@@ -52,6 +52,10 @@ public:
 		e_typeCount = 4
 	};
 
+	b2Shape() = default;
+
+	constexpr explicit b2Shape(Type type, float32 radius): m_type(type), m_radius(radius) {}
+
 	virtual ~b2Shape() {}
 
 	/// Clone the concrete shape using the provided allocator.
@@ -59,7 +63,7 @@ public:
 
 	/// Get the type of this shape. You can use this to down cast to the concrete shape.
 	/// @return the shape type.
-	Type GetType() const;
+	Type GetType() const { return m_type; }
 
 	/// Get the number of child primitives.
 	virtual int32 GetChildCount() const = 0;
@@ -92,10 +96,5 @@ public:
 	Type m_type;
 	float32 m_radius;
 };
-
-inline b2Shape::Type b2Shape::GetType() const
-{
-	return m_type;
-}
 
 #endif

@@ -103,12 +103,12 @@ void b2WheelJoint::InitVelocityConstraints(const b2SolverData& data)
 	// Compute the effective masses.
 	b2Vec2 rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
 	b2Vec2 rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
-	b2Vec2 d = cB + rB - cA - rA;
+	b2Vec2 dd = cB + rB - cA - rA;
 
 	// Point to line constraint
 	{
 		m_ay = b2Mul(qA, m_localYAxisA);
-		m_sAy = b2Cross(d + rA, m_ay);
+		m_sAy = b2Cross(dd + rA, m_ay);
 		m_sBy = b2Cross(rB, m_ay);
 
 		m_mass = mA + mB + iA * m_sAy * m_sAy + iB * m_sBy * m_sBy;
@@ -126,7 +126,7 @@ void b2WheelJoint::InitVelocityConstraints(const b2SolverData& data)
 	if (m_frequencyHz > 0.0f)
 	{
 		m_ax = b2Mul(qA, m_localXAxisA);
-		m_sAx = b2Cross(d + rA, m_ax);
+		m_sAx = b2Cross(dd + rA, m_ax);
 		m_sBx = b2Cross(rB, m_ax);
 
 		float32 invMass = mA + mB + iA * m_sAx * m_sAx + iB * m_sBx * m_sBx;
@@ -135,7 +135,7 @@ void b2WheelJoint::InitVelocityConstraints(const b2SolverData& data)
 		{
 			m_springMass = 1.0f / invMass;
 
-			float32 C = b2Dot(d, m_ax);
+			float32 C = b2Dot(dd, m_ax);
 
 			// Frequency
 			float32 omega = 2.0f * b2_pi * m_frequencyHz;

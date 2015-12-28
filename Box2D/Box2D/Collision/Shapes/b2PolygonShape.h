@@ -28,10 +28,10 @@
 class b2PolygonShape : public b2Shape
 {
 public:
-	b2PolygonShape();
+	b2PolygonShape(): b2Shape(e_polygon, b2_polygonRadius) {}
 
 	/// Implement b2Shape.
-	b2Shape* Clone(b2BlockAllocator* allocator) const;
+	b2Shape* Clone(b2BlockAllocator* allocator) const override;
 
 	/// @see b2Shape::GetChildCount
 	int32 GetChildCount() const;
@@ -56,17 +56,17 @@ public:
 	void SetAsBox(float32 hx, float32 hy, const b2Vec2& center, float32 angle);
 
 	/// @see b2Shape::TestPoint
-	bool TestPoint(const b2Transform& transform, const b2Vec2& p) const;
+	bool TestPoint(const b2Transform& transform, const b2Vec2& p) const override;
 
 	/// Implement b2Shape.
 	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
-					const b2Transform& transform, int32 childIndex) const;
+					const b2Transform& transform, int32 childIndex) const override;
 
 	/// @see b2Shape::ComputeAABB
-	void ComputeAABB(b2AABB* aabb, const b2Transform& transform, int32 childIndex) const;
+	void ComputeAABB(b2AABB* aabb, const b2Transform& transform, int32 childIndex) const override;
 
 	/// @see b2Shape::ComputeMass
-	void ComputeMass(b2MassData* massData, float32 density) const;
+	void ComputeMass(b2MassData* massData, float32 density) const override;
 
 	/// Get the vertex count.
 	int32 GetVertexCount() const { return m_count; }
@@ -78,19 +78,11 @@ public:
 	/// @returns true if valid
 	bool Validate() const;
 
-	b2Vec2 m_centroid;
+	b2Vec2 m_centroid = b2Vec2_zero;
 	b2Vec2 m_vertices[b2_maxPolygonVertices];
 	b2Vec2 m_normals[b2_maxPolygonVertices];
-	int32 m_count;
+	int32 m_count = 0;
 };
-
-inline b2PolygonShape::b2PolygonShape()
-{
-	m_type = e_polygon;
-	m_radius = b2_polygonRadius;
-	m_count = 0;
-	m_centroid.SetZero();
-}
 
 inline const b2Vec2& b2PolygonShape::GetVertex(int32 index) const
 {
