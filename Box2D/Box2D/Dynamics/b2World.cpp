@@ -537,7 +537,7 @@ void b2World::Solve(const b2TimeStep& step)
 		for (int32 i = 0; i < island.m_bodyCount; ++i)
 		{
 			// Allow static bodies to participate in other islands.
-			b2Body* b = island.m_bodies[i];
+			b2Body* const b = island.m_bodies[i];
 			if (b->GetType() == b2_staticBody)
 			{
 				b->m_flags &= ~b2Body::e_islandFlag;

@@ -184,15 +184,15 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 {
 	b2Timer timer;
 
-	float32 h = step.dt;
+	const float32 h = step.dt;
 
 	// Integrate velocities and apply damping. Initialize the body state.
 	for (int32 i = 0; i < m_bodyCount; ++i)
 	{
-		b2Body* b = m_bodies[i];
+		b2Body* const b = m_bodies[i];
 
-		b2Vec2 c = b->m_sweep.c;
-		float32 a = b->m_sweep.a;
+		const b2Vec2 c = b->m_sweep.c;
+		const float32 a = b->m_sweep.a;
 		b2Vec2 v = b->m_linearVelocity;
 		float32 w = b->m_angularVelocity;
 
@@ -280,17 +280,17 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 		float32 w = m_velocities[i].w;
 
 		// Check for large velocities
-		b2Vec2 translation = h * v;
+		const b2Vec2 translation = h * v;
 		if (b2Dot(translation, translation) > b2_maxTranslationSquared)
 		{
-			float32 ratio = b2_maxTranslation / translation.Length();
+			const float32 ratio = b2_maxTranslation / translation.Length();
 			v *= ratio;
 		}
 
-		float32 rotation = h * w;
+		const float32 rotation = h * w;
 		if (rotation * rotation > b2_maxRotationSquared)
 		{
-			float32 ratio = b2_maxRotation / b2Abs(rotation);
+			const float32 ratio = b2_maxRotation / b2Abs(rotation);
 			w *= ratio;
 		}
 
@@ -314,7 +314,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 		bool jointsOkay = true;
 		for (int32 j = 0; j < m_jointCount; ++j)
 		{
-			bool jointOkay = m_joints[j]->SolvePositionConstraints(solverData);
+			const bool jointOkay = m_joints[j]->SolvePositionConstraints(solverData);
 			jointsOkay = jointsOkay && jointOkay;
 		}
 
@@ -329,7 +329,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 	// Copy state buffers back to the bodies
 	for (int32 i = 0; i < m_bodyCount; ++i)
 	{
-		b2Body* body = m_bodies[i];
+		b2Body* const body = m_bodies[i];
 		body->m_sweep.c = m_positions[i].c;
 		body->m_sweep.a = m_positions[i].a;
 		body->m_linearVelocity = m_velocities[i].v;
@@ -350,7 +350,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 
 		for (int32 i = 0; i < m_bodyCount; ++i)
 		{
-			b2Body* b = m_bodies[i];
+			b2Body* const b = m_bodies[i];
 			if (b->GetType() == b2_staticBody)
 			{
 				continue;
@@ -374,7 +374,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 		{
 			for (int32 i = 0; i < m_bodyCount; ++i)
 			{
-				b2Body* b = m_bodies[i];
+				b2Body* const b = m_bodies[i];
 				b->SetAwake(false);
 			}
 		}
@@ -389,7 +389,7 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, int32 toiIndexA, int32 toiInd
 	// Initialize the body state.
 	for (int32 i = 0; i < m_bodyCount; ++i)
 	{
-		b2Body* b = m_bodies[i];
+		b2Body* const b = m_bodies[i];
 		m_positions[i].c = b->m_sweep.c;
 		m_positions[i].a = b->m_sweep.a;
 		m_velocities[i].v = b->m_linearVelocity;
@@ -467,7 +467,7 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, int32 toiIndexA, int32 toiInd
 	// Don't store the TOI contact forces for warm starting
 	// because they can be quite large.
 
-	float32 h = subStep.dt;
+	const float32 h = subStep.dt;
 
 	// Integrate positions
 	for (int32 i = 0; i < m_bodyCount; ++i)
@@ -478,17 +478,17 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, int32 toiIndexA, int32 toiInd
 		float32 w = m_velocities[i].w;
 
 		// Check for large velocities
-		b2Vec2 translation = h * v;
+		const b2Vec2 translation = h * v;
 		if (b2Dot(translation, translation) > b2_maxTranslationSquared)
 		{
-			float32 ratio = b2_maxTranslation / translation.Length();
+			const float32 ratio = b2_maxTranslation / translation.Length();
 			v *= ratio;
 		}
 
-		float32 rotation = h * w;
+		const float32 rotation = h * w;
 		if (rotation * rotation > b2_maxRotationSquared)
 		{
-			float32 ratio = b2_maxRotation / b2Abs(rotation);
+			const float32 ratio = b2_maxRotation / b2Abs(rotation);
 			w *= ratio;
 		}
 
@@ -502,7 +502,7 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, int32 toiIndexA, int32 toiInd
 		m_velocities[i].w = w;
 
 		// Sync bodies
-		b2Body* body = m_bodies[i];
+		b2Body* const body = m_bodies[i];
 		body->m_sweep.c = c;
 		body->m_sweep.a = a;
 		body->m_linearVelocity = v;
@@ -522,9 +522,9 @@ void b2Island::Report(const b2ContactVelocityConstraint* constraints)
 
 	for (int32 i = 0; i < m_contactCount; ++i)
 	{
-		b2Contact* c = m_contacts[i];
+		b2Contact* const c = m_contacts[i];
 
-		const b2ContactVelocityConstraint* vc = constraints + i;
+		const b2ContactVelocityConstraint* const vc = constraints + i;
 		
 		b2ContactImpulse impulse;
 		impulse.count = vc->pointCount;
