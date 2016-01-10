@@ -27,7 +27,7 @@ class b2CircleShape : public b2Shape
 public:
 	constexpr b2CircleShape(): b2Shape(e_circle, 0.0f) {}
 
-	constexpr explicit b2CircleShape(float32 radius, const b2Vec2& position):
+	constexpr explicit b2CircleShape(float32 radius, const b2Vec2& position) noexcept:
 		b2Shape(e_circle, radius), m_p(position) {}
 
 	/// Implement b2Shape.
@@ -56,7 +56,7 @@ public:
 	const b2Vec2& GetSupportVertex(const b2Vec2& d) const;
 
 	/// Get the vertex count.
-	int32 GetVertexCount() const { return 1; }
+	int32 GetVertexCount() const noexcept { return 1; }
 
 	/// Get a vertex by index. Used by b2Distance.
 	const b2Vec2& GetVertex(int32 index) const;

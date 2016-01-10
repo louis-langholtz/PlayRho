@@ -19,20 +19,6 @@
 #include <Box2D/Rope/b2Rope.h>
 #include <Box2D/Common/b2Draw.h>
 
-b2Rope::b2Rope()
-{
-	m_count = 0;
-	m_ps = NULL;
-	m_p0s = NULL;
-	m_vs = NULL;
-	m_ims = NULL;
-	m_Ls = NULL;
-	m_as = NULL;
-	m_gravity.SetZero();
-	m_k2 = 1.0f;
-	m_k3 = 0.1f;
-}
-
 b2Rope::~b2Rope()
 {
 	b2Free(m_ps);

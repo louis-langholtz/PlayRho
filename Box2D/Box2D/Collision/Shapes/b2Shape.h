@@ -54,7 +54,7 @@ public:
 
 	b2Shape() = default;
 
-	constexpr explicit b2Shape(Type type, float32 radius): m_type(type), m_radius(radius) {}
+	constexpr explicit b2Shape(Type type, float32 radius) noexcept: m_type(type), m_radius(radius) {}
 
 	virtual ~b2Shape() {}
 
@@ -63,7 +63,7 @@ public:
 
 	/// Get the type of this shape. You can use this to down cast to the concrete shape.
 	/// @return the shape type.
-	Type GetType() const { return m_type; }
+	Type GetType() const noexcept { return m_type; }
 
 	/// Get the number of child primitives.
 	virtual int32 GetChildCount() const = 0;

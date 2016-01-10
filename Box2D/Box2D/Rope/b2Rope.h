@@ -26,44 +26,35 @@ class b2Draw;
 /// 
 struct b2RopeDef
 {
-	b2RopeDef()
-	{
-		vertices = NULL;
-		count = 0;
-		masses = NULL;
-		gravity.SetZero();
-		damping = 0.1f;
-		k2 = 0.9f;
-		k3 = 0.1f;
-	}
+	constexpr b2RopeDef() = default;
 
 	///
-	b2Vec2* vertices;
+	b2Vec2* vertices = nullptr;
 
 	///
-	int32 count;
+	int32 count = 0;
 
 	///
-	float32* masses;
+	float32* masses = nullptr;
 
 	///
-	b2Vec2 gravity;
+	b2Vec2 gravity = b2Vec2_zero;
 
 	///
-	float32 damping;
+	float32 damping = 0.1f;
 
 	/// Stretching stiffness
-	float32 k2;
+	float32 k2 = 0.9f;
 
 	/// Bending stiffness. Values above 0.5 can make the simulation blow up.
-	float32 k3;
+	float32 k3 = 0.1f;
 };
 
 /// 
 class b2Rope
 {
 public:
-	b2Rope();
+	constexpr b2Rope() = default;
 	~b2Rope();
 
 	///
@@ -73,13 +64,13 @@ public:
 	void Step(float32 timeStep, int32 iterations);
 
 	///
-	int32 GetVertexCount() const
+	int32 GetVertexCount() const noexcept
 	{
 		return m_count;
 	}
 
 	///
-	const b2Vec2* GetVertices() const
+	const b2Vec2* GetVertices() const noexcept
 	{
 		return m_ps;
 	}
@@ -95,21 +86,21 @@ private:
 	void SolveC2();
 	void SolveC3();
 
-	int32 m_count;
-	b2Vec2* m_ps;
-	b2Vec2* m_p0s;
-	b2Vec2* m_vs;
+	int32 m_count = 0;
+	b2Vec2* m_ps = nullptr;
+	b2Vec2* m_p0s = nullptr;
+	b2Vec2* m_vs = nullptr;
 
-	float32* m_ims;
+	float32* m_ims = nullptr;
 
-	float32* m_Ls;
-	float32* m_as;
+	float32* m_Ls = nullptr;
+	float32* m_as = nullptr;
 
-	b2Vec2 m_gravity;
-	float32 m_damping;
+	b2Vec2 m_gravity = b2Vec2_zero;
+	float32 m_damping = 0.0f;
 
-	float32 m_k2;
-	float32 m_k3;
+	float32 m_k2 = 1.0f;
+	float32 m_k3 = 0.1f;
 };
 
 #endif

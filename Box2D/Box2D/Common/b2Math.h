@@ -22,6 +22,15 @@
 #include <Box2D/Common/b2Settings.h>
 #include <math.h>
 
+// forward declarations
+struct b2Vec2;
+struct b2Vec3;
+constexpr inline float32 b2Dot(const b2Vec2& a, const b2Vec2& b) noexcept;
+constexpr inline float32 b2Dot(const b2Vec3& a, const b2Vec3& b) noexcept;
+constexpr inline float32 b2Cross(const b2Vec2& a, const b2Vec2& b) noexcept;
+constexpr inline b2Vec2 b2Cross(const b2Vec2& a, float32 s) noexcept;
+constexpr inline b2Vec3 b2Cross(const b2Vec3& a, const b2Vec3& b) noexcept;
+
 /// This function is used to ensure that a floating point number is not a NaN or infinity.
 inline bool b2IsValid(float32 x)
 {
@@ -56,16 +65,16 @@ struct b2Vec2
 	b2Vec2() {}
 
 	/// Construct using coordinates.
-	constexpr b2Vec2(float32 x_, float32 y_) : x(x_), y(y_) {}
+	constexpr b2Vec2(float32 x_, float32 y_) noexcept : x(x_), y(y_) {}
 
 	/// Set this vector to all zeros.
-	constexpr void SetZero() { x = 0.0f; y = 0.0f; }
+	constexpr void SetZero() noexcept { x = 0.0f; y = 0.0f; };
 
 	/// Set this vector to some specified coordinates.
-	constexpr void Set(float32 x_, float32 y_) { x = x_; y = y_; }
+	constexpr void Set(float32 x_, float32 y_) noexcept { x = x_; y = y_; }
 
 	/// Negate this vector.
-	constexpr b2Vec2 operator -() const { return {-x, -y}; }
+	constexpr b2Vec2 operator -() const noexcept { return {-x, -y}; }
 	
 	/// Read from and indexed element.
 	float32 operator () (int32 i) const
@@ -80,19 +89,19 @@ struct b2Vec2
 	}
 
 	/// Add a vector to this vector.
-	constexpr void operator += (const b2Vec2& v)
+	constexpr void operator += (const b2Vec2& v) noexcept
 	{
 		x += v.x; y += v.y;
 	}
 	
 	/// Subtract a vector from this vector.
-	constexpr void operator -= (const b2Vec2& v)
+	constexpr void operator -= (const b2Vec2& v) noexcept
 	{
 		x -= v.x; y -= v.y;
 	}
 
 	/// Multiply this vector by a scalar.
-	constexpr void operator *= (float32 a)
+	constexpr void operator *= (float32 a) noexcept
 	{
 		x *= a; y *= a;
 	}
@@ -105,7 +114,7 @@ struct b2Vec2
 
 	/// Get the length squared. For performance, use this instead of
 	/// b2Vec2::Length (if possible).
-	constexpr float32 LengthSquared() const
+	constexpr float32 LengthSquared() const noexcept
 	{
 		return x * x + y * y;
 	}
@@ -132,7 +141,7 @@ struct b2Vec2
 	}
 
 	/// Get the skew vector such that dot(skew_vec, other) == cross(vec, other)
-	constexpr b2Vec2 Skew() const
+	constexpr b2Vec2 Skew() const noexcept
 	{
 		return b2Vec2(-y, x);
 	}
@@ -147,31 +156,31 @@ struct b2Vec3
 	b2Vec3() {}
 
 	/// Construct using coordinates.
-	constexpr b2Vec3(float32 x_, float32 y_, float32 z_) : x(x_), y(y_), z(z_) {}
+	constexpr b2Vec3(float32 x_, float32 y_, float32 z_) noexcept : x(x_), y(y_), z(z_) {}
 
 	/// Set this vector to all zeros.
-	constexpr void SetZero() { x = 0.0f; y = 0.0f; z = 0.0f; }
+	constexpr void SetZero() noexcept { x = 0.0f; y = 0.0f; z = 0.0f; }
 
 	/// Set this vector to some specified coordinates.
-	constexpr void Set(float32 x_, float32 y_, float32 z_) { x = x_; y = y_; z = z_; }
+	constexpr void Set(float32 x_, float32 y_, float32 z_) noexcept { x = x_; y = y_; z = z_; }
 
 	/// Negate this vector.
-	constexpr b2Vec3 operator -() const { return {-x, -y, -z}; }
+	constexpr b2Vec3 operator -() const noexcept { return {-x, -y, -z}; }
 
 	/// Add a vector to this vector.
-	void operator += (const b2Vec3& v)
+	constexpr void operator += (const b2Vec3& v) noexcept
 	{
 		x += v.x; y += v.y; z += v.z;
 	}
 
 	/// Subtract a vector from this vector.
-	void operator -= (const b2Vec3& v)
+	constexpr void operator -= (const b2Vec3& v) noexcept
 	{
 		x -= v.x; y -= v.y; z -= v.z;
 	}
 
 	/// Multiply this vector by a scalar.
-	void operator *= (float32 s)
+	constexpr void operator *= (float32 s) noexcept
 	{
 		x *= s; y *= s; z *= s;
 	}
@@ -192,43 +201,40 @@ struct b2Mat22
 	constexpr b2Mat22(float32 a11, float32 a12, float32 a21, float32 a22) : ex(a11, a21), ey(a12, a22) {}
 
 	/// Initialize this matrix using columns.
-	constexpr void Set(const b2Vec2& c1, const b2Vec2& c2)
+	constexpr void Set(const b2Vec2& c1, const b2Vec2& c2) noexcept
 	{
 		ex = c1;
 		ey = c2;
 	}
 
 	/// Set this to the identity matrix.
-	constexpr void SetIdentity()
+	constexpr void SetIdentity() noexcept
 	{
 		ex.x = 1.0f; ey.x = 0.0f;
 		ex.y = 0.0f; ey.y = 1.0f;
 	}
 
 	/// Set this matrix to all zeros.
-	constexpr void SetZero()
+	constexpr void SetZero() noexcept
 	{
 		ex.x = 0.0f; ey.x = 0.0f;
 		ex.y = 0.0f; ey.y = 0.0f;
 	}
 
-	b2Mat22 GetInverse() const
+	constexpr b2Mat22 GetInverse() const noexcept
 	{
-		float32 a = ex.x, b = ey.x, c = ex.y, d = ey.y;
-		b2Mat22 B;
+		const float32 a = ex.x, b = ey.x, c = ex.y, d = ey.y;
 		float32 det = a * d - b * c;
 		if (det != 0.0f)
 		{
 			det = 1.0f / det;
 		}
-		B.ex.x =  det * d;	B.ey.x = -det * b;
-		B.ex.y = -det * c;	B.ey.y =  det * a;
-		return B;
+		return b2Mat22(b2Vec2(det * d, -det * c), b2Vec2(-det * b, det * a));
 	}
 
 	/// Solve A * x = b, where b is a column vector. This is more efficient
 	/// than computing the inverse in one-shot cases.
-	b2Vec2 Solve(const b2Vec2& b) const
+	constexpr b2Vec2 Solve(const b2Vec2& b) const noexcept
 	{
 		float32 a11 = ex.x, a12 = ey.x, a21 = ex.y, a22 = ey.y;
 		float32 det = a11 * a22 - a12 * a21;
@@ -236,10 +242,7 @@ struct b2Mat22
 		{
 			det = 1.0f / det;
 		}
-		b2Vec2 x;
-		x.x = det * (a22 * b.x - a12 * b.y);
-		x.y = det * (a11 * b.y - a21 * b.x);
-		return x;
+		return b2Vec2(det * (a22 * b.x - a12 * b.y), det * (a11 * b.y - a21 * b.x));
 	}
 
 	b2Vec2 ex, ey;
@@ -256,7 +259,7 @@ struct b2Mat33
 		ex(c1), ey(c2), ez(c3) {}
 
 	/// Set this matrix to all zeros.
-	constexpr void SetZero()
+	constexpr void SetZero() noexcept
 	{
 		ex.SetZero();
 		ey.SetZero();
@@ -265,7 +268,15 @@ struct b2Mat33
 
 	/// Solve A * x = b, where b is a column vector. This is more efficient
 	/// than computing the inverse in one-shot cases.
-	b2Vec3 Solve33(const b2Vec3& b) const;
+	constexpr b2Vec3 Solve33(const b2Vec3& b) const
+	{
+		float32 det = b2Dot(ex, b2Cross(ey, ez));
+		if (det != 0.0f)
+		{
+			det = 1.0f / det;
+		}
+		return b2Vec3(det * b2Dot(b, b2Cross(ey, ez)), det * b2Dot(ex, b2Cross(b, ez)), det * b2Dot(ex, b2Cross(ey, b)));
+	}
 
 	/// Solve A * x = b, where b is a column vector. This is more efficient
 	/// than computing the inverse in one-shot cases. Solve only the upper
@@ -393,41 +404,41 @@ struct b2Sweep
 constexpr const b2Vec2 b2Vec2_zero{0.0f, 0.0f};
 
 /// Perform the dot product on two vectors.
-constexpr inline float32 b2Dot(const b2Vec2& a, const b2Vec2& b)
+constexpr inline float32 b2Dot(const b2Vec2& a, const b2Vec2& b) noexcept
 {
 	return a.x * b.x + a.y * b.y;
 }
 
 /// Perform the cross product on two vectors. In 2D this produces a scalar.
-constexpr inline float32 b2Cross(const b2Vec2& a, const b2Vec2& b)
+constexpr inline float32 b2Cross(const b2Vec2& a, const b2Vec2& b) noexcept
 {
 	return a.x * b.y - a.y * b.x;
 }
 
 /// Perform the cross product on a vector and a scalar. In 2D this produces
 /// a vector.
-constexpr inline b2Vec2 b2Cross(const b2Vec2& a, float32 s)
+constexpr inline b2Vec2 b2Cross(const b2Vec2& a, float32 s) noexcept
 {
 	return b2Vec2(s * a.y, -s * a.x);
 }
 
 /// Perform the cross product on a scalar and a vector. In 2D this produces
 /// a vector.
-constexpr inline b2Vec2 b2Cross(float32 s, const b2Vec2& a)
+constexpr inline b2Vec2 b2Cross(float32 s, const b2Vec2& a) noexcept
 {
 	return b2Vec2(-s * a.y, s * a.x);
 }
 
 /// Multiply a matrix times a vector. If a rotation matrix is provided,
 /// then this transforms the vector from one frame to another.
-constexpr inline b2Vec2 b2Mul(const b2Mat22& A, const b2Vec2& v)
+constexpr inline b2Vec2 b2Mul(const b2Mat22& A, const b2Vec2& v) noexcept
 {
 	return b2Vec2(A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y);
 }
 
 /// Multiply a matrix transpose times a vector. If a rotation matrix is provided,
 /// then this transforms the vector from one frame to another (inverse transform).
-constexpr inline b2Vec2 b2MulT(const b2Mat22& A, const b2Vec2& v)
+constexpr inline b2Vec2 b2MulT(const b2Mat22& A, const b2Vec2& v) noexcept
 {
 	return b2Vec2(b2Dot(v, A.ex), b2Dot(v, A.ey));
 }
@@ -484,13 +495,13 @@ constexpr inline b2Vec3 operator - (const b2Vec3& a, const b2Vec3& b)
 }
 
 /// Perform the dot product on two vectors.
-constexpr inline float32 b2Dot(const b2Vec3& a, const b2Vec3& b)
+constexpr inline float32 b2Dot(const b2Vec3& a, const b2Vec3& b) noexcept
 {
 	return a.x * b.x + a.y * b.y + a.z * b.z;
 }
 
 /// Perform the cross product on two vectors.
-constexpr inline b2Vec3 b2Cross(const b2Vec3& a, const b2Vec3& b)
+constexpr inline b2Vec3 b2Cross(const b2Vec3& a, const b2Vec3& b) noexcept
 {
 	return b2Vec3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
 }
