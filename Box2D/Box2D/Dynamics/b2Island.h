@@ -81,9 +81,9 @@ public:
 	b2Position* m_positions;
 	b2Velocity* m_velocities;
 
-	int32 m_bodyCount;
-	int32 m_jointCount;
-	int32 m_contactCount;
+	int32 m_bodyCount = 0;
+	int32 m_jointCount = 0;
+	int32 m_contactCount = 0;
 
 	int32 m_bodyCapacity;
 	int32 m_contactCapacity;

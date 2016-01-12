@@ -155,10 +155,6 @@ b2Island::b2Island(
 	m_bodyCapacity = bodyCapacity;
 	m_contactCapacity = contactCapacity;
 	m_jointCapacity	 = jointCapacity;
-	m_bodyCount = 0;
-	m_contactCount = 0;
-	m_jointCount = 0;
-
 	m_allocator = allocator;
 	m_listener = listener;
 

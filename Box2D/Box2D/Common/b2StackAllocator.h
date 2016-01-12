@@ -21,8 +21,8 @@
 
 #include <Box2D/Common/b2Settings.h>
 
-const int32 b2_stackSize = 100 * 1024;	// 100k
-const int32 b2_maxStackEntries = 32;
+constexpr int32 b2_stackSize = 100 * 1024;	// 100k
+constexpr int32 b2_maxStackEntries = 32;
 
 struct b2StackEntry
 {
@@ -43,7 +43,7 @@ public:
 	void* Allocate(int32 size);
 	void Free(void* p);
 
-	int32 GetMaxAllocation() const;
+	int32 GetMaxAllocation() const noexcept;
 
 private:
 

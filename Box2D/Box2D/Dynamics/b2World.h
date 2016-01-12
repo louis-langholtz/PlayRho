@@ -228,37 +228,37 @@ private:
 	void SolveTOI(const b2TimeStep& step);
 
 	void DrawJoint(b2Joint* joint);
-	void DrawShape(b2Fixture* shape, const b2Transform& xf, const b2Color& color);
+	void DrawShape(const b2Fixture* shape, const b2Transform& xf, const b2Color& color);
 
 	b2BlockAllocator m_blockAllocator;
 	b2StackAllocator m_stackAllocator;
 
-	int32 m_flags;
+	int32 m_flags = e_clearForces;
 
 	b2ContactManager m_contactManager;
 
-	b2Body* m_bodyList;
-	b2Joint* m_jointList;
+	b2Body* m_bodyList = nullptr;
+	b2Joint* m_jointList = nullptr;
 
-	int32 m_bodyCount;
-	int32 m_jointCount;
+	int32 m_bodyCount = 0;
+	int32 m_jointCount = 0;
 
 	b2Vec2 m_gravity;
-	bool m_allowSleep;
+	bool m_allowSleep = true;
 
-	b2DestructionListener* m_destructionListener;
-	b2Draw* g_debugDraw;
+	b2DestructionListener* m_destructionListener = nullptr;
+	b2Draw* g_debugDraw = nullptr;
 
 	// This is used to compute the time step ratio to
 	// support a variable time step.
-	float32 m_inv_dt0;
+	float32 m_inv_dt0 = 0.0f;
 
 	// These are for debugging the solver.
-	bool m_warmStarting;
-	bool m_continuousPhysics;
-	bool m_subStepping;
+	bool m_warmStarting = true;
+	bool m_continuousPhysics = true;
+	bool m_subStepping = false;
 
-	bool m_stepComplete;
+	bool m_stepComplete = true;
 
 	b2Profile m_profile;
 };

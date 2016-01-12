@@ -28,7 +28,7 @@ class b2Shape;
 /// It encapsulates any shape.
 struct b2DistanceProxy
 {
-	b2DistanceProxy() : m_vertices(NULL), m_count(0), m_radius(0.0f) {}
+	b2DistanceProxy() = default;
 
 	/// Initialize the proxy using the given shape. The shape
 	/// must remain in scope while the proxy is in use.
@@ -41,15 +41,18 @@ struct b2DistanceProxy
 	const b2Vec2& GetSupportVertex(const b2Vec2& d) const;
 
 	/// Get the vertex count.
-	int32 GetVertexCount() const;
+	inline int32 GetVertexCount() const noexcept
+	{
+		return m_count;
+	}
 
 	/// Get a vertex by index. Used by b2Distance.
 	const b2Vec2& GetVertex(int32 index) const;
 
 	b2Vec2 m_buffer[2];
-	const b2Vec2* m_vertices;
-	int32 m_count;
-	float32 m_radius;
+	const b2Vec2* m_vertices = nullptr;
+	int32 m_count = 0;
+	float32 m_radius = 0.0f;
 };
 
 /// Used to warm start b2Distance.
@@ -93,11 +96,6 @@ void b2Distance(b2DistanceOutput* output,
 
 //////////////////////////////////////////////////////////////////////////
 
-inline int32 b2DistanceProxy::GetVertexCount() const
-{
-	return m_count;
-}
-
 inline const b2Vec2& b2DistanceProxy::GetVertex(int32 index) const
 {
 	b2Assert(0 <= index && index < m_count);
@@ -107,10 +105,10 @@ inline const b2Vec2& b2DistanceProxy::GetVertex(int32 index) const
 inline int32 b2DistanceProxy::GetSupport(const b2Vec2& d) const
 {
 	int32 bestIndex = 0;
-	float32 bestValue = b2Dot(m_vertices[0], d);
+	auto bestValue = b2Dot(m_vertices[0], d);
 	for (int32 i = 1; i < m_count; ++i)
 	{
-		float32 value = b2Dot(m_vertices[i], d);
+		const auto value = b2Dot(m_vertices[i], d);
 		if (value > bestValue)
 		{
 			bestIndex = i;
@@ -124,10 +122,10 @@ inline int32 b2DistanceProxy::GetSupport(const b2Vec2& d) const
 inline const b2Vec2& b2DistanceProxy::GetSupportVertex(const b2Vec2& d) const
 {
 	int32 bestIndex = 0;
-	float32 bestValue = b2Dot(m_vertices[0], d);
+	auto bestValue = b2Dot(m_vertices[0], d);
 	for (int32 i = 1; i < m_count; ++i)
 	{
-		float32 value = b2Dot(m_vertices[i], d);
+		const auto value = b2Dot(m_vertices[i], d);
 		if (value > bestValue)
 		{
 			bestIndex = i;

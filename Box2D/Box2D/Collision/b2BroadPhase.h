@@ -69,7 +69,7 @@ public:
 	bool TestOverlap(int32 proxyIdA, int32 proxyIdB) const;
 
 	/// Get the number of proxies.
-	int32 GetProxyCount() const;
+	int32 GetProxyCount() const noexcept;
 
 	/// Update the pairs. This results in pair callbacks. This can only add pairs.
 	template <typename T>
@@ -129,7 +129,7 @@ private:
 };
 
 /// This is used to sort pairs.
-inline bool b2PairLessThan(const b2Pair& pair1, const b2Pair& pair2)
+inline bool b2PairLessThan(const b2Pair& pair1, const b2Pair& pair2) noexcept
 {
 	if (pair1.proxyIdA < pair2.proxyIdA)
 	{
@@ -161,7 +161,7 @@ inline const b2AABB& b2BroadPhase::GetFatAABB(int32 proxyId) const
 	return m_tree.GetFatAABB(proxyId);
 }
 
-inline int32 b2BroadPhase::GetProxyCount() const
+inline int32 b2BroadPhase::GetProxyCount() const noexcept
 {
 	return m_proxyCount;
 }

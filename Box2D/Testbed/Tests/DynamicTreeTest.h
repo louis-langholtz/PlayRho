@@ -166,10 +166,10 @@ public:
 
 	float32 RayCastCallback(const b2RayCastInput& input, int32 proxyId)
 	{
-		Actor* actor = (Actor*)m_tree.GetUserData(proxyId);
+		auto actor = static_cast<Actor*>(m_tree.GetUserData(proxyId));
 
 		b2RayCastOutput output;
-		bool hit = actor->aabb.RayCast(&output, input);
+		const auto hit = actor->aabb.RayCast(&output, input);
 
 		if (hit)
 		{
@@ -192,9 +192,9 @@ private:
 		int32 proxyId;
 	};
 
-	void GetRandomAABB(b2AABB* aabb)
+	void GetRandomAABB(b2AABB* const aabb)
 	{
-		b2Vec2 w; w.Set(2.0f * m_proxyExtent, 2.0f * m_proxyExtent);
+		const b2Vec2 w(2.0f * m_proxyExtent, 2.0f * m_proxyExtent);
 		//aabb->lowerBound.x = -m_proxyExtent;
 		//aabb->lowerBound.y = -m_proxyExtent + m_worldExtent;
 		aabb->lowerBound.x = RandomFloat(-m_worldExtent, m_worldExtent);

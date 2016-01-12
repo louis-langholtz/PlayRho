@@ -162,44 +162,50 @@ struct b2RayCastOutput
 struct b2AABB
 {
 	/// Verify that the bounds are sorted.
-	bool IsValid() const;
+	inline bool IsValid() const
+	{
+		const auto d = upperBound - lowerBound;
+		bool valid = d.x >= 0.0f && d.y >= 0.0f;
+		valid = valid && lowerBound.IsValid() && upperBound.IsValid();
+		return valid;
+	}
 
 	/// Get the center of the AABB.
-	b2Vec2 GetCenter() const
+	constexpr b2Vec2 GetCenter() const noexcept
 	{
 		return 0.5f * (lowerBound + upperBound);
 	}
 
 	/// Get the extents of the AABB (half-widths).
-	b2Vec2 GetExtents() const
+	constexpr b2Vec2 GetExtents() const noexcept
 	{
 		return 0.5f * (upperBound - lowerBound);
 	}
 
 	/// Get the perimeter length
-	float32 GetPerimeter() const
+	constexpr float32 GetPerimeter() const noexcept
 	{
-		float32 wx = upperBound.x - lowerBound.x;
-		float32 wy = upperBound.y - lowerBound.y;
+		const auto wx = upperBound.x - lowerBound.x;
+		const auto wy = upperBound.y - lowerBound.y;
 		return 2.0f * (wx + wy);
 	}
 
 	/// Combine an AABB into this one.
-	void Combine(const b2AABB& aabb)
+	constexpr void Combine(const b2AABB& aabb)
 	{
 		lowerBound = b2Min(lowerBound, aabb.lowerBound);
 		upperBound = b2Max(upperBound, aabb.upperBound);
 	}
 
 	/// Combine two AABBs into this one.
-	void Combine(const b2AABB& aabb1, const b2AABB& aabb2)
+	constexpr void Combine(const b2AABB& aabb1, const b2AABB& aabb2)
 	{
 		lowerBound = b2Min(aabb1.lowerBound, aabb2.lowerBound);
 		upperBound = b2Max(aabb1.upperBound, aabb2.upperBound);
 	}
 
 	/// Does this aabb contain the provided AABB.
-	bool Contains(const b2AABB& aabb) const
+	constexpr bool Contains(const b2AABB& aabb) const
 	{
 		bool result = true;
 		result = result && lowerBound.x <= aabb.lowerBound.x;
@@ -251,19 +257,10 @@ bool b2TestOverlap(	const b2Shape* shapeA, int32 indexA,
 
 // ---------------- Inline Functions ------------------------------------------
 
-inline bool b2AABB::IsValid() const
+inline bool b2TestOverlap(const b2AABB& a, const b2AABB& b) noexcept
 {
-	b2Vec2 d = upperBound - lowerBound;
-	bool valid = d.x >= 0.0f && d.y >= 0.0f;
-	valid = valid && lowerBound.IsValid() && upperBound.IsValid();
-	return valid;
-}
-
-inline bool b2TestOverlap(const b2AABB& a, const b2AABB& b)
-{
-	b2Vec2 d1, d2;
-	d1 = b.lowerBound - a.upperBound;
-	d2 = a.lowerBound - b.upperBound;
+	const auto d1 = b.lowerBound - a.upperBound;
+	const auto d2 = a.lowerBound - b.upperBound;
 
 	if (d1.x > 0.0f || d1.y > 0.0f)
 		return false;

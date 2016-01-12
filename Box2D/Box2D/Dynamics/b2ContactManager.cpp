@@ -25,21 +25,16 @@
 b2ContactFilter b2_defaultFilter;
 b2ContactListener b2_defaultListener;
 
-b2ContactManager::b2ContactManager()
-{
-	m_contactList = NULL;
-	m_contactCount = 0;
-	m_contactFilter = &b2_defaultFilter;
-	m_contactListener = &b2_defaultListener;
-	m_allocator = NULL;
-}
+b2ContactManager::b2ContactManager():
+	m_contactFilter(&b2_defaultFilter), m_contactListener(&b2_defaultListener)
+{}
 
 void b2ContactManager::Destroy(b2Contact* c)
 {
-	b2Fixture* fixtureA = c->GetFixtureA();
-	b2Fixture* fixtureB = c->GetFixtureB();
-	b2Body* bodyA = fixtureA->GetBody();
-	b2Body* bodyB = fixtureB->GetBody();
+	auto fixtureA = c->GetFixtureA();
+	auto fixtureB = c->GetFixtureB();
+	auto bodyA = fixtureA->GetBody();
+	auto bodyB = fixtureB->GetBody();
 
 	if (m_contactListener && c->IsTouching())
 	{
@@ -105,7 +100,7 @@ void b2ContactManager::Destroy(b2Contact* c)
 void b2ContactManager::Collide()
 {
 	// Update awake contacts.
-	b2Contact* c = m_contactList;
+	auto c = m_contactList;
 	while (c)
 	{
 		b2Fixture* fixtureA = c->GetFixtureA();
@@ -197,15 +192,15 @@ void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 	// TODO_ERIN use a hash table to remove a potential bottleneck when both
 	// bodies have a lot of contacts.
 	// Does a contact already exist?
-	b2ContactEdge* edge = bodyB->GetContactList();
+	auto edge = bodyB->GetContactList();
 	while (edge)
 	{
 		if (edge->other == bodyA)
 		{
-			b2Fixture* fA = edge->contact->GetFixtureA();
-			b2Fixture* fB = edge->contact->GetFixtureB();
-			int32 iA = edge->contact->GetChildIndexA();
-			int32 iB = edge->contact->GetChildIndexB();
+			const auto fA = edge->contact->GetFixtureA();
+			const auto fB = edge->contact->GetFixtureB();
+			const auto iA = edge->contact->GetChildIndexA();
+			const auto iB = edge->contact->GetChildIndexB();
 
 			if (fA == fixtureA && fB == fixtureB && iA == indexA && iB == indexB)
 			{

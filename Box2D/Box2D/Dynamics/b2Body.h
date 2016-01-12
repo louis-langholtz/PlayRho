@@ -51,75 +51,59 @@ enum b2BodyType
 struct b2BodyDef
 {
 	/// This constructor sets the body definition default values.
-	b2BodyDef()
-	{
-		userData = NULL;
-		position.Set(0.0f, 0.0f);
-		angle = 0.0f;
-		linearVelocity.Set(0.0f, 0.0f);
-		angularVelocity = 0.0f;
-		linearDamping = 0.0f;
-		angularDamping = 0.0f;
-		allowSleep = true;
-		awake = true;
-		fixedRotation = false;
-		bullet = false;
-		type = b2_staticBody;
-		active = true;
-		gravityScale = 1.0f;
-	}
+	constexpr b2BodyDef() = default;
 
 	/// The body type: static, kinematic, or dynamic.
 	/// Note: if a dynamic body would have zero mass, the mass is set to one.
-	b2BodyType type;
+	b2BodyType type = b2_staticBody;
 
 	/// The world position of the body. Avoid creating bodies at the origin
 	/// since this can lead to many overlapping shapes.
-	b2Vec2 position;
+	b2Vec2 position = b2Vec2_zero;
 
 	/// The world angle of the body in radians.
-	float32 angle;
+	float32 angle = 0.0f;
 
 	/// The linear velocity of the body's origin in world co-ordinates.
-	b2Vec2 linearVelocity;
+	b2Vec2 linearVelocity = b2Vec2_zero;
 
 	/// The angular velocity of the body.
-	float32 angularVelocity;
+	float32 angularVelocity = 0.0f;
 
 	/// Linear damping is use to reduce the linear velocity. The damping parameter
 	/// can be larger than 1.0f but the damping effect becomes sensitive to the
 	/// time step when the damping parameter is large.
-	float32 linearDamping;
+	float32 linearDamping = 0.0f;
 
 	/// Angular damping is use to reduce the angular velocity. The damping parameter
 	/// can be larger than 1.0f but the damping effect becomes sensitive to the
 	/// time step when the damping parameter is large.
-	float32 angularDamping;
+	float32 angularDamping = 0.0f;
 
 	/// Set this flag to false if this body should never fall asleep. Note that
 	/// this increases CPU usage.
-	bool allowSleep;
+	bool allowSleep = true;
 
 	/// Is this body initially awake or sleeping?
-	bool awake;
+	bool awake = true;
 
 	/// Should this body be prevented from rotating? Useful for characters.
-	bool fixedRotation;
+	bool fixedRotation = false;
 
 	/// Is this a fast moving body that should be prevented from tunneling through
 	/// other moving bodies? Note that all bodies are prevented from tunneling through
 	/// kinematic and static bodies. This setting is only considered on dynamic bodies.
 	/// @warning You should use this flag sparingly since it increases processing time.
-	bool bullet;
+	bool bullet = false;
 
 	/// Does this body start out active?
-	bool active;
+	bool active = true;
 
 	/// Use this to store application specific body data.
-	void* userData;
+	void* userData = nullptr;
 
 	/// Scale the gravity applied to this body.
-	float32 gravityScale;
+	float32 gravityScale = 1.0f;
 };
 
 /// A rigid body. These are created via b2World::CreateBody.
@@ -414,6 +398,8 @@ private:
 		e_activeFlag		= 0x0020,
 		e_toiFlag			= 0x0040
 	};
+	
+	static uint16 GetFlags(const b2BodyDef& bd) noexcept;
 
 	b2Body(const b2BodyDef* bd, b2World* world);
 	~b2Body();
@@ -429,7 +415,7 @@ private:
 
 	b2BodyType m_type;
 
-	uint16 m_flags;
+	uint16 m_flags = 0;
 
 	int32 m_islandIndex;
 
@@ -439,29 +425,29 @@ private:
 	b2Vec2 m_linearVelocity;
 	float32 m_angularVelocity;
 
-	b2Vec2 m_force;
-	float32 m_torque;
+	b2Vec2 m_force = b2Vec2_zero;
+	float32 m_torque = 0.0f;
 
 	b2World* m_world;
-	b2Body* m_prev;
-	b2Body* m_next;
+	b2Body* m_prev = nullptr;
+	b2Body* m_next = nullptr;
 
-	b2Fixture* m_fixtureList;
-	int32 m_fixtureCount;
+	b2Fixture* m_fixtureList = nullptr;
+	int32 m_fixtureCount = 0;
 
-	b2JointEdge* m_jointList;
-	b2ContactEdge* m_contactList;
+	b2JointEdge* m_jointList = nullptr;
+	b2ContactEdge* m_contactList = nullptr;
 
 	float32 m_mass, m_invMass;
 
 	// Rotational inertia about the center of mass.
-	float32 m_I, m_invI;
+	float32 m_I = 0.0f, m_invI = 0.0f;
 
 	float32 m_linearDamping;
 	float32 m_angularDamping;
 	float32 m_gravityScale;
 
-	float32 m_sleepTime;
+	float32 m_sleepTime = 0.0f;
 
 	void* m_userData;
 };

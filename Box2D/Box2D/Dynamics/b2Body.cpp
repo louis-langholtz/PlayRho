@@ -22,7 +22,34 @@
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include <Box2D/Dynamics/Joints/b2Joint.h>
 
-b2Body::b2Body(const b2BodyDef* bd, b2World* world)
+uint16 b2Body::GetFlags(const b2BodyDef& bd)
+{
+	uint16 flags = 0;
+	if (bd.bullet)
+	{
+		flags |= e_bulletFlag;
+	}
+	if (bd.fixedRotation)
+	{
+		flags |= e_fixedRotationFlag;
+	}
+	if (bd.allowSleep)
+	{
+		flags |= e_autoSleepFlag;
+	}
+	if (bd.awake)
+	{
+		flags |= e_awakeFlag;
+	}
+	if (bd.active)
+	{
+		flags |= e_activeFlag;
+	}
+	return flags;
+}
+
+b2Body::b2Body(const b2BodyDef* bd, b2World* world):
+	m_type(bd->type),m_flags(GetFlags(*bd)), m_world(world)
 {
 	b2Assert(bd->position.IsValid());
 	b2Assert(bd->linearVelocity.IsValid());
@@ -30,31 +57,6 @@ b2Body::b2Body(const b2BodyDef* bd, b2World* world)
 	b2Assert(b2IsValid(bd->angularVelocity));
 	b2Assert(b2IsValid(bd->angularDamping) && bd->angularDamping >= 0.0f);
 	b2Assert(b2IsValid(bd->linearDamping) && bd->linearDamping >= 0.0f);
-
-	m_flags = 0;
-
-	if (bd->bullet)
-	{
-		m_flags |= e_bulletFlag;
-	}
-	if (bd->fixedRotation)
-	{
-		m_flags |= e_fixedRotationFlag;
-	}
-	if (bd->allowSleep)
-	{
-		m_flags |= e_autoSleepFlag;
-	}
-	if (bd->awake)
-	{
-		m_flags |= e_awakeFlag;
-	}
-	if (bd->active)
-	{
-		m_flags |= e_activeFlag;
-	}
-
-	m_world = world;
 
 	m_xf.p = bd->position;
 	m_xf.q.Set(bd->angle);
@@ -66,24 +68,12 @@ b2Body::b2Body(const b2BodyDef* bd, b2World* world)
 	m_sweep.a = bd->angle;
 	m_sweep.alpha0 = 0.0f;
 
-	m_jointList = NULL;
-	m_contactList = NULL;
-	m_prev = NULL;
-	m_next = NULL;
-
 	m_linearVelocity = bd->linearVelocity;
 	m_angularVelocity = bd->angularVelocity;
 
 	m_linearDamping = bd->linearDamping;
 	m_angularDamping = bd->angularDamping;
 	m_gravityScale = bd->gravityScale;
-
-	m_force.SetZero();
-	m_torque = 0.0f;
-
-	m_sleepTime = 0.0f;
-
-	m_type = bd->type;
 
 	if (m_type == b2_dynamicBody)
 	{
@@ -96,13 +86,7 @@ b2Body::b2Body(const b2BodyDef* bd, b2World* world)
 		m_invMass = 0.0f;
 	}
 
-	m_I = 0.0f;
-	m_invI = 0.0f;
-
 	m_userData = bd->userData;
-
-	m_fixtureList = NULL;
-	m_fixtureCount = 0;
 }
 
 b2Body::~b2Body()

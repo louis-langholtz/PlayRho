@@ -28,12 +28,7 @@ template <typename T, int32 N>
 class b2GrowableStack
 {
 public:
-	b2GrowableStack()
-	{
-		m_stack = m_array;
-		m_count = 0;
-		m_capacity = N;
-	}
+	b2GrowableStack() = default;
 
 	~b2GrowableStack()
 	{
@@ -50,7 +45,7 @@ public:
 		{
 			T* old = m_stack;
 			m_capacity *= 2;
-			m_stack = (T*)b2Alloc(m_capacity * sizeof(T));
+			m_stack = static_cast<T*>(b2Alloc(m_capacity * sizeof(T)));
 			memcpy(m_stack, old, m_count * sizeof(T));
 			if (old != m_array)
 			{
@@ -69,16 +64,16 @@ public:
 		return m_stack[m_count];
 	}
 
-	int32 GetCount()
+	constexpr int32 GetCount() const noexcept
 	{
 		return m_count;
 	}
 
 private:
-	T* m_stack;
 	T m_array[N];
-	int32 m_count;
-	int32 m_capacity;
+	T* m_stack = m_array;
+	int32 m_count = 0;
+	int32 m_capacity = N;
 };
 
 

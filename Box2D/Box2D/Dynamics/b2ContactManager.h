@@ -42,11 +42,11 @@ public:
 	void Collide();
             
 	b2BroadPhase m_broadPhase;
-	b2Contact* m_contactList;
-	int32 m_contactCount;
+	b2Contact* m_contactList = nullptr;
+	int32 m_contactCount = 0;
 	b2ContactFilter* m_contactFilter;
 	b2ContactListener* m_contactListener;
-	b2BlockAllocator* m_allocator;
+	b2BlockAllocator* m_allocator = nullptr;
 };
 
 #endif

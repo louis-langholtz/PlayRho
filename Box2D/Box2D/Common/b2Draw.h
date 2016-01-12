@@ -24,9 +24,9 @@
 /// Color for debug drawing. Each value has the range [0,1].
 struct b2Color
 {
-	b2Color() {}
-	b2Color(float32 ri, float32 gi, float32 bi, float32 ai = 1.0f) : r(ri), g(gi), b(bi), a(ai) {}
-	void Set(float32 ri, float32 gi, float32 bi, float32 ai = 1.0f) { r = ri; g = gi; b = bi; a = ai; }
+	b2Color() = default;
+	constexpr b2Color(float32 ri, float32 gi, float32 bi, float32 ai = 1.0f) : r(ri), g(gi), b(bi), a(ai) {}
+	constexpr void Set(float32 ri, float32 gi, float32 bi, float32 ai = 1.0f) { r = ri; g = gi; b = bi; a = ai; }
 	float32 r, g, b, a;
 };
 
@@ -35,9 +35,9 @@ struct b2Color
 class b2Draw
 {
 public:
-	b2Draw();
+	b2Draw() = default;
 
-	virtual ~b2Draw() {}
+	virtual ~b2Draw() = default;
 
 	enum
 	{
@@ -80,7 +80,7 @@ public:
 	virtual void DrawTransform(const b2Transform& xf) = 0;
 
 protected:
-	uint32 m_drawFlags;
+	uint32 m_drawFlags = 0;
 };
 
 #endif

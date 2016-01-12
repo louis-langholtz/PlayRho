@@ -77,7 +77,7 @@ void b2StackAllocator::Free(void* p)
 	p = NULL;
 }
 
-int32 b2StackAllocator::GetMaxAllocation() const
+int32 b2StackAllocator::GetMaxAllocation() const noexcept
 {
 	return m_maxAllocation;
 }

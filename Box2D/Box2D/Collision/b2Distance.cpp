@@ -31,7 +31,7 @@ void b2DistanceProxy::Set(const b2Shape* shape, int32 index)
 	{
 	case b2Shape::e_circle:
 		{
-			const b2CircleShape* circle = static_cast<const b2CircleShape*>(shape);
+			const auto circle = static_cast<const b2CircleShape*>(shape);
 			m_vertices = &circle->m_p;
 			m_count = 1;
 			m_radius = circle->m_radius;
@@ -40,7 +40,7 @@ void b2DistanceProxy::Set(const b2Shape* shape, int32 index)
 
 	case b2Shape::e_polygon:
 		{
-			const b2PolygonShape* polygon = static_cast<const b2PolygonShape*>(shape);
+			const auto polygon = static_cast<const b2PolygonShape*>(shape);
 			m_vertices = polygon->m_vertices;
 			m_count = polygon->m_count;
 			m_radius = polygon->m_radius;
@@ -49,7 +49,7 @@ void b2DistanceProxy::Set(const b2Shape* shape, int32 index)
 
 	case b2Shape::e_chain:
 		{
-			const b2ChainShape* chain = static_cast<const b2ChainShape*>(shape);
+			const auto chain = static_cast<const b2ChainShape*>(shape);
 			b2Assert(0 <= index && index < chain->m_count);
 
 			m_buffer[0] = chain->m_vertices[index];
@@ -70,7 +70,7 @@ void b2DistanceProxy::Set(const b2Shape* shape, int32 index)
 
 	case b2Shape::e_edge:
 		{
-			const b2EdgeShape* edge = static_cast<const b2EdgeShape*>(shape);
+			const auto edge = static_cast<const b2EdgeShape*>(shape);
 			m_vertices = &edge->m_vertex1;
 			m_count = 2;
 			m_radius = edge->m_radius;
@@ -121,8 +121,8 @@ struct b2Simplex
 		// old metric then flush the simplex.
 		if (m_count > 1)
 		{
-			float32 metric1 = cache->metric;
-			float32 metric2 = GetMetric();
+			const auto metric1 = cache->metric;
+			const auto metric2 = GetMetric();
 			if (metric2 < 0.5f * metric1 || 2.0f * metric1 < metric2 || metric2 < b2_epsilon)
 			{
 				// Reset the simplex.
@@ -136,8 +136,8 @@ struct b2Simplex
 			b2SimplexVertex* v = vertices + 0;
 			v->indexA = 0;
 			v->indexB = 0;
-			b2Vec2 wALocal = proxyA->GetVertex(0);
-			b2Vec2 wBLocal = proxyB->GetVertex(0);
+			const auto wALocal = proxyA->GetVertex(0);
+			const auto wBLocal = proxyB->GetVertex(0);
 			v->wA = b2Mul(transformA, wALocal);
 			v->wB = b2Mul(transformB, wBLocal);
 			v->w = v->wB - v->wA;
@@ -146,11 +146,11 @@ struct b2Simplex
 		}
 	}
 
-	void WriteCache(b2SimplexCache* cache) const
+	void WriteCache(b2SimplexCache* const cache) const
 	{
 		cache->metric = GetMetric();
 		cache->count = uint16(m_count);
-		const b2SimplexVertex* vertices = &m_v1;
+		const auto vertices = &m_v1;
 		for (int32 i = 0; i < m_count; ++i)
 		{
 			cache->indexA[i] = uint8(vertices[i].indexA);
@@ -167,8 +167,8 @@ struct b2Simplex
 
 		case 2:
 			{
-				b2Vec2 e12 = m_v2.w - m_v1.w;
-				float32 sgn = b2Cross(e12, -m_v1.w);
+				const auto e12 = m_v2.w - m_v1.w;
+				const auto sgn = b2Cross(e12, -m_v1.w);
 				if (sgn > 0.0f)
 				{
 					// Origin is left of e12.
@@ -295,12 +295,12 @@ struct b2Simplex
 // a2 = d12_2 / d12
 void b2Simplex::Solve2()
 {
-	b2Vec2 w1 = m_v1.w;
-	b2Vec2 w2 = m_v2.w;
-	b2Vec2 e12 = w2 - w1;
+	const auto w1 = m_v1.w;
+	const auto w2 = m_v2.w;
+	const auto e12 = w2 - w1;
 
 	// w1 region
-	float32 d12_2 = -b2Dot(w1, e12);
+	const auto d12_2 = -b2Dot(w1, e12);
 	if (d12_2 <= 0.0f)
 	{
 		// a2 <= 0, so we clamp it to 0
@@ -310,7 +310,7 @@ void b2Simplex::Solve2()
 	}
 
 	// w2 region
-	float32 d12_1 = b2Dot(w2, e12);
+	const auto d12_1 = b2Dot(w2, e12);
 	if (d12_1 <= 0.0f)
 	{
 		// a1 <= 0, so we clamp it to 0
@@ -321,7 +321,7 @@ void b2Simplex::Solve2()
 	}
 
 	// Must be in e12 region.
-	float32 inv_d12 = 1.0f / (d12_1 + d12_2);
+	const auto inv_d12 = 1.0f / (d12_1 + d12_2);
 	m_v1.a = d12_1 * inv_d12;
 	m_v2.a = d12_2 * inv_d12;
 	m_count = 2;
@@ -334,46 +334,46 @@ void b2Simplex::Solve2()
 // - inside the triangle
 void b2Simplex::Solve3()
 {
-	b2Vec2 w1 = m_v1.w;
-	b2Vec2 w2 = m_v2.w;
-	b2Vec2 w3 = m_v3.w;
+	const auto w1 = m_v1.w;
+	const auto w2 = m_v2.w;
+	const auto w3 = m_v3.w;
 
 	// Edge12
 	// [1      1     ][a1] = [1]
 	// [w1.e12 w2.e12][a2] = [0]
 	// a3 = 0
-	b2Vec2 e12 = w2 - w1;
-	float32 w1e12 = b2Dot(w1, e12);
-	float32 w2e12 = b2Dot(w2, e12);
-	float32 d12_1 = w2e12;
-	float32 d12_2 = -w1e12;
+	const auto e12 = w2 - w1;
+	const auto w1e12 = b2Dot(w1, e12);
+	const auto w2e12 = b2Dot(w2, e12);
+	const auto d12_1 = w2e12;
+	const auto d12_2 = -w1e12;
 
 	// Edge13
 	// [1      1     ][a1] = [1]
 	// [w1.e13 w3.e13][a3] = [0]
 	// a2 = 0
-	b2Vec2 e13 = w3 - w1;
-	float32 w1e13 = b2Dot(w1, e13);
-	float32 w3e13 = b2Dot(w3, e13);
-	float32 d13_1 = w3e13;
-	float32 d13_2 = -w1e13;
+	const auto e13 = w3 - w1;
+	const auto w1e13 = b2Dot(w1, e13);
+	const auto w3e13 = b2Dot(w3, e13);
+	const auto d13_1 = w3e13;
+	const auto d13_2 = -w1e13;
 
 	// Edge23
 	// [1      1     ][a2] = [1]
 	// [w2.e23 w3.e23][a3] = [0]
 	// a1 = 0
-	b2Vec2 e23 = w3 - w2;
-	float32 w2e23 = b2Dot(w2, e23);
-	float32 w3e23 = b2Dot(w3, e23);
-	float32 d23_1 = w3e23;
-	float32 d23_2 = -w2e23;
+	const auto e23 = w3 - w2;
+	const auto w2e23 = b2Dot(w2, e23);
+	const auto w3e23 = b2Dot(w3, e23);
+	const auto d23_1 = w3e23;
+	const auto d23_2 = -w2e23;
 	
 	// Triangle123
 	float32 n123 = b2Cross(e12, e13);
 
-	float32 d123_1 = n123 * b2Cross(w2, w3);
-	float32 d123_2 = n123 * b2Cross(w3, w1);
-	float32 d123_3 = n123 * b2Cross(w1, w2);
+	const auto d123_1 = n123 * b2Cross(w2, w3);
+	const auto d123_2 = n123 * b2Cross(w3, w1);
+	const auto d123_3 = n123 * b2Cross(w1, w2);
 
 	// w1 region
 	if (d12_2 <= 0.0f && d13_2 <= 0.0f)
@@ -434,7 +434,7 @@ void b2Simplex::Solve3()
 	}
 
 	// Must be in triangle123
-	float32 inv_d123 = 1.0f / (d123_1 + d123_2 + d123_3);
+	const auto inv_d123 = 1.0f / (d123_1 + d123_2 + d123_3);
 	m_v1.a = d123_1 * inv_d123;
 	m_v2.a = d123_2 * inv_d123;
 	m_v3.a = d123_3 * inv_d123;
@@ -577,8 +577,8 @@ void b2Distance(b2DistanceOutput* output,
 	// Apply radii if requested.
 	if (input->useRadii)
 	{
-		float32 rA = proxyA->m_radius;
-		float32 rB = proxyB->m_radius;
+		const auto rA = proxyA->m_radius;
+		const auto rB = proxyB->m_radius;
 
 		if (output->distance > rA + rB && output->distance > b2_epsilon)
 		{

@@ -195,10 +195,10 @@ struct b2Mat22
 	b2Mat22() {}
 
 	/// Construct this matrix using columns.
-	constexpr b2Mat22(const b2Vec2& c1, const b2Vec2& c2) : ex(c1), ey(c2) {}
+	constexpr b2Mat22(const b2Vec2& c1, const b2Vec2& c2) noexcept: ex(c1), ey(c2) {}
 
 	/// Construct this matrix using scalars.
-	constexpr b2Mat22(float32 a11, float32 a12, float32 a21, float32 a22) : ex(a11, a21), ey(a12, a22) {}
+	constexpr b2Mat22(float32 a11, float32 a12, float32 a21, float32 a22) noexcept: ex(a11, a21), ey(a12, a22) {}
 
 	/// Initialize this matrix using columns.
 	constexpr void Set(const b2Vec2& c1, const b2Vec2& c2) noexcept
@@ -297,7 +297,7 @@ struct b2Mat33
 /// Rotation
 struct b2Rot
 {
-	b2Rot() {}
+	b2Rot() = default;
 
 	/// Initialize from an angle in radians
 	explicit b2Rot(float32 angle)
@@ -307,7 +307,7 @@ struct b2Rot
 		c = cosf(angle);
 	}
 	
-	constexpr explicit b2Rot(float32 sine, float32 cosine): s(sine), c(cosine) {}
+	constexpr explicit b2Rot(float32 sine, float32 cosine) noexcept: s(sine), c(cosine) {}
 
 	/// Set using an angle in radians.
 	void Set(float32 angle)
@@ -318,7 +318,7 @@ struct b2Rot
 	}
 
 	/// Set to the identity rotation
-	constexpr void SetIdentity()
+	constexpr void SetIdentity() noexcept
 	{
 		s = 0.0f;
 		c = 1.0f;
@@ -331,13 +331,13 @@ struct b2Rot
 	}
 
 	/// Get the x-axis
-	constexpr b2Vec2 GetXAxis() const
+	constexpr b2Vec2 GetXAxis() const noexcept
 	{
 		return b2Vec2(c, s);
 	}
 
 	/// Get the u-axis
-	constexpr b2Vec2 GetYAxis() const
+	constexpr b2Vec2 GetYAxis() const noexcept
 	{
 		return b2Vec2(-s, c);
 	}
@@ -354,7 +354,7 @@ struct b2Transform
 	b2Transform() {}
 
 	/// Initialize using a position vector and a rotation.
-	constexpr b2Transform(const b2Vec2& position, const b2Rot& rotation) : p(position), q(rotation) {}
+	constexpr b2Transform(const b2Vec2& position, const b2Rot& rotation) noexcept: p(position), q(rotation) {}
 
 	/// Set this to the identity transform.
 	constexpr void SetIdentity()
@@ -401,7 +401,7 @@ struct b2Sweep
 };
 
 /// Useful constant
-constexpr const b2Vec2 b2Vec2_zero{0.0f, 0.0f};
+constexpr b2Vec2 b2Vec2_zero{0.0f, 0.0f};
 
 /// Perform the dot product on two vectors.
 constexpr inline float32 b2Dot(const b2Vec2& a, const b2Vec2& b) noexcept
@@ -444,23 +444,23 @@ constexpr inline b2Vec2 b2MulT(const b2Mat22& A, const b2Vec2& v) noexcept
 }
 
 /// Add two vectors component-wise.
-constexpr inline b2Vec2 operator + (const b2Vec2& a, const b2Vec2& b)
+constexpr inline b2Vec2 operator + (const b2Vec2& a, const b2Vec2& b) noexcept
 {
 	return b2Vec2(a.x + b.x, a.y + b.y);
 }
 
 /// Subtract two vectors component-wise.
-constexpr inline b2Vec2 operator - (const b2Vec2& a, const b2Vec2& b)
+constexpr inline b2Vec2 operator - (const b2Vec2& a, const b2Vec2& b) noexcept
 {
 	return b2Vec2(a.x - b.x, a.y - b.y);
 }
 
-constexpr inline b2Vec2 operator * (float32 s, const b2Vec2& a)
+constexpr inline b2Vec2 operator * (float32 s, const b2Vec2& a) noexcept
 {
 	return b2Vec2(s * a.x, s * a.y);
 }
 
-constexpr inline bool operator == (const b2Vec2& a, const b2Vec2& b)
+constexpr inline bool operator == (const b2Vec2& a, const b2Vec2& b) noexcept
 {
 	return a.x == b.x && a.y == b.y;
 }
@@ -471,25 +471,25 @@ inline float32 b2Distance(const b2Vec2& a, const b2Vec2& b)
 	return c.Length();
 }
 
-constexpr inline float32 b2DistanceSquared(const b2Vec2& a, const b2Vec2& b)
+constexpr inline float32 b2DistanceSquared(const b2Vec2& a, const b2Vec2& b) noexcept
 {
-	b2Vec2 c = a - b;
+	const auto c = a - b;
 	return b2Dot(c, c);
 }
 
-constexpr inline b2Vec3 operator * (float32 s, const b2Vec3& a)
+constexpr inline b2Vec3 operator * (float32 s, const b2Vec3& a) noexcept
 {
 	return b2Vec3(s * a.x, s * a.y, s * a.z);
 }
 
 /// Add two vectors component-wise.
-constexpr inline b2Vec3 operator + (const b2Vec3& a, const b2Vec3& b)
+constexpr inline b2Vec3 operator + (const b2Vec3& a, const b2Vec3& b) noexcept
 {
 	return b2Vec3(a.x + b.x, a.y + b.y, a.z + b.z);
 }
 
 /// Subtract two vectors component-wise.
-constexpr inline b2Vec3 operator - (const b2Vec3& a, const b2Vec3& b)
+constexpr inline b2Vec3 operator - (const b2Vec3& a, const b2Vec3& b) noexcept
 {
 	return b2Vec3(a.x - b.x, a.y - b.y, a.z - b.z);
 }
@@ -506,39 +506,39 @@ constexpr inline b2Vec3 b2Cross(const b2Vec3& a, const b2Vec3& b) noexcept
 	return b2Vec3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
 }
 
-constexpr inline b2Mat22 operator + (const b2Mat22& A, const b2Mat22& B)
+constexpr inline b2Mat22 operator + (const b2Mat22& A, const b2Mat22& B) noexcept
 {
 	return b2Mat22(A.ex + B.ex, A.ey + B.ey);
 }
 
 // A * B
-constexpr inline b2Mat22 b2Mul(const b2Mat22& A, const b2Mat22& B)
+constexpr inline b2Mat22 b2Mul(const b2Mat22& A, const b2Mat22& B) noexcept
 {
 	return b2Mat22(b2Mul(A, B.ex), b2Mul(A, B.ey));
 }
 
 // A^T * B
-constexpr inline b2Mat22 b2MulT(const b2Mat22& A, const b2Mat22& B)
+constexpr inline b2Mat22 b2MulT(const b2Mat22& A, const b2Mat22& B) noexcept
 {
-	b2Vec2 c1(b2Dot(A.ex, B.ex), b2Dot(A.ey, B.ex));
-	b2Vec2 c2(b2Dot(A.ex, B.ey), b2Dot(A.ey, B.ey));
+	const b2Vec2 c1(b2Dot(A.ex, B.ex), b2Dot(A.ey, B.ex));
+	const b2Vec2 c2(b2Dot(A.ex, B.ey), b2Dot(A.ey, B.ey));
 	return b2Mat22(c1, c2);
 }
 
 /// Multiply a matrix times a vector.
-constexpr inline b2Vec3 b2Mul(const b2Mat33& A, const b2Vec3& v)
+constexpr inline b2Vec3 b2Mul(const b2Mat33& A, const b2Vec3& v) noexcept
 {
 	return v.x * A.ex + v.y * A.ey + v.z * A.ez;
 }
 
 /// Multiply a matrix times a vector.
-constexpr inline b2Vec2 b2Mul22(const b2Mat33& A, const b2Vec2& v)
+constexpr inline b2Vec2 b2Mul22(const b2Mat33& A, const b2Vec2& v) noexcept
 {
 	return b2Vec2(A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y);
 }
 
 /// Multiply two rotations: q * r
-constexpr inline b2Rot b2Mul(const b2Rot& q, const b2Rot& r)
+constexpr inline b2Rot b2Mul(const b2Rot& q, const b2Rot& r) noexcept
 {
 	// [qc -qs] * [rc -rs] = [qc*rc-qs*rs -qc*rs-qs*rc]
 	// [qs  qc]   [rs  rc]   [qs*rc+qc*rs -qs*rs+qc*rc]
@@ -548,7 +548,7 @@ constexpr inline b2Rot b2Mul(const b2Rot& q, const b2Rot& r)
 }
 
 /// Transpose multiply two rotations: qT * r
-constexpr inline b2Rot b2MulT(const b2Rot& q, const b2Rot& r)
+constexpr inline b2Rot b2MulT(const b2Rot& q, const b2Rot& r) noexcept
 {
 	// [ qc qs] * [rc -rs] = [qc*rc+qs*rs -qc*rs+qs*rc]
 	// [-qs qc]   [rs  rc]   [-qs*rc+qc*rs qs*rs+qc*rc]
@@ -558,45 +558,45 @@ constexpr inline b2Rot b2MulT(const b2Rot& q, const b2Rot& r)
 }
 
 /// Rotate a vector
-constexpr inline b2Vec2 b2Mul(const b2Rot& q, const b2Vec2& v)
+constexpr inline b2Vec2 b2Mul(const b2Rot& q, const b2Vec2& v) noexcept
 {
 	return b2Vec2(q.c * v.x - q.s * v.y, q.s * v.x + q.c * v.y);
 }
 
 /// Inverse rotate a vector
-constexpr inline b2Vec2 b2MulT(const b2Rot& q, const b2Vec2& v)
+constexpr inline b2Vec2 b2MulT(const b2Rot& q, const b2Vec2& v) noexcept
 {
 	return b2Vec2(q.c * v.x + q.s * v.y, -q.s * v.x + q.c * v.y);
 }
 
-constexpr inline b2Vec2 b2Mul(const b2Transform& T, const b2Vec2& v)
+constexpr inline b2Vec2 b2Mul(const b2Transform& T, const b2Vec2& v) noexcept
 {
-	float32 x = (T.q.c * v.x - T.q.s * v.y) + T.p.x;
-	float32 y = (T.q.s * v.x + T.q.c * v.y) + T.p.y;
-
+	const auto x = (T.q.c * v.x - T.q.s * v.y) + T.p.x;
+	const auto y = (T.q.s * v.x + T.q.c * v.y) + T.p.y;
+	
 	return b2Vec2(x, y);
 }
 
-constexpr inline b2Vec2 b2MulT(const b2Transform& T, const b2Vec2& v)
+constexpr inline b2Vec2 b2MulT(const b2Transform& T, const b2Vec2& v) noexcept
 {
-	float32 px = v.x - T.p.x;
-	float32 py = v.y - T.p.y;
-	float32 x = (T.q.c * px + T.q.s * py);
-	float32 y = (-T.q.s * px + T.q.c * py);
+	const auto px = v.x - T.p.x;
+	const auto py = v.y - T.p.y;
+	const auto x = (T.q.c * px + T.q.s * py);
+	const auto y = (-T.q.s * px + T.q.c * py);
 
 	return b2Vec2(x, y);
 }
 
 // v2 = A.q.Rot(B.q.Rot(v1) + B.p) + A.p
 //    = (A.q * B.q).Rot(v1) + A.q.Rot(B.p) + A.p
-constexpr inline b2Transform b2Mul(const b2Transform& A, const b2Transform& B)
+constexpr inline b2Transform b2Mul(const b2Transform& A, const b2Transform& B) noexcept
 {
 	return b2Transform(b2Mul(A.q, B.p) + A.p, b2Mul(A.q, B.q));
 }
 
 // v2 = A.q' * (B.q * v1 + B.p - A.p)
 //    = A.q' * B.q * v1 + A.q' * (B.p - A.p)
-constexpr inline b2Transform b2MulT(const b2Transform& A, const b2Transform& B)
+constexpr inline b2Transform b2MulT(const b2Transform& A, const b2Transform& B) noexcept
 {
 	return b2Transform(b2MulT(A.q, B.p - A.p), b2MulT(A.q, B.q));
 }
@@ -662,7 +662,7 @@ template<typename T> inline void b2Swap(T& a, T& b)
 /// that recursively "folds" the upper bits into the lower bits. This process yields a bit vector with
 /// the same most significant 1 as x, but all 1's below it. Adding 1 to that value yields the next
 /// largest power of 2. For a 32-bit value:"
-constexpr inline uint32 b2NextPowerOfTwo(uint32 x)
+constexpr inline uint32 b2NextPowerOfTwo(uint32 x) noexcept
 {
 	x |= (x >> 1);
 	x |= (x >> 2);
@@ -672,7 +672,7 @@ constexpr inline uint32 b2NextPowerOfTwo(uint32 x)
 	return x + 1;
 }
 
-constexpr inline bool b2IsPowerOfTwo(uint32 x)
+constexpr inline bool b2IsPowerOfTwo(uint32 x) noexcept
 {
 	return (x > 0) && ((x & (x - 1)) == 0);
 }
@@ -680,7 +680,7 @@ constexpr inline bool b2IsPowerOfTwo(uint32 x)
 inline void b2Sweep::GetTransform(b2Transform* xf, float32 beta) const
 {
 	xf->p = (1.0f - beta) * c0 + beta * c;
-	float32 angle = (1.0f - beta) * a0 + beta * a;
+	const auto angle = (1.0f - beta) * a0 + beta * a;
 	xf->q.Set(angle);
 
 	// Shift to origin
@@ -690,7 +690,7 @@ inline void b2Sweep::GetTransform(b2Transform* xf, float32 beta) const
 inline void b2Sweep::Advance(float32 alpha)
 {
 	b2Assert(alpha0 < 1.0f);
-	float32 beta = (alpha - alpha0) / (1.0f - alpha0);
+	const auto beta = (alpha - alpha0) / (1.0f - alpha0);
 	c0 += beta * (c - c0);
 	a0 += beta * (a - a0);
 	alpha0 = alpha;
@@ -699,8 +699,8 @@ inline void b2Sweep::Advance(float32 alpha)
 /// Normalize an angle in radians to be between -pi and pi
 inline void b2Sweep::Normalize()
 {
-	float32 twoPi = 2.0f * b2_pi;
-	float32 d =  twoPi * floorf(a0 / twoPi);
+	const auto twoPi = 2.0f * b2_pi;
+	const auto d =  twoPi * floorf(a0 / twoPi);
 	a0 -= d;
 	a -= d;
 }

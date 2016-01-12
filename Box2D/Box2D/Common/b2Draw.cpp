@@ -18,11 +18,6 @@
 
 #include <Box2D/Common/b2Draw.h>
 
-b2Draw::b2Draw()
-{
-	m_drawFlags = 0;
-}
-
 void b2Draw::SetFlags(uint32 flags)
 {
 	m_drawFlags = flags;
