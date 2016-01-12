@@ -105,8 +105,8 @@ b2ContactSolver::b2ContactSolver(b2ContactSolverDef* def)
 
 		for (int32 j = 0; j < pointCount; ++j)
 		{
-			b2ManifoldPoint* const cp = manifold->points + j;
-			b2VelocityConstraintPoint* const vcp = vc->points + j;
+			const auto cp = manifold->points + j;
+			auto vcp = vc->points + j;
 	
 			if (m_step.warmStarting)
 			{
@@ -275,8 +275,8 @@ void b2ContactSolver::WarmStart()
 
 		for (int32 j = 0; j < pointCount; ++j)
 		{
-			b2VelocityConstraintPoint* const vcp = vc->points + j;
-			const b2Vec2 P = vcp->normalImpulse * normal + vcp->tangentImpulse * tangent;
+			const auto vcp = vc->points + j;
+			const auto P = vcp->normalImpulse * normal + vcp->tangentImpulse * tangent;
 			wA -= iA * b2Cross(vcp->rA, P);
 			vA -= mA * P;
 			wB += iB * b2Cross(vcp->rB, P);

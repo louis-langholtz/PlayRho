@@ -351,7 +351,7 @@ struct b2Rot
 struct b2Transform
 {
 	/// The default constructor does nothing.
-	b2Transform() {}
+	b2Transform() = default;
 
 	/// Initialize using a position vector and a rotation.
 	constexpr b2Transform(const b2Vec2& position, const b2Rot& rotation) noexcept: p(position), q(rotation) {}

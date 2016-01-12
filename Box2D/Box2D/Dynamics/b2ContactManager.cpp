@@ -103,12 +103,12 @@ void b2ContactManager::Collide()
 	auto c = m_contactList;
 	while (c)
 	{
-		b2Fixture* fixtureA = c->GetFixtureA();
-		b2Fixture* fixtureB = c->GetFixtureB();
-		int32 indexA = c->GetChildIndexA();
-		int32 indexB = c->GetChildIndexB();
-		b2Body* bodyA = fixtureA->GetBody();
-		b2Body* bodyB = fixtureB->GetBody();
+		const auto fixtureA = c->GetFixtureA();
+		const auto fixtureB = c->GetFixtureB();
+		const auto indexA = c->GetChildIndexA();
+		const auto indexB = c->GetChildIndexB();
+		const auto bodyA = fixtureA->GetBody();
+		const auto bodyB = fixtureB->GetBody();
 		 
 		// Is this contact flagged for filtering?
 		if (c->m_flags & b2Contact::e_filterFlag)
@@ -116,7 +116,7 @@ void b2ContactManager::Collide()
 			// Should these bodies collide?
 			if (bodyB->ShouldCollide(bodyA) == false)
 			{
-				b2Contact* cNuke = c;
+				auto cNuke = c;
 				c = cNuke->GetNext();
 				Destroy(cNuke);
 				continue;
@@ -125,7 +125,7 @@ void b2ContactManager::Collide()
 			// Check user filtering.
 			if (m_contactFilter && m_contactFilter->ShouldCollide(fixtureA, fixtureB) == false)
 			{
-				b2Contact* cNuke = c;
+				auto cNuke = c;
 				c = cNuke->GetNext();
 				Destroy(cNuke);
 				continue;
@@ -135,8 +135,8 @@ void b2ContactManager::Collide()
 			c->m_flags &= ~b2Contact::e_filterFlag;
 		}
 
-		bool activeA = bodyA->IsAwake() && bodyA->m_type != b2_staticBody;
-		bool activeB = bodyB->IsAwake() && bodyB->m_type != b2_staticBody;
+		const bool activeA = bodyA->IsAwake() && bodyA->m_type != b2_staticBody;
+		const bool activeB = bodyB->IsAwake() && bodyB->m_type != b2_staticBody;
 
 		// At least one body must be awake and it must be dynamic or kinematic.
 		if (activeA == false && activeB == false)
@@ -145,14 +145,14 @@ void b2ContactManager::Collide()
 			continue;
 		}
 
-		int32 proxyIdA = fixtureA->m_proxies[indexA].proxyId;
-		int32 proxyIdB = fixtureB->m_proxies[indexB].proxyId;
-		bool overlap = m_broadPhase.TestOverlap(proxyIdA, proxyIdB);
+		const auto proxyIdA = fixtureA->m_proxies[indexA].proxyId;
+		const auto proxyIdB = fixtureB->m_proxies[indexB].proxyId;
+		const auto overlap = m_broadPhase.TestOverlap(proxyIdA, proxyIdB);
 
 		// Here we destroy contacts that cease to overlap in the broad-phase.
 		if (overlap == false)
 		{
-			b2Contact* cNuke = c;
+			auto cNuke = c;
 			c = cNuke->GetNext();
 			Destroy(cNuke);
 			continue;
@@ -171,17 +171,17 @@ void b2ContactManager::FindNewContacts()
 
 void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 {
-	b2FixtureProxy* proxyA = (b2FixtureProxy*)proxyUserDataA;
-	b2FixtureProxy* proxyB = (b2FixtureProxy*)proxyUserDataB;
+	auto proxyA = static_cast<b2FixtureProxy*>(proxyUserDataA);
+	auto proxyB = static_cast<b2FixtureProxy*>(proxyUserDataB);
 
-	b2Fixture* fixtureA = proxyA->fixture;
-	b2Fixture* fixtureB = proxyB->fixture;
+	auto fixtureA = proxyA->fixture;
+	auto fixtureB = proxyB->fixture;
 
-	int32 indexA = proxyA->childIndex;
-	int32 indexB = proxyB->childIndex;
+	auto indexA = proxyA->childIndex;
+	auto indexB = proxyB->childIndex;
 
-	b2Body* bodyA = fixtureA->GetBody();
-	b2Body* bodyB = fixtureB->GetBody();
+	auto bodyA = fixtureA->GetBody();
+	auto bodyB = fixtureB->GetBody();
 
 	// Are the fixtures on the same body?
 	if (bodyA == bodyB)
@@ -231,8 +231,8 @@ void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 	}
 
 	// Call the factory.
-	b2Contact* c = b2Contact::Create(fixtureA, indexA, fixtureB, indexB, m_allocator);
-	if (c == NULL)
+	auto c = b2Contact::Create(fixtureA, indexA, fixtureB, indexB, m_allocator);
+	if (c == nullptr)
 	{
 		return;
 	}
@@ -246,9 +246,9 @@ void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 	bodyB = fixtureB->GetBody();
 
 	// Insert into the world.
-	c->m_prev = NULL;
+	c->m_prev = nullptr;
 	c->m_next = m_contactList;
-	if (m_contactList != NULL)
+	if (m_contactList != nullptr)
 	{
 		m_contactList->m_prev = c;
 	}
@@ -260,9 +260,9 @@ void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 	c->m_nodeA.contact = c;
 	c->m_nodeA.other = bodyB;
 
-	c->m_nodeA.prev = NULL;
+	c->m_nodeA.prev = nullptr;
 	c->m_nodeA.next = bodyA->m_contactList;
-	if (bodyA->m_contactList != NULL)
+	if (bodyA->m_contactList != nullptr)
 	{
 		bodyA->m_contactList->prev = &c->m_nodeA;
 	}
@@ -272,9 +272,9 @@ void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 	c->m_nodeB.contact = c;
 	c->m_nodeB.other = bodyA;
 
-	c->m_nodeB.prev = NULL;
+	c->m_nodeB.prev = nullptr;
 	c->m_nodeB.next = bodyB->m_contactList;
-	if (bodyB->m_contactList != NULL)
+	if (bodyB->m_contactList != nullptr)
 	{
 		bodyB->m_contactList->prev = &c->m_nodeB;
 	}

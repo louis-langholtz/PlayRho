@@ -31,24 +31,19 @@ class b2Fixture;
 /// This holds contact filtering data.
 struct b2Filter
 {
-	b2Filter()
-	{
-		categoryBits = 0x0001;
-		maskBits = 0xFFFF;
-		groupIndex = 0;
-	}
+	constexpr b2Filter() = default;
 
 	/// The collision category bits. Normally you would just set one bit.
-	uint16 categoryBits;
+	uint16 categoryBits = 0x0001;
 
 	/// The collision mask bits. This states the categories that this
 	/// shape would accept for collision.
-	uint16 maskBits;
+	uint16 maskBits = 0xFFFF;
 
 	/// Collision groups allow a certain group of objects to never collide (negative)
 	/// or always collide (positive). Zero means no collision group. Non-zero group
 	/// filtering always wins against the mask bits.
-	int16 groupIndex;
+	int16 groupIndex = 0;
 };
 
 /// A fixture definition is used to create a fixture. This class defines an
@@ -56,35 +51,27 @@ struct b2Filter
 struct b2FixtureDef
 {
 	/// The constructor sets the default fixture definition values.
-	b2FixtureDef()
-	{
-		shape = NULL;
-		userData = NULL;
-		friction = 0.2f;
-		restitution = 0.0f;
-		density = 0.0f;
-		isSensor = false;
-	}
+	constexpr b2FixtureDef() = default;
 
 	/// The shape, this must be set. The shape will be cloned, so you
 	/// can create the shape on the stack.
-	const b2Shape* shape;
+	const b2Shape* shape = nullptr;
 
 	/// Use this to store application specific fixture data.
-	void* userData;
+	void* userData = nullptr;
 
 	/// The friction coefficient, usually in the range [0,1].
-	float32 friction;
+	float32 friction = 0.2f;
 
 	/// The restitution (elasticity) usually in the range [0,1].
-	float32 restitution;
+	float32 restitution = 0.0f;
 
 	/// The density, usually in kg/m^2.
-	float32 density;
+	float32 density = 0.0f;
 
 	/// A sensor shape collects contact information but never generates a collision
 	/// response.
-	bool isSensor;
+	bool isSensor = false;
 
 	/// Contact filtering data.
 	b2Filter filter;
@@ -109,20 +96,20 @@ class b2Fixture
 public:
 	/// Get the type of the child shape. You can use this to down cast to the concrete shape.
 	/// @return the shape type.
-	b2Shape::Type GetType() const;
+	b2Shape::Type GetType() const noexcept;
 
 	/// Get the child shape. You can modify the child shape, however you should not change the
 	/// number of vertices because this will crash some collision caching mechanisms.
 	/// Manipulating the shape may lead to non-physical behavior.
-	b2Shape* GetShape();
-	const b2Shape* GetShape() const;
+	b2Shape* GetShape() noexcept;
+	const b2Shape* GetShape() const noexcept;
 
 	/// Set if this fixture is a sensor.
 	void SetSensor(bool sensor);
 
 	/// Is this fixture a sensor (non-solid)?
 	/// @return the true if the shape is a sensor.
-	bool IsSensor() const;
+	bool IsSensor() const noexcept;
 
 	/// Set the contact filtering data. This will not update contacts until the next time
 	/// step when either parent body is active and awake.
@@ -130,15 +117,15 @@ public:
 	void SetFilterData(const b2Filter& filter);
 
 	/// Get the contact filtering data.
-	const b2Filter& GetFilterData() const;
+	const b2Filter& GetFilterData() const noexcept;
 
 	/// Call this if you want to establish collision that was previously disabled by b2ContactFilter::ShouldCollide.
 	void Refilter();
 
 	/// Get the parent body of this fixture. This is NULL if the fixture is not attached.
 	/// @return the parent body.
-	b2Body* GetBody();
-	const b2Body* GetBody() const;
+	b2Body* GetBody() noexcept;
+	const b2Body* GetBody() const noexcept;
 
 	/// Get the next fixture in the parent body's fixture list.
 	/// @return the next shape.
@@ -147,7 +134,7 @@ public:
 
 	/// Get the user data that was assigned in the fixture definition. Use this to
 	/// store your application specific data.
-	void* GetUserData() const;
+	void* GetUserData() const noexcept;
 
 	/// Set the user data. Use this to store your application specific data.
 	void SetUserData(void* data);
@@ -202,11 +189,11 @@ protected:
 	friend class b2Contact;
 	friend class b2ContactManager;
 
-	b2Fixture();
+	b2Fixture(b2Body* body);
 
 	// We need separation create/destroy functions from the constructor/destructor because
 	// the destructor cannot access the allocator (no destructor arguments allowed by C++).
-	void Create(b2BlockAllocator* allocator, b2Body* body, const b2FixtureDef* def);
+	void Create(b2BlockAllocator* allocator, const b2FixtureDef* def);
 	void Destroy(b2BlockAllocator* allocator);
 
 	// These support body activation/deactivation.
@@ -215,52 +202,52 @@ protected:
 
 	void Synchronize(b2BroadPhase* broadPhase, const b2Transform& xf1, const b2Transform& xf2);
 
-	float32 m_density;
+	float32 m_density = 0.0f;
 
-	b2Fixture* m_next;
-	b2Body* m_body;
+	b2Fixture* m_next = nullptr;
+	b2Body* const m_body;
 
-	b2Shape* m_shape;
+	b2Shape* m_shape = nullptr;
 
 	float32 m_friction;
 	float32 m_restitution;
 
-	b2FixtureProxy* m_proxies;
-	int32 m_proxyCount;
+	b2FixtureProxy* m_proxies = nullptr;
+	int32 m_proxyCount = 0;
 
 	b2Filter m_filter;
 
 	bool m_isSensor;
 
-	void* m_userData;
+	void* m_userData = nullptr;
 };
 
-inline b2Shape::Type b2Fixture::GetType() const
+inline b2Shape::Type b2Fixture::GetType() const noexcept
 {
 	return m_shape->GetType();
 }
 
-inline b2Shape* b2Fixture::GetShape()
+inline b2Shape* b2Fixture::GetShape() noexcept
 {
 	return m_shape;
 }
 
-inline const b2Shape* b2Fixture::GetShape() const
+inline const b2Shape* b2Fixture::GetShape() const noexcept
 {
 	return m_shape;
 }
 
-inline bool b2Fixture::IsSensor() const
+inline bool b2Fixture::IsSensor() const noexcept
 {
 	return m_isSensor;
 }
 
-inline const b2Filter& b2Fixture::GetFilterData() const
+inline const b2Filter& b2Fixture::GetFilterData() const noexcept
 {
 	return m_filter;
 }
 
-inline void* b2Fixture::GetUserData() const
+inline void* b2Fixture::GetUserData() const noexcept
 {
 	return m_userData;
 }
@@ -270,12 +257,12 @@ inline void b2Fixture::SetUserData(void* data)
 	m_userData = data;
 }
 
-inline b2Body* b2Fixture::GetBody()
+inline b2Body* b2Fixture::GetBody() noexcept
 {
 	return m_body;
 }
 
-inline const b2Body* b2Fixture::GetBody() const
+inline const b2Body* b2Fixture::GetBody() const noexcept
 {
 	return m_body;
 }
