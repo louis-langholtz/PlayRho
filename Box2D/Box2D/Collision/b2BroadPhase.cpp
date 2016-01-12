@@ -20,15 +20,8 @@
 
 b2BroadPhase::b2BroadPhase()
 {
-	m_proxyCount = 0;
-
-	m_pairCapacity = 16;
-	m_pairCount = 0;
-	m_pairBuffer = (b2Pair*)b2Alloc(m_pairCapacity * sizeof(b2Pair));
-
-	m_moveCapacity = 16;
-	m_moveCount = 0;
-	m_moveBuffer = (int32*)b2Alloc(m_moveCapacity * sizeof(int32));
+	m_pairBuffer = static_cast<b2Pair*>(b2Alloc(m_pairCapacity * sizeof(b2Pair)));
+	m_moveBuffer = static_cast<int32*>(b2Alloc(m_moveCapacity * sizeof(int32)));
 }
 
 b2BroadPhase::~b2BroadPhase()
@@ -39,7 +32,7 @@ b2BroadPhase::~b2BroadPhase()
 
 int32 b2BroadPhase::CreateProxy(const b2AABB& aabb, void* userData)
 {
-	int32 proxyId = m_tree.CreateProxy(aabb, userData);
+	const auto proxyId = m_tree.CreateProxy(aabb, userData);
 	++m_proxyCount;
 	BufferMove(proxyId);
 	return proxyId;
@@ -54,7 +47,7 @@ void b2BroadPhase::DestroyProxy(int32 proxyId)
 
 void b2BroadPhase::MoveProxy(int32 proxyId, const b2AABB& aabb, const b2Vec2& displacement)
 {
-	bool buffer = m_tree.MoveProxy(proxyId, aabb, displacement);
+	const auto buffer = m_tree.MoveProxy(proxyId, aabb, displacement);
 	if (buffer)
 	{
 		BufferMove(proxyId);
@@ -70,7 +63,7 @@ void b2BroadPhase::BufferMove(int32 proxyId)
 {
 	if (m_moveCount == m_moveCapacity)
 	{
-		int32* oldBuffer = m_moveBuffer;
+		auto oldBuffer = m_moveBuffer;
 		m_moveCapacity *= 2;
 		m_moveBuffer = (int32*)b2Alloc(m_moveCapacity * sizeof(int32));
 		memcpy(m_moveBuffer, oldBuffer, m_moveCount * sizeof(int32));
@@ -104,7 +97,7 @@ bool b2BroadPhase::QueryCallback(int32 proxyId)
 	// Grow the pair buffer as needed.
 	if (m_pairCount == m_pairCapacity)
 	{
-		b2Pair* oldBuffer = m_pairBuffer;
+		auto oldBuffer = m_pairBuffer;
 		m_pairCapacity *= 2;
 		m_pairBuffer = (b2Pair*)b2Alloc(m_pairCapacity * sizeof(b2Pair));
 		memcpy(m_pairBuffer, oldBuffer, m_pairCount * sizeof(b2Pair));

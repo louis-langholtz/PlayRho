@@ -115,15 +115,15 @@ private:
 
 	b2DynamicTree m_tree;
 
-	int32 m_proxyCount;
+	int32 m_proxyCount = 0;
 
 	int32* m_moveBuffer;
-	int32 m_moveCapacity;
-	int32 m_moveCount;
+	int32 m_moveCapacity = 16;
+	int32 m_moveCount = 0;
 
 	b2Pair* m_pairBuffer;
-	int32 m_pairCapacity;
-	int32 m_pairCount;
+	int32 m_pairCapacity = 16;
+	int32 m_pairCount = 0;
 
 	int32 m_queryProxyId;
 };

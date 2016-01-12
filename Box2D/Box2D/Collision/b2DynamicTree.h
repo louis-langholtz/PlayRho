@@ -139,18 +139,18 @@ private:
 	void ValidateStructure(int32 index) const;
 	void ValidateMetrics(int32 index) const;
 
-	int32 m_root;
+	int32 m_root = b2_nullNode;
 
 	b2TreeNode* m_nodes;
-	int32 m_nodeCount;
-	int32 m_nodeCapacity;
+	int32 m_nodeCount = 0;
+	int32 m_nodeCapacity = 16;
 
-	int32 m_freeList;
+	int32 m_freeList = 0;
 
 	/// This is used to incrementally traverse the tree for re-balancing.
-	uint32 m_path;
+	uint32 m_path = 0;
 
-	int32 m_insertionCount;
+	int32 m_insertionCount = 0;
 };
 
 inline void* b2DynamicTree::GetUserData(int32 proxyId) const
