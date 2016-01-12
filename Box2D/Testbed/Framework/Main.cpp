@@ -47,7 +47,7 @@ struct UIState
 //
 namespace
 {
-	GLFWwindow* mainWindow = NULL;
+	GLFWwindow* mainWindow = nullptr;
 	UIState ui;
 
 	int32 testIndex = 0;
@@ -455,8 +455,8 @@ int main(int argc, char** argv)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #endif
 
-    mainWindow = glfwCreateWindow(g_camera.m_width, g_camera.m_height, title, NULL, NULL);
-	if (mainWindow == NULL)
+    mainWindow = glfwCreateWindow(g_camera.m_width, g_camera.m_height, title, nullptr, nullptr);
+	if (mainWindow == nullptr)
 	{
 		fprintf(stderr, "Failed to open GLFW mainWindow.\n");
 		glfwTerminate();
@@ -488,7 +488,7 @@ int main(int argc, char** argv)
 	sCreateUI();
 
 	testCount = 0;
-	while (g_testEntries[testCount].createFcn != NULL)
+	while (g_testEntries[testCount].createFcn != nullptr)
 	{
 		++testCount;
 	}

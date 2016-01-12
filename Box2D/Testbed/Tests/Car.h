@@ -29,7 +29,7 @@ public:
 		m_zeta = 0.7f;
 		m_speed = 50.0f;
 
-		b2Body* ground = NULL;
+		b2Body* ground = nullptr;
 		{
 			b2BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -146,7 +146,7 @@ public:
 			b2PolygonShape box;
 			box.SetAsBox(0.5f, 0.5f);
 
-			b2Body* body = NULL;
+			b2Body* body = nullptr;
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
 

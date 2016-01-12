@@ -66,7 +66,7 @@ public:
 	{
 		B2_NOT_USED(settings);
 
-		m_rayActor = NULL;
+		m_rayActor = nullptr;
 		for (int32 i = 0; i < e_actorCount; ++i)
 		{
 			m_actors[i].fraction = 1.0f;
@@ -308,7 +308,7 @@ private:
 
 	void RayCast()
 	{
-		m_rayActor = NULL;
+		m_rayActor = nullptr;
 
 		b2RayCastInput input = m_rayCastInput;
 
@@ -316,7 +316,7 @@ private:
 		m_tree.RayCast(this, input);
 
 		// Brute force ray cast.
-		Actor* bruteActor = NULL;
+		Actor* bruteActor = nullptr;
 		b2RayCastOutput bruteOutput;
 		for (int32 i = 0; i < e_actorCount; ++i)
 		{
@@ -335,7 +335,7 @@ private:
 			}
 		}
 
-		if (bruteActor != NULL)
+		if (bruteActor != nullptr)
 		{
 			b2Assert(bruteOutput.fraction == m_rayCastOutput.fraction);
 		}

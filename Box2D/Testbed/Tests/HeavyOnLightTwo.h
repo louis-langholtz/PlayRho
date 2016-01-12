@@ -47,7 +47,7 @@ public:
         body = m_world->CreateBody(&bd);
         body->CreateFixture(&shape, 10.0f);
         
-        m_heavy = NULL;
+        m_heavy = nullptr;
 	}
     
     void ToggleHeavy()
@@ -55,7 +55,7 @@ public:
         if (m_heavy)
         {
             m_world->DestroyBody(m_heavy);
-            m_heavy = NULL;
+            m_heavy = nullptr;
         }
         else
         {

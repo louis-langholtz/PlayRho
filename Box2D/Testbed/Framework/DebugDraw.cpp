@@ -139,9 +139,9 @@ static void sPrintLog(GLuint object)
 	char* log = (char*)malloc(log_length);
 
 	if (glIsShader(object))
-		glGetShaderInfoLog(object, log_length, NULL, log);
+		glGetShaderInfoLog(object, log_length, nullptr, log);
 	else if (glIsProgram(object))
-		glGetProgramInfoLog(object, log_length, NULL, log);
+		glGetProgramInfoLog(object, log_length, nullptr, log);
 
 	fprintf(stderr, "%s", log);
 	free(log);
@@ -153,7 +153,7 @@ static GLuint sCreateShaderFromString(const char* source, GLenum type)
 {
 	GLuint res = glCreateShader(type);
 	const char* sources[] = { source };
-	glShaderSource(res, 1, sources, NULL);
+	glShaderSource(res, 1, sources, nullptr);
 	glCompileShader(res);
 	GLint compile_ok = GL_FALSE;
 	glGetShaderiv(res, GL_COMPILE_STATUS, &compile_ok);
@@ -597,17 +597,17 @@ struct GLRenderTriangles
 //
 DebugDraw::DebugDraw()
 {
-	m_points = NULL;
-    m_lines = NULL;
-    m_triangles = NULL;
+	m_points = nullptr;
+    m_lines = nullptr;
+    m_triangles = nullptr;
 }
 
 //
 DebugDraw::~DebugDraw()
 {
-	b2Assert(m_points == NULL);
-	b2Assert(m_lines == NULL);
-	b2Assert(m_triangles == NULL);
+	b2Assert(m_points == nullptr);
+	b2Assert(m_lines == nullptr);
+	b2Assert(m_triangles == nullptr);
 }
 
 //
@@ -626,15 +626,15 @@ void DebugDraw::Destroy()
 {
 	m_points->Destroy();
 	delete m_points;
-	m_points = NULL;
+	m_points = nullptr;
 
 	m_lines->Destroy();
 	delete m_lines;
-	m_lines = NULL;
+	m_lines = nullptr;
 
 	m_triangles->Destroy();
 	delete m_triangles;
-	m_triangles = NULL;
+	m_triangles = nullptr;
 }
 
 //

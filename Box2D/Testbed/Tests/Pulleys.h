@@ -29,7 +29,7 @@ public:
 		float32 a = 1.0f;
 		float32 b = 2.0f;
 
-		b2Body* ground = NULL;
+		b2Body* ground = nullptr;
 		{
 			b2BodyDef bd;
 			ground = m_world->CreateBody(&bd);

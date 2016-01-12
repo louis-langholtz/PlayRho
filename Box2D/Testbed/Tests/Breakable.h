@@ -91,7 +91,7 @@ public:
 		b2Vec2 center = body1->GetWorldCenter();
 
 		body1->DestroyFixture(m_piece2);
-		m_piece2 = NULL;
+		m_piece2 = nullptr;
 
 		b2BodyDef bd;
 		bd.type = b2_dynamicBody;

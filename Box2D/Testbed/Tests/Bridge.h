@@ -30,7 +30,7 @@ public:
 
 	Bridge()
 	{
-		b2Body* ground = NULL;
+		b2Body* ground = nullptr;
 		{
 			b2BodyDef bd;
 			ground = m_world->CreateBody(&bd);

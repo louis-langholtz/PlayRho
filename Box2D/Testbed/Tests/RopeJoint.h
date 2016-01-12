@@ -32,7 +32,7 @@ class RopeJoint : public Test
 public:
 	RopeJoint()
 	{
-		b2Body* ground = NULL;
+		b2Body* ground = nullptr;
 		{
 			b2BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -107,7 +107,7 @@ public:
 			if (m_rope)
 			{
 				m_world->DestroyJoint(m_rope);
-				m_rope = NULL;
+				m_rope = nullptr;
 			}
 			else
 			{

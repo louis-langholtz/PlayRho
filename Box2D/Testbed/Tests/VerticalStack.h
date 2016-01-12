@@ -81,7 +81,7 @@ public:
 			}
 		}
 
-		m_bullet = NULL;
+		m_bullet = nullptr;
 	}
 
 	void Keyboard(int key)
@@ -89,10 +89,10 @@ public:
 		switch (key)
 		{
 		case GLFW_KEY_COMMA:
-			if (m_bullet != NULL)
+			if (m_bullet != nullptr)
 			{
 				m_world->DestroyBody(m_bullet);
-				m_bullet = NULL;
+				m_bullet = nullptr;
 			}
 
 			{
@@ -130,10 +130,10 @@ public:
 		g_debugDraw.DrawString(5, m_textLine, "Blocksolve = %d", g_blockSolve);
 		//if (m_stepCount == 300)
 		//{
-		//	if (m_bullet != NULL)
+		//	if (m_bullet != nullptr)
 		//	{
 		//		m_world->DestroyBody(m_bullet);
-		//		m_bullet = NULL;
+		//		m_bullet = nullptr;
 		//	}
 
 		//	{

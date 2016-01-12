@@ -23,7 +23,7 @@ void DestructionListener::SayGoodbye(b2Joint* joint)
 {
 	if (test->m_mouseJoint == joint)
 	{
-		test->m_mouseJoint = NULL;
+		test->m_mouseJoint = nullptr;
 	}
 	else
 	{
@@ -36,9 +36,9 @@ Test::Test()
 	b2Vec2 gravity;
 	gravity.Set(0.0f, -10.0f);
 	m_world = new b2World(gravity);
-	m_bomb = NULL;
+	m_bomb = nullptr;
 	m_textLine = 30;
-	m_mouseJoint = NULL;
+	m_mouseJoint = nullptr;
 	m_pointCount = 0;
 
 	m_destructionListener.test = this;
@@ -61,7 +61,7 @@ Test::~Test()
 {
 	// By deleting the world, we delete the bomb, mouse joint, etc.
 	delete m_world;
-	m_world = NULL;
+	m_world = nullptr;
 }
 
 void Test::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
@@ -109,7 +109,7 @@ public:
 	QueryCallback(const b2Vec2& point)
 	{
 		m_point = point;
-		m_fixture = NULL;
+		m_fixture = nullptr;
 	}
 
 	bool ReportFixture(b2Fixture* fixture)
@@ -139,7 +139,7 @@ void Test::MouseDown(const b2Vec2& p)
 {
 	m_mouseWorld = p;
 	
-	if (m_mouseJoint != NULL)
+	if (m_mouseJoint != nullptr)
 	{
 		return;
 	}
@@ -192,7 +192,7 @@ void Test::ShiftMouseDown(const b2Vec2& p)
 {
 	m_mouseWorld = p;
 	
-	if (m_mouseJoint != NULL)
+	if (m_mouseJoint != nullptr)
 	{
 		return;
 	}
@@ -205,7 +205,7 @@ void Test::MouseUp(const b2Vec2& p)
 	if (m_mouseJoint)
 	{
 		m_world->DestroyJoint(m_mouseJoint);
-		m_mouseJoint = NULL;
+		m_mouseJoint = nullptr;
 	}
 	
 	if (m_bombSpawning)
@@ -236,7 +236,7 @@ void Test::LaunchBomb(const b2Vec2& position, const b2Vec2& velocity)
 	if (m_bomb)
 	{
 		m_world->DestroyBody(m_bomb);
-		m_bomb = NULL;
+		m_bomb = nullptr;
 	}
 
 	b2BodyDef bd;

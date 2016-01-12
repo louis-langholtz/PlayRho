@@ -553,7 +553,7 @@ bool RenderGLInit(const char* fontpath)
 		"    gl_Position = vec4(VertexPosition * 2.0 / Viewport - 1.0, 0.0, 1.0);\n"
 		"}\n";
 	GLuint vso = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vso, 1, (const char **)&vs, NULL);
+	glShaderSource(vso, 1, (const char **)&vs, nullptr);
 	glCompileShader(vso);
 	glAttachShader(g_program, vso);
 
@@ -570,7 +570,7 @@ bool RenderGLInit(const char* fontpath)
 		"}\n";
 	GLuint fso = glCreateShader(GL_FRAGMENT_SHADER);
 
-	glShaderSource(fso, 1, (const char **)&fs, NULL);
+	glShaderSource(fso, 1, (const char **)&fs, nullptr);
 	glCompileShader(fso);
 	glAttachShader(g_program, fso);
 

@@ -28,8 +28,8 @@ struct b2GearJointDef : public b2JointDef
 	b2GearJointDef()
 	{
 		type = e_gearJoint;
-		joint1 = NULL;
-		joint2 = NULL;
+		joint1 = nullptr;
+		joint2 = nullptr;
 		ratio = 1.0f;
 	}
 

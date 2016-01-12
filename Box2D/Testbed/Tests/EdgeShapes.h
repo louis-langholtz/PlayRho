@@ -24,7 +24,7 @@ class EdgeShapesCallback : public b2RayCastCallback
 public:
 	EdgeShapesCallback()
 	{
-		m_fixture = NULL;
+		m_fixture = nullptr;
 	}
 
 	float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point,
@@ -124,10 +124,10 @@ public:
 
 	void Create(int32 index)
 	{
-		if (m_bodies[m_bodyIndex] != NULL)
+		if (m_bodies[m_bodyIndex] != nullptr)
 		{
 			m_world->DestroyBody(m_bodies[m_bodyIndex]);
-			m_bodies[m_bodyIndex] = NULL;
+			m_bodies[m_bodyIndex] = nullptr;
 		}
 
 		b2BodyDef bd;
@@ -169,10 +169,10 @@ public:
 	{
 		for (int32 i = 0; i < e_maxBodies; ++i)
 		{
-			if (m_bodies[i] != NULL)
+			if (m_bodies[i] != nullptr)
 			{
 				m_world->DestroyBody(m_bodies[i]);
-				m_bodies[i] = NULL;
+				m_bodies[i] = nullptr;
 				return;
 			}
 		}

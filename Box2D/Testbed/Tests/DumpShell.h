@@ -161,8 +161,8 @@ public:
 		}
 		b2Free(joints);
 		b2Free(bodies);
-		joints = NULL;
-		bodies = NULL;
+		joints = nullptr;
+		bodies = nullptr;
 
 	}
 

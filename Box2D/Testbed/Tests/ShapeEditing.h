@@ -43,7 +43,7 @@ public:
 		shape.SetAsBox(4.0f, 4.0f, b2Vec2(0.0f, 0.0f), 0.0f);
 		m_fixture1 = m_body->CreateFixture(&shape, 10.0f);
 
-		m_fixture2 = NULL;
+		m_fixture2 = nullptr;
 
 		m_sensor = false;
 	}
@@ -53,7 +53,7 @@ public:
 		switch (key)
 		{
 		case GLFW_KEY_C:
-			if (m_fixture2 == NULL)
+			if (m_fixture2 == nullptr)
 			{
 				b2CircleShape shape;
 				shape.m_radius = 3.0f;
@@ -64,16 +64,16 @@ public:
 			break;
 
 		case GLFW_KEY_D:
-			if (m_fixture2 != NULL)
+			if (m_fixture2 != nullptr)
 			{
 				m_body->DestroyFixture(m_fixture2);
-				m_fixture2 = NULL;
+				m_fixture2 = nullptr;
 				m_body->SetAwake(true);
 			}
 			break;
 
 		case GLFW_KEY_S:
-			if (m_fixture2 != NULL)
+			if (m_fixture2 != nullptr)
 			{
 				m_sensor = !m_sensor;
 				m_fixture2->SetSensor(m_sensor);

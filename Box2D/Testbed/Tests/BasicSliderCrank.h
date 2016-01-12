@@ -25,7 +25,7 @@ class BasicSliderCrank : public Test
 public:
 	BasicSliderCrank()
 	{
-		b2Body* ground = NULL;
+		b2Body* ground = nullptr;
 		{
 			b2BodyDef bd;
             bd.position.Set(0.0f, 17.0f);
