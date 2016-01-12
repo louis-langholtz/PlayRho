@@ -54,11 +54,11 @@ struct b2WeldJointDef : public b2JointDef
 class b2WeldJoint : public b2Joint
 {
 public:
-	b2Vec2 GetAnchorA() const;
-	b2Vec2 GetAnchorB() const;
+	b2Vec2 GetAnchorA() const override;
+	b2Vec2 GetAnchorB() const override;
 
-	b2Vec2 GetReactionForce(float32 inv_dt) const;
-	float32 GetReactionTorque(float32 inv_dt) const;
+	b2Vec2 GetReactionForce(float32 inv_dt) const override;
+	float32 GetReactionTorque(float32 inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
 	const b2Vec2& GetLocalAnchorA() const { return m_localAnchorA; }
@@ -78,7 +78,7 @@ public:
 	float32 GetDampingRatio() const { return m_dampingRatio; }
 
 	/// Dump to b2Log
-	void Dump();
+	void Dump() override;
 
 protected:
 

@@ -51,11 +51,11 @@ struct b2MotorJointDef : public b2JointDef
 class b2MotorJoint : public b2Joint
 {
 public:
-	b2Vec2 GetAnchorA() const;
-	b2Vec2 GetAnchorB() const;
+	b2Vec2 GetAnchorA() const override;
+	b2Vec2 GetAnchorB() const override;
 
-	b2Vec2 GetReactionForce(float32 inv_dt) const;
-	float32 GetReactionTorque(float32 inv_dt) const;
+	b2Vec2 GetReactionForce(float32 inv_dt) const override;
+	float32 GetReactionTorque(float32 inv_dt) const override;
 
 	/// Set/get the target linear offset, in frame A, in meters.
 	void SetLinearOffset(const b2Vec2& linearOffset);
@@ -84,7 +84,7 @@ public:
 	float32 GetCorrectionFactor() const;
 
 	/// Dump to b2Log
-	void Dump();
+	void Dump() override;
 
 protected:
 

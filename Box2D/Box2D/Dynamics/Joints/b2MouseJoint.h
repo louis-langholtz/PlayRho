@@ -55,16 +55,16 @@ class b2MouseJoint : public b2Joint
 public:
 
 	/// Implements b2Joint.
-	b2Vec2 GetAnchorA() const;
+	b2Vec2 GetAnchorA() const override;
 
 	/// Implements b2Joint.
-	b2Vec2 GetAnchorB() const;
+	b2Vec2 GetAnchorB() const override;
 
 	/// Implements b2Joint.
-	b2Vec2 GetReactionForce(float32 inv_dt) const;
+	b2Vec2 GetReactionForce(float32 inv_dt) const override;
 
 	/// Implements b2Joint.
-	float32 GetReactionTorque(float32 inv_dt) const;
+	float32 GetReactionTorque(float32 inv_dt) const override;
 
 	/// Use this to update the target point.
 	void SetTarget(const b2Vec2& target);
@@ -83,7 +83,7 @@ public:
 	float32 GetDampingRatio() const;
 
 	/// The mouse joint does not support dumping.
-	void Dump() { b2Log("Mouse joint dumping is not supported.\n"); }
+	void Dump() override { b2Log("Mouse joint dumping is not supported.\n"); }
 
 	/// Implement b2Joint::ShiftOrigin
 	void ShiftOrigin(const b2Vec2& newOrigin);
