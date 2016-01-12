@@ -27,24 +27,18 @@
 /// see collideConnected in b2JointDef.
 struct b2RopeJointDef : public b2JointDef
 {
-	b2RopeJointDef()
-	{
-		type = e_ropeJoint;
-		localAnchorA.Set(-1.0f, 0.0f);
-		localAnchorB.Set(1.0f, 0.0f);
-		maxLength = 0.0f;
-	}
+	constexpr b2RopeJointDef() noexcept: b2JointDef(e_ropeJoint) {}
 
 	/// The local anchor point relative to bodyA's origin.
-	b2Vec2 localAnchorA;
+	b2Vec2 localAnchorA = {-1.0f, 0.0f};
 
 	/// The local anchor point relative to bodyB's origin.
-	b2Vec2 localAnchorB;
+	b2Vec2 localAnchorB = {1.0f, 0.0f};
 
 	/// The maximum length of the rope.
 	/// Warning: this must be larger than b2_linearSlop or
 	/// the joint will have no effect.
-	float32 maxLength;
+	float32 maxLength = 0.0f;
 };
 
 /// A rope joint enforces a maximum distance between two points

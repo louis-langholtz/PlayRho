@@ -25,29 +25,22 @@
 /// tuning parameters, and the time step.
 struct b2MouseJointDef : public b2JointDef
 {
-	b2MouseJointDef()
-	{
-		type = e_mouseJoint;
-		target.Set(0.0f, 0.0f);
-		maxForce = 0.0f;
-		frequencyHz = 5.0f;
-		dampingRatio = 0.7f;
-	}
+	constexpr b2MouseJointDef() noexcept: b2JointDef(e_mouseJoint) {}
 
 	/// The initial world target point. This is assumed
 	/// to coincide with the body anchor initially.
-	b2Vec2 target;
+	b2Vec2 target = b2Vec2_zero;
 
 	/// The maximum constraint force that can be exerted
 	/// to move the candidate body. Usually you will express
 	/// as some multiple of the weight (multiplier * mass * gravity).
-	float32 maxForce;
+	float32 maxForce = 0.0f;
 
 	/// The response speed.
-	float32 frequencyHz;
+	float32 frequencyHz = 5.0f;
 
 	/// The damping ratio. 0 = no damping, 1 = critical damping.
-	float32 dampingRatio;
+	float32 dampingRatio = 0.7f;
 };
 
 /// A mouse joint is used to make a point on a body track a

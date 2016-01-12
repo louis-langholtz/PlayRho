@@ -180,32 +180,17 @@ void b2Joint::Destroy(b2Joint* joint, b2BlockAllocator* allocator)
 	}
 }
 
-b2Joint::b2Joint(const b2JointDef* def)
+b2Joint::b2Joint(const b2JointDef* def): m_type(def->type)
 {
 	b2Assert(def->bodyA != def->bodyB);
 
-	m_type = def->type;
-	m_prev = nullptr;
-	m_next = nullptr;
 	m_bodyA = def->bodyA;
 	m_bodyB = def->bodyB;
-	m_index = 0;
 	m_collideConnected = def->collideConnected;
-	m_islandFlag = false;
 	m_userData = def->userData;
-
-	m_edgeA.joint = nullptr;
-	m_edgeA.other = nullptr;
-	m_edgeA.prev = nullptr;
-	m_edgeA.next = nullptr;
-
-	m_edgeB.joint = nullptr;
-	m_edgeB.other = nullptr;
-	m_edgeB.prev = nullptr;
-	m_edgeB.next = nullptr;
 }
 
-bool b2Joint::IsActive() const
+bool b2Joint::IsActive() const noexcept
 {
 	return m_bodyA->IsActive() && m_bodyB->IsActive();
 }

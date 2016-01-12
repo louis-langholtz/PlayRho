@@ -24,33 +24,25 @@
 /// Motor joint definition.
 struct b2MotorJointDef : public b2JointDef
 {
-	b2MotorJointDef()
-	{
-		type = e_motorJoint;
-		linearOffset.SetZero();
-		angularOffset = 0.0f;
-		maxForce = 1.0f;
-		maxTorque = 1.0f;
-		correctionFactor = 0.3f;
-	}
+	constexpr b2MotorJointDef() noexcept: b2JointDef(e_motorJoint) {}
 
 	/// Initialize the bodies and offsets using the current transforms.
 	void Initialize(b2Body* bodyA, b2Body* bodyB);
 
 	/// Position of bodyB minus the position of bodyA, in bodyA's frame, in meters.
-	b2Vec2 linearOffset;
+	b2Vec2 linearOffset = b2Vec2_zero;
 
 	/// The bodyB angle minus bodyA angle in radians.
-	float32 angularOffset;
+	float32 angularOffset = 0.0f;
 	
 	/// The maximum motor force in N.
-	float32 maxForce;
+	float32 maxForce = 1.0f;
 
 	/// The maximum motor torque in N-m.
-	float32 maxTorque;
+	float32 maxTorque = 1.0f;
 
 	/// Position correction factor in the range [0,1].
-	float32 correctionFactor;
+	float32 correctionFactor = 0.3f;
 };
 
 /// A motor joint is used to control the relative motion

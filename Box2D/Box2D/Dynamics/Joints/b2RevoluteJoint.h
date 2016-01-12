@@ -34,51 +34,39 @@
 ///    the joints will be broken.
 struct b2RevoluteJointDef : public b2JointDef
 {
-	b2RevoluteJointDef()
-	{
-		type = e_revoluteJoint;
-		localAnchorA.Set(0.0f, 0.0f);
-		localAnchorB.Set(0.0f, 0.0f);
-		referenceAngle = 0.0f;
-		lowerAngle = 0.0f;
-		upperAngle = 0.0f;
-		maxMotorTorque = 0.0f;
-		motorSpeed = 0.0f;
-		enableLimit = false;
-		enableMotor = false;
-	}
+	constexpr b2RevoluteJointDef() noexcept: b2JointDef(e_revoluteJoint) {}
 
 	/// Initialize the bodies, anchors, and reference angle using a world
 	/// anchor point.
 	void Initialize(b2Body* bodyA, b2Body* bodyB, const b2Vec2& anchor);
 
 	/// The local anchor point relative to bodyA's origin.
-	b2Vec2 localAnchorA;
+	b2Vec2 localAnchorA = b2Vec2_zero;
 
 	/// The local anchor point relative to bodyB's origin.
-	b2Vec2 localAnchorB;
+	b2Vec2 localAnchorB = b2Vec2_zero;
 
 	/// The bodyB angle minus bodyA angle in the reference state (radians).
-	float32 referenceAngle;
+	float32 referenceAngle = 0.0f;
 
 	/// A flag to enable joint limits.
-	bool enableLimit;
+	bool enableLimit = false;
 
 	/// The lower angle for the joint limit (radians).
-	float32 lowerAngle;
+	float32 lowerAngle = 0.0f;
 
 	/// The upper angle for the joint limit (radians).
-	float32 upperAngle;
+	float32 upperAngle = 0.0f;
 
 	/// A flag to enable the joint motor.
-	bool enableMotor;
+	bool enableMotor = false;
 
 	/// The desired motor speed. Usually in radians per second.
-	float32 motorSpeed;
+	float32 motorSpeed = 0.0f;
 
 	/// The maximum motor torque used to achieve the desired motor speed.
 	/// Usually in N-m.
-	float32 maxMotorTorque;
+	float32 maxMotorTorque = 0.0f;
 };
 
 /// A revolute joint constrains two bodies to share a common point while they

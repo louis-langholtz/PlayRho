@@ -73,29 +73,24 @@ struct b2JointEdge
 /// Joint definitions are used to construct joints.
 struct b2JointDef
 {
-	b2JointDef()
-	{
-		type = e_unknownJoint;
-		userData = nullptr;
-		bodyA = nullptr;
-		bodyB = nullptr;
-		collideConnected = false;
-	}
+	constexpr b2JointDef() = default;
+
+	constexpr b2JointDef(b2JointType t) noexcept: type(t) {}
 
 	/// The joint type is set automatically for concrete joint types.
-	b2JointType type;
+	b2JointType type = e_unknownJoint;
 
 	/// Use this to attach application specific data to your joints.
-	void* userData;
+	void* userData = nullptr;
 
 	/// The first attached body.
-	b2Body* bodyA;
+	b2Body* bodyA = nullptr;
 
 	/// The second attached body.
-	b2Body* bodyB;
+	b2Body* bodyB = nullptr;
 
 	/// Set this flag to true if the attached bodies should collide.
-	bool collideConnected;
+	bool collideConnected = false;
 };
 
 /// The base joint class. Joints are used to constraint two bodies together in
@@ -105,13 +100,13 @@ class b2Joint
 public:
 
 	/// Get the type of the concrete joint.
-	b2JointType GetType() const;
+	b2JointType GetType() const noexcept;
 
 	/// Get the first body attached to this joint.
-	b2Body* GetBodyA();
+	b2Body* GetBodyA() noexcept;
 
 	/// Get the second body attached to this joint.
-	b2Body* GetBodyB();
+	b2Body* GetBodyB() noexcept;
 
 	/// Get the anchor point on bodyA in world coordinates.
 	virtual b2Vec2 GetAnchorA() const = 0;
@@ -126,22 +121,22 @@ public:
 	virtual float32 GetReactionTorque(float32 inv_dt) const = 0;
 
 	/// Get the next joint the world joint list.
-	b2Joint* GetNext();
-	const b2Joint* GetNext() const;
+	b2Joint* GetNext() noexcept;
+	const b2Joint* GetNext() const noexcept;
 
 	/// Get the user data pointer.
-	void* GetUserData() const;
+	void* GetUserData() const noexcept;
 
 	/// Set the user data pointer.
-	void SetUserData(void* data);
+	void SetUserData(void* data) noexcept;
 
 	/// Short-cut function to determine if either body is inactive.
-	bool IsActive() const;
+	bool IsActive() const noexcept;
 
 	/// Get collide connected.
 	/// Note: modifying the collide connect flag won't work correctly because
 	/// the flag is only checked when fixture AABBs begin to overlap.
-	bool GetCollideConnected() const;
+	bool GetCollideConnected() const noexcept;
 
 	/// Dump this joint to the log file.
 	virtual void Dump() { b2Log("// Dump is not supported for this joint type.\n"); }
@@ -167,58 +162,58 @@ protected:
 	// This returns true if the position errors are within tolerance.
 	virtual bool SolvePositionConstraints(const b2SolverData& data) = 0;
 
-	b2JointType m_type;
-	b2Joint* m_prev;
-	b2Joint* m_next;
-	b2JointEdge m_edgeA;
-	b2JointEdge m_edgeB;
+	const b2JointType m_type;
+	b2Joint* m_prev = nullptr;
+	b2Joint* m_next = nullptr;
+	b2JointEdge m_edgeA = {nullptr, nullptr, nullptr, nullptr};
+	b2JointEdge m_edgeB = {nullptr, nullptr, nullptr, nullptr};
 	b2Body* m_bodyA;
 	b2Body* m_bodyB;
 
-	int32 m_index;
+	int32 m_index = 0;
 
-	bool m_islandFlag;
+	bool m_islandFlag = false;
 	bool m_collideConnected;
 
 	void* m_userData;
 };
 
-inline b2JointType b2Joint::GetType() const
+inline b2JointType b2Joint::GetType() const noexcept
 {
 	return m_type;
 }
 
-inline b2Body* b2Joint::GetBodyA()
+inline b2Body* b2Joint::GetBodyA() noexcept
 {
 	return m_bodyA;
 }
 
-inline b2Body* b2Joint::GetBodyB()
+inline b2Body* b2Joint::GetBodyB() noexcept
 {
 	return m_bodyB;
 }
 
-inline b2Joint* b2Joint::GetNext()
+inline b2Joint* b2Joint::GetNext() noexcept
 {
 	return m_next;
 }
 
-inline const b2Joint* b2Joint::GetNext() const
+inline const b2Joint* b2Joint::GetNext() const noexcept
 {
 	return m_next;
 }
 
-inline void* b2Joint::GetUserData() const
+inline void* b2Joint::GetUserData() const noexcept
 {
 	return m_userData;
 }
 
-inline void b2Joint::SetUserData(void* data)
+inline void b2Joint::SetUserData(void* data) noexcept
 {
 	m_userData = data;
 }
 
-inline bool b2Joint::GetCollideConnected() const
+inline bool b2Joint::GetCollideConnected() const noexcept
 {
 	return m_collideConnected;
 }

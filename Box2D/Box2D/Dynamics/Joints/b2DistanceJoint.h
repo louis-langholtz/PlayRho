@@ -29,15 +29,7 @@
 /// @warning Do not use a zero or short length.
 struct b2DistanceJointDef : public b2JointDef
 {
-	b2DistanceJointDef()
-	{
-		type = e_distanceJoint;
-		localAnchorA.Set(0.0f, 0.0f);
-		localAnchorB.Set(0.0f, 0.0f);
-		length = 1.0f;
-		frequencyHz = 0.0f;
-		dampingRatio = 0.0f;
-	}
+	constexpr b2DistanceJointDef() noexcept: b2JointDef(e_distanceJoint) {}
 
 	/// Initialize the bodies, anchors, and length using the world
 	/// anchors.
@@ -45,20 +37,20 @@ struct b2DistanceJointDef : public b2JointDef
 					const b2Vec2& anchorA, const b2Vec2& anchorB);
 
 	/// The local anchor point relative to bodyA's origin.
-	b2Vec2 localAnchorA;
+	b2Vec2 localAnchorA = b2Vec2_zero;
 
 	/// The local anchor point relative to bodyB's origin.
-	b2Vec2 localAnchorB;
+	b2Vec2 localAnchorB = b2Vec2_zero;
 
 	/// The natural length between the anchor points.
-	float32 length;
+	float32 length = 1.0f;
 
 	/// The mass-spring-damper frequency in Hertz. A value of 0
 	/// disables softness.
-	float32 frequencyHz;
+	float32 frequencyHz = 0.0f;
 
 	/// The damping ratio. 0 = no damping, 1 = critical damping.
-	float32 dampingRatio;
+	float32 dampingRatio = 0.0f;
 };
 
 /// A distance joint constrains two points on two bodies

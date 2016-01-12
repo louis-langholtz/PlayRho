@@ -29,54 +29,41 @@
 /// anchors and a local axis helps when saving and loading a game.
 struct b2PrismaticJointDef : public b2JointDef
 {
-	b2PrismaticJointDef()
-	{
-		type = e_prismaticJoint;
-		localAnchorA.SetZero();
-		localAnchorB.SetZero();
-		localAxisA.Set(1.0f, 0.0f);
-		referenceAngle = 0.0f;
-		enableLimit = false;
-		lowerTranslation = 0.0f;
-		upperTranslation = 0.0f;
-		enableMotor = false;
-		maxMotorForce = 0.0f;
-		motorSpeed = 0.0f;
-	}
+	constexpr b2PrismaticJointDef() noexcept: b2JointDef(e_prismaticJoint) {}
 
 	/// Initialize the bodies, anchors, axis, and reference angle using the world
 	/// anchor and unit world axis.
 	void Initialize(b2Body* bodyA, b2Body* bodyB, const b2Vec2& anchor, const b2Vec2& axis);
 
 	/// The local anchor point relative to bodyA's origin.
-	b2Vec2 localAnchorA;
+	b2Vec2 localAnchorA = b2Vec2_zero;
 
 	/// The local anchor point relative to bodyB's origin.
-	b2Vec2 localAnchorB;
+	b2Vec2 localAnchorB = b2Vec2_zero;
 
 	/// The local translation unit axis in bodyA.
-	b2Vec2 localAxisA;
+	b2Vec2 localAxisA = {1.0f, 0.0f};
 
 	/// The constrained angle between the bodies: bodyB_angle - bodyA_angle.
-	float32 referenceAngle;
+	float32 referenceAngle = 0.0f;
 
 	/// Enable/disable the joint limit.
-	bool enableLimit;
+	bool enableLimit = false;
 
 	/// The lower translation limit, usually in meters.
-	float32 lowerTranslation;
+	float32 lowerTranslation = 0.0f;
 
 	/// The upper translation limit, usually in meters.
-	float32 upperTranslation;
+	float32 upperTranslation = 0.0f;
 
 	/// Enable/disable the joint motor.
-	bool enableMotor;
+	bool enableMotor = false;
 
 	/// The maximum motor torque, usually in N-m.
-	float32 maxMotorForce;
+	float32 maxMotorForce = 0.0f;
 
 	/// The desired motor speed in radians per second.
-	float32 motorSpeed;
+	float32 motorSpeed = 0.0f;
 };
 
 /// A prismatic joint. This joint provides one degree of freedom: translation

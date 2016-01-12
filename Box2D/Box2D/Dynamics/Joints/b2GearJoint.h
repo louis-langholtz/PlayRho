@@ -25,23 +25,17 @@
 /// revolute or prismatic joints (any combination will work).
 struct b2GearJointDef : public b2JointDef
 {
-	b2GearJointDef()
-	{
-		type = e_gearJoint;
-		joint1 = nullptr;
-		joint2 = nullptr;
-		ratio = 1.0f;
-	}
+	constexpr b2GearJointDef() noexcept: b2JointDef(e_gearJoint) {}
 
 	/// The first revolute/prismatic joint attached to the gear joint.
-	b2Joint* joint1;
+	b2Joint* joint1 = nullptr;
 
 	/// The second revolute/prismatic joint attached to the gear joint.
-	b2Joint* joint2;
+	b2Joint* joint2 = nullptr;
 
 	/// The gear ratio.
 	/// @see b2GearJoint for explanation.
-	float32 ratio;
+	float32 ratio = 1.0f;
 };
 
 /// A gear joint is used to connect two joints together. Either joint

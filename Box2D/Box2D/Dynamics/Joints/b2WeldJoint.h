@@ -26,35 +26,27 @@
 /// of the anchor points is important for computing the reaction torque.
 struct b2WeldJointDef : public b2JointDef
 {
-	b2WeldJointDef()
-	{
-		type = e_weldJoint;
-		localAnchorA.Set(0.0f, 0.0f);
-		localAnchorB.Set(0.0f, 0.0f);
-		referenceAngle = 0.0f;
-		frequencyHz = 0.0f;
-		dampingRatio = 0.0f;
-	}
+	constexpr b2WeldJointDef() noexcept: b2JointDef(e_weldJoint) {}
 
 	/// Initialize the bodies, anchors, and reference angle using a world
 	/// anchor point.
 	void Initialize(b2Body* bodyA, b2Body* bodyB, const b2Vec2& anchor);
 
 	/// The local anchor point relative to bodyA's origin.
-	b2Vec2 localAnchorA;
+	b2Vec2 localAnchorA = b2Vec2_zero;
 
 	/// The local anchor point relative to bodyB's origin.
-	b2Vec2 localAnchorB;
+	b2Vec2 localAnchorB = b2Vec2_zero;
 
 	/// The bodyB angle minus bodyA angle in the reference state (radians).
-	float32 referenceAngle;
+	float32 referenceAngle = 0.0f;
 	
 	/// The mass-spring-damper frequency in Hertz. Rotation only.
 	/// Disable softness with a value of 0.
-	float32 frequencyHz;
+	float32 frequencyHz = 0.0f;
 
 	/// The damping ratio. 0 = no damping, 1 = critical damping.
-	float32 dampingRatio;
+	float32 dampingRatio = 0.0f;
 };
 
 /// A weld joint essentially glues two bodies together. A weld joint may

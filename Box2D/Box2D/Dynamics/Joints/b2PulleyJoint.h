@@ -27,16 +27,8 @@ const float32 b2_minPulleyLength = 2.0f;
 /// two dynamic body anchor points, and a pulley ratio.
 struct b2PulleyJointDef : public b2JointDef
 {
-	b2PulleyJointDef()
+	b2PulleyJointDef() noexcept: b2JointDef(e_pulleyJoint)
 	{
-		type = e_pulleyJoint;
-		groundAnchorA.Set(-1.0f, 1.0f);
-		groundAnchorB.Set(1.0f, 1.0f);
-		localAnchorA.Set(-1.0f, 0.0f);
-		localAnchorB.Set(1.0f, 0.0f);
-		lengthA = 0.0f;
-		lengthB = 0.0f;
-		ratio = 1.0f;
 		collideConnected = true;
 	}
 
@@ -47,25 +39,25 @@ struct b2PulleyJointDef : public b2JointDef
 					float32 ratio);
 
 	/// The first ground anchor in world coordinates. This point never moves.
-	b2Vec2 groundAnchorA;
+	b2Vec2 groundAnchorA = {-1.0f, 1.0f};
 
 	/// The second ground anchor in world coordinates. This point never moves.
-	b2Vec2 groundAnchorB;
+	b2Vec2 groundAnchorB = {1.0f, 1.0f};
 
 	/// The local anchor point relative to bodyA's origin.
-	b2Vec2 localAnchorA;
+	b2Vec2 localAnchorA = {-1.0f, 0.0f};
 
 	/// The local anchor point relative to bodyB's origin.
-	b2Vec2 localAnchorB;
+	b2Vec2 localAnchorB = {1.0f, 0.0f};
 
 	/// The a reference length for the segment attached to bodyA.
-	float32 lengthA;
+	float32 lengthA = 0.0f;
 
 	/// The a reference length for the segment attached to bodyB.
-	float32 lengthB;
+	float32 lengthB = 0.0f;
 
 	/// The pulley ratio, used to simulate a block-and-tackle.
-	float32 ratio;
+	float32 ratio = 1.0f;
 };
 
 /// The pulley joint is connected to two bodies and two fixed ground points.

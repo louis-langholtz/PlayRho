@@ -24,30 +24,23 @@
 /// Friction joint definition.
 struct b2FrictionJointDef : public b2JointDef
 {
-	b2FrictionJointDef()
-	{
-		type = e_frictionJoint;
-		localAnchorA.SetZero();
-		localAnchorB.SetZero();
-		maxForce = 0.0f;
-		maxTorque = 0.0f;
-	}
+	constexpr b2FrictionJointDef() noexcept: b2JointDef(e_frictionJoint) {}
 
 	/// Initialize the bodies, anchors, axis, and reference angle using the world
 	/// anchor and world axis.
 	void Initialize(b2Body* bodyA, b2Body* bodyB, const b2Vec2& anchor);
 
 	/// The local anchor point relative to bodyA's origin.
-	b2Vec2 localAnchorA;
+	b2Vec2 localAnchorA = b2Vec2_zero;
 
 	/// The local anchor point relative to bodyB's origin.
-	b2Vec2 localAnchorB;
+	b2Vec2 localAnchorB = b2Vec2_zero;
 
 	/// The maximum friction force in N.
-	float32 maxForce;
+	float32 maxForce = 0.0f;
 
 	/// The maximum friction torque in N-m.
-	float32 maxTorque;
+	float32 maxTorque = 0.0f;
 };
 
 /// Friction joint. This is used for top-down friction.

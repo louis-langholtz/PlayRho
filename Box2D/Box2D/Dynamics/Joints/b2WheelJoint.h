@@ -29,46 +29,35 @@
 /// anchors and a local axis helps when saving and loading a game.
 struct b2WheelJointDef : public b2JointDef
 {
-	b2WheelJointDef()
-	{
-		type = e_wheelJoint;
-		localAnchorA.SetZero();
-		localAnchorB.SetZero();
-		localAxisA.Set(1.0f, 0.0f);
-		enableMotor = false;
-		maxMotorTorque = 0.0f;
-		motorSpeed = 0.0f;
-		frequencyHz = 2.0f;
-		dampingRatio = 0.7f;
-	}
+	constexpr b2WheelJointDef() noexcept: b2JointDef(e_wheelJoint) {}
 
 	/// Initialize the bodies, anchors, axis, and reference angle using the world
 	/// anchor and world axis.
 	void Initialize(b2Body* bodyA, b2Body* bodyB, const b2Vec2& anchor, const b2Vec2& axis);
 
 	/// The local anchor point relative to bodyA's origin.
-	b2Vec2 localAnchorA;
+	b2Vec2 localAnchorA = b2Vec2_zero;
 
 	/// The local anchor point relative to bodyB's origin.
-	b2Vec2 localAnchorB;
+	b2Vec2 localAnchorB = b2Vec2_zero;
 
 	/// The local translation axis in bodyA.
-	b2Vec2 localAxisA;
+	b2Vec2 localAxisA = {1.0f, 0.0f};
 
 	/// Enable/disable the joint motor.
-	bool enableMotor;
+	bool enableMotor = false;
 
 	/// The maximum motor torque, usually in N-m.
-	float32 maxMotorTorque;
+	float32 maxMotorTorque = 0.0f;
 
 	/// The desired motor speed in radians per second.
-	float32 motorSpeed;
+	float32 motorSpeed = 0.0f;
 
 	/// Suspension frequency, zero indicates no suspension
-	float32 frequencyHz;
+	float32 frequencyHz = 2.0f;
 
 	/// Suspension damping ratio, one indicates critical damping
-	float32 dampingRatio;
+	float32 dampingRatio = 0.7f;
 };
 
 /// A wheel joint. This joint provides two degrees of freedom: translation
