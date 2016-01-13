@@ -157,11 +157,11 @@ m_jointCapacity(jointCapacity),
 m_allocator(allocator),
 m_listener(listener)
 {
-	m_bodies = (b2Body**)m_allocator->Allocate(bodyCapacity * sizeof(b2Body*));
-	m_contacts = (b2Contact**)m_allocator->Allocate(contactCapacity	 * sizeof(b2Contact*));
-	m_joints = (b2Joint**)m_allocator->Allocate(jointCapacity * sizeof(b2Joint*));
-	m_velocities = (b2Velocity*)m_allocator->Allocate(m_bodyCapacity * sizeof(b2Velocity));
-	m_positions = (b2Position*)m_allocator->Allocate(m_bodyCapacity * sizeof(b2Position));
+	m_bodies = static_cast<b2Body**>(m_allocator->Allocate(bodyCapacity * sizeof(b2Body*)));
+	m_contacts = static_cast<b2Contact**>(m_allocator->Allocate(contactCapacity	 * sizeof(b2Contact*)));
+	m_joints = static_cast<b2Joint**>(m_allocator->Allocate(jointCapacity * sizeof(b2Joint*)));
+	m_velocities = static_cast<b2Velocity*>(m_allocator->Allocate(m_bodyCapacity * sizeof(b2Velocity)));
+	m_positions = static_cast<b2Position*>(m_allocator->Allocate(m_bodyCapacity * sizeof(b2Position)));
 }
 
 b2Island::~b2Island()

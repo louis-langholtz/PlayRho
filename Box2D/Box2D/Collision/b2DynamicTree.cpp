@@ -51,7 +51,7 @@ int32 b2DynamicTree::AllocateNode()
 		// The free list is empty. Rebuild a bigger pool.
 		auto oldNodes = m_nodes;
 		m_nodeCapacity *= 2;
-		m_nodes = (b2TreeNode*)b2Alloc(m_nodeCapacity * sizeof(b2TreeNode));
+		m_nodes = static_cast<b2TreeNode*>(b2Alloc(m_nodeCapacity * sizeof(b2TreeNode)));
 		memcpy(m_nodes, oldNodes, m_nodeCount * sizeof(b2TreeNode));
 		b2Free(oldNodes);
 

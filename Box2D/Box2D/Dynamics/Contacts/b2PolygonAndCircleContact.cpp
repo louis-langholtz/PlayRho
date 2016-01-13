@@ -19,6 +19,8 @@
 #include <Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.h>
 #include <Box2D/Common/b2BlockAllocator.h>
 #include <Box2D/Dynamics/b2Fixture.h>
+#include <Box2D/Collision/Shapes/b2PolygonShape.h>
+#include <Box2D/Collision/Shapes/b2CircleShape.h>
 
 #include <new>
 
@@ -30,7 +32,7 @@ b2Contact* b2PolygonAndCircleContact::Create(b2Fixture* fixtureA, int32, b2Fixtu
 
 void b2PolygonAndCircleContact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
 {
-	((b2PolygonAndCircleContact*)contact)->~b2PolygonAndCircleContact();
+	(static_cast<b2PolygonAndCircleContact*>(contact))->~b2PolygonAndCircleContact();
 	allocator->Free(contact, sizeof(b2PolygonAndCircleContact));
 }
 
@@ -44,6 +46,6 @@ b2PolygonAndCircleContact::b2PolygonAndCircleContact(b2Fixture* fixtureA, b2Fixt
 void b2PolygonAndCircleContact::Evaluate(b2Manifold* manifold, const b2Transform& xfA, const b2Transform& xfB)
 {
 	b2CollidePolygonAndCircle(	manifold,
-								(b2PolygonShape*)m_fixtureA->GetShape(), xfA,
-								(b2CircleShape*)m_fixtureB->GetShape(), xfB);
+								static_cast<b2PolygonShape*>(m_fixtureA->GetShape()), xfA,
+								static_cast<b2CircleShape*>(m_fixtureB->GetShape()), xfB);
 }

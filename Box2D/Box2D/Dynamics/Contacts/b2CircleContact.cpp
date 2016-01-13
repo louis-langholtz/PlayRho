@@ -22,6 +22,7 @@
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
 #include <Box2D/Common/b2BlockAllocator.h>
 #include <Box2D/Collision/b2TimeOfImpact.h>
+#include <Box2D/Collision/Shapes/b2CircleShape.h>
 
 #include <new>
 
@@ -33,7 +34,7 @@ b2Contact* b2CircleContact::Create(b2Fixture* fixtureA, int32, b2Fixture* fixtur
 
 void b2CircleContact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
 {
-	((b2CircleContact*)contact)->~b2CircleContact();
+	(static_cast<b2CircleContact*>(contact))->~b2CircleContact();
 	allocator->Free(contact, sizeof(b2CircleContact));
 }
 
@@ -47,6 +48,6 @@ b2CircleContact::b2CircleContact(b2Fixture* fixtureA, b2Fixture* fixtureB)
 void b2CircleContact::Evaluate(b2Manifold* manifold, const b2Transform& xfA, const b2Transform& xfB)
 {
 	b2CollideCircles(manifold,
-					(b2CircleShape*)m_fixtureA->GetShape(), xfA,
-					(b2CircleShape*)m_fixtureB->GetShape(), xfB);
+					static_cast<b2CircleShape*>(m_fixtureA->GetShape()), xfA,
+					static_cast<b2CircleShape*>(m_fixtureB->GetShape()), xfB);
 }

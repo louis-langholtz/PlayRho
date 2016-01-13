@@ -119,7 +119,7 @@ void* b2BlockAllocator::Allocate(int32 size)
 		{
 			auto oldChunks = m_chunks;
 			m_chunkSpace += b2_chunkArrayIncrement;
-			m_chunks = (b2Chunk*)b2Alloc(m_chunkSpace * sizeof(b2Chunk));
+			m_chunks = static_cast<b2Chunk*>(b2Alloc(m_chunkSpace * sizeof(b2Chunk)));
 			memcpy(m_chunks, oldChunks, m_chunkCount * sizeof(b2Chunk));
 			memset(m_chunks + m_chunkCount, 0, b2_chunkArrayIncrement * sizeof(b2Chunk));
 			b2Free(oldChunks);

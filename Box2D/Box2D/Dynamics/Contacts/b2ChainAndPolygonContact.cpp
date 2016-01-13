@@ -21,6 +21,7 @@
 #include <Box2D/Dynamics/b2Fixture.h>
 #include <Box2D/Collision/Shapes/b2ChainShape.h>
 #include <Box2D/Collision/Shapes/b2EdgeShape.h>
+#include <Box2D/Collision/Shapes/b2PolygonShape.h>
 
 #include <new>
 
@@ -32,7 +33,7 @@ b2Contact* b2ChainAndPolygonContact::Create(b2Fixture* fixtureA, int32 indexA, b
 
 void b2ChainAndPolygonContact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
 {
-	((b2ChainAndPolygonContact*)contact)->~b2ChainAndPolygonContact();
+	(static_cast<b2ChainAndPolygonContact*>(contact))->~b2ChainAndPolygonContact();
 	allocator->Free(contact, sizeof(b2ChainAndPolygonContact));
 }
 
@@ -45,9 +46,9 @@ b2ChainAndPolygonContact::b2ChainAndPolygonContact(b2Fixture* fixtureA, int32 in
 
 void b2ChainAndPolygonContact::Evaluate(b2Manifold* manifold, const b2Transform& xfA, const b2Transform& xfB)
 {
-	b2ChainShape* chain = (b2ChainShape*)m_fixtureA->GetShape();
+	auto chain = static_cast<b2ChainShape*>(m_fixtureA->GetShape());
 	b2EdgeShape edge;
 	chain->GetChildEdge(&edge, m_indexA);
 	b2CollideEdgeAndPolygon(	manifold, &edge, xfA,
-								(b2PolygonShape*)m_fixtureB->GetShape(), xfB);
+								static_cast<b2PolygonShape*>(m_fixtureB->GetShape()), xfB);
 }

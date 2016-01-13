@@ -68,7 +68,7 @@ b2GearJoint::b2GearJoint(const b2GearJointDef* def)
 
 	if (m_typeA == e_revoluteJoint)
 	{
-		b2RevoluteJoint* revolute = (b2RevoluteJoint*)def->joint1;
+		b2RevoluteJoint* revolute = static_cast<b2RevoluteJoint*>(def->joint1);
 		m_localAnchorC = revolute->m_localAnchorA;
 		m_localAnchorA = revolute->m_localAnchorB;
 		m_referenceAngleA = revolute->m_referenceAngle;
@@ -78,7 +78,7 @@ b2GearJoint::b2GearJoint(const b2GearJointDef* def)
 	}
 	else
 	{
-		b2PrismaticJoint* prismatic = (b2PrismaticJoint*)def->joint1;
+		b2PrismaticJoint* prismatic = static_cast<b2PrismaticJoint*>(def->joint1);
 		m_localAnchorC = prismatic->m_localAnchorA;
 		m_localAnchorA = prismatic->m_localAnchorB;
 		m_referenceAngleA = prismatic->m_referenceAngle;
@@ -100,7 +100,7 @@ b2GearJoint::b2GearJoint(const b2GearJointDef* def)
 
 	if (m_typeB == e_revoluteJoint)
 	{
-		b2RevoluteJoint* revolute = (b2RevoluteJoint*)def->joint2;
+		b2RevoluteJoint* revolute = static_cast<b2RevoluteJoint*>(def->joint2);
 		m_localAnchorD = revolute->m_localAnchorA;
 		m_localAnchorB = revolute->m_localAnchorB;
 		m_referenceAngleB = revolute->m_referenceAngle;
@@ -110,7 +110,7 @@ b2GearJoint::b2GearJoint(const b2GearJointDef* def)
 	}
 	else
 	{
-		b2PrismaticJoint* prismatic = (b2PrismaticJoint*)def->joint2;
+		b2PrismaticJoint* prismatic = static_cast<b2PrismaticJoint*>(def->joint2);
 		m_localAnchorD = prismatic->m_localAnchorA;
 		m_localAnchorB = prismatic->m_localAnchorB;
 		m_referenceAngleB = prismatic->m_referenceAngle;

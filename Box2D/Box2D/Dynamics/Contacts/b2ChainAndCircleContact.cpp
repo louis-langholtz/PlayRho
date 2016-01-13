@@ -21,6 +21,7 @@
 #include <Box2D/Dynamics/b2Fixture.h>
 #include <Box2D/Collision/Shapes/b2ChainShape.h>
 #include <Box2D/Collision/Shapes/b2EdgeShape.h>
+#include <Box2D/Collision/Shapes/b2CircleShape.h>
 
 #include <new>
 
@@ -32,7 +33,7 @@ b2Contact* b2ChainAndCircleContact::Create(b2Fixture* fixtureA, int32 indexA, b2
 
 void b2ChainAndCircleContact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
 {
-	((b2ChainAndCircleContact*)contact)->~b2ChainAndCircleContact();
+	(static_cast<b2ChainAndCircleContact*>(contact))->~b2ChainAndCircleContact();
 	allocator->Free(contact, sizeof(b2ChainAndCircleContact));
 }
 
@@ -45,9 +46,9 @@ b2ChainAndCircleContact::b2ChainAndCircleContact(b2Fixture* fixtureA, int32 inde
 
 void b2ChainAndCircleContact::Evaluate(b2Manifold* manifold, const b2Transform& xfA, const b2Transform& xfB)
 {
-	b2ChainShape* chain = (b2ChainShape*)m_fixtureA->GetShape();
+	auto chain = static_cast<b2ChainShape*>(m_fixtureA->GetShape());
 	b2EdgeShape edge;
 	chain->GetChildEdge(&edge, m_indexA);
 	b2CollideEdgeAndCircle(	manifold, &edge, xfA,
-							(b2CircleShape*)m_fixtureB->GetShape(), xfB);
+							static_cast<b2CircleShape*>(m_fixtureB->GetShape()), xfB);
 }

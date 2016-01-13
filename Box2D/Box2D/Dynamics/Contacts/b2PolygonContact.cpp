@@ -22,6 +22,7 @@
 #include <Box2D/Dynamics/b2Body.h>
 #include <Box2D/Dynamics/b2Fixture.h>
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
+#include <Box2D/Collision/Shapes/b2PolygonShape.h>
 
 #include <new>
 
@@ -33,7 +34,7 @@ b2Contact* b2PolygonContact::Create(b2Fixture* fixtureA, int32, b2Fixture* fixtu
 
 void b2PolygonContact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
 {
-	((b2PolygonContact*)contact)->~b2PolygonContact();
+	(static_cast<b2PolygonContact*>(contact))->~b2PolygonContact();
 	allocator->Free(contact, sizeof(b2PolygonContact));
 }
 
@@ -47,6 +48,6 @@ b2PolygonContact::b2PolygonContact(b2Fixture* fixtureA, b2Fixture* fixtureB)
 void b2PolygonContact::Evaluate(b2Manifold* manifold, const b2Transform& xfA, const b2Transform& xfB)
 {
 	b2CollidePolygons(	manifold,
-						(b2PolygonShape*)m_fixtureA->GetShape(), xfA,
-						(b2PolygonShape*)m_fixtureB->GetShape(), xfB);
+						static_cast<b2PolygonShape*>(m_fixtureA->GetShape()), xfA,
+						static_cast<b2PolygonShape*>(m_fixtureB->GetShape()), xfB);
 }

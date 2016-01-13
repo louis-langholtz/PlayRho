@@ -19,6 +19,8 @@
 #include <Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.h>
 #include <Box2D/Common/b2BlockAllocator.h>
 #include <Box2D/Dynamics/b2Fixture.h>
+#include <Box2D/Collision/Shapes/b2EdgeShape.h>
+#include <Box2D/Collision/Shapes/b2PolygonShape.h>
 
 #include <new>
 
@@ -30,7 +32,7 @@ b2Contact* b2EdgeAndPolygonContact::Create(b2Fixture* fixtureA, int32, b2Fixture
 
 void b2EdgeAndPolygonContact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
 {
-	((b2EdgeAndPolygonContact*)contact)->~b2EdgeAndPolygonContact();
+	(static_cast<b2EdgeAndPolygonContact*>(contact))->~b2EdgeAndPolygonContact();
 	allocator->Free(contact, sizeof(b2EdgeAndPolygonContact));
 }
 
@@ -44,6 +46,6 @@ b2EdgeAndPolygonContact::b2EdgeAndPolygonContact(b2Fixture* fixtureA, b2Fixture*
 void b2EdgeAndPolygonContact::Evaluate(b2Manifold* manifold, const b2Transform& xfA, const b2Transform& xfB)
 {
 	b2CollideEdgeAndPolygon(	manifold,
-								(b2EdgeShape*)m_fixtureA->GetShape(), xfA,
-								(b2PolygonShape*)m_fixtureB->GetShape(), xfB);
+								static_cast<b2EdgeShape*>(m_fixtureA->GetShape()), xfA,
+								static_cast<b2PolygonShape*>(m_fixtureB->GetShape()), xfB);
 }
