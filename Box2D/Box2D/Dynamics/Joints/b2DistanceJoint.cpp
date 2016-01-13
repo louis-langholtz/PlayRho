@@ -42,7 +42,7 @@ void b2DistanceJointDef::Initialize(b2Body* b1, b2Body* b2,
 	bodyB = b2;
 	localAnchorA = bodyA->GetLocalPoint(anchor1);
 	localAnchorB = bodyB->GetLocalPoint(anchor2);
-	b2Vec2 d = anchor2 - anchor1;
+	const auto d = anchor2 - anchor1;
 	length = d.Length();
 }
 
@@ -54,9 +54,6 @@ b2DistanceJoint::b2DistanceJoint(const b2DistanceJointDef* def)
 	m_length = def->length;
 	m_frequencyHz = def->frequencyHz;
 	m_dampingRatio = def->dampingRatio;
-	m_impulse = 0.0f;
-	m_gamma = 0.0f;
-	m_bias = 0.0f;
 }
 
 void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)

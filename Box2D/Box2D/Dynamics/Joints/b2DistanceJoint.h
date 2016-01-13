@@ -104,13 +104,13 @@ protected:
 
 	float32 m_frequencyHz;
 	float32 m_dampingRatio;
-	float32 m_bias;
+	float32 m_bias = 0.0f;
 
 	// Solver shared
 	b2Vec2 m_localAnchorA;
 	b2Vec2 m_localAnchorB;
-	float32 m_gamma;
-	float32 m_impulse;
+	float32 m_gamma = 0.0f;
+	float32 m_impulse = 0.0f;
 	float32 m_length;
 
 	// Solver temp

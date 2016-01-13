@@ -180,14 +180,11 @@ void b2Joint::Destroy(b2Joint* joint, b2BlockAllocator* allocator)
 	}
 }
 
-b2Joint::b2Joint(const b2JointDef* def): m_type(def->type)
+b2Joint::b2Joint(const b2JointDef* def):
+	m_type(def->type), m_bodyA(def->bodyA), m_bodyB(def->bodyB),
+	m_collideConnected(def->collideConnected), m_userData(def->userData)
 {
 	b2Assert(def->bodyA != def->bodyB);
-
-	m_bodyA = def->bodyA;
-	m_bodyB = def->bodyB;
-	m_collideConnected = def->collideConnected;
-	m_userData = def->userData;
 }
 
 bool b2Joint::IsActive() const noexcept

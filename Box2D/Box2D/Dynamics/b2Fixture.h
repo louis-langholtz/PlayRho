@@ -94,6 +94,8 @@ struct b2FixtureProxy
 class b2Fixture
 {
 public:
+	b2Fixture() = delete;
+
 	/// Get the type of the child shape. You can use this to down cast to the concrete shape.
 	/// @return the shape type.
 	b2Shape::Type GetType() const noexcept;

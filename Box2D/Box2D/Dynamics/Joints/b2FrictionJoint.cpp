@@ -45,10 +45,6 @@ b2FrictionJoint::b2FrictionJoint(const b2FrictionJointDef* def)
 {
 	m_localAnchorA = def->localAnchorA;
 	m_localAnchorB = def->localAnchorB;
-
-	m_linearImpulse.SetZero();
-	m_angularImpulse = 0.0f;
-
 	m_maxForce = def->maxForce;
 	m_maxTorque = def->maxTorque;
 }

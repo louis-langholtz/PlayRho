@@ -89,8 +89,8 @@ protected:
 	b2Vec2 m_localAnchorB;
 
 	// Solver shared
-	b2Vec2 m_linearImpulse;
-	float32 m_angularImpulse;
+	b2Vec2 m_linearImpulse = b2Vec2_zero;
+	float32 m_angularImpulse = 0.0f;
 	float32 m_maxForce;
 	float32 m_maxTorque;
 

@@ -73,12 +73,12 @@ struct b2JointEdge
 /// Joint definitions are used to construct joints.
 struct b2JointDef
 {
-	constexpr b2JointDef() = default;
+	b2JointDef() = delete;
 
 	constexpr b2JointDef(b2JointType t) noexcept: type(t) {}
 
 	/// The joint type is set automatically for concrete joint types.
-	b2JointType type = e_unknownJoint;
+	const b2JointType type;
 
 	/// Use this to attach application specific data to your joints.
 	void* userData = nullptr;
