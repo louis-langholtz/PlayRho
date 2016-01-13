@@ -22,7 +22,6 @@
 #include <Box2D/Dynamics/b2Body.h>
 #include <Box2D/Dynamics/b2Fixture.h>
 #include <Box2D/Dynamics/b2World.h>
-#include <Box2D/Common/b2StackAllocator.h>
 
 #define B2_DEBUG_SOLVER 0
 
