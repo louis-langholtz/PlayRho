@@ -260,25 +260,25 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 	output->state = b2TOIOutput::e_unknown;
 	output->t = input->tMax;
 
-	const b2DistanceProxy* proxyA = &input->proxyA;
-	const b2DistanceProxy* proxyB = &input->proxyB;
+	const auto proxyA = &input->proxyA;
+	const auto proxyB = &input->proxyB;
 
-	b2Sweep sweepA = input->sweepA;
-	b2Sweep sweepB = input->sweepB;
+	auto sweepA = input->sweepA;
+	auto sweepB = input->sweepB;
 
 	// Large rotations can make the root finder fail, so we normalize the
 	// sweep angles.
 	sweepA.Normalize();
 	sweepB.Normalize();
 
-	float32 tMax = input->tMax;
+	const auto tMax = input->tMax;
 
-	float32 totalRadius = proxyA->m_radius + proxyB->m_radius;
-	float32 target = b2Max(b2_linearSlop, totalRadius - 3.0f * b2_linearSlop);
-	float32 tolerance = 0.25f * b2_linearSlop;
+	const auto totalRadius = proxyA->m_radius + proxyB->m_radius;
+	const auto target = b2Max(b2_linearSlop, totalRadius - 3.0f * b2_linearSlop);
+	const auto tolerance = 0.25f * b2_linearSlop;
 	b2Assert(target > tolerance);
 
-	float32 t1 = 0.0f;
+	auto t1 = 0.0f;
 	const int32 k_maxIterations = 20;	// TODO_ERIN b2Settings
 	int32 iter = 0;
 

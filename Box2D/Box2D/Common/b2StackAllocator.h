@@ -48,13 +48,13 @@ public:
 private:
 
 	char m_data[b2_stackSize];
-	int32 m_index;
+	int32 m_index = 0;
 
-	int32 m_allocation;
-	int32 m_maxAllocation;
+	int32 m_allocation = 0;
+	int32 m_maxAllocation = 0;
 
 	b2StackEntry m_entries[b2_maxStackEntries];
-	int32 m_entryCount;
+	int32 m_entryCount = 0;
 };
 
 #endif

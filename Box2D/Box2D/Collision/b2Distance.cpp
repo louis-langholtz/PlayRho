@@ -104,7 +104,7 @@ struct b2Simplex
 		// Copy data from cache.
 		m_count = cache->count;
 		b2SimplexVertex* vertices = &m_v1;
-		for (int32 i = 0; i < m_count; ++i)
+		for (auto i = decltype(m_count){0}; i < m_count; ++i)
 		{
 			b2SimplexVertex* v = vertices + i;
 			v->indexA = cache->indexA[i];
@@ -151,7 +151,7 @@ struct b2Simplex
 		cache->metric = GetMetric();
 		cache->count = uint16(m_count);
 		const auto vertices = &m_v1;
-		for (int32 i = 0; i < m_count; ++i)
+		for (auto i = decltype(m_count){0}; i < m_count; ++i)
 		{
 			cache->indexA[i] = uint8(vertices[i].indexA);
 			cache->indexB[i] = uint8(vertices[i].indexB);
@@ -386,7 +386,7 @@ void b2Simplex::Solve3()
 	// e12
 	if (d12_1 > 0.0f && d12_2 > 0.0f && d123_3 <= 0.0f)
 	{
-		float32 inv_d12 = 1.0f / (d12_1 + d12_2);
+		const auto inv_d12 = 1.0f / (d12_1 + d12_2);
 		m_v1.a = d12_1 * inv_d12;
 		m_v2.a = d12_2 * inv_d12;
 		m_count = 2;
@@ -396,7 +396,7 @@ void b2Simplex::Solve3()
 	// e13
 	if (d13_1 > 0.0f && d13_2 > 0.0f && d123_2 <= 0.0f)
 	{
-		float32 inv_d13 = 1.0f / (d13_1 + d13_2);
+		const auto inv_d13 = 1.0f / (d13_1 + d13_2);
 		m_v1.a = d13_1 * inv_d13;
 		m_v3.a = d13_2 * inv_d13;
 		m_count = 2;
@@ -425,7 +425,7 @@ void b2Simplex::Solve3()
 	// e23
 	if (d23_1 > 0.0f && d23_2 > 0.0f && d123_1 <= 0.0f)
 	{
-		float32 inv_d23 = 1.0f / (d23_1 + d23_2);
+		const auto inv_d23 = 1.0f / (d23_1 + d23_2);
 		m_v2.a = d23_1 * inv_d23;
 		m_v3.a = d23_2 * inv_d23;
 		m_count = 2;
@@ -447,35 +447,34 @@ void b2Distance(b2DistanceOutput* output,
 {
 	++b2_gjkCalls;
 
-	const b2DistanceProxy* proxyA = &input->proxyA;
-	const b2DistanceProxy* proxyB = &input->proxyB;
+	const auto proxyA = &input->proxyA;
+	const auto proxyB = &input->proxyB;
 
-	b2Transform transformA = input->transformA;
-	b2Transform transformB = input->transformB;
+	const auto transformA = input->transformA;
+	const auto transformB = input->transformB;
 
 	// Initialize the simplex.
 	b2Simplex simplex;
 	simplex.ReadCache(cache, proxyA, transformA, proxyB, transformB);
 
 	// Get simplex vertices as an array.
-	b2SimplexVertex* vertices = &simplex.m_v1;
+	const auto vertices = &simplex.m_v1;
 	const int32 k_maxIters = 20;
 
 	// These store the vertices of the last simplex so that we
 	// can check for duplicates and prevent cycling.
 	int32 saveA[3], saveB[3];
-	int32 saveCount = 0;
 
-	float32 distanceSqr1 = b2_maxFloat;
-	float32 distanceSqr2 = distanceSqr1;
+	auto distanceSqr1 = b2_maxFloat;
+	auto distanceSqr2 = distanceSqr1;
 
 	// Main iteration loop.
 	int32 iter = 0;
 	while (iter < k_maxIters)
 	{
 		// Copy simplex so we can identify duplicates.
-		saveCount = simplex.m_count;
-		for (int32 i = 0; i < saveCount; ++i)
+		const auto saveCount = simplex.m_count;
+		for (auto i = decltype(saveCount){0}; i < saveCount; ++i)
 		{
 			saveA[i] = vertices[i].indexA;
 			saveB[i] = vertices[i].indexB;
@@ -505,7 +504,7 @@ void b2Distance(b2DistanceOutput* output,
 		}
 
 		// Compute closest point.
-		b2Vec2 p = simplex.GetClosestPoint();
+		const auto p = simplex.GetClosestPoint();
 		distanceSqr2 = p.LengthSquared();
 
 		// Ensure progress
@@ -516,7 +515,7 @@ void b2Distance(b2DistanceOutput* output,
 		distanceSqr1 = distanceSqr2;
 
 		// Get search direction.
-		b2Vec2 d = simplex.GetSearchDirection();
+		const auto d = simplex.GetSearchDirection();
 
 		// Ensure the search direction is numerically fit.
 		if (d.LengthSquared() < b2_epsilon * b2_epsilon)
@@ -531,10 +530,9 @@ void b2Distance(b2DistanceOutput* output,
 		}
 
 		// Compute a tentative new simplex vertex using support points.
-		b2SimplexVertex* vertex = vertices + simplex.m_count;
+		auto vertex = vertices + simplex.m_count;
 		vertex->indexA = proxyA->GetSupport(b2MulT(transformA.q, -d));
 		vertex->wA = b2Mul(transformA, proxyA->GetVertex(vertex->indexA));
-		b2Vec2 wBLocal;
 		vertex->indexB = proxyB->GetSupport(b2MulT(transformB.q, d));
 		vertex->wB = b2Mul(transformB, proxyB->GetVertex(vertex->indexB));
 		vertex->w = vertex->wB - vertex->wA;
@@ -544,8 +542,8 @@ void b2Distance(b2DistanceOutput* output,
 		++b2_gjkIters;
 
 		// Check for duplicate support points. This is the main termination criteria.
-		bool duplicate = false;
-		for (int32 i = 0; i < saveCount; ++i)
+		auto duplicate = false;
+		for (auto i = decltype(saveCount){0}; i < saveCount; ++i)
 		{
 			if (vertex->indexA == saveA[i] && vertex->indexB == saveB[i])
 			{
@@ -585,7 +583,7 @@ void b2Distance(b2DistanceOutput* output,
 			// Shapes are still no overlapped.
 			// Move the witness points to the outer surface.
 			output->distance -= rA + rB;
-			b2Vec2 normal = output->pointB - output->pointA;
+			auto normal = output->pointB - output->pointA;
 			normal.Normalize();
 			output->pointA += rA * normal;
 			output->pointB -= rB * normal;
@@ -594,7 +592,7 @@ void b2Distance(b2DistanceOutput* output,
 		{
 			// Shapes are overlapped when radii are considered.
 			// Move the witness points to the middle.
-			b2Vec2 p = 0.5f * (output->pointA + output->pointB);
+			const auto p = 0.5f * (output->pointA + output->pointB);
 			output->pointA = p;
 			output->pointB = p;
 			output->distance = 0.0f;

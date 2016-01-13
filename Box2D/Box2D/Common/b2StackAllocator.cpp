@@ -19,13 +19,7 @@
 #include <Box2D/Common/b2StackAllocator.h>
 #include <Box2D/Common/b2Math.h>
 
-b2StackAllocator::b2StackAllocator()
-{
-	m_index = 0;
-	m_allocation = 0;
-	m_maxAllocation = 0;
-	m_entryCount = 0;
-}
+b2StackAllocator::b2StackAllocator() = default;
 
 b2StackAllocator::~b2StackAllocator()
 {
@@ -37,11 +31,11 @@ void* b2StackAllocator::Allocate(int32 size)
 {
 	b2Assert(m_entryCount < b2_maxStackEntries);
 
-	b2StackEntry* entry = m_entries + m_entryCount;
+	auto entry = m_entries + m_entryCount;
 	entry->size = size;
 	if (m_index + size > b2_stackSize)
 	{
-		entry->data = (char*)b2Alloc(size);
+		entry->data = static_cast<decltype(entry->data)>(b2Alloc(size));
 		entry->usedMalloc = true;
 	}
 	else

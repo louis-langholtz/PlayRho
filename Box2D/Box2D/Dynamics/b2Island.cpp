@@ -150,18 +150,16 @@ b2Island::b2Island(
 	int32 contactCapacity,
 	int32 jointCapacity,
 	b2StackAllocator* allocator,
-	b2ContactListener* listener)
+	b2ContactListener* listener):
+m_bodyCapacity(bodyCapacity),
+m_contactCapacity(contactCapacity),
+m_jointCapacity(jointCapacity),
+m_allocator(allocator),
+m_listener(listener)
 {
-	m_bodyCapacity = bodyCapacity;
-	m_contactCapacity = contactCapacity;
-	m_jointCapacity	 = jointCapacity;
-	m_allocator = allocator;
-	m_listener = listener;
-
 	m_bodies = (b2Body**)m_allocator->Allocate(bodyCapacity * sizeof(b2Body*));
 	m_contacts = (b2Contact**)m_allocator->Allocate(contactCapacity	 * sizeof(b2Contact*));
 	m_joints = (b2Joint**)m_allocator->Allocate(jointCapacity * sizeof(b2Joint*));
-
 	m_velocities = (b2Velocity*)m_allocator->Allocate(m_bodyCapacity * sizeof(b2Velocity));
 	m_positions = (b2Position*)m_allocator->Allocate(m_bodyCapacity * sizeof(b2Position));
 }
@@ -187,10 +185,10 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 	{
 		auto const b = m_bodies[i];
 
-		const b2Vec2 c = b->m_sweep.c;
-		const float32 a = b->m_sweep.a;
-		b2Vec2 v = b->m_linearVelocity;
-		float32 w = b->m_angularVelocity;
+		const auto c = b->m_sweep.c;
+		const auto a = b->m_sweep.a;
+		auto v = b->m_linearVelocity;
+		auto w = b->m_angularVelocity;
 
 		// Store positions for continuous collision.
 		b->m_sweep.c0 = b->m_sweep.c;

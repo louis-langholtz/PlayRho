@@ -34,13 +34,9 @@ void b2Fixture::Create(b2BlockAllocator* allocator, const b2FixtureDef* def)
 	m_userData = def->userData;
 	m_friction = def->friction;
 	m_restitution = def->restitution;
-
-	m_next = nullptr;
-
 	m_filter = def->filter;
-
 	m_isSensor = def->isSensor;
-
+	m_density = def->density;
 	m_shape = def->shape->Clone(allocator);
 
 	// Reserve proxy space
@@ -51,9 +47,6 @@ void b2Fixture::Create(b2BlockAllocator* allocator, const b2FixtureDef* def)
 		m_proxies[i].fixture = nullptr;
 		m_proxies[i].proxyId = b2BroadPhase::e_nullProxy;
 	}
-	m_proxyCount = 0;
-
-	m_density = def->density;
 }
 
 void b2Fixture::Destroy(b2BlockAllocator* allocator)

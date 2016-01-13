@@ -202,23 +202,16 @@ protected:
 
 	void Synchronize(b2BroadPhase* broadPhase, const b2Transform& xf1, const b2Transform& xf2);
 
-	float32 m_density = 0.0f;
-
-	b2Fixture* m_next = nullptr;
 	b2Body* const m_body;
-
+	float32 m_density = 0.0f;
+	b2Fixture* m_next = nullptr;
 	b2Shape* m_shape = nullptr;
-
 	float32 m_friction;
 	float32 m_restitution;
-
 	b2FixtureProxy* m_proxies = nullptr;
 	int32 m_proxyCount = 0;
-
 	b2Filter m_filter;
-
 	bool m_isSensor;
-
 	void* m_userData = nullptr;
 };
 

@@ -388,7 +388,7 @@ void b2World::Solve(const b2TimeStep& step)
 
 	// Build and simulate all awake islands.
 	const auto stackSize = m_bodyCount;
-	b2Body** stack = (b2Body**)m_stackAllocator.Allocate(stackSize * sizeof(b2Body*));
+	auto stack = static_cast<b2Body**>(m_stackAllocator.Allocate(stackSize * sizeof(b2Body*)));
 	for (auto seed = m_bodyList; seed; seed = seed->m_next)
 	{
 		if (seed->m_flags & b2Body::e_islandFlag)
@@ -417,7 +417,7 @@ void b2World::Solve(const b2TimeStep& step)
 		while (stackCount > 0)
 		{
 			// Grab the next body off the stack and add it to the island.
-			b2Body* b = stack[--stackCount];
+			auto b = stack[--stackCount];
 			b2Assert(b->IsActive() == true);
 			island.Add(b);
 
@@ -513,7 +513,7 @@ void b2World::Solve(const b2TimeStep& step)
 		for (int32 i = 0; i < island.m_bodyCount; ++i)
 		{
 			// Allow static bodies to participate in other islands.
-			b2Body* const b = island.m_bodies[i];
+			auto b = island.m_bodies[i];
 			if (b->GetType() == b2_staticBody)
 			{
 				b->m_flags &= ~b2Body::e_islandFlag;
@@ -576,7 +576,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 	{
 		// Find the first TOI.
 		b2Contact* minContact = nullptr;
-		float32 minAlpha = 1.0f;
+		auto minAlpha = 1.0f;
 
 		for (auto c = m_contactManager.m_contactList; c; c = c->m_next)
 		{
@@ -600,8 +600,8 @@ void b2World::SolveTOI(const b2TimeStep& step)
 			}
 			else
 			{
-				b2Fixture* fA = c->GetFixtureA();
-				b2Fixture* fB = c->GetFixtureB();
+				auto fA = c->GetFixtureA();
+				auto fB = c->GetFixtureB();
 
 				// Is there a sensor?
 				if (fA->IsSensor() || fB->IsSensor())
@@ -609,15 +609,15 @@ void b2World::SolveTOI(const b2TimeStep& step)
 					continue;
 				}
 
-				b2Body* bA = fA->GetBody();
-				b2Body* bB = fB->GetBody();
+				auto bA = fA->GetBody();
+				auto bB = fB->GetBody();
 
-				b2BodyType typeA = bA->m_type;
-				b2BodyType typeB = bB->m_type;
+				const auto typeA = bA->m_type;
+				const auto typeB = bB->m_type;
 				b2Assert(typeA == b2_dynamicBody || typeB == b2_dynamicBody);
 
-				bool activeA = bA->IsAwake() && typeA != b2_staticBody;
-				bool activeB = bB->IsAwake() && typeB != b2_staticBody;
+				const auto activeA = bA->IsAwake() && typeA != b2_staticBody;
+				const auto activeB = bB->IsAwake() && typeB != b2_staticBody;
 
 				// Is at least one body active (awake and dynamic or kinematic)?
 				if (activeA == false && activeB == false)
@@ -625,8 +625,8 @@ void b2World::SolveTOI(const b2TimeStep& step)
 					continue;
 				}
 
-				bool collideA = bA->IsBullet() || typeA != b2_dynamicBody;
-				bool collideB = bB->IsBullet() || typeB != b2_dynamicBody;
+				const auto collideA = bA->IsBullet() || typeA != b2_dynamicBody;
+				const auto collideB = bB->IsBullet() || typeB != b2_dynamicBody;
 
 				// Are these two non-bullet dynamic bodies?
 				if (collideA == false && collideB == false)
@@ -636,7 +636,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 
 				// Compute the TOI for this contact.
 				// Put the sweeps onto the same time interval.
-				float32 alpha0 = bA->m_sweep.alpha0;
+				auto alpha0 = bA->m_sweep.alpha0;
 
 				if (bA->m_sweep.alpha0 < bB->m_sweep.alpha0)
 				{
@@ -651,8 +651,8 @@ void b2World::SolveTOI(const b2TimeStep& step)
 
 				b2Assert(alpha0 < 1.0f);
 
-				int32 indexA = c->GetChildIndexA();
-				int32 indexB = c->GetChildIndexB();
+				const auto indexA = c->GetChildIndexA();
+				const auto indexB = c->GetChildIndexB();
 
 				// Compute the time of impact in interval [0, minTOI]
 				b2TOIInput input;
