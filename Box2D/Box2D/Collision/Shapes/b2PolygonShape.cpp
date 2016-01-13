@@ -22,9 +22,7 @@
 b2Shape* b2PolygonShape::Clone(b2BlockAllocator* allocator) const
 {
 	void* mem = allocator->Allocate(sizeof(b2PolygonShape));
-	b2PolygonShape* clone = new (mem) b2PolygonShape;
-	*clone = *this;
-	return clone;
+	return new (mem) b2PolygonShape(*this);
 }
 
 void b2PolygonShape::SetAsBox(float32 hx, float32 hy)

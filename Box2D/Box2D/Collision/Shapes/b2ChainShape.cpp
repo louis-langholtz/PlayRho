@@ -89,7 +89,7 @@ void b2ChainShape::SetNextVertex(const b2Vec2& nextVertex)
 b2Shape* b2ChainShape::Clone(b2BlockAllocator* allocator) const
 {
 	void* mem = allocator->Allocate(sizeof(b2ChainShape));
-	b2ChainShape* clone = new (mem) b2ChainShape;
+	auto clone = new (mem) b2ChainShape;
 	clone->CreateChain(m_vertices, m_count);
 	clone->m_prevVertex = m_prevVertex;
 	clone->m_nextVertex = m_nextVertex;
@@ -107,7 +107,6 @@ int32 b2ChainShape::GetChildCount() const
 void b2ChainShape::GetChildEdge(b2EdgeShape* edge, int32 index) const
 {
 	b2Assert(0 <= index && index < m_count - 1);
-	edge->m_type = b2Shape::e_edge;
 	edge->m_radius = m_radius;
 
 	edge->m_vertex1 = m_vertices[index + 0];

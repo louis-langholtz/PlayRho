@@ -30,6 +30,8 @@ public:
 	constexpr explicit b2CircleShape(float32 radius, const b2Vec2& position) noexcept:
 		b2Shape(e_circle, radius), m_p(position) {}
 
+	b2CircleShape(const b2CircleShape&) = default;
+
 	/// Implement b2Shape.
 	b2Shape* Clone(b2BlockAllocator* allocator) const override;
 

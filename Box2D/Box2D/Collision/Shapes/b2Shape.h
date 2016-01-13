@@ -52,11 +52,13 @@ public:
 		e_typeCount = 4
 	};
 
-	b2Shape() = default;
+	b2Shape() = delete;
 
 	constexpr explicit b2Shape(Type type, float32 radius) noexcept: m_type(type), m_radius(radius) {}
 
-	virtual ~b2Shape() {}
+	b2Shape(const b2Shape&) = default;
+
+	virtual ~b2Shape() = default;
 
 	/// Clone the concrete shape using the provided allocator.
 	virtual b2Shape* Clone(b2BlockAllocator* allocator) const = 0;
@@ -93,7 +95,7 @@ public:
 	/// @param density the density in kilograms per meter squared.
 	virtual void ComputeMass(b2MassData* massData, float32 density) const = 0;
 
-	Type m_type;
+	const Type m_type;
 	float32 m_radius;
 };
 

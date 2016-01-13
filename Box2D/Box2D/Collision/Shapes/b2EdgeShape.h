@@ -29,6 +29,8 @@ class b2EdgeShape : public b2Shape
 public:
 	b2EdgeShape(): b2Shape(e_edge, b2_polygonRadius) {}
 
+	b2EdgeShape(const b2EdgeShape&) = default;
+
 	/// Set this as an isolated edge.
 	void Set(const b2Vec2& v1, const b2Vec2& v2);
 

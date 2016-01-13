@@ -30,6 +30,7 @@ class b2PolygonShape : public b2Shape
 public:
 	b2PolygonShape(): b2Shape(e_polygon, b2_polygonRadius) {}
 
+	b2PolygonShape(const b2PolygonShape&) = default;
 	/// Implement b2Shape.
 	b2Shape* Clone(b2BlockAllocator* allocator) const override;
 

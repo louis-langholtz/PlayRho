@@ -34,8 +34,12 @@ class b2ChainShape : public b2Shape
 public:
 	b2ChainShape(): b2Shape(e_chain, b2_polygonRadius) {}
 
+	b2ChainShape(const b2ChainShape&) = delete;
+
 	/// The destructor frees the vertices using b2Free.
 	~b2ChainShape();
+
+	b2ChainShape& operator=(const b2ChainShape&) = delete;
 
 	/// Clear all data.
 	void Clear();
