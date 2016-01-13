@@ -103,14 +103,14 @@ struct b2Simplex
 		
 		// Copy data from cache.
 		m_count = cache->count;
-		b2SimplexVertex* vertices = &m_v1;
+		auto vertices = &m_v1;
 		for (auto i = decltype(m_count){0}; i < m_count; ++i)
 		{
-			b2SimplexVertex* v = vertices + i;
+			auto v = vertices + i;
 			v->indexA = cache->indexA[i];
 			v->indexB = cache->indexB[i];
-			b2Vec2 wALocal = proxyA->GetVertex(v->indexA);
-			b2Vec2 wBLocal = proxyB->GetVertex(v->indexB);
+			const auto wALocal = proxyA->GetVertex(v->indexA);
+			const auto wBLocal = proxyB->GetVertex(v->indexB);
 			v->wA = b2Mul(transformA, wALocal);
 			v->wB = b2Mul(transformB, wBLocal);
 			v->w = v->wB - v->wA;
@@ -133,7 +133,7 @@ struct b2Simplex
 		// If the cache is empty or invalid ...
 		if (m_count == 0)
 		{
-			b2SimplexVertex* v = vertices + 0;
+			auto v = vertices + 0;
 			v->indexA = 0;
 			v->indexB = 0;
 			const auto wALocal = proxyA->GetVertex(0);
@@ -459,7 +459,7 @@ void b2Distance(b2DistanceOutput* output,
 
 	// Get simplex vertices as an array.
 	const auto vertices = &simplex.m_v1;
-	const int32 k_maxIters = 20;
+	constexpr int32 k_maxIters = 20;
 
 	// These store the vertices of the last simplex so that we
 	// can check for duplicates and prevent cycling.
@@ -469,7 +469,7 @@ void b2Distance(b2DistanceOutput* output,
 	auto distanceSqr2 = distanceSqr1;
 
 	// Main iteration loop.
-	int32 iter = 0;
+	auto iter = decltype(k_maxIters){0};
 	while (iter < k_maxIters)
 	{
 		// Copy simplex so we can identify duplicates.
