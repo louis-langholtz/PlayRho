@@ -474,6 +474,11 @@ constexpr inline bool operator == (const b2Vec2& a, const b2Vec2& b) noexcept
 	return a.x == b.x && a.y == b.y;
 }
 
+inline bool operator != (const b2Vec2& a, const b2Vec2& b)
+{
+	return a.x != b.x || a.y != b.y;
+}
+
 inline float32 b2Distance(const b2Vec2& a, const b2Vec2& b)
 {
 	b2Vec2 c = a - b;
