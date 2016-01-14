@@ -48,7 +48,7 @@ inline float32 b2InvSqrt(float32 x)
 	} convert;
 
 	convert.x = x;
-	float32 xhalf = 0.5f * x;
+	const auto xhalf = 0.5f * x;
 	convert.i = 0x5f3759df - (convert.i >> 1);
 	x = convert.x;
 	x = x * (1.5f - xhalf * x * x);
@@ -62,7 +62,7 @@ inline float32 b2InvSqrt(float32 x)
 struct b2Vec2
 {
 	/// Default constructor does nothing (for performance).
-	b2Vec2() {}
+	b2Vec2() = default;
 
 	/// Construct using coordinates.
 	constexpr b2Vec2(float32 x_, float32 y_) noexcept : x(x_), y(y_) {}
@@ -122,12 +122,12 @@ struct b2Vec2
 	/// Convert this vector into a unit vector. Returns the length.
 	float32 Normalize()
 	{
-		float32 length = Length();
+		const auto length = Length();
 		if (length < b2_epsilon)
 		{
 			return 0.0f;
 		}
-		float32 invLength = 1.0f / length;
+		const auto invLength = 1.0f / length;
 		x *= invLength;
 		y *= invLength;
 
@@ -153,7 +153,7 @@ struct b2Vec2
 struct b2Vec3
 {
 	/// Default constructor does nothing (for performance).
-	b2Vec3() {}
+	b2Vec3() = default;
 
 	/// Construct using coordinates.
 	constexpr b2Vec3(float32 x_, float32 y_, float32 z_) noexcept : x(x_), y(y_), z(z_) {}
@@ -192,7 +192,7 @@ struct b2Vec3
 struct b2Mat22
 {
 	/// The default constructor does nothing (for performance).
-	b2Mat22() {}
+	b2Mat22() = default;
 
 	/// Construct this matrix using columns.
 	constexpr b2Mat22(const b2Vec2& c1, const b2Vec2& c2) noexcept: ex(c1), ey(c2) {}
@@ -223,8 +223,8 @@ struct b2Mat22
 
 	constexpr b2Mat22 GetInverse() const noexcept
 	{
-		const float32 a = ex.x, b = ey.x, c = ex.y, d = ey.y;
-		float32 det = a * d - b * c;
+		const auto a = ex.x, b = ey.x, c = ex.y, d = ey.y;
+		auto det = a * d - b * c;
 		if (det != 0.0f)
 		{
 			det = 1.0f / det;
@@ -236,8 +236,8 @@ struct b2Mat22
 	/// than computing the inverse in one-shot cases.
 	constexpr b2Vec2 Solve(const b2Vec2& b) const noexcept
 	{
-		float32 a11 = ex.x, a12 = ey.x, a21 = ex.y, a22 = ey.y;
-		float32 det = a11 * a22 - a12 * a21;
+		const auto a11 = ex.x, a12 = ey.x, a21 = ex.y, a22 = ey.y;
+		auto det = a11 * a22 - a12 * a21;
 		if (det != 0.0f)
 		{
 			det = 1.0f / det;
@@ -252,7 +252,7 @@ struct b2Mat22
 struct b2Mat33
 {
 	/// The default constructor does nothing (for performance).
-	b2Mat33() {}
+	b2Mat33() = default;
 
 	/// Construct this matrix using columns.
 	constexpr b2Mat33(const b2Vec3& c1, const b2Vec3& c2, const b2Vec3& c3):
@@ -270,7 +270,7 @@ struct b2Mat33
 	/// than computing the inverse in one-shot cases.
 	constexpr b2Vec3 Solve33(const b2Vec3& b) const
 	{
-		float32 det = b2Dot(ex, b2Cross(ey, ez));
+		auto det = b2Dot(ex, b2Cross(ey, ez));
 		if (det != 0.0f)
 		{
 			det = 1.0f / det;
@@ -281,7 +281,16 @@ struct b2Mat33
 	/// Solve A * x = b, where b is a column vector. This is more efficient
 	/// than computing the inverse in one-shot cases. Solve only the upper
 	/// 2-by-2 matrix equation.
-	b2Vec2 Solve22(const b2Vec2& b) const;
+	constexpr b2Vec2 Solve22(const b2Vec2& b) const
+	{
+		const auto a11 = ex.x, a12 = ey.x, a21 = ex.y, a22 = ey.y;
+		auto det = a11 * a22 - a12 * a21;
+		if (det != 0.0f)
+		{
+			det = 1.0f / det;
+		}
+		return b2Vec2(det * (a22 * b.x - a12 * b.y), det * (a11 * b.y - a21 * b.x));
+	}
 
 	/// Get the inverse of this matrix as a 2-by-2.
 	/// Returns the zero matrix if singular.
