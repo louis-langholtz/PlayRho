@@ -474,7 +474,7 @@ constexpr inline bool operator == (const b2Vec2& a, const b2Vec2& b) noexcept
 	return a.x == b.x && a.y == b.y;
 }
 
-inline bool operator != (const b2Vec2& a, const b2Vec2& b)
+constexpr inline bool operator != (const b2Vec2& a, const b2Vec2& b) noexcept
 {
 	return a.x != b.x || a.y != b.y;
 }
