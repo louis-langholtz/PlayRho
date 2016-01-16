@@ -479,7 +479,7 @@ void b2Body::SetActive(bool flag)
 
 void b2Body::SetFixedRotation(bool flag)
 {
-	bool status = (m_flags & e_fixedRotationFlag) == e_fixedRotationFlag;
+	const auto status = (m_flags & e_fixedRotationFlag) == e_fixedRotationFlag;
 	if (status == flag)
 	{
 		return;
