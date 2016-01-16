@@ -139,9 +139,9 @@ protected:
 	friend class b2GearJoint;
 	b2PrismaticJoint(const b2PrismaticJointDef* def);
 
-	void InitVelocityConstraints(const b2SolverData& data);
-	void SolveVelocityConstraints(const b2SolverData& data);
-	bool SolvePositionConstraints(const b2SolverData& data);
+	void InitVelocityConstraints(const b2SolverData& data) override;
+	void SolveVelocityConstraints(const b2SolverData& data) override;
+	bool SolvePositionConstraints(const b2SolverData& data) override;
 
 	// Solver shared
 	b2Vec2 m_localAnchorA;

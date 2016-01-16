@@ -37,16 +37,10 @@ b2MouseJoint::b2MouseJoint(const b2MouseJointDef* def)
 	b2Assert(b2IsValid(def->dampingRatio) && def->dampingRatio >= 0.0f);
 
 	m_targetA = def->target;
-	m_localAnchorB = b2MulT(m_bodyB->GetTransform(), m_targetA);
-
+	m_localAnchorB = b2MulT(m_bodyB->GetTransform(), def->target);
 	m_maxForce = def->maxForce;
-	m_impulse.SetZero();
-
 	m_frequencyHz = def->frequencyHz;
 	m_dampingRatio = def->dampingRatio;
-
-	m_beta = 0.0f;
-	m_gamma = 0.0f;
 }
 
 void b2MouseJoint::SetTarget(const b2Vec2& target)
@@ -100,28 +94,28 @@ void b2MouseJoint::InitVelocityConstraints(const b2SolverData& data)
 	m_invMassB = m_bodyB->m_invMass;
 	m_invIB = m_bodyB->m_invI;
 
-	b2Vec2 cB = data.positions[m_indexB].c;
-	float32 aB = data.positions[m_indexB].a;
-	b2Vec2 vB = data.velocities[m_indexB].v;
-	float32 wB = data.velocities[m_indexB].w;
+	const auto cB = data.positions[m_indexB].c;
+	const auto aB = data.positions[m_indexB].a;
+	auto vB = data.velocities[m_indexB].v;
+	auto wB = data.velocities[m_indexB].w;
 
-	b2Rot qB(aB);
+	const b2Rot qB(aB);
 
-	float32 mass = m_bodyB->GetMass();
+	const auto mass = m_bodyB->GetMass();
 
 	// Frequency
-	float32 omega = 2.0f * b2_pi * m_frequencyHz;
+	const auto omega = 2.0f * b2_pi * m_frequencyHz;
 
 	// Damping coefficient
-	float32 d = 2.0f * mass * m_dampingRatio * omega;
+	const auto d = 2.0f * mass * m_dampingRatio * omega;
 
 	// Spring stiffness
-	float32 k = mass * (omega * omega);
+	const auto k = mass * (omega * omega);
 
 	// magic formulas
 	// gamma has units of inverse mass.
 	// beta has units of inverse time.
-	float32 h = data.step.dt;
+	const auto h = data.step.dt;
 	b2Assert(d + h * k > b2_epsilon);
 	m_gamma = h * (d + h * k);
 	if (m_gamma != 0.0f)
@@ -167,16 +161,16 @@ void b2MouseJoint::InitVelocityConstraints(const b2SolverData& data)
 
 void b2MouseJoint::SolveVelocityConstraints(const b2SolverData& data)
 {
-	b2Vec2 vB = data.velocities[m_indexB].v;
-	float32 wB = data.velocities[m_indexB].w;
+	auto vB = data.velocities[m_indexB].v;
+	auto wB = data.velocities[m_indexB].w;
 
 	// Cdot = v + cross(w, r)
-	b2Vec2 Cdot = vB + b2Cross(wB, m_rB);
-	b2Vec2 impulse = b2Mul(m_mass, -(Cdot + m_C + m_gamma * m_impulse));
+	const auto Cdot = vB + b2Cross(wB, m_rB);
+	auto impulse = b2Mul(m_mass, -(Cdot + m_C + m_gamma * m_impulse));
 
-	b2Vec2 oldImpulse = m_impulse;
+	const auto oldImpulse = m_impulse;
 	m_impulse += impulse;
-	float32 maxImpulse = data.step.dt * m_maxForce;
+	const auto maxImpulse = data.step.dt * m_maxForce;
 	if (m_impulse.LengthSquared() > maxImpulse * maxImpulse)
 	{
 		m_impulse *= maxImpulse / m_impulse.Length();
@@ -220,3 +214,20 @@ void b2MouseJoint::ShiftOrigin(const b2Vec2& newOrigin)
 {
 	m_targetA -= newOrigin;
 }
+
+void b2MouseJoint::Dump()
+{
+	const auto indexA = m_bodyA->m_islandIndex;
+	const auto indexB = m_bodyB->m_islandIndex;
+	
+	b2Log("  b2MouseJoint jd;\n");
+	b2Log("  jd.bodyA = bodies[%d];\n", indexA);
+	b2Log("  jd.bodyB = bodies[%d];\n", indexB);
+	b2Log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
+	b2Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+	b2Log("  jd.frequencyHz = %.15lef;\n", m_frequencyHz);
+	b2Log("  jd.dampingRatio = %.15lef;\n", m_dampingRatio);
+	b2Log("  jd.maxForce = %.15lef;\n", m_maxForce);
+	b2Log("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);
+}
+

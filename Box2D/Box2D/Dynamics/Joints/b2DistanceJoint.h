@@ -72,23 +72,23 @@ public:
 	float32 GetReactionTorque(float32 inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
-	const b2Vec2& GetLocalAnchorA() const { return m_localAnchorA; }
+	const b2Vec2& GetLocalAnchorA() const noexcept { return m_localAnchorA; }
 
 	/// The local anchor point relative to bodyB's origin.
-	const b2Vec2& GetLocalAnchorB() const  { return m_localAnchorB; }
+	const b2Vec2& GetLocalAnchorB() const noexcept { return m_localAnchorB; }
 
 	/// Set/get the natural length.
 	/// Manipulating the length can lead to non-physical behavior when the frequency is zero.
 	void SetLength(float32 length);
-	float32 GetLength() const;
+	float32 GetLength() const noexcept;
 
 	/// Set/get frequency in Hz.
 	void SetFrequency(float32 hz);
-	float32 GetFrequency() const;
+	float32 GetFrequency() const noexcept;
 
 	/// Set/get damping ratio.
 	void SetDampingRatio(float32 ratio);
-	float32 GetDampingRatio() const;
+	float32 GetDampingRatio() const noexcept;
 
 	/// Dump joint to dmLog
 	void Dump() override;
@@ -98,9 +98,9 @@ protected:
 	friend class b2Joint;
 	b2DistanceJoint(const b2DistanceJointDef* data);
 
-	void InitVelocityConstraints(const b2SolverData& data);
-	void SolveVelocityConstraints(const b2SolverData& data);
-	bool SolvePositionConstraints(const b2SolverData& data);
+	void InitVelocityConstraints(const b2SolverData& data) override;
+	void SolveVelocityConstraints(const b2SolverData& data) override;
+	bool SolvePositionConstraints(const b2SolverData& data) override;
 
 	float32 m_frequencyHz;
 	float32 m_dampingRatio;
@@ -133,7 +133,7 @@ inline void b2DistanceJoint::SetLength(float32 length)
 	m_length = length;
 }
 
-inline float32 b2DistanceJoint::GetLength() const
+inline float32 b2DistanceJoint::GetLength() const noexcept
 {
 	return m_length;
 }
@@ -143,7 +143,7 @@ inline void b2DistanceJoint::SetFrequency(float32 hz)
 	m_frequencyHz = hz;
 }
 
-inline float32 b2DistanceJoint::GetFrequency() const
+inline float32 b2DistanceJoint::GetFrequency() const noexcept
 {
 	return m_frequencyHz;
 }
@@ -153,7 +153,7 @@ inline void b2DistanceJoint::SetDampingRatio(float32 ratio)
 	m_dampingRatio = ratio;
 }
 
-inline float32 b2DistanceJoint::GetDampingRatio() const
+inline float32 b2DistanceJoint::GetDampingRatio() const noexcept
 {
 	return m_dampingRatio;
 }

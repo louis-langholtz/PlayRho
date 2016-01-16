@@ -102,16 +102,16 @@ public:
 	void Dump() override;
 
 	/// Implement b2Joint::ShiftOrigin
-	void ShiftOrigin(const b2Vec2& newOrigin);
+	void ShiftOrigin(const b2Vec2& newOrigin) override;
 
 protected:
 
 	friend class b2Joint;
 	b2PulleyJoint(const b2PulleyJointDef* data);
 
-	void InitVelocityConstraints(const b2SolverData& data);
-	void SolveVelocityConstraints(const b2SolverData& data);
-	bool SolvePositionConstraints(const b2SolverData& data);
+	void InitVelocityConstraints(const b2SolverData& data) override;
+	void SolveVelocityConstraints(const b2SolverData& data) override;
+	bool SolvePositionConstraints(const b2SolverData& data) override;
 
 	b2Vec2 m_groundAnchorA;
 	b2Vec2 m_groundAnchorB;

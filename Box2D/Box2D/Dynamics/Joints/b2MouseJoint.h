@@ -83,30 +83,30 @@ public:
 	float32 GetDampingRatio() const;
 
 	/// The mouse joint does not support dumping.
-	void Dump() override { b2Log("Mouse joint dumping is not supported.\n"); }
+	void Dump() override;
 
 	/// Implement b2Joint::ShiftOrigin
-	void ShiftOrigin(const b2Vec2& newOrigin);
+	void ShiftOrigin(const b2Vec2& newOrigin) override;
 
 protected:
 	friend class b2Joint;
 
 	b2MouseJoint(const b2MouseJointDef* def);
 
-	void InitVelocityConstraints(const b2SolverData& data);
-	void SolveVelocityConstraints(const b2SolverData& data);
-	bool SolvePositionConstraints(const b2SolverData& data);
+	void InitVelocityConstraints(const b2SolverData& data) override;
+	void SolveVelocityConstraints(const b2SolverData& data) override;
+	bool SolvePositionConstraints(const b2SolverData& data) override;
 
 	b2Vec2 m_localAnchorB;
 	b2Vec2 m_targetA;
 	float32 m_frequencyHz;
 	float32 m_dampingRatio;
-	float32 m_beta;
+	float32 m_beta = 0.0f;
 	
 	// Solver shared
-	b2Vec2 m_impulse;
+	b2Vec2 m_impulse = b2Vec2_zero;
 	float32 m_maxForce;
-	float32 m_gamma;
+	float32 m_gamma = 0.0f;
 
 	// Solver temp
 	int32 m_indexA;

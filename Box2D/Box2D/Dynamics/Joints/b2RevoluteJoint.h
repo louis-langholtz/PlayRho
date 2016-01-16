@@ -82,13 +82,13 @@ public:
 	b2Vec2 GetAnchorB() const override;
 
 	/// The local anchor point relative to bodyA's origin.
-	const b2Vec2& GetLocalAnchorA() const { return m_localAnchorA; }
+	const b2Vec2& GetLocalAnchorA() const noexcept { return m_localAnchorA; }
 
 	/// The local anchor point relative to bodyB's origin.
-	const b2Vec2& GetLocalAnchorB() const  { return m_localAnchorB; }
+	const b2Vec2& GetLocalAnchorB() const noexcept { return m_localAnchorB; }
 
 	/// Get the reference angle.
-	float32 GetReferenceAngle() const { return m_referenceAngle; }
+	float32 GetReferenceAngle() const noexcept { return m_referenceAngle; }
 
 	/// Get the current joint angle in radians.
 	float32 GetJointAngle() const;
@@ -125,7 +125,7 @@ public:
 
 	/// Set the maximum motor torque, usually in N-m.
 	void SetMaxMotorTorque(float32 torque);
-	float32 GetMaxMotorTorque() const { return m_maxMotorTorque; }
+	float32 GetMaxMotorTorque() const noexcept { return m_maxMotorTorque; }
 
 	/// Get the reaction force given the inverse time step.
 	/// Unit is N.
@@ -149,9 +149,9 @@ protected:
 
 	b2RevoluteJoint(const b2RevoluteJointDef* def);
 
-	void InitVelocityConstraints(const b2SolverData& data);
-	void SolveVelocityConstraints(const b2SolverData& data);
-	bool SolvePositionConstraints(const b2SolverData& data);
+	void InitVelocityConstraints(const b2SolverData& data) override;
+	void SolveVelocityConstraints(const b2SolverData& data) override;
+	bool SolvePositionConstraints(const b2SolverData& data) override;
 
 	// Solver shared
 	b2Vec2 m_localAnchorA;

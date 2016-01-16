@@ -74,9 +74,9 @@ protected:
 	friend class b2Joint;
 	b2GearJoint(const b2GearJointDef* data);
 
-	void InitVelocityConstraints(const b2SolverData& data);
-	void SolveVelocityConstraints(const b2SolverData& data);
-	bool SolvePositionConstraints(const b2SolverData& data);
+	void InitVelocityConstraints(const b2SolverData& data) override;
+	void SolveVelocityConstraints(const b2SolverData& data) override;
+	bool SolvePositionConstraints(const b2SolverData& data) override;
 
 	b2Joint* m_joint1;
 	b2Joint* m_joint2;

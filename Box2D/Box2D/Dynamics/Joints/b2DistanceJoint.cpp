@@ -67,24 +67,24 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 	m_invIA = m_bodyA->m_invI;
 	m_invIB = m_bodyB->m_invI;
 
-	b2Vec2 cA = data.positions[m_indexA].c;
-	float32 aA = data.positions[m_indexA].a;
-	b2Vec2 vA = data.velocities[m_indexA].v;
-	float32 wA = data.velocities[m_indexA].w;
+	const auto cA = data.positions[m_indexA].c;
+	const auto aA = data.positions[m_indexA].a;
+	auto vA = data.velocities[m_indexA].v;
+	auto wA = data.velocities[m_indexA].w;
 
-	b2Vec2 cB = data.positions[m_indexB].c;
-	float32 aB = data.positions[m_indexB].a;
-	b2Vec2 vB = data.velocities[m_indexB].v;
-	float32 wB = data.velocities[m_indexB].w;
+	const auto cB = data.positions[m_indexB].c;
+	const auto aB = data.positions[m_indexB].a;
+	auto vB = data.velocities[m_indexB].v;
+	auto wB = data.velocities[m_indexB].w;
 
-	b2Rot qA(aA), qB(aB);
+	const b2Rot qA(aA), qB(aB);
 
 	m_rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
 	m_rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
 	m_u = cB + m_rB - cA - m_rA;
 
 	// Handle singularity.
-	float32 length = m_u.Length();
+	const auto length = m_u.Length();
 	if (length > b2_linearSlop)
 	{
 		m_u *= 1.0f / length;
@@ -94,28 +94,28 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 		m_u.Set(0.0f, 0.0f);
 	}
 
-	float32 crAu = b2Cross(m_rA, m_u);
-	float32 crBu = b2Cross(m_rB, m_u);
-	float32 invMass = m_invMassA + m_invIA * crAu * crAu + m_invMassB + m_invIB * crBu * crBu;
+	const auto crAu = b2Cross(m_rA, m_u);
+	const auto crBu = b2Cross(m_rB, m_u);
+	auto invMass = m_invMassA + m_invIA * crAu * crAu + m_invMassB + m_invIB * crBu * crBu;
 
 	// Compute the effective mass matrix.
 	m_mass = invMass != 0.0f ? 1.0f / invMass : 0.0f;
 
 	if (m_frequencyHz > 0.0f)
 	{
-		float32 C = length - m_length;
+		const auto C = length - m_length;
 
 		// Frequency
-		float32 omega = 2.0f * b2_pi * m_frequencyHz;
+		const auto omega = 2.0f * b2_pi * m_frequencyHz;
 
 		// Damping coefficient
-		float32 d = 2.0f * m_mass * m_dampingRatio * omega;
+		const auto d = 2.0f * m_mass * m_dampingRatio * omega;
 
 		// Spring stiffness
-		float32 k = m_mass * omega * omega;
+		const auto k = m_mass * omega * omega;
 
 		// magic formulas
-		float32 h = data.step.dt;
+		const auto h = data.step.dt;
 		m_gamma = h * (d + h * k);
 		m_gamma = m_gamma != 0.0f ? 1.0f / m_gamma : 0.0f;
 		m_bias = C * h * k * m_gamma;
@@ -134,7 +134,7 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 		// Scale the impulse to support a variable time step.
 		m_impulse *= data.step.dtRatio;
 
-		b2Vec2 P = m_impulse * m_u;
+		const auto P = m_impulse * m_u;
 		vA -= m_invMassA * P;
 		wA -= m_invIA * b2Cross(m_rA, P);
 		vB += m_invMassB * P;
@@ -229,8 +229,7 @@ b2Vec2 b2DistanceJoint::GetAnchorB() const
 
 b2Vec2 b2DistanceJoint::GetReactionForce(float32 inv_dt) const
 {
-	b2Vec2 F = (inv_dt * m_impulse) * m_u;
-	return F;
+	return (inv_dt * m_impulse) * m_u;
 }
 
 float32 b2DistanceJoint::GetReactionTorque(float32 inv_dt) const
@@ -241,8 +240,8 @@ float32 b2DistanceJoint::GetReactionTorque(float32 inv_dt) const
 
 void b2DistanceJoint::Dump()
 {
-	int32 indexA = m_bodyA->m_islandIndex;
-	int32 indexB = m_bodyB->m_islandIndex;
+	const auto indexA = m_bodyA->m_islandIndex;
+	const auto indexB = m_bodyB->m_islandIndex;
 
 	b2Log("  b2DistanceJointDef jd;\n");
 	b2Log("  jd.bodyA = bodies[%d];\n", indexA);
