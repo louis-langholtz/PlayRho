@@ -46,10 +46,10 @@ inline float32 b2MixRestitution(float32 restitution1, float32 restitution2)
 	return restitution1 > restitution2 ? restitution1 : restitution2;
 }
 
-typedef b2Contact* b2ContactCreateFcn(	b2Fixture* fixtureA, int32 indexA,
+using b2ContactCreateFcn = b2Contact* (	b2Fixture* fixtureA, int32 indexA,
 										b2Fixture* fixtureB, int32 indexB,
 										b2BlockAllocator* allocator);
-typedef void b2ContactDestroyFcn(b2Contact* contact, b2BlockAllocator* allocator);
+using b2ContactDestroyFcn = void (b2Contact* contact, b2BlockAllocator* allocator);
 
 struct b2ContactRegister
 {
