@@ -206,7 +206,7 @@ void b2Body::DestroyFixture(b2Fixture* fixture)
 	// Remove the fixture from this body's singly linked list.
 	b2Assert(m_fixtureCount > 0);
 	auto node = &m_fixtureList;
-	bool found = false;
+	auto found = false;
 	while (*node != nullptr)
 	{
 		if (*node == fixture)

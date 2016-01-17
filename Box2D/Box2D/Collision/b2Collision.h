@@ -165,7 +165,7 @@ struct b2AABB
 	inline bool IsValid() const
 	{
 		const auto d = upperBound - lowerBound;
-		bool valid = d.x >= 0.0f && d.y >= 0.0f;
+		auto valid = d.x >= 0.0f && d.y >= 0.0f;
 		valid = valid && lowerBound.IsValid() && upperBound.IsValid();
 		return valid;
 	}
