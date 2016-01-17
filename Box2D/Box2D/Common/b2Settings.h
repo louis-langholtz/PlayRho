@@ -19,21 +19,21 @@
 #ifndef B2_SETTINGS_H
 #define B2_SETTINGS_H
 
-#include <stddef.h>
-#include <assert.h>
-#include <float.h>
+#include <cstddef>
+#include <cassert>
+#include <cfloat>
 
 #define B2_NOT_USED(x) ((void)(x))
 #define b2Assert(A) assert(A)
 
-typedef signed char	int8;
-typedef signed short int16;
-typedef signed int int32;
-typedef unsigned char uint8;
-typedef unsigned short uint16;
-typedef unsigned int uint32;
-typedef float float32;
-typedef double float64;
+using int8 = signed char;
+using int16 = signed short;
+using int32 = signed int;
+using uint8 = unsigned char;
+using uint16 = unsigned short;
+using uint32 = unsigned int;
+using float32 = float;
+using float64 = double;
 
 constexpr float32 b2_maxFloat = FLT_MAX;
 constexpr float32 b2_epsilon = FLT_EPSILON;
