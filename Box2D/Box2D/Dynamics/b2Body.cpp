@@ -22,7 +22,7 @@
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include <Box2D/Dynamics/Joints/b2Joint.h>
 
-uint16 b2Body::GetFlags(const b2BodyDef& bd)
+uint16 b2Body::GetFlags(const b2BodyDef& bd) noexcept
 {
 	uint16 flags = 0;
 	if (bd.bullet)
