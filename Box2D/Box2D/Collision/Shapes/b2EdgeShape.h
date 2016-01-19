@@ -38,7 +38,7 @@ public:
 	b2Shape* Clone(b2BlockAllocator* allocator) const override;
 
 	/// @see b2Shape::GetChildCount
-	int32 GetChildCount() const;
+	int32 GetChildCount() const override;
 
 	/// @see b2Shape::TestPoint
 	bool TestPoint(const b2Transform& transform, const b2Vec2& p) const override;

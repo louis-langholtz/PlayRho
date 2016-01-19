@@ -35,7 +35,7 @@ public:
 	b2Shape* Clone(b2BlockAllocator* allocator) const override;
 
 	/// @see b2Shape::GetChildCount
-	int32 GetChildCount() const;
+	int32 GetChildCount() const override;
 
 	/// Create a convex hull from the given array of local points.
 	/// The count must be in the range [3, b2_maxPolygonVertices].
