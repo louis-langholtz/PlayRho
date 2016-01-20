@@ -466,7 +466,6 @@ void b2Distance(b2DistanceOutput* output,
 	int32 saveA[3], saveB[3];
 
 	auto distanceSqr1 = b2_maxFloat;
-	auto distanceSqr2 = distanceSqr1;
 
 	// Main iteration loop.
 	auto iter = decltype(k_maxIters){0};
@@ -505,7 +504,7 @@ void b2Distance(b2DistanceOutput* output,
 
 		// Compute closest point.
 		const auto p = simplex.GetClosestPoint();
-		distanceSqr2 = p.LengthSquared();
+		const auto distanceSqr2 = p.LengthSquared();
 
 		// Ensure progress
 		if (distanceSqr2 >= distanceSqr1)

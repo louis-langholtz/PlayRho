@@ -171,14 +171,14 @@ void b2ContactManager::FindNewContacts()
 
 void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 {
-	auto proxyA = static_cast<b2FixtureProxy*>(proxyUserDataA);
-	auto proxyB = static_cast<b2FixtureProxy*>(proxyUserDataB);
+	const auto proxyA = static_cast<b2FixtureProxy*>(proxyUserDataA);
+	const auto proxyB = static_cast<b2FixtureProxy*>(proxyUserDataB);
 
 	auto fixtureA = proxyA->fixture;
 	auto fixtureB = proxyB->fixture;
 
-	auto indexA = proxyA->childIndex;
-	auto indexB = proxyB->childIndex;
+	const auto indexA = proxyA->childIndex;
+	const auto indexB = proxyB->childIndex;
 
 	auto bodyA = fixtureA->GetBody();
 	auto bodyB = fixtureB->GetBody();
@@ -240,8 +240,6 @@ void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 	// Contact creation may swap fixtures.
 	fixtureA = c->GetFixtureA();
 	fixtureB = c->GetFixtureB();
-	indexA = c->GetChildIndexA();
-	indexB = c->GetChildIndexB();
 	bodyA = fixtureA->GetBody();
 	bodyB = fixtureB->GetBody();
 
