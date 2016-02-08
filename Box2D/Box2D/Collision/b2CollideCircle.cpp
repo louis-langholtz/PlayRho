@@ -67,9 +67,9 @@ void b2CollidePolygonAndCircle(
 	const b2Vec2* vertices = polygonA->m_vertices;
 	const b2Vec2* normals = polygonA->m_normals;
 
-	for (int32 i = 0; i < vertexCount; ++i)
+	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 	{
-		float32 s = b2Dot(normals[i], cLocal - vertices[i]);
+		const auto s = b2Dot(normals[i], cLocal - vertices[i]);
 
 		if (s > radius)
 		{

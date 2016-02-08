@@ -140,7 +140,7 @@ void b2Body::SetType(b2BodyType type)
 	for (auto f = m_fixtureList; f; f = f->m_next)
 	{
 		const auto proxyCount = f->m_proxyCount;
-		for (int32 i = 0; i < proxyCount; ++i)
+		for (auto i = decltype(proxyCount){0}; i < proxyCount; ++i)
 		{
 			broadPhase->TouchProxy(f->m_proxies[i].proxyId);
 		}

@@ -388,7 +388,7 @@ private:
 	friend class b2WheelJoint;
 
 	// m_flags
-	enum
+	enum : uint16
 	{
 		e_islandFlag		= 0x0001,
 		e_awakeFlag			= 0x0002,

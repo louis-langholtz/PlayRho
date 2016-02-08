@@ -153,9 +153,9 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 		}
 		else
 		{
-			const float32 inv_d = 1.0f / d(i);
-			float32 t1 = (lowerBound(i) - p(i)) * inv_d;
-			float32 t2 = (upperBound(i) - p(i)) * inv_d;
+			const auto inv_d = 1.0f / d(i);
+			auto t1 = (lowerBound(i) - p(i)) * inv_d;
+			auto t2 = (upperBound(i) - p(i)) * inv_d;
 
 			// Sign of the normal vector.
 			auto s = -1.0f;

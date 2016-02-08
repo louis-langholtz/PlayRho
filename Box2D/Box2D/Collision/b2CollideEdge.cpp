@@ -426,7 +426,7 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 	
 	// Get polygonB in frameA
 	m_polygonB.count = polygonB->m_count;
-	for (int32 i = 0; i < polygonB->m_count; ++i)
+	for (auto i = decltype(polygonB->m_count){0}; i < polygonB->m_count; ++i)
 	{
 		m_polygonB.vertices[i] = b2Mul(m_xf, polygonB->m_vertices[i]);
 		m_polygonB.normals[i] = b2Mul(m_xf.q, polygonB->m_normals[i]);
@@ -482,9 +482,9 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 		// Search for the polygon normal that is most anti-parallel to the edge normal.
 		int32 bestIndex = 0;
 		float32 bestValue = b2Dot(m_normal, m_polygonB.normals[0]);
-		for (int32 i = 1; i < m_polygonB.count; ++i)
+		for (auto i = decltype(m_polygonB.count){1}; i < m_polygonB.count; ++i)
 		{
-			float32 value = b2Dot(m_normal, m_polygonB.normals[i]);
+			const auto value = b2Dot(m_normal, m_polygonB.normals[i]);
 			if (value < bestValue)
 			{
 				bestValue = value;
@@ -586,11 +586,9 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 	}
 	
 	int32 pointCount = 0;
-	for (int32 i = 0; i < b2_maxManifoldPoints; ++i)
+	for (auto i = decltype(b2_maxManifoldPoints){0}; i < b2_maxManifoldPoints; ++i)
 	{
-		float32 separation;
-		
-		separation = b2Dot(rf.normal, clipPoints2[i].v - rf.v1);
+		const auto separation = b2Dot(rf.normal, clipPoints2[i].v - rf.v1);
 		
 		if (separation <= m_radius)
 		{
@@ -624,9 +622,9 @@ b2EPAxis b2EPCollider::ComputeEdgeSeparation()
 	axis.index = m_front ? 0 : 1;
 	axis.separation = FLT_MAX;
 	
-	for (int32 i = 0; i < m_polygonB.count; ++i)
+	for (auto i = decltype(m_polygonB.count){0}; i < m_polygonB.count; ++i)
 	{
-		float32 s = b2Dot(m_normal, m_polygonB.vertices[i] - m_v1);
+		const auto s = b2Dot(m_normal, m_polygonB.vertices[i] - m_v1);
 		if (s < axis.separation)
 		{
 			axis.separation = s;
@@ -643,15 +641,15 @@ b2EPAxis b2EPCollider::ComputePolygonSeparation()
 	axis.index = -1;
 	axis.separation = -FLT_MAX;
 
-	b2Vec2 perp(-m_normal.y, m_normal.x);
+	const auto perp = b2Vec2(-m_normal.y, m_normal.x);
 
-	for (int32 i = 0; i < m_polygonB.count; ++i)
+	for (auto i = decltype(m_polygonB.count){0}; i < m_polygonB.count; ++i)
 	{
-		b2Vec2 n = -m_polygonB.normals[i];
+		const auto n = -m_polygonB.normals[i];
 		
-		float32 s1 = b2Dot(n, m_polygonB.vertices[i] - m_v1);
-		float32 s2 = b2Dot(n, m_polygonB.vertices[i] - m_v2);
-		float32 s = b2Min(s1, s2);
+		const auto s1 = b2Dot(n, m_polygonB.vertices[i] - m_v1);
+		const auto s2 = b2Dot(n, m_polygonB.vertices[i] - m_v2);
+		const auto s = b2Min(s1, s2);
 		
 		if (s > m_radius)
 		{

@@ -248,11 +248,11 @@ void b2PolygonShape::Set(const b2Vec2* vertices, int32 count)
 
 bool b2PolygonShape::TestPoint(const b2Transform& xf, const b2Vec2& p) const
 {
-	b2Vec2 pLocal = b2MulT(xf.q, p - xf.p);
+	const auto pLocal = b2MulT(xf.q, p - xf.p);
 
-	for (int32 i = 0; i < m_count; ++i)
+	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
-		float32 dot = b2Dot(m_normals[i], pLocal - m_vertices[i]);
+		const auto dot = b2Dot(m_normals[i], pLocal - m_vertices[i]);
 		if (dot > 0.0f)
 		{
 			return false;
@@ -338,17 +338,17 @@ void b2PolygonShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, int32 chil
 {
 	B2_NOT_USED(childIndex);
 
-	b2Vec2 lower = b2Mul(xf, m_vertices[0]);
-	b2Vec2 upper = lower;
+	auto lower = b2Mul(xf, m_vertices[0]);
+	auto upper = lower;
 
-	for (int32 i = 1; i < m_count; ++i)
+	for (auto i = decltype(m_count){1}; i < m_count; ++i)
 	{
-		b2Vec2 v = b2Mul(xf, m_vertices[i]);
+		const auto v = b2Mul(xf, m_vertices[i]);
 		lower = b2Min(lower, v);
 		upper = b2Max(upper, v);
 	}
 
-	b2Vec2 r(m_radius, m_radius);
+	const auto r = b2Vec2(m_radius, m_radius);
 	aabb->lowerBound = lower - r;
 	aabb->upperBound = upper + r;
 }

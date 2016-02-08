@@ -335,7 +335,7 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 
 			float32 x = 0.0f;
 
-			for (int32 i = 0; i <= N; ++i)
+			for (auto i = decltype(N){0}; i <= N; ++i)
 			{
 				sweepA.GetTransform(&xfA, x);
 				sweepB.GetTransform(&xfB, x);

@@ -300,7 +300,7 @@ private:
 				continue;
 			}
 
-			bool overlap = b2TestOverlap(m_queryAABB, m_actors[i].aabb);
+			const auto overlap = b2TestOverlap(m_queryAABB, m_actors[i].aabb);
 			B2_NOT_USED(overlap);
 			b2Assert(overlap == m_actors[i].overlap);
 		}
@@ -326,7 +326,7 @@ private:
 			}
 
 			b2RayCastOutput output;
-			bool hit = m_actors[i].aabb.RayCast(&output, input);
+			const auto hit = m_actors[i].aabb.RayCast(&output, input);
 			if (hit)
 			{
 				bruteActor = m_actors + i;

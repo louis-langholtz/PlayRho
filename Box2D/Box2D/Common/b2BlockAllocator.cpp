@@ -64,7 +64,7 @@ b2BlockAllocator::b2BlockAllocator()
 	if (s_blockSizeLookupInitialized == false)
 	{
 		int32 j = 0;
-		for (int32 i = 1; i <= b2_maxBlockSize; ++i)
+		for (auto i = decltype(b2_maxBlockSize){1}; i <= b2_maxBlockSize; ++i)
 		{
 			b2Assert(j < b2_blockSizes);
 			if (i <= s_blockSizes[j])
@@ -84,7 +84,7 @@ b2BlockAllocator::b2BlockAllocator()
 
 b2BlockAllocator::~b2BlockAllocator()
 {
-	for (int32 i = 0; i < m_chunkCount; ++i)
+	for (auto i = decltype(m_chunkCount){0}; i < m_chunkCount; ++i)
 	{
 		b2Free(m_chunks[i].blocks);
 	}
@@ -134,7 +134,7 @@ void* b2BlockAllocator::Allocate(int32 size)
 		chunk->blockSize = blockSize;
 		const auto blockCount = b2_chunkSize / blockSize;
 		b2Assert(blockCount * blockSize <= b2_chunkSize);
-		for (int32 i = 0; i < blockCount - 1; ++i)
+		for (auto i = decltype(blockCount){0}; i < blockCount - 1; ++i)
 		{
 			auto block = (b2Block*)((int8*)chunk->blocks + blockSize * i);
 			const auto next = (b2Block*)((int8*)chunk->blocks + blockSize * (i + 1));
@@ -173,7 +173,7 @@ void b2BlockAllocator::Free(void* p, int32 size)
 	// Verify the memory address and size is valid.
 	const auto blockSize = s_blockSizes[index];
 	bool found = false;
-	for (int32 i = 0; i < m_chunkCount; ++i)
+	for (auto i = decltype(m_chunkCount){0}; i < m_chunkCount; ++i)
 	{
 		const auto chunk = m_chunks + i;
 		if (chunk->blockSize != blockSize)
@@ -202,7 +202,7 @@ void b2BlockAllocator::Free(void* p, int32 size)
 
 void b2BlockAllocator::Clear()
 {
-	for (int32 i = 0; i < m_chunkCount; ++i)
+	for (auto i = decltype(m_chunkCount){0}; i < m_chunkCount; ++i)
 	{
 		b2Free(m_chunks[i].blocks);
 	}

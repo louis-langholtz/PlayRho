@@ -42,7 +42,7 @@ void b2Fixture::Create(b2BlockAllocator* allocator, const b2FixtureDef* def)
 	// Reserve proxy space
 	const auto childCount = m_shape->GetChildCount();
 	m_proxies = static_cast<b2FixtureProxy*>(allocator->Allocate(childCount * sizeof(b2FixtureProxy)));
-	for (int32 i = 0; i < childCount; ++i)
+	for (auto i = decltype(childCount){0}; i < childCount; ++i)
 	{
 		m_proxies[i].fixture = nullptr;
 		m_proxies[i].proxyId = b2BroadPhase::e_nullProxy;
@@ -109,7 +109,7 @@ void b2Fixture::CreateProxies(b2BroadPhase* broadPhase, const b2Transform& xf)
 	// Create proxies in the broad-phase.
 	m_proxyCount = m_shape->GetChildCount();
 
-	for (int32 i = 0; i < m_proxyCount; ++i)
+	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
 	{
 		auto proxy = m_proxies + i;
 		m_shape->ComputeAABB(&proxy->aabb, xf, i);
@@ -122,7 +122,7 @@ void b2Fixture::CreateProxies(b2BroadPhase* broadPhase, const b2Transform& xf)
 void b2Fixture::DestroyProxies(b2BroadPhase* broadPhase)
 {
 	// Destroy proxies in the broad-phase.
-	for (int32 i = 0; i < m_proxyCount; ++i)
+	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
 	{
 		auto proxy = m_proxies + i;
 		broadPhase->DestroyProxy(proxy->proxyId);
@@ -139,7 +139,7 @@ void b2Fixture::Synchronize(b2BroadPhase* broadPhase, const b2Transform& transfo
 		return;
 	}
 
-	for (int32 i = 0; i < m_proxyCount; ++i)
+	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
 	{
 		auto proxy = m_proxies + i;
 
@@ -194,7 +194,7 @@ void b2Fixture::Refilter()
 
 	// Touch each proxy so that new pairs may be created
 	auto broadPhase = &world->m_contactManager.m_broadPhase;
-	for (int32 i = 0; i < m_proxyCount; ++i)
+	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
 	{
 		broadPhase->TouchProxy(m_proxies[i].proxyId);
 	}
@@ -250,7 +250,7 @@ void b2Fixture::Dump(int32 bodyIndex)
 			auto s = static_cast<b2PolygonShape*>(m_shape);
 			b2Log("    b2PolygonShape shape;\n");
 			b2Log("    b2Vec2 vs[%d];\n", b2_maxPolygonVertices);
-			for (int32 i = 0; i < s->m_count; ++i)
+			for (auto i = decltype(s->m_count){0}; i < s->m_count; ++i)
 			{
 				b2Log("    vs[%d].Set(%.15lef, %.15lef);\n", i, s->m_vertices[i].x, s->m_vertices[i].y);
 			}
@@ -263,7 +263,7 @@ void b2Fixture::Dump(int32 bodyIndex)
 			auto s = static_cast<b2ChainShape*>(m_shape);
 			b2Log("    b2ChainShape shape;\n");
 			b2Log("    b2Vec2 vs[%d];\n", s->m_count);
-			for (int32 i = 0; i < s->m_count; ++i)
+			for (auto i = decltype(s->m_count){0}; i < s->m_count; ++i)
 			{
 				b2Log("    vs[%d].Set(%.15lef, %.15lef);\n", i, s->m_vertices[i].x, s->m_vertices[i].y);
 			}

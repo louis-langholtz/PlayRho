@@ -25,7 +25,7 @@ b2DynamicTree::b2DynamicTree()
 	memset(m_nodes, 0, m_nodeCapacity * sizeof(b2TreeNode));
 
 	// Build a linked list for the free list.
-	for (int32 i = 0; i < m_nodeCapacity - 1; ++i)
+	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity - 1; ++i)
 	{
 		m_nodes[i].next = i + 1;
 		m_nodes[i].height = -1;
@@ -57,7 +57,7 @@ int32 b2DynamicTree::AllocateNode()
 
 		// Build a linked list for the free list. The parent
 		// pointer becomes the "next" pointer.
-		for (int32 i = m_nodeCount; i < m_nodeCapacity - 1; ++i)
+		for (auto i = m_nodeCount; i < m_nodeCapacity - 1; ++i)
 		{
 			m_nodes[i].next = i + 1;
 			m_nodes[i].height = -1;
@@ -530,7 +530,7 @@ float32 b2DynamicTree::GetAreaRatio() const
 	const auto rootArea = root->aabb.GetPerimeter();
 
 	auto totalArea = 0.0f;
-	for (int32 i = 0; i < m_nodeCapacity; ++i)
+	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
 	{
 		const auto node = m_nodes + i;
 		if (node->height < 0)
@@ -661,7 +661,7 @@ void b2DynamicTree::Validate() const
 int32 b2DynamicTree::GetMaxBalance() const
 {
 	int32 maxBalance = 0;
-	for (int32 i = 0; i < m_nodeCapacity; ++i)
+	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
 	{
 		const auto node = m_nodes + i;
 		if (node->height <= 1)
@@ -686,7 +686,7 @@ void b2DynamicTree::RebuildBottomUp()
 	int32 count = 0;
 
 	// Build array of leaves. Free the rest.
-	for (int32 i = 0; i < m_nodeCapacity; ++i)
+	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
 	{
 		if (m_nodes[i].height < 0)
 		{
@@ -710,11 +710,11 @@ void b2DynamicTree::RebuildBottomUp()
 	{
 		auto minCost = b2_maxFloat;
 		int32 iMin = -1, jMin = -1;
-		for (int32 i = 0; i < count; ++i)
+		for (auto i = decltype(count){0}; i < count; ++i)
 		{
 			auto aabbi = m_nodes[nodes[i]].aabb;
 
-			for (int32 j = i + 1; j < count; ++j)
+			for (auto j = i + 1; j < count; ++j)
 			{
 				const auto aabbj = m_nodes[nodes[j]].aabb;
 				b2AABB b;
@@ -759,7 +759,7 @@ void b2DynamicTree::RebuildBottomUp()
 void b2DynamicTree::ShiftOrigin(const b2Vec2& newOrigin)
 {
 	// Build array of leaves. Free the rest.
-	for (int32 i = 0; i < m_nodeCapacity; ++i)
+	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
 	{
 		m_nodes[i].aabb.lowerBound -= newOrigin;
 		m_nodes[i].aabb.upperBound -= newOrigin;

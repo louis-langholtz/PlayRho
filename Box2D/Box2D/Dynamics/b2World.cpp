@@ -765,8 +765,8 @@ void b2World::SolveTOI(const b2TimeStep& step)
 
 					// Only add static, kinematic, or bullet bodies.
 					auto other = ce->other;
-					if (other->m_type == b2_dynamicBody &&
-						body->IsBullet() == false && other->IsBullet() == false)
+					if ((other->m_type == b2_dynamicBody) &&
+						(!body->IsBullet()) && (!other->IsBullet()))
 					{
 						continue;
 					}
@@ -780,7 +780,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 					}
 
 					// Tentatively advance the body to the TOI.
-					b2Sweep backup = other->m_sweep;
+					const auto backup = other->m_sweep;
 					if ((other->m_flags & b2Body::e_islandFlag) == 0)
 					{
 						other->Advance(minAlpha);

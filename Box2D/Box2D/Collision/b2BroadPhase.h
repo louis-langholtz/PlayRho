@@ -188,7 +188,7 @@ void b2BroadPhase::UpdatePairs(T* callback)
 	m_pairCount = 0;
 
 	// Perform tree queries for all moving proxies.
-	for (int32 i = 0; i < m_moveCount; ++i)
+	for (auto i = decltype(m_moveCount){0}; i < m_moveCount; ++i)
 	{
 		m_queryProxyId = m_moveBuffer[i];
 		if (m_queryProxyId == e_nullProxy)

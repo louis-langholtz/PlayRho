@@ -24,26 +24,26 @@ static float32 b2FindMaxSeparation(int32* edgeIndex,
 								 const b2PolygonShape* poly1, const b2Transform& xf1,
 								 const b2PolygonShape* poly2, const b2Transform& xf2)
 {
-	int32 count1 = poly1->m_count;
-	int32 count2 = poly2->m_count;
+	const auto count1 = poly1->m_count;
+	const auto count2 = poly2->m_count;
 	const b2Vec2* n1s = poly1->m_normals;
 	const b2Vec2* v1s = poly1->m_vertices;
 	const b2Vec2* v2s = poly2->m_vertices;
 	b2Transform xf = b2MulT(xf2, xf1);
 
 	int32 bestIndex = 0;
-	float32 maxSeparation = -b2_maxFloat;
-	for (int32 i = 0; i < count1; ++i)
+	auto maxSeparation = -b2_maxFloat;
+	for (auto i = decltype(count1){0}; i < count1; ++i)
 	{
 		// Get poly1 normal in frame2.
-		b2Vec2 n = b2Mul(xf.q, n1s[i]);
-		b2Vec2 v1 = b2Mul(xf, v1s[i]);
+		const auto n = b2Mul(xf.q, n1s[i]);
+		const auto v1 = b2Mul(xf, v1s[i]);
 
 		// Find deepest point for normal i.
-		float32 si = b2_maxFloat;
-		for (int32 j = 0; j < count2; ++j)
+		auto si = b2_maxFloat;
+		for (auto j = decltype(count2){0}; j < count2; ++j)
 		{
-			float32 sij = b2Dot(n, v2s[j] - v1);
+			const auto sij = b2Dot(n, v2s[j] - v1);
 			if (sij < si)
 			{
 				si = sij;
@@ -67,21 +67,21 @@ static void b2FindIncidentEdge(b2ClipVertex c[2],
 {
 	const b2Vec2* normals1 = poly1->m_normals;
 
-	int32 count2 = poly2->m_count;
+	const auto count2 = poly2->m_count;
 	const b2Vec2* vertices2 = poly2->m_vertices;
 	const b2Vec2* normals2 = poly2->m_normals;
 
 	b2Assert(0 <= edge1 && edge1 < poly1->m_count);
 
 	// Get the normal of the reference edge in poly2's frame.
-	b2Vec2 normal1 = b2MulT(xf2.q, b2Mul(xf1.q, normals1[edge1]));
+	const auto normal1 = b2MulT(xf2.q, b2Mul(xf1.q, normals1[edge1]));
 
 	// Find the incident edge on poly2.
 	int32 index = 0;
-	float32 minDot = b2_maxFloat;
-	for (int32 i = 0; i < count2; ++i)
+	auto minDot = b2_maxFloat;
+	for (auto i = decltype(count2){0}; i < count2; ++i)
 	{
-		float32 dot = b2Dot(normal1, normals2[i]);
+		const auto dot = b2Dot(normal1, normals2[i]);
 		if (dot < minDot)
 		{
 			minDot = dot;
@@ -90,8 +90,8 @@ static void b2FindIncidentEdge(b2ClipVertex c[2],
 	}
 
 	// Build the clip vertices for the incident edge.
-	int32 i1 = index;
-	int32 i2 = i1 + 1 < count2 ? i1 + 1 : 0;
+	const auto i1 = index;
+	const auto i2 = i1 + 1 < count2 ? i1 + 1 : 0;
 
 	c[0].v = b2Mul(xf2, vertices2[i1]);
 	c[0].id.cf.indexA = (uint8)edge1;
@@ -213,7 +213,7 @@ void b2CollidePolygons(b2Manifold* manifold,
 	manifold->localPoint = planePoint;
 
 	int32 pointCount = 0;
-	for (int32 i = 0; i < b2_maxManifoldPoints; ++i)
+	for (auto i = decltype(b2_maxManifoldPoints){0}; i < b2_maxManifoldPoints; ++i)
 	{
 		float32 separation = b2Dot(normal, clipPoints2[i].v) - frontOffset;
 

@@ -160,28 +160,28 @@ b2Contact::b2Contact(b2Fixture* fA, int32 indexA, b2Fixture* fB, int32 indexB)
 // Note: do not assume the fixture AABBs are overlapping or are valid.
 void b2Contact::Update(b2ContactListener* listener)
 {
-	b2Manifold oldManifold = m_manifold;
+	const auto oldManifold = m_manifold;
 
 	// Re-enable this contact.
 	m_flags |= e_enabledFlag;
 
-	bool touching = false;
-	bool wasTouching = (m_flags & e_touchingFlag) == e_touchingFlag;
+	auto touching = false;
+	auto wasTouching = (m_flags & e_touchingFlag) == e_touchingFlag;
 
-	bool sensorA = m_fixtureA->IsSensor();
-	bool sensorB = m_fixtureB->IsSensor();
-	bool sensor = sensorA || sensorB;
+	const auto sensorA = m_fixtureA->IsSensor();
+	const auto sensorB = m_fixtureB->IsSensor();
+	const auto sensor = sensorA || sensorB;
 
-	b2Body* bodyA = m_fixtureA->GetBody();
-	b2Body* bodyB = m_fixtureB->GetBody();
+	auto bodyA = m_fixtureA->GetBody();
+	auto bodyB = m_fixtureB->GetBody();
 	const b2Transform& xfA = bodyA->GetTransform();
 	const b2Transform& xfB = bodyB->GetTransform();
 
 	// Is this contact a sensor?
 	if (sensor)
 	{
-		const b2Shape* shapeA = m_fixtureA->GetShape();
-		const b2Shape* shapeB = m_fixtureB->GetShape();
+		const auto shapeA = m_fixtureA->GetShape();
+		const auto shapeB = m_fixtureB->GetShape();
 		touching = b2TestOverlap(shapeA, m_indexA, shapeB, m_indexB, xfA, xfB);
 
 		// Sensors don't generate manifolds.
@@ -194,16 +194,16 @@ void b2Contact::Update(b2ContactListener* listener)
 
 		// Match old contact ids to new contact ids and copy the
 		// stored impulses to warm start the solver.
-		for (int32 i = 0; i < m_manifold.pointCount; ++i)
+		for (auto i = decltype(m_manifold.pointCount){0}; i < m_manifold.pointCount; ++i)
 		{
-			b2ManifoldPoint* mp2 = m_manifold.points + i;
+			auto mp2 = m_manifold.points + i;
 			mp2->normalImpulse = 0.0f;
 			mp2->tangentImpulse = 0.0f;
-			b2ContactID id2 = mp2->id;
+			const auto id2 = mp2->id;
 
-			for (int32 j = 0; j < oldManifold.pointCount; ++j)
+			for (auto j = decltype(oldManifold.pointCount){0}; j < oldManifold.pointCount; ++j)
 			{
-				b2ManifoldPoint* mp1 = oldManifold.points + j;
+				const auto mp1 = oldManifold.points + j;
 
 				if (mp1->id.key == id2.key)
 				{
