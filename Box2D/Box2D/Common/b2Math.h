@@ -481,7 +481,7 @@ constexpr inline bool operator != (const b2Vec2& a, const b2Vec2& b) noexcept
 
 inline float32 b2Distance(const b2Vec2& a, const b2Vec2& b)
 {
-	b2Vec2 c = a - b;
+	const auto c = a - b;
 	return c.Length();
 }
 

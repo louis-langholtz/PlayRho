@@ -53,7 +53,7 @@ void b2WorldManifold::Initialize(const b2Manifold* manifold,
 			normal = b2Mul(xfA.q, manifold->localNormal);
 			const auto planePoint = b2Mul(xfA, manifold->localPoint);
 			
-			for (int32 i = 0; i < manifold->pointCount; ++i)
+			for (auto i = decltype(manifold->pointCount){0}; i < manifold->pointCount; ++i)
 			{
 				const auto clipPoint = b2Mul(xfB, manifold->points[i].localPoint);
 				const auto cA = clipPoint + (radiusA - b2Dot(clipPoint - planePoint, normal)) * normal;
@@ -69,7 +69,7 @@ void b2WorldManifold::Initialize(const b2Manifold* manifold,
 			normal = b2Mul(xfB.q, manifold->localNormal);
 			const auto planePoint = b2Mul(xfB, manifold->localPoint);
 
-			for (int32 i = 0; i < manifold->pointCount; ++i)
+			for (auto i = decltype(manifold->pointCount){0}; i < manifold->pointCount; ++i)
 			{
 				const auto clipPoint = b2Mul(xfA, manifold->points[i].localPoint);
 				const auto cB = clipPoint + (radiusB - b2Dot(clipPoint - planePoint, normal)) * normal;
@@ -88,20 +88,20 @@ void b2WorldManifold::Initialize(const b2Manifold* manifold,
 void b2GetPointStates(b2PointState state1[b2_maxManifoldPoints], b2PointState state2[b2_maxManifoldPoints],
 					  const b2Manifold* manifold1, const b2Manifold* manifold2)
 {
-	for (int32 i = 0; i < b2_maxManifoldPoints; ++i)
+	for (auto i = decltype(b2_maxManifoldPoints){0}; i < b2_maxManifoldPoints; ++i)
 	{
 		state1[i] = b2_nullState;
 		state2[i] = b2_nullState;
 	}
 
 	// Detect persists and removes.
-	for (int32 i = 0; i < manifold1->pointCount; ++i)
+	for (auto i = decltype(manifold1->pointCount){0}; i < manifold1->pointCount; ++i)
 	{
 		const auto id = manifold1->points[i].id;
 
 		state1[i] = b2_removeState;
 
-		for (int32 j = 0; j < manifold2->pointCount; ++j)
+		for (auto j = decltype(manifold2->pointCount){0}; j < manifold2->pointCount; ++j)
 		{
 			if (manifold2->points[j].id.key == id.key)
 			{
@@ -112,13 +112,13 @@ void b2GetPointStates(b2PointState state1[b2_maxManifoldPoints], b2PointState st
 	}
 
 	// Detect persists and adds.
-	for (int32 i = 0; i < manifold2->pointCount; ++i)
+	for (auto i = decltype(manifold2->pointCount){0}; i < manifold2->pointCount; ++i)
 	{
 		const auto id = manifold2->points[i].id;
 
 		state2[i] = b2_addState;
 
-		for (int32 j = 0; j < manifold1->pointCount; ++j)
+		for (auto j = decltype(manifold1->pointCount){0}; j < manifold1->pointCount; ++j)
 		{
 			if (manifold1->points[j].id.key == id.key)
 			{
@@ -141,7 +141,7 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 
 	b2Vec2 normal;
 
-	for (int32 i = 0; i < 2; ++i)
+	for (auto i = 0; i < 2; ++i)
 	{
 		if (absD(i) < b2_epsilon)
 		{

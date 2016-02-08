@@ -411,7 +411,7 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, int32 toiIndexA, int32 toiInd
 
 #if 0
 	// Is the new position really safe?
-	for (int32 i = 0; i < m_contactCount; ++i)
+	for (auto i = decltype(m_contactCount){0}; i < m_contactCount; ++i)
 	{
 		b2Contact* c = m_contacts[i];
 		b2Fixture* fA = c->GetFixtureA();
