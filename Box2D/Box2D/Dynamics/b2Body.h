@@ -819,7 +819,7 @@ inline void b2Body::ApplyAngularImpulse(float32 impulse, bool wake)
 
 inline void b2Body::SynchronizeTransform()
 {
-	m_xf.q.Set(m_sweep.a);
+	m_xf.q = b2Rot(m_sweep.a);
 	m_xf.p = m_sweep.c - b2Mul(m_xf.q, m_sweep.localCenter);
 }
 
@@ -829,7 +829,7 @@ inline void b2Body::Advance(float32 alpha)
 	m_sweep.Advance(alpha);
 	m_sweep.c = m_sweep.c0;
 	m_sweep.a = m_sweep.a0;
-	m_xf.q.Set(m_sweep.a);
+	m_xf.q = b2Rot(m_sweep.a);
 	m_xf.p = m_sweep.c - b2Mul(m_xf.q, m_sweep.localCenter);
 }
 

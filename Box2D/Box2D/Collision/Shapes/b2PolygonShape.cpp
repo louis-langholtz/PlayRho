@@ -54,7 +54,7 @@ void b2PolygonShape::SetAsBox(float32 hx, float32 hy, const b2Vec2& center, floa
 
 	b2Transform xf;
 	xf.p = center;
-	xf.q.Set(angle);
+	xf.q = b2Rot(angle);
 
 	// Transform vertices and normals.
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)

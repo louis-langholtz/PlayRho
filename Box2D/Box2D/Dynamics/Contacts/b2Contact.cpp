@@ -68,19 +68,19 @@ void b2Contact::AddType(b2ContactCreateFcn* createFcn, b2ContactDestroyFcn* dest
 
 b2Contact* b2Contact::Create(b2Fixture* fixtureA, int32 indexA, b2Fixture* fixtureB, int32 indexB, b2BlockAllocator* allocator)
 {
-	if (s_initialized == false)
+	if (!s_initialized)
 	{
 		InitializeRegisters();
 		s_initialized = true;
 	}
 
-	b2Shape::Type type1 = fixtureA->GetType();
-	b2Shape::Type type2 = fixtureB->GetType();
+	const auto type1 = fixtureA->GetType();
+	const auto type2 = fixtureB->GetType();
 
 	b2Assert(0 <= type1 && type1 < b2Shape::e_typeCount);
 	b2Assert(0 <= type2 && type2 < b2Shape::e_typeCount);
 	
-	b2ContactCreateFcn* createFcn = s_registers[type1][type2].createFcn;
+	auto createFcn = s_registers[type1][type2].createFcn;
 	if (createFcn)
 	{
 		if (s_registers[type1][type2].primary)
@@ -102,58 +102,32 @@ void b2Contact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
 {
 	b2Assert(s_initialized == true);
 
-	b2Fixture* fixtureA = contact->m_fixtureA;
-	b2Fixture* fixtureB = contact->m_fixtureB;
+	auto fixtureA = contact->m_fixtureA;
+	auto fixtureB = contact->m_fixtureB;
 
 	if (contact->m_manifold.pointCount > 0 &&
-		fixtureA->IsSensor() == false &&
-		fixtureB->IsSensor() == false)
+		!fixtureA->IsSensor() && !fixtureB->IsSensor())
 	{
 		fixtureA->GetBody()->SetAwake(true);
 		fixtureB->GetBody()->SetAwake(true);
 	}
 
-	b2Shape::Type typeA = fixtureA->GetType();
-	b2Shape::Type typeB = fixtureB->GetType();
+	const auto typeA = fixtureA->GetType();
+	const auto typeB = fixtureB->GetType();
 
 	b2Assert(0 <= typeA && typeB < b2Shape::e_typeCount);
 	b2Assert(0 <= typeA && typeB < b2Shape::e_typeCount);
 
-	b2ContactDestroyFcn* destroyFcn = s_registers[typeA][typeB].destroyFcn;
+	auto destroyFcn = s_registers[typeA][typeB].destroyFcn;
 	destroyFcn(contact, allocator);
 }
 
-b2Contact::b2Contact(b2Fixture* fA, int32 indexA, b2Fixture* fB, int32 indexB)
+b2Contact::b2Contact(b2Fixture* fA, int32 indexA, b2Fixture* fB, int32 indexB) :
+	m_fixtureA(fA), m_fixtureB(fB), m_indexA(indexA), m_indexB(indexB),
+	m_friction(b2MixFriction(m_fixtureA->m_friction, m_fixtureB->m_friction)),
+	m_restitution(b2MixRestitution(m_fixtureA->m_restitution, m_fixtureB->m_restitution))
 {
-	m_flags = e_enabledFlag;
-
-	m_fixtureA = fA;
-	m_fixtureB = fB;
-
-	m_indexA = indexA;
-	m_indexB = indexB;
-
 	m_manifold.pointCount = 0;
-
-	m_prev = nullptr;
-	m_next = nullptr;
-
-	m_nodeA.contact = nullptr;
-	m_nodeA.prev = nullptr;
-	m_nodeA.next = nullptr;
-	m_nodeA.other = nullptr;
-
-	m_nodeB.contact = nullptr;
-	m_nodeB.prev = nullptr;
-	m_nodeB.next = nullptr;
-	m_nodeB.other = nullptr;
-
-	m_toiCount = 0;
-
-	m_friction = b2MixFriction(m_fixtureA->m_friction, m_fixtureB->m_friction);
-	m_restitution = b2MixRestitution(m_fixtureA->m_restitution, m_fixtureB->m_restitution);
-
-	m_tangentSpeed = 0.0f;
 }
 
 // Update the contact manifold and touching status.
@@ -230,17 +204,17 @@ void b2Contact::Update(b2ContactListener* listener)
 		m_flags &= ~e_touchingFlag;
 	}
 
-	if (wasTouching == false && touching == true && listener)
+	if (!wasTouching && touching && listener)
 	{
 		listener->BeginContact(this);
 	}
 
-	if (wasTouching == true && touching == false && listener)
+	if (wasTouching && !touching && listener)
 	{
 		listener->EndContact(this);
 	}
 
-	if (sensor == false && touching && listener)
+	if (!sensor && touching && listener)
 	{
 		listener->PreSolve(this, &oldManifold);
 	}

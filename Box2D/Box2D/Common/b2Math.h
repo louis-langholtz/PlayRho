@@ -307,6 +307,7 @@ struct b2Mat33
 struct b2Rot
 {
 	b2Rot() = default;
+	b2Rot(const b2Rot& copy) = default;
 
 	/// Initialize from an angle in radians
 	explicit b2Rot(float32 angle)
@@ -317,14 +318,6 @@ struct b2Rot
 	}
 	
 	constexpr explicit b2Rot(float32 sine, float32 cosine) noexcept: s(sine), c(cosine) {}
-
-	/// Set using an angle in radians.
-	void Set(float32 angle)
-	{
-		/// TODO_ERIN optimize
-		s = sinf(angle);
-		c = cosf(angle);
-	}
 
 	/// Set to the identity rotation
 	constexpr void SetIdentity() noexcept
@@ -376,7 +369,7 @@ struct b2Transform
 	void Set(const b2Vec2& position, float32 angle)
 	{
 		p = position;
-		q.Set(angle);
+		q = b2Rot(angle);
 	}
 
 	b2Vec2 p;
@@ -695,7 +688,7 @@ inline void b2Sweep::GetTransform(b2Transform* xf, float32 beta) const
 {
 	xf->p = (1.0f - beta) * c0 + beta * c;
 	const auto angle = (1.0f - beta) * a0 + beta * a;
-	xf->q.Set(angle);
+	xf->q = b2Rot(angle);
 
 	// Shift to origin
 	xf->p -= b2Mul(xf->q, localCenter);

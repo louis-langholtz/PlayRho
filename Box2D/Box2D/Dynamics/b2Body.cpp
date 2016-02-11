@@ -59,7 +59,7 @@ b2Body::b2Body(const b2BodyDef* bd, b2World* world):
 	b2Assert(b2IsValid(bd->linearDamping) && bd->linearDamping >= 0.0f);
 
 	m_xf.p = bd->position;
-	m_xf.q.Set(bd->angle);
+	m_xf.q = b2Rot(bd->angle);
 
 	m_sweep.localCenter.SetZero();
 	m_sweep.c0 = m_xf.p;
@@ -403,7 +403,7 @@ void b2Body::SetTransform(const b2Vec2& position, float32 angle)
 		return;
 	}
 
-	m_xf.q.Set(angle);
+	m_xf.q = b2Rot(angle);
 	m_xf.p = position;
 
 	m_sweep.c = b2Mul(m_xf, m_sweep.localCenter);
@@ -422,7 +422,7 @@ void b2Body::SetTransform(const b2Vec2& position, float32 angle)
 void b2Body::SynchronizeFixtures()
 {
 	b2Transform xf1;
-	xf1.q.Set(m_sweep.a0);
+	xf1.q = b2Rot(m_sweep.a0);
 	xf1.p = m_sweep.c0 - b2Mul(xf1.q, m_sweep.localCenter);
 
 	auto broadPhase = &m_world->m_contactManager.m_broadPhase;

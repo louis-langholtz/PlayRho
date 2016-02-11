@@ -42,36 +42,36 @@ struct b2ContactPositionConstraint
 	int32 pointCount;
 };
 
-b2ContactSolver::b2ContactSolver(b2ContactSolverDef* def)
+b2ContactSolver::b2ContactSolver(b2ContactSolverDef* def) :
+	m_step(def->step),
+	m_positions(def->positions),
+	m_velocities(def->velocities),
+	m_allocator(def->allocator),
+	m_contacts(def->contacts),
+	m_count(def->count)
 {
-	m_step = def->step;
-	m_allocator = def->allocator;
-	m_count = def->count;
 	m_positionConstraints = static_cast<b2ContactPositionConstraint*>(m_allocator->Allocate(m_count * sizeof(b2ContactPositionConstraint)));
 	m_velocityConstraints = static_cast<b2ContactVelocityConstraint*>(m_allocator->Allocate(m_count * sizeof(b2ContactVelocityConstraint)));
-	m_positions = def->positions;
-	m_velocities = def->velocities;
-	m_contacts = def->contacts;
 
 	// Initialize position independent portions of the constraints.
-	for (int32 i = 0; i < m_count; ++i)
+	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
-		b2Contact* const contact = m_contacts[i];
+		const auto contact = m_contacts[i];
 
-		b2Fixture* const fixtureA = contact->m_fixtureA;
-		b2Fixture* const fixtureB = contact->m_fixtureB;
-		b2Shape* const shapeA = fixtureA->GetShape();
-		b2Shape* const shapeB = fixtureB->GetShape();
-		float32 radiusA = shapeA->m_radius;
-		float32 radiusB = shapeB->m_radius;
-		b2Body* const bodyA = fixtureA->GetBody();
-		b2Body* const bodyB = fixtureB->GetBody();
-		b2Manifold* const manifold = contact->GetManifold();
+		const auto fixtureA = contact->m_fixtureA;
+		const auto fixtureB = contact->m_fixtureB;
+		const auto shapeA = fixtureA->GetShape();
+		const auto shapeB = fixtureB->GetShape();
+		const auto radiusA = shapeA->m_radius;
+		const auto radiusB = shapeB->m_radius;
+		const auto bodyA = fixtureA->GetBody();
+		const auto bodyB = fixtureB->GetBody();
+		const auto manifold = contact->GetManifold();
 
-		const int32 pointCount = manifold->pointCount;
+		const auto pointCount = manifold->pointCount;
 		b2Assert(pointCount > 0);
 
-		b2ContactVelocityConstraint* const vc = m_velocityConstraints + i;
+		auto vc = m_velocityConstraints + i;
 		vc->friction = contact->m_friction;
 		vc->restitution = contact->m_restitution;
 		vc->tangentSpeed = contact->m_tangentSpeed;
@@ -86,7 +86,7 @@ b2ContactSolver::b2ContactSolver(b2ContactSolverDef* def)
 		vc->K.SetZero();
 		vc->normalMass.SetZero();
 
-		b2ContactPositionConstraint* const pc = m_positionConstraints + i;
+		auto pc = m_positionConstraints + i;
 		pc->indexA = bodyA->m_islandIndex;
 		pc->indexB = bodyB->m_islandIndex;
 		pc->invMassA = bodyA->m_invMass;
@@ -102,7 +102,7 @@ b2ContactSolver::b2ContactSolver(b2ContactSolverDef* def)
 		pc->radiusB = radiusB;
 		pc->type = manifold->type;
 
-		for (int32 j = 0; j < pointCount; ++j)
+		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 		{
 			const auto cp = manifold->points + j;
 			auto vcp = vc->points + j;
@@ -138,43 +138,43 @@ b2ContactSolver::~b2ContactSolver()
 // Initialize position dependent portions of the velocity constraints.
 void b2ContactSolver::InitializeVelocityConstraints()
 {
-	for (int32 i = 0; i < m_count; ++i)
+	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
-		b2ContactVelocityConstraint* const vc = m_velocityConstraints + i;
-		b2ContactPositionConstraint* const pc = m_positionConstraints + i;
+		const auto vc = m_velocityConstraints + i;
+		const auto pc = m_positionConstraints + i;
 
-		const float32 radiusA = pc->radiusA;
-		const float32 radiusB = pc->radiusB;
-		b2Manifold* const manifold = m_contacts[vc->contactIndex]->GetManifold();
+		const auto radiusA = pc->radiusA;
+		const auto radiusB = pc->radiusB;
+		const auto manifold = m_contacts[vc->contactIndex]->GetManifold();
 
-		const int32 indexA = vc->indexA;
-		const int32 indexB = vc->indexB;
+		const auto indexA = vc->indexA;
+		const auto indexB = vc->indexB;
 
-		const float32 mA = vc->invMassA;
-		const float32 mB = vc->invMassB;
-		const float32 iA = vc->invIA;
-		const float32 iB = vc->invIB;
-		const b2Vec2 localCenterA = pc->localCenterA;
-		const b2Vec2 localCenterB = pc->localCenterB;
+		const auto mA = vc->invMassA;
+		const auto mB = vc->invMassB;
+		const auto iA = vc->invIA;
+		const auto iB = vc->invIB;
+		const auto localCenterA = pc->localCenterA;
+		const auto localCenterB = pc->localCenterB;
 
-		const b2Vec2 cA = m_positions[indexA].c;
-		const float32 aA = m_positions[indexA].a;
-		const b2Vec2 vA = m_velocities[indexA].v;
-		const float32 wA = m_velocities[indexA].w;
+		const auto cA = m_positions[indexA].c;
+		const auto aA = m_positions[indexA].a;
+		const auto vA = m_velocities[indexA].v;
+		const auto wA = m_velocities[indexA].w;
 
-		const b2Vec2 cB = m_positions[indexB].c;
-		const float32 aB = m_positions[indexB].a;
-		const b2Vec2 vB = m_velocities[indexB].v;
-		const float32 wB = m_velocities[indexB].w;
+		const auto cB = m_positions[indexB].c;
+		const auto aB = m_positions[indexB].a;
+		const auto vB = m_velocities[indexB].v;
+		const auto wB = m_velocities[indexB].w;
 
 		b2Assert(manifold->pointCount > 0);
 
 		b2Transform xfA;
-		xfA.q.Set(aA);
+		xfA.q = b2Rot(aA);
 		xfA.p = cA - b2Mul(xfA.q, localCenterA);
 
 		b2Transform xfB;
-		xfB.q.Set(aB);
+		xfB.q = b2Rot(aB);
 		xfB.p = cB - b2Mul(xfB.q, localCenterB);
 
 		b2WorldManifold worldManifold;
@@ -182,33 +182,33 @@ void b2ContactSolver::InitializeVelocityConstraints()
 
 		vc->normal = worldManifold.normal;
 
-		const int32 pointCount = vc->pointCount;
-		for (int32 j = 0; j < pointCount; ++j)
+		const auto pointCount = vc->pointCount;
+		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 		{
-			b2VelocityConstraintPoint* const vcp = vc->points + j;
+			auto vcp = vc->points + j;
 
 			vcp->rA = worldManifold.points[j] - cA;
 			vcp->rB = worldManifold.points[j] - cB;
 
-			const float32 rnA = b2Cross(vcp->rA, vc->normal);
-			const float32 rnB = b2Cross(vcp->rB, vc->normal);
+			const auto rnA = b2Cross(vcp->rA, vc->normal);
+			const auto rnB = b2Cross(vcp->rB, vc->normal);
 
-			const float32 kNormal = mA + mB + iA * rnA * rnA + iB * rnB * rnB;
+			const auto kNormal = mA + mB + iA * rnA * rnA + iB * rnB * rnB;
 
 			vcp->normalMass = kNormal > 0.0f ? 1.0f / kNormal : 0.0f;
 
-			const b2Vec2 tangent = b2Cross(vc->normal, 1.0f);
+			const auto tangent = b2Cross(vc->normal, 1.0f);
 
-			const float32 rtA = b2Cross(vcp->rA, tangent);
-			const float32 rtB = b2Cross(vcp->rB, tangent);
+			const auto rtA = b2Cross(vcp->rA, tangent);
+			const auto rtB = b2Cross(vcp->rB, tangent);
 
-			const float32 kTangent = mA + mB + iA * rtA * rtA + iB * rtB * rtB;
+			const auto kTangent = mA + mB + iA * rtA * rtA + iB * rtB * rtB;
 
 			vcp->tangentMass = kTangent > 0.0f ? 1.0f /  kTangent : 0.0f;
 
 			// Setup a velocity bias for restitution.
 			vcp->velocityBias = 0.0f;
-			const float32 vRel = b2Dot(vc->normal, vB + b2Cross(wB, vcp->rB) - vA - b2Cross(wA, vcp->rA));
+			const auto vRel = b2Dot(vc->normal, vB + b2Cross(wB, vcp->rB) - vA - b2Cross(wA, vcp->rA));
 			if (vRel < -b2_velocityThreshold)
 			{
 				vcp->velocityBias = -vc->restitution * vRel;
@@ -218,20 +218,20 @@ void b2ContactSolver::InitializeVelocityConstraints()
 		// If we have two points, then prepare the block solver.
 		if (vc->pointCount == 2 && g_blockSolve)
 		{
-			b2VelocityConstraintPoint* vcp1 = vc->points + 0;
-			b2VelocityConstraintPoint* vcp2 = vc->points + 1;
+			const auto vcp1 = vc->points + 0;
+			const auto vcp2 = vc->points + 1;
 
-			float32 rn1A = b2Cross(vcp1->rA, vc->normal);
-			float32 rn1B = b2Cross(vcp1->rB, vc->normal);
-			float32 rn2A = b2Cross(vcp2->rA, vc->normal);
-			float32 rn2B = b2Cross(vcp2->rB, vc->normal);
+			const auto rn1A = b2Cross(vcp1->rA, vc->normal);
+			const auto rn1B = b2Cross(vcp1->rB, vc->normal);
+			const auto rn2A = b2Cross(vcp2->rA, vc->normal);
+			const auto rn2B = b2Cross(vcp2->rB, vc->normal);
 
-			float32 k11 = mA + mB + iA * rn1A * rn1A + iB * rn1B * rn1B;
-			float32 k22 = mA + mB + iA * rn2A * rn2A + iB * rn2B * rn2B;
-			float32 k12 = mA + mB + iA * rn1A * rn2A + iB * rn1B * rn2B;
+			const auto k11 = mA + mB + iA * rn1A * rn1A + iB * rn1B * rn1B;
+			const auto k22 = mA + mB + iA * rn2A * rn2A + iB * rn2B * rn2B;
+			const auto k12 = mA + mB + iA * rn1A * rn2A + iB * rn1B * rn2B;
 
 			// Ensure a reasonable condition number.
-			const float32 k_maxConditionNumber = 1000.0f;
+			const auto k_maxConditionNumber = 1000.0f;
 			if (k11 * k11 < k_maxConditionNumber * (k11 * k22 - k12 * k12))
 			{
 				// K is safe to invert.
@@ -252,27 +252,27 @@ void b2ContactSolver::InitializeVelocityConstraints()
 void b2ContactSolver::WarmStart()
 {
 	// Warm start.
-	for (int32 i = 0; i < m_count; ++i)
+	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
-		b2ContactVelocityConstraint* const vc = m_velocityConstraints + i;
+		const auto vc = m_velocityConstraints + i;
 
-		const int32 indexA = vc->indexA;
-		const int32 indexB = vc->indexB;
-		const float32 mA = vc->invMassA;
-		const float32 iA = vc->invIA;
-		const float32 mB = vc->invMassB;
-		const float32 iB = vc->invIB;
-		const int32 pointCount = vc->pointCount;
+		const auto indexA = vc->indexA;
+		const auto indexB = vc->indexB;
+		const auto mA = vc->invMassA;
+		const auto iA = vc->invIA;
+		const auto mB = vc->invMassB;
+		const auto iB = vc->invIB;
+		const auto pointCount = vc->pointCount;
 
-		b2Vec2 vA = m_velocities[indexA].v;
-		float32 wA = m_velocities[indexA].w;
-		b2Vec2 vB = m_velocities[indexB].v;
-		float32 wB = m_velocities[indexB].w;
+		auto vA = m_velocities[indexA].v;
+		auto wA = m_velocities[indexA].w;
+		auto vB = m_velocities[indexB].v;
+		auto wB = m_velocities[indexB].w;
 
-		const b2Vec2 normal = vc->normal;
-		const b2Vec2 tangent = b2Cross(normal, 1.0f);
+		const auto normal = vc->normal;
+		const auto tangent = b2Cross(normal, 1.0f);
 
-		for (int32 j = 0; j < pointCount; ++j)
+		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 		{
 			const auto vcp = vc->points + j;
 			const auto P = vcp->normalImpulse * normal + vcp->tangentImpulse * tangent;
@@ -291,50 +291,50 @@ void b2ContactSolver::WarmStart()
 
 void b2ContactSolver::SolveVelocityConstraints()
 {
-	for (int32 i = 0; i < m_count; ++i)
+	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
-		b2ContactVelocityConstraint* const vc = m_velocityConstraints + i;
+		const auto vc = m_velocityConstraints + i;
 
-		const int32 indexA = vc->indexA;
-		const int32 indexB = vc->indexB;
-		const float32 mA = vc->invMassA;
-		const float32 iA = vc->invIA;
-		const float32 mB = vc->invMassB;
-		const float32 iB = vc->invIB;
-		const int32 pointCount = vc->pointCount;
+		const auto indexA = vc->indexA;
+		const auto indexB = vc->indexB;
+		const auto mA = vc->invMassA;
+		const auto iA = vc->invIA;
+		const auto mB = vc->invMassB;
+		const auto iB = vc->invIB;
+		const auto pointCount = vc->pointCount;
 
-		b2Vec2 vA = m_velocities[indexA].v;
-		float32 wA = m_velocities[indexA].w;
-		b2Vec2 vB = m_velocities[indexB].v;
-		float32 wB = m_velocities[indexB].w;
+		auto vA = m_velocities[indexA].v;
+		auto wA = m_velocities[indexA].w;
+		auto vB = m_velocities[indexB].v;
+		auto wB = m_velocities[indexB].w;
 
-		const b2Vec2 normal = vc->normal;
-		const b2Vec2 tangent = b2Cross(normal, 1.0f);
-		const float32 friction = vc->friction;
+		const auto normal = vc->normal;
+		const auto tangent = b2Cross(normal, 1.0f);
+		const auto friction = vc->friction;
 
 		b2Assert(pointCount == 1 || pointCount == 2);
 
 		// Solve tangent constraints first because non-penetration is more important
 		// than friction.
-		for (int32 j = 0; j < pointCount; ++j)
+		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 		{
-			b2VelocityConstraintPoint* const vcp = vc->points + j;
+			const auto vcp = vc->points + j;
 
 			// Relative velocity at contact
-			const b2Vec2 dv = vB + b2Cross(wB, vcp->rB) - vA - b2Cross(wA, vcp->rA);
+			const auto dv = vB + b2Cross(wB, vcp->rB) - vA - b2Cross(wA, vcp->rA);
 
 			// Compute tangent force
-			const float32 vt = b2Dot(dv, tangent) - vc->tangentSpeed;
-			float32 lambda = vcp->tangentMass * (-vt);
+			const auto vt = b2Dot(dv, tangent) - vc->tangentSpeed;
+			auto lambda = vcp->tangentMass * (-vt);
 
 			// b2Clamp the accumulated force
-			const float32 maxFriction = friction * vcp->normalImpulse;
-			const float32 newImpulse = b2Clamp(vcp->tangentImpulse + lambda, -maxFriction, maxFriction);
+			const auto maxFriction = friction * vcp->normalImpulse;
+			const auto newImpulse = b2Clamp(vcp->tangentImpulse + lambda, -maxFriction, maxFriction);
 			lambda = newImpulse - vcp->tangentImpulse;
 			vcp->tangentImpulse = newImpulse;
 
 			// Apply contact impulse
-			const b2Vec2 P = lambda * tangent;
+			const auto P = lambda * tangent;
 
 			vA -= mA * P;
 			wA -= iA * b2Cross(vcp->rA, P);
@@ -346,24 +346,24 @@ void b2ContactSolver::SolveVelocityConstraints()
 		// Solve normal constraints
 		if (pointCount == 1 || g_blockSolve == false)
 		{
-			for (int32 j = 0; j < pointCount; ++j)
+			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 			{
-				b2VelocityConstraintPoint* const vcp = vc->points + j;
+				const auto vcp = vc->points + j;
 
 				// Relative velocity at contact
-				const b2Vec2 dv = vB + b2Cross(wB, vcp->rB) - vA - b2Cross(wA, vcp->rA);
+				const auto dv = vB + b2Cross(wB, vcp->rB) - vA - b2Cross(wA, vcp->rA);
 
 				// Compute normal impulse
-				const float32 vn = b2Dot(dv, normal);
-				float32 lambda = -vcp->normalMass * (vn - vcp->velocityBias);
+				const auto vn = b2Dot(dv, normal);
+				auto lambda = -vcp->normalMass * (vn - vcp->velocityBias);
 
 				// b2Clamp the accumulated impulse
-				const float32 newImpulse = b2Max(vcp->normalImpulse + lambda, 0.0f);
+				const auto newImpulse = b2Max(vcp->normalImpulse + lambda, 0.0f);
 				lambda = newImpulse - vcp->normalImpulse;
 				vcp->normalImpulse = newImpulse;
 
 				// Apply contact impulse
-				const b2Vec2 P = lambda * normal;
+				const auto P = lambda * normal;
 				vA -= mA * P;
 				wA -= iA * b2Cross(vcp->rA, P);
 
@@ -406,28 +406,26 @@ void b2ContactSolver::SolveVelocityConstraints()
 			//    = A * x + b'
 			// b' = b - A * a;
 
-			b2VelocityConstraintPoint* cp1 = vc->points + 0;
-			b2VelocityConstraintPoint* cp2 = vc->points + 1;
+			const auto cp1 = vc->points + 0;
+			const auto cp2 = vc->points + 1;
 
-			b2Vec2 a(cp1->normalImpulse, cp2->normalImpulse);
+			const auto a = b2Vec2(cp1->normalImpulse, cp2->normalImpulse);
 			b2Assert(a.x >= 0.0f && a.y >= 0.0f);
 
 			// Relative velocity at contact
-			b2Vec2 dv1 = vB + b2Cross(wB, cp1->rB) - vA - b2Cross(wA, cp1->rA);
-			b2Vec2 dv2 = vB + b2Cross(wB, cp2->rB) - vA - b2Cross(wA, cp2->rA);
+			const auto dv1 = vB + b2Cross(wB, cp1->rB) - vA - b2Cross(wA, cp1->rA);
+			const auto dv2 = vB + b2Cross(wB, cp2->rB) - vA - b2Cross(wA, cp2->rA);
 
 			// Compute normal velocity
-			float32 vn1 = b2Dot(dv1, normal);
-			float32 vn2 = b2Dot(dv2, normal);
+			auto vn1 = b2Dot(dv1, normal);
+			auto vn2 = b2Dot(dv2, normal);
 
-			b2Vec2 b;
-			b.x = vn1 - cp1->velocityBias;
-			b.y = vn2 - cp2->velocityBias;
+			auto b = b2Vec2{vn1 - cp1->velocityBias, vn2 - cp2->velocityBias};
 
 			// Compute b'
 			b -= b2Mul(vc->K, a);
 
-			const float32 k_errorTol = 1e-3f;
+			const auto k_errorTol = 1e-3f;
 			B2_NOT_USED(k_errorTol);
 
 			for (;;)
@@ -441,16 +439,16 @@ void b2ContactSolver::SolveVelocityConstraints()
 				//
 				// x = - inv(A) * b'
 				//
-				b2Vec2 x = - b2Mul(vc->normalMass, b);
+				auto x = - b2Mul(vc->normalMass, b);
 
 				if (x.x >= 0.0f && x.y >= 0.0f)
 				{
 					// Get the incremental impulse
-					const b2Vec2 d = x - a;
+					const auto d = x - a;
 
 					// Apply incremental impulse
-					const b2Vec2 P1 = d.x * normal;
-					const b2Vec2 P2 = d.y * normal;
+					const auto P1 = d.x * normal;
+					const auto P2 = d.y * normal;
 					vA -= mA * (P1 + P2);
 					wA -= iA * (b2Cross(cp1->rA, P1) + b2Cross(cp2->rA, P2));
 
@@ -489,11 +487,11 @@ void b2ContactSolver::SolveVelocityConstraints()
 				if (x.x >= 0.0f && vn2 >= 0.0f)
 				{
 					// Get the incremental impulse
-					const b2Vec2 d = x - a;
+					const auto d = x - a;
 
 					// Apply incremental impulse
-					b2Vec2 P1 = d.x * normal;
-					b2Vec2 P2 = d.y * normal;
+					const auto P1 = d.x * normal;
+					const auto P2 = d.y * normal;
 					vA -= mA * (P1 + P2);
 					wA -= iA * (b2Cross(cp1->rA, P1) + b2Cross(cp2->rA, P2));
 
@@ -602,12 +600,12 @@ void b2ContactSolver::SolveVelocityConstraints()
 
 void b2ContactSolver::StoreImpulses()
 {
-	for (int32 i = 0; i < m_count; ++i)
+	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
-		b2ContactVelocityConstraint* const vc = m_velocityConstraints + i;
-		b2Manifold* const manifold = m_contacts[vc->contactIndex]->GetManifold();
+		const auto vc = m_velocityConstraints + i;
+		auto manifold = m_contacts[vc->contactIndex]->GetManifold();
 
-		for (int32 j = 0; j < vc->pointCount; ++j)
+		for (auto j = decltype(vc->pointCount){0}; j < vc->pointCount; ++j)
 		{
 			manifold->points[j].normalImpulse = vc->points[j].normalImpulse;
 			manifold->points[j].tangentImpulse = vc->points[j].tangentImpulse;
@@ -617,7 +615,10 @@ void b2ContactSolver::StoreImpulses()
 
 struct b2PositionSolverManifold
 {
-	void Initialize(b2ContactPositionConstraint* pc, const b2Transform& xfA, const b2Transform& xfB, int32 index)
+	b2PositionSolverManifold() = delete;
+
+	b2PositionSolverManifold(const b2ContactPositionConstraint* pc,
+							 const b2Transform& xfA, const b2Transform& xfB, int32 index)
 	{
 		b2Assert(pc->pointCount > 0);
 
@@ -625,8 +626,8 @@ struct b2PositionSolverManifold
 		{
 		case b2Manifold::e_circles:
 			{
-				b2Vec2 pointA = b2Mul(xfA, pc->localPoint);
-				b2Vec2 pointB = b2Mul(xfB, pc->localPoints[0]);
+				const auto pointA = b2Mul(xfA, pc->localPoint);
+				const auto pointB = b2Mul(xfB, pc->localPoints[0]);
 				normal = pointB - pointA;
 				normal.Normalize();
 				point = 0.5f * (pointA + pointB);
@@ -637,9 +638,9 @@ struct b2PositionSolverManifold
 		case b2Manifold::e_faceA:
 			{
 				normal = b2Mul(xfA.q, pc->localNormal);
-				b2Vec2 planePoint = b2Mul(xfA, pc->localPoint);
+				const auto planePoint = b2Mul(xfA, pc->localPoint);
 
-				b2Vec2 clipPoint = b2Mul(xfB, pc->localPoints[index]);
+				const auto clipPoint = b2Mul(xfB, pc->localPoints[index]);
 				separation = b2Dot(clipPoint - planePoint, normal) - pc->radiusA - pc->radiusB;
 				point = clipPoint;
 			}
@@ -648,9 +649,9 @@ struct b2PositionSolverManifold
 		case b2Manifold::e_faceB:
 			{
 				normal = b2Mul(xfB.q, pc->localNormal);
-				b2Vec2 planePoint = b2Mul(xfB, pc->localPoint);
+				const auto planePoint = b2Mul(xfB, pc->localPoint);
 
-				b2Vec2 clipPoint = b2Mul(xfA, pc->localPoints[index]);
+				const auto clipPoint = b2Mul(xfA, pc->localPoints[index]);
 				separation = b2Dot(clipPoint - planePoint, normal) - pc->radiusA - pc->radiusB;
 				point = clipPoint;
 
@@ -669,62 +670,61 @@ struct b2PositionSolverManifold
 // Sequential solver.
 bool b2ContactSolver::SolvePositionConstraints()
 {
-	float32 minSeparation = 0.0f;
+	auto minSeparation = 0.0f;
 
-	for (int32 i = 0; i < m_count; ++i)
+	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
-		b2ContactPositionConstraint* const pc = m_positionConstraints + i;
+		const auto pc = m_positionConstraints + i;
 
-		int32 indexA = pc->indexA;
-		int32 indexB = pc->indexB;
-		b2Vec2 localCenterA = pc->localCenterA;
-		float32 mA = pc->invMassA;
-		float32 iA = pc->invIA;
-		b2Vec2 localCenterB = pc->localCenterB;
-		float32 mB = pc->invMassB;
-		float32 iB = pc->invIB;
-		int32 pointCount = pc->pointCount;
+		const auto indexA = pc->indexA;
+		const auto indexB = pc->indexB;
+		const auto localCenterA = pc->localCenterA;
+		const auto mA = pc->invMassA;
+		const auto iA = pc->invIA;
+		const auto localCenterB = pc->localCenterB;
+		const auto mB = pc->invMassB;
+		const auto iB = pc->invIB;
+		const auto pointCount = pc->pointCount;
 
-		b2Vec2 cA = m_positions[indexA].c;
-		float32 aA = m_positions[indexA].a;
+		auto cA = m_positions[indexA].c;
+		auto aA = m_positions[indexA].a;
 
-		b2Vec2 cB = m_positions[indexB].c;
-		float32 aB = m_positions[indexB].a;
+		auto cB = m_positions[indexB].c;
+		auto aB = m_positions[indexB].a;
 
 		// Solve normal constraints
-		for (int32 j = 0; j < pointCount; ++j)
+		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 		{
 			b2Transform xfA, xfB;
-			xfA.q.Set(aA);
-			xfB.q.Set(aB);
+			xfA.q = b2Rot(aA);
+			xfB.q = b2Rot(aB);
 			xfA.p = cA - b2Mul(xfA.q, localCenterA);
 			xfB.p = cB - b2Mul(xfB.q, localCenterB);
 
-			b2PositionSolverManifold psm;
-			psm.Initialize(pc, xfA, xfB, j);
-			b2Vec2 normal = psm.normal;
+			const auto psm = b2PositionSolverManifold(pc, xfA, xfB, j);
+			const auto normal = psm.normal;
 
-			b2Vec2 point = psm.point;
-			float32 separation = psm.separation;
+			const auto point = psm.point;
+			const auto separation = psm.separation;
 
-			b2Vec2 rA = point - cA;
-			b2Vec2 rB = point - cB;
+			const auto rA = point - cA;
+			const auto rB = point - cB;
 
 			// Track max constraint error.
 			minSeparation = b2Min(minSeparation, separation);
 
 			// Prevent large corrections and allow slop.
-			const float32 C = b2Clamp(b2_baumgarte * (separation + b2_linearSlop), -b2_maxLinearCorrection, 0.0f);
+			const auto C = b2Clamp(b2_baumgarte * (separation + b2_linearSlop), -b2_maxLinearCorrection, 0.0f);
 
 			// Compute the effective mass.
-			float32 rnA = b2Cross(rA, normal);
-			float32 rnB = b2Cross(rB, normal);
-			float32 K = mA + mB + iA * rnA * rnA + iB * rnB * rnB;
+			const auto rnA = b2Cross(rA, normal);
+			const auto rnB = b2Cross(rB, normal);
+			const auto K = mA + mB + iA * rnA * rnA + iB * rnB * rnB;
 
 			// Compute normal impulse
-			float32 impulse = K > 0.0f ? - C / K : 0.0f;
+			const auto impulse = K > 0.0f ? - C / K : 0.0f;
 
-			b2Vec2 P = impulse * normal;
+			const auto P = impulse * normal;
 
 			cA -= mA * P;
 			aA -= iA * b2Cross(rA, P);
@@ -748,74 +748,73 @@ bool b2ContactSolver::SolvePositionConstraints()
 // Sequential position solver for position constraints.
 bool b2ContactSolver::SolveTOIPositionConstraints(int32 toiIndexA, int32 toiIndexB)
 {
-	float32 minSeparation = 0.0f;
+	auto minSeparation = 0.0f;
 
-	for (int32 i = 0; i < m_count; ++i)
+	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
-		b2ContactPositionConstraint* const pc = m_positionConstraints + i;
+		const auto pc = m_positionConstraints + i;
 
-		int32 indexA = pc->indexA;
-		int32 indexB = pc->indexB;
-		b2Vec2 localCenterA = pc->localCenterA;
-		b2Vec2 localCenterB = pc->localCenterB;
-		int32 pointCount = pc->pointCount;
+		const auto indexA = pc->indexA;
+		const auto indexB = pc->indexB;
+		const auto localCenterA = pc->localCenterA;
+		const auto localCenterB = pc->localCenterB;
+		const auto pointCount = pc->pointCount;
 
-		float32 mA = 0.0f;
-		float32 iA = 0.0f;
+		auto mA = 0.0f;
+		auto iA = 0.0f;
 		if (indexA == toiIndexA || indexA == toiIndexB)
 		{
 			mA = pc->invMassA;
 			iA = pc->invIA;
 		}
 
-		float32 mB = 0.0f;
-		float32 iB = 0.;
+		auto mB = 0.0f;
+		auto iB = 0.f;
 		if (indexB == toiIndexA || indexB == toiIndexB)
 		{
 			mB = pc->invMassB;
 			iB = pc->invIB;
 		}
 
-		b2Vec2 cA = m_positions[indexA].c;
-		float32 aA = m_positions[indexA].a;
+		auto cA = m_positions[indexA].c;
+		auto aA = m_positions[indexA].a;
 
-		b2Vec2 cB = m_positions[indexB].c;
-		float32 aB = m_positions[indexB].a;
+		auto cB = m_positions[indexB].c;
+		auto aB = m_positions[indexB].a;
 
 		// Solve normal constraints
-		for (int32 j = 0; j < pointCount; ++j)
+		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 		{
 			b2Transform xfA, xfB;
-			xfA.q.Set(aA);
-			xfB.q.Set(aB);
+			xfA.q = b2Rot(aA);
+			xfB.q = b2Rot(aB);
 			xfA.p = cA - b2Mul(xfA.q, localCenterA);
 			xfB.p = cB - b2Mul(xfB.q, localCenterB);
 
-			b2PositionSolverManifold psm;
-			psm.Initialize(pc, xfA, xfB, j);
-			b2Vec2 normal = psm.normal;
+			b2PositionSolverManifold psm(pc, xfA, xfB, j);
+			const auto normal = psm.normal;
 
-			b2Vec2 point = psm.point;
-			float32 separation = psm.separation;
+			const auto point = psm.point;
+			const auto separation = psm.separation;
 
-			b2Vec2 rA = point - cA;
-			b2Vec2 rB = point - cB;
+			const auto rA = point - cA;
+			const auto rB = point - cB;
 
 			// Track max constraint error.
 			minSeparation = b2Min(minSeparation, separation);
 
 			// Prevent large corrections and allow slop.
-			const float32 C = b2Clamp(b2_toiBaugarte * (separation + b2_linearSlop), -b2_maxLinearCorrection, 0.0f);
+			const auto C = b2Clamp(b2_toiBaugarte * (separation + b2_linearSlop), -b2_maxLinearCorrection, 0.0f);
 
 			// Compute the effective mass.
-			const float32 rnA = b2Cross(rA, normal);
-			const float32 rnB = b2Cross(rB, normal);
-			const float32 K = mA + mB + iA * rnA * rnA + iB * rnB * rnB;
+			const auto rnA = b2Cross(rA, normal);
+			const auto rnB = b2Cross(rB, normal);
+			const auto K = mA + mB + iA * rnA * rnA + iB * rnB * rnB;
 
 			// Compute normal impulse
-			const float32 impulse = K > 0.0f ? - C / K : 0.0f;
+			const auto impulse = K > 0.0f ? - C / K : 0.0f;
 
-			b2Vec2 P = impulse * normal;
+			const auto P = impulse * normal;
 
 			cA -= mA * P;
 			aA -= iA * b2Cross(rA, P);

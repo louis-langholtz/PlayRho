@@ -340,8 +340,8 @@ bool b2RevoluteJoint::SolvePositionConstraints(const b2SolverData& data)
 
 	// Solve point-to-point constraint.
 	{
-		qA.Set(aA);
-		qB.Set(aB);
+		qA = b2Rot(aA);
+		qB = b2Rot(aB);
 		b2Vec2 rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
 		b2Vec2 rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
 

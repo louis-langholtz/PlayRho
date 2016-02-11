@@ -77,6 +77,7 @@ struct b2ContactEdge
 class b2Contact
 {
 public:
+	b2Contact() = delete;
 
 	/// Get the contact manifold. Do not modify the manifold unless you understand the
 	/// internals of Box2D.
@@ -183,40 +184,39 @@ protected:
 	static void Destroy(b2Contact* contact, b2Shape::Type typeA, b2Shape::Type typeB, b2BlockAllocator* allocator);
 	static void Destroy(b2Contact* contact, b2BlockAllocator* allocator);
 
-	b2Contact() : m_fixtureA(nullptr), m_fixtureB(nullptr) {}
 	b2Contact(b2Fixture* fixtureA, int32 indexA, b2Fixture* fixtureB, int32 indexB);
-	virtual ~b2Contact() {}
+	virtual ~b2Contact() = default;
 
 	void Update(b2ContactListener* listener);
 
 	static b2ContactRegister s_registers[b2Shape::e_typeCount][b2Shape::e_typeCount];
 	static bool s_initialized;
 
-	uint32 m_flags;
+	uint32 m_flags = e_enabledFlag;
 
 	// World pool and list pointers.
-	b2Contact* m_prev;
-	b2Contact* m_next;
+	b2Contact* m_prev = nullptr;
+	b2Contact* m_next = nullptr;
 
 	// Nodes for connecting bodies.
-	b2ContactEdge m_nodeA;
-	b2ContactEdge m_nodeB;
+	b2ContactEdge m_nodeA = { nullptr, nullptr, nullptr, nullptr};
+	b2ContactEdge m_nodeB = { nullptr, nullptr, nullptr, nullptr};
 
-	b2Fixture* m_fixtureA;
-	b2Fixture* m_fixtureB;
+	b2Fixture* m_fixtureA = nullptr;
+	b2Fixture* m_fixtureB = nullptr;
 
-	int32 m_indexA;
-	int32 m_indexB;
+	int32 m_indexA = 0;
+	int32 m_indexB = 0;
 
 	b2Manifold m_manifold;
 
-	int32 m_toiCount;
+	int32 m_toiCount = 0;
 	float32 m_toi;
 
 	float32 m_friction;
 	float32 m_restitution;
 
-	float32 m_tangentSpeed;
+	float32 m_tangentSpeed = 0.0f;
 };
 
 inline b2Manifold* b2Contact::GetManifold()

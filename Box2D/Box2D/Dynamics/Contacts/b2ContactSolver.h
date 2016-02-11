@@ -69,6 +69,8 @@ struct b2ContactSolverDef
 class b2ContactSolver
 {
 public:
+	b2ContactSolver() = delete;
+	b2ContactSolver(const b2ContactSolver& copy) = delete;
 	b2ContactSolver(b2ContactSolverDef* def);
 	~b2ContactSolver();
 
