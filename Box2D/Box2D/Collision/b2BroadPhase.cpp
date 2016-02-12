@@ -18,11 +18,10 @@
 
 #include <Box2D/Collision/b2BroadPhase.h>
 
-b2BroadPhase::b2BroadPhase()
-{
-	m_pairBuffer = static_cast<b2Pair*>(b2Alloc(m_pairCapacity * sizeof(b2Pair)));
-	m_moveBuffer = static_cast<int32*>(b2Alloc(m_moveCapacity * sizeof(int32)));
-}
+b2BroadPhase::b2BroadPhase():
+	m_pairBuffer(static_cast<b2Pair*>(b2Alloc(m_pairCapacity * sizeof(b2Pair)))),
+	m_moveBuffer(static_cast<int32*>(b2Alloc(m_moveCapacity * sizeof(int32))))
+{}
 
 b2BroadPhase::~b2BroadPhase()
 {

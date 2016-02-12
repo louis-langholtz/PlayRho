@@ -44,6 +44,9 @@ public:
 
 	b2BroadPhase();
 	~b2BroadPhase();
+	
+	b2BroadPhase(const b2BroadPhase& copy) = delete;
+	b2BroadPhase& operator=(const b2BroadPhase&) = delete;
 
 	/// Create a proxy with an initial AABB. Pairs are not reported until
 	/// UpdatePairs is called.
@@ -117,14 +120,17 @@ private:
 
 	int32 m_proxyCount = 0;
 
-	int32* m_moveBuffer;
 	int32 m_moveCapacity = 16;
 	int32 m_moveCount = 0;
 
-	b2Pair* m_pairBuffer;
 	int32 m_pairCapacity = 16;
 	int32 m_pairCount = 0;
 
+	/// Initialized on construction
+	int32* m_moveBuffer;
+	b2Pair* m_pairBuffer;
+
+	/// Assigned on calling UpdatePairs
 	int32 m_queryProxyId;
 };
 

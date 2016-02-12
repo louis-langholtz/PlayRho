@@ -67,6 +67,9 @@ public:
 	/// Destroy the tree, freeing the node pool.
 	~b2DynamicTree();
 
+	b2DynamicTree(const b2DynamicTree& copy) = delete;
+	b2DynamicTree& operator=(const b2DynamicTree&) = delete;
+
 	/// Create a proxy. Provide a tight fitting AABB and a userData pointer.
 	int32 CreateProxy(const b2AABB& aabb, void* userData);
 
@@ -141,7 +144,6 @@ private:
 
 	int32 m_root = b2_nullNode;
 
-	b2TreeNode* m_nodes;
 	int32 m_nodeCount = 0;
 	int32 m_nodeCapacity = 16;
 
@@ -151,6 +153,9 @@ private:
 	uint32 m_path = 0;
 
 	int32 m_insertionCount = 0;
+
+	/// Initialized on construction.
+	b2TreeNode* m_nodes;
 };
 
 inline void* b2DynamicTree::GetUserData(int32 proxyId) const

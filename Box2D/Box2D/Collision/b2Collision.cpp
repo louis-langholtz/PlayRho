@@ -202,7 +202,7 @@ int32 b2ClipSegmentToLine(b2ClipVertex vOut[2], const b2ClipVertex vIn[2],
 						const b2Vec2& normal, float32 offset, int32 vertexIndexA)
 {
 	// Start with no output points
-	int32 numOut = 0;
+	auto numOut = int32{0};
 
 	// Calculate the distance of end points to the line
 	const auto distance0 = b2Dot(normal, vIn[0].v) - offset;
@@ -216,7 +216,7 @@ int32 b2ClipSegmentToLine(b2ClipVertex vOut[2], const b2ClipVertex vIn[2],
 	if (distance0 * distance1 < 0.0f)
 	{
 		// Find intersection point of edge and plane
-		float32 interp = distance0 / (distance0 - distance1);
+		const auto interp = distance0 / (distance0 - distance1);
 		vOut[numOut].v = vIn[0].v + interp * (vIn[1].v - vIn[0].v);
 
 		// VertexA is hitting edgeB.

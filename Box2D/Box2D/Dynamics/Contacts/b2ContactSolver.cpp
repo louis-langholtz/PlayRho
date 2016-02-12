@@ -791,7 +791,7 @@ bool b2ContactSolver::SolveTOIPositionConstraints(int32 toiIndexA, int32 toiInde
 			xfA.p = cA - b2Mul(xfA.q, localCenterA);
 			xfB.p = cB - b2Mul(xfB.q, localCenterB);
 
-			b2PositionSolverManifold psm(pc, xfA, xfB, j);
+			const auto psm = b2PositionSolverManifold(pc, xfA, xfB, j);
 			const auto normal = psm.normal;
 
 			const auto point = psm.point;

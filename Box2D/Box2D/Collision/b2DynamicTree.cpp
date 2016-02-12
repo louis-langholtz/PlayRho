@@ -19,9 +19,9 @@
 #include <Box2D/Collision/b2DynamicTree.h>
 #include <string.h>
 
-b2DynamicTree::b2DynamicTree()
+b2DynamicTree::b2DynamicTree():
+	m_nodes(static_cast<b2TreeNode*>(b2Alloc(m_nodeCapacity * sizeof(b2TreeNode))))
 {
-	m_nodes = static_cast<b2TreeNode*>(b2Alloc(m_nodeCapacity * sizeof(b2TreeNode)));
 	memset(m_nodes, 0, m_nodeCapacity * sizeof(b2TreeNode));
 
 	// Build a linked list for the free list.
@@ -98,7 +98,7 @@ int32 b2DynamicTree::CreateProxy(const b2AABB& aabb, void* userData)
 	const auto proxyId = AllocateNode();
 
 	// Fatten the aabb.
-	b2Vec2 r(b2_aabbExtension, b2_aabbExtension);
+	const auto r = b2Vec2(b2_aabbExtension, b2_aabbExtension);
 	m_nodes[proxyId].aabb.lowerBound = aabb.lowerBound - r;
 	m_nodes[proxyId].aabb.upperBound = aabb.upperBound + r;
 	m_nodes[proxyId].userData = userData;
@@ -133,7 +133,7 @@ bool b2DynamicTree::MoveProxy(int32 proxyId, const b2AABB& aabb, const b2Vec2& d
 
 	// Extend AABB.
 	b2AABB b = aabb;
-	b2Vec2 r(b2_aabbExtension, b2_aabbExtension);
+	const auto r = b2Vec2(b2_aabbExtension, b2_aabbExtension);
 	b.lowerBound = b.lowerBound - r;
 	b.upperBound = b.upperBound + r;
 
@@ -176,12 +176,12 @@ void b2DynamicTree::InsertLeaf(int32 leaf)
 	}
 
 	// Find the best sibling for this node
-	b2AABB leafAABB = m_nodes[leaf].aabb;
+	const auto leafAABB = m_nodes[leaf].aabb;
 	auto index = m_root;
 	while (m_nodes[index].IsLeaf() == false)
 	{
-		int32 child1 = m_nodes[index].child1;
-		int32 child2 = m_nodes[index].child2;
+		const auto child1 = m_nodes[index].child1;
+		const auto child2 = m_nodes[index].child2;
 
 		const auto area = m_nodes[index].aabb.GetPerimeter();
 
