@@ -71,23 +71,22 @@ public:
 
 	void Report(const b2ContactVelocityConstraint* constraints);
 
-	b2StackAllocator* m_allocator;
-	b2ContactListener* m_listener;
-
-	b2Body** m_bodies;
-	b2Contact** m_contacts;
-	b2Joint** m_joints;
-
-	b2Position* m_positions;
-	b2Velocity* m_velocities;
-
 	int32 m_bodyCount = 0;
 	int32 m_jointCount = 0;
 	int32 m_contactCount = 0;
 
-	int32 m_bodyCapacity;
-	int32 m_contactCapacity;
-	int32 m_jointCapacity;
+	const int32 m_bodyCapacity;
+	const int32 m_contactCapacity;
+	const int32 m_jointCapacity;
+
+	b2StackAllocator* const m_allocator;
+	b2ContactListener* const m_listener;
+
+	b2Body** const m_bodies;
+	b2Contact** const m_contacts;
+	b2Joint** const m_joints;
+	b2Velocity* const m_velocities;
+	b2Position* const m_positions;
 };
 
 #endif

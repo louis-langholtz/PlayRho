@@ -616,20 +616,20 @@ void b2World::SolveTOI(const b2TimeStep& step)
 				const auto typeB = bB->m_type;
 				b2Assert(typeA == b2_dynamicBody || typeB == b2_dynamicBody);
 
-				const auto activeA = bA->IsAwake() && typeA != b2_staticBody;
-				const auto activeB = bB->IsAwake() && typeB != b2_staticBody;
+				const auto activeA = bA->IsAwake() && (typeA != b2_staticBody);
+				const auto activeB = bB->IsAwake() && (typeB != b2_staticBody);
 
 				// Is at least one body active (awake and dynamic or kinematic)?
-				if (activeA == false && activeB == false)
+				if ((!activeA) && (!activeB))
 				{
 					continue;
 				}
 
-				const auto collideA = bA->IsBullet() || typeA != b2_dynamicBody;
-				const auto collideB = bB->IsBullet() || typeB != b2_dynamicBody;
+				const auto collideA = bA->IsBullet() || (typeA != b2_dynamicBody);
+				const auto collideB = bB->IsBullet() || (typeB != b2_dynamicBody);
 
 				// Are these two non-bullet dynamic bodies?
-				if (collideA == false && collideB == false)
+				if ((!collideA) && (!collideB))
 				{
 					continue;
 				}
@@ -688,7 +688,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 			}
 		}
 
-		if (minContact == nullptr || 1.0f - 10.0f * b2_epsilon < minAlpha)
+		if ((minContact == nullptr) || (1.0f - 10.0f * b2_epsilon < minAlpha))
 		{
 			// No more TOI events. Done!
 			m_stepComplete = true;
@@ -772,9 +772,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 					}
 
 					// Skip sensors.
-					const auto sensorA = contact->m_fixtureA->m_isSensor;
-					const auto sensorB = contact->m_fixtureB->m_isSensor;
-					if (sensorA || sensorB)
+					if (contact->m_fixtureA->m_isSensor || contact->m_fixtureB->m_isSensor)
 					{
 						continue;
 					}
@@ -790,7 +788,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 					contact->Update(m_contactManager.m_contactListener);
 
 					// Was the contact disabled by the user?
-					if (contact->IsEnabled() == false)
+					if (!contact->IsEnabled())
 					{
 						other->m_sweep = backup;
 						other->SynchronizeTransform();
@@ -798,7 +796,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 					}
 
 					// Are there contact points?
-					if (contact->IsTouching() == false)
+					if (!contact->IsTouching())
 					{
 						other->m_sweep = backup;
 						other->SynchronizeTransform();
@@ -941,7 +939,7 @@ void b2World::ClearForces()
 {
 	for (auto body = m_bodyList; body; body = body->GetNext())
 	{
-		body->m_force.SetZero();
+		body->m_force = b2Vec2_zero;
 		body->m_torque = 0.0f;
 	}
 }

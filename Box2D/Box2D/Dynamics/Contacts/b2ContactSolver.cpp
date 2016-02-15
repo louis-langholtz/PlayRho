@@ -48,11 +48,10 @@ b2ContactSolver::b2ContactSolver(b2ContactSolverDef* def) :
 	m_velocities(def->velocities),
 	m_allocator(def->allocator),
 	m_contacts(def->contacts),
-	m_count(def->count)
+	m_count(def->count),
+	m_positionConstraints(static_cast<b2ContactPositionConstraint*>(m_allocator->Allocate(m_count * sizeof(b2ContactPositionConstraint)))),
+	m_velocityConstraints(static_cast<b2ContactVelocityConstraint*>(m_allocator->Allocate(m_count * sizeof(b2ContactVelocityConstraint))))
 {
-	m_positionConstraints = static_cast<b2ContactPositionConstraint*>(m_allocator->Allocate(m_count * sizeof(b2ContactPositionConstraint)));
-	m_velocityConstraints = static_cast<b2ContactVelocityConstraint*>(m_allocator->Allocate(m_count * sizeof(b2ContactVelocityConstraint)));
-
 	// Initialize position independent portions of the constraints.
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
@@ -344,7 +343,7 @@ void b2ContactSolver::SolveVelocityConstraints()
 		}
 
 		// Solve normal constraints
-		if (pointCount == 1 || g_blockSolve == false)
+		if ((pointCount == 1) || (!g_blockSolve))
 		{
 			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 			{
@@ -420,10 +419,8 @@ void b2ContactSolver::SolveVelocityConstraints()
 			auto vn1 = b2Dot(dv1, normal);
 			auto vn2 = b2Dot(dv2, normal);
 
-			auto b = b2Vec2{vn1 - cp1->velocityBias, vn2 - cp2->velocityBias};
-
 			// Compute b'
-			b -= b2Mul(vc->K, a);
+			const auto b = b2Vec2{vn1 - cp1->velocityBias, vn2 - cp2->velocityBias} - b2Mul(vc->K, a);
 
 			const auto k_errorTol = 1e-3f;
 			B2_NOT_USED(k_errorTol);
@@ -531,8 +528,8 @@ void b2ContactSolver::SolveVelocityConstraints()
 					const b2Vec2 d = x - a;
 
 					// Apply incremental impulse
-					b2Vec2 P1 = d.x * normal;
-					b2Vec2 P2 = d.y * normal;
+					const auto P1 = d.x * normal;
+					const auto P2 = d.y * normal;
 					vA -= mA * (P1 + P2);
 					wA -= iA * (b2Cross(cp1->rA, P1) + b2Cross(cp2->rA, P2));
 
@@ -571,8 +568,8 @@ void b2ContactSolver::SolveVelocityConstraints()
 					const b2Vec2 d = x - a;
 
 					// Apply incremental impulse
-					b2Vec2 P1 = d.x * normal;
-					b2Vec2 P2 = d.y * normal;
+					const auto P1 = d.x * normal;
+					const auto P2 = d.y * normal;
 					vA -= mA * (P1 + P2);
 					wA -= iA * (b2Cross(cp1->rA, P1) + b2Cross(cp2->rA, P2));
 

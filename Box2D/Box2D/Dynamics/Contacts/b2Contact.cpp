@@ -142,16 +142,13 @@ void b2Contact::Update(b2ContactListener* listener)
 	auto touching = false;
 	auto wasTouching = (m_flags & e_touchingFlag) == e_touchingFlag;
 
-	const auto sensorA = m_fixtureA->IsSensor();
-	const auto sensorB = m_fixtureB->IsSensor();
-	const auto sensor = sensorA || sensorB;
-
 	auto bodyA = m_fixtureA->GetBody();
 	auto bodyB = m_fixtureB->GetBody();
 	const b2Transform& xfA = bodyA->GetTransform();
 	const b2Transform& xfB = bodyB->GetTransform();
 
 	// Is this contact a sensor?
+	const auto sensor = m_fixtureA->IsSensor() || m_fixtureB->IsSensor();
 	if (sensor)
 	{
 		const auto shapeA = m_fixtureA->GetShape();

@@ -69,10 +69,11 @@ struct b2ContactSolverDef
 class b2ContactSolver
 {
 public:
-	b2ContactSolver() = delete;
-	b2ContactSolver(const b2ContactSolver& copy) = delete;
 	b2ContactSolver(b2ContactSolverDef* def);
 	~b2ContactSolver();
+
+	b2ContactSolver() = delete;
+	b2ContactSolver(const b2ContactSolver& copy) = delete;
 
 	void InitializeVelocityConstraints();
 
@@ -83,14 +84,14 @@ public:
 	bool SolvePositionConstraints();
 	bool SolveTOIPositionConstraints(int32 toiIndexA, int32 toiIndexB);
 
-	b2TimeStep m_step;
-	b2Position* m_positions;
-	b2Velocity* m_velocities;
-	b2StackAllocator* m_allocator;
-	b2ContactPositionConstraint* m_positionConstraints;
-	b2ContactVelocityConstraint* m_velocityConstraints;
-	b2Contact** m_contacts;
-	int m_count;
+	const b2TimeStep m_step;
+	b2Position* const m_positions;
+	b2Velocity* const m_velocities;
+	b2StackAllocator* const m_allocator;
+	b2Contact** const m_contacts;
+	const int m_count;
+	b2ContactPositionConstraint* const m_positionConstraints;
+	b2ContactVelocityConstraint* const m_velocityConstraints;
 };
 
 #endif

@@ -100,13 +100,13 @@ void b2ContactManager::Destroy(b2Contact* c)
 void b2ContactManager::Collide()
 {
 	// Update awake contacts.
-	auto c = m_contactList;
-	while (c)
+	auto next = m_contactList;
+	for (auto c = m_contactList; c; c = next)
 	{
+		next = c->GetNext();
+
 		const auto fixtureA = c->GetFixtureA();
 		const auto fixtureB = c->GetFixtureB();
-		const auto indexA = c->GetChildIndexA();
-		const auto indexB = c->GetChildIndexB();
 		const auto bodyA = fixtureA->GetBody();
 		const auto bodyB = fixtureB->GetBody();
 		 
@@ -114,20 +114,16 @@ void b2ContactManager::Collide()
 		if (c->m_flags & b2Contact::e_filterFlag)
 		{
 			// Should these bodies collide?
-			if (bodyB->ShouldCollide(bodyA) == false)
+			if (!(bodyB->ShouldCollide(bodyA)))
 			{
-				auto cNuke = c;
-				c = cNuke->GetNext();
-				Destroy(cNuke);
+				Destroy(c);
 				continue;
 			}
 
 			// Check user filtering.
-			if (m_contactFilter && m_contactFilter->ShouldCollide(fixtureA, fixtureB) == false)
+			if (m_contactFilter && !(m_contactFilter->ShouldCollide(fixtureA, fixtureB)))
 			{
-				auto cNuke = c;
-				c = cNuke->GetNext();
-				Destroy(cNuke);
+				Destroy(c);
 				continue;
 			}
 
@@ -135,32 +131,30 @@ void b2ContactManager::Collide()
 			c->m_flags &= ~b2Contact::e_filterFlag;
 		}
 
-		const bool activeA = bodyA->IsAwake() && bodyA->m_type != b2_staticBody;
-		const bool activeB = bodyB->IsAwake() && bodyB->m_type != b2_staticBody;
+		const bool activeA = bodyA->IsAwake() && (bodyA->m_type != b2_staticBody);
+		const bool activeB = bodyB->IsAwake() && (bodyB->m_type != b2_staticBody);
 
 		// At least one body must be awake and it must be dynamic or kinematic.
-		if (activeA == false && activeB == false)
+		if (!activeA && !activeB)
 		{
-			c = c->GetNext();
 			continue;
 		}
 
+		const auto indexA = c->GetChildIndexA();
+		const auto indexB = c->GetChildIndexB();
 		const auto proxyIdA = fixtureA->m_proxies[indexA].proxyId;
 		const auto proxyIdB = fixtureB->m_proxies[indexB].proxyId;
 		const auto overlap = m_broadPhase.TestOverlap(proxyIdA, proxyIdB);
 
 		// Here we destroy contacts that cease to overlap in the broad-phase.
-		if (overlap == false)
+		if (!overlap)
 		{
-			auto cNuke = c;
-			c = cNuke->GetNext();
-			Destroy(cNuke);
+			Destroy(c);
 			continue;
 		}
 
 		// The contact persists.
 		c->Update(m_contactListener);
-		c = c->GetNext();
 	}
 }
 

@@ -155,13 +155,13 @@ m_bodyCapacity(bodyCapacity),
 m_contactCapacity(contactCapacity),
 m_jointCapacity(jointCapacity),
 m_allocator(allocator),
-m_listener(listener)
+m_listener(listener),
+m_bodies(static_cast<b2Body**>(m_allocator->Allocate(bodyCapacity * sizeof(b2Body*)))),
+m_contacts(static_cast<b2Contact**>(m_allocator->Allocate(contactCapacity * sizeof(b2Contact*)))),
+m_joints(static_cast<b2Joint**>(m_allocator->Allocate(jointCapacity * sizeof(b2Joint*)))),
+m_velocities(static_cast<b2Velocity*>(m_allocator->Allocate(m_bodyCapacity * sizeof(b2Velocity)))),
+m_positions(static_cast<b2Position*>(m_allocator->Allocate(m_bodyCapacity * sizeof(b2Position))))
 {
-	m_bodies = static_cast<b2Body**>(m_allocator->Allocate(bodyCapacity * sizeof(b2Body*)));
-	m_contacts = static_cast<b2Contact**>(m_allocator->Allocate(contactCapacity	 * sizeof(b2Contact*)));
-	m_joints = static_cast<b2Joint**>(m_allocator->Allocate(jointCapacity * sizeof(b2Joint*)));
-	m_velocities = static_cast<b2Velocity*>(m_allocator->Allocate(m_bodyCapacity * sizeof(b2Velocity)));
-	m_positions = static_cast<b2Position*>(m_allocator->Allocate(m_bodyCapacity * sizeof(b2Position)));
 }
 
 b2Island::~b2Island()
@@ -220,10 +220,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 	timer.Reset();
 
 	// Solver data
-	b2SolverData solverData;
-	solverData.step = step;
-	solverData.positions = m_positions;
-	solverData.velocities = m_velocities;
+	const auto solverData = b2SolverData{step, m_positions, m_velocities};
 
 	// Initialize velocity constraints.
 	b2ContactSolverDef contactSolverDef;
@@ -300,12 +297,12 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 
 	// Solve position constraints
 	timer.Reset();
-	bool positionSolved = false;
+	auto positionSolved = false;
 	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
 	{
 		const auto contactsOkay = contactSolver.SolvePositionConstraints();
 
-		bool jointsOkay = true;
+		auto jointsOkay = true;
 		for (auto j = decltype(m_jointCount){0}; j < m_jointCount; ++j)
 		{
 			const auto jointOkay = m_joints[j]->SolvePositionConstraints(solverData);
@@ -351,7 +348,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 			}
 
 			if ((b->m_flags & b2Body::e_autoSleepFlag) == 0 ||
-				b->m_angularVelocity * b->m_angularVelocity > angTolSqr ||
+				(b->m_angularVelocity * b->m_angularVelocity) > angTolSqr ||
 				b2Dot(b->m_linearVelocity, b->m_linearVelocity) > linTolSqr)
 			{
 				b->m_sleepTime = 0.0f;
