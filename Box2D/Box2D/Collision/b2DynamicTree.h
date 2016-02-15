@@ -190,8 +190,8 @@ inline void b2DynamicTree::Query(T* callback, const b2AABB& aabb) const
 		{
 			if (node->IsLeaf())
 			{
-				bool proceed = callback->QueryCallback(nodeId);
-				if (proceed == false)
+				const auto proceed = callback->QueryCallback(nodeId);
+				if (!proceed)
 				{
 					return;
 				}
@@ -244,7 +244,7 @@ inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) con
 
 		const auto node = m_nodes + nodeId;
 
-		if (b2TestOverlap(node->aabb, segmentAABB) == false)
+		if (!b2TestOverlap(node->aabb, segmentAABB))
 		{
 			continue;
 		}

@@ -178,7 +178,7 @@ void b2DynamicTree::InsertLeaf(int32 leaf)
 	// Find the best sibling for this node
 	const auto leafAABB = m_nodes[leaf].aabb;
 	auto index = m_root;
-	while (m_nodes[index].IsLeaf() == false)
+	while (!m_nodes[index].IsLeaf())
 	{
 		const auto child1 = m_nodes[index].child1;
 		const auto child2 = m_nodes[index].child2;
@@ -669,7 +669,7 @@ int32 b2DynamicTree::GetMaxBalance() const
 			continue;
 		}
 
-		b2Assert(node->IsLeaf() == false);
+		b2Assert(!node->IsLeaf());
 
 		const auto child1 = node->child1;
 		const auto child2 = node->child2;

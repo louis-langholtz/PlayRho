@@ -82,7 +82,7 @@ void b2World::SetDebugDraw(b2Draw* debugDraw)
 
 b2Body* b2World::CreateBody(const b2BodyDef* def)
 {
-	b2Assert(IsLocked() == false);
+	b2Assert(!IsLocked());
 	if (IsLocked())
 	{
 		return nullptr;
@@ -107,7 +107,7 @@ b2Body* b2World::CreateBody(const b2BodyDef* def)
 void b2World::DestroyBody(b2Body* b)
 {
 	b2Assert(m_bodyCount > 0);
-	b2Assert(IsLocked() == false);
+	b2Assert(!IsLocked());
 	if (IsLocked())
 	{
 		return;
@@ -187,7 +187,7 @@ void b2World::DestroyBody(b2Body* b)
 
 b2Joint* b2World::CreateJoint(const b2JointDef* def)
 {
-	b2Assert(IsLocked() == false);
+	b2Assert(!IsLocked());
 	if (IsLocked())
 	{
 		return nullptr;
@@ -224,7 +224,7 @@ b2Joint* b2World::CreateJoint(const b2JointDef* def)
 	auto bodyB = def->bodyB;
 
 	// If the joint prevents collisions, then flag any contacts for filtering.
-	if (def->collideConnected == false)
+	if (!def->collideConnected)
 	{
 		auto edge = bodyB->GetContactList();
 		while (edge)
@@ -247,7 +247,7 @@ b2Joint* b2World::CreateJoint(const b2JointDef* def)
 
 void b2World::DestroyJoint(b2Joint* j)
 {
-	b2Assert(IsLocked() == false);
+	b2Assert(!IsLocked());
 	if (IsLocked())
 	{
 		return;
@@ -349,7 +349,7 @@ void b2World::SetAllowSleeping(bool flag)
 	}
 
 	m_allowSleep = flag;
-	if (m_allowSleep == false)
+	if (!m_allowSleep)
 	{
 		for (auto b = m_bodyList; b; b = b->m_next)
 		{
@@ -396,7 +396,7 @@ void b2World::Solve(const b2TimeStep& step)
 			continue;
 		}
 
-		if (seed->IsAwake() == false || seed->IsActive() == false)
+		if ((!seed->IsAwake()) || (!seed->IsActive()))
 		{
 			continue;
 		}
@@ -409,7 +409,7 @@ void b2World::Solve(const b2TimeStep& step)
 
 		// Reset island and stack.
 		island.Clear();
-		int32 stackCount = 0;
+		auto stackCount = int32{0};
 		stack[stackCount++] = seed;
 		seed->m_flags |= b2Body::e_islandFlag;
 
@@ -418,7 +418,7 @@ void b2World::Solve(const b2TimeStep& step)
 		{
 			// Grab the next body off the stack and add it to the island.
 			auto b = stack[--stackCount];
-			b2Assert(b->IsActive() == true);
+			b2Assert(b->IsActive());
 			island.Add(b);
 
 			// Make sure the body is awake.
@@ -443,16 +443,13 @@ void b2World::Solve(const b2TimeStep& step)
 				}
 
 				// Is this contact solid and touching?
-				if (contact->IsEnabled() == false ||
-					contact->IsTouching() == false)
+				if ((!contact->IsEnabled()) || (!contact->IsTouching()))
 				{
 					continue;
 				}
 
 				// Skip sensors.
-				const auto sensorA = contact->m_fixtureA->m_isSensor;
-				const auto sensorB = contact->m_fixtureB->m_isSensor;
-				if (sensorA || sensorB)
+				if (contact->m_fixtureA->m_isSensor || contact->m_fixtureB->m_isSensor)
 				{
 					continue;
 				}
@@ -476,7 +473,7 @@ void b2World::Solve(const b2TimeStep& step)
 			// Search all joints connect to this body.
 			for (auto je = b->m_jointList; je; je = je->next)
 			{
-				if (je->joint->m_islandFlag == true)
+				if (je->joint->m_islandFlag)
 				{
 					continue;
 				}
@@ -484,7 +481,7 @@ void b2World::Solve(const b2TimeStep& step)
 				auto other = je->other;
 
 				// Don't simulate joints connected to inactive bodies.
-				if (other->IsActive() == false)
+				if (!other->IsActive())
 				{
 					continue;
 				}
@@ -581,7 +578,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 		for (auto c = m_contactManager.m_contactList; c; c = c->m_next)
 		{
 			// Is this contact disabled?
-			if (c->IsEnabled() == false)
+			if (!c->IsEnabled())
 			{
 				continue;
 			}
@@ -600,8 +597,8 @@ void b2World::SolveTOI(const b2TimeStep& step)
 			}
 			else
 			{
-				auto fA = c->GetFixtureA();
-				auto fB = c->GetFixtureB();
+				const auto fA = c->GetFixtureA();
+				const auto fB = c->GetFixtureB();
 
 				// Is there a sensor?
 				if (fA->IsSensor() || fB->IsSensor())
@@ -609,8 +606,8 @@ void b2World::SolveTOI(const b2TimeStep& step)
 					continue;
 				}
 
-				auto bA = fA->GetBody();
-				auto bB = fB->GetBody();
+				const auto bA = fA->GetBody();
+				const auto bB = fB->GetBody();
 
 				const auto typeA = bA->m_type;
 				const auto typeB = bB->m_type;
@@ -713,7 +710,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 		++minContact->m_toiCount;
 
 		// Is the contact solid?
-		if (minContact->IsEnabled() == false || minContact->IsTouching() == false)
+		if ((!minContact->IsEnabled()) || (!minContact->IsTouching()))
 		{
 			// Restore the sweeps.
 			minContact->SetEnabled(false);
@@ -884,17 +881,8 @@ void b2World::Step(float32 dt, int32 velocityIterations, int32 positionIteration
 	step.dt = dt;
 	step.velocityIterations	= velocityIterations;
 	step.positionIterations = positionIterations;
-	if (dt > 0.0f)
-	{
-		step.inv_dt = 1.0f / dt;
-	}
-	else
-	{
-		step.inv_dt = 0.0f;
-	}
-
+	step.inv_dt = (dt > 0.0f)? 1.0f / dt: 0.0f;
 	step.dtRatio = m_inv_dt0 * dt;
-
 	step.warmStarting = m_warmStarting;
 	
 	// Update contacts. This is where some contacts are destroyed.
@@ -1118,7 +1106,7 @@ void b2World::DrawDebugData()
 			const b2Transform& xf = b->GetTransform();
 			for (auto f = b->GetFixtureList(); f; f = f->GetNext())
 			{
-				if (b->IsActive() == false)
+				if (!b->IsActive())
 				{
 					DrawShape(f, xf, b2Color(0.5f, 0.5f, 0.3f));
 				}
@@ -1130,7 +1118,7 @@ void b2World::DrawDebugData()
 				{
 					DrawShape(f, xf, b2Color(0.5f, 0.5f, 0.9f));
 				}
-				else if (b->IsAwake() == false)
+				else if (!b->IsAwake())
 				{
 					DrawShape(f, xf, b2Color(0.6f, 0.6f, 0.6f));
 				}
@@ -1172,7 +1160,7 @@ void b2World::DrawDebugData()
 
 		for (auto b = m_bodyList; b; b = b->GetNext())
 		{
-			if (b->IsActive() == false)
+			if (!b->IsActive())
 			{
 				continue;
 			}

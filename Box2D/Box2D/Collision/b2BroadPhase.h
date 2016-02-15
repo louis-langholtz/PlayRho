@@ -217,10 +217,10 @@ void b2BroadPhase::UpdatePairs(T* callback)
 	std::sort(m_pairBuffer, m_pairBuffer + m_pairCount, b2PairLessThan);
 
 	// Send the pairs back to the client.
-	int32 i = 0;
+	auto i = decltype(m_pairCount){0};
 	while (i < m_pairCount)
 	{
-		b2Pair* primaryPair = m_pairBuffer + i;
+		const auto primaryPair = m_pairBuffer + i;
 		void* userDataA = m_tree.GetUserData(primaryPair->proxyIdA);
 		void* userDataB = m_tree.GetUserData(primaryPair->proxyIdB);
 
@@ -230,7 +230,7 @@ void b2BroadPhase::UpdatePairs(T* callback)
 		// Skip any duplicate pairs.
 		while (i < m_pairCount)
 		{
-			b2Pair* pair = m_pairBuffer + i;
+			const auto pair = m_pairBuffer + i;
 			if (pair->proxyIdA != primaryPair->proxyIdA || pair->proxyIdB != primaryPair->proxyIdB)
 			{
 				break;
