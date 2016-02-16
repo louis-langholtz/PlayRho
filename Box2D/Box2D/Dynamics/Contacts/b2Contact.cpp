@@ -34,46 +34,53 @@
 #include <Box2D/Dynamics/b2Fixture.h>
 #include <Box2D/Dynamics/b2World.h>
 
-b2ContactRegister b2Contact::s_registers[b2Shape::e_typeCount][b2Shape::e_typeCount];
-bool b2Contact::s_initialized = false;
+using b2ContactCreateFcn = b2Contact* (b2Fixture* fixtureA, int32 indexA,
+									   b2Fixture* fixtureB, int32 indexB,
+									   b2BlockAllocator* allocator);
+using b2ContactDestroyFcn = void (b2Contact* contact, b2BlockAllocator* allocator);
 
-void b2Contact::InitializeRegisters()
+struct b2ContactRegister
 {
-	AddType(b2CircleContact::Create, b2CircleContact::Destroy, b2Shape::e_circle, b2Shape::e_circle);
-	AddType(b2PolygonAndCircleContact::Create, b2PolygonAndCircleContact::Destroy, b2Shape::e_polygon, b2Shape::e_circle);
-	AddType(b2PolygonContact::Create, b2PolygonContact::Destroy, b2Shape::e_polygon, b2Shape::e_polygon);
-	AddType(b2EdgeAndCircleContact::Create, b2EdgeAndCircleContact::Destroy, b2Shape::e_edge, b2Shape::e_circle);
-	AddType(b2EdgeAndPolygonContact::Create, b2EdgeAndPolygonContact::Destroy, b2Shape::e_edge, b2Shape::e_polygon);
-	AddType(b2ChainAndCircleContact::Create, b2ChainAndCircleContact::Destroy, b2Shape::e_chain, b2Shape::e_circle);
-	AddType(b2ChainAndPolygonContact::Create, b2ChainAndPolygonContact::Destroy, b2Shape::e_chain, b2Shape::e_polygon);
-}
+	b2ContactCreateFcn* const createFcn;
+	b2ContactDestroyFcn* const destroyFcn;
+	const bool primary;
+};
 
-void b2Contact::AddType(b2ContactCreateFcn* createFcn, b2ContactDestroyFcn* destoryFcn,
-						b2Shape::Type type1, b2Shape::Type type2)
+// Order dependent on b2Shape::Type enumeration values
+static constexpr b2ContactRegister s_registers[b2Shape::e_typeCount][b2Shape::e_typeCount] =
 {
-	b2Assert(0 <= type1 && type1 < b2Shape::e_typeCount);
-	b2Assert(0 <= type2 && type2 < b2Shape::e_typeCount);
-	
-	s_registers[type1][type2].createFcn = createFcn;
-	s_registers[type1][type2].destroyFcn = destoryFcn;
-	s_registers[type1][type2].primary = true;
-
-	if (type1 != type2)
+	// circle-* contacts
 	{
-		s_registers[type2][type1].createFcn = createFcn;
-		s_registers[type2][type1].destroyFcn = destoryFcn;
-		s_registers[type2][type1].primary = false;
-	}
-}
+		{b2CircleContact::Create, b2CircleContact::Destroy, true}, // circle
+		{b2EdgeAndCircleContact::Create, b2EdgeAndCircleContact::Destroy, false}, // edge
+		{b2PolygonAndCircleContact::Create, b2PolygonAndCircleContact::Destroy, false}, // polygon
+		{b2ChainAndCircleContact::Create, b2ChainAndCircleContact::Destroy, false}, // chain
+	},
+	// edge-* contacts
+	{
+		{b2EdgeAndCircleContact::Create, b2EdgeAndCircleContact::Destroy, true}, // circle
+		{nullptr, nullptr, false}, // edge
+		{b2EdgeAndPolygonContact::Create, b2EdgeAndPolygonContact::Destroy, true}, // polygon
+		{nullptr, nullptr, false}, // chain
+	},
+	// polygon-* contacts
+	{
+		{b2PolygonAndCircleContact::Create, b2PolygonAndCircleContact::Destroy, true}, // circle
+		{b2EdgeAndPolygonContact::Create, b2EdgeAndPolygonContact::Destroy, false}, // edge
+		{b2PolygonContact::Create, b2PolygonContact::Destroy, true}, // polygon
+		{nullptr, nullptr, false}, // chain
+	},
+	// chain-* contacts
+	{
+		{b2ChainAndCircleContact::Create, b2ChainAndCircleContact::Destroy, true}, // circle
+		{nullptr, nullptr, false}, // edge
+		{b2ChainAndPolygonContact::Create, b2ChainAndPolygonContact::Destroy, true}, // polygon
+		{nullptr, nullptr, false}, // chain
+	},
+};
 
 b2Contact* b2Contact::Create(b2Fixture* fixtureA, int32 indexA, b2Fixture* fixtureB, int32 indexB, b2BlockAllocator* allocator)
 {
-	if (!s_initialized)
-	{
-		InitializeRegisters();
-		s_initialized = true;
-	}
-
 	const auto type1 = fixtureA->GetType();
 	const auto type2 = fixtureB->GetType();
 
@@ -100,8 +107,6 @@ b2Contact* b2Contact::Create(b2Fixture* fixtureA, int32 indexA, b2Fixture* fixtu
 
 void b2Contact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
 {
-	b2Assert(s_initialized == true);
-
 	auto fixtureA = contact->m_fixtureA;
 	auto fixtureB = contact->m_fixtureB;
 
