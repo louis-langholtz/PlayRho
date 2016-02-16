@@ -413,6 +413,8 @@ private:
 
 	void Advance(float32 t);
 
+	void DestroyContacts();
+
 	b2BodyType m_type;
 
 	uint16 m_flags = 0;

@@ -94,10 +94,23 @@ b2Body::~b2Body()
 	// shapes and joints are destroyed in b2World::Destroy
 }
 
+void b2Body::DestroyContacts()
+{
+	// Destroy the attached contacts.
+	auto ce = m_contactList;
+	while (ce)
+	{
+		auto ce0 = ce;
+		ce = ce->next;
+		m_world->m_contactManager.Destroy(ce0->contact);
+	}
+	m_contactList = nullptr;
+}
+
 void b2Body::SetType(b2BodyType type)
 {
-	b2Assert(m_world->IsLocked() == false);
-	if (m_world->IsLocked() == true)
+	b2Assert(!m_world->IsLocked());
+	if (m_world->IsLocked())
 	{
 		return;
 	}
@@ -113,7 +126,7 @@ void b2Body::SetType(b2BodyType type)
 
 	if (m_type == b2_staticBody)
 	{
-		m_linearVelocity.SetZero();
+		m_linearVelocity = b2Vec2_zero;
 		m_angularVelocity = 0.0f;
 		m_sweep.a0 = m_sweep.a;
 		m_sweep.c0 = m_sweep.c;
@@ -122,18 +135,10 @@ void b2Body::SetType(b2BodyType type)
 
 	SetAwake(true);
 
-	m_force.SetZero();
+	m_force = b2Vec2_zero;
 	m_torque = 0.0f;
 
-	// Delete the attached contacts.
-	auto ce = m_contactList;
-	while (ce)
-	{
-		auto ce0 = ce;
-		ce = ce->next;
-		m_world->m_contactManager.Destroy(ce0->contact);
-	}
-	m_contactList = nullptr;
+	DestroyContacts();
 
 	// Touch the proxies so that new contacts will be created (when appropriate)
 	auto broadPhase = &m_world->m_contactManager.m_broadPhase;
@@ -149,8 +154,8 @@ void b2Body::SetType(b2BodyType type)
 
 b2Fixture* b2Body::CreateFixture(const b2FixtureDef* def)
 {
-	b2Assert(m_world->IsLocked() == false);
-	if (m_world->IsLocked() == true)
+	b2Assert(!m_world->IsLocked());
+	if (m_world->IsLocked())
 	{
 		return nullptr;
 	}
@@ -195,8 +200,8 @@ b2Fixture* b2Body::CreateFixture(const b2Shape* shape, float32 density)
 
 void b2Body::DestroyFixture(b2Fixture* fixture)
 {
-	b2Assert(m_world->IsLocked() == false);
-	if (m_world->IsLocked() == true)
+	b2Assert(!m_world->IsLocked());
+	if (m_world->IsLocked())
 	{
 		return;
 	}
@@ -333,8 +338,8 @@ void b2Body::ResetMassData()
 
 void b2Body::SetMassData(const b2MassData* massData)
 {
-	b2Assert(m_world->IsLocked() == false);
-	if (m_world->IsLocked() == true)
+	b2Assert(!m_world->IsLocked());
+	if (m_world->IsLocked())
 	{
 		return;
 	}
@@ -385,7 +390,7 @@ bool b2Body::ShouldCollide(const b2Body* other) const
 	{
 		if (jn->other == other)
 		{
-			if (jn->joint->m_collideConnected == false)
+			if (!jn->joint->m_collideConnected)
 			{
 				return false;
 			}
@@ -397,8 +402,8 @@ bool b2Body::ShouldCollide(const b2Body* other) const
 
 void b2Body::SetTransform(const b2Vec2& position, float32 angle)
 {
-	b2Assert(m_world->IsLocked() == false);
-	if (m_world->IsLocked() == true)
+	b2Assert(!m_world->IsLocked());
+	if (m_world->IsLocked())
 	{
 		return;
 	}
@@ -434,7 +439,7 @@ void b2Body::SynchronizeFixtures()
 
 void b2Body::SetActive(bool flag)
 {
-	b2Assert(m_world->IsLocked() == false);
+	b2Assert(!m_world->IsLocked());
 
 	if (flag == IsActive())
 	{
@@ -465,15 +470,7 @@ void b2Body::SetActive(bool flag)
 			f->DestroyProxies(broadPhase);
 		}
 
-		// Destroy the attached contacts.
-		auto ce = m_contactList;
-		while (ce)
-		{
-			auto ce0 = ce;
-			ce = ce->next;
-			m_world->m_contactManager.Destroy(ce0->contact);
-		}
-		m_contactList = nullptr;
+		DestroyContacts();
 	}
 }
 
