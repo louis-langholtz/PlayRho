@@ -494,7 +494,7 @@ inline void b2Body::SetLinearVelocity(const b2Vec2& v)
 		return;
 	}
 
-	if (b2Dot(v,v) > 0.0f)
+	if (v != b2Vec2_zero)
 	{
 		SetAwake(true);
 	}
@@ -514,7 +514,7 @@ inline void b2Body::SetAngularVelocity(float32 w)
 		return;
 	}
 
-	if (w * w > 0.0f)
+	if (w != 0.0f)
 	{
 		SetAwake(true);
 	}
@@ -635,9 +635,9 @@ inline void b2Body::SetAwake(bool flag)
 	{
 		m_flags &= ~e_awakeFlag;
 		m_sleepTime = 0.0f;
-		m_linearVelocity.SetZero();
+		m_linearVelocity = b2Vec2_zero;
 		m_angularVelocity = 0.0f;
-		m_force.SetZero();
+		m_force = b2Vec2_zero;
 		m_torque = 0.0f;
 	}
 }

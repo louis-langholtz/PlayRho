@@ -33,6 +33,43 @@
 #include <Box2D/Common/b2Draw.h>
 #include <Box2D/Common/b2Timer.h>
 #include <new>
+#include <functional>
+#include <type_traits>
+
+template <typename T>
+class b2FlagGuard
+{
+public:
+	b2FlagGuard(T& flag, T value) : m_flag(flag), m_value(value)
+	{
+		static_assert(std::is_unsigned<T>::value, "Unsigned interger required");
+		m_flag |= m_value;
+	}
+
+	~b2FlagGuard()
+	{
+		m_flag &= ~m_value;
+	}
+
+	b2FlagGuard() = delete;
+
+private:
+	T& m_flag;
+	T m_value;
+};
+
+template <class T>
+class b2RaiiWrapper
+{
+public:
+	b2RaiiWrapper() = delete;
+	b2RaiiWrapper(std::function<void(T&)> on_destruction): m_on_destruction(on_destruction) {}
+	~b2RaiiWrapper() { m_on_destruction(m_wrapped); }
+	T m_wrapped;
+
+private:
+	std::function<void(T&)> m_on_destruction;
+};
 
 b2World::b2World(const b2Vec2& gravity): m_gravity(gravity)
 {
@@ -377,7 +414,7 @@ void b2World::Solve(const b2TimeStep& step)
 	}
 	for (auto c = m_contactManager.GetContactList(); c; c = c->GetNext())
 	{
-		c->SetInIsland(false);
+		c->UnsetInIsland();
 	}
 	for (auto j = m_jointList; j; j = j->GetNext())
 	{
@@ -453,7 +490,7 @@ void b2World::Solve(const b2TimeStep& step)
 				}
 
 				island.Add(contact);
-				contact->SetInIsland(true);
+				contact->SetInIsland();
 
 				auto other = ce->other;
 
@@ -560,7 +597,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 		for (auto c = m_contactManager.GetContactList(); c; c = c->m_next)
 		{
 			// Invalidate TOI
-			c->SetInIsland(false);
+			c->UnsetInIsland();
 			c->m_toiCount = 0;
 			c->UnsetToi();
 		}
@@ -722,7 +759,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 
 		bA->SetInIsland(true);
 		bB->SetInIsland(true);
-		minContact->SetInIsland(true);
+		minContact->SetInIsland();
 
 		// Get contacts on bodyA and bodyB.
 		b2Body* bodies[2] = {bA, bB};
@@ -791,7 +828,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 					}
 
 					// Add the contact to the island
-					contact->SetInIsland(true);
+					contact->SetInIsland();
 					island.Add(contact);
 
 					// Has the other body already been added to the island?
@@ -838,7 +875,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 			// Invalidate all contact TOIs on this displaced body.
 			for (auto ce = body->m_contactList; ce; ce = ce->next)
 			{
-				ce->contact->SetInIsland(false);
+				ce->contact->UnsetInIsland();
 				ce->contact->UnsetToi();
 			}
 		}
@@ -866,7 +903,8 @@ void b2World::Step(float32 dt, int32 velocityIterations, int32 positionIteration
 		m_flags &= ~e_newFixture;
 	}
 
-	m_flags |= e_locked;
+	b2Assert((m_flags & e_locked) == 0);
+	b2FlagGuard<decltype(m_flags)> flagGaurd(m_flags, e_locked);
 
 	b2TimeStep step;
 	step.dt = dt;
@@ -884,7 +922,7 @@ void b2World::Step(float32 dt, int32 velocityIterations, int32 positionIteration
 	}
 
 	// Integrate velocities, solve velocity constraints, and integrate positions.
-	if (m_stepComplete && step.dt > 0.0f)
+	if (m_stepComplete && (step.dt > 0.0f))
 	{
 		b2Timer timer;
 		Solve(step);
@@ -892,7 +930,7 @@ void b2World::Step(float32 dt, int32 velocityIterations, int32 positionIteration
 	}
 
 	// Handle TOI events.
-	if (m_continuousPhysics && step.dt > 0.0f)
+	if (m_continuousPhysics && (step.dt > 0.0f))
 	{
 		b2Timer timer;
 		SolveTOI(step);
@@ -908,8 +946,6 @@ void b2World::Step(float32 dt, int32 velocityIterations, int32 positionIteration
 	{
 		ClearForces();
 	}
-
-	m_flags &= ~e_locked;
 
 	m_profile.step = stepTimer.GetMilliseconds();
 }

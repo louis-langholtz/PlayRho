@@ -212,7 +212,7 @@ public:
 private:
 
 	// m_flags
-	enum
+	enum: uint32
 	{
 		e_newFixture	= 0x0001,
 		e_locked		= 0x0002,
@@ -233,7 +233,7 @@ private:
 	b2BlockAllocator m_blockAllocator;
 	b2StackAllocator m_stackAllocator;
 
-	int32 m_flags = e_clearForces;
+	uint32 m_flags = e_clearForces;
 
 	b2ContactManager m_contactManager{&m_blockAllocator};
 

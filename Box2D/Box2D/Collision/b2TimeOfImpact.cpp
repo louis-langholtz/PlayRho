@@ -477,7 +477,7 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 
 	b2_toiMaxIters = b2Max(b2_toiMaxIters, iter);
 
-	float32 time = timer.GetMilliseconds();
+	const auto time = timer.GetMilliseconds();
 	b2_toiMaxTime = b2Max(b2_toiMaxTime, time);
 	b2_toiTime += time;
 }

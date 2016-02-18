@@ -182,7 +182,8 @@ protected:
 	void UnsetToi();
 
 	bool IsInIsland() const;
-	void SetInIsland(bool value);
+	void SetInIsland();
+	void UnsetInIsland();
 
 	uint32 m_flags = e_enabledFlag;
 
@@ -375,12 +376,14 @@ inline bool b2Contact::IsInIsland() const
 	return m_flags & b2Contact::e_islandFlag;
 }
 
-inline void b2Contact::SetInIsland(bool value)
+inline void b2Contact::SetInIsland()
 {
-	if (value)
-		m_flags |= b2Contact::e_islandFlag;
-	else
-		m_flags &= ~b2Contact::e_islandFlag;
+	m_flags |= b2Contact::e_islandFlag;
+}
+
+inline void b2Contact::UnsetInIsland()
+{	
+	m_flags &= ~b2Contact::e_islandFlag;
 }
 
 #endif
