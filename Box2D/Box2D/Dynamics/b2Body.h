@@ -307,6 +307,9 @@ public:
 	/// @param flag set to true to wake the body, false to put it to sleep.
 	void SetAwake(bool flag);
 
+	void SetAwake();
+	void UnsetAwake();
+
 	/// Get the sleeping state of this body.
 	/// @return true if the body is awake.
 	bool IsAwake() const noexcept;
@@ -625,21 +628,31 @@ inline void b2Body::SetAwake(bool flag)
 {
 	if (flag)
 	{
-		if ((m_flags & e_awakeFlag) == 0)
-		{
-			m_flags |= e_awakeFlag;
-			m_sleepTime = 0.0f;
-		}
+		SetAwake();
 	}
 	else
 	{
-		m_flags &= ~e_awakeFlag;
-		m_sleepTime = 0.0f;
-		m_linearVelocity = b2Vec2_zero;
-		m_angularVelocity = 0.0f;
-		m_force = b2Vec2_zero;
-		m_torque = 0.0f;
+		UnsetAwake();
 	}
+}
+
+void b2Body::SetAwake()
+{
+	if ((m_flags & e_awakeFlag) == 0)
+	{
+		m_flags |= e_awakeFlag;
+		m_sleepTime = 0.0f;
+	}
+}
+
+void b2Body::UnsetAwake()
+{
+	m_flags &= ~e_awakeFlag;
+	m_sleepTime = 0.0f;
+	m_linearVelocity = b2Vec2_zero;
+	m_angularVelocity = 0.0f;
+	m_force = b2Vec2_zero;
+	m_torque = 0.0f;
 }
 
 inline bool b2Body::IsAwake() const noexcept
