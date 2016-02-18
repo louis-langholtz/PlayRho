@@ -21,6 +21,7 @@
 
 #include <Box2D/Common/b2Math.h>
 #include <limits.h>
+#include <array>
 
 /// @file
 /// Structures and functions used for computing contact points, distance
@@ -165,9 +166,8 @@ struct b2AABB
 	inline bool IsValid() const
 	{
 		const auto d = upperBound - lowerBound;
-		auto valid = d.x >= 0.0f && d.y >= 0.0f;
-		valid = valid && lowerBound.IsValid() && upperBound.IsValid();
-		return valid;
+		const auto valid = (d.x >= 0.0f) && (d.y >= 0.0f);
+		return valid && lowerBound.IsValid() && upperBound.IsValid();
 	}
 
 	/// Get the center of the AABB.
@@ -205,14 +205,11 @@ struct b2AABB
 	}
 
 	/// Does this aabb contain the provided AABB.
-	constexpr bool Contains(const b2AABB& aabb) const
+	constexpr bool Contains(const b2AABB& aabb) const noexcept
 	{
-		bool result = true;
-		result = result && lowerBound.x <= aabb.lowerBound.x;
-		result = result && lowerBound.y <= aabb.lowerBound.y;
-		result = result && aabb.upperBound.x <= upperBound.x;
-		result = result && aabb.upperBound.y <= upperBound.y;
-		return result;
+		return
+			(lowerBound.x <= aabb.lowerBound.x) && (lowerBound.y <= aabb.lowerBound.y) &&
+			(aabb.upperBound.x <= upperBound.x) && (aabb.upperBound.y <= upperBound.y);
 	}
 
 	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const;
@@ -247,7 +244,7 @@ void b2CollideEdgeAndPolygon(b2Manifold* manifold,
 							   const b2PolygonShape* circleB, const b2Transform& xfB);
 
 /// Clipping for contact manifolds.
-int32 b2ClipSegmentToLine(b2ClipVertex vOut[2], const b2ClipVertex vIn[2],
+int32 b2ClipSegmentToLine(std::array<b2ClipVertex, 2>& vOut, const std::array<b2ClipVertex,2>& vIn,
 							const b2Vec2& normal, float32 offset, int32 vertexIndexA);
 
 /// Determine if two generic shapes overlap.
@@ -260,12 +257,11 @@ bool b2TestOverlap(	const b2Shape* shapeA, int32 indexA,
 inline bool b2TestOverlap(const b2AABB& a, const b2AABB& b) noexcept
 {
 	const auto d1 = b.lowerBound - a.upperBound;
-	const auto d2 = a.lowerBound - b.upperBound;
-
-	if (d1.x > 0.0f || d1.y > 0.0f)
+	if ((d1.x > 0.0f) || (d1.y > 0.0f))
 		return false;
 
-	if (d2.x > 0.0f || d2.y > 0.0f)
+	const auto d2 = a.lowerBound - b.upperBound;
+	if ((d2.x > 0.0f) || (d2.y > 0.0f))
 		return false;
 
 	return true;

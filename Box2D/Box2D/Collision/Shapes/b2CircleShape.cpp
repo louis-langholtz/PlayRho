@@ -70,8 +70,7 @@ bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input
 	{
 		a /= rr;
 		output->fraction = a;
-		output->normal = s + a * r;
-		output->normal.Normalize();
+		output->normal = b2Normalize(s + a * r);
 		return true;
 	}
 

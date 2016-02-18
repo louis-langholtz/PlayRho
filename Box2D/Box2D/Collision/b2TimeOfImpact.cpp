@@ -66,8 +66,7 @@ struct b2SeparationFunction
 			b2Vec2 pointA = b2Mul(xfA, localPointA);
 			b2Vec2 pointB = b2Mul(xfB, localPointB);
 			m_axis = pointB - pointA;
-			float32 s = m_axis.Normalize();
-			return s;
+			return m_axis.Normalize();
 		}
 		else if (cache->indexA[0] == cache->indexA[1])
 		{
@@ -76,8 +75,7 @@ struct b2SeparationFunction
 			b2Vec2 localPointB1 = proxyB->GetVertex(cache->indexB[0]);
 			b2Vec2 localPointB2 = proxyB->GetVertex(cache->indexB[1]);
 
-			m_axis = b2Cross(localPointB2 - localPointB1, 1.0f);
-			m_axis.Normalize();
+			m_axis = b2Normalize(b2Cross(localPointB2 - localPointB1, 1.0f));
 			b2Vec2 normal = b2Mul(xfB.q, m_axis);
 
 			m_localPoint = 0.5f * (localPointB1 + localPointB2);
@@ -86,7 +84,7 @@ struct b2SeparationFunction
 			b2Vec2 localPointA = proxyA->GetVertex(cache->indexA[0]);
 			b2Vec2 pointA = b2Mul(xfA, localPointA);
 
-			float32 s = b2Dot(pointA - pointB, normal);
+			auto s = b2Dot(pointA - pointB, normal);
 			if (s < 0.0f)
 			{
 				m_axis = -m_axis;
@@ -101,8 +99,7 @@ struct b2SeparationFunction
 			b2Vec2 localPointA1 = m_proxyA->GetVertex(cache->indexA[0]);
 			b2Vec2 localPointA2 = m_proxyA->GetVertex(cache->indexA[1]);
 			
-			m_axis = b2Cross(localPointA2 - localPointA1, 1.0f);
-			m_axis.Normalize();
+			m_axis = b2Normalize(b2Cross(localPointA2 - localPointA1, 1.0f));
 			b2Vec2 normal = b2Mul(xfA.q, m_axis);
 
 			m_localPoint = 0.5f * (localPointA1 + localPointA2);

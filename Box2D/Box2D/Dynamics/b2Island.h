@@ -60,33 +60,76 @@ public:
 	void Add(b2Contact* contact)
 	{
 		b2Assert(m_contactCount < m_contactCapacity);
-		m_contacts[m_contactCount++] = contact;
+		m_contacts[m_contactCount] = contact;
+		++m_contactCount;
 	}
 
 	void Add(b2Joint* joint)
 	{
 		b2Assert(m_jointCount < m_jointCapacity);
-		m_joints[m_jointCount++] = joint;
+		m_joints[m_jointCount] = joint;
+		++m_jointCount;
 	}
 
 	void Report(const b2ContactVelocityConstraint* constraints);
 
-	int32 m_bodyCount = 0;
-	int32 m_jointCount = 0;
-	int32 m_contactCount = 0;
+	inline int32 GetBodyCapacity() const
+	{
+		return m_bodyCapacity;
+	}
 
+	inline int32 GetContactCapacity() const
+	{
+		return m_contactCapacity;
+	}
+	
+	inline int32 GetJointCapacity() const
+	{
+		return m_jointCapacity;
+	}
+
+	inline int32 GetBodyCount() const
+	{
+		return m_bodyCount;
+	}
+
+	inline int32 GetContactCount() const
+	{
+		return m_contactCount;
+	}
+
+	inline int32 GetJointCount() const
+	{
+		return m_jointCount;
+	}
+
+	inline const b2Body* GetBody(int32 i) const
+	{
+		return m_bodies[i];
+	}
+
+	inline b2Body* GetBody(int32 i)
+	{
+		return m_bodies[i];
+	}
+
+private:
 	const int32 m_bodyCapacity;
 	const int32 m_contactCapacity;
 	const int32 m_jointCapacity;
 
 	b2StackAllocator* const m_allocator;
 	b2ContactListener* const m_listener;
-
+	
 	b2Body** const m_bodies;
 	b2Contact** const m_contacts;
 	b2Joint** const m_joints;
 	b2Velocity* const m_velocities;
 	b2Position* const m_positions;
+
+	int32 m_bodyCount = 0;
+	int32 m_jointCount = 0;
+	int32 m_contactCount = 0;
 };
 
 #endif

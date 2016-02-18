@@ -237,7 +237,7 @@ void b2Body::DestroyFixture(b2Fixture* fixture)
 		const auto fixtureA = c->GetFixtureA();
 		const auto fixtureB = c->GetFixtureB();
 
-		if (fixture == fixtureA || fixture == fixtureB)
+		if ((fixture == fixtureA) || (fixture == fixtureB))
 		{
 			// This destroys the contact and removes it from
 			// this body's contact list.
@@ -274,7 +274,7 @@ void b2Body::ResetMassData()
 	m_sweep.localCenter.SetZero();
 
 	// Static and kinematic bodies have zero mass.
-	if (m_type == b2_staticBody || m_type == b2_kinematicBody)
+	if ((m_type == b2_staticBody) || (m_type == b2_kinematicBody))
 	{
 		m_sweep.c0 = m_xf.p;
 		m_sweep.c = m_xf.p;
@@ -313,7 +313,7 @@ void b2Body::ResetMassData()
 		m_invMass = 1.0f;
 	}
 
-	if (m_I > 0.0f && (m_flags & e_fixedRotationFlag) == 0)
+	if ((m_I > 0.0f) && ((m_flags & e_fixedRotationFlag) == 0))
 	{
 		// Center the inertia about the center of mass.
 		m_I -= m_mass * b2Dot(localCenter, localCenter);
@@ -361,7 +361,7 @@ void b2Body::SetMassData(const b2MassData* massData)
 
 	m_invMass = 1.0f / m_mass;
 
-	if (massData->I > 0.0f && (m_flags & b2Body::e_fixedRotationFlag) == 0)
+	if ((massData->I > 0.0f) && ((m_flags & b2Body::e_fixedRotationFlag) == 0))
 	{
 		m_I = massData->I - m_mass * b2Dot(massData->center, massData->center);
 		b2Assert(m_I > 0.0f);
@@ -380,7 +380,7 @@ void b2Body::SetMassData(const b2MassData* massData)
 bool b2Body::ShouldCollide(const b2Body* other) const
 {
 	// At least one body should be dynamic.
-	if (m_type != b2_dynamicBody && other->m_type != b2_dynamicBody)
+	if ((m_type != b2_dynamicBody) && (other->m_type != b2_dynamicBody))
 	{
 		return false;
 	}

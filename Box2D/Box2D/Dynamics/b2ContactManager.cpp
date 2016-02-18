@@ -25,7 +25,8 @@
 b2ContactFilter b2_defaultFilter;
 b2ContactListener b2_defaultListener;
 
-b2ContactManager::b2ContactManager():
+b2ContactManager::b2ContactManager(b2BlockAllocator* allocator):
+	m_allocator(allocator),
 	m_contactFilter(&b2_defaultFilter), m_contactListener(&b2_defaultListener)
 {}
 
@@ -111,7 +112,7 @@ void b2ContactManager::Collide()
 		const auto bodyB = fixtureB->GetBody();
 		 
 		// Is this contact flagged for filtering?
-		if (c->m_flags & b2Contact::e_filterFlag)
+		if (c->NeedsFiltering())
 		{
 			// Should these bodies collide?
 			if (!(bodyB->ShouldCollide(bodyA)))
@@ -128,7 +129,7 @@ void b2ContactManager::Collide()
 			}
 
 			// Clear the filtering flag.
-			c->m_flags &= ~b2Contact::e_filterFlag;
+			c->UnflagForFiltering();
 		}
 
 		const bool activeA = bodyA->IsAwake() && (bodyA->m_type != b2_staticBody);
@@ -163,6 +164,29 @@ void b2ContactManager::FindNewContacts()
 	m_broadPhase.UpdatePairs(this);
 }
 
+static bool IsFor(const b2Contact* contact,
+				  const b2Fixture* fixtureA, int32 indexA, const b2Fixture* fixtureB, int32 indexB)
+{
+	const auto fA = contact->GetFixtureA();
+	const auto fB = contact->GetFixtureB();
+	const auto iA = contact->GetChildIndexA();
+	const auto iB = contact->GetChildIndexB();
+	
+	if ((fA == fixtureA) && (fB == fixtureB) && (iA == indexA) && (iB == indexB))
+	{
+		// A contact already exists.
+		return true;
+	}
+	
+	if ((fA == fixtureB) && (fB == fixtureA) && (iA == indexB) && (iB == indexA))
+	{
+		// A contact already exists.
+		return true;
+	}
+	
+	return false;
+}
+
 void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 {
 	const auto proxyA = static_cast<b2FixtureProxy*>(proxyUserDataA);
@@ -191,22 +215,8 @@ void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 	{
 		if (edge->other == bodyA)
 		{
-			const auto fA = edge->contact->GetFixtureA();
-			const auto fB = edge->contact->GetFixtureB();
-			const auto iA = edge->contact->GetChildIndexA();
-			const auto iB = edge->contact->GetChildIndexB();
-
-			if (fA == fixtureA && fB == fixtureB && iA == indexA && iB == indexB)
-			{
-				// A contact already exists.
+			if (IsFor(edge->contact, fixtureA, indexA, fixtureB, indexB))
 				return;
-			}
-
-			if (fA == fixtureB && fB == fixtureA && iA == indexB && iB == indexA)
-			{
-				// A contact already exists.
-				return;
-			}
 		}
 
 		edge = edge->next;

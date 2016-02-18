@@ -37,8 +37,7 @@ void b2WorldManifold::Initialize(const b2Manifold* manifold,
 			const auto pointB = b2Mul(xfB, manifold->points[0].localPoint);
 			if (b2DistanceSquared(pointA, pointB) > b2_epsilon * b2_epsilon)
 			{
-				normal = pointB - pointA;
-				normal.Normalize();
+				normal = b2Normalize(pointB - pointA);
 			}
 
 			const auto cA = pointA + radiusA * normal;
@@ -146,7 +145,7 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 		if (absD(i) < b2_epsilon)
 		{
 			// Parallel.
-			if (p(i) < lowerBound(i) || upperBound(i) < p(i))
+			if ((p(i) < lowerBound(i)) || (upperBound(i) < p(i)))
 			{
 				return false;
 			}
@@ -169,7 +168,7 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 			// Push the min up
 			if (t1 > tmin)
 			{
-				normal.SetZero();
+				normal = b2Vec2_zero;
 				normal(i) = s;
 				tmin = t1;
 			}
@@ -186,7 +185,7 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 
 	// Does the ray start inside the box?
 	// Does the ray intersect beyond the max fraction?
-	if (tmin < 0.0f || input.maxFraction < tmin)
+	if ((tmin < 0.0f) || (input.maxFraction < tmin))
 	{
 		return false;
 	}
@@ -198,8 +197,8 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 }
 
 // Sutherland-Hodgman clipping.
-int32 b2ClipSegmentToLine(b2ClipVertex vOut[2], const b2ClipVertex vIn[2],
-						const b2Vec2& normal, float32 offset, int32 vertexIndexA)
+int32 b2ClipSegmentToLine(std::array<b2ClipVertex, 2>& vOut, const std::array<b2ClipVertex,2>& vIn,
+						  const b2Vec2& normal, float32 offset, int32 vertexIndexA)
 {
 	// Start with no output points
 	auto numOut = int32{0};
@@ -213,7 +212,7 @@ int32 b2ClipSegmentToLine(b2ClipVertex vOut[2], const b2ClipVertex vIn[2],
 	if (distance1 <= 0.0f) vOut[numOut++] = vIn[1];
 
 	// If the points are on different sides of the plane
-	if (distance0 * distance1 < 0.0f)
+	if ((distance0 * distance1) < 0.0f)
 	{
 		// Find intersection point of edge and plane
 		const auto interp = distance0 / (distance0 - distance1);
@@ -248,5 +247,5 @@ bool b2TestOverlap(	const b2Shape* shapeA, int32 indexA,
 
 	b2Distance(&output, &cache, &input);
 
-	return output.distance < 10.0f * b2_epsilon;
+	return output.distance < (10.0f * b2_epsilon);
 }

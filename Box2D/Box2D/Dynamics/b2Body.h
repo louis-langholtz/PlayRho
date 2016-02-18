@@ -415,6 +415,9 @@ private:
 
 	void DestroyContacts();
 
+	bool IsInIsland() const;
+	void SetInIsland(bool value);
+
 	b2BodyType m_type;
 
 	uint16 m_flags = 0;
@@ -843,6 +846,19 @@ inline b2World* b2Body::GetWorld()
 inline const b2World* b2Body::GetWorld() const
 {
 	return m_world;
+}
+
+inline bool b2Body::IsInIsland() const
+{
+	return m_flags & b2Body::e_islandFlag;
+}
+
+inline void b2Body::SetInIsland(bool value)
+{
+	if (value)
+		m_flags |= b2Body::e_islandFlag;
+	else
+		m_flags &= ~b2Body::e_islandFlag;
 }
 
 #endif

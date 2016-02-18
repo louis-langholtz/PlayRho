@@ -347,9 +347,9 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 				continue;
 			}
 
-			if ((b->m_flags & b2Body::e_autoSleepFlag) == 0 ||
-				(b->m_angularVelocity * b->m_angularVelocity) > angTolSqr ||
-				b2Dot(b->m_linearVelocity, b->m_linearVelocity) > linTolSqr)
+			if ((!b->IsSleepingAllowed()) ||
+				((b->m_angularVelocity * b->m_angularVelocity) > angTolSqr) ||
+				(b2Dot(b->m_linearVelocity, b->m_linearVelocity) > linTolSqr))
 			{
 				b->m_sleepTime = 0.0f;
 				minSleepTime = 0.0f;
@@ -361,7 +361,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 			}
 		}
 
-		if (minSleepTime >= b2_timeToSleep && positionSolved)
+		if ((minSleepTime >= b2_timeToSleep) && positionSolved)
 		{
 			for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 			{
@@ -477,7 +477,7 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, int32 toiIndexA, int32 toiInd
 		}
 
 		const auto rotation = h * w;
-		if (rotation * rotation > b2_maxRotationSquared)
+		if ((rotation * rotation) > b2_maxRotationSquared)
 		{
 			const auto ratio = b2_maxRotation / b2Abs(rotation);
 			w *= ratio;
@@ -506,7 +506,7 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, int32 toiIndexA, int32 toiInd
 
 void b2Island::Report(const b2ContactVelocityConstraint* constraints)
 {
-	if (m_listener == nullptr)
+	if (!m_listener)
 	{
 		return;
 	}

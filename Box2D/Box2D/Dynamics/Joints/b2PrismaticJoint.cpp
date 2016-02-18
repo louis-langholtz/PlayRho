@@ -102,8 +102,7 @@ b2PrismaticJoint::b2PrismaticJoint(const b2PrismaticJointDef* def)
 {
 	m_localAnchorA = def->localAnchorA;
 	m_localAnchorB = def->localAnchorB;
-	m_localXAxisA = def->localAxisA;
-	m_localXAxisA.Normalize();
+	m_localXAxisA = b2Normalize(def->localAxisA);
 	m_localYAxisA = b2Cross(1.0f, m_localXAxisA);
 	m_referenceAngle = def->referenceAngle;
 

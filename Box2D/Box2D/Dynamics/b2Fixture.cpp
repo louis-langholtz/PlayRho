@@ -177,7 +177,7 @@ void b2Fixture::Refilter()
 		auto contact = edge->contact;
 		const auto fixtureA = contact->GetFixtureA();
 		const auto fixtureB = contact->GetFixtureB();
-		if (fixtureA == this || fixtureB == this)
+		if ((fixtureA == this) || (fixtureB == this))
 		{
 			contact->FlagForFiltering();
 		}

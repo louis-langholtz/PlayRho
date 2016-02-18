@@ -50,8 +50,7 @@ public:
 			b2PrismaticJointDef pjd;
 
 			// Bouncy limit
-			b2Vec2 axis(2.0f, 1.0f);
-			axis.Normalize();
+			const auto axis = b2Normalize(b2Vec2(2.0f, 1.0f));
 			pjd.Initialize(ground, body, b2Vec2(0.0f, 0.0f), axis);
 
 			// Non-bouncy limit

@@ -132,7 +132,7 @@ bool b2DynamicTree::MoveProxy(int32 proxyId, const b2AABB& aabb, const b2Vec2& d
 	RemoveLeaf(proxyId);
 
 	// Extend AABB.
-	b2AABB b = aabb;
+	auto b = b2AABB{aabb};
 	const auto r = b2Vec2(b2_aabbExtension, b2_aabbExtension);
 	b.lowerBound = b.lowerBound - r;
 	b.upperBound = b.upperBound + r;
@@ -230,7 +230,7 @@ void b2DynamicTree::InsertLeaf(int32 leaf)
 		}
 
 		// Descend according to the minimum cost.
-		if (cost < cost1 && cost < cost2)
+		if ((cost < cost1) && (cost < cost2))
 		{
 			break;
 		}
@@ -314,15 +314,7 @@ void b2DynamicTree::RemoveLeaf(int32 leaf)
 
 	const auto parent = m_nodes[leaf].parent;
 	const auto grandParent = m_nodes[parent].parent;
-	int32 sibling;
-	if (m_nodes[parent].child1 == leaf)
-	{
-		sibling = m_nodes[parent].child2;
-	}
-	else
-	{
-		sibling = m_nodes[parent].child1;
-	}
+	const auto sibling = (m_nodes[parent].child1 == leaf)? m_nodes[parent].child2: m_nodes[parent].child1;
 
 	if (grandParent != b2_nullNode)
 	{
@@ -370,15 +362,15 @@ int32 b2DynamicTree::Balance(int32 iA)
 	b2Assert(iA != b2_nullNode);
 
 	auto A = m_nodes + iA;
-	if (A->IsLeaf() || A->height < 2)
+	if (A->IsLeaf() || (A->height < 2))
 	{
 		return iA;
 	}
 
 	const auto iB = A->child1;
 	const auto iC = A->child2;
-	b2Assert(0 <= iB && iB < m_nodeCapacity);
-	b2Assert(0 <= iC && iC < m_nodeCapacity);
+	b2Assert((0 <= iB) && (iB < m_nodeCapacity));
+	b2Assert((0 <= iC) && (iC < m_nodeCapacity));
 
 	auto B = m_nodes + iB;
 	auto C = m_nodes + iC;
@@ -392,8 +384,8 @@ int32 b2DynamicTree::Balance(int32 iA)
 		const auto iG = C->child2;
 		auto F = m_nodes + iF;
 		auto G = m_nodes + iG;
-		b2Assert(0 <= iF && iF < m_nodeCapacity);
-		b2Assert(0 <= iG && iG < m_nodeCapacity);
+		b2Assert((0 <= iF) && (iF < m_nodeCapacity));
+		b2Assert((0 <= iG) && (iG < m_nodeCapacity));
 
 		// Swap A and C
 		C->child1 = iA;
@@ -644,7 +636,7 @@ void b2DynamicTree::Validate() const
 	ValidateStructure(m_root);
 	ValidateMetrics(m_root);
 
-	int32 freeCount = 0;
+	auto freeCount = int32{0};
 	auto freeIndex = m_freeList;
 	while (freeIndex != b2_nullNode)
 	{
@@ -660,7 +652,7 @@ void b2DynamicTree::Validate() const
 
 int32 b2DynamicTree::GetMaxBalance() const
 {
-	int32 maxBalance = 0;
+	auto maxBalance = int32{0};
 	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
 	{
 		const auto node = m_nodes + i;
@@ -683,7 +675,7 @@ int32 b2DynamicTree::GetMaxBalance() const
 void b2DynamicTree::RebuildBottomUp()
 {
 	auto nodes = static_cast<int32*>(b2Alloc(m_nodeCount * sizeof(int32)));
-	int32 count = 0;
+	auto count = int32{0};
 
 	// Build array of leaves. Free the rest.
 	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)

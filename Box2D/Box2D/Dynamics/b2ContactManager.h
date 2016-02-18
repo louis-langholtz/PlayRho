@@ -30,7 +30,7 @@ class b2BlockAllocator;
 class b2ContactManager
 {
 public:
-	b2ContactManager();
+	b2ContactManager(b2BlockAllocator* allocator);
 
 	// Broad-phase callback.
 	void AddPair(void* proxyUserDataA, void* proxyUserDataB);
@@ -40,13 +40,19 @@ public:
 	void Destroy(b2Contact* c);
 
 	void Collide();
-            
+	
+	inline int32 GetContactCount() const { return m_contactCount; }
+	const b2Contact* GetContactList() const { return m_contactList; }
+	b2Contact* GetContactList() { return m_contactList; }
+
 	b2BroadPhase m_broadPhase;
-	b2Contact* m_contactList = nullptr;
-	int32 m_contactCount = 0;
 	b2ContactFilter* m_contactFilter;
 	b2ContactListener* m_contactListener;
-	b2BlockAllocator* m_allocator = nullptr;
+
+private:
+	int32 m_contactCount = 0;
+	b2Contact* m_contactList = nullptr;
+	b2BlockAllocator* const m_allocator;
 };
 
 #endif

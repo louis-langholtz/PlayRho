@@ -62,8 +62,7 @@ bool b2EdgeShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 	b2Vec2 v1 = m_vertex1;
 	b2Vec2 v2 = m_vertex2;
 	b2Vec2 e = v2 - v1;
-	b2Vec2 normal(e.y, -e.x);
-	normal.Normalize();
+	const auto normal = b2Normalize(b2Vec2(e.y, -e.x));
 
 	// q = p1 + t * d
 	// dot(normal, q - v1) = 0

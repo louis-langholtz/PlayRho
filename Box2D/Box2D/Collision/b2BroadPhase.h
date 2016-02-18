@@ -231,7 +231,7 @@ void b2BroadPhase::UpdatePairs(T* callback)
 		while (i < m_pairCount)
 		{
 			const auto pair = m_pairBuffer + i;
-			if (pair->proxyIdA != primaryPair->proxyIdA || pair->proxyIdB != primaryPair->proxyIdB)
+			if ((pair->proxyIdA != primaryPair->proxyIdA) || (pair->proxyIdB != primaryPair->proxyIdB))
 			{
 				break;
 			}

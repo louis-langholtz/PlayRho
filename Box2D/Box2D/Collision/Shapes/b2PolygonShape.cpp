@@ -238,8 +238,7 @@ void b2PolygonShape::Set(const b2Vec2* vertices, int32 count)
 		const auto i2 = i + 1 < m ? i + 1 : 0;
 		const auto edge = m_vertices[i2] - m_vertices[i1];
 		b2Assert(edge.LengthSquared() > b2_epsilon * b2_epsilon);
-		m_normals[i] = b2Cross(edge, 1.0f);
-		m_normals[i].Normalize();
+		m_normals[i] = b2Normalize(b2Cross(edge, 1.0f));
 	}
 
 	// Compute the polygon centroid.

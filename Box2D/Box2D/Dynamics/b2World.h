@@ -235,7 +235,7 @@ private:
 
 	int32 m_flags = e_clearForces;
 
-	b2ContactManager m_contactManager;
+	b2ContactManager m_contactManager{&m_blockAllocator};
 
 	b2Body* m_bodyList = nullptr;
 	b2Joint* m_jointList = nullptr;
@@ -285,12 +285,12 @@ inline const b2Joint* b2World::GetJointList() const
 
 inline b2Contact* b2World::GetContactList()
 {
-	return m_contactManager.m_contactList;
+	return m_contactManager.GetContactList();
 }
 
 inline const b2Contact* b2World::GetContactList() const
 {
-	return m_contactManager.m_contactList;
+	return m_contactManager.GetContactList();
 }
 
 inline int32 b2World::GetBodyCount() const
@@ -305,7 +305,7 @@ inline int32 b2World::GetJointCount() const
 
 inline int32 b2World::GetContactCount() const
 {
-	return m_contactManager.m_contactCount;
+	return m_contactManager.GetContactCount();
 }
 
 inline void b2World::SetGravity(const b2Vec2& gravity)

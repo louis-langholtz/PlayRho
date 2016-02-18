@@ -459,7 +459,7 @@ void b2Distance(b2DistanceOutput* output,
 
 	// Get simplex vertices as an array.
 	const auto vertices = &simplex.m_v1;
-	constexpr int32 k_maxIters = 20;
+	constexpr auto k_maxIters = int32{20};
 
 	// These store the vertices of the last simplex so that we
 	// can check for duplicates and prevent cycling.
@@ -577,13 +577,12 @@ void b2Distance(b2DistanceOutput* output,
 		const auto rA = proxyA->m_radius;
 		const auto rB = proxyB->m_radius;
 
-		if (output->distance > rA + rB && output->distance > b2_epsilon)
+		if ((output->distance > (rA + rB)) && (output->distance > b2_epsilon))
 		{
 			// Shapes are still no overlapped.
 			// Move the witness points to the outer surface.
 			output->distance -= rA + rB;
-			auto normal = output->pointB - output->pointA;
-			normal.Normalize();
+			const auto normal = b2Normalize(output->pointB - output->pointA);
 			output->pointA += rA * normal;
 			output->pointB -= rB * normal;
 		}

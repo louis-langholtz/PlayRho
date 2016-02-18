@@ -625,8 +625,7 @@ struct b2PositionSolverManifold
 			{
 				const auto pointA = b2Mul(xfA, pc->localPoint);
 				const auto pointB = b2Mul(xfB, pc->localPoints[0]);
-				normal = pointB - pointA;
-				normal.Normalize();
+				normal = b2Normalize(pointB - pointA);
 				point = 0.5f * (pointA + pointB);
 				separation = b2Dot(pointB - pointA, normal) - pc->radiusA - pc->radiusB;
 			}

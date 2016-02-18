@@ -141,7 +141,7 @@ protected:
 	friend class b2Fixture;
 
 	// Flags stored in m_flags
-	enum
+	enum: uint32
 	{
 		// Used when crawling contact graph when forming islands.
 		e_islandFlag		= 0x0001,
@@ -164,6 +164,8 @@ protected:
 
 	/// Flag this contact for filtering. Filtering will occur the next time step.
 	void FlagForFiltering();
+	void UnflagForFiltering();
+	bool NeedsFiltering() const;
 
 	static b2Contact* Create(b2Fixture* fixtureA, int32 indexA, b2Fixture* fixtureB, int32 indexB, b2BlockAllocator* allocator);
 	static void Destroy(b2Contact* contact, b2Shape::Type typeA, b2Shape::Type typeB, b2BlockAllocator* allocator);
@@ -173,6 +175,14 @@ protected:
 	virtual ~b2Contact() = default;
 
 	void Update(b2ContactListener* listener);
+
+	bool HasValidToi() const;
+	float32 GetToi() const;
+	void SetToi(float32 toi);
+	void UnsetToi();
+
+	bool IsInIsland() const;
+	void SetInIsland(bool value);
 
 	uint32 m_flags = e_enabledFlag;
 
@@ -193,7 +203,7 @@ protected:
 	b2Manifold m_manifold;
 
 	int32 m_toiCount = 0;
-	float32 m_toi;
+	float32 m_toi; // only valid if m_flags & e_toiFlag
 
 	float32 m_friction;
 	float32 m_restitution;
@@ -213,10 +223,10 @@ inline const b2Manifold* b2Contact::GetManifold() const
 
 inline void b2Contact::GetWorldManifold(b2WorldManifold* worldManifold) const
 {
-	const b2Body* bodyA = m_fixtureA->GetBody();
-	const b2Body* bodyB = m_fixtureB->GetBody();
-	const b2Shape* shapeA = m_fixtureA->GetShape();
-	const b2Shape* shapeB = m_fixtureB->GetShape();
+	const auto bodyA = m_fixtureA->GetBody();
+	const auto bodyB = m_fixtureB->GetBody();
+	const auto shapeA = m_fixtureA->GetShape();
+	const auto shapeB = m_fixtureB->GetShape();
 
 	worldManifold->Initialize(&m_manifold, bodyA->GetTransform(), shapeA->m_radius, bodyB->GetTransform(), shapeB->m_radius);
 }
@@ -225,11 +235,11 @@ inline void b2Contact::SetEnabled(bool flag)
 {
 	if (flag)
 	{
-		m_flags |= static_cast<unsigned int>(e_enabledFlag);
+		m_flags |= b2Contact::e_enabledFlag;
 	}
 	else
 	{
-		m_flags &= ~(static_cast<unsigned int>(e_enabledFlag));
+		m_flags &= ~b2Contact::e_enabledFlag;
 	}
 }
 
@@ -288,6 +298,16 @@ inline void b2Contact::FlagForFiltering()
 	m_flags |= e_filterFlag;
 }
 
+inline void b2Contact::UnflagForFiltering()
+{
+	m_flags &= ~b2Contact::e_filterFlag;
+}
+
+inline bool b2Contact::NeedsFiltering() const
+{
+	return m_flags & b2Contact::e_filterFlag;
+}
+
 inline void b2Contact::SetFriction(float32 friction)
 {
 	m_friction = friction;
@@ -326,6 +346,41 @@ inline void b2Contact::SetTangentSpeed(float32 speed)
 inline float32 b2Contact::GetTangentSpeed() const
 {
 	return m_tangentSpeed;
+}
+
+inline bool b2Contact::HasValidToi() const
+{
+	return m_flags & b2Contact::e_toiFlag;
+}
+
+inline float32 b2Contact::GetToi() const
+{
+	b2Assert(HasValidToi());
+	return m_toi;
+}
+
+inline void b2Contact::SetToi(float32 toi)
+{
+	m_toi = toi;
+	m_flags |= b2Contact::e_toiFlag;
+}
+
+inline void b2Contact::UnsetToi()
+{
+	m_flags &= ~b2Contact::e_toiFlag;
+}
+
+inline bool b2Contact::IsInIsland() const
+{
+	return m_flags & b2Contact::e_islandFlag;
+}
+
+inline void b2Contact::SetInIsland(bool value)
+{
+	if (value)
+		m_flags |= b2Contact::e_islandFlag;
+	else
+		m_flags &= ~b2Contact::e_islandFlag;
 }
 
 #endif
