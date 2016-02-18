@@ -462,6 +462,27 @@ constexpr inline b2Vec2 operator * (float32 s, const b2Vec2& a) noexcept
 	return b2Vec2(s * a.x, s * a.y);
 }
 
+constexpr inline b2Vec2 operator * (const b2Vec2& a, float32 s)
+{
+	return b2Vec2{a.x * s, a.y * s};
+}
+
+constexpr b2Vec2 operator/ (const b2Vec2& a, float32 s)
+{
+	return b2Vec2{a.x / s, a.y / s};
+}
+
+inline b2Vec2 b2Normalize(const b2Vec2& value)
+{
+	// implementation mirrors implementation of b2Vec2::Normalize()
+	const auto length = value.Length();
+	if (length < b2_epsilon)
+	{
+		return value;
+	}
+	return value / length;
+}
+
 constexpr inline bool operator == (const b2Vec2& a, const b2Vec2& b) noexcept
 {
 	return a.x == b.x && a.y == b.y;
