@@ -305,7 +305,8 @@ public:
 	/// Set the sleep state of the body. A sleeping body has very
 	/// low CPU cost.
 	/// @param flag set to true to wake the body, false to put it to sleep.
-	void SetAwake(bool flag);
+	/// @deprecated use b2Body::SetAwake() or b2Body::UnsetAwake() instead.
+	[[deprecated]] void SetAwake(bool flag);
 
 	/// Set the sleep state of the body to awake.
 	void SetAwake();
