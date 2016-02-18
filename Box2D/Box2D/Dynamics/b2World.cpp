@@ -311,8 +311,8 @@ void b2World::DestroyJoint(b2Joint* j)
 	auto bodyB = j->m_bodyB;
 
 	// Wake up connected bodies.
-	bodyA->SetAwake(true);
-	bodyB->SetAwake(true);
+	bodyA->SetAwake();
+	bodyB->SetAwake();
 
 	// Remove from body 1.
 	if (j->m_edgeA.prev)
@@ -388,7 +388,7 @@ void b2World::SetAllowSleeping(bool flag)
 	{
 		for (auto b = m_bodyList; b; b = b->m_next)
 		{
-			b->SetAwake(true);
+			b->SetAwake();
 		}
 	}
 }
@@ -457,7 +457,7 @@ void b2World::Solve(const b2TimeStep& step)
 			island.Add(b);
 
 			// Make sure the body is awake.
-			b->SetAwake(true);
+			b->SetAwake();
 
 			// To keep islands as small as possible, we don't
 			// propagate islands across static bodies.
@@ -748,8 +748,8 @@ void b2World::SolveTOI(const b2TimeStep& step)
 			continue;
 		}
 
-		bA->SetAwake(true);
-		bB->SetAwake(true);
+		bA->SetAwake();
+		bB->SetAwake();
 
 		// Build the island
 		island.Clear();
@@ -842,7 +842,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 
 					if (other->m_type != b2_staticBody)
 					{
-						other->SetAwake(true);
+						other->SetAwake();
 					}
 
 					island.Add(other);

@@ -204,7 +204,7 @@ void b2Fixture::SetSensor(bool sensor)
 {
 	if (sensor != m_isSensor)
 	{
-		m_body->SetAwake(true);
+		m_body->SetAwake();
 		m_isSensor = sensor;
 	}
 }

@@ -366,7 +366,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 			for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 			{
 				auto const b = m_bodies[i];
-				b->SetAwake(false);
+				b->UnsetAwake();
 			}
 		}
 	}

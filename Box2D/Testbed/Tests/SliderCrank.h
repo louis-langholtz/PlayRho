@@ -124,12 +124,12 @@ public:
 		{
 		case GLFW_KEY_F:
 			m_joint2->EnableMotor(!m_joint2->IsMotorEnabled());
-			m_joint2->GetBodyB()->SetAwake(true);
+			m_joint2->GetBodyB()->SetAwake();
 			break;
 
 		case GLFW_KEY_M:
 			m_joint1->EnableMotor(!m_joint1->IsMotorEnabled());
-			m_joint1->GetBodyB()->SetAwake(true);
+			m_joint1->GetBodyB()->SetAwake();
 			break;
 		}
 	}

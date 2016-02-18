@@ -307,7 +307,10 @@ public:
 	/// @param flag set to true to wake the body, false to put it to sleep.
 	void SetAwake(bool flag);
 
+	/// Set the sleep state of the body to awake.
 	void SetAwake();
+
+	/// Set the sleep state of the body to sleep.
 	void UnsetAwake();
 
 	/// Get the sleeping state of this body.
@@ -499,7 +502,7 @@ inline void b2Body::SetLinearVelocity(const b2Vec2& v)
 
 	if (v != b2Vec2_zero)
 	{
-		SetAwake(true);
+		SetAwake();
 	}
 
 	m_linearVelocity = v;
@@ -519,7 +522,7 @@ inline void b2Body::SetAngularVelocity(float32 w)
 
 	if (w != 0.0f)
 	{
-		SetAwake(true);
+		SetAwake();
 	}
 
 	m_angularVelocity = w;
@@ -679,7 +682,7 @@ inline void b2Body::SetSleepingAllowed(bool flag)
 	else
 	{
 		m_flags &= ~e_autoSleepFlag;
-		SetAwake(true);
+		SetAwake();
 	}
 }
 
@@ -747,7 +750,7 @@ inline void b2Body::ApplyForce(const b2Vec2& force, const b2Vec2& point, bool wa
 
 	if (wake && (m_flags & e_awakeFlag) == 0)
 	{
-		SetAwake(true);
+		SetAwake();
 	}
 
 	// Don't accumulate a force if the body is sleeping.
@@ -767,7 +770,7 @@ inline void b2Body::ApplyForceToCenter(const b2Vec2& force, bool wake)
 
 	if (wake && (m_flags & e_awakeFlag) == 0)
 	{
-		SetAwake(true);
+		SetAwake();
 	}
 
 	// Don't accumulate a force if the body is sleeping
@@ -786,7 +789,7 @@ inline void b2Body::ApplyTorque(float32 torque, bool wake)
 
 	if (wake && (m_flags & e_awakeFlag) == 0)
 	{
-		SetAwake(true);
+		SetAwake();
 	}
 
 	// Don't accumulate a force if the body is sleeping
@@ -805,7 +808,7 @@ inline void b2Body::ApplyLinearImpulse(const b2Vec2& impulse, const b2Vec2& poin
 
 	if (wake && (m_flags & e_awakeFlag) == 0)
 	{
-		SetAwake(true);
+		SetAwake();
 	}
 
 	// Don't accumulate velocity if the body is sleeping
@@ -825,7 +828,7 @@ inline void b2Body::ApplyAngularImpulse(float32 impulse, bool wake)
 
 	if (wake && (m_flags & e_awakeFlag) == 0)
 	{
-		SetAwake(true);
+		SetAwake();
 	}
 
 	// Don't accumulate velocity if the body is sleeping

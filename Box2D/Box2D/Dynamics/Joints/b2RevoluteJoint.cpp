@@ -416,8 +416,8 @@ bool b2RevoluteJoint::IsMotorEnabled() const
 
 void b2RevoluteJoint::EnableMotor(bool flag)
 {
-	m_bodyA->SetAwake(true);
-	m_bodyB->SetAwake(true);
+	m_bodyA->SetAwake();
+	m_bodyB->SetAwake();
 	m_enableMotor = flag;
 }
 
@@ -428,15 +428,15 @@ float32 b2RevoluteJoint::GetMotorTorque(float32 inv_dt) const
 
 void b2RevoluteJoint::SetMotorSpeed(float32 speed)
 {
-	m_bodyA->SetAwake(true);
-	m_bodyB->SetAwake(true);
+	m_bodyA->SetAwake();
+	m_bodyB->SetAwake();
 	m_motorSpeed = speed;
 }
 
 void b2RevoluteJoint::SetMaxMotorTorque(float32 torque)
 {
-	m_bodyA->SetAwake(true);
-	m_bodyB->SetAwake(true);
+	m_bodyA->SetAwake();
+	m_bodyB->SetAwake();
 	m_maxMotorTorque = torque;
 }
 
@@ -449,8 +449,8 @@ void b2RevoluteJoint::EnableLimit(bool flag)
 {
 	if (flag != m_enableLimit)
 	{
-		m_bodyA->SetAwake(true);
-		m_bodyB->SetAwake(true);
+		m_bodyA->SetAwake();
+		m_bodyB->SetAwake();
 		m_enableLimit = flag;
 		m_impulse.z = 0.0f;
 	}
@@ -472,8 +472,8 @@ void b2RevoluteJoint::SetLimits(float32 lower, float32 upper)
 	
 	if (lower != m_lowerAngle || upper != m_upperAngle)
 	{
-		m_bodyA->SetAwake(true);
-		m_bodyB->SetAwake(true);
+		m_bodyA->SetAwake();
+		m_bodyB->SetAwake();
 		m_impulse.z = 0.0f;
 		m_lowerAngle = lower;
 		m_upperAngle = upper;

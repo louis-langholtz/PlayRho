@@ -260,8 +260,8 @@ void b2MotorJoint::SetLinearOffset(const b2Vec2& linearOffset)
 {
 	if (linearOffset.x != m_linearOffset.x || linearOffset.y != m_linearOffset.y)
 	{
-		m_bodyA->SetAwake(true);
-		m_bodyB->SetAwake(true);
+		m_bodyA->SetAwake();
+		m_bodyB->SetAwake();
 		m_linearOffset = linearOffset;
 	}
 }
@@ -275,8 +275,8 @@ void b2MotorJoint::SetAngularOffset(float32 angularOffset)
 {
 	if (angularOffset != m_angularOffset)
 	{
-		m_bodyA->SetAwake(true);
-		m_bodyB->SetAwake(true);
+		m_bodyA->SetAwake();
+		m_bodyB->SetAwake();
 		m_angularOffset = angularOffset;
 	}
 }

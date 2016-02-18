@@ -113,8 +113,8 @@ void b2Contact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
 	if (contact->m_manifold.pointCount > 0 &&
 		!fixtureA->IsSensor() && !fixtureB->IsSensor())
 	{
-		fixtureA->GetBody()->SetAwake(true);
-		fixtureB->GetBody()->SetAwake(true);
+		fixtureA->GetBody()->SetAwake();
+		fixtureB->GetBody()->SetAwake();
 	}
 
 	const auto typeA = fixtureA->GetType();
@@ -192,8 +192,8 @@ void b2Contact::Update(b2ContactListener* listener)
 
 		if (touching != wasTouching)
 		{
-			bodyA->SetAwake(true);
-			bodyB->SetAwake(true);
+			bodyA->SetAwake();
+			bodyB->SetAwake();
 		}
 	}
 

@@ -133,7 +133,7 @@ void b2Body::SetType(b2BodyType type)
 		SynchronizeFixtures();
 	}
 
-	SetAwake(true);
+	SetAwake();
 
 	m_force = b2Vec2_zero;
 	m_torque = 0.0f;

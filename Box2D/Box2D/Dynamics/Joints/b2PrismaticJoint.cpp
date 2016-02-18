@@ -541,8 +541,8 @@ void b2PrismaticJoint::EnableLimit(bool flag)
 {
 	if (flag != m_enableLimit)
 	{
-		m_bodyA->SetAwake(true);
-		m_bodyB->SetAwake(true);
+		m_bodyA->SetAwake();
+		m_bodyB->SetAwake();
 		m_enableLimit = flag;
 		m_impulse.z = 0.0f;
 	}
@@ -563,8 +563,8 @@ void b2PrismaticJoint::SetLimits(float32 lower, float32 upper)
 	b2Assert(lower <= upper);
 	if (lower != m_lowerTranslation || upper != m_upperTranslation)
 	{
-		m_bodyA->SetAwake(true);
-		m_bodyB->SetAwake(true);
+		m_bodyA->SetAwake();
+		m_bodyB->SetAwake();
 		m_lowerTranslation = lower;
 		m_upperTranslation = upper;
 		m_impulse.z = 0.0f;
@@ -578,22 +578,22 @@ bool b2PrismaticJoint::IsMotorEnabled() const
 
 void b2PrismaticJoint::EnableMotor(bool flag)
 {
-	m_bodyA->SetAwake(true);
-	m_bodyB->SetAwake(true);
+	m_bodyA->SetAwake();
+	m_bodyB->SetAwake();
 	m_enableMotor = flag;
 }
 
 void b2PrismaticJoint::SetMotorSpeed(float32 speed)
 {
-	m_bodyA->SetAwake(true);
-	m_bodyB->SetAwake(true);
+	m_bodyA->SetAwake();
+	m_bodyB->SetAwake();
 	m_motorSpeed = speed;
 }
 
 void b2PrismaticJoint::SetMaxMotorForce(float32 force)
 {
-	m_bodyA->SetAwake(true);
-	m_bodyB->SetAwake(true);
+	m_bodyA->SetAwake();
+	m_bodyB->SetAwake();
 	m_maxMotorForce = force;
 }
 

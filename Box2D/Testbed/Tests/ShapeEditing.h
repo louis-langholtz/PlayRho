@@ -59,7 +59,7 @@ public:
 				shape.m_radius = 3.0f;
 				shape.m_p.Set(0.5f, -4.0f);
 				m_fixture2 = m_body->CreateFixture(&shape, 10.0f);
-				m_body->SetAwake(true);
+				m_body->SetAwake();
 			}
 			break;
 
@@ -68,7 +68,7 @@ public:
 			{
 				m_body->DestroyFixture(m_fixture2);
 				m_fixture2 = nullptr;
-				m_body->SetAwake(true);
+				m_body->SetAwake();
 			}
 			break;
 
