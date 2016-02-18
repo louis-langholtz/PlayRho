@@ -309,10 +309,10 @@ public:
 	[[deprecated]] void SetAwake(bool flag);
 
 	/// Set the sleep state of the body to awake.
-	void SetAwake();
+	void SetAwake() noexcept;
 
 	/// Set the sleep state of the body to sleep.
-	void UnsetAwake();
+	void UnsetAwake() noexcept;
 
 	/// Get the sleeping state of this body.
 	/// @return true if the body is awake.
@@ -640,7 +640,7 @@ inline void b2Body::SetAwake(bool flag)
 	}
 }
 
-void b2Body::SetAwake()
+inline void b2Body::SetAwake() noexcept
 {
 	if ((m_flags & e_awakeFlag) == 0)
 	{
@@ -649,7 +649,7 @@ void b2Body::SetAwake()
 	}
 }
 
-void b2Body::UnsetAwake()
+inline void b2Body::UnsetAwake() noexcept
 {
 	m_flags &= ~e_awakeFlag;
 	m_sleepTime = 0.0f;
