@@ -25,6 +25,8 @@
 #include <Box2D/Dynamics/b2ContactManager.h>
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
 #include <Box2D/Dynamics/b2TimeStep.h>
+#include <Box2D/Dynamics/b2BodyList.hpp>
+#include <Box2D/Dynamics/b2ConstBodyList.hpp>
 
 struct b2AABB;
 struct b2BodyDef;
@@ -126,6 +128,9 @@ public:
 	/// @return the head of the world body list.
 	b2Body* GetBodyList();
 	const b2Body* GetBodyList() const;
+
+	b2BodyList GetBodies();
+	b2ConstBodyList GetBodies() const;
 
 	/// Get the world joint list. With the returned joint, use b2Joint::GetNext to get
 	/// the next joint in the world list. A nullptr joint indicates the end of the list.
@@ -271,6 +276,16 @@ inline b2Body* b2World::GetBodyList()
 inline const b2Body* b2World::GetBodyList() const
 {
 	return m_bodyList;
+}
+
+inline b2BodyList b2World::GetBodies()
+{
+	return b2BodyList(m_bodyList);
+}
+
+inline b2ConstBodyList b2World::GetBodies() const
+{
+	return b2ConstBodyList(m_bodyList);
 }
 
 inline b2Joint* b2World::GetJointList()
