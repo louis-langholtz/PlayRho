@@ -166,7 +166,7 @@ public:
 
 	/// Set the linear velocity of the center of mass.
 	/// @param v the new linear velocity of the center of mass.
-	void SetLinearVelocity(const b2Vec2& v);
+	void SetLinearVelocity(const b2Vec2& v) noexcept;
 
 	/// Get the linear velocity of the center of mass.
 	/// @return the linear velocity of the center of mass.
@@ -174,7 +174,7 @@ public:
 
 	/// Set the angular velocity.
 	/// @param omega the new angular velocity in radians/second.
-	void SetAngularVelocity(float32 omega);
+	void SetAngularVelocity(float32 omega) noexcept;
 
 	/// Get the angular velocity.
 	/// @return the angular velocity in radians/second.
@@ -186,19 +186,19 @@ public:
 	/// @param force the world force vector, usually in Newtons (N).
 	/// @param point the world position of the point of application.
 	/// @param wake also wake up the body
-	void ApplyForce(const b2Vec2& force, const b2Vec2& point, bool wake);
+	void ApplyForce(const b2Vec2& force, const b2Vec2& point, bool wake) noexcept;
 
 	/// Apply a force to the center of mass. This wakes up the body.
 	/// @param force the world force vector, usually in Newtons (N).
 	/// @param wake also wake up the body
-	void ApplyForceToCenter(const b2Vec2& force, bool wake);
+	void ApplyForceToCenter(const b2Vec2& force, bool wake) noexcept;
 
 	/// Apply a torque. This affects the angular velocity
 	/// without affecting the linear velocity of the center of mass.
 	/// This wakes up the body.
 	/// @param torque about the z-axis (out of the screen), usually in N-m.
 	/// @param wake also wake up the body
-	void ApplyTorque(float32 torque, bool wake);
+	void ApplyTorque(float32 torque, bool wake) noexcept;
 
 	/// Apply an impulse at a point. This immediately modifies the velocity.
 	/// It also modifies the angular velocity if the point of application
@@ -206,12 +206,12 @@ public:
 	/// @param impulse the world impulse vector, usually in N-seconds or kg-m/s.
 	/// @param point the world position of the point of application.
 	/// @param wake also wake up the body
-	void ApplyLinearImpulse(const b2Vec2& impulse, const b2Vec2& point, bool wake);
+	void ApplyLinearImpulse(const b2Vec2& impulse, const b2Vec2& point, bool wake) noexcept;
 
 	/// Apply an angular impulse.
 	/// @param impulse the angular impulse in units of kg*m*m/s
 	/// @param wake also wake up the body
-	void ApplyAngularImpulse(float32 impulse, bool wake);
+	void ApplyAngularImpulse(float32 impulse, bool wake) noexcept;
 
 	/// Get the total mass of the body.
 	/// @return the mass, usually in kilograms (kg).
@@ -271,19 +271,19 @@ public:
 	float32 GetLinearDamping() const noexcept;
 
 	/// Set the linear damping of the body.
-	void SetLinearDamping(float32 linearDamping);
+	void SetLinearDamping(float32 linearDamping) noexcept;
 
 	/// Get the angular damping of the body.
 	float32 GetAngularDamping() const noexcept;
 
 	/// Set the angular damping of the body.
-	void SetAngularDamping(float32 angularDamping);
+	void SetAngularDamping(float32 angularDamping) noexcept;
 
 	/// Get the gravity scale of the body.
 	float32 GetGravityScale() const noexcept;
 
 	/// Set the gravity scale of the body.
-	void SetGravityScale(float32 scale);
+	void SetGravityScale(float32 scale) noexcept;
 
 	/// Set the type of this body. This may alter the mass and velocity.
 	void SetType(b2BodyType type);
@@ -292,14 +292,14 @@ public:
 	b2BodyType GetType() const noexcept;
 
 	/// Should this body be treated like a bullet for continuous collision detection?
-	void SetBullet(bool flag);
+	void SetBullet(bool flag) noexcept;
 
 	/// Is this body treated like a bullet for continuous collision detection?
 	bool IsBullet() const noexcept;
 
 	/// You can disable sleeping on this body. If you disable sleeping, the
 	/// body will be woken.
-	void SetSleepingAllowed(bool flag);
+	void SetSleepingAllowed(bool flag) noexcept;
 
 	/// Is this body allowed to sleep
 	bool IsSleepingAllowed() const noexcept;
@@ -308,7 +308,7 @@ public:
 	/// low CPU cost.
 	/// @param flag set to true to wake the body, false to put it to sleep.
 	/// @deprecated use b2Body::SetAwake() or b2Body::UnsetAwake() instead.
-	[[deprecated]] void SetAwake(bool flag);
+	[[deprecated]] void SetAwake(bool flag) noexcept;
 
 	/// Set the sleep state of the body to awake.
 	void SetAwake() noexcept;
@@ -369,11 +369,11 @@ public:
 	void* GetUserData() const noexcept;
 
 	/// Set the user data. Use this to store your application specific data.
-	void SetUserData(void* data);
+	void SetUserData(void* data) noexcept;
 
 	/// Get the parent world of this body.
-	b2World* GetWorld();
-	const b2World* GetWorld() const;
+	b2World* GetWorld() noexcept;
+	const b2World* GetWorld() const noexcept;
 
 	/// Dump this body to a log file
 	void Dump();
@@ -426,8 +426,8 @@ private:
 
 	void DestroyContacts();
 
-	bool IsInIsland() const;
-	void SetInIsland(bool value);
+	bool IsInIsland() const noexcept;
+	void SetInIsland(bool value) noexcept;
 
 	b2BodyType m_type;
 
@@ -498,7 +498,7 @@ inline const b2Vec2& b2Body::GetLocalCenter() const noexcept
 	return m_sweep.localCenter;
 }
 
-inline void b2Body::SetLinearVelocity(const b2Vec2& v)
+inline void b2Body::SetLinearVelocity(const b2Vec2& v) noexcept
 {
 	if (m_type == b2_staticBody)
 	{
@@ -518,7 +518,7 @@ inline const b2Vec2& b2Body::GetLinearVelocity() const noexcept
 	return m_linearVelocity;
 }
 
-inline void b2Body::SetAngularVelocity(float32 w)
+inline void b2Body::SetAngularVelocity(float32 w) noexcept
 {
 	if (m_type == b2_staticBody)
 	{
@@ -590,7 +590,7 @@ inline float32 b2Body::GetLinearDamping() const noexcept
 	return m_linearDamping;
 }
 
-inline void b2Body::SetLinearDamping(float32 linearDamping)
+inline void b2Body::SetLinearDamping(float32 linearDamping) noexcept
 {
 	m_linearDamping = linearDamping;
 }
@@ -600,7 +600,7 @@ inline float32 b2Body::GetAngularDamping() const noexcept
 	return m_angularDamping;
 }
 
-inline void b2Body::SetAngularDamping(float32 angularDamping)
+inline void b2Body::SetAngularDamping(float32 angularDamping) noexcept
 {
 	m_angularDamping = angularDamping;
 }
@@ -610,12 +610,12 @@ inline float32 b2Body::GetGravityScale() const noexcept
 	return m_gravityScale;
 }
 
-inline void b2Body::SetGravityScale(float32 scale)
+inline void b2Body::SetGravityScale(float32 scale) noexcept
 {
 	m_gravityScale = scale;
 }
 
-inline void b2Body::SetBullet(bool flag)
+inline void b2Body::SetBullet(bool flag) noexcept
 {
 	if (flag)
 	{
@@ -632,7 +632,7 @@ inline bool b2Body::IsBullet() const noexcept
 	return (m_flags & e_bulletFlag) == e_bulletFlag;
 }
 
-inline void b2Body::SetAwake(bool flag)
+inline void b2Body::SetAwake(bool flag) noexcept
 {
 	if (flag)
 	{
@@ -678,7 +678,7 @@ inline bool b2Body::IsFixedRotation() const noexcept
 	return (m_flags & e_fixedRotationFlag) == e_fixedRotationFlag;
 }
 
-inline void b2Body::SetSleepingAllowed(bool flag)
+inline void b2Body::SetSleepingAllowed(bool flag) noexcept
 {
 	if (flag)
 	{
@@ -746,7 +746,7 @@ inline const b2Body* b2Body::GetNext() const noexcept
 	return m_next;
 }
 
-inline void b2Body::SetUserData(void* data)
+inline void b2Body::SetUserData(void* data) noexcept
 {
 	m_userData = data;
 }
@@ -756,7 +756,7 @@ inline void* b2Body::GetUserData() const noexcept
 	return m_userData;
 }
 
-inline void b2Body::ApplyForce(const b2Vec2& force, const b2Vec2& point, bool wake)
+inline void b2Body::ApplyForce(const b2Vec2& force, const b2Vec2& point, bool wake) noexcept
 {
 	if (m_type != b2_dynamicBody)
 	{
@@ -776,7 +776,7 @@ inline void b2Body::ApplyForce(const b2Vec2& force, const b2Vec2& point, bool wa
 	}
 }
 
-inline void b2Body::ApplyForceToCenter(const b2Vec2& force, bool wake)
+inline void b2Body::ApplyForceToCenter(const b2Vec2& force, bool wake) noexcept
 {
 	if (m_type != b2_dynamicBody)
 	{
@@ -795,14 +795,14 @@ inline void b2Body::ApplyForceToCenter(const b2Vec2& force, bool wake)
 	}
 }
 
-inline void b2Body::ApplyTorque(float32 torque, bool wake)
+inline void b2Body::ApplyTorque(float32 torque, bool wake) noexcept
 {
 	if (m_type != b2_dynamicBody)
 	{
 		return;
 	}
 
-	if (wake && (m_flags & e_awakeFlag) == 0)
+	if (wake && ((m_flags & e_awakeFlag) == 0))
 	{
 		SetAwake();
 	}
@@ -814,7 +814,7 @@ inline void b2Body::ApplyTorque(float32 torque, bool wake)
 	}
 }
 
-inline void b2Body::ApplyLinearImpulse(const b2Vec2& impulse, const b2Vec2& point, bool wake)
+inline void b2Body::ApplyLinearImpulse(const b2Vec2& impulse, const b2Vec2& point, bool wake) noexcept
 {
 	if (m_type != b2_dynamicBody)
 	{
@@ -834,7 +834,7 @@ inline void b2Body::ApplyLinearImpulse(const b2Vec2& impulse, const b2Vec2& poin
 	}
 }
 
-inline void b2Body::ApplyAngularImpulse(float32 impulse, bool wake)
+inline void b2Body::ApplyAngularImpulse(float32 impulse, bool wake) noexcept
 {
 	if (m_type != b2_dynamicBody)
 	{
@@ -869,22 +869,22 @@ inline void b2Body::Advance(float32 alpha)
 	m_xf.p = m_sweep.c - b2Mul(m_xf.q, m_sweep.localCenter);
 }
 
-inline b2World* b2Body::GetWorld()
+inline b2World* b2Body::GetWorld() noexcept
 {
 	return m_world;
 }
 
-inline const b2World* b2Body::GetWorld() const
+inline const b2World* b2Body::GetWorld() const noexcept
 {
 	return m_world;
 }
 
-inline bool b2Body::IsInIsland() const
+inline bool b2Body::IsInIsland() const noexcept
 {
 	return m_flags & b2Body::e_islandFlag;
 }
 
-inline void b2Body::SetInIsland(bool value)
+inline void b2Body::SetInIsland(bool value) noexcept
 {
 	if (value)
 		m_flags |= b2Body::e_islandFlag;
