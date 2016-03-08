@@ -21,6 +21,8 @@
 
 #include <Box2D/Common/b2Math.h>
 #include <Box2D/Collision/Shapes/b2Shape.h>
+#include <Box2D/Dynamics/b2FixtureList.hpp>
+#include <Box2D/Dynamics/b2ConstFixtureList.hpp>
 #include <memory>
 
 class b2Fixture;
@@ -346,6 +348,8 @@ public:
 	/// Get the list of all fixtures attached to this body.
 	b2Fixture* GetFixtureList() noexcept;
 	const b2Fixture* GetFixtureList() const noexcept;
+	b2FixtureList GetFixtures() noexcept;
+	b2ConstFixtureList GetFixtures() const noexcept;
 
 	/// Get the list of all joints attached to this body.
 	b2JointEdge* GetJointList() noexcept;
@@ -700,6 +704,16 @@ inline b2Fixture* b2Body::GetFixtureList() noexcept
 inline const b2Fixture* b2Body::GetFixtureList() const noexcept
 {
 	return m_fixtureList;
+}
+
+inline b2FixtureList b2Body::GetFixtures() noexcept
+{
+	return b2FixtureList(m_fixtureList);
+}
+
+inline b2ConstFixtureList b2Body::GetFixtures() const noexcept
+{
+	return b2ConstFixtureList(m_fixtureList);
 }
 
 inline b2JointEdge* b2Body::GetJointList() noexcept
