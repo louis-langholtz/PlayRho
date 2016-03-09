@@ -41,9 +41,9 @@ inline float32 b2MixFriction(float32 friction1, float32 friction2)
 
 /// Restitution mixing law. The idea is allow for anything to bounce off an inelastic surface.
 /// For example, a superball bounces on anything.
-inline float32 b2MixRestitution(float32 restitution1, float32 restitution2)
+inline float32 b2MixRestitution(float32 restitution1, float32 restitution2) noexcept
 {
-	return restitution1 > restitution2 ? restitution1 : restitution2;
+	return (restitution1 > restitution2) ? restitution1 : restitution2;
 }
 
 /// A contact edge is used to connect bodies and contacts together
@@ -69,66 +69,66 @@ public:
 
 	/// Get the contact manifold. Do not modify the manifold unless you understand the
 	/// internals of Box2D.
-	b2Manifold* GetManifold();
-	const b2Manifold* GetManifold() const;
+	b2Manifold* GetManifold() noexcept;
+	const b2Manifold* GetManifold() const noexcept;
 
 	/// Get the world manifold.
 	void GetWorldManifold(b2WorldManifold* worldManifold) const;
 
 	/// Is this contact touching?
-	bool IsTouching() const;
+	bool IsTouching() const noexcept;
 
 	/// Enable/disable this contact. This can be used inside the pre-solve
 	/// contact listener. The contact is only disabled for the current
 	/// time step (or sub-step in continuous collisions).
-	void SetEnabled(bool flag);
+	void SetEnabled(bool flag) noexcept;
 
 	/// Has this contact been disabled?
-	bool IsEnabled() const;
+	bool IsEnabled() const noexcept;
 
 	/// Get the next contact in the world's contact list.
-	b2Contact* GetNext();
-	const b2Contact* GetNext() const;
+	b2Contact* GetNext() noexcept;
+	const b2Contact* GetNext() const noexcept;
 
 	/// Get fixture A in this contact.
-	b2Fixture* GetFixtureA();
-	const b2Fixture* GetFixtureA() const;
+	b2Fixture* GetFixtureA() noexcept;
+	const b2Fixture* GetFixtureA() const noexcept;
 
 	/// Get the child primitive index for fixture A.
-	int32 GetChildIndexA() const;
+	int32 GetChildIndexA() const noexcept;
 
 	/// Get fixture B in this contact.
-	b2Fixture* GetFixtureB();
-	const b2Fixture* GetFixtureB() const;
+	b2Fixture* GetFixtureB() noexcept;
+	const b2Fixture* GetFixtureB() const noexcept;
 
 	/// Get the child primitive index for fixture B.
-	int32 GetChildIndexB() const;
+	int32 GetChildIndexB() const noexcept;
 
 	/// Override the default friction mixture. You can call this in b2ContactListener::PreSolve.
 	/// This value persists until set or reset.
-	void SetFriction(float32 friction);
+	void SetFriction(float32 friction) noexcept;
 
 	/// Get the friction.
-	float32 GetFriction() const;
+	float32 GetFriction() const noexcept;
 
 	/// Reset the friction mixture to the default value.
 	void ResetFriction();
 
 	/// Override the default restitution mixture. You can call this in b2ContactListener::PreSolve.
 	/// The value persists until you set or reset.
-	void SetRestitution(float32 restitution);
+	void SetRestitution(float32 restitution) noexcept;
 
 	/// Get the restitution.
-	float32 GetRestitution() const;
+	float32 GetRestitution() const noexcept;
 
 	/// Reset the restitution to the default value.
-	void ResetRestitution();
+	void ResetRestitution() noexcept;
 
 	/// Set the desired tangent speed for a conveyor belt behavior. In meters per second.
-	void SetTangentSpeed(float32 speed);
+	void SetTangentSpeed(float32 speed) noexcept;
 
 	/// Get the desired tangent speed. In meters per second.
-	float32 GetTangentSpeed() const;
+	float32 GetTangentSpeed() const noexcept;
 
 	/// Evaluate this contact with your own manifold and transforms.
 	virtual void Evaluate(b2Manifold* manifold, const b2Transform& xfA, const b2Transform& xfB) = 0;
@@ -163,9 +163,9 @@ protected:
 	};
 
 	/// Flag this contact for filtering. Filtering will occur the next time step.
-	void FlagForFiltering();
-	void UnflagForFiltering();
-	bool NeedsFiltering() const;
+	void FlagForFiltering() noexcept;
+	void UnflagForFiltering() noexcept;
+	bool NeedsFiltering() const noexcept;
 
 	static b2Contact* Create(b2Fixture* fixtureA, int32 indexA, b2Fixture* fixtureB, int32 indexB, b2BlockAllocator* allocator);
 	static void Destroy(b2Contact* contact, b2Shape::Type typeA, b2Shape::Type typeB, b2BlockAllocator* allocator);
@@ -176,14 +176,14 @@ protected:
 
 	void Update(b2ContactListener* listener);
 
-	bool HasValidToi() const;
+	bool HasValidToi() const noexcept;
 	float32 GetToi() const;
-	void SetToi(float32 toi);
-	void UnsetToi();
+	void SetToi(float32 toi) noexcept;
+	void UnsetToi() noexcept;
 
-	bool IsInIsland() const;
-	void SetInIsland();
-	void UnsetInIsland();
+	bool IsInIsland() const noexcept;
+	void SetInIsland() noexcept;
+	void UnsetInIsland() noexcept;
 
 	uint32 m_flags = e_enabledFlag;
 
@@ -201,23 +201,25 @@ protected:
 	int32 m_indexA = 0;
 	int32 m_indexB = 0;
 
+	float32 m_tangentSpeed = 0.0f;
+
 	b2Manifold m_manifold;
 
 	int32 m_toiCount = 0;
 	float32 m_toi; // only valid if m_flags & e_toiFlag
 
+	// initialized on construction (construction-time depedent)
 	float32 m_friction;
 	float32 m_restitution;
 
-	float32 m_tangentSpeed = 0.0f;
 };
 
-inline b2Manifold* b2Contact::GetManifold()
+inline b2Manifold* b2Contact::GetManifold() noexcept
 {
 	return &m_manifold;
 }
 
-inline const b2Manifold* b2Contact::GetManifold() const
+inline const b2Manifold* b2Contact::GetManifold() const noexcept
 {
 	return &m_manifold;
 }
@@ -232,7 +234,7 @@ inline void b2Contact::GetWorldManifold(b2WorldManifold* worldManifold) const
 	worldManifold->Initialize(&m_manifold, bodyA->GetTransform(), shapeA->m_radius, bodyB->GetTransform(), shapeB->m_radius);
 }
 
-inline void b2Contact::SetEnabled(bool flag)
+inline void b2Contact::SetEnabled(bool flag) noexcept
 {
 	if (flag)
 	{
@@ -244,77 +246,77 @@ inline void b2Contact::SetEnabled(bool flag)
 	}
 }
 
-inline bool b2Contact::IsEnabled() const
+inline bool b2Contact::IsEnabled() const noexcept
 {
 	return (m_flags & e_enabledFlag) == e_enabledFlag;
 }
 
-inline bool b2Contact::IsTouching() const
+inline bool b2Contact::IsTouching() const noexcept
 {
 	return (m_flags & e_touchingFlag) == e_touchingFlag;
 }
 
-inline b2Contact* b2Contact::GetNext()
+inline b2Contact* b2Contact::GetNext() noexcept
 {
 	return m_next;
 }
 
-inline const b2Contact* b2Contact::GetNext() const
+inline const b2Contact* b2Contact::GetNext() const noexcept
 {
 	return m_next;
 }
 
-inline b2Fixture* b2Contact::GetFixtureA()
+inline b2Fixture* b2Contact::GetFixtureA() noexcept
 {
 	return m_fixtureA;
 }
 
-inline const b2Fixture* b2Contact::GetFixtureA() const
+inline const b2Fixture* b2Contact::GetFixtureA() const noexcept
 {
 	return m_fixtureA;
 }
 
-inline b2Fixture* b2Contact::GetFixtureB()
+inline b2Fixture* b2Contact::GetFixtureB() noexcept
 {
 	return m_fixtureB;
 }
 
-inline int32 b2Contact::GetChildIndexA() const
+inline int32 b2Contact::GetChildIndexA() const noexcept
 {
 	return m_indexA;
 }
 
-inline const b2Fixture* b2Contact::GetFixtureB() const
+inline const b2Fixture* b2Contact::GetFixtureB() const noexcept
 {
 	return m_fixtureB;
 }
 
-inline int32 b2Contact::GetChildIndexB() const
+inline int32 b2Contact::GetChildIndexB() const noexcept
 {
 	return m_indexB;
 }
 
-inline void b2Contact::FlagForFiltering()
+inline void b2Contact::FlagForFiltering() noexcept
 {
 	m_flags |= e_filterFlag;
 }
 
-inline void b2Contact::UnflagForFiltering()
+inline void b2Contact::UnflagForFiltering() noexcept
 {
 	m_flags &= ~b2Contact::e_filterFlag;
 }
 
-inline bool b2Contact::NeedsFiltering() const
+inline bool b2Contact::NeedsFiltering() const noexcept
 {
 	return m_flags & b2Contact::e_filterFlag;
 }
 
-inline void b2Contact::SetFriction(float32 friction)
+inline void b2Contact::SetFriction(float32 friction) noexcept
 {
 	m_friction = friction;
 }
 
-inline float32 b2Contact::GetFriction() const
+inline float32 b2Contact::GetFriction() const noexcept
 {
 	return m_friction;
 }
@@ -324,32 +326,32 @@ inline void b2Contact::ResetFriction()
 	m_friction = b2MixFriction(m_fixtureA->m_friction, m_fixtureB->m_friction);
 }
 
-inline void b2Contact::SetRestitution(float32 restitution)
+inline void b2Contact::SetRestitution(float32 restitution) noexcept
 {
 	m_restitution = restitution;
 }
 
-inline float32 b2Contact::GetRestitution() const
+inline float32 b2Contact::GetRestitution() const noexcept
 {
 	return m_restitution;
 }
 
-inline void b2Contact::ResetRestitution()
+inline void b2Contact::ResetRestitution() noexcept
 {
 	m_restitution = b2MixRestitution(m_fixtureA->m_restitution, m_fixtureB->m_restitution);
 }
 
-inline void b2Contact::SetTangentSpeed(float32 speed)
+inline void b2Contact::SetTangentSpeed(float32 speed) noexcept
 {
 	m_tangentSpeed = speed;
 }
 
-inline float32 b2Contact::GetTangentSpeed() const
+inline float32 b2Contact::GetTangentSpeed() const noexcept
 {
 	return m_tangentSpeed;
 }
 
-inline bool b2Contact::HasValidToi() const
+inline bool b2Contact::HasValidToi() const noexcept
 {
 	return m_flags & b2Contact::e_toiFlag;
 }
@@ -360,28 +362,28 @@ inline float32 b2Contact::GetToi() const
 	return m_toi;
 }
 
-inline void b2Contact::SetToi(float32 toi)
+inline void b2Contact::SetToi(float32 toi) noexcept
 {
 	m_toi = toi;
 	m_flags |= b2Contact::e_toiFlag;
 }
 
-inline void b2Contact::UnsetToi()
+inline void b2Contact::UnsetToi() noexcept
 {
 	m_flags &= ~b2Contact::e_toiFlag;
 }
 
-inline bool b2Contact::IsInIsland() const
+inline bool b2Contact::IsInIsland() const noexcept
 {
 	return m_flags & b2Contact::e_islandFlag;
 }
 
-inline void b2Contact::SetInIsland()
+inline void b2Contact::SetInIsland() noexcept
 {
 	m_flags |= b2Contact::e_islandFlag;
 }
 
-inline void b2Contact::UnsetInIsland()
+inline void b2Contact::UnsetInIsland() noexcept
 {	
 	m_flags &= ~b2Contact::e_islandFlag;
 }
