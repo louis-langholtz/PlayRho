@@ -81,7 +81,9 @@ public:
 	/// Enable/disable this contact. This can be used inside the pre-solve
 	/// contact listener. The contact is only disabled for the current
 	/// time step (or sub-step in continuous collisions).
-	void SetEnabled(bool flag) noexcept;
+	[[deprecated]] void SetEnabled(bool flag) noexcept;
+	void SetEnabled() noexcept;
+	void UnsetEnabled() noexcept;
 
 	/// Has this contact been disabled?
 	bool IsEnabled() const noexcept;
@@ -244,6 +246,16 @@ inline void b2Contact::SetEnabled(bool flag) noexcept
 	{
 		m_flags &= ~b2Contact::e_enabledFlag;
 	}
+}
+
+inline void b2Contact::SetEnabled() noexcept
+{
+	m_flags |= b2Contact::e_enabledFlag;
+}
+
+inline void b2Contact::UnsetEnabled() noexcept
+{
+	m_flags &= ~b2Contact::e_enabledFlag;
 }
 
 inline bool b2Contact::IsEnabled() const noexcept

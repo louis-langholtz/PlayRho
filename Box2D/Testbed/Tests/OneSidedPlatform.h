@@ -96,13 +96,13 @@ public:
 
 		if (position.y < m_top + m_radius - 3.0f * b2_linearSlop)
 		{
-			contact->SetEnabled(false);
+			contact->UnsetEnabled();
 		}
 #else
         b2Vec2 v = m_character->GetBody()->GetLinearVelocity();
         if (v.y > 0.0f)
 		{
-            contact->SetEnabled(false);
+            contact->UnsetEnabled();
         }
 #endif
 	}

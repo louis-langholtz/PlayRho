@@ -740,7 +740,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 		if ((!minContact->IsEnabled()) || (!minContact->IsTouching()))
 		{
 			// Restore the sweeps.
-			minContact->SetEnabled(false);
+			minContact->UnsetEnabled();
 			bA->m_sweep = backup1;
 			bB->m_sweep = backup2;
 			bA->SynchronizeTransform();
