@@ -95,22 +95,22 @@ b2World::~b2World()
 	}
 }
 
-void b2World::SetDestructionListener(b2DestructionListener* listener)
+void b2World::SetDestructionListener(b2DestructionListener* listener) noexcept
 {
 	m_destructionListener = listener;
 }
 
-void b2World::SetContactFilter(b2ContactFilter* filter)
+void b2World::SetContactFilter(b2ContactFilter* filter) noexcept
 {
 	m_contactManager.m_contactFilter = filter;
 }
 
-void b2World::SetContactListener(b2ContactListener* listener)
+void b2World::SetContactListener(b2ContactListener* listener) noexcept
 {
 	m_contactManager.m_contactListener = listener;
 }
 
-void b2World::SetDebugDraw(b2Draw* debugDraw)
+void b2World::SetDebugDraw(b2Draw* debugDraw) noexcept
 {
 	g_debugDraw = debugDraw;
 }
@@ -376,7 +376,7 @@ void b2World::DestroyJoint(b2Joint* j)
 }
 
 //
-void b2World::SetAllowSleeping(bool flag)
+void b2World::SetAllowSleeping(bool flag) noexcept
 {
 	if (flag == m_allowSleep)
 	{
@@ -950,7 +950,7 @@ void b2World::Step(float32 dt, int32 velocityIterations, int32 positionIteration
 	m_profile.step = stepTimer.GetMilliseconds();
 }
 
-void b2World::ClearForces()
+void b2World::ClearForces() noexcept
 {
 	for (auto body = m_bodyList; body; body = body->GetNext())
 	{
@@ -1221,12 +1221,12 @@ void b2World::DrawDebugData()
 	}
 }
 
-int32 b2World::GetProxyCount() const
+int32 b2World::GetProxyCount() const noexcept
 {
 	return m_contactManager.m_broadPhase.GetProxyCount();
 }
 
-int32 b2World::GetTreeHeight() const
+int32 b2World::GetTreeHeight() const noexcept
 {
 	return m_contactManager.m_broadPhase.GetTreeHeight();
 }

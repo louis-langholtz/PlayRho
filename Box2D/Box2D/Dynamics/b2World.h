@@ -52,21 +52,21 @@ public:
 
 	/// Register a destruction listener. The listener is owned by you and must
 	/// remain in scope.
-	void SetDestructionListener(b2DestructionListener* listener);
+	void SetDestructionListener(b2DestructionListener* listener) noexcept;
 
 	/// Register a contact filter to provide specific control over collision.
 	/// Otherwise the default filter is used (b2_defaultFilter). The listener is
 	/// owned by you and must remain in scope. 
-	void SetContactFilter(b2ContactFilter* filter);
+	void SetContactFilter(b2ContactFilter* filter) noexcept;
 
 	/// Register a contact event listener. The listener is owned by you and must
 	/// remain in scope.
-	void SetContactListener(b2ContactListener* listener);
+	void SetContactListener(b2ContactListener* listener) noexcept;
 
 	/// Register a routine for debug drawing. The debug draw functions are called
 	/// inside with b2World::DrawDebugData method. The debug draw object is owned
 	/// by you and must remain in scope.
-	void SetDebugDraw(b2Draw* debugDraw);
+	void SetDebugDraw(b2Draw* debugDraw) noexcept;
 
 	/// Create a rigid body given a definition. No reference to the definition
 	/// is retained.
@@ -104,7 +104,7 @@ public:
 	/// When you perform sub-stepping you will disable auto clearing of forces and instead call
 	/// ClearForces after all sub-steps are complete in one pass of your game loop.
 	/// @see SetAutoClearForces
-	void ClearForces();
+	void ClearForces() noexcept;
 
 	/// Call this to draw shapes and other debug draw data. This is intentionally non-const.
 	void DrawDebugData();
@@ -126,56 +126,56 @@ public:
 	/// Get the world body list. With the returned body, use b2Body::GetNext to get
 	/// the next body in the world list. A nullptr body indicates the end of the list.
 	/// @return the head of the world body list.
-	b2Body* GetBodyList();
-	const b2Body* GetBodyList() const;
+	b2Body* GetBodyList() noexcept;
+	const b2Body* GetBodyList() const noexcept;
 
-	b2BodyList GetBodies();
-	b2ConstBodyList GetBodies() const;
+	b2BodyList GetBodies() noexcept;
+	b2ConstBodyList GetBodies() const noexcept;
 
 	/// Get the world joint list. With the returned joint, use b2Joint::GetNext to get
 	/// the next joint in the world list. A nullptr joint indicates the end of the list.
 	/// @return the head of the world joint list.
-	b2Joint* GetJointList();
-	const b2Joint* GetJointList() const;
+	b2Joint* GetJointList() noexcept;
+	const b2Joint* GetJointList() const noexcept;
 
 	/// Get the world contact list. With the returned contact, use b2Contact::GetNext to get
 	/// the next contact in the world list. A nullptr contact indicates the end of the list.
 	/// @return the head of the world contact list.
 	/// @warning contacts are created and destroyed in the middle of a time step.
 	/// Use b2ContactListener to avoid missing contacts.
-	b2Contact* GetContactList();
-	const b2Contact* GetContactList() const;
+	b2Contact* GetContactList() noexcept;
+	const b2Contact* GetContactList() const noexcept;
 
 	/// Enable/disable sleep.
-	void SetAllowSleeping(bool flag);
-	bool GetAllowSleeping() const { return m_allowSleep; }
+	void SetAllowSleeping(bool flag) noexcept;
+	bool GetAllowSleeping() const noexcept { return m_allowSleep; }
 
 	/// Enable/disable warm starting. For testing.
-	void SetWarmStarting(bool flag) { m_warmStarting = flag; }
-	bool GetWarmStarting() const { return m_warmStarting; }
+	void SetWarmStarting(bool flag) noexcept { m_warmStarting = flag; }
+	bool GetWarmStarting() const noexcept { return m_warmStarting; }
 
 	/// Enable/disable continuous physics. For testing.
-	void SetContinuousPhysics(bool flag) { m_continuousPhysics = flag; }
-	bool GetContinuousPhysics() const { return m_continuousPhysics; }
+	void SetContinuousPhysics(bool flag) noexcept { m_continuousPhysics = flag; }
+	bool GetContinuousPhysics() const noexcept { return m_continuousPhysics; }
 
 	/// Enable/disable single stepped continuous physics. For testing.
-	void SetSubStepping(bool flag) { m_subStepping = flag; }
-	bool GetSubStepping() const { return m_subStepping; }
+	void SetSubStepping(bool flag) noexcept { m_subStepping = flag; }
+	bool GetSubStepping() const noexcept { return m_subStepping; }
 
 	/// Get the number of broad-phase proxies.
-	int32 GetProxyCount() const;
+	int32 GetProxyCount() const noexcept;
 
 	/// Get the number of bodies.
-	int32 GetBodyCount() const;
+	int32 GetBodyCount() const noexcept;
 
 	/// Get the number of joints.
-	int32 GetJointCount() const;
+	int32 GetJointCount() const noexcept;
 
 	/// Get the number of contacts (each may have 0 or more contact points).
-	int32 GetContactCount() const;
+	int32 GetContactCount() const noexcept;
 
 	/// Get the height of the dynamic tree.
-	int32 GetTreeHeight() const;
+	int32 GetTreeHeight() const noexcept;
 
 	/// Get the balance of the dynamic tree.
 	int32 GetTreeBalance() const;
@@ -185,19 +185,19 @@ public:
 	float32 GetTreeQuality() const;
 
 	/// Change the global gravity vector.
-	void SetGravity(const b2Vec2& gravity);
+	void SetGravity(const b2Vec2& gravity) noexcept;
 	
 	/// Get the global gravity vector.
-	b2Vec2 GetGravity() const;
+	b2Vec2 GetGravity() const noexcept;
 
 	/// Is the world locked (in the middle of a time step).
-	bool IsLocked() const;
+	bool IsLocked() const noexcept;
 
 	/// Set flag to control automatic clearing of forces after each time step.
-	void SetAutoClearForces(bool flag);
+	void SetAutoClearForces(bool flag) noexcept;
 
 	/// Get the flag that controls automatic clearing of forces after each time step.
-	bool GetAutoClearForces() const;
+	bool GetAutoClearForces() const noexcept;
 
 	/// Shift the world origin. Useful for large worlds.
 	/// The body shift formula is: position -= newOrigin
@@ -205,10 +205,10 @@ public:
 	void ShiftOrigin(const b2Vec2& newOrigin);
 
 	/// Get the contact manager for testing.
-	const b2ContactManager& GetContactManager() const;
+	const b2ContactManager& GetContactManager() const noexcept;
 
 	/// Get the current profile.
-	const b2Profile& GetProfile() const;
+	const b2Profile& GetProfile() const noexcept;
 
 	/// Dump the world into the log file.
 	/// @warning this should be called outside of a time step.
@@ -268,77 +268,77 @@ private:
 	b2Profile m_profile;
 };
 
-inline b2Body* b2World::GetBodyList()
+inline b2Body* b2World::GetBodyList() noexcept
 {
 	return m_bodyList;
 }
 
-inline const b2Body* b2World::GetBodyList() const
+inline const b2Body* b2World::GetBodyList() const noexcept
 {
 	return m_bodyList;
 }
 
-inline b2BodyList b2World::GetBodies()
+inline b2BodyList b2World::GetBodies() noexcept
 {
 	return b2BodyList(m_bodyList);
 }
 
-inline b2ConstBodyList b2World::GetBodies() const
+inline b2ConstBodyList b2World::GetBodies() const noexcept
 {
 	return b2ConstBodyList(m_bodyList);
 }
 
-inline b2Joint* b2World::GetJointList()
+inline b2Joint* b2World::GetJointList() noexcept
 {
 	return m_jointList;
 }
 
-inline const b2Joint* b2World::GetJointList() const
+inline const b2Joint* b2World::GetJointList() const noexcept
 {
 	return m_jointList;
 }
 
-inline b2Contact* b2World::GetContactList()
+inline b2Contact* b2World::GetContactList() noexcept
 {
 	return m_contactManager.GetContactList();
 }
 
-inline const b2Contact* b2World::GetContactList() const
+inline const b2Contact* b2World::GetContactList() const noexcept
 {
 	return m_contactManager.GetContactList();
 }
 
-inline int32 b2World::GetBodyCount() const
+inline int32 b2World::GetBodyCount() const noexcept
 {
 	return m_bodyCount;
 }
 
-inline int32 b2World::GetJointCount() const
+inline int32 b2World::GetJointCount() const noexcept
 {
 	return m_jointCount;
 }
 
-inline int32 b2World::GetContactCount() const
+inline int32 b2World::GetContactCount() const noexcept
 {
 	return m_contactManager.GetContactCount();
 }
 
-inline void b2World::SetGravity(const b2Vec2& gravity)
+inline void b2World::SetGravity(const b2Vec2& gravity) noexcept
 {
 	m_gravity = gravity;
 }
 
-inline b2Vec2 b2World::GetGravity() const
+inline b2Vec2 b2World::GetGravity() const noexcept
 {
 	return m_gravity;
 }
 
-inline bool b2World::IsLocked() const
+inline bool b2World::IsLocked() const noexcept
 {
 	return (m_flags & e_locked) == e_locked;
 }
 
-inline void b2World::SetAutoClearForces(bool flag)
+inline void b2World::SetAutoClearForces(bool flag) noexcept
 {
 	if (flag)
 	{
@@ -351,17 +351,17 @@ inline void b2World::SetAutoClearForces(bool flag)
 }
 
 /// Get the flag that controls automatic clearing of forces after each time step.
-inline bool b2World::GetAutoClearForces() const
+inline bool b2World::GetAutoClearForces() const noexcept
 {
 	return (m_flags & e_clearForces) == e_clearForces;
 }
 
-inline const b2ContactManager& b2World::GetContactManager() const
+inline const b2ContactManager& b2World::GetContactManager() const noexcept
 {
 	return m_contactManager;
 }
 
-inline const b2Profile& b2World::GetProfile() const
+inline const b2Profile& b2World::GetProfile() const noexcept
 {
 	return m_profile;
 }

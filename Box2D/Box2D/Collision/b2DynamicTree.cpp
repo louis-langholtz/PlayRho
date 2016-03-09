@@ -500,7 +500,7 @@ int32 b2DynamicTree::Balance(int32 iA)
 	return iA;
 }
 
-int32 b2DynamicTree::GetHeight() const
+int32 b2DynamicTree::GetHeight() const noexcept
 {
 	if (m_root == b2_nullNode)
 	{

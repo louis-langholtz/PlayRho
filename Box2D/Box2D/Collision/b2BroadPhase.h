@@ -94,7 +94,7 @@ public:
 	void RayCast(T* callback, const b2RayCastInput& input) const;
 
 	/// Get the height of the embedded tree.
-	int32 GetTreeHeight() const;
+	int32 GetTreeHeight() const noexcept;
 
 	/// Get the balance of the embedded tree.
 	int32 GetTreeBalance() const;
@@ -172,7 +172,7 @@ inline int32 b2BroadPhase::GetProxyCount() const noexcept
 	return m_proxyCount;
 }
 
-inline int32 b2BroadPhase::GetTreeHeight() const
+inline int32 b2BroadPhase::GetTreeHeight() const noexcept
 {
 	return m_tree.GetHeight();
 }

@@ -109,7 +109,7 @@ public:
 
 	/// Compute the height of the binary tree in O(N) time. Should not be
 	/// called often.
-	int32 GetHeight() const;
+	int32 GetHeight() const noexcept;
 
 	/// Get the maximum balance of an node in the tree. The balance is the difference
 	/// in height of the two children of a node.

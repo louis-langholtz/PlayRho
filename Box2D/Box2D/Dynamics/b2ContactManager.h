@@ -41,9 +41,9 @@ public:
 
 	void Collide();
 	
-	inline int32 GetContactCount() const { return m_contactCount; }
-	const b2Contact* GetContactList() const { return m_contactList; }
-	b2Contact* GetContactList() { return m_contactList; }
+	inline int32 GetContactCount() const noexcept { return m_contactCount; }
+	const b2Contact* GetContactList() const noexcept { return m_contactList; }
+	b2Contact* GetContactList() noexcept { return m_contactList; }
 
 	b2BroadPhase m_broadPhase;
 	b2ContactFilter* m_contactFilter;

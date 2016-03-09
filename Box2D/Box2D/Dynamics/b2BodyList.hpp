@@ -21,7 +21,7 @@ public:
 	using const_iterator = b2ConstBodyIterator;
 
 	b2BodyList() = default;
-	b2BodyList(b2Body* b): p(b) {}
+	b2BodyList(b2Body* b) noexcept: p(b) {}
 	
 	iterator begin() noexcept { return iterator(p); }
 	iterator end() noexcept { return iterator(nullptr); }
