@@ -22,8 +22,10 @@
 #include <Box2D/Collision/Shapes/b2ChainShape.h>
 #include <Box2D/Collision/Shapes/b2PolygonShape.h>
 
+#if defined(DO_GJK_PROFILING)
 // GJK using Voronoi regions (Christer Ericson) and Barycentric coordinates.
 int32 b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
+#endif
 
 void b2DistanceProxy::Set(const b2Shape* shape, int32 index)
 {
@@ -95,23 +97,23 @@ struct b2SimplexVertex
 
 struct b2Simplex
 {
-	void ReadCache(	const b2SimplexCache* cache,
-					const b2DistanceProxy* proxyA, const b2Transform& transformA,
-					const b2DistanceProxy* proxyB, const b2Transform& transformB)
+	void ReadCache(	const b2SimplexCache& cache,
+					const b2DistanceProxy& proxyA, const b2Transform& transformA,
+					const b2DistanceProxy& proxyB, const b2Transform& transformB)
 	{
-		b2Assert(cache->count <= 3);
+		b2Assert(cache.count <= 3);
 		
 		// Copy data from cache.
-		m_count = cache->count;
-		auto vertices = &m_v1;
+		m_count = cache.count;
+		auto vertices = m_vertices;
 		for (auto i = decltype(m_count){0}; i < m_count; ++i)
 		{
 			auto v = vertices + i;
-			v->indexA = cache->indexA[i];
-			v->indexB = cache->indexB[i];
-			const auto wALocal = proxyA->GetVertex(v->indexA);
-			const auto wBLocal = proxyB->GetVertex(v->indexB);
+			v->indexA = cache.indexA[i];
+			v->indexB = cache.indexB[i];
+			const auto wALocal = proxyA.GetVertex(v->indexA);
 			v->wA = b2Mul(transformA, wALocal);
+			const auto wBLocal = proxyB.GetVertex(v->indexB);
 			v->wB = b2Mul(transformB, wBLocal);
 			v->w = v->wB - v->wA;
 			v->a = 0.0f;
@@ -121,9 +123,9 @@ struct b2Simplex
 		// old metric then flush the simplex.
 		if (m_count > 1)
 		{
-			const auto metric1 = cache->metric;
+			const auto metric1 = cache.metric;
 			const auto metric2 = GetMetric();
-			if (metric2 < 0.5f * metric1 || 2.0f * metric1 < metric2 || metric2 < b2_epsilon)
+			if ((metric2 < 0.5f * metric1) || (2.0f * metric1 < metric2) || (metric2 < b2_epsilon))
 			{
 				// Reset the simplex.
 				m_count = 0;
@@ -136,8 +138,8 @@ struct b2Simplex
 			auto v = vertices + 0;
 			v->indexA = 0;
 			v->indexB = 0;
-			const auto wALocal = proxyA->GetVertex(0);
-			const auto wBLocal = proxyB->GetVertex(0);
+			const auto wALocal = proxyA.GetVertex(0);
+			const auto wBLocal = proxyB.GetVertex(0);
 			v->wA = b2Mul(transformA, wALocal);
 			v->wB = b2Mul(transformB, wBLocal);
 			v->w = v->wB - v->wA;
@@ -146,15 +148,15 @@ struct b2Simplex
 		}
 	}
 
-	void WriteCache(b2SimplexCache* const cache) const
+	void WriteCache(b2SimplexCache& cache) const
 	{
-		cache->metric = GetMetric();
-		cache->count = uint16(m_count);
-		const auto vertices = &m_v1;
+		cache.metric = GetMetric();
+		cache.count = uint16(m_count);
+		const auto vertices = m_vertices;
 		for (auto i = decltype(m_count){0}; i < m_count; ++i)
 		{
-			cache->indexA[i] = uint8(vertices[i].indexA);
-			cache->indexB[i] = uint8(vertices[i].indexB);
+			cache.indexA[i] = uint8(vertices[i].indexA);
+			cache.indexB[i] = uint8(vertices[i].indexB);
 		}
 	}
 
@@ -163,12 +165,12 @@ struct b2Simplex
 		switch (m_count)
 		{
 		case 1:
-			return -m_v1.w;
+			return -m_vertices[0].w;
 
 		case 2:
 			{
-				const auto e12 = m_v2.w - m_v1.w;
-				const auto sgn = b2Cross(e12, -m_v1.w);
+				const auto e12 = m_vertices[1].w - m_vertices[0].w;
+				const auto sgn = b2Cross(e12, -m_vertices[0].w);
 				if (sgn > 0.0f)
 				{
 					// Origin is left of e12.
@@ -196,10 +198,10 @@ struct b2Simplex
 			return b2Vec2_zero;
 
 		case 1:
-			return m_v1.w;
+			return m_vertices[0].w;
 
 		case 2:
-			return m_v1.a * m_v1.w + m_v2.a * m_v2.w;
+			return m_vertices[0].a * m_vertices[0].w + m_vertices[1].a * m_vertices[1].w;
 
 		case 3:
 			return b2Vec2_zero;
@@ -219,17 +221,17 @@ struct b2Simplex
 			break;
 
 		case 1:
-			*pA = m_v1.wA;
-			*pB = m_v1.wB;
+			*pA = m_vertices[0].wA;
+			*pB = m_vertices[0].wB;
 			break;
 
 		case 2:
-			*pA = m_v1.a * m_v1.wA + m_v2.a * m_v2.wA;
-			*pB = m_v1.a * m_v1.wB + m_v2.a * m_v2.wB;
+			*pA = m_vertices[0].a * m_vertices[0].wA + m_vertices[1].a * m_vertices[1].wA;
+			*pB = m_vertices[0].a * m_vertices[0].wB + m_vertices[1].a * m_vertices[1].wB;
 			break;
 
 		case 3:
-			*pA = m_v1.a * m_v1.wA + m_v2.a * m_v2.wA + m_v3.a * m_v3.wA;
+			*pA = m_vertices[0].a * m_vertices[0].wA + m_vertices[1].a * m_vertices[1].wA + m_vertices[2].a * m_vertices[2].wA;
 			*pB = *pA;
 			break;
 
@@ -251,10 +253,10 @@ struct b2Simplex
 			return 0.0f;
 
 		case 2:
-			return b2Distance(m_v1.w, m_v2.w);
+			return b2Distance(m_vertices[0].w, m_vertices[1].w);
 
 		case 3:
-			return b2Cross(m_v2.w - m_v1.w, m_v3.w - m_v1.w);
+			return b2Cross(m_vertices[1].w - m_vertices[0].w, m_vertices[2].w - m_vertices[0].w);
 
 		default:
 			b2Assert(false);
@@ -262,11 +264,11 @@ struct b2Simplex
 		}
 	}
 
-	void Solve2();
-	void Solve3();
+	void Solve2() noexcept;
+	void Solve3() noexcept;
 
-	b2SimplexVertex m_v1, m_v2, m_v3;
-	int32 m_count;
+	b2SimplexVertex m_vertices[3];
+	uint32 m_count;
 };
 
 
@@ -293,10 +295,10 @@ struct b2Simplex
 // Solution
 // a1 = d12_1 / d12
 // a2 = d12_2 / d12
-void b2Simplex::Solve2()
+void b2Simplex::Solve2() noexcept
 {
-	const auto w1 = m_v1.w;
-	const auto w2 = m_v2.w;
+	const auto w1 = m_vertices[0].w;
+	const auto w2 = m_vertices[1].w;
 	const auto e12 = w2 - w1;
 
 	// w1 region
@@ -304,7 +306,7 @@ void b2Simplex::Solve2()
 	if (d12_2 <= 0.0f)
 	{
 		// a2 <= 0, so we clamp it to 0
-		m_v1.a = 1.0f;
+		m_vertices[0].a = 1.0f;
 		m_count = 1;
 		return;
 	}
@@ -314,16 +316,16 @@ void b2Simplex::Solve2()
 	if (d12_1 <= 0.0f)
 	{
 		// a1 <= 0, so we clamp it to 0
-		m_v2.a = 1.0f;
+		m_vertices[1].a = 1.0f;
 		m_count = 1;
-		m_v1 = m_v2;
+		m_vertices[0] = m_vertices[1];
 		return;
 	}
 
 	// Must be in e12 region.
 	const auto inv_d12 = 1.0f / (d12_1 + d12_2);
-	m_v1.a = d12_1 * inv_d12;
-	m_v2.a = d12_2 * inv_d12;
+	m_vertices[0].a = d12_1 * inv_d12;
+	m_vertices[1].a = d12_2 * inv_d12;
 	m_count = 2;
 }
 
@@ -332,11 +334,11 @@ void b2Simplex::Solve2()
 // - edge points[0]-points[2]
 // - edge points[1]-points[2]
 // - inside the triangle
-void b2Simplex::Solve3()
+void b2Simplex::Solve3() noexcept
 {
-	const auto w1 = m_v1.w;
-	const auto w2 = m_v2.w;
-	const auto w3 = m_v3.w;
+	const auto w1 = m_vertices[0].w;
+	const auto w2 = m_vertices[1].w;
+	const auto w3 = m_vertices[2].w;
 
 	// Edge12
 	// [1      1     ][a1] = [1]
@@ -369,75 +371,75 @@ void b2Simplex::Solve3()
 	const auto d23_2 = -w2e23;
 	
 	// Triangle123
-	float32 n123 = b2Cross(e12, e13);
+	const auto n123 = b2Cross(e12, e13);
 
 	const auto d123_1 = n123 * b2Cross(w2, w3);
 	const auto d123_2 = n123 * b2Cross(w3, w1);
 	const auto d123_3 = n123 * b2Cross(w1, w2);
 
 	// w1 region
-	if (d12_2 <= 0.0f && d13_2 <= 0.0f)
+	if ((d12_2 <= 0.0f) && (d13_2 <= 0.0f))
 	{
-		m_v1.a = 1.0f;
+		m_vertices[0].a = 1.0f;
 		m_count = 1;
 		return;
 	}
 
 	// e12
-	if (d12_1 > 0.0f && d12_2 > 0.0f && d123_3 <= 0.0f)
+	if ((d12_1 > 0.0f) && (d12_2 > 0.0f) && (d123_3 <= 0.0f))
 	{
 		const auto inv_d12 = 1.0f / (d12_1 + d12_2);
-		m_v1.a = d12_1 * inv_d12;
-		m_v2.a = d12_2 * inv_d12;
+		m_vertices[0].a = d12_1 * inv_d12;
+		m_vertices[1].a = d12_2 * inv_d12;
 		m_count = 2;
 		return;
 	}
 
 	// e13
-	if (d13_1 > 0.0f && d13_2 > 0.0f && d123_2 <= 0.0f)
+	if ((d13_1 > 0.0f) && (d13_2 > 0.0f) && (d123_2 <= 0.0f))
 	{
 		const auto inv_d13 = 1.0f / (d13_1 + d13_2);
-		m_v1.a = d13_1 * inv_d13;
-		m_v3.a = d13_2 * inv_d13;
+		m_vertices[0].a = d13_1 * inv_d13;
+		m_vertices[2].a = d13_2 * inv_d13;
 		m_count = 2;
-		m_v2 = m_v3;
+		m_vertices[1] = m_vertices[2];
 		return;
 	}
 
 	// w2 region
-	if (d12_1 <= 0.0f && d23_2 <= 0.0f)
+	if ((d12_1 <= 0.0f) && (d23_2 <= 0.0f))
 	{
-		m_v2.a = 1.0f;
+		m_vertices[1].a = 1.0f;
 		m_count = 1;
-		m_v1 = m_v2;
+		m_vertices[0] = m_vertices[1];
 		return;
 	}
 
 	// w3 region
-	if (d13_1 <= 0.0f && d23_1 <= 0.0f)
+	if ((d13_1 <= 0.0f) && (d23_1 <= 0.0f))
 	{
-		m_v3.a = 1.0f;
+		m_vertices[2].a = 1.0f;
 		m_count = 1;
-		m_v1 = m_v3;
+		m_vertices[0] = m_vertices[2];
 		return;
 	}
 
 	// e23
-	if (d23_1 > 0.0f && d23_2 > 0.0f && d123_1 <= 0.0f)
+	if ((d23_1 > 0.0f) && (d23_2 > 0.0f) && (d123_1 <= 0.0f))
 	{
 		const auto inv_d23 = 1.0f / (d23_1 + d23_2);
-		m_v2.a = d23_1 * inv_d23;
-		m_v3.a = d23_2 * inv_d23;
+		m_vertices[1].a = d23_1 * inv_d23;
+		m_vertices[2].a = d23_2 * inv_d23;
 		m_count = 2;
-		m_v1 = m_v3;
+		m_vertices[0] = m_vertices[2];
 		return;
 	}
 
 	// Must be in triangle123
 	const auto inv_d123 = 1.0f / (d123_1 + d123_2 + d123_3);
-	m_v1.a = d123_1 * inv_d123;
-	m_v2.a = d123_2 * inv_d123;
-	m_v3.a = d123_3 * inv_d123;
+	m_vertices[0].a = d123_1 * inv_d123;
+	m_vertices[1].a = d123_2 * inv_d123;
+	m_vertices[2].a = d123_3 * inv_d123;
 	m_count = 3;
 }
 
@@ -445,20 +447,22 @@ void b2Distance(b2DistanceOutput* output,
 				b2SimplexCache* cache,
 				const b2DistanceInput* input)
 {
+#if defined(DO_GJK_PROFILING)
 	++b2_gjkCalls;
+#endif
 
-	const auto proxyA = &input->proxyA;
-	const auto proxyB = &input->proxyB;
+	const auto& proxyA = input->proxyA;
+	const auto& proxyB = input->proxyB;
 
 	const auto transformA = input->transformA;
 	const auto transformB = input->transformB;
 
 	// Initialize the simplex.
 	b2Simplex simplex;
-	simplex.ReadCache(cache, proxyA, transformA, proxyB, transformB);
+	simplex.ReadCache(*cache, proxyA, transformA, proxyB, transformB);
 
 	// Get simplex vertices as an array.
-	const auto vertices = &simplex.m_v1;
+	const auto vertices = simplex.m_vertices;
 	constexpr auto k_maxIters = int32{20};
 
 	// These store the vertices of the last simplex so that we
@@ -530,15 +534,17 @@ void b2Distance(b2DistanceOutput* output,
 
 		// Compute a tentative new simplex vertex using support points.
 		auto vertex = vertices + simplex.m_count;
-		vertex->indexA = proxyA->GetSupport(b2MulT(transformA.q, -d));
-		vertex->wA = b2Mul(transformA, proxyA->GetVertex(vertex->indexA));
-		vertex->indexB = proxyB->GetSupport(b2MulT(transformB.q, d));
-		vertex->wB = b2Mul(transformB, proxyB->GetVertex(vertex->indexB));
+		vertex->indexA = proxyA.GetSupport(b2MulT(transformA.q, -d));
+		vertex->wA = b2Mul(transformA, proxyA.GetVertex(vertex->indexA));
+		vertex->indexB = proxyB.GetSupport(b2MulT(transformB.q, d));
+		vertex->wB = b2Mul(transformB, proxyB.GetVertex(vertex->indexB));
 		vertex->w = vertex->wB - vertex->wA;
 
 		// Iteration count is equated to the number of support point calls.
 		++iter;
+#if defined(DO_GJK_PROFILING)
 		++b2_gjkIters;
+#endif
 
 		// Check for duplicate support points. This is the main termination criteria.
 		auto duplicate = false;
@@ -561,7 +567,9 @@ void b2Distance(b2DistanceOutput* output,
 		++simplex.m_count;
 	}
 
+#if defined(DO_GJK_PROFILING)
 	b2_gjkMaxIters = b2Max(b2_gjkMaxIters, iter);
+#endif
 
 	// Prepare output.
 	simplex.GetWitnessPoints(&output->pointA, &output->pointB);
@@ -569,13 +577,13 @@ void b2Distance(b2DistanceOutput* output,
 	output->iterations = iter;
 
 	// Cache the simplex.
-	simplex.WriteCache(cache);
+	simplex.WriteCache(*cache);
 
 	// Apply radii if requested.
 	if (input->useRadii)
 	{
-		const auto rA = proxyA->m_radius;
-		const auto rB = proxyB->m_radius;
+		const auto rA = proxyA.m_radius;
+		const auto rB = proxyB.m_radius;
 
 		if ((output->distance > (rA + rB)) && (output->distance > b2_epsilon))
 		{

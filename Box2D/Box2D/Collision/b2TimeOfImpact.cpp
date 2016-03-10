@@ -39,82 +39,75 @@ struct b2SeparationFunction
 		e_faceB
 	};
 
-	// TODO_ERIN might not need to return the separation
-
-	float32 Initialize(const b2SimplexCache* cache,
+	b2SeparationFunction(const b2SimplexCache& cache,
 		const b2DistanceProxy* proxyA, const b2Sweep& sweepA,
 		const b2DistanceProxy* proxyB, const b2Sweep& sweepB,
-		float32 t1)
+		float32 t1):
+		m_proxyA(proxyA), m_proxyB(proxyB), m_sweepA(sweepA), m_sweepB(sweepB),
+		m_type((cache.count != 1)? ((cache.indexA[0] == cache.indexA[1])? e_faceB: e_faceA): e_points)
 	{
-		m_proxyA = proxyA;
-		m_proxyB = proxyB;
-		int32 count = cache->count;
-		b2Assert(0 < count && count < 3);
-
-		m_sweepA = sweepA;
-		m_sweepB = sweepB;
+		b2Assert((0 < cache.count) && (cache.count < 3));
 
 		b2Transform xfA, xfB;
 		m_sweepA.GetTransform(&xfA, t1);
 		m_sweepB.GetTransform(&xfB, t1);
 
-		if (count == 1)
+		switch (m_type)
 		{
-			m_type = e_points;
-			b2Vec2 localPointA = m_proxyA->GetVertex(cache->indexA[0]);
-			b2Vec2 localPointB = m_proxyB->GetVertex(cache->indexB[0]);
-			b2Vec2 pointA = b2Mul(xfA, localPointA);
-			b2Vec2 pointB = b2Mul(xfB, localPointB);
+		case e_points:
+		{
+			const auto localPointA = m_proxyA->GetVertex(cache.indexA[0]);
+			const auto localPointB = m_proxyB->GetVertex(cache.indexB[0]);
+			const auto pointA = b2Mul(xfA, localPointA);
+			const auto pointB = b2Mul(xfB, localPointB);
 			m_axis = pointB - pointA;
-			return m_axis.Normalize();
+			m_axis.Normalize();
+			break;
 		}
-		else if (cache->indexA[0] == cache->indexA[1])
+		case e_faceB:
 		{
 			// Two points on B and one on A.
-			m_type = e_faceB;
-			b2Vec2 localPointB1 = proxyB->GetVertex(cache->indexB[0]);
-			b2Vec2 localPointB2 = proxyB->GetVertex(cache->indexB[1]);
+			const auto localPointB1 = proxyB->GetVertex(cache.indexB[0]);
+			const auto localPointB2 = proxyB->GetVertex(cache.indexB[1]);
 
 			m_axis = b2Normalize(b2Cross(localPointB2 - localPointB1, 1.0f));
-			b2Vec2 normal = b2Mul(xfB.q, m_axis);
+			const auto normal = b2Mul(xfB.q, m_axis);
 
 			m_localPoint = 0.5f * (localPointB1 + localPointB2);
-			b2Vec2 pointB = b2Mul(xfB, m_localPoint);
+			const auto pointB = b2Mul(xfB, m_localPoint);
 
-			b2Vec2 localPointA = proxyA->GetVertex(cache->indexA[0]);
-			b2Vec2 pointA = b2Mul(xfA, localPointA);
+			const auto localPointA = proxyA->GetVertex(cache.indexA[0]);
+			const auto pointA = b2Mul(xfA, localPointA);
 
 			auto s = b2Dot(pointA - pointB, normal);
 			if (s < 0.0f)
 			{
 				m_axis = -m_axis;
-				s = -s;
 			}
-			return s;
+			break;
 		}
-		else
+		case e_faceA:
 		{
 			// Two points on A and one or two points on B.
-			m_type = e_faceA;
-			b2Vec2 localPointA1 = m_proxyA->GetVertex(cache->indexA[0]);
-			b2Vec2 localPointA2 = m_proxyA->GetVertex(cache->indexA[1]);
+			const auto localPointA1 = m_proxyA->GetVertex(cache.indexA[0]);
+			const auto localPointA2 = m_proxyA->GetVertex(cache.indexA[1]);
 			
 			m_axis = b2Normalize(b2Cross(localPointA2 - localPointA1, 1.0f));
-			b2Vec2 normal = b2Mul(xfA.q, m_axis);
+			const auto normal = b2Mul(xfA.q, m_axis);
 
 			m_localPoint = 0.5f * (localPointA1 + localPointA2);
-			b2Vec2 pointA = b2Mul(xfA, m_localPoint);
+			const auto pointA = b2Mul(xfA, m_localPoint);
 
-			b2Vec2 localPointB = m_proxyB->GetVertex(cache->indexB[0]);
-			b2Vec2 pointB = b2Mul(xfB, localPointB);
+			const auto localPointB = m_proxyB->GetVertex(cache.indexB[0]);
+			const auto pointB = b2Mul(xfB, localPointB);
 
-			float32 s = b2Dot(pointB - pointA, normal);
+			auto s = b2Dot(pointB - pointA, normal);
 			if (s < 0.0f)
 			{
 				m_axis = -m_axis;
-				s = -s;
 			}
-			return s;
+			break;
+		}
 		}
 	}
 
@@ -129,54 +122,51 @@ struct b2SeparationFunction
 		{
 		case e_points:
 			{
-				b2Vec2 axisA = b2MulT(xfA.q,  m_axis);
-				b2Vec2 axisB = b2MulT(xfB.q, -m_axis);
+				const auto axisA = b2MulT(xfA.q,  m_axis);
+				const auto axisB = b2MulT(xfB.q, -m_axis);
 
 				*indexA = m_proxyA->GetSupport(axisA);
 				*indexB = m_proxyB->GetSupport(axisB);
 
-				b2Vec2 localPointA = m_proxyA->GetVertex(*indexA);
-				b2Vec2 localPointB = m_proxyB->GetVertex(*indexB);
+				const auto localPointA = m_proxyA->GetVertex(*indexA);
+				const auto localPointB = m_proxyB->GetVertex(*indexB);
 				
-				b2Vec2 pointA = b2Mul(xfA, localPointA);
-				b2Vec2 pointB = b2Mul(xfB, localPointB);
+				const auto pointA = b2Mul(xfA, localPointA);
+				const auto pointB = b2Mul(xfB, localPointB);
 
-				float32 separation = b2Dot(pointB - pointA, m_axis);
-				return separation;
+				return b2Dot(pointB - pointA, m_axis);
 			}
 
 		case e_faceA:
 			{
-				b2Vec2 normal = b2Mul(xfA.q, m_axis);
-				b2Vec2 pointA = b2Mul(xfA, m_localPoint);
+				const auto normal = b2Mul(xfA.q, m_axis);
+				const auto pointA = b2Mul(xfA, m_localPoint);
 
-				b2Vec2 axisB = b2MulT(xfB.q, -normal);
+				const auto axisB = b2MulT(xfB.q, -normal);
 				
 				*indexA = -1;
 				*indexB = m_proxyB->GetSupport(axisB);
 
-				b2Vec2 localPointB = m_proxyB->GetVertex(*indexB);
-				b2Vec2 pointB = b2Mul(xfB, localPointB);
+				const auto localPointB = m_proxyB->GetVertex(*indexB);
+				const auto pointB = b2Mul(xfB, localPointB);
 
-				float32 separation = b2Dot(pointB - pointA, normal);
-				return separation;
+				return b2Dot(pointB - pointA, normal);
 			}
 
 		case e_faceB:
 			{
-				b2Vec2 normal = b2Mul(xfB.q, m_axis);
-				b2Vec2 pointB = b2Mul(xfB, m_localPoint);
+				const auto normal = b2Mul(xfB.q, m_axis);
+				const auto pointB = b2Mul(xfB, m_localPoint);
 
-				b2Vec2 axisA = b2MulT(xfA.q, -normal);
+				const auto axisA = b2MulT(xfA.q, -normal);
 
 				*indexB = -1;
 				*indexA = m_proxyA->GetSupport(axisA);
 
-				b2Vec2 localPointA = m_proxyA->GetVertex(*indexA);
-				b2Vec2 pointA = b2Mul(xfA, localPointA);
+				const auto localPointA = m_proxyA->GetVertex(*indexA);
+				const auto pointA = b2Mul(xfA, localPointA);
 
-				float32 separation = b2Dot(pointA - pointB, normal);
-				return separation;
+				return b2Dot(pointA - pointB, normal);
 			}
 
 		default:
@@ -198,38 +188,34 @@ struct b2SeparationFunction
 		{
 		case e_points:
 			{
-				b2Vec2 localPointA = m_proxyA->GetVertex(indexA);
-				b2Vec2 localPointB = m_proxyB->GetVertex(indexB);
+				const auto localPointA = m_proxyA->GetVertex(indexA);
+				const auto localPointB = m_proxyB->GetVertex(indexB);
 
-				b2Vec2 pointA = b2Mul(xfA, localPointA);
-				b2Vec2 pointB = b2Mul(xfB, localPointB);
-				float32 separation = b2Dot(pointB - pointA, m_axis);
-
-				return separation;
+				const auto pointA = b2Mul(xfA, localPointA);
+				const auto pointB = b2Mul(xfB, localPointB);
+				return b2Dot(pointB - pointA, m_axis);
 			}
 
 		case e_faceA:
 			{
-				b2Vec2 normal = b2Mul(xfA.q, m_axis);
-				b2Vec2 pointA = b2Mul(xfA, m_localPoint);
+				const auto normal = b2Mul(xfA.q, m_axis);
+				const auto pointA = b2Mul(xfA, m_localPoint);
 
-				b2Vec2 localPointB = m_proxyB->GetVertex(indexB);
-				b2Vec2 pointB = b2Mul(xfB, localPointB);
+				const auto localPointB = m_proxyB->GetVertex(indexB);
+				const auto pointB = b2Mul(xfB, localPointB);
 
-				float32 separation = b2Dot(pointB - pointA, normal);
-				return separation;
+				return b2Dot(pointB - pointA, normal);
 			}
 
 		case e_faceB:
 			{
-				b2Vec2 normal = b2Mul(xfB.q, m_axis);
-				b2Vec2 pointB = b2Mul(xfB, m_localPoint);
+				const auto normal = b2Mul(xfB.q, m_axis);
+				const auto pointB = b2Mul(xfB, m_localPoint);
 
-				b2Vec2 localPointA = m_proxyA->GetVertex(indexA);
-				b2Vec2 pointA = b2Mul(xfA, localPointA);
+				const auto localPointA = m_proxyA->GetVertex(indexA);
+				const auto pointA = b2Mul(xfA, localPointA);
 
-				float32 separation = b2Dot(pointA - pointB, normal);
-				return separation;
+				return b2Dot(pointA - pointB, normal);
 			}
 
 		default:
@@ -238,10 +224,10 @@ struct b2SeparationFunction
 		}
 	}
 
-	const b2DistanceProxy* m_proxyA;
-	const b2DistanceProxy* m_proxyB;
-	b2Sweep m_sweepA, m_sweepB;
-	Type m_type;
+	const b2DistanceProxy* const m_proxyA;
+	const b2DistanceProxy* const m_proxyB;
+	const b2Sweep m_sweepA, m_sweepB;
+	const Type m_type;
 	b2Vec2 m_localPoint;
 	b2Vec2 m_axis;
 };
@@ -276,12 +262,11 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 	b2Assert(target > tolerance);
 
 	auto t1 = 0.0f;
-	const int32 k_maxIterations = 20;	// TODO_ERIN b2Settings
-	int32 iter = 0;
+	const auto k_maxIterations = int32{20};	// TODO_ERIN b2Settings
+	auto iter = decltype(k_maxIterations){0};
 
 	// Prepare input for distance query.
 	b2SimplexCache cache;
-	cache.count = 0;
 	b2DistanceInput distanceInput;
 	distanceInput.proxyA = input->proxyA;
 	distanceInput.proxyB = input->proxyB;
@@ -320,8 +305,7 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 		}
 
 		// Initialize the separating axis.
-		b2SeparationFunction fcn;
-		fcn.Initialize(&cache, proxyA, sweepA, proxyB, sweepB, t1);
+		b2SeparationFunction fcn(cache, proxyA, sweepA, proxyB, sweepB, t1);
 #if 0
 		// Dump the curve seen by the root finder
 		{
@@ -350,14 +334,14 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 
 		// Compute the TOI on the separating axis. We do this by successively
 		// resolving the deepest point. This loop is bounded by the number of vertices.
-		bool done = false;
-		float32 t2 = tMax;
-		int32 pushBackIter = 0;
+		auto done = false;
+		auto t2 = tMax;
+		auto pushBackIter = decltype(b2_maxPolygonVertices){0};
 		for (;;)
 		{
 			// Find the deepest point at t2. Store the witness point indices.
 			int32 indexA, indexB;
-			float32 s2 = fcn.FindMinSeparation(&indexA, &indexB, t2);
+			auto s2 = fcn.FindMinSeparation(&indexA, &indexB, t2);
 
 			// Is the final configuration separated?
 			if (s2 > target + tolerance)

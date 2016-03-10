@@ -35,7 +35,7 @@ struct b2DistanceProxy
 	void Set(const b2Shape* shape, int32 index);
 
 	/// Get the supporting vertex index in the given direction.
-	int32 GetSupport(const b2Vec2& d) const;
+	int32 GetSupport(const b2Vec2& d) const noexcept;
 
 	/// Get the supporting vertex in the given direction.
 	const b2Vec2& GetSupportVertex(const b2Vec2& d) const;
@@ -56,11 +56,10 @@ struct b2DistanceProxy
 };
 
 /// Used to warm start b2Distance.
-/// Set count to zero on first call.
 struct b2SimplexCache
 {
 	float32 metric;		///< length or area
-	uint16 count;
+	uint16 count = 0;
 	uint8 indexA[3];	///< vertices on shape A
 	uint8 indexB[3];	///< vertices on shape B
 };
@@ -88,7 +87,7 @@ struct b2DistanceOutput
 
 /// Compute the closest points between two shapes. Supports any combination of:
 /// b2CircleShape, b2PolygonShape, b2EdgeShape. The simplex cache is input/output.
-/// On the first call set b2SimplexCache.count to zero.
+/// On the first call, b2SimplexCache.count should be set to zero.
 void b2Distance(b2DistanceOutput* output,
 				b2SimplexCache* cache, 
 				const b2DistanceInput* input);
@@ -102,9 +101,9 @@ inline const b2Vec2& b2DistanceProxy::GetVertex(int32 index) const
 	return m_vertices[index];
 }
 
-inline int32 b2DistanceProxy::GetSupport(const b2Vec2& d) const
+inline int32 b2DistanceProxy::GetSupport(const b2Vec2& d) const noexcept
 {
-	int32 bestIndex = 0;
+	auto bestIndex = decltype(m_count){0};
 	auto bestValue = b2Dot(m_vertices[0], d);
 	for (auto i = decltype(m_count){1}; i < m_count; ++i)
 	{

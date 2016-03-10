@@ -55,7 +55,6 @@ public:
 		input.transformB = m_transformB;
 		input.useRadii = true;
 		b2SimplexCache cache;
-		cache.count = 0;
 		b2DistanceOutput output;
 		b2Distance(&output, &cache, &input);
 

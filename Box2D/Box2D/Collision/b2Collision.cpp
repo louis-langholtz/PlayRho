@@ -241,10 +241,7 @@ bool b2TestOverlap(	const b2Shape* shapeA, int32 indexA,
 	input.useRadii = true;
 
 	b2SimplexCache cache;
-	cache.count = 0;
-
 	b2DistanceOutput output;
-
 	b2Distance(&output, &cache, &input);
 
 	return output.distance < (10.0f * b2_epsilon);
