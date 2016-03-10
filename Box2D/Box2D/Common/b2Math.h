@@ -20,7 +20,7 @@
 #define B2_MATH_H
 
 #include <Box2D/Common/b2Settings.h>
-#include <math.h>
+#include <cmath>
 
 // forward declarations
 struct b2Vec2;
@@ -55,8 +55,8 @@ inline float32 b2InvSqrt(float32 x)
 	return x;
 }
 
-#define	b2Sqrt(x)	sqrtf(x)
-#define	b2Atan2(y, x)	atan2f(y, x)
+#define	b2Sqrt(x)	std::sqrtf(x)
+#define	b2Atan2(y, x)	std::atan2f(y, x)
 
 /// A 2D column vector.
 struct b2Vec2
@@ -313,8 +313,8 @@ struct b2Rot
 	explicit b2Rot(float32 angle)
 	{
 		/// TODO_ERIN optimize
-		s = sinf(angle);
-		c = cosf(angle);
+		s = std::sinf(angle);
+		c = std::cosf(angle);
 	}
 	
 	constexpr explicit b2Rot(float32 sine, float32 cosine) noexcept: s(sine), c(cosine) {}
@@ -462,12 +462,12 @@ constexpr inline b2Vec2 operator * (float32 s, const b2Vec2& a) noexcept
 	return b2Vec2(s * a.x, s * a.y);
 }
 
-constexpr inline b2Vec2 operator * (const b2Vec2& a, float32 s)
+constexpr inline b2Vec2 operator * (const b2Vec2& a, float32 s) noexcept
 {
 	return b2Vec2{a.x * s, a.y * s};
 }
 
-constexpr b2Vec2 operator/ (const b2Vec2& a, float32 s)
+constexpr b2Vec2 operator/ (const b2Vec2& a, float32 s) noexcept
 {
 	return b2Vec2{a.x / s, a.y / s};
 }
@@ -485,12 +485,12 @@ inline b2Vec2 b2Normalize(const b2Vec2& value)
 
 constexpr inline bool operator == (const b2Vec2& a, const b2Vec2& b) noexcept
 {
-	return a.x == b.x && a.y == b.y;
+	return (a.x == b.x) && (a.y == b.y);
 }
 
 constexpr inline bool operator != (const b2Vec2& a, const b2Vec2& b) noexcept
 {
-	return a.x != b.x || a.y != b.y;
+	return (a.x != b.x) || (a.y != b.y);
 }
 
 inline float32 b2Distance(const b2Vec2& a, const b2Vec2& b)
@@ -728,7 +728,7 @@ inline void b2Sweep::Advance(float32 alpha)
 inline void b2Sweep::Normalize()
 {
 	const auto twoPi = 2.0f * b2_pi;
-	const auto d =  twoPi * floorf(a0 / twoPi);
+	const auto d =  twoPi * std::floorf(a0 / twoPi);
 	a0 -= d;
 	a -= d;
 }
