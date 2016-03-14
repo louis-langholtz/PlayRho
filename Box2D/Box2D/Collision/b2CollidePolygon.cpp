@@ -20,18 +20,18 @@
 #include <Box2D/Collision/Shapes/b2PolygonShape.h>
 
 // Find the max separation between poly1 and poly2 using edge normals from poly1.
-static float32 b2FindMaxSeparation(int32* edgeIndex,
-								 const b2PolygonShape* poly1, const b2Transform& xf1,
-								 const b2PolygonShape* poly2, const b2Transform& xf2)
+static float32 b2FindMaxSeparation(int32& edgeIndex,
+								 const b2PolygonShape& poly1, const b2Transform& xf1,
+								 const b2PolygonShape& poly2, const b2Transform& xf2)
 {
-	const auto count1 = poly1->m_count;
-	const auto count2 = poly2->m_count;
-	const b2Vec2* n1s = poly1->m_normals;
-	const b2Vec2* v1s = poly1->m_vertices;
-	const b2Vec2* v2s = poly2->m_vertices;
-	b2Transform xf = b2MulT(xf2, xf1);
+	const auto count1 = poly1.m_count;
+	const auto count2 = poly2.m_count;
+	const auto n1s = poly1.m_normals;
+	const auto v1s = poly1.m_vertices;
+	const auto v2s = poly2.m_vertices;
+	const auto xf = b2MulT(xf2, xf1);
 
-	int32 bestIndex = 0;
+	auto bestIndex = decltype(count1){0};
 	auto maxSeparation = -b2_maxFloat;
 	for (auto i = decltype(count1){0}; i < count1; ++i)
 	{
@@ -44,45 +44,45 @@ static float32 b2FindMaxSeparation(int32* edgeIndex,
 		for (auto j = decltype(count2){0}; j < count2; ++j)
 		{
 			const auto sij = b2Dot(n, v2s[j] - v1);
-			if (sij < si)
+			if (si > sij)
 			{
 				si = sij;
 			}
 		}
 
-		if (si > maxSeparation)
+		if (maxSeparation < si)
 		{
 			maxSeparation = si;
 			bestIndex = i;
 		}
 	}
 
-	*edgeIndex = bestIndex;
+	edgeIndex = bestIndex;
 	return maxSeparation;
 }
 
 static void b2FindIncidentEdge(std::array<b2ClipVertex,2>& c,
-							 const b2PolygonShape* poly1, const b2Transform& xf1, int32 edge1,
-							 const b2PolygonShape* poly2, const b2Transform& xf2)
+							 const b2PolygonShape& poly1, const b2Transform& xf1, int32 edge1,
+							 const b2PolygonShape& poly2, const b2Transform& xf2)
 {
-	const b2Vec2* normals1 = poly1->m_normals;
+	const b2Vec2* normals1 = poly1.m_normals;
 
-	const auto count2 = poly2->m_count;
-	const b2Vec2* vertices2 = poly2->m_vertices;
-	const b2Vec2* normals2 = poly2->m_normals;
+	const auto count2 = poly2.m_count;
+	const auto vertices2 = poly2.m_vertices;
+	const auto normals2 = poly2.m_normals;
 
-	b2Assert(0 <= edge1 && edge1 < poly1->m_count);
+	b2Assert(0 <= edge1 && edge1 < poly1.m_count);
 
 	// Get the normal of the reference edge in poly2's frame.
 	const auto normal1 = b2MulT(xf2.q, b2Mul(xf1.q, normals1[edge1]));
 
 	// Find the incident edge on poly2.
-	int32 index = 0;
+	auto index = decltype(count2){0};
 	auto minDot = b2_maxFloat;
 	for (auto i = decltype(count2){0}; i < count2; ++i)
 	{
 		const auto dot = b2Dot(normal1, normals2[i]);
-		if (dot < minDot)
+		if (minDot > dot)
 		{
 			minDot = dot;
 			index = i;
@@ -91,7 +91,7 @@ static void b2FindIncidentEdge(std::array<b2ClipVertex,2>& c,
 
 	// Build the clip vertices for the incident edge.
 	const auto i1 = index;
-	const auto i2 = i1 + 1 < count2 ? i1 + 1 : 0;
+	const auto i2 = ((i1 + 1) < count2) ? i1 + 1 : 0;
 
 	c[0].v = b2Mul(xf2, vertices2[i1]);
 	c[0].id.cf.indexA = (uint8)edge1;
@@ -120,13 +120,13 @@ void b2CollidePolygons(b2Manifold* manifold,
 	manifold->pointCount = 0;
 	const auto totalRadius = polyA->m_radius + polyB->m_radius;
 
-	int32 edgeA = 0;
-	const auto separationA = b2FindMaxSeparation(&edgeA, polyA, xfA, polyB, xfB);
+	auto edgeA = int32{0};
+	const auto separationA = b2FindMaxSeparation(edgeA, *polyA, xfA, *polyB, xfB);
 	if (separationA > totalRadius)
 		return;
 
-	int32 edgeB = 0;
-	const auto separationB = b2FindMaxSeparation(&edgeB, polyB, xfB, polyA, xfA);
+	auto edgeB = int32{0};
+	const auto separationB = b2FindMaxSeparation(edgeB, *polyB, xfB, *polyA, xfA);
 	if (separationB > totalRadius)
 		return;
 
@@ -135,7 +135,7 @@ void b2CollidePolygons(b2Manifold* manifold,
 	b2Transform xf1, xf2;
 	int32 edge1;					// reference edge
 	bool flip;
-	const auto k_tol = 0.1f * b2_linearSlop;
+	constexpr auto k_tol = 0.1f * b2_linearSlop;
 
 	if (separationB > (separationA + k_tol))
 	{
@@ -159,10 +159,10 @@ void b2CollidePolygons(b2Manifold* manifold,
 	}
 
 	std::array<b2ClipVertex,2> incidentEdge;
-	b2FindIncidentEdge(incidentEdge, poly1, xf1, edge1, poly2, xf2);
+	b2FindIncidentEdge(incidentEdge, *poly1, xf1, edge1, *poly2, xf2);
 
 	const auto count1 = poly1->m_count;
-	const b2Vec2* vertices1 = poly1->m_vertices;
+	const auto vertices1 = poly1->m_vertices;
 
 	const auto iv1 = edge1;
 	const auto iv2 = ((edge1 + 1) < count1) ? edge1 + 1 : 0;
