@@ -95,28 +95,45 @@ struct b2SimplexVertex
 	int32 indexB;	// wB index
 };
 
-struct b2Simplex
+class b2Simplex
 {
+public:
+	using vertices_count_t = uint32;
+	static constexpr vertices_count_t maxVertices = 3;
+
+	vertices_count_t GetCount() const noexcept
+	{
+		return m_count;
+	}
+
+	const b2SimplexVertex* GetVertices() const noexcept
+	{
+		return m_vertices;
+	}
+
+	void AddVertex(const b2SimplexVertex& vertex) noexcept
+	{
+		m_vertices[m_count] = vertex;
+		++m_count;
+	}
+
 	void ReadCache(	const b2SimplexCache& cache,
 					const b2DistanceProxy& proxyA, const b2Transform& transformA,
 					const b2DistanceProxy& proxyB, const b2Transform& transformB)
 	{
-		b2Assert(cache.count <= 3);
+		b2Assert(cache.count <= maxVertices);
 		
 		// Copy data from cache.
 		m_count = cache.count;
-		auto vertices = m_vertices;
 		for (auto i = decltype(m_count){0}; i < m_count; ++i)
 		{
-			auto v = vertices + i;
-			v->indexA = cache.indexA[i];
-			v->indexB = cache.indexB[i];
-			const auto wALocal = proxyA.GetVertex(v->indexA);
-			v->wA = b2Mul(transformA, wALocal);
-			const auto wBLocal = proxyB.GetVertex(v->indexB);
-			v->wB = b2Mul(transformB, wBLocal);
-			v->w = v->wB - v->wA;
-			v->a = 0.0f;
+			auto& v = m_vertices[i];
+			v.indexA = cache.indexA[i];
+			v.indexB = cache.indexB[i];
+			v.wA = b2Mul(transformA, proxyA.GetVertex(v.indexA));
+			v.wB = b2Mul(transformB, proxyB.GetVertex(v.indexB));
+			v.w = v.wB - v.wA;
+			v.a = 0.0f;
 		}
 
 		// Compute the new simplex metric, if it is substantially different than
@@ -135,15 +152,13 @@ struct b2Simplex
 		// If the cache is empty or invalid ...
 		if (m_count == 0)
 		{
-			auto v = vertices + 0;
-			v->indexA = 0;
-			v->indexB = 0;
-			const auto wALocal = proxyA.GetVertex(0);
-			const auto wBLocal = proxyB.GetVertex(0);
-			v->wA = b2Mul(transformA, wALocal);
-			v->wB = b2Mul(transformB, wBLocal);
-			v->w = v->wB - v->wA;
-			v->a = 1.0f;
+			auto& v = m_vertices[0];
+			v.indexA = 0;
+			v.indexB = 0;
+			v.wA = b2Mul(transformA, proxyA.GetVertex(0));
+			v.wB = b2Mul(transformB, proxyB.GetVertex(0));
+			v.w = v.wB - v.wA;
+			v.a = 1.0f;
 			m_count = 1;
 		}
 	}
@@ -193,10 +208,6 @@ struct b2Simplex
 	{
 		switch (m_count)
 		{
-		case 0:
-			b2Assert(false);
-			return b2Vec2_zero;
-
 		case 1:
 			return m_vertices[0].w;
 
@@ -216,10 +227,6 @@ struct b2Simplex
 	{
 		switch (m_count)
 		{
-		case 0:
-			b2Assert(false);
-			break;
-
 		case 1:
 			*pA = m_vertices[0].wA;
 			*pB = m_vertices[0].wB;
@@ -245,10 +252,6 @@ struct b2Simplex
 	{
 		switch (m_count)
 		{
-		case 0:
-			b2Assert(false);
-			return 0.0f;
-
 		case 1:
 			return 0.0f;
 
@@ -267,8 +270,9 @@ struct b2Simplex
 	void Solve2() noexcept;
 	void Solve3() noexcept;
 
-	b2SimplexVertex m_vertices[3];
-	uint32 m_count;
+private:
+	vertices_count_t m_count = 0;
+	b2SimplexVertex m_vertices[maxVertices];
 };
 
 
@@ -317,8 +321,8 @@ void b2Simplex::Solve2() noexcept
 	{
 		// a1 <= 0, so we clamp it to 0
 		m_vertices[1].a = 1.0f;
-		m_count = 1;
 		m_vertices[0] = m_vertices[1];
+		m_count = 1;
 		return;
 	}
 
@@ -462,28 +466,30 @@ void b2Distance(b2DistanceOutput* output,
 	simplex.ReadCache(*cache, proxyA, transformA, proxyB, transformB);
 
 	// Get simplex vertices as an array.
-	const auto vertices = simplex.m_vertices;
+	const auto vertices = simplex.GetVertices();
 	constexpr auto k_maxIters = int32{20};
 
 	// These store the vertices of the last simplex so that we
 	// can check for duplicates and prevent cycling.
 	int32 saveA[3], saveB[3];
 
+#if defined(DO_COMPUTE_CLOSEST_POINT)
 	auto distanceSqr1 = b2_maxFloat;
+#endif
 
 	// Main iteration loop.
 	auto iter = decltype(k_maxIters){0};
 	while (iter < k_maxIters)
 	{
 		// Copy simplex so we can identify duplicates.
-		const auto saveCount = simplex.m_count;
+		const auto saveCount = simplex.GetCount();
 		for (auto i = decltype(saveCount){0}; i < saveCount; ++i)
 		{
 			saveA[i] = vertices[i].indexA;
 			saveB[i] = vertices[i].indexB;
 		}
 
-		switch (simplex.m_count)
+		switch (simplex.GetCount())
 		{
 		case 1:
 			break;
@@ -500,12 +506,13 @@ void b2Distance(b2DistanceOutput* output,
 			b2Assert(false);
 		}
 
-		// If we have 3 points, then the origin is in the corresponding triangle.
-		if (simplex.m_count == 3)
+		// If we have max points (3), then the origin is in the corresponding triangle.
+		if (simplex.GetCount() == b2Simplex::maxVertices)
 		{
 			break;
 		}
 
+#if defined(DO_COMPUTE_CLOSEST_POINT)
 		// Compute closest point.
 		const auto p = simplex.GetClosestPoint();
 		const auto distanceSqr2 = p.LengthSquared();
@@ -516,7 +523,7 @@ void b2Distance(b2DistanceOutput* output,
 			//break;
 		}
 		distanceSqr1 = distanceSqr2;
-
+#endif
 		// Get search direction.
 		const auto d = simplex.GetSearchDirection();
 
@@ -533,12 +540,13 @@ void b2Distance(b2DistanceOutput* output,
 		}
 
 		// Compute a tentative new simplex vertex using support points.
-		auto vertex = vertices + simplex.m_count;
-		vertex->indexA = proxyA.GetSupport(b2MulT(transformA.q, -d));
-		vertex->wA = b2Mul(transformA, proxyA.GetVertex(vertex->indexA));
-		vertex->indexB = proxyB.GetSupport(b2MulT(transformB.q, d));
-		vertex->wB = b2Mul(transformB, proxyB.GetVertex(vertex->indexB));
-		vertex->w = vertex->wB - vertex->wA;
+		b2SimplexVertex vertex;
+		//auto vertex = vertices + simplex.m_count;
+		vertex.indexA = proxyA.GetSupport(b2MulT(transformA.q, -d));
+		vertex.wA = b2Mul(transformA, proxyA.GetVertex(vertex.indexA));
+		vertex.indexB = proxyB.GetSupport(b2MulT(transformB.q, d));
+		vertex.wB = b2Mul(transformB, proxyB.GetVertex(vertex.indexB));
+		vertex.w = vertex.wB - vertex.wA;
 
 		// Iteration count is equated to the number of support point calls.
 		++iter;
@@ -550,7 +558,7 @@ void b2Distance(b2DistanceOutput* output,
 		auto duplicate = false;
 		for (auto i = decltype(saveCount){0}; i < saveCount; ++i)
 		{
-			if (vertex->indexA == saveA[i] && vertex->indexB == saveB[i])
+			if (vertex.indexA == saveA[i] && vertex.indexB == saveB[i])
 			{
 				duplicate = true;
 				break;
@@ -564,7 +572,7 @@ void b2Distance(b2DistanceOutput* output,
 		}
 
 		// New vertex is ok and needed.
-		++simplex.m_count;
+		simplex.AddVertex(vertex);
 	}
 
 #if defined(DO_GJK_PROFILING)
