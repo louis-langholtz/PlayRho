@@ -359,7 +359,7 @@ struct b2Transform
 	constexpr b2Transform(const b2Vec2& position, const b2Rot& rotation) noexcept: p(position), q(rotation) {}
 
 	/// Set this to the identity transform.
-	constexpr void SetIdentity()
+	constexpr void SetIdentity() noexcept
 	{
 		p.SetZero();
 		q.SetIdentity();
