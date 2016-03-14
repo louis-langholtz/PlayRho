@@ -55,58 +55,51 @@ bool b2EdgeShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 	B2_NOT_USED(childIndex);
 
 	// Put the ray into the edge's frame of reference.
-	b2Vec2 p1 = b2MulT(xf.q, input.p1 - xf.p);
-	b2Vec2 p2 = b2MulT(xf.q, input.p2 - xf.p);
-	b2Vec2 d = p2 - p1;
+	const auto p1 = b2MulT(xf.q, input.p1 - xf.p);
+	const auto p2 = b2MulT(xf.q, input.p2 - xf.p);
+	const auto d = p2 - p1;
 
-	b2Vec2 v1 = m_vertex1;
-	b2Vec2 v2 = m_vertex2;
-	b2Vec2 e = v2 - v1;
+	const auto v1 = m_vertex1;
+	const auto v2 = m_vertex2;
+	const auto e = v2 - v1;
 	const auto normal = b2Normalize(b2Vec2(e.y, -e.x));
 
 	// q = p1 + t * d
 	// dot(normal, q - v1) = 0
 	// dot(normal, p1 - v1) + t * dot(normal, d) = 0
-	float32 numerator = b2Dot(normal, v1 - p1);
-	float32 denominator = b2Dot(normal, d);
+	const auto numerator = b2Dot(normal, v1 - p1);
+	const auto denominator = b2Dot(normal, d);
 
 	if (denominator == 0.0f)
 	{
 		return false;
 	}
 
-	float32 t = numerator / denominator;
-	if (t < 0.0f || input.maxFraction < t)
+	const auto t = numerator / denominator;
+	if ((t < 0.0f) || (input.maxFraction < t))
 	{
 		return false;
 	}
 
-	b2Vec2 q = p1 + t * d;
+	const auto q = p1 + t * d;
 
 	// q = v1 + s * r
 	// s = dot(q - v1, r) / dot(r, r)
-	b2Vec2 r = v2 - v1;
-	float32 rr = b2Dot(r, r);
+	const auto r = v2 - v1;
+	const auto rr = b2Dot(r, r);
 	if (rr == 0.0f)
 	{
 		return false;
 	}
 
-	float32 s = b2Dot(q - v1, r) / rr;
-	if (s < 0.0f || 1.0f < s)
+	const auto s = b2Dot(q - v1, r) / rr;
+	if ((s < 0.0f) || (1.0f < s))
 	{
 		return false;
 	}
 
 	output->fraction = t;
-	if (numerator > 0.0f)
-	{
-		output->normal = -b2Mul(xf.q, normal);
-	}
-	else
-	{
-		output->normal = b2Mul(xf.q, normal);
-	}
+	output->normal = (numerator > 0.0f)? -b2Mul(xf.q, normal): b2Mul(xf.q, normal);
 	return true;
 }
 
@@ -114,13 +107,13 @@ void b2EdgeShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, int32 childIn
 {
 	B2_NOT_USED(childIndex);
 
-	b2Vec2 v1 = b2Mul(xf, m_vertex1);
-	b2Vec2 v2 = b2Mul(xf, m_vertex2);
+	const auto v1 = b2Mul(xf, m_vertex1);
+	const auto v2 = b2Mul(xf, m_vertex2);
 
-	b2Vec2 lower = b2Min(v1, v2);
-	b2Vec2 upper = b2Max(v1, v2);
+	const auto lower = b2Min(v1, v2);
+	const auto upper = b2Max(v1, v2);
 
-	b2Vec2 r(m_radius, m_radius);
+	const auto r = b2Vec2{m_radius, m_radius};
 	aabb->lowerBound = lower - r;
 	aabb->upperBound = upper + r;
 }
