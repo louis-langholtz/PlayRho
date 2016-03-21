@@ -46,7 +46,8 @@ struct b2SeparationFunction
 		m_proxyA(proxyA), m_proxyB(proxyB), m_sweepA(sweepA), m_sweepB(sweepB),
 		m_type((cache.count != 1)? ((cache.indexA[0] == cache.indexA[1])? e_faceB: e_faceA): e_points)
 	{
-		b2Assert((0 < cache.count) && (cache.count < 3));
+		b2Assert(cache.count > 0);
+		b2Assert(cache.count <= 3); // < 3 or <= 3?
 
 		b2Transform xfA, xfB;
 		m_sweepA.GetTransform(&xfA, t1);
