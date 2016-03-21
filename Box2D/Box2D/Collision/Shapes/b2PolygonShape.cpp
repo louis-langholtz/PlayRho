@@ -25,7 +25,7 @@ b2Shape* b2PolygonShape::Clone(b2BlockAllocator* allocator) const
 	return new (mem) b2PolygonShape(*this);
 }
 
-void b2PolygonShape::SetAsBox(float32 hx, float32 hy)
+void b2PolygonShape::SetAsBox(float32 hx, float32 hy) noexcept
 {
 	m_count = 4;
 	m_vertices[0].Set(-hx, -hy);
@@ -36,7 +36,7 @@ void b2PolygonShape::SetAsBox(float32 hx, float32 hy)
 	m_normals[1].Set(1.0f, 0.0f);
 	m_normals[2].Set(0.0f, 1.0f);
 	m_normals[3].Set(-1.0f, 0.0f);
-	m_centroid.SetZero();
+	m_centroid = b2Vec2_zero;
 }
 
 void b2PolygonShape::SetAsBox(float32 hx, float32 hy, const b2Vec2& center, float32 angle)
@@ -52,9 +52,7 @@ void b2PolygonShape::SetAsBox(float32 hx, float32 hy, const b2Vec2& center, floa
 	m_normals[3].Set(-1.0f, 0.0f);
 	m_centroid = center;
 
-	b2Transform xf;
-	xf.p = center;
-	xf.q = b2Rot(angle);
+	const auto xf = b2Transform{center, b2Rot{angle}};
 
 	// Transform vertices and normals.
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
@@ -69,7 +67,7 @@ int32 b2PolygonShape::GetChildCount() const
 	return 1;
 }
 
-static b2Vec2 ComputeCentroid(const b2Vec2* vs, int32 count)
+static b2Vec2 ComputeCentroid(const b2Vec2 vs[], int32 count)
 {
 	b2Assert(count >= 3);
 
@@ -115,7 +113,7 @@ static b2Vec2 ComputeCentroid(const b2Vec2* vs, int32 count)
 	return c;
 }
 
-void b2PolygonShape::Set(const b2Vec2* vertices, int32 count)
+void b2PolygonShape::Set(const b2Vec2 vertices[], int32 count)
 {
 	b2Assert(3 <= count && count <= b2_maxPolygonVertices);
 	if (count < 3)
@@ -128,7 +126,7 @@ void b2PolygonShape::Set(const b2Vec2* vertices, int32 count)
 
 	// Perform welding and copy vertices into local buffer.
 	b2Vec2 ps[b2_maxPolygonVertices];
-	int32 tempCount = 0;
+	auto tempCount = decltype(n){0};
 	for (auto i = decltype(n){0}; i < n; ++i)
 	{
 		const auto v = vertices[i];
@@ -162,12 +160,12 @@ void b2PolygonShape::Set(const b2Vec2* vertices, int32 count)
 	// http://en.wikipedia.org/wiki/Gift_wrapping_algorithm
 
 	// Find the right most point on the hull
-	int32 i0 = 0;
-	float32 x0 = ps[0].x;
+	auto i0 = decltype(n){0};
+	auto x0 = ps[0].x;
 	for (auto i = decltype(n){1}; i < n; ++i)
 	{
 		const auto x = ps[i].x;
-		if (x > x0 || (x == x0 && ps[i].y < ps[i0].y))
+		if ((x > x0) || ((x == x0) && (ps[i].y < ps[i0].y)))
 		{
 			i0 = i;
 			x0 = x;
@@ -175,14 +173,14 @@ void b2PolygonShape::Set(const b2Vec2* vertices, int32 count)
 	}
 
 	int32 hull[b2_maxPolygonVertices];
-	int32 m = 0;
-	int32 ih = i0;
+	auto m = decltype(m_count){0};
+	auto ih = i0;
 
 	for (;;)
 	{
 		hull[m] = ih;
 
-		int32 ie = 0;
+		auto ie = decltype(n){0};
 		for (auto j = decltype(n){1}; j < n; ++j)
 		{
 			if (ie == ih)
