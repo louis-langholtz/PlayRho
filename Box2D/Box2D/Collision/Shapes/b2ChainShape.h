@@ -56,11 +56,11 @@ public:
 
 	/// Establish connectivity to a vertex that precedes the first vertex.
 	/// Don't call this for loops.
-	void SetPrevVertex(const b2Vec2& prevVertex);
+	void SetPrevVertex(const b2Vec2& prevVertex) noexcept;
 
 	/// Establish connectivity to a vertex that follows the last vertex.
 	/// Don't call this for loops.
-	void SetNextVertex(const b2Vec2& nextVertex);
+	void SetNextVertex(const b2Vec2& nextVertex) noexcept;
 
 	/// Implement b2Shape. Vertices are cloned using b2Alloc.
 	b2Shape* Clone(b2BlockAllocator* allocator) const override;

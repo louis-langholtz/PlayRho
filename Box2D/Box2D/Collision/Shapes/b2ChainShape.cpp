@@ -74,13 +74,13 @@ void b2ChainShape::CreateChain(const b2Vec2* vertices, int32 count)
 	m_nextVertex.SetZero();
 }
 
-void b2ChainShape::SetPrevVertex(const b2Vec2& prevVertex)
+void b2ChainShape::SetPrevVertex(const b2Vec2& prevVertex) noexcept
 {
 	m_prevVertex = prevVertex;
 	m_hasPrevVertex = true;
 }
 
-void b2ChainShape::SetNextVertex(const b2Vec2& nextVertex)
+void b2ChainShape::SetNextVertex(const b2Vec2& nextVertex) noexcept
 {
 	m_nextVertex = nextVertex;
 	m_hasNextVertex = true;
@@ -147,18 +147,16 @@ bool b2ChainShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 {
 	b2Assert(childIndex < m_count);
 
-	b2EdgeShape edgeShape;
-
-	int32 i1 = childIndex;
-	int32 i2 = childIndex + 1;
+	const auto i1 = childIndex;
+	auto i2 = childIndex + 1;
 	if (i2 == m_count)
 	{
 		i2 = 0;
 	}
 
+	b2EdgeShape edgeShape;
 	edgeShape.m_vertex1 = m_vertices[i1];
 	edgeShape.m_vertex2 = m_vertices[i2];
-
 	return edgeShape.RayCast(output, input, xf, 0);
 }
 
@@ -166,15 +164,15 @@ void b2ChainShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, int32 childI
 {
 	b2Assert(childIndex < m_count);
 
-	int32 i1 = childIndex;
-	int32 i2 = childIndex + 1;
+	const auto i1 = childIndex;
+	auto i2 = childIndex + 1;
 	if (i2 == m_count)
 	{
 		i2 = 0;
 	}
 
-	b2Vec2 v1 = b2Mul(xf, m_vertices[i1]);
-	b2Vec2 v2 = b2Mul(xf, m_vertices[i2]);
+	const auto v1 = b2Mul(xf, m_vertices[i1]);
+	const auto v2 = b2Mul(xf, m_vertices[i2]);
 
 	aabb->lowerBound = b2Min(v1, v2);
 	aabb->upperBound = b2Max(v1, v2);
