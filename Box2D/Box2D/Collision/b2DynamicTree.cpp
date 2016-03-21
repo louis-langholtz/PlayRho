@@ -49,11 +49,8 @@ int32 b2DynamicTree::AllocateNode()
 		b2Assert(m_nodeCount == m_nodeCapacity);
 
 		// The free list is empty. Rebuild a bigger pool.
-		auto oldNodes = m_nodes;
 		m_nodeCapacity *= 2;
-		m_nodes = static_cast<b2TreeNode*>(b2Alloc(m_nodeCapacity * sizeof(b2TreeNode)));
-		memcpy(m_nodes, oldNodes, m_nodeCount * sizeof(b2TreeNode));
-		b2Free(oldNodes);
+		m_nodes = static_cast<b2TreeNode*>(b2Realloc(m_nodes, m_nodeCapacity * sizeof(b2TreeNode)));
 
 		// Build a linked list for the free list. The parent
 		// pointer becomes the "next" pointer.
@@ -701,7 +698,7 @@ void b2DynamicTree::RebuildBottomUp()
 	while (count > 1)
 	{
 		auto minCost = b2_maxFloat;
-		int32 iMin = -1, jMin = -1;
+		auto iMin = decltype(count){-1}, jMin = decltype(count){-1};
 		for (auto i = decltype(count){0}; i < count; ++i)
 		{
 			auto aabbi = m_nodes[nodes[i]].aabb;

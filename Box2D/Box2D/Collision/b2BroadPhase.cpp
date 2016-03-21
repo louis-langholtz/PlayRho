@@ -62,11 +62,8 @@ void b2BroadPhase::BufferMove(int32 proxyId)
 {
 	if (m_moveCount == m_moveCapacity)
 	{
-		auto oldBuffer = m_moveBuffer;
 		m_moveCapacity *= 2;
-		m_moveBuffer = static_cast<int32*>(b2Alloc(m_moveCapacity * sizeof(int32)));
-		memcpy(m_moveBuffer, oldBuffer, m_moveCount * sizeof(int32));
-		b2Free(oldBuffer);
+		m_moveBuffer = static_cast<int32*>(b2Realloc(m_moveBuffer, m_moveCapacity * sizeof(int32)));
 	}
 
 	m_moveBuffer[m_moveCount] = proxyId;
@@ -96,11 +93,8 @@ bool b2BroadPhase::QueryCallback(int32 proxyId)
 	// Grow the pair buffer as needed.
 	if (m_pairCount == m_pairCapacity)
 	{
-		auto oldBuffer = m_pairBuffer;
 		m_pairCapacity *= 2;
-		m_pairBuffer = static_cast<b2Pair*>(b2Alloc(m_pairCapacity * sizeof(b2Pair)));
-		memcpy(m_pairBuffer, oldBuffer, m_pairCount * sizeof(b2Pair));
-		b2Free(oldBuffer);
+		m_pairBuffer = static_cast<b2Pair*>(b2Realloc(m_pairBuffer, m_pairCapacity * sizeof(b2Pair)));
 	}
 
 	m_pairBuffer[m_pairCount].proxyIdA = b2Min(proxyId, m_queryProxyId);

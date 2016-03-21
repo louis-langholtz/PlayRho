@@ -74,7 +74,7 @@ constexpr float32 b2_angularSlop = 2.0f / 180.0f * b2_pi;
 /// The radius of the polygon/edge shape skin. This should not be modified. Making
 /// this smaller means polygons will have an insufficient buffer for continuous collision.
 /// Making it larger may create artifacts for vertex collision.
-constexpr float32 b2_polygonRadius = 2.0f * b2_linearSlop;
+constexpr float32 b2_polygonRadius =  2.0f * b2_linearSlop;
 
 /// Maximum number of sub-steps per contact in continuous physics simulation.
 constexpr int32 b2_maxSubSteps = 8;
@@ -129,6 +129,9 @@ constexpr float32 b2_angularSleepTolerance = 2.0f / 180.0f * b2_pi;
 
 /// Implement this function to use your own memory allocator.
 void* b2Alloc(int32 size);
+
+/// Implement this function to use your own memory allocator.
+void* b2Realloc(void* ptr, int32 new_size);
 
 /// If you implement b2Alloc, you should also implement this function.
 void b2Free(void* mem);

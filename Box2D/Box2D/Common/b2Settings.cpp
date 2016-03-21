@@ -29,6 +29,11 @@ void* b2Alloc(int32 size)
 	return std::malloc(size);
 }
 
+void* b2Realloc(void* ptr, int32 new_size)
+{
+	return std::realloc(ptr, new_size);
+}
+
 void b2Free(void* mem)
 {
 	std::free(mem);
