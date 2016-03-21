@@ -162,8 +162,8 @@ protected:
 	// This returns true if the position errors are within tolerance.
 	virtual bool SolvePositionConstraints(const b2SolverData& data) = 0;
 
-	bool IsInIsland() const;
-	void SetInIsland(bool value);
+	bool IsInIsland() const noexcept;
+	void SetInIsland(bool value) noexcept;
 
 	const b2JointType m_type;
 	b2Joint* m_prev = nullptr;
@@ -221,12 +221,12 @@ inline bool b2Joint::GetCollideConnected() const noexcept
 	return m_collideConnected;
 }
 
-inline bool b2Joint::IsInIsland() const
+inline bool b2Joint::IsInIsland() const noexcept
 {
 	return m_islandFlag;
 }
 
-inline void b2Joint::SetInIsland(bool value)
+inline void b2Joint::SetInIsland(bool value) noexcept
 {
 	m_islandFlag = value;
 }
