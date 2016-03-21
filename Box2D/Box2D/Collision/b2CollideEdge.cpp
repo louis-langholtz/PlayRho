@@ -167,11 +167,37 @@ struct b2EPAxis
 };
 
 // This holds polygon B expressed in frame A.
-struct b2TempPolygon
+class b2TempPolygon
 {
+public:
+	using count_t = int32;
+	
+	count_t getCount() const noexcept { return count; }
+	
+	b2Vec2 getVertex(count_t index) const
+	{
+		b2Assert(index < b2_maxPolygonVertices);
+		return vertices[index];
+	}
+
+	b2Vec2 getNormal(count_t index) const
+	{
+		b2Assert(index < b2_maxPolygonVertices);
+		return normals[index];
+	}
+
+	void append(b2Vec2 vertex, b2Vec2 normal)
+	{
+		b2Assert(count < b2_maxPolygonVertices);
+		vertices[count] = vertex;
+		normals[count] = normal;
+		++count;
+	}
+
+private:
 	b2Vec2 vertices[b2_maxPolygonVertices];
 	b2Vec2 normals[b2_maxPolygonVertices];
-	int32 count;
+	count_t count = 0;
 };
 
 // Reference face used for clipping
@@ -424,11 +450,9 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 	}
 	
 	// Get polygonB in frameA
-	m_polygonB.count = polygonB->m_count;
 	for (auto i = decltype(polygonB->m_count){0}; i < polygonB->m_count; ++i)
 	{
-		m_polygonB.vertices[i] = b2Mul(m_xf, polygonB->m_vertices[i]);
-		m_polygonB.normals[i] = b2Mul(m_xf.q, polygonB->m_normals[i]);
+		m_polygonB.append(b2Mul(m_xf, polygonB->m_vertices[i]), b2Mul(m_xf.q, polygonB->m_normals[i]));
 	}
 	
 	m_radius = 2.0f * b2_polygonRadius;
@@ -479,11 +503,11 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 		manifold->type = b2Manifold::e_faceA;
 		
 		// Search for the polygon normal that is most anti-parallel to the edge normal.
-		auto bestIndex = decltype(m_polygonB.count){0};
-		auto bestValue = b2Dot(m_normal, m_polygonB.normals[0]);
-		for (auto i = decltype(m_polygonB.count){1}; i < m_polygonB.count; ++i)
+		auto bestIndex = decltype(m_polygonB.getCount()){0};
+		auto bestValue = b2Dot(m_normal, m_polygonB.getNormal(0));
+		for (auto i = decltype(m_polygonB.getCount()){1}; i < m_polygonB.getCount(); ++i)
 		{
-			const auto value = b2Dot(m_normal, m_polygonB.normals[i]);
+			const auto value = b2Dot(m_normal, m_polygonB.getNormal(i));
 			if (value < bestValue)
 			{
 				bestValue = value;
@@ -492,15 +516,15 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 		}
 		
 		const auto i1 = bestIndex;
-		const auto i2 = i1 + 1 < m_polygonB.count ? i1 + 1 : 0;
+		const auto i2 = i1 + 1 < m_polygonB.getCount() ? i1 + 1 : 0;
 		
-		ie[0].v = m_polygonB.vertices[i1];
+		ie[0].v = m_polygonB.getVertex(i1);
 		ie[0].id.cf.indexA = 0;
 		ie[0].id.cf.indexB = static_cast<uint8>(i1);
 		ie[0].id.cf.typeA = b2ContactFeature::e_face;
 		ie[0].id.cf.typeB = b2ContactFeature::e_vertex;
 		
-		ie[1].v = m_polygonB.vertices[i2];
+		ie[1].v = m_polygonB.getVertex(i2);
 		ie[1].id.cf.indexA = 0;
 		ie[1].id.cf.indexB = static_cast<uint8>(i2);
 		ie[1].id.cf.typeA = b2ContactFeature::e_face;
@@ -540,10 +564,10 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 		ie[1].id.cf.typeB = b2ContactFeature::e_face;
 		
 		rf.i1 = primaryAxis.index;
-		rf.i2 = rf.i1 + 1 < m_polygonB.count ? rf.i1 + 1 : 0;
-		rf.v1 = m_polygonB.vertices[rf.i1];
-		rf.v2 = m_polygonB.vertices[rf.i2];
-		rf.normal = m_polygonB.normals[rf.i1];
+		rf.i2 = rf.i1 + 1 < m_polygonB.getCount() ? rf.i1 + 1 : 0;
+		rf.v1 = m_polygonB.getVertex(rf.i1);
+		rf.v2 = m_polygonB.getVertex(rf.i2);
+		rf.normal = m_polygonB.getNormal(rf.i1);
 	}
 	
 	rf.sideNormal1 = b2Vec2(rf.normal.y, -rf.normal.x);
@@ -614,12 +638,12 @@ b2EPAxis b2EPCollider::ComputeEdgeSeparation() const
 	b2EPAxis axis;
 	axis.type = b2EPAxis::e_edgeA;
 	axis.index = m_front ? 0 : 1;
-	axis.separation = FLT_MAX;
+	axis.separation = b2_maxFloat;
 	
-	for (auto i = decltype(m_polygonB.count){0}; i < m_polygonB.count; ++i)
+	for (auto i = decltype(m_polygonB.getCount()){0}; i < m_polygonB.getCount(); ++i)
 	{
-		const auto s = b2Dot(m_normal, m_polygonB.vertices[i] - m_v1);
-		if (s < axis.separation)
+		const auto s = b2Dot(m_normal, m_polygonB.getVertex(i) - m_v1);
+		if (axis.separation > s)
 		{
 			axis.separation = s;
 		}
@@ -633,16 +657,16 @@ b2EPAxis b2EPCollider::ComputePolygonSeparation() const
 	b2EPAxis axis;
 	axis.type = b2EPAxis::e_unknown;
 	axis.index = -1;
-	axis.separation = -FLT_MAX;
+	axis.separation = b2_lowestFloat;
 
 	const auto perp = b2Vec2(-m_normal.y, m_normal.x);
 
-	for (auto i = decltype(m_polygonB.count){0}; i < m_polygonB.count; ++i)
+	for (auto i = decltype(m_polygonB.getCount()){0}; i < m_polygonB.getCount(); ++i)
 	{
-		const auto n = -m_polygonB.normals[i];
+		const auto n = -m_polygonB.getNormal(i);
 		
-		const auto s1 = b2Dot(n, m_polygonB.vertices[i] - m_v1);
-		const auto s2 = b2Dot(n, m_polygonB.vertices[i] - m_v2);
+		const auto s1 = b2Dot(n, m_polygonB.getVertex(i) - m_v1);
+		const auto s2 = b2Dot(n, m_polygonB.getVertex(i) - m_v2);
 		const auto s = b2Min(s1, s2);
 		
 		if (s > m_radius)
@@ -670,7 +694,7 @@ b2EPAxis b2EPCollider::ComputePolygonSeparation() const
 			}
 		}
 		
-		if (s > axis.separation)
+		if (axis.separation < s)
 		{
 			axis.type = b2EPAxis::e_edgeB;
 			axis.index = i;
