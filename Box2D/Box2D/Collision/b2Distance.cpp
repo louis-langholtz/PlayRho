@@ -113,6 +113,7 @@ public:
 
 	void AddVertex(const b2SimplexVertex& vertex) noexcept
 	{
+		b2Assert(m_count < maxVertices);
 		m_vertices[m_count] = vertex;
 		++m_count;
 	}
