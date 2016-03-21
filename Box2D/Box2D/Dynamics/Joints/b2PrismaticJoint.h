@@ -98,38 +98,38 @@ public:
 	float32 GetJointSpeed() const;
 
 	/// Is the joint limit enabled?
-	bool IsLimitEnabled() const;
+	bool IsLimitEnabled() const noexcept;
 
 	/// Enable/disable the joint limit.
-	void EnableLimit(bool flag);
+	void EnableLimit(bool flag) noexcept;
 
 	/// Get the lower joint limit, usually in meters.
-	float32 GetLowerLimit() const;
+	float32 GetLowerLimit() const noexcept;
 
 	/// Get the upper joint limit, usually in meters.
-	float32 GetUpperLimit() const;
+	float32 GetUpperLimit() const noexcept;
 
 	/// Set the joint limits, usually in meters.
 	void SetLimits(float32 lower, float32 upper);
 
 	/// Is the joint motor enabled?
-	bool IsMotorEnabled() const;
+	bool IsMotorEnabled() const noexcept;
 
 	/// Enable/disable the joint motor.
-	void EnableMotor(bool flag);
+	void EnableMotor(bool flag) noexcept;
 
 	/// Set the motor speed, usually in meters per second.
-	void SetMotorSpeed(float32 speed);
+	void SetMotorSpeed(float32 speed) noexcept;
 
 	/// Get the motor speed, usually in meters per second.
-	float32 GetMotorSpeed() const;
+	float32 GetMotorSpeed() const noexcept;
 
 	/// Set the maximum motor force, usually in N.
-	void SetMaxMotorForce(float32 force);
-	float32 GetMaxMotorForce() const { return m_maxMotorForce; }
+	void SetMaxMotorForce(float32 force) noexcept;
+	float32 GetMaxMotorForce() const noexcept { return m_maxMotorForce; }
 
 	/// Get the current motor force given the inverse time step, usually in N.
-	float32 GetMotorForce(float32 inv_dt) const;
+	float32 GetMotorForce(float32 inv_dt) const noexcept;
 
 	/// Dump to b2Log
 	void Dump() override;
@@ -175,7 +175,7 @@ protected:
 	float32 m_motorMass;
 };
 
-inline float32 b2PrismaticJoint::GetMotorSpeed() const
+inline float32 b2PrismaticJoint::GetMotorSpeed() const noexcept
 {
 	return m_motorSpeed;
 }
