@@ -167,8 +167,8 @@ void b2CollidePolygons(b2Manifold* manifold,
 	const auto iv1 = edge1;
 	const auto iv2 = ((edge1 + 1) < count1) ? edge1 + 1 : 0;
 
-	b2Vec2 v11 = vertices1[iv1];
-	b2Vec2 v12 = vertices1[iv2];
+	auto v11 = b2Vec2(vertices1[iv1]);
+	auto v12 = b2Vec2(vertices1[iv2]);
 
 	const auto localTangent = b2Normalize(v12 - v11);
 	
