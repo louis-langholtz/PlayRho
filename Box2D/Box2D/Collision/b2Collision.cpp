@@ -35,7 +35,7 @@ void b2WorldManifold::Initialize(const b2Manifold* manifold,
 			normal.Set(1.0f, 0.0f);
 			const auto pointA = b2Mul(xfA, manifold->localPoint);
 			const auto pointB = b2Mul(xfB, manifold->points[0].localPoint);
-			if (b2DistanceSquared(pointA, pointB) > b2_epsilon * b2_epsilon)
+			if (b2DistanceSquared(pointA, pointB) > (b2_epsilon * b2_epsilon))
 			{
 				normal = b2Normalize(pointB - pointA);
 			}
