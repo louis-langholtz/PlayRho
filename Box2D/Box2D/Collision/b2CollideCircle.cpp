@@ -25,17 +25,16 @@ void b2CollideCircles(
 	const b2CircleShape* circleA, const b2Transform& xfA,
 	const b2CircleShape* circleB, const b2Transform& xfB)
 {
-	manifold->pointCount = 0;
+	const auto pA = b2Mul(xfA, circleA->m_p);
+	const auto pB = b2Mul(xfB, circleB->m_p);
 
-	b2Vec2 pA = b2Mul(xfA, circleA->m_p);
-	b2Vec2 pB = b2Mul(xfB, circleB->m_p);
-
-	b2Vec2 d = pB - pA;
-	float32 distSqr = b2Dot(d, d);
-	float32 rA = circleA->m_radius, rB = circleB->m_radius;
-	float32 radius = rA + rB;
-	if (distSqr > radius * radius)
+	const auto d = pB - pA;
+	const auto distSqr = b2Dot(d, d);
+	const auto rA = circleA->m_radius, rB = circleB->m_radius;
+	const auto radius = rA + rB;
+	if (distSqr > (radius * radius))
 	{
+		manifold->pointCount = 0;
 		return;
 	}
 
@@ -53,19 +52,17 @@ void b2CollidePolygonAndCircle(
 	const b2PolygonShape* polygonA, const b2Transform& xfA,
 	const b2CircleShape* circleB, const b2Transform& xfB)
 {
-	manifold->pointCount = 0;
-
 	// Compute circle position in the frame of the polygon.
-	b2Vec2 c = b2Mul(xfB, circleB->m_p);
-	b2Vec2 cLocal = b2MulT(xfA, c);
+	const auto c = b2Mul(xfB, circleB->m_p);
+	const auto cLocal = b2MulT(xfA, c);
 
 	// Find the min separating edge.
-	int32 normalIndex = 0;
-	float32 separation = -b2_maxFloat;
-	float32 radius = polygonA->m_radius + circleB->m_radius;
-	int32 vertexCount = polygonA->m_count;
-	const b2Vec2* vertices = polygonA->m_vertices;
-	const b2Vec2* normals = polygonA->m_normals;
+	auto normalIndex = int32{0};
+	auto separation = -b2_maxFloat;
+	const auto radius = polygonA->m_radius + circleB->m_radius;
+	const auto vertexCount = polygonA->m_count;
+	const auto vertices = polygonA->m_vertices;
+	const auto normals = polygonA->m_normals;
 
 	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 	{
@@ -74,10 +71,11 @@ void b2CollidePolygonAndCircle(
 		if (s > radius)
 		{
 			// Early out.
+			manifold->pointCount = 0;
 			return;
 		}
 
-		if (s > separation)
+		if (separation < s)
 		{
 			separation = s;
 			normalIndex = i;
@@ -85,10 +83,10 @@ void b2CollidePolygonAndCircle(
 	}
 
 	// Vertices that subtend the incident face.
-	int32 vertIndex1 = normalIndex;
-	int32 vertIndex2 = vertIndex1 + 1 < vertexCount ? vertIndex1 + 1 : 0;
-	b2Vec2 v1 = vertices[vertIndex1];
-	b2Vec2 v2 = vertices[vertIndex2];
+	const auto vertIndex1 = normalIndex;
+	const auto vertIndex2 = ((vertIndex1 + 1) < vertexCount) ? vertIndex1 + 1 : 0;
+	const auto v1 = vertices[vertIndex1];
+	const auto v2 = vertices[vertIndex2];
 
 	// If the center is inside the polygon ...
 	if (separation < b2_epsilon)
@@ -103,12 +101,13 @@ void b2CollidePolygonAndCircle(
 	}
 
 	// Compute barycentric coordinates
-	float32 u1 = b2Dot(cLocal - v1, v2 - v1);
-	float32 u2 = b2Dot(cLocal - v2, v1 - v2);
+	const auto u1 = b2Dot(cLocal - v1, v2 - v1);
+	const auto u2 = b2Dot(cLocal - v2, v1 - v2);
 	if (u1 <= 0.0f)
 	{
-		if (b2DistanceSquared(cLocal, v1) > radius * radius)
+		if (b2DistanceSquared(cLocal, v1) > (radius * radius))
 		{
+			manifold->pointCount = 0;
 			return;
 		}
 
@@ -121,8 +120,9 @@ void b2CollidePolygonAndCircle(
 	}
 	else if (u2 <= 0.0f)
 	{
-		if (b2DistanceSquared(cLocal, v2) > radius * radius)
+		if (b2DistanceSquared(cLocal, v2) > (radius * radius))
 		{
+			manifold->pointCount = 0;
 			return;
 		}
 
@@ -135,10 +135,11 @@ void b2CollidePolygonAndCircle(
 	}
 	else
 	{
-		b2Vec2 faceCenter = 0.5f * (v1 + v2);
+		const auto faceCenter = 0.5f * (v1 + v2);
 		separation = b2Dot(cLocal - faceCenter, normals[vertIndex1]);
 		if (separation > radius)
 		{
+			manifold->pointCount = 0;
 			return;
 		}
 
