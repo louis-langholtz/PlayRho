@@ -53,7 +53,7 @@ void b2CollideEdgeAndCircle(b2Manifold* manifold,
 		const auto P = A;
 		const auto d = Q - P;
 		const auto dd = b2Dot(d, d);
-		if (dd > radius * radius)
+		if (dd > (radius * radius))
 		{
 			return;
 		}
@@ -91,7 +91,7 @@ void b2CollideEdgeAndCircle(b2Manifold* manifold,
 		const auto P = B;
 		const auto d = Q - P;
 		const auto dd = b2Dot(d, d);
-		if (dd > radius * radius)
+		if (dd > (radius * radius))
 		{
 			return;
 		}
@@ -129,12 +129,12 @@ void b2CollideEdgeAndCircle(b2Manifold* manifold,
 	const auto P = (1.0f / den) * (u * A + v * B);
 	const auto d = Q - P;
 	const auto dd = b2Dot(d, d);
-	if (dd > radius * radius)
+	if (dd > (radius * radius))
 	{
 		return;
 	}
 	
-	b2Vec2 n(-e.y, e.x);
+	auto n = b2Vec2(-e.y, e.x);
 	if (b2Dot(n, Q - A) < 0.0f)
 	{
 		n = b2Vec2(-n.x, -n.y);
@@ -217,20 +217,23 @@ struct b2ReferenceFace
 };
 
 // This class collides an edge and a polygon, taking into account edge adjacency.
-struct b2EPCollider
+class b2EPCollider
 {
+public:
 	void Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const b2Transform& xfA,
 				 const b2PolygonShape* polygonB, const b2Transform& xfB);
-	b2EPAxis ComputeEdgeSeparation() const;
-	b2EPAxis ComputePolygonSeparation() const;
 	
+private:
 	enum VertexType
 	{
 		e_isolated,
 		e_concave,
 		e_convex
 	};
-	
+
+	b2EPAxis ComputeEdgeSeparation() const;
+	b2EPAxis ComputePolygonSeparation() const;
+
 	b2TempPolygon m_polygonB;
 	
 	b2Transform m_xf;
@@ -516,7 +519,7 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 		}
 		
 		const auto i1 = bestIndex;
-		const auto i2 = i1 + 1 < m_polygonB.getCount() ? i1 + 1 : 0;
+		const auto i2 = ((i1 + 1) < m_polygonB.getCount()) ? i1 + 1 : 0;
 		
 		ie[0].v = m_polygonB.getVertex(i1);
 		ie[0].id.cf.indexA = 0;
@@ -564,7 +567,7 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 		ie[1].id.cf.typeB = b2ContactFeature::e_face;
 		
 		rf.i1 = primaryAxis.index;
-		rf.i2 = rf.i1 + 1 < m_polygonB.getCount() ? rf.i1 + 1 : 0;
+		rf.i2 = ((rf.i1 + 1) < m_polygonB.getCount()) ? rf.i1 + 1 : 0;
 		rf.v1 = m_polygonB.getVertex(rf.i1);
 		rf.v2 = m_polygonB.getVertex(rf.i2);
 		rf.normal = m_polygonB.getNormal(rf.i1);
