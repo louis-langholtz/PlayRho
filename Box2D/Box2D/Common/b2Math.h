@@ -63,6 +63,8 @@ struct b2Vec2
 {
 	/// Default constructor does nothing (for performance).
 	b2Vec2() = default;
+	
+	b2Vec2(const b2Vec2& copy) = default;
 
 	/// Construct using coordinates.
 	constexpr b2Vec2(float32 x_, float32 y_) noexcept : x(x_), y(y_) {}
