@@ -61,8 +61,8 @@ b2ContactSolver::b2ContactSolver(b2ContactSolverDef* def) :
 		const auto fixtureB = contact->m_fixtureB;
 		const auto shapeA = fixtureA->GetShape();
 		const auto shapeB = fixtureB->GetShape();
-		const auto radiusA = shapeA->m_radius;
-		const auto radiusB = shapeB->m_radius;
+		const auto radiusA = shapeA->GetRadius();
+		const auto radiusB = shapeB->GetRadius();
 		const auto bodyA = fixtureA->GetBody();
 		const auto bodyB = fixtureB->GetBody();
 		const auto manifold = contact->GetManifold();

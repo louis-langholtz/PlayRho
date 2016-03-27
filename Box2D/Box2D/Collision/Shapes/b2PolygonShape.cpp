@@ -345,7 +345,7 @@ void b2PolygonShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, int32 chil
 		upper = b2Max(upper, v);
 	}
 
-	const auto r = b2Vec2(m_radius, m_radius);
+	const auto r = b2Vec2(GetRadius(), GetRadius());
 	aabb->lowerBound = lower - r;
 	aabb->upperBound = upper + r;
 }

@@ -55,7 +55,19 @@ public:
 
 	/// @see b2Shape::ComputeMass
 	void ComputeMass(b2MassData* massData, float32 density) const override;
-	
+
+	b2Vec2 GetVertex0() const noexcept { return m_vertex0; }
+	b2Vec2 GetVertex1() const noexcept { return m_vertex1; }
+	b2Vec2 GetVertex2() const noexcept { return m_vertex2; }
+	b2Vec2 GetVertex3() const noexcept { return m_vertex3; }
+
+	void SetVertex0(const b2Vec2& v) noexcept;
+	void SetVertex3(const b2Vec2& v) noexcept;
+
+	bool HasVertex0() const noexcept { return m_hasVertex0; }
+	bool HasVertex3() const noexcept { return m_hasVertex3; }
+
+private:
 	/// These are the edge vertices
 	b2Vec2 m_vertex1, m_vertex2;
 
@@ -63,5 +75,17 @@ public:
 	b2Vec2 m_vertex0 = b2Vec2_zero, m_vertex3 = b2Vec2_zero;
 	bool m_hasVertex0 = false, m_hasVertex3 = false;
 };
+
+inline void b2EdgeShape::SetVertex0(const b2Vec2& v) noexcept
+{
+	m_vertex0 = v;
+	m_hasVertex0 = true;
+}
+
+inline void b2EdgeShape::SetVertex3(const b2Vec2& v) noexcept
+{
+	m_vertex3 = v;
+	m_hasVertex3 = true;
+}
 
 #endif

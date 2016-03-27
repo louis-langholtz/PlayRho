@@ -34,7 +34,7 @@ bool b2CircleShape::TestPoint(const b2Transform& transform, const b2Vec2& p) con
 {
 	const auto center = transform.p + b2Mul(transform.q, m_p);
 	const auto d = p - center;
-	return b2Dot(d, d) <= m_radius * m_radius;
+	return b2Dot(d, d) <= (GetRadius() * GetRadius());
 }
 
 // Collision Detection in Interactive 3D Environments by Gino van den Bergen
@@ -48,7 +48,7 @@ bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input
 
 	const auto position = transform.p + b2Mul(transform.q, m_p);
 	const auto s = input.p1 - position;
-	const auto b = b2Dot(s, s) - m_radius * m_radius;
+	const auto b = b2Dot(s, s) - (GetRadius() * GetRadius());
 
 	// Solve quadratic equation.
 	const auto r = input.p2 - input.p1;
@@ -82,15 +82,15 @@ void b2CircleShape::ComputeAABB(b2AABB* aabb, const b2Transform& transform, int3
 	B2_NOT_USED(childIndex);
 
 	const auto p = transform.p + b2Mul(transform.q, m_p);
-	aabb->lowerBound.Set(p.x - m_radius, p.y - m_radius);
-	aabb->upperBound.Set(p.x + m_radius, p.y + m_radius);
+	aabb->lowerBound.Set(p.x - GetRadius(), p.y - GetRadius());
+	aabb->upperBound.Set(p.x + GetRadius(), p.y + GetRadius());
 }
 
 void b2CircleShape::ComputeMass(b2MassData* massData, float32 density) const
 {
-	massData->mass = density * b2_pi * m_radius * m_radius;
+	massData->mass = density * b2_pi * GetRadius() * GetRadius();
 	massData->center = m_p;
 
 	// inertia about the local origin
-	massData->I = massData->mass * (0.5f * m_radius * m_radius + b2Dot(m_p, m_p));
+	massData->I = massData->mass * (0.5f * GetRadius() * GetRadius() + b2Dot(m_p, m_p));
 }

@@ -34,48 +34,51 @@ void b2DistanceProxy::Set(const b2Shape* shape, int32 index)
 	case b2Shape::e_circle:
 		{
 			const auto circle = static_cast<const b2CircleShape*>(shape);
-			m_vertices = &circle->m_p;
+			m_buffer[0] = circle->GetPosition();
+			m_vertices = m_buffer;
 			m_count = 1;
-			m_radius = circle->m_radius;
+			m_radius = circle->GetRadius();
 		}
 		break;
 
 	case b2Shape::e_polygon:
 		{
 			const auto polygon = static_cast<const b2PolygonShape*>(shape);
-			m_vertices = polygon->m_vertices;
-			m_count = polygon->m_count;
-			m_radius = polygon->m_radius;
+			m_vertices = polygon->GetVertices();
+			m_count = polygon->GetVertexCount();
+			m_radius = polygon->GetRadius();
 		}
 		break;
 
 	case b2Shape::e_chain:
 		{
 			const auto chain = static_cast<const b2ChainShape*>(shape);
-			b2Assert(0 <= index && index < chain->m_count);
+			b2Assert(0 <= index && index < chain->GetVertexCount());
 
-			m_buffer[0] = chain->m_vertices[index];
-			if (index + 1 < chain->m_count)
+			m_buffer[0] = chain->GetVertex(index);
+			if ((index + 1) < chain->GetVertexCount())
 			{
-				m_buffer[1] = chain->m_vertices[index + 1];
+				m_buffer[1] = chain->GetVertex(index + 1);
 			}
 			else
 			{
-				m_buffer[1] = chain->m_vertices[0];
+				m_buffer[1] = chain->GetVertex(0);
 			}
 
 			m_vertices = m_buffer;
 			m_count = 2;
-			m_radius = chain->m_radius;
+			m_radius = chain->GetRadius();
 		}
 		break;
 
 	case b2Shape::e_edge:
 		{
 			const auto edge = static_cast<const b2EdgeShape*>(shape);
-			m_vertices = &edge->m_vertex1;
+			m_buffer[0] = edge->GetVertex1();
+			m_buffer[1] = edge->GetVertex2();
+			m_vertices = m_buffer;
 			m_count = 2;
-			m_radius = edge->m_radius;
+			m_radius = edge->GetRadius();
 		}
 		break;
 

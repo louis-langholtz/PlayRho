@@ -86,6 +86,19 @@ public:
 	/// @see b2Shape::ComputeMass
 	void ComputeMass(b2MassData* massData, float32 density) const override;
 
+	/// Get the vertex count.
+	int32 GetVertexCount() const noexcept { return m_count; }
+
+	/// Get a vertex by index.
+	const b2Vec2& GetVertex(int32 index) const;
+
+	bool HasPrevVertex() const noexcept { return m_hasPrevVertex; }
+	bool HasNextVertex() const noexcept { return m_hasNextVertex; }
+
+	b2Vec2 GetPrevVertex() const noexcept { return m_prevVertex; }
+	b2Vec2 GetNextVertex() const noexcept { return m_nextVertex; }
+
+private:
 	/// The vertices. Owned by this class.
 	b2Vec2* m_vertices = nullptr;
 
@@ -95,5 +108,11 @@ public:
 	b2Vec2 m_prevVertex, m_nextVertex;
 	bool m_hasPrevVertex = false, m_hasNextVertex = false;
 };
+
+inline const b2Vec2& b2ChainShape::GetVertex(int32 index) const
+{
+	b2Assert((0 <= index) && (index < m_count));
+	return m_vertices[index];
+}
 
 #endif

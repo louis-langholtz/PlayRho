@@ -24,11 +24,11 @@ static float32 b2FindMaxSeparation(int32& edgeIndex,
 								 const b2PolygonShape& poly1, const b2Transform& xf1,
 								 const b2PolygonShape& poly2, const b2Transform& xf2)
 {
-	const auto count1 = poly1.m_count;
-	const auto count2 = poly2.m_count;
-	const auto n1s = poly1.m_normals;
-	const auto v1s = poly1.m_vertices;
-	const auto v2s = poly2.m_vertices;
+	const auto count1 = poly1.GetVertexCount();
+	const auto count2 = poly2.GetVertexCount();
+	const auto n1s = poly1.GetNormals();
+	const auto v1s = poly1.GetVertices();
+	const auto v2s = poly2.GetVertices();
 	const auto xf = b2MulT(xf2, xf1);
 
 	auto bestIndex = decltype(count1){0};
@@ -65,13 +65,12 @@ static void b2FindIncidentEdge(std::array<b2ClipVertex,2>& c,
 							 const b2PolygonShape& poly1, const b2Transform& xf1, int32 edge1,
 							 const b2PolygonShape& poly2, const b2Transform& xf2)
 {
-	const b2Vec2* normals1 = poly1.m_normals;
+	const auto normals1 = poly1.GetNormals();
+	const auto count2 = poly2.GetVertexCount();
+	const auto vertices2 = poly2.GetVertices();
+	const auto normals2 = poly2.GetNormals();
 
-	const auto count2 = poly2.m_count;
-	const auto vertices2 = poly2.m_vertices;
-	const auto normals2 = poly2.m_normals;
-
-	b2Assert(0 <= edge1 && edge1 < poly1.m_count);
+	b2Assert(0 <= edge1 && edge1 < poly1.GetVertexCount());
 
 	// Get the normal of the reference edge in poly2's frame.
 	const auto normal1 = b2MulT(xf2.q, b2Mul(xf1.q, normals1[edge1]));
@@ -118,7 +117,7 @@ void b2CollidePolygons(b2Manifold* manifold,
 					  const b2PolygonShape* polyB, const b2Transform& xfB)
 {
 	manifold->pointCount = 0;
-	const auto totalRadius = polyA->m_radius + polyB->m_radius;
+	const auto totalRadius = polyA->GetRadius() + polyB->GetRadius();
 
 	auto edgeA = int32{0};
 	const auto separationA = b2FindMaxSeparation(edgeA, *polyA, xfA, *polyB, xfB);
@@ -161,8 +160,8 @@ void b2CollidePolygons(b2Manifold* manifold,
 	std::array<b2ClipVertex,2> incidentEdge;
 	b2FindIncidentEdge(incidentEdge, *poly1, xf1, edge1, *poly2, xf2);
 
-	const auto count1 = poly1->m_count;
-	const auto vertices1 = poly1->m_vertices;
+	const auto count1 = poly1->GetVertexCount();
+	const auto vertices1 = poly1->GetVertices();
 
 	const auto iv1 = edge1;
 	const auto iv2 = ((edge1 + 1) < count1) ? edge1 + 1 : 0;

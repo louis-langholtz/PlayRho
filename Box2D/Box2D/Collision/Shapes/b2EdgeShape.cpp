@@ -113,7 +113,7 @@ void b2EdgeShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, int32 childIn
 	const auto lower = b2Min(v1, v2);
 	const auto upper = b2Max(v1, v2);
 
-	const auto r = b2Vec2{m_radius, m_radius};
+	const auto r = b2Vec2{GetRadius(), GetRadius()};
 	aabb->lowerBound = lower - r;
 	aabb->upperBound = upper + r;
 }

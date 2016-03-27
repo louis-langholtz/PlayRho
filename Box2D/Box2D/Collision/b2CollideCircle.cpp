@@ -25,12 +25,12 @@ void b2CollideCircles(
 	const b2CircleShape* circleA, const b2Transform& xfA,
 	const b2CircleShape* circleB, const b2Transform& xfB)
 {
-	const auto pA = b2Mul(xfA, circleA->m_p);
-	const auto pB = b2Mul(xfB, circleB->m_p);
+	const auto pA = b2Mul(xfA, circleA->GetPosition());
+	const auto pB = b2Mul(xfB, circleB->GetPosition());
 
 	const auto d = pB - pA;
 	const auto distSqr = b2Dot(d, d);
-	const auto rA = circleA->m_radius, rB = circleB->m_radius;
+	const auto rA = circleA->GetRadius(), rB = circleB->GetRadius();
 	const auto radius = rA + rB;
 	if (distSqr > (radius * radius))
 	{
@@ -39,11 +39,11 @@ void b2CollideCircles(
 	}
 
 	manifold->type = b2Manifold::e_circles;
-	manifold->localPoint = circleA->m_p;
+	manifold->localPoint = circleA->GetPosition();
 	manifold->localNormal.SetZero();
 	manifold->pointCount = 1;
 
-	manifold->points[0].localPoint = circleB->m_p;
+	manifold->points[0].localPoint = circleB->GetPosition();
 	manifold->points[0].id.key = 0;
 }
 
@@ -53,16 +53,16 @@ void b2CollidePolygonAndCircle(
 	const b2CircleShape* circleB, const b2Transform& xfB)
 {
 	// Compute circle position in the frame of the polygon.
-	const auto c = b2Mul(xfB, circleB->m_p);
+	const auto c = b2Mul(xfB, circleB->GetPosition());
 	const auto cLocal = b2MulT(xfA, c);
 
 	// Find the min separating edge.
 	auto normalIndex = int32{0};
 	auto separation = -b2_maxFloat;
-	const auto radius = polygonA->m_radius + circleB->m_radius;
-	const auto vertexCount = polygonA->m_count;
-	const auto vertices = polygonA->m_vertices;
-	const auto normals = polygonA->m_normals;
+	const auto radius = polygonA->GetRadius() + circleB->GetRadius();
+	const auto vertexCount = polygonA->GetVertexCount();
+	const auto vertices = polygonA->GetVertices();
+	const auto normals = polygonA->GetNormals();
 
 	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 	{
@@ -95,7 +95,7 @@ void b2CollidePolygonAndCircle(
 		manifold->type = b2Manifold::e_faceA;
 		manifold->localNormal = normals[normalIndex];
 		manifold->localPoint = 0.5f * (v1 + v2);
-		manifold->points[0].localPoint = circleB->m_p;
+		manifold->points[0].localPoint = circleB->GetPosition();
 		manifold->points[0].id.key = 0;
 		return;
 	}
@@ -115,7 +115,7 @@ void b2CollidePolygonAndCircle(
 		manifold->type = b2Manifold::e_faceA;
 		manifold->localNormal = b2Normalize(cLocal - v1);
 		manifold->localPoint = v1;
-		manifold->points[0].localPoint = circleB->m_p;
+		manifold->points[0].localPoint = circleB->GetPosition();
 		manifold->points[0].id.key = 0;
 	}
 	else if (u2 <= 0.0f)
@@ -130,7 +130,7 @@ void b2CollidePolygonAndCircle(
 		manifold->type = b2Manifold::e_faceA;
 		manifold->localNormal = b2Normalize(cLocal - v2);
 		manifold->localPoint = v2;
-		manifold->points[0].localPoint = circleB->m_p;
+		manifold->points[0].localPoint = circleB->GetPosition();
 		manifold->points[0].id.key = 0;
 	}
 	else
@@ -147,7 +147,7 @@ void b2CollidePolygonAndCircle(
 		manifold->type = b2Manifold::e_faceA;
 		manifold->localNormal = normals[vertIndex1];
 		manifold->localPoint = faceCenter;
-		manifold->points[0].localPoint = circleB->m_p;
+		manifold->points[0].localPoint = circleB->GetPosition();
 		manifold->points[0].id.key = 0;
 	}
 }

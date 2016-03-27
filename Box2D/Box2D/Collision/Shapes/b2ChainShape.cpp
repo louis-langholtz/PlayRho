@@ -55,7 +55,7 @@ void b2ChainShape::CreateLoop(const b2Vec2* vertices, int32 count)
 
 void b2ChainShape::CreateChain(const b2Vec2* vertices, int32 count)
 {
-	b2Assert(m_vertices == nullptr && m_count == 0);
+	b2Assert((m_vertices == nullptr) && (m_count == 0));
 	b2Assert(count >= 2);
 	for (auto i = decltype(count){1}; i < count; ++i)
 	{
@@ -107,31 +107,26 @@ int32 b2ChainShape::GetChildCount() const
 void b2ChainShape::GetChildEdge(b2EdgeShape* edge, int32 index) const
 {
 	b2Assert(0 <= index && index < m_count - 1);
-	edge->m_radius = m_radius;
+	edge->SetRadius(GetRadius());
 
-	edge->m_vertex1 = m_vertices[index + 0];
-	edge->m_vertex2 = m_vertices[index + 1];
+	edge->Set(m_vertices[index + 0], m_vertices[index + 1]);
 
 	if (index > 0)
 	{
-		edge->m_vertex0 = m_vertices[index - 1];
-		edge->m_hasVertex0 = true;
+		edge->SetVertex0(m_vertices[index - 1]);
 	}
-	else
+	else if (m_hasPrevVertex)
 	{
-		edge->m_vertex0 = m_prevVertex;
-		edge->m_hasVertex0 = m_hasPrevVertex;
+		edge->SetVertex0(m_prevVertex);
 	}
 
 	if (index < m_count - 2)
 	{
-		edge->m_vertex3 = m_vertices[index + 2];
-		edge->m_hasVertex3 = true;
+		edge->SetVertex3(m_vertices[index + 2]);
 	}
-	else
+	else if (m_hasNextVertex)
 	{
-		edge->m_vertex3 = m_nextVertex;
-		edge->m_hasVertex3 = m_hasNextVertex;
+		edge->SetVertex3(m_nextVertex);
 	}
 }
 
@@ -154,9 +149,7 @@ bool b2ChainShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 		i2 = 0;
 	}
 
-	b2EdgeShape edgeShape;
-	edgeShape.m_vertex1 = m_vertices[i1];
-	edgeShape.m_vertex2 = m_vertices[i2];
+	const auto edgeShape = b2EdgeShape(m_vertices[i1], m_vertices[i2]);
 	return edgeShape.RayCast(output, input, xf, 0);
 }
 

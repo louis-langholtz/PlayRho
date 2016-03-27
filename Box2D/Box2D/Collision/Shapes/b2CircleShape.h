@@ -51,39 +51,13 @@ public:
 	/// @see b2Shape::ComputeMass
 	void ComputeMass(b2MassData* massData, float32 density) const override;
 
-	/// Get the supporting vertex index in the given direction.
-	int32 GetSupport(const b2Vec2& d) const;
+	b2Vec2 GetPosition() const noexcept { return m_p; }
 
-	/// Get the supporting vertex in the given direction.
-	const b2Vec2& GetSupportVertex(const b2Vec2& d) const;
+	void SetPosition(const b2Vec2& value) noexcept { m_p = value; }
 
-	/// Get the vertex count.
-	int32 GetVertexCount() const noexcept { return 1; }
-
-	/// Get a vertex by index. Used by b2Distance.
-	const b2Vec2& GetVertex(int32 index) const;
-
+private:
 	/// Position
 	b2Vec2 m_p = b2Vec2_zero;
 };
-
-inline int32 b2CircleShape::GetSupport(const b2Vec2 &d) const
-{
-	B2_NOT_USED(d);
-	return 0;
-}
-
-inline const b2Vec2& b2CircleShape::GetSupportVertex(const b2Vec2 &d) const
-{
-	B2_NOT_USED(d);
-	return m_p;
-}
-
-inline const b2Vec2& b2CircleShape::GetVertex(int32 index) const
-{
-	B2_NOT_USED(index);
-	b2Assert(index == 0);
-	return m_p;
-}
 
 #endif

@@ -1020,11 +1020,9 @@ void b2World::DrawShape(const b2Fixture* fixture, const b2Transform& xf, const b
 	case b2Shape::e_circle:
 		{
 			const auto circle = static_cast<const b2CircleShape*>(fixture->GetShape());
-
-			const auto center = b2Mul(xf, circle->m_p);
-			const auto radius = circle->m_radius;
+			const auto center = b2Mul(xf, circle->GetPosition());
+			const auto radius = circle->GetRadius();
 			const auto axis = b2Mul(xf.q, b2Vec2(1.0f, 0.0f));
-
 			g_debugDraw->DrawSolidCircle(center, radius, axis, color);
 		}
 		break;
@@ -1032,8 +1030,8 @@ void b2World::DrawShape(const b2Fixture* fixture, const b2Transform& xf, const b
 	case b2Shape::e_edge:
 		{
 			const auto edge = static_cast<const b2EdgeShape*>(fixture->GetShape());
-			const auto v1 = b2Mul(xf, edge->m_vertex1);
-			const auto v2 = b2Mul(xf, edge->m_vertex2);
+			const auto v1 = b2Mul(xf, edge->GetVertex1());
+			const auto v2 = b2Mul(xf, edge->GetVertex2());
 			g_debugDraw->DrawSegment(v1, v2, color);
 		}
 		break;
@@ -1041,13 +1039,11 @@ void b2World::DrawShape(const b2Fixture* fixture, const b2Transform& xf, const b
 	case b2Shape::e_chain:
 		{
 			const auto chain = static_cast<const b2ChainShape*>(fixture->GetShape());
-			const auto count = chain->m_count;
-			const auto vertices = chain->m_vertices;
-
-			auto v1 = b2Mul(xf, vertices[0]);
+			const auto count = chain->GetVertexCount();
+			auto v1 = b2Mul(xf, chain->GetVertex(0));
 			for (auto i = decltype(count){1}; i < count; ++i)
 			{
-				const auto v2 = b2Mul(xf, vertices[i]);
+				const auto v2 = b2Mul(xf, chain->GetVertex(i));
 				g_debugDraw->DrawSegment(v1, v2, color);
 				g_debugDraw->DrawCircle(v1, 0.05f, color);
 				v1 = v2;
@@ -1058,15 +1054,13 @@ void b2World::DrawShape(const b2Fixture* fixture, const b2Transform& xf, const b
 	case b2Shape::e_polygon:
 		{
 			const auto poly = static_cast<const b2PolygonShape*>(fixture->GetShape());
-			const auto vertexCount = poly->m_count;
+			const auto vertexCount = poly->GetVertexCount();
 			b2Assert(vertexCount <= b2_maxPolygonVertices);
 			b2Vec2 vertices[b2_maxPolygonVertices];
-
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
-				vertices[i] = b2Mul(xf, poly->m_vertices[i]);
+				vertices[i] = b2Mul(xf, poly->GetVertex(i));
 			}
-
 			g_debugDraw->DrawSolidPolygon(vertices, vertexCount, color);
 		}
 		break;

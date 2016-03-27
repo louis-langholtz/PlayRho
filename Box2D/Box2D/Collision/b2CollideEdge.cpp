@@ -31,17 +31,17 @@ void b2CollideEdgeAndCircle(b2Manifold* manifold,
 	manifold->pointCount = 0;
 	
 	// Compute circle in frame of edge
-	const auto Q = b2MulT(xfA, b2Mul(xfB, circleB->m_p));
+	const auto Q = b2MulT(xfA, b2Mul(xfB, circleB->GetPosition()));
 	
-	const auto A = edgeA->m_vertex1;
-	const auto B = edgeA->m_vertex2;
+	const auto A = edgeA->GetVertex1();
+	const auto B = edgeA->GetVertex2();
 	const auto e = B - A;
 	
 	// Barycentric coordinates
 	const auto u = b2Dot(e, B - Q);
 	const auto v = b2Dot(e, Q - A);
 	
-	const auto radius = edgeA->m_radius + circleB->m_radius;
+	const auto radius = edgeA->GetRadius() + circleB->GetRadius();
 	
 	b2ContactFeature cf;
 	cf.indexB = 0;
@@ -59,9 +59,9 @@ void b2CollideEdgeAndCircle(b2Manifold* manifold,
 		}
 		
 		// Is there an edge connected to A?
-		if (edgeA->m_hasVertex0)
+		if (edgeA->HasVertex0())
 		{
-			const auto A1 = edgeA->m_vertex0;
+			const auto A1 = edgeA->GetVertex0();
 			const auto B1 = A;
 			const auto e1 = B1 - A1;
 			const auto u1 = b2Dot(e1, B1 - Q);
@@ -79,9 +79,8 @@ void b2CollideEdgeAndCircle(b2Manifold* manifold,
 		manifold->type = b2Manifold::e_circles;
 		manifold->localNormal = b2Vec2_zero;
 		manifold->localPoint = P;
-		manifold->points[0].id.key = 0;
 		manifold->points[0].id.cf = cf;
-		manifold->points[0].localPoint = circleB->m_p;
+		manifold->points[0].localPoint = circleB->GetPosition();
 		return;
 	}
 	
@@ -97,9 +96,9 @@ void b2CollideEdgeAndCircle(b2Manifold* manifold,
 		}
 		
 		// Is there an edge connected to B?
-		if (edgeA->m_hasVertex3)
+		if (edgeA->HasVertex3())
 		{
-			const auto B2 = edgeA->m_vertex3;
+			const auto B2 = edgeA->GetVertex3();
 			const auto A2 = B;
 			const auto e2 = B2 - A2;
 			const auto v2 = b2Dot(e2, Q - A2);
@@ -117,9 +116,8 @@ void b2CollideEdgeAndCircle(b2Manifold* manifold,
 		manifold->type = b2Manifold::e_circles;
 		manifold->localNormal = b2Vec2_zero;
 		manifold->localPoint = P;
-		manifold->points[0].id.key = 0;
 		manifold->points[0].id.cf = cf;
-		manifold->points[0].localPoint = circleB->m_p;
+		manifold->points[0].localPoint = circleB->GetPosition();
 		return;
 	}
 	
@@ -146,9 +144,8 @@ void b2CollideEdgeAndCircle(b2Manifold* manifold,
 	manifold->type = b2Manifold::e_faceA;
 	manifold->localNormal = b2Normalize(n);
 	manifold->localPoint = A;
-	manifold->points[0].id.key = 0;
 	manifold->points[0].id.cf = cf;
-	manifold->points[0].localPoint = circleB->m_p;
+	manifold->points[0].localPoint = circleB->GetPosition();
 }
 
 // This structure is used to keep track of the best separating axis.
@@ -261,15 +258,15 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 {
 	m_xf = b2MulT(xfA, xfB);
 	
-	m_centroidB = b2Mul(m_xf, polygonB->m_centroid);
+	m_centroidB = b2Mul(m_xf, polygonB->GetCentroid());
 	
-	m_v0 = edgeA->m_vertex0;
-	m_v1 = edgeA->m_vertex1;
-	m_v2 = edgeA->m_vertex2;
-	m_v3 = edgeA->m_vertex3;
+	m_v0 = edgeA->GetVertex0();
+	m_v1 = edgeA->GetVertex1();
+	m_v2 = edgeA->GetVertex2();
+	m_v3 = edgeA->GetVertex3();
 	
-	const auto hasVertex0 = edgeA->m_hasVertex0;
-	const auto hasVertex3 = edgeA->m_hasVertex3;
+	const auto hasVertex0 = edgeA->HasVertex0();
+	const auto hasVertex3 = edgeA->HasVertex3();
 	
 	const auto edge1 = b2Normalize(m_v2 - m_v1);
 	m_normal1 = b2Vec2(edge1.y, -edge1.x);
@@ -453,9 +450,9 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 	}
 	
 	// Get polygonB in frameA
-	for (auto i = decltype(polygonB->m_count){0}; i < polygonB->m_count; ++i)
+	for (auto i = decltype(polygonB->GetVertexCount()){0}; i < polygonB->GetVertexCount(); ++i)
 	{
-		m_polygonB.append(b2Mul(m_xf, polygonB->m_vertices[i]), b2Mul(m_xf.q, polygonB->m_normals[i]));
+		m_polygonB.append(b2Mul(m_xf, polygonB->GetVertex(i)), b2Mul(m_xf.q, polygonB->GetNormal(i)));
 	}
 	
 	m_radius = 2.0f * b2_polygonRadius;
@@ -602,8 +599,8 @@ void b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape* edgeA, const
 	}
 	else
 	{
-		manifold->localNormal = polygonB->m_normals[rf.i1];
-		manifold->localPoint = polygonB->m_vertices[rf.i1];
+		manifold->localNormal = polygonB->GetNormal(rf.i1);
+		manifold->localPoint = polygonB->GetVertex(rf.i1);
 	}
 	
 	auto pointCount = int32{0};
@@ -660,7 +657,7 @@ b2EPAxis b2EPCollider::ComputePolygonSeparation() const
 	b2EPAxis axis;
 	axis.type = b2EPAxis::e_unknown;
 	axis.index = -1;
-	axis.separation = b2_lowestFloat;
+	axis.separation = -b2_maxFloat;
 
 	const auto perp = b2Vec2(-m_normal.y, m_normal.x);
 
