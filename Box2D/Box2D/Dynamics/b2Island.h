@@ -73,43 +73,45 @@ public:
 
 	void Report(const b2ContactVelocityConstraint* constraints);
 
-	inline int32 GetBodyCapacity() const
+	inline int32 GetBodyCapacity() const noexcept
 	{
 		return m_bodyCapacity;
 	}
 
-	inline int32 GetContactCapacity() const
+	inline int32 GetContactCapacity() const noexcept
 	{
 		return m_contactCapacity;
 	}
 	
-	inline int32 GetJointCapacity() const
+	inline int32 GetJointCapacity() const noexcept
 	{
 		return m_jointCapacity;
 	}
 
-	inline int32 GetBodyCount() const
+	inline int32 GetBodyCount() const noexcept
 	{
 		return m_bodyCount;
 	}
 
-	inline int32 GetContactCount() const
+	inline int32 GetContactCount() const noexcept
 	{
 		return m_contactCount;
 	}
 
-	inline int32 GetJointCount() const
+	inline int32 GetJointCount() const noexcept
 	{
 		return m_jointCount;
 	}
 
 	inline const b2Body* GetBody(int32 i) const
 	{
+		b2Assert(i < m_bodyCount);
 		return m_bodies[i];
 	}
 
 	inline b2Body* GetBody(int32 i)
 	{
+		b2Assert(i < m_bodyCount);
 		return m_bodies[i];
 	}
 
