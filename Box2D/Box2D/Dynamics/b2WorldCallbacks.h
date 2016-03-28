@@ -62,11 +62,28 @@ public:
 /// Contact impulses for reporting. Impulses are used instead of forces because
 /// sub-step forces may approach infinity for rigid body collisions. These
 /// match up one-to-one with the contact points in b2Manifold.
-struct b2ContactImpulse
+class b2ContactImpulse
 {
+public:
+	using count_t = unsigned int;
+
+	count_t GetCount() const noexcept { return count; }
+
+	float32 GetEntryNormal(count_t index) const noexcept { return normalImpulses[index]; }
+	float32 GetEntryTanget(count_t index) const noexcept { return tangentImpulses[index]; }
+	
+	void AddEntry(float32 normal, float32 tangent) noexcept
+	{
+		b2Assert(count < b2_maxManifoldPoints);
+		normalImpulses[count] = normal;
+		tangentImpulses[count] = tangent;
+		++count;
+	}
+
+private:
 	float32 normalImpulses[b2_maxManifoldPoints];
 	float32 tangentImpulses[b2_maxManifoldPoints];
-	int32 count;
+	count_t count = 0;
 };
 
 /// Implement this class to get contact information. You can use these results for

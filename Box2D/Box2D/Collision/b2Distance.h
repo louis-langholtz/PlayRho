@@ -26,9 +26,12 @@ class b2Shape;
 
 /// A distance proxy is used by the GJK algorithm.
 /// It encapsulates any shape.
-struct b2DistanceProxy
+class b2DistanceProxy
 {
+public:
 	b2DistanceProxy() = default;
+
+	float32 GetRadius() const noexcept { return m_radius; }
 
 	/// Initialize the proxy using the given shape. The shape
 	/// must remain in scope while the proxy is in use.
@@ -41,14 +44,12 @@ struct b2DistanceProxy
 	const b2Vec2& GetSupportVertex(const b2Vec2& d) const;
 
 	/// Get the vertex count.
-	inline int32 GetVertexCount() const noexcept
-	{
-		return m_count;
-	}
+	inline int32 GetVertexCount() const noexcept { return m_count; }
 
 	/// Get a vertex by index. Used by b2Distance.
 	const b2Vec2& GetVertex(int32 index) const;
 
+private:
 	b2Vec2 m_buffer[2];
 	const b2Vec2* m_vertices = nullptr;
 	int32 m_count = 0;
@@ -56,8 +57,37 @@ struct b2DistanceProxy
 };
 
 /// Used to warm start b2Distance.
-struct b2SimplexCache
+class b2SimplexCache
 {
+public:
+	float32 GetMetric() const noexcept { return metric; }
+	uint16 GetCount() const noexcept { return count; }
+
+	uint8 GetIndexA(uint32 index) const
+	{
+		b2Assert(index < count);
+		return indexA[index];
+	}
+
+	uint8 GetIndexB(uint32 index) const
+	{
+		b2Assert(index < count);
+		return indexB[index];
+	}
+
+	void ClearIndices() noexcept { count = 0; }
+
+	void SetMetric(float32 m) noexcept { metric = m; }
+
+	void AddIndex(uint8 a, uint8 b)
+	{
+		b2Assert(count < 3);
+		indexA[count] = a;
+		indexB[count] = b;
+		++count;
+	}
+
+private:
 	float32 metric;		///< length or area
 	uint16 count = 0;
 	uint8 indexA[3];	///< vertices on shape A
@@ -120,7 +150,7 @@ inline int32 b2DistanceProxy::GetSupport(const b2Vec2& d) const noexcept
 
 inline const b2Vec2& b2DistanceProxy::GetSupportVertex(const b2Vec2& d) const
 {
-	int32 bestIndex = 0;
+	auto bestIndex = int32{0};
 	auto bestValue = b2Dot(m_vertices[0], d);
 	for (auto i = decltype(m_count){1}; i < m_count; ++i)
 	{

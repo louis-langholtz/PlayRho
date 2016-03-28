@@ -44,10 +44,10 @@ struct b2SeparationFunction
 		const b2DistanceProxy* proxyB, const b2Sweep& sweepB,
 		float32 t1):
 		m_proxyA(proxyA), m_proxyB(proxyB), m_sweepA(sweepA), m_sweepB(sweepB),
-		m_type((cache.count != 1)? ((cache.indexA[0] == cache.indexA[1])? e_faceB: e_faceA): e_points)
+		m_type((cache.GetCount() != 1)? ((cache.GetIndexA(0) == cache.GetIndexA(1))? e_faceB: e_faceA): e_points)
 	{
-		b2Assert(cache.count > 0);
-		b2Assert(cache.count <= 3); // < 3 or <= 3?
+		b2Assert(cache.GetCount() > 0);
+		b2Assert(cache.GetCount() <= 3); // < 3 or <= 3?
 
 		b2Transform xfA, xfB;
 		m_sweepA.GetTransform(&xfA, t1);
@@ -57,8 +57,8 @@ struct b2SeparationFunction
 		{
 		case e_points:
 		{
-			const auto localPointA = m_proxyA->GetVertex(cache.indexA[0]);
-			const auto localPointB = m_proxyB->GetVertex(cache.indexB[0]);
+			const auto localPointA = m_proxyA->GetVertex(cache.GetIndexA(0));
+			const auto localPointB = m_proxyB->GetVertex(cache.GetIndexB(0));
 			const auto pointA = b2Mul(xfA, localPointA);
 			const auto pointB = b2Mul(xfB, localPointB);
 			m_axis = pointB - pointA;
@@ -68,8 +68,8 @@ struct b2SeparationFunction
 		case e_faceB:
 		{
 			// Two points on B and one on A.
-			const auto localPointB1 = proxyB->GetVertex(cache.indexB[0]);
-			const auto localPointB2 = proxyB->GetVertex(cache.indexB[1]);
+			const auto localPointB1 = proxyB->GetVertex(cache.GetIndexB(0));
+			const auto localPointB2 = proxyB->GetVertex(cache.GetIndexB(1));
 
 			m_axis = b2Normalize(b2Cross(localPointB2 - localPointB1, 1.0f));
 			const auto normal = b2Mul(xfB.q, m_axis);
@@ -77,7 +77,7 @@ struct b2SeparationFunction
 			m_localPoint = 0.5f * (localPointB1 + localPointB2);
 			const auto pointB = b2Mul(xfB, m_localPoint);
 
-			const auto localPointA = proxyA->GetVertex(cache.indexA[0]);
+			const auto localPointA = proxyA->GetVertex(cache.GetIndexA(0));
 			const auto pointA = b2Mul(xfA, localPointA);
 
 			auto s = b2Dot(pointA - pointB, normal);
@@ -90,8 +90,8 @@ struct b2SeparationFunction
 		case e_faceA:
 		{
 			// Two points on A and one or two points on B.
-			const auto localPointA1 = m_proxyA->GetVertex(cache.indexA[0]);
-			const auto localPointA2 = m_proxyA->GetVertex(cache.indexA[1]);
+			const auto localPointA1 = m_proxyA->GetVertex(cache.GetIndexA(0));
+			const auto localPointA2 = m_proxyA->GetVertex(cache.GetIndexA(1));
 			
 			m_axis = b2Normalize(b2Cross(localPointA2 - localPointA1, 1.0f));
 			const auto normal = b2Mul(xfA.q, m_axis);
@@ -99,7 +99,7 @@ struct b2SeparationFunction
 			m_localPoint = 0.5f * (localPointA1 + localPointA2);
 			const auto pointA = b2Mul(xfA, m_localPoint);
 
-			const auto localPointB = m_proxyB->GetVertex(cache.indexB[0]);
+			const auto localPointB = m_proxyB->GetVertex(cache.GetIndexB(0));
 			const auto pointB = b2Mul(xfB, localPointB);
 
 			auto s = b2Dot(pointB - pointA, normal);
@@ -257,7 +257,7 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 
 	const auto tMax = input->tMax;
 
-	const auto totalRadius = proxyA->m_radius + proxyB->m_radius;
+	const auto totalRadius = proxyA->GetRadius() + proxyB->GetRadius();
 	const auto target = b2Max(b2_linearSlop, totalRadius - 3.0f * b2_linearSlop);
 	const auto tolerance = 0.25f * b2_linearSlop;
 	b2Assert(target > tolerance);

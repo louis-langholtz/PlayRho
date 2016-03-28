@@ -116,7 +116,7 @@ void b2CollidePolygons(b2Manifold* manifold,
 					  const b2PolygonShape* polyA, const b2Transform& xfA,
 					  const b2PolygonShape* polyB, const b2Transform& xfB)
 {
-	manifold->pointCount = 0;
+	manifold->ClearPoints();
 	const auto totalRadius = polyA->GetRadius() + polyB->GetRadius();
 
 	auto edgeA = int32{0};
@@ -143,7 +143,7 @@ void b2CollidePolygons(b2Manifold* manifold,
 		xf1 = xfB;
 		xf2 = xfA;
 		edge1 = edgeB;
-		manifold->type = b2Manifold::e_faceB;
+		manifold->SetType(b2Manifold::e_faceB);
 		flip = true;
 	}
 	else
@@ -153,7 +153,7 @@ void b2CollidePolygons(b2Manifold* manifold,
 		xf1 = xfA;
 		xf2 = xfB;
 		edge1 = edgeA;
-		manifold->type = b2Manifold::e_faceA;
+		manifold->SetType(b2Manifold::e_faceA);
 		flip = false;
 	}
 
@@ -193,42 +193,24 @@ void b2CollidePolygons(b2Manifold* manifold,
 
 	// Clip to box side 1
 	if (b2ClipSegmentToLine(clipPoints1, incidentEdge, -tangent, sideOffset1, iv1) < 2)
-	{
 		return;
-	}
 
 	// Clip to negative box side 1
 	if (b2ClipSegmentToLine(clipPoints2, clipPoints1,  tangent, sideOffset2, iv2) < 2)
-	{
 		return;
-	}
 
 	// Now clipPoints2 contains the clipped points.
-	manifold->localNormal = localNormal;
-	manifold->localPoint = planePoint;
+	manifold->SetLocalNormal(localNormal);
+	manifold->SetLocalPoint(planePoint);
 
-	auto pointCount = int32{0};
 	for (auto i = decltype(b2_maxManifoldPoints){0}; i < b2_maxManifoldPoints; ++i)
 	{
 		const auto separation = b2Dot(normal, clipPoints2[i].v) - frontOffset;
 
 		if (separation <= totalRadius)
 		{
-			auto cp = manifold->points + pointCount;
-			cp->localPoint = b2MulT(xf2, clipPoints2[i].v);
-			cp->id = clipPoints2[i].id;
-			if (flip)
-			{
-				// Swap features
-				const auto cf = cp->id.cf;
-				cp->id.cf.indexA = cf.indexB;
-				cp->id.cf.indexB = cf.indexA;
-				cp->id.cf.typeA = cf.typeB;
-				cp->id.cf.typeB = cf.typeA;
-			}
-			++pointCount;
+			const auto cf = flip? b2Flip(clipPoints2[i].id.cf): clipPoints2[i].id.cf;
+			manifold->AddPoint(b2MulT(xf2, clipPoints2[i].v), cf);
 		}
 	}
-
-	manifold->pointCount = pointCount;
 }

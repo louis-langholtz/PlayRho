@@ -110,7 +110,7 @@ void b2Contact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
 	auto fixtureA = contact->m_fixtureA;
 	auto fixtureB = contact->m_fixtureB;
 
-	if (contact->m_manifold.pointCount > 0 &&
+	if ((contact->m_manifold.GetPointCount() > 0) &&
 		!fixtureA->IsSensor() && !fixtureB->IsSensor())
 	{
 		fixtureA->GetBody()->SetAwake();
@@ -132,7 +132,7 @@ b2Contact::b2Contact(b2Fixture* fA, int32 indexA, b2Fixture* fB, int32 indexB) :
 	m_friction(b2MixFriction(m_fixtureA->m_friction, m_fixtureB->m_friction)),
 	m_restitution(b2MixRestitution(m_fixtureA->m_restitution, m_fixtureB->m_restitution))
 {
-	m_manifold.pointCount = 0;
+	m_manifold.ClearPoints();
 }
 
 // Update the contact manifold and touching status.
@@ -161,30 +161,30 @@ void b2Contact::Update(b2ContactListener* listener)
 		touching = b2TestOverlap(shapeA, m_indexA, shapeB, m_indexB, xfA, xfB);
 
 		// Sensors don't generate manifolds.
-		m_manifold.pointCount = 0;
+		m_manifold.ClearPoints();
 	}
 	else
 	{
 		Evaluate(&m_manifold, xfA, xfB);
-		touching = m_manifold.pointCount > 0;
+		touching = m_manifold.GetPointCount() > 0;
 
 		// Match old contact ids to new contact ids and copy the
 		// stored impulses to warm start the solver.
-		for (auto i = decltype(m_manifold.pointCount){0}; i < m_manifold.pointCount; ++i)
+		for (auto i = decltype(m_manifold.GetPointCount()){0}; i < m_manifold.GetPointCount(); ++i)
 		{
-			auto mp2 = m_manifold.points + i;
-			mp2->normalImpulse = 0.0f;
-			mp2->tangentImpulse = 0.0f;
-			const auto id2 = mp2->id;
+			auto& mp2 = m_manifold.GetPoint(i);
+			mp2.normalImpulse = 0.0f;
+			mp2.tangentImpulse = 0.0f;
+			const auto id2 = mp2.id;
 
-			for (auto j = decltype(oldManifold.pointCount){0}; j < oldManifold.pointCount; ++j)
+			for (auto j = decltype(oldManifold.GetPointCount()){0}; j < oldManifold.GetPointCount(); ++j)
 			{
-				const auto mp1 = oldManifold.points + j;
+				const auto& mp1 = oldManifold.GetPoint(j);
 
-				if (mp1->id.key == id2.key)
+				if (mp1.id.key == id2.key)
 				{
-					mp2->normalImpulse = mp1->normalImpulse;
-					mp2->tangentImpulse = mp1->tangentImpulse;
+					mp2.normalImpulse = mp1.normalImpulse;
+					mp2.tangentImpulse = mp1.tangentImpulse;
 					break;
 				}
 			}

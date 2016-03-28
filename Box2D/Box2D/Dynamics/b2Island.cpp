@@ -330,7 +330,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 
 	profile->solvePosition = timer.GetMilliseconds();
 
-	Report(contactSolver.m_velocityConstraints);
+	Report(contactSolver.GetVelocityConstraints());
 
 	if (allowSleep)
 	{
@@ -500,7 +500,7 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, int32 toiIndexA, int32 toiInd
 		body->SynchronizeTransform();
 	}
 
-	Report(contactSolver.m_velocityConstraints);
+	Report(contactSolver.GetVelocityConstraints());
 }
 
 void b2Island::Report(const b2ContactVelocityConstraint* constraints)
@@ -517,11 +517,10 @@ void b2Island::Report(const b2ContactVelocityConstraint* constraints)
 		const auto vc = constraints + i;
 		
 		b2ContactImpulse impulse;
-		impulse.count = vc->pointCount;
-		for (auto j = decltype(vc->pointCount){0}; j < vc->pointCount; ++j)
+		for (auto j = decltype(vc->GetPointCount()){0}; j < vc->GetPointCount(); ++j)
 		{
-			impulse.normalImpulses[j] = vc->points[j].normalImpulse;
-			impulse.tangentImpulses[j] = vc->points[j].tangentImpulse;
+			const auto point = vc->GetPoint(j);
+			impulse.AddEntry(point.normalImpulse, point.tangentImpulse);
 		}
 
 		m_listener->PostSolve(c, &impulse);

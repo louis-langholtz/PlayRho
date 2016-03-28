@@ -53,7 +53,7 @@ void b2DistanceProxy::Set(const b2Shape* shape, int32 index)
 	case b2Shape::e_chain:
 		{
 			const auto chain = static_cast<const b2ChainShape*>(shape);
-			b2Assert(0 <= index && index < chain->GetVertexCount());
+			b2Assert((0 <= index) && (index < chain->GetVertexCount()));
 
 			m_buffer[0] = chain->GetVertex(index);
 			if ((index + 1) < chain->GetVertexCount())
@@ -125,15 +125,15 @@ public:
 					const b2DistanceProxy& proxyA, const b2Transform& transformA,
 					const b2DistanceProxy& proxyB, const b2Transform& transformB)
 	{
-		b2Assert(cache.count <= maxVertices);
+		b2Assert(cache.GetCount() <= maxVertices);
 		
 		// Copy data from cache.
-		m_count = cache.count;
+		m_count = cache.GetCount();
 		for (auto i = decltype(m_count){0}; i < m_count; ++i)
 		{
 			auto& v = m_vertices[i];
-			v.indexA = cache.indexA[i];
-			v.indexB = cache.indexB[i];
+			v.indexA = cache.GetIndexA(i);
+			v.indexB = cache.GetIndexB(i);
 			v.wA = b2Mul(transformA, proxyA.GetVertex(v.indexA));
 			v.wB = b2Mul(transformB, proxyB.GetVertex(v.indexB));
 			v.w = v.wB - v.wA;
@@ -144,7 +144,7 @@ public:
 		// old metric then flush the simplex.
 		if (m_count > 1)
 		{
-			const auto metric1 = cache.metric;
+			const auto metric1 = cache.GetMetric();
 			const auto metric2 = GetMetric();
 			if ((metric2 < 0.5f * metric1) || (2.0f * metric1 < metric2) || (metric2 < b2_epsilon))
 			{
@@ -169,13 +169,11 @@ public:
 
 	void WriteCache(b2SimplexCache& cache) const
 	{
-		cache.metric = GetMetric();
-		cache.count = uint16(m_count);
-		const auto vertices = m_vertices;
+		cache.SetMetric(GetMetric());
+		cache.ClearIndices();
 		for (auto i = decltype(m_count){0}; i < m_count; ++i)
 		{
-			cache.indexA[i] = uint8(vertices[i].indexA);
-			cache.indexB[i] = uint8(vertices[i].indexB);
+			cache.AddIndex(uint8(m_vertices[i].indexA), uint8(m_vertices[i].indexB));
 		}
 	}
 
@@ -594,8 +592,8 @@ void b2Distance(b2DistanceOutput* output,
 	// Apply radii if requested.
 	if (input->useRadii)
 	{
-		const auto rA = proxyA.m_radius;
-		const auto rB = proxyB.m_radius;
+		const auto rA = proxyA.GetRadius();
+		const auto rB = proxyB.GetRadius();
 
 		if ((output->distance > (rA + rB)) && (output->distance > b2_epsilon))
 		{

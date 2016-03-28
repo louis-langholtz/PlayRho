@@ -38,17 +38,28 @@ const uint8 b2_nullFeature = UCHAR_MAX;
 /// This must be 4 bytes or less.
 struct b2ContactFeature
 {
-	enum Type
+	enum Type: uint8
 	{
 		e_vertex = 0,
 		e_face = 1
 	};
 
+	b2ContactFeature() = default;
+
+	constexpr b2ContactFeature(Type ta, uint8 ia, Type tb, uint8 ib):
+		typeA(ta), indexA(ia), typeB(tb), indexB(ib) {}
+
 	uint8 indexA;		///< Feature index on shapeA
 	uint8 indexB;		///< Feature index on shapeB
-	uint8 typeA;		///< The feature type on shapeA
-	uint8 typeB;		///< The feature type on shapeB
+	Type typeA;		///< The feature type on shapeA
+	Type typeB;		///< The feature type on shapeB
 };
+
+constexpr b2ContactFeature b2Flip(const b2ContactFeature& val)
+{
+	// Swap features
+	return b2ContactFeature(val.typeB, val.indexB, val.typeA, val.indexA);
+}
 
 /// Contact ids to facilitate warm starting.
 union b2ContactID
@@ -91,8 +102,9 @@ struct b2ManifoldPoint
 /// account for movement, which is critical for continuous physics.
 /// All contact scenarios must be expressed in one of these types.
 /// This structure is stored across time steps, so we keep it small.
-struct b2Manifold
+class b2Manifold
 {
+public:
 	enum Type
 	{
 		e_circles,
@@ -100,6 +112,52 @@ struct b2Manifold
 		e_faceB
 	};
 
+	Type GetType() const noexcept { return type; }
+	void SetType(Type val) noexcept { type = val; }
+
+	int32 GetPointCount() const noexcept { return pointCount; }
+
+	const b2ManifoldPoint& GetPoint(int32 index) const
+	{
+		b2Assert(index < pointCount);
+		return points[index];
+	}
+
+	b2ManifoldPoint& GetPoint(int32 index)
+	{
+		b2Assert(index < pointCount);
+		return points[index];
+	}
+
+	void ClearPoints() noexcept { pointCount = 0; }
+	
+	void AddPoint(const b2Vec2& lp, const b2ContactFeature& cf)
+	{
+		b2Assert(pointCount < b2_maxManifoldPoints);
+		points[pointCount].localPoint = lp;
+		points[pointCount].id.cf = cf;
+		points[pointCount].normalImpulse = 0.f;
+		points[pointCount].tangentImpulse = 0.f;
+		++pointCount;
+	}
+
+	void AddPoint(const b2Vec2& lp, const b2ContactID& id)
+	{
+		AddPoint(lp, id.cf);
+	}
+
+	void AddPoint(const b2Vec2& lp)
+	{
+		AddPoint(lp, b2ContactFeature(b2ContactFeature::e_vertex, 0, b2ContactFeature::e_vertex, 0));
+	}
+
+	b2Vec2 GetLocalNormal() const noexcept { return localNormal; }
+	void SetLocalNormal(const b2Vec2& val) noexcept { localNormal = val; }
+	
+	b2Vec2 GetLocalPoint() const noexcept { return localPoint; }
+	void SetLocalPoint(const b2Vec2& val) noexcept { localPoint = val; }
+
+private:
 	b2ManifoldPoint points[b2_maxManifoldPoints];	///< the points of contact
 	b2Vec2 localNormal;								///< not use for Type::e_points
 	b2Vec2 localPoint;								///< usage depends on manifold type
