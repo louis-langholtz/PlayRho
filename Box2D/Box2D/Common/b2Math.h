@@ -34,25 +34,7 @@ constexpr inline b2Vec3 b2Cross(const b2Vec3& a, const b2Vec3& b) noexcept;
 /// This function is used to ensure that a floating point number is not a NaN or infinity.
 inline bool b2IsValid(float32 x)
 {
-	int32 ix = *reinterpret_cast<int32*>(&x);
-	return (ix & 0x7f800000) != 0x7f800000;
-}
-
-/// This is a approximate yet fast inverse square-root.
-inline float32 b2InvSqrt(float32 x)
-{
-	union
-	{
-		float32 x;
-		int32 i;
-	} convert;
-
-	convert.x = x;
-	const auto xhalf = 0.5f * x;
-	convert.i = 0x5f3759df - (convert.i >> 1);
-	x = convert.x;
-	x = x * (1.5f - xhalf * x * x);
-	return x;
+	return !std::isnan(x) && !std::isinf(x);
 }
 
 #define	b2Sqrt(x)	std::sqrtf(x)
@@ -151,6 +133,9 @@ struct b2Vec2
 	float32 x, y;
 };
 
+/// Useful constant
+constexpr auto b2Vec2_zero = b2Vec2{0.0f, 0.0f};
+
 /// A 2D column vector with 3 elements.
 struct b2Vec3
 {
@@ -219,8 +204,8 @@ struct b2Mat22
 	/// Set this matrix to all zeros.
 	constexpr void SetZero() noexcept
 	{
-		ex.x = 0.0f; ey.x = 0.0f;
-		ex.y = 0.0f; ey.y = 0.0f;
+		ex = b2Vec2_zero;
+		ey = b2Vec2_zero;
 	}
 
 	constexpr b2Mat22 GetInverse() const noexcept
@@ -249,6 +234,8 @@ struct b2Mat22
 
 	b2Vec2 ex, ey;
 };
+
+constexpr auto b2Mat22_zero = b2Mat22{b2Vec2_zero, b2Vec2_zero};
 
 /// A 3-by-3 matrix. Stored in column-major order.
 struct b2Mat33
@@ -403,9 +390,6 @@ struct b2Sweep
 	/// c0 and a0 are the positions at alpha0.
 	float32 alpha0;
 };
-
-/// Useful constant
-constexpr b2Vec2 b2Vec2_zero{0.0f, 0.0f};
 
 /// Perform the dot product on two vectors.
 constexpr inline float32 b2Dot(const b2Vec2& a, const b2Vec2& b) noexcept
