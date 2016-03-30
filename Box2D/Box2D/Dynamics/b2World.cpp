@@ -1270,7 +1270,7 @@ void b2World::Dump()
 
 	b2Log("b2Body** bodies = (b2Body**)b2Alloc(%d * sizeof(b2Body*));\n", m_bodyCount);
 	b2Log("b2Joint** joints = (b2Joint**)b2Alloc(%d * sizeof(b2Joint*));\n", m_jointCount);
-	int32 i = 0;
+	auto i = int32{0};
 	for (auto b = m_bodyList; b; b = b->m_next)
 	{
 		b->m_islandIndex = i;
