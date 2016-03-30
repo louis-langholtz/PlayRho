@@ -32,9 +32,9 @@ b2MouseJoint::b2MouseJoint(const b2MouseJointDef* def)
 : b2Joint(def)
 {
 	b2Assert(def->target.IsValid());
-	b2Assert(b2IsValid(def->maxForce) && def->maxForce >= 0.0f);
-	b2Assert(b2IsValid(def->frequencyHz) && def->frequencyHz >= 0.0f);
-	b2Assert(b2IsValid(def->dampingRatio) && def->dampingRatio >= 0.0f);
+	b2Assert(b2IsValid(def->maxForce) && (def->maxForce >= 0.0f));
+	b2Assert(b2IsValid(def->frequencyHz) && (def->frequencyHz >= 0.0f));
+	b2Assert(b2IsValid(def->dampingRatio) && (def->dampingRatio >= 0.0f));
 
 	m_targetA = def->target;
 	m_localAnchorB = b2MulT(m_bodyB->GetTransform(), def->target);

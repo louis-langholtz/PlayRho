@@ -153,20 +153,20 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 
 void b2DistanceJoint::SolveVelocityConstraints(const b2SolverData& data)
 {
-	b2Vec2 vA = data.velocities[m_indexA].v;
-	float32 wA = data.velocities[m_indexA].w;
-	b2Vec2 vB = data.velocities[m_indexB].v;
-	float32 wB = data.velocities[m_indexB].w;
+	auto vA = data.velocities[m_indexA].v;
+	auto wA = data.velocities[m_indexA].w;
+	auto vB = data.velocities[m_indexB].v;
+	auto wB = data.velocities[m_indexB].w;
 
 	// Cdot = dot(u, v + cross(w, r))
-	b2Vec2 vpA = vA + b2Cross(wA, m_rA);
-	b2Vec2 vpB = vB + b2Cross(wB, m_rB);
-	float32 Cdot = b2Dot(m_u, vpB - vpA);
+	const auto vpA = vA + b2Cross(wA, m_rA);
+	const auto vpB = vB + b2Cross(wB, m_rB);
+	const auto Cdot = b2Dot(m_u, vpB - vpA);
 
-	float32 impulse = -m_mass * (Cdot + m_bias + m_gamma * m_impulse);
+	const auto impulse = -m_mass * (Cdot + m_bias + m_gamma * m_impulse);
 	m_impulse += impulse;
 
-	b2Vec2 P = impulse * m_u;
+	const auto P = impulse * m_u;
 	vA -= m_invMassA * P;
 	wA -= m_invIA * b2Cross(m_rA, P);
 	vB += m_invMassB * P;
@@ -186,23 +186,24 @@ bool b2DistanceJoint::SolvePositionConstraints(const b2SolverData& data)
 		return true;
 	}
 
-	b2Vec2 cA = data.positions[m_indexA].c;
-	float32 aA = data.positions[m_indexA].a;
-	b2Vec2 cB = data.positions[m_indexB].c;
-	float32 aB = data.positions[m_indexB].a;
+	auto cA = data.positions[m_indexA].c;
+	auto aA = data.positions[m_indexA].a;
+	auto cB = data.positions[m_indexB].c;
+	auto aB = data.positions[m_indexB].a;
 
-	b2Rot qA(aA), qB(aB);
+	const auto qA = b2Rot(aA);
+	const auto qB = b2Rot(aB);
 
-	b2Vec2 rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
-	b2Vec2 rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
-	b2Vec2 u = cB + rB - cA - rA;
+	const auto rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
+	const auto rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	auto u = cB + rB - cA - rA;
 
-	float32 length = u.Normalize();
-	float32 C = length - m_length;
+	const auto length = u.Normalize();
+	auto C = length - m_length;
 	C = b2Clamp(C, -b2_maxLinearCorrection, b2_maxLinearCorrection);
 
-	float32 impulse = -m_mass * C;
-	b2Vec2 P = impulse * u;
+	const auto impulse = -m_mass * C;
+	const auto P = impulse * u;
 
 	cA -= m_invMassA * P;
 	aA -= m_invIA * b2Cross(rA, P);

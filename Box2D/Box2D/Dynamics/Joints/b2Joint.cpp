@@ -36,7 +36,7 @@
 
 b2Joint* b2Joint::Create(const b2JointDef* def, b2BlockAllocator* allocator)
 {
-	b2Joint* joint = nullptr;
+	auto joint = static_cast<b2Joint*>(nullptr);
 
 	switch (def->type)
 	{

@@ -336,9 +336,9 @@ void b2PrismaticJoint::SolveVelocityConstraints(const b2SolverData& data)
 		m_impulse.x += df.x;
 		m_impulse.y += df.y;
 
-		b2Vec2 P = df.x * m_perp;
-		float32 LA = df.x * m_s1 + df.y;
-		float32 LB = df.x * m_s2 + df.y;
+		const auto P = df.x * m_perp;
+		const auto LA = df.x * m_s1 + df.y;
+		const auto LB = df.x * m_s2 + df.y;
 
 		vA -= mA * P;
 		wA -= iA * LA;
