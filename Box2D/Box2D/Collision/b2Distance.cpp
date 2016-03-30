@@ -57,13 +57,9 @@ void b2DistanceProxy::Set(const b2Shape* shape, int32 index)
 
 			m_buffer[0] = chain->GetVertex(index);
 			if ((index + 1) < chain->GetVertexCount())
-			{
 				m_buffer[1] = chain->GetVertex(index + 1);
-			}
 			else
-			{
 				m_buffer[1] = chain->GetVertex(0);
-			}
 
 			m_vertices = m_buffer;
 			m_count = 2;
