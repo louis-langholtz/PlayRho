@@ -27,6 +27,7 @@ class b2Contact;
 class b2Body;
 class b2StackAllocator;
 struct b2ContactPositionConstraint;
+struct b2ContactPositionConstraintBodyData;
 
 struct b2VelocityConstraintPoint
 {
@@ -37,6 +38,13 @@ struct b2VelocityConstraintPoint
 	float32 normalMass;
 	float32 tangentMass;
 	float32 velocityBias;
+};
+
+struct b2ContactVelocityConstraintBodyData
+{
+	int32 index;
+	float32 invMass;
+	float32 invI;
 };
 
 class b2ContactVelocityConstraint
@@ -71,55 +79,19 @@ public:
 		--pointCount;
 	}
 
-	float32 GetFriction() const noexcept { return friction; }
-	void SetFriction(float32 val) noexcept { friction = val; }
-
-	float32 GetRestitution() const noexcept { return restitution; }
-	void SetRestitution(float32 val) noexcept { restitution = val; }
-
-	float32 GetTangentSpeed() const noexcept { return tangentSpeed; }
-	void SetTangentSpeed(float32 val) noexcept { tangentSpeed = val; }
-
-	b2Vec2 GetNormal() const noexcept { return normal; }
-	void SetNormal(const b2Vec2& val) noexcept { normal = val; }
-
-	int32 GetIndexA() const noexcept { return indexA; }
-	float32 GetInvMassA() const noexcept { return invMassA; }
-	float32 GetInvIA() const noexcept { return invIA; }
-	void SetIndexA(int32 val) noexcept { indexA = val; }
-	void SetInvMassA(float32 val) noexcept { invMassA = val; }
-	void SetInvIA(float32 val) noexcept { invIA = val; }
-
-	int32 GetIndexB() const noexcept { return indexB; }
-	float32 GetInvMassB() const noexcept { return invMassB; }
-	float32 GetInvIB() const noexcept { return invIB; }
-	void SetIndexB(int32 val) noexcept { indexB = val; }
-	void SetInvMassB(float32 val) noexcept { invMassB = val; }
-	void SetInvIB(float32 val) noexcept { invIB = val; }
-
-	int32 GetContactIndex() const noexcept { return contactIndex; }
-	void SetContactIndex(int32 val) noexcept { contactIndex = val; }
-
-	const b2Mat22& GetNormalMass() const noexcept { return normalMass; }
-	void SetNormalMass(const b2Mat22& val) noexcept { normalMass = val; }
-
-	const b2Mat22& GetK() const noexcept { return K; }
-	void SetK(const b2Mat22& val) noexcept { K = val; }
-
-private:
-	b2VelocityConstraintPoint points[b2_maxManifoldPoints];
 	b2Vec2 normal;
 	b2Mat22 normalMass;
 	b2Mat22 K;
-	int32 indexA;
-	int32 indexB;
-	float32 invMassA, invMassB;
-	float32 invIA, invIB;
+	b2ContactVelocityConstraintBodyData bodyA;
+	b2ContactVelocityConstraintBodyData bodyB;
 	float32 friction;
 	float32 restitution;
 	float32 tangentSpeed;
-	int32 pointCount;
 	int32 contactIndex;
+
+private:
+	b2VelocityConstraintPoint points[b2_maxManifoldPoints];
+	int32 pointCount;
 };
 
 struct b2ContactSolverDef
@@ -156,6 +128,10 @@ public:
 	}
 
 private:
+	static void Assign(b2ContactVelocityConstraint& var, const b2Contact& val);
+	static void Assign(b2ContactPositionConstraintBodyData& var, const b2Body& val);
+	static void Assign(b2ContactVelocityConstraintBodyData& var, const b2Body& val);
+
 	const b2TimeStep m_step;
 	b2Position* const m_positions;
 	b2Velocity* const m_velocities;

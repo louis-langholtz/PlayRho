@@ -76,23 +76,24 @@ void Test::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 	b2Fixture* fixtureA = contact->GetFixtureA();
 	b2Fixture* fixtureB = contact->GetFixtureB();
 
-	b2PointState state1[b2_maxManifoldPoints], state2[b2_maxManifoldPoints];
+	std::array<b2PointState,b2_maxManifoldPoints> state1;
+	std::array<b2PointState,b2_maxManifoldPoints> state2;
 	b2GetPointStates(state1, state2, oldManifold, manifold);
 
 	b2WorldManifold worldManifold;
 	contact->GetWorldManifold(&worldManifold);
 
-	for (int32 i = 0; i < manifold->pointCount && m_pointCount < k_maxContactPoints; ++i)
+	for (int32 i = 0; (i < manifold->pointCount) && (m_pointCount < k_maxContactPoints); ++i)
 	{
 		ContactPoint* cp = m_points + m_pointCount;
 		cp->fixtureA = fixtureA;
 		cp->fixtureB = fixtureB;
-		cp->position = worldManifold.points[i];
-		cp->normal = worldManifold.normal;
+		cp->position = worldManifold.GetPointCount(i);
+		cp->normal = worldManifold.GetNormal();
 		cp->state = state2[i];
-		cp->normalImpulse = manifold->points[i].normalImpulse;
-		cp->tangentImpulse = manifold->points[i].tangentImpulse;
-		cp->separation = worldManifold.separations[i];
+		cp->normalImpulse = manifold->GetPoint(i).normalImpulse;
+		cp->tangentImpulse = manifold->GetPoint(i).tangentImpulse;
+		cp->separation = worldManifold.GetSeparation(i);
 		++m_pointCount;
 	}
 }

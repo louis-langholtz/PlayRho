@@ -20,7 +20,7 @@
 #define B2_COLLISION_H
 
 #include <Box2D/Common/b2Math.h>
-#include <limits.h>
+#include <climits>
 #include <array>
 
 /// @file
@@ -166,19 +166,40 @@ private:
 };
 
 /// This is used to compute the current state of a contact manifold.
-struct b2WorldManifold
+class b2WorldManifold
 {
+public:
+	using count_t = int32;
+
 	/// Evaluate the manifold with supplied transforms. This assumes
 	/// modest motion from the original state. This does not change the
 	/// point count, impulses, etc. The radii must come from the shapes
 	/// that generated the manifold.
-	void Initialize(const b2Manifold* manifold,
+	void Assign(const b2Manifold& manifold,
 					const b2Transform& xfA, float32 radiusA,
 					const b2Transform& xfB, float32 radiusB);
 
+	count_t GetPointCount() const noexcept { return pointCount; }
+
+	b2Vec2 GetNormal() const { return normal; }
+
+	b2Vec2 GetPoint(count_t index) const
+	{
+		b2Assert(index < b2_maxManifoldPoints);
+		return points[index];
+	}
+
+	float32 GetSeparation(count_t index) const
+	{
+		b2Assert(index < b2_maxManifoldPoints);
+		return separations[index];
+	}
+
+private:
 	b2Vec2 normal;								///< world vector pointing from A to B
 	b2Vec2 points[b2_maxManifoldPoints];		///< world contact point (point of intersection)
 	float32 separations[b2_maxManifoldPoints];	///< a negative value indicates overlap, in meters
+	count_t pointCount = 0;
 };
 
 /// This is used for determining the state of contact points.
@@ -192,8 +213,9 @@ enum b2PointState
 
 /// Compute the point states given two manifolds. The states pertain to the transition from manifold1
 /// to manifold2. So state1 is either persist or remove while state2 is either add or persist.
-void b2GetPointStates(b2PointState state1[b2_maxManifoldPoints], b2PointState state2[b2_maxManifoldPoints],
-					  const b2Manifold* manifold1, const b2Manifold* manifold2);
+void b2GetPointStates(std::array<b2PointState,b2_maxManifoldPoints>& state1,
+					  std::array<b2PointState,b2_maxManifoldPoints>& state2,
+					  const b2Manifold& manifold1, const b2Manifold& manifold2);
 
 /// Used for computing contact manifolds.
 struct b2ClipVertex

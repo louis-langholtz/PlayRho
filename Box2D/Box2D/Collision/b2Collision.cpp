@@ -19,60 +19,62 @@
 #include <Box2D/Collision/b2Collision.h>
 #include <Box2D/Collision/b2Distance.h>
 
-void b2WorldManifold::Initialize(const b2Manifold* manifold,
+void b2WorldManifold::Assign(const b2Manifold& manifold,
 						  const b2Transform& xfA, float32 radiusA,
 						  const b2Transform& xfB, float32 radiusB)
 {
-	if (manifold->GetPointCount() == 0)
+	if (manifold.GetPointCount() == 0)
 		return;
 
-	switch (manifold->GetType())
+	switch (manifold.GetType())
 	{
 	case b2Manifold::e_circles:
 		{
-			normal.Set(1.0f, 0.0f);
-			const auto pointA = b2Mul(xfA, manifold->GetLocalPoint());
-			const auto pointB = b2Mul(xfB, manifold->GetPoint(0).localPoint);
+			normal = b2Vec2(1.0f, 0.0f);
+			const auto pointA = b2Mul(xfA, manifold.GetLocalPoint());
+			const auto pointB = b2Mul(xfB, manifold.GetPoint(0).localPoint);
 			if (b2DistanceSquared(pointA, pointB) > (b2_epsilon * b2_epsilon))
-			{
 				normal = b2Normalize(pointB - pointA);
-			}
 
 			const auto cA = pointA + radiusA * normal;
 			const auto cB = pointB - radiusB * normal;
 			points[0] = 0.5f * (cA + cB);
 			separations[0] = b2Dot(cB - cA, normal);
+			pointCount = 1;
 		}
 		break;
 
 	case b2Manifold::e_faceA:
 		{
-			normal = b2Mul(xfA.q, manifold->GetLocalNormal());
-			const auto planePoint = b2Mul(xfA, manifold->GetLocalPoint());
-			
-			for (auto i = decltype(manifold->GetPointCount()){0}; i < manifold->GetPointCount(); ++i)
+			normal = b2Mul(xfA.q, manifold.GetLocalNormal());
+			const auto planePoint = b2Mul(xfA, manifold.GetLocalPoint());
+			pointCount = 0;
+			for (auto i = decltype(manifold.GetPointCount()){0}; i < manifold.GetPointCount(); ++i)
 			{
-				const auto clipPoint = b2Mul(xfB, manifold->GetPoint(i).localPoint);
+				const auto clipPoint = b2Mul(xfB, manifold.GetPoint(i).localPoint);
 				const auto cA = clipPoint + (radiusA - b2Dot(clipPoint - planePoint, normal)) * normal;
 				const auto cB = clipPoint - radiusB * normal;
 				points[i] = 0.5f * (cA + cB);
 				separations[i] = b2Dot(cB - cA, normal);
+				++pointCount;
 			}
 		}
 		break;
 
 	case b2Manifold::e_faceB:
 		{
-			normal = b2Mul(xfB.q, manifold->GetLocalNormal());
-			const auto planePoint = b2Mul(xfB, manifold->GetLocalPoint());
+			normal = b2Mul(xfB.q, manifold.GetLocalNormal());
+			const auto planePoint = b2Mul(xfB, manifold.GetLocalPoint());
 
-			for (auto i = decltype(manifold->GetPointCount()){0}; i < manifold->GetPointCount(); ++i)
+			pointCount = 0;
+			for (auto i = decltype(manifold.GetPointCount()){0}; i < manifold.GetPointCount(); ++i)
 			{
-				const auto clipPoint = b2Mul(xfA, manifold->GetPoint(i).localPoint);
+				const auto clipPoint = b2Mul(xfA, manifold.GetPoint(i).localPoint);
 				const auto cB = clipPoint + (radiusB - b2Dot(clipPoint - planePoint, normal)) * normal;
 				const auto cA = clipPoint - radiusA * normal;
 				points[i] = 0.5f * (cA + cB);
 				separations[i] = b2Dot(cA - cB, normal);
+				++pointCount;
 			}
 
 			// Ensure normal points from A to B.
@@ -82,8 +84,9 @@ void b2WorldManifold::Initialize(const b2Manifold* manifold,
 	}
 }
 
-void b2GetPointStates(b2PointState state1[b2_maxManifoldPoints], b2PointState state2[b2_maxManifoldPoints],
-					  const b2Manifold* manifold1, const b2Manifold* manifold2)
+void b2GetPointStates(std::array<b2PointState, b2_maxManifoldPoints>& state1,
+					  std::array<b2PointState, b2_maxManifoldPoints>& state2,
+					  const b2Manifold& manifold1, const b2Manifold& manifold2)
 {
 	for (auto i = decltype(b2_maxManifoldPoints){0}; i < b2_maxManifoldPoints; ++i)
 	{
@@ -92,15 +95,15 @@ void b2GetPointStates(b2PointState state1[b2_maxManifoldPoints], b2PointState st
 	}
 
 	// Detect persists and removes.
-	for (auto i = decltype(manifold1->GetPointCount()){0}; i < manifold1->GetPointCount(); ++i)
+	for (auto i = decltype(manifold1.GetPointCount()){0}; i < manifold1.GetPointCount(); ++i)
 	{
-		const auto id = manifold1->GetPoint(i).id;
+		const auto id = manifold1.GetPoint(i).id;
 
 		state1[i] = b2_removeState;
 
-		for (auto j = decltype(manifold2->GetPointCount()){0}; j < manifold2->GetPointCount(); ++j)
+		for (auto j = decltype(manifold2.GetPointCount()){0}; j < manifold2.GetPointCount(); ++j)
 		{
-			if (manifold2->GetPoint(j).id.key == id.key)
+			if (manifold2.GetPoint(j).id.key == id.key)
 			{
 				state1[i] = b2_persistState;
 				break;
@@ -109,15 +112,15 @@ void b2GetPointStates(b2PointState state1[b2_maxManifoldPoints], b2PointState st
 	}
 
 	// Detect persists and adds.
-	for (auto i = decltype(manifold2->GetPointCount()){0}; i < manifold2->GetPointCount(); ++i)
+	for (auto i = decltype(manifold2.GetPointCount()){0}; i < manifold2.GetPointCount(); ++i)
 	{
-		const auto id = manifold2->GetPoint(i).id;
+		const auto id = manifold2.GetPoint(i).id;
 
 		state2[i] = b2_addState;
 
-		for (auto j = decltype(manifold1->GetPointCount()){0}; j < manifold1->GetPointCount(); ++j)
+		for (auto j = decltype(manifold1.GetPointCount()){0}; j < manifold1.GetPointCount(); ++j)
 		{
-			if (manifold1->GetPoint(j).id.key == id.key)
+			if (manifold1.GetPoint(j).id.key == id.key)
 			{
 				state2[i] = b2_persistState;
 				break;
@@ -144,9 +147,7 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 		{
 			// Parallel.
 			if ((p(i) < lowerBound(i)) || (upperBound(i) < p(i)))
-			{
 				return false;
-			}
 		}
 		else
 		{
@@ -175,18 +176,14 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 			tmax = b2Min(tmax, t2);
 
 			if (tmin > tmax)
-			{
 				return false;
-			}
 		}
 	}
 
 	// Does the ray start inside the box?
 	// Does the ray intersect beyond the max fraction?
 	if ((tmin < 0.0f) || (input.maxFraction < tmin))
-	{
 		return false;
-	}
 
 	// Intersection.
 	output->fraction = tmin;

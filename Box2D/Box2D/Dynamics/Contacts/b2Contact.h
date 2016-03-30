@@ -233,7 +233,7 @@ inline void b2Contact::GetWorldManifold(b2WorldManifold* worldManifold) const
 	const auto shapeA = m_fixtureA->GetShape();
 	const auto shapeB = m_fixtureB->GetShape();
 
-	worldManifold->Initialize(&m_manifold, bodyA->GetTransform(), shapeA->GetRadius(), bodyB->GetTransform(), shapeB->GetRadius());
+	worldManifold->Assign(m_manifold, bodyA->GetTransform(), shapeA->GetRadius(), bodyB->GetTransform(), shapeB->GetRadius());
 }
 
 inline void b2Contact::SetEnabled(bool flag) noexcept
