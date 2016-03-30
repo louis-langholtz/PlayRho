@@ -260,7 +260,7 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 	const auto totalRadius = proxyA->GetRadius() + proxyB->GetRadius();
 	const auto target = b2Max(b2_linearSlop, totalRadius - 3.0f * b2_linearSlop);
 	const auto tolerance = 0.25f * b2_linearSlop;
-	b2Assert(target > tolerance);
+	b2Assert(target >= tolerance);
 
 	auto t1 = 0.0f;
 	const auto k_maxIterations = int32{20};	// TODO_ERIN b2Settings
@@ -297,7 +297,7 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 			break;
 		}
 
-		if (distanceOutput.distance < target + tolerance)
+		if (distanceOutput.distance < (target + tolerance))
 		{
 			// Victory!
 			output->state = b2TOIOutput::e_touching;
@@ -345,7 +345,7 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 			auto s2 = fcn.FindMinSeparation(&indexA, &indexB, t2);
 
 			// Is the final configuration separated?
-			if (s2 > target + tolerance)
+			if (s2 > (target + tolerance))
 			{
 				// Victory!
 				output->state = b2TOIOutput::e_separated;
@@ -355,7 +355,7 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 			}
 
 			// Has the separation reached tolerance?
-			if (s2 > target - tolerance)
+			if (s2 > (target - tolerance))
 			{
 				// Advance the sweeps
 				t1 = t2;
@@ -363,11 +363,11 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 			}
 
 			// Compute the initial separation of the witness points.
-			float32 s1 = fcn.Evaluate(indexA, indexB, t1);
+			auto s1 = fcn.Evaluate(indexA, indexB, t1);
 
 			// Check for initial overlap. This might happen if the root finder
 			// runs out of iterations.
-			if (s1 < target - tolerance)
+			if (s1 < (target - tolerance))
 			{
 				output->state = b2TOIOutput::e_failed;
 				output->t = t1;
@@ -376,7 +376,7 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 			}
 
 			// Check for touching
-			if (s1 <= target + tolerance)
+			if (s1 <= (target + tolerance))
 			{
 				// Victory! t1 should hold the TOI (could be 0.0).
 				output->state = b2TOIOutput::e_touching;
@@ -386,27 +386,22 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 			}
 
 			// Compute 1D root of: f(x) - target = 0
-			int32 rootIterCount = 0;
-			float32 a1 = t1, a2 = t2;
+			auto rootIterCount = int32{0};
+			auto a1 = t1;
+			auto a2 = t2;
 			for (;;)
 			{
 				// Use a mix of the secant rule and bisection.
-				float32 t;
-				if (rootIterCount & 1)
-				{
+				const auto t = (rootIterCount & 1)?
 					// Secant rule to improve convergence.
-					t = a1 + (target - s1) * (a2 - a1) / (s2 - s1);
-				}
-				else
-				{
+					a1 + (target - s1) * (a2 - a1) / (s2 - s1):
 					// Bisection to guarantee progress.
-					t = 0.5f * (a1 + a2);
-				}
+					0.5f * (a1 + a2);
 
 				++rootIterCount;
 				++b2_toiRootIters;
 
-				float32 s = fcn.Evaluate(indexA, indexB, t);
+				const auto s = fcn.Evaluate(indexA, indexB, t);
 
 				if (b2Abs(s - target) < tolerance)
 				{
@@ -428,9 +423,7 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 				}
 				
 				if (rootIterCount == 50)
-				{
 					break;
-				}
 			}
 
 			b2_toiMaxRootIters = b2Max(b2_toiMaxRootIters, rootIterCount);
@@ -438,18 +431,14 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 			++pushBackIter;
 
 			if (pushBackIter == b2_maxPolygonVertices)
-			{
 				break;
-			}
 		}
 
 		++iter;
 		++b2_toiIters;
 
 		if (done)
-		{
 			break;
-		}
 
 		if (iter == k_maxIterations)
 		{
