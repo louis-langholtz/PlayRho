@@ -302,7 +302,7 @@ bool b2WeldJoint::SolvePositionConstraints(const b2SolverData& data)
 	data.positions[m_indexB].c = cB;
 	data.positions[m_indexB].a = aB;
 
-	return positionError <= b2_linearSlop && angularError <= b2_angularSlop;
+	return (positionError <= b2_linearSlop) && (angularError <= b2_angularSlop);
 }
 
 b2Vec2 b2WeldJoint::GetAnchorA() const

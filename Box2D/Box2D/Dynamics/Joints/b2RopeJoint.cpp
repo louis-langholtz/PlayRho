@@ -190,7 +190,7 @@ bool b2RopeJoint::SolvePositionConstraints(const b2SolverData& data)
 	data.positions[m_indexB].c = cB;
 	data.positions[m_indexB].a = aB;
 
-	return length - m_maxLength < b2_linearSlop;
+	return (length - m_maxLength) < b2_linearSlop;
 }
 
 b2Vec2 b2RopeJoint::GetAnchorA() const
