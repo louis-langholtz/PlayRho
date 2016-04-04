@@ -48,15 +48,15 @@ struct b2TimeStep
 /// This is an internal structure.
 struct b2Position
 {
-	b2Vec2 c;
-	float32 a;
+	b2Vec2 c; // linear position
+	float32 a; // angular position
 };
 
 /// This is an internal structure.
 struct b2Velocity
 {
-	b2Vec2 v;
-	float32 w;
+	b2Vec2 v; // linear velocity
+	float32 w; // angular velocity
 };
 
 /// Solver Data

@@ -42,7 +42,7 @@ struct b2VelocityConstraintPoint
 
 struct b2ContactVelocityConstraintBodyData
 {
-	int32 index;
+	int32 index; // index of body within island
 	float32 invMass;
 	float32 invI;
 };
