@@ -76,12 +76,10 @@ struct b2Block
 	b2Block* next;
 };
 
-b2BlockAllocator::b2BlockAllocator()
+b2BlockAllocator::b2BlockAllocator():
+	m_chunks(static_cast<b2Chunk*>(b2Alloc(m_chunkSpace * sizeof(b2Chunk))))
 {
 	b2Assert(b2_blockSizes < UCHAR_MAX);
-
-	m_chunks = static_cast<b2Chunk*>(b2Alloc(m_chunkSpace * sizeof(b2Chunk)));
-	
 	memset(m_chunks, 0, m_chunkSpace * sizeof(b2Chunk));
 	memset(m_freeLists, 0, sizeof(m_freeLists));
 }
@@ -109,7 +107,7 @@ void* b2BlockAllocator::Allocate(int32 size)
 	}
 
 	const auto index = s_blockSizeLookup[size];
-	b2Assert(0 <= index && index < b2_blockSizes);
+	b2Assert((0 <= index) && (index < b2_blockSizes));
 
 	if (m_freeLists[index])
 	{
@@ -132,9 +130,10 @@ void* b2BlockAllocator::Allocate(int32 size)
 		memset(chunk->blocks, 0xcd, b2_chunkSize);
 #endif
 		const auto blockSize = s_blockSizes[index];
+		b2Assert(blockSize > 0);
 		chunk->blockSize = blockSize;
 		const auto blockCount = b2_chunkSize / blockSize;
-		b2Assert(blockCount * blockSize <= b2_chunkSize);
+		b2Assert((blockCount * blockSize) <= b2_chunkSize);
 		for (auto i = decltype(blockCount){0}; i < blockCount - 1; ++i)
 		{
 			auto block = (b2Block*)((int8*)chunk->blocks + blockSize * i);
@@ -167,7 +166,7 @@ void b2BlockAllocator::Free(void* p, int32 size)
 	}
 
 	const auto index = s_blockSizeLookup[size];
-	b2Assert(0 <= index && index < b2_blockSizes);
+	b2Assert((0 <= index) && (index < b2_blockSizes));
 
 #define _DEBUG
 #ifdef _DEBUG
@@ -210,6 +209,5 @@ void b2BlockAllocator::Clear()
 
 	m_chunkCount = 0;
 	memset(m_chunks, 0, m_chunkSpace * sizeof(b2Chunk));
-
 	memset(m_freeLists, 0, sizeof(m_freeLists));
 }

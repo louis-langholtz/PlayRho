@@ -21,10 +21,10 @@
 
 #include <Box2D/Common/b2Settings.h>
 
-constexpr int32 b2_chunkSize = 16 * 1024;
-constexpr int32 b2_maxBlockSize = 640;
-constexpr int32 b2_blockSizes = 14;
-constexpr int32 b2_chunkArrayIncrement = 128;
+constexpr auto b2_chunkSize = int32{16 * 1024};
+constexpr auto b2_maxBlockSize = int32{640};
+constexpr auto b2_blockSizes = int32{14};
+constexpr auto b2_chunkArrayIncrement = int32{128};
 
 struct b2Block;
 struct b2Chunk;
@@ -47,11 +47,9 @@ public:
 	void Clear();
 
 private:
-
-	b2Chunk* m_chunks;
 	int32 m_chunkCount = 0;
 	int32 m_chunkSpace = b2_chunkArrayIncrement;
-
+	b2Chunk* m_chunks;
 	b2Block* m_freeLists[b2_blockSizes];
 };
 
