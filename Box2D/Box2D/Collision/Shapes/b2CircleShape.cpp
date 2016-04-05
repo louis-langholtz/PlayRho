@@ -66,7 +66,7 @@ bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input
 	auto a = -(c + b2Sqrt(sigma));
 
 	// Is the intersection point on the segment?
-	if (0.0f <= a && a <= input.maxFraction * rr)
+	if ((0.0f <= a) && (a <= (input.maxFraction * rr)))
 	{
 		a /= rr;
 		output->fraction = a;
