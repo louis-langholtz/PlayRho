@@ -220,9 +220,9 @@ void b2BroadPhase::UpdatePairs(T* callback)
 	auto i = decltype(m_pairCount){0};
 	while (i < m_pairCount)
 	{
-		const auto primaryPair = m_pairBuffer + i;
-		void* userDataA = m_tree.GetUserData(primaryPair->proxyIdA);
-		void* userDataB = m_tree.GetUserData(primaryPair->proxyIdB);
+		const auto& primaryPair = m_pairBuffer[i];
+		void* userDataA = m_tree.GetUserData(primaryPair.proxyIdA);
+		void* userDataB = m_tree.GetUserData(primaryPair.proxyIdB);
 
 		callback->AddPair(userDataA, userDataB);
 		++i;
@@ -230,8 +230,8 @@ void b2BroadPhase::UpdatePairs(T* callback)
 		// Skip any duplicate pairs.
 		while (i < m_pairCount)
 		{
-			const auto pair = m_pairBuffer + i;
-			if ((pair->proxyIdA != primaryPair->proxyIdA) || (pair->proxyIdB != primaryPair->proxyIdB))
+			const auto& pair = m_pairBuffer[i];
+			if ((pair.proxyIdA != primaryPair.proxyIdA) || (pair.proxyIdB != primaryPair.proxyIdB))
 			{
 				break;
 			}
