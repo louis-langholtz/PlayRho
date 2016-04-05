@@ -326,7 +326,7 @@
 		472134A81C8E4E12009536F9 /* b2ConstFixtureIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = b2ConstFixtureIterator.hpp; sourceTree = "<group>"; };
 		472134AD1C8E4F38009536F9 /* b2ConstFixtureList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2ConstFixtureList.cpp; sourceTree = "<group>"; };
 		472134AE1C8E4F38009536F9 /* b2ConstFixtureList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = b2ConstFixtureList.hpp; sourceTree = "<group>"; };
-		47AA5DFD1C4C5FBE008AF2BA /* libBox2D copy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libBox2D copy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		47AA5DFD1C4C5FBE008AF2BA /* libBox2D iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libBox2D iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		80154ACD141DED6B00C8251F /* Tumbler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tumbler.h; sourceTree = "<group>"; };
 		805900AA184EEE0F00C8ECA3 /* DebugDraw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DebugDraw.cpp; sourceTree = "<group>"; };
 		805900AB184EEE0F00C8ECA3 /* DebugDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugDraw.h; sourceTree = "<group>"; };
@@ -878,7 +878,7 @@
 				80BB890A141C3E2700F1753A /* HelloWorld */,
 				80BB8918141C3E3600F1753A /* Testbed */,
 				805900B8184EEF2E00C8ECA3 /* libGLFW.a */,
-				47AA5DFD1C4C5FBE008AF2BA /* libBox2D copy.a */,
+				47AA5DFD1C4C5FBE008AF2BA /* libBox2D iOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1040,7 +1040,7 @@
 			);
 			name = "Box2D iOS";
 			productName = Box2D;
-			productReference = 47AA5DFD1C4C5FBE008AF2BA /* libBox2D copy.a */;
+			productReference = 47AA5DFD1C4C5FBE008AF2BA /* libBox2D iOS.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		805900B7184EEF2E00C8ECA3 /* GLFW */ = {
@@ -1336,6 +1336,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_STATIC_ANALYZER_MODE = deep;
+				CLANG_WARN_NULLABLE_TO_NONNULL_CONVERSION = YES;
+				CLANG_WARN__EXIT_TIME_DESTRUCTORS = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
@@ -1346,6 +1348,7 @@
 				MACOSX_DEPLOYMENT_TARGET = "";
 				PRODUCT_NAME = "Box2D iOS";
 				SDKROOT = iphoneos;
+				STRIP_INSTALLED_PRODUCT = NO;
 			};
 			name = Debug;
 		};
@@ -1353,6 +1356,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_STATIC_ANALYZER_MODE = deep;
+				CLANG_WARN_NULLABLE_TO_NONNULL_CONVERSION = YES;
+				CLANG_WARN__EXIT_TIME_DESTRUCTORS = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
