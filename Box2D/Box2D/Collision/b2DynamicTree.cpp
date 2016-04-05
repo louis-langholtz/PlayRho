@@ -698,7 +698,8 @@ void b2DynamicTree::RebuildBottomUp()
 	while (count > 1)
 	{
 		auto minCost = b2_maxFloat;
-		auto iMin = decltype(count){-1}, jMin = decltype(count){-1};
+		auto iMin = decltype(count){-1};
+		auto jMin = decltype(count){-1};
 		for (auto i = decltype(count){0}; i < count; ++i)
 		{
 			auto aabbi = m_nodes[nodes[i]].aabb;
@@ -709,7 +710,7 @@ void b2DynamicTree::RebuildBottomUp()
 				b2AABB b;
 				b.Combine(aabbi, aabbj);
 				const auto cost = b.GetPerimeter();
-				if (cost < minCost)
+				if (minCost > cost)
 				{
 					iMin = i;
 					jMin = j;
