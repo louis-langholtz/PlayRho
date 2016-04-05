@@ -239,13 +239,9 @@ inline void b2Contact::GetWorldManifold(b2WorldManifold* worldManifold) const
 inline void b2Contact::SetEnabled(bool flag) noexcept
 {
 	if (flag)
-	{
-		m_flags |= b2Contact::e_enabledFlag;
-	}
+		SetEnabled();
 	else
-	{
-		m_flags &= ~b2Contact::e_enabledFlag;
-	}
+		UnsetEnabled();
 }
 
 inline void b2Contact::SetEnabled() noexcept
@@ -335,7 +331,7 @@ inline float32 b2Contact::GetFriction() const noexcept
 
 inline void b2Contact::ResetFriction()
 {
-	m_friction = b2MixFriction(m_fixtureA->m_friction, m_fixtureB->m_friction);
+	m_friction = b2MixFriction(m_fixtureA->GetFriction(), m_fixtureB->GetFriction());
 }
 
 inline void b2Contact::SetRestitution(float32 restitution) noexcept
@@ -350,7 +346,7 @@ inline float32 b2Contact::GetRestitution() const noexcept
 
 inline void b2Contact::ResetRestitution() noexcept
 {
-	m_restitution = b2MixRestitution(m_fixtureA->m_restitution, m_fixtureB->m_restitution);
+	m_restitution = b2MixRestitution(m_fixtureA->GetRestitution(), m_fixtureB->GetRestitution());
 }
 
 inline void b2Contact::SetTangentSpeed(float32 speed) noexcept
