@@ -44,7 +44,7 @@ void b2Rope::Initialize(const b2RopeDef* def)
 		m_p0s[i] = def->vertices[i];
 		m_vs[i].SetZero();
 
-		float32 m = def->masses[i];
+		const auto m = def->masses[i];
 		if (m > 0.0f)
 		{
 			m_ims[i] = 1.0f / m;
@@ -69,15 +69,15 @@ void b2Rope::Initialize(const b2RopeDef* def)
 
 	for (auto i = decltype(count3){0}; i < count3; ++i)
 	{
-		b2Vec2 p1 = m_ps[i];
-		b2Vec2 p2 = m_ps[i + 1];
-		b2Vec2 p3 = m_ps[i + 2];
+		const auto p1 = m_ps[i];
+		const auto p2 = m_ps[i + 1];
+		const auto p3 = m_ps[i + 2];
 
-		b2Vec2 d1 = p2 - p1;
-		b2Vec2 d2 = p3 - p2;
+		const auto d1 = p2 - p1;
+		const auto d2 = p3 - p2;
 
-		float32 a = b2Cross(d1, d2);
-		float32 b = b2Dot(d1, d2);
+		const auto a = b2Cross(d1, d2);
+		const auto b = b2Dot(d1, d2);
 
 		m_as[i] = b2Atan2(a, b);
 	}
@@ -95,7 +95,7 @@ void b2Rope::Step(float32 h, int32 iterations)
 		return;
 	}
 
-	float32 d = expf(- h * m_damping);
+	const auto d = expf(- h * m_damping);
 
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
@@ -116,7 +116,7 @@ void b2Rope::Step(float32 h, int32 iterations)
 		SolveC2();
 	}
 
-	float32 inv_h = 1.0f / h;
+	const auto inv_h = 1.0f / h;
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		m_vs[i] = inv_h * (m_ps[i] - m_p0s[i]);
@@ -125,26 +125,26 @@ void b2Rope::Step(float32 h, int32 iterations)
 
 void b2Rope::SolveC2()
 {
-	int32 count2 = m_count - 1;
+	const auto count2 = m_count - 1;
 
 	for (auto i = decltype(count2){0}; i < count2; ++i)
 	{
-		b2Vec2 p1 = m_ps[i];
-		b2Vec2 p2 = m_ps[i + 1];
+		auto p1 = m_ps[i];
+		auto p2 = m_ps[i + 1];
 
-		b2Vec2 d = p2 - p1;
-		float32 L = d.Normalize();
+		auto d = p2 - p1;
+		const auto L = d.Normalize();
 
-		float32 im1 = m_ims[i];
-		float32 im2 = m_ims[i + 1];
+		const auto im1 = m_ims[i];
+		const auto im2 = m_ims[i + 1];
 
 		if (im1 + im2 == 0.0f)
 		{
 			continue;
 		}
 
-		float32 s1 = im1 / (im1 + im2);
-		float32 s2 = im2 / (im1 + im2);
+		const auto s1 = im1 / (im1 + im2);
+		const auto s2 = im2 / (im1 + im2);
 
 		p1 -= m_k2 * s1 * (m_Ls[i] - L) * d;
 		p2 += m_k2 * s2 * (m_Ls[i] - L) * d;
@@ -156,7 +156,7 @@ void b2Rope::SolveC2()
 
 void b2Rope::SetAngle(float32 angle)
 {
-	int32 count3 = m_count - 2;
+	const auto count3 = m_count - 2;
 	for (auto i = decltype(count3){0}; i < count3; ++i)
 	{
 		m_as[i] = angle;
@@ -165,42 +165,42 @@ void b2Rope::SetAngle(float32 angle)
 
 void b2Rope::SolveC3()
 {
-	int32 count3 = m_count - 2;
+	const auto count3 = m_count - 2;
 
 	for (auto i = decltype(count3){0}; i < count3; ++i)
 	{
-		b2Vec2 p1 = m_ps[i];
-		b2Vec2 p2 = m_ps[i + 1];
-		b2Vec2 p3 = m_ps[i + 2];
+		auto p1 = m_ps[i];
+		auto p2 = m_ps[i + 1];
+		auto p3 = m_ps[i + 2];
 
-		float32 m1 = m_ims[i];
-		float32 m2 = m_ims[i + 1];
-		float32 m3 = m_ims[i + 2];
+		const auto m1 = m_ims[i];
+		const auto m2 = m_ims[i + 1];
+		const auto m3 = m_ims[i + 2];
 
-		b2Vec2 d1 = p2 - p1;
-		b2Vec2 d2 = p3 - p2;
+		const auto d1 = p2 - p1;
+		const auto d2 = p3 - p2;
 
-		float32 L1sqr = d1.LengthSquared();
-		float32 L2sqr = d2.LengthSquared();
+		const auto L1sqr = d1.LengthSquared();
+		const auto L2sqr = d2.LengthSquared();
 
 		if (L1sqr * L2sqr == 0.0f)
 		{
 			continue;
 		}
 
-		float32 a = b2Cross(d1, d2);
-		float32 b = b2Dot(d1, d2);
+		const auto a = b2Cross(d1, d2);
+		const auto b = b2Dot(d1, d2);
 
-		float32 angle = b2Atan2(a, b);
+		auto angle = b2Atan2(a, b);
 
-		b2Vec2 Jd1 = (-1.0f / L1sqr) * d1.Skew();
-		b2Vec2 Jd2 = (1.0f / L2sqr) * d2.Skew();
+		const auto Jd1 = (-1.0f / L1sqr) * d1.Skew();
+		const auto Jd2 = (1.0f / L2sqr) * d2.Skew();
 
-		b2Vec2 J1 = -Jd1;
-		b2Vec2 J2 = Jd1 - Jd2;
-		b2Vec2 J3 = Jd2;
+		const auto J1 = -Jd1;
+		const auto J2 = Jd1 - Jd2;
+		const auto J3 = Jd2;
 
-		float32 mass = m1 * b2Dot(J1, J1) + m2 * b2Dot(J2, J2) + m3 * b2Dot(J3, J3);
+		auto mass = m1 * b2Dot(J1, J1) + m2 * b2Dot(J2, J2) + m3 * b2Dot(J3, J3);
 		if (mass == 0.0f)
 		{
 			continue;
@@ -208,7 +208,7 @@ void b2Rope::SolveC3()
 
 		mass = 1.0f / mass;
 
-		float32 C = angle - m_as[i];
+		auto C = angle - m_as[i];
 
 		while (C > b2_pi)
 		{
@@ -222,7 +222,7 @@ void b2Rope::SolveC3()
 			C = angle - m_as[i];
 		}
 
-		float32 impulse = - m_k3 * mass * C;
+		const auto impulse = - m_k3 * mass * C;
 
 		p1 += (m1 * impulse) * J1;
 		p2 += (m2 * impulse) * J2;
@@ -236,7 +236,7 @@ void b2Rope::SolveC3()
 
 void b2Rope::Draw(b2Draw* draw) const
 {
-	b2Color c(0.4f, 0.5f, 0.7f);
+	const auto c = b2Color(0.4f, 0.5f, 0.7f);
 
 	for (auto i = decltype(m_count - 1){0}; i < m_count - 1; ++i)
 	{
