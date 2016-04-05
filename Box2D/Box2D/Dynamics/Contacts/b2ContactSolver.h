@@ -97,10 +97,10 @@ private:
 struct b2ContactSolverDef
 {
 	b2TimeStep step;
-	b2Contact** contacts;
-	int32 count;
-	b2Position* positions;
-	b2Velocity* velocities;
+	b2Contact** contacts; // pointers to contacts
+	int32 count; // count of contacts
+	b2Position* positions; // positions for every body referenced by a contact
+	b2Velocity* velocities; // velocities for every body referenced by a contact
 	b2StackAllocator* allocator;
 };
 
