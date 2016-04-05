@@ -115,7 +115,7 @@ static b2Vec2 ComputeCentroid(const b2Vec2 vs[], int32 count)
 
 void b2PolygonShape::Set(const b2Vec2 vertices[], int32 count)
 {
-	b2Assert(3 <= count && count <= b2_maxPolygonVertices);
+	b2Assert((3 <= count) && (count <= b2_maxPolygonVertices));
 	if (count < 3)
 	{
 		SetAsBox(1.0f, 1.0f);
@@ -198,7 +198,7 @@ void b2PolygonShape::Set(const b2Vec2 vertices[], int32 count)
 			}
 
 			// Collinearity check
-			if (c == 0.0f && v.LengthSquared() > r.LengthSquared())
+			if ((c == 0.0f) && (v.LengthSquared() > r.LengthSquared()))
 			{
 				ie = j;
 			}
@@ -233,9 +233,9 @@ void b2PolygonShape::Set(const b2Vec2 vertices[], int32 count)
 	for (auto i = decltype(m){0}; i < m; ++i)
 	{
 		const auto i1 = i;
-		const auto i2 = i + 1 < m ? i + 1 : 0;
+		const auto i2 = ((i + 1) < m) ? i + 1 : 0;
 		const auto edge = m_vertices[i2] - m_vertices[i1];
-		b2Assert(edge.LengthSquared() > b2_epsilon * b2_epsilon);
+		b2Assert(edge.LengthSquared() > (b2_epsilon * b2_epsilon));
 		m_normals[i] = b2Normalize(b2Cross(edge, 1.0f));
 	}
 
@@ -265,14 +265,12 @@ bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& inpu
 	B2_NOT_USED(childIndex);
 
 	// Put the ray into the polygon's frame of reference.
-	b2Vec2 p1 = b2MulT(xf.q, input.p1 - xf.p);
-	b2Vec2 p2 = b2MulT(xf.q, input.p2 - xf.p);
-	b2Vec2 d = p2 - p1;
+	const auto p1 = b2MulT(xf.q, input.p1 - xf.p);
+	const auto p2 = b2MulT(xf.q, input.p2 - xf.p);
+	const auto d = p2 - p1;
 
-	float32 lower = 0.0f, upper = input.maxFraction;
-
-	int32 index = -1;
-
+	auto lower = 0.0f, upper = input.maxFraction;
+	auto index = -1;
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		// p = p1 + a * d
@@ -319,7 +317,7 @@ bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& inpu
 		}
 	}
 
-	b2Assert(0.0f <= lower && lower <= input.maxFraction);
+	b2Assert((0.0f <= lower) && (lower <= input.maxFraction));
 
 	if (index >= 0)
 	{
@@ -334,6 +332,8 @@ bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& inpu
 void b2PolygonShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, int32 childIndex) const
 {
 	B2_NOT_USED(childIndex);
+	
+	b2Assert(m_count > 0);
 
 	auto lower = b2Mul(xf, m_vertices[0]);
 	auto upper = lower;
@@ -378,13 +378,13 @@ void b2PolygonShape::ComputeMass(b2MassData* massData, float32 density) const
 
 	b2Assert(m_count >= 3);
 
-	b2Vec2 center; center.Set(0.0f, 0.0f);
-	float32 area = 0.0f;
-	float32 I = 0.0f;
+	auto center = b2Vec2_zero;
+	auto area = 0.0f;
+	auto I = 0.0f;
 
 	// s is the reference point for forming triangles.
 	// It's location doesn't change the result (except for rounding error).
-	b2Vec2 s(0.0f, 0.0f);
+	auto s = b2Vec2_zero;
 
 	// This code would put the reference point inside the polygon.
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
@@ -393,13 +393,13 @@ void b2PolygonShape::ComputeMass(b2MassData* massData, float32 density) const
 	}
 	s *= 1.0f / m_count;
 
-	const float32 k_inv3 = 1.0f / 3.0f;
+	constexpr auto k_inv3 = 1.0f / 3.0f;
 
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		// Triangle vertices.
 		const auto e1 = m_vertices[i] - s;
-		const auto e2 = i + 1 < m_count ? m_vertices[i+1] - s : m_vertices[0] - s;
+		const auto e2 = ((i + 1) < m_count) ? m_vertices[i+1] - s : m_vertices[0] - s;
 
 		const auto D = b2Cross(e1, e2);
 
@@ -438,13 +438,13 @@ bool b2PolygonShape::Validate() const
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		const auto i1 = i;
-		const auto i2 = i < m_count - 1 ? i1 + 1 : 0;
+		const auto i2 = i < (m_count - 1) ? i1 + 1 : 0;
 		const auto p = m_vertices[i1];
 		const auto e = m_vertices[i2] - p;
 
 		for (auto j = decltype(m_count){0}; j < m_count; ++j)
 		{
-			if (j == i1 || j == i2)
+			if ((j == i1) || (j == i2))
 			{
 				continue;
 			}
