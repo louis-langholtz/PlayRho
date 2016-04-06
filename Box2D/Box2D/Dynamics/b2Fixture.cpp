@@ -27,8 +27,6 @@
 #include <Box2D/Collision/b2Collision.h>
 #include <Box2D/Common/b2BlockAllocator.h>
 
-b2Fixture::b2Fixture(b2Body* body): m_body(body) {}
-
 void b2Fixture::Create(b2BlockAllocator* allocator, const b2FixtureDef* def)
 {
 	m_userData = def->userData;
@@ -209,7 +207,7 @@ void b2Fixture::SetSensor(bool sensor)
 	}
 }
 
-void b2Fixture::Dump(int32 bodyIndex)
+void b2Fixture::Dump(size_type bodyIndex)
 {
 	b2Log("    b2FixtureDef fd;\n");
 	b2Log("    fd.friction = %.15lef;\n", m_friction);

@@ -35,7 +35,7 @@ public:
 	b2Shape* Clone(b2BlockAllocator* allocator) const override;
 
 	/// @see b2Shape::GetChildCount
-	int32 GetChildCount() const override;
+	size_type GetChildCount() const override;
 
 	/// Create a convex hull from the given array of local points.
 	/// The count must be in the range [3, b2_maxPolygonVertices].
@@ -61,22 +61,22 @@ public:
 
 	/// Implement b2Shape.
 	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
-					const b2Transform& transform, int32 childIndex) const override;
+					const b2Transform& transform, size_type childIndex) const override;
 
 	/// @see b2Shape::ComputeAABB
-	void ComputeAABB(b2AABB* aabb, const b2Transform& transform, int32 childIndex) const override;
+	void ComputeAABB(b2AABB* aabb, const b2Transform& transform, size_type childIndex) const override;
 
 	/// @see b2Shape::ComputeMass
 	void ComputeMass(b2MassData* massData, float32 density) const override;
 
 	/// Get the vertex count.
-	int32 GetVertexCount() const noexcept { return m_count; }
+	size_type GetVertexCount() const noexcept { return m_count; }
 
 	/// Get a vertex by index.
-	const b2Vec2& GetVertex(int32 index) const;
+	const b2Vec2& GetVertex(size_type index) const;
 
 	/// Get a normal by index.
-	const b2Vec2& GetNormal(int32 index) const;
+	const b2Vec2& GetNormal(size_type index) const;
 
 	const b2Vec2* GetVertices() const noexcept { return m_vertices; }
 
@@ -92,16 +92,16 @@ private:
 	b2Vec2 m_centroid = b2Vec2_zero;
 	b2Vec2 m_vertices[b2_maxPolygonVertices];
 	b2Vec2 m_normals[b2_maxPolygonVertices];
-	int32 m_count = 0;
+	size_type m_count = 0;
 };
 
-inline const b2Vec2& b2PolygonShape::GetVertex(int32 index) const
+inline const b2Vec2& b2PolygonShape::GetVertex(size_type index) const
 {
 	b2Assert(0 <= index && index < m_count);
 	return m_vertices[index];
 }
 
-inline const b2Vec2& b2PolygonShape::GetNormal(int32 index) const
+inline const b2Vec2& b2PolygonShape::GetNormal(size_type index) const
 {
 	b2Assert(0 <= index && index < m_count);
 	return m_normals[index];

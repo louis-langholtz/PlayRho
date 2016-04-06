@@ -42,7 +42,9 @@ struct b2VelocityConstraintPoint
 
 struct b2ContactVelocityConstraintBodyData
 {
-	int32 index; // index of body within island
+	using index_t = std::size_t;
+
+	index_t index; // index of body within island
 	float32 invMass;
 	float32 invI;
 };
@@ -50,15 +52,18 @@ struct b2ContactVelocityConstraintBodyData
 class b2ContactVelocityConstraint
 {
 public:
-	int32 GetPointCount() const noexcept { return pointCount; }
+	using size_type = std::size_t;
+	using index_type = std::size_t;
 	
-	const b2VelocityConstraintPoint& GetPoint(int32 index) const
+	size_type GetPointCount() const noexcept { return pointCount; }
+	
+	const b2VelocityConstraintPoint& GetPoint(size_type index) const
 	{
 		b2Assert(index < pointCount);
 		return points[index];
 	}
 
-	b2VelocityConstraintPoint& GetPoint(int32 index)
+	b2VelocityConstraintPoint& GetPoint(size_type index)
 	{
 		b2Assert(index < pointCount);
 		return points[index];
@@ -87,18 +92,20 @@ public:
 	float32 friction;
 	float32 restitution;
 	float32 tangentSpeed;
-	int32 contactIndex;
+	index_type contactIndex;
 
 private:
 	b2VelocityConstraintPoint points[b2_maxManifoldPoints];
-	int32 pointCount;
+	size_type pointCount;
 };
 
 struct b2ContactSolverDef
 {
+	using size_type = std::size_t;
+
 	b2TimeStep step;
 	b2Contact** contacts; // pointers to contacts
-	int32 count; // count of contacts
+	size_type count; // count of contacts
 	b2Position* positions; // positions for every body referenced by a contact
 	b2Velocity* velocities; // velocities for every body referenced by a contact
 	b2StackAllocator* allocator;
@@ -107,6 +114,8 @@ struct b2ContactSolverDef
 class b2ContactSolver
 {
 public:
+	using size_type = std::size_t;
+
 	b2ContactSolver(b2ContactSolverDef* def);
 	~b2ContactSolver();
 
@@ -120,7 +129,7 @@ public:
 	void StoreImpulses();
 
 	bool SolvePositionConstraints();
-	bool SolveTOIPositionConstraints(int32 toiIndexA, int32 toiIndexB);
+	bool SolveTOIPositionConstraints(size_type toiIndexA, size_type toiIndexB);
 
 	const b2ContactVelocityConstraint* GetVelocityConstraints() const noexcept
 	{
@@ -137,7 +146,7 @@ private:
 	b2Velocity* const m_velocities;
 	b2StackAllocator* const m_allocator;
 	b2Contact** const m_contacts;
-	const int m_count;
+	const size_type m_count;
 	b2ContactPositionConstraint* const m_positionConstraints;
 	b2ContactVelocityConstraint* const m_velocityConstraints;
 };

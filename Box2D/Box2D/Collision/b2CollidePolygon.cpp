@@ -19,87 +19,83 @@
 #include <Box2D/Collision/b2Collision.h>
 #include <Box2D/Collision/Shapes/b2PolygonShape.h>
 
-// Find the max separation between poly1 and poly2 using edge normals from poly1.
-static float32 b2FindMaxSeparation(int32& edgeIndex,
-								 const b2PolygonShape& poly1, const b2Transform& xf1,
-								 const b2PolygonShape& poly2, const b2Transform& xf2)
+using index_t = std::size_t;
+
+// Find the max separation between shape1 and shape2 using edge normals from shape1.
+static float32 b2FindMaxSeparation(index_t& edgeIndex,
+								 const b2PolygonShape& shape1, const b2Transform& xf1,
+								 const b2PolygonShape& shape2, const b2Transform& xf2)
 {
-	const auto count1 = poly1.GetVertexCount();
-	const auto count2 = poly2.GetVertexCount();
-	const auto n1s = poly1.GetNormals();
-	const auto v1s = poly1.GetVertices();
-	const auto v2s = poly2.GetVertices();
+	const auto count1 = shape1.GetVertexCount();
+	const auto count2 = shape2.GetVertexCount();
 	const auto xf = b2MulT(xf2, xf1);
 
-	auto bestIndex = decltype(count1){0};
+	auto shape1_index_of_max_separation = decltype(count1){0};
 	auto maxSeparation = -b2_maxFloat;
 	for (auto i = decltype(count1){0}; i < count1; ++i)
 	{
-		// Get poly1 normal in frame2.
-		const auto n = b2Mul(xf.q, n1s[i]);
-		const auto v1 = b2Mul(xf, v1s[i]);
+		// Get shape1 normal in frame2.
+		const auto n = b2Mul(xf.q, shape1.GetNormal(i));
+		const auto v1 = b2Mul(xf, shape1.GetVertex(i));
 
 		// Find deepest point for normal i.
-		auto si = b2_maxFloat;
+		auto min_sij = b2_maxFloat;
 		for (auto j = decltype(count2){0}; j < count2; ++j)
 		{
-			const auto sij = b2Dot(n, v2s[j] - v1);
-			if (si > sij)
-			{
-				si = sij;
-			}
+			const auto sij = b2Dot(n, shape2.GetVertex(j) - v1);
+			if (min_sij > sij)
+				min_sij = sij;
 		}
 
-		if (maxSeparation < si)
+		if (maxSeparation < min_sij)
 		{
-			maxSeparation = si;
-			bestIndex = i;
+			maxSeparation = min_sij;
+			shape1_index_of_max_separation = i;
 		}
 	}
 
-	edgeIndex = bestIndex;
+	edgeIndex = shape1_index_of_max_separation;
 	return maxSeparation;
 }
 
 static void b2FindIncidentEdge(std::array<b2ClipVertex,2>& c,
-							 const b2PolygonShape& poly1, const b2Transform& xf1, int32 edge1,
-							 const b2PolygonShape& poly2, const b2Transform& xf2)
+							 const b2PolygonShape& shape1, const b2Transform& xf1, index_t index1,
+							 const b2PolygonShape& shape2, const b2Transform& xf2)
 {
-	const auto normals1 = poly1.GetNormals();
-	const auto count2 = poly2.GetVertexCount();
-	const auto vertices2 = poly2.GetVertices();
-	const auto normals2 = poly2.GetNormals();
+	b2Assert((0 <= index1) && (index1 < shape1.GetVertexCount()));
 
-	b2Assert(0 <= edge1 && edge1 < poly1.GetVertexCount());
+	const auto count2 = shape2.GetVertexCount();
 
-	// Get the normal of the reference edge in poly2's frame.
-	const auto normal1 = b2MulT(xf2.q, b2Mul(xf1.q, normals1[edge1]));
+	// Get the normal of the reference edge in shape2's frame.
+	const auto normal1 = b2MulT(xf2.q, b2Mul(xf1.q, shape1.GetNormal(index1)));
 
-	// Find the incident edge on poly2.
-	auto index = decltype(count2){0};
-	auto minDot = b2_maxFloat;
-	for (auto i = decltype(count2){0}; i < count2; ++i)
+	// Find the incident edge on shape2.
+	auto index_of_min_dot = decltype(count2){0};
 	{
-		const auto dot = b2Dot(normal1, normals2[i]);
-		if (minDot > dot)
+		auto minDot = b2_maxFloat;
+		for (auto i = decltype(count2){0}; i < count2; ++i)
 		{
-			minDot = dot;
-			index = i;
+			const auto dot = b2Dot(normal1, shape2.GetNormal(i));
+			if (minDot > dot)
+			{
+				minDot = dot;
+				index_of_min_dot = i;
+			}
 		}
 	}
 
 	// Build the clip vertices for the incident edge.
-	const auto i1 = index;
+	const auto i1 = index_of_min_dot;
 	const auto i2 = ((i1 + 1) < count2) ? i1 + 1 : 0;
 
-	c[0].v = b2Mul(xf2, vertices2[i1]);
-	c[0].id.cf.indexA = (uint8)edge1;
+	c[0].v = b2Mul(xf2, shape2.GetVertex(i1));
+	c[0].id.cf.indexA = (uint8)index1;
 	c[0].id.cf.indexB = (uint8)i1;
 	c[0].id.cf.typeA = b2ContactFeature::e_face;
 	c[0].id.cf.typeB = b2ContactFeature::e_vertex;
 
-	c[1].v = b2Mul(xf2, vertices2[i2]);
-	c[1].id.cf.indexA = (uint8)edge1;
+	c[1].v = b2Mul(xf2, shape2.GetVertex(i2));
+	c[1].id.cf.indexA = (uint8)index1;
 	c[1].id.cf.indexB = (uint8)i2;
 	c[1].id.cf.typeA = b2ContactFeature::e_face;
 	c[1].id.cf.typeB = b2ContactFeature::e_vertex;
@@ -112,34 +108,34 @@ static void b2FindIncidentEdge(std::array<b2ClipVertex,2>& c,
 // Clip
 
 // The normal points from 1 to 2
-void b2CollidePolygons(b2Manifold* manifold,
-					  const b2PolygonShape* polyA, const b2Transform& xfA,
-					  const b2PolygonShape* polyB, const b2Transform& xfB)
+void b2CollideShapes(b2Manifold* manifold,
+					 const b2PolygonShape& shapeA, const b2Transform& xfA,
+					 const b2PolygonShape& shapeB, const b2Transform& xfB)
 {
-	manifold->ClearPoints();
-	const auto totalRadius = polyA->GetRadius() + polyB->GetRadius();
+	manifold->SetType(b2Manifold::e_unset);
+	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
 
-	auto edgeA = int32{0};
-	const auto separationA = b2FindMaxSeparation(edgeA, *polyA, xfA, *polyB, xfB);
+	auto edgeA = index_t{0};
+	const auto separationA = b2FindMaxSeparation(edgeA, shapeA, xfA, shapeB, xfB);
 	if (separationA > totalRadius)
 		return;
 
-	auto edgeB = int32{0};
-	const auto separationB = b2FindMaxSeparation(edgeB, *polyB, xfB, *polyA, xfA);
+	auto edgeB = index_t{0};
+	const auto separationB = b2FindMaxSeparation(edgeB, shapeB, xfB, shapeA, xfA);
 	if (separationB > totalRadius)
 		return;
 
-	const b2PolygonShape* poly1;	// reference polygon
-	const b2PolygonShape* poly2;	// incident polygon
+	const b2PolygonShape* shape1;	// reference polygon
+	const b2PolygonShape* shape2;	// incident polygon
 	b2Transform xf1, xf2;
-	int32 edge1;					// reference edge
+	index_t edge1;					// reference edge
 	bool flip;
-	constexpr auto k_tol = 0.1f * b2_linearSlop;
+	constexpr auto k_tol = b2_linearSlop / 10;
 
 	if (separationB > (separationA + k_tol))
 	{
-		poly1 = polyB;
-		poly2 = polyA;
+		shape1 = &shapeB;
+		shape2 = &shapeA;
 		xf1 = xfB;
 		xf2 = xfA;
 		edge1 = edgeB;
@@ -148,8 +144,8 @@ void b2CollidePolygons(b2Manifold* manifold,
 	}
 	else
 	{
-		poly1 = polyA;
-		poly2 = polyB;
+		shape1 = &shapeA;
+		shape2 = &shapeB;
 		xf1 = xfA;
 		xf2 = xfB;
 		edge1 = edgeA;
@@ -158,21 +154,23 @@ void b2CollidePolygons(b2Manifold* manifold,
 	}
 
 	std::array<b2ClipVertex,2> incidentEdge;
-	b2FindIncidentEdge(incidentEdge, *poly1, xf1, edge1, *poly2, xf2);
+	b2FindIncidentEdge(incidentEdge, *shape1, xf1, edge1, *shape2, xf2);
 
-	const auto count1 = poly1->GetVertexCount();
-	const auto vertices1 = poly1->GetVertices();
+	const auto count1 = shape1->GetVertexCount();
 
 	const auto iv1 = edge1;
 	const auto iv2 = ((edge1 + 1) < count1) ? edge1 + 1 : 0;
 
-	auto v11 = b2Vec2(vertices1[iv1]);
-	auto v12 = b2Vec2(vertices1[iv2]);
+	auto v11 = b2Vec2(shape1->GetVertex(iv1));
+	auto v12 = b2Vec2(shape1->GetVertex(iv2));
 
 	const auto localTangent = b2Normalize(v12 - v11);
 	
 	const auto localNormal = b2Cross(localTangent, 1.0f);
 	const auto planePoint = 0.5f * (v11 + v12);
+
+	manifold->SetLocalNormal(localNormal);
+	manifold->SetLocalPoint(planePoint);
 
 	const auto tangent = b2Mul(xf1.q, localTangent);
 	const auto normal = b2Cross(tangent, 1.0f);
@@ -200,13 +198,9 @@ void b2CollidePolygons(b2Manifold* manifold,
 		return;
 
 	// Now clipPoints2 contains the clipped points.
-	manifold->SetLocalNormal(localNormal);
-	manifold->SetLocalPoint(planePoint);
-
 	for (auto i = decltype(b2_maxManifoldPoints){0}; i < b2_maxManifoldPoints; ++i)
 	{
 		const auto separation = b2Dot(normal, clipPoints2[i].v) - frontOffset;
-
 		if (separation <= totalRadius)
 		{
 			const auto cf = flip? b2Flip(clipPoints2[i].id.cf): clipPoints2[i].id.cf;

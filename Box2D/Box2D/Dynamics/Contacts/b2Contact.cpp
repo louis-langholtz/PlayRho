@@ -34,8 +34,8 @@
 #include <Box2D/Dynamics/b2Fixture.h>
 #include <Box2D/Dynamics/b2World.h>
 
-using b2ContactCreateFcn = b2Contact* (b2Fixture* fixtureA, int32 indexA,
-									   b2Fixture* fixtureB, int32 indexB,
+using b2ContactCreateFcn = b2Contact* (b2Fixture* fixtureA, b2Contact::size_type indexA,
+									   b2Fixture* fixtureB, b2Contact::size_type indexB,
 									   b2BlockAllocator* allocator);
 using b2ContactDestroyFcn = void (b2Contact* contact, b2BlockAllocator* allocator);
 
@@ -79,7 +79,9 @@ static constexpr b2ContactRegister s_registers[b2Shape::e_typeCount][b2Shape::e_
 	},
 };
 
-b2Contact* b2Contact::Create(b2Fixture* fixtureA, int32 indexA, b2Fixture* fixtureB, int32 indexB, b2BlockAllocator* allocator)
+b2Contact* b2Contact::Create(b2Fixture* fixtureA, size_type indexA,
+							 b2Fixture* fixtureB, size_type indexB,
+							 b2BlockAllocator* allocator)
 {
 	const auto type1 = fixtureA->GetType();
 	const auto type2 = fixtureB->GetType();
@@ -127,12 +129,11 @@ void b2Contact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
 	destroyFcn(contact, allocator);
 }
 
-b2Contact::b2Contact(b2Fixture* fA, int32 indexA, b2Fixture* fB, int32 indexB) :
+b2Contact::b2Contact(b2Fixture* fA, size_type indexA, b2Fixture* fB, size_type indexB) :
 	m_fixtureA(fA), m_fixtureB(fB), m_indexA(indexA), m_indexB(indexB),
-	m_friction(b2MixFriction(m_fixtureA->m_friction, m_fixtureB->m_friction)),
-	m_restitution(b2MixRestitution(m_fixtureA->m_restitution, m_fixtureB->m_restitution))
+	m_friction(b2MixFriction(m_fixtureA->GetFriction(), m_fixtureB->GetFriction())),
+	m_restitution(b2MixRestitution(m_fixtureA->GetRestitution(), m_fixtureB->GetRestitution()))
 {
-	m_manifold.ClearPoints();
 }
 
 // Update the contact manifold and touching status.
@@ -149,8 +150,8 @@ void b2Contact::Update(b2ContactListener* listener)
 
 	auto bodyA = m_fixtureA->GetBody();
 	auto bodyB = m_fixtureB->GetBody();
-	const b2Transform& xfA = bodyA->GetTransform();
-	const b2Transform& xfB = bodyB->GetTransform();
+	const auto& xfA = bodyA->GetTransform();
+	const auto& xfB = bodyB->GetTransform();
 
 	// Is this contact a sensor?
 	const auto sensor = m_fixtureA->IsSensor() || m_fixtureB->IsSensor();
@@ -158,10 +159,10 @@ void b2Contact::Update(b2ContactListener* listener)
 	{
 		const auto shapeA = m_fixtureA->GetShape();
 		const auto shapeB = m_fixtureB->GetShape();
-		touching = b2TestOverlap(shapeA, m_indexA, shapeB, m_indexB, xfA, xfB);
+		touching = b2TestOverlap(*shapeA, m_indexA, *shapeB, m_indexB, xfA, xfB);
 
 		// Sensors don't generate manifolds.
-		m_manifold.ClearPoints();
+		m_manifold.SetType(b2Manifold::e_unset);
 	}
 	else
 	{

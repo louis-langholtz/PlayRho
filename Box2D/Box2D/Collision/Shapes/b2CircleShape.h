@@ -36,17 +36,17 @@ public:
 	b2Shape* Clone(b2BlockAllocator* allocator) const override;
 
 	/// @see b2Shape::GetChildCount
-	int32 GetChildCount() const override;
+	size_type GetChildCount() const override;
 
 	/// Implement b2Shape.
 	bool TestPoint(const b2Transform& transform, const b2Vec2& p) const override;
 
 	/// Implement b2Shape.
 	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
-				const b2Transform& transform, int32 childIndex) const override;
+				const b2Transform& transform, size_type childIndex) const override;
 
 	/// @see b2Shape::ComputeAABB
-	void ComputeAABB(b2AABB* aabb, const b2Transform& transform, int32 childIndex) const override;
+	void ComputeAABB(b2AABB* aabb, const b2Transform& transform, size_type childIndex) const override;
 
 	/// @see b2Shape::ComputeMass
 	void ComputeMass(b2MassData* massData, float32 density) const override;

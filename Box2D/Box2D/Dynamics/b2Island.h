@@ -20,9 +20,9 @@
 #define B2_ISLAND_H
 
 #include <Box2D/Common/b2Math.h>
-#include <Box2D/Dynamics/b2Body.h>
 #include <Box2D/Dynamics/b2TimeStep.h>
 
+class b2Body;
 class b2Contact;
 class b2Joint;
 class b2StackAllocator;
@@ -34,104 +34,87 @@ struct b2Profile;
 class b2Island
 {
 public:
-	b2Island(int32 bodyCapacity, int32 contactCapacity, int32 jointCapacity,
+	using size_type = std::size_t;
+
+	b2Island(size_type bodyCapacity, size_type contactCapacity, size_type jointCapacity,
 			b2StackAllocator* allocator, b2ContactListener* listener);
 	~b2Island();
 
-	void Clear()
-	{
-		m_bodyCount = 0;
-		m_contactCount = 0;
-		m_jointCount = 0;
-	}
+	void Clear() noexcept;
 
 	void Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& gravity, bool allowSleep);
 
-	void SolveTOI(const b2TimeStep& subStep, int32 toiIndexA, int32 toiIndexB);
+	void SolveTOI(const b2TimeStep& subStep, size_type toiIndexA, size_type toiIndexB);
 
-	void Add(b2Body* body)
-	{
-		b2Assert(m_bodyCount < m_bodyCapacity);
-		body->m_islandIndex = m_bodyCount;
-		m_bodies[m_bodyCount] = body;
-		++m_bodyCount;
-	}
+	void Add(b2Body* body);
 
-	void Add(b2Contact* contact)
-	{
-		b2Assert(m_contactCount < m_contactCapacity);
-		m_contacts[m_contactCount] = contact;
-		++m_contactCount;
-	}
+	void Add(b2Contact* contact);
 
-	void Add(b2Joint* joint)
-	{
-		b2Assert(m_jointCount < m_jointCapacity);
-		m_joints[m_jointCount] = joint;
-		++m_jointCount;
-	}
+	void Add(b2Joint* joint);
 
 	void Report(const b2ContactVelocityConstraint* constraints);
 
-	inline int32 GetBodyCapacity() const noexcept
+	inline size_type GetBodyCapacity() const noexcept
 	{
 		return m_bodyCapacity;
 	}
 
-	inline int32 GetContactCapacity() const noexcept
+	inline size_type GetContactCapacity() const noexcept
 	{
 		return m_contactCapacity;
 	}
 	
-	inline int32 GetJointCapacity() const noexcept
+	inline size_type GetJointCapacity() const noexcept
 	{
 		return m_jointCapacity;
 	}
 
-	inline int32 GetBodyCount() const noexcept
+	inline size_type GetBodyCount() const noexcept
 	{
 		return m_bodyCount;
 	}
 
-	inline int32 GetContactCount() const noexcept
+	inline size_type GetContactCount() const noexcept
 	{
 		return m_contactCount;
 	}
 
-	inline int32 GetJointCount() const noexcept
+	inline size_type GetJointCount() const noexcept
 	{
 		return m_jointCount;
 	}
 
-	inline const b2Body* GetBody(int32 i) const
+	inline const b2Body* GetBody(size_type i) const
 	{
-		b2Assert(i < m_bodyCount);
+		b2Assert((0 <= i) && (i < m_bodyCount));
 		return m_bodies[i];
 	}
 
-	inline b2Body* GetBody(int32 i)
+	inline b2Body* GetBody(size_type i)
 	{
-		b2Assert(i < m_bodyCount);
+		b2Assert((0 <= i) && (i < m_bodyCount));
 		return m_bodies[i];
 	}
 
 private:
-	const int32 m_bodyCapacity;
-	const int32 m_contactCapacity;
-	const int32 m_jointCapacity;
+	void ClearBodies() noexcept;
+
+	size_type m_bodyCount = 0;
+	size_type m_contactCount = 0;
+	size_type m_jointCount = 0;
+
+	const size_type m_bodyCapacity;
+	const size_type m_contactCapacity;
+	const size_type m_jointCapacity;
 
 	b2StackAllocator* const m_allocator;
 	b2ContactListener* const m_listener;
-	
+
 	b2Body** const m_bodies;
 	b2Contact** const m_contacts;
 	b2Joint** const m_joints;
 	b2Velocity* const m_velocities;
 	b2Position* const m_positions;
-
-	int32 m_bodyCount = 0;
-	int32 m_jointCount = 0;
-	int32 m_contactCount = 0;
 };
 
 #endif

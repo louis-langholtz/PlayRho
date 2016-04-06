@@ -29,7 +29,9 @@ bool g_blockSolve = true;
 
 struct b2ContactPositionConstraintBodyData
 {
-	int32 index;
+	using index_t = std::size_t;
+
+	index_t index; // index of body within island
 	float32 invMass;
 	b2Vec2 localCenter;
 	float32 invI;
@@ -38,24 +40,26 @@ struct b2ContactPositionConstraintBodyData
 class b2ContactPositionConstraint
 {
 public:
+	using size_type = std::size_t;
+
 	b2Vec2 localNormal;
 	b2Vec2 localPoint;
 
 	b2ContactPositionConstraintBodyData bodyA;
 	b2ContactPositionConstraintBodyData bodyB;
 
-	b2Manifold::Type type;
+	b2Manifold::Type type = b2Manifold::e_unset;
 	float32 radiusA, radiusB;
 
-	int32 GetPointCount() const noexcept { return pointCount; }
+	size_type GetPointCount() const noexcept { return pointCount; }
 
-	b2Vec2 GetPoint(int32 index) const
+	b2Vec2 GetPoint(size_type index) const
 	{
-		b2Assert(index < pointCount);
+		b2Assert((0 <= index) && (index < pointCount));
 		return localPoints[index];
 	}
 
-	void ClearPoints()
+	void ClearPoints() noexcept
 	{
 		pointCount = 0;
 	}
@@ -68,7 +72,7 @@ public:
 	}
 
 private:
-	int32 pointCount;
+	size_type pointCount = 0;
 	b2Vec2 localPoints[b2_maxManifoldPoints];
 };
 
@@ -81,6 +85,7 @@ void b2ContactSolver::Assign(b2ContactVelocityConstraint& var, const b2Contact& 
 
 void b2ContactSolver::Assign(b2ContactPositionConstraintBodyData& var, const b2Body& val)
 {
+	b2Assert(val.IsValidIslandIndex());
 	var.index = val.m_islandIndex;
 	var.invMass = val.m_invMass;
 	var.invI = val.m_invI;
@@ -89,6 +94,7 @@ void b2ContactSolver::Assign(b2ContactPositionConstraintBodyData& var, const b2B
 
 void b2ContactSolver::Assign(b2ContactVelocityConstraintBodyData& var, const b2Body& val)
 {
+	b2Assert(val.IsValidIslandIndex());
 	var.index = val.m_islandIndex;
 	var.invMass = val.m_invMass;
 	var.invI = val.m_invI;
@@ -107,23 +113,23 @@ b2ContactSolver::b2ContactSolver(b2ContactSolverDef* def) :
 	// Initialize position independent portions of the constraints.
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
-		const auto contact = m_contacts[i];
+		const auto& contact = *m_contacts[i];
 
-		const auto fixtureA = contact->m_fixtureA;
-		const auto fixtureB = contact->m_fixtureB;
+		const auto fixtureA = contact.m_fixtureA;
+		const auto fixtureB = contact.m_fixtureB;
 		const auto shapeA = fixtureA->GetShape();
 		const auto shapeB = fixtureB->GetShape();
 		const auto radiusA = shapeA->GetRadius();
 		const auto radiusB = shapeB->GetRadius();
 		const auto bodyA = fixtureA->GetBody();
 		const auto bodyB = fixtureB->GetBody();
-		const auto manifold = contact->GetManifold();
+		const auto manifold = contact.GetManifold();
 
 		const auto pointCount = manifold->GetPointCount();
 		b2Assert(pointCount > 0);
 
 		auto& vc = m_velocityConstraints[i];
-		Assign(vc, *contact);
+		Assign(vc, contact);
 		Assign(vc.bodyA, *bodyA);
 		Assign(vc.bodyB, *bodyB);
 
@@ -201,11 +207,13 @@ void b2ContactSolver::InitializeVelocityConstraints()
 		const auto localCenterA = pc.bodyA.localCenter;
 		const auto localCenterB = pc.bodyB.localCenter;
 
+		b2Assert(indexA >= 0);
 		const auto cA = m_positions[indexA].c;
 		const auto aA = m_positions[indexA].a;
 		const auto vA = m_velocities[indexA].v;
 		const auto wA = m_velocities[indexA].w;
 
+		b2Assert(indexB >= 0);
 		const auto cB = m_positions[indexB].c;
 		const auto aB = m_positions[indexB].a;
 		const auto vB = m_velocities[indexB].v;
@@ -213,13 +221,11 @@ void b2ContactSolver::InitializeVelocityConstraints()
 
 		b2Assert(manifold->GetPointCount() > 0);
 
-		b2Transform xfA;
-		xfA.q = b2Rot(aA);
-		xfA.p = cA - b2Mul(xfA.q, localCenterA);
+		const auto rotA = b2Rot(aA);
+		const auto xfA = b2Transform(cA - b2Mul(rotA, localCenterA), rotA);
 
-		b2Transform xfB;
-		xfB.q = b2Rot(aB);
-		xfB.p = cB - b2Mul(xfB.q, localCenterB);
+		const auto rotB = b2Rot(aB);
+		const auto xfB = b2Transform(cB - b2Mul(rotB, localCenterB), rotB);
 
 		b2WorldManifold worldManifold;
 		worldManifold.Assign(*manifold, xfA, radiusA, xfB, radiusB);
@@ -471,7 +477,7 @@ void b2ContactSolver::SolveVelocityConstraints()
 			// Compute b'
 			const auto b = b2Vec2{vn1 - cp1.velocityBias, vn2 - cp2.velocityBias} - b2Mul(vc.K, a);
 
-			const auto k_errorTol = 1e-3f;
+			const auto k_errorTol = 1e-3f; // error tolerance
 			B2_NOT_USED(k_errorTol);
 
 			for (;;)
@@ -571,7 +577,7 @@ void b2ContactSolver::SolveVelocityConstraints()
 				x.y = - cp2.normalMass * b.y;
 				vn1 = vc.K.ey.x * x.y + b.x;
 
-				if (x.y >= 0.0f && vn1 >= 0.0f)
+				if ((x.y >= 0.0f) && (vn1 >= 0.0f))
 				{
 					// Resubstitute for the incremental impulse
 					const auto d = x - a;
@@ -611,7 +617,7 @@ void b2ContactSolver::SolveVelocityConstraints()
 				vn1 = b.x;
 				vn2 = b.y;
 
-				if (vn1 >= 0.0f && vn2 >= 0.0f )
+				if ((vn1 >= 0.0f) && (vn2 >= 0.0f))
 				{
 					// Resubstitute for the incremental impulse
 					const auto d = x - a;
@@ -644,6 +650,12 @@ void b2ContactSolver::SolveVelocityConstraints()
 	}
 }
 
+static void b2AssignImpulses(b2ManifoldPoint& var, const b2VelocityConstraintPoint& val)
+{
+	var.normalImpulse = val.normalImpulse;
+	var.tangentImpulse = val.tangentImpulse;
+}
+
 void b2ContactSolver::StoreImpulses()
 {
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
@@ -653,29 +665,31 @@ void b2ContactSolver::StoreImpulses()
 
 		const auto point_count = vc.GetPointCount();
 		for (auto j = decltype(point_count){0}; j < point_count; ++j)
-		{
-			auto& manifold_point = manifold.GetPoint(j);
-			const auto& vc_point = vc.GetPoint(j);
-			manifold_point.normalImpulse = vc_point.normalImpulse;
-			manifold_point.tangentImpulse = vc_point.tangentImpulse;
-		}
+			b2AssignImpulses(manifold.GetPoint(j), vc.GetPoint(j));
 	}
 }
 
 class b2PositionSolverManifold
 {
 public:
+	using index_t = std::size_t;
+
 	b2PositionSolverManifold() = delete;
 
 	b2PositionSolverManifold(const b2ContactPositionConstraint& pc,
-							 const b2Transform& xfA, const b2Transform& xfB, int32 index)
+							 const b2Transform& xfA, const b2Transform& xfB, index_t index)
 	{
 		b2Assert(pc.GetPointCount() > 0);
+		b2Assert(pc.type != b2Manifold::e_unset);
 
 		switch (pc.type)
 		{
+		case b2Manifold::e_unset:
+			break;
+
 		case b2Manifold::e_circles:
 			{
+				b2Assert(index == 0);
 				const auto pointA = b2Mul(xfA, pc.localPoint);
 				const auto pointB = b2Mul(xfB, pc.GetPoint(0));
 				normal = b2Normalize(pointB - pointA);
@@ -686,10 +700,9 @@ public:
 
 		case b2Manifold::e_faceA:
 			{
-				normal = b2Mul(xfA.q, pc.localNormal);
 				const auto planePoint = b2Mul(xfA, pc.localPoint);
-
 				const auto clipPoint = b2Mul(xfB, pc.GetPoint(index));
+				normal = b2Mul(xfA.q, pc.localNormal);
 				separation = b2Dot(clipPoint - planePoint, normal) - pc.radiusA - pc.radiusB;
 				point = clipPoint;
 			}
@@ -697,15 +710,12 @@ public:
 
 		case b2Manifold::e_faceB:
 			{
-				normal = b2Mul(xfB.q, pc.localNormal);
 				const auto planePoint = b2Mul(xfB, pc.localPoint);
-
 				const auto clipPoint = b2Mul(xfA, pc.GetPoint(index));
+				normal = b2Mul(xfB.q, pc.localNormal);
 				separation = b2Dot(clipPoint - planePoint, normal) - pc.radiusA - pc.radiusB;
 				point = clipPoint;
-
-				// Ensure normal points from A to B
-				normal = -normal;
+				normal = -normal; // Ensure normal points from A to B
 			}
 			break;
 		}
@@ -724,7 +734,7 @@ private:
 // Sequential solver.
 bool b2ContactSolver::SolvePositionConstraints()
 {
-	auto minSeparation = 0.0f;
+	auto minSeparation = b2_maxFloat;
 
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
@@ -740,8 +750,6 @@ bool b2ContactSolver::SolvePositionConstraints()
 		const auto mB = pc.bodyB.invMass;
 		const auto iB = pc.bodyB.invI;
 
-		const auto pointCount = pc.GetPointCount();
-
 		auto cA = m_positions[indexA].c;
 		auto aA = m_positions[indexA].a;
 
@@ -749,13 +757,13 @@ bool b2ContactSolver::SolvePositionConstraints()
 		auto aB = m_positions[indexB].a;
 
 		// Solve normal constraints
+		const auto pointCount = pc.GetPointCount();
 		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 		{
-			b2Transform xfA, xfB;
-			xfA.q = b2Rot(aA);
-			xfB.q = b2Rot(aB);
-			xfA.p = cA - b2Mul(xfA.q, localCenterA);
-			xfB.p = cB - b2Mul(xfB.q, localCenterB);
+			const auto rotA = b2Rot(aA);
+			const auto rotB = b2Rot(aB);
+			const auto xfA = b2Transform(cA - b2Mul(rotA, localCenterA), rotA);
+			const auto xfB = b2Transform(cB - b2Mul(rotB, localCenterB), rotB);
 
 			const auto psm = b2PositionSolverManifold(pc, xfA, xfB, j);
 			const auto normal = psm.GetNormal();
@@ -774,7 +782,7 @@ bool b2ContactSolver::SolvePositionConstraints()
 			// Compute the effective mass.
 			const auto rnA = b2Cross(rA, normal);
 			const auto rnB = b2Cross(rB, normal);
-			const auto K = mA + mB + iA * rnA * rnA + iB * rnB * rnB;
+			const auto K = mA + mB + (iA * rnA * rnA) + (iB * rnB * rnB);
 
 			// Compute normal impulse
 			const auto impulse = (K > 0.0f)? - C / K : 0.0f;
@@ -797,13 +805,13 @@ bool b2ContactSolver::SolvePositionConstraints()
 
 	// We can't expect minSpeparation >= -b2_linearSlop because we don't
 	// push the separation above -b2_linearSlop.
-	return minSeparation >= -3.0f * b2_linearSlop;
+	return minSeparation >= (-3.0f * -b2_linearSlop);
 }
 
 // Sequential position solver for position constraints.
-bool b2ContactSolver::SolveTOIPositionConstraints(int32 toiIndexA, int32 toiIndexB)
+bool b2ContactSolver::SolveTOIPositionConstraints(size_type toiIndexA, size_type toiIndexB)
 {
-	auto minSeparation = 0.0f;
+	auto minSeparation = b2_maxFloat;
 
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
@@ -833,7 +841,6 @@ bool b2ContactSolver::SolveTOIPositionConstraints(int32 toiIndexA, int32 toiInde
 
 		auto cA = m_positions[indexA].c;
 		auto aA = m_positions[indexA].a;
-
 		auto cB = m_positions[indexB].c;
 		auto aB = m_positions[indexB].a;
 
@@ -841,11 +848,10 @@ bool b2ContactSolver::SolveTOIPositionConstraints(int32 toiIndexA, int32 toiInde
 		const auto pointCount = pc.GetPointCount();
 		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 		{
-			b2Transform xfA, xfB;
-			xfA.q = b2Rot(aA);
-			xfB.q = b2Rot(aB);
-			xfA.p = cA - b2Mul(xfA.q, localCenterA);
-			xfB.p = cB - b2Mul(xfB.q, localCenterB);
+			const auto rotA = b2Rot(aA);
+			const auto rotB = b2Rot(aB);
+			const auto xfA = b2Transform(cA - b2Mul(rotA, localCenterA), rotA);
+			const auto xfB = b2Transform(cB - b2Mul(rotB, localCenterB), rotB);
 
 			const auto psm = b2PositionSolverManifold(pc, xfA, xfB, j);
 			const auto normal = psm.GetNormal();
@@ -864,7 +870,7 @@ bool b2ContactSolver::SolveTOIPositionConstraints(int32 toiIndexA, int32 toiInde
 			// Compute the effective mass.
 			const auto rnA = b2Cross(rA, normal);
 			const auto rnB = b2Cross(rB, normal);
-			const auto K = mA + mB + iA * rnA * rnA + iB * rnB * rnB;
+			const auto K = mA + mB + (iA * rnA * rnA) + (iB * rnB * rnB);
 
 			// Compute normal impulse
 			const auto impulse = (K > 0.0f) ? - C / K : 0.0f;
@@ -880,12 +886,11 @@ bool b2ContactSolver::SolveTOIPositionConstraints(int32 toiIndexA, int32 toiInde
 
 		m_positions[indexA].c = cA;
 		m_positions[indexA].a = aA;
-
 		m_positions[indexB].c = cB;
 		m_positions[indexB].a = aB;
 	}
 
 	// We can't expect minSpeparation >= -b2_linearSlop because we don't
 	// push the separation above -b2_linearSlop.
-	return minSeparation >= -1.5f * b2_linearSlop;
+	return minSeparation >= (-1.5f * b2_linearSlop);
 }

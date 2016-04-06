@@ -367,13 +367,13 @@ struct b2Transform
 
 /// This describes the motion of a body/shape for TOI computation.
 /// Shapes are defined with respect to the body origin, which may
-/// no coincide with the center of mass. However, to support dynamics
+/// not coincide with the center of mass. However, to support dynamics
 /// we must interpolate the center of mass position.
 struct b2Sweep
 {
 	/// Get the interpolated transform at a specific time.
 	/// @param beta is a factor in [0,1], where 0 indicates alpha0.
-	void GetTransform(b2Transform* xfb, float32 beta) const;
+	b2Transform GetTransform(float32 beta) const;
 
 	/// Advance the sweep forward, yielding a new initial state.
 	/// @param alpha the new initial time.
@@ -691,14 +691,10 @@ constexpr inline bool b2IsPowerOfTwo(uint32 x) noexcept
 	return (x > 0) && ((x & (x - 1)) == 0);
 }
 
-inline void b2Sweep::GetTransform(b2Transform* xf, float32 beta) const
+inline b2Transform b2Sweep::GetTransform(float32 beta) const
 {
-	xf->p = (1.0f - beta) * c0 + beta * c;
-	const auto angle = (1.0f - beta) * a0 + beta * a;
-	xf->q = b2Rot(angle);
-
-	// Shift to origin
-	xf->p -= b2Mul(xf->q, localCenter);
+	const auto rot = b2Rot((1.0f - beta) * a0 + beta * a);
+	return b2Transform(((1.0f - beta) * c0 + beta * c) - b2Mul(rot, localCenter), rot);
 }
 
 inline void b2Sweep::Advance(float32 alpha)
@@ -713,7 +709,7 @@ inline void b2Sweep::Advance(float32 alpha)
 /// Normalize an angle in radians to be between -pi and pi
 inline void b2Sweep::Normalize()
 {
-	const auto twoPi = 2.0f * b2_pi;
+	constexpr auto twoPi = 2.0f * b2_pi;
 	const auto d =  twoPi * std::floorf(a0 / twoPi);
 	a0 -= d;
 	a -= d;

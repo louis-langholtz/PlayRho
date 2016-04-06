@@ -28,6 +28,10 @@ void b2WorldManifold::Assign(const b2Manifold& manifold,
 
 	switch (manifold.GetType())
 	{
+	case b2Manifold::e_unset:
+		b2Assert(manifold.GetType() != b2Manifold::e_unset);
+		break;
+
 	case b2Manifold::e_circles:
 		{
 			normal = b2Vec2(1.0f, 0.0f);
@@ -192,11 +196,11 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 }
 
 // Sutherland-Hodgman clipping.
-int32 b2ClipSegmentToLine(std::array<b2ClipVertex, 2>& vOut, const std::array<b2ClipVertex,2>& vIn,
-						  const b2Vec2& normal, float32 offset, int32 vertexIndexA)
+std::size_t b2ClipSegmentToLine(std::array<b2ClipVertex, 2>& vOut, const std::array<b2ClipVertex,2>& vIn,
+						  const b2Vec2& normal, float32 offset, b2ContactFeature::index_t vertexIndexA)
 {
 	// Start with no output points
-	auto numOut = int32{0};
+	auto numOut = std::size_t{0};
 
 	// Calculate the distance of end points to the line
 	const auto distance0 = b2Dot(normal, vIn[0].v) - offset;
@@ -224,8 +228,8 @@ int32 b2ClipSegmentToLine(std::array<b2ClipVertex, 2>& vOut, const std::array<b2
 	return numOut;
 }
 
-bool b2TestOverlap(	const b2Shape* shapeA, int32 indexA,
-					const b2Shape* shapeB, int32 indexB,
+bool b2TestOverlap(	const b2Shape& shapeA, b2ContactFeature::index_t indexA,
+					const b2Shape& shapeB, b2ContactFeature::index_t indexB,
 					const b2Transform& xfA, const b2Transform& xfB)
 {
 	b2DistanceInput input;
@@ -237,7 +241,7 @@ bool b2TestOverlap(	const b2Shape* shapeA, int32 indexA,
 
 	b2SimplexCache cache;
 	b2DistanceOutput output;
-	b2Distance(&output, &cache, &input);
+	b2Distance(&output, &cache, input);
 
 	return output.distance < (10.0f * b2_epsilon);
 }

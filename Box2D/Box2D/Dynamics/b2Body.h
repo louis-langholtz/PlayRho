@@ -112,6 +112,9 @@ struct b2BodyDef
 class b2Body
 {
 public:
+	using size_type = std::size_t;
+	using index_t = std::size_t;
+
 	/// Creates a fixture and attach it to this body. Use this function if you need
 	/// to set some fixture parameters, like friction. Otherwise you can create the
 	/// fixture directly from a shape.
@@ -428,12 +431,18 @@ private:
 
 	bool IsInIsland() const noexcept;
 	void SetInIsland(bool value) noexcept;
+	void SetInIsland() noexcept;
+	void UnsetInIsland() noexcept;
 
 	b2BodyType m_type;
 
 	uint16 m_flags = 0;
 
-	int32 m_islandIndex;
+	static constexpr index_t InvalidIslandIndex = static_cast<index_t>(-1);
+
+	index_t m_islandIndex = InvalidIslandIndex;
+	
+	bool IsValidIslandIndex() const noexcept;
 
 	b2Transform m_xf;		// the body origin transform
 	b2Sweep m_sweep;		// the swept motion for CCD
@@ -449,7 +458,7 @@ private:
 	b2Body* m_next = nullptr;
 
 	b2Fixture* m_fixtureList = nullptr;
-	int32 m_fixtureCount = 0;
+	size_type m_fixtureCount = 0;
 
 	b2JointEdge* m_jointList = nullptr;
 	b2ContactEdge* m_contactList = nullptr;
@@ -665,7 +674,7 @@ inline void b2Body::UnsetAwake() noexcept
 
 inline bool b2Body::IsAwake() const noexcept
 {
-	return (m_flags & e_awakeFlag) == e_awakeFlag;
+	return (m_flags & e_awakeFlag) != 0;
 }
 
 inline bool b2Body::IsActive() const noexcept
@@ -763,13 +772,13 @@ inline void b2Body::ApplyForce(const b2Vec2& force, const b2Vec2& point, bool wa
 		return;
 	}
 
-	if (wake && (m_flags & e_awakeFlag) == 0)
+	if (wake)
 	{
 		SetAwake();
 	}
 
 	// Don't accumulate a force if the body is sleeping.
-	if (m_flags & e_awakeFlag)
+	if (IsAwake())
 	{
 		m_force += force;
 		m_torque += b2Cross(point - m_sweep.c, force);
@@ -783,13 +792,13 @@ inline void b2Body::ApplyForceToCenter(const b2Vec2& force, bool wake) noexcept
 		return;
 	}
 
-	if (wake && (m_flags & e_awakeFlag) == 0)
+	if (wake)
 	{
 		SetAwake();
 	}
 
 	// Don't accumulate a force if the body is sleeping
-	if (m_flags & e_awakeFlag)
+	if (IsAwake())
 	{
 		m_force += force;
 	}
@@ -802,13 +811,13 @@ inline void b2Body::ApplyTorque(float32 torque, bool wake) noexcept
 		return;
 	}
 
-	if (wake && ((m_flags & e_awakeFlag) == 0))
+	if (wake)
 	{
 		SetAwake();
 	}
 
 	// Don't accumulate a force if the body is sleeping
-	if (m_flags & e_awakeFlag)
+	if (IsAwake())
 	{
 		m_torque += torque;
 	}
@@ -821,13 +830,13 @@ inline void b2Body::ApplyLinearImpulse(const b2Vec2& impulse, const b2Vec2& poin
 		return;
 	}
 
-	if (wake && (m_flags & e_awakeFlag) == 0)
+	if (wake)
 	{
 		SetAwake();
 	}
 
 	// Don't accumulate velocity if the body is sleeping
-	if (m_flags & e_awakeFlag)
+	if (IsAwake())
 	{
 		m_linearVelocity += m_invMass * impulse;
 		m_angularVelocity += m_invI * b2Cross(point - m_sweep.c, impulse);
@@ -841,13 +850,13 @@ inline void b2Body::ApplyAngularImpulse(float32 impulse, bool wake) noexcept
 		return;
 	}
 
-	if (wake && (m_flags & e_awakeFlag) == 0)
+	if (wake)
 	{
 		SetAwake();
 	}
 
 	// Don't accumulate velocity if the body is sleeping
-	if (m_flags & e_awakeFlag)
+	if (IsAwake())
 	{
 		m_angularVelocity += m_invI * impulse;
 	}
@@ -887,9 +896,24 @@ inline bool b2Body::IsInIsland() const noexcept
 inline void b2Body::SetInIsland(bool value) noexcept
 {
 	if (value)
-		m_flags |= b2Body::e_islandFlag;
+		SetInIsland();
 	else
-		m_flags &= ~b2Body::e_islandFlag;
+		UnsetInIsland();
+}
+
+inline void b2Body::SetInIsland() noexcept
+{
+	m_flags |= b2Body::e_islandFlag;
+}
+
+inline void b2Body::UnsetInIsland() noexcept
+{
+	m_flags &= ~b2Body::e_islandFlag;
+}
+
+inline bool b2Body::IsValidIslandIndex() const noexcept
+{
+	return IsInIsland() && (m_islandIndex != InvalidIslandIndex);
 }
 
 #endif

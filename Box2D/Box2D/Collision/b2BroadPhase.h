@@ -26,8 +26,9 @@
 
 struct b2Pair
 {
-	int32 proxyIdA;
-	int32 proxyIdB;
+	using size_type = std::size_t;
+	size_type proxyIdA;
+	size_type proxyIdB;
 };
 
 /// The broad-phase is used for computing pairs and performing volume queries and ray casts.
@@ -37,9 +38,11 @@ class b2BroadPhase
 {
 public:
 
-	enum
+	using size_type = std::size_t;
+
+	enum: size_type
 	{
-		e_nullProxy = -1
+		e_nullProxy = static_cast<size_type>(-1)
 	};
 
 	b2BroadPhase();
@@ -50,29 +53,29 @@ public:
 
 	/// Create a proxy with an initial AABB. Pairs are not reported until
 	/// UpdatePairs is called.
-	int32 CreateProxy(const b2AABB& aabb, void* userData);
+	size_type CreateProxy(const b2AABB& aabb, void* userData);
 
 	/// Destroy a proxy. It is up to the client to remove any pairs.
-	void DestroyProxy(int32 proxyId);
+	void DestroyProxy(size_type proxyId);
 
 	/// Call MoveProxy as many times as you like, then when you are done
 	/// call UpdatePairs to finalized the proxy pairs (for your time step).
-	void MoveProxy(int32 proxyId, const b2AABB& aabb, const b2Vec2& displacement);
+	void MoveProxy(size_type proxyId, const b2AABB& aabb, const b2Vec2& displacement);
 
 	/// Call to trigger a re-processing of it's pairs on the next call to UpdatePairs.
-	void TouchProxy(int32 proxyId);
+	void TouchProxy(size_type proxyId);
 
 	/// Get the fat AABB for a proxy.
-	const b2AABB& GetFatAABB(int32 proxyId) const;
+	const b2AABB& GetFatAABB(size_type proxyId) const;
 
 	/// Get user data from a proxy. Returns nullptr if the id is invalid.
-	void* GetUserData(int32 proxyId) const;
+	void* GetUserData(size_type proxyId) const;
 
 	/// Test overlap of fat AABBs.
-	bool TestOverlap(int32 proxyIdA, int32 proxyIdB) const;
+	bool TestOverlap(size_type proxyIdA, size_type proxyIdB) const;
 
 	/// Get the number of proxies.
-	int32 GetProxyCount() const noexcept;
+	size_type GetProxyCount() const noexcept;
 
 	/// Update the pairs. This results in pair callbacks. This can only add pairs.
 	template <typename T>
@@ -94,10 +97,10 @@ public:
 	void RayCast(T* callback, const b2RayCastInput& input) const;
 
 	/// Get the height of the embedded tree.
-	int32 GetTreeHeight() const noexcept;
+	size_type GetTreeHeight() const noexcept;
 
 	/// Get the balance of the embedded tree.
-	int32 GetTreeBalance() const;
+	size_type GetTreeBalance() const;
 
 	/// Get the quality metric of the embedded tree.
 	float32 GetTreeQuality() const;
@@ -111,27 +114,27 @@ private:
 
 	friend class b2DynamicTree;
 
-	void BufferMove(int32 proxyId);
-	void UnBufferMove(int32 proxyId);
+	void BufferMove(size_type proxyId);
+	void UnBufferMove(size_type proxyId);
 
-	bool QueryCallback(int32 proxyId);
+	bool QueryCallback(size_type proxyId);
 
 	b2DynamicTree m_tree;
 
-	int32 m_proxyCount = 0;
+	size_type m_proxyCount = 0;
 
-	int32 m_moveCapacity = 16;
-	int32 m_moveCount = 0;
+	size_type m_moveCapacity = 16;
+	size_type m_moveCount = 0;
 
-	int32 m_pairCapacity = 16;
-	int32 m_pairCount = 0;
+	size_type m_pairCapacity = 16;
+	size_type m_pairCount = 0;
 
 	/// Initialized on construction
-	int32* m_moveBuffer;
+	size_type* m_moveBuffer;
 	b2Pair* m_pairBuffer;
 
 	/// Assigned on calling UpdatePairs
-	int32 m_queryProxyId;
+	size_type m_queryProxyId;
 };
 
 /// This is used to sort pairs.
@@ -150,34 +153,34 @@ inline bool b2PairLessThan(const b2Pair& pair1, const b2Pair& pair2) noexcept
 	return false;
 }
 
-inline void* b2BroadPhase::GetUserData(int32 proxyId) const
+inline void* b2BroadPhase::GetUserData(size_type proxyId) const
 {
 	return m_tree.GetUserData(proxyId);
 }
 
-inline bool b2BroadPhase::TestOverlap(int32 proxyIdA, int32 proxyIdB) const
+inline bool b2BroadPhase::TestOverlap(size_type proxyIdA, size_type proxyIdB) const
 {
 	const b2AABB& aabbA = m_tree.GetFatAABB(proxyIdA);
 	const b2AABB& aabbB = m_tree.GetFatAABB(proxyIdB);
 	return b2TestOverlap(aabbA, aabbB);
 }
 
-inline const b2AABB& b2BroadPhase::GetFatAABB(int32 proxyId) const
+inline const b2AABB& b2BroadPhase::GetFatAABB(size_type proxyId) const
 {
 	return m_tree.GetFatAABB(proxyId);
 }
 
-inline int32 b2BroadPhase::GetProxyCount() const noexcept
+inline b2BroadPhase::size_type b2BroadPhase::GetProxyCount() const noexcept
 {
 	return m_proxyCount;
 }
 
-inline int32 b2BroadPhase::GetTreeHeight() const noexcept
+inline b2BroadPhase::size_type b2BroadPhase::GetTreeHeight() const noexcept
 {
 	return m_tree.GetHeight();
 }
 
-inline int32 b2BroadPhase::GetTreeBalance() const
+inline b2BroadPhase::size_type b2BroadPhase::GetTreeBalance() const
 {
 	return m_tree.GetMaxBalance();
 }

@@ -22,7 +22,6 @@
 #include <Box2D/Dynamics/b2Island.h>
 #include <Box2D/Dynamics/Joints/b2PulleyJoint.h>
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
-#include <Box2D/Dynamics/Contacts/b2ContactSolver.h>
 #include <Box2D/Collision/b2Collision.h>
 #include <Box2D/Collision/b2BroadPhase.h>
 #include <Box2D/Collision/Shapes/b2CircleShape.h>
@@ -410,7 +409,7 @@ void b2World::Solve(const b2TimeStep& step)
 	// Clear all the island flags.
 	for (auto b = m_bodyList; b; b = b->GetNext())
 	{
-		b->SetInIsland(false);
+		b->UnsetInIsland();
 	}
 	for (auto c = m_contactManager.GetContactList(); c; c = c->GetNext())
 	{
@@ -444,9 +443,9 @@ void b2World::Solve(const b2TimeStep& step)
 
 		// Reset island and stack.
 		island.Clear();
-		auto stackCount = int32{0};
+		auto stackCount = size_type{0};
 		stack[stackCount++] = seed;
-		seed->SetInIsland(true);
+		seed->SetInIsland();
 
 		// Perform a depth first search (DFS) on the constraint graph.
 		while (stackCount > 0)
@@ -502,7 +501,7 @@ void b2World::Solve(const b2TimeStep& step)
 
 				b2Assert(stackCount < stackSize);
 				stack[stackCount++] = other;
-				other->SetInIsland(true);
+				other->SetInIsland();
 			}
 
 			// Search all joints connect to this body.
@@ -531,7 +530,7 @@ void b2World::Solve(const b2TimeStep& step)
 
 				b2Assert(stackCount < stackSize);
 				stack[stackCount++] = other;
-				other->SetInIsland(true);
+				other->SetInIsland();
 			}
 		}
 
@@ -546,9 +545,10 @@ void b2World::Solve(const b2TimeStep& step)
 		{
 			// Allow static bodies to participate in other islands.
 			auto b = island.GetBody(i);
-			if (b->GetType() == b2_staticBody)
+			// if (b->GetType() == b2_staticBody) XXX
+			if (b->GetType() != b2_dynamicBody)
 			{
-				b->SetInIsland(false);
+				b->UnsetInIsland();
 			}
 		}
 	}
@@ -561,7 +561,7 @@ void b2World::Solve(const b2TimeStep& step)
 		for (auto b = m_bodyList; b; b = b->GetNext())
 		{
 			// If a body was not in an island then it did not move.
-			if ((b->IsInIsland()) == 0)
+			if (!(b->IsInIsland()))
 			{
 				continue;
 			}
@@ -590,7 +590,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 	{
 		for (auto b = m_bodyList; b; b = b->m_next)
 		{
-			b->SetInIsland(false);
+			b->UnsetInIsland();
 			b->m_sweep.alpha0 = 0.0f;
 		}
 
@@ -607,7 +607,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 	for (;;)
 	{
 		// Find the first TOI.
-		b2Contact* minContact = nullptr;
+		auto minContact = static_cast<b2Contact*>(nullptr);
 		auto minAlpha = 1.0f;
 
 		for (auto c = m_contactManager.GetContactList(); c; c = c->m_next)
@@ -688,14 +688,14 @@ void b2World::SolveTOI(const b2TimeStep& step)
 
 				// Compute the time of impact in interval [0, minTOI]
 				b2TOIInput input;
-				input.proxyA.Set(fA->GetShape(), indexA);
-				input.proxyB.Set(fB->GetShape(), indexB);
+				input.proxyA.Set(*fA->GetShape(), indexA);
+				input.proxyB.Set(*fB->GetShape(), indexB);
 				input.sweepA = bA->m_sweep;
 				input.sweepB = bB->m_sweep;
 				input.tMax = 1.0f;
 
 				b2TOIOutput output;
-				b2TimeOfImpact(&output, &input);
+				b2TimeOfImpact(output, input);
 
 				// Beta is the fraction of the remaining portion of the .
 				const auto beta = output.t;
@@ -704,7 +704,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 				c->SetToi(alpha);
 			}
 
-			if (alpha < minAlpha)
+			if (minAlpha > alpha)
 			{
 				// This is the minimum TOI found so far.
 				minContact = c;
@@ -712,7 +712,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 			}
 		}
 
-		if ((minContact == nullptr) || (1.0f - 10.0f * b2_epsilon < minAlpha))
+		if ((minContact == nullptr) || (minAlpha > (1.0f - (10.0f * b2_epsilon))))
 		{
 			// No more TOI events. Done!
 			m_stepComplete = true;
@@ -753,12 +753,14 @@ void b2World::SolveTOI(const b2TimeStep& step)
 
 		// Build the island
 		island.Clear();
-		island.Add(bA);
-		island.Add(bB);
-		island.Add(minContact);
 
-		bA->SetInIsland(true);
-		bB->SetInIsland(true);
+		island.Add(bA);
+		bA->SetInIsland();
+		
+		island.Add(bB);
+		bB->SetInIsland();
+
+		island.Add(minContact);
 		minContact->SetInIsland();
 
 		// Get contacts on bodyA and bodyB.
@@ -803,7 +805,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 
 					// Tentatively advance the body to the TOI.
 					const auto backup = other->m_sweep;
-					if ((other->IsInIsland()) == 0)
+					if (!other->IsInIsland())
 					{
 						other->Advance(minAlpha);
 					}
@@ -838,7 +840,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 					}
 					
 					// Add the other body to the island.
-					other->SetInIsland(true);
+					other->SetInIsland();
 
 					if (other->m_type != b2_staticBody)
 					{
@@ -863,7 +865,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 		for (auto i = decltype(island.GetBodyCount()){0}; i < island.GetBodyCount(); ++i)
 		{
 			auto body = island.GetBody(i);
-			body->SetInIsland(false);
+			body->UnsetInIsland();
 
 			if (body->m_type != b2_dynamicBody)
 			{
@@ -897,13 +899,13 @@ void b2World::Step(float32 dt, int32 velocityIterations, int32 positionIteration
 	b2Timer stepTimer;
 
 	// If new fixtures were added, we need to find the new contacts.
-	if (m_flags & e_newFixture)
+	if (HasNewFixtures())
 	{
 		m_contactManager.FindNewContacts();
-		m_flags &= ~e_newFixture;
+		UnsetNewFixtures();
 	}
 
-	b2Assert((m_flags & e_locked) == 0);
+	b2Assert(!IsLocked());
 	b2FlagGuard<decltype(m_flags)> flagGaurd(m_flags, e_locked);
 
 	b2TimeStep step;
@@ -942,7 +944,7 @@ void b2World::Step(float32 dt, int32 velocityIterations, int32 positionIteration
 		m_inv_dt0 = step.inv_dt;
 	}
 
-	if (m_flags & e_clearForces)
+	if (GetAutoClearForces())
 	{
 		ClearForces();
 	}
@@ -961,7 +963,9 @@ void b2World::ClearForces() noexcept
 
 struct b2WorldQueryWrapper
 {
-	bool QueryCallback(int32 proxyId)
+	using size_type = b2BroadPhase::size_type;
+
+	bool QueryCallback(size_type proxyId)
 	{
 		const auto proxy = static_cast<b2FixtureProxy*>(broadPhase->GetUserData(proxyId));
 		return callback->ReportFixture(proxy->fixture);
@@ -981,7 +985,9 @@ void b2World::QueryAABB(b2QueryCallback* callback, const b2AABB& aabb) const
 
 struct b2WorldRayCastWrapper
 {
-	float32 RayCastCallback(const b2RayCastInput& input, int32 proxyId)
+	using size_type = b2BroadPhase::size_type;
+
+	float32 RayCastCallback(const b2RayCastInput& input, size_type proxyId)
 	{
 		auto userData = broadPhase->GetUserData(proxyId);
 		const auto proxy = static_cast<b2FixtureProxy*>(userData);
@@ -1215,17 +1221,17 @@ void b2World::DrawDebugData()
 	}
 }
 
-int32 b2World::GetProxyCount() const noexcept
+b2World::size_type b2World::GetProxyCount() const noexcept
 {
 	return m_contactManager.m_broadPhase.GetProxyCount();
 }
 
-int32 b2World::GetTreeHeight() const noexcept
+b2World::size_type b2World::GetTreeHeight() const noexcept
 {
 	return m_contactManager.m_broadPhase.GetTreeHeight();
 }
 
-int32 b2World::GetTreeBalance() const
+b2World::size_type b2World::GetTreeBalance() const
 {
 	return m_contactManager.m_broadPhase.GetTreeBalance();
 }
@@ -1237,8 +1243,8 @@ float32 b2World::GetTreeQuality() const
 
 void b2World::ShiftOrigin(const b2Vec2& newOrigin)
 {
-	b2Assert((m_flags & e_locked) == 0);
-	if ((m_flags & e_locked) == e_locked)
+	b2Assert(!IsLocked());
+	if (IsLocked())
 	{
 		return;
 	}
@@ -1260,7 +1266,7 @@ void b2World::ShiftOrigin(const b2Vec2& newOrigin)
 
 void b2World::Dump()
 {
-	if ((m_flags & e_locked) == e_locked)
+	if (IsLocked())
 	{
 		return;
 	}
@@ -1270,7 +1276,7 @@ void b2World::Dump()
 
 	b2Log("b2Body** bodies = (b2Body**)b2Alloc(%d * sizeof(b2Body*));\n", m_bodyCount);
 	b2Log("b2Joint** joints = (b2Joint**)b2Alloc(%d * sizeof(b2Joint*));\n", m_jointCount);
-	auto i = int32{0};
+	auto i = size_type{0};
 	for (auto b = m_bodyList; b; b = b->m_next)
 	{
 		b->m_islandIndex = i;

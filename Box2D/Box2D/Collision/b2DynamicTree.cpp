@@ -28,10 +28,10 @@ b2DynamicTree::b2DynamicTree():
 	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity - 1; ++i)
 	{
 		m_nodes[i].next = i + 1;
-		m_nodes[i].height = -1;
+		m_nodes[i].height = b2_nullNode;
 	}
 	m_nodes[m_nodeCapacity-1].next = b2_nullNode;
-	m_nodes[m_nodeCapacity-1].height = -1;
+	m_nodes[m_nodeCapacity-1].height = b2_nullNode;
 }
 
 b2DynamicTree::~b2DynamicTree()
@@ -41,7 +41,7 @@ b2DynamicTree::~b2DynamicTree()
 }
 
 // Allocate a node from the pool. Grow the pool if necessary.
-int32 b2DynamicTree::AllocateNode()
+b2DynamicTree::size_type b2DynamicTree::AllocateNode()
 {
 	// Expand the node pool as needed.
 	if (m_freeList == b2_nullNode)
@@ -57,10 +57,10 @@ int32 b2DynamicTree::AllocateNode()
 		for (auto i = m_nodeCount; i < m_nodeCapacity - 1; ++i)
 		{
 			m_nodes[i].next = i + 1;
-			m_nodes[i].height = -1;
+			m_nodes[i].height = b2_nullNode;
 		}
 		m_nodes[m_nodeCapacity-1].next = b2_nullNode;
-		m_nodes[m_nodeCapacity-1].height = -1;
+		m_nodes[m_nodeCapacity-1].height = b2_nullNode;
 		m_freeList = m_nodeCount;
 	}
 
@@ -77,12 +77,12 @@ int32 b2DynamicTree::AllocateNode()
 }
 
 // Return a node to the pool.
-void b2DynamicTree::FreeNode(int32 nodeId)
+void b2DynamicTree::FreeNode(size_type nodeId)
 {
-	b2Assert(0 <= nodeId && nodeId < m_nodeCapacity);
-	b2Assert(0 < m_nodeCount);
+	b2Assert(nodeId < m_nodeCapacity);
+	b2Assert(m_nodeCount > 0);
 	m_nodes[nodeId].next = m_freeList;
-	m_nodes[nodeId].height = -1;
+	m_nodes[nodeId].height = b2_nullNode;
 	m_freeList = nodeId;
 	--m_nodeCount;
 }
@@ -90,7 +90,7 @@ void b2DynamicTree::FreeNode(int32 nodeId)
 // Create a proxy in the tree as a leaf node. We return the index
 // of the node instead of a pointer so that we can grow
 // the node pool.
-int32 b2DynamicTree::CreateProxy(const b2AABB& aabb, void* userData)
+b2DynamicTree::size_type b2DynamicTree::CreateProxy(const b2AABB& aabb, void* userData)
 {
 	const auto proxyId = AllocateNode();
 
@@ -106,7 +106,7 @@ int32 b2DynamicTree::CreateProxy(const b2AABB& aabb, void* userData)
 	return proxyId;
 }
 
-void b2DynamicTree::DestroyProxy(int32 proxyId)
+void b2DynamicTree::DestroyProxy(size_type proxyId)
 {
 	b2Assert(0 <= proxyId && proxyId < m_nodeCapacity);
 	b2Assert(m_nodes[proxyId].IsLeaf());
@@ -115,7 +115,7 @@ void b2DynamicTree::DestroyProxy(int32 proxyId)
 	FreeNode(proxyId);
 }
 
-bool b2DynamicTree::MoveProxy(int32 proxyId, const b2AABB& aabb, const b2Vec2& displacement)
+bool b2DynamicTree::MoveProxy(size_type proxyId, const b2AABB& aabb, const b2Vec2& displacement)
 {
 	b2Assert(0 <= proxyId && proxyId < m_nodeCapacity);
 
@@ -161,7 +161,7 @@ bool b2DynamicTree::MoveProxy(int32 proxyId, const b2AABB& aabb, const b2Vec2& d
 	return true;
 }
 
-void b2DynamicTree::InsertLeaf(int32 leaf)
+void b2DynamicTree::InsertLeaf(size_type leaf)
 {
 	++m_insertionCount;
 
@@ -301,7 +301,7 @@ void b2DynamicTree::InsertLeaf(int32 leaf)
 	//Validate();
 }
 
-void b2DynamicTree::RemoveLeaf(int32 leaf)
+void b2DynamicTree::RemoveLeaf(size_type leaf)
 {
 	if (leaf == m_root)
 	{
@@ -333,8 +333,8 @@ void b2DynamicTree::RemoveLeaf(int32 leaf)
 		{
 			index = Balance(index);
 
-			int32 child1 = m_nodes[index].child1;
-			int32 child2 = m_nodes[index].child2;
+			const auto child1 = m_nodes[index].child1;
+			const auto child2 = m_nodes[index].child2;
 
 			m_nodes[index].aabb.Combine(m_nodes[child1].aabb, m_nodes[child2].aabb);
 			m_nodes[index].height = 1 + b2Max(m_nodes[child1].height, m_nodes[child2].height);
@@ -354,7 +354,7 @@ void b2DynamicTree::RemoveLeaf(int32 leaf)
 
 // Perform a left or right rotation if node A is imbalanced.
 // Returns the new root index.
-int32 b2DynamicTree::Balance(int32 iA)
+b2DynamicTree::size_type b2DynamicTree::Balance(size_type iA)
 {
 	b2Assert(iA != b2_nullNode);
 
@@ -366,16 +366,14 @@ int32 b2DynamicTree::Balance(int32 iA)
 
 	const auto iB = A->child1;
 	const auto iC = A->child2;
-	b2Assert((0 <= iB) && (iB < m_nodeCapacity));
-	b2Assert((0 <= iC) && (iC < m_nodeCapacity));
+	b2Assert(iB < m_nodeCapacity);
+	b2Assert(iC < m_nodeCapacity);
 
 	auto B = m_nodes + iB;
 	auto C = m_nodes + iC;
 
-	const auto balance = C->height - B->height;
-
 	// Rotate C up
-	if (balance > 1)
+	if (C->height > B->height + 1)
 	{
 		const auto iF = C->child1;
 		const auto iG = C->child2;
@@ -435,7 +433,7 @@ int32 b2DynamicTree::Balance(int32 iA)
 	}
 	
 	// Rotate B up
-	if (balance < -1)
+	if (B->height > C->height + 1)
 	{
 		const auto iD = B->child1;
 		const auto iE = B->child2;
@@ -497,7 +495,7 @@ int32 b2DynamicTree::Balance(int32 iA)
 	return iA;
 }
 
-int32 b2DynamicTree::GetHeight() const noexcept
+b2DynamicTree::size_type b2DynamicTree::GetHeight() const noexcept
 {
 	if (m_root == b2_nullNode)
 	{
@@ -522,7 +520,7 @@ float32 b2DynamicTree::GetAreaRatio() const
 	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
 	{
 		const auto node = m_nodes + i;
-		if (node->height < 0)
+		if (node->height == b2_nullNode)
 		{
 			// Free node in pool
 			continue;
@@ -535,7 +533,7 @@ float32 b2DynamicTree::GetAreaRatio() const
 }
 
 // Compute the height of a sub-tree.
-int32 b2DynamicTree::ComputeHeight(int32 nodeId) const
+b2DynamicTree::size_type b2DynamicTree::ComputeHeight(size_type nodeId) const
 {
 	b2Assert(0 <= nodeId && nodeId < m_nodeCapacity);
 	auto node = m_nodes + nodeId;
@@ -550,12 +548,12 @@ int32 b2DynamicTree::ComputeHeight(int32 nodeId) const
 	return 1 + b2Max(height1, height2);
 }
 
-int32 b2DynamicTree::ComputeHeight() const
+b2DynamicTree::size_type b2DynamicTree::ComputeHeight() const
 {
 	return ComputeHeight(m_root);
 }
 
-void b2DynamicTree::ValidateStructure(int32 index) const
+void b2DynamicTree::ValidateStructure(size_type index) const
 {
 	if (index == b2_nullNode)
 	{
@@ -590,7 +588,7 @@ void b2DynamicTree::ValidateStructure(int32 index) const
 	ValidateStructure(child2);
 }
 
-void b2DynamicTree::ValidateMetrics(int32 index) const
+void b2DynamicTree::ValidateMetrics(size_type index) const
 {
 	if (index == b2_nullNode)
 	{
@@ -633,7 +631,7 @@ void b2DynamicTree::Validate() const
 	ValidateStructure(m_root);
 	ValidateMetrics(m_root);
 
-	auto freeCount = int32{0};
+	auto freeCount = size_type{0};
 	auto freeIndex = m_freeList;
 	while (freeIndex != b2_nullNode)
 	{
@@ -647,9 +645,9 @@ void b2DynamicTree::Validate() const
 	b2Assert(m_nodeCount + freeCount == m_nodeCapacity);
 }
 
-int32 b2DynamicTree::GetMaxBalance() const
+b2DynamicTree::size_type b2DynamicTree::GetMaxBalance() const
 {
-	auto maxBalance = int32{0};
+	auto maxBalance = size_type{0};
 	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
 	{
 		const auto node = m_nodes + i;
@@ -671,13 +669,13 @@ int32 b2DynamicTree::GetMaxBalance() const
 
 void b2DynamicTree::RebuildBottomUp()
 {
-	auto nodes = static_cast<int32*>(b2Alloc(m_nodeCount * sizeof(int32)));
-	auto count = int32{0};
+	auto nodes = static_cast<size_type*>(b2Alloc(m_nodeCount * sizeof(size_type)));
+	auto count = size_type{0};
 
 	// Build array of leaves. Free the rest.
 	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
 	{
-		if (m_nodes[i].height < 0)
+		if (m_nodes[i].height == b2_nullNode)
 		{
 			// free node in pool
 			continue;
@@ -698,15 +696,15 @@ void b2DynamicTree::RebuildBottomUp()
 	while (count > 1)
 	{
 		auto minCost = b2_maxFloat;
-		auto iMin = decltype(count){-1};
-		auto jMin = decltype(count){-1};
+		auto iMin = b2_nullNode;
+		auto jMin = b2_nullNode;
 		for (auto i = decltype(count){0}; i < count; ++i)
 		{
-			auto aabbi = m_nodes[nodes[i]].aabb;
+			const auto& aabbi = m_nodes[nodes[i]].aabb;
 
 			for (auto j = i + 1; j < count; ++j)
 			{
-				const auto aabbj = m_nodes[nodes[j]].aabb;
+				const auto& aabbj = m_nodes[nodes[j]].aabb;
 				b2AABB b;
 				b.Combine(aabbi, aabbj);
 				const auto cost = b.GetPerimeter();
@@ -718,6 +716,8 @@ void b2DynamicTree::RebuildBottomUp()
 				}
 			}
 		}
+
+		b2Assert(iMin < m_nodeCount && jMin < m_nodeCount);
 
 		const auto index1 = nodes[iMin];
 		const auto index2 = nodes[jMin];

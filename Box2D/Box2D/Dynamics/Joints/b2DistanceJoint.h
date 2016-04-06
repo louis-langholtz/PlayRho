@@ -114,8 +114,8 @@ protected:
 	float32 m_length;
 
 	// Solver temp
-	int32 m_indexA;
-	int32 m_indexB;
+	index_t m_indexA;
+	index_t m_indexB;
 	b2Vec2 m_u;
 	b2Vec2 m_rA;
 	b2Vec2 m_rB;

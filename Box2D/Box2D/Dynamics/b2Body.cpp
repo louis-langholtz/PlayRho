@@ -49,17 +49,15 @@ uint16 b2Body::GetFlags(const b2BodyDef& bd) noexcept
 }
 
 b2Body::b2Body(const b2BodyDef* bd, b2World* world):
-	m_type(bd->type), m_flags(GetFlags(*bd)), m_world(world)
+	m_type(bd->type), m_flags(GetFlags(*bd)), m_xf(bd->position, b2Rot(bd->angle)), m_world(world),
+	m_linearVelocity(bd->linearVelocity), m_angularVelocity(bd->angularVelocity)
 {
 	b2Assert(bd->position.IsValid());
 	b2Assert(bd->linearVelocity.IsValid());
 	b2Assert(b2IsValid(bd->angle));
 	b2Assert(b2IsValid(bd->angularVelocity));
-	b2Assert(b2IsValid(bd->angularDamping) && bd->angularDamping >= 0.0f);
-	b2Assert(b2IsValid(bd->linearDamping) && bd->linearDamping >= 0.0f);
-
-	m_xf.p = bd->position;
-	m_xf.q = b2Rot(bd->angle);
+	b2Assert(b2IsValid(bd->angularDamping) && (bd->angularDamping >= 0.0f));
+	b2Assert(b2IsValid(bd->linearDamping) && (bd->linearDamping >= 0.0f));
 
 	m_sweep.localCenter.SetZero();
 	m_sweep.c0 = m_xf.p;
@@ -67,9 +65,6 @@ b2Body::b2Body(const b2BodyDef* bd, b2World* world):
 	m_sweep.a0 = bd->angle;
 	m_sweep.a = bd->angle;
 	m_sweep.alpha0 = 0.0f;
-
-	m_linearVelocity = bd->linearVelocity;
-	m_angularVelocity = bd->angularVelocity;
 
 	m_linearDamping = bd->linearDamping;
 	m_angularDamping = bd->angularDamping;
@@ -184,7 +179,7 @@ b2Fixture* b2Body::CreateFixture(const b2FixtureDef* def)
 
 	// Let the world know we have a new fixture. This will cause new contacts
 	// to be created at the beginning of the next time step.
-	m_world->m_flags |= b2World::e_newFixture;
+	m_world->SetNewFixtures();
 
 	return fixture;
 }
@@ -408,8 +403,7 @@ void b2Body::SetTransform(const b2Vec2& position, float32 angle)
 		return;
 	}
 
-	m_xf.q = b2Rot(angle);
-	m_xf.p = position;
+	m_xf = b2Transform{position, b2Rot(angle)};
 
 	m_sweep.c = b2Mul(m_xf, m_sweep.localCenter);
 	m_sweep.a = angle;
@@ -426,10 +420,8 @@ void b2Body::SetTransform(const b2Vec2& position, float32 angle)
 
 void b2Body::SynchronizeFixtures()
 {
-	b2Transform xf1;
-	xf1.q = b2Rot(m_sweep.a0);
-	xf1.p = m_sweep.c0 - b2Mul(xf1.q, m_sweep.localCenter);
-
+	const auto rot = b2Rot(m_sweep.a0);
+	const auto xf1 = b2Transform(m_sweep.c0 - b2Mul(rot, m_sweep.localCenter), rot);
 	auto broadPhase = &m_world->m_contactManager.m_broadPhase;
 	for (auto f = m_fixtureList; f; f = f->m_next)
 	{

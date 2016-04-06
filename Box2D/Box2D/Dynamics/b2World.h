@@ -43,6 +43,8 @@ class b2Joint;
 class b2World
 {
 public:
+	using size_type = std::size_t;
+
 	/// Construct a world object.
 	/// @param gravity the world gravity vector.
 	b2World(const b2Vec2& gravity);
@@ -163,22 +165,22 @@ public:
 	bool GetSubStepping() const noexcept { return m_subStepping; }
 
 	/// Get the number of broad-phase proxies.
-	int32 GetProxyCount() const noexcept;
+	size_type GetProxyCount() const noexcept;
 
 	/// Get the number of bodies.
-	int32 GetBodyCount() const noexcept;
+	size_type GetBodyCount() const noexcept;
 
 	/// Get the number of joints.
-	int32 GetJointCount() const noexcept;
+	size_type GetJointCount() const noexcept;
 
 	/// Get the number of contacts (each may have 0 or more contact points).
-	int32 GetContactCount() const noexcept;
+	size_type GetContactCount() const noexcept;
 
 	/// Get the height of the dynamic tree.
-	int32 GetTreeHeight() const noexcept;
+	size_type GetTreeHeight() const noexcept;
 
 	/// Get the balance of the dynamic tree.
-	int32 GetTreeBalance() const;
+	size_type GetTreeBalance() const;
 
 	/// Get the quality metric of the dynamic tree. The smaller the better.
 	/// The minimum is 1.
@@ -237,16 +239,22 @@ private:
 
 	b2BlockAllocator m_blockAllocator;
 	b2StackAllocator m_stackAllocator;
+	b2ContactFilter m_defaultFilter;
+	b2ContactListener m_defaultListener;
 
 	uint32 m_flags = e_clearForces;
+	
+	bool HasNewFixtures() const noexcept { return (m_flags & e_newFixture) != 0; }
+	void SetNewFixtures() noexcept { m_flags |= b2World::e_newFixture; }
+	void UnsetNewFixtures() noexcept { m_flags &= ~e_newFixture; }
 
-	b2ContactManager m_contactManager{&m_blockAllocator};
+	b2ContactManager m_contactManager{&m_blockAllocator, &m_defaultFilter, &m_defaultListener};
 
 	b2Body* m_bodyList = nullptr;
 	b2Joint* m_jointList = nullptr;
 
-	int32 m_bodyCount = 0;
-	int32 m_jointCount = 0;
+	size_type m_bodyCount = 0;
+	size_type m_jointCount = 0;
 
 	b2Vec2 m_gravity;
 	bool m_allowSleep = true;
@@ -308,17 +316,17 @@ inline const b2Contact* b2World::GetContactList() const noexcept
 	return m_contactManager.GetContactList();
 }
 
-inline int32 b2World::GetBodyCount() const noexcept
+inline b2World::size_type b2World::GetBodyCount() const noexcept
 {
 	return m_bodyCount;
 }
 
-inline int32 b2World::GetJointCount() const noexcept
+inline b2World::size_type b2World::GetJointCount() const noexcept
 {
 	return m_jointCount;
 }
 
-inline int32 b2World::GetContactCount() const noexcept
+inline b2World::size_type b2World::GetContactCount() const noexcept
 {
 	return m_contactManager.GetContactCount();
 }
@@ -353,7 +361,7 @@ inline void b2World::SetAutoClearForces(bool flag) noexcept
 /// Get the flag that controls automatic clearing of forces after each time step.
 inline bool b2World::GetAutoClearForces() const noexcept
 {
-	return (m_flags & e_clearForces) == e_clearForces;
+	return (m_flags & e_clearForces) != 0;
 }
 
 inline const b2ContactManager& b2World::GetContactManager() const noexcept

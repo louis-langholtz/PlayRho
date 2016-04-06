@@ -55,15 +55,15 @@ public:
 		//sweepB.a -= 300.0f * b2_pi;
 
 		b2TOIInput input;
-		input.proxyA.Set(&m_shapeA, 0);
-		input.proxyB.Set(&m_shapeB, 0);
+		input.proxyA.Set(m_shapeA, 0);
+		input.proxyB.Set(m_shapeB, 0);
 		input.sweepA = sweepA;
 		input.sweepB = sweepB;
 		input.tMax = 1.0f;
 
 		b2TOIOutput output;
 
-		b2TimeOfImpact(&output, &input);
+		b2TimeOfImpact(output, input);
 
 		g_debugDraw.DrawString(5, m_textLine, "toi = %g", output.t);
 		m_textLine += DRAW_STRING_NEW_LINE;

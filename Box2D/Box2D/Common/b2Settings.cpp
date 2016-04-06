@@ -24,13 +24,15 @@
 b2Version b2_version = {2, 3, 2};
 
 // Memory allocators. Modify these to use your own allocator.
-void* b2Alloc(int32 size)
+void* b2Alloc(std::size_t size)
 {
+	b2Assert(size >= 0);
 	return std::malloc(size);
 }
 
-void* b2Realloc(void* ptr, int32 new_size)
+void* b2Realloc(void* ptr, std::size_t new_size)
 {
+	b2Assert(new_size >= 0);
 	return std::realloc(ptr, new_size);
 }
 

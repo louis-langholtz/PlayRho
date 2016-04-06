@@ -21,13 +21,15 @@
 
 #include <Box2D/Common/b2Settings.h>
 
-constexpr int32 b2_stackSize = 100 * 1024;	// 100k
-constexpr int32 b2_maxStackEntries = 32;
+constexpr auto b2_stackSize = std::size_t{100 * 1024};	// 100k
+constexpr auto b2_maxStackEntries = std::size_t{32};
 
 struct b2StackEntry
 {
+	using size_type = std::size_t;
+
 	char* data;
-	int32 size;
+	size_type size;
 	bool usedMalloc;
 };
 
@@ -37,24 +39,29 @@ struct b2StackEntry
 class b2StackAllocator
 {
 public:
+	using size_type = std::size_t;
+
 	b2StackAllocator();
 	~b2StackAllocator();
 
-	void* Allocate(int32 size);
+	void* Allocate(size_type size);
 	void Free(void* p);
 
-	int32 GetMaxAllocation() const noexcept;
+	size_type GetMaxAllocation() const noexcept
+	{
+		return m_maxAllocation;
+	}
 
 private:
 
 	char m_data[b2_stackSize];
-	int32 m_index = 0;
+	size_type m_index = 0;
 
-	int32 m_allocation = 0;
-	int32 m_maxAllocation = 0;
+	size_type m_allocation = 0;
+	size_type m_maxAllocation = 0;
 
 	b2StackEntry m_entries[b2_maxStackEntries];
-	int32 m_entryCount = 0;
+	size_type m_entryCount = 0;
 };
 
 #endif

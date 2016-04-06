@@ -35,6 +35,7 @@ using uint16 = unsigned short;
 using uint32 = unsigned int;
 using float32 = float;
 using float64 = double;
+//using size_type = std::size_t;
 
 constexpr auto b2_maxFloat = std::numeric_limits<float32>::max(); // FLT_MAX;
 constexpr auto b2_epsilon = std::numeric_limits<float32>::epsilon(); // FLT_EPSILON;
@@ -48,16 +49,16 @@ constexpr auto b2_pi = 3.14159265359f;
 
 /// The maximum number of contact points between two convex shapes. Do
 /// not change this value.
-constexpr auto b2_maxManifoldPoints = int32{2};
+constexpr auto b2_maxManifoldPoints = std::size_t{2};
 
 /// The maximum number of vertices on a convex polygon. You cannot increase
 /// this too much because b2BlockAllocator has a maximum object size.
-constexpr auto b2_maxPolygonVertices = int32{8};
+constexpr auto b2_maxPolygonVertices = int32{16}; // 8
 
 /// This is used to fatten AABBs in the dynamic tree. This allows proxies
 /// to move by a small amount without triggering a tree adjustment.
 /// This is in meters.
-constexpr auto b2_aabbExtension = float32{0.1f};
+constexpr auto b2_aabbExtension = float32{0.001f}; // float32{0.1f};
 
 /// This is used to fatten AABBs in the dynamic tree. This is used to predict
 /// the future position based on the current displacement.
@@ -66,11 +67,11 @@ constexpr auto b2_aabbMultiplier = float32{2.0f};
 
 /// A small length used as a collision and constraint tolerance. Usually it is
 /// chosen to be numerically significant, but visually insignificant.
-constexpr auto b2_linearSlop = float32{0.005f};
+constexpr auto b2_linearSlop = float32{0.00005f}; // float32{0.005f};
 
 /// A small angle used as a collision and constraint tolerance. Usually it is
 /// chosen to be numerically significant, but visually insignificant.
-constexpr auto b2_angularSlop = float32{2.0f / 180.0f * b2_pi};
+constexpr auto b2_angularSlop = float32{b2_pi * 2.0f / 180.0f};
 
 /// The radius of the polygon/edge shape skin. This should not be modified. Making
 /// this smaller means polygons will have an insufficient buffer for continuous collision.
@@ -78,8 +79,10 @@ constexpr auto b2_angularSlop = float32{2.0f / 180.0f * b2_pi};
 constexpr auto b2_polygonRadius = float32{2.0f * b2_linearSlop};
 
 /// Maximum number of sub-steps per contact in continuous physics simulation.
-constexpr auto b2_maxSubSteps = int32{8};
+constexpr auto b2_maxSubSteps = int32{8}; // often hit but no apparent help against tunneling
 
+constexpr auto b2_maxTOIIterations = int32{20};
+constexpr auto b2_maxTOIRootIterCount = int32{50};
 
 // Dynamics
 
@@ -88,11 +91,11 @@ constexpr auto b2_maxTOIContacts = int32{32};
 
 /// A velocity threshold for elastic collisions. Any collision with a relative linear
 /// velocity below this threshold will be treated as inelastic.
-constexpr auto b2_velocityThreshold = float32{1.0f};
+constexpr auto b2_velocityThreshold = float32{0.8f}; // float32{1.0f};
 
 /// The maximum linear position correction used when solving constraints. This helps to
 /// prevent overshoot.
-constexpr auto b2_maxLinearCorrection = float32{0.2f};
+constexpr auto b2_maxLinearCorrection = b2_linearSlop * 40; // float32{0.2f};
 
 /// The maximum angular position correction used when solving constraints. This helps to
 /// prevent overshoot.
@@ -111,7 +114,7 @@ constexpr auto b2_maxRotationSquared = float32{b2_maxRotation * b2_maxRotation};
 /// This scale factor controls how fast overlap is resolved. Ideally this would be 1 so
 /// that overlap is removed in one time step. However using values close to 1 often lead
 /// to overshoot.
-constexpr auto b2_baumgarte = float32{0.2f};
+constexpr auto b2_baumgarte = float32{0.6f}; // float32{0.2f};
 constexpr auto b2_toiBaugarte = float32{0.75f};
 
 
@@ -129,10 +132,10 @@ constexpr auto b2_angularSleepTolerance = float32{2.0f / 180.0f * b2_pi};
 // Memory Allocation
 
 /// Implement this function to use your own memory allocator.
-void* b2Alloc(int32 size);
+void* b2Alloc(std::size_t size);
 
 /// Implement this function to use your own memory allocator.
-void* b2Realloc(void* ptr, int32 new_size);
+void* b2Realloc(void* ptr, std::size_t new_size);
 
 /// If you implement b2Alloc, you should also implement this function.
 void b2Free(void* mem);

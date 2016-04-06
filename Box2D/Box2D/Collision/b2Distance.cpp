@@ -27,54 +27,58 @@
 int32 b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
 #endif
 
-void b2DistanceProxy::Set(const b2Shape* shape, int32 index)
+b2DistanceProxy::b2DistanceProxy(const b2Shape& shape, size_type index)
 {
-	switch (shape->GetType())
+	Set(shape, index);
+}
+
+void b2DistanceProxy::Set(const b2Shape& shape, size_type index)
+{
+	switch (shape.GetType())
 	{
 	case b2Shape::e_circle:
 		{
-			const auto circle = static_cast<const b2CircleShape*>(shape);
-			m_buffer[0] = circle->GetPosition();
+			const auto& circle = *static_cast<const b2CircleShape*>(&shape);
+			m_buffer[0] = circle.GetPosition();
 			m_vertices = m_buffer;
 			m_count = 1;
-			m_radius = circle->GetRadius();
+			m_radius = circle.GetRadius();
 		}
 		break;
 
 	case b2Shape::e_polygon:
 		{
-			const auto polygon = static_cast<const b2PolygonShape*>(shape);
-			m_vertices = polygon->GetVertices();
-			m_count = polygon->GetVertexCount();
-			m_radius = polygon->GetRadius();
+			const auto& polygon = *static_cast<const b2PolygonShape*>(&shape);
+			m_vertices = polygon.GetVertices();
+			m_count = polygon.GetVertexCount();
+			m_radius = polygon.GetRadius();
 		}
 		break;
 
 	case b2Shape::e_chain:
 		{
-			const auto chain = static_cast<const b2ChainShape*>(shape);
-			b2Assert((0 <= index) && (index < chain->GetVertexCount()));
+			const auto& chain = *static_cast<const b2ChainShape*>(&shape);
+			b2Assert((0 <= index) && (index < chain.GetVertexCount()));
 
-			m_buffer[0] = chain->GetVertex(index);
-			if ((index + 1) < chain->GetVertexCount())
-				m_buffer[1] = chain->GetVertex(index + 1);
-			else
-				m_buffer[1] = chain->GetVertex(0);
+			m_buffer[0] = chain.GetVertex(index);
+			m_buffer[1] = ((index + 1) < chain.GetVertexCount())?
+				chain.GetVertex(index + 1):
+				chain.GetVertex(0);
 
 			m_vertices = m_buffer;
 			m_count = 2;
-			m_radius = chain->GetRadius();
+			m_radius = chain.GetRadius();
 		}
 		break;
 
 	case b2Shape::e_edge:
 		{
-			const auto edge = static_cast<const b2EdgeShape*>(shape);
-			m_buffer[0] = edge->GetVertex1();
-			m_buffer[1] = edge->GetVertex2();
+			const auto& edge = *static_cast<const b2EdgeShape*>(&shape);
+			m_buffer[0] = edge.GetVertex1();
+			m_buffer[1] = edge.GetVertex2();
 			m_vertices = m_buffer;
 			m_count = 2;
-			m_radius = edge->GetRadius();
+			m_radius = edge.GetRadius();
 		}
 		break;
 
@@ -86,21 +90,23 @@ void b2DistanceProxy::Set(const b2Shape* shape, int32 index)
 
 struct b2SimplexVertex
 {
+	using size_type = std::size_t;
+
 	b2Vec2 wA;		// support point in proxyA
 	b2Vec2 wB;		// support point in proxyB
 	b2Vec2 w;		// wB - wA
 	float32 a;		// barycentric coordinate for closest point
-	int32 indexA;	// wA index
-	int32 indexB;	// wB index
+	size_type indexA;	// wA index
+	size_type indexB;	// wB index
 };
 
 class b2Simplex
 {
 public:
-	using vertices_count_t = uint32;
-	static constexpr vertices_count_t maxVertices = 3;
+	using size_type = std::size_t;
+	static constexpr size_type maxVertices = 3;
 
-	vertices_count_t GetCount() const noexcept
+	size_type GetCount() const noexcept
 	{
 		return m_count;
 	}
@@ -169,7 +175,7 @@ public:
 		cache.ClearIndices();
 		for (auto i = decltype(m_count){0}; i < m_count; ++i)
 		{
-			cache.AddIndex(uint8(m_vertices[i].indexA), uint8(m_vertices[i].indexB));
+			cache.AddIndex(m_vertices[i].indexA, m_vertices[i].indexB);
 		}
 	}
 
@@ -269,7 +275,7 @@ public:
 	void Solve3() noexcept;
 
 private:
-	vertices_count_t m_count = 0;
+	size_type m_count = 0; // value between 0 and maxVertices
 	b2SimplexVertex m_vertices[maxVertices];
 };
 
@@ -447,17 +453,17 @@ void b2Simplex::Solve3() noexcept
 
 void b2Distance(b2DistanceOutput* output,
 				b2SimplexCache* cache,
-				const b2DistanceInput* input)
+				const b2DistanceInput& input)
 {
 #if defined(DO_GJK_PROFILING)
 	++b2_gjkCalls;
 #endif
 
-	const auto& proxyA = input->proxyA;
-	const auto& proxyB = input->proxyB;
+	const auto& proxyA = input.proxyA;
+	const auto& proxyB = input.proxyB;
 
-	const auto transformA = input->transformA;
-	const auto transformB = input->transformB;
+	const auto transformA = input.transformA;
+	const auto transformB = input.transformB;
 
 	// Initialize the simplex.
 	b2Simplex simplex;
@@ -469,7 +475,7 @@ void b2Distance(b2DistanceOutput* output,
 
 	// These store the vertices of the last simplex so that we
 	// can check for duplicates and prevent cycling.
-	int32 saveA[3], saveB[3];
+	b2SimplexVertex::size_type saveA[3], saveB[3];
 
 #if defined(DO_COMPUTE_CLOSEST_POINT)
 	auto distanceSqr1 = b2_maxFloat;
@@ -526,7 +532,7 @@ void b2Distance(b2DistanceOutput* output,
 		const auto d = simplex.GetSearchDirection();
 
 		// Ensure the search direction is numerically fit.
-		if (d.LengthSquared() < b2_epsilon * b2_epsilon)
+		if (d.LengthSquared() < (b2_epsilon * b2_epsilon))
 		{
 			// The origin is probably contained by a line segment
 			// or triangle. Thus the shapes are overlapped.
@@ -556,7 +562,7 @@ void b2Distance(b2DistanceOutput* output,
 		auto duplicate = false;
 		for (auto i = decltype(saveCount){0}; i < saveCount; ++i)
 		{
-			if (vertex.indexA == saveA[i] && vertex.indexB == saveB[i])
+			if ((vertex.indexA == saveA[i]) && (vertex.indexB == saveB[i]))
 			{
 				duplicate = true;
 				break;
@@ -586,16 +592,17 @@ void b2Distance(b2DistanceOutput* output,
 	simplex.WriteCache(*cache);
 
 	// Apply radii if requested.
-	if (input->useRadii)
+	if (input.useRadii)
 	{
 		const auto rA = proxyA.GetRadius();
 		const auto rB = proxyB.GetRadius();
+		const auto totalRadius = rA + rB;
 
-		if ((output->distance > (rA + rB)) && (output->distance > b2_epsilon))
+		if ((output->distance > totalRadius) && (output->distance > b2_epsilon))
 		{
 			// Shapes are still no overlapped.
 			// Move the witness points to the outer surface.
-			output->distance -= rA + rB;
+			output->distance -= totalRadius;
 			const auto normal = b2Normalize(output->pointB - output->pointA);
 			output->pointA += rA * normal;
 			output->pointB -= rB * normal;

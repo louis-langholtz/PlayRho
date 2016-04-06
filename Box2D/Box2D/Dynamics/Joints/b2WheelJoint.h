@@ -145,8 +145,8 @@ protected:
 	bool m_enableMotor;
 
 	// Solver temp
-	int32 m_indexA;
-	int32 m_indexB;
+	index_t m_indexA;
+	index_t m_indexB;
 	b2Vec2 m_localCenterA;
 	b2Vec2 m_localCenterB;
 	float32 m_invMassA;

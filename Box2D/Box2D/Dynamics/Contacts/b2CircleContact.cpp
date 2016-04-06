@@ -26,7 +26,7 @@
 
 #include <new>
 
-b2Contact* b2CircleContact::Create(b2Fixture* fixtureA, int32, b2Fixture* fixtureB, int32, b2BlockAllocator* allocator)
+b2Contact* b2CircleContact::Create(b2Fixture* fixtureA, size_type, b2Fixture* fixtureB, size_type, b2BlockAllocator* allocator)
 {
 	void* mem = allocator->Allocate(sizeof(b2CircleContact));
 	return new (mem) b2CircleContact(fixtureA, fixtureB);
@@ -47,7 +47,7 @@ b2CircleContact::b2CircleContact(b2Fixture* fixtureA, b2Fixture* fixtureB)
 
 void b2CircleContact::Evaluate(b2Manifold* manifold, const b2Transform& xfA, const b2Transform& xfB)
 {
-	b2CollideCircles(manifold,
-					static_cast<b2CircleShape*>(m_fixtureA->GetShape()), xfA,
-					static_cast<b2CircleShape*>(m_fixtureB->GetShape()), xfB);
+	b2CollideShapes(manifold,
+					*static_cast<b2CircleShape*>(m_fixtureA->GetShape()), xfA,
+					*static_cast<b2CircleShape*>(m_fixtureB->GetShape()), xfB);
 }

@@ -33,7 +33,7 @@ void b2ChainShape::Clear()
 	m_count = 0;
 }
 
-void b2ChainShape::CreateLoop(const b2Vec2* vertices, int32 count)
+void b2ChainShape::CreateLoop(const b2Vec2* vertices, size_type count)
 {
 	b2Assert(m_vertices == nullptr && m_count == 0);
 	b2Assert(count >= 3);
@@ -53,7 +53,7 @@ void b2ChainShape::CreateLoop(const b2Vec2* vertices, int32 count)
 	m_hasNextVertex = true;
 }
 
-void b2ChainShape::CreateChain(const b2Vec2* vertices, int32 count)
+void b2ChainShape::CreateChain(const b2Vec2* vertices, size_type count)
 {
 	b2Assert((m_vertices == nullptr) && (m_count == 0));
 	b2Assert(count >= 2);
@@ -98,13 +98,13 @@ b2Shape* b2ChainShape::Clone(b2BlockAllocator* allocator) const
 	return clone;
 }
 
-int32 b2ChainShape::GetChildCount() const
+b2ChainShape::size_type b2ChainShape::GetChildCount() const
 {
 	// edge count = vertex count - 1
 	return m_count - 1;
 }
 
-void b2ChainShape::GetChildEdge(b2EdgeShape* edge, int32 index) const
+void b2ChainShape::GetChildEdge(b2EdgeShape* edge, size_type index) const
 {
 	b2Assert((0 <= index) && (index < (m_count - 1)));
 	edge->SetRadius(GetRadius());
@@ -138,7 +138,7 @@ bool b2ChainShape::TestPoint(const b2Transform& xf, const b2Vec2& p) const
 }
 
 bool b2ChainShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
-							const b2Transform& xf, int32 childIndex) const
+							const b2Transform& xf, size_type childIndex) const
 {
 	b2Assert(childIndex < m_count);
 
@@ -153,7 +153,7 @@ bool b2ChainShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 	return edgeShape.RayCast(output, input, xf, 0);
 }
 
-void b2ChainShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, int32 childIndex) const
+void b2ChainShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, size_type childIndex) const
 {
 	b2Assert(childIndex < m_count);
 

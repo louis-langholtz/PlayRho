@@ -21,11 +21,6 @@
 
 #include <Box2D/Common/b2Settings.h>
 
-constexpr auto b2_chunkSize = int32{16 * 1024};
-constexpr auto b2_maxBlockSize = int32{640};
-constexpr auto b2_blockSizes = int32{14};
-constexpr auto b2_chunkArrayIncrement = int32{128};
-
 struct b2Block;
 struct b2Chunk;
 
@@ -35,20 +30,27 @@ struct b2Chunk;
 class b2BlockAllocator
 {
 public:
+	using size_type = std::size_t;
+
+	static constexpr auto b2_chunkSize = size_type{16 * 1024};
+	static constexpr auto b2_maxBlockSize = size_type{640};
+	static constexpr auto b2_blockSizes = size_type{14};
+	static constexpr auto b2_chunkArrayIncrement = size_type{128};
+
 	b2BlockAllocator();
 	~b2BlockAllocator();
 
 	/// Allocate memory. This will use b2Alloc if the size is larger than b2_maxBlockSize.
-	void* Allocate(int32 size);
+	void* Allocate(size_type size);
 
 	/// Free memory. This will use b2Free if the size is larger than b2_maxBlockSize.
-	void Free(void* p, int32 size);
+	void Free(void* p, size_type size);
 
 	void Clear();
 
 private:
-	int32 m_chunkCount = 0;
-	int32 m_chunkSpace = b2_chunkArrayIncrement;
+	size_type m_chunkCount = 0;
+	size_type m_chunkSpace = b2_chunkArrayIncrement;
 	b2Chunk* m_chunks;
 	b2Block* m_freeLists[b2_blockSizes];
 };

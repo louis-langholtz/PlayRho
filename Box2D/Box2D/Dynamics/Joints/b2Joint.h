@@ -98,6 +98,7 @@ struct b2JointDef
 class b2Joint
 {
 public:
+	using index_t = std::size_t;
 
 	/// Get the type of the concrete joint.
 	b2JointType GetType() const noexcept;
@@ -173,7 +174,7 @@ protected:
 	b2Body* m_bodyA;
 	b2Body* m_bodyB;
 
-	int32 m_index = 0;
+	index_t m_index = 0;
 
 	bool m_islandFlag = false;
 	bool m_collideConnected;

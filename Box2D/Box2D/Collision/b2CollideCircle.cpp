@@ -20,56 +20,52 @@
 #include <Box2D/Collision/Shapes/b2CircleShape.h>
 #include <Box2D/Collision/Shapes/b2PolygonShape.h>
 
-void b2CollideCircles(
+void b2CollideShapes(
 	b2Manifold* manifold,
-	const b2CircleShape* circleA, const b2Transform& xfA,
-	const b2CircleShape* circleB, const b2Transform& xfB)
+	const b2CircleShape& shapeA, const b2Transform& xfA,
+	const b2CircleShape& shapeB, const b2Transform& xfB)
 {
-	const auto pA = b2Mul(xfA, circleA->GetPosition());
-	const auto pB = b2Mul(xfB, circleB->GetPosition());
-
+	const auto pA = b2Mul(xfA, shapeA.GetPosition());
+	const auto pB = b2Mul(xfB, shapeB.GetPosition());
 	const auto d = pB - pA;
 	const auto distSqr = b2Dot(d, d);
-	const auto rA = circleA->GetRadius(), rB = circleB->GetRadius();
-	const auto radius = rA + rB;
-	if (distSqr > (radius * radius))
+	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
+
+	if (distSqr > (totalRadius * totalRadius))
 	{
-		manifold->ClearPoints();
+		manifold->SetType(b2Manifold::e_unset);
 		return;
 	}
 
 	manifold->SetType(b2Manifold::e_circles);
-	manifold->SetLocalPoint(circleA->GetPosition());
+	manifold->SetLocalPoint(shapeA.GetPosition());
 	manifold->SetLocalNormal(b2Vec2_zero);
-	manifold->ClearPoints();
-	manifold->AddPoint(circleB->GetPosition());
+	manifold->AddPoint(shapeB.GetPosition());
 }
 
-void b2CollidePolygonAndCircle(
+void b2CollideShapes(
 	b2Manifold* manifold,
-	const b2PolygonShape* polygonA, const b2Transform& xfA,
-	const b2CircleShape* circleB, const b2Transform& xfB)
+	const b2PolygonShape& shapeA, const b2Transform& xfA,
+	const b2CircleShape& shapeB, const b2Transform& xfB)
 {
 	// Compute circle position in the frame of the polygon.
-	const auto c = b2Mul(xfB, circleB->GetPosition());
+	const auto c = b2Mul(xfB, shapeB.GetPosition());
 	const auto cLocal = b2MulT(xfA, c);
 
 	// Find the min separating edge.
-	auto normalIndex = int32{0};
+	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
+	const auto vertexCount = shapeA.GetVertexCount();
+	auto normalIndex = decltype(vertexCount){0};
 	auto separation = -b2_maxFloat;
-	const auto radius = polygonA->GetRadius() + circleB->GetRadius();
-	const auto vertexCount = polygonA->GetVertexCount();
-	const auto vertices = polygonA->GetVertices();
-	const auto normals = polygonA->GetNormals();
 
 	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 	{
-		const auto s = b2Dot(normals[i], cLocal - vertices[i]);
+		const auto s = b2Dot(shapeA.GetNormal(i), cLocal - shapeA.GetVertex(i));
 
-		if (s > radius)
+		if (s > totalRadius)
 		{
 			// Early out.
-			manifold->ClearPoints();
+			manifold->SetType(b2Manifold::e_unset);
 			return;
 		}
 
@@ -83,17 +79,16 @@ void b2CollidePolygonAndCircle(
 	// Vertices that subtend the incident face.
 	const auto vertIndex1 = normalIndex;
 	const auto vertIndex2 = ((vertIndex1 + 1) < vertexCount) ? vertIndex1 + 1 : 0;
-	const auto v1 = vertices[vertIndex1];
-	const auto v2 = vertices[vertIndex2];
+	const auto v1 = shapeA.GetVertex(vertIndex1);
+	const auto v2 = shapeA.GetVertex(vertIndex2);
 
 	// If the center is inside the polygon ...
 	if (separation < b2_epsilon)
 	{
 		manifold->SetType(b2Manifold::e_faceA);
-		manifold->SetLocalNormal(normals[normalIndex]);
+		manifold->SetLocalNormal(shapeA.GetNormal(normalIndex));
 		manifold->SetLocalPoint(0.5f * (v1 + v2));
-		manifold->ClearPoints();
-		manifold->AddPoint(circleB->GetPosition());
+		manifold->AddPoint(shapeB.GetPosition());
 		return;
 	}
 
@@ -102,46 +97,43 @@ void b2CollidePolygonAndCircle(
 	const auto u2 = b2Dot(cLocal - v2, v1 - v2);
 	if (u1 <= 0.0f)
 	{
-		if (b2DistanceSquared(cLocal, v1) > (radius * radius))
+		if (b2DistanceSquared(cLocal, v1) > (totalRadius * totalRadius))
 		{
-			manifold->ClearPoints();
+			manifold->SetType(b2Manifold::e_unset);
 			return;
 		}
 
 		manifold->SetType(b2Manifold::e_faceA);
 		manifold->SetLocalNormal(b2Normalize(cLocal - v1));
 		manifold->SetLocalPoint(v1);
-		manifold->ClearPoints();
-		manifold->AddPoint(circleB->GetPosition());
+		manifold->AddPoint(shapeB.GetPosition());
 	}
 	else if (u2 <= 0.0f)
 	{
-		if (b2DistanceSquared(cLocal, v2) > (radius * radius))
+		if (b2DistanceSquared(cLocal, v2) > (totalRadius * totalRadius))
 		{
-			manifold->ClearPoints();
+			manifold->SetType(b2Manifold::e_unset);;
 			return;
 		}
 
 		manifold->SetType(b2Manifold::e_faceA);
 		manifold->SetLocalNormal(b2Normalize(cLocal - v2));
 		manifold->SetLocalPoint(v2);
-		manifold->ClearPoints();
-		manifold->AddPoint(circleB->GetPosition());
+		manifold->AddPoint(shapeB.GetPosition());
 	}
 	else
 	{
 		const auto faceCenter = 0.5f * (v1 + v2);
-		separation = b2Dot(cLocal - faceCenter, normals[vertIndex1]);
-		if (separation > radius)
+		separation = b2Dot(cLocal - faceCenter, shapeA.GetNormal(vertIndex1));
+		if (separation > totalRadius)
 		{
-			manifold->ClearPoints();
+			manifold->SetType(b2Manifold::e_unset);
 			return;
 		}
 
 		manifold->SetType(b2Manifold::e_faceA);
-		manifold->SetLocalNormal(normals[vertIndex1]);
+		manifold->SetLocalNormal(shapeA.GetNormal(vertIndex1));
 		manifold->SetLocalPoint(faceCenter);
-		manifold->ClearPoints();
-		manifold->AddPoint(circleB->GetPosition());
+		manifold->AddPoint(shapeB.GetPosition());
 	}
 }

@@ -53,6 +53,6 @@ struct b2TOIOutput
 /// non-tunneling collision. If you change the time interval, you should call this function
 /// again.
 /// Note: use b2Distance to compute the contact point and normal at the time of impact.
-void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input);
+void b2TimeOfImpact(b2TOIOutput& output, const b2TOIInput& input);
 
 #endif

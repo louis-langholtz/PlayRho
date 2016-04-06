@@ -62,12 +62,12 @@ void b2PolygonShape::SetAsBox(float32 hx, float32 hy, const b2Vec2& center, floa
 	}
 }
 
-int32 b2PolygonShape::GetChildCount() const
+b2PolygonShape::size_type b2PolygonShape::GetChildCount() const
 {
 	return 1;
 }
 
-static b2Vec2 ComputeCentroid(const b2Vec2 vs[], int32 count)
+static b2Vec2 ComputeCentroid(const b2Vec2 vs[], std::size_t count)
 {
 	b2Assert(count >= 3);
 
@@ -260,7 +260,7 @@ bool b2PolygonShape::TestPoint(const b2Transform& xf, const b2Vec2& p) const
 }
 
 bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
-								const b2Transform& xf, int32 childIndex) const
+								const b2Transform& xf, size_type childIndex) const
 {
 	B2_NOT_USED(childIndex);
 
@@ -270,7 +270,8 @@ bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& inpu
 	const auto d = p2 - p1;
 
 	auto lower = 0.0f, upper = input.maxFraction;
-	auto index = -1;
+	constexpr auto InvalidIndex = static_cast<size_type>(-1);
+	auto index = InvalidIndex;
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		// p = p1 + a * d
@@ -319,7 +320,7 @@ bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& inpu
 
 	b2Assert((0.0f <= lower) && (lower <= input.maxFraction));
 
-	if (index >= 0)
+	if (index != InvalidIndex)
 	{
 		output->fraction = lower;
 		output->normal = b2Mul(xf.q, m_normals[index]);
@@ -329,7 +330,7 @@ bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& inpu
 	return false;
 }
 
-void b2PolygonShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, int32 childIndex) const
+void b2PolygonShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, size_type childIndex) const
 {
 	B2_NOT_USED(childIndex);
 	

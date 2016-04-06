@@ -25,7 +25,9 @@
 
 #include <new>
 
-b2Contact* b2ChainAndPolygonContact::Create(b2Fixture* fixtureA, int32 indexA, b2Fixture* fixtureB, int32 indexB, b2BlockAllocator* allocator)
+b2Contact* b2ChainAndPolygonContact::Create(b2Fixture* fixtureA, size_type indexA,
+											b2Fixture* fixtureB, size_type indexB,
+											b2BlockAllocator* allocator)
 {
 	void* mem = allocator->Allocate(sizeof(b2ChainAndPolygonContact));
 	return new (mem) b2ChainAndPolygonContact(fixtureA, indexA, fixtureB, indexB);
@@ -37,7 +39,8 @@ void b2ChainAndPolygonContact::Destroy(b2Contact* contact, b2BlockAllocator* all
 	allocator->Free(contact, sizeof(b2ChainAndPolygonContact));
 }
 
-b2ChainAndPolygonContact::b2ChainAndPolygonContact(b2Fixture* fixtureA, int32 indexA, b2Fixture* fixtureB, int32 indexB)
+b2ChainAndPolygonContact::b2ChainAndPolygonContact(b2Fixture* fixtureA, size_type indexA,
+												   b2Fixture* fixtureB, size_type indexB)
 : b2Contact(fixtureA, indexA, fixtureB, indexB)
 {
 	b2Assert(m_fixtureA->GetType() == b2Shape::e_chain);
@@ -49,6 +52,5 @@ void b2ChainAndPolygonContact::Evaluate(b2Manifold* manifold, const b2Transform&
 	auto chain = static_cast<b2ChainShape*>(m_fixtureA->GetShape());
 	b2EdgeShape edge;
 	chain->GetChildEdge(&edge, m_indexA);
-	b2CollideEdgeAndPolygon(	manifold, &edge, xfA,
-								static_cast<b2PolygonShape*>(m_fixtureB->GetShape()), xfB);
+	b2CollideShapes(manifold, edge, xfA, *static_cast<b2PolygonShape*>(m_fixtureB->GetShape()), xfB);
 }

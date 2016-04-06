@@ -22,12 +22,9 @@
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 
-b2ContactFilter b2_defaultFilter;
-b2ContactListener b2_defaultListener;
-
-b2ContactManager::b2ContactManager(b2BlockAllocator* allocator):
+b2ContactManager::b2ContactManager(b2BlockAllocator* allocator, b2ContactFilter* filter, b2ContactListener* listener):
 	m_allocator(allocator),
-	m_contactFilter(&b2_defaultFilter), m_contactListener(&b2_defaultListener)
+	m_contactFilter(filter), m_contactListener(listener)
 {}
 
 void b2ContactManager::Destroy(b2Contact* c)
@@ -101,7 +98,7 @@ void b2ContactManager::Destroy(b2Contact* c)
 void b2ContactManager::Collide()
 {
 	// Update awake contacts.
-	auto next = m_contactList;
+	auto next = static_cast<b2Contact*>(nullptr);
 	for (auto c = m_contactList; c; c = next)
 	{
 		next = c->GetNext();
@@ -164,13 +161,14 @@ void b2ContactManager::FindNewContacts()
 	m_broadPhase.UpdatePairs(this);
 }
 
-static bool IsFor(const b2Contact* contact,
-				  const b2Fixture* fixtureA, int32 indexA, const b2Fixture* fixtureB, int32 indexB)
+static bool IsFor(const b2Contact& contact,
+				  const b2Fixture* fixtureA, b2ContactManager::size_type indexA,
+				  const b2Fixture* fixtureB, b2ContactManager::size_type indexB)
 {
-	const auto fA = contact->GetFixtureA();
-	const auto fB = contact->GetFixtureB();
-	const auto iA = contact->GetChildIndexA();
-	const auto iB = contact->GetChildIndexB();
+	const auto fA = contact.GetFixtureA();
+	const auto fB = contact.GetFixtureB();
+	const auto iA = contact.GetChildIndexA();
+	const auto iB = contact.GetChildIndexB();
 	
 	if ((fA == fixtureA) && (fB == fixtureB) && (iA == indexA) && (iB == indexB))
 	{
@@ -210,16 +208,15 @@ void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 	// TODO_ERIN use a hash table to remove a potential bottleneck when both
 	// bodies have a lot of contacts.
 	// Does a contact already exist?
-	auto edge = bodyB->GetContactList();
-	while (edge)
+	auto contactEdge = bodyB->GetContactList();
+	while (contactEdge)
 	{
-		if (edge->other == bodyA)
+		if (contactEdge->other == bodyA)
 		{
-			if (IsFor(edge->contact, fixtureA, indexA, fixtureB, indexB))
+			if (IsFor(*(contactEdge->contact), fixtureA, indexA, fixtureB, indexB))
 				return;
 		}
-
-		edge = edge->next;
+		contactEdge = contactEdge->next;
 	}
 
 	// Does a joint override collision? Is at least one body dynamic?

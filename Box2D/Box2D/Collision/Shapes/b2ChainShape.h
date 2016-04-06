@@ -47,12 +47,12 @@ public:
 	/// Create a loop. This automatically adjusts connectivity.
 	/// @param vertices an array of vertices, these are copied
 	/// @param count the vertex count
-	void CreateLoop(const b2Vec2* vertices, int32 count);
+	void CreateLoop(const b2Vec2* vertices, size_type count);
 
 	/// Create a chain with isolated end vertices.
 	/// @param vertices an array of vertices, these are copied
 	/// @param count the vertex count
-	void CreateChain(const b2Vec2* vertices, int32 count);
+	void CreateChain(const b2Vec2* vertices, size_type count);
 
 	/// Establish connectivity to a vertex that precedes the first vertex.
 	/// Don't call this for loops.
@@ -66,10 +66,10 @@ public:
 	b2Shape* Clone(b2BlockAllocator* allocator) const override;
 
 	/// @see b2Shape::GetChildCount
-	int32 GetChildCount() const override;
+	size_type GetChildCount() const override;
 
 	/// Get a child edge.
-	void GetChildEdge(b2EdgeShape* edge, int32 index) const;
+	void GetChildEdge(b2EdgeShape* edge, size_type index) const;
 
 	/// This always return false.
 	/// @see b2Shape::TestPoint
@@ -77,20 +77,20 @@ public:
 
 	/// Implement b2Shape.
 	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
-					const b2Transform& transform, int32 childIndex) const override;
+					const b2Transform& transform, size_type childIndex) const override;
 
 	/// @see b2Shape::ComputeAABB
-	void ComputeAABB(b2AABB* aabb, const b2Transform& transform, int32 childIndex) const override;
+	void ComputeAABB(b2AABB* aabb, const b2Transform& transform, size_type childIndex) const override;
 
 	/// Chains have zero mass.
 	/// @see b2Shape::ComputeMass
 	void ComputeMass(b2MassData* massData, float32 density) const override;
 
 	/// Get the vertex count.
-	int32 GetVertexCount() const noexcept { return m_count; }
+	size_type GetVertexCount() const noexcept { return m_count; }
 
 	/// Get a vertex by index.
-	const b2Vec2& GetVertex(int32 index) const;
+	const b2Vec2& GetVertex(size_type index) const;
 
 	bool HasPrevVertex() const noexcept { return m_hasPrevVertex; }
 	bool HasNextVertex() const noexcept { return m_hasNextVertex; }
@@ -103,13 +103,13 @@ private:
 	b2Vec2* m_vertices = nullptr;
 
 	/// The vertex count.
-	int32 m_count = 0;
+	size_type m_count = 0;
 
 	b2Vec2 m_prevVertex, m_nextVertex;
 	bool m_hasPrevVertex = false, m_hasNextVertex = false;
 };
 
-inline const b2Vec2& b2ChainShape::GetVertex(int32 index) const
+inline const b2Vec2& b2ChainShape::GetVertex(size_type index) const
 {
 	b2Assert((0 <= index) && (index < m_count));
 	return m_vertices[index];

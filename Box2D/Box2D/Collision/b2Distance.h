@@ -29,30 +29,34 @@ class b2Shape;
 class b2DistanceProxy
 {
 public:
+	using size_type = std::size_t;
+
 	b2DistanceProxy() = default;
+
+	b2DistanceProxy(const b2Shape& shape, size_type index);
 
 	float32 GetRadius() const noexcept { return m_radius; }
 
 	/// Initialize the proxy using the given shape. The shape
 	/// must remain in scope while the proxy is in use.
-	void Set(const b2Shape* shape, int32 index);
+	void Set(const b2Shape& shape, size_type index);
 
 	/// Get the supporting vertex index in the given direction.
-	int32 GetSupport(const b2Vec2& d) const noexcept;
+	size_type GetSupport(const b2Vec2& d) const noexcept;
 
 	/// Get the supporting vertex in the given direction.
 	const b2Vec2& GetSupportVertex(const b2Vec2& d) const;
 
 	/// Get the vertex count.
-	inline int32 GetVertexCount() const noexcept { return m_count; }
+	inline size_type GetVertexCount() const noexcept { return m_count; }
 
 	/// Get a vertex by index. Used by b2Distance.
-	const b2Vec2& GetVertex(int32 index) const;
+	const b2Vec2& GetVertex(size_type index) const;
 
 private:
 	b2Vec2 m_buffer[2];
 	const b2Vec2* m_vertices = nullptr;
-	int32 m_count = 0;
+	size_type m_count = 0;
 	float32 m_radius = 0.0f;
 };
 
@@ -60,16 +64,21 @@ private:
 class b2SimplexCache
 {
 public:
-	float32 GetMetric() const noexcept { return metric; }
-	uint16 GetCount() const noexcept { return count; }
+	using size_type = std::size_t;
+	using index_t = std::size_t;
 
-	uint8 GetIndexA(uint32 index) const
+	static constexpr auto MaxCount = size_type{3};
+
+	float32 GetMetric() const noexcept { return metric; }
+	size_type GetCount() const noexcept { return count; }
+
+	index_t GetIndexA(size_type index) const
 	{
 		b2Assert(index < count);
 		return indexA[index];
 	}
 
-	uint8 GetIndexB(uint32 index) const
+	index_t GetIndexB(size_type index) const
 	{
 		b2Assert(index < count);
 		return indexB[index];
@@ -79,9 +88,9 @@ public:
 
 	void SetMetric(float32 m) noexcept { metric = m; }
 
-	void AddIndex(uint8 a, uint8 b)
+	void AddIndex(index_t a, index_t b)
 	{
-		b2Assert(count < 3);
+		b2Assert(count < MaxCount);
 		indexA[count] = a;
 		indexB[count] = b;
 		++count;
@@ -89,9 +98,9 @@ public:
 
 private:
 	float32 metric;		///< length or area
-	uint16 count = 0;
-	uint8 indexA[3];	///< vertices on shape A
-	uint8 indexB[3];	///< vertices on shape B
+	size_type count = 0;
+	index_t indexA[MaxCount];	///< vertices on shape A
+	index_t indexB[MaxCount];	///< vertices on shape B
 };
 
 /// Input for b2Distance.
@@ -120,18 +129,18 @@ struct b2DistanceOutput
 /// On the first call, b2SimplexCache.count should be set to zero.
 void b2Distance(b2DistanceOutput* output,
 				b2SimplexCache* cache, 
-				const b2DistanceInput* input);
+				const b2DistanceInput& input);
 
 
 //////////////////////////////////////////////////////////////////////////
 
-inline const b2Vec2& b2DistanceProxy::GetVertex(int32 index) const
+inline const b2Vec2& b2DistanceProxy::GetVertex(size_type index) const
 {
 	b2Assert(0 <= index && index < m_count);
 	return m_vertices[index];
 }
 
-inline int32 b2DistanceProxy::GetSupport(const b2Vec2& d) const noexcept
+inline b2DistanceProxy::size_type b2DistanceProxy::GetSupport(const b2Vec2& d) const noexcept
 {
 	auto bestIndex = decltype(m_count){0};
 	auto bestValue = b2Dot(m_vertices[0], d);
@@ -150,7 +159,7 @@ inline int32 b2DistanceProxy::GetSupport(const b2Vec2& d) const noexcept
 
 inline const b2Vec2& b2DistanceProxy::GetSupportVertex(const b2Vec2& d) const
 {
-	auto bestIndex = int32{0};
+	auto bestIndex = decltype(m_count){0};
 	auto bestValue = b2Dot(m_vertices[0], d);
 	for (auto i = decltype(m_count){1}; i < m_count; ++i)
 	{

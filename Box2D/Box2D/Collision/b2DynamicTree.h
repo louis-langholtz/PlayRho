@@ -22,11 +22,13 @@
 #include <Box2D/Collision/b2Collision.h>
 #include <Box2D/Common/b2GrowableStack.h>
 
-constexpr int32 b2_nullNode = -1;
+static constexpr auto b2_nullNode = static_cast<std::size_t>(-1);
 
 /// A node in the dynamic tree. The client does not interact with this directly.
 struct b2TreeNode
 {
+	using size_type = std::size_t;
+
 	bool IsLeaf() const noexcept
 	{
 		return child1 == b2_nullNode;
@@ -39,15 +41,15 @@ struct b2TreeNode
 
 	union
 	{
-		int32 parent;
-		int32 next;
+		size_type parent;
+		size_type next;
 	};
 
-	int32 child1;
-	int32 child2;
+	size_type child1;
+	size_type child2;
 
-	// leaf = 0, free node = -1
-	int32 height;
+	// leaf = 0, free node = b2_nullNode
+	size_type height;
 };
 
 /// A dynamic AABB tree broad-phase, inspired by Nathanael Presson's btDbvt.
@@ -61,6 +63,8 @@ struct b2TreeNode
 class b2DynamicTree
 {
 public:
+	using size_type = std::size_t;
+
 	/// Constructing the tree initializes the node pool.
 	b2DynamicTree();
 
@@ -71,23 +75,23 @@ public:
 	b2DynamicTree& operator=(const b2DynamicTree&) = delete;
 
 	/// Create a proxy. Provide a tight fitting AABB and a userData pointer.
-	int32 CreateProxy(const b2AABB& aabb, void* userData);
+	size_type CreateProxy(const b2AABB& aabb, void* userData);
 
 	/// Destroy a proxy. This asserts if the id is invalid.
-	void DestroyProxy(int32 proxyId);
+	void DestroyProxy(size_type proxyId);
 
 	/// Move a proxy with a swepted AABB. If the proxy has moved outside of its fattened AABB,
 	/// then the proxy is removed from the tree and re-inserted. Otherwise
 	/// the function returns immediately.
 	/// @return true if the proxy was re-inserted.
-	bool MoveProxy(int32 proxyId, const b2AABB& aabb1, const b2Vec2& displacement);
+	bool MoveProxy(size_type proxyId, const b2AABB& aabb1, const b2Vec2& displacement);
 
 	/// Get proxy user data.
 	/// @return the proxy user data or 0 if the id is invalid.
-	void* GetUserData(int32 proxyId) const;
+	void* GetUserData(size_type proxyId) const;
 
 	/// Get the fat AABB for a proxy.
-	const b2AABB& GetFatAABB(int32 proxyId) const;
+	const b2AABB& GetFatAABB(size_type proxyId) const;
 
 	/// Query an AABB for overlapping proxies. The callback class
 	/// is called for each proxy that overlaps the supplied AABB.
@@ -109,11 +113,11 @@ public:
 
 	/// Compute the height of the binary tree in O(N) time. Should not be
 	/// called often.
-	int32 GetHeight() const noexcept;
+	size_type GetHeight() const noexcept;
 
 	/// Get the maximum balance of an node in the tree. The balance is the difference
 	/// in height of the two children of a node.
-	int32 GetMaxBalance() const;
+	size_type GetMaxBalance() const;
 
 	/// Get the ratio of the sum of the node areas to the root area.
 	float32 GetAreaRatio() const;
@@ -128,26 +132,26 @@ public:
 
 private:
 
-	int32 AllocateNode();
-	void FreeNode(int32 node);
+	size_type AllocateNode();
+	void FreeNode(size_type node);
 
-	void InsertLeaf(int32 node);
-	void RemoveLeaf(int32 node);
+	void InsertLeaf(size_type node);
+	void RemoveLeaf(size_type node);
 
-	int32 Balance(int32 index);
+	size_type Balance(size_type index);
 
-	int32 ComputeHeight() const;
-	int32 ComputeHeight(int32 nodeId) const;
+	size_type ComputeHeight() const;
+	size_type ComputeHeight(size_type nodeId) const;
 
-	void ValidateStructure(int32 index) const;
-	void ValidateMetrics(int32 index) const;
+	void ValidateStructure(size_type index) const;
+	void ValidateMetrics(size_type index) const;
 
-	int32 m_root = b2_nullNode;
+	size_type m_root = b2_nullNode;
 
-	int32 m_nodeCount = 0;
-	int32 m_nodeCapacity = 16;
+	size_type m_nodeCount = 0;
+	size_type m_nodeCapacity = 16;
 
-	int32 m_freeList = 0;
+	size_type m_freeList = 0;
 
 	/// This is used to incrementally traverse the tree for re-balancing.
 	uint32 m_path = 0;
@@ -158,22 +162,22 @@ private:
 	b2TreeNode* m_nodes;
 };
 
-inline void* b2DynamicTree::GetUserData(int32 proxyId) const
+inline void* b2DynamicTree::GetUserData(size_type proxyId) const
 {
-	b2Assert(0 <= proxyId && proxyId < m_nodeCapacity);
+	b2Assert(proxyId < m_nodeCapacity);
 	return m_nodes[proxyId].userData;
 }
 
-inline const b2AABB& b2DynamicTree::GetFatAABB(int32 proxyId) const
+inline const b2AABB& b2DynamicTree::GetFatAABB(size_type proxyId) const
 {
-	b2Assert(0 <= proxyId && proxyId < m_nodeCapacity);
+	b2Assert(proxyId < m_nodeCapacity);
 	return m_nodes[proxyId].aabb;
 }
 
 template <typename T>
 inline void b2DynamicTree::Query(T* callback, const b2AABB& aabb) const
 {
-	b2GrowableStack<int32, 256> stack;
+	b2GrowableStack<size_type, 256> stack;
 	stack.Push(m_root);
 
 	while (stack.GetCount() > 0)
@@ -231,7 +235,7 @@ inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) con
 		segmentAABB.upperBound = b2Max(p1, t);
 	}
 
-	b2GrowableStack<int32, 256> stack;
+	b2GrowableStack<size_type, 256> stack;
 	stack.Push(m_root);
 
 	while (stack.GetCount() > 0)

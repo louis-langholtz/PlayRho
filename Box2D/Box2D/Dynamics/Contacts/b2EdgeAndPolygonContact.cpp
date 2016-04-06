@@ -24,7 +24,7 @@
 
 #include <new>
 
-b2Contact* b2EdgeAndPolygonContact::Create(b2Fixture* fixtureA, int32, b2Fixture* fixtureB, int32, b2BlockAllocator* allocator)
+b2Contact* b2EdgeAndPolygonContact::Create(b2Fixture* fixtureA, size_type, b2Fixture* fixtureB, size_type, b2BlockAllocator* allocator)
 {
 	void* mem = allocator->Allocate(sizeof(b2EdgeAndPolygonContact));
 	return new (mem) b2EdgeAndPolygonContact(fixtureA, fixtureB);
@@ -45,7 +45,7 @@ b2EdgeAndPolygonContact::b2EdgeAndPolygonContact(b2Fixture* fixtureA, b2Fixture*
 
 void b2EdgeAndPolygonContact::Evaluate(b2Manifold* manifold, const b2Transform& xfA, const b2Transform& xfB)
 {
-	b2CollideEdgeAndPolygon(	manifold,
-								static_cast<b2EdgeShape*>(m_fixtureA->GetShape()), xfA,
-								static_cast<b2PolygonShape*>(m_fixtureB->GetShape()), xfB);
+	b2CollideShapes(manifold,
+					*static_cast<b2EdgeShape*>(m_fixtureA->GetShape()), xfA,
+					*static_cast<b2PolygonShape*>(m_fixtureB->GetShape()), xfB);
 }

@@ -65,6 +65,8 @@ struct b2ContactEdge
 class b2Contact
 {
 public:
+	using size_type = std::size_t;
+
 	b2Contact() = delete;
 
 	/// Get the contact manifold. Do not modify the manifold unless you understand the
@@ -97,14 +99,14 @@ public:
 	const b2Fixture* GetFixtureA() const noexcept;
 
 	/// Get the child primitive index for fixture A.
-	int32 GetChildIndexA() const noexcept;
+	size_type GetChildIndexA() const noexcept;
 
 	/// Get fixture B in this contact.
 	b2Fixture* GetFixtureB() noexcept;
 	const b2Fixture* GetFixtureB() const noexcept;
 
 	/// Get the child primitive index for fixture B.
-	int32 GetChildIndexB() const noexcept;
+	size_type GetChildIndexB() const noexcept;
 
 	/// Override the default friction mixture. You can call this in b2ContactListener::PreSolve.
 	/// This value persists until set or reset.
@@ -169,11 +171,13 @@ protected:
 	void UnflagForFiltering() noexcept;
 	bool NeedsFiltering() const noexcept;
 
-	static b2Contact* Create(b2Fixture* fixtureA, int32 indexA, b2Fixture* fixtureB, int32 indexB, b2BlockAllocator* allocator);
+	static b2Contact* Create(b2Fixture* fixtureA, size_type indexA,
+							 b2Fixture* fixtureB, size_type indexB,
+							 b2BlockAllocator* allocator);
 	static void Destroy(b2Contact* contact, b2Shape::Type typeA, b2Shape::Type typeB, b2BlockAllocator* allocator);
 	static void Destroy(b2Contact* contact, b2BlockAllocator* allocator);
 
-	b2Contact(b2Fixture* fixtureA, int32 indexA, b2Fixture* fixtureB, int32 indexB);
+	b2Contact(b2Fixture* fixtureA, size_type indexA, b2Fixture* fixtureB, size_type indexB);
 	virtual ~b2Contact() = default;
 
 	void Update(b2ContactListener* listener);
@@ -200,8 +204,8 @@ protected:
 	b2Fixture* m_fixtureA = nullptr;
 	b2Fixture* m_fixtureB = nullptr;
 
-	int32 m_indexA = 0;
-	int32 m_indexB = 0;
+	size_type m_indexA = 0;
+	size_type m_indexB = 0;
 
 	float32 m_tangentSpeed = 0.0f;
 
@@ -289,7 +293,7 @@ inline b2Fixture* b2Contact::GetFixtureB() noexcept
 	return m_fixtureB;
 }
 
-inline int32 b2Contact::GetChildIndexA() const noexcept
+inline b2Contact::size_type b2Contact::GetChildIndexA() const noexcept
 {
 	return m_indexA;
 }
@@ -299,7 +303,7 @@ inline const b2Fixture* b2Contact::GetFixtureB() const noexcept
 	return m_fixtureB;
 }
 
-inline int32 b2Contact::GetChildIndexB() const noexcept
+inline b2Contact::size_type b2Contact::GetChildIndexB() const noexcept
 {
 	return m_indexB;
 }

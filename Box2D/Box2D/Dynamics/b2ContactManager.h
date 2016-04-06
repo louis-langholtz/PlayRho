@@ -30,7 +30,9 @@ class b2BlockAllocator;
 class b2ContactManager
 {
 public:
-	b2ContactManager(b2BlockAllocator* allocator);
+	using size_type = std::size_t;
+
+	b2ContactManager(b2BlockAllocator* allocator, b2ContactFilter* filter, b2ContactListener* listener);
 
 	// Broad-phase callback.
 	void AddPair(void* proxyUserDataA, void* proxyUserDataB);
@@ -41,7 +43,7 @@ public:
 
 	void Collide();
 	
-	inline int32 GetContactCount() const noexcept { return m_contactCount; }
+	inline size_type GetContactCount() const noexcept { return m_contactCount; }
 	const b2Contact* GetContactList() const noexcept { return m_contactList; }
 	b2Contact* GetContactList() noexcept { return m_contactList; }
 
@@ -50,7 +52,7 @@ public:
 	b2ContactListener* m_contactListener;
 
 private:
-	int32 m_contactCount = 0;
+	size_type m_contactCount = 0;
 	b2Contact* m_contactList = nullptr;
 	b2BlockAllocator* const m_allocator;
 };

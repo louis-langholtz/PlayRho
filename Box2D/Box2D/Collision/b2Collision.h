@@ -38,6 +38,8 @@ const uint8 b2_nullFeature = UCHAR_MAX;
 /// This must be 4 bytes or less.
 struct b2ContactFeature
 {
+	using index_t = std::size_t;
+
 	enum Type: uint8
 	{
 		e_vertex = 0,
@@ -46,11 +48,11 @@ struct b2ContactFeature
 
 	b2ContactFeature() = default;
 
-	constexpr b2ContactFeature(Type ta, uint8 ia, Type tb, uint8 ib):
+	constexpr b2ContactFeature(Type ta, index_t ia, Type tb, index_t ib):
 		typeA(ta), indexA(ia), typeB(tb), indexB(ib) {}
 
-	uint8 indexA;		///< Feature index on shapeA
-	uint8 indexB;		///< Feature index on shapeB
+	index_t indexA;		///< Feature index on shapeA
+	index_t indexB;		///< Feature index on shapeB
 	Type typeA;		///< The feature type on shapeA
 	Type typeB;		///< The feature type on shapeB
 };
@@ -105,31 +107,37 @@ struct b2ManifoldPoint
 class b2Manifold
 {
 public:
+	using size_type = std::size_t;
+
 	enum Type
 	{
+		e_unset,
 		e_circles,
 		e_faceA,
 		e_faceB
 	};
 
 	Type GetType() const noexcept { return type; }
-	void SetType(Type val) noexcept { type = val; }
 
-	int32 GetPointCount() const noexcept { return pointCount; }
-
-	const b2ManifoldPoint& GetPoint(int32 index) const
+	void SetType(Type val) noexcept
 	{
-		b2Assert(index < pointCount);
+		type = val;
+		pointCount = 0;
+	}
+
+	size_type GetPointCount() const noexcept { return pointCount; }
+
+	const b2ManifoldPoint& GetPoint(size_type index) const
+	{
+		b2Assert((0 <= index) && (index < pointCount));
 		return points[index];
 	}
 
-	b2ManifoldPoint& GetPoint(int32 index)
+	b2ManifoldPoint& GetPoint(size_type index)
 	{
-		b2Assert(index < pointCount);
+		b2Assert((0 <= index) && (index < pointCount));
 		return points[index];
 	}
-
-	void ClearPoints() noexcept { pointCount = 0; }
 	
 	void AddPoint(const b2Vec2& lp, const b2ContactFeature& cf)
 	{
@@ -158,18 +166,18 @@ public:
 	void SetLocalPoint(const b2Vec2& val) noexcept { localPoint = val; }
 
 private:
-	b2ManifoldPoint points[b2_maxManifoldPoints];	///< the points of contact
+	Type type = e_unset;
 	b2Vec2 localNormal;								///< not use for Type::e_points
 	b2Vec2 localPoint;								///< usage depends on manifold type
-	Type type;
-	int32 pointCount = 0;							///< the number of manifold points
+	size_type pointCount = 0;							///< the number of manifold points
+	b2ManifoldPoint points[b2_maxManifoldPoints];	///< the points of contact
 };
 
 /// This is used to compute the current state of a contact manifold.
 class b2WorldManifold
 {
 public:
-	using count_t = int32;
+	using size_type = std::size_t;
 
 	/// Evaluate the manifold with supplied transforms. This assumes
 	/// modest motion from the original state. This does not change the
@@ -179,17 +187,17 @@ public:
 					const b2Transform& xfA, float32 radiusA,
 					const b2Transform& xfB, float32 radiusB);
 
-	count_t GetPointCount() const noexcept { return pointCount; }
+	size_type GetPointCount() const noexcept { return pointCount; }
 
 	b2Vec2 GetNormal() const { return normal; }
 
-	b2Vec2 GetPoint(count_t index) const
+	b2Vec2 GetPoint(size_type index) const
 	{
 		b2Assert(index < b2_maxManifoldPoints);
 		return points[index];
 	}
 
-	float32 GetSeparation(count_t index) const
+	float32 GetSeparation(size_type index) const
 	{
 		b2Assert(index < b2_maxManifoldPoints);
 		return separations[index];
@@ -197,9 +205,9 @@ public:
 
 private:
 	b2Vec2 normal;								///< world vector pointing from A to B
+	size_type pointCount = 0;
 	b2Vec2 points[b2_maxManifoldPoints];		///< world contact point (point of intersection)
 	float32 separations[b2_maxManifoldPoints];	///< a negative value indicates overlap, in meters
-	count_t pointCount = 0;
 };
 
 /// This is used for determining the state of contact points.
@@ -299,37 +307,37 @@ struct b2AABB
 };
 
 /// Compute the collision manifold between two circles.
-void b2CollideCircles(b2Manifold* manifold,
-					  const b2CircleShape* circleA, const b2Transform& xfA,
-					  const b2CircleShape* circleB, const b2Transform& xfB);
+void b2CollideShapes(b2Manifold* manifold,
+					 const b2CircleShape& shapeA, const b2Transform& xfA,
+					 const b2CircleShape& shapeB, const b2Transform& xfB);
 
 /// Compute the collision manifold between a polygon and a circle.
-void b2CollidePolygonAndCircle(b2Manifold* manifold,
-							   const b2PolygonShape* polygonA, const b2Transform& xfA,
-							   const b2CircleShape* circleB, const b2Transform& xfB);
+void b2CollideShapes(b2Manifold* manifold,
+					 const b2PolygonShape& shapeA, const b2Transform& xfA,
+							   const b2CircleShape& shapeB, const b2Transform& xfB);
 
 /// Compute the collision manifold between two polygons.
-void b2CollidePolygons(b2Manifold* manifold,
-					   const b2PolygonShape* polygonA, const b2Transform& xfA,
-					   const b2PolygonShape* polygonB, const b2Transform& xfB);
+void b2CollideShapes(b2Manifold* manifold,
+					   const b2PolygonShape& shapeA, const b2Transform& xfA,
+					   const b2PolygonShape& shapeB, const b2Transform& xfB);
 
 /// Compute the collision manifold between an edge and a circle.
-void b2CollideEdgeAndCircle(b2Manifold* manifold,
-							   const b2EdgeShape* polygonA, const b2Transform& xfA,
-							   const b2CircleShape* circleB, const b2Transform& xfB);
+void b2CollideShapes(b2Manifold* manifold,
+							   const b2EdgeShape& shapeA, const b2Transform& xfA,
+							   const b2CircleShape& shapeB, const b2Transform& xfB);
 
 /// Compute the collision manifold between an edge and a circle.
-void b2CollideEdgeAndPolygon(b2Manifold* manifold,
-							   const b2EdgeShape* edgeA, const b2Transform& xfA,
-							   const b2PolygonShape* circleB, const b2Transform& xfB);
+void b2CollideShapes(b2Manifold* manifold,
+							   const b2EdgeShape& shapeA, const b2Transform& xfA,
+							   const b2PolygonShape& shapeB, const b2Transform& xfB);
 
 /// Clipping for contact manifolds.
-int32 b2ClipSegmentToLine(std::array<b2ClipVertex, 2>& vOut, const std::array<b2ClipVertex,2>& vIn,
-							const b2Vec2& normal, float32 offset, int32 vertexIndexA);
+std::size_t b2ClipSegmentToLine(std::array<b2ClipVertex, 2>& vOut, const std::array<b2ClipVertex,2>& vIn,
+								const b2Vec2& normal, float32 offset, b2ContactFeature::index_t vertexIndexA);
 
 /// Determine if two generic shapes overlap.
-bool b2TestOverlap(	const b2Shape* shapeA, int32 indexA,
-					const b2Shape* shapeB, int32 indexB,
+bool b2TestOverlap(	const b2Shape& shapeA, b2ContactFeature::index_t indexA,
+					const b2Shape& shapeB, b2ContactFeature::index_t indexB,
 					const b2Transform& xfA, const b2Transform& xfB);
 
 // ---------------- Inline Functions ------------------------------------------

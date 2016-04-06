@@ -26,13 +26,15 @@ class b2Draw;
 /// 
 struct b2RopeDef
 {
+	using size_type = std::size_t;
+
 	constexpr b2RopeDef() = default;
 
 	///
 	b2Vec2* vertices = nullptr;
 
 	///
-	int32 count = 0;
+	size_type count = 0;
 
 	///
 	float32* masses = nullptr;
@@ -54,6 +56,8 @@ struct b2RopeDef
 class b2Rope
 {
 public:
+	using size_type = std::size_t;
+
 	constexpr b2Rope() = default;
 	~b2Rope();
 
@@ -64,7 +68,7 @@ public:
 	void Step(float32 timeStep, int32 iterations);
 
 	///
-	int32 GetVertexCount() const noexcept
+	size_type GetVertexCount() const noexcept
 	{
 		return m_count;
 	}
@@ -86,7 +90,7 @@ private:
 	void SolveC2();
 	void SolveC3();
 
-	int32 m_count = 0;
+	size_type m_count = 0;
 	b2Vec2* m_ps = nullptr;
 	b2Vec2* m_p0s = nullptr;
 	b2Vec2* m_vs = nullptr;
