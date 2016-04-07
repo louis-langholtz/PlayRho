@@ -26,12 +26,12 @@ class b2BlockAllocator;
 class b2ChainAndPolygonContact : public b2Contact
 {
 public:
-	static b2Contact* Create(b2Fixture* fixtureA, size_type indexA,
-							 b2Fixture* fixtureB, size_type indexB,
+	static b2Contact* Create(b2Fixture* fixtureA, child_count_t indexA,
+							 b2Fixture* fixtureB, child_count_t indexB,
 							 b2BlockAllocator* allocator);
 	static void Destroy(b2Contact* contact, b2BlockAllocator* allocator);
 
-	b2ChainAndPolygonContact(b2Fixture* fixtureA, size_type indexA, b2Fixture* fixtureB, size_type indexB);
+	b2ChainAndPolygonContact(b2Fixture* fixtureA, child_count_t indexA, b2Fixture* fixtureB, child_count_t indexB);
 	~b2ChainAndPolygonContact() {}
 
 	void Evaluate(b2Manifold* manifold, const b2Transform& xfA, const b2Transform& xfB) override;

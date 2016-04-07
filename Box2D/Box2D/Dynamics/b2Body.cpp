@@ -420,8 +420,8 @@ void b2Body::SetTransform(const b2Vec2& position, float32 angle)
 
 void b2Body::SynchronizeFixtures()
 {
-	const auto rot = b2Rot(m_sweep.a0);
-	const auto xf1 = b2Transform(m_sweep.c0 - b2Mul(rot, m_sweep.localCenter), rot);
+	const auto rot = b2Rot{m_sweep.a0};
+	const auto xf1 = b2Transform{m_sweep.c0 - b2Mul(rot, m_sweep.localCenter), rot};
 	auto broadPhase = &m_world->m_contactManager.m_broadPhase;
 	for (auto f = m_fixtureList; f; f = f->m_next)
 	{

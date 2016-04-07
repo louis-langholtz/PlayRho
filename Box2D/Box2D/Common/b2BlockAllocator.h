@@ -30,7 +30,7 @@ struct b2Chunk;
 class b2BlockAllocator
 {
 public:
-	using size_type = std::size_t;
+	using size_type = b2_size_t;
 
 	static constexpr auto b2_chunkSize = size_type{16 * 1024};
 	static constexpr auto b2_maxBlockSize = size_type{640};

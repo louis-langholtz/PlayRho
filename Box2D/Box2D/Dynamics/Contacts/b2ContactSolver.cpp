@@ -29,7 +29,7 @@ bool g_blockSolve = true;
 
 struct b2ContactPositionConstraintBodyData
 {
-	using index_t = std::size_t;
+	using index_t = b2_size_t;
 
 	index_t index; // index of body within island
 	float32 invMass;
@@ -40,7 +40,7 @@ struct b2ContactPositionConstraintBodyData
 class b2ContactPositionConstraint
 {
 public:
-	using size_type = std::size_t;
+	using size_type = std::remove_cv<decltype(b2_maxManifoldPoints)>::type;
 
 	b2Vec2 localNormal;
 	b2Vec2 localPoint;
@@ -672,7 +672,7 @@ void b2ContactSolver::StoreImpulses()
 class b2PositionSolverManifold
 {
 public:
-	using index_t = std::size_t;
+	using index_t = std::remove_cv<decltype(b2_maxManifoldPoints)>::type;
 
 	b2PositionSolverManifold() = delete;
 
@@ -805,7 +805,7 @@ bool b2ContactSolver::SolvePositionConstraints()
 
 	// We can't expect minSpeparation >= -b2_linearSlop because we don't
 	// push the separation above -b2_linearSlop.
-	return minSeparation >= (-3.0f * -b2_linearSlop);
+	return minSeparation >= (-3.0f * b2_linearSlop);
 }
 
 // Sequential position solver for position constraints.

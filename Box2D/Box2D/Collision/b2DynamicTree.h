@@ -22,12 +22,12 @@
 #include <Box2D/Collision/b2Collision.h>
 #include <Box2D/Common/b2GrowableStack.h>
 
-static constexpr auto b2_nullNode = static_cast<std::size_t>(-1);
+static constexpr auto b2_nullNode = static_cast<b2_size_t>(-1);
 
 /// A node in the dynamic tree. The client does not interact with this directly.
 struct b2TreeNode
 {
-	using size_type = std::size_t;
+	using size_type = b2_size_t;
 
 	bool IsLeaf() const noexcept
 	{
@@ -63,7 +63,7 @@ struct b2TreeNode
 class b2DynamicTree
 {
 public:
-	using size_type = std::size_t;
+	using size_type = b2_size_t;
 
 	/// Constructing the tree initializes the node pool.
 	b2DynamicTree();

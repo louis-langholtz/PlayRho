@@ -21,6 +21,7 @@
 #include <Box2D/Collision/Shapes/b2EdgeShape.h>
 #include <Box2D/Collision/Shapes/b2PolygonShape.h>
 
+#include <type_traits>
 
 // Compute contact points for edge versus circle.
 // This accounts for edge connectivity.
@@ -134,7 +135,7 @@ void b2CollideShapes(b2Manifold* manifold,
 // This structure is used to keep track of the best separating axis.
 struct b2EPAxis
 {
-	using index_t = std::size_t;
+	using index_t = b2PolygonShape::vertex_count_t;
 
 	enum Type
 	{
@@ -158,7 +159,7 @@ struct b2EPAxis
 class b2TempPolygon
 {
 public:
-	using size_type = std::size_t;
+	using size_type = std::remove_cv<decltype(b2_maxPolygonVertices)>::type;
 	
 	size_type GetCount() const noexcept { return count; }
 	
@@ -191,7 +192,7 @@ private:
 // Reference face used for clipping
 struct b2ReferenceFace
 {
-	using index_t = std::size_t;
+	using index_t = b2PolygonShape::vertex_count_t;
 
 	index_t i1, i2;
 	
@@ -475,7 +476,7 @@ void b2EPCollider::Collide(b2Manifold* manifold,
 		edgeAxis: (polygonAxis.separation > ((k_relativeTol * edgeAxis.separation) + k_absoluteTol))?
 			polygonAxis: edgeAxis;
 	
-	std::array<b2ClipVertex,2> ie;
+	b2ClipArray ie;
 	b2ReferenceFace rf;
 	if (primaryAxis.type == b2EPAxis::e_edgeA)
 	{
@@ -501,16 +502,16 @@ void b2EPCollider::Collide(b2Manifold* manifold,
 		const auto i2 = ((i1 + 1) < m_shapeB.GetCount()) ? i1 + 1 : 0;
 		
 		ie[0].v = m_shapeB.GetVertex(i1);
-		ie[0].id.cf.indexA = 0;
-		ie[0].id.cf.indexB = static_cast<uint8>(i1);
-		ie[0].id.cf.typeA = b2ContactFeature::e_face;
-		ie[0].id.cf.typeB = b2ContactFeature::e_vertex;
+		ie[0].cf.indexA = 0;
+		ie[0].cf.indexB = i1;
+		ie[0].cf.typeA = b2ContactFeature::e_face;
+		ie[0].cf.typeB = b2ContactFeature::e_vertex;
 		
 		ie[1].v = m_shapeB.GetVertex(i2);
-		ie[1].id.cf.indexA = 0;
-		ie[1].id.cf.indexB = static_cast<uint8>(i2);
-		ie[1].id.cf.typeA = b2ContactFeature::e_face;
-		ie[1].id.cf.typeB = b2ContactFeature::e_vertex;
+		ie[1].cf.indexA = 0;
+		ie[1].cf.indexB = i2;
+		ie[1].cf.typeA = b2ContactFeature::e_face;
+		ie[1].cf.typeB = b2ContactFeature::e_vertex;
 		
 		if (m_front)
 		{
@@ -534,16 +535,16 @@ void b2EPCollider::Collide(b2Manifold* manifold,
 		manifold->SetType(b2Manifold::e_faceB);
 		
 		ie[0].v = m_v1;
-		ie[0].id.cf.indexA = 0;
-		ie[0].id.cf.indexB = static_cast<uint8>(primaryAxis.index);
-		ie[0].id.cf.typeA = b2ContactFeature::e_vertex;
-		ie[0].id.cf.typeB = b2ContactFeature::e_face;
+		ie[0].cf.indexA = 0;
+		ie[0].cf.indexB = primaryAxis.index;
+		ie[0].cf.typeA = b2ContactFeature::e_vertex;
+		ie[0].cf.typeB = b2ContactFeature::e_face;
 		
 		ie[1].v = m_v2;
-		ie[1].id.cf.indexA = 0;
-		ie[1].id.cf.indexB = static_cast<uint8>(primaryAxis.index);		
-		ie[1].id.cf.typeA = b2ContactFeature::e_vertex;
-		ie[1].id.cf.typeB = b2ContactFeature::e_face;
+		ie[1].cf.indexA = 0;
+		ie[1].cf.indexB = primaryAxis.index;		
+		ie[1].cf.typeA = b2ContactFeature::e_vertex;
+		ie[1].cf.typeB = b2ContactFeature::e_face;
 		
 		rf.i1 = primaryAxis.index;
 		rf.i2 = ((rf.i1 + 1) < m_shapeB.GetCount()) ? rf.i1 + 1 : 0;
@@ -569,8 +570,8 @@ void b2EPCollider::Collide(b2Manifold* manifold,
 	}
 
 	// Clip incident edge against extruded edge1 side edges.
-	std::array<b2ClipVertex,b2_maxManifoldPoints> clipPoints1;
-	std::array<b2ClipVertex,b2_maxManifoldPoints> clipPoints2;
+	b2ClipArray clipPoints1;
+	b2ClipArray clipPoints2;
 	
 	// Clip to box side 1
 	if (b2ClipSegmentToLine(clipPoints1, ie, rf.sideNormal1, rf.sideOffset1, rf.i1) < b2_maxManifoldPoints)
@@ -588,9 +589,9 @@ void b2EPCollider::Collide(b2Manifold* manifold,
 		if (separation <= MaxSeparation)
 		{
 			if (primaryAxis.type == b2EPAxis::e_edgeA)
-				manifold->AddPoint(b2MulT(m_xf, clipPoints2[i].v), clipPoints2[i].id);
+				manifold->AddPoint(b2MulT(m_xf, clipPoints2[i].v), clipPoints2[i].cf);
 			else
-				manifold->AddPoint(clipPoints2[i].v, b2Flip(clipPoints2[i].id.cf));
+				manifold->AddPoint(clipPoints2[i].v, b2Flip(clipPoints2[i].cf));
 		}
 	}
 }

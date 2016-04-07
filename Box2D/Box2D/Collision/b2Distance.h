@@ -29,17 +29,17 @@ class b2Shape;
 class b2DistanceProxy
 {
 public:
-	using size_type = std::size_t;
+	using size_type = b2_size_t; // must be big enough to hold max posible count of vertices
 
 	b2DistanceProxy() = default;
 
-	b2DistanceProxy(const b2Shape& shape, size_type index);
+	b2DistanceProxy(const b2Shape& shape, child_count_t index);
 
 	float32 GetRadius() const noexcept { return m_radius; }
 
 	/// Initialize the proxy using the given shape. The shape
 	/// must remain in scope while the proxy is in use.
-	void Set(const b2Shape& shape, size_type index);
+	void Set(const b2Shape& shape, child_count_t index);
 
 	/// Get the supporting vertex index in the given direction.
 	size_type GetSupport(const b2Vec2& d) const noexcept;
@@ -64,10 +64,10 @@ private:
 class b2SimplexCache
 {
 public:
-	using size_type = std::size_t;
-	using index_t = std::size_t;
+	static constexpr auto MaxCount = unsigned{3};
+	using size_type = std::remove_cv<decltype(MaxCount)>::type;
 
-	static constexpr auto MaxCount = size_type{3};
+	using index_t = b2_size_t;
 
 	float32 GetMetric() const noexcept { return metric; }
 	size_type GetCount() const noexcept { return count; }

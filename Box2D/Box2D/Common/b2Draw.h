@@ -35,7 +35,7 @@ struct b2Color
 class b2Draw
 {
 public:
-	using size_type = std::size_t;
+	using size_type = b2_size_t;
 
 	b2Draw() = default;
 

@@ -27,12 +27,12 @@
 int32 b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
 #endif
 
-b2DistanceProxy::b2DistanceProxy(const b2Shape& shape, size_type index)
+b2DistanceProxy::b2DistanceProxy(const b2Shape& shape, child_count_t index)
 {
 	Set(shape, index);
 }
 
-void b2DistanceProxy::Set(const b2Shape& shape, size_type index)
+void b2DistanceProxy::Set(const b2Shape& shape, child_count_t index)
 {
 	switch (shape.GetType())
 	{
@@ -90,7 +90,7 @@ void b2DistanceProxy::Set(const b2Shape& shape, size_type index)
 
 struct b2SimplexVertex
 {
-	using size_type = std::size_t;
+	using size_type = b2DistanceProxy::size_type;
 
 	b2Vec2 wA;		// support point in proxyA
 	b2Vec2 wB;		// support point in proxyB
@@ -103,9 +103,10 @@ struct b2SimplexVertex
 class b2Simplex
 {
 public:
-	using size_type = std::size_t;
-	static constexpr size_type maxVertices = 3;
+	static constexpr auto MaxVertices = unsigned{3};
+	using size_type = std::remove_cv<decltype(MaxVertices)>::type;
 
+	// returns value between 0 and MaxVertices
 	size_type GetCount() const noexcept
 	{
 		return m_count;
@@ -118,7 +119,7 @@ public:
 
 	void AddVertex(const b2SimplexVertex& vertex) noexcept
 	{
-		b2Assert(m_count < maxVertices);
+		b2Assert(m_count < MaxVertices);
 		m_vertices[m_count] = vertex;
 		++m_count;
 	}
@@ -127,7 +128,7 @@ public:
 					const b2DistanceProxy& proxyA, const b2Transform& transformA,
 					const b2DistanceProxy& proxyB, const b2Transform& transformB)
 	{
-		b2Assert(cache.GetCount() <= maxVertices);
+		b2Assert(cache.GetCount() <= MaxVertices);
 		
 		// Copy data from cache.
 		m_count = cache.GetCount();
@@ -275,8 +276,8 @@ public:
 	void Solve3() noexcept;
 
 private:
-	size_type m_count = 0; // value between 0 and maxVertices
-	b2SimplexVertex m_vertices[maxVertices];
+	size_type m_count = 0; // value between 0 and MaxVertices
+	b2SimplexVertex m_vertices[MaxVertices];
 };
 
 
@@ -475,7 +476,7 @@ void b2Distance(b2DistanceOutput* output,
 
 	// These store the vertices of the last simplex so that we
 	// can check for duplicates and prevent cycling.
-	b2SimplexVertex::size_type saveA[3], saveB[3];
+	b2SimplexVertex::size_type saveA[b2Simplex::MaxVertices], saveB[b2Simplex::MaxVertices];
 
 #if defined(DO_COMPUTE_CLOSEST_POINT)
 	auto distanceSqr1 = b2_maxFloat;
@@ -511,7 +512,7 @@ void b2Distance(b2DistanceOutput* output,
 		}
 
 		// If we have max points (3), then the origin is in the corresponding triangle.
-		if (simplex.GetCount() == b2Simplex::maxVertices)
+		if (simplex.GetCount() == b2Simplex::MaxVertices)
 		{
 			break;
 		}

@@ -26,8 +26,8 @@
 
 #include <new>
 
-b2Contact* b2PolygonContact::Create(b2Fixture* fixtureA, size_type,
-									b2Fixture* fixtureB, size_type,
+b2Contact* b2PolygonContact::Create(b2Fixture* fixtureA, child_count_t,
+									b2Fixture* fixtureB, child_count_t,
 									b2BlockAllocator* allocator)
 {
 	void* mem = allocator->Allocate(sizeof(b2PolygonContact));

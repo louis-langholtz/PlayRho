@@ -42,8 +42,6 @@ struct b2MassData
 class b2Shape
 {
 public:
-	using size_type = std::size_t;
-	
 	enum Type
 	{
 		e_circle = 0,
@@ -69,7 +67,7 @@ public:
 	Type GetType() const noexcept { return m_type; }
 
 	/// Get the number of child primitives.
-	virtual size_type GetChildCount() const = 0;
+	virtual child_count_t GetChildCount() const = 0;
 
 	/// Test a point for containment in this shape. This only works for convex shapes.
 	/// @param xf the shape world transform.
@@ -82,13 +80,13 @@ public:
 	/// @param transform the transform to be applied to the shape.
 	/// @param childIndex the child shape index
 	virtual bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
-						const b2Transform& transform, size_type childIndex) const = 0;
+						const b2Transform& transform, child_count_t childIndex) const = 0;
 
 	/// Given a transform, compute the associated axis aligned bounding box for a child shape.
 	/// @param aabb returns the axis aligned box.
 	/// @param xf the world transform of the shape.
 	/// @param childIndex the child shape
-	virtual void ComputeAABB(b2AABB* aabb, const b2Transform& xf, size_type childIndex) const = 0;
+	virtual void ComputeAABB(b2AABB* aabb, const b2Transform& xf, child_count_t childIndex) const = 0;
 
 	/// Compute the mass properties of this shape using its dimensions and density.
 	/// The inertia tensor is computed about the local origin.

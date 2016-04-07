@@ -92,7 +92,7 @@ bool b2BroadPhase::QueryCallback(size_type proxyId)
 	}
 
 	// Grow the pair buffer as needed.
-	if (m_pairCount == m_pairCapacity)
+	if (m_pairCapacity == m_pairCount)
 	{
 		m_pairCapacity *= 2;
 		m_pairBuffer = static_cast<b2Pair*>(b2Realloc(m_pairBuffer, m_pairCapacity * sizeof(b2Pair)));

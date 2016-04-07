@@ -284,7 +284,7 @@ bool b2WheelJoint::SolvePositionConstraints(const b2SolverData& data)
 	auto cB = data.positions[m_indexB].c;
 	auto aB = data.positions[m_indexB].a;
 
-	const b2Rot qA(aA), qB(aB);
+	const b2Rot qA{aA}, qB{aB};
 
 	const auto rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
 	const auto rB = b2Mul(qB, m_localAnchorB - m_localCenterB);

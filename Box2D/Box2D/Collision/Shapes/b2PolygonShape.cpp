@@ -62,12 +62,12 @@ void b2PolygonShape::SetAsBox(float32 hx, float32 hy, const b2Vec2& center, floa
 	}
 }
 
-b2PolygonShape::size_type b2PolygonShape::GetChildCount() const
+child_count_t b2PolygonShape::GetChildCount() const
 {
 	return 1;
 }
 
-static b2Vec2 ComputeCentroid(const b2Vec2 vs[], std::size_t count)
+static b2Vec2 ComputeCentroid(const b2Vec2 vs[], b2PolygonShape::vertex_count_t count)
 {
 	b2Assert(count >= 3);
 
@@ -113,9 +113,9 @@ static b2Vec2 ComputeCentroid(const b2Vec2 vs[], std::size_t count)
 	return c;
 }
 
-void b2PolygonShape::Set(const b2Vec2 vertices[], int32 count)
+void b2PolygonShape::Set(const b2Vec2 vertices[], vertex_count_t count)
 {
-	b2Assert((3 <= count) && (count <= b2_maxPolygonVertices));
+	b2Assert((count >= 3) && (count <= b2_maxPolygonVertices));
 	if (count < 3)
 	{
 		SetAsBox(1.0f, 1.0f);
@@ -172,7 +172,7 @@ void b2PolygonShape::Set(const b2Vec2 vertices[], int32 count)
 		}
 	}
 
-	int32 hull[b2_maxPolygonVertices];
+	vertex_count_t hull[b2_maxPolygonVertices];
 	auto m = decltype(m_count){0};
 	auto ih = i0;
 
@@ -260,7 +260,7 @@ bool b2PolygonShape::TestPoint(const b2Transform& xf, const b2Vec2& p) const
 }
 
 bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
-								const b2Transform& xf, size_type childIndex) const
+								const b2Transform& xf, child_count_t childIndex) const
 {
 	B2_NOT_USED(childIndex);
 
@@ -270,7 +270,7 @@ bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& inpu
 	const auto d = p2 - p1;
 
 	auto lower = 0.0f, upper = input.maxFraction;
-	constexpr auto InvalidIndex = static_cast<size_type>(-1);
+	constexpr auto InvalidIndex = static_cast<child_count_t>(-1);
 	auto index = InvalidIndex;
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
@@ -330,7 +330,7 @@ bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& inpu
 	return false;
 }
 
-void b2PolygonShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, size_type childIndex) const
+void b2PolygonShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, child_count_t childIndex) const
 {
 	B2_NOT_USED(childIndex);
 	

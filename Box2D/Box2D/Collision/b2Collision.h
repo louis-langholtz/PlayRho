@@ -20,8 +20,10 @@
 #define B2_COLLISION_H
 
 #include <Box2D/Common/b2Math.h>
+
 #include <climits>
 #include <array>
+#include <type_traits>
 
 /// @file
 /// Structures and functions used for computing contact points, distance
@@ -35,12 +37,11 @@ class b2PolygonShape;
 const uint8 b2_nullFeature = UCHAR_MAX;
 
 /// The features that intersect to form the contact point
-/// This must be 4 bytes or less.
 struct b2ContactFeature
 {
-	using index_t = std::size_t;
+	using index_t = unsigned int;
 
-	enum Type: uint8
+	enum Type
 	{
 		e_vertex = 0,
 		e_face = 1
@@ -51,10 +52,10 @@ struct b2ContactFeature
 	constexpr b2ContactFeature(Type ta, index_t ia, Type tb, index_t ib):
 		typeA(ta), indexA(ia), typeB(tb), indexB(ib) {}
 
-	index_t indexA;		///< Feature index on shapeA
-	index_t indexB;		///< Feature index on shapeB
-	Type typeA;		///< The feature type on shapeA
-	Type typeB;		///< The feature type on shapeB
+	Type typeA; ///< The feature type on shapeA
+	index_t indexA; ///< Feature index on shapeA
+	Type typeB; ///< The feature type on shapeB
+	index_t indexB; ///< Feature index on shapeB
 };
 
 constexpr b2ContactFeature b2Flip(const b2ContactFeature& val)
@@ -63,12 +64,10 @@ constexpr b2ContactFeature b2Flip(const b2ContactFeature& val)
 	return b2ContactFeature(val.typeB, val.indexB, val.typeA, val.indexA);
 }
 
-/// Contact ids to facilitate warm starting.
-union b2ContactID
+constexpr bool operator==(const b2ContactFeature& lhs, const b2ContactFeature& rhs)
 {
-	b2ContactFeature cf;
-	uint32 key;					///< Used to quickly compare contact ids.
-};
+	return lhs.typeA == rhs.typeA && lhs.typeB == rhs.typeB && lhs.indexA == rhs.indexA && lhs.indexB == rhs.indexB;
+}
 
 /// A manifold point is a contact point belonging to a contact
 /// manifold. It holds details related to the geometry and dynamics
@@ -85,7 +84,7 @@ struct b2ManifoldPoint
 	b2Vec2 localPoint;		///< usage depends on manifold type
 	float32 normalImpulse;	///< the non-penetration impulse
 	float32 tangentImpulse;	///< the friction impulse
-	b2ContactID id;			///< uniquely identifies a contact point between two shapes
+	b2ContactFeature cf;    ///< uniquely identifies a contact point between two shapes
 };
 
 /// A manifold for two touching convex shapes.
@@ -107,7 +106,7 @@ struct b2ManifoldPoint
 class b2Manifold
 {
 public:
-	using size_type = std::size_t;
+	using size_type = std::remove_cv<decltype(b2_maxPolygonVertices)>::type;
 
 	enum Type
 	{
@@ -143,15 +142,10 @@ public:
 	{
 		b2Assert(pointCount < b2_maxManifoldPoints);
 		points[pointCount].localPoint = lp;
-		points[pointCount].id.cf = cf;
+		points[pointCount].cf = cf;
 		points[pointCount].normalImpulse = 0.f;
 		points[pointCount].tangentImpulse = 0.f;
 		++pointCount;
-	}
-
-	void AddPoint(const b2Vec2& lp, const b2ContactID& id)
-	{
-		AddPoint(lp, id.cf);
 	}
 
 	void AddPoint(const b2Vec2& lp)
@@ -177,7 +171,7 @@ private:
 class b2WorldManifold
 {
 public:
-	using size_type = std::size_t;
+	using size_type = std::remove_cv<decltype(b2_maxPolygonVertices)>::type;
 
 	/// Evaluate the manifold with supplied transforms. This assumes
 	/// modest motion from the original state. This does not change the
@@ -221,15 +215,15 @@ enum b2PointState
 
 /// Compute the point states given two manifolds. The states pertain to the transition from manifold1
 /// to manifold2. So state1 is either persist or remove while state2 is either add or persist.
-void b2GetPointStates(std::array<b2PointState,b2_maxManifoldPoints>& state1,
-					  std::array<b2PointState,b2_maxManifoldPoints>& state2,
+using b2PointStateArray = std::array<b2PointState,b2_maxManifoldPoints>;
+void b2GetPointStates(b2PointStateArray& state1, b2PointStateArray& state2,
 					  const b2Manifold& manifold1, const b2Manifold& manifold2);
 
 /// Used for computing contact manifolds.
 struct b2ClipVertex
 {
 	b2Vec2 v;
-	b2ContactID id;
+	b2ContactFeature cf;
 };
 
 /// Ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
@@ -332,13 +326,14 @@ void b2CollideShapes(b2Manifold* manifold,
 							   const b2PolygonShape& shapeB, const b2Transform& xfB);
 
 /// Clipping for contact manifolds.
-std::size_t b2ClipSegmentToLine(std::array<b2ClipVertex, 2>& vOut, const std::array<b2ClipVertex,2>& vIn,
-								const b2Vec2& normal, float32 offset, b2ContactFeature::index_t vertexIndexA);
+using b2ClipArray = std::array<b2ClipVertex, b2_maxManifoldPoints>;
+b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray& vIn,
+										   const b2Vec2& normal, float32 offset, b2ContactFeature::index_t vertexIndexA);
 
 /// Determine if two generic shapes overlap.
-bool b2TestOverlap(	const b2Shape& shapeA, b2ContactFeature::index_t indexA,
-					const b2Shape& shapeB, b2ContactFeature::index_t indexB,
-					const b2Transform& xfA, const b2Transform& xfB);
+bool b2TestOverlap(const b2Shape& shapeA, child_count_t indexA,
+				   const b2Shape& shapeB, child_count_t indexB,
+				   const b2Transform& xfA, const b2Transform& xfB);
 
 // ---------------- Inline Functions ------------------------------------------
 

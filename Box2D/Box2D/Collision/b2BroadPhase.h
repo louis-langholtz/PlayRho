@@ -26,7 +26,7 @@
 
 struct b2Pair
 {
-	using size_type = std::size_t;
+	using size_type = b2_size_t;
 	size_type proxyIdA;
 	size_type proxyIdB;
 };
@@ -38,7 +38,7 @@ class b2BroadPhase
 {
 public:
 
-	using size_type = std::size_t;
+	using size_type = b2_size_t;
 
 	enum: size_type
 	{

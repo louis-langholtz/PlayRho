@@ -109,11 +109,11 @@ void b2Fixture::CreateProxies(b2BroadPhase* broadPhase, const b2Transform& xf)
 
 	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
 	{
-		auto proxy = m_proxies + i;
-		m_shape->ComputeAABB(&proxy->aabb, xf, i);
-		proxy->proxyId = broadPhase->CreateProxy(proxy->aabb, proxy);
-		proxy->fixture = this;
-		proxy->childIndex = i;
+		auto& proxy = m_proxies[i];
+		m_shape->ComputeAABB(&proxy.aabb, xf, i);
+		proxy.proxyId = broadPhase->CreateProxy(proxy.aabb, &proxy);
+		proxy.fixture = this;
+		proxy.childIndex = i;
 	}
 }
 
@@ -122,9 +122,9 @@ void b2Fixture::DestroyProxies(b2BroadPhase* broadPhase)
 	// Destroy proxies in the broad-phase.
 	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
 	{
-		auto proxy = m_proxies + i;
-		broadPhase->DestroyProxy(proxy->proxyId);
-		proxy->proxyId = b2BroadPhase::e_nullProxy;
+		auto& proxy = m_proxies[i];
+		broadPhase->DestroyProxy(proxy.proxyId);
+		proxy.proxyId = b2BroadPhase::e_nullProxy;
 	}
 
 	m_proxyCount = 0;
@@ -139,18 +139,18 @@ void b2Fixture::Synchronize(b2BroadPhase* broadPhase, const b2Transform& transfo
 
 	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
 	{
-		auto proxy = m_proxies + i;
+		auto& proxy = m_proxies[i];
 
 		// Compute an AABB that covers the swept shape (may miss some rotation effect).
 		b2AABB aabb1, aabb2;
-		m_shape->ComputeAABB(&aabb1, transform1, proxy->childIndex);
-		m_shape->ComputeAABB(&aabb2, transform2, proxy->childIndex);
+		m_shape->ComputeAABB(&aabb1, transform1, proxy.childIndex);
+		m_shape->ComputeAABB(&aabb2, transform2, proxy.childIndex);
 	
-		proxy->aabb.Combine(aabb1, aabb2);
+		proxy.aabb.Combine(aabb1, aabb2);
 
 		const auto displacement = transform2.p - transform1.p;
 
-		broadPhase->MoveProxy(proxy->proxyId, proxy->aabb, displacement);
+		broadPhase->MoveProxy(proxy.proxyId, proxy.aabb, displacement);
 	}
 }
 
@@ -207,7 +207,7 @@ void b2Fixture::SetSensor(bool sensor)
 	}
 }
 
-void b2Fixture::Dump(size_type bodyIndex)
+void b2Fixture::Dump(island_count_t bodyIndex)
 {
 	b2Log("    b2FixtureDef fd;\n");
 	b2Log("    fd.friction = %.15lef;\n", m_friction);

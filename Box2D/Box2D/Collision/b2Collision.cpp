@@ -88,8 +88,7 @@ void b2WorldManifold::Assign(const b2Manifold& manifold,
 	}
 }
 
-void b2GetPointStates(std::array<b2PointState, b2_maxManifoldPoints>& state1,
-					  std::array<b2PointState, b2_maxManifoldPoints>& state2,
+void b2GetPointStates(b2PointStateArray& state1, b2PointStateArray& state2,
 					  const b2Manifold& manifold1, const b2Manifold& manifold2)
 {
 	for (auto i = decltype(b2_maxManifoldPoints){0}; i < b2_maxManifoldPoints; ++i)
@@ -101,13 +100,13 @@ void b2GetPointStates(std::array<b2PointState, b2_maxManifoldPoints>& state1,
 	// Detect persists and removes.
 	for (auto i = decltype(manifold1.GetPointCount()){0}; i < manifold1.GetPointCount(); ++i)
 	{
-		const auto id = manifold1.GetPoint(i).id;
+		const auto& cf = manifold1.GetPoint(i).cf;
 
 		state1[i] = b2_removeState;
 
 		for (auto j = decltype(manifold2.GetPointCount()){0}; j < manifold2.GetPointCount(); ++j)
 		{
-			if (manifold2.GetPoint(j).id.key == id.key)
+			if (manifold2.GetPoint(j).cf == cf)
 			{
 				state1[i] = b2_persistState;
 				break;
@@ -118,13 +117,13 @@ void b2GetPointStates(std::array<b2PointState, b2_maxManifoldPoints>& state1,
 	// Detect persists and adds.
 	for (auto i = decltype(manifold2.GetPointCount()){0}; i < manifold2.GetPointCount(); ++i)
 	{
-		const auto id = manifold2.GetPoint(i).id;
+		const auto& cf = manifold2.GetPoint(i).cf;
 
 		state2[i] = b2_addState;
 
 		for (auto j = decltype(manifold1.GetPointCount()){0}; j < manifold1.GetPointCount(); ++j)
 		{
-			if (manifold1.GetPoint(j).id.key == id.key)
+			if (manifold1.GetPoint(j).cf == cf)
 			{
 				state2[i] = b2_persistState;
 				break;
@@ -196,11 +195,11 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 }
 
 // Sutherland-Hodgman clipping.
-std::size_t b2ClipSegmentToLine(std::array<b2ClipVertex, 2>& vOut, const std::array<b2ClipVertex,2>& vIn,
-						  const b2Vec2& normal, float32 offset, b2ContactFeature::index_t vertexIndexA)
+b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray& vIn,
+										   const b2Vec2& normal, float32 offset, b2ContactFeature::index_t vertexIndexA)
 {
 	// Start with no output points
-	auto numOut = std::size_t{0};
+	auto numOut = b2ClipArray::size_type{0};
 
 	// Calculate the distance of end points to the line
 	const auto distance0 = b2Dot(normal, vIn[0].v) - offset;
@@ -218,19 +217,19 @@ std::size_t b2ClipSegmentToLine(std::array<b2ClipVertex, 2>& vOut, const std::ar
 		vOut[numOut].v = vIn[0].v + interp * (vIn[1].v - vIn[0].v);
 
 		// VertexA is hitting edgeB.
-		vOut[numOut].id.cf.indexA = static_cast<uint8>(vertexIndexA);
-		vOut[numOut].id.cf.indexB = vIn[0].id.cf.indexB;
-		vOut[numOut].id.cf.typeA = b2ContactFeature::e_vertex;
-		vOut[numOut].id.cf.typeB = b2ContactFeature::e_face;
+		vOut[numOut].cf.indexA = vertexIndexA;
+		vOut[numOut].cf.indexB = vIn[0].cf.indexB;
+		vOut[numOut].cf.typeA = b2ContactFeature::e_vertex;
+		vOut[numOut].cf.typeB = b2ContactFeature::e_face;
 		++numOut;
 	}
 
 	return numOut;
 }
 
-bool b2TestOverlap(	const b2Shape& shapeA, b2ContactFeature::index_t indexA,
-					const b2Shape& shapeB, b2ContactFeature::index_t indexB,
-					const b2Transform& xfA, const b2Transform& xfB)
+bool b2TestOverlap(const b2Shape& shapeA, child_count_t indexA,
+				   const b2Shape& shapeB, child_count_t indexB,
+				   const b2Transform& xfA, const b2Transform& xfB)
 {
 	b2DistanceInput input;
 	input.proxyA.Set(shapeA, indexA);

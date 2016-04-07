@@ -80,11 +80,11 @@ struct b2FixtureDef
 /// This proxy is used internally to connect fixtures to the broad-phase.
 struct b2FixtureProxy
 {
-	using size_type = std::size_t;
+	using size_type = b2_size_t;
 
 	b2AABB aabb;
 	b2Fixture* fixture;
-	size_type childIndex;
+	child_count_t childIndex;
 	size_type proxyId;
 };
 
@@ -96,8 +96,6 @@ struct b2FixtureProxy
 class b2Fixture
 {
 public:
-	using size_type = std::size_t;
-
 	b2Fixture() = delete;
 
 	/// Get the type of the child shape. You can use this to down cast to the concrete shape.
@@ -152,7 +150,7 @@ public:
 	/// Cast a ray against this shape.
 	/// @param output the ray-cast results.
 	/// @param input the ray-cast input parameters.
-	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input, size_type childIndex) const;
+	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input, child_count_t childIndex) const;
 
 	/// Get the mass data for this fixture. The mass data is based on the density and
 	/// the shape. The rotational inertia is about the shape's origin. This operation
@@ -183,10 +181,10 @@ public:
 	/// Get the fixture's AABB. This AABB may be enlarge and/or stale.
 	/// If you need a more accurate AABB, compute it using the shape and
 	/// the body transform.
-	const b2AABB& GetAABB(size_type childIndex) const;
+	const b2AABB& GetAABB(child_count_t childIndex) const;
 
 	/// Dump this fixture to the log file.
-	void Dump(size_type bodyIndex);
+	void Dump(island_count_t bodyIndex);
 
 protected:
 
@@ -214,7 +212,7 @@ protected:
 	float32 m_friction;
 	float32 m_restitution;
 	b2FixtureProxy* m_proxies = nullptr;
-	size_type m_proxyCount = 0;
+	child_count_t m_proxyCount = 0;
 	b2Filter m_filter;
 	bool m_isSensor;
 	void* m_userData = nullptr;
@@ -311,7 +309,7 @@ inline bool b2Fixture::TestPoint(const b2Vec2& p) const
 	return m_shape->TestPoint(m_body->GetTransform(), p);
 }
 
-inline bool b2Fixture::RayCast(b2RayCastOutput* output, const b2RayCastInput& input, size_type childIndex) const
+inline bool b2Fixture::RayCast(b2RayCastOutput* output, const b2RayCastInput& input, child_count_t childIndex) const
 {
 	return m_shape->RayCast(output, input, m_body->GetTransform(), childIndex);
 }
@@ -321,7 +319,7 @@ inline void b2Fixture::GetMassData(b2MassData* massData) const
 	m_shape->ComputeMass(massData, m_density);
 }
 
-inline const b2AABB& b2Fixture::GetAABB(size_type childIndex) const
+inline const b2AABB& b2Fixture::GetAABB(child_count_t childIndex) const
 {
 	b2Assert(0 <= childIndex && childIndex < m_proxyCount);
 	return m_proxies[childIndex].aabb;

@@ -26,8 +26,8 @@
 #include <stdio.h>
 
 float32 b2_toiTime, b2_toiMaxTime;
-int32 b2_toiCalls, b2_toiIters, b2_toiMaxIters;
-int32 b2_toiRootIters, b2_toiMaxRootIters;
+uint32 b2_toiCalls, b2_toiIters, b2_toiMaxIters;
+uint32 b2_toiRootIters, b2_toiMaxRootIters;
 
 //
 struct b2SeparationFunction

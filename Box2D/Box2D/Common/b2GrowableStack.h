@@ -28,7 +28,7 @@ template <typename T, int32 N>
 class b2GrowableStack
 {
 public:
-	using size_type = std::size_t;
+	using size_type = b2_size_t;
 
 	b2GrowableStack() = default;
 

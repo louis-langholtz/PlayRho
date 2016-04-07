@@ -20,6 +20,7 @@
 #define B2_POLYGON_SHAPE_H
 
 #include <Box2D/Collision/Shapes/b2Shape.h>
+#include <type_traits>
 
 /// A convex polygon. It is assumed that the interior of the polygon is to
 /// the left of each edge.
@@ -28,6 +29,8 @@
 class b2PolygonShape : public b2Shape
 {
 public:
+	using vertex_count_t = std::remove_cv<decltype(b2_maxPolygonVertices)>::type;
+
 	b2PolygonShape(): b2Shape(e_polygon, b2_polygonRadius) {}
 
 	b2PolygonShape(const b2PolygonShape&) = default;
@@ -35,14 +38,14 @@ public:
 	b2Shape* Clone(b2BlockAllocator* allocator) const override;
 
 	/// @see b2Shape::GetChildCount
-	size_type GetChildCount() const override;
+	child_count_t GetChildCount() const override;
 
 	/// Create a convex hull from the given array of local points.
 	/// The count must be in the range [3, b2_maxPolygonVertices].
 	/// @warning the points may be re-ordered, even if they form a convex polygon
 	/// @warning collinear points are handled but not removed. Collinear points
 	/// may lead to poor stacking behavior.
-	void Set(const b2Vec2 points[], int32 count);
+	void Set(const b2Vec2 points[], vertex_count_t count);
 
 	/// Build vertices to represent an axis-aligned box centered on the local origin.
 	/// @param hx the half-width.
@@ -61,22 +64,22 @@ public:
 
 	/// Implement b2Shape.
 	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
-					const b2Transform& transform, size_type childIndex) const override;
+					const b2Transform& transform, child_count_t childIndex) const override;
 
 	/// @see b2Shape::ComputeAABB
-	void ComputeAABB(b2AABB* aabb, const b2Transform& transform, size_type childIndex) const override;
+	void ComputeAABB(b2AABB* aabb, const b2Transform& transform, child_count_t childIndex) const override;
 
 	/// @see b2Shape::ComputeMass
 	void ComputeMass(b2MassData* massData, float32 density) const override;
 
 	/// Get the vertex count.
-	size_type GetVertexCount() const noexcept { return m_count; }
+	vertex_count_t GetVertexCount() const noexcept { return m_count; }
 
 	/// Get a vertex by index.
-	const b2Vec2& GetVertex(size_type index) const;
+	const b2Vec2& GetVertex(vertex_count_t index) const;
 
 	/// Get a normal by index.
-	const b2Vec2& GetNormal(size_type index) const;
+	const b2Vec2& GetNormal(vertex_count_t index) const;
 
 	const b2Vec2* GetVertices() const noexcept { return m_vertices; }
 
@@ -92,16 +95,16 @@ private:
 	b2Vec2 m_centroid = b2Vec2_zero;
 	b2Vec2 m_vertices[b2_maxPolygonVertices];
 	b2Vec2 m_normals[b2_maxPolygonVertices];
-	size_type m_count = 0;
+	vertex_count_t m_count = 0;
 };
 
-inline const b2Vec2& b2PolygonShape::GetVertex(size_type index) const
+inline const b2Vec2& b2PolygonShape::GetVertex(vertex_count_t index) const
 {
 	b2Assert(0 <= index && index < m_count);
 	return m_vertices[index];
 }
 
-inline const b2Vec2& b2PolygonShape::GetNormal(size_type index) const
+inline const b2Vec2& b2PolygonShape::GetNormal(vertex_count_t index) const
 {
 	b2Assert(0 <= index && index < m_count);
 	return m_normals[index];

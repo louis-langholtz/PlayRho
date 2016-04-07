@@ -112,9 +112,6 @@ struct b2BodyDef
 class b2Body
 {
 public:
-	using size_type = std::size_t;
-	using index_t = std::size_t;
-
 	/// Creates a fixture and attach it to this body. Use this function if you need
 	/// to set some fixture parameters, like friction. Otherwise you can create the
 	/// fixture directly from a shape.
@@ -438,9 +435,9 @@ private:
 
 	uint16 m_flags = 0;
 
-	static constexpr index_t InvalidIslandIndex = static_cast<index_t>(-1);
+	static constexpr auto InvalidIslandIndex = static_cast<island_count_t>(-1);
 
-	index_t m_islandIndex = InvalidIslandIndex;
+	island_count_t m_islandIndex = InvalidIslandIndex;
 	
 	bool IsValidIslandIndex() const noexcept;
 
@@ -458,7 +455,7 @@ private:
 	b2Body* m_next = nullptr;
 
 	b2Fixture* m_fixtureList = nullptr;
-	size_type m_fixtureCount = 0;
+	b2_size_t m_fixtureCount = 0;
 
 	b2JointEdge* m_jointList = nullptr;
 	b2ContactEdge* m_contactList = nullptr;
