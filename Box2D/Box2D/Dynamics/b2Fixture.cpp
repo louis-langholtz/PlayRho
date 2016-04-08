@@ -110,7 +110,7 @@ void b2Fixture::CreateProxies(b2BroadPhase* broadPhase, const b2Transform& xf)
 	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
 	{
 		auto& proxy = m_proxies[i];
-		m_shape->ComputeAABB(&proxy.aabb, xf, i);
+		proxy.aabb = m_shape->ComputeAABB(xf, i);
 		proxy.proxyId = broadPhase->CreateProxy(proxy.aabb, &proxy);
 		proxy.fixture = this;
 		proxy.childIndex = i;
@@ -142,9 +142,8 @@ void b2Fixture::Synchronize(b2BroadPhase* broadPhase, const b2Transform& transfo
 		auto& proxy = m_proxies[i];
 
 		// Compute an AABB that covers the swept shape (may miss some rotation effect).
-		b2AABB aabb1, aabb2;
-		m_shape->ComputeAABB(&aabb1, transform1, proxy.childIndex);
-		m_shape->ComputeAABB(&aabb2, transform2, proxy.childIndex);
+		const auto aabb1 = m_shape->ComputeAABB(transform1, proxy.childIndex);
+		const auto aabb2 = m_shape->ComputeAABB(transform2, proxy.childIndex);
 	
 		proxy.aabb.Combine(aabb1, aabb2);
 

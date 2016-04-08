@@ -134,7 +134,7 @@ void b2PolygonShape::Set(const b2Vec2 vertices[], vertex_count_t count)
 		auto unique = true;
 		for (auto j = decltype(tempCount){0}; j < tempCount; ++j)
 		{
-			if (b2DistanceSquared(v, ps[j]) < ((0.5f * b2_linearSlop) * (0.5f * b2_linearSlop)))
+			if (b2DistanceSquared(v, ps[j]) < b2Square(0.5f * b2_linearSlop))
 			{
 				unique = false;
 				break;
@@ -235,7 +235,7 @@ void b2PolygonShape::Set(const b2Vec2 vertices[], vertex_count_t count)
 		const auto i1 = i;
 		const auto i2 = ((i + 1) < m) ? i + 1 : 0;
 		const auto edge = m_vertices[i2] - m_vertices[i1];
-		b2Assert(edge.LengthSquared() > (b2_epsilon * b2_epsilon));
+		b2Assert(edge.LengthSquared() > b2Square(b2_epsilon));
 		m_normals[i] = b2Normalize(b2Cross(edge, 1.0f));
 	}
 
@@ -330,7 +330,7 @@ bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& inpu
 	return false;
 }
 
-void b2PolygonShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, child_count_t childIndex) const
+b2AABB b2PolygonShape::ComputeAABB(const b2Transform& xf, child_count_t childIndex) const
 {
 	B2_NOT_USED(childIndex);
 	
@@ -347,11 +347,10 @@ void b2PolygonShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, child_coun
 	}
 
 	const auto r = b2Vec2(GetRadius(), GetRadius());
-	aabb->lowerBound = lower - r;
-	aabb->upperBound = upper + r;
+	return {lower - r, upper + r};
 }
 
-void b2PolygonShape::ComputeMass(b2MassData* massData, float32 density) const
+b2MassData b2PolygonShape::ComputeMass(float32 density) const
 {
 	// Polygon mass, centroid, and inertia.
 	// Let rho be the polygon density in mass per unit area.
@@ -420,18 +419,18 @@ void b2PolygonShape::ComputeMass(b2MassData* massData, float32 density) const
 	}
 
 	// Total mass
-	massData->mass = density * area;
+	const auto mass = density * area;
 
 	// Center of mass
 	b2Assert(area > b2_epsilon);
 	center *= 1.0f / area;
-	massData->center = center + s;
+	const auto massDataCenter = center + s;
 
 	// Inertia tensor relative to the local origin (point s).
-	massData->I = density * I;
-	
 	// Shift to center of mass then to original body origin.
-	massData->I += massData->mass * (b2Dot(massData->center, massData->center) - b2Dot(center, center));
+	const auto massDataI = (density * I) + (mass * (b2Dot(massDataCenter, massDataCenter) - b2Dot(center, center)));
+	
+	return {mass, massDataCenter, massDataI};
 }
 
 bool b2PolygonShape::Validate() const

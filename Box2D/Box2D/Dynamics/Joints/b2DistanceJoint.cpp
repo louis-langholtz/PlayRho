@@ -96,10 +96,10 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 
 	const auto crAu = b2Cross(m_rA, m_u);
 	const auto crBu = b2Cross(m_rB, m_u);
-	auto invMass = m_invMassA + m_invIA * crAu * crAu + m_invMassB + m_invIB * crBu * crBu;
+	auto invMass = m_invMassA + m_invIA * b2Square(crAu) + m_invMassB + m_invIB * b2Square(crBu);
 
 	// Compute the effective mass matrix.
-	m_mass = invMass != 0.0f ? 1.0f / invMass : 0.0f;
+	m_mass = (invMass != 0.0f) ? 1.0f / invMass : 0.0f;
 
 	if (m_frequencyHz > 0.0f)
 	{
@@ -112,7 +112,7 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 		const auto d = 2.0f * m_mass * m_dampingRatio * omega;
 
 		// Spring stiffness
-		const auto k = m_mass * omega * omega;
+		const auto k = m_mass * b2Square(omega);
 
 		// magic formulas
 		const auto h = data.step.dt;

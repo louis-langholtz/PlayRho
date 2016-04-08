@@ -103,7 +103,7 @@ bool b2EdgeShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 	return true;
 }
 
-void b2EdgeShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, child_count_t childIndex) const
+b2AABB b2EdgeShape::ComputeAABB(const b2Transform& xf, child_count_t childIndex) const
 {
 	B2_NOT_USED(childIndex);
 
@@ -114,15 +114,12 @@ void b2EdgeShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, child_count_t
 	const auto upper = b2Max(v1, v2);
 
 	const auto r = b2Vec2{GetRadius(), GetRadius()};
-	aabb->lowerBound = lower - r;
-	aabb->upperBound = upper + r;
+	return {lower - r, upper + r};
 }
 
-void b2EdgeShape::ComputeMass(b2MassData* massData, float32 density) const
+b2MassData b2EdgeShape::ComputeMass(float32 density) const
 {
 	B2_NOT_USED(density);
 
-	massData->mass = 0.0f;
-	massData->center = 0.5f * (m_vertex1 + m_vertex2);
-	massData->I = 0.0f;
+	return {0.0f, 0.5f * (m_vertex1 + m_vertex2), 0.0f};
 }

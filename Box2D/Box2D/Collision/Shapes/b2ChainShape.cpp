@@ -40,7 +40,7 @@ void b2ChainShape::CreateLoop(const b2Vec2* vertices, child_count_t count)
 	for (auto i = decltype(count){1}; i < count; ++i)
 	{
 		// If the code crashes here, it means your vertices are too close together.
-		b2Assert(b2DistanceSquared(vertices[i-1], vertices[i]) > (b2_linearSlop * b2_linearSlop));
+		b2Assert(b2DistanceSquared(vertices[i-1], vertices[i]) > b2Square(b2_linearSlop));
 	}
 
 	m_count = count + 1;
@@ -60,7 +60,7 @@ void b2ChainShape::CreateChain(const b2Vec2* vertices, child_count_t count)
 	for (auto i = decltype(count){1}; i < count; ++i)
 	{
 		// If the code crashes here, it means your vertices are too close together.
-		b2Assert(b2DistanceSquared(vertices[i-1], vertices[i]) > (b2_linearSlop * b2_linearSlop));
+		b2Assert(b2DistanceSquared(vertices[i-1], vertices[i]) > b2Square(b2_linearSlop));
 	}
 
 	m_count = count;
@@ -154,7 +154,7 @@ bool b2ChainShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 	return edgeShape.RayCast(output, input, xf, 0);
 }
 
-void b2ChainShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, child_count_t childIndex) const
+b2AABB b2ChainShape::ComputeAABB(const b2Transform& xf, child_count_t childIndex) const
 {
 	b2Assert(childIndex < m_count);
 
@@ -168,15 +168,12 @@ void b2ChainShape::ComputeAABB(b2AABB* aabb, const b2Transform& xf, child_count_
 	const auto v1 = b2Mul(xf, m_vertices[i1]);
 	const auto v2 = b2Mul(xf, m_vertices[i2]);
 
-	aabb->lowerBound = b2Min(v1, v2);
-	aabb->upperBound = b2Max(v1, v2);
+	return {b2Min(v1, v2), b2Max(v1, v2)};
 }
 
-void b2ChainShape::ComputeMass(b2MassData* massData, float32 density) const
+b2MassData b2ChainShape::ComputeMass(float32 density) const
 {
 	B2_NOT_USED(density);
 
-	massData->mass = 0.0f;
-	massData->center.SetZero();
-	massData->I = 0.0f;
+	return {0.0f, b2Vec2_zero, 0.0f};
 }

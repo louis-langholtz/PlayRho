@@ -288,8 +288,7 @@ void b2Body::ResetMassData()
 			continue;
 		}
 
-		b2MassData massData;
-		f->GetMassData(&massData);
+		const auto massData = f->GetMassData();
 		m_mass += massData.mass;
 		localCenter += massData.mass * massData.center;
 		m_I += massData.I;

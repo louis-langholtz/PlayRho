@@ -46,10 +46,10 @@ public:
 				const b2Transform& transform, child_count_t childIndex) const override;
 
 	/// @see b2Shape::ComputeAABB
-	void ComputeAABB(b2AABB* aabb, const b2Transform& transform, child_count_t childIndex) const override;
+	b2AABB ComputeAABB(const b2Transform& transform, child_count_t childIndex) const override;
 
 	/// @see b2Shape::ComputeMass
-	void ComputeMass(b2MassData* massData, float32 density) const override;
+	b2MassData ComputeMass(float32 density) const override;
 
 	b2Vec2 GetPosition() const noexcept { return m_p; }
 

@@ -37,6 +37,9 @@ inline bool b2IsValid(float32 x)
 	return !std::isnan(x) && !std::isinf(x);
 }
 
+template<class T>
+constexpr inline auto b2Square(T t) { return t * t; }
+
 #define	b2Sqrt(x)	std::sqrtf(x)
 #define	b2Atan2(y, x)	std::atan2f(y, x)
 
@@ -93,14 +96,14 @@ struct b2Vec2
 	/// Get the length of this vector (the norm).
 	float32 Length() const
 	{
-		return b2Sqrt(x * x + y * y);
+		return b2Sqrt(b2Square(x) + b2Square(y));
 	}
 
 	/// Get the length squared. For performance, use this instead of
 	/// b2Vec2::Length (if possible).
 	constexpr float32 LengthSquared() const noexcept
 	{
-		return x * x + y * y;
+		return b2Square(x) + b2Square(y);
 	}
 
 	/// Convert this vector into a unit vector. Returns the length.
@@ -466,7 +469,8 @@ inline b2Vec2 b2Normalize(const b2Vec2& value)
 	{
 		return value;
 	}
-	return value / length;
+	const auto invLength = 1.0f / length;
+	return value * invLength;
 }
 
 constexpr inline bool operator == (const b2Vec2& a, const b2Vec2& b) noexcept
@@ -616,7 +620,7 @@ constexpr inline b2Transform b2MulT(const b2Transform& A, const b2Transform& B) 
 }
 
 template <typename T>
-inline T b2Abs(T a)
+constexpr inline T b2Abs(T a)
 {
 	return a > T(0) ? a : -a;
 }
@@ -664,7 +668,8 @@ constexpr inline b2Vec2 b2Clamp(const b2Vec2& a, const b2Vec2& low, const b2Vec2
 	return b2Max(low, b2Min(a, high));
 }
 
-template<typename T> inline void b2Swap(T& a, T& b)
+template<typename T>
+constexpr inline void b2Swap(T& a, T& b)
 {
 	T tmp = a;
 	a = b;

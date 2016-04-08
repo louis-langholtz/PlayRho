@@ -185,7 +185,7 @@ void b2GearJoint::InitVelocityConstraints(const b2SolverData& data)
 		m_JvAC = u;
 		m_JwC = b2Cross(rC, u);
 		m_JwA = b2Cross(rA, u);
-		m_mass += m_mC + m_mA + m_iC * m_JwC * m_JwC + m_iA * m_JwA * m_JwA;
+		m_mass += m_mC + m_mA + m_iC * b2Square(m_JwC) + m_iA * b2Square(m_JwA);
 	}
 
 	if (m_typeB == e_revoluteJoint)
@@ -193,7 +193,7 @@ void b2GearJoint::InitVelocityConstraints(const b2SolverData& data)
 		m_JvBD.SetZero();
 		m_JwB = m_ratio;
 		m_JwD = m_ratio;
-		m_mass += m_ratio * m_ratio * (m_iB + m_iD);
+		m_mass += b2Square(m_ratio) * (m_iB + m_iD);
 	}
 	else
 	{
@@ -203,7 +203,7 @@ void b2GearJoint::InitVelocityConstraints(const b2SolverData& data)
 		m_JvBD = m_ratio * u;
 		m_JwD = m_ratio * b2Cross(rD, u);
 		m_JwB = m_ratio * b2Cross(rB, u);
-		m_mass += m_ratio * m_ratio * (m_mD + m_mB) + m_iD * m_JwD * m_JwD + m_iB * m_JwB * m_JwB;
+		m_mass += b2Square(m_ratio) * (m_mD + m_mB) + m_iD * b2Square(m_JwD) + m_iB * b2Square(m_JwB);
 	}
 
 	// Compute effective mass.
@@ -309,7 +309,7 @@ bool b2GearJoint::SolvePositionConstraints(const b2SolverData& data)
 		JvAC = u;
 		JwC = b2Cross(rC, u);
 		JwA = b2Cross(rA, u);
-		mass += m_mC + m_mA + m_iC * JwC * JwC + m_iA * JwA * JwA;
+		mass += m_mC + m_mA + m_iC * b2Square(JwC) + m_iA * b2Square(JwA);
 
 		const auto pC = m_localAnchorC - m_lcC;
 		const auto pA = b2MulT(qC, rA + (cA - cC));
@@ -321,7 +321,7 @@ bool b2GearJoint::SolvePositionConstraints(const b2SolverData& data)
 		JvBD.SetZero();
 		JwB = m_ratio;
 		JwD = m_ratio;
-		mass += m_ratio * m_ratio * (m_iB + m_iD);
+		mass += b2Square(m_ratio) * (m_iB + m_iD);
 
 		coordinateB = aB - aD - m_referenceAngleB;
 	}
@@ -333,7 +333,7 @@ bool b2GearJoint::SolvePositionConstraints(const b2SolverData& data)
 		JvBD = m_ratio * u;
 		JwD = m_ratio * b2Cross(rD, u);
 		JwB = m_ratio * b2Cross(rB, u);
-		mass += m_ratio * m_ratio * (m_mD + m_mB) + m_iD * JwD * JwD + m_iB * JwB * JwB;
+		mass += b2Square(m_ratio) * (m_mD + m_mB) + m_iD * b2Square(JwD) + m_iB * b2Square(JwB);
 
 		const auto pD = m_localAnchorD - m_lcD;
 		const auto pB = b2MulT(qD, rB + (cB - cD));

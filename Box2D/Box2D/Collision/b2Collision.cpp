@@ -37,7 +37,7 @@ void b2WorldManifold::Assign(const b2Manifold& manifold,
 			normal = b2Vec2(1.0f, 0.0f);
 			const auto pointA = b2Mul(xfA, manifold.GetLocalPoint());
 			const auto pointB = b2Mul(xfB, manifold.GetPoint(0).localPoint);
-			if (b2DistanceSquared(pointA, pointB) > (b2_epsilon * b2_epsilon))
+			if (b2DistanceSquared(pointA, pointB) > b2Square(b2_epsilon))
 				normal = b2Normalize(pointB - pointA);
 
 			const auto cA = pointA + radiusA * normal;

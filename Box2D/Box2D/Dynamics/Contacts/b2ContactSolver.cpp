@@ -244,7 +244,7 @@ void b2ContactSolver::InitializeVelocityConstraints()
 			const auto rnA = b2Cross(vcp.rA, vc.normal);
 			const auto rnB = b2Cross(vcp.rB, vc.normal);
 
-			const auto kNormal = mA + mB + (iA * rnA * rnA) + (iB * rnB * rnB);
+			const auto kNormal = mA + mB + (iA * b2Square(rnA)) + (iB * b2Square(rnB));
 
 			vcp.normalMass = (kNormal > 0.0f)? 1.0f / kNormal : 0.0f;
 
@@ -253,9 +253,9 @@ void b2ContactSolver::InitializeVelocityConstraints()
 			const auto rtA = b2Cross(vcp.rA, tangent);
 			const auto rtB = b2Cross(vcp.rB, tangent);
 
-			const auto kTangent = mA + mB + iA * rtA * rtA + iB * rtB * rtB;
+			const auto kTangent = mA + mB + iA * b2Square(rtA) + iB * b2Square(rtB);
 
-			vcp.tangentMass = kTangent > 0.0f ? 1.0f /  kTangent : 0.0f;
+			vcp.tangentMass = (kTangent > 0.0f) ? 1.0f /  kTangent : 0.0f;
 
 			// Setup a velocity bias for restitution.
 			vcp.velocityBias = 0.0f;
@@ -277,16 +277,16 @@ void b2ContactSolver::InitializeVelocityConstraints()
 			const auto rn2A = b2Cross(vcp2.rA, vc.normal);
 			const auto rn2B = b2Cross(vcp2.rB, vc.normal);
 
-			const auto k11 = mA + mB + iA * rn1A * rn1A + iB * rn1B * rn1B;
-			const auto k22 = mA + mB + iA * rn2A * rn2A + iB * rn2B * rn2B;
+			const auto k11 = mA + mB + iA * b2Square(rn1A) + iB * b2Square(rn1B);
+			const auto k22 = mA + mB + iA * b2Square(rn2A) + iB * b2Square(rn2B);
 			const auto k12 = mA + mB + iA * rn1A * rn2A + iB * rn1B * rn2B;
 
 			// Ensure a reasonable condition number.
-			const auto k_maxConditionNumber = 1000.0f;
-			if ((k11 * k11) < (k_maxConditionNumber * (k11 * k22 - k12 * k12)))
+			constexpr auto k_maxConditionNumber = 1000.0f;
+			if (b2Square(k11) < (k_maxConditionNumber * (k11 * k22 - b2Square(k12))))
 			{
 				// K is safe to invert.
-				vc.K = b2Mat22(b2Vec2(k11, k12), b2Vec2(k12, k22));
+				vc.K = b2Mat22{b2Vec2{k11, k12}, b2Vec2{k12, k22}};
 				vc.normalMass = vc.K.GetInverse();
 			}
 			else
@@ -477,7 +477,7 @@ void b2ContactSolver::SolveVelocityConstraints()
 			// Compute b'
 			const auto b = b2Vec2{vn1 - cp1.velocityBias, vn2 - cp2.velocityBias} - b2Mul(vc.K, a);
 
-			const auto k_errorTol = 1e-3f; // error tolerance
+			constexpr auto k_errorTol = 1e-3f; // error tolerance
 			B2_NOT_USED(k_errorTol);
 
 			for (;;)
@@ -782,7 +782,7 @@ bool b2ContactSolver::SolvePositionConstraints()
 			// Compute the effective mass.
 			const auto rnA = b2Cross(rA, normal);
 			const auto rnB = b2Cross(rB, normal);
-			const auto K = mA + mB + (iA * rnA * rnA) + (iB * rnB * rnB);
+			const auto K = mA + mB + (iA * b2Square(rnA)) + (iB * b2Square(rnB));
 
 			// Compute normal impulse
 			const auto impulse = (K > 0.0f)? - C / K : 0.0f;
@@ -870,7 +870,7 @@ bool b2ContactSolver::SolveTOIPositionConstraints(size_type toiIndexA, size_type
 			// Compute the effective mass.
 			const auto rnA = b2Cross(rA, normal);
 			const auto rnB = b2Cross(rB, normal);
-			const auto K = mA + mB + (iA * rnA * rnA) + (iB * rnB * rnB);
+			const auto K = mA + mB + (iA * b2Square(rnA)) + (iB * b2Square(rnB));
 
 			// Compute normal impulse
 			const auto impulse = (K > 0.0f) ? - C / K : 0.0f;

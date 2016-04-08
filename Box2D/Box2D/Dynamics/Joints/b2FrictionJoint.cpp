@@ -88,10 +88,10 @@ void b2FrictionJoint::InitVelocityConstraints(const b2SolverData& data)
 	const auto iA = m_invIA, iB = m_invIB;
 
 	b2Mat22 K;
-	K.ex.x = mA + mB + iA * m_rA.y * m_rA.y + iB * m_rB.y * m_rB.y;
+	K.ex.x = mA + mB + iA * b2Square(m_rA.y) + iB * b2Square(m_rB.y);
 	K.ex.y = -iA * m_rA.x * m_rA.y - iB * m_rB.x * m_rB.y;
 	K.ey.x = K.ex.y;
-	K.ey.y = mA + mB + iA * m_rA.x * m_rA.x + iB * m_rB.x * m_rB.x;
+	K.ey.y = mA + mB + iA * b2Square(m_rA.x) + iB * b2Square(m_rB.x);
 
 	m_linearMass = K.GetInverse();
 
@@ -161,7 +161,7 @@ void b2FrictionJoint::SolveVelocityConstraints(const b2SolverData& data)
 
 		const auto maxImpulse = h * m_maxForce;
 
-		if (m_linearImpulse.LengthSquared() > maxImpulse * maxImpulse)
+		if (m_linearImpulse.LengthSquared() > b2Square(maxImpulse))
 		{
 			m_linearImpulse.Normalize();
 			m_linearImpulse *= maxImpulse;

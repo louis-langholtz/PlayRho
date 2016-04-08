@@ -108,7 +108,7 @@ b2DynamicTree::size_type b2DynamicTree::CreateProxy(const b2AABB& aabb, void* us
 
 void b2DynamicTree::DestroyProxy(size_type proxyId)
 {
-	b2Assert(0 <= proxyId && proxyId < m_nodeCapacity);
+	b2Assert((0 <= proxyId) && (proxyId < m_nodeCapacity));
 	b2Assert(m_nodes[proxyId].IsLeaf());
 
 	RemoveLeaf(proxyId);
@@ -117,7 +117,7 @@ void b2DynamicTree::DestroyProxy(size_type proxyId)
 
 bool b2DynamicTree::MoveProxy(size_type proxyId, const b2AABB& aabb, const b2Vec2& displacement)
 {
-	b2Assert(0 <= proxyId && proxyId < m_nodeCapacity);
+	b2Assert((0 <= proxyId) && (proxyId < m_nodeCapacity));
 
 	b2Assert(m_nodes[proxyId].IsLeaf());
 
@@ -172,6 +172,8 @@ void b2DynamicTree::InsertLeaf(size_type leaf)
 		return;
 	}
 
+	b2Assert(leaf < m_nodeCapacity);
+
 	// Find the best sibling for this node
 	const auto leafAABB = m_nodes[leaf].aabb;
 	auto index = m_root;
@@ -182,8 +184,7 @@ void b2DynamicTree::InsertLeaf(size_type leaf)
 
 		const auto area = m_nodes[index].aabb.GetPerimeter();
 
-		b2AABB combinedAABB;
-		combinedAABB.Combine(m_nodes[index].aabb, leafAABB);
+		const auto combinedAABB = b2Combine(m_nodes[index].aabb, leafAABB);
 		const auto combinedArea = combinedAABB.GetPerimeter();
 
 		// Cost of creating a new parent for this node and the new leaf
@@ -196,16 +197,14 @@ void b2DynamicTree::InsertLeaf(size_type leaf)
 		float32 cost1;
 		if (m_nodes[child1].IsLeaf())
 		{
-			b2AABB aabb;
-			aabb.Combine(leafAABB, m_nodes[child1].aabb);
+			const auto aabb = b2Combine(leafAABB, m_nodes[child1].aabb);
 			cost1 = aabb.GetPerimeter() + inheritanceCost;
 		}
 		else
 		{
-			b2AABB aabb;
-			aabb.Combine(leafAABB, m_nodes[child1].aabb);
-			float32 oldArea = m_nodes[child1].aabb.GetPerimeter();
-			float32 newArea = aabb.GetPerimeter();
+			const auto aabb = b2Combine(leafAABB, m_nodes[child1].aabb);
+			const auto oldArea = m_nodes[child1].aabb.GetPerimeter();
+			const auto newArea = aabb.GetPerimeter();
 			cost1 = (newArea - oldArea) + inheritanceCost;
 		}
 
@@ -213,16 +212,14 @@ void b2DynamicTree::InsertLeaf(size_type leaf)
 		float32 cost2;
 		if (m_nodes[child2].IsLeaf())
 		{
-			b2AABB aabb;
-			aabb.Combine(leafAABB, m_nodes[child2].aabb);
+			const auto aabb = b2Combine(leafAABB, m_nodes[child2].aabb);
 			cost2 = aabb.GetPerimeter() + inheritanceCost;
 		}
 		else
 		{
-			b2AABB aabb;
-			aabb.Combine(leafAABB, m_nodes[child2].aabb);
-			float32 oldArea = m_nodes[child2].aabb.GetPerimeter();
-			float32 newArea = aabb.GetPerimeter();
+			const auto aabb = b2Combine(leafAABB, m_nodes[child2].aabb);
+			const auto oldArea = m_nodes[child2].aabb.GetPerimeter();
+			const auto newArea = aabb.GetPerimeter();
 			cost2 = newArea - oldArea + inheritanceCost;
 		}
 
@@ -309,6 +306,8 @@ void b2DynamicTree::RemoveLeaf(size_type leaf)
 		return;
 	}
 
+	b2Assert(leaf < m_nodeCapacity);
+
 	const auto parent = m_nodes[leaf].parent;
 	const auto grandParent = m_nodes[parent].parent;
 	const auto sibling = (m_nodes[parent].child1 == leaf)? m_nodes[parent].child2: m_nodes[parent].child1;
@@ -357,6 +356,7 @@ void b2DynamicTree::RemoveLeaf(size_type leaf)
 b2DynamicTree::size_type b2DynamicTree::Balance(size_type iA)
 {
 	b2Assert(iA != b2_nullNode);
+	b2Assert(iA < m_nodeCapacity);
 
 	auto A = m_nodes + iA;
 	if (A->IsLeaf() || (A->height < 2))
@@ -373,15 +373,16 @@ b2DynamicTree::size_type b2DynamicTree::Balance(size_type iA)
 	auto C = m_nodes + iC;
 
 	// Rotate C up
-	if (C->height > B->height + 1)
+	if (C->height > (B->height + 1))
 	{
 		const auto iF = C->child1;
 		const auto iG = C->child2;
-		auto F = m_nodes + iF;
-		auto G = m_nodes + iG;
 		b2Assert((0 <= iF) && (iF < m_nodeCapacity));
 		b2Assert((0 <= iG) && (iG < m_nodeCapacity));
 
+		auto F = m_nodes + iF;
+		auto G = m_nodes + iG;
+		
 		// Swap A and C
 		C->child1 = iA;
 		C->parent = A->parent;
@@ -433,14 +434,14 @@ b2DynamicTree::size_type b2DynamicTree::Balance(size_type iA)
 	}
 	
 	// Rotate B up
-	if (B->height > C->height + 1)
+	if (B->height > (C->height + 1))
 	{
 		const auto iD = B->child1;
 		const auto iE = B->child2;
 		const auto D = m_nodes + iD;
 		const auto E = m_nodes + iE;
-		b2Assert(0 <= iD && iD < m_nodeCapacity);
-		b2Assert(0 <= iE && iE < m_nodeCapacity);
+		b2Assert((0 <= iD) && (iD < m_nodeCapacity));
+		b2Assert((0 <= iE) && (iE < m_nodeCapacity));
 
 		// Swap A and B
 		B->child1 = iA;
@@ -535,8 +536,8 @@ float32 b2DynamicTree::GetAreaRatio() const
 // Compute the height of a sub-tree.
 b2DynamicTree::size_type b2DynamicTree::ComputeHeight(size_type nodeId) const
 {
-	b2Assert(0 <= nodeId && nodeId < m_nodeCapacity);
-	auto node = m_nodes + nodeId;
+	b2Assert((0 <= nodeId) && (nodeId < m_nodeCapacity));
+	const auto node = m_nodes + nodeId;
 
 	if (node->IsLeaf())
 	{
@@ -565,6 +566,8 @@ void b2DynamicTree::ValidateStructure(size_type index) const
 		b2Assert(m_nodes[index].parent == b2_nullNode);
 	}
 
+	b2Assert(index < m_nodeCapacity);
+
 	const auto node = m_nodes + index;
 
 	const auto child1 = node->child1;
@@ -578,8 +581,8 @@ void b2DynamicTree::ValidateStructure(size_type index) const
 		return;
 	}
 
-	b2Assert(0 <= child1 && child1 < m_nodeCapacity);
-	b2Assert(0 <= child2 && child2 < m_nodeCapacity);
+	b2Assert((0 <= child1) && (child1 < m_nodeCapacity));
+	b2Assert((0 <= child2) && (child2 < m_nodeCapacity));
 
 	b2Assert(m_nodes[child1].parent == index);
 	b2Assert(m_nodes[child2].parent == index);
@@ -595,6 +598,8 @@ void b2DynamicTree::ValidateMetrics(size_type index) const
 		return;
 	}
 
+	b2Assert(index < m_nodeCapacity);
+
 	const auto node = m_nodes + index;
 
 	const auto child1 = node->child1;
@@ -608,16 +613,15 @@ void b2DynamicTree::ValidateMetrics(size_type index) const
 		return;
 	}
 
-	b2Assert(0 <= child1 && child1 < m_nodeCapacity);
-	b2Assert(0 <= child2 && child2 < m_nodeCapacity);
+	b2Assert((0 <= child1) && (child1 < m_nodeCapacity));
+	b2Assert((0 <= child2) && (child2 < m_nodeCapacity));
 
 	const auto height1 = m_nodes[child1].height;
 	const auto height2 = m_nodes[child2].height;
 	const auto height = 1 + b2Max(height1, height2);
 	b2Assert(node->height == height);
 
-	b2AABB aabb;
-	aabb.Combine(m_nodes[child1].aabb, m_nodes[child2].aabb);
+	const auto aabb = b2Combine(m_nodes[child1].aabb, m_nodes[child2].aabb);
 
 	b2Assert(aabb.lowerBound == node->aabb.lowerBound);
 	b2Assert(aabb.upperBound == node->aabb.upperBound);
@@ -635,14 +639,14 @@ void b2DynamicTree::Validate() const
 	auto freeIndex = m_freeList;
 	while (freeIndex != b2_nullNode)
 	{
-		b2Assert(0 <= freeIndex && freeIndex < m_nodeCapacity);
+		b2Assert((0 <= freeIndex) && (freeIndex < m_nodeCapacity));
 		freeIndex = m_nodes[freeIndex].next;
 		++freeCount;
 	}
 
 	b2Assert(GetHeight() == ComputeHeight());
 
-	b2Assert(m_nodeCount + freeCount == m_nodeCapacity);
+	b2Assert((m_nodeCount + freeCount) == m_nodeCapacity);
 }
 
 b2DynamicTree::size_type b2DynamicTree::GetMaxBalance() const
@@ -705,8 +709,7 @@ void b2DynamicTree::RebuildBottomUp()
 			for (auto j = i + 1; j < count; ++j)
 			{
 				const auto& aabbj = m_nodes[nodes[j]].aabb;
-				b2AABB b;
-				b.Combine(aabbi, aabbj);
+				const auto b = b2Combine(aabbi, aabbj);
 				const auto cost = b.GetPerimeter();
 				if (minCost > cost)
 				{
@@ -717,7 +720,7 @@ void b2DynamicTree::RebuildBottomUp()
 			}
 		}
 
-		b2Assert(iMin < m_nodeCount && jMin < m_nodeCount);
+		b2Assert((iMin < m_nodeCount) && (jMin < m_nodeCount));
 
 		const auto index1 = nodes[iMin];
 		const auto index2 = nodes[jMin];

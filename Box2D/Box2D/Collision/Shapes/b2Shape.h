@@ -26,6 +26,10 @@
 /// This holds the mass data computed for a shape.
 struct b2MassData
 {
+	b2MassData() = default;
+
+	constexpr b2MassData(float32 m, b2Vec2 c, float32 _I) noexcept: mass(m), center(c), I(_I) {}
+
 	/// The mass of the shape, usually in kilograms.
 	float32 mass;
 
@@ -83,16 +87,16 @@ public:
 						const b2Transform& transform, child_count_t childIndex) const = 0;
 
 	/// Given a transform, compute the associated axis aligned bounding box for a child shape.
-	/// @param aabb returns the axis aligned box.
 	/// @param xf the world transform of the shape.
 	/// @param childIndex the child shape
-	virtual void ComputeAABB(b2AABB* aabb, const b2Transform& xf, child_count_t childIndex) const = 0;
+	/// @return the axis aligned box.
+	virtual b2AABB ComputeAABB(const b2Transform& xf, child_count_t childIndex) const = 0;
 
 	/// Compute the mass properties of this shape using its dimensions and density.
 	/// The inertia tensor is computed about the local origin.
 	/// @param massData returns the mass data for this shape.
 	/// @param density the density in kilograms per meter squared.
-	virtual void ComputeMass(b2MassData* massData, float32 density) const = 0;
+	virtual b2MassData ComputeMass(float32 density) const = 0;
 
 	float32 GetRadius() const noexcept { return m_radius; }
 

@@ -34,7 +34,7 @@ bool b2CircleShape::TestPoint(const b2Transform& transform, const b2Vec2& p) con
 {
 	const auto center = transform.p + b2Mul(transform.q, m_p);
 	const auto d = p - center;
-	return b2Dot(d, d) <= (GetRadius() * GetRadius());
+	return b2Dot(d, d) <= b2Square(GetRadius());
 }
 
 // Collision Detection in Interactive 3D Environments by Gino van den Bergen
@@ -48,13 +48,13 @@ bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input
 
 	const auto position = transform.p + b2Mul(transform.q, m_p);
 	const auto s = input.p1 - position;
-	const auto b = b2Dot(s, s) - (GetRadius() * GetRadius());
+	const auto b = b2Dot(s, s) - b2Square(GetRadius());
 
 	// Solve quadratic equation.
 	const auto r = input.p2 - input.p1;
 	const auto c =  b2Dot(s, r);
 	const auto rr = b2Dot(r, r);
-	const auto sigma = c * c - rr * b;
+	const auto sigma = b2Square(c) - rr * b;
 
 	// Check for negative discriminant and short segment.
 	if ((sigma < 0.0f) || (rr < b2_epsilon))
@@ -77,20 +77,16 @@ bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input
 	return false;
 }
 
-void b2CircleShape::ComputeAABB(b2AABB* aabb, const b2Transform& transform, child_count_t childIndex) const
+b2AABB b2CircleShape::ComputeAABB(const b2Transform& transform, child_count_t childIndex) const
 {
 	B2_NOT_USED(childIndex);
 
 	const auto p = transform.p + b2Mul(transform.q, m_p);
-	aabb->lowerBound.Set(p.x - GetRadius(), p.y - GetRadius());
-	aabb->upperBound.Set(p.x + GetRadius(), p.y + GetRadius());
+	return {b2Vec2{p.x - GetRadius(), p.y - GetRadius()}, b2Vec2{p.x + GetRadius(), p.y + GetRadius()}};
 }
 
-void b2CircleShape::ComputeMass(b2MassData* massData, float32 density) const
+b2MassData b2CircleShape::ComputeMass(float32 density) const
 {
-	massData->mass = density * b2_pi * GetRadius() * GetRadius();
-	massData->center = m_p;
-
-	// inertia about the local origin
-	massData->I = massData->mass * (0.5f * GetRadius() * GetRadius() + b2Dot(m_p, m_p));
+	const auto mass = density * b2_pi * b2Square(GetRadius());
+	return {mass, m_p, mass * (0.5f * b2Square(GetRadius()) + b2Dot(m_p, m_p))};
 }

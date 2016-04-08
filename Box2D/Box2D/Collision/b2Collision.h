@@ -244,6 +244,10 @@ struct b2RayCastOutput
 /// An axis aligned bounding box.
 struct b2AABB
 {
+	b2AABB() = default;
+
+	constexpr b2AABB(b2Vec2 lb, b2Vec2 ub) noexcept: lowerBound(lb), upperBound(ub) {}
+
 	/// Verify that the bounds are sorted.
 	inline bool IsValid() const
 	{
@@ -299,6 +303,11 @@ struct b2AABB
 	b2Vec2 lowerBound;	///< the lower vertex
 	b2Vec2 upperBound;	///< the upper vertex
 };
+
+constexpr inline b2AABB b2Combine(const b2AABB& aabb1, const b2AABB& aabb2)
+{
+	return {b2Min(aabb1.lowerBound, aabb2.lowerBound), b2Max(aabb1.upperBound, aabb2.upperBound)};
+}
 
 /// Compute the collision manifold between two circles.
 void b2CollideShapes(b2Manifold* manifold,

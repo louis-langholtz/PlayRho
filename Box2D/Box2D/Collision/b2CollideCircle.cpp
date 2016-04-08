@@ -31,7 +31,7 @@ void b2CollideShapes(
 	const auto distSqr = b2Dot(d, d);
 	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
 
-	if (distSqr > (totalRadius * totalRadius))
+	if (distSqr > b2Square(totalRadius))
 	{
 		manifold->SetType(b2Manifold::e_unset);
 		return;
@@ -97,7 +97,7 @@ void b2CollideShapes(
 	const auto u2 = b2Dot(cLocal - v2, v1 - v2);
 	if (u1 <= 0.0f)
 	{
-		if (b2DistanceSquared(cLocal, v1) > (totalRadius * totalRadius))
+		if (b2DistanceSquared(cLocal, v1) > b2Square(totalRadius))
 		{
 			manifold->SetType(b2Manifold::e_unset);
 			return;
@@ -110,7 +110,7 @@ void b2CollideShapes(
 	}
 	else if (u2 <= 0.0f)
 	{
-		if (b2DistanceSquared(cLocal, v2) > (totalRadius * totalRadius))
+		if (b2DistanceSquared(cLocal, v2) > b2Square(totalRadius))
 		{
 			manifold->SetType(b2Manifold::e_unset);;
 			return;

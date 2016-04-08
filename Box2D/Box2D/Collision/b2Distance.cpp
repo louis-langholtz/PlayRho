@@ -533,7 +533,7 @@ void b2Distance(b2DistanceOutput* output,
 		const auto d = simplex.GetSearchDirection();
 
 		// Ensure the search direction is numerically fit.
-		if (d.LengthSquared() < (b2_epsilon * b2_epsilon))
+		if (d.LengthSquared() < b2Square(b2_epsilon))
 		{
 			// The origin is probably contained by a line segment
 			// or triangle. Thus the shapes are overlapped.

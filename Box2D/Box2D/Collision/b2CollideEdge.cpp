@@ -54,7 +54,7 @@ void b2CollideShapes(b2Manifold* manifold,
 		const auto P = A;
 		const auto d = Q - P;
 		const auto dd = b2Dot(d, d);
-		if (dd > (totalRadius * totalRadius))
+		if (dd > b2Square(totalRadius))
 			return;
 		
 		// Is there an edge connected to A?
@@ -85,7 +85,7 @@ void b2CollideShapes(b2Manifold* manifold,
 		const auto P = B;
 		const auto d = Q - P;
 		const auto dd = b2Dot(d, d);
-		if (dd > (totalRadius * totalRadius))
+		if (dd > b2Square(totalRadius))
 			return;
 		
 		// Is there an edge connected to B?
@@ -117,7 +117,7 @@ void b2CollideShapes(b2Manifold* manifold,
 	const auto P = (1.0f / den) * (u * A + v * B);
 	const auto d = Q - P;
 	const auto dd = b2Dot(d, d);
-	if (dd > (totalRadius * totalRadius))
+	if (dd > b2Square(totalRadius))
 		return;
 	
 	auto n = b2Vec2(-e.y, e.x);
