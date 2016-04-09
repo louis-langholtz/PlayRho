@@ -223,7 +223,7 @@ public:
 
 	/// Get the mass data of the body.
 	/// @return a struct containing the mass, inertia and center of the body.
-	void GetMassData(b2MassData* data) const noexcept;
+	b2MassData GetMassData() const noexcept;
 
 	/// Set the mass properties to override the mass properties of the fixtures.
 	/// Note that this changes the center of mass position.
@@ -554,11 +554,9 @@ inline float32 b2Body::GetInertia() const noexcept
 	return m_I + m_mass * b2Dot(m_sweep.localCenter, m_sweep.localCenter);
 }
 
-inline void b2Body::GetMassData(b2MassData* data) const noexcept
+inline b2MassData b2Body::GetMassData() const noexcept
 {
-	data->mass = m_mass;
-	data->I = m_I + m_mass * b2Dot(m_sweep.localCenter, m_sweep.localCenter);
-	data->center = m_sweep.localCenter;
+	return {m_mass, m_sweep.localCenter, m_I + m_mass * b2Dot(m_sweep.localCenter, m_sweep.localCenter)};
 }
 
 inline b2Vec2 b2Body::GetWorldPoint(const b2Vec2& localPoint) const noexcept
