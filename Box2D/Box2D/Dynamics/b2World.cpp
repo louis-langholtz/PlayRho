@@ -545,8 +545,7 @@ void b2World::Solve(const b2TimeStep& step)
 		{
 			// Allow static bodies to participate in other islands.
 			auto b = island.GetBody(i);
-			// if (b->GetType() == b2_staticBody) XXX
-			if (b->GetType() != b2_dynamicBody)
+			if (b->GetType() == b2_staticBody)
 			{
 				b->UnsetInIsland();
 			}
