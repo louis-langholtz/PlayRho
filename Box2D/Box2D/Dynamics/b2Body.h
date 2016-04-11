@@ -148,21 +148,21 @@ public:
 
 	/// Get the body transform for the body's origin.
 	/// @return the world transform of the body's origin.
-	const b2Transform& GetTransform() const noexcept;
+	b2Transform GetTransform() const noexcept;
 
 	/// Get the world body origin position.
 	/// @return the world position of the body's origin.
-	const b2Vec2& GetPosition() const noexcept;
+	b2Vec2 GetPosition() const noexcept;
 
 	/// Get the angle in radians.
 	/// @return the current world rotation angle in radians.
 	float32 GetAngle() const noexcept;
 
 	/// Get the world position of the center of mass.
-	const b2Vec2& GetWorldCenter() const noexcept;
+	b2Vec2 GetWorldCenter() const noexcept;
 
 	/// Get the local position of the center of mass.
-	const b2Vec2& GetLocalCenter() const noexcept;
+	b2Vec2 GetLocalCenter() const noexcept;
 
 	/// Set the linear velocity of the center of mass.
 	/// @param v the new linear velocity of the center of mass.
@@ -170,7 +170,7 @@ public:
 
 	/// Get the linear velocity of the center of mass.
 	/// @return the linear velocity of the center of mass.
-	const b2Vec2& GetLinearVelocity() const noexcept;
+	b2Vec2 GetLinearVelocity() const noexcept;
 
 	/// Set the angular velocity.
 	/// @param omega the new angular velocity in radians/second.
@@ -479,12 +479,12 @@ inline b2BodyType b2Body::GetType() const noexcept
 	return m_type;
 }
 
-inline const b2Transform& b2Body::GetTransform() const noexcept
+inline b2Transform b2Body::GetTransform() const noexcept
 {
 	return m_xf;
 }
 
-inline const b2Vec2& b2Body::GetPosition() const noexcept
+inline b2Vec2 b2Body::GetPosition() const noexcept
 {
 	return m_xf.p;
 }
@@ -494,12 +494,12 @@ inline float32 b2Body::GetAngle() const noexcept
 	return m_sweep.a;
 }
 
-inline const b2Vec2& b2Body::GetWorldCenter() const noexcept
+inline b2Vec2 b2Body::GetWorldCenter() const noexcept
 {
 	return m_sweep.c;
 }
 
-inline const b2Vec2& b2Body::GetLocalCenter() const noexcept
+inline b2Vec2 b2Body::GetLocalCenter() const noexcept
 {
 	return m_sweep.localCenter;
 }
@@ -519,7 +519,7 @@ inline void b2Body::SetLinearVelocity(const b2Vec2& v) noexcept
 	m_linearVelocity = v;
 }
 
-inline const b2Vec2& b2Body::GetLinearVelocity() const noexcept
+inline b2Vec2 b2Body::GetLinearVelocity() const noexcept
 {
 	return m_linearVelocity;
 }
