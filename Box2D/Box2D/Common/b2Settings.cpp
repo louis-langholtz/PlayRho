@@ -21,8 +21,6 @@
 #include <cstdarg>
 #include <cstdlib>
 
-b2Version b2_version = {2, 3, 2};
-
 // Memory allocators. Modify these to use your own allocator.
 void* b2Alloc(b2_size_t size)
 {

@@ -155,6 +155,9 @@ struct b2Version
 };
 
 /// Current version.
-extern b2Version b2_version;
+#define b2_majorVersion 3
+#define b2_minorVersion 0
+#define b2_revision 0
+constexpr auto b2_version = b2Version{b2_majorVersion, b2_minorVersion, b2_revision};
 
 #endif
