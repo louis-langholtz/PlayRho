@@ -143,7 +143,8 @@ void b2PrismaticJoint::InitVelocityConstraints(const b2SolverData& data)
 	auto vB = data.velocities[m_indexB].v;
 	auto wB = data.velocities[m_indexB].w;
 
-	b2Rot qA(aA), qB(aB);
+	const auto qA = b2Rot(aA);
+	const auto qB = b2Rot(aB);
 
 	// Compute the effective masses.
 	const auto rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
@@ -299,8 +300,7 @@ void b2PrismaticJoint::SolveVelocityConstraints(const b2SolverData& data)
 		const auto Cdot = b2Vec3{Cdot1.x, Cdot1.y, Cdot2};
 
 		const auto f1 = m_impulse;
-		auto df =  m_K.Solve33(-Cdot);
-		m_impulse += df;
+		m_impulse += m_K.Solve33(-Cdot);
 
 		if (m_limitState == e_atLowerLimit)
 		{
@@ -317,7 +317,7 @@ void b2PrismaticJoint::SolveVelocityConstraints(const b2SolverData& data)
 		m_impulse.x = f2r.x;
 		m_impulse.y = f2r.y;
 
-		df = m_impulse - f1;
+		const auto df = m_impulse - f1;
 
 		const auto P = df.x * m_perp + df.z * m_axis;
 		const auto LA = df.x * m_s1 + df.y + df.z * m_a1;

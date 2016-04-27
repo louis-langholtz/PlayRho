@@ -80,13 +80,13 @@ public:
 	float32 GetReactionTorque(float32 inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
-	const b2Vec2& GetLocalAnchorA() const { return m_localAnchorA; }
+	b2Vec2 GetLocalAnchorA() const { return m_localAnchorA; }
 
 	/// The local anchor point relative to bodyB's origin.
-	const b2Vec2& GetLocalAnchorB() const  { return m_localAnchorB; }
+	b2Vec2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
 	/// The local joint axis relative to bodyA.
-	const b2Vec2& GetLocalAxisA() const { return m_localXAxisA; }
+	b2Vec2 GetLocalAxisA() const { return m_localXAxisA; }
 
 	/// Get the reference angle.
 	float32 GetReferenceAngle() const { return m_referenceAngle; }
