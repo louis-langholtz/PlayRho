@@ -616,15 +616,19 @@ void b2DynamicTree::ValidateMetrics(size_type index) const
 	b2Assert((0 <= child1) && (child1 < m_nodeCapacity));
 	b2Assert((0 <= child2) && (child2 < m_nodeCapacity));
 
-	const auto height1 = m_nodes[child1].height;
-	const auto height2 = m_nodes[child2].height;
-	const auto height = 1 + b2Max(height1, height2);
-	b2Assert(node->height == height);
-
-	const auto aabb = b2Combine(m_nodes[child1].aabb, m_nodes[child2].aabb);
-
-	b2Assert(aabb.lowerBound == node->aabb.lowerBound);
-	b2Assert(aabb.upperBound == node->aabb.upperBound);
+#if !defined(NDEBUG)
+	{
+		const auto height1 = m_nodes[child1].height;
+		const auto height2 = m_nodes[child2].height;
+		const auto height = 1 + b2Max(height1, height2);
+		b2Assert(node->height == height);
+	}
+	{
+		const auto aabb = b2Combine(m_nodes[child1].aabb, m_nodes[child2].aabb);
+		b2Assert(aabb.lowerBound == node->aabb.lowerBound);
+		b2Assert(aabb.upperBound == node->aabb.upperBound);
+	}
+#endif
 
 	ValidateMetrics(child1);
 	ValidateMetrics(child2);
