@@ -76,6 +76,8 @@ struct b2JointDef
 	b2JointDef() = delete;
 
 	constexpr b2JointDef(b2JointType t) noexcept: type(t) {}
+	constexpr b2JointDef(b2JointType t, b2Body* bA, b2Body* bB) noexcept:
+		type(t), bodyA(bA), bodyB(bB) {}
 
 	/// The joint type is set automatically for concrete joint types.
 	const b2JointType type;
