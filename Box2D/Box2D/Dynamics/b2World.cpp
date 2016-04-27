@@ -1079,8 +1079,8 @@ void b2World::DrawJoint(b2Joint* joint)
 {
 	const auto bodyA = joint->GetBodyA();
 	const auto bodyB = joint->GetBodyB();
-	const auto& xf1 = bodyA->GetTransform();
-	const auto& xf2 = bodyB->GetTransform();
+	const auto xf1 = bodyA->GetTransform();
+	const auto xf2 = bodyB->GetTransform();
 	const auto x1 = xf1.p;
 	const auto x2 = xf2.p;
 	const auto p1 = joint->GetAnchorA();
@@ -1129,7 +1129,7 @@ void b2World::DrawDebugData()
 	{
 		for (auto b = m_bodyList; b; b = b->GetNext())
 		{
-			const b2Transform& xf = b->GetTransform();
+			const auto xf = b->GetTransform();
 			for (auto f = b->GetFixtureList(); f; f = f->GetNext())
 			{
 				if (!b->IsActive())
@@ -1213,7 +1213,7 @@ void b2World::DrawDebugData()
 	{
 		for (auto b = m_bodyList; b; b = b->GetNext())
 		{
-			b2Transform xf = b->GetTransform();
+			auto xf = b->GetTransform();
 			xf.p = b->GetWorldCenter();
 			g_debugDraw->DrawTransform(xf);
 		}
