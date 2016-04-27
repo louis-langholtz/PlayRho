@@ -150,8 +150,8 @@ void b2Contact::Update(b2ContactListener* listener)
 
 	auto bodyA = m_fixtureA->GetBody();
 	auto bodyB = m_fixtureB->GetBody();
-	const auto& xfA = bodyA->GetTransform();
-	const auto& xfB = bodyB->GetTransform();
+	const auto xfA = bodyA->GetTransform();
+	const auto xfB = bodyB->GetTransform();
 
 	// Is this contact a sensor?
 	const auto sensor = m_fixtureA->IsSensor() || m_fixtureB->IsSensor();
