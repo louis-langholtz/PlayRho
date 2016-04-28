@@ -170,8 +170,8 @@ public:
 
 			b2Body* body = m_world->CreateBody(&bd);
 
-			float32 angle = 0.0f;
-			float32 delta = b2_pi / 3.0f;
+			b2Float angle = 0.0f;
+			b2Float delta = b2_pi / 3.0f;
 			b2Vec2 vertices[6];
 			for (int32 i = 0; i < 6; ++i)
 			{

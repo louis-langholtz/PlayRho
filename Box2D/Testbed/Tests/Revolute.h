@@ -52,7 +52,7 @@ public:
 			b2Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&shape, 5.0f);
 
-			float32 w = 100.0f;
+			b2Float w = 100.0f;
 			body->SetAngularVelocity(w);
 			body->SetLinearVelocity(b2Vec2(-8.0f * w, 0.0f));
 
@@ -149,7 +149,7 @@ public:
 		//	m_ball->SetTransform(b2Vec2(0.0f, 0.5f), 0.0f);
 		//}
 
-		//float32 torque1 = m_joint1->GetMotorTorque();
+		//b2Float torque1 = m_joint1->GetMotorTorque();
 		//g_debugDraw.DrawString(5, m_textLine, "Motor Torque = %4.0f, %4.0f : Motor Force = %4.0f", (float) torque1, (float) torque2, (float) force3);
 		//m_textLine += DRAW_STRING_NEW_LINE;
 	}

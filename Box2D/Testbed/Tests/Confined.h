@@ -54,7 +54,7 @@ public:
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
-		float32 radius = 0.5f;
+		b2Float radius = 0.5f;
 		b2CircleShape shape;
 		shape.m_p.SetZero();
 		shape.m_radius = radius;
@@ -82,7 +82,7 @@ public:
 
 	void CreateCircle()
 	{
-		float32 radius = 2.0f;
+		b2Float radius = 2.0f;
 		b2CircleShape shape;
 		shape.m_p.SetZero();
 		shape.m_radius = radius;

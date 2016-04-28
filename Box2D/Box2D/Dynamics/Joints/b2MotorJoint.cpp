@@ -47,7 +47,7 @@ b2MotorJoint::b2MotorJoint(const b2MotorJointDef* def)
 	m_angularOffset = def->angularOffset;
 
 	m_linearImpulse = b2Vec2_zero;
-	m_angularImpulse = 0.0f;
+	m_angularImpulse = b2Float{0};
 
 	m_maxForce = def->maxForce;
 	m_maxTorque = def->maxTorque;
@@ -103,9 +103,9 @@ void b2MotorJoint::InitVelocityConstraints(const b2SolverData& data)
 	m_linearMass = K.GetInverse();
 
 	m_angularMass = iA + iB;
-	if (m_angularMass > 0.0f)
+	if (m_angularMass > b2Float{0})
 	{
-		m_angularMass = 1.0f / m_angularMass;
+		m_angularMass = b2Float(1) / m_angularMass;
 	}
 
 	m_linearError = cB + m_rB - cA - m_rA - b2Mul(qA, m_linearOffset);
@@ -126,7 +126,7 @@ void b2MotorJoint::InitVelocityConstraints(const b2SolverData& data)
 	else
 	{
 		m_linearImpulse.SetZero();
-		m_angularImpulse = 0.0f;
+		m_angularImpulse = b2Float{0};
 	}
 
 	data.velocities[m_indexA].v = vA;
@@ -210,45 +210,45 @@ b2Vec2 b2MotorJoint::GetAnchorB() const
 	return m_bodyB->GetPosition();
 }
 
-b2Vec2 b2MotorJoint::GetReactionForce(float32 inv_dt) const
+b2Vec2 b2MotorJoint::GetReactionForce(b2Float inv_dt) const
 {
 	return inv_dt * m_linearImpulse;
 }
 
-float32 b2MotorJoint::GetReactionTorque(float32 inv_dt) const
+b2Float b2MotorJoint::GetReactionTorque(b2Float inv_dt) const
 {
 	return inv_dt * m_angularImpulse;
 }
 
-void b2MotorJoint::SetMaxForce(float32 force)
+void b2MotorJoint::SetMaxForce(b2Float force)
 {
-	b2Assert(b2IsValid(force) && (force >= 0.0f));
+	b2Assert(b2IsValid(force) && (force >= b2Float{0}));
 	m_maxForce = force;
 }
 
-float32 b2MotorJoint::GetMaxForce() const
+b2Float b2MotorJoint::GetMaxForce() const
 {
 	return m_maxForce;
 }
 
-void b2MotorJoint::SetMaxTorque(float32 torque)
+void b2MotorJoint::SetMaxTorque(b2Float torque)
 {
-	b2Assert(b2IsValid(torque) && (torque >= 0.0f));
+	b2Assert(b2IsValid(torque) && (torque >= b2Float{0}));
 	m_maxTorque = torque;
 }
 
-float32 b2MotorJoint::GetMaxTorque() const
+b2Float b2MotorJoint::GetMaxTorque() const
 {
 	return m_maxTorque;
 }
 
-void b2MotorJoint::SetCorrectionFactor(float32 factor)
+void b2MotorJoint::SetCorrectionFactor(b2Float factor)
 {
-	b2Assert(b2IsValid(factor) && (0.0f <= factor) && (factor <= 1.0f));
+	b2Assert(b2IsValid(factor) && (b2Float{0} <= factor) && (factor <= b2Float(1)));
 	m_correctionFactor = factor;
 }
 
-float32 b2MotorJoint::GetCorrectionFactor() const
+b2Float b2MotorJoint::GetCorrectionFactor() const
 {
 	return m_correctionFactor;
 }
@@ -268,7 +268,7 @@ const b2Vec2& b2MotorJoint::GetLinearOffset() const
 	return m_linearOffset;
 }
 
-void b2MotorJoint::SetAngularOffset(float32 angularOffset)
+void b2MotorJoint::SetAngularOffset(b2Float angularOffset)
 {
 	if (angularOffset != m_angularOffset)
 	{
@@ -278,7 +278,7 @@ void b2MotorJoint::SetAngularOffset(float32 angularOffset)
 	}
 }
 
-float32 b2MotorJoint::GetAngularOffset() const
+b2Float b2MotorJoint::GetAngularOffset() const
 {
 	return m_angularOffset;
 }

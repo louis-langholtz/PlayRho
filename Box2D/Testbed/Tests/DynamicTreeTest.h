@@ -44,7 +44,7 @@ public:
 
 		m_stepCount = 0;
 
-		float32 h = m_worldExtent;
+		b2Float h = m_worldExtent;
 		m_queryAABB.lowerBound.Set(-3.0f, -4.0f + h);
 		m_queryAABB.upperBound.Set(5.0f, 6.0f + h);
 
@@ -164,7 +164,7 @@ public:
 		return true;
 	}
 
-	float32 RayCastCallback(const b2RayCastInput& input, int32 proxyId)
+	b2Float RayCastCallback(const b2RayCastInput& input, int32 proxyId)
 	{
 		auto actor = static_cast<Actor*>(m_tree.GetUserData(proxyId));
 
@@ -187,7 +187,7 @@ private:
 	struct Actor
 	{
 		b2AABB aabb;
-		float32 fraction;
+		b2Float fraction;
 		bool overlap;
 		int32 proxyId;
 	};
@@ -341,8 +341,8 @@ private:
 		}
 	}
 
-	float32 m_worldExtent;
-	float32 m_proxyExtent;
+	b2Float m_worldExtent;
+	b2Float m_proxyExtent;
 
 	b2DynamicTree m_tree;
 	b2AABB m_queryAABB;

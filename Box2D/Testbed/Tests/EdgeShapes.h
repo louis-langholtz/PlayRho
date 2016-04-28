@@ -27,8 +27,8 @@ public:
 		m_fixture = nullptr;
 	}
 
-	float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point,
-						  const b2Vec2& normal, float32 fraction)
+	b2Float ReportFixture(b2Fixture* fixture, const b2Vec2& point,
+						  const b2Vec2& normal, b2Float fraction)
 	{
 		m_fixture = fixture;
 		m_point = point;
@@ -58,12 +58,12 @@ public:
 			b2BodyDef bd;
 			b2Body* ground = m_world->CreateBody(&bd);
 
-			float32 x1 = -20.0f;
-			float32 y1 = 2.0f * cosf(x1 / 10.0f * b2_pi);
+			b2Float x1 = -20.0f;
+			b2Float y1 = 2.0f * cosf(x1 / 10.0f * b2_pi);
 			for (int32 i = 0; i < 80; ++i)
 			{
-				float32 x2 = x1 + 0.5f;
-				float32 y2 = 2.0f * cosf(x2 / 10.0f * b2_pi);
+				b2Float x2 = x1 + 0.5f;
+				b2Float y2 = 2.0f * cosf(x2 / 10.0f * b2_pi);
 
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(x1, y1), b2Vec2(x2, y2));
@@ -91,9 +91,9 @@ public:
 		}
 
 		{
-			float32 w = 1.0f;
-			float32 b = w / (2.0f + b2Sqrt(2.0f));
-			float32 s = b2Sqrt(2.0f) * b;
+			b2Float w = 1.0f;
+			b2Float b = w / (2.0f + b2Sqrt(2.0f));
+			b2Float s = b2Sqrt(2.0f) * b;
 
 			b2Vec2 vertices[8];
 			vertices[0].Set(0.5f * s, 0.0f);
@@ -132,8 +132,8 @@ public:
 
 		b2BodyDef bd;
 
-		float32 x = RandomFloat(-10.0f, 10.0f);
-		float32 y = RandomFloat(10.0f, 20.0f);
+		b2Float x = RandomFloat(-10.0f, 10.0f);
+		b2Float y = RandomFloat(10.0f, 20.0f);
 		bd.position.Set(x, y);
 		bd.angle = RandomFloat(-b2_pi, b2_pi);
 		bd.type = b2_dynamicBody;
@@ -204,7 +204,7 @@ public:
 		g_debugDraw.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		float32 L = 25.0f;
+		b2Float L = 25.0f;
 		b2Vec2 point1(0.0f, 10.0f);
 		b2Vec2 d(L * cosf(m_angle), -L * b2Abs(sinf(m_angle)));
 		b2Vec2 point2 = point1 + d;
@@ -243,7 +243,7 @@ public:
 	b2PolygonShape m_polygons[4];
 	b2CircleShape m_circle;
 
-	float32 m_angle;
+	b2Float m_angle;
 };
 
 #endif

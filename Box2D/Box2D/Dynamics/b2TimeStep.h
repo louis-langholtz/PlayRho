@@ -24,22 +24,22 @@
 /// Profiling data. Times are in milliseconds.
 struct b2Profile
 {
-	float32 step;
-	float32 collide;
-	float32 solve;
-	float32 solveInit;
-	float32 solveVelocity;
-	float32 solvePosition;
-	float32 broadphase;
-	float32 solveTOI;
+	b2Float step;
+	b2Float collide;
+	b2Float solve;
+	b2Float solveInit;
+	b2Float solveVelocity;
+	b2Float solvePosition;
+	b2Float broadphase;
+	b2Float solveTOI;
 };
 
 /// This is an internal structure.
 struct b2TimeStep
 {
-	float32 dt;			// time step
-	float32 inv_dt;		// inverse time step (0 if dt == 0).
-	float32 dtRatio;	// dt * inv_dt0
+	b2Float dt;			// time step
+	b2Float inv_dt;		// inverse time step (0 if dt == 0).
+	b2Float dtRatio;	// dt * inv_dt0
 	int32 velocityIterations;
 	int32 positionIterations;
 	bool warmStarting;
@@ -49,14 +49,14 @@ struct b2TimeStep
 struct b2Position
 {
 	b2Vec2 c; // linear position
-	float32 a; // angular position
+	b2Float a; // angular position
 };
 
 /// This is an internal structure.
 struct b2Velocity
 {
 	b2Vec2 v; // linear velocity
-	float32 w; // angular velocity
+	b2Float w; // angular velocity
 };
 
 /// Solver Data

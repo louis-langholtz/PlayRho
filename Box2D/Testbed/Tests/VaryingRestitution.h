@@ -44,7 +44,7 @@ public:
 			fd.shape = &shape;
 			fd.density = 1.0f;
 
-			float32 restitution[7] = {0.0f, 0.1f, 0.3f, 0.5f, 0.75f, 0.9f, 1.0f};
+			b2Float restitution[7] = {0.0f, 0.1f, 0.3f, 0.5f, 0.75f, 0.9f, 1.0f};
 
 			for (int32 i = 0; i < 7; ++i)
 			{

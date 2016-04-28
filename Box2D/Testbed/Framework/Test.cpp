@@ -267,7 +267,7 @@ void Test::LaunchBomb(const b2Vec2& position, const b2Vec2& velocity)
 
 void Test::Step(Settings* settings)
 {
-	float32 timeStep = settings->hz > 0.0f ? 1.0f / settings->hz : float32(0.0f);
+	b2Float timeStep = settings->hz > 0.0f ? 1.0f / settings->hz : b2Float(0.0f);
 
 	if (settings->pause)
 	{
@@ -319,7 +319,7 @@ void Test::Step(Settings* settings)
 		int32 proxyCount = m_world->GetProxyCount();
 		int32 height = m_world->GetTreeHeight();
 		int32 balance = m_world->GetTreeBalance();
-		float32 quality = m_world->GetTreeQuality();
+		b2Float quality = m_world->GetTreeQuality();
 		g_debugDraw.DrawString(5, m_textLine, "proxies/height/balance/quality = %d/%d/%d/%g", proxyCount, height, balance, quality);
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
@@ -354,7 +354,7 @@ void Test::Step(Settings* settings)
 		memset(&aveProfile, 0, sizeof(b2Profile));
 		if (m_stepCount > 0)
 		{
-			float32 scale = 1.0f / m_stepCount;
+			b2Float scale = 1.0f / m_stepCount;
 			aveProfile.step = scale * m_totalProfile.step;
 			aveProfile.collide = scale * m_totalProfile.collide;
 			aveProfile.solve = scale * m_totalProfile.solve;
@@ -409,8 +409,8 @@ void Test::Step(Settings* settings)
 
 	if (settings->drawContactPoints)
 	{
-		const float32 k_impulseScale = 0.1f;
-		const float32 k_axisScale = 0.3f;
+		const b2Float k_impulseScale = 0.1f;
+		const b2Float k_axisScale = 0.3f;
 
 		for (int32 i = 0; i < m_pointCount; ++i)
 		{

@@ -41,8 +41,8 @@ public:
 			ground->CreateFixture(&sd);
 		}
 
-		float32 xLo = -5.0f, xHi = 5.0f;
-		float32 yLo = 2.0f, yHi = 35.0f;
+		b2Float xLo = -5.0f, xHi = 5.0f;
+		b2Float yLo = 2.0f, yHi = 35.0f;
 
 		// Small triangle
 		b2Vec2 vertices[3];
@@ -138,8 +138,8 @@ public:
 
 			b2Body* body1 = point->fixtureA->GetBody();
 			b2Body* body2 = point->fixtureB->GetBody();
-			float32 mass1 = body1->GetMass();
-			float32 mass2 = body2->GetMass();
+			b2Float mass1 = body1->GetMass();
+			b2Float mass2 = body2->GetMass();
 
 			if (mass1 > 0.0f && mass2 > 0.0f)
 			{

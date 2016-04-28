@@ -37,19 +37,19 @@ struct b2RopeDef
 	size_type count = 0;
 
 	///
-	float32* masses = nullptr;
+	b2Float* masses = nullptr;
 
 	///
 	b2Vec2 gravity = b2Vec2_zero;
 
 	///
-	float32 damping = 0.1f;
+	b2Float damping = b2Float(1) / b2Float(10);
 
 	/// Stretching stiffness
-	float32 k2 = 0.9f;
+	b2Float k2 = b2Float(9) / b2Float(10);
 
 	/// Bending stiffness. Values above 0.5 can make the simulation blow up.
-	float32 k3 = 0.1f;
+	b2Float k3 = b2Float(1) / b2Float(10);
 };
 
 /// 
@@ -65,7 +65,7 @@ public:
 	void Initialize(const b2RopeDef* def);
 
 	///
-	void Step(float32 timeStep, int32 iterations);
+	void Step(b2Float timeStep, int32 iterations);
 
 	///
 	size_type GetVertexCount() const noexcept
@@ -83,7 +83,7 @@ public:
 	void Draw(b2Draw* draw) const;
 
 	///
-	void SetAngle(float32 angle);
+	void SetAngle(b2Float angle);
 
 private:
 
@@ -95,16 +95,16 @@ private:
 	b2Vec2* m_p0s = nullptr;
 	b2Vec2* m_vs = nullptr;
 
-	float32* m_ims = nullptr;
+	b2Float* m_ims = nullptr;
 
-	float32* m_Ls = nullptr;
-	float32* m_as = nullptr;
+	b2Float* m_Ls = nullptr;
+	b2Float* m_as = nullptr;
 
 	b2Vec2 m_gravity = b2Vec2_zero;
-	float32 m_damping = 0.0f;
+	b2Float m_damping = b2Float{0};
 
-	float32 m_k2 = 1.0f;
-	float32 m_k3 = 0.1f;
+	b2Float m_k2 = b2Float(1);
+	b2Float m_k3 = b2Float(0.1);
 };
 
 #endif

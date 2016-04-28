@@ -35,7 +35,7 @@ public:
 		b2Timer timer;
 
 		{
-			float32 a = 0.5f;
+			b2Float a = 0.5f;
 			b2BodyDef bd;
 			bd.position.y = -a;
 			b2Body* ground = m_world->CreateBody(&bd);
@@ -79,7 +79,7 @@ public:
 		}
 
 		{
-			float32 a = 0.5f;
+			b2Float a = 0.5f;
 			b2PolygonShape shape;
 			shape.SetAsBox(a, a);
 
@@ -126,7 +126,7 @@ public:
 		int32 height = cm.m_broadPhase.GetTreeHeight();
 		int32 leafCount = cm.m_broadPhase.GetProxyCount();
 		int32 minimumNodeCount = 2 * leafCount - 1;
-		float32 minimumHeight = ceilf(logf(float32(minimumNodeCount)) / logf(2.0f));
+		b2Float minimumHeight = ceilf(logf(b2Float(minimumNodeCount)) / logf(2.0f));
 		g_debugDraw.DrawString(5, m_textLine, "dynamic tree height = %d, min = %d", height, int32(minimumHeight));
 		m_textLine += DRAW_STRING_NEW_LINE;
 
@@ -150,7 +150,7 @@ public:
 	}
 
 	int32 m_fixtureCount;
-	float32 m_createTime;
+	b2Float m_createTime;
 };
 
 #endif

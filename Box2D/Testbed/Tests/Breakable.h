@@ -71,7 +71,7 @@ public:
 		// Should the body break?
 		int32 count = contact->GetManifold()->pointCount;
 
-		float32 maxImpulse = 0.0f;
+		b2Float maxImpulse = 0.0f;
 		for (int32 i = 0; i < count; ++i)
 		{
 			maxImpulse = b2Max(maxImpulse, impulse->normalImpulses[i]);
@@ -142,7 +142,7 @@ public:
 
 	b2Body* m_body1;
 	b2Vec2 m_velocity;
-	float32 m_angularVelocity;
+	b2Float m_angularVelocity;
 	b2PolygonShape m_shape1;
 	b2PolygonShape m_shape2;
 	b2Fixture* m_piece1;

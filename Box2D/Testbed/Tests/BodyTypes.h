@@ -153,7 +153,7 @@ public:
 
 	b2Body* m_attachment;
 	b2Body* m_platform;
-	float32 m_speed;
+	b2Float m_speed;
 };
 
 #endif

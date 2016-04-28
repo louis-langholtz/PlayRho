@@ -87,11 +87,11 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 	const auto length = m_u.Length();
 	if (length > b2_linearSlop)
 	{
-		m_u *= 1.0f / length;
+		m_u *= b2Float(1) / length;
 	}
 	else
 	{
-		m_u.Set(0.0f, 0.0f);
+		m_u.Set(b2Float{0}, b2Float{0});
 	}
 
 	const auto crAu = b2Cross(m_rA, m_u);
@@ -99,17 +99,17 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 	auto invMass = m_invMassA + m_invIA * b2Square(crAu) + m_invMassB + m_invIB * b2Square(crBu);
 
 	// Compute the effective mass matrix.
-	m_mass = (invMass != 0.0f) ? 1.0f / invMass : 0.0f;
+	m_mass = (invMass != b2Float{0}) ? b2Float(1) / invMass : b2Float{0};
 
-	if (m_frequencyHz > 0.0f)
+	if (m_frequencyHz > b2Float{0})
 	{
 		const auto C = length - m_length;
 
 		// Frequency
-		const auto omega = 2.0f * b2_pi * m_frequencyHz;
+		const auto omega = b2Float(2) * b2_pi * m_frequencyHz;
 
 		// Damping coefficient
-		const auto d = 2.0f * m_mass * m_dampingRatio * omega;
+		const auto d = b2Float(2) * m_mass * m_dampingRatio * omega;
 
 		// Spring stiffness
 		const auto k = m_mass * b2Square(omega);
@@ -117,16 +117,16 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 		// magic formulas
 		const auto h = data.step.dt;
 		m_gamma = h * (d + h * k);
-		m_gamma = m_gamma != 0.0f ? 1.0f / m_gamma : 0.0f;
+		m_gamma = m_gamma != b2Float{0} ? b2Float(1) / m_gamma : b2Float{0};
 		m_bias = C * h * k * m_gamma;
 
 		invMass += m_gamma;
-		m_mass = invMass != 0.0f ? 1.0f / invMass : 0.0f;
+		m_mass = invMass != b2Float{0} ? b2Float(1) / invMass : b2Float{0};
 	}
 	else
 	{
-		m_gamma = 0.0f;
-		m_bias = 0.0f;
+		m_gamma = b2Float{0};
+		m_bias = b2Float{0};
 	}
 
 	if (data.step.warmStarting)
@@ -142,7 +142,7 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 	}
 	else
 	{
-		m_impulse = 0.0f;
+		m_impulse = b2Float{0};
 	}
 
 	data.velocities[m_indexA].v = vA;
@@ -180,7 +180,7 @@ void b2DistanceJoint::SolveVelocityConstraints(const b2SolverData& data)
 
 bool b2DistanceJoint::SolvePositionConstraints(const b2SolverData& data)
 {
-	if (m_frequencyHz > 0.0f)
+	if (m_frequencyHz > b2Float{0})
 	{
 		// There is no position correction for soft distance constraints.
 		return true;
@@ -228,15 +228,15 @@ b2Vec2 b2DistanceJoint::GetAnchorB() const
 	return m_bodyB->GetWorldPoint(m_localAnchorB);
 }
 
-b2Vec2 b2DistanceJoint::GetReactionForce(float32 inv_dt) const
+b2Vec2 b2DistanceJoint::GetReactionForce(b2Float inv_dt) const
 {
 	return (inv_dt * m_impulse) * m_u;
 }
 
-float32 b2DistanceJoint::GetReactionTorque(float32 inv_dt) const
+b2Float b2DistanceJoint::GetReactionTorque(b2Float inv_dt) const
 {
 	B2_NOT_USED(inv_dt);
-	return 0.0f;
+	return b2Float{0};
 }
 
 void b2DistanceJoint::Dump()

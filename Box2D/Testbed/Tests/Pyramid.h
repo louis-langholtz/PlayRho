@@ -39,7 +39,7 @@ public:
 		}
 
 		{
-			float32 a = 0.5f;
+			b2Float a = 0.5f;
 			b2PolygonShape shape;
 			shape.SetAsBox(a, a);
 

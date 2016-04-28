@@ -25,7 +25,7 @@
 
 #include <stdio.h>
 
-float32 b2_toiTime, b2_toiMaxTime;
+b2Float b2_toiTime, b2_toiMaxTime;
 uint32 b2_toiCalls, b2_toiIters, b2_toiMaxIters;
 uint32 b2_toiRootIters, b2_toiMaxRootIters;
 
@@ -42,7 +42,7 @@ struct b2SeparationFunction
 	b2SeparationFunction(const b2SimplexCache& cache,
 		const b2DistanceProxy& proxyA, const b2Sweep& sweepA,
 		const b2DistanceProxy& proxyB, const b2Sweep& sweepB,
-		float32 t1):
+		b2Float t1):
 		m_proxyA(proxyA), m_proxyB(proxyB), m_sweepA(sweepA), m_sweepB(sweepB),
 		m_type((cache.GetCount() != 1)? ((cache.GetIndexA(0) == cache.GetIndexA(1))? e_faceB: e_faceA): e_points)
 	{
@@ -70,17 +70,17 @@ struct b2SeparationFunction
 			const auto localPointB1 = proxyB.GetVertex(cache.GetIndexB(0));
 			const auto localPointB2 = proxyB.GetVertex(cache.GetIndexB(1));
 
-			m_axis = b2Normalize(b2Cross(localPointB2 - localPointB1, 1.0f));
+			m_axis = b2Normalize(b2Cross(localPointB2 - localPointB1, b2Float(1)));
 			const auto normal = b2Mul(xfB.q, m_axis);
 
-			m_localPoint = 0.5f * (localPointB1 + localPointB2);
+			m_localPoint = (localPointB1 + localPointB2) / b2Float(2);
 			const auto pointB = b2Mul(xfB, m_localPoint);
 
 			const auto localPointA = proxyA.GetVertex(cache.GetIndexA(0));
 			const auto pointA = b2Mul(xfA, localPointA);
 
 			auto s = b2Dot(pointA - pointB, normal);
-			if (s < 0.0f)
+			if (s < b2Float{0})
 			{
 				m_axis = -m_axis;
 			}
@@ -92,17 +92,17 @@ struct b2SeparationFunction
 			const auto localPointA1 = m_proxyA.GetVertex(cache.GetIndexA(0));
 			const auto localPointA2 = m_proxyA.GetVertex(cache.GetIndexA(1));
 			
-			m_axis = b2Normalize(b2Cross(localPointA2 - localPointA1, 1.0f));
+			m_axis = b2Normalize(b2Cross(localPointA2 - localPointA1, b2Float(1)));
 			const auto normal = b2Mul(xfA.q, m_axis);
 
-			m_localPoint = 0.5f * (localPointA1 + localPointA2);
+			m_localPoint = (localPointA1 + localPointA2) / b2Float(2);
 			const auto pointA = b2Mul(xfA, m_localPoint);
 
 			const auto localPointB = m_proxyB.GetVertex(cache.GetIndexB(0));
 			const auto pointB = b2Mul(xfB, localPointB);
 
 			auto s = b2Dot(pointB - pointA, normal);
-			if (s < 0.0f)
+			if (s < b2Float{0})
 			{
 				m_axis = -m_axis;
 			}
@@ -112,9 +112,9 @@ struct b2SeparationFunction
 	}
 
 	//
-	float32 FindMinSeparation(b2DistanceProxy::size_type* indexA,
+	b2Float FindMinSeparation(b2DistanceProxy::size_type* indexA,
 							  b2DistanceProxy::size_type* indexB,
-							  float32 t) const
+							  b2Float t) const
 	{
 		const auto xfA = m_sweepA.GetTransform(t);
 		const auto xfB = m_sweepB.GetTransform(t);
@@ -174,12 +174,12 @@ struct b2SeparationFunction
 			b2Assert(false);
 			*indexA = static_cast<b2DistanceProxy::size_type>(-1);
 			*indexB = static_cast<b2DistanceProxy::size_type>(-1);
-			return 0.0f;
+			return b2Float{0};
 		}
 	}
 
 	//
-	float32 Evaluate(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB, float32 t) const
+	b2Float Evaluate(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB, b2Float t) const
 	{
 		const auto xfA = m_sweepA.GetTransform(t);
 		const auto xfB = m_sweepB.GetTransform(t);
@@ -220,7 +220,7 @@ struct b2SeparationFunction
 
 		default:
 			b2Assert(false);
-			return 0.0f;
+			return b2Float{0};
 		}
 	}
 
@@ -257,11 +257,11 @@ void b2TimeOfImpact(b2TOIOutput& output, const b2TOIInput& input)
 	const auto tMax = input.tMax;
 
 	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius();
-	const auto target = b2Max(b2_linearSlop, totalRadius - (3.0f * b2_linearSlop));
-	constexpr auto tolerance = 0.25f * b2_linearSlop;
+	const auto target = b2Max(b2_linearSlop, totalRadius - (b2Float{3} * b2_linearSlop));
+	constexpr auto tolerance = b2_linearSlop / b2Float(4);
 	b2Assert(target >= tolerance);
 
-	auto t1 = 0.0f;
+	auto t1 = b2Float{0};
 	auto iter = decltype(b2_maxTOIIterations){0};
 
 	// Prepare input for distance query.
@@ -284,11 +284,11 @@ void b2TimeOfImpact(b2TOIOutput& output, const b2TOIInput& input)
 		b2Distance(&distanceOutput, &cache, distanceInput);
 
 		// If the shapes are overlapped, we give up on continuous collision.
-		if (distanceOutput.distance <= 0.0f)
+		if (distanceOutput.distance <= b2Float{0})
 		{
 			// Failure!
 			output.state = b2TOIOutput::e_overlapped;
-			output.t = 0.0f;
+			output.t = b2Float{0};
 			break;
 		}
 
@@ -306,17 +306,17 @@ void b2TimeOfImpact(b2TOIOutput& output, const b2TOIInput& input)
 		// Dump the curve seen by the root finder
 		{
 			const int32 N = 100;
-			float32 dx = 1.0f / N;
-			float32 xs[N+1];
-			float32 fs[N+1];
+			b2Float dx = b2Float(1) / N;
+			b2Float xs[N+1];
+			b2Float fs[N+1];
 
-			float32 x = 0.0f;
+			b2Float x = b2Float{0};
 
 			for (auto i = decltype(N){0}; i <= N; ++i)
 			{
 				const auto xfA = sweepA.GetTransform(x);
 				const auto xfB = sweepB.GetTransform(x);
-				float32 f = fcn.Evaluate(xfA, xfB) - target;
+				b2Float f = fcn.Evaluate(xfA, xfB) - target;
 
 				printf("%g %g\n", x, f);
 
@@ -391,7 +391,7 @@ void b2TimeOfImpact(b2TOIOutput& output, const b2TOIInput& input)
 					// Secant rule to improve convergence.
 					a1 + (target - s1) * (a2 - a1) / (s2 - s1):
 					// Bisection to guarantee progress.
-					0.5f * (a1 + a2);
+					(a1 + a2) / b2Float(2);
 
 				++rootIterCount;
 				++b2_toiRootIters;

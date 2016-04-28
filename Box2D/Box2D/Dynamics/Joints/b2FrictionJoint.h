@@ -37,10 +37,10 @@ struct b2FrictionJointDef : public b2JointDef
 	b2Vec2 localAnchorB = b2Vec2_zero;
 
 	/// The maximum friction force in N.
-	float32 maxForce = 0.0f;
+	b2Float maxForce = b2Float{0};
 
 	/// The maximum friction torque in N-m.
-	float32 maxTorque = 0.0f;
+	b2Float maxTorque = b2Float{0};
 };
 
 /// Friction joint. This is used for top-down friction.
@@ -51,8 +51,8 @@ public:
 	b2Vec2 GetAnchorA() const override;
 	b2Vec2 GetAnchorB() const override;
 
-	b2Vec2 GetReactionForce(float32 inv_dt) const override;
-	float32 GetReactionTorque(float32 inv_dt) const override;
+	b2Vec2 GetReactionForce(b2Float inv_dt) const override;
+	b2Float GetReactionTorque(b2Float inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
 	const b2Vec2& GetLocalAnchorA() const { return m_localAnchorA; }
@@ -61,16 +61,16 @@ public:
 	const b2Vec2& GetLocalAnchorB() const  { return m_localAnchorB; }
 
 	/// Set the maximum friction force in N.
-	void SetMaxForce(float32 force);
+	void SetMaxForce(b2Float force);
 
 	/// Get the maximum friction force in N.
-	float32 GetMaxForce() const;
+	b2Float GetMaxForce() const;
 
 	/// Set the maximum friction torque in N*m.
-	void SetMaxTorque(float32 torque);
+	void SetMaxTorque(b2Float torque);
 
 	/// Get the maximum friction torque in N*m.
-	float32 GetMaxTorque() const;
+	b2Float GetMaxTorque() const;
 
 	/// Dump joint to dmLog
 	void Dump() override;
@@ -90,9 +90,9 @@ protected:
 
 	// Solver shared
 	b2Vec2 m_linearImpulse = b2Vec2_zero;
-	float32 m_angularImpulse = 0.0f;
-	float32 m_maxForce;
-	float32 m_maxTorque;
+	b2Float m_angularImpulse = b2Float{0};
+	b2Float m_maxForce;
+	b2Float m_maxTorque;
 
 	// Solver temp
 	index_t m_indexA;
@@ -101,12 +101,12 @@ protected:
 	b2Vec2 m_rB;
 	b2Vec2 m_localCenterA;
 	b2Vec2 m_localCenterB;
-	float32 m_invMassA;
-	float32 m_invMassB;
-	float32 m_invIA;
-	float32 m_invIB;
+	b2Float m_invMassA;
+	b2Float m_invMassB;
+	b2Float m_invIA;
+	b2Float m_invIB;
 	b2Mat22 m_linearMass;
-	float32 m_angularMass;
+	b2Float m_angularMass;
 };
 
 #endif

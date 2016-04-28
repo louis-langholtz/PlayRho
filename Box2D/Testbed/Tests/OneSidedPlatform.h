@@ -123,7 +123,7 @@ public:
 		return new OneSidedPlatform;
 	}
 
-	float32 m_radius, m_top, m_bottom;
+	b2Float m_radius, m_top, m_bottom;
 	State m_state;
 	b2Fixture* m_platform;
 	b2Fixture* m_character;

@@ -42,22 +42,22 @@ struct b2WheelJointDef : public b2JointDef
 	b2Vec2 localAnchorB = b2Vec2_zero;
 
 	/// The local translation axis in bodyA.
-	b2Vec2 localAxisA = {1.0f, 0.0f};
+	b2Vec2 localAxisA = b2Vec2{b2Float(1), b2Float{0}};
 
 	/// Enable/disable the joint motor.
 	bool enableMotor = false;
 
 	/// The maximum motor torque, usually in N-m.
-	float32 maxMotorTorque = 0.0f;
+	b2Float maxMotorTorque = b2Float{0};
 
 	/// The desired motor speed in radians per second.
-	float32 motorSpeed = 0.0f;
+	b2Float motorSpeed = b2Float{0};
 
 	/// Suspension frequency, zero indicates no suspension
-	float32 frequencyHz = 2.0f;
+	b2Float frequencyHz = b2Float(2);
 
 	/// Suspension damping ratio, one indicates critical damping
-	float32 dampingRatio = 0.7f;
+	b2Float dampingRatio = b2Float(0.7);
 };
 
 /// A wheel joint. This joint provides two degrees of freedom: translation
@@ -70,8 +70,8 @@ public:
 	b2Vec2 GetAnchorA() const override;
 	b2Vec2 GetAnchorB() const override;
 
-	b2Vec2 GetReactionForce(float32 inv_dt) const override;
-	float32 GetReactionTorque(float32 inv_dt) const override;
+	b2Vec2 GetReactionForce(b2Float inv_dt) const override;
+	b2Float GetReactionTorque(b2Float inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
 	const b2Vec2& GetLocalAnchorA() const { return m_localAnchorA; }
@@ -83,10 +83,10 @@ public:
 	const b2Vec2& GetLocalAxisA() const { return m_localXAxisA; }
 
 	/// Get the current joint translation, usually in meters.
-	float32 GetJointTranslation() const;
+	b2Float GetJointTranslation() const;
 
 	/// Get the current joint translation speed, usually in meters per second.
-	float32 GetJointSpeed() const;
+	b2Float GetJointSpeed() const;
 
 	/// Is the joint motor enabled?
 	bool IsMotorEnabled() const;
@@ -95,25 +95,25 @@ public:
 	void EnableMotor(bool flag);
 
 	/// Set the motor speed, usually in radians per second.
-	void SetMotorSpeed(float32 speed);
+	void SetMotorSpeed(b2Float speed);
 
 	/// Get the motor speed, usually in radians per second.
-	float32 GetMotorSpeed() const;
+	b2Float GetMotorSpeed() const;
 
 	/// Set/Get the maximum motor force, usually in N-m.
-	void SetMaxMotorTorque(float32 torque);
-	float32 GetMaxMotorTorque() const;
+	void SetMaxMotorTorque(b2Float torque);
+	b2Float GetMaxMotorTorque() const;
 
 	/// Get the current motor torque given the inverse time step, usually in N-m.
-	float32 GetMotorTorque(float32 inv_dt) const;
+	b2Float GetMotorTorque(b2Float inv_dt) const;
 
 	/// Set/Get the spring frequency in hertz. Setting the frequency to zero disables the spring.
-	void SetSpringFrequencyHz(float32 hz);
-	float32 GetSpringFrequencyHz() const;
+	void SetSpringFrequencyHz(b2Float hz);
+	b2Float GetSpringFrequencyHz() const;
 
 	/// Set/Get the spring damping ratio
-	void SetSpringDampingRatio(float32 ratio);
-	float32 GetSpringDampingRatio() const;
+	void SetSpringDampingRatio(b2Float ratio);
+	b2Float GetSpringDampingRatio() const;
 
 	/// Dump to b2Log
 	void Dump() override;
@@ -127,8 +127,8 @@ protected:
 	void SolveVelocityConstraints(const b2SolverData& data) override;
 	bool SolvePositionConstraints(const b2SolverData& data) override;
 
-	float32 m_frequencyHz;
-	float32 m_dampingRatio;
+	b2Float m_frequencyHz;
+	b2Float m_dampingRatio;
 
 	// Solver shared
 	b2Vec2 m_localAnchorA;
@@ -136,12 +136,12 @@ protected:
 	b2Vec2 m_localXAxisA;
 	b2Vec2 m_localYAxisA;
 
-	float32 m_impulse;
-	float32 m_motorImpulse;
-	float32 m_springImpulse;
+	b2Float m_impulse;
+	b2Float m_motorImpulse;
+	b2Float m_springImpulse;
 
-	float32 m_maxMotorTorque;
-	float32 m_motorSpeed;
+	b2Float m_maxMotorTorque;
+	b2Float m_motorSpeed;
 	bool m_enableMotor;
 
 	// Solver temp
@@ -149,49 +149,49 @@ protected:
 	index_t m_indexB;
 	b2Vec2 m_localCenterA;
 	b2Vec2 m_localCenterB;
-	float32 m_invMassA;
-	float32 m_invMassB;
-	float32 m_invIA;
-	float32 m_invIB;
+	b2Float m_invMassA;
+	b2Float m_invMassB;
+	b2Float m_invIA;
+	b2Float m_invIB;
 
 	b2Vec2 m_ax, m_ay;
-	float32 m_sAx, m_sBx;
-	float32 m_sAy, m_sBy;
+	b2Float m_sAx, m_sBx;
+	b2Float m_sAy, m_sBy;
 
-	float32 m_mass;
-	float32 m_motorMass;
-	float32 m_springMass;
+	b2Float m_mass;
+	b2Float m_motorMass;
+	b2Float m_springMass;
 
-	float32 m_bias;
-	float32 m_gamma;
+	b2Float m_bias;
+	b2Float m_gamma;
 };
 
-inline float32 b2WheelJoint::GetMotorSpeed() const
+inline b2Float b2WheelJoint::GetMotorSpeed() const
 {
 	return m_motorSpeed;
 }
 
-inline float32 b2WheelJoint::GetMaxMotorTorque() const
+inline b2Float b2WheelJoint::GetMaxMotorTorque() const
 {
 	return m_maxMotorTorque;
 }
 
-inline void b2WheelJoint::SetSpringFrequencyHz(float32 hz)
+inline void b2WheelJoint::SetSpringFrequencyHz(b2Float hz)
 {
 	m_frequencyHz = hz;
 }
 
-inline float32 b2WheelJoint::GetSpringFrequencyHz() const
+inline b2Float b2WheelJoint::GetSpringFrequencyHz() const
 {
 	return m_frequencyHz;
 }
 
-inline void b2WheelJoint::SetSpringDampingRatio(float32 ratio)
+inline void b2WheelJoint::SetSpringDampingRatio(b2Float ratio)
 {
 	m_dampingRatio = ratio;
 }
 
-inline float32 b2WheelJoint::GetSpringDampingRatio() const
+inline b2Float b2WheelJoint::GetSpringDampingRatio() const
 {
 	return m_dampingRatio;
 }

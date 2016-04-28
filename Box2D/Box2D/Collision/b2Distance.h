@@ -35,7 +35,7 @@ public:
 
 	b2DistanceProxy(const b2Shape& shape, child_count_t index);
 
-	float32 GetRadius() const noexcept { return m_radius; }
+	b2Float GetRadius() const noexcept { return m_radius; }
 
 	/// Initialize the proxy using the given shape. The shape
 	/// must remain in scope while the proxy is in use.
@@ -57,7 +57,7 @@ private:
 	b2Vec2 m_buffer[2];
 	const b2Vec2* m_vertices = nullptr;
 	size_type m_count = 0;
-	float32 m_radius = 0.0f;
+	b2Float m_radius = b2Float{0};
 };
 
 /// Used to warm start b2Distance.
@@ -69,7 +69,7 @@ public:
 
 	using index_t = b2_size_t;
 
-	float32 GetMetric() const noexcept { return metric; }
+	b2Float GetMetric() const noexcept { return metric; }
 	size_type GetCount() const noexcept { return count; }
 
 	index_t GetIndexA(size_type index) const
@@ -86,7 +86,7 @@ public:
 
 	void ClearIndices() noexcept { count = 0; }
 
-	void SetMetric(float32 m) noexcept { metric = m; }
+	void SetMetric(b2Float m) noexcept { metric = m; }
 
 	void AddIndex(index_t a, index_t b)
 	{
@@ -97,7 +97,7 @@ public:
 	}
 
 private:
-	float32 metric;		///< length or area
+	b2Float metric;		///< length or area
 	size_type count = 0;
 	index_t indexA[MaxCount];	///< vertices on shape A
 	index_t indexB[MaxCount];	///< vertices on shape B
@@ -120,7 +120,7 @@ struct b2DistanceOutput
 {
 	b2Vec2 pointA;		///< closest point on shapeA
 	b2Vec2 pointB;		///< closest point on shapeB
-	float32 distance;
+	b2Float distance;
 	int32 iterations;	///< number of GJK iterations used
 };
 

@@ -36,9 +36,9 @@ struct b2ContactPositionConstraintBodyData
 	using index_t = b2_size_t;
 
 	index_t index; // index of body within island
-	float32 invMass;
+	b2Float invMass;
 	b2Vec2 localCenter;
-	float32 invI;
+	b2Float invI;
 };
 
 class b2ContactPositionConstraint
@@ -53,7 +53,7 @@ public:
 	b2ContactPositionConstraintBodyData bodyB;
 
 	b2Manifold::Type type = b2Manifold::e_unset;
-	float32 radiusA, radiusB;
+	b2Float radiusA, radiusB;
 
 	size_type GetPointCount() const noexcept { return pointCount; }
 
@@ -166,15 +166,15 @@ b2ContactSolver::b2ContactSolver(b2ContactSolverDef* def) :
 			}
 			else
 			{
-				vcp.normalImpulse = 0.0f;
-				vcp.tangentImpulse = 0.0f;
+				vcp.normalImpulse = b2Float{0};
+				vcp.tangentImpulse = b2Float{0};
 			}
 
 			vcp.rA = b2Vec2_zero;
 			vcp.rB = b2Vec2_zero;
-			vcp.normalMass = 0.0f;
-			vcp.tangentMass = 0.0f;
-			vcp.velocityBias = 0.0f;
+			vcp.normalMass = b2Float{0};
+			vcp.tangentMass = b2Float{0};
+			vcp.velocityBias = b2Float{0};
 			vc.AddPoint(vcp);
 
 			pc.AddPoint(cp.localPoint);
@@ -248,7 +248,7 @@ void b2ContactSolver::InitializeVelocityConstraints()
 
 			const auto kNormal = mA + mB + (iA * b2Square(rnA)) + (iB * b2Square(rnB));
 
-			const auto tangent = b2Cross(vc.normal, 1.0f);
+			const auto tangent = b2Cross(vc.normal, b2Float(1));
 
 			const auto rtA = b2Cross(vcp_rA, tangent);
 			const auto rtB = b2Cross(vcp_rB, tangent);
@@ -262,9 +262,9 @@ void b2ContactSolver::InitializeVelocityConstraints()
 			auto& vcp = vc.GetPoint(j);
 			vcp.rA = vcp_rA;
 			vcp.rB = vcp_rB;
-			vcp.normalMass = (kNormal > 0.0f)? 1.0f / kNormal : 0.0f;
-			vcp.tangentMass = (kTangent > 0.0f) ? 1.0f /  kTangent : 0.0f;
-			vcp.velocityBias = (vRel < -b2_velocityThreshold)? -vc.restitution * vRel: 0.0f;
+			vcp.normalMass = (kNormal > b2Float{0})? b2Float(1) / kNormal : b2Float{0};
+			vcp.tangentMass = (kTangent > b2Float{0}) ? b2Float(1) /  kTangent : b2Float{0};
+			vcp.velocityBias = (vRel < -b2_velocityThreshold)? -vc.restitution * vRel: b2Float{0};
 		}
 
 		// If we have two points, then prepare the block solver.
@@ -323,7 +323,7 @@ void b2ContactSolver::WarmStart()
 		auto wB = m_velocities[indexB].w;
 
 		const auto normal = vc.normal;
-		const auto tangent = b2Cross(normal, 1.0f);
+		const auto tangent = b2Cross(normal, b2Float(1));
 
 		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 		{
@@ -364,7 +364,7 @@ void b2ContactSolver::SolveVelocityConstraints()
 		auto wB = m_velocities[indexB].w;
 
 		const auto normal = vc.normal;
-		const auto tangent = b2Cross(normal, 1.0f);
+		const auto tangent = b2Cross(normal, b2Float(1));
 		const auto friction = vc.friction;
 
 		b2Assert((pointCount == 1) || (pointCount == 2));
@@ -413,7 +413,7 @@ void b2ContactSolver::SolveVelocityConstraints()
 				auto lambda = -vcp.normalMass * (vn - vcp.velocityBias);
 
 				// b2Clamp the accumulated impulse
-				const auto newImpulse = b2Max(vcp.normalImpulse + lambda, 0.0f);
+				const auto newImpulse = b2Max(vcp.normalImpulse + lambda, b2Float{0});
 				lambda = newImpulse - vcp.normalImpulse;
 				vcp.normalImpulse = newImpulse;
 
@@ -465,7 +465,7 @@ void b2ContactSolver::SolveVelocityConstraints()
 			auto& cp2 = vc.GetPoint(1);
 
 			const auto a = b2Vec2{cp1.normalImpulse, cp2.normalImpulse};
-			b2Assert((a.x >= 0.0f) && (a.y >= 0.0f));
+			b2Assert((a.x >= b2Float{0}) && (a.y >= b2Float{0}));
 
 			// Relative velocity at contact
 			const auto dv1 = (vB + b2Cross(wB, cp1.rB)) - (vA + b2Cross(wA, cp1.rA));
@@ -491,7 +491,7 @@ void b2ContactSolver::SolveVelocityConstraints()
 					// x = - inv(A) * b'
 					//
 					const auto x = - b2Mul(vc.normalMass, b);
-					if ((x.x >= 0.0f) && (x.y >= 0.0f))
+					if ((x.x >= b2Float{0}) && (x.y >= b2Float{0}))
 					{
 						// Get the incremental impulse
 						const auto d = x - a;
@@ -532,10 +532,10 @@ void b2ContactSolver::SolveVelocityConstraints()
 					//   0 = a11 * x1 + a12 * 0 + b1' 
 					// vn2 = a21 * x1 + a22 * 0 + b2'
 					//
-					const auto x = b2Vec2{- cp1.normalMass * b.x, 0.0f};
+					const auto x = b2Vec2{- cp1.normalMass * b.x, b2Float{0}};
 					const auto vn2 = vc.K.ex.y * x.x + b.y;
 
-					if ((x.x >= 0.0f) && (vn2 >= 0.0f))
+					if ((x.x >= b2Float{0}) && (vn2 >= b2Float{0}))
 					{
 						// Get the incremental impulse
 						const auto d = x - a;
@@ -573,10 +573,10 @@ void b2ContactSolver::SolveVelocityConstraints()
 					// vn1 = a11 * 0 + a12 * x2 + b1' 
 					//   0 = a21 * 0 + a22 * x2 + b2'
 					//
-					const auto x = b2Vec2{0.0f, -cp2.normalMass * b.y};
+					const auto x = b2Vec2{b2Float{0}, -cp2.normalMass * b.y};
 					const auto vn1 = vc.K.ey.x * x.y + b.x;
 
-					if ((x.y >= 0.0f) && (vn1 >= 0.0f))
+					if ((x.y >= b2Float{0}) && (vn1 >= b2Float{0}))
 					{
 						// Resubstitute for the incremental impulse
 						const auto d = x - a;
@@ -613,11 +613,11 @@ void b2ContactSolver::SolveVelocityConstraints()
 					// 
 					// vn1 = b1
 					// vn2 = b2;
-					const auto x = b2Vec2{0.0f, 0.0f};
+					const auto x = b2Vec2{b2Float{0}, b2Float{0}};
 					const auto vn1 = b.x;
 					const auto vn2 = b.y;
 
-					if ((vn1 >= 0.0f) && (vn2 >= 0.0f))
+					if ((vn1 >= b2Float{0}) && (vn2 >= b2Float{0}))
 					{
 						// Resubstitute for the incremental impulse
 						const auto d = x - a;
@@ -694,7 +694,7 @@ public:
 				const auto pointA = b2Mul(xfA, pc.localPoint);
 				const auto pointB = b2Mul(xfB, pc.GetPoint(0));
 				normal = b2Normalize(pointB - pointA);
-				point = 0.5f * (pointA + pointB);
+				point = (pointA + pointB) / b2Float(2);
 				separation = b2Dot(pointB - pointA, normal) - pc.radiusA - pc.radiusB;
 			}
 			break;
@@ -724,12 +724,12 @@ public:
 
 	b2Vec2 GetNormal() const noexcept { return normal; }
 	b2Vec2 GetPoint() const noexcept { return point; }
-	float32 GetSeparation() const noexcept { return separation; }
+	b2Float GetSeparation() const noexcept { return separation; }
 
 private:
 	b2Vec2 normal;
 	b2Vec2 point;
-	float32 separation;
+	b2Float separation;
 };
 
 // Sequential solver.
@@ -778,7 +778,7 @@ bool b2ContactSolver::SolvePositionConstraints()
 			minSeparation = b2Min(minSeparation, separation);
 
 			// Prevent large corrections and allow slop.
-			const auto C = b2Clamp(b2_baumgarte * (separation + b2_linearSlop), -b2_maxLinearCorrection, 0.0f);
+			const auto C = b2Clamp(b2_baumgarte * (separation + b2_linearSlop), -b2_maxLinearCorrection, b2Float{0});
 
 			// Compute the effective mass.
 			const auto rnA = b2Cross(rA, normal);
@@ -786,7 +786,7 @@ bool b2ContactSolver::SolvePositionConstraints()
 			const auto K = mA + mB + (iA * b2Square(rnA)) + (iB * b2Square(rnB));
 
 			// Compute normal impulse
-			const auto impulse = (K > 0.0f)? - C / K : 0.0f;
+			const auto impulse = (K > b2Float{0})? - C / K : b2Float{0};
 
 			const auto P = impulse * normal;
 
@@ -824,16 +824,16 @@ bool b2ContactSolver::SolveTOIPositionConstraints(size_type toiIndexA, size_type
 		const auto indexB = pc.bodyB.index;
 		const auto localCenterB = pc.bodyB.localCenter;
 		
-		auto mA = 0.0f;
-		auto iA = 0.0f;
+		auto mA = b2Float{0};
+		auto iA = b2Float{0};
 		if ((indexA == toiIndexA) || (indexA == toiIndexB))
 		{
 			mA = pc.bodyA.invMass;
 			iA = pc.bodyA.invI;
 		}
 
-		auto mB = 0.0f;
-		auto iB = 0.f;
+		auto mB = b2Float{0};
+		auto iB = b2Float{0};
 		if ((indexB == toiIndexA) || (indexB == toiIndexB))
 		{
 			mB = pc.bodyB.invMass;
@@ -866,7 +866,7 @@ bool b2ContactSolver::SolveTOIPositionConstraints(size_type toiIndexA, size_type
 			minSeparation = b2Min(minSeparation, separation);
 
 			// Prevent large corrections and allow slop.
-			const auto C = b2Clamp(b2_toiBaugarte * (separation + b2_linearSlop), -b2_maxLinearCorrection, 0.0f);
+			const auto C = b2Clamp(b2_toiBaugarte * (separation + b2_linearSlop), -b2_maxLinearCorrection, b2Float{0});
 
 			// Compute the effective mass.
 			const auto rnA = b2Cross(rA, normal);
@@ -874,7 +874,7 @@ bool b2ContactSolver::SolveTOIPositionConstraints(size_type toiIndexA, size_type
 			const auto K = mA + mB + (iA * b2Square(rnA)) + (iB * b2Square(rnB));
 
 			// Compute normal impulse
-			const auto impulse = (K > 0.0f) ? - C / K : 0.0f;
+			const auto impulse = (K > b2Float{0}) ? - C / K : b2Float{0};
 
 			const auto P = impulse * normal;
 

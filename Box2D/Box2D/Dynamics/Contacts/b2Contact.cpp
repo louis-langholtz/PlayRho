@@ -174,8 +174,8 @@ void b2Contact::Update(b2ContactListener* listener)
 		for (auto i = decltype(m_manifold.GetPointCount()){0}; i < m_manifold.GetPointCount(); ++i)
 		{
 			auto& mp2 = m_manifold.GetPoint(i);
-			mp2.normalImpulse = 0.0f;
-			mp2.tangentImpulse = 0.0f;
+			mp2.normalImpulse = b2Float{0};
+			mp2.tangentImpulse = b2Float{0};
 
 			for (auto j = decltype(oldManifold.GetPointCount()){0}; j < oldManifold.GetPointCount(); ++j)
 			{

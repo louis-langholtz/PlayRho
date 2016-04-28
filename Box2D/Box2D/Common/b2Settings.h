@@ -23,6 +23,7 @@
 #include <cassert>
 #include <cfloat>
 #include <limits>
+#include <cmath>
 
 #define B2_NOT_USED(x) ((void)(x))
 #define b2Assert(A) assert(A)
@@ -35,13 +36,14 @@ using uint16 = unsigned short;
 using uint32 = unsigned int;
 using float32 = float;
 using float64 = double;
+using b2Float = float;
 using child_count_t = unsigned; // relating to "children" of b2Shape
 using b2_size_t = std::size_t;
 using island_count_t = b2_size_t; // relating to items in a b2Island
 
-constexpr auto b2_maxFloat = std::numeric_limits<float32>::max(); // FLT_MAX;
-constexpr auto b2_epsilon = std::numeric_limits<float32>::epsilon(); // FLT_EPSILON;
-constexpr auto b2_pi = 3.14159265359f;
+constexpr auto b2_maxFloat = std::numeric_limits<b2Float>::max(); // FLT_MAX;
+constexpr auto b2_epsilon = std::numeric_limits<b2Float>::epsilon(); // FLT_EPSILON;
+constexpr auto b2_pi = b2Float(M_PI); // 3.14159265359
 
 /// @file
 /// Global tuning constants based on meters-kilograms-seconds (MKS) units.
@@ -60,25 +62,25 @@ constexpr auto b2_maxPolygonVertices = unsigned{16}; // 8
 /// This is used to fatten AABBs in the dynamic tree. This is used to predict
 /// the future position based on the current displacement.
 /// This is a dimensionless multiplier.
-constexpr auto b2_aabbMultiplier = float32{2.0f};
+constexpr auto b2_aabbMultiplier = b2Float(2);
 
 /// A small length used as a collision and constraint tolerance. Usually it is
 /// chosen to be numerically significant, but visually insignificant.
-constexpr auto b2_linearSlop = float32{0.00005f}; // float32{0.005f};
+constexpr auto b2_linearSlop = b2Float(0.00005); // b2Float(0.005);
 
 /// This is used to fatten AABBs in the dynamic tree. This allows proxies
 /// to move by a small amount without triggering a tree adjustment.
 /// This is in meters.
-constexpr auto b2_aabbExtension = b2_linearSlop * 20.0f; // float32{0.001f}; // float32{0.1f};
+constexpr auto b2_aabbExtension = b2_linearSlop * b2Float(20); // b2Float(0.001); // b2Float(0.1);
 
 /// A small angle used as a collision and constraint tolerance. Usually it is
 /// chosen to be numerically significant, but visually insignificant.
-constexpr auto b2_angularSlop = float32{b2_pi * 2.0f / 180.0f};
+constexpr auto b2_angularSlop = b2_pi * b2Float(2) / b2Float(180);
 
 /// The radius of the polygon/edge shape skin. This should not be modified. Making
 /// this smaller means polygons will have an insufficient buffer for continuous collision.
 /// Making it larger may create artifacts for vertex collision.
-constexpr auto b2_polygonRadius = float32{2.0f * b2_linearSlop};
+constexpr auto b2_polygonRadius = b2_linearSlop * b2Float(2);
 
 /// Maximum number of sub-steps per contact in continuous physics simulation.
 constexpr auto b2_maxSubSteps = unsigned{8}; // often hit but no apparent help against tunneling
@@ -93,43 +95,43 @@ constexpr auto b2_maxTOIContacts = unsigned{32};
 
 /// A velocity threshold for elastic collisions. Any collision with a relative linear
 /// velocity below this threshold will be treated as inelastic.
-constexpr auto b2_velocityThreshold = float32{0.8f}; // float32{1.0f};
+constexpr auto b2_velocityThreshold = b2Float(0.8); // b2Float(1);
 
 /// The maximum linear position correction used when solving constraints. This helps to
 /// prevent overshoot.
-constexpr auto b2_maxLinearCorrection = b2_linearSlop * 40.0f; // float32{0.2f};
+constexpr auto b2_maxLinearCorrection = b2_linearSlop * b2Float(40); // b2Float(0.2);
 
 /// The maximum angular position correction used when solving constraints. This helps to
 /// prevent overshoot.
-constexpr auto b2_maxAngularCorrection = float32{8.0f / 180.0f * b2_pi};
+constexpr auto b2_maxAngularCorrection = b2_pi * b2Float(8) / b2Float(180);
 
 /// The maximum linear velocity of a body. This limit is very large and is used
 /// to prevent numerical problems. You shouldn't need to adjust this.
-constexpr auto b2_maxTranslation = float32{2.0f};
-constexpr auto b2_maxTranslationSquared = float32{b2_maxTranslation * b2_maxTranslation};
+constexpr auto b2_maxTranslation = b2Float(2);
+constexpr auto b2_maxTranslationSquared = b2_maxTranslation * b2_maxTranslation;
 
 /// The maximum angular velocity of a body. This limit is very large and is used
 /// to prevent numerical problems. You shouldn't need to adjust this.
-constexpr auto b2_maxRotation = float32{0.5f * b2_pi};
-constexpr auto b2_maxRotationSquared = float32{b2_maxRotation * b2_maxRotation};
+constexpr auto b2_maxRotation = b2_pi / b2Float(2);
+constexpr auto b2_maxRotationSquared = b2_maxRotation * b2_maxRotation;
 
 /// This scale factor controls how fast overlap is resolved. Ideally this would be 1 so
 /// that overlap is removed in one time step. However using values close to 1 often lead
 /// to overshoot.
-constexpr auto b2_baumgarte = float32{0.2f}; // float32{0.6f};
-constexpr auto b2_toiBaugarte = float32{0.75f};
+constexpr auto b2_baumgarte = b2Float(0.2); // b2Float(0.6);
+constexpr auto b2_toiBaugarte = b2Float(0.75);
 
 
 // Sleep
 
 /// The time that a body must be still before it will go to sleep.
-constexpr auto b2_timeToSleep = float32{0.5f};
+constexpr auto b2_timeToSleep = b2Float(0.5);
 
 /// A body cannot sleep if its linear velocity is above this tolerance.
-constexpr auto b2_linearSleepTolerance = float32{0.01f};
+constexpr auto b2_linearSleepTolerance = b2Float(0.01);
 
 /// A body cannot sleep if its angular velocity is above this tolerance.
-constexpr auto b2_angularSleepTolerance = float32{2.0f / 180.0f * b2_pi};
+constexpr auto b2_angularSleepTolerance = b2_pi * b2Float(2) / b2Float(180);
 
 // Memory Allocation
 

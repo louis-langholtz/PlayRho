@@ -33,11 +33,11 @@ struct b2VelocityConstraintPoint
 {
 	b2Vec2 rA;
 	b2Vec2 rB;
-	float32 normalImpulse;
-	float32 tangentImpulse;
-	float32 normalMass;
-	float32 tangentMass;
-	float32 velocityBias;
+	b2Float normalImpulse;
+	b2Float tangentImpulse;
+	b2Float normalMass;
+	b2Float tangentMass;
+	b2Float velocityBias;
 };
 
 struct b2ContactVelocityConstraintBodyData
@@ -45,8 +45,8 @@ struct b2ContactVelocityConstraintBodyData
 	using index_t = b2_size_t;
 
 	index_t index; // index of body within island
-	float32 invMass;
-	float32 invI;
+	b2Float invMass;
+	b2Float invI;
 };
 
 class b2ContactVelocityConstraint
@@ -89,9 +89,9 @@ public:
 	b2Mat22 K;
 	b2ContactVelocityConstraintBodyData bodyA;
 	b2ContactVelocityConstraintBodyData bodyB;
-	float32 friction;
-	float32 restitution;
-	float32 tangentSpeed;
+	b2Float friction;
+	b2Float restitution;
+	b2Float tangentSpeed;
 	index_type contactIndex;
 
 private:

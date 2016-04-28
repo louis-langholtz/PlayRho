@@ -47,7 +47,7 @@ public:
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
-		float32 xs[5] = {0.0f, -10.0f, -5.0f, 5.0f, 10.0f};
+		b2Float xs[5] = {0.0f, -10.0f, -5.0f, 5.0f, 10.0f};
 
 		for (int32 j = 0; j < e_columnCount; ++j)
 		{
@@ -69,9 +69,9 @@ public:
 				m_indices[n] = n;
 				bd.userData = m_indices + n;
 
-				float32 x = 0.0f;
-				//float32 x = RandomFloat(-0.02f, 0.02f);
-				//float32 x = i % 2 == 0 ? -0.01f : 0.01f;
+				b2Float x = 0.0f;
+				//b2Float x = RandomFloat(-0.02f, 0.02f);
+				//b2Float x = i % 2 == 0 ? -0.01f : 0.01f;
 				bd.position.Set(xs[j] + x, 0.55f + 1.1f * i);
 				b2Body* body = m_world->CreateBody(&bd);
 

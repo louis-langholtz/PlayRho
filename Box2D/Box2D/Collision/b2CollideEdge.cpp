@@ -114,7 +114,7 @@ void b2CollideShapes(b2Manifold* manifold,
 	// Region AB
 	const auto den = b2Dot(e, e);
 	b2Assert(den > 0);
-	const auto P = (1.0f / den) * (u * A + v * B);
+	const auto P = (b2Float(1) / den) * (u * A + v * B);
 	const auto d = Q - P;
 	const auto dd = b2Dot(d, d);
 	if (dd > b2Square(totalRadius))
@@ -148,11 +148,11 @@ struct b2EPAxis
 
 	b2EPAxis() = default;
 
-	constexpr b2EPAxis(Type t, index_t i, float32 s) noexcept: type(t), index(i), separation(s) {}
+	constexpr b2EPAxis(Type t, index_t i, b2Float s) noexcept: type(t), index(i), separation(s) {}
 
 	Type type;
 	index_t index;
-	float32 separation;
+	b2Float separation;
 };
 
 // This holds polygon B expressed in frame A.
@@ -201,10 +201,10 @@ struct b2ReferenceFace
 	b2Vec2 normal;
 	
 	b2Vec2 sideNormal1;
-	float32 sideOffset1;
+	b2Float sideOffset1;
 	
 	b2Vec2 sideNormal2;
-	float32 sideOffset2;
+	b2Float sideOffset2;
 };
 
 // This class collides an edge and a polygon, taking into account edge adjacency.
@@ -226,7 +226,7 @@ private:
 	b2EPAxis ComputeEdgeSeparation() const;
 	b2EPAxis ComputePolygonSeparation() const;
 
-	static constexpr float32 MaxSeparation = b2_polygonRadius * 2;
+	static constexpr b2Float MaxSeparation = b2_polygonRadius * 2;
 
 	b2TempPolygon m_shapeB;
 	
@@ -268,8 +268,8 @@ void b2EPCollider::Collide(b2Manifold* manifold,
 	const auto edge1 = b2Normalize(m_v2 - m_v1);
 	m_normal1 = b2Vec2(edge1.y, -edge1.x);
 	auto offset1 = b2Dot(m_normal1, m_centroidB - m_v1);
-	auto offset0 = float32{0};
-	auto offset2 = float32{0};
+	auto offset0 = b2Float{0};
+	auto offset2 = b2Float{0};
 	auto convex1 = false;
 	auto convex2 = false;
 	
@@ -278,7 +278,7 @@ void b2EPCollider::Collide(b2Manifold* manifold,
 	{
 		const auto edge0 = b2Normalize(m_v1 - m_v0);
 		m_normal0 = b2Vec2(edge0.y, -edge0.x);
-		convex1 = b2Cross(edge0, edge1) >= 0.0f;
+		convex1 = b2Cross(edge0, edge1) >= b2Float{0};
 		offset0 = b2Dot(m_normal0, m_centroidB - m_v0);
 	}
 	
@@ -287,7 +287,7 @@ void b2EPCollider::Collide(b2Manifold* manifold,
 	{
 		const auto edge2 = b2Normalize(m_v3 - m_v2);
 		m_normal2 = b2Vec2(edge2.y, -edge2.x);
-		convex2 = b2Cross(edge1, edge2) > 0.0f;
+		convex2 = b2Cross(edge1, edge2) > b2Float{0};
 		offset2 = b2Dot(m_normal2, m_centroidB - m_v2);
 	}
 	

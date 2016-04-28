@@ -82,8 +82,8 @@ constexpr bool operator==(const b2ContactFeature& lhs, const b2ContactFeature& r
 struct b2ManifoldPoint
 {
 	b2Vec2 localPoint;		///< usage depends on manifold type
-	float32 normalImpulse;	///< the non-penetration impulse
-	float32 tangentImpulse;	///< the friction impulse
+	b2Float normalImpulse;	///< the non-penetration impulse
+	b2Float tangentImpulse;	///< the friction impulse
 	b2ContactFeature cf;    ///< uniquely identifies a contact point between two shapes
 };
 
@@ -178,8 +178,8 @@ public:
 	/// point count, impulses, etc. The radii must come from the shapes
 	/// that generated the manifold.
 	void Assign(const b2Manifold& manifold,
-					const b2Transform& xfA, float32 radiusA,
-					const b2Transform& xfB, float32 radiusB);
+					const b2Transform& xfA, b2Float radiusA,
+					const b2Transform& xfB, b2Float radiusB);
 
 	size_type GetPointCount() const noexcept { return pointCount; }
 
@@ -191,7 +191,7 @@ public:
 		return points[index];
 	}
 
-	float32 GetSeparation(size_type index) const
+	b2Float GetSeparation(size_type index) const
 	{
 		b2Assert(index < b2_maxManifoldPoints);
 		return separations[index];
@@ -201,7 +201,7 @@ private:
 	b2Vec2 normal;								///< world vector pointing from A to B
 	size_type pointCount = 0;
 	b2Vec2 points[b2_maxManifoldPoints];		///< world contact point (point of intersection)
-	float32 separations[b2_maxManifoldPoints];	///< a negative value indicates overlap, in meters
+	b2Float separations[b2_maxManifoldPoints];	///< a negative value indicates overlap, in meters
 };
 
 /// This is used for determining the state of contact points.
@@ -230,7 +230,7 @@ struct b2ClipVertex
 struct b2RayCastInput
 {
 	b2Vec2 p1, p2;
-	float32 maxFraction;
+	b2Float maxFraction;
 };
 
 /// Ray-cast output data. The ray hits at p1 + fraction * (p2 - p1), where p1 and p2
@@ -238,7 +238,7 @@ struct b2RayCastInput
 struct b2RayCastOutput
 {
 	b2Vec2 normal;
-	float32 fraction;
+	b2Float fraction;
 };
 
 /// An axis aligned bounding box.
@@ -252,28 +252,28 @@ struct b2AABB
 	inline bool IsValid() const
 	{
 		const auto d = upperBound - lowerBound;
-		const auto valid = (d.x >= 0.0f) && (d.y >= 0.0f);
+		const auto valid = (d.x >= b2Float{0}) && (d.y >= b2Float{0});
 		return valid && lowerBound.IsValid() && upperBound.IsValid();
 	}
 
 	/// Get the center of the AABB.
 	constexpr b2Vec2 GetCenter() const noexcept
 	{
-		return 0.5f * (lowerBound + upperBound);
+		return (lowerBound + upperBound) / b2Float(2);
 	}
 
 	/// Get the extents of the AABB (half-widths).
 	constexpr b2Vec2 GetExtents() const noexcept
 	{
-		return 0.5f * (upperBound - lowerBound);
+		return (upperBound - lowerBound) / b2Float(2);
 	}
 
 	/// Get the perimeter length
-	constexpr float32 GetPerimeter() const noexcept
+	constexpr b2Float GetPerimeter() const noexcept
 	{
 		const auto wx = upperBound.x - lowerBound.x;
 		const auto wy = upperBound.y - lowerBound.y;
-		return 2.0f * (wx + wy);
+		return b2Float(2) * (wx + wy);
 	}
 
 	/// Combine an AABB into this one.
@@ -337,7 +337,7 @@ void b2CollideShapes(b2Manifold* manifold,
 /// Clipping for contact manifolds.
 using b2ClipArray = std::array<b2ClipVertex, b2_maxManifoldPoints>;
 b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray& vIn,
-										   const b2Vec2& normal, float32 offset, b2ContactFeature::index_t vertexIndexA);
+										   const b2Vec2& normal, b2Float offset, b2ContactFeature::index_t vertexIndexA);
 
 /// Determine if two generic shapes overlap.
 bool b2TestOverlap(const b2Shape& shapeA, child_count_t indexA,
@@ -349,11 +349,11 @@ bool b2TestOverlap(const b2Shape& shapeA, child_count_t indexA,
 inline bool b2TestOverlap(const b2AABB& a, const b2AABB& b) noexcept
 {
 	const auto d1 = b.lowerBound - a.upperBound;
-	if ((d1.x > 0.0f) || (d1.y > 0.0f))
+	if ((d1.x > b2Float{0}) || (d1.y > b2Float{0}))
 		return false;
 
 	const auto d2 = a.lowerBound - b.upperBound;
-	if ((d2.x > 0.0f) || (d2.y > 0.0f))
+	if ((d2.x > b2Float{0}) || (d2.y > b2Float{0}))
 		return false;
 
 	return true;

@@ -40,18 +40,18 @@ typedef Test* TestCreateFcn();
 #define DRAW_STRING_NEW_LINE 16
 
 /// Random number in range [-1,1]
-inline float32 RandomFloat()
+inline b2Float RandomFloat()
 {
-	float32 r = (float32)(std::rand() & (RAND_LIMIT));
+	b2Float r = (b2Float)(std::rand() & (RAND_LIMIT));
 	r /= RAND_LIMIT;
 	r = 2.0f * r - 1.0f;
 	return r;
 }
 
 /// Random floating point number in range [lo, hi]
-inline float32 RandomFloat(float32 lo, float32 hi)
+inline b2Float RandomFloat(b2Float lo, b2Float hi)
 {
-	float32 r = (float32)(std::rand() & (RAND_LIMIT));
+	b2Float r = (b2Float)(std::rand() & (RAND_LIMIT));
 	r /= RAND_LIMIT;
 	r = (hi - lo) * r + lo;
 	return r;
@@ -83,7 +83,7 @@ struct Settings
 		singleStep = false;
 	}
 
-	float32 hz;
+	b2Float hz;
 	int32 velocityIterations;
 	int32 positionIterations;
 	bool drawShapes;
@@ -132,9 +132,9 @@ struct ContactPoint
 	b2Vec2 normal;
 	b2Vec2 position;
 	b2PointState state;
-	float32 normalImpulse;
-	float32 tangentImpulse;
-	float32 separation;
+	b2Float normalImpulse;
+	b2Float tangentImpulse;
+	b2Float separation;
 };
 
 class Test : public b2ContactListener

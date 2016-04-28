@@ -69,10 +69,10 @@ public:
 
 	count_t GetCount() const noexcept { return count; }
 
-	float32 GetEntryNormal(count_t index) const noexcept { return normalImpulses[index]; }
-	float32 GetEntryTanget(count_t index) const noexcept { return tangentImpulses[index]; }
+	b2Float GetEntryNormal(count_t index) const noexcept { return normalImpulses[index]; }
+	b2Float GetEntryTanget(count_t index) const noexcept { return tangentImpulses[index]; }
 	
-	void AddEntry(float32 normal, float32 tangent) noexcept
+	void AddEntry(b2Float normal, b2Float tangent) noexcept
 	{
 		b2Assert(count < b2_maxManifoldPoints);
 		normalImpulses[count] = normal;
@@ -81,8 +81,8 @@ public:
 	}
 
 private:
-	float32 normalImpulses[b2_maxManifoldPoints];
-	float32 tangentImpulses[b2_maxManifoldPoints];
+	b2Float normalImpulses[b2_maxManifoldPoints];
+	b2Float tangentImpulses[b2_maxManifoldPoints];
 	count_t count = 0;
 };
 
@@ -165,8 +165,8 @@ public:
 	/// @param normal the normal vector at the point of intersection
 	/// @return -1 to filter, 0 to terminate, fraction to clip the ray for
 	/// closest hit, 1 to continue
-	virtual float32 ReportFixture(	b2Fixture* fixture, const b2Vec2& point,
-									const b2Vec2& normal, float32 fraction) = 0;
+	virtual b2Float ReportFixture(	b2Fixture* fixture, const b2Vec2& point,
+									const b2Vec2& normal, b2Float fraction) = 0;
 };
 
 #endif

@@ -36,14 +36,14 @@ class b2ContactListener;
 
 /// Friction mixing law. The idea is to allow either fixture to drive the restitution to zero.
 /// For example, anything slides on ice.
-inline float32 b2MixFriction(float32 friction1, float32 friction2)
+inline b2Float b2MixFriction(b2Float friction1, b2Float friction2)
 {
 	return b2Sqrt(friction1 * friction2);
 }
 
 /// Restitution mixing law. The idea is allow for anything to bounce off an inelastic surface.
 /// For example, a superball bounces on anything.
-inline float32 b2MixRestitution(float32 restitution1, float32 restitution2) noexcept
+inline b2Float b2MixRestitution(b2Float restitution1, b2Float restitution2) noexcept
 {
 	return (restitution1 > restitution2) ? restitution1 : restitution2;
 }
@@ -110,29 +110,29 @@ public:
 
 	/// Override the default friction mixture. You can call this in b2ContactListener::PreSolve.
 	/// This value persists until set or reset.
-	void SetFriction(float32 friction) noexcept;
+	void SetFriction(b2Float friction) noexcept;
 
 	/// Get the friction.
-	float32 GetFriction() const noexcept;
+	b2Float GetFriction() const noexcept;
 
 	/// Reset the friction mixture to the default value.
 	void ResetFriction();
 
 	/// Override the default restitution mixture. You can call this in b2ContactListener::PreSolve.
 	/// The value persists until you set or reset.
-	void SetRestitution(float32 restitution) noexcept;
+	void SetRestitution(b2Float restitution) noexcept;
 
 	/// Get the restitution.
-	float32 GetRestitution() const noexcept;
+	b2Float GetRestitution() const noexcept;
 
 	/// Reset the restitution to the default value.
 	void ResetRestitution() noexcept;
 
 	/// Set the desired tangent speed for a conveyor belt behavior. In meters per second.
-	void SetTangentSpeed(float32 speed) noexcept;
+	void SetTangentSpeed(b2Float speed) noexcept;
 
 	/// Get the desired tangent speed. In meters per second.
-	float32 GetTangentSpeed() const noexcept;
+	b2Float GetTangentSpeed() const noexcept;
 
 	/// Evaluate this contact with your own manifold and transforms.
 	virtual void Evaluate(b2Manifold* manifold, const b2Transform& xfA, const b2Transform& xfB) = 0;
@@ -183,8 +183,8 @@ protected:
 	void Update(b2ContactListener* listener);
 
 	bool HasValidToi() const noexcept;
-	float32 GetToi() const;
-	void SetToi(float32 toi) noexcept;
+	b2Float GetToi() const;
+	void SetToi(b2Float toi) noexcept;
 	void UnsetToi() noexcept;
 
 	bool IsInIsland() const noexcept;
@@ -207,16 +207,16 @@ protected:
 	child_count_t m_indexA = 0;
 	child_count_t m_indexB = 0;
 
-	float32 m_tangentSpeed = 0.0f;
+	b2Float m_tangentSpeed = b2Float{0};
 
 	b2Manifold m_manifold;
 
 	std::remove_cv<decltype(b2_maxSubSteps)>::type m_toiCount = 0;
-	float32 m_toi; // only valid if m_flags & e_toiFlag
+	b2Float m_toi; // only valid if m_flags & e_toiFlag
 
 	// initialized on construction (construction-time depedent)
-	float32 m_friction;
-	float32 m_restitution;
+	b2Float m_friction;
+	b2Float m_restitution;
 
 };
 
@@ -323,12 +323,12 @@ inline bool b2Contact::NeedsFiltering() const noexcept
 	return m_flags & b2Contact::e_filterFlag;
 }
 
-inline void b2Contact::SetFriction(float32 friction) noexcept
+inline void b2Contact::SetFriction(b2Float friction) noexcept
 {
 	m_friction = friction;
 }
 
-inline float32 b2Contact::GetFriction() const noexcept
+inline b2Float b2Contact::GetFriction() const noexcept
 {
 	return m_friction;
 }
@@ -338,12 +338,12 @@ inline void b2Contact::ResetFriction()
 	m_friction = b2MixFriction(m_fixtureA->GetFriction(), m_fixtureB->GetFriction());
 }
 
-inline void b2Contact::SetRestitution(float32 restitution) noexcept
+inline void b2Contact::SetRestitution(b2Float restitution) noexcept
 {
 	m_restitution = restitution;
 }
 
-inline float32 b2Contact::GetRestitution() const noexcept
+inline b2Float b2Contact::GetRestitution() const noexcept
 {
 	return m_restitution;
 }
@@ -353,12 +353,12 @@ inline void b2Contact::ResetRestitution() noexcept
 	m_restitution = b2MixRestitution(m_fixtureA->GetRestitution(), m_fixtureB->GetRestitution());
 }
 
-inline void b2Contact::SetTangentSpeed(float32 speed) noexcept
+inline void b2Contact::SetTangentSpeed(b2Float speed) noexcept
 {
 	m_tangentSpeed = speed;
 }
 
-inline float32 b2Contact::GetTangentSpeed() const noexcept
+inline b2Float b2Contact::GetTangentSpeed() const noexcept
 {
 	return m_tangentSpeed;
 }
@@ -368,13 +368,13 @@ inline bool b2Contact::HasValidToi() const noexcept
 	return m_flags & b2Contact::e_toiFlag;
 }
 
-inline float32 b2Contact::GetToi() const
+inline b2Float b2Contact::GetToi() const
 {
 	b2Assert(HasValidToi());
 	return m_toi;
 }
 
-inline void b2Contact::SetToi(float32 toi) noexcept
+inline void b2Contact::SetToi(b2Float toi) noexcept
 {
 	m_toi = toi;
 	m_flags |= b2Contact::e_toiFlag;

@@ -47,7 +47,7 @@ public:
 
 			for (int i = 0; i < 10; ++i)
 			{
-				float32 x = RandomFloat(-0.1f, 0.1f);
+				b2Float x = RandomFloat(-0.1f, 0.1f);
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
 				bd.position.Set(x + 5.0f, 1.05f + 2.5f * i);
@@ -67,7 +67,7 @@ public:
 
 			for (int i = 0; i < 10; ++i)
 			{
-				float32 x = RandomFloat(-0.1f, 0.1f);
+				b2Float x = RandomFloat(-0.1f, 0.1f);
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
 				bd.position.Set(x - 5.0f, 1.05f + 2.5f * i);
@@ -103,7 +103,7 @@ public:
 
 			for (int32 i = 0; i < 10; ++i)
 			{
-				float32 x = RandomFloat(-0.1f, 0.1f);
+				b2Float x = RandomFloat(-0.1f, 0.1f);
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
 				bd.position.Set(x, 2.05f + 2.5f * i);

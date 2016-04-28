@@ -25,14 +25,14 @@
 // forward declarations
 struct b2Vec2;
 struct b2Vec3;
-constexpr inline float32 b2Dot(const b2Vec2& a, const b2Vec2& b) noexcept;
-constexpr inline float32 b2Dot(const b2Vec3& a, const b2Vec3& b) noexcept;
-constexpr inline float32 b2Cross(const b2Vec2& a, const b2Vec2& b) noexcept;
-constexpr inline b2Vec2 b2Cross(const b2Vec2& a, float32 s) noexcept;
+constexpr inline b2Float b2Dot(const b2Vec2& a, const b2Vec2& b) noexcept;
+constexpr inline b2Float b2Dot(const b2Vec3& a, const b2Vec3& b) noexcept;
+constexpr inline b2Float b2Cross(const b2Vec2& a, const b2Vec2& b) noexcept;
+constexpr inline b2Vec2 b2Cross(const b2Vec2& a, b2Float s) noexcept;
 constexpr inline b2Vec3 b2Cross(const b2Vec3& a, const b2Vec3& b) noexcept;
 
 /// This function is used to ensure that a floating point number is not a NaN or infinity.
-inline bool b2IsValid(float32 x)
+inline bool b2IsValid(b2Float x)
 {
 	return !std::isnan(x) && !std::isinf(x);
 }
@@ -40,8 +40,8 @@ inline bool b2IsValid(float32 x)
 template<class T>
 constexpr inline auto b2Square(T t) { return t * t; }
 
-#define	b2Sqrt(x)	std::sqrtf(x)
-#define	b2Atan2(y, x)	std::atan2f(y, x)
+#define	b2Sqrt(x)	std::sqrt(x)
+#define	b2Atan2(y, x)	std::atan2(y, x)
 
 /// A 2D column vector.
 struct b2Vec2
@@ -52,25 +52,25 @@ struct b2Vec2
 	b2Vec2(const b2Vec2& copy) = default;
 
 	/// Construct using coordinates.
-	constexpr b2Vec2(float32 x_, float32 y_) noexcept : x(x_), y(y_) {}
+	constexpr b2Vec2(b2Float x_, b2Float y_) noexcept : x(x_), y(y_) {}
 
 	/// Set this vector to all zeros.
-	constexpr void SetZero() noexcept { x = 0.0f; y = 0.0f; };
+	constexpr void SetZero() noexcept { x = b2Float{0}; y = b2Float{0}; };
 
 	/// Set this vector to some specified coordinates.
-	constexpr void Set(float32 x_, float32 y_) noexcept { x = x_; y = y_; }
+	constexpr void Set(b2Float x_, b2Float y_) noexcept { x = x_; y = y_; }
 
 	/// Negate this vector.
-	constexpr b2Vec2 operator -() const noexcept { return {-x, -y}; }
+	constexpr b2Vec2 operator -() const noexcept { return b2Vec2{-x, -y}; }
 	
 	/// Read from and indexed element.
-	float32 operator () (int32 i) const
+	b2Float operator () (int32 i) const
 	{
 		return (&x)[i];
 	}
 
 	/// Write to an indexed element.
-	float32& operator () (int32 i)
+	b2Float& operator () (int32 i)
 	{
 		return (&x)[i];
 	}
@@ -88,33 +88,33 @@ struct b2Vec2
 	}
 
 	/// Multiply this vector by a scalar.
-	constexpr void operator *= (float32 a) noexcept
+	constexpr void operator *= (b2Float a) noexcept
 	{
 		x *= a; y *= a;
 	}
 
 	/// Get the length of this vector (the norm).
-	float32 Length() const
+	b2Float Length() const
 	{
 		return b2Sqrt(b2Square(x) + b2Square(y));
 	}
 
 	/// Get the length squared. For performance, use this instead of
 	/// b2Vec2::Length (if possible).
-	constexpr float32 LengthSquared() const noexcept
+	constexpr b2Float LengthSquared() const noexcept
 	{
 		return b2Square(x) + b2Square(y);
 	}
 
 	/// Convert this vector into a unit vector. Returns the length.
-	float32 Normalize()
+	b2Float Normalize()
 	{
 		const auto length = Length();
 		if (length < b2_epsilon)
 		{
-			return 0.0f;
+			return b2Float{0};
 		}
-		const auto invLength = 1.0f / length;
+		const auto invLength = b2Float(1) / length;
 		x *= invLength;
 		y *= invLength;
 
@@ -133,11 +133,11 @@ struct b2Vec2
 		return b2Vec2(-y, x);
 	}
 
-	float32 x, y;
+	b2Float x, y;
 };
 
 /// Useful constant
-constexpr auto b2Vec2_zero = b2Vec2{0.0f, 0.0f};
+constexpr auto b2Vec2_zero = b2Vec2{0, 0};
 
 /// A 2D column vector with 3 elements.
 struct b2Vec3
@@ -146,16 +146,16 @@ struct b2Vec3
 	b2Vec3() = default;
 
 	/// Construct using coordinates.
-	constexpr b2Vec3(float32 x_, float32 y_, float32 z_) noexcept : x(x_), y(y_), z(z_) {}
+	constexpr b2Vec3(b2Float x_, b2Float y_, b2Float z_) noexcept : x(x_), y(y_), z(z_) {}
 
 	/// Set this vector to all zeros.
-	constexpr void SetZero() noexcept { x = 0.0f; y = 0.0f; z = 0.0f; }
+	constexpr void SetZero() noexcept { x = b2Float{0}; y = b2Float{0}; z = b2Float{0}; }
 
 	/// Set this vector to some specified coordinates.
-	constexpr void Set(float32 x_, float32 y_, float32 z_) noexcept { x = x_; y = y_; z = z_; }
+	constexpr void Set(b2Float x_, b2Float y_, b2Float z_) noexcept { x = x_; y = y_; z = z_; }
 
 	/// Negate this vector.
-	constexpr b2Vec3 operator -() const noexcept { return {-x, -y, -z}; }
+	constexpr b2Vec3 operator -() const noexcept { return b2Vec3{-x, -y, -z}; }
 
 	/// Add a vector to this vector.
 	constexpr void operator += (const b2Vec3& v) noexcept
@@ -170,12 +170,12 @@ struct b2Vec3
 	}
 
 	/// Multiply this vector by a scalar.
-	constexpr void operator *= (float32 s) noexcept
+	constexpr void operator *= (b2Float s) noexcept
 	{
 		x *= s; y *= s; z *= s;
 	}
 
-	float32 x, y, z;
+	b2Float x, y, z;
 };
 
 /// A 2-by-2 matrix. Stored in column-major order.
@@ -188,7 +188,7 @@ struct b2Mat22
 	constexpr b2Mat22(const b2Vec2& c1, const b2Vec2& c2) noexcept: ex(c1), ey(c2) {}
 
 	/// Construct this matrix using scalars.
-	constexpr b2Mat22(float32 a11, float32 a12, float32 a21, float32 a22) noexcept: ex(a11, a21), ey(a12, a22) {}
+	constexpr b2Mat22(b2Float a11, b2Float a12, b2Float a21, b2Float a22) noexcept: ex(a11, a21), ey(a12, a22) {}
 
 	/// Initialize this matrix using columns.
 	constexpr void Set(const b2Vec2& c1, const b2Vec2& c2) noexcept
@@ -200,8 +200,8 @@ struct b2Mat22
 	/// Set this to the identity matrix.
 	constexpr void SetIdentity() noexcept
 	{
-		ex.x = 1.0f; ey.x = 0.0f;
-		ex.y = 0.0f; ey.y = 1.0f;
+		ex.x = b2Float(1); ey.x = b2Float{0};
+		ex.y = b2Float{0}; ey.y = b2Float(1);
 	}
 
 	/// Set this matrix to all zeros.
@@ -215,9 +215,9 @@ struct b2Mat22
 	{
 		const auto a = ex.x, b = ey.x, c = ex.y, d = ey.y;
 		auto det = a * d - b * c;
-		if (det != 0.0f)
+		if (det != b2Float{0})
 		{
-			det = 1.0f / det;
+			det = b2Float(1) / det;
 		}
 		return b2Mat22(b2Vec2(det * d, -det * c), b2Vec2(-det * b, det * a));
 	}
@@ -228,9 +228,9 @@ struct b2Mat22
 	{
 		const auto a11 = ex.x, a12 = ey.x, a21 = ex.y, a22 = ey.y;
 		auto det = a11 * a22 - a12 * a21;
-		if (det != 0.0f)
+		if (det != b2Float{0})
 		{
-			det = 1.0f / det;
+			det = b2Float(1) / det;
 		}
 		return b2Vec2(det * (a22 * b.x - a12 * b.y), det * (a11 * b.y - a21 * b.x));
 	}
@@ -263,9 +263,9 @@ struct b2Mat33
 	constexpr b2Vec3 Solve33(const b2Vec3& b) const
 	{
 		auto det = b2Dot(ex, b2Cross(ey, ez));
-		if (det != 0.0f)
+		if (det != b2Float{0})
 		{
-			det = 1.0f / det;
+			det = b2Float(1) / det;
 		}
 		return b2Vec3(det * b2Dot(b, b2Cross(ey, ez)), det * b2Dot(ex, b2Cross(b, ez)), det * b2Dot(ex, b2Cross(ey, b)));
 	}
@@ -277,9 +277,9 @@ struct b2Mat33
 	{
 		const auto a11 = ex.x, a12 = ey.x, a21 = ex.y, a22 = ey.y;
 		auto det = a11 * a22 - a12 * a21;
-		if (det != 0.0f)
+		if (det != b2Float{0})
 		{
-			det = 1.0f / det;
+			det = b2Float(1) / det;
 		}
 		return b2Vec2(det * (a22 * b.x - a12 * b.y), det * (a11 * b.y - a21 * b.x));
 	}
@@ -302,24 +302,24 @@ struct b2Rot
 	b2Rot(const b2Rot& copy) = default;
 
 	/// Initialize from an angle in radians
-	explicit b2Rot(float32 angle)
+	explicit b2Rot(b2Float angle)
 	{
 		/// TODO_ERIN optimize
-		s = std::sinf(angle);
-		c = std::cosf(angle);
+		s = std::sin(angle);
+		c = std::cos(angle);
 	}
 	
-	constexpr explicit b2Rot(float32 sine, float32 cosine) noexcept: s(sine), c(cosine) {}
+	constexpr explicit b2Rot(b2Float sine, b2Float cosine) noexcept: s(sine), c(cosine) {}
 
 	/// Set to the identity rotation
 	constexpr void SetIdentity() noexcept
 	{
-		s = 0.0f;
-		c = 1.0f;
+		s = b2Float{0};
+		c = b2Float(1);
 	}
 
 	/// Get the angle in radians
-	float32 GetAngle() const
+	b2Float GetAngle() const
 	{
 		return b2Atan2(s, c);
 	}
@@ -337,7 +337,7 @@ struct b2Rot
 	}
 
 	/// Sine and cosine
-	float32 s, c;
+	b2Float s, c;
 };
 
 /// A transform contains translation and rotation. It is used to represent
@@ -358,7 +358,7 @@ struct b2Transform
 	}
 
 	/// Set this based on the position and angle.
-	void Set(const b2Vec2& position, float32 angle)
+	void Set(const b2Vec2& position, b2Float angle)
 	{
 		p = position;
 		q = b2Rot(angle);
@@ -376,46 +376,46 @@ struct b2Sweep
 {
 	/// Get the interpolated transform at a specific time.
 	/// @param beta is a factor in [0,1], where 0 indicates alpha0.
-	b2Transform GetTransform(float32 beta) const;
+	b2Transform GetTransform(b2Float beta) const;
 
 	/// Advance the sweep forward, yielding a new initial state.
 	/// @param alpha the new initial time.
-	void Advance(float32 alpha);
+	void Advance(b2Float alpha);
 
 	/// Normalize the angles.
 	void Normalize();
 
 	b2Vec2 localCenter;	///< local center of mass position
 	b2Vec2 c0, c;		///< center world positions
-	float32 a0, a;		///< world angles
+	b2Float a0, a;		///< world angles
 
 	/// Fraction of the current time step in the range [0,1]
 	/// c0 and a0 are the positions at alpha0.
-	float32 alpha0;
+	b2Float alpha0;
 };
 
 /// Perform the dot product on two vectors.
-constexpr inline float32 b2Dot(const b2Vec2& a, const b2Vec2& b) noexcept
+constexpr inline b2Float b2Dot(const b2Vec2& a, const b2Vec2& b) noexcept
 {
 	return a.x * b.x + a.y * b.y;
 }
 
 /// Perform the cross product on two vectors. In 2D this produces a scalar.
-constexpr inline float32 b2Cross(const b2Vec2& a, const b2Vec2& b) noexcept
+constexpr inline b2Float b2Cross(const b2Vec2& a, const b2Vec2& b) noexcept
 {
 	return a.x * b.y - a.y * b.x;
 }
 
 /// Perform the cross product on a vector and a scalar. In 2D this produces
 /// a vector.
-constexpr inline b2Vec2 b2Cross(const b2Vec2& a, float32 s) noexcept
+constexpr inline b2Vec2 b2Cross(const b2Vec2& a, b2Float s) noexcept
 {
 	return b2Vec2(s * a.y, -s * a.x);
 }
 
 /// Perform the cross product on a scalar and a vector. In 2D this produces
 /// a vector.
-constexpr inline b2Vec2 b2Cross(float32 s, const b2Vec2& a) noexcept
+constexpr inline b2Vec2 b2Cross(b2Float s, const b2Vec2& a) noexcept
 {
 	return b2Vec2(-s * a.y, s * a.x);
 }
@@ -446,17 +446,17 @@ constexpr inline b2Vec2 operator - (const b2Vec2& a, const b2Vec2& b) noexcept
 	return b2Vec2(a.x - b.x, a.y - b.y);
 }
 
-constexpr inline b2Vec2 operator * (float32 s, const b2Vec2& a) noexcept
+constexpr inline b2Vec2 operator * (b2Float s, const b2Vec2& a) noexcept
 {
 	return b2Vec2(s * a.x, s * a.y);
 }
 
-constexpr inline b2Vec2 operator * (const b2Vec2& a, float32 s) noexcept
+constexpr inline b2Vec2 operator * (const b2Vec2& a, b2Float s) noexcept
 {
 	return b2Vec2{a.x * s, a.y * s};
 }
 
-constexpr b2Vec2 operator/ (const b2Vec2& a, float32 s) noexcept
+constexpr b2Vec2 operator/ (const b2Vec2& a, b2Float s) noexcept
 {
 	return b2Vec2{a.x / s, a.y / s};
 }
@@ -469,7 +469,7 @@ inline b2Vec2 b2Normalize(const b2Vec2& value)
 	{
 		return value;
 	}
-	const auto invLength = 1.0f / length;
+	const auto invLength = b2Float(1) / length;
 	return value * invLength;
 }
 
@@ -483,19 +483,19 @@ constexpr inline bool operator != (const b2Vec2& a, const b2Vec2& b) noexcept
 	return (a.x != b.x) || (a.y != b.y);
 }
 
-inline float32 b2Distance(const b2Vec2& a, const b2Vec2& b)
+inline b2Float b2Distance(const b2Vec2& a, const b2Vec2& b)
 {
 	const auto c = a - b;
 	return c.Length();
 }
 
-constexpr inline float32 b2DistanceSquared(const b2Vec2& a, const b2Vec2& b) noexcept
+constexpr inline b2Float b2DistanceSquared(const b2Vec2& a, const b2Vec2& b) noexcept
 {
 	const auto c = a - b;
 	return b2Dot(c, c);
 }
 
-constexpr inline b2Vec3 operator * (float32 s, const b2Vec3& a) noexcept
+constexpr inline b2Vec3 operator * (b2Float s, const b2Vec3& a) noexcept
 {
 	return b2Vec3(s * a.x, s * a.y, s * a.z);
 }
@@ -513,7 +513,7 @@ constexpr inline b2Vec3 operator - (const b2Vec3& a, const b2Vec3& b) noexcept
 }
 
 /// Perform the dot product on two vectors.
-constexpr inline float32 b2Dot(const b2Vec3& a, const b2Vec3& b) noexcept
+constexpr inline b2Float b2Dot(const b2Vec3& a, const b2Vec3& b) noexcept
 {
 	return a.x * b.x + a.y * b.y + a.z * b.z;
 }
@@ -638,7 +638,7 @@ inline b2Mat22 b2Abs(const b2Mat22& A)
 template <typename T>
 constexpr inline T b2Min(T a, T b)
 {
-	return a < b ? a : b;
+	return (a < b) ? a : b;
 }
 
 constexpr inline b2Vec2 b2Min(const b2Vec2& a, const b2Vec2& b)
@@ -649,7 +649,7 @@ constexpr inline b2Vec2 b2Min(const b2Vec2& a, const b2Vec2& b)
 template <typename T>
 constexpr inline T b2Max(T a, T b)
 {
-	return a > b ? a : b;
+	return (a > b) ? a : b;
 }
 
 constexpr inline b2Vec2 b2Max(const b2Vec2& a, const b2Vec2& b)
@@ -696,16 +696,16 @@ constexpr inline bool b2IsPowerOfTwo(uint32 x) noexcept
 	return (x > 0) && ((x & (x - 1)) == 0);
 }
 
-inline b2Transform b2Sweep::GetTransform(float32 beta) const
+inline b2Transform b2Sweep::GetTransform(b2Float beta) const
 {
-	const auto rot = b2Rot((1.0f - beta) * a0 + beta * a);
-	return b2Transform(((1.0f - beta) * c0 + beta * c) - b2Mul(rot, localCenter), rot);
+	const auto rot = b2Rot((b2Float(1) - beta) * a0 + beta * a);
+	return b2Transform(((b2Float(1) - beta) * c0 + beta * c) - b2Mul(rot, localCenter), rot);
 }
 
-inline void b2Sweep::Advance(float32 alpha)
+inline void b2Sweep::Advance(b2Float alpha)
 {
-	b2Assert(alpha0 < 1.0f);
-	const auto beta = (alpha - alpha0) / (1.0f - alpha0);
+	b2Assert(alpha0 < b2Float(1));
+	const auto beta = (alpha - alpha0) / (b2Float(1) - alpha0);
 	c0 += beta * (c - c0);
 	a0 += beta * (a - a0);
 	alpha0 = alpha;
@@ -714,8 +714,8 @@ inline void b2Sweep::Advance(float32 alpha)
 /// Normalize an angle in radians to be between -pi and pi
 inline void b2Sweep::Normalize()
 {
-	constexpr auto twoPi = 2.0f * b2_pi;
-	const auto d =  twoPi * std::floorf(a0 / twoPi);
+	constexpr auto twoPi = b2Float{2} * b2_pi;
+	const auto d =  twoPi * std::floor(a0 / twoPi);
 	a0 -= d;
 	a -= d;
 }

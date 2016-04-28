@@ -25,9 +25,9 @@
 class b2CircleShape : public b2Shape
 {
 public:
-	constexpr b2CircleShape(): b2Shape(e_circle, 0.0f) {}
+	constexpr b2CircleShape(): b2Shape(e_circle, b2Float{0}) {}
 
-	constexpr explicit b2CircleShape(float32 radius, const b2Vec2& position) noexcept:
+	constexpr explicit b2CircleShape(b2Float radius, const b2Vec2& position) noexcept:
 		b2Shape(e_circle, radius), m_p(position) {}
 
 	b2CircleShape(const b2CircleShape&) = default;
@@ -49,7 +49,7 @@ public:
 	b2AABB ComputeAABB(const b2Transform& transform, child_count_t childIndex) const override;
 
 	/// @see b2Shape::ComputeMass
-	b2MassData ComputeMass(float32 density) const override;
+	b2MassData ComputeMass(b2Float density) const override;
 
 	b2Vec2 GetPosition() const noexcept { return m_p; }
 

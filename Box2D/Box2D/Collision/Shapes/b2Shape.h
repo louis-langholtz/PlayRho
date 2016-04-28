@@ -28,16 +28,16 @@ struct b2MassData
 {
 	b2MassData() = default;
 
-	constexpr b2MassData(float32 m, b2Vec2 c, float32 _I) noexcept: mass(m), center(c), I(_I) {}
+	constexpr b2MassData(b2Float m, b2Vec2 c, b2Float _I) noexcept: mass(m), center(c), I(_I) {}
 
 	/// The mass of the shape, usually in kilograms.
-	float32 mass;
+	b2Float mass;
 
 	/// The position of the shape's centroid relative to the shape's origin.
 	b2Vec2 center;
 
 	/// The rotational inertia of the shape about the local origin.
-	float32 I;
+	b2Float I;
 };
 
 /// A shape is used for collision detection. You can create a shape however you like.
@@ -57,7 +57,7 @@ public:
 
 	b2Shape() = delete;
 
-	constexpr explicit b2Shape(Type type, float32 radius) noexcept: m_type(type), m_radius(radius) {}
+	constexpr explicit b2Shape(Type type, b2Float radius) noexcept: m_type(type), m_radius(radius) {}
 
 	b2Shape(const b2Shape&) = default;
 
@@ -96,15 +96,15 @@ public:
 	/// The inertia tensor is computed about the local origin.
 	/// @param massData returns the mass data for this shape.
 	/// @param density the density in kilograms per meter squared.
-	virtual b2MassData ComputeMass(float32 density) const = 0;
+	virtual b2MassData ComputeMass(b2Float density) const = 0;
 
-	float32 GetRadius() const noexcept { return m_radius; }
+	b2Float GetRadius() const noexcept { return m_radius; }
 
-	void SetRadius(float32 radius) noexcept { m_radius = radius; }
+	void SetRadius(b2Float radius) noexcept { m_radius = radius; }
 
 private:
 	const Type m_type;
-	float32 m_radius;
+	b2Float m_radius;
 };
 
 #endif

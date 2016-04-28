@@ -149,7 +149,7 @@ public:
 	{
 		Test::Step(settings);
 
-		float32 ratio, value;
+		b2Float ratio, value;
 		
 		ratio = m_joint4->GetRatio();
 		value = m_joint1->GetJointAngle() + ratio * m_joint2->GetJointAngle();

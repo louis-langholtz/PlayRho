@@ -116,7 +116,7 @@ public:
 	b2Transform m_transformB;
 
 	b2Vec2 m_positionB;
-	float32 m_angleB;
+	b2Float m_angleB;
 };
 
 #endif

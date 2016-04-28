@@ -51,7 +51,7 @@ public:
 				b2CircleShape* circle = (b2CircleShape*)fixture->GetShape();
 
 				b2Vec2 center = b2Mul(xf, circle->m_p);
-				float32 radius = circle->m_radius;
+				b2Float radius = circle->m_radius;
 
 				g_debugDraw->DrawCircle(center, radius, color);
 			}
@@ -145,9 +145,9 @@ public:
 		}
 
 		{
-			float32 w = 1.0f;
-			float32 b = w / (2.0f + b2Sqrt(2.0f));
-			float32 s = b2Sqrt(2.0f) * b;
+			b2Float w = 1.0f;
+			b2Float b = w / (2.0f + b2Sqrt(2.0f));
+			b2Float s = b2Sqrt(2.0f) * b;
 
 			b2Vec2 vertices[8];
 			vertices[0].Set(0.5f * s, 0.0f);
@@ -185,7 +185,7 @@ public:
 		b2BodyDef bd;
 		bd.type = b2_dynamicBody;
 
-		float32 x = RandomFloat(-2.0f, 2.0f);
+		b2Float x = RandomFloat(-2.0f, 2.0f);
 		bd.position.Set(x, 10.0f);
 		bd.angle = RandomFloat(-b2_pi, b2_pi);
 

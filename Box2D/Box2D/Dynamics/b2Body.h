@@ -64,23 +64,23 @@ struct b2BodyDef
 	b2Vec2 position = b2Vec2_zero;
 
 	/// The world angle of the body in radians.
-	float32 angle = 0.0f;
+	b2Float angle = b2Float{0};
 
 	/// The linear velocity of the body's origin in world co-ordinates.
 	b2Vec2 linearVelocity = b2Vec2_zero;
 
 	/// The angular velocity of the body.
-	float32 angularVelocity = 0.0f;
+	b2Float angularVelocity = b2Float{0};
 
 	/// Linear damping is use to reduce the linear velocity. The damping parameter
-	/// can be larger than 1.0f but the damping effect becomes sensitive to the
+	/// can be larger than 1 but the damping effect becomes sensitive to the
 	/// time step when the damping parameter is large.
-	float32 linearDamping = 0.0f;
+	b2Float linearDamping = b2Float{0};
 
 	/// Angular damping is use to reduce the angular velocity. The damping parameter
-	/// can be larger than 1.0f but the damping effect becomes sensitive to the
+	/// can be larger than 1 but the damping effect becomes sensitive to the
 	/// time step when the damping parameter is large.
-	float32 angularDamping = 0.0f;
+	b2Float angularDamping = b2Float{0};
 
 	/// Set this flag to false if this body should never fall asleep. Note that
 	/// this increases CPU usage.
@@ -105,7 +105,7 @@ struct b2BodyDef
 	void* userData = nullptr;
 
 	/// Scale the gravity applied to this body.
-	float32 gravityScale = 1.0f;
+	b2Float gravityScale = b2Float(1);
 };
 
 /// A rigid body. These are created via b2World::CreateBody.
@@ -128,7 +128,7 @@ public:
 	/// @param shape the shape to be cloned.
 	/// @param density the shape density (set to zero for static bodies).
 	/// @warning This function is locked during callbacks.
-	b2Fixture* CreateFixture(const b2Shape* shape, float32 density);
+	b2Fixture* CreateFixture(const b2Shape* shape, b2Float density);
 
 	/// Destroy a fixture. This removes the fixture from the broad-phase and
 	/// destroys all contacts associated with this fixture. This will
@@ -144,7 +144,7 @@ public:
 	/// Note: contacts are updated on the next call to b2World::Step.
 	/// @param position the world position of the body's local origin.
 	/// @param angle the world rotation in radians.
-	void SetTransform(const b2Vec2& position, float32 angle);
+	void SetTransform(const b2Vec2& position, b2Float angle);
 
 	/// Get the body transform for the body's origin.
 	/// @return the world transform of the body's origin.
@@ -156,7 +156,7 @@ public:
 
 	/// Get the angle in radians.
 	/// @return the current world rotation angle in radians.
-	float32 GetAngle() const noexcept;
+	b2Float GetAngle() const noexcept;
 
 	/// Get the world position of the center of mass.
 	b2Vec2 GetWorldCenter() const noexcept;
@@ -174,11 +174,11 @@ public:
 
 	/// Set the angular velocity.
 	/// @param omega the new angular velocity in radians/second.
-	void SetAngularVelocity(float32 omega) noexcept;
+	void SetAngularVelocity(b2Float omega) noexcept;
 
 	/// Get the angular velocity.
 	/// @return the angular velocity in radians/second.
-	float32 GetAngularVelocity() const noexcept;
+	b2Float GetAngularVelocity() const noexcept;
 
 	/// Apply a force at a world point. If the force is not
 	/// applied at the center of mass, it will generate a torque and
@@ -198,7 +198,7 @@ public:
 	/// This wakes up the body.
 	/// @param torque about the z-axis (out of the screen), usually in N-m.
 	/// @param wake also wake up the body
-	void ApplyTorque(float32 torque, bool wake) noexcept;
+	void ApplyTorque(b2Float torque, bool wake) noexcept;
 
 	/// Apply an impulse at a point. This immediately modifies the velocity.
 	/// It also modifies the angular velocity if the point of application
@@ -211,15 +211,15 @@ public:
 	/// Apply an angular impulse.
 	/// @param impulse the angular impulse in units of kg*m*m/s
 	/// @param wake also wake up the body
-	void ApplyAngularImpulse(float32 impulse, bool wake) noexcept;
+	void ApplyAngularImpulse(b2Float impulse, bool wake) noexcept;
 
 	/// Get the total mass of the body.
 	/// @return the mass, usually in kilograms (kg).
-	float32 GetMass() const noexcept;
+	b2Float GetMass() const noexcept;
 
 	/// Get the rotational inertia of the body about the local origin.
 	/// @return the rotational inertia, usually in kg-m^2.
-	float32 GetInertia() const noexcept;
+	b2Float GetInertia() const noexcept;
 
 	/// Get the mass data of the body.
 	/// @return a struct containing the mass, inertia and center of the body.
@@ -268,22 +268,22 @@ public:
 	b2Vec2 GetLinearVelocityFromLocalPoint(const b2Vec2& localPoint) const noexcept;
 
 	/// Get the linear damping of the body.
-	float32 GetLinearDamping() const noexcept;
+	b2Float GetLinearDamping() const noexcept;
 
 	/// Set the linear damping of the body.
-	void SetLinearDamping(float32 linearDamping) noexcept;
+	void SetLinearDamping(b2Float linearDamping) noexcept;
 
 	/// Get the angular damping of the body.
-	float32 GetAngularDamping() const noexcept;
+	b2Float GetAngularDamping() const noexcept;
 
 	/// Set the angular damping of the body.
-	void SetAngularDamping(float32 angularDamping) noexcept;
+	void SetAngularDamping(b2Float angularDamping) noexcept;
 
 	/// Get the gravity scale of the body.
-	float32 GetGravityScale() const noexcept;
+	b2Float GetGravityScale() const noexcept;
 
 	/// Set the gravity scale of the body.
-	void SetGravityScale(float32 scale) noexcept;
+	void SetGravityScale(b2Float scale) noexcept;
 
 	/// Set the type of this body. This may alter the mass and velocity.
 	void SetType(b2BodyType type);
@@ -422,7 +422,7 @@ private:
 	// It may lie, depending on the collideConnected flag.
 	bool ShouldCollide(const b2Body* other) const;
 
-	void Advance(float32 t);
+	void Advance(b2Float t);
 
 	void DestroyContacts();
 
@@ -445,10 +445,10 @@ private:
 	b2Sweep m_sweep;		// the swept motion for CCD
 
 	b2Vec2 m_linearVelocity;
-	float32 m_angularVelocity;
+	b2Float m_angularVelocity;
 
 	b2Vec2 m_force = b2Vec2_zero;
-	float32 m_torque = 0.0f;
+	b2Float m_torque = b2Float{0};
 
 	b2World* const m_world;
 	b2Body* m_prev = nullptr;
@@ -460,16 +460,16 @@ private:
 	b2JointEdge* m_jointList = nullptr;
 	b2ContactEdge* m_contactList = nullptr;
 
-	float32 m_mass, m_invMass;
+	b2Float m_mass, m_invMass;
 
 	// Rotational inertia about the center of mass.
-	float32 m_I = 0.0f, m_invI = 0.0f;
+	b2Float m_I = b2Float{0}, m_invI = b2Float{0};
 
-	float32 m_linearDamping;
-	float32 m_angularDamping;
-	float32 m_gravityScale;
+	b2Float m_linearDamping;
+	b2Float m_angularDamping;
+	b2Float m_gravityScale;
 
-	float32 m_sleepTime = 0.0f;
+	b2Float m_sleepTime = b2Float{0};
 
 	void* m_userData;
 };
@@ -489,7 +489,7 @@ inline b2Vec2 b2Body::GetPosition() const noexcept
 	return m_xf.p;
 }
 
-inline float32 b2Body::GetAngle() const noexcept
+inline b2Float b2Body::GetAngle() const noexcept
 {
 	return m_sweep.a;
 }
@@ -524,14 +524,14 @@ inline b2Vec2 b2Body::GetLinearVelocity() const noexcept
 	return m_linearVelocity;
 }
 
-inline void b2Body::SetAngularVelocity(float32 w) noexcept
+inline void b2Body::SetAngularVelocity(b2Float w) noexcept
 {
 	if (m_type == b2_staticBody)
 	{
 		return;
 	}
 
-	if (w != 0.0f)
+	if (w != b2Float{0})
 	{
 		SetAwake();
 	}
@@ -539,17 +539,17 @@ inline void b2Body::SetAngularVelocity(float32 w) noexcept
 	m_angularVelocity = w;
 }
 
-inline float32 b2Body::GetAngularVelocity() const noexcept
+inline b2Float b2Body::GetAngularVelocity() const noexcept
 {
 	return m_angularVelocity;
 }
 
-inline float32 b2Body::GetMass() const noexcept
+inline b2Float b2Body::GetMass() const noexcept
 {
 	return m_mass;
 }
 
-inline float32 b2Body::GetInertia() const noexcept
+inline b2Float b2Body::GetInertia() const noexcept
 {
 	return m_I + m_mass * b2Dot(m_sweep.localCenter, m_sweep.localCenter);
 }
@@ -589,32 +589,32 @@ inline b2Vec2 b2Body::GetLinearVelocityFromLocalPoint(const b2Vec2& localPoint) 
 	return GetLinearVelocityFromWorldPoint(GetWorldPoint(localPoint));
 }
 
-inline float32 b2Body::GetLinearDamping() const noexcept
+inline b2Float b2Body::GetLinearDamping() const noexcept
 {
 	return m_linearDamping;
 }
 
-inline void b2Body::SetLinearDamping(float32 linearDamping) noexcept
+inline void b2Body::SetLinearDamping(b2Float linearDamping) noexcept
 {
 	m_linearDamping = linearDamping;
 }
 
-inline float32 b2Body::GetAngularDamping() const noexcept
+inline b2Float b2Body::GetAngularDamping() const noexcept
 {
 	return m_angularDamping;
 }
 
-inline void b2Body::SetAngularDamping(float32 angularDamping) noexcept
+inline void b2Body::SetAngularDamping(b2Float angularDamping) noexcept
 {
 	m_angularDamping = angularDamping;
 }
 
-inline float32 b2Body::GetGravityScale() const noexcept
+inline b2Float b2Body::GetGravityScale() const noexcept
 {
 	return m_gravityScale;
 }
 
-inline void b2Body::SetGravityScale(float32 scale) noexcept
+inline void b2Body::SetGravityScale(b2Float scale) noexcept
 {
 	m_gravityScale = scale;
 }
@@ -653,18 +653,18 @@ inline void b2Body::SetAwake() noexcept
 	if ((m_flags & e_awakeFlag) == 0)
 	{
 		m_flags |= e_awakeFlag;
-		m_sleepTime = 0.0f;
+		m_sleepTime = b2Float{0};
 	}
 }
 
 inline void b2Body::UnsetAwake() noexcept
 {
 	m_flags &= ~e_awakeFlag;
-	m_sleepTime = 0.0f;
+	m_sleepTime = b2Float{0};
 	m_linearVelocity = b2Vec2_zero;
-	m_angularVelocity = 0.0f;
+	m_angularVelocity = b2Float{0};
 	m_force = b2Vec2_zero;
-	m_torque = 0.0f;
+	m_torque = b2Float{0};
 }
 
 inline bool b2Body::IsAwake() const noexcept
@@ -799,7 +799,7 @@ inline void b2Body::ApplyForceToCenter(const b2Vec2& force, bool wake) noexcept
 	}
 }
 
-inline void b2Body::ApplyTorque(float32 torque, bool wake) noexcept
+inline void b2Body::ApplyTorque(b2Float torque, bool wake) noexcept
 {
 	if (m_type != b2_dynamicBody)
 	{
@@ -838,7 +838,7 @@ inline void b2Body::ApplyLinearImpulse(const b2Vec2& impulse, const b2Vec2& poin
 	}
 }
 
-inline void b2Body::ApplyAngularImpulse(float32 impulse, bool wake) noexcept
+inline void b2Body::ApplyAngularImpulse(b2Float impulse, bool wake) noexcept
 {
 	if (m_type != b2_dynamicBody)
 	{
@@ -863,7 +863,7 @@ inline void b2Body::SynchronizeTransform()
 	m_xf.p = m_sweep.c - b2Mul(m_xf.q, m_sweep.localCenter);
 }
 
-inline void b2Body::Advance(float32 alpha)
+inline void b2Body::Advance(b2Float alpha)
 {
 	// Advance to the new safe time. This doesn't sync the broad-phase.
 	m_sweep.Advance(alpha);

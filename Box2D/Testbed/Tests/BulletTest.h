@@ -102,18 +102,18 @@ public:
 		if (b2_gjkCalls > 0)
 		{
 			g_debugDraw.DrawString(5, m_textLine, "gjk calls = %d, ave gjk iters = %3.1f, max gjk iters = %d",
-				b2_gjkCalls, b2_gjkIters / float32(b2_gjkCalls), b2_gjkMaxIters);
+				b2_gjkCalls, b2_gjkIters / b2Float(b2_gjkCalls), b2_gjkMaxIters);
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
 		if (b2_toiCalls > 0)
 		{
 			g_debugDraw.DrawString(5, m_textLine, "toi calls = %d, ave toi iters = %3.1f, max toi iters = %d",
-				b2_toiCalls, b2_toiIters / float32(b2_toiCalls), b2_toiMaxRootIters);
+				b2_toiCalls, b2_toiIters / b2Float(b2_toiCalls), b2_toiMaxRootIters);
 			m_textLine += DRAW_STRING_NEW_LINE;
 
 			g_debugDraw.DrawString(5, m_textLine, "ave toi root iters = %3.1f, max toi root iters = %d",
-				b2_toiRootIters / float32(b2_toiCalls), b2_toiMaxRootIters);
+				b2_toiRootIters / b2Float(b2_toiCalls), b2_toiMaxRootIters);
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
@@ -130,7 +130,7 @@ public:
 
 	b2Body* m_body;
 	b2Body* m_bullet;
-	float32 m_x;
+	b2Float m_x;
 };
 
 #endif

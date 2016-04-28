@@ -20,7 +20,7 @@
 #include <Box2D/Collision/Shapes/b2PolygonShape.h>
 
 // Find the max separation between shape1 and shape2 using edge normals from shape1.
-static float32 b2FindMaxSeparation(b2PolygonShape::vertex_count_t& edgeIndex,
+static b2Float b2FindMaxSeparation(b2PolygonShape::vertex_count_t& edgeIndex,
 								   const b2PolygonShape& shape1, const b2Transform& xf1,
 								   const b2PolygonShape& shape2, const b2Transform& xf2)
 {
@@ -164,14 +164,14 @@ void b2CollideShapes(b2Manifold* manifold,
 
 	const auto localTangent = b2Normalize(v12 - v11);
 	
-	const auto localNormal = b2Cross(localTangent, 1.0f);
-	const auto planePoint = 0.5f * (v11 + v12);
+	const auto localNormal = b2Cross(localTangent, b2Float(1));
+	const auto planePoint = (v11 + v12) / b2Float(2);
 
 	manifold->SetLocalNormal(localNormal);
 	manifold->SetLocalPoint(planePoint);
 
 	const auto tangent = b2Mul(xf1.q, localTangent);
-	const auto normal = b2Cross(tangent, 1.0f);
+	const auto normal = b2Cross(tangent, b2Float(1));
 	
 	v11 = b2Mul(xf1, v11);
 	v12 = b2Mul(xf1, v12);

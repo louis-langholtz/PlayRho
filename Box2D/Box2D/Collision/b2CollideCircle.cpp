@@ -87,7 +87,7 @@ void b2CollideShapes(
 	{
 		manifold->SetType(b2Manifold::e_faceA);
 		manifold->SetLocalNormal(shapeA.GetNormal(normalIndex));
-		manifold->SetLocalPoint(0.5f * (v1 + v2));
+		manifold->SetLocalPoint((v1 + v2) / b2Float(2));
 		manifold->AddPoint(shapeB.GetPosition());
 		return;
 	}
@@ -95,7 +95,7 @@ void b2CollideShapes(
 	// Compute barycentric coordinates
 	const auto u1 = b2Dot(cLocal - v1, v2 - v1);
 	const auto u2 = b2Dot(cLocal - v2, v1 - v2);
-	if (u1 <= 0.0f)
+	if (u1 <= b2Float{0})
 	{
 		if (b2DistanceSquared(cLocal, v1) > b2Square(totalRadius))
 		{
@@ -108,7 +108,7 @@ void b2CollideShapes(
 		manifold->SetLocalPoint(v1);
 		manifold->AddPoint(shapeB.GetPosition());
 	}
-	else if (u2 <= 0.0f)
+	else if (u2 <= b2Float{0})
 	{
 		if (b2DistanceSquared(cLocal, v2) > b2Square(totalRadius))
 		{
@@ -123,7 +123,7 @@ void b2CollideShapes(
 	}
 	else
 	{
-		const auto faceCenter = 0.5f * (v1 + v2);
+		const auto faceCenter = (v1 + v2) / b2Float(2);
 		separation = b2Dot(cLocal - faceCenter, shapeA.GetNormal(vertIndex1));
 		if (separation > totalRadius)
 		{

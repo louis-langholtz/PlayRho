@@ -23,23 +23,23 @@ void b2Mat33::GetInverse22(b2Mat33* M) const
 {
 	const auto a = ex.x, b = ey.x, c = ex.y, d = ey.y;
 	auto det = a * d - b * c;
-	if (det != 0.0f)
+	if (det != b2Float{0})
 	{
-		det = 1.0f / det;
+		det = b2Float(1) / det;
 	}
 
-	M->ex.x =  det * d;	M->ey.x = -det * b; M->ex.z = 0.0f;
-	M->ex.y = -det * c;	M->ey.y =  det * a; M->ey.z = 0.0f;
-	M->ez.x = 0.0f; M->ez.y = 0.0f; M->ez.z = 0.0f;
+	M->ex.x =  det * d;	M->ey.x = -det * b; M->ex.z = b2Float{0};
+	M->ex.y = -det * c;	M->ey.y =  det * a; M->ey.z = b2Float{0};
+	M->ez.x = b2Float{0}; M->ez.y = b2Float{0}; M->ez.z = b2Float{0};
 }
 
 /// Returns the zero matrix if singular.
 void b2Mat33::GetSymInverse33(b2Mat33* M) const
 {
 	auto det = b2Dot(ex, b2Cross(ey, ez));
-	if (det != 0.0f)
+	if (det != b2Float{0})
 	{
-		det = 1.0f / det;
+		det = b2Float(1) / det;
 	}
 
 	const auto a11 = ex.x, a12 = ey.x, a13 = ez.x;

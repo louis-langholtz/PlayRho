@@ -20,8 +20,8 @@
 #include <Box2D/Collision/b2Distance.h>
 
 void b2WorldManifold::Assign(const b2Manifold& manifold,
-						  const b2Transform& xfA, float32 radiusA,
-						  const b2Transform& xfB, float32 radiusB)
+						  const b2Transform& xfA, b2Float radiusA,
+						  const b2Transform& xfB, b2Float radiusB)
 {
 	if (manifold.GetPointCount() == 0)
 		return;
@@ -34,7 +34,7 @@ void b2WorldManifold::Assign(const b2Manifold& manifold,
 
 	case b2Manifold::e_circles:
 		{
-			normal = b2Vec2(1.0f, 0.0f);
+			normal = b2Vec2(b2Float{1}, b2Float{0});
 			const auto pointA = b2Mul(xfA, manifold.GetLocalPoint());
 			const auto pointB = b2Mul(xfB, manifold.GetPoint(0).localPoint);
 			if (b2DistanceSquared(pointA, pointB) > b2Square(b2_epsilon))
@@ -42,7 +42,7 @@ void b2WorldManifold::Assign(const b2Manifold& manifold,
 
 			const auto cA = pointA + radiusA * normal;
 			const auto cB = pointB - radiusB * normal;
-			points[0] = 0.5f * (cA + cB);
+			points[0] = (cA + cB) / b2Float(2);
 			separations[0] = b2Dot(cB - cA, normal);
 			pointCount = 1;
 		}
@@ -58,7 +58,7 @@ void b2WorldManifold::Assign(const b2Manifold& manifold,
 				const auto clipPoint = b2Mul(xfB, manifold.GetPoint(i).localPoint);
 				const auto cA = clipPoint + (radiusA - b2Dot(clipPoint - planePoint, normal)) * normal;
 				const auto cB = clipPoint - radiusB * normal;
-				points[i] = 0.5f * (cA + cB);
+				points[i] = (cA + cB) / b2Float(2);
 				separations[i] = b2Dot(cB - cA, normal);
 				++pointCount;
 			}
@@ -76,7 +76,7 @@ void b2WorldManifold::Assign(const b2Manifold& manifold,
 				const auto clipPoint = b2Mul(xfA, manifold.GetPoint(i).localPoint);
 				const auto cB = clipPoint + (radiusB - b2Dot(clipPoint - planePoint, normal)) * normal;
 				const auto cA = clipPoint - radiusA * normal;
-				points[i] = 0.5f * (cA + cB);
+				points[i] = (cA + cB) / b2Float(2);
 				separations[i] = b2Dot(cA - cB, normal);
 				++pointCount;
 			}
@@ -154,17 +154,17 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 		}
 		else
 		{
-			const auto inv_d = 1.0f / d(i);
+			const auto inv_d = b2Float(1) / d(i);
 			auto t1 = (lowerBound(i) - p(i)) * inv_d;
 			auto t2 = (upperBound(i) - p(i)) * inv_d;
 
 			// Sign of the normal vector.
-			auto s = -1.0f;
+			auto s = b2Float(-1);
 
 			if (t1 > t2)
 			{
 				b2Swap(t1, t2);
-				s = 1.0f;
+				s = b2Float(1);
 			}
 
 			// Push the min up
@@ -185,7 +185,7 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 
 	// Does the ray start inside the box?
 	// Does the ray intersect beyond the max fraction?
-	if ((tmin < 0.0f) || (input.maxFraction < tmin))
+	if ((tmin < b2Float{0}) || (input.maxFraction < tmin))
 		return false;
 
 	// Intersection.
@@ -196,7 +196,7 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 
 // Sutherland-Hodgman clipping.
 b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray& vIn,
-										   const b2Vec2& normal, float32 offset, b2ContactFeature::index_t vertexIndexA)
+										   const b2Vec2& normal, b2Float offset, b2ContactFeature::index_t vertexIndexA)
 {
 	// Start with no output points
 	auto numOut = b2ClipArray::size_type{0};
@@ -206,11 +206,11 @@ b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray&
 	const auto distance1 = b2Dot(normal, vIn[1].v) - offset;
 
 	// If the points are behind the plane
-	if (distance0 <= 0.0f) vOut[numOut++] = vIn[0];
-	if (distance1 <= 0.0f) vOut[numOut++] = vIn[1];
+	if (distance0 <= b2Float{0}) vOut[numOut++] = vIn[0];
+	if (distance1 <= b2Float{0}) vOut[numOut++] = vIn[1];
 
 	// If the points are on different sides of the plane
-	if ((distance0 * distance1) < 0.0f)
+	if ((distance0 * distance1) < b2Float{0})
 	{
 		// Find intersection point of edge and plane
 		const auto interp = distance0 / (distance0 - distance1);

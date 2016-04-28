@@ -25,7 +25,7 @@ public:
 
 	AddPair()
 	{
-		m_world->SetGravity(b2Vec2(0.0f,0.0f));
+		m_world->SetGravity(b2Vec2(b2Float{0}, b2Float{0}));
 		{
 			b2CircleShape shape;
 			shape.m_p.SetZero();

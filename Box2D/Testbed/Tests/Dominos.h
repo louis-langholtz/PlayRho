@@ -190,7 +190,7 @@ public:
 		m_world->CreateJoint(&djd);
 
 		{
-			float32 radius = 0.2f;
+			b2Float radius = 0.2f;
 
 			b2CircleShape shape;
 			shape.m_radius = radius;
