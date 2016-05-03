@@ -24,7 +24,7 @@
 /// This is a growable LIFO stack with an initial capacity of N.
 /// If the stack size exceeds the initial capacity, the heap is used
 /// to increase the size of the stack.
-template <typename T, int32 N>
+template <typename T, b2_size_t N>
 class b2GrowableStack
 {
 public:
