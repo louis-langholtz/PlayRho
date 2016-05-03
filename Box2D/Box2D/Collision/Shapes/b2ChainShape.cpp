@@ -121,7 +121,8 @@ void b2ChainShape::GetChildEdge(b2EdgeShape* edge, child_count_t index) const
 		edge->SetVertex0(m_prevVertex);
 	}
 
-	if (index < m_count - 2)
+	b2Assert(m_count >= 2);
+	if (index < (m_count - 2))
 	{
 		edge->SetVertex3(m_vertices[index + 2]);
 	}
@@ -175,5 +176,5 @@ b2MassData b2ChainShape::ComputeMass(b2Float density) const
 {
 	B2_NOT_USED(density);
 
-	return {b2Float{0}, b2Vec2_zero, b2Float{0}};
+	return b2MassData{b2Float{0}, b2Vec2_zero, b2Float{0}};
 }
