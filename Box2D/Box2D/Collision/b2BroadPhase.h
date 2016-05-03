@@ -121,6 +121,8 @@ private:
 
 	b2DynamicTree m_tree;
 
+	static constexpr size_type BufferGrowthRate = 2;
+	
 	size_type m_proxyCount = 0;
 
 	size_type m_moveCapacity = 16;

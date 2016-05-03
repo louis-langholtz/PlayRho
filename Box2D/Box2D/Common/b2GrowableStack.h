@@ -29,6 +29,7 @@ class b2GrowableStack
 {
 public:
 	using size_type = b2_size_t;
+	static constexpr auto BufferGrowthRate = size_type{2};
 
 	b2GrowableStack() = default;
 
@@ -46,7 +47,7 @@ public:
 		if (m_count == m_capacity)
 		{
 			T* old = m_stack;
-			m_capacity *= 2;
+			m_capacity *= BufferGrowthRate;
 			m_stack = static_cast<T*>(b2Alloc(m_capacity * sizeof(T)));
 			std::memcpy(m_stack, old, m_count * sizeof(T));
 			if (old != m_array)
