@@ -31,8 +31,8 @@ struct b2ContactPositionConstraintBodyData;
 
 struct b2VelocityConstraintPoint
 {
-	b2Vec2 rA;
-	b2Vec2 rB;
+	b2Vec2 rA; ///< Position of body A relative to world manifold point
+	b2Vec2 rB; ///< Position of body B relative to world manifold point
 	b2Float normalImpulse;
 	b2Float tangentImpulse;
 	b2Float normalMass;
@@ -44,9 +44,9 @@ struct b2ContactVelocityConstraintBodyData
 {
 	using index_t = b2_size_t;
 
-	index_t index; // index of body within island
-	b2Float invMass;
-	b2Float invI;
+	index_t index; ///< Index within island of body.
+	b2Float invMass; ///< Inverse mass of body.
+	b2Float invI; ///< Inverse interia of body.
 };
 
 class b2ContactVelocityConstraint
@@ -125,9 +125,9 @@ public:
 	void InitializeVelocityConstraints();
 
 	void WarmStart();
-	void SolveVelocityConstraints();
 	void StoreImpulses();
 
+	void SolveVelocityConstraints();
 	bool SolvePositionConstraints();
 	bool SolveTOIPositionConstraints(size_type toiIndexA, size_type toiIndexB);
 
