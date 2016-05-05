@@ -190,16 +190,11 @@ public:
 			{
 				const auto e12 = m_vertices[1].w - m_vertices[0].w;
 				const auto sgn = b2Cross(e12, -m_vertices[0].w);
-				if (sgn > b2Float{0})
-				{
+				return (sgn > b2Float{0})?
 					// Origin is left of e12.
-					return b2Cross(b2Float(1), e12);
-				}
-				else
-				{
+					b2Cross(b2Float(1), e12):
 					// Origin is right of e12.
-					return b2Cross(e12, b2Float(1));
-				}
+					b2Cross(e12, b2Float(1));
 			}
 
 		default:
