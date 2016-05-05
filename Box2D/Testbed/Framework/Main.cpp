@@ -154,7 +154,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
 		case GLFW_KEY_HOME:
 			// Reset view
 			g_camera.m_zoom = 1.0f;
-			g_camera.m_center.Set(0.0f, 20.0f);
+			g_camera.m_center = b2Vec2(0.0f, 20.0f);
 			break;
 
 		case GLFW_KEY_Z:
@@ -232,7 +232,7 @@ static void sMouseButton(GLFWwindow*, int32 button, int32 action, int32 mods)
 	if (button == GLFW_MOUSE_BUTTON_1)
 	{
         //<##>
-        //ps.Set(0, 0);
+        //ps = b2Vec2(0, 0);
 		b2Vec2 pw = g_camera.ConvertScreenToWorld(ps);
 		if (action == GLFW_PRESS)
 		{
@@ -327,7 +327,7 @@ static void sSimulate()
 		entry = g_testEntries + testIndex;
 		test = entry->createFcn();
 		g_camera.m_zoom = 1.0f;
-		g_camera.m_center.Set(0.0f, 20.0f);
+		g_camera.m_center = b2Vec2(0.0f, 20.0f);
 	}
 }
 

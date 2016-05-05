@@ -34,7 +34,7 @@ void DestructionListener::SayGoodbye(b2Joint* joint)
 Test::Test()
 {
 	b2Vec2 gravity;
-	gravity.Set(0.0f, -10.0f);
+	gravity = b2Vec2(0.0f, -10.0f);
 	m_world = new b2World(gravity);
 	m_bomb = nullptr;
 	m_textLine = 30;

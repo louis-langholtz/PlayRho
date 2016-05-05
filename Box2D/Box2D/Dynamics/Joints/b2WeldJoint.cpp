@@ -285,7 +285,7 @@ bool b2WeldJoint::SolvePositionConstraints(const b2SolverData& data)
 		else
 		{
 			const auto impulse2 = -K.Solve22(C1);
-			impulse.Set(impulse2.x, impulse2.y, b2Float{0});
+			impulse = b2Vec3(impulse2.x, impulse2.y, b2Float{0});
 		}
 
 		const auto P = b2Vec2(impulse.x, impulse.y);
@@ -335,8 +335,8 @@ void b2WeldJoint::Dump()
 	b2Log("  jd.bodyA = bodies[%d];\n", indexA);
 	b2Log("  jd.bodyB = bodies[%d];\n", indexB);
 	b2Log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	b2Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-	b2Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+	b2Log("  jd.localAnchorA = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
+	b2Log("  jd.localAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
 	b2Log("  jd.referenceAngle = %.15lef;\n", m_referenceAngle);
 	b2Log("  jd.frequencyHz = %.15lef;\n", m_frequencyHz);
 	b2Log("  jd.dampingRatio = %.15lef;\n", m_dampingRatio);

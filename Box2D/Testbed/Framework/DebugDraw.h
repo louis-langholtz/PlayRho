@@ -31,7 +31,7 @@ struct Camera
 {
 	Camera()
 	{
-		m_center.Set(0.0f, 20.0f);
+		m_center = b2Vec2(0.0f, 20.0f);
 		m_extent = 25.0f;
 		m_zoom = 1.0f;
 		m_width = 1280;

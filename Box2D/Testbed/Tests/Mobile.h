@@ -35,7 +35,7 @@ public:
 		// Create ground body.
 		{
 			b2BodyDef bodyDef;
-			bodyDef.position.Set(0.0f, 20.0f);
+			bodyDef.position = b2Vec2(0.0f, 20.0f);
 			ground = m_world->CreateBody(&bodyDef);
 		}
 

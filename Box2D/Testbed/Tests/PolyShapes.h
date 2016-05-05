@@ -130,17 +130,17 @@ public:
 
 		{
 			b2Vec2 vertices[3];
-			vertices[0].Set(-0.5f, 0.0f);
-			vertices[1].Set(0.5f, 0.0f);
-			vertices[2].Set(0.0f, 1.5f);
+			vertices[0] = b2Vec2(-0.5f, 0.0f);
+			vertices[1] = b2Vec2(0.5f, 0.0f);
+			vertices[2] = b2Vec2(0.0f, 1.5f);
 			m_polygons[0].Set(vertices, 3);
 		}
 		
 		{
 			b2Vec2 vertices[3];
-			vertices[0].Set(-0.1f, 0.0f);
-			vertices[1].Set(0.1f, 0.0f);
-			vertices[2].Set(0.0f, 1.5f);
+			vertices[0] = b2Vec2(-0.1f, 0.0f);
+			vertices[1] = b2Vec2(0.1f, 0.0f);
+			vertices[2] = b2Vec2(0.0f, 1.5f);
 			m_polygons[1].Set(vertices, 3);
 		}
 
@@ -150,14 +150,14 @@ public:
 			b2Float s = b2Sqrt(2.0f) * b;
 
 			b2Vec2 vertices[8];
-			vertices[0].Set(0.5f * s, 0.0f);
-			vertices[1].Set(0.5f * w, b);
-			vertices[2].Set(0.5f * w, b + s);
-			vertices[3].Set(0.5f * s, w);
-			vertices[4].Set(-0.5f * s, w);
-			vertices[5].Set(-0.5f * w, b + s);
-			vertices[6].Set(-0.5f * w, b);
-			vertices[7].Set(-0.5f * s, 0.0f);
+			vertices[0] = b2Vec2(0.5f * s, 0.0f);
+			vertices[1] = b2Vec2(0.5f * w, b);
+			vertices[2] = b2Vec2(0.5f * w, b + s);
+			vertices[3] = b2Vec2(0.5f * s, w);
+			vertices[4] = b2Vec2(-0.5f * s, w);
+			vertices[5] = b2Vec2(-0.5f * w, b + s);
+			vertices[6] = b2Vec2(-0.5f * w, b);
+			vertices[7] = b2Vec2(-0.5f * s, 0.0f);
 
 			m_polygons[2].Set(vertices, 8);
 		}
@@ -186,7 +186,7 @@ public:
 		bd.type = b2_dynamicBody;
 
 		b2Float x = RandomFloat(-2.0f, 2.0f);
-		bd.position.Set(x, 10.0f);
+		bd.position = b2Vec2(x, 10.0f);
 		bd.angle = RandomFloat(-b2_pi, b2_pi);
 
 		if (index == 4)

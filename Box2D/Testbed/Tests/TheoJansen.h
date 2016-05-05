@@ -118,7 +118,7 @@ public:
 
 	TheoJansen()
 	{
-		m_offset.Set(0.0f, 8.0f);
+		m_offset = b2Vec2(0.0f, 8.0f);
 		m_motorSpeed = 2.0f;
 		m_motorOn = true;
 		b2Vec2 pivot(0.0f, 0.8f);
@@ -147,7 +147,7 @@ public:
 
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
-			bd.position.Set(-40.0f + 2.0f * i, 0.5f);
+			bd.position = b2Vec2(-40.0f + 2.0f * i, 0.5f);
 
 			b2Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&shape, 1.0f);

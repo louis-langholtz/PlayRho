@@ -56,7 +56,7 @@ public:
 			{
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
-				bd.position.Set(-14.5f + 1.0f * i, 5.0f);
+				bd.position = b2Vec2(-14.5f + 1.0f * i, 5.0f);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&fd);
 
@@ -79,9 +79,9 @@ public:
 		for (int32 i = 0; i < 2; ++i)
 		{
 			b2Vec2 vertices[3];
-			vertices[0].Set(-0.5f, 0.0f);
-			vertices[1].Set(0.5f, 0.0f);
-			vertices[2].Set(0.0f, 1.5f);
+			vertices[0] = b2Vec2(-0.5f, 0.0f);
+			vertices[1] = b2Vec2(0.5f, 0.0f);
+			vertices[2] = b2Vec2(0.0f, 1.5f);
 
 			b2PolygonShape shape;
 			shape.Set(vertices, 3);
@@ -92,7 +92,7 @@ public:
 
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
-			bd.position.Set(-8.0f + 8.0f * i, 12.0f);
+			bd.position = b2Vec2(-8.0f + 8.0f * i, 12.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&fd);
 		}
@@ -108,7 +108,7 @@ public:
 
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
-			bd.position.Set(-6.0f + 6.0f * i, 10.0f);
+			bd.position = b2Vec2(-6.0f + 6.0f * i, 10.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&fd);
 		}

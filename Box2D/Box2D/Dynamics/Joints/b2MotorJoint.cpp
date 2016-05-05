@@ -292,7 +292,7 @@ void b2MotorJoint::Dump()
 	b2Log("  jd.bodyA = bodies[%d];\n", indexA);
 	b2Log("  jd.bodyB = bodies[%d];\n", indexB);
 	b2Log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	b2Log("  jd.linearOffset.Set(%.15lef, %.15lef);\n", m_linearOffset.x, m_linearOffset.y);
+	b2Log("  jd.linearOffset = b2Vec2(%.15lef, %.15lef);\n", m_linearOffset.x, m_linearOffset.y);
 	b2Log("  jd.angularOffset = %.15lef;\n", m_angularOffset);
 	b2Log("  jd.maxForce = %.15lef;\n", m_maxForce);
 	b2Log("  jd.maxTorque = %.15lef;\n", m_maxTorque);

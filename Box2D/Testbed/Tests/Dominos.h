@@ -40,7 +40,7 @@ public:
 			shape.SetAsBox(6.0f, 0.25f);
 
 			b2BodyDef bd;
-			bd.position.Set(-1.5f, 10.0f);
+			bd.position = b2Vec2(-1.5f, 10.0f);
 			b2Body* ground = m_world->CreateBody(&bd);
 			ground->CreateFixture(&shape, 0.0f);
 		}
@@ -58,7 +58,7 @@ public:
 			{
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
-				bd.position.Set(-6.0f + 1.0f * i, 11.25f);
+				bd.position = b2Vec2(-6.0f + 1.0f * i, 11.25f);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&fd);
 			}
@@ -69,7 +69,7 @@ public:
 			shape.SetAsBox(7.0f, 0.25f, b2Vec2_zero, 0.3f);
 
 			b2BodyDef bd;
-			bd.position.Set(1.0f, 6.0f);
+			bd.position = b2Vec2(1.0f, 6.0f);
 			b2Body* ground = m_world->CreateBody(&bd);
 			ground->CreateFixture(&shape, 0.0f);
 		}
@@ -80,7 +80,7 @@ public:
 			shape.SetAsBox(0.25f, 1.5f);
 
 			b2BodyDef bd;
-			bd.position.Set(-7.0f, 4.0f);
+			bd.position = b2Vec2(-7.0f, 4.0f);
 			b2 = m_world->CreateBody(&bd);
 			b2->CreateFixture(&shape, 0.0f);
 		}
@@ -92,7 +92,7 @@ public:
 
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
-			bd.position.Set(-0.9f, 1.0f);
+			bd.position = b2Vec2(-0.9f, 1.0f);
 			bd.angle = -0.15f;
 
 			b3 = m_world->CreateBody(&bd);
@@ -102,7 +102,7 @@ public:
 		b2RevoluteJointDef jd;
 		b2Vec2 anchor;
 
-		anchor.Set(-2.0f, 1.0f);
+		anchor = b2Vec2(-2.0f, 1.0f);
 		jd.Initialize(b1, b3, anchor);
 		jd.collideConnected = true;
 		m_world->CreateJoint(&jd);
@@ -114,12 +114,12 @@ public:
 
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
-			bd.position.Set(-10.0f, 15.0f);
+			bd.position = b2Vec2(-10.0f, 15.0f);
 			b4 = m_world->CreateBody(&bd);
 			b4->CreateFixture(&shape, 10.0f);
 		}
 
-		anchor.Set(-7.0f, 15.0f);
+		anchor = b2Vec2(-7.0f, 15.0f);
 		jd.Initialize(b2, b4, anchor);
 		m_world->CreateJoint(&jd);
 
@@ -127,7 +127,7 @@ public:
 		{
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
-			bd.position.Set(6.5f, 3.0f);
+			bd.position = b2Vec2(6.5f, 3.0f);
 			b5 = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
@@ -147,7 +147,7 @@ public:
 			b5->CreateFixture(&fd);
 		}
 
-		anchor.Set(6.0f, 2.0f);
+		anchor = b2Vec2(6.0f, 2.0f);
 		jd.Initialize(b1, b5, anchor);
 		m_world->CreateJoint(&jd);
 
@@ -158,12 +158,12 @@ public:
 
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
-			bd.position.Set(6.5f, 4.1f);
+			bd.position = b2Vec2(6.5f, 4.1f);
 			b6 = m_world->CreateBody(&bd);
 			b6->CreateFixture(&shape, 30.0f);
 		}
 
-		anchor.Set(7.5f, 4.0f);
+		anchor = b2Vec2(7.5f, 4.0f);
 		jd.Initialize(b5, b6, anchor);
 		m_world->CreateJoint(&jd);
 
@@ -174,7 +174,7 @@ public:
 
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
-			bd.position.Set(7.4f, 1.0f);
+			bd.position = b2Vec2(7.4f, 1.0f);
 
 			b7 = m_world->CreateBody(&bd);
 			b7->CreateFixture(&shape, 10.0f);
@@ -183,8 +183,8 @@ public:
 		b2DistanceJointDef djd;
 		djd.bodyA = b3;
 		djd.bodyB = b7;
-		djd.localAnchorA.Set(6.0f, 0.0f);
-		djd.localAnchorB.Set(0.0f, -1.0f);
+		djd.localAnchorA = b2Vec2(6.0f, 0.0f);
+		djd.localAnchorB = b2Vec2(0.0f, -1.0f);
 		b2Vec2 d = djd.bodyB->GetWorldPoint(djd.localAnchorB) - djd.bodyA->GetWorldPoint(djd.localAnchorA);
 		djd.length = d.Length();
 		m_world->CreateJoint(&djd);
@@ -199,7 +199,7 @@ public:
 			{
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
-				bd.position.Set(5.9f + 2.0f * radius * i, 2.4f);
+				bd.position = b2Vec2(5.9f + 2.0f * radius * i, 2.4f);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 10.0f);
 			}

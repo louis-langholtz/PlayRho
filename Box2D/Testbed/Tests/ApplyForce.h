@@ -31,7 +31,7 @@ public:
 		b2Body* ground;
 		{
 			b2BodyDef bd;
-			bd.position.Set(b2Float{0}, 20.0f);
+			bd.position = b2Vec2(b2Float{0}, 20.0f);
 			ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
@@ -95,7 +95,7 @@ public:
 			bd.angularDamping = 2.0f;
 			bd.linearDamping = 0.5f;
 
-			bd.position.Set(b2Float{0}, 2.0);
+			bd.position = b2Vec2(b2Float{0}, 2.0);
 			bd.angle = b2_pi;
 			bd.allowSleep = false;
 			m_body = m_world->CreateBody(&bd);
@@ -117,7 +117,7 @@ public:
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
 
-				bd.position.Set(b2Float{0}, 5.0f + 1.54f * i);
+				bd.position = b2Vec2(b2Float{0}, 5.0f + 1.54f * i);
 				b2Body* body = m_world->CreateBody(&bd);
 
 				body->CreateFixture(&fd);

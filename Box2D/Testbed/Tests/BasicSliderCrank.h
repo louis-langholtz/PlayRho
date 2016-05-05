@@ -28,7 +28,7 @@ public:
 		b2Body* ground = nullptr;
 		{
 			b2BodyDef bd;
-            bd.position.Set(0.0f, 17.0f);
+            bd.position = b2Vec2(0.0f, 17.0f);
 			ground = m_world->CreateBody(&bd);
 		}
         
@@ -42,7 +42,7 @@ public:
                 
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
-				bd.position.Set(-8.0f, 20.0f);
+				bd.position = b2Vec2(-8.0f, 20.0f);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
                 
@@ -60,7 +60,7 @@ public:
                 
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
-				bd.position.Set(4.0f, 20.0f);
+				bd.position = b2Vec2(4.0f, 20.0f);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
                 
@@ -79,7 +79,7 @@ public:
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
 				bd.fixedRotation = true;
-				bd.position.Set(12.0f, 20.0f);
+				bd.position = b2Vec2(12.0f, 20.0f);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
                 

@@ -392,9 +392,9 @@ void b2WheelJoint::Dump()
 	b2Log("  jd.bodyA = bodies[%d];\n", indexA);
 	b2Log("  jd.bodyB = bodies[%d];\n", indexB);
 	b2Log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	b2Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-	b2Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
-	b2Log("  jd.localAxisA.Set(%.15lef, %.15lef);\n", m_localXAxisA.x, m_localXAxisA.y);
+	b2Log("  jd.localAnchorA = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
+	b2Log("  jd.localAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+	b2Log("  jd.localAxisA = b2Vec2(%.15lef, %.15lef);\n", m_localXAxisA.x, m_localXAxisA.y);
 	b2Log("  jd.enableMotor = bool(%d);\n", m_enableMotor);
 	b2Log("  jd.motorSpeed = %.15lef;\n", m_motorSpeed);
 	b2Log("  jd.maxMotorTorque = %.15lef;\n", m_maxMotorTorque);

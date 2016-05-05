@@ -27,7 +27,7 @@ public:
 	{
 		{
 			b2BodyDef bd;
-			bd.position.Set(0.0f, 0.0f);
+			bd.position = b2Vec2(0.0f, 0.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
 			b2EdgeShape edge;
@@ -43,7 +43,7 @@ public:
 		{
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
-			bd.position.Set(0.0f, 4.0f);
+			bd.position = b2Vec2(0.0f, 4.0f);
 
 			b2PolygonShape box;
 			box.SetAsBox(2.0f, 0.1f);
@@ -55,7 +55,7 @@ public:
 
 			//m_x = RandomFloat(-1.0f, 1.0f);
 			m_x = 0.20352793f;
-			bd.position.Set(m_x, 10.0f);
+			bd.position = b2Vec2(m_x, 10.0f);
 			bd.bullet = true;
 
 			m_bullet = m_world->CreateBody(&bd);

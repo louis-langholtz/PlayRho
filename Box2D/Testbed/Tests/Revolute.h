@@ -48,7 +48,7 @@ public:
 
 			b2RevoluteJointDef rjd;
 
-			bd.position.Set(-10.0f, 20.0f);
+			bd.position = b2Vec2(-10.0f, 20.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&shape, 5.0f);
 
@@ -74,7 +74,7 @@ public:
 
 			b2BodyDef circle_bd;
 			circle_bd.type = b2_dynamicBody;
-			circle_bd.position.Set(5.0f, 30.0f);
+			circle_bd.position = b2Vec2(5.0f, 30.0f);
 
 			b2FixtureDef fd;
 			fd.density = 5.0f;
@@ -88,7 +88,7 @@ public:
 			polygon_shape.SetAsBox(10.0f, 0.2f, b2Vec2 (-10.0f, 0.0f), 0.0f);
 
 			b2BodyDef polygon_bd;
-			polygon_bd.position.Set(20.0f, 10.0f);
+			polygon_bd.position = b2Vec2(20.0f, 10.0f);
 			polygon_bd.type = b2_dynamicBody;
 			polygon_bd.bullet = true;
 			b2Body* polygon_body = m_world->CreateBody(&polygon_bd);
@@ -110,9 +110,9 @@ public:
 		
 			b2PolygonShape polyShape;		
 			b2Vec2 verts[3];
-			verts[0].Set( 17.63f, 36.31f );
-			verts[1].Set( 17.52f, 36.69f );
-			verts[2].Set( 17.19f, 36.36f );
+			verts[0] = b2Vec2( 17.63f, 36.31f );
+			verts[1] = b2Vec2( 17.52f, 36.69f );
+			verts[2] = b2Vec2( 17.19f, 36.36f );
 			polyShape.Set(verts, 3);
 		
 			b2FixtureDef polyFixtureDef;

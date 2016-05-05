@@ -33,11 +33,11 @@ public:
 			ground = m_world->CreateBody(&bd);
 
 			b2Vec2 vs[5];
-			vs[0].Set(0.0f, -2.0f);
-			vs[1].Set(8.0f, 6.0f);
-			vs[2].Set(8.0f, 20.0f);
-			vs[3].Set(-8.0f, 20.0f);
-			vs[4].Set(-8.0f, 6.0f);
+			vs[0] = b2Vec2(0.0f, -2.0f);
+			vs[1] = b2Vec2(8.0f, 6.0f);
+			vs[2] = b2Vec2(8.0f, 20.0f);
+			vs[3] = b2Vec2(-8.0f, 20.0f);
+			vs[4] = b2Vec2(-8.0f, 6.0f);
 
 			b2ChainShape loop;
 			loop.CreateLoop(vs, 5);
@@ -95,7 +95,7 @@ public:
 		// Circle character
 		{
 			b2BodyDef bd;
-			bd.position.Set(1.0f, 15.0f);
+			bd.position = b2Vec2(1.0f, 15.0f);
 			bd.type = b2_dynamicBody;
 			bd.bullet = true;
 

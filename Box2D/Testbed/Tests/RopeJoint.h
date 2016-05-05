@@ -58,20 +58,20 @@ public:
 
 			const int32 N = 10;
 			const b2Float y = 15.0f;
-			m_ropeDef.localAnchorA.Set(0.0f, y);
+			m_ropeDef.localAnchorA = b2Vec2(0.0f, y);
 
 			b2Body* prevBody = ground;
 			for (int32 i = 0; i < N; ++i)
 			{
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
-				bd.position.Set(0.5f + 1.0f * i, y);
+				bd.position = b2Vec2(0.5f + 1.0f * i, y);
 				if (i == N - 1)
 				{
 					shape.SetAsBox(1.5f, 1.5f);
 					fd.density = 100.0f;
 					fd.filter.categoryBits = 0x0002;
-					bd.position.Set(1.0f * i, y);
+					bd.position = b2Vec2(1.0f * i, y);
 					bd.angularDamping = 0.4f;
 				}
 

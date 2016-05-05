@@ -185,17 +185,17 @@ public:
 
 		{
 			b2Vec2 vertices[3];
-			vertices[0].Set(-0.5f, 0.0f);
-			vertices[1].Set(0.5f, 0.0f);
-			vertices[2].Set(0.0f, 1.5f);
+			vertices[0] = b2Vec2(-0.5f, 0.0f);
+			vertices[1] = b2Vec2(0.5f, 0.0f);
+			vertices[2] = b2Vec2(0.0f, 1.5f);
 			m_polygons[0].Set(vertices, 3);
 		}
 
 		{
 			b2Vec2 vertices[3];
-			vertices[0].Set(-0.1f, 0.0f);
-			vertices[1].Set(0.1f, 0.0f);
-			vertices[2].Set(0.0f, 1.5f);
+			vertices[0] = b2Vec2(-0.1f, 0.0f);
+			vertices[1] = b2Vec2(0.1f, 0.0f);
+			vertices[2] = b2Vec2(0.0f, 1.5f);
 			m_polygons[1].Set(vertices, 3);
 		}
 
@@ -205,14 +205,14 @@ public:
 			b2Float s = b2Sqrt(2.0f) * b;
 
 			b2Vec2 vertices[8];
-			vertices[0].Set(0.5f * s, 0.0f);
-			vertices[1].Set(0.5f * w, b);
-			vertices[2].Set(0.5f * w, b + s);
-			vertices[3].Set(0.5f * s, w);
-			vertices[4].Set(-0.5f * s, w);
-			vertices[5].Set(-0.5f * w, b + s);
-			vertices[6].Set(-0.5f * w, b);
-			vertices[7].Set(-0.5f * s, 0.0f);
+			vertices[0] = b2Vec2(0.5f * s, 0.0f);
+			vertices[1] = b2Vec2(0.5f * w, b);
+			vertices[2] = b2Vec2(0.5f * w, b + s);
+			vertices[3] = b2Vec2(0.5f * s, w);
+			vertices[4] = b2Vec2(-0.5f * s, w);
+			vertices[5] = b2Vec2(-0.5f * w, b + s);
+			vertices[6] = b2Vec2(-0.5f * w, b);
+			vertices[7] = b2Vec2(-0.5f * s, 0.0f);
 
 			m_polygons[2].Set(vertices, 8);
 		}
@@ -249,7 +249,7 @@ public:
 
 		b2Float x = RandomFloat(-10.0f, 10.0f);
 		b2Float y = RandomFloat(0.0f, 20.0f);
-		bd.position.Set(x, y);
+		bd.position = b2Vec2(x, y);
 		bd.angle = RandomFloat(-b2_pi, b2_pi);
 
 		m_userData[m_bodyIndex] = index;
@@ -424,24 +424,24 @@ public:
 		// This case was failing.
 		{
 			b2Vec2 vertices[4];
-			//vertices[0].Set(-22.875f, -3.0f);
-			//vertices[1].Set(22.875f, -3.0f);
-			//vertices[2].Set(22.875f, 3.0f);
-			//vertices[3].Set(-22.875f, 3.0f);
+			//vertices[0] = b2Vec2(-22.875f, -3.0f);
+			//vertices[1] = b2Vec2(22.875f, -3.0f);
+			//vertices[2] = b2Vec2(22.875f, 3.0f);
+			//vertices[3] = b2Vec2(-22.875f, 3.0f);
 
 			b2PolygonShape shape;
 			//shape.Set(vertices, 4);
 			shape.SetAsBox(22.875f, 3.0f);
 
 			b2RayCastInput input;
-			input.p1.Set(10.2725f,1.71372f);
-			input.p2.Set(10.2353f,2.21807f);
+			input.p1 = b2Vec2(10.2725f,1.71372f);
+			input.p2 = b2Vec2(10.2353f,2.21807f);
 			//input.maxFraction = 0.567623f;
 			input.maxFraction = 0.56762173f;
 
 			b2Transform xf;
 			xf.SetIdentity();
-			xf.position.Set(23.0f, 5.0f);
+			xf.position = b2Vec2(23.0f, 5.0f);
 
 			b2RayCastOutput output;
 			bool hit;

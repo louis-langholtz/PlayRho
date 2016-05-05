@@ -240,8 +240,8 @@ void b2FrictionJoint::Dump()
 	b2Log("  jd.bodyA = bodies[%d];\n", indexA);
 	b2Log("  jd.bodyB = bodies[%d];\n", indexB);
 	b2Log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	b2Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-	b2Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+	b2Log("  jd.localAnchorA = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
+	b2Log("  jd.localAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
 	b2Log("  jd.maxForce = %.15lef;\n", m_maxForce);
 	b2Log("  jd.maxTorque = %.15lef;\n", m_maxTorque);
 	b2Log("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);

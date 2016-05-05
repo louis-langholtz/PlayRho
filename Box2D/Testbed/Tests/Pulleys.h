@@ -54,11 +54,11 @@ public:
 			bd.type = b2_dynamicBody;
 
 			//bd.fixedRotation = true;
-			bd.position.Set(-10.0f, y);
+			bd.position = b2Vec2(-10.0f, y);
 			b2Body* body1 = m_world->CreateBody(&bd);
 			body1->CreateFixture(&shape, 5.0f);
 
-			bd.position.Set(10.0f, y);
+			bd.position = b2Vec2(10.0f, y);
 			b2Body* body2 = m_world->CreateBody(&bd);
 			body2->CreateFixture(&shape, 5.0f);
 

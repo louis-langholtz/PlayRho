@@ -49,7 +49,7 @@ public:
 			shape.SetAsBox(1.5f, 1.5f);
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
-			bd.position.Set(-40.0f,5.0f);
+			bd.position = b2Vec2(-40.0f,5.0f);
 			bd.bullet = true;
 			b2Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&shape, 1.0f);

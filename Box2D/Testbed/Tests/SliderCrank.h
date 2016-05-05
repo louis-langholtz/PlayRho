@@ -46,7 +46,7 @@ public:
 
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
-				bd.position.Set(0.0f, 7.0f);
+				bd.position = b2Vec2(0.0f, 7.0f);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
 
@@ -67,7 +67,7 @@ public:
 
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
-				bd.position.Set(0.0f, 13.0f);
+				bd.position = b2Vec2(0.0f, 13.0f);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
 
@@ -87,7 +87,7 @@ public:
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
 				bd.fixedRotation = true;
-				bd.position.Set(0.0f, 17.0f);
+				bd.position = b2Vec2(0.0f, 17.0f);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
 
@@ -111,7 +111,7 @@ public:
 
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
-				bd.position.Set(0.0f, 23.0f);
+				bd.position = b2Vec2(0.0f, 23.0f);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
 			}

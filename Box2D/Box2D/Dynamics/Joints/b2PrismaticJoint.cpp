@@ -186,9 +186,9 @@ void b2PrismaticJoint::InitVelocityConstraints(const b2SolverData& data)
 		const auto k23 = iA * m_a1 + iB * m_a2;
 		const auto k33 = mA + mB + iA * m_a1 * m_a1 + iB * m_a2 * m_a2;
 
-		m_K.ex.Set(k11, k12, k13);
-		m_K.ey.Set(k12, k22, k23);
-		m_K.ez.Set(k13, k23, k33);
+		m_K.ex = b2Vec3(k11, k12, k13);
+		m_K.ey = b2Vec3(k12, k22, k23);
+		m_K.ez = b2Vec3(k13, k23, k33);
 	}
 
 	// Compute motor and limit terms.
@@ -597,9 +597,9 @@ void b2PrismaticJoint::Dump()
 	b2Log("  jd.bodyA = bodies[%d];\n", indexA);
 	b2Log("  jd.bodyB = bodies[%d];\n", indexB);
 	b2Log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	b2Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-	b2Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
-	b2Log("  jd.localAxisA.Set(%.15lef, %.15lef);\n", m_localXAxisA.x, m_localXAxisA.y);
+	b2Log("  jd.localAnchorA = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
+	b2Log("  jd.localAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+	b2Log("  jd.localAxisA = b2Vec2(%.15lef, %.15lef);\n", m_localXAxisA.x, m_localXAxisA.y);
 	b2Log("  jd.referenceAngle = %.15lef;\n", m_referenceAngle);
 	b2Log("  jd.enableLimit = bool(%d);\n", m_enableLimit);
 	b2Log("  jd.lowerTranslation = %.15lef;\n", m_lowerTranslation);

@@ -31,7 +31,7 @@ public:
 
 		for (int32 i = 0; i < N; ++i)
 		{
-			vertices[i].Set(0.0f, 20.0f - 0.25f * i);
+			vertices[i] = b2Vec2(0.0f, 20.0f - 0.25f * i);
 			masses[i] = 1.0f;
 		}
 		masses[0] = 0.0f;
@@ -40,7 +40,7 @@ public:
 		b2RopeDef def;
 		def.vertices = vertices;
 		def.count = N;
-		def.gravity.Set(0.0f, -10.0f);
+		def.gravity = b2Vec2(0.0f, -10.0f);
 		def.masses = masses;
 		def.damping = 0.1f;
 		def.k2 = 1.0f;

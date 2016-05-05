@@ -223,7 +223,7 @@ void b2Fixture::Dump(island_count_t bodyIndex)
 			auto s = static_cast<b2CircleShape*>(m_shape);
 			b2Log("    b2CircleShape shape;\n");
 			b2Log("    shape.m_radius = %.15lef;\n", s->GetRadius());
-			b2Log("    shape.m_p.Set(%.15lef, %.15lef);\n", s->GetPosition().x, s->GetPosition().y);
+			b2Log("    shape.m_p = b2Vec2(%.15lef, %.15lef);\n", s->GetPosition().x, s->GetPosition().y);
 		}
 		break;
 

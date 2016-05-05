@@ -47,10 +47,10 @@ public:
 		b2Float h = m_worldExtent;
 		m_queryAABB = b2AABB{b2Vec2(-3.0f, -4.0f + h), b2Vec2(5.0f, 6.0f + h)};
 
-		m_rayCastInput.p1.Set(-5.0, 5.0f + h);
-		m_rayCastInput.p2.Set(7.0f, -4.0f + h);
-		//m_rayCastInput.p1.Set(0.0f, 2.0f + h);
-		//m_rayCastInput.p2.Set(0.0f, -2.0f + h);
+		m_rayCastInput.p1 = b2Vec2(-5.0, 5.0f + h);
+		m_rayCastInput.p2 = b2Vec2(7.0f, -4.0f + h);
+		//m_rayCastInput.p1 = b2Vec2(0.0f, 2.0f + h);
+		//m_rayCastInput.p2 = b2Vec2(0.0f, -2.0f + h);
 		m_rayCastInput.maxFraction = 1.0f;
 
 		m_automated = false;

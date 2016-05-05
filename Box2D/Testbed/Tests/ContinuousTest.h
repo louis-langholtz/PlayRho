@@ -27,7 +27,7 @@ public:
 	{
 		{
 			b2BodyDef bd;
-			bd.position.Set(0.0f, 0.0f);
+			bd.position = b2Vec2(0.0f, 0.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
 			b2EdgeShape edge;
@@ -44,7 +44,7 @@ public:
 		{
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
-			bd.position.Set(0.0f, 20.0f);
+			bd.position = b2Vec2(0.0f, 20.0f);
 			//bd.angle = 0.1f;
 
 			b2PolygonShape shape;
@@ -62,7 +62,7 @@ public:
 		{
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
-			bd.position.Set(0.0f, 2.0f);
+			bd.position = b2Vec2(0.0f, 2.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
 			b2CircleShape shape;
@@ -71,7 +71,7 @@ public:
 			body->CreateFixture(&shape, 1.0f);
 
 			bd.bullet = true;
-			bd.position.Set(0.0f, 10.0f);
+			bd.position = b2Vec2(0.0f, 10.0f);
 			body = m_world->CreateBody(&bd);
 			body->CreateFixture(&shape, 1.0f);
 			body->SetLinearVelocity(b2Vec2(0.0f, -100.0f));

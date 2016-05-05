@@ -40,7 +40,7 @@ public:
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
 			bd.allowSleep = false;
-			bd.position.Set(0.0f, 10.0f);
+			bd.position = b2Vec2(0.0f, 10.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
@@ -56,8 +56,8 @@ public:
 			b2RevoluteJointDef jd;
 			jd.bodyA = ground;
 			jd.bodyB = body;
-			jd.localAnchorA.Set(0.0f, 10.0f);
-			jd.localAnchorB.Set(0.0f, 0.0f);
+			jd.localAnchorA = b2Vec2(0.0f, 10.0f);
+			jd.localAnchorB = b2Vec2(0.0f, 0.0f);
 			jd.referenceAngle = 0.0f;
 			jd.motorSpeed = 0.05f * b2_pi;
 			jd.maxMotorTorque = 1e8f;
@@ -76,7 +76,7 @@ public:
 		{
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
-			bd.position.Set(0.0f, 10.0f);
+			bd.position = b2Vec2(0.0f, 10.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;

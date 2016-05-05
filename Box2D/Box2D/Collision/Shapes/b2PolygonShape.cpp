@@ -28,28 +28,28 @@ b2Shape* b2PolygonShape::Clone(b2BlockAllocator* allocator) const
 void b2PolygonShape::SetAsBox(b2Float hx, b2Float hy) noexcept
 {
 	m_count = 4;
-	m_vertices[0].Set(-hx, -hy);
-	m_vertices[1].Set( hx, -hy);
-	m_vertices[2].Set( hx,  hy);
-	m_vertices[3].Set(-hx,  hy);
-	m_normals[0].Set(b2Float{0}, b2Float{-1});
-	m_normals[1].Set(b2Float{1}, b2Float{0});
-	m_normals[2].Set(b2Float{0}, b2Float{1});
-	m_normals[3].Set(b2Float{-1}, b2Float{0});
+	m_vertices[0] = b2Vec2(-hx, -hy);
+	m_vertices[1] = b2Vec2( hx, -hy);
+	m_vertices[2] = b2Vec2( hx,  hy);
+	m_vertices[3] = b2Vec2(-hx,  hy);
+	m_normals[0] = b2Vec2(b2Float{0}, b2Float{-1});
+	m_normals[1] = b2Vec2(b2Float{1}, b2Float{0});
+	m_normals[2] = b2Vec2(b2Float{0}, b2Float{1});
+	m_normals[3] = b2Vec2(b2Float{-1}, b2Float{0});
 	m_centroid = b2Vec2_zero;
 }
 
 void b2PolygonShape::SetAsBox(b2Float hx, b2Float hy, const b2Vec2& center, b2Float angle)
 {
 	m_count = 4;
-	m_vertices[0].Set(-hx, -hy);
-	m_vertices[1].Set( hx, -hy);
-	m_vertices[2].Set( hx,  hy);
-	m_vertices[3].Set(-hx,  hy);
-	m_normals[0].Set(b2Float{0}, -b2Float(1));
-	m_normals[1].Set(b2Float(1), b2Float{0});
-	m_normals[2].Set(b2Float{0}, b2Float(1));
-	m_normals[3].Set(-b2Float(1), b2Float{0});
+	m_vertices[0] = b2Vec2(-hx, -hy);
+	m_vertices[1] = b2Vec2( hx, -hy);
+	m_vertices[2] = b2Vec2( hx,  hy);
+	m_vertices[3] = b2Vec2(-hx,  hy);
+	m_normals[0] = b2Vec2(b2Float{0}, -b2Float(1));
+	m_normals[1] = b2Vec2(b2Float(1), b2Float{0});
+	m_normals[2] = b2Vec2(b2Float{0}, b2Float(1));
+	m_normals[3] = b2Vec2(-b2Float(1), b2Float{0});
 	m_centroid = center;
 
 	const auto xf = b2Transform{center, b2Rot{angle}};

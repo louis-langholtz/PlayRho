@@ -52,7 +52,7 @@ public:
 			{
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
-				bd.position.Set(0.5f + i, y);
+				bd.position = b2Vec2(0.5f + i, y);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&fd);
 

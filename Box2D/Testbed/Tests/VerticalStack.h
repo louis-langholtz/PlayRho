@@ -72,7 +72,7 @@ public:
 				b2Float x = 0.0f;
 				//b2Float x = RandomFloat(-0.02f, 0.02f);
 				//b2Float x = i % 2 == 0 ? -0.01f : 0.01f;
-				bd.position.Set(xs[j] + x, 0.55f + 1.1f * i);
+				bd.position = b2Vec2(xs[j] + x, 0.55f + 1.1f * i);
 				b2Body* body = m_world->CreateBody(&bd);
 
 				m_bodies[n] = body;
@@ -107,7 +107,7 @@ public:
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
 				bd.bullet = true;
-				bd.position.Set(-31.0f, 5.0f);
+				bd.position = b2Vec2(-31.0f, 5.0f);
 
 				m_bullet = m_world->CreateBody(&bd);
 				m_bullet->CreateFixture(&fd);
@@ -148,7 +148,7 @@ public:
 		//		b2BodyDef bd;
 		//		bd.type = b2_dynamicBody;
 		//		bd.bullet = true;
-		//		bd.position.Set(-31.0f, 5.0f);
+		//		bd.position = b2Vec2(-31.0f, 5.0f);
 
 		//		m_bullet = m_world->CreateBody(&bd);
 		//		m_bullet->CreateFixture(&fd);

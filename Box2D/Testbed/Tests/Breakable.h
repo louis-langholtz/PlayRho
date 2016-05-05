@@ -45,7 +45,7 @@ public:
 		{
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
-			bd.position.Set(0.0f, 40.0f);
+			bd.position = b2Vec2(0.0f, 40.0f);
 			bd.angle = 0.25f * b2_pi;
 			m_body1 = m_world->CreateBody(&bd);
 

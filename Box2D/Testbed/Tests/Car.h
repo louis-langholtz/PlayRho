@@ -89,7 +89,7 @@ public:
 		// Teeter
 		{
 			b2BodyDef bd;
-			bd.position.Set(140.0f, 1.0f);
+			bd.position = b2Vec2(140.0f, 1.0f);
 			bd.type = b2_dynamicBody;
 			b2Body* body = m_world->CreateBody(&bd);
 
@@ -125,7 +125,7 @@ public:
 			{
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
-				bd.position.Set(161.0f + 2.0f * i, -0.125f);
+				bd.position = b2Vec2(161.0f + 2.0f * i, -0.125f);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&fd);
 
@@ -150,23 +150,23 @@ public:
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
 
-			bd.position.Set(230.0f, 0.5f);
+			bd.position = b2Vec2(230.0f, 0.5f);
 			body = m_world->CreateBody(&bd);
 			body->CreateFixture(&box, 0.5f);
 
-			bd.position.Set(230.0f, 1.5f);
+			bd.position = b2Vec2(230.0f, 1.5f);
 			body = m_world->CreateBody(&bd);
 			body->CreateFixture(&box, 0.5f);
 
-			bd.position.Set(230.0f, 2.5f);
+			bd.position = b2Vec2(230.0f, 2.5f);
 			body = m_world->CreateBody(&bd);
 			body->CreateFixture(&box, 0.5f);
 
-			bd.position.Set(230.0f, 3.5f);
+			bd.position = b2Vec2(230.0f, 3.5f);
 			body = m_world->CreateBody(&bd);
 			body->CreateFixture(&box, 0.5f);
 
-			bd.position.Set(230.0f, 4.5f);
+			bd.position = b2Vec2(230.0f, 4.5f);
 			body = m_world->CreateBody(&bd);
 			body->CreateFixture(&box, 0.5f);
 		}
@@ -175,12 +175,12 @@ public:
 		{
 			b2PolygonShape chassis;
 			b2Vec2 vertices[8];
-			vertices[0].Set(-1.5f, -0.5f);
-			vertices[1].Set(1.5f, -0.5f);
-			vertices[2].Set(1.5f, 0.0f);
-			vertices[3].Set(0.0f, 0.9f);
-			vertices[4].Set(-1.15f, 0.9f);
-			vertices[5].Set(-1.5f, 0.2f);
+			vertices[0] = b2Vec2(-1.5f, -0.5f);
+			vertices[1] = b2Vec2(1.5f, -0.5f);
+			vertices[2] = b2Vec2(1.5f, 0.0f);
+			vertices[3] = b2Vec2(0.0f, 0.9f);
+			vertices[4] = b2Vec2(-1.15f, 0.9f);
+			vertices[5] = b2Vec2(-1.5f, 0.2f);
 			chassis.Set(vertices, 6);
 
 			b2CircleShape circle;
@@ -188,7 +188,7 @@ public:
 
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
-			bd.position.Set(0.0f, 1.0f);
+			bd.position = b2Vec2(0.0f, 1.0f);
 			m_car = m_world->CreateBody(&bd);
 			m_car->CreateFixture(&chassis, 1.0f);
 
@@ -197,11 +197,11 @@ public:
 			fd.density = 1.0f;
 			fd.friction = 0.9f;
 
-			bd.position.Set(-1.0f, 0.35f);
+			bd.position = b2Vec2(-1.0f, 0.35f);
 			m_wheel1 = m_world->CreateBody(&bd);
 			m_wheel1->CreateFixture(&fd);
 
-			bd.position.Set(1.0f, 0.4f);
+			bd.position = b2Vec2(1.0f, 0.4f);
 			m_wheel2 = m_world->CreateBody(&bd);
 			m_wheel2->CreateFixture(&fd);
 

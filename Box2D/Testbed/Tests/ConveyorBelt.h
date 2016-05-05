@@ -38,7 +38,7 @@ public:
 		// Platform
 		{
 			b2BodyDef bd;
-			bd.position.Set(-5.0f, 5.0f);
+			bd.position = b2Vec2(-5.0f, 5.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
@@ -55,7 +55,7 @@ public:
 		{
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
-			bd.position.Set(-10.0f + 2.0f * i, 7.0f);
+			bd.position = b2Vec2(-10.0f + 2.0f * i, 7.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;

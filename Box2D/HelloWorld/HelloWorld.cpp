@@ -38,7 +38,7 @@ int main(int argc, char** argv)
 
 	// Define the ground body.
 	b2BodyDef groundBodyDef;
-	groundBodyDef.position.Set(0.0f, -10.0f);
+	groundBodyDef.position = b2Vec2(0.0f, -10.0f);
 
 	// Call the body factory which allocates memory for the ground body
 	// from a pool and creates the ground box shape (also from a pool).
@@ -57,7 +57,7 @@ int main(int argc, char** argv)
 	// Define the dynamic body. We set its position and call the body factory.
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(0.0f, 4.0f);
+	bodyDef.position = b2Vec2(0.0f, 4.0f);
 	b2Body* body = world.CreateBody(&bodyDef);
 
 	// Define another box shape for our dynamic body.

@@ -224,7 +224,7 @@ void b2MouseJoint::Dump()
 	b2Log("  jd.bodyA = bodies[%d];\n", indexA);
 	b2Log("  jd.bodyB = bodies[%d];\n", indexB);
 	b2Log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	b2Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+	b2Log("  jd.localAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
 	b2Log("  jd.frequencyHz = %.15lef;\n", m_frequencyHz);
 	b2Log("  jd.dampingRatio = %.15lef;\n", m_dampingRatio);
 	b2Log("  jd.maxForce = %.15lef;\n", m_maxForce);

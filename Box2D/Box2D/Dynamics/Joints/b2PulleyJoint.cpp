@@ -330,10 +330,10 @@ void b2PulleyJoint::Dump()
 	b2Log("  jd.bodyA = bodies[%d];\n", indexA);
 	b2Log("  jd.bodyB = bodies[%d];\n", indexB);
 	b2Log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	b2Log("  jd.groundAnchorA.Set(%.15lef, %.15lef);\n", m_groundAnchorA.x, m_groundAnchorA.y);
-	b2Log("  jd.groundAnchorB.Set(%.15lef, %.15lef);\n", m_groundAnchorB.x, m_groundAnchorB.y);
-	b2Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-	b2Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+	b2Log("  jd.groundAnchorA = b2Vec2(%.15lef, %.15lef);\n", m_groundAnchorA.x, m_groundAnchorA.y);
+	b2Log("  jd.groundAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_groundAnchorB.x, m_groundAnchorB.y);
+	b2Log("  jd.localAnchorA = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
+	b2Log("  jd.localAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
 	b2Log("  jd.lengthA = %.15lef;\n", m_lengthA);
 	b2Log("  jd.lengthB = %.15lef;\n", m_lengthB);
 	b2Log("  jd.ratio = %.15lef;\n", m_ratio);

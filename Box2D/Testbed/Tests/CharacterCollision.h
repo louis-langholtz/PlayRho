@@ -60,10 +60,10 @@ public:
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2Vec2 vs[4];
-			vs[0].Set(5.0f, 7.0f);
-			vs[1].Set(6.0f, 8.0f);
-			vs[2].Set(7.0f, 8.0f);
-			vs[3].Set(8.0f, 7.0f);
+			vs[0] = b2Vec2(5.0f, 7.0f);
+			vs[1] = b2Vec2(6.0f, 8.0f);
+			vs[2] = b2Vec2(7.0f, 8.0f);
+			vs[3] = b2Vec2(8.0f, 7.0f);
 			b2ChainShape shape;
 			shape.CreateChain(vs, 4);
 			ground->CreateFixture(&shape, 0.0f);
@@ -91,10 +91,10 @@ public:
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2Vec2 vs[4];
-			vs[0].Set(-1.0f, 3.0f);
-			vs[1].Set(1.0f, 3.0f);
-			vs[2].Set(1.0f, 5.0f);
-			vs[3].Set(-1.0f, 5.0f);
+			vs[0] = b2Vec2(-1.0f, 3.0f);
+			vs[1] = b2Vec2(1.0f, 3.0f);
+			vs[2] = b2Vec2(1.0f, 5.0f);
+			vs[3] = b2Vec2(-1.0f, 5.0f);
 			b2ChainShape shape;
 			shape.CreateLoop(vs, 4);
 			ground->CreateFixture(&shape, 0.0f);
@@ -103,20 +103,20 @@ public:
 		// Edge loop. Collision should be smooth.
 		{
 			b2BodyDef bd;
-			bd.position.Set(-10.0f, 4.0f);
+			bd.position = b2Vec2(-10.0f, 4.0f);
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2Vec2 vs[10];
-			vs[0].Set(0.0f, 0.0f);
-			vs[1].Set(6.0f, 0.0f);
-			vs[2].Set(6.0f, 2.0f);
-			vs[3].Set(4.0f, 1.0f);
-			vs[4].Set(2.0f, 2.0f);
-			vs[5].Set(0.0f, 2.0f);
-			vs[6].Set(-2.0f, 2.0f);
-			vs[7].Set(-4.0f, 3.0f);
-			vs[8].Set(-6.0f, 2.0f);
-			vs[9].Set(-6.0f, 0.0f);
+			vs[0] = b2Vec2(0.0f, 0.0f);
+			vs[1] = b2Vec2(6.0f, 0.0f);
+			vs[2] = b2Vec2(6.0f, 2.0f);
+			vs[3] = b2Vec2(4.0f, 1.0f);
+			vs[4] = b2Vec2(2.0f, 2.0f);
+			vs[5] = b2Vec2(0.0f, 2.0f);
+			vs[6] = b2Vec2(-2.0f, 2.0f);
+			vs[7] = b2Vec2(-4.0f, 3.0f);
+			vs[8] = b2Vec2(-6.0f, 2.0f);
+			vs[9] = b2Vec2(-6.0f, 0.0f);
 			b2ChainShape shape;
 			shape.CreateLoop(vs, 10);
 			ground->CreateFixture(&shape, 0.0f);
@@ -125,7 +125,7 @@ public:
 		// Square character 1
 		{
 			b2BodyDef bd;
-			bd.position.Set(-3.0f, 8.0f);
+			bd.position = b2Vec2(-3.0f, 8.0f);
 			bd.type = b2_dynamicBody;
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
@@ -144,7 +144,7 @@ public:
 		// Square character 2
 		{
 			b2BodyDef bd;
-			bd.position.Set(-5.0f, 5.0f);
+			bd.position = b2Vec2(-5.0f, 5.0f);
 			bd.type = b2_dynamicBody;
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
@@ -163,7 +163,7 @@ public:
 		// Hexagon character
 		{
 			b2BodyDef bd;
-			bd.position.Set(-5.0f, 8.0f);
+			bd.position = b2Vec2(-5.0f, 8.0f);
 			bd.type = b2_dynamicBody;
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
@@ -175,7 +175,7 @@ public:
 			b2Vec2 vertices[6];
 			for (int32 i = 0; i < 6; ++i)
 			{
-				vertices[i].Set(0.5f * cosf(angle), 0.5f * sinf(angle));
+				vertices[i] = b2Vec2(0.5f * cosf(angle), 0.5f * sinf(angle));
 				angle += delta;
 			}
 
@@ -191,7 +191,7 @@ public:
 		// Circle character
 		{
 			b2BodyDef bd;
-			bd.position.Set(3.0f, 5.0f);
+			bd.position = b2Vec2(3.0f, 5.0f);
 			bd.type = b2_dynamicBody;
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
@@ -210,7 +210,7 @@ public:
 		// Circle character
 		{
 			b2BodyDef bd;
-			bd.position.Set(-7.0f, 6.0f);
+			bd.position = b2Vec2(-7.0f, 6.0f);
 			bd.type = b2_dynamicBody;
 			bd.allowSleep = false;
 

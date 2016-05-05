@@ -91,7 +91,7 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 	}
 	else
 	{
-		m_u.Set(b2Float{0}, b2Float{0});
+		m_u = b2Vec2(b2Float{0}, b2Float{0});
 	}
 
 	const auto crAu = b2Cross(m_rA, m_u);
@@ -248,8 +248,8 @@ void b2DistanceJoint::Dump()
 	b2Log("  jd.bodyA = bodies[%d];\n", indexA);
 	b2Log("  jd.bodyB = bodies[%d];\n", indexB);
 	b2Log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	b2Log("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-	b2Log("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+	b2Log("  jd.localAnchorA = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
+	b2Log("  jd.localAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
 	b2Log("  jd.length = %.15lef;\n", m_length);
 	b2Log("  jd.frequencyHz = %.15lef;\n", m_frequencyHz);
 	b2Log("  jd.dampingRatio = %.15lef;\n", m_dampingRatio);

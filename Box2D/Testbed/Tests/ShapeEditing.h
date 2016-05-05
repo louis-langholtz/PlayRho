@@ -36,7 +36,7 @@ public:
 
 		b2BodyDef bd;
 		bd.type = b2_dynamicBody;
-		bd.position.Set(0.0f, 10.0f);
+		bd.position = b2Vec2(0.0f, 10.0f);
 		m_body = m_world->CreateBody(&bd);
 
 		b2PolygonShape shape;

@@ -1197,10 +1197,10 @@ void b2World::DrawDebugData()
 					const auto proxy = f->m_proxies + i;
 					const auto aabb = bp->GetFatAABB(proxy->proxyId);
 					b2Vec2 vs[4];
-					vs[0].Set(aabb.GetLowerBound().x, aabb.GetLowerBound().y);
-					vs[1].Set(aabb.GetUpperBound().x, aabb.GetLowerBound().y);
-					vs[2].Set(aabb.GetUpperBound().x, aabb.GetUpperBound().y);
-					vs[3].Set(aabb.GetLowerBound().x, aabb.GetUpperBound().y);
+					vs[0] = b2Vec2(aabb.GetLowerBound().x, aabb.GetLowerBound().y);
+					vs[1] = b2Vec2(aabb.GetUpperBound().x, aabb.GetLowerBound().y);
+					vs[2] = b2Vec2(aabb.GetUpperBound().x, aabb.GetUpperBound().y);
+					vs[3] = b2Vec2(aabb.GetLowerBound().x, aabb.GetUpperBound().y);
 
 					g_debugDraw->DrawPolygon(vs, 4, color);
 				}

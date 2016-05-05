@@ -36,14 +36,14 @@ public:
         
 		b2BodyDef bd;
 		bd.type = b2_dynamicBody;
-		bd.position.Set(0.0f, 2.5f);
+		bd.position = b2Vec2(0.0f, 2.5f);
 		b2Body* body = m_world->CreateBody(&bd);
         
 		b2CircleShape shape;
 		shape.SetRadius(b2Float(0.5));
         body->CreateFixture(&shape, 10.0f);
         
-        bd.position.Set(0.0f, 3.5f);
+        bd.position = b2Vec2(0.0f, 3.5f);
         body = m_world->CreateBody(&bd);
         body->CreateFixture(&shape, 10.0f);
         
@@ -61,7 +61,7 @@ public:
         {
             b2BodyDef bd;
             bd.type = b2_dynamicBody;
-            bd.position.Set(0.0f, 9.0f);
+            bd.position = b2Vec2(0.0f, 9.0f);
             m_heavy = m_world->CreateBody(&bd);
             
             b2CircleShape shape;

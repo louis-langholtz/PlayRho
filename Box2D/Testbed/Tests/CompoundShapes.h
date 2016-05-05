@@ -27,7 +27,7 @@ public:
 	{
 		{
 			b2BodyDef bd;
-			bd.position.Set(0.0f, 0.0f);
+			bd.position = b2Vec2(0.0f, 0.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
@@ -46,7 +46,7 @@ public:
 				b2Float x = RandomFloat(-0.1f, 0.1f);
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
-				bd.position.Set(x + 5.0f, 1.05f + 2.5f * i);
+				bd.position = b2Vec2(x + 5.0f, 1.05f + 2.5f * i);
 				bd.angle = RandomFloat(-b2_pi, b2_pi);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&circle1, 2.0f);
@@ -66,7 +66,7 @@ public:
 				b2Float x = RandomFloat(-0.1f, 0.1f);
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
-				bd.position.Set(x - 5.0f, 1.05f + 2.5f * i);
+				bd.position = b2Vec2(x - 5.0f, 1.05f + 2.5f * i);
 				bd.angle = RandomFloat(-b2_pi, b2_pi);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&polygon1, 2.0f);
@@ -102,7 +102,7 @@ public:
 				b2Float x = RandomFloat(-0.1f, 0.1f);
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
-				bd.position.Set(x, 2.05f + 2.5f * i);
+				bd.position = b2Vec2(x, 2.05f + 2.5f * i);
 				bd.angle = 0.0f;
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&triangle1, 2.0f);
@@ -122,7 +122,7 @@ public:
 
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
-			bd.position.Set( 0.0f, 2.0f );
+			bd.position = b2Vec2( 0.0f, 2.0f );
 			b2Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&bottom, 4.0f);
 			body->CreateFixture(&left, 4.0f);

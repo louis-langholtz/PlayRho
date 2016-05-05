@@ -58,9 +58,9 @@ public:
 
 		// Small triangle
 		b2Vec2 vertices[3];
-		vertices[0].Set(-1.0f, 0.0f);
-		vertices[1].Set(1.0f, 0.0f);
-		vertices[2].Set(0.0f, 2.0f);
+		vertices[0] = b2Vec2(-1.0f, 0.0f);
+		vertices[1] = b2Vec2(1.0f, 0.0f);
+		vertices[2] = b2Vec2(0.0f, 2.0f);
 		b2PolygonShape polygon;
 		polygon.Set(vertices, 3);
 
@@ -74,7 +74,7 @@ public:
 
 		b2BodyDef triangleBodyDef;
 		triangleBodyDef.type = b2_dynamicBody;
-		triangleBodyDef.position.Set(-5.0f, 2.0f);
+		triangleBodyDef.position = b2Vec2(-5.0f, 2.0f);
 
 		b2Body* body1 = m_world->CreateBody(&triangleBodyDef);
 		body1->CreateFixture(&triangleShapeDef);
@@ -85,7 +85,7 @@ public:
 		vertices[2] *= 2.0f;
 		polygon.Set(vertices, 3);
 		triangleShapeDef.filter.groupIndex = k_largeGroup;
-		triangleBodyDef.position.Set(-5.0f, 6.0f);
+		triangleBodyDef.position = b2Vec2(-5.0f, 6.0f);
 		triangleBodyDef.fixedRotation = true; // look at me!
 
 		b2Body* body2 = m_world->CreateBody(&triangleBodyDef);
@@ -94,7 +94,7 @@ public:
 		{
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
-			bd.position.Set(-5.0f, 10.0f);
+			bd.position = b2Vec2(-5.0f, 10.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
 			b2PolygonShape p;
@@ -105,9 +105,9 @@ public:
 			jd.bodyA = body2;
 			jd.bodyB = body;
 			jd.enableLimit = true;
-			jd.localAnchorA.Set(0.0f, 4.0f);
+			jd.localAnchorA = b2Vec2(0.0f, 4.0f);
 			jd.localAnchorB = b2Vec2_zero;
-			jd.localAxisA.Set(0.0f, 1.0f);
+			jd.localAxisA = b2Vec2(0.0f, 1.0f);
 			jd.lowerTranslation = -1.0f;
 			jd.upperTranslation = 1.0f;
 
@@ -127,7 +127,7 @@ public:
 
 		b2BodyDef boxBodyDef;
 		boxBodyDef.type = b2_dynamicBody;
-		boxBodyDef.position.Set(0.0f, 2.0f);
+		boxBodyDef.position = b2Vec2(0.0f, 2.0f);
 
 		b2Body* body3 = m_world->CreateBody(&boxBodyDef);
 		body3->CreateFixture(&boxShapeDef);
@@ -135,7 +135,7 @@ public:
 		// Large box (recycle definitions)
 		polygon.SetAsBox(2.0f, 1.0f);
 		boxShapeDef.filter.groupIndex = k_largeGroup;
-		boxBodyDef.position.Set(0.0f, 6.0f);
+		boxBodyDef.position = b2Vec2(0.0f, 6.0f);
 
 		b2Body* body4 = m_world->CreateBody(&boxBodyDef);
 		body4->CreateFixture(&boxShapeDef);
@@ -154,7 +154,7 @@ public:
 
 		b2BodyDef circleBodyDef;
 		circleBodyDef.type = b2_dynamicBody;
-		circleBodyDef.position.Set(5.0f, 2.0f);
+		circleBodyDef.position = b2Vec2(5.0f, 2.0f);
 		
 		b2Body* body5 = m_world->CreateBody(&circleBodyDef);
 		body5->CreateFixture(&circleShapeDef);
@@ -162,7 +162,7 @@ public:
 		// Large circle
 		circle.SetRadius(circle.GetRadius() * 2);
 		circleShapeDef.filter.groupIndex = k_largeGroup;
-		circleBodyDef.position.Set(5.0f, 6.0f);
+		circleBodyDef.position = b2Vec2(5.0f, 6.0f);
 
 		b2Body* body6 = m_world->CreateBody(&circleBodyDef);
 		body6->CreateFixture(&circleShapeDef);

@@ -54,9 +54,6 @@ struct b2Vec2
 	/// Construct using coordinates.
 	constexpr b2Vec2(b2Float x_, b2Float y_) noexcept : x(x_), y(y_) {}
 
-	/// Set this vector to some specified coordinates.
-	constexpr void Set(b2Float x_, b2Float y_) noexcept { x = x_; y = y_; }
-
 	/// Negate this vector.
 	constexpr b2Vec2 operator -() const noexcept { return b2Vec2{-x, -y}; }
 
@@ -167,9 +164,6 @@ struct b2Vec3
 	/// Construct using coordinates.
 	constexpr explicit b2Vec3(b2Float x_, b2Float y_, b2Float z_) noexcept : x(x_), y(y_), z(z_) {}
 
-	/// Set this vector to some specified coordinates.
-	constexpr void Set(b2Float x_, b2Float y_, b2Float z_) noexcept { x = x_; y = y_; z = z_; }
-
 	/// Negate this vector.
 	constexpr b2Vec3 operator -() const noexcept { return b2Vec3{-x, -y, -z}; }
 
@@ -210,25 +204,11 @@ struct b2Mat22
 	/// Construct this matrix using scalars.
 	constexpr b2Mat22(b2Float a11, b2Float a12, b2Float a21, b2Float a22) noexcept: ex(a11, a21), ey(a12, a22) {}
 
-	/// Initialize this matrix using columns.
-	constexpr void Set(const b2Vec2& c1, const b2Vec2& c2) noexcept
-	{
-		ex = c1;
-		ey = c2;
-	}
-
 	/// Set this to the identity matrix.
 	constexpr void SetIdentity() noexcept
 	{
 		ex.x = b2Float(1); ey.x = b2Float{0};
 		ex.y = b2Float{0}; ey.y = b2Float(1);
-	}
-
-	/// Set this matrix to all zeros.
-	constexpr void SetZero() noexcept
-	{
-		ex = b2Vec2_zero;
-		ey = b2Vec2_zero;
 	}
 
 	constexpr b2Mat22 GetInverse() const noexcept
@@ -258,7 +238,7 @@ struct b2Mat22
 	b2Vec2 ex, ey;
 };
 
-constexpr auto b2Mat22_zero = b2Mat22{b2Vec2_zero, b2Vec2_zero};
+constexpr auto b2Mat22_zero = b2Mat22(b2Vec2_zero, b2Vec2_zero);
 
 /// A 3-by-3 matrix. Stored in column-major order.
 struct b2Mat33
@@ -269,14 +249,6 @@ struct b2Mat33
 	/// Construct this matrix using columns.
 	constexpr b2Mat33(const b2Vec3& c1, const b2Vec3& c2, const b2Vec3& c3):
 		ex(c1), ey(c2), ez(c3) {}
-
-	/// Set this matrix to all zeros.
-	constexpr void SetZero() noexcept
-	{
-		ex = b2Vec3_zero;
-		ey = b2Vec3_zero;
-		ez = b2Vec3_zero;
-	}
 
 	/// Solve A * x = b, where b is a column vector. This is more efficient
 	/// than computing the inverse in one-shot cases.
@@ -314,6 +286,8 @@ struct b2Mat33
 
 	b2Vec3 ex, ey, ez;
 };
+
+constexpr auto b2Mat33_zero = b2Mat33(b2Vec3_zero, b2Vec3_zero, b2Vec3_zero);
 
 /// Rotation
 struct b2Rot

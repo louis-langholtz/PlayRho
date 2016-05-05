@@ -47,7 +47,7 @@ public:
 			{
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
-				bd.position.Set(0.0, 4.0f + 3.0f * i);
+				bd.position = b2Vec2(0.0, 4.0f + 3.0f * i);
 
 				m_bodies[i] = m_world->CreateBody(&bd);
 
