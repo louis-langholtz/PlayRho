@@ -150,18 +150,25 @@ class b2TempPolygon
 {
 public:
 	using size_type = std::remove_cv<decltype(b2_maxPolygonVertices)>::type;
-	
+
+	/// Gets count of appended elements (vertex-normal pairs).
+	/// @return value between 0 and b2_maxPolygonVertices inclusive.
+	/// @see b2_maxPolygonVertices.
 	size_type GetCount() const noexcept { return count; }
 	
 	b2Vec2 GetVertex(size_type index) const
 	{
-		b2Assert((index >= 0) && (index < b2_maxPolygonVertices));
+		b2Assert(index >= 0);
+		b2Assert(index < b2_maxPolygonVertices);
+		b2Assert(index < count);
 		return vertices[index];
 	}
 
 	b2Vec2 GetNormal(size_type index) const
 	{
-		b2Assert((index >= 0) && (index < b2_maxPolygonVertices));
+		b2Assert(index >= 0);
+		b2Assert(index < b2_maxPolygonVertices);
+		b2Assert(index < count);
 		return normals[index];
 	}
 
@@ -201,11 +208,14 @@ struct b2ReferenceFace
 class b2EPCollider
 {
 public:
+	b2EPCollider(const b2Transform& xf): m_xf(xf) {}
+
 	bool Collide(b2Manifold* manifold,
-				 const b2EdgeShape& shapeA, const b2Transform& xfA,
-				 const b2PolygonShape& shapeB, const b2Transform& xfB);
+				 const b2EdgeShape& shapeA,
+				 const b2PolygonShape& shapeB);
 	
 private:
+	
 	enum VertexType
 	{
 		e_isolated,
@@ -220,7 +230,7 @@ private:
 
 	b2TempPolygon m_shapeB;
 	
-	b2Transform m_xf;
+	const b2Transform m_xf;
 	b2Vec2 m_centroidB;
 	b2Vec2 m_v0, m_v1, m_v2, m_v3;
 	b2Vec2 m_normal0, m_normal1, m_normal2;
@@ -239,12 +249,8 @@ private:
 // 6. Visit each separating axes, only accept axes within the range
 // 7. Return if _any_ axis indicates separation
 // 8. Clip
-bool b2EPCollider::Collide(b2Manifold* manifold,
-						   const b2EdgeShape& shapeA, const b2Transform& xfA,
-						   const b2PolygonShape& shapeB, const b2Transform& xfB)
+bool b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape& shapeA, const b2PolygonShape& shapeB)
 {
-	m_xf = b2MulT(xfA, xfB);
-	
 	m_centroidB = b2Mul(m_xf, shapeB.GetCentroid());
 	
 	m_v0 = shapeA.GetVertex0();
@@ -436,10 +442,13 @@ bool b2EPCollider::Collide(b2Manifold* manifold,
 		}
 	}
 	
-	// Get shapeB in frameA
-	for (auto i = decltype(shapeB.GetVertexCount()){0}; i < shapeB.GetVertexCount(); ++i)
 	{
-		m_shapeB.Append(b2Mul(m_xf, shapeB.GetVertex(i)), b2Mul(m_xf.q, shapeB.GetNormal(i)));
+		// Get shapeB in frameA
+		const auto num_vertices = shapeB.GetVertexCount();
+		for (auto i = decltype(num_vertices){0}; i < num_vertices; ++i)
+		{
+			m_shapeB.Append(b2Mul(m_xf, shapeB.GetVertex(i)), b2Mul(m_xf.q, shapeB.GetNormal(i)));
+		}
 	}
 
 	manifold->SetType(b2Manifold::e_unset);
@@ -647,6 +656,6 @@ bool b2CollideShapes(b2Manifold* manifold,
 					 const b2EdgeShape& shapeA, const b2Transform& xfA,
 					 const b2PolygonShape& shapeB, const b2Transform& xfB)
 {
-	b2EPCollider collider;
-	return collider.Collide(manifold, shapeA, xfA, shapeB, xfB);
+	b2EPCollider collider(b2MulT(xfA, xfB));
+	return collider.Collide(manifold, shapeA, shapeB);
 }
