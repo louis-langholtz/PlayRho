@@ -33,13 +33,11 @@ public:
 
 	b2DistanceProxy() = default;
 
+	/// Initialize the proxy using the given shape.
+	/// @note The shape must remain in scope while the proxy is in use.
 	b2DistanceProxy(const b2Shape& shape, child_count_t index);
 
 	b2Float GetRadius() const noexcept { return m_radius; }
-
-	/// Initialize the proxy using the given shape. The shape
-	/// must remain in scope while the proxy is in use.
-	void Set(const b2Shape& shape, child_count_t index);
 
 	/// Get the supporting vertex index in the given direction.
 	size_type GetSupport(const b2Vec2& d) const noexcept;
@@ -136,7 +134,8 @@ void b2Distance(b2DistanceOutput* output,
 
 inline const b2Vec2& b2DistanceProxy::GetVertex(size_type index) const
 {
-	b2Assert(0 <= index && index < m_count);
+	b2Assert(index >= 0);
+	b2Assert(index < m_count);
 	return m_vertices[index];
 }
 

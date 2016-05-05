@@ -123,10 +123,11 @@ public:
 	void Step(Settings* settings)
 	{
 		const b2ContactManager& cm = m_world->GetContactManager();
-		int32 height = cm.m_broadPhase.GetTreeHeight();
-		int32 leafCount = cm.m_broadPhase.GetProxyCount();
-		int32 minimumNodeCount = 2 * leafCount - 1;
-		b2Float minimumHeight = ceilf(logf(b2Float(minimumNodeCount)) / logf(2.0f));
+		const auto height = cm.m_broadPhase.GetTreeHeight();
+		const auto leafCount = cm.m_broadPhase.GetProxyCount();
+		b2Assert(leafCount > 0);
+		const auto minimumNodeCount = 2 * leafCount - 1;
+		const auto minimumHeight = ceilf(logf(b2Float(minimumNodeCount)) / logf(2.0f));
 		g_debugDraw.DrawString(5, m_textLine, "dynamic tree height = %d, min = %d", height, int32(minimumHeight));
 		m_textLine += DRAW_STRING_NEW_LINE;
 

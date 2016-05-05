@@ -115,7 +115,7 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 		const auto k = m_mass * b2Square(omega);
 
 		// magic formulas
-		const auto h = data.step.dt;
+		const auto h = data.step.get_dt();
 		m_gamma = h * (d + h * k);
 		m_gamma = m_gamma != b2Float{0} ? b2Float(1) / m_gamma : b2Float{0};
 		m_bias = C * h * k * m_gamma;

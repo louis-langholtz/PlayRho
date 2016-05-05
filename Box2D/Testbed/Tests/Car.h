@@ -184,7 +184,7 @@ public:
 			chassis.Set(vertices, 6);
 
 			b2CircleShape circle;
-			circle.m_radius = 0.4f;
+			circle.SetRadius(b2Float(0.4));
 
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;

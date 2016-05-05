@@ -54,26 +54,44 @@ struct b2Vec2
 	/// Construct using coordinates.
 	constexpr b2Vec2(b2Float x_, b2Float y_) noexcept : x(x_), y(y_) {}
 
-	/// Set this vector to all zeros.
-	constexpr void SetZero() noexcept { x = b2Float{0}; y = b2Float{0}; };
-
 	/// Set this vector to some specified coordinates.
 	constexpr void Set(b2Float x_, b2Float y_) noexcept { x = x_; y = y_; }
 
 	/// Negate this vector.
 	constexpr b2Vec2 operator -() const noexcept { return b2Vec2{-x, -y}; }
-	
+
+#if !defined(NO_B2VEC2_INDEXING)
+
+	using index_t = unsigned;
+	static constexpr auto NumElements = index_t(2);
+
 	/// Read from and indexed element.
-	b2Float operator () (int32 i) const
+	b2Float operator () (index_t i) const
 	{
-		return (&x)[i];
+		b2Assert((i >= 0) && (i < NumElements));
+		switch (i)
+		{
+			case 0: return x;
+			case 1: return y;
+			default: break;
+		}
+		return x;
 	}
 
 	/// Write to an indexed element.
-	b2Float& operator () (int32 i)
+	b2Float& operator () (index_t i)
 	{
-		return (&x)[i];
+		b2Assert((i >= 0) && (i < NumElements));
+		switch (i)
+		{
+			case 0: return x;
+			case 1: return y;
+			default: break;
+		}
+		return x;
 	}
+
+#endif
 
 	/// Add a vector to this vector.
 	constexpr void operator += (const b2Vec2& v) noexcept
@@ -136,7 +154,8 @@ struct b2Vec2
 	b2Float x, y;
 };
 
-/// Useful constant
+/// An all zero b2Vec2 value.
+/// @see b2Vec2.
 constexpr auto b2Vec2_zero = b2Vec2{0, 0};
 
 /// A 2D column vector with 3 elements.
@@ -146,10 +165,7 @@ struct b2Vec3
 	b2Vec3() = default;
 
 	/// Construct using coordinates.
-	constexpr b2Vec3(b2Float x_, b2Float y_, b2Float z_) noexcept : x(x_), y(y_), z(z_) {}
-
-	/// Set this vector to all zeros.
-	constexpr void SetZero() noexcept { x = b2Float{0}; y = b2Float{0}; z = b2Float{0}; }
+	constexpr explicit b2Vec3(b2Float x_, b2Float y_, b2Float z_) noexcept : x(x_), y(y_), z(z_) {}
 
 	/// Set this vector to some specified coordinates.
 	constexpr void Set(b2Float x_, b2Float y_, b2Float z_) noexcept { x = x_; y = y_; z = z_; }
@@ -177,6 +193,10 @@ struct b2Vec3
 
 	b2Float x, y, z;
 };
+
+/// An all zero b2Vec3 value.
+/// @see b2Vec3.
+constexpr auto b2Vec3_zero = b2Vec3{0, 0, 0};
 
 /// A 2-by-2 matrix. Stored in column-major order.
 struct b2Mat22
@@ -214,7 +234,7 @@ struct b2Mat22
 	constexpr b2Mat22 GetInverse() const noexcept
 	{
 		const auto a = ex.x, b = ey.x, c = ex.y, d = ey.y;
-		auto det = a * d - b * c;
+		auto det = (a * d) - (b * c);
 		if (det != b2Float{0})
 		{
 			det = b2Float(1) / det;
@@ -253,9 +273,9 @@ struct b2Mat33
 	/// Set this matrix to all zeros.
 	constexpr void SetZero() noexcept
 	{
-		ex.SetZero();
-		ey.SetZero();
-		ez.SetZero();
+		ex = b2Vec3_zero;
+		ey = b2Vec3_zero;
+		ez = b2Vec3_zero;
 	}
 
 	/// Solve A * x = b, where b is a column vector. This is more efficient
@@ -301,14 +321,14 @@ struct b2Rot
 	b2Rot() = default;
 	b2Rot(const b2Rot& copy) = default;
 
-	/// Initialize from an angle in radians
-	explicit b2Rot(b2Float angle)
+	/// Initialize from an angle.
+	/// @param angle Angle in radians.
+	explicit b2Rot(b2Float angle): s(std::sin(angle)), c(std::cos(angle))
 	{
-		/// TODO_ERIN optimize
-		s = std::sin(angle);
-		c = std::cos(angle);
+		// TODO_ERIN optimize
 	}
 	
+	/// Initialize from sine and cosine values.
 	constexpr explicit b2Rot(b2Float sine, b2Float cosine) noexcept: s(sine), c(cosine) {}
 
 	/// Set to the identity rotation
@@ -353,11 +373,13 @@ struct b2Transform
 	/// Set this to the identity transform.
 	constexpr void SetIdentity() noexcept
 	{
-		p.SetZero();
+		p = b2Vec2_zero;
 		q.SetIdentity();
 	}
 
 	/// Set this based on the position and angle.
+	/// @param position Position.
+	/// @param angle Angle in radians.
 	void Set(const b2Vec2& position, b2Float angle)
 	{
 		p = position;
@@ -397,58 +419,58 @@ struct b2Sweep
 /// Perform the dot product on two vectors.
 constexpr inline b2Float b2Dot(const b2Vec2& a, const b2Vec2& b) noexcept
 {
-	return a.x * b.x + a.y * b.y;
+	return (a.x * b.x) + (a.y * b.y);
 }
 
 /// Perform the cross product on two vectors. In 2D this produces a scalar.
 constexpr inline b2Float b2Cross(const b2Vec2& a, const b2Vec2& b) noexcept
 {
-	return a.x * b.y - a.y * b.x;
+	return (a.x * b.y) - (a.y * b.x);
 }
 
 /// Perform the cross product on a vector and a scalar. In 2D this produces
 /// a vector.
 constexpr inline b2Vec2 b2Cross(const b2Vec2& a, b2Float s) noexcept
 {
-	return b2Vec2(s * a.y, -s * a.x);
+	return b2Vec2{s * a.y, -s * a.x};
 }
 
 /// Perform the cross product on a scalar and a vector. In 2D this produces
 /// a vector.
 constexpr inline b2Vec2 b2Cross(b2Float s, const b2Vec2& a) noexcept
 {
-	return b2Vec2(-s * a.y, s * a.x);
+	return b2Vec2{-s * a.y, s * a.x};
 }
 
 /// Multiply a matrix times a vector. If a rotation matrix is provided,
 /// then this transforms the vector from one frame to another.
 constexpr inline b2Vec2 b2Mul(const b2Mat22& A, const b2Vec2& v) noexcept
 {
-	return b2Vec2(A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y);
+	return b2Vec2{A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y};
 }
 
 /// Multiply a matrix transpose times a vector. If a rotation matrix is provided,
 /// then this transforms the vector from one frame to another (inverse transform).
 constexpr inline b2Vec2 b2MulT(const b2Mat22& A, const b2Vec2& v) noexcept
 {
-	return b2Vec2(b2Dot(v, A.ex), b2Dot(v, A.ey));
+	return b2Vec2{b2Dot(v, A.ex), b2Dot(v, A.ey)};
 }
 
 /// Add two vectors component-wise.
 constexpr inline b2Vec2 operator + (const b2Vec2& a, const b2Vec2& b) noexcept
 {
-	return b2Vec2(a.x + b.x, a.y + b.y);
+	return b2Vec2{a.x + b.x, a.y + b.y};
 }
 
 /// Subtract two vectors component-wise.
 constexpr inline b2Vec2 operator - (const b2Vec2& a, const b2Vec2& b) noexcept
 {
-	return b2Vec2(a.x - b.x, a.y - b.y);
+	return b2Vec2{a.x - b.x, a.y - b.y};
 }
 
 constexpr inline b2Vec2 operator * (b2Float s, const b2Vec2& a) noexcept
 {
-	return b2Vec2(s * a.x, s * a.y);
+	return b2Vec2{s * a.x, s * a.y};
 }
 
 constexpr inline b2Vec2 operator * (const b2Vec2& a, b2Float s) noexcept
@@ -497,62 +519,62 @@ constexpr inline b2Float b2DistanceSquared(const b2Vec2& a, const b2Vec2& b) noe
 
 constexpr inline b2Vec3 operator * (b2Float s, const b2Vec3& a) noexcept
 {
-	return b2Vec3(s * a.x, s * a.y, s * a.z);
+	return b2Vec3{s * a.x, s * a.y, s * a.z};
 }
 
 /// Add two vectors component-wise.
 constexpr inline b2Vec3 operator + (const b2Vec3& a, const b2Vec3& b) noexcept
 {
-	return b2Vec3(a.x + b.x, a.y + b.y, a.z + b.z);
+	return b2Vec3{a.x + b.x, a.y + b.y, a.z + b.z};
 }
 
 /// Subtract two vectors component-wise.
 constexpr inline b2Vec3 operator - (const b2Vec3& a, const b2Vec3& b) noexcept
 {
-	return b2Vec3(a.x - b.x, a.y - b.y, a.z - b.z);
+	return b2Vec3{a.x - b.x, a.y - b.y, a.z - b.z};
 }
 
 /// Perform the dot product on two vectors.
 constexpr inline b2Float b2Dot(const b2Vec3& a, const b2Vec3& b) noexcept
 {
-	return a.x * b.x + a.y * b.y + a.z * b.z;
+	return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
 }
 
 /// Perform the cross product on two vectors.
 constexpr inline b2Vec3 b2Cross(const b2Vec3& a, const b2Vec3& b) noexcept
 {
-	return b2Vec3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
+	return b2Vec3{a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x};
 }
 
 constexpr inline b2Mat22 operator + (const b2Mat22& A, const b2Mat22& B) noexcept
 {
-	return b2Mat22(A.ex + B.ex, A.ey + B.ey);
+	return b2Mat22{A.ex + B.ex, A.ey + B.ey};
 }
 
 // A * B
 constexpr inline b2Mat22 b2Mul(const b2Mat22& A, const b2Mat22& B) noexcept
 {
-	return b2Mat22(b2Mul(A, B.ex), b2Mul(A, B.ey));
+	return b2Mat22{b2Mul(A, B.ex), b2Mul(A, B.ey)};
 }
 
 // A^T * B
 constexpr inline b2Mat22 b2MulT(const b2Mat22& A, const b2Mat22& B) noexcept
 {
-	const b2Vec2 c1(b2Dot(A.ex, B.ex), b2Dot(A.ey, B.ex));
-	const b2Vec2 c2(b2Dot(A.ex, B.ey), b2Dot(A.ey, B.ey));
-	return b2Mat22(c1, c2);
+	const auto c1 = b2Vec2(b2Dot(A.ex, B.ex), b2Dot(A.ey, B.ex));
+	const auto c2 = b2Vec2(b2Dot(A.ex, B.ey), b2Dot(A.ey, B.ey));
+	return b2Mat22{c1, c2};
 }
 
 /// Multiply a matrix times a vector.
 constexpr inline b2Vec3 b2Mul(const b2Mat33& A, const b2Vec3& v) noexcept
 {
-	return v.x * A.ex + v.y * A.ey + v.z * A.ez;
+	return (v.x * A.ex) + (v.y * A.ey) + (v.z * A.ez);
 }
 
 /// Multiply a matrix times a vector.
 constexpr inline b2Vec2 b2Mul22(const b2Mat33& A, const b2Vec2& v) noexcept
 {
-	return b2Vec2(A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y);
+	return b2Vec2{A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y};
 }
 
 /// Multiply two rotations: q * r
@@ -572,27 +594,26 @@ constexpr inline b2Rot b2MulT(const b2Rot& q, const b2Rot& r) noexcept
 	// [-qs qc]   [rs  rc]   [-qs*rc+qc*rs qs*rs+qc*rc]
 	// s = qc * rs - qs * rc
 	// c = qc * rc + qs * rs
-	return b2Rot(q.c * r.s - q.s * r.c, q.c * r.c + q.s * r.s);
+	return b2Rot{q.c * r.s - q.s * r.c, q.c * r.c + q.s * r.s};
 }
 
 /// Rotate a vector
 constexpr inline b2Vec2 b2Mul(const b2Rot& q, const b2Vec2& v) noexcept
 {
-	return b2Vec2(q.c * v.x - q.s * v.y, q.s * v.x + q.c * v.y);
+	return b2Vec2{q.c * v.x - q.s * v.y, q.s * v.x + q.c * v.y};
 }
 
 /// Inverse rotate a vector
 constexpr inline b2Vec2 b2MulT(const b2Rot& q, const b2Vec2& v) noexcept
 {
-	return b2Vec2(q.c * v.x + q.s * v.y, -q.s * v.x + q.c * v.y);
+	return b2Vec2{q.c * v.x + q.s * v.y, -q.s * v.x + q.c * v.y};
 }
 
 constexpr inline b2Vec2 b2Mul(const b2Transform& T, const b2Vec2& v) noexcept
 {
 	const auto x = (T.q.c * v.x - T.q.s * v.y) + T.p.x;
 	const auto y = (T.q.s * v.x + T.q.c * v.y) + T.p.y;
-	
-	return b2Vec2(x, y);
+	return b2Vec2{x, y};
 }
 
 constexpr inline b2Vec2 b2MulT(const b2Transform& T, const b2Vec2& v) noexcept
@@ -601,38 +622,37 @@ constexpr inline b2Vec2 b2MulT(const b2Transform& T, const b2Vec2& v) noexcept
 	const auto py = v.y - T.p.y;
 	const auto x = (T.q.c * px + T.q.s * py);
 	const auto y = (-T.q.s * px + T.q.c * py);
-
-	return b2Vec2(x, y);
+	return b2Vec2{x, y};
 }
 
 // v2 = A.q.Rot(B.q.Rot(v1) + B.p) + A.p
 //    = (A.q * B.q).Rot(v1) + A.q.Rot(B.p) + A.p
 constexpr inline b2Transform b2Mul(const b2Transform& A, const b2Transform& B) noexcept
 {
-	return b2Transform(b2Mul(A.q, B.p) + A.p, b2Mul(A.q, B.q));
+	return b2Transform{b2Mul(A.q, B.p) + A.p, b2Mul(A.q, B.q)};
 }
 
 // v2 = A.q' * (B.q * v1 + B.p - A.p)
 //    = A.q' * B.q * v1 + A.q' * (B.p - A.p)
 constexpr inline b2Transform b2MulT(const b2Transform& A, const b2Transform& B) noexcept
 {
-	return b2Transform(b2MulT(A.q, B.p - A.p), b2MulT(A.q, B.q));
+	return b2Transform{b2MulT(A.q, B.p - A.p), b2MulT(A.q, B.q)};
 }
 
 template <typename T>
 constexpr inline T b2Abs(T a)
 {
-	return a > T(0) ? a : -a;
+	return (a >= T(0)) ? a : -a;
 }
 
 inline b2Vec2 b2Abs(const b2Vec2& a)
 {
-	return b2Vec2(b2Abs(a.x), b2Abs(a.y));
+	return b2Vec2{b2Abs(a.x), b2Abs(a.y)};
 }
 
 inline b2Mat22 b2Abs(const b2Mat22& A)
 {
-	return b2Mat22(b2Abs(A.ex), b2Abs(A.ey));
+	return b2Mat22{b2Abs(A.ex), b2Abs(A.ey)};
 }
 
 template <typename T>
@@ -643,7 +663,7 @@ constexpr inline T b2Min(T a, T b)
 
 constexpr inline b2Vec2 b2Min(const b2Vec2& a, const b2Vec2& b)
 {
-	return b2Vec2(b2Min(a.x, b.x), b2Min(a.y, b.y));
+	return b2Vec2{b2Min(a.x, b.x), b2Min(a.y, b.y)};
 }
 
 template <typename T>
@@ -654,7 +674,7 @@ constexpr inline T b2Max(T a, T b)
 
 constexpr inline b2Vec2 b2Max(const b2Vec2& a, const b2Vec2& b)
 {
-	return b2Vec2(b2Max(a.x, b.x), b2Max(a.y, b.y));
+	return b2Vec2{b2Max(a.x, b.x), b2Max(a.y, b.y)};
 }
 
 template <typename T>
@@ -698,8 +718,8 @@ constexpr inline bool b2IsPowerOfTwo(uint32 x) noexcept
 
 inline b2Transform b2Sweep::GetTransform(b2Float beta) const
 {
-	const auto rot = b2Rot((b2Float(1) - beta) * a0 + beta * a);
-	return b2Transform(((b2Float(1) - beta) * c0 + beta * c) - b2Mul(rot, localCenter), rot);
+	const auto rot = b2Rot{(b2Float(1) - beta) * a0 + beta * a};
+	return b2Transform{((b2Float(1) - beta) * c0 + beta * c) - b2Mul(rot, localCenter), rot};
 }
 
 inline void b2Sweep::Advance(b2Float alpha)

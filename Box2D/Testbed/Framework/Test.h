@@ -29,7 +29,7 @@
 #endif
 #include <glfw/glfw3.h>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 class Test;
 struct Settings;
@@ -42,7 +42,7 @@ typedef Test* TestCreateFcn();
 /// Random number in range [-1,1]
 inline b2Float RandomFloat()
 {
-	b2Float r = (b2Float)(std::rand() & (RAND_LIMIT));
+	auto r = static_cast<b2Float>(std::rand() & (RAND_LIMIT));
 	r /= RAND_LIMIT;
 	r = 2.0f * r - 1.0f;
 	return r;
@@ -51,7 +51,7 @@ inline b2Float RandomFloat()
 /// Random floating point number in range [lo, hi]
 inline b2Float RandomFloat(b2Float lo, b2Float hi)
 {
-	b2Float r = (b2Float)(std::rand() & (RAND_LIMIT));
+	auto r = static_cast<b2Float>(std::rand() & (RAND_LIMIT));
 	r /= RAND_LIMIT;
 	r = (hi - lo) * r + lo;
 	return r;

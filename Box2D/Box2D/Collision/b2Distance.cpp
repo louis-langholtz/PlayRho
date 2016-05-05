@@ -29,14 +29,9 @@ int32 b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
 
 b2DistanceProxy::b2DistanceProxy(const b2Shape& shape, child_count_t index)
 {
-	Set(shape, index);
-}
-
-void b2DistanceProxy::Set(const b2Shape& shape, child_count_t index)
-{
 	switch (shape.GetType())
 	{
-	case b2Shape::e_circle:
+		case b2Shape::e_circle:
 		{
 			const auto& circle = *static_cast<const b2CircleShape*>(&shape);
 			m_buffer[0] = circle.GetPosition();
@@ -44,34 +39,34 @@ void b2DistanceProxy::Set(const b2Shape& shape, child_count_t index)
 			m_count = 1;
 			m_radius = circle.GetRadius();
 		}
-		break;
-
-	case b2Shape::e_polygon:
+			break;
+			
+		case b2Shape::e_polygon:
 		{
 			const auto& polygon = *static_cast<const b2PolygonShape*>(&shape);
 			m_vertices = polygon.GetVertices();
 			m_count = polygon.GetVertexCount();
 			m_radius = polygon.GetRadius();
 		}
-		break;
-
-	case b2Shape::e_chain:
+			break;
+			
+		case b2Shape::e_chain:
 		{
 			const auto& chain = *static_cast<const b2ChainShape*>(&shape);
 			b2Assert((0 <= index) && (index < chain.GetVertexCount()));
-
+			
 			m_buffer[0] = chain.GetVertex(index);
 			m_buffer[1] = ((index + 1) < chain.GetVertexCount())?
-				chain.GetVertex(index + 1):
-				chain.GetVertex(0);
-
+			chain.GetVertex(index + 1):
+			chain.GetVertex(0);
+			
 			m_vertices = m_buffer;
 			m_count = 2;
 			m_radius = chain.GetRadius();
 		}
-		break;
-
-	case b2Shape::e_edge:
+			break;
+			
+		case b2Shape::e_edge:
 		{
 			const auto& edge = *static_cast<const b2EdgeShape*>(&shape);
 			m_buffer[0] = edge.GetVertex1();
@@ -80,33 +75,37 @@ void b2DistanceProxy::Set(const b2Shape& shape, child_count_t index)
 			m_count = 2;
 			m_radius = edge.GetRadius();
 		}
-		break;
-
-	default:
-		b2Assert(false);
+			break;
+			
+		default:
+			b2Assert(false);
+			break;
 	}
 }
-
 
 struct b2SimplexVertex
 {
 	using size_type = b2DistanceProxy::size_type;
 
-	b2Vec2 wA;		// support point in proxyA
-	b2Vec2 wB;		// support point in proxyB
-	b2Vec2 w;		// wB - wA
-	b2Float a;		// barycentric coordinate for closest point
-	size_type indexA;	// wA index
-	size_type indexB;	// wB index
+	b2Vec2 wA;		///< support point in proxyA
+	b2Vec2 wB;		///< support point in proxyB
+	b2Vec2 w;		///< wB - wA. @see wA. @see wB.
+	b2Float a;		///< barycentric coordinate for closest point
+	size_type indexA;	///< wA index
+	size_type indexB;	///< wB index
 };
 
 class b2Simplex
 {
 public:
+	/// Maximum number of supportable vertices.
 	static constexpr auto MaxVertices = unsigned{3};
+
 	using size_type = std::remove_cv<decltype(MaxVertices)>::type;
 
-	// returns value between 0 and MaxVertices
+	/// Gets count of valid vertices.
+ 	/// @return Value between 0 and MaxVertices.
+	/// @see MaxVertices
 	size_type GetCount() const noexcept
 	{
 		return m_count;
@@ -124,9 +123,9 @@ public:
 		++m_count;
 	}
 
-	void ReadCache(	const b2SimplexCache& cache,
-					const b2DistanceProxy& proxyA, const b2Transform& transformA,
-					const b2DistanceProxy& proxyB, const b2Transform& transformB)
+	void ReadCache(const b2SimplexCache& cache,
+				   const b2DistanceProxy& proxyA, const b2Transform& transformA,
+				   const b2DistanceProxy& proxyB, const b2Transform& transformB)
 	{
 		b2Assert(cache.GetCount() <= MaxVertices);
 		
@@ -149,7 +148,7 @@ public:
 		{
 			const auto metric1 = cache.GetMetric();
 			const auto metric2 = GetMetric();
-			if ((metric2 < 0.5f * metric1) || (2.0f * metric1 < metric2) || (metric2 < b2_epsilon))
+			if ((metric2 < (metric1 / b2Float(2))) || (metric2 > (metric1 * b2Float(2))) || (metric2 < b2_epsilon))
 			{
 				// Reset the simplex.
 				m_count = 0;
@@ -276,8 +275,8 @@ public:
 	void Solve3() noexcept;
 
 private:
-	size_type m_count = 0; // value between 0 and MaxVertices
-	b2SimplexVertex m_vertices[MaxVertices];
+	size_type m_count = 0; ///< Count of valid vertex entries in m_vertices. Value between 0 and MaxVertices. @see m_vertices.
+	b2SimplexVertex m_vertices[MaxVertices]; ///< Vertices. Only elements < m_count are valid. @see m_count.
 };
 
 

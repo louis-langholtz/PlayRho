@@ -138,7 +138,7 @@ public:
 		return points[index];
 	}
 	
-	void AddPoint(const b2Vec2& lp, const b2ContactFeature& cf)
+	void AddPoint(const b2Vec2& lp, b2ContactFeature cf = b2ContactFeature{b2ContactFeature::e_vertex, 0, b2ContactFeature::e_vertex, 0})
 	{
 		b2Assert(pointCount < b2_maxManifoldPoints);
 		points[pointCount].localPoint = lp;
@@ -146,11 +146,6 @@ public:
 		points[pointCount].normalImpulse = 0.f;
 		points[pointCount].tangentImpulse = 0.f;
 		++pointCount;
-	}
-
-	void AddPoint(const b2Vec2& lp)
-	{
-		AddPoint(lp, b2ContactFeature(b2ContactFeature::e_vertex, 0, b2ContactFeature::e_vertex, 0));
 	}
 
 	b2Vec2 GetLocalNormal() const noexcept { return localNormal; }
@@ -172,6 +167,12 @@ class b2WorldManifold
 {
 public:
 	using size_type = std::remove_cv<decltype(b2_maxPolygonVertices)>::type;
+
+	b2WorldManifold() = default;
+
+	b2WorldManifold(const b2Manifold& manifold,
+					const b2Transform& xfA, b2Float radiusA,
+					const b2Transform& xfB, b2Float radiusB);
 
 	/// Evaluate the manifold with supplied transforms. This assumes
 	/// modest motion from the original state. This does not change the
@@ -242,19 +243,13 @@ struct b2RayCastOutput
 };
 
 /// An axis aligned bounding box.
-struct b2AABB
+class b2AABB
 {
+public:
 	b2AABB() = default;
 
-	constexpr b2AABB(b2Vec2 lb, b2Vec2 ub) noexcept: lowerBound(lb), upperBound(ub) {}
-
-	/// Verify that the bounds are sorted.
-	inline bool IsValid() const
-	{
-		const auto d = upperBound - lowerBound;
-		const auto valid = (d.x >= b2Float{0}) && (d.y >= b2Float{0});
-		return valid && lowerBound.IsValid() && upperBound.IsValid();
-	}
+	constexpr b2AABB(b2Vec2 a, b2Vec2 b) noexcept:
+		lowerBound(b2Vec2(b2Min(a.x, b.x), b2Min(a.y, b.y))), upperBound(b2Vec2(b2Max(a.x, b.x), b2Max(a.y, b.y))) {}
 
 	/// Get the center of the AABB.
 	constexpr b2Vec2 GetCenter() const noexcept
@@ -277,17 +272,11 @@ struct b2AABB
 	}
 
 	/// Combine an AABB into this one.
-	constexpr void Combine(const b2AABB& aabb)
+	constexpr b2AABB& operator += (const b2AABB& aabb)
 	{
 		lowerBound = b2Min(lowerBound, aabb.lowerBound);
 		upperBound = b2Max(upperBound, aabb.upperBound);
-	}
-
-	/// Combine two AABBs into this one.
-	constexpr void Combine(const b2AABB& aabb1, const b2AABB& aabb2)
-	{
-		lowerBound = b2Min(aabb1.lowerBound, aabb2.lowerBound);
-		upperBound = b2Max(aabb1.upperBound, aabb2.upperBound);
+		return *this;
 	}
 
 	/// Does this aabb contain the provided AABB.
@@ -300,39 +289,60 @@ struct b2AABB
 
 	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const;
 
+	b2Vec2 GetLowerBound() const noexcept { return lowerBound; }
+	b2Vec2 GetUpperBound() const noexcept { return upperBound; }
+
+	b2AABB& Move(b2Vec2 value) noexcept
+	{
+		lowerBound += value;
+		upperBound += value;
+		return *this;
+	}
+
+private:
 	b2Vec2 lowerBound;	///< the lower vertex
 	b2Vec2 upperBound;	///< the upper vertex
 };
 
-constexpr inline b2AABB b2Combine(const b2AABB& aabb1, const b2AABB& aabb2)
+constexpr inline b2AABB operator + (const b2AABB& aabb1, const b2AABB& aabb2)
 {
-	return {b2Min(aabb1.lowerBound, aabb2.lowerBound), b2Max(aabb1.upperBound, aabb2.upperBound)};
+	return b2AABB{b2Min(aabb1.GetLowerBound(), aabb2.GetLowerBound()), b2Max(aabb1.GetUpperBound(), aabb2.GetUpperBound())};
+}
+
+constexpr inline b2AABB operator + (b2Vec2 lhs, const b2AABB& rhs)
+{
+	return b2AABB{rhs.GetLowerBound() - lhs, rhs.GetUpperBound() + lhs};
+}
+
+constexpr inline b2AABB operator + (const b2AABB& lhs, b2Vec2 rhs)
+{
+	return b2AABB{lhs.GetLowerBound() - rhs, lhs.GetUpperBound() + rhs};
 }
 
 /// Compute the collision manifold between two circles.
-void b2CollideShapes(b2Manifold* manifold,
+bool b2CollideShapes(b2Manifold* manifold,
 					 const b2CircleShape& shapeA, const b2Transform& xfA,
 					 const b2CircleShape& shapeB, const b2Transform& xfB);
 
 /// Compute the collision manifold between a polygon and a circle.
-void b2CollideShapes(b2Manifold* manifold,
+bool b2CollideShapes(b2Manifold* manifold,
 					 const b2PolygonShape& shapeA, const b2Transform& xfA,
-							   const b2CircleShape& shapeB, const b2Transform& xfB);
+					 const b2CircleShape& shapeB, const b2Transform& xfB);
 
 /// Compute the collision manifold between two polygons.
-void b2CollideShapes(b2Manifold* manifold,
-					   const b2PolygonShape& shapeA, const b2Transform& xfA,
-					   const b2PolygonShape& shapeB, const b2Transform& xfB);
+bool b2CollideShapes(b2Manifold* manifold,
+					 const b2PolygonShape& shapeA, const b2Transform& xfA,
+					 const b2PolygonShape& shapeB, const b2Transform& xfB);
 
 /// Compute the collision manifold between an edge and a circle.
-void b2CollideShapes(b2Manifold* manifold,
-							   const b2EdgeShape& shapeA, const b2Transform& xfA,
-							   const b2CircleShape& shapeB, const b2Transform& xfB);
+bool b2CollideShapes(b2Manifold* manifold,
+					 const b2EdgeShape& shapeA, const b2Transform& xfA,
+					 const b2CircleShape& shapeB, const b2Transform& xfB);
 
 /// Compute the collision manifold between an edge and a circle.
-void b2CollideShapes(b2Manifold* manifold,
-							   const b2EdgeShape& shapeA, const b2Transform& xfA,
-							   const b2PolygonShape& shapeB, const b2Transform& xfB);
+bool b2CollideShapes(b2Manifold* manifold,
+					 const b2EdgeShape& shapeA, const b2Transform& xfA,
+					 const b2PolygonShape& shapeB, const b2Transform& xfB);
 
 /// Clipping for contact manifolds.
 using b2ClipArray = std::array<b2ClipVertex, b2_maxManifoldPoints>;
@@ -348,11 +358,11 @@ bool b2TestOverlap(const b2Shape& shapeA, child_count_t indexA,
 
 inline bool b2TestOverlap(const b2AABB& a, const b2AABB& b) noexcept
 {
-	const auto d1 = b.lowerBound - a.upperBound;
+	const auto d1 = b.GetLowerBound() - a.GetUpperBound();
 	if ((d1.x > b2Float{0}) || (d1.y > b2Float{0}))
 		return false;
 
-	const auto d2 = a.lowerBound - b.upperBound;
+	const auto d2 = a.GetLowerBound() - b.GetUpperBound();
 	if ((d2.x > b2Float{0}) || (d2.y > b2Float{0}))
 		return false;
 

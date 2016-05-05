@@ -100,7 +100,7 @@ public:
 		for (int32 i = 0; i < 3; ++i)
 		{
 			b2CircleShape shape;
-			shape.m_radius = 0.5f;
+			shape.SetRadius(b2Float(0.5));
 
 			b2FixtureDef fd;
 			fd.shape = &shape;

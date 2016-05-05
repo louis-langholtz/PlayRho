@@ -40,7 +40,7 @@ public:
 		b2Body* body = m_world->CreateBody(&bd);
         
 		b2CircleShape shape;
-		shape.m_radius = 0.5f;
+		shape.SetRadius(b2Float(0.5));
         body->CreateFixture(&shape, 10.0f);
         
         bd.position.Set(0.0f, 3.5f);
@@ -65,7 +65,7 @@ public:
             m_heavy = m_world->CreateBody(&bd);
             
             b2CircleShape shape;
-            shape.m_radius = 5.0f;
+            shape.SetRadius(b2Float(5));
             m_heavy->CreateFixture(&shape, 10.0f);
         }
     }

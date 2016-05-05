@@ -72,7 +72,7 @@ public:
 
 			b2RevoluteJointDef jd;
 			jd.bodyA = ground;
-			jd.localAnchorB.SetZero();
+			jd.localAnchorB = b2Vec2_zero;
 			jd.enableMotor = true;
 			jd.maxMotorTorque = 1000.0f;
 			jd.enableLimit = true;
@@ -102,7 +102,7 @@ public:
 			m_ball = m_world->CreateBody(&bd);
 
 			b2CircleShape shape;
-			shape.m_radius = 0.2f;
+			shape.SetRadius(b2Float(0.2));
 
 			b2FixtureDef fd;
 			fd.shape = &shape;

@@ -321,7 +321,8 @@ inline b2MassData b2Fixture::GetMassData() const
 
 inline const b2AABB& b2Fixture::GetAABB(child_count_t childIndex) const
 {
-	b2Assert(0 <= childIndex && childIndex < m_proxyCount);
+	b2Assert(childIndex >= 0);
+	b2Assert(childIndex < m_proxyCount);
 	return m_proxies[childIndex].aabb;
 }
 

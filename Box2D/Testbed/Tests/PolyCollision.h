@@ -47,33 +47,31 @@ public:
 		B2_NOT_USED(settings);
 
 		b2Manifold manifold;
-		b2CollidePolygons(&manifold, &m_polygonA, m_transformA, &m_polygonB, m_transformB);
+		b2CollideShapes(&manifold, m_polygonA, m_transformA, m_polygonB, m_transformB);
 
-		b2WorldManifold worldManifold;
-		worldManifold.Initialize(&manifold, m_transformA, m_polygonA.m_radius, m_transformB, m_polygonB.m_radius);
-
-		g_debugDraw.DrawString(5, m_textLine, "point count = %d", manifold.pointCount);
+		g_debugDraw.DrawString(5, m_textLine, "point count = %d", manifold.GetPointCount());
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		{
 			b2Color color(0.9f, 0.9f, 0.9f);
 			b2Vec2 v[b2_maxPolygonVertices];
-			for (int32 i = 0; i < m_polygonA.m_count; ++i)
+			for (int32 i = 0; i < m_polygonA.GetVertexCount(); ++i)
 			{
-				v[i] = b2Mul(m_transformA, m_polygonA.m_vertices[i]);
+				v[i] = b2Mul(m_transformA, m_polygonA.GetVertex(i));
 			}
-			g_debugDraw.DrawPolygon(v, m_polygonA.m_count, color);
+			g_debugDraw.DrawPolygon(v, m_polygonA.GetVertexCount(), color);
 
-			for (int32 i = 0; i < m_polygonB.m_count; ++i)
+			for (int32 i = 0; i < m_polygonB.GetVertexCount(); ++i)
 			{
-				v[i] = b2Mul(m_transformB, m_polygonB.m_vertices[i]);
+				v[i] = b2Mul(m_transformB, m_polygonB.GetVertex(i));
 			}
-			g_debugDraw.DrawPolygon(v, m_polygonB.m_count, color);
+			g_debugDraw.DrawPolygon(v, m_polygonB.GetVertexCount(), color);
 		}
 
-		for (int32 i = 0; i < manifold.pointCount; ++i)
+		const b2WorldManifold worldManifold(manifold, m_transformA, m_polygonA.GetRadius(), m_transformB, m_polygonB.GetRadius());
+		for (int32 i = 0; i < manifold.GetPointCount(); ++i)
 		{
-			g_debugDraw.DrawPoint(worldManifold.points[i], 4.0f, b2Color(0.9f, 0.3f, 0.3f));
+			g_debugDraw.DrawPoint(worldManifold.GetPoint(i), 4.0f, b2Color(0.9f, 0.3f, 0.3f));
 		}
 	}
 

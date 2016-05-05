@@ -37,13 +37,9 @@ public:
 		}
 
 		{
-			b2CircleShape circle1;
-			circle1.m_radius = 0.5f;
-			circle1.m_p.Set(-0.5f, 0.5f);
+			b2CircleShape circle1(b2Float(0.5), b2Vec2(b2Float(-0.5), b2Float(0.5f)));
 
-			b2CircleShape circle2;
-			circle2.m_radius = 0.5f;
-			circle2.m_p.Set(0.5f, 0.5f);
+			b2CircleShape circle2(b2Float(0.5), b2Vec2(b2Float(0.5), b2Float(0.5f)));
 
 			for (int i = 0; i < 10; ++i)
 			{
@@ -80,7 +76,7 @@ public:
 
 		{
 			b2Transform xf1;
-			xf1.q.Set(0.3524f * b2_pi);
+			xf1.q = b2Rot(0.3524f * b2_pi);
 			xf1.p = xf1.q.GetXAxis();
 
 			b2Vec2 vertices[3];
@@ -92,7 +88,7 @@ public:
 			triangle1.Set(vertices, 3);
 
 			b2Transform xf2;
-			xf2.q.Set(-0.3524f * b2_pi);
+			xf2.q = b2Rot(-0.3524f * b2_pi);
 			xf2.p = -xf2.q.GetXAxis();
 
 			b2PolygonShape triangle2;

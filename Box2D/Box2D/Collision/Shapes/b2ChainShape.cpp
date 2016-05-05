@@ -70,8 +70,8 @@ void b2ChainShape::CreateChain(const b2Vec2* vertices, child_count_t count)
 	m_hasPrevVertex = false;
 	m_hasNextVertex = false;
 
-	m_prevVertex.SetZero();
-	m_nextVertex.SetZero();
+	m_prevVertex = b2Vec2_zero;
+	m_nextVertex = b2Vec2_zero;
 }
 
 void b2ChainShape::SetPrevVertex(const b2Vec2& prevVertex) noexcept
@@ -169,7 +169,7 @@ b2AABB b2ChainShape::ComputeAABB(const b2Transform& xf, child_count_t childIndex
 	const auto v1 = b2Mul(xf, m_vertices[i1]);
 	const auto v2 = b2Mul(xf, m_vertices[i2]);
 
-	return {b2Min(v1, v2), b2Max(v1, v2)};
+	return b2AABB{v1, v2};
 }
 
 b2MassData b2ChainShape::ComputeMass(b2Float density) const

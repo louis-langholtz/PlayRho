@@ -193,7 +193,7 @@ public:
 			b2Float radius = 0.2f;
 
 			b2CircleShape shape;
-			shape.m_radius = radius;
+			shape.SetRadius(radius);
 
 			for (int32 i = 0; i < 4; ++i)
 			{

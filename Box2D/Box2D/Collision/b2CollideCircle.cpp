@@ -20,7 +20,7 @@
 #include <Box2D/Collision/Shapes/b2CircleShape.h>
 #include <Box2D/Collision/Shapes/b2PolygonShape.h>
 
-void b2CollideShapes(
+bool b2CollideShapes(
 	b2Manifold* manifold,
 	const b2CircleShape& shapeA, const b2Transform& xfA,
 	const b2CircleShape& shapeB, const b2Transform& xfB)
@@ -34,16 +34,17 @@ void b2CollideShapes(
 	if (distSqr > b2Square(totalRadius))
 	{
 		manifold->SetType(b2Manifold::e_unset);
-		return;
+		return false;
 	}
 
 	manifold->SetType(b2Manifold::e_circles);
 	manifold->SetLocalPoint(shapeA.GetPosition());
 	manifold->SetLocalNormal(b2Vec2_zero);
 	manifold->AddPoint(shapeB.GetPosition());
+	return true;
 }
 
-void b2CollideShapes(
+bool b2CollideShapes(
 	b2Manifold* manifold,
 	const b2PolygonShape& shapeA, const b2Transform& xfA,
 	const b2CircleShape& shapeB, const b2Transform& xfB)
@@ -66,7 +67,7 @@ void b2CollideShapes(
 		{
 			// Early out.
 			manifold->SetType(b2Manifold::e_unset);
-			return;
+			return false;
 		}
 
 		if (separation < s)
@@ -89,7 +90,7 @@ void b2CollideShapes(
 		manifold->SetLocalNormal(shapeA.GetNormal(normalIndex));
 		manifold->SetLocalPoint((v1 + v2) / b2Float(2));
 		manifold->AddPoint(shapeB.GetPosition());
-		return;
+		return true;
 	}
 
 	// Compute barycentric coordinates
@@ -100,7 +101,7 @@ void b2CollideShapes(
 		if (b2DistanceSquared(cLocal, v1) > b2Square(totalRadius))
 		{
 			manifold->SetType(b2Manifold::e_unset);
-			return;
+			return false;
 		}
 
 		manifold->SetType(b2Manifold::e_faceA);
@@ -113,7 +114,7 @@ void b2CollideShapes(
 		if (b2DistanceSquared(cLocal, v2) > b2Square(totalRadius))
 		{
 			manifold->SetType(b2Manifold::e_unset);;
-			return;
+			return false;
 		}
 
 		manifold->SetType(b2Manifold::e_faceA);
@@ -128,7 +129,7 @@ void b2CollideShapes(
 		if (separation > totalRadius)
 		{
 			manifold->SetType(b2Manifold::e_unset);
-			return;
+			return false;
 		}
 
 		manifold->SetType(b2Manifold::e_faceA);
@@ -136,4 +137,5 @@ void b2CollideShapes(
 		manifold->SetLocalPoint(faceCenter);
 		manifold->AddPoint(shapeB.GetPosition());
 	}
+	return true;
 }

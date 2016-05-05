@@ -70,8 +70,8 @@ b2WheelJoint::b2WheelJoint(const b2WheelJointDef* def)
 	m_bias = b2Float{0};
 	m_gamma = b2Float{0};
 
-	m_ax.SetZero();
-	m_ay.SetZero();
+	m_ax = b2Vec2_zero;
+	m_ay = b2Vec2_zero;
 }
 
 void b2WheelJoint::InitVelocityConstraints(const b2SolverData& data)
@@ -147,7 +147,7 @@ void b2WheelJoint::InitVelocityConstraints(const b2SolverData& data)
 			const auto k = m_springMass * omega * omega;
 
 			// magic formulas
-			const auto h = data.step.dt;
+			const auto h = data.step.get_dt();
 			m_gamma = h * (d + h * k);
 			if (m_gamma > b2Float{0})
 			{
@@ -246,7 +246,7 @@ void b2WheelJoint::SolveVelocityConstraints(const b2SolverData& data)
 		auto impulse = -m_motorMass * Cdot;
 
 		const auto oldImpulse = m_motorImpulse;
-		const auto maxImpulse = data.step.dt * m_maxMotorTorque;
+		const auto maxImpulse = data.step.get_dt() * m_maxMotorTorque;
 		m_motorImpulse = b2Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
 		impulse = m_motorImpulse - oldImpulse;
 

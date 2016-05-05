@@ -17,12 +17,12 @@
 */
 
 #include <Box2D/Collision/b2DynamicTree.h>
-#include <string.h>
+#include <cstring>
 
 b2DynamicTree::b2DynamicTree():
 	m_nodes(static_cast<b2TreeNode*>(b2Alloc(m_nodeCapacity * sizeof(b2TreeNode))))
 {
-	memset(m_nodes, 0, m_nodeCapacity * sizeof(b2TreeNode));
+	std::memset(m_nodes, 0, m_nodeCapacity * sizeof(b2TreeNode));
 
 	// Build a linked list for the free list.
 	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity - 1; ++i)
@@ -95,9 +95,7 @@ b2DynamicTree::size_type b2DynamicTree::CreateProxy(const b2AABB& aabb, void* us
 	const auto proxyId = AllocateNode();
 
 	// Fatten the aabb.
-	const auto r = b2Vec2(b2_aabbExtension, b2_aabbExtension);
-	m_nodes[proxyId].aabb.lowerBound = aabb.lowerBound - r;
-	m_nodes[proxyId].aabb.upperBound = aabb.upperBound + r;
+	m_nodes[proxyId].aabb = aabb + b2Vec2(b2_aabbExtension, b2_aabbExtension);
 	m_nodes[proxyId].userData = userData;
 	m_nodes[proxyId].height = 0;
 
@@ -129,33 +127,32 @@ bool b2DynamicTree::MoveProxy(size_type proxyId, const b2AABB& aabb, const b2Vec
 	RemoveLeaf(proxyId);
 
 	// Extend AABB.
-	auto b = b2AABB{aabb};
-	const auto r = b2Vec2(b2_aabbExtension, b2_aabbExtension);
-	b.lowerBound = b.lowerBound - r;
-	b.upperBound = b.upperBound + r;
-
+	auto b = aabb + b2Vec2(b2_aabbExtension, b2_aabbExtension);
+	auto lowerBound = b.GetLowerBound();
+	auto upperBound = b.GetUpperBound();
+	
 	// Predict AABB displacement.
 	const auto d = b2_aabbMultiplier * displacement;
 
 	if (d.x < b2Float{0})
 	{
-		b.lowerBound.x += d.x;
+		lowerBound.x += d.x;
 	}
 	else
 	{
-		b.upperBound.x += d.x;
+		upperBound.x += d.x;
 	}
 
 	if (d.y < b2Float{0})
 	{
-		b.lowerBound.y += d.y;
+		lowerBound.y += d.y;
 	}
 	else
 	{
-		b.upperBound.y += d.y;
+		upperBound.y += d.y;
 	}
 
-	m_nodes[proxyId].aabb = b;
+	m_nodes[proxyId].aabb = b2AABB{lowerBound, upperBound};
 
 	InsertLeaf(proxyId);
 	return true;
@@ -184,7 +181,7 @@ void b2DynamicTree::InsertLeaf(size_type leaf)
 
 		const auto area = m_nodes[index].aabb.GetPerimeter();
 
-		const auto combinedAABB = b2Combine(m_nodes[index].aabb, leafAABB);
+		const auto combinedAABB = m_nodes[index].aabb + leafAABB;
 		const auto combinedArea = combinedAABB.GetPerimeter();
 
 		// Cost of creating a new parent for this node and the new leaf
@@ -197,12 +194,12 @@ void b2DynamicTree::InsertLeaf(size_type leaf)
 		b2Float cost1;
 		if (m_nodes[child1].IsLeaf())
 		{
-			const auto aabb = b2Combine(leafAABB, m_nodes[child1].aabb);
+			const auto aabb = leafAABB + m_nodes[child1].aabb;
 			cost1 = aabb.GetPerimeter() + inheritanceCost;
 		}
 		else
 		{
-			const auto aabb = b2Combine(leafAABB, m_nodes[child1].aabb);
+			const auto aabb = leafAABB + m_nodes[child1].aabb;
 			const auto oldArea = m_nodes[child1].aabb.GetPerimeter();
 			const auto newArea = aabb.GetPerimeter();
 			cost1 = (newArea - oldArea) + inheritanceCost;
@@ -212,15 +209,14 @@ void b2DynamicTree::InsertLeaf(size_type leaf)
 		b2Float cost2;
 		if (m_nodes[child2].IsLeaf())
 		{
-			const auto aabb = b2Combine(leafAABB, m_nodes[child2].aabb);
+			const auto aabb = leafAABB + m_nodes[child2].aabb;
 			cost2 = aabb.GetPerimeter() + inheritanceCost;
 		}
 		else
 		{
-			const auto aabb = b2Combine(leafAABB, m_nodes[child2].aabb);
+			const auto aabb = leafAABB + m_nodes[child2].aabb;
 			const auto oldArea = m_nodes[child2].aabb.GetPerimeter();
-			const auto newArea = aabb.GetPerimeter();
-			cost2 = newArea - oldArea + inheritanceCost;
+			cost2 = aabb.GetPerimeter() - oldArea + inheritanceCost;
 		}
 
 		// Descend according to the minimum cost.
@@ -247,7 +243,7 @@ void b2DynamicTree::InsertLeaf(size_type leaf)
 	const auto newParent = AllocateNode();
 	m_nodes[newParent].parent = oldParent;
 	m_nodes[newParent].userData = nullptr;
-	m_nodes[newParent].aabb.Combine(leafAABB, m_nodes[sibling].aabb);
+	m_nodes[newParent].aabb = leafAABB + m_nodes[sibling].aabb;
 	m_nodes[newParent].height = m_nodes[sibling].height + 1;
 
 	if (oldParent != b2_nullNode)
@@ -290,7 +286,7 @@ void b2DynamicTree::InsertLeaf(size_type leaf)
 		b2Assert(child2 != b2_nullNode);
 
 		m_nodes[index].height = 1 + b2Max(m_nodes[child1].height, m_nodes[child2].height);
-		m_nodes[index].aabb.Combine(m_nodes[child1].aabb, m_nodes[child2].aabb);
+		m_nodes[index].aabb = m_nodes[child1].aabb + m_nodes[child2].aabb;
 
 		index = m_nodes[index].parent;
 	}
@@ -307,9 +303,11 @@ void b2DynamicTree::RemoveLeaf(size_type leaf)
 	}
 
 	b2Assert(leaf < m_nodeCapacity);
-
 	const auto parent = m_nodes[leaf].parent;
+
+	b2Assert(parent < m_nodeCapacity);
 	const auto grandParent = m_nodes[parent].parent;
+	
 	const auto sibling = (m_nodes[parent].child1 == leaf)? m_nodes[parent].child2: m_nodes[parent].child1;
 
 	if (grandParent != b2_nullNode)
@@ -335,7 +333,7 @@ void b2DynamicTree::RemoveLeaf(size_type leaf)
 			const auto child1 = m_nodes[index].child1;
 			const auto child2 = m_nodes[index].child2;
 
-			m_nodes[index].aabb.Combine(m_nodes[child1].aabb, m_nodes[child2].aabb);
+			m_nodes[index].aabb = m_nodes[child1].aabb + m_nodes[child2].aabb;
 			m_nodes[index].height = 1 + b2Max(m_nodes[child1].height, m_nodes[child2].height);
 
 			index = m_nodes[index].parent;
@@ -412,8 +410,8 @@ b2DynamicTree::size_type b2DynamicTree::Balance(size_type iA)
 			C->child2 = iF;
 			A->child2 = iG;
 			G->parent = iA;
-			A->aabb.Combine(B->aabb, G->aabb);
-			C->aabb.Combine(A->aabb, F->aabb);
+			A->aabb = B->aabb + G->aabb;
+			C->aabb = A->aabb + F->aabb;
 
 			A->height = 1 + b2Max(B->height, G->height);
 			C->height = 1 + b2Max(A->height, F->height);
@@ -423,8 +421,8 @@ b2DynamicTree::size_type b2DynamicTree::Balance(size_type iA)
 			C->child2 = iG;
 			A->child2 = iF;
 			F->parent = iA;
-			A->aabb.Combine(B->aabb, F->aabb);
-			C->aabb.Combine(A->aabb, G->aabb);
+			A->aabb = B->aabb + F->aabb;
+			C->aabb = A->aabb + G->aabb;
 
 			A->height = 1 + b2Max(B->height, F->height);
 			C->height = 1 + b2Max(A->height, G->height);
@@ -472,8 +470,8 @@ b2DynamicTree::size_type b2DynamicTree::Balance(size_type iA)
 			B->child2 = iD;
 			A->child1 = iE;
 			E->parent = iA;
-			A->aabb.Combine(C->aabb, E->aabb);
-			B->aabb.Combine(A->aabb, D->aabb);
+			A->aabb = C->aabb + E->aabb;
+			B->aabb = A->aabb + D->aabb;
 
 			A->height = 1 + b2Max(C->height, E->height);
 			B->height = 1 + b2Max(A->height, D->height);
@@ -483,8 +481,8 @@ b2DynamicTree::size_type b2DynamicTree::Balance(size_type iA)
 			B->child2 = iE;
 			A->child1 = iD;
 			D->parent = iA;
-			A->aabb.Combine(C->aabb, D->aabb);
-			B->aabb.Combine(A->aabb, E->aabb);
+			A->aabb = C->aabb + D->aabb;
+			B->aabb = A->aabb + E->aabb;
 
 			A->height = 1 + b2Max(C->height, D->height);
 			B->height = 1 + b2Max(A->height, E->height);
@@ -624,9 +622,9 @@ void b2DynamicTree::ValidateMetrics(size_type index) const
 		b2Assert(node->height == height);
 	}
 	{
-		const auto aabb = b2Combine(m_nodes[child1].aabb, m_nodes[child2].aabb);
-		b2Assert(aabb.lowerBound == node->aabb.lowerBound);
-		b2Assert(aabb.upperBound == node->aabb.upperBound);
+		const auto aabb = m_nodes[child1].aabb + m_nodes[child2].aabb;
+		b2Assert(aabb.GetLowerBound() == node->aabb.GetLowerBound());
+		b2Assert(aabb.GetUpperBound() == node->aabb.GetUpperBound());
 	}
 #endif
 
@@ -713,7 +711,7 @@ void b2DynamicTree::RebuildBottomUp()
 			for (auto j = i + 1; j < count; ++j)
 			{
 				const auto& aabbj = m_nodes[nodes[j]].aabb;
-				const auto b = b2Combine(aabbi, aabbj);
+				const auto b = aabbi + aabbj;
 				const auto cost = b.GetPerimeter();
 				if (minCost > cost)
 				{
@@ -736,7 +734,7 @@ void b2DynamicTree::RebuildBottomUp()
 		parent->child1 = index1;
 		parent->child2 = index2;
 		parent->height = 1 + b2Max(child1->height, child2->height);
-		parent->aabb.Combine(child1->aabb, child2->aabb);
+		parent->aabb = child1->aabb + child2->aabb;
 		parent->parent = b2_nullNode;
 
 		child1->parent = parentIndex;
@@ -758,7 +756,6 @@ void b2DynamicTree::ShiftOrigin(const b2Vec2& newOrigin)
 	// Build array of leaves. Free the rest.
 	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
 	{
-		m_nodes[i].aabb.lowerBound -= newOrigin;
-		m_nodes[i].aabb.upperBound -= newOrigin;
+		m_nodes[i].aabb.Move(-newOrigin);
 	}
 }

@@ -125,7 +125,7 @@ void b2MotorJoint::InitVelocityConstraints(const b2SolverData& data)
 	}
 	else
 	{
-		m_linearImpulse.SetZero();
+		m_linearImpulse = b2Vec2_zero;
 		m_angularImpulse = b2Float{0};
 	}
 
@@ -145,8 +145,8 @@ void b2MotorJoint::SolveVelocityConstraints(const b2SolverData& data)
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
 
-	const auto h = data.step.dt;
-	const auto inv_h = data.step.inv_dt;
+	const auto h = data.step.get_dt();
+	const auto inv_h = data.step.get_inv_dt();
 
 	// Solve angular friction
 	{

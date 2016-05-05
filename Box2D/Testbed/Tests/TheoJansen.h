@@ -143,7 +143,7 @@ public:
 		for (int32 i = 0; i < 40; ++i)
 		{
 			b2CircleShape shape;
-			shape.m_radius = 0.25f;
+			shape.SetRadius(0.25);
 
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
@@ -171,7 +171,7 @@ public:
 
 		{
 			b2CircleShape shape;
-			shape.m_radius = 1.6f;
+			shape.SetRadius(b2Float(1.6));
 
 			b2FixtureDef sd;
 			sd.density = 1.0f;

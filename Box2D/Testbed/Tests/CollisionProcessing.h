@@ -98,7 +98,7 @@ public:
 
 		// Small circle
 		b2CircleShape circle;
-		circle.m_radius = 1.0f;
+		circle.SetRadius(b2Float(1));
 
 		b2FixtureDef circleShapeDef;
 		circleShapeDef.shape = &circle;
@@ -112,7 +112,7 @@ public:
 		body5->CreateFixture(&circleShapeDef);
 
 		// Large circle
-		circle.m_radius *= 2.0f;
+		circle.SetRadius(circle.GetRadius() * 2);
 		circleBodyDef.position.Set(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
 		b2Body* body6 = m_world->CreateBody(&circleBodyDef);

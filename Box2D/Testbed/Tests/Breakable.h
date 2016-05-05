@@ -69,12 +69,12 @@ public:
 		}
 
 		// Should the body break?
-		int32 count = contact->GetManifold()->pointCount;
+		const auto count = contact->GetManifold()->GetPointCount();
 
 		b2Float maxImpulse = 0.0f;
 		for (int32 i = 0; i < count; ++i)
 		{
-			maxImpulse = b2Max(maxImpulse, impulse->normalImpulses[i]);
+			maxImpulse = b2Max(maxImpulse, impulse->GetEntryNormal(i));
 		}
 
 		if (maxImpulse > 40.0f)

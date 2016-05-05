@@ -222,7 +222,7 @@ public:
 		}
 
 		{
-			m_circle.m_radius = 0.5f;
+			m_circle.SetRadius(0.5);
 		}
 
 		{

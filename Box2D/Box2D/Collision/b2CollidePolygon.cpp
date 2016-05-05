@@ -106,7 +106,7 @@ static void b2FindIncidentEdge(b2ClipArray& c,
 // Clip
 
 // The normal points from 1 to 2
-void b2CollideShapes(b2Manifold* manifold,
+bool b2CollideShapes(b2Manifold* manifold,
 					 const b2PolygonShape& shapeA, const b2Transform& xfA,
 					 const b2PolygonShape& shapeB, const b2Transform& xfB)
 {
@@ -116,12 +116,12 @@ void b2CollideShapes(b2Manifold* manifold,
 	auto edgeA = b2PolygonShape::vertex_count_t{0};
 	const auto separationA = b2FindMaxSeparation(edgeA, shapeA, xfA, shapeB, xfB);
 	if (separationA > totalRadius)
-		return;
+		return false;
 
 	auto edgeB = b2PolygonShape::vertex_count_t{0};
 	const auto separationB = b2FindMaxSeparation(edgeB, shapeB, xfB, shapeA, xfA);
 	if (separationB > totalRadius)
-		return;
+		return false;
 
 	const b2PolygonShape* shape1;	// reference polygon
 	const b2PolygonShape* shape2;	// incident polygon
@@ -184,16 +184,16 @@ void b2CollideShapes(b2Manifold* manifold,
 	const auto sideOffset2 = b2Dot(tangent, v12) + totalRadius;
 
 	// Clip incident edge against extruded edge1 side edges.
-	b2ClipArray clipPoints1;
-	b2ClipArray clipPoints2;
 
 	// Clip to box side 1
+	b2ClipArray clipPoints1;
 	if (b2ClipSegmentToLine(clipPoints1, incidentEdge, -tangent, sideOffset1, iv1) < 2)
-		return;
+		return false;
 
 	// Clip to negative box side 1
+	b2ClipArray clipPoints2;
 	if (b2ClipSegmentToLine(clipPoints2, clipPoints1,  tangent, sideOffset2, iv2) < 2)
-		return;
+		return false;
 
 	// Now clipPoints2 contains the clipped points.
 	for (auto i = decltype(b2_maxManifoldPoints){0}; i < b2_maxManifoldPoints; ++i)
@@ -205,4 +205,5 @@ void b2CollideShapes(b2Manifold* manifold,
 			manifold->AddPoint(b2MulT(xf2, clipPoints2[i].v), cf);
 		}
 	}
+	return true;
 }

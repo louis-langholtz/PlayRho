@@ -38,13 +38,10 @@ public:
 			edge.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
 			//ground->CreateFixture(&shape, 0.0f);
 
-			b2CircleShape circle;
-			circle.m_radius = 2.0f;
-
-			circle.m_p.Set(-10.0f, y + b + L);
+			b2CircleShape circle(2.0f, b2Vec2(-10.0f, y + b + L));
 			ground->CreateFixture(&circle, 0.0f);
 
-			circle.m_p.Set(10.0f, y + b + L);
+			circle.SetPosition(b2Vec2(10.0f, y + b + L));
 			ground->CreateFixture(&circle, 0.0f);
 		}
 

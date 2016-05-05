@@ -106,7 +106,7 @@ b2PrismaticJoint::b2PrismaticJoint(const b2PrismaticJointDef* def)
 	m_localYAxisA = b2Cross(b2Float(1), m_localXAxisA);
 	m_referenceAngle = def->referenceAngle;
 
-	m_impulse.SetZero();
+	m_impulse = b2Vec3_zero;
 	m_motorMass = b2Float{0};
 	m_motorImpulse = b2Float{0};
 
@@ -195,7 +195,7 @@ void b2PrismaticJoint::InitVelocityConstraints(const b2SolverData& data)
 	if (m_enableLimit)
 	{
 		const auto jointTranslation = b2Dot(m_axis, d);
-		if (b2Abs(m_upperTranslation - m_lowerTranslation) < (2.0f * b2_linearSlop))
+		if (b2Abs(m_upperTranslation - m_lowerTranslation) < (b2_linearSlop * 2))
 		{
 			m_limitState = e_equalLimits;
 		}
@@ -250,7 +250,7 @@ void b2PrismaticJoint::InitVelocityConstraints(const b2SolverData& data)
 	}
 	else
 	{
-		m_impulse.SetZero();
+		m_impulse = b2Vec3_zero;
 		m_motorImpulse = b2Float{0};
 	}
 
@@ -276,7 +276,7 @@ void b2PrismaticJoint::SolveVelocityConstraints(const b2SolverData& data)
 		const auto Cdot = b2Dot(m_axis, vB - vA) + m_a2 * wB - m_a1 * wA;
 		auto impulse = m_motorMass * (m_motorSpeed - Cdot);
 		const auto oldImpulse = m_motorImpulse;
-		const auto maxImpulse = data.step.dt * m_maxMotorForce;
+		const auto maxImpulse = data.step.get_dt() * m_maxMotorForce;
 		m_motorImpulse = b2Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
 		impulse = m_motorImpulse - oldImpulse;
 

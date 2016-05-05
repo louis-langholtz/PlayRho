@@ -687,8 +687,8 @@ void b2World::SolveTOI(const b2TimeStep& step)
 
 				// Compute the time of impact in interval [0, minTOI]
 				b2TOIInput input;
-				input.proxyA.Set(*fA->GetShape(), indexA);
-				input.proxyB.Set(*fB->GetShape(), indexB);
+				input.proxyA = b2DistanceProxy(*fA->GetShape(), indexA);
+				input.proxyB = b2DistanceProxy(*fB->GetShape(), indexB);
 				input.sweepA = bA->m_sweep;
 				input.sweepB = bB->m_sweep;
 				input.tMax = b2Float(1);
@@ -853,8 +853,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 		}
 
 		b2TimeStep subStep;
-		subStep.dt = (b2Float(1) - minAlpha) * step.dt;
-		subStep.inv_dt = b2Float(1) / subStep.dt;
+		subStep.set_dt((b2Float(1) - minAlpha) * step.get_dt());
 		subStep.dtRatio = b2Float(1);
 		subStep.positionIterations = 20;
 		subStep.velocityIterations = step.velocityIterations;
@@ -909,10 +908,9 @@ void b2World::Step(b2Float dt, int32 velocityIterations, int32 positionIteration
 	b2FlagGuard<decltype(m_flags)> flagGaurd(m_flags, e_locked);
 
 	b2TimeStep step;
-	step.dt = dt;
+	step.set_dt(dt);
 	step.velocityIterations	= velocityIterations;
 	step.positionIterations = positionIterations;
-	step.inv_dt = (dt > b2Float{0})? b2Float(1) / dt: b2Float{0};
 	step.dtRatio = m_inv_dt0 * dt;
 	step.warmStarting = m_warmStarting;
 	
@@ -924,7 +922,7 @@ void b2World::Step(b2Float dt, int32 velocityIterations, int32 positionIteration
 	}
 
 	// Integrate velocities, solve velocity constraints, and integrate positions.
-	if (m_stepComplete && (step.dt > b2Float{0}))
+	if (m_stepComplete && (step.get_dt() > b2Float{0}))
 	{
 		b2Timer timer;
 		Solve(step);
@@ -932,16 +930,16 @@ void b2World::Step(b2Float dt, int32 velocityIterations, int32 positionIteration
 	}
 
 	// Handle TOI events.
-	if (m_continuousPhysics && (step.dt > b2Float{0}))
+	if (m_continuousPhysics && (step.get_dt() > b2Float{0}))
 	{
 		b2Timer timer;
 		SolveTOI(step);
 		m_profile.solveTOI = timer.GetMilliseconds();
 	}
 
-	if (step.dt > b2Float{0})
+	if (step.get_dt() > b2Float{0})
 	{
-		m_inv_dt0 = step.inv_dt;
+		m_inv_dt0 = step.get_inv_dt();
 	}
 
 	if (GetAutoClearForces())
@@ -1199,10 +1197,10 @@ void b2World::DrawDebugData()
 					const auto proxy = f->m_proxies + i;
 					const auto aabb = bp->GetFatAABB(proxy->proxyId);
 					b2Vec2 vs[4];
-					vs[0].Set(aabb.lowerBound.x, aabb.lowerBound.y);
-					vs[1].Set(aabb.upperBound.x, aabb.lowerBound.y);
-					vs[2].Set(aabb.upperBound.x, aabb.upperBound.y);
-					vs[3].Set(aabb.lowerBound.x, aabb.upperBound.y);
+					vs[0].Set(aabb.GetLowerBound().x, aabb.GetLowerBound().y);
+					vs[1].Set(aabb.GetUpperBound().x, aabb.GetLowerBound().y);
+					vs[2].Set(aabb.GetUpperBound().x, aabb.GetUpperBound().y);
+					vs[3].Set(aabb.GetLowerBound().x, aabb.GetUpperBound().y);
 
 					g_debugDraw->DrawPolygon(vs, 4, color);
 				}

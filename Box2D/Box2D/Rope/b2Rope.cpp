@@ -42,7 +42,7 @@ void b2Rope::Initialize(const b2RopeDef* def)
 	{
 		m_ps[i] = def->vertices[i];
 		m_p0s[i] = def->vertices[i];
-		m_vs[i].SetZero();
+		m_vs[i] = b2Vec2_zero;
 
 		const auto m = def->masses[i];
 		if (m > b2Float{0})

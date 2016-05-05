@@ -113,7 +113,7 @@ public:
 		}
 
 		{
-			m_circle.m_radius = 0.5f;
+			m_circle.SetRadius(b2Float(0.5));
 		}
 
 		m_bodyIndex = 0;

@@ -82,11 +82,12 @@ b2AABB b2CircleShape::ComputeAABB(const b2Transform& transform, child_count_t ch
 	B2_NOT_USED(childIndex);
 
 	const auto p = transform.p + b2Mul(transform.q, m_p);
-	return {b2Vec2{p.x - GetRadius(), p.y - GetRadius()}, b2Vec2{p.x + GetRadius(), p.y + GetRadius()}};
+	return b2AABB{p, p} + b2Vec2{GetRadius(), GetRadius()};
 }
 
 b2MassData b2CircleShape::ComputeMass(b2Float density) const
 {
 	const auto mass = density * b2_pi * b2Square(GetRadius());
-	return {mass, m_p, mass * (b2Float(0.5) * b2Square(GetRadius()) + b2Dot(m_p, m_p))};
+	const auto I = mass * ((b2Square(GetRadius()) / b2Float(2)) + b2Dot(m_p, m_p));
+	return b2MassData{mass, m_p, I};
 }

@@ -431,6 +431,8 @@ private:
 	void SetInIsland() noexcept;
 	void UnsetInIsland() noexcept;
 
+	b2MassData CalculateMassData() const noexcept;
+
 	b2BodyType m_type;
 
 	uint16 m_flags = 0;
@@ -460,10 +462,11 @@ private:
 	b2JointEdge* m_jointList = nullptr;
 	b2ContactEdge* m_contactList = nullptr;
 
-	b2Float m_mass, m_invMass;
+	b2Float m_mass; ///< Mass of the body. This is the sum total mass of all associated fixtures.
+	b2Float m_invMass; ///< Inverse of m_mass or 0 if m_mass == 0. @see m_mass.
 
-	// Rotational inertia about the center of mass.
-	b2Float m_I = b2Float{0}, m_invI = b2Float{0};
+	b2Float m_I = b2Float{0}; ///< Rotational inertia about the center of mass.
+	b2Float m_invI = b2Float{0}; ///< Inverse of m_I or 0 if m_I == 0. @see m_I.
 
 	b2Float m_linearDamping;
 	b2Float m_angularDamping;
@@ -556,7 +559,7 @@ inline b2Float b2Body::GetInertia() const noexcept
 
 inline b2MassData b2Body::GetMassData() const noexcept
 {
-	return {m_mass, m_sweep.localCenter, m_I + m_mass * b2Dot(m_sweep.localCenter, m_sweep.localCenter)};
+	return b2MassData{m_mass, m_sweep.localCenter, m_I + m_mass * b2Dot(m_sweep.localCenter, m_sweep.localCenter)};
 }
 
 inline b2Vec2 b2Body::GetWorldPoint(const b2Vec2& localPoint) const noexcept
@@ -674,12 +677,12 @@ inline bool b2Body::IsAwake() const noexcept
 
 inline bool b2Body::IsActive() const noexcept
 {
-	return (m_flags & e_activeFlag) == e_activeFlag;
+	return (m_flags & e_activeFlag) != 0;
 }
 
 inline bool b2Body::IsFixedRotation() const noexcept
 {
-	return (m_flags & e_fixedRotationFlag) == e_fixedRotationFlag;
+	return (m_flags & e_fixedRotationFlag) != 0;
 }
 
 inline void b2Body::SetSleepingAllowed(bool flag) noexcept

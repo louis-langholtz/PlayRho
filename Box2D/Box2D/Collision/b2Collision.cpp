@@ -19,6 +19,13 @@
 #include <Box2D/Collision/b2Collision.h>
 #include <Box2D/Collision/b2Distance.h>
 
+b2WorldManifold::b2WorldManifold(const b2Manifold& manifold,
+								 const b2Transform& xfA, b2Float radiusA,
+								 const b2Transform& xfB, b2Float radiusB)
+{
+	this->Assign(manifold, xfA, radiusA, xfB, radiusB);
+}
+
 void b2WorldManifold::Assign(const b2Manifold& manifold,
 						  const b2Transform& xfA, b2Float radiusA,
 						  const b2Transform& xfB, b2Float radiusB)
@@ -40,8 +47,8 @@ void b2WorldManifold::Assign(const b2Manifold& manifold,
 			if (b2DistanceSquared(pointA, pointB) > b2Square(b2_epsilon))
 				normal = b2Normalize(pointB - pointA);
 
-			const auto cA = pointA + radiusA * normal;
-			const auto cB = pointB - radiusB * normal;
+			const auto cA = pointA + (radiusA * normal);
+			const auto cB = pointB - (radiusB * normal);
 			points[0] = (cA + cB) / b2Float(2);
 			separations[0] = b2Dot(cB - cA, normal);
 			pointCount = 1;
@@ -57,7 +64,7 @@ void b2WorldManifold::Assign(const b2Manifold& manifold,
 			{
 				const auto clipPoint = b2Mul(xfB, manifold.GetPoint(i).localPoint);
 				const auto cA = clipPoint + (radiusA - b2Dot(clipPoint - planePoint, normal)) * normal;
-				const auto cB = clipPoint - radiusB * normal;
+				const auto cB = clipPoint - (radiusB * normal);
 				points[i] = (cA + cB) / b2Float(2);
 				separations[i] = b2Dot(cB - cA, normal);
 				++pointCount;
@@ -69,13 +76,12 @@ void b2WorldManifold::Assign(const b2Manifold& manifold,
 		{
 			normal = b2Mul(xfB.q, manifold.GetLocalNormal());
 			const auto planePoint = b2Mul(xfB, manifold.GetLocalPoint());
-
 			pointCount = 0;
 			for (auto i = decltype(manifold.GetPointCount()){0}; i < manifold.GetPointCount(); ++i)
 			{
 				const auto clipPoint = b2Mul(xfA, manifold.GetPoint(i).localPoint);
 				const auto cB = clipPoint + (radiusB - b2Dot(clipPoint - planePoint, normal)) * normal;
-				const auto cA = clipPoint - radiusA * normal;
+				const auto cA = clipPoint - (radiusA * normal);
 				points[i] = (cA + cB) / b2Float(2);
 				separations[i] = b2Dot(cA - cB, normal);
 				++pointCount;
@@ -144,13 +150,15 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 
 	b2Vec2 normal;
 
-	for (auto i = 0; i < 2; ++i)
+	for (auto i = decltype(b2Vec2::NumElements){0}; i < b2Vec2::NumElements; ++i)
 	{
 		if (absD(i) < b2_epsilon)
 		{
 			// Parallel.
 			if ((p(i) < lowerBound(i)) || (upperBound(i) < p(i)))
+			{
 				return false;
+			}
 		}
 		else
 		{
@@ -179,14 +187,18 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 			tmax = b2Min(tmax, t2);
 
 			if (tmin > tmax)
+			{
 				return false;
+			}
 		}
 	}
 
 	// Does the ray start inside the box?
 	// Does the ray intersect beyond the max fraction?
 	if ((tmin < b2Float{0}) || (input.maxFraction < tmin))
+	{
 		return false;
+	}
 
 	// Intersection.
 	output->fraction = tmin;
@@ -232,8 +244,8 @@ bool b2TestOverlap(const b2Shape& shapeA, child_count_t indexA,
 				   const b2Transform& xfA, const b2Transform& xfB)
 {
 	b2DistanceInput input;
-	input.proxyA.Set(shapeA, indexA);
-	input.proxyB.Set(shapeB, indexB);
+	input.proxyA = b2DistanceProxy(shapeA, indexA);
+	input.proxyB = b2DistanceProxy(shapeB, indexB);
 	input.transformA = xfA;
 	input.transformB = xfB;
 	input.useRadii = true;
@@ -242,5 +254,5 @@ bool b2TestOverlap(const b2Shape& shapeA, child_count_t indexA,
 	b2DistanceOutput output;
 	b2Distance(&output, &cache, input);
 
-	return output.distance < (10.0f * b2_epsilon);
+	return output.distance < (b2_epsilon * 10);
 }

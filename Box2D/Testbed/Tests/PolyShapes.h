@@ -50,8 +50,8 @@ public:
 			{
 				b2CircleShape* circle = (b2CircleShape*)fixture->GetShape();
 
-				b2Vec2 center = b2Mul(xf, circle->m_p);
-				b2Float radius = circle->m_radius;
+				b2Vec2 center = b2Mul(xf, circle->GetPosition());
+				b2Float radius = circle->GetRadius();
 
 				g_debugDraw->DrawCircle(center, radius, color);
 			}
@@ -60,13 +60,13 @@ public:
 		case b2Shape::e_polygon:
 			{
 				b2PolygonShape* poly = (b2PolygonShape*)fixture->GetShape();
-				int32 vertexCount = poly->m_count;
+				int32 vertexCount = poly->GetVertexCount();
 				b2Assert(vertexCount <= b2_maxPolygonVertices);
 				b2Vec2 vertices[b2_maxPolygonVertices];
 
 				for (int32 i = 0; i < vertexCount; ++i)
 				{
-					vertices[i] = b2Mul(xf, poly->m_vertices[i]);
+					vertices[i] = b2Mul(xf, poly->GetVertex(i));
 				}
 
 				g_debugDraw->DrawPolygon(vertices, vertexCount, color);
@@ -90,7 +90,7 @@ public:
 		b2Body* body = fixture->GetBody();
 		b2Shape* shape = fixture->GetShape();
 
-		bool overlap = b2TestOverlap(shape, 0, &m_circle, 0, body->GetTransform(), m_transform);
+		bool overlap = b2TestOverlap(*shape, 0, m_circle, 0, body->GetTransform(), m_transform);
 
 		if (overlap)
 		{
@@ -167,7 +167,7 @@ public:
 		}
 
 		{
-			m_circle.m_radius = 0.5f;
+			m_circle.SetRadius(b2Float(0.5));
 		}
 
 		m_bodyIndex = 0;
@@ -264,18 +264,17 @@ public:
 		Test::Step(settings);
 
 		PolyShapesCallback callback;
-		callback.m_circle.m_radius = 2.0f;
-		callback.m_circle.m_p.Set(0.0f, 1.1f);
+		callback.m_circle.SetRadius(b2Float(2.0));
+		callback.m_circle.SetPosition(b2Vec2(0.0f, 1.1f));
 		callback.m_transform.SetIdentity();
 		callback.g_debugDraw = &g_debugDraw;
 
-		b2AABB aabb;
-		callback.m_circle.ComputeAABB(&aabb, callback.m_transform, 0);
+		b2AABB aabb = callback.m_circle.ComputeAABB(callback.m_transform, 0);
 
 		m_world->QueryAABB(&callback, aabb);
 
 		b2Color color(0.4f, 0.7f, 0.8f);
-		g_debugDraw.DrawCircle(callback.m_circle.m_p, callback.m_circle.m_radius, color);
+		g_debugDraw.DrawCircle(callback.m_circle.GetPosition(), callback.m_circle.GetRadius(), color);
 
 		g_debugDraw.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
 		m_textLine += DRAW_STRING_NEW_LINE;

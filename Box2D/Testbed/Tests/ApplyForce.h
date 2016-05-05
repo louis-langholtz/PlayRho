@@ -60,7 +60,7 @@ public:
 
 		{
 			b2Transform xf1;
-			xf1.q.Set(0.3524f * b2_pi);
+			xf1.q = b2Rot(0.3524f * b2_pi);
 			xf1.p = xf1.q.GetXAxis();
 
 			b2Vec2 vertices[3];
@@ -76,7 +76,7 @@ public:
 			sd1.density = 4.0f;
 
 			b2Transform xf2;
-			xf2.q.Set(-0.3524f * b2_pi);
+			xf2.q = b2Rot(-0.3524f * b2_pi);
 			xf2.p = -xf2.q.GetXAxis();
 
 			vertices[0] = b2Mul(xf2, b2Vec2(-1.0f, b2Float{0}));
@@ -130,8 +130,8 @@ public:
 				b2Float radius = b2Sqrt(2.0f * I / mass);
 
 				b2FrictionJointDef jd;
-				jd.localAnchorA.SetZero();
-				jd.localAnchorB.SetZero();
+				jd.localAnchorA = b2Vec2_zero;
+				jd.localAnchorB = b2Vec2_zero;
 				jd.bodyA = ground;
 				jd.bodyB = body;
 				jd.collideConnected = true;

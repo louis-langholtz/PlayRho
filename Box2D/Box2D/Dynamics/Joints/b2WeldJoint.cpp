@@ -52,7 +52,7 @@ b2WeldJoint::b2WeldJoint(const b2WeldJointDef* def)
 	m_frequencyHz = def->frequencyHz;
 	m_dampingRatio = def->dampingRatio;
 
-	m_impulse.SetZero();
+	m_impulse = b2Vec3_zero;
 }
 
 void b2WeldJoint::InitVelocityConstraints(const b2SolverData& data)
@@ -121,7 +121,7 @@ void b2WeldJoint::InitVelocityConstraints(const b2SolverData& data)
 		const auto k = m * omega * omega;
 
 		// magic formulas
-		const auto h = data.step.dt;
+		const auto h = data.step.get_dt();
 		m_gamma = h * (d + h * k);
 		m_gamma = (m_gamma != b2Float{0}) ? b2Float(1) / m_gamma : b2Float{0};
 		m_bias = C * h * k * m_gamma;
@@ -157,7 +157,7 @@ void b2WeldJoint::InitVelocityConstraints(const b2SolverData& data)
 	}
 	else
 	{
-		m_impulse.SetZero();
+		m_impulse = b2Vec3_zero;
 	}
 
 	data.velocities[m_indexA].v = vA;

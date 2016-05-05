@@ -115,7 +115,7 @@ void b2MouseJoint::InitVelocityConstraints(const b2SolverData& data)
 	// magic formulas
 	// gamma has units of inverse mass.
 	// beta has units of inverse time.
-	const auto h = data.step.dt;
+	const auto h = data.step.get_dt();
 	b2Assert(d + h * k > b2_epsilon);
 	m_gamma = h * (d + h * k);
 	if (m_gamma != b2Float{0})
@@ -152,7 +152,7 @@ void b2MouseJoint::InitVelocityConstraints(const b2SolverData& data)
 	}
 	else
 	{
-		m_impulse.SetZero();
+		m_impulse = b2Vec2_zero;
 	}
 
 	data.velocities[m_indexB].v = vB;
@@ -170,7 +170,7 @@ void b2MouseJoint::SolveVelocityConstraints(const b2SolverData& data)
 
 	const auto oldImpulse = m_impulse;
 	m_impulse += impulse;
-	const auto maxImpulse = data.step.dt * m_maxForce;
+	const auto maxImpulse = data.step.get_dt() * m_maxForce;
 	if (m_impulse.LengthSquared() > maxImpulse * maxImpulse)
 	{
 		m_impulse *= maxImpulse / m_impulse.Length();

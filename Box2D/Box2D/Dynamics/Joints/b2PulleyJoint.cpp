@@ -109,7 +109,7 @@ void b2PulleyJoint::InitVelocityConstraints(const b2SolverData& data)
 	}
 	else
 	{
-		m_uA.SetZero();
+		m_uA = b2Vec2_zero;
 	}
 
 	if (lengthB > (b2Float(10) * b2_linearSlop))
@@ -118,7 +118,7 @@ void b2PulleyJoint::InitVelocityConstraints(const b2SolverData& data)
 	}
 	else
 	{
-		m_uB.SetZero();
+		m_uB = b2Vec2_zero;
 	}
 
 	// Compute effective mass.

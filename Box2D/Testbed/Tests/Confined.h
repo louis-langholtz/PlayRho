@@ -22,7 +22,8 @@
 class Confined : public Test
 {
 public:
-
+	static constexpr auto wall_length = b2Float(0.05); // 20
+	
 	enum
 	{
 		e_columnCount = 0,
@@ -37,27 +38,29 @@ public:
 
 			b2EdgeShape shape;
 
+			b2FixtureDef fd;
+			fd.shape = &shape;
+			fd.restitution = b2Float(0.9);
+
 			// Floor
-			shape.Set(b2Vec2(-10.0f, 0.0f), b2Vec2(10.0f, 0.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			shape.Set(b2Vec2(-wall_length/2, 0.0f), b2Vec2(wall_length/2, 0.0f));
+			ground->CreateFixture(&fd);
 
 			// Left wall
-			shape.Set(b2Vec2(-10.0f, 0.0f), b2Vec2(-10.0f, 20.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			shape.Set(b2Vec2(-wall_length/2, 0.0f), b2Vec2(-wall_length/2, wall_length));
+			ground->CreateFixture(&fd);
 
 			// Right wall
-			shape.Set(b2Vec2(10.0f, 0.0f), b2Vec2(10.0f, 20.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			shape.Set(b2Vec2(wall_length/2, 0.0f), b2Vec2(wall_length/2, wall_length));
+			ground->CreateFixture(&fd);
 
 			// Roof
-			shape.Set(b2Vec2(-10.0f, 20.0f), b2Vec2(10.0f, 20.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			shape.Set(b2Vec2(-wall_length/2, wall_length), b2Vec2(wall_length/2, wall_length));
+			ground->CreateFixture(&fd);
 		}
 
 		b2Float radius = 0.5f;
-		b2CircleShape shape;
-		shape.m_p.SetZero();
-		shape.m_radius = radius;
+		b2CircleShape shape(radius, b2Vec2_zero);
 
 		b2FixtureDef fd;
 		fd.shape = &shape;
@@ -82,24 +85,70 @@ public:
 
 	void CreateCircle()
 	{
-		b2Float radius = 2.0f;
-		b2CircleShape shape;
-		shape.m_p.SetZero();
-		shape.m_radius = radius;
+		constexpr auto radius = b2Float(wall_length/10); // 2
+		b2CircleShape shape(radius, b2Vec2_zero);
 
 		b2FixtureDef fd;
 		fd.shape = &shape;
 		fd.density = 1.0f;
-		fd.friction = 0.0f;
+		fd.restitution = b2Float(0.8);
 
-		b2Vec2 p(RandomFloat(), 3.0f + RandomFloat());
 		b2BodyDef bd;
 		bd.type = b2_dynamicBody;
-		bd.position = p;
+		bd.bullet = m_bullet_mode;
+		bd.position = b2Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));
 		//bd.allowSleep = false;
 		b2Body* body = m_world->CreateBody(&bd);
 
 		body->CreateFixture(&fd);
+	}
+
+	void CreateBox()
+	{
+		constexpr auto side_length = b2Float(wall_length/5); // 4
+		b2PolygonShape shape;
+		shape.SetAsBox(side_length/2, side_length/2);
+
+		b2FixtureDef fd;
+		fd.shape = &shape;
+		fd.density = 1.0f;
+		fd.restitution = b2Float(0.8);
+		
+		b2BodyDef bd;
+		bd.type = b2_dynamicBody;
+		bd.bullet = m_bullet_mode;
+		bd.position = b2Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));
+		auto* body = m_world->CreateBody(&bd);
+		body->CreateFixture(&fd);
+	}
+
+	void ToggleBulletMode()
+	{
+		m_bullet_mode = !m_bullet_mode;
+		for (auto& b: m_world->GetBodies())
+		{
+			if (b.GetType() == b2_dynamicBody)
+			{
+				b.SetBullet(m_bullet_mode);
+			}
+		}
+	}
+
+	void ImpartRandomImpulses()
+	{
+		for (auto& b: m_world->GetBodies())
+		{
+			if (b.GetType() == b2_dynamicBody)
+			{
+				const auto position = b.GetPosition();
+				const auto angle_from_center = b2Atan2(position.y - wall_length/2, position.x);
+				const auto opposite_angle = angle_from_center + b2_pi;
+				const auto direction = opposite_angle;
+				const auto magnitude = b2Sqrt(b2Square(wall_length) * 2) * b.GetMass() * 20;
+				const auto impulse = b2Mul(b2Rot(direction), b2Vec2(magnitude, 0.0f));
+				b.ApplyLinearImpulse(impulse, b.GetWorldCenter(), true);
+			}
+		}		
 	}
 
 	void Keyboard(int key)
@@ -108,6 +157,15 @@ public:
 		{
 		case GLFW_KEY_C:
 			CreateCircle();
+			break;
+		case GLFW_KEY_B:
+			CreateBox();
+			break;
+		case GLFW_KEY_I:
+			ImpartRandomImpulses();
+			break;
+		case GLFW_KEY_PERIOD:
+			ToggleBulletMode();
 			break;
 		}
 	}
@@ -148,7 +206,7 @@ public:
 			}
 
 			b2Vec2 p = b->GetPosition();
-			if (p.x <= -10.0f || 10.0f <= p.x || p.y <= 0.0f || 20.0f <= p.y)
+			if (p.x <= -wall_length/2 || wall_length/2 <= p.x || p.y <= 0.0f || wall_length <= p.y)
 			{
 				p.x += 0.0f;
 			}
@@ -156,12 +214,20 @@ public:
 
 		g_debugDraw.DrawString(5, m_textLine, "Press 'c' to create a circle.");
 		m_textLine += DRAW_STRING_NEW_LINE;
+		g_debugDraw.DrawString(5, m_textLine, "Press 'b' to create a box.");
+		m_textLine += DRAW_STRING_NEW_LINE;
+		g_debugDraw.DrawString(5, m_textLine, "Press '.' to toggle bullet mode (currently %s).", m_bullet_mode? "on": "off");
+		m_textLine += DRAW_STRING_NEW_LINE;
+		g_debugDraw.DrawString(5, m_textLine, "Press 'i' to impart impulses.");
+		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 
 	static Test* Create()
 	{
 		return new Confined;
 	}
+	
+	bool m_bullet_mode = false;
 };
 
 #endif

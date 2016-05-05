@@ -45,8 +45,7 @@ public:
 		m_stepCount = 0;
 
 		b2Float h = m_worldExtent;
-		m_queryAABB.lowerBound.Set(-3.0f, -4.0f + h);
-		m_queryAABB.upperBound.Set(5.0f, 6.0f + h);
+		m_queryAABB = b2AABB{b2Vec2(-3.0f, -4.0f + h), b2Vec2(5.0f, 6.0f + h)};
 
 		m_rayCastInput.p1.Set(-5.0, 5.0f + h);
 		m_rayCastInput.p2.Set(7.0f, -4.0f + h);
@@ -127,7 +126,7 @@ public:
 		}
 
 		{
-			int32 height = m_tree.GetHeight();
+			b2DynamicTree::size_type height = m_tree.GetHeight();
 			g_debugDraw.DrawString(5, m_textLine, "dynamic tree height = %d", height);
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
@@ -157,14 +156,14 @@ public:
 		}
 	}
 
-	bool QueryCallback(int32 proxyId)
+	bool QueryCallback(b2DynamicTree::size_type proxyId)
 	{
 		Actor* actor = (Actor*)m_tree.GetUserData(proxyId);
 		actor->overlap = b2TestOverlap(m_queryAABB, actor->aabb);
 		return true;
 	}
 
-	b2Float RayCastCallback(const b2RayCastInput& input, int32 proxyId)
+	b2Float RayCastCallback(const b2RayCastInput& input, b2DynamicTree::size_type proxyId)
 	{
 		auto actor = static_cast<Actor*>(m_tree.GetUserData(proxyId));
 
@@ -189,36 +188,32 @@ private:
 		b2AABB aabb;
 		b2Float fraction;
 		bool overlap;
-		int32 proxyId;
+		b2DynamicTree::size_type proxyId;
 	};
 
-	void GetRandomAABB(b2AABB* const aabb)
+	void GetRandomAABB(b2AABB* aabb)
 	{
-		const b2Vec2 w(2.0f * m_proxyExtent, 2.0f * m_proxyExtent);
+		const b2Vec2 w(m_proxyExtent * 2, m_proxyExtent * 2);
 		//aabb->lowerBound.x = -m_proxyExtent;
 		//aabb->lowerBound.y = -m_proxyExtent + m_worldExtent;
-		aabb->lowerBound.x = RandomFloat(-m_worldExtent, m_worldExtent);
-		aabb->lowerBound.y = RandomFloat(0.0f, 2.0f * m_worldExtent);
-		aabb->upperBound = aabb->lowerBound + w;
+		const auto lowerBound = b2Vec2(RandomFloat(-m_worldExtent, m_worldExtent), RandomFloat(0.0f, 2.0f * m_worldExtent));
+		const auto upperBound = lowerBound + w;
+		*aabb = b2AABB(lowerBound, upperBound);
 	}
 
 	void MoveAABB(b2AABB* aabb)
 	{
-		b2Vec2 d;
-		d.x = RandomFloat(-0.5f, 0.5f);
-		d.y = RandomFloat(-0.5f, 0.5f);
+		const auto d = b2Vec2{RandomFloat(-0.5f, 0.5f), RandomFloat(-0.5f, 0.5f)};
 		//d.x = 2.0f;
 		//d.y = 0.0f;
-		aabb->lowerBound += d;
-		aabb->upperBound += d;
+		aabb->Move(d);
 
-		b2Vec2 c0 = 0.5f * (aabb->lowerBound + aabb->upperBound);
-		b2Vec2 min; min.Set(-m_worldExtent, 0.0f);
-		b2Vec2 max; max.Set(m_worldExtent, 2.0f * m_worldExtent);
-		b2Vec2 c = b2Clamp(c0, min, max);
+		const auto c0 = aabb->GetCenter();
+		const auto min = b2Vec2(-m_worldExtent, b2Float(0));
+		const auto max = b2Vec2(m_worldExtent, 2.0f * m_worldExtent);
+		const auto c = b2Clamp(c0, min, max);
 
-		aabb->lowerBound += c - c0;
-		aabb->upperBound += c - c0;
+		aabb->Move(c - c0);
 	}
 
 	void CreateProxy()
@@ -262,9 +257,9 @@ private:
 				continue;
 			}
 
-			b2AABB aabb0 = actor->aabb;
+			const auto aabb0 = actor->aabb;
 			MoveAABB(&actor->aabb);
-			b2Vec2 displacement = actor->aabb.GetCenter() - aabb0.GetCenter();
+			const auto displacement = actor->aabb.GetCenter() - aabb0.GetCenter();
 			m_tree.MoveProxy(actor->proxyId, actor->aabb, displacement);
 			return;
 		}

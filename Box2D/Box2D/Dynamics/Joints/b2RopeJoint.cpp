@@ -139,7 +139,7 @@ void b2RopeJoint::SolveVelocityConstraints(const b2SolverData& data)
 	// Predictive constraint.
 	if (C < b2Float{0})
 	{
-		Cdot += data.step.inv_dt * C;
+		Cdot += data.step.get_inv_dt() * C;
 	}
 
 	auto impulse = -m_mass * Cdot;

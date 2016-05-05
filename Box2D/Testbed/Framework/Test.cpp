@@ -68,7 +68,7 @@ void Test::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 {
 	const b2Manifold* manifold = contact->GetManifold();
 
-	if (manifold->pointCount == 0)
+	if (manifold->GetPointCount() == 0)
 	{
 		return;
 	}
@@ -78,17 +78,17 @@ void Test::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 
 	b2PointStateArray state1;
 	b2PointStateArray state2;
-	b2GetPointStates(state1, state2, oldManifold, manifold);
+	b2GetPointStates(state1, state2, *oldManifold, *manifold);
 
 	b2WorldManifold worldManifold;
 	contact->GetWorldManifold(&worldManifold);
 
-	for (int32 i = 0; (i < manifold->pointCount) && (m_pointCount < k_maxContactPoints); ++i)
+	for (int32 i = 0; (i < manifold->GetPointCount()) && (m_pointCount < k_maxContactPoints); ++i)
 	{
 		ContactPoint* cp = m_points + m_pointCount;
 		cp->fixtureA = fixtureA;
 		cp->fixtureB = fixtureB;
-		cp->position = worldManifold.GetPointCount(i);
+		cp->position = worldManifold.GetPoint(i);
 		cp->normal = worldManifold.GetNormal();
 		cp->state = state2[i];
 		cp->normalImpulse = manifold->GetPoint(i).normalImpulse;
@@ -146,12 +146,8 @@ void Test::MouseDown(const b2Vec2& p)
 	}
 
 	// Make a small box.
-	b2AABB aabb;
-	b2Vec2 d;
-	d.Set(0.001f, 0.001f);
-	aabb.lowerBound = p - d;
-	aabb.upperBound = p + d;
-
+	const auto aabb = b2AABB{p, p} + b2Vec2(0.001f, 0.001f);
+	
 	// Query the world for overlapping shapes.
 	QueryCallback callback(p);
 	m_world->QueryAABB(&callback, aabb);
@@ -248,20 +244,13 @@ void Test::LaunchBomb(const b2Vec2& position, const b2Vec2& velocity)
 	m_bomb->SetLinearVelocity(velocity);
 	
 	b2CircleShape circle;
-	circle.m_radius = 0.3f;
+	circle.SetRadius(0.3f);
 
 	b2FixtureDef fd;
 	fd.shape = &circle;
 	fd.density = 20.0f;
 	fd.restitution = 0.0f;
 	
-	b2Vec2 minV = position - b2Vec2(0.3f,0.3f);
-	b2Vec2 maxV = position + b2Vec2(0.3f,0.3f);
-	
-	b2AABB aabb;
-	aabb.lowerBound = minV;
-	aabb.upperBound = maxV;
-
 	m_bomb->CreateFixture(&fd);
 }
 
@@ -310,15 +299,15 @@ void Test::Step(Settings* settings)
 
 	if (settings->drawStats)
 	{
-		int32 bodyCount = m_world->GetBodyCount();
-		int32 contactCount = m_world->GetContactCount();
-		int32 jointCount = m_world->GetJointCount();
+		const auto bodyCount = m_world->GetBodyCount();
+		const auto contactCount = m_world->GetContactCount();
+		const auto jointCount = m_world->GetJointCount();
 		g_debugDraw.DrawString(5, m_textLine, "bodies/contacts/joints = %d/%d/%d", bodyCount, contactCount, jointCount);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		int32 proxyCount = m_world->GetProxyCount();
-		int32 height = m_world->GetTreeHeight();
-		int32 balance = m_world->GetTreeBalance();
+		const auto proxyCount = m_world->GetProxyCount();
+		const auto height = m_world->GetTreeHeight();
+		const auto balance = m_world->GetTreeBalance();
 		b2Float quality = m_world->GetTreeQuality();
 		g_debugDraw.DrawString(5, m_textLine, "proxies/height/balance/quality = %d/%d/%d/%g", proxyCount, height, balance, quality);
 		m_textLine += DRAW_STRING_NEW_LINE;

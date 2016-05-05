@@ -144,8 +144,7 @@ void b2Fixture::Synchronize(b2BroadPhase* broadPhase, const b2Transform& transfo
 		// Compute an AABB that covers the swept shape (may miss some rotation effect).
 		const auto aabb1 = m_shape->ComputeAABB(transform1, proxy.childIndex);
 		const auto aabb2 = m_shape->ComputeAABB(transform2, proxy.childIndex);
-	
-		proxy.aabb.Combine(aabb1, aabb2);
+		proxy.aabb = aabb1 + aabb2;
 
 		const auto displacement = transform2.p - transform1.p;
 

@@ -106,7 +106,7 @@ public:
 			jd.bodyB = body;
 			jd.enableLimit = true;
 			jd.localAnchorA.Set(0.0f, 4.0f);
-			jd.localAnchorB.SetZero();
+			jd.localAnchorB = b2Vec2_zero;
 			jd.localAxisA.Set(0.0f, 1.0f);
 			jd.lowerTranslation = -1.0f;
 			jd.upperTranslation = 1.0f;
@@ -142,7 +142,7 @@ public:
 
 		// Small circle
 		b2CircleShape circle;
-		circle.m_radius = 1.0f;
+		circle.SetRadius(b2Float(1));
 
 		b2FixtureDef circleShapeDef;
 		circleShapeDef.shape = &circle;
@@ -160,7 +160,7 @@ public:
 		body5->CreateFixture(&circleShapeDef);
 
 		// Large circle
-		circle.m_radius *= 2.0f;
+		circle.SetRadius(circle.GetRadius() * 2);
 		circleShapeDef.filter.groupIndex = k_largeGroup;
 		circleBodyDef.position.Set(5.0f, 6.0f);
 

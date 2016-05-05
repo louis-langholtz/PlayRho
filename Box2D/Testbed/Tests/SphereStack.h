@@ -41,7 +41,7 @@ public:
 
 		{
 			b2CircleShape shape;
-			shape.m_radius = 1.0f;
+			shape.SetRadius(1.0);
 
 			for (int32 i = 0; i < e_count; ++i)
 			{

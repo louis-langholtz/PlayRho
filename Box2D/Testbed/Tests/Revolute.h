@@ -41,7 +41,7 @@ public:
 
 		{
 			b2CircleShape shape;
-			shape.m_radius = 0.5f;
+			shape.SetRadius(0.5);
 
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
@@ -70,7 +70,7 @@ public:
 
 		{
 			b2CircleShape circle_shape;
-			circle_shape.m_radius = 3.0f;
+			circle_shape.SetRadius(3.0);
 
 			b2BodyDef circle_bd;
 			circle_bd.type = b2_dynamicBody;

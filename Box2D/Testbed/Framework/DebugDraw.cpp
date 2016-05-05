@@ -425,7 +425,7 @@ struct GLRenderLines
         
 		glUseProgram(m_programId);
         
-		b2Float proj[16] = { 0.0f };
+		GLfloat proj[16] = { 0.0f };
 		g_camera.BuildProjectionMatrix(proj, 0.1f);
         
 		glUniformMatrix4fv(m_projectionUniform, 1, GL_FALSE, proj);
@@ -638,7 +638,7 @@ void DebugDraw::Destroy()
 }
 
 //
-void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
+void DebugDraw::DrawPolygon(const b2Vec2* vertices, size_type vertexCount, const b2Color& color)
 {
     b2Vec2 p1 = vertices[vertexCount - 1];
 	for (int32 i = 0; i < vertexCount; ++i)
@@ -651,7 +651,7 @@ void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2C
 }
 
 //
-void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
+void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, size_type vertexCount, const b2Color& color)
 {
 	b2Color fillColor(0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f);
 
@@ -800,10 +800,10 @@ void DebugDraw::DrawString(const b2Vec2& pw, const char *string, ...)
 
 void DebugDraw::DrawAABB(b2AABB* aabb, const b2Color& c)
 {
-    b2Vec2 p1 = aabb->lowerBound;
-    b2Vec2 p2 = b2Vec2(aabb->upperBound.x, aabb->lowerBound.y);
-    b2Vec2 p3 = aabb->upperBound;
-    b2Vec2 p4 = b2Vec2(aabb->lowerBound.x, aabb->upperBound.y);
+    b2Vec2 p1 = aabb->GetLowerBound();
+    b2Vec2 p2 = b2Vec2(aabb->GetUpperBound().x, aabb->GetLowerBound().y);
+    b2Vec2 p3 = aabb->GetUpperBound();
+    b2Vec2 p4 = b2Vec2(aabb->GetLowerBound().x, aabb->GetUpperBound().y);
     
     m_lines->Vertex(p1, c);
     m_lines->Vertex(p2, c);

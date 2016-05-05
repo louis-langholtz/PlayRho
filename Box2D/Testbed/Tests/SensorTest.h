@@ -50,9 +50,7 @@ public:
 			}
 #else
 			{
-				b2CircleShape shape;
-				shape.m_radius = 5.0f;
-				shape.m_p.Set(0.0f, 10.0f);
+				b2CircleShape shape(5.0f, b2Vec2(0.0f, 10.0f));
 
 				b2FixtureDef fd;
 				fd.shape = &shape;
@@ -64,7 +62,7 @@ public:
 
 		{
 			b2CircleShape shape;
-			shape.m_radius = 1.0f;
+			shape.SetRadius(1.0);
 
 			for (int32 i = 0; i < e_count; ++i)
 			{
@@ -152,7 +150,7 @@ public:
 			b2Body* ground = m_sensor->GetBody();
 
 			b2CircleShape* circle = (b2CircleShape*)m_sensor->GetShape();
-			b2Vec2 center = ground->GetWorldPoint(circle->m_p);
+			b2Vec2 center = ground->GetWorldPoint(circle->GetPosition());
 
 			b2Vec2 position = body->GetPosition();
 

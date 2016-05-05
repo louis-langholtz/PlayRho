@@ -173,18 +173,17 @@ void b2Contact::Update(b2ContactListener* listener)
 		// stored impulses to warm start the solver.
 		for (auto i = decltype(m_manifold.GetPointCount()){0}; i < m_manifold.GetPointCount(); ++i)
 		{
-			auto& mp2 = m_manifold.GetPoint(i);
-			mp2.normalImpulse = b2Float{0};
-			mp2.tangentImpulse = b2Float{0};
+			auto& new_mp = m_manifold.GetPoint(i);
+			new_mp.normalImpulse = b2Float{0};
+			new_mp.tangentImpulse = b2Float{0};
 
 			for (auto j = decltype(oldManifold.GetPointCount()){0}; j < oldManifold.GetPointCount(); ++j)
 			{
-				const auto& mp1 = oldManifold.GetPoint(j);
-
-				if (mp2.cf == mp1.cf)
+				const auto& old_mp = oldManifold.GetPoint(j);
+				if (new_mp.cf == old_mp.cf)
 				{
-					mp2.normalImpulse = mp1.normalImpulse;
-					mp2.tangentImpulse = mp1.tangentImpulse;
+					new_mp.normalImpulse = old_mp.normalImpulse;
+					new_mp.tangentImpulse = old_mp.tangentImpulse;
 					break;
 				}
 			}

@@ -49,7 +49,7 @@ b2RevoluteJoint::b2RevoluteJoint(const b2RevoluteJointDef* def)
 	m_localAnchorB = def->localAnchorB;
 	m_referenceAngle = def->referenceAngle;
 
-	m_impulse.SetZero();
+	m_impulse = b2Vec3_zero;
 	m_motorImpulse = b2Float{0};
 
 	m_lowerAngle = def->lowerAngle;
@@ -170,7 +170,7 @@ void b2RevoluteJoint::InitVelocityConstraints(const b2SolverData& data)
 	}
 	else
 	{
-		m_impulse.SetZero();
+		m_impulse = b2Vec3_zero;
 		m_motorImpulse = b2Float{0};
 	}
 
@@ -198,7 +198,7 @@ void b2RevoluteJoint::SolveVelocityConstraints(const b2SolverData& data)
 		const auto Cdot = wB - wA - m_motorSpeed;
 		auto impulse = -m_motorMass * Cdot;
 		const auto oldImpulse = m_motorImpulse;
-		const auto maxImpulse = data.step.dt * m_maxMotorTorque;
+		const auto maxImpulse = data.step.get_dt() * m_maxMotorTorque;
 		m_motorImpulse = b2Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
 		impulse = m_motorImpulse - oldImpulse;
 

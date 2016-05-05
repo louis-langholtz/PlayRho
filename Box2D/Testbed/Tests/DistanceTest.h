@@ -49,14 +49,14 @@ public:
 		Test::Step(settings);
 
 		b2DistanceInput input;
-		input.proxyA.Set(m_polygonA, 0);
-		input.proxyB.Set(m_polygonB, 0);
+		input.proxyA = b2DistanceProxy(m_polygonA, 0);
+		input.proxyB = b2DistanceProxy(m_polygonB, 0);
 		input.transformA = m_transformA;
 		input.transformB = m_transformB;
 		input.useRadii = true;
 		b2SimplexCache cache;
 		b2DistanceOutput output;
-		b2Distance(&output, &cache, &input);
+		b2Distance(&output, &cache, input);
 
 		g_debugDraw.DrawString(5, m_textLine, "distance = %g", output.distance);
 		m_textLine += DRAW_STRING_NEW_LINE;
@@ -67,17 +67,17 @@ public:
 		{
 			b2Color color(0.9f, 0.9f, 0.9f);
 			b2Vec2 v[b2_maxPolygonVertices];
-			for (int32 i = 0; i < m_polygonA.m_count; ++i)
+			for (int32 i = 0; i < m_polygonA.GetVertexCount(); ++i)
 			{
-				v[i] = b2Mul(m_transformA, m_polygonA.m_vertices[i]);
+				v[i] = b2Mul(m_transformA, m_polygonA.GetVertex(i));
 			}
-			g_debugDraw.DrawPolygon(v, m_polygonA.m_count, color);
+			g_debugDraw.DrawPolygon(v, m_polygonA.GetVertexCount(), color);
 
-			for (int32 i = 0; i < m_polygonB.m_count; ++i)
+			for (int32 i = 0; i < m_polygonB.GetVertexCount(); ++i)
 			{
-				v[i] = b2Mul(m_transformB, m_polygonB.m_vertices[i]);
+				v[i] = b2Mul(m_transformB, m_polygonB.GetVertex(i));
 			}
-			g_debugDraw.DrawPolygon(v, m_polygonB.m_count, color);
+			g_debugDraw.DrawPolygon(v, m_polygonB.GetVertexCount(), color);
 		}
 
 		b2Vec2 x1 = output.pointA;

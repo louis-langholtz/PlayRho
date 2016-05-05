@@ -36,13 +36,13 @@ public:
 
 		{
 			b2CircleShape circle1;
-			circle1.m_radius = 1.0f;
+			circle1.SetRadius(b2Float(1.0));
 
 			b2PolygonShape box;
 			box.SetAsBox(0.5f, 5.0f);
 
 			b2CircleShape circle2;
-			circle2.m_radius = 2.0f;
+			circle2.SetRadius(b2Float(2.0));
 			
 			b2BodyDef bd1;
 			bd1.type = b2_staticBody;
@@ -75,16 +75,16 @@ public:
 			jd4.bodyB = body3;
 			jd4.joint1 = joint1;
 			jd4.joint2 = joint2;
-			jd4.ratio = circle2.m_radius / circle1.m_radius;
+			jd4.ratio = circle2.GetRadius() / circle1.GetRadius();
 			m_world->CreateJoint(&jd4);
 		}
 
 		{
 			b2CircleShape circle1;
-			circle1.m_radius = 1.0f;
+			circle1.SetRadius(b2Float(1));
 
 			b2CircleShape circle2;
-			circle2.m_radius = 2.0f;
+			circle2.SetRadius(b2Float(2));
 			
 			b2PolygonShape box;
 			box.SetAsBox(0.5f, 5.0f);
@@ -132,7 +132,7 @@ public:
 			jd4.bodyB = body2;
 			jd4.joint1 = m_joint1;
 			jd4.joint2 = m_joint2;
-			jd4.ratio = circle2.m_radius / circle1.m_radius;
+			jd4.ratio = circle2.GetRadius() / circle1.GetRadius();
 			m_joint4 = (b2GearJoint*)m_world->CreateJoint(&jd4);
 
 			b2GearJointDef jd5;
@@ -140,7 +140,7 @@ public:
 			jd5.bodyB = body3;
 			jd5.joint1 = m_joint2;
 			jd5.joint2 = m_joint3;
-			jd5.ratio = -1.0f / circle2.m_radius;
+			jd5.ratio = -1.0f / circle2.GetRadius();
 			m_joint5 = (b2GearJoint*)m_world->CreateJoint(&jd5);
 		}
 	}

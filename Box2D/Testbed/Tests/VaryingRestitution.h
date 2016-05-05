@@ -38,7 +38,7 @@ public:
 
 		{
 			b2CircleShape shape;
-			shape.m_radius = 1.0f;
+			shape.SetRadius(b2Float(1));
 
 			b2FixtureDef fd;
 			fd.shape = &shape;

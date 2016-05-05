@@ -25,7 +25,7 @@
 
 // Compute contact points for edge versus circle.
 // This accounts for edge connectivity.
-void b2CollideShapes(b2Manifold* manifold,
+bool b2CollideShapes(b2Manifold* manifold,
 					 const b2EdgeShape& shapeA, const b2Transform& xfA,
 					 const b2CircleShape& shapeB, const b2Transform& xfB)
 {
@@ -43,11 +43,7 @@ void b2CollideShapes(b2Manifold* manifold,
 	const auto v = b2Dot(e, Q - A);
 	
 	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
-	
-	b2ContactFeature cf;
-	cf.indexB = 0;
-	cf.typeB = b2ContactFeature::e_vertex;
-	
+
 	// Region A
 	if (v <= 0)
 	{
@@ -55,7 +51,7 @@ void b2CollideShapes(b2Manifold* manifold,
 		const auto d = Q - P;
 		const auto dd = b2Dot(d, d);
 		if (dd > b2Square(totalRadius))
-			return;
+			return false;
 		
 		// Is there an edge connected to A?
 		if (shapeA.HasVertex0())
@@ -67,16 +63,14 @@ void b2CollideShapes(b2Manifold* manifold,
 			
 			// Is the circle in Region AB of the previous edge?
 			if (u1 > 0)
-				return;
+				return false;
 		}
 		
-		cf.indexA = 0;
-		cf.typeA = b2ContactFeature::e_vertex;
 		manifold->SetType(b2Manifold::e_circles);
 		manifold->SetLocalNormal(b2Vec2_zero);
 		manifold->SetLocalPoint(P);
-		manifold->AddPoint(shapeB.GetPosition(), cf);
-		return;
+		manifold->AddPoint(shapeB.GetPosition(), b2ContactFeature{b2ContactFeature::e_vertex, 0, b2ContactFeature::e_vertex, 0});
+		return true;
 	}
 	
 	// Region B
@@ -86,7 +80,7 @@ void b2CollideShapes(b2Manifold* manifold,
 		const auto d = Q - P;
 		const auto dd = b2Dot(d, d);
 		if (dd > b2Square(totalRadius))
-			return;
+			return false;
 		
 		// Is there an edge connected to B?
 		if (shapeA.HasVertex3())
@@ -98,17 +92,14 @@ void b2CollideShapes(b2Manifold* manifold,
 			
 			// Is the circle in Region AB of the next edge?
 			if (v2 > 0)
-				return;
+				return false;
 		}
 		
-		cf.indexA = 1;
-		cf.typeA = b2ContactFeature::e_vertex;
 		manifold->SetType(b2Manifold::e_circles);
 		manifold->SetLocalNormal(b2Vec2_zero);
 		manifold->SetLocalPoint(P);
-		manifold->AddPoint(shapeB.GetPosition(), cf);
-
-		return;
+		manifold->AddPoint(shapeB.GetPosition(), b2ContactFeature{b2ContactFeature::e_vertex, 1, b2ContactFeature::e_vertex, 0});
+		return true;
 	}
 	
 	// Region AB
@@ -118,18 +109,17 @@ void b2CollideShapes(b2Manifold* manifold,
 	const auto d = Q - P;
 	const auto dd = b2Dot(d, d);
 	if (dd > b2Square(totalRadius))
-		return;
+		return false;
 	
 	auto n = b2Vec2(-e.y, e.x);
 	if (b2Dot(n, Q - A) < 0)
 		n = b2Vec2(-n.x, -n.y);
 	
-	cf.indexA = 0;
-	cf.typeA = b2ContactFeature::e_face;
 	manifold->SetType(b2Manifold::e_faceA);
 	manifold->SetLocalNormal(b2Normalize(n));
 	manifold->SetLocalPoint(A);
-	manifold->AddPoint(shapeB.GetPosition(), cf);
+	manifold->AddPoint(shapeB.GetPosition(), b2ContactFeature{b2ContactFeature::e_face, 0, b2ContactFeature::e_vertex, 0});
+	return true;
 }
 
 // This structure is used to keep track of the best separating axis.
@@ -211,7 +201,7 @@ struct b2ReferenceFace
 class b2EPCollider
 {
 public:
-	void Collide(b2Manifold* manifold,
+	bool Collide(b2Manifold* manifold,
 				 const b2EdgeShape& shapeA, const b2Transform& xfA,
 				 const b2PolygonShape& shapeB, const b2Transform& xfB);
 	
@@ -249,7 +239,7 @@ private:
 // 6. Visit each separating axes, only accept axes within the range
 // 7. Return if _any_ axis indicates separation
 // 8. Clip
-void b2EPCollider::Collide(b2Manifold* manifold,
+bool b2EPCollider::Collide(b2Manifold* manifold,
 						   const b2EdgeShape& shapeA, const b2Transform& xfA,
 						   const b2PolygonShape& shapeB, const b2Transform& xfB)
 {
@@ -459,18 +449,18 @@ void b2EPCollider::Collide(b2Manifold* manifold,
 	// If no valid normal can be found then this edge should not collide.
 	b2Assert(edgeAxis.type != b2EPAxis::e_unknown);
 	if (edgeAxis.type == b2EPAxis::e_unknown)
-		return;
+		return false;
 	
 	if (edgeAxis.separation > MaxSeparation)
-		return;
+		return false;
 	
 	const auto polygonAxis = ComputePolygonSeparation();
 	if ((polygonAxis.type != b2EPAxis::e_unknown) && (polygonAxis.separation > MaxSeparation))
-		return;
+		return false;
 	
 	// Use hysteresis for jitter reduction.
-	constexpr auto k_relativeTol = 0.98f;
-	constexpr auto k_absoluteTol = b2_linearSlop / 5; // 0.001f;
+	constexpr auto k_relativeTol = b2Float(0.98);
+	constexpr auto k_absoluteTol = b2_linearSlop / 5; // 0.001
 	
 	const auto primaryAxis = (polygonAxis.type == b2EPAxis::e_unknown)?
 		edgeAxis: (polygonAxis.separation > ((k_relativeTol * edgeAxis.separation) + k_absoluteTol))?
@@ -570,16 +560,16 @@ void b2EPCollider::Collide(b2Manifold* manifold,
 	}
 
 	// Clip incident edge against extruded edge1 side edges.
-	b2ClipArray clipPoints1;
-	b2ClipArray clipPoints2;
 	
 	// Clip to box side 1
+	b2ClipArray clipPoints1;
 	if (b2ClipSegmentToLine(clipPoints1, ie, rf.sideNormal1, rf.sideOffset1, rf.i1) < b2_maxManifoldPoints)
-		return;
+		return false;
 	
 	// Clip to negative box side 1
+	b2ClipArray clipPoints2;
 	if (b2ClipSegmentToLine(clipPoints2, clipPoints1, rf.sideNormal2, rf.sideOffset2, rf.i2) < b2_maxManifoldPoints)
-		return;
+		return false;
 	
 	// Now clipPoints2 contains the clipped points.
 	
@@ -594,6 +584,7 @@ void b2EPCollider::Collide(b2Manifold* manifold,
 				manifold->AddPoint(clipPoints2[i].v, b2Flip(clipPoints2[i].cf));
 		}
 	}
+	return true;
 }
 
 b2EPAxis b2EPCollider::ComputeEdgeSeparation() const
@@ -652,10 +643,10 @@ b2EPAxis b2EPCollider::ComputePolygonSeparation() const
 	return axis;
 }
 
-void b2CollideShapes(b2Manifold* manifold,
+bool b2CollideShapes(b2Manifold* manifold,
 					 const b2EdgeShape& shapeA, const b2Transform& xfA,
 					 const b2PolygonShape& shapeB, const b2Transform& xfB)
 {
 	b2EPCollider collider;
-	collider.Collide(manifold, shapeA, xfA, shapeB, xfB);
+	return collider.Collide(manifold, shapeA, xfA, shapeB, xfB);
 }

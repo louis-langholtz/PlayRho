@@ -55,9 +55,7 @@ public:
 		case GLFW_KEY_C:
 			if (m_fixture2 == nullptr)
 			{
-				b2CircleShape shape;
-				shape.m_radius = 3.0f;
-				shape.m_p.Set(0.5f, -4.0f);
+				b2CircleShape shape(3.0, b2Vec2(0.5f, -4.0f));
 				m_fixture2 = m_body->CreateFixture(&shape, 10.0f);
 				m_body->SetAwake();
 			}

@@ -228,12 +228,7 @@ inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) con
 	auto maxFraction = input.maxFraction;
 
 	// Build a bounding box for the segment.
-	b2AABB segmentAABB;
-	{
-		const auto t = p1 + maxFraction * (p2 - p1);
-		segmentAABB.lowerBound = b2Min(p1, t);
-		segmentAABB.upperBound = b2Max(p1, t);
-	}
+	auto segmentAABB = b2AABB{p1, p1 + maxFraction * (p2 - p1)};
 
 	b2GrowableStack<size_type, 256> stack;
 	stack.Push(m_root);
@@ -280,8 +275,7 @@ inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) con
 				// Update segment bounding box.
 				maxFraction = value;
 				const auto t = p1 + maxFraction * (p2 - p1);
-				segmentAABB.lowerBound = b2Min(p1, t);
-				segmentAABB.upperBound = b2Max(p1, t);
+				segmentAABB = b2AABB(p1, t);
 			}
 		}
 		else

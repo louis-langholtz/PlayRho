@@ -199,7 +199,7 @@ public:
 			b2Body* body = m_world->CreateBody(&bd);
 
 			b2CircleShape shape;
-			shape.m_radius = 0.5f;
+			shape.SetRadius(b2Float(0.5));
 
 			b2FixtureDef fd;
 			fd.shape = &shape;
@@ -217,7 +217,7 @@ public:
 			m_character = m_world->CreateBody(&bd);
 
 			b2CircleShape shape;
-			shape.m_radius = 0.25f;
+			shape.SetRadius(b2Float(0.25));
 
 			b2FixtureDef fd;
 			fd.shape = &shape;

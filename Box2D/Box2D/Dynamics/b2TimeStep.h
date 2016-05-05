@@ -35,28 +35,40 @@ struct b2Profile
 };
 
 /// This is an internal structure.
-struct b2TimeStep
+class b2TimeStep
 {
-	b2Float dt;			// time step
-	b2Float inv_dt;		// inverse time step (0 if dt == 0).
-	b2Float dtRatio;	// dt * inv_dt0
-	int32 velocityIterations;
-	int32 positionIterations;
-	bool warmStarting;
+public:
+	b2Float get_dt() const noexcept { return dt; }
+	b2Float get_inv_dt() const noexcept { return inv_dt; }
+	
+	void set_dt(b2Float value) noexcept
+	{
+		dt = value;
+		inv_dt = (value > b2Float(0))? b2Float(1) / value: b2Float(0);
+	}
+
+	b2Float dtRatio; ///< dt * inv_dt0
+	int32 velocityIterations; ///< Velocity iterations.
+	int32 positionIterations; ///< Position iterations.
+	bool warmStarting; ///< Whether or not to perform warm starting.
+
+private:
+	b2Float dt; ///< The time step - delta time.
+	b2Float inv_dt; ///< Inverse time step (1/dt or 0 if dt == 0). @see dt.
 };
 
 /// This is an internal structure.
 struct b2Position
 {
-	b2Vec2 c; // linear position
-	b2Float a; // angular position
+	b2Vec2 c; ///< linear position
+	b2Float a; ///< angular position
 };
 
 /// This is an internal structure.
 struct b2Velocity
 {
-	b2Vec2 v; // linear velocity
-	b2Float w; // angular velocity
+	b2Vec2 v; ///< Linear velocity.
+	b2Float w; ///< Angular velocity.
 };
 
 /// Solver Data

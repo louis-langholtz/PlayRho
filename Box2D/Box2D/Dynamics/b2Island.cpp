@@ -194,7 +194,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 {
 	b2Timer timer;
 
-	const auto h = step.dt;
+	const auto h = step.get_dt();
 
 	// Integrate velocities and apply damping. Initialize the body state.
 	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
@@ -288,14 +288,14 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 
 		// Check for large velocities
 		const auto translation = h * v;
-		if (b2Dot(translation, translation) > b2_maxTranslationSquared)
+		if (b2Dot(translation, translation) > b2Square(b2_maxTranslation))
 		{
 			const auto ratio = b2_maxTranslation / translation.Length();
 			v *= ratio;
 		}
 
 		const auto rotation = h * w;
-		if ((rotation * rotation) > b2_maxRotationSquared)
+		if (b2Square(rotation) > b2Square(b2_maxRotation))
 		{
 			const auto ratio = b2_maxRotation / b2Abs(rotation);
 			w *= ratio;
@@ -472,7 +472,7 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, isl
 	// Don't store the TOI contact forces for warm starting
 	// because they can be quite large.
 
-	const auto h = subStep.dt;
+	const auto h = subStep.get_dt();
 
 	// Integrate positions
 	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
@@ -484,14 +484,14 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, isl
 
 		// Check for large velocities
 		const auto translation = h * v;
-		if (b2Dot(translation, translation) > b2_maxTranslationSquared)
+		if (b2Dot(translation, translation) > b2Square(b2_maxTranslation))
 		{
 			const auto ratio = b2_maxTranslation / translation.Length();
 			v *= ratio;
 		}
 
 		const auto rotation = h * w;
-		if (b2Square(rotation) > b2_maxRotationSquared)
+		if (b2Square(rotation) > b2Square(b2_maxRotation))
 		{
 			const auto ratio = b2_maxRotation / b2Abs(rotation);
 			w *= ratio;

@@ -59,7 +59,7 @@ b2Body::b2Body(const b2BodyDef* bd, b2World* world):
 	b2Assert(b2IsValid(bd->angularDamping) && (bd->angularDamping >= b2Float{0}));
 	b2Assert(b2IsValid(bd->linearDamping) && (bd->linearDamping >= b2Float{0}));
 
-	m_sweep.localCenter.SetZero();
+	m_sweep.localCenter = b2Vec2_zero;
 	m_sweep.c0 = m_xf.p;
 	m_sweep.c = m_xf.p;
 	m_sweep.a0 = bd->angle;
@@ -259,18 +259,38 @@ void b2Body::DestroyFixture(b2Fixture* fixture)
 	ResetMassData();
 }
 
+b2MassData b2Body::CalculateMassData() const noexcept
+{
+	auto mass = b2Float(0);
+	auto center = b2Vec2_zero;
+	auto I = b2Float(0);
+	for (auto f = m_fixtureList; f; f = f->m_next)
+	{
+		if (f->m_density == b2Float{0})
+		{
+			continue;
+		}
+		
+		const auto massData = f->GetMassData();
+		mass += massData.mass;
+		center += massData.mass * massData.center;
+		I += massData.I;
+	}
+	return b2MassData{mass, (mass != b2Float(0))? center / mass: b2Vec2_zero, I};
+}
+
 void b2Body::ResetMassData()
 {
 	// Compute mass data from shapes. Each shape has its own density.
-	m_mass = b2Float{0};
-	m_invMass = b2Float{0};
-	m_I = b2Float{0};
-	m_invI = b2Float{0};
-	m_sweep.localCenter.SetZero();
 
 	// Static and kinematic bodies have zero mass.
 	if ((m_type == b2_staticBody) || (m_type == b2_kinematicBody))
 	{
+		m_mass = b2Float{0};
+		m_invMass = b2Float{0};
+		m_I = b2Float{0};
+		m_invI = b2Float{0};
+		m_sweep.localCenter = b2Vec2_zero;
 		m_sweep.c0 = m_xf.p;
 		m_sweep.c = m_xf.p;
 		m_sweep.a0 = m_sweep.a;
@@ -280,6 +300,8 @@ void b2Body::ResetMassData()
 	b2Assert(m_type == b2_dynamicBody);
 
 	// Accumulate mass over all fixtures.
+	m_mass = b2Float{0};
+	m_I = b2Float{0};
 	auto localCenter = b2Vec2_zero;
 	for (auto f = m_fixtureList; f; f = f->m_next)
 	{
@@ -307,13 +329,12 @@ void b2Body::ResetMassData()
 		m_invMass = b2Float(1);
 	}
 
-	if ((m_I > b2Float{0}) && ((m_flags & e_fixedRotationFlag) == 0))
+	if ((m_I > b2Float{0}) && (!IsFixedRotation()))
 	{
 		// Center the inertia about the center of mass.
 		m_I -= m_mass * b2Dot(localCenter, localCenter);
 		b2Assert(m_I > b2Float{0});
 		m_invI = b2Float(1) / m_I;
-
 	}
 	else
 	{
@@ -343,23 +364,19 @@ void b2Body::SetMassData(const b2MassData* massData)
 		return;
 	}
 
-	m_invMass = b2Float{0};
-	m_I = b2Float{0};
-	m_invI = b2Float{0};
-
-	m_mass = massData->mass;
-	if (m_mass <= b2Float{0})
-	{
-		m_mass = b2Float(1);
-	}
-
+	m_mass = (massData->mass > b2Float(0))? massData->mass: b2Float(1);
 	m_invMass = b2Float(1) / m_mass;
 
-	if ((massData->I > b2Float{0}) && ((m_flags & b2Body::e_fixedRotationFlag) == 0))
+	if ((massData->I > b2Float{0}) && (!IsFixedRotation()))
 	{
 		m_I = massData->I - m_mass * b2Dot(massData->center, massData->center);
 		b2Assert(m_I > b2Float{0});
 		m_invI = b2Float(1) / m_I;
+	}
+	else
+	{
+		m_I = b2Float{0};
+		m_invI = b2Float{0};
 	}
 
 	// Move center of mass.
@@ -467,7 +484,7 @@ void b2Body::SetActive(bool flag)
 
 void b2Body::SetFixedRotation(bool flag)
 {
-	const auto status = (m_flags & e_fixedRotationFlag) == e_fixedRotationFlag;
+	const auto status = IsFixedRotation();
 	if (status == flag)
 	{
 		return;
