@@ -134,7 +134,7 @@ void b2PolygonShape::Set(const b2Vec2 vertices[], vertex_count_t count)
 		auto unique = true;
 		for (auto j = decltype(tempCount){0}; j < tempCount; ++j)
 		{
-			if (b2DistanceSquared(v, ps[j]) < b2Square(0.5f * b2_linearSlop))
+			if (b2DistanceSquared(v, ps[j]) < b2Square(b2_linearSlop / 2))
 			{
 				unique = false;
 				break;
@@ -416,7 +416,7 @@ b2MassData b2PolygonShape::ComputeMass(b2Float density) const
 		const auto intx2 = ex1*ex1 + ex2*ex1 + ex2*ex2;
 		const auto inty2 = ey1*ey1 + ey2*ey1 + ey2*ey2;
 
-		I += (0.25f * k_inv3 * D) * (intx2 + inty2);
+		I += (D * k_inv3 / 4) * (intx2 + inty2);
 	}
 
 	// Total mass
@@ -431,7 +431,7 @@ b2MassData b2PolygonShape::ComputeMass(b2Float density) const
 	// Shift to center of mass then to original body origin.
 	const auto massDataI = (density * I) + (mass * (b2Dot(massDataCenter, massDataCenter) - b2Dot(center, center)));
 	
-	return {mass, massDataCenter, massDataI};
+	return b2MassData{mass, massDataCenter, massDataI};
 }
 
 bool b2PolygonShape::Validate() const
@@ -439,7 +439,7 @@ bool b2PolygonShape::Validate() const
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		const auto i1 = i;
-		const auto i2 = i < (m_count - 1) ? i1 + 1 : 0;
+		const auto i2 = (i < (m_count - 1)) ? i1 + 1 : 0;
 		const auto p = m_vertices[i1];
 		const auto e = m_vertices[i2] - p;
 

@@ -31,6 +31,8 @@ struct b2MassData
 	constexpr b2MassData(b2Float m, b2Vec2 c, b2Float _I) noexcept: mass(m), center(c), I(_I) {}
 
 	/// The mass of the shape, usually in kilograms.
+	/// This should NEVER be a negative value.
+	/// @note Behavior is undefined if this value is negative.
 	b2Float mass;
 
 	/// The position of the shape's centroid relative to the shape's origin.

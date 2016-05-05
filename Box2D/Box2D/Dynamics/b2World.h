@@ -262,8 +262,7 @@ private:
 	b2DestructionListener* m_destructionListener = nullptr;
 	b2Draw* g_debugDraw = nullptr;
 
-	// This is used to compute the time step ratio to
-	// support a variable time step.
+	/// Used to compute the time step ratio to support a variable time step.
 	b2Float m_inv_dt0 = b2Float{0};
 
 	// These are for debugging the solver.

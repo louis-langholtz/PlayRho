@@ -121,5 +121,5 @@ b2MassData b2EdgeShape::ComputeMass(b2Float density) const
 {
 	B2_NOT_USED(density);
 
-	return {b2Float{0}, (m_vertex1 + m_vertex2) / b2Float(2), b2Float{0}};
+	return b2MassData{b2Float{0}, (m_vertex1 + m_vertex2) / b2Float(2), b2Float{0}};
 }
