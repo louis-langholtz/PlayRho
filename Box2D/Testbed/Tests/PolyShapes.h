@@ -266,7 +266,7 @@ public:
 		PolyShapesCallback callback;
 		callback.m_circle.SetRadius(b2Float(2.0));
 		callback.m_circle.SetPosition(b2Vec2(0.0f, 1.1f));
-		callback.m_transform.SetIdentity();
+		callback.m_transform = b2Transform_identity;
 		callback.g_debugDraw = &g_debugDraw;
 
 		b2AABB aabb = callback.m_circle.ComputeAABB(callback.m_transform, 0);

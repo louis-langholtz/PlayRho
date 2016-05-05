@@ -25,7 +25,7 @@ public:
 	DistanceTest()
 	{
 		{
-			m_transformA.SetIdentity();
+			m_transformA = b2Transform_identity;
 			m_transformA.p = b2Vec2(0.0f, -0.2f);
 			m_polygonA.SetAsBox(10.0f, 0.2f);
 		}
@@ -33,7 +33,7 @@ public:
 		{
 			m_positionB = b2Vec2(12.017401f, 0.13678508f);
 			m_angleB = -0.0109265f;
-			m_transformB.Set(m_positionB, m_angleB);
+			m_transformB = b2Transform(m_positionB, b2Rot(m_angleB));
 
 			m_polygonB.SetAsBox(2.0f, 0.1f);
 		}
@@ -119,7 +119,7 @@ public:
 			break;
 		}
 
-		m_transformB.Set(m_positionB, m_angleB);
+		m_transformB = b2Transform(m_positionB, b2Rot(m_angleB));
 	}
 
 	b2Vec2 m_positionB;

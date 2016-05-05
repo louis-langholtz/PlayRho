@@ -204,13 +204,6 @@ struct b2Mat22
 	/// Construct this matrix using scalars.
 	constexpr b2Mat22(b2Float a11, b2Float a12, b2Float a21, b2Float a22) noexcept: ex(a11, a21), ey(a12, a22) {}
 
-	/// Set this to the identity matrix.
-	constexpr void SetIdentity() noexcept
-	{
-		ex.x = b2Float(1); ey.x = b2Float{0};
-		ex.y = b2Float{0}; ey.y = b2Float(1);
-	}
-
 	constexpr b2Mat22 GetInverse() const noexcept
 	{
 		const auto a = ex.x, b = ey.x, c = ex.y, d = ey.y;
@@ -238,7 +231,13 @@ struct b2Mat22
 	b2Vec2 ex, ey;
 };
 
+/// An all zero b2Mat22 value.
+/// @see b2Mat22.
 constexpr auto b2Mat22_zero = b2Mat22(b2Vec2_zero, b2Vec2_zero);
+
+/// Identity value for b2Mat22 objects.
+/// @see b2Mat22.
+constexpr auto b2Mat22_identity = b2Mat22(b2Vec2(1, 0), b2Vec2(0, 1));
 
 /// A 3-by-3 matrix. Stored in column-major order.
 struct b2Mat33
@@ -305,13 +304,6 @@ struct b2Rot
 	/// Initialize from sine and cosine values.
 	constexpr explicit b2Rot(b2Float sine, b2Float cosine) noexcept: s(sine), c(cosine) {}
 
-	/// Set to the identity rotation
-	constexpr void SetIdentity() noexcept
-	{
-		s = b2Float{0};
-		c = b2Float(1);
-	}
-
 	/// Get the angle in radians
 	b2Float GetAngle() const
 	{
@@ -334,6 +326,8 @@ struct b2Rot
 	b2Float s, c;
 };
 
+constexpr auto b2Rot_identity = b2Rot(0, 1);
+
 /// A transform contains translation and rotation. It is used to represent
 /// the position and orientation of rigid frames.
 struct b2Transform
@@ -344,25 +338,11 @@ struct b2Transform
 	/// Initialize using a position vector and a rotation.
 	constexpr b2Transform(const b2Vec2& position, const b2Rot& rotation) noexcept: p(position), q(rotation) {}
 
-	/// Set this to the identity transform.
-	constexpr void SetIdentity() noexcept
-	{
-		p = b2Vec2_zero;
-		q.SetIdentity();
-	}
-
-	/// Set this based on the position and angle.
-	/// @param position Position.
-	/// @param angle Angle in radians.
-	void Set(const b2Vec2& position, b2Float angle)
-	{
-		p = position;
-		q = b2Rot(angle);
-	}
-
 	b2Vec2 p;
 	b2Rot q;
 };
+
+constexpr auto b2Transform_identity = b2Transform(b2Vec2_zero, b2Rot_identity);
 
 /// This describes the motion of a body/shape for TOI computation.
 /// Shapes are defined with respect to the body origin, which may
