@@ -72,7 +72,9 @@ public:
 	/// @see b2Shape::ComputeMass
 	b2MassData ComputeMass(b2Float density) const override;
 
-	/// Get the vertex count.
+	/// Gets the vertex count.
+	/// @return value between 0 and b2_maxPolygonVertices inclusive.
+	/// @see b2_maxPolygonVertices.
 	vertex_count_t GetVertexCount() const noexcept { return m_count; }
 
 	/// Get a vertex by index.
