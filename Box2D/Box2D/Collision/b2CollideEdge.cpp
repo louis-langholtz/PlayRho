@@ -216,13 +216,6 @@ public:
 	
 private:
 	
-	enum VertexType
-	{
-		e_isolated,
-		e_concave,
-		e_convex
-	};
-
 	b2EPAxis ComputeEdgeSeparation() const;
 	b2EPAxis ComputePolygonSeparation() const;
 
@@ -235,7 +228,6 @@ private:
 	b2Vec2 m_v0, m_v1, m_v2, m_v3;
 	b2Vec2 m_normal0, m_normal1, m_normal2;
 	b2Vec2 m_normal;
-	VertexType m_type1, m_type2;
 	b2Vec2 m_lowerLimit, m_upperLimit;
 	bool m_front;
 };
@@ -457,10 +449,7 @@ bool b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape& shapeA, cons
 	
 	// If no valid normal can be found then this edge should not collide.
 	b2Assert(edgeAxis.type != b2EPAxis::e_unknown);
-	if (edgeAxis.type == b2EPAxis::e_unknown)
-		return false;
-	
-	if (edgeAxis.separation > MaxSeparation)
+	if ((edgeAxis.type == b2EPAxis::e_unknown) || (edgeAxis.separation > MaxSeparation))
 		return false;
 	
 	const auto polygonAxis = ComputePolygonSeparation();
@@ -471,11 +460,14 @@ bool b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape& shapeA, cons
 	constexpr auto k_relativeTol = b2Float(0.98);
 	constexpr auto k_absoluteTol = b2_linearSlop / 5; // 0.001
 	
+	// Now:
+	//   (edgeAxis.separation <= MaxSeparation) AND
+	//   (polygonAxis.type == b2EPAxis::e_unknown OR polygonAxis.separation <= MaxSeparation)
 	const auto primaryAxis = (polygonAxis.type == b2EPAxis::e_unknown)?
 		edgeAxis: (polygonAxis.separation > ((k_relativeTol * edgeAxis.separation) + k_absoluteTol))?
 			polygonAxis: edgeAxis;
 	
-	b2ClipArray ie;
+	b2ClipArray incidentEdge;
 	b2ReferenceFace rf;
 	if (primaryAxis.type == b2EPAxis::e_edgeA)
 	{
@@ -500,17 +492,10 @@ bool b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape& shapeA, cons
 		const auto i1 = bestIndex;
 		const auto i2 = ((i1 + 1) < m_shapeB.GetCount()) ? i1 + 1 : 0;
 		
-		ie[0].v = m_shapeB.GetVertex(i1);
-		ie[0].cf.indexA = 0;
-		ie[0].cf.indexB = i1;
-		ie[0].cf.typeA = b2ContactFeature::e_face;
-		ie[0].cf.typeB = b2ContactFeature::e_vertex;
-		
-		ie[1].v = m_shapeB.GetVertex(i2);
-		ie[1].cf.indexA = 0;
-		ie[1].cf.indexB = i2;
-		ie[1].cf.typeA = b2ContactFeature::e_face;
-		ie[1].cf.typeB = b2ContactFeature::e_vertex;
+		incidentEdge[0].v = m_shapeB.GetVertex(i1);
+		incidentEdge[0].cf = b2ContactFeature(b2ContactFeature::e_face, 0, b2ContactFeature::e_vertex, i1);
+		incidentEdge[1].v = m_shapeB.GetVertex(i2);
+		incidentEdge[1].cf = b2ContactFeature(b2ContactFeature::e_face, 0, b2ContactFeature::e_vertex, i2);
 		
 		if (m_front)
 		{
@@ -533,17 +518,10 @@ bool b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape& shapeA, cons
 	{
 		manifold->SetType(b2Manifold::e_faceB);
 		
-		ie[0].v = m_v1;
-		ie[0].cf.indexA = 0;
-		ie[0].cf.indexB = primaryAxis.index;
-		ie[0].cf.typeA = b2ContactFeature::e_vertex;
-		ie[0].cf.typeB = b2ContactFeature::e_face;
-		
-		ie[1].v = m_v2;
-		ie[1].cf.indexA = 0;
-		ie[1].cf.indexB = primaryAxis.index;		
-		ie[1].cf.typeA = b2ContactFeature::e_vertex;
-		ie[1].cf.typeB = b2ContactFeature::e_face;
+		incidentEdge[0].v = m_v1;
+		incidentEdge[0].cf = b2ContactFeature(b2ContactFeature::e_vertex, 0, b2ContactFeature::e_face, primaryAxis.index);
+		incidentEdge[1].v = m_v2;
+		incidentEdge[1].cf = b2ContactFeature(b2ContactFeature::e_vertex, 0, b2ContactFeature::e_face, primaryAxis.index);
 		
 		rf.i1 = primaryAxis.index;
 		rf.i2 = ((rf.i1 + 1) < m_shapeB.GetCount()) ? rf.i1 + 1 : 0;
@@ -557,22 +535,11 @@ bool b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape& shapeA, cons
 	rf.sideOffset1 = b2Dot(rf.sideNormal1, rf.v1);
 	rf.sideOffset2 = b2Dot(rf.sideNormal2, rf.v2);
 	
-	if (primaryAxis.type == b2EPAxis::e_edgeA)
-	{
-		manifold->SetLocalNormal(rf.normal);
-		manifold->SetLocalPoint(rf.v1);
-	}
-	else
-	{
-		manifold->SetLocalNormal(shapeB.GetNormal(rf.i1));
-		manifold->SetLocalPoint(shapeB.GetVertex(rf.i1));
-	}
-
 	// Clip incident edge against extruded edge1 side edges.
 	
 	// Clip to box side 1
 	b2ClipArray clipPoints1;
-	if (b2ClipSegmentToLine(clipPoints1, ie, rf.sideNormal1, rf.sideOffset1, rf.i1) < b2_maxManifoldPoints)
+	if (b2ClipSegmentToLine(clipPoints1, incidentEdge, rf.sideNormal1, rf.sideOffset1, rf.i1) < clipPoints1.size())
 		return false;
 	
 	// Clip to negative box side 1
@@ -582,17 +549,33 @@ bool b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape& shapeA, cons
 	
 	// Now clipPoints2 contains the clipped points.
 	
-	for (auto i = decltype(b2_maxManifoldPoints){0}; i < b2_maxManifoldPoints; ++i)
+	if (primaryAxis.type == b2EPAxis::e_edgeA)
 	{
-		const auto separation = b2Dot(rf.normal, clipPoints2[i].v - rf.v1);
-		if (separation <= MaxSeparation)
+		manifold->SetLocalNormal(rf.normal);
+		manifold->SetLocalPoint(rf.v1);
+		for (auto i = decltype(b2_maxManifoldPoints){0}; i < b2_maxManifoldPoints; ++i)
 		{
-			if (primaryAxis.type == b2EPAxis::e_edgeA)
+			const auto separation = b2Dot(rf.normal, clipPoints2[i].v - rf.v1);
+			if (separation <= MaxSeparation)
+			{
 				manifold->AddPoint(b2MulT(m_xf, clipPoints2[i].v), clipPoints2[i].cf);
-			else
-				manifold->AddPoint(clipPoints2[i].v, b2Flip(clipPoints2[i].cf));
+			}
 		}
 	}
+	else
+	{
+		manifold->SetLocalNormal(shapeB.GetNormal(rf.i1));
+		manifold->SetLocalPoint(shapeB.GetVertex(rf.i1));
+		for (auto i = decltype(b2_maxManifoldPoints){0}; i < b2_maxManifoldPoints; ++i)
+		{
+			const auto separation = b2Dot(rf.normal, clipPoints2[i].v - rf.v1);
+			if (separation <= MaxSeparation)
+			{
+				manifold->AddPoint(clipPoints2[i].v, b2Flip(clipPoints2[i].cf));
+			}
+		}
+	}
+
 	return true;
 }
 

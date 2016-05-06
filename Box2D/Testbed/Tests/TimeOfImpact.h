@@ -61,11 +61,9 @@ public:
 		input.sweepB = sweepB;
 		input.tMax = 1.0f;
 
-		b2TOIOutput output;
+		const auto output = b2TimeOfImpact(input);
 
-		b2TimeOfImpact(output, input);
-
-		g_debugDraw.DrawString(5, m_textLine, "toi = %g", output.t);
+		g_debugDraw.DrawString(5, m_textLine, "toi = %g", output.get_t());
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		extern int32 b2_toiMaxIters, b2_toiMaxRootIters;
@@ -74,24 +72,22 @@ public:
 
 		b2Vec2 vertices[b2_maxPolygonVertices];
 
-		b2Transform transformA = sweepA.GetTransform(0.0f);
+		const auto transformA = sweepA.GetTransform(0.0f);
 		for (int32 i = 0; i < m_shapeA.GetVertexCount(); ++i)
 		{
 			vertices[i] = b2Mul(transformA, m_shapeA.GetVertex(i));
 		}
 		g_debugDraw.DrawPolygon(vertices, m_shapeA.GetVertexCount(), b2Color(0.9f, 0.9f, 0.9f));
 
-		b2Transform transformB = sweepB.GetTransform(0.0f);
-		
+		auto transformB = sweepB.GetTransform(0.0f);
 		//b2Vec2 localPoint(2.0f, -0.1f);
-
 		for (int32 i = 0; i < m_shapeB.GetVertexCount(); ++i)
 		{
 			vertices[i] = b2Mul(transformB, m_shapeB.GetVertex(i));
 		}
 		g_debugDraw.DrawPolygon(vertices, m_shapeB.GetVertexCount(), b2Color(0.5f, 0.9f, 0.5f));
 
-		transformB = sweepB.GetTransform(output.t);
+		transformB = sweepB.GetTransform(output.get_t());
 		for (int32 i = 0; i < m_shapeB.GetVertexCount(); ++i)
 		{
 			vertices[i] = b2Mul(transformB, m_shapeB.GetVertex(i));
@@ -108,12 +104,12 @@ public:
 #if 0
 		for (b2Float t = 0.0f; t < 1.0f; t += 0.1f)
 		{
-			sweepB.GetTransform(&transformB, t);
-			for (int32 i = 0; i < m_shapeB.m_count; ++i)
+			transformB = sweepB.GetTransform(t);
+			for (int32 i = 0; i < m_shapeB.GetVertexCount(); ++i)
 			{
 				vertices[i] = b2Mul(transformB, m_shapeB.GetVertex(i));
 			}
-			g_debugDraw.DrawPolygon(vertices, m_shapeB.m_count, b2Color(0.9f, 0.5f, 0.5f));
+			g_debugDraw.DrawPolygon(vertices, m_shapeB.GetVertexCount(), b2Color(0.9f, 0.5f, 0.5f));
 		}
 #endif
 	}

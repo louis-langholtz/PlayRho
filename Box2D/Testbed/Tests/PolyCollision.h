@@ -26,14 +26,14 @@ public:
 	{
 		{
 			m_polygonA.SetAsBox(0.2f, 0.4f);
-			m_transformA = b2Transform(b2Vec2(0.0f, 0.0f), b2Rot(0));
+			m_transformA = b2Transform{b2Vec2(0.0f, 0.0f), b2Rot(0)};
 		}
 
 		{
 			m_polygonB.SetAsBox(0.5f, 0.5f);
 			m_positionB = b2Vec2(19.345284f, 1.5632932f);
 			m_angleB = 1.9160721f;
-			m_transformB = b2Transform(m_positionB, b2Rot(m_angleB));
+			m_transformB = b2Transform{m_positionB, b2Rot(m_angleB)};
 		}
 	}
 
@@ -104,7 +104,7 @@ public:
 			break;
 		}
 
-		m_transformB = b2Transform(m_positionB, b2Rot(m_angleB));
+		m_transformB = b2Transform{m_positionB, b2Rot(m_angleB)};
 	}
 
 	b2PolygonShape m_polygonA;

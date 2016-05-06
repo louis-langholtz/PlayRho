@@ -342,7 +342,7 @@ struct b2Transform
 	b2Rot q;
 };
 
-constexpr auto b2Transform_identity = b2Transform(b2Vec2_zero, b2Rot_identity);
+constexpr auto b2Transform_identity = b2Transform{b2Vec2_zero, b2Rot_identity};
 
 /// This describes the motion of a body/shape for TOI computation.
 /// Shapes are defined with respect to the body origin, which may
@@ -354,7 +354,8 @@ struct b2Sweep
 	/// @param beta is a factor in [0,1], where 0 indicates alpha0.
 	b2Transform GetTransform(b2Float beta) const;
 
-	/// Advance the sweep forward, yielding a new initial state.
+	/// Advances the sweep forward, yielding a new initial state.
+	/// This updates c0 and a0 and sets alpha0 to the given time alpha.
 	/// @param alpha the new initial time.
 	void Advance(b2Float alpha);
 
@@ -670,10 +671,19 @@ constexpr inline bool b2IsPowerOfTwo(uint32 x) noexcept
 	return (x > 0) && ((x & (x - 1)) == 0);
 }
 
+constexpr inline b2Transform b2Displace(const b2Vec2& ctr, const b2Vec2& local_ctr, const b2Rot& rot) noexcept
+{
+	return b2Transform{ctr - b2Mul(rot, local_ctr), rot};
+}
+
 inline b2Transform b2Sweep::GetTransform(b2Float beta) const
 {
-	const auto rot = b2Rot{(b2Float(1) - beta) * a0 + beta * a};
-	return b2Transform{((b2Float(1) - beta) * c0 + beta * c) - b2Mul(rot, localCenter), rot};
+	b2Assert(beta >= 0);
+	b2Assert(beta <= 1);
+	const auto one_minus_beta = b2Float(1) - beta;
+	const auto rot = b2Rot{one_minus_beta * a0 + beta * a};
+	const auto pos = (one_minus_beta * c0 + beta * c) - b2Mul(rot, localCenter);
+	return b2Transform{pos, rot};
 }
 
 inline void b2Sweep::Advance(b2Float alpha)

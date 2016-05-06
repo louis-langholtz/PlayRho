@@ -24,34 +24,6 @@
 
 static constexpr auto b2_nullNode = static_cast<b2_size_t>(-1);
 
-/// A node in the dynamic tree. The client does not interact with this directly.
-struct b2TreeNode
-{
-	using size_type = b2_size_t;
-
-	bool IsLeaf() const noexcept
-	{
-		return child1 == b2_nullNode;
-	}
-
-	/// Enlarged AABB
-	b2AABB aabb;
-
-	void* userData;
-
-	union
-	{
-		size_type parent;
-		size_type next;
-	};
-
-	size_type child1;
-	size_type child2;
-
-	// leaf = 0, free node = b2_nullNode
-	size_type height;
-};
-
 /// A dynamic AABB tree broad-phase, inspired by Nathanael Presson's btDbvt.
 /// A dynamic tree arranges data in a binary tree to accelerate
 /// queries such as volume queries and ray casts. Leafs are proxies
@@ -68,16 +40,17 @@ public:
 	/// Constructing the tree initializes the node pool.
 	b2DynamicTree();
 
-	/// Destroy the tree, freeing the node pool.
+	/// Destroys the tree, freeing the node pool.
 	~b2DynamicTree();
 
 	b2DynamicTree(const b2DynamicTree& copy) = delete;
 	b2DynamicTree& operator=(const b2DynamicTree&) = delete;
 
-	/// Create a proxy. Provide a tight fitting AABB and a userData pointer.
+	/// Creates a proxy. Provide a tight fitting AABB and a userData pointer.
+	/// @return 
 	size_type CreateProxy(const b2AABB& aabb, void* userData);
 
-	/// Destroy a proxy. This asserts if the id is invalid.
+	/// Destroys a proxy. This asserts if the id is invalid.
 	void DestroyProxy(size_type proxyId);
 
 	/// Move a proxy with a swepted AABB. If the proxy has moved outside of its fattened AABB,
@@ -86,11 +59,13 @@ public:
 	/// @return true if the proxy was re-inserted.
 	bool MoveProxy(size_type proxyId, const b2AABB& aabb1, const b2Vec2& displacement);
 
-	/// Get proxy user data.
-	/// @return the proxy user data or 0 if the id is invalid.
+	/// Gets the user data for the node identified by the given identifier.
+	/// @param proxyId Identifier of node to get the user data for.
+	/// @return User data for the specified node.
+	/// @note Behavior is undefined if the given index is invalid.
 	void* GetUserData(size_type proxyId) const;
 
-	/// Get the fat AABB for a proxy.
+	/// Gets the fat AABB for a proxy.
 	const b2AABB& GetFatAABB(size_type proxyId) const;
 
 	/// Query an AABB for overlapping proxies. The callback class
@@ -111,26 +86,50 @@ public:
 	/// Validate this tree. For testing.
 	void Validate() const;
 
-	/// Compute the height of the binary tree in O(N) time. Should not be
-	/// called often.
+	/// Gets the height of the binary tree.
 	size_type GetHeight() const noexcept;
 
-	/// Get the maximum balance of an node in the tree. The balance is the difference
+	/// Gets the maximum balance of an node in the tree. The balance is the difference
 	/// in height of the two children of a node.
 	size_type GetMaxBalance() const;
 
-	/// Get the ratio of the sum of the node areas to the root area.
+	/// Gets the ratio of the sum of the node areas to the root area.
 	b2Float GetAreaRatio() const;
 
 	/// Build an optimal tree. Very expensive. For testing.
 	void RebuildBottomUp();
 
-	/// Shift the world origin. Useful for large worlds.
+	/// Shifts the world origin. Useful for large worlds.
 	/// The shift formula is: position -= newOrigin
 	/// @param newOrigin the new origin with respect to the old origin
 	void ShiftOrigin(const b2Vec2& newOrigin);
 
 private:
+
+	/// A node in the dynamic tree. The client does not interact with this directly.
+	struct b2TreeNode
+	{
+		bool IsLeaf() const noexcept
+		{
+			return child1 == b2_nullNode;
+		}
+		
+		/// Enlarged AABB
+		b2AABB aabb;
+		
+		void* userData;
+		
+		union
+		{
+			size_type parent;
+			size_type next;
+		};
+		
+		size_type child1; ///< Index of child 1 in b2DynamicTree::m_nodes or b2_nullNode.
+		size_type child2; ///< Index of child 2 in b2DynamicTree::m_nodes or b2_nullNode.
+		
+		size_type height; ///< Height - for tree balancing. 0 if leaf node. b2_nullNode if free node.
+	};
 
 	size_type AllocateNode();
 	void FreeNode(size_type node);
@@ -146,7 +145,7 @@ private:
 	void ValidateStructure(size_type index) const;
 	void ValidateMetrics(size_type index) const;
 
-	size_type m_root = b2_nullNode;
+	size_type m_root = b2_nullNode; ///< Index of root element in m_nodes or b2_nullNode.
 
 	size_type m_nodeCount = 0;
 	size_type m_nodeCapacity = 16;
@@ -164,14 +163,21 @@ private:
 
 inline void* b2DynamicTree::GetUserData(size_type proxyId) const
 {
+	b2Assert(proxyId != b2_nullNode);
 	b2Assert(proxyId < m_nodeCapacity);
 	return m_nodes[proxyId].userData;
 }
 
 inline const b2AABB& b2DynamicTree::GetFatAABB(size_type proxyId) const
 {
+	b2Assert(proxyId != b2_nullNode);
 	b2Assert(proxyId < m_nodeCapacity);
 	return m_nodes[proxyId].aabb;
+}
+
+inline b2DynamicTree::size_type b2DynamicTree::GetHeight() const noexcept
+{
+	return (m_root != b2_nullNode)? m_nodes[m_root].height: 0;
 }
 
 template <typename T>

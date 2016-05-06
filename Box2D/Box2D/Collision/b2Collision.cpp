@@ -206,9 +206,9 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 	return true;
 }
 
-// Sutherland-Hodgman clipping.
 b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray& vIn,
-										   const b2Vec2& normal, b2Float offset, b2ContactFeature::index_t vertexIndexA)
+										   const b2Vec2& normal, b2Float offset,
+										   b2ContactFeature::index_t vertexIndexA)
 {
 	// Start with no output points
 	auto numOut = b2ClipArray::size_type{0};
@@ -226,13 +226,11 @@ b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray&
 	{
 		// Find intersection point of edge and plane
 		const auto interp = distance0 / (distance0 - distance1);
-		vOut[numOut].v = vIn[0].v + interp * (vIn[1].v - vIn[0].v);
+		vOut[numOut].v = vIn[0].v + (vIn[1].v - vIn[0].v) * interp;
 
 		// VertexA is hitting edgeB.
-		vOut[numOut].cf.indexA = vertexIndexA;
-		vOut[numOut].cf.indexB = vIn[0].cf.indexB;
-		vOut[numOut].cf.typeA = b2ContactFeature::e_vertex;
-		vOut[numOut].cf.typeB = b2ContactFeature::e_face;
+		vOut[numOut].cf = b2ContactFeature(b2ContactFeature::e_vertex, vertexIndexA, b2ContactFeature::e_face, vIn[0].cf.indexB);
+
 		++numOut;
 	}
 

@@ -623,87 +623,12 @@ void b2World::SolveTOI(const b2TimeStep& step)
 				continue;
 			}
 
-			auto alpha = b2Float{1};
-			if (c->HasValidToi())
+			if (!c->HasValidToi() && !ComputeTOI(c))
 			{
-				// This contact has a valid cached TOI.
-				alpha = c->GetToi();
-			}
-			else
-			{
-				const auto fA = c->GetFixtureA();
-				const auto fB = c->GetFixtureB();
-
-				// Is there a sensor?
-				if (fA->IsSensor() || fB->IsSensor())
-				{
-					continue;
-				}
-
-				const auto bA = fA->GetBody();
-				const auto bB = fB->GetBody();
-
-				const auto typeA = bA->m_type;
-				const auto typeB = bB->m_type;
-				b2Assert((typeA == b2_dynamicBody) || (typeB == b2_dynamicBody));
-
-				const auto activeA = bA->IsAwake() && (typeA != b2_staticBody);
-				const auto activeB = bB->IsAwake() && (typeB != b2_staticBody);
-
-				// Is at least one body active (awake and dynamic or kinematic)?
-				if ((!activeA) && (!activeB))
-				{
-					continue;
-				}
-
-				const auto collideA = bA->IsBullet() || (typeA != b2_dynamicBody);
-				const auto collideB = bB->IsBullet() || (typeB != b2_dynamicBody);
-
-				// Are these two non-bullet dynamic bodies?
-				if ((!collideA) && (!collideB))
-				{
-					continue;
-				}
-
-				// Compute the TOI for this contact.
-				// Put the sweeps onto the same time interval.
-				auto alpha0 = bA->m_sweep.alpha0;
-
-				if (bA->m_sweep.alpha0 < bB->m_sweep.alpha0)
-				{
-					alpha0 = bB->m_sweep.alpha0;
-					bA->m_sweep.Advance(alpha0);
-				}
-				else if (bB->m_sweep.alpha0 < bA->m_sweep.alpha0)
-				{
-					alpha0 = bA->m_sweep.alpha0;
-					bB->m_sweep.Advance(alpha0);
-				}
-
-				b2Assert(alpha0 < b2Float(1));
-
-				const auto indexA = c->GetChildIndexA();
-				const auto indexB = c->GetChildIndexB();
-
-				// Compute the time of impact in interval [0, minTOI]
-				b2TOIInput input;
-				input.proxyA = b2DistanceProxy(*fA->GetShape(), indexA);
-				input.proxyB = b2DistanceProxy(*fB->GetShape(), indexB);
-				input.sweepA = bA->m_sweep;
-				input.sweepB = bB->m_sweep;
-				input.tMax = b2Float(1);
-
-				b2TOIOutput output;
-				b2TimeOfImpact(output, input);
-
-				// Beta is the fraction of the remaining portion of the .
-				const auto beta = output.t;
-				alpha = (output.state == b2TOIOutput::e_touching)?
-					b2Min(alpha0 + (b2Float{1} - alpha0) * beta, b2Float{1}): b2Float{1};
-
-				c->SetToi(alpha);
+				continue;
 			}
 
+			const auto alpha = c->GetToi();
 			if (minAlpha > alpha)
 			{
 				// This is the minimum TOI found so far.
@@ -712,7 +637,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 			}
 		}
 
-		if ((minContact == nullptr) || (minAlpha > (b2Float(1) - (b2Float(10) * b2_epsilon))))
+		if ((!minContact) || (minAlpha > (b2Float(1) - (b2Float(10) * b2_epsilon))))
 		{
 			// No more TOI events. Done!
 			m_stepComplete = true;
@@ -893,6 +818,85 @@ void b2World::SolveTOI(const b2TimeStep& step)
 	}
 }
 
+bool b2World::ComputeTOI(b2Contact* c)
+{
+	const auto fA = c->GetFixtureA();
+	const auto fB = c->GetFixtureB();
+	
+	// Is there a sensor?
+	if (fA->IsSensor() || fB->IsSensor())
+	{
+		return false;
+	}
+	
+	const auto bA = fA->GetBody();
+	const auto bB = fB->GetBody();
+	
+	const auto typeA = bA->m_type;
+	const auto typeB = bB->m_type;
+	b2Assert((typeA == b2_dynamicBody) || (typeB == b2_dynamicBody));
+	
+	const auto activeA = bA->IsAwake() && (typeA != b2_staticBody);
+	const auto activeB = bB->IsAwake() && (typeB != b2_staticBody);
+	
+	// Is at least one body active (awake and dynamic or kinematic)?
+	if ((!activeA) && (!activeB))
+	{
+		return false;
+	}
+	
+	const auto collideA = bA->IsBullet() || (typeA != b2_dynamicBody);
+	const auto collideB = bB->IsBullet() || (typeB != b2_dynamicBody);
+	
+	// Are these two non-bullet dynamic bodies?
+	if ((!collideA) && (!collideB))
+	{
+		return false;
+	}
+	
+	// Compute the TOI for this contact.
+	// Put the sweeps onto the same time interval.
+	b2Float alpha0;
+	if (bA->m_sweep.alpha0 < bB->m_sweep.alpha0)
+	{
+		alpha0 = bB->m_sweep.alpha0;
+		bA->m_sweep.Advance(alpha0);
+	}
+	else if (bB->m_sweep.alpha0 < bA->m_sweep.alpha0)
+	{
+		alpha0 = bA->m_sweep.alpha0;
+		bB->m_sweep.Advance(alpha0);
+	}
+	else // bA->m_sweep.alpha0 == bB->m_sweep.alpha0
+	{
+		alpha0 = bA->m_sweep.alpha0;
+	}
+
+	b2Assert(alpha0 < b2Float(1));
+
+	const auto indexA = c->GetChildIndexA();
+	const auto indexB = c->GetChildIndexB();
+
+	// Compute the time of impact in interval [0, minTOI]
+	b2TOIInput input;
+	input.proxyA = b2DistanceProxy(*fA->GetShape(), indexA);
+	input.proxyB = b2DistanceProxy(*fB->GetShape(), indexB);
+	input.sweepA = bA->m_sweep;
+	input.sweepB = bB->m_sweep;
+	input.tMax = b2Float(1);
+
+	const auto output = b2TimeOfImpact(input);
+
+	// Beta is the fraction of the remaining portion of the .
+	const auto beta = output.get_t();
+	const auto alpha = (output.get_state() == b2TOIOutput::e_touching)?
+		b2Min(alpha0 + (b2Float{1} - alpha0) * beta, b2Float{1}): b2Float{1};
+
+	c->SetToi(alpha);
+
+	return true;
+}
+
 void b2World::Step(b2Float dt, int32 velocityIterations, int32 positionIterations)
 {
 	b2Timer stepTimer;
@@ -1004,15 +1008,17 @@ struct b2WorldRayCastWrapper
 		return input.maxFraction;
 	}
 
-	const b2BroadPhase* broadPhase;
-	b2RayCastCallback* callback;
+	b2WorldRayCastWrapper() = delete;
+
+	constexpr b2WorldRayCastWrapper(const b2BroadPhase* bp, b2RayCastCallback* cb): broadPhase(bp), callback(cb) {}
+
+	const b2BroadPhase* const broadPhase;
+	b2RayCastCallback* const callback;
 };
 
 void b2World::RayCast(b2RayCastCallback* callback, const b2Vec2& point1, const b2Vec2& point2) const
 {
-	b2WorldRayCastWrapper wrapper;
-	wrapper.broadPhase = &m_contactManager.m_broadPhase;
-	wrapper.callback = callback;
+	b2WorldRayCastWrapper wrapper(&m_contactManager.m_broadPhase, callback);
 	const auto input = b2RayCastInput{point1, point2, b2Float(1)};
 	m_contactManager.m_broadPhase.RayCast(&wrapper, input);
 }

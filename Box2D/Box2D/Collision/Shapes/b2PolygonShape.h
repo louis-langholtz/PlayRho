@@ -78,10 +78,10 @@ public:
 	vertex_count_t GetVertexCount() const noexcept { return m_count; }
 
 	/// Get a vertex by index.
-	const b2Vec2& GetVertex(vertex_count_t index) const;
+	b2Vec2 GetVertex(vertex_count_t index) const;
 
 	/// Get a normal by index.
-	const b2Vec2& GetNormal(vertex_count_t index) const;
+	b2Vec2 GetNormal(vertex_count_t index) const;
 
 	const b2Vec2* GetVertices() const noexcept { return m_vertices; }
 
@@ -100,13 +100,13 @@ private:
 	vertex_count_t m_count = 0;
 };
 
-inline const b2Vec2& b2PolygonShape::GetVertex(vertex_count_t index) const
+inline b2Vec2 b2PolygonShape::GetVertex(vertex_count_t index) const
 {
 	b2Assert(0 <= index && index < m_count);
 	return m_vertices[index];
 }
 
-inline const b2Vec2& b2PolygonShape::GetNormal(vertex_count_t index) const
+inline b2Vec2 b2PolygonShape::GetNormal(vertex_count_t index) const
 {
 	b2Assert(0 <= index && index < m_count);
 	return m_normals[index];

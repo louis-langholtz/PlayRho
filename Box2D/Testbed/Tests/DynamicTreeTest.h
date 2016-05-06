@@ -38,7 +38,7 @@ public:
 		for (int32 i = 0; i < e_actorCount; ++i)
 		{
 			Actor* actor = m_actors + i;
-			GetRandomAABB(&actor->aabb);
+			actor->aabb = GetRandomAABB();
 			actor->proxyId = m_tree.CreateProxy(actor->aabb, actor);
 		}
 
@@ -191,14 +191,14 @@ private:
 		b2DynamicTree::size_type proxyId;
 	};
 
-	void GetRandomAABB(b2AABB* aabb)
+	b2AABB GetRandomAABB()
 	{
 		const b2Vec2 w(m_proxyExtent * 2, m_proxyExtent * 2);
 		//aabb->lowerBound.x = -m_proxyExtent;
 		//aabb->lowerBound.y = -m_proxyExtent + m_worldExtent;
 		const auto lowerBound = b2Vec2(RandomFloat(-m_worldExtent, m_worldExtent), RandomFloat(0.0f, 2.0f * m_worldExtent));
 		const auto upperBound = lowerBound + w;
-		*aabb = b2AABB(lowerBound, upperBound);
+		return b2AABB(lowerBound, upperBound);
 	}
 
 	void MoveAABB(b2AABB* aabb)
@@ -224,7 +224,7 @@ private:
 			Actor* actor = m_actors + j;
 			if (actor->proxyId == b2_nullNode)
 			{
-				GetRandomAABB(&actor->aabb);
+				actor->aabb = GetRandomAABB();
 				actor->proxyId = m_tree.CreateProxy(actor->aabb, actor);
 				return;
 			}

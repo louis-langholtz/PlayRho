@@ -56,11 +56,12 @@ static b2Float b2FindMaxSeparation(b2PolygonShape::vertex_count_t& edgeIndex,
 	return maxSeparation;
 }
 
-static void b2FindIncidentEdge(b2ClipArray& c,
+static b2ClipArray b2FindIncidentEdge(
 							   const b2PolygonShape& shape1, const b2Transform& xf1, b2PolygonShape::vertex_count_t index1,
 							   const b2PolygonShape& shape2, const b2Transform& xf2)
 {
-	b2Assert((0 <= index1) && (index1 < shape1.GetVertexCount()));
+	b2Assert(index1 >= 0);
+	b2Assert(index1 < shape1.GetVertexCount());
 
 	const auto count2 = shape2.GetVertexCount();
 
@@ -84,19 +85,13 @@ static void b2FindIncidentEdge(b2ClipArray& c,
 
 	// Build the clip vertices for the incident edge.
 	const auto i1 = index_of_min_dot;
-	const auto i2 = ((i1 + 1) < count2) ? i1 + 1 : 0;
+	const auto i1_next = i1 + 1;
+	const auto i2 = (i1_next < count2) ? i1_next: 0;
 
-	c[0].v = b2Mul(xf2, shape2.GetVertex(i1));
-	c[0].cf.indexA = index1;
-	c[0].cf.indexB = i1;
-	c[0].cf.typeA = b2ContactFeature::e_face;
-	c[0].cf.typeB = b2ContactFeature::e_vertex;
-
-	c[1].v = b2Mul(xf2, shape2.GetVertex(i2));
-	c[1].cf.indexA = index1;
-	c[1].cf.indexB = i2;
-	c[1].cf.typeA = b2ContactFeature::e_face;
-	c[1].cf.typeB = b2ContactFeature::e_vertex;
+	return b2ClipArray{{
+		{b2Mul(xf2, shape2.GetVertex(i1)), b2ContactFeature(b2ContactFeature::e_face, index1, b2ContactFeature::e_vertex, i1)},
+		{b2Mul(xf2, shape2.GetVertex(i2)), b2ContactFeature(b2ContactFeature::e_face, index1, b2ContactFeature::e_vertex, i2)}
+	}};
 }
 
 // Find edge normal of max separation on A - return if separating axis is found
@@ -151,24 +146,21 @@ bool b2CollideShapes(b2Manifold* manifold,
 		flip = false;
 	}
 
-	b2ClipArray incidentEdge;
-	b2FindIncidentEdge(incidentEdge, *shape1, xf1, edge1, *shape2, xf2);
+	const auto incidentEdge = b2FindIncidentEdge(*shape1, xf1, edge1, *shape2, xf2);
 
 	const auto count1 = shape1->GetVertexCount();
 
 	const auto iv1 = edge1;
-	const auto iv2 = ((edge1 + 1) < count1) ? edge1 + 1 : 0;
+	const auto iv1_next = edge1 + 1;
+	const auto iv2 = (iv1_next < count1)? iv1_next: 0;
 
-	auto v11 = b2Vec2(shape1->GetVertex(iv1));
-	auto v12 = b2Vec2(shape1->GetVertex(iv2));
+	auto v11 = shape1->GetVertex(iv1);
+	auto v12 = shape1->GetVertex(iv2);
 
 	const auto localTangent = b2Normalize(v12 - v11);
 	
 	const auto localNormal = b2Cross(localTangent, b2Float(1));
 	const auto planePoint = (v11 + v12) / b2Float(2);
-
-	manifold->SetLocalNormal(localNormal);
-	manifold->SetLocalPoint(planePoint);
 
 	const auto tangent = b2Mul(xf1.q, localTangent);
 	const auto normal = b2Cross(tangent, b2Float(1));
@@ -187,15 +179,19 @@ bool b2CollideShapes(b2Manifold* manifold,
 
 	// Clip to box side 1
 	b2ClipArray clipPoints1;
-	if (b2ClipSegmentToLine(clipPoints1, incidentEdge, -tangent, sideOffset1, iv1) < 2)
+	if (b2ClipSegmentToLine(clipPoints1, incidentEdge, -tangent, sideOffset1, iv1) < b2_maxManifoldPoints)
 		return false;
 
 	// Clip to negative box side 1
 	b2ClipArray clipPoints2;
-	if (b2ClipSegmentToLine(clipPoints2, clipPoints1,  tangent, sideOffset2, iv2) < 2)
+	if (b2ClipSegmentToLine(clipPoints2, clipPoints1,  tangent, sideOffset2, iv2) < b2_maxManifoldPoints)
 		return false;
 
 	// Now clipPoints2 contains the clipped points.
+	
+	manifold->SetLocalNormal(localNormal);
+	manifold->SetLocalPoint(planePoint);
+	
 	for (auto i = decltype(b2_maxManifoldPoints){0}; i < b2_maxManifoldPoints; ++i)
 	{
 		const auto separation = b2Dot(normal, clipPoints2[i].v) - frontOffset;

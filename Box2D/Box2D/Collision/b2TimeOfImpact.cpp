@@ -29,7 +29,6 @@ b2Float b2_toiTime, b2_toiMaxTime;
 uint32 b2_toiCalls, b2_toiIters, b2_toiMaxIters;
 uint32 b2_toiRootIters, b2_toiMaxRootIters;
 
-//
 struct b2SeparationFunction
 {
 	enum Type
@@ -111,7 +110,11 @@ struct b2SeparationFunction
 		}
 	}
 
-	//
+	/// Finds the minimum separation.
+	/// @param indexA Returns the index of proxy A's vertex for the returned separation.
+	/// @param indexB Returns the index of proxy B's vertex for the returned separation.
+	/// @param t Time factor in [0, 1] for which the calculation should be performed.
+	/// @return minimum distance between the two identified vertces or zero.
 	b2Float FindMinSeparation(b2DistanceProxy::size_type* indexA,
 							  b2DistanceProxy::size_type* indexB,
 							  b2Float t) const
@@ -178,7 +181,43 @@ struct b2SeparationFunction
 		}
 	}
 
-	//
+	b2Float EvaluatePoints(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB,
+						   const b2Transform& xfA, const b2Transform& xfB) const
+	{
+		const auto localPointA = m_proxyA.GetVertex(indexA);
+		const auto localPointB = m_proxyB.GetVertex(indexB);
+		const auto pointA = b2Mul(xfA, localPointA);
+		const auto pointB = b2Mul(xfB, localPointB);
+		return b2Dot(pointB - pointA, m_axis);
+	}
+
+	b2Float EvaluateFaceA(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB,
+						  const b2Transform& xfA, const b2Transform& xfB) const
+	{
+		const auto normal = b2Mul(xfA.q, m_axis);
+		const auto pointA = b2Mul(xfA, m_localPoint);
+		const auto localPointB = m_proxyB.GetVertex(indexB);
+		const auto pointB = b2Mul(xfB, localPointB);
+		return b2Dot(pointB - pointA, normal);
+	}
+
+	b2Float EvaluateFaceB(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB,
+						  const b2Transform& xfA, const b2Transform& xfB) const
+	{
+		const auto normal = b2Mul(xfB.q, m_axis);
+		const auto pointB = b2Mul(xfB, m_localPoint);
+		
+		const auto localPointA = m_proxyA.GetVertex(indexA);
+		const auto pointA = b2Mul(xfA, localPointA);
+		
+		return b2Dot(pointA - pointB, normal);
+	}
+	
+	/// Evaluates the separation of the identified proxy vertices at the given time factor.
+	/// @param indexA Index of the proxy A vertex.
+	/// @param indexB Index of the proxy B vertex.
+	/// @param t Time factor in range of [0,1] into the future, where 0 indicates alpha0.
+	/// @return Separation distance.
 	b2Float Evaluate(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB, b2Float t) const
 	{
 		const auto xfA = m_sweepA.GetTransform(t);
@@ -186,42 +225,13 @@ struct b2SeparationFunction
 
 		switch (m_type)
 		{
-		case e_points:
-			{
-				const auto localPointA = m_proxyA.GetVertex(indexA);
-				const auto localPointB = m_proxyB.GetVertex(indexB);
-
-				const auto pointA = b2Mul(xfA, localPointA);
-				const auto pointB = b2Mul(xfB, localPointB);
-				return b2Dot(pointB - pointA, m_axis);
-			}
-
-		case e_faceA:
-			{
-				const auto normal = b2Mul(xfA.q, m_axis);
-				const auto pointA = b2Mul(xfA, m_localPoint);
-
-				const auto localPointB = m_proxyB.GetVertex(indexB);
-				const auto pointB = b2Mul(xfB, localPointB);
-
-				return b2Dot(pointB - pointA, normal);
-			}
-
-		case e_faceB:
-			{
-				const auto normal = b2Mul(xfB.q, m_axis);
-				const auto pointB = b2Mul(xfB, m_localPoint);
-
-				const auto localPointA = m_proxyA.GetVertex(indexA);
-				const auto pointA = b2Mul(xfA, localPointA);
-
-				return b2Dot(pointA - pointB, normal);
-			}
-
-		default:
-			b2Assert(false);
-			return b2Float{0};
+			case e_points: return EvaluatePoints(indexA, indexB, xfA, xfB);
+			case e_faceA: return EvaluateFaceA(indexA, indexB, xfA, xfB);
+			case e_faceB: return EvaluateFaceB(indexA, indexB, xfA, xfB);
+			default: break;
 		}
+		b2Assert(false);
+		return b2Float{0};
 	}
 
 	const b2DistanceProxy& m_proxyA;
@@ -234,14 +244,11 @@ struct b2SeparationFunction
 
 // CCD via the local separating axis method. This seeks progression
 // by computing the largest time at which separation is maintained.
-void b2TimeOfImpact(b2TOIOutput& output, const b2TOIInput& input)
+b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 {
-	b2Timer timer;
-
 	++b2_toiCalls;
 
-	output.state = b2TOIOutput::e_unknown;
-	output.t = input.tMax;
+	auto output = b2TOIOutput{b2TOIOutput::e_unknown, input.tMax};
 
 	const auto& proxyA = input.proxyA;
 	const auto& proxyB = input.proxyB;
@@ -249,8 +256,7 @@ void b2TimeOfImpact(b2TOIOutput& output, const b2TOIInput& input)
 	auto sweepA = input.sweepA;
 	auto sweepB = input.sweepB;
 
-	// Large rotations can make the root finder fail, so we normalize the
-	// sweep angles.
+	// Large rotations can make the root finder fail, so we normalize the  sweep angles.
 	sweepA.Normalize();
 	sweepB.Normalize();
 
@@ -267,8 +273,8 @@ void b2TimeOfImpact(b2TOIOutput& output, const b2TOIInput& input)
 	// Prepare input for distance query.
 	b2SimplexCache cache;
 	b2DistanceInput distanceInput;
-	distanceInput.proxyA = input.proxyA;
-	distanceInput.proxyB = input.proxyB;
+	distanceInput.proxyA = proxyA;
+	distanceInput.proxyB = proxyB;
 	distanceInput.useRadii = false;
 
 	// The outer loop progressively attempts to compute new separating axes.
@@ -287,16 +293,14 @@ void b2TimeOfImpact(b2TOIOutput& output, const b2TOIInput& input)
 		if (distanceOutput.distance <= b2Float{0})
 		{
 			// Failure!
-			output.state = b2TOIOutput::e_overlapped;
-			output.t = b2Float{0};
+			output = b2TOIOutput{b2TOIOutput::e_overlapped, b2Float{0}};
 			break;
 		}
 
 		if (distanceOutput.distance < (target + tolerance))
 		{
 			// Victory!
-			output.state = b2TOIOutput::e_touching;
-			output.t = t1;
+			output = b2TOIOutput{b2TOIOutput::e_touching, t1};
 			break;
 		}
 
@@ -343,8 +347,7 @@ void b2TimeOfImpact(b2TOIOutput& output, const b2TOIInput& input)
 			if (s2 > (target + tolerance))
 			{
 				// Victory!
-				output.state = b2TOIOutput::e_separated;
-				output.t = tMax;
+				output = b2TOIOutput{b2TOIOutput::e_separated, tMax};
 				done = true;
 				break;
 			}
@@ -364,8 +367,7 @@ void b2TimeOfImpact(b2TOIOutput& output, const b2TOIInput& input)
 			// runs out of iterations.
 			if (s1 < (target - tolerance))
 			{
-				output.state = b2TOIOutput::e_failed;
-				output.t = t1;
+				output = b2TOIOutput{b2TOIOutput::e_failed, t1};
 				done = true;
 				break;
 			}
@@ -374,8 +376,7 @@ void b2TimeOfImpact(b2TOIOutput& output, const b2TOIInput& input)
 			if (s1 <= (target + tolerance))
 			{
 				// Victory! t1 should hold the TOI (could be 0.0).
-				output.state = b2TOIOutput::e_touching;
-				output.t = t1;
+				output = b2TOIOutput{b2TOIOutput::e_touching, t1};
 				done = true;
 				break;
 			}
@@ -436,15 +437,12 @@ void b2TimeOfImpact(b2TOIOutput& output, const b2TOIInput& input)
 		if (iter == b2_maxTOIIterations)
 		{
 			// Root finder got stuck. Semi-victory.
-			output.state = b2TOIOutput::e_failed;
-			output.t = t1;
+			output = b2TOIOutput{b2TOIOutput::e_failed, t1};
 			break;
 		}
 	}
 
 	b2_toiMaxIters = b2Max(b2_toiMaxIters, iter);
-
-	const auto time = timer.GetMilliseconds();
-	b2_toiMaxTime = b2Max(b2_toiMaxTime, time);
-	b2_toiTime += time;
+	
+	return output;
 }

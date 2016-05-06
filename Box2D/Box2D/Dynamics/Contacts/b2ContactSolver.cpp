@@ -227,12 +227,8 @@ void b2ContactSolver::InitializeVelocityConstraints()
 
 		b2Assert(manifold->GetPointCount() > 0);
 
-		const auto rotA = b2Rot(aA);
-		const auto xfA = b2Transform(cA - b2Mul(rotA, localCenterA), rotA);
-
-		const auto rotB = b2Rot(aB);
-		const auto xfB = b2Transform(cB - b2Mul(rotB, localCenterB), rotB);
-
+		const auto xfA = b2Displace(cA, localCenterA, b2Rot(aA));
+		const auto xfB = b2Displace(cB, localCenterB, b2Rot(aB));
 		const b2WorldManifold worldManifold(*manifold, xfA, radiusA, xfB, radiusB);
 
 		vc.normal = worldManifold.GetNormal();
@@ -751,11 +747,8 @@ bool b2ContactSolver::SolvePositionConstraints()
 		const auto pointCount = pc.GetPointCount();
 		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 		{
-			const auto rotA = b2Rot(aA);
-			const auto rotB = b2Rot(aB);
-			const auto xfA = b2Transform(cA - b2Mul(rotA, localCenterA), rotA);
-			const auto xfB = b2Transform(cB - b2Mul(rotB, localCenterB), rotB);
-
+			const auto xfA = b2Displace(cA, localCenterA, b2Rot(aA));
+			const auto xfB = b2Displace(cB, localCenterB, b2Rot(aB));
 			const auto psm = b2PositionSolverManifold(pc, xfA, xfB, j);
 			const auto normal = psm.GetNormal();
 			const auto point = psm.GetPoint();
@@ -839,11 +832,8 @@ bool b2ContactSolver::SolveTOIPositionConstraints(size_type toiIndexA, size_type
 		const auto pointCount = pc.GetPointCount();
 		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 		{
-			const auto rotA = b2Rot(aA);
-			const auto rotB = b2Rot(aB);
-			const auto xfA = b2Transform(cA - b2Mul(rotA, localCenterA), rotA);
-			const auto xfB = b2Transform(cB - b2Mul(rotB, localCenterB), rotB);
-
+			const auto xfA = b2Displace(cA, localCenterA, b2Rot(aA));
+			const auto xfB = b2Displace(cB, localCenterB, b2Rot(aB));
 			const auto psm = b2PositionSolverManifold(pc, xfA, xfB, j);
 			const auto normal = psm.GetNormal();
 			const auto point = psm.GetPoint();

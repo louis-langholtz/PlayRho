@@ -19,7 +19,7 @@
 #include <Box2D/Collision/b2BroadPhase.h>
 
 b2BroadPhase::b2BroadPhase():
-	m_pairBuffer(static_cast<b2Pair*>(b2Alloc(m_pairCapacity * sizeof(b2Pair)))),
+	m_pairBuffer(static_cast<b2ProxyIdPair*>(b2Alloc(m_pairCapacity * sizeof(b2ProxyIdPair)))),
 	m_moveBuffer(static_cast<size_type*>(b2Alloc(m_moveCapacity * sizeof(size_type))))
 {}
 
@@ -95,7 +95,7 @@ bool b2BroadPhase::QueryCallback(size_type proxyId)
 	if (m_pairCapacity == m_pairCount)
 	{
 		m_pairCapacity *= BufferGrowthRate;
-		m_pairBuffer = static_cast<b2Pair*>(b2Realloc(m_pairBuffer, m_pairCapacity * sizeof(b2Pair)));
+		m_pairBuffer = static_cast<b2ProxyIdPair*>(b2Realloc(m_pairBuffer, m_pairCapacity * sizeof(b2ProxyIdPair)));
 	}
 
 	m_pairBuffer[m_pairCount].proxyIdA = b2Min(proxyId, m_queryProxyId);

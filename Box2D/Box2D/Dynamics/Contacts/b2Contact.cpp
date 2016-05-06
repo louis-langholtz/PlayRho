@@ -146,7 +146,7 @@ void b2Contact::Update(b2ContactListener* listener)
 	m_flags |= e_enabledFlag;
 
 	auto touching = false;
-	auto wasTouching = (m_flags & e_touchingFlag) == e_touchingFlag;
+	auto wasTouching = IsTouching();
 
 	auto bodyA = m_fixtureA->GetBody();
 	auto bodyB = m_fixtureB->GetBody();
@@ -159,6 +159,7 @@ void b2Contact::Update(b2ContactListener* listener)
 	{
 		const auto shapeA = m_fixtureA->GetShape();
 		const auto shapeB = m_fixtureB->GetShape();
+
 		touching = b2TestOverlap(*shapeA, m_indexA, *shapeB, m_indexB, xfA, xfB);
 
 		// Sensors don't generate manifolds.
@@ -167,17 +168,21 @@ void b2Contact::Update(b2ContactListener* listener)
 	else
 	{
 		Evaluate(&m_manifold, xfA, xfB);
-		touching = m_manifold.GetPointCount() > 0;
+		
+		const auto old_point_count = oldManifold.GetPointCount();
+		const auto new_point_count = m_manifold.GetPointCount();
+
+		touching = new_point_count > 0;
 
 		// Match old contact ids to new contact ids and copy the
 		// stored impulses to warm start the solver.
-		for (auto i = decltype(m_manifold.GetPointCount()){0}; i < m_manifold.GetPointCount(); ++i)
+		for (auto i = decltype(new_point_count){0}; i < new_point_count; ++i)
 		{
 			auto& new_mp = m_manifold.GetPoint(i);
 			new_mp.normalImpulse = b2Float{0};
 			new_mp.tangentImpulse = b2Float{0};
 
-			for (auto j = decltype(oldManifold.GetPointCount()){0}; j < oldManifold.GetPointCount(); ++j)
+			for (auto j = decltype(old_point_count){0}; j < old_point_count; ++j)
 			{
 				const auto& old_mp = oldManifold.GetPoint(j);
 				if (new_mp.cf == old_mp.cf)
@@ -198,11 +203,11 @@ void b2Contact::Update(b2ContactListener* listener)
 
 	if (touching)
 	{
-		m_flags |= e_touchingFlag;
+		SetTouching();
 	}
 	else
 	{
-		m_flags &= ~e_touchingFlag;
+		UnsetTouching();
 	}
 
 	if (!wasTouching && touching && listener)

@@ -862,8 +862,7 @@ inline void b2Body::ApplyAngularImpulse(b2Float impulse, bool wake) noexcept
 
 inline void b2Body::SynchronizeTransform()
 {
-	m_xf.q = b2Rot(m_sweep.a);
-	m_xf.p = m_sweep.c - b2Mul(m_xf.q, m_sweep.localCenter);
+	m_xf = b2Displace(m_sweep.c, m_sweep.localCenter, b2Rot(m_sweep.a));
 }
 
 inline void b2Body::Advance(b2Float alpha)
@@ -872,8 +871,7 @@ inline void b2Body::Advance(b2Float alpha)
 	m_sweep.Advance(alpha);
 	m_sweep.c = m_sweep.c0;
 	m_sweep.a = m_sweep.a0;
-	m_xf.q = b2Rot(m_sweep.a);
-	m_xf.p = m_sweep.c - b2Mul(m_xf.q, m_sweep.localCenter);
+	SynchronizeTransform();
 }
 
 inline b2World* b2Body::GetWorld() noexcept

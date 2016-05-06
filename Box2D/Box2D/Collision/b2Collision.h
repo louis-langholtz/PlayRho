@@ -344,8 +344,12 @@ bool b2CollideShapes(b2Manifold* manifold,
 					 const b2EdgeShape& shapeA, const b2Transform& xfA,
 					 const b2PolygonShape& shapeB, const b2Transform& xfB);
 
-/// Clipping for contact manifolds.
+/// Clip array for b2ClipSegmentToLine.
+/// @see b2ClipSegmentToLine.
 using b2ClipArray = std::array<b2ClipVertex, b2_maxManifoldPoints>;
+
+/// Clipping for contact manifolds.
+/// Uses Sutherland-Hodgman clipping.
 b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray& vIn,
 										   const b2Vec2& normal, b2Float offset, b2ContactFeature::index_t vertexIndexA);
 

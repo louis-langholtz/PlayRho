@@ -83,16 +83,28 @@ b2DistanceProxy::b2DistanceProxy(const b2Shape& shape, child_count_t index)
 	}
 }
 
-struct b2SimplexVertex
+class b2SimplexVertex
 {
+public:
 	using size_type = b2DistanceProxy::size_type;
 
+	b2SimplexVertex() = default;
+
+	b2SimplexVertex(b2Vec2 sA, b2Vec2 sB, size_type iA, size_type iB, b2Float _a):
+		wA(sA), wB(sB), indexA(iA), indexB(iB), w(sB - sA), a(_a) {}
+
+	b2Vec2 get_w() const noexcept { return w; }
+	b2Vec2 get_wA() const noexcept { return wA; }
+	b2Vec2 get_wB() const noexcept { return wB; }
+
+	size_type indexA;	///< wA index
+	size_type indexB;	///< wB index
+	b2Float a;		///< barycentric coordinate for closest point
+	
+private:
 	b2Vec2 wA;		///< support point in proxyA
 	b2Vec2 wB;		///< support point in proxyB
 	b2Vec2 w;		///< wB - wA. @see wA. @see wB.
-	b2Float a;		///< barycentric coordinate for closest point
-	size_type indexA;	///< wA index
-	size_type indexB;	///< wB index
 };
 
 class b2Simplex
@@ -102,6 +114,8 @@ public:
 	static constexpr auto MaxVertices = unsigned{3};
 
 	using size_type = std::remove_cv<decltype(MaxVertices)>::type;
+
+	b2Simplex() = default;
 
 	/// Gets count of valid vertices.
  	/// @return Value between 0 and MaxVertices.
@@ -130,17 +144,16 @@ public:
 		b2Assert(cache.GetCount() <= MaxVertices);
 		
 		// Copy data from cache.
-		m_count = cache.GetCount();
-		for (auto i = decltype(m_count){0}; i < m_count; ++i)
+		const auto count = cache.GetCount();
+		for (auto i = decltype(count){0}; i < count; ++i)
 		{
-			auto& v = m_vertices[i];
-			v.indexA = cache.GetIndexA(i);
-			v.indexB = cache.GetIndexB(i);
-			v.wA = b2Mul(transformA, proxyA.GetVertex(v.indexA));
-			v.wB = b2Mul(transformB, proxyB.GetVertex(v.indexB));
-			v.w = v.wB - v.wA;
-			v.a = b2Float{0};
+			const auto indexA = cache.GetIndexA(i);
+			const auto indexB = cache.GetIndexB(i);
+			const auto wA = b2Mul(transformA, proxyA.GetVertex(indexA));
+			const auto wB = b2Mul(transformB, proxyB.GetVertex(indexB));
+			m_vertices[i] = b2SimplexVertex{wA, wB, indexA, indexB, b2Float(0)};
 		}
+		m_count = count;
 
 		// Compute the new simplex metric, if it is substantially different than
 		// old metric then flush the simplex.
@@ -158,13 +171,11 @@ public:
 		// If the cache is empty or invalid ...
 		if (m_count == 0)
 		{
-			auto& v = m_vertices[0];
-			v.indexA = 0;
-			v.indexB = 0;
-			v.wA = b2Mul(transformA, proxyA.GetVertex(0));
-			v.wB = b2Mul(transformB, proxyB.GetVertex(0));
-			v.w = v.wB - v.wA;
-			v.a = b2Float(1);
+			const auto indexA = b2SimplexCache::index_t{0};
+			const auto indexB = b2SimplexCache::index_t{0};
+			const auto wA = b2Mul(transformA, proxyA.GetVertex(indexA));
+			const auto wB = b2Mul(transformB, proxyB.GetVertex(indexB));
+			m_vertices[0] = b2SimplexVertex{wA, wB, indexA, indexB, b2Float(1)};
 			m_count = 1;
 		}
 	}
@@ -184,12 +195,12 @@ public:
 		switch (m_count)
 		{
 		case 1:
-			return -m_vertices[0].w;
+			return -m_vertices[0].get_w();
 
 		case 2:
 			{
-				const auto e12 = m_vertices[1].w - m_vertices[0].w;
-				const auto sgn = b2Cross(e12, -m_vertices[0].w);
+				const auto e12 = m_vertices[1].get_w() - m_vertices[0].get_w();
+				const auto sgn = b2Cross(e12, -m_vertices[0].get_w());
 				return (sgn > b2Float{0})?
 					// Origin is left of e12.
 					b2Cross(b2Float(1), e12):
@@ -208,10 +219,10 @@ public:
 		switch (m_count)
 		{
 		case 1:
-			return m_vertices[0].w;
+			return m_vertices[0].get_w();
 
 		case 2:
-			return m_vertices[0].a * m_vertices[0].w + m_vertices[1].a * m_vertices[1].w;
+			return m_vertices[0].a * m_vertices[0].get_w() + m_vertices[1].a * m_vertices[1].get_w();
 
 		case 3:
 			return b2Vec2_zero;
@@ -227,17 +238,19 @@ public:
 		switch (m_count)
 		{
 		case 1:
-			*pA = m_vertices[0].wA;
-			*pB = m_vertices[0].wB;
+			*pA = m_vertices[0].get_wA();
+			*pB = m_vertices[0].get_wB();
 			break;
 
 		case 2:
-			*pA = m_vertices[0].a * m_vertices[0].wA + m_vertices[1].a * m_vertices[1].wA;
-			*pB = m_vertices[0].a * m_vertices[0].wB + m_vertices[1].a * m_vertices[1].wB;
+			*pA = m_vertices[0].a * m_vertices[0].get_wA() + m_vertices[1].a * m_vertices[1].get_wA();
+			*pB = m_vertices[0].a * m_vertices[0].get_wB() + m_vertices[1].a * m_vertices[1].get_wB();
 			break;
 
 		case 3:
-			*pA = m_vertices[0].a * m_vertices[0].wA + m_vertices[1].a * m_vertices[1].wA + m_vertices[2].a * m_vertices[2].wA;
+			*pA = m_vertices[0].a * m_vertices[0].get_wA()
+				+ m_vertices[1].a * m_vertices[1].get_wA()
+				+ m_vertices[2].a * m_vertices[2].get_wA();
 			*pB = *pA;
 			break;
 
@@ -255,10 +268,10 @@ public:
 			return b2Float{0};
 
 		case 2:
-			return b2Distance(m_vertices[0].w, m_vertices[1].w);
+			return b2Distance(m_vertices[0].get_w(), m_vertices[1].get_w());
 
 		case 3:
-			return b2Cross(m_vertices[1].w - m_vertices[0].w, m_vertices[2].w - m_vertices[0].w);
+			return b2Cross(m_vertices[1].get_w() - m_vertices[0].get_w(), m_vertices[2].get_w() - m_vertices[0].get_w());
 
 		default:
 			b2Assert(false);
@@ -300,8 +313,8 @@ private:
 // a2 = d12_2 / d12
 void b2Simplex::Solve2() noexcept
 {
-	const auto w1 = m_vertices[0].w;
-	const auto w2 = m_vertices[1].w;
+	const auto w1 = m_vertices[0].get_w();
+	const auto w2 = m_vertices[1].get_w();
 	const auto e12 = w2 - w1;
 
 	// w1 region
@@ -339,9 +352,9 @@ void b2Simplex::Solve2() noexcept
 // - inside the triangle
 void b2Simplex::Solve3() noexcept
 {
-	const auto w1 = m_vertices[0].w;
-	const auto w2 = m_vertices[1].w;
-	const auto w3 = m_vertices[2].w;
+	const auto w1 = m_vertices[0].get_w();
+	const auto w2 = m_vertices[1].get_w();
+	const auto w3 = m_vertices[2].get_w();
 
 	// Edge12
 	// [1      1     ][a1] = [1]
@@ -539,13 +552,8 @@ void b2Distance(b2DistanceOutput* output,
 		}
 
 		// Compute a tentative new simplex vertex using support points.
-		b2SimplexVertex vertex;
-		//auto vertex = vertices + simplex.m_count;
-		vertex.indexA = proxyA.GetSupport(b2MulT(transformA.q, -d));
-		vertex.wA = b2Mul(transformA, proxyA.GetVertex(vertex.indexA));
-		vertex.indexB = proxyB.GetSupport(b2MulT(transformB.q, d));
-		vertex.wB = b2Mul(transformB, proxyB.GetVertex(vertex.indexB));
-		vertex.w = vertex.wB - vertex.wA;
+		const auto indexA = proxyA.GetSupport(b2MulT(transformA.q, -d));
+		const auto indexB = proxyB.GetSupport(b2MulT(transformB.q, d));
 
 		// Iteration count is equated to the number of support point calls.
 		++iter;
@@ -557,7 +565,7 @@ void b2Distance(b2DistanceOutput* output,
 		auto duplicate = false;
 		for (auto i = decltype(saveCount){0}; i < saveCount; ++i)
 		{
-			if ((vertex.indexA == saveA[i]) && (vertex.indexB == saveB[i]))
+			if ((indexA == saveA[i]) && (indexB == saveB[i]))
 			{
 				duplicate = true;
 				break;
@@ -571,7 +579,9 @@ void b2Distance(b2DistanceOutput* output,
 		}
 
 		// New vertex is ok and needed.
-		simplex.AddVertex(vertex);
+		const auto wA = b2Mul(transformA, proxyA.GetVertex(indexA));
+		const auto wB = b2Mul(transformB, proxyB.GetVertex(indexB));
+		simplex.AddVertex(b2SimplexVertex{wA, wB, indexA, indexB, b2Float(0)});
 	}
 
 #if defined(DO_GJK_PROFILING)

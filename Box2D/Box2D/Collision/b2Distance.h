@@ -49,7 +49,7 @@ public:
 	inline size_type GetVertexCount() const noexcept { return m_count; }
 
 	/// Get a vertex by index. Used by b2Distance.
-	const b2Vec2& GetVertex(size_type index) const;
+	b2Vec2 GetVertex(size_type index) const;
 
 private:
 	b2Vec2 m_buffer[2];
@@ -132,7 +132,7 @@ void b2Distance(b2DistanceOutput* output,
 
 //////////////////////////////////////////////////////////////////////////
 
-inline const b2Vec2& b2DistanceProxy::GetVertex(size_type index) const
+inline b2Vec2 b2DistanceProxy::GetVertex(size_type index) const
 {
 	b2Assert(index >= 0);
 	b2Assert(index < m_count);

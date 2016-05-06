@@ -191,6 +191,9 @@ protected:
 	void SetInIsland() noexcept;
 	void UnsetInIsland() noexcept;
 
+	void SetTouching() noexcept;
+	void UnsetTouching() noexcept;
+
 	uint32 m_flags = e_enabledFlag;
 
 	// World pool and list pointers.
@@ -260,12 +263,22 @@ inline void b2Contact::UnsetEnabled() noexcept
 
 inline bool b2Contact::IsEnabled() const noexcept
 {
-	return (m_flags & e_enabledFlag) == e_enabledFlag;
+	return (m_flags & e_enabledFlag) != 0;
 }
 
 inline bool b2Contact::IsTouching() const noexcept
 {
-	return (m_flags & e_touchingFlag) == e_touchingFlag;
+	return (m_flags & e_touchingFlag) != 0;
+}
+
+inline void b2Contact::SetTouching() noexcept
+{
+	m_flags |= e_touchingFlag;
+}
+
+inline void b2Contact::UnsetTouching() noexcept
+{
+	m_flags &= ~e_touchingFlag;
 }
 
 inline b2Contact* b2Contact::GetNext() noexcept
@@ -365,7 +378,7 @@ inline b2Float b2Contact::GetTangentSpeed() const noexcept
 
 inline bool b2Contact::HasValidToi() const noexcept
 {
-	return m_flags & b2Contact::e_toiFlag;
+	return (m_flags & b2Contact::e_toiFlag) != 0;
 }
 
 inline b2Float b2Contact::GetToi() const

@@ -24,12 +24,23 @@
 #include <Box2D/Collision/b2DynamicTree.h>
 #include <algorithm>
 
-struct b2Pair
+/// Proxy ID pair.
+struct b2ProxyIdPair
 {
 	using size_type = b2_size_t;
 	size_type proxyIdA;
 	size_type proxyIdB;
 };
+
+constexpr inline bool operator == (b2ProxyIdPair lhs, b2ProxyIdPair rhs)
+{
+	return (lhs.proxyIdA == rhs.proxyIdA) && (lhs.proxyIdB == rhs.proxyIdB);
+}
+
+constexpr inline bool operator != (b2ProxyIdPair lhs, b2ProxyIdPair rhs)
+{
+	return !(lhs == rhs);
+}
 
 /// The broad-phase is used for computing pairs and performing volume queries and ray casts.
 /// This broad-phase does not persist pairs. Instead, this reports potentially new pairs.
@@ -51,11 +62,11 @@ public:
 	b2BroadPhase(const b2BroadPhase& copy) = delete;
 	b2BroadPhase& operator=(const b2BroadPhase&) = delete;
 
-	/// Create a proxy with an initial AABB. Pairs are not reported until
+	/// Creates a proxy with an initial AABB. Pairs are not reported until
 	/// UpdatePairs is called.
 	size_type CreateProxy(const b2AABB& aabb, void* userData);
 
-	/// Destroy a proxy. It is up to the client to remove any pairs.
+	/// Destroys a proxy. It is up to the client to remove any pairs.
 	void DestroyProxy(size_type proxyId);
 
 	/// Call MoveProxy as many times as you like, then when you are done
@@ -65,13 +76,13 @@ public:
 	/// Call to trigger a re-processing of it's pairs on the next call to UpdatePairs.
 	void TouchProxy(size_type proxyId);
 
-	/// Get the fat AABB for a proxy.
+	/// Gets the fat AABB for a proxy.
 	const b2AABB& GetFatAABB(size_type proxyId) const;
 
-	/// Get user data from a proxy. Returns nullptr if the id is invalid.
+	/// Gets user data from a proxy.
 	void* GetUserData(size_type proxyId) const;
 
-	/// Test overlap of fat AABBs.
+	/// Tests overlap of fat AABBs.
 	bool TestOverlap(size_type proxyIdA, size_type proxyIdB) const;
 
 	/// Get the number of proxies.
@@ -87,7 +98,7 @@ public:
 	void Query(T* callback, const b2AABB& aabb) const;
 
 	/// Ray-cast against the proxies in the tree. This relies on the callback
-	/// to perform a exact ray-cast in the case were the proxy contains a shape.
+	/// to perform an exact ray-cast in the case were the proxy contains a shape.
 	/// The callback also performs the any collision filtering. This has performance
 	/// roughly equal to k * log(n), where k is the number of collisions and n is the
 	/// number of proxies in the tree.
@@ -96,16 +107,16 @@ public:
 	template <typename T>
 	void RayCast(T* callback, const b2RayCastInput& input) const;
 
-	/// Get the height of the embedded tree.
+	/// Gets the height of the embedded tree.
 	size_type GetTreeHeight() const noexcept;
 
-	/// Get the balance of the embedded tree.
+	/// Gets the balance of the embedded tree.
 	size_type GetTreeBalance() const;
 
-	/// Get the quality metric of the embedded tree.
+	/// Gets the quality metric of the embedded tree.
 	b2Float GetTreeQuality() const;
 
-	/// Shift the world origin. Useful for large worlds.
+	/// Shifts the world origin. Useful for large worlds.
 	/// The shift formula is: position -= newOrigin
 	/// @param newOrigin the new origin with respect to the old origin
 	void ShiftOrigin(const b2Vec2& newOrigin);
@@ -125,22 +136,22 @@ private:
 	
 	size_type m_proxyCount = 0;
 
-	size_type m_moveCapacity = 16;
+	size_type m_moveCapacity = 16; ///< Move buffer capacity. The # of elements pointed to by move buffer. @sa m_moveBuffer.
 	size_type m_moveCount = 0;
 
 	size_type m_pairCapacity = 16;
 	size_type m_pairCount = 0;
 
-	/// Initialized on construction
-	size_type* m_moveBuffer;
-	b2Pair* m_pairBuffer;
+	// Initialized on construction
+	size_type* m_moveBuffer; ///< Move buffer. @sa size_type. @sa <code>m_moveCapacity</code>. @sa <code>m_moveCount</code>.
+	b2ProxyIdPair* m_pairBuffer;
 
-	/// Assigned on calling UpdatePairs
+	// Assigned on calling UpdatePairs
 	size_type m_queryProxyId;
 };
 
 /// This is used to sort pairs.
-inline bool b2PairLessThan(const b2Pair& pair1, const b2Pair& pair2) noexcept
+inline bool b2PairLessThan(const b2ProxyIdPair& pair1, const b2ProxyIdPair& pair2) noexcept
 {
 	if (pair1.proxyIdA < pair2.proxyIdA)
 	{
@@ -236,7 +247,7 @@ void b2BroadPhase::UpdatePairs(T* callback)
 		while (i < m_pairCount)
 		{
 			const auto& pair = m_pairBuffer[i];
-			if ((pair.proxyIdA != primaryPair.proxyIdA) || (pair.proxyIdB != primaryPair.proxyIdB))
+			if (pair != primaryPair)
 			{
 				break;
 			}
