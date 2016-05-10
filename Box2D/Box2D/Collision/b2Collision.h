@@ -77,7 +77,7 @@ constexpr bool operator==(const b2ContactFeature& lhs, const b2ContactFeature& r
 /// -e_faceA: the local center of cirlceB or the clip point of polygonB
 /// -e_faceB: the clip point of polygonA
 /// This structure is stored across time steps, so we keep it small.
-/// Note: the impulses are used for internal caching and may not
+/// @note The impulses are used for internal caching and may not
 /// provide reliable contact forces, especially for high speed collisions.
 struct b2ManifoldPoint
 {
