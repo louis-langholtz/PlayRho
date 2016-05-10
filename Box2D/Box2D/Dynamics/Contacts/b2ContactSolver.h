@@ -29,26 +29,31 @@ class b2StackAllocator;
 struct b2ContactPositionConstraint;
 struct b2ContactPositionConstraintBodyData;
 
+/// Velocity constraint point.
 struct b2VelocityConstraintPoint
 {
 	b2Vec2 rA; ///< Position of body A relative to world manifold point
 	b2Vec2 rB; ///< Position of body B relative to world manifold point
-	b2Float normalImpulse;
-	b2Float tangentImpulse;
-	b2Float normalMass;
-	b2Float tangentMass;
-	b2Float velocityBias;
+	b2Float normalImpulse; ///< Normal impulse.
+	b2Float tangentImpulse; ///< Tangent impulse.
+	b2Float normalMass; ///< Normal mass.
+	b2Float tangentMass; ///< Tangent mass.
+	b2Float velocityBias; ///< Velocity bias.
 };
 
+/// Contact velocity constraint body data.
+/// @note This structure is intentionally toplevel like the b2ContactPositionConstraintBodyData
+///   structure.
 struct b2ContactVelocityConstraintBodyData
 {
 	using index_t = b2_size_t;
 
 	index_t index; ///< Index within island of body.
 	b2Float invMass; ///< Inverse mass of body.
-	b2Float invI; ///< Inverse interia of body.
+	b2Float invI; ///< Inverse rotational interia of body.
 };
 
+/// Contact velocity constraint.
 class b2ContactVelocityConstraint
 {
 public:
@@ -87,9 +92,9 @@ public:
 	b2Vec2 normal;
 	b2Mat22 normalMass;
 	b2Mat22 K;
-	b2ContactVelocityConstraintBodyData bodyA;
-	b2ContactVelocityConstraintBodyData bodyB;
-	b2Float friction;
+	b2ContactVelocityConstraintBodyData bodyA; ///< Body A contact velocity constraint data.
+	b2ContactVelocityConstraintBodyData bodyB; ///< Body B contact velocity constraint data.
+	b2Float friction; ///< Friction coefficient. Usually in the range of [0,1].
 	b2Float restitution;
 	b2Float tangentSpeed;
 	index_type contactIndex;
