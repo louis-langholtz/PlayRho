@@ -60,6 +60,9 @@ private:
 /// This is an internal structure.
 struct b2Position
 {
+	b2Position() = default;
+	constexpr b2Position(b2Vec2 c_, b2Float a_) noexcept: c(c_), a(a_) {}
+
 	b2Vec2 c; ///< linear position
 	b2Float a; ///< angular position
 };
@@ -67,6 +70,9 @@ struct b2Position
 /// This is an internal structure.
 struct b2Velocity
 {
+	b2Velocity() = default;
+	constexpr b2Velocity(b2Vec2 v_, b2Float w_) noexcept: v(v_), w(w_) {}
+
 	b2Vec2 v; ///< Linear velocity.
 	b2Float w; ///< Angular velocity.
 };
