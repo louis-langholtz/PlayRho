@@ -108,12 +108,6 @@ struct b2Vec2
 		x *= a; y *= a;
 	}
 
-	/// Get the length of this vector (the norm).
-	b2Float Length() const
-	{
-		return b2Sqrt(b2Square(x) + b2Square(y));
-	}
-
 	/// Get the length squared. For performance, use this instead of
 	/// b2Vec2::Length (if possible).
 	constexpr b2Float LengthSquared() const noexcept
@@ -121,6 +115,12 @@ struct b2Vec2
 		return b2Square(x) + b2Square(y);
 	}
 
+	/// Get the length of this vector (the norm).
+	b2Float Length() const
+	{
+		return b2Sqrt(LengthSquared());
+	}
+	
 	/// Convert this vector into a unit vector. Returns the length.
 	b2Float Normalize()
 	{
