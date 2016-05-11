@@ -351,12 +351,12 @@ constexpr auto b2Transform_identity = b2Transform{b2Vec2_zero, b2Rot_identity};
 struct b2Sweep
 {
 	/// Get the interpolated transform at a specific time.
-	/// @param beta is a factor in [0,1], where 0 indicates alpha0.
+	/// @param beta Time factor in [0,1], where 0 indicates alpha0.
 	b2Transform GetTransform(b2Float beta) const;
 
-	/// Advances the sweep forward, yielding a new initial state.
+	/// Advances the sweep forward to the given time factor.
 	/// This updates c0 and a0 and sets alpha0 to the given time alpha.
-	/// @param alpha the new initial time.
+	/// @param alpha New time factor in [0,1) to advance the sweep to.
 	void Advance(b2Float alpha);
 
 	/// Normalize the angles.
@@ -676,6 +676,11 @@ constexpr inline b2Transform b2Displace(const b2Vec2& ctr, const b2Vec2& local_c
 	return b2Transform{ctr - b2Mul(rot, local_ctr), rot};
 }
 
+inline b2Transform b2ComputeTransform(const b2Sweep& sweep)
+{
+	return b2Displace(sweep.c, sweep.localCenter, b2Rot(sweep.a));
+}
+
 inline b2Transform b2Sweep::GetTransform(b2Float beta) const
 {
 	b2Assert(beta >= 0);
@@ -688,6 +693,7 @@ inline b2Transform b2Sweep::GetTransform(b2Float beta) const
 
 inline void b2Sweep::Advance(b2Float alpha)
 {
+	b2Assert(alpha < b2Float(1));
 	b2Assert(alpha0 < b2Float(1));
 	const auto beta = (alpha - alpha0) / (b2Float(1) - alpha0);
 	c0 += beta * (c - c0);
