@@ -54,6 +54,7 @@ struct b2ContactVelocityConstraintBodyData
 };
 
 /// Contact velocity constraint.
+/// @note A valid contact velocity constraint must have either a point count of either 1 or 2.
 class b2ContactVelocityConstraint
 {
 public:
@@ -62,12 +63,22 @@ public:
 	
 	size_type GetPointCount() const noexcept { return pointCount; }
 	
+	/// Gets the point identified by the given index.
+	/// @note Behavior is undefined if the identified point does not exist.
+	/// @param index Index of the point to return. This is a value less than returned by GetPointCount().
+	/// @return velocity constraint point for the given index.
+	/// @sa GetPointCount.
 	const b2VelocityConstraintPoint& GetPoint(size_type index) const
 	{
 		b2Assert(index < pointCount);
 		return points[index];
 	}
 
+	/// Gets the point identified by the given index.
+	/// @note Behavior is undefined if the identified point does not exist.
+	/// @param index Index of the point to return. This is a value less than returned by GetPointCount().
+	/// @return velocity constraint point for the given index.
+	/// @sa GetPointCount.
 	b2VelocityConstraintPoint& GetPoint(size_type index)
 	{
 		b2Assert(index < pointCount);
