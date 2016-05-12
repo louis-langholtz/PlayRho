@@ -668,8 +668,8 @@ void b2World::SolveTOI(const b2TimeStep& step)
 			minContact->UnsetEnabled();
 			bA->m_sweep = backup1;
 			bB->m_sweep = backup2;
-			bA->SynchronizeTransform();
-			bB->SynchronizeTransform();
+			bA->m_xf = b2ComputeTransform(bA->m_sweep);
+			bB->m_xf = b2ComputeTransform(bB->m_sweep);
 			continue;
 		}
 
@@ -742,7 +742,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 					if (!contact->IsEnabled())
 					{
 						other->m_sweep = backup;
-						other->SynchronizeTransform();
+						other->m_xf = b2ComputeTransform(other->m_sweep);
 						continue;
 					}
 
@@ -750,7 +750,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 					if (!contact->IsTouching())
 					{
 						other->m_sweep = backup;
-						other->SynchronizeTransform();
+						other->m_xf = b2ComputeTransform(other->m_sweep);
 						continue;
 					}
 
@@ -856,20 +856,14 @@ bool b2World::ComputeTOI(b2Contact* c)
 	
 	// Compute the TOI for this contact.
 	// Put the sweeps onto the same time interval.
-	b2Float alpha0;
-	if (bA->m_sweep.alpha0 < bB->m_sweep.alpha0)
+	const auto alpha0 = b2Max(bA->m_sweep.alpha0, bB->m_sweep.alpha0);
+	if (bA->m_sweep.alpha0 < alpha0)
 	{
-		alpha0 = bB->m_sweep.alpha0;
 		bA->m_sweep.Advance(alpha0);
 	}
-	else if (bB->m_sweep.alpha0 < bA->m_sweep.alpha0)
+	else if (bB->m_sweep.alpha0 < alpha0)
 	{
-		alpha0 = bA->m_sweep.alpha0;
 		bB->m_sweep.Advance(alpha0);
-	}
-	else // bA->m_sweep.alpha0 == bB->m_sweep.alpha0
-	{
-		alpha0 = bA->m_sweep.alpha0;
 	}
 
 	b2Assert(alpha0 < b2Float(1));

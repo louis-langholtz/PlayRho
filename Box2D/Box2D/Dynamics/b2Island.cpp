@@ -192,8 +192,6 @@ void b2Island::ClearBodies() noexcept
 
 void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& gravity, bool allowSleep)
 {
-	b2Timer timer;
-
 	const auto h = step.get_dt();
 
 	// Integrate velocities and apply damping. Initialize the body state.
@@ -201,39 +199,35 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 	{
 		auto& b = *m_bodies[i];
 
-		const auto c = b.m_sweep.c;
-		const auto a = b.m_sweep.a;
-		auto v = b.m_linearVelocity;
-		auto w = b.m_angularVelocity;
-
-		// Store positions for continuous collision.
-		b.m_sweep.c0 = b.m_sweep.c;
-		b.m_sweep.a0 = b.m_sweep.a;
-
-		if (b.m_type == b2_dynamicBody)
 		{
-			// Integrate velocities.
-			v += h * (b.m_gravityScale * gravity + b.m_invMass * b.m_force);
-			w += h * b.m_invI * b.m_torque;
-
-			// Apply damping.
-			// ODE: dv/dt + c * v = 0
-			// Solution: v(t) = v0 * exp(-c * t)
-			// Time step: v(t + dt) = v0 * exp(-c * (t + dt)) = v0 * exp(-c * t) * exp(-c * dt) = v * exp(-c * dt)
-			// v2 = exp(-c * dt) * v1
-			// Pade approximation:
-			// v2 = v1 * 1 / (1 + c * dt)
-			v *= b2Float(1) / (b2Float(1) + h * b.m_linearDamping);
-			w *= b2Float(1) / (b2Float(1) + h * b.m_angularDamping);
+			// Store positions for continuous collision.
+			b.m_sweep.c0 = b.m_sweep.c;
+			b.m_sweep.a0 = b.m_sweep.a;
+			m_positions[i] = b2Position{b.m_sweep.c, b.m_sweep.a};
 		}
 
-		m_positions[i].c = c;
-		m_positions[i].a = a;
-		m_velocities[i].v = v;
-		m_velocities[i].w = w;
-	}
+		{
+			auto v = b.m_linearVelocity;
+			auto w = b.m_angularVelocity;
+			if (b.m_type == b2_dynamicBody)
+			{
+				// Integrate velocities.
+				v += h * (b.m_gravityScale * gravity + b.m_invMass * b.m_force);
+				w += h * b.m_invI * b.m_torque;
 
-	timer.Reset();
+				// Apply damping.
+				// ODE: dv/dt + c * v = 0
+				// Solution: v(t) = v0 * exp(-c * t)
+				// Time step: v(t + dt) = v0 * exp(-c * (t + dt)) = v0 * exp(-c * t) * exp(-c * dt) = v * exp(-c * dt)
+				// v2 = exp(-c * dt) * v1
+				// Pade approximation:
+				// v2 = v1 * 1 / (1 + c * dt)
+				v *= b2Float(1) / (b2Float(1) + h * b.m_linearDamping);
+				w *= b2Float(1) / (b2Float(1) + h * b.m_angularDamping);
+			}
+			m_velocities[i] = b2Velocity{v, w};
+		}
+	}
 
 	// Solver data
 	const auto solverData = b2SolverData{step, m_positions, m_velocities};
@@ -260,10 +254,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 		m_joints[i]->InitVelocityConstraints(solverData);
 	}
 
-	profile->solveInit = timer.GetMilliseconds();
-
 	// Solve velocity constraints
-	timer.Reset();
 	for (auto i = decltype(step.velocityIterations){0}; i < step.velocityIterations; ++i)
 	{
 		for (auto j = decltype(m_jointCount){0}; j < m_jointCount; ++j)
@@ -276,43 +267,33 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 
 	// Store impulses for warm starting
 	contactSolver.StoreImpulses();
-	profile->solveVelocity = timer.GetMilliseconds();
 
 	// Integrate positions
 	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 	{
-		auto c = m_positions[i].c;
-		auto a = m_positions[i].a;
-		auto v = m_velocities[i].v;
-		auto w = m_velocities[i].w;
-
-		// Check for large velocities
-		const auto translation = h * v;
+		auto velocity = m_velocities[i];
+		auto translation = h * velocity.v;
+		auto rotation = h * velocity.w;
+		
+		// Adjust for large velocities // translation.LengthSquared()
 		if (b2Dot(translation, translation) > b2Square(b2_maxTranslation))
 		{
 			const auto ratio = b2_maxTranslation / translation.Length();
-			v *= ratio;
+			velocity.v *= ratio;
+			translation = h * velocity.v;
 		}
-
-		const auto rotation = h * w;
-		if (b2Square(rotation) > b2Square(b2_maxRotation))
+		if (b2Abs(rotation) > b2_maxRotation)
 		{
 			const auto ratio = b2_maxRotation / b2Abs(rotation);
-			w *= ratio;
+			velocity.w *= ratio;
+			rotation = h * velocity.w;
 		}
+		m_velocities[i] = velocity;
 
-		// Integrate
-		c += h * v;
-		a += h * w;
-
-		m_positions[i].c = c;
-		m_positions[i].a = a;
-		m_velocities[i].v = v;
-		m_velocities[i].w = w;
+		m_positions[i] = b2Position{m_positions[i].c + translation, m_positions[i].a + rotation};
 	}
 
 	// Solve position constraints
-	timer.Reset();
 	auto positionSolved = false;
 	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
 	{
@@ -341,10 +322,8 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 		body.m_sweep.a = m_positions[i].a;
 		body.m_linearVelocity = m_velocities[i].v;
 		body.m_angularVelocity = m_velocities[i].w;
-		body.SynchronizeTransform();
+		body.m_xf = b2ComputeTransform(body.m_sweep);
 	}
-
-	profile->solvePosition = timer.GetMilliseconds();
 
 	Report(contactSolver.GetVelocityConstraints());
 
@@ -512,7 +491,7 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, isl
 		body.m_sweep.a = a;
 		body.m_linearVelocity = v;
 		body.m_angularVelocity = w;
-		body.SynchronizeTransform();
+		body.m_xf = b2ComputeTransform(body.m_sweep);
 	}
 
 	Report(contactSolver.GetVelocityConstraints());

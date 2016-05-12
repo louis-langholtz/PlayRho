@@ -416,8 +416,7 @@ private:
 	~b2Body();
 
 	void SynchronizeFixtures();
-	void SynchronizeTransform();
-
+	
 	// This is used to prevent connected bodies from colliding.
 	// It may lie, depending on the collideConnected flag.
 	bool ShouldCollide(const b2Body* other) const;
@@ -443,8 +442,8 @@ private:
 	
 	bool IsValidIslandIndex() const noexcept;
 
-	b2Transform m_xf;		// the body origin transform
-	b2Sweep m_sweep;		// the swept motion for CCD
+	b2Transform m_xf; ///< Transform for body origin.
+	b2Sweep m_sweep; ///< Sweep motion for CCD
 
 	b2Vec2 m_linearVelocity;
 	b2Float m_angularVelocity;
@@ -860,18 +859,13 @@ inline void b2Body::ApplyAngularImpulse(b2Float impulse, bool wake) noexcept
 	}
 }
 
-inline void b2Body::SynchronizeTransform()
-{
-	m_xf = b2Displace(m_sweep.c, m_sweep.localCenter, b2Rot(m_sweep.a));
-}
-
 inline void b2Body::Advance(b2Float alpha)
 {
 	// Advance to the new safe time. This doesn't sync the broad-phase.
 	m_sweep.Advance(alpha);
 	m_sweep.c = m_sweep.c0;
 	m_sweep.a = m_sweep.a0;
-	SynchronizeTransform();
+	m_xf = b2ComputeTransform(m_sweep);
 }
 
 inline b2World* b2Body::GetWorld() noexcept
