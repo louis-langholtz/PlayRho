@@ -29,7 +29,8 @@
 #endif
 
 #if defined(B2_DEBUG_SOLVER)
-static constexpr auto k_errorTol = b2Float(1e-3); ///< error tolerance
+static constexpr auto k_errorTol = b2Float(2e-3); ///< error tolerance
+static constexpr auto k_majorErrorTol = b2Float(1e-2); ///< error tolerance
 #endif
 
 bool g_blockSolve = true;
@@ -323,25 +324,275 @@ void b2ContactSolver::WarmStart()
 	}
 }
 
-static inline void SolveTangetConstraint(const b2ContactVelocityConstraint& vc,
+static inline void SolveTangentConstraint(const b2ContactVelocityConstraint& vc, b2Vec2 tangent,
 										 b2Velocity& bodyA, b2Velocity& bodyB,
 										 b2VelocityConstraintPoint& vcp)
 {
+	// Relative velocity at contact
+	const auto dv = (bodyB.v + b2Cross(bodyB.w, vcp.rB)) - (bodyA.v + b2Cross(bodyA.w, vcp.rA));
 	
+	// Compute tangent force
+	const auto vt = b2Dot(dv, tangent) - vc.tangentSpeed;
+	const auto lambda = vcp.tangentMass * (-vt);
+	
+	// Clamp the accumulated force
+	const auto maxFriction = vc.friction * vcp.normalImpulse;
+	const auto oldImpulse = vcp.tangentImpulse;
+	const auto newImpulse = b2Clamp(vcp.tangentImpulse + lambda, -maxFriction, maxFriction);
+	const auto incImpulse = newImpulse - oldImpulse;
+	
+	// Save new impulse
+	vcp.tangentImpulse = newImpulse;
+	
+	// Apply contact impulse
+	const auto P = incImpulse * tangent;
+	bodyA.v -= vc.bodyA.invMass * P;
+	bodyA.w -= vc.bodyA.invI * b2Cross(vcp.rA, P);
+	bodyB.v += vc.bodyB.invMass * P;
+	bodyB.w += vc.bodyB.invI * b2Cross(vcp.rB, P);
 }
 
-static inline void SolveVelocityConstraint(const b2ContactVelocityConstraint& vc,
-										   b2Velocity& bodyA, b2Velocity& bodyB,
-										   b2VelocityConstraintPoint& vcp)
+static inline void SolveNormalConstraint(const b2ContactVelocityConstraint& vc,
+										 b2Velocity& bodyA, b2Velocity& bodyB,
+										 b2VelocityConstraintPoint& vcp)
 {
+	// Relative velocity at contact
+	const auto dv = (bodyB.v + b2Cross(bodyB.w, vcp.rB)) - (bodyA.v + b2Cross(bodyA.w, vcp.rA));
 	
+	// Compute normal impulse
+	const auto vn = b2Dot(dv, vc.normal);
+	const auto lambda = -vcp.normalMass * (vn - vcp.velocityBias);
+	
+	// b2Clamp the accumulated impulse
+	const auto oldImpulse = vcp.normalImpulse;
+	const auto newImpulse = b2Max(vcp.normalImpulse + lambda, b2Float{0});
+	const auto incImpulse = newImpulse - oldImpulse;
+	
+	// Save new impulse
+	vcp.normalImpulse = newImpulse;
+	
+	// Apply contact impulse
+	const auto P = incImpulse * vc.normal;
+	bodyA.v -= vc.bodyA.invMass * P;
+	bodyA.w -= vc.bodyA.invI * b2Cross(vcp.rA, P);
+	bodyB.v += vc.bodyB.invMass * P;
+	bodyB.w += vc.bodyB.invI * b2Cross(vcp.rB, P);
 }
 
-static inline void SolveVelocityConstraint(const b2ContactVelocityConstraint& vc,
-										   b2Velocity& bodyA, b2Velocity& bodyB,
-										   b2VelocityConstraintPoint& vcp1, b2VelocityConstraintPoint& vcp2)
+static inline void BlockSolveUpdate(const b2ContactVelocityConstraint& vc,
+									b2Vec2 oldImpulse, b2Vec2 newImpulse,
+									b2Velocity& bodyA, b2Velocity& bodyB,
+									b2VelocityConstraintPoint& vcp1, b2VelocityConstraintPoint& vcp2)
 {
+	// Get the incremental impulse
+	const auto incImpulse = newImpulse - oldImpulse;
 	
+	// Apply incremental impulse
+	const auto P1 = incImpulse.x * vc.normal;
+	const auto P2 = incImpulse.y * vc.normal;
+	const auto P = P1 + P2;
+	bodyA.v -= vc.bodyA.invMass * P;
+	bodyA.w -= vc.bodyA.invI * (b2Cross(vcp1.rA, P1) + b2Cross(vcp2.rA, P2));
+	bodyB.v += vc.bodyB.invMass * P;
+	bodyB.w += vc.bodyB.invI * (b2Cross(vcp1.rB, P1) + b2Cross(vcp2.rB, P2));
+	
+	// Save new impulse
+	vcp1.normalImpulse = newImpulse.x;
+	vcp2.normalImpulse = newImpulse.y;
+}
+
+static inline bool BlockSolveNormalCase1(const b2ContactVelocityConstraint& vc,
+										 b2Vec2 oldImpulse, b2Vec2 b_prime,
+										 b2Velocity& bodyA, b2Velocity& bodyB,
+										 b2VelocityConstraintPoint& vcp1, b2VelocityConstraintPoint& vcp2)
+{
+	//
+	// Case 1: vn = 0
+	//
+	// 0 = A * x + b'
+	//
+	// Solve for x:
+	//
+	// x = -inv(A) * b'
+	//
+	const auto newImpulse = -b2Mul(vc.normalMass, b_prime);
+	if ((newImpulse.x >= b2Float{0}) && (newImpulse.y >= b2Float{0}))
+	{
+		BlockSolveUpdate(vc, oldImpulse, newImpulse, bodyA, bodyB, vcp1, vcp2);
+		
+#if defined(B2_DEBUG_SOLVER)
+		// Postconditions
+		const auto post_dv1 = (bodyB.v + b2Cross(bodyB.w, vcp1.rB)) - (bodyA.v + b2Cross(bodyA.w, vcp1.rA));
+		const auto post_dv2 = (bodyB.v + b2Cross(bodyB.w, vcp2.rB)) - (bodyA.v + b2Cross(bodyA.w, vcp2.rA));
+		
+		// Compute normal velocity
+		const auto post_vn1 = b2Dot(post_dv1, vc.normal);
+		const auto post_vn2 = b2Dot(post_dv2, vc.normal);
+		
+		
+		b2Assert(b2Abs(post_vn1 - vcp1.velocityBias) < k_majorErrorTol);
+		b2Assert(b2Abs(post_vn2 - vcp2.velocityBias) < k_majorErrorTol);
+
+		b2Assert(b2Abs(post_vn1 - vcp1.velocityBias) < k_errorTol);
+		b2Assert(b2Abs(post_vn2 - vcp2.velocityBias) < k_errorTol);
+#endif
+		return true;
+	}
+	return false;
+}
+
+static inline bool BlockSolveNormalCase2(const b2ContactVelocityConstraint& vc,
+										 b2Vec2 oldImpulse, b2Vec2 b_prime,
+										 b2Velocity& bodyA, b2Velocity& bodyB,
+										 b2VelocityConstraintPoint& vcp1, b2VelocityConstraintPoint& vcp2)
+{
+	//
+	// Case 2: vn1 = 0 and x2 = 0
+	//
+	//   0 = a11 * x1 + a12 * 0 + b1' 
+	// vn2 = a21 * x1 + a22 * 0 + b2'
+	//
+	const auto newImpulse = b2Vec2{-vcp1.normalMass * b_prime.x, b2Float{0}};
+	const auto vn2 = vc.K.ex.y * newImpulse.x + b_prime.y;
+	if ((newImpulse.x >= b2Float{0}) && (vn2 >= b2Float{0}))
+	{
+		BlockSolveUpdate(vc, oldImpulse, newImpulse, bodyA, bodyB, vcp1, vcp2);
+		
+#if defined(B2_DEBUG_SOLVER)
+		// Postconditions
+		const auto post_dv1 = (bodyB.v + b2Cross(bodyB.w, vcp1.rB)) - (bodyA.v + b2Cross(bodyA.w, vcp1.rA));
+		
+		// Compute normal velocity
+		const auto post_vn1 = b2Dot(post_dv1, vc.normal);
+		
+		b2Assert(b2Abs(post_vn1 - vcp1.velocityBias) < k_majorErrorTol);
+		b2Assert(b2Abs(post_vn1 - vcp1.velocityBias) < k_errorTol);
+#endif
+		return true;
+	}
+	return false;
+}
+
+static inline bool BlockSolveNormalCase3(const b2ContactVelocityConstraint& vc,
+										 b2Vec2 oldImpulse, b2Vec2 b_prime,
+										 b2Velocity& bodyA, b2Velocity& bodyB,
+										 b2VelocityConstraintPoint& vcp1, b2VelocityConstraintPoint& vcp2)
+{
+	//
+	// Case 3: vn2 = 0 and x1 = 0
+	//
+	// vn1 = a11 * 0 + a12 * x2 + b1' 
+	//   0 = a21 * 0 + a22 * x2 + b2'
+	//
+	const auto newImpulse = b2Vec2{b2Float{0}, -vcp2.normalMass * b_prime.y};
+	const auto vn1 = vc.K.ey.x * newImpulse.y + b_prime.x;
+	if ((newImpulse.y >= b2Float{0}) && (vn1 >= b2Float{0}))
+	{
+		BlockSolveUpdate(vc, oldImpulse, newImpulse, bodyA, bodyB, vcp1, vcp2);
+		
+#if defined(B2_DEBUG_SOLVER)
+		// Postconditions
+		const auto post_dv2 = (bodyB.v + b2Cross(bodyB.w, vcp2.rB)) - (bodyA.v + b2Cross(bodyA.w, vcp2.rA));
+		
+		// Compute normal velocity
+		const auto post_vn2 = b2Dot(post_dv2, vc.normal);
+
+		b2Assert(b2Abs(post_vn2 - vcp2.velocityBias) < k_majorErrorTol);
+		b2Assert(b2Abs(post_vn2 - vcp2.velocityBias) < k_errorTol);
+#endif
+		return true;
+	}
+	return false;
+}
+
+static inline bool BlockSolveNormalCase4(const b2ContactVelocityConstraint& vc,
+										 b2Vec2 oldImpulse, b2Vec2 b_prime,
+										 b2Velocity& bodyA, b2Velocity& bodyB,
+										 b2VelocityConstraintPoint& vcp1, b2VelocityConstraintPoint& vcp2)
+{
+	//
+	// Case 4: x1 = 0 and x2 = 0
+	// 
+	// vn1 = b1
+	// vn2 = b2;
+	const auto newImpulse = b2Vec2{b2Float{0}, b2Float{0}};
+	const auto vn1 = b_prime.x;
+	const auto vn2 = b_prime.y;
+	if ((vn1 >= b2Float{0}) && (vn2 >= b2Float{0}))
+	{
+		BlockSolveUpdate(vc, oldImpulse, newImpulse, bodyA, bodyB, vcp1, vcp2);
+		return true;
+	}
+	return false;
+}
+
+static inline void BlockSolveNormalConstraint(const b2ContactVelocityConstraint& vc,
+											  b2Velocity& bodyA, b2Velocity& bodyB,
+											  b2VelocityConstraintPoint& vcp1, b2VelocityConstraintPoint& vcp2)
+{
+	// Block solver developed in collaboration with Dirk Gregorius (back in 01/07 on Box2D_Lite).
+	// Build the mini LCP for this contact patch
+	//
+	// vn = A * x + b, vn >= 0, x >= 0 and vn_i * x_i = 0 with i = 1..2
+	//
+	// A = J * W * JT and J = ( -n, -r1 x n, n, r2 x n )
+	// b = vn0 - velocityBias
+	//
+	// The system is solved using the "Total enumeration method" (s. Murty). The complementary constraint vn_i * x_i
+	// implies that we must have in any solution either vn_i = 0 or x_i = 0. So for the 2D contact problem the cases
+	// vn1 = 0 and vn2 = 0, x1 = 0 and x2 = 0, x1 = 0 and vn2 = 0, x2 = 0 and vn1 = 0 need to be tested. The first valid
+	// solution that satisfies the problem is chosen.
+	// 
+	// In order to account of the accumulated impulse 'a' (because of the iterative nature of the solver which only requires
+	// that the accumulated impulse is clamped and not the incremental impulse) we change the impulse variable (x_i).
+	//
+	// Substitute:
+	// 
+	// x = a + d
+	// 
+	// a := old total impulse
+	// x := new total impulse
+	// d := incremental impulse 
+	//
+	// For the current iteration we extend the formula for the incremental impulse
+	// to compute the new total impulse:
+	//
+	// vn = A * d + b
+	//    = A * (x - a) + b
+	//    = A * x + b - A * a
+	//    = A * x + b'
+	// b' = b - A * a;
+
+	const auto oldImpulse = b2Vec2{vcp1.normalImpulse, vcp2.normalImpulse};
+	b2Assert((oldImpulse.x >= b2Float{0}) && (oldImpulse.y >= b2Float{0}));
+	
+	const auto b_prime = [=]{
+		// Relative velocity at contact
+		const auto dv1 = (bodyB.v + b2Cross(bodyB.w, vcp1.rB)) - (bodyA.v + b2Cross(bodyA.w, vcp1.rA));
+		const auto dv2 = (bodyB.v + b2Cross(bodyB.w, vcp2.rB)) - (bodyA.v + b2Cross(bodyA.w, vcp2.rA));
+		
+		// Compute normal velocity
+		const auto normal_vn1 = b2Dot(dv1, vc.normal);
+		const auto normal_vn2 = b2Dot(dv2, vc.normal);
+		
+		// Compute b
+		const auto b = b2Vec2{normal_vn1 - vcp1.velocityBias, normal_vn2 - vcp2.velocityBias};
+		
+		// Return b'
+		return b - b2Mul(vc.K, oldImpulse);
+	}();
+	
+	
+	if (BlockSolveNormalCase1(vc, oldImpulse, b_prime, bodyA, bodyB, vcp1, vcp2))
+		return;
+	if (BlockSolveNormalCase2(vc, oldImpulse, b_prime, bodyA, bodyB, vcp1, vcp2))
+		return;
+	if (BlockSolveNormalCase3(vc, oldImpulse, b_prime, bodyA, bodyB, vcp1, vcp2))
+		return;
+	if (BlockSolveNormalCase4(vc, oldImpulse, b_prime, bodyA, bodyB, vcp1, vcp2))
+		return;
+	
+	// No solution, give up. This is hit sometimes, but it doesn't seem to matter.
 }
 
 static inline void SolveVelocityConstraint(b2ContactVelocityConstraint& vc, b2Velocity& bodyA, b2Velocity& bodyB)
@@ -349,287 +600,40 @@ static inline void SolveVelocityConstraint(b2ContactVelocityConstraint& vc, b2Ve
 	const auto pointCount = vc.GetPointCount();
 	b2Assert((pointCount == 1) || (pointCount == 2));
 
-	// Solve tangent constraints first because non-penetration is more important than friction.
+	// Solve tangent constraints first, because non-penetration is more important than friction.
+	// Solve normal constraints second.
+
+	if (pointCount == 1)
 	{
-		const auto tangent = b2Cross(vc.normal, b2Float(1));
-		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
+		auto& vcp = vc.GetPoint(0);
+
 		{
-			auto& vcp = vc.GetPoint(j); ///< Velocity constraint point.
-			
-			// Relative velocity at contact
-			const auto dv = (bodyB.v + b2Cross(bodyB.w, vcp.rB)) - (bodyA.v + b2Cross(bodyA.w, vcp.rA));
-			
-			// Compute tangent force
-			const auto vt = b2Dot(dv, tangent) - vc.tangentSpeed;
-			const auto lambda = vcp.tangentMass * (-vt);
-			
-			// Clamp the accumulated force
-			const auto maxFriction = vc.friction * vcp.normalImpulse;
-			const auto oldImpulse = vcp.tangentImpulse;
-			const auto newImpulse = b2Clamp(vcp.tangentImpulse + lambda, -maxFriction, maxFriction);
-			const auto incImpulse = newImpulse - oldImpulse;
-
-			// Save new impulse
-			vcp.tangentImpulse = newImpulse;
-			
-			// Apply contact impulse
-			const auto P = incImpulse * tangent;
-			bodyA.v -= vc.bodyA.invMass * P;
-			bodyA.w -= vc.bodyA.invI * b2Cross(vcp.rA, P);
-			bodyB.v += vc.bodyB.invMass * P;
-			bodyB.w += vc.bodyB.invI * b2Cross(vcp.rB, P);
+			const auto tangent = b2Cross(vc.normal, b2Float(1));
+			SolveTangentConstraint(vc, tangent, bodyA, bodyB, vcp);
 		}
-	}
 
-	// Solve normal constraints
-	if ((pointCount == 1) || (!g_blockSolve))
-	{
-		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
-		{
-			auto& vcp = vc.GetPoint(j); ///< Velocity constraint point.
-
-			// Relative velocity at contact
-			const auto dv = (bodyB.v + b2Cross(bodyB.w, vcp.rB)) - (bodyA.v + b2Cross(bodyA.w, vcp.rA));
-			
-			// Compute normal impulse
-			const auto vn = b2Dot(dv, vc.normal);
-			const auto lambda = -vcp.normalMass * (vn - vcp.velocityBias);
-			
-			// b2Clamp the accumulated impulse
-			const auto oldImpulse = vcp.normalImpulse;
-			const auto newImpulse = b2Max(vcp.normalImpulse + lambda, b2Float{0});
-			const auto incImpulse = newImpulse - oldImpulse;
-
-			// Save new impulse
-			vcp.normalImpulse = newImpulse;
-			
-			// Apply contact impulse
-			const auto P = incImpulse * vc.normal;
-			bodyA.v -= vc.bodyA.invMass * P;
-			bodyA.w -= vc.bodyA.invI * b2Cross(vcp.rA, P);
-			bodyB.v += vc.bodyB.invMass * P;
-			bodyB.w += vc.bodyB.invI * b2Cross(vcp.rB, P);
-		}
+		SolveNormalConstraint(vc, bodyA, bodyB, vcp);
 	}
 	else // pointCount == 2
 	{
-		// Block solver developed in collaboration with Dirk Gregorius (back in 01/07 on Box2D_Lite).
-		// Build the mini LCP for this contact patch
-		//
-		// vn = A * x + b, vn >= 0, x >= 0 and vn_i * x_i = 0 with i = 1..2
-		//
-		// A = J * W * JT and J = ( -n, -r1 x n, n, r2 x n )
-		// b = vn0 - velocityBias
-		//
-		// The system is solved using the "Total enumeration method" (s. Murty). The complementary constraint vn_i * x_i
-		// implies that we must have in any solution either vn_i = 0 or x_i = 0. So for the 2D contact problem the cases
-		// vn1 = 0 and vn2 = 0, x1 = 0 and x2 = 0, x1 = 0 and vn2 = 0, x2 = 0 and vn1 = 0 need to be tested. The first valid
-		// solution that satisfies the problem is chosen.
-		// 
-		// In order to account of the accumulated impulse 'a' (because of the iterative nature of the solver which only requires
-		// that the accumulated impulse is clamped and not the incremental impulse) we change the impulse variable (x_i).
-		//
-		// Substitute:
-		// 
-		// x = a + d
-		// 
-		// a := old total impulse
-		// x := new total impulse
-		// d := incremental impulse 
-		//
-		// For the current iteration we extend the formula for the incremental impulse
-		// to compute the new total impulse:
-		//
-		// vn = A * d + b
-		//    = A * (x - a) + b
-		//    = A * x + b - A * a
-		//    = A * x + b'
-		// b' = b - A * a;
-		
-		auto& vcp1 = vc.GetPoint(0); ///< Velocity constraint point 1 (point at index 0).
-		auto& vcp2 = vc.GetPoint(1); ///< Velocity constraint point 2 (point at index 1).
-		
-		const auto oldImpulse = b2Vec2{vcp1.normalImpulse, vcp2.normalImpulse};
-		b2Assert((oldImpulse.x >= b2Float{0}) && (oldImpulse.y >= b2Float{0}));
+		auto& vcp1 = vc.GetPoint(0); ///< Velocity constraint point.
+		auto& vcp2 = vc.GetPoint(1); ///< Velocity constraint point.
 
-		const auto b_prime = [=]{
-			// Relative velocity at contact
-			const auto dv1 = (bodyB.v + b2Cross(bodyB.w, vcp1.rB)) - (bodyA.v + b2Cross(bodyA.w, vcp1.rA));
-			const auto dv2 = (bodyB.v + b2Cross(bodyB.w, vcp2.rB)) - (bodyA.v + b2Cross(bodyA.w, vcp2.rA));
-			
-			// Compute normal velocity
-			const auto normal_vn1 = b2Dot(dv1, vc.normal);
-			const auto normal_vn2 = b2Dot(dv2, vc.normal);
-			
-			// Compute b
-			const auto b = b2Vec2{normal_vn1 - vcp1.velocityBias, normal_vn2 - vcp2.velocityBias};
-
-			// Return b'
-			return b - b2Mul(vc.K, oldImpulse);
-		}();
-		
-		do
 		{
-			{
-				//
-				// Case 1: vn = 0
-				//
-				// 0 = A * x + b'
-				//
-				// Solve for x:
-				//
-				// x = -inv(A) * b'
-				//
-				const auto newImpulse = -b2Mul(vc.normalMass, b_prime);
-				if ((newImpulse.x >= b2Float{0}) && (newImpulse.y >= b2Float{0}))
-				{
-					// Get the incremental impulse
-					const auto incImpulse = newImpulse - oldImpulse;
-					
-					// Apply incremental impulse
-					const auto P1 = incImpulse.x * vc.normal;
-					const auto P2 = incImpulse.y * vc.normal;
-					const auto P = P1 + P2;
-					bodyA.v -= vc.bodyA.invMass * P;
-					bodyA.w -= vc.bodyA.invI * (b2Cross(vcp1.rA, P1) + b2Cross(vcp2.rA, P2));
-					bodyB.v += vc.bodyB.invMass * P;
-					bodyB.w += vc.bodyB.invI * (b2Cross(vcp1.rB, P1) + b2Cross(vcp2.rB, P2));
-					
-					// Save new impulse
-					vcp1.normalImpulse = newImpulse.x;
-					vcp2.normalImpulse = newImpulse.y;
-					
-#if defined(B2_DEBUG_SOLVER)
-					// Postconditions
-					const auto post_dv1 = (vB + b2Cross(wB, cp1.rB)) - (vA + b2Cross(wA, cp1.rA));
-					const auto post_dv2 = (vB + b2Cross(wB, cp2.rB)) - (vA + b2Cross(wA, cp2.rA));
-					
-					// Compute normal velocity
-					const auto post_vn1 = b2Dot(post_dv1, normal);
-					const auto post_vn2 = b2Dot(post_dv2, normal);
-					
-					b2Assert(b2Abs(post_vn1 - cp1.velocityBias) < k_errorTol);
-					b2Assert(b2Abs(post_vn2 - cp2.velocityBias) < k_errorTol);
-#endif
-					break;
-				}
-			}
-			
-			{
-				//
-				// Case 2: vn1 = 0 and x2 = 0
-				//
-				//   0 = a11 * x1 + a12 * 0 + b1' 
-				// vn2 = a21 * x1 + a22 * 0 + b2'
-				//
-				const auto newImpulse = b2Vec2{-vcp1.normalMass * b_prime.x, b2Float{0}};
-				const auto vn2 = vc.K.ex.y * newImpulse.x + b_prime.y;
-				if ((newImpulse.x >= b2Float{0}) && (vn2 >= b2Float{0}))
-				{
-					// Get the incremental impulse
-					const auto incImpulse = newImpulse - oldImpulse;
-					
-					// Apply incremental impulse
-					const auto P1 = incImpulse.x * vc.normal;
-					const auto P2 = incImpulse.y * vc.normal;
-					const auto P = P1 + P2;
-					bodyA.v -= vc.bodyA.invMass * P;
-					bodyA.w -= vc.bodyA.invI * (b2Cross(vcp1.rA, P1) + b2Cross(vcp2.rA, P2));
-					bodyB.v += vc.bodyB.invMass * P;
-					bodyB.w += vc.bodyB.invI * (b2Cross(vcp1.rB, P1) + b2Cross(vcp2.rB, P2));
-					
-					// Save new impulse
-					vcp1.normalImpulse = newImpulse.x;
-					vcp2.normalImpulse = newImpulse.y;
-					
-#if defined(B2_DEBUG_SOLVER)
-					// Postconditions
-					const auto post_dv1 = (vB + b2Cross(wB, cp1.rB)) - (vA + b2Cross(wA, cp1.rA));
-					
-					// Compute normal velocity
-					const auto post_vn1 = b2Dot(post_dv1, normal);
-					
-					b2Assert(b2Abs(post_vn1 - cp1.velocityBias) < k_errorTol);
-#endif
-					break;
-				}
-			}
-			
-			{
-				//
-				// Case 3: vn2 = 0 and x1 = 0
-				//
-				// vn1 = a11 * 0 + a12 * x2 + b1' 
-				//   0 = a21 * 0 + a22 * x2 + b2'
-				//
-				const auto newImpulse = b2Vec2{b2Float{0}, -vcp2.normalMass * b_prime.y};
-				const auto vn1 = vc.K.ey.x * newImpulse.y + b_prime.x;
-				if ((newImpulse.y >= b2Float{0}) && (vn1 >= b2Float{0}))
-				{
-					// Get the incremental impulse
-					const auto incImpulse = newImpulse - oldImpulse;
-					
-					// Apply incremental impulse
-					const auto P1 = incImpulse.x * vc.normal;
-					const auto P2 = incImpulse.y * vc.normal;
-					const auto P = P1 + P2;
-					bodyA.v -= vc.bodyA.invMass * P;
-					bodyA.w -= vc.bodyA.invI * (b2Cross(vcp1.rA, P1) + b2Cross(vcp2.rA, P2));
-					bodyB.v += vc.bodyB.invMass * P;
-					bodyB.w += vc.bodyB.invI * (b2Cross(vcp1.rB, P1) + b2Cross(vcp2.rB, P2));
-					
-					// Save new impulse
-					vcp1.normalImpulse = newImpulse.x;
-					vcp2.normalImpulse = newImpulse.y;
-					
-#if defined(B2_DEBUG_SOLVER)
-					// Postconditions
-					const auto post_dv2 = (vB + b2Cross(wB, cp2.rB)) - (vA + b2Cross(wA, cp2.rA));
-					
-					// Compute normal velocity
-					const auto post_vn2 = b2Dot(post_dv2, normal);
-					
-					b2Assert(b2Abs(post_vn2 - cp2.velocityBias) < k_errorTol);
-#endif
-					break;
-				}
-			}
-			
-			{
-				//
-				// Case 4: x1 = 0 and x2 = 0
-				// 
-				// vn1 = b1
-				// vn2 = b2;
-				const auto newImpulse = b2Vec2{b2Float{0}, b2Float{0}};
-				const auto vn1 = b_prime.x;
-				const auto vn2 = b_prime.y;
-				
-				if ((vn1 >= b2Float{0}) && (vn2 >= b2Float{0}))
-				{
-					// Get the incremental impulse
-					const auto incImpulse = newImpulse - oldImpulse;
-					
-					// Apply incremental impulse
-					const auto P1 = incImpulse.x * vc.normal;
-					const auto P2 = incImpulse.y * vc.normal;
-					const auto P = P1 + P2;
-					bodyA.v -= vc.bodyA.invMass * P;
-					bodyA.w -= vc.bodyA.invI * (b2Cross(vcp1.rA, P1) + b2Cross(vcp2.rA, P2));
-					bodyB.v += vc.bodyB.invMass * P;
-					bodyB.w += vc.bodyB.invI * (b2Cross(vcp1.rB, P1) + b2Cross(vcp2.rB, P2));
-					
-					// Save new impulse
-					vcp1.normalImpulse = newImpulse.x;
-					vcp2.normalImpulse = newImpulse.y;
-					
-					break;
-				}
-			}
-			
-			// No solution, give up. This is hit sometimes, but it doesn't seem to matter.
+			const auto tangent = b2Cross(vc.normal, b2Float(1));
+			SolveTangentConstraint(vc, tangent, bodyA, bodyB, vcp1);
+			SolveTangentConstraint(vc, tangent, bodyA, bodyB, vcp2);
 		}
-		while (false);
+
+		if (!g_blockSolve)
+		{
+			SolveNormalConstraint(vc, bodyA, bodyB, vcp1);
+			SolveNormalConstraint(vc, bodyA, bodyB, vcp2);
+		}
+		else
+		{
+			BlockSolveNormalConstraint(vc, bodyA, bodyB, vcp1, vcp2);
+		}
 	}
 }
 
