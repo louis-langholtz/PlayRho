@@ -61,6 +61,10 @@ public:
 	using size_type = std::remove_cv<decltype(b2_maxManifoldPoints)>::type;
 	using index_type = b2_size_t;
 	
+	/// Gets the count of points added to this object.
+	/// @return Value between 0 and b2_maxManifoldPoints
+	/// @sa b2_maxManifoldPoints.
+	/// @sa AddPoint.
 	size_type GetPointCount() const noexcept { return pointCount; }
 	
 	/// Gets the point identified by the given index.
