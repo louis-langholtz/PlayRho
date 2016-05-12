@@ -91,6 +91,12 @@ public:
 
 	void ClearPoints() noexcept { pointCount = 0; }
 
+	/// Adds the given point to this contact velocity constraint object.
+	/// @detail Adds up to b2_maxManifoldPoints points. To find out how many points have already
+	///   been added, call GetPointCount().
+	/// @param val Velocity constraint point value to add.
+	/// @note Behavior is undefined if an attempt is made to add more than b2_maxManifoldPoints points.
+	/// @sa GetPointCount().
 	void AddPoint(const b2VelocityConstraintPoint& val)
 	{
 		b2Assert(pointCount < b2_maxManifoldPoints);
@@ -160,6 +166,8 @@ private:
 	static void Assign(b2ContactVelocityConstraint& var, const b2Contact& val);
 	static void Assign(b2ContactPositionConstraintBodyData& var, const b2Body& val);
 	static void Assign(b2ContactVelocityConstraintBodyData& var, const b2Body& val);
+
+	void InitializeVelocityConstraint(b2ContactVelocityConstraint& vc, const b2ContactPositionConstraint& pc);
 
 	const b2TimeStep m_step;
 	b2Position* const m_positions;
