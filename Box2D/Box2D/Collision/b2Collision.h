@@ -69,7 +69,8 @@ constexpr bool operator==(const b2ContactFeature& lhs, const b2ContactFeature& r
 	return lhs.typeA == rhs.typeA && lhs.typeB == rhs.typeB && lhs.indexA == rhs.indexA && lhs.indexB == rhs.indexB;
 }
 
-/// A manifold point is a contact point belonging to a contact
+/// Manifold point data.
+/// @detail A manifold point is a contact point belonging to a contact
 /// manifold. It holds details related to the geometry and dynamics
 /// of the contact points.
 /// The local point usage depends on the manifold type:
@@ -124,6 +125,13 @@ public:
 		pointCount = 0;
 	}
 
+	/// Gets the manifold point count.
+	/// @detail This is the count of points added using the AddPoint() method.
+	///   Only up to this many points can be validly accessed using the GetPoint() method.
+	/// @return Value between 0 and b2_maxManifoldPoints.
+	/// @sa b2_maxManifoldPoints.
+	/// @sa AddPoint().
+	/// @sa GetPoint().
 	size_type GetPointCount() const noexcept { return pointCount; }
 
 	const b2ManifoldPoint& GetPoint(size_type index) const
@@ -138,6 +146,10 @@ public:
 		return points[index];
 	}
 	
+	/// Adds a new point.
+	/// @detail This can be called up to b2_maxManifoldPoints times.
+	/// GetPointCount() can be called to find out how many points have already been added.
+	/// @note Behavior is undefined if this is called more than b2_maxManifoldPoints times. 
 	void AddPoint(const b2Vec2& lp, b2ContactFeature cf = b2ContactFeature{b2ContactFeature::e_vertex, 0, b2ContactFeature::e_vertex, 0})
 	{
 		b2Assert(pointCount < b2_maxManifoldPoints);
