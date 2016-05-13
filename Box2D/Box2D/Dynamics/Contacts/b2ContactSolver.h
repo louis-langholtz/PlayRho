@@ -137,10 +137,13 @@ struct b2ContactSolverDef
 	b2StackAllocator* allocator;
 };
 
+/// Contact Solver.
 class b2ContactSolver
 {
 public:
 	using size_type = b2_size_t;
+	
+	static constexpr auto MinSeparationThreshold = -b2_linearSlop * b2Float(3);
 
 	b2ContactSolver(b2ContactSolverDef* def);
 	~b2ContactSolver();
@@ -154,7 +157,12 @@ public:
 	void StoreImpulses();
 
 	void SolveVelocityConstraints();
+
+	/// Solves position constraints.
+	/// @return true if the minimum separation is above the minimum separation threshold, false otherwise.
+	/// @sa MinSeparationThreshold.
 	bool SolvePositionConstraints();
+	
 	bool SolveTOIPositionConstraints(size_type toiIndexA, size_type toiIndexB);
 
 	const b2ContactVelocityConstraint* GetVelocityConstraints() const noexcept

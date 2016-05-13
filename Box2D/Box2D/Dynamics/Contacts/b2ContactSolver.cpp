@@ -701,6 +701,9 @@ public:
 
 	b2Vec2 GetNormal() const noexcept { return normal; }
 	b2Vec2 GetPoint() const noexcept { return point; }
+
+	/// Gets the "separation" between the two relavent points of the contact position constraint.
+	/// @return separation value.
 	b2Float GetSeparation() const noexcept { return separation; }
 
 private:
@@ -778,30 +781,23 @@ bool b2ContactSolver::SolvePositionConstraints()
 		m_positions[indexB].a = aB;
 	}
 
-	// We can't expect minSpeparation >= -b2_linearSlop because we don't
-	// push the separation above -b2_linearSlop.
-	return minSeparation >= (-b2_linearSlop * b2Float(3));
+	// Can't expect minSpeparation >= -b2_linearSlop because we don't push the separation above -b2_linearSlop.
+	return minSeparation >= MinSeparationThreshold;
 }
 
-static inline void SolveTOIPositionConstraint(const b2ContactPositionConstraint& pc,
-											  b2ContactSolver::size_type toiIndexA, b2ContactSolver::size_type toiIndexB,
-											  b2Position& posA, b2Position& posB, b2Float& minSeparation)
+static inline b2Float SolveTOIPositionConstraint(const b2ContactPositionConstraint& pc,
+												 b2ContactSolver::size_type indexA, b2ContactSolver::size_type indexB,
+												 b2Position& posA, b2Position& posB)
 {
-	auto invMassA = b2Float{0};
-	auto invInertiaA = b2Float{0};
-	if ((pc.bodyA.index == toiIndexA) || (pc.bodyA.index == toiIndexB))
-	{
-		invMassA = pc.bodyA.invMass;
-		invInertiaA = pc.bodyA.invI;
-	}
+	auto minSeparation = b2_maxFloat;
 	
-	auto invMassB = b2Float{0};
-	auto invInertiaB = b2Float{0};
-	if ((pc.bodyB.index == toiIndexA) || (pc.bodyB.index == toiIndexB))
-	{
-		invMassB = pc.bodyB.invMass;
-		invInertiaB = pc.bodyB.invI;
-	}
+	const auto isA = (indexA == pc.bodyA.index) || (indexB == pc.bodyA.index);
+	const auto invMassA = isA? pc.bodyA.invMass: b2Float{0};
+	const auto invInertiaA = isA? pc.bodyA.invI: b2Float{0};
+	
+	const auto isB = (indexA == pc.bodyB.index) || (indexB == pc.bodyB.index);
+	const auto invMassB = isB? pc.bodyB.invMass: b2Float{0};
+	const auto invInertiaB = isB? pc.bodyB.invI: b2Float{0};
 	
 	// Solve normal constraints
 	const auto pointCount = pc.GetPointCount();
@@ -838,6 +834,8 @@ static inline void SolveTOIPositionConstraint(const b2ContactPositionConstraint&
 		posB.c += invMassB * P;
 		posB.a += invInertiaB * b2Cross(rB, P);
 	}
+	
+	return minSeparation;
 }
 
 // Sequential position solver for position constraints.
@@ -848,8 +846,8 @@ bool b2ContactSolver::SolveTOIPositionConstraints(size_type toiIndexA, size_type
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		const auto& pc = m_positionConstraints[i];
-		SolveTOIPositionConstraint(pc, toiIndexA, toiIndexB,
-								   m_positions[pc.bodyA.index], m_positions[pc.bodyB.index], minSeparation);
+		minSeparation = b2Min(minSeparation, SolveTOIPositionConstraint(pc, toiIndexA, toiIndexB,
+								   m_positions[pc.bodyA.index], m_positions[pc.bodyB.index]));
 	}
 
 	// We can't expect minSpeparation >= -b2_linearSlop because we don't
