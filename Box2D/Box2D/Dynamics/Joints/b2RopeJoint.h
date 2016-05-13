@@ -36,8 +36,7 @@ struct b2RopeJointDef : public b2JointDef
 	b2Vec2 localAnchorB = b2Vec2{b2Float(1), b2Float{0}};
 
 	/// The maximum length of the rope.
-	/// Warning: this must be larger than b2_linearSlop or
-	/// the joint will have no effect.
+	/// @warning This must be larger than b2_linearSlop or the joint will have no effect.
 	b2Float maxLength = b2Float{0};
 };
 
