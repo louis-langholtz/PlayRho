@@ -143,7 +143,11 @@ class b2ContactSolver
 public:
 	using size_type = b2_size_t;
 	
+	/// Minimum separation for position constraints.
 	static constexpr auto MinSeparationThreshold = -b2_linearSlop * b2Float(3);
+
+	/// Minimum time of impact separation for TOI position constraints.
+	static constexpr auto MinToiSeparation = -b2_linearSlop * b2Float(1.5);
 
 	b2ContactSolver(b2ContactSolverDef* def);
 	~b2ContactSolver();

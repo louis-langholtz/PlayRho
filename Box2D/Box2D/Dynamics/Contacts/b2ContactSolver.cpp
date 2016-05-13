@@ -712,6 +712,50 @@ private:
 	b2Float separation;
 };
 
+static inline b2Float SolvePositionConstraint(const b2ContactPositionConstraint& pc,
+											  b2Position& posA, b2Position& posB)
+{
+	auto minSeparation = b2_maxFloat;
+
+	// Solve normal constraints
+	const auto pointCount = pc.GetPointCount();
+	for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
+	{
+		const auto xfA = b2Displace(posA.c, pc.bodyA.localCenter, b2Rot(posA.a));
+		const auto xfB = b2Displace(posB.c, pc.bodyB.localCenter, b2Rot(posB.a));
+		const auto psm = b2PositionSolverManifold(pc, xfA, xfB, j);
+		const auto normal = psm.GetNormal();
+		const auto point = psm.GetPoint();
+		const auto separation = psm.GetSeparation();
+		
+		const auto rA = point - posA.c;
+		const auto rB = point - posB.c;
+		
+		// Track max constraint error.
+		minSeparation = b2Min(minSeparation, separation);
+		
+		// Prevent large corrections and allow slop.
+		const auto C = b2Clamp(b2_baumgarte * (separation + b2_linearSlop), -b2_maxLinearCorrection, b2Float{0});
+		
+		// Compute the effective mass.
+		const auto rnA = b2Cross(rA, normal);
+		const auto rnB = b2Cross(rB, normal);
+		const auto K = pc.bodyA.invMass + pc.bodyB.invMass + (pc.bodyA.invI * b2Square(rnA)) + (pc.bodyB.invI * b2Square(rnB));
+		
+		// Compute normal impulse
+		const auto impulse = (K > b2Float{0})? - C / K : b2Float{0};
+		
+		const auto P = impulse * normal;
+		
+		posA.c -= pc.bodyA.invMass * P;
+		posA.a -= pc.bodyA.invI * b2Cross(rA, P);
+		posB.c += pc.bodyB.invMass * P;
+		posB.a += pc.bodyB.invI * b2Cross(rB, P);
+	}
+	
+	return minSeparation;
+}
+
 // Sequential solver.
 bool b2ContactSolver::SolvePositionConstraints()
 {
@@ -720,65 +764,8 @@ bool b2ContactSolver::SolvePositionConstraints()
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		const auto& pc = m_positionConstraints[i];
-
-		const auto indexA = pc.bodyA.index;
-		const auto localCenterA = pc.bodyA.localCenter;
-		const auto invMassA = pc.bodyA.invMass;
-		const auto invInertiaA = pc.bodyA.invI;
-
-		const auto indexB = pc.bodyB.index;
-		const auto localCenterB = pc.bodyB.localCenter;
-		const auto invMassB = pc.bodyB.invMass;
-		const auto invInertiaB = pc.bodyB.invI;
-
-		auto cA = m_positions[indexA].c;
-		auto aA = m_positions[indexA].a;
-
-		auto cB = m_positions[indexB].c;
-		auto aB = m_positions[indexB].a;
-
-		// Solve normal constraints
-		const auto pointCount = pc.GetPointCount();
-		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
-		{
-			const auto xfA = b2Displace(cA, localCenterA, b2Rot(aA));
-			const auto xfB = b2Displace(cB, localCenterB, b2Rot(aB));
-			const auto psm = b2PositionSolverManifold(pc, xfA, xfB, j);
-			const auto normal = psm.GetNormal();
-			const auto point = psm.GetPoint();
-			const auto separation = psm.GetSeparation();
-
-			const auto rA = point - cA;
-			const auto rB = point - cB;
-
-			// Track max constraint error.
-			minSeparation = b2Min(minSeparation, separation);
-
-			// Prevent large corrections and allow slop.
-			const auto C = b2Clamp(b2_baumgarte * (separation + b2_linearSlop), -b2_maxLinearCorrection, b2Float{0});
-
-			// Compute the effective mass.
-			const auto rnA = b2Cross(rA, normal);
-			const auto rnB = b2Cross(rB, normal);
-			const auto K = invMassA + invMassB + (invInertiaA * b2Square(rnA)) + (invInertiaB * b2Square(rnB));
-
-			// Compute normal impulse
-			const auto impulse = (K > b2Float{0})? - C / K : b2Float{0};
-
-			const auto P = impulse * normal;
-
-			cA -= invMassA * P;
-			aA -= invInertiaA * b2Cross(rA, P);
-
-			cB += invMassB * P;
-			aB += invInertiaB * b2Cross(rB, P);
-		}
-
-		m_positions[indexA].c = cA;
-		m_positions[indexA].a = aA;
-
-		m_positions[indexB].c = cB;
-		m_positions[indexB].a = aB;
+		minSeparation = b2Min(minSeparation,
+							  SolvePositionConstraint(pc, m_positions[pc.bodyA.index], m_positions[pc.bodyB.index]));
 	}
 
 	// Can't expect minSpeparation >= -b2_linearSlop because we don't push the separation above -b2_linearSlop.
@@ -850,7 +837,6 @@ bool b2ContactSolver::SolveTOIPositionConstraints(size_type toiIndexA, size_type
 								   m_positions[pc.bodyA.index], m_positions[pc.bodyB.index]));
 	}
 
-	// We can't expect minSpeparation >= -b2_linearSlop because we don't
-	// push the separation above -b2_linearSlop.
-	return minSeparation >= (-b2_linearSlop * b2Float(1.5));
+	// Can't expect minSpeparation >= -b2_linearSlop because we don't push the separation above -b2_linearSlop.
+	return minSeparation >= MinToiSeparation;
 }
