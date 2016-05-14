@@ -72,14 +72,14 @@ public:
 
 		b2Vec2 vertices[b2_maxPolygonVertices];
 
-		const auto transformA = sweepA.GetTransform(0.0f);
+		const auto transformA = b2GetTransform(sweepA, 0.0f);
 		for (int32 i = 0; i < m_shapeA.GetVertexCount(); ++i)
 		{
 			vertices[i] = b2Mul(transformA, m_shapeA.GetVertex(i));
 		}
 		g_debugDraw.DrawPolygon(vertices, m_shapeA.GetVertexCount(), b2Color(0.9f, 0.9f, 0.9f));
 
-		auto transformB = sweepB.GetTransform(0.0f);
+		auto transformB = b2GetTransform(sweepB, 0.0f);
 		//b2Vec2 localPoint(2.0f, -0.1f);
 		for (int32 i = 0; i < m_shapeB.GetVertexCount(); ++i)
 		{
@@ -87,14 +87,14 @@ public:
 		}
 		g_debugDraw.DrawPolygon(vertices, m_shapeB.GetVertexCount(), b2Color(0.5f, 0.9f, 0.5f));
 
-		transformB = sweepB.GetTransform(output.get_t());
+		transformB = b2GetTransform(sweepB, output.get_t());
 		for (int32 i = 0; i < m_shapeB.GetVertexCount(); ++i)
 		{
 			vertices[i] = b2Mul(transformB, m_shapeB.GetVertex(i));
 		}
 		g_debugDraw.DrawPolygon(vertices, m_shapeB.GetVertexCount(), b2Color(0.5f, 0.7f, 0.9f));
 
-		transformB = sweepB.GetTransform(1.0f);
+		transformB = b2GetTransform(sweepB, 1.0f);
 		for (int32 i = 0; i < m_shapeB.GetVertexCount(); ++i)
 		{
 			vertices[i] = b2Mul(transformB, m_shapeB.GetVertex(i));

@@ -668,8 +668,8 @@ void b2World::SolveTOI(const b2TimeStep& step)
 			minContact->UnsetEnabled();
 			bA->m_sweep = backup1;
 			bB->m_sweep = backup2;
-			bA->m_xf = b2ComputeTransform(bA->m_sweep);
-			bB->m_xf = b2ComputeTransform(bB->m_sweep);
+			bA->m_xf = b2GetTransformOne(bA->m_sweep);
+			bB->m_xf = b2GetTransformOne(bB->m_sweep);
 			continue;
 		}
 
@@ -742,7 +742,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 					if (!contact->IsEnabled())
 					{
 						other->m_sweep = backup;
-						other->m_xf = b2ComputeTransform(other->m_sweep);
+						other->m_xf = b2GetTransformOne(other->m_sweep);
 						continue;
 					}
 
@@ -750,7 +750,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 					if (!contact->IsTouching())
 					{
 						other->m_sweep = backup;
-						other->m_xf = b2ComputeTransform(other->m_sweep);
+						other->m_xf = b2GetTransformOne(other->m_sweep);
 						continue;
 					}
 

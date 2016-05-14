@@ -865,7 +865,7 @@ inline void b2Body::Advance(b2Float alpha)
 	m_sweep.Advance(alpha);
 	m_sweep.c = m_sweep.c0;
 	m_sweep.a = m_sweep.a0;
-	m_xf = b2ComputeTransform(m_sweep);
+	m_xf = b2GetTransformOne(m_sweep);
 }
 
 inline b2World* b2Body::GetWorld() noexcept

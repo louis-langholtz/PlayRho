@@ -350,10 +350,6 @@ constexpr auto b2Transform_identity = b2Transform{b2Vec2_zero, b2Rot_identity};
 /// we must interpolate the center of mass position.
 struct b2Sweep
 {
-	/// Get the interpolated transform at a specific time.
-	/// @param beta Time factor in [0,1], where 0 indicates alpha0.
-	b2Transform GetTransform(b2Float beta) const;
-
 	/// Advances the sweep forward to the given time factor.
 	/// This updates c0 and a0 and sets alpha0 to the given time alpha.
 	/// @param alpha New time factor in [0,1) to advance the sweep to.
@@ -676,19 +672,36 @@ constexpr inline b2Transform b2Displace(const b2Vec2& ctr, const b2Vec2& local_c
 	return b2Transform{ctr - b2Mul(rot, local_ctr), rot};
 }
 
-inline b2Transform b2ComputeTransform(const b2Sweep& sweep)
-{
-	return b2Displace(sweep.c, sweep.localCenter, b2Rot(sweep.a));
-}
-
-inline b2Transform b2Sweep::GetTransform(b2Float beta) const
+/// Gets the interpolated transform at a specific time.
+/// @param sweep Sweep data to get the transform from.
+/// @param beta Time factor in [0,1], where 0 indicates alpha0.
+/// @return Transform of the given sweep at the specified time.
+inline b2Transform b2GetTransform(const b2Sweep& sweep, b2Float beta)
 {
 	b2Assert(beta >= 0);
 	b2Assert(beta <= 1);
 	const auto one_minus_beta = b2Float(1) - beta;
-	const auto rot = b2Rot{one_minus_beta * a0 + beta * a};
-	const auto pos = (one_minus_beta * c0 + beta * c) - b2Mul(rot, localCenter);
-	return b2Transform{pos, rot};
+	return b2Displace(one_minus_beta * sweep.c0 + beta * sweep.c, sweep.localCenter, b2Rot(one_minus_beta * sweep.a0 + beta * sweep.a));
+}
+
+/// Gets the transform at "time" zero.
+/// @note This is like calling b2GetTransform(sweep, 0.0), except more efficiently.
+/// @sa b2GetTransform(const b2Sweep& sweep, b2Float beta).
+/// @param sweep Sweep data to get the transform from.
+/// @return Transform of the given sweep at time zero.
+inline b2Transform b2GetTransformZero(const b2Sweep& sweep)
+{
+	return b2Displace(sweep.c0, sweep.localCenter, b2Rot(sweep.a0));
+}
+
+/// Gets the transform at "time" one.
+/// @note This is like calling b2GetTransform(sweep, 1.0), except more efficiently.
+/// @sa b2GetTransform(const b2Sweep& sweep, b2Float beta).
+/// @param sweep Sweep data to get the transform from.
+/// @return Transform of the given sweep at time one.
+inline b2Transform b2GetTransformOne(const b2Sweep& sweep)
+{
+	return b2Displace(sweep.c, sweep.localCenter, b2Rot(sweep.a));
 }
 
 inline void b2Sweep::Advance(b2Float alpha)

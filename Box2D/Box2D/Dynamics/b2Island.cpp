@@ -322,7 +322,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 		body.m_sweep.a = m_positions[i].a;
 		body.m_linearVelocity = m_velocities[i].v;
 		body.m_angularVelocity = m_velocities[i].w;
-		body.m_xf = b2ComputeTransform(body.m_sweep);
+		body.m_xf = b2GetTransformOne(body.m_sweep);
 	}
 
 	Report(contactSolver.GetVelocityConstraints());
@@ -491,7 +491,7 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, isl
 		body.m_sweep.a = a;
 		body.m_linearVelocity = v;
 		body.m_angularVelocity = w;
-		body.m_xf = b2ComputeTransform(body.m_sweep);
+		body.m_xf = b2GetTransformOne(body.m_sweep);
 	}
 
 	Report(contactSolver.GetVelocityConstraints());

@@ -48,8 +48,8 @@ struct b2SeparationFunction
 		b2Assert(cache.GetCount() > 0);
 		b2Assert(cache.GetCount() <= 3); // < 3 or <= 3?
 
-		const auto xfA = m_sweepA.GetTransform(t1);
-		const auto xfB = m_sweepB.GetTransform(t1);
+		const auto xfA = b2GetTransform(m_sweepA, t1);
+		const auto xfB = b2GetTransform(m_sweepB, t1);
 
 		switch (m_type)
 		{
@@ -119,8 +119,8 @@ struct b2SeparationFunction
 							  b2DistanceProxy::size_type* indexB,
 							  b2Float t) const
 	{
-		const auto xfA = m_sweepA.GetTransform(t);
-		const auto xfB = m_sweepB.GetTransform(t);
+		const auto xfA = b2GetTransform(m_sweepA, t);
+		const auto xfB = b2GetTransform(m_sweepB, t);
 
 		switch (m_type)
 		{
@@ -220,8 +220,8 @@ struct b2SeparationFunction
 	/// @return Separation distance.
 	b2Float Evaluate(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB, b2Float t) const
 	{
-		const auto xfA = m_sweepA.GetTransform(t);
-		const auto xfB = m_sweepB.GetTransform(t);
+		const auto xfA = b2GetTransform(m_sweepA, t);
+		const auto xfB = b2GetTransform(m_sweepB, t);
 
 		switch (m_type)
 		{
@@ -281,8 +281,8 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 	// This loop terminates when an axis is repeated (no progress is made).
 	for(;;)
 	{
-		distanceInput.transformA = sweepA.GetTransform(t1);
-		distanceInput.transformB = sweepB.GetTransform(t1);
+		distanceInput.transformA = b2GetTransform(sweepA, t1);
+		distanceInput.transformB = b2GetTransform(sweepB, t1);
 
 		// Get the distance between shapes. We can also use the results
 		// to get a separating axis.
@@ -318,8 +318,8 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 
 			for (auto i = decltype(N){0}; i <= N; ++i)
 			{
-				const auto xfA = sweepA.GetTransform(x);
-				const auto xfB = sweepB.GetTransform(x);
+				const auto xfA = GetTransform(sweepA, x);
+				const auto xfB = GetTransform(sweepB, x);
 				b2Float f = fcn.Evaluate(xfA, xfB) - target;
 
 				printf("%g %g\n", x, f);
