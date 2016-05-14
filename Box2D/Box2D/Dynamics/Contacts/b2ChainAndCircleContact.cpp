@@ -47,10 +47,10 @@ b2ChainAndCircleContact::b2ChainAndCircleContact(b2Fixture* fixtureA, child_coun
 	b2Assert(m_fixtureB->GetType() == b2Shape::e_circle);
 }
 
-bool b2ChainAndCircleContact::Evaluate(b2Manifold* manifold, const b2Transform& xfA, const b2Transform& xfB)
+b2Manifold b2ChainAndCircleContact::Evaluate(const b2Transform& xfA, const b2Transform& xfB)
 {
 	auto chain = static_cast<b2ChainShape*>(m_fixtureA->GetShape());
 	b2EdgeShape edge;
 	chain->GetChildEdge(&edge, m_indexA);
-	return b2CollideShapes(manifold, edge, xfA, *static_cast<b2CircleShape*>(m_fixtureB->GetShape()), xfB);
+	return b2CollideShapes(edge, xfA, *static_cast<b2CircleShape*>(m_fixtureB->GetShape()), xfB);
 }

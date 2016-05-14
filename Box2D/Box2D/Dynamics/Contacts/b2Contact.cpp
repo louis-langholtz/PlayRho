@@ -167,7 +167,7 @@ void b2Contact::Update(b2ContactListener* listener)
 	}
 	else
 	{
-		Evaluate(&m_manifold, xfA, xfB);
+		m_manifold = Evaluate(xfA, xfB);
 		
 		const auto old_point_count = oldManifold.GetPointCount();
 		const auto new_point_count = m_manifold.GetPointCount();

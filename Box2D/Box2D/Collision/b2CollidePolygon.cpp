@@ -101,22 +101,19 @@ static b2ClipArray b2FindIncidentEdge(
 // Clip
 
 // The normal points from 1 to 2
-bool b2CollideShapes(b2Manifold* manifold,
-					 const b2PolygonShape& shapeA, const b2Transform& xfA,
-					 const b2PolygonShape& shapeB, const b2Transform& xfB)
+b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA, const b2PolygonShape& shapeB, const b2Transform& xfB)
 {
-	manifold->SetType(b2Manifold::e_unset);
 	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
 
 	auto edgeA = b2PolygonShape::vertex_count_t{0};
 	const auto separationA = b2FindMaxSeparation(edgeA, shapeA, xfA, shapeB, xfB);
 	if (separationA > totalRadius)
-		return false;
+		return b2Manifold{};
 
 	auto edgeB = b2PolygonShape::vertex_count_t{0};
 	const auto separationB = b2FindMaxSeparation(edgeB, shapeB, xfB, shapeA, xfA);
 	if (separationB > totalRadius)
-		return false;
+		return b2Manifold{};
 
 	const b2PolygonShape* shape1;	// reference polygon
 	const b2PolygonShape* shape2;	// incident polygon
@@ -181,18 +178,18 @@ bool b2CollideShapes(b2Manifold* manifold,
 	// Clip to box side 1
 	b2ClipArray clipPoints1;
 	if (b2ClipSegmentToLine(clipPoints1, incidentEdge, -tangent, sideOffset1, iv1) < b2_maxManifoldPoints)
-		return false;
+		return b2Manifold{};
 
 	// Clip to negative box side 1
 	b2ClipArray clipPoints2;
 	if (b2ClipSegmentToLine(clipPoints2, clipPoints1,  tangent, sideOffset2, iv2) < b2_maxManifoldPoints)
-		return false;
+		return b2Manifold{};
 
 	// Now clipPoints2 contains the clipped points.
 	
-	manifold->SetType(manifoldType);
-	manifold->SetLocalNormal(localNormal);
-	manifold->SetLocalPoint(planePoint);
+	b2Manifold manifold(manifoldType);
+	manifold.SetLocalNormal(localNormal);
+	manifold.SetLocalPoint(planePoint);
 	
 	for (auto i = decltype(b2_maxManifoldPoints){0}; i < b2_maxManifoldPoints; ++i)
 	{
@@ -200,8 +197,8 @@ bool b2CollideShapes(b2Manifold* manifold,
 		if (separation <= totalRadius)
 		{
 			const auto cf = flip? b2Flip(clipPoints2[i].cf): clipPoints2[i].cf;
-			manifold->AddPoint(b2MulT(xf2, clipPoints2[i].v), cf);
+			manifold.AddPoint(b2MulT(xf2, clipPoints2[i].v), cf);
 		}
 	}
-	return true;
+	return manifold;
 }

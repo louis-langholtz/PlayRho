@@ -134,15 +134,12 @@ public:
 	/// Get the desired tangent speed. In meters per second.
 	b2Float GetTangentSpeed() const noexcept;
 
-	/// Evaluates this contact's collision manifold with your own transforms.
-	/// @detail The collision manifold information is saved in the given manifold object
-	///   if the shapes of the contact are considered collided.
-	/// @param manifold Returns the collision manifold information with one or more points
-	///   if the shapes are considered collided.
+	/// Gets this contact's collision manifold for the given transforms.
 	/// @param xfA Transform for the contact's fixture A shape.
 	/// @param xfB Transform for the contact's fixture B shape.
-	/// @return true if the manifold information was set, false otherwise.
-	virtual bool Evaluate(b2Manifold* manifold, const b2Transform& xfA, const b2Transform& xfB) = 0;
+	/// @return Contact manifold for the given transforms with one or more points
+	///   if the shapes are considered touching (collided).
+	virtual b2Manifold Evaluate(const b2Transform& xfA, const b2Transform& xfB) = 0;
 
 protected:
 	friend class b2ContactManager;

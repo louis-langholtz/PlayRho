@@ -20,10 +20,7 @@
 #include <Box2D/Collision/Shapes/b2CircleShape.h>
 #include <Box2D/Collision/Shapes/b2PolygonShape.h>
 
-bool b2CollideShapes(
-	b2Manifold* manifold,
-	const b2CircleShape& shapeA, const b2Transform& xfA,
-	const b2CircleShape& shapeB, const b2Transform& xfB)
+b2Manifold b2CollideShapes(const b2CircleShape& shapeA, const b2Transform& xfA, const b2CircleShape& shapeB, const b2Transform& xfB)
 {
 	const auto pA = b2Mul(xfA, shapeA.GetPosition());
 	const auto pB = b2Mul(xfB, shapeB.GetPosition());
@@ -33,21 +30,17 @@ bool b2CollideShapes(
 
 	if (distSqr > b2Square(totalRadius))
 	{
-		manifold->SetType(b2Manifold::e_unset);
-		return false;
+		return b2Manifold{};
 	}
 
-	manifold->SetType(b2Manifold::e_circles);
-	manifold->SetLocalPoint(shapeA.GetPosition());
-	manifold->SetLocalNormal(b2Vec2_zero);
-	manifold->AddPoint(shapeB.GetPosition());
-	return true;
+	b2Manifold manifold(b2Manifold::e_circles);
+	manifold.SetLocalPoint(shapeA.GetPosition());
+	manifold.SetLocalNormal(b2Vec2_zero);
+	manifold.AddPoint(shapeB.GetPosition());
+	return manifold;
 }
 
-bool b2CollideShapes(
-	b2Manifold* manifold,
-	const b2PolygonShape& shapeA, const b2Transform& xfA,
-	const b2CircleShape& shapeB, const b2Transform& xfB)
+b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA, const b2CircleShape& shapeB, const b2Transform& xfB)
 {
 	// Compute circle position in the frame of the polygon.
 	const auto c = b2Mul(xfB, shapeB.GetPosition());
@@ -66,8 +59,7 @@ bool b2CollideShapes(
 		if (s > totalRadius)
 		{
 			// Early out.
-			manifold->SetType(b2Manifold::e_unset);
-			return false;
+			return b2Manifold{};
 		}
 
 		if (separation < s)
@@ -86,11 +78,11 @@ bool b2CollideShapes(
 	// If the center is inside the polygon ...
 	if (separation < b2_epsilon)
 	{
-		manifold->SetType(b2Manifold::e_faceA);
-		manifold->SetLocalNormal(shapeA.GetNormal(normalIndex));
-		manifold->SetLocalPoint((v1 + v2) / b2Float(2));
-		manifold->AddPoint(shapeB.GetPosition());
-		return true;
+		b2Manifold manifold(b2Manifold::e_faceA);
+		manifold.SetLocalNormal(shapeA.GetNormal(normalIndex));
+		manifold.SetLocalPoint((v1 + v2) / b2Float(2));
+		manifold.AddPoint(shapeB.GetPosition());
+		return manifold;
 	}
 
 	// Compute barycentric coordinates
@@ -100,42 +92,39 @@ bool b2CollideShapes(
 	{
 		if (b2DistanceSquared(cLocal, v1) > b2Square(totalRadius))
 		{
-			manifold->SetType(b2Manifold::e_unset);
-			return false;
+			return b2Manifold{};
 		}
 
-		manifold->SetType(b2Manifold::e_faceA);
-		manifold->SetLocalNormal(b2Normalize(cLocal - v1));
-		manifold->SetLocalPoint(v1);
-		manifold->AddPoint(shapeB.GetPosition());
+		b2Manifold manifold(b2Manifold::e_faceA);
+		manifold.SetLocalNormal(b2Normalize(cLocal - v1));
+		manifold.SetLocalPoint(v1);
+		manifold.AddPoint(shapeB.GetPosition());
+		return manifold;
 	}
-	else if (u2 <= b2Float{0})
+	if (u2 <= b2Float{0})
 	{
 		if (b2DistanceSquared(cLocal, v2) > b2Square(totalRadius))
 		{
-			manifold->SetType(b2Manifold::e_unset);;
-			return false;
+			return b2Manifold{};
 		}
 
-		manifold->SetType(b2Manifold::e_faceA);
-		manifold->SetLocalNormal(b2Normalize(cLocal - v2));
-		manifold->SetLocalPoint(v2);
-		manifold->AddPoint(shapeB.GetPosition());
+		b2Manifold manifold(b2Manifold::e_faceA);
+		manifold.SetLocalNormal(b2Normalize(cLocal - v2));
+		manifold.SetLocalPoint(v2);
+		manifold.AddPoint(shapeB.GetPosition());
+		return manifold;
 	}
-	else
+
+	const auto faceCenter = (v1 + v2) / b2Float(2);
+	separation = b2Dot(cLocal - faceCenter, shapeA.GetNormal(vertIndex1));
+	if (separation > totalRadius)
 	{
-		const auto faceCenter = (v1 + v2) / b2Float(2);
-		separation = b2Dot(cLocal - faceCenter, shapeA.GetNormal(vertIndex1));
-		if (separation > totalRadius)
-		{
-			manifold->SetType(b2Manifold::e_unset);
-			return false;
-		}
-
-		manifold->SetType(b2Manifold::e_faceA);
-		manifold->SetLocalNormal(shapeA.GetNormal(vertIndex1));
-		manifold->SetLocalPoint(faceCenter);
-		manifold->AddPoint(shapeB.GetPosition());
+		return b2Manifold{};
 	}
-	return true;
+
+	b2Manifold manifold(b2Manifold::e_faceA);
+	manifold.SetLocalNormal(shapeA.GetNormal(vertIndex1));
+	manifold.SetLocalPoint(faceCenter);
+	manifold.AddPoint(shapeB.GetPosition());
+	return manifold;
 }

@@ -34,7 +34,7 @@ public:
 	b2ChainAndPolygonContact(b2Fixture* fixtureA, child_count_t indexA, b2Fixture* fixtureB, child_count_t indexB);
 	~b2ChainAndPolygonContact() {}
 
-	bool Evaluate(b2Manifold* manifold, const b2Transform& xfA, const b2Transform& xfB) override;
+	b2Manifold Evaluate(const b2Transform& xfA, const b2Transform& xfB) override;
 };
 
 #endif

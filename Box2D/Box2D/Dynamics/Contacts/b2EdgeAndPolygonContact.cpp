@@ -45,9 +45,7 @@ b2EdgeAndPolygonContact::b2EdgeAndPolygonContact(b2Fixture* fixtureA, b2Fixture*
 	b2Assert(m_fixtureB->GetType() == b2Shape::e_polygon);
 }
 
-bool b2EdgeAndPolygonContact::Evaluate(b2Manifold* manifold, const b2Transform& xfA, const b2Transform& xfB)
+b2Manifold b2EdgeAndPolygonContact::Evaluate(const b2Transform& xfA, const b2Transform& xfB)
 {
-	return b2CollideShapes(manifold,
-						   *static_cast<b2EdgeShape*>(m_fixtureA->GetShape()), xfA,
-						   *static_cast<b2PolygonShape*>(m_fixtureB->GetShape()), xfB);
+	return b2CollideShapes(*static_cast<b2EdgeShape*>(m_fixtureA->GetShape()), xfA, *static_cast<b2PolygonShape*>(m_fixtureB->GetShape()), xfB);
 }
