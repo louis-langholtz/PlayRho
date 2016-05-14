@@ -75,7 +75,7 @@ public:
 	const b2Manifold* GetManifold() const noexcept;
 
 	/// Get the world manifold.
-	void GetWorldManifold(b2WorldManifold* worldManifold) const;
+	b2WorldManifold GetWorldManifold() const;
 
 	/// Is this contact touching?
 	bool IsTouching() const noexcept;
@@ -233,14 +233,13 @@ inline const b2Manifold* b2Contact::GetManifold() const noexcept
 	return &m_manifold;
 }
 
-inline void b2Contact::GetWorldManifold(b2WorldManifold* worldManifold) const
+inline b2WorldManifold b2Contact::GetWorldManifold() const
 {
 	const auto bodyA = m_fixtureA->GetBody();
 	const auto bodyB = m_fixtureB->GetBody();
 	const auto shapeA = m_fixtureA->GetShape();
 	const auto shapeB = m_fixtureB->GetShape();
-
-	worldManifold->Assign(m_manifold, bodyA->GetTransform(), shapeA->GetRadius(), bodyB->GetTransform(), shapeB->GetRadius());
+	return b2WorldManifold{m_manifold, bodyA->GetTransform(), shapeA->GetRadius(), bodyB->GetTransform(), shapeB->GetRadius()};
 }
 
 inline void b2Contact::SetEnabled(bool flag) noexcept

@@ -80,8 +80,7 @@ void Test::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 	b2PointStateArray state2;
 	b2GetPointStates(state1, state2, *oldManifold, *manifold);
 
-	b2WorldManifold worldManifold;
-	contact->GetWorldManifold(&worldManifold);
+	const auto worldManifold = contact->GetWorldManifold();
 
 	for (int32 i = 0; (i < manifold->GetPointCount()) && (m_pointCount < k_maxContactPoints); ++i)
 	{
