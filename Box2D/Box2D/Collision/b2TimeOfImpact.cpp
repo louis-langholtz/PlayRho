@@ -29,8 +29,9 @@ b2Float b2_toiTime, b2_toiMaxTime;
 uint32 b2_toiCalls, b2_toiIters, b2_toiMaxIters;
 uint32 b2_toiRootIters, b2_toiMaxRootIters;
 
-struct b2SeparationFunction
+class b2SeparationFunction
 {
+public:
 	enum Type
 	{
 		e_points,
@@ -180,38 +181,6 @@ struct b2SeparationFunction
 			return b2Float{0};
 		}
 	}
-
-	b2Float EvaluatePoints(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB,
-						   const b2Transform& xfA, const b2Transform& xfB) const
-	{
-		const auto localPointA = m_proxyA.GetVertex(indexA);
-		const auto localPointB = m_proxyB.GetVertex(indexB);
-		const auto pointA = b2Mul(xfA, localPointA);
-		const auto pointB = b2Mul(xfB, localPointB);
-		return b2Dot(pointB - pointA, m_axis);
-	}
-
-	b2Float EvaluateFaceA(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB,
-						  const b2Transform& xfA, const b2Transform& xfB) const
-	{
-		const auto normal = b2Mul(xfA.q, m_axis);
-		const auto pointA = b2Mul(xfA, m_localPoint);
-		const auto localPointB = m_proxyB.GetVertex(indexB);
-		const auto pointB = b2Mul(xfB, localPointB);
-		return b2Dot(pointB - pointA, normal);
-	}
-
-	b2Float EvaluateFaceB(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB,
-						  const b2Transform& xfA, const b2Transform& xfB) const
-	{
-		const auto normal = b2Mul(xfB.q, m_axis);
-		const auto pointB = b2Mul(xfB, m_localPoint);
-		
-		const auto localPointA = m_proxyA.GetVertex(indexA);
-		const auto pointA = b2Mul(xfA, localPointA);
-		
-		return b2Dot(pointA - pointB, normal);
-	}
 	
 	/// Evaluates the separation of the identified proxy vertices at the given time factor.
 	/// @param indexA Index of the proxy A vertex.
@@ -240,6 +209,39 @@ struct b2SeparationFunction
 	const Type m_type;
 	b2Vec2 m_localPoint; // used if type is e_faceA or e_faceB
 	b2Vec2 m_axis;
+	
+private:
+	b2Float EvaluatePoints(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB,
+						   const b2Transform& xfA, const b2Transform& xfB) const
+	{
+		const auto localPointA = m_proxyA.GetVertex(indexA);
+		const auto localPointB = m_proxyB.GetVertex(indexB);
+		const auto pointA = b2Mul(xfA, localPointA);
+		const auto pointB = b2Mul(xfB, localPointB);
+		return b2Dot(pointB - pointA, m_axis);
+	}
+	
+	b2Float EvaluateFaceA(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB,
+						  const b2Transform& xfA, const b2Transform& xfB) const
+	{
+		const auto normal = b2Mul(xfA.q, m_axis);
+		const auto pointA = b2Mul(xfA, m_localPoint);
+		const auto localPointB = m_proxyB.GetVertex(indexB);
+		const auto pointB = b2Mul(xfB, localPointB);
+		return b2Dot(pointB - pointA, normal);
+	}
+	
+	b2Float EvaluateFaceB(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB,
+						  const b2Transform& xfA, const b2Transform& xfB) const
+	{
+		const auto normal = b2Mul(xfB.q, m_axis);
+		const auto pointB = b2Mul(xfB, m_localPoint);
+		
+		const auto localPointA = m_proxyA.GetVertex(indexA);
+		const auto pointA = b2Mul(xfA, localPointA);
+		
+		return b2Dot(pointA - pointB, normal);
+	}
 };
 
 // CCD via the local separating axis method. This seeks progression

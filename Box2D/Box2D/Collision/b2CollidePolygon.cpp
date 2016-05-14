@@ -125,6 +125,7 @@ bool b2CollideShapes(b2Manifold* manifold,
 	bool flip;
 	constexpr auto k_tol = b2_linearSlop / 10;
 
+	auto manifoldType = b2Manifold::e_unset;
 	if (separationB > (separationA + k_tol))
 	{
 		shape1 = &shapeB;
@@ -132,7 +133,7 @@ bool b2CollideShapes(b2Manifold* manifold,
 		xf1 = xfB;
 		xf2 = xfA;
 		edge1 = edgeB;
-		manifold->SetType(b2Manifold::e_faceB);
+		manifoldType = b2Manifold::e_faceB;
 		flip = true;
 	}
 	else
@@ -142,7 +143,7 @@ bool b2CollideShapes(b2Manifold* manifold,
 		xf1 = xfA;
 		xf2 = xfB;
 		edge1 = edgeA;
-		manifold->SetType(b2Manifold::e_faceA);
+		manifoldType = b2Manifold::e_faceA;
 		flip = false;
 	}
 
@@ -189,6 +190,7 @@ bool b2CollideShapes(b2Manifold* manifold,
 
 	// Now clipPoints2 contains the clipped points.
 	
+	manifold->SetType(manifoldType);
 	manifold->SetLocalNormal(localNormal);
 	manifold->SetLocalPoint(planePoint);
 	

@@ -119,6 +119,8 @@ public:
 
 	Type GetType() const noexcept { return type; }
 
+	/// Sets the type of this manifold object.
+	/// @note This also results in the manifold's point count being reset to zero.
 	void SetType(Type val) noexcept
 	{
 		type = val;
@@ -128,6 +130,7 @@ public:
 	/// Gets the manifold point count.
 	/// @detail This is the count of points added using the AddPoint() method.
 	///   Only up to this many points can be validly accessed using the GetPoint() method.
+	///   Non-zero values indicate that the two shapes are touching.
 	/// @return Value between 0 and b2_maxManifoldPoints.
 	/// @sa b2_maxManifoldPoints.
 	/// @sa AddPoint().
@@ -167,7 +170,7 @@ public:
 	void SetLocalPoint(const b2Vec2& val) noexcept { localPoint = val; }
 
 private:
-	Type type = e_unset;
+	Type type = e_unset; ///< Type of collision this manifold is associated with.
 	b2Vec2 localNormal;								///< not use for Type::e_points
 	b2Vec2 localPoint;								///< usage depends on manifold type
 	size_type pointCount = 0;							///< the number of manifold points
@@ -331,27 +334,62 @@ constexpr inline b2AABB operator + (const b2AABB& lhs, b2Vec2 rhs)
 	return b2AABB{lhs.GetLowerBound() - rhs, lhs.GetUpperBound() + rhs};
 }
 
-/// Compute the collision manifold between two circles.
+/// Computes the collision manifold between two circles.
+/// @detail The collision manifold information is saved in the given manifold object if the shapes are considered collided.
+/// @param manifold Returns the collision manifold information if the shapes are considered collided.
+/// @param shapeA Shape A.
+/// @param xfA Transform for shape A.
+/// @param shapeB Shape B.
+/// @param xfB Transform for shape B.
+/// @return true if shapes are considered collided, false otherwise.
 bool b2CollideShapes(b2Manifold* manifold,
 					 const b2CircleShape& shapeA, const b2Transform& xfA,
 					 const b2CircleShape& shapeB, const b2Transform& xfB);
 
-/// Compute the collision manifold between a polygon and a circle.
+/// Computes the collision manifold between a polygon and a circle.
+/// @detail The collision manifold information is saved in the given manifold object if the shapes are considered collided.
+/// @param manifold Returns the collision manifold information if the shapes are considered collided.
+/// @param shapeA Shape A.
+/// @param xfA Transform for shape A.
+/// @param shapeB Shape B.
+/// @param xfB Transform for shape B.
+/// @return true if shapes are considered collided, false otherwise.
 bool b2CollideShapes(b2Manifold* manifold,
 					 const b2PolygonShape& shapeA, const b2Transform& xfA,
 					 const b2CircleShape& shapeB, const b2Transform& xfB);
 
-/// Compute the collision manifold between two polygons.
+/// Computes the collision manifold between two polygons.
+/// @detail The collision manifold information is saved in the given manifold object if the shapes are considered collided.
+/// @param manifold Returns the collision manifold information if the shapes are considered collided.
+/// @param shapeA Shape A.
+/// @param xfA Transform for shape A.
+/// @param shapeB Shape B.
+/// @param xfB Transform for shape B.
+/// @return true if shapes are considered collided, false otherwise.
 bool b2CollideShapes(b2Manifold* manifold,
 					 const b2PolygonShape& shapeA, const b2Transform& xfA,
 					 const b2PolygonShape& shapeB, const b2Transform& xfB);
 
-/// Compute the collision manifold between an edge and a circle.
+/// Computes the collision manifold between an edge and a circle.
+/// @detail The collision manifold information is saved in the given manifold object if the shapes are considered collided.
+/// @param manifold Returns the collision manifold information if the shapes are considered collided.
+/// @param shapeA Shape A.
+/// @param xfA Transform for shape A.
+/// @param shapeB Shape B.
+/// @param xfB Transform for shape B.
+/// @return true if shapes are considered collided, false otherwise.
 bool b2CollideShapes(b2Manifold* manifold,
 					 const b2EdgeShape& shapeA, const b2Transform& xfA,
 					 const b2CircleShape& shapeB, const b2Transform& xfB);
 
-/// Compute the collision manifold between an edge and a circle.
+/// Computes the collision manifold between an edge and a circle.
+/// @detail The collision manifold information is saved in the given manifold object if the shapes are considered collided.
+/// @param manifold Returns the collision manifold information if the shapes are considered collided.
+/// @param shapeA Shape A.
+/// @param xfA Transform for shape A.
+/// @param shapeB Shape B.
+/// @param xfB Transform for shape B.
+/// @return true if shapes are considered collided, false otherwise.
 bool b2CollideShapes(b2Manifold* manifold,
 					 const b2EdgeShape& shapeA, const b2Transform& xfA,
 					 const b2PolygonShape& shapeB, const b2Transform& xfB);

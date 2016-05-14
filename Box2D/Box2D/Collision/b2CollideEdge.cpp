@@ -204,7 +204,8 @@ struct b2ReferenceFace
 	b2Float sideOffset2;
 };
 
-// This class collides an edge and a polygon, taking into account edge adjacency.
+/// Edge and polygon collider.
+/// This takes into account edge adjacency.
 class b2EPCollider
 {
 public:
@@ -219,7 +220,7 @@ private:
 	b2EPAxis ComputeEdgeSeparation() const;
 	b2EPAxis ComputePolygonSeparation() const;
 
-	static constexpr b2Float MaxSeparation = b2_polygonRadius * 2;
+	static constexpr b2Float MaxSeparation = b2_polygonRadius * 2; ///< Maximum separation.
 
 	b2TempPolygon m_shapeB;
 	
@@ -467,11 +468,12 @@ bool b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape& shapeA, cons
 		edgeAxis: (polygonAxis.separation > ((k_relativeTol * edgeAxis.separation) + k_absoluteTol))?
 			polygonAxis: edgeAxis;
 	
+	auto manifoldType = b2Manifold::e_unset;
 	b2ClipArray incidentEdge;
 	b2ReferenceFace rf;
 	if (primaryAxis.type == b2EPAxis::e_edgeA)
 	{
-		manifold->SetType(b2Manifold::e_faceA);
+		manifoldType = b2Manifold::e_faceA;
 		
 		// Search for the polygon normal that is most anti-parallel to the edge normal.
 		auto bestIndex = decltype(m_shapeB.GetCount()){0};
@@ -516,7 +518,7 @@ bool b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape& shapeA, cons
 	}
 	else
 	{
-		manifold->SetType(b2Manifold::e_faceB);
+		manifoldType = b2Manifold::e_faceB;
 		
 		incidentEdge[0].v = m_v1;
 		incidentEdge[0].cf = b2ContactFeature(b2ContactFeature::e_vertex, 0, b2ContactFeature::e_face, primaryAxis.index);
@@ -549,6 +551,8 @@ bool b2EPCollider::Collide(b2Manifold* manifold, const b2EdgeShape& shapeA, cons
 	
 	// Now clipPoints2 contains the clipped points.
 	
+	manifold->SetType(manifoldType);
+
 	if (primaryAxis.type == b2EPAxis::e_edgeA)
 	{
 		manifold->SetLocalNormal(rf.normal);

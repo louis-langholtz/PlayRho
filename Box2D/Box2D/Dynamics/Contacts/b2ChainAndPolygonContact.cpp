@@ -47,10 +47,10 @@ b2ChainAndPolygonContact::b2ChainAndPolygonContact(b2Fixture* fixtureA, child_co
 	b2Assert(m_fixtureB->GetType() == b2Shape::e_polygon);
 }
 
-void b2ChainAndPolygonContact::Evaluate(b2Manifold* manifold, const b2Transform& xfA, const b2Transform& xfB)
+bool b2ChainAndPolygonContact::Evaluate(b2Manifold* manifold, const b2Transform& xfA, const b2Transform& xfB)
 {
 	auto chain = static_cast<b2ChainShape*>(m_fixtureA->GetShape());
 	b2EdgeShape edge;
 	chain->GetChildEdge(&edge, m_indexA);
-	b2CollideShapes(manifold, edge, xfA, *static_cast<b2PolygonShape*>(m_fixtureB->GetShape()), xfB);
+	return b2CollideShapes(manifold, edge, xfA, *static_cast<b2PolygonShape*>(m_fixtureB->GetShape()), xfB);
 }
