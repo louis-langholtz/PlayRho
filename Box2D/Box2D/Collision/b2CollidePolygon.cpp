@@ -187,7 +187,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 
 	// Now clipPoints2 contains the clipped points.
 	
-	b2Manifold manifold(manifoldType);
+	auto manifold = b2Manifold{manifoldType};
 	manifold.SetLocalNormal(localNormal);
 	manifold.SetLocalPoint(planePoint);
 	

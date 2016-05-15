@@ -33,9 +33,7 @@ b2Manifold b2CollideShapes(const b2CircleShape& shapeA, const b2Transform& xfA, 
 		return b2Manifold{};
 	}
 
-	b2Manifold manifold(b2Manifold::e_circles);
-	manifold.SetLocalPoint(shapeA.GetPosition());
-	manifold.SetLocalNormal(b2Vec2_zero);
+	auto manifold = b2Manifold{b2Manifold::e_circles, b2Vec2_zero, shapeA.GetPosition()};
 	manifold.AddPoint(shapeB.GetPosition());
 	return manifold;
 }
@@ -78,9 +76,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 	// If the center is inside the polygon ...
 	if (separation < b2_epsilon)
 	{
-		b2Manifold manifold(b2Manifold::e_faceA);
-		manifold.SetLocalNormal(shapeA.GetNormal(normalIndex));
-		manifold.SetLocalPoint((v1 + v2) / b2Float(2));
+		auto manifold = b2Manifold{b2Manifold::e_faceA, shapeA.GetNormal(normalIndex), (v1 + v2) / b2Float(2)};
 		manifold.AddPoint(shapeB.GetPosition());
 		return manifold;
 	}
@@ -95,9 +91,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 			return b2Manifold{};
 		}
 
-		b2Manifold manifold(b2Manifold::e_faceA);
-		manifold.SetLocalNormal(b2Normalize(cLocal - v1));
-		manifold.SetLocalPoint(v1);
+		auto manifold = b2Manifold{b2Manifold::e_faceA, b2Normalize(cLocal - v1), v1};
 		manifold.AddPoint(shapeB.GetPosition());
 		return manifold;
 	}
@@ -108,9 +102,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 			return b2Manifold{};
 		}
 
-		b2Manifold manifold(b2Manifold::e_faceA);
-		manifold.SetLocalNormal(b2Normalize(cLocal - v2));
-		manifold.SetLocalPoint(v2);
+		auto manifold = b2Manifold{b2Manifold::e_faceA, b2Normalize(cLocal - v2), v2};
 		manifold.AddPoint(shapeB.GetPosition());
 		return manifold;
 	}
@@ -122,7 +114,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 		return b2Manifold{};
 	}
 
-	b2Manifold manifold(b2Manifold::e_faceA);
+	auto manifold = b2Manifold{b2Manifold::e_faceA};
 	manifold.SetLocalNormal(shapeA.GetNormal(vertIndex1));
 	manifold.SetLocalPoint(faceCenter);
 	manifold.AddPoint(shapeB.GetPosition());
