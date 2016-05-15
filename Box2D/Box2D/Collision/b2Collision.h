@@ -119,7 +119,11 @@ public:
 
 	b2Manifold() = default;
 
-	b2Manifold(Type t): type(t) {}
+	/// Constructs a manifold with the given values.
+	/// @param t Manifold type.
+	/// @param ln Local normal.
+	/// @param lp Local point.
+	b2Manifold(Type t, b2Vec2 ln = b2Vec2_zero, b2Vec2 lp = b2Vec2_zero): type(t), localNormal(ln), localPoint(lp) {}
 
 	Type GetType() const noexcept { return type; }
 
