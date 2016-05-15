@@ -163,7 +163,7 @@ void b2Contact::Update(b2ContactListener* listener)
 		touching = b2TestOverlap(*shapeA, m_indexA, *shapeB, m_indexB, xfA, xfB);
 
 		// Sensors don't generate manifolds.
-		m_manifold.SetType(b2Manifold::e_unset);
+		m_manifold = b2Manifold{};
 	}
 	else
 	{
