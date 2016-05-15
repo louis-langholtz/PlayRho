@@ -434,6 +434,10 @@ constexpr b2Vec2 operator/ (const b2Vec2& a, b2Float s) noexcept
 	return b2Vec2{a.x / s, a.y / s};
 }
 
+/// Normalizes the given value.
+/// @param value Value to normalize.
+/// @return value divided by its length if length not less than b2_epsilon otherwise value.
+/// @sa b2_epsilon.
 inline b2Vec2 b2Normalize(const b2Vec2& value)
 {
 	// implementation mirrors implementation of b2Vec2::Normalize()
