@@ -163,8 +163,7 @@ b2Fixture* b2Body::CreateFixture(const b2FixtureDef* def)
 
 	if (m_flags & e_activeFlag)
 	{
-		auto broadPhase = &m_world->m_contactManager.m_broadPhase;
-		fixture->CreateProxies(broadPhase, m_xf);
+		fixture->CreateProxies(m_world->m_contactManager.m_broadPhase, m_xf);
 	}
 
 	fixture->m_next = m_fixtureList;
@@ -244,8 +243,7 @@ void b2Body::DestroyFixture(b2Fixture* fixture)
 
 	if (m_flags & e_activeFlag)
 	{
-		auto broadPhase = &m_world->m_contactManager.m_broadPhase;
-		fixture->DestroyProxies(broadPhase);
+		fixture->DestroyProxies(m_world->m_contactManager.m_broadPhase);
 	}
 
 	fixture->Destroy(allocator);
@@ -427,7 +425,7 @@ void b2Body::SetTransform(const b2Vec2& position, b2Float angle)
 	m_sweep.c0 = m_sweep.c;
 	m_sweep.a0 = angle;
 
-	auto broadPhase = &m_world->m_contactManager.m_broadPhase;
+	auto& broadPhase = m_world->m_contactManager.m_broadPhase;
 	for (auto f = m_fixtureList; f; f = f->m_next)
 	{
 		f->Synchronize(broadPhase, m_xf, m_xf);
@@ -436,8 +434,8 @@ void b2Body::SetTransform(const b2Vec2& position, b2Float angle)
 
 void b2Body::SynchronizeFixtures()
 {
-	const auto xf1 = b2Displace(m_sweep.c0, m_sweep.localCenter, b2Rot{m_sweep.a0});
-	auto broadPhase = &m_world->m_contactManager.m_broadPhase;
+	const auto xf1 = b2GetTransformZero(m_sweep);
+	auto& broadPhase = m_world->m_contactManager.m_broadPhase;
 	for (auto f = m_fixtureList; f; f = f->m_next)
 	{
 		f->Synchronize(broadPhase, xf1, m_xf);
@@ -458,7 +456,7 @@ void b2Body::SetActive(bool flag)
 		m_flags |= e_activeFlag;
 
 		// Create all proxies.
-		auto broadPhase = &m_world->m_contactManager.m_broadPhase;
+		auto& broadPhase = m_world->m_contactManager.m_broadPhase;
 		for (auto f = m_fixtureList; f; f = f->m_next)
 		{
 			f->CreateProxies(broadPhase, m_xf);
@@ -471,7 +469,7 @@ void b2Body::SetActive(bool flag)
 		m_flags &= ~e_activeFlag;
 
 		// Destroy all proxies.
-		auto broadPhase = &m_world->m_contactManager.m_broadPhase;
+		auto& broadPhase = m_world->m_contactManager.m_broadPhase;
 		for (auto f = m_fixtureList; f; f = f->m_next)
 		{
 			f->DestroyProxies(broadPhase);

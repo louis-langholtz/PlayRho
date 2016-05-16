@@ -100,7 +100,7 @@ void b2Fixture::Destroy(b2BlockAllocator* allocator)
 	m_shape = nullptr;
 }
 
-void b2Fixture::CreateProxies(b2BroadPhase* broadPhase, const b2Transform& xf)
+void b2Fixture::CreateProxies(b2BroadPhase& broadPhase, const b2Transform& xf)
 {
 	b2Assert(m_proxyCount == 0);
 
@@ -111,26 +111,26 @@ void b2Fixture::CreateProxies(b2BroadPhase* broadPhase, const b2Transform& xf)
 	{
 		auto& proxy = m_proxies[i];
 		proxy.aabb = m_shape->ComputeAABB(xf, i);
-		proxy.proxyId = broadPhase->CreateProxy(proxy.aabb, &proxy);
+		proxy.proxyId = broadPhase.CreateProxy(proxy.aabb, &proxy);
 		proxy.fixture = this;
 		proxy.childIndex = i;
 	}
 }
 
-void b2Fixture::DestroyProxies(b2BroadPhase* broadPhase)
+void b2Fixture::DestroyProxies(b2BroadPhase& broadPhase)
 {
 	// Destroy proxies in the broad-phase.
 	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
 	{
 		auto& proxy = m_proxies[i];
-		broadPhase->DestroyProxy(proxy.proxyId);
+		broadPhase.DestroyProxy(proxy.proxyId);
 		proxy.proxyId = b2BroadPhase::e_nullProxy;
 	}
 
 	m_proxyCount = 0;
 }
 
-void b2Fixture::Synchronize(b2BroadPhase* broadPhase, const b2Transform& transform1, const b2Transform& transform2)
+void b2Fixture::Synchronize(b2BroadPhase& broadPhase, const b2Transform& transform1, const b2Transform& transform2)
 {
 	if (m_proxyCount == 0)
 	{	
@@ -148,7 +148,7 @@ void b2Fixture::Synchronize(b2BroadPhase* broadPhase, const b2Transform& transfo
 
 		const auto displacement = transform2.p - transform1.p;
 
-		broadPhase->MoveProxy(proxy.proxyId, proxy.aabb, displacement);
+		broadPhase.MoveProxy(proxy.proxyId, proxy.aabb, displacement);
 	}
 }
 

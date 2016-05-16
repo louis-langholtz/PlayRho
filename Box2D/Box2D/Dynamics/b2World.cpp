@@ -187,7 +187,7 @@ void b2World::DestroyBody(b2Body* b)
 			m_destructionListener->SayGoodbye(f0);
 		}
 
-		f0->DestroyProxies(&m_contactManager.m_broadPhase);
+		f0->DestroyProxies(m_contactManager.m_broadPhase);
 		f0->Destroy(&m_blockAllocator);
 		f0->~b2Fixture();
 		m_blockAllocator.Free(f0, sizeof(b2Fixture));

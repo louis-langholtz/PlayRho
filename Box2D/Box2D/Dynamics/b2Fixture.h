@@ -200,10 +200,10 @@ protected:
 	void Destroy(b2BlockAllocator* allocator);
 
 	// These support body activation/deactivation.
-	void CreateProxies(b2BroadPhase* broadPhase, const b2Transform& xf);
-	void DestroyProxies(b2BroadPhase* broadPhase);
+	void CreateProxies(b2BroadPhase& broadPhase, const b2Transform& xf);
+	void DestroyProxies(b2BroadPhase& broadPhase);
 
-	void Synchronize(b2BroadPhase* broadPhase, const b2Transform& xf1, const b2Transform& xf2);
+	void Synchronize(b2BroadPhase& broadPhase, const b2Transform& xf1, const b2Transform& xf2);
 
 	b2Body* const m_body;
 	b2Float m_density = b2Float{0};
