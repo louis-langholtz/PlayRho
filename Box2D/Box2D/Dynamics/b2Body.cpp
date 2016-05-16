@@ -330,7 +330,7 @@ void b2Body::ResetMassData()
 	if ((m_I > b2Float{0}) && (!IsFixedRotation()))
 	{
 		// Center the inertia about the center of mass.
-		m_I -= m_mass * b2Dot(localCenter, localCenter);
+		m_I -= m_mass * localCenter.LengthSquared();
 		b2Assert(m_I > b2Float{0});
 		m_invI = b2Float(1) / m_I;
 	}
@@ -367,7 +367,7 @@ void b2Body::SetMassData(const b2MassData* massData)
 
 	if ((massData->I > b2Float{0}) && (!IsFixedRotation()))
 	{
-		m_I = massData->I - m_mass * b2Dot(massData->center, massData->center);
+		m_I = massData->I - m_mass * massData->center.LengthSquared();
 		b2Assert(m_I > b2Float{0});
 		m_invI = b2Float(1) / m_I;
 	}

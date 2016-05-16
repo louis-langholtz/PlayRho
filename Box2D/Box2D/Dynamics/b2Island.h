@@ -30,7 +30,9 @@ class b2ContactListener;
 struct b2ContactVelocityConstraint;
 struct b2Profile;
 
-/// This is an internal class.
+/// Island.
+/// @detail A container of bodies contacts and joints relavent to handling world dynamics.
+/// @note This is an internal class.
 class b2Island
 {
 public:
@@ -38,6 +40,13 @@ public:
 			b2StackAllocator* allocator, b2ContactListener* listener);
 	~b2Island();
 
+	/// Clears this island.
+	/// @detail This undoes the adds of all bodies contacts and joints - removing them.
+	///   On return, the get body contact and joint count methods will all return 0.
+	///   Additionally all removed bodies will have their island indexes set to b2Body::InvalidIslandIndex.
+	/// @sa void Add(b2Body* body).
+	/// @sa void Add(b2Contact* contact).
+	/// @sa void Add(b2Joint* joint).
 	void Clear() noexcept;
 
 	void Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& gravity, bool allowSleep);
@@ -95,6 +104,12 @@ public:
 	}
 
 private:
+	
+	/// Clears this island of added bodies.
+	/// @detail This sets all bodies's island indexes to b2Body::InvalidIslandIndex and resets
+	///   the body count to 0.
+	/// @sa Add(b2Body* body).
+	/// @sa b2Body::InvalidIslandIndex.
 	void ClearBodies() noexcept;
 
 	island_count_t m_bodyCount = 0;

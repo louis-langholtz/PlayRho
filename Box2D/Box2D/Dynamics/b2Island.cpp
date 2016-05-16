@@ -199,12 +199,10 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 	{
 		auto& b = *m_bodies[i];
 
-		{
-			// Store positions for continuous collision.
-			b.m_sweep.c0 = b.m_sweep.c;
-			b.m_sweep.a0 = b.m_sweep.a;
-			m_positions[i] = b2Position{b.m_sweep.c, b.m_sweep.a};
-		}
+		// Store positions for continuous collision.
+		b.m_sweep.c0 = b.m_sweep.c;
+		b.m_sweep.a0 = b.m_sweep.a;
+		m_positions[i] = b2Position{b.m_sweep.c, b.m_sweep.a};
 
 		{
 			auto v = b.m_linearVelocity;
@@ -275,8 +273,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 		auto translation = h * velocity.v;
 		auto rotation = h * velocity.w;
 		
-		// Adjust for large velocities // translation.LengthSquared()
-		if (b2Dot(translation, translation) > b2Square(b2_maxTranslation))
+		if (translation.LengthSquared() > b2Square(b2_maxTranslation))
 		{
 			const auto ratio = b2_maxTranslation / translation.Length();
 			velocity.v *= ratio;
@@ -288,8 +285,8 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 			velocity.w *= ratio;
 			rotation = h * velocity.w;
 		}
-		m_velocities[i] = velocity;
 
+		m_velocities[i] = velocity;
 		m_positions[i] = b2Position{m_positions[i].c + translation, m_positions[i].a + rotation};
 	}
 
@@ -344,7 +341,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 
 			if ((!b.IsSleepingAllowed()) ||
 				(b2Square(b.m_angularVelocity) > angTolSqr) ||
-				(b2Dot(b.m_linearVelocity, b.m_linearVelocity) > linTolSqr))
+				(b.m_linearVelocity.LengthSquared() > linTolSqr))
 			{
 				b.m_sleepTime = b2Float{0};
 				minSleepTime = b2Float{0};
@@ -456,41 +453,33 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, isl
 	// Integrate positions
 	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 	{
-		auto c = m_positions[i].c;
-		auto a = m_positions[i].a;
-		auto v = m_velocities[i].v;
-		auto w = m_velocities[i].w;
-
-		// Check for large velocities
-		const auto translation = h * v;
-		if (b2Dot(translation, translation) > b2Square(b2_maxTranslation))
+		auto velocity = m_velocities[i];
+		auto translation = h * velocity.v;
+		auto rotation = h * velocity.w;
+		
+		if (translation.LengthSquared() > b2Square(b2_maxTranslation))
 		{
 			const auto ratio = b2_maxTranslation / translation.Length();
-			v *= ratio;
+			velocity.v *= ratio;
+			translation = h * velocity.v;
 		}
 
-		const auto rotation = h * w;
-		if (b2Square(rotation) > b2Square(b2_maxRotation))
+		if (b2Abs(rotation) > b2_maxRotation)
 		{
 			const auto ratio = b2_maxRotation / b2Abs(rotation);
-			w *= ratio;
+			velocity.w *= ratio;
+			rotation = h * velocity.w;
 		}
 
-		// Integrate
-		c += h * v;
-		a += h * w;
-
-		m_positions[i].c = c;
-		m_positions[i].a = a;
-		m_velocities[i].v = v;
-		m_velocities[i].w = w;
+		m_velocities[i] = velocity;
+		m_positions[i] = b2Position{m_positions[i].c + translation, m_positions[i].a + rotation};
 
 		// Sync bodies
 		auto& body = *m_bodies[i];
-		body.m_sweep.c = c;
-		body.m_sweep.a = a;
-		body.m_linearVelocity = v;
-		body.m_angularVelocity = w;
+		body.m_sweep.c = m_positions[i].c;
+		body.m_sweep.a = m_positions[i].a;
+		body.m_linearVelocity = velocity.v;
+		body.m_angularVelocity = velocity.w;
 		body.m_xf = b2GetTransformOne(body.m_sweep);
 	}
 

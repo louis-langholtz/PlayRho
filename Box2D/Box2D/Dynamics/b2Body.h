@@ -425,7 +425,11 @@ private:
 
 	void DestroyContacts();
 
+	/// Checks if flagged as being in an island or not.
+	/// @return true if flagged for being in an island, false otherwise.
+	/// @sa b2Island.
 	bool IsInIsland() const noexcept;
+
 	void SetInIsland(bool value) noexcept;
 	void SetInIsland() noexcept;
 	void UnsetInIsland() noexcept;
@@ -553,12 +557,12 @@ inline b2Float b2Body::GetMass() const noexcept
 
 inline b2Float b2Body::GetInertia() const noexcept
 {
-	return m_I + m_mass * b2Dot(m_sweep.localCenter, m_sweep.localCenter);
+	return m_I + m_mass * m_sweep.localCenter.LengthSquared();
 }
 
 inline b2MassData b2Body::GetMassData() const noexcept
 {
-	return b2MassData{m_mass, m_sweep.localCenter, m_I + m_mass * b2Dot(m_sweep.localCenter, m_sweep.localCenter)};
+	return b2MassData{m_mass, m_sweep.localCenter, m_I + m_mass * m_sweep.localCenter.LengthSquared()};
 }
 
 inline b2Vec2 b2Body::GetWorldPoint(const b2Vec2& localPoint) const noexcept

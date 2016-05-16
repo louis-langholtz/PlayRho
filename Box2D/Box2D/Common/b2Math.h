@@ -108,8 +108,8 @@ struct b2Vec2
 		x *= a; y *= a;
 	}
 
-	/// Get the length squared. For performance, use this instead of
-	/// b2Vec2::Length (if possible).
+	/// Gets the length squared.
+	/// For performance, use this instead of b2Vec2::Length (if possible).
 	constexpr b2Float LengthSquared() const noexcept
 	{
 		return b2Square(x) + b2Square(y);
@@ -367,7 +367,12 @@ struct b2Sweep
 	b2Float alpha0;
 };
 
-/// Perform the dot product on two vectors.
+/// Performs the dot product on two vectors (A and B).
+/// @param a Vector A.
+/// @param b Vector B.
+/// @return Dot product of the vectors.
+/// @note If A and B are the same vectors, b2Vec2::LengthSquared() returns the same value
+///   using effectively one less input parameter.
 constexpr inline b2Float b2Dot(const b2Vec2& a, const b2Vec2& b) noexcept
 {
 	return (a.x * b.x) + (a.y * b.y);
@@ -469,7 +474,7 @@ inline b2Float b2Distance(const b2Vec2& a, const b2Vec2& b)
 constexpr inline b2Float b2DistanceSquared(const b2Vec2& a, const b2Vec2& b) noexcept
 {
 	const auto c = a - b;
-	return b2Dot(c, c);
+	return c.LengthSquared();
 }
 
 constexpr inline b2Vec3 operator * (b2Float s, const b2Vec3& a) noexcept
