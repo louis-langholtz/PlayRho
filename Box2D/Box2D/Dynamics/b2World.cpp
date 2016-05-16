@@ -623,7 +623,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 				continue;
 			}
 
-			if (!c->HasValidToi() && !ComputeTOI(c))
+			if (!c->HasValidToi() && !c->ComputeTOI())
 			{
 				continue;
 			}
@@ -816,79 +816,6 @@ void b2World::SolveTOI(const b2TimeStep& step)
 			break;
 		}
 	}
-}
-
-bool b2World::ComputeTOI(b2Contact* c)
-{
-	const auto fA = c->GetFixtureA();
-	const auto fB = c->GetFixtureB();
-	
-	// Is there a sensor?
-	if (fA->IsSensor() || fB->IsSensor())
-	{
-		return false;
-	}
-	
-	const auto bA = fA->GetBody();
-	const auto bB = fB->GetBody();
-	
-	const auto typeA = bA->m_type;
-	const auto typeB = bB->m_type;
-	b2Assert((typeA == b2_dynamicBody) || (typeB == b2_dynamicBody));
-	
-	const auto activeA = bA->IsAwake() && (typeA != b2_staticBody);
-	const auto activeB = bB->IsAwake() && (typeB != b2_staticBody);
-	
-	// Is at least one body active (awake and dynamic or kinematic)?
-	if ((!activeA) && (!activeB))
-	{
-		return false;
-	}
-	
-	const auto collideA = bA->IsBullet() || (typeA != b2_dynamicBody);
-	const auto collideB = bB->IsBullet() || (typeB != b2_dynamicBody);
-	
-	// Are these two non-bullet dynamic bodies?
-	if ((!collideA) && (!collideB))
-	{
-		return false;
-	}
-	
-	// Compute the TOI for this contact.
-	// Put the sweeps onto the same time interval.
-	const auto alpha0 = b2Max(bA->m_sweep.alpha0, bB->m_sweep.alpha0);
-	if (bA->m_sweep.alpha0 < alpha0)
-	{
-		bA->m_sweep.Advance(alpha0);
-	}
-	else if (bB->m_sweep.alpha0 < alpha0)
-	{
-		bB->m_sweep.Advance(alpha0);
-	}
-
-	b2Assert(alpha0 < b2Float(1));
-
-	const auto indexA = c->GetChildIndexA();
-	const auto indexB = c->GetChildIndexB();
-
-	// Compute the time of impact in interval [0, minTOI]
-	b2TOIInput input;
-	input.proxyA = b2DistanceProxy(*fA->GetShape(), indexA);
-	input.proxyB = b2DistanceProxy(*fB->GetShape(), indexB);
-	input.sweepA = bA->m_sweep;
-	input.sweepB = bB->m_sweep;
-	input.tMax = b2Float(1);
-
-	const auto output = b2TimeOfImpact(input);
-
-	// Beta is the fraction of the remaining portion of the .
-	const auto beta = output.get_t();
-	const auto alpha = (output.get_state() == b2TOIOutput::e_touching)?
-		b2Min(alpha0 + (b2Float{1} - alpha0) * beta, b2Float{1}): b2Float{1};
-
-	c->SetToi(alpha);
-
-	return true;
 }
 
 void b2World::Step(b2Float dt, int32 velocityIterations, int32 positionIterations)

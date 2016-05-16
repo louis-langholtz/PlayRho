@@ -191,6 +191,8 @@ protected:
 	void SetToi(b2Float toi) noexcept;
 	void UnsetToi() noexcept;
 
+	bool ComputeTOI();
+
 	bool IsInIsland() const noexcept;
 	void SetInIsland() noexcept;
 	void UnsetInIsland() noexcept;
