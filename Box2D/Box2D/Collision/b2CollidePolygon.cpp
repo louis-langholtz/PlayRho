@@ -177,12 +177,12 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 
 	// Clip to box side 1
 	b2ClipArray clipPoints1;
-	if (b2ClipSegmentToLine(clipPoints1, incidentEdge, -tangent, sideOffset1, iv1) < b2_maxManifoldPoints)
+	if (b2ClipSegmentToLine(clipPoints1, incidentEdge, -tangent, sideOffset1, iv1) < clipPoints1.size())
 		return b2Manifold{};
 
 	// Clip to negative box side 1
 	b2ClipArray clipPoints2;
-	if (b2ClipSegmentToLine(clipPoints2, clipPoints1,  tangent, sideOffset2, iv2) < b2_maxManifoldPoints)
+	if (b2ClipSegmentToLine(clipPoints2, clipPoints1,  tangent, sideOffset2, iv2) < clipPoints2.size())
 		return b2Manifold{};
 
 	// Now clipPoints2 contains the clipped points.
