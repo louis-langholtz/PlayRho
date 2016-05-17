@@ -220,9 +220,9 @@ inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) con
 {
 	const auto p1 = input.p1;
 	const auto p2 = input.p2;
-	auto r = p2 - p1;
-	b2Assert(r.LengthSquared() > b2Float{0});
-	r.Normalize();
+	const auto dp = p2 - p1;
+	b2Assert(dp.LengthSquared() > b2Float{0});
+	const auto r = b2Normalize(dp);
 
 	// v is perpendicular to the segment.
 	const auto v = b2Cross(b2Float(1), r);
