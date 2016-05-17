@@ -61,11 +61,18 @@ private:
 struct b2Position
 {
 	b2Position() = default;
+	constexpr b2Position(const b2Position& copy) = default;
+
 	constexpr b2Position(b2Vec2 c_, b2Float a_) noexcept: c(c_), a(a_) {}
 
 	b2Vec2 c; ///< linear position
 	b2Float a; ///< angular position
 };
+
+inline b2Transform b2Displace(const b2Position& pos, const b2Vec2& local_ctr)
+{
+	return b2Displace(pos.c, b2Rot(pos.a), local_ctr);
+}
 
 /// This is an internal structure.
 struct b2Velocity
