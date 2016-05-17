@@ -58,9 +58,9 @@ static b2Float b2FindMaxSeparation(b2PolygonShape::vertex_count_t& edgeIndex,
 	return maxSeparation;
 }
 
-static b2ClipArray b2FindIncidentEdge(
-							   const b2PolygonShape& shape1, const b2Transform& xf1, b2PolygonShape::vertex_count_t index1,
-							   const b2PolygonShape& shape2, const b2Transform& xf2)
+static b2ClipArray b2FindIncidentEdge(b2PolygonShape::vertex_count_t index1,
+									  const b2PolygonShape& shape1, const b2Transform& xf1,
+									  const b2PolygonShape& shape2, const b2Transform& xf2)
 {
 	b2Assert(index1 >= 0);
 	b2Assert(index1 < shape1.GetVertexCount());
@@ -150,7 +150,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 		flip = false;
 	}
 
-	const auto incidentEdge = b2FindIncidentEdge(*shape1, xf1, edge1, *shape2, xf2);
+	const auto incidentEdge = b2FindIncidentEdge(edge1, *shape1, xf1, *shape2, xf2);
 
 	const auto count1 = shape1->GetVertexCount();
 

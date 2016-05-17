@@ -348,7 +348,7 @@ b2AABB b2PolygonShape::ComputeAABB(const b2Transform& xf, child_count_t childInd
 	}
 
 	const auto r = b2Vec2(GetRadius(), GetRadius());
-	return {lower - r, upper + r};
+	return b2AABB{lower - r, upper + r};
 }
 
 b2MassData b2PolygonShape::ComputeMass(b2Float density) const

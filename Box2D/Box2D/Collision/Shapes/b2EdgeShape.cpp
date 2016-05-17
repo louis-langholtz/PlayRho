@@ -114,7 +114,7 @@ b2AABB b2EdgeShape::ComputeAABB(const b2Transform& xf, child_count_t childIndex)
 	const auto upper = b2Max(v1, v2);
 
 	const auto r = b2Vec2{GetRadius(), GetRadius()};
-	return {lower - r, upper + r};
+	return b2AABB{lower - r, upper + r};
 }
 
 b2MassData b2EdgeShape::ComputeMass(b2Float density) const
