@@ -28,7 +28,10 @@ struct b2MassData
 {
 	b2MassData() = default;
 
-	constexpr b2MassData(b2Float m, b2Vec2 c, b2Float _I) noexcept: mass(m), center(c), I(_I) {}
+	constexpr b2MassData(b2Float m, b2Vec2 c, b2Float _I) noexcept: mass(m), center(c), I(_I)
+	{
+		b2Assert(mass >= 0);
+	}
 
 	/// The mass of the shape, usually in kilograms.
 	/// This should NEVER be a negative value.
@@ -59,7 +62,15 @@ public:
 
 	b2Shape() = delete;
 
-	constexpr explicit b2Shape(Type type, b2Float radius) noexcept: m_type(type), m_radius(radius) {}
+	/// Initializing constructor.
+	/// @param type Type of this shape object.
+	/// @param radius Non-negative "radius" distance of this object (whose meaning is
+	///   class dependent).
+	/// @note Behavior is undefined if a negative radius is given.
+	constexpr b2Shape(Type type, b2Float radius) noexcept: m_type(type), m_radius(radius)
+	{
+		b2Assert(radius >= 0);
+	}
 
 	b2Shape(const b2Shape&) = default;
 
@@ -100,9 +111,15 @@ public:
 	/// @param density the density in kilograms per meter squared.
 	virtual b2MassData ComputeMass(b2Float density) const = 0;
 
+	/// Gets the "radius" of the shape.
+	/// @return a non-negative distance whose meaning is dependent on the object's class.
 	b2Float GetRadius() const noexcept { return m_radius; }
 
-	void SetRadius(b2Float radius) noexcept { m_radius = radius; }
+	void SetRadius(b2Float radius) noexcept
+	{
+		b2Assert(radius >= 0);
+		m_radius = radius;
+	}
 
 private:
 	const Type m_type;
