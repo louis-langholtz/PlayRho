@@ -37,6 +37,8 @@ public:
 	/// @note The shape must remain in scope while the proxy is in use.
 	b2DistanceProxy(const b2Shape& shape, child_count_t index);
 
+	/// Gets the "radius" of the associated shape.
+	/// @return Non-negative distance.
 	b2Float GetRadius() const noexcept { return m_radius; }
 
 	/// Get the supporting vertex index in the given direction.
@@ -55,7 +57,7 @@ private:
 	b2Vec2 m_buffer[2];
 	const b2Vec2* m_vertices = nullptr;
 	size_type m_count = 0;
-	b2Float m_radius = b2Float{0};
+	b2Float m_radius = b2Float{0}; ///< "Radius" of the associated shape.
 };
 
 /// Used to warm start b2Distance.
@@ -125,10 +127,7 @@ struct b2DistanceOutput
 /// Compute the closest points between two shapes. Supports any combination of:
 /// b2CircleShape, b2PolygonShape, b2EdgeShape. The simplex cache is input/output.
 /// On the first call, b2SimplexCache.count should be set to zero.
-void b2Distance(b2DistanceOutput* output,
-				b2SimplexCache* cache, 
-				const b2DistanceInput& input);
-
+b2DistanceOutput b2Distance(b2SimplexCache& cache,  const b2DistanceInput& input);
 
 //////////////////////////////////////////////////////////////////////////
 

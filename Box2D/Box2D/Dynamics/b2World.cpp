@@ -409,6 +409,7 @@ void b2World::Solve(const b2TimeStep& step)
 	// Clear all the island flags.
 	for (auto b = m_bodyList; b; b = b->GetNext())
 	{
+		b2Assert(b->m_islandIndex == b2Body::InvalidIslandIndex);
 		b->UnsetInIsland();
 	}
 	for (auto c = m_contactManager.GetContactList(); c; c = c->GetNext())
@@ -618,12 +619,12 @@ void b2World::SolveTOI(const b2TimeStep& step)
 			}
 
 			// Prevent excessive sub-stepping.
-			if (c->m_toiCount > b2_maxSubSteps)
+			if (c->m_toiCount >= b2_maxSubSteps)
 			{
 				continue;
 			}
 
-			if (!c->HasValidToi() && !c->ComputeTOI())
+			if (!c->HasValidToi() && !c->UpdateTOI())
 			{
 				continue;
 			}
@@ -637,6 +638,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 			}
 		}
 
+		// if ((!minContact) || (minAlpha >= b2Float(1)))
 		if ((!minContact) || (minAlpha > (b2Float(1) - (b2Float(10) * b2_epsilon))))
 		{
 			// No more TOI events. Done!
@@ -650,8 +652,8 @@ void b2World::SolveTOI(const b2TimeStep& step)
 		auto bA = fA->GetBody();
 		auto bB = fB->GetBody();
 
-		auto backup1 = bA->m_sweep;
-		auto backup2 = bB->m_sweep;
+		const auto backupA = bA->m_sweep;
+		const auto backupB = bB->m_sweep;
 
 		bA->Advance(minAlpha);
 		bB->Advance(minAlpha);
@@ -666,8 +668,8 @@ void b2World::SolveTOI(const b2TimeStep& step)
 		{
 			// Restore the sweeps.
 			minContact->UnsetEnabled();
-			bA->m_sweep = backup1;
-			bB->m_sweep = backup2;
+			bA->m_sweep = backupA;
+			bB->m_sweep = backupB;
 			bA->m_xf = b2GetTransformOne(bA->m_sweep);
 			bB->m_xf = b2GetTransformOne(bB->m_sweep);
 			continue;
@@ -780,7 +782,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 		b2TimeStep subStep;
 		subStep.set_dt((b2Float(1) - minAlpha) * step.get_dt());
 		subStep.dtRatio = b2Float(1);
-		subStep.positionIterations = 20;
+		subStep.positionIterations = b2_maxSubStepPositionIterations;
 		subStep.velocityIterations = step.velocityIterations;
 		subStep.warmStarting = false;
 		island.SolveTOI(subStep, bA->m_islandIndex, bB->m_islandIndex);

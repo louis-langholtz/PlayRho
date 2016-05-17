@@ -45,9 +45,10 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 	{
 		const auto P = A;
 		const auto d = Q - P;
-		const auto dd = b2Dot(d, d);
-		if (dd > b2Square(totalRadius))
+		if (d.LengthSquared() > b2Square(totalRadius))
+		{
 			return b2Manifold{};
+		}
 		
 		// Is there an edge connected to A?
 		if (shapeA.HasVertex0())
@@ -59,7 +60,9 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 			
 			// Is the circle in Region AB of the previous edge?
 			if (u1 > 0)
+			{
 				return b2Manifold{};
+			}
 		}
 		
 		auto manifold = b2Manifold{b2Manifold::e_circles};
@@ -76,7 +79,9 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 		const auto d = Q - P;
 		const auto dd = b2Dot(d, d);
 		if (dd > b2Square(totalRadius))
+		{
 			return b2Manifold{};
+		}
 		
 		// Is there an edge connected to B?
 		if (shapeA.HasVertex3())
@@ -88,7 +93,9 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 			
 			// Is the circle in Region AB of the next edge?
 			if (v2 > 0)
+			{
 				return b2Manifold{};
+			}
 		}
 		
 		auto manifold = b2Manifold{b2Manifold::e_circles};
@@ -99,17 +106,21 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 	}
 	
 	// Region AB
-	const auto den = b2Dot(e, e);
+	const auto den = e.LengthSquared();
 	b2Assert(den > 0);
 	const auto P = (b2Float(1) / den) * (u * A + v * B);
 	const auto d = Q - P;
-	const auto dd = b2Dot(d, d);
-	if (dd > b2Square(totalRadius))
+
+	if (d.LengthSquared() > b2Square(totalRadius))
+	{
 		return b2Manifold{};
+	}
 	
 	auto n = b2Vec2(-e.y, e.x);
 	if (b2Dot(n, Q - A) < 0)
+	{
 		n = b2Vec2(-n.x, -n.y);
+	}
 	
 	auto manifold = b2Manifold{b2Manifold::e_faceA};
 	manifold.SetLocalNormal(b2Normalize(n));
@@ -487,12 +498,16 @@ static inline b2EPAxis b2ComputePolygonSeparation(const b2TempPolygon& shape, co
 		if (b2Dot(polygonNormal, perp) >= 0)
 		{
 			if (b2Dot(polygonNormal - edgeInfo.GetUpperLimit(), edgeInfo.GetNormal()) < -b2_angularSlop)
+			{
 				continue;
+			}
 		}
 		else
 		{
 			if (b2Dot(polygonNormal - edgeInfo.GetLowerLimit(), edgeInfo.GetNormal()) < -b2_angularSlop)
+			{
 				continue;
+			}
 		}
 		
 		if (axis.separation < s)
@@ -542,11 +557,15 @@ b2Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShap
 	// If no valid normal can be found then this edge should not collide.
 	b2Assert(edgeAxis.type != b2EPAxis::e_unknown);
 	if ((edgeAxis.type == b2EPAxis::e_unknown) || (edgeAxis.separation > b2MaxEPSeparation))
+	{
 		return b2Manifold{};
+	}
 	
 	const auto polygonAxis = b2ComputePolygonSeparation(localShapeB, edgeInfo);
 	if ((polygonAxis.type != b2EPAxis::e_unknown) && (polygonAxis.separation > b2MaxEPSeparation))
+	{
 		return b2Manifold{};
+	}
 	
 	// Use hysteresis for jitter reduction.
 	constexpr auto k_relativeTol = b2Float(0.98);

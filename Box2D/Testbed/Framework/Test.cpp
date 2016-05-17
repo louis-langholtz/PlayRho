@@ -242,8 +242,7 @@ void Test::LaunchBomb(const b2Vec2& position, const b2Vec2& velocity)
 	m_bomb = m_world->CreateBody(&bd);
 	m_bomb->SetLinearVelocity(velocity);
 	
-	b2CircleShape circle;
-	circle.SetRadius(0.3f);
+	b2CircleShape circle(0.3f);
 
 	b2FixtureDef fd;
 	fd.shape = &circle;

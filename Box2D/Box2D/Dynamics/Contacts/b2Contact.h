@@ -186,12 +186,27 @@ protected:
 
 	void Update(b2ContactListener* listener);
 
+	/// Gets whether a TOI is set.
+	/// @return true if this object has a TOI set for it, false otherwise.
 	bool HasValidToi() const noexcept;
+
+	/// Gets the time of impact (TOI) as a fraction.
+	/// @note This is only valid if a TOI has been set.
+	/// @sa void SetToi(b2Float toi).
+	/// @return Time of impact fraction in the range of 0 to 1 if set, otheriwse undefined.
 	b2Float GetToi() const;
+
+	/// Sets the time of impact (TOI).
+	/// @detail After returning, this object will have a TOI that is set as indicated by <code>HasValidToi()</code>.
+	/// @note Behavior is undefined if the value assigned is less than 0 or greater than 1.
+	/// @sa b2Float GetToi() const.
+	/// @sa HasValidToi.
+	/// @param toi Time of impact as a fraction between 0 and 1.
 	void SetToi(b2Float toi) noexcept;
+	
 	void UnsetToi() noexcept;
 
-	bool ComputeTOI();
+	bool UpdateTOI();
 
 	bool IsInIsland() const noexcept;
 	void SetInIsland() noexcept;
@@ -394,6 +409,7 @@ inline b2Float b2Contact::GetToi() const
 
 inline void b2Contact::SetToi(b2Float toi) noexcept
 {
+	b2Assert(toi >= 0 && toi <= 1);
 	m_toi = toi;
 	m_flags |= b2Contact::e_toiFlag;
 }

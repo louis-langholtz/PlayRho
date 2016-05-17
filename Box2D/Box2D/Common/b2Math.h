@@ -292,7 +292,8 @@ constexpr auto b2Mat33_zero = b2Mat33(b2Vec3_zero, b2Vec3_zero, b2Vec3_zero);
 struct b2Rot
 {
 	b2Rot() = default;
-	b2Rot(const b2Rot& copy) = default;
+	
+	constexpr b2Rot(const b2Rot& copy) = default;
 
 	/// Initialize from an angle.
 	/// @param angle Angle in radians.
@@ -337,6 +338,8 @@ struct b2Transform
 
 	/// Initialize using a position vector and a rotation.
 	constexpr b2Transform(const b2Vec2& position, const b2Rot& rotation) noexcept: p(position), q(rotation) {}
+
+	constexpr b2Transform(const b2Transform& copy) = default;
 
 	b2Vec2 p;
 	b2Rot q;
@@ -676,7 +679,7 @@ constexpr inline bool b2IsPowerOfTwo(uint32 x) noexcept
 	return (x > 0) && ((x & (x - 1)) == 0);
 }
 
-constexpr inline b2Transform b2Displace(const b2Vec2& ctr, const b2Vec2& local_ctr, const b2Rot& rot) noexcept
+constexpr inline b2Transform b2Displace(const b2Vec2& ctr, const b2Rot& rot, const b2Vec2& local_ctr) noexcept
 {
 	return b2Transform{ctr - b2Mul(rot, local_ctr), rot};
 }
@@ -690,7 +693,7 @@ inline b2Transform b2GetTransform(const b2Sweep& sweep, b2Float beta)
 	b2Assert(beta >= 0);
 	b2Assert(beta <= 1);
 	const auto one_minus_beta = b2Float(1) - beta;
-	return b2Displace(one_minus_beta * sweep.c0 + beta * sweep.c, sweep.localCenter, b2Rot(one_minus_beta * sweep.a0 + beta * sweep.a));
+	return b2Displace(one_minus_beta * sweep.c0 + beta * sweep.c, b2Rot(one_minus_beta * sweep.a0 + beta * sweep.a), sweep.localCenter);
 }
 
 /// Gets the transform at "time" zero.
@@ -700,7 +703,7 @@ inline b2Transform b2GetTransform(const b2Sweep& sweep, b2Float beta)
 /// @return Transform of the given sweep at time zero.
 inline b2Transform b2GetTransformZero(const b2Sweep& sweep)
 {
-	return b2Displace(sweep.c0, sweep.localCenter, b2Rot(sweep.a0));
+	return b2Displace(sweep.c0, b2Rot(sweep.a0), sweep.localCenter);
 }
 
 /// Gets the transform at "time" one.
@@ -710,7 +713,7 @@ inline b2Transform b2GetTransformZero(const b2Sweep& sweep)
 /// @return Transform of the given sweep at time one.
 inline b2Transform b2GetTransformOne(const b2Sweep& sweep)
 {
-	return b2Displace(sweep.c, sweep.localCenter, b2Rot(sweep.a));
+	return b2Displace(sweep.c, b2Rot(sweep.a), sweep.localCenter);
 }
 
 inline void b2Sweep::Advance(b2Float alpha)

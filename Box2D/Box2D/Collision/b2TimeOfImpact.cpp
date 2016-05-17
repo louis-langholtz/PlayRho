@@ -60,8 +60,7 @@ public:
 			const auto localPointB = m_proxyB.GetVertex(cache.GetIndexB(0));
 			const auto pointA = b2Mul(xfA, localPointA);
 			const auto pointB = b2Mul(xfB, localPointB);
-			m_axis = pointB - pointA;
-			m_axis.Normalize();
+			m_axis = b2Normalize(pointB - pointA);
 			break;
 		}
 		case e_faceB:
@@ -262,8 +261,6 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 	sweepA.Normalize();
 	sweepB.Normalize();
 
-	const auto tMax = input.tMax;
-
 	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius();
 	const auto target = b2Max(b2_linearSlop, totalRadius - (b2Float{3} * b2_linearSlop));
 	constexpr auto tolerance = b2_linearSlop / b2Float(4);
@@ -288,8 +285,7 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 
 		// Get the distance between shapes. We can also use the results
 		// to get a separating axis.
-		b2DistanceOutput distanceOutput;
-		b2Distance(&distanceOutput, &cache, distanceInput);
+		const auto distanceOutput = b2Distance(cache, distanceInput);
 
 		// If the shapes are overlapped, we give up on continuous collision.
 		if (distanceOutput.distance <= b2Float{0})
@@ -337,7 +333,7 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 		// Compute the TOI on the separating axis. We do this by successively
 		// resolving the deepest point. This loop is bounded by the number of vertices.
 		auto done = false;
-		auto t2 = tMax;
+		auto t2 = input.tMax;
 		auto pushBackIter = decltype(b2_maxPolygonVertices){0};
 		for (;;)
 		{
@@ -349,7 +345,12 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 			if (s2 > (target + tolerance))
 			{
 				// Victory!
-				output = b2TOIOutput{b2TOIOutput::e_separated, tMax};
+				b2Assert(t2 == input.tMax);
+				// Formerly this used input.tMax as in...
+				// output = b2TOIOutput{b2TOIOutput::e_separated, input.tMax};
+				// t2 seems more appropriate however given s2 was derived from it.
+				// Meanwhile t2 always seems equal to input.tMax at this point.
+				output = b2TOIOutput{b2TOIOutput::e_separated, t2};
 				done = true;
 				break;
 			}

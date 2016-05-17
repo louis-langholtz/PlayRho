@@ -34,7 +34,7 @@ bool b2CircleShape::TestPoint(const b2Transform& transform, const b2Vec2& p) con
 {
 	const auto center = transform.p + b2Mul(transform.q, m_p);
 	const auto d = p - center;
-	return b2Dot(d, d) <= b2Square(GetRadius());
+	return d.LengthSquared() <= b2Square(GetRadius());
 }
 
 // Collision Detection in Interactive 3D Environments by Gino van den Bergen
@@ -48,7 +48,7 @@ bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input
 
 	const auto position = transform.p + b2Mul(transform.q, m_p);
 	const auto s = input.p1 - position;
-	const auto b = b2Dot(s, s) - b2Square(GetRadius());
+	const auto b = s.LengthSquared() - b2Square(GetRadius());
 
 	// Solve quadratic equation.
 	const auto r = input.p2 - input.p1;

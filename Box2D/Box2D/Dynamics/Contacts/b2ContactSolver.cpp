@@ -41,7 +41,7 @@ struct b2ContactPositionConstraintBodyData
 
 	index_t index; ///< Index within island of the associated body.
 	b2Float invMass; ///< Inverse mass of associated body.
-	b2Vec2 localCenter;
+	b2Vec2 localCenter; ///< Local center of the associated body's sweep.
 	b2Float invI; ///< Inverse rotational inertia about the center of mass of the associated body.
 };
 
@@ -57,7 +57,9 @@ public:
 	b2ContactPositionConstraintBodyData bodyB;
 
 	b2Manifold::Type type = b2Manifold::e_unset;
-	b2Float radiusA, radiusB;
+
+	b2Float radiusA; ///< "Radius" distance from the associated shape of fixture A.
+	b2Float radiusB; ///< "Radius" distance from the associated shape of fixture B.
 
 	size_type GetPointCount() const noexcept { return pointCount; }
 
@@ -127,8 +129,6 @@ b2ContactSolver::b2ContactSolver(b2ContactSolverDef* def) :
 		const auto fixtureB = contact.m_fixtureB;
 		const auto shapeA = fixtureA->GetShape();
 		const auto shapeB = fixtureB->GetShape();
-		const auto radiusA = shapeA->GetRadius();
-		const auto radiusB = shapeB->GetRadius();
 		const auto bodyA = fixtureA->GetBody();
 		const auto bodyB = fixtureB->GetBody();
 		const auto manifold = contact.GetManifold();
@@ -147,8 +147,8 @@ b2ContactSolver::b2ContactSolver(b2ContactSolverDef* def) :
 		Assign(pc.bodyB, *bodyB);
 		pc.localNormal = manifold->GetLocalNormal();
 		pc.localPoint = manifold->GetLocalPoint();
-		pc.radiusA = radiusA;
-		pc.radiusB = radiusB;
+		pc.radiusA = shapeA->GetRadius();
+		pc.radiusB = shapeB->GetRadius();
 		pc.type = manifold->GetType();
 		pc.ClearPoints();
 
@@ -226,9 +226,9 @@ void b2ContactSolver::InitializeVelocityConstraint(b2ContactVelocityConstraint& 
 	
 	b2Assert(manifold->GetPointCount() > 0);
 	
-	const auto xfA = b2Displace(posA.c, pc.bodyA.localCenter, b2Rot(posA.a));
-	const auto xfB = b2Displace(posB.c, pc.bodyB.localCenter, b2Rot(posB.a));
-	const b2WorldManifold worldManifold(*manifold, xfA, pc.radiusA, xfB, pc.radiusB);
+	const auto xfA = b2Displace(posA, pc.bodyA.localCenter);
+	const auto xfB = b2Displace(posB, pc.bodyB.localCenter);
+	const auto worldManifold = b2WorldManifold{*manifold, xfA, pc.radiusA, xfB, pc.radiusB};
 	
 	vc.normal = worldManifold.GetNormal();
 	
@@ -660,6 +660,9 @@ public:
 		b2Assert(pc.GetPointCount() > 0);
 		b2Assert(pc.type != b2Manifold::e_unset);
 
+		// Note for valid manifold types:
+		//   Sum the radius values and subtract this sum to reduce FP losses in cases where the radius
+		//   values would otherwise be insignificant compared to the values being subtracted from.
 		switch (pc.type)
 		{
 		case b2Manifold::e_unset:
@@ -670,9 +673,11 @@ public:
 				b2Assert(index == 0);
 				const auto pointA = b2Mul(xfA, pc.localPoint);
 				const auto pointB = b2Mul(xfB, pc.GetPoint(0));
-				normal = b2Normalize(pointB - pointA);
+				const auto delta = pointB - pointA;
+				normal = b2Normalize(delta);
 				point = (pointA + pointB) / b2Float(2);
-				separation = b2Dot(pointB - pointA, normal) - pc.radiusA - pc.radiusB;
+				const auto totalRadius = pc.radiusA + pc.radiusB;
+				separation = b2Dot(delta, normal) - totalRadius;
 			}
 			break;
 
@@ -681,7 +686,8 @@ public:
 				const auto planePoint = b2Mul(xfA, pc.localPoint);
 				const auto clipPoint = b2Mul(xfB, pc.GetPoint(index));
 				normal = b2Mul(xfA.q, pc.localNormal);
-				separation = b2Dot(clipPoint - planePoint, normal) - pc.radiusA - pc.radiusB;
+				const auto totalRadius = pc.radiusA + pc.radiusB;
+				separation = b2Dot(clipPoint - planePoint, normal) - totalRadius;
 				point = clipPoint;
 			}
 			break;
@@ -691,7 +697,8 @@ public:
 				const auto planePoint = b2Mul(xfB, pc.localPoint);
 				const auto clipPoint = b2Mul(xfA, pc.GetPoint(index));
 				normal = b2Mul(xfB.q, pc.localNormal);
-				separation = b2Dot(clipPoint - planePoint, normal) - pc.radiusA - pc.radiusB;
+				const auto totalRadius = pc.radiusA + pc.radiusB;
+				separation = b2Dot(clipPoint - planePoint, normal) - totalRadius;
 				point = clipPoint;
 				normal = -normal; // Ensure normal points from A to B
 			}
@@ -721,8 +728,8 @@ static inline b2Float SolvePositionConstraint(const b2ContactPositionConstraint&
 	const auto pointCount = pc.GetPointCount();
 	for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 	{
-		const auto xfA = b2Displace(posA.c, pc.bodyA.localCenter, b2Rot(posA.a));
-		const auto xfB = b2Displace(posB.c, pc.bodyB.localCenter, b2Rot(posB.a));
+		const auto xfA = b2Displace(posA, pc.bodyA.localCenter);
+		const auto xfB = b2Displace(posB, pc.bodyB.localCenter);
 		const auto psm = b2PositionSolverManifold(pc, xfA, xfB, j);
 		const auto normal = psm.GetNormal();
 		const auto point = psm.GetPoint();
@@ -785,13 +792,13 @@ static inline b2Float SolveTOIPositionConstraint(const b2ContactPositionConstrai
 	const auto isB = (indexA == pc.bodyB.index) || (indexB == pc.bodyB.index);
 	const auto invMassB = isB? pc.bodyB.invMass: b2Float{0};
 	const auto invInertiaB = isB? pc.bodyB.invI: b2Float{0};
-	
+
 	// Solve normal constraints
 	const auto pointCount = pc.GetPointCount();
 	for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 	{
-		const auto xfA = b2Displace(posA.c, pc.bodyA.localCenter, b2Rot(posA.a));
-		const auto xfB = b2Displace(posB.c, pc.bodyB.localCenter, b2Rot(posB.a));
+		const auto xfA = b2Displace(posA, pc.bodyA.localCenter);
+		const auto xfB = b2Displace(posB, pc.bodyB.localCenter);
 		const auto psm = b2PositionSolverManifold(pc, xfA, xfB, j);
 		const auto normal = psm.GetNormal();
 		const auto point = psm.GetPoint();
@@ -825,16 +832,15 @@ static inline b2Float SolveTOIPositionConstraint(const b2ContactPositionConstrai
 	return minSeparation;
 }
 
-// Sequential position solver for position constraints.
-bool b2ContactSolver::SolveTOIPositionConstraints(size_type toiIndexA, size_type toiIndexB)
+bool b2ContactSolver::SolveTOIPositionConstraints(size_type indexA, size_type indexB)
 {
 	auto minSeparation = b2_maxFloat;
 
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		const auto& pc = m_positionConstraints[i];
-		minSeparation = b2Min(minSeparation, SolveTOIPositionConstraint(pc, toiIndexA, toiIndexB,
-								   m_positions[pc.bodyA.index], m_positions[pc.bodyB.index]));
+		const auto s = SolveTOIPositionConstraint(pc, indexA, indexB, m_positions[pc.bodyA.index], m_positions[pc.bodyB.index]);
+		minSeparation = b2Min(minSeparation, s);
 	}
 
 	// Can't expect minSpeparation >= -b2_linearSlop because we don't push the separation above -b2_linearSlop.

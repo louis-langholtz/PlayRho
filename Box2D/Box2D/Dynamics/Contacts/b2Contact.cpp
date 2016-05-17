@@ -226,7 +226,7 @@ void b2Contact::Update(b2ContactListener* listener)
 	}
 }
 
-bool b2Contact::ComputeTOI()
+bool b2Contact::UpdateTOI()
 {
 	const auto fA = GetFixtureA();
 	const auto fB = GetFixtureB();
@@ -264,25 +264,15 @@ bool b2Contact::ComputeTOI()
 	
 	// Compute the TOI for this contact.
 	// Put the sweeps onto the same time interval.
-	const auto alpha0 = b2Max(bA->m_sweep.alpha0, bB->m_sweep.alpha0);
-	if (bA->m_sweep.alpha0 < alpha0)
-	{
-		bA->m_sweep.Advance(alpha0);
-	}
-	else if (bB->m_sweep.alpha0 < alpha0)
-	{
-		bB->m_sweep.Advance(alpha0);
-	}
-	
-	b2Assert(alpha0 < b2Float(1));
-	
-	const auto indexA = GetChildIndexA();
-	const auto indexB = GetChildIndexB();
+	const auto maxAlpha0 = b2Max(bA->m_sweep.alpha0, bB->m_sweep.alpha0);
+	b2Assert(maxAlpha0 < b2Float(1));
+	bA->m_sweep.Advance(maxAlpha0);
+	bB->m_sweep.Advance(maxAlpha0);
 	
 	// Compute the time of impact in interval [0, minTOI]
 	b2TOIInput input;
-	input.proxyA = b2DistanceProxy(*fA->GetShape(), indexA);
-	input.proxyB = b2DistanceProxy(*fB->GetShape(), indexB);
+	input.proxyA = b2DistanceProxy(*fA->GetShape(), GetChildIndexA());
+	input.proxyB = b2DistanceProxy(*fB->GetShape(), GetChildIndexB());
 	input.sweepA = bA->m_sweep;
 	input.sweepB = bB->m_sweep;
 	input.tMax = b2Float(1);
@@ -292,7 +282,7 @@ bool b2Contact::ComputeTOI()
 	// Beta is the fraction of the remaining portion of the .
 	const auto beta = output.get_t();
 	const auto alpha = (output.get_state() == b2TOIOutput::e_touching)?
-	b2Min(alpha0 + (b2Float{1} - alpha0) * beta, b2Float{1}): b2Float{1};
+		b2Min(maxAlpha0 + (b2Float{1} - maxAlpha0) * beta, b2Float{1}): b2Float{1};
 	
 	SetToi(alpha);
 	

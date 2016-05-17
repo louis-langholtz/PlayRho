@@ -25,9 +25,7 @@
 class b2CircleShape : public b2Shape
 {
 public:
-	constexpr b2CircleShape(): b2Shape(e_circle, b2Float{0}) {}
-
-	constexpr explicit b2CircleShape(b2Float radius, const b2Vec2& position) noexcept:
+	constexpr explicit b2CircleShape(b2Float radius = 0, b2Vec2 position = b2Vec2_zero) noexcept:
 		b2Shape(e_circle, radius), m_p(position) {}
 
 	b2CircleShape(const b2CircleShape&) = default;

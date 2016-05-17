@@ -418,10 +418,8 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, isl
 		input.transformB = bB->GetTransform();
 		input.useRadii = false;
 
-		b2DistanceOutput output;
 		b2SimplexCache cache;
-		b2Distance(&output, &cache, input);
-
+		const auto output = b2Distance(cache, input);
 		if (output.distance == 0 || cache.GetCount() == 3)
 		{
 			;;

@@ -25,10 +25,9 @@ b2Manifold b2CollideShapes(const b2CircleShape& shapeA, const b2Transform& xfA, 
 	const auto pA = b2Mul(xfA, shapeA.GetPosition());
 	const auto pB = b2Mul(xfB, shapeB.GetPosition());
 	const auto d = pB - pA;
-	const auto distSqr = b2Dot(d, d);
 	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
 
-	if (distSqr > b2Square(totalRadius))
+	if (d.LengthSquared() > b2Square(totalRadius))
 	{
 		return b2Manifold{};
 	}

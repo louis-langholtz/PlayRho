@@ -55,8 +55,7 @@ public:
 		input.transformB = m_transformB;
 		input.useRadii = true;
 		b2SimplexCache cache;
-		b2DistanceOutput output;
-		b2Distance(&output, &cache, input);
+		const auto output = b2Distance(cache, input);
 
 		g_debugDraw.DrawString(5, m_textLine, "distance = %g", output.distance);
 		m_textLine += DRAW_STRING_NEW_LINE;

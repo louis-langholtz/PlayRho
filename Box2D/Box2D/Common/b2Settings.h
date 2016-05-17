@@ -90,7 +90,10 @@ constexpr auto b2_angularSlop = b2_pi * b2Float(2) / b2Float(180);
 constexpr auto b2_polygonRadius = b2_linearSlop * b2Float(2);
 
 /// Maximum number of sub-steps per contact in continuous physics simulation.
-constexpr auto b2_maxSubSteps = unsigned{8}; // often hit but no apparent help against tunneling
+constexpr auto b2_maxSubSteps = unsigned{10}; // originally 8, often hit but no apparent help against tunneling
+
+/// Maximum number of sub-step position iterations.
+constexpr auto b2_maxSubStepPositionIterations = unsigned{20};
 
 /// Maximum time of impact iterations.
 constexpr auto b2_maxTOIIterations = unsigned{20};

@@ -42,7 +42,9 @@ static b2Float b2FindMaxSeparation(b2PolygonShape::vertex_count_t& edgeIndex,
 		{
 			const auto sij = b2Dot(n, shape2.GetVertex(j) - v1);
 			if (min_sij > sij)
+			{
 				min_sij = sij;
+			}
 		}
 
 		if (maxSeparation < min_sij)
@@ -108,12 +110,16 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 	auto edgeA = b2PolygonShape::vertex_count_t{0};
 	const auto separationA = b2FindMaxSeparation(edgeA, shapeA, xfA, shapeB, xfB);
 	if (separationA > totalRadius)
+	{
 		return b2Manifold{};
+	}
 
 	auto edgeB = b2PolygonShape::vertex_count_t{0};
 	const auto separationB = b2FindMaxSeparation(edgeB, shapeB, xfB, shapeA, xfA);
 	if (separationB > totalRadius)
+	{
 		return b2Manifold{};
+	}
 
 	const b2PolygonShape* shape1;	// reference polygon
 	const b2PolygonShape* shape2;	// incident polygon
@@ -178,19 +184,22 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 	// Clip to box side 1
 	b2ClipArray clipPoints1;
 	if (b2ClipSegmentToLine(clipPoints1, incidentEdge, -tangent, sideOffset1, iv1) < clipPoints1.size())
+	{
 		return b2Manifold{};
+	}
 
 	// Clip to negative box side 1
 	b2ClipArray clipPoints2;
 	if (b2ClipSegmentToLine(clipPoints2, clipPoints1,  tangent, sideOffset2, iv2) < clipPoints2.size())
+	{
 		return b2Manifold{};
+	}
 
 	// Now clipPoints2 contains the clipped points.
 	
 	auto manifold = b2Manifold{manifoldType};
 	manifold.SetLocalNormal(localNormal);
 	manifold.SetLocalPoint(planePoint);
-	
 	for (auto i = decltype(b2_maxManifoldPoints){0}; i < b2_maxManifoldPoints; ++i)
 	{
 		const auto separation = b2Dot(normal, clipPoints2[i].v) - frontOffset;

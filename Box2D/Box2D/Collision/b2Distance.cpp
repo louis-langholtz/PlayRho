@@ -56,9 +56,7 @@ b2DistanceProxy::b2DistanceProxy(const b2Shape& shape, child_count_t index)
 			b2Assert((0 <= index) && (index < chain.GetVertexCount()));
 			
 			m_buffer[0] = chain.GetVertex(index);
-			m_buffer[1] = ((index + 1) < chain.GetVertexCount())?
-			chain.GetVertex(index + 1):
-			chain.GetVertex(0);
+			m_buffer[1] = ((index + 1) < chain.GetVertexCount())? chain.GetVertex(index + 1): chain.GetVertex(0);
 			
 			m_vertices = m_buffer;
 			m_count = 2;
@@ -459,9 +457,7 @@ void b2Simplex::Solve3() noexcept
 	m_count = 3;
 }
 
-void b2Distance(b2DistanceOutput* output,
-				b2SimplexCache* cache,
-				const b2DistanceInput& input)
+b2DistanceOutput b2Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 {
 #if defined(DO_GJK_PROFILING)
 	++b2_gjkCalls;
@@ -475,7 +471,7 @@ void b2Distance(b2DistanceOutput* output,
 
 	// Initialize the simplex.
 	b2Simplex simplex;
-	simplex.ReadCache(*cache, proxyA, transformA, proxyB, transformB);
+	simplex.ReadCache(cache, proxyA, transformA, proxyB, transformB);
 
 	// Get simplex vertices as an array.
 	const auto vertices = simplex.GetVertices();
@@ -589,12 +585,13 @@ void b2Distance(b2DistanceOutput* output,
 #endif
 
 	// Prepare output.
-	simplex.GetWitnessPoints(&output->pointA, &output->pointB);
-	output->distance = b2Distance(output->pointA, output->pointB);
-	output->iterations = iter;
+	b2DistanceOutput output;
+	simplex.GetWitnessPoints(&output.pointA, &output.pointB);
+	output.distance = b2Distance(output.pointA, output.pointB);
+	output.iterations = iter;
 
 	// Cache the simplex.
-	simplex.WriteCache(*cache);
+	simplex.WriteCache(cache);
 
 	// Apply radii if requested.
 	if (input.useRadii)
@@ -603,23 +600,24 @@ void b2Distance(b2DistanceOutput* output,
 		const auto rB = proxyB.GetRadius();
 		const auto totalRadius = rA + rB;
 
-		if ((output->distance > totalRadius) && (output->distance > b2_epsilon))
+		if ((output.distance > totalRadius) && (output.distance > b2_epsilon))
 		{
 			// Shapes are still no overlapped.
 			// Move the witness points to the outer surface.
-			output->distance -= totalRadius;
-			const auto normal = b2Normalize(output->pointB - output->pointA);
-			output->pointA += rA * normal;
-			output->pointB -= rB * normal;
+			output.distance -= totalRadius;
+			const auto normal = b2Normalize(output.pointB - output.pointA);
+			output.pointA += rA * normal;
+			output.pointB -= rB * normal;
 		}
 		else
 		{
 			// Shapes are overlapped when radii are considered.
 			// Move the witness points to the middle.
-			const auto p = (output->pointA + output->pointB) / b2Float(2);
-			output->pointA = p;
-			output->pointB = p;
-			output->distance = b2Float{0};
+			const auto p = (output.pointA + output.pointB) / b2Float(2);
+			output.pointA = p;
+			output.pointB = p;
+			output.distance = b2Float{0};
 		}
 	}
+	return output;
 }
