@@ -77,8 +77,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 	{
 		const auto P = B;
 		const auto d = Q - P;
-		const auto dd = b2Dot(d, d);
-		if (dd > b2Square(totalRadius))
+		if (d.LengthSquared() > b2Square(totalRadius))
 		{
 			return b2Manifold{};
 		}

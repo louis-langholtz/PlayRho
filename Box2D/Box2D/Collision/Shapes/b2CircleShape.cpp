@@ -53,7 +53,7 @@ bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input
 	// Solve quadratic equation.
 	const auto r = input.p2 - input.p1;
 	const auto c =  b2Dot(s, r);
-	const auto rr = b2Dot(r, r);
+	const auto rr = r.LengthSquared();
 	const auto sigma = b2Square(c) - rr * b;
 
 	// Check for negative discriminant and short segment.
@@ -88,6 +88,6 @@ b2AABB b2CircleShape::ComputeAABB(const b2Transform& transform, child_count_t ch
 b2MassData b2CircleShape::ComputeMass(b2Float density) const
 {
 	const auto mass = density * b2_pi * b2Square(GetRadius());
-	const auto I = mass * ((b2Square(GetRadius()) / b2Float(2)) + b2Dot(m_p, m_p));
+	const auto I = mass * ((b2Square(GetRadius()) / b2Float(2)) + m_p.LengthSquared());
 	return b2MassData{mass, m_p, I};
 }

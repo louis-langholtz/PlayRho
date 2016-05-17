@@ -429,7 +429,7 @@ b2MassData b2PolygonShape::ComputeMass(b2Float density) const
 
 	// Inertia tensor relative to the local origin (point s).
 	// Shift to center of mass then to original body origin.
-	const auto massDataI = (density * I) + (mass * (b2Dot(massDataCenter, massDataCenter) - b2Dot(center, center)));
+	const auto massDataI = (density * I) + (mass * (massDataCenter.LengthSquared() - center.LengthSquared()));
 	
 	return b2MassData{mass, massDataCenter, massDataI};
 }

@@ -86,7 +86,7 @@ bool b2EdgeShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 	// q = v1 + s * r
 	// s = dot(q - v1, r) / dot(r, r)
 	const auto r = v2 - v1;
-	const auto rr = b2Dot(r, r);
+	const auto rr = r.LengthSquared();
 	if (rr == b2Float{0})
 	{
 		return false;
