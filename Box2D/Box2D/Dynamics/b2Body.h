@@ -421,6 +421,12 @@ private:
 	// It may lie, depending on the collideConnected flag.
 	bool ShouldCollide(const b2Body* other) const;
 
+	/// Advances the body by a given time ratio.
+	/// @detail This method:
+	///    1. advances the body's sweep to the given time ratio;
+	///    2. updates the body's sweep positions (linear and angular) to the advanced ones; and
+	///    3. updates the body's transform to the new sweep one settings.
+	/// @param t New time factor in [0,1) to advance the sweep to.
 	void Advance(b2Float t);
 
 	void DestroyContacts();
