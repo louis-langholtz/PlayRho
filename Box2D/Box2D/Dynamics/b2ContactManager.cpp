@@ -235,7 +235,7 @@ void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 
 	// Call the factory.
 	auto c = b2Contact::Create(fixtureA, indexA, fixtureB, indexB, m_allocator);
-	if (c == nullptr)
+	if (!c)
 	{
 		return;
 	}
@@ -249,7 +249,7 @@ void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 	// Insert into the world.
 	c->m_prev = nullptr;
 	c->m_next = m_contactList;
-	if (m_contactList != nullptr)
+	if (m_contactList)
 	{
 		m_contactList->m_prev = c;
 	}
@@ -263,7 +263,7 @@ void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 
 	c->m_nodeA.prev = nullptr;
 	c->m_nodeA.next = bodyA->m_contactList;
-	if (bodyA->m_contactList != nullptr)
+	if (bodyA->m_contactList)
 	{
 		bodyA->m_contactList->prev = &c->m_nodeA;
 	}
@@ -275,7 +275,7 @@ void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 
 	c->m_nodeB.prev = nullptr;
 	c->m_nodeB.next = bodyB->m_contactList;
-	if (bodyB->m_contactList != nullptr)
+	if (bodyB->m_contactList)
 	{
 		bodyB->m_contactList->prev = &c->m_nodeB;
 	}
