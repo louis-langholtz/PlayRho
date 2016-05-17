@@ -167,7 +167,9 @@ public:
 	/// @sa MinSeparationThreshold.
 	bool SolvePositionConstraints();
 	
-	bool SolveTOIPositionConstraints(size_type toiIndexA, size_type toiIndexB);
+	/// Sequential position solver for TOI-based position constraints.
+	/// @return true if the minimum separation is above the minimum TOI separation value, false otherwise.
+	bool SolveTOIPositionConstraints(size_type indexA, size_type indexB);
 
 	const b2ContactVelocityConstraint* GetVelocityConstraints() const noexcept
 	{
