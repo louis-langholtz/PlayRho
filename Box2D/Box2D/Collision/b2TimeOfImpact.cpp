@@ -247,7 +247,7 @@ private:
 
 // CCD via the local separating axis method. This seeks progression
 // by computing the largest time at which separation is maintained.
-b2TOIOutput box2d::b2TimeOfImpact(const b2TOIInput& input)
+b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 {
 	++b2_toiCalls;
 

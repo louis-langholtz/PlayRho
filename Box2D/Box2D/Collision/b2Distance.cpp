@@ -459,7 +459,7 @@ void b2Simplex::Solve3() noexcept
 	m_count = 3;
 }
 
-b2DistanceOutput box2d::b2Distance(b2SimplexCache& cache, const b2DistanceInput& input)
+b2DistanceOutput b2Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 {
 #if defined(DO_GJK_PROFILING)
 	++b2_gjkCalls;
