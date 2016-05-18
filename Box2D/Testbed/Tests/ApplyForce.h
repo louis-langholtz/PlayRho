@@ -19,6 +19,8 @@
 #ifndef APPLY_FORCE_H
 #define APPLY_FORCE_H
 
+namespace box2d {
+
 class ApplyForce : public Test
 {
 public:
@@ -176,5 +178,7 @@ public:
 
 	b2Body* m_body;
 };
+
+} // namespace box2d
 
 #endif

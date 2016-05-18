@@ -9,6 +9,8 @@
 #include <Box2D/Common/b2ConstFixtureIterator.hpp>
 #include <Box2D/Dynamics/b2Fixture.h>
 
+using namespace box2d;
+
 b2ConstFixtureIterator::pointer b2ConstFixtureIterator::next(pointer q) const noexcept
 {
 	return p->GetNext();

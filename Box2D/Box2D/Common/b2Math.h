@@ -22,6 +22,8 @@
 #include <Box2D/Common/b2Settings.h>
 #include <cmath>
 
+namespace box2d
+{
 // forward declarations
 struct b2Vec2;
 struct b2Vec3;
@@ -734,4 +736,5 @@ inline void b2Sweep::Normalize()
 	a -= d;
 }
 
+}
 #endif

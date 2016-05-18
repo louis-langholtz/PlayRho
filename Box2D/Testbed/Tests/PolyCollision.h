@@ -19,6 +19,8 @@
 #ifndef POLYCOLLISION_H
 #define POLYCOLLISION_H
 
+namespace box2d {
+
 class PolyCollision : public Test
 {
 public:
@@ -115,5 +117,7 @@ public:
 	b2Vec2 m_positionB;
 	b2Float m_angleB;
 };
+
+} // namespace box2d
 
 #endif

@@ -19,6 +19,8 @@
 #ifndef BULLET_TEST_H
 #define BULLET_TEST_H
 
+namespace box2d {
+
 class BulletTest : public Test
 {
 public:
@@ -132,5 +134,7 @@ public:
 	b2Body* m_bullet;
 	b2Float m_x;
 };
+
+} // namespace box2d
 
 #endif

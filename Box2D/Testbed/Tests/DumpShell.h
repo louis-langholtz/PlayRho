@@ -19,6 +19,8 @@
 #ifndef DUMP_SHELL_H
 #define DUMP_SHELL_H
 
+namespace box2d {
+
 // This test holds worlds dumped using b2World::Dump.
 class DumpShell : public Test
 {
@@ -171,5 +173,7 @@ public:
 		return new DumpShell;
 	}
 };
+
+} // namespace box2d
 
 #endif

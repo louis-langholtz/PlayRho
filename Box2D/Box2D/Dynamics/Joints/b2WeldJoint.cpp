@@ -20,6 +20,8 @@
 #include <Box2D/Dynamics/b2Body.h>
 #include <Box2D/Dynamics/b2TimeStep.h>
 
+using namespace box2d;
+
 // Point-to-point constraint
 // C = p2 - p1
 // Cdot = v2 - v1

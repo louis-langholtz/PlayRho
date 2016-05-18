@@ -19,6 +19,8 @@
 #ifndef HEAVY_ON_LIGHT_H
 #define HEAVY_ON_LIGHT_H
 
+namespace box2d {
+
 class HeavyOnLight : public Test
 {
 public:
@@ -54,5 +56,7 @@ public:
 		return new HeavyOnLight;
 	}
 };
+
+} // namespace box2d
 
 #endif

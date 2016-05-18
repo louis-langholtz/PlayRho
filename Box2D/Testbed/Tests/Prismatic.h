@@ -19,6 +19,8 @@
 #ifndef PRISMATIC_H
 #define PRISMATIC_H
 
+namespace box2d {
+
 // The motor in this test gets smoother with higher velocity iterations.
 class Prismatic : public Test
 {
@@ -102,5 +104,7 @@ public:
 
 	b2PrismaticJoint* m_joint;
 };
+
+} // namespace box2d
 
 #endif

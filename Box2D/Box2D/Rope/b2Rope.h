@@ -21,6 +21,8 @@
 
 #include <Box2D/Common/b2Math.h>
 
+namespace box2d {
+
 class b2Draw;
 
 /// 
@@ -106,5 +108,7 @@ private:
 	b2Float m_k2 = b2Float(1);
 	b2Float m_k3 = b2Float(0.1);
 };
+
+} // namespace box2d
 
 #endif

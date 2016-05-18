@@ -19,6 +19,8 @@
 #ifndef AddPair_H
 #define AddPair_H
 
+namespace box2d {
+	
 class AddPair : public Test
 {
 public:
@@ -62,5 +64,7 @@ public:
 		return new AddPair;
 	}
 };
+
+} // namespace box2d
 
 #endif

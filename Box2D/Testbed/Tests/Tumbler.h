@@ -19,6 +19,8 @@
 #ifndef TUMBLER_H
 #define TUMBLER_H
 
+namespace box2d {
+
 class Tumbler : public Test
 {
 public:
@@ -95,5 +97,7 @@ public:
 	b2RevoluteJoint* m_joint;
 	int32 m_count;
 };
+
+} // namespace box2d
 
 #endif

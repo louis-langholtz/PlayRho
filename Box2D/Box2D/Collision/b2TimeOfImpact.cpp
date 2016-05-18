@@ -25,6 +25,8 @@
 
 #include <stdio.h>
 
+namespace box2d {
+
 b2Float b2_toiTime, b2_toiMaxTime;
 uint32 b2_toiCalls, b2_toiIters, b2_toiMaxIters;
 uint32 b2_toiRootIters, b2_toiMaxRootIters;
@@ -245,7 +247,7 @@ private:
 
 // CCD via the local separating axis method. This seeks progression
 // by computing the largest time at which separation is maintained.
-b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
+b2TOIOutput box2d::b2TimeOfImpact(const b2TOIInput& input)
 {
 	++b2_toiCalls;
 
@@ -449,3 +451,5 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 	
 	return output;
 }
+	
+} // namespace box2d

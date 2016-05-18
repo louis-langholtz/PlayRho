@@ -28,6 +28,13 @@
 #define B2_NOT_USED(x) ((void)(x))
 #define b2Assert(A) assert(A)
 
+/// Current version.
+#define box2d_majorVersion 3
+#define box2d_minorVersion 0
+#define box2d_revision 0
+
+namespace box2d
+{
 using int8 = signed char;
 using int16 = signed short;
 using int32 = signed int;
@@ -170,10 +177,7 @@ struct b2Version
 	int32 revision;		///< bug fixes
 };
 
-/// Current version.
-#define b2_majorVersion 3
-#define b2_minorVersion 0
-#define b2_revision 0
-constexpr auto b2_version = b2Version{b2_majorVersion, b2_minorVersion, b2_revision};
+constexpr auto b2_version = b2Version{box2d_majorVersion, box2d_minorVersion, box2d_revision};
+}
 
 #endif

@@ -22,6 +22,8 @@
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include <Box2D/Dynamics/Joints/b2Joint.h>
 
+using namespace box2d;
+
 uint16 b2Body::GetFlags(const b2BodyDef& bd) noexcept
 {
 	uint16 flags = 0;

@@ -23,6 +23,8 @@
 #include <Box2D/Collision/b2Collision.h>
 #include <Box2D/Dynamics/b2TimeStep.h>
 
+namespace box2d {
+
 class b2Contact;
 class b2Body;
 class b2StackAllocator;
@@ -192,6 +194,8 @@ private:
 	b2ContactPositionConstraint* const m_positionConstraints;
 	b2ContactVelocityConstraint* const m_velocityConstraints;
 };
+
+} // namespace box2d
 
 #endif
 

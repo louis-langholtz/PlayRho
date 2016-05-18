@@ -22,6 +22,8 @@
 #include <Box2D/Collision/Shapes/b2Shape.h>
 #include <type_traits>
 
+namespace box2d {
+
 /// A convex polygon. It is assumed that the interior of the polygon is to
 /// the left of each edge.
 /// Polygons have a maximum number of vertices equal to b2_maxPolygonVertices.
@@ -111,4 +113,6 @@ inline b2Vec2 b2PolygonShape::GetNormal(vertex_count_t index) const
 	b2Assert(0 <= index && index < m_count);
 	return m_normals[index];
 }
+	
+} // namespace box2d
 #endif

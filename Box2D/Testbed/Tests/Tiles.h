@@ -19,6 +19,8 @@
 #ifndef TILES_H
 #define TILES_H
 
+namespace box2d {
+
 /// This stress tests the dynamic tree broad-phase. This also shows that tile
 /// based collision is _not_ smooth due to Box2D not knowing about adjacency.
 class Tiles : public Test
@@ -153,5 +155,7 @@ public:
 	int32 m_fixtureCount;
 	b2Float m_createTime;
 };
+
+} // namespace box2d
 
 #endif

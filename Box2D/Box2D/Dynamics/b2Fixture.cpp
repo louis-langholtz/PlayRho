@@ -27,6 +27,8 @@
 #include <Box2D/Collision/b2Collision.h>
 #include <Box2D/Common/b2BlockAllocator.h>
 
+using namespace box2d;
+
 void b2Fixture::Create(b2BlockAllocator* allocator, const b2FixtureDef* def)
 {
 	m_userData = def->userData;

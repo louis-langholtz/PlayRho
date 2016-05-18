@@ -21,6 +21,8 @@
 #include <cstdarg>
 #include <cstdlib>
 
+namespace box2d {
+
 // Memory allocators. Modify these to use your own allocator.
 void* b2Alloc(b2_size_t size)
 {
@@ -47,3 +49,5 @@ void b2Log(const char* string, ...)
 	std::vprintf(string, args);
 	va_end(args);
 }
+
+} // namespace box2d

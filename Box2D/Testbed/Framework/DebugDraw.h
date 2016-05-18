@@ -21,10 +21,13 @@
 
 #include <Box2D/Box2D.h>
 
-struct b2AABB;
 struct GLRenderPoints;
 struct GLRenderLines;
 struct GLRenderTriangles;
+
+namespace box2d {
+
+struct b2AABB;
 
 //
 struct Camera
@@ -90,5 +93,7 @@ private:
 
 extern DebugDraw g_debugDraw;
 extern Camera g_camera;
+
+} // namespace box2d
 
 #endif

@@ -19,6 +19,8 @@
 #ifndef PINBALL_H
 #define PINBALL_H
 
+namespace box2d {
+
 /// This tests bullet collision and provides an example of a gameplay scenario.
 /// This also uses a loop shape.
 class Pinball : public Test
@@ -163,5 +165,7 @@ public:
 	b2Body* m_ball;
 	bool m_button;
 };
+
+} // namespace box2d
 
 #endif

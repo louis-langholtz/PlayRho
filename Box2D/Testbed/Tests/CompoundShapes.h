@@ -19,6 +19,8 @@
 #ifndef COMPOUND_SHAPES_H
 #define COMPOUND_SHAPES_H
 
+namespace box2d {
+
 // TODO_ERIN test joints on compounds.
 class CompoundShapes : public Test
 {
@@ -135,5 +137,7 @@ public:
 		return new CompoundShapes;
 	}
 };
+
+} // namespace box2d
 
 #endif

@@ -19,6 +19,8 @@
 #ifndef SHAPE_EDITING_H
 #define SHAPE_EDITING_H
 
+namespace box2d {
+
 class ShapeEditing : public Test
 {
 public:
@@ -99,5 +101,7 @@ public:
 	b2Fixture* m_fixture2;
 	bool m_sensor;
 };
+
+} // namespace box2d
 
 #endif

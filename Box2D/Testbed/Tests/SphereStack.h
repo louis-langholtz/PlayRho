@@ -19,6 +19,8 @@
 #ifndef SPHERE_STACK_H
 #define SPHERE_STACK_H
 
+namespace box2d {
+
 class SphereStack : public Test
 {
 public:
@@ -82,5 +84,7 @@ public:
 
 	b2Body* m_bodies[e_count];
 };
+
+} // namespace box2d
 
 #endif

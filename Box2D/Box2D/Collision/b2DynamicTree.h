@@ -22,6 +22,7 @@
 #include <Box2D/Collision/b2Collision.h>
 #include <Box2D/Common/b2GrowableStack.h>
 
+namespace box2d {
 static constexpr auto b2_nullNode = static_cast<b2_size_t>(-1);
 
 /// A dynamic AABB tree broad-phase, inspired by Nathanael Presson's btDbvt.
@@ -291,5 +292,7 @@ inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) con
 		}
 	}
 }
+
+} /* namespace box2d */
 
 #endif

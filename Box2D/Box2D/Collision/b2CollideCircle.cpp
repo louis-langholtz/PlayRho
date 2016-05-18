@@ -20,6 +20,8 @@
 #include <Box2D/Collision/Shapes/b2CircleShape.h>
 #include <Box2D/Collision/Shapes/b2PolygonShape.h>
 
+namespace box2d {
+
 b2Manifold b2CollideShapes(const b2CircleShape& shapeA, const b2Transform& xfA, const b2CircleShape& shapeB, const b2Transform& xfB)
 {
 	const auto pA = b2Mul(xfA, shapeA.GetPosition());
@@ -119,3 +121,6 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 	manifold.AddPoint(shapeB.GetPosition());
 	return manifold;
 }
+	
+} // namespace box2d
+

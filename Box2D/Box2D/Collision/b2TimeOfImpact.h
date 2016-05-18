@@ -22,6 +22,8 @@
 #include <Box2D/Common/b2Math.h>
 #include <Box2D/Collision/b2Distance.h>
 
+namespace box2d {
+
 /// Input parameters for b2TimeOfImpact
 struct b2TOIInput
 {
@@ -72,5 +74,7 @@ private:
 /// again.
 /// @note Use b2Distance to compute the contact point and normal at the time of impact.
 b2TOIOutput b2TimeOfImpact(const b2TOIInput& input);
+
+} // namespace box2d
 
 #endif

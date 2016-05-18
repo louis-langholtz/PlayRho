@@ -21,6 +21,8 @@
 
 #include <Box2D/Dynamics/Joints/b2Joint.h>
 
+namespace box2d {
+
 /// Prismatic joint definition. This requires defining a line of
 /// motion using an axis and an anchor point. The definition uses local
 /// anchor points and a local axis so that the initial configuration
@@ -179,5 +181,7 @@ inline b2Float b2PrismaticJoint::GetMotorSpeed() const noexcept
 {
 	return m_motorSpeed;
 }
+
+} // namespace box2d
 
 #endif

@@ -145,6 +145,8 @@ This might be faster than computing sin+cos.
 However, we can compute sin+cos of the same angle fast.
 */
 
+using namespace box2d;
+
 b2Island::b2Island(
 	island_count_t bodyCapacity,
 	island_count_t contactCapacity,

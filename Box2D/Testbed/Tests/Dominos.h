@@ -19,6 +19,8 @@
 #ifndef DOMINOS_H
 #define DOMINOS_H
 
+namespace box2d {
+
 class Dominos : public Test
 {
 public:
@@ -211,5 +213,7 @@ public:
 		return new Dominos;
 	}
 };
+
+} // namespace box2d
 
 #endif

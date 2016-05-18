@@ -19,6 +19,8 @@
 #ifndef BREAKABLE_TEST_H
 #define BREAKABLE_TEST_H
 
+namespace box2d {
+
 // This is used to test sensor shapes.
 class Breakable : public Test
 {
@@ -151,5 +153,7 @@ public:
 	bool m_broke;
 	bool m_break;
 };
+
+} // namespace box2d
 
 #endif

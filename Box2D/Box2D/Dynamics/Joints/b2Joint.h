@@ -21,6 +21,8 @@
 
 #include <Box2D/Common/b2Math.h>
 
+namespace box2d {
+
 class b2Body;
 class b2Joint;
 struct b2SolverData;
@@ -233,5 +235,7 @@ inline void b2Joint::SetInIsland(bool value) noexcept
 {
 	m_islandFlag = value;
 }
+
+} // namespace box2d
 
 #endif

@@ -22,6 +22,8 @@
 #include <Box2D/Collision/Shapes/b2ChainShape.h>
 #include <Box2D/Collision/Shapes/b2PolygonShape.h>
 
+namespace box2d {
+
 #if defined(DO_GJK_PROFILING)
 // GJK using Voronoi regions (Christer Ericson) and Barycentric coordinates.
 int32 b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
@@ -457,7 +459,7 @@ void b2Simplex::Solve3() noexcept
 	m_count = 3;
 }
 
-b2DistanceOutput b2Distance(b2SimplexCache& cache, const b2DistanceInput& input)
+b2DistanceOutput box2d::b2Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 {
 #if defined(DO_GJK_PROFILING)
 	++b2_gjkCalls;
@@ -621,3 +623,5 @@ b2DistanceOutput b2Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 	}
 	return output;
 }
+
+} // namespace box2d

@@ -7,3 +7,5 @@
 //
 
 #include "b2BodyList.hpp"
+
+using namespace box2d;

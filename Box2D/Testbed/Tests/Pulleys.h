@@ -19,6 +19,8 @@
 #ifndef PULLEYS_H
 #define PULLEYS_H
 
+namespace box2d {
+
 class Pulleys : public Test
 {
 public:
@@ -90,5 +92,7 @@ public:
 
 	b2PulleyJoint* m_joint1;
 };
+
+} // namespace box2d
 
 #endif

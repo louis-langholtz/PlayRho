@@ -20,6 +20,7 @@
 #include <Box2D/Dynamics/b2Body.h>
 #include <Box2D/Dynamics/b2TimeStep.h>
 
+using namespace box2d;
 
 // Limit:
 // C = norm(pB - pA) - L

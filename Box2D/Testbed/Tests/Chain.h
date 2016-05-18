@@ -19,6 +19,8 @@
 #ifndef CHAIN_H
 #define CHAIN_H
 
+namespace box2d {
+
 class Chain : public Test
 {
 public:
@@ -70,5 +72,7 @@ public:
 		return new Chain;
 	}
 };
+
+} // namespace box2d
 
 #endif

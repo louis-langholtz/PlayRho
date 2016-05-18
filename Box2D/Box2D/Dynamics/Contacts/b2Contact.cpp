@@ -34,6 +34,8 @@
 #include <Box2D/Dynamics/b2Fixture.h>
 #include <Box2D/Dynamics/b2World.h>
 
+using namespace box2d;
+
 using b2ContactCreateFcn = b2Contact* (b2Fixture* fixtureA, child_count_t indexA,
 									   b2Fixture* fixtureB, child_count_t indexB,
 									   b2BlockAllocator* allocator);

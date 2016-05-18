@@ -19,6 +19,8 @@
 #ifndef TIME_OF_IMPACT_H
 #define TIME_OF_IMPACT_H
 
+namespace box2d {
+
 class TimeOfImpact : public Test
 {
 public:
@@ -117,5 +119,7 @@ public:
 	b2PolygonShape m_shapeA;
 	b2PolygonShape m_shapeB;
 };
+
+} // namespace box2d
 
 #endif

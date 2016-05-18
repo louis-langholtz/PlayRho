@@ -19,6 +19,8 @@
 #ifndef CONFINED_H
 #define CONFINED_H
 
+namespace box2d {
+
 class Confined : public Test
 {
 public:
@@ -229,5 +231,7 @@ public:
 	
 	bool m_bullet_mode = false;
 };
+
+} // namespace box2d
 
 #endif

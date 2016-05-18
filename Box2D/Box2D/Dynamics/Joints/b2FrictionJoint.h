@@ -21,6 +21,8 @@
 
 #include <Box2D/Dynamics/Joints/b2Joint.h>
 
+namespace box2d {
+
 /// Friction joint definition.
 struct b2FrictionJointDef : public b2JointDef
 {
@@ -108,5 +110,7 @@ protected:
 	b2Mat22 m_linearMass;
 	b2Float m_angularMass;
 };
+
+} // namespace box2d
 
 #endif

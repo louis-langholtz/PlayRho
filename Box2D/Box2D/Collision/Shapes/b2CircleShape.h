@@ -21,6 +21,8 @@
 
 #include <Box2D/Collision/Shapes/b2Shape.h>
 
+namespace box2d {
+
 /// A circle shape.
 class b2CircleShape : public b2Shape
 {
@@ -57,5 +59,7 @@ private:
 	/// Position
 	b2Vec2 m_p = b2Vec2_zero;
 };
+
+} // namespace box2d
 
 #endif

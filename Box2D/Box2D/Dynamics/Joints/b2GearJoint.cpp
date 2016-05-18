@@ -22,6 +22,8 @@
 #include <Box2D/Dynamics/b2Body.h>
 #include <Box2D/Dynamics/b2TimeStep.h>
 
+using namespace box2d;
+
 // Gear Joint:
 // C0 = (coordinate1 + ratio * coordinate2)_initial
 // C = (coordinate1 + ratio * coordinate2) - C0 = 0

@@ -7,3 +7,5 @@
 //
 
 #include "b2FixtureList.hpp"
+
+using namespace box2d;

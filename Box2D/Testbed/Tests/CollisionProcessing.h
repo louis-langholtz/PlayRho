@@ -21,6 +21,8 @@
 
 #include <algorithm>
 
+namespace box2d {
+
 // This test shows collision processing and tests
 // deferred body destruction.
 class CollisionProcessing : public Test
@@ -184,5 +186,7 @@ public:
 		return new CollisionProcessing;
 	}
 };
+
+} // namespace box2d
 
 #endif

@@ -25,6 +25,8 @@
 #include <Box2D/Dynamics/b2ConstFixtureList.hpp>
 #include <memory>
 
+namespace box2d {
+
 class b2Fixture;
 class b2Joint;
 class b2Contact;
@@ -915,5 +917,7 @@ inline bool b2Body::IsValidIslandIndex() const noexcept
 {
 	return IsInIsland() && (m_islandIndex != InvalidIslandIndex);
 }
+
+} // namespace box2d
 
 #endif

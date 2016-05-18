@@ -19,6 +19,8 @@
 #ifndef MOBILE_BALANCED_H
 #define MOBILE_BALANCED_H
 
+namespace box2d {
+
 class MobileBalanced : public Test
 {
 public:
@@ -101,5 +103,7 @@ public:
 		return new MobileBalanced;
 	}
 };
+
+} // namespace box2d
 
 #endif

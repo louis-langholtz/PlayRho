@@ -23,6 +23,8 @@
 // NOTE: we are intentionally filtering one of the polygons, therefore
 // the ray will always miss one type of polygon.
 
+namespace box2d {
+
 // This callback finds the closest hit. Polygon 0 is filtered.
 class RayCastClosestCallback : public b2RayCastCallback
 {
@@ -477,5 +479,7 @@ public:
 
 	Mode m_mode;
 };
+
+} // namespace box2d
 
 #endif

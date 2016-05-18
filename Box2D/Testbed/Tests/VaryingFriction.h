@@ -19,6 +19,8 @@
 #ifndef VARYING_FRICTION_H
 #define VARYING_FRICTION_H
 
+namespace box2d {
+
 class VaryingFriction : public Test
 {
 public:
@@ -120,5 +122,7 @@ public:
 		return new VaryingFriction;
 	}
 };
+
+} // namespace box2d
 
 #endif

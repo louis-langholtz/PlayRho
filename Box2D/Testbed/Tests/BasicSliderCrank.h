@@ -19,6 +19,8 @@
 #ifndef BASIC_SLIDER_CRANK_H
 #define BASIC_SLIDER_CRANK_H
 
+namespace box2d {
+
 // A basic slider crank created for GDC tutorial: Understanding Constraints
 class BasicSliderCrank : public Test
 {
@@ -99,5 +101,7 @@ public:
 		return new BasicSliderCrank;
 	}
 };
+
+} // namespace box2d
 
 #endif

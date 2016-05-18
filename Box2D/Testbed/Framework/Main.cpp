@@ -34,6 +34,8 @@
 #define snprintf _snprintf
 #endif
 
+using namespace box2d;
+
 //
 struct UIState
 {

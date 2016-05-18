@@ -19,6 +19,8 @@
 #include <Box2D/Collision/Shapes/b2EdgeShape.h>
 #include <new>
 
+using namespace box2d;
+
 void b2EdgeShape::Set(const b2Vec2& v1, const b2Vec2& v2)
 {
 	m_vertex1 = v1;

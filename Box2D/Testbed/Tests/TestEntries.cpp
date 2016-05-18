@@ -71,6 +71,8 @@
 #include "VerticalStack.h"
 #include "Web.h"
 
+namespace box2d {
+
 TestEntry g_testEntries[] =
 {
 	{"Tiles", Tiles::Create},
@@ -127,3 +129,5 @@ TestEntry g_testEntries[] =
 	{"Add Pair Stress Test", AddPair::Create},
 	{nullptr, nullptr}
 };
+	
+} // namespace box2d

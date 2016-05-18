@@ -19,6 +19,8 @@
 #ifndef CAR_H
 #define CAR_H
 
+namespace box2d {
+
 // This is a fun demo that shows off the wheel joint
 class Car : public Test
 {
@@ -282,5 +284,7 @@ public:
 	b2WheelJoint* m_spring1;
 	b2WheelJoint* m_spring2;
 };
+
+} // namespace box2d
 
 #endif

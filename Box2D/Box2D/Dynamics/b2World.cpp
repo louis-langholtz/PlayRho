@@ -35,6 +35,8 @@
 #include <functional>
 #include <type_traits>
 
+using namespace box2d;
+
 template <typename T>
 class b2FlagGuard
 {

@@ -31,6 +31,8 @@
 
 #include <cstdlib>
 
+namespace box2d {
+
 class Test;
 struct Settings;
 
@@ -195,5 +197,7 @@ protected:
 	b2Profile m_maxProfile;
 	b2Profile m_totalProfile;
 };
+
+} // namespace box2d
 
 #endif

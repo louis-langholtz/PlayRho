@@ -19,6 +19,8 @@
 #ifndef VARYING_RESTITUTION_H
 #define VARYING_RESTITUTION_H
 
+namespace box2d {
+
 // Note: even with a restitution of 1.0, there is some energy change
 // due to position correction.
 class VaryingRestitution : public Test
@@ -65,5 +67,7 @@ public:
 		return new VaryingRestitution;
 	}
 };
+
+} // namespace box2d
 
 #endif

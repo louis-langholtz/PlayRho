@@ -28,6 +28,8 @@
 #include <Box2D/Dynamics/b2BodyList.hpp>
 #include <Box2D/Dynamics/b2ConstBodyList.hpp>
 
+namespace box2d {
+
 struct b2AABB;
 struct b2BodyDef;
 struct b2Color;
@@ -370,5 +372,7 @@ inline const b2Profile& b2World::GetProfile() const noexcept
 {
 	return m_profile;
 }
+	
+} // namespace box2d
 
 #endif

@@ -11,6 +11,8 @@
 
 #include <iterator>
 
+namespace box2d {
+
 class b2Fixture;
 
 class b2FixtureIterator: public std::iterator<std::forward_iterator_tag, b2Fixture>
@@ -32,4 +34,7 @@ private:
 	
 	pointer p;
 };
+	
+} // namespace box2d
+
 #endif /* b2FixtureIterator_hpp */

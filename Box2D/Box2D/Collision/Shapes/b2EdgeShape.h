@@ -21,6 +21,8 @@
 
 #include <Box2D/Collision/Shapes/b2Shape.h>
 
+namespace box2d {
+
 /// A line segment (edge) shape. These can be connected in chains or loops
 /// to other edge shapes. The connectivity information is used to ensure
 /// correct contact normals.
@@ -87,5 +89,7 @@ inline void b2EdgeShape::SetVertex3(const b2Vec2& v) noexcept
 	m_vertex3 = v;
 	m_hasVertex3 = true;
 }
+	
+} // namespace box2d
 
 #endif

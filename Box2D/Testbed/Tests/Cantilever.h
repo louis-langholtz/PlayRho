@@ -19,6 +19,8 @@
 #ifndef CANTILEVER_H
 #define CANTILEVER_H
 
+namespace box2d {
+
 // It is difficult to make a cantilever made of links completely rigid with weld joints.
 // You will have to use a high number of iterations to make them stiff.
 // So why not go ahead and use soft weld joints? They behave like a revolute
@@ -207,5 +209,7 @@ public:
 
 	b2Body* m_middle;
 };
+
+} // namespace box2d
 
 #endif

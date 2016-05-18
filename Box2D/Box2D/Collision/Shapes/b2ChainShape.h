@@ -21,6 +21,8 @@
 
 #include <Box2D/Collision/Shapes/b2Shape.h>
 
+namespace box2d {
+
 class b2EdgeShape;
 
 /// A chain shape is a free form sequence of line segments.
@@ -114,5 +116,7 @@ inline const b2Vec2& b2ChainShape::GetVertex(child_count_t index) const
 	b2Assert((0 <= index) && (index < m_count));
 	return m_vertices[index];
 }
+
+} // namespace box2d
 
 #endif

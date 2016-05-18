@@ -11,6 +11,8 @@
 
 #include <iterator>
 
+namespace box2d {
+
 class b2Body;
 
 class b2ConstBodyIterator: public std::iterator<std::forward_iterator_tag, const b2Body>
@@ -32,5 +34,7 @@ private:
 	
 	pointer p;
 };
+
+} // namespace box2d
 
 #endif /* b2ConstBodyIterator_hpp */

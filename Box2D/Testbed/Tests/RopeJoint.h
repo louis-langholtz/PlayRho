@@ -19,6 +19,8 @@
 #ifndef ROPE_JOINT_H
 #define ROPE_JOINT_H
 
+namespace box2d {
+
 /// This test shows how a rope joint can be used to stabilize a chain of
 /// bodies with a heavy payload. Notice that the rope joint just prevents
 /// excessive stretching and has no other effect.
@@ -141,5 +143,7 @@ public:
 	b2RopeJointDef m_ropeDef;
 	b2Joint* m_rope;
 };
+
+} // namespace box2d
 
 #endif

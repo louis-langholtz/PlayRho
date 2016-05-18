@@ -20,6 +20,8 @@
 #include <Box2D/Dynamics/b2Body.h>
 #include <Box2D/Dynamics/b2TimeStep.h>
 
+using namespace box2d;
+
 // Pulley:
 // length1 = norm(p1 - s1)
 // length2 = norm(p2 - s2)

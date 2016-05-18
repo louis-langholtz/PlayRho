@@ -22,6 +22,8 @@
 #include <Box2D/Common/b2Math.h>
 #include <Box2D/Dynamics/b2TimeStep.h>
 
+namespace box2d {
+
 class b2Body;
 class b2Contact;
 class b2Joint;
@@ -129,5 +131,7 @@ private:
 	b2Velocity* const m_velocities;
 	b2Position* const m_positions;
 };
+
+} // namespace box2d
 
 #endif

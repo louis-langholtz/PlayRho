@@ -22,6 +22,8 @@
 #ifndef THEO_JANSEN_H
 #define THEO_JANSEN_H
 
+namespace box2d {
+
 class TheoJansen : public Test
 {
 public:
@@ -252,5 +254,7 @@ public:
 	bool m_motorOn;
 	b2Float m_motorSpeed;
 };
+
+} // namespace box2d
 
 #endif // THEO_JANSEN_H

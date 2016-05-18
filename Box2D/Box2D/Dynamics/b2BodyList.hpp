@@ -12,6 +12,8 @@
 #include <Box2D/Common/b2BodyIterator.hpp>
 #include <Box2D/Common/b2ConstBodyIterator.hpp>
 
+namespace box2d {
+
 class b2Body;
 
 class b2BodyList
@@ -32,5 +34,7 @@ public:
 private:
 	b2Body* p = nullptr;
 };
+
+} // namespace box2d
 
 #endif /* b2BodyList_hpp */

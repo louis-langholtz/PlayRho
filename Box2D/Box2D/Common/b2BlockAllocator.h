@@ -21,6 +21,8 @@
 
 #include <Box2D/Common/b2Settings.h>
 
+namespace box2d {
+
 struct b2Block;
 struct b2Chunk;
 
@@ -54,5 +56,7 @@ private:
 	b2Chunk* m_chunks;
 	b2Block* m_freeLists[b2_blockSizes];
 };
+
+} // namespace box2d
 
 #endif

@@ -19,6 +19,8 @@
 #ifndef PYRAMID_H
 #define PYRAMID_H
 
+namespace box2d {
+
 class Pyramid : public Test
 {
 public:
@@ -85,5 +87,7 @@ public:
 		return new Pyramid;
 	}
 };
+
+} // namespace box2d
 
 #endif

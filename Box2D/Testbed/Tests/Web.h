@@ -19,6 +19,8 @@
 #ifndef WEB_H
 #define WEB_H
 
+namespace box2d {
+
 // This tests distance joints, body destruction, and joint destruction.
 class Web : public Test
 {
@@ -205,5 +207,7 @@ public:
 	b2Body* m_bodies[4];
 	b2Joint* m_joints[8];
 };
+
+} // namespace box2d
 
 #endif

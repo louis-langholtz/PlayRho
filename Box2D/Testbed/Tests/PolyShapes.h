@@ -22,6 +22,8 @@
 /// This tests stacking. It also shows how to use b2World::Query
 /// and b2TestOverlap.
 
+namespace box2d {
+
 /// This callback is called by b2World::QueryAABB. We find all the fixtures
 /// that overlap an AABB. Of those, we use b2TestOverlap to determine which fixtures
 /// overlap a circle. Up to 4 overlapped fixtures will be highlighted with a yellow border.
@@ -294,5 +296,7 @@ public:
 	b2PolygonShape m_polygons[4];
 	b2CircleShape m_circle;
 };
+
+} // namespace box2d
 
 #endif

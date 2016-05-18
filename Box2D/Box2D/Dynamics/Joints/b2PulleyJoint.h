@@ -21,6 +21,8 @@
 
 #include <Box2D/Dynamics/Joints/b2Joint.h>
 
+namespace box2d {
+
 const auto b2_minPulleyLength = b2Float(2);
 
 /// Pulley joint definition. This requires two ground anchors,
@@ -140,5 +142,7 @@ protected:
 	b2Float m_invIB;
 	b2Float m_mass;
 };
+
+} // namespace box2d
 
 #endif

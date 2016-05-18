@@ -21,6 +21,8 @@
 
 // A motor driven slider crank with joint friction.
 
+namespace box2d {
+
 class SliderCrank : public Test
 {
 public:
@@ -152,5 +154,7 @@ public:
 	b2RevoluteJoint* m_joint1;
 	b2PrismaticJoint* m_joint2;
 };
+
+} // namespace box2d
 
 #endif

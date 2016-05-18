@@ -19,6 +19,8 @@
 #include <Box2D/Rope/b2Rope.h>
 #include <Box2D/Common/b2Draw.h>
 
+using namespace box2d;
+
 b2Rope::~b2Rope()
 {
 	b2Free(m_ps);

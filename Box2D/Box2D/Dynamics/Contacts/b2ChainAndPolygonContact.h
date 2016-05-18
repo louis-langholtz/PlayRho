@@ -21,6 +21,8 @@
 
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 
+namespace box2d {
+
 class b2BlockAllocator;
 
 class b2ChainAndPolygonContact : public b2Contact
@@ -36,5 +38,7 @@ public:
 
 	b2Manifold Evaluate(const b2Transform& xfA, const b2Transform& xfB) override;
 };
+
+} // namespace box2d
 
 #endif

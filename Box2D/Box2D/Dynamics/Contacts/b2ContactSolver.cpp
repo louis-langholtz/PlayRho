@@ -23,6 +23,8 @@
 #include <Box2D/Dynamics/b2Fixture.h>
 #include <Box2D/Dynamics/b2World.h>
 
+namespace box2d {
+
 #if !defined(NDEBUG)
 // Solver debugging is normally disabled because the block solver sometimes has to deal with a poorly conditioned effective mass matrix.
 // #define B2_DEBUG_SOLVER 1
@@ -302,7 +304,7 @@ void b2ContactSolver::WarmStart()
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		const auto& vc = m_velocityConstraints[i];
-		::WarmStart(vc, m_velocities[vc.bodyA.index], m_velocities[vc.bodyB.index]);
+		::box2d::WarmStart(vc, m_velocities[vc.bodyA.index], m_velocities[vc.bodyB.index]);
 	}
 }
 
@@ -846,3 +848,5 @@ bool b2ContactSolver::SolveTOIPositionConstraints(size_type indexA, size_type in
 	// Can't expect minSpeparation >= -b2_linearSlop because we don't push the separation above -b2_linearSlop.
 	return minSeparation >= MinToiSeparation;
 }
+	
+} // namespace box2d

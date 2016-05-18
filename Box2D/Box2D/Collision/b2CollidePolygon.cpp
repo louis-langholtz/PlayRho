@@ -19,6 +19,8 @@
 #include <Box2D/Collision/b2Collision.h>
 #include <Box2D/Collision/Shapes/b2PolygonShape.h>
 
+namespace box2d {
+
 // Find the max separation between shape1 and shape2 using edge normals from shape1.
 static b2Float b2FindMaxSeparation(b2PolygonShape::vertex_count_t& edgeIndex,
 								   const b2PolygonShape& shape1, const b2Transform& xf1,
@@ -211,3 +213,5 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 	}
 	return manifold;
 }
+	
+} // namespace box2d

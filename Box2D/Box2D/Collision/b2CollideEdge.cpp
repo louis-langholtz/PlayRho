@@ -23,6 +23,8 @@
 
 #include <type_traits>
 
+namespace box2d {
+
 // Compute contact points for edge versus circle.
 // This accounts for edge connectivity.
 b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, const b2CircleShape& shapeB, const b2Transform& xfB)
@@ -688,3 +690,5 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 	const auto collider = b2EPCollider{b2MulT(xfA, xfB)};
 	return collider.Collide(shapeA, shapeB);
 }
+
+} // namespace box2d

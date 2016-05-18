@@ -18,7 +18,8 @@
 
 #include <Box2D/Common/b2Math.h>
 
-///
+using namespace box2d;
+
 void b2Mat33::GetInverse22(b2Mat33* M) const
 {
 	const auto a = ex.x, b = ey.x, c = ex.y, d = ey.y;

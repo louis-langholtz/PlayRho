@@ -25,6 +25,8 @@
 
 #include <new>
 
+using namespace box2d;
+
 b2Contact* b2ChainAndPolygonContact::Create(b2Fixture* fixtureA, child_count_t indexA,
 											b2Fixture* fixtureB, child_count_t indexB,
 											b2BlockAllocator* allocator)

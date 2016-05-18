@@ -18,6 +18,8 @@
 
 #include <Box2D/Collision/b2BroadPhase.h>
 
+using namespace box2d;
+
 b2BroadPhase::b2BroadPhase():
 	m_pairBuffer(static_cast<b2ProxyIdPair*>(b2Alloc(m_pairCapacity * sizeof(b2ProxyIdPair)))),
 	m_moveBuffer(static_cast<size_type*>(b2Alloc(m_moveCapacity * sizeof(size_type))))

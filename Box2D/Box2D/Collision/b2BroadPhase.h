@@ -24,6 +24,7 @@
 #include <Box2D/Collision/b2DynamicTree.h>
 #include <algorithm>
 
+namespace box2d {
 /// Proxy ID pair.
 struct b2ProxyIdPair
 {
@@ -275,5 +276,7 @@ inline void b2BroadPhase::ShiftOrigin(const b2Vec2& newOrigin)
 {
 	m_tree.ShiftOrigin(newOrigin);
 }
+		
+} // namespace box2d
 
 #endif

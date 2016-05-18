@@ -19,6 +19,8 @@
 #ifndef SENSOR_TEST_H
 #define SENSOR_TEST_H
 
+namespace box2d {
+
 // This is used to test sensor shapes.
 class SensorTest : public Test
 {
@@ -175,5 +177,7 @@ public:
 	b2Body* m_bodies[e_count];
 	bool m_touching[e_count];
 };
+
+} // namespace box2d
 
 #endif

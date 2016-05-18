@@ -19,6 +19,8 @@
 #ifndef CONVEX_HULL_H
 #define CONVEX_HULL_H
 
+namespace box2d {
+
 class ConvexHull : public Test
 {
 public:
@@ -105,5 +107,7 @@ public:
 	int32 m_count;
 	bool m_auto;
 };
+
+} // namespace box2d
 
 #endif

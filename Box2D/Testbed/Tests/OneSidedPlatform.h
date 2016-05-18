@@ -19,6 +19,8 @@
 #ifndef ONE_SIDED_PLATFORM_H
 #define ONE_SIDED_PLATFORM_H
 
+namespace box2d {
+
 class OneSidedPlatform : public Test
 {
 public:
@@ -128,5 +130,7 @@ public:
 	b2Fixture* m_platform;
 	b2Fixture* m_character;
 };
+
+} // namespace box2d
 
 #endif

@@ -21,6 +21,8 @@
 
 #include <Box2D/Collision/b2BroadPhase.h>
 
+namespace box2d {
+
 class b2Contact;
 class b2ContactFilter;
 class b2ContactListener;
@@ -56,5 +58,7 @@ private:
 	b2Contact* m_contactList = nullptr;
 	b2BlockAllocator* const m_allocator;
 };
+
+} // namespace box2d
 
 #endif

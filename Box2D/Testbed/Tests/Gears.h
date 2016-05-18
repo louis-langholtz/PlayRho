@@ -19,6 +19,8 @@
 #ifndef GEARS_H
 #define GEARS_H
 
+namespace box2d {
+
 class Gears : public Test
 {
 public:
@@ -173,5 +175,7 @@ public:
 	b2GearJoint* m_joint4;
 	b2GearJoint* m_joint5;
 };
+
+} // namespace box2d
 
 #endif

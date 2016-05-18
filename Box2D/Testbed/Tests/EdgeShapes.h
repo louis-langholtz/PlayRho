@@ -19,6 +19,8 @@
 #ifndef EDGE_SHAPES_H
 #define EDGE_SHAPES_H
 
+namespace box2d {
+
 class EdgeShapesCallback : public b2RayCastCallback
 {
 public:
@@ -245,5 +247,7 @@ public:
 
 	b2Float m_angle;
 };
+
+} // namespace box2d
 
 #endif

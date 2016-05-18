@@ -22,6 +22,8 @@
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 
+using namespace box2d;
+
 b2ContactManager::b2ContactManager(b2BlockAllocator* allocator, b2ContactFilter* filter, b2ContactListener* listener):
 	m_allocator(allocator),
 	m_contactFilter(filter), m_contactListener(listener)

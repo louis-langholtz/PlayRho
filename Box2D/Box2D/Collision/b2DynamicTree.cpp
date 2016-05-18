@@ -19,6 +19,8 @@
 #include <Box2D/Collision/b2DynamicTree.h>
 #include <cstring>
 
+using namespace box2d;
+
 b2DynamicTree::b2DynamicTree():
 	m_nodes(static_cast<b2TreeNode*>(b2Alloc(m_nodeCapacity * sizeof(b2TreeNode))))
 {

@@ -11,6 +11,8 @@
 
 #include <Box2D/Common/b2ConstFixtureIterator.hpp>
 
+namespace box2d {
+
 class b2Fixture;
 
 class b2ConstFixtureList
@@ -30,5 +32,7 @@ public:
 private:
 	const b2Fixture* p = nullptr;
 };
+
+} // namespace box2d
 
 #endif /* b2ConstFixtureList_hpp */

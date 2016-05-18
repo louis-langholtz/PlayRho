@@ -19,6 +19,8 @@
 #include "Test.h"
 #include <stdio.h>
 
+using namespace box2d;
+
 void DestructionListener::SayGoodbye(b2Joint* joint)
 {
 	if (test->m_mouseJoint == joint)

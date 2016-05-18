@@ -19,6 +19,8 @@
 #ifndef MOBILE_H
 #define MOBILE_H
 
+namespace box2d {
+
 class Mobile : public Test
 {
 public:
@@ -98,5 +100,7 @@ public:
 		return new Mobile;
 	}
 };
+
+} // namespace box2d
 
 #endif

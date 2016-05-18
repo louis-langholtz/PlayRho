@@ -19,6 +19,8 @@
 #ifndef DYNAMIC_TREE_TEST_H
 #define DYNAMIC_TREE_TEST_H
 
+namespace box2d {
+
 class DynamicTreeTest : public Test
 {
 public:
@@ -348,5 +350,7 @@ private:
 	int32 m_stepCount;
 	bool m_automated;
 };
+
+} // namespace box2d
 
 #endif

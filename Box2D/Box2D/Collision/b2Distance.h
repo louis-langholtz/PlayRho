@@ -22,6 +22,9 @@
 
 #include <Box2D/Common/b2Math.h>
 
+namespace box2d
+{
+
 class b2Shape;
 
 /// A distance proxy is used by the GJK algorithm.
@@ -171,5 +174,7 @@ inline const b2Vec2& b2DistanceProxy::GetSupportVertex(const b2Vec2& d) const
 
 	return m_vertices[bestIndex];
 }
+
+} /* namespace box2d */
 
 #endif

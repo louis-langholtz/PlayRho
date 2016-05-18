@@ -19,6 +19,8 @@
 #ifndef CONTINUOUS_TEST_H
 #define CONTINUOUS_TEST_H
 
+namespace box2d {
+
 class ContinuousTest : public Test
 {
 public:
@@ -153,5 +155,7 @@ public:
 	b2Body* m_body;
 	b2Float m_angularVelocity;
 };
+
+} // namespace box2d
 
 #endif

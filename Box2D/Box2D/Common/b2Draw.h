@@ -21,6 +21,8 @@
 
 #include <Box2D/Common/b2Math.h>
 
+namespace box2d {
+
 /// Color for debug drawing. Each value has the range [0,1].
 struct b2Color
 {
@@ -84,5 +86,7 @@ public:
 protected:
 	uint32 m_drawFlags = 0;
 };
+
+} // namespace box2d
 
 #endif

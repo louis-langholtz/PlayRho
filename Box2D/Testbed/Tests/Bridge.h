@@ -19,6 +19,8 @@
 #ifndef BRIDGE_H
 #define BRIDGE_H
 
+namespace box2d {
+
 class Bridge : public Test
 {
 public:
@@ -121,5 +123,7 @@ public:
 
 	b2Body* m_middle;
 };
+
+} // namespace box2d
 
 #endif

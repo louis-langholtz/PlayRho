@@ -34,6 +34,8 @@
 
 #include <new>
 
+using namespace box2d;
+
 b2Joint* b2Joint::Create(const b2JointDef* def, b2BlockAllocator* allocator)
 {
 	auto joint = static_cast<b2Joint*>(nullptr);

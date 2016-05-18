@@ -19,6 +19,8 @@
 #ifndef VERTICAL_STACK_H
 #define VERTICAL_STACK_H
 
+namespace box2d {
+
 extern bool g_blockSolve;
 
 class VerticalStack : public Test
@@ -167,5 +169,7 @@ public:
 	b2Body* m_bodies[e_rowCount * e_columnCount];
 	int32 m_indices[e_rowCount * e_columnCount];
 };
+	
+} // namespace box2d
 
 #endif

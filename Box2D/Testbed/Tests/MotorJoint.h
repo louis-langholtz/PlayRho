@@ -19,6 +19,8 @@
 #ifndef MOTOR_JOINT_H
 #define MOTOR_JOINT_H
 
+namespace box2d {
+
 /// This test shows how to use a motor joint. A motor joint
 /// can be used to animate a dynamic body. With finite motor forces
 /// the body can be blocked by collision with other bodies.
@@ -110,5 +112,7 @@ public:
 	float32 m_time;
 	bool m_go;
 };
+
+} // namespace box2d
 
 #endif

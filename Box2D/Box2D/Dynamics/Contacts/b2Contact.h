@@ -26,6 +26,8 @@
 
 #include <type_traits>
 
+namespace box2d {
+
 class b2Body;
 class b2Contact;
 class b2Fixture;
@@ -433,5 +435,7 @@ inline void b2Contact::UnsetInIsland() noexcept
 {	
 	m_flags &= ~b2Contact::e_islandFlag;
 }
+	
+} // namespace box2d
 
 #endif

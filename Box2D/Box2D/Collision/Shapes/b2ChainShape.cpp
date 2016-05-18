@@ -21,6 +21,8 @@
 #include <new>
 #include <string.h>
 
+using namespace box2d;
+
 b2ChainShape::~b2ChainShape()
 {
 	Clear();

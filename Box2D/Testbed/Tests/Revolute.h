@@ -19,6 +19,8 @@
 #ifndef REVOLUTE_H
 #define REVOLUTE_H
 
+namespace box2d {
+
 class Revolute : public Test
 {
 public:
@@ -162,5 +164,7 @@ public:
 	b2Body* m_ball;
 	b2RevoluteJoint* m_joint;
 };
+
+} // namespace box2d
 
 #endif

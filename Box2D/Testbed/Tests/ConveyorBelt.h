@@ -19,6 +19,8 @@
 #ifndef CONVEYOR_BELT_H
 #define CONVEYOR_BELT_H
 
+namespace box2d {
+
 class ConveyorBelt : public Test
 {
 public:
@@ -94,5 +96,7 @@ public:
 
 	b2Fixture* m_platform;
 };
+
+} // namespace box2d
 
 #endif

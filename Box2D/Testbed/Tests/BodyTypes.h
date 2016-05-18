@@ -19,6 +19,8 @@
 #ifndef BODY_TYPES_H
 #define BODY_TYPES_H
 
+namespace box2d {
+
 class BodyTypes : public Test
 {
 public:
@@ -155,5 +157,7 @@ public:
 	b2Body* m_platform;
 	b2Float m_speed;
 };
+
+} // namespace box2d
 
 #endif

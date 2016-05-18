@@ -19,6 +19,8 @@
 #ifndef DISTANCE_TEST_H
 #define DISTANCE_TEST_H
 
+namespace box2d {
+
 class DistanceTest : public Test
 {
 public:
@@ -129,5 +131,7 @@ public:
 	b2PolygonShape m_polygonA;
 	b2PolygonShape m_polygonB;
 };
+	
+} // namespace box2d
 
 #endif

@@ -21,6 +21,8 @@
 
 #include <Box2D/Common/b2Settings.h>
 
+namespace box2d {
+
 constexpr auto b2_stackSize = unsigned{100 * 1024};	// 100k
 constexpr auto b2_maxStackEntries = unsigned{32};
 
@@ -63,5 +65,7 @@ private:
 	b2StackEntry m_entries[b2_maxStackEntries];
 	std::remove_cv<decltype(b2_maxStackEntries)>::type m_entryCount = 0;
 };
+
+} // namespace box2d
 
 #endif

@@ -21,6 +21,8 @@
 #include <cstring>
 #include <cstddef>
 
+using namespace box2d;
+
 static constexpr b2_size_t s_blockSizes[b2BlockAllocator::b2_blockSizes] =
 {
 	16,		// 0
@@ -65,7 +67,7 @@ static constexpr uint8 s_blockSizeLookup[b2BlockAllocator::b2_maxBlockSize + 1] 
 	13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, // 608-640
 };
 
-struct b2Chunk
+struct box2d::b2Chunk
 {
 	using size_type = b2_size_t;
 
@@ -73,7 +75,7 @@ struct b2Chunk
 	b2Block* blocks;
 };
 
-struct b2Block
+struct box2d::b2Block
 {
 	b2Block* next;
 };

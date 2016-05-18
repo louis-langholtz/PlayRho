@@ -19,6 +19,8 @@
 #ifndef EDGE_TEST_H
 #define EDGE_TEST_H
 
+namespace box2d {
+
 class EdgeTest : public Test
 {
 public:
@@ -95,5 +97,7 @@ public:
 		return new EdgeTest;
 	}
 };
+
+} // namespace box2d
 
 #endif

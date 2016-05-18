@@ -18,6 +18,8 @@
 
 #include <Box2D/Common/b2Timer.h>
 
+using namespace box2d;
+
 #if defined(DO_TIMER_FOR_REALS)
 #if defined(_WIN32)
 
