@@ -40,12 +40,12 @@ Camera box2d::g_camera;
 //
 b2Vec2 Camera::ConvertScreenToWorld(const b2Vec2& ps)
 {
-    b2Float w = b2Float(m_width);
-    b2Float h = b2Float(m_height);
-	b2Float u = ps.x / w;
-	b2Float v = (h - ps.y) / h;
+    float_t w = float_t(m_width);
+    float_t h = float_t(m_height);
+	float_t u = ps.x / w;
+	float_t v = (h - ps.y) / h;
 
-	b2Float ratio = w / h;
+	float_t ratio = w / h;
 	b2Vec2 extents(ratio * 25.0f, 25.0f);
 	extents *= m_zoom;
 
@@ -61,17 +61,17 @@ b2Vec2 Camera::ConvertScreenToWorld(const b2Vec2& ps)
 //
 b2Vec2 Camera::ConvertWorldToScreen(const b2Vec2& pw)
 {
-	b2Float w = b2Float(m_width);
-	b2Float h = b2Float(m_height);
-	b2Float ratio = w / h;
+	float_t w = float_t(m_width);
+	float_t h = float_t(m_height);
+	float_t ratio = w / h;
 	b2Vec2 extents(ratio * 25.0f, 25.0f);
 	extents *= m_zoom;
 
 	b2Vec2 lower = m_center - extents;
 	b2Vec2 upper = m_center + extents;
 
-	b2Float u = (pw.x - lower.x) / (upper.x - lower.x);
-	b2Float v = (pw.y - lower.y) / (upper.y - lower.y);
+	float_t u = (pw.x - lower.x) / (upper.x - lower.x);
+	float_t v = (pw.y - lower.y) / (upper.y - lower.y);
 
 	b2Vec2 ps;
 	ps.x = u * w;
@@ -81,11 +81,11 @@ b2Vec2 Camera::ConvertWorldToScreen(const b2Vec2& pw)
 
 // Convert from world coordinates to normalized device coordinates.
 // http://www.songho.ca/opengl/gl_projectionmatrix.html
-void Camera::BuildProjectionMatrix(b2Float* m, b2Float zBias)
+void Camera::BuildProjectionMatrix(float_t* m, float_t zBias)
 {
-	b2Float w = b2Float(m_width);
-	b2Float h = b2Float(m_height);
-	b2Float ratio = w / h;
+	float_t w = float_t(m_width);
+	float_t h = float_t(m_height);
+	float_t ratio = w / h;
 	b2Vec2 extents(ratio * 25.0f, 25.0f);
 	extents *= m_zoom;
 
@@ -274,7 +274,7 @@ struct GLRenderPoints
 		}
 	}
     
-	void Vertex(const b2Vec2& v, const b2Color& c, b2Float size)
+	void Vertex(const b2Vec2& v, const b2Color& c, float_t size)
 	{
 		if (m_count == e_maxVertices)
 			Flush();
@@ -292,7 +292,7 @@ struct GLRenderPoints
         
 		glUseProgram(m_programId);
         
-		b2Float proj[16] = { 0.0f };
+		float_t proj[16] = { 0.0f };
 		g_camera.BuildProjectionMatrix(proj, 0.0f);
         
 		glUniformMatrix4fv(m_projectionUniform, 1, GL_FALSE, proj);
@@ -306,7 +306,7 @@ struct GLRenderPoints
 		glBufferSubData(GL_ARRAY_BUFFER, 0, m_count * sizeof(b2Color), m_colors);
         
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[2]);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, m_count * sizeof(b2Float), m_sizes);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, m_count * sizeof(float_t), m_sizes);
 
 		glEnable(GL_PROGRAM_POINT_SIZE);
 		glDrawArrays(GL_POINTS, 0, m_count);
@@ -324,7 +324,7 @@ struct GLRenderPoints
 	enum { e_maxVertices = 512 };
 	b2Vec2 m_vertices[e_maxVertices];
 	b2Color m_colors[e_maxVertices];
-    b2Float m_sizes[e_maxVertices];
+    float_t m_sizes[e_maxVertices];
 
 	int32 m_count;
     
@@ -555,7 +555,7 @@ struct GLRenderTriangles
         
 		glUseProgram(m_programId);
         
-		b2Float proj[16] = { 0.0f };
+		float_t proj[16] = { 0.0f };
 		g_camera.BuildProjectionMatrix(proj, 0.2f);
         
 		glUniformMatrix4fv(m_projectionUniform, 1, GL_FALSE, proj);
@@ -675,12 +675,12 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, size_type vertexCount, 
 }
 
 //
-void DebugDraw::DrawCircle(const b2Vec2& center, b2Float radius, const b2Color& color)
+void DebugDraw::DrawCircle(const b2Vec2& center, float_t radius, const b2Color& color)
 {
-	const b2Float k_segments = 16.0f;
-	const b2Float k_increment = 2.0f * b2_pi / k_segments;
-    b2Float sinInc = sinf(k_increment);
-    b2Float cosInc = cosf(k_increment);
+	const float_t k_segments = 16.0f;
+	const float_t k_increment = 2.0f * b2_pi / k_segments;
+    float_t sinInc = sinf(k_increment);
+    float_t cosInc = cosf(k_increment);
     b2Vec2 r1(1.0f, 0.0f);
     b2Vec2 v1 = center + radius * r1;
 	for (int32 i = 0; i < k_segments; ++i)
@@ -698,12 +698,12 @@ void DebugDraw::DrawCircle(const b2Vec2& center, b2Float radius, const b2Color& 
 }
 
 //
-void DebugDraw::DrawSolidCircle(const b2Vec2& center, b2Float radius, const b2Vec2& axis, const b2Color& color)
+void DebugDraw::DrawSolidCircle(const b2Vec2& center, float_t radius, const b2Vec2& axis, const b2Color& color)
 {
-	const b2Float k_segments = 16.0f;
-	const b2Float k_increment = 2.0f * b2_pi / k_segments;
-    b2Float sinInc = sinf(k_increment);
-    b2Float cosInc = cosf(k_increment);
+	const float_t k_segments = 16.0f;
+	const float_t k_increment = 2.0f * b2_pi / k_segments;
+    float_t sinInc = sinf(k_increment);
+    float_t cosInc = cosf(k_increment);
     b2Vec2 v0 = center;
     b2Vec2 r1(cosInc, sinInc);
     b2Vec2 v1 = center + radius * r1;
@@ -752,7 +752,7 @@ void DebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& c
 //
 void DebugDraw::DrawTransform(const b2Transform& xf)
 {
-	const b2Float k_axisScale = 0.4f;
+	const float_t k_axisScale = 0.4f;
     b2Color red(1.0f, 0.0f, 0.0f);
     b2Color green(0.0f, 1.0f, 0.0f);
 	b2Vec2 p1 = xf.p, p2;
@@ -766,14 +766,14 @@ void DebugDraw::DrawTransform(const b2Transform& xf)
 	m_lines->Vertex(p2, green);
 }
 
-void DebugDraw::DrawPoint(const b2Vec2& p, b2Float size, const b2Color& color)
+void DebugDraw::DrawPoint(const b2Vec2& p, float_t size, const b2Color& color)
 {
     m_points->Vertex(p, color, size);
 }
 
 void DebugDraw::DrawString(int x, int y, const char *string, ...)
 {
-	b2Float h = b2Float(g_camera.m_height);
+	float_t h = float_t(g_camera.m_height);
 
 	char buffer[128];
 
@@ -788,7 +788,7 @@ void DebugDraw::DrawString(int x, int y, const char *string, ...)
 void DebugDraw::DrawString(const b2Vec2& pw, const char *string, ...)
 {
 	b2Vec2 ps = g_camera.ConvertWorldToScreen(pw);
-	b2Float h = b2Float(g_camera.m_height);
+	float_t h = float_t(g_camera.m_height);
 
 	char buffer[128];
 

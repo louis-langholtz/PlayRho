@@ -97,7 +97,7 @@ public:
 	/// @param timeStep the amount of time to simulate, this should not vary.
 	/// @param velocityIterations for the velocity constraint solver.
 	/// @param positionIterations for the position constraint solver.
-	void Step(b2Float timeStep, int32 velocityIterations, int32 positionIterations);
+	void Step(float_t timeStep, int32 velocityIterations, int32 positionIterations);
 
 	/// Manually clear the force buffer on all bodies. By default, forces are cleared automatically
 	/// after each call to Step. The default behavior is modified by calling SetAutoClearForces.
@@ -184,7 +184,7 @@ public:
 
 	/// Get the quality metric of the dynamic tree. The smaller the better.
 	/// The minimum is 1.
-	b2Float GetTreeQuality() const;
+	float_t GetTreeQuality() const;
 
 	/// Change the global gravity vector.
 	void SetGravity(const b2Vec2& gravity) noexcept;
@@ -263,7 +263,7 @@ private:
 	b2Draw* g_debugDraw = nullptr;
 
 	/// Used to compute the time step ratio to support a variable time step.
-	b2Float m_inv_dt0 = b2Float{0};
+	float_t m_inv_dt0 = float_t{0};
 
 	// These are for debugging the solver.
 	bool m_warmStarting = true;

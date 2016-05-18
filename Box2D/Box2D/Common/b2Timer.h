@@ -36,7 +36,7 @@ public:
 	void Reset();
 
 	/// Get the time since construction or the last reset.
-	b2Float GetMilliseconds() const;
+	float_t GetMilliseconds() const;
 
 private:
 

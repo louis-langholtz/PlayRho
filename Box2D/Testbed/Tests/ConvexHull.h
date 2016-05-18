@@ -42,8 +42,8 @@ public:
 
 		for (int32 i = 0; i < e_count; ++i)
 		{
-			b2Float x = 10.0f * RandomFloat();
-			b2Float y = 10.0f * RandomFloat();
+			float_t x = 10.0f * RandomFloat();
+			float_t y = 10.0f * RandomFloat();
 
 			// Clamp onto a square to help create collinearities.
 			// This will stress the convex hull algorithm.

@@ -26,21 +26,21 @@ class ApplyForce : public Test
 public:
 	ApplyForce()
 	{
-		m_world->SetGravity(b2Vec2(b2Float{0}, b2Float{0}));
+		m_world->SetGravity(b2Vec2(float_t{0}, float_t{0}));
 
-		const b2Float k_restitution = 0.4f;
+		const float_t k_restitution = 0.4f;
 
 		b2Body* ground;
 		{
 			b2BodyDef bd;
-			bd.position = b2Vec2(b2Float{0}, 20.0f);
+			bd.position = b2Vec2(float_t{0}, 20.0f);
 			ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
 
 			b2FixtureDef sd;
 			sd.shape = &shape;
-			sd.density = b2Float{0};
+			sd.density = float_t{0};
 			sd.restitution = k_restitution;
 
 			// Left vertical
@@ -66,9 +66,9 @@ public:
 			xf1.p = xf1.q.GetXAxis();
 
 			b2Vec2 vertices[3];
-			vertices[0] = b2Mul(xf1, b2Vec2(-1.0f, b2Float{0}));
-			vertices[1] = b2Mul(xf1, b2Vec2(1.0f, b2Float{0}));
-			vertices[2] = b2Mul(xf1, b2Vec2(b2Float{0}, 0.5f));
+			vertices[0] = b2Mul(xf1, b2Vec2(-1.0f, float_t{0}));
+			vertices[1] = b2Mul(xf1, b2Vec2(1.0f, float_t{0}));
+			vertices[2] = b2Mul(xf1, b2Vec2(float_t{0}, 0.5f));
 			
 			b2PolygonShape poly1;
 			poly1.Set(vertices, 3);
@@ -81,9 +81,9 @@ public:
 			xf2.q = b2Rot(-0.3524f * b2_pi);
 			xf2.p = -xf2.q.GetXAxis();
 
-			vertices[0] = b2Mul(xf2, b2Vec2(-1.0f, b2Float{0}));
-			vertices[1] = b2Mul(xf2, b2Vec2(1.0f, b2Float{0}));
-			vertices[2] = b2Mul(xf2, b2Vec2(b2Float{0}, 0.5f));
+			vertices[0] = b2Mul(xf2, b2Vec2(-1.0f, float_t{0}));
+			vertices[1] = b2Mul(xf2, b2Vec2(1.0f, float_t{0}));
+			vertices[2] = b2Mul(xf2, b2Vec2(float_t{0}, 0.5f));
 			
 			b2PolygonShape poly2;
 			poly2.Set(vertices, 3);
@@ -97,7 +97,7 @@ public:
 			bd.angularDamping = 2.0f;
 			bd.linearDamping = 0.5f;
 
-			bd.position = b2Vec2(b2Float{0}, 2.0);
+			bd.position = b2Vec2(float_t{0}, 2.0);
 			bd.angle = b2_pi;
 			bd.allowSleep = false;
 			m_body = m_world->CreateBody(&bd);
@@ -119,17 +119,17 @@ public:
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
 
-				bd.position = b2Vec2(b2Float{0}, 5.0f + 1.54f * i);
+				bd.position = b2Vec2(float_t{0}, 5.0f + 1.54f * i);
 				b2Body* body = m_world->CreateBody(&bd);
 
 				body->CreateFixture(&fd);
 
-				b2Float gravity = 10.0f;
-				b2Float I = body->GetInertia();
-				b2Float mass = body->GetMass();
+				float_t gravity = 10.0f;
+				float_t I = body->GetInertia();
+				float_t mass = body->GetMass();
 
 				// For a circle: I = 0.5 * m * r * r ==> r = sqrt(2 * I / m)
-				b2Float radius = b2Sqrt(2.0f * I / mass);
+				float_t radius = b2Sqrt(2.0f * I / mass);
 
 				b2FrictionJointDef jd;
 				jd.localAnchorA = b2Vec2_zero;
@@ -151,8 +151,8 @@ public:
 		{
 		case GLFW_KEY_W:
 			{
-				b2Vec2 f = m_body->GetWorldVector(b2Vec2(b2Float{0}, -200.0f));
-				b2Vec2 p = m_body->GetWorldPoint(b2Vec2(b2Float{0}, 2.0f));
+				b2Vec2 f = m_body->GetWorldVector(b2Vec2(float_t{0}, -200.0f));
+				b2Vec2 p = m_body->GetWorldPoint(b2Vec2(float_t{0}, 2.0f));
 				m_body->ApplyForce(f, p, true);
 			}
 			break;

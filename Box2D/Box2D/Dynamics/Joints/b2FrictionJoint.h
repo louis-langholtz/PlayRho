@@ -39,10 +39,10 @@ struct b2FrictionJointDef : public b2JointDef
 	b2Vec2 localAnchorB = b2Vec2_zero;
 
 	/// The maximum friction force in N.
-	b2Float maxForce = b2Float{0};
+	float_t maxForce = float_t{0};
 
 	/// The maximum friction torque in N-m.
-	b2Float maxTorque = b2Float{0};
+	float_t maxTorque = float_t{0};
 };
 
 /// Friction joint. This is used for top-down friction.
@@ -53,8 +53,8 @@ public:
 	b2Vec2 GetAnchorA() const override;
 	b2Vec2 GetAnchorB() const override;
 
-	b2Vec2 GetReactionForce(b2Float inv_dt) const override;
-	b2Float GetReactionTorque(b2Float inv_dt) const override;
+	b2Vec2 GetReactionForce(float_t inv_dt) const override;
+	float_t GetReactionTorque(float_t inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
 	const b2Vec2& GetLocalAnchorA() const { return m_localAnchorA; }
@@ -63,16 +63,16 @@ public:
 	const b2Vec2& GetLocalAnchorB() const  { return m_localAnchorB; }
 
 	/// Set the maximum friction force in N.
-	void SetMaxForce(b2Float force);
+	void SetMaxForce(float_t force);
 
 	/// Get the maximum friction force in N.
-	b2Float GetMaxForce() const;
+	float_t GetMaxForce() const;
 
 	/// Set the maximum friction torque in N*m.
-	void SetMaxTorque(b2Float torque);
+	void SetMaxTorque(float_t torque);
 
 	/// Get the maximum friction torque in N*m.
-	b2Float GetMaxTorque() const;
+	float_t GetMaxTorque() const;
 
 	/// Dump joint to dmLog
 	void Dump() override;
@@ -92,9 +92,9 @@ protected:
 
 	// Solver shared
 	b2Vec2 m_linearImpulse = b2Vec2_zero;
-	b2Float m_angularImpulse = b2Float{0};
-	b2Float m_maxForce;
-	b2Float m_maxTorque;
+	float_t m_angularImpulse = float_t{0};
+	float_t m_maxForce;
+	float_t m_maxTorque;
 
 	// Solver temp
 	index_t m_indexA;
@@ -103,12 +103,12 @@ protected:
 	b2Vec2 m_rB;
 	b2Vec2 m_localCenterA;
 	b2Vec2 m_localCenterB;
-	b2Float m_invMassA;
-	b2Float m_invMassB;
-	b2Float m_invIA;
-	b2Float m_invIB;
+	float_t m_invMassA;
+	float_t m_invMassB;
+	float_t m_invIA;
+	float_t m_invIB;
 	b2Mat22 m_linearMass;
-	b2Float m_angularMass;
+	float_t m_angularMass;
 };
 
 } // namespace box2d

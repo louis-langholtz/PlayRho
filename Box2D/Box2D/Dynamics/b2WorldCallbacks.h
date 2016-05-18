@@ -71,10 +71,10 @@ public:
 
 	count_t GetCount() const noexcept { return count; }
 
-	b2Float GetEntryNormal(count_t index) const noexcept { return normalImpulses[index]; }
-	b2Float GetEntryTanget(count_t index) const noexcept { return tangentImpulses[index]; }
+	float_t GetEntryNormal(count_t index) const noexcept { return normalImpulses[index]; }
+	float_t GetEntryTanget(count_t index) const noexcept { return tangentImpulses[index]; }
 	
-	void AddEntry(b2Float normal, b2Float tangent) noexcept
+	void AddEntry(float_t normal, float_t tangent) noexcept
 	{
 		b2Assert(count < b2_maxManifoldPoints);
 		normalImpulses[count] = normal;
@@ -83,8 +83,8 @@ public:
 	}
 
 private:
-	b2Float normalImpulses[b2_maxManifoldPoints];
-	b2Float tangentImpulses[b2_maxManifoldPoints];
+	float_t normalImpulses[b2_maxManifoldPoints];
+	float_t tangentImpulses[b2_maxManifoldPoints];
 	count_t count = 0;
 };
 
@@ -167,8 +167,8 @@ public:
 	/// @param normal the normal vector at the point of intersection
 	/// @return -1 to filter, 0 to terminate, fraction to clip the ray for
 	/// closest hit, 1 to continue
-	virtual b2Float ReportFixture(	b2Fixture* fixture, const b2Vec2& point,
-									const b2Vec2& normal, b2Float fraction) = 0;
+	virtual float_t ReportFixture(	b2Fixture* fixture, const b2Vec2& point,
+									const b2Vec2& normal, float_t fraction) = 0;
 };
 
 } // namespace box2d

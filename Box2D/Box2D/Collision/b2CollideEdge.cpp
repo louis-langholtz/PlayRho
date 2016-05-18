@@ -109,7 +109,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 	// Region AB
 	const auto den = e.LengthSquared();
 	b2Assert(den > 0);
-	const auto P = (b2Float(1) / den) * (u * A + v * B);
+	const auto P = (float_t(1) / den) * (u * A + v * B);
 	const auto d = Q - P;
 
 	if (d.LengthSquared() > b2Square(totalRadius))
@@ -146,11 +146,11 @@ struct b2EPAxis
 
 	b2EPAxis() = default;
 
-	constexpr b2EPAxis(Type t, index_t i, b2Float s) noexcept: type(t), index(i), separation(s) {}
+	constexpr b2EPAxis(Type t, index_t i, float_t s) noexcept: type(t), index(i), separation(s) {}
 
 	Type type;
 	index_t index;
-	b2Float separation;
+	float_t separation;
 };
 
 // This holds polygon B expressed in frame A.
@@ -220,10 +220,10 @@ struct b2ReferenceFace
 	b2Vec2 normal;
 	
 	b2Vec2 sideNormal1;
-	b2Float sideOffset1;
+	float_t sideOffset1;
 	
 	b2Vec2 sideNormal2;
-	b2Float sideOffset2;
+	float_t sideOffset2;
 };
 
 class b2EdgeInfo
@@ -269,13 +269,13 @@ inline b2EdgeInfo::b2EdgeInfo(const b2EdgeShape& edge, const b2Vec2& centroid):
 		const auto vertex0 = edge.GetVertex0();
 		const auto edge0 = b2Normalize(m_vertex1 - vertex0);
 		const auto normal0 = b2Vec2(edge0.y, -edge0.x);
-		const auto convex1 = b2Cross(edge0, m_edge1) >= b2Float{0};
+		const auto convex1 = b2Cross(edge0, m_edge1) >= float_t{0};
 		const auto offset0 = b2Dot(normal0, centroid - vertex0);
 
 		const auto vertex3 = edge.GetVertex3();
 		const auto edge2 = b2Normalize(vertex3 - m_vertex2);
 		const auto normal2 = b2Vec2(edge2.y, -edge2.x);
-		const auto convex2 = b2Cross(m_edge1, edge2) > b2Float{0};
+		const auto convex2 = b2Cross(m_edge1, edge2) > float_t{0};
 		const auto offset2 = b2Dot(normal2, centroid - m_vertex2);
 
 		if (convex1 && convex2)
@@ -348,7 +348,7 @@ inline b2EdgeInfo::b2EdgeInfo(const b2EdgeShape& edge, const b2Vec2& centroid):
 		const auto vertex0 = edge.GetVertex0();
 		const auto edge0 = b2Normalize(m_vertex1 - vertex0);
 		const auto normal0 = b2Vec2(edge0.y, -edge0.x);
-		const auto convex1 = b2Cross(edge0, m_edge1) >= b2Float{0};
+		const auto convex1 = b2Cross(edge0, m_edge1) >= float_t{0};
 		const auto offset0 = b2Dot(normal0, centroid - vertex0);
 
 		if (convex1)
@@ -389,7 +389,7 @@ inline b2EdgeInfo::b2EdgeInfo(const b2EdgeShape& edge, const b2Vec2& centroid):
 		const auto vertex3 = edge.GetVertex3();
 		const auto edge2 = b2Normalize(vertex3 - m_vertex2);
 		const auto normal2 = b2Vec2(edge2.y, -edge2.x);
-		const auto convex2 = b2Cross(m_edge1, edge2) > b2Float{0};
+		const auto convex2 = b2Cross(m_edge1, edge2) > float_t{0};
 		const auto offset2 = b2Dot(normal2, centroid - m_vertex2);
 
 		if (convex2)
@@ -462,7 +462,7 @@ static inline b2TempPolygon::size_type b2GetIndexOfMinimum(const b2TempPolygon& 
 	return bestIndex;
 }
 
-static constexpr b2Float b2MaxEPSeparation = b2_polygonRadius * 2; ///< Maximum separation.
+static constexpr float_t b2MaxEPSeparation = b2_polygonRadius * 2; ///< Maximum separation.
 
 static inline b2EPAxis b2ComputeEdgeSeparation(const b2TempPolygon& shape, const b2EdgeInfo& edgeInfo)
 {
@@ -569,7 +569,7 @@ b2Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShap
 	}
 	
 	// Use hysteresis for jitter reduction.
-	constexpr auto k_relativeTol = b2Float(0.98);
+	constexpr auto k_relativeTol = float_t(0.98);
 	constexpr auto k_absoluteTol = b2_linearSlop / 5; // 0.001
 	
 	// Now:

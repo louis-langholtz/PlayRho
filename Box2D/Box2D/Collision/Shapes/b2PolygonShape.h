@@ -52,14 +52,14 @@ public:
 	/// Build vertices to represent an axis-aligned box centered on the local origin.
 	/// @param hx the half-width.
 	/// @param hy the half-height.
-	void SetAsBox(b2Float hx, b2Float hy) noexcept;
+	void SetAsBox(float_t hx, float_t hy) noexcept;
 
 	/// Build vertices to represent an oriented box.
 	/// @param hx the half-width.
 	/// @param hy the half-height.
 	/// @param center the center of the box in local coordinates.
 	/// @param angle the rotation of the box in local coordinates.
-	void SetAsBox(b2Float hx, b2Float hy, const b2Vec2& center, b2Float angle);
+	void SetAsBox(float_t hx, float_t hy, const b2Vec2& center, float_t angle);
 
 	/// @see b2Shape::TestPoint
 	bool TestPoint(const b2Transform& transform, const b2Vec2& p) const override;
@@ -72,7 +72,7 @@ public:
 	b2AABB ComputeAABB(const b2Transform& transform, child_count_t childIndex) const override;
 
 	/// @see b2Shape::ComputeMass
-	b2MassData ComputeMass(b2Float density) const override;
+	b2MassData ComputeMass(float_t density) const override;
 
 	/// Gets the vertex count.
 	/// @return value between 0 and b2_maxPolygonVertices inclusive.

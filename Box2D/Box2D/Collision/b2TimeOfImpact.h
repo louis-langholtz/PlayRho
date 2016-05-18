@@ -31,7 +31,7 @@ struct b2TOIInput
 	b2DistanceProxy proxyB;
 	b2Sweep sweepA;
 	b2Sweep sweepB;
-	b2Float tMax; ///< Maximum sweep interval time fraction (in the range of [0, 1]).
+	float_t tMax; ///< Maximum sweep interval time fraction (in the range of [0, 1]).
 };
 
 /// Output parameters for b2TimeOfImpact.
@@ -49,7 +49,7 @@ public:
 
 	b2TOIOutput() = default;
 	
-	constexpr b2TOIOutput(State _state, b2Float _t): state(_state), t(_t)
+	constexpr b2TOIOutput(State _state, float_t _t): state(_state), t(_t)
 	{
 		b2Assert(t >= 0);
 		b2Assert(t <= 1);
@@ -60,11 +60,11 @@ public:
 
 	/// Gets time factor at which state occurs.
 	/// @return Time factor in range of [0,1] into the future.
-	b2Float get_t() const noexcept { return t; }
+	float_t get_t() const noexcept { return t; }
 
 private:
 	State state; ///< State at time factor.
-	b2Float t; 	///< Time factor in range of [0,1] into the future.
+	float_t t; 	///< Time factor in range of [0,1] into the future.
 };
 
 /// Computes the upper bound on time before two shapes penetrate.

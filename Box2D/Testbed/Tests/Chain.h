@@ -48,7 +48,7 @@ public:
 			b2RevoluteJointDef jd;
 			jd.collideConnected = false;
 
-			const b2Float y = 25.0f;
+			const float_t y = 25.0f;
 			b2Body* prevBody = ground;
 			for (int32 i = 0; i < 30; ++i)
 			{
@@ -58,7 +58,7 @@ public:
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&fd);
 
-				b2Vec2 anchor(b2Float(i), y);
+				b2Vec2 anchor(float_t(i), y);
 				jd.Initialize(prevBody, body, anchor);
 				m_world->CreateJoint(&jd);
 

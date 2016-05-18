@@ -92,7 +92,7 @@ public:
 		Test::Step(settings);
 		g_debugDraw.DrawString(5, m_textLine, "Keys: (l) limits, (m) motors, (s) speed");
 		m_textLine += DRAW_STRING_NEW_LINE;
-		b2Float force = m_joint->GetMotorForce(settings->hz);
+		float_t force = m_joint->GetMotorForce(settings->hz);
 		g_debugDraw.DrawString(5, m_textLine, "Motor Force = %4.0f", (float) force);
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}

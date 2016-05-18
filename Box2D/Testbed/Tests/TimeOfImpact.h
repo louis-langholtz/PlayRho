@@ -104,7 +104,7 @@ public:
 		g_debugDraw.DrawPolygon(vertices, m_shapeB.GetVertexCount(), b2Color(0.9f, 0.5f, 0.5f));
 
 #if 0
-		for (b2Float t = 0.0f; t < 1.0f; t += 0.1f)
+		for (float_t t = 0.0f; t < 1.0f; t += 0.1f)
 		{
 			transformB = sweepB.GetTransform(t);
 			for (int32 i = 0; i < m_shapeB.GetVertexCount(); ++i)

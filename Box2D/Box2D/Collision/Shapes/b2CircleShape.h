@@ -27,7 +27,7 @@ namespace box2d {
 class b2CircleShape : public b2Shape
 {
 public:
-	constexpr explicit b2CircleShape(b2Float radius = 0, b2Vec2 position = b2Vec2_zero) noexcept:
+	constexpr explicit b2CircleShape(float_t radius = 0, b2Vec2 position = b2Vec2_zero) noexcept:
 		b2Shape(e_circle, radius), m_p(position) {}
 
 	b2CircleShape(const b2CircleShape&) = default;
@@ -49,7 +49,7 @@ public:
 	b2AABB ComputeAABB(const b2Transform& transform, child_count_t childIndex) const override;
 
 	/// @see b2Shape::ComputeMass
-	b2MassData ComputeMass(b2Float density) const override;
+	b2MassData ComputeMass(float_t density) const override;
 
 	b2Vec2 GetPosition() const noexcept { return m_p; }
 

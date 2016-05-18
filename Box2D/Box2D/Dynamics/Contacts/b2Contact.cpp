@@ -181,8 +181,8 @@ void b2Contact::Update(b2ContactListener* listener)
 		for (auto i = decltype(new_point_count){0}; i < new_point_count; ++i)
 		{
 			auto& new_mp = m_manifold.GetPoint(i);
-			new_mp.normalImpulse = b2Float{0};
-			new_mp.tangentImpulse = b2Float{0};
+			new_mp.normalImpulse = float_t{0};
+			new_mp.tangentImpulse = float_t{0};
 
 			for (auto j = decltype(old_point_count){0}; j < old_point_count; ++j)
 			{
@@ -267,7 +267,7 @@ bool b2Contact::UpdateTOI()
 	// Compute the TOI for this contact.
 	// Put the sweeps onto the same time interval.
 	const auto maxAlpha0 = b2Max(bA->m_sweep.alpha0, bB->m_sweep.alpha0);
-	b2Assert(maxAlpha0 < b2Float(1));
+	b2Assert(maxAlpha0 < float_t(1));
 	bA->m_sweep.Advance(maxAlpha0);
 	bB->m_sweep.Advance(maxAlpha0);
 	
@@ -277,14 +277,14 @@ bool b2Contact::UpdateTOI()
 	input.proxyB = b2DistanceProxy(*fB->GetShape(), GetChildIndexB());
 	input.sweepA = bA->m_sweep;
 	input.sweepB = bB->m_sweep;
-	input.tMax = b2Float(1);
+	input.tMax = float_t(1);
 	
 	const auto output = b2TimeOfImpact(input);
 	
 	// Beta is the fraction of the remaining portion of the .
 	const auto beta = output.get_t();
 	const auto alpha = (output.get_state() == b2TOIOutput::e_touching)?
-		b2Min(maxAlpha0 + (b2Float{1} - maxAlpha0) * beta, b2Float{1}): b2Float{1};
+		b2Min(maxAlpha0 + (float_t{1} - maxAlpha0) * beta, float_t{1}): float_t{1};
 	
 	SetToi(alpha);
 	

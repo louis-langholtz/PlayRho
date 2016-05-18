@@ -188,7 +188,7 @@ public:
 		for (int32 i = 0; i < 2; ++i)
 		{
 			b2CircleShape shape;
-			shape.SetRadius(b2Float(0.5));
+			shape.SetRadius(float_t(0.5));
 
 			b2FixtureDef fd;
 			fd.shape = &shape;

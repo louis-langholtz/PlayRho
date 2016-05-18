@@ -104,7 +104,7 @@ public:
 			m_ball = m_world->CreateBody(&bd);
 
 			b2CircleShape shape;
-			shape.SetRadius(b2Float(0.2));
+			shape.SetRadius(float_t(0.2));
 
 			b2FixtureDef fd;
 			fd.shape = &shape;

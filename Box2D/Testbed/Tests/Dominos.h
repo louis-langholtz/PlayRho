@@ -192,7 +192,7 @@ public:
 		m_world->CreateJoint(&djd);
 
 		{
-			b2Float radius = 0.2f;
+			float_t radius = 0.2f;
 
 			b2CircleShape shape;
 			shape.SetRadius(radius);

@@ -172,8 +172,8 @@ public:
 
 			b2Body* body = m_world->CreateBody(&bd);
 
-			b2Float angle = 0.0f;
-			b2Float delta = b2_pi / 3.0f;
+			float_t angle = 0.0f;
+			float_t delta = b2_pi / 3.0f;
 			b2Vec2 vertices[6];
 			for (int32 i = 0; i < 6; ++i)
 			{
@@ -201,7 +201,7 @@ public:
 			b2Body* body = m_world->CreateBody(&bd);
 
 			b2CircleShape shape;
-			shape.SetRadius(b2Float(0.5));
+			shape.SetRadius(float_t(0.5));
 
 			b2FixtureDef fd;
 			fd.shape = &shape;
@@ -219,7 +219,7 @@ public:
 			m_character = m_world->CreateBody(&bd);
 
 			b2CircleShape shape;
-			shape.SetRadius(b2Float(0.25));
+			shape.SetRadius(float_t(0.25));
 
 			b2FixtureDef fd;
 			fd.shape = &shape;

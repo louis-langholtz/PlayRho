@@ -24,7 +24,7 @@ namespace box2d {
 class Confined : public Test
 {
 public:
-	static constexpr auto wall_length = b2Float(0.05); // 20
+	static constexpr auto wall_length = float_t(0.05); // 20
 	
 	enum
 	{
@@ -42,7 +42,7 @@ public:
 
 			b2FixtureDef fd;
 			fd.shape = &shape;
-			fd.restitution = b2Float(0.9);
+			fd.restitution = float_t(0.9);
 
 			// Floor
 			shape.Set(b2Vec2(-wall_length/2, 0.0f), b2Vec2(wall_length/2, 0.0f));
@@ -61,7 +61,7 @@ public:
 			ground->CreateFixture(&fd);
 		}
 
-		b2Float radius = 0.5f;
+		float_t radius = 0.5f;
 		b2CircleShape shape(radius, b2Vec2_zero);
 
 		b2FixtureDef fd;
@@ -87,13 +87,13 @@ public:
 
 	void CreateCircle()
 	{
-		constexpr auto radius = b2Float(wall_length/10); // 2
+		constexpr auto radius = float_t(wall_length/10); // 2
 		b2CircleShape shape(radius, b2Vec2_zero);
 
 		b2FixtureDef fd;
 		fd.shape = &shape;
 		fd.density = 1.0f;
-		fd.restitution = b2Float(0.8);
+		fd.restitution = float_t(0.8);
 
 		b2BodyDef bd;
 		bd.type = b2_dynamicBody;
@@ -107,14 +107,14 @@ public:
 
 	void CreateBox()
 	{
-		constexpr auto side_length = b2Float(wall_length/5); // 4
+		constexpr auto side_length = float_t(wall_length/5); // 4
 		b2PolygonShape shape;
 		shape.SetAsBox(side_length/2, side_length/2);
 
 		b2FixtureDef fd;
 		fd.shape = &shape;
 		fd.density = 1.0f;
-		fd.restitution = b2Float(0.8);
+		fd.restitution = float_t(0.8);
 		
 		b2BodyDef bd;
 		bd.type = b2_dynamicBody;

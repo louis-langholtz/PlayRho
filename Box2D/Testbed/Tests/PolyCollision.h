@@ -115,7 +115,7 @@ public:
 	b2Transform m_transformB;
 
 	b2Vec2 m_positionB;
-	b2Float m_angleB;
+	float_t m_angleB;
 };
 
 } // namespace box2d

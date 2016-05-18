@@ -36,11 +36,11 @@ struct b2VelocityConstraintPoint
 {
 	b2Vec2 rA; ///< Position of body A relative to world manifold point
 	b2Vec2 rB; ///< Position of body B relative to world manifold point
-	b2Float normalImpulse; ///< Normal impulse.
-	b2Float tangentImpulse; ///< Tangent impulse.
-	b2Float normalMass; ///< Normal mass.
-	b2Float tangentMass; ///< Tangent mass.
-	b2Float velocityBias; ///< Velocity bias.
+	float_t normalImpulse; ///< Normal impulse.
+	float_t tangentImpulse; ///< Tangent impulse.
+	float_t normalMass; ///< Normal mass.
+	float_t tangentMass; ///< Tangent mass.
+	float_t velocityBias; ///< Velocity bias.
 };
 
 /// Contact velocity constraint body data.
@@ -51,8 +51,8 @@ struct b2ContactVelocityConstraintBodyData
 	using index_t = b2_size_t;
 
 	index_t index; ///< Index within island of body.
-	b2Float invMass; ///< Inverse mass of body.
-	b2Float invI; ///< Inverse rotational interia of body.
+	float_t invMass; ///< Inverse mass of body.
+	float_t invI; ///< Inverse rotational interia of body.
 };
 
 /// Contact velocity constraint.
@@ -117,9 +117,9 @@ public:
 	b2Mat22 K;
 	b2ContactVelocityConstraintBodyData bodyA; ///< Body A contact velocity constraint data.
 	b2ContactVelocityConstraintBodyData bodyB; ///< Body B contact velocity constraint data.
-	b2Float friction; ///< Friction coefficient. Usually in the range of [0,1].
-	b2Float restitution;
-	b2Float tangentSpeed;
+	float_t friction; ///< Friction coefficient. Usually in the range of [0,1].
+	float_t restitution;
+	float_t tangentSpeed;
 	index_type contactIndex;
 
 private:
@@ -146,10 +146,10 @@ public:
 	using size_type = b2_size_t;
 	
 	/// Minimum separation for position constraints.
-	static constexpr auto MinSeparationThreshold = -b2_linearSlop * b2Float(3);
+	static constexpr auto MinSeparationThreshold = -b2_linearSlop * float_t(3);
 
 	/// Minimum time of impact separation for TOI position constraints.
-	static constexpr auto MinToiSeparation = -b2_linearSlop * b2Float(1.5);
+	static constexpr auto MinToiSeparation = -b2_linearSlop * float_t(1.5);
 
 	b2ContactSolver(b2ContactSolverDef* def);
 	~b2ContactSolver();

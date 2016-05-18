@@ -73,7 +73,7 @@ public:
 			b2Body* body = m_world->CreateBody(&bd);
 
 			b2CircleShape shape;
-			shape.SetRadius(b2Float(0.5));
+			shape.SetRadius(float_t(0.5));
 
 			body->CreateFixture(&shape, 1.0f);
 		}

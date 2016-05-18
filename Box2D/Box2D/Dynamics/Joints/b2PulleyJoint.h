@@ -23,7 +23,7 @@
 
 namespace box2d {
 
-const auto b2_minPulleyLength = b2Float(2);
+const auto b2_minPulleyLength = float_t(2);
 
 /// Pulley joint definition. This requires two ground anchors,
 /// two dynamic body anchor points, and a pulley ratio.
@@ -38,28 +38,28 @@ struct b2PulleyJointDef : public b2JointDef
 	void Initialize(b2Body* bodyA, b2Body* bodyB,
 					const b2Vec2& groundAnchorA, const b2Vec2& groundAnchorB,
 					const b2Vec2& anchorA, const b2Vec2& anchorB,
-					b2Float ratio);
+					float_t ratio);
 
 	/// The first ground anchor in world coordinates. This point never moves.
-	b2Vec2 groundAnchorA = b2Vec2{-b2Float(1), b2Float(1)};
+	b2Vec2 groundAnchorA = b2Vec2{-float_t(1), float_t(1)};
 
 	/// The second ground anchor in world coordinates. This point never moves.
-	b2Vec2 groundAnchorB = b2Vec2{b2Float(1), b2Float(1)};
+	b2Vec2 groundAnchorB = b2Vec2{float_t(1), float_t(1)};
 
 	/// The local anchor point relative to bodyA's origin.
-	b2Vec2 localAnchorA = b2Vec2{-b2Float(1), b2Float{0}};
+	b2Vec2 localAnchorA = b2Vec2{-float_t(1), float_t{0}};
 
 	/// The local anchor point relative to bodyB's origin.
-	b2Vec2 localAnchorB = b2Vec2{b2Float(1), b2Float{0}};
+	b2Vec2 localAnchorB = b2Vec2{float_t(1), float_t{0}};
 
 	/// The a reference length for the segment attached to bodyA.
-	b2Float lengthA = b2Float{0};
+	float_t lengthA = float_t{0};
 
 	/// The a reference length for the segment attached to bodyB.
-	b2Float lengthB = b2Float{0};
+	float_t lengthB = float_t{0};
 
 	/// The pulley ratio, used to simulate a block-and-tackle.
-	b2Float ratio = b2Float(1);
+	float_t ratio = float_t(1);
 };
 
 /// The pulley joint is connected to two bodies and two fixed ground points.
@@ -76,8 +76,8 @@ public:
 	b2Vec2 GetAnchorA() const override;
 	b2Vec2 GetAnchorB() const override;
 
-	b2Vec2 GetReactionForce(b2Float inv_dt) const override;
-	b2Float GetReactionTorque(b2Float inv_dt) const override;
+	b2Vec2 GetReactionForce(float_t inv_dt) const override;
+	float_t GetReactionTorque(float_t inv_dt) const override;
 
 	/// Get the first ground anchor.
 	b2Vec2 GetGroundAnchorA() const;
@@ -86,19 +86,19 @@ public:
 	b2Vec2 GetGroundAnchorB() const;
 
 	/// Get the current length of the segment attached to bodyA.
-	b2Float GetLengthA() const;
+	float_t GetLengthA() const;
 
 	/// Get the current length of the segment attached to bodyB.
-	b2Float GetLengthB() const;
+	float_t GetLengthB() const;
 
 	/// Get the pulley ratio.
-	b2Float GetRatio() const;
+	float_t GetRatio() const;
 
 	/// Get the current length of the segment attached to bodyA.
-	b2Float GetCurrentLengthA() const;
+	float_t GetCurrentLengthA() const;
 
 	/// Get the current length of the segment attached to bodyB.
-	b2Float GetCurrentLengthB() const;
+	float_t GetCurrentLengthB() const;
 
 	/// Dump joint to dmLog
 	void Dump() override;
@@ -117,15 +117,15 @@ protected:
 
 	b2Vec2 m_groundAnchorA;
 	b2Vec2 m_groundAnchorB;
-	b2Float m_lengthA;
-	b2Float m_lengthB;
+	float_t m_lengthA;
+	float_t m_lengthB;
 	
 	// Solver shared
 	b2Vec2 m_localAnchorA;
 	b2Vec2 m_localAnchorB;
-	b2Float m_constant;
-	b2Float m_ratio;
-	b2Float m_impulse;
+	float_t m_constant;
+	float_t m_ratio;
+	float_t m_impulse;
 
 	// Solver temp
 	index_t m_indexA;
@@ -136,11 +136,11 @@ protected:
 	b2Vec2 m_rB;
 	b2Vec2 m_localCenterA;
 	b2Vec2 m_localCenterB;
-	b2Float m_invMassA;
-	b2Float m_invMassB;
-	b2Float m_invIA;
-	b2Float m_invIB;
-	b2Float m_mass;
+	float_t m_invMassA;
+	float_t m_invMassB;
+	float_t m_invIA;
+	float_t m_invIB;
+	float_t m_mass;
 };
 
 } // namespace box2d

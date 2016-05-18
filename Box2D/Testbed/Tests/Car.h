@@ -46,13 +46,13 @@ public:
 			shape.Set(b2Vec2(-20.0f, 0.0f), b2Vec2(20.0f, 0.0f));
 			ground->CreateFixture(&fd);
 
-			b2Float hs[10] = {0.25f, 1.0f, 4.0f, 0.0f, 0.0f, -1.0f, -2.0f, -2.0f, -1.25f, 0.0f};
+			float_t hs[10] = {0.25f, 1.0f, 4.0f, 0.0f, 0.0f, -1.0f, -2.0f, -2.0f, -1.25f, 0.0f};
 
-			b2Float x = 20.0f, y1 = 0.0f, dx = 5.0f;
+			float_t x = 20.0f, y1 = 0.0f, dx = 5.0f;
 
 			for (int32 i = 0; i < 10; ++i)
 			{
-				b2Float y2 = hs[i];
+				float_t y2 = hs[i];
 				shape.Set(b2Vec2(x, y1), b2Vec2(x + dx, y2));
 				ground->CreateFixture(&fd);
 				y1 = y2;
@@ -61,7 +61,7 @@ public:
 
 			for (int32 i = 0; i < 10; ++i)
 			{
-				b2Float y2 = hs[i];
+				float_t y2 = hs[i];
 				shape.Set(b2Vec2(x, y1), b2Vec2(x + dx, y2));
 				ground->CreateFixture(&fd);
 				y1 = y2;
@@ -186,7 +186,7 @@ public:
 			chassis.Set(vertices, 6);
 
 			b2CircleShape circle;
-			circle.SetRadius(b2Float(0.4));
+			circle.SetRadius(float_t(0.4));
 
 			b2BodyDef bd;
 			bd.type = b2_dynamicBody;
@@ -278,9 +278,9 @@ public:
 	b2Body* m_wheel1;
 	b2Body* m_wheel2;
 
-	b2Float m_hz;
-	b2Float m_zeta;
-	b2Float m_speed;
+	float_t m_hz;
+	float_t m_zeta;
+	float_t m_speed;
 	b2WheelJoint* m_spring1;
 	b2WheelJoint* m_spring2;
 };

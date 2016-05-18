@@ -86,8 +86,8 @@ constexpr bool operator==(const b2ContactFeature& lhs, const b2ContactFeature& r
 struct b2ManifoldPoint
 {
 	b2Vec2 localPoint;		///< usage depends on manifold type
-	b2Float normalImpulse;	///< the non-penetration impulse
-	b2Float tangentImpulse;	///< the friction impulse
+	float_t normalImpulse;	///< the non-penetration impulse
+	float_t tangentImpulse;	///< the friction impulse
 	b2ContactFeature cf;    ///< uniquely identifies a contact point between two shapes
 };
 
@@ -197,16 +197,16 @@ public:
 	b2WorldManifold() = default;
 
 	b2WorldManifold(const b2Manifold& manifold,
-					const b2Transform& xfA, b2Float radiusA,
-					const b2Transform& xfB, b2Float radiusB);
+					const b2Transform& xfA, float_t radiusA,
+					const b2Transform& xfB, float_t radiusB);
 
 	/// Evaluate the manifold with supplied transforms. This assumes
 	/// modest motion from the original state. This does not change the
 	/// point count, impulses, etc. The radii must come from the shapes
 	/// that generated the manifold.
 	void Assign(const b2Manifold& manifold,
-					const b2Transform& xfA, b2Float radiusA,
-					const b2Transform& xfB, b2Float radiusB);
+					const b2Transform& xfA, float_t radiusA,
+					const b2Transform& xfB, float_t radiusB);
 
 	size_type GetPointCount() const noexcept { return pointCount; }
 
@@ -218,7 +218,7 @@ public:
 		return points[index];
 	}
 
-	b2Float GetSeparation(size_type index) const
+	float_t GetSeparation(size_type index) const
 	{
 		b2Assert(index < b2_maxManifoldPoints);
 		return separations[index];
@@ -228,7 +228,7 @@ private:
 	b2Vec2 normal;								///< world vector pointing from A to B
 	size_type pointCount = 0;
 	b2Vec2 points[b2_maxManifoldPoints];		///< world contact point (point of intersection)
-	b2Float separations[b2_maxManifoldPoints];	///< a negative value indicates overlap, in meters
+	float_t separations[b2_maxManifoldPoints];	///< a negative value indicates overlap, in meters
 };
 
 /// This is used for determining the state of contact points.
@@ -257,7 +257,7 @@ struct b2ClipVertex
 struct b2RayCastInput
 {
 	b2Vec2 p1, p2;
-	b2Float maxFraction;
+	float_t maxFraction;
 };
 
 /// Ray-cast output data. The ray hits at p1 + fraction * (p2 - p1), where p1 and p2
@@ -265,7 +265,7 @@ struct b2RayCastInput
 struct b2RayCastOutput
 {
 	b2Vec2 normal;
-	b2Float fraction;
+	float_t fraction;
 };
 
 /// An axis aligned bounding box.
@@ -280,21 +280,21 @@ public:
 	/// Get the center of the AABB.
 	constexpr b2Vec2 GetCenter() const noexcept
 	{
-		return (lowerBound + upperBound) / b2Float(2);
+		return (lowerBound + upperBound) / float_t(2);
 	}
 
 	/// Get the extents of the AABB (half-widths).
 	constexpr b2Vec2 GetExtents() const noexcept
 	{
-		return (upperBound - lowerBound) / b2Float(2);
+		return (upperBound - lowerBound) / float_t(2);
 	}
 
 	/// Get the perimeter length
-	constexpr b2Float GetPerimeter() const noexcept
+	constexpr float_t GetPerimeter() const noexcept
 	{
 		const auto wx = upperBound.x - lowerBound.x;
 		const auto wy = upperBound.y - lowerBound.y;
-		return b2Float(2) * (wx + wy);
+		return float_t(2) * (wx + wy);
 	}
 
 	/// Combine an AABB into this one.
@@ -399,7 +399,7 @@ using b2ClipArray = std::array<b2ClipVertex, b2_maxManifoldPoints>;
 /// @param indexA Index of vertex A.
 /// @return Number of valid elements of the output array being returned (# of points of the line found within the plane).
 b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray& vIn,
-										   const b2Vec2& normal, b2Float offset, b2ContactFeature::index_t indexA);
+										   const b2Vec2& normal, float_t offset, b2ContactFeature::index_t indexA);
 
 /// Determine if two generic shapes overlap.
 bool b2TestOverlap(const b2Shape& shapeA, child_count_t indexA,
@@ -411,11 +411,11 @@ bool b2TestOverlap(const b2Shape& shapeA, child_count_t indexA,
 inline bool b2TestOverlap(const b2AABB& a, const b2AABB& b) noexcept
 {
 	const auto d1 = b.GetLowerBound() - a.GetUpperBound();
-	if ((d1.x > b2Float{0}) || (d1.y > b2Float{0}))
+	if ((d1.x > float_t{0}) || (d1.y > float_t{0}))
 		return false;
 
 	const auto d2 = a.GetLowerBound() - b.GetUpperBound();
-	if ((d2.x > b2Float{0}) || (d2.y > b2Float{0}))
+	if ((d2.x > float_t{0}) || (d2.y > float_t{0}))
 		return false;
 
 	return true;

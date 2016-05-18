@@ -32,14 +32,14 @@ struct b2RopeJointDef : public b2JointDef
 	constexpr b2RopeJointDef() noexcept: b2JointDef(e_ropeJoint) {}
 
 	/// The local anchor point relative to bodyA's origin.
-	b2Vec2 localAnchorA = b2Vec2{-b2Float(1), b2Float{0}};
+	b2Vec2 localAnchorA = b2Vec2{-float_t(1), float_t{0}};
 
 	/// The local anchor point relative to bodyB's origin.
-	b2Vec2 localAnchorB = b2Vec2{b2Float(1), b2Float{0}};
+	b2Vec2 localAnchorB = b2Vec2{float_t(1), float_t{0}};
 
 	/// The maximum length of the rope.
 	/// @warning This must be larger than b2_linearSlop or the joint will have no effect.
-	b2Float maxLength = b2Float{0};
+	float_t maxLength = float_t{0};
 };
 
 /// A rope joint enforces a maximum distance between two points
@@ -56,8 +56,8 @@ public:
 	b2Vec2 GetAnchorA() const override;
 	b2Vec2 GetAnchorB() const override;
 
-	b2Vec2 GetReactionForce(b2Float inv_dt) const override;
-	b2Float GetReactionTorque(b2Float inv_dt) const override;
+	b2Vec2 GetReactionForce(float_t inv_dt) const override;
+	float_t GetReactionTorque(float_t inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
 	const b2Vec2& GetLocalAnchorA() const { return m_localAnchorA; }
@@ -66,8 +66,8 @@ public:
 	const b2Vec2& GetLocalAnchorB() const  { return m_localAnchorB; }
 
 	/// Set/Get the maximum length of the rope.
-	void SetMaxLength(b2Float length) { m_maxLength = length; }
-	b2Float GetMaxLength() const;
+	void SetMaxLength(float_t length) { m_maxLength = length; }
+	float_t GetMaxLength() const;
 
 	b2LimitState GetLimitState() const;
 
@@ -86,9 +86,9 @@ protected:
 	// Solver shared
 	b2Vec2 m_localAnchorA;
 	b2Vec2 m_localAnchorB;
-	b2Float m_maxLength;
-	b2Float m_length;
-	b2Float m_impulse;
+	float_t m_maxLength;
+	float_t m_length;
+	float_t m_impulse;
 
 	// Solver temp
 	index_t m_indexA;
@@ -98,11 +98,11 @@ protected:
 	b2Vec2 m_rB;
 	b2Vec2 m_localCenterA;
 	b2Vec2 m_localCenterB;
-	b2Float m_invMassA;
-	b2Float m_invMassB;
-	b2Float m_invIA;
-	b2Float m_invIB;
-	b2Float m_mass;
+	float_t m_invMassA;
+	float_t m_invMassB;
+	float_t m_invIA;
+	float_t m_invIB;
+	float_t m_mass;
 	b2LimitState m_state;
 };
 

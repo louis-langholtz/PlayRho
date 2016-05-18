@@ -104,20 +104,20 @@ void b2WeldJoint::InitVelocityConstraints(const b2SolverData& data)
 	K.ey.z = K.ez.y;
 	K.ez.z = iA + iB;
 
-	if (m_frequencyHz > b2Float{0})
+	if (m_frequencyHz > float_t{0})
 	{
 		K.GetInverse22(&m_mass);
 
 		auto invM = iA + iB;
-		const auto m = (invM > b2Float{0}) ? b2Float(1) / invM : b2Float{0};
+		const auto m = (invM > float_t{0}) ? float_t(1) / invM : float_t{0};
 
 		const auto C = aB - aA - m_referenceAngle;
 
 		// Frequency
-		const auto omega = b2Float(2) * b2_pi * m_frequencyHz;
+		const auto omega = float_t(2) * b2_pi * m_frequencyHz;
 
 		// Damping coefficient
-		const auto d = b2Float(2) * m * m_dampingRatio * omega;
+		const auto d = float_t(2) * m * m_dampingRatio * omega;
 
 		// Spring stiffness
 		const auto k = m * omega * omega;
@@ -125,23 +125,23 @@ void b2WeldJoint::InitVelocityConstraints(const b2SolverData& data)
 		// magic formulas
 		const auto h = data.step.get_dt();
 		m_gamma = h * (d + h * k);
-		m_gamma = (m_gamma != b2Float{0}) ? b2Float(1) / m_gamma : b2Float{0};
+		m_gamma = (m_gamma != float_t{0}) ? float_t(1) / m_gamma : float_t{0};
 		m_bias = C * h * k * m_gamma;
 
 		invM += m_gamma;
-		m_mass.ez.z = (invM != b2Float{0}) ? b2Float(1) / invM : b2Float{0};
+		m_mass.ez.z = (invM != float_t{0}) ? float_t(1) / invM : float_t{0};
 	}
-	else if (K.ez.z == b2Float{0})
+	else if (K.ez.z == float_t{0})
 	{
 		K.GetInverse22(&m_mass);
-		m_gamma = b2Float{0};
-		m_bias = b2Float{0};
+		m_gamma = float_t{0};
+		m_bias = float_t{0};
 	}
 	else
 	{
 		K.GetSymInverse33(&m_mass);
-		m_gamma = b2Float{0};
-		m_bias = b2Float{0};
+		m_gamma = float_t{0};
+		m_bias = float_t{0};
 	}
 
 	if (data.step.warmStarting)
@@ -178,7 +178,7 @@ void b2WeldJoint::SolveVelocityConstraints(const b2SolverData& data)
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
 
-	if (m_frequencyHz > b2Float{0})
+	if (m_frequencyHz > float_t{0})
 	{
 		const auto Cdot2 = wB - wA;
 
@@ -241,7 +241,7 @@ bool b2WeldJoint::SolvePositionConstraints(const b2SolverData& data)
 	const auto rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
 	const auto rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
 
-	b2Float positionError, angularError;
+	float_t positionError, angularError;
 
 	b2Mat33 K;
 	K.ex.x = mA + mB + rA.y * rA.y * iA + rB.y * rB.y * iB;
@@ -254,12 +254,12 @@ bool b2WeldJoint::SolvePositionConstraints(const b2SolverData& data)
 	K.ey.z = K.ez.y;
 	K.ez.z = iA + iB;
 
-	if (m_frequencyHz > b2Float{0})
+	if (m_frequencyHz > float_t{0})
 	{
 		const auto C1 =  cB + rB - cA - rA;
 
 		positionError = C1.Length();
-		angularError = b2Float{0};
+		angularError = float_t{0};
 
 		const auto P = -K.Solve22(C1);
 
@@ -280,14 +280,14 @@ bool b2WeldJoint::SolvePositionConstraints(const b2SolverData& data)
 		const auto C = b2Vec3(C1.x, C1.y, C2);
 	
 		b2Vec3 impulse;
-		if (K.ez.z > b2Float{0})
+		if (K.ez.z > float_t{0})
 		{
 			impulse = -K.Solve33(C);
 		}
 		else
 		{
 			const auto impulse2 = -K.Solve22(C1);
-			impulse = b2Vec3(impulse2.x, impulse2.y, b2Float{0});
+			impulse = b2Vec3(impulse2.x, impulse2.y, float_t{0});
 		}
 
 		const auto P = b2Vec2(impulse.x, impulse.y);
@@ -317,13 +317,13 @@ b2Vec2 b2WeldJoint::GetAnchorB() const
 	return m_bodyB->GetWorldPoint(m_localAnchorB);
 }
 
-b2Vec2 b2WeldJoint::GetReactionForce(b2Float inv_dt) const
+b2Vec2 b2WeldJoint::GetReactionForce(float_t inv_dt) const
 {
 	const auto P = b2Vec2(m_impulse.x, m_impulse.y);
 	return inv_dt * P;
 }
 
-b2Float b2WeldJoint::GetReactionTorque(b2Float inv_dt) const
+float_t b2WeldJoint::GetReactionTorque(float_t inv_dt) const
 {
 	return inv_dt * m_impulse.z;
 }

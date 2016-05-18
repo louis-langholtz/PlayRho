@@ -28,7 +28,7 @@ class TheoJansen : public Test
 {
 public:
 
-	void CreateLeg(b2Float s, const b2Vec2& wheelAnchor)
+	void CreateLeg(float_t s, const b2Vec2& wheelAnchor)
 	{
 		b2Vec2 p1(5.4f * s, -6.1f);
 		b2Vec2 p2(7.2f * s, -1.2f);
@@ -173,7 +173,7 @@ public:
 
 		{
 			b2CircleShape shape;
-			shape.SetRadius(b2Float(1.6));
+			shape.SetRadius(float_t(1.6));
 
 			b2FixtureDef sd;
 			sd.density = 1.0f;
@@ -252,7 +252,7 @@ public:
 	b2Body* m_wheel;
 	b2RevoluteJoint* m_motorJoint;
 	bool m_motorOn;
-	b2Float m_motorSpeed;
+	float_t m_motorSpeed;
 };
 
 } // namespace box2d

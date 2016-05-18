@@ -144,7 +144,7 @@ public:
 
 		// Small circle
 		b2CircleShape circle;
-		circle.SetRadius(b2Float(1));
+		circle.SetRadius(float_t(1));
 
 		b2FixtureDef circleShapeDef;
 		circleShapeDef.shape = &circle;

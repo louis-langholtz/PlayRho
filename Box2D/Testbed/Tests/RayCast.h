@@ -34,7 +34,7 @@ public:
 		m_hit = false;
 	}
 
-	b2Float ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, b2Float fraction)
+	float_t ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float_t fraction)
 	{
 		b2Body* body = fixture->GetBody();
 		void* userData = body->GetUserData();
@@ -74,7 +74,7 @@ public:
 		m_hit = false;
 	}
 
-	b2Float ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, b2Float fraction)
+	float_t ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float_t fraction)
 	{
 		b2Body* body = fixture->GetBody();
 		void* userData = body->GetUserData();
@@ -119,7 +119,7 @@ public:
 		m_count = 0;
 	}
 
-	b2Float ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, b2Float fraction)
+	float_t ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float_t fraction)
 	{
 		b2Body* body = fixture->GetBody();
 		void* userData = body->GetUserData();
@@ -202,9 +202,9 @@ public:
 		}
 
 		{
-			b2Float w = 1.0f;
-			b2Float b = w / (2.0f + b2Sqrt(2.0f));
-			b2Float s = b2Sqrt(2.0f) * b;
+			float_t w = 1.0f;
+			float_t b = w / (2.0f + b2Sqrt(2.0f));
+			float_t s = b2Sqrt(2.0f) * b;
 
 			b2Vec2 vertices[8];
 			vertices[0] = b2Vec2(0.5f * s, 0.0f);
@@ -249,8 +249,8 @@ public:
 
 		b2BodyDef bd;
 
-		b2Float x = RandomFloat(-10.0f, 10.0f);
-		b2Float y = RandomFloat(0.0f, 20.0f);
+		float_t x = RandomFloat(-10.0f, 10.0f);
+		float_t y = RandomFloat(0.0f, 20.0f);
 		bd.position = b2Vec2(x, y);
 		bd.angle = RandomFloat(-b2_pi, b2_pi);
 
@@ -361,7 +361,7 @@ public:
 
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		b2Float L = 11.0f;
+		float_t L = 11.0f;
 		b2Vec2 point1(0.0f, 10.0f);
 		b2Vec2 d(L * cosf(m_angle), L * sinf(m_angle));
 		b2Vec2 point2 = point1 + d;
@@ -475,7 +475,7 @@ public:
 	b2CircleShape m_circle;
 	b2EdgeShape m_edge;
 
-	b2Float m_angle;
+	float_t m_angle;
 
 	Mode m_mode;
 };

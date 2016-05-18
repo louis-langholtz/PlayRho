@@ -42,12 +42,12 @@ public:
 		b2Body* body = m_world->CreateBody(&bd);
         
 		b2CircleShape shape;
-		shape.SetRadius(b2Float(0.5));
+		shape.SetRadius(float_t(0.5));
         body->CreateFixture(&shape, 10.0f);
         
         bd.position = b2Vec2(0.0f, 6.0f);
         body = m_world->CreateBody(&bd);
-        shape.SetRadius(b2Float(5));
+        shape.SetRadius(float_t(5));
         body->CreateFixture(&shape, 10.0f);
 	}
     

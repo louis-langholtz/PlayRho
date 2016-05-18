@@ -222,8 +222,8 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 				// v2 = exp(-c * dt) * v1
 				// Pade approximation:
 				// v2 = v1 * 1 / (1 + c * dt)
-				v *= b2Float(1) / (b2Float(1) + h * b.m_linearDamping);
-				w *= b2Float(1) / (b2Float(1) + h * b.m_angularDamping);
+				v *= float_t(1) / (float_t(1) + h * b.m_linearDamping);
+				w *= float_t(1) / (float_t(1) + h * b.m_angularDamping);
 			}
 			m_velocities[i] = b2Velocity{v, w};
 		}
@@ -345,8 +345,8 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 				(b2Square(b.m_angularVelocity) > angTolSqr) ||
 				(b.m_linearVelocity.LengthSquared() > linTolSqr))
 			{
-				b.m_sleepTime = b2Float{0};
-				minSleepTime = b2Float{0};
+				b.m_sleepTime = float_t{0};
+				minSleepTime = float_t{0};
 			}
 			else
 			{

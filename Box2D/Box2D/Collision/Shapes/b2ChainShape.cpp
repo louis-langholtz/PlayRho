@@ -174,9 +174,9 @@ b2AABB b2ChainShape::ComputeAABB(const b2Transform& xf, child_count_t childIndex
 	return b2AABB{v1, v2};
 }
 
-b2MassData b2ChainShape::ComputeMass(b2Float density) const
+b2MassData b2ChainShape::ComputeMass(float_t density) const
 {
 	B2_NOT_USED(density);
 
-	return b2MassData{b2Float{0}, b2Vec2_zero, b2Float{0}};
+	return b2MassData{float_t{0}, b2Vec2_zero, float_t{0}};
 }

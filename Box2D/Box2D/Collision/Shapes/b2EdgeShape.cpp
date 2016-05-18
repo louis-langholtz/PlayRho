@@ -72,13 +72,13 @@ bool b2EdgeShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 	const auto numerator = b2Dot(normal, v1 - p1);
 	const auto denominator = b2Dot(normal, d);
 
-	if (denominator == b2Float{0})
+	if (denominator == float_t{0})
 	{
 		return false;
 	}
 
 	const auto t = numerator / denominator;
-	if ((t < b2Float{0}) || (input.maxFraction < t))
+	if ((t < float_t{0}) || (input.maxFraction < t))
 	{
 		return false;
 	}
@@ -89,19 +89,19 @@ bool b2EdgeShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 	// s = dot(q - v1, r) / dot(r, r)
 	const auto r = v2 - v1;
 	const auto rr = r.LengthSquared();
-	if (rr == b2Float{0})
+	if (rr == float_t{0})
 	{
 		return false;
 	}
 
 	const auto s = b2Dot(q - v1, r) / rr;
-	if ((s < b2Float{0}) || (b2Float(1) < s))
+	if ((s < float_t{0}) || (float_t(1) < s))
 	{
 		return false;
 	}
 
 	output->fraction = t;
-	output->normal = (numerator > b2Float{0})? -b2Mul(xf.q, normal): b2Mul(xf.q, normal);
+	output->normal = (numerator > float_t{0})? -b2Mul(xf.q, normal): b2Mul(xf.q, normal);
 	return true;
 }
 
@@ -119,9 +119,9 @@ b2AABB b2EdgeShape::ComputeAABB(const b2Transform& xf, child_count_t childIndex)
 	return b2AABB{lower - r, upper + r};
 }
 
-b2MassData b2EdgeShape::ComputeMass(b2Float density) const
+b2MassData b2EdgeShape::ComputeMass(float_t density) const
 {
 	B2_NOT_USED(density);
 
-	return b2MassData{b2Float{0}, (m_vertex1 + m_vertex2) / b2Float(2), b2Float{0}};
+	return b2MassData{float_t{0}, (m_vertex1 + m_vertex2) / float_t(2), float_t{0}};
 }

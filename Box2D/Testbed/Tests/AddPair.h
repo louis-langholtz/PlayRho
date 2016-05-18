@@ -27,9 +27,9 @@ public:
 
 	AddPair()
 	{
-		m_world->SetGravity(b2Vec2(b2Float{0}, b2Float{0}));
+		m_world->SetGravity(b2Vec2(float_t{0}, float_t{0}));
 		{
-			b2CircleShape shape{b2Float(0.1), b2Vec2_zero};
+			b2CircleShape shape{float_t(0.1), b2Vec2_zero};
 
 			float minX = -6.0f;
 			float maxX = 0.0f;

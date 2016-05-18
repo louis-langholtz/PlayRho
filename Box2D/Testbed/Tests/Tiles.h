@@ -37,7 +37,7 @@ public:
 		b2Timer timer;
 
 		{
-			b2Float a = 0.5f;
+			float_t a = 0.5f;
 			b2BodyDef bd;
 			bd.position.y = -a;
 			b2Body* ground = m_world->CreateBody(&bd);
@@ -81,7 +81,7 @@ public:
 		}
 
 		{
-			b2Float a = 0.5f;
+			float_t a = 0.5f;
 			b2PolygonShape shape;
 			shape.SetAsBox(a, a);
 
@@ -129,7 +129,7 @@ public:
 		const auto leafCount = cm.m_broadPhase.GetProxyCount();
 		b2Assert(leafCount > 0);
 		const auto minimumNodeCount = 2 * leafCount - 1;
-		const auto minimumHeight = ceilf(logf(b2Float(minimumNodeCount)) / logf(2.0f));
+		const auto minimumHeight = ceilf(logf(float_t(minimumNodeCount)) / logf(2.0f));
 		g_debugDraw.DrawString(5, m_textLine, "dynamic tree height = %d, min = %d", height, int32(minimumHeight));
 		m_textLine += DRAW_STRING_NEW_LINE;
 
@@ -153,7 +153,7 @@ public:
 	}
 
 	int32 m_fixtureCount;
-	b2Float m_createTime;
+	float_t m_createTime;
 };
 
 } // namespace box2d

@@ -26,37 +26,37 @@ namespace box2d {
 /// Profiling data. Times are in milliseconds.
 struct b2Profile
 {
-	b2Float step;
-	b2Float collide;
-	b2Float solve;
-	b2Float solveInit;
-	b2Float solveVelocity;
-	b2Float solvePosition;
-	b2Float broadphase;
-	b2Float solveTOI;
+	float_t step;
+	float_t collide;
+	float_t solve;
+	float_t solveInit;
+	float_t solveVelocity;
+	float_t solvePosition;
+	float_t broadphase;
+	float_t solveTOI;
 };
 
 /// This is an internal structure.
 class b2TimeStep
 {
 public:
-	b2Float get_dt() const noexcept { return dt; }
-	b2Float get_inv_dt() const noexcept { return inv_dt; }
+	float_t get_dt() const noexcept { return dt; }
+	float_t get_inv_dt() const noexcept { return inv_dt; }
 	
-	void set_dt(b2Float value) noexcept
+	void set_dt(float_t value) noexcept
 	{
 		dt = value;
-		inv_dt = (value > b2Float(0))? b2Float(1) / value: b2Float(0);
+		inv_dt = (value > float_t(0))? float_t(1) / value: float_t(0);
 	}
 
-	b2Float dtRatio; ///< dt * inv_dt0
+	float_t dtRatio; ///< dt * inv_dt0
 	int32 velocityIterations; ///< Velocity iterations.
 	int32 positionIterations; ///< Position iterations.
 	bool warmStarting; ///< Whether or not to perform warm starting.
 
 private:
-	b2Float dt; ///< The time step - delta time.
-	b2Float inv_dt; ///< Inverse time step (1/dt or 0 if dt == 0). @see dt.
+	float_t dt; ///< The time step - delta time.
+	float_t inv_dt; ///< Inverse time step (1/dt or 0 if dt == 0). @see dt.
 };
 
 /// This is an internal structure.
@@ -65,10 +65,10 @@ struct b2Position
 	b2Position() = default;
 	constexpr b2Position(const b2Position& copy) = default;
 
-	constexpr b2Position(b2Vec2 c_, b2Float a_) noexcept: c(c_), a(a_) {}
+	constexpr b2Position(b2Vec2 c_, float_t a_) noexcept: c(c_), a(a_) {}
 
 	b2Vec2 c; ///< linear position
-	b2Float a; ///< angular position
+	float_t a; ///< angular position
 };
 
 inline b2Transform b2Displace(const b2Position& pos, const b2Vec2& local_ctr)
@@ -80,10 +80,10 @@ inline b2Transform b2Displace(const b2Position& pos, const b2Vec2& local_ctr)
 struct b2Velocity
 {
 	b2Velocity() = default;
-	constexpr b2Velocity(b2Vec2 v_, b2Float w_) noexcept: v(v_), w(w_) {}
+	constexpr b2Velocity(b2Vec2 v_, float_t w_) noexcept: v(v_), w(w_) {}
 
 	b2Vec2 v; ///< Linear velocity.
-	b2Float w; ///< Angular velocity.
+	float_t w; ///< Angular velocity.
 };
 
 /// Solver Data

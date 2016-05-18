@@ -40,13 +40,13 @@ public:
 
 		{
 			b2CircleShape shape;
-			shape.SetRadius(b2Float(1));
+			shape.SetRadius(float_t(1));
 
 			b2FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 1.0f;
 
-			b2Float restitution[7] = {0.0f, 0.1f, 0.3f, 0.5f, 0.75f, 0.9f, 1.0f};
+			float_t restitution[7] = {0.0f, 0.1f, 0.3f, 0.5f, 0.75f, 0.9f, 1.0f};
 
 			for (int32 i = 0; i < 7; ++i)
 			{

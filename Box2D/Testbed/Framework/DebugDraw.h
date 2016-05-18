@@ -43,11 +43,11 @@ struct Camera
 
 	b2Vec2 ConvertScreenToWorld(const b2Vec2& screenPoint);
 	b2Vec2 ConvertWorldToScreen(const b2Vec2& worldPoint);
-	void BuildProjectionMatrix(b2Float* m, b2Float zBias);
+	void BuildProjectionMatrix(float_t* m, float_t zBias);
 
 	b2Vec2 m_center;
-	b2Float m_extent;
-	b2Float m_zoom;
+	float_t m_extent;
+	float_t m_zoom;
 	int32 m_width;
 	int32 m_height;
 };
@@ -67,15 +67,15 @@ public:
 
 	virtual void DrawSolidPolygon(const b2Vec2* vertices, size_type vertexCount, const b2Color& color) override;
 
-	virtual void DrawCircle(const b2Vec2& center, b2Float radius, const b2Color& color) override;
+	virtual void DrawCircle(const b2Vec2& center, float_t radius, const b2Color& color) override;
 
-	virtual void DrawSolidCircle(const b2Vec2& center, b2Float radius, const b2Vec2& axis, const b2Color& color) override;
+	virtual void DrawSolidCircle(const b2Vec2& center, float_t radius, const b2Vec2& axis, const b2Color& color) override;
 
 	virtual void DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color) override;
 
 	virtual void DrawTransform(const b2Transform& xf) override;
 
-    void DrawPoint(const b2Vec2& p, b2Float size, const b2Color& color);
+    void DrawPoint(const b2Vec2& p, float_t size, const b2Color& color);
 
     void DrawString(int x, int y, const char* string, ...); 
 

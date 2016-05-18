@@ -52,7 +52,7 @@ b2RevoluteJoint::b2RevoluteJoint(const b2RevoluteJointDef* def)
 	m_referenceAngle = def->referenceAngle;
 
 	m_impulse = b2Vec3_zero;
-	m_motorImpulse = b2Float{0};
+	m_motorImpulse = float_t{0};
 
 	m_lowerAngle = def->lowerAngle;
 	m_upperAngle = def->upperAngle;
@@ -99,7 +99,7 @@ void b2RevoluteJoint::InitVelocityConstraints(const b2SolverData& data)
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
 
-	const auto fixedRotation = ((iA + iB) == b2Float{0});
+	const auto fixedRotation = ((iA + iB) == float_t{0});
 
 	m_mass.ex.x = mA + mB + m_rA.y * m_rA.y * iA + m_rB.y * m_rB.y * iB;
 	m_mass.ey.x = -m_rA.y * m_rA.x * iA - m_rB.y * m_rB.x * iB;
@@ -112,20 +112,20 @@ void b2RevoluteJoint::InitVelocityConstraints(const b2SolverData& data)
 	m_mass.ez.z = iA + iB;
 
 	m_motorMass = iA + iB;
-	if (m_motorMass > b2Float{0})
+	if (m_motorMass > float_t{0})
 	{
-		m_motorMass = b2Float{1} / m_motorMass;
+		m_motorMass = float_t{1} / m_motorMass;
 	}
 
 	if (m_enableMotor == false || fixedRotation)
 	{
-		m_motorImpulse = b2Float{0};
+		m_motorImpulse = float_t{0};
 	}
 
 	if (m_enableLimit && fixedRotation == false)
 	{
 		const auto jointAngle = aB - aA - m_referenceAngle;
-		if (b2Abs(m_upperAngle - m_lowerAngle) < (b2Float{2} * b2_angularSlop))
+		if (b2Abs(m_upperAngle - m_lowerAngle) < (float_t{2} * b2_angularSlop))
 		{
 			m_limitState = e_equalLimits;
 		}
@@ -133,7 +133,7 @@ void b2RevoluteJoint::InitVelocityConstraints(const b2SolverData& data)
 		{
 			if (m_limitState != e_atLowerLimit)
 			{
-				m_impulse.z = b2Float{0};
+				m_impulse.z = float_t{0};
 			}
 			m_limitState = e_atLowerLimit;
 		}
@@ -141,14 +141,14 @@ void b2RevoluteJoint::InitVelocityConstraints(const b2SolverData& data)
 		{
 			if (m_limitState != e_atUpperLimit)
 			{
-				m_impulse.z = b2Float{0};
+				m_impulse.z = float_t{0};
 			}
 			m_limitState = e_atUpperLimit;
 		}
 		else
 		{
 			m_limitState = e_inactiveLimit;
-			m_impulse.z = b2Float{0};
+			m_impulse.z = float_t{0};
 		}
 	}
 	else
@@ -173,7 +173,7 @@ void b2RevoluteJoint::InitVelocityConstraints(const b2SolverData& data)
 	else
 	{
 		m_impulse = b2Vec3_zero;
-		m_motorImpulse = b2Float{0};
+		m_motorImpulse = float_t{0};
 	}
 
 	data.velocities[m_indexA].v = vA;
@@ -192,7 +192,7 @@ void b2RevoluteJoint::SolveVelocityConstraints(const b2SolverData& data)
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
 
-	const auto fixedRotation = (iA + iB == b2Float{0});
+	const auto fixedRotation = (iA + iB == float_t{0});
 
 	// Solve motor constraint.
 	if (m_enableMotor && (m_limitState != e_equalLimits) && !fixedRotation)
@@ -224,7 +224,7 @@ void b2RevoluteJoint::SolveVelocityConstraints(const b2SolverData& data)
 		else if (m_limitState == e_atLowerLimit)
 		{
 			const auto newImpulse = m_impulse.z + impulse.z;
-			if (newImpulse < b2Float{0})
+			if (newImpulse < float_t{0})
 			{
 				const auto rhs = -Cdot1 + m_impulse.z * b2Vec2(m_mass.ez.x, m_mass.ez.y);
 				const auto reduced = m_mass.Solve22(rhs);
@@ -233,7 +233,7 @@ void b2RevoluteJoint::SolveVelocityConstraints(const b2SolverData& data)
 				impulse.z = -m_impulse.z;
 				m_impulse.x += reduced.x;
 				m_impulse.y += reduced.y;
-				m_impulse.z = b2Float{0};
+				m_impulse.z = float_t{0};
 			}
 			else
 			{
@@ -243,7 +243,7 @@ void b2RevoluteJoint::SolveVelocityConstraints(const b2SolverData& data)
 		else if (m_limitState == e_atUpperLimit)
 		{
 			const auto newImpulse = m_impulse.z + impulse.z;
-			if (newImpulse > b2Float{0})
+			if (newImpulse > float_t{0})
 			{
 				const auto rhs = -Cdot1 + m_impulse.z * b2Vec2(m_mass.ez.x, m_mass.ez.y);
 				const auto reduced = m_mass.Solve22(rhs);
@@ -252,7 +252,7 @@ void b2RevoluteJoint::SolveVelocityConstraints(const b2SolverData& data)
 				impulse.z = -m_impulse.z;
 				m_impulse.x += reduced.x;
 				m_impulse.y += reduced.y;
-				m_impulse.z = b2Float{0};
+				m_impulse.z = float_t{0};
 			}
 			else
 			{
@@ -300,16 +300,16 @@ bool b2RevoluteJoint::SolvePositionConstraints(const b2SolverData& data)
 	auto qA = b2Rot(aA);
 	auto qB = b2Rot(aB);
 
-	auto angularError = b2Float{0};
-	auto positionError = b2Float{0};
+	auto angularError = float_t{0};
+	auto positionError = float_t{0};
 
-	const auto fixedRotation = ((m_invIA + m_invIB) == b2Float{0});
+	const auto fixedRotation = ((m_invIA + m_invIB) == float_t{0});
 
 	// Solve angular limit constraint.
 	if (m_enableLimit && m_limitState != e_inactiveLimit && fixedRotation == false)
 	{
 		const auto angle = aB - aA - m_referenceAngle;
-		auto limitImpulse = b2Float{0};
+		auto limitImpulse = float_t{0};
 
 		if (m_limitState == e_equalLimits)
 		{
@@ -324,7 +324,7 @@ bool b2RevoluteJoint::SolvePositionConstraints(const b2SolverData& data)
 			angularError = -C;
 
 			// Prevent large angular corrections and allow some slop.
-			C = b2Clamp(C + b2_angularSlop, -b2_maxAngularCorrection, b2Float{0});
+			C = b2Clamp(C + b2_angularSlop, -b2_maxAngularCorrection, float_t{0});
 			limitImpulse = -m_motorMass * C;
 		}
 		else if (m_limitState == e_atUpperLimit)
@@ -333,7 +333,7 @@ bool b2RevoluteJoint::SolvePositionConstraints(const b2SolverData& data)
 			angularError = C;
 
 			// Prevent large angular corrections and allow some slop.
-			C = b2Clamp(C - b2_angularSlop, b2Float{0}, b2_maxAngularCorrection);
+			C = b2Clamp(C - b2_angularSlop, float_t{0}, b2_maxAngularCorrection);
 			limitImpulse = -m_motorMass * C;
 		}
 
@@ -387,23 +387,23 @@ b2Vec2 b2RevoluteJoint::GetAnchorB() const
 	return m_bodyB->GetWorldPoint(m_localAnchorB);
 }
 
-b2Vec2 b2RevoluteJoint::GetReactionForce(b2Float inv_dt) const
+b2Vec2 b2RevoluteJoint::GetReactionForce(float_t inv_dt) const
 {
 	const auto P = b2Vec2(m_impulse.x, m_impulse.y);
 	return inv_dt * P;
 }
 
-b2Float b2RevoluteJoint::GetReactionTorque(b2Float inv_dt) const
+float_t b2RevoluteJoint::GetReactionTorque(float_t inv_dt) const
 {
 	return inv_dt * m_impulse.z;
 }
 
-b2Float b2RevoluteJoint::GetJointAngle() const
+float_t b2RevoluteJoint::GetJointAngle() const
 {
 	return m_bodyB->m_sweep.a - m_bodyA->m_sweep.a - m_referenceAngle;
 }
 
-b2Float b2RevoluteJoint::GetJointSpeed() const
+float_t b2RevoluteJoint::GetJointSpeed() const
 {
 	return m_bodyB->m_angularVelocity - m_bodyA->m_angularVelocity;
 }
@@ -420,19 +420,19 @@ void b2RevoluteJoint::EnableMotor(bool flag)
 	m_enableMotor = flag;
 }
 
-b2Float b2RevoluteJoint::GetMotorTorque(b2Float inv_dt) const
+float_t b2RevoluteJoint::GetMotorTorque(float_t inv_dt) const
 {
 	return inv_dt * m_motorImpulse;
 }
 
-void b2RevoluteJoint::SetMotorSpeed(b2Float speed)
+void b2RevoluteJoint::SetMotorSpeed(float_t speed)
 {
 	m_bodyA->SetAwake();
 	m_bodyB->SetAwake();
 	m_motorSpeed = speed;
 }
 
-void b2RevoluteJoint::SetMaxMotorTorque(b2Float torque)
+void b2RevoluteJoint::SetMaxMotorTorque(float_t torque)
 {
 	m_bodyA->SetAwake();
 	m_bodyB->SetAwake();
@@ -451,21 +451,21 @@ void b2RevoluteJoint::EnableLimit(bool flag)
 		m_bodyA->SetAwake();
 		m_bodyB->SetAwake();
 		m_enableLimit = flag;
-		m_impulse.z = b2Float{0};
+		m_impulse.z = float_t{0};
 	}
 }
 
-b2Float b2RevoluteJoint::GetLowerLimit() const
+float_t b2RevoluteJoint::GetLowerLimit() const
 {
 	return m_lowerAngle;
 }
 
-b2Float b2RevoluteJoint::GetUpperLimit() const
+float_t b2RevoluteJoint::GetUpperLimit() const
 {
 	return m_upperAngle;
 }
 
-void b2RevoluteJoint::SetLimits(b2Float lower, b2Float upper)
+void b2RevoluteJoint::SetLimits(float_t lower, float_t upper)
 {
 	b2Assert(lower <= upper);
 	
@@ -473,7 +473,7 @@ void b2RevoluteJoint::SetLimits(b2Float lower, b2Float upper)
 	{
 		m_bodyA->SetAwake();
 		m_bodyB->SetAwake();
-		m_impulse.z = b2Float{0};
+		m_impulse.z = float_t{0};
 		m_lowerAngle = lower;
 		m_upperAngle = upper;
 	}

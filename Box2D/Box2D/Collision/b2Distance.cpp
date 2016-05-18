@@ -90,7 +90,7 @@ public:
 
 	b2SimplexVertex() = default;
 
-	b2SimplexVertex(b2Vec2 sA, b2Vec2 sB, size_type iA, size_type iB, b2Float _a):
+	b2SimplexVertex(b2Vec2 sA, b2Vec2 sB, size_type iA, size_type iB, float_t _a):
 		wA(sA), wB(sB), indexA(iA), indexB(iB), w(sB - sA), a(_a) {}
 
 	b2Vec2 get_w() const noexcept { return w; }
@@ -99,7 +99,7 @@ public:
 
 	size_type indexA;	///< wA index
 	size_type indexB;	///< wB index
-	b2Float a;		///< barycentric coordinate for closest point
+	float_t a;		///< barycentric coordinate for closest point
 	
 private:
 	b2Vec2 wA;		///< support point in proxyA
@@ -151,7 +151,7 @@ public:
 			const auto indexB = cache.GetIndexB(i);
 			const auto wA = b2Mul(transformA, proxyA.GetVertex(indexA));
 			const auto wB = b2Mul(transformB, proxyB.GetVertex(indexB));
-			m_vertices[i] = b2SimplexVertex{wA, wB, indexA, indexB, b2Float(0)};
+			m_vertices[i] = b2SimplexVertex{wA, wB, indexA, indexB, float_t(0)};
 		}
 		m_count = count;
 
@@ -161,7 +161,7 @@ public:
 		{
 			const auto metric1 = cache.GetMetric();
 			const auto metric2 = GetMetric();
-			if ((metric2 < (metric1 / b2Float(2))) || (metric2 > (metric1 * b2Float(2))) || (metric2 < b2_epsilon))
+			if ((metric2 < (metric1 / float_t(2))) || (metric2 > (metric1 * float_t(2))) || (metric2 < b2_epsilon))
 			{
 				// Reset the simplex.
 				m_count = 0;
@@ -175,7 +175,7 @@ public:
 			const auto indexB = b2SimplexCache::index_t{0};
 			const auto wA = b2Mul(transformA, proxyA.GetVertex(indexA));
 			const auto wB = b2Mul(transformB, proxyB.GetVertex(indexB));
-			m_vertices[0] = b2SimplexVertex{wA, wB, indexA, indexB, b2Float(1)};
+			m_vertices[0] = b2SimplexVertex{wA, wB, indexA, indexB, float_t(1)};
 			m_count = 1;
 		}
 	}
@@ -201,11 +201,11 @@ public:
 			{
 				const auto e12 = m_vertices[1].get_w() - m_vertices[0].get_w();
 				const auto sgn = b2Cross(e12, -m_vertices[0].get_w());
-				return (sgn > b2Float{0})?
+				return (sgn > float_t{0})?
 					// Origin is left of e12.
-					b2Cross(b2Float(1), e12):
+					b2Cross(float_t(1), e12):
 					// Origin is right of e12.
-					b2Cross(e12, b2Float(1));
+					b2Cross(e12, float_t(1));
 			}
 
 		default:
@@ -260,12 +260,12 @@ public:
 		}
 	}
 
-	b2Float GetMetric() const
+	float_t GetMetric() const
 	{
 		switch (m_count)
 		{
 		case 1:
-			return b2Float{0};
+			return float_t{0};
 
 		case 2:
 			return b2Distance(m_vertices[0].get_w(), m_vertices[1].get_w());
@@ -275,7 +275,7 @@ public:
 
 		default:
 			b2Assert(false);
-			return b2Float{0};
+			return float_t{0};
 		}
 	}
 
@@ -319,27 +319,27 @@ void b2Simplex::Solve2() noexcept
 
 	// w1 region
 	const auto d12_2 = -b2Dot(w1, e12);
-	if (d12_2 <= b2Float{0})
+	if (d12_2 <= float_t{0})
 	{
 		// a2 <= 0, so we clamp it to 0
-		m_vertices[0].a = b2Float(1);
+		m_vertices[0].a = float_t(1);
 		m_count = 1;
 		return;
 	}
 
 	// w2 region
 	const auto d12_1 = b2Dot(w2, e12);
-	if (d12_1 <= b2Float{0})
+	if (d12_1 <= float_t{0})
 	{
 		// a1 <= 0, so we clamp it to 0
-		m_vertices[1].a = b2Float(1);
+		m_vertices[1].a = float_t(1);
 		m_vertices[0] = m_vertices[1];
 		m_count = 1;
 		return;
 	}
 
 	// Must be in e12 region.
-	const auto inv_d12 = b2Float(1) / (d12_1 + d12_2);
+	const auto inv_d12 = float_t(1) / (d12_1 + d12_2);
 	m_vertices[0].a = d12_1 * inv_d12;
 	m_vertices[1].a = d12_2 * inv_d12;
 	m_count = 2;
@@ -394,17 +394,17 @@ void b2Simplex::Solve3() noexcept
 	const auto d123_3 = n123 * b2Cross(w1, w2);
 
 	// w1 region
-	if ((d12_2 <= b2Float{0}) && (d13_2 <= b2Float{0}))
+	if ((d12_2 <= float_t{0}) && (d13_2 <= float_t{0}))
 	{
-		m_vertices[0].a = b2Float(1);
+		m_vertices[0].a = float_t(1);
 		m_count = 1;
 		return;
 	}
 
 	// e12
-	if ((d12_1 > b2Float{0}) && (d12_2 > b2Float{0}) && (d123_3 <= b2Float{0}))
+	if ((d12_1 > float_t{0}) && (d12_2 > float_t{0}) && (d123_3 <= float_t{0}))
 	{
-		const auto inv_d12 = b2Float(1) / (d12_1 + d12_2);
+		const auto inv_d12 = float_t(1) / (d12_1 + d12_2);
 		m_vertices[0].a = d12_1 * inv_d12;
 		m_vertices[1].a = d12_2 * inv_d12;
 		m_count = 2;
@@ -412,9 +412,9 @@ void b2Simplex::Solve3() noexcept
 	}
 
 	// e13
-	if ((d13_1 > b2Float{0}) && (d13_2 > b2Float{0}) && (d123_2 <= b2Float{0}))
+	if ((d13_1 > float_t{0}) && (d13_2 > float_t{0}) && (d123_2 <= float_t{0}))
 	{
-		const auto inv_d13 = b2Float(1) / (d13_1 + d13_2);
+		const auto inv_d13 = float_t(1) / (d13_1 + d13_2);
 		m_vertices[0].a = d13_1 * inv_d13;
 		m_vertices[2].a = d13_2 * inv_d13;
 		m_count = 2;
@@ -423,27 +423,27 @@ void b2Simplex::Solve3() noexcept
 	}
 
 	// w2 region
-	if ((d12_1 <= b2Float{0}) && (d23_2 <= b2Float{0}))
+	if ((d12_1 <= float_t{0}) && (d23_2 <= float_t{0}))
 	{
-		m_vertices[1].a = b2Float(1);
+		m_vertices[1].a = float_t(1);
 		m_count = 1;
 		m_vertices[0] = m_vertices[1];
 		return;
 	}
 
 	// w3 region
-	if ((d13_1 <= b2Float{0}) && (d23_1 <= b2Float{0}))
+	if ((d13_1 <= float_t{0}) && (d23_1 <= float_t{0}))
 	{
-		m_vertices[2].a = b2Float(1);
+		m_vertices[2].a = float_t(1);
 		m_count = 1;
 		m_vertices[0] = m_vertices[2];
 		return;
 	}
 
 	// e23
-	if ((d23_1 > b2Float{0}) && (d23_2 > b2Float{0}) && (d123_1 <= b2Float{0}))
+	if ((d23_1 > float_t{0}) && (d23_2 > float_t{0}) && (d123_1 <= float_t{0}))
 	{
-		const auto inv_d23 = b2Float(1) / (d23_1 + d23_2);
+		const auto inv_d23 = float_t(1) / (d23_1 + d23_2);
 		m_vertices[1].a = d23_1 * inv_d23;
 		m_vertices[2].a = d23_2 * inv_d23;
 		m_count = 2;
@@ -452,7 +452,7 @@ void b2Simplex::Solve3() noexcept
 	}
 
 	// Must be in triangle123
-	const auto inv_d123 = b2Float(1) / (d123_1 + d123_2 + d123_3);
+	const auto inv_d123 = float_t(1) / (d123_1 + d123_2 + d123_3);
 	m_vertices[0].a = d123_1 * inv_d123;
 	m_vertices[1].a = d123_2 * inv_d123;
 	m_vertices[2].a = d123_3 * inv_d123;
@@ -579,7 +579,7 @@ b2DistanceOutput b2Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 		// New vertex is ok and needed.
 		const auto wA = b2Mul(transformA, proxyA.GetVertex(indexA));
 		const auto wB = b2Mul(transformB, proxyB.GetVertex(indexB));
-		simplex.AddVertex(b2SimplexVertex{wA, wB, indexA, indexB, b2Float(0)});
+		simplex.AddVertex(b2SimplexVertex{wA, wB, indexA, indexB, float_t(0)});
 	}
 
 #if defined(DO_GJK_PROFILING)
@@ -615,10 +615,10 @@ b2DistanceOutput b2Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 		{
 			// Shapes are overlapped when radii are considered.
 			// Move the witness points to the middle.
-			const auto p = (output.pointA + output.pointB) / b2Float(2);
+			const auto p = (output.pointA + output.pointB) / float_t(2);
 			output.pointA = p;
 			output.pointB = p;
-			output.distance = b2Float{0};
+			output.distance = float_t{0};
 		}
 	}
 	return output;

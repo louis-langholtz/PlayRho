@@ -30,7 +30,7 @@ struct b2MassData
 {
 	b2MassData() = default;
 
-	constexpr b2MassData(b2Float m, b2Vec2 c, b2Float _I) noexcept: mass(m), center(c), I(_I)
+	constexpr b2MassData(float_t m, b2Vec2 c, float_t _I) noexcept: mass(m), center(c), I(_I)
 	{
 		b2Assert(mass >= 0);
 	}
@@ -38,13 +38,13 @@ struct b2MassData
 	/// The mass of the shape, usually in kilograms.
 	/// This should NEVER be a negative value.
 	/// @note Behavior is undefined if this value is negative.
-	b2Float mass;
+	float_t mass;
 
 	/// The position of the shape's centroid relative to the shape's origin.
 	b2Vec2 center;
 
 	/// The rotational inertia of the shape about the local origin.
-	b2Float I;
+	float_t I;
 };
 
 /// A shape is used for collision detection. You can create a shape however you like.
@@ -69,7 +69,7 @@ public:
 	/// @param radius Non-negative "radius" distance of this object (whose meaning is
 	///   class dependent).
 	/// @note Behavior is undefined if a negative radius is given.
-	constexpr b2Shape(Type type, b2Float radius) noexcept: m_type(type), m_radius(radius)
+	constexpr b2Shape(Type type, float_t radius) noexcept: m_type(type), m_radius(radius)
 	{
 		b2Assert(radius >= 0);
 	}
@@ -111,13 +111,13 @@ public:
 	/// The inertia tensor is computed about the local origin.
 	/// @param massData returns the mass data for this shape.
 	/// @param density the density in kilograms per meter squared.
-	virtual b2MassData ComputeMass(b2Float density) const = 0;
+	virtual b2MassData ComputeMass(float_t density) const = 0;
 
 	/// Gets the "radius" of the shape.
 	/// @return a non-negative distance whose meaning is dependent on the object's class.
-	b2Float GetRadius() const noexcept { return m_radius; }
+	float_t GetRadius() const noexcept { return m_radius; }
 
-	void SetRadius(b2Float radius) noexcept
+	void SetRadius(float_t radius) noexcept
 	{
 		b2Assert(radius >= 0);
 		m_radius = radius;
@@ -125,7 +125,7 @@ public:
 
 private:
 	const Type m_type;
-	b2Float m_radius;
+	float_t m_radius;
 };
 
 } // namespace box2d

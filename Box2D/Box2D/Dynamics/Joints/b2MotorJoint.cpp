@@ -49,7 +49,7 @@ b2MotorJoint::b2MotorJoint(const b2MotorJointDef* def)
 	m_angularOffset = def->angularOffset;
 
 	m_linearImpulse = b2Vec2_zero;
-	m_angularImpulse = b2Float{0};
+	m_angularImpulse = float_t{0};
 
 	m_maxForce = def->maxForce;
 	m_maxTorque = def->maxTorque;
@@ -105,9 +105,9 @@ void b2MotorJoint::InitVelocityConstraints(const b2SolverData& data)
 	m_linearMass = K.GetInverse();
 
 	m_angularMass = iA + iB;
-	if (m_angularMass > b2Float{0})
+	if (m_angularMass > float_t{0})
 	{
-		m_angularMass = b2Float(1) / m_angularMass;
+		m_angularMass = float_t(1) / m_angularMass;
 	}
 
 	m_linearError = cB + m_rB - cA - m_rA - b2Mul(qA, m_linearOffset);
@@ -128,7 +128,7 @@ void b2MotorJoint::InitVelocityConstraints(const b2SolverData& data)
 	else
 	{
 		m_linearImpulse = b2Vec2_zero;
-		m_angularImpulse = b2Float{0};
+		m_angularImpulse = float_t{0};
 	}
 
 	data.velocities[m_indexA].v = vA;
@@ -212,45 +212,45 @@ b2Vec2 b2MotorJoint::GetAnchorB() const
 	return m_bodyB->GetPosition();
 }
 
-b2Vec2 b2MotorJoint::GetReactionForce(b2Float inv_dt) const
+b2Vec2 b2MotorJoint::GetReactionForce(float_t inv_dt) const
 {
 	return inv_dt * m_linearImpulse;
 }
 
-b2Float b2MotorJoint::GetReactionTorque(b2Float inv_dt) const
+float_t b2MotorJoint::GetReactionTorque(float_t inv_dt) const
 {
 	return inv_dt * m_angularImpulse;
 }
 
-void b2MotorJoint::SetMaxForce(b2Float force)
+void b2MotorJoint::SetMaxForce(float_t force)
 {
-	b2Assert(b2IsValid(force) && (force >= b2Float{0}));
+	b2Assert(b2IsValid(force) && (force >= float_t{0}));
 	m_maxForce = force;
 }
 
-b2Float b2MotorJoint::GetMaxForce() const
+float_t b2MotorJoint::GetMaxForce() const
 {
 	return m_maxForce;
 }
 
-void b2MotorJoint::SetMaxTorque(b2Float torque)
+void b2MotorJoint::SetMaxTorque(float_t torque)
 {
-	b2Assert(b2IsValid(torque) && (torque >= b2Float{0}));
+	b2Assert(b2IsValid(torque) && (torque >= float_t{0}));
 	m_maxTorque = torque;
 }
 
-b2Float b2MotorJoint::GetMaxTorque() const
+float_t b2MotorJoint::GetMaxTorque() const
 {
 	return m_maxTorque;
 }
 
-void b2MotorJoint::SetCorrectionFactor(b2Float factor)
+void b2MotorJoint::SetCorrectionFactor(float_t factor)
 {
-	b2Assert(b2IsValid(factor) && (b2Float{0} <= factor) && (factor <= b2Float(1)));
+	b2Assert(b2IsValid(factor) && (float_t{0} <= factor) && (factor <= float_t(1)));
 	m_correctionFactor = factor;
 }
 
-b2Float b2MotorJoint::GetCorrectionFactor() const
+float_t b2MotorJoint::GetCorrectionFactor() const
 {
 	return m_correctionFactor;
 }
@@ -270,7 +270,7 @@ const b2Vec2& b2MotorJoint::GetLinearOffset() const
 	return m_linearOffset;
 }
 
-void b2MotorJoint::SetAngularOffset(b2Float angularOffset)
+void b2MotorJoint::SetAngularOffset(float_t angularOffset)
 {
 	if (angularOffset != m_angularOffset)
 	{
@@ -280,7 +280,7 @@ void b2MotorJoint::SetAngularOffset(b2Float angularOffset)
 	}
 }
 
-b2Float b2MotorJoint::GetAngularOffset() const
+float_t b2MotorJoint::GetAngularOffset() const
 {
 	return m_angularOffset;
 }

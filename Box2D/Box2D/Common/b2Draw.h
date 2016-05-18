@@ -27,9 +27,9 @@ namespace box2d {
 struct b2Color
 {
 	b2Color() = default;
-	constexpr b2Color(b2Float ri, b2Float gi, b2Float bi, b2Float ai = b2Float(1)) : r(ri), g(gi), b(bi), a(ai) {}
-	constexpr void Set(b2Float ri, b2Float gi, b2Float bi, b2Float ai = b2Float(1)) { r = ri; g = gi; b = bi; a = ai; }
-	b2Float r, g, b, a;
+	constexpr b2Color(float_t ri, float_t gi, float_t bi, float_t ai = float_t(1)) : r(ri), g(gi), b(bi), a(ai) {}
+	constexpr void Set(float_t ri, float_t gi, float_t bi, float_t ai = float_t(1)) { r = ri; g = gi; b = bi; a = ai; }
+	float_t r, g, b, a;
 };
 
 /// Implement and register this class with a b2World to provide debug drawing of physics
@@ -71,10 +71,10 @@ public:
 	virtual void DrawSolidPolygon(const b2Vec2* vertices, size_type vertexCount, const b2Color& color) = 0;
 
 	/// Draw a circle.
-	virtual void DrawCircle(const b2Vec2& center, b2Float radius, const b2Color& color) = 0;
+	virtual void DrawCircle(const b2Vec2& center, float_t radius, const b2Color& color) = 0;
 	
 	/// Draw a solid circle.
-	virtual void DrawSolidCircle(const b2Vec2& center, b2Float radius, const b2Vec2& axis, const b2Color& color) = 0;
+	virtual void DrawSolidCircle(const b2Vec2& center, float_t radius, const b2Vec2& axis, const b2Color& color) = 0;
 	
 	/// Draw a line segment.
 	virtual void DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color) = 0;

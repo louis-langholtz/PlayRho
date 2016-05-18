@@ -22,7 +22,7 @@
 namespace box2d {
 
 // Find the max separation between shape1 and shape2 using edge normals from shape1.
-static b2Float b2FindMaxSeparation(b2PolygonShape::vertex_count_t& edgeIndex,
+static float_t b2FindMaxSeparation(b2PolygonShape::vertex_count_t& edgeIndex,
 								   const b2PolygonShape& shape1, const b2Transform& xf1,
 								   const b2PolygonShape& shape2, const b2Transform& xf2)
 {
@@ -165,11 +165,11 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 
 	const auto localTangent = b2Normalize(v12 - v11);
 	
-	const auto localNormal = b2Cross(localTangent, b2Float(1));
-	const auto planePoint = (v11 + v12) / b2Float(2);
+	const auto localNormal = b2Cross(localTangent, float_t(1));
+	const auto planePoint = (v11 + v12) / float_t(2);
 
 	const auto tangent = b2Mul(xf1.q, localTangent);
-	const auto normal = b2Cross(tangent, b2Float(1));
+	const auto normal = b2Cross(tangent, float_t(1));
 	
 	v11 = b2Mul(xf1, v11);
 	v12 = b2Mul(xf1, v12);

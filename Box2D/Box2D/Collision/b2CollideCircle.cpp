@@ -77,7 +77,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 	// If the center is inside the polygon ...
 	if (separation < b2_epsilon)
 	{
-		auto manifold = b2Manifold{b2Manifold::e_faceA, shapeA.GetNormal(normalIndex), (v1 + v2) / b2Float(2)};
+		auto manifold = b2Manifold{b2Manifold::e_faceA, shapeA.GetNormal(normalIndex), (v1 + v2) / float_t(2)};
 		manifold.AddPoint(shapeB.GetPosition());
 		return manifold;
 	}
@@ -85,7 +85,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 	// Compute barycentric coordinates
 	const auto u1 = b2Dot(cLocal - v1, v2 - v1);
 	const auto u2 = b2Dot(cLocal - v2, v1 - v2);
-	if (u1 <= b2Float{0})
+	if (u1 <= float_t{0})
 	{
 		if (b2DistanceSquared(cLocal, v1) > b2Square(totalRadius))
 		{
@@ -96,7 +96,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 		manifold.AddPoint(shapeB.GetPosition());
 		return manifold;
 	}
-	if (u2 <= b2Float{0})
+	if (u2 <= float_t{0})
 	{
 		if (b2DistanceSquared(cLocal, v2) > b2Square(totalRadius))
 		{
@@ -108,7 +108,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 		return manifold;
 	}
 
-	const auto faceCenter = (v1 + v2) / b2Float(2);
+	const auto faceCenter = (v1 + v2) / float_t(2);
 	separation = b2Dot(cLocal - faceCenter, shapeA.GetNormal(vertIndex1));
 	if (separation > totalRadius)
 	{

@@ -36,13 +36,13 @@ struct b2MouseJointDef : public b2JointDef
 	/// The maximum constraint force that can be exerted
 	/// to move the candidate body. Usually you will express
 	/// as some multiple of the weight (multiplier * mass * gravity).
-	b2Float maxForce = b2Float{0};
+	float_t maxForce = float_t{0};
 
 	/// The response speed.
-	b2Float frequencyHz = b2Float(5);
+	float_t frequencyHz = float_t(5);
 
 	/// The damping ratio. 0 = no damping, 1 = critical damping.
-	b2Float dampingRatio = b2Float(0.7);
+	float_t dampingRatio = float_t(0.7);
 };
 
 /// A mouse joint is used to make a point on a body track a
@@ -63,26 +63,26 @@ public:
 	b2Vec2 GetAnchorB() const override;
 
 	/// Implements b2Joint.
-	b2Vec2 GetReactionForce(b2Float inv_dt) const override;
+	b2Vec2 GetReactionForce(float_t inv_dt) const override;
 
 	/// Implements b2Joint.
-	b2Float GetReactionTorque(b2Float inv_dt) const override;
+	float_t GetReactionTorque(float_t inv_dt) const override;
 
 	/// Use this to update the target point.
 	void SetTarget(const b2Vec2& target);
 	const b2Vec2& GetTarget() const;
 
 	/// Set/get the maximum force in Newtons.
-	void SetMaxForce(b2Float force);
-	b2Float GetMaxForce() const;
+	void SetMaxForce(float_t force);
+	float_t GetMaxForce() const;
 
 	/// Set/get the frequency in Hertz.
-	void SetFrequency(b2Float hz);
-	b2Float GetFrequency() const;
+	void SetFrequency(float_t hz);
+	float_t GetFrequency() const;
 
 	/// Set/get the damping ratio (dimensionless).
-	void SetDampingRatio(b2Float ratio);
-	b2Float GetDampingRatio() const;
+	void SetDampingRatio(float_t ratio);
+	float_t GetDampingRatio() const;
 
 	/// The mouse joint does not support dumping.
 	void Dump() override;
@@ -101,22 +101,22 @@ protected:
 
 	b2Vec2 m_localAnchorB;
 	b2Vec2 m_targetA;
-	b2Float m_frequencyHz;
-	b2Float m_dampingRatio;
-	b2Float m_beta = b2Float{0};
+	float_t m_frequencyHz;
+	float_t m_dampingRatio;
+	float_t m_beta = float_t{0};
 	
 	// Solver shared
 	b2Vec2 m_impulse = b2Vec2_zero;
-	b2Float m_maxForce;
-	b2Float m_gamma = b2Float{0};
+	float_t m_maxForce;
+	float_t m_gamma = float_t{0};
 
 	// Solver temp
 	index_t m_indexA;
 	index_t m_indexB;
 	b2Vec2 m_rB;
 	b2Vec2 m_localCenterB;
-	b2Float m_invMassB;
-	b2Float m_invIB;
+	float_t m_invMassB;
+	float_t m_invIB;
 	b2Mat22 m_mass;
 	b2Vec2 m_C;
 };

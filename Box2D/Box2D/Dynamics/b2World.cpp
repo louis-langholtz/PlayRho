@@ -397,9 +397,9 @@ void b2World::SetAllowSleeping(bool flag) noexcept
 // Find islands, integrate and solve constraints, solve position constraints
 void b2World::Solve(const b2TimeStep& step)
 {
-	m_profile.solveInit = b2Float{0};
-	m_profile.solveVelocity = b2Float{0};
-	m_profile.solvePosition = b2Float{0};
+	m_profile.solveInit = float_t{0};
+	m_profile.solveVelocity = float_t{0};
+	m_profile.solvePosition = float_t{0};
 
 	// Size the island for the worst case.
 	b2Island island(m_bodyCount,
@@ -593,7 +593,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 		for (auto b = m_bodyList; b; b = b->m_next)
 		{
 			b->UnsetInIsland();
-			b->m_sweep.alpha0 = b2Float{0};
+			b->m_sweep.alpha0 = float_t{0};
 		}
 
 		for (auto c = m_contactManager.GetContactList(); c; c = c->m_next)
@@ -610,7 +610,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 	{
 		// Find the first TOI.
 		auto minContact = static_cast<b2Contact*>(nullptr);
-		auto minAlpha = b2Float{1};
+		auto minAlpha = float_t{1};
 
 		for (auto c = m_contactManager.GetContactList(); c; c = c->m_next)
 		{
@@ -640,8 +640,8 @@ void b2World::SolveTOI(const b2TimeStep& step)
 			}
 		}
 
-		// if ((!minContact) || (minAlpha >= b2Float(1)))
-		if ((!minContact) || (minAlpha > (b2Float(1) - (b2Float(10) * b2_epsilon))))
+		// if ((!minContact) || (minAlpha >= float_t(1)))
+		if ((!minContact) || (minAlpha > (float_t(1) - (float_t(10) * b2_epsilon))))
 		{
 			// No more TOI events. Done!
 			m_stepComplete = true;
@@ -782,8 +782,8 @@ void b2World::SolveTOI(const b2TimeStep& step)
 		}
 
 		b2TimeStep subStep;
-		subStep.set_dt((b2Float(1) - minAlpha) * step.get_dt());
-		subStep.dtRatio = b2Float(1);
+		subStep.set_dt((float_t(1) - minAlpha) * step.get_dt());
+		subStep.dtRatio = float_t(1);
 		subStep.positionIterations = b2_maxSubStepPositionIterations;
 		subStep.velocityIterations = step.velocityIterations;
 		subStep.warmStarting = false;
@@ -822,7 +822,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 	}
 }
 
-void b2World::Step(b2Float dt, int32 velocityIterations, int32 positionIterations)
+void b2World::Step(float_t dt, int32 velocityIterations, int32 positionIterations)
 {
 	b2Timer stepTimer;
 
@@ -851,7 +851,7 @@ void b2World::Step(b2Float dt, int32 velocityIterations, int32 positionIteration
 	}
 
 	// Integrate velocities, solve velocity constraints, and integrate positions.
-	if (m_stepComplete && (step.get_dt() > b2Float{0}))
+	if (m_stepComplete && (step.get_dt() > float_t{0}))
 	{
 		b2Timer timer;
 		Solve(step);
@@ -859,14 +859,14 @@ void b2World::Step(b2Float dt, int32 velocityIterations, int32 positionIteration
 	}
 
 	// Handle TOI events.
-	if (m_continuousPhysics && (step.get_dt() > b2Float{0}))
+	if (m_continuousPhysics && (step.get_dt() > float_t{0}))
 	{
 		b2Timer timer;
 		SolveTOI(step);
 		m_profile.solveTOI = timer.GetMilliseconds();
 	}
 
-	if (step.get_dt() > b2Float{0})
+	if (step.get_dt() > float_t{0})
 	{
 		m_inv_dt0 = step.get_inv_dt();
 	}
@@ -884,7 +884,7 @@ void b2World::ClearForces() noexcept
 	for (auto body = m_bodyList; body; body = body->GetNext())
 	{
 		body->m_force = b2Vec2_zero;
-		body->m_torque = b2Float{0};
+		body->m_torque = float_t{0};
 	}
 }
 
@@ -914,7 +914,7 @@ struct b2WorldRayCastWrapper
 {
 	using size_type = b2BroadPhase::size_type;
 
-	b2Float RayCastCallback(const b2RayCastInput& input, size_type proxyId)
+	float_t RayCastCallback(const b2RayCastInput& input, size_type proxyId)
 	{
 		auto userData = broadPhase->GetUserData(proxyId);
 		const auto proxy = static_cast<b2FixtureProxy*>(userData);
@@ -926,7 +926,7 @@ struct b2WorldRayCastWrapper
 		if (hit)
 		{
 			const auto fraction = output.fraction;
-			const auto point = (b2Float(1) - fraction) * input.p1 + fraction * input.p2;
+			const auto point = (float_t(1) - fraction) * input.p1 + fraction * input.p2;
 			return callback->ReportFixture(fixture, point, output.normal, fraction);
 		}
 
@@ -944,7 +944,7 @@ struct b2WorldRayCastWrapper
 void b2World::RayCast(b2RayCastCallback* callback, const b2Vec2& point1, const b2Vec2& point2) const
 {
 	b2WorldRayCastWrapper wrapper(&m_contactManager.m_broadPhase, callback);
-	const auto input = b2RayCastInput{point1, point2, b2Float(1)};
+	const auto input = b2RayCastInput{point1, point2, float_t(1)};
 	m_contactManager.m_broadPhase.RayCast(&wrapper, input);
 }
 
@@ -957,7 +957,7 @@ void b2World::DrawShape(const b2Fixture* fixture, const b2Transform& xf, const b
 			const auto circle = static_cast<const b2CircleShape*>(fixture->GetShape());
 			const auto center = b2Mul(xf, circle->GetPosition());
 			const auto radius = circle->GetRadius();
-			const auto axis = b2Mul(xf.q, b2Vec2(b2Float(1), b2Float{0}));
+			const auto axis = b2Mul(xf.q, b2Vec2(float_t(1), float_t{0}));
 			g_debugDraw->DrawSolidCircle(center, radius, axis, color);
 		}
 		break;
@@ -980,7 +980,7 @@ void b2World::DrawShape(const b2Fixture* fixture, const b2Transform& xf, const b
 			{
 				const auto v2 = b2Mul(xf, chain->GetVertex(i));
 				g_debugDraw->DrawSegment(v1, v2, color);
-				g_debugDraw->DrawCircle(v1, b2Float(0.05), color);
+				g_debugDraw->DrawCircle(v1, float_t(0.05), color);
 				v1 = v2;
 			}
 		}
@@ -1016,7 +1016,7 @@ void b2World::DrawJoint(b2Joint* joint)
 	const auto p1 = joint->GetAnchorA();
 	const auto p2 = joint->GetAnchorB();
 
-	const b2Color color(b2Float(0.5), b2Float(0.8), b2Float(0.8));
+	const b2Color color(float_t(0.5), float_t(0.8), float_t(0.8));
 
 	switch (joint->GetType())
 	{
@@ -1165,7 +1165,7 @@ b2World::size_type b2World::GetTreeBalance() const
 	return m_contactManager.m_broadPhase.GetTreeBalance();
 }
 
-b2Float b2World::GetTreeQuality() const
+float_t b2World::GetTreeQuality() const
 {
 	return m_contactManager.m_broadPhase.GetTreeQuality();
 }

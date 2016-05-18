@@ -56,7 +56,7 @@ public:
 	b2AABB ComputeAABB(const b2Transform& transform, child_count_t childIndex) const override;
 
 	/// @see b2Shape::ComputeMass
-	b2MassData ComputeMass(b2Float density) const override;
+	b2MassData ComputeMass(float_t density) const override;
 
 	b2Vec2 GetVertex0() const noexcept { return m_vertex0; }
 	b2Vec2 GetVertex1() const noexcept { return m_vertex1; }

@@ -86,7 +86,7 @@ public:
 
 	/// Chains have zero mass.
 	/// @see b2Shape::ComputeMass
-	b2MassData ComputeMass(b2Float density) const override;
+	b2MassData ComputeMass(float_t density) const override;
 
 	/// Get the vertex count.
 	child_count_t GetVertexCount() const noexcept { return m_count; }

@@ -53,7 +53,7 @@ public:
 				b2CircleShape* circle = (b2CircleShape*)fixture->GetShape();
 
 				b2Vec2 center = b2Mul(xf, circle->GetPosition());
-				b2Float radius = circle->GetRadius();
+				float_t radius = circle->GetRadius();
 
 				g_debugDraw->DrawCircle(center, radius, color);
 			}
@@ -147,9 +147,9 @@ public:
 		}
 
 		{
-			b2Float w = 1.0f;
-			b2Float b = w / (2.0f + b2Sqrt(2.0f));
-			b2Float s = b2Sqrt(2.0f) * b;
+			float_t w = 1.0f;
+			float_t b = w / (2.0f + b2Sqrt(2.0f));
+			float_t s = b2Sqrt(2.0f) * b;
 
 			b2Vec2 vertices[8];
 			vertices[0] = b2Vec2(0.5f * s, 0.0f);
@@ -169,7 +169,7 @@ public:
 		}
 
 		{
-			m_circle.SetRadius(b2Float(0.5));
+			m_circle.SetRadius(float_t(0.5));
 		}
 
 		m_bodyIndex = 0;
@@ -187,7 +187,7 @@ public:
 		b2BodyDef bd;
 		bd.type = b2_dynamicBody;
 
-		b2Float x = RandomFloat(-2.0f, 2.0f);
+		float_t x = RandomFloat(-2.0f, 2.0f);
 		bd.position = b2Vec2(x, 10.0f);
 		bd.angle = RandomFloat(-b2_pi, b2_pi);
 
@@ -266,7 +266,7 @@ public:
 		Test::Step(settings);
 
 		PolyShapesCallback callback;
-		callback.m_circle.SetRadius(b2Float(2.0));
+		callback.m_circle.SetRadius(float_t(2.0));
 		callback.m_circle.SetPosition(b2Vec2(0.0f, 1.1f));
 		callback.m_transform = b2Transform_identity;
 		callback.g_debugDraw = &g_debugDraw;

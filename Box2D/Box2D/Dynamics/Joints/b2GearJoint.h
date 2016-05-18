@@ -37,7 +37,7 @@ struct b2GearJointDef : public b2JointDef
 
 	/// The gear ratio.
 	/// @see b2GearJoint for explanation.
-	b2Float ratio = b2Float(1);
+	float_t ratio = float_t(1);
 };
 
 /// A gear joint is used to connect two joints together. Either joint
@@ -55,8 +55,8 @@ public:
 	b2Vec2 GetAnchorA() const override;
 	b2Vec2 GetAnchorB() const override;
 
-	b2Vec2 GetReactionForce(b2Float inv_dt) const override;
-	b2Float GetReactionTorque(b2Float inv_dt) const override;
+	b2Vec2 GetReactionForce(float_t inv_dt) const override;
+	float_t GetReactionTorque(float_t inv_dt) const override;
 
 	/// Get the first joint.
 	b2Joint* GetJoint1() { return m_joint1; }
@@ -65,8 +65,8 @@ public:
 	b2Joint* GetJoint2() { return m_joint2; }
 
 	/// Set/Get the gear ratio.
-	void SetRatio(b2Float ratio);
-	b2Float GetRatio() const;
+	void SetRatio(float_t ratio);
+	float_t GetRatio() const;
 
 	/// Dump joint to dmLog
 	void Dump() override;
@@ -100,22 +100,22 @@ protected:
 	b2Vec2 m_localAxisC;
 	b2Vec2 m_localAxisD;
 
-	b2Float m_referenceAngleA;
-	b2Float m_referenceAngleB;
+	float_t m_referenceAngleA;
+	float_t m_referenceAngleB;
 
-	b2Float m_constant;
-	b2Float m_ratio;
+	float_t m_constant;
+	float_t m_ratio;
 
-	b2Float m_impulse;
+	float_t m_impulse;
 
 	// Solver temp
 	index_t m_indexA, m_indexB, m_indexC, m_indexD;
 	b2Vec2 m_lcA, m_lcB, m_lcC, m_lcD;
-	b2Float m_mA, m_mB, m_mC, m_mD;
-	b2Float m_iA, m_iB, m_iC, m_iD;
+	float_t m_mA, m_mB, m_mC, m_mD;
+	float_t m_iA, m_iB, m_iC, m_iD;
 	b2Vec2 m_JvAC, m_JvBD;
-	b2Float m_JwA, m_JwB, m_JwC, m_JwD;
-	b2Float m_mass;
+	float_t m_JwA, m_JwB, m_JwC, m_JwD;
+	float_t m_mass;
 };
 
 } // namespace box2d

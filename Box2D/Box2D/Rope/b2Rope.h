@@ -39,19 +39,19 @@ struct b2RopeDef
 	size_type count = 0;
 
 	///
-	b2Float* masses = nullptr;
+	float_t* masses = nullptr;
 
 	///
 	b2Vec2 gravity = b2Vec2_zero;
 
 	///
-	b2Float damping = b2Float(1) / b2Float(10);
+	float_t damping = float_t(1) / float_t(10);
 
 	/// Stretching stiffness
-	b2Float k2 = b2Float(9) / b2Float(10);
+	float_t k2 = float_t(9) / float_t(10);
 
 	/// Bending stiffness. Values above 0.5 can make the simulation blow up.
-	b2Float k3 = b2Float(1) / b2Float(10);
+	float_t k3 = float_t(1) / float_t(10);
 };
 
 /// 
@@ -67,7 +67,7 @@ public:
 	void Initialize(const b2RopeDef* def);
 
 	///
-	void Step(b2Float timeStep, int32 iterations);
+	void Step(float_t timeStep, int32 iterations);
 
 	///
 	size_type GetVertexCount() const noexcept
@@ -85,7 +85,7 @@ public:
 	void Draw(b2Draw* draw) const;
 
 	///
-	void SetAngle(b2Float angle);
+	void SetAngle(float_t angle);
 
 private:
 
@@ -97,16 +97,16 @@ private:
 	b2Vec2* m_p0s = nullptr;
 	b2Vec2* m_vs = nullptr;
 
-	b2Float* m_ims = nullptr;
+	float_t* m_ims = nullptr;
 
-	b2Float* m_Ls = nullptr;
-	b2Float* m_as = nullptr;
+	float_t* m_Ls = nullptr;
+	float_t* m_as = nullptr;
 
 	b2Vec2 m_gravity = b2Vec2_zero;
-	b2Float m_damping = b2Float{0};
+	float_t m_damping = float_t{0};
 
-	b2Float m_k2 = b2Float(1);
-	b2Float m_k3 = b2Float(0.1);
+	float_t m_k2 = float_t(1);
+	float_t m_k3 = float_t(0.1);
 };
 
 } // namespace box2d

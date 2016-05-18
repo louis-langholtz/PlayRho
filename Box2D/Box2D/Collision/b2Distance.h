@@ -42,7 +42,7 @@ public:
 
 	/// Gets the "radius" of the associated shape.
 	/// @return Non-negative distance.
-	b2Float GetRadius() const noexcept { return m_radius; }
+	float_t GetRadius() const noexcept { return m_radius; }
 
 	/// Get the supporting vertex index in the given direction.
 	size_type GetSupport(const b2Vec2& d) const noexcept;
@@ -60,7 +60,7 @@ private:
 	b2Vec2 m_buffer[2];
 	const b2Vec2* m_vertices = nullptr;
 	size_type m_count = 0;
-	b2Float m_radius = b2Float{0}; ///< "Radius" of the associated shape.
+	float_t m_radius = float_t{0}; ///< "Radius" of the associated shape.
 };
 
 /// Used to warm start b2Distance.
@@ -72,7 +72,7 @@ public:
 
 	using index_t = b2_size_t;
 
-	b2Float GetMetric() const noexcept { return metric; }
+	float_t GetMetric() const noexcept { return metric; }
 	size_type GetCount() const noexcept { return count; }
 
 	index_t GetIndexA(size_type index) const
@@ -89,7 +89,7 @@ public:
 
 	void ClearIndices() noexcept { count = 0; }
 
-	void SetMetric(b2Float m) noexcept { metric = m; }
+	void SetMetric(float_t m) noexcept { metric = m; }
 
 	void AddIndex(index_t a, index_t b)
 	{
@@ -100,7 +100,7 @@ public:
 	}
 
 private:
-	b2Float metric;		///< length or area
+	float_t metric;		///< length or area
 	size_type count = 0;
 	index_t indexA[MaxCount];	///< vertices on shape A
 	index_t indexB[MaxCount];	///< vertices on shape B
@@ -123,7 +123,7 @@ struct b2DistanceOutput
 {
 	b2Vec2 pointA;		///< closest point on shapeA
 	b2Vec2 pointB;		///< closest point on shapeB
-	b2Float distance;
+	float_t distance;
 	int32 iterations;	///< number of GJK iterations used
 };
 

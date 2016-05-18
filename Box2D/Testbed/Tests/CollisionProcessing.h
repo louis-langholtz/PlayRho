@@ -43,8 +43,8 @@ public:
 			ground->CreateFixture(&sd);
 		}
 
-		b2Float xLo = -5.0f, xHi = 5.0f;
-		b2Float yLo = 2.0f, yHi = 35.0f;
+		float_t xLo = -5.0f, xHi = 5.0f;
+		float_t yLo = 2.0f, yHi = 35.0f;
 
 		// Small triangle
 		b2Vec2 vertices[3];
@@ -100,7 +100,7 @@ public:
 
 		// Small circle
 		b2CircleShape circle;
-		circle.SetRadius(b2Float(1));
+		circle.SetRadius(float_t(1));
 
 		b2FixtureDef circleShapeDef;
 		circleShapeDef.shape = &circle;
@@ -140,8 +140,8 @@ public:
 
 			b2Body* body1 = point->fixtureA->GetBody();
 			b2Body* body2 = point->fixtureB->GetBody();
-			b2Float mass1 = body1->GetMass();
-			b2Float mass2 = body2->GetMass();
+			float_t mass1 = body1->GetMass();
+			float_t mass2 = body2->GetMass();
 
 			if (mass1 > 0.0f && mass2 > 0.0f)
 			{

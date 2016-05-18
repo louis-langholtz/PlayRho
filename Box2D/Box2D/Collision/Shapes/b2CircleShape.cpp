@@ -59,7 +59,7 @@ bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input
 	const auto sigma = b2Square(c) - rr * b;
 
 	// Check for negative discriminant and short segment.
-	if ((sigma < b2Float{0}) || (rr < b2_epsilon))
+	if ((sigma < float_t{0}) || (rr < b2_epsilon))
 	{
 		return false;
 	}
@@ -68,7 +68,7 @@ bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input
 	auto a = -(c + b2Sqrt(sigma));
 
 	// Is the intersection point on the segment?
-	if ((b2Float{0} <= a) && (a <= (input.maxFraction * rr)))
+	if ((float_t{0} <= a) && (a <= (input.maxFraction * rr)))
 	{
 		a /= rr;
 		output->fraction = a;
@@ -87,9 +87,9 @@ b2AABB b2CircleShape::ComputeAABB(const b2Transform& transform, child_count_t ch
 	return b2AABB{p, p} + b2Vec2{GetRadius(), GetRadius()};
 }
 
-b2MassData b2CircleShape::ComputeMass(b2Float density) const
+b2MassData b2CircleShape::ComputeMass(float_t density) const
 {
 	const auto mass = density * b2_pi * b2Square(GetRadius());
-	const auto I = mass * ((b2Square(GetRadius()) / b2Float(2)) + m_p.LengthSquared());
+	const auto I = mass * ((b2Square(GetRadius()) / float_t(2)) + m_p.LengthSquared());
 	return b2MassData{mass, m_p, I};
 }

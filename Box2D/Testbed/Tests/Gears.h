@@ -38,13 +38,13 @@ public:
 
 		{
 			b2CircleShape circle1;
-			circle1.SetRadius(b2Float(1.0));
+			circle1.SetRadius(float_t(1.0));
 
 			b2PolygonShape box;
 			box.SetAsBox(0.5f, 5.0f);
 
 			b2CircleShape circle2;
-			circle2.SetRadius(b2Float(2.0));
+			circle2.SetRadius(float_t(2.0));
 			
 			b2BodyDef bd1;
 			bd1.type = b2_staticBody;
@@ -83,10 +83,10 @@ public:
 
 		{
 			b2CircleShape circle1;
-			circle1.SetRadius(b2Float(1));
+			circle1.SetRadius(float_t(1));
 
 			b2CircleShape circle2;
-			circle2.SetRadius(b2Float(2));
+			circle2.SetRadius(float_t(2));
 			
 			b2PolygonShape box;
 			box.SetAsBox(0.5f, 5.0f);
@@ -151,7 +151,7 @@ public:
 	{
 		Test::Step(settings);
 
-		b2Float ratio, value;
+		float_t ratio, value;
 		
 		ratio = m_joint4->GetRatio();
 		value = m_joint1->GetJointAngle() + ratio * m_joint2->GetJointAngle();

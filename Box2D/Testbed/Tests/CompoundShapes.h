@@ -39,13 +39,13 @@ public:
 		}
 
 		{
-			b2CircleShape circle1(b2Float(0.5), b2Vec2(b2Float(-0.5), b2Float(0.5f)));
+			b2CircleShape circle1(float_t(0.5), b2Vec2(float_t(-0.5), float_t(0.5f)));
 
-			b2CircleShape circle2(b2Float(0.5), b2Vec2(b2Float(0.5), b2Float(0.5f)));
+			b2CircleShape circle2(float_t(0.5), b2Vec2(float_t(0.5), float_t(0.5f)));
 
 			for (int i = 0; i < 10; ++i)
 			{
-				b2Float x = RandomFloat(-0.1f, 0.1f);
+				float_t x = RandomFloat(-0.1f, 0.1f);
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
 				bd.position = b2Vec2(x + 5.0f, 1.05f + 2.5f * i);
@@ -65,7 +65,7 @@ public:
 
 			for (int i = 0; i < 10; ++i)
 			{
-				b2Float x = RandomFloat(-0.1f, 0.1f);
+				float_t x = RandomFloat(-0.1f, 0.1f);
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
 				bd.position = b2Vec2(x - 5.0f, 1.05f + 2.5f * i);
@@ -101,7 +101,7 @@ public:
 
 			for (int32 i = 0; i < 10; ++i)
 			{
-				b2Float x = RandomFloat(-0.1f, 0.1f);
+				float_t x = RandomFloat(-0.1f, 0.1f);
 				b2BodyDef bd;
 				bd.type = b2_dynamicBody;
 				bd.position = b2Vec2(x, 2.05f + 2.5f * i);

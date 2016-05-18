@@ -27,7 +27,7 @@ public:
 	{
 		const int32 N = 40;
 		b2Vec2 vertices[N];
-		b2Float masses[N];
+		float_t masses[N];
 
 		for (int32 i = 0; i < N; ++i)
 		{
@@ -70,7 +70,7 @@ public:
 
 	void Step(Settings* settings)
 	{
-		b2Float dt = settings->hz > 0.0f ? 1.0f / settings->hz : 0.0f;
+		float_t dt = settings->hz > 0.0f ? 1.0f / settings->hz : 0.0f;
 
 		if (settings->pause == 1 && settings->singleStep == 0)
 		{
@@ -95,7 +95,7 @@ public:
 	}
 
 	b2Rope m_rope;
-	b2Float m_angle;
+	float_t m_angle;
 };
 
 #endif

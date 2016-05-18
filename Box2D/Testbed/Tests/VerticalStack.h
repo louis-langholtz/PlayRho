@@ -49,7 +49,7 @@ public:
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
-		b2Float xs[5] = {0.0f, -10.0f, -5.0f, 5.0f, 10.0f};
+		float_t xs[5] = {0.0f, -10.0f, -5.0f, 5.0f, 10.0f};
 
 		for (int32 j = 0; j < e_columnCount; ++j)
 		{
@@ -71,9 +71,9 @@ public:
 				m_indices[n] = n;
 				bd.userData = m_indices + n;
 
-				b2Float x = 0.0f;
-				//b2Float x = RandomFloat(-0.02f, 0.02f);
-				//b2Float x = i % 2 == 0 ? -0.01f : 0.01f;
+				float_t x = 0.0f;
+				//float_t x = RandomFloat(-0.02f, 0.02f);
+				//float_t x = i % 2 == 0 ? -0.01f : 0.01f;
 				bd.position = b2Vec2(xs[j] + x, 0.55f + 1.1f * i);
 				b2Body* body = m_world->CreateBody(&bd);
 
@@ -99,7 +99,7 @@ public:
 
 			{
 				b2CircleShape shape;
-				shape.SetRadius(b2Float(0.25));
+				shape.SetRadius(float_t(0.25));
 
 				b2FixtureDef fd;
 				fd.shape = &shape;

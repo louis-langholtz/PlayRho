@@ -73,7 +73,7 @@ public:
 		// Should the body break?
 		const auto count = contact->GetManifold()->GetPointCount();
 
-		b2Float maxImpulse = 0.0f;
+		float_t maxImpulse = 0.0f;
 		for (int32 i = 0; i < count; ++i)
 		{
 			maxImpulse = b2Max(maxImpulse, impulse->GetEntryNormal(i));
@@ -144,7 +144,7 @@ public:
 
 	b2Body* m_body1;
 	b2Vec2 m_velocity;
-	b2Float m_angularVelocity;
+	float_t m_angularVelocity;
 	b2PolygonShape m_shape1;
 	b2PolygonShape m_shape2;
 	b2Fixture* m_piece1;
