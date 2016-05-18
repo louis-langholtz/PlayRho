@@ -71,7 +71,7 @@ child_count_t b2PolygonShape::GetChildCount() const
 
 static b2Vec2 ComputeCentroid(const b2Vec2 vs[], b2PolygonShape::vertex_count_t count)
 {
-	b2Assert(count >= 3);
+	assert(count >= 3);
 
 	auto c = b2Vec2_zero;
 	auto area = float_t{0};
@@ -110,14 +110,14 @@ static b2Vec2 ComputeCentroid(const b2Vec2 vs[], b2PolygonShape::vertex_count_t 
 	}
 
 	// Centroid
-	b2Assert(area > b2_epsilon);
+	assert(area > b2_epsilon);
 	c *= float_t(1) / area;
 	return c;
 }
 
 void b2PolygonShape::Set(const b2Vec2 vertices[], vertex_count_t count)
 {
-	b2Assert((count >= 3) && (count <= b2_maxPolygonVertices));
+	assert((count >= 3) && (count <= b2_maxPolygonVertices));
 	if (count < 3)
 	{
 		SetAsBox(float_t(1), float_t(1));
@@ -153,7 +153,7 @@ void b2PolygonShape::Set(const b2Vec2 vertices[], vertex_count_t count)
 	if (n < 3)
 	{
 		// Polygon is degenerate.
-		b2Assert(false);
+		assert(false);
 		SetAsBox(float_t(1), float_t(1));
 		return;
 	}
@@ -218,7 +218,7 @@ void b2PolygonShape::Set(const b2Vec2 vertices[], vertex_count_t count)
 	if (m < 3)
 	{
 		// Polygon is degenerate.
-		b2Assert(false);
+		assert(false);
 		SetAsBox(float_t(1), float_t(1));
 		return;
 	}
@@ -237,7 +237,7 @@ void b2PolygonShape::Set(const b2Vec2 vertices[], vertex_count_t count)
 		const auto i1 = i;
 		const auto i2 = ((i + 1) < m) ? i + 1 : 0;
 		const auto edge = m_vertices[i2] - m_vertices[i1];
-		b2Assert(edge.LengthSquared() > b2Square(b2_epsilon));
+		assert(edge.LengthSquared() > b2Square(b2_epsilon));
 		m_normals[i] = b2Normalize(b2Cross(edge, float_t(1)));
 	}
 
@@ -264,7 +264,7 @@ bool b2PolygonShape::TestPoint(const b2Transform& xf, const b2Vec2& p) const
 bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 								const b2Transform& xf, child_count_t childIndex) const
 {
-	B2_NOT_USED(childIndex);
+	BOX2D_NOT_USED(childIndex);
 
 	// Put the ray into the polygon's frame of reference.
 	const auto p1 = b2MulT(xf.q, input.p1 - xf.p);
@@ -321,7 +321,7 @@ bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& inpu
 		}
 	}
 
-	b2Assert((float_t{0} <= lower) && (lower <= input.maxFraction));
+	assert((float_t{0} <= lower) && (lower <= input.maxFraction));
 
 	if (index != InvalidIndex)
 	{
@@ -335,9 +335,9 @@ bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& inpu
 
 b2AABB b2PolygonShape::ComputeAABB(const b2Transform& xf, child_count_t childIndex) const
 {
-	B2_NOT_USED(childIndex);
+	BOX2D_NOT_USED(childIndex);
 	
-	b2Assert(m_count > 0);
+	assert(m_count > 0);
 
 	auto lower = b2Mul(xf, m_vertices[0]);
 	auto upper = lower;
@@ -379,7 +379,7 @@ b2MassData b2PolygonShape::ComputeMass(float_t density) const
 	//
 	// The rest of the derivation is handled by computer algebra.
 
-	b2Assert(m_count >= 3);
+	assert(m_count >= 3);
 
 	auto center = b2Vec2_zero;
 	auto area = float_t{0};
@@ -425,7 +425,7 @@ b2MassData b2PolygonShape::ComputeMass(float_t density) const
 	const auto mass = density * area;
 
 	// Center of mass
-	b2Assert(area > b2_epsilon);
+	assert(area > b2_epsilon);
 	center *= float_t(1) / area;
 	const auto massDataCenter = center + s;
 

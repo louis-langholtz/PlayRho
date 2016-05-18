@@ -51,8 +51,8 @@ public:
 	
 	constexpr b2TOIOutput(State _state, float_t _t): state(_state), t(_t)
 	{
-		b2Assert(t >= 0);
-		b2Assert(t <= 1);
+		assert(t >= 0);
+		assert(t <= 1);
 	}
 
 	/// Gets the state at time factor.

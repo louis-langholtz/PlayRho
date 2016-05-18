@@ -37,12 +37,12 @@ void b2ChainShape::Clear()
 
 void b2ChainShape::CreateLoop(const b2Vec2* vertices, child_count_t count)
 {
-	b2Assert(m_vertices == nullptr && m_count == 0);
-	b2Assert(count >= 3);
+	assert(m_vertices == nullptr && m_count == 0);
+	assert(count >= 3);
 	for (auto i = decltype(count){1}; i < count; ++i)
 	{
 		// If the code crashes here, it means your vertices are too close together.
-		b2Assert(b2DistanceSquared(vertices[i-1], vertices[i]) > b2Square(b2_linearSlop));
+		assert(b2DistanceSquared(vertices[i-1], vertices[i]) > b2Square(b2_linearSlop));
 	}
 
 	m_count = count + 1;
@@ -57,12 +57,12 @@ void b2ChainShape::CreateLoop(const b2Vec2* vertices, child_count_t count)
 
 void b2ChainShape::CreateChain(const b2Vec2* vertices, child_count_t count)
 {
-	b2Assert((m_vertices == nullptr) && (m_count == 0));
-	b2Assert(count >= 2);
+	assert((m_vertices == nullptr) && (m_count == 0));
+	assert(count >= 2);
 	for (auto i = decltype(count){1}; i < count; ++i)
 	{
 		// If the code crashes here, it means your vertices are too close together.
-		b2Assert(b2DistanceSquared(vertices[i-1], vertices[i]) > b2Square(b2_linearSlop));
+		assert(b2DistanceSquared(vertices[i-1], vertices[i]) > b2Square(b2_linearSlop));
 	}
 
 	m_count = count;
@@ -103,13 +103,13 @@ b2Shape* b2ChainShape::Clone(b2BlockAllocator* allocator) const
 child_count_t b2ChainShape::GetChildCount() const
 {
 	// edge count = vertex count - 1
-	b2Assert(m_count > 0);
+	assert(m_count > 0);
 	return m_count - 1;
 }
 
 void b2ChainShape::GetChildEdge(b2EdgeShape* edge, child_count_t index) const
 {
-	b2Assert((0 <= index) && (index < (m_count - 1)));
+	assert((0 <= index) && (index < (m_count - 1)));
 	edge->SetRadius(GetRadius());
 
 	edge->Set(m_vertices[index + 0], m_vertices[index + 1]);
@@ -123,7 +123,7 @@ void b2ChainShape::GetChildEdge(b2EdgeShape* edge, child_count_t index) const
 		edge->SetVertex0(m_prevVertex);
 	}
 
-	b2Assert(m_count >= 2);
+	assert(m_count >= 2);
 	if (index < (m_count - 2))
 	{
 		edge->SetVertex3(m_vertices[index + 2]);
@@ -136,15 +136,15 @@ void b2ChainShape::GetChildEdge(b2EdgeShape* edge, child_count_t index) const
 
 bool b2ChainShape::TestPoint(const b2Transform& xf, const b2Vec2& p) const
 {
-	B2_NOT_USED(xf);
-	B2_NOT_USED(p);
+	BOX2D_NOT_USED(xf);
+	BOX2D_NOT_USED(p);
 	return false;
 }
 
 bool b2ChainShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 							const b2Transform& xf, child_count_t childIndex) const
 {
-	b2Assert(childIndex < m_count);
+	assert(childIndex < m_count);
 
 	const auto i1 = childIndex;
 	auto i2 = childIndex + 1;
@@ -159,7 +159,7 @@ bool b2ChainShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 
 b2AABB b2ChainShape::ComputeAABB(const b2Transform& xf, child_count_t childIndex) const
 {
-	b2Assert(childIndex < m_count);
+	assert(childIndex < m_count);
 
 	const auto i1 = childIndex;
 	auto i2 = childIndex + 1;
@@ -176,7 +176,7 @@ b2AABB b2ChainShape::ComputeAABB(const b2Transform& xf, child_count_t childIndex
 
 b2MassData b2ChainShape::ComputeMass(float_t density) const
 {
-	B2_NOT_USED(density);
+	BOX2D_NOT_USED(density);
 
 	return b2MassData{float_t{0}, b2Vec2_zero, float_t{0}};
 }

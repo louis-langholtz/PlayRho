@@ -65,7 +65,7 @@ public:
 
 	void Step(Settings* settings)
 	{
-		B2_NOT_USED(settings);
+		BOX2D_NOT_USED(settings);
 
 		m_rayActor = nullptr;
 		for (int32 i = 0; i < e_actorCount; ++i)
@@ -298,8 +298,8 @@ private:
 			}
 
 			const auto overlap = b2TestOverlap(m_queryAABB, m_actors[i].aabb);
-			B2_NOT_USED(overlap);
-			b2Assert(overlap == m_actors[i].overlap);
+			BOX2D_NOT_USED(overlap);
+			assert(overlap == m_actors[i].overlap);
 		}
 	}
 
@@ -334,7 +334,7 @@ private:
 
 		if (bruteActor != nullptr)
 		{
-			b2Assert(bruteOutput.fraction == m_rayCastOutput.fraction);
+			assert(bruteOutput.fraction == m_rayCastOutput.fraction);
 		}
 	}
 

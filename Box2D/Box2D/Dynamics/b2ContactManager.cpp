@@ -92,7 +92,7 @@ void b2ContactManager::Destroy(b2Contact* c)
 	// Call the factory.
 	b2Contact::Destroy(c, m_allocator);
 	
-	b2Assert(m_contactCount > 0);
+	assert(m_contactCount > 0);
 	--m_contactCount;
 }
 

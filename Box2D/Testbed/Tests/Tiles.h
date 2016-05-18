@@ -127,7 +127,7 @@ public:
 		const b2ContactManager& cm = m_world->GetContactManager();
 		const auto height = cm.m_broadPhase.GetTreeHeight();
 		const auto leafCount = cm.m_broadPhase.GetProxyCount();
-		b2Assert(leafCount > 0);
+		assert(leafCount > 0);
 		const auto minimumNodeCount = 2 * leafCount - 1;
 		const auto minimumHeight = ceilf(logf(float_t(minimumNodeCount)) / logf(2.0f));
 		g_debugDraw.DrawString(5, m_textLine, "dynamic tree height = %d, min = %d", height, int32(minimumHeight));

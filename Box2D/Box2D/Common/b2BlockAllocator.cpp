@@ -83,7 +83,7 @@ struct box2d::b2Block
 b2BlockAllocator::b2BlockAllocator():
 	m_chunks(static_cast<b2Chunk*>(b2Alloc(m_chunkSpace * sizeof(b2Chunk))))
 {
-	b2Assert(b2_blockSizes < std::numeric_limits<uint8>::max());
+	assert(b2_blockSizes < std::numeric_limits<uint8>::max());
 	std::memset(m_chunks, 0, m_chunkSpace * sizeof(b2Chunk));
 	std::memset(m_freeLists, 0, sizeof(m_freeLists));
 }
@@ -103,7 +103,7 @@ void* b2BlockAllocator::Allocate(size_type size)
 	if (size == 0)
 		return nullptr;
 
-	b2Assert(0 < size);
+	assert(0 < size);
 
 	if (size > b2_maxBlockSize)
 	{
@@ -111,7 +111,7 @@ void* b2BlockAllocator::Allocate(size_type size)
 	}
 
 	const auto index = s_blockSizeLookup[size];
-	b2Assert((0 <= index) && (index < b2_blockSizes));
+	assert((0 <= index) && (index < b2_blockSizes));
 
 	if (m_freeLists[index])
 	{
@@ -133,10 +133,10 @@ void* b2BlockAllocator::Allocate(size_type size)
 	std::memset(chunk->blocks, 0xcd, b2_chunkSize);
 #endif
 	const auto blockSize = s_blockSizes[index];
-	b2Assert(blockSize > 0);
+	assert(blockSize > 0);
 	chunk->blockSize = blockSize;
 	const auto blockCount = b2_chunkSize / blockSize;
-	b2Assert((blockCount * blockSize) <= b2_chunkSize);
+	assert((blockCount * blockSize) <= b2_chunkSize);
 	for (auto i = decltype(blockCount){0}; i < blockCount - 1; ++i)
 	{
 		auto block = (b2Block*)((int8*)chunk->blocks + blockSize * i);
@@ -159,7 +159,7 @@ void b2BlockAllocator::Free(void* p, size_type size)
 		return;
 	}
 
-	b2Assert(size > 0);
+	assert(size > 0);
 
 	if (size > b2_maxBlockSize)
 	{
@@ -168,7 +168,7 @@ void b2BlockAllocator::Free(void* p, size_type size)
 	}
 
 	const auto index = s_blockSizeLookup[size];
-	b2Assert((0 <= index) && (index < b2_blockSizes));
+	assert((0 <= index) && (index < b2_blockSizes));
 
 #define _DEBUG
 #ifdef _DEBUG
@@ -180,7 +180,7 @@ void b2BlockAllocator::Free(void* p, size_type size)
 		const auto chunk = m_chunks + i;
 		if (chunk->blockSize != blockSize)
 		{
-			b2Assert(	(int8*)p + blockSize <= (int8*)chunk->blocks ||
+			assert(	(int8*)p + blockSize <= (int8*)chunk->blocks ||
 						(int8*)chunk->blocks + b2_chunkSize <= (int8*)p);
 		}
 		else
@@ -192,7 +192,7 @@ void b2BlockAllocator::Free(void* p, size_type size)
 		}
 	}
 
-	b2Assert(found);
+	assert(found);
 
 	std::memset(p, 0xfd, blockSize);
 #endif

@@ -104,13 +104,13 @@ private:
 
 inline b2Vec2 b2PolygonShape::GetVertex(vertex_count_t index) const
 {
-	b2Assert(0 <= index && index < m_count);
+	assert(0 <= index && index < m_count);
 	return m_vertices[index];
 }
 
 inline b2Vec2 b2PolygonShape::GetNormal(vertex_count_t index) const
 {
-	b2Assert(0 <= index && index < m_count);
+	assert(0 <= index && index < m_count);
 	return m_normals[index];
 }
 	

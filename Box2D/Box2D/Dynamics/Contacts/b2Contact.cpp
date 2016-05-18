@@ -88,8 +88,8 @@ b2Contact* b2Contact::Create(b2Fixture* fixtureA, child_count_t indexA,
 	const auto type1 = fixtureA->GetType();
 	const auto type2 = fixtureB->GetType();
 
-	b2Assert(0 <= type1 && type1 < b2Shape::e_typeCount);
-	b2Assert(0 <= type2 && type2 < b2Shape::e_typeCount);
+	assert(0 <= type1 && type1 < b2Shape::e_typeCount);
+	assert(0 <= type2 && type2 < b2Shape::e_typeCount);
 	
 	auto createFcn = s_registers[type1][type2].createFcn;
 	if (createFcn)
@@ -124,8 +124,8 @@ void b2Contact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
 	const auto typeA = fixtureA->GetType();
 	const auto typeB = fixtureB->GetType();
 
-	b2Assert(0 <= typeA && typeB < b2Shape::e_typeCount);
-	b2Assert(0 <= typeA && typeB < b2Shape::e_typeCount);
+	assert(0 <= typeA && typeB < b2Shape::e_typeCount);
+	assert(0 <= typeA && typeB < b2Shape::e_typeCount);
 
 	auto destroyFcn = s_registers[typeA][typeB].destroyFcn;
 	destroyFcn(contact, allocator);
@@ -244,7 +244,7 @@ bool b2Contact::UpdateTOI()
 	
 	const auto typeA = bA->m_type;
 	const auto typeB = bB->m_type;
-	b2Assert((typeA == b2_dynamicBody) || (typeB == b2_dynamicBody));
+	assert((typeA == b2_dynamicBody) || (typeB == b2_dynamicBody));
 	
 	const auto activeA = bA->IsAwake() && (typeA != b2_staticBody);
 	const auto activeB = bB->IsAwake() && (typeB != b2_staticBody);
@@ -267,7 +267,7 @@ bool b2Contact::UpdateTOI()
 	// Compute the TOI for this contact.
 	// Put the sweeps onto the same time interval.
 	const auto maxAlpha0 = b2Max(bA->m_sweep.alpha0, bB->m_sweep.alpha0);
-	b2Assert(maxAlpha0 < float_t(1));
+	assert(maxAlpha0 < float_t(1));
 	bA->m_sweep.Advance(maxAlpha0);
 	bB->m_sweep.Advance(maxAlpha0);
 	

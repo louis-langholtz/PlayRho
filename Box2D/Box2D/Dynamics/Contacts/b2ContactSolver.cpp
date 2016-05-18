@@ -67,7 +67,7 @@ public:
 
 	b2Vec2 GetPoint(size_type index) const
 	{
-		b2Assert((0 <= index) && (index < pointCount));
+		assert((0 <= index) && (index < pointCount));
 		return localPoints[index];
 	}
 
@@ -78,7 +78,7 @@ public:
 
 	void AddPoint(const b2Vec2& val)
 	{
-		b2Assert(pointCount < b2_maxManifoldPoints);
+		assert(pointCount < b2_maxManifoldPoints);
 		localPoints[pointCount] = val;
 		++pointCount;
 	}
@@ -97,7 +97,7 @@ void b2ContactSolver::Assign(b2ContactVelocityConstraint& var, const b2Contact& 
 
 void b2ContactSolver::Assign(b2ContactPositionConstraintBodyData& var, const b2Body& val)
 {
-	b2Assert(val.IsValidIslandIndex());
+	assert(val.IsValidIslandIndex());
 	var.index = val.m_islandIndex;
 	var.invMass = val.m_invMass;
 	var.invI = val.m_invI;
@@ -106,7 +106,7 @@ void b2ContactSolver::Assign(b2ContactPositionConstraintBodyData& var, const b2B
 
 void b2ContactSolver::Assign(b2ContactVelocityConstraintBodyData& var, const b2Body& val)
 {
-	b2Assert(val.IsValidIslandIndex());
+	assert(val.IsValidIslandIndex());
 	var.index = val.m_islandIndex;
 	var.invMass = val.m_invMass;
 	var.invI = val.m_invI;
@@ -155,7 +155,7 @@ b2ContactSolver::b2ContactSolver(b2ContactSolverDef* def) :
 		pc.ClearPoints();
 
 		const auto pointCount = manifold->GetPointCount();
-		b2Assert(pointCount > 0);
+		assert(pointCount > 0);
 		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 		{
 			const auto& mp = manifold->GetPoint(j); ///< Manifold point.
@@ -218,15 +218,15 @@ void b2ContactSolver::InitializeVelocityConstraint(b2ContactVelocityConstraint& 
 {
 	const auto manifold = m_contacts[vc.contactIndex]->GetManifold();
 	
-	b2Assert(vc.bodyA.index >= 0);
+	assert(vc.bodyA.index >= 0);
 	const auto posA = m_positions[vc.bodyA.index];
 	const auto velA = m_velocities[vc.bodyA.index];
 	
-	b2Assert(vc.bodyB.index >= 0);
+	assert(vc.bodyB.index >= 0);
 	const auto posB = m_positions[vc.bodyB.index];
 	const auto velB = m_velocities[vc.bodyB.index];
 	
-	b2Assert(manifold->GetPointCount() > 0);
+	assert(manifold->GetPointCount() > 0);
 	
 	const auto xfA = b2Displace(posA, pc.bodyA.localCenter);
 	const auto xfB = b2Displace(posB, pc.bodyB.localCenter);
@@ -414,11 +414,11 @@ static inline bool BlockSolveNormalCase1(const b2ContactVelocityConstraint& vc,
 		const auto post_vn2 = b2Dot(post_dv2, vc.normal);
 		
 		
-		b2Assert(b2Abs(post_vn1 - vcp1.velocityBias) < k_majorErrorTol);
-		b2Assert(b2Abs(post_vn2 - vcp2.velocityBias) < k_majorErrorTol);
+		assert(b2Abs(post_vn1 - vcp1.velocityBias) < k_majorErrorTol);
+		assert(b2Abs(post_vn2 - vcp2.velocityBias) < k_majorErrorTol);
 
-		b2Assert(b2Abs(post_vn1 - vcp1.velocityBias) < k_errorTol);
-		b2Assert(b2Abs(post_vn2 - vcp2.velocityBias) < k_errorTol);
+		assert(b2Abs(post_vn1 - vcp1.velocityBias) < k_errorTol);
+		assert(b2Abs(post_vn2 - vcp2.velocityBias) < k_errorTol);
 #endif
 		return true;
 	}
@@ -449,8 +449,8 @@ static inline bool BlockSolveNormalCase2(const b2ContactVelocityConstraint& vc,
 		// Compute normal velocity
 		const auto post_vn1 = b2Dot(post_dv1, vc.normal);
 		
-		b2Assert(b2Abs(post_vn1 - vcp1.velocityBias) < k_majorErrorTol);
-		b2Assert(b2Abs(post_vn1 - vcp1.velocityBias) < k_errorTol);
+		assert(b2Abs(post_vn1 - vcp1.velocityBias) < k_majorErrorTol);
+		assert(b2Abs(post_vn1 - vcp1.velocityBias) < k_errorTol);
 #endif
 		return true;
 	}
@@ -481,8 +481,8 @@ static inline bool BlockSolveNormalCase3(const b2ContactVelocityConstraint& vc,
 		// Compute normal velocity
 		const auto post_vn2 = b2Dot(post_dv2, vc.normal);
 
-		b2Assert(b2Abs(post_vn2 - vcp2.velocityBias) < k_majorErrorTol);
-		b2Assert(b2Abs(post_vn2 - vcp2.velocityBias) < k_errorTol);
+		assert(b2Abs(post_vn2 - vcp2.velocityBias) < k_majorErrorTol);
+		assert(b2Abs(post_vn2 - vcp2.velocityBias) < k_errorTol);
 #endif
 		return true;
 	}
@@ -548,7 +548,7 @@ static inline void BlockSolveNormalConstraint(const b2ContactVelocityConstraint&
 	// b' = b - A * a;
 
 	const auto oldImpulse = b2Vec2{vcp1.normalImpulse, vcp2.normalImpulse};
-	b2Assert((oldImpulse.x >= float_t{0}) && (oldImpulse.y >= float_t{0}));
+	assert((oldImpulse.x >= float_t{0}) && (oldImpulse.y >= float_t{0}));
 	
 	const auto b_prime = [=]{
 		// Relative velocity at contact
@@ -582,7 +582,7 @@ static inline void BlockSolveNormalConstraint(const b2ContactVelocityConstraint&
 static inline void SolveVelocityConstraint(b2ContactVelocityConstraint& vc, b2Velocity& bodyA, b2Velocity& bodyB)
 {
 	const auto pointCount = vc.GetPointCount();
-	b2Assert((pointCount == 1) || (pointCount == 2));
+	assert((pointCount == 1) || (pointCount == 2));
 
 	// Solve tangent constraints first, because non-penetration is more important than friction.
 	// Solve normal constraints second.
@@ -659,8 +659,8 @@ public:
 	b2PositionSolverManifold(const b2ContactPositionConstraint& pc,
 							 const b2Transform& xfA, const b2Transform& xfB, index_t index)
 	{
-		b2Assert(pc.GetPointCount() > 0);
-		b2Assert(pc.type != b2Manifold::e_unset);
+		assert(pc.GetPointCount() > 0);
+		assert(pc.type != b2Manifold::e_unset);
 
 		// Note for valid manifold types:
 		//   Sum the radius values and subtract this sum to reduce FP losses in cases where the radius
@@ -672,7 +672,7 @@ public:
 
 		case b2Manifold::e_circles:
 			{
-				b2Assert(index == 0);
+				assert(index == 0);
 				const auto pointA = b2Mul(xfA, pc.localPoint);
 				const auto pointB = b2Mul(xfB, pc.GetPoint(0));
 				const auto delta = pointB - pointA;

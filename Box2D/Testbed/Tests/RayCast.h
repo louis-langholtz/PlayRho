@@ -134,7 +134,7 @@ public:
 			}
 		}
 
-		b2Assert(m_count < e_maxCount);
+		assert(m_count < e_maxCount);
 
 		m_points[m_count] = point;
 		m_normals[m_count] = normal;

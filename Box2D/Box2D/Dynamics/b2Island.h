@@ -95,13 +95,13 @@ public:
 
 	inline const b2Body* GetBody(island_count_t i) const
 	{
-		b2Assert((0 <= i) && (i < m_bodyCount));
+		assert((0 <= i) && (i < m_bodyCount));
 		return m_bodies[i];
 	}
 
 	inline b2Body* GetBody(island_count_t i)
 	{
-		b2Assert((0 <= i) && (i < m_bodyCount));
+		assert((0 <= i) && (i < m_bodyCount));
 		return m_bodies[i];
 	}
 

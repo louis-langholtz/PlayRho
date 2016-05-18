@@ -46,7 +46,7 @@ public:
 
 	void Step(Settings* settings)
 	{
-		B2_NOT_USED(settings);
+		BOX2D_NOT_USED(settings);
 
 		const auto manifold = b2CollideShapes(m_polygonA, m_transformA, m_polygonB, m_transformB);
 

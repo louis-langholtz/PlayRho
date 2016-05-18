@@ -55,7 +55,7 @@ b2DistanceProxy::b2DistanceProxy(const b2Shape& shape, child_count_t index)
 		case b2Shape::e_chain:
 		{
 			const auto& chain = *static_cast<const b2ChainShape*>(&shape);
-			b2Assert((0 <= index) && (index < chain.GetVertexCount()));
+			assert((0 <= index) && (index < chain.GetVertexCount()));
 			
 			m_buffer[0] = chain.GetVertex(index);
 			m_buffer[1] = ((index + 1) < chain.GetVertexCount())? chain.GetVertex(index + 1): chain.GetVertex(0);
@@ -78,7 +78,7 @@ b2DistanceProxy::b2DistanceProxy(const b2Shape& shape, child_count_t index)
 			break;
 			
 		default:
-			b2Assert(false);
+			assert(false);
 			break;
 	}
 }
@@ -132,7 +132,7 @@ public:
 
 	void AddVertex(const b2SimplexVertex& vertex) noexcept
 	{
-		b2Assert(m_count < MaxVertices);
+		assert(m_count < MaxVertices);
 		m_vertices[m_count] = vertex;
 		++m_count;
 	}
@@ -141,7 +141,7 @@ public:
 				   const b2DistanceProxy& proxyA, const b2Transform& transformA,
 				   const b2DistanceProxy& proxyB, const b2Transform& transformB)
 	{
-		b2Assert(cache.GetCount() <= MaxVertices);
+		assert(cache.GetCount() <= MaxVertices);
 		
 		// Copy data from cache.
 		const auto count = cache.GetCount();
@@ -209,7 +209,7 @@ public:
 			}
 
 		default:
-			b2Assert(false);
+			assert(false);
 			return b2Vec2_zero;
 		}
 	}
@@ -228,7 +228,7 @@ public:
 			return b2Vec2_zero;
 
 		default:
-			b2Assert(false);
+			assert(false);
 			return b2Vec2_zero;
 		}
 	}
@@ -255,7 +255,7 @@ public:
 			break;
 
 		default:
-			b2Assert(false);
+			assert(false);
 			break;
 		}
 	}
@@ -274,7 +274,7 @@ public:
 			return b2Cross(m_vertices[1].get_w() - m_vertices[0].get_w(), m_vertices[2].get_w() - m_vertices[0].get_w());
 
 		default:
-			b2Assert(false);
+			assert(false);
 			return float_t{0};
 		}
 	}
@@ -513,7 +513,7 @@ b2DistanceOutput b2Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 			break;
 
 		default:
-			b2Assert(false);
+			assert(false);
 		}
 
 		// If we have max points (3), then the origin is in the corresponding triangle.

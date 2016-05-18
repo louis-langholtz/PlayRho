@@ -197,7 +197,7 @@ void b2MotorJoint::SolveVelocityConstraints(const b2SolverData& data)
 
 bool b2MotorJoint::SolvePositionConstraints(const b2SolverData& data)
 {
-	B2_NOT_USED(data);
+	BOX2D_NOT_USED(data);
 
 	return true;
 }
@@ -224,7 +224,7 @@ float_t b2MotorJoint::GetReactionTorque(float_t inv_dt) const
 
 void b2MotorJoint::SetMaxForce(float_t force)
 {
-	b2Assert(b2IsValid(force) && (force >= float_t{0}));
+	assert(b2IsValid(force) && (force >= float_t{0}));
 	m_maxForce = force;
 }
 
@@ -235,7 +235,7 @@ float_t b2MotorJoint::GetMaxForce() const
 
 void b2MotorJoint::SetMaxTorque(float_t torque)
 {
-	b2Assert(b2IsValid(torque) && (torque >= float_t{0}));
+	assert(b2IsValid(torque) && (torque >= float_t{0}));
 	m_maxTorque = torque;
 }
 
@@ -246,7 +246,7 @@ float_t b2MotorJoint::GetMaxTorque() const
 
 void b2MotorJoint::SetCorrectionFactor(float_t factor)
 {
-	b2Assert(b2IsValid(factor) && (float_t{0} <= factor) && (factor <= float_t(1)));
+	assert(b2IsValid(factor) && (float_t{0} <= factor) && (factor <= float_t(1)));
 	m_correctionFactor = factor;
 }
 

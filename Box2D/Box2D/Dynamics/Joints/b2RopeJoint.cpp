@@ -212,7 +212,7 @@ b2Vec2 b2RopeJoint::GetReactionForce(float_t inv_dt) const
 
 float_t b2RopeJoint::GetReactionTorque(float_t inv_dt) const
 {
-	B2_NOT_USED(inv_dt);
+	BOX2D_NOT_USED(inv_dt);
 	return float_t{0};
 }
 

@@ -555,7 +555,7 @@ float_t b2PrismaticJoint::GetUpperLimit() const noexcept
 
 void b2PrismaticJoint::SetLimits(float_t lower, float_t upper)
 {
-	b2Assert(lower <= upper);
+	assert(lower <= upper);
 	if ((lower != m_lowerTranslation) || (upper != m_upperTranslation))
 	{
 		m_bodyA->SetAwake();

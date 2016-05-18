@@ -67,7 +67,7 @@ struct b2Vec2
 	/// Read from and indexed element.
 	float_t operator () (index_t i) const
 	{
-		b2Assert((i >= 0) && (i < NumElements));
+		assert((i >= 0) && (i < NumElements));
 		switch (i)
 		{
 			case 0: return x;
@@ -80,7 +80,7 @@ struct b2Vec2
 	/// Write to an indexed element.
 	float_t& operator () (index_t i)
 	{
-		b2Assert((i >= 0) && (i < NumElements));
+		assert((i >= 0) && (i < NumElements));
 		switch (i)
 		{
 			case 0: return x;
@@ -691,8 +691,8 @@ constexpr inline b2Transform b2Displace(const b2Vec2& ctr, const b2Rot& rot, con
 /// @return Transform of the given sweep at the specified time.
 inline b2Transform b2GetTransform(const b2Sweep& sweep, float_t beta)
 {
-	b2Assert(beta >= 0);
-	b2Assert(beta <= 1);
+	assert(beta >= 0);
+	assert(beta <= 1);
 	const auto one_minus_beta = float_t(1) - beta;
 	return b2Displace(one_minus_beta * sweep.c0 + beta * sweep.c, b2Rot(one_minus_beta * sweep.a0 + beta * sweep.a), sweep.localCenter);
 }
@@ -719,8 +719,8 @@ inline b2Transform b2GetTransformOne(const b2Sweep& sweep)
 
 inline void b2Sweep::Advance(float_t alpha)
 {
-	b2Assert(alpha < float_t(1));
-	b2Assert(alpha0 < float_t(1));
+	assert(alpha < float_t(1));
+	assert(alpha0 < float_t(1));
 	const auto beta = (alpha - alpha0) / (float_t(1) - alpha0);
 	c0 += beta * (c - c0);
 	a0 += beta * (a - a0);

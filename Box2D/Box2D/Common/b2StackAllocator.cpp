@@ -25,13 +25,13 @@ b2StackAllocator::b2StackAllocator() = default;
 
 b2StackAllocator::~b2StackAllocator()
 {
-	b2Assert(m_index == 0);
-	b2Assert(m_entryCount == 0);
+	assert(m_index == 0);
+	assert(m_entryCount == 0);
 }
 
 void* b2StackAllocator::Allocate(size_type size)
 {
-	b2Assert(m_entryCount < b2_maxStackEntries);
+	assert(m_entryCount < b2_maxStackEntries);
 
 	auto entry = m_entries + m_entryCount;
 	entry->size = size;
@@ -56,19 +56,19 @@ void* b2StackAllocator::Allocate(size_type size)
 
 void b2StackAllocator::Free(void* p)
 {
-	b2Assert(m_entryCount > 0);
+	assert(m_entryCount > 0);
 	const auto entry = m_entries + m_entryCount - 1;
-	b2Assert(p == entry->data);
+	assert(p == entry->data);
 	if (entry->usedMalloc)
 	{
 		b2Free(p);
 	}
 	else
 	{
-		b2Assert(m_index >= entry->size);
+		assert(m_index >= entry->size);
 		m_index -= entry->size;
 	}
-	b2Assert(m_allocation >= entry->size);
+	assert(m_allocation >= entry->size);
 	m_allocation -= entry->size;
 	--m_entryCount;
 }

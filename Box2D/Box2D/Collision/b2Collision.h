@@ -150,13 +150,13 @@ public:
 
 	const b2ManifoldPoint& GetPoint(size_type index) const
 	{
-		b2Assert((0 <= index) && (index < pointCount));
+		assert((0 <= index) && (index < pointCount));
 		return points[index];
 	}
 
 	b2ManifoldPoint& GetPoint(size_type index)
 	{
-		b2Assert((0 <= index) && (index < pointCount));
+		assert((0 <= index) && (index < pointCount));
 		return points[index];
 	}
 	
@@ -166,7 +166,7 @@ public:
 	/// @note Behavior is undefined if this is called more than b2_maxManifoldPoints times. 
 	void AddPoint(const b2Vec2& lp, b2ContactFeature cf = b2ContactFeature{b2ContactFeature::e_vertex, 0, b2ContactFeature::e_vertex, 0})
 	{
-		b2Assert(pointCount < b2_maxManifoldPoints);
+		assert(pointCount < b2_maxManifoldPoints);
 		points[pointCount].localPoint = lp;
 		points[pointCount].cf = cf;
 		points[pointCount].normalImpulse = 0.f;
@@ -214,13 +214,13 @@ public:
 
 	b2Vec2 GetPoint(size_type index) const
 	{
-		b2Assert(index < b2_maxManifoldPoints);
+		assert(index < b2_maxManifoldPoints);
 		return points[index];
 	}
 
 	float_t GetSeparation(size_type index) const
 	{
-		b2Assert(index < b2_maxManifoldPoints);
+		assert(index < b2_maxManifoldPoints);
 		return separations[index];
 	}
 

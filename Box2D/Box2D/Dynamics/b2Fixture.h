@@ -277,7 +277,7 @@ inline const b2Fixture* b2Fixture::GetNext() const
 
 inline void b2Fixture::SetDensity(float_t density)
 {
-	b2Assert(b2IsValid(density) && density >= float_t{0});
+	assert(b2IsValid(density) && density >= float_t{0});
 	m_density = density;
 }
 
@@ -323,8 +323,8 @@ inline b2MassData b2Fixture::GetMassData() const
 
 inline const b2AABB& b2Fixture::GetAABB(child_count_t childIndex) const
 {
-	b2Assert(childIndex >= 0);
-	b2Assert(childIndex < m_proxyCount);
+	assert(childIndex >= 0);
+	assert(childIndex < m_proxyCount);
 	return m_proxies[childIndex].aabb;
 }
 

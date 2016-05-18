@@ -26,13 +26,13 @@ namespace box2d {
 // Memory allocators. Modify these to use your own allocator.
 void* b2Alloc(size_t size)
 {
-	b2Assert(size >= 0);
+	assert(size >= 0);
 	return std::malloc(size);
 }
 
 void* b2Realloc(void* ptr, size_t new_size)
 {
-	b2Assert(new_size >= 0);
+	assert(new_size >= 0);
 	return std::realloc(ptr, new_size);
 }
 

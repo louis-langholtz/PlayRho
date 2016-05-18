@@ -76,7 +76,7 @@ public:
 	
 	void AddEntry(float_t normal, float_t tangent) noexcept
 	{
-		b2Assert(count < b2_maxManifoldPoints);
+		assert(count < b2_maxManifoldPoints);
 		normalImpulses[count] = normal;
 		tangentImpulses[count] = tangent;
 		++count;
@@ -103,10 +103,10 @@ public:
 	virtual ~b2ContactListener() {}
 
 	/// Called when two fixtures begin to touch.
-	virtual void BeginContact(b2Contact* contact) { B2_NOT_USED(contact); }
+	virtual void BeginContact(b2Contact* contact) { BOX2D_NOT_USED(contact); }
 
 	/// Called when two fixtures cease to touch.
-	virtual void EndContact(b2Contact* contact) { B2_NOT_USED(contact); }
+	virtual void EndContact(b2Contact* contact) { BOX2D_NOT_USED(contact); }
 
 	/// This is called after a contact is updated. This allows you to inspect a
 	/// contact before it goes to the solver. If you are careful, you can modify the
@@ -120,8 +120,8 @@ public:
 	/// the next step.
 	virtual void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 	{
-		B2_NOT_USED(contact);
-		B2_NOT_USED(oldManifold);
+		BOX2D_NOT_USED(contact);
+		BOX2D_NOT_USED(oldManifold);
 	}
 
 	/// This lets you inspect a contact after the solver is finished. This is useful
@@ -132,8 +132,8 @@ public:
 	/// Note: this is only called for contacts that are touching, solid, and awake.
 	virtual void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
 	{
-		B2_NOT_USED(contact);
-		B2_NOT_USED(impulse);
+		BOX2D_NOT_USED(contact);
+		BOX2D_NOT_USED(impulse);
 	}
 };
 

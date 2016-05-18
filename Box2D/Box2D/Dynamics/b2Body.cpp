@@ -54,12 +54,12 @@ b2Body::b2Body(const b2BodyDef* bd, b2World* world):
 	m_type(bd->type), m_flags(GetFlags(*bd)), m_xf(bd->position, b2Rot(bd->angle)), m_world(world),
 	m_linearVelocity(bd->linearVelocity), m_angularVelocity(bd->angularVelocity)
 {
-	b2Assert(bd->position.IsValid());
-	b2Assert(bd->linearVelocity.IsValid());
-	b2Assert(b2IsValid(bd->angle));
-	b2Assert(b2IsValid(bd->angularVelocity));
-	b2Assert(b2IsValid(bd->angularDamping) && (bd->angularDamping >= float_t{0}));
-	b2Assert(b2IsValid(bd->linearDamping) && (bd->linearDamping >= float_t{0}));
+	assert(bd->position.IsValid());
+	assert(bd->linearVelocity.IsValid());
+	assert(b2IsValid(bd->angle));
+	assert(b2IsValid(bd->angularVelocity));
+	assert(b2IsValid(bd->angularDamping) && (bd->angularDamping >= float_t{0}));
+	assert(b2IsValid(bd->linearDamping) && (bd->linearDamping >= float_t{0}));
 
 	m_sweep.localCenter = b2Vec2_zero;
 	m_sweep.c0 = m_xf.p;
@@ -106,7 +106,7 @@ void b2Body::DestroyContacts()
 
 void b2Body::SetType(b2BodyType type)
 {
-	b2Assert(!m_world->IsLocked());
+	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())
 	{
 		return;
@@ -151,7 +151,7 @@ void b2Body::SetType(b2BodyType type)
 
 b2Fixture* b2Body::CreateFixture(const b2FixtureDef* def)
 {
-	b2Assert(!m_world->IsLocked());
+	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())
 	{
 		return nullptr;
@@ -196,16 +196,16 @@ b2Fixture* b2Body::CreateFixture(const b2Shape* shape, float_t density)
 
 void b2Body::DestroyFixture(b2Fixture* fixture)
 {
-	b2Assert(!m_world->IsLocked());
+	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())
 	{
 		return;
 	}
 
-	b2Assert(fixture->m_body == this);
+	assert(fixture->m_body == this);
 
 	// Remove the fixture from this body's singly linked list.
-	b2Assert(m_fixtureCount > 0);
+	assert(m_fixtureCount > 0);
 	auto node = &m_fixtureList;
 	auto found = false;
 	while (*node != nullptr)
@@ -221,7 +221,7 @@ void b2Body::DestroyFixture(b2Fixture* fixture)
 	}
 
 	// You tried to remove a shape that is not attached to this body.
-	b2Assert(found);
+	assert(found);
 
 	// Destroy any contacts associated with the fixture.
 	auto edge = m_contactList;
@@ -297,7 +297,7 @@ void b2Body::ResetMassData()
 		return;
 	}
 
-	b2Assert(m_type == b2_dynamicBody);
+	assert(m_type == b2_dynamicBody);
 
 	// Accumulate mass over all fixtures.
 	m_mass = float_t{0};
@@ -333,7 +333,7 @@ void b2Body::ResetMassData()
 	{
 		// Center the inertia about the center of mass.
 		m_I -= m_mass * localCenter.LengthSquared();
-		b2Assert(m_I > float_t{0});
+		assert(m_I > float_t{0});
 		m_invI = float_t(1) / m_I;
 	}
 	else
@@ -353,7 +353,7 @@ void b2Body::ResetMassData()
 
 void b2Body::SetMassData(const b2MassData* massData)
 {
-	b2Assert(!m_world->IsLocked());
+	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())
 	{
 		return;
@@ -370,7 +370,7 @@ void b2Body::SetMassData(const b2MassData* massData)
 	if ((massData->I > float_t{0}) && (!IsFixedRotation()))
 	{
 		m_I = massData->I - m_mass * massData->center.LengthSquared();
-		b2Assert(m_I > float_t{0});
+		assert(m_I > float_t{0});
 		m_invI = float_t(1) / m_I;
 	}
 	else
@@ -413,7 +413,7 @@ bool b2Body::ShouldCollide(const b2Body* other) const
 
 void b2Body::SetTransform(const b2Vec2& position, float_t angle)
 {
-	b2Assert(!m_world->IsLocked());
+	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())
 	{
 		return;
@@ -446,7 +446,7 @@ void b2Body::SynchronizeFixtures()
 
 void b2Body::SetActive(bool flag)
 {
-	b2Assert(!m_world->IsLocked());
+	assert(!m_world->IsLocked());
 
 	if (flag == IsActive())
 	{

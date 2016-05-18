@@ -25,13 +25,12 @@
 #include <cmath>
 #include <limits>
 
-#define B2_NOT_USED(x) ((void)(x))
-#define b2Assert(A) assert(A)
+#define BOX2D_NOT_USED(x) ((void)(x))
 
 /// Current version.
-#define box2d_majorVersion 3
-#define box2d_minorVersion 0
-#define box2d_revision 0
+#define BOX2D_MAJOR_VERSION 3
+#define BOX2D_MINOR_VERSION 0
+#define BOX2D_REVISION 0
 
 namespace box2d
 {
@@ -177,7 +176,7 @@ struct b2Version
 	int32 revision;		///< bug fixes
 };
 
-constexpr auto b2_version = b2Version{box2d_majorVersion, box2d_minorVersion, box2d_revision};
+constexpr auto b2_version = b2Version{BOX2D_MAJOR_VERSION, BOX2D_MINOR_VERSION, BOX2D_REVISION};
 }
 
 #endif

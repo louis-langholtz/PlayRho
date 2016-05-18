@@ -46,7 +46,7 @@ bool b2CircleShape::TestPoint(const b2Transform& transform, const b2Vec2& p) con
 bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 							const b2Transform& transform, child_count_t childIndex) const
 {
-	B2_NOT_USED(childIndex);
+	BOX2D_NOT_USED(childIndex);
 
 	const auto position = transform.p + b2Mul(transform.q, m_p);
 	const auto s = input.p1 - position;
@@ -81,7 +81,7 @@ bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input
 
 b2AABB b2CircleShape::ComputeAABB(const b2Transform& transform, child_count_t childIndex) const
 {
-	B2_NOT_USED(childIndex);
+	BOX2D_NOT_USED(childIndex);
 
 	const auto p = transform.p + b2Mul(transform.q, m_p);
 	return b2AABB{p, p} + b2Vec2{GetRadius(), GetRadius()};

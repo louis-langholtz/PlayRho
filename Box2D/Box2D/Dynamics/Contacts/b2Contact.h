@@ -405,13 +405,13 @@ inline bool b2Contact::HasValidToi() const noexcept
 
 inline float_t b2Contact::GetToi() const
 {
-	b2Assert(HasValidToi());
+	assert(HasValidToi());
 	return m_toi;
 }
 
 inline void b2Contact::SetToi(float_t toi) noexcept
 {
-	b2Assert(toi >= 0 && toi <= 1);
+	assert(toi >= 0 && toi <= 1);
 	m_toi = toi;
 	m_flags |= b2Contact::e_toiFlag;
 }

@@ -48,8 +48,8 @@ public:
 		m_proxyA(proxyA), m_proxyB(proxyB), m_sweepA(sweepA), m_sweepB(sweepB),
 		m_type((cache.GetCount() != 1)? ((cache.GetIndexA(0) == cache.GetIndexA(1))? e_faceB: e_faceA): e_points)
 	{
-		b2Assert(cache.GetCount() > 0);
-		b2Assert(cache.GetCount() <= 3); // < 3 or <= 3?
+		assert(cache.GetCount() > 0);
+		assert(cache.GetCount() <= 3); // < 3 or <= 3?
 
 		const auto xfA = b2GetTransform(m_sweepA, t1);
 		const auto xfB = b2GetTransform(m_sweepB, t1);
@@ -176,7 +176,7 @@ public:
 			}
 
 		default:
-			b2Assert(false);
+			assert(false);
 			*indexA = static_cast<b2DistanceProxy::size_type>(-1);
 			*indexB = static_cast<b2DistanceProxy::size_type>(-1);
 			return float_t{0};
@@ -200,7 +200,7 @@ public:
 			case e_faceB: return EvaluateFaceB(indexA, indexB, xfA, xfB);
 			default: break;
 		}
-		b2Assert(false);
+		assert(false);
 		return float_t{0};
 	}
 
@@ -266,7 +266,7 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius();
 	const auto target = b2Max(b2_linearSlop, totalRadius - (float_t{3} * b2_linearSlop));
 	constexpr auto tolerance = b2_linearSlop / float_t(4);
-	b2Assert(target >= tolerance);
+	assert(target >= tolerance);
 
 	auto t1 = float_t{0};
 	auto iter = decltype(b2_maxTOIIterations){0};
@@ -347,7 +347,7 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 			if (s2 > (target + tolerance))
 			{
 				// Victory!
-				b2Assert(t2 == input.tMax);
+				assert(t2 == input.tMax);
 				// Formerly this used input.tMax as in...
 				// output = b2TOIOutput{b2TOIOutput::e_separated, input.tMax};
 				// t2 seems more appropriate however given s2 was derived from it.

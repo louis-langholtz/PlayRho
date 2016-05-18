@@ -43,8 +43,8 @@ void b2PolygonAndCircleContact::Destroy(b2Contact* contact, b2BlockAllocator* al
 b2PolygonAndCircleContact::b2PolygonAndCircleContact(b2Fixture* fixtureA, b2Fixture* fixtureB)
 : b2Contact(fixtureA, 0, fixtureB, 0)
 {
-	b2Assert(m_fixtureA->GetType() == b2Shape::e_polygon);
-	b2Assert(m_fixtureB->GetType() == b2Shape::e_circle);
+	assert(m_fixtureA->GetType() == b2Shape::e_polygon);
+	assert(m_fixtureB->GetType() == b2Shape::e_circle);
 }
 
 b2Manifold b2PolygonAndCircleContact::Evaluate(const b2Transform& xfA, const b2Transform& xfB)

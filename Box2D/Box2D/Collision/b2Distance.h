@@ -77,13 +77,13 @@ public:
 
 	index_t GetIndexA(size_type index) const
 	{
-		b2Assert(index < count);
+		assert(index < count);
 		return indexA[index];
 	}
 
 	index_t GetIndexB(size_type index) const
 	{
-		b2Assert(index < count);
+		assert(index < count);
 		return indexB[index];
 	}
 
@@ -93,7 +93,7 @@ public:
 
 	void AddIndex(index_t a, index_t b)
 	{
-		b2Assert(count < MaxCount);
+		assert(count < MaxCount);
 		indexA[count] = a;
 		indexB[count] = b;
 		++count;
@@ -136,8 +136,8 @@ b2DistanceOutput b2Distance(b2SimplexCache& cache,  const b2DistanceInput& input
 
 inline b2Vec2 b2DistanceProxy::GetVertex(size_type index) const
 {
-	b2Assert(index >= 0);
-	b2Assert(index < m_count);
+	assert(index >= 0);
+	assert(index < m_count);
 	return m_vertices[index];
 }
 

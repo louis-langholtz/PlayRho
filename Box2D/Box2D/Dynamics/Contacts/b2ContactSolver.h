@@ -76,7 +76,7 @@ public:
 	/// @sa GetPointCount.
 	const b2VelocityConstraintPoint& GetPoint(size_type index) const
 	{
-		b2Assert(index < pointCount);
+		assert(index < pointCount);
 		return points[index];
 	}
 
@@ -87,7 +87,7 @@ public:
 	/// @sa GetPointCount.
 	b2VelocityConstraintPoint& GetPoint(size_type index)
 	{
-		b2Assert(index < pointCount);
+		assert(index < pointCount);
 		return points[index];
 	}
 
@@ -101,14 +101,14 @@ public:
 	/// @sa GetPointCount().
 	void AddPoint(const b2VelocityConstraintPoint& val)
 	{
-		b2Assert(pointCount < b2_maxManifoldPoints);
+		assert(pointCount < b2_maxManifoldPoints);
 		points[pointCount] = val;
 		++pointCount;
 	}
 
 	void RemovePoint()
 	{
-		b2Assert(pointCount > 0);
+		assert(pointCount > 0);
 		--pointCount;
 	}
 

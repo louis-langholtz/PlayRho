@@ -120,7 +120,7 @@ b2Joint* b2Joint::Create(const b2JointDef* def, b2BlockAllocator* allocator)
 		break;
 
 	default:
-		b2Assert(false);
+		assert(false);
 		break;
 	}
 
@@ -177,7 +177,7 @@ void b2Joint::Destroy(b2Joint* joint, b2BlockAllocator* allocator)
 		break;
 
 	default:
-		b2Assert(false);
+		assert(false);
 		break;
 	}
 }
@@ -186,7 +186,7 @@ b2Joint::b2Joint(const b2JointDef* def):
 	m_type(def->type), m_bodyA(def->bodyA), m_bodyB(def->bodyB),
 	m_collideConnected(def->collideConnected), m_userData(def->userData)
 {
-	b2Assert(def->bodyA != def->bodyB);
+	assert(def->bodyA != def->bodyB);
 }
 
 bool b2Joint::IsActive() const noexcept

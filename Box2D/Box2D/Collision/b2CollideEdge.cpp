@@ -108,7 +108,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 	
 	// Region AB
 	const auto den = e.LengthSquared();
-	b2Assert(den > 0);
+	assert(den > 0);
 	const auto P = (float_t(1) / den) * (u * A + v * B);
 	const auto d = Q - P;
 
@@ -170,23 +170,23 @@ public:
 	
 	b2Vec2 GetVertex(size_type index) const
 	{
-		b2Assert(index >= 0);
-		b2Assert(index < b2_maxPolygonVertices);
-		b2Assert(index < count);
+		assert(index >= 0);
+		assert(index < b2_maxPolygonVertices);
+		assert(index < count);
 		return vertices[index];
 	}
 
 	b2Vec2 GetNormal(size_type index) const
 	{
-		b2Assert(index >= 0);
-		b2Assert(index < b2_maxPolygonVertices);
-		b2Assert(index < count);
+		assert(index >= 0);
+		assert(index < b2_maxPolygonVertices);
+		assert(index < count);
 		return normals[index];
 	}
 
 	void Append(const b2Vec2& vertex, const b2Vec2& normal)
 	{
-		b2Assert(count < b2_maxPolygonVertices);
+		assert(count < b2_maxPolygonVertices);
 		vertices[count] = vertex;
 		normals[count] = normal;
 		++count;
@@ -556,7 +556,7 @@ b2Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShap
 	const auto edgeAxis = b2ComputeEdgeSeparation(localShapeB, edgeInfo);
 	
 	// If no valid normal can be found then this edge should not collide.
-	b2Assert(edgeAxis.type != b2EPAxis::e_unknown);
+	assert(edgeAxis.type != b2EPAxis::e_unknown);
 	if ((edgeAxis.type == b2EPAxis::e_unknown) || (edgeAxis.separation > b2MaxEPSeparation))
 	{
 		return b2Manifold{};

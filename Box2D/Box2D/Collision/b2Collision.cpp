@@ -38,7 +38,7 @@ void b2WorldManifold::Assign(const b2Manifold& manifold,
 	switch (manifold.GetType())
 	{
 	case b2Manifold::e_unset:
-		b2Assert(manifold.GetType() != b2Manifold::e_unset);
+		assert(manifold.GetType() != b2Manifold::e_unset);
 		break;
 
 	case b2Manifold::e_circles:

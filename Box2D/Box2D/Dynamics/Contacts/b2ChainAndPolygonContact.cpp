@@ -45,8 +45,8 @@ b2ChainAndPolygonContact::b2ChainAndPolygonContact(b2Fixture* fixtureA, child_co
 												   b2Fixture* fixtureB, child_count_t indexB)
 : b2Contact(fixtureA, indexA, fixtureB, indexB)
 {
-	b2Assert(m_fixtureA->GetType() == b2Shape::e_chain);
-	b2Assert(m_fixtureB->GetType() == b2Shape::e_polygon);
+	assert(m_fixtureA->GetType() == b2Shape::e_chain);
+	assert(m_fixtureB->GetType() == b2Shape::e_polygon);
 }
 
 b2Manifold b2ChainAndPolygonContact::Evaluate(const b2Transform& xfA, const b2Transform& xfB)

@@ -64,8 +64,8 @@ static b2ClipArray b2FindIncidentEdge(b2PolygonShape::vertex_count_t index1,
 									  const b2PolygonShape& shape1, const b2Transform& xf1,
 									  const b2PolygonShape& shape2, const b2Transform& xf2)
 {
-	b2Assert(index1 >= 0);
-	b2Assert(index1 < shape1.GetVertexCount());
+	assert(index1 >= 0);
+	assert(index1 < shape1.GetVertexCount());
 
 	const auto count2 = shape2.GetVertexCount();
 

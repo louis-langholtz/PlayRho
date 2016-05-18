@@ -50,7 +50,7 @@ void b2PulleyJointDef::Initialize(b2Body* bA, b2Body* bB,
 	b2Vec2 dB = anchorB - groundB;
 	lengthB = dB.Length();
 	ratio = r;
-	b2Assert(ratio > b2_epsilon);
+	assert(ratio > b2_epsilon);
 }
 
 b2PulleyJoint::b2PulleyJoint(const b2PulleyJointDef* def)
@@ -64,7 +64,7 @@ b2PulleyJoint::b2PulleyJoint(const b2PulleyJointDef* def)
 	m_lengthA = def->lengthA;
 	m_lengthB = def->lengthB;
 
-	b2Assert(def->ratio != float_t{0});
+	assert(def->ratio != float_t{0});
 	m_ratio = def->ratio;
 
 	m_constant = def->lengthA + m_ratio * def->lengthB;
@@ -278,7 +278,7 @@ b2Vec2 b2PulleyJoint::GetReactionForce(float_t inv_dt) const
 
 float_t b2PulleyJoint::GetReactionTorque(float_t inv_dt) const
 {
-	B2_NOT_USED(inv_dt);
+	BOX2D_NOT_USED(inv_dt);
 	return float_t{0};
 }
 

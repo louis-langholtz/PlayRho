@@ -164,15 +164,15 @@ private:
 
 inline void* b2DynamicTree::GetUserData(size_type proxyId) const
 {
-	b2Assert(proxyId != b2_nullNode);
-	b2Assert(proxyId < m_nodeCapacity);
+	assert(proxyId != b2_nullNode);
+	assert(proxyId < m_nodeCapacity);
 	return m_nodes[proxyId].userData;
 }
 
 inline const b2AABB& b2DynamicTree::GetFatAABB(size_type proxyId) const
 {
-	b2Assert(proxyId != b2_nullNode);
-	b2Assert(proxyId < m_nodeCapacity);
+	assert(proxyId != b2_nullNode);
+	assert(proxyId < m_nodeCapacity);
 	return m_nodes[proxyId].aabb;
 }
 
@@ -222,7 +222,7 @@ inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) con
 	const auto p1 = input.p1;
 	const auto p2 = input.p2;
 	const auto dp = p2 - p1;
-	b2Assert(dp.LengthSquared() > float_t{0});
+	assert(dp.LengthSquared() > float_t{0});
 	const auto r = b2Normalize(dp);
 
 	// v is perpendicular to the segment.

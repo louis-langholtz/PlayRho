@@ -41,7 +41,7 @@ b2BroadPhase::size_type b2BroadPhase::CreateProxy(const b2AABB& aabb, void* user
 
 void b2BroadPhase::DestroyProxy(size_type proxyId)
 {
-	b2Assert(m_proxyCount > 0);
+	assert(m_proxyCount > 0);
 	UnBufferMove(proxyId);
 	--m_proxyCount;
 	m_tree.DestroyProxy(proxyId);

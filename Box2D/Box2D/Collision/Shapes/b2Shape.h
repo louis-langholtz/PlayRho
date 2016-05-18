@@ -32,7 +32,7 @@ struct b2MassData
 
 	constexpr b2MassData(float_t m, b2Vec2 c, float_t _I) noexcept: mass(m), center(c), I(_I)
 	{
-		b2Assert(mass >= 0);
+		assert(mass >= 0);
 	}
 
 	/// The mass of the shape, usually in kilograms.
@@ -71,7 +71,7 @@ public:
 	/// @note Behavior is undefined if a negative radius is given.
 	constexpr b2Shape(Type type, float_t radius) noexcept: m_type(type), m_radius(radius)
 	{
-		b2Assert(radius >= 0);
+		assert(radius >= 0);
 	}
 
 	b2Shape(const b2Shape&) = default;
@@ -119,7 +119,7 @@ public:
 
 	void SetRadius(float_t radius) noexcept
 	{
-		b2Assert(radius >= 0);
+		assert(radius >= 0);
 		m_radius = radius;
 	}
 

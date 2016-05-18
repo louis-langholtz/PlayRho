@@ -367,8 +367,8 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 
 void b2Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, island_count_t toiIndexB)
 {
-	b2Assert(toiIndexA < m_bodyCount);
-	b2Assert(toiIndexB < m_bodyCount);
+	assert(toiIndexA < m_bodyCount);
+	assert(toiIndexB < m_bodyCount);
 
 	// Initialize the body state.
 	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
@@ -488,8 +488,8 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, isl
 
 void b2Island::Add(b2Body* body)
 {
-	b2Assert(body->m_islandIndex == b2Body::InvalidIslandIndex);
-	b2Assert(m_bodyCount < m_bodyCapacity);
+	assert(body->m_islandIndex == b2Body::InvalidIslandIndex);
+	assert(m_bodyCount < m_bodyCapacity);
 	body->m_islandIndex = m_bodyCount;
 	m_bodies[m_bodyCount] = body;
 	++m_bodyCount;
@@ -497,14 +497,14 @@ void b2Island::Add(b2Body* body)
 
 void b2Island::Add(b2Contact* contact)
 {
-	b2Assert(m_contactCount < m_contactCapacity);
+	assert(m_contactCount < m_contactCapacity);
 	m_contacts[m_contactCount] = contact;
 	++m_contactCount;
 }
 
 void b2Island::Add(b2Joint* joint)
 {
-	b2Assert(m_jointCount < m_jointCapacity);
+	assert(m_jointCount < m_jointCapacity);
 	m_joints[m_jointCount] = joint;
 	++m_jointCount;
 }

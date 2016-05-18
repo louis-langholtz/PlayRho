@@ -33,7 +33,7 @@ b2Rope::~b2Rope()
 
 void b2Rope::Initialize(const b2RopeDef* def)
 {
-	b2Assert(def->count >= 3);
+	assert(def->count >= 3);
 	m_count = def->count;
 	m_ps = static_cast<b2Vec2*>(b2Alloc(m_count * sizeof(b2Vec2)));
 	m_p0s = static_cast<b2Vec2*>(b2Alloc(m_count * sizeof(b2Vec2)));

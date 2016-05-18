@@ -186,7 +186,7 @@ void b2FrictionJoint::SolveVelocityConstraints(const b2SolverData& data)
 
 bool b2FrictionJoint::SolvePositionConstraints(const b2SolverData& data)
 {
-	B2_NOT_USED(data);
+	BOX2D_NOT_USED(data);
 
 	return true;
 }
@@ -213,7 +213,7 @@ float_t b2FrictionJoint::GetReactionTorque(float_t inv_dt) const
 
 void b2FrictionJoint::SetMaxForce(float_t force)
 {
-	b2Assert(b2IsValid(force) && (force >= float_t{0}));
+	assert(b2IsValid(force) && (force >= float_t{0}));
 	m_maxForce = force;
 }
 
@@ -224,7 +224,7 @@ float_t b2FrictionJoint::GetMaxForce() const
 
 void b2FrictionJoint::SetMaxTorque(float_t torque)
 {
-	b2Assert(b2IsValid(torque) && (torque >= float_t{0}));
+	assert(b2IsValid(torque) && (torque >= float_t{0}));
 	m_maxTorque = torque;
 }
 

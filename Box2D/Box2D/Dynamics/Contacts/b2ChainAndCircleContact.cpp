@@ -45,8 +45,8 @@ b2ChainAndCircleContact::b2ChainAndCircleContact(b2Fixture* fixtureA, child_coun
 												 b2Fixture* fixtureB, child_count_t indexB)
 : b2Contact(fixtureA, indexA, fixtureB, indexB)
 {
-	b2Assert(m_fixtureA->GetType() == b2Shape::e_chain);
-	b2Assert(m_fixtureB->GetType() == b2Shape::e_circle);
+	assert(m_fixtureA->GetType() == b2Shape::e_chain);
+	assert(m_fixtureB->GetType() == b2Shape::e_circle);
 }
 
 b2Manifold b2ChainAndCircleContact::Evaluate(const b2Transform& xfA, const b2Transform& xfB)
