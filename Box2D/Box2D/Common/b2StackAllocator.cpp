@@ -31,11 +31,11 @@ b2StackAllocator::~b2StackAllocator()
 
 void* b2StackAllocator::Allocate(size_type size)
 {
-	assert(m_entryCount < b2_maxStackEntries);
+	assert(m_entryCount < MaxStackEntries);
 
 	auto entry = m_entries + m_entryCount;
 	entry->size = size;
-	if (m_index + size > b2_stackSize)
+	if (m_index + size > StackSize)
 	{
 		entry->data = static_cast<decltype(entry->data)>(alloc(size));
 		entry->usedMalloc = true;

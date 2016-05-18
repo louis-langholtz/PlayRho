@@ -23,9 +23,6 @@
 
 namespace box2d {
 
-constexpr auto b2_stackSize = unsigned{100 * 1024};	// 100k
-constexpr auto b2_maxStackEntries = unsigned{32};
-
 struct b2StackEntry
 {
 	using size_type = size_t;
@@ -43,6 +40,9 @@ class b2StackAllocator
 public:
 	using size_type = size_t;
 
+	static constexpr auto StackSize = unsigned{100 * 1024};	// 100k
+	static constexpr auto MaxStackEntries = unsigned{32};
+	
 	b2StackAllocator();
 	~b2StackAllocator();
 
@@ -56,14 +56,14 @@ public:
 
 private:
 
-	char m_data[b2_stackSize];
+	char m_data[StackSize];
 	size_type m_index = 0;
 
 	size_type m_allocation = 0;
 	size_type m_maxAllocation = 0;
 
-	b2StackEntry m_entries[b2_maxStackEntries];
-	std::remove_cv<decltype(b2_maxStackEntries)>::type m_entryCount = 0;
+	b2StackEntry m_entries[MaxStackEntries];
+	std::remove_cv<decltype(MaxStackEntries)>::type m_entryCount = 0;
 };
 
 } // namespace box2d
