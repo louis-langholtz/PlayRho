@@ -21,11 +21,11 @@
 
 #include <Box2D/Box2D.h>
 
+namespace box2d {
+
 struct GLRenderPoints;
 struct GLRenderLines;
 struct GLRenderTriangles;
-
-namespace box2d {
 
 struct b2AABB;
 

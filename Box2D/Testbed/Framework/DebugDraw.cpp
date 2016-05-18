@@ -32,10 +32,10 @@
 
 #define BUFFER_OFFSET(x)  ((const void*) (x))
 
-using namespace box2d;
+namespace box2d {
 
-DebugDraw box2d::g_debugDraw;
-Camera box2d::g_camera;
+DebugDraw g_debugDraw;
+Camera g_camera;
 
 //
 b2Vec2 Camera::ConvertScreenToWorld(const b2Vec2& ps)
@@ -826,4 +826,6 @@ void DebugDraw::Flush()
     m_triangles->Flush();
     m_lines->Flush();
     m_points->Flush();
+}
+
 }
