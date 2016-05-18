@@ -59,7 +59,7 @@ public:
 	void SetDestructionListener(b2DestructionListener* listener) noexcept;
 
 	/// Register a contact filter to provide specific control over collision.
-	/// Otherwise the default filter is used (b2_defaultFilter). The listener is
+	/// Otherwise the default filter is used. The listener is
 	/// owned by you and must remain in scope. 
 	void SetContactFilter(b2ContactFilter* filter) noexcept;
 

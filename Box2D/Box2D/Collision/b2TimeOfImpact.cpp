@@ -27,9 +27,9 @@
 
 namespace box2d {
 
-float_t b2_toiTime, b2_toiMaxTime;
-uint32 b2_toiCalls, b2_toiIters, b2_toiMaxIters;
-uint32 b2_toiRootIters, b2_toiMaxRootIters;
+float_t toiTime, toiMaxTime;
+uint32 toiCalls, toiIters, toiMaxIters;
+uint32 toiRootIters, toiMaxRootIters;
 
 class b2SeparationFunction
 {
@@ -249,7 +249,7 @@ private:
 // by computing the largest time at which separation is maintained.
 b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 {
-	++b2_toiCalls;
+	++toiCalls;
 
 	auto output = b2TOIOutput{b2TOIOutput::e_unknown, input.tMax};
 
@@ -400,7 +400,7 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 					(a1 + a2) / float_t(2);
 
 				++rootIterCount;
-				++b2_toiRootIters;
+				++toiRootIters;
 
 				const auto s = fcn.Evaluate(indexA, indexB, t);
 
@@ -425,7 +425,7 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 			}
 			while (rootIterCount < MaxTOIRootIterCount);
 
-			b2_toiMaxRootIters = b2Max(b2_toiMaxRootIters, rootIterCount);
+			toiMaxRootIters = b2Max(toiMaxRootIters, rootIterCount);
 
 			++pushBackIter;
 
@@ -434,7 +434,7 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 		}
 
 		++iter;
-		++b2_toiIters;
+		++toiIters;
 
 		if (done)
 			break;
@@ -447,7 +447,7 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 		}
 	}
 
-	b2_toiMaxIters = b2Max(b2_toiMaxIters, iter);
+	toiMaxIters = b2Max(toiMaxIters, iter);
 	
 	return output;
 }

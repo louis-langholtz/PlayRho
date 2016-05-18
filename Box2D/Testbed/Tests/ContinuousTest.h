@@ -81,27 +81,27 @@ public:
 #endif
 
 		extern int32 gjkCalls, gjkIters, gjkMaxIters;
-		extern int32 b2_toiCalls, b2_toiIters;
-		extern int32 b2_toiRootIters, b2_toiMaxRootIters;
-		extern float_t b2_toiTime, b2_toiMaxTime;
+		extern int32 toiCalls, toiIters;
+		extern int32 toiRootIters, toiMaxRootIters;
+		extern float_t toiTime, toiMaxTime;
 
 		gjkCalls = 0; gjkIters = 0; gjkMaxIters = 0;
-		b2_toiCalls = 0; b2_toiIters = 0;
-		b2_toiRootIters = 0; b2_toiMaxRootIters = 0;
-		b2_toiTime = 0.0f; b2_toiMaxTime = 0.0f;
+		toiCalls = 0; toiIters = 0;
+		toiRootIters = 0; toiMaxRootIters = 0;
+		toiTime = 0.0f; toiMaxTime = 0.0f;
 	}
 
 	void Launch()
 	{
 		extern int32 gjkCalls, gjkIters, gjkMaxIters;
-		extern int32 b2_toiCalls, b2_toiIters;
-		extern int32 b2_toiRootIters, b2_toiMaxRootIters;
-		extern float_t b2_toiTime, b2_toiMaxTime;
+		extern int32 toiCalls, toiIters;
+		extern int32 toiRootIters, toiMaxRootIters;
+		extern float_t toiTime, toiMaxTime;
 
 		gjkCalls = 0; gjkIters = 0; gjkMaxIters = 0;
-		b2_toiCalls = 0; b2_toiIters = 0;
-		b2_toiRootIters = 0; b2_toiMaxRootIters = 0;
-		b2_toiTime = 0.0f; b2_toiMaxTime = 0.0f;
+		toiCalls = 0; toiIters = 0;
+		toiRootIters = 0; toiMaxRootIters = 0;
+		toiTime = 0.0f; toiMaxTime = 0.0f;
 
 		m_body->SetTransform(b2Vec2(0.0f, 20.0f), 0.0f);
 		m_angularVelocity = RandomFloat(-50.0f, 50.0f);
@@ -122,22 +122,22 @@ public:
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
-		extern int32 b2_toiCalls, b2_toiIters;
-		extern int32 b2_toiRootIters, b2_toiMaxRootIters;
-		extern float_t b2_toiTime, b2_toiMaxTime;
+		extern int32 toiCalls, toiIters;
+		extern int32 toiRootIters, toiMaxRootIters;
+		extern float_t toiTime, toiMaxTime;
 
-		if (b2_toiCalls > 0)
+		if (toiCalls > 0)
 		{
 			g_debugDraw.DrawString(5, m_textLine, "toi calls = %d, ave [max] toi iters = %3.1f [%d]",
-								b2_toiCalls, b2_toiIters / float_t(b2_toiCalls), b2_toiMaxRootIters);
+								toiCalls, toiIters / float_t(toiCalls), toiMaxRootIters);
 			m_textLine += DRAW_STRING_NEW_LINE;
 			
 			g_debugDraw.DrawString(5, m_textLine, "ave [max] toi root iters = %3.1f [%d]",
-				b2_toiRootIters / float_t(b2_toiCalls), b2_toiMaxRootIters);
+				toiRootIters / float_t(toiCalls), toiMaxRootIters);
 			m_textLine += DRAW_STRING_NEW_LINE;
 
 			g_debugDraw.DrawString(5, m_textLine, "ave [max] toi time = %.1f [%.1f] (microseconds)",
-				1000.0f * b2_toiTime / float_t(b2_toiCalls), 1000.0f * b2_toiMaxTime);
+				1000.0f * toiTime / float_t(toiCalls), 1000.0f * toiMaxTime);
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 

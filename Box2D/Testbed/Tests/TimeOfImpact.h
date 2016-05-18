@@ -68,8 +68,8 @@ public:
 		g_debugDraw.DrawString(5, m_textLine, "toi = %g", output.get_t());
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		extern int32 b2_toiMaxIters, b2_toiMaxRootIters;
-		g_debugDraw.DrawString(5, m_textLine, "max toi iters = %d, max root iters = %d", b2_toiMaxIters, b2_toiMaxRootIters);
+		extern int32 toiMaxIters, toiMaxRootIters;
+		g_debugDraw.DrawString(5, m_textLine, "max toi iters = %d, max root iters = %d", toiMaxIters, toiMaxRootIters);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		b2Vec2 vertices[MaxPolygonVertices];

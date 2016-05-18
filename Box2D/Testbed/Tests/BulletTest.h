@@ -79,18 +79,18 @@ public:
 		m_bullet->SetAngularVelocity(0.0f);
 
 		extern int32 gjkCalls, gjkIters, gjkMaxIters;
-		extern int32 b2_toiCalls, b2_toiIters, b2_toiMaxIters;
-		extern int32 b2_toiRootIters, b2_toiMaxRootIters;
+		extern int32 toiCalls, toiIters, toiMaxIters;
+		extern int32 toiRootIters, toiMaxRootIters;
 
 		gjkCalls = 0;
 		gjkIters = 0;
 		gjkMaxIters = 0;
 
-		b2_toiCalls = 0;
-		b2_toiIters = 0;
-		b2_toiMaxIters = 0;
-		b2_toiRootIters = 0;
-		b2_toiMaxRootIters = 0;
+		toiCalls = 0;
+		toiIters = 0;
+		toiMaxIters = 0;
+		toiRootIters = 0;
+		toiMaxRootIters = 0;
 	}
 
 	void Step(Settings* settings)
@@ -98,8 +98,8 @@ public:
 		Test::Step(settings);
 
 		extern int32 gjkCalls, gjkIters, gjkMaxIters;
-		extern int32 b2_toiCalls, b2_toiIters;
-		extern int32 b2_toiRootIters, b2_toiMaxRootIters;
+		extern int32 toiCalls, toiIters;
+		extern int32 toiRootIters, toiMaxRootIters;
 
 		if (gjkCalls > 0)
 		{
@@ -108,14 +108,14 @@ public:
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
-		if (b2_toiCalls > 0)
+		if (toiCalls > 0)
 		{
 			g_debugDraw.DrawString(5, m_textLine, "toi calls = %d, ave toi iters = %3.1f, max toi iters = %d",
-				b2_toiCalls, b2_toiIters / float_t(b2_toiCalls), b2_toiMaxRootIters);
+				toiCalls, toiIters / float_t(toiCalls), toiMaxRootIters);
 			m_textLine += DRAW_STRING_NEW_LINE;
 
 			g_debugDraw.DrawString(5, m_textLine, "ave toi root iters = %3.1f, max toi root iters = %d",
-				b2_toiRootIters / float_t(b2_toiCalls), b2_toiMaxRootIters);
+				toiRootIters / float_t(toiCalls), toiMaxRootIters);
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
