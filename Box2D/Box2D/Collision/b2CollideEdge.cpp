@@ -657,7 +657,7 @@ b2Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShap
 	{
 		manifold.SetLocalNormal(rf.normal);
 		manifold.SetLocalPoint(rf.v1);
-		for (auto i = decltype(b2_maxManifoldPoints){0}; i < b2_maxManifoldPoints; ++i)
+		for (auto i = decltype(clipPoints2.size()){0}; i < clipPoints2.size(); ++i)
 		{
 			const auto separation = b2Dot(rf.normal, clipPoints2[i].v - rf.v1);
 			if (separation <= b2MaxEPSeparation)
@@ -670,7 +670,7 @@ b2Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShap
 	{
 		manifold.SetLocalNormal(shapeB.GetNormal(rf.i1));
 		manifold.SetLocalPoint(shapeB.GetVertex(rf.i1));
-		for (auto i = decltype(b2_maxManifoldPoints){0}; i < b2_maxManifoldPoints; ++i)
+		for (auto i = decltype(clipPoints2.size()){0}; i < clipPoints2.size(); ++i)
 		{
 			const auto separation = b2Dot(rf.normal, clipPoints2[i].v - rf.v1);
 			if (separation <= b2MaxEPSeparation)

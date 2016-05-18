@@ -200,7 +200,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 	auto manifold = b2Manifold{manifoldType};
 	manifold.SetLocalNormal(localNormal);
 	manifold.SetLocalPoint(planePoint);
-	for (auto i = decltype(b2_maxManifoldPoints){0}; i < b2_maxManifoldPoints; ++i)
+	for (auto i = decltype(clipPoints2.size()){0}; i < clipPoints2.size(); ++i)
 	{
 		const auto separation = b2Dot(normal, clipPoints2[i].v) - frontOffset;
 		if (separation <= totalRadius)

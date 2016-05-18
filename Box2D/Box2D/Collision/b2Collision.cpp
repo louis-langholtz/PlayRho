@@ -208,14 +208,16 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 
 b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray& vIn,
 										   const b2Vec2& normal, b2Float offset,
-										   b2ContactFeature::index_t vertexIndexA)
+										   b2ContactFeature::index_t indexA)
 {
+	// Use Sutherland-Hodgman clipping (https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm ).
+	
 	// Start with no output points
 	auto numOut = b2ClipArray::size_type{0};
 
 	// Calculate the distance of end points to the line
-	const auto distance0 = b2Dot(normal, vIn[0].v) - offset;
-	const auto distance1 = b2Dot(normal, vIn[1].v) - offset;
+	const auto distance0 = b2Dot(normal, vIn[0].v) - offset; ///< Distance of point at vIn[0].v from line defined by normal and offset.
+	const auto distance1 = b2Dot(normal, vIn[1].v) - offset; ///< Distance of point at vIn[1].v from line defined by normal and offset.
 
 	// If the points are behind the plane
 	if (distance0 <= b2Float{0}) vOut[numOut++] = vIn[0];
@@ -228,8 +230,8 @@ b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray&
 		const auto interp = distance0 / (distance0 - distance1);
 		vOut[numOut].v = vIn[0].v + (vIn[1].v - vIn[0].v) * interp;
 
-		// VertexA is hitting edgeB.
-		vOut[numOut].cf = b2ContactFeature(b2ContactFeature::e_vertex, vertexIndexA, b2ContactFeature::e_face, vIn[0].cf.indexB);
+		// Vertex A is hitting edge B.
+		vOut[numOut].cf = b2ContactFeature(b2ContactFeature::e_vertex, indexA, b2ContactFeature::e_face, vIn[0].cf.indexB);
 
 		++numOut;
 	}

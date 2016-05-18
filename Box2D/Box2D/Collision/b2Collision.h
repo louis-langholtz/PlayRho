@@ -246,8 +246,8 @@ void b2GetPointStates(b2PointStateArray& state1, b2PointStateArray& state2,
 /// Used for computing contact manifolds.
 struct b2ClipVertex
 {
-	b2Vec2 v;
-	b2ContactFeature cf;
+	b2Vec2 v; ///< Vertex of edge or polygon.
+	b2ContactFeature cf; ///< Contact feature information.
 };
 
 /// Ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
@@ -387,9 +387,16 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 using b2ClipArray = std::array<b2ClipVertex, b2_maxManifoldPoints>;
 
 /// Clipping for contact manifolds.
-/// Uses Sutherland-Hodgman clipping.
+/// @detail This returns an array of points from the given line that are inside of the plane as
+///   defined by a given normal and offset.
+/// @param vOut Output clip array returning the positions and contact features of points within the plane.
+/// @param vIn Input clip array of points defining the line.
+/// @param normal Normal of the plane with which to determine intersection.
+/// @param offset Offset of the plane with which to determine intersection.
+/// @param indexA Index of vertex A.
+/// @return Number of valid elements of the output array being returned (# of points of the line found within the plane).
 b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray& vIn,
-										   const b2Vec2& normal, b2Float offset, b2ContactFeature::index_t vertexIndexA);
+										   const b2Vec2& normal, b2Float offset, b2ContactFeature::index_t indexA);
 
 /// Determine if two generic shapes overlap.
 bool b2TestOverlap(const b2Shape& shapeA, child_count_t indexA,
