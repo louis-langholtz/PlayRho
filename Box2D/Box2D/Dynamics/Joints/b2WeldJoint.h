@@ -79,7 +79,7 @@ public:
 	void SetDampingRatio(float_t ratio) { m_dampingRatio = ratio; }
 	float_t GetDampingRatio() const { return m_dampingRatio; }
 
-	/// Dump to b2Log
+	/// Dump to log
 	void Dump() override;
 
 protected:

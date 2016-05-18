@@ -24,25 +24,25 @@
 namespace box2d {
 
 // Memory allocators. Modify these to use your own allocator.
-void* b2Alloc(size_t size)
+void* alloc(size_t size)
 {
 	assert(size >= 0);
 	return std::malloc(size);
 }
 
-void* b2Realloc(void* ptr, size_t new_size)
+void* realloc(void* ptr, size_t new_size)
 {
 	assert(new_size >= 0);
 	return std::realloc(ptr, new_size);
 }
 
-void b2Free(void* mem)
+void free(void* mem)
 {
 	std::free(mem);
 }
 
 // You can modify this to use your logging facility.
-void b2Log(const char* string, ...)
+void log(const char* string, ...)
 {
 	va_list args;
 	va_start(args, string);

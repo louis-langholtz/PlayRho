@@ -79,7 +79,7 @@ b2World::b2World(const b2Vec2& gravity): m_gravity(gravity)
 
 b2World::~b2World()
 {
-	// Some shapes allocate using b2Alloc.
+	// Some shapes allocate using alloc.
 	auto b = m_bodyList;
 	while (b)
 	{
@@ -1200,11 +1200,11 @@ void b2World::Dump()
 		return;
 	}
 
-	b2Log("b2Vec2 g(%.15lef, %.15lef);\n", m_gravity.x, m_gravity.y);
-	b2Log("m_world->SetGravity(g);\n");
+	log("b2Vec2 g(%.15lef, %.15lef);\n", m_gravity.x, m_gravity.y);
+	log("m_world->SetGravity(g);\n");
 
-	b2Log("b2Body** bodies = (b2Body**)b2Alloc(%d * sizeof(b2Body*));\n", m_bodyCount);
-	b2Log("b2Joint** joints = (b2Joint**)b2Alloc(%d * sizeof(b2Joint*));\n", m_jointCount);
+	log("b2Body** bodies = (b2Body**)alloc(%d * sizeof(b2Body*));\n", m_bodyCount);
+	log("b2Joint** joints = (b2Joint**)alloc(%d * sizeof(b2Joint*));\n", m_jointCount);
 	auto i = island_count_t{0};
 	for (auto b = m_bodyList; b; b = b->m_next)
 	{
@@ -1228,9 +1228,9 @@ void b2World::Dump()
 			continue;
 		}
 
-		b2Log("{\n");
+		log("{\n");
 		j->Dump();
-		b2Log("}\n");
+		log("}\n");
 	}
 
 	// Second pass on joints, only gear joints.
@@ -1241,13 +1241,13 @@ void b2World::Dump()
 			continue;
 		}
 
-		b2Log("{\n");
+		log("{\n");
 		j->Dump();
-		b2Log("}\n");
+		log("}\n");
 	}
 
-	b2Log("b2Free(joints);\n");
-	b2Log("b2Free(bodies);\n");
-	b2Log("joints = nullptr;\n");
-	b2Log("bodies = nullptr;\n");
+	log("free(joints);\n");
+	log("free(bodies);\n");
+	log("joints = nullptr;\n");
+	log("bodies = nullptr;\n");
 }

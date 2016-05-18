@@ -133,7 +133,7 @@ public:
 	/// Get the current motor force given the inverse time step, usually in N.
 	float_t GetMotorForce(float_t inv_dt) const noexcept;
 
-	/// Dump to b2Log
+	/// Dump to log
 	void Dump() override;
 
 protected:

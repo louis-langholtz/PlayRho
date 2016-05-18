@@ -117,7 +117,7 @@ public:
 	void SetSpringDampingRatio(float_t ratio);
 	float_t GetSpringDampingRatio() const;
 
-	/// Dump to b2Log
+	/// Dump to log
 	void Dump() override;
 
 protected:

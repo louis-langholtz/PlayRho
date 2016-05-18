@@ -21,14 +21,14 @@
 using namespace box2d;
 
 b2BroadPhase::b2BroadPhase():
-	m_pairBuffer(static_cast<b2ProxyIdPair*>(b2Alloc(m_pairCapacity * sizeof(b2ProxyIdPair)))),
-	m_moveBuffer(static_cast<size_type*>(b2Alloc(m_moveCapacity * sizeof(size_type))))
+	m_pairBuffer(static_cast<b2ProxyIdPair*>(alloc(m_pairCapacity * sizeof(b2ProxyIdPair)))),
+	m_moveBuffer(static_cast<size_type*>(alloc(m_moveCapacity * sizeof(size_type))))
 {}
 
 b2BroadPhase::~b2BroadPhase()
 {
-	b2Free(m_moveBuffer);
-	b2Free(m_pairBuffer);
+	free(m_moveBuffer);
+	free(m_pairBuffer);
 }
 
 b2BroadPhase::size_type b2BroadPhase::CreateProxy(const b2AABB& aabb, void* userData)
@@ -66,7 +66,7 @@ void b2BroadPhase::BufferMove(size_type proxyId)
 	if (m_moveCount == m_moveCapacity)
 	{
 		m_moveCapacity *= BufferGrowthRate;
-		m_moveBuffer = static_cast<size_type*>(b2Realloc(m_moveBuffer, m_moveCapacity * sizeof(size_type)));
+		m_moveBuffer = static_cast<size_type*>(realloc(m_moveBuffer, m_moveCapacity * sizeof(size_type)));
 	}
 
 	m_moveBuffer[m_moveCount] = proxyId;
@@ -97,7 +97,7 @@ bool b2BroadPhase::QueryCallback(size_type proxyId)
 	if (m_pairCapacity == m_pairCount)
 	{
 		m_pairCapacity *= BufferGrowthRate;
-		m_pairBuffer = static_cast<b2ProxyIdPair*>(b2Realloc(m_pairBuffer, m_pairCapacity * sizeof(b2ProxyIdPair)));
+		m_pairBuffer = static_cast<b2ProxyIdPair*>(realloc(m_pairBuffer, m_pairCapacity * sizeof(b2ProxyIdPair)));
 	}
 
 	m_pairBuffer[m_pairCount].proxyIdA = b2Min(proxyId, m_queryProxyId);

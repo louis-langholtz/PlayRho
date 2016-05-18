@@ -30,7 +30,7 @@ b2ChainShape::~b2ChainShape()
 
 void b2ChainShape::Clear()
 {
-	b2Free(m_vertices);
+	free(m_vertices);
 	m_vertices = nullptr;
 	m_count = 0;
 }
@@ -46,7 +46,7 @@ void b2ChainShape::CreateLoop(const b2Vec2* vertices, child_count_t count)
 	}
 
 	m_count = count + 1;
-	m_vertices = static_cast<b2Vec2*>(b2Alloc(m_count * sizeof(b2Vec2)));
+	m_vertices = static_cast<b2Vec2*>(alloc(m_count * sizeof(b2Vec2)));
 	memcpy(m_vertices, vertices, count * sizeof(b2Vec2));
 	m_vertices[count] = m_vertices[0];
 	m_prevVertex = m_vertices[m_count - 2];
@@ -66,7 +66,7 @@ void b2ChainShape::CreateChain(const b2Vec2* vertices, child_count_t count)
 	}
 
 	m_count = count;
-	m_vertices = static_cast<b2Vec2*>(b2Alloc(count * sizeof(b2Vec2)));
+	m_vertices = static_cast<b2Vec2*>(alloc(count * sizeof(b2Vec2)));
 	memcpy(m_vertices, vertices, m_count * sizeof(b2Vec2));
 
 	m_hasPrevVertex = false;

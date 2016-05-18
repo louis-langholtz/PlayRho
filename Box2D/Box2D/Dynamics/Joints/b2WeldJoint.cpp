@@ -333,14 +333,14 @@ void b2WeldJoint::Dump()
 	const auto indexA = m_bodyA->m_islandIndex;
 	const auto indexB = m_bodyB->m_islandIndex;
 
-	b2Log("  b2WeldJointDef jd;\n");
-	b2Log("  jd.bodyA = bodies[%d];\n", indexA);
-	b2Log("  jd.bodyB = bodies[%d];\n", indexB);
-	b2Log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	b2Log("  jd.localAnchorA = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-	b2Log("  jd.localAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
-	b2Log("  jd.referenceAngle = %.15lef;\n", m_referenceAngle);
-	b2Log("  jd.frequencyHz = %.15lef;\n", m_frequencyHz);
-	b2Log("  jd.dampingRatio = %.15lef;\n", m_dampingRatio);
-	b2Log("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);
+	log("  b2WeldJointDef jd;\n");
+	log("  jd.bodyA = bodies[%d];\n", indexA);
+	log("  jd.bodyB = bodies[%d];\n", indexB);
+	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
+	log("  jd.localAnchorA = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
+	log("  jd.localAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+	log("  jd.referenceAngle = %.15lef;\n", m_referenceAngle);
+	log("  jd.frequencyHz = %.15lef;\n", m_frequencyHz);
+	log("  jd.dampingRatio = %.15lef;\n", m_dampingRatio);
+	log("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);
 }

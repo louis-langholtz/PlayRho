@@ -37,7 +37,7 @@ void* b2StackAllocator::Allocate(size_type size)
 	entry->size = size;
 	if (m_index + size > b2_stackSize)
 	{
-		entry->data = static_cast<decltype(entry->data)>(b2Alloc(size));
+		entry->data = static_cast<decltype(entry->data)>(alloc(size));
 		entry->usedMalloc = true;
 	}
 	else
@@ -61,7 +61,7 @@ void b2StackAllocator::Free(void* p)
 	assert(p == entry->data);
 	if (entry->usedMalloc)
 	{
-		b2Free(p);
+		free(p);
 	}
 	else
 	{

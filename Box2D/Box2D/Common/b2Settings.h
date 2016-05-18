@@ -156,27 +156,27 @@ constexpr auto b2_angularSleepTolerance = b2_pi * float_t(2) / float_t(180);
 // Memory Allocation
 
 /// Implement this function to use your own memory allocator.
-void* b2Alloc(size_t size);
+void* alloc(size_t size);
 
 /// Implement this function to use your own memory allocator.
-void* b2Realloc(void* ptr, size_t new_size);
+void* realloc(void* ptr, size_t new_size);
 
-/// If you implement b2Alloc, you should also implement this function.
-void b2Free(void* mem);
+/// If you implement alloc, you should also implement this function.
+void free(void* mem);
 
 /// Logging function.
-void b2Log(const char* string, ...);
+void log(const char* string, ...);
 
 /// Version numbering scheme.
 /// See http://en.wikipedia.org/wiki/Software_versioning
-struct b2Version
+struct Version
 {
 	int32 major;		///< significant changes
 	int32 minor;		///< incremental changes
 	int32 revision;		///< bug fixes
 };
 
-constexpr auto b2_version = b2Version{BOX2D_MAJOR_VERSION, BOX2D_MINOR_VERSION, BOX2D_REVISION};
+constexpr auto BuiltVersion = Version{BOX2D_MAJOR_VERSION, BOX2D_MINOR_VERSION, BOX2D_REVISION};
 }
 
 #endif

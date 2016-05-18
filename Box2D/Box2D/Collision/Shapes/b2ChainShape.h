@@ -28,7 +28,7 @@ class b2EdgeShape;
 /// A chain shape is a free form sequence of line segments.
 /// The chain has two-sided collision, so you can use inside and outside collision.
 /// Therefore, you may use any winding order.
-/// Since there may be many vertices, they are allocated using b2Alloc.
+/// Since there may be many vertices, they are allocated using alloc.
 /// Connectivity information is used to create smooth collisions.
 /// WARNING: The chain will not collide properly if there are self-intersections.
 class b2ChainShape : public b2Shape
@@ -38,7 +38,7 @@ public:
 
 	b2ChainShape(const b2ChainShape&) = delete;
 
-	/// The destructor frees the vertices using b2Free.
+	/// The destructor frees the vertices using free.
 	~b2ChainShape();
 
 	b2ChainShape& operator=(const b2ChainShape&) = delete;
@@ -64,7 +64,7 @@ public:
 	/// Don't call this for loops.
 	void SetNextVertex(const b2Vec2& nextVertex) noexcept;
 
-	/// Implement b2Shape. Vertices are cloned using b2Alloc.
+	/// Implement b2Shape. Vertices are cloned using alloc.
 	b2Shape* Clone(b2BlockAllocator* allocator) const override;
 
 	/// @see b2Shape::GetChildCount

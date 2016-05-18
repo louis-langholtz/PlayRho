@@ -209,67 +209,67 @@ void b2Fixture::SetSensor(bool sensor)
 
 void b2Fixture::Dump(island_count_t bodyIndex)
 {
-	b2Log("    b2FixtureDef fd;\n");
-	b2Log("    fd.friction = %.15lef;\n", m_friction);
-	b2Log("    fd.restitution = %.15lef;\n", m_restitution);
-	b2Log("    fd.density = %.15lef;\n", m_density);
-	b2Log("    fd.isSensor = bool(%d);\n", m_isSensor);
-	b2Log("    fd.filter.categoryBits = uint16(%d);\n", m_filter.categoryBits);
-	b2Log("    fd.filter.maskBits = uint16(%d);\n", m_filter.maskBits);
-	b2Log("    fd.filter.groupIndex = int16(%d);\n", m_filter.groupIndex);
+	log("    b2FixtureDef fd;\n");
+	log("    fd.friction = %.15lef;\n", m_friction);
+	log("    fd.restitution = %.15lef;\n", m_restitution);
+	log("    fd.density = %.15lef;\n", m_density);
+	log("    fd.isSensor = bool(%d);\n", m_isSensor);
+	log("    fd.filter.categoryBits = uint16(%d);\n", m_filter.categoryBits);
+	log("    fd.filter.maskBits = uint16(%d);\n", m_filter.maskBits);
+	log("    fd.filter.groupIndex = int16(%d);\n", m_filter.groupIndex);
 
 	switch (m_shape->GetType())
 	{
 	case b2Shape::e_circle:
 		{
 			auto s = static_cast<b2CircleShape*>(m_shape);
-			b2Log("    b2CircleShape shape;\n");
-			b2Log("    shape.m_radius = %.15lef;\n", s->GetRadius());
-			b2Log("    shape.m_p = b2Vec2(%.15lef, %.15lef);\n", s->GetPosition().x, s->GetPosition().y);
+			log("    b2CircleShape shape;\n");
+			log("    shape.m_radius = %.15lef;\n", s->GetRadius());
+			log("    shape.m_p = b2Vec2(%.15lef, %.15lef);\n", s->GetPosition().x, s->GetPosition().y);
 		}
 		break;
 
 	case b2Shape::e_edge:
 		{
 			auto s = static_cast<b2EdgeShape*>(m_shape);
-			b2Log("    b2EdgeShape shape;\n");
-			b2Log("    shape.m_radius = %.15lef;\n", s->GetRadius());
-			b2Log("    shape.m_vertex0.Set(%.15lef, %.15lef);\n", s->GetVertex0().x, s->GetVertex0().y);
-			b2Log("    shape.m_vertex1.Set(%.15lef, %.15lef);\n", s->GetVertex1().x, s->GetVertex1().y);
-			b2Log("    shape.m_vertex2.Set(%.15lef, %.15lef);\n", s->GetVertex2().x, s->GetVertex2().y);
-			b2Log("    shape.m_vertex3.Set(%.15lef, %.15lef);\n", s->GetVertex3().x, s->GetVertex3().y);
-			b2Log("    shape.m_hasVertex0 = bool(%d);\n", s->HasVertex0());
-			b2Log("    shape.m_hasVertex3 = bool(%d);\n", s->HasVertex3());
+			log("    b2EdgeShape shape;\n");
+			log("    shape.m_radius = %.15lef;\n", s->GetRadius());
+			log("    shape.m_vertex0.Set(%.15lef, %.15lef);\n", s->GetVertex0().x, s->GetVertex0().y);
+			log("    shape.m_vertex1.Set(%.15lef, %.15lef);\n", s->GetVertex1().x, s->GetVertex1().y);
+			log("    shape.m_vertex2.Set(%.15lef, %.15lef);\n", s->GetVertex2().x, s->GetVertex2().y);
+			log("    shape.m_vertex3.Set(%.15lef, %.15lef);\n", s->GetVertex3().x, s->GetVertex3().y);
+			log("    shape.m_hasVertex0 = bool(%d);\n", s->HasVertex0());
+			log("    shape.m_hasVertex3 = bool(%d);\n", s->HasVertex3());
 		}
 		break;
 
 	case b2Shape::e_polygon:
 		{
 			auto s = static_cast<b2PolygonShape*>(m_shape);
-			b2Log("    b2PolygonShape shape;\n");
-			b2Log("    b2Vec2 vs[%d];\n", b2_maxPolygonVertices);
+			log("    b2PolygonShape shape;\n");
+			log("    b2Vec2 vs[%d];\n", b2_maxPolygonVertices);
 			for (auto i = decltype(s->GetVertexCount()){0}; i < s->GetVertexCount(); ++i)
 			{
-				b2Log("    vs[%d].Set(%.15lef, %.15lef);\n", i, s->GetVertex(i).x, s->GetVertex(i).y);
+				log("    vs[%d].Set(%.15lef, %.15lef);\n", i, s->GetVertex(i).x, s->GetVertex(i).y);
 			}
-			b2Log("    shape.Set(vs, %d);\n", s->GetVertexCount());
+			log("    shape.Set(vs, %d);\n", s->GetVertexCount());
 		}
 		break;
 
 	case b2Shape::e_chain:
 		{
 			auto s = static_cast<b2ChainShape*>(m_shape);
-			b2Log("    b2ChainShape shape;\n");
-			b2Log("    b2Vec2 vs[%d];\n", s->GetVertexCount());
+			log("    b2ChainShape shape;\n");
+			log("    b2Vec2 vs[%d];\n", s->GetVertexCount());
 			for (auto i = decltype(s->GetVertexCount()){0}; i < s->GetVertexCount(); ++i)
 			{
-				b2Log("    vs[%d].Set(%.15lef, %.15lef);\n", i, s->GetVertex(i).x, s->GetVertex(i).y);
+				log("    vs[%d].Set(%.15lef, %.15lef);\n", i, s->GetVertex(i).x, s->GetVertex(i).y);
 			}
-			b2Log("    shape.CreateChain(vs, %d);\n", s->GetVertexCount());
-			b2Log("    shape.m_prevVertex.Set(%.15lef, %.15lef);\n", s->GetPrevVertex().x, s->GetPrevVertex().y);
-			b2Log("    shape.m_nextVertex.Set(%.15lef, %.15lef);\n", s->GetNextVertex().x, s->GetNextVertex().y);
-			b2Log("    shape.m_hasPrevVertex = bool(%d);\n", s->HasPrevVertex());
-			b2Log("    shape.m_hasNextVertex = bool(%d);\n", s->HasNextVertex());
+			log("    shape.CreateChain(vs, %d);\n", s->GetVertexCount());
+			log("    shape.m_prevVertex.Set(%.15lef, %.15lef);\n", s->GetPrevVertex().x, s->GetPrevVertex().y);
+			log("    shape.m_nextVertex.Set(%.15lef, %.15lef);\n", s->GetNextVertex().x, s->GetNextVertex().y);
+			log("    shape.m_hasPrevVertex = bool(%d);\n", s->HasPrevVertex());
+			log("    shape.m_hasNextVertex = bool(%d);\n", s->HasNextVertex());
 		}
 		break;
 
@@ -277,8 +277,8 @@ void b2Fixture::Dump(island_count_t bodyIndex)
 		return;
 	}
 
-	b2Log("\n");
-	b2Log("    fd.shape = &shape;\n");
-	b2Log("\n");
-	b2Log("    bodies[%d]->CreateFixture(&fd);\n", bodyIndex);
+	log("\n");
+	log("    fd.shape = &shape;\n");
+	log("\n");
+	log("    bodies[%d]->CreateFixture(&fd);\n", bodyIndex);
 }

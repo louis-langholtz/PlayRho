@@ -23,22 +23,22 @@ using namespace box2d;
 
 b2Rope::~b2Rope()
 {
-	b2Free(m_ps);
-	b2Free(m_p0s);
-	b2Free(m_vs);
-	b2Free(m_ims);
-	b2Free(m_Ls);
-	b2Free(m_as);
+	free(m_ps);
+	free(m_p0s);
+	free(m_vs);
+	free(m_ims);
+	free(m_Ls);
+	free(m_as);
 }
 
 void b2Rope::Initialize(const b2RopeDef* def)
 {
 	assert(def->count >= 3);
 	m_count = def->count;
-	m_ps = static_cast<b2Vec2*>(b2Alloc(m_count * sizeof(b2Vec2)));
-	m_p0s = static_cast<b2Vec2*>(b2Alloc(m_count * sizeof(b2Vec2)));
-	m_vs = static_cast<b2Vec2*>(b2Alloc(m_count * sizeof(b2Vec2)));
-	m_ims = static_cast<float_t*>(b2Alloc(m_count * sizeof(float_t)));
+	m_ps = static_cast<b2Vec2*>(alloc(m_count * sizeof(b2Vec2)));
+	m_p0s = static_cast<b2Vec2*>(alloc(m_count * sizeof(b2Vec2)));
+	m_vs = static_cast<b2Vec2*>(alloc(m_count * sizeof(b2Vec2)));
+	m_ims = static_cast<float_t*>(alloc(m_count * sizeof(float_t)));
 
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
@@ -59,8 +59,8 @@ void b2Rope::Initialize(const b2RopeDef* def)
 
 	const auto count2 = m_count - 1;
 	const auto count3 = m_count - 2;
-	m_Ls = static_cast<float_t*>(b2Alloc(count2 * sizeof(float_t)));
-	m_as = static_cast<float_t*>(b2Alloc(count3 * sizeof(float_t)));
+	m_Ls = static_cast<float_t*>(alloc(count2 * sizeof(float_t)));
+	m_as = static_cast<float_t*>(alloc(count3 * sizeof(float_t)));
 
 	for (auto i = decltype(count2){0}; i < count2; ++i)
 	{

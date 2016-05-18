@@ -22,7 +22,7 @@
 using namespace box2d;
 
 b2DynamicTree::b2DynamicTree():
-	m_nodes(static_cast<b2TreeNode*>(b2Alloc(m_nodeCapacity * sizeof(b2TreeNode))))
+	m_nodes(static_cast<b2TreeNode*>(alloc(m_nodeCapacity * sizeof(b2TreeNode))))
 {
 	std::memset(m_nodes, 0, m_nodeCapacity * sizeof(b2TreeNode));
 
@@ -39,7 +39,7 @@ b2DynamicTree::b2DynamicTree():
 b2DynamicTree::~b2DynamicTree()
 {
 	// This frees the entire tree in one shot.
-	b2Free(m_nodes);
+	free(m_nodes);
 }
 
 // Allocate a node from the pool. Grow the pool if necessary.
@@ -52,7 +52,7 @@ b2DynamicTree::size_type b2DynamicTree::AllocateNode()
 
 		// The free list is empty. Rebuild a bigger pool.
 		m_nodeCapacity *= 2;
-		m_nodes = static_cast<b2TreeNode*>(b2Realloc(m_nodes, m_nodeCapacity * sizeof(b2TreeNode)));
+		m_nodes = static_cast<b2TreeNode*>(realloc(m_nodes, m_nodeCapacity * sizeof(b2TreeNode)));
 
 		// Build a linked list for the free list. The parent
 		// pointer becomes the "next" pointer.
@@ -673,7 +673,7 @@ b2DynamicTree::size_type b2DynamicTree::GetMaxBalance() const
 
 void b2DynamicTree::RebuildBottomUp()
 {
-	auto nodes = static_cast<size_type*>(b2Alloc(m_nodeCount * sizeof(size_type)));
+	auto nodes = static_cast<size_type*>(alloc(m_nodeCount * sizeof(size_type)));
 	auto count = size_type{0};
 
 	// Build array of leaves. Free the rest.
@@ -744,7 +744,7 @@ void b2DynamicTree::RebuildBottomUp()
 	}
 
 	m_root = nodes[0];
-	b2Free(nodes);
+	free(nodes);
 
 	Validate();
 }

@@ -328,18 +328,18 @@ void b2PulleyJoint::Dump()
 	const auto indexA = m_bodyA->m_islandIndex;
 	const auto indexB = m_bodyB->m_islandIndex;
 
-	b2Log("  b2PulleyJointDef jd;\n");
-	b2Log("  jd.bodyA = bodies[%d];\n", indexA);
-	b2Log("  jd.bodyB = bodies[%d];\n", indexB);
-	b2Log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	b2Log("  jd.groundAnchorA = b2Vec2(%.15lef, %.15lef);\n", m_groundAnchorA.x, m_groundAnchorA.y);
-	b2Log("  jd.groundAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_groundAnchorB.x, m_groundAnchorB.y);
-	b2Log("  jd.localAnchorA = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-	b2Log("  jd.localAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
-	b2Log("  jd.lengthA = %.15lef;\n", m_lengthA);
-	b2Log("  jd.lengthB = %.15lef;\n", m_lengthB);
-	b2Log("  jd.ratio = %.15lef;\n", m_ratio);
-	b2Log("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);
+	log("  b2PulleyJointDef jd;\n");
+	log("  jd.bodyA = bodies[%d];\n", indexA);
+	log("  jd.bodyB = bodies[%d];\n", indexB);
+	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
+	log("  jd.groundAnchorA = b2Vec2(%.15lef, %.15lef);\n", m_groundAnchorA.x, m_groundAnchorA.y);
+	log("  jd.groundAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_groundAnchorB.x, m_groundAnchorB.y);
+	log("  jd.localAnchorA = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
+	log("  jd.localAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+	log("  jd.lengthA = %.15lef;\n", m_lengthA);
+	log("  jd.lengthB = %.15lef;\n", m_lengthB);
+	log("  jd.ratio = %.15lef;\n", m_ratio);
+	log("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);
 }
 
 void b2PulleyJoint::ShiftOrigin(const b2Vec2& newOrigin)

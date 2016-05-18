@@ -39,7 +39,7 @@ public:
 	{
 		if (m_stack != m_array)
 		{
-			b2Free(m_stack);
+			free(m_stack);
 			m_stack = nullptr;
 		}
 	}
@@ -50,11 +50,11 @@ public:
 		{
 			T* old = m_stack;
 			m_capacity *= BufferGrowthRate;
-			m_stack = static_cast<T*>(b2Alloc(m_capacity * sizeof(T)));
+			m_stack = static_cast<T*>(alloc(m_capacity * sizeof(T)));
 			std::memcpy(m_stack, old, m_count * sizeof(T));
 			if (old != m_array)
 			{
-				b2Free(old);
+				free(old);
 			}
 		}
 

@@ -602,19 +602,19 @@ void b2PrismaticJoint::Dump()
 	const auto indexA = m_bodyA->m_islandIndex;
 	const auto indexB = m_bodyB->m_islandIndex;
 
-	b2Log("  b2PrismaticJointDef jd;\n");
-	b2Log("  jd.bodyA = bodies[%d];\n", indexA);
-	b2Log("  jd.bodyB = bodies[%d];\n", indexB);
-	b2Log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	b2Log("  jd.localAnchorA = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-	b2Log("  jd.localAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
-	b2Log("  jd.localAxisA = b2Vec2(%.15lef, %.15lef);\n", m_localXAxisA.x, m_localXAxisA.y);
-	b2Log("  jd.referenceAngle = %.15lef;\n", m_referenceAngle);
-	b2Log("  jd.enableLimit = bool(%d);\n", m_enableLimit);
-	b2Log("  jd.lowerTranslation = %.15lef;\n", m_lowerTranslation);
-	b2Log("  jd.upperTranslation = %.15lef;\n", m_upperTranslation);
-	b2Log("  jd.enableMotor = bool(%d);\n", m_enableMotor);
-	b2Log("  jd.motorSpeed = %.15lef;\n", m_motorSpeed);
-	b2Log("  jd.maxMotorForce = %.15lef;\n", m_maxMotorForce);
-	b2Log("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);
+	log("  b2PrismaticJointDef jd;\n");
+	log("  jd.bodyA = bodies[%d];\n", indexA);
+	log("  jd.bodyB = bodies[%d];\n", indexB);
+	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
+	log("  jd.localAnchorA = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
+	log("  jd.localAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+	log("  jd.localAxisA = b2Vec2(%.15lef, %.15lef);\n", m_localXAxisA.x, m_localXAxisA.y);
+	log("  jd.referenceAngle = %.15lef;\n", m_referenceAngle);
+	log("  jd.enableLimit = bool(%d);\n", m_enableLimit);
+	log("  jd.lowerTranslation = %.15lef;\n", m_lowerTranslation);
+	log("  jd.upperTranslation = %.15lef;\n", m_upperTranslation);
+	log("  jd.enableMotor = bool(%d);\n", m_enableMotor);
+	log("  jd.motorSpeed = %.15lef;\n", m_motorSpeed);
+	log("  jd.maxMotorForce = %.15lef;\n", m_maxMotorForce);
+	log("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);
 }

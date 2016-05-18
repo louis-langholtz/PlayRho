@@ -42,10 +42,10 @@ public:
 	b2BlockAllocator();
 	~b2BlockAllocator();
 
-	/// Allocate memory. This will use b2Alloc if the size is larger than b2_maxBlockSize.
+	/// Allocate memory. This will use alloc if the size is larger than b2_maxBlockSize.
 	void* Allocate(size_type size);
 
-	/// Free memory. This will use b2Free if the size is larger than b2_maxBlockSize.
+	/// Free memory. This will use free if the size is larger than b2_maxBlockSize.
 	void Free(void* p, size_type size);
 
 	void Clear();

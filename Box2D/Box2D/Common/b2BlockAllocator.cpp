@@ -81,7 +81,7 @@ struct box2d::b2Block
 };
 
 b2BlockAllocator::b2BlockAllocator():
-	m_chunks(static_cast<b2Chunk*>(b2Alloc(m_chunkSpace * sizeof(b2Chunk))))
+	m_chunks(static_cast<b2Chunk*>(alloc(m_chunkSpace * sizeof(b2Chunk))))
 {
 	assert(b2_blockSizes < std::numeric_limits<uint8>::max());
 	std::memset(m_chunks, 0, m_chunkSpace * sizeof(b2Chunk));
@@ -92,10 +92,10 @@ b2BlockAllocator::~b2BlockAllocator()
 {
 	for (auto i = decltype(m_chunkCount){0}; i < m_chunkCount; ++i)
 	{
-		b2Free(m_chunks[i].blocks);
+		free(m_chunks[i].blocks);
 	}
 
-	b2Free(m_chunks);
+	free(m_chunks);
 }
 
 void* b2BlockAllocator::Allocate(size_type size)
@@ -107,7 +107,7 @@ void* b2BlockAllocator::Allocate(size_type size)
 
 	if (size > b2_maxBlockSize)
 	{
-		return b2Alloc(size);
+		return alloc(size);
 	}
 
 	const auto index = s_blockSizeLookup[size];
@@ -123,12 +123,12 @@ void* b2BlockAllocator::Allocate(size_type size)
 	if (m_chunkCount == m_chunkSpace)
 	{
 		m_chunkSpace += b2_chunkArrayIncrement;
-		m_chunks = static_cast<b2Chunk*>(b2Realloc(m_chunks, m_chunkSpace * sizeof(b2Chunk)));
+		m_chunks = static_cast<b2Chunk*>(realloc(m_chunks, m_chunkSpace * sizeof(b2Chunk)));
 		std::memset(m_chunks + m_chunkCount, 0, b2_chunkArrayIncrement * sizeof(b2Chunk));
 	}
 
 	auto chunk = m_chunks + m_chunkCount;
-	chunk->blocks = static_cast<b2Block*>(b2Alloc(b2_chunkSize));
+	chunk->blocks = static_cast<b2Block*>(alloc(b2_chunkSize));
 #if defined(_DEBUG)
 	std::memset(chunk->blocks, 0xcd, b2_chunkSize);
 #endif
@@ -163,7 +163,7 @@ void b2BlockAllocator::Free(void* p, size_type size)
 
 	if (size > b2_maxBlockSize)
 	{
-		b2Free(p);
+		free(p);
 		return;
 	}
 
@@ -206,7 +206,7 @@ void b2BlockAllocator::Clear()
 {
 	for (auto i = decltype(m_chunkCount){0}; i < m_chunkCount; ++i)
 	{
-		b2Free(m_chunks[i].blocks);
+		free(m_chunks[i].blocks);
 	}
 
 	m_chunkCount = 0;

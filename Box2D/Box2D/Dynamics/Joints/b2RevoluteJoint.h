@@ -141,7 +141,7 @@ public:
 	/// Unit is N*m.
 	float_t GetMotorTorque(float_t inv_dt) const;
 
-	/// Dump to b2Log.
+	/// Dump to log.
 	void Dump() override;
 
 protected:

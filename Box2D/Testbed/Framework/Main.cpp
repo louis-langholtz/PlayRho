@@ -447,7 +447,7 @@ int main(int argc, char** argv)
 	}
 
 	char title[64];
-	sprintf(title, "Box2D Testbed Version %d.%d.%d", b2_version.major, b2_version.minor, b2_version.revision);
+	sprintf(title, "Box2D Testbed Version %d.%d.%d", BuiltVersion.major, BuiltVersion.minor, BuiltVersion.revision);
 
 #if defined(__APPLE__)
 	// Not sure why, but these settings cause glewInit below to crash.

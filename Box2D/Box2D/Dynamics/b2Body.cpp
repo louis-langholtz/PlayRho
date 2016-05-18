@@ -507,28 +507,28 @@ void b2Body::Dump()
 {
 	const auto bodyIndex = m_islandIndex;
 
-	b2Log("{\n");
-	b2Log("  b2BodyDef bd;\n");
-	b2Log("  bd.type = b2BodyType(%d);\n", m_type);
-	b2Log("  bd.position = b2Vec2(%.15lef, %.15lef);\n", m_xf.p.x, m_xf.p.y);
-	b2Log("  bd.angle = %.15lef;\n", m_sweep.a);
-	b2Log("  bd.linearVelocity = b2Vec2(%.15lef, %.15lef);\n", m_linearVelocity.x, m_linearVelocity.y);
-	b2Log("  bd.angularVelocity = %.15lef;\n", m_angularVelocity);
-	b2Log("  bd.linearDamping = %.15lef;\n", m_linearDamping);
-	b2Log("  bd.angularDamping = %.15lef;\n", m_angularDamping);
-	b2Log("  bd.allowSleep = bool(%d);\n", m_flags & e_autoSleepFlag);
-	b2Log("  bd.awake = bool(%d);\n", m_flags & e_awakeFlag);
-	b2Log("  bd.fixedRotation = bool(%d);\n", m_flags & e_fixedRotationFlag);
-	b2Log("  bd.bullet = bool(%d);\n", m_flags & e_bulletFlag);
-	b2Log("  bd.active = bool(%d);\n", m_flags & e_activeFlag);
-	b2Log("  bd.gravityScale = %.15lef;\n", m_gravityScale);
-	b2Log("  bodies[%d] = m_world->CreateBody(&bd);\n", m_islandIndex);
-	b2Log("\n");
+	log("{\n");
+	log("  b2BodyDef bd;\n");
+	log("  bd.type = b2BodyType(%d);\n", m_type);
+	log("  bd.position = b2Vec2(%.15lef, %.15lef);\n", m_xf.p.x, m_xf.p.y);
+	log("  bd.angle = %.15lef;\n", m_sweep.a);
+	log("  bd.linearVelocity = b2Vec2(%.15lef, %.15lef);\n", m_linearVelocity.x, m_linearVelocity.y);
+	log("  bd.angularVelocity = %.15lef;\n", m_angularVelocity);
+	log("  bd.linearDamping = %.15lef;\n", m_linearDamping);
+	log("  bd.angularDamping = %.15lef;\n", m_angularDamping);
+	log("  bd.allowSleep = bool(%d);\n", m_flags & e_autoSleepFlag);
+	log("  bd.awake = bool(%d);\n", m_flags & e_awakeFlag);
+	log("  bd.fixedRotation = bool(%d);\n", m_flags & e_fixedRotationFlag);
+	log("  bd.bullet = bool(%d);\n", m_flags & e_bulletFlag);
+	log("  bd.active = bool(%d);\n", m_flags & e_activeFlag);
+	log("  bd.gravityScale = %.15lef;\n", m_gravityScale);
+	log("  bodies[%d] = m_world->CreateBody(&bd);\n", m_islandIndex);
+	log("\n");
 	for (auto f = m_fixtureList; f; f = f->m_next)
 	{
-		b2Log("  {\n");
+		log("  {\n");
 		f->Dump(bodyIndex);
-		b2Log("  }\n");
+		log("  }\n");
 	}
-	b2Log("}\n");
+	log("}\n");
 }

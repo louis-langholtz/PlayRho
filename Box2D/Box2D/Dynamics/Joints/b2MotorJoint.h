@@ -85,7 +85,7 @@ public:
 	/// Get the position correction factor in the range [0,1].
 	float_t GetCorrectionFactor() const;
 
-	/// Dump to b2Log
+	/// Dump to log
 	void Dump() override;
 
 protected:
