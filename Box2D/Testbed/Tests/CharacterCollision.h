@@ -31,7 +31,7 @@ public:
 	{
 		// Ground body
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
@@ -43,7 +43,7 @@ public:
 		// This shows the problematic case where a box shape can hit
 		// an internal vertex.
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
@@ -57,7 +57,7 @@ public:
 
 		// Chain shape
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.angle = 0.25f * b2_pi;
 			b2Body* ground = m_world->CreateBody(&bd);
 
@@ -75,7 +75,7 @@ public:
 		// have non-smooth collision. There is no solution
 		// to this problem.
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
@@ -89,7 +89,7 @@ public:
 
 		// Square made from an edge loop. Collision should be smooth.
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2Vec2 vs[4];
@@ -104,7 +104,7 @@ public:
 
 		// Edge loop. Collision should be smooth.
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.position = b2Vec2(-10.0f, 4.0f);
 			b2Body* ground = m_world->CreateBody(&bd);
 
@@ -126,7 +126,7 @@ public:
 
 		// Square character 1
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.position = b2Vec2(-3.0f, 8.0f);
 			bd.type = DynamicBody;
 			bd.fixedRotation = true;
@@ -145,7 +145,7 @@ public:
 
 		// Square character 2
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.position = b2Vec2(-5.0f, 5.0f);
 			bd.type = DynamicBody;
 			bd.fixedRotation = true;
@@ -164,7 +164,7 @@ public:
 
 		// Hexagon character
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.position = b2Vec2(-5.0f, 8.0f);
 			bd.type = DynamicBody;
 			bd.fixedRotation = true;
@@ -192,7 +192,7 @@ public:
 
 		// Circle character
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.position = b2Vec2(3.0f, 5.0f);
 			bd.type = DynamicBody;
 			bd.fixedRotation = true;
@@ -211,7 +211,7 @@ public:
 
 		// Circle character
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.position = b2Vec2(-7.0f, 6.0f);
 			bd.type = DynamicBody;
 			bd.allowSleep = false;

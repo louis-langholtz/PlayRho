@@ -28,7 +28,7 @@ public:
 	{
 		b2Body* ground = nullptr;
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
@@ -42,7 +42,7 @@ public:
 
 		// Define attachment
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = b2Vec2(0.0f, 3.0f);
 			m_attachment = m_world->CreateBody(&bd);
@@ -54,7 +54,7 @@ public:
 
 		// Define platform
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = b2Vec2(-4.0f, 5.0f);
 			m_platform = m_world->CreateBody(&bd);
@@ -90,7 +90,7 @@ public:
 
 		// Create a payload
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = b2Vec2(0.0f, 8.0f);
 			b2Body* body = m_world->CreateBody(&bd);

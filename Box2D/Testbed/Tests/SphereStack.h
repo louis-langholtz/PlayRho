@@ -33,7 +33,7 @@ public:
 	SphereStack()
 	{
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
@@ -47,7 +47,7 @@ public:
 
 			for (int32 i = 0; i < e_count; ++i)
 			{
-				b2BodyDef bd;
+				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = b2Vec2(0.0, 4.0f + 3.0f * i);
 

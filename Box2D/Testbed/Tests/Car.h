@@ -33,7 +33,7 @@ public:
 
 		b2Body* ground = nullptr;
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
@@ -90,7 +90,7 @@ public:
 
 		// Teeter
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.position = b2Vec2(140.0f, 1.0f);
 			bd.type = DynamicBody;
 			b2Body* body = m_world->CreateBody(&bd);
@@ -125,7 +125,7 @@ public:
 			b2Body* prevBody = ground;
 			for (int32 i = 0; i < N; ++i)
 			{
-				b2BodyDef bd;
+				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = b2Vec2(161.0f + 2.0f * i, -0.125f);
 				b2Body* body = m_world->CreateBody(&bd);
@@ -149,7 +149,7 @@ public:
 			box.SetAsBox(0.5f, 0.5f);
 
 			b2Body* body = nullptr;
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 
 			bd.position = b2Vec2(230.0f, 0.5f);
@@ -188,7 +188,7 @@ public:
 			b2CircleShape circle;
 			circle.SetRadius(float_t(0.4));
 
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = b2Vec2(0.0f, 1.0f);
 			m_car = m_world->CreateBody(&bd);

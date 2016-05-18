@@ -52,7 +52,7 @@ Test::Test()
 
 	m_stepCount = 0;
 
-	b2BodyDef bodyDef;
+	BodyDef bodyDef;
 	m_groundBody = m_world->CreateBody(&bodyDef);
 
 	memset(&m_maxProfile, 0, sizeof(b2Profile));
@@ -237,7 +237,7 @@ void Test::LaunchBomb(const b2Vec2& position, const b2Vec2& velocity)
 		m_bomb = nullptr;
 	}
 
-	b2BodyDef bd;
+	BodyDef bd;
 	bd.type = DynamicBody;
 	bd.position = position;
 	bd.bullet = true;

@@ -32,7 +32,7 @@ public:
 
 		b2Body* ground;
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.position = b2Vec2(float_t{0}, 20.0f);
 			ground = m_world->CreateBody(&bd);
 
@@ -92,7 +92,7 @@ public:
 			sd2.shape = &poly2;
 			sd2.density = 2.0f;
 
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.angularDamping = 2.0f;
 			bd.linearDamping = 0.5f;
@@ -116,7 +116,7 @@ public:
 
 			for (int i = 0; i < 10; ++i)
 			{
-				b2BodyDef bd;
+				BodyDef bd;
 				bd.type = DynamicBody;
 
 				bd.position = b2Vec2(float_t{0}, 5.0f + 1.54f * i);

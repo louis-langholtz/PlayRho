@@ -53,7 +53,7 @@ public:
 			sd.shape = &shape;
 			sd.friction = 0.3f;
 
-			b2BodyDef bd;
+			BodyDef bd;
 			b2Body* ground = m_world->CreateBody(&bd);
 			ground->CreateFixture(&sd);
 		}
@@ -74,7 +74,7 @@ public:
 		triangleShapeDef.filter.categoryBits = k_triangleCategory;
 		triangleShapeDef.filter.maskBits = k_triangleMask;
 
-		b2BodyDef triangleBodyDef;
+		BodyDef triangleBodyDef;
 		triangleBodyDef.type = DynamicBody;
 		triangleBodyDef.position = b2Vec2(-5.0f, 2.0f);
 
@@ -94,7 +94,7 @@ public:
 		body2->CreateFixture(&triangleShapeDef);
 
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = b2Vec2(-5.0f, 10.0f);
 			b2Body* body = m_world->CreateBody(&bd);
@@ -127,7 +127,7 @@ public:
 		boxShapeDef.filter.categoryBits = k_boxCategory;
 		boxShapeDef.filter.maskBits = k_boxMask;
 
-		b2BodyDef boxBodyDef;
+		BodyDef boxBodyDef;
 		boxBodyDef.type = DynamicBody;
 		boxBodyDef.position = b2Vec2(0.0f, 2.0f);
 
@@ -154,7 +154,7 @@ public:
 		circleShapeDef.filter.categoryBits = k_circleCategory;
 		circleShapeDef.filter.maskBits = k_circleMask;
 
-		b2BodyDef circleBodyDef;
+		BodyDef circleBodyDef;
 		circleBodyDef.type = DynamicBody;
 		circleBodyDef.position = b2Vec2(5.0f, 2.0f);
 		

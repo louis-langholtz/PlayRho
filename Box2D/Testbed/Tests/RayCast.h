@@ -177,7 +177,7 @@ public:
 	{
 		// Ground body
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
@@ -247,7 +247,7 @@ public:
 			m_bodies[m_bodyIndex] = nullptr;
 		}
 
-		b2BodyDef bd;
+		BodyDef bd;
 
 		float_t x = RandomFloat(-10.0f, 10.0f);
 		float_t y = RandomFloat(0.0f, 20.0f);

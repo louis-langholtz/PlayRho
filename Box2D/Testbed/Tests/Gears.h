@@ -28,7 +28,7 @@ public:
 	{
 		b2Body* ground = nullptr;
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
@@ -46,19 +46,19 @@ public:
 			b2CircleShape circle2;
 			circle2.SetRadius(float_t(2.0));
 			
-			b2BodyDef bd1;
+			BodyDef bd1;
 			bd1.type = StaticBody;
 			bd1.position = b2Vec2(10.0f, 9.0f);
 			b2Body* body1 = m_world->CreateBody(&bd1);
 			body1->CreateFixture(&circle1, 5.0f);
 
-			b2BodyDef bd2;
+			BodyDef bd2;
 			bd2.type = DynamicBody;
 			bd2.position = b2Vec2(10.0f, 8.0f);
 			b2Body* body2 = m_world->CreateBody(&bd2);
 			body2->CreateFixture(&box, 5.0f);
 
-			b2BodyDef bd3;
+			BodyDef bd3;
 			bd3.type = DynamicBody;
 			bd3.position = b2Vec2(10.0f, 6.0f);
 			b2Body* body3 = m_world->CreateBody(&bd3);
@@ -91,7 +91,7 @@ public:
 			b2PolygonShape box;
 			box.SetAsBox(0.5f, 5.0f);
 
-			b2BodyDef bd1;
+			BodyDef bd1;
 			bd1.type = DynamicBody;
 			bd1.position = b2Vec2(-3.0f, 12.0f);
 			b2Body* body1 = m_world->CreateBody(&bd1);
@@ -105,7 +105,7 @@ public:
 			jd1.referenceAngle = body1->GetAngle() - ground->GetAngle();
 			m_joint1 = (b2RevoluteJoint*)m_world->CreateJoint(&jd1);
 
-			b2BodyDef bd2;
+			BodyDef bd2;
 			bd2.type = DynamicBody;
 			bd2.position = b2Vec2(0.0f, 12.0f);
 			b2Body* body2 = m_world->CreateBody(&bd2);
@@ -115,7 +115,7 @@ public:
 			jd2.Initialize(ground, body2, bd2.position);
 			m_joint2 = (b2RevoluteJoint*)m_world->CreateJoint(&jd2);
 
-			b2BodyDef bd3;
+			BodyDef bd3;
 			bd3.type = DynamicBody;
 			bd3.position = b2Vec2(2.5f, 12.0f);
 			b2Body* body3 = m_world->CreateBody(&bd3);

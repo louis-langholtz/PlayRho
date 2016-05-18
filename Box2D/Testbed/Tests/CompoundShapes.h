@@ -28,7 +28,7 @@ public:
 	CompoundShapes()
 	{
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.position = b2Vec2(0.0f, 0.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
@@ -46,7 +46,7 @@ public:
 			for (int i = 0; i < 10; ++i)
 			{
 				float_t x = RandomFloat(-0.1f, 0.1f);
-				b2BodyDef bd;
+				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = b2Vec2(x + 5.0f, 1.05f + 2.5f * i);
 				bd.angle = RandomFloat(-b2_pi, b2_pi);
@@ -66,7 +66,7 @@ public:
 			for (int i = 0; i < 10; ++i)
 			{
 				float_t x = RandomFloat(-0.1f, 0.1f);
-				b2BodyDef bd;
+				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = b2Vec2(x - 5.0f, 1.05f + 2.5f * i);
 				bd.angle = RandomFloat(-b2_pi, b2_pi);
@@ -102,7 +102,7 @@ public:
 			for (int32 i = 0; i < 10; ++i)
 			{
 				float_t x = RandomFloat(-0.1f, 0.1f);
-				b2BodyDef bd;
+				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = b2Vec2(x, 2.05f + 2.5f * i);
 				bd.angle = 0.0f;
@@ -122,7 +122,7 @@ public:
 			b2PolygonShape right;
 			right.SetAsBox(0.15f, 2.7f, b2Vec2(1.45f, 2.35f), -0.2f);
 
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = b2Vec2( 0.0f, 2.0f );
 			b2Body* body = m_world->CreateBody(&bd);

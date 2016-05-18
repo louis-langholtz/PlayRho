@@ -31,7 +31,7 @@ public:
 		// Ground body
 		b2Body* ground = nullptr;
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
 
 			b2Vec2 vs[5];
@@ -53,7 +53,7 @@ public:
 		{
 			b2Vec2 p1(-2.0f, 0.0f), p2(2.0f, 0.0f);
 
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 
 			bd.position = p1;
@@ -96,7 +96,7 @@ public:
 
 		// Circle character
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.position = b2Vec2(1.0f, 15.0f);
 			bd.type = DynamicBody;
 			bd.bullet = true;

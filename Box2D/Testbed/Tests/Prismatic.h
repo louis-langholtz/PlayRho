@@ -29,7 +29,7 @@ public:
 	{
 		b2Body* ground = nullptr;
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
@@ -41,7 +41,7 @@ public:
 			b2PolygonShape shape;
 			shape.SetAsBox(2.0f, 0.5f);
 
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = b2Vec2(-10.0f, 10.0f);
 			bd.angle = 0.5f * b2_pi;

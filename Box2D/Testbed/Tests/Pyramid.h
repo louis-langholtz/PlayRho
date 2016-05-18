@@ -32,7 +32,7 @@ public:
 	Pyramid()
 	{
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
@@ -56,7 +56,7 @@ public:
 
 				for (int32 j = i; j < e_count; ++j)
 				{
-					b2BodyDef bd;
+					BodyDef bd;
 					bd.type = DynamicBody;
 					bd.position = y;
 					b2Body* body = m_world->CreateBody(&bd);

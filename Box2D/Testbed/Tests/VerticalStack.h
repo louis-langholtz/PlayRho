@@ -38,7 +38,7 @@ public:
 	VerticalStack()
 	{
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
@@ -63,7 +63,7 @@ public:
 
 			for (int i = 0; i < e_rowCount; ++i)
 			{
-				b2BodyDef bd;
+				BodyDef bd;
 				bd.type = DynamicBody;
 
 				int32 n = j * e_rowCount + i;
@@ -106,7 +106,7 @@ public:
 				fd.density = 20.0f;
 				fd.restitution = 0.05f;
 
-				b2BodyDef bd;
+				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.bullet = true;
 				bd.position = b2Vec2(-31.0f, 5.0f);
@@ -147,7 +147,7 @@ public:
 		//		fd.density = 20.0f;
 		//		fd.restitution = 0.05f;
 
-		//		b2BodyDef bd;
+		//		BodyDef bd;
 		//		bd.type = DynamicBody;
 		//		bd.bullet = true;
 		//		bd.position = b2Vec2(-31.0f, 5.0f);

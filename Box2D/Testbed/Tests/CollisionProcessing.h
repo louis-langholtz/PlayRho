@@ -38,7 +38,7 @@ public:
 			b2FixtureDef sd;
 			sd.shape = &shape;;
 
-			b2BodyDef bd;
+			BodyDef bd;
 			b2Body* ground = m_world->CreateBody(&bd);
 			ground->CreateFixture(&sd);
 		}
@@ -59,7 +59,7 @@ public:
 		triangleShapeDef.shape = &polygon;
 		triangleShapeDef.density = 1.0f;
 
-		b2BodyDef triangleBodyDef;
+		BodyDef triangleBodyDef;
 		triangleBodyDef.type = DynamicBody;
 		triangleBodyDef.position = b2Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
@@ -84,7 +84,7 @@ public:
 		boxShapeDef.shape = &polygon;
 		boxShapeDef.density = 1.0f;
 
-		b2BodyDef boxBodyDef;
+		BodyDef boxBodyDef;
 		boxBodyDef.type = DynamicBody;
 		boxBodyDef.position = b2Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
@@ -106,7 +106,7 @@ public:
 		circleShapeDef.shape = &circle;
 		circleShapeDef.density = 1.0f;
 
-		b2BodyDef circleBodyDef;
+		BodyDef circleBodyDef;
 		circleBodyDef.type = DynamicBody;
 		circleBodyDef.position = b2Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 

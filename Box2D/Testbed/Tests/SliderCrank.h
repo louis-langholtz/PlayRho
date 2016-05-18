@@ -30,7 +30,7 @@ public:
 	{
 		b2Body* ground = nullptr;
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
@@ -46,7 +46,7 @@ public:
 				b2PolygonShape shape;
 				shape.SetAsBox(0.5f, 2.0f);
 
-				b2BodyDef bd;
+				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = b2Vec2(0.0f, 7.0f);
 				b2Body* body = m_world->CreateBody(&bd);
@@ -67,7 +67,7 @@ public:
 				b2PolygonShape shape;
 				shape.SetAsBox(0.5f, 4.0f);
 
-				b2BodyDef bd;
+				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = b2Vec2(0.0f, 13.0f);
 				b2Body* body = m_world->CreateBody(&bd);
@@ -86,7 +86,7 @@ public:
 				b2PolygonShape shape;
 				shape.SetAsBox(1.5f, 1.5f);
 
-				b2BodyDef bd;
+				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.fixedRotation = true;
 				bd.position = b2Vec2(0.0f, 17.0f);
@@ -111,7 +111,7 @@ public:
 				b2PolygonShape shape;
 				shape.SetAsBox(1.5f, 1.5f);
 
-				b2BodyDef bd;
+				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = b2Vec2(0.0f, 23.0f);
 				b2Body* body = m_world->CreateBody(&bd);

@@ -37,7 +37,7 @@ int main(int argc, char** argv)
 	b2World world(gravity);
 
 	// Define the ground body.
-	b2BodyDef groundBodyDef;
+	BodyDef groundBodyDef;
 	groundBodyDef.position = b2Vec2(0.0f, -10.0f);
 
 	// Call the body factory which allocates memory for the ground body
@@ -55,7 +55,7 @@ int main(int argc, char** argv)
 	groundBody->CreateFixture(&groundBox, 0.0f);
 
 	// Define the dynamic body. We set its position and call the body factory.
-	b2BodyDef bodyDef;
+	BodyDef bodyDef;
 	bodyDef.type = DynamicBody;
 	bodyDef.position = b2Vec2(0.0f, 4.0f);
 	b2Body* body = world.CreateBody(&bodyDef);

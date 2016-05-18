@@ -36,7 +36,7 @@ public:
 
 		// Create ground body.
 		{
-			b2BodyDef bodyDef;
+			BodyDef bodyDef;
 			bodyDef.position = b2Vec2(0.0f, 20.0f);
 			ground = m_world->CreateBody(&bodyDef);
 		}
@@ -61,7 +61,7 @@ public:
 
 		b2Vec2 p = parent->GetPosition() + localAnchor - h;
 
-		b2BodyDef bodyDef;
+		BodyDef bodyDef;
 		bodyDef.type = DynamicBody;
 		bodyDef.position = p;
 		b2Body* body = m_world->CreateBody(&bodyDef);

@@ -40,7 +40,7 @@ struct b2ContactEdge;
 /// static: zero mass, zero velocity, may be manually moved
 /// kinematic: zero mass, non-zero velocity set by user, moved by solver
 /// dynamic: positive mass, non-zero velocity determined by forces, moved by solver
-enum b2BodyType
+enum BodyType
 {
 	StaticBody = 0,
 	KinematicBody,
@@ -52,14 +52,14 @@ enum b2BodyType
 
 /// A body definition holds all the data needed to construct a rigid body.
 /// You can safely re-use body definitions. Shapes are added to a body after construction.
-struct b2BodyDef
+struct BodyDef
 {
 	/// This constructor sets the body definition default values.
-	constexpr b2BodyDef() = default;
+	constexpr BodyDef() = default;
 
 	/// The body type: static, kinematic, or dynamic.
 	/// Note: if a dynamic body would have zero mass, the mass is set to one.
-	b2BodyType type = StaticBody;
+	BodyType type = StaticBody;
 
 	/// The world position of the body. Avoid creating bodies at the origin
 	/// since this can lead to many overlapping shapes.
@@ -288,10 +288,10 @@ public:
 	void SetGravityScale(float_t scale) noexcept;
 
 	/// Set the type of this body. This may alter the mass and velocity.
-	void SetType(b2BodyType type);
+	void SetType(BodyType type);
 
 	/// Get the type of this body.
-	b2BodyType GetType() const noexcept;
+	BodyType GetType() const noexcept;
 
 	/// Should this body be treated like a bullet for continuous collision detection?
 	void SetBullet(bool flag) noexcept;
@@ -412,9 +412,9 @@ private:
 		e_toiFlag			= 0x0040
 	};
 	
-	static uint16 GetFlags(const b2BodyDef& bd) noexcept;
+	static uint16 GetFlags(const BodyDef& bd) noexcept;
 
-	b2Body(const b2BodyDef* bd, b2World* world);
+	b2Body(const BodyDef* bd, b2World* world);
 	~b2Body();
 
 	void SynchronizeFixtures();
@@ -444,7 +444,7 @@ private:
 
 	b2MassData CalculateMassData() const noexcept;
 
-	b2BodyType m_type;
+	BodyType m_type;
 
 	uint16 m_flags = 0;
 
@@ -488,7 +488,7 @@ private:
 	void* m_userData;
 };
 
-inline b2BodyType b2Body::GetType() const noexcept
+inline BodyType b2Body::GetType() const noexcept
 {
 	return m_type;
 }

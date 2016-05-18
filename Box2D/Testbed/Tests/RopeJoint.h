@@ -36,7 +36,7 @@ public:
 	{
 		b2Body* ground = nullptr;
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
@@ -65,7 +65,7 @@ public:
 			b2Body* prevBody = ground;
 			for (int32 i = 0; i < N; ++i)
 			{
-				b2BodyDef bd;
+				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = b2Vec2(0.5f + 1.0f * i, y);
 				if (i == N - 1)

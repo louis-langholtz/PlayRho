@@ -24,7 +24,7 @@
 
 using namespace box2d;
 
-uint16 b2Body::GetFlags(const b2BodyDef& bd) noexcept
+uint16 b2Body::GetFlags(const BodyDef& bd) noexcept
 {
 	uint16 flags = 0;
 	if (bd.bullet)
@@ -50,7 +50,7 @@ uint16 b2Body::GetFlags(const b2BodyDef& bd) noexcept
 	return flags;
 }
 
-b2Body::b2Body(const b2BodyDef* bd, b2World* world):
+b2Body::b2Body(const BodyDef* bd, b2World* world):
 	m_type(bd->type), m_flags(GetFlags(*bd)), m_xf(bd->position, b2Rot(bd->angle)), m_world(world),
 	m_linearVelocity(bd->linearVelocity), m_angularVelocity(bd->angularVelocity)
 {
@@ -104,7 +104,7 @@ void b2Body::DestroyContacts()
 	m_contactList = nullptr;
 }
 
-void b2Body::SetType(b2BodyType type)
+void b2Body::SetType(BodyType type)
 {
 	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())
@@ -508,8 +508,8 @@ void b2Body::Dump()
 	const auto bodyIndex = m_islandIndex;
 
 	log("{\n");
-	log("  b2BodyDef bd;\n");
-	log("  bd.type = b2BodyType(%d);\n", m_type);
+	log("  BodyDef bd;\n");
+	log("  bd.type = BodyType(%d);\n", m_type);
 	log("  bd.position = b2Vec2(%.15lef, %.15lef);\n", m_xf.p.x, m_xf.p.y);
 	log("  bd.angle = %.15lef;\n", m_sweep.a);
 	log("  bd.linearVelocity = b2Vec2(%.15lef, %.15lef);\n", m_linearVelocity.x, m_linearVelocity.y);

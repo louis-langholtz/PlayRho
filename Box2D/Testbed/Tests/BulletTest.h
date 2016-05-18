@@ -28,7 +28,7 @@ public:
 	BulletTest()
 	{
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.position = b2Vec2(0.0f, 0.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
@@ -43,7 +43,7 @@ public:
 		}
 
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = b2Vec2(0.0f, 4.0f);
 

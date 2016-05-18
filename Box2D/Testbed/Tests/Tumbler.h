@@ -34,12 +34,12 @@ public:
 	{
 		b2Body* ground = nullptr;
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
 		}
 
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.allowSleep = false;
 			bd.position = b2Vec2(0.0f, 10.0f);
@@ -76,7 +76,7 @@ public:
 
 		if (m_count < e_count)
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = b2Vec2(0.0f, 10.0f);
 			b2Body* body = m_world->CreateBody(&bd);

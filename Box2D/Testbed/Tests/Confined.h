@@ -35,7 +35,7 @@ public:
 	Confined()
 	{
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
@@ -73,7 +73,7 @@ public:
 		{
 			for (int i = 0; i < e_rowCount; ++i)
 			{
-				b2BodyDef bd;
+				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = b2Vec2(-10.0f + (2.1f * j + 1.0f + 0.01f * i) * radius, (2.0f * i + 1.0f) * radius);
 				b2Body* body = m_world->CreateBody(&bd);
@@ -95,7 +95,7 @@ public:
 		fd.density = 1.0f;
 		fd.restitution = float_t(0.8);
 
-		b2BodyDef bd;
+		BodyDef bd;
 		bd.type = DynamicBody;
 		bd.bullet = m_bullet_mode;
 		bd.position = b2Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));
@@ -116,7 +116,7 @@ public:
 		fd.density = 1.0f;
 		fd.restitution = float_t(0.8);
 		
-		b2BodyDef bd;
+		BodyDef bd;
 		bd.type = DynamicBody;
 		bd.bullet = m_bullet_mode;
 		bd.position = b2Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));

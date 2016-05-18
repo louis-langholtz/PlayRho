@@ -28,7 +28,7 @@ public:
 	EdgeTest()
 	{
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2Vec2 v1(-10.0f, 0.0f), v2(-7.0f, -2.0f), v3(-4.0f, 0.0f);
@@ -66,7 +66,7 @@ public:
 		}
 
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = b2Vec2(-0.5f, 0.6f);
 			bd.allowSleep = false;
@@ -79,7 +79,7 @@ public:
 		}
 
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = b2Vec2(1.0f, 0.6f);
 			bd.allowSleep = false;

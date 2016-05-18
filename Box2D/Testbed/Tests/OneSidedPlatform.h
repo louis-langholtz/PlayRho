@@ -36,7 +36,7 @@ public:
 	{
 		// Ground
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
@@ -46,7 +46,7 @@ public:
 
 		// Platform
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.position = b2Vec2(0.0f, 10.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
@@ -60,7 +60,7 @@ public:
 
 		// Actor
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = b2Vec2(0.0f, 12.0f);
 			b2Body* body = m_world->CreateBody(&bd);

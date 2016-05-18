@@ -33,7 +33,7 @@ public:
 
 		b2Body* ground = nullptr;
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape edge;
@@ -52,7 +52,7 @@ public:
 			b2PolygonShape shape;
 			shape.SetAsBox(a, b);
 
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 
 			//bd.fixedRotation = true;

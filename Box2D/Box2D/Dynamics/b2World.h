@@ -31,7 +31,7 @@
 namespace box2d {
 
 struct b2AABB;
-struct b2BodyDef;
+struct BodyDef;
 struct b2Color;
 struct b2JointDef;
 class b2Body;
@@ -75,7 +75,7 @@ public:
 	/// Create a rigid body given a definition. No reference to the definition
 	/// is retained.
 	/// @warning This function is locked during callbacks.
-	b2Body* CreateBody(const b2BodyDef* def);
+	b2Body* CreateBody(const BodyDef* def);
 
 	/// Destroy a rigid body given a definition. No reference to the definition
 	/// is retained. This function is locked during callbacks.

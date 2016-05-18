@@ -38,7 +38,7 @@ public:
 
 		{
 			float_t a = 0.5f;
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.position.y = -a;
 			b2Body* ground = m_world->CreateBody(&bd);
 
@@ -96,7 +96,7 @@ public:
 
 				for (int32 j = i; j < e_count; ++j)
 				{
-					b2BodyDef bd;
+					BodyDef bd;
 					bd.type = DynamicBody;
 					bd.position = y;
 

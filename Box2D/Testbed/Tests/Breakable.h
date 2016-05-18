@@ -35,7 +35,7 @@ public:
 	{
 		// Ground body
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
@@ -45,7 +45,7 @@ public:
 
 		// Breakable dynamic body
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = b2Vec2(0.0f, 40.0f);
 			bd.angle = 0.25f * b2_pi;
@@ -95,7 +95,7 @@ public:
 		body1->DestroyFixture(m_piece2);
 		m_piece2 = nullptr;
 
-		b2BodyDef bd;
+		BodyDef bd;
 		bd.type = DynamicBody;
 		bd.position = body1->GetPosition();
 		bd.angle = body1->GetAngle();

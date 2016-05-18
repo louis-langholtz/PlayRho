@@ -30,7 +30,7 @@ public:
 	VaryingRestitution()
 	{
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
@@ -50,7 +50,7 @@ public:
 
 			for (int32 i = 0; i < 7; ++i)
 			{
-				b2BodyDef bd;
+				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = b2Vec2(-10.0f + 3.0f * i, 20.0f);
 

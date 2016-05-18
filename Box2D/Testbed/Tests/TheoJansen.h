@@ -77,7 +77,7 @@ public:
 		fd1.shape = &poly1;
 		fd2.shape = &poly2;
 
-		b2BodyDef bd1, bd2;
+		BodyDef bd1, bd2;
 		bd1.type = DynamicBody;
 		bd2.type = DynamicBody;
 		bd1.position = m_offset;
@@ -127,7 +127,7 @@ public:
 
 		// Ground
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
@@ -147,7 +147,7 @@ public:
 			b2CircleShape shape;
 			shape.SetRadius(0.25);
 
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = b2Vec2(-40.0f + 2.0f * i, 0.5f);
 
@@ -164,7 +164,7 @@ public:
 			sd.density = 1.0f;
 			sd.shape = &shape;
 			sd.filter.groupIndex = -1;
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = pivot + m_offset;
 			m_chassis = m_world->CreateBody(&bd);
@@ -179,7 +179,7 @@ public:
 			sd.density = 1.0f;
 			sd.shape = &shape;
 			sd.filter.groupIndex = -1;
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = pivot + m_offset;
 			m_wheel = m_world->CreateBody(&bd);

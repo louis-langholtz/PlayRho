@@ -116,7 +116,7 @@ void b2World::SetDebugDraw(b2Draw* debugDraw) noexcept
 	g_debugDraw = debugDraw;
 }
 
-b2Body* b2World::CreateBody(const b2BodyDef* def)
+b2Body* b2World::CreateBody(const BodyDef* def)
 {
 	assert(!IsLocked());
 	if (IsLocked())

@@ -28,7 +28,7 @@ public:
 	{
 		b2Body* ground = nullptr;
 		{
-			b2BodyDef bd;
+			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
@@ -45,7 +45,7 @@ public:
 			b2CircleShape shape;
 			shape.SetRadius(0.5);
 
-			b2BodyDef bd;
+			BodyDef bd;
 			bd.type = DynamicBody;
 
 			b2RevoluteJointDef rjd;
@@ -74,7 +74,7 @@ public:
 			b2CircleShape circle_shape;
 			circle_shape.SetRadius(3.0);
 
-			b2BodyDef circle_bd;
+			BodyDef circle_bd;
 			circle_bd.type = DynamicBody;
 			circle_bd.position = b2Vec2(5.0f, 30.0f);
 
@@ -89,7 +89,7 @@ public:
 			b2PolygonShape polygon_shape;
 			polygon_shape.SetAsBox(10.0f, 0.2f, b2Vec2 (-10.0f, 0.0f), 0.0f);
 
-			b2BodyDef polygon_bd;
+			BodyDef polygon_bd;
 			polygon_bd.position = b2Vec2(20.0f, 10.0f);
 			polygon_bd.type = DynamicBody;
 			polygon_bd.bullet = true;
@@ -106,7 +106,7 @@ public:
 
 		// Tests mass computation of a small object far from the origin
 		{
-			b2BodyDef bodyDef;
+			BodyDef bodyDef;
 			bodyDef.type = DynamicBody;
 			b2Body* body = m_world->CreateBody(&bodyDef);
 		
