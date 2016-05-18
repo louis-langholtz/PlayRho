@@ -101,8 +101,8 @@ void b2GetPointStates(b2PointStateArray& state1, b2PointStateArray& state2,
 {
 	for (auto i = decltype(MaxManifoldPoints){0}; i < MaxManifoldPoints; ++i)
 	{
-		state1[i] = b2_nullState;
-		state2[i] = b2_nullState;
+		state1[i] = b2PointState::NullState;
+		state2[i] = b2PointState::NullState;
 	}
 
 	// Detect persists and removes.
@@ -110,13 +110,13 @@ void b2GetPointStates(b2PointStateArray& state1, b2PointStateArray& state2,
 	{
 		const auto& cf = manifold1.GetPoint(i).cf;
 
-		state1[i] = b2_removeState;
+		state1[i] = b2PointState::RemoveState;
 
 		for (auto j = decltype(manifold2.GetPointCount()){0}; j < manifold2.GetPointCount(); ++j)
 		{
 			if (manifold2.GetPoint(j).cf == cf)
 			{
-				state1[i] = b2_persistState;
+				state1[i] = b2PointState::PersistState;
 				break;
 			}
 		}
@@ -127,13 +127,13 @@ void b2GetPointStates(b2PointStateArray& state1, b2PointStateArray& state2,
 	{
 		const auto& cf = manifold2.GetPoint(i).cf;
 
-		state2[i] = b2_addState;
+		state2[i] = b2PointState::AddState;
 
 		for (auto j = decltype(manifold1.GetPointCount()){0}; j < manifold1.GetPointCount(); ++j)
 		{
 			if (manifold1.GetPoint(j).cf == cf)
 			{
-				state2[i] = b2_persistState;
+				state2[i] = b2PointState::PersistState;
 				break;
 			}
 		}

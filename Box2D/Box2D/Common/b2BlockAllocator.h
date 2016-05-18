@@ -34,27 +34,27 @@ class b2BlockAllocator
 public:
 	using size_type = size_t;
 
-	static constexpr auto b2_chunkSize = size_type{16 * 1024};
-	static constexpr auto b2_maxBlockSize = size_type{640};
-	static constexpr auto b2_blockSizes = size_type{14};
-	static constexpr auto b2_chunkArrayIncrement = size_type{128};
+	static constexpr auto ChunkSize = size_type{16 * 1024};
+	static constexpr auto MaxBlockSize = size_type{640};
+	static constexpr auto BlockSizes = size_type{14};
+	static constexpr auto ChunkArrayIncrement = size_type{128};
 
 	b2BlockAllocator();
 	~b2BlockAllocator();
 
-	/// Allocate memory. This will use alloc if the size is larger than b2_maxBlockSize.
+	/// Allocate memory. This will use alloc if the size is larger than MaxBlockSize.
 	void* Allocate(size_type size);
 
-	/// Free memory. This will use free if the size is larger than b2_maxBlockSize.
+	/// Free memory. This will use free if the size is larger than MaxBlockSize.
 	void Free(void* p, size_type size);
 
 	void Clear();
 
 private:
 	size_type m_chunkCount = 0;
-	size_type m_chunkSpace = b2_chunkArrayIncrement;
+	size_type m_chunkSpace = ChunkArrayIncrement;
 	b2Chunk* m_chunks;
-	b2Block* m_freeLists[b2_blockSizes];
+	b2Block* m_freeLists[BlockSizes];
 };
 
 } // namespace box2d

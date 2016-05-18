@@ -23,7 +23,7 @@
 
 using namespace box2d;
 
-static constexpr size_t s_blockSizes[b2BlockAllocator::b2_blockSizes] =
+static constexpr size_t s_blockSizes[b2BlockAllocator::BlockSizes] =
 {
 	16,		// 0
 	32,		// 1
@@ -41,7 +41,7 @@ static constexpr size_t s_blockSizes[b2BlockAllocator::b2_blockSizes] =
 	640,	// 13
 };
 
-static constexpr uint8 s_blockSizeLookup[b2BlockAllocator::b2_maxBlockSize + 1] =
+static constexpr uint8 s_blockSizeLookup[b2BlockAllocator::MaxBlockSize + 1] =
 {
 	0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 1-16
@@ -83,7 +83,7 @@ struct box2d::b2Block
 b2BlockAllocator::b2BlockAllocator():
 	m_chunks(static_cast<b2Chunk*>(alloc(m_chunkSpace * sizeof(b2Chunk))))
 {
-	assert(b2_blockSizes < std::numeric_limits<uint8>::max());
+	assert(BlockSizes < std::numeric_limits<uint8>::max());
 	std::memset(m_chunks, 0, m_chunkSpace * sizeof(b2Chunk));
 	std::memset(m_freeLists, 0, sizeof(m_freeLists));
 }
@@ -105,13 +105,13 @@ void* b2BlockAllocator::Allocate(size_type size)
 
 	assert(0 < size);
 
-	if (size > b2_maxBlockSize)
+	if (size > MaxBlockSize)
 	{
 		return alloc(size);
 	}
 
 	const auto index = s_blockSizeLookup[size];
-	assert((0 <= index) && (index < b2_blockSizes));
+	assert((0 <= index) && (index < BlockSizes));
 
 	if (m_freeLists[index])
 	{
@@ -122,21 +122,21 @@ void* b2BlockAllocator::Allocate(size_type size)
 
 	if (m_chunkCount == m_chunkSpace)
 	{
-		m_chunkSpace += b2_chunkArrayIncrement;
+		m_chunkSpace += ChunkArrayIncrement;
 		m_chunks = static_cast<b2Chunk*>(realloc(m_chunks, m_chunkSpace * sizeof(b2Chunk)));
-		std::memset(m_chunks + m_chunkCount, 0, b2_chunkArrayIncrement * sizeof(b2Chunk));
+		std::memset(m_chunks + m_chunkCount, 0, ChunkArrayIncrement * sizeof(b2Chunk));
 	}
 
 	auto chunk = m_chunks + m_chunkCount;
-	chunk->blocks = static_cast<b2Block*>(alloc(b2_chunkSize));
+	chunk->blocks = static_cast<b2Block*>(alloc(ChunkSize));
 #if defined(_DEBUG)
-	std::memset(chunk->blocks, 0xcd, b2_chunkSize);
+	std::memset(chunk->blocks, 0xcd, ChunkSize);
 #endif
 	const auto blockSize = s_blockSizes[index];
 	assert(blockSize > 0);
 	chunk->blockSize = blockSize;
-	const auto blockCount = b2_chunkSize / blockSize;
-	assert((blockCount * blockSize) <= b2_chunkSize);
+	const auto blockCount = ChunkSize / blockSize;
+	assert((blockCount * blockSize) <= ChunkSize);
 	for (auto i = decltype(blockCount){0}; i < blockCount - 1; ++i)
 	{
 		auto block = (b2Block*)((int8*)chunk->blocks + blockSize * i);
@@ -161,14 +161,14 @@ void b2BlockAllocator::Free(void* p, size_type size)
 
 	assert(size > 0);
 
-	if (size > b2_maxBlockSize)
+	if (size > MaxBlockSize)
 	{
 		free(p);
 		return;
 	}
 
 	const auto index = s_blockSizeLookup[size];
-	assert((0 <= index) && (index < b2_blockSizes));
+	assert((0 <= index) && (index < BlockSizes));
 
 #define _DEBUG
 #ifdef _DEBUG
@@ -181,11 +181,11 @@ void b2BlockAllocator::Free(void* p, size_type size)
 		if (chunk->blockSize != blockSize)
 		{
 			assert(	(int8*)p + blockSize <= (int8*)chunk->blocks ||
-						(int8*)chunk->blocks + b2_chunkSize <= (int8*)p);
+						(int8*)chunk->blocks + ChunkSize <= (int8*)p);
 		}
 		else
 		{
-			if ((int8*)chunk->blocks <= (int8*)p && (int8*)p + blockSize <= (int8*)chunk->blocks + b2_chunkSize)
+			if ((int8*)chunk->blocks <= (int8*)p && (int8*)p + blockSize <= (int8*)chunk->blocks + ChunkSize)
 			{
 				found = true;
 			}

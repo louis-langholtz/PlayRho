@@ -232,12 +232,12 @@ private:
 };
 
 /// This is used for determining the state of contact points.
-enum b2PointState
+enum class b2PointState
 {
-	b2_nullState,		///< point does not exist
-	b2_addState,		///< point was added in the update
-	b2_persistState,	///< point persisted across the update
-	b2_removeState		///< point was removed in the update
+	NullState,		///< point does not exist
+	AddState,		///< point was added in the update
+	PersistState,	///< point persisted across the update
+	RemoveState		///< point was removed in the update
 };
 
 /// Compute the point states given two manifolds. The states pertain to the transition from manifold1
