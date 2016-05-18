@@ -37,8 +37,6 @@ class b2CircleShape;
 class b2EdgeShape;
 class b2PolygonShape;
 
-const uint8 b2_nullFeature = UCHAR_MAX;
-
 /// The features that intersect to form the contact point
 struct b2ContactFeature
 {
@@ -55,10 +53,10 @@ struct b2ContactFeature
 	constexpr b2ContactFeature(Type ta, index_t ia, Type tb, index_t ib):
 		typeA(ta), indexA(ia), typeB(tb), indexB(ib) {}
 
-	Type typeA; ///< The feature type on shapeA
-	index_t indexA; ///< Feature index on shapeA
-	Type typeB; ///< The feature type on shapeB
-	index_t indexB; ///< Feature index on shapeB
+	Type typeA; ///< The feature type on shape A
+	index_t indexA; ///< Feature index on shape A
+	Type typeB; ///< The feature type on shape B
+	index_t indexB; ///< Feature index on shape B
 };
 
 constexpr b2ContactFeature b2Flip(const b2ContactFeature& val)
