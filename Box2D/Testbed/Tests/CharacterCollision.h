@@ -128,7 +128,7 @@ public:
 		{
 			b2BodyDef bd;
 			bd.position = b2Vec2(-3.0f, 8.0f);
-			bd.type = b2_dynamicBody;
+			bd.type = DynamicBody;
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
 
@@ -147,7 +147,7 @@ public:
 		{
 			b2BodyDef bd;
 			bd.position = b2Vec2(-5.0f, 5.0f);
-			bd.type = b2_dynamicBody;
+			bd.type = DynamicBody;
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
 
@@ -166,7 +166,7 @@ public:
 		{
 			b2BodyDef bd;
 			bd.position = b2Vec2(-5.0f, 8.0f);
-			bd.type = b2_dynamicBody;
+			bd.type = DynamicBody;
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
 
@@ -194,7 +194,7 @@ public:
 		{
 			b2BodyDef bd;
 			bd.position = b2Vec2(3.0f, 5.0f);
-			bd.type = b2_dynamicBody;
+			bd.type = DynamicBody;
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
 
@@ -213,7 +213,7 @@ public:
 		{
 			b2BodyDef bd;
 			bd.position = b2Vec2(-7.0f, 6.0f);
-			bd.type = b2_dynamicBody;
+			bd.type = DynamicBody;
 			bd.allowSleep = false;
 
 			m_character = m_world->CreateBody(&bd);

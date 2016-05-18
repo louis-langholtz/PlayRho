@@ -93,7 +93,7 @@ public:
 			sd2.density = 2.0f;
 
 			b2BodyDef bd;
-			bd.type = b2_dynamicBody;
+			bd.type = DynamicBody;
 			bd.angularDamping = 2.0f;
 			bd.linearDamping = 0.5f;
 
@@ -117,7 +117,7 @@ public:
 			for (int i = 0; i < 10; ++i)
 			{
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = DynamicBody;
 
 				bd.position = b2Vec2(float_t{0}, 5.0f + 1.54f * i);
 				b2Body* body = m_world->CreateBody(&bd);

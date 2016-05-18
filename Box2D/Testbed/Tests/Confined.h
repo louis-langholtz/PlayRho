@@ -74,7 +74,7 @@ public:
 			for (int i = 0; i < e_rowCount; ++i)
 			{
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = DynamicBody;
 				bd.position = b2Vec2(-10.0f + (2.1f * j + 1.0f + 0.01f * i) * radius, (2.0f * i + 1.0f) * radius);
 				b2Body* body = m_world->CreateBody(&bd);
 
@@ -96,7 +96,7 @@ public:
 		fd.restitution = float_t(0.8);
 
 		b2BodyDef bd;
-		bd.type = b2_dynamicBody;
+		bd.type = DynamicBody;
 		bd.bullet = m_bullet_mode;
 		bd.position = b2Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));
 		//bd.allowSleep = false;
@@ -117,7 +117,7 @@ public:
 		fd.restitution = float_t(0.8);
 		
 		b2BodyDef bd;
-		bd.type = b2_dynamicBody;
+		bd.type = DynamicBody;
 		bd.bullet = m_bullet_mode;
 		bd.position = b2Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));
 		auto* body = m_world->CreateBody(&bd);
@@ -129,7 +129,7 @@ public:
 		m_bullet_mode = !m_bullet_mode;
 		for (auto& b: m_world->GetBodies())
 		{
-			if (b.GetType() == b2_dynamicBody)
+			if (b.GetType() == DynamicBody)
 			{
 				b.SetBullet(m_bullet_mode);
 			}
@@ -140,7 +140,7 @@ public:
 	{
 		for (auto& b: m_world->GetBodies())
 		{
-			if (b.GetType() == b2_dynamicBody)
+			if (b.GetType() == DynamicBody)
 			{
 				const auto position = b.GetPosition();
 				const auto angle_from_center = b2Atan2(position.y - wall_length/2, position.x);
@@ -177,7 +177,7 @@ public:
 		bool sleeping = true;
 		for (b2Body* b = m_world->GetBodyList(); b; b = b->GetNext())
 		{
-			if (b->GetType() != b2_dynamicBody)
+			if (b->GetType() != DynamicBody)
 			{
 				continue;
 			}
@@ -202,7 +202,7 @@ public:
 
 		for (b2Body* b = m_world->GetBodyList(); b; b = b->GetNext())
 		{
-			if (b->GetType() != b2_dynamicBody)
+			if (b->GetType() != DynamicBody)
 			{
 				continue;
 			}

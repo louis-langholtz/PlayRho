@@ -66,7 +66,7 @@ public:
 			for (int32 i = 0; i < N; ++i)
 			{
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = DynamicBody;
 				bd.position = b2Vec2(0.5f + 1.0f * i, y);
 				if (i == N - 1)
 				{

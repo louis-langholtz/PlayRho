@@ -107,7 +107,7 @@ public:
 			for (int i = 0; i < 5; ++i)
 			{
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = DynamicBody;
 				bd.position = b2Vec2(-15.0f + 4.0f * i, 28.0f);
 				b2Body* body = m_world->CreateBody(&bd);
 

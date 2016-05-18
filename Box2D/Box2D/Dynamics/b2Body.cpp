@@ -72,7 +72,7 @@ b2Body::b2Body(const b2BodyDef* bd, b2World* world):
 	m_angularDamping = bd->angularDamping;
 	m_gravityScale = bd->gravityScale;
 
-	if (m_type == b2_dynamicBody)
+	if (m_type == DynamicBody)
 	{
 		m_mass = float_t{1};
 		m_invMass = float_t{1};
@@ -121,7 +121,7 @@ void b2Body::SetType(b2BodyType type)
 
 	ResetMassData();
 
-	if (m_type == b2_staticBody)
+	if (m_type == StaticBody)
 	{
 		m_linearVelocity = b2Vec2_zero;
 		m_angularVelocity = float_t{0};
@@ -284,7 +284,7 @@ void b2Body::ResetMassData()
 	// Compute mass data from shapes. Each shape has its own density.
 
 	// Static and kinematic bodies have zero mass.
-	if ((m_type == b2_staticBody) || (m_type == b2_kinematicBody))
+	if ((m_type == StaticBody) || (m_type == KinematicBody))
 	{
 		m_mass = float_t{0};
 		m_invMass = float_t{0};
@@ -297,7 +297,7 @@ void b2Body::ResetMassData()
 		return;
 	}
 
-	assert(m_type == b2_dynamicBody);
+	assert(m_type == DynamicBody);
 
 	// Accumulate mass over all fixtures.
 	m_mass = float_t{0};
@@ -359,7 +359,7 @@ void b2Body::SetMassData(const b2MassData* massData)
 		return;
 	}
 
-	if (m_type != b2_dynamicBody)
+	if (m_type != DynamicBody)
 	{
 		return;
 	}
@@ -391,7 +391,7 @@ void b2Body::SetMassData(const b2MassData* massData)
 bool b2Body::ShouldCollide(const b2Body* other) const
 {
 	// At least one body should be dynamic.
-	if ((m_type != b2_dynamicBody) && (other->m_type != b2_dynamicBody))
+	if ((m_type != DynamicBody) && (other->m_type != DynamicBody))
 	{
 		return false;
 	}

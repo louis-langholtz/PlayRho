@@ -60,7 +60,7 @@ public:
 			for (int32 i = 0; i < e_count; ++i)
 			{
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = DynamicBody;
 				bd.position = b2Vec2(-14.5f + 1.0f * i, 5.0f);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&fd);
@@ -89,7 +89,7 @@ public:
 			for (int32 i = 0; i < 3; ++i)
 			{
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = DynamicBody;
 				bd.position = b2Vec2(-14.0f + 2.0f * i, 15.0f);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&fd);
@@ -116,7 +116,7 @@ public:
 			for (int32 i = 0; i < e_count; ++i)
 			{
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = DynamicBody;
 				bd.position = b2Vec2(-4.5f + 1.0f * i, 5.0f);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&fd);
@@ -148,7 +148,7 @@ public:
 			for (int32 i = 0; i < e_count; ++i)
 			{
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = DynamicBody;
 				bd.position = b2Vec2(5.5f + 1.0f * i, 10.0f);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&fd);
@@ -179,7 +179,7 @@ public:
 			fd.density = 1.0f;
 
 			b2BodyDef bd;
-			bd.type = b2_dynamicBody;
+			bd.type = DynamicBody;
 			bd.position = b2Vec2(-8.0f + 8.0f * i, 12.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&fd);
@@ -195,7 +195,7 @@ public:
 			fd.density = 1.0f;
 
 			b2BodyDef bd;
-			bd.type = b2_dynamicBody;
+			bd.type = DynamicBody;
 			bd.position = b2Vec2(-6.0f + 6.0f * i, 10.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&fd);

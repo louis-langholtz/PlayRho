@@ -42,7 +42,7 @@ public:
 			shape.SetAsBox(2.0f, 0.5f);
 
 			b2BodyDef bd;
-			bd.type = b2_dynamicBody;
+			bd.type = DynamicBody;
 			bd.position = b2Vec2(-10.0f, 10.0f);
 			bd.angle = 0.5f * b2_pi;
 			bd.allowSleep = false;

@@ -62,7 +62,7 @@ public:
 		b2Vec2 p = parent->GetPosition() + localAnchor - h;
 
 		b2BodyDef bodyDef;
-		bodyDef.type = b2_dynamicBody;
+		bodyDef.type = DynamicBody;
 		bodyDef.position = p;
 		b2Body* body = m_world->CreateBody(&bodyDef);
 

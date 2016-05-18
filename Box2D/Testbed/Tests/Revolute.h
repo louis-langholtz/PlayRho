@@ -46,7 +46,7 @@ public:
 			shape.SetRadius(0.5);
 
 			b2BodyDef bd;
-			bd.type = b2_dynamicBody;
+			bd.type = DynamicBody;
 
 			b2RevoluteJointDef rjd;
 
@@ -75,7 +75,7 @@ public:
 			circle_shape.SetRadius(3.0);
 
 			b2BodyDef circle_bd;
-			circle_bd.type = b2_dynamicBody;
+			circle_bd.type = DynamicBody;
 			circle_bd.position = b2Vec2(5.0f, 30.0f);
 
 			b2FixtureDef fd;
@@ -91,7 +91,7 @@ public:
 
 			b2BodyDef polygon_bd;
 			polygon_bd.position = b2Vec2(20.0f, 10.0f);
-			polygon_bd.type = b2_dynamicBody;
+			polygon_bd.type = DynamicBody;
 			polygon_bd.bullet = true;
 			b2Body* polygon_body = m_world->CreateBody(&polygon_bd);
 			polygon_body->CreateFixture(&polygon_shape, 2.0f);
@@ -107,7 +107,7 @@ public:
 		// Tests mass computation of a small object far from the origin
 		{
 			b2BodyDef bodyDef;
-			bodyDef.type = b2_dynamicBody;
+			bodyDef.type = DynamicBody;
 			b2Body* body = m_world->CreateBody(&bodyDef);
 		
 			b2PolygonShape polyShape;		

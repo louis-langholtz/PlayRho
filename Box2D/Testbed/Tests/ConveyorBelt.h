@@ -56,7 +56,7 @@ public:
 		for (int32 i = 0; i < 5; ++i)
 		{
 			b2BodyDef bd;
-			bd.type = b2_dynamicBody;
+			bd.type = DynamicBody;
 			bd.position = b2Vec2(-10.0f + 2.0f * i, 7.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 

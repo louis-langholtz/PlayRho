@@ -43,7 +43,7 @@ public:
 		// Define attachment
 		{
 			b2BodyDef bd;
-			bd.type = b2_dynamicBody;
+			bd.type = DynamicBody;
 			bd.position = b2Vec2(0.0f, 3.0f);
 			m_attachment = m_world->CreateBody(&bd);
 
@@ -55,7 +55,7 @@ public:
 		// Define platform
 		{
 			b2BodyDef bd;
-			bd.type = b2_dynamicBody;
+			bd.type = DynamicBody;
 			bd.position = b2Vec2(-4.0f, 5.0f);
 			m_platform = m_world->CreateBody(&bd);
 
@@ -91,7 +91,7 @@ public:
 		// Create a payload
 		{
 			b2BodyDef bd;
-			bd.type = b2_dynamicBody;
+			bd.type = DynamicBody;
 			bd.position = b2Vec2(0.0f, 8.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
@@ -112,15 +112,15 @@ public:
 		switch (key)
 		{
 		case GLFW_KEY_D:
-			m_platform->SetType(b2_dynamicBody);
+			m_platform->SetType(DynamicBody);
 			break;
 
 		case GLFW_KEY_S:
-			m_platform->SetType(b2_staticBody);
+			m_platform->SetType(StaticBody);
 			break;
 
 		case GLFW_KEY_K:
-			m_platform->SetType(b2_kinematicBody);
+			m_platform->SetType(KinematicBody);
 			m_platform->SetLinearVelocity(b2Vec2(-m_speed, 0.0f));
 			m_platform->SetAngularVelocity(0.0f);
 			break;
@@ -130,7 +130,7 @@ public:
 	void Step(Settings* settings)
 	{
 		// Drive the kinematic body.
-		if (m_platform->GetType() == b2_kinematicBody)
+		if (m_platform->GetType() == KinematicBody)
 		{
 			b2Vec2 p = m_platform->GetTransform().p;
 			b2Vec2 v = m_platform->GetLinearVelocity();

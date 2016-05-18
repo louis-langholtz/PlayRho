@@ -42,12 +42,12 @@ struct b2ContactEdge;
 /// dynamic: positive mass, non-zero velocity determined by forces, moved by solver
 enum b2BodyType
 {
-	b2_staticBody = 0,
-	b2_kinematicBody,
-	b2_dynamicBody
+	StaticBody = 0,
+	KinematicBody,
+	DynamicBody
 
 	// TODO_ERIN
-	//b2_bulletBody,
+	//BulletBody,
 };
 
 /// A body definition holds all the data needed to construct a rigid body.
@@ -59,7 +59,7 @@ struct b2BodyDef
 
 	/// The body type: static, kinematic, or dynamic.
 	/// Note: if a dynamic body would have zero mass, the mass is set to one.
-	b2BodyType type = b2_staticBody;
+	b2BodyType type = StaticBody;
 
 	/// The world position of the body. Avoid creating bodies at the origin
 	/// since this can lead to many overlapping shapes.
@@ -520,7 +520,7 @@ inline b2Vec2 b2Body::GetLocalCenter() const noexcept
 
 inline void b2Body::SetLinearVelocity(const b2Vec2& v) noexcept
 {
-	if (m_type == b2_staticBody)
+	if (m_type == StaticBody)
 	{
 		return;
 	}
@@ -540,7 +540,7 @@ inline b2Vec2 b2Body::GetLinearVelocity() const noexcept
 
 inline void b2Body::SetAngularVelocity(float_t w) noexcept
 {
-	if (m_type == b2_staticBody)
+	if (m_type == StaticBody)
 	{
 		return;
 	}
@@ -776,7 +776,7 @@ inline void* b2Body::GetUserData() const noexcept
 
 inline void b2Body::ApplyForce(const b2Vec2& force, const b2Vec2& point, bool wake) noexcept
 {
-	if (m_type != b2_dynamicBody)
+	if (m_type != DynamicBody)
 	{
 		return;
 	}
@@ -796,7 +796,7 @@ inline void b2Body::ApplyForce(const b2Vec2& force, const b2Vec2& point, bool wa
 
 inline void b2Body::ApplyForceToCenter(const b2Vec2& force, bool wake) noexcept
 {
-	if (m_type != b2_dynamicBody)
+	if (m_type != DynamicBody)
 	{
 		return;
 	}
@@ -815,7 +815,7 @@ inline void b2Body::ApplyForceToCenter(const b2Vec2& force, bool wake) noexcept
 
 inline void b2Body::ApplyTorque(float_t torque, bool wake) noexcept
 {
-	if (m_type != b2_dynamicBody)
+	if (m_type != DynamicBody)
 	{
 		return;
 	}
@@ -834,7 +834,7 @@ inline void b2Body::ApplyTorque(float_t torque, bool wake) noexcept
 
 inline void b2Body::ApplyLinearImpulse(const b2Vec2& impulse, const b2Vec2& point, bool wake) noexcept
 {
-	if (m_type != b2_dynamicBody)
+	if (m_type != DynamicBody)
 	{
 		return;
 	}
@@ -854,7 +854,7 @@ inline void b2Body::ApplyLinearImpulse(const b2Vec2& impulse, const b2Vec2& poin
 
 inline void b2Body::ApplyAngularImpulse(float_t impulse, bool wake) noexcept
 {
-	if (m_type != b2_dynamicBody)
+	if (m_type != DynamicBody)
 	{
 		return;
 	}

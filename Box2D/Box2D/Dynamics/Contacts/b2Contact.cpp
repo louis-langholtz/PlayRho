@@ -244,10 +244,10 @@ bool b2Contact::UpdateTOI()
 	
 	const auto typeA = bA->m_type;
 	const auto typeB = bB->m_type;
-	assert((typeA == b2_dynamicBody) || (typeB == b2_dynamicBody));
+	assert((typeA == DynamicBody) || (typeB == DynamicBody));
 	
-	const auto activeA = bA->IsAwake() && (typeA != b2_staticBody);
-	const auto activeB = bB->IsAwake() && (typeB != b2_staticBody);
+	const auto activeA = bA->IsAwake() && (typeA != StaticBody);
+	const auto activeB = bB->IsAwake() && (typeB != StaticBody);
 	
 	// Is at least one body active (awake and dynamic or kinematic)?
 	if ((!activeA) && (!activeB))
@@ -255,8 +255,8 @@ bool b2Contact::UpdateTOI()
 		return false;
 	}
 	
-	const auto collideA = bA->IsBullet() || (typeA != b2_dynamicBody);
-	const auto collideB = bB->IsBullet() || (typeB != b2_dynamicBody);
+	const auto collideA = bA->IsBullet() || (typeA != DynamicBody);
+	const auto collideB = bB->IsBullet() || (typeB != DynamicBody);
 	
 	// Are these two non-bullet dynamic bodies?
 	if ((!collideA) && (!collideB))

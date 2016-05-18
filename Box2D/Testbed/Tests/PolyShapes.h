@@ -185,7 +185,7 @@ public:
 		}
 
 		b2BodyDef bd;
-		bd.type = b2_dynamicBody;
+		bd.type = DynamicBody;
 
 		float_t x = RandomFloat(-2.0f, 2.0f);
 		bd.position = b2Vec2(x, 10.0f);

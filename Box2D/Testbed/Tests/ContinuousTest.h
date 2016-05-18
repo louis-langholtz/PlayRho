@@ -45,7 +45,7 @@ public:
 #if 1
 		{
 			b2BodyDef bd;
-			bd.type = b2_dynamicBody;
+			bd.type = DynamicBody;
 			bd.position = b2Vec2(0.0f, 20.0f);
 			//bd.angle = 0.1f;
 
@@ -63,7 +63,7 @@ public:
 #else
 		{
 			b2BodyDef bd;
-			bd.type = b2_dynamicBody;
+			bd.type = DynamicBody;
 			bd.position = b2Vec2(0.0f, 2.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 

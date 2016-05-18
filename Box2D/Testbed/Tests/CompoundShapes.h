@@ -47,7 +47,7 @@ public:
 			{
 				float_t x = RandomFloat(-0.1f, 0.1f);
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = DynamicBody;
 				bd.position = b2Vec2(x + 5.0f, 1.05f + 2.5f * i);
 				bd.angle = RandomFloat(-b2_pi, b2_pi);
 				b2Body* body = m_world->CreateBody(&bd);
@@ -67,7 +67,7 @@ public:
 			{
 				float_t x = RandomFloat(-0.1f, 0.1f);
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = DynamicBody;
 				bd.position = b2Vec2(x - 5.0f, 1.05f + 2.5f * i);
 				bd.angle = RandomFloat(-b2_pi, b2_pi);
 				b2Body* body = m_world->CreateBody(&bd);
@@ -103,7 +103,7 @@ public:
 			{
 				float_t x = RandomFloat(-0.1f, 0.1f);
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = DynamicBody;
 				bd.position = b2Vec2(x, 2.05f + 2.5f * i);
 				bd.angle = 0.0f;
 				b2Body* body = m_world->CreateBody(&bd);
@@ -123,7 +123,7 @@ public:
 			right.SetAsBox(0.15f, 2.7f, b2Vec2(1.45f, 2.35f), -0.2f);
 
 			b2BodyDef bd;
-			bd.type = b2_dynamicBody;
+			bd.type = DynamicBody;
 			bd.position = b2Vec2( 0.0f, 2.0f );
 			b2Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&bottom, 4.0f);

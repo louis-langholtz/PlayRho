@@ -67,7 +67,7 @@ public:
 
 		{
 			b2BodyDef bd;
-			bd.type = b2_dynamicBody;
+			bd.type = DynamicBody;
 			bd.position = b2Vec2(-0.5f, 0.6f);
 			bd.allowSleep = false;
 			b2Body* body = m_world->CreateBody(&bd);
@@ -80,7 +80,7 @@ public:
 
 		{
 			b2BodyDef bd;
-			bd.type = b2_dynamicBody;
+			bd.type = DynamicBody;
 			bd.position = b2Vec2(1.0f, 0.6f);
 			bd.allowSleep = false;
 			b2Body* body = m_world->CreateBody(&bd);

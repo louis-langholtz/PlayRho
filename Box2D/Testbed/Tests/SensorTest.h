@@ -69,7 +69,7 @@ public:
 			for (int32 i = 0; i < e_count; ++i)
 			{
 				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
+				bd.type = DynamicBody;
 				bd.position = b2Vec2(-10.0f + 3.0f * i, 20.0f);
 				bd.userData = m_touching + i;
 

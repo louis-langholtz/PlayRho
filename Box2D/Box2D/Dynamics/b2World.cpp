@@ -439,7 +439,7 @@ void b2World::Solve(const b2TimeStep& step)
 		}
 
 		// The seed can be dynamic or kinematic.
-		if (seed->GetType() == b2_staticBody)
+		if (seed->GetType() == StaticBody)
 		{
 			continue;
 		}
@@ -463,7 +463,7 @@ void b2World::Solve(const b2TimeStep& step)
 
 			// To keep islands as small as possible, we don't
 			// propagate islands across static bodies.
-			if (b->GetType() == b2_staticBody)
+			if (b->GetType() == StaticBody)
 			{
 				continue;
 			}
@@ -548,7 +548,7 @@ void b2World::Solve(const b2TimeStep& step)
 		{
 			// Allow static bodies to participate in other islands.
 			auto b = island.GetBody(i);
-			if (b->GetType() == b2_staticBody)
+			if (b->GetType() == StaticBody)
 			{
 				b->UnsetInIsland();
 			}
@@ -568,7 +568,7 @@ void b2World::Solve(const b2TimeStep& step)
 				continue;
 			}
 
-			if (b->GetType() == b2_staticBody)
+			if (b->GetType() == StaticBody)
 			{
 				continue;
 			}
@@ -696,7 +696,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 		b2Body* bodies[2] = {bA, bB};
 		for (auto body: bodies)
 		{
-			if (body->m_type == b2_dynamicBody)
+			if (body->m_type == DynamicBody)
 			{
 				for (auto ce = body->m_contactList; ce; ce = ce->next)
 				{
@@ -720,7 +720,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 
 					// Only add static, kinematic, or bullet bodies.
 					auto other = ce->other;
-					if ((other->m_type == b2_dynamicBody) &&
+					if ((other->m_type == DynamicBody) &&
 						(!body->IsBullet()) && (!other->IsBullet()))
 					{
 						continue;
@@ -771,7 +771,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 					// Add the other body to the island.
 					other->SetInIsland();
 
-					if (other->m_type != b2_staticBody)
+					if (other->m_type != StaticBody)
 					{
 						other->SetAwake();
 					}
@@ -795,7 +795,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 			auto body = island.GetBody(i);
 			body->UnsetInIsland();
 
-			if (body->m_type != b2_dynamicBody)
+			if (body->m_type != DynamicBody)
 			{
 				continue;
 			}
@@ -1066,11 +1066,11 @@ void b2World::DrawDebugData()
 				{
 					DrawShape(f, xf, b2Color(0.5f, 0.5f, 0.3f));
 				}
-				else if (b->GetType() == b2_staticBody)
+				else if (b->GetType() == StaticBody)
 				{
 					DrawShape(f, xf, b2Color(0.5f, 0.9f, 0.5f));
 				}
-				else if (b->GetType() == b2_kinematicBody)
+				else if (b->GetType() == KinematicBody)
 				{
 					DrawShape(f, xf, b2Color(0.5f, 0.5f, 0.9f));
 				}
