@@ -73,6 +73,7 @@ constexpr auto b2_aabbMultiplier = b2Float(2);
 /// Usually chosen to be numerically significant, but visually insignificant.
 /// Lower or raise to decrease or increase respectively the minimum of space
 /// between bodies at rest.
+/// @note Smaller values increases the time it takes for bodies to come to rest.
 constexpr auto b2_linearSlop = b2Float(0.00005); // originally 0.005;
 
 /// Fattens AABBs in the dynamic tree. This allows proxies
@@ -131,7 +132,7 @@ constexpr auto b2_maxRotation = b2_pi / b2Float(2);
 /// This scale factor controls how fast overlap is resolved. Ideally this would be 1 so
 /// that overlap is removed in one time step. However using values close to 1 often lead
 /// to overshoot.
-constexpr auto b2_baumgarte = b2Float(0.2); // b2Float(0.6);
+constexpr auto b2_baumgarte = b2Float(0.6);
 constexpr auto b2_toiBaugarte = b2Float(0.75);
 
 
