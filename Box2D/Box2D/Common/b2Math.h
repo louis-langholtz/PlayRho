@@ -468,16 +468,15 @@ constexpr inline bool operator != (const b2Vec2& a, const b2Vec2& b) noexcept
 	return (a.x != b.x) || (a.y != b.y);
 }
 
-inline b2Float b2Distance(const b2Vec2& a, const b2Vec2& b)
-{
-	const auto c = a - b;
-	return c.Length();
-}
-
 constexpr inline b2Float b2DistanceSquared(const b2Vec2& a, const b2Vec2& b) noexcept
 {
 	const auto c = a - b;
 	return c.LengthSquared();
+}
+
+inline b2Float b2Distance(const b2Vec2& a, const b2Vec2& b)
+{
+	return b2Sqrt(b2DistanceSquared(a, b));
 }
 
 constexpr inline b2Vec3 operator * (b2Float s, const b2Vec3& a) noexcept
