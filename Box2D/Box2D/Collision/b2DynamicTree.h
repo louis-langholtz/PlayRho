@@ -23,7 +23,6 @@
 #include <Box2D/Common/b2GrowableStack.h>
 
 namespace box2d {
-static constexpr auto b2_nullNode = static_cast<size_t>(-1);
 
 /// A dynamic AABB tree broad-phase, inspired by Nathanael Presson's btDbvt.
 /// A dynamic tree arranges data in a binary tree to accelerate
@@ -38,6 +37,8 @@ class b2DynamicTree
 public:
 	using size_type = size_t;
 
+	static constexpr auto NullNode = static_cast<size_t>(-1);
+	
 	/// Constructing the tree initializes the node pool.
 	b2DynamicTree();
 
@@ -112,7 +113,7 @@ private:
 	{
 		bool IsLeaf() const noexcept
 		{
-			return child1 == b2_nullNode;
+			return child1 == NullNode;
 		}
 		
 		/// Enlarged AABB
@@ -126,10 +127,10 @@ private:
 			size_type next;
 		};
 		
-		size_type child1; ///< Index of child 1 in b2DynamicTree::m_nodes or b2_nullNode.
-		size_type child2; ///< Index of child 2 in b2DynamicTree::m_nodes or b2_nullNode.
+		size_type child1; ///< Index of child 1 in b2DynamicTree::m_nodes or NullNode.
+		size_type child2; ///< Index of child 2 in b2DynamicTree::m_nodes or NullNode.
 		
-		size_type height; ///< Height - for tree balancing. 0 if leaf node. b2_nullNode if free node.
+		size_type height; ///< Height - for tree balancing. 0 if leaf node. NullNode if free node.
 	};
 
 	size_type AllocateNode();
@@ -146,7 +147,7 @@ private:
 	void ValidateStructure(size_type index) const;
 	void ValidateMetrics(size_type index) const;
 
-	size_type m_root = b2_nullNode; ///< Index of root element in m_nodes or b2_nullNode.
+	size_type m_root = NullNode; ///< Index of root element in m_nodes or NullNode.
 
 	size_type m_nodeCount = 0;
 	size_type m_nodeCapacity = 16;
@@ -164,21 +165,21 @@ private:
 
 inline void* b2DynamicTree::GetUserData(size_type proxyId) const
 {
-	assert(proxyId != b2_nullNode);
+	assert(proxyId != NullNode);
 	assert(proxyId < m_nodeCapacity);
 	return m_nodes[proxyId].userData;
 }
 
 inline const b2AABB& b2DynamicTree::GetFatAABB(size_type proxyId) const
 {
-	assert(proxyId != b2_nullNode);
+	assert(proxyId != NullNode);
 	assert(proxyId < m_nodeCapacity);
 	return m_nodes[proxyId].aabb;
 }
 
 inline b2DynamicTree::size_type b2DynamicTree::GetHeight() const noexcept
 {
-	return (m_root != b2_nullNode)? m_nodes[m_root].height: 0;
+	return (m_root != NullNode)? m_nodes[m_root].height: 0;
 }
 
 template <typename T>
@@ -190,7 +191,7 @@ inline void b2DynamicTree::Query(T* callback, const b2AABB& aabb) const
 	while (stack.GetCount() > 0)
 	{
 		const auto nodeId = stack.Pop();
-		if (nodeId == b2_nullNode)
+		if (nodeId == NullNode)
 		{
 			continue;
 		}
@@ -243,7 +244,7 @@ inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) con
 	while (stack.GetCount() > 0)
 	{
 		const auto nodeId = stack.Pop();
-		if (nodeId == b2_nullNode)
+		if (nodeId == NullNode)
 		{
 			continue;
 		}
