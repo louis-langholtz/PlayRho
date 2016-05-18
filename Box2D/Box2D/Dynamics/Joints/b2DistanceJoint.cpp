@@ -81,7 +81,7 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 
 	m_rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
 	m_rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
-	m_u = cB + m_rB - cA - m_rA;
+	m_u = (cB + m_rB) - (cA + m_rA);
 
 	// Handle singularity.
 	const auto length = m_u.Length();
@@ -117,11 +117,11 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 		// magic formulas
 		const auto h = data.step.get_dt();
 		m_gamma = h * (d + h * k);
-		m_gamma = m_gamma != b2Float{0} ? b2Float(1) / m_gamma : b2Float{0};
+		m_gamma = (m_gamma != b2Float{0}) ? b2Float(1) / m_gamma : b2Float{0};
 		m_bias = C * h * k * m_gamma;
 
 		invMass += m_gamma;
-		m_mass = invMass != b2Float{0} ? b2Float(1) / invMass : b2Float{0};
+		m_mass = (invMass != b2Float{0}) ? b2Float(1) / invMass : b2Float{0};
 	}
 	else
 	{
