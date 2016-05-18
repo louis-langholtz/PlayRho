@@ -59,7 +59,7 @@ bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input
 	const auto sigma = b2Square(c) - rr * b;
 
 	// Check for negative discriminant and short segment.
-	if ((sigma < float_t{0}) || (rr < b2_epsilon))
+	if ((sigma < float_t{0}) || (rr < Epsilon))
 	{
 		return false;
 	}
@@ -89,7 +89,7 @@ b2AABB b2CircleShape::ComputeAABB(const b2Transform& transform, child_count_t ch
 
 b2MassData b2CircleShape::ComputeMass(float_t density) const
 {
-	const auto mass = density * b2_pi * b2Square(GetRadius());
+	const auto mass = density * Pi * b2Square(GetRadius());
 	const auto I = mass * ((b2Square(GetRadius()) / float_t(2)) + m_p.LengthSquared());
 	return b2MassData{mass, m_p, I};
 }

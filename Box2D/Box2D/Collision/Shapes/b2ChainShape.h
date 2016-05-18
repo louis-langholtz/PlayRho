@@ -34,7 +34,7 @@ class b2EdgeShape;
 class b2ChainShape : public b2Shape
 {
 public:
-	b2ChainShape(): b2Shape(e_chain, b2_polygonRadius) {}
+	b2ChainShape(): b2Shape(e_chain, PolygonRadius) {}
 
 	b2ChainShape(const b2ChainShape&) = delete;
 

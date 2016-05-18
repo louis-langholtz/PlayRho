@@ -247,7 +247,7 @@ void b2Fixture::Dump(island_count_t bodyIndex)
 		{
 			auto s = static_cast<b2PolygonShape*>(m_shape);
 			log("    b2PolygonShape shape;\n");
-			log("    b2Vec2 vs[%d];\n", b2_maxPolygonVertices);
+			log("    b2Vec2 vs[%d];\n", MaxPolygonVertices);
 			for (auto i = decltype(s->GetVertexCount()){0}; i < s->GetVertexCount(); ++i)
 			{
 				log("    vs[%d].Set(%.15lef, %.15lef);\n", i, s->GetVertex(i).x, s->GetVertex(i).y);

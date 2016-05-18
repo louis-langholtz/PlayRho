@@ -127,7 +127,7 @@ struct b2Vec2
 	float_t Normalize()
 	{
 		const auto length = Length();
-		if (length < b2_epsilon)
+		if (length < Epsilon)
 		{
 			return float_t{0};
 		}
@@ -446,13 +446,13 @@ constexpr b2Vec2 operator/ (const b2Vec2& a, float_t s) noexcept
 
 /// Normalizes the given value.
 /// @param value Value to normalize.
-/// @return value divided by its length if length not less than b2_epsilon otherwise value.
-/// @sa b2_epsilon.
+/// @return value divided by its length if length not less than Epsilon otherwise value.
+/// @sa Epsilon.
 inline b2Vec2 b2Normalize(const b2Vec2& value)
 {
 	// implementation mirrors implementation of b2Vec2::Normalize()
 	const auto length = value.Length();
-	if (length < b2_epsilon)
+	if (length < Epsilon)
 	{
 		return value;
 	}
@@ -730,7 +730,7 @@ inline void b2Sweep::Advance(float_t alpha)
 /// Normalize an angle in radians to be between -pi and pi
 inline void b2Sweep::Normalize()
 {
-	constexpr auto twoPi = float_t{2} * b2_pi;
+	constexpr auto twoPi = float_t{2} * Pi;
 	const auto d =  twoPi * std::floor(a0 / twoPi);
 	a0 -= d;
 	a -= d;

@@ -60,12 +60,12 @@ struct b2ContactVelocityConstraintBodyData
 class b2ContactVelocityConstraint
 {
 public:
-	using size_type = std::remove_cv<decltype(b2_maxManifoldPoints)>::type;
+	using size_type = std::remove_cv<decltype(MaxManifoldPoints)>::type;
 	using index_type = size_t;
 	
 	/// Gets the count of points added to this object.
-	/// @return Value between 0 and b2_maxManifoldPoints
-	/// @sa b2_maxManifoldPoints.
+	/// @return Value between 0 and MaxManifoldPoints
+	/// @sa MaxManifoldPoints.
 	/// @sa AddPoint.
 	size_type GetPointCount() const noexcept { return pointCount; }
 	
@@ -94,14 +94,14 @@ public:
 	void ClearPoints() noexcept { pointCount = 0; }
 
 	/// Adds the given point to this contact velocity constraint object.
-	/// @detail Adds up to b2_maxManifoldPoints points. To find out how many points have already
+	/// @detail Adds up to MaxManifoldPoints points. To find out how many points have already
 	///   been added, call GetPointCount().
 	/// @param val Velocity constraint point value to add.
-	/// @note Behavior is undefined if an attempt is made to add more than b2_maxManifoldPoints points.
+	/// @note Behavior is undefined if an attempt is made to add more than MaxManifoldPoints points.
 	/// @sa GetPointCount().
 	void AddPoint(const b2VelocityConstraintPoint& val)
 	{
-		assert(pointCount < b2_maxManifoldPoints);
+		assert(pointCount < MaxManifoldPoints);
 		points[pointCount] = val;
 		++pointCount;
 	}
@@ -123,7 +123,7 @@ public:
 	index_type contactIndex;
 
 private:
-	b2VelocityConstraintPoint points[b2_maxManifoldPoints];
+	b2VelocityConstraintPoint points[MaxManifoldPoints];
 	size_type pointCount;
 };
 
@@ -146,10 +146,10 @@ public:
 	using size_type = size_t;
 	
 	/// Minimum separation for position constraints.
-	static constexpr auto MinSeparationThreshold = -b2_linearSlop * float_t(3);
+	static constexpr auto MinSeparationThreshold = -LinearSlop * float_t(3);
 
 	/// Minimum time of impact separation for TOI position constraints.
-	static constexpr auto MinToiSeparation = -b2_linearSlop * float_t(1.5);
+	static constexpr auto MinToiSeparation = -LinearSlop * float_t(1.5);
 
 	b2ContactSolver(b2ContactSolverDef* def);
 	~b2ContactSolver();

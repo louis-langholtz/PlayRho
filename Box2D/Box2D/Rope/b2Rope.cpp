@@ -212,15 +212,15 @@ void b2Rope::SolveC3()
 
 		auto C = angle - m_as[i];
 
-		while (C > b2_pi)
+		while (C > Pi)
 		{
-			angle -= 2 * b2_pi;
+			angle -= 2 * Pi;
 			C = angle - m_as[i];
 		}
 
-		while (C < -b2_pi)
+		while (C < -Pi)
 		{
-			angle += float_t{2} * b2_pi;
+			angle += float_t{2} * Pi;
 			C = angle - m_as[i];
 		}
 

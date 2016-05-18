@@ -63,8 +63,8 @@ public:
 			{
 				b2PolygonShape* poly = (b2PolygonShape*)fixture->GetShape();
 				int32 vertexCount = poly->GetVertexCount();
-				assert(vertexCount <= b2_maxPolygonVertices);
-				b2Vec2 vertices[b2_maxPolygonVertices];
+				assert(vertexCount <= MaxPolygonVertices);
+				b2Vec2 vertices[MaxPolygonVertices];
 
 				for (int32 i = 0; i < vertexCount; ++i)
 				{
@@ -189,7 +189,7 @@ public:
 
 		float_t x = RandomFloat(-2.0f, 2.0f);
 		bd.position = b2Vec2(x, 10.0f);
-		bd.angle = RandomFloat(-b2_pi, b2_pi);
+		bd.angle = RandomFloat(-Pi, Pi);
 
 		if (index == 4)
 		{

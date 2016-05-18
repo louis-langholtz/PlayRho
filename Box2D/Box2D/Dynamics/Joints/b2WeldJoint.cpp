@@ -114,7 +114,7 @@ void b2WeldJoint::InitVelocityConstraints(const b2SolverData& data)
 		const auto C = aB - aA - m_referenceAngle;
 
 		// Frequency
-		const auto omega = float_t(2) * b2_pi * m_frequencyHz;
+		const auto omega = float_t(2) * Pi * m_frequencyHz;
 
 		// Damping coefficient
 		const auto d = float_t(2) * m * m_dampingRatio * omega;
@@ -304,7 +304,7 @@ bool b2WeldJoint::SolvePositionConstraints(const b2SolverData& data)
 	data.positions[m_indexB].c = cB;
 	data.positions[m_indexB].a = aB;
 
-	return (positionError <= b2_linearSlop) && (angularError <= b2_angularSlop);
+	return (positionError <= LinearSlop) && (angularError <= AngularSlop);
 }
 
 b2Vec2 b2WeldJoint::GetAnchorA() const

@@ -29,10 +29,10 @@ namespace box2d {
 class b2EdgeShape : public b2Shape
 {
 public:
-	b2EdgeShape(): b2Shape(e_edge, b2_polygonRadius) {}
+	b2EdgeShape(): b2Shape(e_edge, PolygonRadius) {}
 
 	constexpr b2EdgeShape(const b2Vec2& v1, const b2Vec2& v2):
-		b2Shape(e_edge, b2_polygonRadius), m_vertex1(v1), m_vertex2(v2) {}
+		b2Shape(e_edge, PolygonRadius), m_vertex1(v1), m_vertex2(v2) {}
 
 	b2EdgeShape(const b2EdgeShape&) = default;
 

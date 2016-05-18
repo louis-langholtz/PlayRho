@@ -46,7 +46,7 @@ void b2WorldManifold::Assign(const b2Manifold& manifold,
 			normal = b2Vec2(float_t{1}, float_t{0});
 			const auto pointA = b2Mul(xfA, manifold.GetLocalPoint());
 			const auto pointB = b2Mul(xfB, manifold.GetPoint(0).localPoint);
-			if (b2DistanceSquared(pointA, pointB) > b2Square(b2_epsilon))
+			if (b2DistanceSquared(pointA, pointB) > b2Square(Epsilon))
 				normal = b2Normalize(pointB - pointA);
 
 			const auto cA = pointA + (radiusA * normal);
@@ -99,7 +99,7 @@ void b2WorldManifold::Assign(const b2Manifold& manifold,
 void b2GetPointStates(b2PointStateArray& state1, b2PointStateArray& state2,
 					  const b2Manifold& manifold1, const b2Manifold& manifold2)
 {
-	for (auto i = decltype(b2_maxManifoldPoints){0}; i < b2_maxManifoldPoints; ++i)
+	for (auto i = decltype(MaxManifoldPoints){0}; i < MaxManifoldPoints; ++i)
 	{
 		state1[i] = b2_nullState;
 		state2[i] = b2_nullState;
@@ -143,8 +143,8 @@ void b2GetPointStates(b2PointStateArray& state1, b2PointStateArray& state2,
 // From Real-time Collision Detection, p179.
 bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 {
-	auto tmin = -b2_maxFloat;
-	auto tmax = b2_maxFloat;
+	auto tmin = -MaxFloat;
+	auto tmax = MaxFloat;
 
 	const auto p = input.p1;
 	const auto d = input.p2 - input.p1;
@@ -154,7 +154,7 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 
 	for (auto i = decltype(b2Vec2::NumElements){0}; i < b2Vec2::NumElements; ++i)
 	{
-		if (absD(i) < b2_epsilon)
+		if (absD(i) < Epsilon)
 		{
 			// Parallel.
 			if ((p(i) < lowerBound(i)) || (upperBound(i) < p(i)))
@@ -254,7 +254,7 @@ bool b2TestOverlap(const b2Shape& shapeA, child_count_t indexA,
 
 	b2SimplexCache cache;
 	const auto output = b2Distance(cache, input);
-	return output.distance < (b2_epsilon * 10);
+	return output.distance < (Epsilon * 10);
 }
 
 } // namespace box2d

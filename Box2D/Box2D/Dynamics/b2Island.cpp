@@ -55,7 +55,7 @@ after the constraint is solved. The radius vectors (aka Jacobians) are
 re-computed too (otherwise the algorithm has horrible instability). The pseudo
 velocity states are not needed because they are effectively zero at the beginning
 of each iteration. Since we have the current position error, we allow the
-iterations to terminate early if the error becomes smaller than b2_linearSlop.
+iterations to terminate early if the error becomes smaller than LinearSlop.
 
 Full NGS or just NGS - Like Modified NGS except the effective mass are re-computed
 each time a constraint is solved.
@@ -275,15 +275,15 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 		auto translation = h * velocity.v;
 		auto rotation = h * velocity.w;
 		
-		if (translation.LengthSquared() > b2Square(b2_maxTranslation))
+		if (translation.LengthSquared() > b2Square(MaxTranslation))
 		{
-			const auto ratio = b2_maxTranslation / translation.Length();
+			const auto ratio = MaxTranslation / translation.Length();
 			velocity.v *= ratio;
 			translation = h * velocity.v;
 		}
-		if (b2Abs(rotation) > b2_maxRotation)
+		if (b2Abs(rotation) > MaxRotation)
 		{
-			const auto ratio = b2_maxRotation / b2Abs(rotation);
+			const auto ratio = MaxRotation / b2Abs(rotation);
 			velocity.w *= ratio;
 			rotation = h * velocity.w;
 		}
@@ -328,10 +328,10 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 
 	if (allowSleep)
 	{
-		auto minSleepTime = b2_maxFloat;
+		auto minSleepTime = MaxFloat;
 
-		constexpr auto linTolSqr = b2Square(b2_linearSleepTolerance);
-		constexpr auto angTolSqr = b2Square(b2_angularSleepTolerance);
+		constexpr auto linTolSqr = b2Square(LinearSleepTolerance);
+		constexpr auto angTolSqr = b2Square(AngularSleepTolerance);
 
 		for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 		{
@@ -355,7 +355,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 			}
 		}
 
-		if ((minSleepTime >= b2_timeToSleep) && positionSolved)
+		if ((minSleepTime >= TimeToSleep) && positionSolved)
 		{
 			for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 			{
@@ -457,16 +457,16 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, isl
 		auto translation = h * velocity.v;
 		auto rotation = h * velocity.w;
 		
-		if (translation.LengthSquared() > b2Square(b2_maxTranslation))
+		if (translation.LengthSquared() > b2Square(MaxTranslation))
 		{
-			const auto ratio = b2_maxTranslation / translation.Length();
+			const auto ratio = MaxTranslation / translation.Length();
 			velocity.v *= ratio;
 			translation = h * velocity.v;
 		}
 
-		if (b2Abs(rotation) > b2_maxRotation)
+		if (b2Abs(rotation) > MaxRotation)
 		{
-			const auto ratio = b2_maxRotation / b2Abs(rotation);
+			const auto ratio = MaxRotation / b2Abs(rotation);
 			velocity.w *= ratio;
 			rotation = h * velocity.w;
 		}

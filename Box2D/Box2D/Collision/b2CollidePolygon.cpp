@@ -31,7 +31,7 @@ static float_t b2FindMaxSeparation(b2PolygonShape::vertex_count_t& edgeIndex,
 	const auto xf = b2MulT(xf2, xf1);
 
 	auto shape1_index_of_max_separation = decltype(count1){0};
-	auto maxSeparation = -b2_maxFloat;
+	auto maxSeparation = -MaxFloat;
 	for (auto i = decltype(count1){0}; i < count1; ++i)
 	{
 		// Get shape1 normal in frame2.
@@ -39,7 +39,7 @@ static float_t b2FindMaxSeparation(b2PolygonShape::vertex_count_t& edgeIndex,
 		const auto v1 = b2Mul(xf, shape1.GetVertex(i));
 
 		// Find deepest point for normal i.
-		auto min_sij = b2_maxFloat;
+		auto min_sij = MaxFloat;
 		for (auto j = decltype(count2){0}; j < count2; ++j)
 		{
 			const auto sij = b2Dot(n, shape2.GetVertex(j) - v1);
@@ -75,7 +75,7 @@ static b2ClipArray b2FindIncidentEdge(b2PolygonShape::vertex_count_t index1,
 	// Find the incident edge on shape2.
 	auto index_of_min_dot = decltype(count2){0};
 	{
-		auto minDot = b2_maxFloat;
+		auto minDot = MaxFloat;
 		for (auto i = decltype(count2){0}; i < count2; ++i)
 		{
 			const auto dot = b2Dot(normal1, shape2.GetNormal(i));
@@ -128,7 +128,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 	b2Transform xf1, xf2;
 	b2PolygonShape::vertex_count_t edge1; // reference edge
 	bool flip;
-	constexpr auto k_tol = b2_linearSlop / 10;
+	constexpr auto k_tol = LinearSlop / 10;
 
 	auto manifoldType = b2Manifold::e_unset;
 	if (separationB > (separationA + k_tol))

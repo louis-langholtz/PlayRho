@@ -264,12 +264,12 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 	sweepB.Normalize();
 
 	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius();
-	const auto target = b2Max(b2_linearSlop, totalRadius - (float_t{3} * b2_linearSlop));
-	constexpr auto tolerance = b2_linearSlop / float_t(4);
+	const auto target = b2Max(LinearSlop, totalRadius - (float_t{3} * LinearSlop));
+	constexpr auto tolerance = LinearSlop / float_t(4);
 	assert(target >= tolerance);
 
 	auto t1 = float_t{0};
-	auto iter = decltype(b2_maxTOIIterations){0};
+	auto iter = decltype(MaxTOIIterations){0};
 
 	// Prepare input for distance query.
 	b2SimplexCache cache;
@@ -336,7 +336,7 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 		// resolving the deepest point. This loop is bounded by the number of vertices.
 		auto done = false;
 		auto t2 = input.tMax;
-		auto pushBackIter = decltype(b2_maxPolygonVertices){0};
+		auto pushBackIter = decltype(MaxPolygonVertices){0};
 		for (;;)
 		{
 			// Find the deepest point at t2. Store the witness point indices.
@@ -387,7 +387,7 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 			}
 
 			// Compute 1D root of: f(x) - target = 0
-			auto rootIterCount = decltype(b2_maxTOIRootIterCount){0};
+			auto rootIterCount = decltype(MaxTOIRootIterCount){0};
 			auto a1 = t1;
 			auto a2 = t2;
 			do
@@ -423,13 +423,13 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 					s2 = s;
 				}				
 			}
-			while (rootIterCount < b2_maxTOIRootIterCount);
+			while (rootIterCount < MaxTOIRootIterCount);
 
 			b2_toiMaxRootIters = b2Max(b2_toiMaxRootIters, rootIterCount);
 
 			++pushBackIter;
 
-			if (pushBackIter == b2_maxPolygonVertices)
+			if (pushBackIter == MaxPolygonVertices)
 				break;
 		}
 
@@ -439,7 +439,7 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 		if (done)
 			break;
 
-		if (iter == b2_maxTOIIterations)
+		if (iter == MaxTOIIterations)
 		{
 			// Root finder got stuck. Semi-victory.
 			output = b2TOIOutput{b2TOIOutput::e_failed, t1};

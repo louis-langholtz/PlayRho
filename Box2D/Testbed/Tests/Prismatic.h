@@ -44,7 +44,7 @@ public:
 			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = b2Vec2(-10.0f, 10.0f);
-			bd.angle = 0.5f * b2_pi;
+			bd.angle = 0.5f * Pi;
 			bd.allowSleep = false;
 			b2Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&shape, 5.0f);

@@ -60,7 +60,7 @@ public:
 			m_platform = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
-			shape.SetAsBox(0.5f, 4.0f, b2Vec2(4.0f, 0.0f), 0.5f * b2_pi);
+			shape.SetAsBox(0.5f, 4.0f, b2Vec2(4.0f, 0.0f), 0.5f * Pi);
 
 			b2FixtureDef fd;
 			fd.shape = &shape;

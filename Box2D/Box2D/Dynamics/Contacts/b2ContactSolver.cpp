@@ -50,7 +50,7 @@ struct b2ContactPositionConstraintBodyData
 class b2ContactPositionConstraint
 {
 public:
-	using size_type = std::remove_cv<decltype(b2_maxManifoldPoints)>::type;
+	using size_type = std::remove_cv<decltype(MaxManifoldPoints)>::type;
 
 	b2Vec2 localNormal;
 	b2Vec2 localPoint;
@@ -78,14 +78,14 @@ public:
 
 	void AddPoint(const b2Vec2& val)
 	{
-		assert(pointCount < b2_maxManifoldPoints);
+		assert(pointCount < MaxManifoldPoints);
 		localPoints[pointCount] = val;
 		++pointCount;
 	}
 
 private:
 	size_type pointCount = 0;
-	b2Vec2 localPoints[b2_maxManifoldPoints];
+	b2Vec2 localPoints[MaxManifoldPoints];
 };
 
 void b2ContactSolver::Assign(b2ContactVelocityConstraint& var, const b2Contact& val)
@@ -207,7 +207,7 @@ static inline void Initialize(b2VelocityConstraintPoint& vcp,
 	vcp.rB = vcp_rB;
 	vcp.normalMass = (kNormal > float_t{0})? float_t(1) / kNormal : float_t{0};
 	vcp.tangentMass = (kTangent > float_t{0}) ? float_t(1) /  kTangent : float_t{0};
-	vcp.velocityBias = (vRel < -b2_velocityThreshold)? -vc.restitution * vRel: float_t{0};
+	vcp.velocityBias = (vRel < -VelocityThreshold)? -vc.restitution * vRel: float_t{0};
 	
 	// The following fields are assumed to be set already (by b2ContactSolver constructor).
 	// vcp.normalImpulse
@@ -652,7 +652,7 @@ void b2ContactSolver::StoreImpulses()
 class b2PositionSolverManifold
 {
 public:
-	using index_t = std::remove_cv<decltype(b2_maxManifoldPoints)>::type;
+	using index_t = std::remove_cv<decltype(MaxManifoldPoints)>::type;
 
 	b2PositionSolverManifold() = delete;
 
@@ -724,7 +724,7 @@ private:
 static inline float_t SolvePositionConstraint(const b2ContactPositionConstraint& pc,
 											  b2Position& posA, b2Position& posB)
 {
-	auto minSeparation = b2_maxFloat;
+	auto minSeparation = MaxFloat;
 
 	// Solve normal constraints
 	const auto pointCount = pc.GetPointCount();
@@ -744,7 +744,7 @@ static inline float_t SolvePositionConstraint(const b2ContactPositionConstraint&
 		minSeparation = b2Min(minSeparation, separation);
 		
 		// Prevent large corrections and allow slop.
-		const auto C = b2Clamp(b2_baumgarte * (separation + b2_linearSlop), -b2_maxLinearCorrection, float_t{0});
+		const auto C = b2Clamp(Baumgarte * (separation + LinearSlop), -MaxLinearCorrection, float_t{0});
 		
 		// Compute the effective mass.
 		const auto rnA = b2Cross(rA, normal);
@@ -768,7 +768,7 @@ static inline float_t SolvePositionConstraint(const b2ContactPositionConstraint&
 // Sequential solver.
 bool b2ContactSolver::SolvePositionConstraints()
 {
-	auto minSeparation = b2_maxFloat;
+	auto minSeparation = MaxFloat;
 
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
@@ -777,7 +777,7 @@ bool b2ContactSolver::SolvePositionConstraints()
 							  SolvePositionConstraint(pc, m_positions[pc.bodyA.index], m_positions[pc.bodyB.index]));
 	}
 
-	// Can't expect minSpeparation >= -b2_linearSlop because we don't push the separation above -b2_linearSlop.
+	// Can't expect minSpeparation >= -LinearSlop because we don't push the separation above -LinearSlop.
 	return minSeparation >= MinSeparationThreshold;
 }
 
@@ -785,7 +785,7 @@ static inline float_t SolveTOIPositionConstraint(const b2ContactPositionConstrai
 												 b2ContactSolver::size_type indexA, b2ContactSolver::size_type indexB,
 												 b2Position& posA, b2Position& posB)
 {
-	auto minSeparation = b2_maxFloat;
+	auto minSeparation = MaxFloat;
 	
 	const auto isA = (indexA == pc.bodyA.index) || (indexB == pc.bodyA.index);
 	const auto invMassA = isA? pc.bodyA.invMass: float_t{0};
@@ -813,7 +813,7 @@ static inline float_t SolveTOIPositionConstraint(const b2ContactPositionConstrai
 		minSeparation = b2Min(minSeparation, separation);
 		
 		// Prevent large corrections and allow slop.
-		const auto C = b2Clamp(b2_toiBaugarte * (separation + b2_linearSlop), -b2_maxLinearCorrection, float_t{0});
+		const auto C = b2Clamp(ToiBaugarte * (separation + LinearSlop), -MaxLinearCorrection, float_t{0});
 		
 		// Compute the effective mass.
 		const auto rnA = b2Cross(rA, normal);
@@ -836,7 +836,7 @@ static inline float_t SolveTOIPositionConstraint(const b2ContactPositionConstrai
 
 bool b2ContactSolver::SolveTOIPositionConstraints(size_type indexA, size_type indexB)
 {
-	auto minSeparation = b2_maxFloat;
+	auto minSeparation = MaxFloat;
 
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
@@ -845,7 +845,7 @@ bool b2ContactSolver::SolveTOIPositionConstraints(size_type indexA, size_type in
 		minSeparation = b2Min(minSeparation, s);
 	}
 
-	// Can't expect minSpeparation >= -b2_linearSlop because we don't push the separation above -b2_linearSlop.
+	// Can't expect minSpeparation >= -LinearSlop because we don't push the separation above -LinearSlop.
 	return minSeparation >= MinToiSeparation;
 }
 	

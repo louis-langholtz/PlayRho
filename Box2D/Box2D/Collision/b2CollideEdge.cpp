@@ -157,21 +157,21 @@ struct b2EPAxis
 class b2TempPolygon
 {
 public:
-	using size_type = std::remove_cv<decltype(b2_maxPolygonVertices)>::type;
+	using size_type = std::remove_cv<decltype(MaxPolygonVertices)>::type;
 
 	b2TempPolygon() = default;
 
 	b2TempPolygon(const b2PolygonShape& shape, const b2Transform& xf);
 
 	/// Gets count of appended elements (vertex-normal pairs).
-	/// @return value between 0 and b2_maxPolygonVertices inclusive.
-	/// @see b2_maxPolygonVertices.
+	/// @return value between 0 and MaxPolygonVertices inclusive.
+	/// @see MaxPolygonVertices.
 	size_type GetCount() const noexcept { return count; }
 	
 	b2Vec2 GetVertex(size_type index) const
 	{
 		assert(index >= 0);
-		assert(index < b2_maxPolygonVertices);
+		assert(index < MaxPolygonVertices);
 		assert(index < count);
 		return vertices[index];
 	}
@@ -179,14 +179,14 @@ public:
 	b2Vec2 GetNormal(size_type index) const
 	{
 		assert(index >= 0);
-		assert(index < b2_maxPolygonVertices);
+		assert(index < MaxPolygonVertices);
 		assert(index < count);
 		return normals[index];
 	}
 
 	void Append(const b2Vec2& vertex, const b2Vec2& normal)
 	{
-		assert(count < b2_maxPolygonVertices);
+		assert(count < MaxPolygonVertices);
 		vertices[count] = vertex;
 		normals[count] = normal;
 		++count;
@@ -194,8 +194,8 @@ public:
 
 private:
 	size_type count = 0;
-	b2Vec2 vertices[b2_maxPolygonVertices];
-	b2Vec2 normals[b2_maxPolygonVertices];
+	b2Vec2 vertices[MaxPolygonVertices];
+	b2Vec2 normals[MaxPolygonVertices];
 };
 
 /// Gets a b2TempPolygon object from a given shape in terms of a given transform.
@@ -462,11 +462,11 @@ static inline b2TempPolygon::size_type b2GetIndexOfMinimum(const b2TempPolygon& 
 	return bestIndex;
 }
 
-static constexpr float_t b2MaxEPSeparation = b2_polygonRadius * 2; ///< Maximum separation.
+static constexpr float_t b2MaxEPSeparation = PolygonRadius * 2; ///< Maximum separation.
 
 static inline b2EPAxis b2ComputeEdgeSeparation(const b2TempPolygon& shape, const b2EdgeInfo& edgeInfo)
 {
-	auto min_val = b2_maxFloat;
+	auto min_val = MaxFloat;
 	const auto count = shape.GetCount();
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
@@ -479,7 +479,7 @@ static inline b2EPAxis b2ComputeEdgeSeparation(const b2TempPolygon& shape, const
 
 static inline b2EPAxis b2ComputePolygonSeparation(const b2TempPolygon& shape, const b2EdgeInfo& edgeInfo)
 {
-	auto axis = b2EPAxis{b2EPAxis::e_unknown, b2EPAxis::InvalidIndex, -b2_maxFloat};
+	auto axis = b2EPAxis{b2EPAxis::e_unknown, b2EPAxis::InvalidIndex, -MaxFloat};
 	
 	const auto normal = edgeInfo.GetNormal();
 	const auto perp = b2Vec2(-normal.y, normal.x);
@@ -498,14 +498,14 @@ static inline b2EPAxis b2ComputePolygonSeparation(const b2TempPolygon& shape, co
 		// Adjacency
 		if (b2Dot(polygonNormal, perp) >= 0)
 		{
-			if (b2Dot(polygonNormal - edgeInfo.GetUpperLimit(), edgeInfo.GetNormal()) < -b2_angularSlop)
+			if (b2Dot(polygonNormal - edgeInfo.GetUpperLimit(), edgeInfo.GetNormal()) < -AngularSlop)
 			{
 				continue;
 			}
 		}
 		else
 		{
-			if (b2Dot(polygonNormal - edgeInfo.GetLowerLimit(), edgeInfo.GetNormal()) < -b2_angularSlop)
+			if (b2Dot(polygonNormal - edgeInfo.GetLowerLimit(), edgeInfo.GetNormal()) < -AngularSlop)
 			{
 				continue;
 			}
@@ -570,7 +570,7 @@ b2Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShap
 	
 	// Use hysteresis for jitter reduction.
 	constexpr auto k_relativeTol = float_t(0.98);
-	constexpr auto k_absoluteTol = b2_linearSlop / 5; // 0.001
+	constexpr auto k_absoluteTol = LinearSlop / 5; // 0.001
 	
 	// Now:
 	//   (edgeAxis.separation <= MaxSeparation) AND

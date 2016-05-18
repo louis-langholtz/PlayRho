@@ -67,7 +67,7 @@ public:
 
 		{
 			b2Color color(0.9f, 0.9f, 0.9f);
-			b2Vec2 v[b2_maxPolygonVertices];
+			b2Vec2 v[MaxPolygonVertices];
 			for (int32 i = 0; i < m_polygonA.GetVertexCount(); ++i)
 			{
 				v[i] = b2Mul(m_transformA, m_polygonA.GetVertex(i));
@@ -112,11 +112,11 @@ public:
 			break;
 
 		case GLFW_KEY_Q:
-			m_angleB += 0.1f * b2_pi;
+			m_angleB += 0.1f * Pi;
 			break;
 
 		case GLFW_KEY_E:
-			m_angleB -= 0.1f * b2_pi;
+			m_angleB -= 0.1f * Pi;
 			break;
 		}
 

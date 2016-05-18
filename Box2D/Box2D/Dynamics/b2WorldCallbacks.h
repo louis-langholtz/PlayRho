@@ -76,15 +76,15 @@ public:
 	
 	void AddEntry(float_t normal, float_t tangent) noexcept
 	{
-		assert(count < b2_maxManifoldPoints);
+		assert(count < MaxManifoldPoints);
 		normalImpulses[count] = normal;
 		tangentImpulses[count] = tangent;
 		++count;
 	}
 
 private:
-	float_t normalImpulses[b2_maxManifoldPoints];
-	float_t tangentImpulses[b2_maxManifoldPoints];
+	float_t normalImpulses[MaxManifoldPoints];
+	float_t tangentImpulses[MaxManifoldPoints];
 	count_t count = 0;
 };
 

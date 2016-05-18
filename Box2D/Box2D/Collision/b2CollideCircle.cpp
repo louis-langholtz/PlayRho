@@ -49,7 +49,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
 	const auto vertexCount = shapeA.GetVertexCount();
 	auto normalIndex = decltype(vertexCount){0};
-	auto separation = -b2_maxFloat;
+	auto separation = -MaxFloat;
 
 	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 	{
@@ -75,7 +75,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 	const auto v2 = shapeA.GetVertex(vertIndex2);
 
 	// If the center is inside the polygon ...
-	if (separation < b2_epsilon)
+	if (separation < Epsilon)
 	{
 		auto manifold = b2Manifold{b2Manifold::e_faceA, shapeA.GetNormal(normalIndex), (v1 + v2) / float_t(2)};
 		manifold.AddPoint(shapeB.GetPosition());

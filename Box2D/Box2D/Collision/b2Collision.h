@@ -110,7 +110,7 @@ struct b2ManifoldPoint
 class b2Manifold
 {
 public:
-	using size_type = std::remove_cv<decltype(b2_maxPolygonVertices)>::type;
+	using size_type = std::remove_cv<decltype(MaxPolygonVertices)>::type;
 
 	enum Type
 	{
@@ -142,8 +142,8 @@ public:
 	/// @detail This is the count of points added using the AddPoint() method.
 	///   Only up to this many points can be validly accessed using the GetPoint() method.
 	///   Non-zero values indicate that the two shapes are touching.
-	/// @return Value between 0 and b2_maxManifoldPoints.
-	/// @sa b2_maxManifoldPoints.
+	/// @return Value between 0 and MaxManifoldPoints.
+	/// @sa MaxManifoldPoints.
 	/// @sa AddPoint().
 	/// @sa GetPoint().
 	size_type GetPointCount() const noexcept { return pointCount; }
@@ -161,12 +161,12 @@ public:
 	}
 	
 	/// Adds a new point.
-	/// @detail This can be called up to b2_maxManifoldPoints times.
+	/// @detail This can be called up to MaxManifoldPoints times.
 	/// GetPointCount() can be called to find out how many points have already been added.
-	/// @note Behavior is undefined if this is called more than b2_maxManifoldPoints times. 
+	/// @note Behavior is undefined if this is called more than MaxManifoldPoints times. 
 	void AddPoint(const b2Vec2& lp, b2ContactFeature cf = b2ContactFeature{b2ContactFeature::e_vertex, 0, b2ContactFeature::e_vertex, 0})
 	{
-		assert(pointCount < b2_maxManifoldPoints);
+		assert(pointCount < MaxManifoldPoints);
 		points[pointCount].localPoint = lp;
 		points[pointCount].cf = cf;
 		points[pointCount].normalImpulse = 0.f;
@@ -185,14 +185,14 @@ private:
 	b2Vec2 localNormal;								///< not use for Type::e_points
 	b2Vec2 localPoint;								///< usage depends on manifold type
 	size_type pointCount = 0;							///< the number of manifold points
-	b2ManifoldPoint points[b2_maxManifoldPoints];	///< the points of contact
+	b2ManifoldPoint points[MaxManifoldPoints];	///< the points of contact
 };
 
 /// This is used to compute the current state of a contact manifold.
 class b2WorldManifold
 {
 public:
-	using size_type = std::remove_cv<decltype(b2_maxPolygonVertices)>::type;
+	using size_type = std::remove_cv<decltype(MaxPolygonVertices)>::type;
 
 	b2WorldManifold() = default;
 
@@ -214,21 +214,21 @@ public:
 
 	b2Vec2 GetPoint(size_type index) const
 	{
-		assert(index < b2_maxManifoldPoints);
+		assert(index < MaxManifoldPoints);
 		return points[index];
 	}
 
 	float_t GetSeparation(size_type index) const
 	{
-		assert(index < b2_maxManifoldPoints);
+		assert(index < MaxManifoldPoints);
 		return separations[index];
 	}
 
 private:
 	b2Vec2 normal;								///< world vector pointing from A to B
 	size_type pointCount = 0;
-	b2Vec2 points[b2_maxManifoldPoints];		///< world contact point (point of intersection)
-	float_t separations[b2_maxManifoldPoints];	///< a negative value indicates overlap, in meters
+	b2Vec2 points[MaxManifoldPoints];		///< world contact point (point of intersection)
+	float_t separations[MaxManifoldPoints];	///< a negative value indicates overlap, in meters
 };
 
 /// This is used for determining the state of contact points.
@@ -242,7 +242,7 @@ enum b2PointState
 
 /// Compute the point states given two manifolds. The states pertain to the transition from manifold1
 /// to manifold2. So state1 is either persist or remove while state2 is either add or persist.
-using b2PointStateArray = std::array<b2PointState,b2_maxManifoldPoints>;
+using b2PointStateArray = std::array<b2PointState,MaxManifoldPoints>;
 void b2GetPointStates(b2PointStateArray& state1, b2PointStateArray& state2,
 					  const b2Manifold& manifold1, const b2Manifold& manifold2);
 
@@ -387,7 +387,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 
 /// Clip array for b2ClipSegmentToLine.
 /// @see b2ClipSegmentToLine.
-using b2ClipArray = std::array<b2ClipVertex, b2_maxManifoldPoints>;
+using b2ClipArray = std::array<b2ClipVertex, MaxManifoldPoints>;
 
 /// Clipping for contact manifolds.
 /// @detail This returns an array of points from the given line that are inside of the plane as

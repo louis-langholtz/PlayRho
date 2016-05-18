@@ -586,7 +586,7 @@ void b2World::Solve(const b2TimeStep& step)
 // Find TOI contacts and solve them.
 void b2World::SolveTOI(const b2TimeStep& step)
 {
-	b2Island island(2 * b2_maxTOIContacts, b2_maxTOIContacts, 0, &m_stackAllocator, m_contactManager.m_contactListener);
+	b2Island island(2 * MaxTOIContacts, MaxTOIContacts, 0, &m_stackAllocator, m_contactManager.m_contactListener);
 
 	if (m_stepComplete)
 	{
@@ -621,7 +621,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 			}
 
 			// Prevent excessive sub-stepping.
-			if (c->m_toiCount >= b2_maxSubSteps)
+			if (c->m_toiCount >= MaxSubSteps)
 			{
 				continue;
 			}
@@ -641,7 +641,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 		}
 
 		// if ((!minContact) || (minAlpha >= float_t(1)))
-		if ((!minContact) || (minAlpha > (float_t(1) - (float_t(10) * b2_epsilon))))
+		if ((!minContact) || (minAlpha > (float_t(1) - (float_t(10) * Epsilon))))
 		{
 			// No more TOI events. Done!
 			m_stepComplete = true;
@@ -784,7 +784,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 		b2TimeStep subStep;
 		subStep.set_dt((float_t(1) - minAlpha) * step.get_dt());
 		subStep.dtRatio = float_t(1);
-		subStep.positionIterations = b2_maxSubStepPositionIterations;
+		subStep.positionIterations = MaxSubStepPositionIterations;
 		subStep.velocityIterations = step.velocityIterations;
 		subStep.warmStarting = false;
 		island.SolveTOI(subStep, bA->m_islandIndex, bB->m_islandIndex);
@@ -990,8 +990,8 @@ void b2World::DrawShape(const b2Fixture* fixture, const b2Transform& xf, const b
 		{
 			const auto poly = static_cast<const b2PolygonShape*>(fixture->GetShape());
 			const auto vertexCount = poly->GetVertexCount();
-			assert(vertexCount <= b2_maxPolygonVertices);
-			b2Vec2 vertices[b2_maxPolygonVertices];
+			assert(vertexCount <= MaxPolygonVertices);
+			b2Vec2 vertices[MaxPolygonVertices];
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
 				vertices[i] = b2Mul(xf, poly->GetVertex(i));

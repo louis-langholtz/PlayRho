@@ -42,7 +42,7 @@ void b2ChainShape::CreateLoop(const b2Vec2* vertices, child_count_t count)
 	for (auto i = decltype(count){1}; i < count; ++i)
 	{
 		// If the code crashes here, it means your vertices are too close together.
-		assert(b2DistanceSquared(vertices[i-1], vertices[i]) > b2Square(b2_linearSlop));
+		assert(b2DistanceSquared(vertices[i-1], vertices[i]) > b2Square(LinearSlop));
 	}
 
 	m_count = count + 1;
@@ -62,7 +62,7 @@ void b2ChainShape::CreateChain(const b2Vec2* vertices, child_count_t count)
 	for (auto i = decltype(count){1}; i < count; ++i)
 	{
 		// If the code crashes here, it means your vertices are too close together.
-		assert(b2DistanceSquared(vertices[i-1], vertices[i]) > b2Square(b2_linearSlop));
+		assert(b2DistanceSquared(vertices[i-1], vertices[i]) > b2Square(LinearSlop));
 	}
 
 	m_count = count;

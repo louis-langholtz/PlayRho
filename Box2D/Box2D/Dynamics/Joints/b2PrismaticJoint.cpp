@@ -197,7 +197,7 @@ void b2PrismaticJoint::InitVelocityConstraints(const b2SolverData& data)
 	if (m_enableLimit)
 	{
 		const auto jointTranslation = b2Dot(m_axis, d);
-		if (b2Abs(m_upperTranslation - m_lowerTranslation) < (b2_linearSlop * 2))
+		if (b2Abs(m_upperTranslation - m_lowerTranslation) < (LinearSlop * 2))
 		{
 			m_limitState = e_equalLimits;
 		}
@@ -398,24 +398,24 @@ bool b2PrismaticJoint::SolvePositionConstraints(const b2SolverData& data)
 	if (m_enableLimit)
 	{
 		const auto translation = b2Dot(axis, d);
-		if (b2Abs(m_upperTranslation - m_lowerTranslation) < (float_t{2} * b2_linearSlop))
+		if (b2Abs(m_upperTranslation - m_lowerTranslation) < (float_t{2} * LinearSlop))
 		{
 			// Prevent large angular corrections
-			C2 = b2Clamp(translation, -b2_maxLinearCorrection, b2_maxLinearCorrection);
+			C2 = b2Clamp(translation, -MaxLinearCorrection, MaxLinearCorrection);
 			linearError = b2Max(linearError, b2Abs(translation));
 			active = true;
 		}
 		else if (translation <= m_lowerTranslation)
 		{
 			// Prevent large linear corrections and allow some slop.
-			C2 = b2Clamp(translation - m_lowerTranslation + b2_linearSlop, -b2_maxLinearCorrection, float_t{0});
+			C2 = b2Clamp(translation - m_lowerTranslation + LinearSlop, -MaxLinearCorrection, float_t{0});
 			linearError = b2Max(linearError, m_lowerTranslation - translation);
 			active = true;
 		}
 		else if (translation >= m_upperTranslation)
 		{
 			// Prevent large linear corrections and allow some slop.
-			C2 = b2Clamp(translation - m_upperTranslation - b2_linearSlop, float_t{0}, b2_maxLinearCorrection);
+			C2 = b2Clamp(translation - m_upperTranslation - LinearSlop, float_t{0}, MaxLinearCorrection);
 			linearError = b2Max(linearError, translation - m_upperTranslation);
 			active = true;
 		}
@@ -474,7 +474,7 @@ bool b2PrismaticJoint::SolvePositionConstraints(const b2SolverData& data)
 	data.positions[m_indexB].c = cB;
 	data.positions[m_indexB].a = aB;
 
-	return (linearError <= b2_linearSlop) && (angularError <= b2_angularSlop);
+	return (linearError <= LinearSlop) && (angularError <= AngularSlop);
 }
 
 b2Vec2 b2PrismaticJoint::GetAnchorA() const

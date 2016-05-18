@@ -54,7 +54,7 @@ public:
 
 				b2RevoluteJointDef rjd;
 				rjd.Initialize(prevBody, body, b2Vec2(0.0f, 5.0f));
-				rjd.motorSpeed = 1.0f * b2_pi;
+				rjd.motorSpeed = 1.0f * Pi;
 				rjd.maxMotorTorque = 10000.0f;
 				rjd.enableMotor = true;
 				m_joint1 = (b2RevoluteJoint*)m_world->CreateJoint(&rjd);

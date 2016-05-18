@@ -252,7 +252,7 @@ public:
 		float_t x = RandomFloat(-10.0f, 10.0f);
 		float_t y = RandomFloat(0.0f, 20.0f);
 		bd.position = b2Vec2(x, y);
-		bd.angle = RandomFloat(-b2_pi, b2_pi);
+		bd.angle = RandomFloat(-Pi, Pi);
 
 		m_userData[m_bodyIndex] = index;
 		bd.userData = m_userData + m_bodyIndex;
@@ -419,7 +419,7 @@ public:
 
 		if (advanceRay)
 		{
-			m_angle += 0.25f * b2_pi / 180.0f;
+			m_angle += 0.25f * Pi / 180.0f;
 		}
 
 #if 0

@@ -61,7 +61,7 @@ public:
 			jd.localAnchorA = b2Vec2(0.0f, 10.0f);
 			jd.localAnchorB = b2Vec2(0.0f, 0.0f);
 			jd.referenceAngle = 0.0f;
-			jd.motorSpeed = 0.05f * b2_pi;
+			jd.motorSpeed = 0.05f * Pi;
 			jd.maxMotorTorque = 1e8f;
 			jd.enableMotor = true;
 			m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jd);

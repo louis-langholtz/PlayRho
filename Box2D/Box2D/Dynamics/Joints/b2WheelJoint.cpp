@@ -140,7 +140,7 @@ void b2WheelJoint::InitVelocityConstraints(const b2SolverData& data)
 			const auto C = b2Dot(dd, m_ax);
 
 			// Frequency
-			const auto omega = float_t(2) * b2_pi * m_frequencyHz;
+			const auto omega = float_t(2) * Pi * m_frequencyHz;
 
 			// Damping coefficient
 			const auto d = float_t(2) * m_springMass * m_dampingRatio * omega;
@@ -317,7 +317,7 @@ bool b2WheelJoint::SolvePositionConstraints(const b2SolverData& data)
 	data.positions[m_indexB].c = cB;
 	data.positions[m_indexB].a = aB;
 
-	return b2Abs(C) <= b2_linearSlop;
+	return b2Abs(C) <= LinearSlop;
 }
 
 b2Vec2 b2WheelJoint::GetAnchorA() const

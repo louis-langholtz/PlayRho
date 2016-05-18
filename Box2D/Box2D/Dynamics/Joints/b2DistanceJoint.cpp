@@ -87,7 +87,7 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 
 	// Handle singularity.
 	const auto length = m_u.Length();
-	if (length > b2_linearSlop)
+	if (length > LinearSlop)
 	{
 		m_u *= float_t(1) / length;
 	}
@@ -108,7 +108,7 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 		const auto C = length - m_length;
 
 		// Frequency
-		const auto omega = float_t(2) * b2_pi * m_frequencyHz;
+		const auto omega = float_t(2) * Pi * m_frequencyHz;
 
 		// Damping coefficient
 		const auto d = float_t(2) * m_mass * m_dampingRatio * omega;
@@ -202,7 +202,7 @@ bool b2DistanceJoint::SolvePositionConstraints(const b2SolverData& data)
 
 	const auto length = u.Normalize();
 	auto C = length - m_length;
-	C = b2Clamp(C, -b2_maxLinearCorrection, b2_maxLinearCorrection);
+	C = b2Clamp(C, -MaxLinearCorrection, MaxLinearCorrection);
 
 	const auto impulse = -m_mass * C;
 	const auto P = impulse * u;
@@ -217,7 +217,7 @@ bool b2DistanceJoint::SolvePositionConstraints(const b2SolverData& data)
 	data.positions[m_indexB].c = cB;
 	data.positions[m_indexB].a = aB;
 
-	return b2Abs(C) < b2_linearSlop;
+	return b2Abs(C) < LinearSlop;
 }
 
 b2Vec2 b2DistanceJoint::GetAnchorA() const

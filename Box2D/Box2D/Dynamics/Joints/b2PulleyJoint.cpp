@@ -50,7 +50,7 @@ void b2PulleyJointDef::Initialize(b2Body* bA, b2Body* bB,
 	b2Vec2 dB = anchorB - groundB;
 	lengthB = dB.Length();
 	ratio = r;
-	assert(ratio > b2_epsilon);
+	assert(ratio > Epsilon);
 }
 
 b2PulleyJoint::b2PulleyJoint(const b2PulleyJointDef* def)
@@ -105,7 +105,7 @@ void b2PulleyJoint::InitVelocityConstraints(const b2SolverData& data)
 	const auto lengthA = m_uA.Length();
 	const auto lengthB = m_uB.Length();
 
-	if (lengthA > (float_t(10) * b2_linearSlop))
+	if (lengthA > (float_t(10) * LinearSlop))
 	{
 		m_uA *= float_t(1) / lengthA;
 	}
@@ -114,7 +114,7 @@ void b2PulleyJoint::InitVelocityConstraints(const b2SolverData& data)
 		m_uA = b2Vec2_zero;
 	}
 
-	if (lengthB > (float_t(10) * b2_linearSlop))
+	if (lengthB > (float_t(10) * LinearSlop))
 	{
 		m_uB *= float_t(1) / lengthB;
 	}
@@ -208,7 +208,7 @@ bool b2PulleyJoint::SolvePositionConstraints(const b2SolverData& data)
 	const auto lengthA = uA.Length();
 	const auto lengthB = uB.Length();
 
-	if (lengthA > (float_t(10) * b2_linearSlop))
+	if (lengthA > (float_t(10) * LinearSlop))
 	{
 		uA *= float_t(1) / lengthA;
 	}
@@ -217,7 +217,7 @@ bool b2PulleyJoint::SolvePositionConstraints(const b2SolverData& data)
 		uA = b2Vec2_zero;
 	}
 
-	if (lengthB > (float_t(10) * b2_linearSlop))
+	if (lengthB > (float_t(10) * LinearSlop))
 	{
 		uB *= float_t(1) / lengthB;
 	}
@@ -258,7 +258,7 @@ bool b2PulleyJoint::SolvePositionConstraints(const b2SolverData& data)
 	data.positions[m_indexB].c = cB;
 	data.positions[m_indexB].a = aB;
 
-	return linearError < b2_linearSlop;
+	return linearError < LinearSlop;
 }
 
 b2Vec2 b2PulleyJoint::GetAnchorA() const

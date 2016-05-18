@@ -237,7 +237,7 @@ protected:
 
 	b2Manifold m_manifold;
 
-	std::remove_cv<decltype(b2_maxSubSteps)>::type m_toiCount = 0;
+	std::remove_cv<decltype(MaxSubSteps)>::type m_toiCount = 0;
 	float_t m_toi; // only valid if m_flags & e_toiFlag
 
 	// initialized on construction (construction-time depedent)

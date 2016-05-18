@@ -161,7 +161,7 @@ public:
 		{
 			const auto metric1 = cache.GetMetric();
 			const auto metric2 = GetMetric();
-			if ((metric2 < (metric1 / float_t(2))) || (metric2 > (metric1 * float_t(2))) || (metric2 < b2_epsilon))
+			if ((metric2 < (metric1 / float_t(2))) || (metric2 > (metric1 * float_t(2))) || (metric2 < Epsilon))
 			{
 				// Reset the simplex.
 				m_count = 0;
@@ -484,7 +484,7 @@ b2DistanceOutput b2Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 	b2SimplexVertex::size_type saveA[b2Simplex::MaxVertices], saveB[b2Simplex::MaxVertices];
 
 #if defined(DO_COMPUTE_CLOSEST_POINT)
-	auto distanceSqr1 = b2_maxFloat;
+	auto distanceSqr1 = MaxFloat;
 #endif
 
 	// Main iteration loop.
@@ -538,7 +538,7 @@ b2DistanceOutput b2Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 		const auto d = simplex.GetSearchDirection();
 
 		// Ensure the search direction is numerically fit.
-		if (d.LengthSquared() < b2Square(b2_epsilon))
+		if (d.LengthSquared() < b2Square(Epsilon))
 		{
 			// The origin is probably contained by a line segment
 			// or triangle. Thus the shapes are overlapped.
@@ -602,7 +602,7 @@ b2DistanceOutput b2Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 		const auto rB = proxyB.GetRadius();
 		const auto totalRadius = rA + rB;
 
-		if ((output.distance > totalRadius) && (output.distance > b2_epsilon))
+		if ((output.distance > totalRadius) && (output.distance > Epsilon))
 		{
 			// Shapes are still no overlapped.
 			// Move the witness points to the outer surface.

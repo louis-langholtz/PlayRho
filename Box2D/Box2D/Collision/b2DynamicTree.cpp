@@ -97,7 +97,7 @@ b2DynamicTree::size_type b2DynamicTree::CreateProxy(const b2AABB& aabb, void* us
 	const auto proxyId = AllocateNode();
 
 	// Fatten the aabb.
-	m_nodes[proxyId].aabb = aabb + b2Vec2(b2_aabbExtension, b2_aabbExtension);
+	m_nodes[proxyId].aabb = aabb + b2Vec2(AabbExtension, AabbExtension);
 	m_nodes[proxyId].userData = userData;
 	m_nodes[proxyId].height = 0;
 
@@ -129,12 +129,12 @@ bool b2DynamicTree::MoveProxy(size_type proxyId, const b2AABB& aabb, const b2Vec
 	RemoveLeaf(proxyId);
 
 	// Extend AABB.
-	auto b = aabb + b2Vec2(b2_aabbExtension, b2_aabbExtension);
+	auto b = aabb + b2Vec2(AabbExtension, AabbExtension);
 	auto lowerBound = b.GetLowerBound();
 	auto upperBound = b.GetUpperBound();
 	
 	// Predict AABB displacement.
-	const auto d = b2_aabbMultiplier * displacement;
+	const auto d = AabbMultiplier * displacement;
 
 	if (d.x < float_t{0})
 	{
@@ -699,7 +699,7 @@ void b2DynamicTree::RebuildBottomUp()
 
 	while (count > 1)
 	{
-		auto minCost = b2_maxFloat;
+		auto minCost = MaxFloat;
 		auto iMin = b2_nullNode;
 		auto jMin = b2_nullNode;
 		for (auto i = decltype(count){0}; i < count; ++i)

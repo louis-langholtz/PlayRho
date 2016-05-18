@@ -110,24 +110,24 @@ static b2Vec2 ComputeCentroid(const b2Vec2 vs[], b2PolygonShape::vertex_count_t 
 	}
 
 	// Centroid
-	assert(area > b2_epsilon);
+	assert(area > Epsilon);
 	c *= float_t(1) / area;
 	return c;
 }
 
 void b2PolygonShape::Set(const b2Vec2 vertices[], vertex_count_t count)
 {
-	assert((count >= 3) && (count <= b2_maxPolygonVertices));
+	assert((count >= 3) && (count <= MaxPolygonVertices));
 	if (count < 3)
 	{
 		SetAsBox(float_t(1), float_t(1));
 		return;
 	}
 	
-	auto n = b2Min(count, b2_maxPolygonVertices);
+	auto n = b2Min(count, MaxPolygonVertices);
 
 	// Perform welding and copy vertices into local buffer.
-	b2Vec2 ps[b2_maxPolygonVertices];
+	b2Vec2 ps[MaxPolygonVertices];
 	auto tempCount = decltype(n){0};
 	for (auto i = decltype(n){0}; i < n; ++i)
 	{
@@ -136,7 +136,7 @@ void b2PolygonShape::Set(const b2Vec2 vertices[], vertex_count_t count)
 		auto unique = true;
 		for (auto j = decltype(tempCount){0}; j < tempCount; ++j)
 		{
-			if (b2DistanceSquared(v, ps[j]) < b2Square(b2_linearSlop / 2))
+			if (b2DistanceSquared(v, ps[j]) < b2Square(LinearSlop / 2))
 			{
 				unique = false;
 				break;
@@ -174,7 +174,7 @@ void b2PolygonShape::Set(const b2Vec2 vertices[], vertex_count_t count)
 		}
 	}
 
-	vertex_count_t hull[b2_maxPolygonVertices];
+	vertex_count_t hull[MaxPolygonVertices];
 	auto m = decltype(m_count){0};
 	auto ih = i0;
 
@@ -237,7 +237,7 @@ void b2PolygonShape::Set(const b2Vec2 vertices[], vertex_count_t count)
 		const auto i1 = i;
 		const auto i2 = ((i + 1) < m) ? i + 1 : 0;
 		const auto edge = m_vertices[i2] - m_vertices[i1];
-		assert(edge.LengthSquared() > b2Square(b2_epsilon));
+		assert(edge.LengthSquared() > b2Square(Epsilon));
 		m_normals[i] = b2Normalize(b2Cross(edge, float_t(1)));
 	}
 
@@ -314,7 +314,7 @@ bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& inpu
 		// The use of epsilon here causes the assert on lower to trip
 		// in some cases. Apparently the use of epsilon was to make edge
 		// shapes work, but now those are handled separately.
-		//if (upper < lower - b2_epsilon)
+		//if (upper < lower - Epsilon)
 		if (upper < lower)
 		{
 			return false;
@@ -425,7 +425,7 @@ b2MassData b2PolygonShape::ComputeMass(float_t density) const
 	const auto mass = density * area;
 
 	// Center of mass
-	assert(area > b2_epsilon);
+	assert(area > Epsilon);
 	center *= float_t(1) / area;
 	const auto massDataCenter = center + s;
 

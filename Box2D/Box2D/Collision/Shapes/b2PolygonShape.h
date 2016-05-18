@@ -26,14 +26,14 @@ namespace box2d {
 
 /// A convex polygon. It is assumed that the interior of the polygon is to
 /// the left of each edge.
-/// Polygons have a maximum number of vertices equal to b2_maxPolygonVertices.
+/// Polygons have a maximum number of vertices equal to MaxPolygonVertices.
 /// In most cases you should not need many vertices for a convex polygon.
 class b2PolygonShape : public b2Shape
 {
 public:
-	using vertex_count_t = std::remove_cv<decltype(b2_maxPolygonVertices)>::type;
+	using vertex_count_t = std::remove_cv<decltype(MaxPolygonVertices)>::type;
 
-	b2PolygonShape(): b2Shape(e_polygon, b2_polygonRadius) {}
+	b2PolygonShape(): b2Shape(e_polygon, PolygonRadius) {}
 
 	b2PolygonShape(const b2PolygonShape&) = default;
 	/// Implement b2Shape.
@@ -43,7 +43,7 @@ public:
 	child_count_t GetChildCount() const override;
 
 	/// Create a convex hull from the given array of local points.
-	/// The count must be in the range [3, b2_maxPolygonVertices].
+	/// The count must be in the range [3, MaxPolygonVertices].
 	/// @warning the points may be re-ordered, even if they form a convex polygon
 	/// @warning collinear points are handled but not removed. Collinear points
 	/// may lead to poor stacking behavior.
@@ -75,8 +75,8 @@ public:
 	b2MassData ComputeMass(float_t density) const override;
 
 	/// Gets the vertex count.
-	/// @return value between 0 and b2_maxPolygonVertices inclusive.
-	/// @see b2_maxPolygonVertices.
+	/// @return value between 0 and MaxPolygonVertices inclusive.
+	/// @see MaxPolygonVertices.
 	vertex_count_t GetVertexCount() const noexcept { return m_count; }
 
 	/// Get a vertex by index.
@@ -97,8 +97,8 @@ public:
 
 private:
 	b2Vec2 m_centroid = b2Vec2_zero;
-	b2Vec2 m_vertices[b2_maxPolygonVertices];
-	b2Vec2 m_normals[b2_maxPolygonVertices];
+	b2Vec2 m_vertices[MaxPolygonVertices];
+	b2Vec2 m_normals[MaxPolygonVertices];
 	vertex_count_t m_count = 0;
 };
 

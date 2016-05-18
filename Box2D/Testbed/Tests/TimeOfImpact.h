@@ -48,13 +48,13 @@ public:
 
 		b2Sweep sweepB;
 		sweepB.c0 = b2Vec2(53.474274f, -50.252514f);
-		sweepB.a0 = 513.36676f; // - 162.0f * b2_pi;
+		sweepB.a0 = 513.36676f; // - 162.0f * Pi;
 		sweepB.c = b2Vec2(54.595478f, -51.083473f);
-		sweepB.a = 513.62781f; //  - 162.0f * b2_pi;
+		sweepB.a = 513.62781f; //  - 162.0f * Pi;
 		sweepB.localCenter = b2Vec2_zero;
 
-		//sweepB.a0 -= 300.0f * b2_pi;
-		//sweepB.a -= 300.0f * b2_pi;
+		//sweepB.a0 -= 300.0f * Pi;
+		//sweepB.a -= 300.0f * Pi;
 
 		b2TOIInput input;
 		input.proxyA = b2DistanceProxy(m_shapeA, 0);
@@ -72,7 +72,7 @@ public:
 		g_debugDraw.DrawString(5, m_textLine, "max toi iters = %d, max root iters = %d", b2_toiMaxIters, b2_toiMaxRootIters);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		b2Vec2 vertices[b2_maxPolygonVertices];
+		b2Vec2 vertices[MaxPolygonVertices];
 
 		const auto transformA = b2GetTransform(sweepA, 0.0f);
 		for (int32 i = 0; i < m_shapeA.GetVertexCount(); ++i)

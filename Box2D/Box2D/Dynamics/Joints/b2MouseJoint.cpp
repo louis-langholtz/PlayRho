@@ -106,7 +106,7 @@ void b2MouseJoint::InitVelocityConstraints(const b2SolverData& data)
 	const auto mass = m_bodyB->GetMass();
 
 	// Frequency
-	const auto omega = float_t(2) * b2_pi * m_frequencyHz;
+	const auto omega = float_t(2) * Pi * m_frequencyHz;
 
 	// Damping coefficient
 	const auto d = float_t(2) * mass * m_dampingRatio * omega;
@@ -118,7 +118,7 @@ void b2MouseJoint::InitVelocityConstraints(const b2SolverData& data)
 	// gamma has units of inverse mass.
 	// beta has units of inverse time.
 	const auto h = data.step.get_dt();
-	assert(d + h * k > b2_epsilon);
+	assert(d + h * k > Epsilon);
 	m_gamma = h * (d + h * k);
 	if (m_gamma != float_t{0})
 	{

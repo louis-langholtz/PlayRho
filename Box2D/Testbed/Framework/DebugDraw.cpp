@@ -678,7 +678,7 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, size_type vertexCount, 
 void DebugDraw::DrawCircle(const b2Vec2& center, float_t radius, const b2Color& color)
 {
 	const float_t k_segments = 16.0f;
-	const float_t k_increment = 2.0f * b2_pi / k_segments;
+	const float_t k_increment = 2.0f * Pi / k_segments;
     float_t sinInc = sinf(k_increment);
     float_t cosInc = cosf(k_increment);
     b2Vec2 r1(1.0f, 0.0f);
@@ -701,7 +701,7 @@ void DebugDraw::DrawCircle(const b2Vec2& center, float_t radius, const b2Color& 
 void DebugDraw::DrawSolidCircle(const b2Vec2& center, float_t radius, const b2Vec2& axis, const b2Color& color)
 {
 	const float_t k_segments = 16.0f;
-	const float_t k_increment = 2.0f * b2_pi / k_segments;
+	const float_t k_increment = 2.0f * Pi / k_segments;
     float_t sinInc = sinf(k_increment);
     float_t cosInc = cosf(k_increment);
     b2Vec2 v0 = center;
