@@ -37,6 +37,7 @@ class b2DynamicTree
 public:
 	using size_type = size_t;
 
+	/// Null node index value.
 	static constexpr auto NullNode = static_cast<size_t>(-1);
 	
 	/// Constructing the tree initializes the node pool.

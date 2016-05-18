@@ -81,6 +81,7 @@ b2DynamicTree::size_type b2DynamicTree::AllocateNode()
 // Return a node to the pool.
 void b2DynamicTree::FreeNode(size_type nodeId)
 {
+	assert(nodeId != NullNode);
 	assert(nodeId < m_nodeCapacity);
 	assert(m_nodeCount > 0);
 	m_nodes[nodeId].next = m_freeList;
@@ -653,6 +654,12 @@ b2DynamicTree::size_type b2DynamicTree::GetMaxBalance() const
 	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
 	{
 		const auto node = m_nodes + i;
+		
+		if (node->height == NullNode)
+		{
+			continue;
+		}
+
 		if (node->height <= 1)
 		{
 			continue;
@@ -661,8 +668,10 @@ b2DynamicTree::size_type b2DynamicTree::GetMaxBalance() const
 		assert(!node->IsLeaf());
 
 		const auto child1 = node->child1;
+		assert(child1 != NullNode);
 		assert(child1 < m_nodeCapacity);
 		const auto child2 = node->child2;
+		assert(child2 != NullNode);
 		assert(child2 < m_nodeCapacity);
 		const auto balance = b2Abs(m_nodes[child2].height - m_nodes[child1].height);
 		maxBalance = b2Max(maxBalance, balance);
