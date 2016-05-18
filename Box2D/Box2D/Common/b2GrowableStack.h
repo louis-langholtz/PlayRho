@@ -26,11 +26,11 @@ namespace box2d {
 /// This is a growable LIFO stack with an initial capacity of N.
 /// If the stack size exceeds the initial capacity, the heap is used
 /// to increase the size of the stack.
-template <typename T, b2_size_t N>
+template <typename T, size_t N>
 class b2GrowableStack
 {
 public:
-	using size_type = b2_size_t;
+	using size_type = size_t;
 	static constexpr auto BufferGrowthRate = size_type{2};
 
 	b2GrowableStack() = default;

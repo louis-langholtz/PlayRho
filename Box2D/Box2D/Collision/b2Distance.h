@@ -32,7 +32,7 @@ class b2Shape;
 class b2DistanceProxy
 {
 public:
-	using size_type = b2_size_t; // must be big enough to hold max posible count of vertices
+	using size_type = size_t; // must be big enough to hold max posible count of vertices
 
 	b2DistanceProxy() = default;
 
@@ -70,7 +70,7 @@ public:
 	static constexpr auto MaxCount = unsigned{3};
 	using size_type = std::remove_cv<decltype(MaxCount)>::type;
 
-	using index_t = b2_size_t;
+	using index_t = size_t;
 
 	float_t GetMetric() const noexcept { return metric; }
 	size_type GetCount() const noexcept { return count; }

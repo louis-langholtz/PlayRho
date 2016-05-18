@@ -82,7 +82,7 @@ struct b2FixtureDef
 /// This proxy is used internally to connect fixtures to the broad-phase.
 struct b2FixtureProxy
 {
-	using size_type = b2_size_t;
+	using size_type = size_t;
 
 	b2AABB aabb;
 	b2Fixture* fixture;

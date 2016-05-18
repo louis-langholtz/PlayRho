@@ -28,7 +28,7 @@ namespace box2d {
 /// Proxy ID pair.
 struct b2ProxyIdPair
 {
-	using size_type = b2_size_t;
+	using size_type = size_t;
 	size_type proxyIdA;
 	size_type proxyIdB;
 };
@@ -50,7 +50,7 @@ class b2BroadPhase
 {
 public:
 
-	using size_type = b2_size_t;
+	using size_type = size_t;
 
 	enum: size_type
 	{

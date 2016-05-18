@@ -468,7 +468,7 @@ private:
 	b2Body* m_next = nullptr;
 
 	b2Fixture* m_fixtureList = nullptr;
-	b2_size_t m_fixtureCount = 0;
+	size_t m_fixtureCount = 0;
 
 	b2JointEdge* m_jointList = nullptr;
 	b2ContactEdge* m_contactList = nullptr;

@@ -28,7 +28,7 @@ constexpr auto b2_maxStackEntries = unsigned{32};
 
 struct b2StackEntry
 {
-	using size_type = b2_size_t;
+	using size_type = size_t;
 
 	char* data;
 	size_type size;
@@ -41,7 +41,7 @@ struct b2StackEntry
 class b2StackAllocator
 {
 public:
-	using size_type = b2_size_t;
+	using size_type = size_t;
 
 	b2StackAllocator();
 	~b2StackAllocator();

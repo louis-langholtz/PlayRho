@@ -23,7 +23,7 @@
 #include <Box2D/Common/b2GrowableStack.h>
 
 namespace box2d {
-static constexpr auto b2_nullNode = static_cast<b2_size_t>(-1);
+static constexpr auto b2_nullNode = static_cast<size_t>(-1);
 
 /// A dynamic AABB tree broad-phase, inspired by Nathanael Presson's btDbvt.
 /// A dynamic tree arranges data in a binary tree to accelerate
@@ -36,7 +36,7 @@ static constexpr auto b2_nullNode = static_cast<b2_size_t>(-1);
 class b2DynamicTree
 {
 public:
-	using size_type = b2_size_t;
+	using size_type = size_t;
 
 	/// Constructing the tree initializes the node pool.
 	b2DynamicTree();

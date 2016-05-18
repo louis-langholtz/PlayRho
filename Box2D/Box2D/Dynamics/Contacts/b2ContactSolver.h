@@ -48,7 +48,7 @@ struct b2VelocityConstraintPoint
 ///   structure.
 struct b2ContactVelocityConstraintBodyData
 {
-	using index_t = b2_size_t;
+	using index_t = size_t;
 
 	index_t index; ///< Index within island of body.
 	float_t invMass; ///< Inverse mass of body.
@@ -61,7 +61,7 @@ class b2ContactVelocityConstraint
 {
 public:
 	using size_type = std::remove_cv<decltype(b2_maxManifoldPoints)>::type;
-	using index_type = b2_size_t;
+	using index_type = size_t;
 	
 	/// Gets the count of points added to this object.
 	/// @return Value between 0 and b2_maxManifoldPoints
@@ -129,7 +129,7 @@ private:
 
 struct b2ContactSolverDef
 {
-	using size_type = b2_size_t;
+	using size_type = size_t;
 
 	b2TimeStep step;
 	b2Contact** contacts; // pointers to contacts
@@ -143,7 +143,7 @@ struct b2ContactSolverDef
 class b2ContactSolver
 {
 public:
-	using size_type = b2_size_t;
+	using size_type = size_t;
 	
 	/// Minimum separation for position constraints.
 	static constexpr auto MinSeparationThreshold = -b2_linearSlop * float_t(3);

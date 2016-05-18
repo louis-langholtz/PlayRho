@@ -39,7 +39,7 @@ bool g_blockSolve = true;
 
 struct b2ContactPositionConstraintBodyData
 {
-	using index_t = b2_size_t;
+	using index_t = size_t;
 
 	index_t index; ///< Index within island of the associated body.
 	float_t invMass; ///< Inverse mass of associated body.

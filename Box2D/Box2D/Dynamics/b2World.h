@@ -45,7 +45,7 @@ class b2Joint;
 class b2World
 {
 public:
-	using size_type = b2_size_t;
+	using size_type = size_t;
 
 	/// Construct a world object.
 	/// @param gravity the world gravity vector.

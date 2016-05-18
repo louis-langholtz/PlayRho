@@ -32,7 +32,7 @@ class b2BlockAllocator;
 class b2ContactManager
 {
 public:
-	using size_type = b2_size_t;
+	using size_type = size_t;
 
 	b2ContactManager(b2BlockAllocator* allocator, b2ContactFilter* filter, b2ContactListener* listener);
 

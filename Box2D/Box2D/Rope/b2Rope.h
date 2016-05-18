@@ -28,7 +28,7 @@ class b2Draw;
 /// 
 struct b2RopeDef
 {
-	using size_type = b2_size_t;
+	using size_type = size_t;
 
 	constexpr b2RopeDef() = default;
 
@@ -58,7 +58,7 @@ struct b2RopeDef
 class b2Rope
 {
 public:
-	using size_type = b2_size_t;
+	using size_type = size_t;
 
 	constexpr b2Rope() = default;
 	~b2Rope();

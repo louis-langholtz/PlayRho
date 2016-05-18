@@ -49,8 +49,8 @@ using float64 = double;
 using float_t = float;
 
 using child_count_t = unsigned; // relating to "children" of b2Shape
-using b2_size_t = std::size_t;
-using island_count_t = b2_size_t; // relating to items in a b2Island
+using size_t = std::size_t;
+using island_count_t = size_t; // relating to items in a b2Island
 
 constexpr auto b2_maxFloat = std::numeric_limits<float_t>::max(); // FLT_MAX
 constexpr auto b2_epsilon = std::numeric_limits<float_t>::epsilon(); // FLT_EPSILON;
@@ -157,10 +157,10 @@ constexpr auto b2_angularSleepTolerance = b2_pi * float_t(2) / float_t(180);
 // Memory Allocation
 
 /// Implement this function to use your own memory allocator.
-void* b2Alloc(b2_size_t size);
+void* b2Alloc(size_t size);
 
 /// Implement this function to use your own memory allocator.
-void* b2Realloc(void* ptr, b2_size_t new_size);
+void* b2Realloc(void* ptr, size_t new_size);
 
 /// If you implement b2Alloc, you should also implement this function.
 void b2Free(void* mem);

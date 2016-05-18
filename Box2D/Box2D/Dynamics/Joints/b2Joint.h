@@ -102,7 +102,7 @@ struct b2JointDef
 class b2Joint
 {
 public:
-	using index_t = b2_size_t;
+	using index_t = size_t;
 
 	/// Get the type of the concrete joint.
 	b2JointType GetType() const noexcept;
