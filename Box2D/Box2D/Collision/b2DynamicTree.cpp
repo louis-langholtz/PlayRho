@@ -369,18 +369,23 @@ b2DynamicTree::size_type b2DynamicTree::Balance(size_type iA)
 	assert(iA < m_nodeCapacity);
 
 	auto A = m_nodes + iA;
-	if (A->IsLeaf() || (A->height < 2))
+	if (A->IsLeaf() || (A->height == NullNode) || (A->height < 2))
 	{
 		return iA;
 	}
 
 	const auto iB = A->child1;
 	const auto iC = A->child2;
+	assert(iB != NullNode);
 	assert(iB < m_nodeCapacity);
+	assert(iC != NullNode);
 	assert(iC < m_nodeCapacity);
 
 	auto B = m_nodes + iB;
 	auto C = m_nodes + iC;
+
+	assert(B->height != NullNode);
+	assert(C->height != NullNode);
 
 	// Rotate C up
 	if (C->height > (B->height + 1))
