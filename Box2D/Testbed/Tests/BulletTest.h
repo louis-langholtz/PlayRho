@@ -78,13 +78,13 @@ public:
 		m_bullet->SetLinearVelocity(b2Vec2(0.0f, -50.0f));
 		m_bullet->SetAngularVelocity(0.0f);
 
-		extern int32 b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
+		extern int32 gjkCalls, gjkIters, gjkMaxIters;
 		extern int32 b2_toiCalls, b2_toiIters, b2_toiMaxIters;
 		extern int32 b2_toiRootIters, b2_toiMaxRootIters;
 
-		b2_gjkCalls = 0;
-		b2_gjkIters = 0;
-		b2_gjkMaxIters = 0;
+		gjkCalls = 0;
+		gjkIters = 0;
+		gjkMaxIters = 0;
 
 		b2_toiCalls = 0;
 		b2_toiIters = 0;
@@ -97,14 +97,14 @@ public:
 	{
 		Test::Step(settings);
 
-		extern int32 b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
+		extern int32 gjkCalls, gjkIters, gjkMaxIters;
 		extern int32 b2_toiCalls, b2_toiIters;
 		extern int32 b2_toiRootIters, b2_toiMaxRootIters;
 
-		if (b2_gjkCalls > 0)
+		if (gjkCalls > 0)
 		{
 			g_debugDraw.DrawString(5, m_textLine, "gjk calls = %d, ave gjk iters = %3.1f, max gjk iters = %d",
-				b2_gjkCalls, b2_gjkIters / float_t(b2_gjkCalls), b2_gjkMaxIters);
+				gjkCalls, gjkIters / float_t(gjkCalls), gjkMaxIters);
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 

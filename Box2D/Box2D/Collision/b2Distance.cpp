@@ -26,7 +26,7 @@ namespace box2d {
 
 #if defined(DO_GJK_PROFILING)
 // GJK using Voronoi regions (Christer Ericson) and Barycentric coordinates.
-int32 b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
+int32 gjkCalls, gjkIters, gjkMaxIters;
 #endif
 
 b2DistanceProxy::b2DistanceProxy(const b2Shape& shape, child_count_t index)
@@ -462,7 +462,7 @@ void b2Simplex::Solve3() noexcept
 b2DistanceOutput b2Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 {
 #if defined(DO_GJK_PROFILING)
-	++b2_gjkCalls;
+	++gjkCalls;
 #endif
 
 	const auto& proxyA = input.proxyA;
@@ -556,7 +556,7 @@ b2DistanceOutput b2Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 		// Iteration count is equated to the number of support point calls.
 		++iter;
 #if defined(DO_GJK_PROFILING)
-		++b2_gjkIters;
+		++gjkIters;
 #endif
 
 		// Check for duplicate support points. This is the main termination criteria.
@@ -583,7 +583,7 @@ b2DistanceOutput b2Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 	}
 
 #if defined(DO_GJK_PROFILING)
-	b2_gjkMaxIters = b2Max(b2_gjkMaxIters, iter);
+	gjkMaxIters = b2Max(gjkMaxIters, iter);
 #endif
 
 	// Prepare output.
