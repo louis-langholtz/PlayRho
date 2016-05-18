@@ -23,8 +23,6 @@
 
 namespace box2d {
 
-const auto b2_minPulleyLength = float_t(2);
-
 /// Pulley joint definition. This requires two ground anchors,
 /// two dynamic body anchor points, and a pulley ratio.
 struct b2PulleyJointDef : public b2JointDef
