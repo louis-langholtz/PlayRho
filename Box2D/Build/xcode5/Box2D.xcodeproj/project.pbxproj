@@ -1632,6 +1632,7 @@
 				GCC_WARN_SIGN_COMPARE = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
+				USE_HEADERMAP = NO;
 			};
 			name = Debug;
 		};
@@ -1652,6 +1653,7 @@
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_WARN_SIGN_COMPARE = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USE_HEADERMAP = NO;
 			};
 			name = Release;
 		};

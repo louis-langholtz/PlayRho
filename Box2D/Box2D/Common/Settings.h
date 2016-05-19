@@ -16,8 +16,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef B2_SETTINGS_H
-#define B2_SETTINGS_H
+#ifndef BOX2D_SETTINGS_H
+#define BOX2D_SETTINGS_H
 
 #include <cstddef>
 #include <cassert>

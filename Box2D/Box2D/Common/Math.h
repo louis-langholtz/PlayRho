@@ -16,8 +16,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef B2_MATH_H
-#define B2_MATH_H
+#ifndef BOX2D_MATH_H
+#define BOX2D_MATH_H
 
 #include <Box2D/Common/Settings.h>
 #include <cmath>
