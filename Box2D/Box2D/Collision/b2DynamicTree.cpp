@@ -130,7 +130,7 @@ bool b2DynamicTree::MoveProxy(size_type proxyId, const b2AABB& aabb, const b2Vec
 	RemoveLeaf(proxyId);
 
 	// Extend AABB.
-	auto b = aabb + b2Vec2(AabbExtension, AabbExtension);
+	const auto b = aabb + b2Vec2(AabbExtension, AabbExtension);
 	auto lowerBound = b.GetLowerBound();
 	auto upperBound = b.GetUpperBound();
 	
@@ -233,14 +233,7 @@ void b2DynamicTree::InsertLeaf(size_type leaf)
 		}
 
 		// Descend
-		if (cost1 < cost2)
-		{
-			index = child1;
-		}
-		else
-		{
-			index = child2;
-		}
+		index = (cost1 < cost2)? child1: child2;
 	}
 
 	const auto sibling = index;
@@ -251,6 +244,7 @@ void b2DynamicTree::InsertLeaf(size_type leaf)
 	m_nodes[newParent].parent = oldParent;
 	m_nodes[newParent].userData = nullptr;
 	m_nodes[newParent].aabb = leafAABB + m_nodes[sibling].aabb;
+	assert(m_nodes[sibling].height != NullNode);
 	m_nodes[newParent].height = m_nodes[sibling].height + 1;
 
 	if (oldParent != NullNode)
@@ -346,6 +340,8 @@ void b2DynamicTree::RemoveLeaf(size_type leaf)
 			assert(child2 < m_nodeCapacity);
 
 			m_nodes[index].aabb = m_nodes[child1].aabb + m_nodes[child2].aabb;
+			assert(m_nodes[child1].height != NullNode);
+			assert(m_nodes[child2].height != NullNode);
 			m_nodes[index].height = 1 + b2Max(m_nodes[child1].height, m_nodes[child2].height);
 
 			index = m_nodes[index].parent;
@@ -368,7 +364,7 @@ b2DynamicTree::size_type b2DynamicTree::Balance(size_type iA)
 	assert(iA != NullNode);
 	assert(iA < m_nodeCapacity);
 
-	auto A = m_nodes + iA;
+	const auto A = m_nodes + iA;
 	if (A->IsLeaf() || (A->height == NullNode) || (A->height < 2))
 	{
 		return iA;
@@ -381,8 +377,8 @@ b2DynamicTree::size_type b2DynamicTree::Balance(size_type iA)
 	assert(iC != NullNode);
 	assert(iC < m_nodeCapacity);
 
-	auto B = m_nodes + iB;
-	auto C = m_nodes + iC;
+	const auto B = m_nodes + iB;
+	const auto C = m_nodes + iC;
 
 	assert(B->height != NullNode);
 	assert(C->height != NullNode);
@@ -395,8 +391,8 @@ b2DynamicTree::size_type b2DynamicTree::Balance(size_type iA)
 		assert((0 <= iF) && (iF < m_nodeCapacity));
 		assert((0 <= iG) && (iG < m_nodeCapacity));
 
-		auto F = m_nodes + iF;
-		auto G = m_nodes + iG;
+		const auto F = m_nodes + iF;
+		const auto G = m_nodes + iG;
 		
 		// Swap A and C
 		C->child1 = iA;
@@ -422,6 +418,8 @@ b2DynamicTree::size_type b2DynamicTree::Balance(size_type iA)
 		}
 
 		// Rotate
+		assert(F->height != NullNode);
+		assert(G->height != NullNode);
 		if (F->height > G->height)
 		{
 			C->child2 = iF;
@@ -478,6 +476,9 @@ b2DynamicTree::size_type b2DynamicTree::Balance(size_type iA)
 		{
 			m_root = iB;
 		}
+
+		assert(D->height != NullNode);
+		assert(E->height != NullNode);
 
 		// Rotate
 		if (D->height > E->height)
@@ -678,6 +679,8 @@ b2DynamicTree::size_type b2DynamicTree::GetMaxBalance() const
 		const auto child2 = node->child2;
 		assert(child2 != NullNode);
 		assert(child2 < m_nodeCapacity);
+		assert(m_nodes[child1].height != NullNode);
+		assert(m_nodes[child2].height != NullNode);
 		const auto balance = b2Abs(m_nodes[child2].height - m_nodes[child1].height);
 		maxBalance = b2Max(maxBalance, balance);
 	}
@@ -687,7 +690,7 @@ b2DynamicTree::size_type b2DynamicTree::GetMaxBalance() const
 
 void b2DynamicTree::RebuildBottomUp()
 {
-	auto nodes = static_cast<size_type*>(alloc(m_nodeCount * sizeof(size_type)));
+	const auto nodes = static_cast<size_type*>(alloc(m_nodeCount * sizeof(size_type)));
 	auto count = size_type{0};
 
 	// Build array of leaves. Free the rest.
@@ -745,6 +748,8 @@ void b2DynamicTree::RebuildBottomUp()
 		auto parent = m_nodes + parentIndex;
 		parent->child1 = index1;
 		parent->child2 = index2;
+		assert(child1->height != NullNode);
+		assert(child2->height != NullNode);
 		parent->height = 1 + b2Max(child1->height, child2->height);
 		parent->aabb = child1->aabb + child2->aabb;
 		parent->parent = NullNode;
