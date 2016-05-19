@@ -29,9 +29,9 @@ namespace box2d {
 /// can violate the constraint slightly. The joint translation is zero
 /// when the local anchor points coincide in world space. Using local
 /// anchors and a local axis helps when saving and loading a game.
-struct b2PrismaticJointDef : public b2JointDef
+struct b2PrismaticJointDef : public JointDef
 {
-	constexpr b2PrismaticJointDef() noexcept: b2JointDef(e_prismaticJoint) {}
+	constexpr b2PrismaticJointDef() noexcept: JointDef(e_prismaticJoint) {}
 
 	/// Initialize the bodies, anchors, axis, and reference angle using the world
 	/// anchor and unit world axis.
@@ -72,7 +72,7 @@ struct b2PrismaticJointDef : public b2JointDef
 /// along an axis fixed in bodyA. Relative rotation is prevented. You can
 /// use a joint limit to restrict the range of motion and a joint motor to
 /// drive the motion or to model joint friction.
-class b2PrismaticJoint : public b2Joint
+class b2PrismaticJoint : public Joint
 {
 public:
 	Vec2 GetAnchorA() const override;
@@ -137,7 +137,7 @@ public:
 	void Dump() override;
 
 protected:
-	friend class b2Joint;
+	friend class Joint;
 	friend class b2GearJoint;
 	b2PrismaticJoint(const b2PrismaticJointDef* def);
 

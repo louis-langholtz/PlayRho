@@ -160,7 +160,7 @@ m_allocator(allocator),
 m_listener(listener),
 m_bodies(static_cast<Body**>(m_allocator->Allocate(bodyCapacity * sizeof(Body*)))),
 m_contacts(static_cast<b2Contact**>(m_allocator->Allocate(contactCapacity * sizeof(b2Contact*)))),
-m_joints(static_cast<b2Joint**>(m_allocator->Allocate(jointCapacity * sizeof(b2Joint*)))),
+m_joints(static_cast<Joint**>(m_allocator->Allocate(jointCapacity * sizeof(Joint*)))),
 m_velocities(static_cast<b2Velocity*>(m_allocator->Allocate(bodyCapacity * sizeof(b2Velocity)))),
 m_positions(static_cast<b2Position*>(m_allocator->Allocate(bodyCapacity * sizeof(b2Position))))
 {
@@ -502,7 +502,7 @@ void b2Island::Add(b2Contact* contact)
 	++m_contactCount;
 }
 
-void b2Island::Add(b2Joint* joint)
+void b2Island::Add(Joint* joint)
 {
 	assert(m_jointCount < m_jointCapacity);
 	m_joints[m_jointCount] = joint;

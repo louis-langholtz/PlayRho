@@ -141,7 +141,7 @@ public:
 	}
 
 	b2RopeJointDef m_ropeDef;
-	b2Joint* m_rope;
+	Joint* m_rope;
 };
 
 } // namespace box2d

@@ -24,11 +24,11 @@
 namespace box2d {
 
 class Body;
-class b2Joint;
+class Joint;
 struct b2SolverData;
 class b2BlockAllocator;
 
-enum b2JointType
+enum JointType
 {
 	e_unknownJoint,
 	e_revoluteJoint,
@@ -64,25 +64,25 @@ struct b2Jacobian
 /// is an edge. A joint edge belongs to a doubly linked list
 /// maintained in each attached body. Each joint has two joint
 /// nodes, one for each attached body.
-struct b2JointEdge
+struct JointEdge
 {
 	Body* other;			///< provides quick access to the other body attached.
-	b2Joint* joint;			///< the joint
-	b2JointEdge* prev;		///< the previous joint edge in the body's joint list
-	b2JointEdge* next;		///< the next joint edge in the body's joint list
+	Joint* joint;			///< the joint
+	JointEdge* prev;		///< the previous joint edge in the body's joint list
+	JointEdge* next;		///< the next joint edge in the body's joint list
 };
 
 /// Joint definitions are used to construct joints.
-struct b2JointDef
+struct JointDef
 {
-	b2JointDef() = delete;
+	JointDef() = delete;
 
-	constexpr b2JointDef(b2JointType t) noexcept: type(t) {}
-	constexpr b2JointDef(b2JointType t, Body* bA, Body* bB) noexcept:
+	constexpr JointDef(JointType t) noexcept: type(t) {}
+	constexpr JointDef(JointType t, Body* bA, Body* bB) noexcept:
 		type(t), bodyA(bA), bodyB(bB) {}
 
 	/// The joint type is set automatically for concrete joint types.
-	const b2JointType type;
+	const JointType type;
 
 	/// Use this to attach application specific data to your joints.
 	void* userData = nullptr;
@@ -99,13 +99,13 @@ struct b2JointDef
 
 /// The base joint class. Joints are used to constraint two bodies together in
 /// various fashions. Some joints also feature limits and motors.
-class b2Joint
+class Joint
 {
 public:
 	using index_t = size_t;
 
 	/// Get the type of the concrete joint.
-	b2JointType GetType() const noexcept;
+	JointType GetType() const noexcept;
 
 	/// Get the first body attached to this joint.
 	Body* GetBodyA() noexcept;
@@ -126,8 +126,8 @@ public:
 	virtual float_t GetReactionTorque(float_t inv_dt) const = 0;
 
 	/// Get the next joint the world joint list.
-	b2Joint* GetNext() noexcept;
-	const b2Joint* GetNext() const noexcept;
+	Joint* GetNext() noexcept;
+	const Joint* GetNext() const noexcept;
 
 	/// Get the user data pointer.
 	void* GetUserData() const noexcept;
@@ -155,11 +155,11 @@ protected:
 	friend class b2Island;
 	friend class b2GearJoint;
 
-	static b2Joint* Create(const b2JointDef* def, b2BlockAllocator* allocator);
-	static void Destroy(b2Joint* joint, b2BlockAllocator* allocator);
+	static Joint* Create(const JointDef* def, b2BlockAllocator* allocator);
+	static void Destroy(Joint* joint, b2BlockAllocator* allocator);
 
-	b2Joint(const b2JointDef* def);
-	virtual ~b2Joint() {}
+	Joint(const JointDef* def);
+	virtual ~Joint() {}
 
 	virtual void InitVelocityConstraints(const b2SolverData& data) = 0;
 	virtual void SolveVelocityConstraints(const b2SolverData& data) = 0;
@@ -170,11 +170,11 @@ protected:
 	bool IsInIsland() const noexcept;
 	void SetInIsland(bool value) noexcept;
 
-	const b2JointType m_type;
-	b2Joint* m_prev = nullptr;
-	b2Joint* m_next = nullptr;
-	b2JointEdge m_edgeA = {nullptr, nullptr, nullptr, nullptr};
-	b2JointEdge m_edgeB = {nullptr, nullptr, nullptr, nullptr};
+	const JointType m_type;
+	Joint* m_prev = nullptr;
+	Joint* m_next = nullptr;
+	JointEdge m_edgeA = {nullptr, nullptr, nullptr, nullptr};
+	JointEdge m_edgeB = {nullptr, nullptr, nullptr, nullptr};
 	Body* m_bodyA;
 	Body* m_bodyB;
 
@@ -186,52 +186,52 @@ protected:
 	void* m_userData;
 };
 
-inline b2JointType b2Joint::GetType() const noexcept
+inline JointType Joint::GetType() const noexcept
 {
 	return m_type;
 }
 
-inline Body* b2Joint::GetBodyA() noexcept
+inline Body* Joint::GetBodyA() noexcept
 {
 	return m_bodyA;
 }
 
-inline Body* b2Joint::GetBodyB() noexcept
+inline Body* Joint::GetBodyB() noexcept
 {
 	return m_bodyB;
 }
 
-inline b2Joint* b2Joint::GetNext() noexcept
+inline Joint* Joint::GetNext() noexcept
 {
 	return m_next;
 }
 
-inline const b2Joint* b2Joint::GetNext() const noexcept
+inline const Joint* Joint::GetNext() const noexcept
 {
 	return m_next;
 }
 
-inline void* b2Joint::GetUserData() const noexcept
+inline void* Joint::GetUserData() const noexcept
 {
 	return m_userData;
 }
 
-inline void b2Joint::SetUserData(void* data) noexcept
+inline void Joint::SetUserData(void* data) noexcept
 {
 	m_userData = data;
 }
 
-inline bool b2Joint::GetCollideConnected() const noexcept
+inline bool Joint::GetCollideConnected() const noexcept
 {
 	return m_collideConnected;
 }
 
-inline bool b2Joint::IsInIsland() const noexcept
+inline bool Joint::IsInIsland() const noexcept
 {
 	return m_islandFlag;
 }
 
-inline void b2Joint::SetInIsland(bool value) noexcept
+inline void Joint::SetInIsland(bool value) noexcept
 {
 	m_islandFlag = value;
 }

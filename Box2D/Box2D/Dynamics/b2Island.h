@@ -26,7 +26,7 @@ namespace box2d {
 
 class Body;
 class b2Contact;
-class b2Joint;
+class Joint;
 class b2StackAllocator;
 class b2ContactListener;
 struct b2ContactVelocityConstraint;
@@ -48,7 +48,7 @@ public:
 	///   Additionally all removed bodies will have their island indexes set to Body::InvalidIslandIndex.
 	/// @sa void Add(Body* body).
 	/// @sa void Add(b2Contact* contact).
-	/// @sa void Add(b2Joint* joint).
+	/// @sa void Add(Joint* joint).
 	void Clear() noexcept;
 
 	void Solve(b2Profile* profile, const b2TimeStep& step, const Vec2& gravity, bool allowSleep);
@@ -59,7 +59,7 @@ public:
 
 	void Add(b2Contact* contact);
 
-	void Add(b2Joint* joint);
+	void Add(Joint* joint);
 
 	void Report(const b2ContactVelocityConstraint* constraints);
 
@@ -127,7 +127,7 @@ private:
 
 	Body** const m_bodies;
 	b2Contact** const m_contacts;
-	b2Joint** const m_joints;
+	Joint** const m_joints;
 	b2Velocity* const m_velocities;
 	b2Position* const m_positions;
 };

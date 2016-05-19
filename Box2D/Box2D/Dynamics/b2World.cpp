@@ -221,7 +221,7 @@ void b2World::DestroyBody(Body* b)
 	m_blockAllocator.Free(b, sizeof(Body));
 }
 
-b2Joint* b2World::CreateJoint(const b2JointDef* def)
+Joint* b2World::CreateJoint(const JointDef* def)
 {
 	assert(!IsLocked());
 	if (IsLocked())
@@ -229,7 +229,7 @@ b2Joint* b2World::CreateJoint(const b2JointDef* def)
 		return nullptr;
 	}
 
-	auto j = b2Joint::Create(def, &m_blockAllocator);
+	auto j = Joint::Create(def, &m_blockAllocator);
 
 	// Connect to the world list.
 	j->m_prev = nullptr;
@@ -281,7 +281,7 @@ b2Joint* b2World::CreateJoint(const b2JointDef* def)
 	return j;
 }
 
-void b2World::DestroyJoint(b2Joint* j)
+void b2World::DestroyJoint(Joint* j)
 {
 	assert(!IsLocked());
 	if (IsLocked())
@@ -353,7 +353,7 @@ void b2World::DestroyJoint(b2Joint* j)
 	j->m_edgeB.prev = nullptr;
 	j->m_edgeB.next = nullptr;
 
-	b2Joint::Destroy(j, &m_blockAllocator);
+	Joint::Destroy(j, &m_blockAllocator);
 
 	assert(m_jointCount > 0);
 	--m_jointCount;
@@ -1005,7 +1005,7 @@ void b2World::DrawShape(const Fixture* fixture, const Transform& xf, const b2Col
 	}
 }
 
-void b2World::DrawJoint(b2Joint* joint)
+void b2World::DrawJoint(Joint* joint)
 {
 	const auto bodyA = joint->GetBodyA();
 	const auto bodyB = joint->GetBodyB();
@@ -1204,7 +1204,7 @@ void b2World::Dump()
 	log("m_world->SetGravity(g);\n");
 
 	log("Body** bodies = (Body**)alloc(%d * sizeof(Body*));\n", m_bodyCount);
-	log("b2Joint** joints = (b2Joint**)alloc(%d * sizeof(b2Joint*));\n", m_jointCount);
+	log("Joint** joints = (Joint**)alloc(%d * sizeof(Joint*));\n", m_jointCount);
 	auto i = island_count_t{0};
 	for (auto b = m_bodyList; b; b = b->m_next)
 	{

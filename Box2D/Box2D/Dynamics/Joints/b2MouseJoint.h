@@ -25,9 +25,9 @@ namespace box2d {
 
 /// Mouse joint definition. This requires a world target point,
 /// tuning parameters, and the time step.
-struct b2MouseJointDef : public b2JointDef
+struct b2MouseJointDef : public JointDef
 {
-	constexpr b2MouseJointDef() noexcept: b2JointDef(e_mouseJoint) {}
+	constexpr b2MouseJointDef() noexcept: JointDef(e_mouseJoint) {}
 
 	/// The initial world target point. This is assumed
 	/// to coincide with the body anchor initially.
@@ -52,20 +52,20 @@ struct b2MouseJointDef : public b2JointDef
 /// NOTE: this joint is not documented in the manual because it was
 /// developed to be used in the testbed. If you want to learn how to
 /// use the mouse joint, look at the testbed.
-class b2MouseJoint : public b2Joint
+class b2MouseJoint : public Joint
 {
 public:
 
-	/// Implements b2Joint.
+	/// Implements Joint.
 	Vec2 GetAnchorA() const override;
 
-	/// Implements b2Joint.
+	/// Implements Joint.
 	Vec2 GetAnchorB() const override;
 
-	/// Implements b2Joint.
+	/// Implements Joint.
 	Vec2 GetReactionForce(float_t inv_dt) const override;
 
-	/// Implements b2Joint.
+	/// Implements Joint.
 	float_t GetReactionTorque(float_t inv_dt) const override;
 
 	/// Use this to update the target point.
@@ -87,11 +87,11 @@ public:
 	/// The mouse joint does not support dumping.
 	void Dump() override;
 
-	/// Implement b2Joint::ShiftOrigin
+	/// Implement Joint::ShiftOrigin
 	void ShiftOrigin(const Vec2& newOrigin) override;
 
 protected:
-	friend class b2Joint;
+	friend class Joint;
 
 	b2MouseJoint(const b2MouseJointDef* def);
 

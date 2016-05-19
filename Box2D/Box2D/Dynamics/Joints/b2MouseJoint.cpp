@@ -31,7 +31,7 @@ using namespace box2d;
 // w k % (rx i + ry j) = w * (-ry i + rx j)
 
 b2MouseJoint::b2MouseJoint(const b2MouseJointDef* def)
-: b2Joint(def)
+: Joint(def)
 {
 	assert(def->target.IsValid());
 	assert(IsValid(def->maxForce) && (def->maxForce >= float_t{0}));

@@ -43,7 +43,7 @@ void b2MotorJointDef::Initialize(Body* bA, Body* bB)
 }
 
 b2MotorJoint::b2MotorJoint(const b2MotorJointDef* def)
-: b2Joint(def)
+: Joint(def)
 {
 	m_linearOffset = def->linearOffset;
 	m_angularOffset = def->angularOffset;

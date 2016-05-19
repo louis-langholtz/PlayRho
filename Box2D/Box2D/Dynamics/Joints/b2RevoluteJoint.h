@@ -34,9 +34,9 @@ namespace box2d {
 /// 1. you might not know where the center of mass will be.
 /// 2. if you add/remove shapes from a body and recompute the mass,
 ///    the joints will be broken.
-struct b2RevoluteJointDef : public b2JointDef
+struct b2RevoluteJointDef : public JointDef
 {
-	constexpr b2RevoluteJointDef() noexcept: b2JointDef(e_revoluteJoint) {}
+	constexpr b2RevoluteJointDef() noexcept: JointDef(e_revoluteJoint) {}
 
 	/// Initialize the bodies, anchors, and reference angle using a world
 	/// anchor point.
@@ -77,7 +77,7 @@ struct b2RevoluteJointDef : public b2JointDef
 /// a joint limit that specifies a lower and upper angle. You can use a motor
 /// to drive the relative rotation about the shared point. A maximum motor torque
 /// is provided so that infinite forces are not generated.
-class b2RevoluteJoint : public b2Joint
+class b2RevoluteJoint : public Joint
 {
 public:
 	Vec2 GetAnchorA() const override;
@@ -146,7 +146,7 @@ public:
 
 protected:
 	
-	friend class b2Joint;
+	friend class Joint;
 	friend class b2GearJoint;
 
 	b2RevoluteJoint(const b2RevoluteJointDef* def);

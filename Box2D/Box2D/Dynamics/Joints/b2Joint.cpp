@@ -36,9 +36,9 @@
 
 using namespace box2d;
 
-b2Joint* b2Joint::Create(const b2JointDef* def, b2BlockAllocator* allocator)
+Joint* Joint::Create(const JointDef* def, b2BlockAllocator* allocator)
 {
-	auto joint = static_cast<b2Joint*>(nullptr);
+	auto joint = static_cast<Joint*>(nullptr);
 
 	switch (def->type)
 	{
@@ -127,9 +127,9 @@ b2Joint* b2Joint::Create(const b2JointDef* def, b2BlockAllocator* allocator)
 	return joint;
 }
 
-void b2Joint::Destroy(b2Joint* joint, b2BlockAllocator* allocator)
+void Joint::Destroy(Joint* joint, b2BlockAllocator* allocator)
 {
-	joint->~b2Joint();
+	joint->~Joint();
 	switch (joint->m_type)
 	{
 	case e_distanceJoint:
@@ -182,14 +182,14 @@ void b2Joint::Destroy(b2Joint* joint, b2BlockAllocator* allocator)
 	}
 }
 
-b2Joint::b2Joint(const b2JointDef* def):
+Joint::Joint(const JointDef* def):
 	m_type(def->type), m_bodyA(def->bodyA), m_bodyB(def->bodyB),
 	m_collideConnected(def->collideConnected), m_userData(def->userData)
 {
 	assert(def->bodyA != def->bodyB);
 }
 
-bool b2Joint::IsActive() const noexcept
+bool Joint::IsActive() const noexcept
 {
 	return m_bodyA->IsActive() && m_bodyB->IsActive();
 }

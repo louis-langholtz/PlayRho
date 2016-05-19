@@ -31,7 +31,7 @@ using namespace box2d;
 //   = invMassA + invIA * cross(rA, u)^2 + invMassB + invIB * cross(rB, u)^2
 
 b2RopeJoint::b2RopeJoint(const b2RopeJointDef* def)
-: b2Joint(def)
+: Joint(def)
 {
 	m_localAnchorA = def->localAnchorA;
 	m_localAnchorB = def->localAnchorB;

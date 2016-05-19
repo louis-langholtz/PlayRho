@@ -66,11 +66,11 @@ public:
 
 			b2RevoluteJointDef jd1;
 			jd1.Initialize(body2, body1, bd1.position);
-			b2Joint* joint1 = m_world->CreateJoint(&jd1);
+			Joint* joint1 = m_world->CreateJoint(&jd1);
 
 			b2RevoluteJointDef jd2;
 			jd2.Initialize(body2, body3, bd3.position);
-			b2Joint* joint2 = m_world->CreateJoint(&jd2);
+			Joint* joint2 = m_world->CreateJoint(&jd2);
 
 			b2GearJointDef jd4;
 			jd4.bodyA = body1;

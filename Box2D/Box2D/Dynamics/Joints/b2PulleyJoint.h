@@ -25,9 +25,9 @@ namespace box2d {
 
 /// Pulley joint definition. This requires two ground anchors,
 /// two dynamic body anchor points, and a pulley ratio.
-struct b2PulleyJointDef : public b2JointDef
+struct b2PulleyJointDef : public JointDef
 {
-	b2PulleyJointDef() noexcept: b2JointDef(e_pulleyJoint)
+	b2PulleyJointDef() noexcept: JointDef(e_pulleyJoint)
 	{
 		collideConnected = true;
 	}
@@ -68,7 +68,7 @@ struct b2PulleyJointDef : public b2JointDef
 /// work better when combined with prismatic joints. You should also cover the
 /// the anchor points with static shapes to prevent one side from going to
 /// zero length.
-class b2PulleyJoint : public b2Joint
+class b2PulleyJoint : public Joint
 {
 public:
 	Vec2 GetAnchorA() const override;
@@ -101,12 +101,12 @@ public:
 	/// Dump joint to dmLog
 	void Dump() override;
 
-	/// Implement b2Joint::ShiftOrigin
+	/// Implement Joint::ShiftOrigin
 	void ShiftOrigin(const Vec2& newOrigin) override;
 
 protected:
 
-	friend class b2Joint;
+	friend class Joint;
 	b2PulleyJoint(const b2PulleyJointDef* data);
 
 	void InitVelocityConstraints(const b2SolverData& data) override;

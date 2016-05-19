@@ -100,7 +100,7 @@ void b2PrismaticJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor, con
 }
 
 b2PrismaticJoint::b2PrismaticJoint(const b2PrismaticJointDef* def)
-: b2Joint(def)
+: Joint(def)
 {
 	m_localAnchorA = def->localAnchorA;
 	m_localAnchorB = def->localAnchorB;

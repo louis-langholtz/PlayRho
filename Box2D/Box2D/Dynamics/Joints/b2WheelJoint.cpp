@@ -48,7 +48,7 @@ void b2WheelJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor, const V
 }
 
 b2WheelJoint::b2WheelJoint(const b2WheelJointDef* def)
-: b2Joint(def)
+: Joint(def)
 {
 	m_localAnchorA = def->localAnchorA;
 	m_localAnchorB = def->localAnchorB;

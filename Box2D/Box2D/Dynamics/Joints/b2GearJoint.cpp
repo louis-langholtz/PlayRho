@@ -44,7 +44,7 @@ using namespace box2d;
 // K = J * invM * JT = invMass + invI * cross(r, ug)^2
 
 b2GearJoint::b2GearJoint(const b2GearJointDef* def)
-: b2Joint(def)
+: Joint(def)
 {
 	m_joint1 = def->joint1;
 	m_joint2 = def->joint2;
@@ -57,7 +57,7 @@ b2GearJoint::b2GearJoint(const b2GearJointDef* def)
 
 	float_t coordinateA, coordinateB;
 
-	// TODO_ERIN there might be some problem with the joint edges in b2Joint.
+	// TODO_ERIN there might be some problem with the joint edges in Joint.
 
 	m_bodyC = m_joint1->GetBodyA();
 	m_bodyA = m_joint1->GetBodyB();

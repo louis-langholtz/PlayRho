@@ -54,7 +54,7 @@ void b2PulleyJointDef::Initialize(Body* bA, Body* bB,
 }
 
 b2PulleyJoint::b2PulleyJoint(const b2PulleyJointDef* def)
-: b2Joint(def)
+: Joint(def)
 {
 	m_groundAnchorA = def->groundAnchorA;
 	m_groundAnchorB = def->groundAnchorB;

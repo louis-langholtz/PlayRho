@@ -46,7 +46,7 @@ void b2WeldJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor)
 }
 
 b2WeldJoint::b2WeldJoint(const b2WeldJointDef* def)
-: b2Joint(def)
+: Joint(def)
 {
 	m_localAnchorA = def->localAnchorA;
 	m_localAnchorB = def->localAnchorB;

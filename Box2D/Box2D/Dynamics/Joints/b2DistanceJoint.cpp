@@ -49,7 +49,7 @@ void b2DistanceJointDef::Initialize(Body* b1, Body* b2,
 }
 
 b2DistanceJoint::b2DistanceJoint(const b2DistanceJointDef* def)
-: b2Joint(def)
+: Joint(def)
 {
 	m_localAnchorA = def->localAnchorA;
 	m_localAnchorB = def->localAnchorB;

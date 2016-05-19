@@ -45,7 +45,7 @@ void b2RevoluteJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor)
 }
 
 b2RevoluteJoint::b2RevoluteJoint(const b2RevoluteJointDef* def)
-: b2Joint(def)
+: Joint(def)
 {
 	m_localAnchorA = def->localAnchorA;
 	m_localAnchorB = def->localAnchorB;

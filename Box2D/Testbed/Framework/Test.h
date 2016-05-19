@@ -120,7 +120,7 @@ class DestructionListener : public b2DestructionListener
 {
 public:
 	void SayGoodbye(Fixture* fixture) { BOX2D_NOT_USED(fixture); }
-	void SayGoodbye(b2Joint* joint);
+	void SayGoodbye(Joint* joint);
 
 	Test* test;
 };
@@ -161,7 +161,7 @@ public:
 	void CompleteBombSpawn(const Vec2& p);
 
 	// Let derived tests know that a joint was destroyed.
-	virtual void JointDestroyed(b2Joint* joint) { BOX2D_NOT_USED(joint); }
+	virtual void JointDestroyed(Joint* joint) { BOX2D_NOT_USED(joint); }
 
 	// Callbacks for derived classes.
 	virtual void BeginContact(b2Contact* contact) { BOX2D_NOT_USED(contact); }

@@ -24,9 +24,9 @@
 namespace box2d {
 
 /// Friction joint definition.
-struct b2FrictionJointDef : public b2JointDef
+struct b2FrictionJointDef : public JointDef
 {
-	constexpr b2FrictionJointDef() noexcept: b2JointDef(e_frictionJoint) {}
+	constexpr b2FrictionJointDef() noexcept: JointDef(e_frictionJoint) {}
 
 	/// Initialize the bodies, anchors, axis, and reference angle using the world
 	/// anchor and world axis.
@@ -47,7 +47,7 @@ struct b2FrictionJointDef : public b2JointDef
 
 /// Friction joint. This is used for top-down friction.
 /// It provides 2D translational friction and angular friction.
-class b2FrictionJoint : public b2Joint
+class b2FrictionJoint : public Joint
 {
 public:
 	Vec2 GetAnchorA() const override;
@@ -79,7 +79,7 @@ public:
 
 protected:
 
-	friend class b2Joint;
+	friend class Joint;
 
 	b2FrictionJoint(const b2FrictionJointDef* def);
 

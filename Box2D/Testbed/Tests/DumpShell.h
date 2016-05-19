@@ -41,7 +41,7 @@ public:
 		Vec2 g(0.000000000000000e+00f, -1.000000000000000e+01f);
 		m_world->SetGravity(g);
 		Body** bodies = (Body**)alloc(3 * sizeof(Body*));
-		b2Joint** joints = (b2Joint**)alloc(0 * sizeof(b2Joint*));
+		Joint** joints = (Joint**)alloc(0 * sizeof(Joint*));
 		{
 			BodyDef bd;
 			bd.type = BodyType(0);

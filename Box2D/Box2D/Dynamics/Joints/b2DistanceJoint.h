@@ -29,9 +29,9 @@ namespace box2d {
 /// so that the initial configuration can violate the constraint
 /// slightly. This helps when saving and loading a game.
 /// @warning Do not use a zero or short length.
-struct b2DistanceJointDef : public b2JointDef
+struct b2DistanceJointDef : public JointDef
 {
-	constexpr b2DistanceJointDef() noexcept: b2JointDef(e_distanceJoint) {}
+	constexpr b2DistanceJointDef() noexcept: JointDef(e_distanceJoint) {}
 
 	/// Initialize the bodies, anchors, and length using the world
 	/// anchors.
@@ -58,7 +58,7 @@ struct b2DistanceJointDef : public b2JointDef
 /// A distance joint constrains two points on two bodies
 /// to remain at a fixed distance from each other. You can view
 /// this as a massless, rigid rod.
-class b2DistanceJoint : public b2Joint
+class b2DistanceJoint : public Joint
 {
 public:
 
@@ -97,7 +97,7 @@ public:
 
 protected:
 
-	friend class b2Joint;
+	friend class Joint;
 	b2DistanceJoint(const b2DistanceJointDef* data);
 
 	void InitVelocityConstraints(const b2SolverData& data) override;

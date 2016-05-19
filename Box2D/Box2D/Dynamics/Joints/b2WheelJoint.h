@@ -29,9 +29,9 @@ namespace box2d {
 /// can violate the constraint slightly. The joint translation is zero
 /// when the local anchor points coincide in world space. Using local
 /// anchors and a local axis helps when saving and loading a game.
-struct b2WheelJointDef : public b2JointDef
+struct b2WheelJointDef : public JointDef
 {
-	constexpr b2WheelJointDef() noexcept: b2JointDef(e_wheelJoint) {}
+	constexpr b2WheelJointDef() noexcept: JointDef(e_wheelJoint) {}
 
 	/// Initialize the bodies, anchors, axis, and reference angle using the world
 	/// anchor and world axis.
@@ -66,7 +66,7 @@ struct b2WheelJointDef : public b2JointDef
 /// along an axis fixed in bodyA and rotation in the plane. In other words, it is a point to
 /// line constraint with a rotational motor and a linear spring/damper.
 /// This joint is designed for vehicle suspensions.
-class b2WheelJoint : public b2Joint
+class b2WheelJoint : public Joint
 {
 public:
 	Vec2 GetAnchorA() const override;
@@ -122,7 +122,7 @@ public:
 
 protected:
 
-	friend class b2Joint;
+	friend class Joint;
 	b2WheelJoint(const b2WheelJointDef* def);
 
 	void InitVelocityConstraints(const b2SolverData& data) override;

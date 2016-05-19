@@ -26,10 +26,10 @@ namespace box2d {
 /// Rope joint definition. This requires two body anchor points and
 /// a maximum lengths.
 /// Note: by default the connected objects will not collide.
-/// see collideConnected in b2JointDef.
-struct b2RopeJointDef : public b2JointDef
+/// see collideConnected in JointDef.
+struct b2RopeJointDef : public JointDef
 {
-	constexpr b2RopeJointDef() noexcept: b2JointDef(e_ropeJoint) {}
+	constexpr b2RopeJointDef() noexcept: JointDef(e_ropeJoint) {}
 
 	/// The local anchor point relative to bodyA's origin.
 	Vec2 localAnchorA = Vec2{-float_t(1), float_t{0}};
@@ -50,7 +50,7 @@ struct b2RopeJointDef : public b2JointDef
 /// would have some sponginess, so I chose not to implement it
 /// that way. See b2DistanceJoint if you want to dynamically
 /// control length.
-class b2RopeJoint : public b2Joint
+class b2RopeJoint : public Joint
 {
 public:
 	Vec2 GetAnchorA() const override;
@@ -76,7 +76,7 @@ public:
 
 protected:
 
-	friend class b2Joint;
+	friend class Joint;
 	b2RopeJoint(const b2RopeJointDef* data);
 
 	void InitVelocityConstraints(const b2SolverData& data) override;

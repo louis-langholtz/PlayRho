@@ -27,7 +27,7 @@ struct Vec2;
 struct Transform;
 class Fixture;
 class Body;
-class b2Joint;
+class Joint;
 class b2Contact;
 struct b2ContactResult;
 struct b2Manifold;
@@ -42,7 +42,7 @@ public:
 
 	/// Called when any joint is about to be destroyed due
 	/// to the destruction of one of its attached bodies.
-	virtual void SayGoodbye(b2Joint* joint) = 0;
+	virtual void SayGoodbye(Joint* joint) = 0;
 
 	/// Called when any fixture is about to be destroyed due
 	/// to the destruction of its parent body.

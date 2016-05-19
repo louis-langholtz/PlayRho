@@ -33,11 +33,11 @@ namespace box2d {
 struct b2AABB;
 struct BodyDef;
 struct b2Color;
-struct b2JointDef;
+struct JointDef;
 class Body;
 class b2Draw;
 class Fixture;
-class b2Joint;
+class Joint;
 
 /// The world class manages all physics entities, dynamic simulation,
 /// and asynchronous queries. The world also contains efficient memory
@@ -86,11 +86,11 @@ public:
 	/// Create a joint to constrain bodies together. No reference to the definition
 	/// is retained. This may cause the connected bodies to cease colliding.
 	/// @warning This function is locked during callbacks.
-	b2Joint* CreateJoint(const b2JointDef* def);
+	Joint* CreateJoint(const JointDef* def);
 
 	/// Destroy a joint. This may cause the connected bodies to begin colliding.
 	/// @warning This function is locked during callbacks.
-	void DestroyJoint(b2Joint* joint);
+	void DestroyJoint(Joint* joint);
 
 	/// Take a time step. This performs collision detection, integration,
 	/// and constraint solution.
@@ -134,11 +134,11 @@ public:
 	BodyList GetBodies() noexcept;
 	b2ConstBodyList GetBodies() const noexcept;
 
-	/// Get the world joint list. With the returned joint, use b2Joint::GetNext to get
+	/// Get the world joint list. With the returned joint, use Joint::GetNext to get
 	/// the next joint in the world list. A nullptr joint indicates the end of the list.
 	/// @return the head of the world joint list.
-	b2Joint* GetJointList() noexcept;
-	const b2Joint* GetJointList() const noexcept;
+	Joint* GetJointList() noexcept;
+	const Joint* GetJointList() const noexcept;
 
 	/// Get the world contact list. With the returned contact, use b2Contact::GetNext to get
 	/// the next contact in the world list. A nullptr contact indicates the end of the list.
@@ -234,7 +234,7 @@ private:
 	void Solve(const b2TimeStep& step);
 	void SolveTOI(const b2TimeStep& step);
 
-	void DrawJoint(b2Joint* joint);
+	void DrawJoint(Joint* joint);
 	void DrawShape(const Fixture* shape, const Transform& xf, const b2Color& color);
 
 	b2BlockAllocator m_blockAllocator;
@@ -251,7 +251,7 @@ private:
 	b2ContactManager m_contactManager{&m_blockAllocator, &m_defaultFilter, &m_defaultListener};
 
 	Body* m_bodyList = nullptr;
-	b2Joint* m_jointList = nullptr;
+	Joint* m_jointList = nullptr;
 
 	size_type m_bodyCount = 0;
 	size_type m_jointCount = 0;
@@ -295,12 +295,12 @@ inline b2ConstBodyList b2World::GetBodies() const noexcept
 	return b2ConstBodyList(m_bodyList);
 }
 
-inline b2Joint* b2World::GetJointList() noexcept
+inline Joint* b2World::GetJointList() noexcept
 {
 	return m_jointList;
 }
 
-inline const b2Joint* b2World::GetJointList() const noexcept
+inline const Joint* b2World::GetJointList() const noexcept
 {
 	return m_jointList;
 }

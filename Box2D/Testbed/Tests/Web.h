@@ -187,7 +187,7 @@ public:
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 
-	void JointDestroyed(b2Joint* joint)
+	void JointDestroyed(Joint* joint)
 	{
 		for (int32 i = 0; i < 8; ++i)
 		{
@@ -205,7 +205,7 @@ public:
 	}
 
 	Body* m_bodies[4];
-	b2Joint* m_joints[8];
+	Joint* m_joints[8];
 };
 
 } // namespace box2d

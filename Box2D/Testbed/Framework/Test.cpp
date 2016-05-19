@@ -21,7 +21,7 @@
 
 using namespace box2d;
 
-void DestructionListener::SayGoodbye(b2Joint* joint)
+void DestructionListener::SayGoodbye(Joint* joint)
 {
 	if (test->m_mouseJoint == joint)
 	{
