@@ -25,7 +25,7 @@ namespace box2d {
 
 struct Vec2;
 struct Transform;
-class b2Fixture;
+class Fixture;
 class Body;
 class b2Joint;
 class b2Contact;
@@ -46,7 +46,7 @@ public:
 
 	/// Called when any fixture is about to be destroyed due
 	/// to the destruction of its parent body.
-	virtual void SayGoodbye(b2Fixture* fixture) = 0;
+	virtual void SayGoodbye(Fixture* fixture) = 0;
 };
 
 /// Implement this class to provide collision filtering. In other words, you can implement
@@ -58,7 +58,7 @@ public:
 
 	/// Return true if contact calculations should be performed between these two shapes.
 	/// @warning for performance reasons this is only called when the AABBs begin to overlap.
-	virtual bool ShouldCollide(b2Fixture* fixtureA, b2Fixture* fixtureB);
+	virtual bool ShouldCollide(Fixture* fixtureA, Fixture* fixtureB);
 };
 
 /// Contact impulses for reporting. Impulses are used instead of forces because
@@ -146,7 +146,7 @@ public:
 
 	/// Called for each fixture found in the query AABB.
 	/// @return false to terminate the query.
-	virtual bool ReportFixture(b2Fixture* fixture) = 0;
+	virtual bool ReportFixture(Fixture* fixture) = 0;
 };
 
 /// Callback class for ray casts.
@@ -167,7 +167,7 @@ public:
 	/// @param normal the normal vector at the point of intersection
 	/// @return -1 to filter, 0 to terminate, fraction to clip the ray for
 	/// closest hit, 1 to continue
-	virtual float_t ReportFixture(	b2Fixture* fixture, const Vec2& point,
+	virtual float_t ReportFixture(	Fixture* fixture, const Vec2& point,
 									const Vec2& normal, float_t fraction) = 0;
 };
 

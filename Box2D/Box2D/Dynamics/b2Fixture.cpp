@@ -29,7 +29,7 @@
 
 using namespace box2d;
 
-void b2Fixture::Create(b2BlockAllocator* allocator, const b2FixtureDef* def)
+void Fixture::Create(b2BlockAllocator* allocator, const FixtureDef* def)
 {
 	m_userData = def->userData;
 	m_friction = def->friction;
@@ -41,7 +41,7 @@ void b2Fixture::Create(b2BlockAllocator* allocator, const b2FixtureDef* def)
 
 	// Reserve proxy space
 	const auto childCount = m_shape->GetChildCount();
-	m_proxies = static_cast<b2FixtureProxy*>(allocator->Allocate(childCount * sizeof(b2FixtureProxy)));
+	m_proxies = static_cast<FixtureProxy*>(allocator->Allocate(childCount * sizeof(FixtureProxy)));
 	for (auto i = decltype(childCount){0}; i < childCount; ++i)
 	{
 		m_proxies[i].fixture = nullptr;
@@ -49,14 +49,14 @@ void b2Fixture::Create(b2BlockAllocator* allocator, const b2FixtureDef* def)
 	}
 }
 
-void b2Fixture::Destroy(b2BlockAllocator* allocator)
+void Fixture::Destroy(b2BlockAllocator* allocator)
 {
 	// The proxies must be destroyed before calling this.
 	assert(m_proxyCount == 0);
 
 	// Free the proxy array.
 	const auto childCount = m_shape->GetChildCount();
-	allocator->Free(m_proxies, childCount * sizeof(b2FixtureProxy));
+	allocator->Free(m_proxies, childCount * sizeof(FixtureProxy));
 	m_proxies = nullptr;
 
 	// Free the child shape.
@@ -102,7 +102,7 @@ void b2Fixture::Destroy(b2BlockAllocator* allocator)
 	m_shape = nullptr;
 }
 
-void b2Fixture::CreateProxies(b2BroadPhase& broadPhase, const Transform& xf)
+void Fixture::CreateProxies(b2BroadPhase& broadPhase, const Transform& xf)
 {
 	assert(m_proxyCount == 0);
 
@@ -119,7 +119,7 @@ void b2Fixture::CreateProxies(b2BroadPhase& broadPhase, const Transform& xf)
 	}
 }
 
-void b2Fixture::DestroyProxies(b2BroadPhase& broadPhase)
+void Fixture::DestroyProxies(b2BroadPhase& broadPhase)
 {
 	// Destroy proxies in the broad-phase.
 	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
@@ -132,7 +132,7 @@ void b2Fixture::DestroyProxies(b2BroadPhase& broadPhase)
 	m_proxyCount = 0;
 }
 
-void b2Fixture::Synchronize(b2BroadPhase& broadPhase, const Transform& transform1, const Transform& transform2)
+void Fixture::Synchronize(b2BroadPhase& broadPhase, const Transform& transform1, const Transform& transform2)
 {
 	if (m_proxyCount == 0)
 	{	
@@ -154,14 +154,14 @@ void b2Fixture::Synchronize(b2BroadPhase& broadPhase, const Transform& transform
 	}
 }
 
-void b2Fixture::SetFilterData(const b2Filter& filter)
+void Fixture::SetFilterData(const b2Filter& filter)
 {
 	m_filter = filter;
 
 	Refilter();
 }
 
-void b2Fixture::Refilter()
+void Fixture::Refilter()
 {
 	if (m_body == nullptr)
 	{
@@ -198,7 +198,7 @@ void b2Fixture::Refilter()
 	}
 }
 
-void b2Fixture::SetSensor(bool sensor)
+void Fixture::SetSensor(bool sensor)
 {
 	if (sensor != m_isSensor)
 	{
@@ -207,9 +207,9 @@ void b2Fixture::SetSensor(bool sensor)
 	}
 }
 
-void b2Fixture::Dump(island_count_t bodyIndex)
+void Fixture::Dump(island_count_t bodyIndex)
 {
-	log("    b2FixtureDef fd;\n");
+	log("    FixtureDef fd;\n");
 	log("    fd.friction = %.15lef;\n", m_friction);
 	log("    fd.restitution = %.15lef;\n", m_restitution);
 	log("    fd.density = %.15lef;\n", m_density);

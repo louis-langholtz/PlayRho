@@ -34,7 +34,7 @@ public:
 			b2EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &shape;
 			//fd.filter.categoryBits = 2;
 
@@ -78,7 +78,7 @@ public:
 			circle_bd.type = DynamicBody;
 			circle_bd.position = Vec2(5.0f, 30.0f);
 
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.density = 5.0f;
 			fd.filter.maskBits = 1;
 			fd.shape = &circle_shape;
@@ -117,7 +117,7 @@ public:
 			verts[2] = Vec2( 17.19f, 36.36f );
 			polyShape.Set(verts, 3);
 		
-			b2FixtureDef polyFixtureDef;
+			FixtureDef polyFixtureDef;
 			polyFixtureDef.shape = &polyShape;
 			polyFixtureDef.density = 1;
 

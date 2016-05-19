@@ -119,7 +119,7 @@ extern TestEntry g_testEntries[];
 class DestructionListener : public b2DestructionListener
 {
 public:
-	void SayGoodbye(b2Fixture* fixture) { BOX2D_NOT_USED(fixture); }
+	void SayGoodbye(Fixture* fixture) { BOX2D_NOT_USED(fixture); }
 	void SayGoodbye(b2Joint* joint);
 
 	Test* test;
@@ -129,8 +129,8 @@ const int32 k_maxContactPoints = 2048;
 
 struct ContactPoint
 {
-	b2Fixture* fixtureA;
-	b2Fixture* fixtureB;
+	Fixture* fixtureA;
+	Fixture* fixtureB;
 	Vec2 normal;
 	Vec2 position;
 	b2PointState state;

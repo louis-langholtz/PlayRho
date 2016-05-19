@@ -40,7 +40,7 @@ public:
 
 			b2EdgeShape shape;
 
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &shape;
 			fd.restitution = float_t(0.9);
 
@@ -64,7 +64,7 @@ public:
 		float_t radius = 0.5f;
 		b2CircleShape shape(radius, Vec2_zero);
 
-		b2FixtureDef fd;
+		FixtureDef fd;
 		fd.shape = &shape;
 		fd.density = 1.0f;
 		fd.friction = 0.1f;
@@ -90,7 +90,7 @@ public:
 		constexpr auto radius = float_t(wall_length/10); // 2
 		b2CircleShape shape(radius, Vec2_zero);
 
-		b2FixtureDef fd;
+		FixtureDef fd;
 		fd.shape = &shape;
 		fd.density = 1.0f;
 		fd.restitution = float_t(0.8);
@@ -111,7 +111,7 @@ public:
 		b2PolygonShape shape;
 		shape.SetAsBox(side_length/2, side_length/2);
 
-		b2FixtureDef fd;
+		FixtureDef fd;
 		fd.shape = &shape;
 		fd.density = 1.0f;
 		fd.restitution = float_t(0.8);

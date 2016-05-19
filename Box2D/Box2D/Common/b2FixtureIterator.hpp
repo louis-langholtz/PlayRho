@@ -13,19 +13,19 @@
 
 namespace box2d {
 
-class b2Fixture;
+class Fixture;
 
-class b2FixtureIterator: public std::iterator<std::forward_iterator_tag, b2Fixture>
+class FixtureIterator: public std::iterator<std::forward_iterator_tag, Fixture>
 {
 public:
-	b2FixtureIterator(pointer b) noexcept: p(b) {}
-	b2FixtureIterator(const b2FixtureIterator& it) noexcept: p(it.p) {}
+	FixtureIterator(pointer b) noexcept: p(b) {}
+	FixtureIterator(const FixtureIterator& it) noexcept: p(it.p) {}
 	
-	b2FixtureIterator& operator++() noexcept { p = next(p); return *this; }
-	b2FixtureIterator operator++(int) { b2FixtureIterator tmp(*this); operator++(); return tmp; }
+	FixtureIterator& operator++() noexcept { p = next(p); return *this; }
+	FixtureIterator operator++(int) { FixtureIterator tmp(*this); operator++(); return tmp; }
 	
-	bool operator==(const b2FixtureIterator& rhs) const noexcept {return p == rhs.p; }
-	bool operator!=(const b2FixtureIterator& rhs) const noexcept {return p != rhs.p; }
+	bool operator==(const FixtureIterator& rhs) const noexcept {return p == rhs.p; }
+	bool operator!=(const FixtureIterator& rhs) const noexcept {return p != rhs.p; }
 	
 	reference operator*() const noexcept { return *p; }
 	

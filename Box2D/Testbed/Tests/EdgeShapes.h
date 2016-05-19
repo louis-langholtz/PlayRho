@@ -29,7 +29,7 @@ public:
 		m_fixture = nullptr;
 	}
 
-	float_t ReportFixture(b2Fixture* fixture, const Vec2& point,
+	float_t ReportFixture(Fixture* fixture, const Vec2& point,
 						  const Vec2& normal, float_t fraction)
 	{
 		m_fixture = fixture;
@@ -39,7 +39,7 @@ public:
 		return fraction;
 	}
 
-	b2Fixture* m_fixture;
+	Fixture* m_fixture;
 	Vec2 m_point;
 	Vec2 m_normal;
 };
@@ -149,7 +149,7 @@ public:
 
 		if (index < 4)
 		{
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = m_polygons + index;
 			fd.friction = 0.3f;
 			fd.density = 20.0f;
@@ -157,7 +157,7 @@ public:
 		}
 		else
 		{
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &m_circle;
 			fd.friction = 0.3f;
 			fd.density = 20.0f;

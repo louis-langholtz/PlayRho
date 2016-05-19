@@ -149,7 +149,7 @@ void Body::SetType(BodyType type)
 	}
 }
 
-b2Fixture* Body::CreateFixture(const b2FixtureDef* def)
+Fixture* Body::CreateFixture(const FixtureDef* def)
 {
 	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())
@@ -159,8 +159,8 @@ b2Fixture* Body::CreateFixture(const b2FixtureDef* def)
 
 	auto allocator = &m_world->m_blockAllocator;
 
-	auto memory = allocator->Allocate(sizeof(b2Fixture));
-	auto fixture = new (memory) b2Fixture(this);
+	auto memory = allocator->Allocate(sizeof(Fixture));
+	auto fixture = new (memory) Fixture(this);
 	fixture->Create(allocator, def);
 
 	if (m_flags & e_activeFlag)
@@ -185,16 +185,16 @@ b2Fixture* Body::CreateFixture(const b2FixtureDef* def)
 	return fixture;
 }
 
-b2Fixture* Body::CreateFixture(const b2Shape* shape, float_t density)
+Fixture* Body::CreateFixture(const b2Shape* shape, float_t density)
 {
-	b2FixtureDef def;
+	FixtureDef def;
 	def.shape = shape;
 	def.density = density;
 
 	return CreateFixture(&def);
 }
 
-void Body::DestroyFixture(b2Fixture* fixture)
+void Body::DestroyFixture(Fixture* fixture)
 {
 	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())
@@ -250,8 +250,8 @@ void Body::DestroyFixture(b2Fixture* fixture)
 
 	fixture->Destroy(allocator);
 	fixture->m_next = nullptr;
-	fixture->~b2Fixture();
-	allocator->Free(fixture, sizeof(b2Fixture));
+	fixture->~Fixture();
+	allocator->Free(fixture, sizeof(Fixture));
 
 	--m_fixtureCount;
 

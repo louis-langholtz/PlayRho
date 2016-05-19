@@ -13,9 +13,9 @@
 
 namespace box2d {
 
-class b2Fixture;
+class Fixture;
 
-class b2ConstFixtureIterator: public std::iterator<std::forward_iterator_tag, const b2Fixture>
+class b2ConstFixtureIterator: public std::iterator<std::forward_iterator_tag, const Fixture>
 {
 public:
 	b2ConstFixtureIterator(pointer b) noexcept: p(b) {}

@@ -147,8 +147,8 @@ public:
 	float_t m_angularVelocity;
 	b2PolygonShape m_shape1;
 	b2PolygonShape m_shape2;
-	b2Fixture* m_piece1;
-	b2Fixture* m_piece2;
+	Fixture* m_piece1;
+	Fixture* m_piece2;
 
 	bool m_broke;
 	bool m_break;

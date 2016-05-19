@@ -38,7 +38,7 @@ public:
 
 			b2EdgeShape shape;
 
-			b2FixtureDef sd;
+			FixtureDef sd;
 			sd.shape = &shape;
 			sd.density = float_t{0};
 			sd.restitution = k_restitution;
@@ -73,7 +73,7 @@ public:
 			b2PolygonShape poly1;
 			poly1.Set(vertices, 3);
 
-			b2FixtureDef sd1;
+			FixtureDef sd1;
 			sd1.shape = &poly1;
 			sd1.density = 4.0f;
 
@@ -88,7 +88,7 @@ public:
 			b2PolygonShape poly2;
 			poly2.Set(vertices, 3);
 
-			b2FixtureDef sd2;
+			FixtureDef sd2;
 			sd2.shape = &poly2;
 			sd2.density = 2.0f;
 
@@ -109,7 +109,7 @@ public:
 			b2PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.5f);
 
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 1.0f;
 			fd.friction = 0.3f;

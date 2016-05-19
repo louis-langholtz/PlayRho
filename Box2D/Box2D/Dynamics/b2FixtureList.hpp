@@ -14,16 +14,16 @@
 
 namespace box2d {
 
-class b2Fixture;
+class Fixture;
 
-class b2FixtureList
+class FixtureList
 {
 public:
-	using iterator = b2FixtureIterator;
+	using iterator = FixtureIterator;
 	using const_iterator = b2ConstFixtureIterator;
 	
-	b2FixtureList() = default;
-	b2FixtureList(b2Fixture* b): p(b) {}
+	FixtureList() = default;
+	FixtureList(Fixture* b): p(b) {}
 	
 	iterator begin() noexcept { return iterator(p); }
 	iterator end() noexcept { return iterator(nullptr); }
@@ -32,7 +32,7 @@ public:
 	const_iterator end() const noexcept { return const_iterator(nullptr); }
 	
 private:
-	b2Fixture* p = nullptr;
+	Fixture* p = nullptr;
 };
 
 } // namespace box2d

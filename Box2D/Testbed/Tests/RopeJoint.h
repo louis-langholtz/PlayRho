@@ -48,7 +48,7 @@ public:
 			b2PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.125f);
 
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 20.0f;
 			fd.friction = 0.2f;

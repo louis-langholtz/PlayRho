@@ -41,7 +41,7 @@ public:
 		m_count = 0;
 	}
 
-	void DrawFixture(b2Fixture* fixture)
+	void DrawFixture(Fixture* fixture)
 	{
 		b2Color color(0.95f, 0.95f, 0.6f);
 		const Transform& xf = fixture->GetBody()->GetTransform();
@@ -82,7 +82,7 @@ public:
 
 	/// Called for each fixture found in the query AABB.
 	/// @return false to terminate the query.
-	bool ReportFixture(b2Fixture* fixture)
+	bool ReportFixture(Fixture* fixture)
 	{
 		if (m_count == e_maxCount)
 		{
@@ -200,7 +200,7 @@ public:
 
 		if (index < 4)
 		{
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = m_polygons + index;
 			fd.density = 1.0f;
 			fd.friction = 0.3f;
@@ -208,7 +208,7 @@ public:
 		}
 		else
 		{
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &m_circle;
 			fd.density = 1.0f;
 			fd.friction = 0.3f;

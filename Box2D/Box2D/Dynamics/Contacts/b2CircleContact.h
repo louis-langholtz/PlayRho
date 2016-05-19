@@ -28,12 +28,12 @@ class b2BlockAllocator;
 class b2CircleContact : public b2Contact
 {
 public:
-	static b2Contact* Create(b2Fixture* fixtureA, child_count_t indexA,
-							 b2Fixture* fixtureB, child_count_t indexB,
+	static b2Contact* Create(Fixture* fixtureA, child_count_t indexA,
+							 Fixture* fixtureB, child_count_t indexB,
 							 b2BlockAllocator* allocator);
 	static void Destroy(b2Contact* contact, b2BlockAllocator* allocator);
 
-	b2CircleContact(b2Fixture* fixtureA, b2Fixture* fixtureB);
+	b2CircleContact(Fixture* fixtureA, Fixture* fixtureB);
 	~b2CircleContact() {}
 
 	b2Manifold Evaluate(const Transform& xfA, const Transform& xfB) override;

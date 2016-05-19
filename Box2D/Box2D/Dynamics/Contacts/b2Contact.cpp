@@ -36,8 +36,8 @@
 
 using namespace box2d;
 
-using b2ContactCreateFcn = b2Contact* (b2Fixture* fixtureA, child_count_t indexA,
-									   b2Fixture* fixtureB, child_count_t indexB,
+using b2ContactCreateFcn = b2Contact* (Fixture* fixtureA, child_count_t indexA,
+									   Fixture* fixtureB, child_count_t indexB,
 									   b2BlockAllocator* allocator);
 using b2ContactDestroyFcn = void (b2Contact* contact, b2BlockAllocator* allocator);
 
@@ -81,8 +81,8 @@ static constexpr b2ContactRegister s_registers[b2Shape::e_typeCount][b2Shape::e_
 	},
 };
 
-b2Contact* b2Contact::Create(b2Fixture* fixtureA, child_count_t indexA,
-							 b2Fixture* fixtureB, child_count_t indexB,
+b2Contact* b2Contact::Create(Fixture* fixtureA, child_count_t indexA,
+							 Fixture* fixtureB, child_count_t indexB,
 							 b2BlockAllocator* allocator)
 {
 	const auto type1 = fixtureA->GetType();
@@ -131,7 +131,7 @@ void b2Contact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
 	destroyFcn(contact, allocator);
 }
 
-b2Contact::b2Contact(b2Fixture* fA, child_count_t indexA, b2Fixture* fB, child_count_t indexB) :
+b2Contact::b2Contact(Fixture* fA, child_count_t indexA, Fixture* fB, child_count_t indexB) :
 	m_fixtureA(fA), m_fixtureB(fB), m_indexA(indexA), m_indexB(indexB),
 	m_friction(b2MixFriction(m_fixtureA->GetFriction(), m_fixtureB->GetFriction())),
 	m_restitution(b2MixRestitution(m_fixtureA->GetRestitution(), m_fixtureB->GetRestitution()))

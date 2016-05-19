@@ -51,7 +51,7 @@ public:
 			b2PolygonShape shape;
 			shape.SetAsBox(0.1f, 1.0f);
 
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 20.0f;
 			fd.friction = 0.1f;
@@ -133,7 +133,7 @@ public:
 			b5 = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
-			b2FixtureDef fd;
+			FixtureDef fd;
 
 			fd.shape = &shape;
 			fd.density = 10.0f;

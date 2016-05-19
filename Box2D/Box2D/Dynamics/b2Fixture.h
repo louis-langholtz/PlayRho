@@ -28,7 +28,7 @@ namespace box2d {
 class b2BlockAllocator;
 class Body;
 class b2BroadPhase;
-class b2Fixture;
+class Fixture;
 
 /// This holds contact filtering data.
 struct b2Filter
@@ -50,10 +50,10 @@ struct b2Filter
 
 /// A fixture definition is used to create a fixture. This class defines an
 /// abstract fixture definition. You can reuse fixture definitions safely.
-struct b2FixtureDef
+struct FixtureDef
 {
 	/// The constructor sets the default fixture definition values.
-	constexpr b2FixtureDef() = default;
+	constexpr FixtureDef() = default;
 
 	/// The shape, this must be set. The shape will be cloned, so you
 	/// can create the shape on the stack.
@@ -80,12 +80,12 @@ struct b2FixtureDef
 };
 
 /// This proxy is used internally to connect fixtures to the broad-phase.
-struct b2FixtureProxy
+struct FixtureProxy
 {
 	using size_type = size_t;
 
 	b2AABB aabb;
-	b2Fixture* fixture;
+	Fixture* fixture;
 	child_count_t childIndex;
 	size_type proxyId;
 };
@@ -95,10 +95,10 @@ struct b2FixtureProxy
 /// such as friction, collision filters, etc.
 /// Fixtures are created via Body::CreateFixture.
 /// @warning you cannot reuse fixtures.
-class b2Fixture
+class Fixture
 {
 public:
-	b2Fixture() = delete;
+	Fixture() = delete;
 
 	/// Get the type of the child shape. You can use this to down cast to the concrete shape.
 	/// @return the shape type.
@@ -135,8 +135,8 @@ public:
 
 	/// Get the next fixture in the parent body's fixture list.
 	/// @return the next shape.
-	b2Fixture* GetNext();
-	const b2Fixture* GetNext() const;
+	Fixture* GetNext();
+	const Fixture* GetNext() const;
 
 	/// Get the user data that was assigned in the fixture definition. Use this to
 	/// store your application specific data.
@@ -194,11 +194,11 @@ protected:
 	friend class b2World;
 	friend class b2ContactManager;
 
-	b2Fixture(Body* body) noexcept: m_body(body) {}
+	Fixture(Body* body) noexcept: m_body(body) {}
 
 	// We need separation create/destroy functions from the constructor/destructor because
 	// the destructor cannot access the allocator (no destructor arguments allowed by C++).
-	void Create(b2BlockAllocator* allocator, const b2FixtureDef* def);
+	void Create(b2BlockAllocator* allocator, const FixtureDef* def);
 	void Destroy(b2BlockAllocator* allocator);
 
 	// These support body activation/deactivation.
@@ -209,119 +209,119 @@ protected:
 
 	Body* const m_body;
 	float_t m_density = float_t{0};
-	b2Fixture* m_next = nullptr;
+	Fixture* m_next = nullptr;
 	b2Shape* m_shape = nullptr;
 	float_t m_friction;
 	float_t m_restitution;
-	b2FixtureProxy* m_proxies = nullptr;
+	FixtureProxy* m_proxies = nullptr;
 	child_count_t m_proxyCount = 0;
 	b2Filter m_filter;
 	bool m_isSensor;
 	void* m_userData = nullptr;
 };
 
-inline b2Shape::Type b2Fixture::GetType() const noexcept
+inline b2Shape::Type Fixture::GetType() const noexcept
 {
 	return m_shape->GetType();
 }
 
-inline b2Shape* b2Fixture::GetShape() noexcept
+inline b2Shape* Fixture::GetShape() noexcept
 {
 	return m_shape;
 }
 
-inline const b2Shape* b2Fixture::GetShape() const noexcept
+inline const b2Shape* Fixture::GetShape() const noexcept
 {
 	return m_shape;
 }
 
-inline bool b2Fixture::IsSensor() const noexcept
+inline bool Fixture::IsSensor() const noexcept
 {
 	return m_isSensor;
 }
 
-inline const b2Filter& b2Fixture::GetFilterData() const noexcept
+inline const b2Filter& Fixture::GetFilterData() const noexcept
 {
 	return m_filter;
 }
 
-inline void* b2Fixture::GetUserData() const noexcept
+inline void* Fixture::GetUserData() const noexcept
 {
 	return m_userData;
 }
 
-inline void b2Fixture::SetUserData(void* data)
+inline void Fixture::SetUserData(void* data)
 {
 	m_userData = data;
 }
 
-inline Body* b2Fixture::GetBody() noexcept
+inline Body* Fixture::GetBody() noexcept
 {
 	return m_body;
 }
 
-inline const Body* b2Fixture::GetBody() const noexcept
+inline const Body* Fixture::GetBody() const noexcept
 {
 	return m_body;
 }
 
-inline b2Fixture* b2Fixture::GetNext()
+inline Fixture* Fixture::GetNext()
 {
 	return m_next;
 }
 
-inline const b2Fixture* b2Fixture::GetNext() const
+inline const Fixture* Fixture::GetNext() const
 {
 	return m_next;
 }
 
-inline void b2Fixture::SetDensity(float_t density)
+inline void Fixture::SetDensity(float_t density)
 {
 	assert(IsValid(density) && density >= float_t{0});
 	m_density = density;
 }
 
-inline float_t b2Fixture::GetDensity() const
+inline float_t Fixture::GetDensity() const
 {
 	return m_density;
 }
 
-inline float_t b2Fixture::GetFriction() const
+inline float_t Fixture::GetFriction() const
 {
 	return m_friction;
 }
 
-inline void b2Fixture::SetFriction(float_t friction)
+inline void Fixture::SetFriction(float_t friction)
 {
 	m_friction = friction;
 }
 
-inline float_t b2Fixture::GetRestitution() const
+inline float_t Fixture::GetRestitution() const
 {
 	return m_restitution;
 }
 
-inline void b2Fixture::SetRestitution(float_t restitution)
+inline void Fixture::SetRestitution(float_t restitution)
 {
 	m_restitution = restitution;
 }
 
-inline bool b2Fixture::TestPoint(const Vec2& p) const
+inline bool Fixture::TestPoint(const Vec2& p) const
 {
 	return m_shape->TestPoint(m_body->GetTransform(), p);
 }
 
-inline bool b2Fixture::RayCast(b2RayCastOutput* output, const b2RayCastInput& input, child_count_t childIndex) const
+inline bool Fixture::RayCast(b2RayCastOutput* output, const b2RayCastInput& input, child_count_t childIndex) const
 {
 	return m_shape->RayCast(output, input, m_body->GetTransform(), childIndex);
 }
 
-inline b2MassData b2Fixture::GetMassData() const
+inline b2MassData Fixture::GetMassData() const
 {
 	return m_shape->ComputeMass(m_density);
 }
 
-inline const b2AABB& b2Fixture::GetAABB(child_count_t childIndex) const
+inline const b2AABB& Fixture::GetAABB(child_count_t childIndex) const
 {
 	assert(childIndex >= 0);
 	assert(childIndex < m_proxyCount);

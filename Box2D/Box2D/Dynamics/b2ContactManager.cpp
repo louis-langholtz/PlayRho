@@ -166,8 +166,8 @@ void b2ContactManager::FindNewContacts()
 }
 
 static bool IsFor(const b2Contact& contact,
-				  const b2Fixture* fixtureA, b2ContactManager::size_type indexA,
-				  const b2Fixture* fixtureB, b2ContactManager::size_type indexB)
+				  const Fixture* fixtureA, b2ContactManager::size_type indexA,
+				  const Fixture* fixtureB, b2ContactManager::size_type indexB)
 {
 	const auto fA = contact.GetFixtureA();
 	const auto fB = contact.GetFixtureB();
@@ -191,8 +191,8 @@ static bool IsFor(const b2Contact& contact,
 
 void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 {
-	const auto proxyA = static_cast<b2FixtureProxy*>(proxyUserDataA);
-	const auto proxyB = static_cast<b2FixtureProxy*>(proxyUserDataB);
+	const auto proxyA = static_cast<FixtureProxy*>(proxyUserDataA);
+	const auto proxyB = static_cast<FixtureProxy*>(proxyUserDataB);
 
 	auto fixtureA = proxyA->fixture;
 	auto fixtureB = proxyB->fixture;

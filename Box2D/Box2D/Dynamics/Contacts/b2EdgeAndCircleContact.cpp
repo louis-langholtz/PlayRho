@@ -26,8 +26,8 @@
 
 using namespace box2d;
 
-b2Contact* b2EdgeAndCircleContact::Create(b2Fixture* fixtureA, child_count_t,
-										  b2Fixture* fixtureB, child_count_t,
+b2Contact* b2EdgeAndCircleContact::Create(Fixture* fixtureA, child_count_t,
+										  Fixture* fixtureB, child_count_t,
 										  b2BlockAllocator* allocator)
 {
 	void* mem = allocator->Allocate(sizeof(b2EdgeAndCircleContact));
@@ -40,7 +40,7 @@ void b2EdgeAndCircleContact::Destroy(b2Contact* contact, b2BlockAllocator* alloc
 	allocator->Free(contact, sizeof(b2EdgeAndCircleContact));
 }
 
-b2EdgeAndCircleContact::b2EdgeAndCircleContact(b2Fixture* fixtureA, b2Fixture* fixtureB)
+b2EdgeAndCircleContact::b2EdgeAndCircleContact(Fixture* fixtureA, Fixture* fixtureB)
 : b2Contact(fixtureA, 0, fixtureB, 0)
 {
 	assert(m_fixtureA->GetType() == b2Shape::e_edge);

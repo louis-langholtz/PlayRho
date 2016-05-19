@@ -98,7 +98,7 @@ public:
 			b2PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.5f);
 
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 25.0f;
 

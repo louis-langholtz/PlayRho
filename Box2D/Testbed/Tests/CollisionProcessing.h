@@ -35,7 +35,7 @@ public:
 			b2EdgeShape shape;
 			shape.Set(Vec2(-50.0f, 0.0f), Vec2(50.0f, 0.0f));
 
-			b2FixtureDef sd;
+			FixtureDef sd;
 			sd.shape = &shape;;
 
 			BodyDef bd;
@@ -55,7 +55,7 @@ public:
 		b2PolygonShape polygon;
 		polygon.Set(vertices, 3);
 
-		b2FixtureDef triangleShapeDef;
+		FixtureDef triangleShapeDef;
 		triangleShapeDef.shape = &polygon;
 		triangleShapeDef.density = 1.0f;
 
@@ -80,7 +80,7 @@ public:
 		// Small box
 		polygon.SetAsBox(1.0f, 0.5f);
 
-		b2FixtureDef boxShapeDef;
+		FixtureDef boxShapeDef;
 		boxShapeDef.shape = &polygon;
 		boxShapeDef.density = 1.0f;
 
@@ -102,7 +102,7 @@ public:
 		b2CircleShape circle;
 		circle.SetRadius(float_t(1));
 
-		b2FixtureDef circleShapeDef;
+		FixtureDef circleShapeDef;
 		circleShapeDef.shape = &circle;
 		circleShapeDef.density = 1.0f;
 

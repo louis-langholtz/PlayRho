@@ -80,8 +80,8 @@ public:
 	{
 		Test::PreSolve(contact, oldManifold);
 
-		b2Fixture* fixtureA = contact->GetFixtureA();
-		b2Fixture* fixtureB = contact->GetFixtureB();
+		Fixture* fixtureA = contact->GetFixtureA();
+		Fixture* fixtureB = contact->GetFixtureB();
 
 		if (fixtureA != m_platform && fixtureA != m_character)
 		{
@@ -127,8 +127,8 @@ public:
 
 	float_t m_radius, m_top, m_bottom;
 	State m_state;
-	b2Fixture* m_platform;
-	b2Fixture* m_character;
+	Fixture* m_platform;
+	Fixture* m_character;
 };
 
 } // namespace box2d

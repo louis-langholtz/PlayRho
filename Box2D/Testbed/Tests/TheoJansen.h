@@ -37,7 +37,7 @@ public:
 		Vec2 p5(6.0f * s, 1.5f);
 		Vec2 p6(2.5f * s, 3.7f);
 
-		b2FixtureDef fd1, fd2;
+		FixtureDef fd1, fd2;
 		fd1.filter.groupIndex = -1;
 		fd2.filter.groupIndex = -1;
 		fd1.density = 1.0f;
@@ -160,7 +160,7 @@ public:
 			b2PolygonShape shape;
 			shape.SetAsBox(2.5f, 1.0f);
 
-			b2FixtureDef sd;
+			FixtureDef sd;
 			sd.density = 1.0f;
 			sd.shape = &shape;
 			sd.filter.groupIndex = -1;
@@ -175,7 +175,7 @@ public:
 			b2CircleShape shape;
 			shape.SetRadius(float_t(1.6));
 
-			b2FixtureDef sd;
+			FixtureDef sd;
 			sd.density = 1.0f;
 			sd.shape = &shape;
 			sd.filter.groupIndex = -1;

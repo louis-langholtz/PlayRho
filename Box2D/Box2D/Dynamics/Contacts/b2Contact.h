@@ -30,7 +30,7 @@ namespace box2d {
 
 class Body;
 class b2Contact;
-class b2Fixture;
+class Fixture;
 class b2World;
 class b2BlockAllocator;
 class b2StackAllocator;
@@ -97,15 +97,15 @@ public:
 	const b2Contact* GetNext() const noexcept;
 
 	/// Get fixture A in this contact.
-	b2Fixture* GetFixtureA() noexcept;
-	const b2Fixture* GetFixtureA() const noexcept;
+	Fixture* GetFixtureA() noexcept;
+	const Fixture* GetFixtureA() const noexcept;
 
 	/// Get the child primitive index for fixture A.
 	child_count_t GetChildIndexA() const noexcept;
 
 	/// Get fixture B in this contact.
-	b2Fixture* GetFixtureB() noexcept;
-	const b2Fixture* GetFixtureB() const noexcept;
+	Fixture* GetFixtureB() noexcept;
+	const Fixture* GetFixtureB() const noexcept;
 
 	/// Get the child primitive index for fixture B.
 	child_count_t GetChildIndexB() const noexcept;
@@ -148,7 +148,7 @@ protected:
 	friend class b2World;
 	friend class b2ContactSolver;
 	friend class Body;
-	friend class b2Fixture;
+	friend class Fixture;
 
 	// Flags stored in m_flags
 	enum: uint32
@@ -177,13 +177,13 @@ protected:
 	void UnflagForFiltering() noexcept;
 	bool NeedsFiltering() const noexcept;
 
-	static b2Contact* Create(b2Fixture* fixtureA, child_count_t indexA,
-							 b2Fixture* fixtureB, child_count_t indexB,
+	static b2Contact* Create(Fixture* fixtureA, child_count_t indexA,
+							 Fixture* fixtureB, child_count_t indexB,
 							 b2BlockAllocator* allocator);
 	static void Destroy(b2Contact* contact, b2Shape::Type typeA, b2Shape::Type typeB, b2BlockAllocator* allocator);
 	static void Destroy(b2Contact* contact, b2BlockAllocator* allocator);
 
-	b2Contact(b2Fixture* fixtureA, child_count_t indexA, b2Fixture* fixtureB, child_count_t indexB);
+	b2Contact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB);
 	virtual ~b2Contact() = default;
 
 	void Update(b2ContactListener* listener);
@@ -227,8 +227,8 @@ protected:
 	b2ContactEdge m_nodeA = { nullptr, nullptr, nullptr, nullptr};
 	b2ContactEdge m_nodeB = { nullptr, nullptr, nullptr, nullptr};
 
-	b2Fixture* m_fixtureA = nullptr;
-	b2Fixture* m_fixtureB = nullptr;
+	Fixture* m_fixtureA = nullptr;
+	Fixture* m_fixtureB = nullptr;
 
 	child_count_t m_indexA = 0;
 	child_count_t m_indexB = 0;
@@ -313,17 +313,17 @@ inline const b2Contact* b2Contact::GetNext() const noexcept
 	return m_next;
 }
 
-inline b2Fixture* b2Contact::GetFixtureA() noexcept
+inline Fixture* b2Contact::GetFixtureA() noexcept
 {
 	return m_fixtureA;
 }
 
-inline const b2Fixture* b2Contact::GetFixtureA() const noexcept
+inline const Fixture* b2Contact::GetFixtureA() const noexcept
 {
 	return m_fixtureA;
 }
 
-inline b2Fixture* b2Contact::GetFixtureB() noexcept
+inline Fixture* b2Contact::GetFixtureB() noexcept
 {
 	return m_fixtureB;
 }
@@ -333,7 +333,7 @@ inline child_count_t b2Contact::GetChildIndexA() const noexcept
 	return m_indexA;
 }
 
-inline const b2Fixture* b2Contact::GetFixtureB() const noexcept
+inline const Fixture* b2Contact::GetFixtureB() const noexcept
 {
 	return m_fixtureB;
 }

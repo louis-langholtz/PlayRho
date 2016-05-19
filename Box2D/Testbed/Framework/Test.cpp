@@ -75,8 +75,8 @@ void Test::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 		return;
 	}
 
-	b2Fixture* fixtureA = contact->GetFixtureA();
-	b2Fixture* fixtureB = contact->GetFixtureB();
+	Fixture* fixtureA = contact->GetFixtureA();
+	Fixture* fixtureB = contact->GetFixtureB();
 
 	b2PointStateArray state1;
 	b2PointStateArray state2;
@@ -114,7 +114,7 @@ public:
 		m_fixture = nullptr;
 	}
 
-	bool ReportFixture(b2Fixture* fixture)
+	bool ReportFixture(Fixture* fixture)
 	{
 		Body* body = fixture->GetBody();
 		if (body->GetType() == DynamicBody)
@@ -134,7 +134,7 @@ public:
 	}
 
 	Vec2 m_point;
-	b2Fixture* m_fixture;
+	Fixture* m_fixture;
 };
 
 void Test::MouseDown(const Vec2& p)
@@ -246,7 +246,7 @@ void Test::LaunchBomb(const Vec2& position, const Vec2& velocity)
 	
 	b2CircleShape circle(0.3f);
 
-	b2FixtureDef fd;
+	FixtureDef fd;
 	fd.shape = &circle;
 	fd.density = 20.0f;
 	fd.restitution = 0.0f;

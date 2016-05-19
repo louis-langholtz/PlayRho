@@ -13,7 +13,7 @@
 
 namespace box2d {
 
-class b2Fixture;
+class Fixture;
 
 class b2ConstFixtureList
 {
@@ -21,7 +21,7 @@ public:
 	using const_iterator = b2ConstFixtureIterator;
 	
 	b2ConstFixtureList() = default;
-	b2ConstFixtureList(const b2Fixture* b): p(b) {}
+	b2ConstFixtureList(const Fixture* b): p(b) {}
 	
 	const_iterator begin() noexcept { return const_iterator(p); }
 	const_iterator end() noexcept { return const_iterator(nullptr); }
@@ -30,7 +30,7 @@ public:
 	const_iterator end() const noexcept { return const_iterator(nullptr); }
 	
 private:
-	const b2Fixture* p = nullptr;
+	const Fixture* p = nullptr;
 };
 
 } // namespace box2d

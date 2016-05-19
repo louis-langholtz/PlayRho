@@ -36,7 +36,7 @@ struct b2Color;
 struct b2JointDef;
 class Body;
 class b2Draw;
-class b2Fixture;
+class Fixture;
 class b2Joint;
 
 /// The world class manages all physics entities, dynamic simulation,
@@ -227,7 +227,7 @@ private:
 	};
 
 	friend class Body;
-	friend class b2Fixture;
+	friend class Fixture;
 	friend class b2ContactManager;
 	friend class b2Controller;
 
@@ -235,7 +235,7 @@ private:
 	void SolveTOI(const b2TimeStep& step);
 
 	void DrawJoint(b2Joint* joint);
-	void DrawShape(const b2Fixture* shape, const Transform& xf, const b2Color& color);
+	void DrawShape(const Fixture* shape, const Transform& xf, const b2Color& color);
 
 	b2BlockAllocator m_blockAllocator;
 	b2StackAllocator m_stackAllocator;

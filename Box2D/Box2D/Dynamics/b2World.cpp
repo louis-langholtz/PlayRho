@@ -191,8 +191,8 @@ void b2World::DestroyBody(Body* b)
 
 		f0->DestroyProxies(m_contactManager.m_broadPhase);
 		f0->Destroy(&m_blockAllocator);
-		f0->~b2Fixture();
-		m_blockAllocator.Free(f0, sizeof(b2Fixture));
+		f0->~Fixture();
+		m_blockAllocator.Free(f0, sizeof(Fixture));
 
 		b->m_fixtureList = f;
 		b->m_fixtureCount -= 1;
@@ -894,7 +894,7 @@ struct b2WorldQueryWrapper
 
 	bool QueryCallback(size_type proxyId)
 	{
-		const auto proxy = static_cast<b2FixtureProxy*>(broadPhase->GetUserData(proxyId));
+		const auto proxy = static_cast<FixtureProxy*>(broadPhase->GetUserData(proxyId));
 		return callback->ReportFixture(proxy->fixture);
 	}
 
@@ -917,7 +917,7 @@ struct b2WorldRayCastWrapper
 	float_t RayCastCallback(const b2RayCastInput& input, size_type proxyId)
 	{
 		auto userData = broadPhase->GetUserData(proxyId);
-		const auto proxy = static_cast<b2FixtureProxy*>(userData);
+		const auto proxy = static_cast<FixtureProxy*>(userData);
 		auto fixture = proxy->fixture;
 		const auto index = proxy->childIndex;
 		b2RayCastOutput output;
@@ -948,7 +948,7 @@ void b2World::RayCast(b2RayCastCallback* callback, const Vec2& point1, const Vec
 	m_contactManager.m_broadPhase.RayCast(&wrapper, input);
 }
 
-void b2World::DrawShape(const b2Fixture* fixture, const Transform& xf, const b2Color& color)
+void b2World::DrawShape(const Fixture* fixture, const Transform& xf, const b2Color& color)
 {
 	switch (fixture->GetType())
 	{
@@ -1099,8 +1099,8 @@ void b2World::DrawDebugData()
 		const b2Color color(0.3f, 0.9f, 0.9f);
 		for (auto c = m_contactManager.GetContactList(); c; c = c->GetNext())
 		{
-			//b2Fixture* fixtureA = c->GetFixtureA();
-			//b2Fixture* fixtureB = c->GetFixtureB();
+			//Fixture* fixtureA = c->GetFixtureA();
+			//Fixture* fixtureB = c->GetFixtureB();
 
 			//Vec2 cA = fixtureA->GetAABB().GetCenter();
 			//Vec2 cB = fixtureB->GetAABB().GetCenter();

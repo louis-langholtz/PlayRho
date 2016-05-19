@@ -43,7 +43,7 @@ public:
 
 			b2ChainShape loop;
 			loop.CreateLoop(vs, 5);
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &loop;
 			fd.density = 0.0f;
 			ground->CreateFixture(&fd);
@@ -65,7 +65,7 @@ public:
 			b2PolygonShape box;
 			box.SetAsBox(1.75f, 0.1f);
 
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &box;
 			fd.density = 1.0f;
 
@@ -106,7 +106,7 @@ public:
 			b2CircleShape shape;
 			shape.SetRadius(float_t(0.2));
 
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 1.0f;
 			m_ball->CreateFixture(&fd);

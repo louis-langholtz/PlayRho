@@ -65,7 +65,7 @@ int main(int argc, char** argv)
 	dynamicBox.SetAsBox(1.0f, 1.0f);
 
 	// Define the dynamic body fixture.
-	b2FixtureDef fixtureDef;
+	FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
 
 	// Set the box density to be non-zero, so it will be dynamic.

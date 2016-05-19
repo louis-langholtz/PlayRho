@@ -34,7 +34,7 @@ public:
 		m_hit = false;
 	}
 
-	float_t ReportFixture(b2Fixture* fixture, const Vec2& point, const Vec2& normal, float_t fraction)
+	float_t ReportFixture(Fixture* fixture, const Vec2& point, const Vec2& normal, float_t fraction)
 	{
 		Body* body = fixture->GetBody();
 		void* userData = body->GetUserData();
@@ -74,7 +74,7 @@ public:
 		m_hit = false;
 	}
 
-	float_t ReportFixture(b2Fixture* fixture, const Vec2& point, const Vec2& normal, float_t fraction)
+	float_t ReportFixture(Fixture* fixture, const Vec2& point, const Vec2& normal, float_t fraction)
 	{
 		Body* body = fixture->GetBody();
 		void* userData = body->GetUserData();
@@ -119,7 +119,7 @@ public:
 		m_count = 0;
 	}
 
-	float_t ReportFixture(b2Fixture* fixture, const Vec2& point, const Vec2& normal, float_t fraction)
+	float_t ReportFixture(Fixture* fixture, const Vec2& point, const Vec2& normal, float_t fraction)
 	{
 		Body* body = fixture->GetBody();
 		void* userData = body->GetUserData();
@@ -266,14 +266,14 @@ public:
 
 		if (index < 4)
 		{
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = m_polygons + index;
 			fd.friction = 0.3f;
 			m_bodies[m_bodyIndex]->CreateFixture(&fd);
 		}
 		else if (index < 5)
 		{
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &m_circle;
 			fd.friction = 0.3f;
 
@@ -281,7 +281,7 @@ public:
 		}
 		else
 		{
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &m_edge;
 			fd.friction = 0.3f;
 

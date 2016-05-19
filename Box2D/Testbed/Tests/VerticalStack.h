@@ -56,7 +56,7 @@ public:
 			b2PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.5f);
 
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 1.0f;
 			fd.friction = 0.3f;
@@ -101,7 +101,7 @@ public:
 				b2CircleShape shape;
 				shape.SetRadius(float_t(0.25));
 
-				b2FixtureDef fd;
+				FixtureDef fd;
 				fd.shape = &shape;
 				fd.density = 20.0f;
 				fd.restitution = 0.05f;
@@ -142,7 +142,7 @@ public:
 		//		b2CircleShape shape;
 		//		shape.m_radius = 0.25f;
 
-		//		b2FixtureDef fd;
+		//		FixtureDef fd;
 		//		fd.shape = &shape;
 		//		fd.density = 20.0f;
 		//		fd.restitution = 0.05f;

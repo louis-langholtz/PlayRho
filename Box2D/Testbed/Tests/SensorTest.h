@@ -45,7 +45,7 @@ public:
 
 #if 0
 			{
-				b2FixtureDef sd;
+				FixtureDef sd;
 				sd.SetAsBox(10.0f, 2.0f, Vec2(0.0f, 20.0f), 0.0f);
 				sd.isSensor = true;
 				m_sensor = ground->CreateFixture(&sd);
@@ -54,7 +54,7 @@ public:
 			{
 				b2CircleShape shape(5.0f, Vec2(0.0f, 10.0f));
 
-				b2FixtureDef fd;
+				FixtureDef fd;
 				fd.shape = &shape;
 				fd.isSensor = true;
 				m_sensor = ground->CreateFixture(&fd);
@@ -84,8 +84,8 @@ public:
 	// Implement contact listener.
 	void BeginContact(b2Contact* contact)
 	{
-		b2Fixture* fixtureA = contact->GetFixtureA();
-		b2Fixture* fixtureB = contact->GetFixtureB();
+		Fixture* fixtureA = contact->GetFixtureA();
+		Fixture* fixtureB = contact->GetFixtureB();
 
 		if (fixtureA == m_sensor)
 		{
@@ -111,8 +111,8 @@ public:
 	// Implement contact listener.
 	void EndContact(b2Contact* contact)
 	{
-		b2Fixture* fixtureA = contact->GetFixtureA();
-		b2Fixture* fixtureB = contact->GetFixtureB();
+		Fixture* fixtureA = contact->GetFixtureA();
+		Fixture* fixtureB = contact->GetFixtureB();
 
 		if (fixtureA == m_sensor)
 		{
@@ -173,7 +173,7 @@ public:
 		return new SensorTest;
 	}
 
-	b2Fixture* m_sensor;
+	Fixture* m_sensor;
 	Body* m_bodies[e_count];
 	bool m_touching[e_count];
 };

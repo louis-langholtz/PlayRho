@@ -38,7 +38,7 @@ public:
 
 			b2EdgeShape shape;
 
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 0.0f;
 			fd.friction = 0.6f;
@@ -115,7 +115,7 @@ public:
 			b2PolygonShape shape;
 			shape.SetAsBox(1.0f, 0.125f);
 
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 1.0f;
 			fd.friction = 0.6f;
@@ -194,7 +194,7 @@ public:
 			m_car = m_world->CreateBody(&bd);
 			m_car->CreateFixture(&chassis, 1.0f);
 
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &circle;
 			fd.density = 1.0f;
 			fd.friction = 0.9f;

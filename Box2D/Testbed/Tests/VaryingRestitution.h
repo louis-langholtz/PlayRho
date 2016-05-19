@@ -42,7 +42,7 @@ public:
 			b2CircleShape shape;
 			shape.SetRadius(float_t(1));
 
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 1.0f;
 

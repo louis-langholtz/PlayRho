@@ -97,8 +97,8 @@ public:
 	}
 
 	Body* m_body;
-	b2Fixture* m_fixture1;
-	b2Fixture* m_fixture2;
+	Fixture* m_fixture1;
+	Fixture* m_fixture2;
 	bool m_sensor;
 };
 

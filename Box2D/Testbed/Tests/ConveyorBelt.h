@@ -46,7 +46,7 @@ public:
 			b2PolygonShape shape;
 			shape.SetAsBox(10.0f, 0.5f);
 
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &shape;
 			fd.friction = 0.8f;
 			m_platform = body->CreateFixture(&fd);
@@ -70,8 +70,8 @@ public:
 	{
 		Test::PreSolve(contact, oldManifold);
 
-		b2Fixture* fixtureA = contact->GetFixtureA();
-		b2Fixture* fixtureB = contact->GetFixtureB();
+		Fixture* fixtureA = contact->GetFixtureA();
+		Fixture* fixtureB = contact->GetFixtureB();
 
 		if (fixtureA == m_platform)
 		{
@@ -94,7 +94,7 @@ public:
 		return new ConveyorBelt;
 	}
 
-	b2Fixture* m_platform;
+	Fixture* m_platform;
 };
 
 } // namespace box2d

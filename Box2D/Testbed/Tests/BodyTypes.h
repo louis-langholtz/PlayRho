@@ -34,7 +34,7 @@ public:
 			b2EdgeShape shape;
 			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
 
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &shape;
 
 			ground->CreateFixture(&fd);
@@ -62,7 +62,7 @@ public:
 			b2PolygonShape shape;
 			shape.SetAsBox(0.5f, 4.0f, Vec2(4.0f, 0.0f), 0.5f * Pi);
 
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &shape;
 			fd.friction = 0.6f;
 			fd.density = 2.0f;
@@ -98,7 +98,7 @@ public:
 			b2PolygonShape shape;
 			shape.SetAsBox(0.75f, 0.75f);
 
-			b2FixtureDef fd;
+			FixtureDef fd;
 			fd.shape = &shape;
 			fd.friction = 0.6f;
 			fd.density = 2.0f;

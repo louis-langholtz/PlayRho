@@ -404,8 +404,8 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, isl
 	for (auto i = decltype(m_contactCount){0}; i < m_contactCount; ++i)
 	{
 		b2Contact* c = m_contacts[i];
-		b2Fixture* fA = c->GetFixtureA();
-		b2Fixture* fB = c->GetFixtureB();
+		Fixture* fA = c->GetFixtureA();
+		Fixture* fB = c->GetFixtureB();
 
 		Body* bA = fA->GetBody();
 		Body* bB = fB->GetBody();

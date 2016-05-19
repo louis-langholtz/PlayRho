@@ -60,7 +60,7 @@ public:
 			bodies[0] = m_world->CreateBody(&bd);
 
 			{
-				b2FixtureDef fd;
+				FixtureDef fd;
 				fd.friction = 2.000000029802322e-01f;
 				fd.restitution = 0.000000000000000e+00f;
 				fd.density = 1.000000000000000e+00f;
@@ -99,7 +99,7 @@ public:
 			bodies[1] = m_world->CreateBody(&bd);
 
 			{
-				b2FixtureDef fd;
+				FixtureDef fd;
 				fd.friction = 5.000000000000000e-01f;
 				fd.restitution = 0.000000000000000e+00f;
 				fd.density = 5.000000000000000e+00f;
@@ -140,7 +140,7 @@ public:
 			bodies[2] = m_world->CreateBody(&bd);
 
 			{
-				b2FixtureDef fd;
+				FixtureDef fd;
 				fd.friction = 9.499999880790710e-01f;
 				fd.restitution = 0.000000000000000e+00f;
 				fd.density = 1.000000000000000e+01f;

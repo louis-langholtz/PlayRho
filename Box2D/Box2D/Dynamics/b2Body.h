@@ -27,12 +27,12 @@
 
 namespace box2d {
 
-class b2Fixture;
+class Fixture;
 class b2Joint;
 class b2Contact;
 class b2Controller;
 class b2World;
-struct b2FixtureDef;
+struct FixtureDef;
 struct b2JointEdge;
 struct b2ContactEdge;
 
@@ -121,16 +121,16 @@ public:
 	/// Contacts are not created until the next time step.
 	/// @param def the fixture definition.
 	/// @warning This function is locked during callbacks.
-	b2Fixture* CreateFixture(const b2FixtureDef* def);
+	Fixture* CreateFixture(const FixtureDef* def);
 
 	/// Creates a fixture from a shape and attach it to this body.
-	/// This is a convenience function. Use b2FixtureDef if you need to set parameters
+	/// This is a convenience function. Use FixtureDef if you need to set parameters
 	/// like friction, restitution, user data, or filtering.
 	/// If the density is non-zero, this function automatically updates the mass of the body.
 	/// @param shape the shape to be cloned.
 	/// @param density the shape density (set to zero for static bodies).
 	/// @warning This function is locked during callbacks.
-	b2Fixture* CreateFixture(const b2Shape* shape, float_t density);
+	Fixture* CreateFixture(const b2Shape* shape, float_t density);
 
 	/// Destroy a fixture. This removes the fixture from the broad-phase and
 	/// destroys all contacts associated with this fixture. This will
@@ -139,7 +139,7 @@ public:
 	/// All fixtures attached to a body are implicitly destroyed when the body is destroyed.
 	/// @param fixture the fixture to be removed.
 	/// @warning This function is locked during callbacks.
-	void DestroyFixture(b2Fixture* fixture);
+	void DestroyFixture(Fixture* fixture);
 
 	/// Set the position of the body's origin and rotation.
 	/// Manipulating a body's transform may cause non-physical behavior.
@@ -348,9 +348,9 @@ public:
 	bool IsFixedRotation() const noexcept;
 
 	/// Get the list of all fixtures attached to this body.
-	b2Fixture* GetFixtureList() noexcept;
-	const b2Fixture* GetFixtureList() const noexcept;
-	b2FixtureList GetFixtures() noexcept;
+	Fixture* GetFixtureList() noexcept;
+	const Fixture* GetFixtureList() const noexcept;
+	FixtureList GetFixtures() noexcept;
 	b2ConstFixtureList GetFixtures() const noexcept;
 
 	/// Get the list of all joints attached to this body.
@@ -467,7 +467,7 @@ private:
 	Body* m_prev = nullptr;
 	Body* m_next = nullptr;
 
-	b2Fixture* m_fixtureList = nullptr;
+	Fixture* m_fixtureList = nullptr;
 	size_t m_fixtureCount = 0;
 
 	b2JointEdge* m_jointList = nullptr;
@@ -714,19 +714,19 @@ inline bool Body::IsSleepingAllowed() const noexcept
 	return (m_flags & e_autoSleepFlag) == e_autoSleepFlag;
 }
 
-inline b2Fixture* Body::GetFixtureList() noexcept
+inline Fixture* Body::GetFixtureList() noexcept
 {
 	return m_fixtureList;
 }
 
-inline const b2Fixture* Body::GetFixtureList() const noexcept
+inline const Fixture* Body::GetFixtureList() const noexcept
 {
 	return m_fixtureList;
 }
 
-inline b2FixtureList Body::GetFixtures() noexcept
+inline FixtureList Body::GetFixtures() noexcept
 {
-	return b2FixtureList(m_fixtureList);
+	return FixtureList(m_fixtureList);
 }
 
 inline b2ConstFixtureList Body::GetFixtures() const noexcept
