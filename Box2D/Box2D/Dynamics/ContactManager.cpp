@@ -16,11 +16,11 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Dynamics/b2ContactManager.h>
-#include <Box2D/Dynamics/b2Body.h>
-#include <Box2D/Dynamics/b2Fixture.h>
-#include <Box2D/Dynamics/b2WorldCallbacks.h>
-#include <Box2D/Dynamics/Contacts/b2Contact.h>
+#include <Box2D/Dynamics/ContactManager.h>
+#include <Box2D/Dynamics/Body.h>
+#include <Box2D/Dynamics/Fixture.h>
+#include <Box2D/Dynamics/WorldCallbacks.h>
+#include <Box2D/Dynamics/Contacts/Contact.h>
 
 using namespace box2d;
 

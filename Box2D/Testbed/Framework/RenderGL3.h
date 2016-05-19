@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include <Box2D/Common/b2Math.h>
+#include <Box2D/Common/Math.h>
 
 #define SILVER (220 | (220 << 8) | (220 << 16) | (255 << 24))
 #define WHITE (255 | (255 << 8) | (255 << 16) | (255 << 24))

@@ -16,7 +16,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Common/b2Math.h>
+#include <Box2D/Common/Math.h>
 
 using namespace box2d;
 

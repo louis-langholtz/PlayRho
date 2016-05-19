@@ -6,6 +6,6 @@
 //
 //
 
-#include <Box2D/Dynamics/b2FixtureList.hpp>
+#include <Box2D/Dynamics/FixtureList.hpp>
 
 using namespace box2d;

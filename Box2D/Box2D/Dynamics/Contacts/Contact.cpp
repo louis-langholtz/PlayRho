@@ -16,23 +16,23 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Dynamics/Contacts/b2Contact.h>
-#include <Box2D/Dynamics/Contacts/b2CircleContact.h>
-#include <Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.h>
-#include <Box2D/Dynamics/Contacts/b2PolygonContact.h>
-#include <Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.h>
-#include <Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.h>
-#include <Box2D/Dynamics/Contacts/b2ChainAndCircleContact.h>
-#include <Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.h>
-#include <Box2D/Dynamics/Contacts/b2ContactSolver.h>
+#include <Box2D/Dynamics/Contacts/Contact.h>
+#include <Box2D/Dynamics/Contacts/CircleContact.h>
+#include <Box2D/Dynamics/Contacts/PolygonAndCircleContact.h>
+#include <Box2D/Dynamics/Contacts/PolygonContact.h>
+#include <Box2D/Dynamics/Contacts/EdgeAndCircleContact.h>
+#include <Box2D/Dynamics/Contacts/EdgeAndPolygonContact.h>
+#include <Box2D/Dynamics/Contacts/ChainAndCircleContact.h>
+#include <Box2D/Dynamics/Contacts/ChainAndPolygonContact.h>
+#include <Box2D/Dynamics/Contacts/ContactSolver.h>
 
-#include <Box2D/Collision/b2Collision.h>
-#include <Box2D/Collision/b2TimeOfImpact.h>
-#include <Box2D/Collision/Shapes/b2Shape.h>
-#include <Box2D/Common/b2BlockAllocator.h>
-#include <Box2D/Dynamics/b2Body.h>
-#include <Box2D/Dynamics/b2Fixture.h>
-#include <Box2D/Dynamics/b2World.h>
+#include <Box2D/Collision/Collision.h>
+#include <Box2D/Collision/TimeOfImpact.h>
+#include <Box2D/Collision/Shapes/Shape.h>
+#include <Box2D/Common/BlockAllocator.h>
+#include <Box2D/Dynamics/Body.h>
+#include <Box2D/Dynamics/Fixture.h>
+#include <Box2D/Dynamics/World.h>
 
 using namespace box2d;
 

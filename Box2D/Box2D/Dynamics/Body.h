@@ -19,10 +19,10 @@
 #ifndef B2_BODY_H
 #define B2_BODY_H
 
-#include <Box2D/Common/b2Math.h>
-#include <Box2D/Collision/Shapes/b2Shape.h>
-#include <Box2D/Dynamics/b2FixtureList.hpp>
-#include <Box2D/Dynamics/b2ConstFixtureList.hpp>
+#include <Box2D/Common/Math.h>
+#include <Box2D/Collision/Shapes/Shape.h>
+#include <Box2D/Dynamics/FixtureList.hpp>
+#include <Box2D/Dynamics/ConstFixtureList.hpp>
 #include <memory>
 
 namespace box2d {

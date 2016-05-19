@@ -16,21 +16,21 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Dynamics/Joints/b2Joint.h>
-#include <Box2D/Dynamics/Joints/b2DistanceJoint.h>
-#include <Box2D/Dynamics/Joints/b2WheelJoint.h>
-#include <Box2D/Dynamics/Joints/b2MouseJoint.h>
-#include <Box2D/Dynamics/Joints/b2RevoluteJoint.h>
-#include <Box2D/Dynamics/Joints/b2PrismaticJoint.h>
-#include <Box2D/Dynamics/Joints/b2PulleyJoint.h>
-#include <Box2D/Dynamics/Joints/b2GearJoint.h>
-#include <Box2D/Dynamics/Joints/b2WeldJoint.h>
-#include <Box2D/Dynamics/Joints/b2FrictionJoint.h>
-#include <Box2D/Dynamics/Joints/b2RopeJoint.h>
-#include <Box2D/Dynamics/Joints/b2MotorJoint.h>
-#include <Box2D/Dynamics/b2Body.h>
-#include <Box2D/Dynamics/b2World.h>
-#include <Box2D/Common/b2BlockAllocator.h>
+#include <Box2D/Dynamics/Joints/Joint.h>
+#include <Box2D/Dynamics/Joints/DistanceJoint.h>
+#include <Box2D/Dynamics/Joints/WheelJoint.h>
+#include <Box2D/Dynamics/Joints/MouseJoint.h>
+#include <Box2D/Dynamics/Joints/RevoluteJoint.h>
+#include <Box2D/Dynamics/Joints/PrismaticJoint.h>
+#include <Box2D/Dynamics/Joints/PulleyJoint.h>
+#include <Box2D/Dynamics/Joints/GearJoint.h>
+#include <Box2D/Dynamics/Joints/WeldJoint.h>
+#include <Box2D/Dynamics/Joints/FrictionJoint.h>
+#include <Box2D/Dynamics/Joints/RopeJoint.h>
+#include <Box2D/Dynamics/Joints/MotorJoint.h>
+#include <Box2D/Dynamics/Body.h>
+#include <Box2D/Dynamics/World.h>
+#include <Box2D/Common/BlockAllocator.h>
 
 #include <new>
 

@@ -19,10 +19,10 @@
 #ifndef B2_CONTACT_H
 #define B2_CONTACT_H
 
-#include <Box2D/Common/b2Math.h>
-#include <Box2D/Collision/b2Collision.h>
-#include <Box2D/Collision/Shapes/b2Shape.h>
-#include <Box2D/Dynamics/b2Fixture.h>
+#include <Box2D/Common/Math.h>
+#include <Box2D/Collision/Collision.h>
+#include <Box2D/Collision/Shapes/Shape.h>
+#include <Box2D/Dynamics/Fixture.h>
 
 #include <type_traits>
 

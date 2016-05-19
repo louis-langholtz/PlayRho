@@ -6,6 +6,6 @@
 //
 //
 
-#include <Box2D/Dynamics/b2BodyList.hpp>
+#include <Box2D/Dynamics/BodyList.hpp>
 
 using namespace box2d;

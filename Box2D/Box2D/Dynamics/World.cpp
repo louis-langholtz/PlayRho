@@ -16,21 +16,21 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Dynamics/b2World.h>
-#include <Box2D/Dynamics/b2Body.h>
-#include <Box2D/Dynamics/b2Fixture.h>
-#include <Box2D/Dynamics/b2Island.h>
-#include <Box2D/Dynamics/Joints/b2PulleyJoint.h>
-#include <Box2D/Dynamics/Contacts/b2Contact.h>
-#include <Box2D/Collision/b2Collision.h>
-#include <Box2D/Collision/b2BroadPhase.h>
-#include <Box2D/Collision/Shapes/b2CircleShape.h>
-#include <Box2D/Collision/Shapes/b2EdgeShape.h>
-#include <Box2D/Collision/Shapes/b2ChainShape.h>
-#include <Box2D/Collision/Shapes/b2PolygonShape.h>
-#include <Box2D/Collision/b2TimeOfImpact.h>
-#include <Box2D/Common/b2Draw.h>
-#include <Box2D/Common/b2Timer.h>
+#include <Box2D/Dynamics/World.h>
+#include <Box2D/Dynamics/Body.h>
+#include <Box2D/Dynamics/Fixture.h>
+#include <Box2D/Dynamics/Island.h>
+#include <Box2D/Dynamics/Joints/PulleyJoint.h>
+#include <Box2D/Dynamics/Contacts/Contact.h>
+#include <Box2D/Collision/Collision.h>
+#include <Box2D/Collision/BroadPhase.h>
+#include <Box2D/Collision/Shapes/CircleShape.h>
+#include <Box2D/Collision/Shapes/EdgeShape.h>
+#include <Box2D/Collision/Shapes/ChainShape.h>
+#include <Box2D/Collision/Shapes/PolygonShape.h>
+#include <Box2D/Collision/TimeOfImpact.h>
+#include <Box2D/Common/Draw.h>
+#include <Box2D/Common/Timer.h>
 #include <new>
 #include <functional>
 #include <type_traits>

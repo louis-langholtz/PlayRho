@@ -6,8 +6,8 @@
 //
 //
 
-#include <Box2D/Common/b2BodyIterator.hpp>
-#include <Box2D/Dynamics/b2Body.h>
+#include <Box2D/Common/BodyIterator.hpp>
+#include <Box2D/Dynamics/Body.h>
 
 using namespace box2d;
 

@@ -16,11 +16,11 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.h>
-#include <Box2D/Common/b2BlockAllocator.h>
-#include <Box2D/Dynamics/b2Fixture.h>
-#include <Box2D/Collision/Shapes/b2EdgeShape.h>
-#include <Box2D/Collision/Shapes/b2CircleShape.h>
+#include <Box2D/Dynamics/Contacts/EdgeAndCircleContact.h>
+#include <Box2D/Common/BlockAllocator.h>
+#include <Box2D/Dynamics/Fixture.h>
+#include <Box2D/Collision/Shapes/EdgeShape.h>
+#include <Box2D/Collision/Shapes/CircleShape.h>
 
 #include <new>
 

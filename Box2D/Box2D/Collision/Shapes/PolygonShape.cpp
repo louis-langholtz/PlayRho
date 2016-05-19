@@ -16,7 +16,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Collision/Shapes/b2PolygonShape.h>
+#include <Box2D/Collision/Shapes/PolygonShape.h>
 #include <new>
 
 using namespace box2d;

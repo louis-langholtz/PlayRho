@@ -19,7 +19,7 @@
 #ifndef B2_STACK_ALLOCATOR_H
 #define B2_STACK_ALLOCATOR_H
 
-#include <Box2D/Common/b2Settings.h>
+#include <Box2D/Common/Settings.h>
 
 namespace box2d {
 

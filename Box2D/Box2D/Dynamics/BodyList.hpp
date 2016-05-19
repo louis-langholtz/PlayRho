@@ -9,8 +9,8 @@
 #ifndef BodyList_hpp
 #define BodyList_hpp
 
-#include <Box2D/Common/b2BodyIterator.hpp>
-#include <Box2D/Common/b2ConstBodyIterator.hpp>
+#include <Box2D/Common/BodyIterator.hpp>
+#include <Box2D/Common/ConstBodyIterator.hpp>
 
 namespace box2d {
 

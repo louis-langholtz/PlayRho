@@ -9,8 +9,8 @@
 #ifndef b2FixtureList_hpp
 #define b2FixtureList_hpp
 
-#include <Box2D/Common/b2FixtureIterator.hpp>
-#include <Box2D/Common/b2ConstFixtureIterator.hpp>
+#include <Box2D/Common/FixtureIterator.hpp>
+#include <Box2D/Common/ConstFixtureIterator.hpp>
 
 namespace box2d {
 

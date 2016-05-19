@@ -19,7 +19,7 @@
 #ifndef B2_DRAW_H
 #define B2_DRAW_H
 
-#include <Box2D/Common/b2Math.h>
+#include <Box2D/Common/Math.h>
 
 namespace box2d {
 

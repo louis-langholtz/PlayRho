@@ -19,8 +19,8 @@
 #ifndef B2_DYNAMIC_TREE_H
 #define B2_DYNAMIC_TREE_H
 
-#include <Box2D/Collision/b2Collision.h>
-#include <Box2D/Common/b2GrowableStack.h>
+#include <Box2D/Collision/Collision.h>
+#include <Box2D/Common/GrowableStack.h>
 
 namespace box2d {
 

@@ -9,7 +9,7 @@
 #ifndef ConstBodyList_hpp
 #define ConstBodyList_hpp
 
-#include <Box2D/Common/b2ConstBodyIterator.hpp>
+#include <Box2D/Common/ConstBodyIterator.hpp>
 
 namespace box2d {
 

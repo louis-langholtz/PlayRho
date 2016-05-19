@@ -19,9 +19,9 @@
 #ifndef B2_SHAPE_H
 #define B2_SHAPE_H
 
-#include <Box2D/Common/b2BlockAllocator.h>
-#include <Box2D/Common/b2Math.h>
-#include <Box2D/Collision/b2Collision.h>
+#include <Box2D/Common/BlockAllocator.h>
+#include <Box2D/Common/Math.h>
+#include <Box2D/Collision/Collision.h>
 
 namespace box2d {
 

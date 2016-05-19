@@ -6,6 +6,6 @@
 //
 //
 
-#include <Box2D/Dynamics/b2ConstFixtureList.hpp>
+#include <Box2D/Dynamics/ConstFixtureList.hpp>
 
 using namespace box2d;

@@ -16,8 +16,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Dynamics/b2WorldCallbacks.h>
-#include <Box2D/Dynamics/b2Fixture.h>
+#include <Box2D/Dynamics/WorldCallbacks.h>
+#include <Box2D/Dynamics/Fixture.h>
 
 using namespace box2d;
 

@@ -16,11 +16,11 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Collision/b2Distance.h>
-#include <Box2D/Collision/Shapes/b2CircleShape.h>
-#include <Box2D/Collision/Shapes/b2EdgeShape.h>
-#include <Box2D/Collision/Shapes/b2ChainShape.h>
-#include <Box2D/Collision/Shapes/b2PolygonShape.h>
+#include <Box2D/Collision/Distance.h>
+#include <Box2D/Collision/Shapes/CircleShape.h>
+#include <Box2D/Collision/Shapes/EdgeShape.h>
+#include <Box2D/Collision/Shapes/ChainShape.h>
+#include <Box2D/Collision/Shapes/PolygonShape.h>
 
 namespace box2d {
 

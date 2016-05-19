@@ -19,14 +19,14 @@
 #ifndef B2_WORLD_H
 #define B2_WORLD_H
 
-#include <Box2D/Common/b2Math.h>
-#include <Box2D/Common/b2BlockAllocator.h>
-#include <Box2D/Common/b2StackAllocator.h>
-#include <Box2D/Dynamics/b2ContactManager.h>
-#include <Box2D/Dynamics/b2WorldCallbacks.h>
-#include <Box2D/Dynamics/b2TimeStep.h>
-#include <Box2D/Dynamics/b2BodyList.hpp>
-#include <Box2D/Dynamics/b2ConstBodyList.hpp>
+#include <Box2D/Common/Math.h>
+#include <Box2D/Common/BlockAllocator.h>
+#include <Box2D/Common/StackAllocator.h>
+#include <Box2D/Dynamics/ContactManager.h>
+#include <Box2D/Dynamics/WorldCallbacks.h>
+#include <Box2D/Dynamics/TimeStep.h>
+#include <Box2D/Dynamics/BodyList.hpp>
+#include <Box2D/Dynamics/ConstBodyList.hpp>
 
 namespace box2d {
 
