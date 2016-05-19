@@ -49,7 +49,7 @@ public:
 	AABB ComputeAABB(const Transform& transform, child_count_t childIndex) const override;
 
 	/// @see Shape::ComputeMass
-	b2MassData ComputeMass(float_t density) const override;
+	MassData ComputeMass(float_t density) const override;
 
 	Vec2 GetPosition() const noexcept { return m_p; }
 

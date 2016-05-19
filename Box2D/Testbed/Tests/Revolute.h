@@ -31,7 +31,7 @@ public:
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
 
-			b2EdgeShape shape;
+			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 
 			FixtureDef fd;
@@ -48,7 +48,7 @@ public:
 			BodyDef bd;
 			bd.type = DynamicBody;
 
-			b2RevoluteJointDef rjd;
+			RevoluteJointDef rjd;
 
 			bd.position = Vec2(-10.0f, 20.0f);
 			Body* body = m_world->CreateBody(&bd);
@@ -67,7 +67,7 @@ public:
 			rjd.enableLimit = true;
 			rjd.collideConnected = true;
 
-			m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&rjd);
+			m_joint = (RevoluteJoint*)m_world->CreateJoint(&rjd);
 		}
 
 		{
@@ -96,7 +96,7 @@ public:
 			Body* polygon_body = m_world->CreateBody(&polygon_bd);
 			polygon_body->CreateFixture(&polygon_shape, 2.0f);
 
-			b2RevoluteJointDef rjd;
+			RevoluteJointDef rjd;
 			rjd.Initialize(ground, polygon_body, Vec2(20.0f, 10.0f));
 			rjd.lowerAngle = -0.25f * Pi;
 			rjd.upperAngle = 0.0f * Pi;
@@ -162,7 +162,7 @@ public:
 	}
 
 	Body* m_ball;
-	b2RevoluteJoint* m_joint;
+	RevoluteJoint* m_joint;
 };
 
 } // namespace box2d

@@ -138,7 +138,7 @@ public:
 
 protected:
 	friend class Joint;
-	friend class b2GearJoint;
+	friend class GearJoint;
 	b2PrismaticJoint(const b2PrismaticJointDef* def);
 
 	void InitVelocityConstraints(const b2SolverData& data) override;

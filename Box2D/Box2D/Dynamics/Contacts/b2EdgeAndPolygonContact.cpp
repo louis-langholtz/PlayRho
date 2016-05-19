@@ -49,5 +49,5 @@ b2EdgeAndPolygonContact::b2EdgeAndPolygonContact(Fixture* fixtureA, Fixture* fix
 
 Manifold b2EdgeAndPolygonContact::Evaluate(const Transform& xfA, const Transform& xfB)
 {
-	return CollideShapes(*static_cast<b2EdgeShape*>(m_fixtureA->GetShape()), xfA, *static_cast<b2PolygonShape*>(m_fixtureB->GetShape()), xfB);
+	return CollideShapes(*static_cast<EdgeShape*>(m_fixtureA->GetShape()), xfA, *static_cast<b2PolygonShape*>(m_fixtureB->GetShape()), xfB);
 }

@@ -27,7 +27,7 @@ namespace box2d {
 
 // Compute contact points for edge versus circle.
 // This accounts for edge connectivity.
-Manifold CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB)
+Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB)
 {
 	// Compute circle in frame of edge
 	const auto Q = MulT(xfA, Mul(xfB, shapeB.GetPosition()));
@@ -131,7 +131,7 @@ Manifold CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, const b2
 }
 
 // This structure is used to keep track of the best separating axis.
-struct b2EPAxis
+struct EPAxis
 {
 	using index_t = b2PolygonShape::vertex_count_t;
 
@@ -144,9 +144,9 @@ struct b2EPAxis
 	
 	static constexpr index_t InvalidIndex = static_cast<index_t>(-1);
 
-	b2EPAxis() = default;
+	EPAxis() = default;
 
-	constexpr b2EPAxis(Type t, index_t i, float_t s) noexcept: type(t), index(i), separation(s) {}
+	constexpr EPAxis(Type t, index_t i, float_t s) noexcept: type(t), index(i), separation(s) {}
 
 	Type type;
 	index_t index;
@@ -154,14 +154,14 @@ struct b2EPAxis
 };
 
 // This holds polygon B expressed in frame A.
-class b2TempPolygon
+class TempPolygon
 {
 public:
 	using size_type = std::remove_cv<decltype(MaxPolygonVertices)>::type;
 
-	b2TempPolygon() = default;
+	TempPolygon() = default;
 
-	b2TempPolygon(const b2PolygonShape& shape, const Transform& xf);
+	TempPolygon(const b2PolygonShape& shape, const Transform& xf);
 
 	/// Gets count of appended elements (vertex-normal pairs).
 	/// @return value between 0 and MaxPolygonVertices inclusive.
@@ -198,8 +198,8 @@ private:
 	Vec2 normals[MaxPolygonVertices];
 };
 
-/// Gets a b2TempPolygon object from a given shape in terms of a given transform.
-inline b2TempPolygon::b2TempPolygon(const b2PolygonShape& shape, const Transform& xf)
+/// Gets a TempPolygon object from a given shape in terms of a given transform.
+inline TempPolygon::TempPolygon(const b2PolygonShape& shape, const Transform& xf)
 {
 	const auto num_vertices = shape.GetVertexCount();
 	for (auto i = decltype(num_vertices){0}; i < num_vertices; ++i)
@@ -209,7 +209,7 @@ inline b2TempPolygon::b2TempPolygon(const b2PolygonShape& shape, const Transform
 }
 
 // Reference face used for clipping
-struct b2ReferenceFace
+struct ReferenceFace
 {
 	using index_t = b2PolygonShape::vertex_count_t;
 
@@ -226,12 +226,12 @@ struct b2ReferenceFace
 	float_t sideOffset2;
 };
 
-class b2EdgeInfo
+class EdgeInfo
 {
 public:
-	b2EdgeInfo() = default;
+	EdgeInfo() = default;
 
-	b2EdgeInfo(const b2EdgeShape& edge, const Vec2& centroid);
+	EdgeInfo(const EdgeShape& edge, const Vec2& centroid);
 
 	Vec2 GetVertex1() const noexcept { return m_vertex1; }
 	Vec2 GetVertex2() const noexcept { return m_vertex2; }
@@ -254,7 +254,7 @@ private:
 	Vec2 m_lowerLimit, m_upperLimit;
 };
 
-inline b2EdgeInfo::b2EdgeInfo(const b2EdgeShape& edge, const Vec2& centroid):
+inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2& centroid):
 	m_vertex1(edge.GetVertex1()), m_vertex2(edge.GetVertex2()),
 	m_edge1(Normalize(m_vertex2 - m_vertex1)), m_normal1(m_edge1.y, -m_edge1.x)
 {
@@ -443,9 +443,9 @@ inline b2EdgeInfo::b2EdgeInfo(const b2EdgeShape& edge, const Vec2& centroid):
 	}
 }
 
-static inline b2TempPolygon::size_type b2GetIndexOfMinimum(const b2TempPolygon& localShapeB, const b2EdgeInfo& edgeInfo)
+static inline TempPolygon::size_type GetIndexOfMinimum(const TempPolygon& localShapeB, const EdgeInfo& edgeInfo)
 {
-	b2TempPolygon::size_type bestIndex = b2TempPolygon::size_type{0};
+	TempPolygon::size_type bestIndex = TempPolygon::size_type{0};
 	
 	auto minValue = Dot(edgeInfo.GetNormal(), localShapeB.GetNormal(0));
 	const auto count = localShapeB.GetCount();
@@ -462,9 +462,9 @@ static inline b2TempPolygon::size_type b2GetIndexOfMinimum(const b2TempPolygon& 
 	return bestIndex;
 }
 
-static constexpr float_t b2MaxEPSeparation = PolygonRadius * 2; ///< Maximum separation.
+static constexpr float_t MaxEPSeparation = PolygonRadius * 2; ///< Maximum separation.
 
-static inline b2EPAxis b2ComputeEdgeSeparation(const b2TempPolygon& shape, const b2EdgeInfo& edgeInfo)
+static inline EPAxis ComputeEdgeSeparation(const TempPolygon& shape, const EdgeInfo& edgeInfo)
 {
 	auto min_val = MaxFloat;
 	const auto count = shape.GetCount();
@@ -474,12 +474,12 @@ static inline b2EPAxis b2ComputeEdgeSeparation(const b2TempPolygon& shape, const
 		if (min_val > s)
 			min_val = s;
 	}
-	return b2EPAxis(b2EPAxis::e_edgeA, edgeInfo.IsFront() ? 0 : 1, min_val);
+	return EPAxis(EPAxis::e_edgeA, edgeInfo.IsFront() ? 0 : 1, min_val);
 }
 
-static inline b2EPAxis b2ComputePolygonSeparation(const b2TempPolygon& shape, const b2EdgeInfo& edgeInfo)
+static inline EPAxis ComputePolygonSeparation(const TempPolygon& shape, const EdgeInfo& edgeInfo)
 {
-	auto axis = b2EPAxis{b2EPAxis::e_unknown, b2EPAxis::InvalidIndex, -MaxFloat};
+	auto axis = EPAxis{EPAxis::e_unknown, EPAxis::InvalidIndex, -MaxFloat};
 	
 	const auto normal = edgeInfo.GetNormal();
 	const auto perp = Vec2(-normal.y, normal.x);
@@ -492,8 +492,8 @@ static inline b2EPAxis b2ComputePolygonSeparation(const b2TempPolygon& shape, co
 		const auto s2 = Dot(polygonNormal, polygonVertex - edgeInfo.GetVertex2());
 		const auto s = Min(s1, s2);
 		
-		if (s > b2MaxEPSeparation) // No collision
-			return b2EPAxis(b2EPAxis::e_edgeB, i, s);
+		if (s > MaxEPSeparation) // No collision
+			return EPAxis(EPAxis::e_edgeB, i, s);
 		
 		// Adjacency
 		if (Dot(polygonNormal, perp) >= 0)
@@ -513,7 +513,7 @@ static inline b2EPAxis b2ComputePolygonSeparation(const b2TempPolygon& shape, co
 		
 		if (axis.separation < s)
 		{
-			axis = b2EPAxis{b2EPAxis::e_edgeB, i, s};
+			axis = EPAxis{EPAxis::e_edgeB, i, s};
 		}
 	}
 	
@@ -522,22 +522,22 @@ static inline b2EPAxis b2ComputePolygonSeparation(const b2TempPolygon& shape, co
 
 /// Edge and polygon collider.
 /// This takes into account edge adjacency.
-class b2EPCollider
+class EPCollider
 {
 public:
-	b2EPCollider(const Transform& xf): m_xf(xf) {}
+	EPCollider(const Transform& xf): m_xf(xf) {}
 	
-	Manifold Collide(const b2EdgeShape& shapeA, const b2PolygonShape& shapeB) const;
+	Manifold Collide(const EdgeShape& shapeA, const b2PolygonShape& shapeB) const;
 	
 private:
-	Manifold Collide(const b2EdgeInfo& shapeA, const b2PolygonShape& shapeB) const;
+	Manifold Collide(const EdgeInfo& shapeA, const b2PolygonShape& shapeB) const;
 
 	const Transform m_xf;
 };
 
-Manifold b2EPCollider::Collide(const b2EdgeShape& shapeA, const b2PolygonShape& shapeB) const
+Manifold EPCollider::Collide(const EdgeShape& shapeA, const b2PolygonShape& shapeB) const
 {
-	return Collide(b2EdgeInfo{shapeA, Mul(m_xf, shapeB.GetCentroid())}, shapeB);
+	return Collide(EdgeInfo{shapeA, Mul(m_xf, shapeB.GetCentroid())}, shapeB);
 }
 
 // Algorithm:
@@ -549,21 +549,21 @@ Manifold b2EPCollider::Collide(const b2EdgeShape& shapeA, const b2PolygonShape& 
 // 6. Visit each separating axes, only accept axes within the range
 // 7. Return if _any_ axis indicates separation
 // 8. Clip
-Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShape& shapeB) const
+Manifold EPCollider::Collide(const EdgeInfo& edgeInfo, const b2PolygonShape& shapeB) const
 {
-	const auto localShapeB = b2TempPolygon{shapeB, m_xf};
+	const auto localShapeB = TempPolygon{shapeB, m_xf};
 	
-	const auto edgeAxis = b2ComputeEdgeSeparation(localShapeB, edgeInfo);
+	const auto edgeAxis = ComputeEdgeSeparation(localShapeB, edgeInfo);
 	
 	// If no valid normal can be found then this edge should not collide.
-	assert(edgeAxis.type != b2EPAxis::e_unknown);
-	if ((edgeAxis.type == b2EPAxis::e_unknown) || (edgeAxis.separation > b2MaxEPSeparation))
+	assert(edgeAxis.type != EPAxis::e_unknown);
+	if ((edgeAxis.type == EPAxis::e_unknown) || (edgeAxis.separation > MaxEPSeparation))
 	{
 		return Manifold{};
 	}
 	
-	const auto polygonAxis = b2ComputePolygonSeparation(localShapeB, edgeInfo);
-	if ((polygonAxis.type != b2EPAxis::e_unknown) && (polygonAxis.separation > b2MaxEPSeparation))
+	const auto polygonAxis = ComputePolygonSeparation(localShapeB, edgeInfo);
+	if ((polygonAxis.type != EPAxis::e_unknown) && (polygonAxis.separation > MaxEPSeparation))
 	{
 		return Manifold{};
 	}
@@ -574,20 +574,20 @@ Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShape&
 	
 	// Now:
 	//   (edgeAxis.separation <= MaxSeparation) AND
-	//   (polygonAxis.type == b2EPAxis::e_unknown OR polygonAxis.separation <= MaxSeparation)
-	const auto primaryAxis = (polygonAxis.type == b2EPAxis::e_unknown)?
+	//   (polygonAxis.type == EPAxis::e_unknown OR polygonAxis.separation <= MaxSeparation)
+	const auto primaryAxis = (polygonAxis.type == EPAxis::e_unknown)?
 		edgeAxis: (polygonAxis.separation > ((k_relativeTol * edgeAxis.separation) + k_absoluteTol))?
 			polygonAxis: edgeAxis;
 	
 	auto manifoldType = Manifold::e_unset;
-	b2ClipArray incidentEdge;
-	b2ReferenceFace rf;
-	if (primaryAxis.type == b2EPAxis::e_edgeA)
+	ClipArray incidentEdge;
+	ReferenceFace rf;
+	if (primaryAxis.type == EPAxis::e_edgeA)
 	{
 		manifoldType = Manifold::e_faceA;
 		
 		// Search for the polygon normal that is most anti-parallel to the edge normal.
-		const auto bestIndex = b2GetIndexOfMinimum(localShapeB, edgeInfo);
+		const auto bestIndex = GetIndexOfMinimum(localShapeB, edgeInfo);
 		
 		const auto i1 = bestIndex;
 		const auto i2 = ((i1 + 1) < localShapeB.GetCount()) ? i1 + 1 : 0;
@@ -638,15 +638,15 @@ Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShape&
 	// Clip incident edge against extruded edge1 side edges.
 	
 	// Clip to box side 1
-	b2ClipArray clipPoints1;
-	if (b2ClipSegmentToLine(clipPoints1, incidentEdge, rf.sideNormal1, rf.sideOffset1, rf.i1) < clipPoints1.size())
+	ClipArray clipPoints1;
+	if (ClipSegmentToLine(clipPoints1, incidentEdge, rf.sideNormal1, rf.sideOffset1, rf.i1) < clipPoints1.size())
 	{
 		return Manifold{};
 	}
 	
 	// Clip to negative box side 1
-	b2ClipArray clipPoints2;
-	if (b2ClipSegmentToLine(clipPoints2, clipPoints1, rf.sideNormal2, rf.sideOffset2, rf.i2) < clipPoints2.size())
+	ClipArray clipPoints2;
+	if (ClipSegmentToLine(clipPoints2, clipPoints1, rf.sideNormal2, rf.sideOffset2, rf.i2) < clipPoints2.size())
 	{
 		return Manifold{};
 	}
@@ -655,14 +655,14 @@ Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShape&
 	
 	auto manifold = Manifold{manifoldType};
 
-	if (primaryAxis.type == b2EPAxis::e_edgeA)
+	if (primaryAxis.type == EPAxis::e_edgeA)
 	{
 		manifold.SetLocalNormal(rf.normal);
 		manifold.SetLocalPoint(rf.v1);
 		for (auto i = decltype(clipPoints2.size()){0}; i < clipPoints2.size(); ++i)
 		{
 			const auto separation = Dot(rf.normal, clipPoints2[i].v - rf.v1);
-			if (separation <= b2MaxEPSeparation)
+			if (separation <= MaxEPSeparation)
 			{
 				manifold.AddPoint(MulT(m_xf, clipPoints2[i].v), clipPoints2[i].cf);
 			}
@@ -675,9 +675,9 @@ Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShape&
 		for (auto i = decltype(clipPoints2.size()){0}; i < clipPoints2.size(); ++i)
 		{
 			const auto separation = Dot(rf.normal, clipPoints2[i].v - rf.v1);
-			if (separation <= b2MaxEPSeparation)
+			if (separation <= MaxEPSeparation)
 			{
-				manifold.AddPoint(clipPoints2[i].v, b2Flip(clipPoints2[i].cf));
+				manifold.AddPoint(clipPoints2[i].v, Flip(clipPoints2[i].cf));
 			}
 		}
 	}
@@ -685,9 +685,9 @@ Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShape&
 	return manifold;
 }
 
-Manifold CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, const b2PolygonShape& shapeB, const Transform& xfB)
+Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const b2PolygonShape& shapeB, const Transform& xfB)
 {
-	const auto collider = b2EPCollider{MulT(xfA, xfB)};
+	const auto collider = EPCollider{MulT(xfA, xfB)};
 	return collider.Collide(shapeA, shapeB);
 }
 

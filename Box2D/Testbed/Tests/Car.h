@@ -36,7 +36,7 @@ public:
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
 
-			b2EdgeShape shape;
+			EdgeShape shape;
 
 			FixtureDef fd;
 			fd.shape = &shape;
@@ -99,7 +99,7 @@ public:
 			box.SetAsBox(10.0f, 0.25f);
 			body->CreateFixture(&box, 1.0f);
 
-			b2RevoluteJointDef jd;
+			RevoluteJointDef jd;
 			jd.Initialize(ground, body, body->GetPosition());
 			jd.lowerAngle = -8.0f * Pi / 180.0f;
 			jd.upperAngle = 8.0f * Pi / 180.0f;
@@ -120,7 +120,7 @@ public:
 			fd.density = 1.0f;
 			fd.friction = 0.6f;
 
-			b2RevoluteJointDef jd;
+			RevoluteJointDef jd;
 
 			Body* prevBody = ground;
 			for (int32 i = 0; i < N; ++i)

@@ -60,7 +60,7 @@ static float_t b2FindMaxSeparation(b2PolygonShape::vertex_count_t& edgeIndex,
 	return maxSeparation;
 }
 
-static b2ClipArray b2FindIncidentEdge(b2PolygonShape::vertex_count_t index1,
+static ClipArray b2FindIncidentEdge(b2PolygonShape::vertex_count_t index1,
 									  const b2PolygonShape& shape1, const Transform& xf1,
 									  const b2PolygonShape& shape2, const Transform& xf2)
 {
@@ -92,7 +92,7 @@ static b2ClipArray b2FindIncidentEdge(b2PolygonShape::vertex_count_t index1,
 	const auto i1_next = i1 + 1;
 	const auto i2 = (i1_next < count2) ? i1_next: 0;
 
-	return b2ClipArray{{
+	return ClipArray{{
 		{Mul(xf2, shape2.GetVertex(i1)), ContactFeature(ContactFeature::e_face, index1, ContactFeature::e_vertex, i1)},
 		{Mul(xf2, shape2.GetVertex(i2)), ContactFeature(ContactFeature::e_face, index1, ContactFeature::e_vertex, i2)}
 	}};
@@ -184,15 +184,15 @@ Manifold CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, const
 	// Clip incident edge against extruded edge1 side edges.
 
 	// Clip to box side 1
-	b2ClipArray clipPoints1;
-	if (b2ClipSegmentToLine(clipPoints1, incidentEdge, -tangent, sideOffset1, iv1) < clipPoints1.size())
+	ClipArray clipPoints1;
+	if (ClipSegmentToLine(clipPoints1, incidentEdge, -tangent, sideOffset1, iv1) < clipPoints1.size())
 	{
 		return Manifold{};
 	}
 
 	// Clip to negative box side 1
-	b2ClipArray clipPoints2;
-	if (b2ClipSegmentToLine(clipPoints2, clipPoints1,  tangent, sideOffset2, iv2) < clipPoints2.size())
+	ClipArray clipPoints2;
+	if (ClipSegmentToLine(clipPoints2, clipPoints1,  tangent, sideOffset2, iv2) < clipPoints2.size())
 	{
 		return Manifold{};
 	}
@@ -207,7 +207,7 @@ Manifold CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, const
 		const auto separation = Dot(normal, clipPoints2[i].v) - frontOffset;
 		if (separation <= totalRadius)
 		{
-			const auto cf = flip? b2Flip(clipPoints2[i].cf): clipPoints2[i].cf;
+			const auto cf = flip? Flip(clipPoints2[i].cf): clipPoints2[i].cf;
 			manifold.AddPoint(MulT(xf2, clipPoints2[i].v), cf);
 		}
 	}

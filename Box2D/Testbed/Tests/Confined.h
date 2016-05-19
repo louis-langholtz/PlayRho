@@ -38,7 +38,7 @@ public:
 			BodyDef bd;
 			Body* ground = m_world->CreateBody(&bd);
 
-			b2EdgeShape shape;
+			EdgeShape shape;
 
 			FixtureDef fd;
 			fd.shape = &shape;

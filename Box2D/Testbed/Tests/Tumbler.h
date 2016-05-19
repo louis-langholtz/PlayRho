@@ -55,7 +55,7 @@ public:
 			shape.SetAsBox(10.0f, 0.5f, Vec2(0.0f, -10.0f), 0.0);
 			body->CreateFixture(&shape, 5.0f);
 
-			b2RevoluteJointDef jd;
+			RevoluteJointDef jd;
 			jd.bodyA = ground;
 			jd.bodyB = body;
 			jd.localAnchorA = Vec2(0.0f, 10.0f);
@@ -64,7 +64,7 @@ public:
 			jd.motorSpeed = 0.05f * Pi;
 			jd.maxMotorTorque = 1e8f;
 			jd.enableMotor = true;
-			m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jd);
+			m_joint = (RevoluteJoint*)m_world->CreateJoint(&jd);
 		}
 
 		m_count = 0;
@@ -94,7 +94,7 @@ public:
 		return new Tumbler;
 	}
 
-	b2RevoluteJoint* m_joint;
+	RevoluteJoint* m_joint;
 	int32 m_count;
 };
 

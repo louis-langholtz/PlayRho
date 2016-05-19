@@ -72,7 +72,7 @@ public:
 			leftFlipper->CreateFixture(&fd);
 			rightFlipper->CreateFixture(&fd);
 
-			b2RevoluteJointDef jd;
+			RevoluteJointDef jd;
 			jd.bodyA = ground;
 			jd.localAnchorB = Vec2_zero;
 			jd.enableMotor = true;
@@ -84,14 +84,14 @@ public:
 			jd.bodyB = leftFlipper;
 			jd.lowerAngle = -30.0f * Pi / 180.0f;
 			jd.upperAngle = 5.0f * Pi / 180.0f;
-			m_leftJoint = (b2RevoluteJoint*)m_world->CreateJoint(&jd);
+			m_leftJoint = (RevoluteJoint*)m_world->CreateJoint(&jd);
 
 			jd.motorSpeed = 0.0f;
 			jd.localAnchorA = p2;
 			jd.bodyB = rightFlipper;
 			jd.lowerAngle = -5.0f * Pi / 180.0f;
 			jd.upperAngle = 30.0f * Pi / 180.0f;
-			m_rightJoint = (b2RevoluteJoint*)m_world->CreateJoint(&jd);
+			m_rightJoint = (RevoluteJoint*)m_world->CreateJoint(&jd);
 		}
 
 		// Circle character
@@ -160,8 +160,8 @@ public:
 		return new Pinball;
 	}
 
-	b2RevoluteJoint* m_leftJoint;
-	b2RevoluteJoint* m_rightJoint;
+	RevoluteJoint* m_leftJoint;
+	RevoluteJoint* m_rightJoint;
 	Body* m_ball;
 	bool m_button;
 };

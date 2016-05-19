@@ -34,7 +34,7 @@ public:
 			Vec2 v1(-10.0f, 0.0f), v2(-7.0f, -2.0f), v3(-4.0f, 0.0f);
 			Vec2 v4(0.0f, 0.0f), v5(4.0f, 0.0f), v6(7.0f, 2.0f), v7(10.0f, 0.0f);
 
-			b2EdgeShape shape;
+			EdgeShape shape;
 
 			shape.Set(v1, v2);
 			shape.SetVertex3(v3);

@@ -49,7 +49,7 @@ using float_t = float;
 
 using child_count_t = unsigned; // relating to "children" of Shape
 using size_t = std::size_t;
-using island_count_t = size_t; // relating to items in a b2Island
+using island_count_t = size_t; // relating to items in a Island
 
 constexpr auto MaxFloat = std::numeric_limits<float_t>::max(); // FLT_MAX
 constexpr auto Epsilon = std::numeric_limits<float_t>::epsilon(); // FLT_EPSILON;

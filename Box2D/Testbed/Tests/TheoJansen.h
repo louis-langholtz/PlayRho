@@ -92,7 +92,7 @@ public:
 		body1->CreateFixture(&fd1);
 		body2->CreateFixture(&fd2);
 
-		b2DistanceJointDef djd;
+		DistanceJointDef djd;
 
 		// Using a soft distance constraint can reduce some jitter.
 		// It also makes the structure seem a bit more fluid by
@@ -112,7 +112,7 @@ public:
 		djd.Initialize(body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset);
 		m_world->CreateJoint(&djd);
 
-		b2RevoluteJointDef rjd;
+		RevoluteJointDef rjd;
 
 		rjd.Initialize(body2, m_chassis, p4 + m_offset);
 		m_world->CreateJoint(&rjd);
@@ -130,7 +130,7 @@ public:
 			BodyDef bd;
 			Body* ground = m_world->CreateBody(&bd);
 
-			b2EdgeShape shape;
+			EdgeShape shape;
 			shape.Set(Vec2(-50.0f, 0.0f), Vec2(50.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 
@@ -187,13 +187,13 @@ public:
 		}
 
 		{
-			b2RevoluteJointDef jd;
+			RevoluteJointDef jd;
 			jd.Initialize(m_wheel, m_chassis, pivot + m_offset);
 			jd.collideConnected = false;
 			jd.motorSpeed = m_motorSpeed;
 			jd.maxMotorTorque = 400.0f;
 			jd.enableMotor = m_motorOn;
-			m_motorJoint = (b2RevoluteJoint*)m_world->CreateJoint(&jd);
+			m_motorJoint = (RevoluteJoint*)m_world->CreateJoint(&jd);
 		}
 
 		Vec2 wheelAnchor;
@@ -250,7 +250,7 @@ public:
 	Vec2 m_offset;
 	Body* m_chassis;
 	Body* m_wheel;
-	b2RevoluteJoint* m_motorJoint;
+	RevoluteJoint* m_motorJoint;
 	bool m_motorOn;
 	float_t m_motorSpeed;
 };

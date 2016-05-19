@@ -31,7 +31,7 @@ public:
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
 
-			b2EdgeShape shape;
+			EdgeShape shape;
 			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
 
 			FixtureDef fd;
@@ -68,7 +68,7 @@ public:
 			fd.density = 2.0f;
 			m_platform->CreateFixture(&fd);
 
-			b2RevoluteJointDef rjd;
+			RevoluteJointDef rjd;
 			rjd.Initialize(m_attachment, m_platform, Vec2(0.0f, 5.0f));
 			rjd.maxMotorTorque = 50.0f;
 			rjd.enableMotor = true;

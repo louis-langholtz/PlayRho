@@ -26,11 +26,11 @@
 namespace box2d {
 
 /// This holds the mass data computed for a shape.
-struct b2MassData
+struct MassData
 {
-	b2MassData() = default;
+	MassData() = default;
 
-	constexpr b2MassData(float_t m, Vec2 c, float_t _I) noexcept: mass(m), center(c), I(_I)
+	constexpr MassData(float_t m, Vec2 c, float_t _I) noexcept: mass(m), center(c), I(_I)
 	{
 		assert(mass >= 0);
 	}
@@ -111,7 +111,7 @@ public:
 	/// The inertia tensor is computed about the local origin.
 	/// @param massData returns the mass data for this shape.
 	/// @param density the density in kilograms per meter squared.
-	virtual b2MassData ComputeMass(float_t density) const = 0;
+	virtual MassData ComputeMass(float_t density) const = 0;
 
 	/// Gets the "radius" of the shape.
 	/// @return a non-negative distance whose meaning is dependent on the object's class.

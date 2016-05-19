@@ -208,14 +208,14 @@ bool AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 	return true;
 }
 
-b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray& vIn,
+ClipArray::size_type ClipSegmentToLine(ClipArray& vOut, const ClipArray& vIn,
 										   const Vec2& normal, float_t offset,
 										   ContactFeature::index_t indexA)
 {
 	// Use Sutherland-Hodgman clipping (https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm ).
 	
 	// Start with no output points
-	auto numOut = b2ClipArray::size_type{0};
+	auto numOut = ClipArray::size_type{0};
 
 	// Calculate the distance of end points to the line
 	const auto distance0 = Dot(normal, vIn[0].v) - offset; ///< Distance of point at vIn[0].v from line defined by normal and offset.

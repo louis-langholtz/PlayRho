@@ -152,8 +152,8 @@ public:
 protected:
 	friend class World;
 	friend class Body;
-	friend class b2Island;
-	friend class b2GearJoint;
+	friend class Island;
+	friend class GearJoint;
 
 	static Joint* Create(const JointDef* def, BlockAllocator* allocator);
 	static void Destroy(Joint* joint, BlockAllocator* allocator);

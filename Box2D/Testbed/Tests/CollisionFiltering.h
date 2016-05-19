@@ -46,7 +46,7 @@ public:
 	{
 		// Ground body
 		{
-			b2EdgeShape shape;
+			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 
 			FixtureDef sd;

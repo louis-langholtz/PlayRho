@@ -128,7 +128,7 @@ struct b2DistanceOutput
 };
 
 /// Compute the closest points between two shapes. Supports any combination of:
-/// b2CircleShape, b2PolygonShape, b2EdgeShape. The simplex cache is input/output.
+/// b2CircleShape, b2PolygonShape, EdgeShape. The simplex cache is input/output.
 /// On the first call, b2SimplexCache.count should be set to zero.
 b2DistanceOutput Distance(b2SimplexCache& cache,  const b2DistanceInput& input);
 

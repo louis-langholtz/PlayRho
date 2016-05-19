@@ -32,7 +32,7 @@ public:
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
 
-			b2EdgeShape shape;
+			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
@@ -60,7 +60,7 @@ public:
 			m_bodies[3] = m_world->CreateBody(&bd);
 			m_bodies[3]->CreateFixture(&shape, 5.0f);
 
-			b2DistanceJointDef jd;
+			DistanceJointDef jd;
 			Vec2 p1, p2, d;
 
 			jd.frequencyHz = 2.0f;

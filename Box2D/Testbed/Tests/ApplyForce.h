@@ -36,7 +36,7 @@ public:
 			bd.position = Vec2(float_t{0}, 20.0f);
 			ground = m_world->CreateBody(&bd);
 
-			b2EdgeShape shape;
+			EdgeShape shape;
 
 			FixtureDef sd;
 			sd.shape = &shape;
@@ -131,7 +131,7 @@ public:
 				// For a circle: I = 0.5 * m * r * r ==> r = sqrt(2 * I / m)
 				float_t radius = Sqrt(2.0f * I / mass);
 
-				b2FrictionJointDef jd;
+				FrictionJointDef jd;
 				jd.localAnchorA = Vec2_zero;
 				jd.localAnchorB = Vec2_zero;
 				jd.bodyA = ground;

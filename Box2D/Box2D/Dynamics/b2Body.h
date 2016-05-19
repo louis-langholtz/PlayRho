@@ -225,14 +225,14 @@ public:
 
 	/// Get the mass data of the body.
 	/// @return a struct containing the mass, inertia and center of the body.
-	b2MassData GetMassData() const noexcept;
+	MassData GetMassData() const noexcept;
 
 	/// Set the mass properties to override the mass properties of the fixtures.
 	/// Note that this changes the center of mass position.
 	/// Note that creating or destroying fixtures can also alter the mass.
 	/// This function has no effect if the body isn't dynamic.
 	/// @param massData the mass properties.
-	void SetMassData(const b2MassData* data);
+	void SetMassData(const MassData* data);
 
 	/// This resets the mass properties to the sum of the mass properties of the fixtures.
 	/// This normally does not need to be called unless you called SetMassData to override
@@ -383,19 +383,19 @@ public:
 private:
 
 	friend class World;
-	friend class b2Island;
+	friend class Island;
 	friend class ContactManager;
 	friend class ContactSolver;
 	friend class Contact;
 	
-	friend class b2DistanceJoint;
-	friend class b2FrictionJoint;
-	friend class b2GearJoint;
+	friend class DistanceJoint;
+	friend class FrictionJoint;
+	friend class GearJoint;
 	friend class b2MotorJoint;
 	friend class b2MouseJoint;
 	friend class b2PrismaticJoint;
 	friend class b2PulleyJoint;
-	friend class b2RevoluteJoint;
+	friend class RevoluteJoint;
 	friend class b2RopeJoint;
 	friend class b2WeldJoint;
 	friend class b2WheelJoint;
@@ -435,14 +435,14 @@ private:
 
 	/// Checks if flagged as being in an island or not.
 	/// @return true if flagged for being in an island, false otherwise.
-	/// @sa b2Island.
+	/// @sa Island.
 	bool IsInIsland() const noexcept;
 
 	void SetInIsland(bool value) noexcept;
 	void SetInIsland() noexcept;
 	void UnsetInIsland() noexcept;
 
-	b2MassData CalculateMassData() const noexcept;
+	MassData CalculateMassData() const noexcept;
 
 	BodyType m_type;
 
@@ -568,9 +568,9 @@ inline float_t Body::GetInertia() const noexcept
 	return m_I + m_mass * m_sweep.localCenter.LengthSquared();
 }
 
-inline b2MassData Body::GetMassData() const noexcept
+inline MassData Body::GetMassData() const noexcept
 {
-	return b2MassData{m_mass, m_sweep.localCenter, m_I + m_mass * m_sweep.localCenter.LengthSquared()};
+	return MassData{m_mass, m_sweep.localCenter, m_I + m_mass * m_sweep.localCenter.LengthSquared()};
 }
 
 inline Vec2 Body::GetWorldPoint(const Vec2& localPoint) const noexcept

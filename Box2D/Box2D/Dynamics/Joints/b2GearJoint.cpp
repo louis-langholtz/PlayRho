@@ -43,7 +43,7 @@ using namespace box2d;
 // J = [ug cross(r, ug)]
 // K = J * invM * JT = invMass + invI * cross(r, ug)^2
 
-b2GearJoint::b2GearJoint(const b2GearJointDef* def)
+GearJoint::GearJoint(const GearJointDef* def)
 : Joint(def)
 {
 	m_joint1 = def->joint1;
@@ -70,7 +70,7 @@ b2GearJoint::b2GearJoint(const b2GearJointDef* def)
 
 	if (m_typeA == e_revoluteJoint)
 	{
-		const auto revolute = static_cast<b2RevoluteJoint*>(def->joint1);
+		const auto revolute = static_cast<RevoluteJoint*>(def->joint1);
 		m_localAnchorC = revolute->m_localAnchorA;
 		m_localAnchorA = revolute->m_localAnchorB;
 		m_referenceAngleA = revolute->m_referenceAngle;
@@ -102,7 +102,7 @@ b2GearJoint::b2GearJoint(const b2GearJointDef* def)
 
 	if (m_typeB == e_revoluteJoint)
 	{
-		const auto revolute = static_cast<b2RevoluteJoint*>(def->joint2);
+		const auto revolute = static_cast<RevoluteJoint*>(def->joint2);
 		m_localAnchorD = revolute->m_localAnchorA;
 		m_localAnchorB = revolute->m_localAnchorB;
 		m_referenceAngleB = revolute->m_referenceAngle;
@@ -130,7 +130,7 @@ b2GearJoint::b2GearJoint(const b2GearJointDef* def)
 	m_impulse = float_t{0};
 }
 
-void b2GearJoint::InitVelocityConstraints(const b2SolverData& data)
+void GearJoint::InitVelocityConstraints(const b2SolverData& data)
 {
 	m_indexA = m_bodyA->m_islandIndex;
 	m_indexB = m_bodyB->m_islandIndex;
@@ -237,7 +237,7 @@ void b2GearJoint::InitVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexD].w = wD;
 }
 
-void b2GearJoint::SolveVelocityConstraints(const b2SolverData& data)
+void GearJoint::SolveVelocityConstraints(const b2SolverData& data)
 {
 	auto vA = data.velocities[m_indexA].v;
 	auto wA = data.velocities[m_indexA].w;
@@ -273,7 +273,7 @@ void b2GearJoint::SolveVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexD].w = wD;
 }
 
-bool b2GearJoint::SolvePositionConstraints(const b2SolverData& data)
+bool GearJoint::SolvePositionConstraints(const b2SolverData& data)
 {
 	auto cA = data.positions[m_indexA].c;
 	auto aA = data.positions[m_indexA].a;
@@ -372,38 +372,38 @@ bool b2GearJoint::SolvePositionConstraints(const b2SolverData& data)
 	return linearError < LinearSlop;
 }
 
-Vec2 b2GearJoint::GetAnchorA() const
+Vec2 GearJoint::GetAnchorA() const
 {
 	return m_bodyA->GetWorldPoint(m_localAnchorA);
 }
 
-Vec2 b2GearJoint::GetAnchorB() const
+Vec2 GearJoint::GetAnchorB() const
 {
 	return m_bodyB->GetWorldPoint(m_localAnchorB);
 }
 
-Vec2 b2GearJoint::GetReactionForce(float_t inv_dt) const
+Vec2 GearJoint::GetReactionForce(float_t inv_dt) const
 {
 	return inv_dt * m_impulse * m_JvAC;
 }
 
-float_t b2GearJoint::GetReactionTorque(float_t inv_dt) const
+float_t GearJoint::GetReactionTorque(float_t inv_dt) const
 {
 	return inv_dt * m_impulse * m_JwA;
 }
 
-void b2GearJoint::SetRatio(float_t ratio)
+void GearJoint::SetRatio(float_t ratio)
 {
 	assert(IsValid(ratio));
 	m_ratio = ratio;
 }
 
-float_t b2GearJoint::GetRatio() const
+float_t GearJoint::GetRatio() const
 {
 	return m_ratio;
 }
 
-void b2GearJoint::Dump()
+void GearJoint::Dump()
 {
 	const auto indexA = m_bodyA->m_islandIndex;
 	const auto indexB = m_bodyB->m_islandIndex;
@@ -411,7 +411,7 @@ void b2GearJoint::Dump()
 	const auto index1 = m_joint1->m_index;
 	const auto index2 = m_joint2->m_index;
 
-	log("  b2GearJointDef jd;\n");
+	log("  GearJointDef jd;\n");
 	log("  jd.bodyA = bodies[%d];\n", indexA);
 	log("  jd.bodyB = bodies[%d];\n", indexB);
 	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);

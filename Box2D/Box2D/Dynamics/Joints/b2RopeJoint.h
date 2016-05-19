@@ -48,7 +48,7 @@ struct b2RopeJointDef : public JointDef
 /// the simulation you will get some non-physical behavior.
 /// A model that would allow you to dynamically modify the length
 /// would have some sponginess, so I chose not to implement it
-/// that way. See b2DistanceJoint if you want to dynamically
+/// that way. See DistanceJoint if you want to dynamically
 /// control length.
 class b2RopeJoint : public Joint
 {

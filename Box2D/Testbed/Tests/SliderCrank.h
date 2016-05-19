@@ -33,7 +33,7 @@ public:
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
 
-			b2EdgeShape shape;
+			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
@@ -52,12 +52,12 @@ public:
 				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
 
-				b2RevoluteJointDef rjd;
+				RevoluteJointDef rjd;
 				rjd.Initialize(prevBody, body, Vec2(0.0f, 5.0f));
 				rjd.motorSpeed = 1.0f * Pi;
 				rjd.maxMotorTorque = 10000.0f;
 				rjd.enableMotor = true;
-				m_joint1 = (b2RevoluteJoint*)m_world->CreateJoint(&rjd);
+				m_joint1 = (RevoluteJoint*)m_world->CreateJoint(&rjd);
 
 				prevBody = body;
 			}
@@ -73,7 +73,7 @@ public:
 				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
 
-				b2RevoluteJointDef rjd;
+				RevoluteJointDef rjd;
 				rjd.Initialize(prevBody, body, Vec2(0.0f, 9.0f));
 				rjd.enableMotor = false;
 				m_world->CreateJoint(&rjd);
@@ -93,7 +93,7 @@ public:
 				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
 
-				b2RevoluteJointDef rjd;
+				RevoluteJointDef rjd;
 				rjd.Initialize(prevBody, body, Vec2(0.0f, 17.0f));
 				m_world->CreateJoint(&rjd);
 
@@ -151,7 +151,7 @@ public:
 		return new SliderCrank;
 	}
 
-	b2RevoluteJoint* m_joint1;
+	RevoluteJoint* m_joint1;
 	b2PrismaticJoint* m_joint2;
 };
 

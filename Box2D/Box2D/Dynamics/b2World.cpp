@@ -402,7 +402,7 @@ void World::Solve(const b2TimeStep& step)
 	m_profile.solvePosition = float_t{0};
 
 	// Size the island for the worst case.
-	b2Island island(m_bodyCount,
+	Island island(m_bodyCount,
 					m_contactManager.GetContactCount(),
 					m_jointCount,
 					&m_stackAllocator,
@@ -586,7 +586,7 @@ void World::Solve(const b2TimeStep& step)
 // Find TOI contacts and solve them.
 void World::SolveTOI(const b2TimeStep& step)
 {
-	b2Island island(2 * MaxTOIContacts, MaxTOIContacts, 0, &m_stackAllocator, m_contactManager.m_contactListener);
+	Island island(2 * MaxTOIContacts, MaxTOIContacts, 0, &m_stackAllocator, m_contactManager.m_contactListener);
 
 	if (m_stepComplete)
 	{
@@ -964,7 +964,7 @@ void World::DrawShape(const Fixture* fixture, const Transform& xf, const Color& 
 
 	case Shape::e_edge:
 		{
-			const auto edge = static_cast<const b2EdgeShape*>(fixture->GetShape());
+			const auto edge = static_cast<const EdgeShape*>(fixture->GetShape());
 			const auto v1 = Mul(xf, edge->GetVertex1());
 			const auto v2 = Mul(xf, edge->GetVertex2());
 			g_debugDraw->DrawSegment(v1, v2, color);

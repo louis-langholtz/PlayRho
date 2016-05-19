@@ -68,7 +68,7 @@ b2DistanceProxy::b2DistanceProxy(const Shape& shape, child_count_t index)
 			
 		case Shape::e_edge:
 		{
-			const auto& edge = *static_cast<const b2EdgeShape*>(&shape);
+			const auto& edge = *static_cast<const EdgeShape*>(&shape);
 			m_buffer[0] = edge.GetVertex1();
 			m_buffer[1] = edge.GetVertex2();
 			m_vertices = m_buffer;

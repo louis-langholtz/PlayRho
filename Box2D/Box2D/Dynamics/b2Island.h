@@ -35,12 +35,12 @@ struct b2Profile;
 /// Island.
 /// @detail A container of bodies contacts and joints relavent to handling world dynamics.
 /// @note This is an internal class.
-class b2Island
+class Island
 {
 public:
-	b2Island(island_count_t bodyCapacity, island_count_t contactCapacity, island_count_t jointCapacity,
+	Island(island_count_t bodyCapacity, island_count_t contactCapacity, island_count_t jointCapacity,
 			b2StackAllocator* allocator, ContactListener* listener);
-	~b2Island();
+	~Island();
 
 	/// Clears this island.
 	/// @detail This undoes the adds of all bodies contacts and joints - removing them.

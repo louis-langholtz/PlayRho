@@ -67,7 +67,7 @@ public:
 				float_t x2 = x1 + 0.5f;
 				float_t y2 = 2.0f * cosf(x2 / 10.0f * Pi);
 
-				b2EdgeShape shape;
+				EdgeShape shape;
 				shape.Set(Vec2(x1, y1), Vec2(x2, y2));
 				ground->CreateFixture(&shape, 0.0f);
 

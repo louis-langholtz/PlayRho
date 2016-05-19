@@ -31,7 +31,7 @@ public:
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
 
-			b2EdgeShape shape;
+			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
@@ -45,7 +45,7 @@ public:
 			fd.density = 20.0f;
 			fd.friction = 0.2f;
 
-			b2RevoluteJointDef jd;
+			RevoluteJointDef jd;
 			jd.collideConnected = false;
 
 			const float_t y = 25.0f;

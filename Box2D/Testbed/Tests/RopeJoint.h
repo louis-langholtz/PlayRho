@@ -39,7 +39,7 @@ public:
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
 
-			b2EdgeShape shape;
+			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
@@ -55,7 +55,7 @@ public:
 			fd.filter.categoryBits = 0x0001;
 			fd.filter.maskBits = 0xFFFF & ~0x0002;
 
-			b2RevoluteJointDef jd;
+			RevoluteJointDef jd;
 			jd.collideConnected = false;
 
 			const int32 N = 10;

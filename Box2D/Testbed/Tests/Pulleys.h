@@ -36,7 +36,7 @@ public:
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
 
-			b2EdgeShape edge;
+			EdgeShape edge;
 			edge.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			//ground->CreateFixture(&shape, 0.0f);
 

@@ -180,7 +180,7 @@ public:
 			BodyDef bd;
 			Body* ground = m_world->CreateBody(&bd);
 
-			b2EdgeShape shape;
+			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
@@ -473,7 +473,7 @@ public:
 	int32 m_userData[e_maxBodies];
 	b2PolygonShape m_polygons[4];
 	b2CircleShape m_circle;
-	b2EdgeShape m_edge;
+	EdgeShape m_edge;
 
 	float_t m_angle;
 

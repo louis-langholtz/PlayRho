@@ -37,7 +37,7 @@ using namespace box2d;
 // K = J * invM * JT
 //   = invMass1 + invI1 * cross(r1, u)^2 + invMass2 + invI2 * cross(r2, u)^2
 
-void b2DistanceJointDef::Initialize(Body* b1, Body* b2,
+void DistanceJointDef::Initialize(Body* b1, Body* b2,
 									const Vec2& anchor1, const Vec2& anchor2)
 {
 	bodyA = b1;
@@ -48,7 +48,7 @@ void b2DistanceJointDef::Initialize(Body* b1, Body* b2,
 	length = d.Length();
 }
 
-b2DistanceJoint::b2DistanceJoint(const b2DistanceJointDef* def)
+DistanceJoint::DistanceJoint(const DistanceJointDef* def)
 : Joint(def)
 {
 	m_localAnchorA = def->localAnchorA;
@@ -58,7 +58,7 @@ b2DistanceJoint::b2DistanceJoint(const b2DistanceJointDef* def)
 	m_dampingRatio = def->dampingRatio;
 }
 
-void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
+void DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 {
 	m_indexA = m_bodyA->m_islandIndex;
 	m_indexB = m_bodyB->m_islandIndex;
@@ -153,7 +153,7 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-void b2DistanceJoint::SolveVelocityConstraints(const b2SolverData& data)
+void DistanceJoint::SolveVelocityConstraints(const b2SolverData& data)
 {
 	auto vA = data.velocities[m_indexA].v;
 	auto wA = data.velocities[m_indexA].w;
@@ -180,7 +180,7 @@ void b2DistanceJoint::SolveVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-bool b2DistanceJoint::SolvePositionConstraints(const b2SolverData& data)
+bool DistanceJoint::SolvePositionConstraints(const b2SolverData& data)
 {
 	if (m_frequencyHz > float_t{0})
 	{
@@ -220,33 +220,33 @@ bool b2DistanceJoint::SolvePositionConstraints(const b2SolverData& data)
 	return Abs(C) < LinearSlop;
 }
 
-Vec2 b2DistanceJoint::GetAnchorA() const
+Vec2 DistanceJoint::GetAnchorA() const
 {
 	return m_bodyA->GetWorldPoint(m_localAnchorA);
 }
 
-Vec2 b2DistanceJoint::GetAnchorB() const
+Vec2 DistanceJoint::GetAnchorB() const
 {
 	return m_bodyB->GetWorldPoint(m_localAnchorB);
 }
 
-Vec2 b2DistanceJoint::GetReactionForce(float_t inv_dt) const
+Vec2 DistanceJoint::GetReactionForce(float_t inv_dt) const
 {
 	return (inv_dt * m_impulse) * m_u;
 }
 
-float_t b2DistanceJoint::GetReactionTorque(float_t inv_dt) const
+float_t DistanceJoint::GetReactionTorque(float_t inv_dt) const
 {
 	BOX2D_NOT_USED(inv_dt);
 	return float_t{0};
 }
 
-void b2DistanceJoint::Dump()
+void DistanceJoint::Dump()
 {
 	const auto indexA = m_bodyA->m_islandIndex;
 	const auto indexB = m_bodyB->m_islandIndex;
 
-	log("  b2DistanceJointDef jd;\n");
+	log("  DistanceJointDef jd;\n");
 	log("  jd.bodyA = bodies[%d];\n", indexA);
 	log("  jd.bodyB = bodies[%d];\n", indexB);
 	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);

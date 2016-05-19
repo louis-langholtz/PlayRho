@@ -46,7 +46,7 @@ public:
 
 		Body* root = AddNode(ground, Vec2_zero, 0, 3.0f, a);
 
-		b2RevoluteJointDef jointDef;
+		RevoluteJointDef jointDef;
 		jointDef.bodyA = ground;
 		jointDef.bodyB = root;
 		jointDef.localAnchorA = Vec2_zero;
@@ -83,7 +83,7 @@ public:
 		Body* body1 = AddNode(body, a1, depth + 1, 0.5f * offset, a);
 		Body* body2 = AddNode(body, a2, depth + 1, 0.5f * offset, a);
 
-		b2RevoluteJointDef jointDef;
+		RevoluteJointDef jointDef;
 		jointDef.bodyA = body;
 		jointDef.localAnchorB = h;
 

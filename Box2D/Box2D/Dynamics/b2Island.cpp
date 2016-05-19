@@ -147,7 +147,7 @@ However, we can compute sin+cos of the same angle fast.
 
 using namespace box2d;
 
-b2Island::b2Island(
+Island::Island(
 	island_count_t bodyCapacity,
 	island_count_t contactCapacity,
 	island_count_t jointCapacity,
@@ -166,7 +166,7 @@ m_positions(static_cast<b2Position*>(m_allocator->Allocate(bodyCapacity * sizeof
 {
 }
 
-b2Island::~b2Island()
+Island::~Island()
 {
 	ClearBodies();
 
@@ -178,21 +178,21 @@ b2Island::~b2Island()
 	m_allocator->Free(m_bodies);
 }
 
-void b2Island::Clear() noexcept
+void Island::Clear() noexcept
 {
 	ClearBodies();
 	m_contactCount = 0;
 	m_jointCount = 0;
 }
 
-void b2Island::ClearBodies() noexcept
+void Island::ClearBodies() noexcept
 {
 	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 		m_bodies[i]->m_islandIndex = Body::InvalidIslandIndex;	
 	m_bodyCount = 0;
 }
 
-void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const Vec2& gravity, bool allowSleep)
+void Island::Solve(b2Profile* profile, const b2TimeStep& step, const Vec2& gravity, bool allowSleep)
 {
 	const auto h = step.get_dt();
 
@@ -365,7 +365,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const Vec2& gra
 	}
 }
 
-void b2Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, island_count_t toiIndexB)
+void Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, island_count_t toiIndexB)
 {
 	assert(toiIndexA < m_bodyCount);
 	assert(toiIndexB < m_bodyCount);
@@ -486,7 +486,7 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, isl
 	Report(contactSolver.GetVelocityConstraints());
 }
 
-void b2Island::Add(Body* body)
+void Island::Add(Body* body)
 {
 	assert(body->m_islandIndex == Body::InvalidIslandIndex);
 	assert(m_bodyCount < m_bodyCapacity);
@@ -495,21 +495,21 @@ void b2Island::Add(Body* body)
 	++m_bodyCount;
 }
 
-void b2Island::Add(Contact* contact)
+void Island::Add(Contact* contact)
 {
 	assert(m_contactCount < m_contactCapacity);
 	m_contacts[m_contactCount] = contact;
 	++m_contactCount;
 }
 
-void b2Island::Add(Joint* joint)
+void Island::Add(Joint* joint)
 {
 	assert(m_jointCount < m_jointCapacity);
 	m_joints[m_jointCount] = joint;
 	++m_jointCount;
 }
 
-void b2Island::Report(const ContactVelocityConstraint* constraints)
+void Island::Report(const ContactVelocityConstraint* constraints)
 {
 	if (!m_listener)
 		return;

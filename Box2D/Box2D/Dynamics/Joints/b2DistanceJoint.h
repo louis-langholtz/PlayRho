@@ -29,9 +29,9 @@ namespace box2d {
 /// so that the initial configuration can violate the constraint
 /// slightly. This helps when saving and loading a game.
 /// @warning Do not use a zero or short length.
-struct b2DistanceJointDef : public JointDef
+struct DistanceJointDef : public JointDef
 {
-	constexpr b2DistanceJointDef() noexcept: JointDef(e_distanceJoint) {}
+	constexpr DistanceJointDef() noexcept: JointDef(e_distanceJoint) {}
 
 	/// Initialize the bodies, anchors, and length using the world
 	/// anchors.
@@ -58,7 +58,7 @@ struct b2DistanceJointDef : public JointDef
 /// A distance joint constrains two points on two bodies
 /// to remain at a fixed distance from each other. You can view
 /// this as a massless, rigid rod.
-class b2DistanceJoint : public Joint
+class DistanceJoint : public Joint
 {
 public:
 
@@ -98,7 +98,7 @@ public:
 protected:
 
 	friend class Joint;
-	b2DistanceJoint(const b2DistanceJointDef* data);
+	DistanceJoint(const DistanceJointDef* data);
 
 	void InitVelocityConstraints(const b2SolverData& data) override;
 	void SolveVelocityConstraints(const b2SolverData& data) override;
@@ -130,32 +130,32 @@ protected:
 	float_t m_mass;
 };
 
-inline void b2DistanceJoint::SetLength(float_t length)
+inline void DistanceJoint::SetLength(float_t length)
 {
 	m_length = length;
 }
 
-inline float_t b2DistanceJoint::GetLength() const noexcept
+inline float_t DistanceJoint::GetLength() const noexcept
 {
 	return m_length;
 }
 
-inline void b2DistanceJoint::SetFrequency(float_t hz)
+inline void DistanceJoint::SetFrequency(float_t hz)
 {
 	m_frequencyHz = hz;
 }
 
-inline float_t b2DistanceJoint::GetFrequency() const noexcept
+inline float_t DistanceJoint::GetFrequency() const noexcept
 {
 	return m_frequencyHz;
 }
 
-inline void b2DistanceJoint::SetDampingRatio(float_t ratio)
+inline void DistanceJoint::SetDampingRatio(float_t ratio)
 {
 	m_dampingRatio = ratio;
 }
 
-inline float_t b2DistanceJoint::GetDampingRatio() const noexcept
+inline float_t DistanceJoint::GetDampingRatio() const noexcept
 {
 	return m_dampingRatio;
 }

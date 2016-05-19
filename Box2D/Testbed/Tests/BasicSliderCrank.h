@@ -48,7 +48,7 @@ public:
 				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
                 
-				b2RevoluteJointDef rjd;
+				RevoluteJointDef rjd;
 				rjd.Initialize(prevBody, body, Vec2(-12.0f, 20.0f));
 				m_world->CreateJoint(&rjd);
                 
@@ -66,7 +66,7 @@ public:
 				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
                 
-				b2RevoluteJointDef rjd;
+				RevoluteJointDef rjd;
 				rjd.Initialize(prevBody, body, Vec2(-4.0f, 20.0f));
 				m_world->CreateJoint(&rjd);
                 
@@ -85,7 +85,7 @@ public:
 				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
                 
-				b2RevoluteJointDef rjd;
+				RevoluteJointDef rjd;
 				rjd.Initialize(prevBody, body, Vec2(12.0f, 20.0f));
 				m_world->CreateJoint(&rjd);
                 

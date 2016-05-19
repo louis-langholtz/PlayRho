@@ -259,7 +259,7 @@ void Body::DestroyFixture(Fixture* fixture)
 	ResetMassData();
 }
 
-b2MassData Body::CalculateMassData() const noexcept
+MassData Body::CalculateMassData() const noexcept
 {
 	auto mass = float_t(0);
 	auto center = Vec2_zero;
@@ -276,7 +276,7 @@ b2MassData Body::CalculateMassData() const noexcept
 		center += massData.mass * massData.center;
 		I += massData.I;
 	}
-	return b2MassData{mass, (mass != float_t(0))? center / mass: Vec2_zero, I};
+	return MassData{mass, (mass != float_t(0))? center / mass: Vec2_zero, I};
 }
 
 void Body::ResetMassData()
@@ -351,7 +351,7 @@ void Body::ResetMassData()
 	m_linearVelocity += Cross(m_angularVelocity, m_sweep.c - oldCenter);
 }
 
-void Body::SetMassData(const b2MassData* massData)
+void Body::SetMassData(const MassData* massData)
 {
 	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())

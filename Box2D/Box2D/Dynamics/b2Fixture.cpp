@@ -72,9 +72,9 @@ void Fixture::Destroy(BlockAllocator* allocator)
 
 	case Shape::e_edge:
 		{
-			auto s = static_cast<b2EdgeShape*>(m_shape);
-			s->~b2EdgeShape();
-			allocator->Free(s, sizeof(b2EdgeShape));
+			auto s = static_cast<EdgeShape*>(m_shape);
+			s->~EdgeShape();
+			allocator->Free(s, sizeof(EdgeShape));
 		}
 		break;
 
@@ -231,8 +231,8 @@ void Fixture::Dump(island_count_t bodyIndex)
 
 	case Shape::e_edge:
 		{
-			auto s = static_cast<b2EdgeShape*>(m_shape);
-			log("    b2EdgeShape shape;\n");
+			auto s = static_cast<EdgeShape*>(m_shape);
+			log("    EdgeShape shape;\n");
 			log("    shape.m_radius = %.15lef;\n", s->GetRadius());
 			log("    shape.m_vertex0.Set(%.15lef, %.15lef);\n", s->GetVertex0().x, s->GetVertex0().y);
 			log("    shape.m_vertex1.Set(%.15lef, %.15lef);\n", s->GetVertex1().x, s->GetVertex1().y);

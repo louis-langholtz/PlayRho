@@ -44,8 +44,8 @@ Joint* Joint::Create(const JointDef* def, BlockAllocator* allocator)
 	{
 	case e_distanceJoint:
 		{
-			void* mem = allocator->Allocate(sizeof(b2DistanceJoint));
-			joint = new (mem) b2DistanceJoint(static_cast<const b2DistanceJointDef*>(def));
+			void* mem = allocator->Allocate(sizeof(DistanceJoint));
+			joint = new (mem) DistanceJoint(static_cast<const DistanceJointDef*>(def));
 		}
 		break;
 
@@ -65,8 +65,8 @@ Joint* Joint::Create(const JointDef* def, BlockAllocator* allocator)
 
 	case e_revoluteJoint:
 		{
-			void* mem = allocator->Allocate(sizeof(b2RevoluteJoint));
-			joint = new (mem) b2RevoluteJoint(static_cast<const b2RevoluteJointDef*>(def));
+			void* mem = allocator->Allocate(sizeof(RevoluteJoint));
+			joint = new (mem) RevoluteJoint(static_cast<const RevoluteJointDef*>(def));
 		}
 		break;
 
@@ -79,8 +79,8 @@ Joint* Joint::Create(const JointDef* def, BlockAllocator* allocator)
 
 	case e_gearJoint:
 		{
-			void* mem = allocator->Allocate(sizeof(b2GearJoint));
-			joint = new (mem) b2GearJoint(static_cast<const b2GearJointDef*>(def));
+			void* mem = allocator->Allocate(sizeof(GearJoint));
+			joint = new (mem) GearJoint(static_cast<const GearJointDef*>(def));
 		}
 		break;
 
@@ -100,8 +100,8 @@ Joint* Joint::Create(const JointDef* def, BlockAllocator* allocator)
         
 	case e_frictionJoint:
 		{
-			void* mem = allocator->Allocate(sizeof(b2FrictionJoint));
-			joint = new (mem) b2FrictionJoint(static_cast<const b2FrictionJointDef*>(def));
+			void* mem = allocator->Allocate(sizeof(FrictionJoint));
+			joint = new (mem) FrictionJoint(static_cast<const FrictionJointDef*>(def));
 		}
 		break;
 
@@ -133,7 +133,7 @@ void Joint::Destroy(Joint* joint, BlockAllocator* allocator)
 	switch (joint->m_type)
 	{
 	case e_distanceJoint:
-		allocator->Free(joint, sizeof(b2DistanceJoint));
+		allocator->Free(joint, sizeof(DistanceJoint));
 		break;
 
 	case e_mouseJoint:
@@ -145,7 +145,7 @@ void Joint::Destroy(Joint* joint, BlockAllocator* allocator)
 		break;
 
 	case e_revoluteJoint:
-		allocator->Free(joint, sizeof(b2RevoluteJoint));
+		allocator->Free(joint, sizeof(RevoluteJoint));
 		break;
 
 	case e_pulleyJoint:
@@ -153,7 +153,7 @@ void Joint::Destroy(Joint* joint, BlockAllocator* allocator)
 		break;
 
 	case e_gearJoint:
-		allocator->Free(joint, sizeof(b2GearJoint));
+		allocator->Free(joint, sizeof(GearJoint));
 		break;
 
 	case e_wheelJoint:
@@ -165,7 +165,7 @@ void Joint::Destroy(Joint* joint, BlockAllocator* allocator)
 		break;
 
 	case e_frictionJoint:
-		allocator->Free(joint, sizeof(b2FrictionJoint));
+		allocator->Free(joint, sizeof(FrictionJoint));
 		break;
 
 	case e_ropeJoint:

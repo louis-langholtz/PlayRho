@@ -23,7 +23,7 @@
 
 namespace box2d {
 
-class b2EdgeShape;
+class EdgeShape;
 
 /// A chain shape is a free form sequence of line segments.
 /// The chain has two-sided collision, so you can use inside and outside collision.
@@ -71,7 +71,7 @@ public:
 	child_count_t GetChildCount() const override;
 
 	/// Get a child edge.
-	void GetChildEdge(b2EdgeShape* edge, child_count_t index) const;
+	void GetChildEdge(EdgeShape* edge, child_count_t index) const;
 
 	/// This always return false.
 	/// @see Shape::TestPoint
@@ -86,7 +86,7 @@ public:
 
 	/// Chains have zero mass.
 	/// @see Shape::ComputeMass
-	b2MassData ComputeMass(float_t density) const override;
+	MassData ComputeMass(float_t density) const override;
 
 	/// Get the vertex count.
 	child_count_t GetVertexCount() const noexcept { return m_count; }

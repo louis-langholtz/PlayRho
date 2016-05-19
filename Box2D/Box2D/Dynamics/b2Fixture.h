@@ -157,7 +157,7 @@ public:
 	/// Get the mass data for this fixture. The mass data is based on the density and
 	/// the shape. The rotational inertia is about the shape's origin. This operation
 	/// may be expensive.
-	b2MassData GetMassData() const;
+	MassData GetMassData() const;
 
 	/// Set the density of this fixture. This will _not_ automatically adjust the mass
 	/// of the body. You must call Body::ResetMassData to update the body's mass.
@@ -316,7 +316,7 @@ inline bool Fixture::RayCast(b2RayCastOutput* output, const b2RayCastInput& inpu
 	return m_shape->RayCast(output, input, m_body->GetTransform(), childIndex);
 }
 
-inline b2MassData Fixture::GetMassData() const
+inline MassData Fixture::GetMassData() const
 {
 	return m_shape->ComputeMass(m_density);
 }

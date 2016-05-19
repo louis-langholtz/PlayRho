@@ -34,7 +34,7 @@ public:
 			BodyDef bd;
 			Body* ground = m_world->CreateBody(&bd);
 
-			b2EdgeShape shape;
+			EdgeShape shape;
 			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
@@ -46,7 +46,7 @@ public:
 			BodyDef bd;
 			Body* ground = m_world->CreateBody(&bd);
 
-			b2EdgeShape shape;
+			EdgeShape shape;
 			shape.Set(Vec2(-8.0f, 1.0f), Vec2(-6.0f, 1.0f));
 			ground->CreateFixture(&shape, 0.0f);
 			shape.Set(Vec2(-6.0f, 1.0f), Vec2(-4.0f, 1.0f));

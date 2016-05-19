@@ -353,7 +353,7 @@ AABB b2PolygonShape::ComputeAABB(const Transform& xf, child_count_t childIndex) 
 	return AABB{lower - r, upper + r};
 }
 
-b2MassData b2PolygonShape::ComputeMass(float_t density) const
+MassData b2PolygonShape::ComputeMass(float_t density) const
 {
 	// Polygon mass, centroid, and inertia.
 	// Let rho be the polygon density in mass per unit area.
@@ -433,7 +433,7 @@ b2MassData b2PolygonShape::ComputeMass(float_t density) const
 	// Shift to center of mass then to original body origin.
 	const auto massDataI = (density * I) + (mass * (massDataCenter.LengthSquared() - center.LengthSquared()));
 	
-	return b2MassData{mass, massDataCenter, massDataI};
+	return MassData{mass, massDataCenter, massDataI};
 }
 
 bool b2PolygonShape::Validate() const

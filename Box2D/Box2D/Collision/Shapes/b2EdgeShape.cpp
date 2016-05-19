@@ -21,7 +21,7 @@
 
 using namespace box2d;
 
-void b2EdgeShape::Set(const Vec2& v1, const Vec2& v2)
+void EdgeShape::Set(const Vec2& v1, const Vec2& v2)
 {
 	m_vertex1 = v1;
 	m_vertex2 = v2;
@@ -29,18 +29,18 @@ void b2EdgeShape::Set(const Vec2& v1, const Vec2& v2)
 	m_hasVertex3 = false;
 }
 
-Shape* b2EdgeShape::Clone(BlockAllocator* allocator) const
+Shape* EdgeShape::Clone(BlockAllocator* allocator) const
 {
-	void* mem = allocator->Allocate(sizeof(b2EdgeShape));
-	return new (mem) b2EdgeShape(*this);
+	void* mem = allocator->Allocate(sizeof(EdgeShape));
+	return new (mem) EdgeShape(*this);
 }
 
-child_count_t b2EdgeShape::GetChildCount() const
+child_count_t EdgeShape::GetChildCount() const
 {
 	return 1;
 }
 
-bool b2EdgeShape::TestPoint(const Transform& xf, const Vec2& p) const
+bool EdgeShape::TestPoint(const Transform& xf, const Vec2& p) const
 {
 	BOX2D_NOT_USED(xf);
 	BOX2D_NOT_USED(p);
@@ -51,7 +51,7 @@ bool b2EdgeShape::TestPoint(const Transform& xf, const Vec2& p) const
 // v = v1 + s * e
 // p1 + t * d = v1 + s * e
 // s * e - t * d = p1 - v1
-bool b2EdgeShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
+bool EdgeShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 							const Transform& xf, child_count_t childIndex) const
 {
 	BOX2D_NOT_USED(childIndex);
@@ -105,7 +105,7 @@ bool b2EdgeShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 	return true;
 }
 
-AABB b2EdgeShape::ComputeAABB(const Transform& xf, child_count_t childIndex) const
+AABB EdgeShape::ComputeAABB(const Transform& xf, child_count_t childIndex) const
 {
 	BOX2D_NOT_USED(childIndex);
 
@@ -119,9 +119,9 @@ AABB b2EdgeShape::ComputeAABB(const Transform& xf, child_count_t childIndex) con
 	return AABB{lower - r, upper + r};
 }
 
-b2MassData b2EdgeShape::ComputeMass(float_t density) const
+MassData EdgeShape::ComputeMass(float_t density) const
 {
 	BOX2D_NOT_USED(density);
 
-	return b2MassData{float_t{0}, (m_vertex1 + m_vertex2) / float_t(2), float_t{0}};
+	return MassData{float_t{0}, (m_vertex1 + m_vertex2) / float_t(2), float_t{0}};
 }

@@ -29,7 +29,7 @@ public:
 	{
 		Body* b1;
 		{
-			b2EdgeShape shape;
+			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 
 			BodyDef bd;
@@ -101,7 +101,7 @@ public:
 			b3->CreateFixture(&shape, 10.0f);
 		}
 
-		b2RevoluteJointDef jd;
+		RevoluteJointDef jd;
 		Vec2 anchor;
 
 		anchor = Vec2(-2.0f, 1.0f);
@@ -182,7 +182,7 @@ public:
 			b7->CreateFixture(&shape, 10.0f);
 		}
 
-		b2DistanceJointDef djd;
+		DistanceJointDef djd;
 		djd.bodyA = b3;
 		djd.bodyB = b7;
 		djd.localAnchorA = Vec2(6.0f, 0.0f);

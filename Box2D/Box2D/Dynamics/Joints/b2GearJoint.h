@@ -25,9 +25,9 @@ namespace box2d {
 
 /// Gear joint definition. This definition requires two existing
 /// revolute or prismatic joints (any combination will work).
-struct b2GearJointDef : public JointDef
+struct GearJointDef : public JointDef
 {
-	constexpr b2GearJointDef() noexcept: JointDef(e_gearJoint) {}
+	constexpr GearJointDef() noexcept: JointDef(e_gearJoint) {}
 
 	/// The first revolute/prismatic joint attached to the gear joint.
 	Joint* joint1 = nullptr;
@@ -36,7 +36,7 @@ struct b2GearJointDef : public JointDef
 	Joint* joint2 = nullptr;
 
 	/// The gear ratio.
-	/// @see b2GearJoint for explanation.
+	/// @see GearJoint for explanation.
 	float_t ratio = float_t(1);
 };
 
@@ -49,7 +49,7 @@ struct b2GearJointDef : public JointDef
 /// of length or units of 1/length.
 /// @warning You have to manually destroy the gear joint if joint1 or joint2
 /// is destroyed.
-class b2GearJoint : public Joint
+class GearJoint : public Joint
 {
 public:
 	Vec2 GetAnchorA() const override;
@@ -74,7 +74,7 @@ public:
 protected:
 
 	friend class Joint;
-	b2GearJoint(const b2GearJointDef* data);
+	GearJoint(const GearJointDef* data);
 
 	void InitVelocityConstraints(const b2SolverData& data) override;
 	void SolveVelocityConstraints(const b2SolverData& data) override;

@@ -52,7 +52,7 @@ b2ChainAndCircleContact::b2ChainAndCircleContact(Fixture* fixtureA, child_count_
 Manifold b2ChainAndCircleContact::Evaluate(const Transform& xfA, const Transform& xfB)
 {
 	auto chain = static_cast<b2ChainShape*>(m_fixtureA->GetShape());
-	b2EdgeShape edge;
+	EdgeShape edge;
 	chain->GetChildEdge(&edge, m_indexA);
 	return CollideShapes(edge, xfA, *static_cast<b2CircleShape*>(m_fixtureB->GetShape()), xfB);
 }

@@ -26,15 +26,15 @@ namespace box2d {
 /// A line segment (edge) shape. These can be connected in chains or loops
 /// to other edge shapes. The connectivity information is used to ensure
 /// correct contact normals.
-class b2EdgeShape : public Shape
+class EdgeShape : public Shape
 {
 public:
-	b2EdgeShape(): Shape(e_edge, PolygonRadius) {}
+	EdgeShape(): Shape(e_edge, PolygonRadius) {}
 
-	constexpr b2EdgeShape(const Vec2& v1, const Vec2& v2):
+	constexpr EdgeShape(const Vec2& v1, const Vec2& v2):
 		Shape(e_edge, PolygonRadius), m_vertex1(v1), m_vertex2(v2) {}
 
-	b2EdgeShape(const b2EdgeShape&) = default;
+	EdgeShape(const EdgeShape&) = default;
 
 	/// Set this as an isolated edge.
 	void Set(const Vec2& v1, const Vec2& v2);
@@ -56,7 +56,7 @@ public:
 	AABB ComputeAABB(const Transform& transform, child_count_t childIndex) const override;
 
 	/// @see Shape::ComputeMass
-	b2MassData ComputeMass(float_t density) const override;
+	MassData ComputeMass(float_t density) const override;
 
 	Vec2 GetVertex0() const noexcept { return m_vertex0; }
 	Vec2 GetVertex1() const noexcept { return m_vertex1; }
@@ -78,13 +78,13 @@ private:
 	bool m_hasVertex0 = false, m_hasVertex3 = false;
 };
 
-inline void b2EdgeShape::SetVertex0(const Vec2& v) noexcept
+inline void EdgeShape::SetVertex0(const Vec2& v) noexcept
 {
 	m_vertex0 = v;
 	m_hasVertex0 = true;
 }
 
-inline void b2EdgeShape::SetVertex3(const Vec2& v) noexcept
+inline void EdgeShape::SetVertex3(const Vec2& v) noexcept
 {
 	m_vertex3 = v;
 	m_hasVertex3 = true;

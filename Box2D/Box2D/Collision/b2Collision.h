@@ -34,7 +34,7 @@ namespace box2d
 
 class Shape;
 class b2CircleShape;
-class b2EdgeShape;
+class EdgeShape;
 class b2PolygonShape;
 
 /// The features that intersect to form the contact point
@@ -59,7 +59,7 @@ struct ContactFeature
 	index_t indexB; ///< Feature index on shape B
 };
 
-constexpr ContactFeature b2Flip(const ContactFeature& val)
+constexpr ContactFeature Flip(const ContactFeature& val)
 {
 	// Swap features
 	return ContactFeature(val.typeB, val.indexB, val.typeA, val.indexA);
@@ -373,7 +373,7 @@ Manifold CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, const
 /// @param shapeB Shape B.
 /// @param xfB Transform for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-Manifold CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB);
+Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB);
 
 /// Computes the collision manifold between an edge and a circle.
 /// @param shapeA Shape A.
@@ -381,11 +381,11 @@ Manifold CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, const b2
 /// @param shapeB Shape B.
 /// @param xfB Transform for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-Manifold CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, const b2PolygonShape& shapeB, const Transform& xfB);
+Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const b2PolygonShape& shapeB, const Transform& xfB);
 
-/// Clip array for b2ClipSegmentToLine.
-/// @see b2ClipSegmentToLine.
-using b2ClipArray = std::array<b2ClipVertex, MaxManifoldPoints>;
+/// Clip array for ClipSegmentToLine.
+/// @see ClipSegmentToLine.
+using ClipArray = std::array<b2ClipVertex, MaxManifoldPoints>;
 
 /// Clipping for contact manifolds.
 /// @detail This returns an array of points from the given line that are inside of the plane as
@@ -396,7 +396,7 @@ using b2ClipArray = std::array<b2ClipVertex, MaxManifoldPoints>;
 /// @param offset Offset of the plane with which to determine intersection.
 /// @param indexA Index of vertex A.
 /// @return Number of valid elements of the output array being returned (# of points of the line found within the plane).
-b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray& vIn,
+ClipArray::size_type ClipSegmentToLine(ClipArray& vOut, const ClipArray& vIn,
 										   const Vec2& normal, float_t offset, ContactFeature::index_t indexA);
 
 /// Determine if two generic shapes overlap.
