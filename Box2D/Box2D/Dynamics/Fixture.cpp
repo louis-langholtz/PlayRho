@@ -134,11 +134,6 @@ void Fixture::DestroyProxies(BroadPhase& broadPhase)
 
 void Fixture::Synchronize(BroadPhase& broadPhase, const Transform& transform1, const Transform& transform2)
 {
-	if (m_proxyCount == 0)
-	{	
-		return;
-	}
-
 	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
 	{
 		auto& proxy = m_proxies[i];

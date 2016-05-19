@@ -346,8 +346,8 @@ struct Transform
 
 	constexpr Transform(const Transform& copy) = default;
 
-	Vec2 p;
-	Rot q;
+	Vec2 p; ///< Positional portion of the transformation.
+	Rot q; ///< Rotational portion of the transformation.
 };
 
 constexpr auto Transform_identity = Transform{Vec2_zero, Rot_identity};

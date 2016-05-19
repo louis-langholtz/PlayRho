@@ -202,7 +202,13 @@ protected:
 	void Destroy(BlockAllocator* allocator);
 
 	// These support body activation/deactivation.
+	
+	/// Creates proxies for every child of this fixture's shape.
+	/// This sets the proxy count to the child count of the shape.
 	void CreateProxies(BroadPhase& broadPhase, const Transform& xf);
+
+	/// Destroys this fixture's proxies.
+	/// This resets the proxy count to 0.
 	void DestroyProxies(BroadPhase& broadPhase);
 
 	void Synchronize(BroadPhase& broadPhase, const Transform& xf1, const Transform& xf2);
@@ -214,7 +220,7 @@ protected:
 	float_t m_friction;
 	float_t m_restitution;
 	FixtureProxy* m_proxies = nullptr;
-	child_count_t m_proxyCount = 0;
+	child_count_t m_proxyCount = 0; ///< Proxy count - the child count of this fixture's shape.
 	Filter m_filter;
 	bool m_isSensor;
 	void* m_userData = nullptr;

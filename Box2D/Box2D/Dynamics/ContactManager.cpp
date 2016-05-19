@@ -89,16 +89,13 @@ void ContactManager::Destroy(Contact* c)
 		bodyB->m_contactList = c->m_nodeB.next;
 	}
 
-	// Call the factory.
+	// Call the factory destroy method.
 	Contact::Destroy(c, m_allocator);
 	
 	assert(m_contactCount > 0);
 	--m_contactCount;
 }
 
-// This is the top level collision call for the time step. Here
-// all the narrow phase collision is processed for the world
-// contact list.
 void ContactManager::Collide()
 {
 	// Update awake contacts.
@@ -162,6 +159,7 @@ void ContactManager::Collide()
 
 void ContactManager::FindNewContacts()
 {
+	// Here m_broadPhase will call this object's ContactManager::AddPair method.
 	m_broadPhase.UpdatePairs(this);
 }
 
@@ -235,8 +233,9 @@ void ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 		return;
 	}
 
-	// Call the factory.
+	// Call the contact factory create method.
 	auto c = Contact::Create(fixtureA, indexA, fixtureB, indexB, m_allocator);
+	assert(c);
 	if (!c)
 	{
 		return;

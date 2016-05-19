@@ -67,8 +67,8 @@ struct Position
 
 	constexpr Position(Vec2 c_, float_t a_) noexcept: c(c_), a(a_) {}
 
-	Vec2 c; ///< linear position
-	float_t a; ///< angular position
+	Vec2 c; ///< Linear position.
+	float_t a; ///< Angular position.
 };
 
 inline Transform GetTransform(const Position& pos, const Vec2& local_ctr)

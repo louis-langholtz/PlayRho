@@ -28,7 +28,9 @@ class ContactFilter;
 class ContactListener;
 class BlockAllocator;
 
-// Delegate of World.
+/// Contact Manager.
+/// This is a delegate of World (every World instance has one of these).
+/// Objects of this class manage the contacts for the world they are in.
 class ContactManager
 {
 public:
@@ -41,12 +43,31 @@ public:
 
 	void FindNewContacts();
 
+	/// Destroys the given contact and removes it from its list.
+	/// @detail This updates the contact list, returns the memory to the allocator,
+	///   and decrements the contact manager's contact count.
+	/// @param c Contact to destroy.
 	void Destroy(Contact* c);
 
+	/// Processes the narrow phase collision for the contact list.
+	/// @detail
+	/// This finds and destroys the contacts that need filtering and no longer should collide or
+	/// that no longer have AABB-based overlapping fixtures. Those contacts that persist and
+	/// have active bodies (either or both) get their Update methods called with the current
+	/// contact listener as its argument.
+	/// Essentially this really just purges contacts that are no longer relevant.
 	void Collide();
 	
+	/// Gets the contact count.
+	/// @return Number of contacts referenced by the contact list (0 if empty).
 	inline size_type GetContactCount() const noexcept { return m_contactCount; }
+
+	/// Gets the contact list.
+	/// @return Contact list or <code>nullptr</code> if empty.
 	const Contact* GetContactList() const noexcept { return m_contactList; }
+	
+	/// Gets the contact list.
+	/// @return Contact list or <code>nullptr</code> if empty.
 	Contact* GetContactList() noexcept { return m_contactList; }
 
 	BroadPhase m_broadPhase;
