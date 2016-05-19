@@ -45,7 +45,7 @@ void Fixture::Create(BlockAllocator* allocator, const FixtureDef* def)
 	for (auto i = decltype(childCount){0}; i < childCount; ++i)
 	{
 		m_proxies[i].fixture = nullptr;
-		m_proxies[i].proxyId = b2BroadPhase::e_nullProxy;
+		m_proxies[i].proxyId = BroadPhase::e_nullProxy;
 	}
 }
 
@@ -102,7 +102,7 @@ void Fixture::Destroy(BlockAllocator* allocator)
 	m_shape = nullptr;
 }
 
-void Fixture::CreateProxies(b2BroadPhase& broadPhase, const Transform& xf)
+void Fixture::CreateProxies(BroadPhase& broadPhase, const Transform& xf)
 {
 	assert(m_proxyCount == 0);
 
@@ -119,20 +119,20 @@ void Fixture::CreateProxies(b2BroadPhase& broadPhase, const Transform& xf)
 	}
 }
 
-void Fixture::DestroyProxies(b2BroadPhase& broadPhase)
+void Fixture::DestroyProxies(BroadPhase& broadPhase)
 {
 	// Destroy proxies in the broad-phase.
 	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
 	{
 		auto& proxy = m_proxies[i];
 		broadPhase.DestroyProxy(proxy.proxyId);
-		proxy.proxyId = b2BroadPhase::e_nullProxy;
+		proxy.proxyId = BroadPhase::e_nullProxy;
 	}
 
 	m_proxyCount = 0;
 }
 
-void Fixture::Synchronize(b2BroadPhase& broadPhase, const Transform& transform1, const Transform& transform2)
+void Fixture::Synchronize(BroadPhase& broadPhase, const Transform& transform1, const Transform& transform2)
 {
 	if (m_proxyCount == 0)
 	{	

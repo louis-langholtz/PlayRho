@@ -20,18 +20,18 @@
 
 using namespace box2d;
 
-b2BroadPhase::b2BroadPhase():
-	m_pairBuffer(static_cast<b2ProxyIdPair*>(alloc(m_pairCapacity * sizeof(b2ProxyIdPair)))),
+BroadPhase::BroadPhase():
+	m_pairBuffer(static_cast<ProxyIdPair*>(alloc(m_pairCapacity * sizeof(ProxyIdPair)))),
 	m_moveBuffer(static_cast<size_type*>(alloc(m_moveCapacity * sizeof(size_type))))
 {}
 
-b2BroadPhase::~b2BroadPhase()
+BroadPhase::~BroadPhase()
 {
 	free(m_moveBuffer);
 	free(m_pairBuffer);
 }
 
-b2BroadPhase::size_type b2BroadPhase::CreateProxy(const AABB& aabb, void* userData)
+BroadPhase::size_type BroadPhase::CreateProxy(const AABB& aabb, void* userData)
 {
 	const auto proxyId = m_tree.CreateProxy(aabb, userData);
 	++m_proxyCount;
@@ -39,7 +39,7 @@ b2BroadPhase::size_type b2BroadPhase::CreateProxy(const AABB& aabb, void* userDa
 	return proxyId;
 }
 
-void b2BroadPhase::DestroyProxy(size_type proxyId)
+void BroadPhase::DestroyProxy(size_type proxyId)
 {
 	assert(m_proxyCount > 0);
 	UnBufferMove(proxyId);
@@ -47,7 +47,7 @@ void b2BroadPhase::DestroyProxy(size_type proxyId)
 	m_tree.DestroyProxy(proxyId);
 }
 
-void b2BroadPhase::MoveProxy(size_type proxyId, const AABB& aabb, const Vec2& displacement)
+void BroadPhase::MoveProxy(size_type proxyId, const AABB& aabb, const Vec2& displacement)
 {
 	const auto buffer = m_tree.MoveProxy(proxyId, aabb, displacement);
 	if (buffer)
@@ -56,12 +56,12 @@ void b2BroadPhase::MoveProxy(size_type proxyId, const AABB& aabb, const Vec2& di
 	}
 }
 
-void b2BroadPhase::TouchProxy(size_type proxyId)
+void BroadPhase::TouchProxy(size_type proxyId)
 {
 	BufferMove(proxyId);
 }
 
-void b2BroadPhase::BufferMove(size_type proxyId)
+void BroadPhase::BufferMove(size_type proxyId)
 {
 	if (m_moveCount == m_moveCapacity)
 	{
@@ -73,7 +73,7 @@ void b2BroadPhase::BufferMove(size_type proxyId)
 	++m_moveCount;
 }
 
-void b2BroadPhase::UnBufferMove(size_type proxyId)
+void BroadPhase::UnBufferMove(size_type proxyId)
 {
 	for (auto i = decltype(m_moveCount){0}; i < m_moveCount; ++i)
 	{
@@ -85,7 +85,7 @@ void b2BroadPhase::UnBufferMove(size_type proxyId)
 }
 
 // This is called from b2DynamicTree::Query when we are gathering pairs.
-bool b2BroadPhase::QueryCallback(size_type proxyId)
+bool BroadPhase::QueryCallback(size_type proxyId)
 {
 	// A proxy cannot form a pair with itself.
 	if (proxyId == m_queryProxyId)
@@ -97,7 +97,7 @@ bool b2BroadPhase::QueryCallback(size_type proxyId)
 	if (m_pairCapacity == m_pairCount)
 	{
 		m_pairCapacity *= BufferGrowthRate;
-		m_pairBuffer = static_cast<b2ProxyIdPair*>(realloc(m_pairBuffer, m_pairCapacity * sizeof(b2ProxyIdPair)));
+		m_pairBuffer = static_cast<ProxyIdPair*>(realloc(m_pairBuffer, m_pairCapacity * sizeof(ProxyIdPair)));
 	}
 
 	m_pairBuffer[m_pairCount].proxyIdA = Min(proxyId, m_queryProxyId);

@@ -890,7 +890,7 @@ void World::ClearForces() noexcept
 
 struct WorldQueryWrapper
 {
-	using size_type = b2BroadPhase::size_type;
+	using size_type = BroadPhase::size_type;
 
 	bool QueryCallback(size_type proxyId)
 	{
@@ -898,7 +898,7 @@ struct WorldQueryWrapper
 		return callback->ReportFixture(proxy->fixture);
 	}
 
-	const b2BroadPhase* broadPhase;
+	const BroadPhase* broadPhase;
 	b2QueryCallback* callback;
 };
 
@@ -912,7 +912,7 @@ void World::QueryAABB(b2QueryCallback* callback, const AABB& aabb) const
 
 struct WorldRayCastWrapper
 {
-	using size_type = b2BroadPhase::size_type;
+	using size_type = BroadPhase::size_type;
 
 	float_t RayCastCallback(const b2RayCastInput& input, size_type proxyId)
 	{
@@ -935,9 +935,9 @@ struct WorldRayCastWrapper
 
 	WorldRayCastWrapper() = delete;
 
-	constexpr WorldRayCastWrapper(const b2BroadPhase* bp, b2RayCastCallback* cb): broadPhase(bp), callback(cb) {}
+	constexpr WorldRayCastWrapper(const BroadPhase* bp, b2RayCastCallback* cb): broadPhase(bp), callback(cb) {}
 
-	const b2BroadPhase* const broadPhase;
+	const BroadPhase* const broadPhase;
 	b2RayCastCallback* const callback;
 };
 

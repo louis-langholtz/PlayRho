@@ -49,7 +49,7 @@ public:
 	const Contact* GetContactList() const noexcept { return m_contactList; }
 	Contact* GetContactList() noexcept { return m_contactList; }
 
-	b2BroadPhase m_broadPhase;
+	BroadPhase m_broadPhase;
 	ContactFilter* m_contactFilter;
 	ContactListener* m_contactListener;
 

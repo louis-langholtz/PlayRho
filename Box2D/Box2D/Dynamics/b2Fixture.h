@@ -27,7 +27,7 @@ namespace box2d {
 
 class BlockAllocator;
 class Body;
-class b2BroadPhase;
+class BroadPhase;
 class Fixture;
 
 /// This holds contact filtering data.
@@ -202,10 +202,10 @@ protected:
 	void Destroy(BlockAllocator* allocator);
 
 	// These support body activation/deactivation.
-	void CreateProxies(b2BroadPhase& broadPhase, const Transform& xf);
-	void DestroyProxies(b2BroadPhase& broadPhase);
+	void CreateProxies(BroadPhase& broadPhase, const Transform& xf);
+	void DestroyProxies(BroadPhase& broadPhase);
 
-	void Synchronize(b2BroadPhase& broadPhase, const Transform& xf1, const Transform& xf2);
+	void Synchronize(BroadPhase& broadPhase, const Transform& xf1, const Transform& xf2);
 
 	Body* const m_body;
 	float_t m_density = float_t{0};

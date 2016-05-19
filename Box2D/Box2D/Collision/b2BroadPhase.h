@@ -25,20 +25,21 @@
 #include <algorithm>
 
 namespace box2d {
+
 /// Proxy ID pair.
-struct b2ProxyIdPair
+struct ProxyIdPair
 {
 	using size_type = size_t;
 	size_type proxyIdA;
 	size_type proxyIdB;
 };
 
-constexpr inline bool operator == (b2ProxyIdPair lhs, b2ProxyIdPair rhs)
+constexpr inline bool operator == (ProxyIdPair lhs, ProxyIdPair rhs)
 {
 	return (lhs.proxyIdA == rhs.proxyIdA) && (lhs.proxyIdB == rhs.proxyIdB);
 }
 
-constexpr inline bool operator != (b2ProxyIdPair lhs, b2ProxyIdPair rhs)
+constexpr inline bool operator != (ProxyIdPair lhs, ProxyIdPair rhs)
 {
 	return !(lhs == rhs);
 }
@@ -46,7 +47,7 @@ constexpr inline bool operator != (b2ProxyIdPair lhs, b2ProxyIdPair rhs)
 /// The broad-phase is used for computing pairs and performing volume queries and ray casts.
 /// This broad-phase does not persist pairs. Instead, this reports potentially new pairs.
 /// It is up to the client to consume the new pairs and to track subsequent overlap.
-class b2BroadPhase
+class BroadPhase
 {
 public:
 
@@ -57,11 +58,11 @@ public:
 		e_nullProxy = static_cast<size_type>(-1)
 	};
 
-	b2BroadPhase();
-	~b2BroadPhase();
+	BroadPhase();
+	~BroadPhase();
 	
-	b2BroadPhase(const b2BroadPhase& copy) = delete;
-	b2BroadPhase& operator=(const b2BroadPhase&) = delete;
+	BroadPhase(const BroadPhase& copy) = delete;
+	BroadPhase& operator=(const BroadPhase&) = delete;
 
 	/// Creates a proxy with an initial AABB. Pairs are not reported until
 	/// UpdatePairs is called.
@@ -145,14 +146,14 @@ private:
 
 	// Initialized on construction
 	size_type* m_moveBuffer; ///< Move buffer. @sa size_type. @sa <code>m_moveCapacity</code>. @sa <code>m_moveCount</code>.
-	b2ProxyIdPair* m_pairBuffer;
+	ProxyIdPair* m_pairBuffer;
 
 	// Assigned on calling UpdatePairs
 	size_type m_queryProxyId;
 };
 
 /// This is used to sort pairs.
-inline bool b2PairLessThan(const b2ProxyIdPair& pair1, const b2ProxyIdPair& pair2) noexcept
+inline bool b2PairLessThan(const ProxyIdPair& pair1, const ProxyIdPair& pair2) noexcept
 {
 	if (pair1.proxyIdA < pair2.proxyIdA)
 	{
@@ -167,45 +168,45 @@ inline bool b2PairLessThan(const b2ProxyIdPair& pair1, const b2ProxyIdPair& pair
 	return false;
 }
 
-inline void* b2BroadPhase::GetUserData(size_type proxyId) const
+inline void* BroadPhase::GetUserData(size_type proxyId) const
 {
 	return m_tree.GetUserData(proxyId);
 }
 
-inline bool b2BroadPhase::TestOverlap(size_type proxyIdA, size_type proxyIdB) const
+inline bool BroadPhase::TestOverlap(size_type proxyIdA, size_type proxyIdB) const
 {
 	const AABB& aabbA = m_tree.GetFatAABB(proxyIdA);
 	const AABB& aabbB = m_tree.GetFatAABB(proxyIdB);
 	return b2TestOverlap(aabbA, aabbB);
 }
 
-inline const AABB& b2BroadPhase::GetFatAABB(size_type proxyId) const
+inline const AABB& BroadPhase::GetFatAABB(size_type proxyId) const
 {
 	return m_tree.GetFatAABB(proxyId);
 }
 
-inline b2BroadPhase::size_type b2BroadPhase::GetProxyCount() const noexcept
+inline BroadPhase::size_type BroadPhase::GetProxyCount() const noexcept
 {
 	return m_proxyCount;
 }
 
-inline b2BroadPhase::size_type b2BroadPhase::GetTreeHeight() const noexcept
+inline BroadPhase::size_type BroadPhase::GetTreeHeight() const noexcept
 {
 	return m_tree.GetHeight();
 }
 
-inline b2BroadPhase::size_type b2BroadPhase::GetTreeBalance() const
+inline BroadPhase::size_type BroadPhase::GetTreeBalance() const
 {
 	return m_tree.GetMaxBalance();
 }
 
-inline float_t b2BroadPhase::GetTreeQuality() const
+inline float_t BroadPhase::GetTreeQuality() const
 {
 	return m_tree.GetAreaRatio();
 }
 
 template <typename T>
-void b2BroadPhase::UpdatePairs(T* callback)
+void BroadPhase::UpdatePairs(T* callback)
 {
 	// Reset pair buffer
 	m_pairCount = 0;
@@ -261,18 +262,18 @@ void b2BroadPhase::UpdatePairs(T* callback)
 }
 
 template <typename T>
-inline void b2BroadPhase::Query(T* callback, const AABB& aabb) const
+inline void BroadPhase::Query(T* callback, const AABB& aabb) const
 {
 	m_tree.Query(callback, aabb);
 }
 
 template <typename T>
-inline void b2BroadPhase::RayCast(T* callback, const b2RayCastInput& input) const
+inline void BroadPhase::RayCast(T* callback, const b2RayCastInput& input) const
 {
 	m_tree.RayCast(callback, input);
 }
 
-inline void b2BroadPhase::ShiftOrigin(const Vec2& newOrigin)
+inline void BroadPhase::ShiftOrigin(const Vec2& newOrigin)
 {
 	m_tree.ShiftOrigin(newOrigin);
 }
