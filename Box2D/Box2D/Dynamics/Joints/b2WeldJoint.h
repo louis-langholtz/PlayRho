@@ -101,7 +101,7 @@ protected:
 	Vec2 m_localAnchorB;
 	float_t m_referenceAngle;
 	float_t m_gamma;
-	b2Vec3 m_impulse;
+	Vec3 m_impulse;
 
 	// Solver temp
 	index_t m_indexA;

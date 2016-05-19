@@ -151,7 +151,7 @@ protected:
 	Vec2 m_localXAxisA;
 	Vec2 m_localYAxisA;
 	float_t m_referenceAngle;
-	b2Vec3 m_impulse;
+	Vec3 m_impulse;
 	float_t m_motorImpulse;
 	float_t m_lowerTranslation;
 	float_t m_upperTranslation;

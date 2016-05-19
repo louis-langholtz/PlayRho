@@ -54,7 +54,7 @@ b2WeldJoint::b2WeldJoint(const b2WeldJointDef* def)
 	m_frequencyHz = def->frequencyHz;
 	m_dampingRatio = def->dampingRatio;
 
-	m_impulse = b2Vec3_zero;
+	m_impulse = Vec3_zero;
 }
 
 void b2WeldJoint::InitVelocityConstraints(const b2SolverData& data)
@@ -159,7 +159,7 @@ void b2WeldJoint::InitVelocityConstraints(const b2SolverData& data)
 	}
 	else
 	{
-		m_impulse = b2Vec3_zero;
+		m_impulse = Vec3_zero;
 	}
 
 	data.velocities[m_indexA].v = vA;
@@ -206,7 +206,7 @@ void b2WeldJoint::SolveVelocityConstraints(const b2SolverData& data)
 	{
 		const auto Cdot1 = vB + b2Cross(wB, m_rB) - vA - b2Cross(wA, m_rA);
 		const auto Cdot2 = wB - wA;
-		const auto Cdot = b2Vec3(Cdot1.x, Cdot1.y, Cdot2);
+		const auto Cdot = Vec3(Cdot1.x, Cdot1.y, Cdot2);
 
 		const auto impulse = -b2Mul(m_mass, Cdot);
 		m_impulse += impulse;
@@ -277,9 +277,9 @@ bool b2WeldJoint::SolvePositionConstraints(const b2SolverData& data)
 		positionError = C1.Length();
 		angularError = b2Abs(C2);
 
-		const auto C = b2Vec3(C1.x, C1.y, C2);
+		const auto C = Vec3(C1.x, C1.y, C2);
 	
-		b2Vec3 impulse;
+		Vec3 impulse;
 		if (K.ez.z > float_t{0})
 		{
 			impulse = -K.Solve33(C);
@@ -287,7 +287,7 @@ bool b2WeldJoint::SolvePositionConstraints(const b2SolverData& data)
 		else
 		{
 			const auto impulse2 = -K.Solve22(C1);
-			impulse = b2Vec3(impulse2.x, impulse2.y, float_t{0});
+			impulse = Vec3(impulse2.x, impulse2.y, float_t{0});
 		}
 
 		const auto P = Vec2(impulse.x, impulse.y);

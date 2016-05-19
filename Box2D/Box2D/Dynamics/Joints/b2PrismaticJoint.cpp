@@ -108,7 +108,7 @@ b2PrismaticJoint::b2PrismaticJoint(const b2PrismaticJointDef* def)
 	m_localYAxisA = b2Cross(float_t(1), m_localXAxisA);
 	m_referenceAngle = def->referenceAngle;
 
-	m_impulse = b2Vec3_zero;
+	m_impulse = Vec3_zero;
 	m_motorMass = float_t{0};
 	m_motorImpulse = float_t{0};
 
@@ -188,9 +188,9 @@ void b2PrismaticJoint::InitVelocityConstraints(const b2SolverData& data)
 		const auto k23 = iA * m_a1 + iB * m_a2;
 		const auto k33 = mA + mB + iA * m_a1 * m_a1 + iB * m_a2 * m_a2;
 
-		m_K.ex = b2Vec3(k11, k12, k13);
-		m_K.ey = b2Vec3(k12, k22, k23);
-		m_K.ez = b2Vec3(k13, k23, k33);
+		m_K.ex = Vec3(k11, k12, k13);
+		m_K.ey = Vec3(k12, k22, k23);
+		m_K.ez = Vec3(k13, k23, k33);
 	}
 
 	// Compute motor and limit terms.
@@ -252,7 +252,7 @@ void b2PrismaticJoint::InitVelocityConstraints(const b2SolverData& data)
 	}
 	else
 	{
-		m_impulse = b2Vec3_zero;
+		m_impulse = Vec3_zero;
 		m_motorImpulse = float_t{0};
 	}
 
@@ -299,7 +299,7 @@ void b2PrismaticJoint::SolveVelocityConstraints(const b2SolverData& data)
 	{
 		// Solve prismatic and limit constraint in block form.
 		const auto Cdot2 = b2Dot(m_axis, vB - vA) + m_a2 * wB - m_a1 * wA;
-		const auto Cdot = b2Vec3{Cdot1.x, Cdot1.y, Cdot2};
+		const auto Cdot = Vec3{Cdot1.x, Cdot1.y, Cdot2};
 
 		const auto f1 = m_impulse;
 		m_impulse += m_K.Solve33(-Cdot);
@@ -421,7 +421,7 @@ bool b2PrismaticJoint::SolvePositionConstraints(const b2SolverData& data)
 		}
 	}
 
-	b2Vec3 impulse;
+	Vec3 impulse;
 	if (active)
 	{
 		const auto k11 = mA + mB + iA * s1 * s1 + iB * s2 * s2;
@@ -436,9 +436,9 @@ bool b2PrismaticJoint::SolvePositionConstraints(const b2SolverData& data)
 		const auto k23 = iA * a1 + iB * a2;
 		const auto k33 = mA + mB + iA * a1 * a1 + iB * a2 * a2;
 
-		const auto K = b2Mat33{b2Vec3{k11, k12, k13}, b2Vec3{k12, k22, k23}, b2Vec3{k13, k23, k33}};
+		const auto K = b2Mat33{Vec3{k11, k12, k13}, Vec3{k12, k22, k23}, Vec3{k13, k23, k33}};
 
-		const auto C = b2Vec3{C1.x, C1.y, C2};
+		const auto C = Vec3{C1.x, C1.y, C2};
 
 		impulse = K.Solve33(-C);
 	}
