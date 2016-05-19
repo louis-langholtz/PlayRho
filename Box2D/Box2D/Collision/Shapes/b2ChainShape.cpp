@@ -42,7 +42,7 @@ void b2ChainShape::CreateLoop(const Vec2* vertices, child_count_t count)
 	for (auto i = decltype(count){1}; i < count; ++i)
 	{
 		// If the code crashes here, it means your vertices are too close together.
-		assert(b2DistanceSquared(vertices[i-1], vertices[i]) > b2Square(LinearSlop));
+		assert(DistanceSquared(vertices[i-1], vertices[i]) > Square(LinearSlop));
 	}
 
 	m_count = count + 1;
@@ -62,7 +62,7 @@ void b2ChainShape::CreateChain(const Vec2* vertices, child_count_t count)
 	for (auto i = decltype(count){1}; i < count; ++i)
 	{
 		// If the code crashes here, it means your vertices are too close together.
-		assert(b2DistanceSquared(vertices[i-1], vertices[i]) > b2Square(LinearSlop));
+		assert(DistanceSquared(vertices[i-1], vertices[i]) > Square(LinearSlop));
 	}
 
 	m_count = count;
@@ -134,7 +134,7 @@ void b2ChainShape::GetChildEdge(b2EdgeShape* edge, child_count_t index) const
 	}
 }
 
-bool b2ChainShape::TestPoint(const b2Transform& xf, const Vec2& p) const
+bool b2ChainShape::TestPoint(const Transform& xf, const Vec2& p) const
 {
 	BOX2D_NOT_USED(xf);
 	BOX2D_NOT_USED(p);
@@ -142,7 +142,7 @@ bool b2ChainShape::TestPoint(const b2Transform& xf, const Vec2& p) const
 }
 
 bool b2ChainShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
-							const b2Transform& xf, child_count_t childIndex) const
+							const Transform& xf, child_count_t childIndex) const
 {
 	assert(childIndex < m_count);
 
@@ -157,7 +157,7 @@ bool b2ChainShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 	return edgeShape.RayCast(output, input, xf, 0);
 }
 
-b2AABB b2ChainShape::ComputeAABB(const b2Transform& xf, child_count_t childIndex) const
+b2AABB b2ChainShape::ComputeAABB(const Transform& xf, child_count_t childIndex) const
 {
 	assert(childIndex < m_count);
 
@@ -168,8 +168,8 @@ b2AABB b2ChainShape::ComputeAABB(const b2Transform& xf, child_count_t childIndex
 		i2 = 0;
 	}
 
-	const auto v1 = b2Mul(xf, m_vertices[i1]);
-	const auto v2 = b2Mul(xf, m_vertices[i2]);
+	const auto v1 = Mul(xf, m_vertices[i1]);
+	const auto v2 = Mul(xf, m_vertices[i2]);
 
 	return b2AABB{v1, v2};
 }

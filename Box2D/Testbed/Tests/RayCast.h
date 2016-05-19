@@ -203,8 +203,8 @@ public:
 
 		{
 			float_t w = 1.0f;
-			float_t b = w / (2.0f + b2Sqrt(2.0f));
-			float_t s = b2Sqrt(2.0f) * b;
+			float_t b = w / (2.0f + Sqrt(2.0f));
+			float_t s = Sqrt(2.0f) * b;
 
 			Vec2 vertices[8];
 			vertices[0] = Vec2(0.5f * s, 0.0f);
@@ -441,7 +441,7 @@ public:
 			//input.maxFraction = 0.567623f;
 			input.maxFraction = 0.56762173f;
 
-			b2Transform xf;
+			Transform xf;
 			xf.SetIdentity();
 			xf.position = Vec2(23.0f, 5.0f);
 
@@ -454,7 +454,7 @@ public:
 			Vec2 vs[4];
 			for (int32 i = 0; i < 4; ++i)
 			{
-				vs[i] = b2Mul(xf, shape.m_vertices[i]);
+				vs[i] = Mul(xf, shape.m_vertices[i]);
 			}
 
 			g_debugDraw.DrawPolygon(vs, 4, color);

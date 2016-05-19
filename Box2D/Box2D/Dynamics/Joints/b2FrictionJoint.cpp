@@ -70,12 +70,12 @@ void b2FrictionJoint::InitVelocityConstraints(const b2SolverData& data)
 	auto vB = data.velocities[m_indexB].v;
 	auto wB = data.velocities[m_indexB].w;
 
-	const auto qA = b2Rot(aA);
-	const auto qB = b2Rot(aB);
+	const auto qA = Rot(aA);
+	const auto qB = Rot(aB);
 
 	// Compute the effective mass matrix.
-	m_rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
-	m_rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	m_rA = Mul(qA, m_localAnchorA - m_localCenterA);
+	m_rB = Mul(qB, m_localAnchorB - m_localCenterB);
 
 	// J = [-I -r1_skew I r2_skew]
 	//     [ 0       -1 0       1]
@@ -89,11 +89,11 @@ void b2FrictionJoint::InitVelocityConstraints(const b2SolverData& data)
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
 
-	b2Mat22 K;
-	K.ex.x = mA + mB + iA * b2Square(m_rA.y) + iB * b2Square(m_rB.y);
+	Mat22 K;
+	K.ex.x = mA + mB + iA * Square(m_rA.y) + iB * Square(m_rB.y);
 	K.ex.y = -iA * m_rA.x * m_rA.y - iB * m_rB.x * m_rB.y;
 	K.ey.x = K.ex.y;
-	K.ey.y = mA + mB + iA * b2Square(m_rA.x) + iB * b2Square(m_rB.x);
+	K.ey.y = mA + mB + iA * Square(m_rA.x) + iB * Square(m_rB.x);
 
 	m_linearMass = K.GetInverse();
 
@@ -146,7 +146,7 @@ void b2FrictionJoint::SolveVelocityConstraints(const b2SolverData& data)
 
 		const auto oldImpulse = m_angularImpulse;
 		const auto maxImpulse = h * m_maxTorque;
-		m_angularImpulse = b2Clamp(m_angularImpulse + impulse, -maxImpulse, maxImpulse);
+		m_angularImpulse = Clamp(m_angularImpulse + impulse, -maxImpulse, maxImpulse);
 		impulse = m_angularImpulse - oldImpulse;
 
 		wA -= iA * impulse;
@@ -157,13 +157,13 @@ void b2FrictionJoint::SolveVelocityConstraints(const b2SolverData& data)
 	{
 		const auto Cdot = vB + Cross(wB, m_rB) - vA - Cross(wA, m_rA);
 
-		auto impulse = -b2Mul(m_linearMass, Cdot);
+		auto impulse = -Mul(m_linearMass, Cdot);
 		const auto oldImpulse = m_linearImpulse;
 		m_linearImpulse += impulse;
 
 		const auto maxImpulse = h * m_maxForce;
 
-		if (m_linearImpulse.LengthSquared() > b2Square(maxImpulse))
+		if (m_linearImpulse.LengthSquared() > Square(maxImpulse))
 		{
 			m_linearImpulse.Normalize();
 			m_linearImpulse *= maxImpulse;
@@ -213,7 +213,7 @@ float_t b2FrictionJoint::GetReactionTorque(float_t inv_dt) const
 
 void b2FrictionJoint::SetMaxForce(float_t force)
 {
-	assert(b2IsValid(force) && (force >= float_t{0}));
+	assert(IsValid(force) && (force >= float_t{0}));
 	m_maxForce = force;
 }
 
@@ -224,7 +224,7 @@ float_t b2FrictionJoint::GetMaxForce() const
 
 void b2FrictionJoint::SetMaxTorque(float_t torque)
 {
-	assert(b2IsValid(torque) && (torque >= float_t{0}));
+	assert(IsValid(torque) && (torque >= float_t{0}));
 	m_maxTorque = torque;
 }
 

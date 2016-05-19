@@ -102,7 +102,7 @@ void b2Fixture::Destroy(b2BlockAllocator* allocator)
 	m_shape = nullptr;
 }
 
-void b2Fixture::CreateProxies(b2BroadPhase& broadPhase, const b2Transform& xf)
+void b2Fixture::CreateProxies(b2BroadPhase& broadPhase, const Transform& xf)
 {
 	assert(m_proxyCount == 0);
 
@@ -132,7 +132,7 @@ void b2Fixture::DestroyProxies(b2BroadPhase& broadPhase)
 	m_proxyCount = 0;
 }
 
-void b2Fixture::Synchronize(b2BroadPhase& broadPhase, const b2Transform& transform1, const b2Transform& transform2)
+void b2Fixture::Synchronize(b2BroadPhase& broadPhase, const Transform& transform1, const Transform& transform2)
 {
 	if (m_proxyCount == 0)
 	{	

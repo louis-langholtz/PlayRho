@@ -34,12 +34,12 @@ b2MouseJoint::b2MouseJoint(const b2MouseJointDef* def)
 : b2Joint(def)
 {
 	assert(def->target.IsValid());
-	assert(b2IsValid(def->maxForce) && (def->maxForce >= float_t{0}));
-	assert(b2IsValid(def->frequencyHz) && (def->frequencyHz >= float_t{0}));
-	assert(b2IsValid(def->dampingRatio) && (def->dampingRatio >= float_t{0}));
+	assert(IsValid(def->maxForce) && (def->maxForce >= float_t{0}));
+	assert(IsValid(def->frequencyHz) && (def->frequencyHz >= float_t{0}));
+	assert(IsValid(def->dampingRatio) && (def->dampingRatio >= float_t{0}));
 
 	m_targetA = def->target;
-	m_localAnchorB = b2MulT(m_bodyB->GetTransform(), def->target);
+	m_localAnchorB = MulT(m_bodyB->GetTransform(), def->target);
 	m_maxForce = def->maxForce;
 	m_frequencyHz = def->frequencyHz;
 	m_dampingRatio = def->dampingRatio;
@@ -101,7 +101,7 @@ void b2MouseJoint::InitVelocityConstraints(const b2SolverData& data)
 	auto vB = data.velocities[m_indexB].v;
 	auto wB = data.velocities[m_indexB].w;
 
-	const b2Rot qB(aB);
+	const Rot qB(aB);
 
 	const auto mass = m_bodyB->GetMass();
 
@@ -127,12 +127,12 @@ void b2MouseJoint::InitVelocityConstraints(const b2SolverData& data)
 	m_beta = h * k * m_gamma;
 
 	// Compute the effective mass matrix.
-	m_rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	m_rB = Mul(qB, m_localAnchorB - m_localCenterB);
 
 	// K    = [(1/m1 + 1/m2) * eye(2) - skew(r1) * invI1 * skew(r1) - skew(r2) * invI2 * skew(r2)]
 	//      = [1/m1+1/m2     0    ] + invI1 * [r1.y*r1.y -r1.x*r1.y] + invI2 * [r1.y*r1.y -r1.x*r1.y]
 	//        [    0     1/m1+1/m2]           [-r1.x*r1.y r1.x*r1.x]           [-r1.x*r1.y r1.x*r1.x]
-	b2Mat22 K;
+	Mat22 K;
 	K.ex.x = m_invMassB + m_invIB * m_rB.y * m_rB.y + m_gamma;
 	K.ex.y = -m_invIB * m_rB.x * m_rB.y;
 	K.ey.x = K.ex.y;
@@ -168,7 +168,7 @@ void b2MouseJoint::SolveVelocityConstraints(const b2SolverData& data)
 
 	// Cdot = v + cross(w, r)
 	const auto Cdot = vB + Cross(wB, m_rB);
-	auto impulse = b2Mul(m_mass, -(Cdot + m_C + m_gamma * m_impulse));
+	auto impulse = Mul(m_mass, -(Cdot + m_C + m_gamma * m_impulse));
 
 	const auto oldImpulse = m_impulse;
 	m_impulse += impulse;

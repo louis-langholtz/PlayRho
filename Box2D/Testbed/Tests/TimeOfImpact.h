@@ -39,14 +39,14 @@ public:
 	{
 		Test::Step(settings);
 
-		b2Sweep sweepA;
+		Sweep sweepA;
 		sweepA.c0 = Vec2(24.0f, -60.0f);
 		sweepA.a0 = 2.95f;
 		sweepA.c = sweepA.c0;
 		sweepA.a = sweepA.a0;
 		sweepA.localCenter = Vec2_zero;
 
-		b2Sweep sweepB;
+		Sweep sweepB;
 		sweepB.c0 = Vec2(53.474274f, -50.252514f);
 		sweepB.a0 = 513.36676f; // - 162.0f * Pi;
 		sweepB.c = Vec2(54.595478f, -51.083473f);
@@ -74,32 +74,32 @@ public:
 
 		Vec2 vertices[MaxPolygonVertices];
 
-		const auto transformA = b2GetTransform(sweepA, 0.0f);
+		const auto transformA = GetTransform(sweepA, 0.0f);
 		for (int32 i = 0; i < m_shapeA.GetVertexCount(); ++i)
 		{
-			vertices[i] = b2Mul(transformA, m_shapeA.GetVertex(i));
+			vertices[i] = Mul(transformA, m_shapeA.GetVertex(i));
 		}
 		g_debugDraw.DrawPolygon(vertices, m_shapeA.GetVertexCount(), b2Color(0.9f, 0.9f, 0.9f));
 
-		auto transformB = b2GetTransform(sweepB, 0.0f);
+		auto transformB = GetTransform(sweepB, 0.0f);
 		//Vec2 localPoint(2.0f, -0.1f);
 		for (int32 i = 0; i < m_shapeB.GetVertexCount(); ++i)
 		{
-			vertices[i] = b2Mul(transformB, m_shapeB.GetVertex(i));
+			vertices[i] = Mul(transformB, m_shapeB.GetVertex(i));
 		}
 		g_debugDraw.DrawPolygon(vertices, m_shapeB.GetVertexCount(), b2Color(0.5f, 0.9f, 0.5f));
 
-		transformB = b2GetTransform(sweepB, output.get_t());
+		transformB = GetTransform(sweepB, output.get_t());
 		for (int32 i = 0; i < m_shapeB.GetVertexCount(); ++i)
 		{
-			vertices[i] = b2Mul(transformB, m_shapeB.GetVertex(i));
+			vertices[i] = Mul(transformB, m_shapeB.GetVertex(i));
 		}
 		g_debugDraw.DrawPolygon(vertices, m_shapeB.GetVertexCount(), b2Color(0.5f, 0.7f, 0.9f));
 
-		transformB = b2GetTransform(sweepB, 1.0f);
+		transformB = GetTransform(sweepB, 1.0f);
 		for (int32 i = 0; i < m_shapeB.GetVertexCount(); ++i)
 		{
-			vertices[i] = b2Mul(transformB, m_shapeB.GetVertex(i));
+			vertices[i] = Mul(transformB, m_shapeB.GetVertex(i));
 		}
 		g_debugDraw.DrawPolygon(vertices, m_shapeB.GetVertexCount(), b2Color(0.9f, 0.5f, 0.5f));
 
@@ -109,7 +109,7 @@ public:
 			transformB = sweepB.GetTransform(t);
 			for (int32 i = 0; i < m_shapeB.GetVertexCount(); ++i)
 			{
-				vertices[i] = b2Mul(transformB, m_shapeB.GetVertex(i));
+				vertices[i] = Mul(transformB, m_shapeB.GetVertex(i));
 			}
 			g_debugDraw.DrawPolygon(vertices, m_shapeB.GetVertexCount(), b2Color(0.9f, 0.5f, 0.5f));
 		}

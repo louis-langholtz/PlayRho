@@ -100,16 +100,16 @@ void b2WheelJoint::InitVelocityConstraints(const b2SolverData& data)
 	auto vB = data.velocities[m_indexB].v;
 	auto wB = data.velocities[m_indexB].w;
 
-	const b2Rot qA(aA), qB(aB);
+	const Rot qA(aA), qB(aB);
 
 	// Compute the effective masses.
-	const auto rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
-	const auto rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	const auto rA = Mul(qA, m_localAnchorA - m_localCenterA);
+	const auto rB = Mul(qB, m_localAnchorB - m_localCenterB);
 	const auto dd = cB + rB - cA - rA;
 
 	// Point to line constraint
 	{
-		m_ay = b2Mul(qA, m_localYAxisA);
+		m_ay = Mul(qA, m_localYAxisA);
 		m_sAy = Cross(dd + rA, m_ay);
 		m_sBy = Cross(rB, m_ay);
 
@@ -127,7 +127,7 @@ void b2WheelJoint::InitVelocityConstraints(const b2SolverData& data)
 	m_gamma = float_t{0};
 	if (m_frequencyHz > float_t{0})
 	{
-		m_ax = b2Mul(qA, m_localXAxisA);
+		m_ax = Mul(qA, m_localXAxisA);
 		m_sAx = Cross(dd + rA, m_ax);
 		m_sBx = Cross(rB, m_ax);
 
@@ -249,7 +249,7 @@ void b2WheelJoint::SolveVelocityConstraints(const b2SolverData& data)
 
 		const auto oldImpulse = m_motorImpulse;
 		const auto maxImpulse = data.step.get_dt() * m_maxMotorTorque;
-		m_motorImpulse = b2Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
+		m_motorImpulse = Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
 		impulse = m_motorImpulse - oldImpulse;
 
 		wA -= iA * impulse;
@@ -286,13 +286,13 @@ bool b2WheelJoint::SolvePositionConstraints(const b2SolverData& data)
 	auto cB = data.positions[m_indexB].c;
 	auto aB = data.positions[m_indexB].a;
 
-	const b2Rot qA{aA}, qB{aB};
+	const Rot qA{aA}, qB{aB};
 
-	const auto rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
-	const auto rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	const auto rA = Mul(qA, m_localAnchorA - m_localCenterA);
+	const auto rB = Mul(qB, m_localAnchorB - m_localCenterB);
 	const auto d = (cB - cA) + rB - rA;
 
-	const auto ay = b2Mul(qA, m_localYAxisA);
+	const auto ay = Mul(qA, m_localYAxisA);
 
 	const auto sAy = Cross(d + rA, ay);
 	const auto sBy = Cross(rB, ay);
@@ -317,7 +317,7 @@ bool b2WheelJoint::SolvePositionConstraints(const b2SolverData& data)
 	data.positions[m_indexB].c = cB;
 	data.positions[m_indexB].a = aB;
 
-	return b2Abs(C) <= LinearSlop;
+	return Abs(C) <= LinearSlop;
 }
 
 Vec2 b2WheelJoint::GetAnchorA() const

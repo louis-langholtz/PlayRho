@@ -150,7 +150,7 @@ public:
 
 	/// Get the body transform for the body's origin.
 	/// @return the world transform of the body's origin.
-	b2Transform GetTransform() const noexcept;
+	Transform GetTransform() const noexcept;
 
 	/// Get the world body origin position.
 	/// @return the world position of the body's origin.
@@ -454,8 +454,8 @@ private:
 	
 	bool IsValidIslandIndex() const noexcept;
 
-	b2Transform m_xf; ///< Transform for body origin.
-	b2Sweep m_sweep; ///< Sweep motion for CCD
+	Transform m_xf; ///< Transform for body origin.
+	Sweep m_sweep; ///< Sweep motion for CCD
 
 	Vec2 m_linearVelocity;
 	float_t m_angularVelocity;
@@ -493,7 +493,7 @@ inline BodyType b2Body::GetType() const noexcept
 	return m_type;
 }
 
-inline b2Transform b2Body::GetTransform() const noexcept
+inline Transform b2Body::GetTransform() const noexcept
 {
 	return m_xf;
 }
@@ -575,22 +575,22 @@ inline b2MassData b2Body::GetMassData() const noexcept
 
 inline Vec2 b2Body::GetWorldPoint(const Vec2& localPoint) const noexcept
 {
-	return b2Mul(m_xf, localPoint);
+	return Mul(m_xf, localPoint);
 }
 
 inline Vec2 b2Body::GetWorldVector(const Vec2& localVector) const noexcept
 {
-	return b2Mul(m_xf.q, localVector);
+	return Mul(m_xf.q, localVector);
 }
 
 inline Vec2 b2Body::GetLocalPoint(const Vec2& worldPoint) const noexcept
 {
-	return b2MulT(m_xf, worldPoint);
+	return MulT(m_xf, worldPoint);
 }
 
 inline Vec2 b2Body::GetLocalVector(const Vec2& worldVector) const noexcept
 {
-	return b2MulT(m_xf.q, worldVector);
+	return MulT(m_xf.q, worldVector);
 }
 
 inline Vec2 b2Body::GetLinearVelocityFromWorldPoint(const Vec2& worldPoint) const noexcept
@@ -877,7 +877,7 @@ inline void b2Body::Advance(float_t alpha)
 	m_sweep.Advance(alpha);
 	m_sweep.c = m_sweep.c0;
 	m_sweep.a = m_sweep.a0;
-	m_xf = b2GetTransformOne(m_sweep);
+	m_xf = GetTransformOne(m_sweep);
 }
 
 inline b2World* b2Body::GetWorld() noexcept

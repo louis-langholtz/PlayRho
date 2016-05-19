@@ -44,7 +44,7 @@ public:
 	void DrawFixture(b2Fixture* fixture)
 	{
 		b2Color color(0.95f, 0.95f, 0.6f);
-		const b2Transform& xf = fixture->GetBody()->GetTransform();
+		const Transform& xf = fixture->GetBody()->GetTransform();
 
 		switch (fixture->GetType())
 		{
@@ -52,7 +52,7 @@ public:
 			{
 				b2CircleShape* circle = (b2CircleShape*)fixture->GetShape();
 
-				Vec2 center = b2Mul(xf, circle->GetPosition());
+				Vec2 center = Mul(xf, circle->GetPosition());
 				float_t radius = circle->GetRadius();
 
 				g_debugDraw->DrawCircle(center, radius, color);
@@ -68,7 +68,7 @@ public:
 
 				for (int32 i = 0; i < vertexCount; ++i)
 				{
-					vertices[i] = b2Mul(xf, poly->GetVertex(i));
+					vertices[i] = Mul(xf, poly->GetVertex(i));
 				}
 
 				g_debugDraw->DrawPolygon(vertices, vertexCount, color);
@@ -104,7 +104,7 @@ public:
 	}
 
 	b2CircleShape m_circle;
-	b2Transform m_transform;
+	Transform m_transform;
 	b2Draw* g_debugDraw;
 	int32 m_count;
 };
@@ -148,8 +148,8 @@ public:
 
 		{
 			float_t w = 1.0f;
-			float_t b = w / (2.0f + b2Sqrt(2.0f));
-			float_t s = b2Sqrt(2.0f) * b;
+			float_t b = w / (2.0f + Sqrt(2.0f));
+			float_t s = Sqrt(2.0f) * b;
 
 			Vec2 vertices[8];
 			vertices[0] = Vec2(0.5f * s, 0.0f);
@@ -268,7 +268,7 @@ public:
 		PolyShapesCallback callback;
 		callback.m_circle.SetRadius(float_t(2.0));
 		callback.m_circle.SetPosition(Vec2(0.0f, 1.1f));
-		callback.m_transform = b2Transform_identity;
+		callback.m_transform = Transform_identity;
 		callback.g_debugDraw = &g_debugDraw;
 
 		b2AABB aabb = callback.m_circle.ComputeAABB(callback.m_transform, 0);

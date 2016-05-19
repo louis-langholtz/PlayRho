@@ -65,10 +65,10 @@ void b2RopeJoint::InitVelocityConstraints(const b2SolverData& data)
 	auto vB = data.velocities[m_indexB].v;
 	auto wB = data.velocities[m_indexB].w;
 
-	const b2Rot qA(aA), qB(aB);
+	const Rot qA(aA), qB(aB);
 
-	m_rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
-	m_rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	m_rA = Mul(qA, m_localAnchorA - m_localCenterA);
+	m_rB = Mul(qB, m_localAnchorB - m_localCenterB);
 	m_u = cB + m_rB - cA - m_rA;
 
 	m_length = m_u.Length();
@@ -145,7 +145,7 @@ void b2RopeJoint::SolveVelocityConstraints(const b2SolverData& data)
 
 	auto impulse = -m_mass * Cdot;
 	const auto oldImpulse = m_impulse;
-	m_impulse = b2Min(float_t{0}, m_impulse + impulse);
+	m_impulse = Min(float_t{0}, m_impulse + impulse);
 	impulse = m_impulse - oldImpulse;
 
 	const auto P = impulse * m_u;
@@ -167,16 +167,16 @@ bool b2RopeJoint::SolvePositionConstraints(const b2SolverData& data)
 	auto cB = data.positions[m_indexB].c;
 	auto aB = data.positions[m_indexB].a;
 
-	const b2Rot qA(aA), qB(aB);
+	const Rot qA(aA), qB(aB);
 
-	const auto rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
-	const auto rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	const auto rA = Mul(qA, m_localAnchorA - m_localCenterA);
+	const auto rB = Mul(qB, m_localAnchorB - m_localCenterB);
 	auto u = cB + rB - cA - rA;
 
 	const auto length = u.Normalize();
 	auto C = length - m_maxLength;
 
-	C = b2Clamp(C, float_t{0}, MaxLinearCorrection);
+	C = Clamp(C, float_t{0}, MaxLinearCorrection);
 
 	const auto impulse = -m_mass * C;
 	const auto P = impulse * u;

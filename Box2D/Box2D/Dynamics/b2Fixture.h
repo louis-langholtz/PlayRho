@@ -202,10 +202,10 @@ protected:
 	void Destroy(b2BlockAllocator* allocator);
 
 	// These support body activation/deactivation.
-	void CreateProxies(b2BroadPhase& broadPhase, const b2Transform& xf);
+	void CreateProxies(b2BroadPhase& broadPhase, const Transform& xf);
 	void DestroyProxies(b2BroadPhase& broadPhase);
 
-	void Synchronize(b2BroadPhase& broadPhase, const b2Transform& xf1, const b2Transform& xf2);
+	void Synchronize(b2BroadPhase& broadPhase, const Transform& xf1, const Transform& xf2);
 
 	b2Body* const m_body;
 	float_t m_density = float_t{0};
@@ -277,7 +277,7 @@ inline const b2Fixture* b2Fixture::GetNext() const
 
 inline void b2Fixture::SetDensity(float_t density)
 {
-	assert(b2IsValid(density) && density >= float_t{0});
+	assert(IsValid(density) && density >= float_t{0});
 	m_density = density;
 }
 

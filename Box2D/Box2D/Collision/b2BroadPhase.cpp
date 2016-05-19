@@ -100,8 +100,8 @@ bool b2BroadPhase::QueryCallback(size_type proxyId)
 		m_pairBuffer = static_cast<b2ProxyIdPair*>(realloc(m_pairBuffer, m_pairCapacity * sizeof(b2ProxyIdPair)));
 	}
 
-	m_pairBuffer[m_pairCount].proxyIdA = b2Min(proxyId, m_queryProxyId);
-	m_pairBuffer[m_pairCount].proxyIdB = b2Max(proxyId, m_queryProxyId);
+	m_pairBuffer[m_pairCount].proxyIdA = Min(proxyId, m_queryProxyId);
+	m_pairBuffer[m_pairCount].proxyIdB = Max(proxyId, m_queryProxyId);
 	++m_pairCount;
 
 	return true;

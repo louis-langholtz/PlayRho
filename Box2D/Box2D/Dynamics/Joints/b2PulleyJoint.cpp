@@ -93,10 +93,10 @@ void b2PulleyJoint::InitVelocityConstraints(const b2SolverData& data)
 	auto vB = data.velocities[m_indexB].v;
 	auto wB = data.velocities[m_indexB].w;
 
-	const b2Rot qA(aA), qB(aB);
+	const Rot qA(aA), qB(aB);
 
-	m_rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
-	m_rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	m_rA = Mul(qA, m_localAnchorA - m_localCenterA);
+	m_rB = Mul(qB, m_localAnchorB - m_localCenterB);
 
 	// Get the pulley axes.
 	m_uA = cA + m_rA - m_groundAnchorA;
@@ -196,10 +196,10 @@ bool b2PulleyJoint::SolvePositionConstraints(const b2SolverData& data)
 	auto cB = data.positions[m_indexB].c;
 	auto aB = data.positions[m_indexB].a;
 
-	const b2Rot qA(aA), qB(aB);
+	const Rot qA(aA), qB(aB);
 
-	const auto rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
-	const auto rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	const auto rA = Mul(qA, m_localAnchorA - m_localCenterA);
+	const auto rB = Mul(qB, m_localAnchorB - m_localCenterB);
 
 	// Get the pulley axes.
 	auto uA = cA + rA - m_groundAnchorA;
@@ -241,7 +241,7 @@ bool b2PulleyJoint::SolvePositionConstraints(const b2SolverData& data)
 	}
 
 	const auto C = m_constant - lengthA - (m_ratio * lengthB);
-	const auto linearError = b2Abs(C);
+	const auto linearError = Abs(C);
 
 	const auto impulse = -mass * C;
 

@@ -266,7 +266,7 @@ bool b2Contact::UpdateTOI()
 	
 	// Compute the TOI for this contact.
 	// Put the sweeps onto the same time interval.
-	const auto maxAlpha0 = b2Max(bA->m_sweep.alpha0, bB->m_sweep.alpha0);
+	const auto maxAlpha0 = Max(bA->m_sweep.alpha0, bB->m_sweep.alpha0);
 	assert(maxAlpha0 < float_t(1));
 	bA->m_sweep.Advance(maxAlpha0);
 	bB->m_sweep.Advance(maxAlpha0);
@@ -284,7 +284,7 @@ bool b2Contact::UpdateTOI()
 	// Beta is the fraction of the remaining portion of the .
 	const auto beta = output.get_t();
 	const auto alpha = (output.get_state() == b2TOIOutput::e_touching)?
-		b2Min(maxAlpha0 + (float_t{1} - maxAlpha0) * beta, float_t{1}): float_t{1};
+		Min(maxAlpha0 + (float_t{1} - maxAlpha0) * beta, float_t{1}): float_t{1};
 	
 	SetToi(alpha);
 	

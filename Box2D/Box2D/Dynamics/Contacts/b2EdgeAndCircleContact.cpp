@@ -47,7 +47,7 @@ b2EdgeAndCircleContact::b2EdgeAndCircleContact(b2Fixture* fixtureA, b2Fixture* f
 	assert(m_fixtureB->GetType() == b2Shape::e_circle);
 }
 
-b2Manifold b2EdgeAndCircleContact::Evaluate(const b2Transform& xfA, const b2Transform& xfB)
+b2Manifold b2EdgeAndCircleContact::Evaluate(const Transform& xfA, const Transform& xfB)
 {
 	return b2CollideShapes(*static_cast<b2EdgeShape*>(m_fixtureA->GetShape()), xfA, *static_cast<b2CircleShape*>(m_fixtureB->GetShape()), xfB);
 }

@@ -107,7 +107,7 @@ protected:
 	float_t m_invMassB;
 	float_t m_invIA;
 	float_t m_invIB;
-	b2Mat22 m_linearMass;
+	Mat22 m_linearMass;
 	float_t m_angularMass;
 };
 

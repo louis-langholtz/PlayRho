@@ -195,16 +195,16 @@ public:
 	b2WorldManifold() = default;
 
 	b2WorldManifold(const b2Manifold& manifold,
-					const b2Transform& xfA, float_t radiusA,
-					const b2Transform& xfB, float_t radiusB);
+					const Transform& xfA, float_t radiusA,
+					const Transform& xfB, float_t radiusB);
 
 	/// Evaluate the manifold with supplied transforms. This assumes
 	/// modest motion from the original state. This does not change the
 	/// point count, impulses, etc. The radii must come from the shapes
 	/// that generated the manifold.
 	void Assign(const b2Manifold& manifold,
-					const b2Transform& xfA, float_t radiusA,
-					const b2Transform& xfB, float_t radiusB);
+					const Transform& xfA, float_t radiusA,
+					const Transform& xfB, float_t radiusB);
 
 	size_type GetPointCount() const noexcept { return pointCount; }
 
@@ -273,7 +273,7 @@ public:
 	b2AABB() = default;
 
 	constexpr b2AABB(Vec2 a, Vec2 b) noexcept:
-		lowerBound(Vec2(b2Min(a.x, b.x), b2Min(a.y, b.y))), upperBound(Vec2(b2Max(a.x, b.x), b2Max(a.y, b.y))) {}
+		lowerBound(Vec2(Min(a.x, b.x), Min(a.y, b.y))), upperBound(Vec2(Max(a.x, b.x), Max(a.y, b.y))) {}
 
 	/// Get the center of the AABB.
 	constexpr Vec2 GetCenter() const noexcept
@@ -298,8 +298,8 @@ public:
 	/// Combine an AABB into this one.
 	constexpr b2AABB& operator += (const b2AABB& aabb)
 	{
-		lowerBound = b2Min(lowerBound, aabb.lowerBound);
-		upperBound = b2Max(upperBound, aabb.upperBound);
+		lowerBound = Min(lowerBound, aabb.lowerBound);
+		upperBound = Max(upperBound, aabb.upperBound);
 		return *this;
 	}
 
@@ -330,7 +330,7 @@ private:
 
 constexpr inline b2AABB operator + (const b2AABB& aabb1, const b2AABB& aabb2)
 {
-	return b2AABB{b2Min(aabb1.GetLowerBound(), aabb2.GetLowerBound()), b2Max(aabb1.GetUpperBound(), aabb2.GetUpperBound())};
+	return b2AABB{Min(aabb1.GetLowerBound(), aabb2.GetLowerBound()), Max(aabb1.GetUpperBound(), aabb2.GetUpperBound())};
 }
 
 constexpr inline b2AABB operator + (Vec2 lhs, const b2AABB& rhs)
@@ -349,7 +349,7 @@ constexpr inline b2AABB operator + (const b2AABB& lhs, Vec2 rhs)
 /// @param shapeB Shape B.
 /// @param xfB Transform for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-b2Manifold b2CollideShapes(const b2CircleShape& shapeA, const b2Transform& xfA, const b2CircleShape& shapeB, const b2Transform& xfB);
+b2Manifold b2CollideShapes(const b2CircleShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB);
 
 /// Computes the collision manifold between a polygon and a circle.
 /// @param shapeA Shape A.
@@ -357,7 +357,7 @@ b2Manifold b2CollideShapes(const b2CircleShape& shapeA, const b2Transform& xfA, 
 /// @param shapeB Shape B.
 /// @param xfB Transform for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA, const b2CircleShape& shapeB, const b2Transform& xfB);
+b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB);
 
 /// Computes the collision manifold between two polygons.
 /// @param shapeA Shape A.
@@ -365,7 +365,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 /// @param shapeB Shape B.
 /// @param xfB Transform for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA, const b2PolygonShape& shapeB, const b2Transform& xfB);
+b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, const b2PolygonShape& shapeB, const Transform& xfB);
 
 /// Computes the collision manifold between an edge and a circle.
 /// @param shapeA Shape A.
@@ -373,7 +373,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 /// @param shapeB Shape B.
 /// @param xfB Transform for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, const b2CircleShape& shapeB, const b2Transform& xfB);
+b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB);
 
 /// Computes the collision manifold between an edge and a circle.
 /// @param shapeA Shape A.
@@ -381,7 +381,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 /// @param shapeB Shape B.
 /// @param xfB Transform for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, const b2PolygonShape& shapeB, const b2Transform& xfB);
+b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, const b2PolygonShape& shapeB, const Transform& xfB);
 
 /// Clip array for b2ClipSegmentToLine.
 /// @see b2ClipSegmentToLine.
@@ -402,7 +402,7 @@ b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray&
 /// Determine if two generic shapes overlap.
 bool b2TestOverlap(const b2Shape& shapeA, child_count_t indexA,
 				   const b2Shape& shapeB, child_count_t indexB,
-				   const b2Transform& xfA, const b2Transform& xfB);
+				   const Transform& xfA, const Transform& xfB);
 
 // ---------------- Inline Functions ------------------------------------------
 

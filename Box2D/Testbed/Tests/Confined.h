@@ -143,11 +143,11 @@ public:
 			if (b.GetType() == DynamicBody)
 			{
 				const auto position = b.GetPosition();
-				const auto angle_from_center = b2Atan2(position.y - wall_length/2, position.x);
+				const auto angle_from_center = Atan2(position.y - wall_length/2, position.x);
 				const auto opposite_angle = angle_from_center + Pi;
 				const auto direction = opposite_angle;
-				const auto magnitude = b2Sqrt(b2Square(wall_length) * 2) * b.GetMass() * 20;
-				const auto impulse = b2Mul(b2Rot(direction), Vec2(magnitude, 0.0f));
+				const auto magnitude = Sqrt(Square(wall_length) * 2) * b.GetMass() * 20;
+				const auto impulse = Mul(Rot(direction), Vec2(magnitude, 0.0f));
 				b.ApplyLinearImpulse(impulse, b.GetWorldCenter(), true);
 			}
 		}		

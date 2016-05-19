@@ -161,12 +161,12 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
 
 		case GLFW_KEY_Z:
 			// Zoom out
-			g_camera.m_zoom = b2Min(1.1f * g_camera.m_zoom, 20.0f);
+			g_camera.m_zoom = Min(1.1f * g_camera.m_zoom, 20.0f);
 			break;
 
 		case GLFW_KEY_X:
 			// Zoom in
-			g_camera.m_zoom = b2Max(0.9f * g_camera.m_zoom, 0.02f);
+			g_camera.m_zoom = Max(0.9f * g_camera.m_zoom, 0.02f);
 			break;
 
 		case GLFW_KEY_R:
@@ -495,7 +495,7 @@ int main(int argc, char** argv)
 		++testCount;
 	}
 
-	testIndex = b2Clamp(testIndex, 0, testCount - 1);
+	testIndex = Clamp(testIndex, 0, testCount - 1);
 	testSelection = testIndex;
 
 	entry = g_testEntries + testIndex;

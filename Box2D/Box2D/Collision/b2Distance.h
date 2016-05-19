@@ -53,7 +53,7 @@ public:
 	/// Get the vertex count.
 	inline size_type GetVertexCount() const noexcept { return m_count; }
 
-	/// Get a vertex by index. Used by b2Distance.
+	/// Get a vertex by index. Used by Distance.
 	Vec2 GetVertex(size_type index) const;
 
 private:
@@ -63,7 +63,7 @@ private:
 	float_t m_radius = float_t{0}; ///< "Radius" of the associated shape.
 };
 
-/// Used to warm start b2Distance.
+/// Used to warm start Distance.
 class b2SimplexCache
 {
 public:
@@ -106,19 +106,19 @@ private:
 	index_t indexB[MaxCount];	///< vertices on shape B
 };
 
-/// Input for b2Distance.
+/// Input for Distance.
 /// You have to option to use the shape radii
 /// in the computation. Even 
 struct b2DistanceInput
 {
 	b2DistanceProxy proxyA;
 	b2DistanceProxy proxyB;
-	b2Transform transformA;
-	b2Transform transformB;
+	Transform transformA;
+	Transform transformB;
 	bool useRadii;
 };
 
-/// Output for b2Distance.
+/// Output for Distance.
 struct b2DistanceOutput
 {
 	Vec2 pointA;		///< closest point on shapeA
@@ -130,7 +130,7 @@ struct b2DistanceOutput
 /// Compute the closest points between two shapes. Supports any combination of:
 /// b2CircleShape, b2PolygonShape, b2EdgeShape. The simplex cache is input/output.
 /// On the first call, b2SimplexCache.count should be set to zero.
-b2DistanceOutput b2Distance(b2SimplexCache& cache,  const b2DistanceInput& input);
+b2DistanceOutput Distance(b2SimplexCache& cache,  const b2DistanceInput& input);
 
 //////////////////////////////////////////////////////////////////////////
 

@@ -28,14 +28,14 @@ public:
 	{
 		{
 			m_polygonA.SetAsBox(0.2f, 0.4f);
-			m_transformA = b2Transform{Vec2(0.0f, 0.0f), b2Rot(0)};
+			m_transformA = Transform{Vec2(0.0f, 0.0f), Rot(0)};
 		}
 
 		{
 			m_polygonB.SetAsBox(0.5f, 0.5f);
 			m_positionB = Vec2(19.345284f, 1.5632932f);
 			m_angleB = 1.9160721f;
-			m_transformB = b2Transform{m_positionB, b2Rot(m_angleB)};
+			m_transformB = Transform{m_positionB, Rot(m_angleB)};
 		}
 	}
 
@@ -58,13 +58,13 @@ public:
 			Vec2 v[MaxPolygonVertices];
 			for (int32 i = 0; i < m_polygonA.GetVertexCount(); ++i)
 			{
-				v[i] = b2Mul(m_transformA, m_polygonA.GetVertex(i));
+				v[i] = Mul(m_transformA, m_polygonA.GetVertex(i));
 			}
 			g_debugDraw.DrawPolygon(v, m_polygonA.GetVertexCount(), color);
 
 			for (int32 i = 0; i < m_polygonB.GetVertexCount(); ++i)
 			{
-				v[i] = b2Mul(m_transformB, m_polygonB.GetVertex(i));
+				v[i] = Mul(m_transformB, m_polygonB.GetVertex(i));
 			}
 			g_debugDraw.DrawPolygon(v, m_polygonB.GetVertexCount(), color);
 		}
@@ -105,14 +105,14 @@ public:
 			break;
 		}
 
-		m_transformB = b2Transform{m_positionB, b2Rot(m_angleB)};
+		m_transformB = Transform{m_positionB, Rot(m_angleB)};
 	}
 
 	b2PolygonShape m_polygonA;
 	b2PolygonShape m_polygonB;
 
-	b2Transform m_transformA;
-	b2Transform m_transformB;
+	Transform m_transformA;
+	Transform m_transformB;
 
 	Vec2 m_positionB;
 	float_t m_angleB;

@@ -286,7 +286,7 @@ void b2DynamicTree::InsertLeaf(size_type leaf)
 		assert(child1 != NullNode);
 		assert(child2 != NullNode);
 
-		m_nodes[index].height = 1 + b2Max(m_nodes[child1].height, m_nodes[child2].height);
+		m_nodes[index].height = 1 + Max(m_nodes[child1].height, m_nodes[child2].height);
 		m_nodes[index].aabb = m_nodes[child1].aabb + m_nodes[child2].aabb;
 
 		index = m_nodes[index].parent;
@@ -342,7 +342,7 @@ void b2DynamicTree::RemoveLeaf(size_type leaf)
 			m_nodes[index].aabb = m_nodes[child1].aabb + m_nodes[child2].aabb;
 			assert(m_nodes[child1].height != NullNode);
 			assert(m_nodes[child2].height != NullNode);
-			m_nodes[index].height = 1 + b2Max(m_nodes[child1].height, m_nodes[child2].height);
+			m_nodes[index].height = 1 + Max(m_nodes[child1].height, m_nodes[child2].height);
 
 			index = m_nodes[index].parent;
 		}
@@ -427,8 +427,8 @@ b2DynamicTree::size_type b2DynamicTree::Balance(size_type iA)
 			G->parent = iA;
 			A->aabb = B->aabb + G->aabb;
 			C->aabb = A->aabb + F->aabb;
-			A->height = 1 + b2Max(B->height, G->height);
-			C->height = 1 + b2Max(A->height, F->height);
+			A->height = 1 + Max(B->height, G->height);
+			C->height = 1 + Max(A->height, F->height);
 		}
 		else
 		{
@@ -437,8 +437,8 @@ b2DynamicTree::size_type b2DynamicTree::Balance(size_type iA)
 			F->parent = iA;
 			A->aabb = B->aabb + F->aabb;
 			C->aabb = A->aabb + G->aabb;
-			A->height = 1 + b2Max(B->height, F->height);
-			C->height = 1 + b2Max(A->height, G->height);
+			A->height = 1 + Max(B->height, F->height);
+			C->height = 1 + Max(A->height, G->height);
 		}
 
 		return iC;
@@ -488,8 +488,8 @@ b2DynamicTree::size_type b2DynamicTree::Balance(size_type iA)
 			E->parent = iA;
 			A->aabb = C->aabb + E->aabb;
 			B->aabb = A->aabb + D->aabb;
-			A->height = 1 + b2Max(C->height, E->height);
-			B->height = 1 + b2Max(A->height, D->height);
+			A->height = 1 + Max(C->height, E->height);
+			B->height = 1 + Max(A->height, D->height);
 		}
 		else
 		{
@@ -498,8 +498,8 @@ b2DynamicTree::size_type b2DynamicTree::Balance(size_type iA)
 			D->parent = iA;
 			A->aabb = C->aabb + D->aabb;
 			B->aabb = A->aabb + E->aabb;
-			A->height = 1 + b2Max(C->height, D->height);
-			B->height = 1 + b2Max(A->height, E->height);
+			A->height = 1 + Max(C->height, D->height);
+			B->height = 1 + Max(A->height, E->height);
 		}
 
 		return iB;
@@ -547,7 +547,7 @@ b2DynamicTree::size_type b2DynamicTree::ComputeHeight(size_type nodeId) const
 
 	const auto height1 = ComputeHeight(node->child1);
 	const auto height2 = ComputeHeight(node->child2);
-	return 1 + b2Max(height1, height2);
+	return 1 + Max(height1, height2);
 }
 
 b2DynamicTree::size_type b2DynamicTree::ComputeHeight() const
@@ -621,7 +621,7 @@ void b2DynamicTree::ValidateMetrics(size_type index) const
 	{
 		const auto height1 = m_nodes[child1].height;
 		const auto height2 = m_nodes[child2].height;
-		const auto height = 1 + b2Max(height1, height2);
+		const auto height = 1 + Max(height1, height2);
 		assert(node->height == height);
 	}
 	{
@@ -681,8 +681,8 @@ b2DynamicTree::size_type b2DynamicTree::GetMaxBalance() const
 		assert(child2 < m_nodeCapacity);
 		assert(m_nodes[child1].height != NullNode);
 		assert(m_nodes[child2].height != NullNode);
-		const auto balance = b2Abs(m_nodes[child2].height - m_nodes[child1].height);
-		maxBalance = b2Max(maxBalance, balance);
+		const auto balance = Abs(m_nodes[child2].height - m_nodes[child1].height);
+		maxBalance = Max(maxBalance, balance);
 	}
 
 	return maxBalance;
@@ -750,7 +750,7 @@ void b2DynamicTree::RebuildBottomUp()
 		parent->child2 = index2;
 		assert(child1->height != NullNode);
 		assert(child2->height != NullNode);
-		parent->height = 1 + b2Max(child1->height, child2->height);
+		parent->height = 1 + Max(child1->height, child2->height);
 		parent->aabb = child1->aabb + child2->aabb;
 		parent->parent = NullNode;
 

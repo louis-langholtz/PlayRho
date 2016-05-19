@@ -117,7 +117,7 @@ protected:
 	Vec2 m_localCenterB;
 	float_t m_invMassB;
 	float_t m_invIB;
-	b2Mat22 m_mass;
+	Mat22 m_mass;
 	Vec2 m_C;
 };
 

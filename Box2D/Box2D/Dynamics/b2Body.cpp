@@ -51,15 +51,15 @@ uint16 b2Body::GetFlags(const BodyDef& bd) noexcept
 }
 
 b2Body::b2Body(const BodyDef* bd, b2World* world):
-	m_type(bd->type), m_flags(GetFlags(*bd)), m_xf(bd->position, b2Rot(bd->angle)), m_world(world),
+	m_type(bd->type), m_flags(GetFlags(*bd)), m_xf(bd->position, Rot(bd->angle)), m_world(world),
 	m_linearVelocity(bd->linearVelocity), m_angularVelocity(bd->angularVelocity)
 {
 	assert(bd->position.IsValid());
 	assert(bd->linearVelocity.IsValid());
-	assert(b2IsValid(bd->angle));
-	assert(b2IsValid(bd->angularVelocity));
-	assert(b2IsValid(bd->angularDamping) && (bd->angularDamping >= float_t{0}));
-	assert(b2IsValid(bd->linearDamping) && (bd->linearDamping >= float_t{0}));
+	assert(IsValid(bd->angle));
+	assert(IsValid(bd->angularVelocity));
+	assert(IsValid(bd->angularDamping) && (bd->angularDamping >= float_t{0}));
+	assert(IsValid(bd->linearDamping) && (bd->linearDamping >= float_t{0}));
 
 	m_sweep.localCenter = Vec2_zero;
 	m_sweep.c0 = m_xf.p;
@@ -345,7 +345,7 @@ void b2Body::ResetMassData()
 	// Move center of mass.
 	const auto oldCenter = m_sweep.c;
 	m_sweep.localCenter = localCenter;
-	m_sweep.c0 = m_sweep.c = b2Mul(m_xf, m_sweep.localCenter);
+	m_sweep.c0 = m_sweep.c = Mul(m_xf, m_sweep.localCenter);
 
 	// Update center of mass velocity.
 	m_linearVelocity += Cross(m_angularVelocity, m_sweep.c - oldCenter);
@@ -382,7 +382,7 @@ void b2Body::SetMassData(const b2MassData* massData)
 	// Move center of mass.
 	const auto oldCenter = m_sweep.c;
 	m_sweep.localCenter =  massData->center;
-	m_sweep.c0 = m_sweep.c = b2Mul(m_xf, m_sweep.localCenter);
+	m_sweep.c0 = m_sweep.c = Mul(m_xf, m_sweep.localCenter);
 
 	// Update center of mass velocity.
 	m_linearVelocity += Cross(m_angularVelocity, m_sweep.c - oldCenter);
@@ -419,9 +419,9 @@ void b2Body::SetTransform(const Vec2& position, float_t angle)
 		return;
 	}
 
-	m_xf = b2Transform{position, b2Rot(angle)};
+	m_xf = Transform{position, Rot(angle)};
 
-	m_sweep.c = b2Mul(m_xf, m_sweep.localCenter);
+	m_sweep.c = Mul(m_xf, m_sweep.localCenter);
 	m_sweep.a = angle;
 
 	m_sweep.c0 = m_sweep.c;
@@ -436,7 +436,7 @@ void b2Body::SetTransform(const Vec2& position, float_t angle)
 
 void b2Body::SynchronizeFixtures()
 {
-	const auto xf1 = b2GetTransformZero(m_sweep);
+	const auto xf1 = GetTransformZero(m_sweep);
 	auto& broadPhase = m_world->m_contactManager.m_broadPhase;
 	for (auto f = m_fixtureList; f; f = f->m_next)
 	{

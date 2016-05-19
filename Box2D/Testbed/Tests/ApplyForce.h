@@ -61,14 +61,14 @@ public:
 		}
 
 		{
-			b2Transform xf1;
-			xf1.q = b2Rot(0.3524f * Pi);
+			Transform xf1;
+			xf1.q = Rot(0.3524f * Pi);
 			xf1.p = xf1.q.GetXAxis();
 
 			Vec2 vertices[3];
-			vertices[0] = b2Mul(xf1, Vec2(-1.0f, float_t{0}));
-			vertices[1] = b2Mul(xf1, Vec2(1.0f, float_t{0}));
-			vertices[2] = b2Mul(xf1, Vec2(float_t{0}, 0.5f));
+			vertices[0] = Mul(xf1, Vec2(-1.0f, float_t{0}));
+			vertices[1] = Mul(xf1, Vec2(1.0f, float_t{0}));
+			vertices[2] = Mul(xf1, Vec2(float_t{0}, 0.5f));
 			
 			b2PolygonShape poly1;
 			poly1.Set(vertices, 3);
@@ -77,13 +77,13 @@ public:
 			sd1.shape = &poly1;
 			sd1.density = 4.0f;
 
-			b2Transform xf2;
-			xf2.q = b2Rot(-0.3524f * Pi);
+			Transform xf2;
+			xf2.q = Rot(-0.3524f * Pi);
 			xf2.p = -xf2.q.GetXAxis();
 
-			vertices[0] = b2Mul(xf2, Vec2(-1.0f, float_t{0}));
-			vertices[1] = b2Mul(xf2, Vec2(1.0f, float_t{0}));
-			vertices[2] = b2Mul(xf2, Vec2(float_t{0}, 0.5f));
+			vertices[0] = Mul(xf2, Vec2(-1.0f, float_t{0}));
+			vertices[1] = Mul(xf2, Vec2(1.0f, float_t{0}));
+			vertices[2] = Mul(xf2, Vec2(float_t{0}, 0.5f));
 			
 			b2PolygonShape poly2;
 			poly2.Set(vertices, 3);
@@ -129,7 +129,7 @@ public:
 				float_t mass = body->GetMass();
 
 				// For a circle: I = 0.5 * m * r * r ==> r = sqrt(2 * I / m)
-				float_t radius = b2Sqrt(2.0f * I / mass);
+				float_t radius = Sqrt(2.0f * I / mass);
 
 				b2FrictionJointDef jd;
 				jd.localAnchorA = Vec2_zero;

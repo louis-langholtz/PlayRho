@@ -27,10 +27,10 @@ namespace box2d {
 
 // Compute contact points for edge versus circle.
 // This accounts for edge connectivity.
-b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, const b2CircleShape& shapeB, const b2Transform& xfB)
+b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB)
 {
 	// Compute circle in frame of edge
-	const auto Q = b2MulT(xfA, b2Mul(xfB, shapeB.GetPosition()));
+	const auto Q = MulT(xfA, Mul(xfB, shapeB.GetPosition()));
 	
 	const auto A = shapeA.GetVertex1();
 	const auto B = shapeA.GetVertex2();
@@ -47,7 +47,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 	{
 		const auto P = A;
 		const auto d = Q - P;
-		if (d.LengthSquared() > b2Square(totalRadius))
+		if (d.LengthSquared() > Square(totalRadius))
 		{
 			return b2Manifold{};
 		}
@@ -79,7 +79,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 	{
 		const auto P = B;
 		const auto d = Q - P;
-		if (d.LengthSquared() > b2Square(totalRadius))
+		if (d.LengthSquared() > Square(totalRadius))
 		{
 			return b2Manifold{};
 		}
@@ -112,7 +112,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 	const auto P = (float_t(1) / den) * (u * A + v * B);
 	const auto d = Q - P;
 
-	if (d.LengthSquared() > b2Square(totalRadius))
+	if (d.LengthSquared() > Square(totalRadius))
 	{
 		return b2Manifold{};
 	}
@@ -124,7 +124,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 	}
 	
 	auto manifold = b2Manifold{b2Manifold::e_faceA};
-	manifold.SetLocalNormal(b2Normalize(n));
+	manifold.SetLocalNormal(Normalize(n));
 	manifold.SetLocalPoint(A);
 	manifold.AddPoint(shapeB.GetPosition(), b2ContactFeature{b2ContactFeature::e_face, 0, b2ContactFeature::e_vertex, 0});
 	return manifold;
@@ -161,7 +161,7 @@ public:
 
 	b2TempPolygon() = default;
 
-	b2TempPolygon(const b2PolygonShape& shape, const b2Transform& xf);
+	b2TempPolygon(const b2PolygonShape& shape, const Transform& xf);
 
 	/// Gets count of appended elements (vertex-normal pairs).
 	/// @return value between 0 and MaxPolygonVertices inclusive.
@@ -199,12 +199,12 @@ private:
 };
 
 /// Gets a b2TempPolygon object from a given shape in terms of a given transform.
-inline b2TempPolygon::b2TempPolygon(const b2PolygonShape& shape, const b2Transform& xf)
+inline b2TempPolygon::b2TempPolygon(const b2PolygonShape& shape, const Transform& xf)
 {
 	const auto num_vertices = shape.GetVertexCount();
 	for (auto i = decltype(num_vertices){0}; i < num_vertices; ++i)
 	{
-		Append(b2Mul(xf, shape.GetVertex(i)), b2Mul(xf.q, shape.GetNormal(i)));
+		Append(Mul(xf, shape.GetVertex(i)), Mul(xf.q, shape.GetNormal(i)));
 	}	
 }
 
@@ -256,7 +256,7 @@ private:
 
 inline b2EdgeInfo::b2EdgeInfo(const b2EdgeShape& edge, const Vec2& centroid):
 	m_vertex1(edge.GetVertex1()), m_vertex2(edge.GetVertex2()),
-	m_edge1(b2Normalize(m_vertex2 - m_vertex1)), m_normal1(m_edge1.y, -m_edge1.x)
+	m_edge1(Normalize(m_vertex2 - m_vertex1)), m_normal1(m_edge1.y, -m_edge1.x)
 {
 	const auto hasVertex0 = edge.HasVertex0();
 	const auto hasVertex3 = edge.HasVertex3();
@@ -267,13 +267,13 @@ inline b2EdgeInfo::b2EdgeInfo(const b2EdgeShape& edge, const Vec2& centroid):
 	if (hasVertex0 && hasVertex3)
 	{
 		const auto vertex0 = edge.GetVertex0();
-		const auto edge0 = b2Normalize(m_vertex1 - vertex0);
+		const auto edge0 = Normalize(m_vertex1 - vertex0);
 		const auto normal0 = Vec2(edge0.y, -edge0.x);
 		const auto convex1 = Cross(edge0, m_edge1) >= float_t{0};
 		const auto offset0 = Dot(normal0, centroid - vertex0);
 
 		const auto vertex3 = edge.GetVertex3();
-		const auto edge2 = b2Normalize(vertex3 - m_vertex2);
+		const auto edge2 = Normalize(vertex3 - m_vertex2);
 		const auto normal2 = Vec2(edge2.y, -edge2.x);
 		const auto convex2 = Cross(m_edge1, edge2) > float_t{0};
 		const auto offset2 = Dot(normal2, centroid - m_vertex2);
@@ -346,7 +346,7 @@ inline b2EdgeInfo::b2EdgeInfo(const b2EdgeShape& edge, const Vec2& centroid):
 	else if (hasVertex0)
 	{
 		const auto vertex0 = edge.GetVertex0();
-		const auto edge0 = b2Normalize(m_vertex1 - vertex0);
+		const auto edge0 = Normalize(m_vertex1 - vertex0);
 		const auto normal0 = Vec2(edge0.y, -edge0.x);
 		const auto convex1 = Cross(edge0, m_edge1) >= float_t{0};
 		const auto offset0 = Dot(normal0, centroid - vertex0);
@@ -387,7 +387,7 @@ inline b2EdgeInfo::b2EdgeInfo(const b2EdgeShape& edge, const Vec2& centroid):
 	else if (hasVertex3)
 	{
 		const auto vertex3 = edge.GetVertex3();
-		const auto edge2 = b2Normalize(vertex3 - m_vertex2);
+		const auto edge2 = Normalize(vertex3 - m_vertex2);
 		const auto normal2 = Vec2(edge2.y, -edge2.x);
 		const auto convex2 = Cross(m_edge1, edge2) > float_t{0};
 		const auto offset2 = Dot(normal2, centroid - m_vertex2);
@@ -490,7 +490,7 @@ static inline b2EPAxis b2ComputePolygonSeparation(const b2TempPolygon& shape, co
 		const auto polygonVertex = shape.GetVertex(i);
 		const auto s1 = Dot(polygonNormal, polygonVertex - edgeInfo.GetVertex1());
 		const auto s2 = Dot(polygonNormal, polygonVertex - edgeInfo.GetVertex2());
-		const auto s = b2Min(s1, s2);
+		const auto s = Min(s1, s2);
 		
 		if (s > b2MaxEPSeparation) // No collision
 			return b2EPAxis(b2EPAxis::e_edgeB, i, s);
@@ -525,19 +525,19 @@ static inline b2EPAxis b2ComputePolygonSeparation(const b2TempPolygon& shape, co
 class b2EPCollider
 {
 public:
-	b2EPCollider(const b2Transform& xf): m_xf(xf) {}
+	b2EPCollider(const Transform& xf): m_xf(xf) {}
 	
 	b2Manifold Collide(const b2EdgeShape& shapeA, const b2PolygonShape& shapeB) const;
 	
 private:
 	b2Manifold Collide(const b2EdgeInfo& shapeA, const b2PolygonShape& shapeB) const;
 
-	const b2Transform m_xf;
+	const Transform m_xf;
 };
 
 b2Manifold b2EPCollider::Collide(const b2EdgeShape& shapeA, const b2PolygonShape& shapeB) const
 {
-	return Collide(b2EdgeInfo{shapeA, b2Mul(m_xf, shapeB.GetCentroid())}, shapeB);
+	return Collide(b2EdgeInfo{shapeA, Mul(m_xf, shapeB.GetCentroid())}, shapeB);
 }
 
 // Algorithm:
@@ -664,7 +664,7 @@ b2Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShap
 			const auto separation = Dot(rf.normal, clipPoints2[i].v - rf.v1);
 			if (separation <= b2MaxEPSeparation)
 			{
-				manifold.AddPoint(b2MulT(m_xf, clipPoints2[i].v), clipPoints2[i].cf);
+				manifold.AddPoint(MulT(m_xf, clipPoints2[i].v), clipPoints2[i].cf);
 			}
 		}
 	}
@@ -685,9 +685,9 @@ b2Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShap
 	return manifold;
 }
 
-b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, const b2PolygonShape& shapeB, const b2Transform& xfB)
+b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, const b2PolygonShape& shapeB, const Transform& xfB)
 {
-	const auto collider = b2EPCollider{b2MulT(xfA, xfB)};
+	const auto collider = b2EPCollider{MulT(xfA, xfB)};
 	return collider.Collide(shapeA, shapeB);
 }
 

@@ -42,8 +42,8 @@ public:
 	};
 
 	b2SeparationFunction(const b2SimplexCache& cache,
-		const b2DistanceProxy& proxyA, const b2Sweep& sweepA,
-		const b2DistanceProxy& proxyB, const b2Sweep& sweepB,
+		const b2DistanceProxy& proxyA, const Sweep& sweepA,
+		const b2DistanceProxy& proxyB, const Sweep& sweepB,
 		float_t t1):
 		m_proxyA(proxyA), m_proxyB(proxyB), m_sweepA(sweepA), m_sweepB(sweepB),
 		m_type((cache.GetCount() != 1)? ((cache.GetIndexA(0) == cache.GetIndexA(1))? e_faceB: e_faceA): e_points)
@@ -51,8 +51,8 @@ public:
 		assert(cache.GetCount() > 0);
 		assert(cache.GetCount() <= 3); // < 3 or <= 3?
 
-		const auto xfA = b2GetTransform(m_sweepA, t1);
-		const auto xfB = b2GetTransform(m_sweepB, t1);
+		const auto xfA = GetTransform(m_sweepA, t1);
+		const auto xfB = GetTransform(m_sweepB, t1);
 
 		switch (m_type)
 		{
@@ -60,9 +60,9 @@ public:
 		{
 			const auto localPointA = m_proxyA.GetVertex(cache.GetIndexA(0));
 			const auto localPointB = m_proxyB.GetVertex(cache.GetIndexB(0));
-			const auto pointA = b2Mul(xfA, localPointA);
-			const auto pointB = b2Mul(xfB, localPointB);
-			m_axis = b2Normalize(pointB - pointA);
+			const auto pointA = Mul(xfA, localPointA);
+			const auto pointB = Mul(xfB, localPointB);
+			m_axis = Normalize(pointB - pointA);
 			break;
 		}
 		case e_faceB:
@@ -71,14 +71,14 @@ public:
 			const auto localPointB1 = proxyB.GetVertex(cache.GetIndexB(0));
 			const auto localPointB2 = proxyB.GetVertex(cache.GetIndexB(1));
 
-			m_axis = b2Normalize(Cross(localPointB2 - localPointB1, float_t(1)));
-			const auto normal = b2Mul(xfB.q, m_axis);
+			m_axis = Normalize(Cross(localPointB2 - localPointB1, float_t(1)));
+			const auto normal = Mul(xfB.q, m_axis);
 
 			m_localPoint = (localPointB1 + localPointB2) / float_t(2);
-			const auto pointB = b2Mul(xfB, m_localPoint);
+			const auto pointB = Mul(xfB, m_localPoint);
 
 			const auto localPointA = proxyA.GetVertex(cache.GetIndexA(0));
-			const auto pointA = b2Mul(xfA, localPointA);
+			const auto pointA = Mul(xfA, localPointA);
 
 			auto s = Dot(pointA - pointB, normal);
 			if (s < float_t{0})
@@ -93,14 +93,14 @@ public:
 			const auto localPointA1 = m_proxyA.GetVertex(cache.GetIndexA(0));
 			const auto localPointA2 = m_proxyA.GetVertex(cache.GetIndexA(1));
 			
-			m_axis = b2Normalize(Cross(localPointA2 - localPointA1, float_t(1)));
-			const auto normal = b2Mul(xfA.q, m_axis);
+			m_axis = Normalize(Cross(localPointA2 - localPointA1, float_t(1)));
+			const auto normal = Mul(xfA.q, m_axis);
 
 			m_localPoint = (localPointA1 + localPointA2) / float_t(2);
-			const auto pointA = b2Mul(xfA, m_localPoint);
+			const auto pointA = Mul(xfA, m_localPoint);
 
 			const auto localPointB = m_proxyB.GetVertex(cache.GetIndexB(0));
-			const auto pointB = b2Mul(xfB, localPointB);
+			const auto pointB = Mul(xfB, localPointB);
 
 			auto s = Dot(pointB - pointA, normal);
 			if (s < float_t{0})
@@ -121,15 +121,15 @@ public:
 							  b2DistanceProxy::size_type* indexB,
 							  float_t t) const
 	{
-		const auto xfA = b2GetTransform(m_sweepA, t);
-		const auto xfB = b2GetTransform(m_sweepB, t);
+		const auto xfA = GetTransform(m_sweepA, t);
+		const auto xfB = GetTransform(m_sweepB, t);
 
 		switch (m_type)
 		{
 		case e_points:
 			{
-				const auto axisA = b2MulT(xfA.q,  m_axis);
-				const auto axisB = b2MulT(xfB.q, -m_axis);
+				const auto axisA = MulT(xfA.q,  m_axis);
+				const auto axisB = MulT(xfB.q, -m_axis);
 
 				*indexA = m_proxyA.GetSupport(axisA);
 				*indexB = m_proxyB.GetSupport(axisB);
@@ -137,40 +137,40 @@ public:
 				const auto localPointA = m_proxyA.GetVertex(*indexA);
 				const auto localPointB = m_proxyB.GetVertex(*indexB);
 				
-				const auto pointA = b2Mul(xfA, localPointA);
-				const auto pointB = b2Mul(xfB, localPointB);
+				const auto pointA = Mul(xfA, localPointA);
+				const auto pointB = Mul(xfB, localPointB);
 
 				return Dot(pointB - pointA, m_axis);
 			}
 
 		case e_faceA:
 			{
-				const auto normal = b2Mul(xfA.q, m_axis);
-				const auto pointA = b2Mul(xfA, m_localPoint);
+				const auto normal = Mul(xfA.q, m_axis);
+				const auto pointA = Mul(xfA, m_localPoint);
 
-				const auto axisB = b2MulT(xfB.q, -normal);
+				const auto axisB = MulT(xfB.q, -normal);
 				
 				*indexA = static_cast<b2DistanceProxy::size_type>(-1);
 				*indexB = m_proxyB.GetSupport(axisB);
 
 				const auto localPointB = m_proxyB.GetVertex(*indexB);
-				const auto pointB = b2Mul(xfB, localPointB);
+				const auto pointB = Mul(xfB, localPointB);
 
 				return Dot(pointB - pointA, normal);
 			}
 
 		case e_faceB:
 			{
-				const auto normal = b2Mul(xfB.q, m_axis);
-				const auto pointB = b2Mul(xfB, m_localPoint);
+				const auto normal = Mul(xfB.q, m_axis);
+				const auto pointB = Mul(xfB, m_localPoint);
 
-				const auto axisA = b2MulT(xfA.q, -normal);
+				const auto axisA = MulT(xfA.q, -normal);
 
 				*indexB = static_cast<b2DistanceProxy::size_type>(-1);
 				*indexA = m_proxyA.GetSupport(axisA);
 
 				const auto localPointA = m_proxyA.GetVertex(*indexA);
-				const auto pointA = b2Mul(xfA, localPointA);
+				const auto pointA = Mul(xfA, localPointA);
 
 				return Dot(pointA - pointB, normal);
 			}
@@ -190,8 +190,8 @@ public:
 	/// @return Separation distance.
 	float_t Evaluate(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB, float_t t) const
 	{
-		const auto xfA = b2GetTransform(m_sweepA, t);
-		const auto xfB = b2GetTransform(m_sweepB, t);
+		const auto xfA = GetTransform(m_sweepA, t);
+		const auto xfB = GetTransform(m_sweepB, t);
 
 		switch (m_type)
 		{
@@ -206,40 +206,40 @@ public:
 
 	const b2DistanceProxy& m_proxyA;
 	const b2DistanceProxy& m_proxyB;
-	const b2Sweep m_sweepA, m_sweepB;
+	const Sweep m_sweepA, m_sweepB;
 	const Type m_type;
 	Vec2 m_localPoint; // used if type is e_faceA or e_faceB
 	Vec2 m_axis;
 	
 private:
 	float_t EvaluatePoints(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB,
-						   const b2Transform& xfA, const b2Transform& xfB) const
+						   const Transform& xfA, const Transform& xfB) const
 	{
 		const auto localPointA = m_proxyA.GetVertex(indexA);
 		const auto localPointB = m_proxyB.GetVertex(indexB);
-		const auto pointA = b2Mul(xfA, localPointA);
-		const auto pointB = b2Mul(xfB, localPointB);
+		const auto pointA = Mul(xfA, localPointA);
+		const auto pointB = Mul(xfB, localPointB);
 		return Dot(pointB - pointA, m_axis);
 	}
 	
 	float_t EvaluateFaceA(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB,
-						  const b2Transform& xfA, const b2Transform& xfB) const
+						  const Transform& xfA, const Transform& xfB) const
 	{
-		const auto normal = b2Mul(xfA.q, m_axis);
-		const auto pointA = b2Mul(xfA, m_localPoint);
+		const auto normal = Mul(xfA.q, m_axis);
+		const auto pointA = Mul(xfA, m_localPoint);
 		const auto localPointB = m_proxyB.GetVertex(indexB);
-		const auto pointB = b2Mul(xfB, localPointB);
+		const auto pointB = Mul(xfB, localPointB);
 		return Dot(pointB - pointA, normal);
 	}
 	
 	float_t EvaluateFaceB(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB,
-						  const b2Transform& xfA, const b2Transform& xfB) const
+						  const Transform& xfA, const Transform& xfB) const
 	{
-		const auto normal = b2Mul(xfB.q, m_axis);
-		const auto pointB = b2Mul(xfB, m_localPoint);
+		const auto normal = Mul(xfB.q, m_axis);
+		const auto pointB = Mul(xfB, m_localPoint);
 		
 		const auto localPointA = m_proxyA.GetVertex(indexA);
-		const auto pointA = b2Mul(xfA, localPointA);
+		const auto pointA = Mul(xfA, localPointA);
 		
 		return Dot(pointA - pointB, normal);
 	}
@@ -264,7 +264,7 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 	sweepB.Normalize();
 
 	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius();
-	const auto target = b2Max(LinearSlop, totalRadius - (float_t{3} * LinearSlop));
+	const auto target = Max(LinearSlop, totalRadius - (float_t{3} * LinearSlop));
 	constexpr auto tolerance = LinearSlop / float_t(4);
 	assert(target >= tolerance);
 
@@ -282,12 +282,12 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 	// This loop terminates when an axis is repeated (no progress is made).
 	for(;;)
 	{
-		distanceInput.transformA = b2GetTransform(sweepA, t1);
-		distanceInput.transformB = b2GetTransform(sweepB, t1);
+		distanceInput.transformA = GetTransform(sweepA, t1);
+		distanceInput.transformB = GetTransform(sweepB, t1);
 
 		// Get the distance between shapes. We can also use the results
 		// to get a separating axis.
-		const auto distanceOutput = b2Distance(cache, distanceInput);
+		const auto distanceOutput = Distance(cache, distanceInput);
 
 		// If the shapes are overlapped, we give up on continuous collision.
 		if (distanceOutput.distance <= float_t{0})
@@ -404,7 +404,7 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 
 				const auto s = fcn.Evaluate(indexA, indexB, t);
 
-				if (b2Abs(s - target) < tolerance)
+				if (Abs(s - target) < tolerance)
 				{
 					// t2 holds a tentative value for t1
 					t2 = t;
@@ -425,7 +425,7 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 			}
 			while (rootIterCount < MaxTOIRootIterCount);
 
-			toiMaxRootIters = b2Max(toiMaxRootIters, rootIterCount);
+			toiMaxRootIters = Max(toiMaxRootIters, rootIterCount);
 
 			++pushBackIter;
 
@@ -447,7 +447,7 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 		}
 	}
 
-	toiMaxIters = b2Max(toiMaxIters, iter);
+	toiMaxIters = Max(toiMaxIters, iter);
 	
 	return output;
 }

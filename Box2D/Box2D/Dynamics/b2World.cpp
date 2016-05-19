@@ -672,8 +672,8 @@ void b2World::SolveTOI(const b2TimeStep& step)
 			minContact->UnsetEnabled();
 			bA->m_sweep = backupA;
 			bB->m_sweep = backupB;
-			bA->m_xf = b2GetTransformOne(bA->m_sweep);
-			bB->m_xf = b2GetTransformOne(bB->m_sweep);
+			bA->m_xf = GetTransformOne(bA->m_sweep);
+			bB->m_xf = GetTransformOne(bB->m_sweep);
 			continue;
 		}
 
@@ -746,7 +746,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 					if (!contact->IsEnabled())
 					{
 						other->m_sweep = backup;
-						other->m_xf = b2GetTransformOne(other->m_sweep);
+						other->m_xf = GetTransformOne(other->m_sweep);
 						continue;
 					}
 
@@ -754,7 +754,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 					if (!contact->IsTouching())
 					{
 						other->m_sweep = backup;
-						other->m_xf = b2GetTransformOne(other->m_sweep);
+						other->m_xf = GetTransformOne(other->m_sweep);
 						continue;
 					}
 
@@ -948,16 +948,16 @@ void b2World::RayCast(b2RayCastCallback* callback, const Vec2& point1, const Vec
 	m_contactManager.m_broadPhase.RayCast(&wrapper, input);
 }
 
-void b2World::DrawShape(const b2Fixture* fixture, const b2Transform& xf, const b2Color& color)
+void b2World::DrawShape(const b2Fixture* fixture, const Transform& xf, const b2Color& color)
 {
 	switch (fixture->GetType())
 	{
 	case b2Shape::e_circle:
 		{
 			const auto circle = static_cast<const b2CircleShape*>(fixture->GetShape());
-			const auto center = b2Mul(xf, circle->GetPosition());
+			const auto center = Mul(xf, circle->GetPosition());
 			const auto radius = circle->GetRadius();
-			const auto axis = b2Mul(xf.q, Vec2(float_t(1), float_t{0}));
+			const auto axis = Mul(xf.q, Vec2(float_t(1), float_t{0}));
 			g_debugDraw->DrawSolidCircle(center, radius, axis, color);
 		}
 		break;
@@ -965,8 +965,8 @@ void b2World::DrawShape(const b2Fixture* fixture, const b2Transform& xf, const b
 	case b2Shape::e_edge:
 		{
 			const auto edge = static_cast<const b2EdgeShape*>(fixture->GetShape());
-			const auto v1 = b2Mul(xf, edge->GetVertex1());
-			const auto v2 = b2Mul(xf, edge->GetVertex2());
+			const auto v1 = Mul(xf, edge->GetVertex1());
+			const auto v2 = Mul(xf, edge->GetVertex2());
 			g_debugDraw->DrawSegment(v1, v2, color);
 		}
 		break;
@@ -975,10 +975,10 @@ void b2World::DrawShape(const b2Fixture* fixture, const b2Transform& xf, const b
 		{
 			const auto chain = static_cast<const b2ChainShape*>(fixture->GetShape());
 			const auto count = chain->GetVertexCount();
-			auto v1 = b2Mul(xf, chain->GetVertex(0));
+			auto v1 = Mul(xf, chain->GetVertex(0));
 			for (auto i = decltype(count){1}; i < count; ++i)
 			{
-				const auto v2 = b2Mul(xf, chain->GetVertex(i));
+				const auto v2 = Mul(xf, chain->GetVertex(i));
 				g_debugDraw->DrawSegment(v1, v2, color);
 				g_debugDraw->DrawCircle(v1, float_t(0.05), color);
 				v1 = v2;
@@ -994,7 +994,7 @@ void b2World::DrawShape(const b2Fixture* fixture, const b2Transform& xf, const b
 			Vec2 vertices[MaxPolygonVertices];
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
-				vertices[i] = b2Mul(xf, poly->GetVertex(i));
+				vertices[i] = Mul(xf, poly->GetVertex(i));
 			}
 			g_debugDraw->DrawSolidPolygon(vertices, vertexCount, color);
 		}

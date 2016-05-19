@@ -77,26 +77,26 @@ public:
 		}
 
 		{
-			b2Transform xf1;
-			xf1.q = b2Rot(0.3524f * Pi);
+			Transform xf1;
+			xf1.q = Rot(0.3524f * Pi);
 			xf1.p = xf1.q.GetXAxis();
 
 			Vec2 vertices[3];
 
 			b2PolygonShape triangle1;
-			vertices[0] = b2Mul(xf1, Vec2(-1.0f, 0.0f));
-			vertices[1] = b2Mul(xf1, Vec2(1.0f, 0.0f));
-			vertices[2] = b2Mul(xf1, Vec2(0.0f, 0.5f));
+			vertices[0] = Mul(xf1, Vec2(-1.0f, 0.0f));
+			vertices[1] = Mul(xf1, Vec2(1.0f, 0.0f));
+			vertices[2] = Mul(xf1, Vec2(0.0f, 0.5f));
 			triangle1.Set(vertices, 3);
 
-			b2Transform xf2;
-			xf2.q = b2Rot(-0.3524f * Pi);
+			Transform xf2;
+			xf2.q = Rot(-0.3524f * Pi);
 			xf2.p = -xf2.q.GetXAxis();
 
 			b2PolygonShape triangle2;
-			vertices[0] = b2Mul(xf2, Vec2(-1.0f, 0.0f));
-			vertices[1] = b2Mul(xf2, Vec2(1.0f, 0.0f));
-			vertices[2] = b2Mul(xf2, Vec2(0.0f, 0.5f));
+			vertices[0] = Mul(xf2, Vec2(-1.0f, 0.0f));
+			vertices[1] = Mul(xf2, Vec2(1.0f, 0.0f));
+			vertices[2] = Mul(xf2, Vec2(0.0f, 0.5f));
 			triangle2.Set(vertices, 3);
 
 			for (int32 i = 0; i < 10; ++i)

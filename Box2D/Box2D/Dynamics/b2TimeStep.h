@@ -71,9 +71,9 @@ struct b2Position
 	float_t a; ///< angular position
 };
 
-inline b2Transform b2Displace(const b2Position& pos, const Vec2& local_ctr)
+inline Transform GetTransform(const b2Position& pos, const Vec2& local_ctr)
 {
-	return b2Displace(pos.c, b2Rot(pos.a), local_ctr);
+	return GetTransform(pos.c, Rot(pos.a), local_ctr);
 }
 
 /// This is an internal structure.

@@ -32,11 +32,11 @@ child_count_t b2CircleShape::GetChildCount() const
 	return 1;
 }
 
-bool b2CircleShape::TestPoint(const b2Transform& transform, const Vec2& p) const
+bool b2CircleShape::TestPoint(const Transform& transform, const Vec2& p) const
 {
-	const auto center = transform.p + b2Mul(transform.q, m_p);
+	const auto center = transform.p + Mul(transform.q, m_p);
 	const auto d = p - center;
-	return d.LengthSquared() <= b2Square(GetRadius());
+	return d.LengthSquared() <= Square(GetRadius());
 }
 
 // Collision Detection in Interactive 3D Environments by Gino van den Bergen
@@ -44,19 +44,19 @@ bool b2CircleShape::TestPoint(const b2Transform& transform, const Vec2& p) const
 // x = s + a * r
 // norm(x) = radius
 bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
-							const b2Transform& transform, child_count_t childIndex) const
+							const Transform& transform, child_count_t childIndex) const
 {
 	BOX2D_NOT_USED(childIndex);
 
-	const auto position = transform.p + b2Mul(transform.q, m_p);
+	const auto position = transform.p + Mul(transform.q, m_p);
 	const auto s = input.p1 - position;
-	const auto b = s.LengthSquared() - b2Square(GetRadius());
+	const auto b = s.LengthSquared() - Square(GetRadius());
 
 	// Solve quadratic equation.
 	const auto r = input.p2 - input.p1;
 	const auto c =  Dot(s, r);
 	const auto rr = r.LengthSquared();
-	const auto sigma = b2Square(c) - rr * b;
+	const auto sigma = Square(c) - rr * b;
 
 	// Check for negative discriminant and short segment.
 	if ((sigma < float_t{0}) || (rr < Epsilon))
@@ -65,31 +65,31 @@ bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input
 	}
 
 	// Find the point of intersection of the line with the circle.
-	auto a = -(c + b2Sqrt(sigma));
+	auto a = -(c + Sqrt(sigma));
 
 	// Is the intersection point on the segment?
 	if ((float_t{0} <= a) && (a <= (input.maxFraction * rr)))
 	{
 		a /= rr;
 		output->fraction = a;
-		output->normal = b2Normalize(s + a * r);
+		output->normal = Normalize(s + a * r);
 		return true;
 	}
 
 	return false;
 }
 
-b2AABB b2CircleShape::ComputeAABB(const b2Transform& transform, child_count_t childIndex) const
+b2AABB b2CircleShape::ComputeAABB(const Transform& transform, child_count_t childIndex) const
 {
 	BOX2D_NOT_USED(childIndex);
 
-	const auto p = transform.p + b2Mul(transform.q, m_p);
+	const auto p = transform.p + Mul(transform.q, m_p);
 	return b2AABB{p, p} + Vec2{GetRadius(), GetRadius()};
 }
 
 b2MassData b2CircleShape::ComputeMass(float_t density) const
 {
-	const auto mass = density * Pi * b2Square(GetRadius());
-	const auto I = mass * ((b2Square(GetRadius()) / float_t(2)) + m_p.LengthSquared());
+	const auto mass = density * Pi * Square(GetRadius());
+	const auto I = mass * ((Square(GetRadius()) / float_t(2)) + m_p.LengthSquared());
 	return b2MassData{mass, m_p, I};
 }

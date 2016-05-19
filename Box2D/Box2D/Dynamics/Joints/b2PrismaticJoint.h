@@ -173,7 +173,7 @@ protected:
 	Vec2 m_axis, m_perp;
 	float_t m_s1, m_s2;
 	float_t m_a1, m_a2;
-	b2Mat33 m_K;
+	Mat33 m_K;
 	float_t m_motorMass;
 };
 

@@ -49,7 +49,7 @@ b2ChainAndCircleContact::b2ChainAndCircleContact(b2Fixture* fixtureA, child_coun
 	assert(m_fixtureB->GetType() == b2Shape::e_circle);
 }
 
-b2Manifold b2ChainAndCircleContact::Evaluate(const b2Transform& xfA, const b2Transform& xfB)
+b2Manifold b2ChainAndCircleContact::Evaluate(const Transform& xfA, const Transform& xfB)
 {
 	auto chain = static_cast<b2ChainShape*>(m_fixtureA->GetShape());
 	b2EdgeShape edge;

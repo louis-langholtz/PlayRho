@@ -40,7 +40,7 @@ class b2ContactListener;
 /// For example, anything slides on ice.
 inline float_t b2MixFriction(float_t friction1, float_t friction2)
 {
-	return b2Sqrt(friction1 * friction2);
+	return Sqrt(friction1 * friction2);
 }
 
 /// Restitution mixing law. The idea is allow for anything to bounce off an inelastic surface.
@@ -141,7 +141,7 @@ public:
 	/// @param xfB Transform for the contact's fixture B shape.
 	/// @return Contact manifold for the given transforms with one or more points
 	///   if the shapes are considered touching (collided).
-	virtual b2Manifold Evaluate(const b2Transform& xfA, const b2Transform& xfB) = 0;
+	virtual b2Manifold Evaluate(const Transform& xfA, const Transform& xfB) = 0;
 
 protected:
 	friend class b2ContactManager;

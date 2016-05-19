@@ -245,7 +245,7 @@ public:
 			break;
 
 		case GLFW_KEY_Q:
-			m_hz = b2Max(0.0f, m_hz - 1.0f);
+			m_hz = Max(0.0f, m_hz - 1.0f);
 			m_spring1->SetSpringFrequencyHz(m_hz);
 			m_spring2->SetSpringFrequencyHz(m_hz);
 			break;

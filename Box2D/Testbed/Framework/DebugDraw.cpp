@@ -750,7 +750,7 @@ void DebugDraw::DrawSegment(const Vec2& p1, const Vec2& p2, const b2Color& color
 }
 
 //
-void DebugDraw::DrawTransform(const b2Transform& xf)
+void DebugDraw::DrawTransform(const Transform& xf)
 {
 	const float_t k_axisScale = 0.4f;
     b2Color red(1.0f, 0.0f, 0.0f);

@@ -79,10 +79,10 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 	auto vB = data.velocities[m_indexB].v;
 	auto wB = data.velocities[m_indexB].w;
 
-	const b2Rot qA(aA), qB(aB);
+	const Rot qA(aA), qB(aB);
 
-	m_rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
-	m_rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	m_rA = Mul(qA, m_localAnchorA - m_localCenterA);
+	m_rB = Mul(qB, m_localAnchorB - m_localCenterB);
 	m_u = (cB + m_rB) - (cA + m_rA);
 
 	// Handle singularity.
@@ -98,7 +98,7 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 
 	const auto crAu = Cross(m_rA, m_u);
 	const auto crBu = Cross(m_rB, m_u);
-	auto invMass = m_invMassA + m_invIA * b2Square(crAu) + m_invMassB + m_invIB * b2Square(crBu);
+	auto invMass = m_invMassA + m_invIA * Square(crAu) + m_invMassB + m_invIB * Square(crBu);
 
 	// Compute the effective mass matrix.
 	m_mass = (invMass != float_t{0}) ? float_t(1) / invMass : float_t{0};
@@ -114,7 +114,7 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 		const auto d = float_t(2) * m_mass * m_dampingRatio * omega;
 
 		// Spring stiffness
-		const auto k = m_mass * b2Square(omega);
+		const auto k = m_mass * Square(omega);
 
 		// magic formulas
 		const auto h = data.step.get_dt();
@@ -193,16 +193,16 @@ bool b2DistanceJoint::SolvePositionConstraints(const b2SolverData& data)
 	auto cB = data.positions[m_indexB].c;
 	auto aB = data.positions[m_indexB].a;
 
-	const auto qA = b2Rot(aA);
-	const auto qB = b2Rot(aB);
+	const auto qA = Rot(aA);
+	const auto qB = Rot(aB);
 
-	const auto rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
-	const auto rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	const auto rA = Mul(qA, m_localAnchorA - m_localCenterA);
+	const auto rB = Mul(qB, m_localAnchorB - m_localCenterB);
 	auto u = cB + rB - cA - rA;
 
 	const auto length = u.Normalize();
 	auto C = length - m_length;
-	C = b2Clamp(C, -MaxLinearCorrection, MaxLinearCorrection);
+	C = Clamp(C, -MaxLinearCorrection, MaxLinearCorrection);
 
 	const auto impulse = -m_mass * C;
 	const auto P = impulse * u;
@@ -217,7 +217,7 @@ bool b2DistanceJoint::SolvePositionConstraints(const b2SolverData& data)
 	data.positions[m_indexB].c = cB;
 	data.positions[m_indexB].a = aB;
 
-	return b2Abs(C) < LinearSlop;
+	return Abs(C) < LinearSlop;
 }
 
 Vec2 b2DistanceJoint::GetAnchorA() const

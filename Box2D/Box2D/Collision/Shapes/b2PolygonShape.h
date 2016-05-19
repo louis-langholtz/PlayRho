@@ -62,14 +62,14 @@ public:
 	void SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t angle);
 
 	/// @see b2Shape::TestPoint
-	bool TestPoint(const b2Transform& transform, const Vec2& p) const override;
+	bool TestPoint(const Transform& transform, const Vec2& p) const override;
 
 	/// Implement b2Shape.
 	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
-					const b2Transform& transform, child_count_t childIndex) const override;
+					const Transform& transform, child_count_t childIndex) const override;
 
 	/// @see b2Shape::ComputeAABB
-	b2AABB ComputeAABB(const b2Transform& transform, child_count_t childIndex) const override;
+	b2AABB ComputeAABB(const Transform& transform, child_count_t childIndex) const override;
 
 	/// @see b2Shape::ComputeMass
 	b2MassData ComputeMass(float_t density) const override;

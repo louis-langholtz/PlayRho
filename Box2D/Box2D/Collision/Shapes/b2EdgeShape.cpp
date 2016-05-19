@@ -40,7 +40,7 @@ child_count_t b2EdgeShape::GetChildCount() const
 	return 1;
 }
 
-bool b2EdgeShape::TestPoint(const b2Transform& xf, const Vec2& p) const
+bool b2EdgeShape::TestPoint(const Transform& xf, const Vec2& p) const
 {
 	BOX2D_NOT_USED(xf);
 	BOX2D_NOT_USED(p);
@@ -52,19 +52,19 @@ bool b2EdgeShape::TestPoint(const b2Transform& xf, const Vec2& p) const
 // p1 + t * d = v1 + s * e
 // s * e - t * d = p1 - v1
 bool b2EdgeShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
-							const b2Transform& xf, child_count_t childIndex) const
+							const Transform& xf, child_count_t childIndex) const
 {
 	BOX2D_NOT_USED(childIndex);
 
 	// Put the ray into the edge's frame of reference.
-	const auto p1 = b2MulT(xf.q, input.p1 - xf.p);
-	const auto p2 = b2MulT(xf.q, input.p2 - xf.p);
+	const auto p1 = MulT(xf.q, input.p1 - xf.p);
+	const auto p2 = MulT(xf.q, input.p2 - xf.p);
 	const auto d = p2 - p1;
 
 	const auto v1 = m_vertex1;
 	const auto v2 = m_vertex2;
 	const auto e = v2 - v1;
-	const auto normal = b2Normalize(Vec2(e.y, -e.x));
+	const auto normal = Normalize(Vec2(e.y, -e.x));
 
 	// q = p1 + t * d
 	// dot(normal, q - v1) = 0
@@ -101,19 +101,19 @@ bool b2EdgeShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 	}
 
 	output->fraction = t;
-	output->normal = (numerator > float_t{0})? -b2Mul(xf.q, normal): b2Mul(xf.q, normal);
+	output->normal = (numerator > float_t{0})? -Mul(xf.q, normal): Mul(xf.q, normal);
 	return true;
 }
 
-b2AABB b2EdgeShape::ComputeAABB(const b2Transform& xf, child_count_t childIndex) const
+b2AABB b2EdgeShape::ComputeAABB(const Transform& xf, child_count_t childIndex) const
 {
 	BOX2D_NOT_USED(childIndex);
 
-	const auto v1 = b2Mul(xf, m_vertex1);
-	const auto v2 = b2Mul(xf, m_vertex2);
+	const auto v1 = Mul(xf, m_vertex1);
+	const auto v2 = Mul(xf, m_vertex2);
 
-	const auto lower = b2Min(v1, v2);
-	const auto upper = b2Max(v1, v2);
+	const auto lower = Min(v1, v2);
+	const auto upper = Max(v1, v2);
 
 	const auto r = Vec2{GetRadius(), GetRadius()};
 	return b2AABB{lower - r, upper + r};

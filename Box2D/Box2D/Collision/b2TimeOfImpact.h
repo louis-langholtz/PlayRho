@@ -29,8 +29,8 @@ struct b2TOIInput
 {
 	b2DistanceProxy proxyA;
 	b2DistanceProxy proxyB;
-	b2Sweep sweepA;
-	b2Sweep sweepB;
+	Sweep sweepA;
+	Sweep sweepB;
 	float_t tMax; ///< Maximum sweep interval time fraction (in the range of [0, 1]).
 };
 
@@ -72,7 +72,7 @@ private:
 /// This uses a swept separating axis and may miss some intermediate,
 /// non-tunneling collision. If you change the time interval, you should call this function
 /// again.
-/// @note Use b2Distance to compute the contact point and normal at the time of impact.
+/// @note Use Distance to compute the contact point and normal at the time of impact.
 b2TOIOutput b2TimeOfImpact(const b2TOIInput& input);
 
 } // namespace box2d

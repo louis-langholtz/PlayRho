@@ -140,8 +140,8 @@ b2ContactSolver::b2ContactSolver(b2ContactSolverDef* def) :
 		Assign(vc.bodyA, *bodyA);
 		Assign(vc.bodyB, *bodyB);
 		vc.contactIndex = i;
-		vc.K = b2Mat22_zero;
-		vc.normalMass = b2Mat22_zero;
+		vc.K = Mat22_zero;
+		vc.normalMass = Mat22_zero;
 		vc.ClearPoints();
 		
 		auto& pc = m_positionConstraints[i];
@@ -190,14 +190,14 @@ static inline void Initialize(b2VelocityConstraintPoint& vcp,
 	const auto rnA = Cross(vcp_rA, vc.normal);
 	const auto rnB = Cross(vcp_rB, vc.normal);
 	
-	const auto kNormal = vc.bodyA.invMass + vc.bodyB.invMass + (vc.bodyA.invI * b2Square(rnA)) + (vc.bodyB.invI * b2Square(rnB));
+	const auto kNormal = vc.bodyA.invMass + vc.bodyB.invMass + (vc.bodyA.invI * Square(rnA)) + (vc.bodyB.invI * Square(rnB));
 	
 	const auto tangent = Cross(vc.normal, float_t(1));
 	
 	const auto rtA = Cross(vcp_rA, tangent);
 	const auto rtB = Cross(vcp_rB, tangent);
 	
-	const auto kTangent = vc.bodyA.invMass + vc.bodyB.invMass + (vc.bodyA.invI * b2Square(rtA)) + (vc.bodyB.invI * b2Square(rtB));
+	const auto kTangent = vc.bodyA.invMass + vc.bodyB.invMass + (vc.bodyA.invI * Square(rtA)) + (vc.bodyB.invI * Square(rtB));
 	
 	// Relative velocity at contact
 	const auto dv = (velB.v + Cross(velB.w, vcp_rB)) - (velA.v + Cross(velA.w, vcp_rA));
@@ -228,8 +228,8 @@ void b2ContactSolver::InitializeVelocityConstraint(b2ContactVelocityConstraint& 
 	
 	assert(manifold->GetPointCount() > 0);
 	
-	const auto xfA = b2Displace(posA, pc.bodyA.localCenter);
-	const auto xfB = b2Displace(posB, pc.bodyB.localCenter);
+	const auto xfA = GetTransform(posA, pc.bodyA.localCenter);
+	const auto xfB = GetTransform(posB, pc.bodyB.localCenter);
 	const auto worldManifold = b2WorldManifold{*manifold, xfA, pc.radiusA, xfB, pc.radiusB};
 	
 	vc.normal = worldManifold.GetNormal();
@@ -253,16 +253,16 @@ void b2ContactSolver::InitializeVelocityConstraint(b2ContactVelocityConstraint& 
 		const auto rn2A = Cross(vcp2.rA, vc.normal);
 		const auto rn2B = Cross(vcp2.rB, vc.normal);
 		
-		const auto k11 = vc.bodyA.invMass + vc.bodyB.invMass + (vc.bodyA.invI * b2Square(rn1A)) + (vc.bodyB.invI * b2Square(rn1B));
-		const auto k22 = vc.bodyA.invMass + vc.bodyB.invMass + (vc.bodyA.invI * b2Square(rn2A)) + (vc.bodyB.invI * b2Square(rn2B));
+		const auto k11 = vc.bodyA.invMass + vc.bodyB.invMass + (vc.bodyA.invI * Square(rn1A)) + (vc.bodyB.invI * Square(rn1B));
+		const auto k22 = vc.bodyA.invMass + vc.bodyB.invMass + (vc.bodyA.invI * Square(rn2A)) + (vc.bodyB.invI * Square(rn2B));
 		const auto k12 = vc.bodyA.invMass + vc.bodyB.invMass + (vc.bodyA.invI * rn1A * rn2A) + (vc.bodyB.invI * rn1B * rn2B);
 		
 		// Ensure a reasonable condition number.
 		constexpr auto k_maxConditionNumber = float_t(1000);
-		if (b2Square(k11) < (k_maxConditionNumber * (k11 * k22 - b2Square(k12))))
+		if (Square(k11) < (k_maxConditionNumber * (k11 * k22 - Square(k12))))
 		{
 			// K is safe to invert.
-			vc.K = b2Mat22{Vec2{k11, k12}, Vec2{k12, k22}};
+			vc.K = Mat22{Vec2{k11, k12}, Vec2{k12, k22}};
 			vc.normalMass = vc.K.GetInverse();
 		}
 		else
@@ -322,7 +322,7 @@ static inline void SolveTangentConstraint(const b2ContactVelocityConstraint& vc,
 	// Clamp the accumulated force
 	const auto maxFriction = vc.friction * vcp.normalImpulse;
 	const auto oldImpulse = vcp.tangentImpulse;
-	const auto newImpulse = b2Clamp(vcp.tangentImpulse + lambda, -maxFriction, maxFriction);
+	const auto newImpulse = Clamp(vcp.tangentImpulse + lambda, -maxFriction, maxFriction);
 	const auto incImpulse = newImpulse - oldImpulse;
 	
 	// Save new impulse
@@ -347,9 +347,9 @@ static inline void SolveNormalConstraint(const b2ContactVelocityConstraint& vc,
 	const auto vn = Dot(dv, vc.normal);
 	const auto lambda = -vcp.normalMass * (vn - vcp.velocityBias);
 	
-	// b2Clamp the accumulated impulse
+	// Clamp the accumulated impulse
 	const auto oldImpulse = vcp.normalImpulse;
-	const auto newImpulse = b2Max(vcp.normalImpulse + lambda, float_t{0});
+	const auto newImpulse = Max(vcp.normalImpulse + lambda, float_t{0});
 	const auto incImpulse = newImpulse - oldImpulse;
 	
 	// Save new impulse
@@ -399,7 +399,7 @@ static inline bool BlockSolveNormalCase1(const b2ContactVelocityConstraint& vc,
 	//
 	// x = -inv(A) * b'
 	//
-	const auto newImpulse = -b2Mul(vc.normalMass, b_prime);
+	const auto newImpulse = -Mul(vc.normalMass, b_prime);
 	if ((newImpulse.x >= float_t{0}) && (newImpulse.y >= float_t{0}))
 	{
 		BlockSolveUpdate(vc, oldImpulse, newImpulse, bodyA, bodyB, vcp1, vcp2);
@@ -414,11 +414,11 @@ static inline bool BlockSolveNormalCase1(const b2ContactVelocityConstraint& vc,
 		const auto post_vn2 = Dot(post_dv2, vc.normal);
 		
 		
-		assert(b2Abs(post_vn1 - vcp1.velocityBias) < k_majorErrorTol);
-		assert(b2Abs(post_vn2 - vcp2.velocityBias) < k_majorErrorTol);
+		assert(Abs(post_vn1 - vcp1.velocityBias) < k_majorErrorTol);
+		assert(Abs(post_vn2 - vcp2.velocityBias) < k_majorErrorTol);
 
-		assert(b2Abs(post_vn1 - vcp1.velocityBias) < k_errorTol);
-		assert(b2Abs(post_vn2 - vcp2.velocityBias) < k_errorTol);
+		assert(Abs(post_vn1 - vcp1.velocityBias) < k_errorTol);
+		assert(Abs(post_vn2 - vcp2.velocityBias) < k_errorTol);
 #endif
 		return true;
 	}
@@ -449,8 +449,8 @@ static inline bool BlockSolveNormalCase2(const b2ContactVelocityConstraint& vc,
 		// Compute normal velocity
 		const auto post_vn1 = Dot(post_dv1, vc.normal);
 		
-		assert(b2Abs(post_vn1 - vcp1.velocityBias) < k_majorErrorTol);
-		assert(b2Abs(post_vn1 - vcp1.velocityBias) < k_errorTol);
+		assert(Abs(post_vn1 - vcp1.velocityBias) < k_majorErrorTol);
+		assert(Abs(post_vn1 - vcp1.velocityBias) < k_errorTol);
 #endif
 		return true;
 	}
@@ -481,8 +481,8 @@ static inline bool BlockSolveNormalCase3(const b2ContactVelocityConstraint& vc,
 		// Compute normal velocity
 		const auto post_vn2 = Dot(post_dv2, vc.normal);
 
-		assert(b2Abs(post_vn2 - vcp2.velocityBias) < k_majorErrorTol);
-		assert(b2Abs(post_vn2 - vcp2.velocityBias) < k_errorTol);
+		assert(Abs(post_vn2 - vcp2.velocityBias) < k_majorErrorTol);
+		assert(Abs(post_vn2 - vcp2.velocityBias) < k_errorTol);
 #endif
 		return true;
 	}
@@ -563,7 +563,7 @@ static inline void BlockSolveNormalConstraint(const b2ContactVelocityConstraint&
 		const auto b = Vec2{normal_vn1 - vcp1.velocityBias, normal_vn2 - vcp2.velocityBias};
 		
 		// Return b'
-		return b - b2Mul(vc.K, oldImpulse);
+		return b - Mul(vc.K, oldImpulse);
 	}();
 	
 	
@@ -657,7 +657,7 @@ public:
 	b2PositionSolverManifold() = delete;
 
 	b2PositionSolverManifold(const b2ContactPositionConstraint& pc,
-							 const b2Transform& xfA, const b2Transform& xfB, index_t index)
+							 const Transform& xfA, const Transform& xfB, index_t index)
 	{
 		assert(pc.GetPointCount() > 0);
 		assert(pc.type != b2Manifold::e_unset);
@@ -673,10 +673,10 @@ public:
 		case b2Manifold::e_circles:
 			{
 				assert(index == 0);
-				const auto pointA = b2Mul(xfA, pc.localPoint);
-				const auto pointB = b2Mul(xfB, pc.GetPoint(0));
+				const auto pointA = Mul(xfA, pc.localPoint);
+				const auto pointB = Mul(xfB, pc.GetPoint(0));
 				const auto delta = pointB - pointA;
-				normal = b2Normalize(delta);
+				normal = Normalize(delta);
 				point = (pointA + pointB) / float_t(2);
 				const auto totalRadius = pc.radiusA + pc.radiusB;
 				separation = Dot(delta, normal) - totalRadius;
@@ -685,9 +685,9 @@ public:
 
 		case b2Manifold::e_faceA:
 			{
-				const auto planePoint = b2Mul(xfA, pc.localPoint);
-				const auto clipPoint = b2Mul(xfB, pc.GetPoint(index));
-				normal = b2Mul(xfA.q, pc.localNormal);
+				const auto planePoint = Mul(xfA, pc.localPoint);
+				const auto clipPoint = Mul(xfB, pc.GetPoint(index));
+				normal = Mul(xfA.q, pc.localNormal);
 				const auto totalRadius = pc.radiusA + pc.radiusB;
 				separation = Dot(clipPoint - planePoint, normal) - totalRadius;
 				point = clipPoint;
@@ -696,9 +696,9 @@ public:
 
 		case b2Manifold::e_faceB:
 			{
-				const auto planePoint = b2Mul(xfB, pc.localPoint);
-				const auto clipPoint = b2Mul(xfA, pc.GetPoint(index));
-				normal = b2Mul(xfB.q, pc.localNormal);
+				const auto planePoint = Mul(xfB, pc.localPoint);
+				const auto clipPoint = Mul(xfA, pc.GetPoint(index));
+				normal = Mul(xfB.q, pc.localNormal);
 				const auto totalRadius = pc.radiusA + pc.radiusB;
 				separation = Dot(clipPoint - planePoint, normal) - totalRadius;
 				point = clipPoint;
@@ -730,8 +730,8 @@ static inline float_t SolvePositionConstraint(const b2ContactPositionConstraint&
 	const auto pointCount = pc.GetPointCount();
 	for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 	{
-		const auto xfA = b2Displace(posA, pc.bodyA.localCenter);
-		const auto xfB = b2Displace(posB, pc.bodyB.localCenter);
+		const auto xfA = GetTransform(posA, pc.bodyA.localCenter);
+		const auto xfB = GetTransform(posB, pc.bodyB.localCenter);
 		const auto psm = b2PositionSolverManifold(pc, xfA, xfB, j);
 		const auto normal = psm.GetNormal();
 		const auto point = psm.GetPoint();
@@ -741,15 +741,15 @@ static inline float_t SolvePositionConstraint(const b2ContactPositionConstraint&
 		const auto rB = point - posB.c;
 		
 		// Track max constraint error.
-		minSeparation = b2Min(minSeparation, separation);
+		minSeparation = Min(minSeparation, separation);
 		
 		// Prevent large corrections and allow slop.
-		const auto C = b2Clamp(Baumgarte * (separation + LinearSlop), -MaxLinearCorrection, float_t{0});
+		const auto C = Clamp(Baumgarte * (separation + LinearSlop), -MaxLinearCorrection, float_t{0});
 		
 		// Compute the effective mass.
 		const auto rnA = Cross(rA, normal);
 		const auto rnB = Cross(rB, normal);
-		const auto K = pc.bodyA.invMass + pc.bodyB.invMass + (pc.bodyA.invI * b2Square(rnA)) + (pc.bodyB.invI * b2Square(rnB));
+		const auto K = pc.bodyA.invMass + pc.bodyB.invMass + (pc.bodyA.invI * Square(rnA)) + (pc.bodyB.invI * Square(rnB));
 		
 		// Compute normal impulse
 		const auto impulse = (K > float_t{0})? - C / K : float_t{0};
@@ -773,7 +773,7 @@ bool b2ContactSolver::SolvePositionConstraints()
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		const auto& pc = m_positionConstraints[i];
-		minSeparation = b2Min(minSeparation,
+		minSeparation = Min(minSeparation,
 							  SolvePositionConstraint(pc, m_positions[pc.bodyA.index], m_positions[pc.bodyB.index]));
 	}
 
@@ -799,8 +799,8 @@ static inline float_t SolveTOIPositionConstraint(const b2ContactPositionConstrai
 	const auto pointCount = pc.GetPointCount();
 	for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 	{
-		const auto xfA = b2Displace(posA, pc.bodyA.localCenter);
-		const auto xfB = b2Displace(posB, pc.bodyB.localCenter);
+		const auto xfA = GetTransform(posA, pc.bodyA.localCenter);
+		const auto xfB = GetTransform(posB, pc.bodyB.localCenter);
 		const auto psm = b2PositionSolverManifold(pc, xfA, xfB, j);
 		const auto normal = psm.GetNormal();
 		const auto point = psm.GetPoint();
@@ -810,15 +810,15 @@ static inline float_t SolveTOIPositionConstraint(const b2ContactPositionConstrai
 		const auto rB = point - posB.c;
 		
 		// Track max constraint error.
-		minSeparation = b2Min(minSeparation, separation);
+		minSeparation = Min(minSeparation, separation);
 		
 		// Prevent large corrections and allow slop.
-		const auto C = b2Clamp(ToiBaugarte * (separation + LinearSlop), -MaxLinearCorrection, float_t{0});
+		const auto C = Clamp(ToiBaugarte * (separation + LinearSlop), -MaxLinearCorrection, float_t{0});
 		
 		// Compute the effective mass.
 		const auto rnA = Cross(rA, normal);
 		const auto rnB = Cross(rB, normal);
-		const auto K = invMassA + invMassB + (invInertiaA * b2Square(rnA)) + (invInertiaB * b2Square(rnB));
+		const auto K = invMassA + invMassB + (invInertiaA * Square(rnA)) + (invInertiaB * Square(rnB));
 		
 		// Compute normal impulse
 		const auto impulse = (K > float_t{0}) ? - C / K : float_t{0};
@@ -842,7 +842,7 @@ bool b2ContactSolver::SolveTOIPositionConstraints(size_type indexA, size_type in
 	{
 		const auto& pc = m_positionConstraints[i];
 		const auto s = SolveTOIPositionConstraint(pc, indexA, indexB, m_positions[pc.bodyA.index], m_positions[pc.bodyB.index]);
-		minSeparation = b2Min(minSeparation, s);
+		minSeparation = Min(minSeparation, s);
 	}
 
 	// Can't expect minSpeparation >= -LinearSlop because we don't push the separation above -LinearSlop.

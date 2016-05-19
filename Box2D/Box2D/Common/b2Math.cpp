@@ -20,7 +20,7 @@
 
 using namespace box2d;
 
-void b2Mat33::GetInverse22(b2Mat33* M) const
+void Mat33::GetInverse22(Mat33* M) const
 {
 	const auto a = ex.x, b = ey.x, c = ex.y, d = ey.y;
 	auto det = a * d - b * c;
@@ -35,7 +35,7 @@ void b2Mat33::GetInverse22(b2Mat33* M) const
 }
 
 /// Returns the zero matrix if singular.
-void b2Mat33::GetSymInverse33(b2Mat33* M) const
+void Mat33::GetSymInverse33(Mat33* M) const
 {
 	auto det = Dot(ex, Cross(ey, ez));
 	if (det != float_t{0})

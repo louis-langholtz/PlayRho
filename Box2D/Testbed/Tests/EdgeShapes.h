@@ -94,8 +94,8 @@ public:
 
 		{
 			float_t w = 1.0f;
-			float_t b = w / (2.0f + b2Sqrt(2.0f));
-			float_t s = b2Sqrt(2.0f) * b;
+			float_t b = w / (2.0f + Sqrt(2.0f));
+			float_t s = Sqrt(2.0f) * b;
 
 			Vec2 vertices[8];
 			vertices[0] = Vec2(0.5f * s, 0.0f);
@@ -208,7 +208,7 @@ public:
 
 		float_t L = 25.0f;
 		Vec2 point1(0.0f, 10.0f);
-		Vec2 d(L * cosf(m_angle), -L * b2Abs(sinf(m_angle)));
+		Vec2 d(L * cosf(m_angle), -L * Abs(sinf(m_angle)));
 		Vec2 point2 = point1 + d;
 
 		EdgeShapesCallback callback;

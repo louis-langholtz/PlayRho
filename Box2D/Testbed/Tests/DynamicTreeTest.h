@@ -76,7 +76,7 @@ public:
 
 		if (m_automated == true)
 		{
-			int32 actionCount = b2Max(1, e_actorCount >> 2);
+			int32 actionCount = Max(1, e_actorCount >> 2);
 
 			for (int32 i = 0; i < actionCount; ++i)
 			{
@@ -213,7 +213,7 @@ private:
 		const auto c0 = aabb->GetCenter();
 		const auto min = Vec2(-m_worldExtent, float_t(0));
 		const auto max = Vec2(m_worldExtent, 2.0f * m_worldExtent);
-		const auto c = b2Clamp(c0, min, max);
+		const auto c = Clamp(c0, min, max);
 
 		aabb->Move(c - c0);
 	}

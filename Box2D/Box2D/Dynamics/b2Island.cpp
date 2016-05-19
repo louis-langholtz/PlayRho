@@ -275,15 +275,15 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const Vec2& gra
 		auto translation = h * velocity.v;
 		auto rotation = h * velocity.w;
 		
-		if (translation.LengthSquared() > b2Square(MaxTranslation))
+		if (translation.LengthSquared() > Square(MaxTranslation))
 		{
 			const auto ratio = MaxTranslation / translation.Length();
 			velocity.v *= ratio;
 			translation = h * velocity.v;
 		}
-		if (b2Abs(rotation) > MaxRotation)
+		if (Abs(rotation) > MaxRotation)
 		{
-			const auto ratio = MaxRotation / b2Abs(rotation);
+			const auto ratio = MaxRotation / Abs(rotation);
 			velocity.w *= ratio;
 			rotation = h * velocity.w;
 		}
@@ -321,7 +321,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const Vec2& gra
 		body.m_sweep.a = m_positions[i].a;
 		body.m_linearVelocity = m_velocities[i].v;
 		body.m_angularVelocity = m_velocities[i].w;
-		body.m_xf = b2GetTransformOne(body.m_sweep);
+		body.m_xf = GetTransformOne(body.m_sweep);
 	}
 
 	Report(contactSolver.GetVelocityConstraints());
@@ -330,8 +330,8 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const Vec2& gra
 	{
 		auto minSleepTime = MaxFloat;
 
-		constexpr auto linTolSqr = b2Square(LinearSleepTolerance);
-		constexpr auto angTolSqr = b2Square(AngularSleepTolerance);
+		constexpr auto linTolSqr = Square(LinearSleepTolerance);
+		constexpr auto angTolSqr = Square(AngularSleepTolerance);
 
 		for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 		{
@@ -342,7 +342,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const Vec2& gra
 			}
 
 			if ((!b.IsSleepingAllowed()) ||
-				(b2Square(b.m_angularVelocity) > angTolSqr) ||
+				(Square(b.m_angularVelocity) > angTolSqr) ||
 				(b.m_linearVelocity.LengthSquared() > linTolSqr))
 			{
 				b.m_sleepTime = float_t{0};
@@ -351,7 +351,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const Vec2& gra
 			else
 			{
 				b.m_sleepTime += h;
-				minSleepTime = b2Min(minSleepTime, b.m_sleepTime);
+				minSleepTime = Min(minSleepTime, b.m_sleepTime);
 			}
 		}
 
@@ -421,7 +421,7 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, isl
 		input.useRadii = false;
 
 		b2SimplexCache cache;
-		const auto output = b2Distance(cache, input);
+		const auto output = Distance(cache, input);
 		if (output.distance == 0 || cache.GetCount() == 3)
 		{
 			;;
@@ -457,16 +457,16 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, isl
 		auto translation = h * velocity.v;
 		auto rotation = h * velocity.w;
 		
-		if (translation.LengthSquared() > b2Square(MaxTranslation))
+		if (translation.LengthSquared() > Square(MaxTranslation))
 		{
 			const auto ratio = MaxTranslation / translation.Length();
 			velocity.v *= ratio;
 			translation = h * velocity.v;
 		}
 
-		if (b2Abs(rotation) > MaxRotation)
+		if (Abs(rotation) > MaxRotation)
 		{
-			const auto ratio = MaxRotation / b2Abs(rotation);
+			const auto ratio = MaxRotation / Abs(rotation);
 			velocity.w *= ratio;
 			rotation = h * velocity.w;
 		}
@@ -480,7 +480,7 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, isl
 		body.m_sweep.a = m_positions[i].a;
 		body.m_linearVelocity = velocity.v;
 		body.m_angularVelocity = velocity.w;
-		body.m_xf = b2GetTransformOne(body.m_sweep);
+		body.m_xf = GetTransformOne(body.m_sweep);
 	}
 
 	Report(contactSolver.GetVelocityConstraints());

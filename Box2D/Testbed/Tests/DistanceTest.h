@@ -27,7 +27,7 @@ public:
 	DistanceTest()
 	{
 		{
-			m_transformA = b2Transform_identity;
+			m_transformA = Transform_identity;
 			m_transformA.p = Vec2(0.0f, -0.2f);
 			m_polygonA.SetAsBox(10.0f, 0.2f);
 		}
@@ -35,7 +35,7 @@ public:
 		{
 			m_positionB = Vec2(12.017401f, 0.13678508f);
 			m_angleB = -0.0109265f;
-			m_transformB = b2Transform{m_positionB, b2Rot(m_angleB)};
+			m_transformB = Transform{m_positionB, Rot(m_angleB)};
 
 			m_polygonB.SetAsBox(2.0f, 0.1f);
 		}
@@ -57,7 +57,7 @@ public:
 		input.transformB = m_transformB;
 		input.useRadii = true;
 		b2SimplexCache cache;
-		const auto output = b2Distance(cache, input);
+		const auto output = Distance(cache, input);
 
 		g_debugDraw.DrawString(5, m_textLine, "distance = %g", output.distance);
 		m_textLine += DRAW_STRING_NEW_LINE;
@@ -70,13 +70,13 @@ public:
 			Vec2 v[MaxPolygonVertices];
 			for (int32 i = 0; i < m_polygonA.GetVertexCount(); ++i)
 			{
-				v[i] = b2Mul(m_transformA, m_polygonA.GetVertex(i));
+				v[i] = Mul(m_transformA, m_polygonA.GetVertex(i));
 			}
 			g_debugDraw.DrawPolygon(v, m_polygonA.GetVertexCount(), color);
 
 			for (int32 i = 0; i < m_polygonB.GetVertexCount(); ++i)
 			{
-				v[i] = b2Mul(m_transformB, m_polygonB.GetVertex(i));
+				v[i] = Mul(m_transformB, m_polygonB.GetVertex(i));
 			}
 			g_debugDraw.DrawPolygon(v, m_polygonB.GetVertexCount(), color);
 		}
@@ -120,14 +120,14 @@ public:
 			break;
 		}
 
-		m_transformB = b2Transform{m_positionB, b2Rot(m_angleB)};
+		m_transformB = Transform{m_positionB, Rot(m_angleB)};
 	}
 
 	Vec2 m_positionB;
 	float_t m_angleB;
 
-	b2Transform m_transformA;
-	b2Transform m_transformB;
+	Transform m_transformA;
+	Transform m_transformB;
 	b2PolygonShape m_polygonA;
 	b2PolygonShape m_polygonB;
 };

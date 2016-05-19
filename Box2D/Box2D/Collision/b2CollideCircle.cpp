@@ -22,14 +22,14 @@
 
 namespace box2d {
 
-b2Manifold b2CollideShapes(const b2CircleShape& shapeA, const b2Transform& xfA, const b2CircleShape& shapeB, const b2Transform& xfB)
+b2Manifold b2CollideShapes(const b2CircleShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB)
 {
-	const auto pA = b2Mul(xfA, shapeA.GetPosition());
-	const auto pB = b2Mul(xfB, shapeB.GetPosition());
+	const auto pA = Mul(xfA, shapeA.GetPosition());
+	const auto pB = Mul(xfB, shapeB.GetPosition());
 	const auto d = pB - pA;
 	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
 
-	if (d.LengthSquared() > b2Square(totalRadius))
+	if (d.LengthSquared() > Square(totalRadius))
 	{
 		return b2Manifold{};
 	}
@@ -39,11 +39,11 @@ b2Manifold b2CollideShapes(const b2CircleShape& shapeA, const b2Transform& xfA, 
 	return manifold;
 }
 
-b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA, const b2CircleShape& shapeB, const b2Transform& xfB)
+b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB)
 {
 	// Compute circle position in the frame of the polygon.
-	const auto c = b2Mul(xfB, shapeB.GetPosition());
-	const auto cLocal = b2MulT(xfA, c);
+	const auto c = Mul(xfB, shapeB.GetPosition());
+	const auto cLocal = MulT(xfA, c);
 
 	// Find the min separating edge.
 	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
@@ -87,23 +87,23 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 	const auto u2 = Dot(cLocal - v2, v1 - v2);
 	if (u1 <= float_t{0})
 	{
-		if (b2DistanceSquared(cLocal, v1) > b2Square(totalRadius))
+		if (DistanceSquared(cLocal, v1) > Square(totalRadius))
 		{
 			return b2Manifold{};
 		}
 
-		auto manifold = b2Manifold{b2Manifold::e_faceA, b2Normalize(cLocal - v1), v1};
+		auto manifold = b2Manifold{b2Manifold::e_faceA, Normalize(cLocal - v1), v1};
 		manifold.AddPoint(shapeB.GetPosition());
 		return manifold;
 	}
 	if (u2 <= float_t{0})
 	{
-		if (b2DistanceSquared(cLocal, v2) > b2Square(totalRadius))
+		if (DistanceSquared(cLocal, v2) > Square(totalRadius))
 		{
 			return b2Manifold{};
 		}
 
-		auto manifold = b2Manifold{b2Manifold::e_faceA, b2Normalize(cLocal - v2), v2};
+		auto manifold = b2Manifold{b2Manifold::e_faceA, Normalize(cLocal - v2), v2};
 		manifold.AddPoint(shapeB.GetPosition());
 		return manifold;
 	}

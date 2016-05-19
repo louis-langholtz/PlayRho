@@ -77,12 +77,12 @@ void b2MotorJoint::InitVelocityConstraints(const b2SolverData& data)
 	auto vB = data.velocities[m_indexB].v;
 	auto wB = data.velocities[m_indexB].w;
 
-	const auto qA = b2Rot(aA);
-	const auto qB = b2Rot(aB);
+	const auto qA = Rot(aA);
+	const auto qB = Rot(aB);
 
 	// Compute the effective mass matrix.
-	m_rA = b2Mul(qA, -m_localCenterA);
-	m_rB = b2Mul(qB, -m_localCenterB);
+	m_rA = Mul(qA, -m_localCenterA);
+	m_rB = Mul(qB, -m_localCenterB);
 
 	// J = [-I -r1_skew I r2_skew]
 	//     [ 0       -1 0       1]
@@ -96,7 +96,7 @@ void b2MotorJoint::InitVelocityConstraints(const b2SolverData& data)
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
 
-	b2Mat22 K;
+	Mat22 K;
 	K.ex.x = mA + mB + iA * m_rA.y * m_rA.y + iB * m_rB.y * m_rB.y;
 	K.ex.y = -iA * m_rA.x * m_rA.y - iB * m_rB.x * m_rB.y;
 	K.ey.x = K.ex.y;
@@ -110,7 +110,7 @@ void b2MotorJoint::InitVelocityConstraints(const b2SolverData& data)
 		m_angularMass = float_t(1) / m_angularMass;
 	}
 
-	m_linearError = cB + m_rB - cA - m_rA - b2Mul(qA, m_linearOffset);
+	m_linearError = cB + m_rB - cA - m_rA - Mul(qA, m_linearOffset);
 	m_angularError = aB - aA - m_angularOffset;
 
 	if (data.step.warmStarting)
@@ -157,7 +157,7 @@ void b2MotorJoint::SolveVelocityConstraints(const b2SolverData& data)
 
 		const auto oldImpulse = m_angularImpulse;
 		const auto maxImpulse = h * m_maxTorque;
-		m_angularImpulse = b2Clamp(m_angularImpulse + impulse, -maxImpulse, maxImpulse);
+		m_angularImpulse = Clamp(m_angularImpulse + impulse, -maxImpulse, maxImpulse);
 		impulse = m_angularImpulse - oldImpulse;
 
 		wA -= iA * impulse;
@@ -168,7 +168,7 @@ void b2MotorJoint::SolveVelocityConstraints(const b2SolverData& data)
 	{
 		const auto Cdot = vB + Cross(wB, m_rB) - vA - Cross(wA, m_rA) + inv_h * m_correctionFactor * m_linearError;
 
-		auto impulse = -b2Mul(m_linearMass, Cdot);
+		auto impulse = -Mul(m_linearMass, Cdot);
 		const auto oldImpulse = m_linearImpulse;
 		m_linearImpulse += impulse;
 
@@ -224,7 +224,7 @@ float_t b2MotorJoint::GetReactionTorque(float_t inv_dt) const
 
 void b2MotorJoint::SetMaxForce(float_t force)
 {
-	assert(b2IsValid(force) && (force >= float_t{0}));
+	assert(IsValid(force) && (force >= float_t{0}));
 	m_maxForce = force;
 }
 
@@ -235,7 +235,7 @@ float_t b2MotorJoint::GetMaxForce() const
 
 void b2MotorJoint::SetMaxTorque(float_t torque)
 {
-	assert(b2IsValid(torque) && (torque >= float_t{0}));
+	assert(IsValid(torque) && (torque >= float_t{0}));
 	m_maxTorque = torque;
 }
 
@@ -246,7 +246,7 @@ float_t b2MotorJoint::GetMaxTorque() const
 
 void b2MotorJoint::SetCorrectionFactor(float_t factor)
 {
-	assert(b2IsValid(factor) && (float_t{0} <= factor) && (factor <= float_t(1)));
+	assert(IsValid(factor) && (float_t{0} <= factor) && (factor <= float_t(1)));
 	m_correctionFactor = factor;
 }
 

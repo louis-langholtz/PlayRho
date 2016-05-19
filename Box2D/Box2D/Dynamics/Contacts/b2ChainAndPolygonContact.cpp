@@ -49,7 +49,7 @@ b2ChainAndPolygonContact::b2ChainAndPolygonContact(b2Fixture* fixtureA, child_co
 	assert(m_fixtureB->GetType() == b2Shape::e_polygon);
 }
 
-b2Manifold b2ChainAndPolygonContact::Evaluate(const b2Transform& xfA, const b2Transform& xfB)
+b2Manifold b2ChainAndPolygonContact::Evaluate(const Transform& xfA, const Transform& xfB)
 {
 	auto chain = static_cast<b2ChainShape*>(m_fixtureA->GetShape());
 	b2EdgeShape edge;

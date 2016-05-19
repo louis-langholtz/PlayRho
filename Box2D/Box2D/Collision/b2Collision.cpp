@@ -22,15 +22,15 @@
 namespace box2d {
 
 b2WorldManifold::b2WorldManifold(const b2Manifold& manifold,
-								 const b2Transform& xfA, float_t radiusA,
-								 const b2Transform& xfB, float_t radiusB)
+								 const Transform& xfA, float_t radiusA,
+								 const Transform& xfB, float_t radiusB)
 {
 	this->Assign(manifold, xfA, radiusA, xfB, radiusB);
 }
 
 void b2WorldManifold::Assign(const b2Manifold& manifold,
-						  const b2Transform& xfA, float_t radiusA,
-						  const b2Transform& xfB, float_t radiusB)
+						  const Transform& xfA, float_t radiusA,
+						  const Transform& xfB, float_t radiusB)
 {
 	if (manifold.GetPointCount() == 0)
 		return;
@@ -44,10 +44,10 @@ void b2WorldManifold::Assign(const b2Manifold& manifold,
 	case b2Manifold::e_circles:
 		{
 			normal = Vec2(float_t{1}, float_t{0});
-			const auto pointA = b2Mul(xfA, manifold.GetLocalPoint());
-			const auto pointB = b2Mul(xfB, manifold.GetPoint(0).localPoint);
-			if (b2DistanceSquared(pointA, pointB) > b2Square(Epsilon))
-				normal = b2Normalize(pointB - pointA);
+			const auto pointA = Mul(xfA, manifold.GetLocalPoint());
+			const auto pointB = Mul(xfB, manifold.GetPoint(0).localPoint);
+			if (DistanceSquared(pointA, pointB) > Square(Epsilon))
+				normal = Normalize(pointB - pointA);
 
 			const auto cA = pointA + (radiusA * normal);
 			const auto cB = pointB - (radiusB * normal);
@@ -59,12 +59,12 @@ void b2WorldManifold::Assign(const b2Manifold& manifold,
 
 	case b2Manifold::e_faceA:
 		{
-			normal = b2Mul(xfA.q, manifold.GetLocalNormal());
-			const auto planePoint = b2Mul(xfA, manifold.GetLocalPoint());
+			normal = Mul(xfA.q, manifold.GetLocalNormal());
+			const auto planePoint = Mul(xfA, manifold.GetLocalPoint());
 			pointCount = 0;
 			for (auto i = decltype(manifold.GetPointCount()){0}; i < manifold.GetPointCount(); ++i)
 			{
-				const auto clipPoint = b2Mul(xfB, manifold.GetPoint(i).localPoint);
+				const auto clipPoint = Mul(xfB, manifold.GetPoint(i).localPoint);
 				const auto cA = clipPoint + (radiusA - Dot(clipPoint - planePoint, normal)) * normal;
 				const auto cB = clipPoint - (radiusB * normal);
 				points[i] = (cA + cB) / float_t(2);
@@ -76,12 +76,12 @@ void b2WorldManifold::Assign(const b2Manifold& manifold,
 
 	case b2Manifold::e_faceB:
 		{
-			normal = b2Mul(xfB.q, manifold.GetLocalNormal());
-			const auto planePoint = b2Mul(xfB, manifold.GetLocalPoint());
+			normal = Mul(xfB.q, manifold.GetLocalNormal());
+			const auto planePoint = Mul(xfB, manifold.GetLocalPoint());
 			pointCount = 0;
 			for (auto i = decltype(manifold.GetPointCount()){0}; i < manifold.GetPointCount(); ++i)
 			{
-				const auto clipPoint = b2Mul(xfA, manifold.GetPoint(i).localPoint);
+				const auto clipPoint = Mul(xfA, manifold.GetPoint(i).localPoint);
 				const auto cB = clipPoint + (radiusB - Dot(clipPoint - planePoint, normal)) * normal;
 				const auto cA = clipPoint - (radiusA * normal);
 				points[i] = (cA + cB) / float_t(2);
@@ -148,7 +148,7 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 
 	const auto p = input.p1;
 	const auto d = input.p2 - input.p1;
-	const auto absD = b2Abs(d);
+	const auto absD = Abs(d);
 
 	Vec2 normal;
 
@@ -173,7 +173,7 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 
 			if (t1 > t2)
 			{
-				b2Swap(t1, t2);
+				Swap(t1, t2);
 				s = float_t(1);
 			}
 
@@ -186,7 +186,7 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 			}
 
 			// Pull the max down
-			tmax = b2Min(tmax, t2);
+			tmax = Min(tmax, t2);
 
 			if (tmin > tmax)
 			{
@@ -243,7 +243,7 @@ b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray&
 
 bool b2TestOverlap(const b2Shape& shapeA, child_count_t indexA,
 				   const b2Shape& shapeB, child_count_t indexB,
-				   const b2Transform& xfA, const b2Transform& xfB)
+				   const Transform& xfA, const Transform& xfB)
 {
 	b2DistanceInput input;
 	input.proxyA = b2DistanceProxy(shapeA, indexA);
@@ -253,7 +253,7 @@ bool b2TestOverlap(const b2Shape& shapeA, child_count_t indexA,
 	input.useRadii = true;
 
 	b2SimplexCache cache;
-	const auto output = b2Distance(cache, input);
+	const auto output = Distance(cache, input);
 	return output.distance < (Epsilon * 10);
 }
 

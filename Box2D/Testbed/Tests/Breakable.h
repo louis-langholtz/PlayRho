@@ -76,7 +76,7 @@ public:
 		float_t maxImpulse = 0.0f;
 		for (int32 i = 0; i < count; ++i)
 		{
-			maxImpulse = b2Max(maxImpulse, impulse->GetEntryNormal(i));
+			maxImpulse = Max(maxImpulse, impulse->GetEntryNormal(i));
 		}
 
 		if (maxImpulse > 40.0f)

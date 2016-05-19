@@ -138,8 +138,8 @@ public:
 	}
 
 	void ReadCache(const b2SimplexCache& cache,
-				   const b2DistanceProxy& proxyA, const b2Transform& transformA,
-				   const b2DistanceProxy& proxyB, const b2Transform& transformB)
+				   const b2DistanceProxy& proxyA, const Transform& transformA,
+				   const b2DistanceProxy& proxyB, const Transform& transformB)
 	{
 		assert(cache.GetCount() <= MaxVertices);
 		
@@ -149,8 +149,8 @@ public:
 		{
 			const auto indexA = cache.GetIndexA(i);
 			const auto indexB = cache.GetIndexB(i);
-			const auto wA = b2Mul(transformA, proxyA.GetVertex(indexA));
-			const auto wB = b2Mul(transformB, proxyB.GetVertex(indexB));
+			const auto wA = Mul(transformA, proxyA.GetVertex(indexA));
+			const auto wB = Mul(transformB, proxyB.GetVertex(indexB));
 			m_vertices[i] = b2SimplexVertex{wA, wB, indexA, indexB, float_t(0)};
 		}
 		m_count = count;
@@ -173,8 +173,8 @@ public:
 		{
 			const auto indexA = b2SimplexCache::index_t{0};
 			const auto indexB = b2SimplexCache::index_t{0};
-			const auto wA = b2Mul(transformA, proxyA.GetVertex(indexA));
-			const auto wB = b2Mul(transformB, proxyB.GetVertex(indexB));
+			const auto wA = Mul(transformA, proxyA.GetVertex(indexA));
+			const auto wB = Mul(transformB, proxyB.GetVertex(indexB));
 			m_vertices[0] = b2SimplexVertex{wA, wB, indexA, indexB, float_t(1)};
 			m_count = 1;
 		}
@@ -268,7 +268,7 @@ public:
 			return float_t{0};
 
 		case 2:
-			return b2Distance(m_vertices[0].get_w(), m_vertices[1].get_w());
+			return Distance(m_vertices[0].get_w(), m_vertices[1].get_w());
 
 		case 3:
 			return Cross(m_vertices[1].get_w() - m_vertices[0].get_w(), m_vertices[2].get_w() - m_vertices[0].get_w());
@@ -459,7 +459,7 @@ void b2Simplex::Solve3() noexcept
 	m_count = 3;
 }
 
-b2DistanceOutput b2Distance(b2SimplexCache& cache, const b2DistanceInput& input)
+b2DistanceOutput Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 {
 #if defined(DO_GJK_PROFILING)
 	++gjkCalls;
@@ -538,7 +538,7 @@ b2DistanceOutput b2Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 		const auto d = simplex.GetSearchDirection();
 
 		// Ensure the search direction is numerically fit.
-		if (d.LengthSquared() < b2Square(Epsilon))
+		if (d.LengthSquared() < Square(Epsilon))
 		{
 			// The origin is probably contained by a line segment
 			// or triangle. Thus the shapes are overlapped.
@@ -550,8 +550,8 @@ b2DistanceOutput b2Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 		}
 
 		// Compute a tentative new simplex vertex using support points.
-		const auto indexA = proxyA.GetSupport(b2MulT(transformA.q, -d));
-		const auto indexB = proxyB.GetSupport(b2MulT(transformB.q, d));
+		const auto indexA = proxyA.GetSupport(MulT(transformA.q, -d));
+		const auto indexB = proxyB.GetSupport(MulT(transformB.q, d));
 
 		// Iteration count is equated to the number of support point calls.
 		++iter;
@@ -577,19 +577,19 @@ b2DistanceOutput b2Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 		}
 
 		// New vertex is ok and needed.
-		const auto wA = b2Mul(transformA, proxyA.GetVertex(indexA));
-		const auto wB = b2Mul(transformB, proxyB.GetVertex(indexB));
+		const auto wA = Mul(transformA, proxyA.GetVertex(indexA));
+		const auto wB = Mul(transformB, proxyB.GetVertex(indexB));
 		simplex.AddVertex(b2SimplexVertex{wA, wB, indexA, indexB, float_t(0)});
 	}
 
 #if defined(DO_GJK_PROFILING)
-	gjkMaxIters = b2Max(gjkMaxIters, iter);
+	gjkMaxIters = Max(gjkMaxIters, iter);
 #endif
 
 	// Prepare output.
 	b2DistanceOutput output;
 	simplex.GetWitnessPoints(&output.pointA, &output.pointB);
-	output.distance = b2Distance(output.pointA, output.pointB);
+	output.distance = Distance(output.pointA, output.pointB);
 	output.iterations = iter;
 
 	// Cache the simplex.
@@ -607,7 +607,7 @@ b2DistanceOutput b2Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 			// Shapes are still no overlapped.
 			// Move the witness points to the outer surface.
 			output.distance -= totalRadius;
-			const auto normal = b2Normalize(output.pointB - output.pointA);
+			const auto normal = Normalize(output.pointB - output.pointA);
 			output.pointA += rA * normal;
 			output.pointB -= rB * normal;
 		}

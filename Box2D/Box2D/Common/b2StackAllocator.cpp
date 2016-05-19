@@ -48,7 +48,7 @@ void* b2StackAllocator::Allocate(size_type size)
 	}
 
 	m_allocation += size;
-	m_maxAllocation = b2Max(m_maxAllocation, m_allocation);
+	m_maxAllocation = Max(m_maxAllocation, m_allocation);
 	++m_entryCount;
 
 	return entry->data;

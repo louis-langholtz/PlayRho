@@ -181,7 +181,7 @@ protected:
 	float_t m_invMassB;
 	float_t m_invIA;
 	float_t m_invIB;
-	b2Mat33 m_mass;			// effective mass for point-to-point constraint.
+	Mat33 m_mass;			// effective mass for point-to-point constraint.
 	float_t m_motorMass;	// effective mass for motor/limit angular constraint.
 	b2LimitState m_limitState;
 };

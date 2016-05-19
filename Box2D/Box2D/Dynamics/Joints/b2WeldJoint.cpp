@@ -76,10 +76,10 @@ void b2WeldJoint::InitVelocityConstraints(const b2SolverData& data)
 	auto vB = data.velocities[m_indexB].v;
 	auto wB = data.velocities[m_indexB].w;
 
-	const b2Rot qA(aA), qB(aB);
+	const Rot qA(aA), qB(aB);
 
-	m_rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
-	m_rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	m_rA = Mul(qA, m_localAnchorA - m_localCenterA);
+	m_rB = Mul(qB, m_localAnchorB - m_localCenterB);
 
 	// J = [-I -r1_skew I r2_skew]
 	//     [ 0       -1 0       1]
@@ -93,7 +93,7 @@ void b2WeldJoint::InitVelocityConstraints(const b2SolverData& data)
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
 
-	b2Mat33 K;
+	Mat33 K;
 	K.ex.x = mA + mB + m_rA.y * m_rA.y * iA + m_rB.y * m_rB.y * iB;
 	K.ey.x = -m_rA.y * m_rA.x * iA - m_rB.y * m_rB.x * iB;
 	K.ez.x = -m_rA.y * iA - m_rB.y * iB;
@@ -190,7 +190,7 @@ void b2WeldJoint::SolveVelocityConstraints(const b2SolverData& data)
 
 		const auto Cdot1 = vB + Cross(wB, m_rB) - vA - Cross(wA, m_rA);
 
-		const auto impulse1 = -b2Mul22(m_mass, Cdot1);
+		const auto impulse1 = -Mul22(m_mass, Cdot1);
 		m_impulse.x += impulse1.x;
 		m_impulse.y += impulse1.y;
 
@@ -208,7 +208,7 @@ void b2WeldJoint::SolveVelocityConstraints(const b2SolverData& data)
 		const auto Cdot2 = wB - wA;
 		const auto Cdot = Vec3(Cdot1.x, Cdot1.y, Cdot2);
 
-		const auto impulse = -b2Mul(m_mass, Cdot);
+		const auto impulse = -Mul(m_mass, Cdot);
 		m_impulse += impulse;
 
 		const auto P = Vec2(impulse.x, impulse.y);
@@ -233,17 +233,17 @@ bool b2WeldJoint::SolvePositionConstraints(const b2SolverData& data)
 	auto cB = data.positions[m_indexB].c;
 	auto aB = data.positions[m_indexB].a;
 
-	const b2Rot qA(aA), qB(aB);
+	const Rot qA(aA), qB(aB);
 
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
 
-	const auto rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
-	const auto rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	const auto rA = Mul(qA, m_localAnchorA - m_localCenterA);
+	const auto rB = Mul(qB, m_localAnchorB - m_localCenterB);
 
 	float_t positionError, angularError;
 
-	b2Mat33 K;
+	Mat33 K;
 	K.ex.x = mA + mB + rA.y * rA.y * iA + rB.y * rB.y * iB;
 	K.ey.x = -rA.y * rA.x * iA - rB.y * rB.x * iB;
 	K.ez.x = -rA.y * iA - rB.y * iB;
@@ -275,7 +275,7 @@ bool b2WeldJoint::SolvePositionConstraints(const b2SolverData& data)
 		const auto C2 = aB - aA - m_referenceAngle;
 
 		positionError = C1.Length();
-		angularError = b2Abs(C2);
+		angularError = Abs(C2);
 
 		const auto C = Vec3(C1.x, C1.y, C2);
 	

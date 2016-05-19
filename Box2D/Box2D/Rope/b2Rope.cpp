@@ -66,7 +66,7 @@ void b2Rope::Initialize(const b2RopeDef* def)
 	{
 		const auto p1 = m_ps[i];
 		const auto p2 = m_ps[i+1];
-		m_Ls[i] = b2Distance(p1, p2);
+		m_Ls[i] = Distance(p1, p2);
 	}
 
 	for (auto i = decltype(count3){0}; i < count3; ++i)
@@ -81,7 +81,7 @@ void b2Rope::Initialize(const b2RopeDef* def)
 		const auto a = Cross(d1, d2);
 		const auto b = Dot(d1, d2);
 
-		m_as[i] = b2Atan2(a, b);
+		m_as[i] = Atan2(a, b);
 	}
 
 	m_gravity = def->gravity;
@@ -193,7 +193,7 @@ void b2Rope::SolveC3()
 		const auto a = Cross(d1, d2);
 		const auto b = Dot(d1, d2);
 
-		auto angle = b2Atan2(a, b);
+		auto angle = Atan2(a, b);
 
 		const auto Jd1 = (-float_t(1) / L1sqr) * d1.Skew();
 		const auto Jd2 = (float_t(1) / L2sqr) * d2.Skew();

@@ -54,13 +54,13 @@ void b2PolygonShape::SetAsBox(float_t hx, float_t hy, const Vec2& center, float_
 	m_normals[3] = Vec2(-float_t(1), float_t{0});
 	m_centroid = center;
 
-	const auto xf = b2Transform{center, b2Rot{angle}};
+	const auto xf = Transform{center, Rot{angle}};
 
 	// Transform vertices and normals.
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
-		m_vertices[i] = b2Mul(xf, m_vertices[i]);
-		m_normals[i] = b2Mul(xf.q, m_normals[i]);
+		m_vertices[i] = Mul(xf, m_vertices[i]);
+		m_normals[i] = Mul(xf.q, m_normals[i]);
 	}
 }
 
@@ -124,7 +124,7 @@ void b2PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 		return;
 	}
 	
-	auto n = b2Min(count, MaxPolygonVertices);
+	auto n = Min(count, MaxPolygonVertices);
 
 	// Perform welding and copy vertices into local buffer.
 	Vec2 ps[MaxPolygonVertices];
@@ -136,7 +136,7 @@ void b2PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 		auto unique = true;
 		for (auto j = decltype(tempCount){0}; j < tempCount; ++j)
 		{
-			if (b2DistanceSquared(v, ps[j]) < b2Square(LinearSlop / 2))
+			if (DistanceSquared(v, ps[j]) < Square(LinearSlop / 2))
 			{
 				unique = false;
 				break;
@@ -237,17 +237,17 @@ void b2PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 		const auto i1 = i;
 		const auto i2 = ((i + 1) < m) ? i + 1 : 0;
 		const auto edge = m_vertices[i2] - m_vertices[i1];
-		assert(edge.LengthSquared() > b2Square(Epsilon));
-		m_normals[i] = b2Normalize(Cross(edge, float_t(1)));
+		assert(edge.LengthSquared() > Square(Epsilon));
+		m_normals[i] = Normalize(Cross(edge, float_t(1)));
 	}
 
 	// Compute the polygon centroid.
 	m_centroid = ComputeCentroid(m_vertices, m);
 }
 
-bool b2PolygonShape::TestPoint(const b2Transform& xf, const Vec2& p) const
+bool b2PolygonShape::TestPoint(const Transform& xf, const Vec2& p) const
 {
-	const auto pLocal = b2MulT(xf.q, p - xf.p);
+	const auto pLocal = MulT(xf.q, p - xf.p);
 
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
@@ -262,13 +262,13 @@ bool b2PolygonShape::TestPoint(const b2Transform& xf, const Vec2& p) const
 }
 
 bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
-								const b2Transform& xf, child_count_t childIndex) const
+								const Transform& xf, child_count_t childIndex) const
 {
 	BOX2D_NOT_USED(childIndex);
 
 	// Put the ray into the polygon's frame of reference.
-	const auto p1 = b2MulT(xf.q, input.p1 - xf.p);
-	const auto p2 = b2MulT(xf.q, input.p2 - xf.p);
+	const auto p1 = MulT(xf.q, input.p1 - xf.p);
+	const auto p2 = MulT(xf.q, input.p2 - xf.p);
 	const auto d = p2 - p1;
 
 	auto lower = float_t{0};
@@ -326,27 +326,27 @@ bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& inpu
 	if (index != InvalidIndex)
 	{
 		output->fraction = lower;
-		output->normal = b2Mul(xf.q, m_normals[index]);
+		output->normal = Mul(xf.q, m_normals[index]);
 		return true;
 	}
 
 	return false;
 }
 
-b2AABB b2PolygonShape::ComputeAABB(const b2Transform& xf, child_count_t childIndex) const
+b2AABB b2PolygonShape::ComputeAABB(const Transform& xf, child_count_t childIndex) const
 {
 	BOX2D_NOT_USED(childIndex);
 	
 	assert(m_count > 0);
 
-	auto lower = b2Mul(xf, m_vertices[0]);
+	auto lower = Mul(xf, m_vertices[0]);
 	auto upper = lower;
 
 	for (auto i = decltype(m_count){1}; i < m_count; ++i)
 	{
-		const auto v = b2Mul(xf, m_vertices[i]);
-		lower = b2Min(lower, v);
-		upper = b2Max(upper, v);
+		const auto v = Mul(xf, m_vertices[i]);
+		lower = Min(lower, v);
+		upper = Max(upper, v);
 	}
 
 	const auto r = Vec2(GetRadius(), GetRadius());

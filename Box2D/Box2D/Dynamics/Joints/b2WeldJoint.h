@@ -114,7 +114,7 @@ protected:
 	float_t m_invMassB;
 	float_t m_invIA;
 	float_t m_invIB;
-	b2Mat33 m_mass;
+	Mat33 m_mass;
 };
 
 } // namespace box2d

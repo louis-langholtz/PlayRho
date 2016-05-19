@@ -104,7 +104,7 @@ b2PrismaticJoint::b2PrismaticJoint(const b2PrismaticJointDef* def)
 {
 	m_localAnchorA = def->localAnchorA;
 	m_localAnchorB = def->localAnchorB;
-	m_localXAxisA = b2Normalize(def->localAxisA);
+	m_localXAxisA = Normalize(def->localAxisA);
 	m_localYAxisA = Cross(float_t(1), m_localXAxisA);
 	m_referenceAngle = def->referenceAngle;
 
@@ -145,12 +145,12 @@ void b2PrismaticJoint::InitVelocityConstraints(const b2SolverData& data)
 	auto vB = data.velocities[m_indexB].v;
 	auto wB = data.velocities[m_indexB].w;
 
-	const auto qA = b2Rot(aA);
-	const auto qB = b2Rot(aB);
+	const auto qA = Rot(aA);
+	const auto qB = Rot(aB);
 
 	// Compute the effective masses.
-	const auto rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
-	const auto rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	const auto rA = Mul(qA, m_localAnchorA - m_localCenterA);
+	const auto rB = Mul(qB, m_localAnchorB - m_localCenterB);
 	const auto d = (cB - cA) + rB - rA;
 
 	const auto mA = m_invMassA, mB = m_invMassB;
@@ -158,7 +158,7 @@ void b2PrismaticJoint::InitVelocityConstraints(const b2SolverData& data)
 
 	// Compute motor Jacobian and effective mass.
 	{
-		m_axis = b2Mul(qA, m_localXAxisA);
+		m_axis = Mul(qA, m_localXAxisA);
 		m_a1 = Cross(d + rA, m_axis);
 		m_a2 = Cross(rB, m_axis);
 
@@ -171,7 +171,7 @@ void b2PrismaticJoint::InitVelocityConstraints(const b2SolverData& data)
 
 	// Prismatic constraint.
 	{
-		m_perp = b2Mul(qA, m_localYAxisA);
+		m_perp = Mul(qA, m_localYAxisA);
 
 		m_s1 = Cross(d + rA, m_perp);
 		m_s2 = Cross(rB, m_perp);
@@ -197,7 +197,7 @@ void b2PrismaticJoint::InitVelocityConstraints(const b2SolverData& data)
 	if (m_enableLimit)
 	{
 		const auto jointTranslation = Dot(m_axis, d);
-		if (b2Abs(m_upperTranslation - m_lowerTranslation) < (LinearSlop * 2))
+		if (Abs(m_upperTranslation - m_lowerTranslation) < (LinearSlop * 2))
 		{
 			m_limitState = e_equalLimits;
 		}
@@ -279,7 +279,7 @@ void b2PrismaticJoint::SolveVelocityConstraints(const b2SolverData& data)
 		auto impulse = m_motorMass * (m_motorSpeed - Cdot);
 		const auto oldImpulse = m_motorImpulse;
 		const auto maxImpulse = data.step.get_dt() * m_maxMotorForce;
-		m_motorImpulse = b2Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
+		m_motorImpulse = Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
 		impulse = m_motorImpulse - oldImpulse;
 
 		const auto P = impulse * m_axis;
@@ -306,11 +306,11 @@ void b2PrismaticJoint::SolveVelocityConstraints(const b2SolverData& data)
 
 		if (m_limitState == e_atLowerLimit)
 		{
-			m_impulse.z = b2Max(m_impulse.z, float_t{0});
+			m_impulse.z = Max(m_impulse.z, float_t{0});
 		}
 		else if (m_limitState == e_atUpperLimit)
 		{
-			m_impulse.z = b2Min(m_impulse.z, float_t{0});
+			m_impulse.z = Min(m_impulse.z, float_t{0});
 		}
 
 		// f2(1:2) = invK(1:2,1:2) * (-Cdot(1:2) - K(1:2,3) * (f2(3) - f1(3))) + f1(1:2)
@@ -369,54 +369,54 @@ bool b2PrismaticJoint::SolvePositionConstraints(const b2SolverData& data)
 	auto cB = data.positions[m_indexB].c;
 	auto aB = data.positions[m_indexB].a;
 
-	const auto qA = b2Rot{aA};
-	const auto qB = b2Rot{aB};
+	const auto qA = Rot{aA};
+	const auto qB = Rot{aB};
 
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
 
 	// Compute fresh Jacobians
-	const auto rA = b2Mul(qA, m_localAnchorA - m_localCenterA);
-	const auto rB = b2Mul(qB, m_localAnchorB - m_localCenterB);
+	const auto rA = Mul(qA, m_localAnchorA - m_localCenterA);
+	const auto rB = Mul(qB, m_localAnchorB - m_localCenterB);
 	const auto d = cB + rB - cA - rA;
 
-	const auto axis = b2Mul(qA, m_localXAxisA);
+	const auto axis = Mul(qA, m_localXAxisA);
 	const auto a1 = Cross(d + rA, axis);
 	const auto a2 = Cross(rB, axis);
-	const auto perp = b2Mul(qA, m_localYAxisA);
+	const auto perp = Mul(qA, m_localYAxisA);
 
 	const auto s1 = Cross(d + rA, perp);
 	const auto s2 = Cross(rB, perp);
 
 	const auto C1 = Vec2{Dot(perp, d), aB - aA - m_referenceAngle};
 
-	auto linearError = b2Abs(C1.x);
-	const auto angularError = b2Abs(C1.y);
+	auto linearError = Abs(C1.x);
+	const auto angularError = Abs(C1.y);
 
 	auto active = false;
 	auto C2 = float_t{0};
 	if (m_enableLimit)
 	{
 		const auto translation = Dot(axis, d);
-		if (b2Abs(m_upperTranslation - m_lowerTranslation) < (float_t{2} * LinearSlop))
+		if (Abs(m_upperTranslation - m_lowerTranslation) < (float_t{2} * LinearSlop))
 		{
 			// Prevent large angular corrections
-			C2 = b2Clamp(translation, -MaxLinearCorrection, MaxLinearCorrection);
-			linearError = b2Max(linearError, b2Abs(translation));
+			C2 = Clamp(translation, -MaxLinearCorrection, MaxLinearCorrection);
+			linearError = Max(linearError, Abs(translation));
 			active = true;
 		}
 		else if (translation <= m_lowerTranslation)
 		{
 			// Prevent large linear corrections and allow some slop.
-			C2 = b2Clamp(translation - m_lowerTranslation + LinearSlop, -MaxLinearCorrection, float_t{0});
-			linearError = b2Max(linearError, m_lowerTranslation - translation);
+			C2 = Clamp(translation - m_lowerTranslation + LinearSlop, -MaxLinearCorrection, float_t{0});
+			linearError = Max(linearError, m_lowerTranslation - translation);
 			active = true;
 		}
 		else if (translation >= m_upperTranslation)
 		{
 			// Prevent large linear corrections and allow some slop.
-			C2 = b2Clamp(translation - m_upperTranslation - LinearSlop, float_t{0}, MaxLinearCorrection);
-			linearError = b2Max(linearError, translation - m_upperTranslation);
+			C2 = Clamp(translation - m_upperTranslation - LinearSlop, float_t{0}, MaxLinearCorrection);
+			linearError = Max(linearError, translation - m_upperTranslation);
 			active = true;
 		}
 	}
@@ -436,7 +436,7 @@ bool b2PrismaticJoint::SolvePositionConstraints(const b2SolverData& data)
 		const auto k23 = iA * a1 + iB * a2;
 		const auto k33 = mA + mB + iA * a1 * a1 + iB * a2 * a2;
 
-		const auto K = b2Mat33{Vec3{k11, k12, k13}, Vec3{k12, k22, k23}, Vec3{k13, k23, k33}};
+		const auto K = Mat33{Vec3{k11, k12, k13}, Vec3{k12, k22, k23}, Vec3{k13, k23, k33}};
 
 		const auto C = Vec3{C1.x, C1.y, C2};
 
@@ -452,7 +452,7 @@ bool b2PrismaticJoint::SolvePositionConstraints(const b2SolverData& data)
 			k22 = float_t{1};
 		}
 
-		const auto K = b2Mat22{Vec2{k11, k12}, Vec2{k12, k22}};
+		const auto K = Mat22{Vec2{k11, k12}, Vec2{k12, k22}};
 
 		const auto impulse1 = K.Solve(-C1);
 		impulse.x = impulse1.x;
@@ -512,12 +512,12 @@ float_t b2PrismaticJoint::GetJointSpeed() const
 	const auto bA = m_bodyA;
 	const auto bB = m_bodyB;
 
-	const auto rA = b2Mul(bA->m_xf.q, m_localAnchorA - bA->m_sweep.localCenter);
-	const auto rB = b2Mul(bB->m_xf.q, m_localAnchorB - bB->m_sweep.localCenter);
+	const auto rA = Mul(bA->m_xf.q, m_localAnchorA - bA->m_sweep.localCenter);
+	const auto rB = Mul(bB->m_xf.q, m_localAnchorB - bB->m_sweep.localCenter);
 	const auto p1 = bA->m_sweep.c + rA;
 	const auto p2 = bB->m_sweep.c + rB;
 	const auto d = p2 - p1;
-	const auto axis = b2Mul(bA->m_xf.q, m_localXAxisA);
+	const auto axis = Mul(bA->m_xf.q, m_localXAxisA);
 
 	const auto vA = bA->m_linearVelocity;
 	const auto vB = bB->m_linearVelocity;

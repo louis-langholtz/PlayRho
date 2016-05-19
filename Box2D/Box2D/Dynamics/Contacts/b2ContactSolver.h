@@ -113,8 +113,8 @@ public:
 	}
 
 	Vec2 normal;
-	b2Mat22 normalMass;
-	b2Mat22 K;
+	Mat22 normalMass;
+	Mat22 K;
 	b2ContactVelocityConstraintBodyData bodyA; ///< Body A contact velocity constraint data.
 	b2ContactVelocityConstraintBodyData bodyB; ///< Body B contact velocity constraint data.
 	float_t friction; ///< Friction coefficient. Usually in the range of [0,1].

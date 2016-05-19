@@ -81,7 +81,7 @@ public:
 
 	/// Draw a transform. Choose your own length scale.
 	/// @param xf a transform.
-	virtual void DrawTransform(const b2Transform& xf) = 0;
+	virtual void DrawTransform(const Transform& xf) = 0;
 
 protected:
 	uint32 m_drawFlags = 0;

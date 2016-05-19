@@ -23,20 +23,20 @@ namespace box2d {
 
 // Find the max separation between shape1 and shape2 using edge normals from shape1.
 static float_t b2FindMaxSeparation(b2PolygonShape::vertex_count_t& edgeIndex,
-								   const b2PolygonShape& shape1, const b2Transform& xf1,
-								   const b2PolygonShape& shape2, const b2Transform& xf2)
+								   const b2PolygonShape& shape1, const Transform& xf1,
+								   const b2PolygonShape& shape2, const Transform& xf2)
 {
 	const auto count1 = shape1.GetVertexCount();
 	const auto count2 = shape2.GetVertexCount();
-	const auto xf = b2MulT(xf2, xf1);
+	const auto xf = MulT(xf2, xf1);
 
 	auto shape1_index_of_max_separation = decltype(count1){0};
 	auto maxSeparation = -MaxFloat;
 	for (auto i = decltype(count1){0}; i < count1; ++i)
 	{
 		// Get shape1 normal in frame2.
-		const auto n = b2Mul(xf.q, shape1.GetNormal(i));
-		const auto v1 = b2Mul(xf, shape1.GetVertex(i));
+		const auto n = Mul(xf.q, shape1.GetNormal(i));
+		const auto v1 = Mul(xf, shape1.GetVertex(i));
 
 		// Find deepest point for normal i.
 		auto min_sij = MaxFloat;
@@ -61,8 +61,8 @@ static float_t b2FindMaxSeparation(b2PolygonShape::vertex_count_t& edgeIndex,
 }
 
 static b2ClipArray b2FindIncidentEdge(b2PolygonShape::vertex_count_t index1,
-									  const b2PolygonShape& shape1, const b2Transform& xf1,
-									  const b2PolygonShape& shape2, const b2Transform& xf2)
+									  const b2PolygonShape& shape1, const Transform& xf1,
+									  const b2PolygonShape& shape2, const Transform& xf2)
 {
 	assert(index1 >= 0);
 	assert(index1 < shape1.GetVertexCount());
@@ -70,7 +70,7 @@ static b2ClipArray b2FindIncidentEdge(b2PolygonShape::vertex_count_t index1,
 	const auto count2 = shape2.GetVertexCount();
 
 	// Get the normal of the reference edge in shape2's frame.
-	const auto normal1 = b2MulT(xf2.q, b2Mul(xf1.q, shape1.GetNormal(index1)));
+	const auto normal1 = MulT(xf2.q, Mul(xf1.q, shape1.GetNormal(index1)));
 
 	// Find the incident edge on shape2.
 	auto index_of_min_dot = decltype(count2){0};
@@ -93,8 +93,8 @@ static b2ClipArray b2FindIncidentEdge(b2PolygonShape::vertex_count_t index1,
 	const auto i2 = (i1_next < count2) ? i1_next: 0;
 
 	return b2ClipArray{{
-		{b2Mul(xf2, shape2.GetVertex(i1)), b2ContactFeature(b2ContactFeature::e_face, index1, b2ContactFeature::e_vertex, i1)},
-		{b2Mul(xf2, shape2.GetVertex(i2)), b2ContactFeature(b2ContactFeature::e_face, index1, b2ContactFeature::e_vertex, i2)}
+		{Mul(xf2, shape2.GetVertex(i1)), b2ContactFeature(b2ContactFeature::e_face, index1, b2ContactFeature::e_vertex, i1)},
+		{Mul(xf2, shape2.GetVertex(i2)), b2ContactFeature(b2ContactFeature::e_face, index1, b2ContactFeature::e_vertex, i2)}
 	}};
 }
 
@@ -105,7 +105,7 @@ static b2ClipArray b2FindIncidentEdge(b2PolygonShape::vertex_count_t index1,
 // Clip
 
 // The normal points from 1 to 2
-b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA, const b2PolygonShape& shapeB, const b2Transform& xfB)
+b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, const b2PolygonShape& shapeB, const Transform& xfB)
 {
 	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
 
@@ -125,7 +125,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 
 	const b2PolygonShape* shape1;	// reference polygon
 	const b2PolygonShape* shape2;	// incident polygon
-	b2Transform xf1, xf2;
+	Transform xf1, xf2;
 	b2PolygonShape::vertex_count_t edge1; // reference edge
 	bool flip;
 	constexpr auto k_tol = LinearSlop / 10;
@@ -163,16 +163,16 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 	auto v11 = shape1->GetVertex(iv1);
 	auto v12 = shape1->GetVertex(iv2);
 
-	const auto localTangent = b2Normalize(v12 - v11);
+	const auto localTangent = Normalize(v12 - v11);
 	
 	const auto localNormal = Cross(localTangent, float_t(1));
 	const auto planePoint = (v11 + v12) / float_t(2);
 
-	const auto tangent = b2Mul(xf1.q, localTangent);
+	const auto tangent = Mul(xf1.q, localTangent);
 	const auto normal = Cross(tangent, float_t(1));
 	
-	v11 = b2Mul(xf1, v11);
-	v12 = b2Mul(xf1, v12);
+	v11 = Mul(xf1, v11);
+	v12 = Mul(xf1, v12);
 
 	// Face offset.
 	const auto frontOffset = Dot(normal, v11);
@@ -208,7 +208,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 		if (separation <= totalRadius)
 		{
 			const auto cf = flip? b2Flip(clipPoints2[i].cf): clipPoints2[i].cf;
-			manifold.AddPoint(b2MulT(xf2, clipPoints2[i].v), cf);
+			manifold.AddPoint(MulT(xf2, clipPoints2[i].v), cf);
 		}
 	}
 	return manifold;

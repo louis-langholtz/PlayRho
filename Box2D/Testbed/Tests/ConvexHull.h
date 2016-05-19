@@ -48,7 +48,7 @@ public:
 			// Clamp onto a square to help create collinearities.
 			// This will stress the convex hull algorithm.
 			Vec2 v(x, y);
-			v = b2Clamp(v, lowerBound, upperBound);
+			v = Clamp(v, lowerBound, upperBound);
 			m_points[i] = v;
 		}
 
