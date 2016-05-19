@@ -72,12 +72,12 @@ private:
 	std::function<void(T&)> m_on_destruction;
 };
 
-b2World::b2World(const Vec2& gravity): m_gravity(gravity)
+World::World(const Vec2& gravity): m_gravity(gravity)
 {
 	memset(&m_profile, 0, sizeof(b2Profile));
 }
 
-b2World::~b2World()
+World::~World()
 {
 	// Some shapes allocate using alloc.
 	auto b = m_bodyList;
@@ -96,27 +96,27 @@ b2World::~b2World()
 	}
 }
 
-void b2World::SetDestructionListener(b2DestructionListener* listener) noexcept
+void World::SetDestructionListener(b2DestructionListener* listener) noexcept
 {
 	m_destructionListener = listener;
 }
 
-void b2World::SetContactFilter(b2ContactFilter* filter) noexcept
+void World::SetContactFilter(b2ContactFilter* filter) noexcept
 {
 	m_contactManager.m_contactFilter = filter;
 }
 
-void b2World::SetContactListener(b2ContactListener* listener) noexcept
+void World::SetContactListener(b2ContactListener* listener) noexcept
 {
 	m_contactManager.m_contactListener = listener;
 }
 
-void b2World::SetDebugDraw(b2Draw* debugDraw) noexcept
+void World::SetDebugDraw(b2Draw* debugDraw) noexcept
 {
 	g_debugDraw = debugDraw;
 }
 
-Body* b2World::CreateBody(const BodyDef* def)
+Body* World::CreateBody(const BodyDef* def)
 {
 	assert(!IsLocked());
 	if (IsLocked())
@@ -140,7 +140,7 @@ Body* b2World::CreateBody(const BodyDef* def)
 	return b;
 }
 
-void b2World::DestroyBody(Body* b)
+void World::DestroyBody(Body* b)
 {
 	assert(m_bodyCount > 0);
 	assert(!IsLocked());
@@ -221,7 +221,7 @@ void b2World::DestroyBody(Body* b)
 	m_blockAllocator.Free(b, sizeof(Body));
 }
 
-Joint* b2World::CreateJoint(const JointDef* def)
+Joint* World::CreateJoint(const JointDef* def)
 {
 	assert(!IsLocked());
 	if (IsLocked())
@@ -281,7 +281,7 @@ Joint* b2World::CreateJoint(const JointDef* def)
 	return j;
 }
 
-void b2World::DestroyJoint(Joint* j)
+void World::DestroyJoint(Joint* j)
 {
 	assert(!IsLocked());
 	if (IsLocked())
@@ -377,7 +377,7 @@ void b2World::DestroyJoint(Joint* j)
 }
 
 //
-void b2World::SetAllowSleeping(bool flag) noexcept
+void World::SetAllowSleeping(bool flag) noexcept
 {
 	if (flag == m_allowSleep)
 	{
@@ -395,7 +395,7 @@ void b2World::SetAllowSleeping(bool flag) noexcept
 }
 
 // Find islands, integrate and solve constraints, solve position constraints
-void b2World::Solve(const b2TimeStep& step)
+void World::Solve(const b2TimeStep& step)
 {
 	m_profile.solveInit = float_t{0};
 	m_profile.solveVelocity = float_t{0};
@@ -584,7 +584,7 @@ void b2World::Solve(const b2TimeStep& step)
 }
 
 // Find TOI contacts and solve them.
-void b2World::SolveTOI(const b2TimeStep& step)
+void World::SolveTOI(const b2TimeStep& step)
 {
 	b2Island island(2 * MaxTOIContacts, MaxTOIContacts, 0, &m_stackAllocator, m_contactManager.m_contactListener);
 
@@ -822,7 +822,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 	}
 }
 
-void b2World::Step(float_t dt, int32 velocityIterations, int32 positionIterations)
+void World::Step(float_t dt, int32 velocityIterations, int32 positionIterations)
 {
 	b2Timer stepTimer;
 
@@ -879,7 +879,7 @@ void b2World::Step(float_t dt, int32 velocityIterations, int32 positionIteration
 	m_profile.step = stepTimer.GetMilliseconds();
 }
 
-void b2World::ClearForces() noexcept
+void World::ClearForces() noexcept
 {
 	for (auto body = m_bodyList; body; body = body->GetNext())
 	{
@@ -888,7 +888,7 @@ void b2World::ClearForces() noexcept
 	}
 }
 
-struct b2WorldQueryWrapper
+struct WorldQueryWrapper
 {
 	using size_type = b2BroadPhase::size_type;
 
@@ -902,15 +902,15 @@ struct b2WorldQueryWrapper
 	b2QueryCallback* callback;
 };
 
-void b2World::QueryAABB(b2QueryCallback* callback, const b2AABB& aabb) const
+void World::QueryAABB(b2QueryCallback* callback, const b2AABB& aabb) const
 {
-	b2WorldQueryWrapper wrapper;
+	WorldQueryWrapper wrapper;
 	wrapper.broadPhase = &m_contactManager.m_broadPhase;
 	wrapper.callback = callback;
 	m_contactManager.m_broadPhase.Query(&wrapper, aabb);
 }
 
-struct b2WorldRayCastWrapper
+struct WorldRayCastWrapper
 {
 	using size_type = b2BroadPhase::size_type;
 
@@ -933,22 +933,22 @@ struct b2WorldRayCastWrapper
 		return input.maxFraction;
 	}
 
-	b2WorldRayCastWrapper() = delete;
+	WorldRayCastWrapper() = delete;
 
-	constexpr b2WorldRayCastWrapper(const b2BroadPhase* bp, b2RayCastCallback* cb): broadPhase(bp), callback(cb) {}
+	constexpr WorldRayCastWrapper(const b2BroadPhase* bp, b2RayCastCallback* cb): broadPhase(bp), callback(cb) {}
 
 	const b2BroadPhase* const broadPhase;
 	b2RayCastCallback* const callback;
 };
 
-void b2World::RayCast(b2RayCastCallback* callback, const Vec2& point1, const Vec2& point2) const
+void World::RayCast(b2RayCastCallback* callback, const Vec2& point1, const Vec2& point2) const
 {
-	b2WorldRayCastWrapper wrapper(&m_contactManager.m_broadPhase, callback);
+	WorldRayCastWrapper wrapper(&m_contactManager.m_broadPhase, callback);
 	const auto input = b2RayCastInput{point1, point2, float_t(1)};
 	m_contactManager.m_broadPhase.RayCast(&wrapper, input);
 }
 
-void b2World::DrawShape(const Fixture* fixture, const Transform& xf, const b2Color& color)
+void World::DrawShape(const Fixture* fixture, const Transform& xf, const b2Color& color)
 {
 	switch (fixture->GetType())
 	{
@@ -1005,7 +1005,7 @@ void b2World::DrawShape(const Fixture* fixture, const Transform& xf, const b2Col
 	}
 }
 
-void b2World::DrawJoint(Joint* joint)
+void World::DrawJoint(Joint* joint)
 {
 	const auto bodyA = joint->GetBodyA();
 	const auto bodyB = joint->GetBodyB();
@@ -1046,7 +1046,7 @@ void b2World::DrawJoint(Joint* joint)
 	}
 }
 
-void b2World::DrawDebugData()
+void World::DrawDebugData()
 {
 	if (g_debugDraw == nullptr)
 	{
@@ -1150,27 +1150,27 @@ void b2World::DrawDebugData()
 	}
 }
 
-b2World::size_type b2World::GetProxyCount() const noexcept
+World::size_type World::GetProxyCount() const noexcept
 {
 	return m_contactManager.m_broadPhase.GetProxyCount();
 }
 
-b2World::size_type b2World::GetTreeHeight() const noexcept
+World::size_type World::GetTreeHeight() const noexcept
 {
 	return m_contactManager.m_broadPhase.GetTreeHeight();
 }
 
-b2World::size_type b2World::GetTreeBalance() const
+World::size_type World::GetTreeBalance() const
 {
 	return m_contactManager.m_broadPhase.GetTreeBalance();
 }
 
-float_t b2World::GetTreeQuality() const
+float_t World::GetTreeQuality() const
 {
 	return m_contactManager.m_broadPhase.GetTreeQuality();
 }
 
-void b2World::ShiftOrigin(const Vec2& newOrigin)
+void World::ShiftOrigin(const Vec2& newOrigin)
 {
 	assert(!IsLocked());
 	if (IsLocked())
@@ -1193,7 +1193,7 @@ void b2World::ShiftOrigin(const Vec2& newOrigin)
 	m_contactManager.m_broadPhase.ShiftOrigin(newOrigin);
 }
 
-void b2World::Dump()
+void World::Dump()
 {
 	if (IsLocked())
 	{

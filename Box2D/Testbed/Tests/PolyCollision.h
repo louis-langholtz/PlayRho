@@ -69,7 +69,7 @@ public:
 			g_debugDraw.DrawPolygon(v, m_polygonB.GetVertexCount(), color);
 		}
 
-		const b2WorldManifold worldManifold(manifold, m_transformA, m_polygonA.GetRadius(), m_transformB, m_polygonB.GetRadius());
+		const WorldManifold worldManifold(manifold, m_transformA, m_polygonA.GetRadius(), m_transformB, m_polygonB.GetRadius());
 		for (int32 i = 0; i < manifold.GetPointCount(); ++i)
 		{
 			g_debugDraw.DrawPoint(worldManifold.GetPoint(i), 4.0f, b2Color(0.9f, 0.3f, 0.3f));

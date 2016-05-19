@@ -28,7 +28,7 @@ class b2ContactFilter;
 class b2ContactListener;
 class b2BlockAllocator;
 
-// Delegate of b2World.
+// Delegate of World.
 class b2ContactManager
 {
 public:

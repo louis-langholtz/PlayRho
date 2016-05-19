@@ -31,7 +31,7 @@ namespace box2d {
 class Body;
 class b2Contact;
 class Fixture;
-class b2World;
+class World;
 class b2BlockAllocator;
 class b2StackAllocator;
 class b2ContactListener;
@@ -77,7 +77,7 @@ public:
 	const b2Manifold* GetManifold() const noexcept;
 
 	/// Get the world manifold.
-	b2WorldManifold GetWorldManifold() const;
+	WorldManifold GetWorldManifold() const;
 
 	/// Is this contact touching?
 	bool IsTouching() const noexcept;
@@ -145,7 +145,7 @@ public:
 
 protected:
 	friend class b2ContactManager;
-	friend class b2World;
+	friend class World;
 	friend class b2ContactSolver;
 	friend class Body;
 	friend class Fixture;
@@ -256,13 +256,13 @@ inline const b2Manifold* b2Contact::GetManifold() const noexcept
 	return &m_manifold;
 }
 
-inline b2WorldManifold b2Contact::GetWorldManifold() const
+inline WorldManifold b2Contact::GetWorldManifold() const
 {
 	const auto bodyA = m_fixtureA->GetBody();
 	const auto bodyB = m_fixtureB->GetBody();
 	const auto shapeA = m_fixtureA->GetShape();
 	const auto shapeB = m_fixtureB->GetShape();
-	return b2WorldManifold{m_manifold, bodyA->GetTransform(), shapeA->GetRadius(), bodyB->GetTransform(), shapeB->GetRadius()};
+	return WorldManifold{m_manifold, bodyA->GetTransform(), shapeA->GetRadius(), bodyB->GetTransform(), shapeB->GetRadius()};
 }
 
 inline void b2Contact::SetEnabled(bool flag) noexcept

@@ -186,7 +186,7 @@ protected:
 	int32 m_pointCount;
 	DestructionListener m_destructionListener;
 	int32 m_textLine;
-	b2World* m_world;
+	World* m_world;
 	Body* m_bomb;
 	b2MouseJoint* m_mouseJoint;
 	Vec2 m_bombSpawnPoint;

@@ -187,14 +187,14 @@ private:
 };
 
 /// This is used to compute the current state of a contact manifold.
-class b2WorldManifold
+class WorldManifold
 {
 public:
 	using size_type = std::remove_cv<decltype(MaxPolygonVertices)>::type;
 
-	b2WorldManifold() = default;
+	WorldManifold() = default;
 
-	b2WorldManifold(const b2Manifold& manifold,
+	WorldManifold(const b2Manifold& manifold,
 					const Transform& xfA, float_t radiusA,
 					const Transform& xfB, float_t radiusB);
 

@@ -31,7 +31,7 @@ class Fixture;
 class Joint;
 class b2Contact;
 class b2Controller;
-class b2World;
+class World;
 struct FixtureDef;
 struct JointEdge;
 struct b2ContactEdge;
@@ -110,7 +110,7 @@ struct BodyDef
 	float_t gravityScale = float_t(1);
 };
 
-/// A rigid body. These are created via b2World::CreateBody.
+/// A rigid body. These are created via World::CreateBody.
 class Body
 {
 public:
@@ -143,7 +143,7 @@ public:
 
 	/// Set the position of the body's origin and rotation.
 	/// Manipulating a body's transform may cause non-physical behavior.
-	/// Note: contacts are updated on the next call to b2World::Step.
+	/// Note: contacts are updated on the next call to World::Step.
 	/// @param position the world position of the body's local origin.
 	/// @param angle the world rotation in radians.
 	void SetTransform(const Vec2& position, float_t angle);
@@ -333,7 +333,7 @@ public:
 	/// Fixtures on an inactive body are implicitly inactive and will
 	/// not participate in collisions, ray-casts, or queries.
 	/// Joints connected to an inactive body are implicitly inactive.
-	/// An inactive body is still owned by a b2World object and remains
+	/// An inactive body is still owned by a World object and remains
 	/// in the body list.
 	void SetActive(bool flag);
 
@@ -374,15 +374,15 @@ public:
 	void SetUserData(void* data) noexcept;
 
 	/// Get the parent world of this body.
-	b2World* GetWorld() noexcept;
-	const b2World* GetWorld() const noexcept;
+	World* GetWorld() noexcept;
+	const World* GetWorld() const noexcept;
 
 	/// Dump this body to a log file
 	void Dump();
 
 private:
 
-	friend class b2World;
+	friend class World;
 	friend class b2Island;
 	friend class b2ContactManager;
 	friend class b2ContactSolver;
@@ -414,7 +414,7 @@ private:
 	
 	static uint16 GetFlags(const BodyDef& bd) noexcept;
 
-	Body(const BodyDef* bd, b2World* world);
+	Body(const BodyDef* bd, World* world);
 	~Body();
 
 	void SynchronizeFixtures();
@@ -463,7 +463,7 @@ private:
 	Vec2 m_force = Vec2_zero;
 	float_t m_torque = float_t{0};
 
-	b2World* const m_world;
+	World* const m_world;
 	Body* m_prev = nullptr;
 	Body* m_next = nullptr;
 
@@ -880,12 +880,12 @@ inline void Body::Advance(float_t alpha)
 	m_xf = GetTransformOne(m_sweep);
 }
 
-inline b2World* Body::GetWorld() noexcept
+inline World* Body::GetWorld() noexcept
 {
 	return m_world;
 }
 
-inline const b2World* Body::GetWorld() const noexcept
+inline const World* Body::GetWorld() const noexcept
 {
 	return m_world;
 }

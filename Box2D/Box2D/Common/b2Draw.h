@@ -32,7 +32,7 @@ struct b2Color
 	float_t r, g, b, a;
 };
 
-/// Implement and register this class with a b2World to provide debug drawing of physics
+/// Implement and register this class with a World to provide debug drawing of physics
 /// entities in your game.
 class b2Draw
 {

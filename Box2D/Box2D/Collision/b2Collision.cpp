@@ -21,14 +21,14 @@
 
 namespace box2d {
 
-b2WorldManifold::b2WorldManifold(const b2Manifold& manifold,
+WorldManifold::WorldManifold(const b2Manifold& manifold,
 								 const Transform& xfA, float_t radiusA,
 								 const Transform& xfB, float_t radiusB)
 {
 	this->Assign(manifold, xfA, radiusA, xfB, radiusB);
 }
 
-void b2WorldManifold::Assign(const b2Manifold& manifold,
+void WorldManifold::Assign(const b2Manifold& manifold,
 						  const Transform& xfA, float_t radiusA,
 						  const Transform& xfB, float_t radiusB)
 {

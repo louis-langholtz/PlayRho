@@ -138,7 +138,7 @@ public:
 };
 
 /// Callback class for AABB queries.
-/// See b2World::Query
+/// See World::Query
 class b2QueryCallback
 {
 public:
@@ -150,7 +150,7 @@ public:
 };
 
 /// Callback class for ray casts.
-/// See b2World::RayCast
+/// See World::RayCast
 class b2RayCastCallback
 {
 public:

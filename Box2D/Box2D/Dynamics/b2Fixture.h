@@ -191,7 +191,7 @@ public:
 protected:
 
 	friend class Body;
-	friend class b2World;
+	friend class World;
 	friend class b2ContactManager;
 
 	Fixture(Body* body) noexcept: m_body(body) {}

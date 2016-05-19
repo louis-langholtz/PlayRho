@@ -42,17 +42,17 @@ class Joint;
 /// The world class manages all physics entities, dynamic simulation,
 /// and asynchronous queries. The world also contains efficient memory
 /// management facilities.
-class b2World
+class World
 {
 public:
 	using size_type = size_t;
 
 	/// Construct a world object.
 	/// @param gravity the world gravity vector.
-	b2World(const Vec2& gravity);
+	World(const Vec2& gravity);
 
 	/// Destruct the world. All physics entities are destroyed and all heap memory is released.
-	~b2World();
+	~World();
 
 	/// Register a destruction listener. The listener is owned by you and must
 	/// remain in scope.
@@ -68,7 +68,7 @@ public:
 	void SetContactListener(b2ContactListener* listener) noexcept;
 
 	/// Register a routine for debug drawing. The debug draw functions are called
-	/// inside with b2World::DrawDebugData method. The debug draw object is owned
+	/// inside with World::DrawDebugData method. The debug draw object is owned
 	/// by you and must remain in scope.
 	void SetDebugDraw(b2Draw* debugDraw) noexcept;
 
@@ -245,7 +245,7 @@ private:
 	uint32 m_flags = e_clearForces;
 	
 	bool HasNewFixtures() const noexcept { return (m_flags & e_newFixture) != 0; }
-	void SetNewFixtures() noexcept { m_flags |= b2World::e_newFixture; }
+	void SetNewFixtures() noexcept { m_flags |= World::e_newFixture; }
 	void UnsetNewFixtures() noexcept { m_flags &= ~e_newFixture; }
 
 	b2ContactManager m_contactManager{&m_blockAllocator, &m_defaultFilter, &m_defaultListener};
@@ -275,77 +275,77 @@ private:
 	b2Profile m_profile;
 };
 
-inline Body* b2World::GetBodyList() noexcept
+inline Body* World::GetBodyList() noexcept
 {
 	return m_bodyList;
 }
 
-inline const Body* b2World::GetBodyList() const noexcept
+inline const Body* World::GetBodyList() const noexcept
 {
 	return m_bodyList;
 }
 
-inline BodyList b2World::GetBodies() noexcept
+inline BodyList World::GetBodies() noexcept
 {
 	return BodyList(m_bodyList);
 }
 
-inline b2ConstBodyList b2World::GetBodies() const noexcept
+inline b2ConstBodyList World::GetBodies() const noexcept
 {
 	return b2ConstBodyList(m_bodyList);
 }
 
-inline Joint* b2World::GetJointList() noexcept
+inline Joint* World::GetJointList() noexcept
 {
 	return m_jointList;
 }
 
-inline const Joint* b2World::GetJointList() const noexcept
+inline const Joint* World::GetJointList() const noexcept
 {
 	return m_jointList;
 }
 
-inline b2Contact* b2World::GetContactList() noexcept
+inline b2Contact* World::GetContactList() noexcept
 {
 	return m_contactManager.GetContactList();
 }
 
-inline const b2Contact* b2World::GetContactList() const noexcept
+inline const b2Contact* World::GetContactList() const noexcept
 {
 	return m_contactManager.GetContactList();
 }
 
-inline b2World::size_type b2World::GetBodyCount() const noexcept
+inline World::size_type World::GetBodyCount() const noexcept
 {
 	return m_bodyCount;
 }
 
-inline b2World::size_type b2World::GetJointCount() const noexcept
+inline World::size_type World::GetJointCount() const noexcept
 {
 	return m_jointCount;
 }
 
-inline b2World::size_type b2World::GetContactCount() const noexcept
+inline World::size_type World::GetContactCount() const noexcept
 {
 	return m_contactManager.GetContactCount();
 }
 
-inline void b2World::SetGravity(const Vec2& gravity) noexcept
+inline void World::SetGravity(const Vec2& gravity) noexcept
 {
 	m_gravity = gravity;
 }
 
-inline Vec2 b2World::GetGravity() const noexcept
+inline Vec2 World::GetGravity() const noexcept
 {
 	return m_gravity;
 }
 
-inline bool b2World::IsLocked() const noexcept
+inline bool World::IsLocked() const noexcept
 {
 	return (m_flags & e_locked) == e_locked;
 }
 
-inline void b2World::SetAutoClearForces(bool flag) noexcept
+inline void World::SetAutoClearForces(bool flag) noexcept
 {
 	if (flag)
 	{
@@ -358,17 +358,17 @@ inline void b2World::SetAutoClearForces(bool flag) noexcept
 }
 
 /// Get the flag that controls automatic clearing of forces after each time step.
-inline bool b2World::GetAutoClearForces() const noexcept
+inline bool World::GetAutoClearForces() const noexcept
 {
 	return (m_flags & e_clearForces) != 0;
 }
 
-inline const b2ContactManager& b2World::GetContactManager() const noexcept
+inline const b2ContactManager& World::GetContactManager() const noexcept
 {
 	return m_contactManager;
 }
 
-inline const b2Profile& b2World::GetProfile() const noexcept
+inline const b2Profile& World::GetProfile() const noexcept
 {
 	return m_profile;
 }

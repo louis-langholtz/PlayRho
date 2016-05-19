@@ -50,7 +50,7 @@ uint16 Body::GetFlags(const BodyDef& bd) noexcept
 	return flags;
 }
 
-Body::Body(const BodyDef* bd, b2World* world):
+Body::Body(const BodyDef* bd, World* world):
 	m_type(bd->type), m_flags(GetFlags(*bd)), m_xf(bd->position, Rot(bd->angle)), m_world(world),
 	m_linearVelocity(bd->linearVelocity), m_angularVelocity(bd->angularVelocity)
 {
@@ -88,7 +88,7 @@ Body::Body(const BodyDef* bd, b2World* world):
 
 Body::~Body()
 {
-	// shapes and joints are destroyed in b2World::Destroy
+	// shapes and joints are destroyed in World::Destroy
 }
 
 void Body::DestroyContacts()

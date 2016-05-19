@@ -230,7 +230,7 @@ void b2ContactSolver::InitializeVelocityConstraint(b2ContactVelocityConstraint& 
 	
 	const auto xfA = GetTransform(posA, pc.bodyA.localCenter);
 	const auto xfB = GetTransform(posB, pc.bodyB.localCenter);
-	const auto worldManifold = b2WorldManifold{*manifold, xfA, pc.radiusA, xfB, pc.radiusB};
+	const auto worldManifold = WorldManifold{*manifold, xfA, pc.radiusA, xfB, pc.radiusB};
 	
 	vc.normal = worldManifold.GetNormal();
 	

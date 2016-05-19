@@ -53,7 +53,7 @@ struct Camera
 };
 
 // This class implements debug drawing callbacks that are invoked
-// inside b2World::Step.
+// inside World::Step.
 class DebugDraw : public b2Draw
 {
 public:
