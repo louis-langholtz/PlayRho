@@ -56,7 +56,7 @@ MotorJoint::MotorJoint(const MotorJointDef* def)
 	m_correctionFactor = def->correctionFactor;
 }
 
-void MotorJoint::InitVelocityConstraints(const b2SolverData& data)
+void MotorJoint::InitVelocityConstraints(const SolverData& data)
 {
 	m_indexA = m_bodyA->m_islandIndex;
 	m_indexB = m_bodyB->m_islandIndex;
@@ -137,7 +137,7 @@ void MotorJoint::InitVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-void MotorJoint::SolveVelocityConstraints(const b2SolverData& data)
+void MotorJoint::SolveVelocityConstraints(const SolverData& data)
 {
 	auto vA = data.velocities[m_indexA].v;
 	auto wA = data.velocities[m_indexA].w;
@@ -195,7 +195,7 @@ void MotorJoint::SolveVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-bool MotorJoint::SolvePositionConstraints(const b2SolverData& data)
+bool MotorJoint::SolvePositionConstraints(const SolverData& data)
 {
 	BOX2D_NOT_USED(data);
 

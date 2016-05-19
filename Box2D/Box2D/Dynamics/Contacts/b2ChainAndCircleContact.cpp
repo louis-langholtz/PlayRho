@@ -27,21 +27,21 @@
 
 using namespace box2d;
 
-Contact* b2ChainAndCircleContact::Create(Fixture* fixtureA, child_count_t indexA,
+Contact* ChainAndCircleContact::Create(Fixture* fixtureA, child_count_t indexA,
 										   Fixture* fixtureB, child_count_t indexB,
 										   BlockAllocator* allocator)
 {
-	void* mem = allocator->Allocate(sizeof(b2ChainAndCircleContact));
-	return new (mem) b2ChainAndCircleContact(fixtureA, indexA, fixtureB, indexB);
+	void* mem = allocator->Allocate(sizeof(ChainAndCircleContact));
+	return new (mem) ChainAndCircleContact(fixtureA, indexA, fixtureB, indexB);
 }
 
-void b2ChainAndCircleContact::Destroy(Contact* contact, BlockAllocator* allocator)
+void ChainAndCircleContact::Destroy(Contact* contact, BlockAllocator* allocator)
 {
-	(static_cast<b2ChainAndCircleContact*>(contact))->~b2ChainAndCircleContact();
-	allocator->Free(contact, sizeof(b2ChainAndCircleContact));
+	(static_cast<ChainAndCircleContact*>(contact))->~ChainAndCircleContact();
+	allocator->Free(contact, sizeof(ChainAndCircleContact));
 }
 
-b2ChainAndCircleContact::b2ChainAndCircleContact(Fixture* fixtureA, child_count_t indexA,
+ChainAndCircleContact::ChainAndCircleContact(Fixture* fixtureA, child_count_t indexA,
 												 Fixture* fixtureB, child_count_t indexB)
 : Contact(fixtureA, indexA, fixtureB, indexB)
 {
@@ -49,7 +49,7 @@ b2ChainAndCircleContact::b2ChainAndCircleContact(Fixture* fixtureA, child_count_
 	assert(m_fixtureB->GetType() == Shape::e_circle);
 }
 
-Manifold b2ChainAndCircleContact::Evaluate(const Transform& xfA, const Transform& xfB)
+Manifold ChainAndCircleContact::Evaluate(const Transform& xfA, const Transform& xfB)
 {
 	auto chain = static_cast<ChainShape*>(m_fixtureA->GetShape());
 	EdgeShape edge;

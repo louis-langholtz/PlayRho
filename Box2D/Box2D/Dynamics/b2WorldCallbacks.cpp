@@ -25,8 +25,8 @@ using namespace box2d;
 // If you implement your own collision filter you may want to build from this implementation.
 bool ContactFilter::ShouldCollide(Fixture* fixtureA, Fixture* fixtureB)
 {
-	const b2Filter& filterA = fixtureA->GetFilterData();
-	const b2Filter& filterB = fixtureB->GetFilterData();
+	const Filter& filterA = fixtureA->GetFilterData();
+	const Filter& filterB = fixtureB->GetFilterData();
 
 	if (filterA.groupIndex == filterB.groupIndex && filterA.groupIndex != 0)
 	{

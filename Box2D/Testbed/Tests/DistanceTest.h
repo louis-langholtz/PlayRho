@@ -50,13 +50,13 @@ public:
 	{
 		Test::Step(settings);
 
-		b2DistanceInput input;
-		input.proxyA = b2DistanceProxy(m_polygonA, 0);
-		input.proxyB = b2DistanceProxy(m_polygonB, 0);
+		DistanceInput input;
+		input.proxyA = DistanceProxy(m_polygonA, 0);
+		input.proxyB = DistanceProxy(m_polygonB, 0);
 		input.transformA = m_transformA;
 		input.transformB = m_transformB;
 		input.useRadii = true;
-		b2SimplexCache cache;
+		SimplexCache cache;
 		const auto output = Distance(cache, input);
 
 		g_debugDraw.DrawString(5, m_textLine, "distance = %g", output.distance);

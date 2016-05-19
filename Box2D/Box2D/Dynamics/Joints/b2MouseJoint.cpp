@@ -89,7 +89,7 @@ float_t MouseJoint::GetDampingRatio() const
 	return m_dampingRatio;
 }
 
-void MouseJoint::InitVelocityConstraints(const b2SolverData& data)
+void MouseJoint::InitVelocityConstraints(const SolverData& data)
 {
 	m_indexB = m_bodyB->m_islandIndex;
 	m_localCenterB = m_bodyB->m_sweep.localCenter;
@@ -161,7 +161,7 @@ void MouseJoint::InitVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-void MouseJoint::SolveVelocityConstraints(const b2SolverData& data)
+void MouseJoint::SolveVelocityConstraints(const SolverData& data)
 {
 	auto vB = data.velocities[m_indexB].v;
 	auto wB = data.velocities[m_indexB].w;
@@ -186,7 +186,7 @@ void MouseJoint::SolveVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-bool MouseJoint::SolvePositionConstraints(const b2SolverData& data)
+bool MouseJoint::SolvePositionConstraints(const SolverData& data)
 {
 	BOX2D_NOT_USED(data);
 	return true;

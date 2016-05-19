@@ -26,28 +26,28 @@
 
 using namespace box2d;
 
-Contact* b2PolygonAndCircleContact::Create(Fixture* fixtureA, child_count_t,
+Contact* PolygonAndCircleContact::Create(Fixture* fixtureA, child_count_t,
 											 Fixture* fixtureB, child_count_t,
 											 BlockAllocator* allocator)
 {
-	void* mem = allocator->Allocate(sizeof(b2PolygonAndCircleContact));
-	return new (mem) b2PolygonAndCircleContact(fixtureA, fixtureB);
+	void* mem = allocator->Allocate(sizeof(PolygonAndCircleContact));
+	return new (mem) PolygonAndCircleContact(fixtureA, fixtureB);
 }
 
-void b2PolygonAndCircleContact::Destroy(Contact* contact, BlockAllocator* allocator)
+void PolygonAndCircleContact::Destroy(Contact* contact, BlockAllocator* allocator)
 {
-	(static_cast<b2PolygonAndCircleContact*>(contact))->~b2PolygonAndCircleContact();
-	allocator->Free(contact, sizeof(b2PolygonAndCircleContact));
+	(static_cast<PolygonAndCircleContact*>(contact))->~PolygonAndCircleContact();
+	allocator->Free(contact, sizeof(PolygonAndCircleContact));
 }
 
-b2PolygonAndCircleContact::b2PolygonAndCircleContact(Fixture* fixtureA, Fixture* fixtureB)
+PolygonAndCircleContact::PolygonAndCircleContact(Fixture* fixtureA, Fixture* fixtureB)
 : Contact(fixtureA, 0, fixtureB, 0)
 {
 	assert(m_fixtureA->GetType() == Shape::e_polygon);
 	assert(m_fixtureB->GetType() == Shape::e_circle);
 }
 
-Manifold b2PolygonAndCircleContact::Evaluate(const Transform& xfA, const Transform& xfB)
+Manifold PolygonAndCircleContact::Evaluate(const Transform& xfA, const Transform& xfB)
 {
 	return CollideShapes(*static_cast<PolygonShape*>(m_fixtureA->GetShape()), xfA, *static_cast<CircleShape*>(m_fixtureB->GetShape()), xfB);
 }

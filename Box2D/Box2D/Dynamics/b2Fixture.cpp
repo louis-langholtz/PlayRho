@@ -154,7 +154,7 @@ void Fixture::Synchronize(BroadPhase& broadPhase, const Transform& transform1, c
 	}
 }
 
-void Fixture::SetFilterData(const b2Filter& filter)
+void Fixture::SetFilterData(const Filter& filter)
 {
 	m_filter = filter;
 

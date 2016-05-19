@@ -161,7 +161,7 @@ ContactSolver::ContactSolver(ContactSolverDef* def) :
 			const auto& mp = manifold->GetPoint(j); ///< Manifold point.
 			pc.AddPoint(mp.localPoint);
 	
-			b2VelocityConstraintPoint vcp;
+			VelocityConstraintPoint vcp;
 			vcp.normalImpulse = m_step.warmStarting? m_step.dtRatio * mp.normalImpulse: float_t{0};
 			vcp.tangentImpulse = m_step.warmStarting? m_step.dtRatio * mp.tangentImpulse: float_t{0};
 			vcp.rA = Vec2_zero;
@@ -180,9 +180,9 @@ ContactSolver::~ContactSolver()
 	m_allocator->Free(m_positionConstraints);
 }
 
-static inline void Initialize(b2VelocityConstraintPoint& vcp,
+static inline void Initialize(VelocityConstraintPoint& vcp,
 							  const ContactVelocityConstraint& vc, Vec2 worldPoint,
-							  b2Position posA, b2Velocity velA, b2Position posB, b2Velocity velB)
+							  Position posA, Velocity velA, Position posB, Velocity velB)
 {
 	const auto vcp_rA = worldPoint - posA.c;
 	const auto vcp_rB = worldPoint - posB.c;
@@ -283,7 +283,7 @@ void ContactSolver::InitializeVelocityConstraints()
 	}
 }
 
-static inline void WarmStart(const ContactVelocityConstraint& vc, b2Velocity& bodyA, b2Velocity& bodyB)
+static inline void WarmStart(const ContactVelocityConstraint& vc, Velocity& bodyA, Velocity& bodyB)
 {
 	const auto tangent = Cross(vc.normal, float_t(1));
 	const auto pointCount = vc.GetPointCount();	
@@ -309,8 +309,8 @@ void ContactSolver::WarmStart()
 }
 
 static inline void SolveTangentConstraint(const ContactVelocityConstraint& vc, Vec2 tangent,
-										 b2Velocity& bodyA, b2Velocity& bodyB,
-										 b2VelocityConstraintPoint& vcp)
+										 Velocity& bodyA, Velocity& bodyB,
+										 VelocityConstraintPoint& vcp)
 {
 	// Relative velocity at contact
 	const auto dv = (bodyB.v + Cross(bodyB.w, vcp.rB)) - (bodyA.v + Cross(bodyA.w, vcp.rA));
@@ -337,8 +337,8 @@ static inline void SolveTangentConstraint(const ContactVelocityConstraint& vc, V
 }
 
 static inline void SolveNormalConstraint(const ContactVelocityConstraint& vc,
-										 b2Velocity& bodyA, b2Velocity& bodyB,
-										 b2VelocityConstraintPoint& vcp)
+										 Velocity& bodyA, Velocity& bodyB,
+										 VelocityConstraintPoint& vcp)
 {
 	// Relative velocity at contact
 	const auto dv = (bodyB.v + Cross(bodyB.w, vcp.rB)) - (bodyA.v + Cross(bodyA.w, vcp.rA));
@@ -365,8 +365,8 @@ static inline void SolveNormalConstraint(const ContactVelocityConstraint& vc,
 
 static inline void BlockSolveUpdate(const ContactVelocityConstraint& vc,
 									Vec2 oldImpulse, Vec2 newImpulse,
-									b2Velocity& bodyA, b2Velocity& bodyB,
-									b2VelocityConstraintPoint& vcp1, b2VelocityConstraintPoint& vcp2)
+									Velocity& bodyA, Velocity& bodyB,
+									VelocityConstraintPoint& vcp1, VelocityConstraintPoint& vcp2)
 {
 	// Get the incremental impulse
 	const auto incImpulse = newImpulse - oldImpulse;
@@ -387,8 +387,8 @@ static inline void BlockSolveUpdate(const ContactVelocityConstraint& vc,
 
 static inline bool BlockSolveNormalCase1(const ContactVelocityConstraint& vc,
 										 Vec2 oldImpulse, Vec2 b_prime,
-										 b2Velocity& bodyA, b2Velocity& bodyB,
-										 b2VelocityConstraintPoint& vcp1, b2VelocityConstraintPoint& vcp2)
+										 Velocity& bodyA, Velocity& bodyB,
+										 VelocityConstraintPoint& vcp1, VelocityConstraintPoint& vcp2)
 {
 	//
 	// Case 1: vn = 0
@@ -427,8 +427,8 @@ static inline bool BlockSolveNormalCase1(const ContactVelocityConstraint& vc,
 
 static inline bool BlockSolveNormalCase2(const ContactVelocityConstraint& vc,
 										 Vec2 oldImpulse, Vec2 b_prime,
-										 b2Velocity& bodyA, b2Velocity& bodyB,
-										 b2VelocityConstraintPoint& vcp1, b2VelocityConstraintPoint& vcp2)
+										 Velocity& bodyA, Velocity& bodyB,
+										 VelocityConstraintPoint& vcp1, VelocityConstraintPoint& vcp2)
 {
 	//
 	// Case 2: vn1 = 0 and x2 = 0
@@ -459,8 +459,8 @@ static inline bool BlockSolveNormalCase2(const ContactVelocityConstraint& vc,
 
 static inline bool BlockSolveNormalCase3(const ContactVelocityConstraint& vc,
 										 Vec2 oldImpulse, Vec2 b_prime,
-										 b2Velocity& bodyA, b2Velocity& bodyB,
-										 b2VelocityConstraintPoint& vcp1, b2VelocityConstraintPoint& vcp2)
+										 Velocity& bodyA, Velocity& bodyB,
+										 VelocityConstraintPoint& vcp1, VelocityConstraintPoint& vcp2)
 {
 	//
 	// Case 3: vn2 = 0 and x1 = 0
@@ -491,8 +491,8 @@ static inline bool BlockSolveNormalCase3(const ContactVelocityConstraint& vc,
 
 static inline bool BlockSolveNormalCase4(const ContactVelocityConstraint& vc,
 										 Vec2 oldImpulse, Vec2 b_prime,
-										 b2Velocity& bodyA, b2Velocity& bodyB,
-										 b2VelocityConstraintPoint& vcp1, b2VelocityConstraintPoint& vcp2)
+										 Velocity& bodyA, Velocity& bodyB,
+										 VelocityConstraintPoint& vcp1, VelocityConstraintPoint& vcp2)
 {
 	//
 	// Case 4: x1 = 0 and x2 = 0
@@ -511,8 +511,8 @@ static inline bool BlockSolveNormalCase4(const ContactVelocityConstraint& vc,
 }
 
 static inline void BlockSolveNormalConstraint(const ContactVelocityConstraint& vc,
-											  b2Velocity& bodyA, b2Velocity& bodyB,
-											  b2VelocityConstraintPoint& vcp1, b2VelocityConstraintPoint& vcp2)
+											  Velocity& bodyA, Velocity& bodyB,
+											  VelocityConstraintPoint& vcp1, VelocityConstraintPoint& vcp2)
 {
 	// Block solver developed in collaboration with Dirk Gregorius (back in 01/07 on Box2D_Lite).
 	// Build the mini LCP for this contact patch
@@ -579,7 +579,7 @@ static inline void BlockSolveNormalConstraint(const ContactVelocityConstraint& v
 	// No solution, give up. This is hit sometimes, but it doesn't seem to matter.
 }
 
-static inline void SolveVelocityConstraint(ContactVelocityConstraint& vc, b2Velocity& bodyA, b2Velocity& bodyB)
+static inline void SolveVelocityConstraint(ContactVelocityConstraint& vc, Velocity& bodyA, Velocity& bodyB)
 {
 	const auto pointCount = vc.GetPointCount();
 	assert((pointCount == 1) || (pointCount == 2));
@@ -630,7 +630,7 @@ void ContactSolver::SolveVelocityConstraints()
 	}
 }
 
-static void b2AssignImpulses(ManifoldPoint& var, const b2VelocityConstraintPoint& val)
+static void AssignImpulses(ManifoldPoint& var, const VelocityConstraintPoint& val)
 {
 	var.normalImpulse = val.normalImpulse;
 	var.tangentImpulse = val.tangentImpulse;
@@ -645,18 +645,18 @@ void ContactSolver::StoreImpulses()
 
 		const auto point_count = vc.GetPointCount();
 		for (auto j = decltype(point_count){0}; j < point_count; ++j)
-			b2AssignImpulses(manifold.GetPoint(j), vc.GetPoint(j));
+			AssignImpulses(manifold.GetPoint(j), vc.GetPoint(j));
 	}
 }
 
-class b2PositionSolverManifold
+class PositionSolverManifold
 {
 public:
 	using index_t = std::remove_cv<decltype(MaxManifoldPoints)>::type;
 
-	b2PositionSolverManifold() = delete;
+	PositionSolverManifold() = delete;
 
-	b2PositionSolverManifold(const ContactPositionConstraint& pc,
+	PositionSolverManifold(const ContactPositionConstraint& pc,
 							 const Transform& xfA, const Transform& xfB, index_t index)
 	{
 		assert(pc.GetPointCount() > 0);
@@ -722,7 +722,7 @@ private:
 };
 
 static inline float_t SolvePositionConstraint(const ContactPositionConstraint& pc,
-											  b2Position& posA, b2Position& posB)
+											  Position& posA, Position& posB)
 {
 	auto minSeparation = MaxFloat;
 
@@ -732,7 +732,7 @@ static inline float_t SolvePositionConstraint(const ContactPositionConstraint& p
 	{
 		const auto xfA = GetTransform(posA, pc.bodyA.localCenter);
 		const auto xfB = GetTransform(posB, pc.bodyB.localCenter);
-		const auto psm = b2PositionSolverManifold(pc, xfA, xfB, j);
+		const auto psm = PositionSolverManifold(pc, xfA, xfB, j);
 		const auto normal = psm.GetNormal();
 		const auto point = psm.GetPoint();
 		const auto separation = psm.GetSeparation();
@@ -783,7 +783,7 @@ bool ContactSolver::SolvePositionConstraints()
 
 static inline float_t SolveTOIPositionConstraint(const ContactPositionConstraint& pc,
 												 ContactSolver::size_type indexA, ContactSolver::size_type indexB,
-												 b2Position& posA, b2Position& posB)
+												 Position& posA, Position& posB)
 {
 	auto minSeparation = MaxFloat;
 	
@@ -801,7 +801,7 @@ static inline float_t SolveTOIPositionConstraint(const ContactPositionConstraint
 	{
 		const auto xfA = GetTransform(posA, pc.bodyA.localCenter);
 		const auto xfB = GetTransform(posB, pc.bodyB.localCenter);
-		const auto psm = b2PositionSolverManifold(pc, xfA, xfB, j);
+		const auto psm = PositionSolverManifold(pc, xfA, xfB, j);
 		const auto normal = psm.GetNormal();
 		const auto point = psm.GetPoint();
 		const auto separation = psm.GetSeparation();

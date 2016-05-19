@@ -88,7 +88,7 @@ TestEntry g_testEntries[] =
 	{"Dump Shell", DumpShell::Create},
 	{"Apply Force", ApplyForce::Create},
 	{"Continuous Test", ContinuousTest::Create},
-	{"Time of Impact", TimeOfImpact::Create},
+	{"Time of Impact", TimeOfImpactTest::Create},
 	{"Motor Joint", MotorJointTest::Create},
 	{"One-Sided Platform", OneSidedPlatform::Create},
 	{"Mobile", Mobile::Create},

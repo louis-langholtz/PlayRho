@@ -38,21 +38,21 @@
 using namespace box2d;
 
 template <typename T>
-class b2FlagGuard
+class FlagGuard
 {
 public:
-	b2FlagGuard(T& flag, T value) : m_flag(flag), m_value(value)
+	FlagGuard(T& flag, T value) : m_flag(flag), m_value(value)
 	{
 		static_assert(std::is_unsigned<T>::value, "Unsigned interger required");
 		m_flag |= m_value;
 	}
 
-	~b2FlagGuard()
+	~FlagGuard()
 	{
 		m_flag &= ~m_value;
 	}
 
-	b2FlagGuard() = delete;
+	FlagGuard() = delete;
 
 private:
 	T& m_flag;
@@ -60,12 +60,12 @@ private:
 };
 
 template <class T>
-class b2RaiiWrapper
+class RaiiWrapper
 {
 public:
-	b2RaiiWrapper() = delete;
-	b2RaiiWrapper(std::function<void(T&)> on_destruction): m_on_destruction(on_destruction) {}
-	~b2RaiiWrapper() { m_on_destruction(m_wrapped); }
+	RaiiWrapper() = delete;
+	RaiiWrapper(std::function<void(T&)> on_destruction): m_on_destruction(on_destruction) {}
+	~RaiiWrapper() { m_on_destruction(m_wrapped); }
 	T m_wrapped;
 
 private:
@@ -74,7 +74,7 @@ private:
 
 World::World(const Vec2& gravity): m_gravity(gravity)
 {
-	memset(&m_profile, 0, sizeof(b2Profile));
+	memset(&m_profile, 0, sizeof(Profile));
 }
 
 World::~World()
@@ -96,7 +96,7 @@ World::~World()
 	}
 }
 
-void World::SetDestructionListener(b2DestructionListener* listener) noexcept
+void World::SetDestructionListener(DestructionListener* listener) noexcept
 {
 	m_destructionListener = listener;
 }
@@ -395,7 +395,7 @@ void World::SetAllowSleeping(bool flag) noexcept
 }
 
 // Find islands, integrate and solve constraints, solve position constraints
-void World::Solve(const b2TimeStep& step)
+void World::Solve(const TimeStep& step)
 {
 	m_profile.solveInit = float_t{0};
 	m_profile.solveVelocity = float_t{0};
@@ -537,7 +537,7 @@ void World::Solve(const b2TimeStep& step)
 			}
 		}
 
-		b2Profile profile;
+		Profile profile;
 		island.Solve(&profile, step, m_gravity, m_allowSleep);
 		m_profile.solveInit += profile.solveInit;
 		m_profile.solveVelocity += profile.solveVelocity;
@@ -558,7 +558,7 @@ void World::Solve(const b2TimeStep& step)
 	m_stackAllocator.Free(stack);
 
 	{
-		b2Timer timer;
+		Timer timer;
 		// Synchronize fixtures, check for out of range bodies.
 		for (auto b = m_bodyList; b; b = b->GetNext())
 		{
@@ -584,7 +584,7 @@ void World::Solve(const b2TimeStep& step)
 }
 
 // Find TOI contacts and solve them.
-void World::SolveTOI(const b2TimeStep& step)
+void World::SolveTOI(const TimeStep& step)
 {
 	Island island(2 * MaxTOIContacts, MaxTOIContacts, 0, &m_stackAllocator, m_contactManager.m_contactListener);
 
@@ -781,7 +781,7 @@ void World::SolveTOI(const b2TimeStep& step)
 			}
 		}
 
-		b2TimeStep subStep;
+		TimeStep subStep;
 		subStep.set_dt((float_t(1) - minAlpha) * step.get_dt());
 		subStep.dtRatio = float_t(1);
 		subStep.positionIterations = MaxSubStepPositionIterations;
@@ -824,7 +824,7 @@ void World::SolveTOI(const b2TimeStep& step)
 
 void World::Step(float_t dt, int32 velocityIterations, int32 positionIterations)
 {
-	b2Timer stepTimer;
+	Timer stepTimer;
 
 	// If new fixtures were added, we need to find the new contacts.
 	if (HasNewFixtures())
@@ -834,9 +834,9 @@ void World::Step(float_t dt, int32 velocityIterations, int32 positionIterations)
 	}
 
 	assert(!IsLocked());
-	b2FlagGuard<decltype(m_flags)> flagGaurd(m_flags, e_locked);
+	FlagGuard<decltype(m_flags)> flagGaurd(m_flags, e_locked);
 
-	b2TimeStep step;
+	TimeStep step;
 	step.set_dt(dt);
 	step.velocityIterations	= velocityIterations;
 	step.positionIterations = positionIterations;
@@ -845,7 +845,7 @@ void World::Step(float_t dt, int32 velocityIterations, int32 positionIterations)
 	
 	// Update contacts. This is where some contacts are destroyed.
 	{
-		b2Timer timer;
+		Timer timer;
 		m_contactManager.Collide();
 		m_profile.collide = timer.GetMilliseconds();
 	}
@@ -853,7 +853,7 @@ void World::Step(float_t dt, int32 velocityIterations, int32 positionIterations)
 	// Integrate velocities, solve velocity constraints, and integrate positions.
 	if (m_stepComplete && (step.get_dt() > float_t{0}))
 	{
-		b2Timer timer;
+		Timer timer;
 		Solve(step);
 		m_profile.solve = timer.GetMilliseconds();
 	}
@@ -861,7 +861,7 @@ void World::Step(float_t dt, int32 velocityIterations, int32 positionIterations)
 	// Handle TOI events.
 	if (m_continuousPhysics && (step.get_dt() > float_t{0}))
 	{
-		b2Timer timer;
+		Timer timer;
 		SolveTOI(step);
 		m_profile.solveTOI = timer.GetMilliseconds();
 	}
@@ -899,10 +899,10 @@ struct WorldQueryWrapper
 	}
 
 	const BroadPhase* broadPhase;
-	b2QueryCallback* callback;
+	QueryFixtureReporter* callback;
 };
 
-void World::QueryAABB(b2QueryCallback* callback, const AABB& aabb) const
+void World::QueryAABB(QueryFixtureReporter* callback, const AABB& aabb) const
 {
 	WorldQueryWrapper wrapper;
 	wrapper.broadPhase = &m_contactManager.m_broadPhase;
@@ -914,13 +914,13 @@ struct WorldRayCastWrapper
 {
 	using size_type = BroadPhase::size_type;
 
-	float_t RayCastCallback(const b2RayCastInput& input, size_type proxyId)
+	float_t RayCastCallback(const RayCastInput& input, size_type proxyId)
 	{
 		auto userData = broadPhase->GetUserData(proxyId);
 		const auto proxy = static_cast<FixtureProxy*>(userData);
 		auto fixture = proxy->fixture;
 		const auto index = proxy->childIndex;
-		b2RayCastOutput output;
+		RayCastOutput output;
 		const auto hit = fixture->RayCast(&output, input, index);
 
 		if (hit)
@@ -935,16 +935,16 @@ struct WorldRayCastWrapper
 
 	WorldRayCastWrapper() = delete;
 
-	constexpr WorldRayCastWrapper(const BroadPhase* bp, b2RayCastCallback* cb): broadPhase(bp), callback(cb) {}
+	constexpr WorldRayCastWrapper(const BroadPhase* bp, RayCastFixtureReporter* cb): broadPhase(bp), callback(cb) {}
 
 	const BroadPhase* const broadPhase;
-	b2RayCastCallback* const callback;
+	RayCastFixtureReporter* const callback;
 };
 
-void World::RayCast(b2RayCastCallback* callback, const Vec2& point1, const Vec2& point2) const
+void World::RayCast(RayCastFixtureReporter* callback, const Vec2& point1, const Vec2& point2) const
 {
 	WorldRayCastWrapper wrapper(&m_contactManager.m_broadPhase, callback);
-	const auto input = b2RayCastInput{point1, point2, float_t(1)};
+	const auto input = RayCastInput{point1, point2, float_t(1)};
 	m_contactManager.m_broadPhase.RayCast(&wrapper, input);
 }
 

@@ -44,7 +44,7 @@ RopeJoint::RopeJoint(const RopeJointDef* def)
 	m_length = float_t{0};
 }
 
-void RopeJoint::InitVelocityConstraints(const b2SolverData& data)
+void RopeJoint::InitVelocityConstraints(const SolverData& data)
 {
 	m_indexA = m_bodyA->m_islandIndex;
 	m_indexB = m_bodyB->m_islandIndex;
@@ -124,7 +124,7 @@ void RopeJoint::InitVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-void RopeJoint::SolveVelocityConstraints(const b2SolverData& data)
+void RopeJoint::SolveVelocityConstraints(const SolverData& data)
 {
 	auto vA = data.velocities[m_indexA].v;
 	auto wA = data.velocities[m_indexA].w;
@@ -160,7 +160,7 @@ void RopeJoint::SolveVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-bool RopeJoint::SolvePositionConstraints(const b2SolverData& data)
+bool RopeJoint::SolvePositionConstraints(const SolverData& data)
 {
 	auto cA = data.positions[m_indexA].c;
 	auto aA = data.positions[m_indexA].a;
@@ -221,7 +221,7 @@ float_t RopeJoint::GetMaxLength() const
 	return m_maxLength;
 }
 
-b2LimitState RopeJoint::GetLimitState() const
+LimitState RopeJoint::GetLimitState() const
 {
 	return m_state;
 }

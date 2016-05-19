@@ -34,7 +34,7 @@ public:
 	Tiles()
 	{
 		m_fixtureCount = 0;
-		b2Timer timer;
+		Timer timer;
 
 		{
 			float_t a = 0.5f;

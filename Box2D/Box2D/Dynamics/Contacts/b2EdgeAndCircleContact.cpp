@@ -26,28 +26,28 @@
 
 using namespace box2d;
 
-Contact* b2EdgeAndCircleContact::Create(Fixture* fixtureA, child_count_t,
+Contact* EdgeAndCircleContact::Create(Fixture* fixtureA, child_count_t,
 										  Fixture* fixtureB, child_count_t,
 										  BlockAllocator* allocator)
 {
-	void* mem = allocator->Allocate(sizeof(b2EdgeAndCircleContact));
-	return new (mem) b2EdgeAndCircleContact(fixtureA, fixtureB);
+	void* mem = allocator->Allocate(sizeof(EdgeAndCircleContact));
+	return new (mem) EdgeAndCircleContact(fixtureA, fixtureB);
 }
 
-void b2EdgeAndCircleContact::Destroy(Contact* contact, BlockAllocator* allocator)
+void EdgeAndCircleContact::Destroy(Contact* contact, BlockAllocator* allocator)
 {
-	(static_cast<b2EdgeAndCircleContact*>(contact))->~b2EdgeAndCircleContact();
-	allocator->Free(contact, sizeof(b2EdgeAndCircleContact));
+	(static_cast<EdgeAndCircleContact*>(contact))->~EdgeAndCircleContact();
+	allocator->Free(contact, sizeof(EdgeAndCircleContact));
 }
 
-b2EdgeAndCircleContact::b2EdgeAndCircleContact(Fixture* fixtureA, Fixture* fixtureB)
+EdgeAndCircleContact::EdgeAndCircleContact(Fixture* fixtureA, Fixture* fixtureB)
 : Contact(fixtureA, 0, fixtureB, 0)
 {
 	assert(m_fixtureA->GetType() == Shape::e_edge);
 	assert(m_fixtureB->GetType() == Shape::e_circle);
 }
 
-Manifold b2EdgeAndCircleContact::Evaluate(const Transform& xfA, const Transform& xfB)
+Manifold EdgeAndCircleContact::Evaluate(const Transform& xfA, const Transform& xfB)
 {
 	return CollideShapes(*static_cast<EdgeShape*>(m_fixtureA->GetShape()), xfA, *static_cast<CircleShape*>(m_fixtureB->GetShape()), xfB);
 }

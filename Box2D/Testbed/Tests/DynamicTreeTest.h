@@ -165,11 +165,11 @@ public:
 		return true;
 	}
 
-	float_t RayCastCallback(const b2RayCastInput& input, DynamicTree::size_type proxyId)
+	float_t RayCastCallback(const RayCastInput& input, DynamicTree::size_type proxyId)
 	{
 		auto actor = static_cast<Actor*>(m_tree.GetUserData(proxyId));
 
-		b2RayCastOutput output;
+		RayCastOutput output;
 		const auto hit = actor->aabb.RayCast(&output, input);
 
 		if (hit)
@@ -307,14 +307,14 @@ private:
 	{
 		m_rayActor = nullptr;
 
-		b2RayCastInput input = m_rayCastInput;
+		RayCastInput input = m_rayCastInput;
 
 		// Ray cast against the dynamic tree.
 		m_tree.RayCast(this, input);
 
 		// Brute force ray cast.
 		Actor* bruteActor = nullptr;
-		b2RayCastOutput bruteOutput;
+		RayCastOutput bruteOutput;
 		for (int32 i = 0; i < e_actorCount; ++i)
 		{
 			if (m_actors[i].proxyId == DynamicTree::NullNode)
@@ -322,7 +322,7 @@ private:
 				continue;
 			}
 
-			b2RayCastOutput output;
+			RayCastOutput output;
 			const auto hit = m_actors[i].aabb.RayCast(&output, input);
 			if (hit)
 			{
@@ -343,8 +343,8 @@ private:
 
 	DynamicTree m_tree;
 	AABB m_queryAABB;
-	b2RayCastInput m_rayCastInput;
-	b2RayCastOutput m_rayCastOutput;
+	RayCastInput m_rayCastInput;
+	RayCastOutput m_rayCastOutput;
 	Actor* m_rayActor;
 	Actor m_actors[e_actorCount];
 	int32 m_stepCount;

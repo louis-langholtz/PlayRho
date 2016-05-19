@@ -84,7 +84,7 @@ public:
 	/// @param input the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
 	/// @param callback a callback class that is called for each proxy that is hit by the ray.
 	template <typename T>
-	void RayCast(T* callback, const b2RayCastInput& input) const;
+	void RayCast(T* callback, const RayCastInput& input) const;
 
 	/// Validate this tree. For testing.
 	void Validate() const;
@@ -110,7 +110,7 @@ public:
 private:
 
 	/// A node in the dynamic tree. The client does not interact with this directly.
-	struct b2TreeNode
+	struct TreeNode
 	{
 		bool IsLeaf() const noexcept
 		{
@@ -161,7 +161,7 @@ private:
 	int32 m_insertionCount = 0;
 
 	/// Initialized on construction.
-	b2TreeNode* m_nodes;
+	TreeNode* m_nodes;
 };
 
 inline void* DynamicTree::GetUserData(size_type proxyId) const
@@ -186,7 +186,7 @@ inline DynamicTree::size_type DynamicTree::GetHeight() const noexcept
 template <typename T>
 inline void DynamicTree::Query(T* callback, const AABB& aabb) const
 {
-	b2GrowableStack<size_type, 256> stack;
+	GrowableStack<size_type, 256> stack;
 	stack.Push(m_root);
 
 	while (stack.GetCount() > 0)
@@ -197,7 +197,7 @@ inline void DynamicTree::Query(T* callback, const AABB& aabb) const
 			continue;
 		}
 
-		const b2TreeNode* node = m_nodes + nodeId;
+		const TreeNode* node = m_nodes + nodeId;
 
 		if (TestOverlap(node->aabb, aabb))
 		{
@@ -219,7 +219,7 @@ inline void DynamicTree::Query(T* callback, const AABB& aabb) const
 }
 
 template <typename T>
-inline void DynamicTree::RayCast(T* callback, const b2RayCastInput& input) const
+inline void DynamicTree::RayCast(T* callback, const RayCastInput& input) const
 {
 	const auto p1 = input.p1;
 	const auto p2 = input.p2;
@@ -239,7 +239,7 @@ inline void DynamicTree::RayCast(T* callback, const b2RayCastInput& input) const
 	// Build a bounding box for the segment.
 	auto segmentAABB = AABB{p1, p1 + maxFraction * (p2 - p1)};
 
-	b2GrowableStack<size_type, 256> stack;
+	GrowableStack<size_type, 256> stack;
 	stack.Push(m_root);
 
 	while (stack.GetCount() > 0)
@@ -269,7 +269,7 @@ inline void DynamicTree::RayCast(T* callback, const b2RayCastInput& input) const
 
 		if (node->IsLeaf())
 		{
-			const auto subInput = b2RayCastInput{input.p1, input.p2, maxFraction};
+			const auto subInput = RayCastInput{input.p1, input.p2, maxFraction};
 
 			const auto value = callback->RayCastCallback(subInput, nodeId);
 

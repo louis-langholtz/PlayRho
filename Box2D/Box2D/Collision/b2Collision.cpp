@@ -96,13 +96,13 @@ void WorldManifold::Assign(const Manifold& manifold,
 	}
 }
 
-void b2GetPointStates(b2PointStateArray& state1, b2PointStateArray& state2,
+void GetPointStates(PointStateArray& state1, PointStateArray& state2,
 					  const Manifold& manifold1, const Manifold& manifold2)
 {
 	for (auto i = decltype(MaxManifoldPoints){0}; i < MaxManifoldPoints; ++i)
 	{
-		state1[i] = b2PointState::NullState;
-		state2[i] = b2PointState::NullState;
+		state1[i] = PointState::NullState;
+		state2[i] = PointState::NullState;
 	}
 
 	// Detect persists and removes.
@@ -110,13 +110,13 @@ void b2GetPointStates(b2PointStateArray& state1, b2PointStateArray& state2,
 	{
 		const auto& cf = manifold1.GetPoint(i).cf;
 
-		state1[i] = b2PointState::RemoveState;
+		state1[i] = PointState::RemoveState;
 
 		for (auto j = decltype(manifold2.GetPointCount()){0}; j < manifold2.GetPointCount(); ++j)
 		{
 			if (manifold2.GetPoint(j).cf == cf)
 			{
-				state1[i] = b2PointState::PersistState;
+				state1[i] = PointState::PersistState;
 				break;
 			}
 		}
@@ -127,13 +127,13 @@ void b2GetPointStates(b2PointStateArray& state1, b2PointStateArray& state2,
 	{
 		const auto& cf = manifold2.GetPoint(i).cf;
 
-		state2[i] = b2PointState::AddState;
+		state2[i] = PointState::AddState;
 
 		for (auto j = decltype(manifold1.GetPointCount()){0}; j < manifold1.GetPointCount(); ++j)
 		{
 			if (manifold1.GetPoint(j).cf == cf)
 			{
-				state2[i] = b2PointState::PersistState;
+				state2[i] = PointState::PersistState;
 				break;
 			}
 		}
@@ -141,7 +141,7 @@ void b2GetPointStates(b2PointStateArray& state1, b2PointStateArray& state2,
 }
 
 // From Real-time Collision Detection, p179.
-bool AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
+bool AABB::RayCast(RayCastOutput* output, const RayCastInput& input) const
 {
 	auto tmin = -MaxFloat;
 	auto tmax = MaxFloat;
@@ -245,14 +245,14 @@ bool TestOverlap(const Shape& shapeA, child_count_t indexA,
 				   const Shape& shapeB, child_count_t indexB,
 				   const Transform& xfA, const Transform& xfB)
 {
-	b2DistanceInput input;
-	input.proxyA = b2DistanceProxy(shapeA, indexA);
-	input.proxyB = b2DistanceProxy(shapeB, indexB);
+	DistanceInput input;
+	input.proxyA = DistanceProxy(shapeA, indexA);
+	input.proxyB = DistanceProxy(shapeB, indexB);
 	input.transformA = xfA;
 	input.transformB = xfB;
 	input.useRadii = true;
 
-	b2SimplexCache cache;
+	SimplexCache cache;
 	const auto output = Distance(cache, input);
 	return output.distance < (Epsilon * 10);
 }

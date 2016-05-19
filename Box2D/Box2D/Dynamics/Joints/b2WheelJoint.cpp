@@ -76,7 +76,7 @@ WheelJoint::WheelJoint(const WheelJointDef* def)
 	m_ay = Vec2_zero;
 }
 
-void WheelJoint::InitVelocityConstraints(const b2SolverData& data)
+void WheelJoint::InitVelocityConstraints(const SolverData& data)
 {
 	m_indexA = m_bodyA->m_islandIndex;
 	m_indexB = m_bodyB->m_islandIndex;
@@ -215,7 +215,7 @@ void WheelJoint::InitVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-void WheelJoint::SolveVelocityConstraints(const b2SolverData& data)
+void WheelJoint::SolveVelocityConstraints(const SolverData& data)
 {
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
@@ -279,7 +279,7 @@ void WheelJoint::SolveVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-bool WheelJoint::SolvePositionConstraints(const b2SolverData& data)
+bool WheelJoint::SolvePositionConstraints(const SolverData& data)
 {
 	auto cA = data.positions[m_indexA].c;
 	auto aA = data.positions[m_indexA].a;

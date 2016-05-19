@@ -26,28 +26,28 @@
 
 using namespace box2d;
 
-Contact* b2EdgeAndPolygonContact::Create(Fixture* fixtureA, child_count_t,
+Contact* EdgeAndPolygonContact::Create(Fixture* fixtureA, child_count_t,
 										   Fixture* fixtureB, child_count_t,
 										   BlockAllocator* allocator)
 {
-	void* mem = allocator->Allocate(sizeof(b2EdgeAndPolygonContact));
-	return new (mem) b2EdgeAndPolygonContact(fixtureA, fixtureB);
+	void* mem = allocator->Allocate(sizeof(EdgeAndPolygonContact));
+	return new (mem) EdgeAndPolygonContact(fixtureA, fixtureB);
 }
 
-void b2EdgeAndPolygonContact::Destroy(Contact* contact, BlockAllocator* allocator)
+void EdgeAndPolygonContact::Destroy(Contact* contact, BlockAllocator* allocator)
 {
-	(static_cast<b2EdgeAndPolygonContact*>(contact))->~b2EdgeAndPolygonContact();
-	allocator->Free(contact, sizeof(b2EdgeAndPolygonContact));
+	(static_cast<EdgeAndPolygonContact*>(contact))->~EdgeAndPolygonContact();
+	allocator->Free(contact, sizeof(EdgeAndPolygonContact));
 }
 
-b2EdgeAndPolygonContact::b2EdgeAndPolygonContact(Fixture* fixtureA, Fixture* fixtureB)
+EdgeAndPolygonContact::EdgeAndPolygonContact(Fixture* fixtureA, Fixture* fixtureB)
 : Contact(fixtureA, 0, fixtureB, 0)
 {
 	assert(m_fixtureA->GetType() == Shape::e_edge);
 	assert(m_fixtureB->GetType() == Shape::e_polygon);
 }
 
-Manifold b2EdgeAndPolygonContact::Evaluate(const Transform& xfA, const Transform& xfB)
+Manifold EdgeAndPolygonContact::Evaluate(const Transform& xfA, const Transform& xfB)
 {
 	return CollideShapes(*static_cast<EdgeShape*>(m_fixtureA->GetShape()), xfA, *static_cast<PolygonShape*>(m_fixtureB->GetShape()), xfB);
 }

@@ -29,7 +29,7 @@ namespace box2d {
 int32 gjkCalls, gjkIters, gjkMaxIters;
 #endif
 
-b2DistanceProxy::b2DistanceProxy(const Shape& shape, child_count_t index)
+DistanceProxy::DistanceProxy(const Shape& shape, child_count_t index)
 {
 	switch (shape.GetType())
 	{
@@ -83,14 +83,14 @@ b2DistanceProxy::b2DistanceProxy(const Shape& shape, child_count_t index)
 	}
 }
 
-class b2SimplexVertex
+class SimplexVertex
 {
 public:
-	using size_type = b2DistanceProxy::size_type;
+	using size_type = DistanceProxy::size_type;
 
-	b2SimplexVertex() = default;
+	SimplexVertex() = default;
 
-	b2SimplexVertex(Vec2 sA, Vec2 sB, size_type iA, size_type iB, float_t _a):
+	SimplexVertex(Vec2 sA, Vec2 sB, size_type iA, size_type iB, float_t _a):
 		wA(sA), wB(sB), indexA(iA), indexB(iB), w(sB - sA), a(_a) {}
 
 	Vec2 get_w() const noexcept { return w; }
@@ -107,7 +107,7 @@ private:
 	Vec2 w;		///< wB - wA. @see wA. @see wB.
 };
 
-class b2Simplex
+class Simplex
 {
 public:
 	/// Maximum number of supportable vertices.
@@ -115,7 +115,7 @@ public:
 
 	using size_type = std::remove_cv<decltype(MaxVertices)>::type;
 
-	b2Simplex() = default;
+	Simplex() = default;
 
 	/// Gets count of valid vertices.
  	/// @return Value between 0 and MaxVertices.
@@ -125,21 +125,21 @@ public:
 		return m_count;
 	}
 
-	const b2SimplexVertex* GetVertices() const noexcept
+	const SimplexVertex* GetVertices() const noexcept
 	{
 		return m_vertices;
 	}
 
-	void AddVertex(const b2SimplexVertex& vertex) noexcept
+	void AddVertex(const SimplexVertex& vertex) noexcept
 	{
 		assert(m_count < MaxVertices);
 		m_vertices[m_count] = vertex;
 		++m_count;
 	}
 
-	void ReadCache(const b2SimplexCache& cache,
-				   const b2DistanceProxy& proxyA, const Transform& transformA,
-				   const b2DistanceProxy& proxyB, const Transform& transformB)
+	void ReadCache(const SimplexCache& cache,
+				   const DistanceProxy& proxyA, const Transform& transformA,
+				   const DistanceProxy& proxyB, const Transform& transformB)
 	{
 		assert(cache.GetCount() <= MaxVertices);
 		
@@ -151,7 +151,7 @@ public:
 			const auto indexB = cache.GetIndexB(i);
 			const auto wA = Mul(transformA, proxyA.GetVertex(indexA));
 			const auto wB = Mul(transformB, proxyB.GetVertex(indexB));
-			m_vertices[i] = b2SimplexVertex{wA, wB, indexA, indexB, float_t(0)};
+			m_vertices[i] = SimplexVertex{wA, wB, indexA, indexB, float_t(0)};
 		}
 		m_count = count;
 
@@ -171,16 +171,16 @@ public:
 		// If the cache is empty or invalid ...
 		if (m_count == 0)
 		{
-			const auto indexA = b2SimplexCache::index_t{0};
-			const auto indexB = b2SimplexCache::index_t{0};
+			const auto indexA = SimplexCache::index_t{0};
+			const auto indexB = SimplexCache::index_t{0};
 			const auto wA = Mul(transformA, proxyA.GetVertex(indexA));
 			const auto wB = Mul(transformB, proxyB.GetVertex(indexB));
-			m_vertices[0] = b2SimplexVertex{wA, wB, indexA, indexB, float_t(1)};
+			m_vertices[0] = SimplexVertex{wA, wB, indexA, indexB, float_t(1)};
 			m_count = 1;
 		}
 	}
 
-	void WriteCache(b2SimplexCache& cache) const
+	void WriteCache(SimplexCache& cache) const
 	{
 		cache.SetMetric(GetMetric());
 		cache.ClearIndices();
@@ -284,7 +284,7 @@ public:
 
 private:
 	size_type m_count = 0; ///< Count of valid vertex entries in m_vertices. Value between 0 and MaxVertices. @see m_vertices.
-	b2SimplexVertex m_vertices[MaxVertices]; ///< Vertices. Only elements < m_count are valid. @see m_count.
+	SimplexVertex m_vertices[MaxVertices]; ///< Vertices. Only elements < m_count are valid. @see m_count.
 };
 
 
@@ -311,7 +311,7 @@ private:
 // Solution
 // a1 = d12_1 / d12
 // a2 = d12_2 / d12
-void b2Simplex::Solve2() noexcept
+void Simplex::Solve2() noexcept
 {
 	const auto w1 = m_vertices[0].get_w();
 	const auto w2 = m_vertices[1].get_w();
@@ -350,7 +350,7 @@ void b2Simplex::Solve2() noexcept
 // - edge points[0]-points[2]
 // - edge points[1]-points[2]
 // - inside the triangle
-void b2Simplex::Solve3() noexcept
+void Simplex::Solve3() noexcept
 {
 	const auto w1 = m_vertices[0].get_w();
 	const auto w2 = m_vertices[1].get_w();
@@ -459,7 +459,7 @@ void b2Simplex::Solve3() noexcept
 	m_count = 3;
 }
 
-b2DistanceOutput Distance(b2SimplexCache& cache, const b2DistanceInput& input)
+DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 {
 #if defined(DO_GJK_PROFILING)
 	++gjkCalls;
@@ -472,7 +472,7 @@ b2DistanceOutput Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 	const auto transformB = input.transformB;
 
 	// Initialize the simplex.
-	b2Simplex simplex;
+	Simplex simplex;
 	simplex.ReadCache(cache, proxyA, transformA, proxyB, transformB);
 
 	// Get simplex vertices as an array.
@@ -481,7 +481,7 @@ b2DistanceOutput Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 
 	// These store the vertices of the last simplex so that we
 	// can check for duplicates and prevent cycling.
-	b2SimplexVertex::size_type saveA[b2Simplex::MaxVertices], saveB[b2Simplex::MaxVertices];
+	SimplexVertex::size_type saveA[Simplex::MaxVertices], saveB[Simplex::MaxVertices];
 
 #if defined(DO_COMPUTE_CLOSEST_POINT)
 	auto distanceSqr1 = MaxFloat;
@@ -517,7 +517,7 @@ b2DistanceOutput Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 		}
 
 		// If we have max points (3), then the origin is in the corresponding triangle.
-		if (simplex.GetCount() == b2Simplex::MaxVertices)
+		if (simplex.GetCount() == Simplex::MaxVertices)
 		{
 			break;
 		}
@@ -579,7 +579,7 @@ b2DistanceOutput Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 		// New vertex is ok and needed.
 		const auto wA = Mul(transformA, proxyA.GetVertex(indexA));
 		const auto wB = Mul(transformB, proxyB.GetVertex(indexB));
-		simplex.AddVertex(b2SimplexVertex{wA, wB, indexA, indexB, float_t(0)});
+		simplex.AddVertex(SimplexVertex{wA, wB, indexA, indexB, float_t(0)});
 	}
 
 #if defined(DO_GJK_PROFILING)
@@ -587,7 +587,7 @@ b2DistanceOutput Distance(b2SimplexCache& cache, const b2DistanceInput& input)
 #endif
 
 	// Prepare output.
-	b2DistanceOutput output;
+	DistanceOutput output;
 	simplex.GetWitnessPoints(&output.pointA, &output.pointB);
 	output.distance = Distance(output.pointA, output.pointB);
 	output.iterations = iter;

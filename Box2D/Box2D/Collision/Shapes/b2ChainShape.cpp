@@ -141,7 +141,7 @@ bool ChainShape::TestPoint(const Transform& xf, const Vec2& p) const
 	return false;
 }
 
-bool ChainShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
+bool ChainShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 							const Transform& xf, child_count_t childIndex) const
 {
 	assert(childIndex < m_count);

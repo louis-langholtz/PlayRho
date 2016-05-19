@@ -22,9 +22,9 @@
 using namespace box2d;
 
 DynamicTree::DynamicTree():
-	m_nodes(static_cast<b2TreeNode*>(alloc(m_nodeCapacity * sizeof(b2TreeNode))))
+	m_nodes(static_cast<TreeNode*>(alloc(m_nodeCapacity * sizeof(TreeNode))))
 {
-	std::memset(m_nodes, 0, m_nodeCapacity * sizeof(b2TreeNode));
+	std::memset(m_nodes, 0, m_nodeCapacity * sizeof(TreeNode));
 
 	// Build a linked list for the free list.
 	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity - 1; ++i)
@@ -52,7 +52,7 @@ DynamicTree::size_type DynamicTree::AllocateNode()
 
 		// The free list is empty. Rebuild a bigger pool.
 		m_nodeCapacity *= 2;
-		m_nodes = static_cast<b2TreeNode*>(realloc(m_nodes, m_nodeCapacity * sizeof(b2TreeNode)));
+		m_nodes = static_cast<TreeNode*>(realloc(m_nodes, m_nodeCapacity * sizeof(TreeNode)));
 
 		// Build a linked list for the free list. The parent
 		// pointer becomes the "next" pointer.

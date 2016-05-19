@@ -37,7 +37,7 @@ public:
 		masses[0] = 0.0f;
 		masses[1] = 0.0f;
 
-		b2RopeDef def;
+		RopeDef def;
 		def.vertices = vertices;
 		def.count = N;
 		def.gravity = Vec2(0.0f, -10.0f);
@@ -94,7 +94,7 @@ public:
 		return new Rope;
 	}
 
-	b2Rope m_rope;
+	Rope m_rope;
 	float_t m_angle;
 };
 

@@ -31,7 +31,7 @@ float_t toiTime, toiMaxTime;
 uint32 toiCalls, toiIters, toiMaxIters;
 uint32 toiRootIters, toiMaxRootIters;
 
-class b2SeparationFunction
+class SeparationFunction
 {
 public:
 	enum Type
@@ -41,9 +41,9 @@ public:
 		e_faceB
 	};
 
-	b2SeparationFunction(const b2SimplexCache& cache,
-		const b2DistanceProxy& proxyA, const Sweep& sweepA,
-		const b2DistanceProxy& proxyB, const Sweep& sweepB,
+	SeparationFunction(const SimplexCache& cache,
+		const DistanceProxy& proxyA, const Sweep& sweepA,
+		const DistanceProxy& proxyB, const Sweep& sweepB,
 		float_t t1):
 		m_proxyA(proxyA), m_proxyB(proxyB), m_sweepA(sweepA), m_sweepB(sweepB),
 		m_type((cache.GetCount() != 1)? ((cache.GetIndexA(0) == cache.GetIndexA(1))? e_faceB: e_faceA): e_points)
@@ -117,8 +117,8 @@ public:
 	/// @param indexB Returns the index of proxy B's vertex for the returned separation.
 	/// @param t Time factor in [0, 1] for which the calculation should be performed.
 	/// @return minimum distance between the two identified vertces or zero.
-	float_t FindMinSeparation(b2DistanceProxy::size_type* indexA,
-							  b2DistanceProxy::size_type* indexB,
+	float_t FindMinSeparation(DistanceProxy::size_type* indexA,
+							  DistanceProxy::size_type* indexB,
 							  float_t t) const
 	{
 		const auto xfA = GetTransform(m_sweepA, t);
@@ -150,7 +150,7 @@ public:
 
 				const auto axisB = MulT(xfB.q, -normal);
 				
-				*indexA = static_cast<b2DistanceProxy::size_type>(-1);
+				*indexA = static_cast<DistanceProxy::size_type>(-1);
 				*indexB = m_proxyB.GetSupport(axisB);
 
 				const auto localPointB = m_proxyB.GetVertex(*indexB);
@@ -166,7 +166,7 @@ public:
 
 				const auto axisA = MulT(xfA.q, -normal);
 
-				*indexB = static_cast<b2DistanceProxy::size_type>(-1);
+				*indexB = static_cast<DistanceProxy::size_type>(-1);
 				*indexA = m_proxyA.GetSupport(axisA);
 
 				const auto localPointA = m_proxyA.GetVertex(*indexA);
@@ -177,8 +177,8 @@ public:
 
 		default:
 			assert(false);
-			*indexA = static_cast<b2DistanceProxy::size_type>(-1);
-			*indexB = static_cast<b2DistanceProxy::size_type>(-1);
+			*indexA = static_cast<DistanceProxy::size_type>(-1);
+			*indexB = static_cast<DistanceProxy::size_type>(-1);
 			return float_t{0};
 		}
 	}
@@ -188,7 +188,7 @@ public:
 	/// @param indexB Index of the proxy B vertex.
 	/// @param t Time factor in range of [0,1] into the future, where 0 indicates alpha0.
 	/// @return Separation distance.
-	float_t Evaluate(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB, float_t t) const
+	float_t Evaluate(DistanceProxy::size_type indexA, DistanceProxy::size_type indexB, float_t t) const
 	{
 		const auto xfA = GetTransform(m_sweepA, t);
 		const auto xfB = GetTransform(m_sweepB, t);
@@ -204,15 +204,15 @@ public:
 		return float_t{0};
 	}
 
-	const b2DistanceProxy& m_proxyA;
-	const b2DistanceProxy& m_proxyB;
+	const DistanceProxy& m_proxyA;
+	const DistanceProxy& m_proxyB;
 	const Sweep m_sweepA, m_sweepB;
 	const Type m_type;
 	Vec2 m_localPoint; // used if type is e_faceA or e_faceB
 	Vec2 m_axis;
 	
 private:
-	float_t EvaluatePoints(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB,
+	float_t EvaluatePoints(DistanceProxy::size_type indexA, DistanceProxy::size_type indexB,
 						   const Transform& xfA, const Transform& xfB) const
 	{
 		const auto localPointA = m_proxyA.GetVertex(indexA);
@@ -222,7 +222,7 @@ private:
 		return Dot(pointB - pointA, m_axis);
 	}
 	
-	float_t EvaluateFaceA(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB,
+	float_t EvaluateFaceA(DistanceProxy::size_type indexA, DistanceProxy::size_type indexB,
 						  const Transform& xfA, const Transform& xfB) const
 	{
 		const auto normal = Mul(xfA.q, m_axis);
@@ -232,7 +232,7 @@ private:
 		return Dot(pointB - pointA, normal);
 	}
 	
-	float_t EvaluateFaceB(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB,
+	float_t EvaluateFaceB(DistanceProxy::size_type indexA, DistanceProxy::size_type indexB,
 						  const Transform& xfA, const Transform& xfB) const
 	{
 		const auto normal = Mul(xfB.q, m_axis);
@@ -247,11 +247,11 @@ private:
 
 // CCD via the local separating axis method. This seeks progression
 // by computing the largest time at which separation is maintained.
-b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
+TOIOutput TimeOfImpact(const TOIInput& input)
 {
 	++toiCalls;
 
-	auto output = b2TOIOutput{b2TOIOutput::e_unknown, input.tMax};
+	auto output = TOIOutput{TOIOutput::e_unknown, input.tMax};
 
 	const auto& proxyA = input.proxyA;
 	const auto& proxyB = input.proxyB;
@@ -272,8 +272,8 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 	auto iter = decltype(MaxTOIIterations){0};
 
 	// Prepare input for distance query.
-	b2SimplexCache cache;
-	b2DistanceInput distanceInput;
+	SimplexCache cache;
+	DistanceInput distanceInput;
 	distanceInput.proxyA = proxyA;
 	distanceInput.proxyB = proxyB;
 	distanceInput.useRadii = false;
@@ -293,19 +293,19 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 		if (distanceOutput.distance <= float_t{0})
 		{
 			// Failure!
-			output = b2TOIOutput{b2TOIOutput::e_overlapped, float_t{0}};
+			output = TOIOutput{TOIOutput::e_overlapped, float_t{0}};
 			break;
 		}
 
 		if (distanceOutput.distance < (target + tolerance))
 		{
 			// Victory!
-			output = b2TOIOutput{b2TOIOutput::e_touching, t1};
+			output = TOIOutput{TOIOutput::e_touching, t1};
 			break;
 		}
 
 		// Initialize the separating axis.
-		b2SeparationFunction fcn(cache, proxyA, sweepA, proxyB, sweepB, t1);
+		SeparationFunction fcn(cache, proxyA, sweepA, proxyB, sweepB, t1);
 #if 0
 		// Dump the curve seen by the root finder
 		{
@@ -340,7 +340,7 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 		for (;;)
 		{
 			// Find the deepest point at t2. Store the witness point indices.
-			b2DistanceProxy::size_type indexA, indexB;
+			DistanceProxy::size_type indexA, indexB;
 			auto s2 = fcn.FindMinSeparation(&indexA, &indexB, t2);
 
 			// Is the final configuration separated?
@@ -349,10 +349,10 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 				// Victory!
 				assert(t2 == input.tMax);
 				// Formerly this used input.tMax as in...
-				// output = b2TOIOutput{b2TOIOutput::e_separated, input.tMax};
+				// output = TOIOutput{TOIOutput::e_separated, input.tMax};
 				// t2 seems more appropriate however given s2 was derived from it.
 				// Meanwhile t2 always seems equal to input.tMax at this point.
-				output = b2TOIOutput{b2TOIOutput::e_separated, t2};
+				output = TOIOutput{TOIOutput::e_separated, t2};
 				done = true;
 				break;
 			}
@@ -372,7 +372,7 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 			// runs out of iterations.
 			if (s1 < (target - tolerance))
 			{
-				output = b2TOIOutput{b2TOIOutput::e_failed, t1};
+				output = TOIOutput{TOIOutput::e_failed, t1};
 				done = true;
 				break;
 			}
@@ -381,7 +381,7 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 			if (s1 <= (target + tolerance))
 			{
 				// Victory! t1 should hold the TOI (could be 0.0).
-				output = b2TOIOutput{b2TOIOutput::e_touching, t1};
+				output = TOIOutput{TOIOutput::e_touching, t1};
 				done = true;
 				break;
 			}
@@ -442,7 +442,7 @@ b2TOIOutput b2TimeOfImpact(const b2TOIInput& input)
 		if (iter == MaxTOIIterations)
 		{
 			// Root finder got stuck. Semi-victory.
-			output = b2TOIOutput{b2TOIOutput::e_failed, t1};
+			output = TOIOutput{TOIOutput::e_failed, t1};
 			break;
 		}
 	}

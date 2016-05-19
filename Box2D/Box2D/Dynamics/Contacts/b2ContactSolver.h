@@ -27,12 +27,12 @@ namespace box2d {
 
 class Contact;
 class Body;
-class b2StackAllocator;
+class StackAllocator;
 struct ContactPositionConstraint;
 struct ContactPositionConstraintBodyData;
 
 /// Velocity constraint point.
-struct b2VelocityConstraintPoint
+struct VelocityConstraintPoint
 {
 	Vec2 rA; ///< Position of body A relative to world manifold point
 	Vec2 rB; ///< Position of body B relative to world manifold point
@@ -74,7 +74,7 @@ public:
 	/// @param index Index of the point to return. This is a value less than returned by GetPointCount().
 	/// @return velocity constraint point for the given index.
 	/// @sa GetPointCount.
-	const b2VelocityConstraintPoint& GetPoint(size_type index) const
+	const VelocityConstraintPoint& GetPoint(size_type index) const
 	{
 		assert(index < pointCount);
 		return points[index];
@@ -85,7 +85,7 @@ public:
 	/// @param index Index of the point to return. This is a value less than returned by GetPointCount().
 	/// @return velocity constraint point for the given index.
 	/// @sa GetPointCount.
-	b2VelocityConstraintPoint& GetPoint(size_type index)
+	VelocityConstraintPoint& GetPoint(size_type index)
 	{
 		assert(index < pointCount);
 		return points[index];
@@ -99,7 +99,7 @@ public:
 	/// @param val Velocity constraint point value to add.
 	/// @note Behavior is undefined if an attempt is made to add more than MaxManifoldPoints points.
 	/// @sa GetPointCount().
-	void AddPoint(const b2VelocityConstraintPoint& val)
+	void AddPoint(const VelocityConstraintPoint& val)
 	{
 		assert(pointCount < MaxManifoldPoints);
 		points[pointCount] = val;
@@ -123,7 +123,7 @@ public:
 	index_type contactIndex;
 
 private:
-	b2VelocityConstraintPoint points[MaxManifoldPoints];
+	VelocityConstraintPoint points[MaxManifoldPoints];
 	size_type pointCount;
 };
 
@@ -131,12 +131,12 @@ struct ContactSolverDef
 {
 	using size_type = size_t;
 
-	b2TimeStep step;
+	TimeStep step;
 	Contact** contacts; // pointers to contacts
 	size_type count; // count of contacts
-	b2Position* positions; // positions for every body referenced by a contact
-	b2Velocity* velocities; // velocities for every body referenced by a contact
-	b2StackAllocator* allocator;
+	Position* positions; // positions for every body referenced by a contact
+	Velocity* velocities; // velocities for every body referenced by a contact
+	StackAllocator* allocator;
 };
 
 /// Contact Solver.
@@ -185,10 +185,10 @@ private:
 
 	void InitializeVelocityConstraint(ContactVelocityConstraint& vc, const ContactPositionConstraint& pc);
 
-	const b2TimeStep m_step;
-	b2Position* const m_positions;
-	b2Velocity* const m_velocities;
-	b2StackAllocator* const m_allocator;
+	const TimeStep m_step;
+	Position* const m_positions;
+	Velocity* const m_velocities;
+	StackAllocator* const m_allocator;
 	Contact** const m_contacts;
 	const size_type m_count;
 	ContactPositionConstraint* const m_positionConstraints;

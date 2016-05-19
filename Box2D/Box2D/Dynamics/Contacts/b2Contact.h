@@ -33,19 +33,19 @@ class Contact;
 class Fixture;
 class World;
 class BlockAllocator;
-class b2StackAllocator;
+class StackAllocator;
 class ContactListener;
 
 /// Friction mixing law. The idea is to allow either fixture to drive the restitution to zero.
 /// For example, anything slides on ice.
-inline float_t b2MixFriction(float_t friction1, float_t friction2)
+inline float_t MixFriction(float_t friction1, float_t friction2)
 {
 	return Sqrt(friction1 * friction2);
 }
 
 /// Restitution mixing law. The idea is allow for anything to bounce off an inelastic surface.
 /// For example, a superball bounces on anything.
-inline float_t b2MixRestitution(float_t restitution1, float_t restitution2) noexcept
+inline float_t MixRestitution(float_t restitution1, float_t restitution2) noexcept
 {
 	return (restitution1 > restitution2) ? restitution1 : restitution2;
 }
@@ -370,7 +370,7 @@ inline float_t Contact::GetFriction() const noexcept
 
 inline void Contact::ResetFriction()
 {
-	m_friction = b2MixFriction(m_fixtureA->GetFriction(), m_fixtureB->GetFriction());
+	m_friction = MixFriction(m_fixtureA->GetFriction(), m_fixtureB->GetFriction());
 }
 
 inline void Contact::SetRestitution(float_t restitution) noexcept
@@ -385,7 +385,7 @@ inline float_t Contact::GetRestitution() const noexcept
 
 inline void Contact::ResetRestitution() noexcept
 {
-	m_restitution = b2MixRestitution(m_fixtureA->GetRestitution(), m_fixtureB->GetRestitution());
+	m_restitution = MixRestitution(m_fixtureA->GetRestitution(), m_fixtureB->GetRestitution());
 }
 
 inline void Contact::SetTangentSpeed(float_t speed) noexcept

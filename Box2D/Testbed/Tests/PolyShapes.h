@@ -27,7 +27,7 @@ namespace box2d {
 /// This callback is called by World::QueryAABB. We find all the fixtures
 /// that overlap an AABB. Of those, we use TestOverlap to determine which fixtures
 /// overlap a circle. Up to 4 overlapped fixtures will be highlighted with a yellow border.
-class PolyShapesCallback : public b2QueryCallback
+class PolyShapesCallback : public QueryFixtureReporter
 {
 public:
 	

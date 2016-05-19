@@ -69,7 +69,7 @@ public:
 	void SetMaxLength(float_t length) { m_maxLength = length; }
 	float_t GetMaxLength() const;
 
-	b2LimitState GetLimitState() const;
+	LimitState GetLimitState() const;
 
 	/// Dump joint to dmLog
 	void Dump() override;
@@ -79,9 +79,9 @@ protected:
 	friend class Joint;
 	RopeJoint(const RopeJointDef* data);
 
-	void InitVelocityConstraints(const b2SolverData& data) override;
-	void SolveVelocityConstraints(const b2SolverData& data) override;
-	bool SolvePositionConstraints(const b2SolverData& data) override;
+	void InitVelocityConstraints(const SolverData& data) override;
+	void SolveVelocityConstraints(const SolverData& data) override;
+	bool SolvePositionConstraints(const SolverData& data) override;
 
 	// Solver shared
 	Vec2 m_localAnchorA;
@@ -103,7 +103,7 @@ protected:
 	float_t m_invIA;
 	float_t m_invIB;
 	float_t m_mass;
-	b2LimitState m_state;
+	LimitState m_state;
 };
 
 } // namespace box2d

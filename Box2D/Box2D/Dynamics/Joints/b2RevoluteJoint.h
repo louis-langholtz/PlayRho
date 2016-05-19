@@ -151,9 +151,9 @@ protected:
 
 	RevoluteJoint(const RevoluteJointDef* def);
 
-	void InitVelocityConstraints(const b2SolverData& data) override;
-	void SolveVelocityConstraints(const b2SolverData& data) override;
-	bool SolvePositionConstraints(const b2SolverData& data) override;
+	void InitVelocityConstraints(const SolverData& data) override;
+	void SolveVelocityConstraints(const SolverData& data) override;
+	bool SolvePositionConstraints(const SolverData& data) override;
 
 	// Solver shared
 	Vec2 m_localAnchorA;
@@ -183,7 +183,7 @@ protected:
 	float_t m_invIB;
 	Mat33 m_mass;			// effective mass for point-to-point constraint.
 	float_t m_motorMass;	// effective mass for motor/limit angular constraint.
-	b2LimitState m_limitState;
+	LimitState m_limitState;
 };
 
 inline float_t RevoluteJoint::GetMotorSpeed() const

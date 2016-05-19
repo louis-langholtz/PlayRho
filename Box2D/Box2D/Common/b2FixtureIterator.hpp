@@ -1,13 +1,13 @@
 //
-//  b2FixtureIterator.hpp
+//  FixtureIterator.hpp
 //  Box2D
 //
 //  Created by Louis D. Langholtz on 3/7/16.
 //
 //
 
-#ifndef b2FixtureIterator_hpp
-#define b2FixtureIterator_hpp
+#ifndef FixtureIterator_hpp
+#define FixtureIterator_hpp
 
 #include <iterator>
 
@@ -37,4 +37,4 @@ private:
 	
 } // namespace box2d
 
-#endif /* b2FixtureIterator_hpp */
+#endif /* FixtureIterator_hpp */

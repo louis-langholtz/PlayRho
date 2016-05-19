@@ -29,16 +29,16 @@ class Shape;
 
 /// A distance proxy is used by the GJK algorithm.
 /// It encapsulates any shape.
-class b2DistanceProxy
+class DistanceProxy
 {
 public:
 	using size_type = size_t; // must be big enough to hold max posible count of vertices
 
-	b2DistanceProxy() = default;
+	DistanceProxy() = default;
 
 	/// Initialize the proxy using the given shape.
 	/// @note The shape must remain in scope while the proxy is in use.
-	b2DistanceProxy(const Shape& shape, child_count_t index);
+	DistanceProxy(const Shape& shape, child_count_t index);
 
 	/// Gets the "radius" of the associated shape.
 	/// @return Non-negative distance.
@@ -64,7 +64,7 @@ private:
 };
 
 /// Used to warm start Distance.
-class b2SimplexCache
+class SimplexCache
 {
 public:
 	static constexpr auto MaxCount = unsigned{3};
@@ -109,17 +109,17 @@ private:
 /// Input for Distance.
 /// You have to option to use the shape radii
 /// in the computation. Even 
-struct b2DistanceInput
+struct DistanceInput
 {
-	b2DistanceProxy proxyA;
-	b2DistanceProxy proxyB;
+	DistanceProxy proxyA;
+	DistanceProxy proxyB;
 	Transform transformA;
 	Transform transformB;
 	bool useRadii;
 };
 
 /// Output for Distance.
-struct b2DistanceOutput
+struct DistanceOutput
 {
 	Vec2 pointA;		///< closest point on shapeA
 	Vec2 pointB;		///< closest point on shapeB
@@ -129,19 +129,19 @@ struct b2DistanceOutput
 
 /// Compute the closest points between two shapes. Supports any combination of:
 /// CircleShape, PolygonShape, EdgeShape. The simplex cache is input/output.
-/// On the first call, b2SimplexCache.count should be set to zero.
-b2DistanceOutput Distance(b2SimplexCache& cache,  const b2DistanceInput& input);
+/// On the first call, SimplexCache.count should be set to zero.
+DistanceOutput Distance(SimplexCache& cache,  const DistanceInput& input);
 
 //////////////////////////////////////////////////////////////////////////
 
-inline Vec2 b2DistanceProxy::GetVertex(size_type index) const
+inline Vec2 DistanceProxy::GetVertex(size_type index) const
 {
 	assert(index >= 0);
 	assert(index < m_count);
 	return m_vertices[index];
 }
 
-inline b2DistanceProxy::size_type b2DistanceProxy::GetSupport(const Vec2& d) const noexcept
+inline DistanceProxy::size_type DistanceProxy::GetSupport(const Vec2& d) const noexcept
 {
 	auto bestIndex = decltype(m_count){0};
 	auto bestValue = Dot(m_vertices[0], d);
@@ -158,7 +158,7 @@ inline b2DistanceProxy::size_type b2DistanceProxy::GetSupport(const Vec2& d) con
 	return bestIndex;
 }
 
-inline const Vec2& b2DistanceProxy::GetSupportVertex(const Vec2& d) const
+inline const Vec2& DistanceProxy::GetSupportVertex(const Vec2& d) const
 {
 	auto bestIndex = decltype(m_count){0};
 	auto bestValue = Dot(m_vertices[0], d);

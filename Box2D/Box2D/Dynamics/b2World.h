@@ -56,7 +56,7 @@ public:
 
 	/// Register a destruction listener. The listener is owned by you and must
 	/// remain in scope.
-	void SetDestructionListener(b2DestructionListener* listener) noexcept;
+	void SetDestructionListener(DestructionListener* listener) noexcept;
 
 	/// Register a contact filter to provide specific control over collision.
 	/// Otherwise the default filter is used. The listener is
@@ -111,11 +111,10 @@ public:
 	/// Call this to draw shapes and other debug draw data. This is intentionally non-const.
 	void DrawDebugData();
 
-	/// Query the world for all fixtures that potentially overlap the
-	/// provided AABB.
+	/// Queries the world for all fixtures that potentially overlap the provided AABB.
 	/// @param callback a user implemented callback class.
 	/// @param aabb the query box.
-	void QueryAABB(b2QueryCallback* callback, const AABB& aabb) const;
+	void QueryAABB(QueryFixtureReporter* callback, const AABB& aabb) const;
 
 	/// Ray-cast the world for all fixtures in the path of the ray. Your callback
 	/// controls whether you get the closest point, any point, or n-points.
@@ -123,7 +122,7 @@ public:
 	/// @param callback a user implemented callback class.
 	/// @param point1 the ray starting point
 	/// @param point2 the ray ending point
-	void RayCast(b2RayCastCallback* callback, const Vec2& point1, const Vec2& point2) const;
+	void RayCast(RayCastFixtureReporter* callback, const Vec2& point1, const Vec2& point2) const;
 
 	/// Get the world body list. With the returned body, use Body::GetNext to get
 	/// the next body in the world list. A nullptr body indicates the end of the list.
@@ -210,7 +209,7 @@ public:
 	const ContactManager& GetContactManager() const noexcept;
 
 	/// Get the current profile.
-	const b2Profile& GetProfile() const noexcept;
+	const Profile& GetProfile() const noexcept;
 
 	/// Dump the world into the log file.
 	/// @warning this should be called outside of a time step.
@@ -230,14 +229,14 @@ private:
 	friend class Fixture;
 	friend class ContactManager;
 
-	void Solve(const b2TimeStep& step);
-	void SolveTOI(const b2TimeStep& step);
+	void Solve(const TimeStep& step);
+	void SolveTOI(const TimeStep& step);
 
 	void DrawJoint(Joint* joint);
 	void DrawShape(const Fixture* shape, const Transform& xf, const Color& color);
 
 	BlockAllocator m_blockAllocator;
-	b2StackAllocator m_stackAllocator;
+	StackAllocator m_stackAllocator;
 	ContactFilter m_defaultFilter;
 	ContactListener m_defaultListener;
 
@@ -258,7 +257,7 @@ private:
 	Vec2 m_gravity;
 	bool m_allowSleep = true;
 
-	b2DestructionListener* m_destructionListener = nullptr;
+	DestructionListener* m_destructionListener = nullptr;
 	Draw* g_debugDraw = nullptr;
 
 	/// Used to compute the time step ratio to support a variable time step.
@@ -271,7 +270,7 @@ private:
 
 	bool m_stepComplete = true;
 
-	b2Profile m_profile;
+	Profile m_profile;
 };
 
 inline Body* World::GetBodyList() noexcept
@@ -367,7 +366,7 @@ inline const ContactManager& World::GetContactManager() const noexcept
 	return m_contactManager;
 }
 
-inline const b2Profile& World::GetProfile() const noexcept
+inline const Profile& World::GetProfile() const noexcept
 {
 	return m_profile;
 }

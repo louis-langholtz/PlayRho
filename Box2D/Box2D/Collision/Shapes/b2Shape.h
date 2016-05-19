@@ -98,7 +98,7 @@ public:
 	/// @param input the ray-cast input parameters.
 	/// @param transform the transform to be applied to the shape.
 	/// @param childIndex the child shape index
-	virtual bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
+	virtual bool RayCast(RayCastOutput* output, const RayCastInput& input,
 						const Transform& transform, child_count_t childIndex) const = 0;
 
 	/// Given a transform, compute the associated axis aligned bounding box for a child shape.

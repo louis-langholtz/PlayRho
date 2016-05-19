@@ -25,7 +25,7 @@ namespace box2d {
 
 class BlockAllocator;
 
-class b2ChainAndPolygonContact : public Contact
+class ChainAndPolygonContact : public Contact
 {
 public:
 	static Contact* Create(Fixture* fixtureA, child_count_t indexA,
@@ -33,8 +33,8 @@ public:
 							 BlockAllocator* allocator);
 	static void Destroy(Contact* contact, BlockAllocator* allocator);
 
-	b2ChainAndPolygonContact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB);
-	~b2ChainAndPolygonContact() {}
+	ChainAndPolygonContact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB);
+	~ChainAndPolygonContact() {}
 
 	Manifold Evaluate(const Transform& xfA, const Transform& xfB) override;
 };

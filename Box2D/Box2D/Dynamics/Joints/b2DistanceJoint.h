@@ -100,9 +100,9 @@ protected:
 	friend class Joint;
 	DistanceJoint(const DistanceJointDef* data);
 
-	void InitVelocityConstraints(const b2SolverData& data) override;
-	void SolveVelocityConstraints(const b2SolverData& data) override;
-	bool SolvePositionConstraints(const b2SolverData& data) override;
+	void InitVelocityConstraints(const SolverData& data) override;
+	void SolveVelocityConstraints(const SolverData& data) override;
+	bool SolvePositionConstraints(const SolverData& data) override;
 
 	float_t m_frequencyHz;
 	float_t m_dampingRatio;

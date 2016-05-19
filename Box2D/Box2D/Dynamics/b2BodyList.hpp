@@ -1,13 +1,13 @@
 //
-//  b2BodyList.hpp
+//  BodyList.hpp
 //  Box2D
 //
 //  Created by Louis D. Langholtz on 3/6/16.
 //
 //
 
-#ifndef b2BodyList_hpp
-#define b2BodyList_hpp
+#ifndef BodyList_hpp
+#define BodyList_hpp
 
 #include <Box2D/Common/b2BodyIterator.hpp>
 #include <Box2D/Common/b2ConstBodyIterator.hpp>
@@ -37,4 +37,4 @@ private:
 
 } // namespace box2d
 
-#endif /* b2BodyList_hpp */
+#endif /* BodyList_hpp */

@@ -25,12 +25,12 @@ namespace box2d {
 
 /// Timer for profiling. This has platform specific code and may
 /// not work on every platform.
-class b2Timer
+class Timer
 {
 public:
 
 	/// Constructor
-	b2Timer();
+	Timer();
 
 	/// Reset the timer.
 	void Reset();

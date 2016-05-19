@@ -21,15 +21,15 @@
 
 using namespace box2d;
 
-b2StackAllocator::b2StackAllocator() = default;
+StackAllocator::StackAllocator() = default;
 
-b2StackAllocator::~b2StackAllocator()
+StackAllocator::~StackAllocator()
 {
 	assert(m_index == 0);
 	assert(m_entryCount == 0);
 }
 
-void* b2StackAllocator::Allocate(size_type size)
+void* StackAllocator::Allocate(size_type size)
 {
 	assert(m_entryCount < MaxStackEntries);
 
@@ -54,7 +54,7 @@ void* b2StackAllocator::Allocate(size_type size)
 	return entry->data;
 }
 
-void b2StackAllocator::Free(void* p)
+void StackAllocator::Free(void* p)
 {
 	assert(m_entryCount > 0);
 	const auto entry = m_entries + m_entryCount - 1;

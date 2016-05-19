@@ -27,10 +27,10 @@ namespace box2d {
 class Body;
 class Contact;
 class Joint;
-class b2StackAllocator;
+class StackAllocator;
 class ContactListener;
 struct ContactVelocityConstraint;
-struct b2Profile;
+struct Profile;
 
 /// Island.
 /// @detail A container of bodies contacts and joints relavent to handling world dynamics.
@@ -39,7 +39,7 @@ class Island
 {
 public:
 	Island(island_count_t bodyCapacity, island_count_t contactCapacity, island_count_t jointCapacity,
-			b2StackAllocator* allocator, ContactListener* listener);
+			StackAllocator* allocator, ContactListener* listener);
 	~Island();
 
 	/// Clears this island.
@@ -51,9 +51,9 @@ public:
 	/// @sa void Add(Joint* joint).
 	void Clear() noexcept;
 
-	void Solve(b2Profile* profile, const b2TimeStep& step, const Vec2& gravity, bool allowSleep);
+	void Solve(Profile* profile, const TimeStep& step, const Vec2& gravity, bool allowSleep);
 
-	void SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, island_count_t toiIndexB);
+	void SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_count_t toiIndexB);
 
 	void Add(Body* body);
 
@@ -122,14 +122,14 @@ private:
 	const island_count_t m_contactCapacity;
 	const island_count_t m_jointCapacity;
 
-	b2StackAllocator* const m_allocator;
+	StackAllocator* const m_allocator;
 	ContactListener* const m_listener;
 
 	Body** const m_bodies;
 	Contact** const m_contacts;
 	Joint** const m_joints;
-	b2Velocity* const m_velocities;
-	b2Position* const m_positions;
+	Velocity* const m_velocities;
+	Position* const m_positions;
 };
 
 } // namespace box2d

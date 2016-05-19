@@ -27,15 +27,15 @@ namespace box2d {
 /// If the stack size exceeds the initial capacity, the heap is used
 /// to increase the size of the stack.
 template <typename T, size_t N>
-class b2GrowableStack
+class GrowableStack
 {
 public:
 	using size_type = size_t;
 	static constexpr auto BufferGrowthRate = size_type{2};
 
-	b2GrowableStack() = default;
+	GrowableStack() = default;
 
-	~b2GrowableStack()
+	~GrowableStack()
 	{
 		if (m_stack != m_array)
 		{

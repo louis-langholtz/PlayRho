@@ -141,9 +141,9 @@ protected:
 	friend class GearJoint;
 	PrismaticJoint(const PrismaticJointDef* def);
 
-	void InitVelocityConstraints(const b2SolverData& data) override;
-	void SolveVelocityConstraints(const b2SolverData& data) override;
-	bool SolvePositionConstraints(const b2SolverData& data) override;
+	void InitVelocityConstraints(const SolverData& data) override;
+	void SolveVelocityConstraints(const SolverData& data) override;
+	bool SolvePositionConstraints(const SolverData& data) override;
 
 	// Solver shared
 	Vec2 m_localAnchorA;
@@ -159,7 +159,7 @@ protected:
 	float_t m_motorSpeed;
 	bool m_enableLimit;
 	bool m_enableMotor;
-	b2LimitState m_limitState;
+	LimitState m_limitState;
 
 	// Solver temp
 	index_t m_indexA;

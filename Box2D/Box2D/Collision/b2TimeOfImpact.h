@@ -24,18 +24,18 @@
 
 namespace box2d {
 
-/// Input parameters for b2TimeOfImpact
-struct b2TOIInput
+/// Input parameters for TimeOfImpact
+struct TOIInput
 {
-	b2DistanceProxy proxyA;
-	b2DistanceProxy proxyB;
+	DistanceProxy proxyA;
+	DistanceProxy proxyB;
 	Sweep sweepA;
 	Sweep sweepB;
 	float_t tMax; ///< Maximum sweep interval time fraction (in the range of [0, 1]).
 };
 
-/// Output parameters for b2TimeOfImpact.
-class b2TOIOutput
+/// Output parameters for TimeOfImpact.
+class TOIOutput
 {
 public:
 	enum State
@@ -47,9 +47,9 @@ public:
 		e_separated
 	};
 
-	b2TOIOutput() = default;
+	TOIOutput() = default;
 	
-	constexpr b2TOIOutput(State _state, float_t _t): state(_state), t(_t)
+	constexpr TOIOutput(State _state, float_t _t): state(_state), t(_t)
 	{
 		assert(t >= 0);
 		assert(t <= 1);
@@ -68,12 +68,12 @@ private:
 };
 
 /// Computes the upper bound on time before two shapes penetrate.
-/// Time is represented as a fraction between [0,b2TOIInput::tMax].
+/// Time is represented as a fraction between [0,TOIInput::tMax].
 /// This uses a swept separating axis and may miss some intermediate,
 /// non-tunneling collision. If you change the time interval, you should call this function
 /// again.
 /// @note Use Distance to compute the contact point and normal at the time of impact.
-b2TOIOutput b2TimeOfImpact(const b2TOIInput& input);
+TOIOutput TimeOfImpact(const TOIInput& input);
 
 } // namespace box2d
 

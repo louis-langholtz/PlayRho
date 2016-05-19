@@ -51,7 +51,7 @@ bool EdgeShape::TestPoint(const Transform& xf, const Vec2& p) const
 // v = v1 + s * e
 // p1 + t * d = v1 + s * e
 // s * e - t * d = p1 - v1
-bool EdgeShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
+bool EdgeShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 							const Transform& xf, child_count_t childIndex) const
 {
 	BOX2D_NOT_USED(childIndex);

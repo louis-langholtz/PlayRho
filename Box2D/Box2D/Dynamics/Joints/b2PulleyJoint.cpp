@@ -72,7 +72,7 @@ PulleyJoint::PulleyJoint(const PulleyJointDef* def)
 	m_impulse = float_t{0};
 }
 
-void PulleyJoint::InitVelocityConstraints(const b2SolverData& data)
+void PulleyJoint::InitVelocityConstraints(const SolverData& data)
 {
 	m_indexA = m_bodyA->m_islandIndex;
 	m_indexB = m_bodyB->m_islandIndex;
@@ -162,7 +162,7 @@ void PulleyJoint::InitVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-void PulleyJoint::SolveVelocityConstraints(const b2SolverData& data)
+void PulleyJoint::SolveVelocityConstraints(const SolverData& data)
 {
 	auto vA = data.velocities[m_indexA].v;
 	auto wA = data.velocities[m_indexA].w;
@@ -189,7 +189,7 @@ void PulleyJoint::SolveVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-bool PulleyJoint::SolvePositionConstraints(const b2SolverData& data)
+bool PulleyJoint::SolvePositionConstraints(const SolverData& data)
 {
 	auto cA = data.positions[m_indexA].c;
 	auto aA = data.positions[m_indexA].a;

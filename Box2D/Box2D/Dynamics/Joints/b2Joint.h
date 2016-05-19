@@ -25,7 +25,7 @@ namespace box2d {
 
 class Body;
 class Joint;
-struct b2SolverData;
+struct SolverData;
 class BlockAllocator;
 
 enum JointType
@@ -44,7 +44,7 @@ enum JointType
 	e_motorJoint
 };
 
-enum b2LimitState
+enum LimitState
 {
 	e_inactiveLimit,
 	e_atLowerLimit,
@@ -52,7 +52,7 @@ enum b2LimitState
 	e_equalLimits
 };
 
-struct b2Jacobian
+struct Jacobian
 {
 	Vec2 linear;
 	float_t angularA;
@@ -161,11 +161,11 @@ protected:
 	Joint(const JointDef* def);
 	virtual ~Joint() {}
 
-	virtual void InitVelocityConstraints(const b2SolverData& data) = 0;
-	virtual void SolveVelocityConstraints(const b2SolverData& data) = 0;
+	virtual void InitVelocityConstraints(const SolverData& data) = 0;
+	virtual void SolveVelocityConstraints(const SolverData& data) = 0;
 
 	// This returns true if the position errors are within tolerance.
-	virtual bool SolvePositionConstraints(const b2SolverData& data) = 0;
+	virtual bool SolvePositionConstraints(const SolverData& data) = 0;
 
 	bool IsInIsland() const noexcept;
 	void SetInIsland(bool value) noexcept;

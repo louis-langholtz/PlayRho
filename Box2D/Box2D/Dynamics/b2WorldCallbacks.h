@@ -35,10 +35,10 @@ struct Manifold;
 /// Joints and fixtures are destroyed when their associated
 /// body is destroyed. Implement this listener so that you
 /// may nullify references to these joints and shapes.
-class b2DestructionListener
+class DestructionListener
 {
 public:
-	virtual ~b2DestructionListener() {}
+	virtual ~DestructionListener() {}
 
 	/// Called when any joint is about to be destroyed due
 	/// to the destruction of one of its attached bodies.
@@ -139,10 +139,10 @@ public:
 
 /// Callback class for AABB queries.
 /// See World::Query
-class b2QueryCallback
+class QueryFixtureReporter
 {
 public:
-	virtual ~b2QueryCallback() {}
+	virtual ~QueryFixtureReporter() {}
 
 	/// Called for each fixture found in the query AABB.
 	/// @return false to terminate the query.
@@ -151,10 +151,10 @@ public:
 
 /// Callback class for ray casts.
 /// See World::RayCast
-class b2RayCastCallback
+class RayCastFixtureReporter
 {
 public:
-	virtual ~b2RayCastCallback() {}
+	virtual ~RayCastFixtureReporter() {}
 
 	/// Called for each fixture found in the query. You control how the ray cast
 	/// proceeds by returning a float:
@@ -167,8 +167,8 @@ public:
 	/// @param normal the normal vector at the point of intersection
 	/// @return -1 to filter, 0 to terminate, fraction to clip the ray for
 	/// closest hit, 1 to continue
-	virtual float_t ReportFixture(	Fixture* fixture, const Vec2& point,
-									const Vec2& normal, float_t fraction) = 0;
+	virtual float_t ReportFixture(Fixture* fixture, const Vec2& point,
+								  const Vec2& normal, float_t fraction) = 0;
 };
 
 } // namespace box2d

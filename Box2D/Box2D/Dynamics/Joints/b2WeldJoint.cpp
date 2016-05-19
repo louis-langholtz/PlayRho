@@ -57,7 +57,7 @@ WeldJoint::WeldJoint(const WeldJointDef* def)
 	m_impulse = Vec3_zero;
 }
 
-void WeldJoint::InitVelocityConstraints(const b2SolverData& data)
+void WeldJoint::InitVelocityConstraints(const SolverData& data)
 {
 	m_indexA = m_bodyA->m_islandIndex;
 	m_indexB = m_bodyB->m_islandIndex;
@@ -168,7 +168,7 @@ void WeldJoint::InitVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-void WeldJoint::SolveVelocityConstraints(const b2SolverData& data)
+void WeldJoint::SolveVelocityConstraints(const SolverData& data)
 {
 	auto vA = data.velocities[m_indexA].v;
 	auto wA = data.velocities[m_indexA].w;
@@ -226,7 +226,7 @@ void WeldJoint::SolveVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-bool WeldJoint::SolvePositionConstraints(const b2SolverData& data)
+bool WeldJoint::SolvePositionConstraints(const SolverData& data)
 {
 	auto cA = data.positions[m_indexA].c;
 	auto aA = data.positions[m_indexA].a;

@@ -230,7 +230,7 @@ private:
 };
 
 /// This is used for determining the state of contact points.
-enum class b2PointState
+enum class PointState
 {
 	NullState,		///< point does not exist
 	AddState,		///< point was added in the update
@@ -240,27 +240,27 @@ enum class b2PointState
 
 /// Compute the point states given two manifolds. The states pertain to the transition from manifold1
 /// to manifold2. So state1 is either persist or remove while state2 is either add or persist.
-using b2PointStateArray = std::array<b2PointState,MaxManifoldPoints>;
-void b2GetPointStates(b2PointStateArray& state1, b2PointStateArray& state2,
+using PointStateArray = std::array<PointState,MaxManifoldPoints>;
+void GetPointStates(PointStateArray& state1, PointStateArray& state2,
 					  const Manifold& manifold1, const Manifold& manifold2);
 
 /// Used for computing contact manifolds.
-struct b2ClipVertex
+struct ClipVertex
 {
 	Vec2 v; ///< Vertex of edge or polygon.
 	ContactFeature cf; ///< Contact feature information.
 };
 
 /// Ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
-struct b2RayCastInput
+struct RayCastInput
 {
 	Vec2 p1, p2;
 	float_t maxFraction;
 };
 
 /// Ray-cast output data. The ray hits at p1 + fraction * (p2 - p1), where p1 and p2
-/// come from b2RayCastInput.
-struct b2RayCastOutput
+/// come from RayCastInput.
+struct RayCastOutput
 {
 	Vec2 normal;
 	float_t fraction;
@@ -311,7 +311,7 @@ public:
 			(aabb.upperBound.x <= upperBound.x) && (aabb.upperBound.y <= upperBound.y);
 	}
 
-	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const;
+	bool RayCast(RayCastOutput* output, const RayCastInput& input) const;
 
 	Vec2 GetLowerBound() const noexcept { return lowerBound; }
 	Vec2 GetUpperBound() const noexcept { return upperBound; }
@@ -385,7 +385,7 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const Poly
 
 /// Clip array for ClipSegmentToLine.
 /// @see ClipSegmentToLine.
-using ClipArray = std::array<b2ClipVertex, MaxManifoldPoints>;
+using ClipArray = std::array<ClipVertex, MaxManifoldPoints>;
 
 /// Clipping for contact manifolds.
 /// @detail This returns an array of points from the given line that are inside of the plane as

@@ -130,7 +130,7 @@ GearJoint::GearJoint(const GearJointDef* def)
 	m_impulse = float_t{0};
 }
 
-void GearJoint::InitVelocityConstraints(const b2SolverData& data)
+void GearJoint::InitVelocityConstraints(const SolverData& data)
 {
 	m_indexA = m_bodyA->m_islandIndex;
 	m_indexB = m_bodyB->m_islandIndex;
@@ -237,7 +237,7 @@ void GearJoint::InitVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexD].w = wD;
 }
 
-void GearJoint::SolveVelocityConstraints(const b2SolverData& data)
+void GearJoint::SolveVelocityConstraints(const SolverData& data)
 {
 	auto vA = data.velocities[m_indexA].v;
 	auto wA = data.velocities[m_indexA].w;
@@ -273,7 +273,7 @@ void GearJoint::SolveVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexD].w = wD;
 }
 
-bool GearJoint::SolvePositionConstraints(const b2SolverData& data)
+bool GearJoint::SolvePositionConstraints(const SolverData& data)
 {
 	auto cA = data.positions[m_indexA].c;
 	auto aA = data.positions[m_indexA].a;

@@ -43,7 +43,7 @@ bool CircleShape::TestPoint(const Transform& transform, const Vec2& p) const
 // From Section 3.1.2
 // x = s + a * r
 // norm(x) = radius
-bool CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
+bool CircleShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 							const Transform& transform, child_count_t childIndex) const
 {
 	BOX2D_NOT_USED(childIndex);

@@ -42,7 +42,7 @@ public:
 	bool TestPoint(const Transform& transform, const Vec2& p) const override;
 
 	/// Implement Shape.
-	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
+	bool RayCast(RayCastOutput* output, const RayCastInput& input,
 				const Transform& transform, child_count_t childIndex) const override;
 
 	/// @see Shape::ComputeAABB

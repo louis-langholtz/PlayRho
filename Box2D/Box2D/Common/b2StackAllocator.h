@@ -23,19 +23,10 @@
 
 namespace box2d {
 
-struct b2StackEntry
-{
-	using size_type = size_t;
-
-	char* data;
-	size_type size;
-	bool usedMalloc;
-};
-
 // This is a stack allocator used for fast per step allocations.
 // You must nest allocate/free pairs. The code will assert
 // if you try to interleave multiple allocate/free pairs.
-class b2StackAllocator
+class StackAllocator
 {
 public:
 	using size_type = size_t;
@@ -43,8 +34,8 @@ public:
 	static constexpr auto StackSize = unsigned{100 * 1024};	// 100k
 	static constexpr auto MaxStackEntries = unsigned{32};
 	
-	b2StackAllocator();
-	~b2StackAllocator();
+	StackAllocator();
+	~StackAllocator();
 
 	void* Allocate(size_type size);
 	void Free(void* p);
@@ -56,13 +47,22 @@ public:
 
 private:
 
+	struct StackEntry
+	{
+		using size_type = size_t;
+		
+		char* data;
+		size_type size;
+		bool usedMalloc;
+	};
+	
 	char m_data[StackSize];
 	size_type m_index = 0;
 
 	size_type m_allocation = 0;
 	size_type m_maxAllocation = 0;
 
-	b2StackEntry m_entries[MaxStackEntries];
+	StackEntry m_entries[MaxStackEntries];
 	std::remove_cv<decltype(MaxStackEntries)>::type m_entryCount = 0;
 };
 

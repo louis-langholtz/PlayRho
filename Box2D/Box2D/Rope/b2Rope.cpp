@@ -21,7 +21,7 @@
 
 using namespace box2d;
 
-b2Rope::~b2Rope()
+Rope::~Rope()
 {
 	free(m_ps);
 	free(m_p0s);
@@ -31,7 +31,7 @@ b2Rope::~b2Rope()
 	free(m_as);
 }
 
-void b2Rope::Initialize(const b2RopeDef* def)
+void Rope::Initialize(const RopeDef* def)
 {
 	assert(def->count >= 3);
 	m_count = def->count;
@@ -90,7 +90,7 @@ void b2Rope::Initialize(const b2RopeDef* def)
 	m_k3 = def->k3;
 }
 
-void b2Rope::Step(float_t h, int32 iterations)
+void Rope::Step(float_t h, int32 iterations)
 {
 	if (h == 0.0)
 	{
@@ -125,7 +125,7 @@ void b2Rope::Step(float_t h, int32 iterations)
 	}
 }
 
-void b2Rope::SolveC2()
+void Rope::SolveC2()
 {
 	const auto count2 = m_count - 1;
 
@@ -156,7 +156,7 @@ void b2Rope::SolveC2()
 	}
 }
 
-void b2Rope::SetAngle(float_t angle)
+void Rope::SetAngle(float_t angle)
 {
 	const auto count3 = m_count - 2;
 	for (auto i = decltype(count3){0}; i < count3; ++i)
@@ -165,7 +165,7 @@ void b2Rope::SetAngle(float_t angle)
 	}
 }
 
-void b2Rope::SolveC3()
+void Rope::SolveC3()
 {
 	const auto count3 = m_count - 2;
 
@@ -236,7 +236,7 @@ void b2Rope::SolveC3()
 	}
 }
 
-void b2Rope::Draw(box2d::Draw* draw) const
+void Rope::Draw(box2d::Draw* draw) const
 {
 	const auto c = Color(float_t(0.4), float_t(0.5), float_t(0.7));
 

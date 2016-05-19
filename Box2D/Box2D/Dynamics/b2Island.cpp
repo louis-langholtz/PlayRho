@@ -151,7 +151,7 @@ Island::Island(
 	island_count_t bodyCapacity,
 	island_count_t contactCapacity,
 	island_count_t jointCapacity,
-	b2StackAllocator* allocator,
+	StackAllocator* allocator,
 	ContactListener* listener):
 m_bodyCapacity(bodyCapacity),
 m_contactCapacity(contactCapacity),
@@ -161,8 +161,8 @@ m_listener(listener),
 m_bodies(static_cast<Body**>(m_allocator->Allocate(bodyCapacity * sizeof(Body*)))),
 m_contacts(static_cast<Contact**>(m_allocator->Allocate(contactCapacity * sizeof(Contact*)))),
 m_joints(static_cast<Joint**>(m_allocator->Allocate(jointCapacity * sizeof(Joint*)))),
-m_velocities(static_cast<b2Velocity*>(m_allocator->Allocate(bodyCapacity * sizeof(b2Velocity)))),
-m_positions(static_cast<b2Position*>(m_allocator->Allocate(bodyCapacity * sizeof(b2Position))))
+m_velocities(static_cast<Velocity*>(m_allocator->Allocate(bodyCapacity * sizeof(Velocity)))),
+m_positions(static_cast<Position*>(m_allocator->Allocate(bodyCapacity * sizeof(Position))))
 {
 }
 
@@ -192,7 +192,7 @@ void Island::ClearBodies() noexcept
 	m_bodyCount = 0;
 }
 
-void Island::Solve(b2Profile* profile, const b2TimeStep& step, const Vec2& gravity, bool allowSleep)
+void Island::Solve(Profile* profile, const TimeStep& step, const Vec2& gravity, bool allowSleep)
 {
 	const auto h = step.get_dt();
 
@@ -204,7 +204,7 @@ void Island::Solve(b2Profile* profile, const b2TimeStep& step, const Vec2& gravi
 		// Store positions for continuous collision.
 		b.m_sweep.c0 = b.m_sweep.c;
 		b.m_sweep.a0 = b.m_sweep.a;
-		m_positions[i] = b2Position{b.m_sweep.c, b.m_sweep.a};
+		m_positions[i] = Position{b.m_sweep.c, b.m_sweep.a};
 
 		{
 			auto v = b.m_linearVelocity;
@@ -225,12 +225,12 @@ void Island::Solve(b2Profile* profile, const b2TimeStep& step, const Vec2& gravi
 				v *= float_t(1) / (float_t(1) + h * b.m_linearDamping);
 				w *= float_t(1) / (float_t(1) + h * b.m_angularDamping);
 			}
-			m_velocities[i] = b2Velocity{v, w};
+			m_velocities[i] = Velocity{v, w};
 		}
 	}
 
 	// Solver data
-	const auto solverData = b2SolverData{step, m_positions, m_velocities};
+	const auto solverData = SolverData{step, m_positions, m_velocities};
 
 	// Initialize velocity constraints.
 	ContactSolverDef contactSolverDef;
@@ -289,7 +289,7 @@ void Island::Solve(b2Profile* profile, const b2TimeStep& step, const Vec2& gravi
 		}
 
 		m_velocities[i] = velocity;
-		m_positions[i] = b2Position{m_positions[i].c + translation, m_positions[i].a + rotation};
+		m_positions[i] = Position{m_positions[i].c + translation, m_positions[i].a + rotation};
 	}
 
 	// Solve position constraints
@@ -365,7 +365,7 @@ void Island::Solve(b2Profile* profile, const b2TimeStep& step, const Vec2& gravi
 	}
 }
 
-void Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, island_count_t toiIndexB)
+void Island::SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_count_t toiIndexB)
 {
 	assert(toiIndexA < m_bodyCount);
 	assert(toiIndexB < m_bodyCount);
@@ -413,14 +413,14 @@ void Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, islan
 		int32 indexA = c->GetChildIndexA();
 		int32 indexB = c->GetChildIndexB();
 
-		b2DistanceInput input;
+		DistanceInput input;
 		input.proxyA.Set(*fA->GetShape(), indexA);
 		input.proxyB.Set(*fB->GetShape(), indexB);
 		input.transformA = bA->GetTransform();
 		input.transformB = bB->GetTransform();
 		input.useRadii = false;
 
-		b2SimplexCache cache;
+		SimplexCache cache;
 		const auto output = Distance(cache, input);
 		if (output.distance == 0 || cache.GetCount() == 3)
 		{
@@ -472,7 +472,7 @@ void Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, islan
 		}
 
 		m_velocities[i] = velocity;
-		m_positions[i] = b2Position{m_positions[i].c + translation, m_positions[i].a + rotation};
+		m_positions[i] = Position{m_positions[i].c + translation, m_positions[i].a + rotation};
 
 		// Sync bodies
 		auto& body = *m_bodies[i];

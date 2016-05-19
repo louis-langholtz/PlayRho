@@ -24,7 +24,7 @@
 namespace box2d {
 
 /// Profiling data. Times are in milliseconds.
-struct b2Profile
+struct Profile
 {
 	float_t step;
 	float_t collide;
@@ -37,7 +37,7 @@ struct b2Profile
 };
 
 /// This is an internal structure.
-class b2TimeStep
+class TimeStep
 {
 public:
 	float_t get_dt() const noexcept { return dt; }
@@ -60,38 +60,38 @@ private:
 };
 
 /// This is an internal structure.
-struct b2Position
+struct Position
 {
-	b2Position() = default;
-	constexpr b2Position(const b2Position& copy) = default;
+	Position() = default;
+	constexpr Position(const Position& copy) = default;
 
-	constexpr b2Position(Vec2 c_, float_t a_) noexcept: c(c_), a(a_) {}
+	constexpr Position(Vec2 c_, float_t a_) noexcept: c(c_), a(a_) {}
 
 	Vec2 c; ///< linear position
 	float_t a; ///< angular position
 };
 
-inline Transform GetTransform(const b2Position& pos, const Vec2& local_ctr)
+inline Transform GetTransform(const Position& pos, const Vec2& local_ctr)
 {
 	return GetTransform(pos.c, Rot(pos.a), local_ctr);
 }
 
 /// This is an internal structure.
-struct b2Velocity
+struct Velocity
 {
-	b2Velocity() = default;
-	constexpr b2Velocity(Vec2 v_, float_t w_) noexcept: v(v_), w(w_) {}
+	Velocity() = default;
+	constexpr Velocity(Vec2 v_, float_t w_) noexcept: v(v_), w(w_) {}
 
 	Vec2 v; ///< Linear velocity.
 	float_t w; ///< Angular velocity.
 };
 
 /// Solver Data
-struct b2SolverData
+struct SolverData
 {
-	b2TimeStep step;
-	b2Position* positions;
-	b2Velocity* velocities;
+	TimeStep step;
+	Position* positions;
+	Velocity* velocities;
 };
 
 } // namespace box2d

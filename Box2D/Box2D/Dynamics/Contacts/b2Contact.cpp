@@ -54,29 +54,29 @@ static constexpr ContactRegister s_registers[Shape::e_typeCount][Shape::e_typeCo
 	// circle-* contacts
 	{
 		{CircleContact::Create, CircleContact::Destroy, true}, // circle
-		{b2EdgeAndCircleContact::Create, b2EdgeAndCircleContact::Destroy, false}, // edge
-		{b2PolygonAndCircleContact::Create, b2PolygonAndCircleContact::Destroy, false}, // polygon
-		{b2ChainAndCircleContact::Create, b2ChainAndCircleContact::Destroy, false}, // chain
+		{EdgeAndCircleContact::Create, EdgeAndCircleContact::Destroy, false}, // edge
+		{PolygonAndCircleContact::Create, PolygonAndCircleContact::Destroy, false}, // polygon
+		{ChainAndCircleContact::Create, ChainAndCircleContact::Destroy, false}, // chain
 	},
 	// edge-* contacts
 	{
-		{b2EdgeAndCircleContact::Create, b2EdgeAndCircleContact::Destroy, true}, // circle
+		{EdgeAndCircleContact::Create, EdgeAndCircleContact::Destroy, true}, // circle
 		{nullptr, nullptr, false}, // edge
-		{b2EdgeAndPolygonContact::Create, b2EdgeAndPolygonContact::Destroy, true}, // polygon
+		{EdgeAndPolygonContact::Create, EdgeAndPolygonContact::Destroy, true}, // polygon
 		{nullptr, nullptr, false}, // chain
 	},
 	// polygon-* contacts
 	{
-		{b2PolygonAndCircleContact::Create, b2PolygonAndCircleContact::Destroy, true}, // circle
-		{b2EdgeAndPolygonContact::Create, b2EdgeAndPolygonContact::Destroy, false}, // edge
-		{b2PolygonContact::Create, b2PolygonContact::Destroy, true}, // polygon
+		{PolygonAndCircleContact::Create, PolygonAndCircleContact::Destroy, true}, // circle
+		{EdgeAndPolygonContact::Create, EdgeAndPolygonContact::Destroy, false}, // edge
+		{PolygonContact::Create, PolygonContact::Destroy, true}, // polygon
 		{nullptr, nullptr, false}, // chain
 	},
 	// chain-* contacts
 	{
-		{b2ChainAndCircleContact::Create, b2ChainAndCircleContact::Destroy, true}, // circle
+		{ChainAndCircleContact::Create, ChainAndCircleContact::Destroy, true}, // circle
 		{nullptr, nullptr, false}, // edge
-		{b2ChainAndPolygonContact::Create, b2ChainAndPolygonContact::Destroy, true}, // polygon
+		{ChainAndPolygonContact::Create, ChainAndPolygonContact::Destroy, true}, // polygon
 		{nullptr, nullptr, false}, // chain
 	},
 };
@@ -133,8 +133,8 @@ void Contact::Destroy(Contact* contact, BlockAllocator* allocator)
 
 Contact::Contact(Fixture* fA, child_count_t indexA, Fixture* fB, child_count_t indexB) :
 	m_fixtureA(fA), m_fixtureB(fB), m_indexA(indexA), m_indexB(indexB),
-	m_friction(b2MixFriction(m_fixtureA->GetFriction(), m_fixtureB->GetFriction())),
-	m_restitution(b2MixRestitution(m_fixtureA->GetRestitution(), m_fixtureB->GetRestitution()))
+	m_friction(MixFriction(m_fixtureA->GetFriction(), m_fixtureB->GetFriction())),
+	m_restitution(MixRestitution(m_fixtureA->GetRestitution(), m_fixtureB->GetRestitution()))
 {
 }
 
@@ -272,18 +272,18 @@ bool Contact::UpdateTOI()
 	bB->m_sweep.Advance(maxAlpha0);
 	
 	// Compute the time of impact in interval [0, minTOI]
-	b2TOIInput input;
-	input.proxyA = b2DistanceProxy(*fA->GetShape(), GetChildIndexA());
-	input.proxyB = b2DistanceProxy(*fB->GetShape(), GetChildIndexB());
+	TOIInput input;
+	input.proxyA = DistanceProxy(*fA->GetShape(), GetChildIndexA());
+	input.proxyB = DistanceProxy(*fB->GetShape(), GetChildIndexB());
 	input.sweepA = bA->m_sweep;
 	input.sweepB = bB->m_sweep;
 	input.tMax = float_t(1);
 	
-	const auto output = b2TimeOfImpact(input);
+	const auto output = TimeOfImpact(input);
 	
 	// Beta is the fraction of the remaining portion of the .
 	const auto beta = output.get_t();
-	const auto alpha = (output.get_state() == b2TOIOutput::e_touching)?
+	const auto alpha = (output.get_state() == TOIOutput::e_touching)?
 		Min(maxAlpha0 + (float_t{1} - maxAlpha0) * beta, float_t{1}): float_t{1};
 	
 	SetToi(alpha);

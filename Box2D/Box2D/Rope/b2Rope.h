@@ -26,11 +26,11 @@ namespace box2d {
 class Draw;
 
 /// 
-struct b2RopeDef
+struct RopeDef
 {
 	using size_type = size_t;
 
-	constexpr b2RopeDef() = default;
+	constexpr RopeDef() = default;
 
 	///
 	Vec2* vertices = nullptr;
@@ -55,16 +55,16 @@ struct b2RopeDef
 };
 
 /// 
-class b2Rope
+class Rope
 {
 public:
 	using size_type = size_t;
 
-	constexpr b2Rope() = default;
-	~b2Rope();
+	constexpr Rope() = default;
+	~Rope();
 
 	///
-	void Initialize(const b2RopeDef* def);
+	void Initialize(const RopeDef* def);
 
 	///
 	void Step(float_t timeStep, int32 iterations);

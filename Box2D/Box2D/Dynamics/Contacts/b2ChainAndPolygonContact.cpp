@@ -27,21 +27,21 @@
 
 using namespace box2d;
 
-Contact* b2ChainAndPolygonContact::Create(Fixture* fixtureA, child_count_t indexA,
+Contact* ChainAndPolygonContact::Create(Fixture* fixtureA, child_count_t indexA,
 											Fixture* fixtureB, child_count_t indexB,
 											BlockAllocator* allocator)
 {
-	void* mem = allocator->Allocate(sizeof(b2ChainAndPolygonContact));
-	return new (mem) b2ChainAndPolygonContact(fixtureA, indexA, fixtureB, indexB);
+	void* mem = allocator->Allocate(sizeof(ChainAndPolygonContact));
+	return new (mem) ChainAndPolygonContact(fixtureA, indexA, fixtureB, indexB);
 }
 
-void b2ChainAndPolygonContact::Destroy(Contact* contact, BlockAllocator* allocator)
+void ChainAndPolygonContact::Destroy(Contact* contact, BlockAllocator* allocator)
 {
-	(static_cast<b2ChainAndPolygonContact*>(contact))->~b2ChainAndPolygonContact();
-	allocator->Free(contact, sizeof(b2ChainAndPolygonContact));
+	(static_cast<ChainAndPolygonContact*>(contact))->~ChainAndPolygonContact();
+	allocator->Free(contact, sizeof(ChainAndPolygonContact));
 }
 
-b2ChainAndPolygonContact::b2ChainAndPolygonContact(Fixture* fixtureA, child_count_t indexA,
+ChainAndPolygonContact::ChainAndPolygonContact(Fixture* fixtureA, child_count_t indexA,
 												   Fixture* fixtureB, child_count_t indexB)
 : Contact(fixtureA, indexA, fixtureB, indexB)
 {
@@ -49,7 +49,7 @@ b2ChainAndPolygonContact::b2ChainAndPolygonContact(Fixture* fixtureA, child_coun
 	assert(m_fixtureB->GetType() == Shape::e_polygon);
 }
 
-Manifold b2ChainAndPolygonContact::Evaluate(const Transform& xfA, const Transform& xfB)
+Manifold ChainAndPolygonContact::Evaluate(const Transform& xfA, const Transform& xfB)
 {
 	auto chain = static_cast<ChainShape*>(m_fixtureA->GetShape());
 	EdgeShape edge;

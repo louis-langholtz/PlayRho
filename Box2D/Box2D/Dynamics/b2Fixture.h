@@ -31,9 +31,9 @@ class BroadPhase;
 class Fixture;
 
 /// This holds contact filtering data.
-struct b2Filter
+struct Filter
 {
-	constexpr b2Filter() = default;
+	constexpr Filter() = default;
 
 	/// The collision category bits. Normally you would just set one bit.
 	uint16 categoryBits = 0x0001;
@@ -76,7 +76,7 @@ struct FixtureDef
 	bool isSensor = false;
 
 	/// Contact filtering data.
-	b2Filter filter;
+	Filter filter;
 };
 
 /// This proxy is used internally to connect fixtures to the broad-phase.
@@ -120,10 +120,10 @@ public:
 	/// Set the contact filtering data. This will not update contacts until the next time
 	/// step when either parent body is active and awake.
 	/// This automatically calls Refilter.
-	void SetFilterData(const b2Filter& filter);
+	void SetFilterData(const Filter& filter);
 
 	/// Get the contact filtering data.
-	const b2Filter& GetFilterData() const noexcept;
+	const Filter& GetFilterData() const noexcept;
 
 	/// Call this if you want to establish collision that was previously disabled by ContactFilter::ShouldCollide.
 	void Refilter();
@@ -152,7 +152,7 @@ public:
 	/// Cast a ray against this shape.
 	/// @param output the ray-cast results.
 	/// @param input the ray-cast input parameters.
-	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input, child_count_t childIndex) const;
+	bool RayCast(RayCastOutput* output, const RayCastInput& input, child_count_t childIndex) const;
 
 	/// Get the mass data for this fixture. The mass data is based on the density and
 	/// the shape. The rotational inertia is about the shape's origin. This operation
@@ -215,7 +215,7 @@ protected:
 	float_t m_restitution;
 	FixtureProxy* m_proxies = nullptr;
 	child_count_t m_proxyCount = 0;
-	b2Filter m_filter;
+	Filter m_filter;
 	bool m_isSensor;
 	void* m_userData = nullptr;
 };
@@ -240,7 +240,7 @@ inline bool Fixture::IsSensor() const noexcept
 	return m_isSensor;
 }
 
-inline const b2Filter& Fixture::GetFilterData() const noexcept
+inline const Filter& Fixture::GetFilterData() const noexcept
 {
 	return m_filter;
 }
@@ -311,7 +311,7 @@ inline bool Fixture::TestPoint(const Vec2& p) const
 	return m_shape->TestPoint(m_body->GetTransform(), p);
 }
 
-inline bool Fixture::RayCast(b2RayCastOutput* output, const b2RayCastInput& input, child_count_t childIndex) const
+inline bool Fixture::RayCast(RayCastOutput* output, const RayCastInput& input, child_count_t childIndex) const
 {
 	return m_shape->RayCast(output, input, m_body->GetTransform(), childIndex);
 }

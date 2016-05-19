@@ -21,7 +21,7 @@
 
 using namespace box2d;
 
-void DestructionListener::SayGoodbye(Joint* joint)
+void TestDestructionListener::SayGoodbye(Joint* joint)
 {
 	if (test->m_mouseJoint == joint)
 	{
@@ -55,8 +55,8 @@ Test::Test()
 	BodyDef bodyDef;
 	m_groundBody = m_world->CreateBody(&bodyDef);
 
-	memset(&m_maxProfile, 0, sizeof(b2Profile));
-	memset(&m_totalProfile, 0, sizeof(b2Profile));
+	memset(&m_maxProfile, 0, sizeof(Profile));
+	memset(&m_totalProfile, 0, sizeof(Profile));
 }
 
 Test::~Test()
@@ -78,9 +78,9 @@ void Test::PreSolve(Contact* contact, const Manifold* oldManifold)
 	Fixture* fixtureA = contact->GetFixtureA();
 	Fixture* fixtureB = contact->GetFixtureB();
 
-	b2PointStateArray state1;
-	b2PointStateArray state2;
-	b2GetPointStates(state1, state2, *oldManifold, *manifold);
+	PointStateArray state1;
+	PointStateArray state2;
+	GetPointStates(state1, state2, *oldManifold, *manifold);
 
 	const auto worldManifold = contact->GetWorldManifold();
 
@@ -105,7 +105,7 @@ void Test::DrawTitle(const char *string)
     m_textLine = 3 * DRAW_STRING_NEW_LINE;
 }
 
-class QueryCallback : public b2QueryCallback
+class QueryCallback : public QueryFixtureReporter
 {
 public:
 	QueryCallback(const Vec2& point)
@@ -315,7 +315,7 @@ void Test::Step(Settings* settings)
 
 	// Track maximum profile times
 	{
-		const b2Profile& p = m_world->GetProfile();
+		const Profile& p = m_world->GetProfile();
 		m_maxProfile.step = Max(m_maxProfile.step, p.step);
 		m_maxProfile.collide = Max(m_maxProfile.collide, p.collide);
 		m_maxProfile.solve = Max(m_maxProfile.solve, p.solve);
@@ -337,10 +337,10 @@ void Test::Step(Settings* settings)
 
 	if (settings->drawProfile)
 	{
-		const b2Profile& p = m_world->GetProfile();
+		const Profile& p = m_world->GetProfile();
 
-		b2Profile aveProfile;
-		memset(&aveProfile, 0, sizeof(b2Profile));
+		Profile aveProfile;
+		memset(&aveProfile, 0, sizeof(Profile));
 		if (m_stepCount > 0)
 		{
 			float_t scale = 1.0f / m_stepCount;
@@ -405,12 +405,12 @@ void Test::Step(Settings* settings)
 		{
 			ContactPoint* point = m_points + i;
 
-			if (point->state == b2PointState::AddState)
+			if (point->state == PointState::AddState)
 			{
 				// Add
 				g_debugDraw.DrawPoint(point->position, 10.0f, Color(0.3f, 0.95f, 0.3f));
 			}
-			else if (point->state == b2PointState::PersistState)
+			else if (point->state == PointState::PersistState)
 			{
 				// Persist
 				g_debugDraw.DrawPoint(point->position, 5.0f, Color(0.3f, 0.3f, 0.95f));

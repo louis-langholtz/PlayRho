@@ -107,7 +107,7 @@ public:
 	/// @param input the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
 	/// @param callback a callback class that is called for each proxy that is hit by the ray.
 	template <typename T>
-	void RayCast(T* callback, const b2RayCastInput& input) const;
+	void RayCast(T* callback, const RayCastInput& input) const;
 
 	/// Gets the height of the embedded tree.
 	size_type GetTreeHeight() const noexcept;
@@ -268,7 +268,7 @@ inline void BroadPhase::Query(T* callback, const AABB& aabb) const
 }
 
 template <typename T>
-inline void BroadPhase::RayCast(T* callback, const b2RayCastInput& input) const
+inline void BroadPhase::RayCast(T* callback, const RayCastInput& input) const
 {
 	m_tree.RayCast(callback, input);
 }

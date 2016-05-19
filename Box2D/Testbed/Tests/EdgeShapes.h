@@ -21,7 +21,7 @@
 
 namespace box2d {
 
-class EdgeShapesCallback : public b2RayCastCallback
+class EdgeShapesCallback : public RayCastFixtureReporter
 {
 public:
 	EdgeShapesCallback()

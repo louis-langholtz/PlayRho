@@ -124,7 +124,7 @@ PrismaticJoint::PrismaticJoint(const PrismaticJointDef* def)
 	m_perp = Vec2_zero;
 }
 
-void PrismaticJoint::InitVelocityConstraints(const b2SolverData& data)
+void PrismaticJoint::InitVelocityConstraints(const SolverData& data)
 {
 	m_indexA = m_bodyA->m_islandIndex;
 	m_indexB = m_bodyB->m_islandIndex;
@@ -262,7 +262,7 @@ void PrismaticJoint::InitVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-void PrismaticJoint::SolveVelocityConstraints(const b2SolverData& data)
+void PrismaticJoint::SolveVelocityConstraints(const SolverData& data)
 {
 	auto vA = data.velocities[m_indexA].v;
 	auto wA = data.velocities[m_indexA].w;
@@ -362,7 +362,7 @@ void PrismaticJoint::SolveVelocityConstraints(const b2SolverData& data)
 //
 // We could take the active state from the velocity solver.However, the joint might push past the limit when the velocity
 // solver indicates the limit is inactive.
-bool PrismaticJoint::SolvePositionConstraints(const b2SolverData& data)
+bool PrismaticJoint::SolvePositionConstraints(const SolverData& data)
 {
 	auto cA = data.positions[m_indexA].c;
 	auto aA = data.positions[m_indexA].a;

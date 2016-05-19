@@ -22,7 +22,7 @@
 namespace box2d {
 
 // Find the max separation between shape1 and shape2 using edge normals from shape1.
-static float_t b2FindMaxSeparation(PolygonShape::vertex_count_t& edgeIndex,
+static float_t FindMaxSeparation(PolygonShape::vertex_count_t& edgeIndex,
 								   const PolygonShape& shape1, const Transform& xf1,
 								   const PolygonShape& shape2, const Transform& xf2)
 {
@@ -60,7 +60,7 @@ static float_t b2FindMaxSeparation(PolygonShape::vertex_count_t& edgeIndex,
 	return maxSeparation;
 }
 
-static ClipArray b2FindIncidentEdge(PolygonShape::vertex_count_t index1,
+static ClipArray FindIncidentEdge(PolygonShape::vertex_count_t index1,
 									  const PolygonShape& shape1, const Transform& xf1,
 									  const PolygonShape& shape2, const Transform& xf2)
 {
@@ -110,14 +110,14 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const P
 	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
 
 	auto edgeA = PolygonShape::vertex_count_t{0};
-	const auto separationA = b2FindMaxSeparation(edgeA, shapeA, xfA, shapeB, xfB);
+	const auto separationA = FindMaxSeparation(edgeA, shapeA, xfA, shapeB, xfB);
 	if (separationA > totalRadius)
 	{
 		return Manifold{};
 	}
 
 	auto edgeB = PolygonShape::vertex_count_t{0};
-	const auto separationB = b2FindMaxSeparation(edgeB, shapeB, xfB, shapeA, xfA);
+	const auto separationB = FindMaxSeparation(edgeB, shapeB, xfB, shapeA, xfA);
 	if (separationB > totalRadius)
 	{
 		return Manifold{};
@@ -152,7 +152,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const P
 		flip = false;
 	}
 
-	const auto incidentEdge = b2FindIncidentEdge(edge1, *shape1, xf1, *shape2, xf2);
+	const auto incidentEdge = FindIncidentEdge(edge1, *shape1, xf1, *shape2, xf2);
 
 	const auto count1 = shape1->GetVertexCount();
 

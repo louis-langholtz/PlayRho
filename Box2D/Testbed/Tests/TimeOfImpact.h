@@ -21,10 +21,10 @@
 
 namespace box2d {
 
-class TimeOfImpact : public Test
+class TimeOfImpactTest : public Test
 {
 public:
-	TimeOfImpact()
+	TimeOfImpactTest()
 	{
 		m_shapeA.SetAsBox(25.0f, 5.0f);
 		m_shapeB.SetAsBox(2.5f, 2.5f);
@@ -32,7 +32,7 @@ public:
 
 	static Test* Create()
 	{
-		return new TimeOfImpact;
+		return new TimeOfImpactTest;
 	}
 
 	void Step(Settings* settings)
@@ -56,14 +56,14 @@ public:
 		//sweepB.a0 -= 300.0f * Pi;
 		//sweepB.a -= 300.0f * Pi;
 
-		b2TOIInput input;
-		input.proxyA = b2DistanceProxy(m_shapeA, 0);
-		input.proxyB = b2DistanceProxy(m_shapeB, 0);
+		TOIInput input;
+		input.proxyA = DistanceProxy(m_shapeA, 0);
+		input.proxyB = DistanceProxy(m_shapeB, 0);
 		input.sweepA = sweepA;
 		input.sweepB = sweepB;
 		input.tMax = 1.0f;
 
-		const auto output = b2TimeOfImpact(input);
+		const auto output = TimeOfImpact(input);
 
 		g_debugDraw.DrawString(5, m_textLine, "toi = %g", output.get_t());
 		m_textLine += DRAW_STRING_NEW_LINE;

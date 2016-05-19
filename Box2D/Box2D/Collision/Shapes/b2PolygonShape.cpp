@@ -261,7 +261,7 @@ bool PolygonShape::TestPoint(const Transform& xf, const Vec2& p) const
 	return true;
 }
 
-bool PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
+bool PolygonShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 								const Transform& xf, child_count_t childIndex) const
 {
 	BOX2D_NOT_USED(childIndex);

@@ -26,7 +26,7 @@
 namespace box2d {
 
 // This callback finds the closest hit. Polygon 0 is filtered.
-class RayCastClosestCallback : public b2RayCastCallback
+class RayCastClosestCallback : public RayCastFixtureReporter
 {
 public:
 	RayCastClosestCallback()
@@ -66,7 +66,7 @@ public:
 
 // This callback finds any hit. Polygon 0 is filtered. For this type of query we are usually
 // just checking for obstruction, so the actual fixture and hit point are irrelevant. 
-class RayCastAnyCallback : public b2RayCastCallback
+class RayCastAnyCallback : public RayCastFixtureReporter
 {
 public:
 	RayCastAnyCallback()
@@ -106,7 +106,7 @@ public:
 // This ray cast collects multiple hits along the ray. Polygon 0 is filtered.
 // The fixtures are not necessary reported in order, so we might not capture
 // the closest fixture.
-class RayCastMultipleCallback : public b2RayCastCallback
+class RayCastMultipleCallback : public RayCastFixtureReporter
 {
 public:
 	enum
@@ -435,7 +435,7 @@ public:
 			//shape.Set(vertices, 4);
 			shape.SetAsBox(22.875f, 3.0f);
 
-			b2RayCastInput input;
+			RayCastInput input;
 			input.p1 = Vec2(10.2725f,1.71372f);
 			input.p2 = Vec2(10.2353f,2.21807f);
 			//input.maxFraction = 0.567623f;
@@ -445,7 +445,7 @@ public:
 			xf.SetIdentity();
 			xf.position = Vec2(23.0f, 5.0f);
 
-			b2RayCastOutput output;
+			RayCastOutput output;
 			bool hit;
 			hit = shape.RayCast(&output, input, xf);
 			hit = false;

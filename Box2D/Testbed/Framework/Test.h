@@ -116,7 +116,7 @@ extern TestEntry g_testEntries[];
 // This is called when a joint in the world is implicitly destroyed
 // because an attached body is destroyed. This gives us a chance to
 // nullify the mouse joint.
-class DestructionListener : public b2DestructionListener
+class TestDestructionListener : public DestructionListener
 {
 public:
 	void SayGoodbye(Fixture* fixture) { BOX2D_NOT_USED(fixture); }
@@ -133,7 +133,7 @@ struct ContactPoint
 	Fixture* fixtureB;
 	Vec2 normal;
 	Vec2 position;
-	b2PointState state;
+	PointState state;
 	float_t normalImpulse;
 	float_t tangentImpulse;
 	float_t separation;
@@ -176,7 +176,7 @@ public:
 	void ShiftOrigin(const Vec2& newOrigin);
 
 protected:
-	friend class DestructionListener;
+	friend class TestDestructionListener;
 	friend class BoundaryListener;
 	friend class ContactListener;
 
@@ -184,7 +184,7 @@ protected:
 	AABB m_worldAABB;
 	ContactPoint m_points[k_maxContactPoints];
 	int32 m_pointCount;
-	DestructionListener m_destructionListener;
+	TestDestructionListener m_destructionListener;
 	int32 m_textLine;
 	World* m_world;
 	Body* m_bomb;
@@ -194,8 +194,8 @@ protected:
 	Vec2 m_mouseWorld;
 	int32 m_stepCount;
 
-	b2Profile m_maxProfile;
-	b2Profile m_totalProfile;
+	Profile m_maxProfile;
+	Profile m_totalProfile;
 };
 
 } // namespace box2d

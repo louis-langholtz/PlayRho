@@ -63,7 +63,7 @@ RevoluteJoint::RevoluteJoint(const RevoluteJointDef* def)
 	m_limitState = e_inactiveLimit;
 }
 
-void RevoluteJoint::InitVelocityConstraints(const b2SolverData& data)
+void RevoluteJoint::InitVelocityConstraints(const SolverData& data)
 {
 	m_indexA = m_bodyA->m_islandIndex;
 	m_indexB = m_bodyB->m_islandIndex;
@@ -182,7 +182,7 @@ void RevoluteJoint::InitVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-void RevoluteJoint::SolveVelocityConstraints(const b2SolverData& data)
+void RevoluteJoint::SolveVelocityConstraints(const SolverData& data)
 {
 	auto vA = data.velocities[m_indexA].v;
 	auto wA = data.velocities[m_indexA].w;
@@ -290,7 +290,7 @@ void RevoluteJoint::SolveVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-bool RevoluteJoint::SolvePositionConstraints(const b2SolverData& data)
+bool RevoluteJoint::SolvePositionConstraints(const SolverData& data)
 {
 	auto cA = data.positions[m_indexA].c;
 	auto aA = data.positions[m_indexA].a;
