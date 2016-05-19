@@ -25,11 +25,11 @@
 
 namespace box2d {
 
-class b2Contact;
+class Contact;
 class Body;
 class b2StackAllocator;
-struct b2ContactPositionConstraint;
-struct b2ContactPositionConstraintBodyData;
+struct ContactPositionConstraint;
+struct ContactPositionConstraintBodyData;
 
 /// Velocity constraint point.
 struct b2VelocityConstraintPoint
@@ -44,9 +44,9 @@ struct b2VelocityConstraintPoint
 };
 
 /// Contact velocity constraint body data.
-/// @note This structure is intentionally toplevel like the b2ContactPositionConstraintBodyData
+/// @note This structure is intentionally toplevel like the ContactPositionConstraintBodyData
 ///   structure.
-struct b2ContactVelocityConstraintBodyData
+struct ContactVelocityConstraintBodyData
 {
 	using index_t = size_t;
 
@@ -57,7 +57,7 @@ struct b2ContactVelocityConstraintBodyData
 
 /// Contact velocity constraint.
 /// @note A valid contact velocity constraint must have either a point count of either 1 or 2.
-class b2ContactVelocityConstraint
+class ContactVelocityConstraint
 {
 public:
 	using size_type = std::remove_cv<decltype(MaxManifoldPoints)>::type;
@@ -115,8 +115,8 @@ public:
 	Vec2 normal;
 	Mat22 normalMass;
 	Mat22 K;
-	b2ContactVelocityConstraintBodyData bodyA; ///< Body A contact velocity constraint data.
-	b2ContactVelocityConstraintBodyData bodyB; ///< Body B contact velocity constraint data.
+	ContactVelocityConstraintBodyData bodyA; ///< Body A contact velocity constraint data.
+	ContactVelocityConstraintBodyData bodyB; ///< Body B contact velocity constraint data.
 	float_t friction; ///< Friction coefficient. Usually in the range of [0,1].
 	float_t restitution;
 	float_t tangentSpeed;
@@ -127,12 +127,12 @@ private:
 	size_type pointCount;
 };
 
-struct b2ContactSolverDef
+struct ContactSolverDef
 {
 	using size_type = size_t;
 
 	b2TimeStep step;
-	b2Contact** contacts; // pointers to contacts
+	Contact** contacts; // pointers to contacts
 	size_type count; // count of contacts
 	b2Position* positions; // positions for every body referenced by a contact
 	b2Velocity* velocities; // velocities for every body referenced by a contact
@@ -140,7 +140,7 @@ struct b2ContactSolverDef
 };
 
 /// Contact Solver.
-class b2ContactSolver
+class ContactSolver
 {
 public:
 	using size_type = size_t;
@@ -151,11 +151,11 @@ public:
 	/// Minimum time of impact separation for TOI position constraints.
 	static constexpr auto MinToiSeparation = -LinearSlop * float_t(1.5);
 
-	b2ContactSolver(b2ContactSolverDef* def);
-	~b2ContactSolver();
+	ContactSolver(ContactSolverDef* def);
+	~ContactSolver();
 
-	b2ContactSolver() = delete;
-	b2ContactSolver(const b2ContactSolver& copy) = delete;
+	ContactSolver() = delete;
+	ContactSolver(const ContactSolver& copy) = delete;
 
 	void InitializeVelocityConstraints();
 
@@ -173,26 +173,26 @@ public:
 	/// @return true if the minimum separation is above the minimum TOI separation value, false otherwise.
 	bool SolveTOIPositionConstraints(size_type indexA, size_type indexB);
 
-	const b2ContactVelocityConstraint* GetVelocityConstraints() const noexcept
+	const ContactVelocityConstraint* GetVelocityConstraints() const noexcept
 	{
 		return m_velocityConstraints;
 	}
 
 private:
-	static void Assign(b2ContactVelocityConstraint& var, const b2Contact& val);
-	static void Assign(b2ContactPositionConstraintBodyData& var, const Body& val);
-	static void Assign(b2ContactVelocityConstraintBodyData& var, const Body& val);
+	static void Assign(ContactVelocityConstraint& var, const Contact& val);
+	static void Assign(ContactPositionConstraintBodyData& var, const Body& val);
+	static void Assign(ContactVelocityConstraintBodyData& var, const Body& val);
 
-	void InitializeVelocityConstraint(b2ContactVelocityConstraint& vc, const b2ContactPositionConstraint& pc);
+	void InitializeVelocityConstraint(ContactVelocityConstraint& vc, const ContactPositionConstraint& pc);
 
 	const b2TimeStep m_step;
 	b2Position* const m_positions;
 	b2Velocity* const m_velocities;
 	b2StackAllocator* const m_allocator;
-	b2Contact** const m_contacts;
+	Contact** const m_contacts;
 	const size_type m_count;
-	b2ContactPositionConstraint* const m_positionConstraints;
-	b2ContactVelocityConstraint* const m_velocityConstraints;
+	ContactPositionConstraint* const m_positionConstraints;
+	ContactVelocityConstraint* const m_velocityConstraints;
 };
 
 } // namespace box2d

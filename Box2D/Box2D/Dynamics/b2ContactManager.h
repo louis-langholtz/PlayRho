@@ -23,39 +23,39 @@
 
 namespace box2d {
 
-class b2Contact;
-class b2ContactFilter;
-class b2ContactListener;
+class Contact;
+class ContactFilter;
+class ContactListener;
 class b2BlockAllocator;
 
 // Delegate of World.
-class b2ContactManager
+class ContactManager
 {
 public:
 	using size_type = size_t;
 
-	b2ContactManager(b2BlockAllocator* allocator, b2ContactFilter* filter, b2ContactListener* listener);
+	ContactManager(b2BlockAllocator* allocator, ContactFilter* filter, ContactListener* listener);
 
 	// Broad-phase callback.
 	void AddPair(void* proxyUserDataA, void* proxyUserDataB);
 
 	void FindNewContacts();
 
-	void Destroy(b2Contact* c);
+	void Destroy(Contact* c);
 
 	void Collide();
 	
 	inline size_type GetContactCount() const noexcept { return m_contactCount; }
-	const b2Contact* GetContactList() const noexcept { return m_contactList; }
-	b2Contact* GetContactList() noexcept { return m_contactList; }
+	const Contact* GetContactList() const noexcept { return m_contactList; }
+	Contact* GetContactList() noexcept { return m_contactList; }
 
 	b2BroadPhase m_broadPhase;
-	b2ContactFilter* m_contactFilter;
-	b2ContactListener* m_contactListener;
+	ContactFilter* m_contactFilter;
+	ContactListener* m_contactListener;
 
 private:
 	size_type m_contactCount = 0;
-	b2Contact* m_contactList = nullptr;
+	Contact* m_contactList = nullptr;
 	b2BlockAllocator* const m_allocator;
 };
 

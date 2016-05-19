@@ -210,7 +210,7 @@ bool AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 
 b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray& vIn,
 										   const Vec2& normal, float_t offset,
-										   b2ContactFeature::index_t indexA)
+										   ContactFeature::index_t indexA)
 {
 	// Use Sutherland-Hodgman clipping (https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm ).
 	
@@ -233,7 +233,7 @@ b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray&
 		vOut[numOut].v = vIn[0].v + (vIn[1].v - vIn[0].v) * interp;
 
 		// Vertex A is hitting edge B.
-		vOut[numOut].cf = b2ContactFeature(b2ContactFeature::e_vertex, indexA, b2ContactFeature::e_face, vIn[0].cf.indexB);
+		vOut[numOut].cf = ContactFeature(ContactFeature::e_vertex, indexA, ContactFeature::e_face, vIn[0].cf.indexB);
 
 		++numOut;
 	}

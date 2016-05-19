@@ -27,7 +27,7 @@
 
 using namespace box2d;
 
-b2Contact* b2ChainAndCircleContact::Create(Fixture* fixtureA, child_count_t indexA,
+Contact* b2ChainAndCircleContact::Create(Fixture* fixtureA, child_count_t indexA,
 										   Fixture* fixtureB, child_count_t indexB,
 										   b2BlockAllocator* allocator)
 {
@@ -35,7 +35,7 @@ b2Contact* b2ChainAndCircleContact::Create(Fixture* fixtureA, child_count_t inde
 	return new (mem) b2ChainAndCircleContact(fixtureA, indexA, fixtureB, indexB);
 }
 
-void b2ChainAndCircleContact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
+void b2ChainAndCircleContact::Destroy(Contact* contact, b2BlockAllocator* allocator)
 {
 	(static_cast<b2ChainAndCircleContact*>(contact))->~b2ChainAndCircleContact();
 	allocator->Free(contact, sizeof(b2ChainAndCircleContact));
@@ -43,7 +43,7 @@ void b2ChainAndCircleContact::Destroy(b2Contact* contact, b2BlockAllocator* allo
 
 b2ChainAndCircleContact::b2ChainAndCircleContact(Fixture* fixtureA, child_count_t indexA,
 												 Fixture* fixtureB, child_count_t indexB)
-: b2Contact(fixtureA, indexA, fixtureB, indexB)
+: Contact(fixtureA, indexA, fixtureB, indexB)
 {
 	assert(m_fixtureA->GetType() == b2Shape::e_chain);
 	assert(m_fixtureB->GetType() == b2Shape::e_circle);

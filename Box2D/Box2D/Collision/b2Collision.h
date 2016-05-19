@@ -38,7 +38,7 @@ class b2EdgeShape;
 class b2PolygonShape;
 
 /// The features that intersect to form the contact point
-struct b2ContactFeature
+struct ContactFeature
 {
 	using index_t = unsigned int;
 
@@ -48,9 +48,9 @@ struct b2ContactFeature
 		e_face = 1
 	};
 
-	b2ContactFeature() = default;
+	ContactFeature() = default;
 
-	constexpr b2ContactFeature(Type ta, index_t ia, Type tb, index_t ib):
+	constexpr ContactFeature(Type ta, index_t ia, Type tb, index_t ib):
 		typeA(ta), indexA(ia), typeB(tb), indexB(ib) {}
 
 	Type typeA; ///< The feature type on shape A
@@ -59,13 +59,13 @@ struct b2ContactFeature
 	index_t indexB; ///< Feature index on shape B
 };
 
-constexpr b2ContactFeature b2Flip(const b2ContactFeature& val)
+constexpr ContactFeature b2Flip(const ContactFeature& val)
 {
 	// Swap features
-	return b2ContactFeature(val.typeB, val.indexB, val.typeA, val.indexA);
+	return ContactFeature(val.typeB, val.indexB, val.typeA, val.indexA);
 }
 
-constexpr bool operator==(const b2ContactFeature& lhs, const b2ContactFeature& rhs)
+constexpr bool operator==(const ContactFeature& lhs, const ContactFeature& rhs)
 {
 	return lhs.typeA == rhs.typeA && lhs.typeB == rhs.typeB && lhs.indexA == rhs.indexA && lhs.indexB == rhs.indexB;
 }
@@ -86,7 +86,7 @@ struct b2ManifoldPoint
 	Vec2 localPoint;		///< usage depends on manifold type
 	float_t normalImpulse;	///< the non-penetration impulse
 	float_t tangentImpulse;	///< the friction impulse
-	b2ContactFeature cf;    ///< uniquely identifies a contact point between two shapes
+	ContactFeature cf;    ///< uniquely identifies a contact point between two shapes
 };
 
 /// A manifold for two touching convex shapes.
@@ -162,7 +162,7 @@ public:
 	/// @detail This can be called up to MaxManifoldPoints times.
 	/// GetPointCount() can be called to find out how many points have already been added.
 	/// @note Behavior is undefined if this is called more than MaxManifoldPoints times. 
-	void AddPoint(const Vec2& lp, b2ContactFeature cf = b2ContactFeature{b2ContactFeature::e_vertex, 0, b2ContactFeature::e_vertex, 0})
+	void AddPoint(const Vec2& lp, ContactFeature cf = ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 0})
 	{
 		assert(pointCount < MaxManifoldPoints);
 		points[pointCount].localPoint = lp;
@@ -248,7 +248,7 @@ void b2GetPointStates(b2PointStateArray& state1, b2PointStateArray& state2,
 struct b2ClipVertex
 {
 	Vec2 v; ///< Vertex of edge or polygon.
-	b2ContactFeature cf; ///< Contact feature information.
+	ContactFeature cf; ///< Contact feature information.
 };
 
 /// Ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
@@ -397,7 +397,7 @@ using b2ClipArray = std::array<b2ClipVertex, MaxManifoldPoints>;
 /// @param indexA Index of vertex A.
 /// @return Number of valid elements of the output array being returned (# of points of the line found within the plane).
 b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray& vIn,
-										   const Vec2& normal, float_t offset, b2ContactFeature::index_t indexA);
+										   const Vec2& normal, float_t offset, ContactFeature::index_t indexA);
 
 /// Determine if two generic shapes overlap.
 bool b2TestOverlap(const b2Shape& shapeA, child_count_t indexA,

@@ -28,8 +28,8 @@ struct Transform;
 class Fixture;
 class Body;
 class Joint;
-class b2Contact;
-struct b2ContactResult;
+class Contact;
+struct ContactResult;
 struct b2Manifold;
 
 /// Joints and fixtures are destroyed when their associated
@@ -51,10 +51,10 @@ public:
 
 /// Implement this class to provide collision filtering. In other words, you can implement
 /// this class if you want finer control over contact creation.
-class b2ContactFilter
+class ContactFilter
 {
 public:
-	virtual ~b2ContactFilter() {}
+	virtual ~ContactFilter() {}
 
 	/// Return true if contact calculations should be performed between these two shapes.
 	/// @warning for performance reasons this is only called when the AABBs begin to overlap.
@@ -64,7 +64,7 @@ public:
 /// Contact impulses for reporting. Impulses are used instead of forces because
 /// sub-step forces may approach infinity for rigid body collisions. These
 /// match up one-to-one with the contact points in b2Manifold.
-class b2ContactImpulse
+class ContactImpulse
 {
 public:
 	using count_t = unsigned int;
@@ -97,16 +97,16 @@ private:
 /// You should strive to make your callbacks efficient because there may be
 /// many callbacks per time step.
 /// @warning You cannot create/destroy Box2D entities inside these callbacks.
-class b2ContactListener
+class ContactListener
 {
 public:
-	virtual ~b2ContactListener() {}
+	virtual ~ContactListener() {}
 
 	/// Called when two fixtures begin to touch.
-	virtual void BeginContact(b2Contact* contact) { BOX2D_NOT_USED(contact); }
+	virtual void BeginContact(Contact* contact) { BOX2D_NOT_USED(contact); }
 
 	/// Called when two fixtures cease to touch.
-	virtual void EndContact(b2Contact* contact) { BOX2D_NOT_USED(contact); }
+	virtual void EndContact(Contact* contact) { BOX2D_NOT_USED(contact); }
 
 	/// This is called after a contact is updated. This allows you to inspect a
 	/// contact before it goes to the solver. If you are careful, you can modify the
@@ -118,7 +118,7 @@ public:
 	/// Note: if you set the number of contact points to zero, you will not
 	/// get an EndContact callback. However, you may get a BeginContact callback
 	/// the next step.
-	virtual void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
+	virtual void PreSolve(Contact* contact, const b2Manifold* oldManifold)
 	{
 		BOX2D_NOT_USED(contact);
 		BOX2D_NOT_USED(oldManifold);
@@ -130,7 +130,7 @@ public:
 	/// arbitrarily large if the sub-step is small. Hence the impulse is provided explicitly
 	/// in a separate data structure.
 	/// Note: this is only called for contacts that are touching, solid, and awake.
-	virtual void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
+	virtual void PostSolve(Contact* contact, const ContactImpulse* impulse)
 	{
 		BOX2D_NOT_USED(contact);
 		BOX2D_NOT_USED(impulse);

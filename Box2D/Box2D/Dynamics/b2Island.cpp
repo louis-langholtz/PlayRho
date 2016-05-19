@@ -152,14 +152,14 @@ b2Island::b2Island(
 	island_count_t contactCapacity,
 	island_count_t jointCapacity,
 	b2StackAllocator* allocator,
-	b2ContactListener* listener):
+	ContactListener* listener):
 m_bodyCapacity(bodyCapacity),
 m_contactCapacity(contactCapacity),
 m_jointCapacity(jointCapacity),
 m_allocator(allocator),
 m_listener(listener),
 m_bodies(static_cast<Body**>(m_allocator->Allocate(bodyCapacity * sizeof(Body*)))),
-m_contacts(static_cast<b2Contact**>(m_allocator->Allocate(contactCapacity * sizeof(b2Contact*)))),
+m_contacts(static_cast<Contact**>(m_allocator->Allocate(contactCapacity * sizeof(Contact*)))),
 m_joints(static_cast<Joint**>(m_allocator->Allocate(jointCapacity * sizeof(Joint*)))),
 m_velocities(static_cast<b2Velocity*>(m_allocator->Allocate(bodyCapacity * sizeof(b2Velocity)))),
 m_positions(static_cast<b2Position*>(m_allocator->Allocate(bodyCapacity * sizeof(b2Position))))
@@ -233,7 +233,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const Vec2& gra
 	const auto solverData = b2SolverData{step, m_positions, m_velocities};
 
 	// Initialize velocity constraints.
-	b2ContactSolverDef contactSolverDef;
+	ContactSolverDef contactSolverDef;
 	contactSolverDef.step = step;
 	contactSolverDef.contacts = m_contacts;
 	contactSolverDef.count = m_contactCount;
@@ -241,7 +241,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const Vec2& gra
 	contactSolverDef.velocities = m_velocities;
 	contactSolverDef.allocator = m_allocator;
 
-	b2ContactSolver contactSolver(&contactSolverDef);
+	ContactSolver contactSolver(&contactSolverDef);
 	contactSolver.InitializeVelocityConstraints();
 
 	if (step.warmStarting)
@@ -380,14 +380,14 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, isl
 		m_velocities[i].w = b.m_angularVelocity;
 	}
 
-	b2ContactSolverDef contactSolverDef;
+	ContactSolverDef contactSolverDef;
 	contactSolverDef.contacts = m_contacts;
 	contactSolverDef.count = m_contactCount;
 	contactSolverDef.allocator = m_allocator;
 	contactSolverDef.step = subStep;
 	contactSolverDef.positions = m_positions;
 	contactSolverDef.velocities = m_velocities;
-	b2ContactSolver contactSolver(&contactSolverDef);
+	ContactSolver contactSolver(&contactSolverDef);
 
 	// Solve position constraints.
 	for (auto i = decltype(subStep.positionIterations){0}; i < subStep.positionIterations; ++i)
@@ -403,7 +403,7 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, isl
 	// Is the new position really safe?
 	for (auto i = decltype(m_contactCount){0}; i < m_contactCount; ++i)
 	{
-		b2Contact* c = m_contacts[i];
+		Contact* c = m_contacts[i];
 		Fixture* fA = c->GetFixtureA();
 		Fixture* fB = c->GetFixtureB();
 
@@ -495,7 +495,7 @@ void b2Island::Add(Body* body)
 	++m_bodyCount;
 }
 
-void b2Island::Add(b2Contact* contact)
+void b2Island::Add(Contact* contact)
 {
 	assert(m_contactCount < m_contactCapacity);
 	m_contacts[m_contactCount] = contact;
@@ -509,14 +509,14 @@ void b2Island::Add(Joint* joint)
 	++m_jointCount;
 }
 
-void b2Island::Report(const b2ContactVelocityConstraint* constraints)
+void b2Island::Report(const ContactVelocityConstraint* constraints)
 {
 	if (!m_listener)
 		return;
 
 	for (auto i = decltype(m_contactCount){0}; i < m_contactCount; ++i)
 	{
-		b2ContactImpulse impulse;
+		ContactImpulse impulse;
 		const auto& vc = constraints[i];
 		const auto count = vc.GetPointCount();
 		for (auto j = decltype(count){0}; j < count; ++j)

@@ -29,12 +29,12 @@ namespace box2d {
 
 class Fixture;
 class Joint;
-class b2Contact;
+class Contact;
 class b2Controller;
 class World;
 struct FixtureDef;
 struct JointEdge;
-struct b2ContactEdge;
+struct ContactEdge;
 
 /// The body type.
 /// static: zero mass, zero velocity, may be manually moved
@@ -359,9 +359,9 @@ public:
 
 	/// Get the list of all contacts attached to this body.
 	/// @warning this list changes during the time step and you may
-	/// miss some collisions if you don't use b2ContactListener.
-	b2ContactEdge* GetContactList() noexcept;
-	const b2ContactEdge* GetContactList() const noexcept;
+	/// miss some collisions if you don't use ContactListener.
+	ContactEdge* GetContactList() noexcept;
+	const ContactEdge* GetContactList() const noexcept;
 
 	/// Get the next body in the world's body list.
 	Body* GetNext() noexcept;
@@ -384,9 +384,9 @@ private:
 
 	friend class World;
 	friend class b2Island;
-	friend class b2ContactManager;
-	friend class b2ContactSolver;
-	friend class b2Contact;
+	friend class ContactManager;
+	friend class ContactSolver;
+	friend class Contact;
 	
 	friend class b2DistanceJoint;
 	friend class b2FrictionJoint;
@@ -471,7 +471,7 @@ private:
 	size_t m_fixtureCount = 0;
 
 	JointEdge* m_jointList = nullptr;
-	b2ContactEdge* m_contactList = nullptr;
+	ContactEdge* m_contactList = nullptr;
 
 	float_t m_mass; ///< Mass of the body. This is the sum total mass of all associated fixtures.
 	float_t m_invMass; ///< Inverse of m_mass or 0 if m_mass == 0. @see m_mass.
@@ -744,12 +744,12 @@ inline const JointEdge* Body::GetJointList() const noexcept
 	return m_jointList;
 }
 
-inline b2ContactEdge* Body::GetContactList() noexcept
+inline ContactEdge* Body::GetContactList() noexcept
 {
 	return m_contactList;
 }
 
-inline const b2ContactEdge* Body::GetContactList() const noexcept
+inline const ContactEdge* Body::GetContactList() const noexcept
 {
 	return m_contactList;
 }

@@ -125,7 +125,7 @@ public:
 	/// Get the contact filtering data.
 	const b2Filter& GetFilterData() const noexcept;
 
-	/// Call this if you want to establish collision that was previously disabled by b2ContactFilter::ShouldCollide.
+	/// Call this if you want to establish collision that was previously disabled by ContactFilter::ShouldCollide.
 	void Refilter();
 
 	/// Get the parent body of this fixture. This is nullptr if the fixture is not attached.
@@ -192,7 +192,7 @@ protected:
 
 	friend class Body;
 	friend class World;
-	friend class b2ContactManager;
+	friend class ContactManager;
 
 	Fixture(Body* body) noexcept: m_body(body) {}
 

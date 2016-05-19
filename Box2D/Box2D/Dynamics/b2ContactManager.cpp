@@ -24,12 +24,12 @@
 
 using namespace box2d;
 
-b2ContactManager::b2ContactManager(b2BlockAllocator* allocator, b2ContactFilter* filter, b2ContactListener* listener):
+ContactManager::ContactManager(b2BlockAllocator* allocator, ContactFilter* filter, ContactListener* listener):
 	m_allocator(allocator),
 	m_contactFilter(filter), m_contactListener(listener)
 {}
 
-void b2ContactManager::Destroy(b2Contact* c)
+void ContactManager::Destroy(Contact* c)
 {
 	auto fixtureA = c->GetFixtureA();
 	auto fixtureB = c->GetFixtureB();
@@ -90,7 +90,7 @@ void b2ContactManager::Destroy(b2Contact* c)
 	}
 
 	// Call the factory.
-	b2Contact::Destroy(c, m_allocator);
+	Contact::Destroy(c, m_allocator);
 	
 	assert(m_contactCount > 0);
 	--m_contactCount;
@@ -99,10 +99,10 @@ void b2ContactManager::Destroy(b2Contact* c)
 // This is the top level collision call for the time step. Here
 // all the narrow phase collision is processed for the world
 // contact list.
-void b2ContactManager::Collide()
+void ContactManager::Collide()
 {
 	// Update awake contacts.
-	auto next = static_cast<b2Contact*>(nullptr);
+	auto next = static_cast<Contact*>(nullptr);
 	for (auto c = m_contactList; c; c = next)
 	{
 		next = c->GetNext();
@@ -160,14 +160,14 @@ void b2ContactManager::Collide()
 	}
 }
 
-void b2ContactManager::FindNewContacts()
+void ContactManager::FindNewContacts()
 {
 	m_broadPhase.UpdatePairs(this);
 }
 
-static bool IsFor(const b2Contact& contact,
-				  const Fixture* fixtureA, b2ContactManager::size_type indexA,
-				  const Fixture* fixtureB, b2ContactManager::size_type indexB)
+static bool IsFor(const Contact& contact,
+				  const Fixture* fixtureA, ContactManager::size_type indexA,
+				  const Fixture* fixtureB, ContactManager::size_type indexB)
 {
 	const auto fA = contact.GetFixtureA();
 	const auto fB = contact.GetFixtureB();
@@ -189,7 +189,7 @@ static bool IsFor(const b2Contact& contact,
 	return false;
 }
 
-void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
+void ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 {
 	const auto proxyA = static_cast<FixtureProxy*>(proxyUserDataA);
 	const auto proxyB = static_cast<FixtureProxy*>(proxyUserDataB);
@@ -236,7 +236,7 @@ void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 	}
 
 	// Call the factory.
-	auto c = b2Contact::Create(fixtureA, indexA, fixtureB, indexB, m_allocator);
+	auto c = Contact::Create(fixtureA, indexA, fixtureB, indexB, m_allocator);
 	if (!c)
 	{
 		return;

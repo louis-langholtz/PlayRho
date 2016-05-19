@@ -139,7 +139,7 @@ struct ContactPoint
 	float_t separation;
 };
 
-class Test : public b2ContactListener
+class Test : public ContactListener
 {
 public:
 
@@ -164,10 +164,10 @@ public:
 	virtual void JointDestroyed(Joint* joint) { BOX2D_NOT_USED(joint); }
 
 	// Callbacks for derived classes.
-	virtual void BeginContact(b2Contact* contact) { BOX2D_NOT_USED(contact); }
-	virtual void EndContact(b2Contact* contact) { BOX2D_NOT_USED(contact); }
-	virtual void PreSolve(b2Contact* contact, const b2Manifold* oldManifold);
-	virtual void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
+	virtual void BeginContact(Contact* contact) { BOX2D_NOT_USED(contact); }
+	virtual void EndContact(Contact* contact) { BOX2D_NOT_USED(contact); }
+	virtual void PreSolve(Contact* contact, const b2Manifold* oldManifold);
+	virtual void PostSolve(Contact* contact, const ContactImpulse* impulse)
 	{
 		BOX2D_NOT_USED(contact);
 		BOX2D_NOT_USED(impulse);

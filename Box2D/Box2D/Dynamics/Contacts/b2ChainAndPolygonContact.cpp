@@ -27,7 +27,7 @@
 
 using namespace box2d;
 
-b2Contact* b2ChainAndPolygonContact::Create(Fixture* fixtureA, child_count_t indexA,
+Contact* b2ChainAndPolygonContact::Create(Fixture* fixtureA, child_count_t indexA,
 											Fixture* fixtureB, child_count_t indexB,
 											b2BlockAllocator* allocator)
 {
@@ -35,7 +35,7 @@ b2Contact* b2ChainAndPolygonContact::Create(Fixture* fixtureA, child_count_t ind
 	return new (mem) b2ChainAndPolygonContact(fixtureA, indexA, fixtureB, indexB);
 }
 
-void b2ChainAndPolygonContact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
+void b2ChainAndPolygonContact::Destroy(Contact* contact, b2BlockAllocator* allocator)
 {
 	(static_cast<b2ChainAndPolygonContact*>(contact))->~b2ChainAndPolygonContact();
 	allocator->Free(contact, sizeof(b2ChainAndPolygonContact));
@@ -43,7 +43,7 @@ void b2ChainAndPolygonContact::Destroy(b2Contact* contact, b2BlockAllocator* all
 
 b2ChainAndPolygonContact::b2ChainAndPolygonContact(Fixture* fixtureA, child_count_t indexA,
 												   Fixture* fixtureB, child_count_t indexB)
-: b2Contact(fixtureA, indexA, fixtureB, indexB)
+: Contact(fixtureA, indexA, fixtureB, indexB)
 {
 	assert(m_fixtureA->GetType() == b2Shape::e_chain);
 	assert(m_fixtureB->GetType() == b2Shape::e_polygon);

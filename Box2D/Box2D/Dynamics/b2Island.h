@@ -25,11 +25,11 @@
 namespace box2d {
 
 class Body;
-class b2Contact;
+class Contact;
 class Joint;
 class b2StackAllocator;
-class b2ContactListener;
-struct b2ContactVelocityConstraint;
+class ContactListener;
+struct ContactVelocityConstraint;
 struct b2Profile;
 
 /// Island.
@@ -39,7 +39,7 @@ class b2Island
 {
 public:
 	b2Island(island_count_t bodyCapacity, island_count_t contactCapacity, island_count_t jointCapacity,
-			b2StackAllocator* allocator, b2ContactListener* listener);
+			b2StackAllocator* allocator, ContactListener* listener);
 	~b2Island();
 
 	/// Clears this island.
@@ -47,7 +47,7 @@ public:
 	///   On return, the get body contact and joint count methods will all return 0.
 	///   Additionally all removed bodies will have their island indexes set to Body::InvalidIslandIndex.
 	/// @sa void Add(Body* body).
-	/// @sa void Add(b2Contact* contact).
+	/// @sa void Add(Contact* contact).
 	/// @sa void Add(Joint* joint).
 	void Clear() noexcept;
 
@@ -57,11 +57,11 @@ public:
 
 	void Add(Body* body);
 
-	void Add(b2Contact* contact);
+	void Add(Contact* contact);
 
 	void Add(Joint* joint);
 
-	void Report(const b2ContactVelocityConstraint* constraints);
+	void Report(const ContactVelocityConstraint* constraints);
 
 	inline island_count_t GetBodyCapacity() const noexcept
 	{
@@ -123,10 +123,10 @@ private:
 	const island_count_t m_jointCapacity;
 
 	b2StackAllocator* const m_allocator;
-	b2ContactListener* const m_listener;
+	ContactListener* const m_listener;
 
 	Body** const m_bodies;
-	b2Contact** const m_contacts;
+	Contact** const m_contacts;
 	Joint** const m_joints;
 	b2Velocity* const m_velocities;
 	b2Position* const m_positions;

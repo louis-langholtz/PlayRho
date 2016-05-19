@@ -61,11 +61,11 @@ public:
 	/// Register a contact filter to provide specific control over collision.
 	/// Otherwise the default filter is used. The listener is
 	/// owned by you and must remain in scope. 
-	void SetContactFilter(b2ContactFilter* filter) noexcept;
+	void SetContactFilter(ContactFilter* filter) noexcept;
 
 	/// Register a contact event listener. The listener is owned by you and must
 	/// remain in scope.
-	void SetContactListener(b2ContactListener* listener) noexcept;
+	void SetContactListener(ContactListener* listener) noexcept;
 
 	/// Register a routine for debug drawing. The debug draw functions are called
 	/// inside with World::DrawDebugData method. The debug draw object is owned
@@ -140,13 +140,13 @@ public:
 	Joint* GetJointList() noexcept;
 	const Joint* GetJointList() const noexcept;
 
-	/// Get the world contact list. With the returned contact, use b2Contact::GetNext to get
+	/// Get the world contact list. With the returned contact, use Contact::GetNext to get
 	/// the next contact in the world list. A nullptr contact indicates the end of the list.
 	/// @return the head of the world contact list.
 	/// @warning contacts are created and destroyed in the middle of a time step.
-	/// Use b2ContactListener to avoid missing contacts.
-	b2Contact* GetContactList() noexcept;
-	const b2Contact* GetContactList() const noexcept;
+	/// Use ContactListener to avoid missing contacts.
+	Contact* GetContactList() noexcept;
+	const Contact* GetContactList() const noexcept;
 
 	/// Enable/disable sleep.
 	void SetAllowSleeping(bool flag) noexcept;
@@ -207,7 +207,7 @@ public:
 	void ShiftOrigin(const Vec2& newOrigin);
 
 	/// Get the contact manager for testing.
-	const b2ContactManager& GetContactManager() const noexcept;
+	const ContactManager& GetContactManager() const noexcept;
 
 	/// Get the current profile.
 	const b2Profile& GetProfile() const noexcept;
@@ -228,7 +228,7 @@ private:
 
 	friend class Body;
 	friend class Fixture;
-	friend class b2ContactManager;
+	friend class ContactManager;
 	friend class b2Controller;
 
 	void Solve(const b2TimeStep& step);
@@ -239,8 +239,8 @@ private:
 
 	b2BlockAllocator m_blockAllocator;
 	b2StackAllocator m_stackAllocator;
-	b2ContactFilter m_defaultFilter;
-	b2ContactListener m_defaultListener;
+	ContactFilter m_defaultFilter;
+	ContactListener m_defaultListener;
 
 	uint32 m_flags = e_clearForces;
 	
@@ -248,7 +248,7 @@ private:
 	void SetNewFixtures() noexcept { m_flags |= World::e_newFixture; }
 	void UnsetNewFixtures() noexcept { m_flags &= ~e_newFixture; }
 
-	b2ContactManager m_contactManager{&m_blockAllocator, &m_defaultFilter, &m_defaultListener};
+	ContactManager m_contactManager{&m_blockAllocator, &m_defaultFilter, &m_defaultListener};
 
 	Body* m_bodyList = nullptr;
 	Joint* m_jointList = nullptr;
@@ -305,12 +305,12 @@ inline const Joint* World::GetJointList() const noexcept
 	return m_jointList;
 }
 
-inline b2Contact* World::GetContactList() noexcept
+inline Contact* World::GetContactList() noexcept
 {
 	return m_contactManager.GetContactList();
 }
 
-inline const b2Contact* World::GetContactList() const noexcept
+inline const Contact* World::GetContactList() const noexcept
 {
 	return m_contactManager.GetContactList();
 }
@@ -363,7 +363,7 @@ inline bool World::GetAutoClearForces() const noexcept
 	return (m_flags & e_clearForces) != 0;
 }
 
-inline const b2ContactManager& World::GetContactManager() const noexcept
+inline const ContactManager& World::GetContactManager() const noexcept
 {
 	return m_contactManager;
 }

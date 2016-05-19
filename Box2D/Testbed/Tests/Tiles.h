@@ -124,7 +124,7 @@ public:
 
 	void Step(Settings* settings)
 	{
-		const b2ContactManager& cm = m_world->GetContactManager();
+		const ContactManager& cm = m_world->GetContactManager();
 		const auto height = cm.m_broadPhase.GetTreeHeight();
 		const auto leafCount = cm.m_broadPhase.GetProxyCount();
 		assert(leafCount > 0);

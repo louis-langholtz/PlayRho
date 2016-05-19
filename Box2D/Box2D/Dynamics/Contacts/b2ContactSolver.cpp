@@ -37,7 +37,7 @@ static constexpr auto k_majorErrorTol = float_t(1e-2); ///< error tolerance
 
 bool g_blockSolve = true;
 
-struct b2ContactPositionConstraintBodyData
+struct ContactPositionConstraintBodyData
 {
 	using index_t = size_t;
 
@@ -47,7 +47,7 @@ struct b2ContactPositionConstraintBodyData
 	float_t invI; ///< Inverse rotational inertia about the center of mass of the associated body.
 };
 
-class b2ContactPositionConstraint
+class ContactPositionConstraint
 {
 public:
 	using size_type = std::remove_cv<decltype(MaxManifoldPoints)>::type;
@@ -55,8 +55,8 @@ public:
 	Vec2 localNormal;
 	Vec2 localPoint;
 
-	b2ContactPositionConstraintBodyData bodyA;
-	b2ContactPositionConstraintBodyData bodyB;
+	ContactPositionConstraintBodyData bodyA;
+	ContactPositionConstraintBodyData bodyB;
 
 	b2Manifold::Type type = b2Manifold::e_unset;
 
@@ -88,14 +88,14 @@ private:
 	Vec2 localPoints[MaxManifoldPoints];
 };
 
-void b2ContactSolver::Assign(b2ContactVelocityConstraint& var, const b2Contact& val)
+void ContactSolver::Assign(ContactVelocityConstraint& var, const Contact& val)
 {
 	var.friction = val.m_friction;
 	var.restitution = val.m_restitution;
 	var.tangentSpeed = val.m_tangentSpeed;
 }
 
-void b2ContactSolver::Assign(b2ContactPositionConstraintBodyData& var, const Body& val)
+void ContactSolver::Assign(ContactPositionConstraintBodyData& var, const Body& val)
 {
 	assert(val.IsValidIslandIndex());
 	var.index = val.m_islandIndex;
@@ -104,7 +104,7 @@ void b2ContactSolver::Assign(b2ContactPositionConstraintBodyData& var, const Bod
 	var.localCenter = val.m_sweep.localCenter;
 }
 
-void b2ContactSolver::Assign(b2ContactVelocityConstraintBodyData& var, const Body& val)
+void ContactSolver::Assign(ContactVelocityConstraintBodyData& var, const Body& val)
 {
 	assert(val.IsValidIslandIndex());
 	var.index = val.m_islandIndex;
@@ -112,15 +112,15 @@ void b2ContactSolver::Assign(b2ContactVelocityConstraintBodyData& var, const Bod
 	var.invI = val.m_invI;
 }
 
-b2ContactSolver::b2ContactSolver(b2ContactSolverDef* def) :
+ContactSolver::ContactSolver(ContactSolverDef* def) :
 	m_step(def->step),
 	m_positions(def->positions),
 	m_velocities(def->velocities),
 	m_allocator(def->allocator),
 	m_contacts(def->contacts),
 	m_count(def->count),
-	m_positionConstraints(static_cast<b2ContactPositionConstraint*>(m_allocator->Allocate(m_count * sizeof(b2ContactPositionConstraint)))),
-	m_velocityConstraints(static_cast<b2ContactVelocityConstraint*>(m_allocator->Allocate(m_count * sizeof(b2ContactVelocityConstraint))))
+	m_positionConstraints(static_cast<ContactPositionConstraint*>(m_allocator->Allocate(m_count * sizeof(ContactPositionConstraint)))),
+	m_velocityConstraints(static_cast<ContactVelocityConstraint*>(m_allocator->Allocate(m_count * sizeof(ContactVelocityConstraint))))
 {
 	// Initialize position independent portions of the constraints.
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
@@ -174,14 +174,14 @@ b2ContactSolver::b2ContactSolver(b2ContactSolverDef* def) :
 	}
 }
 
-b2ContactSolver::~b2ContactSolver()
+ContactSolver::~ContactSolver()
 {
 	m_allocator->Free(m_velocityConstraints);
 	m_allocator->Free(m_positionConstraints);
 }
 
 static inline void Initialize(b2VelocityConstraintPoint& vcp,
-							  const b2ContactVelocityConstraint& vc, Vec2 worldPoint,
+							  const ContactVelocityConstraint& vc, Vec2 worldPoint,
 							  b2Position posA, b2Velocity velA, b2Position posB, b2Velocity velB)
 {
 	const auto vcp_rA = worldPoint - posA.c;
@@ -209,12 +209,12 @@ static inline void Initialize(b2VelocityConstraintPoint& vcp,
 	vcp.tangentMass = (kTangent > float_t{0}) ? float_t(1) /  kTangent : float_t{0};
 	vcp.velocityBias = (vRel < -VelocityThreshold)? -vc.restitution * vRel: float_t{0};
 	
-	// The following fields are assumed to be set already (by b2ContactSolver constructor).
+	// The following fields are assumed to be set already (by ContactSolver constructor).
 	// vcp.normalImpulse
 	// vcp.tangentImpulse
 }
 
-void b2ContactSolver::InitializeVelocityConstraint(b2ContactVelocityConstraint& vc, const b2ContactPositionConstraint& pc)
+void ContactSolver::InitializeVelocityConstraint(ContactVelocityConstraint& vc, const ContactPositionConstraint& pc)
 {
 	const auto manifold = m_contacts[vc.contactIndex]->GetManifold();
 	
@@ -275,7 +275,7 @@ void b2ContactSolver::InitializeVelocityConstraint(b2ContactVelocityConstraint& 
 }
 
 // Initialize position dependent portions of the velocity constraints.
-void b2ContactSolver::InitializeVelocityConstraints()
+void ContactSolver::InitializeVelocityConstraints()
 {
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
@@ -283,7 +283,7 @@ void b2ContactSolver::InitializeVelocityConstraints()
 	}
 }
 
-static inline void WarmStart(const b2ContactVelocityConstraint& vc, b2Velocity& bodyA, b2Velocity& bodyB)
+static inline void WarmStart(const ContactVelocityConstraint& vc, b2Velocity& bodyA, b2Velocity& bodyB)
 {
 	const auto tangent = Cross(vc.normal, float_t(1));
 	const auto pointCount = vc.GetPointCount();	
@@ -298,7 +298,7 @@ static inline void WarmStart(const b2ContactVelocityConstraint& vc, b2Velocity& 
 	}
 }
 
-void b2ContactSolver::WarmStart()
+void ContactSolver::WarmStart()
 {
 	// Warm start.
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
@@ -308,7 +308,7 @@ void b2ContactSolver::WarmStart()
 	}
 }
 
-static inline void SolveTangentConstraint(const b2ContactVelocityConstraint& vc, Vec2 tangent,
+static inline void SolveTangentConstraint(const ContactVelocityConstraint& vc, Vec2 tangent,
 										 b2Velocity& bodyA, b2Velocity& bodyB,
 										 b2VelocityConstraintPoint& vcp)
 {
@@ -336,7 +336,7 @@ static inline void SolveTangentConstraint(const b2ContactVelocityConstraint& vc,
 	bodyB.w += vc.bodyB.invI * Cross(vcp.rB, P);
 }
 
-static inline void SolveNormalConstraint(const b2ContactVelocityConstraint& vc,
+static inline void SolveNormalConstraint(const ContactVelocityConstraint& vc,
 										 b2Velocity& bodyA, b2Velocity& bodyB,
 										 b2VelocityConstraintPoint& vcp)
 {
@@ -363,7 +363,7 @@ static inline void SolveNormalConstraint(const b2ContactVelocityConstraint& vc,
 	bodyB.w += vc.bodyB.invI * Cross(vcp.rB, P);
 }
 
-static inline void BlockSolveUpdate(const b2ContactVelocityConstraint& vc,
+static inline void BlockSolveUpdate(const ContactVelocityConstraint& vc,
 									Vec2 oldImpulse, Vec2 newImpulse,
 									b2Velocity& bodyA, b2Velocity& bodyB,
 									b2VelocityConstraintPoint& vcp1, b2VelocityConstraintPoint& vcp2)
@@ -385,7 +385,7 @@ static inline void BlockSolveUpdate(const b2ContactVelocityConstraint& vc,
 	vcp2.normalImpulse = newImpulse.y;
 }
 
-static inline bool BlockSolveNormalCase1(const b2ContactVelocityConstraint& vc,
+static inline bool BlockSolveNormalCase1(const ContactVelocityConstraint& vc,
 										 Vec2 oldImpulse, Vec2 b_prime,
 										 b2Velocity& bodyA, b2Velocity& bodyB,
 										 b2VelocityConstraintPoint& vcp1, b2VelocityConstraintPoint& vcp2)
@@ -425,7 +425,7 @@ static inline bool BlockSolveNormalCase1(const b2ContactVelocityConstraint& vc,
 	return false;
 }
 
-static inline bool BlockSolveNormalCase2(const b2ContactVelocityConstraint& vc,
+static inline bool BlockSolveNormalCase2(const ContactVelocityConstraint& vc,
 										 Vec2 oldImpulse, Vec2 b_prime,
 										 b2Velocity& bodyA, b2Velocity& bodyB,
 										 b2VelocityConstraintPoint& vcp1, b2VelocityConstraintPoint& vcp2)
@@ -457,7 +457,7 @@ static inline bool BlockSolveNormalCase2(const b2ContactVelocityConstraint& vc,
 	return false;
 }
 
-static inline bool BlockSolveNormalCase3(const b2ContactVelocityConstraint& vc,
+static inline bool BlockSolveNormalCase3(const ContactVelocityConstraint& vc,
 										 Vec2 oldImpulse, Vec2 b_prime,
 										 b2Velocity& bodyA, b2Velocity& bodyB,
 										 b2VelocityConstraintPoint& vcp1, b2VelocityConstraintPoint& vcp2)
@@ -489,7 +489,7 @@ static inline bool BlockSolveNormalCase3(const b2ContactVelocityConstraint& vc,
 	return false;
 }
 
-static inline bool BlockSolveNormalCase4(const b2ContactVelocityConstraint& vc,
+static inline bool BlockSolveNormalCase4(const ContactVelocityConstraint& vc,
 										 Vec2 oldImpulse, Vec2 b_prime,
 										 b2Velocity& bodyA, b2Velocity& bodyB,
 										 b2VelocityConstraintPoint& vcp1, b2VelocityConstraintPoint& vcp2)
@@ -510,7 +510,7 @@ static inline bool BlockSolveNormalCase4(const b2ContactVelocityConstraint& vc,
 	return false;
 }
 
-static inline void BlockSolveNormalConstraint(const b2ContactVelocityConstraint& vc,
+static inline void BlockSolveNormalConstraint(const ContactVelocityConstraint& vc,
 											  b2Velocity& bodyA, b2Velocity& bodyB,
 											  b2VelocityConstraintPoint& vcp1, b2VelocityConstraintPoint& vcp2)
 {
@@ -579,7 +579,7 @@ static inline void BlockSolveNormalConstraint(const b2ContactVelocityConstraint&
 	// No solution, give up. This is hit sometimes, but it doesn't seem to matter.
 }
 
-static inline void SolveVelocityConstraint(b2ContactVelocityConstraint& vc, b2Velocity& bodyA, b2Velocity& bodyB)
+static inline void SolveVelocityConstraint(ContactVelocityConstraint& vc, b2Velocity& bodyA, b2Velocity& bodyB)
 {
 	const auto pointCount = vc.GetPointCount();
 	assert((pointCount == 1) || (pointCount == 2));
@@ -621,7 +621,7 @@ static inline void SolveVelocityConstraint(b2ContactVelocityConstraint& vc, b2Ve
 	}
 }
 
-void b2ContactSolver::SolveVelocityConstraints()
+void ContactSolver::SolveVelocityConstraints()
 {
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
@@ -636,7 +636,7 @@ static void b2AssignImpulses(b2ManifoldPoint& var, const b2VelocityConstraintPoi
 	var.tangentImpulse = val.tangentImpulse;
 }
 
-void b2ContactSolver::StoreImpulses()
+void ContactSolver::StoreImpulses()
 {
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
@@ -656,7 +656,7 @@ public:
 
 	b2PositionSolverManifold() = delete;
 
-	b2PositionSolverManifold(const b2ContactPositionConstraint& pc,
+	b2PositionSolverManifold(const ContactPositionConstraint& pc,
 							 const Transform& xfA, const Transform& xfB, index_t index)
 	{
 		assert(pc.GetPointCount() > 0);
@@ -721,7 +721,7 @@ private:
 	float_t separation;
 };
 
-static inline float_t SolvePositionConstraint(const b2ContactPositionConstraint& pc,
+static inline float_t SolvePositionConstraint(const ContactPositionConstraint& pc,
 											  b2Position& posA, b2Position& posB)
 {
 	auto minSeparation = MaxFloat;
@@ -766,7 +766,7 @@ static inline float_t SolvePositionConstraint(const b2ContactPositionConstraint&
 }
 
 // Sequential solver.
-bool b2ContactSolver::SolvePositionConstraints()
+bool ContactSolver::SolvePositionConstraints()
 {
 	auto minSeparation = MaxFloat;
 
@@ -781,8 +781,8 @@ bool b2ContactSolver::SolvePositionConstraints()
 	return minSeparation >= MinSeparationThreshold;
 }
 
-static inline float_t SolveTOIPositionConstraint(const b2ContactPositionConstraint& pc,
-												 b2ContactSolver::size_type indexA, b2ContactSolver::size_type indexB,
+static inline float_t SolveTOIPositionConstraint(const ContactPositionConstraint& pc,
+												 ContactSolver::size_type indexA, ContactSolver::size_type indexB,
 												 b2Position& posA, b2Position& posB)
 {
 	auto minSeparation = MaxFloat;
@@ -834,7 +834,7 @@ static inline float_t SolveTOIPositionConstraint(const b2ContactPositionConstrai
 	return minSeparation;
 }
 
-bool b2ContactSolver::SolveTOIPositionConstraints(size_type indexA, size_type indexB)
+bool ContactSolver::SolveTOIPositionConstraints(size_type indexA, size_type indexB)
 {
 	auto minSeparation = MaxFloat;
 

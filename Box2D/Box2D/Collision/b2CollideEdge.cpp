@@ -70,7 +70,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, cons
 		auto manifold = b2Manifold{b2Manifold::e_circles};
 		manifold.SetLocalNormal(Vec2_zero);
 		manifold.SetLocalPoint(P);
-		manifold.AddPoint(shapeB.GetPosition(), b2ContactFeature{b2ContactFeature::e_vertex, 0, b2ContactFeature::e_vertex, 0});
+		manifold.AddPoint(shapeB.GetPosition(), ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 0});
 		return manifold;
 	}
 	
@@ -102,7 +102,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, cons
 		auto manifold = b2Manifold{b2Manifold::e_circles};
 		manifold.SetLocalNormal(Vec2_zero);
 		manifold.SetLocalPoint(P);
-		manifold.AddPoint(shapeB.GetPosition(), b2ContactFeature{b2ContactFeature::e_vertex, 1, b2ContactFeature::e_vertex, 0});
+		manifold.AddPoint(shapeB.GetPosition(), ContactFeature{ContactFeature::e_vertex, 1, ContactFeature::e_vertex, 0});
 		return manifold;
 	}
 	
@@ -126,7 +126,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, cons
 	auto manifold = b2Manifold{b2Manifold::e_faceA};
 	manifold.SetLocalNormal(Normalize(n));
 	manifold.SetLocalPoint(A);
-	manifold.AddPoint(shapeB.GetPosition(), b2ContactFeature{b2ContactFeature::e_face, 0, b2ContactFeature::e_vertex, 0});
+	manifold.AddPoint(shapeB.GetPosition(), ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_vertex, 0});
 	return manifold;
 }
 
@@ -593,9 +593,9 @@ b2Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShap
 		const auto i2 = ((i1 + 1) < localShapeB.GetCount()) ? i1 + 1 : 0;
 		
 		incidentEdge[0].v = localShapeB.GetVertex(i1);
-		incidentEdge[0].cf = b2ContactFeature(b2ContactFeature::e_face, 0, b2ContactFeature::e_vertex, i1);
+		incidentEdge[0].cf = ContactFeature(ContactFeature::e_face, 0, ContactFeature::e_vertex, i1);
 		incidentEdge[1].v = localShapeB.GetVertex(i2);
-		incidentEdge[1].cf = b2ContactFeature(b2ContactFeature::e_face, 0, b2ContactFeature::e_vertex, i2);
+		incidentEdge[1].cf = ContactFeature(ContactFeature::e_face, 0, ContactFeature::e_vertex, i2);
 
 		if (edgeInfo.IsFront())
 		{
@@ -619,9 +619,9 @@ b2Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShap
 		manifoldType = b2Manifold::e_faceB;
 		
 		incidentEdge[0].v = edgeInfo.GetVertex1();
-		incidentEdge[0].cf = b2ContactFeature(b2ContactFeature::e_vertex, 0, b2ContactFeature::e_face, primaryAxis.index);
+		incidentEdge[0].cf = ContactFeature(ContactFeature::e_vertex, 0, ContactFeature::e_face, primaryAxis.index);
 		incidentEdge[1].v = edgeInfo.GetVertex2();
-		incidentEdge[1].cf = b2ContactFeature(b2ContactFeature::e_vertex, 0, b2ContactFeature::e_face, primaryAxis.index);
+		incidentEdge[1].cf = ContactFeature(ContactFeature::e_vertex, 0, ContactFeature::e_face, primaryAxis.index);
 		
 		rf.i1 = primaryAxis.index;
 		rf.i2 = ((rf.i1 + 1) < localShapeB.GetCount()) ? rf.i1 + 1 : 0;

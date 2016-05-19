@@ -93,8 +93,8 @@ static b2ClipArray b2FindIncidentEdge(b2PolygonShape::vertex_count_t index1,
 	const auto i2 = (i1_next < count2) ? i1_next: 0;
 
 	return b2ClipArray{{
-		{Mul(xf2, shape2.GetVertex(i1)), b2ContactFeature(b2ContactFeature::e_face, index1, b2ContactFeature::e_vertex, i1)},
-		{Mul(xf2, shape2.GetVertex(i2)), b2ContactFeature(b2ContactFeature::e_face, index1, b2ContactFeature::e_vertex, i2)}
+		{Mul(xf2, shape2.GetVertex(i1)), ContactFeature(ContactFeature::e_face, index1, ContactFeature::e_vertex, i1)},
+		{Mul(xf2, shape2.GetVertex(i2)), ContactFeature(ContactFeature::e_face, index1, ContactFeature::e_vertex, i2)}
 	}};
 }
 

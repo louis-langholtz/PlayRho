@@ -82,7 +82,7 @@ public:
 	}
 
 	// Implement contact listener.
-	void BeginContact(b2Contact* contact)
+	void BeginContact(Contact* contact)
 	{
 		Fixture* fixtureA = contact->GetFixtureA();
 		Fixture* fixtureB = contact->GetFixtureB();
@@ -109,7 +109,7 @@ public:
 	}
 
 	// Implement contact listener.
-	void EndContact(b2Contact* contact)
+	void EndContact(Contact* contact)
 	{
 		Fixture* fixtureA = contact->GetFixtureA();
 		Fixture* fixtureB = contact->GetFixtureB();

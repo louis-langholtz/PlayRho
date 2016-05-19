@@ -101,12 +101,12 @@ void World::SetDestructionListener(b2DestructionListener* listener) noexcept
 	m_destructionListener = listener;
 }
 
-void World::SetContactFilter(b2ContactFilter* filter) noexcept
+void World::SetContactFilter(ContactFilter* filter) noexcept
 {
 	m_contactManager.m_contactFilter = filter;
 }
 
-void World::SetContactListener(b2ContactListener* listener) noexcept
+void World::SetContactListener(ContactListener* listener) noexcept
 {
 	m_contactManager.m_contactListener = listener;
 }
@@ -609,7 +609,7 @@ void World::SolveTOI(const b2TimeStep& step)
 	for (;;)
 	{
 		// Find the first TOI.
-		auto minContact = static_cast<b2Contact*>(nullptr);
+		auto minContact = static_cast<Contact*>(nullptr);
 		auto minAlpha = float_t{1};
 
 		for (auto c = m_contactManager.GetContactList(); c; c = c->m_next)
