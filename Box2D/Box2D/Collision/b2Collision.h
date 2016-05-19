@@ -83,7 +83,7 @@ constexpr bool operator==(const b2ContactFeature& lhs, const b2ContactFeature& r
 /// provide reliable contact forces, especially for high speed collisions.
 struct b2ManifoldPoint
 {
-	b2Vec2 localPoint;		///< usage depends on manifold type
+	Vec2 localPoint;		///< usage depends on manifold type
 	float_t normalImpulse;	///< the non-penetration impulse
 	float_t tangentImpulse;	///< the friction impulse
 	b2ContactFeature cf;    ///< uniquely identifies a contact point between two shapes
@@ -124,7 +124,7 @@ public:
 	/// @param t Manifold type.
 	/// @param ln Local normal.
 	/// @param lp Local point.
-	b2Manifold(Type t, b2Vec2 ln = b2Vec2_zero, b2Vec2 lp = b2Vec2_zero): type(t), localNormal(ln), localPoint(lp) {}
+	b2Manifold(Type t, Vec2 ln = Vec2_zero, Vec2 lp = Vec2_zero): type(t), localNormal(ln), localPoint(lp) {}
 
 	Type GetType() const noexcept { return type; }
 
@@ -162,7 +162,7 @@ public:
 	/// @detail This can be called up to MaxManifoldPoints times.
 	/// GetPointCount() can be called to find out how many points have already been added.
 	/// @note Behavior is undefined if this is called more than MaxManifoldPoints times. 
-	void AddPoint(const b2Vec2& lp, b2ContactFeature cf = b2ContactFeature{b2ContactFeature::e_vertex, 0, b2ContactFeature::e_vertex, 0})
+	void AddPoint(const Vec2& lp, b2ContactFeature cf = b2ContactFeature{b2ContactFeature::e_vertex, 0, b2ContactFeature::e_vertex, 0})
 	{
 		assert(pointCount < MaxManifoldPoints);
 		points[pointCount].localPoint = lp;
@@ -172,16 +172,16 @@ public:
 		++pointCount;
 	}
 
-	b2Vec2 GetLocalNormal() const noexcept { return localNormal; }
-	void SetLocalNormal(const b2Vec2& val) noexcept { localNormal = val; }
+	Vec2 GetLocalNormal() const noexcept { return localNormal; }
+	void SetLocalNormal(const Vec2& val) noexcept { localNormal = val; }
 	
-	b2Vec2 GetLocalPoint() const noexcept { return localPoint; }
-	void SetLocalPoint(const b2Vec2& val) noexcept { localPoint = val; }
+	Vec2 GetLocalPoint() const noexcept { return localPoint; }
+	void SetLocalPoint(const Vec2& val) noexcept { localPoint = val; }
 
 private:
 	Type type = e_unset; ///< Type of collision this manifold is associated with.
-	b2Vec2 localNormal;								///< not use for Type::e_points
-	b2Vec2 localPoint;								///< usage depends on manifold type
+	Vec2 localNormal;								///< not use for Type::e_points
+	Vec2 localPoint;								///< usage depends on manifold type
 	size_type pointCount = 0;							///< the number of manifold points
 	b2ManifoldPoint points[MaxManifoldPoints];	///< the points of contact
 };
@@ -208,9 +208,9 @@ public:
 
 	size_type GetPointCount() const noexcept { return pointCount; }
 
-	b2Vec2 GetNormal() const { return normal; }
+	Vec2 GetNormal() const { return normal; }
 
-	b2Vec2 GetPoint(size_type index) const
+	Vec2 GetPoint(size_type index) const
 	{
 		assert(index < MaxManifoldPoints);
 		return points[index];
@@ -223,9 +223,9 @@ public:
 	}
 
 private:
-	b2Vec2 normal;								///< world vector pointing from A to B
+	Vec2 normal;								///< world vector pointing from A to B
 	size_type pointCount = 0;
-	b2Vec2 points[MaxManifoldPoints];		///< world contact point (point of intersection)
+	Vec2 points[MaxManifoldPoints];		///< world contact point (point of intersection)
 	float_t separations[MaxManifoldPoints];	///< a negative value indicates overlap, in meters
 };
 
@@ -247,14 +247,14 @@ void b2GetPointStates(b2PointStateArray& state1, b2PointStateArray& state2,
 /// Used for computing contact manifolds.
 struct b2ClipVertex
 {
-	b2Vec2 v; ///< Vertex of edge or polygon.
+	Vec2 v; ///< Vertex of edge or polygon.
 	b2ContactFeature cf; ///< Contact feature information.
 };
 
 /// Ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
 struct b2RayCastInput
 {
-	b2Vec2 p1, p2;
+	Vec2 p1, p2;
 	float_t maxFraction;
 };
 
@@ -262,7 +262,7 @@ struct b2RayCastInput
 /// come from b2RayCastInput.
 struct b2RayCastOutput
 {
-	b2Vec2 normal;
+	Vec2 normal;
 	float_t fraction;
 };
 
@@ -272,17 +272,17 @@ class b2AABB
 public:
 	b2AABB() = default;
 
-	constexpr b2AABB(b2Vec2 a, b2Vec2 b) noexcept:
-		lowerBound(b2Vec2(b2Min(a.x, b.x), b2Min(a.y, b.y))), upperBound(b2Vec2(b2Max(a.x, b.x), b2Max(a.y, b.y))) {}
+	constexpr b2AABB(Vec2 a, Vec2 b) noexcept:
+		lowerBound(Vec2(b2Min(a.x, b.x), b2Min(a.y, b.y))), upperBound(Vec2(b2Max(a.x, b.x), b2Max(a.y, b.y))) {}
 
 	/// Get the center of the AABB.
-	constexpr b2Vec2 GetCenter() const noexcept
+	constexpr Vec2 GetCenter() const noexcept
 	{
 		return (lowerBound + upperBound) / float_t(2);
 	}
 
 	/// Get the extents of the AABB (half-widths).
-	constexpr b2Vec2 GetExtents() const noexcept
+	constexpr Vec2 GetExtents() const noexcept
 	{
 		return (upperBound - lowerBound) / float_t(2);
 	}
@@ -313,10 +313,10 @@ public:
 
 	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const;
 
-	b2Vec2 GetLowerBound() const noexcept { return lowerBound; }
-	b2Vec2 GetUpperBound() const noexcept { return upperBound; }
+	Vec2 GetLowerBound() const noexcept { return lowerBound; }
+	Vec2 GetUpperBound() const noexcept { return upperBound; }
 
-	b2AABB& Move(b2Vec2 value) noexcept
+	b2AABB& Move(Vec2 value) noexcept
 	{
 		lowerBound += value;
 		upperBound += value;
@@ -324,8 +324,8 @@ public:
 	}
 
 private:
-	b2Vec2 lowerBound;	///< the lower vertex
-	b2Vec2 upperBound;	///< the upper vertex
+	Vec2 lowerBound;	///< the lower vertex
+	Vec2 upperBound;	///< the upper vertex
 };
 
 constexpr inline b2AABB operator + (const b2AABB& aabb1, const b2AABB& aabb2)
@@ -333,12 +333,12 @@ constexpr inline b2AABB operator + (const b2AABB& aabb1, const b2AABB& aabb2)
 	return b2AABB{b2Min(aabb1.GetLowerBound(), aabb2.GetLowerBound()), b2Max(aabb1.GetUpperBound(), aabb2.GetUpperBound())};
 }
 
-constexpr inline b2AABB operator + (b2Vec2 lhs, const b2AABB& rhs)
+constexpr inline b2AABB operator + (Vec2 lhs, const b2AABB& rhs)
 {
 	return b2AABB{rhs.GetLowerBound() - lhs, rhs.GetUpperBound() + lhs};
 }
 
-constexpr inline b2AABB operator + (const b2AABB& lhs, b2Vec2 rhs)
+constexpr inline b2AABB operator + (const b2AABB& lhs, Vec2 rhs)
 {
 	return b2AABB{lhs.GetLowerBound() - rhs, lhs.GetUpperBound() + rhs};
 }
@@ -397,7 +397,7 @@ using b2ClipArray = std::array<b2ClipVertex, MaxManifoldPoints>;
 /// @param indexA Index of vertex A.
 /// @return Number of valid elements of the output array being returned (# of points of the line found within the plane).
 b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray& vIn,
-										   const b2Vec2& normal, float_t offset, b2ContactFeature::index_t indexA);
+										   const Vec2& normal, float_t offset, b2ContactFeature::index_t indexA);
 
 /// Determine if two generic shapes overlap.
 bool b2TestOverlap(const b2Shape& shapeA, child_count_t indexA,

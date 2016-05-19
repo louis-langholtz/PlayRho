@@ -29,8 +29,8 @@ public:
 		m_fixture = nullptr;
 	}
 
-	float_t ReportFixture(b2Fixture* fixture, const b2Vec2& point,
-						  const b2Vec2& normal, float_t fraction)
+	float_t ReportFixture(b2Fixture* fixture, const Vec2& point,
+						  const Vec2& normal, float_t fraction)
 	{
 		m_fixture = fixture;
 		m_point = point;
@@ -40,8 +40,8 @@ public:
 	}
 
 	b2Fixture* m_fixture;
-	b2Vec2 m_point;
-	b2Vec2 m_normal;
+	Vec2 m_point;
+	Vec2 m_normal;
 };
 
 class EdgeShapes : public Test
@@ -68,7 +68,7 @@ public:
 				float_t y2 = 2.0f * cosf(x2 / 10.0f * Pi);
 
 				b2EdgeShape shape;
-				shape.Set(b2Vec2(x1, y1), b2Vec2(x2, y2));
+				shape.Set(Vec2(x1, y1), Vec2(x2, y2));
 				ground->CreateFixture(&shape, 0.0f);
 
 				x1 = x2;
@@ -77,18 +77,18 @@ public:
 		}
 
 		{
-		b2Vec2 vertices[3];
-		vertices[0] = b2Vec2(-0.5f, 0.0f);
-		vertices[1] = b2Vec2(0.5f, 0.0f);
-		vertices[2] = b2Vec2(0.0f, 1.5f);
+		Vec2 vertices[3];
+		vertices[0] = Vec2(-0.5f, 0.0f);
+		vertices[1] = Vec2(0.5f, 0.0f);
+		vertices[2] = Vec2(0.0f, 1.5f);
 		m_polygons[0].Set(vertices, 3);
 	}
 
 		{
-			b2Vec2 vertices[3];
-			vertices[0] = b2Vec2(-0.1f, 0.0f);
-			vertices[1] = b2Vec2(0.1f, 0.0f);
-			vertices[2] = b2Vec2(0.0f, 1.5f);
+			Vec2 vertices[3];
+			vertices[0] = Vec2(-0.1f, 0.0f);
+			vertices[1] = Vec2(0.1f, 0.0f);
+			vertices[2] = Vec2(0.0f, 1.5f);
 			m_polygons[1].Set(vertices, 3);
 		}
 
@@ -97,15 +97,15 @@ public:
 			float_t b = w / (2.0f + b2Sqrt(2.0f));
 			float_t s = b2Sqrt(2.0f) * b;
 
-			b2Vec2 vertices[8];
-			vertices[0] = b2Vec2(0.5f * s, 0.0f);
-			vertices[1] = b2Vec2(0.5f * w, b);
-			vertices[2] = b2Vec2(0.5f * w, b + s);
-			vertices[3] = b2Vec2(0.5f * s, w);
-			vertices[4] = b2Vec2(-0.5f * s, w);
-			vertices[5] = b2Vec2(-0.5f * w, b + s);
-			vertices[6] = b2Vec2(-0.5f * w, b);
-			vertices[7] = b2Vec2(-0.5f * s, 0.0f);
+			Vec2 vertices[8];
+			vertices[0] = Vec2(0.5f * s, 0.0f);
+			vertices[1] = Vec2(0.5f * w, b);
+			vertices[2] = Vec2(0.5f * w, b + s);
+			vertices[3] = Vec2(0.5f * s, w);
+			vertices[4] = Vec2(-0.5f * s, w);
+			vertices[5] = Vec2(-0.5f * w, b + s);
+			vertices[6] = Vec2(-0.5f * w, b);
+			vertices[7] = Vec2(-0.5f * s, 0.0f);
 
 			m_polygons[2].Set(vertices, 8);
 		}
@@ -136,7 +136,7 @@ public:
 
 		float_t x = RandomFloat(-10.0f, 10.0f);
 		float_t y = RandomFloat(10.0f, 20.0f);
-		bd.position = b2Vec2(x, y);
+		bd.position = Vec2(x, y);
 		bd.angle = RandomFloat(-Pi, Pi);
 		bd.type = DynamicBody;
 
@@ -207,9 +207,9 @@ public:
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		float_t L = 25.0f;
-		b2Vec2 point1(0.0f, 10.0f);
-		b2Vec2 d(L * cosf(m_angle), -L * b2Abs(sinf(m_angle)));
-		b2Vec2 point2 = point1 + d;
+		Vec2 point1(0.0f, 10.0f);
+		Vec2 d(L * cosf(m_angle), -L * b2Abs(sinf(m_angle)));
+		Vec2 point2 = point1 + d;
 
 		EdgeShapesCallback callback;
 
@@ -221,7 +221,7 @@ public:
 
 			g_debugDraw.DrawSegment(point1, callback.m_point, b2Color(0.8f, 0.8f, 0.8f));
 
-			b2Vec2 head = callback.m_point + 0.5f * callback.m_normal;
+			Vec2 head = callback.m_point + 0.5f * callback.m_normal;
 			g_debugDraw.DrawSegment(callback.m_point, head, b2Color(0.9f, 0.9f, 0.4f));
 		}
 		else

@@ -35,8 +35,8 @@ void DestructionListener::SayGoodbye(b2Joint* joint)
 
 Test::Test()
 {
-	b2Vec2 gravity;
-	gravity = b2Vec2(0.0f, -10.0f);
+	Vec2 gravity;
+	gravity = Vec2(0.0f, -10.0f);
 	m_world = new b2World(gravity);
 	m_bomb = nullptr;
 	m_textLine = 30;
@@ -108,7 +108,7 @@ void Test::DrawTitle(const char *string)
 class QueryCallback : public b2QueryCallback
 {
 public:
-	QueryCallback(const b2Vec2& point)
+	QueryCallback(const Vec2& point)
 	{
 		m_point = point;
 		m_fixture = nullptr;
@@ -133,11 +133,11 @@ public:
 		return true;
 	}
 
-	b2Vec2 m_point;
+	Vec2 m_point;
 	b2Fixture* m_fixture;
 };
 
-void Test::MouseDown(const b2Vec2& p)
+void Test::MouseDown(const Vec2& p)
 {
 	m_mouseWorld = p;
 	
@@ -147,7 +147,7 @@ void Test::MouseDown(const b2Vec2& p)
 	}
 
 	// Make a small box.
-	const auto aabb = b2AABB{p, p} + b2Vec2(0.001f, 0.001f);
+	const auto aabb = b2AABB{p, p} + Vec2(0.001f, 0.001f);
 	
 	// Query the world for overlapping shapes.
 	QueryCallback callback(p);
@@ -166,13 +166,13 @@ void Test::MouseDown(const b2Vec2& p)
 	}
 }
 
-void Test::SpawnBomb(const b2Vec2& worldPt)
+void Test::SpawnBomb(const Vec2& worldPt)
 {
 	m_bombSpawnPoint = worldPt;
 	m_bombSpawning = true;
 }
     
-void Test::CompleteBombSpawn(const b2Vec2& p)
+void Test::CompleteBombSpawn(const Vec2& p)
 {
 	if (m_bombSpawning == false)
 	{
@@ -180,13 +180,13 @@ void Test::CompleteBombSpawn(const b2Vec2& p)
 	}
 
 	const float multiplier = 30.0f;
-	b2Vec2 vel = m_bombSpawnPoint - p;
+	Vec2 vel = m_bombSpawnPoint - p;
 	vel *= multiplier;
 	LaunchBomb(m_bombSpawnPoint,vel);
 	m_bombSpawning = false;
 }
 
-void Test::ShiftMouseDown(const b2Vec2& p)
+void Test::ShiftMouseDown(const Vec2& p)
 {
 	m_mouseWorld = p;
 	
@@ -198,7 +198,7 @@ void Test::ShiftMouseDown(const b2Vec2& p)
 	SpawnBomb(p);
 }
 
-void Test::MouseUp(const b2Vec2& p)
+void Test::MouseUp(const Vec2& p)
 {
 	if (m_mouseJoint)
 	{
@@ -212,7 +212,7 @@ void Test::MouseUp(const b2Vec2& p)
 	}
 }
 
-void Test::MouseMove(const b2Vec2& p)
+void Test::MouseMove(const Vec2& p)
 {
 	m_mouseWorld = p;
 	
@@ -224,12 +224,12 @@ void Test::MouseMove(const b2Vec2& p)
 
 void Test::LaunchBomb()
 {
-	b2Vec2 p(RandomFloat(-15.0f, 15.0f), 30.0f);
-	b2Vec2 v = -5.0f * p;
+	Vec2 p(RandomFloat(-15.0f, 15.0f), 30.0f);
+	Vec2 v = -5.0f * p;
 	LaunchBomb(p, v);
 }
 
-void Test::LaunchBomb(const b2Vec2& position, const b2Vec2& velocity)
+void Test::LaunchBomb(const Vec2& position, const Vec2& velocity)
 {
 	if (m_bomb)
 	{
@@ -374,8 +374,8 @@ void Test::Step(Settings* settings)
 
 	if (m_mouseJoint)
 	{
-		b2Vec2 p1 = m_mouseJoint->GetAnchorB();
-		b2Vec2 p2 = m_mouseJoint->GetTarget();
+		Vec2 p1 = m_mouseJoint->GetAnchorB();
+		Vec2 p2 = m_mouseJoint->GetTarget();
 
 		b2Color c;
 		c.Set(0.0f, 1.0f, 0.0f);
@@ -418,29 +418,29 @@ void Test::Step(Settings* settings)
 
 			if (settings->drawContactNormals == 1)
 			{
-				b2Vec2 p1 = point->position;
-				b2Vec2 p2 = p1 + k_axisScale * point->normal;
+				Vec2 p1 = point->position;
+				Vec2 p2 = p1 + k_axisScale * point->normal;
 				g_debugDraw.DrawSegment(p1, p2, b2Color(0.9f, 0.9f, 0.9f));
 			}
 			else if (settings->drawContactImpulse == 1)
 			{
-				b2Vec2 p1 = point->position;
-				b2Vec2 p2 = p1 + k_impulseScale * point->normalImpulse * point->normal;
+				Vec2 p1 = point->position;
+				Vec2 p2 = p1 + k_impulseScale * point->normalImpulse * point->normal;
 				g_debugDraw.DrawSegment(p1, p2, b2Color(0.9f, 0.9f, 0.3f));
 			}
 
 			if (settings->drawFrictionImpulse == 1)
 			{
-				b2Vec2 tangent = b2Cross(point->normal, 1.0f);
-				b2Vec2 p1 = point->position;
-				b2Vec2 p2 = p1 + k_impulseScale * point->tangentImpulse * tangent;
+				Vec2 tangent = b2Cross(point->normal, 1.0f);
+				Vec2 p1 = point->position;
+				Vec2 p2 = p1 + k_impulseScale * point->tangentImpulse * tangent;
 				g_debugDraw.DrawSegment(p1, p2, b2Color(0.9f, 0.9f, 0.3f));
 			}
 		}
 	}
 }
 
-void Test::ShiftOrigin(const b2Vec2& newOrigin)
+void Test::ShiftOrigin(const Vec2& newOrigin)
 {
 	m_world->ShiftOrigin(newOrigin);
 }

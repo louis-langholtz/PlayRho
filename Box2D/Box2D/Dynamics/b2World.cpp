@@ -72,7 +72,7 @@ private:
 	std::function<void(T&)> m_on_destruction;
 };
 
-b2World::b2World(const b2Vec2& gravity): m_gravity(gravity)
+b2World::b2World(const Vec2& gravity): m_gravity(gravity)
 {
 	memset(&m_profile, 0, sizeof(b2Profile));
 }
@@ -883,7 +883,7 @@ void b2World::ClearForces() noexcept
 {
 	for (auto body = m_bodyList; body; body = body->GetNext())
 	{
-		body->m_force = b2Vec2_zero;
+		body->m_force = Vec2_zero;
 		body->m_torque = float_t{0};
 	}
 }
@@ -941,7 +941,7 @@ struct b2WorldRayCastWrapper
 	b2RayCastCallback* const callback;
 };
 
-void b2World::RayCast(b2RayCastCallback* callback, const b2Vec2& point1, const b2Vec2& point2) const
+void b2World::RayCast(b2RayCastCallback* callback, const Vec2& point1, const Vec2& point2) const
 {
 	b2WorldRayCastWrapper wrapper(&m_contactManager.m_broadPhase, callback);
 	const auto input = b2RayCastInput{point1, point2, float_t(1)};
@@ -957,7 +957,7 @@ void b2World::DrawShape(const b2Fixture* fixture, const b2Transform& xf, const b
 			const auto circle = static_cast<const b2CircleShape*>(fixture->GetShape());
 			const auto center = b2Mul(xf, circle->GetPosition());
 			const auto radius = circle->GetRadius();
-			const auto axis = b2Mul(xf.q, b2Vec2(float_t(1), float_t{0}));
+			const auto axis = b2Mul(xf.q, Vec2(float_t(1), float_t{0}));
 			g_debugDraw->DrawSolidCircle(center, radius, axis, color);
 		}
 		break;
@@ -991,7 +991,7 @@ void b2World::DrawShape(const b2Fixture* fixture, const b2Transform& xf, const b
 			const auto poly = static_cast<const b2PolygonShape*>(fixture->GetShape());
 			const auto vertexCount = poly->GetVertexCount();
 			assert(vertexCount <= MaxPolygonVertices);
-			b2Vec2 vertices[MaxPolygonVertices];
+			Vec2 vertices[MaxPolygonVertices];
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
 				vertices[i] = b2Mul(xf, poly->GetVertex(i));
@@ -1102,8 +1102,8 @@ void b2World::DrawDebugData()
 			//b2Fixture* fixtureA = c->GetFixtureA();
 			//b2Fixture* fixtureB = c->GetFixtureB();
 
-			//b2Vec2 cA = fixtureA->GetAABB().GetCenter();
-			//b2Vec2 cB = fixtureB->GetAABB().GetCenter();
+			//Vec2 cA = fixtureA->GetAABB().GetCenter();
+			//Vec2 cB = fixtureB->GetAABB().GetCenter();
 
 			//g_debugDraw->DrawSegment(cA, cB, color);
 		}
@@ -1127,11 +1127,11 @@ void b2World::DrawDebugData()
 				{
 					const auto proxy = f->m_proxies + i;
 					const auto aabb = bp->GetFatAABB(proxy->proxyId);
-					b2Vec2 vs[4];
-					vs[0] = b2Vec2(aabb.GetLowerBound().x, aabb.GetLowerBound().y);
-					vs[1] = b2Vec2(aabb.GetUpperBound().x, aabb.GetLowerBound().y);
-					vs[2] = b2Vec2(aabb.GetUpperBound().x, aabb.GetUpperBound().y);
-					vs[3] = b2Vec2(aabb.GetLowerBound().x, aabb.GetUpperBound().y);
+					Vec2 vs[4];
+					vs[0] = Vec2(aabb.GetLowerBound().x, aabb.GetLowerBound().y);
+					vs[1] = Vec2(aabb.GetUpperBound().x, aabb.GetLowerBound().y);
+					vs[2] = Vec2(aabb.GetUpperBound().x, aabb.GetUpperBound().y);
+					vs[3] = Vec2(aabb.GetLowerBound().x, aabb.GetUpperBound().y);
 
 					g_debugDraw->DrawPolygon(vs, 4, color);
 				}
@@ -1170,7 +1170,7 @@ float_t b2World::GetTreeQuality() const
 	return m_contactManager.m_broadPhase.GetTreeQuality();
 }
 
-void b2World::ShiftOrigin(const b2Vec2& newOrigin)
+void b2World::ShiftOrigin(const Vec2& newOrigin)
 {
 	assert(!IsLocked());
 	if (IsLocked())
@@ -1200,7 +1200,7 @@ void b2World::Dump()
 		return;
 	}
 
-	log("b2Vec2 g(%.15lef, %.15lef);\n", m_gravity.x, m_gravity.y);
+	log("Vec2 g(%.15lef, %.15lef);\n", m_gravity.x, m_gravity.y);
 	log("m_world->SetGravity(g);\n");
 
 	log("b2Body** bodies = (b2Body**)alloc(%d * sizeof(b2Body*));\n", m_bodyCount);

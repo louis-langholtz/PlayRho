@@ -52,7 +52,7 @@ public:
 			{
 				b2CircleShape* circle = (b2CircleShape*)fixture->GetShape();
 
-				b2Vec2 center = b2Mul(xf, circle->GetPosition());
+				Vec2 center = b2Mul(xf, circle->GetPosition());
 				float_t radius = circle->GetRadius();
 
 				g_debugDraw->DrawCircle(center, radius, color);
@@ -64,7 +64,7 @@ public:
 				b2PolygonShape* poly = (b2PolygonShape*)fixture->GetShape();
 				int32 vertexCount = poly->GetVertexCount();
 				assert(vertexCount <= MaxPolygonVertices);
-				b2Vec2 vertices[MaxPolygonVertices];
+				Vec2 vertices[MaxPolygonVertices];
 
 				for (int32 i = 0; i < vertexCount; ++i)
 				{
@@ -126,23 +126,23 @@ public:
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
+			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
 		{
-			b2Vec2 vertices[3];
-			vertices[0] = b2Vec2(-0.5f, 0.0f);
-			vertices[1] = b2Vec2(0.5f, 0.0f);
-			vertices[2] = b2Vec2(0.0f, 1.5f);
+			Vec2 vertices[3];
+			vertices[0] = Vec2(-0.5f, 0.0f);
+			vertices[1] = Vec2(0.5f, 0.0f);
+			vertices[2] = Vec2(0.0f, 1.5f);
 			m_polygons[0].Set(vertices, 3);
 		}
 		
 		{
-			b2Vec2 vertices[3];
-			vertices[0] = b2Vec2(-0.1f, 0.0f);
-			vertices[1] = b2Vec2(0.1f, 0.0f);
-			vertices[2] = b2Vec2(0.0f, 1.5f);
+			Vec2 vertices[3];
+			vertices[0] = Vec2(-0.1f, 0.0f);
+			vertices[1] = Vec2(0.1f, 0.0f);
+			vertices[2] = Vec2(0.0f, 1.5f);
 			m_polygons[1].Set(vertices, 3);
 		}
 
@@ -151,15 +151,15 @@ public:
 			float_t b = w / (2.0f + b2Sqrt(2.0f));
 			float_t s = b2Sqrt(2.0f) * b;
 
-			b2Vec2 vertices[8];
-			vertices[0] = b2Vec2(0.5f * s, 0.0f);
-			vertices[1] = b2Vec2(0.5f * w, b);
-			vertices[2] = b2Vec2(0.5f * w, b + s);
-			vertices[3] = b2Vec2(0.5f * s, w);
-			vertices[4] = b2Vec2(-0.5f * s, w);
-			vertices[5] = b2Vec2(-0.5f * w, b + s);
-			vertices[6] = b2Vec2(-0.5f * w, b);
-			vertices[7] = b2Vec2(-0.5f * s, 0.0f);
+			Vec2 vertices[8];
+			vertices[0] = Vec2(0.5f * s, 0.0f);
+			vertices[1] = Vec2(0.5f * w, b);
+			vertices[2] = Vec2(0.5f * w, b + s);
+			vertices[3] = Vec2(0.5f * s, w);
+			vertices[4] = Vec2(-0.5f * s, w);
+			vertices[5] = Vec2(-0.5f * w, b + s);
+			vertices[6] = Vec2(-0.5f * w, b);
+			vertices[7] = Vec2(-0.5f * s, 0.0f);
 
 			m_polygons[2].Set(vertices, 8);
 		}
@@ -188,7 +188,7 @@ public:
 		bd.type = DynamicBody;
 
 		float_t x = RandomFloat(-2.0f, 2.0f);
-		bd.position = b2Vec2(x, 10.0f);
+		bd.position = Vec2(x, 10.0f);
 		bd.angle = RandomFloat(-Pi, Pi);
 
 		if (index == 4)
@@ -267,7 +267,7 @@ public:
 
 		PolyShapesCallback callback;
 		callback.m_circle.SetRadius(float_t(2.0));
-		callback.m_circle.SetPosition(b2Vec2(0.0f, 1.1f));
+		callback.m_circle.SetPosition(Vec2(0.0f, 1.1f));
 		callback.m_transform = b2Transform_identity;
 		callback.g_debugDraw = &g_debugDraw;
 

@@ -30,28 +30,28 @@ b2Shape* b2PolygonShape::Clone(b2BlockAllocator* allocator) const
 void b2PolygonShape::SetAsBox(float_t hx, float_t hy) noexcept
 {
 	m_count = 4;
-	m_vertices[0] = b2Vec2(-hx, -hy);
-	m_vertices[1] = b2Vec2( hx, -hy);
-	m_vertices[2] = b2Vec2( hx,  hy);
-	m_vertices[3] = b2Vec2(-hx,  hy);
-	m_normals[0] = b2Vec2(float_t{0}, float_t{-1});
-	m_normals[1] = b2Vec2(float_t{1}, float_t{0});
-	m_normals[2] = b2Vec2(float_t{0}, float_t{1});
-	m_normals[3] = b2Vec2(float_t{-1}, float_t{0});
-	m_centroid = b2Vec2_zero;
+	m_vertices[0] = Vec2(-hx, -hy);
+	m_vertices[1] = Vec2( hx, -hy);
+	m_vertices[2] = Vec2( hx,  hy);
+	m_vertices[3] = Vec2(-hx,  hy);
+	m_normals[0] = Vec2(float_t{0}, float_t{-1});
+	m_normals[1] = Vec2(float_t{1}, float_t{0});
+	m_normals[2] = Vec2(float_t{0}, float_t{1});
+	m_normals[3] = Vec2(float_t{-1}, float_t{0});
+	m_centroid = Vec2_zero;
 }
 
-void b2PolygonShape::SetAsBox(float_t hx, float_t hy, const b2Vec2& center, float_t angle)
+void b2PolygonShape::SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t angle)
 {
 	m_count = 4;
-	m_vertices[0] = b2Vec2(-hx, -hy);
-	m_vertices[1] = b2Vec2( hx, -hy);
-	m_vertices[2] = b2Vec2( hx,  hy);
-	m_vertices[3] = b2Vec2(-hx,  hy);
-	m_normals[0] = b2Vec2(float_t{0}, -float_t(1));
-	m_normals[1] = b2Vec2(float_t(1), float_t{0});
-	m_normals[2] = b2Vec2(float_t{0}, float_t(1));
-	m_normals[3] = b2Vec2(-float_t(1), float_t{0});
+	m_vertices[0] = Vec2(-hx, -hy);
+	m_vertices[1] = Vec2( hx, -hy);
+	m_vertices[2] = Vec2( hx,  hy);
+	m_vertices[3] = Vec2(-hx,  hy);
+	m_normals[0] = Vec2(float_t{0}, -float_t(1));
+	m_normals[1] = Vec2(float_t(1), float_t{0});
+	m_normals[2] = Vec2(float_t{0}, float_t(1));
+	m_normals[3] = Vec2(-float_t(1), float_t{0});
 	m_centroid = center;
 
 	const auto xf = b2Transform{center, b2Rot{angle}};
@@ -69,16 +69,16 @@ child_count_t b2PolygonShape::GetChildCount() const
 	return 1;
 }
 
-static b2Vec2 ComputeCentroid(const b2Vec2 vs[], b2PolygonShape::vertex_count_t count)
+static Vec2 ComputeCentroid(const Vec2 vs[], b2PolygonShape::vertex_count_t count)
 {
 	assert(count >= 3);
 
-	auto c = b2Vec2_zero;
+	auto c = Vec2_zero;
 	auto area = float_t{0};
 
 	// pRef is the reference point for forming triangles.
 	// It's location doesn't change the result (except for rounding error).
-	const auto pRef = b2Vec2_zero;
+	const auto pRef = Vec2_zero;
 #if 0
 	// This code would put the reference point inside the polygon.
 	for (auto i = decltype(count){0}; i < count; ++i)
@@ -115,7 +115,7 @@ static b2Vec2 ComputeCentroid(const b2Vec2 vs[], b2PolygonShape::vertex_count_t 
 	return c;
 }
 
-void b2PolygonShape::Set(const b2Vec2 vertices[], vertex_count_t count)
+void b2PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 {
 	assert((count >= 3) && (count <= MaxPolygonVertices));
 	if (count < 3)
@@ -127,7 +127,7 @@ void b2PolygonShape::Set(const b2Vec2 vertices[], vertex_count_t count)
 	auto n = b2Min(count, MaxPolygonVertices);
 
 	// Perform welding and copy vertices into local buffer.
-	b2Vec2 ps[MaxPolygonVertices];
+	Vec2 ps[MaxPolygonVertices];
 	auto tempCount = decltype(n){0};
 	for (auto i = decltype(n){0}; i < n; ++i)
 	{
@@ -245,7 +245,7 @@ void b2PolygonShape::Set(const b2Vec2 vertices[], vertex_count_t count)
 	m_centroid = ComputeCentroid(m_vertices, m);
 }
 
-bool b2PolygonShape::TestPoint(const b2Transform& xf, const b2Vec2& p) const
+bool b2PolygonShape::TestPoint(const b2Transform& xf, const Vec2& p) const
 {
 	const auto pLocal = b2MulT(xf.q, p - xf.p);
 
@@ -349,7 +349,7 @@ b2AABB b2PolygonShape::ComputeAABB(const b2Transform& xf, child_count_t childInd
 		upper = b2Max(upper, v);
 	}
 
-	const auto r = b2Vec2(GetRadius(), GetRadius());
+	const auto r = Vec2(GetRadius(), GetRadius());
 	return b2AABB{lower - r, upper + r};
 }
 
@@ -381,13 +381,13 @@ b2MassData b2PolygonShape::ComputeMass(float_t density) const
 
 	assert(m_count >= 3);
 
-	auto center = b2Vec2_zero;
+	auto center = Vec2_zero;
 	auto area = float_t{0};
 	auto I = float_t{0};
 
 	// s is the reference point for forming triangles.
 	// It's location doesn't change the result (except for rounding error).
-	auto s = b2Vec2_zero;
+	auto s = Vec2_zero;
 
 	// This code would put the reference point inside the polygon.
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)

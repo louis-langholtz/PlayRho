@@ -43,7 +43,7 @@ void b2WorldManifold::Assign(const b2Manifold& manifold,
 
 	case b2Manifold::e_circles:
 		{
-			normal = b2Vec2(float_t{1}, float_t{0});
+			normal = Vec2(float_t{1}, float_t{0});
 			const auto pointA = b2Mul(xfA, manifold.GetLocalPoint());
 			const auto pointB = b2Mul(xfB, manifold.GetPoint(0).localPoint);
 			if (b2DistanceSquared(pointA, pointB) > b2Square(Epsilon))
@@ -150,9 +150,9 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 	const auto d = input.p2 - input.p1;
 	const auto absD = b2Abs(d);
 
-	b2Vec2 normal;
+	Vec2 normal;
 
-	for (auto i = decltype(b2Vec2::NumElements){0}; i < b2Vec2::NumElements; ++i)
+	for (auto i = decltype(Vec2::NumElements){0}; i < Vec2::NumElements; ++i)
 	{
 		if (absD(i) < Epsilon)
 		{
@@ -180,7 +180,7 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 			// Push the min up
 			if (t1 > tmin)
 			{
-				normal = b2Vec2_zero;
+				normal = Vec2_zero;
 				normal(i) = s;
 				tmin = t1;
 			}
@@ -209,7 +209,7 @@ bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 }
 
 b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray& vIn,
-										   const b2Vec2& normal, float_t offset,
+										   const Vec2& normal, float_t offset,
 										   b2ContactFeature::index_t indexA)
 {
 	// Use Sutherland-Hodgman clipping (https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm ).

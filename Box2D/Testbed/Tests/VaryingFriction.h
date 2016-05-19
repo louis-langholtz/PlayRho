@@ -32,7 +32,7 @@ public:
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
+			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
@@ -41,7 +41,7 @@ public:
 			shape.SetAsBox(13.0f, 0.25f);
 
 			BodyDef bd;
-			bd.position = b2Vec2(-4.0f, 22.0f);
+			bd.position = Vec2(-4.0f, 22.0f);
 			bd.angle = -0.25f;
 
 			b2Body* ground = m_world->CreateBody(&bd);
@@ -53,7 +53,7 @@ public:
 			shape.SetAsBox(0.25f, 1.0f);
 
 			BodyDef bd;
-			bd.position = b2Vec2(10.5f, 19.0f);
+			bd.position = Vec2(10.5f, 19.0f);
 
 			b2Body* ground = m_world->CreateBody(&bd);
 			ground->CreateFixture(&shape, 0.0f);
@@ -64,7 +64,7 @@ public:
 			shape.SetAsBox(13.0f, 0.25f);
 
 			BodyDef bd;
-			bd.position = b2Vec2(4.0f, 14.0f);
+			bd.position = Vec2(4.0f, 14.0f);
 			bd.angle = 0.25f;
 
 			b2Body* ground = m_world->CreateBody(&bd);
@@ -76,7 +76,7 @@ public:
 			shape.SetAsBox(0.25f, 1.0f);
 
 			BodyDef bd;
-			bd.position = b2Vec2(-10.5f, 11.0f);
+			bd.position = Vec2(-10.5f, 11.0f);
 
 			b2Body* ground = m_world->CreateBody(&bd);
 			ground->CreateFixture(&shape, 0.0f);
@@ -87,7 +87,7 @@ public:
 			shape.SetAsBox(13.0f, 0.25f);
 
 			BodyDef bd;
-			bd.position = b2Vec2(-4.0f, 6.0f);
+			bd.position = Vec2(-4.0f, 6.0f);
 			bd.angle = -0.25f;
 
 			b2Body* ground = m_world->CreateBody(&bd);
@@ -108,7 +108,7 @@ public:
 			{
 				BodyDef bd;
 				bd.type = DynamicBody;
-				bd.position = b2Vec2(-15.0f + 4.0f * i, 28.0f);
+				bd.position = Vec2(-15.0f + 4.0f * i, 28.0f);
 				b2Body* body = m_world->CreateBody(&bd);
 
 				fd.friction = friction[i];

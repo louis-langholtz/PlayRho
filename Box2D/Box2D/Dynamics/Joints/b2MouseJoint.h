@@ -31,7 +31,7 @@ struct b2MouseJointDef : public b2JointDef
 
 	/// The initial world target point. This is assumed
 	/// to coincide with the body anchor initially.
-	b2Vec2 target = b2Vec2_zero;
+	Vec2 target = Vec2_zero;
 
 	/// The maximum constraint force that can be exerted
 	/// to move the candidate body. Usually you will express
@@ -57,20 +57,20 @@ class b2MouseJoint : public b2Joint
 public:
 
 	/// Implements b2Joint.
-	b2Vec2 GetAnchorA() const override;
+	Vec2 GetAnchorA() const override;
 
 	/// Implements b2Joint.
-	b2Vec2 GetAnchorB() const override;
+	Vec2 GetAnchorB() const override;
 
 	/// Implements b2Joint.
-	b2Vec2 GetReactionForce(float_t inv_dt) const override;
+	Vec2 GetReactionForce(float_t inv_dt) const override;
 
 	/// Implements b2Joint.
 	float_t GetReactionTorque(float_t inv_dt) const override;
 
 	/// Use this to update the target point.
-	void SetTarget(const b2Vec2& target);
-	const b2Vec2& GetTarget() const;
+	void SetTarget(const Vec2& target);
+	const Vec2& GetTarget() const;
 
 	/// Set/get the maximum force in Newtons.
 	void SetMaxForce(float_t force);
@@ -88,7 +88,7 @@ public:
 	void Dump() override;
 
 	/// Implement b2Joint::ShiftOrigin
-	void ShiftOrigin(const b2Vec2& newOrigin) override;
+	void ShiftOrigin(const Vec2& newOrigin) override;
 
 protected:
 	friend class b2Joint;
@@ -99,26 +99,26 @@ protected:
 	void SolveVelocityConstraints(const b2SolverData& data) override;
 	bool SolvePositionConstraints(const b2SolverData& data) override;
 
-	b2Vec2 m_localAnchorB;
-	b2Vec2 m_targetA;
+	Vec2 m_localAnchorB;
+	Vec2 m_targetA;
 	float_t m_frequencyHz;
 	float_t m_dampingRatio;
 	float_t m_beta = float_t{0};
 	
 	// Solver shared
-	b2Vec2 m_impulse = b2Vec2_zero;
+	Vec2 m_impulse = Vec2_zero;
 	float_t m_maxForce;
 	float_t m_gamma = float_t{0};
 
 	// Solver temp
 	index_t m_indexA;
 	index_t m_indexB;
-	b2Vec2 m_rB;
-	b2Vec2 m_localCenterB;
+	Vec2 m_rB;
+	Vec2 m_localCenterB;
 	float_t m_invMassB;
 	float_t m_invIB;
 	b2Mat22 m_mass;
-	b2Vec2 m_C;
+	Vec2 m_C;
 };
 
 } // namespace box2d

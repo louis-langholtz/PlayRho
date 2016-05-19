@@ -31,14 +31,14 @@ int main(int argc, char** argv)
 	BOX2D_NOT_USED(argv);
 
 	// Define the gravity vector.
-	b2Vec2 gravity(0.0f, -10.0f);
+	Vec2 gravity(0.0f, -10.0f);
 
 	// Construct a world object, which will hold and simulate the rigid bodies.
 	b2World world(gravity);
 
 	// Define the ground body.
 	BodyDef groundBodyDef;
-	groundBodyDef.position = b2Vec2(0.0f, -10.0f);
+	groundBodyDef.position = Vec2(0.0f, -10.0f);
 
 	// Call the body factory which allocates memory for the ground body
 	// from a pool and creates the ground box shape (also from a pool).
@@ -57,7 +57,7 @@ int main(int argc, char** argv)
 	// Define the dynamic body. We set its position and call the body factory.
 	BodyDef bodyDef;
 	bodyDef.type = DynamicBody;
-	bodyDef.position = b2Vec2(0.0f, 4.0f);
+	bodyDef.position = Vec2(0.0f, 4.0f);
 	b2Body* body = world.CreateBody(&bodyDef);
 
 	// Define another box shape for our dynamic body.
@@ -92,7 +92,7 @@ int main(int argc, char** argv)
 		world.Step(timeStep, velocityIterations, positionIterations);
 
 		// Now print the position and angle of the body.
-		b2Vec2 position = body->GetPosition();
+		Vec2 position = body->GetPosition();
 		float_t angle = body->GetAngle();
 
 		printf("%4.2f %4.2f %4.2f\n", position.x, position.y, angle);

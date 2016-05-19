@@ -45,7 +45,7 @@ b2MouseJoint::b2MouseJoint(const b2MouseJointDef* def)
 	m_dampingRatio = def->dampingRatio;
 }
 
-void b2MouseJoint::SetTarget(const b2Vec2& target)
+void b2MouseJoint::SetTarget(const Vec2& target)
 {
 	if (!m_bodyB->IsAwake())
 	{
@@ -54,7 +54,7 @@ void b2MouseJoint::SetTarget(const b2Vec2& target)
 	m_targetA = target;
 }
 
-const b2Vec2& b2MouseJoint::GetTarget() const
+const Vec2& b2MouseJoint::GetTarget() const
 {
 	return m_targetA;
 }
@@ -154,7 +154,7 @@ void b2MouseJoint::InitVelocityConstraints(const b2SolverData& data)
 	}
 	else
 	{
-		m_impulse = b2Vec2_zero;
+		m_impulse = Vec2_zero;
 	}
 
 	data.velocities[m_indexB].v = vB;
@@ -192,17 +192,17 @@ bool b2MouseJoint::SolvePositionConstraints(const b2SolverData& data)
 	return true;
 }
 
-b2Vec2 b2MouseJoint::GetAnchorA() const
+Vec2 b2MouseJoint::GetAnchorA() const
 {
 	return m_targetA;
 }
 
-b2Vec2 b2MouseJoint::GetAnchorB() const
+Vec2 b2MouseJoint::GetAnchorB() const
 {
 	return m_bodyB->GetWorldPoint(m_localAnchorB);
 }
 
-b2Vec2 b2MouseJoint::GetReactionForce(float_t inv_dt) const
+Vec2 b2MouseJoint::GetReactionForce(float_t inv_dt) const
 {
 	return inv_dt * m_impulse;
 }
@@ -212,7 +212,7 @@ float_t b2MouseJoint::GetReactionTorque(float_t inv_dt) const
 	return inv_dt * float_t{0};
 }
 
-void b2MouseJoint::ShiftOrigin(const b2Vec2& newOrigin)
+void b2MouseJoint::ShiftOrigin(const Vec2& newOrigin)
 {
 	m_targetA -= newOrigin;
 }
@@ -226,7 +226,7 @@ void b2MouseJoint::Dump()
 	log("  jd.bodyA = bodies[%d];\n", indexA);
 	log("  jd.bodyB = bodies[%d];\n", indexB);
 	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	log("  jd.localAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
 	log("  jd.frequencyHz = %.15lef;\n", m_frequencyHz);
 	log("  jd.dampingRatio = %.15lef;\n", m_dampingRatio);
 	log("  jd.maxForce = %.15lef;\n", m_maxForce);

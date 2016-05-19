@@ -37,8 +37,8 @@ public:
 
 	void Generate()
 	{
-		b2Vec2 lowerBound(-8.0f, -8.0f);
-		b2Vec2 upperBound(8.0f, 8.0f);
+		Vec2 lowerBound(-8.0f, -8.0f);
+		Vec2 upperBound(8.0f, 8.0f);
 
 		for (int32 i = 0; i < e_count; ++i)
 		{
@@ -47,7 +47,7 @@ public:
 
 			// Clamp onto a square to help create collinearities.
 			// This will stress the convex hull algorithm.
-			b2Vec2 v(x, y);
+			Vec2 v(x, y);
 			v = b2Clamp(v, lowerBound, upperBound);
 			m_points[i] = v;
 		}
@@ -89,7 +89,7 @@ public:
 		for (int32 i = 0; i < m_count; ++i)
 		{
 			g_debugDraw.DrawPoint(m_points[i], 3.0f, b2Color(0.3f, 0.9f, 0.3f));
-			g_debugDraw.DrawString(m_points[i] + b2Vec2(0.05f, 0.05f), "%d", i);
+			g_debugDraw.DrawString(m_points[i] + Vec2(0.05f, 0.05f), "%d", i);
 		}
 
 		if (shape.Validate() == false)
@@ -103,7 +103,7 @@ public:
 		}
 	}
 
-	b2Vec2 m_points[MaxPolygonVertices];
+	Vec2 m_points[MaxPolygonVertices];
 	int32 m_count;
 	bool m_auto;
 };

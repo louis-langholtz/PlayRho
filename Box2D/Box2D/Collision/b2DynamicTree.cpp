@@ -98,7 +98,7 @@ b2DynamicTree::size_type b2DynamicTree::CreateProxy(const b2AABB& aabb, void* us
 	const auto proxyId = AllocateNode();
 
 	// Fatten the aabb.
-	m_nodes[proxyId].aabb = aabb + b2Vec2(AabbExtension, AabbExtension);
+	m_nodes[proxyId].aabb = aabb + Vec2(AabbExtension, AabbExtension);
 	m_nodes[proxyId].userData = userData;
 	m_nodes[proxyId].height = 0;
 
@@ -116,7 +116,7 @@ void b2DynamicTree::DestroyProxy(size_type proxyId)
 	FreeNode(proxyId);
 }
 
-bool b2DynamicTree::MoveProxy(size_type proxyId, const b2AABB& aabb, const b2Vec2& displacement)
+bool b2DynamicTree::MoveProxy(size_type proxyId, const b2AABB& aabb, const Vec2& displacement)
 {
 	assert((0 <= proxyId) && (proxyId < m_nodeCapacity));
 
@@ -130,7 +130,7 @@ bool b2DynamicTree::MoveProxy(size_type proxyId, const b2AABB& aabb, const b2Vec
 	RemoveLeaf(proxyId);
 
 	// Extend AABB.
-	const auto b = aabb + b2Vec2(AabbExtension, AabbExtension);
+	const auto b = aabb + Vec2(AabbExtension, AabbExtension);
 	auto lowerBound = b.GetLowerBound();
 	auto upperBound = b.GetUpperBound();
 	
@@ -768,7 +768,7 @@ void b2DynamicTree::RebuildBottomUp()
 	Validate();
 }
 
-void b2DynamicTree::ShiftOrigin(const b2Vec2& newOrigin)
+void b2DynamicTree::ShiftOrigin(const Vec2& newOrigin)
 {
 	// Build array of leaves. Free the rest.
 	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)

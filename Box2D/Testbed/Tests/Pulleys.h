@@ -37,13 +37,13 @@ public:
 			ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape edge;
-			edge.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
+			edge.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			//ground->CreateFixture(&shape, 0.0f);
 
-			b2CircleShape circle(2.0f, b2Vec2(-10.0f, y + b + L));
+			b2CircleShape circle(2.0f, Vec2(-10.0f, y + b + L));
 			ground->CreateFixture(&circle, 0.0f);
 
-			circle.SetPosition(b2Vec2(10.0f, y + b + L));
+			circle.SetPosition(Vec2(10.0f, y + b + L));
 			ground->CreateFixture(&circle, 0.0f);
 		}
 
@@ -56,19 +56,19 @@ public:
 			bd.type = DynamicBody;
 
 			//bd.fixedRotation = true;
-			bd.position = b2Vec2(-10.0f, y);
+			bd.position = Vec2(-10.0f, y);
 			b2Body* body1 = m_world->CreateBody(&bd);
 			body1->CreateFixture(&shape, 5.0f);
 
-			bd.position = b2Vec2(10.0f, y);
+			bd.position = Vec2(10.0f, y);
 			b2Body* body2 = m_world->CreateBody(&bd);
 			body2->CreateFixture(&shape, 5.0f);
 
 			b2PulleyJointDef pulleyDef;
-			b2Vec2 anchor1(-10.0f, y + b);
-			b2Vec2 anchor2(10.0f, y + b);
-			b2Vec2 groundAnchor1(-10.0f, y + b + L);
-			b2Vec2 groundAnchor2(10.0f, y + b + L);
+			Vec2 anchor1(-10.0f, y + b);
+			Vec2 anchor2(10.0f, y + b);
+			Vec2 groundAnchor1(-10.0f, y + b + L);
+			Vec2 groundAnchor2(10.0f, y + b + L);
 			pulleyDef.Initialize(body1, body2, groundAnchor1, groundAnchor2, anchor1, anchor2, 1.5f);
 
 			m_joint1 = (b2PulleyJoint*)m_world->CreateJoint(&pulleyDef);

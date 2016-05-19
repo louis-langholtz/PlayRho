@@ -39,20 +39,20 @@ public:
 
 			{
 				b2EdgeShape shape;
-				shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
+				shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 				ground->CreateFixture(&shape, 0.0f);
 			}
 
 #if 0
 			{
 				b2FixtureDef sd;
-				sd.SetAsBox(10.0f, 2.0f, b2Vec2(0.0f, 20.0f), 0.0f);
+				sd.SetAsBox(10.0f, 2.0f, Vec2(0.0f, 20.0f), 0.0f);
 				sd.isSensor = true;
 				m_sensor = ground->CreateFixture(&sd);
 			}
 #else
 			{
-				b2CircleShape shape(5.0f, b2Vec2(0.0f, 10.0f));
+				b2CircleShape shape(5.0f, Vec2(0.0f, 10.0f));
 
 				b2FixtureDef fd;
 				fd.shape = &shape;
@@ -70,7 +70,7 @@ public:
 			{
 				BodyDef bd;
 				bd.type = DynamicBody;
-				bd.position = b2Vec2(-10.0f + 3.0f * i, 20.0f);
+				bd.position = Vec2(-10.0f + 3.0f * i, 20.0f);
 				bd.userData = m_touching + i;
 
 				m_touching[i] = false;
@@ -152,18 +152,18 @@ public:
 			b2Body* ground = m_sensor->GetBody();
 
 			b2CircleShape* circle = (b2CircleShape*)m_sensor->GetShape();
-			b2Vec2 center = ground->GetWorldPoint(circle->GetPosition());
+			Vec2 center = ground->GetWorldPoint(circle->GetPosition());
 
-			b2Vec2 position = body->GetPosition();
+			Vec2 position = body->GetPosition();
 
-			b2Vec2 d = center - position;
+			Vec2 d = center - position;
 			if (d.LengthSquared() < FLT_EPSILON * FLT_EPSILON)
 			{
 				continue;
 			}
 
 			d.Normalize();
-			b2Vec2 F = 100.0f * d;
+			Vec2 F = 100.0f * d;
 			body->ApplyForce(F, position, false);
 		}
 	}

@@ -34,18 +34,18 @@ struct Camera
 {
 	Camera()
 	{
-		m_center = b2Vec2(0.0f, 20.0f);
+		m_center = Vec2(0.0f, 20.0f);
 		m_extent = 25.0f;
 		m_zoom = 1.0f;
 		m_width = 1280;
 		m_height = 800;
 	}
 
-	b2Vec2 ConvertScreenToWorld(const b2Vec2& screenPoint);
-	b2Vec2 ConvertWorldToScreen(const b2Vec2& worldPoint);
+	Vec2 ConvertScreenToWorld(const Vec2& screenPoint);
+	Vec2 ConvertWorldToScreen(const Vec2& worldPoint);
 	void BuildProjectionMatrix(float_t* m, float_t zBias);
 
-	b2Vec2 m_center;
+	Vec2 m_center;
 	float_t m_extent;
 	float_t m_zoom;
 	int32 m_width;
@@ -63,23 +63,23 @@ public:
 	void Create();
 	void Destroy();
 	
-	virtual void DrawPolygon(const b2Vec2* vertices, size_type vertexCount, const b2Color& color) override;
+	virtual void DrawPolygon(const Vec2* vertices, size_type vertexCount, const b2Color& color) override;
 
-	virtual void DrawSolidPolygon(const b2Vec2* vertices, size_type vertexCount, const b2Color& color) override;
+	virtual void DrawSolidPolygon(const Vec2* vertices, size_type vertexCount, const b2Color& color) override;
 
-	virtual void DrawCircle(const b2Vec2& center, float_t radius, const b2Color& color) override;
+	virtual void DrawCircle(const Vec2& center, float_t radius, const b2Color& color) override;
 
-	virtual void DrawSolidCircle(const b2Vec2& center, float_t radius, const b2Vec2& axis, const b2Color& color) override;
+	virtual void DrawSolidCircle(const Vec2& center, float_t radius, const Vec2& axis, const b2Color& color) override;
 
-	virtual void DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color) override;
+	virtual void DrawSegment(const Vec2& p1, const Vec2& p2, const b2Color& color) override;
 
 	virtual void DrawTransform(const b2Transform& xf) override;
 
-    void DrawPoint(const b2Vec2& p, float_t size, const b2Color& color);
+    void DrawPoint(const Vec2& p, float_t size, const b2Color& color);
 
     void DrawString(int x, int y, const char* string, ...); 
 
-    void DrawString(const b2Vec2& p, const char* string, ...);
+    void DrawString(const Vec2& p, const char* string, ...);
 
     void DrawAABB(b2AABB* aabb, const b2Color& color);
 

@@ -192,7 +192,7 @@ void b2Island::ClearBodies() noexcept
 	m_bodyCount = 0;
 }
 
-void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& gravity, bool allowSleep)
+void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const Vec2& gravity, bool allowSleep)
 {
 	const auto h = step.get_dt();
 

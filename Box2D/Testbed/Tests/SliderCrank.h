@@ -34,7 +34,7 @@ public:
 			ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
+			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
@@ -48,12 +48,12 @@ public:
 
 				BodyDef bd;
 				bd.type = DynamicBody;
-				bd.position = b2Vec2(0.0f, 7.0f);
+				bd.position = Vec2(0.0f, 7.0f);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
 
 				b2RevoluteJointDef rjd;
-				rjd.Initialize(prevBody, body, b2Vec2(0.0f, 5.0f));
+				rjd.Initialize(prevBody, body, Vec2(0.0f, 5.0f));
 				rjd.motorSpeed = 1.0f * Pi;
 				rjd.maxMotorTorque = 10000.0f;
 				rjd.enableMotor = true;
@@ -69,12 +69,12 @@ public:
 
 				BodyDef bd;
 				bd.type = DynamicBody;
-				bd.position = b2Vec2(0.0f, 13.0f);
+				bd.position = Vec2(0.0f, 13.0f);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
 
 				b2RevoluteJointDef rjd;
-				rjd.Initialize(prevBody, body, b2Vec2(0.0f, 9.0f));
+				rjd.Initialize(prevBody, body, Vec2(0.0f, 9.0f));
 				rjd.enableMotor = false;
 				m_world->CreateJoint(&rjd);
 
@@ -89,16 +89,16 @@ public:
 				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.fixedRotation = true;
-				bd.position = b2Vec2(0.0f, 17.0f);
+				bd.position = Vec2(0.0f, 17.0f);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
 
 				b2RevoluteJointDef rjd;
-				rjd.Initialize(prevBody, body, b2Vec2(0.0f, 17.0f));
+				rjd.Initialize(prevBody, body, Vec2(0.0f, 17.0f));
 				m_world->CreateJoint(&rjd);
 
 				b2PrismaticJointDef pjd;
-				pjd.Initialize(ground, body, b2Vec2(0.0f, 17.0f), b2Vec2(0.0f, 1.0f));
+				pjd.Initialize(ground, body, Vec2(0.0f, 17.0f), Vec2(0.0f, 1.0f));
 
 				pjd.maxMotorForce = 1000.0f;
 				pjd.enableMotor = true;
@@ -113,7 +113,7 @@ public:
 
 				BodyDef bd;
 				bd.type = DynamicBody;
-				bd.position = b2Vec2(0.0f, 23.0f);
+				bd.position = Vec2(0.0f, 23.0f);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
 			}

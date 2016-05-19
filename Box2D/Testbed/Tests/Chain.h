@@ -32,7 +32,7 @@ public:
 			ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
+			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
@@ -54,11 +54,11 @@ public:
 			{
 				BodyDef bd;
 				bd.type = DynamicBody;
-				bd.position = b2Vec2(0.5f + i, y);
+				bd.position = Vec2(0.5f + i, y);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&fd);
 
-				b2Vec2 anchor(float_t(i), y);
+				Vec2 anchor(float_t(i), y);
 				jd.Initialize(prevBody, body, anchor);
 				m_world->CreateJoint(&jd);
 

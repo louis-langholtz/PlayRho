@@ -49,7 +49,7 @@ public:
 
 	/// Construct a world object.
 	/// @param gravity the world gravity vector.
-	b2World(const b2Vec2& gravity);
+	b2World(const Vec2& gravity);
 
 	/// Destruct the world. All physics entities are destroyed and all heap memory is released.
 	~b2World();
@@ -123,7 +123,7 @@ public:
 	/// @param callback a user implemented callback class.
 	/// @param point1 the ray starting point
 	/// @param point2 the ray ending point
-	void RayCast(b2RayCastCallback* callback, const b2Vec2& point1, const b2Vec2& point2) const;
+	void RayCast(b2RayCastCallback* callback, const Vec2& point1, const Vec2& point2) const;
 
 	/// Get the world body list. With the returned body, use b2Body::GetNext to get
 	/// the next body in the world list. A nullptr body indicates the end of the list.
@@ -187,10 +187,10 @@ public:
 	float_t GetTreeQuality() const;
 
 	/// Change the global gravity vector.
-	void SetGravity(const b2Vec2& gravity) noexcept;
+	void SetGravity(const Vec2& gravity) noexcept;
 	
 	/// Get the global gravity vector.
-	b2Vec2 GetGravity() const noexcept;
+	Vec2 GetGravity() const noexcept;
 
 	/// Is the world locked (in the middle of a time step).
 	bool IsLocked() const noexcept;
@@ -204,7 +204,7 @@ public:
 	/// Shift the world origin. Useful for large worlds.
 	/// The body shift formula is: position -= newOrigin
 	/// @param newOrigin the new origin with respect to the old origin
-	void ShiftOrigin(const b2Vec2& newOrigin);
+	void ShiftOrigin(const Vec2& newOrigin);
 
 	/// Get the contact manager for testing.
 	const b2ContactManager& GetContactManager() const noexcept;
@@ -256,7 +256,7 @@ private:
 	size_type m_bodyCount = 0;
 	size_type m_jointCount = 0;
 
-	b2Vec2 m_gravity;
+	Vec2 m_gravity;
 	bool m_allowSleep = true;
 
 	b2DestructionListener* m_destructionListener = nullptr;
@@ -330,12 +330,12 @@ inline b2World::size_type b2World::GetContactCount() const noexcept
 	return m_contactManager.GetContactCount();
 }
 
-inline void b2World::SetGravity(const b2Vec2& gravity) noexcept
+inline void b2World::SetGravity(const Vec2& gravity) noexcept
 {
 	m_gravity = gravity;
 }
 
-inline b2Vec2 b2World::GetGravity() const noexcept
+inline Vec2 b2World::GetGravity() const noexcept
 {
 	return m_gravity;
 }

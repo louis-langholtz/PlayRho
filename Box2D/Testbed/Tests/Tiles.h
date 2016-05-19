@@ -45,7 +45,7 @@ public:
 #if 1
 			int32 N = 200;
 			int32 M = 10;
-			b2Vec2 position;
+			Vec2 position;
 			position.y = 0.0f;
 			for (int32 j = 0; j < M; ++j)
 			{
@@ -63,7 +63,7 @@ public:
 #else
 			int32 N = 200;
 			int32 M = 10;
-			b2Vec2 position;
+			Vec2 position;
 			position.x = -N * a;
 			for (int32 i = 0; i < N; ++i)
 			{
@@ -85,10 +85,10 @@ public:
 			b2PolygonShape shape;
 			shape.SetAsBox(a, a);
 
-			b2Vec2 x(-7.0f, 0.75f);
-			b2Vec2 y;
-			b2Vec2 deltaX(0.5625f, 1.25f);
-			b2Vec2 deltaY(1.125f, 0.0f);
+			Vec2 x(-7.0f, 0.75f);
+			Vec2 y;
+			Vec2 deltaX(0.5625f, 1.25f);
+			Vec2 deltaY(1.125f, 0.0f);
 
 			for (int32 i = 0; i < e_count; ++i)
 			{

@@ -34,7 +34,7 @@ public:
 		m_hit = false;
 	}
 
-	float_t ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float_t fraction)
+	float_t ReportFixture(b2Fixture* fixture, const Vec2& point, const Vec2& normal, float_t fraction)
 	{
 		b2Body* body = fixture->GetBody();
 		void* userData = body->GetUserData();
@@ -60,8 +60,8 @@ public:
 	}
 	
 	bool m_hit;
-	b2Vec2 m_point;
-	b2Vec2 m_normal;
+	Vec2 m_point;
+	Vec2 m_normal;
 };
 
 // This callback finds any hit. Polygon 0 is filtered. For this type of query we are usually
@@ -74,7 +74,7 @@ public:
 		m_hit = false;
 	}
 
-	float_t ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float_t fraction)
+	float_t ReportFixture(b2Fixture* fixture, const Vec2& point, const Vec2& normal, float_t fraction)
 	{
 		b2Body* body = fixture->GetBody();
 		void* userData = body->GetUserData();
@@ -99,8 +99,8 @@ public:
 	}
 
 	bool m_hit;
-	b2Vec2 m_point;
-	b2Vec2 m_normal;
+	Vec2 m_point;
+	Vec2 m_normal;
 };
 
 // This ray cast collects multiple hits along the ray. Polygon 0 is filtered.
@@ -119,7 +119,7 @@ public:
 		m_count = 0;
 	}
 
-	float_t ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float_t fraction)
+	float_t ReportFixture(b2Fixture* fixture, const Vec2& point, const Vec2& normal, float_t fraction)
 	{
 		b2Body* body = fixture->GetBody();
 		void* userData = body->GetUserData();
@@ -151,8 +151,8 @@ public:
 		return 1.0f;
 	}
 
-	b2Vec2 m_points[e_maxCount];
-	b2Vec2 m_normals[e_maxCount];
+	Vec2 m_points[e_maxCount];
+	Vec2 m_normals[e_maxCount];
 	int32 m_count;
 };
 
@@ -181,23 +181,23 @@ public:
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
+			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
 		{
-			b2Vec2 vertices[3];
-			vertices[0] = b2Vec2(-0.5f, 0.0f);
-			vertices[1] = b2Vec2(0.5f, 0.0f);
-			vertices[2] = b2Vec2(0.0f, 1.5f);
+			Vec2 vertices[3];
+			vertices[0] = Vec2(-0.5f, 0.0f);
+			vertices[1] = Vec2(0.5f, 0.0f);
+			vertices[2] = Vec2(0.0f, 1.5f);
 			m_polygons[0].Set(vertices, 3);
 		}
 
 		{
-			b2Vec2 vertices[3];
-			vertices[0] = b2Vec2(-0.1f, 0.0f);
-			vertices[1] = b2Vec2(0.1f, 0.0f);
-			vertices[2] = b2Vec2(0.0f, 1.5f);
+			Vec2 vertices[3];
+			vertices[0] = Vec2(-0.1f, 0.0f);
+			vertices[1] = Vec2(0.1f, 0.0f);
+			vertices[2] = Vec2(0.0f, 1.5f);
 			m_polygons[1].Set(vertices, 3);
 		}
 
@@ -206,15 +206,15 @@ public:
 			float_t b = w / (2.0f + b2Sqrt(2.0f));
 			float_t s = b2Sqrt(2.0f) * b;
 
-			b2Vec2 vertices[8];
-			vertices[0] = b2Vec2(0.5f * s, 0.0f);
-			vertices[1] = b2Vec2(0.5f * w, b);
-			vertices[2] = b2Vec2(0.5f * w, b + s);
-			vertices[3] = b2Vec2(0.5f * s, w);
-			vertices[4] = b2Vec2(-0.5f * s, w);
-			vertices[5] = b2Vec2(-0.5f * w, b + s);
-			vertices[6] = b2Vec2(-0.5f * w, b);
-			vertices[7] = b2Vec2(-0.5f * s, 0.0f);
+			Vec2 vertices[8];
+			vertices[0] = Vec2(0.5f * s, 0.0f);
+			vertices[1] = Vec2(0.5f * w, b);
+			vertices[2] = Vec2(0.5f * w, b + s);
+			vertices[3] = Vec2(0.5f * s, w);
+			vertices[4] = Vec2(-0.5f * s, w);
+			vertices[5] = Vec2(-0.5f * w, b + s);
+			vertices[6] = Vec2(-0.5f * w, b);
+			vertices[7] = Vec2(-0.5f * s, 0.0f);
 
 			m_polygons[2].Set(vertices, 8);
 		}
@@ -228,7 +228,7 @@ public:
 		}
 
 		{
-			m_edge.Set(b2Vec2(-1.0f, 0.0f), b2Vec2(1.0f, 0.0f));
+			m_edge.Set(Vec2(-1.0f, 0.0f), Vec2(1.0f, 0.0f));
 		}
 
 		m_bodyIndex = 0;
@@ -251,7 +251,7 @@ public:
 
 		float_t x = RandomFloat(-10.0f, 10.0f);
 		float_t y = RandomFloat(0.0f, 20.0f);
-		bd.position = b2Vec2(x, y);
+		bd.position = Vec2(x, y);
 		bd.angle = RandomFloat(-Pi, Pi);
 
 		m_userData[m_bodyIndex] = index;
@@ -362,9 +362,9 @@ public:
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		float_t L = 11.0f;
-		b2Vec2 point1(0.0f, 10.0f);
-		b2Vec2 d(L * cosf(m_angle), L * sinf(m_angle));
-		b2Vec2 point2 = point1 + d;
+		Vec2 point1(0.0f, 10.0f);
+		Vec2 d(L * cosf(m_angle), L * sinf(m_angle));
+		Vec2 point2 = point1 + d;
 
 		if (m_mode == e_closest)
 		{
@@ -375,7 +375,7 @@ public:
 			{
 				g_debugDraw.DrawPoint(callback.m_point, 5.0f, b2Color(0.4f, 0.9f, 0.4f));
 				g_debugDraw.DrawSegment(point1, callback.m_point, b2Color(0.8f, 0.8f, 0.8f));
-				b2Vec2 head = callback.m_point + 0.5f * callback.m_normal;
+				Vec2 head = callback.m_point + 0.5f * callback.m_normal;
 				g_debugDraw.DrawSegment(callback.m_point, head, b2Color(0.9f, 0.9f, 0.4f));
 			}
 			else
@@ -392,7 +392,7 @@ public:
 			{
 				g_debugDraw.DrawPoint(callback.m_point, 5.0f, b2Color(0.4f, 0.9f, 0.4f));
 				g_debugDraw.DrawSegment(point1, callback.m_point, b2Color(0.8f, 0.8f, 0.8f));
-				b2Vec2 head = callback.m_point + 0.5f * callback.m_normal;
+				Vec2 head = callback.m_point + 0.5f * callback.m_normal;
 				g_debugDraw.DrawSegment(callback.m_point, head, b2Color(0.9f, 0.9f, 0.4f));
 			}
 			else
@@ -408,11 +408,11 @@ public:
 
 			for (int32 i = 0; i < callback.m_count; ++i)
 			{
-				b2Vec2 p = callback.m_points[i];
-				b2Vec2 n = callback.m_normals[i];
+				Vec2 p = callback.m_points[i];
+				Vec2 n = callback.m_normals[i];
 				g_debugDraw.DrawPoint(p, 5.0f, b2Color(0.4f, 0.9f, 0.4f));
 				g_debugDraw.DrawSegment(point1, p, b2Color(0.8f, 0.8f, 0.8f));
-				b2Vec2 head = p + 0.5f * n;
+				Vec2 head = p + 0.5f * n;
 				g_debugDraw.DrawSegment(p, head, b2Color(0.9f, 0.9f, 0.4f));
 			}
 		}
@@ -425,25 +425,25 @@ public:
 #if 0
 		// This case was failing.
 		{
-			b2Vec2 vertices[4];
-			//vertices[0] = b2Vec2(-22.875f, -3.0f);
-			//vertices[1] = b2Vec2(22.875f, -3.0f);
-			//vertices[2] = b2Vec2(22.875f, 3.0f);
-			//vertices[3] = b2Vec2(-22.875f, 3.0f);
+			Vec2 vertices[4];
+			//vertices[0] = Vec2(-22.875f, -3.0f);
+			//vertices[1] = Vec2(22.875f, -3.0f);
+			//vertices[2] = Vec2(22.875f, 3.0f);
+			//vertices[3] = Vec2(-22.875f, 3.0f);
 
 			b2PolygonShape shape;
 			//shape.Set(vertices, 4);
 			shape.SetAsBox(22.875f, 3.0f);
 
 			b2RayCastInput input;
-			input.p1 = b2Vec2(10.2725f,1.71372f);
-			input.p2 = b2Vec2(10.2353f,2.21807f);
+			input.p1 = Vec2(10.2725f,1.71372f);
+			input.p2 = Vec2(10.2353f,2.21807f);
 			//input.maxFraction = 0.567623f;
 			input.maxFraction = 0.56762173f;
 
 			b2Transform xf;
 			xf.SetIdentity();
-			xf.position = b2Vec2(23.0f, 5.0f);
+			xf.position = Vec2(23.0f, 5.0f);
 
 			b2RayCastOutput output;
 			bool hit;
@@ -451,7 +451,7 @@ public:
 			hit = false;
 
 			b2Color color(1.0f, 1.0f, 1.0f);
-			b2Vec2 vs[4];
+			Vec2 vs[4];
 			for (int32 i = 0; i < 4; ++i)
 			{
 				vs[i] = b2Mul(xf, shape.m_vertices[i]);

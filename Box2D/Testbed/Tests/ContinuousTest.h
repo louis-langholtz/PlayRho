@@ -29,16 +29,16 @@ public:
 	{
 		{
 			BodyDef bd;
-			bd.position = b2Vec2(0.0f, 0.0f);
+			bd.position = Vec2(0.0f, 0.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
 			b2EdgeShape edge;
 
-			edge.Set(b2Vec2(-10.0f, 0.0f), b2Vec2(10.0f, 0.0f));
+			edge.Set(Vec2(-10.0f, 0.0f), Vec2(10.0f, 0.0f));
 			body->CreateFixture(&edge, 0.0f);
 
 			b2PolygonShape shape;
-			shape.SetAsBox(0.2f, 1.0f, b2Vec2(0.5f, 1.0f), 0.0f);
+			shape.SetAsBox(0.2f, 1.0f, Vec2(0.5f, 1.0f), 0.0f);
 			body->CreateFixture(&shape, 0.0f);
 		}
 
@@ -46,7 +46,7 @@ public:
 		{
 			BodyDef bd;
 			bd.type = DynamicBody;
-			bd.position = b2Vec2(0.0f, 20.0f);
+			bd.position = Vec2(0.0f, 20.0f);
 			//bd.angle = 0.1f;
 
 			b2PolygonShape shape;
@@ -57,14 +57,14 @@ public:
 
 			m_angularVelocity = RandomFloat(-50.0f, 50.0f);
 			//m_angularVelocity = 46.661274f;
-			m_body->SetLinearVelocity(b2Vec2(0.0f, -100.0f));
+			m_body->SetLinearVelocity(Vec2(0.0f, -100.0f));
 			m_body->SetAngularVelocity(m_angularVelocity);
 		}
 #else
 		{
 			BodyDef bd;
 			bd.type = DynamicBody;
-			bd.position = b2Vec2(0.0f, 2.0f);
+			bd.position = Vec2(0.0f, 2.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
 			b2CircleShape shape;
@@ -73,10 +73,10 @@ public:
 			body->CreateFixture(&shape, 1.0f);
 
 			bd.bullet = true;
-			bd.position = b2Vec2(0.0f, 10.0f);
+			bd.position = Vec2(0.0f, 10.0f);
 			body = m_world->CreateBody(&bd);
 			body->CreateFixture(&shape, 1.0f);
-			body->SetLinearVelocity(b2Vec2(0.0f, -100.0f));
+			body->SetLinearVelocity(Vec2(0.0f, -100.0f));
 		}
 #endif
 
@@ -103,9 +103,9 @@ public:
 		toiRootIters = 0; toiMaxRootIters = 0;
 		toiTime = 0.0f; toiMaxTime = 0.0f;
 
-		m_body->SetTransform(b2Vec2(0.0f, 20.0f), 0.0f);
+		m_body->SetTransform(Vec2(0.0f, 20.0f), 0.0f);
 		m_angularVelocity = RandomFloat(-50.0f, 50.0f);
-		m_body->SetLinearVelocity(b2Vec2(0.0f, -100.0f));
+		m_body->SetLinearVelocity(Vec2(0.0f, -100.0f));
 		m_body->SetAngularVelocity(m_angularVelocity);
 	}
 

@@ -63,13 +63,13 @@ struct BodyDef
 
 	/// The world position of the body. Avoid creating bodies at the origin
 	/// since this can lead to many overlapping shapes.
-	b2Vec2 position = b2Vec2_zero;
+	Vec2 position = Vec2_zero;
 
 	/// The world angle of the body in radians.
 	float_t angle = float_t{0};
 
 	/// The linear velocity of the body's origin in world co-ordinates.
-	b2Vec2 linearVelocity = b2Vec2_zero;
+	Vec2 linearVelocity = Vec2_zero;
 
 	/// The angular velocity of the body.
 	float_t angularVelocity = float_t{0};
@@ -146,7 +146,7 @@ public:
 	/// Note: contacts are updated on the next call to b2World::Step.
 	/// @param position the world position of the body's local origin.
 	/// @param angle the world rotation in radians.
-	void SetTransform(const b2Vec2& position, float_t angle);
+	void SetTransform(const Vec2& position, float_t angle);
 
 	/// Get the body transform for the body's origin.
 	/// @return the world transform of the body's origin.
@@ -154,25 +154,25 @@ public:
 
 	/// Get the world body origin position.
 	/// @return the world position of the body's origin.
-	b2Vec2 GetPosition() const noexcept;
+	Vec2 GetPosition() const noexcept;
 
 	/// Get the angle in radians.
 	/// @return the current world rotation angle in radians.
 	float_t GetAngle() const noexcept;
 
 	/// Get the world position of the center of mass.
-	b2Vec2 GetWorldCenter() const noexcept;
+	Vec2 GetWorldCenter() const noexcept;
 
 	/// Get the local position of the center of mass.
-	b2Vec2 GetLocalCenter() const noexcept;
+	Vec2 GetLocalCenter() const noexcept;
 
 	/// Set the linear velocity of the center of mass.
 	/// @param v the new linear velocity of the center of mass.
-	void SetLinearVelocity(const b2Vec2& v) noexcept;
+	void SetLinearVelocity(const Vec2& v) noexcept;
 
 	/// Get the linear velocity of the center of mass.
 	/// @return the linear velocity of the center of mass.
-	b2Vec2 GetLinearVelocity() const noexcept;
+	Vec2 GetLinearVelocity() const noexcept;
 
 	/// Set the angular velocity.
 	/// @param omega the new angular velocity in radians/second.
@@ -188,12 +188,12 @@ public:
 	/// @param force the world force vector, usually in Newtons (N).
 	/// @param point the world position of the point of application.
 	/// @param wake also wake up the body
-	void ApplyForce(const b2Vec2& force, const b2Vec2& point, bool wake) noexcept;
+	void ApplyForce(const Vec2& force, const Vec2& point, bool wake) noexcept;
 
 	/// Apply a force to the center of mass. This wakes up the body.
 	/// @param force the world force vector, usually in Newtons (N).
 	/// @param wake also wake up the body
-	void ApplyForceToCenter(const b2Vec2& force, bool wake) noexcept;
+	void ApplyForceToCenter(const Vec2& force, bool wake) noexcept;
 
 	/// Apply a torque. This affects the angular velocity
 	/// without affecting the linear velocity of the center of mass.
@@ -208,7 +208,7 @@ public:
 	/// @param impulse the world impulse vector, usually in N-seconds or kg-m/s.
 	/// @param point the world position of the point of application.
 	/// @param wake also wake up the body
-	void ApplyLinearImpulse(const b2Vec2& impulse, const b2Vec2& point, bool wake) noexcept;
+	void ApplyLinearImpulse(const Vec2& impulse, const Vec2& point, bool wake) noexcept;
 
 	/// Apply an angular impulse.
 	/// @param impulse the angular impulse in units of kg*m*m/s
@@ -242,32 +242,32 @@ public:
 	/// Get the world coordinates of a point given the local coordinates.
 	/// @param localPoint a point on the body measured relative the the body's origin.
 	/// @return the same point expressed in world coordinates.
-	b2Vec2 GetWorldPoint(const b2Vec2& localPoint) const noexcept;
+	Vec2 GetWorldPoint(const Vec2& localPoint) const noexcept;
 
 	/// Get the world coordinates of a vector given the local coordinates.
 	/// @param localVector a vector fixed in the body.
 	/// @return the same vector expressed in world coordinates.
-	b2Vec2 GetWorldVector(const b2Vec2& localVector) const noexcept;
+	Vec2 GetWorldVector(const Vec2& localVector) const noexcept;
 
 	/// Gets a local point relative to the body's origin given a world point.
 	/// @param a point in world coordinates.
 	/// @return the corresponding local point relative to the body's origin.
-	b2Vec2 GetLocalPoint(const b2Vec2& worldPoint) const noexcept;
+	Vec2 GetLocalPoint(const Vec2& worldPoint) const noexcept;
 
 	/// Gets a local vector given a world vector.
 	/// @param a vector in world coordinates.
 	/// @return the corresponding local vector.
-	b2Vec2 GetLocalVector(const b2Vec2& worldVector) const noexcept;
+	Vec2 GetLocalVector(const Vec2& worldVector) const noexcept;
 
 	/// Get the world linear velocity of a world point attached to this body.
 	/// @param a point in world coordinates.
 	/// @return the world velocity of a point.
-	b2Vec2 GetLinearVelocityFromWorldPoint(const b2Vec2& worldPoint) const noexcept;
+	Vec2 GetLinearVelocityFromWorldPoint(const Vec2& worldPoint) const noexcept;
 
 	/// Get the world velocity of a local point.
 	/// @param a point in local coordinates.
 	/// @return the world velocity of a point.
-	b2Vec2 GetLinearVelocityFromLocalPoint(const b2Vec2& localPoint) const noexcept;
+	Vec2 GetLinearVelocityFromLocalPoint(const Vec2& localPoint) const noexcept;
 
 	/// Get the linear damping of the body.
 	float_t GetLinearDamping() const noexcept;
@@ -457,10 +457,10 @@ private:
 	b2Transform m_xf; ///< Transform for body origin.
 	b2Sweep m_sweep; ///< Sweep motion for CCD
 
-	b2Vec2 m_linearVelocity;
+	Vec2 m_linearVelocity;
 	float_t m_angularVelocity;
 
-	b2Vec2 m_force = b2Vec2_zero;
+	Vec2 m_force = Vec2_zero;
 	float_t m_torque = float_t{0};
 
 	b2World* const m_world;
@@ -498,7 +498,7 @@ inline b2Transform b2Body::GetTransform() const noexcept
 	return m_xf;
 }
 
-inline b2Vec2 b2Body::GetPosition() const noexcept
+inline Vec2 b2Body::GetPosition() const noexcept
 {
 	return m_xf.p;
 }
@@ -508,24 +508,24 @@ inline float_t b2Body::GetAngle() const noexcept
 	return m_sweep.a;
 }
 
-inline b2Vec2 b2Body::GetWorldCenter() const noexcept
+inline Vec2 b2Body::GetWorldCenter() const noexcept
 {
 	return m_sweep.c;
 }
 
-inline b2Vec2 b2Body::GetLocalCenter() const noexcept
+inline Vec2 b2Body::GetLocalCenter() const noexcept
 {
 	return m_sweep.localCenter;
 }
 
-inline void b2Body::SetLinearVelocity(const b2Vec2& v) noexcept
+inline void b2Body::SetLinearVelocity(const Vec2& v) noexcept
 {
 	if (m_type == StaticBody)
 	{
 		return;
 	}
 
-	if (v != b2Vec2_zero)
+	if (v != Vec2_zero)
 	{
 		SetAwake();
 	}
@@ -533,7 +533,7 @@ inline void b2Body::SetLinearVelocity(const b2Vec2& v) noexcept
 	m_linearVelocity = v;
 }
 
-inline b2Vec2 b2Body::GetLinearVelocity() const noexcept
+inline Vec2 b2Body::GetLinearVelocity() const noexcept
 {
 	return m_linearVelocity;
 }
@@ -573,32 +573,32 @@ inline b2MassData b2Body::GetMassData() const noexcept
 	return b2MassData{m_mass, m_sweep.localCenter, m_I + m_mass * m_sweep.localCenter.LengthSquared()};
 }
 
-inline b2Vec2 b2Body::GetWorldPoint(const b2Vec2& localPoint) const noexcept
+inline Vec2 b2Body::GetWorldPoint(const Vec2& localPoint) const noexcept
 {
 	return b2Mul(m_xf, localPoint);
 }
 
-inline b2Vec2 b2Body::GetWorldVector(const b2Vec2& localVector) const noexcept
+inline Vec2 b2Body::GetWorldVector(const Vec2& localVector) const noexcept
 {
 	return b2Mul(m_xf.q, localVector);
 }
 
-inline b2Vec2 b2Body::GetLocalPoint(const b2Vec2& worldPoint) const noexcept
+inline Vec2 b2Body::GetLocalPoint(const Vec2& worldPoint) const noexcept
 {
 	return b2MulT(m_xf, worldPoint);
 }
 
-inline b2Vec2 b2Body::GetLocalVector(const b2Vec2& worldVector) const noexcept
+inline Vec2 b2Body::GetLocalVector(const Vec2& worldVector) const noexcept
 {
 	return b2MulT(m_xf.q, worldVector);
 }
 
-inline b2Vec2 b2Body::GetLinearVelocityFromWorldPoint(const b2Vec2& worldPoint) const noexcept
+inline Vec2 b2Body::GetLinearVelocityFromWorldPoint(const Vec2& worldPoint) const noexcept
 {
 	return m_linearVelocity + b2Cross(m_angularVelocity, worldPoint - m_sweep.c);
 }
 
-inline b2Vec2 b2Body::GetLinearVelocityFromLocalPoint(const b2Vec2& localPoint) const noexcept
+inline Vec2 b2Body::GetLinearVelocityFromLocalPoint(const Vec2& localPoint) const noexcept
 {
 	return GetLinearVelocityFromWorldPoint(GetWorldPoint(localPoint));
 }
@@ -675,9 +675,9 @@ inline void b2Body::UnsetAwake() noexcept
 {
 	m_flags &= ~e_awakeFlag;
 	m_sleepTime = float_t{0};
-	m_linearVelocity = b2Vec2_zero;
+	m_linearVelocity = Vec2_zero;
 	m_angularVelocity = float_t{0};
-	m_force = b2Vec2_zero;
+	m_force = Vec2_zero;
 	m_torque = float_t{0};
 }
 
@@ -774,7 +774,7 @@ inline void* b2Body::GetUserData() const noexcept
 	return m_userData;
 }
 
-inline void b2Body::ApplyForce(const b2Vec2& force, const b2Vec2& point, bool wake) noexcept
+inline void b2Body::ApplyForce(const Vec2& force, const Vec2& point, bool wake) noexcept
 {
 	if (m_type != DynamicBody)
 	{
@@ -794,7 +794,7 @@ inline void b2Body::ApplyForce(const b2Vec2& force, const b2Vec2& point, bool wa
 	}
 }
 
-inline void b2Body::ApplyForceToCenter(const b2Vec2& force, bool wake) noexcept
+inline void b2Body::ApplyForceToCenter(const Vec2& force, bool wake) noexcept
 {
 	if (m_type != DynamicBody)
 	{
@@ -832,7 +832,7 @@ inline void b2Body::ApplyTorque(float_t torque, bool wake) noexcept
 	}
 }
 
-inline void b2Body::ApplyLinearImpulse(const b2Vec2& impulse, const b2Vec2& point, bool wake) noexcept
+inline void b2Body::ApplyLinearImpulse(const Vec2& impulse, const Vec2& point, bool wake) noexcept
 {
 	if (m_type != DynamicBody)
 	{

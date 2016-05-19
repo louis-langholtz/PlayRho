@@ -32,7 +32,7 @@ public:
 			ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
+			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 
 			b2FixtureDef fd;
 			fd.shape = &shape;
@@ -50,15 +50,15 @@ public:
 
 			b2RevoluteJointDef rjd;
 
-			bd.position = b2Vec2(-10.0f, 20.0f);
+			bd.position = Vec2(-10.0f, 20.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&shape, 5.0f);
 
 			float_t w = 100.0f;
 			body->SetAngularVelocity(w);
-			body->SetLinearVelocity(b2Vec2(-8.0f * w, 0.0f));
+			body->SetLinearVelocity(Vec2(-8.0f * w, 0.0f));
 
-			rjd.Initialize(ground, body, b2Vec2(-10.0f, 12.0f));
+			rjd.Initialize(ground, body, Vec2(-10.0f, 12.0f));
 			rjd.motorSpeed = 1.0f * Pi;
 			rjd.maxMotorTorque = 10000.0f;
 			rjd.enableMotor = false;
@@ -76,7 +76,7 @@ public:
 
 			BodyDef circle_bd;
 			circle_bd.type = DynamicBody;
-			circle_bd.position = b2Vec2(5.0f, 30.0f);
+			circle_bd.position = Vec2(5.0f, 30.0f);
 
 			b2FixtureDef fd;
 			fd.density = 5.0f;
@@ -87,17 +87,17 @@ public:
 			m_ball->CreateFixture(&fd);
 
 			b2PolygonShape polygon_shape;
-			polygon_shape.SetAsBox(10.0f, 0.2f, b2Vec2 (-10.0f, 0.0f), 0.0f);
+			polygon_shape.SetAsBox(10.0f, 0.2f, Vec2 (-10.0f, 0.0f), 0.0f);
 
 			BodyDef polygon_bd;
-			polygon_bd.position = b2Vec2(20.0f, 10.0f);
+			polygon_bd.position = Vec2(20.0f, 10.0f);
 			polygon_bd.type = DynamicBody;
 			polygon_bd.bullet = true;
 			b2Body* polygon_body = m_world->CreateBody(&polygon_bd);
 			polygon_body->CreateFixture(&polygon_shape, 2.0f);
 
 			b2RevoluteJointDef rjd;
-			rjd.Initialize(ground, polygon_body, b2Vec2(20.0f, 10.0f));
+			rjd.Initialize(ground, polygon_body, Vec2(20.0f, 10.0f));
 			rjd.lowerAngle = -0.25f * Pi;
 			rjd.upperAngle = 0.0f * Pi;
 			rjd.enableLimit = true;
@@ -111,10 +111,10 @@ public:
 			b2Body* body = m_world->CreateBody(&bodyDef);
 		
 			b2PolygonShape polyShape;		
-			b2Vec2 verts[3];
-			verts[0] = b2Vec2( 17.63f, 36.31f );
-			verts[1] = b2Vec2( 17.52f, 36.69f );
-			verts[2] = b2Vec2( 17.19f, 36.36f );
+			Vec2 verts[3];
+			verts[0] = Vec2( 17.63f, 36.31f );
+			verts[1] = Vec2( 17.52f, 36.69f );
+			verts[2] = Vec2( 17.19f, 36.36f );
 			polyShape.Set(verts, 3);
 		
 			b2FixtureDef polyFixtureDef;
@@ -148,7 +148,7 @@ public:
 
 		//if (m_stepCount == 360)
 		//{
-		//	m_ball->SetTransform(b2Vec2(0.0f, 0.5f), 0.0f);
+		//	m_ball->SetTransform(Vec2(0.0f, 0.5f), 0.0f);
 		//}
 
 		//float_t torque1 = m_joint1->GetMotorTorque();

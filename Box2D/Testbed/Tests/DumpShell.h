@@ -38,16 +38,16 @@ public:
 		//  but you can easily use it in other applications by providing
 		//  a b2World for use as the 'm_world' variable in the code below.
 
-		b2Vec2 g(0.000000000000000e+00f, -1.000000000000000e+01f);
+		Vec2 g(0.000000000000000e+00f, -1.000000000000000e+01f);
 		m_world->SetGravity(g);
 		b2Body** bodies = (b2Body**)alloc(3 * sizeof(b2Body*));
 		b2Joint** joints = (b2Joint**)alloc(0 * sizeof(b2Joint*));
 		{
 			BodyDef bd;
 			bd.type = BodyType(0);
-			bd.position = b2Vec2(2.587699890136719e-02f, 5.515012264251709e+00f);
+			bd.position = Vec2(2.587699890136719e-02f, 5.515012264251709e+00f);
 			bd.angle = 0.000000000000000e+00f;
-			bd.linearVelocity = b2Vec2(0.000000000000000e+00f, 0.000000000000000e+00f);
+			bd.linearVelocity = Vec2(0.000000000000000e+00f, 0.000000000000000e+00f);
 			bd.angularVelocity = 0.000000000000000e+00f;
 			bd.linearDamping = 0.000000000000000e+00f;
 			bd.angularDamping = 0.000000000000000e+00f;
@@ -69,11 +69,11 @@ public:
 				fd.filter.maskBits = uint16(65535);
 				fd.filter.groupIndex = int16(0);
 				b2PolygonShape shape;
-				b2Vec2 vs[8];
-				vs[0] = b2Vec2(7.733039855957031e-01f, -1.497260034084320e-01f);
-				vs[1] = b2Vec2(-4.487270116806030e-01f, 1.138330027461052e-01f);
-				vs[2] = b2Vec2(-1.880589962005615e+00f, -1.365900039672852e-01f);
-				vs[3] = b2Vec2(3.972740173339844e-01f, -3.897832870483398e+00f);
+				Vec2 vs[8];
+				vs[0] = Vec2(7.733039855957031e-01f, -1.497260034084320e-01f);
+				vs[1] = Vec2(-4.487270116806030e-01f, 1.138330027461052e-01f);
+				vs[2] = Vec2(-1.880589962005615e+00f, -1.365900039672852e-01f);
+				vs[3] = Vec2(3.972740173339844e-01f, -3.897832870483398e+00f);
 				shape.Set(vs, 4);
 
 				fd.shape = &shape;
@@ -84,9 +84,9 @@ public:
 		{
 			BodyDef bd;
 			bd.type = BodyType(2);
-			bd.position = b2Vec2(-3.122138977050781e-02f, 7.535382270812988e+00f);
+			bd.position = Vec2(-3.122138977050781e-02f, 7.535382270812988e+00f);
 			bd.angle = -1.313644275069237e-02f;
-			bd.linearVelocity = b2Vec2(8.230687379837036e-01f, 7.775862514972687e-02f);
+			bd.linearVelocity = Vec2(8.230687379837036e-01f, 7.775862514972687e-02f);
 			bd.angularVelocity = 3.705333173274994e-02f;
 			bd.linearDamping = 0.000000000000000e+00f;
 			bd.angularDamping = 0.000000000000000e+00f;
@@ -108,13 +108,13 @@ public:
 				fd.filter.maskBits = uint16(65535);
 				fd.filter.groupIndex = int16(0);
 				b2PolygonShape shape;
-				b2Vec2 vs[8];
-				vs[0] = b2Vec2(3.473900079727173e+00f, -2.009889930486679e-01f);
-				vs[1] = b2Vec2(3.457079887390137e+00f, 3.694039955735207e-02f);
-				vs[2] = b2Vec2(-3.116359949111938e+00f, 2.348500071093440e-03f);
-				vs[3] = b2Vec2(-3.109960079193115e+00f, -3.581250011920929e-01f);
-				vs[4] = b2Vec2(-2.590820074081421e+00f, -5.472509860992432e-01f);
-				vs[5] = b2Vec2(2.819370031356812e+00f, -5.402340292930603e-01f);
+				Vec2 vs[8];
+				vs[0] = Vec2(3.473900079727173e+00f, -2.009889930486679e-01f);
+				vs[1] = Vec2(3.457079887390137e+00f, 3.694039955735207e-02f);
+				vs[2] = Vec2(-3.116359949111938e+00f, 2.348500071093440e-03f);
+				vs[3] = Vec2(-3.109960079193115e+00f, -3.581250011920929e-01f);
+				vs[4] = Vec2(-2.590820074081421e+00f, -5.472509860992432e-01f);
+				vs[5] = Vec2(2.819370031356812e+00f, -5.402340292930603e-01f);
 				shape.Set(vs, 6);
 
 				fd.shape = &shape;
@@ -125,9 +125,9 @@ public:
 		{
 			BodyDef bd;
 			bd.type = BodyType(2);
-			bd.position = b2Vec2(-7.438077926635742e-01f, 6.626811981201172e+00f);
+			bd.position = Vec2(-7.438077926635742e-01f, 6.626811981201172e+00f);
 			bd.angle = -1.884713363647461e+01f;
-			bd.linearVelocity = b2Vec2(1.785794943571091e-01f, 3.799796104431152e-07f);
+			bd.linearVelocity = Vec2(1.785794943571091e-01f, 3.799796104431152e-07f);
 			bd.angularVelocity = -5.908820639888290e-06f;
 			bd.linearDamping = 0.000000000000000e+00f;
 			bd.angularDamping = 0.000000000000000e+00f;
@@ -149,11 +149,11 @@ public:
 				fd.filter.maskBits = uint16(65535);
 				fd.filter.groupIndex = int16(-3);
 				b2PolygonShape shape;
-				b2Vec2 vs[8];
-				vs[0] = b2Vec2(1.639146506786346e-01f, 4.428443685173988e-02f);
-				vs[1] = b2Vec2(-1.639146655797958e-01f, 4.428443685173988e-02f);
-				vs[2] = b2Vec2(-1.639146655797958e-01f, -4.428443312644958e-02f);
-				vs[3] = b2Vec2(1.639146357774734e-01f, -4.428444057703018e-02f);
+				Vec2 vs[8];
+				vs[0] = Vec2(1.639146506786346e-01f, 4.428443685173988e-02f);
+				vs[1] = Vec2(-1.639146655797958e-01f, 4.428443685173988e-02f);
+				vs[2] = Vec2(-1.639146655797958e-01f, -4.428443312644958e-02f);
+				vs[3] = Vec2(1.639146357774734e-01f, -4.428444057703018e-02f);
 				shape.Set(vs, 4);
 
 				fd.shape = &shape;

@@ -45,24 +45,24 @@ public:
 			fd.restitution = float_t(0.9);
 
 			// Floor
-			shape.Set(b2Vec2(-wall_length/2, 0.0f), b2Vec2(wall_length/2, 0.0f));
+			shape.Set(Vec2(-wall_length/2, 0.0f), Vec2(wall_length/2, 0.0f));
 			ground->CreateFixture(&fd);
 
 			// Left wall
-			shape.Set(b2Vec2(-wall_length/2, 0.0f), b2Vec2(-wall_length/2, wall_length));
+			shape.Set(Vec2(-wall_length/2, 0.0f), Vec2(-wall_length/2, wall_length));
 			ground->CreateFixture(&fd);
 
 			// Right wall
-			shape.Set(b2Vec2(wall_length/2, 0.0f), b2Vec2(wall_length/2, wall_length));
+			shape.Set(Vec2(wall_length/2, 0.0f), Vec2(wall_length/2, wall_length));
 			ground->CreateFixture(&fd);
 
 			// Roof
-			shape.Set(b2Vec2(-wall_length/2, wall_length), b2Vec2(wall_length/2, wall_length));
+			shape.Set(Vec2(-wall_length/2, wall_length), Vec2(wall_length/2, wall_length));
 			ground->CreateFixture(&fd);
 		}
 
 		float_t radius = 0.5f;
-		b2CircleShape shape(radius, b2Vec2_zero);
+		b2CircleShape shape(radius, Vec2_zero);
 
 		b2FixtureDef fd;
 		fd.shape = &shape;
@@ -75,20 +75,20 @@ public:
 			{
 				BodyDef bd;
 				bd.type = DynamicBody;
-				bd.position = b2Vec2(-10.0f + (2.1f * j + 1.0f + 0.01f * i) * radius, (2.0f * i + 1.0f) * radius);
+				bd.position = Vec2(-10.0f + (2.1f * j + 1.0f + 0.01f * i) * radius, (2.0f * i + 1.0f) * radius);
 				b2Body* body = m_world->CreateBody(&bd);
 
 				body->CreateFixture(&fd);
 			}
 		}
 
-		m_world->SetGravity(b2Vec2(0.0f, 0.0f));
+		m_world->SetGravity(Vec2(0.0f, 0.0f));
 	}
 
 	void CreateCircle()
 	{
 		constexpr auto radius = float_t(wall_length/10); // 2
-		b2CircleShape shape(radius, b2Vec2_zero);
+		b2CircleShape shape(radius, Vec2_zero);
 
 		b2FixtureDef fd;
 		fd.shape = &shape;
@@ -98,7 +98,7 @@ public:
 		BodyDef bd;
 		bd.type = DynamicBody;
 		bd.bullet = m_bullet_mode;
-		bd.position = b2Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));
+		bd.position = Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));
 		//bd.allowSleep = false;
 		b2Body* body = m_world->CreateBody(&bd);
 
@@ -119,7 +119,7 @@ public:
 		BodyDef bd;
 		bd.type = DynamicBody;
 		bd.bullet = m_bullet_mode;
-		bd.position = b2Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));
+		bd.position = Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));
 		auto* body = m_world->CreateBody(&bd);
 		body->CreateFixture(&fd);
 	}
@@ -147,7 +147,7 @@ public:
 				const auto opposite_angle = angle_from_center + Pi;
 				const auto direction = opposite_angle;
 				const auto magnitude = b2Sqrt(b2Square(wall_length) * 2) * b.GetMass() * 20;
-				const auto impulse = b2Mul(b2Rot(direction), b2Vec2(magnitude, 0.0f));
+				const auto impulse = b2Mul(b2Rot(direction), Vec2(magnitude, 0.0f));
 				b.ApplyLinearImpulse(impulse, b.GetWorldCenter(), true);
 			}
 		}		
@@ -207,7 +207,7 @@ public:
 				continue;
 			}
 
-			b2Vec2 p = b->GetPosition();
+			Vec2 p = b->GetPosition();
 			if (p.x <= -wall_length/2 || wall_length/2 <= p.x || p.y <= 0.0f || wall_length <= p.y)
 			{
 				p.x += 0.0f;

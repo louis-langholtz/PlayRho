@@ -33,7 +33,7 @@ public:
 			ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
+			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
@@ -43,7 +43,7 @@ public:
 
 			BodyDef bd;
 			bd.type = DynamicBody;
-			bd.position = b2Vec2(-10.0f, 10.0f);
+			bd.position = Vec2(-10.0f, 10.0f);
 			bd.angle = 0.5f * Pi;
 			bd.allowSleep = false;
 			b2Body* body = m_world->CreateBody(&bd);
@@ -52,11 +52,11 @@ public:
 			b2PrismaticJointDef pjd;
 
 			// Bouncy limit
-			const auto axis = b2Normalize(b2Vec2(2.0f, 1.0f));
-			pjd.Initialize(ground, body, b2Vec2(0.0f, 0.0f), axis);
+			const auto axis = b2Normalize(Vec2(2.0f, 1.0f));
+			pjd.Initialize(ground, body, Vec2(0.0f, 0.0f), axis);
 
 			// Non-bouncy limit
-			//pjd.Initialize(ground, body, b2Vec2(-10.0f, 10.0f), b2Vec2(1.0f, 0.0f));
+			//pjd.Initialize(ground, body, Vec2(-10.0f, 10.0f), Vec2(1.0f, 0.0f));
 
 			pjd.motorSpeed = 10.0f;
 			pjd.maxMotorForce = 10000.0f;

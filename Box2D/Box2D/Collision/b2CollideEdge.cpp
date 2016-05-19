@@ -68,7 +68,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 		}
 		
 		auto manifold = b2Manifold{b2Manifold::e_circles};
-		manifold.SetLocalNormal(b2Vec2_zero);
+		manifold.SetLocalNormal(Vec2_zero);
 		manifold.SetLocalPoint(P);
 		manifold.AddPoint(shapeB.GetPosition(), b2ContactFeature{b2ContactFeature::e_vertex, 0, b2ContactFeature::e_vertex, 0});
 		return manifold;
@@ -100,7 +100,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 		}
 		
 		auto manifold = b2Manifold{b2Manifold::e_circles};
-		manifold.SetLocalNormal(b2Vec2_zero);
+		manifold.SetLocalNormal(Vec2_zero);
 		manifold.SetLocalPoint(P);
 		manifold.AddPoint(shapeB.GetPosition(), b2ContactFeature{b2ContactFeature::e_vertex, 1, b2ContactFeature::e_vertex, 0});
 		return manifold;
@@ -117,10 +117,10 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 		return b2Manifold{};
 	}
 	
-	auto n = b2Vec2(-e.y, e.x);
+	auto n = Vec2(-e.y, e.x);
 	if (b2Dot(n, Q - A) < 0)
 	{
-		n = b2Vec2(-n.x, -n.y);
+		n = Vec2(-n.x, -n.y);
 	}
 	
 	auto manifold = b2Manifold{b2Manifold::e_faceA};
@@ -168,7 +168,7 @@ public:
 	/// @see MaxPolygonVertices.
 	size_type GetCount() const noexcept { return count; }
 	
-	b2Vec2 GetVertex(size_type index) const
+	Vec2 GetVertex(size_type index) const
 	{
 		assert(index >= 0);
 		assert(index < MaxPolygonVertices);
@@ -176,7 +176,7 @@ public:
 		return vertices[index];
 	}
 
-	b2Vec2 GetNormal(size_type index) const
+	Vec2 GetNormal(size_type index) const
 	{
 		assert(index >= 0);
 		assert(index < MaxPolygonVertices);
@@ -184,7 +184,7 @@ public:
 		return normals[index];
 	}
 
-	void Append(const b2Vec2& vertex, const b2Vec2& normal)
+	void Append(const Vec2& vertex, const Vec2& normal)
 	{
 		assert(count < MaxPolygonVertices);
 		vertices[count] = vertex;
@@ -194,8 +194,8 @@ public:
 
 private:
 	size_type count = 0;
-	b2Vec2 vertices[MaxPolygonVertices];
-	b2Vec2 normals[MaxPolygonVertices];
+	Vec2 vertices[MaxPolygonVertices];
+	Vec2 normals[MaxPolygonVertices];
 };
 
 /// Gets a b2TempPolygon object from a given shape in terms of a given transform.
@@ -215,14 +215,14 @@ struct b2ReferenceFace
 
 	index_t i1, i2;
 	
-	b2Vec2 v1, v2;
+	Vec2 v1, v2;
 	
-	b2Vec2 normal;
+	Vec2 normal;
 	
-	b2Vec2 sideNormal1;
+	Vec2 sideNormal1;
 	float_t sideOffset1;
 	
-	b2Vec2 sideNormal2;
+	Vec2 sideNormal2;
 	float_t sideOffset2;
 };
 
@@ -231,30 +231,30 @@ class b2EdgeInfo
 public:
 	b2EdgeInfo() = default;
 
-	b2EdgeInfo(const b2EdgeShape& edge, const b2Vec2& centroid);
+	b2EdgeInfo(const b2EdgeShape& edge, const Vec2& centroid);
 
-	b2Vec2 GetVertex1() const noexcept { return m_vertex1; }
-	b2Vec2 GetVertex2() const noexcept { return m_vertex2; }
-	b2Vec2 GetEdge1() const noexcept { return m_edge1; }
-	b2Vec2 GetNormal1() const noexcept { return m_normal1; }
+	Vec2 GetVertex1() const noexcept { return m_vertex1; }
+	Vec2 GetVertex2() const noexcept { return m_vertex2; }
+	Vec2 GetEdge1() const noexcept { return m_edge1; }
+	Vec2 GetNormal1() const noexcept { return m_normal1; }
 
 	bool IsFront() const noexcept { return m_front; }
-	b2Vec2 GetNormal() const noexcept { return m_normal; }
-	b2Vec2 GetLowerLimit() const noexcept { return m_lowerLimit; }
-	b2Vec2 GetUpperLimit() const noexcept { return m_upperLimit; }
+	Vec2 GetNormal() const noexcept { return m_normal; }
+	Vec2 GetLowerLimit() const noexcept { return m_lowerLimit; }
+	Vec2 GetUpperLimit() const noexcept { return m_upperLimit; }
 
 private:
-	b2Vec2 m_vertex1;
-	b2Vec2 m_vertex2;
-	b2Vec2 m_edge1;
-	b2Vec2 m_normal1;
+	Vec2 m_vertex1;
+	Vec2 m_vertex2;
+	Vec2 m_edge1;
+	Vec2 m_normal1;
 
 	bool m_front;
-	b2Vec2 m_normal;
-	b2Vec2 m_lowerLimit, m_upperLimit;
+	Vec2 m_normal;
+	Vec2 m_lowerLimit, m_upperLimit;
 };
 
-inline b2EdgeInfo::b2EdgeInfo(const b2EdgeShape& edge, const b2Vec2& centroid):
+inline b2EdgeInfo::b2EdgeInfo(const b2EdgeShape& edge, const Vec2& centroid):
 	m_vertex1(edge.GetVertex1()), m_vertex2(edge.GetVertex2()),
 	m_edge1(b2Normalize(m_vertex2 - m_vertex1)), m_normal1(m_edge1.y, -m_edge1.x)
 {
@@ -268,13 +268,13 @@ inline b2EdgeInfo::b2EdgeInfo(const b2EdgeShape& edge, const b2Vec2& centroid):
 	{
 		const auto vertex0 = edge.GetVertex0();
 		const auto edge0 = b2Normalize(m_vertex1 - vertex0);
-		const auto normal0 = b2Vec2(edge0.y, -edge0.x);
+		const auto normal0 = Vec2(edge0.y, -edge0.x);
 		const auto convex1 = b2Cross(edge0, m_edge1) >= float_t{0};
 		const auto offset0 = b2Dot(normal0, centroid - vertex0);
 
 		const auto vertex3 = edge.GetVertex3();
 		const auto edge2 = b2Normalize(vertex3 - m_vertex2);
-		const auto normal2 = b2Vec2(edge2.y, -edge2.x);
+		const auto normal2 = Vec2(edge2.y, -edge2.x);
 		const auto convex2 = b2Cross(m_edge1, edge2) > float_t{0};
 		const auto offset2 = b2Dot(normal2, centroid - m_vertex2);
 
@@ -347,7 +347,7 @@ inline b2EdgeInfo::b2EdgeInfo(const b2EdgeShape& edge, const b2Vec2& centroid):
 	{
 		const auto vertex0 = edge.GetVertex0();
 		const auto edge0 = b2Normalize(m_vertex1 - vertex0);
-		const auto normal0 = b2Vec2(edge0.y, -edge0.x);
+		const auto normal0 = Vec2(edge0.y, -edge0.x);
 		const auto convex1 = b2Cross(edge0, m_edge1) >= float_t{0};
 		const auto offset0 = b2Dot(normal0, centroid - vertex0);
 
@@ -388,7 +388,7 @@ inline b2EdgeInfo::b2EdgeInfo(const b2EdgeShape& edge, const b2Vec2& centroid):
 	{
 		const auto vertex3 = edge.GetVertex3();
 		const auto edge2 = b2Normalize(vertex3 - m_vertex2);
-		const auto normal2 = b2Vec2(edge2.y, -edge2.x);
+		const auto normal2 = Vec2(edge2.y, -edge2.x);
 		const auto convex2 = b2Cross(m_edge1, edge2) > float_t{0};
 		const auto offset2 = b2Dot(normal2, centroid - m_vertex2);
 
@@ -482,7 +482,7 @@ static inline b2EPAxis b2ComputePolygonSeparation(const b2TempPolygon& shape, co
 	auto axis = b2EPAxis{b2EPAxis::e_unknown, b2EPAxis::InvalidIndex, -MaxFloat};
 	
 	const auto normal = edgeInfo.GetNormal();
-	const auto perp = b2Vec2(-normal.y, normal.x);
+	const auto perp = Vec2(-normal.y, normal.x);
 	const auto count = shape.GetCount();
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
@@ -630,7 +630,7 @@ b2Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShap
 		rf.normal = localShapeB.GetNormal(rf.i1);
 	}
 	
-	rf.sideNormal1 = b2Vec2(rf.normal.y, -rf.normal.x);
+	rf.sideNormal1 = Vec2(rf.normal.y, -rf.normal.x);
 	rf.sideNormal2 = -rf.sideNormal1;
 	rf.sideOffset1 = b2Dot(rf.sideNormal1, rf.v1);
 	rf.sideOffset2 = b2Dot(rf.sideNormal2, rf.v2);

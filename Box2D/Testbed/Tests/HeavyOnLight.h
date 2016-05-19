@@ -32,20 +32,20 @@ public:
 			b2Body* ground = m_world->CreateBody(&bd);
             
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
+			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
         
 		BodyDef bd;
 		bd.type = DynamicBody;
-		bd.position = b2Vec2(0.0f, 0.5f);
+		bd.position = Vec2(0.0f, 0.5f);
 		b2Body* body = m_world->CreateBody(&bd);
         
 		b2CircleShape shape;
 		shape.SetRadius(float_t(0.5));
         body->CreateFixture(&shape, 10.0f);
         
-        bd.position = b2Vec2(0.0f, 6.0f);
+        bd.position = Vec2(0.0f, 6.0f);
         body = m_world->CreateBody(&bd);
         shape.SetRadius(float_t(5));
         body->CreateFixture(&shape, 10.0f);

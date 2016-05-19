@@ -34,7 +34,7 @@ b2Manifold b2CollideShapes(const b2CircleShape& shapeA, const b2Transform& xfA, 
 		return b2Manifold{};
 	}
 
-	auto manifold = b2Manifold{b2Manifold::e_circles, b2Vec2_zero, shapeA.GetPosition()};
+	auto manifold = b2Manifold{b2Manifold::e_circles, Vec2_zero, shapeA.GetPosition()};
 	manifold.AddPoint(shapeB.GetPosition());
 	return manifold;
 }

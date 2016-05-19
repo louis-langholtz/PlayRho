@@ -65,13 +65,13 @@ struct b2Position
 	b2Position() = default;
 	constexpr b2Position(const b2Position& copy) = default;
 
-	constexpr b2Position(b2Vec2 c_, float_t a_) noexcept: c(c_), a(a_) {}
+	constexpr b2Position(Vec2 c_, float_t a_) noexcept: c(c_), a(a_) {}
 
-	b2Vec2 c; ///< linear position
+	Vec2 c; ///< linear position
 	float_t a; ///< angular position
 };
 
-inline b2Transform b2Displace(const b2Position& pos, const b2Vec2& local_ctr)
+inline b2Transform b2Displace(const b2Position& pos, const Vec2& local_ctr)
 {
 	return b2Displace(pos.c, b2Rot(pos.a), local_ctr);
 }
@@ -80,9 +80,9 @@ inline b2Transform b2Displace(const b2Position& pos, const b2Vec2& local_ctr)
 struct b2Velocity
 {
 	b2Velocity() = default;
-	constexpr b2Velocity(b2Vec2 v_, float_t w_) noexcept: v(v_), w(w_) {}
+	constexpr b2Velocity(Vec2 v_, float_t w_) noexcept: v(v_), w(w_) {}
 
-	b2Vec2 v; ///< Linear velocity.
+	Vec2 v; ///< Linear velocity.
 	float_t w; ///< Angular velocity.
 };
 

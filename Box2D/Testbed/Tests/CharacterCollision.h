@@ -35,7 +35,7 @@ public:
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-20.0f, 0.0f), b2Vec2(20.0f, 0.0f));
+			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
@@ -47,11 +47,11 @@ public:
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-8.0f, 1.0f), b2Vec2(-6.0f, 1.0f));
+			shape.Set(Vec2(-8.0f, 1.0f), Vec2(-6.0f, 1.0f));
 			ground->CreateFixture(&shape, 0.0f);
-			shape.Set(b2Vec2(-6.0f, 1.0f), b2Vec2(-4.0f, 1.0f));
+			shape.Set(Vec2(-6.0f, 1.0f), Vec2(-4.0f, 1.0f));
 			ground->CreateFixture(&shape, 0.0f);
-			shape.Set(b2Vec2(-4.0f, 1.0f), b2Vec2(-2.0f, 1.0f));
+			shape.Set(Vec2(-4.0f, 1.0f), Vec2(-2.0f, 1.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
@@ -61,11 +61,11 @@ public:
 			bd.angle = 0.25f * Pi;
 			b2Body* ground = m_world->CreateBody(&bd);
 
-			b2Vec2 vs[4];
-			vs[0] = b2Vec2(5.0f, 7.0f);
-			vs[1] = b2Vec2(6.0f, 8.0f);
-			vs[2] = b2Vec2(7.0f, 8.0f);
-			vs[3] = b2Vec2(8.0f, 7.0f);
+			Vec2 vs[4];
+			vs[0] = Vec2(5.0f, 7.0f);
+			vs[1] = Vec2(6.0f, 8.0f);
+			vs[2] = Vec2(7.0f, 8.0f);
+			vs[3] = Vec2(8.0f, 7.0f);
 			b2ChainShape shape;
 			shape.CreateChain(vs, 4);
 			ground->CreateFixture(&shape, 0.0f);
@@ -79,11 +79,11 @@ public:
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
-			shape.SetAsBox(1.0f, 1.0f, b2Vec2(4.0f, 3.0f), 0.0f);
+			shape.SetAsBox(1.0f, 1.0f, Vec2(4.0f, 3.0f), 0.0f);
 			ground->CreateFixture(&shape, 0.0f);
-			shape.SetAsBox(1.0f, 1.0f, b2Vec2(6.0f, 3.0f), 0.0f);
+			shape.SetAsBox(1.0f, 1.0f, Vec2(6.0f, 3.0f), 0.0f);
 			ground->CreateFixture(&shape, 0.0f);
-			shape.SetAsBox(1.0f, 1.0f, b2Vec2(8.0f, 3.0f), 0.0f);
+			shape.SetAsBox(1.0f, 1.0f, Vec2(8.0f, 3.0f), 0.0f);
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
@@ -92,11 +92,11 @@ public:
 			BodyDef bd;
 			b2Body* ground = m_world->CreateBody(&bd);
 
-			b2Vec2 vs[4];
-			vs[0] = b2Vec2(-1.0f, 3.0f);
-			vs[1] = b2Vec2(1.0f, 3.0f);
-			vs[2] = b2Vec2(1.0f, 5.0f);
-			vs[3] = b2Vec2(-1.0f, 5.0f);
+			Vec2 vs[4];
+			vs[0] = Vec2(-1.0f, 3.0f);
+			vs[1] = Vec2(1.0f, 3.0f);
+			vs[2] = Vec2(1.0f, 5.0f);
+			vs[3] = Vec2(-1.0f, 5.0f);
 			b2ChainShape shape;
 			shape.CreateLoop(vs, 4);
 			ground->CreateFixture(&shape, 0.0f);
@@ -105,20 +105,20 @@ public:
 		// Edge loop. Collision should be smooth.
 		{
 			BodyDef bd;
-			bd.position = b2Vec2(-10.0f, 4.0f);
+			bd.position = Vec2(-10.0f, 4.0f);
 			b2Body* ground = m_world->CreateBody(&bd);
 
-			b2Vec2 vs[10];
-			vs[0] = b2Vec2(0.0f, 0.0f);
-			vs[1] = b2Vec2(6.0f, 0.0f);
-			vs[2] = b2Vec2(6.0f, 2.0f);
-			vs[3] = b2Vec2(4.0f, 1.0f);
-			vs[4] = b2Vec2(2.0f, 2.0f);
-			vs[5] = b2Vec2(0.0f, 2.0f);
-			vs[6] = b2Vec2(-2.0f, 2.0f);
-			vs[7] = b2Vec2(-4.0f, 3.0f);
-			vs[8] = b2Vec2(-6.0f, 2.0f);
-			vs[9] = b2Vec2(-6.0f, 0.0f);
+			Vec2 vs[10];
+			vs[0] = Vec2(0.0f, 0.0f);
+			vs[1] = Vec2(6.0f, 0.0f);
+			vs[2] = Vec2(6.0f, 2.0f);
+			vs[3] = Vec2(4.0f, 1.0f);
+			vs[4] = Vec2(2.0f, 2.0f);
+			vs[5] = Vec2(0.0f, 2.0f);
+			vs[6] = Vec2(-2.0f, 2.0f);
+			vs[7] = Vec2(-4.0f, 3.0f);
+			vs[8] = Vec2(-6.0f, 2.0f);
+			vs[9] = Vec2(-6.0f, 0.0f);
 			b2ChainShape shape;
 			shape.CreateLoop(vs, 10);
 			ground->CreateFixture(&shape, 0.0f);
@@ -127,7 +127,7 @@ public:
 		// Square character 1
 		{
 			BodyDef bd;
-			bd.position = b2Vec2(-3.0f, 8.0f);
+			bd.position = Vec2(-3.0f, 8.0f);
 			bd.type = DynamicBody;
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
@@ -146,7 +146,7 @@ public:
 		// Square character 2
 		{
 			BodyDef bd;
-			bd.position = b2Vec2(-5.0f, 5.0f);
+			bd.position = Vec2(-5.0f, 5.0f);
 			bd.type = DynamicBody;
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
@@ -165,7 +165,7 @@ public:
 		// Hexagon character
 		{
 			BodyDef bd;
-			bd.position = b2Vec2(-5.0f, 8.0f);
+			bd.position = Vec2(-5.0f, 8.0f);
 			bd.type = DynamicBody;
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
@@ -174,10 +174,10 @@ public:
 
 			float_t angle = 0.0f;
 			float_t delta = Pi / 3.0f;
-			b2Vec2 vertices[6];
+			Vec2 vertices[6];
 			for (int32 i = 0; i < 6; ++i)
 			{
-				vertices[i] = b2Vec2(0.5f * cosf(angle), 0.5f * sinf(angle));
+				vertices[i] = Vec2(0.5f * cosf(angle), 0.5f * sinf(angle));
 				angle += delta;
 			}
 
@@ -193,7 +193,7 @@ public:
 		// Circle character
 		{
 			BodyDef bd;
-			bd.position = b2Vec2(3.0f, 5.0f);
+			bd.position = Vec2(3.0f, 5.0f);
 			bd.type = DynamicBody;
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
@@ -212,7 +212,7 @@ public:
 		// Circle character
 		{
 			BodyDef bd;
-			bd.position = b2Vec2(-7.0f, 6.0f);
+			bd.position = Vec2(-7.0f, 6.0f);
 			bd.type = DynamicBody;
 			bd.allowSleep = false;
 
@@ -231,7 +231,7 @@ public:
 
 	void Step(Settings* settings)
 	{
-		b2Vec2 v = m_character->GetLinearVelocity();
+		Vec2 v = m_character->GetLinearVelocity();
 		v.x = -5.0f;
 		m_character->SetLinearVelocity(v);
 

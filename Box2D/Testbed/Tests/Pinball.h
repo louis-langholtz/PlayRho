@@ -34,12 +34,12 @@ public:
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
 
-			b2Vec2 vs[5];
-			vs[0] = b2Vec2(0.0f, -2.0f);
-			vs[1] = b2Vec2(8.0f, 6.0f);
-			vs[2] = b2Vec2(8.0f, 20.0f);
-			vs[3] = b2Vec2(-8.0f, 20.0f);
-			vs[4] = b2Vec2(-8.0f, 6.0f);
+			Vec2 vs[5];
+			vs[0] = Vec2(0.0f, -2.0f);
+			vs[1] = Vec2(8.0f, 6.0f);
+			vs[2] = Vec2(8.0f, 20.0f);
+			vs[3] = Vec2(-8.0f, 20.0f);
+			vs[4] = Vec2(-8.0f, 6.0f);
 
 			b2ChainShape loop;
 			loop.CreateLoop(vs, 5);
@@ -51,7 +51,7 @@ public:
 
 		// Flippers
 		{
-			b2Vec2 p1(-2.0f, 0.0f), p2(2.0f, 0.0f);
+			Vec2 p1(-2.0f, 0.0f), p2(2.0f, 0.0f);
 
 			BodyDef bd;
 			bd.type = DynamicBody;
@@ -74,7 +74,7 @@ public:
 
 			b2RevoluteJointDef jd;
 			jd.bodyA = ground;
-			jd.localAnchorB = b2Vec2_zero;
+			jd.localAnchorB = Vec2_zero;
 			jd.enableMotor = true;
 			jd.maxMotorTorque = 1000.0f;
 			jd.enableLimit = true;
@@ -97,7 +97,7 @@ public:
 		// Circle character
 		{
 			BodyDef bd;
-			bd.position = b2Vec2(1.0f, 15.0f);
+			bd.position = Vec2(1.0f, 15.0f);
 			bd.type = DynamicBody;
 			bd.bullet = true;
 

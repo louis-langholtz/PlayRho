@@ -27,9 +27,9 @@ public:
 
 	AddPair()
 	{
-		m_world->SetGravity(b2Vec2(float_t{0}, float_t{0}));
+		m_world->SetGravity(Vec2(float_t{0}, float_t{0}));
 		{
-			b2CircleShape shape{float_t(0.1), b2Vec2_zero};
+			b2CircleShape shape{float_t(0.1), Vec2_zero};
 
 			float minX = -6.0f;
 			float maxX = 0.0f;
@@ -40,7 +40,7 @@ public:
 			{
 				BodyDef bd;
 				bd.type = DynamicBody;
-				bd.position = b2Vec2(RandomFloat(minX,maxX),RandomFloat(minY,maxY));
+				bd.position = Vec2(RandomFloat(minX,maxX),RandomFloat(minY,maxY));
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 0.01f);
 			}
@@ -51,11 +51,11 @@ public:
 			shape.SetAsBox(1.5f, 1.5f);
 			BodyDef bd;
 			bd.type = DynamicBody;
-			bd.position = b2Vec2(-40.0f,5.0f);
+			bd.position = Vec2(-40.0f,5.0f);
 			bd.bullet = true;
 			b2Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&shape, 1.0f);
-			body->SetLinearVelocity(b2Vec2(150.0f, 0.0f));
+			body->SetLinearVelocity(Vec2(150.0f, 0.0f));
 		}
 	}
 

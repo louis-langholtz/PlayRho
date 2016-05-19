@@ -89,7 +89,7 @@ using namespace box2d;
 // Now compute impulse to be applied:
 // df = f2 - f1
 
-void b2PrismaticJointDef::Initialize(b2Body* bA, b2Body* bB, const b2Vec2& anchor, const b2Vec2& axis)
+void b2PrismaticJointDef::Initialize(b2Body* bA, b2Body* bB, const Vec2& anchor, const Vec2& axis)
 {
 	bodyA = bA;
 	bodyB = bB;
@@ -120,8 +120,8 @@ b2PrismaticJoint::b2PrismaticJoint(const b2PrismaticJointDef* def)
 	m_enableMotor = def->enableMotor;
 	m_limitState = e_inactiveLimit;
 
-	m_axis = b2Vec2_zero;
-	m_perp = b2Vec2_zero;
+	m_axis = Vec2_zero;
+	m_perp = Vec2_zero;
 }
 
 void b2PrismaticJoint::InitVelocityConstraints(const b2SolverData& data)
@@ -293,7 +293,7 @@ void b2PrismaticJoint::SolveVelocityConstraints(const b2SolverData& data)
 		wB += iB * LB;
 	}
 
-	const auto Cdot1 = b2Vec2{b2Dot(m_perp, vB - vA) + m_s2 * wB - m_s1 * wA, wB - wA};
+	const auto Cdot1 = Vec2{b2Dot(m_perp, vB - vA) + m_s2 * wB - m_s1 * wA, wB - wA};
 
 	if (m_enableLimit && (m_limitState != e_inactiveLimit))
 	{
@@ -314,8 +314,8 @@ void b2PrismaticJoint::SolveVelocityConstraints(const b2SolverData& data)
 		}
 
 		// f2(1:2) = invK(1:2,1:2) * (-Cdot(1:2) - K(1:2,3) * (f2(3) - f1(3))) + f1(1:2)
-		const auto b = -Cdot1 - (m_impulse.z - f1.z) * b2Vec2(m_K.ez.x, m_K.ez.y);
-		const auto f2r = m_K.Solve22(b) + b2Vec2(f1.x, f1.y);
+		const auto b = -Cdot1 - (m_impulse.z - f1.z) * Vec2(m_K.ez.x, m_K.ez.y);
+		const auto f2r = m_K.Solve22(b) + Vec2(f1.x, f1.y);
 		m_impulse.x = f2r.x;
 		m_impulse.y = f2r.y;
 
@@ -388,7 +388,7 @@ bool b2PrismaticJoint::SolvePositionConstraints(const b2SolverData& data)
 	const auto s1 = b2Cross(d + rA, perp);
 	const auto s2 = b2Cross(rB, perp);
 
-	const auto C1 = b2Vec2{b2Dot(perp, d), aB - aA - m_referenceAngle};
+	const auto C1 = Vec2{b2Dot(perp, d), aB - aA - m_referenceAngle};
 
 	auto linearError = b2Abs(C1.x);
 	const auto angularError = b2Abs(C1.y);
@@ -452,7 +452,7 @@ bool b2PrismaticJoint::SolvePositionConstraints(const b2SolverData& data)
 			k22 = float_t{1};
 		}
 
-		const auto K = b2Mat22{b2Vec2{k11, k12}, b2Vec2{k12, k22}};
+		const auto K = b2Mat22{Vec2{k11, k12}, Vec2{k12, k22}};
 
 		const auto impulse1 = K.Solve(-C1);
 		impulse.x = impulse1.x;
@@ -477,17 +477,17 @@ bool b2PrismaticJoint::SolvePositionConstraints(const b2SolverData& data)
 	return (linearError <= LinearSlop) && (angularError <= AngularSlop);
 }
 
-b2Vec2 b2PrismaticJoint::GetAnchorA() const
+Vec2 b2PrismaticJoint::GetAnchorA() const
 {
 	return m_bodyA->GetWorldPoint(m_localAnchorA);
 }
 
-b2Vec2 b2PrismaticJoint::GetAnchorB() const
+Vec2 b2PrismaticJoint::GetAnchorB() const
 {
 	return m_bodyB->GetWorldPoint(m_localAnchorB);
 }
 
-b2Vec2 b2PrismaticJoint::GetReactionForce(float_t inv_dt) const
+Vec2 b2PrismaticJoint::GetReactionForce(float_t inv_dt) const
 {
 	return inv_dt * (m_impulse.x * m_perp + (m_motorImpulse + m_impulse.z) * m_axis);
 }
@@ -606,9 +606,9 @@ void b2PrismaticJoint::Dump()
 	log("  jd.bodyA = bodies[%d];\n", indexA);
 	log("  jd.bodyB = bodies[%d];\n", indexB);
 	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	log("  jd.localAnchorA = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-	log("  jd.localAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
-	log("  jd.localAxisA = b2Vec2(%.15lef, %.15lef);\n", m_localXAxisA.x, m_localXAxisA.y);
+	log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
+	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+	log("  jd.localAxisA = Vec2(%.15lef, %.15lef);\n", m_localXAxisA.x, m_localXAxisA.y);
 	log("  jd.referenceAngle = %.15lef;\n", m_referenceAngle);
 	log("  jd.enableLimit = bool(%d);\n", m_enableLimit);
 	log("  jd.lowerTranslation = %.15lef;\n", m_lowerTranslation);

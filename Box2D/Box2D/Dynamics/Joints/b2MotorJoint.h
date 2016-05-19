@@ -32,7 +32,7 @@ struct b2MotorJointDef : public b2JointDef
 	void Initialize(b2Body* bodyA, b2Body* bodyB);
 
 	/// Position of bodyB minus the position of bodyA, in bodyA's frame, in meters.
-	b2Vec2 linearOffset = b2Vec2_zero;
+	Vec2 linearOffset = Vec2_zero;
 
 	/// The bodyB angle minus bodyA angle in radians.
 	float_t angularOffset = float_t{0};
@@ -53,15 +53,15 @@ struct b2MotorJointDef : public b2JointDef
 class b2MotorJoint : public b2Joint
 {
 public:
-	b2Vec2 GetAnchorA() const override;
-	b2Vec2 GetAnchorB() const override;
+	Vec2 GetAnchorA() const override;
+	Vec2 GetAnchorB() const override;
 
-	b2Vec2 GetReactionForce(float_t inv_dt) const override;
+	Vec2 GetReactionForce(float_t inv_dt) const override;
 	float_t GetReactionTorque(float_t inv_dt) const override;
 
 	/// Set/get the target linear offset, in frame A, in meters.
-	void SetLinearOffset(const b2Vec2& linearOffset);
-	const b2Vec2& GetLinearOffset() const;
+	void SetLinearOffset(const Vec2& linearOffset);
+	const Vec2& GetLinearOffset() const;
 
 	/// Set/get the target angular offset, in radians.
 	void SetAngularOffset(float_t angularOffset);
@@ -99,9 +99,9 @@ protected:
 	bool SolvePositionConstraints(const b2SolverData& data) override;
 
 	// Solver shared
-	b2Vec2 m_linearOffset;
+	Vec2 m_linearOffset;
 	float_t m_angularOffset;
-	b2Vec2 m_linearImpulse;
+	Vec2 m_linearImpulse;
 	float_t m_angularImpulse;
 	float_t m_maxForce;
 	float_t m_maxTorque;
@@ -110,11 +110,11 @@ protected:
 	// Solver temp
 	index_t m_indexA;
 	index_t m_indexB;
-	b2Vec2 m_rA;
-	b2Vec2 m_rB;
-	b2Vec2 m_localCenterA;
-	b2Vec2 m_localCenterB;
-	b2Vec2 m_linearError;
+	Vec2 m_rA;
+	Vec2 m_rB;
+	Vec2 m_localCenterA;
+	Vec2 m_localCenterB;
+	Vec2 m_linearError;
 	float_t m_angularError;
 	float_t m_invMassA;
 	float_t m_invMassB;

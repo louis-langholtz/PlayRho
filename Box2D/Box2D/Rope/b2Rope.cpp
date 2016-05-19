@@ -35,16 +35,16 @@ void b2Rope::Initialize(const b2RopeDef* def)
 {
 	assert(def->count >= 3);
 	m_count = def->count;
-	m_ps = static_cast<b2Vec2*>(alloc(m_count * sizeof(b2Vec2)));
-	m_p0s = static_cast<b2Vec2*>(alloc(m_count * sizeof(b2Vec2)));
-	m_vs = static_cast<b2Vec2*>(alloc(m_count * sizeof(b2Vec2)));
+	m_ps = static_cast<Vec2*>(alloc(m_count * sizeof(Vec2)));
+	m_p0s = static_cast<Vec2*>(alloc(m_count * sizeof(Vec2)));
+	m_vs = static_cast<Vec2*>(alloc(m_count * sizeof(Vec2)));
 	m_ims = static_cast<float_t*>(alloc(m_count * sizeof(float_t)));
 
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		m_ps[i] = def->vertices[i];
 		m_p0s[i] = def->vertices[i];
-		m_vs[i] = b2Vec2_zero;
+		m_vs[i] = Vec2_zero;
 
 		const auto m = def->masses[i];
 		if (m > float_t{0})

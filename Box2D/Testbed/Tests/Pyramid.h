@@ -36,7 +36,7 @@ public:
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
+			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
@@ -45,10 +45,10 @@ public:
 			b2PolygonShape shape;
 			shape.SetAsBox(a, a);
 
-			b2Vec2 x(-7.0f, 0.75f);
-			b2Vec2 y;
-			b2Vec2 deltaX(0.5625f, 1.25f);
-			b2Vec2 deltaY(1.125f, 0.0f);
+			Vec2 x(-7.0f, 0.75f);
+			Vec2 y;
+			Vec2 deltaX(0.5625f, 1.25f);
+			Vec2 deltaY(1.125f, 0.0f);
 
 			for (int32 i = 0; i < e_count; ++i)
 			{

@@ -28,12 +28,12 @@ public:
 	{
 		{
 			m_transformA = b2Transform_identity;
-			m_transformA.p = b2Vec2(0.0f, -0.2f);
+			m_transformA.p = Vec2(0.0f, -0.2f);
 			m_polygonA.SetAsBox(10.0f, 0.2f);
 		}
 
 		{
-			m_positionB = b2Vec2(12.017401f, 0.13678508f);
+			m_positionB = Vec2(12.017401f, 0.13678508f);
 			m_angleB = -0.0109265f;
 			m_transformB = b2Transform{m_positionB, b2Rot(m_angleB)};
 
@@ -67,7 +67,7 @@ public:
 
 		{
 			b2Color color(0.9f, 0.9f, 0.9f);
-			b2Vec2 v[MaxPolygonVertices];
+			Vec2 v[MaxPolygonVertices];
 			for (int32 i = 0; i < m_polygonA.GetVertexCount(); ++i)
 			{
 				v[i] = b2Mul(m_transformA, m_polygonA.GetVertex(i));
@@ -81,8 +81,8 @@ public:
 			g_debugDraw.DrawPolygon(v, m_polygonB.GetVertexCount(), color);
 		}
 
-		b2Vec2 x1 = output.pointA;
-		b2Vec2 x2 = output.pointB;
+		Vec2 x1 = output.pointA;
+		Vec2 x2 = output.pointB;
 
 		b2Color c1(1.0f, 0.0f, 0.0f);
 		g_debugDraw.DrawPoint(x1, 4.0f, c1);
@@ -123,7 +123,7 @@ public:
 		m_transformB = b2Transform{m_positionB, b2Rot(m_angleB)};
 	}
 
-	b2Vec2 m_positionB;
+	Vec2 m_positionB;
 	float_t m_angleB;
 
 	b2Transform m_transformA;

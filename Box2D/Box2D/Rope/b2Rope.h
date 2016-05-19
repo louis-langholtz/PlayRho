@@ -33,7 +33,7 @@ struct b2RopeDef
 	constexpr b2RopeDef() = default;
 
 	///
-	b2Vec2* vertices = nullptr;
+	Vec2* vertices = nullptr;
 
 	///
 	size_type count = 0;
@@ -42,7 +42,7 @@ struct b2RopeDef
 	float_t* masses = nullptr;
 
 	///
-	b2Vec2 gravity = b2Vec2_zero;
+	Vec2 gravity = Vec2_zero;
 
 	///
 	float_t damping = float_t(1) / float_t(10);
@@ -76,7 +76,7 @@ public:
 	}
 
 	///
-	const b2Vec2* GetVertices() const noexcept
+	const Vec2* GetVertices() const noexcept
 	{
 		return m_ps;
 	}
@@ -93,16 +93,16 @@ private:
 	void SolveC3();
 
 	size_type m_count = 0;
-	b2Vec2* m_ps = nullptr;
-	b2Vec2* m_p0s = nullptr;
-	b2Vec2* m_vs = nullptr;
+	Vec2* m_ps = nullptr;
+	Vec2* m_p0s = nullptr;
+	Vec2* m_vs = nullptr;
 
 	float_t* m_ims = nullptr;
 
 	float_t* m_Ls = nullptr;
 	float_t* m_as = nullptr;
 
-	b2Vec2 m_gravity = b2Vec2_zero;
+	Vec2 m_gravity = Vec2_zero;
 	float_t m_damping = float_t{0};
 
 	float_t m_k2 = float_t(1);

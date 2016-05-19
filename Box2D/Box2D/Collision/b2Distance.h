@@ -45,20 +45,20 @@ public:
 	float_t GetRadius() const noexcept { return m_radius; }
 
 	/// Get the supporting vertex index in the given direction.
-	size_type GetSupport(const b2Vec2& d) const noexcept;
+	size_type GetSupport(const Vec2& d) const noexcept;
 
 	/// Get the supporting vertex in the given direction.
-	const b2Vec2& GetSupportVertex(const b2Vec2& d) const;
+	const Vec2& GetSupportVertex(const Vec2& d) const;
 
 	/// Get the vertex count.
 	inline size_type GetVertexCount() const noexcept { return m_count; }
 
 	/// Get a vertex by index. Used by b2Distance.
-	b2Vec2 GetVertex(size_type index) const;
+	Vec2 GetVertex(size_type index) const;
 
 private:
-	b2Vec2 m_buffer[2];
-	const b2Vec2* m_vertices = nullptr;
+	Vec2 m_buffer[2];
+	const Vec2* m_vertices = nullptr;
 	size_type m_count = 0;
 	float_t m_radius = float_t{0}; ///< "Radius" of the associated shape.
 };
@@ -121,8 +121,8 @@ struct b2DistanceInput
 /// Output for b2Distance.
 struct b2DistanceOutput
 {
-	b2Vec2 pointA;		///< closest point on shapeA
-	b2Vec2 pointB;		///< closest point on shapeB
+	Vec2 pointA;		///< closest point on shapeA
+	Vec2 pointB;		///< closest point on shapeB
 	float_t distance;
 	int32 iterations;	///< number of GJK iterations used
 };
@@ -134,14 +134,14 @@ b2DistanceOutput b2Distance(b2SimplexCache& cache,  const b2DistanceInput& input
 
 //////////////////////////////////////////////////////////////////////////
 
-inline b2Vec2 b2DistanceProxy::GetVertex(size_type index) const
+inline Vec2 b2DistanceProxy::GetVertex(size_type index) const
 {
 	assert(index >= 0);
 	assert(index < m_count);
 	return m_vertices[index];
 }
 
-inline b2DistanceProxy::size_type b2DistanceProxy::GetSupport(const b2Vec2& d) const noexcept
+inline b2DistanceProxy::size_type b2DistanceProxy::GetSupport(const Vec2& d) const noexcept
 {
 	auto bestIndex = decltype(m_count){0};
 	auto bestValue = b2Dot(m_vertices[0], d);
@@ -158,7 +158,7 @@ inline b2DistanceProxy::size_type b2DistanceProxy::GetSupport(const b2Vec2& d) c
 	return bestIndex;
 }
 
-inline const b2Vec2& b2DistanceProxy::GetSupportVertex(const b2Vec2& d) const
+inline const Vec2& b2DistanceProxy::GetSupportVertex(const Vec2& d) const
 {
 	auto bestIndex = decltype(m_count){0};
 	auto bestValue = b2Dot(m_vertices[0], d);

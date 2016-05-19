@@ -32,7 +32,7 @@ public:
 			ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-20.0f, 0.0f), b2Vec2(20.0f, 0.0f));
+			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
 
 			b2FixtureDef fd;
 			fd.shape = &shape;
@@ -44,7 +44,7 @@ public:
 		{
 			BodyDef bd;
 			bd.type = DynamicBody;
-			bd.position = b2Vec2(0.0f, 3.0f);
+			bd.position = Vec2(0.0f, 3.0f);
 			m_attachment = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
@@ -56,11 +56,11 @@ public:
 		{
 			BodyDef bd;
 			bd.type = DynamicBody;
-			bd.position = b2Vec2(-4.0f, 5.0f);
+			bd.position = Vec2(-4.0f, 5.0f);
 			m_platform = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
-			shape.SetAsBox(0.5f, 4.0f, b2Vec2(4.0f, 0.0f), 0.5f * Pi);
+			shape.SetAsBox(0.5f, 4.0f, Vec2(4.0f, 0.0f), 0.5f * Pi);
 
 			b2FixtureDef fd;
 			fd.shape = &shape;
@@ -69,13 +69,13 @@ public:
 			m_platform->CreateFixture(&fd);
 
 			b2RevoluteJointDef rjd;
-			rjd.Initialize(m_attachment, m_platform, b2Vec2(0.0f, 5.0f));
+			rjd.Initialize(m_attachment, m_platform, Vec2(0.0f, 5.0f));
 			rjd.maxMotorTorque = 50.0f;
 			rjd.enableMotor = true;
 			m_world->CreateJoint(&rjd);
 
 			b2PrismaticJointDef pjd;
-			pjd.Initialize(ground, m_platform, b2Vec2(0.0f, 5.0f), b2Vec2(1.0f, 0.0f));
+			pjd.Initialize(ground, m_platform, Vec2(0.0f, 5.0f), Vec2(1.0f, 0.0f));
 
 			pjd.maxMotorForce = 1000.0f;
 			pjd.enableMotor = true;
@@ -92,7 +92,7 @@ public:
 		{
 			BodyDef bd;
 			bd.type = DynamicBody;
-			bd.position = b2Vec2(0.0f, 8.0f);
+			bd.position = Vec2(0.0f, 8.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
@@ -121,7 +121,7 @@ public:
 
 		case GLFW_KEY_K:
 			m_platform->SetType(KinematicBody);
-			m_platform->SetLinearVelocity(b2Vec2(-m_speed, 0.0f));
+			m_platform->SetLinearVelocity(Vec2(-m_speed, 0.0f));
 			m_platform->SetAngularVelocity(0.0f);
 			break;
 		}
@@ -132,8 +132,8 @@ public:
 		// Drive the kinematic body.
 		if (m_platform->GetType() == KinematicBody)
 		{
-			b2Vec2 p = m_platform->GetTransform().p;
-			b2Vec2 v = m_platform->GetLinearVelocity();
+			Vec2 p = m_platform->GetTransform().p;
+			Vec2 v = m_platform->GetLinearVelocity();
 
 			if ((p.x < -10.0f && v.x < 0.0f) ||
 				(p.x > 10.0f && v.x > 0.0f))

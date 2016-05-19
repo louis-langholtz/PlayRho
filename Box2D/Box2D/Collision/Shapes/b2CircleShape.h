@@ -27,7 +27,7 @@ namespace box2d {
 class b2CircleShape : public b2Shape
 {
 public:
-	constexpr explicit b2CircleShape(float_t radius = 0, b2Vec2 position = b2Vec2_zero) noexcept:
+	constexpr explicit b2CircleShape(float_t radius = 0, Vec2 position = Vec2_zero) noexcept:
 		b2Shape(e_circle, radius), m_p(position) {}
 
 	b2CircleShape(const b2CircleShape&) = default;
@@ -39,7 +39,7 @@ public:
 	child_count_t GetChildCount() const override;
 
 	/// Implement b2Shape.
-	bool TestPoint(const b2Transform& transform, const b2Vec2& p) const override;
+	bool TestPoint(const b2Transform& transform, const Vec2& p) const override;
 
 	/// Implement b2Shape.
 	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
@@ -51,13 +51,13 @@ public:
 	/// @see b2Shape::ComputeMass
 	b2MassData ComputeMass(float_t density) const override;
 
-	b2Vec2 GetPosition() const noexcept { return m_p; }
+	Vec2 GetPosition() const noexcept { return m_p; }
 
-	void SetPosition(const b2Vec2& value) noexcept { m_p = value; }
+	void SetPosition(const Vec2& value) noexcept { m_p = value; }
 
 private:
 	/// Position
-	b2Vec2 m_p = b2Vec2_zero;
+	Vec2 m_p = Vec2_zero;
 };
 
 } // namespace box2d

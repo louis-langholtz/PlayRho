@@ -40,18 +40,18 @@ public:
 		Test::Step(settings);
 
 		b2Sweep sweepA;
-		sweepA.c0 = b2Vec2(24.0f, -60.0f);
+		sweepA.c0 = Vec2(24.0f, -60.0f);
 		sweepA.a0 = 2.95f;
 		sweepA.c = sweepA.c0;
 		sweepA.a = sweepA.a0;
-		sweepA.localCenter = b2Vec2_zero;
+		sweepA.localCenter = Vec2_zero;
 
 		b2Sweep sweepB;
-		sweepB.c0 = b2Vec2(53.474274f, -50.252514f);
+		sweepB.c0 = Vec2(53.474274f, -50.252514f);
 		sweepB.a0 = 513.36676f; // - 162.0f * Pi;
-		sweepB.c = b2Vec2(54.595478f, -51.083473f);
+		sweepB.c = Vec2(54.595478f, -51.083473f);
 		sweepB.a = 513.62781f; //  - 162.0f * Pi;
-		sweepB.localCenter = b2Vec2_zero;
+		sweepB.localCenter = Vec2_zero;
 
 		//sweepB.a0 -= 300.0f * Pi;
 		//sweepB.a -= 300.0f * Pi;
@@ -72,7 +72,7 @@ public:
 		g_debugDraw.DrawString(5, m_textLine, "max toi iters = %d, max root iters = %d", toiMaxIters, toiMaxRootIters);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		b2Vec2 vertices[MaxPolygonVertices];
+		Vec2 vertices[MaxPolygonVertices];
 
 		const auto transformA = b2GetTransform(sweepA, 0.0f);
 		for (int32 i = 0; i < m_shapeA.GetVertexCount(); ++i)
@@ -82,7 +82,7 @@ public:
 		g_debugDraw.DrawPolygon(vertices, m_shapeA.GetVertexCount(), b2Color(0.9f, 0.9f, 0.9f));
 
 		auto transformB = b2GetTransform(sweepB, 0.0f);
-		//b2Vec2 localPoint(2.0f, -0.1f);
+		//Vec2 localPoint(2.0f, -0.1f);
 		for (int32 i = 0; i < m_shapeB.GetVertexCount(); ++i)
 		{
 			vertices[i] = b2Mul(transformB, m_shapeB.GetVertex(i));

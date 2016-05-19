@@ -39,6 +39,10 @@
 		472134B01C8E4F38009536F9 /* b2ConstFixtureList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472134AD1C8E4F38009536F9 /* b2ConstFixtureList.cpp */; };
 		472134B11C8E4F38009536F9 /* b2ConstFixtureList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472134AE1C8E4F38009536F9 /* b2ConstFixtureList.hpp */; };
 		472134B21C8E4F38009536F9 /* b2ConstFixtureList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472134AE1C8E4F38009536F9 /* b2ConstFixtureList.hpp */; };
+		4751EE291CEDD78F00D459CB /* Mobile.h in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE281CEDD78F00D459CB /* Mobile.h */; };
+		4751EE2B1CEDD79900D459CB /* ConveyorBelt.h in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE2A1CEDD79900D459CB /* ConveyorBelt.h */; };
+		4751EE2E1CEDD7A300D459CB /* MotorJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE2C1CEDD7A300D459CB /* MotorJoint.h */; };
+		4751EE2F1CEDD7A300D459CB /* MobileBalanced.h in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE2D1CEDD7A300D459CB /* MobileBalanced.h */; };
 		47AA5D9B1C4C5FBE008AF2BA /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8927141C3E5900F1753A /* b2BroadPhase.cpp */; };
 		47AA5D9C1C4C5FBE008AF2BA /* b2CollideCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8929141C3E5900F1753A /* b2CollideCircle.cpp */; };
 		47AA5D9D1C4C5FBE008AF2BA /* b2CollideEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB892A141C3E5900F1753A /* b2CollideEdge.cpp */; };
@@ -326,6 +330,10 @@
 		472134A81C8E4E12009536F9 /* b2ConstFixtureIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = b2ConstFixtureIterator.hpp; sourceTree = "<group>"; };
 		472134AD1C8E4F38009536F9 /* b2ConstFixtureList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2ConstFixtureList.cpp; sourceTree = "<group>"; };
 		472134AE1C8E4F38009536F9 /* b2ConstFixtureList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = b2ConstFixtureList.hpp; sourceTree = "<group>"; };
+		4751EE281CEDD78F00D459CB /* Mobile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mobile.h; sourceTree = "<group>"; };
+		4751EE2A1CEDD79900D459CB /* ConveyorBelt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConveyorBelt.h; sourceTree = "<group>"; };
+		4751EE2C1CEDD7A300D459CB /* MotorJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MotorJoint.h; sourceTree = "<group>"; };
+		4751EE2D1CEDD7A300D459CB /* MobileBalanced.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobileBalanced.h; sourceTree = "<group>"; };
 		47AA5DFD1C4C5FBE008AF2BA /* libBox2D iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libBox2D iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		80154ACD141DED6B00C8251F /* Tumbler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tumbler.h; sourceTree = "<group>"; };
 		805900AA184EEE0F00C8ECA3 /* DebugDraw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DebugDraw.cpp; sourceTree = "<group>"; };
@@ -802,6 +810,10 @@
 		80BB8A3D141C3E8500F1753A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				4751EE2C1CEDD7A300D459CB /* MotorJoint.h */,
+				4751EE2D1CEDD7A300D459CB /* MobileBalanced.h */,
+				4751EE2A1CEDD79900D459CB /* ConveyorBelt.h */,
+				4751EE281CEDD78F00D459CB /* Mobile.h */,
 				8066C2311890307100985759 /* BasicSliderCrank.h */,
 				80BB8A3E141C3E8500F1753A /* AddPair.h */,
 				80BB8A3F141C3E8500F1753A /* ApplyForce.h */,
@@ -979,6 +991,7 @@
 				80BB899A141C3E5900F1753A /* b2EdgeShape.h in Headers */,
 				80BB899C141C3E5900F1753A /* b2PolygonShape.h in Headers */,
 				80BB899D141C3E5900F1753A /* b2Shape.h in Headers */,
+				4751EE2F1CEDD7A300D459CB /* MobileBalanced.h in Headers */,
 				80BB899F141C3E5900F1753A /* b2BlockAllocator.h in Headers */,
 				80BB89A1141C3E5900F1753A /* b2Draw.h in Headers */,
 				80BB89A2141C3E5900F1753A /* b2GrowableStack.h in Headers */,
@@ -995,9 +1008,11 @@
 				80BB89B5141C3E5900F1753A /* b2World.h in Headers */,
 				80BB89B7141C3E5900F1753A /* b2WorldCallbacks.h in Headers */,
 				80BB89B9141C3E5900F1753A /* b2ChainAndCircleContact.h in Headers */,
+				4751EE291CEDD78F00D459CB /* Mobile.h in Headers */,
 				80BB89BB141C3E5900F1753A /* b2ChainAndPolygonContact.h in Headers */,
 				4721348E1C8CF9FA009536F9 /* b2ConstBodyIterator.hpp in Headers */,
 				4721349F1C8E4CB5009536F9 /* b2FixtureList.hpp in Headers */,
+				4751EE2B1CEDD79900D459CB /* ConveyorBelt.h in Headers */,
 				80BB89BD141C3E5900F1753A /* b2CircleContact.h in Headers */,
 				472134A51C8E4D47009536F9 /* b2FixtureIterator.hpp in Headers */,
 				80BB89BF141C3E5900F1753A /* b2Contact.h in Headers */,
@@ -1018,6 +1033,7 @@
 				80BB89DB141C3E5900F1753A /* b2RopeJoint.h in Headers */,
 				80BB89DD141C3E5900F1753A /* b2WeldJoint.h in Headers */,
 				80BB89DF141C3E5900F1753A /* b2WheelJoint.h in Headers */,
+				4751EE2E1CEDD7A300D459CB /* MotorJoint.h in Headers */,
 				80BB89E1141C3E5900F1753A /* b2Rope.h in Headers */,
 				80620F90168B934600D46C8D /* b2MotorJoint.h in Headers */,
 			);

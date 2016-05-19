@@ -51,7 +51,7 @@ public:
 	/// @sa void Add(b2Joint* joint).
 	void Clear() noexcept;
 
-	void Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& gravity, bool allowSleep);
+	void Solve(b2Profile* profile, const b2TimeStep& step, const Vec2& gravity, bool allowSleep);
 
 	void SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, island_count_t toiIndexB);
 

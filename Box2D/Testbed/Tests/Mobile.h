@@ -37,29 +37,29 @@ public:
 		// Create ground body.
 		{
 			BodyDef bodyDef;
-			bodyDef.position = b2Vec2(0.0f, 20.0f);
+			bodyDef.position = Vec2(0.0f, 20.0f);
 			ground = m_world->CreateBody(&bodyDef);
 		}
 
 		float32 a = 0.5f;
-		b2Vec2 h(0.0f, a);
+		Vec2 h(0.0f, a);
 
-		b2Body* root = AddNode(ground, b2Vec2_zero, 0, 3.0f, a);
+		b2Body* root = AddNode(ground, Vec2_zero, 0, 3.0f, a);
 
 		b2RevoluteJointDef jointDef;
 		jointDef.bodyA = ground;
 		jointDef.bodyB = root;
-		jointDef.localAnchorA = b2Vec2_zero;
+		jointDef.localAnchorA = Vec2_zero;
 		jointDef.localAnchorB = h;
 		m_world->CreateJoint(&jointDef);
 	}
 
-	b2Body* AddNode(b2Body* parent, const b2Vec2& localAnchor, int32 depth, float32 offset, float32 a)
+	b2Body* AddNode(b2Body* parent, const Vec2& localAnchor, int32 depth, float32 offset, float32 a)
 	{
 		float32 density = 20.0f;
-		b2Vec2 h(0.0f, a);
+		Vec2 h(0.0f, a);
 
-		b2Vec2 p = parent->GetPosition() + localAnchor - h;
+		Vec2 p = parent->GetPosition() + localAnchor - h;
 
 		BodyDef bodyDef;
 		bodyDef.type = DynamicBody;
@@ -75,8 +75,8 @@ public:
 			return body;
 		}
 
-		b2Vec2 a1 = b2Vec2(offset, -a);
-		b2Vec2 a2 = b2Vec2(-offset, -a);
+		Vec2 a1 = Vec2(offset, -a);
+		Vec2 a2 = Vec2(-offset, -a);
 		b2Body* body1 = AddNode(body, a1, depth + 1, 0.5f * offset, a);
 		b2Body* body2 = AddNode(body, a2, depth + 1, 0.5f * offset, a);
 

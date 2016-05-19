@@ -36,7 +36,7 @@ using namespace box2d;
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-void b2WeldJointDef::Initialize(b2Body* bA, b2Body* bB, const b2Vec2& anchor)
+void b2WeldJointDef::Initialize(b2Body* bA, b2Body* bB, const Vec2& anchor)
 {
 	bodyA = bA;
 	bodyB = bB;
@@ -149,7 +149,7 @@ void b2WeldJoint::InitVelocityConstraints(const b2SolverData& data)
 		// Scale impulses to support a variable time step.
 		m_impulse *= data.step.dtRatio;
 
-		const auto P = b2Vec2(m_impulse.x, m_impulse.y);
+		const auto P = Vec2(m_impulse.x, m_impulse.y);
 
 		vA -= mA * P;
 		wA -= iA * (b2Cross(m_rA, P) + m_impulse.z);
@@ -211,7 +211,7 @@ void b2WeldJoint::SolveVelocityConstraints(const b2SolverData& data)
 		const auto impulse = -b2Mul(m_mass, Cdot);
 		m_impulse += impulse;
 
-		const auto P = b2Vec2(impulse.x, impulse.y);
+		const auto P = Vec2(impulse.x, impulse.y);
 
 		vA -= mA * P;
 		wA -= iA * (b2Cross(m_rA, P) + impulse.z);
@@ -290,7 +290,7 @@ bool b2WeldJoint::SolvePositionConstraints(const b2SolverData& data)
 			impulse = b2Vec3(impulse2.x, impulse2.y, float_t{0});
 		}
 
-		const auto P = b2Vec2(impulse.x, impulse.y);
+		const auto P = Vec2(impulse.x, impulse.y);
 
 		cA -= mA * P;
 		aA -= iA * (b2Cross(rA, P) + impulse.z);
@@ -307,19 +307,19 @@ bool b2WeldJoint::SolvePositionConstraints(const b2SolverData& data)
 	return (positionError <= LinearSlop) && (angularError <= AngularSlop);
 }
 
-b2Vec2 b2WeldJoint::GetAnchorA() const
+Vec2 b2WeldJoint::GetAnchorA() const
 {
 	return m_bodyA->GetWorldPoint(m_localAnchorA);
 }
 
-b2Vec2 b2WeldJoint::GetAnchorB() const
+Vec2 b2WeldJoint::GetAnchorB() const
 {
 	return m_bodyB->GetWorldPoint(m_localAnchorB);
 }
 
-b2Vec2 b2WeldJoint::GetReactionForce(float_t inv_dt) const
+Vec2 b2WeldJoint::GetReactionForce(float_t inv_dt) const
 {
-	const auto P = b2Vec2(m_impulse.x, m_impulse.y);
+	const auto P = Vec2(m_impulse.x, m_impulse.y);
 	return inv_dt * P;
 }
 
@@ -337,8 +337,8 @@ void b2WeldJoint::Dump()
 	log("  jd.bodyA = bodies[%d];\n", indexA);
 	log("  jd.bodyB = bodies[%d];\n", indexB);
 	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	log("  jd.localAnchorA = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-	log("  jd.localAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+	log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
+	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
 	log("  jd.referenceAngle = %.15lef;\n", m_referenceAngle);
 	log("  jd.frequencyHz = %.15lef;\n", m_frequencyHz);
 	log("  jd.dampingRatio = %.15lef;\n", m_dampingRatio);

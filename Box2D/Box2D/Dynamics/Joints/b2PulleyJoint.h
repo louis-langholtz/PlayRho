@@ -34,21 +34,21 @@ struct b2PulleyJointDef : public b2JointDef
 
 	/// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.
 	void Initialize(b2Body* bodyA, b2Body* bodyB,
-					const b2Vec2& groundAnchorA, const b2Vec2& groundAnchorB,
-					const b2Vec2& anchorA, const b2Vec2& anchorB,
+					const Vec2& groundAnchorA, const Vec2& groundAnchorB,
+					const Vec2& anchorA, const Vec2& anchorB,
 					float_t ratio);
 
 	/// The first ground anchor in world coordinates. This point never moves.
-	b2Vec2 groundAnchorA = b2Vec2{-float_t(1), float_t(1)};
+	Vec2 groundAnchorA = Vec2{-float_t(1), float_t(1)};
 
 	/// The second ground anchor in world coordinates. This point never moves.
-	b2Vec2 groundAnchorB = b2Vec2{float_t(1), float_t(1)};
+	Vec2 groundAnchorB = Vec2{float_t(1), float_t(1)};
 
 	/// The local anchor point relative to bodyA's origin.
-	b2Vec2 localAnchorA = b2Vec2{-float_t(1), float_t{0}};
+	Vec2 localAnchorA = Vec2{-float_t(1), float_t{0}};
 
 	/// The local anchor point relative to bodyB's origin.
-	b2Vec2 localAnchorB = b2Vec2{float_t(1), float_t{0}};
+	Vec2 localAnchorB = Vec2{float_t(1), float_t{0}};
 
 	/// The a reference length for the segment attached to bodyA.
 	float_t lengthA = float_t{0};
@@ -71,17 +71,17 @@ struct b2PulleyJointDef : public b2JointDef
 class b2PulleyJoint : public b2Joint
 {
 public:
-	b2Vec2 GetAnchorA() const override;
-	b2Vec2 GetAnchorB() const override;
+	Vec2 GetAnchorA() const override;
+	Vec2 GetAnchorB() const override;
 
-	b2Vec2 GetReactionForce(float_t inv_dt) const override;
+	Vec2 GetReactionForce(float_t inv_dt) const override;
 	float_t GetReactionTorque(float_t inv_dt) const override;
 
 	/// Get the first ground anchor.
-	b2Vec2 GetGroundAnchorA() const;
+	Vec2 GetGroundAnchorA() const;
 
 	/// Get the second ground anchor.
-	b2Vec2 GetGroundAnchorB() const;
+	Vec2 GetGroundAnchorB() const;
 
 	/// Get the current length of the segment attached to bodyA.
 	float_t GetLengthA() const;
@@ -102,7 +102,7 @@ public:
 	void Dump() override;
 
 	/// Implement b2Joint::ShiftOrigin
-	void ShiftOrigin(const b2Vec2& newOrigin) override;
+	void ShiftOrigin(const Vec2& newOrigin) override;
 
 protected:
 
@@ -113,14 +113,14 @@ protected:
 	void SolveVelocityConstraints(const b2SolverData& data) override;
 	bool SolvePositionConstraints(const b2SolverData& data) override;
 
-	b2Vec2 m_groundAnchorA;
-	b2Vec2 m_groundAnchorB;
+	Vec2 m_groundAnchorA;
+	Vec2 m_groundAnchorB;
 	float_t m_lengthA;
 	float_t m_lengthB;
 	
 	// Solver shared
-	b2Vec2 m_localAnchorA;
-	b2Vec2 m_localAnchorB;
+	Vec2 m_localAnchorA;
+	Vec2 m_localAnchorB;
 	float_t m_constant;
 	float_t m_ratio;
 	float_t m_impulse;
@@ -128,12 +128,12 @@ protected:
 	// Solver temp
 	index_t m_indexA;
 	index_t m_indexB;
-	b2Vec2 m_uA;
-	b2Vec2 m_uB;
-	b2Vec2 m_rA;
-	b2Vec2 m_rB;
-	b2Vec2 m_localCenterA;
-	b2Vec2 m_localCenterB;
+	Vec2 m_uA;
+	Vec2 m_uB;
+	Vec2 m_rA;
+	Vec2 m_rB;
+	Vec2 m_localCenterA;
+	Vec2 m_localCenterB;
 	float_t m_invMassA;
 	float_t m_invMassB;
 	float_t m_invIA;

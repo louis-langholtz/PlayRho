@@ -30,7 +30,7 @@ struct b2MassData
 {
 	b2MassData() = default;
 
-	constexpr b2MassData(float_t m, b2Vec2 c, float_t _I) noexcept: mass(m), center(c), I(_I)
+	constexpr b2MassData(float_t m, Vec2 c, float_t _I) noexcept: mass(m), center(c), I(_I)
 	{
 		assert(mass >= 0);
 	}
@@ -41,7 +41,7 @@ struct b2MassData
 	float_t mass;
 
 	/// The position of the shape's centroid relative to the shape's origin.
-	b2Vec2 center;
+	Vec2 center;
 
 	/// The rotational inertia of the shape about the local origin.
 	float_t I;
@@ -91,7 +91,7 @@ public:
 	/// Test a point for containment in this shape. This only works for convex shapes.
 	/// @param xf the shape world transform.
 	/// @param p a point in world coordinates.
-	virtual bool TestPoint(const b2Transform& xf, const b2Vec2& p) const = 0;
+	virtual bool TestPoint(const b2Transform& xf, const Vec2& p) const = 0;
 
 	/// Cast a ray against a child shape.
 	/// @param output the ray-cast results.

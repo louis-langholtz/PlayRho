@@ -42,10 +42,10 @@ public:
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
+			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 
-			shape.Set(b2Vec2(20.0f, 0.0f), b2Vec2(20.0f, 20.0f));
+			shape.Set(Vec2(20.0f, 0.0f), Vec2(20.0f, 20.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
@@ -74,7 +74,7 @@ public:
 				float_t x = 0.0f;
 				//float_t x = RandomFloat(-0.02f, 0.02f);
 				//float_t x = i % 2 == 0 ? -0.01f : 0.01f;
-				bd.position = b2Vec2(xs[j] + x, 0.55f + 1.1f * i);
+				bd.position = Vec2(xs[j] + x, 0.55f + 1.1f * i);
 				b2Body* body = m_world->CreateBody(&bd);
 
 				m_bodies[n] = body;
@@ -109,12 +109,12 @@ public:
 				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.bullet = true;
-				bd.position = b2Vec2(-31.0f, 5.0f);
+				bd.position = Vec2(-31.0f, 5.0f);
 
 				m_bullet = m_world->CreateBody(&bd);
 				m_bullet->CreateFixture(&fd);
 
-				m_bullet->SetLinearVelocity(b2Vec2(400.0f, 0.0f));
+				m_bullet->SetLinearVelocity(Vec2(400.0f, 0.0f));
 			}
 			break;
                 
@@ -150,12 +150,12 @@ public:
 		//		BodyDef bd;
 		//		bd.type = DynamicBody;
 		//		bd.bullet = true;
-		//		bd.position = b2Vec2(-31.0f, 5.0f);
+		//		bd.position = Vec2(-31.0f, 5.0f);
 
 		//		m_bullet = m_world->CreateBody(&bd);
 		//		m_bullet->CreateFixture(&fd);
 
-		//		m_bullet->SetLinearVelocity(b2Vec2(400.0f, 0.0f));
+		//		m_bullet->SetLinearVelocity(Vec2(400.0f, 0.0f));
 		//	}
 		//}
 	}

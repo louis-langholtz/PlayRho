@@ -131,8 +131,8 @@ struct ContactPoint
 {
 	b2Fixture* fixtureA;
 	b2Fixture* fixtureB;
-	b2Vec2 normal;
-	b2Vec2 position;
+	Vec2 normal;
+	Vec2 position;
 	b2PointState state;
 	float_t normalImpulse;
 	float_t tangentImpulse;
@@ -150,15 +150,15 @@ public:
 	virtual void Step(Settings* settings);
 	virtual void Keyboard(int key) { BOX2D_NOT_USED(key); }
 	virtual void KeyboardUp(int key) { BOX2D_NOT_USED(key); }
-	void ShiftMouseDown(const b2Vec2& p);
-	virtual void MouseDown(const b2Vec2& p);
-	virtual void MouseUp(const b2Vec2& p);
-	void MouseMove(const b2Vec2& p);
+	void ShiftMouseDown(const Vec2& p);
+	virtual void MouseDown(const Vec2& p);
+	virtual void MouseUp(const Vec2& p);
+	void MouseMove(const Vec2& p);
 	void LaunchBomb();
-	void LaunchBomb(const b2Vec2& position, const b2Vec2& velocity);
+	void LaunchBomb(const Vec2& position, const Vec2& velocity);
 	
-	void SpawnBomb(const b2Vec2& worldPt);
-	void CompleteBombSpawn(const b2Vec2& p);
+	void SpawnBomb(const Vec2& worldPt);
+	void CompleteBombSpawn(const Vec2& p);
 
 	// Let derived tests know that a joint was destroyed.
 	virtual void JointDestroyed(b2Joint* joint) { BOX2D_NOT_USED(joint); }
@@ -173,7 +173,7 @@ public:
 		BOX2D_NOT_USED(impulse);
 	}
 
-	void ShiftOrigin(const b2Vec2& newOrigin);
+	void ShiftOrigin(const Vec2& newOrigin);
 
 protected:
 	friend class DestructionListener;
@@ -189,9 +189,9 @@ protected:
 	b2World* m_world;
 	b2Body* m_bomb;
 	b2MouseJoint* m_mouseJoint;
-	b2Vec2 m_bombSpawnPoint;
+	Vec2 m_bombSpawnPoint;
 	bool m_bombSpawning;
-	b2Vec2 m_mouseWorld;
+	Vec2 m_mouseWorld;
 	int32 m_stepCount;
 
 	b2Profile m_maxProfile;

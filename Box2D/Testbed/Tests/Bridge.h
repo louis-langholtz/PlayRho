@@ -38,7 +38,7 @@ public:
 			ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
+			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
@@ -58,11 +58,11 @@ public:
 			{
 				BodyDef bd;
 				bd.type = DynamicBody;
-				bd.position = b2Vec2(-14.5f + 1.0f * i, 5.0f);
+				bd.position = Vec2(-14.5f + 1.0f * i, 5.0f);
 				b2Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&fd);
 
-				b2Vec2 anchor(-15.0f + 1.0f * i, 5.0f);
+				Vec2 anchor(-15.0f + 1.0f * i, 5.0f);
 				jd.Initialize(prevBody, body, anchor);
 				m_world->CreateJoint(&jd);
 
@@ -73,17 +73,17 @@ public:
 				prevBody = body;
 			}
 
-			b2Vec2 anchor(-15.0f + 1.0f * e_count, 5.0f);
+			Vec2 anchor(-15.0f + 1.0f * e_count, 5.0f);
 			jd.Initialize(prevBody, ground, anchor);
 			m_world->CreateJoint(&jd);
 		}
 
 		for (int32 i = 0; i < 2; ++i)
 		{
-			b2Vec2 vertices[3];
-			vertices[0] = b2Vec2(-0.5f, 0.0f);
-			vertices[1] = b2Vec2(0.5f, 0.0f);
-			vertices[2] = b2Vec2(0.0f, 1.5f);
+			Vec2 vertices[3];
+			vertices[0] = Vec2(-0.5f, 0.0f);
+			vertices[1] = Vec2(0.5f, 0.0f);
+			vertices[2] = Vec2(0.0f, 1.5f);
 
 			b2PolygonShape shape;
 			shape.Set(vertices, 3);
@@ -94,7 +94,7 @@ public:
 
 			BodyDef bd;
 			bd.type = DynamicBody;
-			bd.position = b2Vec2(-8.0f + 8.0f * i, 12.0f);
+			bd.position = Vec2(-8.0f + 8.0f * i, 12.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&fd);
 		}
@@ -110,7 +110,7 @@ public:
 
 			BodyDef bd;
 			bd.type = DynamicBody;
-			bd.position = b2Vec2(-6.0f + 6.0f * i, 10.0f);
+			bd.position = Vec2(-6.0f + 6.0f * i, 10.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&fd);
 		}

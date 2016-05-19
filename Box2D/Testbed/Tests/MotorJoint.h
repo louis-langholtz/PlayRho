@@ -35,7 +35,7 @@ public:
 			ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-20.0f, 0.0f), b2Vec2(20.0f, 0.0f));
+			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
 
 			b2FixtureDef fd;
 			fd.shape = &shape;
@@ -47,7 +47,7 @@ public:
 		{
 			BodyDef bd;
 			bd.type = DynamicBody;
-			bd.position = b2Vec2(0.0f, 8.0f);
+			bd.position = Vec2(0.0f, 8.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
@@ -87,7 +87,7 @@ public:
 			m_time += 1.0f / settings->hz;
 		}
 
-		b2Vec2 linearOffset;
+		Vec2 linearOffset;
 		linearOffset.x = 6.0f * sinf(2.0f * m_time);
 		linearOffset.y = 8.0f + 4.0f * sinf(1.0f * m_time);
 		

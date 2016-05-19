@@ -29,23 +29,23 @@ public:
 	{
 		{
 			BodyDef bd;
-			bd.position = b2Vec2(0.0f, 0.0f);
+			bd.position = Vec2(0.0f, 0.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
 			b2EdgeShape edge;
 
-			edge.Set(b2Vec2(-10.0f, 0.0f), b2Vec2(10.0f, 0.0f));
+			edge.Set(Vec2(-10.0f, 0.0f), Vec2(10.0f, 0.0f));
 			body->CreateFixture(&edge, 0.0f);
 
 			b2PolygonShape shape;
-			shape.SetAsBox(0.2f, 1.0f, b2Vec2(0.5f, 1.0f), 0.0f);
+			shape.SetAsBox(0.2f, 1.0f, Vec2(0.5f, 1.0f), 0.0f);
 			body->CreateFixture(&shape, 0.0f);
 		}
 
 		{
 			BodyDef bd;
 			bd.type = DynamicBody;
-			bd.position = b2Vec2(0.0f, 4.0f);
+			bd.position = Vec2(0.0f, 4.0f);
 
 			b2PolygonShape box;
 			box.SetAsBox(2.0f, 0.1f);
@@ -57,25 +57,25 @@ public:
 
 			//m_x = RandomFloat(-1.0f, 1.0f);
 			m_x = 0.20352793f;
-			bd.position = b2Vec2(m_x, 10.0f);
+			bd.position = Vec2(m_x, 10.0f);
 			bd.bullet = true;
 
 			m_bullet = m_world->CreateBody(&bd);
 			m_bullet->CreateFixture(&box, 100.0f);
 
-			m_bullet->SetLinearVelocity(b2Vec2(0.0f, -50.0f));
+			m_bullet->SetLinearVelocity(Vec2(0.0f, -50.0f));
 		}
 	}
 
 	void Launch()
 	{
-		m_body->SetTransform(b2Vec2(0.0f, 4.0f), 0.0f);
-		m_body->SetLinearVelocity(b2Vec2_zero);
+		m_body->SetTransform(Vec2(0.0f, 4.0f), 0.0f);
+		m_body->SetLinearVelocity(Vec2_zero);
 		m_body->SetAngularVelocity(0.0f);
 
 		m_x = RandomFloat(-1.0f, 1.0f);
-		m_bullet->SetTransform(b2Vec2(m_x, 10.0f), 0.0f);
-		m_bullet->SetLinearVelocity(b2Vec2(0.0f, -50.0f));
+		m_bullet->SetTransform(Vec2(m_x, 10.0f), 0.0f);
+		m_bullet->SetLinearVelocity(Vec2(0.0f, -50.0f));
 		m_bullet->SetAngularVelocity(0.0f);
 
 		extern int32 gjkCalls, gjkIters, gjkMaxIters;

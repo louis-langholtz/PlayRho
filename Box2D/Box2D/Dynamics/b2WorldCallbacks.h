@@ -23,7 +23,7 @@
 
 namespace box2d {
 
-struct b2Vec2;
+struct Vec2;
 struct b2Transform;
 class b2Fixture;
 class b2Body;
@@ -167,8 +167,8 @@ public:
 	/// @param normal the normal vector at the point of intersection
 	/// @return -1 to filter, 0 to terminate, fraction to clip the ray for
 	/// closest hit, 1 to continue
-	virtual float_t ReportFixture(	b2Fixture* fixture, const b2Vec2& point,
-									const b2Vec2& normal, float_t fraction) = 0;
+	virtual float_t ReportFixture(	b2Fixture* fixture, const Vec2& point,
+									const Vec2& normal, float_t fraction) = 0;
 };
 
 } // namespace box2d

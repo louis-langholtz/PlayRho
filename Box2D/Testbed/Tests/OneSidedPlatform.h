@@ -40,14 +40,14 @@ public:
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-20.0f, 0.0f), b2Vec2(20.0f, 0.0f));
+			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
 		// Platform
 		{
 			BodyDef bd;
-			bd.position = b2Vec2(0.0f, 10.0f);
+			bd.position = Vec2(0.0f, 10.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
@@ -62,7 +62,7 @@ public:
 		{
 			BodyDef bd;
 			bd.type = DynamicBody;
-			bd.position = b2Vec2(0.0f, 12.0f);
+			bd.position = Vec2(0.0f, 12.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
 			m_radius = 0.5f;
@@ -70,7 +70,7 @@ public:
 			shape.SetRadius(float_t(m_radius));
 			m_character = body->CreateFixture(&shape, 20.0f);
 
-			body->SetLinearVelocity(b2Vec2(0.0f, -50.0f));
+			body->SetLinearVelocity(Vec2(0.0f, -50.0f));
 
 			m_state = e_unknown;
 		}
@@ -94,14 +94,14 @@ public:
 		}
 
 #if 1
-		b2Vec2 position = m_character->GetBody()->GetPosition();
+		Vec2 position = m_character->GetBody()->GetPosition();
 
 		if (position.y < m_top + m_radius - 3.0f * LinearSlop)
 		{
 			contact->UnsetEnabled();
 		}
 #else
-        b2Vec2 v = m_character->GetBody()->GetLinearVelocity();
+        Vec2 v = m_character->GetBody()->GetLinearVelocity();
         if (v.y > 0.0f)
 		{
             contact->UnsetEnabled();
@@ -115,7 +115,7 @@ public:
 		g_debugDraw.DrawString(5, m_textLine, "Press: (c) create a shape, (d) destroy a shape.");
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-        b2Vec2 v = m_character->GetBody()->GetLinearVelocity();
+        Vec2 v = m_character->GetBody()->GetLinearVelocity();
         g_debugDraw.DrawString(5, m_textLine, "Character Linear Velocity: %f", v.y);
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}

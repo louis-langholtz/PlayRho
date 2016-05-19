@@ -72,7 +72,7 @@ public:
 
 	/// Call MoveProxy as many times as you like, then when you are done
 	/// call UpdatePairs to finalized the proxy pairs (for your time step).
-	void MoveProxy(size_type proxyId, const b2AABB& aabb, const b2Vec2& displacement);
+	void MoveProxy(size_type proxyId, const b2AABB& aabb, const Vec2& displacement);
 
 	/// Call to trigger a re-processing of it's pairs on the next call to UpdatePairs.
 	void TouchProxy(size_type proxyId);
@@ -120,7 +120,7 @@ public:
 	/// Shifts the world origin. Useful for large worlds.
 	/// The shift formula is: position -= newOrigin
 	/// @param newOrigin the new origin with respect to the old origin
-	void ShiftOrigin(const b2Vec2& newOrigin);
+	void ShiftOrigin(const Vec2& newOrigin);
 
 private:
 
@@ -272,7 +272,7 @@ inline void b2BroadPhase::RayCast(T* callback, const b2RayCastInput& input) cons
 	m_tree.RayCast(callback, input);
 }
 
-inline void b2BroadPhase::ShiftOrigin(const b2Vec2& newOrigin)
+inline void b2BroadPhase::ShiftOrigin(const Vec2& newOrigin)
 {
 	m_tree.ShiftOrigin(newOrigin);
 }

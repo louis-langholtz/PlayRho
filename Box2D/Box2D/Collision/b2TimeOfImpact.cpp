@@ -208,8 +208,8 @@ public:
 	const b2DistanceProxy& m_proxyB;
 	const b2Sweep m_sweepA, m_sweepB;
 	const Type m_type;
-	b2Vec2 m_localPoint; // used if type is e_faceA or e_faceB
-	b2Vec2 m_axis;
+	Vec2 m_localPoint; // used if type is e_faceA or e_faceB
+	Vec2 m_axis;
 	
 private:
 	float_t EvaluatePoints(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB,

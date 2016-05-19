@@ -42,24 +42,24 @@ public:
 			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.allowSleep = false;
-			bd.position = b2Vec2(0.0f, 10.0f);
+			bd.position = Vec2(0.0f, 10.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
-			shape.SetAsBox(0.5f, 10.0f, b2Vec2( 10.0f, 0.0f), 0.0);
+			shape.SetAsBox(0.5f, 10.0f, Vec2( 10.0f, 0.0f), 0.0);
 			body->CreateFixture(&shape, 5.0f);
-			shape.SetAsBox(0.5f, 10.0f, b2Vec2(-10.0f, 0.0f), 0.0);
+			shape.SetAsBox(0.5f, 10.0f, Vec2(-10.0f, 0.0f), 0.0);
 			body->CreateFixture(&shape, 5.0f);
-			shape.SetAsBox(10.0f, 0.5f, b2Vec2(0.0f, 10.0f), 0.0);
+			shape.SetAsBox(10.0f, 0.5f, Vec2(0.0f, 10.0f), 0.0);
 			body->CreateFixture(&shape, 5.0f);
-			shape.SetAsBox(10.0f, 0.5f, b2Vec2(0.0f, -10.0f), 0.0);
+			shape.SetAsBox(10.0f, 0.5f, Vec2(0.0f, -10.0f), 0.0);
 			body->CreateFixture(&shape, 5.0f);
 
 			b2RevoluteJointDef jd;
 			jd.bodyA = ground;
 			jd.bodyB = body;
-			jd.localAnchorA = b2Vec2(0.0f, 10.0f);
-			jd.localAnchorB = b2Vec2(0.0f, 0.0f);
+			jd.localAnchorA = Vec2(0.0f, 10.0f);
+			jd.localAnchorB = Vec2(0.0f, 0.0f);
 			jd.referenceAngle = 0.0f;
 			jd.motorSpeed = 0.05f * Pi;
 			jd.maxMotorTorque = 1e8f;
@@ -78,7 +78,7 @@ public:
 		{
 			BodyDef bd;
 			bd.type = DynamicBody;
-			bd.position = b2Vec2(0.0f, 10.0f);
+			bd.position = Vec2(0.0f, 10.0f);
 			b2Body* body = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;

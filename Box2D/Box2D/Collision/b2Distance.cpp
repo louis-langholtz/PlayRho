@@ -90,21 +90,21 @@ public:
 
 	b2SimplexVertex() = default;
 
-	b2SimplexVertex(b2Vec2 sA, b2Vec2 sB, size_type iA, size_type iB, float_t _a):
+	b2SimplexVertex(Vec2 sA, Vec2 sB, size_type iA, size_type iB, float_t _a):
 		wA(sA), wB(sB), indexA(iA), indexB(iB), w(sB - sA), a(_a) {}
 
-	b2Vec2 get_w() const noexcept { return w; }
-	b2Vec2 get_wA() const noexcept { return wA; }
-	b2Vec2 get_wB() const noexcept { return wB; }
+	Vec2 get_w() const noexcept { return w; }
+	Vec2 get_wA() const noexcept { return wA; }
+	Vec2 get_wB() const noexcept { return wB; }
 
 	size_type indexA;	///< wA index
 	size_type indexB;	///< wB index
 	float_t a;		///< barycentric coordinate for closest point
 	
 private:
-	b2Vec2 wA;		///< support point in proxyA
-	b2Vec2 wB;		///< support point in proxyB
-	b2Vec2 w;		///< wB - wA. @see wA. @see wB.
+	Vec2 wA;		///< support point in proxyA
+	Vec2 wB;		///< support point in proxyB
+	Vec2 w;		///< wB - wA. @see wA. @see wB.
 };
 
 class b2Simplex
@@ -190,7 +190,7 @@ public:
 		}
 	}
 
-	b2Vec2 GetSearchDirection() const
+	Vec2 GetSearchDirection() const
 	{
 		switch (m_count)
 		{
@@ -210,11 +210,11 @@ public:
 
 		default:
 			assert(false);
-			return b2Vec2_zero;
+			return Vec2_zero;
 		}
 	}
 
-	b2Vec2 GetClosestPoint() const
+	Vec2 GetClosestPoint() const
 	{
 		switch (m_count)
 		{
@@ -225,15 +225,15 @@ public:
 			return m_vertices[0].a * m_vertices[0].get_w() + m_vertices[1].a * m_vertices[1].get_w();
 
 		case 3:
-			return b2Vec2_zero;
+			return Vec2_zero;
 
 		default:
 			assert(false);
-			return b2Vec2_zero;
+			return Vec2_zero;
 		}
 	}
 
-	void GetWitnessPoints(b2Vec2* pA, b2Vec2* pB) const
+	void GetWitnessPoints(Vec2* pA, Vec2* pB) const
 	{
 		switch (m_count)
 		{

@@ -33,7 +33,7 @@ public:
 		// Ground body
 		{
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-50.0f, 0.0f), b2Vec2(50.0f, 0.0f));
+			shape.Set(Vec2(-50.0f, 0.0f), Vec2(50.0f, 0.0f));
 
 			b2FixtureDef sd;
 			sd.shape = &shape;;
@@ -47,10 +47,10 @@ public:
 		float_t yLo = 2.0f, yHi = 35.0f;
 
 		// Small triangle
-		b2Vec2 vertices[3];
-		vertices[0] = b2Vec2(-1.0f, 0.0f);
-		vertices[1] = b2Vec2(1.0f, 0.0f);
-		vertices[2] = b2Vec2(0.0f, 2.0f);
+		Vec2 vertices[3];
+		vertices[0] = Vec2(-1.0f, 0.0f);
+		vertices[1] = Vec2(1.0f, 0.0f);
+		vertices[2] = Vec2(0.0f, 2.0f);
 
 		b2PolygonShape polygon;
 		polygon.Set(vertices, 3);
@@ -61,7 +61,7 @@ public:
 
 		BodyDef triangleBodyDef;
 		triangleBodyDef.type = DynamicBody;
-		triangleBodyDef.position = b2Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
+		triangleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
 		b2Body* body1 = m_world->CreateBody(&triangleBodyDef);
 		body1->CreateFixture(&triangleShapeDef);
@@ -72,7 +72,7 @@ public:
 		vertices[2] *= 2.0f;
 		polygon.Set(vertices, 3);
 
-		triangleBodyDef.position = b2Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
+		triangleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
 		b2Body* body2 = m_world->CreateBody(&triangleBodyDef);
 		body2->CreateFixture(&triangleShapeDef);
@@ -86,14 +86,14 @@ public:
 
 		BodyDef boxBodyDef;
 		boxBodyDef.type = DynamicBody;
-		boxBodyDef.position = b2Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
+		boxBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
 		b2Body* body3 = m_world->CreateBody(&boxBodyDef);
 		body3->CreateFixture(&boxShapeDef);
 
 		// Large box (recycle definitions)
 		polygon.SetAsBox(2.0f, 1.0f);
-		boxBodyDef.position = b2Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
+		boxBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 		
 		b2Body* body4 = m_world->CreateBody(&boxBodyDef);
 		body4->CreateFixture(&boxShapeDef);
@@ -108,14 +108,14 @@ public:
 
 		BodyDef circleBodyDef;
 		circleBodyDef.type = DynamicBody;
-		circleBodyDef.position = b2Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
+		circleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
 		b2Body* body5 = m_world->CreateBody(&circleBodyDef);
 		body5->CreateFixture(&circleShapeDef);
 
 		// Large circle
 		circle.SetRadius(circle.GetRadius() * 2);
-		circleBodyDef.position = b2Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
+		circleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
 		b2Body* body6 = m_world->CreateBody(&circleBodyDef);
 		body6->CreateFixture(&circleShapeDef);

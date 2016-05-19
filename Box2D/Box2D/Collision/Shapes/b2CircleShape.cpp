@@ -32,7 +32,7 @@ child_count_t b2CircleShape::GetChildCount() const
 	return 1;
 }
 
-bool b2CircleShape::TestPoint(const b2Transform& transform, const b2Vec2& p) const
+bool b2CircleShape::TestPoint(const b2Transform& transform, const Vec2& p) const
 {
 	const auto center = transform.p + b2Mul(transform.q, m_p);
 	const auto d = p - center;
@@ -84,7 +84,7 @@ b2AABB b2CircleShape::ComputeAABB(const b2Transform& transform, child_count_t ch
 	BOX2D_NOT_USED(childIndex);
 
 	const auto p = transform.p + b2Mul(transform.q, m_p);
-	return b2AABB{p, p} + b2Vec2{GetRadius(), GetRadius()};
+	return b2AABB{p, p} + Vec2{GetRadius(), GetRadius()};
 }
 
 b2MassData b2CircleShape::ComputeMass(float_t density) const

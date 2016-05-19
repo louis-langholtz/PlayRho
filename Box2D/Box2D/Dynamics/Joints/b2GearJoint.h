@@ -52,10 +52,10 @@ struct b2GearJointDef : public b2JointDef
 class b2GearJoint : public b2Joint
 {
 public:
-	b2Vec2 GetAnchorA() const override;
-	b2Vec2 GetAnchorB() const override;
+	Vec2 GetAnchorA() const override;
+	Vec2 GetAnchorB() const override;
 
-	b2Vec2 GetReactionForce(float_t inv_dt) const override;
+	Vec2 GetReactionForce(float_t inv_dt) const override;
 	float_t GetReactionTorque(float_t inv_dt) const override;
 
 	/// Get the first joint.
@@ -92,13 +92,13 @@ protected:
 	b2Body* m_bodyD;
 
 	// Solver shared
-	b2Vec2 m_localAnchorA;
-	b2Vec2 m_localAnchorB;
-	b2Vec2 m_localAnchorC;
-	b2Vec2 m_localAnchorD;
+	Vec2 m_localAnchorA;
+	Vec2 m_localAnchorB;
+	Vec2 m_localAnchorC;
+	Vec2 m_localAnchorD;
 
-	b2Vec2 m_localAxisC;
-	b2Vec2 m_localAxisD;
+	Vec2 m_localAxisC;
+	Vec2 m_localAxisD;
 
 	float_t m_referenceAngleA;
 	float_t m_referenceAngleB;
@@ -110,10 +110,10 @@ protected:
 
 	// Solver temp
 	index_t m_indexA, m_indexB, m_indexC, m_indexD;
-	b2Vec2 m_lcA, m_lcB, m_lcC, m_lcD;
+	Vec2 m_lcA, m_lcB, m_lcC, m_lcD;
 	float_t m_mA, m_mB, m_mC, m_mD;
 	float_t m_iA, m_iB, m_iC, m_iD;
-	b2Vec2 m_JvAC, m_JvBD;
+	Vec2 m_JvAC, m_JvBD;
 	float_t m_JwA, m_JwB, m_JwC, m_JwD;
 	float_t m_mass;
 };

@@ -47,12 +47,12 @@ public:
 		m_stepCount = 0;
 
 		float_t h = m_worldExtent;
-		m_queryAABB = b2AABB{b2Vec2(-3.0f, -4.0f + h), b2Vec2(5.0f, 6.0f + h)};
+		m_queryAABB = b2AABB{Vec2(-3.0f, -4.0f + h), Vec2(5.0f, 6.0f + h)};
 
-		m_rayCastInput.p1 = b2Vec2(-5.0, 5.0f + h);
-		m_rayCastInput.p2 = b2Vec2(7.0f, -4.0f + h);
-		//m_rayCastInput.p1 = b2Vec2(0.0f, 2.0f + h);
-		//m_rayCastInput.p2 = b2Vec2(0.0f, -2.0f + h);
+		m_rayCastInput.p1 = Vec2(-5.0, 5.0f + h);
+		m_rayCastInput.p2 = Vec2(7.0f, -4.0f + h);
+		//m_rayCastInput.p1 = Vec2(0.0f, 2.0f + h);
+		//m_rayCastInput.p2 = Vec2(0.0f, -2.0f + h);
 		m_rayCastInput.maxFraction = 1.0f;
 
 		m_automated = false;
@@ -123,7 +123,7 @@ public:
 		if (m_rayActor)
 		{
 			b2Color cr(0.2f, 0.2f, 0.9f);
-			b2Vec2 p = m_rayCastInput.p1 + m_rayActor->fraction * (m_rayCastInput.p2 - m_rayCastInput.p1);
+			Vec2 p = m_rayCastInput.p1 + m_rayActor->fraction * (m_rayCastInput.p2 - m_rayCastInput.p1);
 			g_debugDraw.DrawPoint(p, 6.0f, cr);
 		}
 
@@ -195,24 +195,24 @@ private:
 
 	b2AABB GetRandomAABB()
 	{
-		const b2Vec2 w(m_proxyExtent * 2, m_proxyExtent * 2);
+		const Vec2 w(m_proxyExtent * 2, m_proxyExtent * 2);
 		//aabb->lowerBound.x = -m_proxyExtent;
 		//aabb->lowerBound.y = -m_proxyExtent + m_worldExtent;
-		const auto lowerBound = b2Vec2(RandomFloat(-m_worldExtent, m_worldExtent), RandomFloat(0.0f, 2.0f * m_worldExtent));
+		const auto lowerBound = Vec2(RandomFloat(-m_worldExtent, m_worldExtent), RandomFloat(0.0f, 2.0f * m_worldExtent));
 		const auto upperBound = lowerBound + w;
 		return b2AABB(lowerBound, upperBound);
 	}
 
 	void MoveAABB(b2AABB* aabb)
 	{
-		const auto d = b2Vec2{RandomFloat(-0.5f, 0.5f), RandomFloat(-0.5f, 0.5f)};
+		const auto d = Vec2{RandomFloat(-0.5f, 0.5f), RandomFloat(-0.5f, 0.5f)};
 		//d.x = 2.0f;
 		//d.y = 0.0f;
 		aabb->Move(d);
 
 		const auto c0 = aabb->GetCenter();
-		const auto min = b2Vec2(-m_worldExtent, float_t(0));
-		const auto max = b2Vec2(m_worldExtent, 2.0f * m_worldExtent);
+		const auto min = Vec2(-m_worldExtent, float_t(0));
+		const auto max = Vec2(m_worldExtent, 2.0f * m_worldExtent);
 		const auto c = b2Clamp(c0, min, max);
 
 		aabb->Move(c - c0);

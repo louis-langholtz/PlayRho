@@ -47,7 +47,7 @@ public:
 	/// @warning the points may be re-ordered, even if they form a convex polygon
 	/// @warning collinear points are handled but not removed. Collinear points
 	/// may lead to poor stacking behavior.
-	void Set(const b2Vec2 points[], vertex_count_t count);
+	void Set(const Vec2 points[], vertex_count_t count);
 
 	/// Build vertices to represent an axis-aligned box centered on the local origin.
 	/// @param hx the half-width.
@@ -59,10 +59,10 @@ public:
 	/// @param hy the half-height.
 	/// @param center the center of the box in local coordinates.
 	/// @param angle the rotation of the box in local coordinates.
-	void SetAsBox(float_t hx, float_t hy, const b2Vec2& center, float_t angle);
+	void SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t angle);
 
 	/// @see b2Shape::TestPoint
-	bool TestPoint(const b2Transform& transform, const b2Vec2& p) const override;
+	bool TestPoint(const b2Transform& transform, const Vec2& p) const override;
 
 	/// Implement b2Shape.
 	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
@@ -80,35 +80,35 @@ public:
 	vertex_count_t GetVertexCount() const noexcept { return m_count; }
 
 	/// Get a vertex by index.
-	b2Vec2 GetVertex(vertex_count_t index) const;
+	Vec2 GetVertex(vertex_count_t index) const;
 
 	/// Get a normal by index.
-	b2Vec2 GetNormal(vertex_count_t index) const;
+	Vec2 GetNormal(vertex_count_t index) const;
 
-	const b2Vec2* GetVertices() const noexcept { return m_vertices; }
+	const Vec2* GetVertices() const noexcept { return m_vertices; }
 
-	const b2Vec2* GetNormals() const noexcept { return m_normals; }
+	const Vec2* GetNormals() const noexcept { return m_normals; }
 	
-	b2Vec2 GetCentroid() const noexcept { return m_centroid; }
+	Vec2 GetCentroid() const noexcept { return m_centroid; }
 
 	/// Validate convexity. This is a very time consuming operation.
 	/// @returns true if valid
 	bool Validate() const;
 
 private:
-	b2Vec2 m_centroid = b2Vec2_zero;
-	b2Vec2 m_vertices[MaxPolygonVertices];
-	b2Vec2 m_normals[MaxPolygonVertices];
+	Vec2 m_centroid = Vec2_zero;
+	Vec2 m_vertices[MaxPolygonVertices];
+	Vec2 m_normals[MaxPolygonVertices];
 	vertex_count_t m_count = 0;
 };
 
-inline b2Vec2 b2PolygonShape::GetVertex(vertex_count_t index) const
+inline Vec2 b2PolygonShape::GetVertex(vertex_count_t index) const
 {
 	assert(0 <= index && index < m_count);
 	return m_vertices[index];
 }
 
-inline b2Vec2 b2PolygonShape::GetNormal(vertex_count_t index) const
+inline Vec2 b2PolygonShape::GetNormal(vertex_count_t index) const
 {
 	assert(0 <= index && index < m_count);
 	return m_normals[index];

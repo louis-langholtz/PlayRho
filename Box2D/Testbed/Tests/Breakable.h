@@ -39,7 +39,7 @@ public:
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
+			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
@@ -47,14 +47,14 @@ public:
 		{
 			BodyDef bd;
 			bd.type = DynamicBody;
-			bd.position = b2Vec2(0.0f, 40.0f);
+			bd.position = Vec2(0.0f, 40.0f);
 			bd.angle = 0.25f * Pi;
 			m_body1 = m_world->CreateBody(&bd);
 
-			m_shape1.SetAsBox(0.5f, 0.5f, b2Vec2(-0.5f, 0.0f), 0.0f);
+			m_shape1.SetAsBox(0.5f, 0.5f, Vec2(-0.5f, 0.0f), 0.0f);
 			m_piece1 = m_body1->CreateFixture(&m_shape1, 1.0f);
 
-			m_shape2.SetAsBox(0.5f, 0.5f, b2Vec2(0.5f, 0.0f), 0.0f);
+			m_shape2.SetAsBox(0.5f, 0.5f, Vec2(0.5f, 0.0f), 0.0f);
 			m_piece2 = m_body1->CreateFixture(&m_shape2, 1.0f);
 		}
 
@@ -90,7 +90,7 @@ public:
 	{
 		// Create two bodies from one.
 		b2Body* body1 = m_piece1->GetBody();
-		b2Vec2 center = body1->GetWorldCenter();
+		Vec2 center = body1->GetWorldCenter();
 
 		body1->DestroyFixture(m_piece2);
 		m_piece2 = nullptr;
@@ -105,11 +105,11 @@ public:
 
 		// Compute consistent velocities for new bodies based on
 		// cached velocity.
-		b2Vec2 center1 = body1->GetWorldCenter();
-		b2Vec2 center2 = body2->GetWorldCenter();
+		Vec2 center1 = body1->GetWorldCenter();
+		Vec2 center2 = body2->GetWorldCenter();
 		
-		b2Vec2 velocity1 = m_velocity + b2Cross(m_angularVelocity, center1 - center);
-		b2Vec2 velocity2 = m_velocity + b2Cross(m_angularVelocity, center2 - center);
+		Vec2 velocity1 = m_velocity + b2Cross(m_angularVelocity, center1 - center);
+		Vec2 velocity2 = m_velocity + b2Cross(m_angularVelocity, center2 - center);
 
 		body1->SetAngularVelocity(m_angularVelocity);
 		body1->SetLinearVelocity(velocity1);
@@ -143,7 +143,7 @@ public:
 	}
 
 	b2Body* m_body1;
-	b2Vec2 m_velocity;
+	Vec2 m_velocity;
 	float_t m_angularVelocity;
 	b2PolygonShape m_shape1;
 	b2PolygonShape m_shape2;

@@ -38,7 +38,7 @@ using namespace box2d;
 // Cdot = wB - wA
 // J = [0 0 -1 0 0 1]
 
-void b2WheelJointDef::Initialize(b2Body* bA, b2Body* bB, const b2Vec2& anchor, const b2Vec2& axis)
+void b2WheelJointDef::Initialize(b2Body* bA, b2Body* bB, const Vec2& anchor, const Vec2& axis)
 {
 	bodyA = bA;
 	bodyB = bB;
@@ -72,8 +72,8 @@ b2WheelJoint::b2WheelJoint(const b2WheelJointDef* def)
 	m_bias = float_t{0};
 	m_gamma = float_t{0};
 
-	m_ax = b2Vec2_zero;
-	m_ay = b2Vec2_zero;
+	m_ax = Vec2_zero;
+	m_ay = Vec2_zero;
 }
 
 void b2WheelJoint::InitVelocityConstraints(const b2SolverData& data)
@@ -320,17 +320,17 @@ bool b2WheelJoint::SolvePositionConstraints(const b2SolverData& data)
 	return b2Abs(C) <= LinearSlop;
 }
 
-b2Vec2 b2WheelJoint::GetAnchorA() const
+Vec2 b2WheelJoint::GetAnchorA() const
 {
 	return m_bodyA->GetWorldPoint(m_localAnchorA);
 }
 
-b2Vec2 b2WheelJoint::GetAnchorB() const
+Vec2 b2WheelJoint::GetAnchorB() const
 {
 	return m_bodyB->GetWorldPoint(m_localAnchorB);
 }
 
-b2Vec2 b2WheelJoint::GetReactionForce(float_t inv_dt) const
+Vec2 b2WheelJoint::GetReactionForce(float_t inv_dt) const
 {
 	return inv_dt * (m_impulse * m_ay + m_springImpulse * m_ax);
 }
@@ -394,9 +394,9 @@ void b2WheelJoint::Dump()
 	log("  jd.bodyA = bodies[%d];\n", indexA);
 	log("  jd.bodyB = bodies[%d];\n", indexB);
 	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	log("  jd.localAnchorA = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-	log("  jd.localAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
-	log("  jd.localAxisA = b2Vec2(%.15lef, %.15lef);\n", m_localXAxisA.x, m_localXAxisA.y);
+	log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
+	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+	log("  jd.localAxisA = Vec2(%.15lef, %.15lef);\n", m_localXAxisA.x, m_localXAxisA.y);
 	log("  jd.enableMotor = bool(%d);\n", m_enableMotor);
 	log("  jd.motorSpeed = %.15lef;\n", m_motorSpeed);
 	log("  jd.maxMotorTorque = %.15lef;\n", m_maxMotorTorque);

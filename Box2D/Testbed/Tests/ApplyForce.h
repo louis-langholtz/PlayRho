@@ -26,14 +26,14 @@ class ApplyForce : public Test
 public:
 	ApplyForce()
 	{
-		m_world->SetGravity(b2Vec2(float_t{0}, float_t{0}));
+		m_world->SetGravity(Vec2(float_t{0}, float_t{0}));
 
 		const float_t k_restitution = 0.4f;
 
 		b2Body* ground;
 		{
 			BodyDef bd;
-			bd.position = b2Vec2(float_t{0}, 20.0f);
+			bd.position = Vec2(float_t{0}, 20.0f);
 			ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
@@ -44,19 +44,19 @@ public:
 			sd.restitution = k_restitution;
 
 			// Left vertical
-			shape.Set(b2Vec2(-20.0f, -20.0f), b2Vec2(-20.0f, 20.0f));
+			shape.Set(Vec2(-20.0f, -20.0f), Vec2(-20.0f, 20.0f));
 			ground->CreateFixture(&sd);
 
 			// Right vertical
-			shape.Set(b2Vec2(20.0f, -20.0f), b2Vec2(20.0f, 20.0f));
+			shape.Set(Vec2(20.0f, -20.0f), Vec2(20.0f, 20.0f));
 			ground->CreateFixture(&sd);
 
 			// Top horizontal
-			shape.Set(b2Vec2(-20.0f, 20.0f), b2Vec2(20.0f, 20.0f));
+			shape.Set(Vec2(-20.0f, 20.0f), Vec2(20.0f, 20.0f));
 			ground->CreateFixture(&sd);
 
 			// Bottom horizontal
-			shape.Set(b2Vec2(-20.0f, -20.0f), b2Vec2(20.0f, -20.0f));
+			shape.Set(Vec2(-20.0f, -20.0f), Vec2(20.0f, -20.0f));
 			ground->CreateFixture(&sd);
 		}
 
@@ -65,10 +65,10 @@ public:
 			xf1.q = b2Rot(0.3524f * Pi);
 			xf1.p = xf1.q.GetXAxis();
 
-			b2Vec2 vertices[3];
-			vertices[0] = b2Mul(xf1, b2Vec2(-1.0f, float_t{0}));
-			vertices[1] = b2Mul(xf1, b2Vec2(1.0f, float_t{0}));
-			vertices[2] = b2Mul(xf1, b2Vec2(float_t{0}, 0.5f));
+			Vec2 vertices[3];
+			vertices[0] = b2Mul(xf1, Vec2(-1.0f, float_t{0}));
+			vertices[1] = b2Mul(xf1, Vec2(1.0f, float_t{0}));
+			vertices[2] = b2Mul(xf1, Vec2(float_t{0}, 0.5f));
 			
 			b2PolygonShape poly1;
 			poly1.Set(vertices, 3);
@@ -81,9 +81,9 @@ public:
 			xf2.q = b2Rot(-0.3524f * Pi);
 			xf2.p = -xf2.q.GetXAxis();
 
-			vertices[0] = b2Mul(xf2, b2Vec2(-1.0f, float_t{0}));
-			vertices[1] = b2Mul(xf2, b2Vec2(1.0f, float_t{0}));
-			vertices[2] = b2Mul(xf2, b2Vec2(float_t{0}, 0.5f));
+			vertices[0] = b2Mul(xf2, Vec2(-1.0f, float_t{0}));
+			vertices[1] = b2Mul(xf2, Vec2(1.0f, float_t{0}));
+			vertices[2] = b2Mul(xf2, Vec2(float_t{0}, 0.5f));
 			
 			b2PolygonShape poly2;
 			poly2.Set(vertices, 3);
@@ -97,7 +97,7 @@ public:
 			bd.angularDamping = 2.0f;
 			bd.linearDamping = 0.5f;
 
-			bd.position = b2Vec2(float_t{0}, 2.0);
+			bd.position = Vec2(float_t{0}, 2.0);
 			bd.angle = Pi;
 			bd.allowSleep = false;
 			m_body = m_world->CreateBody(&bd);
@@ -119,7 +119,7 @@ public:
 				BodyDef bd;
 				bd.type = DynamicBody;
 
-				bd.position = b2Vec2(float_t{0}, 5.0f + 1.54f * i);
+				bd.position = Vec2(float_t{0}, 5.0f + 1.54f * i);
 				b2Body* body = m_world->CreateBody(&bd);
 
 				body->CreateFixture(&fd);
@@ -132,8 +132,8 @@ public:
 				float_t radius = b2Sqrt(2.0f * I / mass);
 
 				b2FrictionJointDef jd;
-				jd.localAnchorA = b2Vec2_zero;
-				jd.localAnchorB = b2Vec2_zero;
+				jd.localAnchorA = Vec2_zero;
+				jd.localAnchorB = Vec2_zero;
 				jd.bodyA = ground;
 				jd.bodyB = body;
 				jd.collideConnected = true;
@@ -151,8 +151,8 @@ public:
 		{
 		case GLFW_KEY_W:
 			{
-				b2Vec2 f = m_body->GetWorldVector(b2Vec2(float_t{0}, -200.0f));
-				b2Vec2 p = m_body->GetWorldPoint(b2Vec2(float_t{0}, 2.0f));
+				Vec2 f = m_body->GetWorldVector(Vec2(float_t{0}, -200.0f));
+				Vec2 p = m_body->GetWorldPoint(Vec2(float_t{0}, 2.0f));
 				m_body->ApplyForce(f, p, true);
 			}
 			break;

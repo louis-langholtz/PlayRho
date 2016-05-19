@@ -25,12 +25,12 @@
 namespace box2d
 {
 // forward declarations
-struct b2Vec2;
+struct Vec2;
 struct b2Vec3;
-constexpr inline float_t b2Dot(const b2Vec2& a, const b2Vec2& b) noexcept;
+constexpr inline float_t b2Dot(const Vec2& a, const Vec2& b) noexcept;
 constexpr inline float_t b2Dot(const b2Vec3& a, const b2Vec3& b) noexcept;
-constexpr inline float_t b2Cross(const b2Vec2& a, const b2Vec2& b) noexcept;
-constexpr inline b2Vec2 b2Cross(const b2Vec2& a, float_t s) noexcept;
+constexpr inline float_t b2Cross(const Vec2& a, const Vec2& b) noexcept;
+constexpr inline Vec2 b2Cross(const Vec2& a, float_t s) noexcept;
 constexpr inline b2Vec3 b2Cross(const b2Vec3& a, const b2Vec3& b) noexcept;
 
 /// This function is used to ensure that a floating point number is not a NaN or infinity.
@@ -46,18 +46,18 @@ constexpr inline auto b2Square(T t) { return t * t; }
 #define	b2Atan2(y, x)	std::atan2(y, x)
 
 /// A 2D column vector.
-struct b2Vec2
+struct Vec2
 {
 	/// Default constructor does nothing (for performance).
-	b2Vec2() = default;
+	Vec2() = default;
 	
-	b2Vec2(const b2Vec2& copy) = default;
+	Vec2(const Vec2& copy) = default;
 
 	/// Construct using coordinates.
-	constexpr b2Vec2(float_t x_, float_t y_) noexcept : x(x_), y(y_) {}
+	constexpr Vec2(float_t x_, float_t y_) noexcept : x(x_), y(y_) {}
 
 	/// Negate this vector.
-	constexpr b2Vec2 operator -() const noexcept { return b2Vec2{-x, -y}; }
+	constexpr Vec2 operator -() const noexcept { return Vec2{-x, -y}; }
 
 #if !defined(NO_B2VEC2_INDEXING)
 
@@ -93,13 +93,13 @@ struct b2Vec2
 #endif
 
 	/// Add a vector to this vector.
-	constexpr void operator += (const b2Vec2& v) noexcept
+	constexpr void operator += (const Vec2& v) noexcept
 	{
 		x += v.x; y += v.y;
 	}
 	
 	/// Subtract a vector from this vector.
-	constexpr void operator -= (const b2Vec2& v) noexcept
+	constexpr void operator -= (const Vec2& v) noexcept
 	{
 		x -= v.x; y -= v.y;
 	}
@@ -111,7 +111,7 @@ struct b2Vec2
 	}
 
 	/// Gets the length squared.
-	/// For performance, use this instead of b2Vec2::Length (if possible).
+	/// For performance, use this instead of Vec2::Length (if possible).
 	constexpr float_t LengthSquared() const noexcept
 	{
 		return b2Square(x) + b2Square(y);
@@ -145,17 +145,17 @@ struct b2Vec2
 	}
 
 	/// Get the skew vector such that dot(skew_vec, other) == cross(vec, other)
-	constexpr b2Vec2 Skew() const noexcept
+	constexpr Vec2 Skew() const noexcept
 	{
-		return b2Vec2(-y, x);
+		return Vec2(-y, x);
 	}
 
 	float_t x, y;
 };
 
-/// An all zero b2Vec2 value.
-/// @see b2Vec2.
-constexpr auto b2Vec2_zero = b2Vec2{0, 0};
+/// An all zero Vec2 value.
+/// @see Vec2.
+constexpr auto Vec2_zero = Vec2{0, 0};
 
 /// A 2D column vector with 3 elements.
 struct b2Vec3
@@ -201,7 +201,7 @@ struct b2Mat22
 	b2Mat22() = default;
 
 	/// Construct this matrix using columns.
-	constexpr b2Mat22(const b2Vec2& c1, const b2Vec2& c2) noexcept: ex(c1), ey(c2) {}
+	constexpr b2Mat22(const Vec2& c1, const Vec2& c2) noexcept: ex(c1), ey(c2) {}
 
 	/// Construct this matrix using scalars.
 	constexpr b2Mat22(float_t a11, float_t a12, float_t a21, float_t a22) noexcept: ex(a11, a21), ey(a12, a22) {}
@@ -214,12 +214,12 @@ struct b2Mat22
 		{
 			det = float_t(1) / det;
 		}
-		return b2Mat22(b2Vec2(det * d, -det * c), b2Vec2(-det * b, det * a));
+		return b2Mat22(Vec2(det * d, -det * c), Vec2(-det * b, det * a));
 	}
 
 	/// Solve A * x = b, where b is a column vector. This is more efficient
 	/// than computing the inverse in one-shot cases.
-	constexpr b2Vec2 Solve(const b2Vec2& b) const noexcept
+	constexpr Vec2 Solve(const Vec2& b) const noexcept
 	{
 		const auto a11 = ex.x, a12 = ey.x, a21 = ex.y, a22 = ey.y;
 		auto det = a11 * a22 - a12 * a21;
@@ -227,19 +227,19 @@ struct b2Mat22
 		{
 			det = float_t(1) / det;
 		}
-		return b2Vec2(det * (a22 * b.x - a12 * b.y), det * (a11 * b.y - a21 * b.x));
+		return Vec2(det * (a22 * b.x - a12 * b.y), det * (a11 * b.y - a21 * b.x));
 	}
 
-	b2Vec2 ex, ey;
+	Vec2 ex, ey;
 };
 
 /// An all zero b2Mat22 value.
 /// @see b2Mat22.
-constexpr auto b2Mat22_zero = b2Mat22(b2Vec2_zero, b2Vec2_zero);
+constexpr auto b2Mat22_zero = b2Mat22(Vec2_zero, Vec2_zero);
 
 /// Identity value for b2Mat22 objects.
 /// @see b2Mat22.
-constexpr auto b2Mat22_identity = b2Mat22(b2Vec2(1, 0), b2Vec2(0, 1));
+constexpr auto b2Mat22_identity = b2Mat22(Vec2(1, 0), Vec2(0, 1));
 
 /// A 3-by-3 matrix. Stored in column-major order.
 struct b2Mat33
@@ -266,7 +266,7 @@ struct b2Mat33
 	/// Solve A * x = b, where b is a column vector. This is more efficient
 	/// than computing the inverse in one-shot cases. Solve only the upper
 	/// 2-by-2 matrix equation.
-	constexpr b2Vec2 Solve22(const b2Vec2& b) const
+	constexpr Vec2 Solve22(const Vec2& b) const
 	{
 		const auto a11 = ex.x, a12 = ey.x, a21 = ex.y, a22 = ey.y;
 		auto det = a11 * a22 - a12 * a21;
@@ -274,7 +274,7 @@ struct b2Mat33
 		{
 			det = float_t(1) / det;
 		}
-		return b2Vec2(det * (a22 * b.x - a12 * b.y), det * (a11 * b.y - a21 * b.x));
+		return Vec2(det * (a22 * b.x - a12 * b.y), det * (a11 * b.y - a21 * b.x));
 	}
 
 	/// Get the inverse of this matrix as a 2-by-2.
@@ -314,15 +314,15 @@ struct b2Rot
 	}
 
 	/// Get the x-axis
-	constexpr b2Vec2 GetXAxis() const noexcept
+	constexpr Vec2 GetXAxis() const noexcept
 	{
-		return b2Vec2(c, s);
+		return Vec2(c, s);
 	}
 
 	/// Get the u-axis
-	constexpr b2Vec2 GetYAxis() const noexcept
+	constexpr Vec2 GetYAxis() const noexcept
 	{
-		return b2Vec2(-s, c);
+		return Vec2(-s, c);
 	}
 
 	/// Sine and cosine
@@ -339,15 +339,15 @@ struct b2Transform
 	b2Transform() = default;
 
 	/// Initialize using a position vector and a rotation.
-	constexpr b2Transform(const b2Vec2& position, const b2Rot& rotation) noexcept: p(position), q(rotation) {}
+	constexpr b2Transform(const Vec2& position, const b2Rot& rotation) noexcept: p(position), q(rotation) {}
 
 	constexpr b2Transform(const b2Transform& copy) = default;
 
-	b2Vec2 p;
+	Vec2 p;
 	b2Rot q;
 };
 
-constexpr auto b2Transform_identity = b2Transform{b2Vec2_zero, b2Rot_identity};
+constexpr auto b2Transform_identity = b2Transform{Vec2_zero, b2Rot_identity};
 
 /// This describes the motion of a body/shape for TOI computation.
 /// Shapes are defined with respect to the body origin, which may
@@ -363,8 +363,8 @@ struct b2Sweep
 	/// Normalize the angles.
 	void Normalize();
 
-	b2Vec2 localCenter;	///< local center of mass position
-	b2Vec2 c0, c;		///< center world positions
+	Vec2 localCenter;	///< local center of mass position
+	Vec2 c0, c;		///< center world positions
 	float_t a0, a;		///< world angles
 
 	/// Fraction of the current time step in the range [0,1]
@@ -376,81 +376,81 @@ struct b2Sweep
 /// @param a Vector A.
 /// @param b Vector B.
 /// @return Dot product of the vectors.
-/// @note If A and B are the same vectors, b2Vec2::LengthSquared() returns the same value
+/// @note If A and B are the same vectors, Vec2::LengthSquared() returns the same value
 ///   using effectively one less input parameter.
-constexpr inline float_t b2Dot(const b2Vec2& a, const b2Vec2& b) noexcept
+constexpr inline float_t b2Dot(const Vec2& a, const Vec2& b) noexcept
 {
 	return (a.x * b.x) + (a.y * b.y);
 }
 
 /// Perform the cross product on two vectors. In 2D this produces a scalar.
-constexpr inline float_t b2Cross(const b2Vec2& a, const b2Vec2& b) noexcept
+constexpr inline float_t b2Cross(const Vec2& a, const Vec2& b) noexcept
 {
 	return (a.x * b.y) - (a.y * b.x);
 }
 
 /// Perform the cross product on a vector and a scalar. In 2D this produces
 /// a vector.
-constexpr inline b2Vec2 b2Cross(const b2Vec2& a, float_t s) noexcept
+constexpr inline Vec2 b2Cross(const Vec2& a, float_t s) noexcept
 {
-	return b2Vec2{s * a.y, -s * a.x};
+	return Vec2{s * a.y, -s * a.x};
 }
 
 /// Perform the cross product on a scalar and a vector. In 2D this produces
 /// a vector.
-constexpr inline b2Vec2 b2Cross(float_t s, const b2Vec2& a) noexcept
+constexpr inline Vec2 b2Cross(float_t s, const Vec2& a) noexcept
 {
-	return b2Vec2{-s * a.y, s * a.x};
+	return Vec2{-s * a.y, s * a.x};
 }
 
 /// Multiply a matrix times a vector. If a rotation matrix is provided,
 /// then this transforms the vector from one frame to another.
-constexpr inline b2Vec2 b2Mul(const b2Mat22& A, const b2Vec2& v) noexcept
+constexpr inline Vec2 b2Mul(const b2Mat22& A, const Vec2& v) noexcept
 {
-	return b2Vec2{A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y};
+	return Vec2{A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y};
 }
 
 /// Multiply a matrix transpose times a vector. If a rotation matrix is provided,
 /// then this transforms the vector from one frame to another (inverse transform).
-constexpr inline b2Vec2 b2MulT(const b2Mat22& A, const b2Vec2& v) noexcept
+constexpr inline Vec2 b2MulT(const b2Mat22& A, const Vec2& v) noexcept
 {
-	return b2Vec2{b2Dot(v, A.ex), b2Dot(v, A.ey)};
+	return Vec2{b2Dot(v, A.ex), b2Dot(v, A.ey)};
 }
 
 /// Add two vectors component-wise.
-constexpr inline b2Vec2 operator + (const b2Vec2& a, const b2Vec2& b) noexcept
+constexpr inline Vec2 operator + (const Vec2& a, const Vec2& b) noexcept
 {
-	return b2Vec2{a.x + b.x, a.y + b.y};
+	return Vec2{a.x + b.x, a.y + b.y};
 }
 
 /// Subtract two vectors component-wise.
-constexpr inline b2Vec2 operator - (const b2Vec2& a, const b2Vec2& b) noexcept
+constexpr inline Vec2 operator - (const Vec2& a, const Vec2& b) noexcept
 {
-	return b2Vec2{a.x - b.x, a.y - b.y};
+	return Vec2{a.x - b.x, a.y - b.y};
 }
 
-constexpr inline b2Vec2 operator * (float_t s, const b2Vec2& a) noexcept
+constexpr inline Vec2 operator * (float_t s, const Vec2& a) noexcept
 {
-	return b2Vec2{s * a.x, s * a.y};
+	return Vec2{s * a.x, s * a.y};
 }
 
-constexpr inline b2Vec2 operator * (const b2Vec2& a, float_t s) noexcept
+constexpr inline Vec2 operator * (const Vec2& a, float_t s) noexcept
 {
-	return b2Vec2{a.x * s, a.y * s};
+	return Vec2{a.x * s, a.y * s};
 }
 
-constexpr b2Vec2 operator/ (const b2Vec2& a, float_t s) noexcept
+constexpr Vec2 operator/ (const Vec2& a, float_t s) noexcept
 {
-	return b2Vec2{a.x / s, a.y / s};
+	return Vec2{a.x / s, a.y / s};
 }
 
 /// Normalizes the given value.
 /// @param value Value to normalize.
 /// @return value divided by its length if length not less than Epsilon otherwise value.
 /// @sa Epsilon.
-inline b2Vec2 b2Normalize(const b2Vec2& value)
+inline Vec2 b2Normalize(const Vec2& value)
 {
-	// implementation mirrors implementation of b2Vec2::Normalize()
+	// implementation mirrors implementation of Vec2::Normalize()
 	const auto length = value.Length();
 	if (length < Epsilon)
 	{
@@ -460,23 +460,23 @@ inline b2Vec2 b2Normalize(const b2Vec2& value)
 	return value * invLength;
 }
 
-constexpr inline bool operator == (const b2Vec2& a, const b2Vec2& b) noexcept
+constexpr inline bool operator == (const Vec2& a, const Vec2& b) noexcept
 {
 	return (a.x == b.x) && (a.y == b.y);
 }
 
-constexpr inline bool operator != (const b2Vec2& a, const b2Vec2& b) noexcept
+constexpr inline bool operator != (const Vec2& a, const Vec2& b) noexcept
 {
 	return (a.x != b.x) || (a.y != b.y);
 }
 
-constexpr inline float_t b2DistanceSquared(const b2Vec2& a, const b2Vec2& b) noexcept
+constexpr inline float_t b2DistanceSquared(const Vec2& a, const Vec2& b) noexcept
 {
 	const auto c = a - b;
 	return c.LengthSquared();
 }
 
-inline float_t b2Distance(const b2Vec2& a, const b2Vec2& b)
+inline float_t b2Distance(const Vec2& a, const Vec2& b)
 {
 	return b2Sqrt(b2DistanceSquared(a, b));
 }
@@ -524,8 +524,8 @@ constexpr inline b2Mat22 b2Mul(const b2Mat22& A, const b2Mat22& B) noexcept
 // A^T * B
 constexpr inline b2Mat22 b2MulT(const b2Mat22& A, const b2Mat22& B) noexcept
 {
-	const auto c1 = b2Vec2(b2Dot(A.ex, B.ex), b2Dot(A.ey, B.ex));
-	const auto c2 = b2Vec2(b2Dot(A.ex, B.ey), b2Dot(A.ey, B.ey));
+	const auto c1 = Vec2(b2Dot(A.ex, B.ex), b2Dot(A.ey, B.ex));
+	const auto c2 = Vec2(b2Dot(A.ex, B.ey), b2Dot(A.ey, B.ey));
 	return b2Mat22{c1, c2};
 }
 
@@ -536,9 +536,9 @@ constexpr inline b2Vec3 b2Mul(const b2Mat33& A, const b2Vec3& v) noexcept
 }
 
 /// Multiply a matrix times a vector.
-constexpr inline b2Vec2 b2Mul22(const b2Mat33& A, const b2Vec2& v) noexcept
+constexpr inline Vec2 b2Mul22(const b2Mat33& A, const Vec2& v) noexcept
 {
-	return b2Vec2{A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y};
+	return Vec2{A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y};
 }
 
 /// Multiply two rotations: q * r
@@ -562,31 +562,31 @@ constexpr inline b2Rot b2MulT(const b2Rot& q, const b2Rot& r) noexcept
 }
 
 /// Rotate a vector
-constexpr inline b2Vec2 b2Mul(const b2Rot& q, const b2Vec2& v) noexcept
+constexpr inline Vec2 b2Mul(const b2Rot& q, const Vec2& v) noexcept
 {
-	return b2Vec2{q.c * v.x - q.s * v.y, q.s * v.x + q.c * v.y};
+	return Vec2{q.c * v.x - q.s * v.y, q.s * v.x + q.c * v.y};
 }
 
 /// Inverse rotate a vector
-constexpr inline b2Vec2 b2MulT(const b2Rot& q, const b2Vec2& v) noexcept
+constexpr inline Vec2 b2MulT(const b2Rot& q, const Vec2& v) noexcept
 {
-	return b2Vec2{q.c * v.x + q.s * v.y, -q.s * v.x + q.c * v.y};
+	return Vec2{q.c * v.x + q.s * v.y, -q.s * v.x + q.c * v.y};
 }
 
-constexpr inline b2Vec2 b2Mul(const b2Transform& T, const b2Vec2& v) noexcept
+constexpr inline Vec2 b2Mul(const b2Transform& T, const Vec2& v) noexcept
 {
 	const auto x = (T.q.c * v.x - T.q.s * v.y) + T.p.x;
 	const auto y = (T.q.s * v.x + T.q.c * v.y) + T.p.y;
-	return b2Vec2{x, y};
+	return Vec2{x, y};
 }
 
-constexpr inline b2Vec2 b2MulT(const b2Transform& T, const b2Vec2& v) noexcept
+constexpr inline Vec2 b2MulT(const b2Transform& T, const Vec2& v) noexcept
 {
 	const auto px = v.x - T.p.x;
 	const auto py = v.y - T.p.y;
 	const auto x = (T.q.c * px + T.q.s * py);
 	const auto y = (-T.q.s * px + T.q.c * py);
-	return b2Vec2{x, y};
+	return Vec2{x, y};
 }
 
 // v2 = A.q.Rot(B.q.Rot(v1) + B.p) + A.p
@@ -609,9 +609,9 @@ constexpr inline T b2Abs(T a)
 	return (a >= T(0)) ? a : -a;
 }
 
-inline b2Vec2 b2Abs(const b2Vec2& a)
+inline Vec2 b2Abs(const Vec2& a)
 {
-	return b2Vec2{b2Abs(a.x), b2Abs(a.y)};
+	return Vec2{b2Abs(a.x), b2Abs(a.y)};
 }
 
 inline b2Mat22 b2Abs(const b2Mat22& A)
@@ -625,9 +625,9 @@ constexpr inline T b2Min(T a, T b)
 	return (a < b) ? a : b;
 }
 
-constexpr inline b2Vec2 b2Min(const b2Vec2& a, const b2Vec2& b)
+constexpr inline Vec2 b2Min(const Vec2& a, const Vec2& b)
 {
-	return b2Vec2{b2Min(a.x, b.x), b2Min(a.y, b.y)};
+	return Vec2{b2Min(a.x, b.x), b2Min(a.y, b.y)};
 }
 
 template <typename T>
@@ -636,9 +636,9 @@ constexpr inline T b2Max(T a, T b)
 	return (a > b) ? a : b;
 }
 
-constexpr inline b2Vec2 b2Max(const b2Vec2& a, const b2Vec2& b)
+constexpr inline Vec2 b2Max(const Vec2& a, const Vec2& b)
 {
-	return b2Vec2{b2Max(a.x, b.x), b2Max(a.y, b.y)};
+	return Vec2{b2Max(a.x, b.x), b2Max(a.y, b.y)};
 }
 
 template <typename T>
@@ -647,7 +647,7 @@ constexpr inline T b2Clamp(T a, T low, T high)
 	return b2Max(low, b2Min(a, high));
 }
 
-constexpr inline b2Vec2 b2Clamp(const b2Vec2& a, const b2Vec2& low, const b2Vec2& high)
+constexpr inline Vec2 b2Clamp(const Vec2& a, const Vec2& low, const Vec2& high)
 {
 	return b2Max(low, b2Min(a, high));
 }
@@ -680,7 +680,7 @@ constexpr inline bool b2IsPowerOfTwo(uint32 x) noexcept
 	return (x > 0) && ((x & (x - 1)) == 0);
 }
 
-constexpr inline b2Transform b2Displace(const b2Vec2& ctr, const b2Rot& rot, const b2Vec2& local_ctr) noexcept
+constexpr inline b2Transform b2Displace(const Vec2& ctr, const b2Rot& rot, const Vec2& local_ctr) noexcept
 {
 	return b2Transform{ctr - b2Mul(rot, local_ctr), rot};
 }

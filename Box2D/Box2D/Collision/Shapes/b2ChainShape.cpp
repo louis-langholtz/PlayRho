@@ -35,7 +35,7 @@ void b2ChainShape::Clear()
 	m_count = 0;
 }
 
-void b2ChainShape::CreateLoop(const b2Vec2* vertices, child_count_t count)
+void b2ChainShape::CreateLoop(const Vec2* vertices, child_count_t count)
 {
 	assert(m_vertices == nullptr && m_count == 0);
 	assert(count >= 3);
@@ -46,8 +46,8 @@ void b2ChainShape::CreateLoop(const b2Vec2* vertices, child_count_t count)
 	}
 
 	m_count = count + 1;
-	m_vertices = static_cast<b2Vec2*>(alloc(m_count * sizeof(b2Vec2)));
-	memcpy(m_vertices, vertices, count * sizeof(b2Vec2));
+	m_vertices = static_cast<Vec2*>(alloc(m_count * sizeof(Vec2)));
+	memcpy(m_vertices, vertices, count * sizeof(Vec2));
 	m_vertices[count] = m_vertices[0];
 	m_prevVertex = m_vertices[m_count - 2];
 	m_nextVertex = m_vertices[1];
@@ -55,7 +55,7 @@ void b2ChainShape::CreateLoop(const b2Vec2* vertices, child_count_t count)
 	m_hasNextVertex = true;
 }
 
-void b2ChainShape::CreateChain(const b2Vec2* vertices, child_count_t count)
+void b2ChainShape::CreateChain(const Vec2* vertices, child_count_t count)
 {
 	assert((m_vertices == nullptr) && (m_count == 0));
 	assert(count >= 2);
@@ -66,23 +66,23 @@ void b2ChainShape::CreateChain(const b2Vec2* vertices, child_count_t count)
 	}
 
 	m_count = count;
-	m_vertices = static_cast<b2Vec2*>(alloc(count * sizeof(b2Vec2)));
-	memcpy(m_vertices, vertices, m_count * sizeof(b2Vec2));
+	m_vertices = static_cast<Vec2*>(alloc(count * sizeof(Vec2)));
+	memcpy(m_vertices, vertices, m_count * sizeof(Vec2));
 
 	m_hasPrevVertex = false;
 	m_hasNextVertex = false;
 
-	m_prevVertex = b2Vec2_zero;
-	m_nextVertex = b2Vec2_zero;
+	m_prevVertex = Vec2_zero;
+	m_nextVertex = Vec2_zero;
 }
 
-void b2ChainShape::SetPrevVertex(const b2Vec2& prevVertex) noexcept
+void b2ChainShape::SetPrevVertex(const Vec2& prevVertex) noexcept
 {
 	m_prevVertex = prevVertex;
 	m_hasPrevVertex = true;
 }
 
-void b2ChainShape::SetNextVertex(const b2Vec2& nextVertex) noexcept
+void b2ChainShape::SetNextVertex(const Vec2& nextVertex) noexcept
 {
 	m_nextVertex = nextVertex;
 	m_hasNextVertex = true;
@@ -134,7 +134,7 @@ void b2ChainShape::GetChildEdge(b2EdgeShape* edge, child_count_t index) const
 	}
 }
 
-bool b2ChainShape::TestPoint(const b2Transform& xf, const b2Vec2& p) const
+bool b2ChainShape::TestPoint(const b2Transform& xf, const Vec2& p) const
 {
 	BOX2D_NOT_USED(xf);
 	BOX2D_NOT_USED(p);
@@ -178,5 +178,5 @@ b2MassData b2ChainShape::ComputeMass(float_t density) const
 {
 	BOX2D_NOT_USED(density);
 
-	return b2MassData{float_t{0}, b2Vec2_zero, float_t{0}};
+	return b2MassData{float_t{0}, Vec2_zero, float_t{0}};
 }

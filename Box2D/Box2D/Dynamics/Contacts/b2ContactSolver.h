@@ -34,8 +34,8 @@ struct b2ContactPositionConstraintBodyData;
 /// Velocity constraint point.
 struct b2VelocityConstraintPoint
 {
-	b2Vec2 rA; ///< Position of body A relative to world manifold point
-	b2Vec2 rB; ///< Position of body B relative to world manifold point
+	Vec2 rA; ///< Position of body A relative to world manifold point
+	Vec2 rB; ///< Position of body B relative to world manifold point
 	float_t normalImpulse; ///< Normal impulse.
 	float_t tangentImpulse; ///< Tangent impulse.
 	float_t normalMass; ///< Normal mass.
@@ -112,7 +112,7 @@ public:
 		--pointCount;
 	}
 
-	b2Vec2 normal;
+	Vec2 normal;
 	b2Mat22 normalMass;
 	b2Mat22 K;
 	b2ContactVelocityConstraintBodyData bodyA; ///< Body A contact velocity constraint data.

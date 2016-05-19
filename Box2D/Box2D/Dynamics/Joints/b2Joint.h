@@ -54,7 +54,7 @@ enum b2LimitState
 
 struct b2Jacobian
 {
-	b2Vec2 linear;
+	Vec2 linear;
 	float_t angularA;
 	float_t angularB;
 };
@@ -114,13 +114,13 @@ public:
 	b2Body* GetBodyB() noexcept;
 
 	/// Get the anchor point on bodyA in world coordinates.
-	virtual b2Vec2 GetAnchorA() const = 0;
+	virtual Vec2 GetAnchorA() const = 0;
 
 	/// Get the anchor point on bodyB in world coordinates.
-	virtual b2Vec2 GetAnchorB() const = 0;
+	virtual Vec2 GetAnchorB() const = 0;
 
 	/// Get the reaction force on bodyB at the joint anchor in Newtons.
-	virtual b2Vec2 GetReactionForce(float_t inv_dt) const = 0;
+	virtual Vec2 GetReactionForce(float_t inv_dt) const = 0;
 
 	/// Get the reaction torque on bodyB in N*m.
 	virtual float_t GetReactionTorque(float_t inv_dt) const = 0;
@@ -147,7 +147,7 @@ public:
 	virtual void Dump() { log("// Dump is not supported for this joint type.\n"); }
 
 	/// Shift the origin for any points stored in world coordinates.
-	virtual void ShiftOrigin(const b2Vec2& newOrigin) { BOX2D_NOT_USED(newOrigin);  }
+	virtual void ShiftOrigin(const Vec2& newOrigin) { BOX2D_NOT_USED(newOrigin);  }
 
 protected:
 	friend class b2World;

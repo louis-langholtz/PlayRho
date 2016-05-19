@@ -21,7 +21,7 @@
 
 using namespace box2d;
 
-void b2EdgeShape::Set(const b2Vec2& v1, const b2Vec2& v2)
+void b2EdgeShape::Set(const Vec2& v1, const Vec2& v2)
 {
 	m_vertex1 = v1;
 	m_vertex2 = v2;
@@ -40,7 +40,7 @@ child_count_t b2EdgeShape::GetChildCount() const
 	return 1;
 }
 
-bool b2EdgeShape::TestPoint(const b2Transform& xf, const b2Vec2& p) const
+bool b2EdgeShape::TestPoint(const b2Transform& xf, const Vec2& p) const
 {
 	BOX2D_NOT_USED(xf);
 	BOX2D_NOT_USED(p);
@@ -64,7 +64,7 @@ bool b2EdgeShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 	const auto v1 = m_vertex1;
 	const auto v2 = m_vertex2;
 	const auto e = v2 - v1;
-	const auto normal = b2Normalize(b2Vec2(e.y, -e.x));
+	const auto normal = b2Normalize(Vec2(e.y, -e.x));
 
 	// q = p1 + t * d
 	// dot(normal, q - v1) = 0
@@ -115,7 +115,7 @@ b2AABB b2EdgeShape::ComputeAABB(const b2Transform& xf, child_count_t childIndex)
 	const auto lower = b2Min(v1, v2);
 	const auto upper = b2Max(v1, v2);
 
-	const auto r = b2Vec2{GetRadius(), GetRadius()};
+	const auto r = Vec2{GetRadius(), GetRadius()};
 	return b2AABB{lower - r, upper + r};
 }
 

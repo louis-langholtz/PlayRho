@@ -31,13 +31,13 @@ class b2EdgeShape : public b2Shape
 public:
 	b2EdgeShape(): b2Shape(e_edge, PolygonRadius) {}
 
-	constexpr b2EdgeShape(const b2Vec2& v1, const b2Vec2& v2):
+	constexpr b2EdgeShape(const Vec2& v1, const Vec2& v2):
 		b2Shape(e_edge, PolygonRadius), m_vertex1(v1), m_vertex2(v2) {}
 
 	b2EdgeShape(const b2EdgeShape&) = default;
 
 	/// Set this as an isolated edge.
-	void Set(const b2Vec2& v1, const b2Vec2& v2);
+	void Set(const Vec2& v1, const Vec2& v2);
 
 	/// Implement b2Shape.
 	b2Shape* Clone(b2BlockAllocator* allocator) const override;
@@ -46,7 +46,7 @@ public:
 	child_count_t GetChildCount() const override;
 
 	/// @see b2Shape::TestPoint
-	bool TestPoint(const b2Transform& transform, const b2Vec2& p) const override;
+	bool TestPoint(const b2Transform& transform, const Vec2& p) const override;
 
 	/// Implement b2Shape.
 	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
@@ -58,33 +58,33 @@ public:
 	/// @see b2Shape::ComputeMass
 	b2MassData ComputeMass(float_t density) const override;
 
-	b2Vec2 GetVertex0() const noexcept { return m_vertex0; }
-	b2Vec2 GetVertex1() const noexcept { return m_vertex1; }
-	b2Vec2 GetVertex2() const noexcept { return m_vertex2; }
-	b2Vec2 GetVertex3() const noexcept { return m_vertex3; }
+	Vec2 GetVertex0() const noexcept { return m_vertex0; }
+	Vec2 GetVertex1() const noexcept { return m_vertex1; }
+	Vec2 GetVertex2() const noexcept { return m_vertex2; }
+	Vec2 GetVertex3() const noexcept { return m_vertex3; }
 
-	void SetVertex0(const b2Vec2& v) noexcept;
-	void SetVertex3(const b2Vec2& v) noexcept;
+	void SetVertex0(const Vec2& v) noexcept;
+	void SetVertex3(const Vec2& v) noexcept;
 
 	bool HasVertex0() const noexcept { return m_hasVertex0; }
 	bool HasVertex3() const noexcept { return m_hasVertex3; }
 
 private:
 	/// These are the edge vertices
-	b2Vec2 m_vertex1, m_vertex2;
+	Vec2 m_vertex1, m_vertex2;
 
 	/// Optional adjacent vertices. These are used for smooth collision.
-	b2Vec2 m_vertex0 = b2Vec2_zero, m_vertex3 = b2Vec2_zero;
+	Vec2 m_vertex0 = Vec2_zero, m_vertex3 = Vec2_zero;
 	bool m_hasVertex0 = false, m_hasVertex3 = false;
 };
 
-inline void b2EdgeShape::SetVertex0(const b2Vec2& v) noexcept
+inline void b2EdgeShape::SetVertex0(const Vec2& v) noexcept
 {
 	m_vertex0 = v;
 	m_hasVertex0 = true;
 }
 
-inline void b2EdgeShape::SetVertex3(const b2Vec2& v) noexcept
+inline void b2EdgeShape::SetVertex3(const Vec2& v) noexcept
 {
 	m_vertex3 = v;
 	m_hasVertex3 = true;

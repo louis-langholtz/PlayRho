@@ -34,7 +34,7 @@ using namespace box2d;
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-void b2FrictionJointDef::Initialize(b2Body* bA, b2Body* bB, const b2Vec2& anchor)
+void b2FrictionJointDef::Initialize(b2Body* bA, b2Body* bB, const Vec2& anchor)
 {
 	bodyA = bA;
 	bodyB = bB;
@@ -109,7 +109,7 @@ void b2FrictionJoint::InitVelocityConstraints(const b2SolverData& data)
 		m_linearImpulse *= data.step.dtRatio;
 		m_angularImpulse *= data.step.dtRatio;
 
-		const auto P = b2Vec2(m_linearImpulse.x, m_linearImpulse.y);
+		const auto P = Vec2(m_linearImpulse.x, m_linearImpulse.y);
 		vA -= mA * P;
 		wA -= iA * (b2Cross(m_rA, P) + m_angularImpulse);
 		vB += mB * P;
@@ -117,7 +117,7 @@ void b2FrictionJoint::InitVelocityConstraints(const b2SolverData& data)
 	}
 	else
 	{
-		m_linearImpulse = b2Vec2_zero;
+		m_linearImpulse = Vec2_zero;
 		m_angularImpulse = float_t{0};
 	}
 
@@ -191,17 +191,17 @@ bool b2FrictionJoint::SolvePositionConstraints(const b2SolverData& data)
 	return true;
 }
 
-b2Vec2 b2FrictionJoint::GetAnchorA() const
+Vec2 b2FrictionJoint::GetAnchorA() const
 {
 	return m_bodyA->GetWorldPoint(m_localAnchorA);
 }
 
-b2Vec2 b2FrictionJoint::GetAnchorB() const
+Vec2 b2FrictionJoint::GetAnchorB() const
 {
 	return m_bodyB->GetWorldPoint(m_localAnchorB);
 }
 
-b2Vec2 b2FrictionJoint::GetReactionForce(float_t inv_dt) const
+Vec2 b2FrictionJoint::GetReactionForce(float_t inv_dt) const
 {
 	return inv_dt * m_linearImpulse;
 }
@@ -242,8 +242,8 @@ void b2FrictionJoint::Dump()
 	log("  jd.bodyA = bodies[%d];\n", indexA);
 	log("  jd.bodyB = bodies[%d];\n", indexB);
 	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	log("  jd.localAnchorA = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-	log("  jd.localAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+	log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
+	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
 	log("  jd.maxForce = %.15lef;\n", m_maxForce);
 	log("  jd.maxTorque = %.15lef;\n", m_maxTorque);
 	log("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);

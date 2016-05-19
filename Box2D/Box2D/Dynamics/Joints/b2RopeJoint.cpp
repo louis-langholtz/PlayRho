@@ -89,7 +89,7 @@ void b2RopeJoint::InitVelocityConstraints(const b2SolverData& data)
 	}
 	else
 	{
-		m_u = b2Vec2_zero;
+		m_u = Vec2_zero;
 		m_mass = float_t{0};
 		m_impulse = float_t{0};
 		return;
@@ -194,19 +194,19 @@ bool b2RopeJoint::SolvePositionConstraints(const b2SolverData& data)
 	return (length - m_maxLength) < LinearSlop;
 }
 
-b2Vec2 b2RopeJoint::GetAnchorA() const
+Vec2 b2RopeJoint::GetAnchorA() const
 {
 	return m_bodyA->GetWorldPoint(m_localAnchorA);
 }
 
-b2Vec2 b2RopeJoint::GetAnchorB() const
+Vec2 b2RopeJoint::GetAnchorB() const
 {
 	return m_bodyB->GetWorldPoint(m_localAnchorB);
 }
 
-b2Vec2 b2RopeJoint::GetReactionForce(float_t inv_dt) const
+Vec2 b2RopeJoint::GetReactionForce(float_t inv_dt) const
 {
-	b2Vec2 F = (inv_dt * m_impulse) * m_u;
+	Vec2 F = (inv_dt * m_impulse) * m_u;
 	return F;
 }
 
@@ -235,8 +235,8 @@ void b2RopeJoint::Dump()
 	log("  jd.bodyA = bodies[%d];\n", indexA);
 	log("  jd.bodyB = bodies[%d];\n", indexB);
 	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	log("  jd.localAnchorA = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-	log("  jd.localAnchorB = b2Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
+	log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
+	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
 	log("  jd.maxLength = %.15lef;\n", m_maxLength);
 	log("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);
 }

@@ -61,7 +61,7 @@ b2Body::b2Body(const BodyDef* bd, b2World* world):
 	assert(b2IsValid(bd->angularDamping) && (bd->angularDamping >= float_t{0}));
 	assert(b2IsValid(bd->linearDamping) && (bd->linearDamping >= float_t{0}));
 
-	m_sweep.localCenter = b2Vec2_zero;
+	m_sweep.localCenter = Vec2_zero;
 	m_sweep.c0 = m_xf.p;
 	m_sweep.c = m_xf.p;
 	m_sweep.a0 = bd->angle;
@@ -123,7 +123,7 @@ void b2Body::SetType(BodyType type)
 
 	if (m_type == StaticBody)
 	{
-		m_linearVelocity = b2Vec2_zero;
+		m_linearVelocity = Vec2_zero;
 		m_angularVelocity = float_t{0};
 		m_sweep.a0 = m_sweep.a;
 		m_sweep.c0 = m_sweep.c;
@@ -132,7 +132,7 @@ void b2Body::SetType(BodyType type)
 
 	SetAwake();
 
-	m_force = b2Vec2_zero;
+	m_force = Vec2_zero;
 	m_torque = float_t{0};
 
 	DestroyContacts();
@@ -262,7 +262,7 @@ void b2Body::DestroyFixture(b2Fixture* fixture)
 b2MassData b2Body::CalculateMassData() const noexcept
 {
 	auto mass = float_t(0);
-	auto center = b2Vec2_zero;
+	auto center = Vec2_zero;
 	auto I = float_t(0);
 	for (auto f = m_fixtureList; f; f = f->m_next)
 	{
@@ -276,7 +276,7 @@ b2MassData b2Body::CalculateMassData() const noexcept
 		center += massData.mass * massData.center;
 		I += massData.I;
 	}
-	return b2MassData{mass, (mass != float_t(0))? center / mass: b2Vec2_zero, I};
+	return b2MassData{mass, (mass != float_t(0))? center / mass: Vec2_zero, I};
 }
 
 void b2Body::ResetMassData()
@@ -290,7 +290,7 @@ void b2Body::ResetMassData()
 		m_invMass = float_t{0};
 		m_I = float_t{0};
 		m_invI = float_t{0};
-		m_sweep.localCenter = b2Vec2_zero;
+		m_sweep.localCenter = Vec2_zero;
 		m_sweep.c0 = m_xf.p;
 		m_sweep.c = m_xf.p;
 		m_sweep.a0 = m_sweep.a;
@@ -302,7 +302,7 @@ void b2Body::ResetMassData()
 	// Accumulate mass over all fixtures.
 	m_mass = float_t{0};
 	m_I = float_t{0};
-	auto localCenter = b2Vec2_zero;
+	auto localCenter = Vec2_zero;
 	for (auto f = m_fixtureList; f; f = f->m_next)
 	{
 		if (f->m_density == float_t{0})
@@ -411,7 +411,7 @@ bool b2Body::ShouldCollide(const b2Body* other) const
 	return true;
 }
 
-void b2Body::SetTransform(const b2Vec2& position, float_t angle)
+void b2Body::SetTransform(const Vec2& position, float_t angle)
 {
 	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())
@@ -510,9 +510,9 @@ void b2Body::Dump()
 	log("{\n");
 	log("  BodyDef bd;\n");
 	log("  bd.type = BodyType(%d);\n", m_type);
-	log("  bd.position = b2Vec2(%.15lef, %.15lef);\n", m_xf.p.x, m_xf.p.y);
+	log("  bd.position = Vec2(%.15lef, %.15lef);\n", m_xf.p.x, m_xf.p.y);
 	log("  bd.angle = %.15lef;\n", m_sweep.a);
-	log("  bd.linearVelocity = b2Vec2(%.15lef, %.15lef);\n", m_linearVelocity.x, m_linearVelocity.y);
+	log("  bd.linearVelocity = Vec2(%.15lef, %.15lef);\n", m_linearVelocity.x, m_linearVelocity.y);
 	log("  bd.angularVelocity = %.15lef;\n", m_angularVelocity);
 	log("  bd.linearDamping = %.15lef;\n", m_linearDamping);
 	log("  bd.angularDamping = %.15lef;\n", m_angularDamping);

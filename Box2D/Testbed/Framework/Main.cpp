@@ -59,7 +59,7 @@ namespace
 	Test* test;
 	Settings settings;
 	bool rightMouseDown;
-	b2Vec2 lastp;
+	Vec2 lastp;
 }
 
 //
@@ -105,7 +105,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
 			// Pan left
 			if (mods == GLFW_MOD_CONTROL)
 			{
-				b2Vec2 newOrigin(2.0f, 0.0f);
+				Vec2 newOrigin(2.0f, 0.0f);
 				test->ShiftOrigin(newOrigin);
 			}
 			else
@@ -118,7 +118,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
 			// Pan right
 			if (mods == GLFW_MOD_CONTROL)
 			{
-				b2Vec2 newOrigin(-2.0f, 0.0f);
+				Vec2 newOrigin(-2.0f, 0.0f);
 				test->ShiftOrigin(newOrigin);
 			}
 			else
@@ -131,7 +131,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
 			// Pan down
 			if (mods == GLFW_MOD_CONTROL)
 			{
-				b2Vec2 newOrigin(0.0f, 2.0f);
+				Vec2 newOrigin(0.0f, 2.0f);
 				test->ShiftOrigin(newOrigin);
 			}
 			else
@@ -144,7 +144,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
 			// Pan up
 			if (mods == GLFW_MOD_CONTROL)
 			{
-				b2Vec2 newOrigin(0.0f, -2.0f);
+				Vec2 newOrigin(0.0f, -2.0f);
 				test->ShiftOrigin(newOrigin);
 			}
 			else
@@ -156,7 +156,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
 		case GLFW_KEY_HOME:
 			// Reset view
 			g_camera.m_zoom = 1.0f;
-			g_camera.m_center = b2Vec2(0.0f, 20.0f);
+			g_camera.m_center = Vec2(0.0f, 20.0f);
 			break;
 
 		case GLFW_KEY_Z:
@@ -228,14 +228,14 @@ static void sMouseButton(GLFWwindow*, int32 button, int32 action, int32 mods)
 {
 	double xd, yd;
 	glfwGetCursorPos(mainWindow, &xd, &yd);
-	b2Vec2 ps((float_t)xd, (float_t)yd);
+	Vec2 ps((float_t)xd, (float_t)yd);
 
 	// Use the mouse to move things around.
 	if (button == GLFW_MOUSE_BUTTON_1)
 	{
         //<##>
-        //ps = b2Vec2(0, 0);
-		b2Vec2 pw = g_camera.ConvertScreenToWorld(ps);
+        //ps = Vec2(0, 0);
+		Vec2 pw = g_camera.ConvertScreenToWorld(ps);
 		if (action == GLFW_PRESS)
 		{
 			if (mods == GLFW_MOD_SHIFT)
@@ -271,14 +271,14 @@ static void sMouseButton(GLFWwindow*, int32 button, int32 action, int32 mods)
 //
 static void sMouseMotion(GLFWwindow*, double xd, double yd)
 {
-	b2Vec2 ps((float)xd, (float)yd);
+	Vec2 ps((float)xd, (float)yd);
 
-	b2Vec2 pw = g_camera.ConvertScreenToWorld(ps);
+	Vec2 pw = g_camera.ConvertScreenToWorld(ps);
 	test->MouseMove(pw);
 	
 	if (rightMouseDown)
 	{
-		b2Vec2 diff = pw - lastp;
+		Vec2 diff = pw - lastp;
 		g_camera.m_center.x -= diff.x;
 		g_camera.m_center.y -= diff.y;
 		lastp = g_camera.ConvertScreenToWorld(ps);
@@ -329,7 +329,7 @@ static void sSimulate()
 		entry = g_testEntries + testIndex;
 		test = entry->createFcn();
 		g_camera.m_zoom = 1.0f;
-		g_camera.m_center = b2Vec2(0.0f, 20.0f);
+		g_camera.m_center = Vec2(0.0f, 20.0f);
 	}
 }
 

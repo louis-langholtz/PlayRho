@@ -37,7 +37,7 @@ public:
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
+			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
@@ -49,13 +49,13 @@ public:
 			{
 				BodyDef bd;
 				bd.type = DynamicBody;
-				bd.position = b2Vec2(0.0, 4.0f + 3.0f * i);
+				bd.position = Vec2(0.0, 4.0f + 3.0f * i);
 
 				m_bodies[i] = m_world->CreateBody(&bd);
 
 				m_bodies[i]->CreateFixture(&shape, 1.0f);
 
-				m_bodies[i]->SetLinearVelocity(b2Vec2(0.0f, -50.0f));
+				m_bodies[i]->SetLinearVelocity(Vec2(0.0f, -50.0f));
 			}
 		}
 	}

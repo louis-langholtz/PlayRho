@@ -36,13 +36,13 @@ struct b2DistanceJointDef : public b2JointDef
 	/// Initialize the bodies, anchors, and length using the world
 	/// anchors.
 	void Initialize(b2Body* bodyA, b2Body* bodyB,
-					const b2Vec2& anchorA, const b2Vec2& anchorB);
+					const Vec2& anchorA, const Vec2& anchorB);
 
 	/// The local anchor point relative to bodyA's origin.
-	b2Vec2 localAnchorA = b2Vec2_zero;
+	Vec2 localAnchorA = Vec2_zero;
 
 	/// The local anchor point relative to bodyB's origin.
-	b2Vec2 localAnchorB = b2Vec2_zero;
+	Vec2 localAnchorB = Vec2_zero;
 
 	/// The natural length between the anchor points.
 	float_t length = float_t(1);
@@ -62,22 +62,22 @@ class b2DistanceJoint : public b2Joint
 {
 public:
 
-	b2Vec2 GetAnchorA() const override;
-	b2Vec2 GetAnchorB() const override;
+	Vec2 GetAnchorA() const override;
+	Vec2 GetAnchorB() const override;
 
 	/// Get the reaction force given the inverse time step.
 	/// Unit is N.
-	b2Vec2 GetReactionForce(float_t inv_dt) const override;
+	Vec2 GetReactionForce(float_t inv_dt) const override;
 
 	/// Get the reaction torque given the inverse time step.
 	/// Unit is N*m. This is always zero for a distance joint.
 	float_t GetReactionTorque(float_t inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
-	const b2Vec2& GetLocalAnchorA() const noexcept { return m_localAnchorA; }
+	const Vec2& GetLocalAnchorA() const noexcept { return m_localAnchorA; }
 
 	/// The local anchor point relative to bodyB's origin.
-	const b2Vec2& GetLocalAnchorB() const noexcept { return m_localAnchorB; }
+	const Vec2& GetLocalAnchorB() const noexcept { return m_localAnchorB; }
 
 	/// Set/get the natural length.
 	/// Manipulating the length can lead to non-physical behavior when the frequency is zero.
@@ -109,8 +109,8 @@ protected:
 	float_t m_bias = float_t{0};
 
 	// Solver shared
-	b2Vec2 m_localAnchorA;
-	b2Vec2 m_localAnchorB;
+	Vec2 m_localAnchorA;
+	Vec2 m_localAnchorB;
 	float_t m_gamma = float_t{0};
 	float_t m_impulse = float_t{0};
 	float_t m_length;
@@ -118,11 +118,11 @@ protected:
 	// Solver temp
 	index_t m_indexA;
 	index_t m_indexB;
-	b2Vec2 m_u;
-	b2Vec2 m_rA;
-	b2Vec2 m_rB;
-	b2Vec2 m_localCenterA;
-	b2Vec2 m_localCenterB;
+	Vec2 m_u;
+	Vec2 m_rA;
+	Vec2 m_rB;
+	Vec2 m_localCenterA;
+	Vec2 m_localCenterB;
 	float_t m_invMassA;
 	float_t m_invMassB;
 	float_t m_invIA;

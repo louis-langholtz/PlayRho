@@ -40,7 +40,7 @@ public:
 			ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
+			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
@@ -60,20 +60,20 @@ public:
 
 			const int32 N = 10;
 			const float_t y = 15.0f;
-			m_ropeDef.localAnchorA = b2Vec2(0.0f, y);
+			m_ropeDef.localAnchorA = Vec2(0.0f, y);
 
 			b2Body* prevBody = ground;
 			for (int32 i = 0; i < N; ++i)
 			{
 				BodyDef bd;
 				bd.type = DynamicBody;
-				bd.position = b2Vec2(0.5f + 1.0f * i, y);
+				bd.position = Vec2(0.5f + 1.0f * i, y);
 				if (i == N - 1)
 				{
 					shape.SetAsBox(1.5f, 1.5f);
 					fd.density = 100.0f;
 					fd.filter.categoryBits = 0x0002;
-					bd.position = b2Vec2(1.0f * i, y);
+					bd.position = Vec2(1.0f * i, y);
 					bd.angularDamping = 0.4f;
 				}
 
@@ -81,14 +81,14 @@ public:
 
 				body->CreateFixture(&fd);
 
-				b2Vec2 anchor(float_t(i), y);
+				Vec2 anchor(float_t(i), y);
 				jd.Initialize(prevBody, body, anchor);
 				m_world->CreateJoint(&jd);
 
 				prevBody = body;
 			}
 
-			m_ropeDef.localAnchorB = b2Vec2_zero;
+			m_ropeDef.localAnchorB = Vec2_zero;
 
 			float_t extraLength = 0.01f;
 			m_ropeDef.maxLength = N - 1.0f + extraLength;

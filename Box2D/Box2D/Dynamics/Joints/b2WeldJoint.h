@@ -32,13 +32,13 @@ struct b2WeldJointDef : public b2JointDef
 
 	/// Initialize the bodies, anchors, and reference angle using a world
 	/// anchor point.
-	void Initialize(b2Body* bodyA, b2Body* bodyB, const b2Vec2& anchor);
+	void Initialize(b2Body* bodyA, b2Body* bodyB, const Vec2& anchor);
 
 	/// The local anchor point relative to bodyA's origin.
-	b2Vec2 localAnchorA = b2Vec2_zero;
+	Vec2 localAnchorA = Vec2_zero;
 
 	/// The local anchor point relative to bodyB's origin.
-	b2Vec2 localAnchorB = b2Vec2_zero;
+	Vec2 localAnchorB = Vec2_zero;
 
 	/// The bodyB angle minus bodyA angle in the reference state (radians).
 	float_t referenceAngle = float_t{0};
@@ -56,17 +56,17 @@ struct b2WeldJointDef : public b2JointDef
 class b2WeldJoint : public b2Joint
 {
 public:
-	b2Vec2 GetAnchorA() const override;
-	b2Vec2 GetAnchorB() const override;
+	Vec2 GetAnchorA() const override;
+	Vec2 GetAnchorB() const override;
 
-	b2Vec2 GetReactionForce(float_t inv_dt) const override;
+	Vec2 GetReactionForce(float_t inv_dt) const override;
 	float_t GetReactionTorque(float_t inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
-	const b2Vec2& GetLocalAnchorA() const { return m_localAnchorA; }
+	const Vec2& GetLocalAnchorA() const { return m_localAnchorA; }
 
 	/// The local anchor point relative to bodyB's origin.
-	const b2Vec2& GetLocalAnchorB() const  { return m_localAnchorB; }
+	const Vec2& GetLocalAnchorB() const  { return m_localAnchorB; }
 
 	/// Get the reference angle.
 	float_t GetReferenceAngle() const { return m_referenceAngle; }
@@ -97,8 +97,8 @@ protected:
 	float_t m_bias;
 
 	// Solver shared
-	b2Vec2 m_localAnchorA;
-	b2Vec2 m_localAnchorB;
+	Vec2 m_localAnchorA;
+	Vec2 m_localAnchorB;
 	float_t m_referenceAngle;
 	float_t m_gamma;
 	b2Vec3 m_impulse;
@@ -106,10 +106,10 @@ protected:
 	// Solver temp
 	index_t m_indexA;
 	index_t m_indexB;
-	b2Vec2 m_rA;
-	b2Vec2 m_rB;
-	b2Vec2 m_localCenterA;
-	b2Vec2 m_localCenterB;
+	Vec2 m_rA;
+	Vec2 m_rB;
+	Vec2 m_localCenterA;
+	Vec2 m_localCenterB;
 	float_t m_invMassA;
 	float_t m_invMassB;
 	float_t m_invIA;

@@ -28,14 +28,14 @@ class TheoJansen : public Test
 {
 public:
 
-	void CreateLeg(float_t s, const b2Vec2& wheelAnchor)
+	void CreateLeg(float_t s, const Vec2& wheelAnchor)
 	{
-		b2Vec2 p1(5.4f * s, -6.1f);
-		b2Vec2 p2(7.2f * s, -1.2f);
-		b2Vec2 p3(4.3f * s, -1.9f);
-		b2Vec2 p4(3.1f * s, 0.8f);
-		b2Vec2 p5(6.0f * s, 1.5f);
-		b2Vec2 p6(2.5f * s, 3.7f);
+		Vec2 p1(5.4f * s, -6.1f);
+		Vec2 p2(7.2f * s, -1.2f);
+		Vec2 p3(4.3f * s, -1.9f);
+		Vec2 p4(3.1f * s, 0.8f);
+		Vec2 p5(6.0f * s, 1.5f);
+		Vec2 p6(2.5f * s, 3.7f);
 
 		b2FixtureDef fd1, fd2;
 		fd1.filter.groupIndex = -1;
@@ -47,28 +47,28 @@ public:
 
 		if (s > 0.0f)
 		{
-			b2Vec2 vertices[3];
+			Vec2 vertices[3];
 
 			vertices[0] = p1;
 			vertices[1] = p2;
 			vertices[2] = p3;
 			poly1.Set(vertices, 3);
 
-			vertices[0] = b2Vec2_zero;
+			vertices[0] = Vec2_zero;
 			vertices[1] = p5 - p4;
 			vertices[2] = p6 - p4;
 			poly2.Set(vertices, 3);
 		}
 		else
 		{
-			b2Vec2 vertices[3];
+			Vec2 vertices[3];
 
 			vertices[0] = p1;
 			vertices[1] = p3;
 			vertices[2] = p2;
 			poly1.Set(vertices, 3);
 
-			vertices[0] = b2Vec2_zero;
+			vertices[0] = Vec2_zero;
 			vertices[1] = p6 - p4;
 			vertices[2] = p5 - p4;
 			poly2.Set(vertices, 3);
@@ -120,10 +120,10 @@ public:
 
 	TheoJansen()
 	{
-		m_offset = b2Vec2(0.0f, 8.0f);
+		m_offset = Vec2(0.0f, 8.0f);
 		m_motorSpeed = 2.0f;
 		m_motorOn = true;
-		b2Vec2 pivot(0.0f, 0.8f);
+		Vec2 pivot(0.0f, 0.8f);
 
 		// Ground
 		{
@@ -131,13 +131,13 @@ public:
 			b2Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-50.0f, 0.0f), b2Vec2(50.0f, 0.0f));
+			shape.Set(Vec2(-50.0f, 0.0f), Vec2(50.0f, 0.0f));
 			ground->CreateFixture(&shape, 0.0f);
 
-			shape.Set(b2Vec2(-50.0f, 0.0f), b2Vec2(-50.0f, 10.0f));
+			shape.Set(Vec2(-50.0f, 0.0f), Vec2(-50.0f, 10.0f));
 			ground->CreateFixture(&shape, 0.0f);
 
-			shape.Set(b2Vec2(50.0f, 0.0f), b2Vec2(50.0f, 10.0f));
+			shape.Set(Vec2(50.0f, 0.0f), Vec2(50.0f, 10.0f));
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
@@ -149,7 +149,7 @@ public:
 
 			BodyDef bd;
 			bd.type = DynamicBody;
-			bd.position = b2Vec2(-40.0f + 2.0f * i, 0.5f);
+			bd.position = Vec2(-40.0f + 2.0f * i, 0.5f);
 
 			b2Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&shape, 1.0f);
@@ -196,9 +196,9 @@ public:
 			m_motorJoint = (b2RevoluteJoint*)m_world->CreateJoint(&jd);
 		}
 
-		b2Vec2 wheelAnchor;
+		Vec2 wheelAnchor;
 		
-		wheelAnchor = pivot + b2Vec2(0.0f, -0.8f);
+		wheelAnchor = pivot + Vec2(0.0f, -0.8f);
 
 		CreateLeg(-1.0f, wheelAnchor);
 		CreateLeg(1.0f, wheelAnchor);
@@ -247,7 +247,7 @@ public:
 		return new TheoJansen;
 	}
 
-	b2Vec2 m_offset;
+	Vec2 m_offset;
 	b2Body* m_chassis;
 	b2Body* m_wheel;
 	b2RevoluteJoint* m_motorJoint;
