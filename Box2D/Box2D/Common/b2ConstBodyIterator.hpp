@@ -1,13 +1,13 @@
 //
-//  b2ConstBodyIterator.hpp
+//  ConstBodyIterator.hpp
 //  Box2D
 //
 //  Created by Louis D. Langholtz on 3/6/16.
 //
 //
 
-#ifndef b2ConstBodyIterator_hpp
-#define b2ConstBodyIterator_hpp
+#ifndef ConstBodyIterator_hpp
+#define ConstBodyIterator_hpp
 
 #include <iterator>
 
@@ -15,17 +15,17 @@ namespace box2d {
 
 class Body;
 
-class b2ConstBodyIterator: public std::iterator<std::forward_iterator_tag, const Body>
+class ConstBodyIterator: public std::iterator<std::forward_iterator_tag, const Body>
 {
 public:
-	b2ConstBodyIterator(pointer b) noexcept: p(b) {}
-	b2ConstBodyIterator(const b2ConstBodyIterator& it) noexcept: p(it.p) {}
+	ConstBodyIterator(pointer b) noexcept: p(b) {}
+	ConstBodyIterator(const ConstBodyIterator& it) noexcept: p(it.p) {}
 	
-	b2ConstBodyIterator& operator++() noexcept { p = next(p); return *this; }
-	b2ConstBodyIterator operator++(int) { b2ConstBodyIterator tmp(*this); operator++(); return tmp; }
+	ConstBodyIterator& operator++() noexcept { p = next(p); return *this; }
+	ConstBodyIterator operator++(int) { ConstBodyIterator tmp(*this); operator++(); return tmp; }
 	
-	bool operator==(const b2ConstBodyIterator& rhs) const noexcept {return p == rhs.p; }
-	bool operator!=(const b2ConstBodyIterator& rhs) const noexcept {return p != rhs.p; }
+	bool operator==(const ConstBodyIterator& rhs) const noexcept {return p == rhs.p; }
+	bool operator!=(const ConstBodyIterator& rhs) const noexcept {return p != rhs.p; }
 	
 	reference operator*() const noexcept { return *p; }
 	
@@ -37,4 +37,4 @@ private:
 
 } // namespace box2d
 
-#endif /* b2ConstBodyIterator_hpp */
+#endif /* ConstBodyIterator_hpp */

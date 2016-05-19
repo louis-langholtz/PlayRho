@@ -21,7 +21,7 @@
 
 using namespace box2d;
 
-b2DynamicTree::b2DynamicTree():
+DynamicTree::DynamicTree():
 	m_nodes(static_cast<b2TreeNode*>(alloc(m_nodeCapacity * sizeof(b2TreeNode))))
 {
 	std::memset(m_nodes, 0, m_nodeCapacity * sizeof(b2TreeNode));
@@ -36,14 +36,14 @@ b2DynamicTree::b2DynamicTree():
 	m_nodes[m_nodeCapacity-1].height = NullNode;
 }
 
-b2DynamicTree::~b2DynamicTree()
+DynamicTree::~DynamicTree()
 {
 	// This frees the entire tree in one shot.
 	free(m_nodes);
 }
 
 // Allocate a node from the pool. Grow the pool if necessary.
-b2DynamicTree::size_type b2DynamicTree::AllocateNode()
+DynamicTree::size_type DynamicTree::AllocateNode()
 {
 	// Expand the node pool as needed.
 	if (m_freeList == NullNode)
@@ -79,7 +79,7 @@ b2DynamicTree::size_type b2DynamicTree::AllocateNode()
 }
 
 // Return a node to the pool.
-void b2DynamicTree::FreeNode(size_type nodeId)
+void DynamicTree::FreeNode(size_type nodeId)
 {
 	assert(nodeId != NullNode);
 	assert(nodeId < m_nodeCapacity);
@@ -93,7 +93,7 @@ void b2DynamicTree::FreeNode(size_type nodeId)
 // Create a proxy in the tree as a leaf node. We return the index
 // of the node instead of a pointer so that we can grow
 // the node pool.
-b2DynamicTree::size_type b2DynamicTree::CreateProxy(const AABB& aabb, void* userData)
+DynamicTree::size_type DynamicTree::CreateProxy(const AABB& aabb, void* userData)
 {
 	const auto proxyId = AllocateNode();
 
@@ -107,7 +107,7 @@ b2DynamicTree::size_type b2DynamicTree::CreateProxy(const AABB& aabb, void* user
 	return proxyId;
 }
 
-void b2DynamicTree::DestroyProxy(size_type proxyId)
+void DynamicTree::DestroyProxy(size_type proxyId)
 {
 	assert((0 <= proxyId) && (proxyId < m_nodeCapacity));
 	assert(m_nodes[proxyId].IsLeaf());
@@ -116,7 +116,7 @@ void b2DynamicTree::DestroyProxy(size_type proxyId)
 	FreeNode(proxyId);
 }
 
-bool b2DynamicTree::MoveProxy(size_type proxyId, const AABB& aabb, const Vec2& displacement)
+bool DynamicTree::MoveProxy(size_type proxyId, const AABB& aabb, const Vec2& displacement)
 {
 	assert((0 <= proxyId) && (proxyId < m_nodeCapacity));
 
@@ -161,7 +161,7 @@ bool b2DynamicTree::MoveProxy(size_type proxyId, const AABB& aabb, const Vec2& d
 	return true;
 }
 
-void b2DynamicTree::InsertLeaf(size_type leaf)
+void DynamicTree::InsertLeaf(size_type leaf)
 {
 	assert(leaf != NullNode);
 
@@ -295,7 +295,7 @@ void b2DynamicTree::InsertLeaf(size_type leaf)
 	//Validate();
 }
 
-void b2DynamicTree::RemoveLeaf(size_type leaf)
+void DynamicTree::RemoveLeaf(size_type leaf)
 {
 	if (leaf == m_root)
 	{
@@ -359,7 +359,7 @@ void b2DynamicTree::RemoveLeaf(size_type leaf)
 
 // Perform a left or right rotation if node A is imbalanced.
 // Returns the new root index.
-b2DynamicTree::size_type b2DynamicTree::Balance(size_type iA)
+DynamicTree::size_type DynamicTree::Balance(size_type iA)
 {
 	assert(iA != NullNode);
 	assert(iA < m_nodeCapacity);
@@ -508,7 +508,7 @@ b2DynamicTree::size_type b2DynamicTree::Balance(size_type iA)
 	return iA;
 }
 
-float_t b2DynamicTree::GetAreaRatio() const
+float_t DynamicTree::GetAreaRatio() const
 {
 	if (m_root == NullNode)
 	{
@@ -535,7 +535,7 @@ float_t b2DynamicTree::GetAreaRatio() const
 }
 
 // Compute the height of a sub-tree.
-b2DynamicTree::size_type b2DynamicTree::ComputeHeight(size_type nodeId) const
+DynamicTree::size_type DynamicTree::ComputeHeight(size_type nodeId) const
 {
 	assert((0 <= nodeId) && (nodeId < m_nodeCapacity));
 	const auto node = m_nodes + nodeId;
@@ -550,12 +550,12 @@ b2DynamicTree::size_type b2DynamicTree::ComputeHeight(size_type nodeId) const
 	return 1 + Max(height1, height2);
 }
 
-b2DynamicTree::size_type b2DynamicTree::ComputeHeight() const
+DynamicTree::size_type DynamicTree::ComputeHeight() const
 {
 	return ComputeHeight(m_root);
 }
 
-void b2DynamicTree::ValidateStructure(size_type index) const
+void DynamicTree::ValidateStructure(size_type index) const
 {
 	if (index == NullNode)
 	{
@@ -592,7 +592,7 @@ void b2DynamicTree::ValidateStructure(size_type index) const
 	ValidateStructure(child2);
 }
 
-void b2DynamicTree::ValidateMetrics(size_type index) const
+void DynamicTree::ValidateMetrics(size_type index) const
 {
 	if (index == NullNode)
 	{
@@ -635,7 +635,7 @@ void b2DynamicTree::ValidateMetrics(size_type index) const
 	ValidateMetrics(child2);
 }
 
-void b2DynamicTree::Validate() const
+void DynamicTree::Validate() const
 {
 	ValidateStructure(m_root);
 	ValidateMetrics(m_root);
@@ -654,7 +654,7 @@ void b2DynamicTree::Validate() const
 	assert((m_nodeCount + freeCount) == m_nodeCapacity);
 }
 
-b2DynamicTree::size_type b2DynamicTree::GetMaxBalance() const
+DynamicTree::size_type DynamicTree::GetMaxBalance() const
 {
 	auto maxBalance = size_type{0};
 	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
@@ -688,7 +688,7 @@ b2DynamicTree::size_type b2DynamicTree::GetMaxBalance() const
 	return maxBalance;
 }
 
-void b2DynamicTree::RebuildBottomUp()
+void DynamicTree::RebuildBottomUp()
 {
 	const auto nodes = static_cast<size_type*>(alloc(m_nodeCount * sizeof(size_type)));
 	auto count = size_type{0};
@@ -768,7 +768,7 @@ void b2DynamicTree::RebuildBottomUp()
 	Validate();
 }
 
-void b2DynamicTree::ShiftOrigin(const Vec2& newOrigin)
+void DynamicTree::ShiftOrigin(const Vec2& newOrigin)
 {
 	// Build array of leaves. Free the rest.
 	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)

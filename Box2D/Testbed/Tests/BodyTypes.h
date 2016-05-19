@@ -74,7 +74,7 @@ public:
 			rjd.enableMotor = true;
 			m_world->CreateJoint(&rjd);
 
-			b2PrismaticJointDef pjd;
+			PrismaticJointDef pjd;
 			pjd.Initialize(ground, m_platform, Vec2(0.0f, 5.0f), Vec2(1.0f, 0.0f));
 
 			pjd.maxMotorForce = 1000.0f;

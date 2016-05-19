@@ -30,7 +30,7 @@ using namespace box2d;
 // K = J * invM * JT
 //   = invMassA + invIA * cross(rA, u)^2 + invMassB + invIB * cross(rB, u)^2
 
-b2RopeJoint::b2RopeJoint(const b2RopeJointDef* def)
+RopeJoint::RopeJoint(const RopeJointDef* def)
 : Joint(def)
 {
 	m_localAnchorA = def->localAnchorA;
@@ -44,7 +44,7 @@ b2RopeJoint::b2RopeJoint(const b2RopeJointDef* def)
 	m_length = float_t{0};
 }
 
-void b2RopeJoint::InitVelocityConstraints(const b2SolverData& data)
+void RopeJoint::InitVelocityConstraints(const b2SolverData& data)
 {
 	m_indexA = m_bodyA->m_islandIndex;
 	m_indexB = m_bodyB->m_islandIndex;
@@ -124,7 +124,7 @@ void b2RopeJoint::InitVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-void b2RopeJoint::SolveVelocityConstraints(const b2SolverData& data)
+void RopeJoint::SolveVelocityConstraints(const b2SolverData& data)
 {
 	auto vA = data.velocities[m_indexA].v;
 	auto wA = data.velocities[m_indexA].w;
@@ -160,7 +160,7 @@ void b2RopeJoint::SolveVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-bool b2RopeJoint::SolvePositionConstraints(const b2SolverData& data)
+bool RopeJoint::SolvePositionConstraints(const b2SolverData& data)
 {
 	auto cA = data.positions[m_indexA].c;
 	auto aA = data.positions[m_indexA].a;
@@ -194,44 +194,44 @@ bool b2RopeJoint::SolvePositionConstraints(const b2SolverData& data)
 	return (length - m_maxLength) < LinearSlop;
 }
 
-Vec2 b2RopeJoint::GetAnchorA() const
+Vec2 RopeJoint::GetAnchorA() const
 {
 	return m_bodyA->GetWorldPoint(m_localAnchorA);
 }
 
-Vec2 b2RopeJoint::GetAnchorB() const
+Vec2 RopeJoint::GetAnchorB() const
 {
 	return m_bodyB->GetWorldPoint(m_localAnchorB);
 }
 
-Vec2 b2RopeJoint::GetReactionForce(float_t inv_dt) const
+Vec2 RopeJoint::GetReactionForce(float_t inv_dt) const
 {
 	Vec2 F = (inv_dt * m_impulse) * m_u;
 	return F;
 }
 
-float_t b2RopeJoint::GetReactionTorque(float_t inv_dt) const
+float_t RopeJoint::GetReactionTorque(float_t inv_dt) const
 {
 	BOX2D_NOT_USED(inv_dt);
 	return float_t{0};
 }
 
-float_t b2RopeJoint::GetMaxLength() const
+float_t RopeJoint::GetMaxLength() const
 {
 	return m_maxLength;
 }
 
-b2LimitState b2RopeJoint::GetLimitState() const
+b2LimitState RopeJoint::GetLimitState() const
 {
 	return m_state;
 }
 
-void b2RopeJoint::Dump()
+void RopeJoint::Dump()
 {
 	const auto indexA = m_bodyA->m_islandIndex;
 	const auto indexB = m_bodyB->m_islandIndex;
 
-	log("  b2RopeJointDef jd;\n");
+	log("  RopeJointDef jd;\n");
 	log("  jd.bodyA = bodies[%d];\n", indexA);
 	log("  jd.bodyB = bodies[%d];\n", indexB);
 	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);

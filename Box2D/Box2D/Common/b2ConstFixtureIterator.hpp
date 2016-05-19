@@ -1,13 +1,13 @@
 //
-//  b2ConstFixtureIterator.hpp
+//  ConstFixtureIterator.hpp
 //  Box2D
 //
 //  Created by Louis D. Langholtz on 3/7/16.
 //
 //
 
-#ifndef b2ConstFixtureIterator_hpp
-#define b2ConstFixtureIterator_hpp
+#ifndef ConstFixtureIterator_hpp
+#define ConstFixtureIterator_hpp
 
 #include <iterator>
 
@@ -15,17 +15,17 @@ namespace box2d {
 
 class Fixture;
 
-class b2ConstFixtureIterator: public std::iterator<std::forward_iterator_tag, const Fixture>
+class ConstFixtureIterator: public std::iterator<std::forward_iterator_tag, const Fixture>
 {
 public:
-	b2ConstFixtureIterator(pointer b) noexcept: p(b) {}
-	b2ConstFixtureIterator(const b2ConstFixtureIterator& it) noexcept: p(it.p) {}
+	ConstFixtureIterator(pointer b) noexcept: p(b) {}
+	ConstFixtureIterator(const ConstFixtureIterator& it) noexcept: p(it.p) {}
 	
-	b2ConstFixtureIterator& operator++() noexcept { p = next(p); return *this; }
-	b2ConstFixtureIterator operator++(int) { b2ConstFixtureIterator tmp(*this); operator++(); return tmp; }
+	ConstFixtureIterator& operator++() noexcept { p = next(p); return *this; }
+	ConstFixtureIterator operator++(int) { ConstFixtureIterator tmp(*this); operator++(); return tmp; }
 	
-	bool operator==(const b2ConstFixtureIterator& rhs) const noexcept {return p == rhs.p; }
-	bool operator!=(const b2ConstFixtureIterator& rhs) const noexcept {return p != rhs.p; }
+	bool operator==(const ConstFixtureIterator& rhs) const noexcept {return p == rhs.p; }
+	bool operator!=(const ConstFixtureIterator& rhs) const noexcept {return p != rhs.p; }
 	
 	reference operator*() const noexcept { return *p; }
 	
@@ -37,4 +37,4 @@ private:
 	
 } // namespace box2d
 
-#endif /* b2ConstFixtureIterator_hpp */
+#endif /* ConstFixtureIterator_hpp */

@@ -54,7 +54,7 @@ public:
 			fd.shape = &shape;
 			fd.density = 20.0f;
 
-			b2WeldJointDef jd;
+			WeldJointDef jd;
 
 			Body* prevBody = ground;
 			for (int32 i = 0; i < e_count; ++i)
@@ -81,7 +81,7 @@ public:
 			fd.shape = &shape;
 			fd.density = 20.0f;
 
-			b2WeldJointDef jd;
+			WeldJointDef jd;
 			jd.frequencyHz = 5.0f;
 			jd.dampingRatio = 0.7f;
 
@@ -110,7 +110,7 @@ public:
 			fd.shape = &shape;
 			fd.density = 20.0f;
 
-			b2WeldJointDef jd;
+			WeldJointDef jd;
 
 			Body* prevBody = ground;
 			for (int32 i = 0; i < e_count; ++i)
@@ -140,7 +140,7 @@ public:
 			fd.shape = &shape;
 			fd.density = 20.0f;
 
-			b2WeldJointDef jd;
+			WeldJointDef jd;
 			jd.frequencyHz = 8.0f;
 			jd.dampingRatio = 0.7f;
 

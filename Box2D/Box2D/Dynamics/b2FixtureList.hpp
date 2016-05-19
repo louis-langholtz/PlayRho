@@ -20,7 +20,7 @@ class FixtureList
 {
 public:
 	using iterator = FixtureIterator;
-	using const_iterator = b2ConstFixtureIterator;
+	using const_iterator = ConstFixtureIterator;
 	
 	FixtureList() = default;
 	FixtureList(Fixture* b): p(b) {}

@@ -1,5 +1,5 @@
 //
-//  b2ConstBodyIterator.cpp
+//  ConstBodyIterator.cpp
 //  Box2D
 //
 //  Created by Louis D. Langholtz on 3/6/16.
@@ -11,7 +11,7 @@
 
 using namespace box2d;
 
-b2ConstBodyIterator::pointer b2ConstBodyIterator::next(pointer q) const noexcept
+ConstBodyIterator::pointer ConstBodyIterator::next(pointer q) const noexcept
 {
 	return p->GetNext();
 }

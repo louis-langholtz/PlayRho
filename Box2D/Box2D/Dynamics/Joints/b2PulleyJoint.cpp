@@ -34,7 +34,7 @@ using namespace box2d;
 // K = J * invM * JT
 //   = invMass1 + invI1 * cross(r1, u1)^2 + ratio^2 * (invMass2 + invI2 * cross(r2, u2)^2)
 
-void b2PulleyJointDef::Initialize(Body* bA, Body* bB,
+void PulleyJointDef::Initialize(Body* bA, Body* bB,
 				const Vec2& groundA, const Vec2& groundB,
 				const Vec2& anchorA, const Vec2& anchorB,
 				float_t r)
@@ -53,7 +53,7 @@ void b2PulleyJointDef::Initialize(Body* bA, Body* bB,
 	assert(ratio > Epsilon);
 }
 
-b2PulleyJoint::b2PulleyJoint(const b2PulleyJointDef* def)
+PulleyJoint::PulleyJoint(const PulleyJointDef* def)
 : Joint(def)
 {
 	m_groundAnchorA = def->groundAnchorA;
@@ -72,7 +72,7 @@ b2PulleyJoint::b2PulleyJoint(const b2PulleyJointDef* def)
 	m_impulse = float_t{0};
 }
 
-void b2PulleyJoint::InitVelocityConstraints(const b2SolverData& data)
+void PulleyJoint::InitVelocityConstraints(const b2SolverData& data)
 {
 	m_indexA = m_bodyA->m_islandIndex;
 	m_indexB = m_bodyB->m_islandIndex;
@@ -162,7 +162,7 @@ void b2PulleyJoint::InitVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-void b2PulleyJoint::SolveVelocityConstraints(const b2SolverData& data)
+void PulleyJoint::SolveVelocityConstraints(const b2SolverData& data)
 {
 	auto vA = data.velocities[m_indexA].v;
 	auto wA = data.velocities[m_indexA].w;
@@ -189,7 +189,7 @@ void b2PulleyJoint::SolveVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-bool b2PulleyJoint::SolvePositionConstraints(const b2SolverData& data)
+bool PulleyJoint::SolvePositionConstraints(const b2SolverData& data)
 {
 	auto cA = data.positions[m_indexA].c;
 	auto aA = data.positions[m_indexA].a;
@@ -261,53 +261,53 @@ bool b2PulleyJoint::SolvePositionConstraints(const b2SolverData& data)
 	return linearError < LinearSlop;
 }
 
-Vec2 b2PulleyJoint::GetAnchorA() const
+Vec2 PulleyJoint::GetAnchorA() const
 {
 	return m_bodyA->GetWorldPoint(m_localAnchorA);
 }
 
-Vec2 b2PulleyJoint::GetAnchorB() const
+Vec2 PulleyJoint::GetAnchorB() const
 {
 	return m_bodyB->GetWorldPoint(m_localAnchorB);
 }
 
-Vec2 b2PulleyJoint::GetReactionForce(float_t inv_dt) const
+Vec2 PulleyJoint::GetReactionForce(float_t inv_dt) const
 {
 	return inv_dt * m_impulse * m_uB;
 }
 
-float_t b2PulleyJoint::GetReactionTorque(float_t inv_dt) const
+float_t PulleyJoint::GetReactionTorque(float_t inv_dt) const
 {
 	BOX2D_NOT_USED(inv_dt);
 	return float_t{0};
 }
 
-Vec2 b2PulleyJoint::GetGroundAnchorA() const
+Vec2 PulleyJoint::GetGroundAnchorA() const
 {
 	return m_groundAnchorA;
 }
 
-Vec2 b2PulleyJoint::GetGroundAnchorB() const
+Vec2 PulleyJoint::GetGroundAnchorB() const
 {
 	return m_groundAnchorB;
 }
 
-float_t b2PulleyJoint::GetLengthA() const
+float_t PulleyJoint::GetLengthA() const
 {
 	return m_lengthA;
 }
 
-float_t b2PulleyJoint::GetLengthB() const
+float_t PulleyJoint::GetLengthB() const
 {
 	return m_lengthB;
 }
 
-float_t b2PulleyJoint::GetRatio() const
+float_t PulleyJoint::GetRatio() const
 {
 	return m_ratio;
 }
 
-float_t b2PulleyJoint::GetCurrentLengthA() const
+float_t PulleyJoint::GetCurrentLengthA() const
 {
 	Vec2 p = m_bodyA->GetWorldPoint(m_localAnchorA);
 	Vec2 s = m_groundAnchorA;
@@ -315,7 +315,7 @@ float_t b2PulleyJoint::GetCurrentLengthA() const
 	return d.Length();
 }
 
-float_t b2PulleyJoint::GetCurrentLengthB() const
+float_t PulleyJoint::GetCurrentLengthB() const
 {
 	const auto p = m_bodyB->GetWorldPoint(m_localAnchorB);
 	const auto s = m_groundAnchorB;
@@ -323,12 +323,12 @@ float_t b2PulleyJoint::GetCurrentLengthB() const
 	return d.Length();
 }
 
-void b2PulleyJoint::Dump()
+void PulleyJoint::Dump()
 {
 	const auto indexA = m_bodyA->m_islandIndex;
 	const auto indexB = m_bodyB->m_islandIndex;
 
-	log("  b2PulleyJointDef jd;\n");
+	log("  PulleyJointDef jd;\n");
 	log("  jd.bodyA = bodies[%d];\n", indexA);
 	log("  jd.bodyB = bodies[%d];\n", indexB);
 	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
@@ -342,7 +342,7 @@ void b2PulleyJoint::Dump()
 	log("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);
 }
 
-void b2PulleyJoint::ShiftOrigin(const Vec2& newOrigin)
+void PulleyJoint::ShiftOrigin(const Vec2& newOrigin)
 {
 	m_groundAnchorA -= newOrigin;
 	m_groundAnchorB -= newOrigin;

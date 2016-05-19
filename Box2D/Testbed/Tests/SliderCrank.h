@@ -97,13 +97,13 @@ public:
 				rjd.Initialize(prevBody, body, Vec2(0.0f, 17.0f));
 				m_world->CreateJoint(&rjd);
 
-				b2PrismaticJointDef pjd;
+				PrismaticJointDef pjd;
 				pjd.Initialize(ground, body, Vec2(0.0f, 17.0f), Vec2(0.0f, 1.0f));
 
 				pjd.maxMotorForce = 1000.0f;
 				pjd.enableMotor = true;
 
-				m_joint2 = (b2PrismaticJoint*)m_world->CreateJoint(&pjd);
+				m_joint2 = (PrismaticJoint*)m_world->CreateJoint(&pjd);
 			}
 
 			// Create a payload
@@ -152,7 +152,7 @@ public:
 	}
 
 	RevoluteJoint* m_joint1;
-	b2PrismaticJoint* m_joint2;
+	PrismaticJoint* m_joint2;
 };
 
 } // namespace box2d

@@ -121,13 +121,13 @@ public:
 			Body* body3 = m_world->CreateBody(&bd3);
 			body3->CreateFixture(&box, 5.0f);
 
-			b2PrismaticJointDef jd3;
+			PrismaticJointDef jd3;
 			jd3.Initialize(ground, body3, bd3.position, Vec2(0.0f, 1.0f));
 			jd3.lowerTranslation = -5.0f;
 			jd3.upperTranslation = 5.0f;
 			jd3.enableLimit = true;
 
-			m_joint3 = (b2PrismaticJoint*)m_world->CreateJoint(&jd3);
+			m_joint3 = (PrismaticJoint*)m_world->CreateJoint(&jd3);
 
 			GearJointDef jd4;
 			jd4.bodyA = body1;
@@ -171,7 +171,7 @@ public:
 
 	RevoluteJoint* m_joint1;
 	RevoluteJoint* m_joint2;
-	b2PrismaticJoint* m_joint3;
+	PrismaticJoint* m_joint3;
 	GearJoint* m_joint4;
 	GearJoint* m_joint5;
 };

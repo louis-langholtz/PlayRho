@@ -1,5 +1,5 @@
 //
-//  b2ConstBodyList.cpp
+//  ConstBodyList.cpp
 //  Box2D
 //
 //  Created by Louis D. Langholtz on 3/6/16.

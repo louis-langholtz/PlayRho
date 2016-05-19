@@ -107,7 +107,7 @@ TestEntry g_testEntries[] =
 	{"Pulleys", Pulleys::Create},
 	{"Polygon Shapes", PolyShapes::Create},
 	{"Web", Web::Create},
-	{"RopeJoint", RopeJoint::Create},
+	{"RopeJoint", RopeJointTest::Create},
 	{"Pinball", Pinball::Create},
 	{"Bullet Test", BulletTest::Create},
 	{"Confined", Confined::Create},

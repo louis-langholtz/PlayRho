@@ -1,5 +1,5 @@
 //
-//  b2ConstFixtureIterator.cpp
+//  ConstFixtureIterator.cpp
 //  Box2D
 //
 //  Created by Louis D. Langholtz on 3/7/16.
@@ -11,7 +11,7 @@
 
 using namespace box2d;
 
-b2ConstFixtureIterator::pointer b2ConstFixtureIterator::next(pointer q) const noexcept
+ConstFixtureIterator::pointer ConstFixtureIterator::next(pointer q) const noexcept
 {
 	return p->GetNext();
 }

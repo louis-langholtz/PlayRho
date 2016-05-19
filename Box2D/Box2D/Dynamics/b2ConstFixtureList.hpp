@@ -1,13 +1,13 @@
 //
-//  b2ConstFixtureList.hpp
+//  ConstFixtureList.hpp
 //  Box2D
 //
 //  Created by Louis D. Langholtz on 3/7/16.
 //
 //
 
-#ifndef b2ConstFixtureList_hpp
-#define b2ConstFixtureList_hpp
+#ifndef ConstFixtureList_hpp
+#define ConstFixtureList_hpp
 
 #include <Box2D/Common/b2ConstFixtureIterator.hpp>
 
@@ -15,13 +15,13 @@ namespace box2d {
 
 class Fixture;
 
-class b2ConstFixtureList
+class ConstFixtureList
 {
 public:
-	using const_iterator = b2ConstFixtureIterator;
+	using const_iterator = ConstFixtureIterator;
 	
-	b2ConstFixtureList() = default;
-	b2ConstFixtureList(const Fixture* b): p(b) {}
+	ConstFixtureList() = default;
+	ConstFixtureList(const Fixture* b): p(b) {}
 	
 	const_iterator begin() noexcept { return const_iterator(p); }
 	const_iterator end() noexcept { return const_iterator(nullptr); }
@@ -35,4 +35,4 @@ private:
 
 } // namespace box2d
 
-#endif /* b2ConstFixtureList_hpp */
+#endif /* ConstFixtureList_hpp */

@@ -1026,7 +1026,7 @@ void World::DrawJoint(Joint* joint)
 
 	case e_pulleyJoint:
 		{
-			const auto pulley = static_cast<b2PulleyJoint*>(joint);
+			const auto pulley = static_cast<PulleyJoint*>(joint);
 			const auto s1 = pulley->GetGroundAnchorA();
 			const auto s2 = pulley->GetGroundAnchorB();
 			g_debugDraw->DrawSegment(s1, p1, color);

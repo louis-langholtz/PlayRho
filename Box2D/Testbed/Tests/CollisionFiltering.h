@@ -103,7 +103,7 @@ public:
 			p.SetAsBox(0.5f, 1.0f);
 			body->CreateFixture(&p, 1.0f);
 
-			b2PrismaticJointDef jd;
+			PrismaticJointDef jd;
 			jd.bodyA = body2;
 			jd.bodyB = body;
 			jd.enableLimit = true;

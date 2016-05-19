@@ -29,9 +29,9 @@ namespace box2d {
 /// can violate the constraint slightly. The joint translation is zero
 /// when the local anchor points coincide in world space. Using local
 /// anchors and a local axis helps when saving and loading a game.
-struct b2WheelJointDef : public JointDef
+struct WheelJointDef : public JointDef
 {
-	constexpr b2WheelJointDef() noexcept: JointDef(e_wheelJoint) {}
+	constexpr WheelJointDef() noexcept: JointDef(e_wheelJoint) {}
 
 	/// Initialize the bodies, anchors, axis, and reference angle using the world
 	/// anchor and world axis.
@@ -66,7 +66,7 @@ struct b2WheelJointDef : public JointDef
 /// along an axis fixed in bodyA and rotation in the plane. In other words, it is a point to
 /// line constraint with a rotational motor and a linear spring/damper.
 /// This joint is designed for vehicle suspensions.
-class b2WheelJoint : public Joint
+class WheelJoint : public Joint
 {
 public:
 	Vec2 GetAnchorA() const override;
@@ -123,7 +123,7 @@ public:
 protected:
 
 	friend class Joint;
-	b2WheelJoint(const b2WheelJointDef* def);
+	WheelJoint(const WheelJointDef* def);
 
 	void InitVelocityConstraints(const b2SolverData& data) override;
 	void SolveVelocityConstraints(const b2SolverData& data) override;
@@ -168,32 +168,32 @@ protected:
 	float_t m_gamma;
 };
 
-inline float_t b2WheelJoint::GetMotorSpeed() const
+inline float_t WheelJoint::GetMotorSpeed() const
 {
 	return m_motorSpeed;
 }
 
-inline float_t b2WheelJoint::GetMaxMotorTorque() const
+inline float_t WheelJoint::GetMaxMotorTorque() const
 {
 	return m_maxMotorTorque;
 }
 
-inline void b2WheelJoint::SetSpringFrequencyHz(float_t hz)
+inline void WheelJoint::SetSpringFrequencyHz(float_t hz)
 {
 	m_frequencyHz = hz;
 }
 
-inline float_t b2WheelJoint::GetSpringFrequencyHz() const
+inline float_t WheelJoint::GetSpringFrequencyHz() const
 {
 	return m_frequencyHz;
 }
 
-inline void b2WheelJoint::SetSpringDampingRatio(float_t ratio)
+inline void WheelJoint::SetSpringDampingRatio(float_t ratio)
 {
 	m_dampingRatio = ratio;
 }
 
-inline float_t b2WheelJoint::GetSpringDampingRatio() const
+inline float_t WheelJoint::GetSpringDampingRatio() const
 {
 	return m_dampingRatio;
 }

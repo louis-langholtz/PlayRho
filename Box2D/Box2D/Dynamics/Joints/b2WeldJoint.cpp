@@ -36,7 +36,7 @@ using namespace box2d;
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-void b2WeldJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor)
+void WeldJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor)
 {
 	bodyA = bA;
 	bodyB = bB;
@@ -45,7 +45,7 @@ void b2WeldJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor)
 	referenceAngle = bodyB->GetAngle() - bodyA->GetAngle();
 }
 
-b2WeldJoint::b2WeldJoint(const b2WeldJointDef* def)
+WeldJoint::WeldJoint(const WeldJointDef* def)
 : Joint(def)
 {
 	m_localAnchorA = def->localAnchorA;
@@ -57,7 +57,7 @@ b2WeldJoint::b2WeldJoint(const b2WeldJointDef* def)
 	m_impulse = Vec3_zero;
 }
 
-void b2WeldJoint::InitVelocityConstraints(const b2SolverData& data)
+void WeldJoint::InitVelocityConstraints(const b2SolverData& data)
 {
 	m_indexA = m_bodyA->m_islandIndex;
 	m_indexB = m_bodyB->m_islandIndex;
@@ -168,7 +168,7 @@ void b2WeldJoint::InitVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-void b2WeldJoint::SolveVelocityConstraints(const b2SolverData& data)
+void WeldJoint::SolveVelocityConstraints(const b2SolverData& data)
 {
 	auto vA = data.velocities[m_indexA].v;
 	auto wA = data.velocities[m_indexA].w;
@@ -226,7 +226,7 @@ void b2WeldJoint::SolveVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-bool b2WeldJoint::SolvePositionConstraints(const b2SolverData& data)
+bool WeldJoint::SolvePositionConstraints(const b2SolverData& data)
 {
 	auto cA = data.positions[m_indexA].c;
 	auto aA = data.positions[m_indexA].a;
@@ -307,33 +307,33 @@ bool b2WeldJoint::SolvePositionConstraints(const b2SolverData& data)
 	return (positionError <= LinearSlop) && (angularError <= AngularSlop);
 }
 
-Vec2 b2WeldJoint::GetAnchorA() const
+Vec2 WeldJoint::GetAnchorA() const
 {
 	return m_bodyA->GetWorldPoint(m_localAnchorA);
 }
 
-Vec2 b2WeldJoint::GetAnchorB() const
+Vec2 WeldJoint::GetAnchorB() const
 {
 	return m_bodyB->GetWorldPoint(m_localAnchorB);
 }
 
-Vec2 b2WeldJoint::GetReactionForce(float_t inv_dt) const
+Vec2 WeldJoint::GetReactionForce(float_t inv_dt) const
 {
 	const auto P = Vec2(m_impulse.x, m_impulse.y);
 	return inv_dt * P;
 }
 
-float_t b2WeldJoint::GetReactionTorque(float_t inv_dt) const
+float_t WeldJoint::GetReactionTorque(float_t inv_dt) const
 {
 	return inv_dt * m_impulse.z;
 }
 
-void b2WeldJoint::Dump()
+void WeldJoint::Dump()
 {
 	const auto indexA = m_bodyA->m_islandIndex;
 	const auto indexB = m_bodyB->m_islandIndex;
 
-	log("  b2WeldJointDef jd;\n");
+	log("  WeldJointDef jd;\n");
 	log("  jd.bodyA = bodies[%d];\n", indexA);
 	log("  jd.bodyB = bodies[%d];\n", indexB);
 	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);

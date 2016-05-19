@@ -30,7 +30,6 @@ namespace box2d {
 class Fixture;
 class Joint;
 class Contact;
-class b2Controller;
 class World;
 struct FixtureDef;
 struct JointEdge;
@@ -351,7 +350,7 @@ public:
 	Fixture* GetFixtureList() noexcept;
 	const Fixture* GetFixtureList() const noexcept;
 	FixtureList GetFixtures() noexcept;
-	b2ConstFixtureList GetFixtures() const noexcept;
+	ConstFixtureList GetFixtures() const noexcept;
 
 	/// Get the list of all joints attached to this body.
 	JointEdge* GetJointList() noexcept;
@@ -392,13 +391,13 @@ private:
 	friend class FrictionJoint;
 	friend class GearJoint;
 	friend class MotorJoint;
-	friend class b2MouseJoint;
-	friend class b2PrismaticJoint;
-	friend class b2PulleyJoint;
+	friend class MouseJoint;
+	friend class PrismaticJoint;
+	friend class PulleyJoint;
 	friend class RevoluteJoint;
-	friend class b2RopeJoint;
-	friend class b2WeldJoint;
-	friend class b2WheelJoint;
+	friend class RopeJoint;
+	friend class WeldJoint;
+	friend class WheelJoint;
 
 	// m_flags
 	enum : uint16
@@ -729,9 +728,9 @@ inline FixtureList Body::GetFixtures() noexcept
 	return FixtureList(m_fixtureList);
 }
 
-inline b2ConstFixtureList Body::GetFixtures() const noexcept
+inline ConstFixtureList Body::GetFixtures() const noexcept
 {
-	return b2ConstFixtureList(m_fixtureList);
+	return ConstFixtureList(m_fixtureList);
 }
 
 inline JointEdge* Body::GetJointList() noexcept

@@ -125,14 +125,14 @@ public:
 
 private:
 
-	friend class b2DynamicTree;
+	friend class DynamicTree;
 
 	void BufferMove(size_type proxyId);
 	void UnBufferMove(size_type proxyId);
 
 	bool QueryCallback(size_type proxyId);
 
-	b2DynamicTree m_tree;
+	DynamicTree m_tree;
 
 	static constexpr size_type BufferGrowthRate = 2;
 	
@@ -153,7 +153,7 @@ private:
 };
 
 /// This is used to sort pairs.
-inline bool b2PairLessThan(const ProxyIdPair& pair1, const ProxyIdPair& pair2) noexcept
+inline bool PairLessThan(const ProxyIdPair& pair1, const ProxyIdPair& pair2) noexcept
 {
 	if (pair1.proxyIdA < pair2.proxyIdA)
 	{
@@ -177,7 +177,7 @@ inline bool BroadPhase::TestOverlap(size_type proxyIdA, size_type proxyIdB) cons
 {
 	const AABB& aabbA = m_tree.GetFatAABB(proxyIdA);
 	const AABB& aabbB = m_tree.GetFatAABB(proxyIdB);
-	return b2TestOverlap(aabbA, aabbB);
+	return box2d::TestOverlap(aabbA, aabbB);
 }
 
 inline const AABB& BroadPhase::GetFatAABB(size_type proxyId) const
@@ -232,7 +232,7 @@ void BroadPhase::UpdatePairs(T* callback)
 	m_moveCount = 0;
 
 	// Sort the pair buffer to expose duplicates.
-	std::sort(m_pairBuffer, m_pairBuffer + m_pairCount, b2PairLessThan);
+	std::sort(m_pairBuffer, m_pairBuffer + m_pairCount, PairLessThan);
 
 	// Send the pairs back to the client.
 	auto i = decltype(m_pairCount){0};

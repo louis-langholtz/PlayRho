@@ -25,9 +25,9 @@ namespace box2d {
 
 /// Mouse joint definition. This requires a world target point,
 /// tuning parameters, and the time step.
-struct b2MouseJointDef : public JointDef
+struct MouseJointDef : public JointDef
 {
-	constexpr b2MouseJointDef() noexcept: JointDef(e_mouseJoint) {}
+	constexpr MouseJointDef() noexcept: JointDef(e_mouseJoint) {}
 
 	/// The initial world target point. This is assumed
 	/// to coincide with the body anchor initially.
@@ -52,7 +52,7 @@ struct b2MouseJointDef : public JointDef
 /// NOTE: this joint is not documented in the manual because it was
 /// developed to be used in the testbed. If you want to learn how to
 /// use the mouse joint, look at the testbed.
-class b2MouseJoint : public Joint
+class MouseJoint : public Joint
 {
 public:
 
@@ -93,7 +93,7 @@ public:
 protected:
 	friend class Joint;
 
-	b2MouseJoint(const b2MouseJointDef* def);
+	MouseJoint(const MouseJointDef* def);
 
 	void InitVelocityConstraints(const b2SolverData& data) override;
 	void SolveVelocityConstraints(const b2SolverData& data) override;

@@ -32,7 +32,7 @@ namespace box2d {
 /// object to move by small amounts without triggering a tree update.
 ///
 /// Nodes are pooled and relocatable, so we use node indices rather than pointers.
-class b2DynamicTree
+class DynamicTree
 {
 public:
 	using size_type = size_t;
@@ -41,13 +41,13 @@ public:
 	static constexpr auto NullNode = static_cast<size_t>(-1);
 	
 	/// Constructing the tree initializes the node pool.
-	b2DynamicTree();
+	DynamicTree();
 
 	/// Destroys the tree, freeing the node pool.
-	~b2DynamicTree();
+	~DynamicTree();
 
-	b2DynamicTree(const b2DynamicTree& copy) = delete;
-	b2DynamicTree& operator=(const b2DynamicTree&) = delete;
+	DynamicTree(const DynamicTree& copy) = delete;
+	DynamicTree& operator=(const DynamicTree&) = delete;
 
 	/// Creates a proxy. Provide a tight fitting AABB and a userData pointer.
 	/// @return 
@@ -128,8 +128,8 @@ private:
 			size_type next;
 		};
 		
-		size_type child1; ///< Index of child 1 in b2DynamicTree::m_nodes or NullNode.
-		size_type child2; ///< Index of child 2 in b2DynamicTree::m_nodes or NullNode.
+		size_type child1; ///< Index of child 1 in DynamicTree::m_nodes or NullNode.
+		size_type child2; ///< Index of child 2 in DynamicTree::m_nodes or NullNode.
 		
 		size_type height; ///< Height - for tree balancing. 0 if leaf node. NullNode if free node.
 	};
@@ -164,27 +164,27 @@ private:
 	b2TreeNode* m_nodes;
 };
 
-inline void* b2DynamicTree::GetUserData(size_type proxyId) const
+inline void* DynamicTree::GetUserData(size_type proxyId) const
 {
 	assert(proxyId != NullNode);
 	assert(proxyId < m_nodeCapacity);
 	return m_nodes[proxyId].userData;
 }
 
-inline const AABB& b2DynamicTree::GetFatAABB(size_type proxyId) const
+inline const AABB& DynamicTree::GetFatAABB(size_type proxyId) const
 {
 	assert(proxyId != NullNode);
 	assert(proxyId < m_nodeCapacity);
 	return m_nodes[proxyId].aabb;
 }
 
-inline b2DynamicTree::size_type b2DynamicTree::GetHeight() const noexcept
+inline DynamicTree::size_type DynamicTree::GetHeight() const noexcept
 {
 	return (m_root != NullNode)? m_nodes[m_root].height: 0;
 }
 
 template <typename T>
-inline void b2DynamicTree::Query(T* callback, const AABB& aabb) const
+inline void DynamicTree::Query(T* callback, const AABB& aabb) const
 {
 	b2GrowableStack<size_type, 256> stack;
 	stack.Push(m_root);
@@ -199,7 +199,7 @@ inline void b2DynamicTree::Query(T* callback, const AABB& aabb) const
 
 		const b2TreeNode* node = m_nodes + nodeId;
 
-		if (b2TestOverlap(node->aabb, aabb))
+		if (TestOverlap(node->aabb, aabb))
 		{
 			if (node->IsLeaf())
 			{
@@ -219,7 +219,7 @@ inline void b2DynamicTree::Query(T* callback, const AABB& aabb) const
 }
 
 template <typename T>
-inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) const
+inline void DynamicTree::RayCast(T* callback, const b2RayCastInput& input) const
 {
 	const auto p1 = input.p1;
 	const auto p2 = input.p2;
@@ -252,7 +252,7 @@ inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) con
 
 		const auto node = m_nodes + nodeId;
 
-		if (!b2TestOverlap(node->aabb, segmentAABB))
+		if (!TestOverlap(node->aabb, segmentAABB))
 		{
 			continue;
 		}

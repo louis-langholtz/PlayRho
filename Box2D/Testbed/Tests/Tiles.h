@@ -139,7 +139,7 @@ public:
 			m_createTime, m_fixtureCount);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		//b2DynamicTree* tree = &m_world->m_contactManager.m_broadPhase.m_tree;
+		//DynamicTree* tree = &m_world->m_contactManager.m_broadPhase.m_tree;
 
 		//if (m_stepCount == 400)
 		//{

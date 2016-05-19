@@ -84,7 +84,7 @@ void BroadPhase::UnBufferMove(size_type proxyId)
 	}
 }
 
-// This is called from b2DynamicTree::Query when we are gathering pairs.
+// This is called from DynamicTree::Query when we are gathering pairs.
 bool BroadPhase::QueryCallback(size_type proxyId)
 {
 	// A proxy cannot form a pair with itself.

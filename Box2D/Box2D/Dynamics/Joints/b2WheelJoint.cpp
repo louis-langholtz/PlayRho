@@ -38,7 +38,7 @@ using namespace box2d;
 // Cdot = wB - wA
 // J = [0 0 -1 0 0 1]
 
-void b2WheelJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor, const Vec2& axis)
+void WheelJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor, const Vec2& axis)
 {
 	bodyA = bA;
 	bodyB = bB;
@@ -47,7 +47,7 @@ void b2WheelJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor, const V
 	localAxisA = bodyA->GetLocalVector(axis);
 }
 
-b2WheelJoint::b2WheelJoint(const b2WheelJointDef* def)
+WheelJoint::WheelJoint(const WheelJointDef* def)
 : Joint(def)
 {
 	m_localAnchorA = def->localAnchorA;
@@ -76,7 +76,7 @@ b2WheelJoint::b2WheelJoint(const b2WheelJointDef* def)
 	m_ay = Vec2_zero;
 }
 
-void b2WheelJoint::InitVelocityConstraints(const b2SolverData& data)
+void WheelJoint::InitVelocityConstraints(const b2SolverData& data)
 {
 	m_indexA = m_bodyA->m_islandIndex;
 	m_indexB = m_bodyB->m_islandIndex;
@@ -215,7 +215,7 @@ void b2WheelJoint::InitVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-void b2WheelJoint::SolveVelocityConstraints(const b2SolverData& data)
+void WheelJoint::SolveVelocityConstraints(const b2SolverData& data)
 {
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
@@ -279,7 +279,7 @@ void b2WheelJoint::SolveVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-bool b2WheelJoint::SolvePositionConstraints(const b2SolverData& data)
+bool WheelJoint::SolvePositionConstraints(const b2SolverData& data)
 {
 	auto cA = data.positions[m_indexA].c;
 	auto aA = data.positions[m_indexA].a;
@@ -320,27 +320,27 @@ bool b2WheelJoint::SolvePositionConstraints(const b2SolverData& data)
 	return Abs(C) <= LinearSlop;
 }
 
-Vec2 b2WheelJoint::GetAnchorA() const
+Vec2 WheelJoint::GetAnchorA() const
 {
 	return m_bodyA->GetWorldPoint(m_localAnchorA);
 }
 
-Vec2 b2WheelJoint::GetAnchorB() const
+Vec2 WheelJoint::GetAnchorB() const
 {
 	return m_bodyB->GetWorldPoint(m_localAnchorB);
 }
 
-Vec2 b2WheelJoint::GetReactionForce(float_t inv_dt) const
+Vec2 WheelJoint::GetReactionForce(float_t inv_dt) const
 {
 	return inv_dt * (m_impulse * m_ay + m_springImpulse * m_ax);
 }
 
-float_t b2WheelJoint::GetReactionTorque(float_t inv_dt) const
+float_t WheelJoint::GetReactionTorque(float_t inv_dt) const
 {
 	return inv_dt * m_motorImpulse;
 }
 
-float_t b2WheelJoint::GetJointTranslation() const
+float_t WheelJoint::GetJointTranslation() const
 {
 	const auto pA = m_bodyA->GetWorldPoint(m_localAnchorA);
 	const auto pB = m_bodyB->GetWorldPoint(m_localAnchorB);
@@ -349,48 +349,48 @@ float_t b2WheelJoint::GetJointTranslation() const
 	return Dot(d, axis);
 }
 
-float_t b2WheelJoint::GetJointSpeed() const
+float_t WheelJoint::GetJointSpeed() const
 {
 	return m_bodyB->m_angularVelocity - m_bodyA->m_angularVelocity;
 }
 
-bool b2WheelJoint::IsMotorEnabled() const
+bool WheelJoint::IsMotorEnabled() const
 {
 	return m_enableMotor;
 }
 
-void b2WheelJoint::EnableMotor(bool flag)
+void WheelJoint::EnableMotor(bool flag)
 {
 	m_bodyA->SetAwake();
 	m_bodyB->SetAwake();
 	m_enableMotor = flag;
 }
 
-void b2WheelJoint::SetMotorSpeed(float_t speed)
+void WheelJoint::SetMotorSpeed(float_t speed)
 {
 	m_bodyA->SetAwake();
 	m_bodyB->SetAwake();
 	m_motorSpeed = speed;
 }
 
-void b2WheelJoint::SetMaxMotorTorque(float_t torque)
+void WheelJoint::SetMaxMotorTorque(float_t torque)
 {
 	m_bodyA->SetAwake();
 	m_bodyB->SetAwake();
 	m_maxMotorTorque = torque;
 }
 
-float_t b2WheelJoint::GetMotorTorque(float_t inv_dt) const
+float_t WheelJoint::GetMotorTorque(float_t inv_dt) const
 {
 	return inv_dt * m_motorImpulse;
 }
 
-void b2WheelJoint::Dump()
+void WheelJoint::Dump()
 {
 	const auto indexA = m_bodyA->m_islandIndex;
 	const auto indexB = m_bodyB->m_islandIndex;
 
-	log("  b2WheelJointDef jd;\n");
+	log("  WheelJointDef jd;\n");
 	log("  jd.bodyA = bodies[%d];\n", indexA);
 	log("  jd.bodyB = bodies[%d];\n", indexB);
 	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);

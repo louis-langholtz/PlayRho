@@ -80,7 +80,7 @@ GearJoint::GearJoint(const GearJointDef* def)
 	}
 	else
 	{
-		const auto prismatic = static_cast<b2PrismaticJoint*>(def->joint1);
+		const auto prismatic = static_cast<PrismaticJoint*>(def->joint1);
 		m_localAnchorC = prismatic->m_localAnchorA;
 		m_localAnchorA = prismatic->m_localAnchorB;
 		m_referenceAngleA = prismatic->m_referenceAngle;
@@ -112,7 +112,7 @@ GearJoint::GearJoint(const GearJointDef* def)
 	}
 	else
 	{
-		const auto prismatic = static_cast<b2PrismaticJoint*>(def->joint2);
+		const auto prismatic = static_cast<PrismaticJoint*>(def->joint2);
 		m_localAnchorD = prismatic->m_localAnchorA;
 		m_localAnchorB = prismatic->m_localAnchorB;
 		m_referenceAngleB = prismatic->m_referenceAngle;

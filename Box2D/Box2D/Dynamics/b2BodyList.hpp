@@ -20,7 +20,7 @@ class BodyList
 {
 public:
 	using iterator = BodyIterator;
-	using const_iterator = b2ConstBodyIterator;
+	using const_iterator = ConstBodyIterator;
 
 	BodyList() = default;
 	BodyList(Body* b) noexcept: p(b) {}

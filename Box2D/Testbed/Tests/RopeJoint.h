@@ -29,10 +29,10 @@ namespace box2d {
 /// densities, time step, and iterations to see how they affect stability.
 /// This test also shows how to use contact filtering. Filtering is configured
 /// so that the payload does not collide with the chain.
-class RopeJoint : public Test
+class RopeJointTest : public Test
 {
 public:
-	RopeJoint()
+	RopeJointTest()
 	{
 		Body* ground = nullptr;
 		{
@@ -137,10 +137,10 @@ public:
 
 	static Test* Create()
 	{
-		return new RopeJoint;
+		return new RopeJointTest;
 	}
 
-	b2RopeJointDef m_ropeDef;
+	RopeJointDef m_ropeDef;
 	Joint* m_rope;
 };
 

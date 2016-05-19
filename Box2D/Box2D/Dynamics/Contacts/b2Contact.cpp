@@ -53,7 +53,7 @@ static constexpr ContactRegister s_registers[Shape::e_typeCount][Shape::e_typeCo
 {
 	// circle-* contacts
 	{
-		{b2CircleContact::Create, b2CircleContact::Destroy, true}, // circle
+		{CircleContact::Create, CircleContact::Destroy, true}, // circle
 		{b2EdgeAndCircleContact::Create, b2EdgeAndCircleContact::Destroy, false}, // edge
 		{b2PolygonAndCircleContact::Create, b2PolygonAndCircleContact::Destroy, false}, // polygon
 		{b2ChainAndCircleContact::Create, b2ChainAndCircleContact::Destroy, false}, // chain
@@ -162,7 +162,7 @@ void Contact::Update(ContactListener* listener)
 		const auto shapeA = m_fixtureA->GetShape();
 		const auto shapeB = m_fixtureB->GetShape();
 
-		touching = b2TestOverlap(*shapeA, m_indexA, *shapeB, m_indexB, xfA, xfB);
+		touching = TestOverlap(*shapeA, m_indexA, *shapeB, m_indexB, xfA, xfB);
 
 		// Sensors don't generate manifolds.
 		m_manifold = Manifold{};

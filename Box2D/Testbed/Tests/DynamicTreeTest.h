@@ -90,7 +90,7 @@ public:
 		for (int32 i = 0; i < e_actorCount; ++i)
 		{
 			Actor* actor = m_actors + i;
-			if (actor->proxyId == b2DynamicTree::NullNode)
+			if (actor->proxyId == DynamicTree::NullNode)
 				continue;
 
 			Color c(0.9f, 0.9f, 0.9f);
@@ -128,7 +128,7 @@ public:
 		}
 
 		{
-			b2DynamicTree::size_type height = m_tree.GetHeight();
+			DynamicTree::size_type height = m_tree.GetHeight();
 			g_debugDraw.DrawString(5, m_textLine, "dynamic tree height = %d", height);
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
@@ -158,14 +158,14 @@ public:
 		}
 	}
 
-	bool QueryCallback(b2DynamicTree::size_type proxyId)
+	bool QueryCallback(DynamicTree::size_type proxyId)
 	{
 		Actor* actor = (Actor*)m_tree.GetUserData(proxyId);
-		actor->overlap = b2TestOverlap(m_queryAABB, actor->aabb);
+		actor->overlap = TestOverlap(m_queryAABB, actor->aabb);
 		return true;
 	}
 
-	float_t RayCastCallback(const b2RayCastInput& input, b2DynamicTree::size_type proxyId)
+	float_t RayCastCallback(const b2RayCastInput& input, DynamicTree::size_type proxyId)
 	{
 		auto actor = static_cast<Actor*>(m_tree.GetUserData(proxyId));
 
@@ -190,7 +190,7 @@ private:
 		AABB aabb;
 		float_t fraction;
 		bool overlap;
-		b2DynamicTree::size_type proxyId;
+		DynamicTree::size_type proxyId;
 	};
 
 	AABB GetRandomAABB()
@@ -224,7 +224,7 @@ private:
 		{
 			int32 j = rand() % e_actorCount;
 			Actor* actor = m_actors + j;
-			if (actor->proxyId == b2DynamicTree::NullNode)
+			if (actor->proxyId == DynamicTree::NullNode)
 			{
 				actor->aabb = GetRandomAABB();
 				actor->proxyId = m_tree.CreateProxy(actor->aabb, actor);
@@ -239,10 +239,10 @@ private:
 		{
 			int32 j = rand() % e_actorCount;
 			Actor* actor = m_actors + j;
-			if (actor->proxyId != b2DynamicTree::NullNode)
+			if (actor->proxyId != DynamicTree::NullNode)
 			{
 				m_tree.DestroyProxy(actor->proxyId);
-				actor->proxyId = b2DynamicTree::NullNode;
+				actor->proxyId = DynamicTree::NullNode;
 				return;
 			}
 		}
@@ -254,7 +254,7 @@ private:
 		{
 			int32 j = rand() % e_actorCount;
 			Actor* actor = m_actors + j;
-			if (actor->proxyId == b2DynamicTree::NullNode)
+			if (actor->proxyId == DynamicTree::NullNode)
 			{
 				continue;
 			}
@@ -292,12 +292,12 @@ private:
 
 		for (int32 i = 0; i < e_actorCount; ++i)
 		{
-			if (m_actors[i].proxyId == b2DynamicTree::NullNode)
+			if (m_actors[i].proxyId == DynamicTree::NullNode)
 			{
 				continue;
 			}
 
-			const auto overlap = b2TestOverlap(m_queryAABB, m_actors[i].aabb);
+			const auto overlap = TestOverlap(m_queryAABB, m_actors[i].aabb);
 			BOX2D_NOT_USED(overlap);
 			assert(overlap == m_actors[i].overlap);
 		}
@@ -317,7 +317,7 @@ private:
 		b2RayCastOutput bruteOutput;
 		for (int32 i = 0; i < e_actorCount; ++i)
 		{
-			if (m_actors[i].proxyId == b2DynamicTree::NullNode)
+			if (m_actors[i].proxyId == DynamicTree::NullNode)
 			{
 				continue;
 			}
@@ -341,7 +341,7 @@ private:
 	float_t m_worldExtent;
 	float_t m_proxyExtent;
 
-	b2DynamicTree m_tree;
+	DynamicTree m_tree;
 	AABB m_queryAABB;
 	b2RayCastInput m_rayCastInput;
 	b2RayCastOutput m_rayCastOutput;

@@ -1,13 +1,13 @@
 //
-//  b2ConstBodyList.hpp
+//  ConstBodyList.hpp
 //  Box2D
 //
 //  Created by Louis D. Langholtz on 3/6/16.
 //
 //
 
-#ifndef b2ConstBodyList_hpp
-#define b2ConstBodyList_hpp
+#ifndef ConstBodyList_hpp
+#define ConstBodyList_hpp
 
 #include <Box2D/Common/b2ConstBodyIterator.hpp>
 
@@ -15,13 +15,13 @@ namespace box2d {
 
 class Body;
 
-class b2ConstBodyList
+class ConstBodyList
 {
 public:
-	using const_iterator = b2ConstBodyIterator;
+	using const_iterator = ConstBodyIterator;
 	
-	b2ConstBodyList() = default;
-	b2ConstBodyList(const Body* b): p(b) {}
+	ConstBodyList() = default;
+	ConstBodyList(const Body* b): p(b) {}
 	
 	const_iterator begin() noexcept { return const_iterator(p); }
 	const_iterator end() noexcept { return const_iterator(nullptr); }
@@ -35,4 +35,4 @@ private:
 
 } // namespace box2d
 
-#endif /* b2ConstBodyList_hpp */
+#endif /* ConstBodyList_hpp */

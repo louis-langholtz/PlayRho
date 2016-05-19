@@ -156,12 +156,12 @@ void Test::MouseDown(const Vec2& p)
 	if (callback.m_fixture)
 	{
 		Body* body = callback.m_fixture->GetBody();
-		b2MouseJointDef md;
+		MouseJointDef md;
 		md.bodyA = m_groundBody;
 		md.bodyB = body;
 		md.target = p;
 		md.maxForce = 1000.0f * body->GetMass();
-		m_mouseJoint = (b2MouseJoint*)m_world->CreateJoint(&md);
+		m_mouseJoint = (MouseJoint*)m_world->CreateJoint(&md);
 		body->SetAwake();
 	}
 }

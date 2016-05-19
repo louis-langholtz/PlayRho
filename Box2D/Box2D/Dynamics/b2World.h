@@ -132,7 +132,7 @@ public:
 	const Body* GetBodyList() const noexcept;
 
 	BodyList GetBodies() noexcept;
-	b2ConstBodyList GetBodies() const noexcept;
+	ConstBodyList GetBodies() const noexcept;
 
 	/// Get the world joint list. With the returned joint, use Joint::GetNext to get
 	/// the next joint in the world list. A nullptr joint indicates the end of the list.
@@ -229,7 +229,6 @@ private:
 	friend class Body;
 	friend class Fixture;
 	friend class ContactManager;
-	friend class b2Controller;
 
 	void Solve(const b2TimeStep& step);
 	void SolveTOI(const b2TimeStep& step);
@@ -290,9 +289,9 @@ inline BodyList World::GetBodies() noexcept
 	return BodyList(m_bodyList);
 }
 
-inline b2ConstBodyList World::GetBodies() const noexcept
+inline ConstBodyList World::GetBodies() const noexcept
 {
-	return b2ConstBodyList(m_bodyList);
+	return ConstBodyList(m_bodyList);
 }
 
 inline Joint* World::GetJointList() noexcept

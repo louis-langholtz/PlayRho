@@ -26,9 +26,9 @@ namespace box2d {
 /// Weld joint definition. You need to specify local anchor points
 /// where they are attached and the relative body angle. The position
 /// of the anchor points is important for computing the reaction torque.
-struct b2WeldJointDef : public JointDef
+struct WeldJointDef : public JointDef
 {
-	constexpr b2WeldJointDef() noexcept: JointDef(e_weldJoint) {}
+	constexpr WeldJointDef() noexcept: JointDef(e_weldJoint) {}
 
 	/// Initialize the bodies, anchors, and reference angle using a world
 	/// anchor point.
@@ -53,7 +53,7 @@ struct b2WeldJointDef : public JointDef
 
 /// A weld joint essentially glues two bodies together. A weld joint may
 /// distort somewhat because the island constraint solver is approximate.
-class b2WeldJoint : public Joint
+class WeldJoint : public Joint
 {
 public:
 	Vec2 GetAnchorA() const override;
@@ -86,7 +86,7 @@ protected:
 
 	friend class Joint;
 
-	b2WeldJoint(const b2WeldJointDef* def);
+	WeldJoint(const WeldJointDef* def);
 
 	void InitVelocityConstraints(const b2SolverData& data) override;
 	void SolveVelocityConstraints(const b2SolverData& data) override;

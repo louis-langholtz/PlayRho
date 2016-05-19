@@ -207,7 +207,7 @@ public:
 			m_wheel2 = m_world->CreateBody(&bd);
 			m_wheel2->CreateFixture(&fd);
 
-			b2WheelJointDef jd;
+			WheelJointDef jd;
 			Vec2 axis(0.0f, 1.0f);
 
 			jd.Initialize(m_car, m_wheel1, m_wheel1->GetPosition(), axis);
@@ -216,7 +216,7 @@ public:
 			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
-			m_spring1 = (b2WheelJoint*)m_world->CreateJoint(&jd);
+			m_spring1 = (WheelJoint*)m_world->CreateJoint(&jd);
 
 			jd.Initialize(m_car, m_wheel2, m_wheel2->GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
@@ -224,7 +224,7 @@ public:
 			jd.enableMotor = false;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
-			m_spring2 = (b2WheelJoint*)m_world->CreateJoint(&jd);
+			m_spring2 = (WheelJoint*)m_world->CreateJoint(&jd);
 		}
 	}
 
@@ -281,8 +281,8 @@ public:
 	float_t m_hz;
 	float_t m_zeta;
 	float_t m_speed;
-	b2WheelJoint* m_spring1;
-	b2WheelJoint* m_spring2;
+	WheelJoint* m_spring1;
+	WheelJoint* m_spring2;
 };
 
 } // namespace box2d

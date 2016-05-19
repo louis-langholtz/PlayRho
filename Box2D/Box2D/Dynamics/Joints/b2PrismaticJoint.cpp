@@ -89,7 +89,7 @@ using namespace box2d;
 // Now compute impulse to be applied:
 // df = f2 - f1
 
-void b2PrismaticJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor, const Vec2& axis)
+void PrismaticJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor, const Vec2& axis)
 {
 	bodyA = bA;
 	bodyB = bB;
@@ -99,7 +99,7 @@ void b2PrismaticJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor, con
 	referenceAngle = bodyB->GetAngle() - bodyA->GetAngle();
 }
 
-b2PrismaticJoint::b2PrismaticJoint(const b2PrismaticJointDef* def)
+PrismaticJoint::PrismaticJoint(const PrismaticJointDef* def)
 : Joint(def)
 {
 	m_localAnchorA = def->localAnchorA;
@@ -124,7 +124,7 @@ b2PrismaticJoint::b2PrismaticJoint(const b2PrismaticJointDef* def)
 	m_perp = Vec2_zero;
 }
 
-void b2PrismaticJoint::InitVelocityConstraints(const b2SolverData& data)
+void PrismaticJoint::InitVelocityConstraints(const b2SolverData& data)
 {
 	m_indexA = m_bodyA->m_islandIndex;
 	m_indexB = m_bodyB->m_islandIndex;
@@ -262,7 +262,7 @@ void b2PrismaticJoint::InitVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-void b2PrismaticJoint::SolveVelocityConstraints(const b2SolverData& data)
+void PrismaticJoint::SolveVelocityConstraints(const b2SolverData& data)
 {
 	auto vA = data.velocities[m_indexA].v;
 	auto wA = data.velocities[m_indexA].w;
@@ -362,7 +362,7 @@ void b2PrismaticJoint::SolveVelocityConstraints(const b2SolverData& data)
 //
 // We could take the active state from the velocity solver.However, the joint might push past the limit when the velocity
 // solver indicates the limit is inactive.
-bool b2PrismaticJoint::SolvePositionConstraints(const b2SolverData& data)
+bool PrismaticJoint::SolvePositionConstraints(const b2SolverData& data)
 {
 	auto cA = data.positions[m_indexA].c;
 	auto aA = data.positions[m_indexA].a;
@@ -477,27 +477,27 @@ bool b2PrismaticJoint::SolvePositionConstraints(const b2SolverData& data)
 	return (linearError <= LinearSlop) && (angularError <= AngularSlop);
 }
 
-Vec2 b2PrismaticJoint::GetAnchorA() const
+Vec2 PrismaticJoint::GetAnchorA() const
 {
 	return m_bodyA->GetWorldPoint(m_localAnchorA);
 }
 
-Vec2 b2PrismaticJoint::GetAnchorB() const
+Vec2 PrismaticJoint::GetAnchorB() const
 {
 	return m_bodyB->GetWorldPoint(m_localAnchorB);
 }
 
-Vec2 b2PrismaticJoint::GetReactionForce(float_t inv_dt) const
+Vec2 PrismaticJoint::GetReactionForce(float_t inv_dt) const
 {
 	return inv_dt * (m_impulse.x * m_perp + (m_motorImpulse + m_impulse.z) * m_axis);
 }
 
-float_t b2PrismaticJoint::GetReactionTorque(float_t inv_dt) const
+float_t PrismaticJoint::GetReactionTorque(float_t inv_dt) const
 {
 	return inv_dt * m_impulse.y;
 }
 
-float_t b2PrismaticJoint::GetJointTranslation() const
+float_t PrismaticJoint::GetJointTranslation() const
 {
 	const auto pA = m_bodyA->GetWorldPoint(m_localAnchorA);
 	const auto pB = m_bodyB->GetWorldPoint(m_localAnchorB);
@@ -507,7 +507,7 @@ float_t b2PrismaticJoint::GetJointTranslation() const
 	return Dot(d, axis);
 }
 
-float_t b2PrismaticJoint::GetJointSpeed() const
+float_t PrismaticJoint::GetJointSpeed() const
 {
 	const auto bA = m_bodyA;
 	const auto bB = m_bodyB;
@@ -527,12 +527,12 @@ float_t b2PrismaticJoint::GetJointSpeed() const
 	return Dot(d, Cross(wA, axis)) + Dot(axis, vB + Cross(wB, rB) - vA - Cross(wA, rA));
 }
 
-bool b2PrismaticJoint::IsLimitEnabled() const noexcept
+bool PrismaticJoint::IsLimitEnabled() const noexcept
 {
 	return m_enableLimit;
 }
 
-void b2PrismaticJoint::EnableLimit(bool flag) noexcept
+void PrismaticJoint::EnableLimit(bool flag) noexcept
 {
 	if (m_enableLimit != flag)
 	{
@@ -543,17 +543,17 @@ void b2PrismaticJoint::EnableLimit(bool flag) noexcept
 	}
 }
 
-float_t b2PrismaticJoint::GetLowerLimit() const noexcept
+float_t PrismaticJoint::GetLowerLimit() const noexcept
 {
 	return m_lowerTranslation;
 }
 
-float_t b2PrismaticJoint::GetUpperLimit() const noexcept
+float_t PrismaticJoint::GetUpperLimit() const noexcept
 {
 	return m_upperTranslation;
 }
 
-void b2PrismaticJoint::SetLimits(float_t lower, float_t upper)
+void PrismaticJoint::SetLimits(float_t lower, float_t upper)
 {
 	assert(lower <= upper);
 	if ((lower != m_lowerTranslation) || (upper != m_upperTranslation))
@@ -566,43 +566,43 @@ void b2PrismaticJoint::SetLimits(float_t lower, float_t upper)
 	}
 }
 
-bool b2PrismaticJoint::IsMotorEnabled() const noexcept
+bool PrismaticJoint::IsMotorEnabled() const noexcept
 {
 	return m_enableMotor;
 }
 
-void b2PrismaticJoint::EnableMotor(bool flag) noexcept
+void PrismaticJoint::EnableMotor(bool flag) noexcept
 {
 	m_bodyA->SetAwake();
 	m_bodyB->SetAwake();
 	m_enableMotor = flag;
 }
 
-void b2PrismaticJoint::SetMotorSpeed(float_t speed) noexcept
+void PrismaticJoint::SetMotorSpeed(float_t speed) noexcept
 {
 	m_bodyA->SetAwake();
 	m_bodyB->SetAwake();
 	m_motorSpeed = speed;
 }
 
-void b2PrismaticJoint::SetMaxMotorForce(float_t force) noexcept
+void PrismaticJoint::SetMaxMotorForce(float_t force) noexcept
 {
 	m_bodyA->SetAwake();
 	m_bodyB->SetAwake();
 	m_maxMotorForce = force;
 }
 
-float_t b2PrismaticJoint::GetMotorForce(float_t inv_dt) const noexcept
+float_t PrismaticJoint::GetMotorForce(float_t inv_dt) const noexcept
 {
 	return inv_dt * m_motorImpulse;
 }
 
-void b2PrismaticJoint::Dump()
+void PrismaticJoint::Dump()
 {
 	const auto indexA = m_bodyA->m_islandIndex;
 	const auto indexB = m_bodyB->m_islandIndex;
 
-	log("  b2PrismaticJointDef jd;\n");
+	log("  PrismaticJointDef jd;\n");
 	log("  jd.bodyA = bodies[%d];\n", indexA);
 	log("  jd.bodyB = bodies[%d];\n", indexB);
 	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);

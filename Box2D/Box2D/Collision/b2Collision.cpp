@@ -241,7 +241,7 @@ ClipArray::size_type ClipSegmentToLine(ClipArray& vOut, const ClipArray& vIn,
 	return numOut;
 }
 
-bool b2TestOverlap(const Shape& shapeA, child_count_t indexA,
+bool TestOverlap(const Shape& shapeA, child_count_t indexA,
 				   const Shape& shapeB, child_count_t indexB,
 				   const Transform& xfA, const Transform& xfB)
 {

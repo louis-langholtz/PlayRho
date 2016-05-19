@@ -188,7 +188,7 @@ protected:
 	int32 m_textLine;
 	World* m_world;
 	Body* m_bomb;
-	b2MouseJoint* m_mouseJoint;
+	MouseJoint* m_mouseJoint;
 	Vec2 m_bombSpawnPoint;
 	bool m_bombSpawning;
 	Vec2 m_mouseWorld;

@@ -400,13 +400,13 @@ ClipArray::size_type ClipSegmentToLine(ClipArray& vOut, const ClipArray& vIn,
 										   const Vec2& normal, float_t offset, ContactFeature::index_t indexA);
 
 /// Determine if two generic shapes overlap.
-bool b2TestOverlap(const Shape& shapeA, child_count_t indexA,
+bool TestOverlap(const Shape& shapeA, child_count_t indexA,
 				   const Shape& shapeB, child_count_t indexB,
 				   const Transform& xfA, const Transform& xfB);
 
 // ---------------- Inline Functions ------------------------------------------
 
-inline bool b2TestOverlap(const AABB& a, const AABB& b) noexcept
+inline bool TestOverlap(const AABB& a, const AABB& b) noexcept
 {
 	const auto d1 = b.GetLowerBound() - a.GetUpperBound();
 	if ((d1.x > float_t{0}) || (d1.y > float_t{0}))
