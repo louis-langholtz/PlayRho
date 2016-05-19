@@ -31,10 +31,10 @@ class b2EdgeShape;
 /// Since there may be many vertices, they are allocated using alloc.
 /// Connectivity information is used to create smooth collisions.
 /// WARNING: The chain will not collide properly if there are self-intersections.
-class b2ChainShape : public b2Shape
+class b2ChainShape : public Shape
 {
 public:
-	b2ChainShape(): b2Shape(e_chain, PolygonRadius) {}
+	b2ChainShape(): Shape(e_chain, PolygonRadius) {}
 
 	b2ChainShape(const b2ChainShape&) = delete;
 
@@ -64,28 +64,28 @@ public:
 	/// Don't call this for loops.
 	void SetNextVertex(const Vec2& nextVertex) noexcept;
 
-	/// Implement b2Shape. Vertices are cloned using alloc.
-	b2Shape* Clone(b2BlockAllocator* allocator) const override;
+	/// Implement Shape. Vertices are cloned using alloc.
+	Shape* Clone(b2BlockAllocator* allocator) const override;
 
-	/// @see b2Shape::GetChildCount
+	/// @see Shape::GetChildCount
 	child_count_t GetChildCount() const override;
 
 	/// Get a child edge.
 	void GetChildEdge(b2EdgeShape* edge, child_count_t index) const;
 
 	/// This always return false.
-	/// @see b2Shape::TestPoint
+	/// @see Shape::TestPoint
 	bool TestPoint(const Transform& transform, const Vec2& p) const override;
 
-	/// Implement b2Shape.
+	/// Implement Shape.
 	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 					const Transform& transform, child_count_t childIndex) const override;
 
-	/// @see b2Shape::ComputeAABB
+	/// @see Shape::ComputeAABB
 	AABB ComputeAABB(const Transform& transform, child_count_t childIndex) const override;
 
 	/// Chains have zero mass.
-	/// @see b2Shape::ComputeMass
+	/// @see Shape::ComputeMass
 	b2MassData ComputeMass(float_t density) const override;
 
 	/// Get the vertex count.

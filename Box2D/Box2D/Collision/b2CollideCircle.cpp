@@ -22,7 +22,7 @@
 
 namespace box2d {
 
-b2Manifold b2CollideShapes(const b2CircleShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB)
+Manifold CollideShapes(const b2CircleShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB)
 {
 	const auto pA = Mul(xfA, shapeA.GetPosition());
 	const auto pB = Mul(xfB, shapeB.GetPosition());
@@ -31,15 +31,15 @@ b2Manifold b2CollideShapes(const b2CircleShape& shapeA, const Transform& xfA, co
 
 	if (d.LengthSquared() > Square(totalRadius))
 	{
-		return b2Manifold{};
+		return Manifold{};
 	}
 
-	auto manifold = b2Manifold{b2Manifold::e_circles, Vec2_zero, shapeA.GetPosition()};
+	auto manifold = Manifold{Manifold::e_circles, Vec2_zero, shapeA.GetPosition()};
 	manifold.AddPoint(shapeB.GetPosition());
 	return manifold;
 }
 
-b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB)
+Manifold CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB)
 {
 	// Compute circle position in the frame of the polygon.
 	const auto c = Mul(xfB, shapeB.GetPosition());
@@ -58,7 +58,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, c
 		if (s > totalRadius)
 		{
 			// Early out.
-			return b2Manifold{};
+			return Manifold{};
 		}
 
 		if (separation < s)
@@ -77,7 +77,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, c
 	// If the center is inside the polygon ...
 	if (separation < Epsilon)
 	{
-		auto manifold = b2Manifold{b2Manifold::e_faceA, shapeA.GetNormal(normalIndex), (v1 + v2) / float_t(2)};
+		auto manifold = Manifold{Manifold::e_faceA, shapeA.GetNormal(normalIndex), (v1 + v2) / float_t(2)};
 		manifold.AddPoint(shapeB.GetPosition());
 		return manifold;
 	}
@@ -89,10 +89,10 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, c
 	{
 		if (DistanceSquared(cLocal, v1) > Square(totalRadius))
 		{
-			return b2Manifold{};
+			return Manifold{};
 		}
 
-		auto manifold = b2Manifold{b2Manifold::e_faceA, Normalize(cLocal - v1), v1};
+		auto manifold = Manifold{Manifold::e_faceA, Normalize(cLocal - v1), v1};
 		manifold.AddPoint(shapeB.GetPosition());
 		return manifold;
 	}
@@ -100,10 +100,10 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, c
 	{
 		if (DistanceSquared(cLocal, v2) > Square(totalRadius))
 		{
-			return b2Manifold{};
+			return Manifold{};
 		}
 
-		auto manifold = b2Manifold{b2Manifold::e_faceA, Normalize(cLocal - v2), v2};
+		auto manifold = Manifold{Manifold::e_faceA, Normalize(cLocal - v2), v2};
 		manifold.AddPoint(shapeB.GetPosition());
 		return manifold;
 	}
@@ -112,10 +112,10 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, c
 	separation = Dot(cLocal - faceCenter, shapeA.GetNormal(vertIndex1));
 	if (separation > totalRadius)
 	{
-		return b2Manifold{};
+		return Manifold{};
 	}
 
-	auto manifold = b2Manifold{b2Manifold::e_faceA};
+	auto manifold = Manifold{Manifold::e_faceA};
 	manifold.SetLocalNormal(shapeA.GetNormal(vertIndex1));
 	manifold.SetLocalPoint(faceCenter);
 	manifold.AddPoint(shapeB.GetPosition());

@@ -27,7 +27,7 @@ namespace box2d {
 
 // Compute contact points for edge versus circle.
 // This accounts for edge connectivity.
-b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB)
+Manifold CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB)
 {
 	// Compute circle in frame of edge
 	const auto Q = MulT(xfA, Mul(xfB, shapeB.GetPosition()));
@@ -49,7 +49,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, cons
 		const auto d = Q - P;
 		if (d.LengthSquared() > Square(totalRadius))
 		{
-			return b2Manifold{};
+			return Manifold{};
 		}
 		
 		// Is there an edge connected to A?
@@ -63,11 +63,11 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, cons
 			// Is the circle in Region AB of the previous edge?
 			if (u1 > 0)
 			{
-				return b2Manifold{};
+				return Manifold{};
 			}
 		}
 		
-		auto manifold = b2Manifold{b2Manifold::e_circles};
+		auto manifold = Manifold{Manifold::e_circles};
 		manifold.SetLocalNormal(Vec2_zero);
 		manifold.SetLocalPoint(P);
 		manifold.AddPoint(shapeB.GetPosition(), ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 0});
@@ -81,7 +81,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, cons
 		const auto d = Q - P;
 		if (d.LengthSquared() > Square(totalRadius))
 		{
-			return b2Manifold{};
+			return Manifold{};
 		}
 		
 		// Is there an edge connected to B?
@@ -95,11 +95,11 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, cons
 			// Is the circle in Region AB of the next edge?
 			if (v2 > 0)
 			{
-				return b2Manifold{};
+				return Manifold{};
 			}
 		}
 		
-		auto manifold = b2Manifold{b2Manifold::e_circles};
+		auto manifold = Manifold{Manifold::e_circles};
 		manifold.SetLocalNormal(Vec2_zero);
 		manifold.SetLocalPoint(P);
 		manifold.AddPoint(shapeB.GetPosition(), ContactFeature{ContactFeature::e_vertex, 1, ContactFeature::e_vertex, 0});
@@ -114,7 +114,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, cons
 
 	if (d.LengthSquared() > Square(totalRadius))
 	{
-		return b2Manifold{};
+		return Manifold{};
 	}
 	
 	auto n = Vec2(-e.y, e.x);
@@ -123,7 +123,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, cons
 		n = Vec2(-n.x, -n.y);
 	}
 	
-	auto manifold = b2Manifold{b2Manifold::e_faceA};
+	auto manifold = Manifold{Manifold::e_faceA};
 	manifold.SetLocalNormal(Normalize(n));
 	manifold.SetLocalPoint(A);
 	manifold.AddPoint(shapeB.GetPosition(), ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_vertex, 0});
@@ -527,15 +527,15 @@ class b2EPCollider
 public:
 	b2EPCollider(const Transform& xf): m_xf(xf) {}
 	
-	b2Manifold Collide(const b2EdgeShape& shapeA, const b2PolygonShape& shapeB) const;
+	Manifold Collide(const b2EdgeShape& shapeA, const b2PolygonShape& shapeB) const;
 	
 private:
-	b2Manifold Collide(const b2EdgeInfo& shapeA, const b2PolygonShape& shapeB) const;
+	Manifold Collide(const b2EdgeInfo& shapeA, const b2PolygonShape& shapeB) const;
 
 	const Transform m_xf;
 };
 
-b2Manifold b2EPCollider::Collide(const b2EdgeShape& shapeA, const b2PolygonShape& shapeB) const
+Manifold b2EPCollider::Collide(const b2EdgeShape& shapeA, const b2PolygonShape& shapeB) const
 {
 	return Collide(b2EdgeInfo{shapeA, Mul(m_xf, shapeB.GetCentroid())}, shapeB);
 }
@@ -549,7 +549,7 @@ b2Manifold b2EPCollider::Collide(const b2EdgeShape& shapeA, const b2PolygonShape
 // 6. Visit each separating axes, only accept axes within the range
 // 7. Return if _any_ axis indicates separation
 // 8. Clip
-b2Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShape& shapeB) const
+Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShape& shapeB) const
 {
 	const auto localShapeB = b2TempPolygon{shapeB, m_xf};
 	
@@ -559,13 +559,13 @@ b2Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShap
 	assert(edgeAxis.type != b2EPAxis::e_unknown);
 	if ((edgeAxis.type == b2EPAxis::e_unknown) || (edgeAxis.separation > b2MaxEPSeparation))
 	{
-		return b2Manifold{};
+		return Manifold{};
 	}
 	
 	const auto polygonAxis = b2ComputePolygonSeparation(localShapeB, edgeInfo);
 	if ((polygonAxis.type != b2EPAxis::e_unknown) && (polygonAxis.separation > b2MaxEPSeparation))
 	{
-		return b2Manifold{};
+		return Manifold{};
 	}
 	
 	// Use hysteresis for jitter reduction.
@@ -579,12 +579,12 @@ b2Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShap
 		edgeAxis: (polygonAxis.separation > ((k_relativeTol * edgeAxis.separation) + k_absoluteTol))?
 			polygonAxis: edgeAxis;
 	
-	auto manifoldType = b2Manifold::e_unset;
+	auto manifoldType = Manifold::e_unset;
 	b2ClipArray incidentEdge;
 	b2ReferenceFace rf;
 	if (primaryAxis.type == b2EPAxis::e_edgeA)
 	{
-		manifoldType = b2Manifold::e_faceA;
+		manifoldType = Manifold::e_faceA;
 		
 		// Search for the polygon normal that is most anti-parallel to the edge normal.
 		const auto bestIndex = b2GetIndexOfMinimum(localShapeB, edgeInfo);
@@ -616,7 +616,7 @@ b2Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShap
 	}
 	else
 	{
-		manifoldType = b2Manifold::e_faceB;
+		manifoldType = Manifold::e_faceB;
 		
 		incidentEdge[0].v = edgeInfo.GetVertex1();
 		incidentEdge[0].cf = ContactFeature(ContactFeature::e_vertex, 0, ContactFeature::e_face, primaryAxis.index);
@@ -641,19 +641,19 @@ b2Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShap
 	b2ClipArray clipPoints1;
 	if (b2ClipSegmentToLine(clipPoints1, incidentEdge, rf.sideNormal1, rf.sideOffset1, rf.i1) < clipPoints1.size())
 	{
-		return b2Manifold{};
+		return Manifold{};
 	}
 	
 	// Clip to negative box side 1
 	b2ClipArray clipPoints2;
 	if (b2ClipSegmentToLine(clipPoints2, clipPoints1, rf.sideNormal2, rf.sideOffset2, rf.i2) < clipPoints2.size())
 	{
-		return b2Manifold{};
+		return Manifold{};
 	}
 	
 	// Now clipPoints2 contains the clipped points.
 	
-	auto manifold = b2Manifold{manifoldType};
+	auto manifold = Manifold{manifoldType};
 
 	if (primaryAxis.type == b2EPAxis::e_edgeA)
 	{
@@ -685,7 +685,7 @@ b2Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShap
 	return manifold;
 }
 
-b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, const b2PolygonShape& shapeB, const Transform& xfB)
+Manifold CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, const b2PolygonShape& shapeB, const Transform& xfB)
 {
 	const auto collider = b2EPCollider{MulT(xfA, xfB)};
 	return collider.Collide(shapeA, shapeB);

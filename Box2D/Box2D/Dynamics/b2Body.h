@@ -130,7 +130,7 @@ public:
 	/// @param shape the shape to be cloned.
 	/// @param density the shape density (set to zero for static bodies).
 	/// @warning This function is locked during callbacks.
-	Fixture* CreateFixture(const b2Shape* shape, float_t density);
+	Fixture* CreateFixture(const Shape* shape, float_t density);
 
 	/// Destroy a fixture. This removes the fixture from the broad-phase and
 	/// destroys all contacts associated with this fixture. This will

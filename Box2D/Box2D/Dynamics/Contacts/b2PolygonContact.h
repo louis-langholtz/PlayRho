@@ -36,7 +36,7 @@ public:
 	b2PolygonContact(Fixture* fixtureA, Fixture* fixtureB);
 	~b2PolygonContact() {}
 
-	b2Manifold Evaluate(const Transform& xfA, const Transform& xfB) override;
+	Manifold Evaluate(const Transform& xfA, const Transform& xfB) override;
 };
 
 } // namespace box2d

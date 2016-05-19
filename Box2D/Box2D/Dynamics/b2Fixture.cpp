@@ -62,7 +62,7 @@ void Fixture::Destroy(b2BlockAllocator* allocator)
 	// Free the child shape.
 	switch (m_shape->GetType())
 	{
-	case b2Shape::e_circle:
+	case Shape::e_circle:
 		{
 			auto s = static_cast<b2CircleShape*>(m_shape);
 			s->~b2CircleShape();
@@ -70,7 +70,7 @@ void Fixture::Destroy(b2BlockAllocator* allocator)
 		}
 		break;
 
-	case b2Shape::e_edge:
+	case Shape::e_edge:
 		{
 			auto s = static_cast<b2EdgeShape*>(m_shape);
 			s->~b2EdgeShape();
@@ -78,7 +78,7 @@ void Fixture::Destroy(b2BlockAllocator* allocator)
 		}
 		break;
 
-	case b2Shape::e_polygon:
+	case Shape::e_polygon:
 		{
 			auto s = static_cast<b2PolygonShape*>(m_shape);
 			s->~b2PolygonShape();
@@ -86,7 +86,7 @@ void Fixture::Destroy(b2BlockAllocator* allocator)
 		}
 		break;
 
-	case b2Shape::e_chain:
+	case Shape::e_chain:
 		{
 			auto s = static_cast<b2ChainShape*>(m_shape);
 			s->~b2ChainShape();
@@ -220,7 +220,7 @@ void Fixture::Dump(island_count_t bodyIndex)
 
 	switch (m_shape->GetType())
 	{
-	case b2Shape::e_circle:
+	case Shape::e_circle:
 		{
 			auto s = static_cast<b2CircleShape*>(m_shape);
 			log("    b2CircleShape shape;\n");
@@ -229,7 +229,7 @@ void Fixture::Dump(island_count_t bodyIndex)
 		}
 		break;
 
-	case b2Shape::e_edge:
+	case Shape::e_edge:
 		{
 			auto s = static_cast<b2EdgeShape*>(m_shape);
 			log("    b2EdgeShape shape;\n");
@@ -243,7 +243,7 @@ void Fixture::Dump(island_count_t bodyIndex)
 		}
 		break;
 
-	case b2Shape::e_polygon:
+	case Shape::e_polygon:
 		{
 			auto s = static_cast<b2PolygonShape*>(m_shape);
 			log("    b2PolygonShape shape;\n");
@@ -256,7 +256,7 @@ void Fixture::Dump(island_count_t bodyIndex)
 		}
 		break;
 
-	case b2Shape::e_chain:
+	case Shape::e_chain:
 		{
 			auto s = static_cast<b2ChainShape*>(m_shape);
 			log("    b2ChainShape shape;\n");

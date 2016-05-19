@@ -28,18 +28,18 @@ namespace box2d {
 /// the left of each edge.
 /// Polygons have a maximum number of vertices equal to MaxPolygonVertices.
 /// In most cases you should not need many vertices for a convex polygon.
-class b2PolygonShape : public b2Shape
+class b2PolygonShape : public Shape
 {
 public:
 	using vertex_count_t = std::remove_cv<decltype(MaxPolygonVertices)>::type;
 
-	b2PolygonShape(): b2Shape(e_polygon, PolygonRadius) {}
+	b2PolygonShape(): Shape(e_polygon, PolygonRadius) {}
 
 	b2PolygonShape(const b2PolygonShape&) = default;
-	/// Implement b2Shape.
-	b2Shape* Clone(b2BlockAllocator* allocator) const override;
+	/// Implement Shape.
+	Shape* Clone(b2BlockAllocator* allocator) const override;
 
-	/// @see b2Shape::GetChildCount
+	/// @see Shape::GetChildCount
 	child_count_t GetChildCount() const override;
 
 	/// Create a convex hull from the given array of local points.
@@ -61,17 +61,17 @@ public:
 	/// @param angle the rotation of the box in local coordinates.
 	void SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t angle);
 
-	/// @see b2Shape::TestPoint
+	/// @see Shape::TestPoint
 	bool TestPoint(const Transform& transform, const Vec2& p) const override;
 
-	/// Implement b2Shape.
+	/// Implement Shape.
 	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 					const Transform& transform, child_count_t childIndex) const override;
 
-	/// @see b2Shape::ComputeAABB
+	/// @see Shape::ComputeAABB
 	AABB ComputeAABB(const Transform& transform, child_count_t childIndex) const override;
 
-	/// @see b2Shape::ComputeMass
+	/// @see Shape::ComputeMass
 	b2MassData ComputeMass(float_t density) const override;
 
 	/// Gets the vertex count.

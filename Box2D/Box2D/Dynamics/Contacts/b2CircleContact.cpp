@@ -45,11 +45,11 @@ void b2CircleContact::Destroy(Contact* contact, b2BlockAllocator* allocator)
 b2CircleContact::b2CircleContact(Fixture* fixtureA, Fixture* fixtureB)
 	: Contact(fixtureA, 0, fixtureB, 0)
 {
-	assert(m_fixtureA->GetType() == b2Shape::e_circle);
-	assert(m_fixtureB->GetType() == b2Shape::e_circle);
+	assert(m_fixtureA->GetType() == Shape::e_circle);
+	assert(m_fixtureB->GetType() == Shape::e_circle);
 }
 
-b2Manifold b2CircleContact::Evaluate(const Transform& xfA, const Transform& xfB)
+Manifold b2CircleContact::Evaluate(const Transform& xfA, const Transform& xfB)
 {
-	return b2CollideShapes(*static_cast<b2CircleShape*>(m_fixtureA->GetShape()), xfA, *static_cast<b2CircleShape*>(m_fixtureB->GetShape()), xfB);
+	return CollideShapes(*static_cast<b2CircleShape*>(m_fixtureA->GetShape()), xfA, *static_cast<b2CircleShape*>(m_fixtureB->GetShape()), xfB);
 }

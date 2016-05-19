@@ -58,7 +58,7 @@ public:
 	ContactPositionConstraintBodyData bodyA;
 	ContactPositionConstraintBodyData bodyB;
 
-	b2Manifold::Type type = b2Manifold::e_unset;
+	Manifold::Type type = Manifold::e_unset;
 
 	float_t radiusA; ///< "Radius" distance from the associated shape of fixture A.
 	float_t radiusB; ///< "Radius" distance from the associated shape of fixture B.
@@ -630,7 +630,7 @@ void ContactSolver::SolveVelocityConstraints()
 	}
 }
 
-static void b2AssignImpulses(b2ManifoldPoint& var, const b2VelocityConstraintPoint& val)
+static void b2AssignImpulses(ManifoldPoint& var, const b2VelocityConstraintPoint& val)
 {
 	var.normalImpulse = val.normalImpulse;
 	var.tangentImpulse = val.tangentImpulse;
@@ -660,17 +660,17 @@ public:
 							 const Transform& xfA, const Transform& xfB, index_t index)
 	{
 		assert(pc.GetPointCount() > 0);
-		assert(pc.type != b2Manifold::e_unset);
+		assert(pc.type != Manifold::e_unset);
 
 		// Note for valid manifold types:
 		//   Sum the radius values and subtract this sum to reduce FP losses in cases where the radius
 		//   values would otherwise be insignificant compared to the values being subtracted from.
 		switch (pc.type)
 		{
-		case b2Manifold::e_unset:
+		case Manifold::e_unset:
 			break;
 
-		case b2Manifold::e_circles:
+		case Manifold::e_circles:
 			{
 				assert(index == 0);
 				const auto pointA = Mul(xfA, pc.localPoint);
@@ -683,7 +683,7 @@ public:
 			}
 			break;
 
-		case b2Manifold::e_faceA:
+		case Manifold::e_faceA:
 			{
 				const auto planePoint = Mul(xfA, pc.localPoint);
 				const auto clipPoint = Mul(xfB, pc.GetPoint(index));
@@ -694,7 +694,7 @@ public:
 			}
 			break;
 
-		case b2Manifold::e_faceB:
+		case Manifold::e_faceB:
 			{
 				const auto planePoint = Mul(xfB, pc.localPoint);
 				const auto clipPoint = Mul(xfA, pc.GetPoint(index));

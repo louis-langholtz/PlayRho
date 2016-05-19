@@ -105,7 +105,7 @@ static b2ClipArray b2FindIncidentEdge(b2PolygonShape::vertex_count_t index1,
 // Clip
 
 // The normal points from 1 to 2
-b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, const b2PolygonShape& shapeB, const Transform& xfB)
+Manifold CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, const b2PolygonShape& shapeB, const Transform& xfB)
 {
 	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
 
@@ -113,14 +113,14 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, c
 	const auto separationA = b2FindMaxSeparation(edgeA, shapeA, xfA, shapeB, xfB);
 	if (separationA > totalRadius)
 	{
-		return b2Manifold{};
+		return Manifold{};
 	}
 
 	auto edgeB = b2PolygonShape::vertex_count_t{0};
 	const auto separationB = b2FindMaxSeparation(edgeB, shapeB, xfB, shapeA, xfA);
 	if (separationB > totalRadius)
 	{
-		return b2Manifold{};
+		return Manifold{};
 	}
 
 	const b2PolygonShape* shape1;	// reference polygon
@@ -130,7 +130,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, c
 	bool flip;
 	constexpr auto k_tol = LinearSlop / 10;
 
-	auto manifoldType = b2Manifold::e_unset;
+	auto manifoldType = Manifold::e_unset;
 	if (separationB > (separationA + k_tol))
 	{
 		shape1 = &shapeB;
@@ -138,7 +138,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, c
 		xf1 = xfB;
 		xf2 = xfA;
 		edge1 = edgeB;
-		manifoldType = b2Manifold::e_faceB;
+		manifoldType = Manifold::e_faceB;
 		flip = true;
 	}
 	else
@@ -148,7 +148,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, c
 		xf1 = xfA;
 		xf2 = xfB;
 		edge1 = edgeA;
-		manifoldType = b2Manifold::e_faceA;
+		manifoldType = Manifold::e_faceA;
 		flip = false;
 	}
 
@@ -187,19 +187,19 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, c
 	b2ClipArray clipPoints1;
 	if (b2ClipSegmentToLine(clipPoints1, incidentEdge, -tangent, sideOffset1, iv1) < clipPoints1.size())
 	{
-		return b2Manifold{};
+		return Manifold{};
 	}
 
 	// Clip to negative box side 1
 	b2ClipArray clipPoints2;
 	if (b2ClipSegmentToLine(clipPoints2, clipPoints1,  tangent, sideOffset2, iv2) < clipPoints2.size())
 	{
-		return b2Manifold{};
+		return Manifold{};
 	}
 
 	// Now clipPoints2 contains the clipped points.
 	
-	auto manifold = b2Manifold{manifoldType};
+	auto manifold = Manifold{manifoldType};
 	manifold.SetLocalNormal(localNormal);
 	manifold.SetLocalPoint(planePoint);
 	for (auto i = decltype(clipPoints2.size()){0}; i < clipPoints2.size(); ++i)

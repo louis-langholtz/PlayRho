@@ -48,8 +48,8 @@ struct ContactRegister
 	const bool primary;
 };
 
-// Order dependent on b2Shape::Type enumeration values
-static constexpr ContactRegister s_registers[b2Shape::e_typeCount][b2Shape::e_typeCount] =
+// Order dependent on Shape::Type enumeration values
+static constexpr ContactRegister s_registers[Shape::e_typeCount][Shape::e_typeCount] =
 {
 	// circle-* contacts
 	{
@@ -88,8 +88,8 @@ Contact* Contact::Create(Fixture* fixtureA, child_count_t indexA,
 	const auto type1 = fixtureA->GetType();
 	const auto type2 = fixtureB->GetType();
 
-	assert(0 <= type1 && type1 < b2Shape::e_typeCount);
-	assert(0 <= type2 && type2 < b2Shape::e_typeCount);
+	assert(0 <= type1 && type1 < Shape::e_typeCount);
+	assert(0 <= type2 && type2 < Shape::e_typeCount);
 	
 	auto createFcn = s_registers[type1][type2].createFcn;
 	if (createFcn)
@@ -124,8 +124,8 @@ void Contact::Destroy(Contact* contact, b2BlockAllocator* allocator)
 	const auto typeA = fixtureA->GetType();
 	const auto typeB = fixtureB->GetType();
 
-	assert(0 <= typeA && typeB < b2Shape::e_typeCount);
-	assert(0 <= typeA && typeB < b2Shape::e_typeCount);
+	assert(0 <= typeA && typeB < Shape::e_typeCount);
+	assert(0 <= typeA && typeB < Shape::e_typeCount);
 
 	auto destroyFcn = s_registers[typeA][typeB].destroyFcn;
 	destroyFcn(contact, allocator);
@@ -165,7 +165,7 @@ void Contact::Update(ContactListener* listener)
 		touching = b2TestOverlap(*shapeA, m_indexA, *shapeB, m_indexB, xfA, xfB);
 
 		// Sensors don't generate manifolds.
-		m_manifold = b2Manifold{};
+		m_manifold = Manifold{};
 	}
 	else
 	{

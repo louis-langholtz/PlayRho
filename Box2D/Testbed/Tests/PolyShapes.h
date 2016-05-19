@@ -48,7 +48,7 @@ public:
 
 		switch (fixture->GetType())
 		{
-		case b2Shape::e_circle:
+		case Shape::e_circle:
 			{
 				b2CircleShape* circle = (b2CircleShape*)fixture->GetShape();
 
@@ -59,7 +59,7 @@ public:
 			}
 			break;
 
-		case b2Shape::e_polygon:
+		case Shape::e_polygon:
 			{
 				b2PolygonShape* poly = (b2PolygonShape*)fixture->GetShape();
 				int32 vertexCount = poly->GetVertexCount();
@@ -90,7 +90,7 @@ public:
 		}
 
 		Body* body = fixture->GetBody();
-		b2Shape* shape = fixture->GetShape();
+		Shape* shape = fixture->GetShape();
 
 		bool overlap = b2TestOverlap(*shape, 0, m_circle, 0, body->GetTransform(), m_transform);
 

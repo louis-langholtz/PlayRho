@@ -43,11 +43,11 @@ void b2EdgeAndPolygonContact::Destroy(Contact* contact, b2BlockAllocator* alloca
 b2EdgeAndPolygonContact::b2EdgeAndPolygonContact(Fixture* fixtureA, Fixture* fixtureB)
 : Contact(fixtureA, 0, fixtureB, 0)
 {
-	assert(m_fixtureA->GetType() == b2Shape::e_edge);
-	assert(m_fixtureB->GetType() == b2Shape::e_polygon);
+	assert(m_fixtureA->GetType() == Shape::e_edge);
+	assert(m_fixtureB->GetType() == Shape::e_polygon);
 }
 
-b2Manifold b2EdgeAndPolygonContact::Evaluate(const Transform& xfA, const Transform& xfB)
+Manifold b2EdgeAndPolygonContact::Evaluate(const Transform& xfA, const Transform& xfB)
 {
-	return b2CollideShapes(*static_cast<b2EdgeShape*>(m_fixtureA->GetShape()), xfA, *static_cast<b2PolygonShape*>(m_fixtureB->GetShape()), xfB);
+	return CollideShapes(*static_cast<b2EdgeShape*>(m_fixtureA->GetShape()), xfA, *static_cast<b2PolygonShape*>(m_fixtureB->GetShape()), xfB);
 }

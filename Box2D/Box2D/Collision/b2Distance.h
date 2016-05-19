@@ -25,7 +25,7 @@
 namespace box2d
 {
 
-class b2Shape;
+class Shape;
 
 /// A distance proxy is used by the GJK algorithm.
 /// It encapsulates any shape.
@@ -38,7 +38,7 @@ public:
 
 	/// Initialize the proxy using the given shape.
 	/// @note The shape must remain in scope while the proxy is in use.
-	b2DistanceProxy(const b2Shape& shape, child_count_t index);
+	b2DistanceProxy(const Shape& shape, child_count_t index);
 
 	/// Gets the "radius" of the associated shape.
 	/// @return Non-negative distance.

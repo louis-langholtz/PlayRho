@@ -166,7 +166,7 @@ public:
 	// Callbacks for derived classes.
 	virtual void BeginContact(Contact* contact) { BOX2D_NOT_USED(contact); }
 	virtual void EndContact(Contact* contact) { BOX2D_NOT_USED(contact); }
-	virtual void PreSolve(Contact* contact, const b2Manifold* oldManifold);
+	virtual void PreSolve(Contact* contact, const Manifold* oldManifold);
 	virtual void PostSolve(Contact* contact, const ContactImpulse* impulse)
 	{
 		BOX2D_NOT_USED(contact);

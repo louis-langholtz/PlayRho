@@ -21,14 +21,14 @@
 
 namespace box2d {
 
-WorldManifold::WorldManifold(const b2Manifold& manifold,
+WorldManifold::WorldManifold(const Manifold& manifold,
 								 const Transform& xfA, float_t radiusA,
 								 const Transform& xfB, float_t radiusB)
 {
 	this->Assign(manifold, xfA, radiusA, xfB, radiusB);
 }
 
-void WorldManifold::Assign(const b2Manifold& manifold,
+void WorldManifold::Assign(const Manifold& manifold,
 						  const Transform& xfA, float_t radiusA,
 						  const Transform& xfB, float_t radiusB)
 {
@@ -37,11 +37,11 @@ void WorldManifold::Assign(const b2Manifold& manifold,
 
 	switch (manifold.GetType())
 	{
-	case b2Manifold::e_unset:
-		assert(manifold.GetType() != b2Manifold::e_unset);
+	case Manifold::e_unset:
+		assert(manifold.GetType() != Manifold::e_unset);
 		break;
 
-	case b2Manifold::e_circles:
+	case Manifold::e_circles:
 		{
 			normal = Vec2(float_t{1}, float_t{0});
 			const auto pointA = Mul(xfA, manifold.GetLocalPoint());
@@ -57,7 +57,7 @@ void WorldManifold::Assign(const b2Manifold& manifold,
 		}
 		break;
 
-	case b2Manifold::e_faceA:
+	case Manifold::e_faceA:
 		{
 			normal = Mul(xfA.q, manifold.GetLocalNormal());
 			const auto planePoint = Mul(xfA, manifold.GetLocalPoint());
@@ -74,7 +74,7 @@ void WorldManifold::Assign(const b2Manifold& manifold,
 		}
 		break;
 
-	case b2Manifold::e_faceB:
+	case Manifold::e_faceB:
 		{
 			normal = Mul(xfB.q, manifold.GetLocalNormal());
 			const auto planePoint = Mul(xfB, manifold.GetLocalPoint());
@@ -97,7 +97,7 @@ void WorldManifold::Assign(const b2Manifold& manifold,
 }
 
 void b2GetPointStates(b2PointStateArray& state1, b2PointStateArray& state2,
-					  const b2Manifold& manifold1, const b2Manifold& manifold2)
+					  const Manifold& manifold1, const Manifold& manifold2)
 {
 	for (auto i = decltype(MaxManifoldPoints){0}; i < MaxManifoldPoints; ++i)
 	{
@@ -241,8 +241,8 @@ b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray&
 	return numOut;
 }
 
-bool b2TestOverlap(const b2Shape& shapeA, child_count_t indexA,
-				   const b2Shape& shapeB, child_count_t indexB,
+bool b2TestOverlap(const Shape& shapeA, child_count_t indexA,
+				   const Shape& shapeB, child_count_t indexB,
 				   const Transform& xfA, const Transform& xfB)
 {
 	b2DistanceInput input;

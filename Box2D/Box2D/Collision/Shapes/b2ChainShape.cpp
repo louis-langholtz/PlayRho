@@ -88,7 +88,7 @@ void b2ChainShape::SetNextVertex(const Vec2& nextVertex) noexcept
 	m_hasNextVertex = true;
 }
 
-b2Shape* b2ChainShape::Clone(b2BlockAllocator* allocator) const
+Shape* b2ChainShape::Clone(b2BlockAllocator* allocator) const
 {
 	void* mem = allocator->Allocate(sizeof(b2ChainShape));
 	auto clone = new (mem) b2ChainShape;

@@ -73,8 +73,8 @@ public:
 
 	/// Get the contact manifold. Do not modify the manifold unless you understand the
 	/// internals of Box2D.
-	b2Manifold* GetManifold() noexcept;
-	const b2Manifold* GetManifold() const noexcept;
+	Manifold* GetManifold() noexcept;
+	const Manifold* GetManifold() const noexcept;
 
 	/// Get the world manifold.
 	WorldManifold GetWorldManifold() const;
@@ -141,7 +141,7 @@ public:
 	/// @param xfB Transform for the contact's fixture B shape.
 	/// @return Contact manifold for the given transforms with one or more points
 	///   if the shapes are considered touching (collided).
-	virtual b2Manifold Evaluate(const Transform& xfA, const Transform& xfB) = 0;
+	virtual Manifold Evaluate(const Transform& xfA, const Transform& xfB) = 0;
 
 protected:
 	friend class ContactManager;
@@ -180,7 +180,7 @@ protected:
 	static Contact* Create(Fixture* fixtureA, child_count_t indexA,
 							 Fixture* fixtureB, child_count_t indexB,
 							 b2BlockAllocator* allocator);
-	static void Destroy(Contact* contact, b2Shape::Type typeA, b2Shape::Type typeB, b2BlockAllocator* allocator);
+	static void Destroy(Contact* contact, Shape::Type typeA, Shape::Type typeB, b2BlockAllocator* allocator);
 	static void Destroy(Contact* contact, b2BlockAllocator* allocator);
 
 	Contact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB);
@@ -235,7 +235,7 @@ protected:
 
 	float_t m_tangentSpeed = float_t{0};
 
-	b2Manifold m_manifold;
+	Manifold m_manifold;
 
 	std::remove_cv<decltype(MaxSubSteps)>::type m_toiCount = 0;
 	float_t m_toi; // only valid if m_flags & e_toiFlag
@@ -246,12 +246,12 @@ protected:
 
 };
 
-inline b2Manifold* Contact::GetManifold() noexcept
+inline Manifold* Contact::GetManifold() noexcept
 {
 	return &m_manifold;
 }
 
-inline const b2Manifold* Contact::GetManifold() const noexcept
+inline const Manifold* Contact::GetManifold() const noexcept
 {
 	return &m_manifold;
 }

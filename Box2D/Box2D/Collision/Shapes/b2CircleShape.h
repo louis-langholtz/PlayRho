@@ -24,31 +24,31 @@
 namespace box2d {
 
 /// A circle shape.
-class b2CircleShape : public b2Shape
+class b2CircleShape : public Shape
 {
 public:
 	constexpr explicit b2CircleShape(float_t radius = 0, Vec2 position = Vec2_zero) noexcept:
-		b2Shape(e_circle, radius), m_p(position) {}
+		Shape(e_circle, radius), m_p(position) {}
 
 	b2CircleShape(const b2CircleShape&) = default;
 
-	/// Implement b2Shape.
-	b2Shape* Clone(b2BlockAllocator* allocator) const override;
+	/// Implement Shape.
+	Shape* Clone(b2BlockAllocator* allocator) const override;
 
-	/// @see b2Shape::GetChildCount
+	/// @see Shape::GetChildCount
 	child_count_t GetChildCount() const override;
 
-	/// Implement b2Shape.
+	/// Implement Shape.
 	bool TestPoint(const Transform& transform, const Vec2& p) const override;
 
-	/// Implement b2Shape.
+	/// Implement Shape.
 	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 				const Transform& transform, child_count_t childIndex) const override;
 
-	/// @see b2Shape::ComputeAABB
+	/// @see Shape::ComputeAABB
 	AABB ComputeAABB(const Transform& transform, child_count_t childIndex) const override;
 
-	/// @see b2Shape::ComputeMass
+	/// @see Shape::ComputeMass
 	b2MassData ComputeMass(float_t density) const override;
 
 	Vec2 GetPosition() const noexcept { return m_p; }

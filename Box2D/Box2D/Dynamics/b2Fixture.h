@@ -57,7 +57,7 @@ struct FixtureDef
 
 	/// The shape, this must be set. The shape will be cloned, so you
 	/// can create the shape on the stack.
-	const b2Shape* shape = nullptr;
+	const Shape* shape = nullptr;
 
 	/// Use this to store application specific fixture data.
 	void* userData = nullptr;
@@ -102,13 +102,13 @@ public:
 
 	/// Get the type of the child shape. You can use this to down cast to the concrete shape.
 	/// @return the shape type.
-	b2Shape::Type GetType() const noexcept;
+	Shape::Type GetType() const noexcept;
 
 	/// Get the child shape. You can modify the child shape, however you should not change the
 	/// number of vertices because this will crash some collision caching mechanisms.
 	/// Manipulating the shape may lead to non-physical behavior.
-	b2Shape* GetShape() noexcept;
-	const b2Shape* GetShape() const noexcept;
+	Shape* GetShape() noexcept;
+	const Shape* GetShape() const noexcept;
 
 	/// Set if this fixture is a sensor.
 	void SetSensor(bool sensor);
@@ -210,7 +210,7 @@ protected:
 	Body* const m_body;
 	float_t m_density = float_t{0};
 	Fixture* m_next = nullptr;
-	b2Shape* m_shape = nullptr;
+	Shape* m_shape = nullptr;
 	float_t m_friction;
 	float_t m_restitution;
 	FixtureProxy* m_proxies = nullptr;
@@ -220,17 +220,17 @@ protected:
 	void* m_userData = nullptr;
 };
 
-inline b2Shape::Type Fixture::GetType() const noexcept
+inline Shape::Type Fixture::GetType() const noexcept
 {
 	return m_shape->GetType();
 }
 
-inline b2Shape* Fixture::GetShape() noexcept
+inline Shape* Fixture::GetShape() noexcept
 {
 	return m_shape;
 }
 
-inline const b2Shape* Fixture::GetShape() const noexcept
+inline const Shape* Fixture::GetShape() const noexcept
 {
 	return m_shape;
 }

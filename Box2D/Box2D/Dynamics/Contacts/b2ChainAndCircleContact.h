@@ -36,7 +36,7 @@ public:
 	b2ChainAndCircleContact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB);
 	~b2ChainAndCircleContact() {}
 
-	b2Manifold Evaluate(const Transform& xfA, const Transform& xfB) override;
+	Manifold Evaluate(const Transform& xfA, const Transform& xfB) override;
 };
 
 } // namespace box2d

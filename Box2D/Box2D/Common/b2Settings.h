@@ -47,7 +47,7 @@ using float64 = double;
 /// This should be float, double, or long double.
 using float_t = float;
 
-using child_count_t = unsigned; // relating to "children" of b2Shape
+using child_count_t = unsigned; // relating to "children" of Shape
 using size_t = std::size_t;
 using island_count_t = size_t; // relating to items in a b2Island
 

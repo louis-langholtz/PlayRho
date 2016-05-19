@@ -30,7 +30,7 @@ class Body;
 class Joint;
 class Contact;
 struct ContactResult;
-struct b2Manifold;
+struct Manifold;
 
 /// Joints and fixtures are destroyed when their associated
 /// body is destroyed. Implement this listener so that you
@@ -63,7 +63,7 @@ public:
 
 /// Contact impulses for reporting. Impulses are used instead of forces because
 /// sub-step forces may approach infinity for rigid body collisions. These
-/// match up one-to-one with the contact points in b2Manifold.
+/// match up one-to-one with the contact points in Manifold.
 class ContactImpulse
 {
 public:
@@ -118,7 +118,7 @@ public:
 	/// Note: if you set the number of contact points to zero, you will not
 	/// get an EndContact callback. However, you may get a BeginContact callback
 	/// the next step.
-	virtual void PreSolve(Contact* contact, const b2Manifold* oldManifold)
+	virtual void PreSolve(Contact* contact, const Manifold* oldManifold)
 	{
 		BOX2D_NOT_USED(contact);
 		BOX2D_NOT_USED(oldManifold);

@@ -32,7 +32,7 @@ namespace box2d
 /// Structures and functions used for computing contact points, distance
 /// queries, and TOI queries.
 
-class b2Shape;
+class Shape;
 class b2CircleShape;
 class b2EdgeShape;
 class b2PolygonShape;
@@ -81,7 +81,7 @@ constexpr bool operator==(const ContactFeature& lhs, const ContactFeature& rhs)
 /// This structure is stored across time steps, so we keep it small.
 /// @note The impulses are used for internal caching and may not
 /// provide reliable contact forces, especially for high speed collisions.
-struct b2ManifoldPoint
+struct ManifoldPoint
 {
 	Vec2 localPoint;		///< usage depends on manifold type
 	float_t normalImpulse;	///< the non-penetration impulse
@@ -105,7 +105,7 @@ struct b2ManifoldPoint
 /// account for movement, which is critical for continuous physics.
 /// All contact scenarios must be expressed in one of these types.
 /// This structure is stored across time steps, so we keep it small.
-class b2Manifold
+class Manifold
 {
 public:
 	using size_type = std::remove_cv<decltype(MaxPolygonVertices)>::type;
@@ -118,13 +118,13 @@ public:
 		e_faceB
 	};
 
-	b2Manifold() = default;
+	Manifold() = default;
 
 	/// Constructs a manifold with the given values.
 	/// @param t Manifold type.
 	/// @param ln Local normal.
 	/// @param lp Local point.
-	b2Manifold(Type t, Vec2 ln = Vec2_zero, Vec2 lp = Vec2_zero): type(t), localNormal(ln), localPoint(lp) {}
+	Manifold(Type t, Vec2 ln = Vec2_zero, Vec2 lp = Vec2_zero): type(t), localNormal(ln), localPoint(lp) {}
 
 	Type GetType() const noexcept { return type; }
 
@@ -146,13 +146,13 @@ public:
 	/// @sa GetPoint().
 	size_type GetPointCount() const noexcept { return pointCount; }
 
-	const b2ManifoldPoint& GetPoint(size_type index) const
+	const ManifoldPoint& GetPoint(size_type index) const
 	{
 		assert((0 <= index) && (index < pointCount));
 		return points[index];
 	}
 
-	b2ManifoldPoint& GetPoint(size_type index)
+	ManifoldPoint& GetPoint(size_type index)
 	{
 		assert((0 <= index) && (index < pointCount));
 		return points[index];
@@ -183,7 +183,7 @@ private:
 	Vec2 localNormal;								///< not use for Type::e_points
 	Vec2 localPoint;								///< usage depends on manifold type
 	size_type pointCount = 0;							///< the number of manifold points
-	b2ManifoldPoint points[MaxManifoldPoints];	///< the points of contact
+	ManifoldPoint points[MaxManifoldPoints];	///< the points of contact
 };
 
 /// This is used to compute the current state of a contact manifold.
@@ -194,7 +194,7 @@ public:
 
 	WorldManifold() = default;
 
-	WorldManifold(const b2Manifold& manifold,
+	WorldManifold(const Manifold& manifold,
 					const Transform& xfA, float_t radiusA,
 					const Transform& xfB, float_t radiusB);
 
@@ -202,7 +202,7 @@ public:
 	/// modest motion from the original state. This does not change the
 	/// point count, impulses, etc. The radii must come from the shapes
 	/// that generated the manifold.
-	void Assign(const b2Manifold& manifold,
+	void Assign(const Manifold& manifold,
 					const Transform& xfA, float_t radiusA,
 					const Transform& xfB, float_t radiusB);
 
@@ -242,7 +242,7 @@ enum class b2PointState
 /// to manifold2. So state1 is either persist or remove while state2 is either add or persist.
 using b2PointStateArray = std::array<b2PointState,MaxManifoldPoints>;
 void b2GetPointStates(b2PointStateArray& state1, b2PointStateArray& state2,
-					  const b2Manifold& manifold1, const b2Manifold& manifold2);
+					  const Manifold& manifold1, const Manifold& manifold2);
 
 /// Used for computing contact manifolds.
 struct b2ClipVertex
@@ -349,7 +349,7 @@ constexpr inline AABB operator + (const AABB& lhs, Vec2 rhs)
 /// @param shapeB Shape B.
 /// @param xfB Transform for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-b2Manifold b2CollideShapes(const b2CircleShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB);
+Manifold CollideShapes(const b2CircleShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB);
 
 /// Computes the collision manifold between a polygon and a circle.
 /// @param shapeA Shape A.
@@ -357,7 +357,7 @@ b2Manifold b2CollideShapes(const b2CircleShape& shapeA, const Transform& xfA, co
 /// @param shapeB Shape B.
 /// @param xfB Transform for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB);
+Manifold CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB);
 
 /// Computes the collision manifold between two polygons.
 /// @param shapeA Shape A.
@@ -365,7 +365,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, c
 /// @param shapeB Shape B.
 /// @param xfB Transform for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, const b2PolygonShape& shapeB, const Transform& xfB);
+Manifold CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, const b2PolygonShape& shapeB, const Transform& xfB);
 
 /// Computes the collision manifold between an edge and a circle.
 /// @param shapeA Shape A.
@@ -373,7 +373,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, c
 /// @param shapeB Shape B.
 /// @param xfB Transform for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB);
+Manifold CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB);
 
 /// Computes the collision manifold between an edge and a circle.
 /// @param shapeA Shape A.
@@ -381,7 +381,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, cons
 /// @param shapeB Shape B.
 /// @param xfB Transform for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, const b2PolygonShape& shapeB, const Transform& xfB);
+Manifold CollideShapes(const b2EdgeShape& shapeA, const Transform& xfA, const b2PolygonShape& shapeB, const Transform& xfB);
 
 /// Clip array for b2ClipSegmentToLine.
 /// @see b2ClipSegmentToLine.
@@ -400,8 +400,8 @@ b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray&
 										   const Vec2& normal, float_t offset, ContactFeature::index_t indexA);
 
 /// Determine if two generic shapes overlap.
-bool b2TestOverlap(const b2Shape& shapeA, child_count_t indexA,
-				   const b2Shape& shapeB, child_count_t indexB,
+bool b2TestOverlap(const Shape& shapeA, child_count_t indexA,
+				   const Shape& shapeB, child_count_t indexB,
 				   const Transform& xfA, const Transform& xfB);
 
 // ---------------- Inline Functions ------------------------------------------

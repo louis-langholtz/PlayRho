@@ -50,7 +50,7 @@ struct b2MassData
 /// A shape is used for collision detection. You can create a shape however you like.
 /// Shapes used for simulation in World are created automatically when a Fixture
 /// is created. Shapes may encapsulate a one or more child shapes.
-class b2Shape
+class Shape
 {
 public:
 	enum Type
@@ -62,24 +62,24 @@ public:
 		e_typeCount = 4
 	};
 
-	b2Shape() = delete;
+	Shape() = delete;
 
 	/// Initializing constructor.
 	/// @param type Type of this shape object.
 	/// @param radius Non-negative "radius" distance of this object (whose meaning is
 	///   class dependent).
 	/// @note Behavior is undefined if a negative radius is given.
-	constexpr b2Shape(Type type, float_t radius) noexcept: m_type(type), m_radius(radius)
+	constexpr Shape(Type type, float_t radius) noexcept: m_type(type), m_radius(radius)
 	{
 		assert(radius >= 0);
 	}
 
-	b2Shape(const b2Shape&) = default;
+	Shape(const Shape&) = default;
 
-	virtual ~b2Shape() = default;
+	virtual ~Shape() = default;
 
 	/// Clone the concrete shape using the provided allocator.
-	virtual b2Shape* Clone(b2BlockAllocator* allocator) const = 0;
+	virtual Shape* Clone(b2BlockAllocator* allocator) const = 0;
 
 	/// Get the type of this shape. You can use this to down cast to the concrete shape.
 	/// @return the shape type.

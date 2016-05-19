@@ -45,14 +45,14 @@ b2ChainAndCircleContact::b2ChainAndCircleContact(Fixture* fixtureA, child_count_
 												 Fixture* fixtureB, child_count_t indexB)
 : Contact(fixtureA, indexA, fixtureB, indexB)
 {
-	assert(m_fixtureA->GetType() == b2Shape::e_chain);
-	assert(m_fixtureB->GetType() == b2Shape::e_circle);
+	assert(m_fixtureA->GetType() == Shape::e_chain);
+	assert(m_fixtureB->GetType() == Shape::e_circle);
 }
 
-b2Manifold b2ChainAndCircleContact::Evaluate(const Transform& xfA, const Transform& xfB)
+Manifold b2ChainAndCircleContact::Evaluate(const Transform& xfA, const Transform& xfB)
 {
 	auto chain = static_cast<b2ChainShape*>(m_fixtureA->GetShape());
 	b2EdgeShape edge;
 	chain->GetChildEdge(&edge, m_indexA);
-	return b2CollideShapes(edge, xfA, *static_cast<b2CircleShape*>(m_fixtureB->GetShape()), xfB);
+	return CollideShapes(edge, xfA, *static_cast<b2CircleShape*>(m_fixtureB->GetShape()), xfB);
 }

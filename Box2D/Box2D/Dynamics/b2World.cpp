@@ -952,7 +952,7 @@ void World::DrawShape(const Fixture* fixture, const Transform& xf, const Color& 
 {
 	switch (fixture->GetType())
 	{
-	case b2Shape::e_circle:
+	case Shape::e_circle:
 		{
 			const auto circle = static_cast<const b2CircleShape*>(fixture->GetShape());
 			const auto center = Mul(xf, circle->GetPosition());
@@ -962,7 +962,7 @@ void World::DrawShape(const Fixture* fixture, const Transform& xf, const Color& 
 		}
 		break;
 
-	case b2Shape::e_edge:
+	case Shape::e_edge:
 		{
 			const auto edge = static_cast<const b2EdgeShape*>(fixture->GetShape());
 			const auto v1 = Mul(xf, edge->GetVertex1());
@@ -971,7 +971,7 @@ void World::DrawShape(const Fixture* fixture, const Transform& xf, const Color& 
 		}
 		break;
 
-	case b2Shape::e_chain:
+	case Shape::e_chain:
 		{
 			const auto chain = static_cast<const b2ChainShape*>(fixture->GetShape());
 			const auto count = chain->GetVertexCount();
@@ -986,7 +986,7 @@ void World::DrawShape(const Fixture* fixture, const Transform& xf, const Color& 
 		}
 		break;
 
-	case b2Shape::e_polygon:
+	case Shape::e_polygon:
 		{
 			const auto poly = static_cast<const b2PolygonShape*>(fixture->GetShape());
 			const auto vertexCount = poly->GetVertexCount();

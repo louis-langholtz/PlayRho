@@ -185,7 +185,7 @@ Fixture* Body::CreateFixture(const FixtureDef* def)
 	return fixture;
 }
 
-Fixture* Body::CreateFixture(const b2Shape* shape, float_t density)
+Fixture* Body::CreateFixture(const Shape* shape, float_t density)
 {
 	FixtureDef def;
 	def.shape = shape;

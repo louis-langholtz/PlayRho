@@ -66,9 +66,9 @@ Test::~Test()
 	m_world = nullptr;
 }
 
-void Test::PreSolve(Contact* contact, const b2Manifold* oldManifold)
+void Test::PreSolve(Contact* contact, const Manifold* oldManifold)
 {
-	const b2Manifold* manifold = contact->GetManifold();
+	const Manifold* manifold = contact->GetManifold();
 
 	if (manifold->GetPointCount() == 0)
 	{

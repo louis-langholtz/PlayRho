@@ -29,11 +29,11 @@ namespace box2d {
 int32 gjkCalls, gjkIters, gjkMaxIters;
 #endif
 
-b2DistanceProxy::b2DistanceProxy(const b2Shape& shape, child_count_t index)
+b2DistanceProxy::b2DistanceProxy(const Shape& shape, child_count_t index)
 {
 	switch (shape.GetType())
 	{
-		case b2Shape::e_circle:
+		case Shape::e_circle:
 		{
 			const auto& circle = *static_cast<const b2CircleShape*>(&shape);
 			m_buffer[0] = circle.GetPosition();
@@ -43,7 +43,7 @@ b2DistanceProxy::b2DistanceProxy(const b2Shape& shape, child_count_t index)
 		}
 			break;
 			
-		case b2Shape::e_polygon:
+		case Shape::e_polygon:
 		{
 			const auto& polygon = *static_cast<const b2PolygonShape*>(&shape);
 			m_vertices = polygon.GetVertices();
@@ -52,7 +52,7 @@ b2DistanceProxy::b2DistanceProxy(const b2Shape& shape, child_count_t index)
 		}
 			break;
 			
-		case b2Shape::e_chain:
+		case Shape::e_chain:
 		{
 			const auto& chain = *static_cast<const b2ChainShape*>(&shape);
 			assert((0 <= index) && (index < chain.GetVertexCount()));
@@ -66,7 +66,7 @@ b2DistanceProxy::b2DistanceProxy(const b2Shape& shape, child_count_t index)
 		}
 			break;
 			
-		case b2Shape::e_edge:
+		case Shape::e_edge:
 		{
 			const auto& edge = *static_cast<const b2EdgeShape*>(&shape);
 			m_buffer[0] = edge.GetVertex1();

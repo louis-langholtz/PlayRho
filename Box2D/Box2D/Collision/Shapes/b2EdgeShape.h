@@ -26,36 +26,36 @@ namespace box2d {
 /// A line segment (edge) shape. These can be connected in chains or loops
 /// to other edge shapes. The connectivity information is used to ensure
 /// correct contact normals.
-class b2EdgeShape : public b2Shape
+class b2EdgeShape : public Shape
 {
 public:
-	b2EdgeShape(): b2Shape(e_edge, PolygonRadius) {}
+	b2EdgeShape(): Shape(e_edge, PolygonRadius) {}
 
 	constexpr b2EdgeShape(const Vec2& v1, const Vec2& v2):
-		b2Shape(e_edge, PolygonRadius), m_vertex1(v1), m_vertex2(v2) {}
+		Shape(e_edge, PolygonRadius), m_vertex1(v1), m_vertex2(v2) {}
 
 	b2EdgeShape(const b2EdgeShape&) = default;
 
 	/// Set this as an isolated edge.
 	void Set(const Vec2& v1, const Vec2& v2);
 
-	/// Implement b2Shape.
-	b2Shape* Clone(b2BlockAllocator* allocator) const override;
+	/// Implement Shape.
+	Shape* Clone(b2BlockAllocator* allocator) const override;
 
-	/// @see b2Shape::GetChildCount
+	/// @see Shape::GetChildCount
 	child_count_t GetChildCount() const override;
 
-	/// @see b2Shape::TestPoint
+	/// @see Shape::TestPoint
 	bool TestPoint(const Transform& transform, const Vec2& p) const override;
 
-	/// Implement b2Shape.
+	/// Implement Shape.
 	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 				const Transform& transform, child_count_t childIndex) const override;
 
-	/// @see b2Shape::ComputeAABB
+	/// @see Shape::ComputeAABB
 	AABB ComputeAABB(const Transform& transform, child_count_t childIndex) const override;
 
-	/// @see b2Shape::ComputeMass
+	/// @see Shape::ComputeMass
 	b2MassData ComputeMass(float_t density) const override;
 
 	Vec2 GetVertex0() const noexcept { return m_vertex0; }
