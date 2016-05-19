@@ -78,7 +78,7 @@ public:
 	{
 		Test::Step(settings);
 
-		b2PolygonShape shape;
+		PolygonShape shape;
 		shape.Set(m_points, m_count);
 
 		g_debugDraw.DrawString(5, m_textLine, "Press g to generate a new random convex hull");

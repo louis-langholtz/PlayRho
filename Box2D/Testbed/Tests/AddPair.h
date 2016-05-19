@@ -29,7 +29,7 @@ public:
 	{
 		m_world->SetGravity(Vec2(float_t{0}, float_t{0}));
 		{
-			b2CircleShape shape{float_t(0.1), Vec2_zero};
+			CircleShape shape{float_t(0.1), Vec2_zero};
 
 			float minX = -6.0f;
 			float maxX = 0.0f;
@@ -47,7 +47,7 @@ public:
 		}
 		
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(1.5f, 1.5f);
 			BodyDef bd;
 			bd.type = DynamicBody;

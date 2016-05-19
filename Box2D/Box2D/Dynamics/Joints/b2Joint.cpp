@@ -114,8 +114,8 @@ Joint* Joint::Create(const JointDef* def, BlockAllocator* allocator)
 
 	case e_motorJoint:
 		{
-			void* mem = allocator->Allocate(sizeof(b2MotorJoint));
-			joint = new (mem) b2MotorJoint(static_cast<const b2MotorJointDef*>(def));
+			void* mem = allocator->Allocate(sizeof(MotorJoint));
+			joint = new (mem) MotorJoint(static_cast<const MotorJointDef*>(def));
 		}
 		break;
 
@@ -173,7 +173,7 @@ void Joint::Destroy(Joint* joint, BlockAllocator* allocator)
 		break;
 
 	case e_motorJoint:
-		allocator->Free(joint, sizeof(b2MotorJoint));
+		allocator->Free(joint, sizeof(MotorJoint));
 		break;
 
 	default:

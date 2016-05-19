@@ -42,7 +42,7 @@ public:
 		}
 
 		{
-			b2CircleShape shape;
+			CircleShape shape;
 			shape.SetRadius(1.0);
 
 			for (int32 i = 0; i < e_count; ++i)

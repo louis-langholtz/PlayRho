@@ -28,14 +28,14 @@ namespace box2d {
 /// the left of each edge.
 /// Polygons have a maximum number of vertices equal to MaxPolygonVertices.
 /// In most cases you should not need many vertices for a convex polygon.
-class b2PolygonShape : public Shape
+class PolygonShape : public Shape
 {
 public:
 	using vertex_count_t = std::remove_cv<decltype(MaxPolygonVertices)>::type;
 
-	b2PolygonShape(): Shape(e_polygon, PolygonRadius) {}
+	PolygonShape(): Shape(e_polygon, PolygonRadius) {}
 
-	b2PolygonShape(const b2PolygonShape&) = default;
+	PolygonShape(const PolygonShape&) = default;
 	/// Implement Shape.
 	Shape* Clone(BlockAllocator* allocator) const override;
 
@@ -102,13 +102,13 @@ private:
 	vertex_count_t m_count = 0;
 };
 
-inline Vec2 b2PolygonShape::GetVertex(vertex_count_t index) const
+inline Vec2 PolygonShape::GetVertex(vertex_count_t index) const
 {
 	assert(0 <= index && index < m_count);
 	return m_vertices[index];
 }
 
-inline Vec2 b2PolygonShape::GetNormal(vertex_count_t index) const
+inline Vec2 PolygonShape::GetNormal(vertex_count_t index) const
 {
 	assert(0 <= index && index < m_count);
 	return m_normals[index];

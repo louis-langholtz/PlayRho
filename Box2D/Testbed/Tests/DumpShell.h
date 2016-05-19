@@ -68,7 +68,7 @@ public:
 				fd.filter.categoryBits = uint16(1);
 				fd.filter.maskBits = uint16(65535);
 				fd.filter.groupIndex = int16(0);
-				b2PolygonShape shape;
+				PolygonShape shape;
 				Vec2 vs[8];
 				vs[0] = Vec2(7.733039855957031e-01f, -1.497260034084320e-01f);
 				vs[1] = Vec2(-4.487270116806030e-01f, 1.138330027461052e-01f);
@@ -107,7 +107,7 @@ public:
 				fd.filter.categoryBits = uint16(1);
 				fd.filter.maskBits = uint16(65535);
 				fd.filter.groupIndex = int16(0);
-				b2PolygonShape shape;
+				PolygonShape shape;
 				Vec2 vs[8];
 				vs[0] = Vec2(3.473900079727173e+00f, -2.009889930486679e-01f);
 				vs[1] = Vec2(3.457079887390137e+00f, 3.694039955735207e-02f);
@@ -148,7 +148,7 @@ public:
 				fd.filter.categoryBits = uint16(1);
 				fd.filter.maskBits = uint16(65535);
 				fd.filter.groupIndex = int16(-3);
-				b2PolygonShape shape;
+				PolygonShape shape;
 				Vec2 vs[8];
 				vs[0] = Vec2(1.639146506786346e-01f, 4.428443685173988e-02f);
 				vs[1] = Vec2(-1.639146655797958e-01f, 4.428443685173988e-02f);

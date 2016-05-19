@@ -39,7 +39,7 @@ public:
 		}
 
 		{
-			b2CircleShape shape;
+			CircleShape shape;
 			shape.SetRadius(float_t(1));
 
 			FixtureDef fd;

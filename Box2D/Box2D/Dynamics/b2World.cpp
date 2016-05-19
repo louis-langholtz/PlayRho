@@ -954,7 +954,7 @@ void World::DrawShape(const Fixture* fixture, const Transform& xf, const Color& 
 	{
 	case Shape::e_circle:
 		{
-			const auto circle = static_cast<const b2CircleShape*>(fixture->GetShape());
+			const auto circle = static_cast<const CircleShape*>(fixture->GetShape());
 			const auto center = Mul(xf, circle->GetPosition());
 			const auto radius = circle->GetRadius();
 			const auto axis = Mul(xf.q, Vec2(float_t(1), float_t{0}));
@@ -973,7 +973,7 @@ void World::DrawShape(const Fixture* fixture, const Transform& xf, const Color& 
 
 	case Shape::e_chain:
 		{
-			const auto chain = static_cast<const b2ChainShape*>(fixture->GetShape());
+			const auto chain = static_cast<const ChainShape*>(fixture->GetShape());
 			const auto count = chain->GetVertexCount();
 			auto v1 = Mul(xf, chain->GetVertex(0));
 			for (auto i = decltype(count){1}; i < count; ++i)
@@ -988,7 +988,7 @@ void World::DrawShape(const Fixture* fixture, const Transform& xf, const Color& 
 
 	case Shape::e_polygon:
 		{
-			const auto poly = static_cast<const b2PolygonShape*>(fixture->GetShape());
+			const auto poly = static_cast<const PolygonShape*>(fixture->GetShape());
 			const auto vertexCount = poly->GetVertexCount();
 			assert(vertexCount <= MaxPolygonVertices);
 			Vec2 vertices[MaxPolygonVertices];

@@ -70,7 +70,7 @@ public:
 			vertices[1] = Mul(xf1, Vec2(1.0f, float_t{0}));
 			vertices[2] = Mul(xf1, Vec2(float_t{0}, 0.5f));
 			
-			b2PolygonShape poly1;
+			PolygonShape poly1;
 			poly1.Set(vertices, 3);
 
 			FixtureDef sd1;
@@ -85,7 +85,7 @@ public:
 			vertices[1] = Mul(xf2, Vec2(1.0f, float_t{0}));
 			vertices[2] = Mul(xf2, Vec2(float_t{0}, 0.5f));
 			
-			b2PolygonShape poly2;
+			PolygonShape poly2;
 			poly2.Set(vertices, 3);
 
 			FixtureDef sd2;
@@ -106,7 +106,7 @@ public:
 		}
 
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.5f);
 
 			FixtureDef fd;

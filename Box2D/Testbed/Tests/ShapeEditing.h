@@ -41,7 +41,7 @@ public:
 		bd.position = Vec2(0.0f, 10.0f);
 		m_body = m_world->CreateBody(&bd);
 
-		b2PolygonShape shape;
+		PolygonShape shape;
 		shape.SetAsBox(4.0f, 4.0f, Vec2(0.0f, 0.0f), 0.0f);
 		m_fixture1 = m_body->CreateFixture(&shape, 10.0f);
 
@@ -57,7 +57,7 @@ public:
 		case GLFW_KEY_C:
 			if (m_fixture2 == nullptr)
 			{
-				b2CircleShape shape(3.0, Vec2(0.5f, -4.0f));
+				CircleShape shape(3.0, Vec2(0.5f, -4.0f));
 				m_fixture2 = m_body->CreateFixture(&shape, 10.0f);
 				m_body->SetAwake();
 			}

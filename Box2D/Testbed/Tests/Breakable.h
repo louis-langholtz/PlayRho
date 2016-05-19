@@ -145,8 +145,8 @@ public:
 	Body* m_body1;
 	Vec2 m_velocity;
 	float_t m_angularVelocity;
-	b2PolygonShape m_shape1;
-	b2PolygonShape m_shape2;
+	PolygonShape m_shape1;
+	PolygonShape m_shape2;
 	Fixture* m_piece1;
 	Fixture* m_piece2;
 

@@ -53,7 +53,7 @@ public:
 
 		for (int32 j = 0; j < e_columnCount; ++j)
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.5f);
 
 			FixtureDef fd;
@@ -98,7 +98,7 @@ public:
 			}
 
 			{
-				b2CircleShape shape;
+				CircleShape shape;
 				shape.SetRadius(float_t(0.25));
 
 				FixtureDef fd;
@@ -139,7 +139,7 @@ public:
 		//	}
 
 		//	{
-		//		b2CircleShape shape;
+		//		CircleShape shape;
 		//		shape.m_radius = 0.25f;
 
 		//		FixtureDef fd;

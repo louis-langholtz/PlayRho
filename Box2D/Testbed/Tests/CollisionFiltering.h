@@ -63,7 +63,7 @@ public:
 		vertices[0] = Vec2(-1.0f, 0.0f);
 		vertices[1] = Vec2(1.0f, 0.0f);
 		vertices[2] = Vec2(0.0f, 2.0f);
-		b2PolygonShape polygon;
+		PolygonShape polygon;
 		polygon.Set(vertices, 3);
 
 		FixtureDef triangleShapeDef;
@@ -99,7 +99,7 @@ public:
 			bd.position = Vec2(-5.0f, 10.0f);
 			Body* body = m_world->CreateBody(&bd);
 
-			b2PolygonShape p;
+			PolygonShape p;
 			p.SetAsBox(0.5f, 1.0f);
 			body->CreateFixture(&p, 1.0f);
 
@@ -143,7 +143,7 @@ public:
 		body4->CreateFixture(&boxShapeDef);
 
 		// Small circle
-		b2CircleShape circle;
+		CircleShape circle;
 		circle.SetRadius(float_t(1));
 
 		FixtureDef circleShapeDef;

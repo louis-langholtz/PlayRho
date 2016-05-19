@@ -39,7 +39,7 @@ public:
             
 			// Define crank.
 			{
-				b2PolygonShape shape;
+				PolygonShape shape;
 				shape.SetAsBox(4.0f, 1.0f);
                 
 				BodyDef bd;
@@ -57,7 +57,7 @@ public:
             
 			// Define connecting rod
 			{
-				b2PolygonShape shape;
+				PolygonShape shape;
 				shape.SetAsBox(8.0f, 1.0f);
                 
 				BodyDef bd;
@@ -75,7 +75,7 @@ public:
             
 			// Define piston
 			{
-				b2PolygonShape shape;
+				PolygonShape shape;
 				shape.SetAsBox(3.0f, 3.0f);
                 
 				BodyDef bd;

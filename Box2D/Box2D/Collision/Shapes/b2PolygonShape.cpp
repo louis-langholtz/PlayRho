@@ -21,13 +21,13 @@
 
 using namespace box2d;
 
-Shape* b2PolygonShape::Clone(BlockAllocator* allocator) const
+Shape* PolygonShape::Clone(BlockAllocator* allocator) const
 {
-	void* mem = allocator->Allocate(sizeof(b2PolygonShape));
-	return new (mem) b2PolygonShape(*this);
+	void* mem = allocator->Allocate(sizeof(PolygonShape));
+	return new (mem) PolygonShape(*this);
 }
 
-void b2PolygonShape::SetAsBox(float_t hx, float_t hy) noexcept
+void PolygonShape::SetAsBox(float_t hx, float_t hy) noexcept
 {
 	m_count = 4;
 	m_vertices[0] = Vec2(-hx, -hy);
@@ -41,7 +41,7 @@ void b2PolygonShape::SetAsBox(float_t hx, float_t hy) noexcept
 	m_centroid = Vec2_zero;
 }
 
-void b2PolygonShape::SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t angle)
+void PolygonShape::SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t angle)
 {
 	m_count = 4;
 	m_vertices[0] = Vec2(-hx, -hy);
@@ -64,12 +64,12 @@ void b2PolygonShape::SetAsBox(float_t hx, float_t hy, const Vec2& center, float_
 	}
 }
 
-child_count_t b2PolygonShape::GetChildCount() const
+child_count_t PolygonShape::GetChildCount() const
 {
 	return 1;
 }
 
-static Vec2 ComputeCentroid(const Vec2 vs[], b2PolygonShape::vertex_count_t count)
+static Vec2 ComputeCentroid(const Vec2 vs[], PolygonShape::vertex_count_t count)
 {
 	assert(count >= 3);
 
@@ -115,7 +115,7 @@ static Vec2 ComputeCentroid(const Vec2 vs[], b2PolygonShape::vertex_count_t coun
 	return c;
 }
 
-void b2PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
+void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 {
 	assert((count >= 3) && (count <= MaxPolygonVertices));
 	if (count < 3)
@@ -245,7 +245,7 @@ void b2PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 	m_centroid = ComputeCentroid(m_vertices, m);
 }
 
-bool b2PolygonShape::TestPoint(const Transform& xf, const Vec2& p) const
+bool PolygonShape::TestPoint(const Transform& xf, const Vec2& p) const
 {
 	const auto pLocal = MulT(xf.q, p - xf.p);
 
@@ -261,7 +261,7 @@ bool b2PolygonShape::TestPoint(const Transform& xf, const Vec2& p) const
 	return true;
 }
 
-bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
+bool PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 								const Transform& xf, child_count_t childIndex) const
 {
 	BOX2D_NOT_USED(childIndex);
@@ -333,7 +333,7 @@ bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& inpu
 	return false;
 }
 
-AABB b2PolygonShape::ComputeAABB(const Transform& xf, child_count_t childIndex) const
+AABB PolygonShape::ComputeAABB(const Transform& xf, child_count_t childIndex) const
 {
 	BOX2D_NOT_USED(childIndex);
 	
@@ -353,7 +353,7 @@ AABB b2PolygonShape::ComputeAABB(const Transform& xf, child_count_t childIndex) 
 	return AABB{lower - r, upper + r};
 }
 
-MassData b2PolygonShape::ComputeMass(float_t density) const
+MassData PolygonShape::ComputeMass(float_t density) const
 {
 	// Polygon mass, centroid, and inertia.
 	// Let rho be the polygon density in mass per unit area.
@@ -436,7 +436,7 @@ MassData b2PolygonShape::ComputeMass(float_t density) const
 	return MassData{mass, massDataCenter, massDataI};
 }
 
-bool b2PolygonShape::Validate() const
+bool PolygonShape::Validate() const
 {
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{

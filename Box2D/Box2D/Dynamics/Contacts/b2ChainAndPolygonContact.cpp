@@ -51,8 +51,8 @@ b2ChainAndPolygonContact::b2ChainAndPolygonContact(Fixture* fixtureA, child_coun
 
 Manifold b2ChainAndPolygonContact::Evaluate(const Transform& xfA, const Transform& xfB)
 {
-	auto chain = static_cast<b2ChainShape*>(m_fixtureA->GetShape());
+	auto chain = static_cast<ChainShape*>(m_fixtureA->GetShape());
 	EdgeShape edge;
 	chain->GetChildEdge(&edge, m_indexA);
-	return CollideShapes(edge, xfA, *static_cast<b2PolygonShape*>(m_fixtureB->GetShape()), xfB);
+	return CollideShapes(edge, xfA, *static_cast<PolygonShape*>(m_fixtureB->GetShape()), xfB);
 }

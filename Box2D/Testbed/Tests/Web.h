@@ -38,7 +38,7 @@ public:
 		}
 
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.5f);
 
 			BodyDef bd;

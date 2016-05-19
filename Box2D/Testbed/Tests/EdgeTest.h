@@ -72,7 +72,7 @@ public:
 			bd.allowSleep = false;
 			Body* body = m_world->CreateBody(&bd);
 
-			b2CircleShape shape;
+			CircleShape shape;
 			shape.SetRadius(float_t(0.5));
 
 			body->CreateFixture(&shape, 1.0f);
@@ -85,7 +85,7 @@ public:
 			bd.allowSleep = false;
 			Body* body = m_world->CreateBody(&bd);
 
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.5f);
 
 			body->CreateFixture(&shape, 1.0f);

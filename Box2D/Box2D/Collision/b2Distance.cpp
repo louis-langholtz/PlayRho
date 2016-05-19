@@ -35,7 +35,7 @@ b2DistanceProxy::b2DistanceProxy(const Shape& shape, child_count_t index)
 	{
 		case Shape::e_circle:
 		{
-			const auto& circle = *static_cast<const b2CircleShape*>(&shape);
+			const auto& circle = *static_cast<const CircleShape*>(&shape);
 			m_buffer[0] = circle.GetPosition();
 			m_vertices = m_buffer;
 			m_count = 1;
@@ -45,7 +45,7 @@ b2DistanceProxy::b2DistanceProxy(const Shape& shape, child_count_t index)
 			
 		case Shape::e_polygon:
 		{
-			const auto& polygon = *static_cast<const b2PolygonShape*>(&shape);
+			const auto& polygon = *static_cast<const PolygonShape*>(&shape);
 			m_vertices = polygon.GetVertices();
 			m_count = polygon.GetVertexCount();
 			m_radius = polygon.GetRadius();
@@ -54,7 +54,7 @@ b2DistanceProxy::b2DistanceProxy(const Shape& shape, child_count_t index)
 			
 		case Shape::e_chain:
 		{
-			const auto& chain = *static_cast<const b2ChainShape*>(&shape);
+			const auto& chain = *static_cast<const ChainShape*>(&shape);
 			assert((0 <= index) && (index < chain.GetVertexCount()));
 			
 			m_buffer[0] = chain.GetVertex(index);

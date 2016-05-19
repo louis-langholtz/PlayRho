@@ -89,7 +89,7 @@ TestEntry g_testEntries[] =
 	{"Apply Force", ApplyForce::Create},
 	{"Continuous Test", ContinuousTest::Create},
 	{"Time of Impact", TimeOfImpact::Create},
-	{"Motor Joint", MotorJoint::Create},
+	{"Motor Joint", MotorJointTest::Create},
 	{"One-Sided Platform", OneSidedPlatform::Create},
 	{"Mobile", Mobile::Create},
 	{"MobileBalanced", MobileBalanced::Create},

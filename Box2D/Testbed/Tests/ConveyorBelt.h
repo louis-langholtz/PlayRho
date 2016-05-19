@@ -43,7 +43,7 @@ public:
 			bd.position = Vec2(-5.0f, 5.0f);
 			Body* body = m_world->CreateBody(&bd);
 
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(10.0f, 0.5f);
 
 			FixtureDef fd;
@@ -60,7 +60,7 @@ public:
 			bd.position = Vec2(-10.0f + 2.0f * i, 7.0f);
 			Body* body = m_world->CreateBody(&bd);
 
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.5f);
 			body->CreateFixture(&shape, 20.0f);
 		}

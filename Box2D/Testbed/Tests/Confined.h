@@ -62,7 +62,7 @@ public:
 		}
 
 		float_t radius = 0.5f;
-		b2CircleShape shape(radius, Vec2_zero);
+		CircleShape shape(radius, Vec2_zero);
 
 		FixtureDef fd;
 		fd.shape = &shape;
@@ -88,7 +88,7 @@ public:
 	void CreateCircle()
 	{
 		constexpr auto radius = float_t(wall_length/10); // 2
-		b2CircleShape shape(radius, Vec2_zero);
+		CircleShape shape(radius, Vec2_zero);
 
 		FixtureDef fd;
 		fd.shape = &shape;
@@ -108,7 +108,7 @@ public:
 	void CreateBox()
 	{
 		constexpr auto side_length = float_t(wall_length/5); // 4
-		b2PolygonShape shape;
+		PolygonShape shape;
 		shape.SetAsBox(side_length/2, side_length/2);
 
 		FixtureDef fd;

@@ -43,7 +43,7 @@ public:
 
 			// Define crank.
 			{
-				b2PolygonShape shape;
+				PolygonShape shape;
 				shape.SetAsBox(0.5f, 2.0f);
 
 				BodyDef bd;
@@ -64,7 +64,7 @@ public:
 
 			// Define follower.
 			{
-				b2PolygonShape shape;
+				PolygonShape shape;
 				shape.SetAsBox(0.5f, 4.0f);
 
 				BodyDef bd;
@@ -83,7 +83,7 @@ public:
 
 			// Define piston
 			{
-				b2PolygonShape shape;
+				PolygonShape shape;
 				shape.SetAsBox(1.5f, 1.5f);
 
 				BodyDef bd;
@@ -108,7 +108,7 @@ public:
 
 			// Create a payload
 			{
-				b2PolygonShape shape;
+				PolygonShape shape;
 				shape.SetAsBox(1.5f, 1.5f);
 
 				BodyDef bd;

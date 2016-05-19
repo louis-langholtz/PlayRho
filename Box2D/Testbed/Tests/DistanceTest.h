@@ -128,8 +128,8 @@ public:
 
 	Transform m_transformA;
 	Transform m_transformB;
-	b2PolygonShape m_polygonA;
-	b2PolygonShape m_polygonB;
+	PolygonShape m_polygonA;
+	PolygonShape m_polygonB;
 };
 	
 } // namespace box2d

@@ -33,9 +33,9 @@ namespace box2d
 /// queries, and TOI queries.
 
 class Shape;
-class b2CircleShape;
+class CircleShape;
 class EdgeShape;
-class b2PolygonShape;
+class PolygonShape;
 
 /// The features that intersect to form the contact point
 struct ContactFeature
@@ -349,7 +349,7 @@ constexpr inline AABB operator + (const AABB& lhs, Vec2 rhs)
 /// @param shapeB Shape B.
 /// @param xfB Transform for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-Manifold CollideShapes(const b2CircleShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB);
+Manifold CollideShapes(const CircleShape& shapeA, const Transform& xfA, const CircleShape& shapeB, const Transform& xfB);
 
 /// Computes the collision manifold between a polygon and a circle.
 /// @param shapeA Shape A.
@@ -357,7 +357,7 @@ Manifold CollideShapes(const b2CircleShape& shapeA, const Transform& xfA, const 
 /// @param shapeB Shape B.
 /// @param xfB Transform for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-Manifold CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB);
+Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const CircleShape& shapeB, const Transform& xfB);
 
 /// Computes the collision manifold between two polygons.
 /// @param shapeA Shape A.
@@ -365,7 +365,7 @@ Manifold CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, const
 /// @param shapeB Shape B.
 /// @param xfB Transform for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-Manifold CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, const b2PolygonShape& shapeB, const Transform& xfB);
+Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const PolygonShape& shapeB, const Transform& xfB);
 
 /// Computes the collision manifold between an edge and a circle.
 /// @param shapeA Shape A.
@@ -373,7 +373,7 @@ Manifold CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, const
 /// @param shapeB Shape B.
 /// @param xfB Transform for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB);
+Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const CircleShape& shapeB, const Transform& xfB);
 
 /// Computes the collision manifold between an edge and a circle.
 /// @param shapeA Shape A.
@@ -381,7 +381,7 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const b2Ci
 /// @param shapeB Shape B.
 /// @param xfB Transform for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const b2PolygonShape& shapeB, const Transform& xfB);
+Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const PolygonShape& shapeB, const Transform& xfB);
 
 /// Clip array for ClipSegmentToLine.
 /// @see ClipSegmentToLine.

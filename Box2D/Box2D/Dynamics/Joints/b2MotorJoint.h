@@ -24,9 +24,9 @@
 namespace box2d {
 
 /// Motor joint definition.
-struct b2MotorJointDef : public JointDef
+struct MotorJointDef : public JointDef
 {
-	constexpr b2MotorJointDef() noexcept: JointDef(e_motorJoint) {}
+	constexpr MotorJointDef() noexcept: JointDef(e_motorJoint) {}
 
 	/// Initialize the bodies and offsets using the current transforms.
 	void Initialize(Body* bodyA, Body* bodyB);
@@ -50,7 +50,7 @@ struct b2MotorJointDef : public JointDef
 /// A motor joint is used to control the relative motion
 /// between two bodies. A typical usage is to control the movement
 /// of a dynamic body with respect to the ground.
-class b2MotorJoint : public Joint
+class MotorJoint : public Joint
 {
 public:
 	Vec2 GetAnchorA() const override;
@@ -92,7 +92,7 @@ protected:
 
 	friend class Joint;
 
-	b2MotorJoint(const b2MotorJointDef* def);
+	MotorJoint(const MotorJointDef* def);
 
 	void InitVelocityConstraints(const b2SolverData& data) override;
 	void SolveVelocityConstraints(const b2SolverData& data) override;

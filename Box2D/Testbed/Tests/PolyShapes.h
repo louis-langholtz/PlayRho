@@ -50,7 +50,7 @@ public:
 		{
 		case Shape::e_circle:
 			{
-				b2CircleShape* circle = (b2CircleShape*)fixture->GetShape();
+				CircleShape* circle = (CircleShape*)fixture->GetShape();
 
 				Vec2 center = Mul(xf, circle->GetPosition());
 				float_t radius = circle->GetRadius();
@@ -61,7 +61,7 @@ public:
 
 		case Shape::e_polygon:
 			{
-				b2PolygonShape* poly = (b2PolygonShape*)fixture->GetShape();
+				PolygonShape* poly = (PolygonShape*)fixture->GetShape();
 				int32 vertexCount = poly->GetVertexCount();
 				assert(vertexCount <= MaxPolygonVertices);
 				Vec2 vertices[MaxPolygonVertices];
@@ -103,7 +103,7 @@ public:
 		return true;
 	}
 
-	b2CircleShape m_circle;
+	CircleShape m_circle;
 	Transform m_transform;
 	Draw* g_debugDraw;
 	int32 m_count;
@@ -293,8 +293,8 @@ public:
 
 	int32 m_bodyIndex;
 	Body* m_bodies[e_maxBodies];
-	b2PolygonShape m_polygons[4];
-	b2CircleShape m_circle;
+	PolygonShape m_polygons[4];
+	CircleShape m_circle;
 };
 
 } // namespace box2d

@@ -42,7 +42,7 @@ public:
 		}
 
 		{
-			b2CircleShape shape;
+			CircleShape shape;
 			shape.SetRadius(0.5);
 
 			BodyDef bd;
@@ -71,7 +71,7 @@ public:
 		}
 
 		{
-			b2CircleShape circle_shape;
+			CircleShape circle_shape;
 			circle_shape.SetRadius(3.0);
 
 			BodyDef circle_bd;
@@ -86,7 +86,7 @@ public:
 			m_ball = m_world->CreateBody(&circle_bd);
 			m_ball->CreateFixture(&fd);
 
-			b2PolygonShape polygon_shape;
+			PolygonShape polygon_shape;
 			polygon_shape.SetAsBox(10.0f, 0.2f, Vec2 (-10.0f, 0.0f), 0.0f);
 
 			BodyDef polygon_bd;
@@ -110,7 +110,7 @@ public:
 			bodyDef.type = DynamicBody;
 			Body* body = m_world->CreateBody(&bodyDef);
 		
-			b2PolygonShape polyShape;		
+			PolygonShape polyShape;		
 			Vec2 verts[3];
 			verts[0] = Vec2( 17.63f, 36.31f );
 			verts[1] = Vec2( 17.52f, 36.69f );

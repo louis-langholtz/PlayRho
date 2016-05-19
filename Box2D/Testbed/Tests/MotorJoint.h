@@ -24,10 +24,10 @@ namespace box2d {
 /// This test shows how to use a motor joint. A motor joint
 /// can be used to animate a dynamic body. With finite motor forces
 /// the body can be blocked by collision with other bodies.
-class MotorJoint : public Test
+class MotorJointTest : public Test
 {
 public:
-	MotorJoint()
+	MotorJointTest()
 	{
 		Body* ground = NULL;
 		{
@@ -50,7 +50,7 @@ public:
 			bd.position = Vec2(0.0f, 8.0f);
 			Body* body = m_world->CreateBody(&bd);
 
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(2.0f, 0.5f);
 
 			FixtureDef fd;
@@ -59,11 +59,11 @@ public:
 			fd.density = 2.0f;
 			body->CreateFixture(&fd);
 
-			b2MotorJointDef mjd;
+			MotorJointDef mjd;
 			mjd.Initialize(ground, body);
 			mjd.maxForce = 1000.0f;
 			mjd.maxTorque = 1000.0f;
-			m_joint = (b2MotorJoint*)m_world->CreateJoint(&mjd);
+			m_joint = (MotorJoint*)m_world->CreateJoint(&mjd);
 		}
 
 		m_go = false;
@@ -105,10 +105,10 @@ public:
 
 	static Test* Create()
 	{
-		return new MotorJoint;
+		return new MotorJointTest;
 	}
 
-	b2MotorJoint* m_joint;
+	MotorJoint* m_joint;
 	float32 m_time;
 	bool m_go;
 };

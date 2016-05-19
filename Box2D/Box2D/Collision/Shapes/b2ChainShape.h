@@ -31,17 +31,17 @@ class EdgeShape;
 /// Since there may be many vertices, they are allocated using alloc.
 /// Connectivity information is used to create smooth collisions.
 /// WARNING: The chain will not collide properly if there are self-intersections.
-class b2ChainShape : public Shape
+class ChainShape : public Shape
 {
 public:
-	b2ChainShape(): Shape(e_chain, PolygonRadius) {}
+	ChainShape(): Shape(e_chain, PolygonRadius) {}
 
-	b2ChainShape(const b2ChainShape&) = delete;
+	ChainShape(const ChainShape&) = delete;
 
 	/// The destructor frees the vertices using free.
-	~b2ChainShape();
+	~ChainShape();
 
-	b2ChainShape& operator=(const b2ChainShape&) = delete;
+	ChainShape& operator=(const ChainShape&) = delete;
 
 	/// Clear all data.
 	void Clear();
@@ -111,7 +111,7 @@ private:
 	bool m_hasPrevVertex = false, m_hasNextVertex = false;
 };
 
-inline const Vec2& b2ChainShape::GetVertex(child_count_t index) const
+inline const Vec2& ChainShape::GetVertex(child_count_t index) const
 {
 	assert((0 <= index) && (index < m_count));
 	return m_vertices[index];

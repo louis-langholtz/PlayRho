@@ -41,7 +41,7 @@ public:
 		bd.position = Vec2(0.0f, 2.5f);
 		Body* body = m_world->CreateBody(&bd);
         
-		b2CircleShape shape;
+		CircleShape shape;
 		shape.SetRadius(float_t(0.5));
         body->CreateFixture(&shape, 10.0f);
         
@@ -66,7 +66,7 @@ public:
             bd.position = Vec2(0.0f, 9.0f);
             m_heavy = m_world->CreateBody(&bd);
             
-            b2CircleShape shape;
+            CircleShape shape;
             shape.SetRadius(float_t(5));
             m_heavy->CreateFixture(&shape, 10.0f);
         }

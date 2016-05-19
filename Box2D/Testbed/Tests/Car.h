@@ -95,7 +95,7 @@ public:
 			bd.type = DynamicBody;
 			Body* body = m_world->CreateBody(&bd);
 
-			b2PolygonShape box;
+			PolygonShape box;
 			box.SetAsBox(10.0f, 0.25f);
 			body->CreateFixture(&box, 1.0f);
 
@@ -112,7 +112,7 @@ public:
 		// Bridge
 		{
 			int32 N = 20;
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(1.0f, 0.125f);
 
 			FixtureDef fd;
@@ -145,7 +145,7 @@ public:
 
 		// Boxes
 		{
-			b2PolygonShape box;
+			PolygonShape box;
 			box.SetAsBox(0.5f, 0.5f);
 
 			Body* body = nullptr;
@@ -175,7 +175,7 @@ public:
 
 		// Car
 		{
-			b2PolygonShape chassis;
+			PolygonShape chassis;
 			Vec2 vertices[8];
 			vertices[0] = Vec2(-1.5f, -0.5f);
 			vertices[1] = Vec2(1.5f, -0.5f);
@@ -185,7 +185,7 @@ public:
 			vertices[5] = Vec2(-1.5f, 0.2f);
 			chassis.Set(vertices, 6);
 
-			b2CircleShape circle;
+			CircleShape circle;
 			circle.SetRadius(float_t(0.4));
 
 			BodyDef bd;

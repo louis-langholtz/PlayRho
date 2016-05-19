@@ -39,9 +39,9 @@ public:
 		}
 
 		{
-			b2CircleShape circle1(float_t(0.5), Vec2(float_t(-0.5), float_t(0.5f)));
+			CircleShape circle1(float_t(0.5), Vec2(float_t(-0.5), float_t(0.5f)));
 
-			b2CircleShape circle2(float_t(0.5), Vec2(float_t(0.5), float_t(0.5f)));
+			CircleShape circle2(float_t(0.5), Vec2(float_t(0.5), float_t(0.5f)));
 
 			for (int i = 0; i < 10; ++i)
 			{
@@ -57,10 +57,10 @@ public:
 		}
 
 		{
-			b2PolygonShape polygon1;
+			PolygonShape polygon1;
 			polygon1.SetAsBox(0.25f, 0.5f);
 
-			b2PolygonShape polygon2;
+			PolygonShape polygon2;
 			polygon2.SetAsBox(0.25f, 0.5f, Vec2(0.0f, -0.5f), 0.5f * Pi);
 
 			for (int i = 0; i < 10; ++i)
@@ -83,7 +83,7 @@ public:
 
 			Vec2 vertices[3];
 
-			b2PolygonShape triangle1;
+			PolygonShape triangle1;
 			vertices[0] = Mul(xf1, Vec2(-1.0f, 0.0f));
 			vertices[1] = Mul(xf1, Vec2(1.0f, 0.0f));
 			vertices[2] = Mul(xf1, Vec2(0.0f, 0.5f));
@@ -93,7 +93,7 @@ public:
 			xf2.q = Rot(-0.3524f * Pi);
 			xf2.p = -xf2.q.GetXAxis();
 
-			b2PolygonShape triangle2;
+			PolygonShape triangle2;
 			vertices[0] = Mul(xf2, Vec2(-1.0f, 0.0f));
 			vertices[1] = Mul(xf2, Vec2(1.0f, 0.0f));
 			vertices[2] = Mul(xf2, Vec2(0.0f, 0.5f));
@@ -113,13 +113,13 @@ public:
 		}
 
 		{
-			b2PolygonShape bottom;
+			PolygonShape bottom;
 			bottom.SetAsBox( 1.5f, 0.15f );
 
-			b2PolygonShape left;
+			PolygonShape left;
 			left.SetAsBox(0.15f, 2.7f, Vec2(-1.45f, 2.35f), 0.2f);
 
-			b2PolygonShape right;
+			PolygonShape right;
 			right.SetAsBox(0.15f, 2.7f, Vec2(1.45f, 2.35f), -0.2f);
 
 			BodyDef bd;

@@ -49,5 +49,5 @@ b2PolygonAndCircleContact::b2PolygonAndCircleContact(Fixture* fixtureA, Fixture*
 
 Manifold b2PolygonAndCircleContact::Evaluate(const Transform& xfA, const Transform& xfB)
 {
-	return CollideShapes(*static_cast<b2PolygonShape*>(m_fixtureA->GetShape()), xfA, *static_cast<b2CircleShape*>(m_fixtureB->GetShape()), xfB);
+	return CollideShapes(*static_cast<PolygonShape*>(m_fixtureA->GetShape()), xfA, *static_cast<CircleShape*>(m_fixtureB->GetShape()), xfB);
 }

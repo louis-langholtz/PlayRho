@@ -50,7 +50,7 @@ public:
 			bd.position = Vec2(0.0f, 10.0f);
 			Body* body = m_world->CreateBody(&bd);
 
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(3.0f, 0.5f);
 			m_platform = body->CreateFixture(&shape, 0.0f);
 
@@ -66,7 +66,7 @@ public:
 			Body* body = m_world->CreateBody(&bd);
 
 			m_radius = 0.5f;
-			b2CircleShape shape;
+			CircleShape shape;
 			shape.SetRadius(float_t(m_radius));
 			m_character = body->CreateFixture(&shape, 20.0f);
 

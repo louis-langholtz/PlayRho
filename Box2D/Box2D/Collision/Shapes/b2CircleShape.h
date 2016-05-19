@@ -24,13 +24,13 @@
 namespace box2d {
 
 /// A circle shape.
-class b2CircleShape : public Shape
+class CircleShape : public Shape
 {
 public:
-	constexpr explicit b2CircleShape(float_t radius = 0, Vec2 position = Vec2_zero) noexcept:
+	constexpr explicit CircleShape(float_t radius = 0, Vec2 position = Vec2_zero) noexcept:
 		Shape(e_circle, radius), m_p(position) {}
 
-	b2CircleShape(const b2CircleShape&) = default;
+	CircleShape(const CircleShape&) = default;
 
 	/// Implement Shape.
 	Shape* Clone(BlockAllocator* allocator) const override;

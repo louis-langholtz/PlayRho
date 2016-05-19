@@ -51,5 +51,5 @@ b2PolygonContact::b2PolygonContact(Fixture* fixtureA, Fixture* fixtureB)
 
 Manifold b2PolygonContact::Evaluate(const Transform& xfA, const Transform& xfB)
 {
-	return CollideShapes(*static_cast<b2PolygonShape*>(m_fixtureA->GetShape()), xfA, *static_cast<b2PolygonShape*>(m_fixtureB->GetShape()), xfB);
+	return CollideShapes(*static_cast<PolygonShape*>(m_fixtureA->GetShape()), xfA, *static_cast<PolygonShape*>(m_fixtureB->GetShape()), xfB);
 }

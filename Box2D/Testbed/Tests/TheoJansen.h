@@ -43,7 +43,7 @@ public:
 		fd1.density = 1.0f;
 		fd2.density = 1.0f;
 
-		b2PolygonShape poly1, poly2;
+		PolygonShape poly1, poly2;
 
 		if (s > 0.0f)
 		{
@@ -144,7 +144,7 @@ public:
 		// Balls
 		for (int32 i = 0; i < 40; ++i)
 		{
-			b2CircleShape shape;
+			CircleShape shape;
 			shape.SetRadius(0.25);
 
 			BodyDef bd;
@@ -157,7 +157,7 @@ public:
 
 		// Chassis
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(2.5f, 1.0f);
 
 			FixtureDef sd;
@@ -172,7 +172,7 @@ public:
 		}
 
 		{
-			b2CircleShape shape;
+			CircleShape shape;
 			shape.SetRadius(float_t(1.6));
 
 			FixtureDef sd;

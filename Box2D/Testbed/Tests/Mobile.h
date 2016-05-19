@@ -66,7 +66,7 @@ public:
 		bodyDef.position = p;
 		Body* body = m_world->CreateBody(&bodyDef);
 
-		b2PolygonShape shape;
+		PolygonShape shape;
 		shape.SetAsBox(0.25f * a, a);
 		body->CreateFixture(&shape, density);
 

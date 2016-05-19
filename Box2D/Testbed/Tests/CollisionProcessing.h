@@ -52,7 +52,7 @@ public:
 		vertices[1] = Vec2(1.0f, 0.0f);
 		vertices[2] = Vec2(0.0f, 2.0f);
 
-		b2PolygonShape polygon;
+		PolygonShape polygon;
 		polygon.Set(vertices, 3);
 
 		FixtureDef triangleShapeDef;
@@ -99,7 +99,7 @@ public:
 		body4->CreateFixture(&boxShapeDef);
 
 		// Small circle
-		b2CircleShape circle;
+		CircleShape circle;
 		circle.SetRadius(float_t(1));
 
 		FixtureDef circleShapeDef;

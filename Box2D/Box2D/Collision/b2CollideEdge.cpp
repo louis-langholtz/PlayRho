@@ -27,7 +27,7 @@ namespace box2d {
 
 // Compute contact points for edge versus circle.
 // This accounts for edge connectivity.
-Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB)
+Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const CircleShape& shapeB, const Transform& xfB)
 {
 	// Compute circle in frame of edge
 	const auto Q = MulT(xfA, Mul(xfB, shapeB.GetPosition()));
@@ -133,7 +133,7 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const b2Ci
 // This structure is used to keep track of the best separating axis.
 struct EPAxis
 {
-	using index_t = b2PolygonShape::vertex_count_t;
+	using index_t = PolygonShape::vertex_count_t;
 
 	enum Type
 	{
@@ -161,7 +161,7 @@ public:
 
 	TempPolygon() = default;
 
-	TempPolygon(const b2PolygonShape& shape, const Transform& xf);
+	TempPolygon(const PolygonShape& shape, const Transform& xf);
 
 	/// Gets count of appended elements (vertex-normal pairs).
 	/// @return value between 0 and MaxPolygonVertices inclusive.
@@ -199,7 +199,7 @@ private:
 };
 
 /// Gets a TempPolygon object from a given shape in terms of a given transform.
-inline TempPolygon::TempPolygon(const b2PolygonShape& shape, const Transform& xf)
+inline TempPolygon::TempPolygon(const PolygonShape& shape, const Transform& xf)
 {
 	const auto num_vertices = shape.GetVertexCount();
 	for (auto i = decltype(num_vertices){0}; i < num_vertices; ++i)
@@ -211,7 +211,7 @@ inline TempPolygon::TempPolygon(const b2PolygonShape& shape, const Transform& xf
 // Reference face used for clipping
 struct ReferenceFace
 {
-	using index_t = b2PolygonShape::vertex_count_t;
+	using index_t = PolygonShape::vertex_count_t;
 
 	index_t i1, i2;
 	
@@ -527,15 +527,15 @@ class EPCollider
 public:
 	EPCollider(const Transform& xf): m_xf(xf) {}
 	
-	Manifold Collide(const EdgeShape& shapeA, const b2PolygonShape& shapeB) const;
+	Manifold Collide(const EdgeShape& shapeA, const PolygonShape& shapeB) const;
 	
 private:
-	Manifold Collide(const EdgeInfo& shapeA, const b2PolygonShape& shapeB) const;
+	Manifold Collide(const EdgeInfo& shapeA, const PolygonShape& shapeB) const;
 
 	const Transform m_xf;
 };
 
-Manifold EPCollider::Collide(const EdgeShape& shapeA, const b2PolygonShape& shapeB) const
+Manifold EPCollider::Collide(const EdgeShape& shapeA, const PolygonShape& shapeB) const
 {
 	return Collide(EdgeInfo{shapeA, Mul(m_xf, shapeB.GetCentroid())}, shapeB);
 }
@@ -549,7 +549,7 @@ Manifold EPCollider::Collide(const EdgeShape& shapeA, const b2PolygonShape& shap
 // 6. Visit each separating axes, only accept axes within the range
 // 7. Return if _any_ axis indicates separation
 // 8. Clip
-Manifold EPCollider::Collide(const EdgeInfo& edgeInfo, const b2PolygonShape& shapeB) const
+Manifold EPCollider::Collide(const EdgeInfo& edgeInfo, const PolygonShape& shapeB) const
 {
 	const auto localShapeB = TempPolygon{shapeB, m_xf};
 	
@@ -685,7 +685,7 @@ Manifold EPCollider::Collide(const EdgeInfo& edgeInfo, const b2PolygonShape& sha
 	return manifold;
 }
 
-Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const b2PolygonShape& shapeB, const Transform& xfB)
+Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const PolygonShape& shapeB, const Transform& xfB)
 {
 	const auto collider = EPCollider{MulT(xfA, xfB)};
 	return collider.Collide(shapeA, shapeB);

@@ -21,18 +21,18 @@
 
 using namespace box2d;
 
-Shape* b2CircleShape::Clone(BlockAllocator* allocator) const
+Shape* CircleShape::Clone(BlockAllocator* allocator) const
 {
-	void* mem = allocator->Allocate(sizeof(b2CircleShape));
-	return new (mem) b2CircleShape(*this);
+	void* mem = allocator->Allocate(sizeof(CircleShape));
+	return new (mem) CircleShape(*this);
 }
 
-child_count_t b2CircleShape::GetChildCount() const
+child_count_t CircleShape::GetChildCount() const
 {
 	return 1;
 }
 
-bool b2CircleShape::TestPoint(const Transform& transform, const Vec2& p) const
+bool CircleShape::TestPoint(const Transform& transform, const Vec2& p) const
 {
 	const auto center = transform.p + Mul(transform.q, m_p);
 	const auto d = p - center;
@@ -43,7 +43,7 @@ bool b2CircleShape::TestPoint(const Transform& transform, const Vec2& p) const
 // From Section 3.1.2
 // x = s + a * r
 // norm(x) = radius
-bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
+bool CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 							const Transform& transform, child_count_t childIndex) const
 {
 	BOX2D_NOT_USED(childIndex);
@@ -79,7 +79,7 @@ bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input
 	return false;
 }
 
-AABB b2CircleShape::ComputeAABB(const Transform& transform, child_count_t childIndex) const
+AABB CircleShape::ComputeAABB(const Transform& transform, child_count_t childIndex) const
 {
 	BOX2D_NOT_USED(childIndex);
 
@@ -87,7 +87,7 @@ AABB b2CircleShape::ComputeAABB(const Transform& transform, child_count_t childI
 	return AABB{p, p} + Vec2{GetRadius(), GetRadius()};
 }
 
-MassData b2CircleShape::ComputeMass(float_t density) const
+MassData CircleShape::ComputeMass(float_t density) const
 {
 	const auto mass = density * Pi * Square(GetRadius());
 	const auto I = mass * ((Square(GetRadius()) / float_t(2)) + m_p.LengthSquared());

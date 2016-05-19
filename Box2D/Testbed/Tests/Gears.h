@@ -37,13 +37,13 @@ public:
 		}
 
 		{
-			b2CircleShape circle1;
+			CircleShape circle1;
 			circle1.SetRadius(float_t(1.0));
 
-			b2PolygonShape box;
+			PolygonShape box;
 			box.SetAsBox(0.5f, 5.0f);
 
-			b2CircleShape circle2;
+			CircleShape circle2;
 			circle2.SetRadius(float_t(2.0));
 			
 			BodyDef bd1;
@@ -82,13 +82,13 @@ public:
 		}
 
 		{
-			b2CircleShape circle1;
+			CircleShape circle1;
 			circle1.SetRadius(float_t(1));
 
-			b2CircleShape circle2;
+			CircleShape circle2;
 			circle2.SetRadius(float_t(2));
 			
-			b2PolygonShape box;
+			PolygonShape box;
 			box.SetAsBox(0.5f, 5.0f);
 
 			BodyDef bd1;

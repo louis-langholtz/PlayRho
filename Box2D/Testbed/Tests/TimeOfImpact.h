@@ -116,8 +116,8 @@ public:
 #endif
 	}
 
-	b2PolygonShape m_shapeA;
-	b2PolygonShape m_shapeB;
+	PolygonShape m_shapeA;
+	PolygonShape m_shapeB;
 };
 
 } // namespace box2d

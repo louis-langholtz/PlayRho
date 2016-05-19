@@ -66,7 +66,7 @@ public:
 			vs[1] = Vec2(6.0f, 8.0f);
 			vs[2] = Vec2(7.0f, 8.0f);
 			vs[3] = Vec2(8.0f, 7.0f);
-			b2ChainShape shape;
+			ChainShape shape;
 			shape.CreateChain(vs, 4);
 			ground->CreateFixture(&shape, 0.0f);
 		}
@@ -78,7 +78,7 @@ public:
 			BodyDef bd;
 			Body* ground = m_world->CreateBody(&bd);
 
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(1.0f, 1.0f, Vec2(4.0f, 3.0f), 0.0f);
 			ground->CreateFixture(&shape, 0.0f);
 			shape.SetAsBox(1.0f, 1.0f, Vec2(6.0f, 3.0f), 0.0f);
@@ -97,7 +97,7 @@ public:
 			vs[1] = Vec2(1.0f, 3.0f);
 			vs[2] = Vec2(1.0f, 5.0f);
 			vs[3] = Vec2(-1.0f, 5.0f);
-			b2ChainShape shape;
+			ChainShape shape;
 			shape.CreateLoop(vs, 4);
 			ground->CreateFixture(&shape, 0.0f);
 		}
@@ -119,7 +119,7 @@ public:
 			vs[7] = Vec2(-4.0f, 3.0f);
 			vs[8] = Vec2(-6.0f, 2.0f);
 			vs[9] = Vec2(-6.0f, 0.0f);
-			b2ChainShape shape;
+			ChainShape shape;
 			shape.CreateLoop(vs, 10);
 			ground->CreateFixture(&shape, 0.0f);
 		}
@@ -134,7 +134,7 @@ public:
 
 			Body* body = m_world->CreateBody(&bd);
 
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.5f);
 
 			FixtureDef fd;
@@ -153,7 +153,7 @@ public:
 
 			Body* body = m_world->CreateBody(&bd);
 
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(0.25f, 0.25f);
 
 			FixtureDef fd;
@@ -181,7 +181,7 @@ public:
 				angle += delta;
 			}
 
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.Set(vertices, 6);
 
 			FixtureDef fd;
@@ -200,7 +200,7 @@ public:
 
 			Body* body = m_world->CreateBody(&bd);
 
-			b2CircleShape shape;
+			CircleShape shape;
 			shape.SetRadius(float_t(0.5));
 
 			FixtureDef fd;
@@ -218,7 +218,7 @@ public:
 
 			m_character = m_world->CreateBody(&bd);
 
-			b2CircleShape shape;
+			CircleShape shape;
 			shape.SetRadius(float_t(0.25));
 
 			FixtureDef fd;

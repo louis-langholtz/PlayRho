@@ -40,7 +40,7 @@ public:
 			edge.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			//ground->CreateFixture(&shape, 0.0f);
 
-			b2CircleShape circle(2.0f, Vec2(-10.0f, y + b + L));
+			CircleShape circle(2.0f, Vec2(-10.0f, y + b + L));
 			ground->CreateFixture(&circle, 0.0f);
 
 			circle.SetPosition(Vec2(10.0f, y + b + L));
@@ -49,7 +49,7 @@ public:
 
 		{
 
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(a, b);
 
 			BodyDef bd;

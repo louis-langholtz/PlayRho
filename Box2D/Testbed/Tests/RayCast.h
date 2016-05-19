@@ -431,7 +431,7 @@ public:
 			//vertices[2] = Vec2(22.875f, 3.0f);
 			//vertices[3] = Vec2(-22.875f, 3.0f);
 
-			b2PolygonShape shape;
+			PolygonShape shape;
 			//shape.Set(vertices, 4);
 			shape.SetAsBox(22.875f, 3.0f);
 
@@ -471,8 +471,8 @@ public:
 	int32 m_bodyIndex;
 	Body* m_bodies[e_maxBodies];
 	int32 m_userData[e_maxBodies];
-	b2PolygonShape m_polygons[4];
-	b2CircleShape m_circle;
+	PolygonShape m_polygons[4];
+	CircleShape m_circle;
 	EdgeShape m_edge;
 
 	float_t m_angle;

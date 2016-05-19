@@ -22,7 +22,7 @@
 
 namespace box2d {
 
-Manifold CollideShapes(const b2CircleShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB)
+Manifold CollideShapes(const CircleShape& shapeA, const Transform& xfA, const CircleShape& shapeB, const Transform& xfB)
 {
 	const auto pA = Mul(xfA, shapeA.GetPosition());
 	const auto pB = Mul(xfB, shapeB.GetPosition());
@@ -39,7 +39,7 @@ Manifold CollideShapes(const b2CircleShape& shapeA, const Transform& xfA, const 
 	return manifold;
 }
 
-Manifold CollideShapes(const b2PolygonShape& shapeA, const Transform& xfA, const b2CircleShape& shapeB, const Transform& xfB)
+Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const CircleShape& shapeB, const Transform& xfB)
 {
 	// Compute circle position in the frame of the polygon.
 	const auto c = Mul(xfB, shapeB.GetPosition());

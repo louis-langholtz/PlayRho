@@ -34,7 +34,7 @@ using namespace box2d;
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-void b2MotorJointDef::Initialize(Body* bA, Body* bB)
+void MotorJointDef::Initialize(Body* bA, Body* bB)
 {
 	bodyA = bA;
 	bodyB = bB;
@@ -42,7 +42,7 @@ void b2MotorJointDef::Initialize(Body* bA, Body* bB)
 	angularOffset = bodyB->GetAngle() - bodyA->GetAngle();
 }
 
-b2MotorJoint::b2MotorJoint(const b2MotorJointDef* def)
+MotorJoint::MotorJoint(const MotorJointDef* def)
 : Joint(def)
 {
 	m_linearOffset = def->linearOffset;
@@ -56,7 +56,7 @@ b2MotorJoint::b2MotorJoint(const b2MotorJointDef* def)
 	m_correctionFactor = def->correctionFactor;
 }
 
-void b2MotorJoint::InitVelocityConstraints(const b2SolverData& data)
+void MotorJoint::InitVelocityConstraints(const b2SolverData& data)
 {
 	m_indexA = m_bodyA->m_islandIndex;
 	m_indexB = m_bodyB->m_islandIndex;
@@ -137,7 +137,7 @@ void b2MotorJoint::InitVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-void b2MotorJoint::SolveVelocityConstraints(const b2SolverData& data)
+void MotorJoint::SolveVelocityConstraints(const b2SolverData& data)
 {
 	auto vA = data.velocities[m_indexA].v;
 	auto wA = data.velocities[m_indexA].w;
@@ -195,67 +195,67 @@ void b2MotorJoint::SolveVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
-bool b2MotorJoint::SolvePositionConstraints(const b2SolverData& data)
+bool MotorJoint::SolvePositionConstraints(const b2SolverData& data)
 {
 	BOX2D_NOT_USED(data);
 
 	return true;
 }
 
-Vec2 b2MotorJoint::GetAnchorA() const
+Vec2 MotorJoint::GetAnchorA() const
 {
 	return m_bodyA->GetPosition();
 }
 
-Vec2 b2MotorJoint::GetAnchorB() const
+Vec2 MotorJoint::GetAnchorB() const
 {
 	return m_bodyB->GetPosition();
 }
 
-Vec2 b2MotorJoint::GetReactionForce(float_t inv_dt) const
+Vec2 MotorJoint::GetReactionForce(float_t inv_dt) const
 {
 	return inv_dt * m_linearImpulse;
 }
 
-float_t b2MotorJoint::GetReactionTorque(float_t inv_dt) const
+float_t MotorJoint::GetReactionTorque(float_t inv_dt) const
 {
 	return inv_dt * m_angularImpulse;
 }
 
-void b2MotorJoint::SetMaxForce(float_t force)
+void MotorJoint::SetMaxForce(float_t force)
 {
 	assert(IsValid(force) && (force >= float_t{0}));
 	m_maxForce = force;
 }
 
-float_t b2MotorJoint::GetMaxForce() const
+float_t MotorJoint::GetMaxForce() const
 {
 	return m_maxForce;
 }
 
-void b2MotorJoint::SetMaxTorque(float_t torque)
+void MotorJoint::SetMaxTorque(float_t torque)
 {
 	assert(IsValid(torque) && (torque >= float_t{0}));
 	m_maxTorque = torque;
 }
 
-float_t b2MotorJoint::GetMaxTorque() const
+float_t MotorJoint::GetMaxTorque() const
 {
 	return m_maxTorque;
 }
 
-void b2MotorJoint::SetCorrectionFactor(float_t factor)
+void MotorJoint::SetCorrectionFactor(float_t factor)
 {
 	assert(IsValid(factor) && (float_t{0} <= factor) && (factor <= float_t(1)));
 	m_correctionFactor = factor;
 }
 
-float_t b2MotorJoint::GetCorrectionFactor() const
+float_t MotorJoint::GetCorrectionFactor() const
 {
 	return m_correctionFactor;
 }
 
-void b2MotorJoint::SetLinearOffset(const Vec2& linearOffset)
+void MotorJoint::SetLinearOffset(const Vec2& linearOffset)
 {
 	if ((linearOffset.x != m_linearOffset.x) || (linearOffset.y != m_linearOffset.y))
 	{
@@ -265,12 +265,12 @@ void b2MotorJoint::SetLinearOffset(const Vec2& linearOffset)
 	}
 }
 
-const Vec2& b2MotorJoint::GetLinearOffset() const
+const Vec2& MotorJoint::GetLinearOffset() const
 {
 	return m_linearOffset;
 }
 
-void b2MotorJoint::SetAngularOffset(float_t angularOffset)
+void MotorJoint::SetAngularOffset(float_t angularOffset)
 {
 	if (angularOffset != m_angularOffset)
 	{
@@ -280,17 +280,17 @@ void b2MotorJoint::SetAngularOffset(float_t angularOffset)
 	}
 }
 
-float_t b2MotorJoint::GetAngularOffset() const
+float_t MotorJoint::GetAngularOffset() const
 {
 	return m_angularOffset;
 }
 
-void b2MotorJoint::Dump()
+void MotorJoint::Dump()
 {
 	const auto indexA = m_bodyA->m_islandIndex;
 	const auto indexB = m_bodyB->m_islandIndex;
 
-	log("  b2MotorJointDef jd;\n");
+	log("  MotorJointDef jd;\n");
 	log("  jd.bodyA = bodies[%d];\n", indexA);
 	log("  jd.bodyB = bodies[%d];\n", indexB);
 	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);

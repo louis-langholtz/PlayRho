@@ -242,8 +242,8 @@ public:
 
 	int32 m_bodyIndex;
 	Body* m_bodies[e_maxBodies];
-	b2PolygonShape m_polygons[4];
-	b2CircleShape m_circle;
+	PolygonShape m_polygons[4];
+	CircleShape m_circle;
 
 	float_t m_angle;
 };

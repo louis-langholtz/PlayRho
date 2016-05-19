@@ -37,7 +37,7 @@ public:
 		}
 
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(13.0f, 0.25f);
 
 			BodyDef bd;
@@ -49,7 +49,7 @@ public:
 		}
 
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(0.25f, 1.0f);
 
 			BodyDef bd;
@@ -60,7 +60,7 @@ public:
 		}
 
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(13.0f, 0.25f);
 
 			BodyDef bd;
@@ -72,7 +72,7 @@ public:
 		}
 
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(0.25f, 1.0f);
 
 			BodyDef bd;
@@ -83,7 +83,7 @@ public:
 		}
 
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(13.0f, 0.25f);
 
 			BodyDef bd;
@@ -95,7 +95,7 @@ public:
 		}
 
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.5f);
 
 			FixtureDef fd;

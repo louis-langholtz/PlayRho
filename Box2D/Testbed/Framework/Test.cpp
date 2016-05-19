@@ -244,7 +244,7 @@ void Test::LaunchBomb(const Vec2& position, const Vec2& velocity)
 	m_bomb = m_world->CreateBody(&bd);
 	m_bomb->SetLinearVelocity(velocity);
 	
-	b2CircleShape circle(0.3f);
+	CircleShape circle(0.3f);
 
 	FixtureDef fd;
 	fd.shape = &circle;

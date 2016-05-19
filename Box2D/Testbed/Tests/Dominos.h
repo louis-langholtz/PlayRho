@@ -38,7 +38,7 @@ public:
 		}
 
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(6.0f, 0.25f);
 
 			BodyDef bd;
@@ -48,7 +48,7 @@ public:
 		}
 
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(0.1f, 1.0f);
 
 			FixtureDef fd;
@@ -67,7 +67,7 @@ public:
 		}
 
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(7.0f, 0.25f, Vec2_zero, 0.3f);
 
 			BodyDef bd;
@@ -78,7 +78,7 @@ public:
 
 		Body* b2;
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(0.25f, 1.5f);
 
 			BodyDef bd;
@@ -89,7 +89,7 @@ public:
 
 		Body* b3;
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(6.0f, 0.125f);
 
 			BodyDef bd;
@@ -111,7 +111,7 @@ public:
 
 		Body* b4;
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(0.25f, 0.25f);
 
 			BodyDef bd;
@@ -132,7 +132,7 @@ public:
 			bd.position = Vec2(6.5f, 3.0f);
 			b5 = m_world->CreateBody(&bd);
 
-			b2PolygonShape shape;
+			PolygonShape shape;
 			FixtureDef fd;
 
 			fd.shape = &shape;
@@ -155,7 +155,7 @@ public:
 
 		Body* b6;
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(1.0f, 0.1f);
 
 			BodyDef bd;
@@ -171,7 +171,7 @@ public:
 
 		Body* b7;
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(0.1f, 1.0f);
 
 			BodyDef bd;
@@ -194,7 +194,7 @@ public:
 		{
 			float_t radius = 0.2f;
 
-			b2CircleShape shape;
+			CircleShape shape;
 			shape.SetRadius(radius);
 
 			for (int32 i = 0; i < 4; ++i)

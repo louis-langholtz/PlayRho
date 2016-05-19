@@ -37,7 +37,7 @@ public:
 			edge.Set(Vec2(-10.0f, 0.0f), Vec2(10.0f, 0.0f));
 			body->CreateFixture(&edge, 0.0f);
 
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(0.2f, 1.0f, Vec2(0.5f, 1.0f), 0.0f);
 			body->CreateFixture(&shape, 0.0f);
 		}
@@ -47,7 +47,7 @@ public:
 			bd.type = DynamicBody;
 			bd.position = Vec2(0.0f, 4.0f);
 
-			b2PolygonShape box;
+			PolygonShape box;
 			box.SetAsBox(2.0f, 0.1f);
 
 			m_body = m_world->CreateBody(&bd);

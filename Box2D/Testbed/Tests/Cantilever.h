@@ -47,7 +47,7 @@ public:
 		}
 
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.125f);
 
 			FixtureDef fd;
@@ -74,7 +74,7 @@ public:
 		}
 
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(1.0f, 0.125f);
 
 			FixtureDef fd;
@@ -103,7 +103,7 @@ public:
 		}
 
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.125f);
 
 			FixtureDef fd;
@@ -133,7 +133,7 @@ public:
 		}
 
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.125f);
 
 			FixtureDef fd;
@@ -171,7 +171,7 @@ public:
 			vertices[1] = Vec2(0.5f, 0.0f);
 			vertices[2] = Vec2(0.0f, 1.5f);
 
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.Set(vertices, 3);
 
 			FixtureDef fd;
@@ -187,7 +187,7 @@ public:
 
 		for (int32 i = 0; i < 2; ++i)
 		{
-			b2CircleShape shape;
+			CircleShape shape;
 			shape.SetRadius(float_t(0.5));
 
 			FixtureDef fd;

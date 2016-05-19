@@ -37,7 +37,7 @@ public:
 			edge.Set(Vec2(-10.0f, 0.0f), Vec2(10.0f, 0.0f));
 			body->CreateFixture(&edge, 0.0f);
 
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(0.2f, 1.0f, Vec2(0.5f, 1.0f), 0.0f);
 			body->CreateFixture(&shape, 0.0f);
 		}
@@ -49,7 +49,7 @@ public:
 			bd.position = Vec2(0.0f, 20.0f);
 			//bd.angle = 0.1f;
 
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(2.0f, 0.1f);
 
 			m_body = m_world->CreateBody(&bd);
@@ -67,7 +67,7 @@ public:
 			bd.position = Vec2(0.0f, 2.0f);
 			Body* body = m_world->CreateBody(&bd);
 
-			b2CircleShape shape;
+			CircleShape shape;
 			shape.m_p.SetZero();
 			shape.m_radius = 0.5f;
 			body->CreateFixture(&shape, 1.0f);

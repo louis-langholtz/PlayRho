@@ -41,7 +41,7 @@ public:
 			vs[3] = Vec2(-8.0f, 20.0f);
 			vs[4] = Vec2(-8.0f, 6.0f);
 
-			b2ChainShape loop;
+			ChainShape loop;
 			loop.CreateLoop(vs, 5);
 			FixtureDef fd;
 			fd.shape = &loop;
@@ -62,7 +62,7 @@ public:
 			bd.position = p2;
 			Body* rightFlipper = m_world->CreateBody(&bd);
 
-			b2PolygonShape box;
+			PolygonShape box;
 			box.SetAsBox(1.75f, 0.1f);
 
 			FixtureDef fd;
@@ -103,7 +103,7 @@ public:
 
 			m_ball = m_world->CreateBody(&bd);
 
-			b2CircleShape shape;
+			CircleShape shape;
 			shape.SetRadius(float_t(0.2));
 
 			FixtureDef fd;

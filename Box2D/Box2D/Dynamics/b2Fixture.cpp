@@ -64,9 +64,9 @@ void Fixture::Destroy(BlockAllocator* allocator)
 	{
 	case Shape::e_circle:
 		{
-			auto s = static_cast<b2CircleShape*>(m_shape);
-			s->~b2CircleShape();
-			allocator->Free(s, sizeof(b2CircleShape));
+			auto s = static_cast<CircleShape*>(m_shape);
+			s->~CircleShape();
+			allocator->Free(s, sizeof(CircleShape));
 		}
 		break;
 
@@ -80,17 +80,17 @@ void Fixture::Destroy(BlockAllocator* allocator)
 
 	case Shape::e_polygon:
 		{
-			auto s = static_cast<b2PolygonShape*>(m_shape);
-			s->~b2PolygonShape();
-			allocator->Free(s, sizeof(b2PolygonShape));
+			auto s = static_cast<PolygonShape*>(m_shape);
+			s->~PolygonShape();
+			allocator->Free(s, sizeof(PolygonShape));
 		}
 		break;
 
 	case Shape::e_chain:
 		{
-			auto s = static_cast<b2ChainShape*>(m_shape);
-			s->~b2ChainShape();
-			allocator->Free(s, sizeof(b2ChainShape));
+			auto s = static_cast<ChainShape*>(m_shape);
+			s->~ChainShape();
+			allocator->Free(s, sizeof(ChainShape));
 		}
 		break;
 
@@ -222,8 +222,8 @@ void Fixture::Dump(island_count_t bodyIndex)
 	{
 	case Shape::e_circle:
 		{
-			auto s = static_cast<b2CircleShape*>(m_shape);
-			log("    b2CircleShape shape;\n");
+			auto s = static_cast<CircleShape*>(m_shape);
+			log("    CircleShape shape;\n");
 			log("    shape.m_radius = %.15lef;\n", s->GetRadius());
 			log("    shape.m_p = Vec2(%.15lef, %.15lef);\n", s->GetPosition().x, s->GetPosition().y);
 		}
@@ -245,8 +245,8 @@ void Fixture::Dump(island_count_t bodyIndex)
 
 	case Shape::e_polygon:
 		{
-			auto s = static_cast<b2PolygonShape*>(m_shape);
-			log("    b2PolygonShape shape;\n");
+			auto s = static_cast<PolygonShape*>(m_shape);
+			log("    PolygonShape shape;\n");
 			log("    Vec2 vs[%d];\n", MaxPolygonVertices);
 			for (auto i = decltype(s->GetVertexCount()){0}; i < s->GetVertexCount(); ++i)
 			{
@@ -258,8 +258,8 @@ void Fixture::Dump(island_count_t bodyIndex)
 
 	case Shape::e_chain:
 		{
-			auto s = static_cast<b2ChainShape*>(m_shape);
-			log("    b2ChainShape shape;\n");
+			auto s = static_cast<ChainShape*>(m_shape);
+			log("    ChainShape shape;\n");
 			log("    Vec2 vs[%d];\n", s->GetVertexCount());
 			for (auto i = decltype(s->GetVertexCount()){0}; i < s->GetVertexCount(); ++i)
 			{

@@ -37,7 +37,7 @@ public:
 		}
 
 		{
-			b2PolygonShape shape;
+			PolygonShape shape;
 			shape.SetAsBox(0.6f, 0.125f);
 
 			FixtureDef fd;
