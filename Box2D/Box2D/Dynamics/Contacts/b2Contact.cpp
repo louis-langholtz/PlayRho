@@ -38,8 +38,8 @@ using namespace box2d;
 
 using ContactCreateFcn = Contact* (Fixture* fixtureA, child_count_t indexA,
 									   Fixture* fixtureB, child_count_t indexB,
-									   b2BlockAllocator* allocator);
-using ContactDestroyFcn = void (Contact* contact, b2BlockAllocator* allocator);
+									   BlockAllocator* allocator);
+using ContactDestroyFcn = void (Contact* contact, BlockAllocator* allocator);
 
 struct ContactRegister
 {
@@ -83,7 +83,7 @@ static constexpr ContactRegister s_registers[Shape::e_typeCount][Shape::e_typeCo
 
 Contact* Contact::Create(Fixture* fixtureA, child_count_t indexA,
 							 Fixture* fixtureB, child_count_t indexB,
-							 b2BlockAllocator* allocator)
+							 BlockAllocator* allocator)
 {
 	const auto type1 = fixtureA->GetType();
 	const auto type2 = fixtureB->GetType();
@@ -109,7 +109,7 @@ Contact* Contact::Create(Fixture* fixtureA, child_count_t indexA,
 	}
 }
 
-void Contact::Destroy(Contact* contact, b2BlockAllocator* allocator)
+void Contact::Destroy(Contact* contact, BlockAllocator* allocator)
 {
 	auto fixtureA = contact->m_fixtureA;
 	auto fixtureB = contact->m_fixtureB;

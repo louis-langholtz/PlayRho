@@ -36,7 +36,7 @@
 
 using namespace box2d;
 
-Joint* Joint::Create(const JointDef* def, b2BlockAllocator* allocator)
+Joint* Joint::Create(const JointDef* def, BlockAllocator* allocator)
 {
 	auto joint = static_cast<Joint*>(nullptr);
 
@@ -127,7 +127,7 @@ Joint* Joint::Create(const JointDef* def, b2BlockAllocator* allocator)
 	return joint;
 }
 
-void Joint::Destroy(Joint* joint, b2BlockAllocator* allocator)
+void Joint::Destroy(Joint* joint, BlockAllocator* allocator)
 {
 	joint->~Joint();
 	switch (joint->m_type)

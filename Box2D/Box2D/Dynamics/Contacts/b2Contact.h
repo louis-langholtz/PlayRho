@@ -32,7 +32,7 @@ class Body;
 class Contact;
 class Fixture;
 class World;
-class b2BlockAllocator;
+class BlockAllocator;
 class b2StackAllocator;
 class ContactListener;
 
@@ -179,9 +179,9 @@ protected:
 
 	static Contact* Create(Fixture* fixtureA, child_count_t indexA,
 							 Fixture* fixtureB, child_count_t indexB,
-							 b2BlockAllocator* allocator);
-	static void Destroy(Contact* contact, Shape::Type typeA, Shape::Type typeB, b2BlockAllocator* allocator);
-	static void Destroy(Contact* contact, b2BlockAllocator* allocator);
+							 BlockAllocator* allocator);
+	static void Destroy(Contact* contact, Shape::Type typeA, Shape::Type typeB, BlockAllocator* allocator);
+	static void Destroy(Contact* contact, BlockAllocator* allocator);
 
 	Contact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB);
 	virtual ~Contact() = default;

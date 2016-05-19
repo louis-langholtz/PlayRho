@@ -79,7 +79,7 @@ public:
 	virtual ~Shape() = default;
 
 	/// Clone the concrete shape using the provided allocator.
-	virtual Shape* Clone(b2BlockAllocator* allocator) const = 0;
+	virtual Shape* Clone(BlockAllocator* allocator) const = 0;
 
 	/// Get the type of this shape. You can use this to down cast to the concrete shape.
 	/// @return the shape type.

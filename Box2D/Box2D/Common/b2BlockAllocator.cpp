@@ -23,7 +23,7 @@
 
 using namespace box2d;
 
-static constexpr size_t s_blockSizes[b2BlockAllocator::BlockSizes] =
+static constexpr size_t s_blockSizes[BlockAllocator::BlockSizes] =
 {
 	16,		// 0
 	32,		// 1
@@ -41,7 +41,7 @@ static constexpr size_t s_blockSizes[b2BlockAllocator::BlockSizes] =
 	640,	// 13
 };
 
-static constexpr uint8 s_blockSizeLookup[b2BlockAllocator::MaxBlockSize + 1] =
+static constexpr uint8 s_blockSizeLookup[BlockAllocator::MaxBlockSize + 1] =
 {
 	0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 1-16
@@ -67,28 +67,28 @@ static constexpr uint8 s_blockSizeLookup[b2BlockAllocator::MaxBlockSize + 1] =
 	13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, // 608-640
 };
 
-struct box2d::b2Chunk
+struct BlockAllocator::Chunk
 {
 	using size_type = size_t;
 
 	size_type blockSize;
-	b2Block* blocks;
+	Block* blocks;
 };
 
-struct box2d::b2Block
+struct BlockAllocator::Block
 {
-	b2Block* next;
+	Block* next;
 };
 
-b2BlockAllocator::b2BlockAllocator():
-	m_chunks(static_cast<b2Chunk*>(alloc(m_chunkSpace * sizeof(b2Chunk))))
+BlockAllocator::BlockAllocator():
+	m_chunks(static_cast<Chunk*>(alloc(m_chunkSpace * sizeof(Chunk))))
 {
 	assert(BlockSizes < std::numeric_limits<uint8>::max());
-	std::memset(m_chunks, 0, m_chunkSpace * sizeof(b2Chunk));
+	std::memset(m_chunks, 0, m_chunkSpace * sizeof(Chunk));
 	std::memset(m_freeLists, 0, sizeof(m_freeLists));
 }
 
-b2BlockAllocator::~b2BlockAllocator()
+BlockAllocator::~BlockAllocator()
 {
 	for (auto i = decltype(m_chunkCount){0}; i < m_chunkCount; ++i)
 	{
@@ -98,7 +98,7 @@ b2BlockAllocator::~b2BlockAllocator()
 	free(m_chunks);
 }
 
-void* b2BlockAllocator::Allocate(size_type size)
+void* BlockAllocator::Allocate(size_type size)
 {
 	if (size == 0)
 		return nullptr;
@@ -123,12 +123,12 @@ void* b2BlockAllocator::Allocate(size_type size)
 	if (m_chunkCount == m_chunkSpace)
 	{
 		m_chunkSpace += ChunkArrayIncrement;
-		m_chunks = static_cast<b2Chunk*>(realloc(m_chunks, m_chunkSpace * sizeof(b2Chunk)));
-		std::memset(m_chunks + m_chunkCount, 0, ChunkArrayIncrement * sizeof(b2Chunk));
+		m_chunks = static_cast<Chunk*>(realloc(m_chunks, m_chunkSpace * sizeof(Chunk)));
+		std::memset(m_chunks + m_chunkCount, 0, ChunkArrayIncrement * sizeof(Chunk));
 	}
 
 	auto chunk = m_chunks + m_chunkCount;
-	chunk->blocks = static_cast<b2Block*>(alloc(ChunkSize));
+	chunk->blocks = static_cast<Block*>(alloc(ChunkSize));
 #if defined(_DEBUG)
 	std::memset(chunk->blocks, 0xcd, ChunkSize);
 #endif
@@ -139,11 +139,11 @@ void* b2BlockAllocator::Allocate(size_type size)
 	assert((blockCount * blockSize) <= ChunkSize);
 	for (auto i = decltype(blockCount){0}; i < blockCount - 1; ++i)
 	{
-		auto block = (b2Block*)((int8*)chunk->blocks + blockSize * i);
-		const auto next = (b2Block*)((int8*)chunk->blocks + blockSize * (i + 1));
+		auto block = (Block*)((int8*)chunk->blocks + blockSize * i);
+		const auto next = (Block*)((int8*)chunk->blocks + blockSize * (i + 1));
 		block->next = next;
 	}
-	auto last = (b2Block*)((int8*)chunk->blocks + blockSize * (blockCount - 1));
+	auto last = (Block*)((int8*)chunk->blocks + blockSize * (blockCount - 1));
 	last->next = nullptr;
 
 	m_freeLists[index] = chunk->blocks->next;
@@ -152,7 +152,7 @@ void* b2BlockAllocator::Allocate(size_type size)
 	return chunk->blocks;
 }
 
-void b2BlockAllocator::Free(void* p, size_type size)
+void BlockAllocator::Free(void* p, size_type size)
 {
 	if (size == 0)
 	{
@@ -197,12 +197,12 @@ void b2BlockAllocator::Free(void* p, size_type size)
 	std::memset(p, 0xfd, blockSize);
 #endif
 
-	auto block = static_cast<b2Block*>(p);
+	auto block = static_cast<Block*>(p);
 	block->next = m_freeLists[index];
 	m_freeLists[index] = block;
 }
 
-void b2BlockAllocator::Clear()
+void BlockAllocator::Clear()
 {
 	for (auto i = decltype(m_chunkCount){0}; i < m_chunkCount; ++i)
 	{
@@ -210,6 +210,6 @@ void b2BlockAllocator::Clear()
 	}
 
 	m_chunkCount = 0;
-	std::memset(m_chunks, 0, m_chunkSpace * sizeof(b2Chunk));
+	std::memset(m_chunks, 0, m_chunkSpace * sizeof(Chunk));
 	std::memset(m_freeLists, 0, sizeof(m_freeLists));
 }

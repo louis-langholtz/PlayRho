@@ -23,13 +23,10 @@
 
 namespace box2d {
 
-struct b2Block;
-struct b2Chunk;
-
 /// This is a small object allocator used for allocating small
 /// objects that persist for more than one time step.
 /// See: http://www.codeproject.com/useritems/Small_Block_Allocator.asp
-class b2BlockAllocator
+class BlockAllocator
 {
 public:
 	using size_type = size_t;
@@ -39,8 +36,8 @@ public:
 	static constexpr auto BlockSizes = size_type{14};
 	static constexpr auto ChunkArrayIncrement = size_type{128};
 
-	b2BlockAllocator();
-	~b2BlockAllocator();
+	BlockAllocator();
+	~BlockAllocator();
 
 	/// Allocate memory. This will use alloc if the size is larger than MaxBlockSize.
 	void* Allocate(size_type size);
@@ -51,10 +48,13 @@ public:
 	void Clear();
 
 private:
+	struct Chunk;
+	struct Block;
+	
 	size_type m_chunkCount = 0;
 	size_type m_chunkSpace = ChunkArrayIncrement;
-	b2Chunk* m_chunks;
-	b2Block* m_freeLists[BlockSizes];
+	Chunk* m_chunks;
+	Block* m_freeLists[BlockSizes];
 };
 
 } // namespace box2d

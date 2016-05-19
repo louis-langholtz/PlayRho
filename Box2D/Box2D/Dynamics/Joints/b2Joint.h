@@ -26,7 +26,7 @@ namespace box2d {
 class Body;
 class Joint;
 struct b2SolverData;
-class b2BlockAllocator;
+class BlockAllocator;
 
 enum JointType
 {
@@ -155,8 +155,8 @@ protected:
 	friend class b2Island;
 	friend class b2GearJoint;
 
-	static Joint* Create(const JointDef* def, b2BlockAllocator* allocator);
-	static void Destroy(Joint* joint, b2BlockAllocator* allocator);
+	static Joint* Create(const JointDef* def, BlockAllocator* allocator);
+	static void Destroy(Joint* joint, BlockAllocator* allocator);
 
 	Joint(const JointDef* def);
 	virtual ~Joint() {}

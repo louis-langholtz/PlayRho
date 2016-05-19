@@ -237,7 +237,7 @@ private:
 	void DrawJoint(Joint* joint);
 	void DrawShape(const Fixture* shape, const Transform& xf, const Color& color);
 
-	b2BlockAllocator m_blockAllocator;
+	BlockAllocator m_blockAllocator;
 	b2StackAllocator m_stackAllocator;
 	ContactFilter m_defaultFilter;
 	ContactListener m_defaultListener;

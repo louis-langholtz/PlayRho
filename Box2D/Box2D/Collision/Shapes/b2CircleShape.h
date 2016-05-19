@@ -33,7 +33,7 @@ public:
 	b2CircleShape(const b2CircleShape&) = default;
 
 	/// Implement Shape.
-	Shape* Clone(b2BlockAllocator* allocator) const override;
+	Shape* Clone(BlockAllocator* allocator) const override;
 
 	/// @see Shape::GetChildCount
 	child_count_t GetChildCount() const override;

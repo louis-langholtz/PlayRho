@@ -67,7 +67,7 @@ constexpr auto Pi = float_t(M_PI); // 3.14159265359
 constexpr auto MaxManifoldPoints = unsigned{2};
 
 /// Maximum number of vertices on a convex polygon.
-/// You cannot increase this too much because b2BlockAllocator has a maximum object size.
+/// You cannot increase this too much because BlockAllocator has a maximum object size.
 constexpr auto MaxPolygonVertices = unsigned{16}; // 8
 
 /// This is used to fatten AABBs in the dynamic tree. This is used to predict

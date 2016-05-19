@@ -29,7 +29,7 @@
 
 using namespace box2d;
 
-void Fixture::Create(b2BlockAllocator* allocator, const FixtureDef* def)
+void Fixture::Create(BlockAllocator* allocator, const FixtureDef* def)
 {
 	m_userData = def->userData;
 	m_friction = def->friction;
@@ -49,7 +49,7 @@ void Fixture::Create(b2BlockAllocator* allocator, const FixtureDef* def)
 	}
 }
 
-void Fixture::Destroy(b2BlockAllocator* allocator)
+void Fixture::Destroy(BlockAllocator* allocator)
 {
 	// The proxies must be destroyed before calling this.
 	assert(m_proxyCount == 0);

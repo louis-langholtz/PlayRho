@@ -21,7 +21,7 @@
 
 using namespace box2d;
 
-Shape* b2CircleShape::Clone(b2BlockAllocator* allocator) const
+Shape* b2CircleShape::Clone(BlockAllocator* allocator) const
 {
 	void* mem = allocator->Allocate(sizeof(b2CircleShape));
 	return new (mem) b2CircleShape(*this);

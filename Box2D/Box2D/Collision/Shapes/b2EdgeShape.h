@@ -40,7 +40,7 @@ public:
 	void Set(const Vec2& v1, const Vec2& v2);
 
 	/// Implement Shape.
-	Shape* Clone(b2BlockAllocator* allocator) const override;
+	Shape* Clone(BlockAllocator* allocator) const override;
 
 	/// @see Shape::GetChildCount
 	child_count_t GetChildCount() const override;

@@ -26,7 +26,7 @@ namespace box2d {
 class Contact;
 class ContactFilter;
 class ContactListener;
-class b2BlockAllocator;
+class BlockAllocator;
 
 // Delegate of World.
 class ContactManager
@@ -34,7 +34,7 @@ class ContactManager
 public:
 	using size_type = size_t;
 
-	ContactManager(b2BlockAllocator* allocator, ContactFilter* filter, ContactListener* listener);
+	ContactManager(BlockAllocator* allocator, ContactFilter* filter, ContactListener* listener);
 
 	// Broad-phase callback.
 	void AddPair(void* proxyUserDataA, void* proxyUserDataB);
@@ -56,7 +56,7 @@ public:
 private:
 	size_type m_contactCount = 0;
 	Contact* m_contactList = nullptr;
-	b2BlockAllocator* const m_allocator;
+	BlockAllocator* const m_allocator;
 };
 
 } // namespace box2d

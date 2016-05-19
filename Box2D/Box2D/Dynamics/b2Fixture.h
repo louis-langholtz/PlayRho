@@ -25,7 +25,7 @@
 
 namespace box2d {
 
-class b2BlockAllocator;
+class BlockAllocator;
 class Body;
 class b2BroadPhase;
 class Fixture;
@@ -198,8 +198,8 @@ protected:
 
 	// We need separation create/destroy functions from the constructor/destructor because
 	// the destructor cannot access the allocator (no destructor arguments allowed by C++).
-	void Create(b2BlockAllocator* allocator, const FixtureDef* def);
-	void Destroy(b2BlockAllocator* allocator);
+	void Create(BlockAllocator* allocator, const FixtureDef* def);
+	void Destroy(BlockAllocator* allocator);
 
 	// These support body activation/deactivation.
 	void CreateProxies(b2BroadPhase& broadPhase, const Transform& xf);

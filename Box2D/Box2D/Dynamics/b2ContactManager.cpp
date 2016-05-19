@@ -24,7 +24,7 @@
 
 using namespace box2d;
 
-ContactManager::ContactManager(b2BlockAllocator* allocator, ContactFilter* filter, ContactListener* listener):
+ContactManager::ContactManager(BlockAllocator* allocator, ContactFilter* filter, ContactListener* listener):
 	m_allocator(allocator),
 	m_contactFilter(filter), m_contactListener(listener)
 {}

@@ -28,13 +28,13 @@ using namespace box2d;
 
 Contact* b2EdgeAndCircleContact::Create(Fixture* fixtureA, child_count_t,
 										  Fixture* fixtureB, child_count_t,
-										  b2BlockAllocator* allocator)
+										  BlockAllocator* allocator)
 {
 	void* mem = allocator->Allocate(sizeof(b2EdgeAndCircleContact));
 	return new (mem) b2EdgeAndCircleContact(fixtureA, fixtureB);
 }
 
-void b2EdgeAndCircleContact::Destroy(Contact* contact, b2BlockAllocator* allocator)
+void b2EdgeAndCircleContact::Destroy(Contact* contact, BlockAllocator* allocator)
 {
 	(static_cast<b2EdgeAndCircleContact*>(contact))->~b2EdgeAndCircleContact();
 	allocator->Free(contact, sizeof(b2EdgeAndCircleContact));

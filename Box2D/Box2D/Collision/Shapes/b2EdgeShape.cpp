@@ -29,7 +29,7 @@ void b2EdgeShape::Set(const Vec2& v1, const Vec2& v2)
 	m_hasVertex3 = false;
 }
 
-Shape* b2EdgeShape::Clone(b2BlockAllocator* allocator) const
+Shape* b2EdgeShape::Clone(BlockAllocator* allocator) const
 {
 	void* mem = allocator->Allocate(sizeof(b2EdgeShape));
 	return new (mem) b2EdgeShape(*this);

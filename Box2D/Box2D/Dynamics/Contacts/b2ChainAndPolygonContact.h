@@ -23,15 +23,15 @@
 
 namespace box2d {
 
-class b2BlockAllocator;
+class BlockAllocator;
 
 class b2ChainAndPolygonContact : public Contact
 {
 public:
 	static Contact* Create(Fixture* fixtureA, child_count_t indexA,
 							 Fixture* fixtureB, child_count_t indexB,
-							 b2BlockAllocator* allocator);
-	static void Destroy(Contact* contact, b2BlockAllocator* allocator);
+							 BlockAllocator* allocator);
+	static void Destroy(Contact* contact, BlockAllocator* allocator);
 
 	b2ChainAndPolygonContact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB);
 	~b2ChainAndPolygonContact() {}

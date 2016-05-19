@@ -65,7 +65,7 @@ public:
 	void SetNextVertex(const Vec2& nextVertex) noexcept;
 
 	/// Implement Shape. Vertices are cloned using alloc.
-	Shape* Clone(b2BlockAllocator* allocator) const override;
+	Shape* Clone(BlockAllocator* allocator) const override;
 
 	/// @see Shape::GetChildCount
 	child_count_t GetChildCount() const override;
