@@ -79,12 +79,12 @@ bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input
 	return false;
 }
 
-b2AABB b2CircleShape::ComputeAABB(const Transform& transform, child_count_t childIndex) const
+AABB b2CircleShape::ComputeAABB(const Transform& transform, child_count_t childIndex) const
 {
 	BOX2D_NOT_USED(childIndex);
 
 	const auto p = transform.p + Mul(transform.q, m_p);
-	return b2AABB{p, p} + Vec2{GetRadius(), GetRadius()};
+	return AABB{p, p} + Vec2{GetRadius(), GetRadius()};
 }
 
 b2MassData b2CircleShape::ComputeMass(float_t density) const

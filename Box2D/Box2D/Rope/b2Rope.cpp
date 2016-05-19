@@ -236,9 +236,9 @@ void b2Rope::SolveC3()
 	}
 }
 
-void b2Rope::Draw(b2Draw* draw) const
+void b2Rope::Draw(box2d::Draw* draw) const
 {
-	const auto c = b2Color(float_t(0.4), float_t(0.5), float_t(0.7));
+	const auto c = Color(float_t(0.4), float_t(0.5), float_t(0.7));
 
 	for (auto i = decltype(m_count - 1){0}; i < m_count - 1; ++i)
 	{

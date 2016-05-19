@@ -181,7 +181,7 @@ protected:
 	friend class ContactListener;
 
 	Body* m_groundBody;
-	b2AABB m_worldAABB;
+	AABB m_worldAABB;
 	ContactPoint m_points[k_maxContactPoints];
 	int32 m_pointCount;
 	DestructionListener m_destructionListener;

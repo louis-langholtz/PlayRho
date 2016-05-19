@@ -47,7 +47,7 @@ public:
 		m_stepCount = 0;
 
 		float_t h = m_worldExtent;
-		m_queryAABB = b2AABB{Vec2(-3.0f, -4.0f + h), Vec2(5.0f, 6.0f + h)};
+		m_queryAABB = AABB{Vec2(-3.0f, -4.0f + h), Vec2(5.0f, 6.0f + h)};
 
 		m_rayCastInput.p1 = Vec2(-5.0, 5.0f + h);
 		m_rayCastInput.p2 = Vec2(7.0f, -4.0f + h);
@@ -93,7 +93,7 @@ public:
 			if (actor->proxyId == b2DynamicTree::NullNode)
 				continue;
 
-			b2Color c(0.9f, 0.9f, 0.9f);
+			Color c(0.9f, 0.9f, 0.9f);
 			if (actor == m_rayActor && actor->overlap)
 			{
 				c.Set(0.9f, 0.6f, 0.6f);
@@ -110,19 +110,19 @@ public:
 			g_debugDraw.DrawAABB(&actor->aabb, c);
 		}
 
-		b2Color c(0.7f, 0.7f, 0.7f);
+		Color c(0.7f, 0.7f, 0.7f);
 		g_debugDraw.DrawAABB(&m_queryAABB, c);
 
 		g_debugDraw.DrawSegment(m_rayCastInput.p1, m_rayCastInput.p2, c);
 
-		b2Color c1(0.2f, 0.9f, 0.2f);
-		b2Color c2(0.9f, 0.2f, 0.2f);
+		Color c1(0.2f, 0.9f, 0.2f);
+		Color c2(0.9f, 0.2f, 0.2f);
 		g_debugDraw.DrawPoint(m_rayCastInput.p1, 6.0f, c1);
 		g_debugDraw.DrawPoint(m_rayCastInput.p2, 6.0f, c2);
 
 		if (m_rayActor)
 		{
-			b2Color cr(0.2f, 0.2f, 0.9f);
+			Color cr(0.2f, 0.2f, 0.9f);
 			Vec2 p = m_rayCastInput.p1 + m_rayActor->fraction * (m_rayCastInput.p2 - m_rayCastInput.p1);
 			g_debugDraw.DrawPoint(p, 6.0f, cr);
 		}
@@ -187,23 +187,23 @@ private:
 
 	struct Actor
 	{
-		b2AABB aabb;
+		AABB aabb;
 		float_t fraction;
 		bool overlap;
 		b2DynamicTree::size_type proxyId;
 	};
 
-	b2AABB GetRandomAABB()
+	AABB GetRandomAABB()
 	{
 		const Vec2 w(m_proxyExtent * 2, m_proxyExtent * 2);
 		//aabb->lowerBound.x = -m_proxyExtent;
 		//aabb->lowerBound.y = -m_proxyExtent + m_worldExtent;
 		const auto lowerBound = Vec2(RandomFloat(-m_worldExtent, m_worldExtent), RandomFloat(0.0f, 2.0f * m_worldExtent));
 		const auto upperBound = lowerBound + w;
-		return b2AABB(lowerBound, upperBound);
+		return AABB(lowerBound, upperBound);
 	}
 
-	void MoveAABB(b2AABB* aabb)
+	void MoveAABB(AABB* aabb)
 	{
 		const auto d = Vec2{RandomFloat(-0.5f, 0.5f), RandomFloat(-0.5f, 0.5f)};
 		//d.x = 2.0f;
@@ -342,7 +342,7 @@ private:
 	float_t m_proxyExtent;
 
 	b2DynamicTree m_tree;
-	b2AABB m_queryAABB;
+	AABB m_queryAABB;
 	b2RayCastInput m_rayCastInput;
 	b2RayCastOutput m_rayCastOutput;
 	Actor* m_rayActor;

@@ -96,7 +96,7 @@ public:
 		m_joint->SetLinearOffset(linearOffset);
 		m_joint->SetAngularOffset(angularOffset);
 
-		g_debugDraw.DrawPoint(linearOffset, 4.0f, b2Color(0.9f, 0.9f, 0.9f));
+		g_debugDraw.DrawPoint(linearOffset, 4.0f, Color(0.9f, 0.9f, 0.9f));
 
 		Test::Step(settings);
 		g_debugDraw.DrawString(5, m_textLine, "Keys: (s) pause");

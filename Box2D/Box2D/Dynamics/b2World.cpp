@@ -111,7 +111,7 @@ void World::SetContactListener(b2ContactListener* listener) noexcept
 	m_contactManager.m_contactListener = listener;
 }
 
-void World::SetDebugDraw(b2Draw* debugDraw) noexcept
+void World::SetDebugDraw(Draw* debugDraw) noexcept
 {
 	g_debugDraw = debugDraw;
 }
@@ -902,7 +902,7 @@ struct WorldQueryWrapper
 	b2QueryCallback* callback;
 };
 
-void World::QueryAABB(b2QueryCallback* callback, const b2AABB& aabb) const
+void World::QueryAABB(b2QueryCallback* callback, const AABB& aabb) const
 {
 	WorldQueryWrapper wrapper;
 	wrapper.broadPhase = &m_contactManager.m_broadPhase;
@@ -948,7 +948,7 @@ void World::RayCast(b2RayCastCallback* callback, const Vec2& point1, const Vec2&
 	m_contactManager.m_broadPhase.RayCast(&wrapper, input);
 }
 
-void World::DrawShape(const Fixture* fixture, const Transform& xf, const b2Color& color)
+void World::DrawShape(const Fixture* fixture, const Transform& xf, const Color& color)
 {
 	switch (fixture->GetType())
 	{
@@ -1016,7 +1016,7 @@ void World::DrawJoint(Joint* joint)
 	const auto p1 = joint->GetAnchorA();
 	const auto p2 = joint->GetAnchorB();
 
-	const b2Color color(float_t(0.5), float_t(0.8), float_t(0.8));
+	const Color color(float_t(0.5), float_t(0.8), float_t(0.8));
 
 	switch (joint->GetType())
 	{
@@ -1055,7 +1055,7 @@ void World::DrawDebugData()
 
 	const auto flags = g_debugDraw->GetFlags();
 
-	if (flags & b2Draw::e_shapeBit)
+	if (flags & Draw::e_shapeBit)
 	{
 		for (auto b = m_bodyList; b; b = b->GetNext())
 		{
@@ -1064,29 +1064,29 @@ void World::DrawDebugData()
 			{
 				if (!b->IsActive())
 				{
-					DrawShape(f, xf, b2Color(0.5f, 0.5f, 0.3f));
+					DrawShape(f, xf, Color(0.5f, 0.5f, 0.3f));
 				}
 				else if (b->GetType() == StaticBody)
 				{
-					DrawShape(f, xf, b2Color(0.5f, 0.9f, 0.5f));
+					DrawShape(f, xf, Color(0.5f, 0.9f, 0.5f));
 				}
 				else if (b->GetType() == KinematicBody)
 				{
-					DrawShape(f, xf, b2Color(0.5f, 0.5f, 0.9f));
+					DrawShape(f, xf, Color(0.5f, 0.5f, 0.9f));
 				}
 				else if (!b->IsAwake())
 				{
-					DrawShape(f, xf, b2Color(0.6f, 0.6f, 0.6f));
+					DrawShape(f, xf, Color(0.6f, 0.6f, 0.6f));
 				}
 				else
 				{
-					DrawShape(f, xf, b2Color(0.9f, 0.7f, 0.7f));
+					DrawShape(f, xf, Color(0.9f, 0.7f, 0.7f));
 				}
 			}
 		}
 	}
 
-	if (flags & b2Draw::e_jointBit)
+	if (flags & Draw::e_jointBit)
 	{
 		for (auto j = m_jointList; j; j = j->GetNext())
 		{
@@ -1094,9 +1094,9 @@ void World::DrawDebugData()
 		}
 	}
 
-	if (flags & b2Draw::e_pairBit)
+	if (flags & Draw::e_pairBit)
 	{
-		const b2Color color(0.3f, 0.9f, 0.9f);
+		const Color color(0.3f, 0.9f, 0.9f);
 		for (auto c = m_contactManager.GetContactList(); c; c = c->GetNext())
 		{
 			//Fixture* fixtureA = c->GetFixtureA();
@@ -1109,9 +1109,9 @@ void World::DrawDebugData()
 		}
 	}
 
-	if (flags & b2Draw::e_aabbBit)
+	if (flags & Draw::e_aabbBit)
 	{
-		const b2Color color(0.9f, 0.3f, 0.9f);
+		const Color color(0.9f, 0.3f, 0.9f);
 		const auto bp = &m_contactManager.m_broadPhase;
 
 		for (auto b = m_bodyList; b; b = b->GetNext())
@@ -1139,7 +1139,7 @@ void World::DrawDebugData()
 		}
 	}
 
-	if (flags & b2Draw::e_centerOfMassBit)
+	if (flags & Draw::e_centerOfMassBit)
 	{
 		for (auto b = m_bodyList; b; b = b->GetNext())
 		{

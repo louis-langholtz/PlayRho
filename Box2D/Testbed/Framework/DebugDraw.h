@@ -27,7 +27,7 @@ struct GLRenderPoints;
 struct GLRenderLines;
 struct GLRenderTriangles;
 
-struct b2AABB;
+struct AABB;
 
 //
 struct Camera
@@ -54,7 +54,7 @@ struct Camera
 
 // This class implements debug drawing callbacks that are invoked
 // inside World::Step.
-class DebugDraw : public b2Draw
+class DebugDraw : public Draw
 {
 public:
 	DebugDraw();
@@ -63,25 +63,25 @@ public:
 	void Create();
 	void Destroy();
 	
-	virtual void DrawPolygon(const Vec2* vertices, size_type vertexCount, const b2Color& color) override;
+	virtual void DrawPolygon(const Vec2* vertices, size_type vertexCount, const Color& color) override;
 
-	virtual void DrawSolidPolygon(const Vec2* vertices, size_type vertexCount, const b2Color& color) override;
+	virtual void DrawSolidPolygon(const Vec2* vertices, size_type vertexCount, const Color& color) override;
 
-	virtual void DrawCircle(const Vec2& center, float_t radius, const b2Color& color) override;
+	virtual void DrawCircle(const Vec2& center, float_t radius, const Color& color) override;
 
-	virtual void DrawSolidCircle(const Vec2& center, float_t radius, const Vec2& axis, const b2Color& color) override;
+	virtual void DrawSolidCircle(const Vec2& center, float_t radius, const Vec2& axis, const Color& color) override;
 
-	virtual void DrawSegment(const Vec2& p1, const Vec2& p2, const b2Color& color) override;
+	virtual void DrawSegment(const Vec2& p1, const Vec2& p2, const Color& color) override;
 
 	virtual void DrawTransform(const Transform& xf) override;
 
-    void DrawPoint(const Vec2& p, float_t size, const b2Color& color);
+    void DrawPoint(const Vec2& p, float_t size, const Color& color);
 
     void DrawString(int x, int y, const char* string, ...); 
 
     void DrawString(const Vec2& p, const char* string, ...);
 
-    void DrawAABB(b2AABB* aabb, const b2Color& color);
+    void DrawAABB(AABB* aabb, const Color& color);
 
     void Flush();
     

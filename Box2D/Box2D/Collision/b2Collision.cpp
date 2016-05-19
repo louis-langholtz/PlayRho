@@ -141,7 +141,7 @@ void b2GetPointStates(b2PointStateArray& state1, b2PointStateArray& state2,
 }
 
 // From Real-time Collision Detection, p179.
-bool b2AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
+bool AABB::RayCast(b2RayCastOutput* output, const b2RayCastInput& input) const
 {
 	auto tmin = -MaxFloat;
 	auto tmax = MaxFloat;

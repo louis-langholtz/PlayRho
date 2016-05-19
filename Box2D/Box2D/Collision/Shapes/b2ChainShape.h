@@ -82,7 +82,7 @@ public:
 					const Transform& transform, child_count_t childIndex) const override;
 
 	/// @see b2Shape::ComputeAABB
-	b2AABB ComputeAABB(const Transform& transform, child_count_t childIndex) const override;
+	AABB ComputeAABB(const Transform& transform, child_count_t childIndex) const override;
 
 	/// Chains have zero mass.
 	/// @see b2Shape::ComputeMass

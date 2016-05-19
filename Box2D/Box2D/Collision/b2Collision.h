@@ -267,12 +267,12 @@ struct b2RayCastOutput
 };
 
 /// An axis aligned bounding box.
-class b2AABB
+class AABB
 {
 public:
-	b2AABB() = default;
+	AABB() = default;
 
-	constexpr b2AABB(Vec2 a, Vec2 b) noexcept:
+	constexpr AABB(Vec2 a, Vec2 b) noexcept:
 		lowerBound(Vec2(Min(a.x, b.x), Min(a.y, b.y))), upperBound(Vec2(Max(a.x, b.x), Max(a.y, b.y))) {}
 
 	/// Get the center of the AABB.
@@ -296,7 +296,7 @@ public:
 	}
 
 	/// Combine an AABB into this one.
-	constexpr b2AABB& operator += (const b2AABB& aabb)
+	constexpr AABB& operator += (const AABB& aabb)
 	{
 		lowerBound = Min(lowerBound, aabb.lowerBound);
 		upperBound = Max(upperBound, aabb.upperBound);
@@ -304,7 +304,7 @@ public:
 	}
 
 	/// Does this aabb contain the provided AABB.
-	constexpr bool Contains(const b2AABB& aabb) const noexcept
+	constexpr bool Contains(const AABB& aabb) const noexcept
 	{
 		return
 			(lowerBound.x <= aabb.lowerBound.x) && (lowerBound.y <= aabb.lowerBound.y) &&
@@ -316,7 +316,7 @@ public:
 	Vec2 GetLowerBound() const noexcept { return lowerBound; }
 	Vec2 GetUpperBound() const noexcept { return upperBound; }
 
-	b2AABB& Move(Vec2 value) noexcept
+	AABB& Move(Vec2 value) noexcept
 	{
 		lowerBound += value;
 		upperBound += value;
@@ -328,19 +328,19 @@ private:
 	Vec2 upperBound;	///< the upper vertex
 };
 
-constexpr inline b2AABB operator + (const b2AABB& aabb1, const b2AABB& aabb2)
+constexpr inline AABB operator + (const AABB& aabb1, const AABB& aabb2)
 {
-	return b2AABB{Min(aabb1.GetLowerBound(), aabb2.GetLowerBound()), Max(aabb1.GetUpperBound(), aabb2.GetUpperBound())};
+	return AABB{Min(aabb1.GetLowerBound(), aabb2.GetLowerBound()), Max(aabb1.GetUpperBound(), aabb2.GetUpperBound())};
 }
 
-constexpr inline b2AABB operator + (Vec2 lhs, const b2AABB& rhs)
+constexpr inline AABB operator + (Vec2 lhs, const AABB& rhs)
 {
-	return b2AABB{rhs.GetLowerBound() - lhs, rhs.GetUpperBound() + lhs};
+	return AABB{rhs.GetLowerBound() - lhs, rhs.GetUpperBound() + lhs};
 }
 
-constexpr inline b2AABB operator + (const b2AABB& lhs, Vec2 rhs)
+constexpr inline AABB operator + (const AABB& lhs, Vec2 rhs)
 {
-	return b2AABB{lhs.GetLowerBound() - rhs, lhs.GetUpperBound() + rhs};
+	return AABB{lhs.GetLowerBound() - rhs, lhs.GetUpperBound() + rhs};
 }
 
 /// Computes the collision manifold between two circles.
@@ -406,7 +406,7 @@ bool b2TestOverlap(const b2Shape& shapeA, child_count_t indexA,
 
 // ---------------- Inline Functions ------------------------------------------
 
-inline bool b2TestOverlap(const b2AABB& a, const b2AABB& b) noexcept
+inline bool b2TestOverlap(const AABB& a, const AABB& b) noexcept
 {
 	const auto d1 = b.GetLowerBound() - a.GetUpperBound();
 	if ((d1.x > float_t{0}) || (d1.y > float_t{0}))

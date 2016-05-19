@@ -24,24 +24,24 @@
 namespace box2d {
 
 /// Color for debug drawing. Each value has the range [0,1].
-struct b2Color
+struct Color
 {
-	b2Color() = default;
-	constexpr b2Color(float_t ri, float_t gi, float_t bi, float_t ai = float_t(1)) : r(ri), g(gi), b(bi), a(ai) {}
+	Color() = default;
+	constexpr Color(float_t ri, float_t gi, float_t bi, float_t ai = float_t(1)) : r(ri), g(gi), b(bi), a(ai) {}
 	constexpr void Set(float_t ri, float_t gi, float_t bi, float_t ai = float_t(1)) { r = ri; g = gi; b = bi; a = ai; }
 	float_t r, g, b, a;
 };
 
 /// Implement and register this class with a World to provide debug drawing of physics
 /// entities in your game.
-class b2Draw
+class Draw
 {
 public:
 	using size_type = size_t;
 
-	b2Draw() = default;
+	Draw() = default;
 
-	virtual ~b2Draw() = default;
+	virtual ~Draw() = default;
 
 	enum
 	{
@@ -65,19 +65,19 @@ public:
 	void ClearFlags(uint32 flags);
 
 	/// Draw a closed polygon provided in CCW order.
-	virtual void DrawPolygon(const Vec2* vertices, size_type vertexCount, const b2Color& color) = 0;
+	virtual void DrawPolygon(const Vec2* vertices, size_type vertexCount, const Color& color) = 0;
 
 	/// Draw a solid closed polygon provided in CCW order.
-	virtual void DrawSolidPolygon(const Vec2* vertices, size_type vertexCount, const b2Color& color) = 0;
+	virtual void DrawSolidPolygon(const Vec2* vertices, size_type vertexCount, const Color& color) = 0;
 
 	/// Draw a circle.
-	virtual void DrawCircle(const Vec2& center, float_t radius, const b2Color& color) = 0;
+	virtual void DrawCircle(const Vec2& center, float_t radius, const Color& color) = 0;
 	
 	/// Draw a solid circle.
-	virtual void DrawSolidCircle(const Vec2& center, float_t radius, const Vec2& axis, const b2Color& color) = 0;
+	virtual void DrawSolidCircle(const Vec2& center, float_t radius, const Vec2& axis, const Color& color) = 0;
 	
 	/// Draw a line segment.
-	virtual void DrawSegment(const Vec2& p1, const Vec2& p2, const b2Color& color) = 0;
+	virtual void DrawSegment(const Vec2& p1, const Vec2& p2, const Color& color) = 0;
 
 	/// Draw a transform. Choose your own length scale.
 	/// @param xf a transform.

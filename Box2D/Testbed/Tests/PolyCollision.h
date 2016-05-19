@@ -54,7 +54,7 @@ public:
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		{
-			b2Color color(0.9f, 0.9f, 0.9f);
+			Color color(0.9f, 0.9f, 0.9f);
 			Vec2 v[MaxPolygonVertices];
 			for (int32 i = 0; i < m_polygonA.GetVertexCount(); ++i)
 			{
@@ -72,7 +72,7 @@ public:
 		const WorldManifold worldManifold(manifold, m_transformA, m_polygonA.GetRadius(), m_transformB, m_polygonB.GetRadius());
 		for (int32 i = 0; i < manifold.GetPointCount(); ++i)
 		{
-			g_debugDraw.DrawPoint(worldManifold.GetPoint(i), 4.0f, b2Color(0.9f, 0.3f, 0.3f));
+			g_debugDraw.DrawPoint(worldManifold.GetPoint(i), 4.0f, Color(0.9f, 0.3f, 0.3f));
 		}
 	}
 

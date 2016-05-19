@@ -43,7 +43,7 @@ public:
 
 	void DrawFixture(Fixture* fixture)
 	{
-		b2Color color(0.95f, 0.95f, 0.6f);
+		Color color(0.95f, 0.95f, 0.6f);
 		const Transform& xf = fixture->GetBody()->GetTransform();
 
 		switch (fixture->GetType())
@@ -105,7 +105,7 @@ public:
 
 	b2CircleShape m_circle;
 	Transform m_transform;
-	b2Draw* g_debugDraw;
+	Draw* g_debugDraw;
 	int32 m_count;
 };
 
@@ -271,11 +271,11 @@ public:
 		callback.m_transform = Transform_identity;
 		callback.g_debugDraw = &g_debugDraw;
 
-		b2AABB aabb = callback.m_circle.ComputeAABB(callback.m_transform, 0);
+		AABB aabb = callback.m_circle.ComputeAABB(callback.m_transform, 0);
 
 		m_world->QueryAABB(&callback, aabb);
 
-		b2Color color(0.4f, 0.7f, 0.8f);
+		Color color(0.4f, 0.7f, 0.8f);
 		g_debugDraw.DrawCircle(callback.m_circle.GetPosition(), callback.m_circle.GetRadius(), color);
 
 		g_debugDraw.DrawString(5, m_textLine, "Press 1-5 to drop stuff");

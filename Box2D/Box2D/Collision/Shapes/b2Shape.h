@@ -105,7 +105,7 @@ public:
 	/// @param xf the world transform of the shape.
 	/// @param childIndex the child shape
 	/// @return the axis aligned box.
-	virtual b2AABB ComputeAABB(const Transform& xf, child_count_t childIndex) const = 0;
+	virtual AABB ComputeAABB(const Transform& xf, child_count_t childIndex) const = 0;
 
 	/// Compute the mass properties of this shape using its dimensions and density.
 	/// The inertia tensor is computed about the local origin.

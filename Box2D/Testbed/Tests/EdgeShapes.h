@@ -217,16 +217,16 @@ public:
 
 		if (callback.m_fixture)
 		{
-			g_debugDraw.DrawPoint(callback.m_point, 5.0f, b2Color(0.4f, 0.9f, 0.4f));
+			g_debugDraw.DrawPoint(callback.m_point, 5.0f, Color(0.4f, 0.9f, 0.4f));
 
-			g_debugDraw.DrawSegment(point1, callback.m_point, b2Color(0.8f, 0.8f, 0.8f));
+			g_debugDraw.DrawSegment(point1, callback.m_point, Color(0.8f, 0.8f, 0.8f));
 
 			Vec2 head = callback.m_point + 0.5f * callback.m_normal;
-			g_debugDraw.DrawSegment(callback.m_point, head, b2Color(0.9f, 0.9f, 0.4f));
+			g_debugDraw.DrawSegment(callback.m_point, head, Color(0.9f, 0.9f, 0.4f));
 		}
 		else
 		{
-			g_debugDraw.DrawSegment(point1, point2, b2Color(0.8f, 0.8f, 0.8f));
+			g_debugDraw.DrawSegment(point1, point2, Color(0.8f, 0.8f, 0.8f));
 		}
 
 		if (advanceRay)

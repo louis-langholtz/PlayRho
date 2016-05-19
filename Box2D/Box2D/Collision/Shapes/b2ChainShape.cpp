@@ -157,7 +157,7 @@ bool b2ChainShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 	return edgeShape.RayCast(output, input, xf, 0);
 }
 
-b2AABB b2ChainShape::ComputeAABB(const Transform& xf, child_count_t childIndex) const
+AABB b2ChainShape::ComputeAABB(const Transform& xf, child_count_t childIndex) const
 {
 	assert(childIndex < m_count);
 
@@ -171,7 +171,7 @@ b2AABB b2ChainShape::ComputeAABB(const Transform& xf, child_count_t childIndex) 
 	const auto v1 = Mul(xf, m_vertices[i1]);
 	const auto v2 = Mul(xf, m_vertices[i2]);
 
-	return b2AABB{v1, v2};
+	return AABB{v1, v2};
 }
 
 b2MassData b2ChainShape::ComputeMass(float_t density) const

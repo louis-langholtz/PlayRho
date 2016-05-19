@@ -147,7 +147,7 @@ void Test::MouseDown(const Vec2& p)
 	}
 
 	// Make a small box.
-	const auto aabb = b2AABB{p, p} + Vec2(0.001f, 0.001f);
+	const auto aabb = AABB{p, p} + Vec2(0.001f, 0.001f);
 	
 	// Query the world for overlapping shapes.
 	QueryCallback callback(p);
@@ -274,10 +274,10 @@ void Test::Step(Settings* settings)
 	}
 
 	uint32 flags = 0;
-	flags += settings->drawShapes			* b2Draw::e_shapeBit;
-	flags += settings->drawJoints			* b2Draw::e_jointBit;
-	flags += settings->drawAABBs			* b2Draw::e_aabbBit;
-	flags += settings->drawCOMs				* b2Draw::e_centerOfMassBit;
+	flags += settings->drawShapes			* Draw::e_shapeBit;
+	flags += settings->drawJoints			* Draw::e_jointBit;
+	flags += settings->drawAABBs			* Draw::e_aabbBit;
+	flags += settings->drawCOMs				* Draw::e_centerOfMassBit;
 	g_debugDraw.SetFlags(flags);
 
 	m_world->SetAllowSleeping(settings->enableSleep);
@@ -377,7 +377,7 @@ void Test::Step(Settings* settings)
 		Vec2 p1 = m_mouseJoint->GetAnchorB();
 		Vec2 p2 = m_mouseJoint->GetTarget();
 
-		b2Color c;
+		Color c;
 		c.Set(0.0f, 1.0f, 0.0f);
 		g_debugDraw.DrawPoint(p1, 4.0f, c);
 		g_debugDraw.DrawPoint(p2, 4.0f, c);
@@ -388,7 +388,7 @@ void Test::Step(Settings* settings)
 	
 	if (m_bombSpawning)
 	{
-		b2Color c;
+		Color c;
 		c.Set(0.0f, 0.0f, 1.0f);
 		g_debugDraw.DrawPoint(m_bombSpawnPoint, 4.0f, c);
 
@@ -408,25 +408,25 @@ void Test::Step(Settings* settings)
 			if (point->state == b2PointState::AddState)
 			{
 				// Add
-				g_debugDraw.DrawPoint(point->position, 10.0f, b2Color(0.3f, 0.95f, 0.3f));
+				g_debugDraw.DrawPoint(point->position, 10.0f, Color(0.3f, 0.95f, 0.3f));
 			}
 			else if (point->state == b2PointState::PersistState)
 			{
 				// Persist
-				g_debugDraw.DrawPoint(point->position, 5.0f, b2Color(0.3f, 0.3f, 0.95f));
+				g_debugDraw.DrawPoint(point->position, 5.0f, Color(0.3f, 0.3f, 0.95f));
 			}
 
 			if (settings->drawContactNormals == 1)
 			{
 				Vec2 p1 = point->position;
 				Vec2 p2 = p1 + k_axisScale * point->normal;
-				g_debugDraw.DrawSegment(p1, p2, b2Color(0.9f, 0.9f, 0.9f));
+				g_debugDraw.DrawSegment(p1, p2, Color(0.9f, 0.9f, 0.9f));
 			}
 			else if (settings->drawContactImpulse == 1)
 			{
 				Vec2 p1 = point->position;
 				Vec2 p2 = p1 + k_impulseScale * point->normalImpulse * point->normal;
-				g_debugDraw.DrawSegment(p1, p2, b2Color(0.9f, 0.9f, 0.3f));
+				g_debugDraw.DrawSegment(p1, p2, Color(0.9f, 0.9f, 0.3f));
 			}
 
 			if (settings->drawFrictionImpulse == 1)
@@ -434,7 +434,7 @@ void Test::Step(Settings* settings)
 				Vec2 tangent = Cross(point->normal, 1.0f);
 				Vec2 p1 = point->position;
 				Vec2 p2 = p1 + k_impulseScale * point->tangentImpulse * tangent;
-				g_debugDraw.DrawSegment(p1, p2, b2Color(0.9f, 0.9f, 0.3f));
+				g_debugDraw.DrawSegment(p1, p2, Color(0.9f, 0.9f, 0.3f));
 			}
 		}
 	}

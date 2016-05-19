@@ -65,20 +65,20 @@ public:
 
 	/// Creates a proxy with an initial AABB. Pairs are not reported until
 	/// UpdatePairs is called.
-	size_type CreateProxy(const b2AABB& aabb, void* userData);
+	size_type CreateProxy(const AABB& aabb, void* userData);
 
 	/// Destroys a proxy. It is up to the client to remove any pairs.
 	void DestroyProxy(size_type proxyId);
 
 	/// Call MoveProxy as many times as you like, then when you are done
 	/// call UpdatePairs to finalized the proxy pairs (for your time step).
-	void MoveProxy(size_type proxyId, const b2AABB& aabb, const Vec2& displacement);
+	void MoveProxy(size_type proxyId, const AABB& aabb, const Vec2& displacement);
 
 	/// Call to trigger a re-processing of it's pairs on the next call to UpdatePairs.
 	void TouchProxy(size_type proxyId);
 
 	/// Gets the fat AABB for a proxy.
-	const b2AABB& GetFatAABB(size_type proxyId) const;
+	const AABB& GetFatAABB(size_type proxyId) const;
 
 	/// Gets user data from a proxy.
 	void* GetUserData(size_type proxyId) const;
@@ -96,7 +96,7 @@ public:
 	/// Query an AABB for overlapping proxies. The callback class
 	/// is called for each proxy that overlaps the supplied AABB.
 	template <typename T>
-	void Query(T* callback, const b2AABB& aabb) const;
+	void Query(T* callback, const AABB& aabb) const;
 
 	/// Ray-cast against the proxies in the tree. This relies on the callback
 	/// to perform an exact ray-cast in the case were the proxy contains a shape.
@@ -174,12 +174,12 @@ inline void* b2BroadPhase::GetUserData(size_type proxyId) const
 
 inline bool b2BroadPhase::TestOverlap(size_type proxyIdA, size_type proxyIdB) const
 {
-	const b2AABB& aabbA = m_tree.GetFatAABB(proxyIdA);
-	const b2AABB& aabbB = m_tree.GetFatAABB(proxyIdB);
+	const AABB& aabbA = m_tree.GetFatAABB(proxyIdA);
+	const AABB& aabbB = m_tree.GetFatAABB(proxyIdB);
 	return b2TestOverlap(aabbA, aabbB);
 }
 
-inline const b2AABB& b2BroadPhase::GetFatAABB(size_type proxyId) const
+inline const AABB& b2BroadPhase::GetFatAABB(size_type proxyId) const
 {
 	return m_tree.GetFatAABB(proxyId);
 }
@@ -221,7 +221,7 @@ void b2BroadPhase::UpdatePairs(T* callback)
 
 		// We have to query the tree with the fat AABB so that
 		// we don't fail to create a pair that may touch later.
-		const b2AABB& fatAABB = m_tree.GetFatAABB(m_queryProxyId);
+		const AABB& fatAABB = m_tree.GetFatAABB(m_queryProxyId);
 
 		// Query tree, create pairs and add them pair buffer.
 		m_tree.Query(this, fatAABB);
@@ -261,7 +261,7 @@ void b2BroadPhase::UpdatePairs(T* callback)
 }
 
 template <typename T>
-inline void b2BroadPhase::Query(T* callback, const b2AABB& aabb) const
+inline void b2BroadPhase::Query(T* callback, const AABB& aabb) const
 {
 	m_tree.Query(callback, aabb);
 }

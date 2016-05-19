@@ -84,7 +84,7 @@ struct FixtureProxy
 {
 	using size_type = size_t;
 
-	b2AABB aabb;
+	AABB aabb;
 	Fixture* fixture;
 	child_count_t childIndex;
 	size_type proxyId;
@@ -183,7 +183,7 @@ public:
 	/// Get the fixture's AABB. This AABB may be enlarge and/or stale.
 	/// If you need a more accurate AABB, compute it using the shape and
 	/// the body transform.
-	const b2AABB& GetAABB(child_count_t childIndex) const;
+	const AABB& GetAABB(child_count_t childIndex) const;
 
 	/// Dump this fixture to the log file.
 	void Dump(island_count_t bodyIndex);
@@ -321,7 +321,7 @@ inline b2MassData Fixture::GetMassData() const
 	return m_shape->ComputeMass(m_density);
 }
 
-inline const b2AABB& Fixture::GetAABB(child_count_t childIndex) const
+inline const AABB& Fixture::GetAABB(child_count_t childIndex) const
 {
 	assert(childIndex >= 0);
 	assert(childIndex < m_proxyCount);

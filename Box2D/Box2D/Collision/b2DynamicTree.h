@@ -51,7 +51,7 @@ public:
 
 	/// Creates a proxy. Provide a tight fitting AABB and a userData pointer.
 	/// @return 
-	size_type CreateProxy(const b2AABB& aabb, void* userData);
+	size_type CreateProxy(const AABB& aabb, void* userData);
 
 	/// Destroys a proxy. This asserts if the id is invalid.
 	void DestroyProxy(size_type proxyId);
@@ -60,7 +60,7 @@ public:
 	/// then the proxy is removed from the tree and re-inserted. Otherwise
 	/// the function returns immediately.
 	/// @return true if the proxy was re-inserted.
-	bool MoveProxy(size_type proxyId, const b2AABB& aabb1, const Vec2& displacement);
+	bool MoveProxy(size_type proxyId, const AABB& aabb1, const Vec2& displacement);
 
 	/// Gets the user data for the node identified by the given identifier.
 	/// @param proxyId Identifier of node to get the user data for.
@@ -69,12 +69,12 @@ public:
 	void* GetUserData(size_type proxyId) const;
 
 	/// Gets the fat AABB for a proxy.
-	const b2AABB& GetFatAABB(size_type proxyId) const;
+	const AABB& GetFatAABB(size_type proxyId) const;
 
 	/// Query an AABB for overlapping proxies. The callback class
 	/// is called for each proxy that overlaps the supplied AABB.
 	template <typename T>
-	void Query(T* callback, const b2AABB& aabb) const;
+	void Query(T* callback, const AABB& aabb) const;
 
 	/// Ray-cast against the proxies in the tree. This relies on the callback
 	/// to perform a exact ray-cast in the case were the proxy contains a shape.
@@ -118,7 +118,7 @@ private:
 		}
 		
 		/// Enlarged AABB
-		b2AABB aabb;
+		AABB aabb;
 		
 		void* userData;
 		
@@ -171,7 +171,7 @@ inline void* b2DynamicTree::GetUserData(size_type proxyId) const
 	return m_nodes[proxyId].userData;
 }
 
-inline const b2AABB& b2DynamicTree::GetFatAABB(size_type proxyId) const
+inline const AABB& b2DynamicTree::GetFatAABB(size_type proxyId) const
 {
 	assert(proxyId != NullNode);
 	assert(proxyId < m_nodeCapacity);
@@ -184,7 +184,7 @@ inline b2DynamicTree::size_type b2DynamicTree::GetHeight() const noexcept
 }
 
 template <typename T>
-inline void b2DynamicTree::Query(T* callback, const b2AABB& aabb) const
+inline void b2DynamicTree::Query(T* callback, const AABB& aabb) const
 {
 	b2GrowableStack<size_type, 256> stack;
 	stack.Push(m_root);
@@ -237,7 +237,7 @@ inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) con
 	auto maxFraction = input.maxFraction;
 
 	// Build a bounding box for the segment.
-	auto segmentAABB = b2AABB{p1, p1 + maxFraction * (p2 - p1)};
+	auto segmentAABB = AABB{p1, p1 + maxFraction * (p2 - p1)};
 
 	b2GrowableStack<size_type, 256> stack;
 	stack.Push(m_root);
@@ -284,7 +284,7 @@ inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) con
 				// Update segment bounding box.
 				maxFraction = value;
 				const auto t = p1 + maxFraction * (p2 - p1);
-				segmentAABB = b2AABB(p1, t);
+				segmentAABB = AABB(p1, t);
 			}
 		}
 		else

@@ -66,7 +66,7 @@ public:
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		{
-			b2Color color(0.9f, 0.9f, 0.9f);
+			Color color(0.9f, 0.9f, 0.9f);
 			Vec2 v[MaxPolygonVertices];
 			for (int32 i = 0; i < m_polygonA.GetVertexCount(); ++i)
 			{
@@ -84,10 +84,10 @@ public:
 		Vec2 x1 = output.pointA;
 		Vec2 x2 = output.pointB;
 
-		b2Color c1(1.0f, 0.0f, 0.0f);
+		Color c1(1.0f, 0.0f, 0.0f);
 		g_debugDraw.DrawPoint(x1, 4.0f, c1);
 
-		b2Color c2(1.0f, 1.0f, 0.0f);
+		Color c2(1.0f, 1.0f, 0.0f);
 		g_debugDraw.DrawPoint(x2, 4.0f, c2);
 	}
 

@@ -373,14 +373,14 @@ public:
 
 			if (callback.m_hit)
 			{
-				g_debugDraw.DrawPoint(callback.m_point, 5.0f, b2Color(0.4f, 0.9f, 0.4f));
-				g_debugDraw.DrawSegment(point1, callback.m_point, b2Color(0.8f, 0.8f, 0.8f));
+				g_debugDraw.DrawPoint(callback.m_point, 5.0f, Color(0.4f, 0.9f, 0.4f));
+				g_debugDraw.DrawSegment(point1, callback.m_point, Color(0.8f, 0.8f, 0.8f));
 				Vec2 head = callback.m_point + 0.5f * callback.m_normal;
-				g_debugDraw.DrawSegment(callback.m_point, head, b2Color(0.9f, 0.9f, 0.4f));
+				g_debugDraw.DrawSegment(callback.m_point, head, Color(0.9f, 0.9f, 0.4f));
 			}
 			else
 			{
-				g_debugDraw.DrawSegment(point1, point2, b2Color(0.8f, 0.8f, 0.8f));
+				g_debugDraw.DrawSegment(point1, point2, Color(0.8f, 0.8f, 0.8f));
 			}
 		}
 		else if (m_mode == e_any)
@@ -390,30 +390,30 @@ public:
 
 			if (callback.m_hit)
 			{
-				g_debugDraw.DrawPoint(callback.m_point, 5.0f, b2Color(0.4f, 0.9f, 0.4f));
-				g_debugDraw.DrawSegment(point1, callback.m_point, b2Color(0.8f, 0.8f, 0.8f));
+				g_debugDraw.DrawPoint(callback.m_point, 5.0f, Color(0.4f, 0.9f, 0.4f));
+				g_debugDraw.DrawSegment(point1, callback.m_point, Color(0.8f, 0.8f, 0.8f));
 				Vec2 head = callback.m_point + 0.5f * callback.m_normal;
-				g_debugDraw.DrawSegment(callback.m_point, head, b2Color(0.9f, 0.9f, 0.4f));
+				g_debugDraw.DrawSegment(callback.m_point, head, Color(0.9f, 0.9f, 0.4f));
 			}
 			else
 			{
-				g_debugDraw.DrawSegment(point1, point2, b2Color(0.8f, 0.8f, 0.8f));
+				g_debugDraw.DrawSegment(point1, point2, Color(0.8f, 0.8f, 0.8f));
 			}
 		}
 		else if (m_mode == e_multiple)
 		{
 			RayCastMultipleCallback callback;
 			m_world->RayCast(&callback, point1, point2);
-			g_debugDraw.DrawSegment(point1, point2, b2Color(0.8f, 0.8f, 0.8f));
+			g_debugDraw.DrawSegment(point1, point2, Color(0.8f, 0.8f, 0.8f));
 
 			for (int32 i = 0; i < callback.m_count; ++i)
 			{
 				Vec2 p = callback.m_points[i];
 				Vec2 n = callback.m_normals[i];
-				g_debugDraw.DrawPoint(p, 5.0f, b2Color(0.4f, 0.9f, 0.4f));
-				g_debugDraw.DrawSegment(point1, p, b2Color(0.8f, 0.8f, 0.8f));
+				g_debugDraw.DrawPoint(p, 5.0f, Color(0.4f, 0.9f, 0.4f));
+				g_debugDraw.DrawSegment(point1, p, Color(0.8f, 0.8f, 0.8f));
 				Vec2 head = p + 0.5f * n;
-				g_debugDraw.DrawSegment(p, head, b2Color(0.9f, 0.9f, 0.4f));
+				g_debugDraw.DrawSegment(p, head, Color(0.9f, 0.9f, 0.4f));
 			}
 		}
 
@@ -450,7 +450,7 @@ public:
 			hit = shape.RayCast(&output, input, xf);
 			hit = false;
 
-			b2Color color(1.0f, 1.0f, 1.0f);
+			Color color(1.0f, 1.0f, 1.0f);
 			Vec2 vs[4];
 			for (int32 i = 0; i < 4; ++i)
 			{

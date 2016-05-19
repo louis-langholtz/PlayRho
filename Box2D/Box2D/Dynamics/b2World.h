@@ -30,12 +30,12 @@
 
 namespace box2d {
 
-struct b2AABB;
+struct AABB;
 struct BodyDef;
-struct b2Color;
+struct Color;
 struct JointDef;
 class Body;
-class b2Draw;
+class Draw;
 class Fixture;
 class Joint;
 
@@ -70,7 +70,7 @@ public:
 	/// Register a routine for debug drawing. The debug draw functions are called
 	/// inside with World::DrawDebugData method. The debug draw object is owned
 	/// by you and must remain in scope.
-	void SetDebugDraw(b2Draw* debugDraw) noexcept;
+	void SetDebugDraw(Draw* debugDraw) noexcept;
 
 	/// Create a rigid body given a definition. No reference to the definition
 	/// is retained.
@@ -115,7 +115,7 @@ public:
 	/// provided AABB.
 	/// @param callback a user implemented callback class.
 	/// @param aabb the query box.
-	void QueryAABB(b2QueryCallback* callback, const b2AABB& aabb) const;
+	void QueryAABB(b2QueryCallback* callback, const AABB& aabb) const;
 
 	/// Ray-cast the world for all fixtures in the path of the ray. Your callback
 	/// controls whether you get the closest point, any point, or n-points.
@@ -235,7 +235,7 @@ private:
 	void SolveTOI(const b2TimeStep& step);
 
 	void DrawJoint(Joint* joint);
-	void DrawShape(const Fixture* shape, const Transform& xf, const b2Color& color);
+	void DrawShape(const Fixture* shape, const Transform& xf, const Color& color);
 
 	b2BlockAllocator m_blockAllocator;
 	b2StackAllocator m_stackAllocator;
@@ -260,7 +260,7 @@ private:
 	bool m_allowSleep = true;
 
 	b2DestructionListener* m_destructionListener = nullptr;
-	b2Draw* g_debugDraw = nullptr;
+	Draw* g_debugDraw = nullptr;
 
 	/// Used to compute the time step ratio to support a variable time step.
 	float_t m_inv_dt0 = float_t{0};

@@ -84,11 +84,11 @@ public:
 		g_debugDraw.DrawString(5, m_textLine, "Press g to generate a new random convex hull");
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		g_debugDraw.DrawPolygon(shape.GetVertices(), shape.GetVertexCount(), b2Color(0.9f, 0.9f, 0.9f));
+		g_debugDraw.DrawPolygon(shape.GetVertices(), shape.GetVertexCount(), Color(0.9f, 0.9f, 0.9f));
 
 		for (int32 i = 0; i < m_count; ++i)
 		{
-			g_debugDraw.DrawPoint(m_points[i], 3.0f, b2Color(0.3f, 0.9f, 0.3f));
+			g_debugDraw.DrawPoint(m_points[i], 3.0f, Color(0.3f, 0.9f, 0.3f));
 			g_debugDraw.DrawString(m_points[i] + Vec2(0.05f, 0.05f), "%d", i);
 		}
 

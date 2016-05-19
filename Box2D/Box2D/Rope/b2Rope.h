@@ -23,7 +23,7 @@
 
 namespace box2d {
 
-class b2Draw;
+class Draw;
 
 /// 
 struct b2RopeDef
@@ -82,7 +82,7 @@ public:
 	}
 
 	///
-	void Draw(b2Draw* draw) const;
+	void Draw(Draw* draw) const;
 
 	///
 	void SetAngle(float_t angle);

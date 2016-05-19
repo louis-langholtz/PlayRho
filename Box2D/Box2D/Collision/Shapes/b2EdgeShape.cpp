@@ -105,7 +105,7 @@ bool b2EdgeShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 	return true;
 }
 
-b2AABB b2EdgeShape::ComputeAABB(const Transform& xf, child_count_t childIndex) const
+AABB b2EdgeShape::ComputeAABB(const Transform& xf, child_count_t childIndex) const
 {
 	BOX2D_NOT_USED(childIndex);
 
@@ -116,7 +116,7 @@ b2AABB b2EdgeShape::ComputeAABB(const Transform& xf, child_count_t childIndex) c
 	const auto upper = Max(v1, v2);
 
 	const auto r = Vec2{GetRadius(), GetRadius()};
-	return b2AABB{lower - r, upper + r};
+	return AABB{lower - r, upper + r};
 }
 
 b2MassData b2EdgeShape::ComputeMass(float_t density) const
