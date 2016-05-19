@@ -200,12 +200,12 @@ public:
 		case 2:
 			{
 				const auto e12 = m_vertices[1].get_w() - m_vertices[0].get_w();
-				const auto sgn = b2Cross(e12, -m_vertices[0].get_w());
+				const auto sgn = Cross(e12, -m_vertices[0].get_w());
 				return (sgn > float_t{0})?
 					// Origin is left of e12.
-					b2Cross(float_t(1), e12):
+					Cross(float_t(1), e12):
 					// Origin is right of e12.
-					b2Cross(e12, float_t(1));
+					Cross(e12, float_t(1));
 			}
 
 		default:
@@ -271,7 +271,7 @@ public:
 			return b2Distance(m_vertices[0].get_w(), m_vertices[1].get_w());
 
 		case 3:
-			return b2Cross(m_vertices[1].get_w() - m_vertices[0].get_w(), m_vertices[2].get_w() - m_vertices[0].get_w());
+			return Cross(m_vertices[1].get_w() - m_vertices[0].get_w(), m_vertices[2].get_w() - m_vertices[0].get_w());
 
 		default:
 			assert(false);
@@ -318,7 +318,7 @@ void b2Simplex::Solve2() noexcept
 	const auto e12 = w2 - w1;
 
 	// w1 region
-	const auto d12_2 = -b2Dot(w1, e12);
+	const auto d12_2 = -Dot(w1, e12);
 	if (d12_2 <= float_t{0})
 	{
 		// a2 <= 0, so we clamp it to 0
@@ -328,7 +328,7 @@ void b2Simplex::Solve2() noexcept
 	}
 
 	// w2 region
-	const auto d12_1 = b2Dot(w2, e12);
+	const auto d12_1 = Dot(w2, e12);
 	if (d12_1 <= float_t{0})
 	{
 		// a1 <= 0, so we clamp it to 0
@@ -361,8 +361,8 @@ void b2Simplex::Solve3() noexcept
 	// [w1.e12 w2.e12][a2] = [0]
 	// a3 = 0
 	const auto e12 = w2 - w1;
-	const auto w1e12 = b2Dot(w1, e12);
-	const auto w2e12 = b2Dot(w2, e12);
+	const auto w1e12 = Dot(w1, e12);
+	const auto w2e12 = Dot(w2, e12);
 	const auto d12_1 = w2e12;
 	const auto d12_2 = -w1e12;
 
@@ -371,8 +371,8 @@ void b2Simplex::Solve3() noexcept
 	// [w1.e13 w3.e13][a3] = [0]
 	// a2 = 0
 	const auto e13 = w3 - w1;
-	const auto w1e13 = b2Dot(w1, e13);
-	const auto w3e13 = b2Dot(w3, e13);
+	const auto w1e13 = Dot(w1, e13);
+	const auto w3e13 = Dot(w3, e13);
 	const auto d13_1 = w3e13;
 	const auto d13_2 = -w1e13;
 
@@ -381,17 +381,17 @@ void b2Simplex::Solve3() noexcept
 	// [w2.e23 w3.e23][a3] = [0]
 	// a1 = 0
 	const auto e23 = w3 - w2;
-	const auto w2e23 = b2Dot(w2, e23);
-	const auto w3e23 = b2Dot(w3, e23);
+	const auto w2e23 = Dot(w2, e23);
+	const auto w3e23 = Dot(w3, e23);
 	const auto d23_1 = w3e23;
 	const auto d23_2 = -w2e23;
 	
 	// Triangle123
-	const auto n123 = b2Cross(e12, e13);
+	const auto n123 = Cross(e12, e13);
 
-	const auto d123_1 = n123 * b2Cross(w2, w3);
-	const auto d123_2 = n123 * b2Cross(w3, w1);
-	const auto d123_3 = n123 * b2Cross(w1, w2);
+	const auto d123_1 = n123 * Cross(w2, w3);
+	const auto d123_2 = n123 * Cross(w3, w1);
+	const auto d123_3 = n123 * Cross(w1, w2);
 
 	// w1 region
 	if ((d12_2 <= float_t{0}) && (d13_2 <= float_t{0}))

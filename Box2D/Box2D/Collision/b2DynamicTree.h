@@ -228,7 +228,7 @@ inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) con
 	const auto r = b2Normalize(dp);
 
 	// v is perpendicular to the segment.
-	const auto v = b2Cross(float_t(1), r);
+	const auto v = Cross(float_t(1), r);
 	const auto abs_v = b2Abs(v);
 
 	// Separating axis for segment (Gino, p80).
@@ -261,7 +261,7 @@ inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) con
 		// |dot(v, p1 - c)| > dot(|v|, h)
 		const auto c = node->aabb.GetCenter();
 		const auto h = node->aabb.GetExtents();
-		const auto separation = b2Abs(b2Dot(v, p1 - c)) - b2Dot(abs_v, h);
+		const auto separation = b2Abs(Dot(v, p1 - c)) - Dot(abs_v, h);
 		if (separation > float_t{0})
 		{
 			continue;

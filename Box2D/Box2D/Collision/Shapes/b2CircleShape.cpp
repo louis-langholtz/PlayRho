@@ -54,7 +54,7 @@ bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input
 
 	// Solve quadratic equation.
 	const auto r = input.p2 - input.p1;
-	const auto c =  b2Dot(s, r);
+	const auto c =  Dot(s, r);
 	const auto rr = r.LengthSquared();
 	const auto sigma = b2Square(c) - rr * b;
 

@@ -37,7 +37,7 @@ void b2Mat33::GetInverse22(b2Mat33* M) const
 /// Returns the zero matrix if singular.
 void b2Mat33::GetSymInverse33(b2Mat33* M) const
 {
-	auto det = b2Dot(ex, b2Cross(ey, ez));
+	auto det = Dot(ex, Cross(ey, ez));
 	if (det != float_t{0})
 	{
 		det = float_t(1) / det;

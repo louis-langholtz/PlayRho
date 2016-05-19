@@ -150,7 +150,7 @@ void b2MouseJoint::InitVelocityConstraints(const b2SolverData& data)
 	{
 		m_impulse *= data.step.dtRatio;
 		vB += m_invMassB * m_impulse;
-		wB += m_invIB * b2Cross(m_rB, m_impulse);
+		wB += m_invIB * Cross(m_rB, m_impulse);
 	}
 	else
 	{
@@ -167,7 +167,7 @@ void b2MouseJoint::SolveVelocityConstraints(const b2SolverData& data)
 	auto wB = data.velocities[m_indexB].w;
 
 	// Cdot = v + cross(w, r)
-	const auto Cdot = vB + b2Cross(wB, m_rB);
+	const auto Cdot = vB + Cross(wB, m_rB);
 	auto impulse = b2Mul(m_mass, -(Cdot + m_C + m_gamma * m_impulse));
 
 	const auto oldImpulse = m_impulse;
@@ -180,7 +180,7 @@ void b2MouseJoint::SolveVelocityConstraints(const b2SolverData& data)
 	impulse = m_impulse - oldImpulse;
 
 	vB += m_invMassB * impulse;
-	wB += m_invIB * b2Cross(m_rB, impulse);
+	wB += m_invIB * Cross(m_rB, impulse);
 
 	data.velocities[m_indexB].v = vB;
 	data.velocities[m_indexB].w = wB;

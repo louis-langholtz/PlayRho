@@ -52,7 +52,7 @@ void b2WorldManifold::Assign(const b2Manifold& manifold,
 			const auto cA = pointA + (radiusA * normal);
 			const auto cB = pointB - (radiusB * normal);
 			points[0] = (cA + cB) / float_t(2);
-			separations[0] = b2Dot(cB - cA, normal);
+			separations[0] = Dot(cB - cA, normal);
 			pointCount = 1;
 		}
 		break;
@@ -65,10 +65,10 @@ void b2WorldManifold::Assign(const b2Manifold& manifold,
 			for (auto i = decltype(manifold.GetPointCount()){0}; i < manifold.GetPointCount(); ++i)
 			{
 				const auto clipPoint = b2Mul(xfB, manifold.GetPoint(i).localPoint);
-				const auto cA = clipPoint + (radiusA - b2Dot(clipPoint - planePoint, normal)) * normal;
+				const auto cA = clipPoint + (radiusA - Dot(clipPoint - planePoint, normal)) * normal;
 				const auto cB = clipPoint - (radiusB * normal);
 				points[i] = (cA + cB) / float_t(2);
-				separations[i] = b2Dot(cB - cA, normal);
+				separations[i] = Dot(cB - cA, normal);
 				++pointCount;
 			}
 		}
@@ -82,10 +82,10 @@ void b2WorldManifold::Assign(const b2Manifold& manifold,
 			for (auto i = decltype(manifold.GetPointCount()){0}; i < manifold.GetPointCount(); ++i)
 			{
 				const auto clipPoint = b2Mul(xfA, manifold.GetPoint(i).localPoint);
-				const auto cB = clipPoint + (radiusB - b2Dot(clipPoint - planePoint, normal)) * normal;
+				const auto cB = clipPoint + (radiusB - Dot(clipPoint - planePoint, normal)) * normal;
 				const auto cA = clipPoint - (radiusA * normal);
 				points[i] = (cA + cB) / float_t(2);
-				separations[i] = b2Dot(cA - cB, normal);
+				separations[i] = Dot(cA - cB, normal);
 				++pointCount;
 			}
 
@@ -218,8 +218,8 @@ b2ClipArray::size_type b2ClipSegmentToLine(b2ClipArray& vOut, const b2ClipArray&
 	auto numOut = b2ClipArray::size_type{0};
 
 	// Calculate the distance of end points to the line
-	const auto distance0 = b2Dot(normal, vIn[0].v) - offset; ///< Distance of point at vIn[0].v from line defined by normal and offset.
-	const auto distance1 = b2Dot(normal, vIn[1].v) - offset; ///< Distance of point at vIn[1].v from line defined by normal and offset.
+	const auto distance0 = Dot(normal, vIn[0].v) - offset; ///< Distance of point at vIn[0].v from line defined by normal and offset.
+	const auto distance1 = Dot(normal, vIn[1].v) - offset; ///< Distance of point at vIn[1].v from line defined by normal and offset.
 
 	// If the points are behind the plane
 	if (distance0 <= float_t{0}) vOut[numOut++] = vIn[0];

@@ -27,11 +27,11 @@ namespace box2d
 // forward declarations
 struct Vec2;
 struct Vec3;
-constexpr inline float_t b2Dot(const Vec2& a, const Vec2& b) noexcept;
-constexpr inline float_t b2Dot(const Vec3& a, const Vec3& b) noexcept;
-constexpr inline float_t b2Cross(const Vec2& a, const Vec2& b) noexcept;
-constexpr inline Vec2 b2Cross(const Vec2& a, float_t s) noexcept;
-constexpr inline Vec3 b2Cross(const Vec3& a, const Vec3& b) noexcept;
+constexpr inline float_t Dot(const Vec2& a, const Vec2& b) noexcept;
+constexpr inline float_t Dot(const Vec3& a, const Vec3& b) noexcept;
+constexpr inline float_t Cross(const Vec2& a, const Vec2& b) noexcept;
+constexpr inline Vec2 Cross(const Vec2& a, float_t s) noexcept;
+constexpr inline Vec3 Cross(const Vec3& a, const Vec3& b) noexcept;
 
 /// This function is used to ensure that a floating point number is not a NaN or infinity.
 inline bool b2IsValid(float_t x)
@@ -255,12 +255,12 @@ struct b2Mat33
 	/// than computing the inverse in one-shot cases.
 	constexpr Vec3 Solve33(const Vec3& b) const
 	{
-		auto det = b2Dot(ex, b2Cross(ey, ez));
+		auto det = Dot(ex, Cross(ey, ez));
 		if (det != float_t{0})
 		{
 			det = float_t(1) / det;
 		}
-		return Vec3(det * b2Dot(b, b2Cross(ey, ez)), det * b2Dot(ex, b2Cross(b, ez)), det * b2Dot(ex, b2Cross(ey, b)));
+		return Vec3(det * Dot(b, Cross(ey, ez)), det * Dot(ex, Cross(b, ez)), det * Dot(ex, Cross(ey, b)));
 	}
 
 	/// Solve A * x = b, where b is a column vector. This is more efficient
@@ -378,27 +378,27 @@ struct b2Sweep
 /// @return Dot product of the vectors.
 /// @note If A and B are the same vectors, Vec2::LengthSquared() returns the same value
 ///   using effectively one less input parameter.
-constexpr inline float_t b2Dot(const Vec2& a, const Vec2& b) noexcept
+constexpr inline float_t Dot(const Vec2& a, const Vec2& b) noexcept
 {
 	return (a.x * b.x) + (a.y * b.y);
 }
 
 /// Perform the cross product on two vectors. In 2D this produces a scalar.
-constexpr inline float_t b2Cross(const Vec2& a, const Vec2& b) noexcept
+constexpr inline float_t Cross(const Vec2& a, const Vec2& b) noexcept
 {
 	return (a.x * b.y) - (a.y * b.x);
 }
 
 /// Perform the cross product on a vector and a scalar. In 2D this produces
 /// a vector.
-constexpr inline Vec2 b2Cross(const Vec2& a, float_t s) noexcept
+constexpr inline Vec2 Cross(const Vec2& a, float_t s) noexcept
 {
 	return Vec2{s * a.y, -s * a.x};
 }
 
 /// Perform the cross product on a scalar and a vector. In 2D this produces
 /// a vector.
-constexpr inline Vec2 b2Cross(float_t s, const Vec2& a) noexcept
+constexpr inline Vec2 Cross(float_t s, const Vec2& a) noexcept
 {
 	return Vec2{-s * a.y, s * a.x};
 }
@@ -414,7 +414,7 @@ constexpr inline Vec2 b2Mul(const b2Mat22& A, const Vec2& v) noexcept
 /// then this transforms the vector from one frame to another (inverse transform).
 constexpr inline Vec2 b2MulT(const b2Mat22& A, const Vec2& v) noexcept
 {
-	return Vec2{b2Dot(v, A.ex), b2Dot(v, A.ey)};
+	return Vec2{Dot(v, A.ex), Dot(v, A.ey)};
 }
 
 /// Add two vectors component-wise.
@@ -499,13 +499,13 @@ constexpr inline Vec3 operator - (const Vec3& a, const Vec3& b) noexcept
 }
 
 /// Perform the dot product on two vectors.
-constexpr inline float_t b2Dot(const Vec3& a, const Vec3& b) noexcept
+constexpr inline float_t Dot(const Vec3& a, const Vec3& b) noexcept
 {
 	return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
 }
 
 /// Perform the cross product on two vectors.
-constexpr inline Vec3 b2Cross(const Vec3& a, const Vec3& b) noexcept
+constexpr inline Vec3 Cross(const Vec3& a, const Vec3& b) noexcept
 {
 	return Vec3{a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x};
 }
@@ -524,8 +524,8 @@ constexpr inline b2Mat22 b2Mul(const b2Mat22& A, const b2Mat22& B) noexcept
 // A^T * B
 constexpr inline b2Mat22 b2MulT(const b2Mat22& A, const b2Mat22& B) noexcept
 {
-	const auto c1 = Vec2(b2Dot(A.ex, B.ex), b2Dot(A.ey, B.ex));
-	const auto c2 = Vec2(b2Dot(A.ex, B.ey), b2Dot(A.ey, B.ey));
+	const auto c1 = Vec2(Dot(A.ex, B.ex), Dot(A.ey, B.ex));
+	const auto c2 = Vec2(Dot(A.ex, B.ey), Dot(A.ey, B.ey));
 	return b2Mat22{c1, c2};
 }
 

@@ -53,7 +53,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 
 	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 	{
-		const auto s = b2Dot(shapeA.GetNormal(i), cLocal - shapeA.GetVertex(i));
+		const auto s = Dot(shapeA.GetNormal(i), cLocal - shapeA.GetVertex(i));
 
 		if (s > totalRadius)
 		{
@@ -83,8 +83,8 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 	}
 
 	// Compute barycentric coordinates
-	const auto u1 = b2Dot(cLocal - v1, v2 - v1);
-	const auto u2 = b2Dot(cLocal - v2, v1 - v2);
+	const auto u1 = Dot(cLocal - v1, v2 - v1);
+	const auto u2 = Dot(cLocal - v2, v1 - v2);
 	if (u1 <= float_t{0})
 	{
 		if (b2DistanceSquared(cLocal, v1) > b2Square(totalRadius))
@@ -109,7 +109,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 	}
 
 	const auto faceCenter = (v1 + v2) / float_t(2);
-	separation = b2Dot(cLocal - faceCenter, shapeA.GetNormal(vertIndex1));
+	separation = Dot(cLocal - faceCenter, shapeA.GetNormal(vertIndex1));
 	if (separation > totalRadius)
 	{
 		return b2Manifold{};

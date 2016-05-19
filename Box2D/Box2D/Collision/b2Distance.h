@@ -144,10 +144,10 @@ inline Vec2 b2DistanceProxy::GetVertex(size_type index) const
 inline b2DistanceProxy::size_type b2DistanceProxy::GetSupport(const Vec2& d) const noexcept
 {
 	auto bestIndex = decltype(m_count){0};
-	auto bestValue = b2Dot(m_vertices[0], d);
+	auto bestValue = Dot(m_vertices[0], d);
 	for (auto i = decltype(m_count){1}; i < m_count; ++i)
 	{
-		const auto value = b2Dot(m_vertices[i], d);
+		const auto value = Dot(m_vertices[i], d);
 		if (value > bestValue)
 		{
 			bestIndex = i;
@@ -161,10 +161,10 @@ inline b2DistanceProxy::size_type b2DistanceProxy::GetSupport(const Vec2& d) con
 inline const Vec2& b2DistanceProxy::GetSupportVertex(const Vec2& d) const
 {
 	auto bestIndex = decltype(m_count){0};
-	auto bestValue = b2Dot(m_vertices[0], d);
+	auto bestValue = Dot(m_vertices[0], d);
 	for (auto i = decltype(m_count){1}; i < m_count; ++i)
 	{
-		const auto value = b2Dot(m_vertices[i], d);
+		const auto value = Dot(m_vertices[i], d);
 		if (value > bestValue)
 		{
 			bestIndex = i;

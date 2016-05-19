@@ -348,7 +348,7 @@ void b2Body::ResetMassData()
 	m_sweep.c0 = m_sweep.c = b2Mul(m_xf, m_sweep.localCenter);
 
 	// Update center of mass velocity.
-	m_linearVelocity += b2Cross(m_angularVelocity, m_sweep.c - oldCenter);
+	m_linearVelocity += Cross(m_angularVelocity, m_sweep.c - oldCenter);
 }
 
 void b2Body::SetMassData(const b2MassData* massData)
@@ -385,7 +385,7 @@ void b2Body::SetMassData(const b2MassData* massData)
 	m_sweep.c0 = m_sweep.c = b2Mul(m_xf, m_sweep.localCenter);
 
 	// Update center of mass velocity.
-	m_linearVelocity += b2Cross(m_angularVelocity, m_sweep.c - oldCenter);
+	m_linearVelocity += Cross(m_angularVelocity, m_sweep.c - oldCenter);
 }
 
 bool b2Body::ShouldCollide(const b2Body* other) const

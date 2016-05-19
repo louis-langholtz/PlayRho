@@ -69,8 +69,8 @@ bool b2EdgeShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 	// q = p1 + t * d
 	// dot(normal, q - v1) = 0
 	// dot(normal, p1 - v1) + t * dot(normal, d) = 0
-	const auto numerator = b2Dot(normal, v1 - p1);
-	const auto denominator = b2Dot(normal, d);
+	const auto numerator = Dot(normal, v1 - p1);
+	const auto denominator = Dot(normal, d);
 
 	if (denominator == float_t{0})
 	{
@@ -94,7 +94,7 @@ bool b2EdgeShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 		return false;
 	}
 
-	const auto s = b2Dot(q - v1, r) / rr;
+	const auto s = Dot(q - v1, r) / rr;
 	if ((s < float_t{0}) || (float_t(1) < s))
 	{
 		return false;

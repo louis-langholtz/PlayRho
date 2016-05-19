@@ -100,7 +100,7 @@ static Vec2 ComputeCentroid(const Vec2 vs[], b2PolygonShape::vertex_count_t coun
 		const auto e1 = p2 - p1;
 		const auto e2 = p3 - p1;
 
-		const auto D = b2Cross(e1, e2);
+		const auto D = Cross(e1, e2);
 
 		const auto triangleArea = D / float_t(2);
 		area += triangleArea;
@@ -193,7 +193,7 @@ void b2PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 
 			const auto r = ps[ie] - ps[hull[m]];
 			const auto v = ps[j] - ps[hull[m]];
-			const auto c = b2Cross(r, v);
+			const auto c = Cross(r, v);
 			if (c < float_t{0})
 			{
 				ie = j;
@@ -238,7 +238,7 @@ void b2PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 		const auto i2 = ((i + 1) < m) ? i + 1 : 0;
 		const auto edge = m_vertices[i2] - m_vertices[i1];
 		assert(edge.LengthSquared() > b2Square(Epsilon));
-		m_normals[i] = b2Normalize(b2Cross(edge, float_t(1)));
+		m_normals[i] = b2Normalize(Cross(edge, float_t(1)));
 	}
 
 	// Compute the polygon centroid.
@@ -251,7 +251,7 @@ bool b2PolygonShape::TestPoint(const b2Transform& xf, const Vec2& p) const
 
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
-		const auto dot = b2Dot(m_normals[i], pLocal - m_vertices[i]);
+		const auto dot = Dot(m_normals[i], pLocal - m_vertices[i]);
 		if (dot > float_t{0})
 		{
 			return false;
@@ -280,8 +280,8 @@ bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& inpu
 		// p = p1 + a * d
 		// dot(normal, p - v) = 0
 		// dot(normal, p1 - v) + a * dot(normal, d) = 0
-		const auto numerator = b2Dot(m_normals[i], m_vertices[i] - p1);
-		const auto denominator = b2Dot(m_normals[i], d);
+		const auto numerator = Dot(m_normals[i], m_vertices[i] - p1);
+		const auto denominator = Dot(m_normals[i], d);
 
 		if (denominator == float_t{0})
 		{	
@@ -404,7 +404,7 @@ b2MassData b2PolygonShape::ComputeMass(float_t density) const
 		const auto e1 = m_vertices[i] - s;
 		const auto e2 = ((i + 1) < m_count) ? m_vertices[i+1] - s : m_vertices[0] - s;
 
-		const auto D = b2Cross(e1, e2);
+		const auto D = Cross(e1, e2);
 
 		const auto triangleArea = D / float_t(2);
 		area += triangleArea;
@@ -453,7 +453,7 @@ bool b2PolygonShape::Validate() const
 			}
 
 			const auto v = m_vertices[j] - p;
-			const auto c = b2Cross(e, v);
+			const auto c = Cross(e, v);
 			if (c < float_t{0})
 			{
 				return false;

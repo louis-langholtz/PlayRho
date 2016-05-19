@@ -96,8 +96,8 @@ void b2RopeJoint::InitVelocityConstraints(const b2SolverData& data)
 	}
 
 	// Compute effective mass.
-	const auto crA = b2Cross(m_rA, m_u);
-	const auto crB = b2Cross(m_rB, m_u);
+	const auto crA = Cross(m_rA, m_u);
+	const auto crB = Cross(m_rB, m_u);
 	const auto invMass = m_invMassA + m_invIA * crA * crA + m_invMassB + m_invIB * crB * crB;
 
 	m_mass = (invMass != float_t{0}) ? float_t(1) / invMass : float_t{0};
@@ -109,9 +109,9 @@ void b2RopeJoint::InitVelocityConstraints(const b2SolverData& data)
 
 		const auto P = m_impulse * m_u;
 		vA -= m_invMassA * P;
-		wA -= m_invIA * b2Cross(m_rA, P);
+		wA -= m_invIA * Cross(m_rA, P);
 		vB += m_invMassB * P;
-		wB += m_invIB * b2Cross(m_rB, P);
+		wB += m_invIB * Cross(m_rB, P);
 	}
 	else
 	{
@@ -132,10 +132,10 @@ void b2RopeJoint::SolveVelocityConstraints(const b2SolverData& data)
 	auto wB = data.velocities[m_indexB].w;
 
 	// Cdot = dot(u, v + cross(w, r))
-	const auto vpA = vA + b2Cross(wA, m_rA);
-	const auto vpB = vB + b2Cross(wB, m_rB);
+	const auto vpA = vA + Cross(wA, m_rA);
+	const auto vpB = vB + Cross(wB, m_rB);
 	const auto C = m_length - m_maxLength;
-	auto Cdot = b2Dot(m_u, vpB - vpA);
+	auto Cdot = Dot(m_u, vpB - vpA);
 
 	// Predictive constraint.
 	if (C < float_t{0})
@@ -150,9 +150,9 @@ void b2RopeJoint::SolveVelocityConstraints(const b2SolverData& data)
 
 	const auto P = impulse * m_u;
 	vA -= m_invMassA * P;
-	wA -= m_invIA * b2Cross(m_rA, P);
+	wA -= m_invIA * Cross(m_rA, P);
 	vB += m_invMassB * P;
-	wB += m_invIB * b2Cross(m_rB, P);
+	wB += m_invIB * Cross(m_rB, P);
 
 	data.velocities[m_indexA].v = vA;
 	data.velocities[m_indexA].w = wA;
@@ -182,9 +182,9 @@ bool b2RopeJoint::SolvePositionConstraints(const b2SolverData& data)
 	const auto P = impulse * u;
 
 	cA -= m_invMassA * P;
-	aA -= m_invIA * b2Cross(rA, P);
+	aA -= m_invIA * Cross(rA, P);
 	cB += m_invMassB * P;
-	aB += m_invIB * b2Cross(rB, P);
+	aB += m_invIB * Cross(rB, P);
 
 	data.positions[m_indexA].c = cA;
 	data.positions[m_indexA].a = aA;

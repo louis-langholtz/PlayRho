@@ -105,7 +105,7 @@ b2PrismaticJoint::b2PrismaticJoint(const b2PrismaticJointDef* def)
 	m_localAnchorA = def->localAnchorA;
 	m_localAnchorB = def->localAnchorB;
 	m_localXAxisA = b2Normalize(def->localAxisA);
-	m_localYAxisA = b2Cross(float_t(1), m_localXAxisA);
+	m_localYAxisA = Cross(float_t(1), m_localXAxisA);
 	m_referenceAngle = def->referenceAngle;
 
 	m_impulse = Vec3_zero;
@@ -159,8 +159,8 @@ void b2PrismaticJoint::InitVelocityConstraints(const b2SolverData& data)
 	// Compute motor Jacobian and effective mass.
 	{
 		m_axis = b2Mul(qA, m_localXAxisA);
-		m_a1 = b2Cross(d + rA, m_axis);
-		m_a2 = b2Cross(rB, m_axis);
+		m_a1 = Cross(d + rA, m_axis);
+		m_a2 = Cross(rB, m_axis);
 
 		m_motorMass = mA + mB + iA * m_a1 * m_a1 + iB * m_a2 * m_a2;
 		if (m_motorMass > float_t{0})
@@ -173,8 +173,8 @@ void b2PrismaticJoint::InitVelocityConstraints(const b2SolverData& data)
 	{
 		m_perp = b2Mul(qA, m_localYAxisA);
 
-		m_s1 = b2Cross(d + rA, m_perp);
-		m_s2 = b2Cross(rB, m_perp);
+		m_s1 = Cross(d + rA, m_perp);
+		m_s2 = Cross(rB, m_perp);
 
 		const auto k11 = mA + mB + iA * m_s1 * m_s1 + iB * m_s2 * m_s2;
 		const auto k12 = iA * m_s1 + iB * m_s2;
@@ -196,7 +196,7 @@ void b2PrismaticJoint::InitVelocityConstraints(const b2SolverData& data)
 	// Compute motor and limit terms.
 	if (m_enableLimit)
 	{
-		const auto jointTranslation = b2Dot(m_axis, d);
+		const auto jointTranslation = Dot(m_axis, d);
 		if (b2Abs(m_upperTranslation - m_lowerTranslation) < (LinearSlop * 2))
 		{
 			m_limitState = e_equalLimits;
@@ -275,7 +275,7 @@ void b2PrismaticJoint::SolveVelocityConstraints(const b2SolverData& data)
 	// Solve linear motor constraint.
 	if (m_enableMotor && m_limitState != e_equalLimits)
 	{
-		const auto Cdot = b2Dot(m_axis, vB - vA) + m_a2 * wB - m_a1 * wA;
+		const auto Cdot = Dot(m_axis, vB - vA) + m_a2 * wB - m_a1 * wA;
 		auto impulse = m_motorMass * (m_motorSpeed - Cdot);
 		const auto oldImpulse = m_motorImpulse;
 		const auto maxImpulse = data.step.get_dt() * m_maxMotorForce;
@@ -293,12 +293,12 @@ void b2PrismaticJoint::SolveVelocityConstraints(const b2SolverData& data)
 		wB += iB * LB;
 	}
 
-	const auto Cdot1 = Vec2{b2Dot(m_perp, vB - vA) + m_s2 * wB - m_s1 * wA, wB - wA};
+	const auto Cdot1 = Vec2{Dot(m_perp, vB - vA) + m_s2 * wB - m_s1 * wA, wB - wA};
 
 	if (m_enableLimit && (m_limitState != e_inactiveLimit))
 	{
 		// Solve prismatic and limit constraint in block form.
-		const auto Cdot2 = b2Dot(m_axis, vB - vA) + m_a2 * wB - m_a1 * wA;
+		const auto Cdot2 = Dot(m_axis, vB - vA) + m_a2 * wB - m_a1 * wA;
 		const auto Cdot = Vec3{Cdot1.x, Cdot1.y, Cdot2};
 
 		const auto f1 = m_impulse;
@@ -381,14 +381,14 @@ bool b2PrismaticJoint::SolvePositionConstraints(const b2SolverData& data)
 	const auto d = cB + rB - cA - rA;
 
 	const auto axis = b2Mul(qA, m_localXAxisA);
-	const auto a1 = b2Cross(d + rA, axis);
-	const auto a2 = b2Cross(rB, axis);
+	const auto a1 = Cross(d + rA, axis);
+	const auto a2 = Cross(rB, axis);
 	const auto perp = b2Mul(qA, m_localYAxisA);
 
-	const auto s1 = b2Cross(d + rA, perp);
-	const auto s2 = b2Cross(rB, perp);
+	const auto s1 = Cross(d + rA, perp);
+	const auto s2 = Cross(rB, perp);
 
-	const auto C1 = Vec2{b2Dot(perp, d), aB - aA - m_referenceAngle};
+	const auto C1 = Vec2{Dot(perp, d), aB - aA - m_referenceAngle};
 
 	auto linearError = b2Abs(C1.x);
 	const auto angularError = b2Abs(C1.y);
@@ -397,7 +397,7 @@ bool b2PrismaticJoint::SolvePositionConstraints(const b2SolverData& data)
 	auto C2 = float_t{0};
 	if (m_enableLimit)
 	{
-		const auto translation = b2Dot(axis, d);
+		const auto translation = Dot(axis, d);
 		if (b2Abs(m_upperTranslation - m_lowerTranslation) < (float_t{2} * LinearSlop))
 		{
 			// Prevent large angular corrections
@@ -504,7 +504,7 @@ float_t b2PrismaticJoint::GetJointTranslation() const
 	const auto d = pB - pA;
 	const auto axis = m_bodyA->GetWorldVector(m_localXAxisA);
 
-	return b2Dot(d, axis);
+	return Dot(d, axis);
 }
 
 float_t b2PrismaticJoint::GetJointSpeed() const
@@ -524,7 +524,7 @@ float_t b2PrismaticJoint::GetJointSpeed() const
 	const auto wA = bA->m_angularVelocity;
 	const auto wB = bB->m_angularVelocity;
 
-	return b2Dot(d, b2Cross(wA, axis)) + b2Dot(axis, vB + b2Cross(wB, rB) - vA - b2Cross(wA, rA));
+	return Dot(d, Cross(wA, axis)) + Dot(axis, vB + Cross(wB, rB) - vA - Cross(wA, rA));
 }
 
 bool b2PrismaticJoint::IsLimitEnabled() const noexcept

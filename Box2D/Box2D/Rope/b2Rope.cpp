@@ -78,8 +78,8 @@ void b2Rope::Initialize(const b2RopeDef* def)
 		const auto d1 = p2 - p1;
 		const auto d2 = p3 - p2;
 
-		const auto a = b2Cross(d1, d2);
-		const auto b = b2Dot(d1, d2);
+		const auto a = Cross(d1, d2);
+		const auto b = Dot(d1, d2);
 
 		m_as[i] = b2Atan2(a, b);
 	}
@@ -190,8 +190,8 @@ void b2Rope::SolveC3()
 			continue;
 		}
 
-		const auto a = b2Cross(d1, d2);
-		const auto b = b2Dot(d1, d2);
+		const auto a = Cross(d1, d2);
+		const auto b = Dot(d1, d2);
 
 		auto angle = b2Atan2(a, b);
 
@@ -202,7 +202,7 @@ void b2Rope::SolveC3()
 		const auto J2 = Jd1 - Jd2;
 		const auto J3 = Jd2;
 
-		auto mass = m1 * b2Dot(J1, J1) + m2 * b2Dot(J2, J2) + m3 * b2Dot(J3, J3);
+		auto mass = m1 * Dot(J1, J1) + m2 * Dot(J2, J2) + m3 * Dot(J3, J3);
 		if (mass == float_t{0})
 		{
 			continue;

@@ -88,7 +88,7 @@ b2GearJoint::b2GearJoint(const b2GearJointDef* def)
 
 		const auto pC = m_localAnchorC;
 		const auto pA = b2MulT(xfC.q, b2Mul(xfA.q, m_localAnchorA) + (xfA.p - xfC.p));
-		coordinateA = b2Dot(pA - pC, m_localAxisC);
+		coordinateA = Dot(pA - pC, m_localAxisC);
 	}
 
 	m_bodyD = m_joint2->GetBodyA();
@@ -120,7 +120,7 @@ b2GearJoint::b2GearJoint(const b2GearJointDef* def)
 
 		const auto pD = m_localAnchorD;
 		const auto pB = b2MulT(xfD.q, b2Mul(xfB.q, m_localAnchorB) + (xfB.p - xfD.p));
-		coordinateB = b2Dot(pB - pD, m_localAxisD);
+		coordinateB = Dot(pB - pD, m_localAxisD);
 	}
 
 	m_ratio = def->ratio;
@@ -185,8 +185,8 @@ void b2GearJoint::InitVelocityConstraints(const b2SolverData& data)
 		const auto rC = b2Mul(qC, m_localAnchorC - m_lcC);
 		const auto rA = b2Mul(qA, m_localAnchorA - m_lcA);
 		m_JvAC = u;
-		m_JwC = b2Cross(rC, u);
-		m_JwA = b2Cross(rA, u);
+		m_JwC = Cross(rC, u);
+		m_JwA = Cross(rA, u);
 		m_mass += m_mC + m_mA + m_iC * b2Square(m_JwC) + m_iA * b2Square(m_JwA);
 	}
 
@@ -203,8 +203,8 @@ void b2GearJoint::InitVelocityConstraints(const b2SolverData& data)
 		Vec2 rD = b2Mul(qD, m_localAnchorD - m_lcD);
 		Vec2 rB = b2Mul(qB, m_localAnchorB - m_lcB);
 		m_JvBD = m_ratio * u;
-		m_JwD = m_ratio * b2Cross(rD, u);
-		m_JwB = m_ratio * b2Cross(rB, u);
+		m_JwD = m_ratio * Cross(rD, u);
+		m_JwB = m_ratio * Cross(rB, u);
 		m_mass += b2Square(m_ratio) * (m_mD + m_mB) + m_iD * b2Square(m_JwD) + m_iB * b2Square(m_JwB);
 	}
 
@@ -248,7 +248,7 @@ void b2GearJoint::SolveVelocityConstraints(const b2SolverData& data)
 	auto vD = data.velocities[m_indexD].v;
 	auto wD = data.velocities[m_indexD].w;
 
-	auto Cdot = b2Dot(m_JvAC, vA - vC) + b2Dot(m_JvBD, vB - vD);
+	auto Cdot = Dot(m_JvAC, vA - vC) + Dot(m_JvBD, vB - vD);
 	Cdot += (m_JwA * wA - m_JwC * wC) + (m_JwB * wB - m_JwD * wD);
 
 	const auto impulse = -m_mass * Cdot;
@@ -309,13 +309,13 @@ bool b2GearJoint::SolvePositionConstraints(const b2SolverData& data)
 		const auto rC = b2Mul(qC, m_localAnchorC - m_lcC);
 		const auto rA = b2Mul(qA, m_localAnchorA - m_lcA);
 		JvAC = u;
-		JwC = b2Cross(rC, u);
-		JwA = b2Cross(rA, u);
+		JwC = Cross(rC, u);
+		JwA = Cross(rA, u);
 		mass += m_mC + m_mA + m_iC * b2Square(JwC) + m_iA * b2Square(JwA);
 
 		const auto pC = m_localAnchorC - m_lcC;
 		const auto pA = b2MulT(qC, rA + (cA - cC));
-		coordinateA = b2Dot(pA - pC, m_localAxisC);
+		coordinateA = Dot(pA - pC, m_localAxisC);
 	}
 
 	if (m_typeB == e_revoluteJoint)
@@ -333,13 +333,13 @@ bool b2GearJoint::SolvePositionConstraints(const b2SolverData& data)
 		const auto rD = b2Mul(qD, m_localAnchorD - m_lcD);
 		const auto rB = b2Mul(qB, m_localAnchorB - m_lcB);
 		JvBD = m_ratio * u;
-		JwD = m_ratio * b2Cross(rD, u);
-		JwB = m_ratio * b2Cross(rB, u);
+		JwD = m_ratio * Cross(rD, u);
+		JwB = m_ratio * Cross(rB, u);
 		mass += b2Square(m_ratio) * (m_mD + m_mB) + m_iD * b2Square(JwD) + m_iB * b2Square(JwB);
 
 		const auto pD = m_localAnchorD - m_lcD;
 		const auto pB = b2MulT(qD, rB + (cB - cD));
-		coordinateB = b2Dot(pB - pD, m_localAxisD);
+		coordinateB = Dot(pB - pD, m_localAxisD);
 	}
 
 	const auto C = (coordinateA + m_ratio * coordinateB) - m_constant;

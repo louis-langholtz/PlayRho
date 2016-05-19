@@ -53,7 +53,7 @@ b2WheelJoint::b2WheelJoint(const b2WheelJointDef* def)
 	m_localAnchorA = def->localAnchorA;
 	m_localAnchorB = def->localAnchorB;
 	m_localXAxisA = def->localAxisA;
-	m_localYAxisA = b2Cross(float_t(1), m_localXAxisA);
+	m_localYAxisA = Cross(float_t(1), m_localXAxisA);
 
 	m_mass = float_t{0};
 	m_impulse = float_t{0};
@@ -110,8 +110,8 @@ void b2WheelJoint::InitVelocityConstraints(const b2SolverData& data)
 	// Point to line constraint
 	{
 		m_ay = b2Mul(qA, m_localYAxisA);
-		m_sAy = b2Cross(dd + rA, m_ay);
-		m_sBy = b2Cross(rB, m_ay);
+		m_sAy = Cross(dd + rA, m_ay);
+		m_sBy = Cross(rB, m_ay);
 
 		m_mass = mA + mB + iA * m_sAy * m_sAy + iB * m_sBy * m_sBy;
 
@@ -128,8 +128,8 @@ void b2WheelJoint::InitVelocityConstraints(const b2SolverData& data)
 	if (m_frequencyHz > float_t{0})
 	{
 		m_ax = b2Mul(qA, m_localXAxisA);
-		m_sAx = b2Cross(dd + rA, m_ax);
-		m_sBx = b2Cross(rB, m_ax);
+		m_sAx = Cross(dd + rA, m_ax);
+		m_sBx = Cross(rB, m_ax);
 
 		const auto invMass = mA + mB + iA * m_sAx * m_sAx + iB * m_sBx * m_sBx;
 
@@ -137,7 +137,7 @@ void b2WheelJoint::InitVelocityConstraints(const b2SolverData& data)
 		{
 			m_springMass = float_t(1) / invMass;
 
-			const auto C = b2Dot(dd, m_ax);
+			const auto C = Dot(dd, m_ax);
 
 			// Frequency
 			const auto omega = float_t(2) * Pi * m_frequencyHz;
@@ -227,7 +227,7 @@ void b2WheelJoint::SolveVelocityConstraints(const b2SolverData& data)
 
 	// Solve spring constraint
 	{
-		const auto Cdot = b2Dot(m_ax, vB - vA) + m_sBx * wB - m_sAx * wA;
+		const auto Cdot = Dot(m_ax, vB - vA) + m_sBx * wB - m_sAx * wA;
 		const auto impulse = -m_springMass * (Cdot + m_bias + m_gamma * m_springImpulse);
 		m_springImpulse += impulse;
 
@@ -258,7 +258,7 @@ void b2WheelJoint::SolveVelocityConstraints(const b2SolverData& data)
 
 	// Solve point to line constraint
 	{
-		const auto Cdot = b2Dot(m_ay, vB - vA) + m_sBy * wB - m_sAy * wA;
+		const auto Cdot = Dot(m_ay, vB - vA) + m_sBy * wB - m_sAy * wA;
 		const auto impulse = -m_mass * Cdot;
 		m_impulse += impulse;
 
@@ -294,10 +294,10 @@ bool b2WheelJoint::SolvePositionConstraints(const b2SolverData& data)
 
 	const auto ay = b2Mul(qA, m_localYAxisA);
 
-	const auto sAy = b2Cross(d + rA, ay);
-	const auto sBy = b2Cross(rB, ay);
+	const auto sAy = Cross(d + rA, ay);
+	const auto sBy = Cross(rB, ay);
 
-	const auto C = b2Dot(d, ay);
+	const auto C = Dot(d, ay);
 
 	const auto k = m_invMassA + m_invMassB + m_invIA * m_sAy * m_sAy + m_invIB * m_sBy * m_sBy;
 
@@ -346,7 +346,7 @@ float_t b2WheelJoint::GetJointTranslation() const
 	const auto pB = m_bodyB->GetWorldPoint(m_localAnchorB);
 	const auto d = pB - pA;
 	const auto axis = m_bodyA->GetWorldVector(m_localXAxisA);
-	return b2Dot(d, axis);
+	return Dot(d, axis);
 }
 
 float_t b2WheelJoint::GetJointSpeed() const

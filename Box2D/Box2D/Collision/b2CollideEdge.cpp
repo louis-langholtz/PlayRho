@@ -37,8 +37,8 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 	const auto e = B - A;
 	
 	// Barycentric coordinates
-	const auto u = b2Dot(e, B - Q);
-	const auto v = b2Dot(e, Q - A);
+	const auto u = Dot(e, B - Q);
+	const auto v = Dot(e, Q - A);
 	
 	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
 
@@ -58,7 +58,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 			const auto A1 = shapeA.GetVertex0();
 			const auto B1 = A;
 			const auto e1 = B1 - A1;
-			const auto u1 = b2Dot(e1, B1 - Q);
+			const auto u1 = Dot(e1, B1 - Q);
 			
 			// Is the circle in Region AB of the previous edge?
 			if (u1 > 0)
@@ -90,7 +90,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 			const auto B2 = shapeA.GetVertex3();
 			const auto A2 = B;
 			const auto e2 = B2 - A2;
-			const auto v2 = b2Dot(e2, Q - A2);
+			const auto v2 = Dot(e2, Q - A2);
 			
 			// Is the circle in Region AB of the next edge?
 			if (v2 > 0)
@@ -118,7 +118,7 @@ b2Manifold b2CollideShapes(const b2EdgeShape& shapeA, const b2Transform& xfA, co
 	}
 	
 	auto n = Vec2(-e.y, e.x);
-	if (b2Dot(n, Q - A) < 0)
+	if (Dot(n, Q - A) < 0)
 	{
 		n = Vec2(-n.x, -n.y);
 	}
@@ -261,7 +261,7 @@ inline b2EdgeInfo::b2EdgeInfo(const b2EdgeShape& edge, const Vec2& centroid):
 	const auto hasVertex0 = edge.HasVertex0();
 	const auto hasVertex3 = edge.HasVertex3();
 
-	const auto offset1 = b2Dot(m_normal1, centroid - m_vertex1);
+	const auto offset1 = Dot(m_normal1, centroid - m_vertex1);
 	
 	// Determine front or back collision. Determine collision normal limits.
 	if (hasVertex0 && hasVertex3)
@@ -269,14 +269,14 @@ inline b2EdgeInfo::b2EdgeInfo(const b2EdgeShape& edge, const Vec2& centroid):
 		const auto vertex0 = edge.GetVertex0();
 		const auto edge0 = b2Normalize(m_vertex1 - vertex0);
 		const auto normal0 = Vec2(edge0.y, -edge0.x);
-		const auto convex1 = b2Cross(edge0, m_edge1) >= float_t{0};
-		const auto offset0 = b2Dot(normal0, centroid - vertex0);
+		const auto convex1 = Cross(edge0, m_edge1) >= float_t{0};
+		const auto offset0 = Dot(normal0, centroid - vertex0);
 
 		const auto vertex3 = edge.GetVertex3();
 		const auto edge2 = b2Normalize(vertex3 - m_vertex2);
 		const auto normal2 = Vec2(edge2.y, -edge2.x);
-		const auto convex2 = b2Cross(m_edge1, edge2) > float_t{0};
-		const auto offset2 = b2Dot(normal2, centroid - m_vertex2);
+		const auto convex2 = Cross(m_edge1, edge2) > float_t{0};
+		const auto offset2 = Dot(normal2, centroid - m_vertex2);
 
 		if (convex1 && convex2)
 		{
@@ -348,8 +348,8 @@ inline b2EdgeInfo::b2EdgeInfo(const b2EdgeShape& edge, const Vec2& centroid):
 		const auto vertex0 = edge.GetVertex0();
 		const auto edge0 = b2Normalize(m_vertex1 - vertex0);
 		const auto normal0 = Vec2(edge0.y, -edge0.x);
-		const auto convex1 = b2Cross(edge0, m_edge1) >= float_t{0};
-		const auto offset0 = b2Dot(normal0, centroid - vertex0);
+		const auto convex1 = Cross(edge0, m_edge1) >= float_t{0};
+		const auto offset0 = Dot(normal0, centroid - vertex0);
 
 		if (convex1)
 		{
@@ -389,8 +389,8 @@ inline b2EdgeInfo::b2EdgeInfo(const b2EdgeShape& edge, const Vec2& centroid):
 		const auto vertex3 = edge.GetVertex3();
 		const auto edge2 = b2Normalize(vertex3 - m_vertex2);
 		const auto normal2 = Vec2(edge2.y, -edge2.x);
-		const auto convex2 = b2Cross(m_edge1, edge2) > float_t{0};
-		const auto offset2 = b2Dot(normal2, centroid - m_vertex2);
+		const auto convex2 = Cross(m_edge1, edge2) > float_t{0};
+		const auto offset2 = Dot(normal2, centroid - m_vertex2);
 
 		if (convex2)
 		{
@@ -447,11 +447,11 @@ static inline b2TempPolygon::size_type b2GetIndexOfMinimum(const b2TempPolygon& 
 {
 	b2TempPolygon::size_type bestIndex = b2TempPolygon::size_type{0};
 	
-	auto minValue = b2Dot(edgeInfo.GetNormal(), localShapeB.GetNormal(0));
+	auto minValue = Dot(edgeInfo.GetNormal(), localShapeB.GetNormal(0));
 	const auto count = localShapeB.GetCount();
 	for (auto i = decltype(count){1}; i < count; ++i)
 	{
-		const auto value = b2Dot(edgeInfo.GetNormal(), localShapeB.GetNormal(i));
+		const auto value = Dot(edgeInfo.GetNormal(), localShapeB.GetNormal(i));
 		if (minValue > value)
 		{
 			minValue = value;
@@ -470,7 +470,7 @@ static inline b2EPAxis b2ComputeEdgeSeparation(const b2TempPolygon& shape, const
 	const auto count = shape.GetCount();
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
-		const auto s = b2Dot(edgeInfo.GetNormal(), shape.GetVertex(i) - edgeInfo.GetVertex1());
+		const auto s = Dot(edgeInfo.GetNormal(), shape.GetVertex(i) - edgeInfo.GetVertex1());
 		if (min_val > s)
 			min_val = s;
 	}
@@ -488,24 +488,24 @@ static inline b2EPAxis b2ComputePolygonSeparation(const b2TempPolygon& shape, co
 	{
 		const auto polygonNormal = -shape.GetNormal(i);
 		const auto polygonVertex = shape.GetVertex(i);
-		const auto s1 = b2Dot(polygonNormal, polygonVertex - edgeInfo.GetVertex1());
-		const auto s2 = b2Dot(polygonNormal, polygonVertex - edgeInfo.GetVertex2());
+		const auto s1 = Dot(polygonNormal, polygonVertex - edgeInfo.GetVertex1());
+		const auto s2 = Dot(polygonNormal, polygonVertex - edgeInfo.GetVertex2());
 		const auto s = b2Min(s1, s2);
 		
 		if (s > b2MaxEPSeparation) // No collision
 			return b2EPAxis(b2EPAxis::e_edgeB, i, s);
 		
 		// Adjacency
-		if (b2Dot(polygonNormal, perp) >= 0)
+		if (Dot(polygonNormal, perp) >= 0)
 		{
-			if (b2Dot(polygonNormal - edgeInfo.GetUpperLimit(), edgeInfo.GetNormal()) < -AngularSlop)
+			if (Dot(polygonNormal - edgeInfo.GetUpperLimit(), edgeInfo.GetNormal()) < -AngularSlop)
 			{
 				continue;
 			}
 		}
 		else
 		{
-			if (b2Dot(polygonNormal - edgeInfo.GetLowerLimit(), edgeInfo.GetNormal()) < -AngularSlop)
+			if (Dot(polygonNormal - edgeInfo.GetLowerLimit(), edgeInfo.GetNormal()) < -AngularSlop)
 			{
 				continue;
 			}
@@ -632,8 +632,8 @@ b2Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShap
 	
 	rf.sideNormal1 = Vec2(rf.normal.y, -rf.normal.x);
 	rf.sideNormal2 = -rf.sideNormal1;
-	rf.sideOffset1 = b2Dot(rf.sideNormal1, rf.v1);
-	rf.sideOffset2 = b2Dot(rf.sideNormal2, rf.v2);
+	rf.sideOffset1 = Dot(rf.sideNormal1, rf.v1);
+	rf.sideOffset2 = Dot(rf.sideNormal2, rf.v2);
 	
 	// Clip incident edge against extruded edge1 side edges.
 	
@@ -661,7 +661,7 @@ b2Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShap
 		manifold.SetLocalPoint(rf.v1);
 		for (auto i = decltype(clipPoints2.size()){0}; i < clipPoints2.size(); ++i)
 		{
-			const auto separation = b2Dot(rf.normal, clipPoints2[i].v - rf.v1);
+			const auto separation = Dot(rf.normal, clipPoints2[i].v - rf.v1);
 			if (separation <= b2MaxEPSeparation)
 			{
 				manifold.AddPoint(b2MulT(m_xf, clipPoints2[i].v), clipPoints2[i].cf);
@@ -674,7 +674,7 @@ b2Manifold b2EPCollider::Collide(const b2EdgeInfo& edgeInfo, const b2PolygonShap
 		manifold.SetLocalPoint(shapeB.GetVertex(rf.i1));
 		for (auto i = decltype(clipPoints2.size()){0}; i < clipPoints2.size(); ++i)
 		{
-			const auto separation = b2Dot(rf.normal, clipPoints2[i].v - rf.v1);
+			const auto separation = Dot(rf.normal, clipPoints2[i].v - rf.v1);
 			if (separation <= b2MaxEPSeparation)
 			{
 				manifold.AddPoint(clipPoints2[i].v, b2Flip(clipPoints2[i].cf));

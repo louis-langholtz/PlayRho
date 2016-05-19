@@ -121,9 +121,9 @@ void b2MotorJoint::InitVelocityConstraints(const b2SolverData& data)
 
 		const auto P = Vec2(m_linearImpulse.x, m_linearImpulse.y);
 		vA -= mA * P;
-		wA -= iA * (b2Cross(m_rA, P) + m_angularImpulse);
+		wA -= iA * (Cross(m_rA, P) + m_angularImpulse);
 		vB += mB * P;
-		wB += iB * (b2Cross(m_rB, P) + m_angularImpulse);
+		wB += iB * (Cross(m_rB, P) + m_angularImpulse);
 	}
 	else
 	{
@@ -166,7 +166,7 @@ void b2MotorJoint::SolveVelocityConstraints(const b2SolverData& data)
 
 	// Solve linear friction
 	{
-		const auto Cdot = vB + b2Cross(wB, m_rB) - vA - b2Cross(wA, m_rA) + inv_h * m_correctionFactor * m_linearError;
+		const auto Cdot = vB + Cross(wB, m_rB) - vA - Cross(wA, m_rA) + inv_h * m_correctionFactor * m_linearError;
 
 		auto impulse = -b2Mul(m_linearMass, Cdot);
 		const auto oldImpulse = m_linearImpulse;
@@ -183,10 +183,10 @@ void b2MotorJoint::SolveVelocityConstraints(const b2SolverData& data)
 		impulse = m_linearImpulse - oldImpulse;
 
 		vA -= mA * impulse;
-		wA -= iA * b2Cross(m_rA, impulse);
+		wA -= iA * Cross(m_rA, impulse);
 
 		vB += mB * impulse;
-		wB += iB * b2Cross(m_rB, impulse);
+		wB += iB * Cross(m_rB, impulse);
 	}
 
 	data.velocities[m_indexA].v = vA;

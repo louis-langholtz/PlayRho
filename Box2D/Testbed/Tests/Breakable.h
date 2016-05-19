@@ -108,8 +108,8 @@ public:
 		Vec2 center1 = body1->GetWorldCenter();
 		Vec2 center2 = body2->GetWorldCenter();
 		
-		Vec2 velocity1 = m_velocity + b2Cross(m_angularVelocity, center1 - center);
-		Vec2 velocity2 = m_velocity + b2Cross(m_angularVelocity, center2 - center);
+		Vec2 velocity1 = m_velocity + Cross(m_angularVelocity, center1 - center);
+		Vec2 velocity2 = m_velocity + Cross(m_angularVelocity, center2 - center);
 
 		body1->SetAngularVelocity(m_angularVelocity);
 		body1->SetLinearVelocity(velocity1);

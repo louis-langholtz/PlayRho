@@ -96,8 +96,8 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 		m_u = Vec2(float_t{0}, float_t{0});
 	}
 
-	const auto crAu = b2Cross(m_rA, m_u);
-	const auto crBu = b2Cross(m_rB, m_u);
+	const auto crAu = Cross(m_rA, m_u);
+	const auto crBu = Cross(m_rB, m_u);
 	auto invMass = m_invMassA + m_invIA * b2Square(crAu) + m_invMassB + m_invIB * b2Square(crBu);
 
 	// Compute the effective mass matrix.
@@ -138,9 +138,9 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 
 		const auto P = m_impulse * m_u;
 		vA -= m_invMassA * P;
-		wA -= m_invIA * b2Cross(m_rA, P);
+		wA -= m_invIA * Cross(m_rA, P);
 		vB += m_invMassB * P;
-		wB += m_invIB * b2Cross(m_rB, P);
+		wB += m_invIB * Cross(m_rB, P);
 	}
 	else
 	{
@@ -161,18 +161,18 @@ void b2DistanceJoint::SolveVelocityConstraints(const b2SolverData& data)
 	auto wB = data.velocities[m_indexB].w;
 
 	// Cdot = dot(u, v + cross(w, r))
-	const auto vpA = vA + b2Cross(wA, m_rA);
-	const auto vpB = vB + b2Cross(wB, m_rB);
-	const auto Cdot = b2Dot(m_u, vpB - vpA);
+	const auto vpA = vA + Cross(wA, m_rA);
+	const auto vpB = vB + Cross(wB, m_rB);
+	const auto Cdot = Dot(m_u, vpB - vpA);
 
 	const auto impulse = -m_mass * (Cdot + m_bias + m_gamma * m_impulse);
 	m_impulse += impulse;
 
 	const auto P = impulse * m_u;
 	vA -= m_invMassA * P;
-	wA -= m_invIA * b2Cross(m_rA, P);
+	wA -= m_invIA * Cross(m_rA, P);
 	vB += m_invMassB * P;
-	wB += m_invIB * b2Cross(m_rB, P);
+	wB += m_invIB * Cross(m_rB, P);
 
 	data.velocities[m_indexA].v = vA;
 	data.velocities[m_indexA].w = wA;
@@ -208,9 +208,9 @@ bool b2DistanceJoint::SolvePositionConstraints(const b2SolverData& data)
 	const auto P = impulse * u;
 
 	cA -= m_invMassA * P;
-	aA -= m_invIA * b2Cross(rA, P);
+	aA -= m_invIA * Cross(rA, P);
 	cB += m_invMassB * P;
-	aB += m_invIB * b2Cross(rB, P);
+	aB += m_invIB * Cross(rB, P);
 
 	data.positions[m_indexA].c = cA;
 	data.positions[m_indexA].a = aA;

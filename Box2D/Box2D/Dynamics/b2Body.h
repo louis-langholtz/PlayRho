@@ -595,7 +595,7 @@ inline Vec2 b2Body::GetLocalVector(const Vec2& worldVector) const noexcept
 
 inline Vec2 b2Body::GetLinearVelocityFromWorldPoint(const Vec2& worldPoint) const noexcept
 {
-	return m_linearVelocity + b2Cross(m_angularVelocity, worldPoint - m_sweep.c);
+	return m_linearVelocity + Cross(m_angularVelocity, worldPoint - m_sweep.c);
 }
 
 inline Vec2 b2Body::GetLinearVelocityFromLocalPoint(const Vec2& localPoint) const noexcept
@@ -790,7 +790,7 @@ inline void b2Body::ApplyForce(const Vec2& force, const Vec2& point, bool wake) 
 	if (IsAwake())
 	{
 		m_force += force;
-		m_torque += b2Cross(point - m_sweep.c, force);
+		m_torque += Cross(point - m_sweep.c, force);
 	}
 }
 
@@ -848,7 +848,7 @@ inline void b2Body::ApplyLinearImpulse(const Vec2& impulse, const Vec2& point, b
 	if (IsAwake())
 	{
 		m_linearVelocity += m_invMass * impulse;
-		m_angularVelocity += m_invI * b2Cross(point - m_sweep.c, impulse);
+		m_angularVelocity += m_invI * Cross(point - m_sweep.c, impulse);
 	}
 }
 

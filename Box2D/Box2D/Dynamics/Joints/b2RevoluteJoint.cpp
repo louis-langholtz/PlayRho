@@ -165,10 +165,10 @@ void b2RevoluteJoint::InitVelocityConstraints(const b2SolverData& data)
 		const auto P = Vec2(m_impulse.x, m_impulse.y);
 
 		vA -= mA * P;
-		wA -= iA * (b2Cross(m_rA, P) + m_motorImpulse + m_impulse.z);
+		wA -= iA * (Cross(m_rA, P) + m_motorImpulse + m_impulse.z);
 
 		vB += mB * P;
-		wB += iB * (b2Cross(m_rB, P) + m_motorImpulse + m_impulse.z);
+		wB += iB * (Cross(m_rB, P) + m_motorImpulse + m_impulse.z);
 	}
 	else
 	{
@@ -211,7 +211,7 @@ void b2RevoluteJoint::SolveVelocityConstraints(const b2SolverData& data)
 	// Solve limit constraint.
 	if (m_enableLimit && (m_limitState != e_inactiveLimit) && !fixedRotation)
 	{
-		const auto Cdot1 = vB + b2Cross(wB, m_rB) - vA - b2Cross(wA, m_rA);
+		const auto Cdot1 = vB + Cross(wB, m_rB) - vA - Cross(wA, m_rA);
 		const auto Cdot2 = wB - wA;
 		const auto Cdot = Vec3(Cdot1.x, Cdot1.y, Cdot2);
 
@@ -263,25 +263,25 @@ void b2RevoluteJoint::SolveVelocityConstraints(const b2SolverData& data)
 		const auto P = Vec2(impulse.x, impulse.y);
 
 		vA -= mA * P;
-		wA -= iA * (b2Cross(m_rA, P) + impulse.z);
+		wA -= iA * (Cross(m_rA, P) + impulse.z);
 
 		vB += mB * P;
-		wB += iB * (b2Cross(m_rB, P) + impulse.z);
+		wB += iB * (Cross(m_rB, P) + impulse.z);
 	}
 	else
 	{
 		// Solve point-to-point constraint
-		const auto Cdot = vB + b2Cross(wB, m_rB) - vA - b2Cross(wA, m_rA);
+		const auto Cdot = vB + Cross(wB, m_rB) - vA - Cross(wA, m_rA);
 		const auto impulse = m_mass.Solve22(-Cdot);
 
 		m_impulse.x += impulse.x;
 		m_impulse.y += impulse.y;
 
 		vA -= mA * impulse;
-		wA -= iA * b2Cross(m_rA, impulse);
+		wA -= iA * Cross(m_rA, impulse);
 
 		vB += mB * impulse;
-		wB += iB * b2Cross(m_rB, impulse);
+		wB += iB * Cross(m_rB, impulse);
 	}
 
 	data.velocities[m_indexA].v = vA;
@@ -363,10 +363,10 @@ bool b2RevoluteJoint::SolvePositionConstraints(const b2SolverData& data)
 		const auto impulse = -K.Solve(C);
 
 		cA -= mA * impulse;
-		aA -= iA * b2Cross(rA, impulse);
+		aA -= iA * Cross(rA, impulse);
 
 		cB += mB * impulse;
-		aB += iB * b2Cross(rB, impulse);
+		aB += iB * Cross(rB, impulse);
 	}
 
 	data.positions[m_indexA].c = cA;

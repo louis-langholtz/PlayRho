@@ -124,8 +124,8 @@ void b2PulleyJoint::InitVelocityConstraints(const b2SolverData& data)
 	}
 
 	// Compute effective mass.
-	const auto ruA = b2Cross(m_rA, m_uA);
-	const auto ruB = b2Cross(m_rB, m_uB);
+	const auto ruA = Cross(m_rA, m_uA);
+	const auto ruB = Cross(m_rB, m_uB);
 
 	const auto mA = m_invMassA + m_invIA * ruA * ruA;
 	const auto mB = m_invMassB + m_invIB * ruB * ruB;
@@ -147,9 +147,9 @@ void b2PulleyJoint::InitVelocityConstraints(const b2SolverData& data)
 		const auto PB = (-m_ratio * m_impulse) * m_uB;
 
 		vA += m_invMassA * PA;
-		wA += m_invIA * b2Cross(m_rA, PA);
+		wA += m_invIA * Cross(m_rA, PA);
 		vB += m_invMassB * PB;
-		wB += m_invIB * b2Cross(m_rB, PB);
+		wB += m_invIB * Cross(m_rB, PB);
 	}
 	else
 	{
@@ -169,19 +169,19 @@ void b2PulleyJoint::SolveVelocityConstraints(const b2SolverData& data)
 	auto vB = data.velocities[m_indexB].v;
 	auto wB = data.velocities[m_indexB].w;
 
-	const auto vpA = vA + b2Cross(wA, m_rA);
-	const auto vpB = vB + b2Cross(wB, m_rB);
+	const auto vpA = vA + Cross(wA, m_rA);
+	const auto vpB = vB + Cross(wB, m_rB);
 
-	const auto Cdot = -b2Dot(m_uA, vpA) - m_ratio * b2Dot(m_uB, vpB);
+	const auto Cdot = -Dot(m_uA, vpA) - m_ratio * Dot(m_uB, vpB);
 	const auto impulse = -m_mass * Cdot;
 	m_impulse += impulse;
 
 	const auto PA = -impulse * m_uA;
 	const auto PB = -m_ratio * impulse * m_uB;
 	vA += m_invMassA * PA;
-	wA += m_invIA * b2Cross(m_rA, PA);
+	wA += m_invIA * Cross(m_rA, PA);
 	vB += m_invMassB * PB;
-	wB += m_invIB * b2Cross(m_rB, PB);
+	wB += m_invIB * Cross(m_rB, PB);
 
 	data.velocities[m_indexA].v = vA;
 	data.velocities[m_indexA].w = wA;
@@ -227,8 +227,8 @@ bool b2PulleyJoint::SolvePositionConstraints(const b2SolverData& data)
 	}
 
 	// Compute effective mass.
-	const auto ruA = b2Cross(rA, uA);
-	const auto ruB = b2Cross(rB, uB);
+	const auto ruA = Cross(rA, uA);
+	const auto ruB = Cross(rB, uB);
 
 	const auto mA = m_invMassA + m_invIA * ruA * ruA;
 	const auto mB = m_invMassB + m_invIB * ruB * ruB;
@@ -249,9 +249,9 @@ bool b2PulleyJoint::SolvePositionConstraints(const b2SolverData& data)
 	const auto PB = -m_ratio * impulse * uB;
 
 	cA += m_invMassA * PA;
-	aA += m_invIA * b2Cross(rA, PA);
+	aA += m_invIA * Cross(rA, PA);
 	cB += m_invMassB * PB;
-	aB += m_invIB * b2Cross(rB, PB);
+	aB += m_invIB * Cross(rB, PB);
 
 	data.positions[m_indexA].c = cA;
 	data.positions[m_indexA].a = aA;

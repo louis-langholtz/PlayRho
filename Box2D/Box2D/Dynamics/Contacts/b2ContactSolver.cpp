@@ -187,21 +187,21 @@ static inline void Initialize(b2VelocityConstraintPoint& vcp,
 	const auto vcp_rA = worldPoint - posA.c;
 	const auto vcp_rB = worldPoint - posB.c;
 	
-	const auto rnA = b2Cross(vcp_rA, vc.normal);
-	const auto rnB = b2Cross(vcp_rB, vc.normal);
+	const auto rnA = Cross(vcp_rA, vc.normal);
+	const auto rnB = Cross(vcp_rB, vc.normal);
 	
 	const auto kNormal = vc.bodyA.invMass + vc.bodyB.invMass + (vc.bodyA.invI * b2Square(rnA)) + (vc.bodyB.invI * b2Square(rnB));
 	
-	const auto tangent = b2Cross(vc.normal, float_t(1));
+	const auto tangent = Cross(vc.normal, float_t(1));
 	
-	const auto rtA = b2Cross(vcp_rA, tangent);
-	const auto rtB = b2Cross(vcp_rB, tangent);
+	const auto rtA = Cross(vcp_rA, tangent);
+	const auto rtB = Cross(vcp_rB, tangent);
 	
 	const auto kTangent = vc.bodyA.invMass + vc.bodyB.invMass + (vc.bodyA.invI * b2Square(rtA)) + (vc.bodyB.invI * b2Square(rtB));
 	
 	// Relative velocity at contact
-	const auto dv = (velB.v + b2Cross(velB.w, vcp_rB)) - (velA.v + b2Cross(velA.w, vcp_rA));
-	const auto vRel = b2Dot(dv, vc.normal);
+	const auto dv = (velB.v + Cross(velB.w, vcp_rB)) - (velA.v + Cross(velA.w, vcp_rA));
+	const auto vRel = Dot(dv, vc.normal);
 	
 	vcp.rA = vcp_rA;
 	vcp.rB = vcp_rB;
@@ -248,10 +248,10 @@ void b2ContactSolver::InitializeVelocityConstraint(b2ContactVelocityConstraint& 
 		const auto vcp1 = vc.GetPoint(0);
 		const auto vcp2 = vc.GetPoint(1);
 		
-		const auto rn1A = b2Cross(vcp1.rA, vc.normal);
-		const auto rn1B = b2Cross(vcp1.rB, vc.normal);
-		const auto rn2A = b2Cross(vcp2.rA, vc.normal);
-		const auto rn2B = b2Cross(vcp2.rB, vc.normal);
+		const auto rn1A = Cross(vcp1.rA, vc.normal);
+		const auto rn1B = Cross(vcp1.rB, vc.normal);
+		const auto rn2A = Cross(vcp2.rA, vc.normal);
+		const auto rn2B = Cross(vcp2.rB, vc.normal);
 		
 		const auto k11 = vc.bodyA.invMass + vc.bodyB.invMass + (vc.bodyA.invI * b2Square(rn1A)) + (vc.bodyB.invI * b2Square(rn1B));
 		const auto k22 = vc.bodyA.invMass + vc.bodyB.invMass + (vc.bodyA.invI * b2Square(rn2A)) + (vc.bodyB.invI * b2Square(rn2B));
@@ -285,16 +285,16 @@ void b2ContactSolver::InitializeVelocityConstraints()
 
 static inline void WarmStart(const b2ContactVelocityConstraint& vc, b2Velocity& bodyA, b2Velocity& bodyB)
 {
-	const auto tangent = b2Cross(vc.normal, float_t(1));
+	const auto tangent = Cross(vc.normal, float_t(1));
 	const auto pointCount = vc.GetPointCount();	
 	for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 	{
 		const auto vcp = vc.GetPoint(j); ///< Velocity constraint point.
 		const auto P = vcp.normalImpulse * vc.normal + vcp.tangentImpulse * tangent;
 		bodyA.v -= vc.bodyA.invMass * P;
-		bodyA.w -= vc.bodyA.invI * b2Cross(vcp.rA, P);
+		bodyA.w -= vc.bodyA.invI * Cross(vcp.rA, P);
 		bodyB.v += vc.bodyB.invMass * P;
-		bodyB.w += vc.bodyB.invI * b2Cross(vcp.rB, P);
+		bodyB.w += vc.bodyB.invI * Cross(vcp.rB, P);
 	}
 }
 
@@ -313,10 +313,10 @@ static inline void SolveTangentConstraint(const b2ContactVelocityConstraint& vc,
 										 b2VelocityConstraintPoint& vcp)
 {
 	// Relative velocity at contact
-	const auto dv = (bodyB.v + b2Cross(bodyB.w, vcp.rB)) - (bodyA.v + b2Cross(bodyA.w, vcp.rA));
+	const auto dv = (bodyB.v + Cross(bodyB.w, vcp.rB)) - (bodyA.v + Cross(bodyA.w, vcp.rA));
 	
 	// Compute tangent force
-	const auto vt = b2Dot(dv, tangent) - vc.tangentSpeed;
+	const auto vt = Dot(dv, tangent) - vc.tangentSpeed;
 	const auto lambda = vcp.tangentMass * (-vt);
 	
 	// Clamp the accumulated force
@@ -331,9 +331,9 @@ static inline void SolveTangentConstraint(const b2ContactVelocityConstraint& vc,
 	// Apply contact impulse
 	const auto P = incImpulse * tangent;
 	bodyA.v -= vc.bodyA.invMass * P;
-	bodyA.w -= vc.bodyA.invI * b2Cross(vcp.rA, P);
+	bodyA.w -= vc.bodyA.invI * Cross(vcp.rA, P);
 	bodyB.v += vc.bodyB.invMass * P;
-	bodyB.w += vc.bodyB.invI * b2Cross(vcp.rB, P);
+	bodyB.w += vc.bodyB.invI * Cross(vcp.rB, P);
 }
 
 static inline void SolveNormalConstraint(const b2ContactVelocityConstraint& vc,
@@ -341,10 +341,10 @@ static inline void SolveNormalConstraint(const b2ContactVelocityConstraint& vc,
 										 b2VelocityConstraintPoint& vcp)
 {
 	// Relative velocity at contact
-	const auto dv = (bodyB.v + b2Cross(bodyB.w, vcp.rB)) - (bodyA.v + b2Cross(bodyA.w, vcp.rA));
+	const auto dv = (bodyB.v + Cross(bodyB.w, vcp.rB)) - (bodyA.v + Cross(bodyA.w, vcp.rA));
 	
 	// Compute normal impulse
-	const auto vn = b2Dot(dv, vc.normal);
+	const auto vn = Dot(dv, vc.normal);
 	const auto lambda = -vcp.normalMass * (vn - vcp.velocityBias);
 	
 	// b2Clamp the accumulated impulse
@@ -358,9 +358,9 @@ static inline void SolveNormalConstraint(const b2ContactVelocityConstraint& vc,
 	// Apply contact impulse
 	const auto P = incImpulse * vc.normal;
 	bodyA.v -= vc.bodyA.invMass * P;
-	bodyA.w -= vc.bodyA.invI * b2Cross(vcp.rA, P);
+	bodyA.w -= vc.bodyA.invI * Cross(vcp.rA, P);
 	bodyB.v += vc.bodyB.invMass * P;
-	bodyB.w += vc.bodyB.invI * b2Cross(vcp.rB, P);
+	bodyB.w += vc.bodyB.invI * Cross(vcp.rB, P);
 }
 
 static inline void BlockSolveUpdate(const b2ContactVelocityConstraint& vc,
@@ -376,9 +376,9 @@ static inline void BlockSolveUpdate(const b2ContactVelocityConstraint& vc,
 	const auto P2 = incImpulse.y * vc.normal;
 	const auto P = P1 + P2;
 	bodyA.v -= vc.bodyA.invMass * P;
-	bodyA.w -= vc.bodyA.invI * (b2Cross(vcp1.rA, P1) + b2Cross(vcp2.rA, P2));
+	bodyA.w -= vc.bodyA.invI * (Cross(vcp1.rA, P1) + Cross(vcp2.rA, P2));
 	bodyB.v += vc.bodyB.invMass * P;
-	bodyB.w += vc.bodyB.invI * (b2Cross(vcp1.rB, P1) + b2Cross(vcp2.rB, P2));
+	bodyB.w += vc.bodyB.invI * (Cross(vcp1.rB, P1) + Cross(vcp2.rB, P2));
 	
 	// Save new impulse
 	vcp1.normalImpulse = newImpulse.x;
@@ -406,12 +406,12 @@ static inline bool BlockSolveNormalCase1(const b2ContactVelocityConstraint& vc,
 		
 #if defined(B2_DEBUG_SOLVER)
 		// Postconditions
-		const auto post_dv1 = (bodyB.v + b2Cross(bodyB.w, vcp1.rB)) - (bodyA.v + b2Cross(bodyA.w, vcp1.rA));
-		const auto post_dv2 = (bodyB.v + b2Cross(bodyB.w, vcp2.rB)) - (bodyA.v + b2Cross(bodyA.w, vcp2.rA));
+		const auto post_dv1 = (bodyB.v + Cross(bodyB.w, vcp1.rB)) - (bodyA.v + Cross(bodyA.w, vcp1.rA));
+		const auto post_dv2 = (bodyB.v + Cross(bodyB.w, vcp2.rB)) - (bodyA.v + Cross(bodyA.w, vcp2.rA));
 		
 		// Compute normal velocity
-		const auto post_vn1 = b2Dot(post_dv1, vc.normal);
-		const auto post_vn2 = b2Dot(post_dv2, vc.normal);
+		const auto post_vn1 = Dot(post_dv1, vc.normal);
+		const auto post_vn2 = Dot(post_dv2, vc.normal);
 		
 		
 		assert(b2Abs(post_vn1 - vcp1.velocityBias) < k_majorErrorTol);
@@ -444,10 +444,10 @@ static inline bool BlockSolveNormalCase2(const b2ContactVelocityConstraint& vc,
 		
 #if defined(B2_DEBUG_SOLVER)
 		// Postconditions
-		const auto post_dv1 = (bodyB.v + b2Cross(bodyB.w, vcp1.rB)) - (bodyA.v + b2Cross(bodyA.w, vcp1.rA));
+		const auto post_dv1 = (bodyB.v + Cross(bodyB.w, vcp1.rB)) - (bodyA.v + Cross(bodyA.w, vcp1.rA));
 		
 		// Compute normal velocity
-		const auto post_vn1 = b2Dot(post_dv1, vc.normal);
+		const auto post_vn1 = Dot(post_dv1, vc.normal);
 		
 		assert(b2Abs(post_vn1 - vcp1.velocityBias) < k_majorErrorTol);
 		assert(b2Abs(post_vn1 - vcp1.velocityBias) < k_errorTol);
@@ -476,10 +476,10 @@ static inline bool BlockSolveNormalCase3(const b2ContactVelocityConstraint& vc,
 		
 #if defined(B2_DEBUG_SOLVER)
 		// Postconditions
-		const auto post_dv2 = (bodyB.v + b2Cross(bodyB.w, vcp2.rB)) - (bodyA.v + b2Cross(bodyA.w, vcp2.rA));
+		const auto post_dv2 = (bodyB.v + Cross(bodyB.w, vcp2.rB)) - (bodyA.v + Cross(bodyA.w, vcp2.rA));
 		
 		// Compute normal velocity
-		const auto post_vn2 = b2Dot(post_dv2, vc.normal);
+		const auto post_vn2 = Dot(post_dv2, vc.normal);
 
 		assert(b2Abs(post_vn2 - vcp2.velocityBias) < k_majorErrorTol);
 		assert(b2Abs(post_vn2 - vcp2.velocityBias) < k_errorTol);
@@ -552,12 +552,12 @@ static inline void BlockSolveNormalConstraint(const b2ContactVelocityConstraint&
 	
 	const auto b_prime = [=]{
 		// Relative velocity at contact
-		const auto dv1 = (bodyB.v + b2Cross(bodyB.w, vcp1.rB)) - (bodyA.v + b2Cross(bodyA.w, vcp1.rA));
-		const auto dv2 = (bodyB.v + b2Cross(bodyB.w, vcp2.rB)) - (bodyA.v + b2Cross(bodyA.w, vcp2.rA));
+		const auto dv1 = (bodyB.v + Cross(bodyB.w, vcp1.rB)) - (bodyA.v + Cross(bodyA.w, vcp1.rA));
+		const auto dv2 = (bodyB.v + Cross(bodyB.w, vcp2.rB)) - (bodyA.v + Cross(bodyA.w, vcp2.rA));
 		
 		// Compute normal velocity
-		const auto normal_vn1 = b2Dot(dv1, vc.normal);
-		const auto normal_vn2 = b2Dot(dv2, vc.normal);
+		const auto normal_vn1 = Dot(dv1, vc.normal);
+		const auto normal_vn2 = Dot(dv2, vc.normal);
 		
 		// Compute b
 		const auto b = Vec2{normal_vn1 - vcp1.velocityBias, normal_vn2 - vcp2.velocityBias};
@@ -592,7 +592,7 @@ static inline void SolveVelocityConstraint(b2ContactVelocityConstraint& vc, b2Ve
 		auto& vcp = vc.GetPoint(0);
 
 		{
-			const auto tangent = b2Cross(vc.normal, float_t(1));
+			const auto tangent = Cross(vc.normal, float_t(1));
 			SolveTangentConstraint(vc, tangent, bodyA, bodyB, vcp);
 		}
 
@@ -604,7 +604,7 @@ static inline void SolveVelocityConstraint(b2ContactVelocityConstraint& vc, b2Ve
 		auto& vcp2 = vc.GetPoint(1); ///< Velocity constraint point.
 
 		{
-			const auto tangent = b2Cross(vc.normal, float_t(1));
+			const auto tangent = Cross(vc.normal, float_t(1));
 			SolveTangentConstraint(vc, tangent, bodyA, bodyB, vcp1);
 			SolveTangentConstraint(vc, tangent, bodyA, bodyB, vcp2);
 		}
@@ -679,7 +679,7 @@ public:
 				normal = b2Normalize(delta);
 				point = (pointA + pointB) / float_t(2);
 				const auto totalRadius = pc.radiusA + pc.radiusB;
-				separation = b2Dot(delta, normal) - totalRadius;
+				separation = Dot(delta, normal) - totalRadius;
 			}
 			break;
 
@@ -689,7 +689,7 @@ public:
 				const auto clipPoint = b2Mul(xfB, pc.GetPoint(index));
 				normal = b2Mul(xfA.q, pc.localNormal);
 				const auto totalRadius = pc.radiusA + pc.radiusB;
-				separation = b2Dot(clipPoint - planePoint, normal) - totalRadius;
+				separation = Dot(clipPoint - planePoint, normal) - totalRadius;
 				point = clipPoint;
 			}
 			break;
@@ -700,7 +700,7 @@ public:
 				const auto clipPoint = b2Mul(xfA, pc.GetPoint(index));
 				normal = b2Mul(xfB.q, pc.localNormal);
 				const auto totalRadius = pc.radiusA + pc.radiusB;
-				separation = b2Dot(clipPoint - planePoint, normal) - totalRadius;
+				separation = Dot(clipPoint - planePoint, normal) - totalRadius;
 				point = clipPoint;
 				normal = -normal; // Ensure normal points from A to B
 			}
@@ -747,8 +747,8 @@ static inline float_t SolvePositionConstraint(const b2ContactPositionConstraint&
 		const auto C = b2Clamp(Baumgarte * (separation + LinearSlop), -MaxLinearCorrection, float_t{0});
 		
 		// Compute the effective mass.
-		const auto rnA = b2Cross(rA, normal);
-		const auto rnB = b2Cross(rB, normal);
+		const auto rnA = Cross(rA, normal);
+		const auto rnB = Cross(rB, normal);
 		const auto K = pc.bodyA.invMass + pc.bodyB.invMass + (pc.bodyA.invI * b2Square(rnA)) + (pc.bodyB.invI * b2Square(rnB));
 		
 		// Compute normal impulse
@@ -757,9 +757,9 @@ static inline float_t SolvePositionConstraint(const b2ContactPositionConstraint&
 		const auto P = impulse * normal;
 		
 		posA.c -= pc.bodyA.invMass * P;
-		posA.a -= pc.bodyA.invI * b2Cross(rA, P);
+		posA.a -= pc.bodyA.invI * Cross(rA, P);
 		posB.c += pc.bodyB.invMass * P;
-		posB.a += pc.bodyB.invI * b2Cross(rB, P);
+		posB.a += pc.bodyB.invI * Cross(rB, P);
 	}
 	
 	return minSeparation;
@@ -816,8 +816,8 @@ static inline float_t SolveTOIPositionConstraint(const b2ContactPositionConstrai
 		const auto C = b2Clamp(ToiBaugarte * (separation + LinearSlop), -MaxLinearCorrection, float_t{0});
 		
 		// Compute the effective mass.
-		const auto rnA = b2Cross(rA, normal);
-		const auto rnB = b2Cross(rB, normal);
+		const auto rnA = Cross(rA, normal);
+		const auto rnB = Cross(rB, normal);
 		const auto K = invMassA + invMassB + (invInertiaA * b2Square(rnA)) + (invInertiaB * b2Square(rnB));
 		
 		// Compute normal impulse
@@ -826,9 +826,9 @@ static inline float_t SolveTOIPositionConstraint(const b2ContactPositionConstrai
 		const auto P = impulse * normal;
 
 		posA.c -= invMassA * P;
-		posA.a -= invInertiaA * b2Cross(rA, P);
+		posA.a -= invInertiaA * Cross(rA, P);
 		posB.c += invMassB * P;
-		posB.a += invInertiaB * b2Cross(rB, P);
+		posB.a += invInertiaB * Cross(rB, P);
 	}
 	
 	return minSeparation;

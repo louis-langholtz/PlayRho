@@ -42,7 +42,7 @@ static float_t b2FindMaxSeparation(b2PolygonShape::vertex_count_t& edgeIndex,
 		auto min_sij = MaxFloat;
 		for (auto j = decltype(count2){0}; j < count2; ++j)
 		{
-			const auto sij = b2Dot(n, shape2.GetVertex(j) - v1);
+			const auto sij = Dot(n, shape2.GetVertex(j) - v1);
 			if (min_sij > sij)
 			{
 				min_sij = sij;
@@ -78,7 +78,7 @@ static b2ClipArray b2FindIncidentEdge(b2PolygonShape::vertex_count_t index1,
 		auto minDot = MaxFloat;
 		for (auto i = decltype(count2){0}; i < count2; ++i)
 		{
-			const auto dot = b2Dot(normal1, shape2.GetNormal(i));
+			const auto dot = Dot(normal1, shape2.GetNormal(i));
 			if (minDot > dot)
 			{
 				minDot = dot;
@@ -165,21 +165,21 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 
 	const auto localTangent = b2Normalize(v12 - v11);
 	
-	const auto localNormal = b2Cross(localTangent, float_t(1));
+	const auto localNormal = Cross(localTangent, float_t(1));
 	const auto planePoint = (v11 + v12) / float_t(2);
 
 	const auto tangent = b2Mul(xf1.q, localTangent);
-	const auto normal = b2Cross(tangent, float_t(1));
+	const auto normal = Cross(tangent, float_t(1));
 	
 	v11 = b2Mul(xf1, v11);
 	v12 = b2Mul(xf1, v12);
 
 	// Face offset.
-	const auto frontOffset = b2Dot(normal, v11);
+	const auto frontOffset = Dot(normal, v11);
 
 	// Side offsets, extended by polytope skin thickness.
-	const auto sideOffset1 = -b2Dot(tangent, v11) + totalRadius;
-	const auto sideOffset2 = b2Dot(tangent, v12) + totalRadius;
+	const auto sideOffset1 = -Dot(tangent, v11) + totalRadius;
+	const auto sideOffset2 = Dot(tangent, v12) + totalRadius;
 
 	// Clip incident edge against extruded edge1 side edges.
 
@@ -204,7 +204,7 @@ b2Manifold b2CollideShapes(const b2PolygonShape& shapeA, const b2Transform& xfA,
 	manifold.SetLocalPoint(planePoint);
 	for (auto i = decltype(clipPoints2.size()){0}; i < clipPoints2.size(); ++i)
 	{
-		const auto separation = b2Dot(normal, clipPoints2[i].v) - frontOffset;
+		const auto separation = Dot(normal, clipPoints2[i].v) - frontOffset;
 		if (separation <= totalRadius)
 		{
 			const auto cf = flip? b2Flip(clipPoints2[i].cf): clipPoints2[i].cf;

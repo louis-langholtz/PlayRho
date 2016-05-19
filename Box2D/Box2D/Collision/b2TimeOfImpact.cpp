@@ -71,7 +71,7 @@ public:
 			const auto localPointB1 = proxyB.GetVertex(cache.GetIndexB(0));
 			const auto localPointB2 = proxyB.GetVertex(cache.GetIndexB(1));
 
-			m_axis = b2Normalize(b2Cross(localPointB2 - localPointB1, float_t(1)));
+			m_axis = b2Normalize(Cross(localPointB2 - localPointB1, float_t(1)));
 			const auto normal = b2Mul(xfB.q, m_axis);
 
 			m_localPoint = (localPointB1 + localPointB2) / float_t(2);
@@ -80,7 +80,7 @@ public:
 			const auto localPointA = proxyA.GetVertex(cache.GetIndexA(0));
 			const auto pointA = b2Mul(xfA, localPointA);
 
-			auto s = b2Dot(pointA - pointB, normal);
+			auto s = Dot(pointA - pointB, normal);
 			if (s < float_t{0})
 			{
 				m_axis = -m_axis;
@@ -93,7 +93,7 @@ public:
 			const auto localPointA1 = m_proxyA.GetVertex(cache.GetIndexA(0));
 			const auto localPointA2 = m_proxyA.GetVertex(cache.GetIndexA(1));
 			
-			m_axis = b2Normalize(b2Cross(localPointA2 - localPointA1, float_t(1)));
+			m_axis = b2Normalize(Cross(localPointA2 - localPointA1, float_t(1)));
 			const auto normal = b2Mul(xfA.q, m_axis);
 
 			m_localPoint = (localPointA1 + localPointA2) / float_t(2);
@@ -102,7 +102,7 @@ public:
 			const auto localPointB = m_proxyB.GetVertex(cache.GetIndexB(0));
 			const auto pointB = b2Mul(xfB, localPointB);
 
-			auto s = b2Dot(pointB - pointA, normal);
+			auto s = Dot(pointB - pointA, normal);
 			if (s < float_t{0})
 			{
 				m_axis = -m_axis;
@@ -140,7 +140,7 @@ public:
 				const auto pointA = b2Mul(xfA, localPointA);
 				const auto pointB = b2Mul(xfB, localPointB);
 
-				return b2Dot(pointB - pointA, m_axis);
+				return Dot(pointB - pointA, m_axis);
 			}
 
 		case e_faceA:
@@ -156,7 +156,7 @@ public:
 				const auto localPointB = m_proxyB.GetVertex(*indexB);
 				const auto pointB = b2Mul(xfB, localPointB);
 
-				return b2Dot(pointB - pointA, normal);
+				return Dot(pointB - pointA, normal);
 			}
 
 		case e_faceB:
@@ -172,7 +172,7 @@ public:
 				const auto localPointA = m_proxyA.GetVertex(*indexA);
 				const auto pointA = b2Mul(xfA, localPointA);
 
-				return b2Dot(pointA - pointB, normal);
+				return Dot(pointA - pointB, normal);
 			}
 
 		default:
@@ -219,7 +219,7 @@ private:
 		const auto localPointB = m_proxyB.GetVertex(indexB);
 		const auto pointA = b2Mul(xfA, localPointA);
 		const auto pointB = b2Mul(xfB, localPointB);
-		return b2Dot(pointB - pointA, m_axis);
+		return Dot(pointB - pointA, m_axis);
 	}
 	
 	float_t EvaluateFaceA(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB,
@@ -229,7 +229,7 @@ private:
 		const auto pointA = b2Mul(xfA, m_localPoint);
 		const auto localPointB = m_proxyB.GetVertex(indexB);
 		const auto pointB = b2Mul(xfB, localPointB);
-		return b2Dot(pointB - pointA, normal);
+		return Dot(pointB - pointA, normal);
 	}
 	
 	float_t EvaluateFaceB(b2DistanceProxy::size_type indexA, b2DistanceProxy::size_type indexB,
@@ -241,7 +241,7 @@ private:
 		const auto localPointA = m_proxyA.GetVertex(indexA);
 		const auto pointA = b2Mul(xfA, localPointA);
 		
-		return b2Dot(pointA - pointB, normal);
+		return Dot(pointA - pointB, normal);
 	}
 };
 

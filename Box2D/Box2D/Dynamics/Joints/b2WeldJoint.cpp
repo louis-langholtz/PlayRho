@@ -152,10 +152,10 @@ void b2WeldJoint::InitVelocityConstraints(const b2SolverData& data)
 		const auto P = Vec2(m_impulse.x, m_impulse.y);
 
 		vA -= mA * P;
-		wA -= iA * (b2Cross(m_rA, P) + m_impulse.z);
+		wA -= iA * (Cross(m_rA, P) + m_impulse.z);
 
 		vB += mB * P;
-		wB += iB * (b2Cross(m_rB, P) + m_impulse.z);
+		wB += iB * (Cross(m_rB, P) + m_impulse.z);
 	}
 	else
 	{
@@ -188,7 +188,7 @@ void b2WeldJoint::SolveVelocityConstraints(const b2SolverData& data)
 		wA -= iA * impulse2;
 		wB += iB * impulse2;
 
-		const auto Cdot1 = vB + b2Cross(wB, m_rB) - vA - b2Cross(wA, m_rA);
+		const auto Cdot1 = vB + Cross(wB, m_rB) - vA - Cross(wA, m_rA);
 
 		const auto impulse1 = -b2Mul22(m_mass, Cdot1);
 		m_impulse.x += impulse1.x;
@@ -197,14 +197,14 @@ void b2WeldJoint::SolveVelocityConstraints(const b2SolverData& data)
 		const auto P = impulse1;
 
 		vA -= mA * P;
-		wA -= iA * b2Cross(m_rA, P);
+		wA -= iA * Cross(m_rA, P);
 
 		vB += mB * P;
-		wB += iB * b2Cross(m_rB, P);
+		wB += iB * Cross(m_rB, P);
 	}
 	else
 	{
-		const auto Cdot1 = vB + b2Cross(wB, m_rB) - vA - b2Cross(wA, m_rA);
+		const auto Cdot1 = vB + Cross(wB, m_rB) - vA - Cross(wA, m_rA);
 		const auto Cdot2 = wB - wA;
 		const auto Cdot = Vec3(Cdot1.x, Cdot1.y, Cdot2);
 
@@ -214,10 +214,10 @@ void b2WeldJoint::SolveVelocityConstraints(const b2SolverData& data)
 		const auto P = Vec2(impulse.x, impulse.y);
 
 		vA -= mA * P;
-		wA -= iA * (b2Cross(m_rA, P) + impulse.z);
+		wA -= iA * (Cross(m_rA, P) + impulse.z);
 
 		vB += mB * P;
-		wB += iB * (b2Cross(m_rB, P) + impulse.z);
+		wB += iB * (Cross(m_rB, P) + impulse.z);
 	}
 
 	data.velocities[m_indexA].v = vA;
@@ -264,10 +264,10 @@ bool b2WeldJoint::SolvePositionConstraints(const b2SolverData& data)
 		const auto P = -K.Solve22(C1);
 
 		cA -= mA * P;
-		aA -= iA * b2Cross(rA, P);
+		aA -= iA * Cross(rA, P);
 
 		cB += mB * P;
-		aB += iB * b2Cross(rB, P);
+		aB += iB * Cross(rB, P);
 	}
 	else
 	{
@@ -293,10 +293,10 @@ bool b2WeldJoint::SolvePositionConstraints(const b2SolverData& data)
 		const auto P = Vec2(impulse.x, impulse.y);
 
 		cA -= mA * P;
-		aA -= iA * (b2Cross(rA, P) + impulse.z);
+		aA -= iA * (Cross(rA, P) + impulse.z);
 
 		cB += mB * P;
-		aB += iB * (b2Cross(rB, P) + impulse.z);
+		aB += iB * (Cross(rB, P) + impulse.z);
 	}
 
 	data.positions[m_indexA].c = cA;
