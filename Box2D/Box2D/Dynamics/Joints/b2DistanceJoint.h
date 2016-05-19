@@ -35,7 +35,7 @@ struct b2DistanceJointDef : public b2JointDef
 
 	/// Initialize the bodies, anchors, and length using the world
 	/// anchors.
-	void Initialize(b2Body* bodyA, b2Body* bodyB,
+	void Initialize(Body* bodyA, Body* bodyB,
 					const Vec2& anchorA, const Vec2& anchorB);
 
 	/// The local anchor point relative to bodyA's origin.

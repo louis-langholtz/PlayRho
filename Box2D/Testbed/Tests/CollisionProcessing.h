@@ -39,7 +39,7 @@ public:
 			sd.shape = &shape;;
 
 			BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(&bd);
 			ground->CreateFixture(&sd);
 		}
 
@@ -63,7 +63,7 @@ public:
 		triangleBodyDef.type = DynamicBody;
 		triangleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
-		b2Body* body1 = m_world->CreateBody(&triangleBodyDef);
+		Body* body1 = m_world->CreateBody(&triangleBodyDef);
 		body1->CreateFixture(&triangleShapeDef);
 
 		// Large triangle (recycle definitions)
@@ -74,7 +74,7 @@ public:
 
 		triangleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
-		b2Body* body2 = m_world->CreateBody(&triangleBodyDef);
+		Body* body2 = m_world->CreateBody(&triangleBodyDef);
 		body2->CreateFixture(&triangleShapeDef);
 		
 		// Small box
@@ -88,14 +88,14 @@ public:
 		boxBodyDef.type = DynamicBody;
 		boxBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
-		b2Body* body3 = m_world->CreateBody(&boxBodyDef);
+		Body* body3 = m_world->CreateBody(&boxBodyDef);
 		body3->CreateFixture(&boxShapeDef);
 
 		// Large box (recycle definitions)
 		polygon.SetAsBox(2.0f, 1.0f);
 		boxBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 		
-		b2Body* body4 = m_world->CreateBody(&boxBodyDef);
+		Body* body4 = m_world->CreateBody(&boxBodyDef);
 		body4->CreateFixture(&boxShapeDef);
 
 		// Small circle
@@ -110,14 +110,14 @@ public:
 		circleBodyDef.type = DynamicBody;
 		circleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
-		b2Body* body5 = m_world->CreateBody(&circleBodyDef);
+		Body* body5 = m_world->CreateBody(&circleBodyDef);
 		body5->CreateFixture(&circleShapeDef);
 
 		// Large circle
 		circle.SetRadius(circle.GetRadius() * 2);
 		circleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
-		b2Body* body6 = m_world->CreateBody(&circleBodyDef);
+		Body* body6 = m_world->CreateBody(&circleBodyDef);
 		body6->CreateFixture(&circleShapeDef);
 	}
 
@@ -129,7 +129,7 @@ public:
 		// points. We must buffer the bodies that should be destroyed
 		// because they may belong to multiple contact points.
 		const int32 k_maxNuke = 6;
-		b2Body* nuke[k_maxNuke];
+		Body* nuke[k_maxNuke];
 		int32 nukeCount = 0;
 
 		// Traverse the contact results. Destroy bodies that
@@ -138,8 +138,8 @@ public:
 		{
 			ContactPoint* point = m_points + i;
 
-			b2Body* body1 = point->fixtureA->GetBody();
-			b2Body* body2 = point->fixtureB->GetBody();
+			Body* body1 = point->fixtureA->GetBody();
+			Body* body2 = point->fixtureB->GetBody();
 			float_t mass1 = body1->GetMass();
 			float_t mass2 = body2->GetMass();
 
@@ -168,7 +168,7 @@ public:
 		int32 i = 0;
 		while (i < nukeCount)
 		{
-			b2Body* b = nuke[i++];
+			Body* b = nuke[i++];
 			while (i < nukeCount && nuke[i] == b)
 			{
 				++i;

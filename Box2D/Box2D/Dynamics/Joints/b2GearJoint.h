@@ -88,8 +88,8 @@ protected:
 
 	// Body A is connected to body C
 	// Body B is connected to body D
-	b2Body* m_bodyC;
-	b2Body* m_bodyD;
+	Body* m_bodyC;
+	Body* m_bodyD;
 
 	// Solver shared
 	Vec2 m_localAnchorA;

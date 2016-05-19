@@ -28,7 +28,7 @@ class SliderCrank : public Test
 public:
 	SliderCrank()
 	{
-		b2Body* ground = nullptr;
+		Body* ground = nullptr;
 		{
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -39,7 +39,7 @@ public:
 		}
 
 		{
-			b2Body* prevBody = ground;
+			Body* prevBody = ground;
 
 			// Define crank.
 			{
@@ -49,7 +49,7 @@ public:
 				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = Vec2(0.0f, 7.0f);
-				b2Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
 
 				b2RevoluteJointDef rjd;
@@ -70,7 +70,7 @@ public:
 				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = Vec2(0.0f, 13.0f);
-				b2Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
 
 				b2RevoluteJointDef rjd;
@@ -90,7 +90,7 @@ public:
 				bd.type = DynamicBody;
 				bd.fixedRotation = true;
 				bd.position = Vec2(0.0f, 17.0f);
-				b2Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
 
 				b2RevoluteJointDef rjd;
@@ -114,7 +114,7 @@ public:
 				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = Vec2(0.0f, 23.0f);
-				b2Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
 			}
 		}

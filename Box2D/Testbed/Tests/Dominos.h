@@ -27,7 +27,7 @@ public:
 
 	Dominos()
 	{
-		b2Body* b1;
+		Body* b1;
 		{
 			b2EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -43,7 +43,7 @@ public:
 
 			BodyDef bd;
 			bd.position = Vec2(-1.5f, 10.0f);
-			b2Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(&bd);
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
@@ -61,7 +61,7 @@ public:
 				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = Vec2(-6.0f + 1.0f * i, 11.25f);
-				b2Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&fd);
 			}
 		}
@@ -72,11 +72,11 @@ public:
 
 			BodyDef bd;
 			bd.position = Vec2(1.0f, 6.0f);
-			b2Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(&bd);
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
-		b2Body* b2;
+		Body* b2;
 		{
 			b2PolygonShape shape;
 			shape.SetAsBox(0.25f, 1.5f);
@@ -87,7 +87,7 @@ public:
 			b2->CreateFixture(&shape, 0.0f);
 		}
 
-		b2Body* b3;
+		Body* b3;
 		{
 			b2PolygonShape shape;
 			shape.SetAsBox(6.0f, 0.125f);
@@ -109,7 +109,7 @@ public:
 		jd.collideConnected = true;
 		m_world->CreateJoint(&jd);
 
-		b2Body* b4;
+		Body* b4;
 		{
 			b2PolygonShape shape;
 			shape.SetAsBox(0.25f, 0.25f);
@@ -125,7 +125,7 @@ public:
 		jd.Initialize(b2, b4, anchor);
 		m_world->CreateJoint(&jd);
 
-		b2Body* b5;
+		Body* b5;
 		{
 			BodyDef bd;
 			bd.type = DynamicBody;
@@ -153,7 +153,7 @@ public:
 		jd.Initialize(b1, b5, anchor);
 		m_world->CreateJoint(&jd);
 
-		b2Body* b6;
+		Body* b6;
 		{
 			b2PolygonShape shape;
 			shape.SetAsBox(1.0f, 0.1f);
@@ -169,7 +169,7 @@ public:
 		jd.Initialize(b5, b6, anchor);
 		m_world->CreateJoint(&jd);
 
-		b2Body* b7;
+		Body* b7;
 		{
 			b2PolygonShape shape;
 			shape.SetAsBox(0.1f, 1.0f);
@@ -202,7 +202,7 @@ public:
 				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = Vec2(5.9f + 2.0f * radius * i, 2.4f);
-				b2Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 10.0f);
 			}
 		}

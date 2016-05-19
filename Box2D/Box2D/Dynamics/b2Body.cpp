@@ -24,7 +24,7 @@
 
 using namespace box2d;
 
-uint16 b2Body::GetFlags(const BodyDef& bd) noexcept
+uint16 Body::GetFlags(const BodyDef& bd) noexcept
 {
 	uint16 flags = 0;
 	if (bd.bullet)
@@ -50,7 +50,7 @@ uint16 b2Body::GetFlags(const BodyDef& bd) noexcept
 	return flags;
 }
 
-b2Body::b2Body(const BodyDef* bd, b2World* world):
+Body::Body(const BodyDef* bd, b2World* world):
 	m_type(bd->type), m_flags(GetFlags(*bd)), m_xf(bd->position, Rot(bd->angle)), m_world(world),
 	m_linearVelocity(bd->linearVelocity), m_angularVelocity(bd->angularVelocity)
 {
@@ -86,12 +86,12 @@ b2Body::b2Body(const BodyDef* bd, b2World* world):
 	m_userData = bd->userData;
 }
 
-b2Body::~b2Body()
+Body::~Body()
 {
 	// shapes and joints are destroyed in b2World::Destroy
 }
 
-void b2Body::DestroyContacts()
+void Body::DestroyContacts()
 {
 	// Destroy the attached contacts.
 	auto ce = m_contactList;
@@ -104,7 +104,7 @@ void b2Body::DestroyContacts()
 	m_contactList = nullptr;
 }
 
-void b2Body::SetType(BodyType type)
+void Body::SetType(BodyType type)
 {
 	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())
@@ -149,7 +149,7 @@ void b2Body::SetType(BodyType type)
 	}
 }
 
-b2Fixture* b2Body::CreateFixture(const b2FixtureDef* def)
+b2Fixture* Body::CreateFixture(const b2FixtureDef* def)
 {
 	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())
@@ -185,7 +185,7 @@ b2Fixture* b2Body::CreateFixture(const b2FixtureDef* def)
 	return fixture;
 }
 
-b2Fixture* b2Body::CreateFixture(const b2Shape* shape, float_t density)
+b2Fixture* Body::CreateFixture(const b2Shape* shape, float_t density)
 {
 	b2FixtureDef def;
 	def.shape = shape;
@@ -194,7 +194,7 @@ b2Fixture* b2Body::CreateFixture(const b2Shape* shape, float_t density)
 	return CreateFixture(&def);
 }
 
-void b2Body::DestroyFixture(b2Fixture* fixture)
+void Body::DestroyFixture(b2Fixture* fixture)
 {
 	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())
@@ -259,7 +259,7 @@ void b2Body::DestroyFixture(b2Fixture* fixture)
 	ResetMassData();
 }
 
-b2MassData b2Body::CalculateMassData() const noexcept
+b2MassData Body::CalculateMassData() const noexcept
 {
 	auto mass = float_t(0);
 	auto center = Vec2_zero;
@@ -279,7 +279,7 @@ b2MassData b2Body::CalculateMassData() const noexcept
 	return b2MassData{mass, (mass != float_t(0))? center / mass: Vec2_zero, I};
 }
 
-void b2Body::ResetMassData()
+void Body::ResetMassData()
 {
 	// Compute mass data from shapes. Each shape has its own density.
 
@@ -351,7 +351,7 @@ void b2Body::ResetMassData()
 	m_linearVelocity += Cross(m_angularVelocity, m_sweep.c - oldCenter);
 }
 
-void b2Body::SetMassData(const b2MassData* massData)
+void Body::SetMassData(const b2MassData* massData)
 {
 	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())
@@ -388,7 +388,7 @@ void b2Body::SetMassData(const b2MassData* massData)
 	m_linearVelocity += Cross(m_angularVelocity, m_sweep.c - oldCenter);
 }
 
-bool b2Body::ShouldCollide(const b2Body* other) const
+bool Body::ShouldCollide(const Body* other) const
 {
 	// At least one body should be dynamic.
 	if ((m_type != DynamicBody) && (other->m_type != DynamicBody))
@@ -411,7 +411,7 @@ bool b2Body::ShouldCollide(const b2Body* other) const
 	return true;
 }
 
-void b2Body::SetTransform(const Vec2& position, float_t angle)
+void Body::SetTransform(const Vec2& position, float_t angle)
 {
 	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())
@@ -434,7 +434,7 @@ void b2Body::SetTransform(const Vec2& position, float_t angle)
 	}
 }
 
-void b2Body::SynchronizeFixtures()
+void Body::SynchronizeFixtures()
 {
 	const auto xf1 = GetTransformZero(m_sweep);
 	auto& broadPhase = m_world->m_contactManager.m_broadPhase;
@@ -444,7 +444,7 @@ void b2Body::SynchronizeFixtures()
 	}
 }
 
-void b2Body::SetActive(bool flag)
+void Body::SetActive(bool flag)
 {
 	assert(!m_world->IsLocked());
 
@@ -481,7 +481,7 @@ void b2Body::SetActive(bool flag)
 	}
 }
 
-void b2Body::SetFixedRotation(bool flag)
+void Body::SetFixedRotation(bool flag)
 {
 	const auto status = IsFixedRotation();
 	if (status == flag)
@@ -503,7 +503,7 @@ void b2Body::SetFixedRotation(bool flag)
 	ResetMassData();
 }
 
-void b2Body::Dump()
+void Body::Dump()
 {
 	const auto bodyIndex = m_islandIndex;
 

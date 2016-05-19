@@ -32,7 +32,7 @@ public:
 		// Ground body
 		{
 			BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
@@ -44,7 +44,7 @@ public:
 		// an internal vertex.
 		{
 			BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(Vec2(-8.0f, 1.0f), Vec2(-6.0f, 1.0f));
@@ -59,7 +59,7 @@ public:
 		{
 			BodyDef bd;
 			bd.angle = 0.25f * Pi;
-			b2Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(&bd);
 
 			Vec2 vs[4];
 			vs[0] = Vec2(5.0f, 7.0f);
@@ -76,7 +76,7 @@ public:
 		// to this problem.
 		{
 			BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
 			shape.SetAsBox(1.0f, 1.0f, Vec2(4.0f, 3.0f), 0.0f);
@@ -90,7 +90,7 @@ public:
 		// Square made from an edge loop. Collision should be smooth.
 		{
 			BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(&bd);
 
 			Vec2 vs[4];
 			vs[0] = Vec2(-1.0f, 3.0f);
@@ -106,7 +106,7 @@ public:
 		{
 			BodyDef bd;
 			bd.position = Vec2(-10.0f, 4.0f);
-			b2Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(&bd);
 
 			Vec2 vs[10];
 			vs[0] = Vec2(0.0f, 0.0f);
@@ -132,7 +132,7 @@ public:
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
 
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.5f);
@@ -151,7 +151,7 @@ public:
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
 
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
 			shape.SetAsBox(0.25f, 0.25f);
@@ -170,7 +170,7 @@ public:
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
 
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 
 			float_t angle = 0.0f;
 			float_t delta = Pi / 3.0f;
@@ -198,7 +198,7 @@ public:
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
 
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 
 			b2CircleShape shape;
 			shape.SetRadius(float_t(0.5));
@@ -249,7 +249,7 @@ public:
 		return new CharacterCollision;
 	}
 
-	b2Body* m_character;
+	Body* m_character;
 };
 
 } // namespace box2d

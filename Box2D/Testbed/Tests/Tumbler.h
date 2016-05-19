@@ -32,7 +32,7 @@ public:
 
 	Tumbler()
 	{
-		b2Body* ground = nullptr;
+		Body* ground = nullptr;
 		{
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -43,7 +43,7 @@ public:
 			bd.type = DynamicBody;
 			bd.allowSleep = false;
 			bd.position = Vec2(0.0f, 10.0f);
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
 			shape.SetAsBox(0.5f, 10.0f, Vec2( 10.0f, 0.0f), 0.0);
@@ -79,7 +79,7 @@ public:
 			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = Vec2(0.0f, 10.0f);
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
 			shape.SetAsBox(0.125f, 0.125f);

@@ -23,7 +23,7 @@
 
 namespace box2d {
 
-class b2Body;
+class Body;
 class b2Joint;
 struct b2SolverData;
 class b2BlockAllocator;
@@ -66,7 +66,7 @@ struct b2Jacobian
 /// nodes, one for each attached body.
 struct b2JointEdge
 {
-	b2Body* other;			///< provides quick access to the other body attached.
+	Body* other;			///< provides quick access to the other body attached.
 	b2Joint* joint;			///< the joint
 	b2JointEdge* prev;		///< the previous joint edge in the body's joint list
 	b2JointEdge* next;		///< the next joint edge in the body's joint list
@@ -78,7 +78,7 @@ struct b2JointDef
 	b2JointDef() = delete;
 
 	constexpr b2JointDef(b2JointType t) noexcept: type(t) {}
-	constexpr b2JointDef(b2JointType t, b2Body* bA, b2Body* bB) noexcept:
+	constexpr b2JointDef(b2JointType t, Body* bA, Body* bB) noexcept:
 		type(t), bodyA(bA), bodyB(bB) {}
 
 	/// The joint type is set automatically for concrete joint types.
@@ -88,10 +88,10 @@ struct b2JointDef
 	void* userData = nullptr;
 
 	/// The first attached body.
-	b2Body* bodyA = nullptr;
+	Body* bodyA = nullptr;
 
 	/// The second attached body.
-	b2Body* bodyB = nullptr;
+	Body* bodyB = nullptr;
 
 	/// Set this flag to true if the attached bodies should collide.
 	bool collideConnected = false;
@@ -108,10 +108,10 @@ public:
 	b2JointType GetType() const noexcept;
 
 	/// Get the first body attached to this joint.
-	b2Body* GetBodyA() noexcept;
+	Body* GetBodyA() noexcept;
 
 	/// Get the second body attached to this joint.
-	b2Body* GetBodyB() noexcept;
+	Body* GetBodyB() noexcept;
 
 	/// Get the anchor point on bodyA in world coordinates.
 	virtual Vec2 GetAnchorA() const = 0;
@@ -151,7 +151,7 @@ public:
 
 protected:
 	friend class b2World;
-	friend class b2Body;
+	friend class Body;
 	friend class b2Island;
 	friend class b2GearJoint;
 
@@ -175,8 +175,8 @@ protected:
 	b2Joint* m_next = nullptr;
 	b2JointEdge m_edgeA = {nullptr, nullptr, nullptr, nullptr};
 	b2JointEdge m_edgeB = {nullptr, nullptr, nullptr, nullptr};
-	b2Body* m_bodyA;
-	b2Body* m_bodyB;
+	Body* m_bodyA;
+	Body* m_bodyB;
 
 	index_t m_index = 0;
 
@@ -191,12 +191,12 @@ inline b2JointType b2Joint::GetType() const noexcept
 	return m_type;
 }
 
-inline b2Body* b2Joint::GetBodyA() noexcept
+inline Body* b2Joint::GetBodyA() noexcept
 {
 	return m_bodyA;
 }
 
-inline b2Body* b2Joint::GetBodyB() noexcept
+inline Body* b2Joint::GetBodyB() noexcept
 {
 	return m_bodyB;
 }

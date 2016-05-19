@@ -180,14 +180,14 @@ protected:
 	friend class BoundaryListener;
 	friend class ContactListener;
 
-	b2Body* m_groundBody;
+	Body* m_groundBody;
 	b2AABB m_worldAABB;
 	ContactPoint m_points[k_maxContactPoints];
 	int32 m_pointCount;
 	DestructionListener m_destructionListener;
 	int32 m_textLine;
 	b2World* m_world;
-	b2Body* m_bomb;
+	Body* m_bomb;
 	b2MouseJoint* m_mouseJoint;
 	Vec2 m_bombSpawnPoint;
 	bool m_bombSpawning;

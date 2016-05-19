@@ -13,9 +13,9 @@
 
 namespace box2d {
 
-class b2Body;
+class Body;
 
-class b2ConstBodyIterator: public std::iterator<std::forward_iterator_tag, const b2Body>
+class b2ConstBodyIterator: public std::iterator<std::forward_iterator_tag, const Body>
 {
 public:
 	b2ConstBodyIterator(pointer b) noexcept: p(b) {}

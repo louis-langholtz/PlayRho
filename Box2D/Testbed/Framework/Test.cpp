@@ -116,7 +116,7 @@ public:
 
 	bool ReportFixture(b2Fixture* fixture)
 	{
-		b2Body* body = fixture->GetBody();
+		Body* body = fixture->GetBody();
 		if (body->GetType() == DynamicBody)
 		{
 			bool inside = fixture->TestPoint(m_point);
@@ -155,7 +155,7 @@ void Test::MouseDown(const Vec2& p)
 
 	if (callback.m_fixture)
 	{
-		b2Body* body = callback.m_fixture->GetBody();
+		Body* body = callback.m_fixture->GetBody();
 		b2MouseJointDef md;
 		md.bodyA = m_groundBody;
 		md.bodyB = body;

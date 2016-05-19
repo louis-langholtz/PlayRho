@@ -30,7 +30,7 @@ public:
 
 		const float_t k_restitution = 0.4f;
 
-		b2Body* ground;
+		Body* ground;
 		{
 			BodyDef bd;
 			bd.position = Vec2(float_t{0}, 20.0f);
@@ -120,7 +120,7 @@ public:
 				bd.type = DynamicBody;
 
 				bd.position = Vec2(float_t{0}, 5.0f + 1.54f * i);
-				b2Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(&bd);
 
 				body->CreateFixture(&fd);
 
@@ -176,7 +176,7 @@ public:
 		return new ApplyForce;
 	}
 
-	b2Body* m_body;
+	Body* m_body;
 };
 
 } // namespace box2d

@@ -27,7 +27,7 @@ class Prismatic : public Test
 public:
 	Prismatic()
 	{
-		b2Body* ground = nullptr;
+		Body* ground = nullptr;
 		{
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -46,7 +46,7 @@ public:
 			bd.position = Vec2(-10.0f, 10.0f);
 			bd.angle = 0.5f * Pi;
 			bd.allowSleep = false;
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&shape, 5.0f);
 
 			b2PrismaticJointDef pjd;

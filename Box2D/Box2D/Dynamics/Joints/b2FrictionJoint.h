@@ -30,7 +30,7 @@ struct b2FrictionJointDef : public b2JointDef
 
 	/// Initialize the bodies, anchors, axis, and reference angle using the world
 	/// anchor and world axis.
-	void Initialize(b2Body* bodyA, b2Body* bodyB, const Vec2& anchor);
+	void Initialize(Body* bodyA, Body* bodyB, const Vec2& anchor);
 
 	/// The local anchor point relative to bodyA's origin.
 	Vec2 localAnchorA = Vec2_zero;

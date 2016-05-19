@@ -37,7 +37,7 @@ public:
 		// Ground
 		{
 			BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
@@ -48,7 +48,7 @@ public:
 		{
 			BodyDef bd;
 			bd.position = Vec2(0.0f, 10.0f);
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
 			shape.SetAsBox(3.0f, 0.5f);
@@ -63,7 +63,7 @@ public:
 			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = Vec2(0.0f, 12.0f);
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 
 			m_radius = 0.5f;
 			b2CircleShape shape;

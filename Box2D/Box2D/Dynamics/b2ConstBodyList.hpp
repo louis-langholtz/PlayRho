@@ -13,7 +13,7 @@
 
 namespace box2d {
 
-class b2Body;
+class Body;
 
 class b2ConstBodyList
 {
@@ -21,7 +21,7 @@ public:
 	using const_iterator = b2ConstBodyIterator;
 	
 	b2ConstBodyList() = default;
-	b2ConstBodyList(const b2Body* b): p(b) {}
+	b2ConstBodyList(const Body* b): p(b) {}
 	
 	const_iterator begin() noexcept { return const_iterator(p); }
 	const_iterator end() noexcept { return const_iterator(nullptr); }
@@ -30,7 +30,7 @@ public:
 	const_iterator end() const noexcept { return const_iterator(nullptr); }
 	
 private:
-	const b2Body* p = nullptr;
+	const Body* p = nullptr;
 };
 
 } // namespace box2d

@@ -26,7 +26,7 @@ class Revolute : public Test
 public:
 	Revolute()
 	{
-		b2Body* ground = nullptr;
+		Body* ground = nullptr;
 		{
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -51,7 +51,7 @@ public:
 			b2RevoluteJointDef rjd;
 
 			bd.position = Vec2(-10.0f, 20.0f);
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&shape, 5.0f);
 
 			float_t w = 100.0f;
@@ -93,7 +93,7 @@ public:
 			polygon_bd.position = Vec2(20.0f, 10.0f);
 			polygon_bd.type = DynamicBody;
 			polygon_bd.bullet = true;
-			b2Body* polygon_body = m_world->CreateBody(&polygon_bd);
+			Body* polygon_body = m_world->CreateBody(&polygon_bd);
 			polygon_body->CreateFixture(&polygon_shape, 2.0f);
 
 			b2RevoluteJointDef rjd;
@@ -108,7 +108,7 @@ public:
 		{
 			BodyDef bodyDef;
 			bodyDef.type = DynamicBody;
-			b2Body* body = m_world->CreateBody(&bodyDef);
+			Body* body = m_world->CreateBody(&bodyDef);
 		
 			b2PolygonShape polyShape;		
 			Vec2 verts[3];
@@ -161,7 +161,7 @@ public:
 		return new Revolute;
 	}
 
-	b2Body* m_ball;
+	Body* m_ball;
 	b2RevoluteJoint* m_joint;
 };
 

@@ -29,7 +29,7 @@ public:
 	{
 		{
 			BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -96,7 +96,7 @@ public:
 		return new ShapeEditing;
 	}
 
-	b2Body* m_body;
+	Body* m_body;
 	b2Fixture* m_fixture1;
 	b2Fixture* m_fixture2;
 	bool m_sensor;

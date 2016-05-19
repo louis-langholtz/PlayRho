@@ -32,7 +32,7 @@ public:
 
 	Bridge()
 	{
-		b2Body* ground = nullptr;
+		Body* ground = nullptr;
 		{
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -53,13 +53,13 @@ public:
 
 			b2RevoluteJointDef jd;
 
-			b2Body* prevBody = ground;
+			Body* prevBody = ground;
 			for (int32 i = 0; i < e_count; ++i)
 			{
 				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = Vec2(-14.5f + 1.0f * i, 5.0f);
-				b2Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&fd);
 
 				Vec2 anchor(-15.0f + 1.0f * i, 5.0f);
@@ -95,7 +95,7 @@ public:
 			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = Vec2(-8.0f + 8.0f * i, 12.0f);
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&fd);
 		}
 
@@ -111,7 +111,7 @@ public:
 			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = Vec2(-6.0f + 6.0f * i, 10.0f);
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&fd);
 		}
 	}
@@ -121,7 +121,7 @@ public:
 		return new Bridge;
 	}
 
-	b2Body* m_middle;
+	Body* m_middle;
 };
 
 } // namespace box2d

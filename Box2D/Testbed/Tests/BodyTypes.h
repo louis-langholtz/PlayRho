@@ -26,7 +26,7 @@ class BodyTypes : public Test
 public:
 	BodyTypes()
 	{
-		b2Body* ground = nullptr;
+		Body* ground = nullptr;
 		{
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -93,7 +93,7 @@ public:
 			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = Vec2(0.0f, 8.0f);
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
 			shape.SetAsBox(0.75f, 0.75f);
@@ -153,8 +153,8 @@ public:
 		return new BodyTypes;
 	}
 
-	b2Body* m_attachment;
-	b2Body* m_platform;
+	Body* m_attachment;
+	Body* m_platform;
 	float_t m_speed;
 };
 

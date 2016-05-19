@@ -116,7 +116,7 @@ void b2World::SetDebugDraw(b2Draw* debugDraw) noexcept
 	g_debugDraw = debugDraw;
 }
 
-b2Body* b2World::CreateBody(const BodyDef* def)
+Body* b2World::CreateBody(const BodyDef* def)
 {
 	assert(!IsLocked());
 	if (IsLocked())
@@ -124,8 +124,8 @@ b2Body* b2World::CreateBody(const BodyDef* def)
 		return nullptr;
 	}
 
-	void* mem = m_blockAllocator.Allocate(sizeof(b2Body));
-	auto b = new (mem) b2Body(def, this);
+	void* mem = m_blockAllocator.Allocate(sizeof(Body));
+	auto b = new (mem) Body(def, this);
 
 	// Add to world doubly linked list.
 	b->m_prev = nullptr;
@@ -140,7 +140,7 @@ b2Body* b2World::CreateBody(const BodyDef* def)
 	return b;
 }
 
-void b2World::DestroyBody(b2Body* b)
+void b2World::DestroyBody(Body* b)
 {
 	assert(m_bodyCount > 0);
 	assert(!IsLocked());
@@ -217,8 +217,8 @@ void b2World::DestroyBody(b2Body* b)
 	}
 
 	--m_bodyCount;
-	b->~b2Body();
-	m_blockAllocator.Free(b, sizeof(b2Body));
+	b->~Body();
+	m_blockAllocator.Free(b, sizeof(Body));
 }
 
 b2Joint* b2World::CreateJoint(const b2JointDef* def)
@@ -411,7 +411,7 @@ void b2World::Solve(const b2TimeStep& step)
 	// Clear all the island flags.
 	for (auto b = m_bodyList; b; b = b->GetNext())
 	{
-		assert(b->m_islandIndex == b2Body::InvalidIslandIndex);
+		assert(b->m_islandIndex == Body::InvalidIslandIndex);
 		b->UnsetInIsland();
 	}
 	for (auto c = m_contactManager.GetContactList(); c; c = c->GetNext())
@@ -425,7 +425,7 @@ void b2World::Solve(const b2TimeStep& step)
 
 	// Build and simulate all awake islands.
 	const auto stackSize = m_bodyCount;
-	auto stack = static_cast<b2Body**>(m_stackAllocator.Allocate(stackSize * sizeof(b2Body*)));
+	auto stack = static_cast<Body**>(m_stackAllocator.Allocate(stackSize * sizeof(Body*)));
 	for (auto seed = m_bodyList; seed; seed = seed->GetNext())
 	{
 		if (seed->IsInIsland())
@@ -693,7 +693,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 		minContact->SetInIsland();
 
 		// Get contacts on bodyA and bodyB.
-		b2Body* bodies[2] = {bA, bB};
+		Body* bodies[2] = {bA, bB};
 		for (auto body: bodies)
 		{
 			if (body->m_type == DynamicBody)
@@ -1203,7 +1203,7 @@ void b2World::Dump()
 	log("Vec2 g(%.15lef, %.15lef);\n", m_gravity.x, m_gravity.y);
 	log("m_world->SetGravity(g);\n");
 
-	log("b2Body** bodies = (b2Body**)alloc(%d * sizeof(b2Body*));\n", m_bodyCount);
+	log("Body** bodies = (Body**)alloc(%d * sizeof(Body*));\n", m_bodyCount);
 	log("b2Joint** joints = (b2Joint**)alloc(%d * sizeof(b2Joint*));\n", m_jointCount);
 	auto i = island_count_t{0};
 	for (auto b = m_bodyList; b; b = b->m_next)

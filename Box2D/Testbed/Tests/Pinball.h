@@ -29,7 +29,7 @@ public:
 	Pinball()
 	{
 		// Ground body
-		b2Body* ground = nullptr;
+		Body* ground = nullptr;
 		{
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -57,10 +57,10 @@ public:
 			bd.type = DynamicBody;
 
 			bd.position = p1;
-			b2Body* leftFlipper = m_world->CreateBody(&bd);
+			Body* leftFlipper = m_world->CreateBody(&bd);
 
 			bd.position = p2;
-			b2Body* rightFlipper = m_world->CreateBody(&bd);
+			Body* rightFlipper = m_world->CreateBody(&bd);
 
 			b2PolygonShape box;
 			box.SetAsBox(1.75f, 0.1f);
@@ -162,7 +162,7 @@ public:
 
 	b2RevoluteJoint* m_leftJoint;
 	b2RevoluteJoint* m_rightJoint;
-	b2Body* m_ball;
+	Body* m_ball;
 	bool m_button;
 };
 

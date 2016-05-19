@@ -29,7 +29,7 @@ class MotorJoint : public Test
 public:
 	MotorJoint()
 	{
-		b2Body* ground = NULL;
+		Body* ground = NULL;
 		{
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -48,7 +48,7 @@ public:
 			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = Vec2(0.0f, 8.0f);
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
 			shape.SetAsBox(2.0f, 0.5f);

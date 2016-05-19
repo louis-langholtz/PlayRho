@@ -58,7 +58,7 @@ public:
 		// Ground body
 		{
 			BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(&bd);
 
 			float_t x1 = -20.0f;
 			float_t y1 = 2.0f * cosf(x1 / 10.0f * Pi);
@@ -241,7 +241,7 @@ public:
 	}
 
 	int32 m_bodyIndex;
-	b2Body* m_bodies[e_maxBodies];
+	Body* m_bodies[e_maxBodies];
 	b2PolygonShape m_polygons[4];
 	b2CircleShape m_circle;
 

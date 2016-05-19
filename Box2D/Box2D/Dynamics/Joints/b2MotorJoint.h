@@ -29,7 +29,7 @@ struct b2MotorJointDef : public b2JointDef
 	constexpr b2MotorJointDef() noexcept: b2JointDef(e_motorJoint) {}
 
 	/// Initialize the bodies and offsets using the current transforms.
-	void Initialize(b2Body* bodyA, b2Body* bodyB);
+	void Initialize(Body* bodyA, Body* bodyB);
 
 	/// Position of bodyB minus the position of bodyA, in bodyA's frame, in meters.
 	Vec2 linearOffset = Vec2_zero;

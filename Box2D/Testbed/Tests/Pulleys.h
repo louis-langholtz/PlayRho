@@ -31,7 +31,7 @@ public:
 		float_t a = 1.0f;
 		float_t b = 2.0f;
 
-		b2Body* ground = nullptr;
+		Body* ground = nullptr;
 		{
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -57,11 +57,11 @@ public:
 
 			//bd.fixedRotation = true;
 			bd.position = Vec2(-10.0f, y);
-			b2Body* body1 = m_world->CreateBody(&bd);
+			Body* body1 = m_world->CreateBody(&bd);
 			body1->CreateFixture(&shape, 5.0f);
 
 			bd.position = Vec2(10.0f, y);
-			b2Body* body2 = m_world->CreateBody(&bd);
+			Body* body2 = m_world->CreateBody(&bd);
 			body2->CreateFixture(&shape, 5.0f);
 
 			b2PulleyJointDef pulleyDef;

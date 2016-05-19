@@ -26,7 +26,7 @@
 namespace box2d {
 
 class b2Contact;
-class b2Body;
+class Body;
 class b2StackAllocator;
 struct b2ContactPositionConstraint;
 struct b2ContactPositionConstraintBodyData;
@@ -180,8 +180,8 @@ public:
 
 private:
 	static void Assign(b2ContactVelocityConstraint& var, const b2Contact& val);
-	static void Assign(b2ContactPositionConstraintBodyData& var, const b2Body& val);
-	static void Assign(b2ContactVelocityConstraintBodyData& var, const b2Body& val);
+	static void Assign(b2ContactPositionConstraintBodyData& var, const Body& val);
+	static void Assign(b2ContactVelocityConstraintBodyData& var, const Body& val);
 
 	void InitializeVelocityConstraint(b2ContactVelocityConstraint& vc, const b2ContactPositionConstraint& pc);
 

@@ -34,7 +34,7 @@ struct b2AABB;
 struct BodyDef;
 struct b2Color;
 struct b2JointDef;
-class b2Body;
+class Body;
 class b2Draw;
 class b2Fixture;
 class b2Joint;
@@ -75,13 +75,13 @@ public:
 	/// Create a rigid body given a definition. No reference to the definition
 	/// is retained.
 	/// @warning This function is locked during callbacks.
-	b2Body* CreateBody(const BodyDef* def);
+	Body* CreateBody(const BodyDef* def);
 
 	/// Destroy a rigid body given a definition. No reference to the definition
 	/// is retained. This function is locked during callbacks.
 	/// @warning This automatically deletes all associated shapes and joints.
 	/// @warning This function is locked during callbacks.
-	void DestroyBody(b2Body* body);
+	void DestroyBody(Body* body);
 
 	/// Create a joint to constrain bodies together. No reference to the definition
 	/// is retained. This may cause the connected bodies to cease colliding.
@@ -125,13 +125,13 @@ public:
 	/// @param point2 the ray ending point
 	void RayCast(b2RayCastCallback* callback, const Vec2& point1, const Vec2& point2) const;
 
-	/// Get the world body list. With the returned body, use b2Body::GetNext to get
+	/// Get the world body list. With the returned body, use Body::GetNext to get
 	/// the next body in the world list. A nullptr body indicates the end of the list.
 	/// @return the head of the world body list.
-	b2Body* GetBodyList() noexcept;
-	const b2Body* GetBodyList() const noexcept;
+	Body* GetBodyList() noexcept;
+	const Body* GetBodyList() const noexcept;
 
-	b2BodyList GetBodies() noexcept;
+	BodyList GetBodies() noexcept;
 	b2ConstBodyList GetBodies() const noexcept;
 
 	/// Get the world joint list. With the returned joint, use b2Joint::GetNext to get
@@ -226,7 +226,7 @@ private:
 		e_clearForces	= 0x0004
 	};
 
-	friend class b2Body;
+	friend class Body;
 	friend class b2Fixture;
 	friend class b2ContactManager;
 	friend class b2Controller;
@@ -250,7 +250,7 @@ private:
 
 	b2ContactManager m_contactManager{&m_blockAllocator, &m_defaultFilter, &m_defaultListener};
 
-	b2Body* m_bodyList = nullptr;
+	Body* m_bodyList = nullptr;
 	b2Joint* m_jointList = nullptr;
 
 	size_type m_bodyCount = 0;
@@ -275,19 +275,19 @@ private:
 	b2Profile m_profile;
 };
 
-inline b2Body* b2World::GetBodyList() noexcept
+inline Body* b2World::GetBodyList() noexcept
 {
 	return m_bodyList;
 }
 
-inline const b2Body* b2World::GetBodyList() const noexcept
+inline const Body* b2World::GetBodyList() const noexcept
 {
 	return m_bodyList;
 }
 
-inline b2BodyList b2World::GetBodies() noexcept
+inline BodyList b2World::GetBodies() noexcept
 {
-	return b2BodyList(m_bodyList);
+	return BodyList(m_bodyList);
 }
 
 inline b2ConstBodyList b2World::GetBodies() const noexcept

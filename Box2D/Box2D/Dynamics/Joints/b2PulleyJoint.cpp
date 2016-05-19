@@ -34,7 +34,7 @@ using namespace box2d;
 // K = J * invM * JT
 //   = invMass1 + invI1 * cross(r1, u1)^2 + ratio^2 * (invMass2 + invI2 * cross(r2, u2)^2)
 
-void b2PulleyJointDef::Initialize(b2Body* bA, b2Body* bB,
+void b2PulleyJointDef::Initialize(Body* bA, Body* bB,
 				const Vec2& groundA, const Vec2& groundB,
 				const Vec2& anchorA, const Vec2& anchorB,
 				float_t r)

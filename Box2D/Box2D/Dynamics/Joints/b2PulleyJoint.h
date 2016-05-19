@@ -33,7 +33,7 @@ struct b2PulleyJointDef : public b2JointDef
 	}
 
 	/// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.
-	void Initialize(b2Body* bodyA, b2Body* bodyB,
+	void Initialize(Body* bodyA, Body* bodyB,
 					const Vec2& groundAnchorA, const Vec2& groundAnchorB,
 					const Vec2& anchorA, const Vec2& anchorB,
 					float_t ratio);

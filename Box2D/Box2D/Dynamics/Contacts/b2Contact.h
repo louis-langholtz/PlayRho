@@ -28,7 +28,7 @@
 
 namespace box2d {
 
-class b2Body;
+class Body;
 class b2Contact;
 class b2Fixture;
 class b2World;
@@ -57,7 +57,7 @@ inline float_t b2MixRestitution(float_t restitution1, float_t restitution2) noex
 /// nodes, one for each attached body.
 struct b2ContactEdge
 {
-	b2Body* other;			///< provides quick access to the other body attached.
+	Body* other;			///< provides quick access to the other body attached.
 	b2Contact* contact;		///< the contact
 	b2ContactEdge* prev;	///< the previous contact edge in the body's contact list
 	b2ContactEdge* next;	///< the next contact edge in the body's contact list
@@ -147,7 +147,7 @@ protected:
 	friend class b2ContactManager;
 	friend class b2World;
 	friend class b2ContactSolver;
-	friend class b2Body;
+	friend class Body;
 	friend class b2Fixture;
 
 	// Flags stored in m_flags

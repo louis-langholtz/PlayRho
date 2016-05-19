@@ -33,7 +33,7 @@ public:
 	{
 		{
 			BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -59,7 +59,7 @@ public:
 					BodyDef bd;
 					bd.type = DynamicBody;
 					bd.position = y;
-					b2Body* body = m_world->CreateBody(&bd);
+					Body* body = m_world->CreateBody(&bd);
 					body->CreateFixture(&shape, 5.0f);
 
 					y += deltaY;

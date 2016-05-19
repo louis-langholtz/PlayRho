@@ -36,7 +36,7 @@ public:
 	{
 		{
 			BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
 
@@ -76,7 +76,7 @@ public:
 				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = Vec2(-10.0f + (2.1f * j + 1.0f + 0.01f * i) * radius, (2.0f * i + 1.0f) * radius);
-				b2Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(&bd);
 
 				body->CreateFixture(&fd);
 			}
@@ -100,7 +100,7 @@ public:
 		bd.bullet = m_bullet_mode;
 		bd.position = Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));
 		//bd.allowSleep = false;
-		b2Body* body = m_world->CreateBody(&bd);
+		Body* body = m_world->CreateBody(&bd);
 
 		body->CreateFixture(&fd);
 	}
@@ -175,7 +175,7 @@ public:
 	void Step(Settings* settings)
 	{
 		bool sleeping = true;
-		for (b2Body* b = m_world->GetBodyList(); b; b = b->GetNext())
+		for (Body* b = m_world->GetBodyList(); b; b = b->GetNext())
 		{
 			if (b->GetType() != DynamicBody)
 			{
@@ -200,7 +200,7 @@ public:
 
 		Test::Step(settings);
 
-		for (b2Body* b = m_world->GetBodyList(); b; b = b->GetNext())
+		for (Body* b = m_world->GetBodyList(); b; b = b->GetNext())
 		{
 			if (b->GetType() != DynamicBody)
 			{

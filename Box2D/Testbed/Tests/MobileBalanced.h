@@ -32,7 +32,7 @@ public:
 
 	MobileBalanced()
 	{
-		b2Body* ground;
+		Body* ground;
 
 		// Create ground body.
 		{
@@ -44,7 +44,7 @@ public:
 		float32 a = 0.5f;
 		Vec2 h(0.0f, a);
 
-		b2Body* root = AddNode(ground, Vec2_zero, 0, 3.0f, a);
+		Body* root = AddNode(ground, Vec2_zero, 0, 3.0f, a);
 
 		b2RevoluteJointDef jointDef;
 		jointDef.bodyA = ground;
@@ -54,7 +54,7 @@ public:
 		m_world->CreateJoint(&jointDef);
 	}
 
-	b2Body* AddNode(b2Body* parent, const Vec2& localAnchor, int32 depth, float32 offset, float32 a)
+	Body* AddNode(Body* parent, const Vec2& localAnchor, int32 depth, float32 offset, float32 a)
 	{
 		float32 density = 20.0f;
 		Vec2 h(0.0f, a);
@@ -64,7 +64,7 @@ public:
 		BodyDef bodyDef;
 		bodyDef.type = DynamicBody;
 		bodyDef.position = p;
-		b2Body* body = m_world->CreateBody(&bodyDef);
+		Body* body = m_world->CreateBody(&bodyDef);
 
 		b2PolygonShape shape;
 		shape.SetAsBox(0.25f * a, a);
@@ -80,8 +80,8 @@ public:
 
 		Vec2 a1 = Vec2(offset, -a);
 		Vec2 a2 = Vec2(-offset, -a);
-		b2Body* body1 = AddNode(body, a1, depth + 1, 0.5f * offset, a);
-		b2Body* body2 = AddNode(body, a2, depth + 1, 0.5f * offset, a);
+		Body* body1 = AddNode(body, a1, depth + 1, 0.5f * offset, a);
+		Body* body2 = AddNode(body, a2, depth + 1, 0.5f * offset, a);
 
 		b2RevoluteJointDef jointDef;
 		jointDef.bodyA = body;

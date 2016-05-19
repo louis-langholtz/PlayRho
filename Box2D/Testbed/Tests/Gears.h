@@ -26,7 +26,7 @@ class Gears : public Test
 public:
 	Gears()
 	{
-		b2Body* ground = nullptr;
+		Body* ground = nullptr;
 		{
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -49,19 +49,19 @@ public:
 			BodyDef bd1;
 			bd1.type = StaticBody;
 			bd1.position = Vec2(10.0f, 9.0f);
-			b2Body* body1 = m_world->CreateBody(&bd1);
+			Body* body1 = m_world->CreateBody(&bd1);
 			body1->CreateFixture(&circle1, 5.0f);
 
 			BodyDef bd2;
 			bd2.type = DynamicBody;
 			bd2.position = Vec2(10.0f, 8.0f);
-			b2Body* body2 = m_world->CreateBody(&bd2);
+			Body* body2 = m_world->CreateBody(&bd2);
 			body2->CreateFixture(&box, 5.0f);
 
 			BodyDef bd3;
 			bd3.type = DynamicBody;
 			bd3.position = Vec2(10.0f, 6.0f);
-			b2Body* body3 = m_world->CreateBody(&bd3);
+			Body* body3 = m_world->CreateBody(&bd3);
 			body3->CreateFixture(&circle2, 5.0f);
 
 			b2RevoluteJointDef jd1;
@@ -94,7 +94,7 @@ public:
 			BodyDef bd1;
 			bd1.type = DynamicBody;
 			bd1.position = Vec2(-3.0f, 12.0f);
-			b2Body* body1 = m_world->CreateBody(&bd1);
+			Body* body1 = m_world->CreateBody(&bd1);
 			body1->CreateFixture(&circle1, 5.0f);
 
 			b2RevoluteJointDef jd1;
@@ -108,7 +108,7 @@ public:
 			BodyDef bd2;
 			bd2.type = DynamicBody;
 			bd2.position = Vec2(0.0f, 12.0f);
-			b2Body* body2 = m_world->CreateBody(&bd2);
+			Body* body2 = m_world->CreateBody(&bd2);
 			body2->CreateFixture(&circle2, 5.0f);
 
 			b2RevoluteJointDef jd2;
@@ -118,7 +118,7 @@ public:
 			BodyDef bd3;
 			bd3.type = DynamicBody;
 			bd3.position = Vec2(2.5f, 12.0f);
-			b2Body* body3 = m_world->CreateBody(&bd3);
+			Body* body3 = m_world->CreateBody(&bd3);
 			body3->CreateFixture(&box, 5.0f);
 
 			b2PrismaticJointDef jd3;

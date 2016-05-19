@@ -11,7 +11,7 @@
 
 using namespace box2d;
 
-b2BodyIterator::pointer b2BodyIterator::next(pointer q) const noexcept
+BodyIterator::pointer BodyIterator::next(pointer q) const noexcept
 {
 	return p->GetNext();
 }

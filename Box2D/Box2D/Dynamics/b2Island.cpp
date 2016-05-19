@@ -158,7 +158,7 @@ m_contactCapacity(contactCapacity),
 m_jointCapacity(jointCapacity),
 m_allocator(allocator),
 m_listener(listener),
-m_bodies(static_cast<b2Body**>(m_allocator->Allocate(bodyCapacity * sizeof(b2Body*)))),
+m_bodies(static_cast<Body**>(m_allocator->Allocate(bodyCapacity * sizeof(Body*)))),
 m_contacts(static_cast<b2Contact**>(m_allocator->Allocate(contactCapacity * sizeof(b2Contact*)))),
 m_joints(static_cast<b2Joint**>(m_allocator->Allocate(jointCapacity * sizeof(b2Joint*)))),
 m_velocities(static_cast<b2Velocity*>(m_allocator->Allocate(bodyCapacity * sizeof(b2Velocity)))),
@@ -188,7 +188,7 @@ void b2Island::Clear() noexcept
 void b2Island::ClearBodies() noexcept
 {
 	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
-		m_bodies[i]->m_islandIndex = b2Body::InvalidIslandIndex;	
+		m_bodies[i]->m_islandIndex = Body::InvalidIslandIndex;	
 	m_bodyCount = 0;
 }
 
@@ -407,8 +407,8 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, isl
 		b2Fixture* fA = c->GetFixtureA();
 		b2Fixture* fB = c->GetFixtureB();
 
-		b2Body* bA = fA->GetBody();
-		b2Body* bB = fB->GetBody();
+		Body* bA = fA->GetBody();
+		Body* bB = fB->GetBody();
 
 		int32 indexA = c->GetChildIndexA();
 		int32 indexB = c->GetChildIndexB();
@@ -486,9 +486,9 @@ void b2Island::SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, isl
 	Report(contactSolver.GetVelocityConstraints());
 }
 
-void b2Island::Add(b2Body* body)
+void b2Island::Add(Body* body)
 {
-	assert(body->m_islandIndex == b2Body::InvalidIslandIndex);
+	assert(body->m_islandIndex == Body::InvalidIslandIndex);
 	assert(m_bodyCount < m_bodyCapacity);
 	body->m_islandIndex = m_bodyCount;
 	m_bodies[m_bodyCount] = body;

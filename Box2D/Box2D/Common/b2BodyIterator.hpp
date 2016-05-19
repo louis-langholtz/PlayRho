@@ -13,19 +13,19 @@
 
 namespace box2d {
 
-class b2Body;
+class Body;
 
-class b2BodyIterator: public std::iterator<std::forward_iterator_tag, b2Body>
+class BodyIterator: public std::iterator<std::forward_iterator_tag, Body>
 {
 public:
-	b2BodyIterator(pointer b) noexcept: p(b) {}
-	b2BodyIterator(const b2BodyIterator& it) noexcept: p(it.p) {}
+	BodyIterator(pointer b) noexcept: p(b) {}
+	BodyIterator(const BodyIterator& it) noexcept: p(it.p) {}
 	
-	b2BodyIterator& operator++() noexcept { p = next(p); return *this; }
-	b2BodyIterator operator++(int) { b2BodyIterator tmp(*this); operator++(); return tmp; }
+	BodyIterator& operator++() noexcept { p = next(p); return *this; }
+	BodyIterator operator++(int) { BodyIterator tmp(*this); operator++(); return tmp; }
 	
-	bool operator==(const b2BodyIterator& rhs) const noexcept {return p == rhs.p; }
-	bool operator!=(const b2BodyIterator& rhs) const noexcept {return p != rhs.p; }
+	bool operator==(const BodyIterator& rhs) const noexcept {return p == rhs.p; }
+	bool operator!=(const BodyIterator& rhs) const noexcept {return p != rhs.p; }
 	
 	reference operator*() const noexcept { return *p; }
 	

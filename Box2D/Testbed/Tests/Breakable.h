@@ -36,7 +36,7 @@ public:
 		// Ground body
 		{
 			BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -89,7 +89,7 @@ public:
 	void Break()
 	{
 		// Create two bodies from one.
-		b2Body* body1 = m_piece1->GetBody();
+		Body* body1 = m_piece1->GetBody();
 		Vec2 center = body1->GetWorldCenter();
 
 		body1->DestroyFixture(m_piece2);
@@ -100,7 +100,7 @@ public:
 		bd.position = body1->GetPosition();
 		bd.angle = body1->GetAngle();
 
-		b2Body* body2 = m_world->CreateBody(&bd);
+		Body* body2 = m_world->CreateBody(&bd);
 		m_piece2 = body2->CreateFixture(&m_shape2, 1.0f);
 
 		// Compute consistent velocities for new bodies based on
@@ -142,7 +142,7 @@ public:
 		return new Breakable;
 	}
 
-	b2Body* m_body1;
+	Body* m_body1;
 	Vec2 m_velocity;
 	float_t m_angularVelocity;
 	b2PolygonShape m_shape1;

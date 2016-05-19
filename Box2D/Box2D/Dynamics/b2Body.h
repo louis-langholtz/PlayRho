@@ -111,7 +111,7 @@ struct BodyDef
 };
 
 /// A rigid body. These are created via b2World::CreateBody.
-class b2Body
+class Body
 {
 public:
 	/// Creates a fixture and attach it to this body. Use this function if you need
@@ -309,7 +309,7 @@ public:
 	/// Set the sleep state of the body. A sleeping body has very
 	/// low CPU cost.
 	/// @param flag set to true to wake the body, false to put it to sleep.
-	/// @deprecated use b2Body::SetAwake() or b2Body::UnsetAwake() instead.
+	/// @deprecated use Body::SetAwake() or Body::UnsetAwake() instead.
 	[[deprecated]] void SetAwake(bool flag) noexcept;
 
 	/// Set the sleep state of the body to awake.
@@ -364,8 +364,8 @@ public:
 	const b2ContactEdge* GetContactList() const noexcept;
 
 	/// Get the next body in the world's body list.
-	b2Body* GetNext() noexcept;
-	const b2Body* GetNext() const noexcept;
+	Body* GetNext() noexcept;
+	const Body* GetNext() const noexcept;
 
 	/// Get the user data pointer that was provided in the body definition.
 	void* GetUserData() const noexcept;
@@ -414,14 +414,14 @@ private:
 	
 	static uint16 GetFlags(const BodyDef& bd) noexcept;
 
-	b2Body(const BodyDef* bd, b2World* world);
-	~b2Body();
+	Body(const BodyDef* bd, b2World* world);
+	~Body();
 
 	void SynchronizeFixtures();
 	
 	// This is used to prevent connected bodies from colliding.
 	// It may lie, depending on the collideConnected flag.
-	bool ShouldCollide(const b2Body* other) const;
+	bool ShouldCollide(const Body* other) const;
 
 	/// Advances the body by a given time ratio.
 	/// @detail This method:
@@ -464,8 +464,8 @@ private:
 	float_t m_torque = float_t{0};
 
 	b2World* const m_world;
-	b2Body* m_prev = nullptr;
-	b2Body* m_next = nullptr;
+	Body* m_prev = nullptr;
+	Body* m_next = nullptr;
 
 	b2Fixture* m_fixtureList = nullptr;
 	size_t m_fixtureCount = 0;
@@ -488,37 +488,37 @@ private:
 	void* m_userData;
 };
 
-inline BodyType b2Body::GetType() const noexcept
+inline BodyType Body::GetType() const noexcept
 {
 	return m_type;
 }
 
-inline Transform b2Body::GetTransform() const noexcept
+inline Transform Body::GetTransform() const noexcept
 {
 	return m_xf;
 }
 
-inline Vec2 b2Body::GetPosition() const noexcept
+inline Vec2 Body::GetPosition() const noexcept
 {
 	return m_xf.p;
 }
 
-inline float_t b2Body::GetAngle() const noexcept
+inline float_t Body::GetAngle() const noexcept
 {
 	return m_sweep.a;
 }
 
-inline Vec2 b2Body::GetWorldCenter() const noexcept
+inline Vec2 Body::GetWorldCenter() const noexcept
 {
 	return m_sweep.c;
 }
 
-inline Vec2 b2Body::GetLocalCenter() const noexcept
+inline Vec2 Body::GetLocalCenter() const noexcept
 {
 	return m_sweep.localCenter;
 }
 
-inline void b2Body::SetLinearVelocity(const Vec2& v) noexcept
+inline void Body::SetLinearVelocity(const Vec2& v) noexcept
 {
 	if (m_type == StaticBody)
 	{
@@ -533,12 +533,12 @@ inline void b2Body::SetLinearVelocity(const Vec2& v) noexcept
 	m_linearVelocity = v;
 }
 
-inline Vec2 b2Body::GetLinearVelocity() const noexcept
+inline Vec2 Body::GetLinearVelocity() const noexcept
 {
 	return m_linearVelocity;
 }
 
-inline void b2Body::SetAngularVelocity(float_t w) noexcept
+inline void Body::SetAngularVelocity(float_t w) noexcept
 {
 	if (m_type == StaticBody)
 	{
@@ -553,87 +553,87 @@ inline void b2Body::SetAngularVelocity(float_t w) noexcept
 	m_angularVelocity = w;
 }
 
-inline float_t b2Body::GetAngularVelocity() const noexcept
+inline float_t Body::GetAngularVelocity() const noexcept
 {
 	return m_angularVelocity;
 }
 
-inline float_t b2Body::GetMass() const noexcept
+inline float_t Body::GetMass() const noexcept
 {
 	return m_mass;
 }
 
-inline float_t b2Body::GetInertia() const noexcept
+inline float_t Body::GetInertia() const noexcept
 {
 	return m_I + m_mass * m_sweep.localCenter.LengthSquared();
 }
 
-inline b2MassData b2Body::GetMassData() const noexcept
+inline b2MassData Body::GetMassData() const noexcept
 {
 	return b2MassData{m_mass, m_sweep.localCenter, m_I + m_mass * m_sweep.localCenter.LengthSquared()};
 }
 
-inline Vec2 b2Body::GetWorldPoint(const Vec2& localPoint) const noexcept
+inline Vec2 Body::GetWorldPoint(const Vec2& localPoint) const noexcept
 {
 	return Mul(m_xf, localPoint);
 }
 
-inline Vec2 b2Body::GetWorldVector(const Vec2& localVector) const noexcept
+inline Vec2 Body::GetWorldVector(const Vec2& localVector) const noexcept
 {
 	return Mul(m_xf.q, localVector);
 }
 
-inline Vec2 b2Body::GetLocalPoint(const Vec2& worldPoint) const noexcept
+inline Vec2 Body::GetLocalPoint(const Vec2& worldPoint) const noexcept
 {
 	return MulT(m_xf, worldPoint);
 }
 
-inline Vec2 b2Body::GetLocalVector(const Vec2& worldVector) const noexcept
+inline Vec2 Body::GetLocalVector(const Vec2& worldVector) const noexcept
 {
 	return MulT(m_xf.q, worldVector);
 }
 
-inline Vec2 b2Body::GetLinearVelocityFromWorldPoint(const Vec2& worldPoint) const noexcept
+inline Vec2 Body::GetLinearVelocityFromWorldPoint(const Vec2& worldPoint) const noexcept
 {
 	return m_linearVelocity + Cross(m_angularVelocity, worldPoint - m_sweep.c);
 }
 
-inline Vec2 b2Body::GetLinearVelocityFromLocalPoint(const Vec2& localPoint) const noexcept
+inline Vec2 Body::GetLinearVelocityFromLocalPoint(const Vec2& localPoint) const noexcept
 {
 	return GetLinearVelocityFromWorldPoint(GetWorldPoint(localPoint));
 }
 
-inline float_t b2Body::GetLinearDamping() const noexcept
+inline float_t Body::GetLinearDamping() const noexcept
 {
 	return m_linearDamping;
 }
 
-inline void b2Body::SetLinearDamping(float_t linearDamping) noexcept
+inline void Body::SetLinearDamping(float_t linearDamping) noexcept
 {
 	m_linearDamping = linearDamping;
 }
 
-inline float_t b2Body::GetAngularDamping() const noexcept
+inline float_t Body::GetAngularDamping() const noexcept
 {
 	return m_angularDamping;
 }
 
-inline void b2Body::SetAngularDamping(float_t angularDamping) noexcept
+inline void Body::SetAngularDamping(float_t angularDamping) noexcept
 {
 	m_angularDamping = angularDamping;
 }
 
-inline float_t b2Body::GetGravityScale() const noexcept
+inline float_t Body::GetGravityScale() const noexcept
 {
 	return m_gravityScale;
 }
 
-inline void b2Body::SetGravityScale(float_t scale) noexcept
+inline void Body::SetGravityScale(float_t scale) noexcept
 {
 	m_gravityScale = scale;
 }
 
-inline void b2Body::SetBullet(bool flag) noexcept
+inline void Body::SetBullet(bool flag) noexcept
 {
 	if (flag)
 	{
@@ -645,12 +645,12 @@ inline void b2Body::SetBullet(bool flag) noexcept
 	}
 }
 
-inline bool b2Body::IsBullet() const noexcept
+inline bool Body::IsBullet() const noexcept
 {
 	return (m_flags & e_bulletFlag) == e_bulletFlag;
 }
 
-inline void b2Body::SetAwake(bool flag) noexcept
+inline void Body::SetAwake(bool flag) noexcept
 {
 	if (flag)
 	{
@@ -662,7 +662,7 @@ inline void b2Body::SetAwake(bool flag) noexcept
 	}
 }
 
-inline void b2Body::SetAwake() noexcept
+inline void Body::SetAwake() noexcept
 {
 	if ((m_flags & e_awakeFlag) == 0)
 	{
@@ -671,7 +671,7 @@ inline void b2Body::SetAwake() noexcept
 	}
 }
 
-inline void b2Body::UnsetAwake() noexcept
+inline void Body::UnsetAwake() noexcept
 {
 	m_flags &= ~e_awakeFlag;
 	m_sleepTime = float_t{0};
@@ -681,22 +681,22 @@ inline void b2Body::UnsetAwake() noexcept
 	m_torque = float_t{0};
 }
 
-inline bool b2Body::IsAwake() const noexcept
+inline bool Body::IsAwake() const noexcept
 {
 	return (m_flags & e_awakeFlag) != 0;
 }
 
-inline bool b2Body::IsActive() const noexcept
+inline bool Body::IsActive() const noexcept
 {
 	return (m_flags & e_activeFlag) != 0;
 }
 
-inline bool b2Body::IsFixedRotation() const noexcept
+inline bool Body::IsFixedRotation() const noexcept
 {
 	return (m_flags & e_fixedRotationFlag) != 0;
 }
 
-inline void b2Body::SetSleepingAllowed(bool flag) noexcept
+inline void Body::SetSleepingAllowed(bool flag) noexcept
 {
 	if (flag)
 	{
@@ -709,72 +709,72 @@ inline void b2Body::SetSleepingAllowed(bool flag) noexcept
 	}
 }
 
-inline bool b2Body::IsSleepingAllowed() const noexcept
+inline bool Body::IsSleepingAllowed() const noexcept
 {
 	return (m_flags & e_autoSleepFlag) == e_autoSleepFlag;
 }
 
-inline b2Fixture* b2Body::GetFixtureList() noexcept
+inline b2Fixture* Body::GetFixtureList() noexcept
 {
 	return m_fixtureList;
 }
 
-inline const b2Fixture* b2Body::GetFixtureList() const noexcept
+inline const b2Fixture* Body::GetFixtureList() const noexcept
 {
 	return m_fixtureList;
 }
 
-inline b2FixtureList b2Body::GetFixtures() noexcept
+inline b2FixtureList Body::GetFixtures() noexcept
 {
 	return b2FixtureList(m_fixtureList);
 }
 
-inline b2ConstFixtureList b2Body::GetFixtures() const noexcept
+inline b2ConstFixtureList Body::GetFixtures() const noexcept
 {
 	return b2ConstFixtureList(m_fixtureList);
 }
 
-inline b2JointEdge* b2Body::GetJointList() noexcept
+inline b2JointEdge* Body::GetJointList() noexcept
 {
 	return m_jointList;
 }
 
-inline const b2JointEdge* b2Body::GetJointList() const noexcept
+inline const b2JointEdge* Body::GetJointList() const noexcept
 {
 	return m_jointList;
 }
 
-inline b2ContactEdge* b2Body::GetContactList() noexcept
+inline b2ContactEdge* Body::GetContactList() noexcept
 {
 	return m_contactList;
 }
 
-inline const b2ContactEdge* b2Body::GetContactList() const noexcept
+inline const b2ContactEdge* Body::GetContactList() const noexcept
 {
 	return m_contactList;
 }
 
-inline b2Body* b2Body::GetNext() noexcept
+inline Body* Body::GetNext() noexcept
 {
 	return m_next;
 }
 
-inline const b2Body* b2Body::GetNext() const noexcept
+inline const Body* Body::GetNext() const noexcept
 {
 	return m_next;
 }
 
-inline void b2Body::SetUserData(void* data) noexcept
+inline void Body::SetUserData(void* data) noexcept
 {
 	m_userData = data;
 }
 
-inline void* b2Body::GetUserData() const noexcept
+inline void* Body::GetUserData() const noexcept
 {
 	return m_userData;
 }
 
-inline void b2Body::ApplyForce(const Vec2& force, const Vec2& point, bool wake) noexcept
+inline void Body::ApplyForce(const Vec2& force, const Vec2& point, bool wake) noexcept
 {
 	if (m_type != DynamicBody)
 	{
@@ -794,7 +794,7 @@ inline void b2Body::ApplyForce(const Vec2& force, const Vec2& point, bool wake) 
 	}
 }
 
-inline void b2Body::ApplyForceToCenter(const Vec2& force, bool wake) noexcept
+inline void Body::ApplyForceToCenter(const Vec2& force, bool wake) noexcept
 {
 	if (m_type != DynamicBody)
 	{
@@ -813,7 +813,7 @@ inline void b2Body::ApplyForceToCenter(const Vec2& force, bool wake) noexcept
 	}
 }
 
-inline void b2Body::ApplyTorque(float_t torque, bool wake) noexcept
+inline void Body::ApplyTorque(float_t torque, bool wake) noexcept
 {
 	if (m_type != DynamicBody)
 	{
@@ -832,7 +832,7 @@ inline void b2Body::ApplyTorque(float_t torque, bool wake) noexcept
 	}
 }
 
-inline void b2Body::ApplyLinearImpulse(const Vec2& impulse, const Vec2& point, bool wake) noexcept
+inline void Body::ApplyLinearImpulse(const Vec2& impulse, const Vec2& point, bool wake) noexcept
 {
 	if (m_type != DynamicBody)
 	{
@@ -852,7 +852,7 @@ inline void b2Body::ApplyLinearImpulse(const Vec2& impulse, const Vec2& point, b
 	}
 }
 
-inline void b2Body::ApplyAngularImpulse(float_t impulse, bool wake) noexcept
+inline void Body::ApplyAngularImpulse(float_t impulse, bool wake) noexcept
 {
 	if (m_type != DynamicBody)
 	{
@@ -871,7 +871,7 @@ inline void b2Body::ApplyAngularImpulse(float_t impulse, bool wake) noexcept
 	}
 }
 
-inline void b2Body::Advance(float_t alpha)
+inline void Body::Advance(float_t alpha)
 {
 	// Advance to the new safe time. This doesn't sync the broad-phase.
 	m_sweep.Advance(alpha);
@@ -880,22 +880,22 @@ inline void b2Body::Advance(float_t alpha)
 	m_xf = GetTransformOne(m_sweep);
 }
 
-inline b2World* b2Body::GetWorld() noexcept
+inline b2World* Body::GetWorld() noexcept
 {
 	return m_world;
 }
 
-inline const b2World* b2Body::GetWorld() const noexcept
+inline const b2World* Body::GetWorld() const noexcept
 {
 	return m_world;
 }
 
-inline bool b2Body::IsInIsland() const noexcept
+inline bool Body::IsInIsland() const noexcept
 {
-	return m_flags & b2Body::e_islandFlag;
+	return m_flags & Body::e_islandFlag;
 }
 
-inline void b2Body::SetInIsland(bool value) noexcept
+inline void Body::SetInIsland(bool value) noexcept
 {
 	if (value)
 		SetInIsland();
@@ -903,17 +903,17 @@ inline void b2Body::SetInIsland(bool value) noexcept
 		UnsetInIsland();
 }
 
-inline void b2Body::SetInIsland() noexcept
+inline void Body::SetInIsland() noexcept
 {
-	m_flags |= b2Body::e_islandFlag;
+	m_flags |= Body::e_islandFlag;
 }
 
-inline void b2Body::UnsetInIsland() noexcept
+inline void Body::UnsetInIsland() noexcept
 {
-	m_flags &= ~b2Body::e_islandFlag;
+	m_flags &= ~Body::e_islandFlag;
 }
 
-inline bool b2Body::IsValidIslandIndex() const noexcept
+inline bool Body::IsValidIslandIndex() const noexcept
 {
 	return IsInIsland() && (m_islandIndex != InvalidIslandIndex);
 }

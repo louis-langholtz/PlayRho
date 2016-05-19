@@ -29,7 +29,7 @@ public:
 	{
 		{
 			BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(&bd);
 
 			Vec2 v1(-10.0f, 0.0f), v2(-7.0f, -2.0f), v3(-4.0f, 0.0f);
 			Vec2 v4(0.0f, 0.0f), v5(4.0f, 0.0f), v6(7.0f, 2.0f), v7(10.0f, 0.0f);
@@ -70,7 +70,7 @@ public:
 			bd.type = DynamicBody;
 			bd.position = Vec2(-0.5f, 0.6f);
 			bd.allowSleep = false;
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 
 			b2CircleShape shape;
 			shape.SetRadius(float_t(0.5));
@@ -83,7 +83,7 @@ public:
 			bd.type = DynamicBody;
 			bd.position = Vec2(1.0f, 0.6f);
 			bd.allowSleep = false;
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 
 			b2PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.5f);

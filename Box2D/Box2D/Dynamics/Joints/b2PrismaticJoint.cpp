@@ -89,7 +89,7 @@ using namespace box2d;
 // Now compute impulse to be applied:
 // df = f2 - f1
 
-void b2PrismaticJointDef::Initialize(b2Body* bA, b2Body* bB, const Vec2& anchor, const Vec2& axis)
+void b2PrismaticJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor, const Vec2& axis)
 {
 	bodyA = bA;
 	bodyB = bB;

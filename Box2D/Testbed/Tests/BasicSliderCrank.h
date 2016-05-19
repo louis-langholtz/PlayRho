@@ -27,7 +27,7 @@ class BasicSliderCrank : public Test
 public:
 	BasicSliderCrank()
 	{
-		b2Body* ground = nullptr;
+		Body* ground = nullptr;
 		{
 			BodyDef bd;
             bd.position = Vec2(0.0f, 17.0f);
@@ -35,7 +35,7 @@ public:
 		}
         
 		{
-			b2Body* prevBody = ground;
+			Body* prevBody = ground;
             
 			// Define crank.
 			{
@@ -45,7 +45,7 @@ public:
 				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = Vec2(-8.0f, 20.0f);
-				b2Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
                 
 				b2RevoluteJointDef rjd;
@@ -63,7 +63,7 @@ public:
 				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = Vec2(4.0f, 20.0f);
-				b2Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
                 
 				b2RevoluteJointDef rjd;
@@ -82,7 +82,7 @@ public:
 				bd.type = DynamicBody;
 				bd.fixedRotation = true;
 				bd.position = Vec2(12.0f, 20.0f);
-				b2Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
                 
 				b2RevoluteJointDef rjd;

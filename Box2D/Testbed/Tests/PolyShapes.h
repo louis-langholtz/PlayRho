@@ -89,7 +89,7 @@ public:
 			return false;
 		}
 
-		b2Body* body = fixture->GetBody();
+		Body* body = fixture->GetBody();
 		b2Shape* shape = fixture->GetShape();
 
 		bool overlap = b2TestOverlap(*shape, 0, m_circle, 0, body->GetTransform(), m_transform);
@@ -123,7 +123,7 @@ public:
 		// Ground body
 		{
 			BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -292,7 +292,7 @@ public:
 	}
 
 	int32 m_bodyIndex;
-	b2Body* m_bodies[e_maxBodies];
+	Body* m_bodies[e_maxBodies];
 	b2PolygonShape m_polygons[4];
 	b2CircleShape m_circle;
 };

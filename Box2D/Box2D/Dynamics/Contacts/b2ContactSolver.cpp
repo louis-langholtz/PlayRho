@@ -95,7 +95,7 @@ void b2ContactSolver::Assign(b2ContactVelocityConstraint& var, const b2Contact& 
 	var.tangentSpeed = val.m_tangentSpeed;
 }
 
-void b2ContactSolver::Assign(b2ContactPositionConstraintBodyData& var, const b2Body& val)
+void b2ContactSolver::Assign(b2ContactPositionConstraintBodyData& var, const Body& val)
 {
 	assert(val.IsValidIslandIndex());
 	var.index = val.m_islandIndex;
@@ -104,7 +104,7 @@ void b2ContactSolver::Assign(b2ContactPositionConstraintBodyData& var, const b2B
 	var.localCenter = val.m_sweep.localCenter;
 }
 
-void b2ContactSolver::Assign(b2ContactVelocityConstraintBodyData& var, const b2Body& val)
+void b2ContactSolver::Assign(b2ContactVelocityConstraintBodyData& var, const Body& val)
 {
 	assert(val.IsValidIslandIndex());
 	var.index = val.m_islandIndex;

@@ -41,7 +41,7 @@ public:
 				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = Vec2(RandomFloat(minX,maxX),RandomFloat(minY,maxY));
-				b2Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 0.01f);
 			}
 		}
@@ -53,7 +53,7 @@ public:
 			bd.type = DynamicBody;
 			bd.position = Vec2(-40.0f,5.0f);
 			bd.bullet = true;
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&shape, 1.0f);
 			body->SetLinearVelocity(Vec2(150.0f, 0.0f));
 		}

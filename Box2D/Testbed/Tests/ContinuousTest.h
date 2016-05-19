@@ -30,7 +30,7 @@ public:
 		{
 			BodyDef bd;
 			bd.position = Vec2(0.0f, 0.0f);
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 
 			b2EdgeShape edge;
 
@@ -65,7 +65,7 @@ public:
 			BodyDef bd;
 			bd.type = DynamicBody;
 			bd.position = Vec2(0.0f, 2.0f);
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 
 			b2CircleShape shape;
 			shape.m_p.SetZero();
@@ -152,7 +152,7 @@ public:
 		return new ContinuousTest;
 	}
 
-	b2Body* m_body;
+	Body* m_body;
 	float_t m_angularVelocity;
 };
 

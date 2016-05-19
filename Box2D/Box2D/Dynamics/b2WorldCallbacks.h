@@ -26,7 +26,7 @@ namespace box2d {
 struct Vec2;
 struct Transform;
 class b2Fixture;
-class b2Body;
+class Body;
 class b2Joint;
 class b2Contact;
 struct b2ContactResult;

@@ -26,7 +26,7 @@
 namespace box2d {
 
 class b2BlockAllocator;
-class b2Body;
+class Body;
 class b2BroadPhase;
 class b2Fixture;
 
@@ -93,7 +93,7 @@ struct b2FixtureProxy
 /// A fixture is used to attach a shape to a body for collision detection. A fixture
 /// inherits its transform from its parent. Fixtures hold additional non-geometric data
 /// such as friction, collision filters, etc.
-/// Fixtures are created via b2Body::CreateFixture.
+/// Fixtures are created via Body::CreateFixture.
 /// @warning you cannot reuse fixtures.
 class b2Fixture
 {
@@ -130,8 +130,8 @@ public:
 
 	/// Get the parent body of this fixture. This is nullptr if the fixture is not attached.
 	/// @return the parent body.
-	b2Body* GetBody() noexcept;
-	const b2Body* GetBody() const noexcept;
+	Body* GetBody() noexcept;
+	const Body* GetBody() const noexcept;
 
 	/// Get the next fixture in the parent body's fixture list.
 	/// @return the next shape.
@@ -160,7 +160,7 @@ public:
 	b2MassData GetMassData() const;
 
 	/// Set the density of this fixture. This will _not_ automatically adjust the mass
-	/// of the body. You must call b2Body::ResetMassData to update the body's mass.
+	/// of the body. You must call Body::ResetMassData to update the body's mass.
 	void SetDensity(float_t density);
 
 	/// Get the density of this fixture.
@@ -190,11 +190,11 @@ public:
 
 protected:
 
-	friend class b2Body;
+	friend class Body;
 	friend class b2World;
 	friend class b2ContactManager;
 
-	b2Fixture(b2Body* body) noexcept: m_body(body) {}
+	b2Fixture(Body* body) noexcept: m_body(body) {}
 
 	// We need separation create/destroy functions from the constructor/destructor because
 	// the destructor cannot access the allocator (no destructor arguments allowed by C++).
@@ -207,7 +207,7 @@ protected:
 
 	void Synchronize(b2BroadPhase& broadPhase, const Transform& xf1, const Transform& xf2);
 
-	b2Body* const m_body;
+	Body* const m_body;
 	float_t m_density = float_t{0};
 	b2Fixture* m_next = nullptr;
 	b2Shape* m_shape = nullptr;
@@ -255,12 +255,12 @@ inline void b2Fixture::SetUserData(void* data)
 	m_userData = data;
 }
 
-inline b2Body* b2Fixture::GetBody() noexcept
+inline Body* b2Fixture::GetBody() noexcept
 {
 	return m_body;
 }
 
-inline const b2Body* b2Fixture::GetBody() const noexcept
+inline const Body* b2Fixture::GetBody() const noexcept
 {
 	return m_body;
 }

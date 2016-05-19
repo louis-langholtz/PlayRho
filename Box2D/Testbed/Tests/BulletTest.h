@@ -30,7 +30,7 @@ public:
 		{
 			BodyDef bd;
 			bd.position = Vec2(0.0f, 0.0f);
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 
 			b2EdgeShape edge;
 
@@ -130,8 +130,8 @@ public:
 		return new BulletTest;
 	}
 
-	b2Body* m_body;
-	b2Body* m_bullet;
+	Body* m_body;
+	Body* m_bullet;
 	float_t m_x;
 };
 

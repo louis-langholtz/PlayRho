@@ -34,7 +34,7 @@ class RopeJoint : public Test
 public:
 	RopeJoint()
 	{
-		b2Body* ground = nullptr;
+		Body* ground = nullptr;
 		{
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -62,7 +62,7 @@ public:
 			const float_t y = 15.0f;
 			m_ropeDef.localAnchorA = Vec2(0.0f, y);
 
-			b2Body* prevBody = ground;
+			Body* prevBody = ground;
 			for (int32 i = 0; i < N; ++i)
 			{
 				BodyDef bd;
@@ -77,7 +77,7 @@ public:
 					bd.angularDamping = 0.4f;
 				}
 
-				b2Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(&bd);
 
 				body->CreateFixture(&fd);
 

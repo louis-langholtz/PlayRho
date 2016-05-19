@@ -31,7 +31,7 @@ public:
 		m_zeta = 0.7f;
 		m_speed = 50.0f;
 
-		b2Body* ground = nullptr;
+		Body* ground = nullptr;
 		{
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -93,7 +93,7 @@ public:
 			BodyDef bd;
 			bd.position = Vec2(140.0f, 1.0f);
 			bd.type = DynamicBody;
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 
 			b2PolygonShape box;
 			box.SetAsBox(10.0f, 0.25f);
@@ -122,13 +122,13 @@ public:
 
 			b2RevoluteJointDef jd;
 
-			b2Body* prevBody = ground;
+			Body* prevBody = ground;
 			for (int32 i = 0; i < N; ++i)
 			{
 				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = Vec2(161.0f + 2.0f * i, -0.125f);
-				b2Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&fd);
 
 				Vec2 anchor(160.0f + 2.0f * i, -0.125f);
@@ -148,7 +148,7 @@ public:
 			b2PolygonShape box;
 			box.SetAsBox(0.5f, 0.5f);
 
-			b2Body* body = nullptr;
+			Body* body = nullptr;
 			BodyDef bd;
 			bd.type = DynamicBody;
 
@@ -274,9 +274,9 @@ public:
 		return new Car;
 	}
 
-	b2Body* m_car;
-	b2Body* m_wheel1;
-	b2Body* m_wheel2;
+	Body* m_car;
+	Body* m_wheel1;
+	Body* m_wheel2;
 
 	float_t m_hz;
 	float_t m_zeta;

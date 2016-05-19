@@ -36,7 +36,7 @@ using namespace box2d;
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-void b2WeldJointDef::Initialize(b2Body* bA, b2Body* bB, const Vec2& anchor)
+void b2WeldJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor)
 {
 	bodyA = bA;
 	bodyB = bB;

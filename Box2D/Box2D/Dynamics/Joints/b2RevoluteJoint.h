@@ -40,7 +40,7 @@ struct b2RevoluteJointDef : public b2JointDef
 
 	/// Initialize the bodies, anchors, and reference angle using a world
 	/// anchor point.
-	void Initialize(b2Body* bodyA, b2Body* bodyB, const Vec2& anchor);
+	void Initialize(Body* bodyA, Body* bodyB, const Vec2& anchor);
 
 	/// The local anchor point relative to bodyA's origin.
 	Vec2 localAnchorA = Vec2_zero;

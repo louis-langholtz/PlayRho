@@ -86,8 +86,8 @@ public:
 		bd1.angularDamping = 10.0f;
 		bd2.angularDamping = 10.0f;
 
-		b2Body* body1 = m_world->CreateBody(&bd1);
-		b2Body* body2 = m_world->CreateBody(&bd2);
+		Body* body1 = m_world->CreateBody(&bd1);
+		Body* body2 = m_world->CreateBody(&bd2);
 
 		body1->CreateFixture(&fd1);
 		body2->CreateFixture(&fd2);
@@ -128,7 +128,7 @@ public:
 		// Ground
 		{
 			BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(Vec2(-50.0f, 0.0f), Vec2(50.0f, 0.0f));
@@ -151,7 +151,7 @@ public:
 			bd.type = DynamicBody;
 			bd.position = Vec2(-40.0f + 2.0f * i, 0.5f);
 
-			b2Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&shape, 1.0f);
 		}
 
@@ -248,8 +248,8 @@ public:
 	}
 
 	Vec2 m_offset;
-	b2Body* m_chassis;
-	b2Body* m_wheel;
+	Body* m_chassis;
+	Body* m_wheel;
 	b2RevoluteJoint* m_motorJoint;
 	bool m_motorOn;
 	float_t m_motorSpeed;

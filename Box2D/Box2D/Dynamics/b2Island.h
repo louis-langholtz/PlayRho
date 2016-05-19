@@ -24,7 +24,7 @@
 
 namespace box2d {
 
-class b2Body;
+class Body;
 class b2Contact;
 class b2Joint;
 class b2StackAllocator;
@@ -45,8 +45,8 @@ public:
 	/// Clears this island.
 	/// @detail This undoes the adds of all bodies contacts and joints - removing them.
 	///   On return, the get body contact and joint count methods will all return 0.
-	///   Additionally all removed bodies will have their island indexes set to b2Body::InvalidIslandIndex.
-	/// @sa void Add(b2Body* body).
+	///   Additionally all removed bodies will have their island indexes set to Body::InvalidIslandIndex.
+	/// @sa void Add(Body* body).
 	/// @sa void Add(b2Contact* contact).
 	/// @sa void Add(b2Joint* joint).
 	void Clear() noexcept;
@@ -55,7 +55,7 @@ public:
 
 	void SolveTOI(const b2TimeStep& subStep, island_count_t toiIndexA, island_count_t toiIndexB);
 
-	void Add(b2Body* body);
+	void Add(Body* body);
 
 	void Add(b2Contact* contact);
 
@@ -93,13 +93,13 @@ public:
 		return m_jointCount;
 	}
 
-	inline const b2Body* GetBody(island_count_t i) const
+	inline const Body* GetBody(island_count_t i) const
 	{
 		assert((0 <= i) && (i < m_bodyCount));
 		return m_bodies[i];
 	}
 
-	inline b2Body* GetBody(island_count_t i)
+	inline Body* GetBody(island_count_t i)
 	{
 		assert((0 <= i) && (i < m_bodyCount));
 		return m_bodies[i];
@@ -108,10 +108,10 @@ public:
 private:
 	
 	/// Clears this island of added bodies.
-	/// @detail This sets all bodies's island indexes to b2Body::InvalidIslandIndex and resets
+	/// @detail This sets all bodies's island indexes to Body::InvalidIslandIndex and resets
 	///   the body count to 0.
-	/// @sa Add(b2Body* body).
-	/// @sa b2Body::InvalidIslandIndex.
+	/// @sa Add(Body* body).
+	/// @sa Body::InvalidIslandIndex.
 	void ClearBodies() noexcept;
 
 	island_count_t m_bodyCount = 0;
@@ -125,7 +125,7 @@ private:
 	b2StackAllocator* const m_allocator;
 	b2ContactListener* const m_listener;
 
-	b2Body** const m_bodies;
+	Body** const m_bodies;
 	b2Contact** const m_contacts;
 	b2Joint** const m_joints;
 	b2Velocity* const m_velocities;

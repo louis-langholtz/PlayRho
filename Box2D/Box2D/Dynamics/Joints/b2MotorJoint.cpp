@@ -34,7 +34,7 @@ using namespace box2d;
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-void b2MotorJointDef::Initialize(b2Body* bA, b2Body* bB)
+void b2MotorJointDef::Initialize(Body* bA, Body* bB)
 {
 	bodyA = bA;
 	bodyB = bB;

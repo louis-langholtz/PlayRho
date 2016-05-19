@@ -36,7 +36,7 @@ public:
 
 	float_t ReportFixture(b2Fixture* fixture, const Vec2& point, const Vec2& normal, float_t fraction)
 	{
-		b2Body* body = fixture->GetBody();
+		Body* body = fixture->GetBody();
 		void* userData = body->GetUserData();
 		if (userData)
 		{
@@ -76,7 +76,7 @@ public:
 
 	float_t ReportFixture(b2Fixture* fixture, const Vec2& point, const Vec2& normal, float_t fraction)
 	{
-		b2Body* body = fixture->GetBody();
+		Body* body = fixture->GetBody();
 		void* userData = body->GetUserData();
 		if (userData)
 		{
@@ -121,7 +121,7 @@ public:
 
 	float_t ReportFixture(b2Fixture* fixture, const Vec2& point, const Vec2& normal, float_t fraction)
 	{
-		b2Body* body = fixture->GetBody();
+		Body* body = fixture->GetBody();
 		void* userData = body->GetUserData();
 		if (userData)
 		{
@@ -178,7 +178,7 @@ public:
 		// Ground body
 		{
 			BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -469,7 +469,7 @@ public:
 	}
 
 	int32 m_bodyIndex;
-	b2Body* m_bodies[e_maxBodies];
+	Body* m_bodies[e_maxBodies];
 	int32 m_userData[e_maxBodies];
 	b2PolygonShape m_polygons[4];
 	b2CircleShape m_circle;

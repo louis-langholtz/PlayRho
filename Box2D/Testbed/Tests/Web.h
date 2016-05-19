@@ -27,7 +27,7 @@ class Web : public Test
 public:
 	Web()
 	{
-		b2Body* ground = nullptr;
+		Body* ground = nullptr;
 		{
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -204,7 +204,7 @@ public:
 		return new Web;
 	}
 
-	b2Body* m_bodies[4];
+	Body* m_bodies[4];
 	b2Joint* m_joints[8];
 };
 

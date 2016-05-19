@@ -26,7 +26,7 @@ class Chain : public Test
 public:
 	Chain()
 	{
-		b2Body* ground = nullptr;
+		Body* ground = nullptr;
 		{
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -49,13 +49,13 @@ public:
 			jd.collideConnected = false;
 
 			const float_t y = 25.0f;
-			b2Body* prevBody = ground;
+			Body* prevBody = ground;
 			for (int32 i = 0; i < 30; ++i)
 			{
 				BodyDef bd;
 				bd.type = DynamicBody;
 				bd.position = Vec2(0.5f + i, y);
-				b2Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&fd);
 
 				Vec2 anchor(float_t(i), y);

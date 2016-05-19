@@ -35,7 +35,7 @@ public:
 	{
 		{
 			BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(&bd);
 
 			{
 				b2EdgeShape shape;
@@ -148,8 +148,8 @@ public:
 				continue;
 			}
 
-			b2Body* body = m_bodies[i];
-			b2Body* ground = m_sensor->GetBody();
+			Body* body = m_bodies[i];
+			Body* ground = m_sensor->GetBody();
 
 			b2CircleShape* circle = (b2CircleShape*)m_sensor->GetShape();
 			Vec2 center = ground->GetWorldPoint(circle->GetPosition());
@@ -174,7 +174,7 @@ public:
 	}
 
 	b2Fixture* m_sensor;
-	b2Body* m_bodies[e_count];
+	Body* m_bodies[e_count];
 	bool m_touching[e_count];
 };
 

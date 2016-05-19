@@ -34,7 +34,7 @@ public:
 	{
 		{
 			BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(&bd);
 
 			b2EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -82,7 +82,7 @@ public:
 		return new SphereStack;
 	}
 
-	b2Body* m_bodies[e_count];
+	Body* m_bodies[e_count];
 };
 
 } // namespace box2d
