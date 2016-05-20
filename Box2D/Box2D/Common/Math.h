@@ -147,12 +147,6 @@ struct Vec2
 		return ::box2d::IsValid(x) && ::box2d::IsValid(y);
 	}
 
-	/// Get the skew vector such that dot(skew_vec, other) == cross(vec, other)
-	constexpr Vec2 Skew() const noexcept
-	{
-		return Vec2(-y, x);
-	}
-
 	float_t x, y;
 };
 
