@@ -59,33 +59,6 @@ private:
 	float_t inv_dt; ///< Inverse time step (1/dt or 0 if dt == 0). @see dt.
 };
 
-/// This is an internal structure.
-struct Position
-{
-	Position() = default;
-	constexpr Position(const Position& copy) = default;
-
-	constexpr Position(Vec2 c_, float_t a_) noexcept: c(c_), a(a_) {}
-
-	Vec2 c; ///< Linear position.
-	float_t a; ///< Angular position.
-};
-
-inline Transform GetTransform(const Position& pos, const Vec2& local_ctr)
-{
-	return GetTransform(pos.c, Rot(pos.a), local_ctr);
-}
-
-/// This is an internal structure.
-struct Velocity
-{
-	Velocity() = default;
-	constexpr Velocity(Vec2 v_, float_t w_) noexcept: v(v_), w(w_) {}
-
-	Vec2 v; ///< Linear velocity.
-	float_t w; ///< Angular velocity.
-};
-
 /// Solver Data
 struct SolverData
 {

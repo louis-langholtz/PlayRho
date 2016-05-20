@@ -43,7 +43,7 @@ public:
 				shape.SetAsBox(4.0f, 1.0f);
                 
 				BodyDef bd;
-				bd.type = DynamicBody;
+				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-8.0f, 20.0f);
 				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
@@ -61,7 +61,7 @@ public:
 				shape.SetAsBox(8.0f, 1.0f);
                 
 				BodyDef bd;
-				bd.type = DynamicBody;
+				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(4.0f, 20.0f);
 				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 2.0f);
@@ -79,7 +79,7 @@ public:
 				shape.SetAsBox(3.0f, 3.0f);
                 
 				BodyDef bd;
-				bd.type = DynamicBody;
+				bd.type = BodyType::Dynamic;
 				bd.fixedRotation = true;
 				bd.position = Vec2(12.0f, 20.0f);
 				Body* body = m_world->CreateBody(&bd);

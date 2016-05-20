@@ -117,7 +117,7 @@ public:
 	bool ReportFixture(Fixture* fixture)
 	{
 		Body* body = fixture->GetBody();
-		if (body->GetType() == DynamicBody)
+		if (body->GetType() == BodyType::Dynamic)
 		{
 			bool inside = fixture->TestPoint(m_point);
 			if (inside)
@@ -238,7 +238,7 @@ void Test::LaunchBomb(const Vec2& position, const Vec2& velocity)
 	}
 
 	BodyDef bd;
-	bd.type = DynamicBody;
+	bd.type = BodyType::Dynamic;
 	bd.position = position;
 	bd.bullet = true;
 	m_bomb = m_world->CreateBody(&bd);

@@ -64,7 +64,7 @@ public:
 			for (int i = 0; i < e_rowCount; ++i)
 			{
 				BodyDef bd;
-				bd.type = DynamicBody;
+				bd.type = BodyType::Dynamic;
 
 				int32 n = j * e_rowCount + i;
 				assert(n < e_rowCount * e_columnCount);
@@ -107,7 +107,7 @@ public:
 				fd.restitution = 0.05f;
 
 				BodyDef bd;
-				bd.type = DynamicBody;
+				bd.type = BodyType::Dynamic;
 				bd.bullet = true;
 				bd.position = Vec2(-31.0f, 5.0f);
 
@@ -148,7 +148,7 @@ public:
 		//		fd.restitution = 0.05f;
 
 		//		BodyDef bd;
-		//		bd.type = DynamicBody;
+		//		bd.type = BodyType::Dynamic;
 		//		bd.bullet = true;
 		//		bd.position = Vec2(-31.0f, 5.0f);
 

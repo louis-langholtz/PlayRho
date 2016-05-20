@@ -40,17 +40,13 @@ public:
 		Test::Step(settings);
 
 		Sweep sweepA;
-		sweepA.c0 = Vec2(24.0f, -60.0f);
-		sweepA.a0 = 2.95f;
-		sweepA.c = sweepA.c0;
-		sweepA.a = sweepA.a0;
+		sweepA.pos0 = Position{Vec2(24.0f, -60.0f), 2.95f};
+		sweepA.pos1 = sweepA.pos0;
 		sweepA.localCenter = Vec2_zero;
 
 		Sweep sweepB;
-		sweepB.c0 = Vec2(53.474274f, -50.252514f);
-		sweepB.a0 = 513.36676f; // - 162.0f * Pi;
-		sweepB.c = Vec2(54.595478f, -51.083473f);
-		sweepB.a = 513.62781f; //  - 162.0f * Pi;
+		sweepB.pos0 = Position{Vec2(53.474274f, -50.252514f), 513.36676f}; // - 162.0f * Pi;
+		sweepB.pos1 = Position{Vec2(54.595478f, -51.083473f), 513.62781f}; //  - 162.0f * Pi;
 		sweepB.localCenter = Vec2_zero;
 
 		//sweepB.a0 -= 300.0f * Pi;

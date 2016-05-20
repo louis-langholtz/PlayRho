@@ -48,7 +48,7 @@ public:
 			for (int32 i = 0; i < e_count; ++i)
 			{
 				BodyDef bd;
-				bd.type = DynamicBody;
+				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(0.0, 4.0f + 3.0f * i);
 
 				m_bodies[i] = m_world->CreateBody(&bd);

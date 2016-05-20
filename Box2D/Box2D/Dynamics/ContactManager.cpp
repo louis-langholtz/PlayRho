@@ -130,8 +130,8 @@ void ContactManager::Collide()
 			c->UnflagForFiltering();
 		}
 
-		const bool activeA = bodyA->IsAwake() && (bodyA->m_type != StaticBody);
-		const bool activeB = bodyB->IsAwake() && (bodyB->m_type != StaticBody);
+		const bool activeA = bodyA->IsAwake() && (bodyA->m_type != BodyType::Static);
+		const bool activeB = bodyB->IsAwake() && (bodyB->m_type != BodyType::Static);
 
 		// At least one body must be awake and it must be dynamic or kinematic.
 		if (!activeA && !activeB)

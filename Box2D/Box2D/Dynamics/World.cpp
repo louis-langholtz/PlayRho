@@ -439,7 +439,7 @@ void World::Solve(const TimeStep& step)
 		}
 
 		// The seed can be dynamic or kinematic.
-		if (seed->GetType() == StaticBody)
+		if (seed->GetType() == BodyType::Static)
 		{
 			continue;
 		}
@@ -463,7 +463,7 @@ void World::Solve(const TimeStep& step)
 
 			// To keep islands as small as possible, we don't
 			// propagate islands across static bodies.
-			if (b->GetType() == StaticBody)
+			if (b->GetType() == BodyType::Static)
 			{
 				continue;
 			}
@@ -548,7 +548,7 @@ void World::Solve(const TimeStep& step)
 		{
 			// Allow static bodies to participate in other islands.
 			auto b = island.GetBody(i);
-			if (b->GetType() == StaticBody)
+			if (b->GetType() == BodyType::Static)
 			{
 				b->UnsetInIsland();
 			}
@@ -568,7 +568,7 @@ void World::Solve(const TimeStep& step)
 				continue;
 			}
 
-			if (b->GetType() == StaticBody)
+			if (b->GetType() == BodyType::Static)
 			{
 				continue;
 			}
@@ -696,7 +696,7 @@ void World::SolveTOI(const TimeStep& step)
 		Body* bodies[2] = {bA, bB};
 		for (auto body: bodies)
 		{
-			if (body->m_type == DynamicBody)
+			if (body->m_type == BodyType::Dynamic)
 			{
 				for (auto ce = body->m_contactList; ce; ce = ce->next)
 				{
@@ -720,7 +720,7 @@ void World::SolveTOI(const TimeStep& step)
 
 					// Only add static, kinematic, or bullet bodies.
 					auto other = ce->other;
-					if ((other->m_type == DynamicBody) &&
+					if ((other->m_type == BodyType::Dynamic) &&
 						(!body->IsBullet()) && (!other->IsBullet()))
 					{
 						continue;
@@ -771,7 +771,7 @@ void World::SolveTOI(const TimeStep& step)
 					// Add the other body to the island.
 					other->SetInIsland();
 
-					if (other->m_type != StaticBody)
+					if (other->m_type != BodyType::Static)
 					{
 						other->SetAwake();
 					}
@@ -795,7 +795,7 @@ void World::SolveTOI(const TimeStep& step)
 			auto body = island.GetBody(i);
 			body->UnsetInIsland();
 
-			if (body->m_type != DynamicBody)
+			if (body->m_type != BodyType::Dynamic)
 			{
 				continue;
 			}
@@ -1066,11 +1066,11 @@ void World::DrawDebugData()
 				{
 					DrawShape(f, xf, Color(0.5f, 0.5f, 0.3f));
 				}
-				else if (b->GetType() == StaticBody)
+				else if (b->GetType() == BodyType::Static)
 				{
 					DrawShape(f, xf, Color(0.5f, 0.9f, 0.5f));
 				}
-				else if (b->GetType() == KinematicBody)
+				else if (b->GetType() == BodyType::Kinematic)
 				{
 					DrawShape(f, xf, Color(0.5f, 0.5f, 0.9f));
 				}
@@ -1181,8 +1181,8 @@ void World::ShiftOrigin(const Vec2& newOrigin)
 	for (auto b = m_bodyList; b; b = b->m_next)
 	{
 		b->m_xf.p -= newOrigin;
-		b->m_sweep.c0 -= newOrigin;
-		b->m_sweep.c -= newOrigin;
+		b->m_sweep.pos0.c -= newOrigin;
+		b->m_sweep.pos1.c -= newOrigin;
 	}
 
 	for (auto j = m_jointList; j; j = j->m_next)

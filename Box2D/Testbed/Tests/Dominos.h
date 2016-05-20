@@ -59,7 +59,7 @@ public:
 			for (int i = 0; i < 10; ++i)
 			{
 				BodyDef bd;
-				bd.type = DynamicBody;
+				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-6.0f + 1.0f * i, 11.25f);
 				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&fd);
@@ -93,7 +93,7 @@ public:
 			shape.SetAsBox(6.0f, 0.125f);
 
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-0.9f, 1.0f);
 			bd.angle = -0.15f;
 
@@ -115,7 +115,7 @@ public:
 			shape.SetAsBox(0.25f, 0.25f);
 
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-10.0f, 15.0f);
 			b4 = m_world->CreateBody(&bd);
 			b4->CreateFixture(&shape, 10.0f);
@@ -128,7 +128,7 @@ public:
 		Body* b5;
 		{
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(6.5f, 3.0f);
 			b5 = m_world->CreateBody(&bd);
 
@@ -159,7 +159,7 @@ public:
 			shape.SetAsBox(1.0f, 0.1f);
 
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(6.5f, 4.1f);
 			b6 = m_world->CreateBody(&bd);
 			b6->CreateFixture(&shape, 30.0f);
@@ -175,7 +175,7 @@ public:
 			shape.SetAsBox(0.1f, 1.0f);
 
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(7.4f, 1.0f);
 
 			b7 = m_world->CreateBody(&bd);
@@ -200,7 +200,7 @@ public:
 			for (int32 i = 0; i < 4; ++i)
 			{
 				BodyDef bd;
-				bd.type = DynamicBody;
+				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(5.9f + 2.0f * radius * i, 2.4f);
 				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 10.0f);

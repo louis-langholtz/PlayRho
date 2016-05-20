@@ -78,8 +78,8 @@ public:
 		fd2.shape = &poly2;
 
 		BodyDef bd1, bd2;
-		bd1.type = DynamicBody;
-		bd2.type = DynamicBody;
+		bd1.type = BodyType::Dynamic;
+		bd2.type = BodyType::Dynamic;
 		bd1.position = m_offset;
 		bd2.position = p4 + m_offset;
 
@@ -148,7 +148,7 @@ public:
 			shape.SetRadius(0.25);
 
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-40.0f + 2.0f * i, 0.5f);
 
 			Body* body = m_world->CreateBody(&bd);
@@ -165,7 +165,7 @@ public:
 			sd.shape = &shape;
 			sd.filter.groupIndex = -1;
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.position = pivot + m_offset;
 			m_chassis = m_world->CreateBody(&bd);
 			m_chassis->CreateFixture(&sd);
@@ -180,7 +180,7 @@ public:
 			sd.shape = &shape;
 			sd.filter.groupIndex = -1;
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.position = pivot + m_offset;
 			m_wheel = m_world->CreateBody(&bd);
 			m_wheel->CreateFixture(&sd);

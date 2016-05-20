@@ -57,7 +57,7 @@ public:
 			for (int32 i = 0; i < e_count; ++i)
 			{
 				BodyDef bd;
-				bd.type = DynamicBody;
+				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-14.5f + 1.0f * i, 5.0f);
 				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&fd);
@@ -93,7 +93,7 @@ public:
 			fd.density = 1.0f;
 
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-8.0f + 8.0f * i, 12.0f);
 			Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&fd);
@@ -109,7 +109,7 @@ public:
 			fd.density = 1.0f;
 
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-6.0f + 6.0f * i, 10.0f);
 			Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&fd);

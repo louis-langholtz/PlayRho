@@ -54,7 +54,7 @@ public:
 			Vec2 p1(-2.0f, 0.0f), p2(2.0f, 0.0f);
 
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 
 			bd.position = p1;
 			Body* leftFlipper = m_world->CreateBody(&bd);
@@ -98,7 +98,7 @@ public:
 		{
 			BodyDef bd;
 			bd.position = Vec2(1.0f, 15.0f);
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.bullet = true;
 
 			m_ball = m_world->CreateBody(&bd);

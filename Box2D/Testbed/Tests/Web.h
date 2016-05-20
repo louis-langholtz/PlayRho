@@ -42,7 +42,7 @@ public:
 			shape.SetAsBox(0.5f, 0.5f);
 
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 
 			bd.position = Vec2(-5.0f, 5.0f);
 			m_bodies[0] = m_world->CreateBody(&bd);

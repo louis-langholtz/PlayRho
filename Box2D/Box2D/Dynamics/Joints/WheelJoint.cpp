@@ -351,7 +351,7 @@ float_t WheelJoint::GetJointTranslation() const
 
 float_t WheelJoint::GetJointSpeed() const
 {
-	return m_bodyB->m_angularVelocity - m_bodyA->m_angularVelocity;
+	return m_bodyB->m_velocity.w - m_bodyA->m_velocity.w;
 }
 
 bool WheelJoint::IsMotorEnabled() const

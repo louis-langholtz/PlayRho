@@ -514,15 +514,15 @@ float_t PrismaticJoint::GetJointSpeed() const
 
 	const auto rA = Mul(bA->m_xf.q, m_localAnchorA - bA->m_sweep.localCenter);
 	const auto rB = Mul(bB->m_xf.q, m_localAnchorB - bB->m_sweep.localCenter);
-	const auto p1 = bA->m_sweep.c + rA;
-	const auto p2 = bB->m_sweep.c + rB;
+	const auto p1 = bA->m_sweep.pos1.c + rA;
+	const auto p2 = bB->m_sweep.pos1.c + rB;
 	const auto d = p2 - p1;
 	const auto axis = Mul(bA->m_xf.q, m_localXAxisA);
 
-	const auto vA = bA->m_linearVelocity;
-	const auto vB = bB->m_linearVelocity;
-	const auto wA = bA->m_angularVelocity;
-	const auto wB = bB->m_angularVelocity;
+	const auto vA = bA->m_velocity.v;
+	const auto vB = bB->m_velocity.v;
+	const auto wA = bA->m_velocity.w;
+	const auto wB = bB->m_velocity.w;
 
 	return Dot(d, Cross(wA, axis)) + Dot(axis, vB + Cross(wB, rB) - vA - Cross(wA, rA));
 }

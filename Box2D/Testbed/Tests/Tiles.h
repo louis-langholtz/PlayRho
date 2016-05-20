@@ -97,7 +97,7 @@ public:
 				for (int32 j = i; j < e_count; ++j)
 				{
 					BodyDef bd;
-					bd.type = DynamicBody;
+					bd.type = BodyType::Dynamic;
 					bd.position = y;
 
 					//if (i == 0 && j == 0)

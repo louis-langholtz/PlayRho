@@ -69,7 +69,7 @@ public:
 			for (int32 i = 0; i < e_count; ++i)
 			{
 				BodyDef bd;
-				bd.type = DynamicBody;
+				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-10.0f + 3.0f * i, 20.0f);
 				bd.userData = m_touching + i;
 

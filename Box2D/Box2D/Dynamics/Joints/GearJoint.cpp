@@ -64,9 +64,9 @@ GearJoint::GearJoint(const GearJointDef* def)
 
 	// Get geometry of joint1
 	const auto xfA = m_bodyA->m_xf;
-	const auto aA = m_bodyA->m_sweep.a;
+	const auto aA = m_bodyA->m_sweep.pos1.a;
 	const auto xfC = m_bodyC->m_xf;
-	const auto aC = m_bodyC->m_sweep.a;
+	const auto aC = m_bodyC->m_sweep.pos1.a;
 
 	if (m_typeA == e_revoluteJoint)
 	{
@@ -96,9 +96,9 @@ GearJoint::GearJoint(const GearJointDef* def)
 
 	// Get geometry of joint2
 	const auto xfB = m_bodyB->m_xf;
-	const auto aB = m_bodyB->m_sweep.a;
+	const auto aB = m_bodyB->m_sweep.pos1.a;
 	const auto xfD = m_bodyD->m_xf;
-	const auto aD = m_bodyD->m_sweep.a;
+	const auto aD = m_bodyD->m_sweep.pos1.a;
 
 	if (m_typeB == e_revoluteJoint)
 	{

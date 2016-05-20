@@ -66,7 +66,7 @@ public:
 			for (int32 i = 0; i < N; ++i)
 			{
 				BodyDef bd;
-				bd.type = DynamicBody;
+				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(0.5f + 1.0f * i, y);
 				if (i == N - 1)
 				{

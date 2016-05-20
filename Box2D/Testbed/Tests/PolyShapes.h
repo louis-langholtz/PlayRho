@@ -185,7 +185,7 @@ public:
 		}
 
 		BodyDef bd;
-		bd.type = DynamicBody;
+		bd.type = BodyType::Dynamic;
 
 		float_t x = RandomFloat(-2.0f, 2.0f);
 		bd.position = Vec2(x, 10.0f);

@@ -52,7 +52,7 @@ uint16 Body::GetFlags(const BodyDef& bd) noexcept
 
 Body::Body(const BodyDef* bd, World* world):
 	m_type(bd->type), m_flags(GetFlags(*bd)), m_xf(bd->position, Rot(bd->angle)), m_world(world),
-	m_linearVelocity(bd->linearVelocity), m_angularVelocity(bd->angularVelocity)
+	m_velocity(Velocity{bd->linearVelocity, bd->angularVelocity})
 {
 	assert(bd->position.IsValid());
 	assert(bd->linearVelocity.IsValid());
@@ -62,17 +62,15 @@ Body::Body(const BodyDef* bd, World* world):
 	assert(IsValid(bd->linearDamping) && (bd->linearDamping >= float_t{0}));
 
 	m_sweep.localCenter = Vec2_zero;
-	m_sweep.c0 = m_xf.p;
-	m_sweep.c = m_xf.p;
-	m_sweep.a0 = bd->angle;
-	m_sweep.a = bd->angle;
+	m_sweep.pos0 = Position{m_xf.p, bd->angle};
+	m_sweep.pos1 = Position{m_xf.p, bd->angle};
 	m_sweep.alpha0 = float_t{0};
 
 	m_linearDamping = bd->linearDamping;
 	m_angularDamping = bd->angularDamping;
 	m_gravityScale = bd->gravityScale;
 
-	if (m_type == DynamicBody)
+	if (m_type == BodyType::Dynamic)
 	{
 		m_mass = float_t{1};
 		m_invMass = float_t{1};
@@ -121,12 +119,10 @@ void Body::SetType(BodyType type)
 
 	ResetMassData();
 
-	if (m_type == StaticBody)
+	if (m_type == BodyType::Static)
 	{
-		m_linearVelocity = Vec2_zero;
-		m_angularVelocity = float_t{0};
-		m_sweep.a0 = m_sweep.a;
-		m_sweep.c0 = m_sweep.c;
+		m_velocity = Velocity{Vec2_zero, 0};
+		m_sweep.pos0 = m_sweep.pos1;
 		SynchronizeFixtures();
 	}
 
@@ -284,20 +280,21 @@ void Body::ResetMassData()
 	// Compute mass data from shapes. Each shape has its own density.
 
 	// Static and kinematic bodies have zero mass.
-	if ((m_type == StaticBody) || (m_type == KinematicBody))
+	if ((m_type == BodyType::Static) || (m_type == BodyType::Kinematic))
 	{
 		m_mass = float_t{0};
 		m_invMass = float_t{0};
 		m_I = float_t{0};
 		m_invI = float_t{0};
+
 		m_sweep.localCenter = Vec2_zero;
-		m_sweep.c0 = m_xf.p;
-		m_sweep.c = m_xf.p;
-		m_sweep.a0 = m_sweep.a;
+		const auto position = Position{m_xf.p, m_sweep.pos1.a};
+		m_sweep.pos0 = position;
+		m_sweep.pos1 = position;
 		return;
 	}
 
-	assert(m_type == DynamicBody);
+	assert(m_type == BodyType::Dynamic);
 
 	// Accumulate mass over all fixtures.
 	m_mass = float_t{0};
@@ -343,12 +340,12 @@ void Body::ResetMassData()
 	}
 
 	// Move center of mass.
-	const auto oldCenter = m_sweep.c;
+	const auto oldCenter = m_sweep.pos1.c;
 	m_sweep.localCenter = localCenter;
-	m_sweep.c0 = m_sweep.c = Mul(m_xf, m_sweep.localCenter);
+	m_sweep.pos0.c = m_sweep.pos1.c = Mul(m_xf, m_sweep.localCenter);
 
 	// Update center of mass velocity.
-	m_linearVelocity += Cross(m_angularVelocity, m_sweep.c - oldCenter);
+	m_velocity.v += Cross(m_velocity.w, m_sweep.pos1.c - oldCenter);
 }
 
 void Body::SetMassData(const MassData* massData)
@@ -359,7 +356,7 @@ void Body::SetMassData(const MassData* massData)
 		return;
 	}
 
-	if (m_type != DynamicBody)
+	if (m_type != BodyType::Dynamic)
 	{
 		return;
 	}
@@ -380,18 +377,18 @@ void Body::SetMassData(const MassData* massData)
 	}
 
 	// Move center of mass.
-	const auto oldCenter = m_sweep.c;
+	const auto oldCenter = m_sweep.pos1.c;
 	m_sweep.localCenter =  massData->center;
-	m_sweep.c0 = m_sweep.c = Mul(m_xf, m_sweep.localCenter);
+	m_sweep.pos0.c = m_sweep.pos1.c = Mul(m_xf, m_sweep.localCenter);
 
 	// Update center of mass velocity.
-	m_linearVelocity += Cross(m_angularVelocity, m_sweep.c - oldCenter);
+	m_velocity.v += Cross(m_velocity.w, m_sweep.pos1.c - oldCenter);
 }
 
 bool Body::ShouldCollide(const Body* other) const
 {
 	// At least one body should be dynamic.
-	if ((m_type != DynamicBody) && (other->m_type != DynamicBody))
+	if ((m_type != BodyType::Dynamic) && (other->m_type != BodyType::Dynamic))
 	{
 		return false;
 	}
@@ -421,11 +418,9 @@ void Body::SetTransform(const Vec2& position, float_t angle)
 
 	m_xf = Transform{position, Rot(angle)};
 
-	m_sweep.c = Mul(m_xf, m_sweep.localCenter);
-	m_sweep.a = angle;
-
-	m_sweep.c0 = m_sweep.c;
-	m_sweep.a0 = angle;
+	const auto center = Mul(m_xf, m_sweep.localCenter);
+	m_sweep.pos1 = Position{center, angle};
+	m_sweep.pos0 = Position{center, angle};
 
 	auto& broadPhase = m_world->m_contactManager.m_broadPhase;
 	for (auto f = m_fixtureList; f; f = f->m_next)
@@ -498,7 +493,7 @@ void Body::SetFixedRotation(bool flag)
 		m_flags &= ~e_fixedRotationFlag;
 	}
 
-	m_angularVelocity = float_t{0};
+	m_velocity.w = float_t{0};
 
 	ResetMassData();
 }
@@ -511,9 +506,9 @@ void Body::Dump()
 	log("  BodyDef bd;\n");
 	log("  bd.type = BodyType(%d);\n", m_type);
 	log("  bd.position = Vec2(%.15lef, %.15lef);\n", m_xf.p.x, m_xf.p.y);
-	log("  bd.angle = %.15lef;\n", m_sweep.a);
-	log("  bd.linearVelocity = Vec2(%.15lef, %.15lef);\n", m_linearVelocity.x, m_linearVelocity.y);
-	log("  bd.angularVelocity = %.15lef;\n", m_angularVelocity);
+	log("  bd.angle = %.15lef;\n", m_sweep.pos1.a);
+	log("  bd.linearVelocity = Vec2(%.15lef, %.15lef);\n", m_velocity.v.x, m_velocity.v.y);
+	log("  bd.angularVelocity = %.15lef;\n", m_velocity.w);
 	log("  bd.linearDamping = %.15lef;\n", m_linearDamping);
 	log("  bd.angularDamping = %.15lef;\n", m_angularDamping);
 	log("  bd.allowSleep = bool(%d);\n", m_flags & e_autoSleepFlag);

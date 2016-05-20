@@ -44,7 +44,7 @@ public:
 
 		{
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(0.0f, 4.0f);
 
 			PolygonShape box;

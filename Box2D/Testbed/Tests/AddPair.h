@@ -39,7 +39,7 @@ public:
 			for (int32 i = 0; i < 400; ++i)
 			{
 				BodyDef bd;
-				bd.type = DynamicBody;
+				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(RandomFloat(minX,maxX),RandomFloat(minY,maxY));
 				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&shape, 0.01f);
@@ -50,7 +50,7 @@ public:
 			PolygonShape shape;
 			shape.SetAsBox(1.5f, 1.5f);
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-40.0f,5.0f);
 			bd.bullet = true;
 			Body* body = m_world->CreateBody(&bd);

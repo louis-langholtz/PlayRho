@@ -138,7 +138,7 @@ public:
 		float_t y = RandomFloat(10.0f, 20.0f);
 		bd.position = Vec2(x, y);
 		bd.angle = RandomFloat(-Pi, Pi);
-		bd.type = DynamicBody;
+		bd.type = BodyType::Dynamic;
 
 		if (index == 4)
 		{

@@ -128,7 +128,7 @@ public:
 		{
 			BodyDef bd;
 			bd.position = Vec2(-3.0f, 8.0f);
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
 
@@ -147,7 +147,7 @@ public:
 		{
 			BodyDef bd;
 			bd.position = Vec2(-5.0f, 5.0f);
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
 
@@ -166,7 +166,7 @@ public:
 		{
 			BodyDef bd;
 			bd.position = Vec2(-5.0f, 8.0f);
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
 
@@ -194,7 +194,7 @@ public:
 		{
 			BodyDef bd;
 			bd.position = Vec2(3.0f, 5.0f);
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
 
@@ -213,7 +213,7 @@ public:
 		{
 			BodyDef bd;
 			bd.position = Vec2(-7.0f, 6.0f);
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.allowSleep = false;
 
 			m_character = m_world->CreateBody(&bd);

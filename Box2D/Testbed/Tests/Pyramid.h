@@ -57,7 +57,7 @@ public:
 				for (int32 j = i; j < e_count; ++j)
 				{
 					BodyDef bd;
-					bd.type = DynamicBody;
+					bd.type = BodyType::Dynamic;
 					bd.position = y;
 					Body* body = m_world->CreateBody(&bd);
 					body->CreateFixture(&shape, 5.0f);

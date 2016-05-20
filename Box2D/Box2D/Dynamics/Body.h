@@ -39,11 +39,11 @@ struct ContactEdge;
 /// static: zero mass, zero velocity, may be manually moved
 /// kinematic: zero mass, non-zero velocity set by user, moved by solver
 /// dynamic: positive mass, non-zero velocity determined by forces, moved by solver
-enum BodyType
+enum class BodyType
 {
-	StaticBody = 0,
-	KinematicBody,
-	DynamicBody
+	Static = 0,
+	Kinematic,
+	Dynamic
 
 	// TODO_ERIN
 	//BulletBody,
@@ -58,7 +58,7 @@ struct BodyDef
 
 	/// The body type: static, kinematic, or dynamic.
 	/// Note: if a dynamic body would have zero mass, the mass is set to one.
-	BodyType type = StaticBody;
+	BodyType type = BodyType::Static;
 
 	/// The world position of the body. Avoid creating bodies at the origin
 	/// since this can lead to many overlapping shapes.
@@ -456,8 +456,7 @@ private:
 	Transform m_xf; ///< Transform for body origin.
 	Sweep m_sweep; ///< Sweep motion for CCD
 
-	Vec2 m_linearVelocity;
-	float_t m_angularVelocity;
+	Velocity m_velocity;
 
 	Vec2 m_force = Vec2_zero;
 	float_t m_torque = float_t{0};
@@ -504,12 +503,12 @@ inline Vec2 Body::GetPosition() const noexcept
 
 inline float_t Body::GetAngle() const noexcept
 {
-	return m_sweep.a;
+	return m_sweep.pos1.a;
 }
 
 inline Vec2 Body::GetWorldCenter() const noexcept
 {
-	return m_sweep.c;
+	return m_sweep.pos1.c;
 }
 
 inline Vec2 Body::GetLocalCenter() const noexcept
@@ -519,7 +518,7 @@ inline Vec2 Body::GetLocalCenter() const noexcept
 
 inline void Body::SetLinearVelocity(const Vec2& v) noexcept
 {
-	if (m_type == StaticBody)
+	if (m_type == BodyType::Static)
 	{
 		return;
 	}
@@ -529,17 +528,17 @@ inline void Body::SetLinearVelocity(const Vec2& v) noexcept
 		SetAwake();
 	}
 
-	m_linearVelocity = v;
+	m_velocity.v = v;
 }
 
 inline Vec2 Body::GetLinearVelocity() const noexcept
 {
-	return m_linearVelocity;
+	return m_velocity.v;
 }
 
 inline void Body::SetAngularVelocity(float_t w) noexcept
 {
-	if (m_type == StaticBody)
+	if (m_type == BodyType::Static)
 	{
 		return;
 	}
@@ -549,12 +548,12 @@ inline void Body::SetAngularVelocity(float_t w) noexcept
 		SetAwake();
 	}
 
-	m_angularVelocity = w;
+	m_velocity.w = w;
 }
 
 inline float_t Body::GetAngularVelocity() const noexcept
 {
-	return m_angularVelocity;
+	return m_velocity.w;
 }
 
 inline float_t Body::GetMass() const noexcept
@@ -594,7 +593,7 @@ inline Vec2 Body::GetLocalVector(const Vec2& worldVector) const noexcept
 
 inline Vec2 Body::GetLinearVelocityFromWorldPoint(const Vec2& worldPoint) const noexcept
 {
-	return m_linearVelocity + Cross(m_angularVelocity, worldPoint - m_sweep.c);
+	return m_velocity.v + Cross(m_velocity.w, worldPoint - m_sweep.pos1.c);
 }
 
 inline Vec2 Body::GetLinearVelocityFromLocalPoint(const Vec2& localPoint) const noexcept
@@ -674,8 +673,7 @@ inline void Body::UnsetAwake() noexcept
 {
 	m_flags &= ~e_awakeFlag;
 	m_sleepTime = float_t{0};
-	m_linearVelocity = Vec2_zero;
-	m_angularVelocity = float_t{0};
+	m_velocity = Velocity{Vec2_zero, 0};
 	m_force = Vec2_zero;
 	m_torque = float_t{0};
 }
@@ -775,7 +773,7 @@ inline void* Body::GetUserData() const noexcept
 
 inline void Body::ApplyForce(const Vec2& force, const Vec2& point, bool wake) noexcept
 {
-	if (m_type != DynamicBody)
+	if (m_type != BodyType::Dynamic)
 	{
 		return;
 	}
@@ -789,13 +787,13 @@ inline void Body::ApplyForce(const Vec2& force, const Vec2& point, bool wake) no
 	if (IsAwake())
 	{
 		m_force += force;
-		m_torque += Cross(point - m_sweep.c, force);
+		m_torque += Cross(point - m_sweep.pos1.c, force);
 	}
 }
 
 inline void Body::ApplyForceToCenter(const Vec2& force, bool wake) noexcept
 {
-	if (m_type != DynamicBody)
+	if (m_type != BodyType::Dynamic)
 	{
 		return;
 	}
@@ -814,7 +812,7 @@ inline void Body::ApplyForceToCenter(const Vec2& force, bool wake) noexcept
 
 inline void Body::ApplyTorque(float_t torque, bool wake) noexcept
 {
-	if (m_type != DynamicBody)
+	if (m_type != BodyType::Dynamic)
 	{
 		return;
 	}
@@ -833,7 +831,7 @@ inline void Body::ApplyTorque(float_t torque, bool wake) noexcept
 
 inline void Body::ApplyLinearImpulse(const Vec2& impulse, const Vec2& point, bool wake) noexcept
 {
-	if (m_type != DynamicBody)
+	if (m_type != BodyType::Dynamic)
 	{
 		return;
 	}
@@ -846,14 +844,14 @@ inline void Body::ApplyLinearImpulse(const Vec2& impulse, const Vec2& point, boo
 	// Don't accumulate velocity if the body is sleeping
 	if (IsAwake())
 	{
-		m_linearVelocity += m_invMass * impulse;
-		m_angularVelocity += m_invI * Cross(point - m_sweep.c, impulse);
+		m_velocity.v += m_invMass * impulse;
+		m_velocity.w += m_invI * Cross(point - m_sweep.pos1.c, impulse);
 	}
 }
 
 inline void Body::ApplyAngularImpulse(float_t impulse, bool wake) noexcept
 {
-	if (m_type != DynamicBody)
+	if (m_type != BodyType::Dynamic)
 	{
 		return;
 	}
@@ -866,7 +864,7 @@ inline void Body::ApplyAngularImpulse(float_t impulse, bool wake) noexcept
 	// Don't accumulate velocity if the body is sleeping
 	if (IsAwake())
 	{
-		m_angularVelocity += m_invI * impulse;
+		m_velocity.w += m_invI * impulse;
 	}
 }
 
@@ -874,8 +872,7 @@ inline void Body::Advance(float_t alpha)
 {
 	// Advance to the new safe time. This doesn't sync the broad-phase.
 	m_sweep.Advance(alpha);
-	m_sweep.c = m_sweep.c0;
-	m_sweep.a = m_sweep.a0;
+	m_sweep.pos1 = m_sweep.pos0;
 	m_xf = GetTransformOne(m_sweep);
 }
 

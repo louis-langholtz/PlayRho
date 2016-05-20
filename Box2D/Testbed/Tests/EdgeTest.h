@@ -67,7 +67,7 @@ public:
 
 		{
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-0.5f, 0.6f);
 			bd.allowSleep = false;
 			Body* body = m_world->CreateBody(&bd);
@@ -80,7 +80,7 @@ public:
 
 		{
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(1.0f, 0.6f);
 			bd.allowSleep = false;
 			Body* body = m_world->CreateBody(&bd);

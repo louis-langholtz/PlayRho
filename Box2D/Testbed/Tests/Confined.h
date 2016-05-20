@@ -74,7 +74,7 @@ public:
 			for (int i = 0; i < e_rowCount; ++i)
 			{
 				BodyDef bd;
-				bd.type = DynamicBody;
+				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-10.0f + (2.1f * j + 1.0f + 0.01f * i) * radius, (2.0f * i + 1.0f) * radius);
 				Body* body = m_world->CreateBody(&bd);
 
@@ -96,7 +96,7 @@ public:
 		fd.restitution = float_t(0.8);
 
 		BodyDef bd;
-		bd.type = DynamicBody;
+		bd.type = BodyType::Dynamic;
 		bd.bullet = m_bullet_mode;
 		bd.position = Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));
 		//bd.allowSleep = false;
@@ -117,7 +117,7 @@ public:
 		fd.restitution = float_t(0.8);
 		
 		BodyDef bd;
-		bd.type = DynamicBody;
+		bd.type = BodyType::Dynamic;
 		bd.bullet = m_bullet_mode;
 		bd.position = Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));
 		auto* body = m_world->CreateBody(&bd);
@@ -129,7 +129,7 @@ public:
 		m_bullet_mode = !m_bullet_mode;
 		for (auto& b: m_world->GetBodies())
 		{
-			if (b.GetType() == DynamicBody)
+			if (b.GetType() == BodyType::Dynamic)
 			{
 				b.SetBullet(m_bullet_mode);
 			}
@@ -140,7 +140,7 @@ public:
 	{
 		for (auto& b: m_world->GetBodies())
 		{
-			if (b.GetType() == DynamicBody)
+			if (b.GetType() == BodyType::Dynamic)
 			{
 				const auto position = b.GetPosition();
 				const auto angle_from_center = Atan2(position.y - wall_length/2, position.x);
@@ -177,7 +177,7 @@ public:
 		bool sleeping = true;
 		for (Body* b = m_world->GetBodyList(); b; b = b->GetNext())
 		{
-			if (b->GetType() != DynamicBody)
+			if (b->GetType() != BodyType::Dynamic)
 			{
 				continue;
 			}
@@ -202,7 +202,7 @@ public:
 
 		for (Body* b = m_world->GetBodyList(); b; b = b->GetNext())
 		{
-			if (b->GetType() != DynamicBody)
+			if (b->GetType() != BodyType::Dynamic)
 			{
 				continue;
 			}

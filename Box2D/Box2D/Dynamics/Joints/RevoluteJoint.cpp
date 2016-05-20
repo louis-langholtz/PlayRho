@@ -400,12 +400,12 @@ float_t RevoluteJoint::GetReactionTorque(float_t inv_dt) const
 
 float_t RevoluteJoint::GetJointAngle() const
 {
-	return m_bodyB->m_sweep.a - m_bodyA->m_sweep.a - m_referenceAngle;
+	return m_bodyB->m_sweep.pos1.a - m_bodyA->m_sweep.pos1.a - m_referenceAngle;
 }
 
 float_t RevoluteJoint::GetJointSpeed() const
 {
-	return m_bodyB->m_angularVelocity - m_bodyA->m_angularVelocity;
+	return m_bodyB->m_velocity.w - m_bodyA->m_velocity.w;
 }
 
 bool RevoluteJoint::IsMotorEnabled() const

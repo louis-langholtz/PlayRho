@@ -352,6 +352,32 @@ struct Transform
 
 constexpr auto Transform_identity = Transform{Vec2_zero, Rot_identity};
 
+/// Positional data structure.
+struct Position
+{
+	Position() = default;
+	
+	constexpr Position(const Position& copy) = default;
+	
+	constexpr Position(Vec2 c_, float_t a_) noexcept: c(c_), a(a_) {}
+	
+	Vec2 c; ///< Linear position (in meters).
+	float_t a; ///< Angular position (in radians).
+};
+
+/// Velocity related data structure.
+struct Velocity
+{
+	Velocity() = default;
+	
+	constexpr Velocity(const Velocity& copy) = default;
+
+	constexpr Velocity(Vec2 v_, float_t w_) noexcept: v(v_), w(w_) {}
+	
+	Vec2 v; ///< Linear velocity (in meters/second).
+	float_t w; ///< Angular velocity (in radians/second).
+};
+
 /// This describes the motion of a body/shape for TOI computation.
 /// Shapes are defined with respect to the body origin, which may
 /// not coincide with the center of mass. However, to support dynamics
@@ -359,26 +385,36 @@ constexpr auto Transform_identity = Transform{Vec2_zero, Rot_identity};
 struct Sweep
 {
 	/// Advances the sweep forward to the given time factor.
-	/// This updates c0 and a0 and sets alpha0 to the given time alpha.
+	/// This updates pos0.c and pos0.a and sets alpha0 to the given time alpha.
 	/// @param alpha New time factor in [0,1) to advance the sweep to.
 	void Advance(float_t alpha);
 
 	/// Normalize the angles.
 	void Normalize();
 
-	Vec2 localCenter;	///< local center of mass position
-	Vec2 c0, c;		///< center world positions
-	float_t a0, a;		///< world angles
+	Position pos0; ///< Center world position and world angle at time "0".
+	Position pos1; ///< Center world position and world angle at time "1".
 
+	Vec2 localCenter;	///< local center of mass position
+	
 	/// Fraction of the current time step in the range [0,1]
-	/// c0 and a0 are the positions at alpha0.
+	/// pos0.c and pos0.a are the positions at alpha0.
 	float_t alpha0;
 };
+
+/// Gets a vector perpendicular to the given vector.
+/// @param vector Vector to return a perpendicular equivalent for.
+/// @return A counter-clockwise 90-degree rotation of the given vector.
+constexpr inline Vec2 GetPerpendicular(const Vec2& vector) noexcept
+{
+	// See http://mathworld.wolfram.com/PerpendicularVector.html
+	return Vec2{-vector.y, vector.x};
+}
 
 /// Performs the dot product on two vectors (A and B).
 /// @param a Vector A.
 /// @param b Vector B.
-/// @return Dot product of the vectors.
+/// @return Dot product of the vectors (0 means the two vectors are perpendicular).
 /// @note If A and B are the same vectors, Vec2::LengthSquared() returns the same value
 ///   using effectively one less input parameter.
 constexpr inline float_t Dot(const Vec2& a, const Vec2& b) noexcept
@@ -686,6 +722,11 @@ constexpr inline Transform GetTransform(const Vec2& ctr, const Rot& rot, const V
 	return Transform{ctr - Mul(rot, local_ctr), rot};
 }
 
+inline Transform GetTransform(const Position& pos, const Vec2& local_ctr) noexcept
+{
+	return GetTransform(pos.c, Rot(pos.a), local_ctr);
+}
+
 /// Gets the interpolated transform at a specific time.
 /// @param sweep Sweep data to get the transform from.
 /// @param beta Time factor in [0,1], where 0 indicates alpha0.
@@ -695,7 +736,11 @@ inline Transform GetTransform(const Sweep& sweep, float_t beta)
 	assert(beta >= 0);
 	assert(beta <= 1);
 	const auto one_minus_beta = float_t(1) - beta;
-	return GetTransform(one_minus_beta * sweep.c0 + beta * sweep.c, Rot(one_minus_beta * sweep.a0 + beta * sweep.a), sweep.localCenter);
+	const auto pos_beta = Position{
+		one_minus_beta * sweep.pos0.c + beta * sweep.pos1.c,
+		one_minus_beta * sweep.pos0.a + beta * sweep.pos1.a
+	};
+	return GetTransform(pos_beta, sweep.localCenter);
 }
 
 /// Gets the transform at "time" zero.
@@ -705,7 +750,7 @@ inline Transform GetTransform(const Sweep& sweep, float_t beta)
 /// @return Transform of the given sweep at time zero.
 inline Transform GetTransformZero(const Sweep& sweep)
 {
-	return GetTransform(sweep.c0, Rot(sweep.a0), sweep.localCenter);
+	return GetTransform(sweep.pos0, sweep.localCenter);
 }
 
 /// Gets the transform at "time" one.
@@ -715,7 +760,7 @@ inline Transform GetTransformZero(const Sweep& sweep)
 /// @return Transform of the given sweep at time one.
 inline Transform GetTransformOne(const Sweep& sweep)
 {
-	return GetTransform(sweep.c, Rot(sweep.a), sweep.localCenter);
+	return GetTransform(sweep.pos1, sweep.localCenter);
 }
 
 inline void Sweep::Advance(float_t alpha)
@@ -723,8 +768,8 @@ inline void Sweep::Advance(float_t alpha)
 	assert(alpha < float_t(1));
 	assert(alpha0 < float_t(1));
 	const auto beta = (alpha - alpha0) / (float_t(1) - alpha0);
-	c0 += beta * (c - c0);
-	a0 += beta * (a - a0);
+	pos0.c += beta * (pos1.c - pos0.c);
+	pos0.a += beta * (pos1.a - pos0.a);
 	alpha0 = alpha;
 }
 
@@ -732,9 +777,9 @@ inline void Sweep::Advance(float_t alpha)
 inline void Sweep::Normalize()
 {
 	constexpr auto twoPi = float_t{2} * Pi;
-	const auto d =  twoPi * std::floor(a0 / twoPi);
-	a0 -= d;
-	a -= d;
+	const auto d =  twoPi * std::floor(pos0.a / twoPi);
+	pos0.a -= d;
+	pos1.a -= d;
 }
 
 }

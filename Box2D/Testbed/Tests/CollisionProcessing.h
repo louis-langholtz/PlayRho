@@ -60,7 +60,7 @@ public:
 		triangleShapeDef.density = 1.0f;
 
 		BodyDef triangleBodyDef;
-		triangleBodyDef.type = DynamicBody;
+		triangleBodyDef.type = BodyType::Dynamic;
 		triangleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
 		Body* body1 = m_world->CreateBody(&triangleBodyDef);
@@ -85,7 +85,7 @@ public:
 		boxShapeDef.density = 1.0f;
 
 		BodyDef boxBodyDef;
-		boxBodyDef.type = DynamicBody;
+		boxBodyDef.type = BodyType::Dynamic;
 		boxBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
 		Body* body3 = m_world->CreateBody(&boxBodyDef);
@@ -107,7 +107,7 @@ public:
 		circleShapeDef.density = 1.0f;
 
 		BodyDef circleBodyDef;
-		circleBodyDef.type = DynamicBody;
+		circleBodyDef.type = BodyType::Dynamic;
 		circleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
 		Body* body5 = m_world->CreateBody(&circleBodyDef);

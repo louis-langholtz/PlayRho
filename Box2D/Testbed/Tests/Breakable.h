@@ -46,7 +46,7 @@ public:
 		// Breakable dynamic body
 		{
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(0.0f, 40.0f);
 			bd.angle = 0.25f * Pi;
 			m_body1 = m_world->CreateBody(&bd);
@@ -96,7 +96,7 @@ public:
 		m_piece2 = nullptr;
 
 		BodyDef bd;
-		bd.type = DynamicBody;
+		bd.type = BodyType::Dynamic;
 		bd.position = body1->GetPosition();
 		bd.angle = body1->GetAngle();
 

@@ -56,7 +56,7 @@ int main(int argc, char** argv)
 
 	// Define the dynamic body. We set its position and call the body factory.
 	BodyDef bodyDef;
-	bodyDef.type = DynamicBody;
+	bodyDef.type = BodyType::Dynamic;
 	bodyDef.position = Vec2(0.0f, 4.0f);
 	Body* body = world.CreateBody(&bodyDef);
 

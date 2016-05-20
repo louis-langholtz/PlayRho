@@ -47,7 +47,7 @@ public:
 			{
 				float_t x = RandomFloat(-0.1f, 0.1f);
 				BodyDef bd;
-				bd.type = DynamicBody;
+				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(x + 5.0f, 1.05f + 2.5f * i);
 				bd.angle = RandomFloat(-Pi, Pi);
 				Body* body = m_world->CreateBody(&bd);
@@ -67,7 +67,7 @@ public:
 			{
 				float_t x = RandomFloat(-0.1f, 0.1f);
 				BodyDef bd;
-				bd.type = DynamicBody;
+				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(x - 5.0f, 1.05f + 2.5f * i);
 				bd.angle = RandomFloat(-Pi, Pi);
 				Body* body = m_world->CreateBody(&bd);
@@ -103,7 +103,7 @@ public:
 			{
 				float_t x = RandomFloat(-0.1f, 0.1f);
 				BodyDef bd;
-				bd.type = DynamicBody;
+				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(x, 2.05f + 2.5f * i);
 				bd.angle = 0.0f;
 				Body* body = m_world->CreateBody(&bd);
@@ -123,7 +123,7 @@ public:
 			right.SetAsBox(0.15f, 2.7f, Vec2(1.45f, 2.35f), -0.2f);
 
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.position = Vec2( 0.0f, 2.0f );
 			Body* body = m_world->CreateBody(&bd);
 			body->CreateFixture(&bottom, 4.0f);

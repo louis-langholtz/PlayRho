@@ -46,7 +46,7 @@ public:
 			shape.SetRadius(0.5);
 
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 
 			RevoluteJointDef rjd;
 
@@ -75,7 +75,7 @@ public:
 			circle_shape.SetRadius(3.0);
 
 			BodyDef circle_bd;
-			circle_bd.type = DynamicBody;
+			circle_bd.type = BodyType::Dynamic;
 			circle_bd.position = Vec2(5.0f, 30.0f);
 
 			FixtureDef fd;
@@ -91,7 +91,7 @@ public:
 
 			BodyDef polygon_bd;
 			polygon_bd.position = Vec2(20.0f, 10.0f);
-			polygon_bd.type = DynamicBody;
+			polygon_bd.type = BodyType::Dynamic;
 			polygon_bd.bullet = true;
 			Body* polygon_body = m_world->CreateBody(&polygon_bd);
 			polygon_body->CreateFixture(&polygon_shape, 2.0f);
@@ -107,7 +107,7 @@ public:
 		// Tests mass computation of a small object far from the origin
 		{
 			BodyDef bodyDef;
-			bodyDef.type = DynamicBody;
+			bodyDef.type = BodyType::Dynamic;
 			Body* body = m_world->CreateBody(&bodyDef);
 		
 			PolygonShape polyShape;		

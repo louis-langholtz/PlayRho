@@ -75,7 +75,7 @@ public:
 		triangleShapeDef.filter.maskBits = k_triangleMask;
 
 		BodyDef triangleBodyDef;
-		triangleBodyDef.type = DynamicBody;
+		triangleBodyDef.type = BodyType::Dynamic;
 		triangleBodyDef.position = Vec2(-5.0f, 2.0f);
 
 		Body* body1 = m_world->CreateBody(&triangleBodyDef);
@@ -95,7 +95,7 @@ public:
 
 		{
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-5.0f, 10.0f);
 			Body* body = m_world->CreateBody(&bd);
 
@@ -128,7 +128,7 @@ public:
 		boxShapeDef.filter.maskBits = k_boxMask;
 
 		BodyDef boxBodyDef;
-		boxBodyDef.type = DynamicBody;
+		boxBodyDef.type = BodyType::Dynamic;
 		boxBodyDef.position = Vec2(0.0f, 2.0f);
 
 		Body* body3 = m_world->CreateBody(&boxBodyDef);
@@ -155,7 +155,7 @@ public:
 		circleShapeDef.filter.maskBits = k_circleMask;
 
 		BodyDef circleBodyDef;
-		circleBodyDef.type = DynamicBody;
+		circleBodyDef.type = BodyType::Dynamic;
 		circleBodyDef.position = Vec2(5.0f, 2.0f);
 		
 		Body* body5 = m_world->CreateBody(&circleBodyDef);

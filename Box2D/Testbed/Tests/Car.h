@@ -92,7 +92,7 @@ public:
 		{
 			BodyDef bd;
 			bd.position = Vec2(140.0f, 1.0f);
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			Body* body = m_world->CreateBody(&bd);
 
 			PolygonShape box;
@@ -126,7 +126,7 @@ public:
 			for (int32 i = 0; i < N; ++i)
 			{
 				BodyDef bd;
-				bd.type = DynamicBody;
+				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(161.0f + 2.0f * i, -0.125f);
 				Body* body = m_world->CreateBody(&bd);
 				body->CreateFixture(&fd);
@@ -150,7 +150,7 @@ public:
 
 			Body* body = nullptr;
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 
 			bd.position = Vec2(230.0f, 0.5f);
 			body = m_world->CreateBody(&bd);
@@ -189,7 +189,7 @@ public:
 			circle.SetRadius(float_t(0.4));
 
 			BodyDef bd;
-			bd.type = DynamicBody;
+			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(0.0f, 1.0f);
 			m_car = m_world->CreateBody(&bd);
 			m_car->CreateFixture(&chassis, 1.0f);

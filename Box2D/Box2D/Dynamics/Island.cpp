@@ -202,18 +202,16 @@ void Island::Solve(Profile* profile, const TimeStep& step, const Vec2& gravity, 
 		auto& b = *m_bodies[i];
 
 		// Store positions for continuous collision.
-		b.m_sweep.c0 = b.m_sweep.c;
-		b.m_sweep.a0 = b.m_sweep.a;
-		m_positions[i] = Position{b.m_sweep.c, b.m_sweep.a};
+		b.m_sweep.pos0 = b.m_sweep.pos1;
+		m_positions[i] = b.m_sweep.pos1;
 
 		{
-			auto v = b.m_linearVelocity;
-			auto w = b.m_angularVelocity;
-			if (b.m_type == DynamicBody)
+			auto velocity = b.m_velocity;
+			if (b.m_type == BodyType::Dynamic)
 			{
 				// Integrate velocities.
-				v += h * (b.m_gravityScale * gravity + b.m_invMass * b.m_force);
-				w += h * b.m_invI * b.m_torque;
+				velocity.v += h * (b.m_gravityScale * gravity + b.m_invMass * b.m_force);
+				velocity.w += h * b.m_invI * b.m_torque;
 
 				// Apply damping.
 				// ODE: dv/dt + c * v = 0
@@ -222,10 +220,10 @@ void Island::Solve(Profile* profile, const TimeStep& step, const Vec2& gravity, 
 				// v2 = exp(-c * dt) * v1
 				// Pade approximation:
 				// v2 = v1 * 1 / (1 + c * dt)
-				v *= float_t(1) / (float_t(1) + h * b.m_linearDamping);
-				w *= float_t(1) / (float_t(1) + h * b.m_angularDamping);
+				velocity.v *= float_t(1) / (float_t(1) + h * b.m_linearDamping);
+				velocity.w *= float_t(1) / (float_t(1) + h * b.m_angularDamping);
 			}
-			m_velocities[i] = Velocity{v, w};
+			m_velocities[i] = velocity;
 		}
 	}
 
@@ -317,10 +315,8 @@ void Island::Solve(Profile* profile, const TimeStep& step, const Vec2& gravity, 
 	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 	{
 		auto& body = *m_bodies[i];
-		body.m_sweep.c = m_positions[i].c;
-		body.m_sweep.a = m_positions[i].a;
-		body.m_linearVelocity = m_velocities[i].v;
-		body.m_angularVelocity = m_velocities[i].w;
+		body.m_sweep.pos1 = m_positions[i];
+		body.m_velocity = m_velocities[i];
 		body.m_xf = GetTransformOne(body.m_sweep);
 	}
 
@@ -336,14 +332,14 @@ void Island::Solve(Profile* profile, const TimeStep& step, const Vec2& gravity, 
 		for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 		{
 			auto& b = *m_bodies[i];
-			if (b.GetType() == StaticBody)
+			if (b.GetType() == BodyType::Static)
 			{
 				continue;
 			}
 
 			if ((!b.IsSleepingAllowed()) ||
-				(Square(b.m_angularVelocity) > angTolSqr) ||
-				(b.m_linearVelocity.LengthSquared() > linTolSqr))
+				(Square(b.m_velocity.w) > angTolSqr) ||
+				(b.m_velocity.v.LengthSquared() > linTolSqr))
 			{
 				b.m_sleepTime = float_t{0};
 				minSleepTime = float_t{0};
@@ -374,10 +370,8 @@ void Island::SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_
 	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 	{
 		const auto& b = *m_bodies[i];
-		m_positions[i].c = b.m_sweep.c;
-		m_positions[i].a = b.m_sweep.a;
-		m_velocities[i].v = b.m_linearVelocity;
-		m_velocities[i].w = b.m_angularVelocity;
+		m_positions[i] = b.m_sweep.pos1;
+		m_velocities[i] = b.m_velocity;
 	}
 
 	ContactSolverDef contactSolverDef;
@@ -430,10 +424,8 @@ void Island::SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_
 #endif
 
 	// Leap of faith to new safe state.
-	m_bodies[toiIndexA]->m_sweep.c0 = m_positions[toiIndexA].c;
-	m_bodies[toiIndexA]->m_sweep.a0 = m_positions[toiIndexA].a;
-	m_bodies[toiIndexB]->m_sweep.c0 = m_positions[toiIndexB].c;
-	m_bodies[toiIndexB]->m_sweep.a0 = m_positions[toiIndexB].a;
+	m_bodies[toiIndexA]->m_sweep.pos0 = m_positions[toiIndexA];
+	m_bodies[toiIndexB]->m_sweep.pos0 = m_positions[toiIndexB];
 
 	// No warm starting is needed for TOI events because warm
 	// starting impulses were applied in the discrete solver.
@@ -476,10 +468,8 @@ void Island::SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_
 
 		// Sync bodies
 		auto& body = *m_bodies[i];
-		body.m_sweep.c = m_positions[i].c;
-		body.m_sweep.a = m_positions[i].a;
-		body.m_linearVelocity = velocity.v;
-		body.m_angularVelocity = velocity.w;
+		body.m_sweep.pos1 = m_positions[i];
+		body.m_velocity = velocity;
 		body.m_xf = GetTransformOne(body.m_sweep);
 	}
 
