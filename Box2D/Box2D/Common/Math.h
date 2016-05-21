@@ -396,13 +396,26 @@ struct Sweep
 	float_t alpha0;
 };
 
-/// Gets a vector perpendicular to the given vector.
-/// @param vector Vector to return a perpendicular equivalent for.
+/// Gets a vector counter-clockwise perpendicular to the given vector.
+/// @detail This takes a vector of form (x, y) and returns the vector (-y, x).
+/// @param vector Vector to return a counter-clockwise perpendicular equivalent for.
 /// @return A counter-clockwise 90-degree rotation of the given vector.
-constexpr inline Vec2 GetPerpendicular(const Vec2& vector) noexcept
+/// @sa GetCwPerpendicular.
+constexpr inline Vec2 GetCcwPerpendicular(const Vec2& vector) noexcept
 {
 	// See http://mathworld.wolfram.com/PerpendicularVector.html
 	return Vec2{-vector.y, vector.x};
+}
+	
+/// Gets a vector clockwise perpendicular to the given vector.
+/// @detail This takes a vector of form (x, y) and returns the vector (y, -x).
+/// @param vector Vector to return a clockwise perpendicular equivalent for.
+/// @return A clockwise 90-degree rotation of the given vector.
+/// @sa GetCcwPerpendicular.
+constexpr inline Vec2 GetCwPerpendicular(const Vec2& vector) noexcept
+{
+	// See http://mathworld.wolfram.com/PerpendicularVector.html
+	return Vec2{vector.y, -vector.x};
 }
 
 /// Performs the dot product on two vectors (A and B).
