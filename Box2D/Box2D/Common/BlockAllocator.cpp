@@ -115,7 +115,7 @@ void* BlockAllocator::Allocate(size_type size)
 
 	if (m_freeLists[index])
 	{
-		auto block = m_freeLists[index];
+		const auto block = m_freeLists[index];
 		m_freeLists[index] = block->next;
 		return block;
 	}
@@ -127,7 +127,7 @@ void* BlockAllocator::Allocate(size_type size)
 		std::memset(m_chunks + m_chunkCount, 0, ChunkArrayIncrement * sizeof(Chunk));
 	}
 
-	auto chunk = m_chunks + m_chunkCount;
+	const auto chunk = m_chunks + m_chunkCount;
 	chunk->blocks = static_cast<Block*>(alloc(ChunkSize));
 #if defined(_DEBUG)
 	std::memset(chunk->blocks, 0xcd, ChunkSize);
@@ -139,11 +139,11 @@ void* BlockAllocator::Allocate(size_type size)
 	assert((blockCount * blockSize) <= ChunkSize);
 	for (auto i = decltype(blockCount){0}; i < blockCount - 1; ++i)
 	{
-		auto block = (Block*)((int8*)chunk->blocks + blockSize * i);
+		const auto block = (Block*)((int8*)chunk->blocks + blockSize * i);
 		const auto next = (Block*)((int8*)chunk->blocks + blockSize * (i + 1));
 		block->next = next;
 	}
-	auto last = (Block*)((int8*)chunk->blocks + blockSize * (blockCount - 1));
+	const auto last = (Block*)((int8*)chunk->blocks + blockSize * (blockCount - 1));
 	last->next = nullptr;
 
 	m_freeLists[index] = chunk->blocks->next;
@@ -197,7 +197,7 @@ void BlockAllocator::Free(void* p, size_type size)
 	std::memset(p, 0xfd, blockSize);
 #endif
 
-	auto block = static_cast<Block*>(p);
+	const auto block = static_cast<Block*>(p);
 	block->next = m_freeLists[index];
 	m_freeLists[index] = block;
 }

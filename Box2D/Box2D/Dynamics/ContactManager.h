@@ -27,6 +27,7 @@ class Contact;
 class ContactFilter;
 class ContactListener;
 class BlockAllocator;
+struct FixtureProxy;
 
 /// Contact Manager.
 /// This is a delegate of World (every World instance has one of these).
@@ -39,7 +40,10 @@ public:
 	ContactManager(BlockAllocator* allocator, ContactFilter* filter, ContactListener* listener);
 
 	// Broad-phase callback.
-	void AddPair(void* proxyUserDataA, void* proxyUserDataB);
+	void AddPair(void* proxyUserDataA, void* proxyUserDataB)
+	{
+		Add(static_cast<FixtureProxy*>(proxyUserDataA), static_cast<FixtureProxy*>(proxyUserDataB));
+	}
 
 	void FindNewContacts();
 
@@ -75,6 +79,10 @@ public:
 	ContactListener* m_contactListener;
 
 private:
+	void Add(FixtureProxy* proxyA, FixtureProxy* proxyB);
+	void Add(Contact* contact);
+	void Remove(Contact* contact);
+	
 	size_type m_contactCount = 0;
 	Contact* m_contactList = nullptr;
 	BlockAllocator* const m_allocator;

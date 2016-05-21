@@ -169,7 +169,7 @@ bool AABB::RayCast(RayCastOutput* output, const RayCastInput& input) const
 			auto t2 = (upperBound(i) - p(i)) * inv_d;
 
 			// Sign of the normal vector.
-			auto s = float_t(-1);
+			auto s = float_t{-1};
 
 			if (t1 > t2)
 			{

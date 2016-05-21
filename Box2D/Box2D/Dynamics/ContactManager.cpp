@@ -29,71 +29,77 @@ ContactManager::ContactManager(BlockAllocator* allocator, ContactFilter* filter,
 	m_contactFilter(filter), m_contactListener(listener)
 {}
 
-void ContactManager::Destroy(Contact* c)
+void ContactManager::Remove(Contact* c)
 {
-	auto fixtureA = c->GetFixtureA();
-	auto fixtureB = c->GetFixtureB();
-	auto bodyA = fixtureA->GetBody();
-	auto bodyB = fixtureB->GetBody();
-
-	if (m_contactListener && c->IsTouching())
-	{
-		m_contactListener->EndContact(c);
-	}
-
+	assert(m_contactCount > 0);
+	
+	const auto fixtureA = c->GetFixtureA();
+	const auto fixtureB = c->GetFixtureB();
+	const auto bodyA = fixtureA->GetBody();
+	const auto bodyB = fixtureB->GetBody();
+	
 	// Remove from the world.
 	if (c->m_prev)
 	{
 		c->m_prev->m_next = c->m_next;
 	}
-
+	
 	if (c->m_next)
 	{
 		c->m_next->m_prev = c->m_prev;
 	}
-
+	
 	if (c == m_contactList)
 	{
 		m_contactList = c->m_next;
 	}
-
+	
 	// Remove from body 1
 	if (c->m_nodeA.prev)
 	{
 		c->m_nodeA.prev->next = c->m_nodeA.next;
 	}
-
+	
 	if (c->m_nodeA.next)
 	{
 		c->m_nodeA.next->prev = c->m_nodeA.prev;
 	}
-
+	
 	if (&c->m_nodeA == bodyA->m_contactList)
 	{
 		bodyA->m_contactList = c->m_nodeA.next;
 	}
-
+	
 	// Remove from body 2
 	if (c->m_nodeB.prev)
 	{
 		c->m_nodeB.prev->next = c->m_nodeB.next;
 	}
-
+	
 	if (c->m_nodeB.next)
 	{
 		c->m_nodeB.next->prev = c->m_nodeB.prev;
 	}
-
+	
 	if (&c->m_nodeB == bodyB->m_contactList)
 	{
 		bodyB->m_contactList = c->m_nodeB.next;
 	}
 
+	--m_contactCount;	
+}
+
+void ContactManager::Destroy(Contact* c)
+{
+	if (m_contactListener && c->IsTouching())
+	{
+		m_contactListener->EndContact(c);
+	}
+
+	Remove(c);
+
 	// Call the factory destroy method.
 	Contact::Destroy(c, m_allocator);
-	
-	assert(m_contactCount > 0);
-	--m_contactCount;
 }
 
 void ContactManager::Collide()
@@ -187,19 +193,13 @@ static bool IsFor(const Contact& contact,
 	return false;
 }
 
-void ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
+void ContactManager::Add(FixtureProxy* proxyA, FixtureProxy* proxyB)
 {
-	const auto proxyA = static_cast<FixtureProxy*>(proxyUserDataA);
-	const auto proxyB = static_cast<FixtureProxy*>(proxyUserDataB);
+	const auto fixtureA = proxyA->fixture; ///< Fixture of proxyA (but may get switched with fixtureB).
+	const auto fixtureB = proxyB->fixture; ///< Fixture of proxyB (but may get switched with fixtureA).
 
-	auto fixtureA = proxyA->fixture;
-	auto fixtureB = proxyB->fixture;
-
-	const auto indexA = proxyA->childIndex;
-	const auto indexB = proxyB->childIndex;
-
-	auto bodyA = fixtureA->GetBody();
-	auto bodyB = fixtureB->GetBody();
+	const auto bodyA = fixtureA->GetBody();
+	const auto bodyB = fixtureB->GetBody();
 
 	// Are the fixtures on the same body?
 	if (bodyA == bodyB)
@@ -207,18 +207,23 @@ void ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 		return;
 	}
 
+	const auto indexA = proxyA->childIndex;
+	const auto indexB = proxyB->childIndex;
+	
 	// TODO_ERIN use a hash table to remove a potential bottleneck when both
 	// bodies have a lot of contacts.
 	// Does a contact already exist?
-	auto contactEdge = bodyB->GetContactList();
-	while (contactEdge)
 	{
-		if (contactEdge->other == bodyA)
+		auto contactEdge = bodyB->GetContactList();
+		while (contactEdge)
 		{
-			if (IsFor(*(contactEdge->contact), fixtureA, indexA, fixtureB, indexB))
-				return;
+			if (contactEdge->other == bodyA)
+			{
+				if (IsFor(*(contactEdge->contact), fixtureA, indexA, fixtureB, indexB))
+					return;
+			}
+			contactEdge = contactEdge->next;
 		}
-		contactEdge = contactEdge->next;
 	}
 
 	// Does a joint override collision? Is at least one body dynamic?
@@ -234,18 +239,23 @@ void ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 	}
 
 	// Call the contact factory create method.
-	auto c = Contact::Create(fixtureA, indexA, fixtureB, indexB, m_allocator);
+	const auto c = Contact::Create(fixtureA, indexA, fixtureB, indexB, m_allocator);
 	assert(c);
 	if (!c)
 	{
 		return;
 	}
+	
+	Add(c);
+}
 
+void ContactManager::Add(Contact* c)
+{
 	// Contact creation may swap fixtures.
-	fixtureA = c->GetFixtureA();
-	fixtureB = c->GetFixtureB();
-	bodyA = fixtureA->GetBody();
-	bodyB = fixtureB->GetBody();
+	const auto fixtureA = c->GetFixtureA();
+	const auto fixtureB = c->GetFixtureB();
+	const auto bodyA = fixtureA->GetBody();
+	const auto bodyB = fixtureB->GetBody();
 
 	// Insert into the world.
 	c->m_prev = nullptr;
@@ -261,7 +271,6 @@ void ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 	// Connect to body A
 	c->m_nodeA.contact = c;
 	c->m_nodeA.other = bodyB;
-
 	c->m_nodeA.prev = nullptr;
 	c->m_nodeA.next = bodyA->m_contactList;
 	if (bodyA->m_contactList)
@@ -273,7 +282,6 @@ void ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 	// Connect to body B
 	c->m_nodeB.contact = c;
 	c->m_nodeB.other = bodyA;
-
 	c->m_nodeB.prev = nullptr;
 	c->m_nodeB.next = bodyB->m_contactList;
 	if (bodyB->m_contactList)

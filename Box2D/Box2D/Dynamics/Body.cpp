@@ -95,7 +95,7 @@ void Body::DestroyContacts()
 	auto ce = m_contactList;
 	while (ce)
 	{
-		auto ce0 = ce;
+		const auto ce0 = ce;
 		ce = ce->next;
 		m_world->m_contactManager.Destroy(ce0->contact);
 	}
@@ -134,13 +134,13 @@ void Body::SetType(BodyType type)
 	DestroyContacts();
 
 	// Touch the proxies so that new contacts will be created (when appropriate)
-	auto broadPhase = &m_world->m_contactManager.m_broadPhase;
+	auto& broadPhase = m_world->m_contactManager.m_broadPhase;
 	for (auto f = m_fixtureList; f; f = f->m_next)
 	{
 		const auto proxyCount = f->m_proxyCount;
 		for (auto i = decltype(proxyCount){0}; i < proxyCount; ++i)
 		{
-			broadPhase->TouchProxy(f->m_proxies[i].proxyId);
+			broadPhase.TouchProxy(f->m_proxies[i].proxyId);
 		}
 	}
 }
@@ -153,10 +153,10 @@ Fixture* Body::CreateFixture(const FixtureDef* def)
 		return nullptr;
 	}
 
-	auto allocator = &m_world->m_blockAllocator;
+	const auto allocator = &m_world->m_blockAllocator;
 
-	auto memory = allocator->Allocate(sizeof(Fixture));
-	auto fixture = new (memory) Fixture(this);
+	const auto memory = allocator->Allocate(sizeof(Fixture));
+	const auto fixture = new (memory) Fixture(this);
 	fixture->Create(allocator, def);
 
 	if (m_flags & e_activeFlag)
@@ -199,21 +199,22 @@ void Body::DestroyFixture(Fixture* fixture)
 	}
 
 	assert(fixture->m_body == this);
+	assert(m_fixtureCount > 0);
 
 	// Remove the fixture from this body's singly linked list.
-	assert(m_fixtureCount > 0);
-	auto node = &m_fixtureList;
 	auto found = false;
-	while (*node != nullptr)
 	{
-		if (*node == fixture)
+		auto node = &m_fixtureList;
+		while (*node != nullptr)
 		{
-			*node = fixture->m_next;
-			found = true;
-			break;
+			if (*node == fixture)
+			{
+				*node = fixture->m_next;
+				found = true;
+				break;
+			}
+			node = &(*node)->m_next;
 		}
-
-		node = &(*node)->m_next;
 	}
 
 	// You tried to remove a shape that is not attached to this body.
@@ -257,9 +258,9 @@ void Body::DestroyFixture(Fixture* fixture)
 
 MassData Body::CalculateMassData() const noexcept
 {
-	auto mass = float_t(0);
+	auto mass = float_t{0};
 	auto center = Vec2_zero;
-	auto I = float_t(0);
+	auto I = float_t{0};
 	for (auto f = m_fixtureList; f; f = f->m_next)
 	{
 		if (f->m_density == float_t{0})
@@ -272,7 +273,7 @@ MassData Body::CalculateMassData() const noexcept
 		center += massData.mass * massData.center;
 		I += massData.I;
 	}
-	return MassData{mass, (mass != float_t(0))? center / mass: Vec2_zero, I};
+	return MassData{mass, (mass != float_t{0})? center / mass: Vec2_zero, I};
 }
 
 void Body::ResetMassData()

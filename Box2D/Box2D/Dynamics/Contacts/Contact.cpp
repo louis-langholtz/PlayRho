@@ -91,7 +91,7 @@ Contact* Contact::Create(Fixture* fixtureA, child_count_t indexA,
 	assert(0 <= type1 && type1 < Shape::e_typeCount);
 	assert(0 <= type2 && type2 < Shape::e_typeCount);
 	
-	auto createFcn = s_registers[type1][type2].createFcn;
+	const auto createFcn = s_registers[type1][type2].createFcn;
 	if (createFcn)
 	{
 		if (s_registers[type1][type2].primary)
@@ -111,8 +111,8 @@ Contact* Contact::Create(Fixture* fixtureA, child_count_t indexA,
 
 void Contact::Destroy(Contact* contact, BlockAllocator* allocator)
 {
-	auto fixtureA = contact->m_fixtureA;
-	auto fixtureB = contact->m_fixtureB;
+	const auto fixtureA = contact->m_fixtureA;
+	const auto fixtureB = contact->m_fixtureB;
 
 	if ((contact->m_manifold.GetPointCount() > 0) &&
 		!fixtureA->IsSensor() && !fixtureB->IsSensor())
@@ -127,7 +127,7 @@ void Contact::Destroy(Contact* contact, BlockAllocator* allocator)
 	assert(0 <= typeA && typeB < Shape::e_typeCount);
 	assert(0 <= typeA && typeB < Shape::e_typeCount);
 
-	auto destroyFcn = s_registers[typeA][typeB].destroyFcn;
+	const auto destroyFcn = s_registers[typeA][typeB].destroyFcn;
 	destroyFcn(contact, allocator);
 }
 
@@ -150,8 +150,8 @@ void Contact::Update(ContactListener* listener)
 	auto touching = false;
 	auto wasTouching = IsTouching();
 
-	auto bodyA = m_fixtureA->GetBody();
-	auto bodyB = m_fixtureB->GetBody();
+	const auto bodyA = m_fixtureA->GetBody();
+	const auto bodyB = m_fixtureB->GetBody();
 	const auto xfA = bodyA->GetTransform();
 	const auto xfB = bodyB->GetTransform();
 

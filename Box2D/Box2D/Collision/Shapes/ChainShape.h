@@ -101,6 +101,13 @@ public:
 	Vec2 GetNextVertex() const noexcept { return m_nextVertex; }
 
 private:
+	child_count_t GetNext(child_count_t index) const noexcept
+	{
+		assert(index < m_count);
+		const auto next = index + 1;
+		return (next < m_count)? next: 0;
+	}
+
 	/// The vertices. Owned by this class.
 	Vec2* m_vertices = nullptr;
 

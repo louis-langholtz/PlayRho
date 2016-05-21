@@ -65,14 +65,14 @@ bool CircleShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 	}
 
 	// Find the point of intersection of the line with the circle.
-	auto a = -(c + Sqrt(sigma));
+	const auto a = -(c + Sqrt(sigma));
 
 	// Is the intersection point on the segment?
 	if ((float_t{0} <= a) && (a <= (input.maxFraction * rr)))
 	{
-		a /= rr;
-		output->fraction = a;
-		output->normal = Normalize(s + a * r);
+		const auto fraction = a / rr;
+		output->fraction = fraction;
+		output->normal = Normalize(s + fraction * r);
 		return true;
 	}
 

@@ -445,19 +445,19 @@ inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2& centroid):
 static inline TempPolygon::size_type GetIndexOfMinimum(const TempPolygon& localShapeB, const EdgeInfo& edgeInfo)
 {
 	TempPolygon::size_type bestIndex = TempPolygon::size_type{0};
-	
-	auto minValue = Dot(edgeInfo.GetNormal(), localShapeB.GetNormal(0));
-	const auto count = localShapeB.GetCount();
-	for (auto i = decltype(count){1}; i < count; ++i)
 	{
-		const auto value = Dot(edgeInfo.GetNormal(), localShapeB.GetNormal(i));
-		if (minValue > value)
+		auto minValue = Dot(edgeInfo.GetNormal(), localShapeB.GetNormal(0));
+		const auto count = localShapeB.GetCount();
+		for (auto i = decltype(count){1}; i < count; ++i)
 		{
-			minValue = value;
-			bestIndex = i;
+			const auto value = Dot(edgeInfo.GetNormal(), localShapeB.GetNormal(i));
+			if (minValue > value)
+			{
+				minValue = value;
+				bestIndex = i;
+			}
 		}
 	}
-	
 	return bestIndex;
 }
 
@@ -465,15 +465,16 @@ static constexpr float_t MaxEPSeparation = PolygonRadius * 2; ///< Maximum separ
 
 static inline EPAxis ComputeEdgeSeparation(const TempPolygon& shape, const EdgeInfo& edgeInfo)
 {
-	auto min_val = MaxFloat;
-	const auto count = shape.GetCount();
-	for (auto i = decltype(count){0}; i < count; ++i)
+	auto minValue = MaxFloat;
 	{
-		const auto s = Dot(edgeInfo.GetNormal(), shape.GetVertex(i) - edgeInfo.GetVertex1());
-		if (min_val > s)
-			min_val = s;
+		const auto count = shape.GetCount();
+		for (auto i = decltype(count){0}; i < count; ++i)
+		{
+			const auto s = Dot(edgeInfo.GetNormal(), shape.GetVertex(i) - edgeInfo.GetVertex1());
+			minValue = Min(minValue, s);
+		}
 	}
-	return EPAxis(EPAxis::e_edgeA, edgeInfo.IsFront() ? 0 : 1, min_val);
+	return EPAxis{EPAxis::e_edgeA, edgeInfo.IsFront()? 0u: 1u, minValue};
 }
 
 static inline EPAxis ComputePolygonSeparation(const TempPolygon& shape, const EdgeInfo& edgeInfo)
@@ -492,7 +493,9 @@ static inline EPAxis ComputePolygonSeparation(const TempPolygon& shape, const Ed
 		const auto s = Min(s1, s2);
 		
 		if (s > MaxEPSeparation) // No collision
-			return EPAxis(EPAxis::e_edgeB, i, s);
+		{
+			return EPAxis{EPAxis::e_edgeB, i, s};
+		}
 		
 		// Adjacency
 		if (Dot(polygonNormal, perp) >= 0)

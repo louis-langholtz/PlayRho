@@ -26,36 +26,34 @@ static float_t FindMaxSeparation(PolygonShape::vertex_count_t& edgeIndex,
 								   const PolygonShape& shape1, const Transform& xf1,
 								   const PolygonShape& shape2, const Transform& xf2)
 {
-	const auto count1 = shape1.GetVertexCount();
-	const auto count2 = shape2.GetVertexCount();
-	const auto xf = MulT(xf2, xf1);
-
-	auto shape1_index_of_max_separation = decltype(count1){0};
 	auto maxSeparation = -MaxFloat;
-	for (auto i = decltype(count1){0}; i < count1; ++i)
+	auto shape1_index_of_max_separation = PolygonShape::vertex_count_t{0};
 	{
-		// Get shape1 normal in frame2.
-		const auto n = Mul(xf.q, shape1.GetNormal(i));
-		const auto v1 = Mul(xf, shape1.GetVertex(i));
-
-		// Find deepest point for normal i.
-		auto min_sij = MaxFloat;
-		for (auto j = decltype(count2){0}; j < count2; ++j)
+		const auto count1 = shape1.GetVertexCount();
+		const auto count2 = shape2.GetVertexCount();
+		const auto xf = MulT(xf2, xf1);
+		
+		for (auto i = decltype(count1){0}; i < count1; ++i)
 		{
-			const auto sij = Dot(n, shape2.GetVertex(j) - v1);
-			if (min_sij > sij)
+			// Get shape1 normal in frame2.
+			const auto n = Mul(xf.q, shape1.GetNormal(i));
+			const auto v1 = Mul(xf, shape1.GetVertex(i));
+
+			// Find deepest point for normal i.
+			auto min_sij = MaxFloat;
+			for (auto j = decltype(count2){0}; j < count2; ++j)
 			{
-				min_sij = sij;
+				const auto sij = Dot(n, shape2.GetVertex(j) - v1);
+				min_sij = Min(min_sij, sij);
+			}
+
+			if (maxSeparation < min_sij)
+			{
+				maxSeparation = min_sij;
+				shape1_index_of_max_separation = i;
 			}
 		}
-
-		if (maxSeparation < min_sij)
-		{
-			maxSeparation = min_sij;
-			shape1_index_of_max_separation = i;
-		}
 	}
-
 	edgeIndex = shape1_index_of_max_separation;
 	return maxSeparation;
 }
@@ -69,12 +67,12 @@ static ClipArray FindIncidentEdge(PolygonShape::vertex_count_t index1,
 
 	const auto count2 = shape2.GetVertexCount();
 
-	// Get the normal of the reference edge in shape2's frame.
-	const auto normal1 = MulT(xf2.q, Mul(xf1.q, shape1.GetNormal(index1)));
-
 	// Find the incident edge on shape2.
 	auto index_of_min_dot = decltype(count2){0};
 	{
+		// Get the normal of the reference edge in shape2's frame.
+		const auto normal1 = MulT(xf2.q, Mul(xf1.q, shape1.GetNormal(index1)));
+		
 		auto minDot = MaxFloat;
 		for (auto i = decltype(count2){0}; i < count2; ++i)
 		{
@@ -109,15 +107,15 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const P
 {
 	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
 
-	auto edgeA = PolygonShape::vertex_count_t{0};
-	const auto separationA = FindMaxSeparation(edgeA, shapeA, xfA, shapeB, xfB);
+	auto edgeIndexA = PolygonShape::vertex_count_t{0};
+	const auto separationA = FindMaxSeparation(edgeIndexA, shapeA, xfA, shapeB, xfB);
 	if (separationA > totalRadius)
 	{
 		return Manifold{};
 	}
 
-	auto edgeB = PolygonShape::vertex_count_t{0};
-	const auto separationB = FindMaxSeparation(edgeB, shapeB, xfB, shapeA, xfA);
+	auto edgeIndexB = PolygonShape::vertex_count_t{0};
+	const auto separationB = FindMaxSeparation(edgeIndexB, shapeB, xfB, shapeA, xfA);
 	if (separationB > totalRadius)
 	{
 		return Manifold{};
@@ -126,7 +124,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const P
 	const PolygonShape* shape1;	// reference polygon
 	const PolygonShape* shape2;	// incident polygon
 	Transform xf1, xf2;
-	PolygonShape::vertex_count_t edge1; // reference edge
+	PolygonShape::vertex_count_t edgeIndex1; // reference edge
 	bool flip;
 	constexpr auto k_tol = LinearSlop / 10;
 
@@ -137,7 +135,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const P
 		shape2 = &shapeA;
 		xf1 = xfB;
 		xf2 = xfA;
-		edge1 = edgeB;
+		edgeIndex1 = edgeIndexB;
 		manifoldType = Manifold::e_faceB;
 		flip = true;
 	}
@@ -147,17 +145,17 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const P
 		shape2 = &shapeB;
 		xf1 = xfA;
 		xf2 = xfB;
-		edge1 = edgeA;
+		edgeIndex1 = edgeIndexA;
 		manifoldType = Manifold::e_faceA;
 		flip = false;
 	}
 
-	const auto incidentEdge = FindIncidentEdge(edge1, *shape1, xf1, *shape2, xf2);
+	const auto incidentEdge = FindIncidentEdge(edgeIndex1, *shape1, xf1, *shape2, xf2);
 
 	const auto count1 = shape1->GetVertexCount();
 
-	const auto iv1 = edge1;
-	const auto iv1_next = edge1 + 1;
+	const auto iv1 = edgeIndex1;
+	const auto iv1_next = edgeIndex1 + 1;
 	const auto iv2 = (iv1_next < count1)? iv1_next: 0;
 
 	auto v11 = shape1->GetVertex(iv1);

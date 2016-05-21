@@ -175,8 +175,8 @@ inline void* BroadPhase::GetUserData(size_type proxyId) const
 
 inline bool BroadPhase::TestOverlap(size_type proxyIdA, size_type proxyIdB) const
 {
-	const AABB& aabbA = m_tree.GetFatAABB(proxyIdA);
-	const AABB& aabbB = m_tree.GetFatAABB(proxyIdB);
+	const auto& aabbA = m_tree.GetFatAABB(proxyIdA);
+	const auto& aabbB = m_tree.GetFatAABB(proxyIdB);
 	return box2d::TestOverlap(aabbA, aabbB);
 }
 
@@ -222,7 +222,7 @@ void BroadPhase::UpdatePairs(T* callback)
 
 		// We have to query the tree with the fat AABB so that
 		// we don't fail to create a pair that may touch later.
-		const AABB& fatAABB = m_tree.GetFatAABB(m_queryProxyId);
+		const auto& fatAABB = m_tree.GetFatAABB(m_queryProxyId);
 
 		// Query tree, create pairs and add them pair buffer.
 		m_tree.Query(this, fatAABB);
@@ -235,12 +235,11 @@ void BroadPhase::UpdatePairs(T* callback)
 	std::sort(m_pairBuffer, m_pairBuffer + m_pairCount, PairLessThan);
 
 	// Send the pairs back to the client.
-	auto i = decltype(m_pairCount){0};
-	while (i < m_pairCount)
+	for (auto i = decltype(m_pairCount){0}; i < m_pairCount; )
 	{
 		const auto& primaryPair = m_pairBuffer[i];
-		void* userDataA = m_tree.GetUserData(primaryPair.proxyIdA);
-		void* userDataB = m_tree.GetUserData(primaryPair.proxyIdB);
+		const auto userDataA = m_tree.GetUserData(primaryPair.proxyIdA);
+		const auto userDataB = m_tree.GetUserData(primaryPair.proxyIdB);
 
 		callback->AddPair(userDataA, userDataB);
 		++i;

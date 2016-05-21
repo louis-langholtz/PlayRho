@@ -91,7 +91,7 @@ void ChainShape::SetNextVertex(const Vec2& nextVertex) noexcept
 Shape* ChainShape::Clone(BlockAllocator* allocator) const
 {
 	void* mem = allocator->Allocate(sizeof(ChainShape));
-	auto clone = new (mem) ChainShape;
+	const auto clone = new (mem) ChainShape;
 	clone->CreateChain(m_vertices, m_count);
 	clone->m_prevVertex = m_prevVertex;
 	clone->m_nextVertex = m_nextVertex;
@@ -147,12 +147,7 @@ bool ChainShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 	assert(childIndex < m_count);
 
 	const auto i1 = childIndex;
-	auto i2 = childIndex + 1;
-	if (i2 == m_count)
-	{
-		i2 = 0;
-	}
-
+	const auto i2 = GetNext(childIndex);
 	const auto edgeShape = EdgeShape(m_vertices[i1], m_vertices[i2]);
 	return edgeShape.RayCast(output, input, xf, 0);
 }
@@ -162,15 +157,9 @@ AABB ChainShape::ComputeAABB(const Transform& xf, child_count_t childIndex) cons
 	assert(childIndex < m_count);
 
 	const auto i1 = childIndex;
-	auto i2 = childIndex + 1;
-	if (i2 == m_count)
-	{
-		i2 = 0;
-	}
-
+	const auto i2 = GetNext(childIndex);
 	const auto v1 = Mul(xf, m_vertices[i1]);
 	const auto v2 = Mul(xf, m_vertices[i2]);
-
 	return AABB{v1, v2};
 }
 
