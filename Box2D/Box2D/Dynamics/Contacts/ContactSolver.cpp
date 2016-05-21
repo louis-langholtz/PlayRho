@@ -499,7 +499,7 @@ static inline bool BlockSolveNormalCase4(const ContactVelocityConstraint& vc,
 	// 
 	// vn1 = b1
 	// vn2 = b2;
-	const auto newImpulse = Vec2{float_t{0}, float_t{0}};
+	const auto newImpulse = Vec2_zero;
 	const auto vn1 = b_prime.x;
 	const auto vn2 = b_prime.y;
 	if ((vn1 >= float_t{0}) && (vn2 >= float_t{0}))

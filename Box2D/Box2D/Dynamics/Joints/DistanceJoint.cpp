@@ -93,7 +93,7 @@ void DistanceJoint::InitVelocityConstraints(const SolverData& data)
 	}
 	else
 	{
-		m_u = Vec2(float_t{0}, float_t{0});
+		m_u = Vec2_zero;
 	}
 
 	const auto crAu = Cross(m_rA, m_u);
