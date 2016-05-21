@@ -128,13 +128,13 @@ void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 
 	// Perform welding and copy vertices into local buffer.
 	Vec2 ps[MaxPolygonVertices];
-	auto tempCount = decltype(n){0};
+	auto uniqueCount = decltype(n){0};
 	for (auto i = decltype(n){0}; i < n; ++i)
 	{
 		const auto v = vertices[i];
 
 		auto unique = true;
-		for (auto j = decltype(tempCount){0}; j < tempCount; ++j)
+		for (auto j = decltype(uniqueCount){0}; j < uniqueCount; ++j)
 		{
 			if (DistanceSquared(v, ps[j]) < Square(LinearSlop / 2))
 			{
@@ -145,15 +145,17 @@ void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 
 		if (unique)
 		{
-			ps[tempCount++] = v;
+			ps[uniqueCount] = v;
+			++uniqueCount;
 		}
 	}
 
-	n = tempCount;
+	n = uniqueCount;
+	
+	assert(n >= 3);
 	if (n < 3)
 	{
 		// Polygon is degenerate.
-		assert(false);
 		SetAsBox(float_t(1), float_t(1));
 		return;
 	}
@@ -215,10 +217,10 @@ void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 		}
 	}
 	
+	assert(m >= 3);
 	if (m < 3)
 	{
 		// Polygon is degenerate.
-		assert(false);
 		SetAsBox(float_t(1), float_t(1));
 		return;
 	}

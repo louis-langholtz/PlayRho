@@ -192,6 +192,7 @@ public:
 
 	Vec2 GetSearchDirection() const
 	{
+		assert((m_count == 1) || (m_count == 2));
 		switch (m_count)
 		{
 		case 1:
@@ -209,13 +210,14 @@ public:
 			}
 
 		default:
-			assert(false);
 			return Vec2_zero;
 		}
 	}
 
 	Vec2 GetClosestPoint() const
 	{
+		assert(m_count == 1 || m_count == 2 || m_count == 3);
+		
 		switch (m_count)
 		{
 		case 1:
@@ -228,13 +230,14 @@ public:
 			return Vec2_zero;
 
 		default:
-			assert(false);
 			return Vec2_zero;
 		}
 	}
 
 	void GetWitnessPoints(Vec2* pA, Vec2* pB) const
 	{
+		assert(m_count == 1 || m_count == 2 || m_count == 3);
+
 		switch (m_count)
 		{
 		case 1:
@@ -255,13 +258,14 @@ public:
 			break;
 
 		default:
-			assert(false);
 			break;
 		}
 	}
 
 	float_t GetMetric() const
 	{
+		assert(m_count == 1 || m_count == 2 || m_count == 3);
+
 		switch (m_count)
 		{
 		case 1:
@@ -274,7 +278,6 @@ public:
 			return Cross(m_vertices[1].get_w() - m_vertices[0].get_w(), m_vertices[2].get_w() - m_vertices[0].get_w());
 
 		default:
-			assert(false);
 			return float_t{0};
 		}
 	}
@@ -499,7 +502,11 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 			saveB[i] = vertices[i].indexB;
 		}
 
-		switch (simplex.GetCount())
+		const auto simplexCount = simplex.GetCount();
+
+		assert(simplexCount == 1 || simplexCount == 2 || simplexCount == 3);
+		
+		switch (simplexCount)
 		{
 		case 1:
 			break;
@@ -513,7 +520,7 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 			break;
 
 		default:
-			assert(false);
+			break;
 		}
 
 		// If we have max points (3), then the origin is in the corresponding triangle.
