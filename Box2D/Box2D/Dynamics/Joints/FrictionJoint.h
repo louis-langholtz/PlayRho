@@ -91,7 +91,7 @@ protected:
 	Vec2 m_localAnchorB;
 
 	// Solver shared
-	Vec2 m_linearImpulse = Vec2_zero;
+	Vec2 m_linearImpulse = Vec2_zero; ///< Linear impulse.
 	float_t m_angularImpulse = float_t{0};
 	float_t m_maxForce;
 	float_t m_maxTorque;

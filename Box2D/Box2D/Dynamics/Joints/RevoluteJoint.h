@@ -158,7 +158,7 @@ protected:
 	// Solver shared
 	Vec2 m_localAnchorA;
 	Vec2 m_localAnchorB;
-	Vec3 m_impulse;
+	Vec3 m_impulse; ///< Impulse.
 	float_t m_motorImpulse;
 
 	bool m_enableMotor;
