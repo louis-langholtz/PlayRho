@@ -162,7 +162,7 @@ void RevoluteJoint::InitVelocityConstraints(const SolverData& data)
 		m_impulse *= data.step.dtRatio;
 		m_motorImpulse *= data.step.dtRatio;
 
-		const auto P = Vec2(m_impulse.x, m_impulse.y);
+		const auto P = Vec2{m_impulse.x, m_impulse.y};
 
 		vA -= mA * P;
 		wA -= iA * (Cross(m_rA, P) + m_motorImpulse + m_impulse.z);
@@ -226,7 +226,7 @@ void RevoluteJoint::SolveVelocityConstraints(const SolverData& data)
 			const auto newImpulse = m_impulse.z + impulse.z;
 			if (newImpulse < float_t{0})
 			{
-				const auto rhs = -Cdot1 + m_impulse.z * Vec2(m_mass.ez.x, m_mass.ez.y);
+				const auto rhs = -Cdot1 + m_impulse.z * Vec2{m_mass.ez.x, m_mass.ez.y};
 				const auto reduced = m_mass.Solve22(rhs);
 				impulse.x = reduced.x;
 				impulse.y = reduced.y;
@@ -245,7 +245,7 @@ void RevoluteJoint::SolveVelocityConstraints(const SolverData& data)
 			const auto newImpulse = m_impulse.z + impulse.z;
 			if (newImpulse > float_t{0})
 			{
-				const auto rhs = -Cdot1 + m_impulse.z * Vec2(m_mass.ez.x, m_mass.ez.y);
+				const auto rhs = -Cdot1 + m_impulse.z * Vec2{m_mass.ez.x, m_mass.ez.y};
 				const auto reduced = m_mass.Solve22(rhs);
 				impulse.x = reduced.x;
 				impulse.y = reduced.y;
@@ -260,7 +260,7 @@ void RevoluteJoint::SolveVelocityConstraints(const SolverData& data)
 			}
 		}
 
-		const auto P = Vec2(impulse.x, impulse.y);
+		const auto P = Vec2{impulse.x, impulse.y};
 
 		vA -= mA * P;
 		wA -= iA * (Cross(m_rA, P) + impulse.z);
@@ -389,7 +389,7 @@ Vec2 RevoluteJoint::GetAnchorB() const
 
 Vec2 RevoluteJoint::GetReactionForce(float_t inv_dt) const
 {
-	const auto P = Vec2(m_impulse.x, m_impulse.y);
+	const auto P = Vec2{m_impulse.x, m_impulse.y};
 	return inv_dt * P;
 }
 

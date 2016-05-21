@@ -314,8 +314,8 @@ void PrismaticJoint::SolveVelocityConstraints(const SolverData& data)
 		}
 
 		// f2(1:2) = invK(1:2,1:2) * (-Cdot(1:2) - K(1:2,3) * (f2(3) - f1(3))) + f1(1:2)
-		const auto b = -Cdot1 - (m_impulse.z - f1.z) * Vec2(m_K.ez.x, m_K.ez.y);
-		const auto f2r = m_K.Solve22(b) + Vec2(f1.x, f1.y);
+		const auto b = -Cdot1 - (m_impulse.z - f1.z) * Vec2{m_K.ez.x, m_K.ez.y};
+		const auto f2r = m_K.Solve22(b) + Vec2{f1.x, f1.y};
 		m_impulse.x = f2r.x;
 		m_impulse.y = f2r.y;
 

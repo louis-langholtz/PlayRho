@@ -109,7 +109,7 @@ void FrictionJoint::InitVelocityConstraints(const SolverData& data)
 		m_linearImpulse *= data.step.dtRatio;
 		m_angularImpulse *= data.step.dtRatio;
 
-		const auto P = Vec2(m_linearImpulse.x, m_linearImpulse.y);
+		const auto P = Vec2{m_linearImpulse.x, m_linearImpulse.y};
 		vA -= mA * P;
 		wA -= iA * (Cross(m_rA, P) + m_angularImpulse);
 		vB += mB * P;

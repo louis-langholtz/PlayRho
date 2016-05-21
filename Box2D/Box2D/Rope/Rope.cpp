@@ -195,8 +195,8 @@ void Rope::SolveC3()
 
 		auto angle = Atan2(a, b);
 
-		const auto Jd1 = (-float_t(1) / L1sqr) * GetCcwPerpendicular(d1);
-		const auto Jd2 = (float_t(1) / L2sqr) * GetCcwPerpendicular(d2);
+		const auto Jd1 = (-float_t(1) / L1sqr) * GetReversePerpendicular(d1);
+		const auto Jd2 = (float_t(1) / L2sqr) * GetReversePerpendicular(d2);
 
 		const auto J1 = -Jd1;
 		const auto J2 = Jd1 - Jd2;

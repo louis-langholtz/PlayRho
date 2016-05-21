@@ -957,7 +957,7 @@ void World::DrawShape(const Fixture* fixture, const Transform& xf, const Color& 
 			const auto circle = static_cast<const CircleShape*>(fixture->GetShape());
 			const auto center = Mul(xf, circle->GetPosition());
 			const auto radius = circle->GetRadius();
-			const auto axis = Mul(xf.q, Vec2(float_t(1), float_t{0}));
+			const auto axis = Mul(xf.q, Vec2{float_t(1), float_t{0}});
 			g_debugDraw->DrawSolidCircle(center, radius, axis, color);
 		}
 		break;
@@ -1128,10 +1128,10 @@ void World::DrawDebugData()
 					const auto proxy = f->m_proxies + i;
 					const auto aabb = bp->GetFatAABB(proxy->proxyId);
 					Vec2 vs[4];
-					vs[0] = Vec2(aabb.GetLowerBound().x, aabb.GetLowerBound().y);
-					vs[1] = Vec2(aabb.GetUpperBound().x, aabb.GetLowerBound().y);
-					vs[2] = Vec2(aabb.GetUpperBound().x, aabb.GetUpperBound().y);
-					vs[3] = Vec2(aabb.GetLowerBound().x, aabb.GetUpperBound().y);
+					vs[0] = Vec2{aabb.GetLowerBound().x, aabb.GetLowerBound().y};
+					vs[1] = Vec2{aabb.GetUpperBound().x, aabb.GetLowerBound().y};
+					vs[2] = Vec2{aabb.GetUpperBound().x, aabb.GetUpperBound().y};
+					vs[3] = Vec2{aabb.GetLowerBound().x, aabb.GetUpperBound().y};
 
 					g_debugDraw->DrawPolygon(vs, 4, color);
 				}

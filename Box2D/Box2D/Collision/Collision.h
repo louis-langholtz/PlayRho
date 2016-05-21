@@ -273,7 +273,7 @@ public:
 	AABB() = default;
 
 	constexpr AABB(Vec2 a, Vec2 b) noexcept:
-		lowerBound(Vec2(Min(a.x, b.x), Min(a.y, b.y))), upperBound(Vec2(Max(a.x, b.x), Max(a.y, b.y))) {}
+		lowerBound(Vec2{Min(a.x, b.x), Min(a.y, b.y)}), upperBound(Vec2{Max(a.x, b.x), Max(a.y, b.y)}) {}
 
 	/// Get the center of the AABB.
 	constexpr Vec2 GetCenter() const noexcept

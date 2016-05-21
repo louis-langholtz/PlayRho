@@ -118,7 +118,7 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const Circ
 	}
 	
 	const auto n = [=]() {
-		const auto e_perp = GetCcwPerpendicular(e);
+		const auto e_perp = GetReversePerpendicular(e);
 		return (Dot(e_perp, Q - A) < 0)? -e_perp: e_perp;
 	}();
 	
@@ -267,13 +267,13 @@ inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2& centroid):
 	{
 		const auto vertex0 = edge.GetVertex0();
 		const auto edge0 = Normalize(m_vertex1 - vertex0);
-		const auto normal0 = GetCwPerpendicular(edge0);
+		const auto normal0 = GetForwardPerpendicular(edge0);
 		const auto convex1 = Cross(edge0, m_edge1) >= float_t{0};
 		const auto offset0 = Dot(normal0, centroid - vertex0);
 
 		const auto vertex3 = edge.GetVertex3();
 		const auto edge2 = Normalize(vertex3 - m_vertex2);
-		const auto normal2 = GetCwPerpendicular(edge2);
+		const auto normal2 = GetForwardPerpendicular(edge2);
 		const auto convex2 = Cross(m_edge1, edge2) > float_t{0};
 		const auto offset2 = Dot(normal2, centroid - m_vertex2);
 
@@ -346,7 +346,7 @@ inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2& centroid):
 	{
 		const auto vertex0 = edge.GetVertex0();
 		const auto edge0 = Normalize(m_vertex1 - vertex0);
-		const auto normal0 = GetCwPerpendicular(edge0);
+		const auto normal0 = GetForwardPerpendicular(edge0);
 		const auto convex1 = Cross(edge0, m_edge1) >= float_t{0};
 		const auto offset0 = Dot(normal0, centroid - vertex0);
 
@@ -387,7 +387,7 @@ inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2& centroid):
 	{
 		const auto vertex3 = edge.GetVertex3();
 		const auto edge2 = Normalize(vertex3 - m_vertex2);
-		const auto normal2 = GetCwPerpendicular(edge2);
+		const auto normal2 = GetForwardPerpendicular(edge2);
 		const auto convex2 = Cross(m_edge1, edge2) > float_t{0};
 		const auto offset2 = Dot(normal2, centroid - m_vertex2);
 
@@ -481,7 +481,7 @@ static inline EPAxis ComputePolygonSeparation(const TempPolygon& shape, const Ed
 	auto axis = EPAxis{EPAxis::e_unknown, EPAxis::InvalidIndex, -MaxFloat};
 	
 	const auto normal = edgeInfo.GetNormal();
-	const auto perp = GetCcwPerpendicular(normal);
+	const auto perp = GetReversePerpendicular(normal);
 	const auto count = shape.GetCount();
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
@@ -629,7 +629,7 @@ Manifold EPCollider::Collide(const EdgeInfo& edgeInfo, const PolygonShape& shape
 		rf.normal = localShapeB.GetNormal(rf.i1);
 	}
 	
-	rf.sideNormal1 = GetCwPerpendicular(rf.normal);
+	rf.sideNormal1 = GetForwardPerpendicular(rf.normal);
 	rf.sideNormal2 = -rf.sideNormal1;
 	rf.sideOffset1 = Dot(rf.sideNormal1, rf.v1);
 	rf.sideOffset2 = Dot(rf.sideNormal2, rf.v2);

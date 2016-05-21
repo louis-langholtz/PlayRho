@@ -30,28 +30,28 @@ Shape* PolygonShape::Clone(BlockAllocator* allocator) const
 void PolygonShape::SetAsBox(float_t hx, float_t hy) noexcept
 {
 	m_count = 4;
-	m_vertices[0] = Vec2(-hx, -hy);
-	m_vertices[1] = Vec2( hx, -hy);
-	m_vertices[2] = Vec2( hx,  hy);
-	m_vertices[3] = Vec2(-hx,  hy);
-	m_normals[0] = Vec2(float_t{0}, float_t{-1});
-	m_normals[1] = Vec2(float_t{1}, float_t{0});
-	m_normals[2] = Vec2(float_t{0}, float_t{1});
-	m_normals[3] = Vec2(float_t{-1}, float_t{0});
+	m_vertices[0] = Vec2{-hx, -hy};
+	m_vertices[1] = Vec2{ hx, -hy};
+	m_vertices[2] = Vec2{ hx,  hy};
+	m_vertices[3] = Vec2{-hx,  hy};
+	m_normals[0] = Vec2{float_t{0}, float_t{-1}};
+	m_normals[1] = Vec2{float_t{1}, float_t{0}};
+	m_normals[2] = Vec2{float_t{0}, float_t{1}};
+	m_normals[3] = Vec2{float_t{-1}, float_t{0}};
 	m_centroid = Vec2_zero;
 }
 
 void PolygonShape::SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t angle)
 {
 	m_count = 4;
-	m_vertices[0] = Vec2(-hx, -hy);
-	m_vertices[1] = Vec2( hx, -hy);
-	m_vertices[2] = Vec2( hx,  hy);
-	m_vertices[3] = Vec2(-hx,  hy);
-	m_normals[0] = Vec2(float_t{0}, -float_t(1));
-	m_normals[1] = Vec2(float_t(1), float_t{0});
-	m_normals[2] = Vec2(float_t{0}, float_t(1));
-	m_normals[3] = Vec2(-float_t(1), float_t{0});
+	m_vertices[0] = Vec2{-hx, -hy};
+	m_vertices[1] = Vec2{ hx, -hy};
+	m_vertices[2] = Vec2{ hx,  hy};
+	m_vertices[3] = Vec2{-hx,  hy};
+	m_normals[0] = Vec2{float_t{0}, -float_t(1)};
+	m_normals[1] = Vec2{float_t(1), float_t{0}};
+	m_normals[2] = Vec2{float_t{0}, float_t(1)};
+	m_normals[3] = Vec2{-float_t(1), float_t{0}};
 	m_centroid = center;
 
 	const auto xf = Transform{center, Rot{angle}};
@@ -349,7 +349,7 @@ AABB PolygonShape::ComputeAABB(const Transform& xf, child_count_t childIndex) co
 		upper = Max(upper, v);
 	}
 
-	const auto r = Vec2(GetRadius(), GetRadius());
+	const auto r = Vec2{GetRadius(), GetRadius()};
 	return AABB{lower - r, upper + r};
 }
 

@@ -43,7 +43,7 @@ void WorldManifold::Assign(const Manifold& manifold,
 
 	case Manifold::e_circles:
 		{
-			normal = Vec2(float_t{1}, float_t{0});
+			normal = Vec2{float_t{1}, float_t{0}};
 			const auto pointA = Mul(xfA, manifold.GetLocalPoint());
 			const auto pointB = Mul(xfB, manifold.GetPoint(0).localPoint);
 			if (DistanceSquared(pointA, pointB) > Square(Epsilon))

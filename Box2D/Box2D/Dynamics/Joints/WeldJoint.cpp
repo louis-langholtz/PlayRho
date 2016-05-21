@@ -149,7 +149,7 @@ void WeldJoint::InitVelocityConstraints(const SolverData& data)
 		// Scale impulses to support a variable time step.
 		m_impulse *= data.step.dtRatio;
 
-		const auto P = Vec2(m_impulse.x, m_impulse.y);
+		const auto P = Vec2{m_impulse.x, m_impulse.y};
 
 		vA -= mA * P;
 		wA -= iA * (Cross(m_rA, P) + m_impulse.z);
@@ -211,7 +211,7 @@ void WeldJoint::SolveVelocityConstraints(const SolverData& data)
 		const auto impulse = -Mul(m_mass, Cdot);
 		m_impulse += impulse;
 
-		const auto P = Vec2(impulse.x, impulse.y);
+		const auto P = Vec2{impulse.x, impulse.y};
 
 		vA -= mA * P;
 		wA -= iA * (Cross(m_rA, P) + impulse.z);
@@ -290,7 +290,7 @@ bool WeldJoint::SolvePositionConstraints(const SolverData& data)
 			impulse = Vec3(impulse2.x, impulse2.y, float_t{0});
 		}
 
-		const auto P = Vec2(impulse.x, impulse.y);
+		const auto P = Vec2{impulse.x, impulse.y};
 
 		cA -= mA * P;
 		aA -= iA * (Cross(rA, P) + impulse.z);
@@ -319,7 +319,7 @@ Vec2 WeldJoint::GetAnchorB() const
 
 Vec2 WeldJoint::GetReactionForce(float_t inv_dt) const
 {
-	const auto P = Vec2(m_impulse.x, m_impulse.y);
+	const auto P = Vec2{m_impulse.x, m_impulse.y};
 	return inv_dt * P;
 }
 

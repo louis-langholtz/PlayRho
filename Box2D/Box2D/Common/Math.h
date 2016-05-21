@@ -211,7 +211,7 @@ struct Mat22
 		{
 			det = float_t(1) / det;
 		}
-		return Mat22(Vec2(det * d, -det * c), Vec2(-det * b, det * a));
+		return Mat22(Vec2{det * d, -det * c}, Vec2{-det * b, det * a});
 	}
 
 	/// Solve A * x = b, where b is a column vector. This is more efficient
@@ -224,7 +224,7 @@ struct Mat22
 		{
 			det = float_t(1) / det;
 		}
-		return Vec2(det * (a22 * b.x - a12 * b.y), det * (a11 * b.y - a21 * b.x));
+		return Vec2{det * (a22 * b.x - a12 * b.y), det * (a11 * b.y - a21 * b.x)};
 	}
 
 	Vec2 ex, ey;
@@ -236,7 +236,7 @@ constexpr auto Mat22_zero = Mat22(Vec2_zero, Vec2_zero);
 
 /// Identity value for Mat22 objects.
 /// @see Mat22.
-constexpr auto Mat22_identity = Mat22(Vec2(1, 0), Vec2(0, 1));
+constexpr auto Mat22_identity = Mat22(Vec2{1, 0}, Vec2{0, 1});
 
 /// A 3-by-3 matrix. Stored in column-major order.
 struct Mat33
@@ -271,7 +271,7 @@ struct Mat33
 		{
 			det = float_t(1) / det;
 		}
-		return Vec2(det * (a22 * b.x - a12 * b.y), det * (a11 * b.y - a21 * b.x));
+		return Vec2{det * (a22 * b.x - a12 * b.y), det * (a11 * b.y - a21 * b.x)};
 	}
 
 	/// Get the inverse of this matrix as a 2-by-2.
@@ -313,13 +313,13 @@ struct Rot
 	/// Get the x-axis
 	constexpr Vec2 GetXAxis() const noexcept
 	{
-		return Vec2(c, s);
+		return Vec2{c, s};
 	}
 
 	/// Get the u-axis
 	constexpr Vec2 GetYAxis() const noexcept
 	{
-		return Vec2(-s, c);
+		return Vec2{-s, c};
 	}
 
 	/// Sine and cosine
@@ -396,23 +396,23 @@ struct Sweep
 	float_t alpha0;
 };
 
-/// Gets a vector counter-clockwise perpendicular to the given vector.
+/// Gets a vector counter-clockwise (reverse-clockwise) perpendicular to the given vector.
 /// @detail This takes a vector of form (x, y) and returns the vector (-y, x).
 /// @param vector Vector to return a counter-clockwise perpendicular equivalent for.
 /// @return A counter-clockwise 90-degree rotation of the given vector.
-/// @sa GetCwPerpendicular.
-constexpr inline Vec2 GetCcwPerpendicular(const Vec2& vector) noexcept
+/// @sa GetForwardPerpendicular.
+constexpr inline Vec2 GetReversePerpendicular(const Vec2& vector) noexcept
 {
 	// See http://mathworld.wolfram.com/PerpendicularVector.html
 	return Vec2{-vector.y, vector.x};
 }
 	
-/// Gets a vector clockwise perpendicular to the given vector.
+/// Gets a vector clockwise (forward-clockwise) perpendicular to the given vector.
 /// @detail This takes a vector of form (x, y) and returns the vector (y, -x).
 /// @param vector Vector to return a clockwise perpendicular equivalent for.
 /// @return A clockwise 90-degree rotation of the given vector.
-/// @sa GetCcwPerpendicular.
-constexpr inline Vec2 GetCwPerpendicular(const Vec2& vector) noexcept
+/// @sa GetReversePerpendicular.
+constexpr inline Vec2 GetForwardPerpendicular(const Vec2& vector) noexcept
 {
 	// See http://mathworld.wolfram.com/PerpendicularVector.html
 	return Vec2{vector.y, -vector.x};
@@ -568,8 +568,8 @@ constexpr inline Mat22 Mul(const Mat22& A, const Mat22& B) noexcept
 // A^T * B
 constexpr inline Mat22 MulT(const Mat22& A, const Mat22& B) noexcept
 {
-	const auto c1 = Vec2(Dot(A.ex, B.ex), Dot(A.ey, B.ex));
-	const auto c2 = Vec2(Dot(A.ex, B.ey), Dot(A.ey, B.ey));
+	const auto c1 = Vec2{Dot(A.ex, B.ex), Dot(A.ey, B.ex)};
+	const auto c2 = Vec2{Dot(A.ex, B.ey), Dot(A.ey, B.ey)};
 	return Mat22{c1, c2};
 }
 

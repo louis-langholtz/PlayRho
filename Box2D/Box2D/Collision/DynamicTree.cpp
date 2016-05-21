@@ -98,7 +98,7 @@ DynamicTree::size_type DynamicTree::CreateProxy(const AABB& aabb, void* userData
 	const auto proxyId = AllocateNode();
 
 	// Fatten the aabb.
-	m_nodes[proxyId].aabb = aabb + Vec2(AabbExtension, AabbExtension);
+	m_nodes[proxyId].aabb = aabb + Vec2{AabbExtension, AabbExtension};
 	m_nodes[proxyId].userData = userData;
 	m_nodes[proxyId].height = 0;
 
@@ -130,7 +130,7 @@ bool DynamicTree::MoveProxy(size_type proxyId, const AABB& aabb, const Vec2& dis
 	RemoveLeaf(proxyId);
 
 	// Extend AABB.
-	const auto b = aabb + Vec2(AabbExtension, AabbExtension);
+	const auto b = aabb + Vec2{AabbExtension, AabbExtension};
 	auto lowerBound = b.GetLowerBound();
 	auto upperBound = b.GetUpperBound();
 	
