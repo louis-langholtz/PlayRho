@@ -378,13 +378,17 @@ struct Velocity
 /// we must interpolate the center of mass position.
 struct Sweep
 {
+	Sweep() = default;
+
+	constexpr Sweep(const Sweep& copy) = default;
+
+	constexpr Sweep(const Position& p0, const Position& p1, const Vec2& lc = Vec2_zero, float_t a0 = 0):
+		pos0{p0}, pos1{p1}, localCenter{lc}, alpha0{a0} {}
+	
 	/// Advances the sweep forward to the given time factor.
 	/// This updates pos0.c and pos0.a and sets alpha0 to the given time alpha.
 	/// @param alpha New time factor in [0,1) to advance the sweep to.
 	void Advance(float_t alpha);
-
-	/// Normalize the angles.
-	void Normalize();
 
 	Position pos0; ///< Center world position and world angle at time "0".
 	Position pos1; ///< Center world position and world angle at time "1".
@@ -780,13 +784,16 @@ inline void Sweep::Advance(float_t alpha)
 	alpha0 = alpha;
 }
 
-/// Normalize an angle in radians to be between -pi and pi
-inline void Sweep::Normalize()
+/// Gets a sweep with the given sweep's angles normalized.
+/// @param sweep Sweep to return with its angles normalized.
+/// @return Sweep with its angles in radians to be between -pi and pi
+inline Sweep GetAnglesNormalized(Sweep sweep)
 {
 	constexpr auto twoPi = float_t{2} * Pi;
-	const auto d =  twoPi * std::floor(pos0.a / twoPi);
-	pos0.a -= d;
-	pos1.a -= d;
+	const auto d =  twoPi * std::floor(sweep.pos0.a / twoPi);
+	sweep.pos0.a -= d;
+	sweep.pos1.a -= d;
+	return sweep;
 }
 
 }

@@ -237,10 +237,8 @@ private:
 	{
 		const auto normal = Mul(xfB.q, m_axis);
 		const auto pointB = Mul(xfB, m_localPoint);
-		
 		const auto localPointA = m_proxyA.GetVertex(indexA);
 		const auto pointA = Mul(xfA, localPointA);
-		
 		return Dot(pointA - pointB, normal);
 	}
 };
@@ -256,12 +254,9 @@ TOIOutput TimeOfImpact(const TOIInput& input)
 	const auto& proxyA = input.proxyA;
 	const auto& proxyB = input.proxyB;
 
-	auto sweepA = input.sweepA;
-	auto sweepB = input.sweepB;
-
 	// Large rotations can make the root finder fail, so we normalize the  sweep angles.
-	sweepA.Normalize();
-	sweepB.Normalize();
+	const auto sweepA = GetAnglesNormalized(input.sweepA);
+	const auto sweepB = GetAnglesNormalized(input.sweepB);
 
 	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius();
 	const auto target = Max(LinearSlop, totalRadius - (float_t{3} * LinearSlop));
