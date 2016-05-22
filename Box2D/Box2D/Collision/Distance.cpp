@@ -26,7 +26,7 @@ namespace box2d {
 
 #if defined(DO_GJK_PROFILING)
 // GJK using Voronoi regions (Christer Ericson) and Barycentric coordinates.
-int32 gjkCalls, gjkIters, gjkMaxIters;
+uint32 gjkCalls, gjkIters, gjkMaxIters;
 #endif
 
 DistanceProxy::DistanceProxy(const Shape& shape, child_count_t index)
@@ -55,11 +55,8 @@ DistanceProxy::DistanceProxy(const Shape& shape, child_count_t index)
 		case Shape::e_chain:
 		{
 			const auto& chain = *static_cast<const ChainShape*>(&shape);
-			assert((0 <= index) && (index < chain.GetVertexCount()));
-			
 			m_buffer[0] = chain.GetVertex(index);
-			m_buffer[1] = ((index + 1) < chain.GetVertexCount())? chain.GetVertex(index + 1): chain.GetVertex(0);
-			
+			m_buffer[1] = chain.GetVertex(chain.GetNextIndex(index));
 			m_vertices = m_buffer;
 			m_count = 2;
 			m_radius = chain.GetRadius();
@@ -90,21 +87,50 @@ public:
 
 	SimplexVertex() = default;
 
-	SimplexVertex(Vec2 sA, Vec2 sB, size_type iA, size_type iB, float_t _a):
-		wA(sA), wB(sB), indexA(iA), indexB(iB), w(sB - sA), a(_a) {}
+	constexpr SimplexVertex(const SimplexVertex& copy) noexcept = default;
 
-	Vec2 get_w() const noexcept { return w; }
+	constexpr SimplexVertex(Vec2 sA, size_type iA, Vec2 sB, size_type iB, float_t a_) noexcept:
+		wA(sA), wB(sB), indexA(iA), indexB(iB), w(sB - sA), a(a_)
+	{
+		assert(a_ >= 0 && a_ <= 1);
+	}
+
+	constexpr SimplexVertex(const SimplexVertex& copy, float_t newA) noexcept:
+		wA(copy.wA), wB(copy.wB), indexA(copy.indexA), indexB(copy.indexB), w(copy.w), a(newA)
+	{
+		assert(newA >= 0 && newA <= 1);
+	}
+
 	Vec2 get_wA() const noexcept { return wA; }
+	
 	Vec2 get_wB() const noexcept { return wB; }
 
-	size_type indexA;	///< wA index
-	size_type indexB;	///< wB index
-	float_t a;		///< barycentric coordinate for closest point
+	/// Gets "w".
+	/// @return 2D vector value of wB minus wA.
+	Vec2 get_w() const noexcept { return w; }
+
+	/// Gets "A".
+	/// @detail This is the "Barycentric coordinate for closest point".
+	/// @return Scalar value between 0 and 1 inclusive.
+	float_t get_a() const noexcept { return a; }
+
+	/// Sets "A" to the given value.
+	/// @note The given value must be between 0 and 1 inclusively. Behavior is undefined otherwise.
+	/// @param value Value between 0 and 1 to set "A" to.
+	void set_a(float_t value) noexcept
+	{
+		assert(value >= 0 && value <= 1);
+		a = value;
+	}
+
+	size_type indexA; ///< wA index
+	size_type indexB; ///< wB index
 	
 private:
-	Vec2 wA;		///< support point in proxyA
-	Vec2 wB;		///< support point in proxyB
-	Vec2 w;		///< wB - wA. @see wA. @see wB.
+	Vec2 wA; ///< Support point in proxy A.
+	Vec2 wB; ///< Support point in proxy B.
+	Vec2 w; ///< wB - wA. @see wA. @see wB.
+	float_t a; ///< Barycentric coordinate for closest point
 };
 
 class Simplex
@@ -116,6 +142,13 @@ public:
 	using size_type = std::remove_cv<decltype(MaxVertices)>::type;
 
 	Simplex() = default;
+	
+	Simplex(const SimplexVertex& sv1) noexcept:
+		m_count{1}, m_vertices{sv1} {}
+	Simplex(const SimplexVertex& sv1, const SimplexVertex& sv2) noexcept:
+		m_count{2}, m_vertices{sv1, sv2} {}
+	Simplex(const SimplexVertex& sv1, const SimplexVertex& sv2, const SimplexVertex& sv3) noexcept:
+		m_count{3}, m_vertices{sv1, sv2, sv3} {}
 
 	/// Gets count of valid vertices.
  	/// @return Value between 0 and MaxVertices.
@@ -151,7 +184,7 @@ public:
 			const auto indexB = cache.GetIndexB(i);
 			const auto wA = Mul(transformA, proxyA.GetVertex(indexA));
 			const auto wB = Mul(transformB, proxyB.GetVertex(indexB));
-			m_vertices[i] = SimplexVertex{wA, wB, indexA, indexB, float_t{0}};
+			m_vertices[i] = SimplexVertex{wA, indexA, wB, indexB, float_t{0}};
 		}
 		m_count = count;
 
@@ -161,7 +194,7 @@ public:
 		{
 			const auto metric1 = cache.GetMetric();
 			const auto metric2 = GetMetric();
-			if ((metric2 < (metric1 / float_t(2))) || (metric2 > (metric1 * float_t(2))) || (metric2 < Epsilon))
+			if ((metric2 < (metric1 / float_t{2})) || (metric2 > (metric1 * float_t{2})) || (metric2 < Epsilon))
 			{
 				// Reset the simplex.
 				m_count = 0;
@@ -175,7 +208,7 @@ public:
 			const auto indexB = SimplexCache::index_t{0};
 			const auto wA = Mul(transformA, proxyA.GetVertex(indexA));
 			const auto wB = Mul(transformB, proxyB.GetVertex(indexB));
-			m_vertices[0] = SimplexVertex{wA, wB, indexA, indexB, float_t{1}};
+			m_vertices[0] = SimplexVertex{wA, indexA, wB, indexB, float_t{1}};
 			m_count = 1;
 		}
 	}
@@ -202,11 +235,8 @@ public:
 			{
 				const auto e12 = m_vertices[1].get_w() - m_vertices[0].get_w();
 				const auto sgn = Cross(e12, -m_vertices[0].get_w());
-				return (sgn > float_t{0})?
-					// Origin is left of e12.
-					Cross(float_t(1), e12):
-					// Origin is right of e12.
-					Cross(e12, float_t(1));
+				// If sgn > 0, then origin is left of e12, else origin is right of e12.
+				return (sgn > float_t{0})? Cross(float_t{1}, e12): Cross(e12, float_t{1});
 			}
 
 		default:
@@ -224,7 +254,7 @@ public:
 			return m_vertices[0].get_w();
 
 		case 2:
-			return m_vertices[0].a * m_vertices[0].get_w() + m_vertices[1].a * m_vertices[1].get_w();
+			return m_vertices[0].get_a() * m_vertices[0].get_w() + m_vertices[1].get_a() * m_vertices[1].get_w();
 
 		case 3:
 			return Vec2_zero;
@@ -246,14 +276,14 @@ public:
 			break;
 
 		case 2:
-			*pA = m_vertices[0].a * m_vertices[0].get_wA() + m_vertices[1].a * m_vertices[1].get_wA();
-			*pB = m_vertices[0].a * m_vertices[0].get_wB() + m_vertices[1].a * m_vertices[1].get_wB();
+			*pA = m_vertices[0].get_a() * m_vertices[0].get_wA() + m_vertices[1].get_a() * m_vertices[1].get_wA();
+			*pB = m_vertices[0].get_a() * m_vertices[0].get_wB() + m_vertices[1].get_a() * m_vertices[1].get_wB();
 			break;
 
 		case 3:
-			*pA = m_vertices[0].a * m_vertices[0].get_wA()
-				+ m_vertices[1].a * m_vertices[1].get_wA()
-				+ m_vertices[2].a * m_vertices[2].get_wA();
+			*pA = m_vertices[0].get_a() * m_vertices[0].get_wA()
+				+ m_vertices[1].get_a() * m_vertices[1].get_wA()
+				+ m_vertices[2].get_a() * m_vertices[2].get_wA();
 			*pB = *pA;
 			break;
 
@@ -265,20 +295,12 @@ public:
 	float_t GetMetric() const
 	{
 		assert(m_count == 1 || m_count == 2 || m_count == 3);
-
 		switch (m_count)
 		{
-		case 1:
-			return float_t{0};
-
-		case 2:
-			return Distance(m_vertices[0].get_w(), m_vertices[1].get_w());
-
-		case 3:
-			return Cross(m_vertices[1].get_w() - m_vertices[0].get_w(), m_vertices[2].get_w() - m_vertices[0].get_w());
-
-		default:
-			return float_t{0};
+		case 1:	return float_t{0};
+		case 2:	return Distance(m_vertices[0].get_w(), m_vertices[1].get_w());
+		case 3:	return Cross(m_vertices[1].get_w() - m_vertices[0].get_w(), m_vertices[2].get_w() - m_vertices[0].get_w());
+		default: return float_t{0};
 		}
 	}
 
@@ -327,7 +349,7 @@ void Simplex::Solve2() noexcept
 	if (d12_2 <= float_t{0})
 	{
 		// a2 <= 0, so we clamp it to 0
-		m_vertices[0].a = float_t{1};
+		m_vertices[0].set_a(float_t{1});
 		m_count = 1;
 		return;
 	}
@@ -337,7 +359,7 @@ void Simplex::Solve2() noexcept
 	if (d12_1 <= float_t{0})
 	{
 		// a1 <= 0, so we clamp it to 0
-		m_vertices[1].a = float_t{1};
+		m_vertices[1].set_a(float_t{1});
 		m_vertices[0] = m_vertices[1];
 		m_count = 1;
 		return;
@@ -345,8 +367,8 @@ void Simplex::Solve2() noexcept
 
 	// Must be in e12 region.
 	const auto inv_d12 = float_t{1} / (d12_1 + d12_2);
-	m_vertices[0].a = d12_1 * inv_d12;
-	m_vertices[1].a = d12_2 * inv_d12;
+	m_vertices[0].set_a(d12_1 * inv_d12);
+	m_vertices[1].set_a(d12_2 * inv_d12);
 	m_count = 2;
 }
 
@@ -401,7 +423,7 @@ void Simplex::Solve3() noexcept
 	// w1 region
 	if ((d12_2 <= float_t{0}) && (d13_2 <= float_t{0}))
 	{
-		m_vertices[0].a = float_t(1);
+		m_vertices[0].set_a(float_t{1});
 		m_count = 1;
 		return;
 	}
@@ -409,9 +431,9 @@ void Simplex::Solve3() noexcept
 	// e12
 	if ((d12_1 > float_t{0}) && (d12_2 > float_t{0}) && (d123_3 <= float_t{0}))
 	{
-		const auto inv_d12 = float_t(1) / (d12_1 + d12_2);
-		m_vertices[0].a = d12_1 * inv_d12;
-		m_vertices[1].a = d12_2 * inv_d12;
+		const auto inv_d12 = float_t{1} / (d12_1 + d12_2);
+		m_vertices[0].set_a(d12_1 * inv_d12);
+		m_vertices[1].set_a(d12_2 * inv_d12);
 		m_count = 2;
 		return;
 	}
@@ -419,9 +441,9 @@ void Simplex::Solve3() noexcept
 	// e13
 	if ((d13_1 > float_t{0}) && (d13_2 > float_t{0}) && (d123_2 <= float_t{0}))
 	{
-		const auto inv_d13 = float_t(1) / (d13_1 + d13_2);
-		m_vertices[0].a = d13_1 * inv_d13;
-		m_vertices[2].a = d13_2 * inv_d13;
+		const auto inv_d13 = float_t{1} / (d13_1 + d13_2);
+		m_vertices[0].set_a(d13_1 * inv_d13);
+		m_vertices[2].set_a(d13_2 * inv_d13);
 		m_count = 2;
 		m_vertices[1] = m_vertices[2];
 		return;
@@ -430,7 +452,7 @@ void Simplex::Solve3() noexcept
 	// w2 region
 	if ((d12_1 <= float_t{0}) && (d23_2 <= float_t{0}))
 	{
-		m_vertices[1].a = float_t(1);
+		m_vertices[1].set_a(float_t{1});
 		m_count = 1;
 		m_vertices[0] = m_vertices[1];
 		return;
@@ -439,7 +461,7 @@ void Simplex::Solve3() noexcept
 	// w3 region
 	if ((d13_1 <= float_t{0}) && (d23_1 <= float_t{0}))
 	{
-		m_vertices[2].a = float_t(1);
+		m_vertices[2].set_a(float_t{1});
 		m_count = 1;
 		m_vertices[0] = m_vertices[2];
 		return;
@@ -448,9 +470,9 @@ void Simplex::Solve3() noexcept
 	// e23
 	if ((d23_1 > float_t{0}) && (d23_2 > float_t{0}) && (d123_1 <= float_t{0}))
 	{
-		const auto inv_d23 = float_t(1) / (d23_1 + d23_2);
-		m_vertices[1].a = d23_1 * inv_d23;
-		m_vertices[2].a = d23_2 * inv_d23;
+		const auto inv_d23 = float_t{1} / (d23_1 + d23_2);
+		m_vertices[1].set_a(d23_1 * inv_d23);
+		m_vertices[2].set_a(d23_2 * inv_d23);
 		m_count = 2;
 		m_vertices[0] = m_vertices[2];
 		return;
@@ -458,9 +480,9 @@ void Simplex::Solve3() noexcept
 
 	// Must be in triangle123
 	const auto inv_d123 = float_t{1} / (d123_1 + d123_2 + d123_3);
-	m_vertices[0].a = d123_1 * inv_d123;
-	m_vertices[1].a = d123_2 * inv_d123;
-	m_vertices[2].a = d123_3 * inv_d123;
+	m_vertices[0].set_a(d123_1 * inv_d123);
+	m_vertices[1].set_a(d123_2 * inv_d123);
+	m_vertices[2].set_a(d123_3 * inv_d123);
 	m_count = 3;
 }
 
@@ -498,7 +520,7 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 
 	// Get simplex vertices as an array.
 	const auto vertices = simplex.GetVertices();
-	constexpr auto k_maxIters = int32{20};
+	constexpr auto k_maxIters = uint32{20}; ///< Max number of support point calls.
 
 	// These store the vertices of the last simplex so that we
 	// can check for duplicates and prevent cycling.
@@ -561,9 +583,6 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 
 		// Iteration count is equated to the number of support point calls.
 		++iter;
-#if defined(DO_GJK_PROFILING)
-		++gjkIters;
-#endif
 
 		// Check for duplicate support points. This is the main termination criteria.
 		auto duplicate = false;
@@ -585,10 +604,11 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 		// New vertex is ok and needed.
 		const auto wA = Mul(input.transformA, input.proxyA.GetVertex(indexA));
 		const auto wB = Mul(input.transformB, input.proxyB.GetVertex(indexB));
-		simplex.AddVertex(SimplexVertex{wA, wB, indexA, indexB, 0});
+		simplex.AddVertex(SimplexVertex{wA, indexA, wB, indexB, 0});
 	}
 
 #if defined(DO_GJK_PROFILING)
+	gjkIters += iter;
 	gjkMaxIters = Max(gjkMaxIters, iter);
 #endif
 
@@ -621,7 +641,7 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 		{
 			// Shapes are overlapped when radii are considered.
 			// Move the witness points to the middle.
-			const auto p = (output.pointA + output.pointB) / float_t(2);
+			const auto p = (output.pointA + output.pointB) / float_t{2};
 			output.pointA = p;
 			output.pointB = p;
 			output.distance = float_t{0};

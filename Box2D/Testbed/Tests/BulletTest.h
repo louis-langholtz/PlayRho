@@ -78,7 +78,7 @@ public:
 		m_bullet->SetLinearVelocity(Vec2(0.0f, -50.0f));
 		m_bullet->SetAngularVelocity(0.0f);
 
-		extern int32 gjkCalls, gjkIters, gjkMaxIters;
+		extern uint32 gjkCalls, gjkIters, gjkMaxIters;
 		extern int32 toiCalls, toiIters, toiMaxIters;
 		extern int32 toiRootIters, toiMaxRootIters;
 
@@ -97,7 +97,7 @@ public:
 	{
 		Test::Step(settings);
 
-		extern int32 gjkCalls, gjkIters, gjkMaxIters;
+		extern uint32 gjkCalls, gjkIters, gjkMaxIters;
 		extern int32 toiCalls, toiIters;
 		extern int32 toiRootIters, toiMaxRootIters;
 

@@ -80,7 +80,7 @@ public:
 		}
 #endif
 
-		extern int32 gjkCalls, gjkIters, gjkMaxIters;
+		extern uint32 gjkCalls, gjkIters, gjkMaxIters;
 		extern int32 toiCalls, toiIters;
 		extern int32 toiRootIters, toiMaxRootIters;
 		extern float_t toiTime, toiMaxTime;
@@ -93,7 +93,7 @@ public:
 
 	void Launch()
 	{
-		extern int32 gjkCalls, gjkIters, gjkMaxIters;
+		extern uint32 gjkCalls, gjkIters, gjkMaxIters;
 		extern int32 toiCalls, toiIters;
 		extern int32 toiRootIters, toiMaxRootIters;
 		extern float_t toiTime, toiMaxTime;
@@ -113,7 +113,7 @@ public:
 	{
 		Test::Step(settings);
 
-		extern int32 gjkCalls, gjkIters, gjkMaxIters;
+		extern uint32 gjkCalls, gjkIters, gjkMaxIters;
 
 		if (gjkCalls > 0)
 		{

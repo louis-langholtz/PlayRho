@@ -147,7 +147,7 @@ bool ChainShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 	assert(childIndex < m_count);
 
 	const auto i1 = childIndex;
-	const auto i2 = GetNext(childIndex);
+	const auto i2 = GetNextIndex(childIndex);
 	const auto edgeShape = EdgeShape(m_vertices[i1], m_vertices[i2]);
 	return edgeShape.RayCast(output, input, xf, 0);
 }
@@ -157,7 +157,7 @@ AABB ChainShape::ComputeAABB(const Transform& xf, child_count_t childIndex) cons
 	assert(childIndex < m_count);
 
 	const auto i1 = childIndex;
-	const auto i2 = GetNext(childIndex);
+	const auto i2 = GetNextIndex(childIndex);
 	const auto v1 = Mul(xf, m_vertices[i1]);
 	const auto v2 = Mul(xf, m_vertices[i2]);
 	return AABB{v1, v2};

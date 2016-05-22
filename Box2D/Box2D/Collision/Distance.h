@@ -152,7 +152,7 @@ struct DistanceOutput
 	Vec2 pointA;		///< closest point on shapeA
 	Vec2 pointB;		///< closest point on shapeB
 	float_t distance;
-	int32 iterations;	///< number of GJK iterations used
+	uint32 iterations;	///< number of GJK iterations used
 };
 
 /// Compute the closest points between two shapes. Supports any combination of:
