@@ -67,12 +67,33 @@ private:
 class SimplexCache
 {
 public:
+	/// Maximum count of times this object's add-index method may be called.
+	/// @sa AddIndex.
 	static constexpr auto MaxCount = unsigned{3};
+
 	using size_type = std::remove_cv<decltype(MaxCount)>::type;
 
 	using index_t = size_t;
 
-	float_t GetMetric() const noexcept { return metric; }
+	/// Gets the metric that was set.
+	/// @note Behavior is undefined if metric was not previously set.
+	///   The IsMetricSet() method can be used to check dynamically if unsure.
+	/// @sa SetMetric.
+	/// @sa IsMetricSet.
+	/// @return Value previously set.
+	float_t GetMetric() const noexcept
+	{
+		assert(metric_set);
+		return metric;
+	}
+
+	/// Gets the count.
+ 	/// @detail This is the count of times this object's add-index method has been called
+	///   since the last clearing of the indexes was done.
+	/// @return Value between 0 and MaxCount.
+	/// @sa MaxCount.
+	/// @sa AddIndex.
+	/// @sa ClearIndices.
 	size_type GetCount() const noexcept { return count; }
 
 	index_t GetIndexA(size_type index) const
@@ -89,7 +110,13 @@ public:
 
 	void ClearIndices() noexcept { count = 0; }
 
-	void SetMetric(float_t m) noexcept { metric = m; }
+	bool IsMetricSet() const noexcept { return metric_set; }
+
+	void SetMetric(float_t m) noexcept
+	{
+		metric = m;
+		metric_set = true;
+	}
 
 	void AddIndex(index_t a, index_t b)
 	{
@@ -100,6 +127,7 @@ public:
 	}
 
 private:
+	bool metric_set = false; ///< Whether the metric has been set or not.
 	float_t metric;		///< length or area
 	size_type count = 0;
 	index_t indexA[MaxCount];	///< vertices on shape A

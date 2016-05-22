@@ -151,7 +151,7 @@ public:
 			const auto indexB = cache.GetIndexB(i);
 			const auto wA = Mul(transformA, proxyA.GetVertex(indexA));
 			const auto wB = Mul(transformB, proxyB.GetVertex(indexB));
-			m_vertices[i] = SimplexVertex{wA, wB, indexA, indexB, float_t(0)};
+			m_vertices[i] = SimplexVertex{wA, wB, indexA, indexB, float_t{0}};
 		}
 		m_count = count;
 
@@ -175,7 +175,7 @@ public:
 			const auto indexB = SimplexCache::index_t{0};
 			const auto wA = Mul(transformA, proxyA.GetVertex(indexA));
 			const auto wB = Mul(transformB, proxyB.GetVertex(indexB));
-			m_vertices[0] = SimplexVertex{wA, wB, indexA, indexB, float_t(1)};
+			m_vertices[0] = SimplexVertex{wA, wB, indexA, indexB, float_t{1}};
 			m_count = 1;
 		}
 	}
@@ -282,10 +282,12 @@ public:
 		}
 	}
 
+	void Solve() noexcept;
+
+private:
 	void Solve2() noexcept;
 	void Solve3() noexcept;
 
-private:
 	size_type m_count = 0; ///< Count of valid vertex entries in m_vertices. Value between 0 and MaxVertices. @see m_vertices.
 	SimplexVertex m_vertices[MaxVertices]; ///< Vertices. Only elements < m_count are valid. @see m_count.
 };
@@ -325,7 +327,7 @@ void Simplex::Solve2() noexcept
 	if (d12_2 <= float_t{0})
 	{
 		// a2 <= 0, so we clamp it to 0
-		m_vertices[0].a = float_t(1);
+		m_vertices[0].a = float_t{1};
 		m_count = 1;
 		return;
 	}
@@ -335,14 +337,14 @@ void Simplex::Solve2() noexcept
 	if (d12_1 <= float_t{0})
 	{
 		// a1 <= 0, so we clamp it to 0
-		m_vertices[1].a = float_t(1);
+		m_vertices[1].a = float_t{1};
 		m_vertices[0] = m_vertices[1];
 		m_count = 1;
 		return;
 	}
 
 	// Must be in e12 region.
-	const auto inv_d12 = float_t(1) / (d12_1 + d12_2);
+	const auto inv_d12 = float_t{1} / (d12_1 + d12_2);
 	m_vertices[0].a = d12_1 * inv_d12;
 	m_vertices[1].a = d12_2 * inv_d12;
 	m_count = 2;
@@ -455,11 +457,33 @@ void Simplex::Solve3() noexcept
 	}
 
 	// Must be in triangle123
-	const auto inv_d123 = float_t(1) / (d123_1 + d123_2 + d123_3);
+	const auto inv_d123 = float_t{1} / (d123_1 + d123_2 + d123_3);
 	m_vertices[0].a = d123_1 * inv_d123;
 	m_vertices[1].a = d123_2 * inv_d123;
 	m_vertices[2].a = d123_3 * inv_d123;
 	m_count = 3;
+}
+
+void Simplex::Solve() noexcept
+{
+	assert(m_count == 1 || m_count == 2 || m_count == 3);
+	
+	switch (m_count)
+	{
+		case 1:
+			break;
+			
+		case 2:
+			Solve2();
+			break;
+			
+		case 3:
+			Solve3();
+			break;
+			
+		default:
+			break;
+	}
 }
 
 DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
@@ -468,15 +492,9 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 	++gjkCalls;
 #endif
 
-	const auto& proxyA = input.proxyA;
-	const auto& proxyB = input.proxyB;
-
-	const auto transformA = input.transformA;
-	const auto transformB = input.transformB;
-
 	// Initialize the simplex.
 	Simplex simplex;
-	simplex.ReadCache(cache, proxyA, transformA, proxyB, transformB);
+	simplex.ReadCache(cache, input.proxyA, input.transformA, input.proxyB, input.transformB);
 
 	// Get simplex vertices as an array.
 	const auto vertices = simplex.GetVertices();
@@ -502,26 +520,7 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 			saveB[i] = vertices[i].indexB;
 		}
 
-		const auto simplexCount = simplex.GetCount();
-
-		assert(simplexCount == 1 || simplexCount == 2 || simplexCount == 3);
-		
-		switch (simplexCount)
-		{
-		case 1:
-			break;
-
-		case 2:
-			simplex.Solve2();
-			break;
-
-		case 3:
-			simplex.Solve3();
-			break;
-
-		default:
-			break;
-		}
+		simplex.Solve();
 
 		// If we have max points (3), then the origin is in the corresponding triangle.
 		if (simplex.GetCount() == Simplex::MaxVertices)
@@ -557,8 +556,8 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 		}
 
 		// Compute a tentative new simplex vertex using support points.
-		const auto indexA = proxyA.GetSupport(MulT(transformA.q, -d));
-		const auto indexB = proxyB.GetSupport(MulT(transformB.q, d));
+		const auto indexA = input.proxyA.GetSupport(MulT(input.transformA.q, -d));
+		const auto indexB = input.proxyB.GetSupport(MulT(input.transformB.q, d));
 
 		// Iteration count is equated to the number of support point calls.
 		++iter;
@@ -584,9 +583,9 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 		}
 
 		// New vertex is ok and needed.
-		const auto wA = Mul(transformA, proxyA.GetVertex(indexA));
-		const auto wB = Mul(transformB, proxyB.GetVertex(indexB));
-		simplex.AddVertex(SimplexVertex{wA, wB, indexA, indexB, float_t(0)});
+		const auto wA = Mul(input.transformA, input.proxyA.GetVertex(indexA));
+		const auto wB = Mul(input.transformB, input.proxyB.GetVertex(indexB));
+		simplex.AddVertex(SimplexVertex{wA, wB, indexA, indexB, 0});
 	}
 
 #if defined(DO_GJK_PROFILING)
@@ -605,8 +604,8 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 	// Apply radii if requested.
 	if (input.useRadii)
 	{
-		const auto rA = proxyA.GetRadius();
-		const auto rB = proxyB.GetRadius();
+		const auto rA = input.proxyA.GetRadius();
+		const auto rB = input.proxyB.GetRadius();
 		const auto totalRadius = rA + rB;
 
 		if ((output.distance > totalRadius) && (output.distance > Epsilon))
