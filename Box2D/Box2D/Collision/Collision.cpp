@@ -43,12 +43,10 @@ void WorldManifold::Assign(const Manifold& manifold,
 
 	case Manifold::e_circles:
 		{
-			normal = Vec2{float_t{1}, float_t{0}};
 			const auto pointA = Mul(xfA, manifold.GetLocalPoint());
 			const auto pointB = Mul(xfB, manifold.GetPoint(0).localPoint);
-			if (DistanceSquared(pointA, pointB) > Square(Epsilon))
-				normal = Normalize(pointB - pointA);
-
+			const auto delta = pointB - pointA;
+			normal = (delta.LengthSquared() > Square(Epsilon))? Normalize(delta): Vec2{float_t{1}, float_t{0}};
 			const auto cA = pointA + (radiusA * normal);
 			const auto cB = pointB - (radiusB * normal);
 			points[0] = (cA + cB) / float_t(2);
