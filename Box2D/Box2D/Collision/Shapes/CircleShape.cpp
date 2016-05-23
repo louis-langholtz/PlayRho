@@ -90,6 +90,6 @@ AABB CircleShape::ComputeAABB(const Transform& transform, child_count_t childInd
 MassData CircleShape::ComputeMass(float_t density) const
 {
 	const auto mass = density * Pi * Square(GetRadius());
-	const auto I = mass * ((Square(GetRadius()) / float_t(2)) + m_p.LengthSquared());
+	const auto I = mass * ((Square(GetRadius()) / float_t{2}) + m_p.LengthSquared());
 	return MassData{mass, m_p, I};
 }
