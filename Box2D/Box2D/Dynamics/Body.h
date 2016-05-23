@@ -127,7 +127,7 @@ public:
 	/// like friction, restitution, user data, or filtering.
 	/// If the density is non-zero, this function automatically updates the mass of the body.
 	/// @param shape the shape to be cloned.
-	/// @param density the shape density (set to zero for static bodies).
+	/// @param density Density of the shape in kg/m^2 (set to zero for static bodies).
 	/// @warning This function is locked during callbacks.
 	Fixture* CreateFixture(const Shape* shape, float_t density);
 

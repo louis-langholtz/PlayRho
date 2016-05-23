@@ -115,6 +115,7 @@ struct Vec2
 
 	/// Gets the length squared.
 	/// For performance, use this instead of Vec2::Length (if possible).
+	/// @return Non-negative value.
 	constexpr float_t LengthSquared() const noexcept
 	{
 		return Square(x) + Square(y);

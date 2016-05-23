@@ -159,11 +159,15 @@ public:
 	/// may be expensive.
 	MassData GetMassData() const;
 
-	/// Set the density of this fixture. This will _not_ automatically adjust the mass
-	/// of the body. You must call Body::ResetMassData to update the body's mass.
+	/// Sets the density of this fixture.
+	/// @note This will _not_ automatically adjust the mass of the body.
+	///   You must call Body::ResetMassData to update the body's mass.
+	/// @warning Behavior is undefined if given a negative value.
+	/// @param density Non-negative density in kg/m^2.
 	void SetDensity(float_t density);
 
-	/// Get the density of this fixture.
+	/// Gets the density of this fixture.
+	/// @return Non-negative density in kg/m^2.
 	float_t GetDensity() const;
 
 	/// Get the coefficient of friction.
@@ -284,7 +288,7 @@ inline const Fixture* Fixture::GetNext() const
 inline void Fixture::SetDensity(float_t density)
 {
 	assert(IsValid(density) && density >= float_t{0});
-	m_density = density;
+	m_density = Max(density, float_t{0});
 }
 
 inline float_t Fixture::GetDensity() const

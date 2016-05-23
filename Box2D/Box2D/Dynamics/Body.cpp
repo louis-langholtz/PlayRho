@@ -273,7 +273,7 @@ MassData Body::CalculateMassData() const noexcept
 		center += massData.mass * massData.center;
 		I += massData.I;
 	}
-	return MassData{mass, (mass != float_t{0})? center / mass: Vec2_zero, I};
+	return MassData{mass, (mass > float_t{0})? center / mass: Vec2_zero, I};
 }
 
 void Body::ResetMassData()

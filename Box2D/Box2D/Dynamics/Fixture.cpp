@@ -31,12 +31,13 @@ using namespace box2d;
 
 void Fixture::Create(BlockAllocator* allocator, const FixtureDef* def)
 {
+	assert(def->density >= 0);
 	m_userData = def->userData;
 	m_friction = def->friction;
 	m_restitution = def->restitution;
 	m_filter = def->filter;
 	m_isSensor = def->isSensor;
-	m_density = def->density;
+	m_density = Max(def->density, float_t{0});
 	m_shape = def->shape->Clone(allocator);
 
 	// Reserve proxy space
