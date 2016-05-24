@@ -200,7 +200,7 @@ public:
 
 	void Step(Settings* settings)
 	{
-		bool advanceRay = settings->pause == 0 || settings->singleStep;
+		bool advanceRay = !settings->pause || settings->singleStep;
 
 		Test::Step(settings);
 		g_debugDraw.DrawString(5, m_textLine, "Press 1-5 to drop stuff");

@@ -72,7 +72,7 @@ public:
 	{
 		float_t dt = settings->hz > 0.0f ? 1.0f / settings->hz : 0.0f;
 
-		if (settings->pause == 1 && settings->singleStep == 0)
+		if (settings->pause && !settings->singleStep)
 		{
 			dt = 0.0f;
 		}

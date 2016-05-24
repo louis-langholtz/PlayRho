@@ -262,7 +262,7 @@ void Test::Step(Settings* settings)
 	{
 		if (settings->singleStep)
 		{
-			settings->singleStep = 0;
+			settings->singleStep = false;
 		}
 		else
 		{
