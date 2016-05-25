@@ -437,8 +437,14 @@ private:
 	/// @sa Island.
 	bool IsInIsland() const noexcept;
 
-	void SetInIsland(bool value) noexcept;
+	[[deprecated]] void SetInIsland(bool value) noexcept;
+
 	void SetInIsland() noexcept;
+
+	/// Unsets the in-island flag.
+	/// @detail Afterwards, IsInIsland returns false. This does the opposite of what SetInIsland() does.
+	/// @sa SetInIsland().
+	/// @sa IsInIsland().
 	void UnsetInIsland() noexcept;
 
 	MassData CalculateMassData() const noexcept;

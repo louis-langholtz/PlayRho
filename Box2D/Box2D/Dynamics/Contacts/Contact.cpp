@@ -267,17 +267,17 @@ bool Contact::UpdateTOI()
 	// Compute the TOI for this contact.
 	// Put the sweeps onto the same time interval.
 	const auto maxAlpha0 = Max(bA->m_sweep.alpha0, bB->m_sweep.alpha0);
-	assert(maxAlpha0 < float_t(1));
+	assert(maxAlpha0 < float_t{1});
 	bA->m_sweep.Advance(maxAlpha0);
 	bB->m_sweep.Advance(maxAlpha0);
 	
 	// Compute the time of impact in interval [0, minTOI]
 	TOIInput input;
 	input.proxyA = DistanceProxy(*fA->GetShape(), GetChildIndexA());
-	input.proxyB = DistanceProxy(*fB->GetShape(), GetChildIndexB());
 	input.sweepA = bA->m_sweep;
+	input.proxyB = DistanceProxy(*fB->GetShape(), GetChildIndexB());
 	input.sweepB = bB->m_sweep;
-	input.tMax = float_t(1);
+	input.tMax = float_t{1};
 	
 	const auto output = TimeOfImpact(input);
 	

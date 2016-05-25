@@ -230,6 +230,10 @@ private:
 	friend class ContactManager;
 
 	void Solve(const TimeStep& step);
+
+	/// Solves Time Of Impact Events.
+	/// @detail Used for continuous physics.
+	/// @param step Time step value to use.
 	void SolveTOI(const TimeStep& step);
 
 	void DrawJoint(Joint* joint);
