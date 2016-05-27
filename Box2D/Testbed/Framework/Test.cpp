@@ -70,7 +70,8 @@ void Test::PreSolve(Contact* contact, const Manifold* oldManifold)
 {
 	const Manifold* manifold = contact->GetManifold();
 
-	if (manifold->GetPointCount() == 0)
+	const auto manifoldPointCount = manifold->GetPointCount();
+	if (manifoldPointCount == 0)
 	{
 		return;
 	}
@@ -84,7 +85,7 @@ void Test::PreSolve(Contact* contact, const Manifold* oldManifold)
 
 	const auto worldManifold = contact->GetWorldManifold();
 
-	for (int32 i = 0; (i < manifold->GetPointCount()) && (m_pointCount < k_maxContactPoints); ++i)
+	for (auto i = decltype(manifoldPointCount){0}; (i < manifoldPointCount) && (m_pointCount < k_maxContactPoints); ++i)
 	{
 		ContactPoint* cp = m_points + m_pointCount;
 		cp->fixtureA = fixtureA;
