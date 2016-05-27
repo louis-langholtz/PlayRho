@@ -201,8 +201,8 @@ bool DistanceJoint::SolvePositionConstraints(const SolverData& data)
 	auto u = cB + rB - cA - rA;
 
 	const auto length = u.Normalize();
-	auto C = length - m_length;
-	C = Clamp(C, -MaxLinearCorrection, MaxLinearCorrection);
+	const auto deltaLength = length - m_length;
+	const auto C = Clamp(deltaLength, -MaxLinearCorrection, MaxLinearCorrection);
 
 	const auto impulse = -m_mass * C;
 	const auto P = impulse * u;
