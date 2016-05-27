@@ -165,8 +165,6 @@ void DynamicTree::InsertLeaf(size_type leaf)
 {
 	assert(leaf != NullNode);
 
-	++m_insertionCount;
-
 	if (m_root == NullNode)
 	{
 		m_root = leaf;

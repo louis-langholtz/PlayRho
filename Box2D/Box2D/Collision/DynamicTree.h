@@ -155,11 +155,6 @@ private:
 
 	size_type m_freeList = 0;
 
-	/// This is used to incrementally traverse the tree for re-balancing.
-	uint32 m_path = 0;
-
-	int32 m_insertionCount = 0;
-
 	/// Initialized on construction.
 	TreeNode* m_nodes;
 };
