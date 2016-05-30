@@ -24,11 +24,6 @@
 
 using namespace box2d;
 
-ContactManager::ContactManager(BlockAllocator* allocator, ContactFilter* filter, ContactListener* listener):
-	m_allocator(allocator),
-	m_contactFilter(filter), m_contactListener(listener)
-{}
-
 void ContactManager::Remove(Contact* c)
 {
 	assert(m_contactCount > 0);
@@ -169,9 +164,9 @@ void ContactManager::FindNewContacts()
 	m_broadPhase.UpdatePairs(this);
 }
 
-static bool IsFor(const Contact& contact,
-				  const Fixture* fixtureA, ContactManager::size_type indexA,
-				  const Fixture* fixtureB, ContactManager::size_type indexB)
+static inline bool IsFor(const Contact& contact,
+						 const Fixture* fixtureA, ContactManager::size_type indexA,
+						 const Fixture* fixtureB, ContactManager::size_type indexB)
 {
 	const auto fA = contact.GetFixtureA();
 	const auto fB = contact.GetFixtureB();

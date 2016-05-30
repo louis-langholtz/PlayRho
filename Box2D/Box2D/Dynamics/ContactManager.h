@@ -37,8 +37,9 @@ class ContactManager
 public:
 	using size_type = size_t;
 
-	ContactManager(BlockAllocator* allocator, ContactFilter* filter, ContactListener* listener);
-
+	ContactManager(BlockAllocator* allocator, ContactFilter* filter, ContactListener* listener):
+		m_allocator(allocator), m_contactFilter(filter), m_contactListener(listener) {}
+	
 	// Broad-phase callback.
 	void AddPair(void* proxyUserDataA, void* proxyUserDataB)
 	{
