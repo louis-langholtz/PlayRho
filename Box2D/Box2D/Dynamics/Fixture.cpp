@@ -107,9 +107,9 @@ void Fixture::CreateProxies(BroadPhase& broadPhase, const Transform& xf)
 {
 	assert(m_proxyCount == 0);
 
-	// Create proxies in the broad-phase.
 	m_proxyCount = m_shape->GetChildCount();
 
+	// Create proxies in the broad-phase.
 	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
 	{
 		auto& proxy = m_proxies[i];

@@ -224,7 +224,7 @@ protected:
 	float_t m_friction;
 	float_t m_restitution;
 	FixtureProxy* m_proxies = nullptr;
-	child_count_t m_proxyCount = 0; ///< Proxy count - the child count of this fixture's shape.
+	child_count_t m_proxyCount = 0; ///< Proxy count. @detail This is the fixture shape's child count after proxy creation.
 	Filter m_filter;
 	bool m_isSensor;
 	void* m_userData = nullptr;
@@ -336,6 +336,15 @@ inline const AABB& Fixture::GetAABB(child_count_t childIndex) const
 	assert(childIndex >= 0);
 	assert(childIndex < m_proxyCount);
 	return m_proxies[childIndex].aabb;
+}
+
+inline void SetAwake(Fixture& f)
+{
+	const auto b = f.GetBody();
+	if (b)
+	{
+		b->SetAwake();
+	}
 }
 
 } // namespace box2d

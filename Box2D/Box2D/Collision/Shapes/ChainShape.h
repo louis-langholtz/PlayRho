@@ -47,8 +47,9 @@ public:
 	void Clear();
 
 	/// Create a loop. This automatically adjusts connectivity.
-	/// @param vertices an array of vertices, these are copied
-	/// @param count the vertex count
+	/// @note Behavior is undefined if vertices is null or if count of vertices is less than 3.
+	/// @param vertices Non-null array of vertices. These are copied.
+	/// @param count Count of vertices. Must be 3 or more.
 	void CreateLoop(const Vec2* vertices, child_count_t count);
 
 	/// Create a chain with isolated end vertices.

@@ -85,7 +85,8 @@ public:
 	/// @return the shape type.
 	Type GetType() const noexcept { return m_type; }
 
-	/// Get the number of child primitives.
+	/// Gets the number of child primitives.
+	/// @return Positive non-zero count.
 	virtual child_count_t GetChildCount() const = 0;
 
 	/// Test a point for containment in this shape. This only works for convex shapes.

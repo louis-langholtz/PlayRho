@@ -37,8 +37,9 @@ void ChainShape::Clear()
 
 void ChainShape::CreateLoop(const Vec2* vertices, child_count_t count)
 {
-	assert(m_vertices == nullptr && m_count == 0);
+	assert(vertices != nullptr);
 	assert(count >= 3);
+	assert(m_vertices == nullptr && m_count == 0);
 	for (auto i = decltype(count){1}; i < count; ++i)
 	{
 		// If the code crashes here, it means your vertices are too close together.
