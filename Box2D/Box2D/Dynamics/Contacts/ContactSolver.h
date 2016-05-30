@@ -132,10 +132,10 @@ struct ContactSolverDef
 	using size_type = size_t;
 
 	TimeStep step;
-	Contact** contacts; // pointers to contacts
-	size_type count; // count of contacts
-	Position* positions; // positions for every body referenced by a contact
-	Velocity* velocities; // velocities for every body referenced by a contact
+	Contact** contacts; ///< Pointers to contacts.
+	size_type count; ///< Count of contacts.
+	Position* positions; ///< Array of positions, one for every body referenced by a contact.
+	Velocity* velocities; ///< Array of velocities, for every body referenced by a contact.
 	StackAllocator* allocator;
 };
 

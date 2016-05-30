@@ -40,13 +40,15 @@ struct Profile
 class TimeStep
 {
 public:
+	/// Gets delta time - the time step.
 	float_t get_dt() const noexcept { return dt; }
+
 	float_t get_inv_dt() const noexcept { return inv_dt; }
 	
 	void set_dt(float_t value) noexcept
 	{
 		dt = value;
-		inv_dt = (value > float_t(0))? float_t(1) / value: float_t(0);
+		inv_dt = (value != 0)? float_t{1} / value: float_t{0};
 	}
 
 	float_t dtRatio; ///< dt * inv_dt0

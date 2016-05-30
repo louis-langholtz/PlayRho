@@ -69,7 +69,7 @@ child_count_t PolygonShape::GetChildCount() const
 	return 1;
 }
 
-static Vec2 ComputeCentroid(const Vec2 vs[], PolygonShape::vertex_count_t count)
+static inline Vec2 ComputeCentroid(const Vec2 vs[], PolygonShape::vertex_count_t count)
 {
 	assert(count >= 3);
 

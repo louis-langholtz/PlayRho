@@ -28,8 +28,8 @@
 using namespace box2d;
 
 Contact* ChainAndPolygonContact::Create(Fixture* fixtureA, child_count_t indexA,
-											Fixture* fixtureB, child_count_t indexB,
-											BlockAllocator* allocator)
+										Fixture* fixtureB, child_count_t indexB,
+										BlockAllocator* allocator)
 {
 	void* mem = allocator->Allocate(sizeof(ChainAndPolygonContact));
 	return new (mem) ChainAndPolygonContact(fixtureA, indexA, fixtureB, indexB);

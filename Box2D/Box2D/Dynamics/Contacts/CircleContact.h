@@ -29,8 +29,8 @@ class CircleContact : public Contact
 {
 public:
 	static Contact* Create(Fixture* fixtureA, child_count_t indexA,
-							 Fixture* fixtureB, child_count_t indexB,
-							 BlockAllocator* allocator);
+						   Fixture* fixtureB, child_count_t indexB,
+						   BlockAllocator* allocator);
 	static void Destroy(Contact* contact, BlockAllocator* allocator);
 
 	CircleContact(Fixture* fixtureA, Fixture* fixtureB);
