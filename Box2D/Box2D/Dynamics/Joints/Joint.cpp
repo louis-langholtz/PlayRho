@@ -34,7 +34,8 @@
 
 #include <new>
 
-using namespace box2d;
+namespace box2d
+{
 
 Joint* Joint::Create(const JointDef* def, BlockAllocator* allocator)
 {
@@ -193,3 +194,11 @@ bool Joint::IsActive() const noexcept
 {
 	return m_bodyA->IsActive() && m_bodyB->IsActive();
 }
+
+void SetAwake(Joint& j) noexcept
+{
+	j.GetBodyA()->SetAwake();
+	j.GetBodyB()->SetAwake();
+}
+
+} // namespace box2d

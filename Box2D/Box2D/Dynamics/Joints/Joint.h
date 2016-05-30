@@ -236,6 +236,9 @@ inline void Joint::SetInIsland(bool value) noexcept
 	m_islandFlag = value;
 }
 
+// Wakes up the joined bodies.
+void SetAwake(Joint& j) noexcept;
+
 } // namespace box2d
 
 #endif
