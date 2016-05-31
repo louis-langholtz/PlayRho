@@ -51,8 +51,13 @@ uint16 Body::GetFlags(const BodyDef& bd) noexcept
 }
 
 Body::Body(const BodyDef* bd, World* world):
-	m_type(bd->type), m_flags(GetFlags(*bd)), m_xf(bd->position, Rot(bd->angle)), m_world(world),
-	m_velocity(Velocity{bd->linearVelocity, bd->angularVelocity})
+	m_type{bd->type}, m_flags{GetFlags(*bd)}, m_xf{bd->position, Rot{bd->angle}}, m_world{world},
+	m_sweep{Sweep{Position{m_xf.p, bd->angle}, Position{m_xf.p, bd->angle}, Vec2_zero}},
+	m_velocity{Velocity{bd->linearVelocity, bd->angularVelocity}},
+	m_mass{(bd->type == BodyType::Dynamic)? float_t{1}: float_t{0}},
+	m_invMass{(bd->type == BodyType::Dynamic)? float_t{1}: float_t{0}},
+	m_linearDamping{bd->linearDamping}, m_angularDamping{bd->angularDamping}, m_gravityScale{bd->gravityScale},
+	m_userData{bd->userData}
 {
 	assert(bd->position.IsValid());
 	assert(bd->linearVelocity.IsValid());
@@ -60,25 +65,6 @@ Body::Body(const BodyDef* bd, World* world):
 	assert(IsValid(bd->angularVelocity));
 	assert(IsValid(bd->angularDamping) && (bd->angularDamping >= float_t{0}));
 	assert(IsValid(bd->linearDamping) && (bd->linearDamping >= float_t{0}));
-
-	m_sweep = Sweep{Position{m_xf.p, bd->angle}, Position{m_xf.p, bd->angle}, Vec2_zero};
-
-	m_linearDamping = bd->linearDamping;
-	m_angularDamping = bd->angularDamping;
-	m_gravityScale = bd->gravityScale;
-
-	if (m_type == BodyType::Dynamic)
-	{
-		m_mass = float_t{1};
-		m_invMass = float_t{1};
-	}
-	else
-	{
-		m_mass = float_t{0};
-		m_invMass = float_t{0};
-	}
-
-	m_userData = bd->userData;
 }
 
 Body::~Body()

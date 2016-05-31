@@ -106,7 +106,7 @@ struct BodyDef
 	void* userData = nullptr;
 
 	/// Scale the gravity applied to this body.
-	float_t gravityScale = float_t(1);
+	float_t gravityScale = float_t{1};
 };
 
 /// A rigid body. These are created via World::CreateBody.
