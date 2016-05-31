@@ -71,7 +71,7 @@ public:
 		}
 
 		// Should the body break?
-		const auto count = contact->GetManifold()->GetPointCount();
+		const auto count = contact->GetManifold().GetPointCount();
 
 		float_t maxImpulse = 0.0f;
 		for (int32 i = 0; i < count; ++i)

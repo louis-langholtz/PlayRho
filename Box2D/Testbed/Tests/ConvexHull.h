@@ -104,7 +104,7 @@ public:
 	}
 
 	Vec2 m_points[MaxPolygonVertices];
-	int32 m_count;
+	std::remove_cv<decltype(MaxPolygonVertices)>::type m_count;
 	bool m_auto;
 };
 

@@ -68,9 +68,9 @@ Test::~Test()
 
 void Test::PreSolve(Contact* contact, const Manifold* oldManifold)
 {
-	const Manifold* manifold = contact->GetManifold();
+	const auto& manifold = contact->GetManifold();
 
-	const auto manifoldPointCount = manifold->GetPointCount();
+	const auto manifoldPointCount = manifold.GetPointCount();
 	if (manifoldPointCount == 0)
 	{
 		return;
@@ -81,7 +81,7 @@ void Test::PreSolve(Contact* contact, const Manifold* oldManifold)
 
 	PointStateArray state1;
 	PointStateArray state2;
-	GetPointStates(state1, state2, *oldManifold, *manifold);
+	GetPointStates(state1, state2, *oldManifold, manifold);
 
 	const auto worldManifold = contact->GetWorldManifold();
 
@@ -93,8 +93,8 @@ void Test::PreSolve(Contact* contact, const Manifold* oldManifold)
 		cp->position = worldManifold.GetPoint(i);
 		cp->normal = worldManifold.GetNormal();
 		cp->state = state2[i];
-		cp->normalImpulse = manifold->GetPoint(i).normalImpulse;
-		cp->tangentImpulse = manifold->GetPoint(i).tangentImpulse;
+		cp->normalImpulse = manifold.GetPoint(i).normalImpulse;
+		cp->tangentImpulse = manifold.GetPoint(i).tangentImpulse;
 		cp->separation = worldManifold.GetSeparation(i);
 		++m_pointCount;
 	}

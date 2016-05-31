@@ -35,7 +35,7 @@ Manifold CollideShapes(const CircleShape& shapeA, const Transform& xfA, const Ci
 	}
 
 	auto manifold = Manifold{Manifold::e_circles, Vec2_zero, shapeA.GetPosition()};
-	manifold.AddPoint(shapeB.GetPosition());
+	manifold.AddPoint(ManifoldPoint{shapeB.GetPosition()});
 	return manifold;
 }
 
@@ -70,7 +70,8 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const C
 
 	// Vertices that subtend the incident face.
 	const auto vertIndex1 = normalIndex;
-	const auto vertIndex2 = ((vertIndex1 + 1) < vertexCount) ? vertIndex1 + 1 : 0;
+	const auto vertIndexNext = static_cast<decltype(vertIndex1)>(vertIndex1 + 1);
+	const auto vertIndex2 = (vertIndexNext < vertexCount)? vertIndexNext: static_cast<decltype(vertIndex1)>(0);
 	const auto v1 = shapeA.GetVertex(vertIndex1);
 	const auto v2 = shapeA.GetVertex(vertIndex2);
 
@@ -78,7 +79,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const C
 	if (separation < Epsilon)
 	{
 		auto manifold = Manifold{Manifold::e_faceA, shapeA.GetNormal(normalIndex), (v1 + v2) / float_t(2)};
-		manifold.AddPoint(shapeB.GetPosition());
+		manifold.AddPoint(ManifoldPoint{shapeB.GetPosition()});
 		return manifold;
 	}
 
@@ -93,7 +94,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const C
 		}
 
 		auto manifold = Manifold{Manifold::e_faceA, Normalize(cLocal - v1), v1};
-		manifold.AddPoint(shapeB.GetPosition());
+		manifold.AddPoint(ManifoldPoint{shapeB.GetPosition()});
 		return manifold;
 	}
 	if (u2 <= float_t{0})
@@ -104,7 +105,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const C
 		}
 
 		auto manifold = Manifold{Manifold::e_faceA, Normalize(cLocal - v2), v2};
-		manifold.AddPoint(shapeB.GetPosition());
+		manifold.AddPoint(ManifoldPoint{shapeB.GetPosition()});
 		return manifold;
 	}
 
@@ -118,7 +119,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const C
 	auto manifold = Manifold{Manifold::e_faceA};
 	manifold.SetLocalNormal(shapeA.GetNormal(vertIndex1));
 	manifold.SetLocalPoint(faceCenter);
-	manifold.AddPoint(shapeB.GetPosition());
+	manifold.AddPoint(ManifoldPoint{shapeB.GetPosition()});
 	return manifold;
 }
 	

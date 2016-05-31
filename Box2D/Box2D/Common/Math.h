@@ -40,7 +40,7 @@ inline bool IsValid(float_t x)
 }
 
 template<class T>
-constexpr inline auto Square(T t) { return t * t; }
+constexpr inline auto Square(T t) noexcept { return t * t; }
 
 template<typename T>
 inline auto Sqrt(T t) { return std::sqrt(t); }
@@ -52,12 +52,12 @@ inline auto Atan2(T y, T x) { return std::atan2(y, x); }
 struct Vec2
 {
 	/// Default constructor does nothing (for performance).
-	Vec2() = default;
+	Vec2() noexcept = default;
 	
-	Vec2(const Vec2& copy) = default;
+	Vec2(const Vec2& copy) noexcept = default;
 
 	/// Construct using coordinates.
-	constexpr Vec2(float_t x_, float_t y_) noexcept : x(x_), y(y_) {}
+	constexpr Vec2(float_t x_, float_t y_) noexcept : x{x_}, y{y_} {}
 
 	/// Negate this vector.
 	constexpr Vec2 operator -() const noexcept { return Vec2{-x, -y}; }
@@ -96,13 +96,13 @@ struct Vec2
 #endif
 
 	/// Add a vector to this vector.
-	constexpr void operator += (const Vec2& v) noexcept
+	constexpr void operator += (Vec2 v) noexcept
 	{
 		x += v.x; y += v.y;
 	}
 	
 	/// Subtract a vector from this vector.
-	constexpr void operator -= (const Vec2& v) noexcept
+	constexpr void operator -= (Vec2 v) noexcept
 	{
 		x -= v.x; y -= v.y;
 	}
@@ -159,10 +159,10 @@ constexpr auto Vec2_zero = Vec2{0, 0};
 struct Vec3
 {
 	/// Default constructor does nothing (for performance).
-	Vec3() = default;
+	Vec3() noexcept = default;
 
 	/// Construct using coordinates.
-	constexpr explicit Vec3(float_t x_, float_t y_, float_t z_) noexcept : x(x_), y(y_), z(z_) {}
+	constexpr Vec3(float_t x_, float_t y_, float_t z_) noexcept : x(x_), y(y_), z(z_) {}
 
 	/// Negate this vector.
 	constexpr Vec3 operator -() const noexcept { return Vec3{-x, -y, -z}; }
@@ -199,10 +199,10 @@ struct Mat22
 	Mat22() = default;
 
 	/// Construct this matrix using columns.
-	constexpr Mat22(const Vec2& c1, const Vec2& c2) noexcept: ex(c1), ey(c2) {}
+	constexpr Mat22(const Vec2& c1, const Vec2& c2) noexcept: ex{c1}, ey{c2} {}
 
 	/// Construct this matrix using scalars.
-	constexpr Mat22(float_t a11, float_t a12, float_t a21, float_t a22) noexcept: ex(a11, a21), ey(a12, a22) {}
+	constexpr Mat22(float_t a11, float_t a12, float_t a21, float_t a22) noexcept: ex{a11, a21}, ey{a12, a22} {}
 
 	constexpr Mat22 GetInverse() const noexcept
 	{
@@ -210,7 +210,7 @@ struct Mat22
 		auto det = (a * d) - (b * c);
 		if (det != float_t{0})
 		{
-			det = float_t(1) / det;
+			det = float_t{1} / det;
 		}
 		return Mat22(Vec2{det * d, -det * c}, Vec2{-det * b, det * a});
 	}
@@ -220,10 +220,10 @@ struct Mat22
 	constexpr Vec2 Solve(const Vec2& b) const noexcept
 	{
 		const auto a11 = ex.x, a12 = ey.x, a21 = ex.y, a22 = ey.y;
-		auto det = a11 * a22 - a12 * a21;
+		auto det = (a11 * a22) - (a12 * a21);
 		if (det != float_t{0})
 		{
-			det = float_t(1) / det;
+			det = float_t{1} / det;
 		}
 		return Vec2{det * (a22 * b.x - a12 * b.y), det * (a11 * b.y - a21 * b.x)};
 	}
@@ -291,20 +291,20 @@ constexpr auto Mat33_zero = Mat33(Vec3_zero, Vec3_zero, Vec3_zero);
 /// Rotation
 struct Rot
 {
-	Rot() = default;
+	Rot() noexcept = default;
 	
-	constexpr Rot(const Rot& copy) = default;
+	constexpr Rot(const Rot& copy) noexcept = default;
+
+	/// Initialize from sine and cosine values.
+	constexpr Rot(float_t sine, float_t cosine) noexcept: s{sine}, c{cosine} {}
 
 	/// Initialize from an angle.
 	/// @param angle Angle in radians.
-	explicit Rot(float_t angle): s(std::sin(angle)), c(std::cos(angle))
+	explicit Rot(float_t angle): s{std::sin(angle)}, c{std::cos(angle)}
 	{
 		// TODO_ERIN optimize
 	}
 	
-	/// Initialize from sine and cosine values.
-	constexpr explicit Rot(float_t sine, float_t cosine) noexcept: s(sine), c(cosine) {}
-
 	/// Get the angle in radians
 	float_t GetAngle() const
 	{
@@ -334,12 +334,12 @@ constexpr auto Rot_identity = Rot(0, 1);
 struct Transform
 {
 	/// The default constructor does nothing.
-	Transform() = default;
+	Transform() noexcept = default;
 
 	/// Initialize using a position vector and a rotation.
-	constexpr Transform(const Vec2& position, const Rot& rotation) noexcept: p(position), q(rotation) {}
+	constexpr Transform(Vec2 position, Rot rotation) noexcept: p{position}, q{rotation} {}
 
-	constexpr Transform(const Transform& copy) = default;
+	constexpr Transform(const Transform& copy) noexcept = default;
 
 	Vec2 p; ///< Positional portion of the transformation.
 	Rot q; ///< Rotational portion of the transformation.
@@ -350,16 +350,16 @@ constexpr auto Transform_identity = Transform{Vec2_zero, Rot_identity};
 /// Positional data structure.
 struct Position
 {
-	Position() = default;
+	Position() noexcept = default;
 	
-	constexpr Position(const Position& copy) = default;
+	constexpr Position(const Position& copy) noexcept = default;
 	
-	constexpr Position(Vec2 c_, float_t a_) noexcept: c(c_), a(a_) {}
+	constexpr Position(Vec2 c_, float_t a_) noexcept: c{c_}, a{a_} {}
 	
 	Vec2 c; ///< Linear position (in meters).
 	float_t a; ///< Angular position (in radians).
 };
-
+	
 /// Velocity related data structure.
 struct Velocity
 {
@@ -367,7 +367,7 @@ struct Velocity
 	
 	constexpr Velocity(const Velocity& copy) = default;
 
-	constexpr Velocity(Vec2 v_, float_t w_) noexcept: v(v_), w(w_) {}
+	constexpr Velocity(Vec2 v_, float_t w_) noexcept: v{v_}, w{w_} {}
 	
 	Vec2 v; ///< Linear velocity (in meters/second).
 	float_t w; ///< Angular velocity (in radians/second).
@@ -377,15 +377,22 @@ struct Velocity
 /// Shapes are defined with respect to the body origin, which may
 /// not coincide with the center of mass. However, to support dynamics
 /// we must interpolate the center of mass position.
-struct Sweep
+class Sweep
 {
+public:
 	Sweep() = default;
 
-	constexpr Sweep(const Sweep& copy) = default;
+	constexpr Sweep(const Sweep& copy) noexcept = default;
 
-	constexpr Sweep(const Position& p0, const Position& p1, const Vec2& lc = Vec2_zero, float_t a0 = 0):
-		pos0{p0}, pos1{p1}, localCenter{lc}, alpha0{a0} {}
+	constexpr Sweep(const Position& p0, const Position& p1, const Vec2& lc = Vec2_zero, float_t a0 = 0) noexcept:
+		pos0{p0}, pos1{p1}, localCenter{lc}, alpha0{a0}
+	{
+		assert(a0 >= 0);
+		assert(a0 < 1);
+	}
 	
+	constexpr explicit Sweep(const Position& p, const Vec2& lc = Vec2_zero, float_t a0 = 0) noexcept: Sweep{p, p, lc, a0} {}
+
 	/// Advances the sweep forward to the given time factor.
 	/// This updates pos0.c and pos0.a and sets alpha0 to the given time alpha.
 	/// @param alpha New time factor in [0,1) to advance the sweep to.
@@ -396,6 +403,14 @@ struct Sweep
 
 	Vec2 localCenter;	///< local center of mass position
 	
+	float_t GetAlpha0() noexcept { return alpha0; }
+	
+	void ResetAlpha0() noexcept
+	{
+		alpha0 = float_t{0};
+	}
+
+private:
 	/// Fraction of the current time step in the range [0,1]
 	/// pos0.c and pos0.a are the positions at alpha0.
 	float_t alpha0;
@@ -406,7 +421,7 @@ struct Sweep
 /// @param vector Vector to return a counter-clockwise perpendicular equivalent for.
 /// @return A counter-clockwise 90-degree rotation of the given vector.
 /// @sa GetForwardPerpendicular.
-constexpr inline Vec2 GetReversePerpendicular(const Vec2& vector) noexcept
+constexpr inline Vec2 GetReversePerpendicular(const Vec2 vector) noexcept
 {
 	// See http://mathworld.wolfram.com/PerpendicularVector.html
 	return Vec2{-vector.y, vector.x};
@@ -417,7 +432,7 @@ constexpr inline Vec2 GetReversePerpendicular(const Vec2& vector) noexcept
 /// @param vector Vector to return a clockwise perpendicular equivalent for.
 /// @return A clockwise 90-degree rotation of the given vector.
 /// @sa GetReversePerpendicular.
-constexpr inline Vec2 GetForwardPerpendicular(const Vec2& vector) noexcept
+constexpr inline Vec2 GetForwardPerpendicular(const Vec2 vector) noexcept
 {
 	// See http://mathworld.wolfram.com/PerpendicularVector.html
 	return Vec2{vector.y, -vector.x};
@@ -497,7 +512,7 @@ constexpr Vec2 operator/ (const Vec2& a, float_t s) noexcept
 /// @param value Value to normalize.
 /// @return value divided by its length if length not less than Epsilon otherwise value.
 /// @sa Epsilon.
-inline Vec2 Normalize(const Vec2& value)
+inline Vec2 Normalize(Vec2 value)
 {
 	// implementation mirrors implementation of Vec2::Normalize()
 	const auto length = value.Length();
@@ -509,12 +524,12 @@ inline Vec2 Normalize(const Vec2& value)
 	return value * invLength;
 }
 
-constexpr inline bool operator == (const Vec2& a, const Vec2& b) noexcept
+constexpr inline bool operator == (Vec2 a, Vec2 b) noexcept
 {
 	return (a.x == b.x) && (a.y == b.y);
 }
 
-constexpr inline bool operator != (const Vec2& a, const Vec2& b) noexcept
+constexpr inline bool operator != (Vec2 a, Vec2 b) noexcept
 {
 	return (a.x != b.x) || (a.y != b.y);
 }
@@ -633,8 +648,8 @@ constexpr inline Vec2 MulT(const Transform& T, const Vec2& v) noexcept
 {
 	const auto px = v.x - T.p.x;
 	const auto py = v.y - T.p.y;
-	const auto x = (T.q.c * px + T.q.s * py);
-	const auto y = (-T.q.s * px + T.q.c * py);
+	const auto x = T.q.c * px + T.q.s * py;
+	const auto y = -T.q.s * px + T.q.c * py;
 	return Vec2{x, y};
 }
 
@@ -658,7 +673,8 @@ constexpr inline T Abs(T a)
 	return (a >= T(0)) ? a : -a;
 }
 
-inline Vec2 Abs(const Vec2& a)
+template <>
+inline Vec2 Abs(Vec2 a)
 {
 	return Vec2{Abs(a.x), Abs(a.y)};
 }
@@ -674,7 +690,8 @@ constexpr inline T Min(T a, T b)
 	return (a < b) ? a : b;
 }
 
-constexpr inline Vec2 Min(const Vec2& a, const Vec2& b)
+template <>
+constexpr inline Vec2 Min(Vec2 a, Vec2 b)
 {
 	return Vec2{Min(a.x, b.x), Min(a.y, b.y)};
 }
@@ -685,7 +702,8 @@ constexpr inline T Max(T a, T b)
 	return (a > b) ? a : b;
 }
 
-constexpr inline Vec2 Max(const Vec2& a, const Vec2& b)
+template <>
+constexpr inline Vec2 Max(Vec2 a, Vec2 b)
 {
 	return Vec2{Max(a.x, b.x), Max(a.y, b.y)};
 }
@@ -709,24 +727,28 @@ constexpr inline void Swap(T& a, T& b)
 	b = tmp;
 }
 
-/// "Next Largest Power of 2
-/// Given a binary integer value x, the next largest power of 2 can be computed by a SWAR algorithm
-/// that recursively "folds" the upper bits into the lower bits. This process yields a bit vector with
-/// the same most significant 1 as x, but all 1's below it. Adding 1 to that value yields the next
-/// largest power of 2. For a 32-bit value:"
-constexpr inline uint32 NextPowerOfTwo(uint32 x) noexcept
+constexpr inline Position& operator+= (Position& lhs, const Position& rhs)
 {
-	x |= (x >> 1);
-	x |= (x >> 2);
-	x |= (x >> 4);
-	x |= (x >> 8);
-	x |= (x >> 16);
-	return x + 1;
+	lhs.c += rhs.c;
+	lhs.a += rhs.a;
+	return lhs;
 }
 
-constexpr inline bool IsPowerOfTwo(uint32 x) noexcept
+constexpr inline Position operator+ (const Position& lhs, const Position& rhs)
 {
-	return (x > 0) && ((x & (x - 1)) == 0);
+	return Position{lhs.c + rhs.c, lhs.a + rhs.a};
+}
+	
+constexpr inline Position& operator-= (Position& lhs, const Position& rhs)
+{
+	lhs.c -= rhs.c;
+	lhs.a -= rhs.a;
+	return lhs;
+}
+
+constexpr inline Position operator- (const Position& lhs, const Position& rhs)
+{
+	return Position{lhs.c - rhs.c, lhs.a - rhs.a};
 }
 
 constexpr inline Transform GetTransform(const Vec2& ctr, const Rot& rot, const Vec2& local_ctr) noexcept
@@ -734,9 +756,9 @@ constexpr inline Transform GetTransform(const Vec2& ctr, const Rot& rot, const V
 	return Transform{ctr - Mul(rot, local_ctr), rot};
 }
 
-inline Transform GetTransform(const Position& pos, const Vec2& local_ctr) noexcept
+inline Transform GetTransform(Position pos, const Vec2& local_ctr) noexcept
 {
-	return GetTransform(pos.c, Rot(pos.a), local_ctr);
+	return GetTransform(pos.c, Rot{pos.a}, local_ctr);
 }
 
 /// Gets the interpolated transform at a specific time.
@@ -747,7 +769,7 @@ inline Transform GetTransform(const Sweep& sweep, float_t beta)
 {
 	assert(beta >= 0);
 	assert(beta <= 1);
-	const auto one_minus_beta = float_t(1) - beta;
+	const auto one_minus_beta = float_t{1} - beta;
 	const auto pos_beta = Position{
 		one_minus_beta * sweep.pos0.c + beta * sweep.pos1.c,
 		one_minus_beta * sweep.pos0.a + beta * sweep.pos1.a
@@ -777,9 +799,12 @@ inline Transform GetTransformOne(const Sweep& sweep)
 
 inline void Sweep::Advance(float_t alpha)
 {
-	assert(alpha < float_t(1));
-	assert(alpha0 < float_t(1));
-	const auto beta = (alpha - alpha0) / (float_t(1) - alpha0);
+	assert(alpha >= 0);
+	assert(alpha < 1);
+
+	assert(alpha0 < 1);
+	
+	const auto beta = (alpha - alpha0) / (float_t{1} - alpha0);
 	pos0.c += beta * (pos1.c - pos0.c);
 	pos0.a += beta * (pos1.a - pos0.a);
 	alpha0 = alpha;
@@ -791,7 +816,7 @@ inline void Sweep::Advance(float_t alpha)
 inline Sweep GetAnglesNormalized(Sweep sweep)
 {
 	constexpr auto twoPi = float_t{2} * Pi;
-	const auto d =  twoPi * std::floor(sweep.pos0.a / twoPi);
+	const auto d = twoPi * std::floor(sweep.pos0.a / twoPi);
 	sweep.pos0.a -= d;
 	sweep.pos1.a -= d;
 	return sweep;

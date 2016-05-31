@@ -40,6 +40,9 @@ class Island
 public:
 	Island(island_count_t bodyCapacity, island_count_t contactCapacity, island_count_t jointCapacity,
 			StackAllocator* allocator, ContactListener* listener);
+
+	/// Destructor.
+	/// @detail Sets all bodies's island indexes to Body::InvalidIslandIndex and then frees allocated memory.
 	~Island();
 
 	/// Clears this island.
@@ -51,7 +54,15 @@ public:
 	/// @sa void Add(Joint* joint).
 	void Clear() noexcept;
 
-	void Solve(Profile* profile, const TimeStep& step, const Vec2& gravity, bool allowSleep);
+	/// Solves this island.
+	/// @detail This:
+	///   1. Updates every element of m_positions, and m_velocities.
+	///   2. Updates every body's sweep.pos0 to its sweep.pos1.
+	///   3. Updates every body's sweep.pos1 to the m_position element for it.
+	///   4. Updates every body's velocity to the m_velocity element for it.
+	///   5. Synchronizes every body's transform (by updating it to transform one of the body's sweep).
+	///   6. Reports to the listener.
+	void Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep);
 
 	void SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_count_t toiIndexB);
 
@@ -61,6 +72,9 @@ public:
 
 	void Add(Joint* joint);
 
+	/// Reports the given constraints to the listener.
+	/// This calls the listener's PostSolve method for all m_contactCount elements of the given array of constraints.
+	/// @param constraints Array of m_contactCount contact velocity constraint elements.
 	void Report(const ContactVelocityConstraint* constraints);
 
 	inline island_count_t GetBodyCapacity() const noexcept
@@ -107,6 +121,12 @@ public:
 
 private:
 	
+	void InitJointVelocityConstraints(const SolverData& solverData);
+	void SolveJointVelocityConstraints(const SolverData& solverData);
+	bool SolveJointPositionConstraints(const SolverData& solverData);
+	
+	float_t UpdateSleepTimes(float_t h);
+
 	/// Clears this island of added bodies.
 	/// @detail This sets all bodies's island indexes to Body::InvalidIslandIndex and resets
 	///   the body count to 0.
@@ -114,21 +134,29 @@ private:
 	/// @sa Body::InvalidIslandIndex.
 	void ClearBodies() noexcept;
 
-	island_count_t m_bodyCount = 0;
-	island_count_t m_contactCount = 0;
-	island_count_t m_jointCount = 0;
+	const island_count_t m_bodyCapacity; ///< Body capacity.
+	const island_count_t m_contactCapacity; ///< Contact capacity.
+	const island_count_t m_jointCapacity; ///< Joint capacity.
 
-	const island_count_t m_bodyCapacity;
-	const island_count_t m_contactCapacity;
-	const island_count_t m_jointCapacity;
-
+	island_count_t m_bodyCount = 0; ///< Count of bodies added to the island. Max of m_bodyCapacity.
+	island_count_t m_contactCount = 0; ///< Count of contacts added to the island. Max of m_contactCapacity.
+	island_count_t m_jointCount = 0; ///< Count of joints added to the island. Max of m_jointCapacity.
+	
 	StackAllocator* const m_allocator;
 	ContactListener* const m_listener;
 
 	Body** const m_bodies;
 	Contact** const m_contacts;
 	Joint** const m_joints;
+
+	/// Buffer of velocities allocated on construction.
+	/// @detail This is a body-capacity-sized array of velocities.
+	/// @sa m_bodyCapacity.
 	Velocity* const m_velocities;
+	
+	/// Buffer of positions allocated on construction.
+ 	/// @detail This is a body-capacity-sized array of positions.
+	/// @sa m_bodyCapacity.
 	Position* const m_positions;
 };
 

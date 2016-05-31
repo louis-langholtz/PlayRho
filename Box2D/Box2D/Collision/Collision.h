@@ -37,37 +37,48 @@ class CircleShape;
 class EdgeShape;
 class PolygonShape;
 
-/// The features that intersect to form the contact point
+/// Contact Feature.
+/// @detail The features that intersect to form the contact point.
+/// @note This structure is designed to be compact and passed-by-value.
 struct ContactFeature
 {
-	using index_t = unsigned int;
+	using index_t = uint8;
 
-	enum Type
+	enum Type: uint8
 	{
 		e_vertex = 0,
 		e_face = 1
 	};
 
-	ContactFeature() = default;
+	ContactFeature() noexcept = default;
+	ContactFeature(const ContactFeature& copy) noexcept = default;
+	
+	constexpr ContactFeature(Type ta, index_t ia, Type tb, index_t ib) noexcept:
+		typeA{ta}, indexA{ia}, typeB{tb}, indexB{ib}
+	{
+		static_assert(sizeof(struct ContactFeature) == 4, "bad size");
+	}
 
-	constexpr ContactFeature(Type ta, index_t ia, Type tb, index_t ib):
-		typeA(ta), indexA(ia), typeB(tb), indexB(ib) {}
+	// Fit data into 4-byte large structure...
 
 	Type typeA; ///< The feature type on shape A
-	index_t indexA; ///< Feature index on shape A
 	Type typeB; ///< The feature type on shape B
+	index_t indexA; ///< Feature index on shape A
 	index_t indexB; ///< Feature index on shape B
 };
 
-constexpr ContactFeature Flip(const ContactFeature& val)
+/// Default contact feature value.
+constexpr auto DefaultContactFeature = ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 0};
+
+/// Flips contact features information.
+constexpr ContactFeature Flip(ContactFeature val)
 {
-	// Swap features
-	return ContactFeature(val.typeB, val.indexB, val.typeA, val.indexA);
+	return ContactFeature{val.typeB, val.indexB, val.typeA, val.indexA};
 }
 
-constexpr bool operator==(const ContactFeature& lhs, const ContactFeature& rhs)
+constexpr bool operator==(ContactFeature lhs, ContactFeature rhs)
 {
-	return lhs.typeA == rhs.typeA && lhs.typeB == rhs.typeB && lhs.indexA == rhs.indexA && lhs.indexB == rhs.indexB;
+	return (lhs.typeA == rhs.typeA) && (lhs.typeB == rhs.typeB) && (lhs.indexA == rhs.indexA) && (lhs.indexB == rhs.indexB);
 }
 
 /// Manifold point data.
@@ -75,18 +86,26 @@ constexpr bool operator==(const ContactFeature& lhs, const ContactFeature& rhs)
 /// manifold. It holds details related to the geometry and dynamics
 /// of the contact points.
 /// The local point usage depends on the manifold type:
-/// -e_circles: the local center of circleB
-/// -e_faceA: the local center of cirlceB or the clip point of polygonB
-/// -e_faceB: the clip point of polygonA
+///   1. e_circles: The local center of circle B;
+///   2. e_faceA: The local center of cirlce B or the clip point of polygon B; or,
+///   3. e_faceB: The clip point of polygon A.
 /// This structure is stored across time steps, so we keep it small.
 /// @note The impulses are used for internal caching and may not
-/// provide reliable contact forces, especially for high speed collisions.
+///   provide reliable contact forces especially for high speed collisions.
 struct ManifoldPoint
 {
+	ManifoldPoint() noexcept = default;
+	ManifoldPoint(const ManifoldPoint& copy) noexcept = default;
+
+	constexpr explicit ManifoldPoint(Vec2 lp, ContactFeature cf = DefaultContactFeature,
+									 float_t ni = float_t{0}, float_t ti = float_t{0}) noexcept:
+		localPoint{lp}, contactFeature{cf}, normalImpulse{ni}, tangentImpulse{ti}
+	{}
+
 	Vec2 localPoint;		///< usage depends on manifold type
 	float_t normalImpulse;	///< the non-penetration impulse
 	float_t tangentImpulse;	///< the friction impulse
-	ContactFeature cf;    ///< uniquely identifies a contact point between two shapes
+	ContactFeature contactFeature; ///< uniquely identifies a contact point between two shapes
 };
 
 /// A manifold for two touching convex shapes.
@@ -110,7 +129,7 @@ class Manifold
 public:
 	using size_type = std::remove_cv<decltype(MaxPolygonVertices)>::type;
 
-	enum Type
+	enum Type: uint8
 	{
 		e_unset,
 		e_circles,
@@ -118,14 +137,22 @@ public:
 		e_faceB
 	};
 
-	Manifold() = default;
+	Manifold() noexcept = default;
 
 	/// Constructs a manifold with the given values.
 	/// @param t Manifold type.
 	/// @param ln Local normal.
 	/// @param lp Local point.
-	Manifold(Type t, Vec2 ln = Vec2_zero, Vec2 lp = Vec2_zero): type(t), localNormal(ln), localPoint(lp) {}
+	constexpr explicit Manifold(Type t, Vec2 ln = Vec2_zero, Vec2 lp = Vec2_zero) noexcept:
+		type{t}, localNormal{ln}, localPoint{lp}, pointCount{0}, points{} {}
 
+	constexpr Manifold(Type t, Vec2 ln, Vec2 lp, const ManifoldPoint& mp1) noexcept:
+		type{t}, localNormal{ln}, localPoint{lp}, pointCount{1}, points{mp1} {}
+
+	constexpr Manifold(Type t, Vec2 ln, Vec2 lp, const ManifoldPoint& mp1, const ManifoldPoint& mp2) noexcept:
+		type{t}, localNormal{ln}, localPoint{lp}, pointCount{2}, points{mp1, mp2} {}
+
+	/// Gets the type of this manifold.
 	Type GetType() const noexcept { return type; }
 
 	/// Sets the type of this manifold object.
@@ -162,13 +189,10 @@ public:
 	/// @detail This can be called up to MaxManifoldPoints times.
 	/// GetPointCount() can be called to find out how many points have already been added.
 	/// @note Behavior is undefined if this is called more than MaxManifoldPoints times. 
-	void AddPoint(const Vec2& lp, ContactFeature cf = ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 0})
+	void AddPoint(const ManifoldPoint& mp)
 	{
 		assert(pointCount < MaxManifoldPoints);
-		points[pointCount].localPoint = lp;
-		points[pointCount].cf = cf;
-		points[pointCount].normalImpulse = 0.f;
-		points[pointCount].tangentImpulse = 0.f;
+		points[pointCount] = mp;
 		++pointCount;
 	}
 
@@ -180,10 +204,23 @@ public:
 
 private:
 	Type type = e_unset; ///< Type of collision this manifold is associated with.
-	Vec2 localNormal;								///< not use for Type::e_points
-	Vec2 localPoint;								///< usage depends on manifold type
-	size_type pointCount = 0;							///< the number of manifold points
-	ManifoldPoint points[MaxManifoldPoints];	///< the points of contact
+	size_type pointCount = 0; ///< the number of manifold points
+	
+	Vec2 localNormal; ///< not use for Type::e_points
+	Vec2 localPoint; ///< usage depends on manifold type
+	
+	ManifoldPoint points[MaxManifoldPoints]; ///< the points of contact
+};
+
+struct PointSeparation
+{
+	PointSeparation() noexcept = default;
+	PointSeparation(const PointSeparation& copy) noexcept = default;
+	
+	constexpr PointSeparation(Vec2 point, float_t separation) noexcept: p{point}, s{separation} {}
+	
+	Vec2 p; ///< Point.
+	float_t s; ///< Separation.
 };
 
 /// This is used to compute the current state of a contact manifold.
@@ -192,21 +229,18 @@ class WorldManifold
 public:
 	using size_type = std::remove_cv<decltype(MaxPolygonVertices)>::type;
 
-	WorldManifold() = default;
+	WorldManifold() noexcept = default;
 
-	WorldManifold(const Manifold& manifold,
-					const Transform& xfA, float_t radiusA,
-					const Transform& xfB, float_t radiusB);
+	constexpr explicit WorldManifold(Vec2 n) noexcept:
+		normal{n}, count{0}, points{}, separations{} {}
 
-	/// Evaluate the manifold with supplied transforms. This assumes
-	/// modest motion from the original state. This does not change the
-	/// point count, impulses, etc. The radii must come from the shapes
-	/// that generated the manifold.
-	void Assign(const Manifold& manifold,
-					const Transform& xfA, float_t radiusA,
-					const Transform& xfB, float_t radiusB);
-
-	size_type GetPointCount() const noexcept { return pointCount; }
+	constexpr explicit WorldManifold(Vec2 n, PointSeparation ps0) noexcept:
+		normal{n}, count{1}, points{ps0.p}, separations{ps0.s} {}
+	
+	constexpr explicit WorldManifold(Vec2 n, PointSeparation ps0, PointSeparation ps1) noexcept:
+		normal{n}, count{2}, points{ps0.p, ps1.p}, separations{ps0.s, ps1.s} {}
+	
+	size_type GetPointCount() const noexcept { return count; }
 
 	Vec2 GetNormal() const { return normal; }
 
@@ -223,12 +257,24 @@ public:
 	}
 
 private:
+	/// Evaluate the manifold with supplied transforms. This assumes
+	/// modest motion from the original state. This does not change the
+	/// point count, impulses, etc. The radii must come from the shapes
+	/// that generated the manifold.
+	void Assign(const Manifold& manifold,
+				const Transform& xfA, float_t radiusA,
+				const Transform& xfB, float_t radiusB);
+	
 	Vec2 normal;								///< world vector pointing from A to B
-	size_type pointCount = 0;
+	size_type count = 0;
 	Vec2 points[MaxManifoldPoints];		///< world contact point (point of intersection)
 	float_t separations[MaxManifoldPoints];	///< a negative value indicates overlap, in meters
 };
 
+WorldManifold GetWorldManifold(const Manifold& manifold,
+							   const Transform& xfA, const float_t radiusA,
+							   const Transform& xfB, const float_t radiusB);
+	
 /// This is used for determining the state of contact points.
 enum class PointState
 {
@@ -254,8 +300,9 @@ struct ClipVertex
 /// Ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
 struct RayCastInput
 {
-	Vec2 p1, p2;
-	float_t maxFraction;
+	Vec2 p1; ///< Point 1.
+	Vec2 p2; ///< Point 2.
+	float_t maxFraction; ///< Max fraction.
 };
 
 /// Ray-cast output data. The ray hits at p1 + fraction * (p2 - p1), where p1 and p2

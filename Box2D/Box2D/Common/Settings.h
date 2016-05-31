@@ -24,6 +24,7 @@
 #include <cfloat>
 #include <cmath>
 #include <limits>
+#include <cstdint>
 
 #define BOX2D_NOT_USED(x) ((void)(x))
 
@@ -34,12 +35,12 @@
 
 namespace box2d
 {
-using int8 = signed char;
-using int16 = signed short;
-using int32 = signed int;
-using uint8 = unsigned char;
-using uint16 = unsigned short;
-using uint32 = unsigned int;
+using int8 = std::int8_t;
+using int16 = std::int16_t;
+using int32 = std::int32_t;
+using uint8 = std::uint8_t;
+using uint16 = std::uint16_t;
+using uint32 = std::uint32_t;
 using float32 = float;
 using float64 = double;
 
@@ -64,28 +65,30 @@ constexpr auto Pi = float_t(M_PI); // 3.14159265359
 /// Maximum manifold points.
 /// This is the number of contact points between two convex shapes.
 /// Do not change this value.
-constexpr auto MaxManifoldPoints = unsigned{2};
+/// @note For memory efficiency, uses the smallest integral type that can hold the value. 
+constexpr auto MaxManifoldPoints = uint8{2};
 
 /// Maximum number of vertices on a convex polygon.
 /// You cannot increase this too much because BlockAllocator has a maximum object size.
-constexpr auto MaxPolygonVertices = unsigned{16}; // 8
+/// @note For memory efficiency, uses the smallest integral type that can hold the value. 
+constexpr auto MaxPolygonVertices = uint8{16}; // 8
 
 /// This is used to fatten AABBs in the dynamic tree. This is used to predict
 /// the future position based on the current displacement.
 /// This is a dimensionless multiplier.
-constexpr auto AabbMultiplier = float_t(2);
+constexpr auto AabbMultiplier = float_t{2};
 
 /// Length used as a collision and constraint tolerance.
 /// Usually chosen to be numerically significant, but visually insignificant.
 /// Lower or raise to decrease or increase respectively the minimum of space
 /// between bodies at rest.
 /// @note Smaller values increases the time it takes for bodies to come to rest.
-constexpr auto LinearSlop = float_t(0.00005); // originally 0.005;
+constexpr auto LinearSlop = float_t{1} / float_t{10000}; // aka 0.0001, originally 0.005
 
 /// Fattens AABBs in the dynamic tree. This allows proxies
 /// to move by a small amount without triggering a tree adjustment.
 /// This is in meters.
-constexpr auto AabbExtension = LinearSlop * float_t(20); // aka 0.001, originally 0.1
+constexpr auto AabbExtension = LinearSlop * float_t{20}; // aka 0.002, originally 0.1
 
 /// A small angle used as a collision and constraint tolerance. Usually it is
 /// chosen to be numerically significant, but visually insignificant.
@@ -128,7 +131,7 @@ constexpr auto MaxAngularCorrection = Pi * float_t(8) / float_t(180);
 /// Maximum linear velocity of a body.
 /// This limit is very large and is used to prevent numerical problems.
 /// You shouldn't need to adjust this.
-constexpr auto MaxTranslation = float_t(2);
+constexpr auto MaxTranslation = float_t{4}; // originally 2
 
 /// Maximum angular velocity of a body.
 /// This limit is very large and is used to prevent numerical problems.
@@ -138,8 +141,11 @@ constexpr auto MaxRotation = Pi / float_t(2);
 /// This scale factor controls how fast overlap is resolved. Ideally this would be 1 so
 /// that overlap is removed in one time step. However using values close to 1 often lead
 /// to overshoot.
-constexpr auto Baumgarte = float_t(0.6);
-constexpr auto ToiBaugarte = float_t(0.75);
+constexpr auto Baumgarte = float_t{2} / float_t{10}; // aka 0.2.
+
+/// Time of impact Baumgarte factor.
+/// @sa Baumgarte.
+constexpr auto ToiBaumgarte = float_t{75} / float_t{100}; // aka .75
 
 
 // Sleep

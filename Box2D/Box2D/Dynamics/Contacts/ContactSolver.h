@@ -50,13 +50,18 @@ struct ContactVelocityConstraintBodyData
 {
 	using index_t = size_t;
 
+	ContactVelocityConstraintBodyData() noexcept = default;
+	ContactVelocityConstraintBodyData(const ContactVelocityConstraintBodyData& copy) noexcept = default;
+	
+	constexpr ContactVelocityConstraintBodyData(index_t i, float_t iM, float_t iI) noexcept: index{i}, invMass{iM}, invI{iI} {}
+
 	index_t index; ///< Index within island of body.
 	float_t invMass; ///< Inverse mass of body.
 	float_t invI; ///< Inverse rotational interia of body.
 };
 
 /// Contact velocity constraint.
-/// @note A valid contact velocity constraint must have either a point count of either 1 or 2.
+/// @note A valid contact velocity constraint must have a point count of either 1 or 2.
 class ContactVelocityConstraint
 {
 public:
@@ -112,17 +117,31 @@ public:
 		--pointCount;
 	}
 
+	/// Sets this object's K value.
+	/// @param value A position constraint dependent value or the zero matrix (Mat22_zero).
+	void SetK(const Mat22& value) noexcept
+	{
+		K = value;
+		normalMass = value.GetInverse();
+	}
+
+	Mat22 GetK() const noexcept { return K; }
+	Mat22 GetNormalMass() const noexcept { return normalMass; }
+
 	Vec2 normal;
-	Mat22 normalMass;
-	Mat22 K;
+
 	ContactVelocityConstraintBodyData bodyA; ///< Body A contact velocity constraint data.
 	ContactVelocityConstraintBodyData bodyB; ///< Body B contact velocity constraint data.
 	float_t friction; ///< Friction coefficient. Usually in the range of [0,1].
-	float_t restitution;
+	float_t restitution; ///< Restitution coefficient.
 	float_t tangentSpeed;
-	index_type contactIndex;
+	index_type contactIndex; ///< Index of the contact that this constraint is for.
 
 private:
+	// K and normalMass fields are only used for the block solver.
+	Mat22 K; ///< Block solver "K" info (only used by block solver).
+	Mat22 normalMass; ///< Block solver "normal mass" info (only used by block solver).
+
 	VelocityConstraintPoint points[MaxManifoldPoints];
 	size_type pointCount;
 };
@@ -157,11 +176,15 @@ public:
 	ContactSolver() = delete;
 	ContactSolver(const ContactSolver& copy) = delete;
 
-	void InitializeVelocityConstraints();
+	/// Updates the position dependent portions of the velocity constraints with the
+	/// information from the current position constraints.
+	void UpdateVelocityConstraints();
 
 	void WarmStart();
 	void StoreImpulses();
 
+	/// "Solves" the velocity constraints.
+	/// @detail Updates the velocities and velocity constraint points' normal and tangent impulses.
 	void SolveVelocityConstraints();
 
 	/// Solves position constraints.
@@ -170,6 +193,7 @@ public:
 	bool SolvePositionConstraints();
 	
 	/// Sequential position solver for TOI-based position constraints.
+	/// @detail This updates positions (and nothing else).
 	/// @return true if the minimum separation is above the minimum TOI separation value, false otherwise.
 	bool SolveTOIPositionConstraints(size_type indexA, size_type indexB);
 
@@ -179,20 +203,37 @@ public:
 	}
 
 private:
-	static void Assign(ContactVelocityConstraint& var, const Contact& val);
-	static void Assign(ContactPositionConstraintBodyData& var, const Body& val);
-	static void Assign(ContactVelocityConstraintBodyData& var, const Body& val);
+	static ContactPositionConstraint* AllocPositionConstraints(StackAllocator* allocator, size_type count);
+	static ContactPositionConstraint* InitPositionConstraints(ContactPositionConstraint* constraints, size_type count, Contact** contacts);
 
-	void InitializeVelocityConstraint(ContactVelocityConstraint& vc, const ContactPositionConstraint& pc);
+	static ContactVelocityConstraint* AllocVelocityConstraints(StackAllocator* allocator, size_type count);
+	static ContactVelocityConstraint* InitVelocityConstraints(ContactVelocityConstraint* constraints, size_type count, Contact** contacts, float_t dtRatio = 0);
+	
+	static void Assign(ContactPositionConstraintBodyData& var, const Body& val);
+	static ContactVelocityConstraintBodyData GetVelocityConstraintBodyData(const Body& val);
+
+	/// Gets the position-independent velocity constraint for the given contact, index, and time slot values.
+	static ContactVelocityConstraint GetVelocityConstraint(const Contact& contact, size_type index, float_t dtRatio);
+	
+	/// Updates the velocity constraint data with the given position constraint data.
+	/// @detail Specifically this:
+	///   1. Sets the normal to the calculated world manifold normal.
+	///   2. Sets the velocity constraint point information (short of the impulse data).
+	///   3. Sets the K value (for the 2-point block solver).
+	///   4. Checks for redundant velocity constraint point and removes it if found.
+	/// @param vc Velocity constraint.
+	/// @param pc Position constraint.
+	void UpdateVelocityConstraint(ContactVelocityConstraint& vc, const ContactPositionConstraint& pc);
 
 	const TimeStep m_step;
 	Position* const m_positions;
 	Velocity* const m_velocities;
 	StackAllocator* const m_allocator;
-	Contact** const m_contacts;
-	const size_type m_count;
-	ContactPositionConstraint* const m_positionConstraints;
-	ContactVelocityConstraint* const m_velocityConstraints;
+	
+	const size_type m_count; ///< Count of elements in the contact position-constraint and velocity-constraint arrays.
+	Contact** const m_contacts; ///< Array of contacts.
+	ContactPositionConstraint* const m_positionConstraints; ///< Array of position-constraints (1 per contact).
+	ContactVelocityConstraint* const m_velocityConstraints; ///< Array of velocity-constraints (1 per contact).
 };
 
 } // namespace box2d

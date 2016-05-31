@@ -37,6 +37,8 @@ public:
 	Cantilever()
 	{
 		Body* ground = nullptr;
+
+		// Creates bottom ground
 		{
 			BodyDef bd;
 			ground = m_world->CreateBody(&bd);
@@ -46,6 +48,7 @@ public:
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
+		// Creates left-end-fixed 8-part plank (below the top one)
 		{
 			PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.125f);
@@ -73,6 +76,7 @@ public:
 			}
 		}
 
+		// Creates left-end-fixed 3-part plank at top
 		{
 			PolygonShape shape;
 			shape.SetAsBox(1.0f, 0.125f);
@@ -102,6 +106,7 @@ public:
 			}
 		}
 
+		// Creates 8-part plank to the right of the fixed planks (but not farthest right)
 		{
 			PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.125f);
@@ -132,6 +137,7 @@ public:
 			}
 		}
 
+		// Creates 8-part farthest-right plank
 		{
 			PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.125f);
@@ -164,6 +170,7 @@ public:
 			}
 		}
 
+		// Creates triangles
 		for (int32 i = 0; i < 2; ++i)
 		{
 			Vec2 vertices[3];
@@ -185,6 +192,7 @@ public:
 			body->CreateFixture(&fd);
 		}
 
+		// Creates circles
 		for (int32 i = 0; i < 2; ++i)
 		{
 			CircleShape shape;

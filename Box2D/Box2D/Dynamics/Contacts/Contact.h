@@ -73,11 +73,14 @@ public:
 
 	/// Get the contact manifold. Do not modify the manifold unless you understand the
 	/// internals of Box2D.
-	Manifold* GetManifold() noexcept;
-	const Manifold* GetManifold() const noexcept;
+	Manifold& GetManifold() noexcept;
+	const Manifold& GetManifold() const noexcept;
 
 	/// Get the world manifold.
 	WorldManifold GetWorldManifold() const;
+
+	/// Does this contact have a sensor fixture?
+	bool HasSensor() const noexcept;
 
 	/// Is this contact touching?
 	bool IsTouching() const noexcept;
@@ -86,7 +89,11 @@ public:
 	/// contact listener. The contact is only disabled for the current
 	/// time step (or sub-step in continuous collisions).
 	[[deprecated]] void SetEnabled(bool flag) noexcept;
+
+	/// Enables this contact.
 	void SetEnabled() noexcept;
+	
+	/// Disables this contact.
 	void UnsetEnabled() noexcept;
 
 	/// Has this contact been disabled?
@@ -177,9 +184,8 @@ protected:
 	void UnflagForFiltering() noexcept;
 	bool NeedsFiltering() const noexcept;
 
-	static Contact* Create(Fixture* fixtureA, child_count_t indexA,
-							 Fixture* fixtureB, child_count_t indexB,
-							 BlockAllocator* allocator);
+	static Contact* Create(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB,
+						   BlockAllocator* allocator);
 	static void Destroy(Contact* contact, Shape::Type typeA, Shape::Type typeB, BlockAllocator* allocator);
 	static void Destroy(Contact* contact, BlockAllocator* allocator);
 
@@ -195,7 +201,8 @@ protected:
 	/// Gets the time of impact (TOI) as a fraction.
 	/// @note This is only valid if a TOI has been set.
 	/// @sa void SetToi(float_t toi).
-	/// @return Time of impact fraction in the range of 0 to 1 if set, otheriwse undefined.
+	/// @return Time of impact fraction in the range of 0 to 1 if set (where 1
+	///   means no actual impact in current time slot), otheriwse undefined.
 	float_t GetToi() const;
 
 	/// Sets the time of impact (TOI).
@@ -203,11 +210,16 @@ protected:
 	/// @note Behavior is undefined if the value assigned is less than 0 or greater than 1.
 	/// @sa float_t GetToi() const.
 	/// @sa HasValidToi.
-	/// @param toi Time of impact as a fraction between 0 and 1.
+	/// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates no actual impact in the current time slot.
 	void SetToi(float_t toi) noexcept;
 	
 	void UnsetToi() noexcept;
 
+	/// Updates the time of impact information.
+	/// @detail This:
+	///   Ensures both bodies's sweeps are on the max alpha0 of the two (by advancing the sweep of the lesser body).
+	///   Calculates whether there's an impact and if so when.
+	///   Sets the new time of impact or sets it to 1.
 	bool UpdateTOI();
 
 	bool IsInIsland() const noexcept;
@@ -227,34 +239,33 @@ protected:
 	ContactEdge m_nodeA = { nullptr, nullptr, nullptr, nullptr};
 	ContactEdge m_nodeB = { nullptr, nullptr, nullptr, nullptr};
 
-	Fixture* m_fixtureA = nullptr;
-	Fixture* m_fixtureB = nullptr;
+	Fixture* const m_fixtureA;
+	Fixture* const m_fixtureB;
 
-	child_count_t m_indexA = 0;
-	child_count_t m_indexB = 0;
+	child_count_t const m_indexA;
+	child_count_t const m_indexB;
 
 	float_t m_tangentSpeed = float_t{0};
 
-	Manifold m_manifold;
+	Manifold m_manifold; ///< Manifold of the contact.
 
 	std::remove_cv<decltype(MaxSubSteps)>::type m_toiCount = 0; ///< Count of TOI substeps contact has gone through [0,MaxSubSteps].
 
 	float_t m_toi; // only valid if m_flags & e_toiFlag
 
 	// initialized on construction (construction-time depedent)
-	float_t m_friction;
-	float_t m_restitution;
-
+	float_t m_friction; ///< Mix of frictions of the associated fixtures. @sa MixFriction.
+	float_t m_restitution; ///< Mix of restitutions of the associated fixtures. @sa MixRestitution.
 };
 
-inline Manifold* Contact::GetManifold() noexcept
+inline Manifold& Contact::GetManifold() noexcept
 {
-	return &m_manifold;
+	return m_manifold;
 }
 
-inline const Manifold* Contact::GetManifold() const noexcept
+inline const Manifold& Contact::GetManifold() const noexcept
 {
-	return &m_manifold;
+	return m_manifold;
 }
 
 inline WorldManifold Contact::GetWorldManifold() const
@@ -263,7 +274,7 @@ inline WorldManifold Contact::GetWorldManifold() const
 	const auto bodyB = m_fixtureB->GetBody();
 	const auto shapeA = m_fixtureA->GetShape();
 	const auto shapeB = m_fixtureB->GetShape();
-	return WorldManifold{m_manifold, bodyA->GetTransform(), shapeA->GetRadius(), bodyB->GetTransform(), shapeB->GetRadius()};
+	return box2d::GetWorldManifold(m_manifold, bodyA->GetTransform(), shapeA->GetRadius(), bodyB->GetTransform(), shapeB->GetRadius());
 }
 
 inline void Contact::SetEnabled(bool flag) noexcept
@@ -436,7 +447,18 @@ inline void Contact::UnsetInIsland() noexcept
 {	
 	m_flags &= ~Contact::e_islandFlag;
 }
-	
+
+inline bool Contact::HasSensor() const noexcept
+{
+	return m_fixtureA->IsSensor() || m_fixtureB->IsSensor();
+}
+
+inline void SetAwake(Contact& c) noexcept
+{
+	SetAwake(*c.GetFixtureA());
+	SetAwake(*c.GetFixtureB());
+}
+
 } // namespace box2d
 
 #endif

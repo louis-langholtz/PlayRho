@@ -62,11 +62,11 @@ public:
 		case Shape::e_polygon:
 			{
 				PolygonShape* poly = (PolygonShape*)fixture->GetShape();
-				int32 vertexCount = poly->GetVertexCount();
+				const auto vertexCount = poly->GetVertexCount();
 				assert(vertexCount <= MaxPolygonVertices);
 				Vec2 vertices[MaxPolygonVertices];
 
-				for (int32 i = 0; i < vertexCount; ++i)
+				for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 				{
 					vertices[i] = Mul(xf, poly->GetVertex(i));
 				}

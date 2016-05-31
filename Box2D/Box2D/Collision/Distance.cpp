@@ -29,55 +29,60 @@ namespace box2d {
 uint32 gjkCalls, gjkIters, gjkMaxIters;
 #endif
 
-DistanceProxy::DistanceProxy(const Shape& shape, child_count_t index)
+namespace {
+
+/// Maximum number of supportable vertices.
+constexpr auto MaxSimplexVertices = unsigned{3};
+
+using IndexPairArray = std::array<IndexPair, MaxSimplexVertices>;
+
+bool Find(const IndexPairArray& array, IndexPair key, std::size_t count)
+{
+	assert(count <= array.size());
+	for (std::size_t i = std::size_t{0}; i < count; ++i)
+	{
+		if (array[i] == key)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+}
+
+DistanceProxy GetDistanceProxy(const Shape& shape, child_count_t index)
 {
 	switch (shape.GetType())
 	{
 		case Shape::e_circle:
 		{
 			const auto& circle = *static_cast<const CircleShape*>(&shape);
-			m_buffer[0] = circle.GetPosition();
-			m_vertices = m_buffer;
-			m_count = 1;
-			m_radius = circle.GetRadius();
+			return DistanceProxy{circle.GetRadius(), circle.GetPosition()};
 		}
-			break;
 			
 		case Shape::e_polygon:
 		{
 			const auto& polygon = *static_cast<const PolygonShape*>(&shape);
-			m_vertices = polygon.GetVertices();
-			m_count = polygon.GetVertexCount();
-			m_radius = polygon.GetRadius();
+			return DistanceProxy{polygon.GetRadius(), polygon.GetVertices(), polygon.GetVertexCount()};
 		}
-			break;
 			
 		case Shape::e_chain:
 		{
 			const auto& chain = *static_cast<const ChainShape*>(&shape);
-			m_buffer[0] = chain.GetVertex(index);
-			m_buffer[1] = chain.GetVertex(chain.GetNextIndex(index));
-			m_vertices = m_buffer;
-			m_count = 2;
-			m_radius = chain.GetRadius();
+			return DistanceProxy{chain.GetRadius(), chain.GetVertex(index), chain.GetVertex(chain.GetNextIndex(index))};
 		}
-			break;
 			
 		case Shape::e_edge:
 		{
 			const auto& edge = *static_cast<const EdgeShape*>(&shape);
-			m_buffer[0] = edge.GetVertex1();
-			m_buffer[1] = edge.GetVertex2();
-			m_vertices = m_buffer;
-			m_count = 2;
-			m_radius = edge.GetRadius();
+			return DistanceProxy{edge.GetRadius(), edge.GetVertex1(), edge.GetVertex2()};
 		}
-			break;
 			
-		default:
-			assert(false);
+		case Shape::e_typeCount:
 			break;
 	}
+	assert(false);
 }
 
 class SimplexVertex
@@ -90,13 +95,13 @@ public:
 	constexpr SimplexVertex(const SimplexVertex& copy) noexcept = default;
 
 	constexpr SimplexVertex(Vec2 sA, size_type iA, Vec2 sB, size_type iB, float_t a_) noexcept:
-		wA(sA), wB(sB), indexA(iA), indexB(iB), w(sB - sA), a(a_)
+		wA{sA}, wB{sB}, indexPair{iA,iB}, w{sB - sA}, a{a_}
 	{
 		assert(a_ >= 0 && a_ <= 1);
 	}
 
 	constexpr SimplexVertex(const SimplexVertex& copy, float_t newA) noexcept:
-		wA(copy.wA), wB(copy.wB), indexA(copy.indexA), indexB(copy.indexB), w(copy.w), a(newA)
+		wA{copy.wA}, wB{copy.wB}, indexPair{copy.indexPair}, w{copy.w}, a{newA}
 	{
 		assert(newA >= 0 && newA <= 1);
 	}
@@ -123,8 +128,7 @@ public:
 		a = value;
 	}
 
-	size_type indexA; ///< wA index
-	size_type indexB; ///< wB index
+	IndexPair indexPair; ///< Indexes of wA and wB.
 	
 private:
 	Vec2 wA; ///< Support point in proxy A.
@@ -136,26 +140,34 @@ private:
 class Simplex
 {
 public:
-	/// Maximum number of supportable vertices.
-	static constexpr auto MaxVertices = unsigned{3};
-
-	using size_type = std::remove_cv<decltype(MaxVertices)>::type;
+	using size_type = std::remove_cv<decltype(MaxSimplexVertices)>::type;
 
 	Simplex() = default;
 	
 	Simplex(const SimplexVertex& sv1) noexcept:
-		m_count{1}, m_vertices{sv1} {}
+		m_count{1}, m_vertices{sv1}
+	{}
+
 	Simplex(const SimplexVertex& sv1, const SimplexVertex& sv2) noexcept:
-		m_count{2}, m_vertices{sv1, sv2} {}
+		m_count{2}, m_vertices{sv1, sv2}, m_metric{Distance(m_vertices[0].get_w(), m_vertices[1].get_w())}
+	{}
+	
 	Simplex(const SimplexVertex& sv1, const SimplexVertex& sv2, const SimplexVertex& sv3) noexcept:
-		m_count{3}, m_vertices{sv1, sv2, sv3} {}
+		m_count{3}, m_vertices{sv1, sv2, sv3}, m_metric{Cross(m_vertices[1].get_w() - m_vertices[0].get_w(), m_vertices[2].get_w() - m_vertices[0].get_w())}
+	{}
 
 	/// Gets count of valid vertices.
- 	/// @return Value between 0 and MaxVertices.
-	/// @see MaxVertices
+ 	/// @return Value between 0 and MaxSimplexVertices.
+	/// @see MaxSimplexVertices
 	size_type GetCount() const noexcept
 	{
 		return m_count;
+	}
+
+	const SimplexVertex& GetVertex(size_type index) const noexcept
+	{
+		assert(index < m_count);
+		return m_vertices[index];
 	}
 
 	const SimplexVertex* GetVertices() const noexcept
@@ -165,7 +177,7 @@ public:
 
 	void AddVertex(const SimplexVertex& vertex) noexcept
 	{
-		assert(m_count < MaxVertices);
+		assert(m_count < MaxSimplexVertices);
 		m_vertices[m_count] = vertex;
 		++m_count;
 	}
@@ -174,19 +186,20 @@ public:
 				   const DistanceProxy& proxyA, const Transform& transformA,
 				   const DistanceProxy& proxyB, const Transform& transformB)
 	{
-		assert(cache.GetCount() <= MaxVertices);
+		assert(cache.GetCount() <= MaxSimplexVertices);
 		
 		// Copy data from cache.
-		const auto count = cache.GetCount();
-		for (auto i = decltype(count){0}; i < count; ++i)
 		{
-			const auto indexA = cache.GetIndexA(i);
-			const auto indexB = cache.GetIndexB(i);
-			const auto wA = Mul(transformA, proxyA.GetVertex(indexA));
-			const auto wB = Mul(transformB, proxyB.GetVertex(indexB));
-			m_vertices[i] = SimplexVertex{wA, indexA, wB, indexB, float_t{0}};
+			const auto count = cache.GetCount();
+			for (auto i = decltype(count){0}; i < count; ++i)
+			{
+				const auto indexPair = cache.GetIndexPair(i);
+				const auto wA = Mul(transformA, proxyA.GetVertex(indexPair.a));
+				const auto wB = Mul(transformB, proxyB.GetVertex(indexPair.b));
+				m_vertices[i] = SimplexVertex{wA, indexPair.a, wB, indexPair.b, float_t{0}};
+			}
+			m_count = count;
 		}
-		m_count = count;
 
 		// Compute the new simplex metric, if it is substantially different than
 		// old metric then flush the simplex.
@@ -219,7 +232,7 @@ public:
 		cache.ClearIndices();
 		for (auto i = decltype(m_count){0}; i < m_count; ++i)
 		{
-			cache.AddIndex(m_vertices[i].indexA, m_vertices[i].indexB);
+			cache.AddIndex(m_vertices[i].indexPair);
 		}
 	}
 
@@ -244,23 +257,18 @@ public:
 		}
 	}
 
+	/// Gets the "closest point".
+	/// @note This uses the vertices "A" values when count is 2.
 	Vec2 GetClosestPoint() const
 	{
 		assert(m_count == 1 || m_count == 2 || m_count == 3);
 		
 		switch (m_count)
 		{
-		case 1:
-			return m_vertices[0].get_w();
-
-		case 2:
-			return m_vertices[0].get_a() * m_vertices[0].get_w() + m_vertices[1].get_a() * m_vertices[1].get_w();
-
-		case 3:
-			return Vec2_zero;
-
-		default:
-			return Vec2_zero;
+		case 1: return m_vertices[0].get_w();
+		case 2: return m_vertices[0].get_a() * m_vertices[0].get_w() + m_vertices[1].get_a() * m_vertices[1].get_w();
+		case 3: return Vec2_zero;
+		default: return Vec2_zero;
 		}
 	}
 
@@ -304,6 +312,9 @@ public:
 		}
 	}
 
+	/// "Solves" the simplex.
+	/// @detail This updates the simplex vertexes - setting the "A" value of each and possibly changing the simplex vertex count.
+	/// @sa GetCount().
 	void Solve() noexcept;
 
 private:
@@ -311,10 +322,47 @@ private:
 	void Solve3() noexcept;
 
 	size_type m_count = 0; ///< Count of valid vertex entries in m_vertices. Value between 0 and MaxVertices. @see m_vertices.
-	SimplexVertex m_vertices[MaxVertices]; ///< Vertices. Only elements < m_count are valid. @see m_count.
+	SimplexVertex m_vertices[MaxSimplexVertices]; ///< Vertices. Only elements < m_count are valid. @see m_count.
+	float_t m_metric = 0;
 };
 
+static SimplexVertex GetSimplexVertex(IndexPair indexPair,
+									  const DistanceProxy& proxyA, const Transform& xfA,
+									  const DistanceProxy& proxyB, const Transform& xfB)
+{
+	const auto wA = Mul(xfA, proxyA.GetVertex(indexPair.a));
+	const auto wB = Mul(xfB, proxyB.GetVertex(indexPair.b));
+	return SimplexVertex{wA, indexPair.a, wB, indexPair.b, float_t{0}};	
+}
 
+static Simplex GetSimplex(const SimplexCache& cache,
+						  const DistanceProxy& proxyA, const Transform& xfA,
+						  const DistanceProxy& proxyB, const Transform& xfB)
+{
+	const auto count = cache.GetCount();
+	assert(count <= 3);
+	switch (count)
+	{
+		case 1:
+			return Simplex{
+				GetSimplexVertex(cache.GetIndexPair(0), proxyA, xfA, proxyB, xfB)
+			};
+		case 2:
+			return Simplex{
+				GetSimplexVertex(cache.GetIndexPair(0), proxyA, xfA, proxyB, xfB),
+				GetSimplexVertex(cache.GetIndexPair(1), proxyA, xfA, proxyB, xfB)
+			};
+		case 3:
+			return Simplex{
+				GetSimplexVertex(cache.GetIndexPair(0), proxyA, xfA, proxyB, xfB),
+				GetSimplexVertex(cache.GetIndexPair(1), proxyA, xfA, proxyB, xfB),
+				GetSimplexVertex(cache.GetIndexPair(2), proxyA, xfA, proxyB, xfB)
+			};
+		default: break;
+	}
+	return Simplex{};
+}
+	
 // Solve a line segment using barycentric coordinates.
 //
 // p = a1 * w1 + a2 * w2
@@ -508,23 +556,35 @@ void Simplex::Solve() noexcept
 	}
 }
 
+static inline auto CopyIndexPairs(IndexPairArray& dst, const Simplex& src)
+{
+	const auto count = src.GetCount();
+	for (auto i = decltype(count){0}; i < count; ++i)
+	{
+		dst[i] = src.GetVertex(i).indexPair;
+	}
+	return count;
+}
+
 DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 {
 #if defined(DO_GJK_PROFILING)
 	++gjkCalls;
 #endif
 
+	assert(input.proxyA.GetVertexCount() > 0);
+	assert(input.proxyB.GetVertexCount() > 0);
+
 	// Initialize the simplex.
-	Simplex simplex;
+	Simplex simplex; // = GetSimplex(cache, input.proxyA, input.transformA, input.proxyB, input.transformB);
 	simplex.ReadCache(cache, input.proxyA, input.transformA, input.proxyB, input.transformB);
 
 	// Get simplex vertices as an array.
-	const auto vertices = simplex.GetVertices();
-	constexpr auto k_maxIters = uint32{20}; ///< Max number of support point calls.
+	constexpr auto k_maxIters = std::uint32_t{20}; ///< Max number of support point calls.
 
 	// These store the vertices of the last simplex so that we
 	// can check for duplicates and prevent cycling.
-	SimplexVertex::size_type saveA[Simplex::MaxVertices], saveB[Simplex::MaxVertices];
+	IndexPairArray savedIndices;
 
 #if defined(DO_COMPUTE_CLOSEST_POINT)
 	auto distanceSqr1 = MaxFloat;
@@ -535,17 +595,12 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 	while (iter < k_maxIters)
 	{
 		// Copy simplex so we can identify duplicates.
-		const auto saveCount = simplex.GetCount();
-		for (auto i = decltype(saveCount){0}; i < saveCount; ++i)
-		{
-			saveA[i] = vertices[i].indexA;
-			saveB[i] = vertices[i].indexB;
-		}
+		const auto savedCount = CopyIndexPairs(savedIndices, simplex);
 
 		simplex.Solve();
 
 		// If we have max points (3), then the origin is in the corresponding triangle.
-		if (simplex.GetCount() == Simplex::MaxVertices)
+		if (simplex.GetCount() == MaxSimplexVertices)
 		{
 			break;
 		}
@@ -577,26 +632,16 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 			break;
 		}
 
-		// Compute a tentative new simplex vertex using support points.
-		const auto indexA = input.proxyA.GetSupport(MulT(input.transformA.q, -d));
-		const auto indexB = input.proxyB.GetSupport(MulT(input.transformB.q, d));
-
 		// Iteration count is equated to the number of support point calls.
 		++iter;
+		
+		// Compute a tentative new simplex vertex using support points.
+		const auto indexA = input.proxyA.GetSupportIndex(MulT(input.transformA.q, -d));
+		const auto indexB = input.proxyB.GetSupportIndex(MulT(input.transformB.q, d));
 
 		// Check for duplicate support points. This is the main termination criteria.
-		auto duplicate = false;
-		for (auto i = decltype(saveCount){0}; i < saveCount; ++i)
-		{
-			if ((indexA == saveA[i]) && (indexB == saveB[i]))
-			{
-				duplicate = true;
-				break;
-			}
-		}
-
-		// If we found a duplicate support point we must exit to avoid cycling.
-		if (duplicate)
+		// If there's a duplicate support point, code must exit loop to avoid cycling.
+		if (Find(savedIndices, IndexPair{indexA, indexB}, savedCount))
 		{
 			break;
 		}

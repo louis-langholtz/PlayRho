@@ -21,81 +21,109 @@
 
 namespace box2d {
 
-WorldManifold::WorldManifold(const Manifold& manifold,
-								 const Transform& xfA, float_t radiusA,
-								 const Transform& xfB, float_t radiusB)
+static inline WorldManifold GetWorldManifoldForCircles(const Manifold& manifold,
+													   const Transform& xfA, const float_t radiusA,
+													   const Transform& xfB, const float_t radiusB)
 {
-	this->Assign(manifold, xfA, radiusA, xfB, radiusB);
-}
-
-void WorldManifold::Assign(const Manifold& manifold,
-						  const Transform& xfA, float_t radiusA,
-						  const Transform& xfB, float_t radiusB)
-{
-	if (manifold.GetPointCount() == 0)
-		return;
-
-	switch (manifold.GetType())
+	assert(manifold.GetPointCount() == 1);
+	
+	switch (manifold.GetPointCount())
 	{
-	case Manifold::e_unset:
-		assert(manifold.GetType() != Manifold::e_unset);
-		break;
-
-	case Manifold::e_circles:
+		case 1:
 		{
 			const auto pointA = Mul(xfA, manifold.GetLocalPoint());
 			const auto pointB = Mul(xfB, manifold.GetPoint(0).localPoint);
 			const auto delta = pointB - pointA;
-			normal = (delta.LengthSquared() > Square(Epsilon))? Normalize(delta): Vec2{float_t{1}, float_t{0}};
+			const auto normal = (delta.LengthSquared() > Square(Epsilon))? Normalize(delta): Vec2{float_t{1}, float_t{0}};
+
 			const auto cA = pointA + (radiusA * normal);
 			const auto cB = pointB - (radiusB * normal);
-			points[0] = (cA + cB) / float_t(2);
-			separations[0] = Dot(cB - cA, normal);
-			pointCount = 1;
+			const auto p0 = (cA + cB) / float_t{2};
+			const auto s0 = Dot(cB - cA, normal);
+			return WorldManifold{normal, PointSeparation{p0, s0}};
 		}
-		break;
-
-	case Manifold::e_faceA:
-		{
-			normal = Mul(xfA.q, manifold.GetLocalNormal());
-			const auto planePoint = Mul(xfA, manifold.GetLocalPoint());
-			pointCount = 0;
-			for (auto i = decltype(manifold.GetPointCount()){0}; i < manifold.GetPointCount(); ++i)
-			{
-				const auto clipPoint = Mul(xfB, manifold.GetPoint(i).localPoint);
-				const auto cA = clipPoint + (radiusA - Dot(clipPoint - planePoint, normal)) * normal;
-				const auto cB = clipPoint - (radiusB * normal);
-				points[i] = (cA + cB) / float_t(2);
-				separations[i] = Dot(cB - cA, normal);
-				++pointCount;
-			}
-		}
-		break;
-
-	case Manifold::e_faceB:
-		{
-			normal = Mul(xfB.q, manifold.GetLocalNormal());
-			const auto planePoint = Mul(xfB, manifold.GetLocalPoint());
-			pointCount = 0;
-			for (auto i = decltype(manifold.GetPointCount()){0}; i < manifold.GetPointCount(); ++i)
-			{
-				const auto clipPoint = Mul(xfA, manifold.GetPoint(i).localPoint);
-				const auto cB = clipPoint + (radiusB - Dot(clipPoint - planePoint, normal)) * normal;
-				const auto cA = clipPoint - (radiusA * normal);
-				points[i] = (cA + cB) / float_t(2);
-				separations[i] = Dot(cA - cB, normal);
-				++pointCount;
-			}
-
-			// Ensure normal points from A to B.
-			normal = -normal;
-		}
-		break;
+		default: break;
 	}
+
+	// should never be reached
+	return WorldManifold{Vec2{float_t{1}, float_t{0}}};
+}
+
+static inline WorldManifold GetWorldManifoldForFaceA(const Manifold& manifold,
+													 const Transform& xfA, const float_t radiusA,
+													 const Transform& xfB, const float_t radiusB)
+{
+	assert(manifold.GetPointCount() <= 2);
+	
+	const auto normal = Mul(xfA.q, manifold.GetLocalNormal());
+	const auto planePoint = Mul(xfA, manifold.GetLocalPoint());
+	const auto pointFn = [&](Manifold::size_type index) {
+		const auto clipPoint = Mul(xfB, manifold.GetPoint(index).localPoint);
+		const auto cA = clipPoint + (radiusA - Dot(clipPoint - planePoint, normal)) * normal;
+		const auto cB = clipPoint - (radiusB * normal);
+		return PointSeparation{(cA + cB) / float_t{2}, Dot(cB - cA, normal)};
+	};
+	
+	switch (manifold.GetPointCount())
+	{
+		case 0: return WorldManifold{normal};
+		case 1: return WorldManifold{normal, pointFn(0)};
+		case 2: return WorldManifold{normal, pointFn(0), pointFn(1)};
+		default: break; // should never be reached
+	}
+
+	// should never be reached
+	return WorldManifold{normal};
+}
+
+static inline WorldManifold GetWorldManifoldForFaceB(const Manifold& manifold,
+													 const Transform& xfA, const float_t radiusA,
+													 const Transform& xfB, const float_t radiusB)
+{
+	assert(manifold.GetPointCount() <= 2);
+	
+	const auto normal = Mul(xfB.q, manifold.GetLocalNormal());
+	const auto planePoint = Mul(xfB, manifold.GetLocalPoint());
+	const auto pointFn = [&](Manifold::size_type index) {
+		const auto clipPoint = Mul(xfA, manifold.GetPoint(index).localPoint);
+		const auto cB = clipPoint + (radiusB - Dot(clipPoint - planePoint, normal)) * normal;
+		const auto cA = clipPoint - (radiusA * normal);
+		return PointSeparation{(cA + cB) / float_t{2}, Dot(cA - cB, normal)};
+	};
+	
+	// Negate normal given to world manifold constructor to ensure it points from A to B.
+	switch (manifold.GetPointCount())
+	{
+		case 0: return WorldManifold{-normal};
+		case 1: return WorldManifold{-normal, pointFn(0)};
+		case 2: return WorldManifold{-normal, pointFn(0), pointFn(1)};
+		default: break; // should never be reached
+	}
+	
+	// should never be reached
+	return WorldManifold{-normal};
+}
+
+WorldManifold GetWorldManifold(const Manifold& manifold,
+							   const Transform& xfA, const float_t radiusA,
+							   const Transform& xfB, const float_t radiusB)
+{
+	const auto type = manifold.GetType();
+	assert((type == Manifold::e_circles) || (type == Manifold::e_faceA) || (type == Manifold::e_faceB) || (type == Manifold::e_unset));
+	switch (type)
+	{
+		case Manifold::e_circles: return GetWorldManifoldForCircles(manifold, xfA, radiusA, xfB, radiusB);
+		case Manifold::e_faceA: return GetWorldManifoldForFaceA(manifold, xfA, radiusA, xfB, radiusB);
+		case Manifold::e_faceB: return GetWorldManifoldForFaceB(manifold, xfA, radiusA, xfB, radiusB);
+		case Manifold::e_unset: return WorldManifold{Vec2_zero};
+	}
+
+	// should never be reached
+	return WorldManifold{Vec2_zero};
 }
 
 void GetPointStates(PointStateArray& state1, PointStateArray& state2,
-					  const Manifold& manifold1, const Manifold& manifold2)
+					const Manifold& manifold1, const Manifold& manifold2)
 {
 	for (auto i = decltype(MaxManifoldPoints){0}; i < MaxManifoldPoints; ++i)
 	{
@@ -106,13 +134,13 @@ void GetPointStates(PointStateArray& state1, PointStateArray& state2,
 	// Detect persists and removes.
 	for (auto i = decltype(manifold1.GetPointCount()){0}; i < manifold1.GetPointCount(); ++i)
 	{
-		const auto& cf = manifold1.GetPoint(i).cf;
+		const auto cf = manifold1.GetPoint(i).contactFeature;
 
 		state1[i] = PointState::RemoveState;
 
 		for (auto j = decltype(manifold2.GetPointCount()){0}; j < manifold2.GetPointCount(); ++j)
 		{
-			if (manifold2.GetPoint(j).cf == cf)
+			if (manifold2.GetPoint(j).contactFeature == cf)
 			{
 				state1[i] = PointState::PersistState;
 				break;
@@ -123,13 +151,13 @@ void GetPointStates(PointStateArray& state1, PointStateArray& state2,
 	// Detect persists and adds.
 	for (auto i = decltype(manifold2.GetPointCount()){0}; i < manifold2.GetPointCount(); ++i)
 	{
-		const auto& cf = manifold2.GetPoint(i).cf;
+		const auto cf = manifold2.GetPoint(i).contactFeature;
 
 		state2[i] = PointState::AddState;
 
 		for (auto j = decltype(manifold1.GetPointCount()){0}; j < manifold1.GetPointCount(); ++j)
 		{
-			if (manifold1.GetPoint(j).cf == cf)
+			if (manifold1.GetPoint(j).contactFeature == cf)
 			{
 				state2[i] = PointState::PersistState;
 				break;
@@ -207,8 +235,7 @@ bool AABB::RayCast(RayCastOutput* output, const RayCastInput& input) const
 }
 
 ClipArray::size_type ClipSegmentToLine(ClipArray& vOut, const ClipArray& vIn,
-										   const Vec2& normal, float_t offset,
-										   ContactFeature::index_t indexA)
+									   const Vec2& normal, float_t offset, ContactFeature::index_t indexA)
 {
 	// Use Sutherland-Hodgman clipping (https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm ).
 	
@@ -227,12 +254,12 @@ ClipArray::size_type ClipSegmentToLine(ClipArray& vOut, const ClipArray& vIn,
 	if ((distance0 * distance1) < float_t{0})
 	{
 		// Find intersection point of edge and plane
-		const auto interp = distance0 / (distance0 - distance1);
-		vOut[numOut].v = vIn[0].v + (vIn[1].v - vIn[0].v) * interp;
-
 		// Vertex A is hitting edge B.
-		vOut[numOut].cf = ContactFeature(ContactFeature::e_vertex, indexA, ContactFeature::e_face, vIn[0].cf.indexB);
-
+		const auto interp = distance0 / (distance0 - distance1);
+		vOut[numOut] = ClipVertex{
+			vIn[0].v + (vIn[1].v - vIn[0].v) * interp,
+			ContactFeature{ContactFeature::e_vertex, indexA, ContactFeature::e_face, vIn[0].cf.indexB}
+		};
 		++numOut;
 	}
 
@@ -244,8 +271,8 @@ bool TestOverlap(const Shape& shapeA, child_count_t indexA,
 				   const Transform& xfA, const Transform& xfB)
 {
 	DistanceInput input;
-	input.proxyA = DistanceProxy(shapeA, indexA);
-	input.proxyB = DistanceProxy(shapeB, indexB);
+	input.proxyA = GetDistanceProxy(shapeA, indexA);
+	input.proxyB = GetDistanceProxy(shapeB, indexB);
 	input.transformA = xfA;
 	input.transformB = xfB;
 	input.useRadii = true;

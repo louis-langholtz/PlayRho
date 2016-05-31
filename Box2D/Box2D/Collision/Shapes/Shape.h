@@ -30,12 +30,17 @@ struct MassData
 {
 	MassData() = default;
 
-	constexpr MassData(float_t m, Vec2 c, float_t _I) noexcept: mass(m), center(c), I(_I)
+	/// Initializing constructor.
+	/// @param m Non-negative mass in kg.
+	/// @param c Position of the shape's centroid relative to the shape's origin.
+	/// @param I Non-negative rotational inertia of the shape about the local origin.
+	constexpr MassData(float_t m, Vec2 c, float_t _I) noexcept: mass{m}, center{c}, I{_I}
 	{
 		assert(mass >= 0);
+		assert(I >= 0);
 	}
 
-	/// The mass of the shape, usually in kilograms.
+	/// Mass of the shape in kilograms.
 	/// This should NEVER be a negative value.
 	/// @note Behavior is undefined if this value is negative.
 	float_t mass;
@@ -44,6 +49,8 @@ struct MassData
 	Vec2 center;
 
 	/// The rotational inertia of the shape about the local origin.
+	/// This should NEVER be a negative value.
+	/// @note Behavior is undefined if this value is negative.
 	float_t I;
 };
 
@@ -108,10 +115,11 @@ public:
 	/// @return the axis aligned box.
 	virtual AABB ComputeAABB(const Transform& xf, child_count_t childIndex) const = 0;
 
-	/// Compute the mass properties of this shape using its dimensions and density.
+	/// Computes the mass properties of this shape using its dimensions and density.
 	/// The inertia tensor is computed about the local origin.
+	/// @note Behavior is undefined if the given density is negative.
 	/// @param massData returns the mass data for this shape.
-	/// @param density the density in kilograms per meter squared.
+	/// @param density Density in kilograms per meter squared (must be non-negative).
 	virtual MassData ComputeMass(float_t density) const = 0;
 
 	/// Gets the "radius" of the shape.

@@ -61,10 +61,7 @@ Body::Body(const BodyDef* bd, World* world):
 	assert(IsValid(bd->angularDamping) && (bd->angularDamping >= float_t{0}));
 	assert(IsValid(bd->linearDamping) && (bd->linearDamping >= float_t{0}));
 
-	m_sweep.localCenter = Vec2_zero;
-	m_sweep.pos0 = Position{m_xf.p, bd->angle};
-	m_sweep.pos1 = Position{m_xf.p, bd->angle};
-	m_sweep.alpha0 = float_t{0};
+	m_sweep = Sweep{Position{m_xf.p, bd->angle}, Position{m_xf.p, bd->angle}, Vec2_zero};
 
 	m_linearDamping = bd->linearDamping;
 	m_angularDamping = bd->angularDamping;
@@ -159,7 +156,7 @@ Fixture* Body::CreateFixture(const FixtureDef* def)
 	const auto fixture = new (memory) Fixture(this);
 	fixture->Create(allocator, def);
 
-	if (m_flags & e_activeFlag)
+	if (IsActive())
 	{
 		fixture->CreateProxies(m_world->m_contactManager.m_broadPhase, m_xf);
 	}
@@ -240,7 +237,7 @@ void Body::DestroyFixture(Fixture* fixture)
 
 	auto allocator = &m_world->m_blockAllocator;
 
-	if (m_flags & e_activeFlag)
+	if (IsActive())
 	{
 		fixture->DestroyProxies(m_world->m_contactManager.m_broadPhase);
 	}
@@ -259,8 +256,8 @@ void Body::DestroyFixture(Fixture* fixture)
 MassData Body::CalculateMassData() const noexcept
 {
 	auto mass = float_t{0};
-	auto center = Vec2_zero;
 	auto I = float_t{0};
+	auto center = Vec2_zero;
 	for (auto f = m_fixtureList; f; f = f->m_next)
 	{
 		if (f->m_density == float_t{0})
@@ -273,7 +270,7 @@ MassData Body::CalculateMassData() const noexcept
 		center += massData.mass * massData.center;
 		I += massData.I;
 	}
-	return MassData{mass, (mass > float_t{0})? center / mass: Vec2_zero, I};
+	return MassData{mass, center, I};
 }
 
 void Body::ResetMassData()
@@ -297,42 +294,22 @@ void Body::ResetMassData()
 
 	assert(m_type == BodyType::Dynamic);
 
-	// Accumulate mass over all fixtures.
-	m_mass = float_t{0};
-	m_I = float_t{0};
-	auto localCenter = Vec2_zero;
-	for (auto f = m_fixtureList; f; f = f->m_next)
-	{
-		if (f->m_density == float_t{0})
-		{
-			continue;
-		}
+	const auto massData = CalculateMassData();
 
-		const auto massData = f->GetMassData();
-		m_mass += massData.mass;
-		localCenter += massData.mass * massData.center;
-		m_I += massData.I;
-	}
-
+	// Force all dynamic bodies to have a positive mass.
+	m_mass = (massData.mass > float_t{0})? massData.mass: float_t{1};
+	m_invMass = float_t{1} / m_mass;
+	m_I = massData.I;
+	
 	// Compute center of mass.
-	if (m_mass > float_t{0})
-	{
-		m_invMass = float_t(1) / m_mass;
-		localCenter *= m_invMass;
-	}
-	else
-	{
-		// Force all dynamic bodies to have a positive mass.
-		m_mass = float_t(1);
-		m_invMass = float_t(1);
-	}
-
+	const auto localCenter = massData.center * m_invMass;
+	
 	if ((m_I > float_t{0}) && (!IsFixedRotation()))
 	{
 		// Center the inertia about the center of mass.
 		m_I -= m_mass * localCenter.LengthSquared();
 		assert(m_I > float_t{0});
-		m_invI = float_t(1) / m_I;
+		m_invI = float_t{1} / m_I;
 	}
 	else
 	{

@@ -51,8 +51,8 @@ public:
 		Test::Step(settings);
 
 		DistanceInput input;
-		input.proxyA = DistanceProxy(m_polygonA, 0);
-		input.proxyB = DistanceProxy(m_polygonB, 0);
+		input.proxyA = GetDistanceProxy(m_polygonA, 0);
+		input.proxyB = GetDistanceProxy(m_polygonB, 0);
 		input.transformA = m_transformA;
 		input.transformB = m_transformB;
 		input.useRadii = true;
@@ -68,17 +68,23 @@ public:
 		{
 			Color color(0.9f, 0.9f, 0.9f);
 			Vec2 v[MaxPolygonVertices];
-			for (int32 i = 0; i < m_polygonA.GetVertexCount(); ++i)
 			{
-				v[i] = Mul(m_transformA, m_polygonA.GetVertex(i));
+				const auto vertexCount = m_polygonA.GetVertexCount();
+				for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+				{
+					v[i] = Mul(m_transformA, m_polygonA.GetVertex(i));
+				}
+				g_debugDraw.DrawPolygon(v, vertexCount, color);
 			}
-			g_debugDraw.DrawPolygon(v, m_polygonA.GetVertexCount(), color);
 
-			for (int32 i = 0; i < m_polygonB.GetVertexCount(); ++i)
 			{
-				v[i] = Mul(m_transformB, m_polygonB.GetVertex(i));
+				const auto vertexCount = m_polygonB.GetVertexCount();
+				for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+				{
+					v[i] = Mul(m_transformB, m_polygonB.GetVertex(i));
+				}
+				g_debugDraw.DrawPolygon(v, m_polygonB.GetVertexCount(), color);
 			}
-			g_debugDraw.DrawPolygon(v, m_polygonB.GetVertexCount(), color);
 		}
 
 		Vec2 x1 = output.pointA;

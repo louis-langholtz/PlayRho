@@ -27,9 +27,15 @@ namespace box2d {
 /// Input parameters for TimeOfImpact
 struct TOIInput
 {
+	TOIInput() noexcept = default;
+	TOIInput(const TOIInput& copy) noexcept = default;
+	
+	constexpr TOIInput(const DistanceProxy& pA, const Sweep& sA, const DistanceProxy& pB, const Sweep& sB, float_t max = 1) noexcept:
+		proxyA{pA}, sweepA{sA}, proxyB{pB}, sweepB{sB}, tMax{max} {};
+
 	DistanceProxy proxyA;
-	DistanceProxy proxyB;
 	Sweep sweepA;
+	DistanceProxy proxyB;
 	Sweep sweepB;
 	float_t tMax; ///< Maximum sweep interval time fraction (in the range of [0, 1]).
 };

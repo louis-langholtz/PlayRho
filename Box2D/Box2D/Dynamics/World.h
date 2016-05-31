@@ -229,12 +229,28 @@ private:
 	friend class Fixture;
 	friend class ContactManager;
 
+	/// Finds islands, integrates and solves constraints, solves position constraints.
 	void Solve(const TimeStep& step);
 
 	/// Solves Time Of Impact Events.
 	/// @detail Used for continuous physics.
 	/// @param step Time step value to use.
 	void SolveTOI(const TimeStep& step);
+	
+	void SolveToiUnsetBodies();
+	void SolveToiUnsetContacts();
+	
+	struct ContactToiPair
+	{
+		Contact* contact;
+		float_t toi;
+	};
+
+	/// Updates the contact times of impact.
+	/// @detail While checking contacts and setting their time of impact values this also
+	///   finds the contact with the lowest (soonest) time of impact.
+	/// @return Contact with the least time of impact and its time of impact, or null contact.
+	ContactToiPair UpdateContactTOIs();
 
 	void DrawJoint(Joint* joint);
 	void DrawShape(const Fixture* shape, const Transform& xf, const Color& color);

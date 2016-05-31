@@ -117,8 +117,8 @@ void Contact::Destroy(Contact* contact, BlockAllocator* allocator)
 	if ((contact->m_manifold.GetPointCount() > 0) &&
 		!fixtureA->IsSensor() && !fixtureB->IsSensor())
 	{
-		fixtureA->GetBody()->SetAwake();
-		fixtureB->GetBody()->SetAwake();
+		SetAwake(*fixtureA);
+		SetAwake(*fixtureB);
 	}
 
 	const auto typeA = fixtureA->GetType();
@@ -132,9 +132,9 @@ void Contact::Destroy(Contact* contact, BlockAllocator* allocator)
 }
 
 Contact::Contact(Fixture* fA, child_count_t indexA, Fixture* fB, child_count_t indexB) :
-	m_fixtureA(fA), m_fixtureB(fB), m_indexA(indexA), m_indexB(indexB),
-	m_friction(MixFriction(m_fixtureA->GetFriction(), m_fixtureB->GetFriction())),
-	m_restitution(MixRestitution(m_fixtureA->GetRestitution(), m_fixtureB->GetRestitution()))
+	m_fixtureA{fA}, m_fixtureB{fB}, m_indexA{indexA}, m_indexB{indexB},
+	m_friction{MixFriction(fA->GetFriction(), fB->GetFriction())},
+	m_restitution{MixRestitution(fA->GetRestitution(), fB->GetRestitution())}
 {
 }
 
@@ -152,11 +152,15 @@ void Contact::Update(ContactListener* listener)
 
 	const auto bodyA = m_fixtureA->GetBody();
 	const auto bodyB = m_fixtureB->GetBody();
+	
+	assert(bodyA != nullptr);
+	assert(bodyB != nullptr);
+
 	const auto xfA = bodyA->GetTransform();
 	const auto xfB = bodyB->GetTransform();
 
 	// Is this contact a sensor?
-	const auto sensor = m_fixtureA->IsSensor() || m_fixtureB->IsSensor();
+	const auto sensor = HasSensor();
 	if (sensor)
 	{
 		const auto shapeA = m_fixtureA->GetShape();
@@ -187,7 +191,7 @@ void Contact::Update(ContactListener* listener)
 			for (auto j = decltype(old_point_count){0}; j < old_point_count; ++j)
 			{
 				const auto& old_mp = oldManifold.GetPoint(j);
-				if (new_mp.cf == old_mp.cf)
+				if (new_mp.contactFeature == old_mp.contactFeature)
 				{
 					new_mp.normalImpulse = old_mp.normalImpulse;
 					new_mp.tangentImpulse = old_mp.tangentImpulse;
@@ -212,19 +216,22 @@ void Contact::Update(ContactListener* listener)
 		UnsetTouching();
 	}
 
-	if (!wasTouching && touching && listener)
+	if (listener)
 	{
-		listener->BeginContact(this);
-	}
+		if (!wasTouching && touching)
+		{
+			listener->BeginContact(this);
+		}
 
-	if (wasTouching && !touching && listener)
-	{
-		listener->EndContact(this);
-	}
+		if (wasTouching && !touching)
+		{
+			listener->EndContact(this);
+		}
 
-	if (!sensor && touching && listener)
-	{
-		listener->PreSolve(this, &oldManifold);
+		if (!sensor && touching)
+		{
+			listener->PreSolve(this, &oldManifold);
+		}
 	}
 }
 
@@ -266,19 +273,16 @@ bool Contact::UpdateTOI()
 	
 	// Compute the TOI for this contact.
 	// Put the sweeps onto the same time interval.
-	const auto maxAlpha0 = Max(bA->m_sweep.alpha0, bB->m_sweep.alpha0);
+	const auto maxAlpha0 = Max(bA->m_sweep.GetAlpha0(), bB->m_sweep.GetAlpha0());
 	assert(maxAlpha0 < float_t{1});
 	bA->m_sweep.Advance(maxAlpha0);
 	bB->m_sweep.Advance(maxAlpha0);
 	
 	// Compute the time of impact in interval [0, minTOI]
-	TOIInput input;
-	input.proxyA = DistanceProxy(*fA->GetShape(), GetChildIndexA());
-	input.sweepA = bA->m_sweep;
-	input.proxyB = DistanceProxy(*fB->GetShape(), GetChildIndexB());
-	input.sweepB = bB->m_sweep;
-	input.tMax = float_t{1};
-	
+	const auto input = TOIInput{
+		GetDistanceProxy(*fA->GetShape(), GetChildIndexA()), bA->m_sweep,
+		GetDistanceProxy(*fB->GetShape(), GetChildIndexB()), bB->m_sweep
+	};
 	const auto output = TimeOfImpact(input);
 	
 	// Beta is the fraction of the remaining portion of the .

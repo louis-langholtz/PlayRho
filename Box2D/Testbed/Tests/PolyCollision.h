@@ -49,28 +49,35 @@ public:
 		BOX2D_NOT_USED(settings);
 
 		const auto manifold = CollideShapes(m_polygonA, m_transformA, m_polygonB, m_transformB);
+		const auto pointCount = manifold.GetPointCount();
 
-		g_debugDraw.DrawString(5, m_textLine, "point count = %d", manifold.GetPointCount());
+		g_debugDraw.DrawString(5, m_textLine, "point count = %d", pointCount);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		{
 			Color color(0.9f, 0.9f, 0.9f);
 			Vec2 v[MaxPolygonVertices];
-			for (int32 i = 0; i < m_polygonA.GetVertexCount(); ++i)
 			{
-				v[i] = Mul(m_transformA, m_polygonA.GetVertex(i));
+				const auto vertexCount = m_polygonA.GetVertexCount();
+				for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+				{
+					v[i] = Mul(m_transformA, m_polygonA.GetVertex(i));
+				}
+				g_debugDraw.DrawPolygon(v, vertexCount, color);
 			}
-			g_debugDraw.DrawPolygon(v, m_polygonA.GetVertexCount(), color);
 
-			for (int32 i = 0; i < m_polygonB.GetVertexCount(); ++i)
 			{
-				v[i] = Mul(m_transformB, m_polygonB.GetVertex(i));
+				const auto vertexCount = m_polygonB.GetVertexCount();
+				for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+				{
+					v[i] = Mul(m_transformB, m_polygonB.GetVertex(i));
+				}
+				g_debugDraw.DrawPolygon(v, vertexCount, color);
 			}
-			g_debugDraw.DrawPolygon(v, m_polygonB.GetVertexCount(), color);
 		}
 
-		const WorldManifold worldManifold(manifold, m_transformA, m_polygonA.GetRadius(), m_transformB, m_polygonB.GetRadius());
-		for (int32 i = 0; i < manifold.GetPointCount(); ++i)
+		const auto worldManifold = GetWorldManifold(manifold, m_transformA, m_polygonA.GetRadius(), m_transformB, m_polygonB.GetRadius());
+		for (auto i = decltype(pointCount){0}; i < pointCount; ++i)
 		{
 			g_debugDraw.DrawPoint(worldManifold.GetPoint(i), 4.0f, Color(0.9f, 0.3f, 0.3f));
 		}

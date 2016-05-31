@@ -26,6 +26,19 @@ namespace box2d
 {
 
 class Shape;
+	
+struct IndexPair
+{
+	static constexpr size_t InvalidIndex = static_cast<size_t>(-1);
+
+	size_t a;
+	size_t b;
+};
+
+constexpr inline bool operator == (IndexPair lhs, IndexPair rhs)
+{
+	return (lhs.a == rhs.a) && (lhs.b == rhs.b);
+}
 
 /// A distance proxy is used by the GJK algorithm.
 /// It encapsulates any shape.
@@ -34,34 +47,54 @@ class DistanceProxy
 public:
 	using size_type = size_t; // must be big enough to hold max posible count of vertices
 
-	DistanceProxy() = default;
+	static constexpr size_type InvalidIndex = static_cast<size_type>(-1);
 
-	/// Initialize the proxy using the given shape.
-	/// @note The shape must remain in scope while the proxy is in use.
-	DistanceProxy(const Shape& shape, child_count_t index);
+	DistanceProxy() noexcept = default;
+	
+	constexpr DistanceProxy(const DistanceProxy& copy) noexcept = default;
+
+	constexpr DistanceProxy(float_t radius, Vec2 v0) noexcept:
+		m_radius{radius}, m_buffer{v0}, m_count{1}
+	{}
+
+	constexpr DistanceProxy(float_t radius, Vec2 v0, Vec2 v1) noexcept:
+		m_radius{radius}, m_buffer{v0, v1}, m_count{2}
+	{}
+
+	constexpr DistanceProxy(float_t radius, const Vec2* vertices, size_type count) noexcept:
+		m_radius{radius}, m_buffer{}, m_vertices{vertices}, m_count{count}
+	{}
 
 	/// Gets the "radius" of the associated shape.
 	/// @return Non-negative distance.
 	float_t GetRadius() const noexcept { return m_radius; }
 
 	/// Get the supporting vertex index in the given direction.
-	size_type GetSupport(const Vec2& d) const noexcept;
-
-	/// Get the supporting vertex in the given direction.
-	const Vec2& GetSupportVertex(const Vec2& d) const;
+	/// @param d Direction vector to find index for.
+	/// @return InvalidIndex if the count of vertices is zero or a value from 0 to one less than count.
+	/// @sa GetVertexCount().
+	size_type GetSupportIndex(const Vec2& d) const noexcept;
 
 	/// Get the vertex count.
+	/// @detail This is the count of valid vertex elements that this object provides.
 	inline size_type GetVertexCount() const noexcept { return m_count; }
 
 	/// Get a vertex by index. Used by Distance.
+	/// @param index A valid index value (must not be InvalidIndex).
+	/// @note Behavior is undefined if InvalidIndex is given as the index value.
+	/// @return 2D vector value at the given index.
 	Vec2 GetVertex(size_type index) const;
 
 private:
 	Vec2 m_buffer[2];
-	const Vec2* m_vertices = nullptr;
-	size_type m_count = 0;
+	const Vec2* m_vertices = m_buffer;
+	size_type m_count = 0; ///< Count of valid elements at m_vertices.
 	float_t m_radius = float_t{0}; ///< "Radius" of the associated shape.
 };
+
+/// Initialize the proxy using the given shape.
+/// @note The shape must remain in scope while the proxy is in use.
+DistanceProxy GetDistanceProxy(const Shape& shape, child_count_t index);
 
 /// Used to warm start Distance.
 class SimplexCache
@@ -96,16 +129,22 @@ public:
 	/// @sa ClearIndices.
 	size_type GetCount() const noexcept { return count; }
 
+	IndexPair GetIndexPair(size_type index) const noexcept
+	{
+		assert(index < count);
+		return indexPair[index];
+	}
+
 	index_t GetIndexA(size_type index) const
 	{
 		assert(index < count);
-		return indexA[index];
+		return indexPair[index].a;
 	}
 
 	index_t GetIndexB(size_type index) const
 	{
 		assert(index < count);
-		return indexB[index];
+		return indexPair[index].b;
 	}
 
 	void ClearIndices() noexcept { count = 0; }
@@ -118,11 +157,10 @@ public:
 		metric_set = true;
 	}
 
-	void AddIndex(index_t a, index_t b)
+	void AddIndex(IndexPair ip)
 	{
 		assert(count < MaxCount);
-		indexA[count] = a;
-		indexB[count] = b;
+		indexPair[count] = ip;
 		++count;
 	}
 
@@ -130,8 +168,7 @@ private:
 	bool metric_set = false; ///< Whether the metric has been set or not.
 	float_t metric;		///< length or area
 	size_type count = 0;
-	index_t indexA[MaxCount];	///< vertices on shape A
-	index_t indexB[MaxCount];	///< vertices on shape B
+	IndexPair indexPair[MaxCount];	///< Vertices on shape A and B.
 };
 
 /// Input for Distance.
@@ -164,43 +201,25 @@ DistanceOutput Distance(SimplexCache& cache,  const DistanceInput& input);
 
 inline Vec2 DistanceProxy::GetVertex(size_type index) const
 {
-	assert(index >= 0);
+	assert(index != InvalidIndex);
 	assert(index < m_count);
 	return m_vertices[index];
 }
 
-inline DistanceProxy::size_type DistanceProxy::GetSupport(const Vec2& d) const noexcept
+inline DistanceProxy::size_type DistanceProxy::GetSupportIndex(const Vec2& d) const noexcept
 {
-	auto bestIndex = decltype(m_count){0};
-	auto bestValue = Dot(m_vertices[0], d);
-	for (auto i = decltype(m_count){1}; i < m_count; ++i)
+	auto bestIndex = InvalidIndex;
+	auto bestValue = -MaxFloat;
+	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		const auto value = Dot(m_vertices[i], d);
-		if (value > bestValue)
+		if (bestValue < value)
 		{
-			bestIndex = i;
 			bestValue = value;
+			bestIndex = i;
 		}
 	}
-
 	return bestIndex;
-}
-
-inline const Vec2& DistanceProxy::GetSupportVertex(const Vec2& d) const
-{
-	auto bestIndex = decltype(m_count){0};
-	auto bestValue = Dot(m_vertices[0], d);
-	for (auto i = decltype(m_count){1}; i < m_count; ++i)
-	{
-		const auto value = Dot(m_vertices[i], d);
-		if (value > bestValue)
-		{
-			bestIndex = i;
-			bestValue = value;
-		}
-	}
-
-	return m_vertices[bestIndex];
 }
 
 } /* namespace box2d */

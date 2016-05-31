@@ -192,26 +192,82 @@ void Island::ClearBodies() noexcept
 	m_bodyCount = 0;
 }
 
-void Island::Solve(Profile* profile, const TimeStep& step, const Vec2& gravity, bool allowSleep)
+void Island::InitJointVelocityConstraints(const SolverData& solverData)
+{
+	for (auto i = decltype(m_jointCount){0}; i < m_jointCount; ++i)
+	{
+		m_joints[i]->InitVelocityConstraints(solverData);
+	}
+}
+
+void Island::SolveJointVelocityConstraints(const SolverData& solverData)
+{
+	for (auto j = decltype(m_jointCount){0}; j < m_jointCount; ++j)
+	{
+		m_joints[j]->SolveVelocityConstraints(solverData);
+	}
+}
+
+bool Island::SolveJointPositionConstraints(const SolverData& solverData)
+{
+	auto jointsOkay = true;
+	for (auto j = decltype(m_jointCount){0}; j < m_jointCount; ++j)
+	{
+		const auto jointOkay = m_joints[j]->SolvePositionConstraints(solverData);
+		jointsOkay = jointsOkay && jointOkay;
+	}
+	return jointsOkay;
+}
+
+static inline bool IsSleepable(Velocity velocity)
+{
+	constexpr auto LinSleepTolSquared = Square(LinearSleepTolerance);
+	constexpr auto AngSleepTolSquared = Square(AngularSleepTolerance);
+
+	return (Square(velocity.w) <= AngSleepTolSquared) && (velocity.v.LengthSquared() <= LinSleepTolSquared);
+}
+
+static inline Position CalculateMovement(Velocity& velocity, float_t h)
+{
+	auto translation = h * velocity.v;
+	if (translation.LengthSquared() > Square(MaxTranslation))
+	{
+		const auto ratio = MaxTranslation / translation.Length();
+		velocity.v *= ratio;
+		translation = h * velocity.v;
+	}
+
+	auto rotation = h * velocity.w;
+	if (Abs(rotation) > MaxRotation)
+	{
+		const auto ratio = MaxRotation / Abs(rotation);
+		velocity.w *= ratio;
+		rotation = h * velocity.w;
+	}
+	
+	return Position{translation, rotation};
+}
+
+void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 {
 	const auto h = step.get_dt();
 
 	// Integrate velocities and apply damping. Initialize the body state.
 	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 	{
-		auto& b = *m_bodies[i];
+		auto& body = *m_bodies[i];
 
 		// Store positions for continuous collision.
-		b.m_sweep.pos0 = b.m_sweep.pos1;
-		m_positions[i] = b.m_sweep.pos1;
+		body.m_sweep.pos0 = body.m_sweep.pos1;
+		m_positions[i] = body.m_sweep.pos1;
 
 		{
-			auto velocity = b.m_velocity;
-			if (b.m_type == BodyType::Dynamic)
+			auto velocity = body.m_velocity;
+			if (body.m_type == BodyType::Dynamic)
 			{
 				// Integrate velocities.
-				velocity.v += h * (b.m_gravityScale * gravity + b.m_invMass * b.m_force);
-				velocity.w += h * b.m_invI * b.m_torque;
+				velocity.v += h * (body.m_gravityScale * gravity + body.m_invMass * body.m_force);
+				velocity.w += h * body.m_invI * body.m_torque;
 
 				// Apply damping.
 				// ODE: dv/dt + c * v = 0
@@ -220,8 +276,8 @@ void Island::Solve(Profile* profile, const TimeStep& step, const Vec2& gravity, 
 				// v2 = exp(-c * dt) * v1
 				// Pade approximation:
 				// v2 = v1 * 1 / (1 + c * dt)
-				velocity.v *= float_t(1) / (float_t(1) + h * b.m_linearDamping);
-				velocity.w *= float_t(1) / (float_t(1) + h * b.m_angularDamping);
+				velocity.v *= float_t{1} / (float_t{1} + h * body.m_linearDamping);
+				velocity.w *= float_t{1} / (float_t{1} + h * body.m_angularDamping);
 			}
 			m_velocities[i] = velocity;
 		}
@@ -240,26 +296,19 @@ void Island::Solve(Profile* profile, const TimeStep& step, const Vec2& gravity, 
 	contactSolverDef.allocator = m_allocator;
 
 	ContactSolver contactSolver(&contactSolverDef);
-	contactSolver.InitializeVelocityConstraints();
+	contactSolver.UpdateVelocityConstraints();
 
 	if (step.warmStarting)
 	{
 		contactSolver.WarmStart();
 	}
 	
-	for (auto i = decltype(m_jointCount){0}; i < m_jointCount; ++i)
-	{
-		m_joints[i]->InitVelocityConstraints(solverData);
-	}
+	InitJointVelocityConstraints(solverData);
 
 	// Solve velocity constraints
 	for (auto i = decltype(step.velocityIterations){0}; i < step.velocityIterations; ++i)
 	{
-		for (auto j = decltype(m_jointCount){0}; j < m_jointCount; ++j)
-		{
-			m_joints[j]->SolveVelocityConstraints(solverData);
-		}
-
+		SolveJointVelocityConstraints(solverData);
 		contactSolver.SolveVelocityConstraints();
 	}
 
@@ -269,25 +318,7 @@ void Island::Solve(Profile* profile, const TimeStep& step, const Vec2& gravity, 
 	// Integrate positions
 	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 	{
-		auto velocity = m_velocities[i];
-		auto translation = h * velocity.v;
-		auto rotation = h * velocity.w;
-		
-		if (translation.LengthSquared() > Square(MaxTranslation))
-		{
-			const auto ratio = MaxTranslation / translation.Length();
-			velocity.v *= ratio;
-			translation = h * velocity.v;
-		}
-		if (Abs(rotation) > MaxRotation)
-		{
-			const auto ratio = MaxRotation / Abs(rotation);
-			velocity.w *= ratio;
-			rotation = h * velocity.w;
-		}
-
-		m_velocities[i] = velocity;
-		m_positions[i] = Position{m_positions[i].c + translation, m_positions[i].a + rotation};
+		m_positions[i] += CalculateMovement(m_velocities[i], h);
 	}
 
 	// Solve position constraints
@@ -295,13 +326,7 @@ void Island::Solve(Profile* profile, const TimeStep& step, const Vec2& gravity, 
 	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
 	{
 		const auto contactsOkay = contactSolver.SolvePositionConstraints();
-
-		auto jointsOkay = true;
-		for (auto j = decltype(m_jointCount){0}; j < m_jointCount; ++j)
-		{
-			const auto jointOkay = m_joints[j]->SolvePositionConstraints(solverData);
-			jointsOkay = jointsOkay && jointOkay;
-		}
+		const auto jointsOkay = SolveJointPositionConstraints(solverData);
 
 		if (contactsOkay && jointsOkay)
 		{
@@ -315,8 +340,8 @@ void Island::Solve(Profile* profile, const TimeStep& step, const Vec2& gravity, 
 	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 	{
 		auto& body = *m_bodies[i];
-		body.m_sweep.pos1 = m_positions[i];
 		body.m_velocity = m_velocities[i];
+		body.m_sweep.pos1 = m_positions[i];
 		body.m_xf = GetTransformOne(body.m_sweep);
 	}
 
@@ -324,33 +349,7 @@ void Island::Solve(Profile* profile, const TimeStep& step, const Vec2& gravity, 
 
 	if (allowSleep)
 	{
-		auto minSleepTime = MaxFloat;
-
-		constexpr auto linTolSqr = Square(LinearSleepTolerance);
-		constexpr auto angTolSqr = Square(AngularSleepTolerance);
-
-		for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
-		{
-			auto& b = *m_bodies[i];
-			if (b.GetType() == BodyType::Static)
-			{
-				continue;
-			}
-
-			if ((!b.IsSleepingAllowed()) ||
-				(Square(b.m_velocity.w) > angTolSqr) ||
-				(b.m_velocity.v.LengthSquared() > linTolSqr))
-			{
-				b.m_sleepTime = float_t{0};
-				minSleepTime = float_t{0};
-			}
-			else
-			{
-				b.m_sleepTime += h;
-				minSleepTime = Min(minSleepTime, b.m_sleepTime);
-			}
-		}
-
+		const auto minSleepTime = UpdateSleepTimes(h);
 		if ((minSleepTime >= TimeToSleep) && positionSolved)
 		{
 			for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
@@ -361,6 +360,33 @@ void Island::Solve(Profile* profile, const TimeStep& step, const Vec2& gravity, 
 	}
 }
 
+float_t Island::UpdateSleepTimes(float_t h)
+{
+	auto minSleepTime = MaxFloat;
+	
+	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
+	{
+		auto& body = *m_bodies[i];
+		if (body.GetType() == BodyType::Static)
+		{
+			continue;
+		}
+		
+		if (body.IsSleepingAllowed() && IsSleepable(body.m_velocity))
+		{
+			body.m_sleepTime += h;
+			minSleepTime = Min(minSleepTime, body.m_sleepTime);
+		}
+		else
+		{
+			body.m_sleepTime = float_t{0};
+			minSleepTime = float_t{0};
+		}
+	}
+
+	return minSleepTime;
+}
+
 void Island::SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_count_t toiIndexB)
 {
 	assert(toiIndexA < m_bodyCount);
@@ -369,9 +395,9 @@ void Island::SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_
 	// Initialize the body state.
 	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 	{
-		const auto& b = *m_bodies[i];
-		m_positions[i] = b.m_sweep.pos1;
-		m_velocities[i] = b.m_velocity;
+		const auto& body = *m_bodies[i];
+		m_positions[i] = body.m_sweep.pos1;
+		m_velocities[i] = body.m_velocity;
 	}
 
 	ContactSolverDef contactSolverDef;
@@ -383,7 +409,7 @@ void Island::SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_
 	contactSolverDef.velocities = m_velocities;
 	ContactSolver contactSolver(&contactSolverDef);
 
-	// Solve position constraints.
+	// Solve TOI-based position constraints.
 	for (auto i = decltype(subStep.positionIterations){0}; i < subStep.positionIterations; ++i)
 	{
 		const auto contactsOkay = contactSolver.SolveTOIPositionConstraints(toiIndexA, toiIndexB);
@@ -429,7 +455,7 @@ void Island::SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_
 
 	// No warm starting is needed for TOI events because warm
 	// starting impulses were applied in the discrete solver.
-	contactSolver.InitializeVelocityConstraints();
+	contactSolver.UpdateVelocityConstraints();
 
 	// Solve velocity constraints.
 	for (auto i = decltype(subStep.velocityIterations){0}; i < subStep.velocityIterations; ++i)
@@ -445,31 +471,12 @@ void Island::SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_
 	// Integrate positions
 	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 	{
-		auto velocity = m_velocities[i];
-		auto translation = h * velocity.v;
-		auto rotation = h * velocity.w;
-		
-		if (translation.LengthSquared() > Square(MaxTranslation))
-		{
-			const auto ratio = MaxTranslation / translation.Length();
-			velocity.v *= ratio;
-			translation = h * velocity.v;
-		}
-
-		if (Abs(rotation) > MaxRotation)
-		{
-			const auto ratio = MaxRotation / Abs(rotation);
-			velocity.w *= ratio;
-			rotation = h * velocity.w;
-		}
-
-		m_velocities[i] = velocity;
-		m_positions[i] = Position{m_positions[i].c + translation, m_positions[i].a + rotation};
+		m_positions[i] += CalculateMovement(m_velocities[i], h);
 
 		// Sync bodies
 		auto& body = *m_bodies[i];
+		body.m_velocity = m_velocities[i];
 		body.m_sweep.pos1 = m_positions[i];
-		body.m_velocity = velocity;
 		body.m_xf = GetTransformOne(body.m_sweep);
 	}
 
@@ -478,6 +485,7 @@ void Island::SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_
 
 void Island::Add(Body* body)
 {
+	assert(body != nullptr);
 	assert(body->m_islandIndex == Body::InvalidIslandIndex);
 	assert(m_bodyCount < m_bodyCapacity);
 	body->m_islandIndex = m_bodyCount;
@@ -487,6 +495,7 @@ void Island::Add(Body* body)
 
 void Island::Add(Contact* contact)
 {
+	assert(contact != nullptr);
 	assert(m_contactCount < m_contactCapacity);
 	m_contacts[m_contactCount] = contact;
 	++m_contactCount;
@@ -494,26 +503,32 @@ void Island::Add(Contact* contact)
 
 void Island::Add(Joint* joint)
 {
+	assert(joint != nullptr);
 	assert(m_jointCount < m_jointCapacity);
 	m_joints[m_jointCount] = joint;
 	++m_jointCount;
 }
 
+static inline ContactImpulse GetContactImpulse(const ContactVelocityConstraint& vc)
+{
+	ContactImpulse impulse;
+	const auto count = vc.GetPointCount();
+	for (auto j = decltype(count){0}; j < count; ++j)
+	{
+		const auto point = vc.GetPoint(j);
+		impulse.AddEntry(point.normalImpulse, point.tangentImpulse);
+	}
+	return impulse;
+}
+
 void Island::Report(const ContactVelocityConstraint* constraints)
 {
-	if (!m_listener)
-		return;
-
-	for (auto i = decltype(m_contactCount){0}; i < m_contactCount; ++i)
+	if (m_listener)
 	{
-		ContactImpulse impulse;
-		const auto& vc = constraints[i];
-		const auto count = vc.GetPointCount();
-		for (auto j = decltype(count){0}; j < count; ++j)
+		for (auto i = decltype(m_contactCount){0}; i < m_contactCount; ++i)
 		{
-			const auto point = vc.GetPoint(j);
-			impulse.AddEntry(point.normalImpulse, point.tangentImpulse);
+			const auto impulse = GetContactImpulse(constraints[i]);
+			m_listener->PostSolve(m_contacts[i], &impulse);
 		}
-		m_listener->PostSolve(m_contacts[i], &impulse);
 	}
 }

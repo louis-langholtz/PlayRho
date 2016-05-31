@@ -43,7 +43,7 @@ class FlagGuard
 public:
 	FlagGuard(T& flag, T value) : m_flag(flag), m_value(value)
 	{
-		static_assert(std::is_unsigned<T>::value, "Unsigned interger required");
+		static_assert(std::is_unsigned<T>::value, "Unsigned integer required");
 		m_flag |= m_value;
 	}
 
@@ -394,7 +394,6 @@ void World::SetAllowSleeping(bool flag) noexcept
 	}
 }
 
-// Find islands, integrate and solve constraints, solve position constraints
 void World::Solve(const TimeStep& step)
 {
 	m_profile.solveInit = float_t{0};
@@ -402,11 +401,8 @@ void World::Solve(const TimeStep& step)
 	m_profile.solvePosition = float_t{0};
 
 	// Size the island for the worst case.
-	Island island(m_bodyCount,
-					m_contactManager.GetContactCount(),
-					m_jointCount,
-					&m_stackAllocator,
-					m_contactManager.m_contactListener);
+	Island island(m_bodyCount, m_contactManager.GetContactCount(), m_jointCount,
+				  &m_stackAllocator, m_contactManager.m_contactListener);
 
 	// Clear all the island flags.
 	for (auto b = m_bodyList; b; b = b->GetNext())
@@ -428,12 +424,7 @@ void World::Solve(const TimeStep& step)
 	auto stack = static_cast<Body**>(m_stackAllocator.Allocate(stackSize * sizeof(Body*)));
 	for (auto seed = m_bodyList; seed; seed = seed->GetNext())
 	{
-		if (seed->IsInIsland())
-		{
-			continue;
-		}
-
-		if ((!seed->IsAwake()) || (!seed->IsActive()))
+		if (seed->IsInIsland() || (!seed->IsAwake()) || (!seed->IsActive()))
 		{
 			continue;
 		}
@@ -479,14 +470,14 @@ void World::Solve(const TimeStep& step)
 					continue;
 				}
 
-				// Is this contact solid and touching?
+				// Is this contact disabled or not touching?
 				if ((!contact->IsEnabled()) || (!contact->IsTouching()))
 				{
 					continue;
 				}
 
 				// Skip sensors.
-				if (contact->GetFixtureA()->IsSensor() || contact->GetFixtureB()->IsSensor())
+				if (contact->HasSensor())
 				{
 					continue;
 				}
@@ -515,7 +506,7 @@ void World::Solve(const TimeStep& step)
 					continue;
 				}
 
-				auto other = je->other;
+				const auto other = je->other;
 
 				// Don't simulate joints connected to inactive bodies.
 				if (!other->IsActive())
@@ -537,11 +528,7 @@ void World::Solve(const TimeStep& step)
 			}
 		}
 
-		Profile profile;
-		island.Solve(&profile, step, m_gravity, m_allowSleep);
-		m_profile.solveInit += profile.solveInit;
-		m_profile.solveVelocity += profile.solveVelocity;
-		m_profile.solvePosition += profile.solvePosition;
+		island.Solve(step, m_gravity, m_allowSleep);
 
 		// Post solve cleanup.
 		for (auto i = decltype(island.GetBodyCount()){0}; i < island.GetBodyCount(); ++i)
@@ -562,13 +549,8 @@ void World::Solve(const TimeStep& step)
 		// Synchronize fixtures, check for out of range bodies.
 		for (auto b = m_bodyList; b; b = b->GetNext())
 		{
-			// If a body was not in an island then it did not move.
-			if (!(b->IsInIsland()))
-			{
-				continue;
-			}
-
-			if (b->GetType() == BodyType::Static)
+			// If a body was not in an island or is static then it did not move.
+			if (!(b->IsInIsland()) || (b->GetType() == BodyType::Static))
 			{
 				continue;
 			}
@@ -583,6 +565,66 @@ void World::Solve(const TimeStep& step)
 	}
 }
 
+void World::SolveToiUnsetBodies()
+{
+	for (auto b = m_bodyList; b; b = b->m_next)
+	{
+		b->UnsetInIsland();
+		b->m_sweep.ResetAlpha0();
+	}
+}
+
+void World::SolveToiUnsetContacts()
+{
+	for (auto c = m_contactManager.GetContactList(); c; c = c->m_next)
+	{
+		// Invalidate TOI
+		c->UnsetInIsland();
+		c->UnsetToi();
+		c->m_toiCount = 0;
+	}	
+}
+
+World::ContactToiPair World::UpdateContactTOIs()
+{
+	auto minContact = static_cast<Contact*>(nullptr);
+	auto minToi = float_t{1};
+	
+	for (auto c = m_contactManager.GetContactList(); c; c = c->m_next)
+	{
+		// Skip the disabled and excessive sub-stepped contacts
+		if (!c->IsEnabled() || (c->m_toiCount >= MaxSubSteps))
+		{
+			continue;
+		}
+		
+		if (!c->HasValidToi() && !c->UpdateTOI())
+		{
+			continue;
+		}
+		
+		const auto toi = c->GetToi();
+		if (minToi > toi)
+		{
+			// This is the minimum TOI found so far.
+			minContact = c;
+			minToi = toi;
+		}
+	}
+
+	return ContactToiPair{minContact, minToi};
+}
+
+static inline bool IsFullOfBodies(const Island& island)
+{
+	return island.GetBodyCount() == island.GetBodyCapacity();
+}
+
+static inline bool IsFullOfContacts(const Island& island)
+{
+	return island.GetContactCount() == island.GetContactCapacity();
+}
+
 // Find TOI contacts and solve them.
 void World::SolveTOI(const TimeStep& step)
 {
@@ -590,58 +632,18 @@ void World::SolveTOI(const TimeStep& step)
 
 	if (m_stepComplete)
 	{
-		for (auto b = m_bodyList; b; b = b->m_next)
-		{
-			b->UnsetInIsland();
-			b->m_sweep.alpha0 = float_t{0};
-		}
-
-		for (auto c = m_contactManager.GetContactList(); c; c = c->m_next)
-		{
-			// Invalidate TOI
-			c->UnsetInIsland();
-			c->m_toiCount = 0;
-			c->UnsetToi();
-		}
+		SolveToiUnsetBodies();
+		SolveToiUnsetContacts();
 	}
 
 	// Find TOI events and solve them.
 	for (;;)
 	{
-		// Find the first TOI.
-		auto minContact = static_cast<Contact*>(nullptr);
-		auto minAlpha = float_t{1};
+		// Find the first TOI - the soonest one.
+		const auto minContactToi = UpdateContactTOIs();
 
-		for (auto c = m_contactManager.GetContactList(); c; c = c->m_next)
-		{
-			// Is this contact disabled?
-			if (!c->IsEnabled())
-			{
-				continue;
-			}
-
-			// Prevent excessive sub-stepping.
-			if (c->m_toiCount >= MaxSubSteps)
-			{
-				continue;
-			}
-
-			if (!c->HasValidToi() && !c->UpdateTOI())
-			{
-				continue;
-			}
-
-			const auto alpha = c->GetToi();
-			if (minAlpha > alpha)
-			{
-				// This is the minimum TOI found so far.
-				minContact = c;
-				minAlpha = alpha;
-			}
-		}
-
-		// if ((!minContact) || (minAlpha >= float_t(1)))
-		if ((!minContact) || (minAlpha > (float_t(1) - (float_t(10) * Epsilon))))
+		//if ((!minContactToi.contact) || (minContactToi.toi >= float_t(1)))
+		if ((!minContactToi.contact) || (minContactToi.toi > (float_t{1} - (float_t{10} * Epsilon))))
 		{
 			// No more TOI events. Done!
 			m_stepComplete = true;
@@ -649,30 +651,28 @@ void World::SolveTOI(const TimeStep& step)
 		}
 
 		// Advance the bodies to the TOI.
-		auto fA = minContact->GetFixtureA();
-		auto fB = minContact->GetFixtureB();
-		auto bA = fA->GetBody();
-		auto bB = fB->GetBody();
+		auto bA = minContactToi.contact->GetFixtureA()->GetBody();
+		auto bB = minContactToi.contact->GetFixtureB()->GetBody();
 
 		const auto backupA = bA->m_sweep;
 		const auto backupB = bB->m_sweep;
 
-		bA->Advance(minAlpha);
-		bB->Advance(minAlpha);
+		bA->Advance(minContactToi.toi);
+		bB->Advance(minContactToi.toi);
 
 		// The TOI contact likely has some new contact points.
-		minContact->Update(m_contactManager.m_contactListener);
-		minContact->UnsetToi();
-		++(minContact->m_toiCount);
+		minContactToi.contact->Update(m_contactManager.m_contactListener);
+		minContactToi.contact->UnsetToi();
+		++(minContactToi.contact->m_toiCount);
 
-		// Is the contact solid?
-		if ((!minContact->IsEnabled()) || (!minContact->IsTouching()))
+		// Is contact disabled or separated?
+		if (!minContactToi.contact->IsEnabled() || !minContactToi.contact->IsTouching())
 		{
 			// Restore the sweeps.
-			minContact->UnsetEnabled();
+			minContactToi.contact->UnsetEnabled();
 			bA->m_sweep = backupA;
-			bB->m_sweep = backupB;
 			bA->m_xf = GetTransformOne(bA->m_sweep);
+			bB->m_sweep = backupB;
 			bB->m_xf = GetTransformOne(bB->m_sweep);
 			continue;
 		}
@@ -682,15 +682,12 @@ void World::SolveTOI(const TimeStep& step)
 
 		// Build the island
 		island.Clear();
-
 		island.Add(bA);
 		bA->SetInIsland();
-		
 		island.Add(bB);
 		bB->SetInIsland();
-
-		island.Add(minContact);
-		minContact->SetInIsland();
+		island.Add(minContactToi.contact);
+		minContactToi.contact->SetInIsland();
 
 		// Get contacts on bodyA and bodyB.
 		Body* bodies[2] = {bA, bB};
@@ -700,34 +697,22 @@ void World::SolveTOI(const TimeStep& step)
 			{
 				for (auto ce = body->m_contactList; ce; ce = ce->next)
 				{
-					if (island.GetBodyCount() == island.GetBodyCapacity())
+					if (IsFullOfBodies(island) || IsFullOfContacts(island))
 					{
-						break;
-					}
-
-					if (island.GetContactCount() == island.GetContactCapacity())
-					{
-						break;
+						break; // processed all bodies or all contacts, done.
 					}
 
 					auto contact = ce->contact;
 
-					// Has this contact already been added to the island?
-					if (contact->IsInIsland())
+					// Skip already added or sensor contacts
+					if (contact->IsInIsland() || contact->HasSensor())
 					{
 						continue;
 					}
 
 					// Only add static, kinematic, or bullet bodies.
 					auto other = ce->other;
-					if ((other->m_type == BodyType::Dynamic) &&
-						(!body->IsBullet()) && (!other->IsBullet()))
-					{
-						continue;
-					}
-
-					// Skip sensors.
-					if (contact->m_fixtureA->m_isSensor || contact->m_fixtureB->m_isSensor)
+					if ((other->m_type == BodyType::Dynamic) && !other->IsBullet() && !body->IsBullet())
 					{
 						continue;
 					}
@@ -736,22 +721,14 @@ void World::SolveTOI(const TimeStep& step)
 					const auto backup = other->m_sweep;
 					if (!other->IsInIsland())
 					{
-						other->Advance(minAlpha);
+						other->Advance(minContactToi.toi);
 					}
 
 					// Update the contact points
 					contact->Update(m_contactManager.m_contactListener);
 
-					// Was the contact disabled by the user?
-					if (!contact->IsEnabled())
-					{
-						other->m_sweep = backup;
-						other->m_xf = GetTransformOne(other->m_sweep);
-						continue;
-					}
-
-					// Are there contact points?
-					if (!contact->IsTouching())
+					// Was contact disabled by user or are there no contact points?
+					if (!contact->IsEnabled() || !contact->IsTouching())
 					{
 						other->m_sweep = backup;
 						other->m_xf = GetTransformOne(other->m_sweep);
@@ -782,8 +759,8 @@ void World::SolveTOI(const TimeStep& step)
 		}
 
 		TimeStep subStep;
-		subStep.set_dt((float_t(1) - minAlpha) * step.get_dt());
-		subStep.dtRatio = float_t(1);
+		subStep.set_dt((float_t{1} - minContactToi.toi) * step.get_dt());
+		subStep.dtRatio = float_t{1};
 		subStep.positionIterations = MaxSubStepPositionIterations;
 		subStep.velocityIterations = step.velocityIterations;
 		subStep.warmStarting = false;
@@ -926,7 +903,8 @@ struct WorldRayCastWrapper
 		if (hit)
 		{
 			const auto fraction = output.fraction;
-			const auto point = (float_t(1) - fraction) * input.p1 + fraction * input.p2;
+			assert(fraction >= 0 && fraction <= 1);
+			const auto point = (float_t{1} - fraction) * input.p1 + fraction * input.p2;
 			return callback->ReportFixture(fixture, point, output.normal, fraction);
 		}
 

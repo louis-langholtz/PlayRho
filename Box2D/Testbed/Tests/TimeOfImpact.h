@@ -39,26 +39,10 @@ public:
 	{
 		Test::Step(settings);
 
-		Sweep sweepA;
-		sweepA.pos0 = Position{Vec2(24.0f, -60.0f), 2.95f};
-		sweepA.pos1 = sweepA.pos0;
-		sweepA.localCenter = Vec2_zero;
+		const auto sweepA = Sweep{Position{Vec2(24.0f, -60.0f), 2.95f}};
+		const auto sweepB = Sweep{Position{Vec2(53.474274f, -50.252514f), 513.36676f}, Position{Vec2(54.595478f, -51.083473f), 513.62781f}};
 
-		Sweep sweepB;
-		sweepB.pos0 = Position{Vec2(53.474274f, -50.252514f), 513.36676f}; // - 162.0f * Pi;
-		sweepB.pos1 = Position{Vec2(54.595478f, -51.083473f), 513.62781f}; //  - 162.0f * Pi;
-		sweepB.localCenter = Vec2_zero;
-
-		//sweepB.a0 -= 300.0f * Pi;
-		//sweepB.a -= 300.0f * Pi;
-
-		TOIInput input;
-		input.proxyA = DistanceProxy(m_shapeA, 0);
-		input.proxyB = DistanceProxy(m_shapeB, 0);
-		input.sweepA = sweepA;
-		input.sweepB = sweepB;
-		input.tMax = 1.0f;
-
+		const auto input = TOIInput{GetDistanceProxy(m_shapeA, 0), sweepA, GetDistanceProxy(m_shapeB, 0), sweepB};
 		const auto output = TimeOfImpact(input);
 
 		g_debugDraw.DrawString(5, m_textLine, "toi = %g", output.get_t());
@@ -70,34 +54,45 @@ public:
 
 		Vec2 vertices[MaxPolygonVertices];
 
-		const auto transformA = GetTransform(sweepA, 0.0f);
-		for (int32 i = 0; i < m_shapeA.GetVertexCount(); ++i)
 		{
-			vertices[i] = Mul(transformA, m_shapeA.GetVertex(i));
+			const auto transformA = GetTransform(sweepA, 0.0f);
+			const auto vertexCount = m_shapeA.GetVertexCount();
+			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+			{
+				vertices[i] = Mul(transformA, m_shapeA.GetVertex(i));
+			}
+			g_debugDraw.DrawPolygon(vertices, vertexCount, Color(0.9f, 0.9f, 0.9f));
 		}
-		g_debugDraw.DrawPolygon(vertices, m_shapeA.GetVertexCount(), Color(0.9f, 0.9f, 0.9f));
 
-		auto transformB = GetTransform(sweepB, 0.0f);
-		//Vec2 localPoint(2.0f, -0.1f);
-		for (int32 i = 0; i < m_shapeB.GetVertexCount(); ++i)
 		{
-			vertices[i] = Mul(transformB, m_shapeB.GetVertex(i));
+			const auto transformB = GetTransform(sweepB, 0.0f);
+			const auto vertexCount = m_shapeB.GetVertexCount();
+			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+			{
+				vertices[i] = Mul(transformB, m_shapeB.GetVertex(i));
+			}
+			g_debugDraw.DrawPolygon(vertices, vertexCount, Color(0.5f, 0.9f, 0.5f));
 		}
-		g_debugDraw.DrawPolygon(vertices, m_shapeB.GetVertexCount(), Color(0.5f, 0.9f, 0.5f));
 
-		transformB = GetTransform(sweepB, output.get_t());
-		for (int32 i = 0; i < m_shapeB.GetVertexCount(); ++i)
 		{
-			vertices[i] = Mul(transformB, m_shapeB.GetVertex(i));
+			const auto transformB = GetTransform(sweepB, output.get_t());
+			const auto vertexCount = m_shapeB.GetVertexCount();
+			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+			{
+				vertices[i] = Mul(transformB, m_shapeB.GetVertex(i));
+			}
+			g_debugDraw.DrawPolygon(vertices, vertexCount, Color(0.5f, 0.7f, 0.9f));
 		}
-		g_debugDraw.DrawPolygon(vertices, m_shapeB.GetVertexCount(), Color(0.5f, 0.7f, 0.9f));
 
-		transformB = GetTransform(sweepB, 1.0f);
-		for (int32 i = 0; i < m_shapeB.GetVertexCount(); ++i)
 		{
-			vertices[i] = Mul(transformB, m_shapeB.GetVertex(i));
+			const auto transformB = GetTransform(sweepB, 1.0f);
+			const auto vertexCount = m_shapeB.GetVertexCount();
+			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+			{
+				vertices[i] = Mul(transformB, m_shapeB.GetVertex(i));
+			}
+			g_debugDraw.DrawPolygon(vertices, vertexCount, Color(0.9f, 0.5f, 0.5f));
 		}
-		g_debugDraw.DrawPolygon(vertices, m_shapeB.GetVertexCount(), Color(0.9f, 0.5f, 0.5f));
 
 #if 0
 		for (float_t t = 0.0f; t < 1.0f; t += 0.1f)

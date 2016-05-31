@@ -233,7 +233,8 @@ public:
 	/// @param massData the mass properties.
 	void SetMassData(const MassData* data);
 
-	/// This resets the mass properties to the sum of the mass properties of the fixtures.
+	/// Resets the mass data properties.
+	/// @detail This resets the mass data to the sum of the mass properties of the fixtures.
 	/// This normally does not need to be called unless you called SetMassData to override
 	/// the mass and you later want to reset the mass.
 	void ResetMassData();
@@ -447,6 +448,10 @@ private:
 	/// @sa IsInIsland().
 	void UnsetInIsland() noexcept;
 
+	/// Calculates mass data.
+ 	/// @detail This basically accumulates the mass data over all fixtures.
+	/// @note The center is the mass weighted sum of all fixture centers. Make sure to divide it by the mass to get the averaged center.
+	/// @return accumalated mass data for all fixtures associated with this body.
 	MassData CalculateMassData() const noexcept;
 
 	BodyType m_type;
@@ -477,11 +482,11 @@ private:
 	JointEdge* m_jointList = nullptr;
 	ContactEdge* m_contactList = nullptr;
 
-	float_t m_mass; ///< Mass of the body. This is the sum total mass of all associated fixtures.
-	float_t m_invMass; ///< Inverse of m_mass or 0 if m_mass == 0. @see m_mass.
+	float_t m_mass; ///< Mass of the body (a non-negative value). This is the sum total mass of all associated fixtures.
+	float_t m_invMass; ///< Inverse of m_mass or 0 if m_mass == 0 (this is a non-negative value). @see m_mass.
 
-	float_t m_I = float_t{0}; ///< Rotational inertia about the center of mass.
-	float_t m_invI = float_t{0}; ///< Inverse of m_I or 0 if m_I == 0. @see m_I.
+	float_t m_I = float_t{0}; ///< Rotational inertia about the center of mass (a non-negative value).
+	float_t m_invI = float_t{0}; ///< Inverse of m_I or 0 if m_I == 0 (this is a non-negative value). @see m_I.
 
 	float_t m_linearDamping;
 	float_t m_angularDamping;
@@ -651,7 +656,7 @@ inline void Body::SetBullet(bool flag) noexcept
 
 inline bool Body::IsBullet() const noexcept
 {
-	return (m_flags & e_bulletFlag) == e_bulletFlag;
+	return (m_flags & e_bulletFlag) != 0;
 }
 
 inline void Body::SetAwake(bool flag) noexcept
@@ -714,7 +719,7 @@ inline void Body::SetSleepingAllowed(bool flag) noexcept
 
 inline bool Body::IsSleepingAllowed() const noexcept
 {
-	return (m_flags & e_autoSleepFlag) == e_autoSleepFlag;
+	return (m_flags & e_autoSleepFlag) != 0;
 }
 
 inline Fixture* Body::GetFixtureList() noexcept

@@ -357,6 +357,8 @@ AABB PolygonShape::ComputeAABB(const Transform& xf, child_count_t childIndex) co
 
 MassData PolygonShape::ComputeMass(float_t density) const
 {
+	assert(density >= 0);
+
 	// Polygon mass, centroid, and inertia.
 	// Let rho be the polygon density in mass per unit area.
 	// Then:
@@ -396,9 +398,9 @@ MassData PolygonShape::ComputeMass(float_t density) const
 	{
 		s += m_vertices[i];
 	}
-	s *= float_t(1) / m_count;
+	s *= float_t{1} / m_count;
 
-	constexpr auto k_inv3 = float_t(1) / float_t(3);
+	constexpr auto k_inv3 = float_t{1} / float_t{3};
 
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
@@ -408,7 +410,7 @@ MassData PolygonShape::ComputeMass(float_t density) const
 
 		const auto D = Cross(e1, e2);
 
-		const auto triangleArea = D / float_t(2);
+		const auto triangleArea = D / float_t{2};
 		area += triangleArea;
 
 		// Area weighted centroid
@@ -428,7 +430,7 @@ MassData PolygonShape::ComputeMass(float_t density) const
 
 	// Center of mass
 	assert(area > Epsilon);
-	center *= float_t(1) / area;
+	center *= float_t{1} / area;
 	const auto massDataCenter = center + s;
 
 	// Inertia tensor relative to the local origin (point s).

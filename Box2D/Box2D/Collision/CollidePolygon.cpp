@@ -58,7 +58,7 @@ static float_t FindMaxSeparation(PolygonShape::vertex_count_t& edgeIndex,
 	return maxSeparation;
 }
 
-static ClipArray FindIncidentEdge(PolygonShape::vertex_count_t index1,
+static inline ClipArray FindIncidentEdge(PolygonShape::vertex_count_t index1,
 									  const PolygonShape& shape1, const Transform& xf1,
 									  const PolygonShape& shape2, const Transform& xf2)
 {
@@ -87,12 +87,12 @@ static ClipArray FindIncidentEdge(PolygonShape::vertex_count_t index1,
 
 	// Build the clip vertices for the incident edge.
 	const auto i1 = index_of_min_dot;
-	const auto i1_next = i1 + 1;
-	const auto i2 = (i1_next < count2) ? i1_next: 0;
+	const auto i1_next = static_cast<decltype(i1)>(i1 + 1);
+	const auto i2 = (i1_next < count2) ? i1_next: static_cast<decltype(i1)>(0);
 
 	return ClipArray{{
-		{Mul(xf2, shape2.GetVertex(i1)), ContactFeature(ContactFeature::e_face, index1, ContactFeature::e_vertex, i1)},
-		{Mul(xf2, shape2.GetVertex(i2)), ContactFeature(ContactFeature::e_face, index1, ContactFeature::e_vertex, i2)}
+		{Mul(xf2, shape2.GetVertex(i1)), ContactFeature{ContactFeature::e_face, index1, ContactFeature::e_vertex, i1}},
+		{Mul(xf2, shape2.GetVertex(i2)), ContactFeature{ContactFeature::e_face, index1, ContactFeature::e_vertex, i2}}
 	}};
 }
 
@@ -155,8 +155,8 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const P
 	const auto count1 = shape1->GetVertexCount();
 
 	const auto iv1 = edgeIndex1;
-	const auto iv1_next = edgeIndex1 + 1;
-	const auto iv2 = (iv1_next < count1)? iv1_next: 0;
+	const auto iv1_next = static_cast<decltype(iv1)>(edgeIndex1 + 1);
+	const auto iv2 = (iv1_next < count1)? iv1_next: static_cast<decltype(iv1)>(0);
 
 	auto v11 = shape1->GetVertex(iv1);
 	auto v12 = shape1->GetVertex(iv2);
@@ -206,7 +206,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const P
 		if (separation <= totalRadius)
 		{
 			const auto cf = flip? Flip(clipPoints2[i].cf): clipPoints2[i].cf;
-			manifold.AddPoint(MulT(xf2, clipPoints2[i].v), cf);
+			manifold.AddPoint(ManifoldPoint{MulT(xf2, clipPoints2[i].v), cf});
 		}
 	}
 	return manifold;

@@ -170,17 +170,17 @@ public:
 	/// @return Non-negative density in kg/m^2.
 	float_t GetDensity() const;
 
-	/// Get the coefficient of friction.
+	/// Gets the coefficient of friction.
 	float_t GetFriction() const;
 
-	/// Set the coefficient of friction. This will _not_ change the friction of
+	/// Sets the coefficient of friction. This will _not_ change the friction of
 	/// existing contacts.
 	void SetFriction(float_t friction);
 
-	/// Get the coefficient of restitution.
+	/// Gets the coefficient of restitution.
 	float_t GetRestitution() const;
 
-	/// Set the coefficient of restitution. This will _not_ change the restitution of
+	/// Sets the coefficient of restitution. This will _not_ change the restitution of
 	/// existing contacts.
 	void SetRestitution(float_t restitution);
 
@@ -221,8 +221,8 @@ protected:
 	float_t m_density = float_t{0};
 	Fixture* m_next = nullptr;
 	Shape* m_shape = nullptr;
-	float_t m_friction;
-	float_t m_restitution;
+	float_t m_friction; ///< Friction as a coefficient.
+	float_t m_restitution; ///< Restitution as a coefficient.
 	FixtureProxy* m_proxies = nullptr;
 	child_count_t m_proxyCount = 0; ///< Proxy count. @detail This is the fixture shape's child count after proxy creation.
 	Filter m_filter;
