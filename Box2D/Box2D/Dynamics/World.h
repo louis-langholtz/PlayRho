@@ -93,7 +93,7 @@ public:
 	void DestroyJoint(Joint* joint);
 
 	/// Take a time step. This performs collision detection, integration,
-	/// and constraint solution.
+	/// and constraint solving.
 	/// @param timeStep the amount of time to simulate, this should not vary.
 	/// @param velocityIterations for the velocity constraint solver.
 	/// @param positionIterations for the position constraint solver.
@@ -268,11 +268,11 @@ private:
 
 	ContactManager m_contactManager{&m_blockAllocator, &m_defaultFilter, &m_defaultListener};
 
-	Body* m_bodyList = nullptr;
-	Joint* m_jointList = nullptr;
+	Body* m_bodyList = nullptr; ///< Body list linked-list.
+	Joint* m_jointList = nullptr; ///< Joint list linked-list.
 
-	size_type m_bodyCount = 0;
-	size_type m_jointCount = 0;
+	size_type m_bodyCount = 0; ///< Count of bodies in body list.
+	size_type m_jointCount = 0; ///< Count of joints in joint list.
 
 	Vec2 m_gravity;
 	bool m_allowSleep = true;

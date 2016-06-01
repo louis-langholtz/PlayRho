@@ -40,7 +40,8 @@ struct Profile
 class TimeStep
 {
 public:
-	/// Gets delta time - the time step.
+	/// Gets the delta time (time amount for this time step).
+	/// @return Time step amount in seconds.
 	float_t get_dt() const noexcept { return dt; }
 
 	float_t get_inv_dt() const noexcept { return inv_dt; }
@@ -57,7 +58,7 @@ public:
 	bool warmStarting; ///< Whether or not to perform warm starting.
 
 private:
-	float_t dt; ///< The time step - delta time.
+	float_t dt; ///< Delta time. This is the time step in seconds.
 	float_t inv_dt; ///< Inverse time step (1/dt or 0 if dt == 0). @see dt.
 };
 
