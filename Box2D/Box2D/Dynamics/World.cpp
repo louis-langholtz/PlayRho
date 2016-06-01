@@ -35,7 +35,8 @@
 #include <functional>
 #include <type_traits>
 
-using namespace box2d;
+namespace box2d
+{
 
 template <typename T>
 class FlagGuard
@@ -400,10 +401,6 @@ void World::Solve(const TimeStep& step)
 	m_profile.solveVelocity = float_t{0};
 	m_profile.solvePosition = float_t{0};
 
-	// Size the island for the worst case.
-	Island island(m_bodyCount, m_contactManager.GetContactCount(), m_jointCount,
-				  &m_stackAllocator, m_contactManager.m_contactListener);
-
 	// Clear all the island flags.
 	for (auto b = m_bodyList; b; b = b->GetNext())
 	{
@@ -419,33 +416,35 @@ void World::Solve(const TimeStep& step)
 		j->SetInIsland(false);
 	}
 
+	// Size the island for the worst case.
+	Island island(m_bodyCount, m_contactManager.GetContactCount(), m_jointCount,
+				  &m_stackAllocator, m_contactManager.m_contactListener);
+	
 	// Build and simulate all awake islands.
 	const auto stackSize = m_bodyCount;
 	auto stack = static_cast<Body**>(m_stackAllocator.Allocate(stackSize * sizeof(Body*)));
 	for (auto seed = m_bodyList; seed; seed = seed->GetNext())
 	{
-		if (seed->IsInIsland() || (!seed->IsAwake()) || (!seed->IsActive()))
+		// Skip seed (body) if already in island, not-awake, not-active, or is static.
+		if (seed->IsInIsland() || (!seed->IsAwake()) || (!seed->IsActive()) || (seed->GetType() == BodyType::Static))
 		{
 			continue;
 		}
 
-		// The seed can be dynamic or kinematic.
-		if (seed->GetType() == BodyType::Static)
-		{
-			continue;
-		}
+		// Seed may be dynamic or kinematic.
 
 		// Reset island and stack.
 		island.Clear();
 		auto stackCount = size_type{0};
-		stack[stackCount++] = seed;
+		stack[stackCount] = seed;
+		++stackCount;
 		seed->SetInIsland();
 
 		// Perform a depth first search (DFS) on the constraint graph.
 		while (stackCount > 0)
 		{
 			// Grab the next body off the stack and add it to the island.
-			auto b = stack[--stackCount];
+			const auto b = stack[--stackCount];
 			assert(b->IsActive());
 			island.Add(b);
 
@@ -459,25 +458,13 @@ void World::Solve(const TimeStep& step)
 				continue;
 			}
 
-			// Search all contacts connected to this body.
+			// Add to island appropriate contacts of current body and appropriate 'other' bodies of those contacts.
 			for (auto ce = b->m_contactList; ce; ce = ce->next)
 			{
-				auto contact = ce->contact;
+				const auto contact = ce->contact;
 
-				// Has this contact already been added to an island?
-				if (contact->IsInIsland())
-				{
-					continue;
-				}
-
-				// Is this contact disabled or not touching?
-				if ((!contact->IsEnabled()) || (!contact->IsTouching()))
-				{
-					continue;
-				}
-
-				// Skip sensors.
-				if (contact->HasSensor())
+				// Skip contacts already in island, disabled, not-touching, or having sensors.
+				if ((contact->IsInIsland()) || (!contact->IsEnabled()) || (!contact->IsTouching()) || (contact->HasSensor()))
 				{
 					continue;
 				}
@@ -485,12 +472,10 @@ void World::Solve(const TimeStep& step)
 				island.Add(contact);
 				contact->SetInIsland();
 
-				auto other = ce->other;
-
-				// Was the other body already added to this island?
+				const auto other = ce->other;
 				if (other->IsInIsland())
 				{
-					continue;
+					continue; // Other already in island, skip it.
 				}
 
 				assert(stackCount < stackSize);
@@ -498,24 +483,24 @@ void World::Solve(const TimeStep& step)
 				other->SetInIsland();
 			}
 
-			// Search all joints connect to this body.
+			// Add to island appropriate joints of current body and appropriate 'other' bodies of those joint.
 			for (auto je = b->m_jointList; je; je = je->next)
 			{
-				if (je->joint->IsInIsland())
+				const auto joint = je->joint;
+
+				if (joint->IsInIsland())
 				{
 					continue;
 				}
 
 				const auto other = je->other;
-
-				// Don't simulate joints connected to inactive bodies.
 				if (!other->IsActive())
 				{
-					continue;
+					continue; // Skip joints connected to inactive bodies.
 				}
 
-				island.Add(je->joint);
-				je->joint->SetInIsland(true);
+				island.Add(joint);
+				joint->SetInIsland(true);
 
 				if (other->IsInIsland())
 				{
@@ -1229,3 +1214,5 @@ void World::Dump()
 	log("joints = nullptr;\n");
 	log("bodies = nullptr;\n");
 }
+
+} // namespace box2d
