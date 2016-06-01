@@ -181,6 +181,10 @@ public:
 	void UpdateVelocityConstraints();
 
 	void WarmStart();
+
+	/// Stores impulses.
+	/// @detail Saves the normal and tangent impulses of all the velocity constraint points back to their
+	///   associated contacts' manifold points.
 	void StoreImpulses();
 
 	/// "Solves" the velocity constraints.
@@ -214,6 +218,8 @@ private:
 
 	/// Gets the position-independent velocity constraint for the given contact, index, and time slot values.
 	static ContactVelocityConstraint GetVelocityConstraint(const Contact& contact, size_type index, float_t dtRatio);
+	
+	static ContactPositionConstraint GetPositionConstraint(const Contact& contact);
 	
 	/// Updates the velocity constraint data with the given position constraint data.
 	/// @detail Specifically this:
