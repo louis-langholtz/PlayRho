@@ -113,7 +113,7 @@ void ContactManager::Collide()
 		// Is this contact flagged for filtering?
 		if (c->NeedsFiltering())
 		{
-			// Should these bodies collide?
+			// Can these bodies collide?
 			if (!(bodyB->ShouldCollide(bodyA)))
 			{
 				Destroy(c);

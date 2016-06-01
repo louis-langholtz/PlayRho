@@ -419,8 +419,8 @@ private:
 
 	void SynchronizeFixtures();
 	
-	// This is used to prevent connected bodies from colliding.
-	// It may lie, depending on the collideConnected flag.
+	/// Determines whether this body should possibly be able to collide with the given other body.
+	/// @return true if either body is dynamic and no joint prevents collision, false otherwise.
 	bool ShouldCollide(const Body* other) const;
 
 	/// Advances the body by a given time ratio.

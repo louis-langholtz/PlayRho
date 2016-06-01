@@ -431,7 +431,7 @@ void World::Solve(const TimeStep& step)
 			continue;
 		}
 
-		// Seed may be dynamic or kinematic.
+		// Seed (body): is not in island, is awake, is active, and, is dynamic or kinematic.
 
 		// Reset island and stack.
 		island.Clear();
@@ -463,7 +463,7 @@ void World::Solve(const TimeStep& step)
 			{
 				const auto contact = ce->contact;
 
-				// Skip contacts already in island, disabled, not-touching, or having sensors.
+				// Skip contacts that are already in island, disabled, not-touching, or that have sensors.
 				if ((contact->IsInIsland()) || (!contact->IsEnabled()) || (!contact->IsTouching()) || (contact->HasSensor()))
 				{
 					continue;
@@ -487,16 +487,12 @@ void World::Solve(const TimeStep& step)
 			for (auto je = b->m_jointList; je; je = je->next)
 			{
 				const auto joint = je->joint;
-
-				if (joint->IsInIsland())
+				const auto other = je->other;
+				
+				// Skip joints already in island or that are connected to inactive bodies.
+				if (joint->IsInIsland() || !other->IsActive())
 				{
 					continue;
-				}
-
-				const auto other = je->other;
-				if (!other->IsActive())
-				{
-					continue; // Skip joints connected to inactive bodies.
 				}
 
 				island.Add(joint);
