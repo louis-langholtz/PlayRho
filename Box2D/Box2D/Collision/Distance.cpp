@@ -580,7 +580,7 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 	simplex.ReadCache(cache, input.proxyA, input.transformA, input.proxyB, input.transformB);
 
 	// Get simplex vertices as an array.
-	constexpr auto k_maxIters = std::uint32_t{20}; ///< Max number of support point calls.
+	constexpr auto k_maxIters = unsigned{20}; ///< Max number of support point calls.
 
 	// These store the vertices of the last simplex so that we
 	// can check for duplicates and prevent cycling.

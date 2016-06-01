@@ -784,7 +784,7 @@ void World::SolveTOI(const TimeStep& step)
 	}
 }
 
-void World::Step(float_t dt, int32 velocityIterations, int32 positionIterations)
+void World::Step(float_t dt, unsigned velocityIterations, unsigned positionIterations)
 {
 	Timer stepTimer;
 

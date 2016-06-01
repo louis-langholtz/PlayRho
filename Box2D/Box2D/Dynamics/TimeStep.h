@@ -53,8 +53,8 @@ public:
 	}
 
 	float_t dtRatio; ///< dt * inv_dt0
-	int32 velocityIterations; ///< Velocity iterations.
-	int32 positionIterations; ///< Position iterations.
+	unsigned velocityIterations; ///< Velocity iterations.
+	unsigned positionIterations; ///< Position iterations.
 	bool warmStarting; ///< Whether or not to perform warm starting.
 
 private:
