@@ -454,6 +454,9 @@ private:
 	/// @return accumalated mass data for all fixtures associated with this body.
 	MassData CalculateMassData() const noexcept;
 
+	/// Gets the velocity of this body after the given time with the given gravity.
+	Velocity GetVelocity(float_t h, Vec2 gravity) const noexcept;
+
 	BodyType m_type;
 
 	uint16 m_flags = 0;

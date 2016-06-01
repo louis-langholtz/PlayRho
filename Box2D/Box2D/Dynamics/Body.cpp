@@ -259,6 +259,29 @@ MassData Body::CalculateMassData() const noexcept
 	return MassData{mass, center, I};
 }
 
+Velocity Body::GetVelocity(float_t h, Vec2 gravity) const noexcept
+{
+	// Integrate velocity and apply damping.
+	auto velocity = m_velocity;
+	if (m_type == BodyType::Dynamic)
+	{
+		// Integrate velocities.
+		velocity.v += h * (m_gravityScale * gravity + m_invMass * m_force);
+		velocity.w += h * m_invI * m_torque;
+		
+		// Apply damping.
+		// ODE: dv/dt + c * v = 0
+		// Solution: v(t) = v0 * exp(-c * t)
+		// Time step: v(t + dt) = v0 * exp(-c * (t + dt)) = v0 * exp(-c * t) * exp(-c * dt) = v * exp(-c * dt)
+		// v2 = exp(-c * dt) * v1
+		// Pade approximation:
+		// v2 = v1 * 1 / (1 + c * dt)
+		velocity.v *= float_t{1} / (float_t{1} + h * m_linearDamping);
+		velocity.w *= float_t{1} / (float_t{1} + h * m_angularDamping);
+	}
+	return velocity;
+}
+
 void Body::ResetMassData()
 {
 	// Compute mass data from shapes. Each shape has its own density.
@@ -382,9 +405,12 @@ void Body::SetTransform(const Vec2& position, float_t angle)
 
 	m_xf = Transform{position, Rot(angle)};
 
-	const auto center = Mul(m_xf, m_sweep.localCenter);
-	m_sweep.pos1 = Position{center, angle};
-	m_sweep.pos0 = Position{center, angle};
+	{
+		const auto center = Mul(m_xf, m_sweep.localCenter);
+		const auto newPosition = Position{center, angle};
+		m_sweep.pos1 = newPosition;
+		m_sweep.pos0 = newPosition;
+	}
 
 	auto& broadPhase = m_world->m_contactManager.m_broadPhase;
 	for (auto f = m_fixtureList; f; f = f->m_next)
