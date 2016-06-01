@@ -188,7 +188,9 @@ void Island::Clear() noexcept
 void Island::ClearBodies() noexcept
 {
 	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
-		m_bodies[i]->m_islandIndex = Body::InvalidIslandIndex;	
+	{
+		m_bodies[i]->m_islandIndex = Body::InvalidIslandIndex;
+	}
 	m_bodyCount = 0;
 }
 
@@ -250,37 +252,21 @@ static inline Position CalculateMovement(Velocity& velocity, float_t h)
 
 void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 {
-	const auto h = step.get_dt();
-
-	// Integrate velocities and apply damping. Initialize the body state.
+	// Initialize the bodies
 	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 	{
 		auto& body = *m_bodies[i];
-
-		// Store positions for continuous collision.
 		body.m_sweep.pos0 = body.m_sweep.pos1;
+	}
+
+	const auto h = step.get_dt(); ///< Time step (in seconds).
+
+	// Copy body position and velocity data into local arrays.
+	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
+	{
+		const auto& body = *m_bodies[i];
 		m_positions[i] = body.m_sweep.pos1;
-
-		{
-			auto velocity = body.m_velocity;
-			if (body.m_type == BodyType::Dynamic)
-			{
-				// Integrate velocities.
-				velocity.v += h * (body.m_gravityScale * gravity + body.m_invMass * body.m_force);
-				velocity.w += h * body.m_invI * body.m_torque;
-
-				// Apply damping.
-				// ODE: dv/dt + c * v = 0
-				// Solution: v(t) = v0 * exp(-c * t)
-				// Time step: v(t + dt) = v0 * exp(-c * (t + dt)) = v0 * exp(-c * t) * exp(-c * dt) = v * exp(-c * dt)
-				// v2 = exp(-c * dt) * v1
-				// Pade approximation:
-				// v2 = v1 * 1 / (1 + c * dt)
-				velocity.v *= float_t{1} / (float_t{1} + h * body.m_linearDamping);
-				velocity.w *= float_t{1} / (float_t{1} + h * body.m_angularDamping);
-			}
-			m_velocities[i] = velocity;
-		}
+		m_velocities[i] = body.GetVelocity(h, gravity);
 	}
 
 	// Solver data
@@ -312,7 +298,7 @@ void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 		contactSolver.SolveVelocityConstraints();
 	}
 
-	// Store impulses for warm starting
+	// Update normal and tangent impulses of contacts' manifold points
 	contactSolver.StoreImpulses();
 
 	// Integrate positions
@@ -336,7 +322,7 @@ void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 		}
 	}
 
-	// Copy state buffers back to the bodies
+	// Copy velocity and position array data back out to the bodies
 	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 	{
 		auto& body = *m_bodies[i];
@@ -352,6 +338,7 @@ void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 		const auto minSleepTime = UpdateSleepTimes(h);
 		if ((minSleepTime >= TimeToSleep) && positionSolved)
 		{
+			// Sleep the bodies
 			for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 			{
 				m_bodies[i]->UnsetAwake();
@@ -472,8 +459,11 @@ void Island::SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_
 	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 	{
 		m_positions[i] += CalculateMovement(m_velocities[i], h);
+	}
 
-		// Sync bodies
+	// Sync bodies
+	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
+	{
 		auto& body = *m_bodies[i];
 		body.m_velocity = m_velocities[i];
 		body.m_sweep.pos1 = m_positions[i];
