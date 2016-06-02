@@ -65,6 +65,8 @@ public:
 
 	void SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_count_t toiIndexB);
 
+	/// Adds the given body to this island.
+	/// @param body Body to add to this island.
 	void Add(Body* body);
 
 	void Add(Contact* contact);
