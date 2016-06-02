@@ -192,6 +192,8 @@ protected:
 	Contact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB);
 	virtual ~Contact() = default;
 
+	/// Updates the contact manifold and touching status.
+	/// @param listener Listener that if non-null is called with status information.
 	void Update(ContactListener* listener);
 
 	/// Gets whether a TOI is set.

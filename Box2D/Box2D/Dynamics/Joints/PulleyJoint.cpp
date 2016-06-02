@@ -107,7 +107,7 @@ void PulleyJoint::InitVelocityConstraints(const SolverData& data)
 
 	if (lengthA > (float_t(10) * LinearSlop))
 	{
-		m_uA *= float_t(1) / lengthA;
+		m_uA *= float_t{1} / lengthA;
 	}
 	else
 	{
@@ -116,7 +116,7 @@ void PulleyJoint::InitVelocityConstraints(const SolverData& data)
 
 	if (lengthB > (float_t(10) * LinearSlop))
 	{
-		m_uB *= float_t(1) / lengthB;
+		m_uB *= float_t{1} / lengthB;
 	}
 	else
 	{
@@ -134,7 +134,7 @@ void PulleyJoint::InitVelocityConstraints(const SolverData& data)
 
 	if (m_mass > float_t{0})
 	{
-		m_mass = float_t(1) / m_mass;
+		m_mass = float_t{1} / m_mass;
 	}
 
 	if (data.step.warmStarting)
@@ -210,7 +210,7 @@ bool PulleyJoint::SolvePositionConstraints(const SolverData& data)
 
 	if (lengthA > (float_t(10) * LinearSlop))
 	{
-		uA *= float_t(1) / lengthA;
+		uA *= float_t{1} / lengthA;
 	}
 	else
 	{
@@ -219,7 +219,7 @@ bool PulleyJoint::SolvePositionConstraints(const SolverData& data)
 
 	if (lengthB > (float_t(10) * LinearSlop))
 	{
-		uB *= float_t(1) / lengthB;
+		uB *= float_t{1} / lengthB;
 	}
 	else
 	{
@@ -237,7 +237,7 @@ bool PulleyJoint::SolvePositionConstraints(const SolverData& data)
 
 	if (mass > float_t{0})
 	{
-		mass = float_t(1) / mass;
+		mass = float_t{1} / mass;
 	}
 
 	const auto C = m_constant - lengthA - (m_ratio * lengthB);

@@ -54,7 +54,7 @@ using island_count_t = size_t; // relating to items in a Island
 
 constexpr auto MaxFloat = std::numeric_limits<float_t>::max(); // FLT_MAX
 constexpr auto Epsilon = std::numeric_limits<float_t>::epsilon(); // FLT_EPSILON;
-constexpr auto Pi = float_t(M_PI); // 3.14159265359
+constexpr auto Pi = static_cast<float_t>(M_PI); ///< Pi as the "float_t" float-type (any narrowing is intentional).
 
 /// @file
 /// Global tuning constants based on meters-kilograms-seconds (MKS) units.
@@ -92,12 +92,12 @@ constexpr auto AabbExtension = LinearSlop * float_t{20}; // aka 0.002, originall
 
 /// A small angle used as a collision and constraint tolerance. Usually it is
 /// chosen to be numerically significant, but visually insignificant.
-constexpr auto AngularSlop = Pi * float_t(2) / float_t(180);
+constexpr auto AngularSlop = Pi * float_t{2} / float_t{180};
 
 /// The radius of the polygon/edge shape skin. This should not be modified. Making
 /// this smaller means polygons will have an insufficient buffer for continuous collision.
 /// Making it larger may create artifacts for vertex collision.
-constexpr auto PolygonRadius = LinearSlop * float_t(2);
+constexpr auto PolygonRadius = LinearSlop * float_t{2};
 
 /// Maximum number of sub-steps per contact in continuous physics simulation.
 constexpr auto MaxSubSteps = unsigned{10}; // originally 8, often hit but no apparent help against tunneling
@@ -118,15 +118,15 @@ constexpr auto MaxTOIContacts = unsigned{32};
 
 /// A velocity threshold for elastic collisions. Any collision with a relative linear
 /// velocity below this threshold will be treated as inelastic.
-constexpr auto VelocityThreshold = float_t(0.8); // float_t(1);
+constexpr auto VelocityThreshold = float_t{8} / float_t{10}; // float_t{1};
 
 /// Maximum linear position correction used when solving constraints.
 /// This helps to prevent overshoot.
-constexpr auto MaxLinearCorrection = LinearSlop * float_t(40); // aka 0.002, originally 0.2
+constexpr auto MaxLinearCorrection = LinearSlop * float_t{40}; // aka 0.002, originally 0.2
 
 /// Maximum angular position correction used when solving constraints.
 /// This helps to prevent overshoot.
-constexpr auto MaxAngularCorrection = Pi * float_t(8) / float_t(180);
+constexpr auto MaxAngularCorrection = Pi * float_t{8} / float_t{180};
 
 /// Maximum linear velocity of a body.
 /// This limit is very large and is used to prevent numerical problems.
@@ -136,7 +136,7 @@ constexpr auto MaxTranslation = float_t{4}; // originally 2
 /// Maximum angular velocity of a body.
 /// This limit is very large and is used to prevent numerical problems.
 /// You shouldn't need to adjust this.
-constexpr auto MaxRotation = Pi / float_t(2);
+constexpr auto MaxRotation = Pi / float_t{2};
 
 /// This scale factor controls how fast overlap is resolved. Ideally this would be 1 so
 /// that overlap is removed in one time step. However using values close to 1 often lead
@@ -151,13 +151,13 @@ constexpr auto ToiBaumgarte = float_t{75} / float_t{100}; // aka .75
 // Sleep
 
 /// The time that a body must be still before it will go to sleep.
-constexpr auto TimeToSleep = float_t(0.5);
+constexpr auto TimeToSleep = float_t{1} / float_t{2}; // aka 0.5
 
 /// A body cannot sleep if its linear velocity is above this tolerance.
-constexpr auto LinearSleepTolerance = float_t(0.01);
+constexpr auto LinearSleepTolerance = float_t{1} / float_t{100}; // aka 0.01
 
 /// A body cannot sleep if its angular velocity is above this tolerance.
-constexpr auto AngularSleepTolerance = Pi * float_t(2) / float_t(180);
+constexpr auto AngularSleepTolerance = Pi * float_t{2} / float_t{180};
 
 // Memory Allocation
 

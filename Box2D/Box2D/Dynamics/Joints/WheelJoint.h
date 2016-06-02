@@ -44,7 +44,7 @@ struct WheelJointDef : public JointDef
 	Vec2 localAnchorB = Vec2_zero;
 
 	/// The local translation axis in bodyA.
-	Vec2 localAxisA = Vec2{float_t(1), float_t{0}};
+	Vec2 localAxisA = Vec2{float_t{1}, float_t{0}};
 
 	/// Enable/disable the joint motor.
 	bool enableMotor = false;

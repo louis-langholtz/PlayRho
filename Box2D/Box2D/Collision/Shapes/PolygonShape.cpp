@@ -48,10 +48,10 @@ void PolygonShape::SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t 
 	m_vertices[1] = Vec2{ hx, -hy};
 	m_vertices[2] = Vec2{ hx,  hy};
 	m_vertices[3] = Vec2{-hx,  hy};
-	m_normals[0] = Vec2{float_t{0}, -float_t(1)};
-	m_normals[1] = Vec2{float_t(1), float_t{0}};
-	m_normals[2] = Vec2{float_t{0}, float_t(1)};
-	m_normals[3] = Vec2{-float_t(1), float_t{0}};
+	m_normals[0] = Vec2{float_t{0}, -float_t{1}};
+	m_normals[1] = Vec2{float_t{1}, float_t{0}};
+	m_normals[2] = Vec2{float_t{0}, float_t{1}};
+	m_normals[3] = Vec2{-float_t{1}, float_t{0}};
 	m_centroid = center;
 
 	const auto xf = Transform{center, Rot{angle}};
@@ -85,10 +85,10 @@ static inline Vec2 ComputeCentroid(const Vec2 vs[], PolygonShape::vertex_count_t
 	{
 		pRef += vs[i];
 	}
-	pRef *= float_t(1) / count;
+	pRef *= float_t{1} / count;
 #endif
 
-	const auto inv3 = float_t(1) / float_t(3);
+	const auto inv3 = float_t{1} / float_t(3);
 
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
@@ -111,7 +111,7 @@ static inline Vec2 ComputeCentroid(const Vec2 vs[], PolygonShape::vertex_count_t
 
 	// Centroid
 	assert(area > Epsilon);
-	c *= float_t(1) / area;
+	c *= float_t{1} / area;
 	return c;
 }
 
@@ -120,7 +120,7 @@ void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 	assert((count >= 3) && (count <= MaxPolygonVertices));
 	if (count < 3)
 	{
-		SetAsBox(float_t(1), float_t(1));
+		SetAsBox(float_t{1}, float_t{1});
 		return;
 	}
 	
@@ -156,7 +156,7 @@ void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 	if (n < 3)
 	{
 		// Polygon is degenerate.
-		SetAsBox(float_t(1), float_t(1));
+		SetAsBox(float_t{1}, float_t{1});
 		return;
 	}
 
@@ -221,7 +221,7 @@ void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 	if (m < 3)
 	{
 		// Polygon is degenerate.
-		SetAsBox(float_t(1), float_t(1));
+		SetAsBox(float_t{1}, float_t{1});
 		return;
 	}
 
@@ -240,7 +240,7 @@ void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 		const auto i2 = ((i + 1) < m) ? i + 1 : 0;
 		const auto edge = m_vertices[i2] - m_vertices[i1];
 		assert(edge.LengthSquared() > Square(Epsilon));
-		m_normals[i] = Normalize(Cross(edge, float_t(1)));
+		m_normals[i] = Normalize(Cross(edge, float_t{1}));
 	}
 
 	// Compute the polygon centroid.

@@ -32,10 +32,10 @@ struct RopeJointDef : public JointDef
 	constexpr RopeJointDef() noexcept: JointDef(e_ropeJoint) {}
 
 	/// The local anchor point relative to bodyA's origin.
-	Vec2 localAnchorA = Vec2{-float_t(1), float_t{0}};
+	Vec2 localAnchorA = Vec2{-float_t{1}, float_t{0}};
 
 	/// The local anchor point relative to bodyB's origin.
-	Vec2 localAnchorB = Vec2{float_t(1), float_t{0}};
+	Vec2 localAnchorB = Vec2{float_t{1}, float_t{0}};
 
 	/// The maximum length of the rope.
 	/// @warning This must be larger than LinearSlop or the joint will have no effect.

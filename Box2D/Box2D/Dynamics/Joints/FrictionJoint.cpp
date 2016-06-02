@@ -100,7 +100,7 @@ void FrictionJoint::InitVelocityConstraints(const SolverData& data)
 	m_angularMass = iA + iB;
 	if (m_angularMass > float_t{0})
 	{
-		m_angularMass = float_t(1) / m_angularMass;
+		m_angularMass = float_t{1} / m_angularMass;
 	}
 
 	if (data.step.warmStarting)

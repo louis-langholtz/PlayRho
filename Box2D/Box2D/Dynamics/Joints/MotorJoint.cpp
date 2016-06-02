@@ -107,7 +107,7 @@ void MotorJoint::InitVelocityConstraints(const SolverData& data)
 	m_angularMass = iA + iB;
 	if (m_angularMass > float_t{0})
 	{
-		m_angularMass = float_t(1) / m_angularMass;
+		m_angularMass = float_t{1} / m_angularMass;
 	}
 
 	m_linearError = cB + m_rB - cA - m_rA - Mul(qA, m_linearOffset);
@@ -246,7 +246,7 @@ float_t MotorJoint::GetMaxTorque() const
 
 void MotorJoint::SetCorrectionFactor(float_t factor)
 {
-	assert(IsValid(factor) && (float_t{0} <= factor) && (factor <= float_t(1)));
+	assert(IsValid(factor) && (float_t{0} <= factor) && (factor <= float_t{1}));
 	m_correctionFactor = factor;
 }
 

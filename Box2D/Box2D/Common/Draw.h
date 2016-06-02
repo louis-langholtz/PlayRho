@@ -27,8 +27,8 @@ namespace box2d {
 struct Color
 {
 	Color() = default;
-	constexpr Color(float_t ri, float_t gi, float_t bi, float_t ai = float_t(1)) : r(ri), g(gi), b(bi), a(ai) {}
-	constexpr void Set(float_t ri, float_t gi, float_t bi, float_t ai = float_t(1)) { r = ri; g = gi; b = bi; a = ai; }
+	constexpr Color(float_t ri, float_t gi, float_t bi, float_t ai = float_t{1}) : r(ri), g(gi), b(bi), a(ai) {}
+	constexpr void Set(float_t ri, float_t gi, float_t bi, float_t ai = float_t{1}) { r = ri; g = gi; b = bi; a = ai; }
 	float_t r, g, b, a;
 };
 

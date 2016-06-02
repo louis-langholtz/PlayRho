@@ -37,7 +37,7 @@ struct GearJointDef : public JointDef
 
 	/// The gear ratio.
 	/// @see GearJoint for explanation.
-	float_t ratio = float_t(1);
+	float_t ratio = float_t{1};
 };
 
 /// A gear joint is used to connect two joints together. Either joint

@@ -623,7 +623,7 @@ void World::SolveTOI(const TimeStep& step)
 		// Find the first TOI - the soonest one.
 		const auto minContactToi = UpdateContactTOIs();
 
-		//if ((!minContactToi.contact) || (minContactToi.toi >= float_t(1)))
+		//if ((!minContactToi.contact) || (minContactToi.toi >= float_t{1}))
 		if ((!minContactToi.contact) || (minContactToi.toi > (float_t{1} - (float_t{10} * Epsilon))))
 		{
 			// No more TOI events. Done!
@@ -691,8 +691,10 @@ void World::SolveTOI(const TimeStep& step)
 						continue;
 					}
 
-					// Only add static, kinematic, or bullet bodies.
+					// Only static, kinematic, or bullet bodies are appropriate for CCD.
 					auto other = ce->other;
+					
+					// Skip if neither bodies are appropriate for CCD
 					if ((other->m_type == BodyType::Dynamic) && !other->IsBullet() && !body->IsBullet())
 					{
 						continue;
@@ -708,7 +710,7 @@ void World::SolveTOI(const TimeStep& step)
 					// Update the contact points
 					contact->Update(m_contactManager.m_contactListener);
 
-					// Was contact disabled by user or are there no contact points?
+					// Revert and skip if contact disabled by user or if there are there no contact points anymore.
 					if (!contact->IsEnabled() || !contact->IsTouching())
 					{
 						other->m_sweep = backup;
@@ -903,7 +905,7 @@ struct WorldRayCastWrapper
 void World::RayCast(RayCastFixtureReporter* callback, const Vec2& point1, const Vec2& point2) const
 {
 	WorldRayCastWrapper wrapper(&m_contactManager.m_broadPhase, callback);
-	const auto input = RayCastInput{point1, point2, float_t(1)};
+	const auto input = RayCastInput{point1, point2, float_t{1}};
 	m_contactManager.m_broadPhase.RayCast(&wrapper, input);
 }
 
@@ -916,7 +918,7 @@ void World::DrawShape(const Fixture* fixture, const Transform& xf, const Color& 
 			const auto circle = static_cast<const CircleShape*>(fixture->GetShape());
 			const auto center = Mul(xf, circle->GetPosition());
 			const auto radius = circle->GetRadius();
-			const auto axis = Mul(xf.q, Vec2{float_t(1), float_t{0}});
+			const auto axis = Mul(xf.q, Vec2{float_t{1}, float_t{0}});
 			g_debugDraw->DrawSolidCircle(center, radius, axis, color);
 		}
 		break;

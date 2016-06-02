@@ -85,7 +85,7 @@ void RopeJoint::InitVelocityConstraints(const SolverData& data)
 
 	if (m_length > LinearSlop)
 	{
-		m_u *= float_t(1) / m_length;
+		m_u *= float_t{1} / m_length;
 	}
 	else
 	{
@@ -100,7 +100,7 @@ void RopeJoint::InitVelocityConstraints(const SolverData& data)
 	const auto crB = Cross(m_rB, m_u);
 	const auto invMass = m_invMassA + m_invIA * crA * crA + m_invMassB + m_invIB * crB * crB;
 
-	m_mass = (invMass != float_t{0}) ? float_t(1) / invMass : float_t{0};
+	m_mass = (invMass != float_t{0}) ? float_t{1} / invMass : float_t{0};
 
 	if (data.step.warmStarting)
 	{

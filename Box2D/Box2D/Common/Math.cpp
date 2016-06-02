@@ -26,7 +26,7 @@ void Mat33::GetInverse22(Mat33* M) const
 	auto det = a * d - b * c;
 	if (det != float_t{0})
 	{
-		det = float_t(1) / det;
+		det = float_t{1} / det;
 	}
 
 	M->ex.x =  det * d;	M->ey.x = -det * b; M->ex.z = float_t{0};
@@ -40,7 +40,7 @@ void Mat33::GetSymInverse33(Mat33* M) const
 	auto det = Dot(ex, Cross(ey, ez));
 	if (det != float_t{0})
 	{
-		det = float_t(1) / det;
+		det = float_t{1} / det;
 	}
 
 	const auto a11 = ex.x, a12 = ey.x, a13 = ez.x;

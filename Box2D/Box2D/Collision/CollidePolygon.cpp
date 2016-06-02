@@ -163,11 +163,11 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const P
 
 	const auto localTangent = Normalize(v12 - v11);
 	
-	const auto localNormal = Cross(localTangent, float_t(1));
+	const auto localNormal = Cross(localTangent, float_t{1});
 	const auto planePoint = (v11 + v12) / float_t(2);
 
 	const auto tangent = Mul(xf1.q, localTangent);
-	const auto normal = Cross(tangent, float_t(1));
+	const auto normal = Cross(tangent, float_t{1});
 	
 	v11 = Mul(xf1, v11);
 	v12 = Mul(xf1, v12);

@@ -73,7 +73,7 @@ public:
 			const auto localPointB1 = proxyB.GetVertex(cache.GetIndexB(0));
 			const auto localPointB2 = proxyB.GetVertex(cache.GetIndexB(1));
 
-			m_axis = Normalize(Cross(localPointB2 - localPointB1, float_t(1)));
+			m_axis = Normalize(Cross(localPointB2 - localPointB1, float_t{1}));
 			const auto normal = Mul(xfB.q, m_axis);
 
 			m_localPoint = (localPointB1 + localPointB2) / float_t(2);
@@ -95,7 +95,7 @@ public:
 			const auto localPointA1 = proxyA.GetVertex(cache.GetIndexA(0));
 			const auto localPointA2 = proxyA.GetVertex(cache.GetIndexA(1));
 			
-			m_axis = Normalize(Cross(localPointA2 - localPointA1, float_t(1)));
+			m_axis = Normalize(Cross(localPointA2 - localPointA1, float_t{1}));
 			const auto normal = Mul(xfA.q, m_axis);
 
 			m_localPoint = (localPointA1 + localPointA2) / float_t(2);
@@ -300,7 +300,7 @@ TOIOutput TimeOfImpact(const TOIInput& input)
 		// Dump the curve seen by the root finder
 		{
 			const int32 N = 100;
-			float_t dx = float_t(1) / N;
+			float_t dx = float_t{1} / N;
 			float_t xs[N+1];
 			float_t fs[N+1];
 

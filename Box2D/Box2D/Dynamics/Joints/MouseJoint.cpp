@@ -122,7 +122,7 @@ void MouseJoint::InitVelocityConstraints(const SolverData& data)
 	m_gamma = h * (d + h * k);
 	if (m_gamma != float_t{0})
 	{
-		m_gamma = float_t(1) / m_gamma;
+		m_gamma = float_t{1} / m_gamma;
 	}
 	m_beta = h * k * m_gamma;
 

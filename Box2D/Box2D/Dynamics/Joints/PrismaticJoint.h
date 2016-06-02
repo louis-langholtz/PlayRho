@@ -44,7 +44,7 @@ struct PrismaticJointDef : public JointDef
 	Vec2 localAnchorB = Vec2_zero;
 
 	/// The local translation unit axis in bodyA.
-	Vec2 localAxisA = Vec2{float_t(1), float_t{0}};
+	Vec2 localAxisA = Vec2{float_t{1}, float_t{0}};
 
 	/// The constrained angle between the bodies: bodyB_angle - bodyA_angle.
 	float_t referenceAngle = float_t{0};

@@ -101,7 +101,7 @@ void DistanceJoint::InitVelocityConstraints(const SolverData& data)
 	auto invMass = m_invMassA + m_invIA * Square(crAu) + m_invMassB + m_invIB * Square(crBu);
 
 	// Compute the effective mass matrix.
-	m_mass = (invMass != float_t{0}) ? float_t(1) / invMass : float_t{0};
+	m_mass = (invMass != float_t{0}) ? float_t{1} / invMass : float_t{0};
 
 	if (m_frequencyHz > float_t{0})
 	{
@@ -119,11 +119,11 @@ void DistanceJoint::InitVelocityConstraints(const SolverData& data)
 		// magic formulas
 		const auto h = data.step.get_dt();
 		m_gamma = h * (d + h * k);
-		m_gamma = (m_gamma != float_t{0}) ? float_t(1) / m_gamma : float_t{0};
+		m_gamma = (m_gamma != float_t{0}) ? float_t{1} / m_gamma : float_t{0};
 		m_bias = C * h * k * m_gamma;
 
 		invMass += m_gamma;
-		m_mass = (invMass != float_t{0}) ? float_t(1) / invMass : float_t{0};
+		m_mass = (invMass != float_t{0}) ? float_t{1} / invMass : float_t{0};
 	}
 	else
 	{

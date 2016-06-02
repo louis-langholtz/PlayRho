@@ -135,7 +135,7 @@ struct Vec2
 		{
 			return float_t{0};
 		}
-		const auto invLength = float_t(1) / length;
+		const auto invLength = float_t{1} / length;
 		x *= invLength;
 		y *= invLength;
 
@@ -256,7 +256,7 @@ struct Mat33
 		auto det = Dot(ex, Cross(ey, ez));
 		if (det != float_t{0})
 		{
-			det = float_t(1) / det;
+			det = float_t{1} / det;
 		}
 		return Vec3(det * Dot(b, Cross(ey, ez)), det * Dot(ex, Cross(b, ez)), det * Dot(ex, Cross(ey, b)));
 	}
@@ -270,7 +270,7 @@ struct Mat33
 		auto det = a11 * a22 - a12 * a21;
 		if (det != float_t{0})
 		{
-			det = float_t(1) / det;
+			det = float_t{1} / det;
 		}
 		return Vec2{det * (a22 * b.x - a12 * b.y), det * (a11 * b.y - a21 * b.x)};
 	}
@@ -520,7 +520,7 @@ inline Vec2 Normalize(Vec2 value)
 	{
 		return value;
 	}
-	const auto invLength = float_t(1) / length;
+	const auto invLength = float_t{1} / length;
 	return value * invLength;
 }
 

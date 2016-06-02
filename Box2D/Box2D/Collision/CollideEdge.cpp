@@ -25,24 +25,22 @@
 
 namespace box2d {
 
-// Compute contact points for edge versus circle.
 // This accounts for edge connectivity.
 Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const CircleShape& shapeB, const Transform& xfB)
 {
 	// Compute circle in frame of edge
-	const auto Q = MulT(xfA, Mul(xfB, shapeB.GetPosition()));
+	const auto Q = MulT(xfA, Mul(xfB, shapeB.GetPosition())); ///< Circle's position in frame of edge.
 	
-	const auto A = shapeA.GetVertex1();
-	const auto B = shapeA.GetVertex2();
-	const auto e = B - A;
+	const auto A = shapeA.GetVertex1(); ///< Edge shape's vertex 1.
+	const auto B = shapeA.GetVertex2(); ///< Edge shape's vertex 2.
+	const auto e = B - A; ///< Edge shape's primary edge.
 	
 	// Barycentric coordinates
-	const auto u = Dot(e, B - Q);
-	const auto v = Dot(e, Q - A);
 	
 	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
 
 	// Region A
+	const auto v = Dot(e, Q - A);
 	if (v <= 0)
 	{
 		const auto P = A;
@@ -72,6 +70,7 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const Circ
 	}
 	
 	// Region B
+	const auto u = Dot(e, B - Q);
 	if (u <= 0)
 	{
 		const auto P = B;
@@ -103,7 +102,7 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const Circ
 	// Region AB
 	const auto den = e.LengthSquared();
 	assert(den > 0);
-	const auto P = (float_t(1) / den) * (u * A + v * B);
+	const auto P = (float_t{1} / den) * (u * A + v * B);
 	const auto d = Q - P;
 
 	if (d.LengthSquared() > Square(totalRadius))
@@ -125,7 +124,7 @@ struct EPAxis
 {
 	using index_t = PolygonShape::vertex_count_t;
 
-	enum Type
+	enum Type: index_t
 	{
 		e_unknown,
 		e_edgeA,

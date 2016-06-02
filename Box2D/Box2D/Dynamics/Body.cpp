@@ -348,14 +348,14 @@ void Body::SetMassData(const MassData* massData)
 		return;
 	}
 
-	m_mass = (massData->mass > float_t(0))? massData->mass: float_t(1);
-	m_invMass = float_t(1) / m_mass;
+	m_mass = (massData->mass > float_t(0))? massData->mass: float_t{1};
+	m_invMass = float_t{1} / m_mass;
 
 	if ((massData->I > float_t{0}) && (!IsFixedRotation()))
 	{
 		m_I = massData->I - m_mass * massData->center.LengthSquared();
 		assert(m_I > float_t{0});
-		m_invI = float_t(1) / m_I;
+		m_invI = float_t{1} / m_I;
 	}
 	else
 	{

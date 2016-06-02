@@ -190,7 +190,7 @@ bool AABB::RayCast(RayCastOutput* output, const RayCastInput& input) const
 		}
 		else
 		{
-			const auto inv_d = float_t(1) / d(i);
+			const auto inv_d = float_t{1} / d(i);
 			auto t1 = (lowerBound(i) - p(i)) * inv_d;
 			auto t2 = (upperBound(i) - p(i)) * inv_d;
 
@@ -200,7 +200,7 @@ bool AABB::RayCast(RayCastOutput* output, const RayCastInput& input) const
 			if (t1 > t2)
 			{
 				Swap(t1, t2);
-				s = float_t(1);
+				s = float_t{1};
 			}
 
 			// Push the min up

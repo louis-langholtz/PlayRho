@@ -45,13 +45,13 @@ struct RopeDef
 	Vec2 gravity = Vec2_zero;
 
 	///
-	float_t damping = float_t(1) / float_t(10);
+	float_t damping = float_t{1} / float_t(10);
 
 	/// Stretching stiffness
 	float_t k2 = float_t(9) / float_t(10);
 
 	/// Bending stiffness. Values above 0.5 can make the simulation blow up.
-	float_t k3 = float_t(1) / float_t(10);
+	float_t k3 = float_t{1} / float_t(10);
 };
 
 /// 
@@ -105,7 +105,7 @@ private:
 	Vec2 m_gravity = Vec2_zero;
 	float_t m_damping = float_t{0};
 
-	float_t m_k2 = float_t(1);
+	float_t m_k2 = float_t{1};
 	float_t m_k3 = float_t(0.1);
 };
 

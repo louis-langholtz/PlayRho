@@ -95,7 +95,7 @@ bool EdgeShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 	}
 
 	const auto s = Dot(q - v1, r) / rr;
-	if ((s < float_t{0}) || (float_t(1) < s))
+	if ((s < float_t{0}) || (float_t{1} < s))
 	{
 		return false;
 	}

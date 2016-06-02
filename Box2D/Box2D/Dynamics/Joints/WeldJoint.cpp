@@ -109,7 +109,7 @@ void WeldJoint::InitVelocityConstraints(const SolverData& data)
 		K.GetInverse22(&m_mass);
 
 		auto invM = iA + iB;
-		const auto m = (invM > float_t{0}) ? float_t(1) / invM : float_t{0};
+		const auto m = (invM > float_t{0}) ? float_t{1} / invM : float_t{0};
 
 		const auto C = aB - aA - m_referenceAngle;
 
@@ -125,11 +125,11 @@ void WeldJoint::InitVelocityConstraints(const SolverData& data)
 		// magic formulas
 		const auto h = data.step.get_dt();
 		m_gamma = h * (d + h * k);
-		m_gamma = (m_gamma != float_t{0}) ? float_t(1) / m_gamma : float_t{0};
+		m_gamma = (m_gamma != float_t{0}) ? float_t{1} / m_gamma : float_t{0};
 		m_bias = C * h * k * m_gamma;
 
 		invM += m_gamma;
-		m_mass.ez.z = (invM != float_t{0}) ? float_t(1) / invM : float_t{0};
+		m_mass.ez.z = (invM != float_t{0}) ? float_t{1} / invM : float_t{0};
 	}
 	else if (K.ez.z == float_t{0})
 	{

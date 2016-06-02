@@ -31,6 +31,7 @@ namespace box2d {
 class PolygonShape : public Shape
 {
 public:
+	/// Vertex count type.
 	using vertex_count_t = std::remove_cv<decltype(MaxPolygonVertices)>::type;
 
 	PolygonShape(): Shape(e_polygon, PolygonRadius) {}

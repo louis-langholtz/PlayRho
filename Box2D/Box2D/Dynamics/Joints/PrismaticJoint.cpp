@@ -105,7 +105,7 @@ PrismaticJoint::PrismaticJoint(const PrismaticJointDef* def)
 	m_localAnchorA = def->localAnchorA;
 	m_localAnchorB = def->localAnchorB;
 	m_localXAxisA = Normalize(def->localAxisA);
-	m_localYAxisA = Cross(float_t(1), m_localXAxisA);
+	m_localYAxisA = Cross(float_t{1}, m_localXAxisA);
 	m_referenceAngle = def->referenceAngle;
 
 	m_impulse = Vec3_zero;
@@ -165,7 +165,7 @@ void PrismaticJoint::InitVelocityConstraints(const SolverData& data)
 		m_motorMass = mA + mB + iA * m_a1 * m_a1 + iB * m_a2 * m_a2;
 		if (m_motorMass > float_t{0})
 		{
-			m_motorMass = float_t(1) / m_motorMass;
+			m_motorMass = float_t{1} / m_motorMass;
 		}
 	}
 
@@ -183,7 +183,7 @@ void PrismaticJoint::InitVelocityConstraints(const SolverData& data)
 		if (k22 == float_t{0})
 		{
 			// For bodies with fixed rotation.
-			k22 = float_t(1);
+			k22 = float_t{1};
 		}
 		const auto k23 = iA * m_a1 + iB * m_a2;
 		const auto k33 = mA + mB + iA * m_a1 * m_a1 + iB * m_a2 * m_a2;

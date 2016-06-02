@@ -39,16 +39,16 @@ struct PulleyJointDef : public JointDef
 					float_t ratio);
 
 	/// The first ground anchor in world coordinates. This point never moves.
-	Vec2 groundAnchorA = Vec2{-float_t(1), float_t(1)};
+	Vec2 groundAnchorA = Vec2{-float_t{1}, float_t{1}};
 
 	/// The second ground anchor in world coordinates. This point never moves.
-	Vec2 groundAnchorB = Vec2{float_t(1), float_t(1)};
+	Vec2 groundAnchorB = Vec2{float_t{1}, float_t{1}};
 
 	/// The local anchor point relative to bodyA's origin.
-	Vec2 localAnchorA = Vec2{-float_t(1), float_t{0}};
+	Vec2 localAnchorA = Vec2{-float_t{1}, float_t{0}};
 
 	/// The local anchor point relative to bodyB's origin.
-	Vec2 localAnchorB = Vec2{float_t(1), float_t{0}};
+	Vec2 localAnchorB = Vec2{float_t{1}, float_t{0}};
 
 	/// The a reference length for the segment attached to bodyA.
 	float_t lengthA = float_t{0};
@@ -57,7 +57,7 @@ struct PulleyJointDef : public JointDef
 	float_t lengthB = float_t{0};
 
 	/// The pulley ratio, used to simulate a block-and-tackle.
-	float_t ratio = float_t(1);
+	float_t ratio = float_t{1};
 };
 
 /// The pulley joint is connected to two bodies and two fixed ground points.

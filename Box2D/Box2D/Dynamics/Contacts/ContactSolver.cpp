@@ -626,7 +626,7 @@ static inline void SolveVelocityConstraint(ContactVelocityConstraint& vc, Veloci
 		auto& vcp = vc.GetPoint(0);
 
 		{
-			const auto tangent = Cross(vc.normal, float_t(1));
+			const auto tangent = Cross(vc.normal, float_t{1});
 			SolveTangentConstraint(vc, tangent, velA, velB, vcp);
 		}
 

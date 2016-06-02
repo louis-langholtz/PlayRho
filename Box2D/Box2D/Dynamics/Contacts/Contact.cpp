@@ -138,8 +138,6 @@ Contact::Contact(Fixture* fA, child_count_t indexA, Fixture* fB, child_count_t i
 {
 }
 
-// Update the contact manifold and touching status.
-// Note: do not assume the fixture AABBs are overlapping or are valid.
 void Contact::Update(ContactListener* listener)
 {
 	const auto oldManifold = m_manifold;
@@ -147,6 +145,7 @@ void Contact::Update(ContactListener* listener)
 	// Re-enable this contact.
 	m_flags |= e_enabledFlag;
 
+	// Note: do not assume the fixture AABBs are overlapping or are valid.
 	auto touching = false;
 	auto wasTouching = IsTouching();
 

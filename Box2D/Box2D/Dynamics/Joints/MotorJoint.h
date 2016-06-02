@@ -38,10 +38,10 @@ struct MotorJointDef : public JointDef
 	float_t angularOffset = float_t{0};
 	
 	/// The maximum motor force in N.
-	float_t maxForce = float_t(1);
+	float_t maxForce = float_t{1};
 
 	/// The maximum motor torque in N-m.
-	float_t maxTorque = float_t(1);
+	float_t maxTorque = float_t{1};
 
 	/// Position correction factor in the range [0,1].
 	float_t correctionFactor = float_t(0.3);

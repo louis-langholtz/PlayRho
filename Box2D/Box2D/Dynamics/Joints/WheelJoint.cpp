@@ -53,7 +53,7 @@ WheelJoint::WheelJoint(const WheelJointDef* def)
 	m_localAnchorA = def->localAnchorA;
 	m_localAnchorB = def->localAnchorB;
 	m_localXAxisA = def->localAxisA;
-	m_localYAxisA = Cross(float_t(1), m_localXAxisA);
+	m_localYAxisA = Cross(float_t{1}, m_localXAxisA);
 
 	m_mass = float_t{0};
 	m_impulse = float_t{0};
@@ -117,7 +117,7 @@ void WheelJoint::InitVelocityConstraints(const SolverData& data)
 
 		if (m_mass > float_t{0})
 		{
-			m_mass = float_t(1) / m_mass;
+			m_mass = float_t{1} / m_mass;
 		}
 	}
 
@@ -135,7 +135,7 @@ void WheelJoint::InitVelocityConstraints(const SolverData& data)
 
 		if (invMass > float_t{0})
 		{
-			m_springMass = float_t(1) / invMass;
+			m_springMass = float_t{1} / invMass;
 
 			const auto C = Dot(dd, m_ax);
 
@@ -153,7 +153,7 @@ void WheelJoint::InitVelocityConstraints(const SolverData& data)
 			m_gamma = h * (d + h * k);
 			if (m_gamma > float_t{0})
 			{
-				m_gamma = float_t(1) / m_gamma;
+				m_gamma = float_t{1} / m_gamma;
 			}
 
 			m_bias = C * h * k * m_gamma;
@@ -161,7 +161,7 @@ void WheelJoint::InitVelocityConstraints(const SolverData& data)
 			m_springMass = invMass + m_gamma;
 			if (m_springMass > float_t{0})
 			{
-				m_springMass = float_t(1) / m_springMass;
+				m_springMass = float_t{1} / m_springMass;
 			}
 		}
 	}
@@ -176,7 +176,7 @@ void WheelJoint::InitVelocityConstraints(const SolverData& data)
 		m_motorMass = iA + iB;
 		if (m_motorMass > float_t{0})
 		{
-			m_motorMass = float_t(1) / m_motorMass;
+			m_motorMass = float_t{1} / m_motorMass;
 		}
 	}
 	else

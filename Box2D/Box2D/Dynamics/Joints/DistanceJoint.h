@@ -45,7 +45,7 @@ struct DistanceJointDef : public JointDef
 	Vec2 localAnchorB = Vec2_zero;
 
 	/// The natural length between the anchor points.
-	float_t length = float_t(1);
+	float_t length = float_t{1};
 
 	/// The mass-spring-damper frequency in Hertz. A value of 0
 	/// disables softness.

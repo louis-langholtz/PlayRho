@@ -175,8 +175,8 @@ void GearJoint::InitVelocityConstraints(const SolverData& data)
 	if (m_typeA == e_revoluteJoint)
 	{
 		m_JvAC = Vec2_zero;
-		m_JwA = float_t(1);
-		m_JwC = float_t(1);
+		m_JwA = float_t{1};
+		m_JwC = float_t{1};
 		m_mass += m_iA + m_iC;
 	}
 	else
@@ -209,7 +209,7 @@ void GearJoint::InitVelocityConstraints(const SolverData& data)
 	}
 
 	// Compute effective mass.
-	m_mass = (m_mass > float_t{0}) ? float_t(1) / m_mass : float_t{0};
+	m_mass = (m_mass > float_t{0}) ? float_t{1} / m_mass : float_t{0};
 
 	if (data.step.warmStarting)
 	{
@@ -297,8 +297,8 @@ bool GearJoint::SolvePositionConstraints(const SolverData& data)
 	if (m_typeA == e_revoluteJoint)
 	{
 		JvAC = Vec2_zero;
-		JwA = float_t(1);
-		JwC = float_t(1);
+		JwA = float_t{1};
+		JwC = float_t{1};
 		mass += m_iA + m_iC;
 
 		coordinateA = aA - aC - m_referenceAngleA;
