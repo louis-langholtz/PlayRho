@@ -56,12 +56,11 @@ public:
 
 	/// Solves this island.
 	/// @detail This:
-	///   1. Updates every element of m_positions, and m_velocities.
-	///   2. Updates every body's sweep.pos0 to its sweep.pos1.
-	///   3. Updates every body's sweep.pos1 to the m_position element for it.
-	///   4. Updates every body's velocity to the m_velocity element for it.
-	///   5. Synchronizes every body's transform (by updating it to transform one of the body's sweep).
-	///   6. Reports to the listener.
+	///   1. Updates every body's sweep.pos0 to its sweep.pos1.
+	///   2. Updates every body's sweep.pos1 to the new "solved" position for it.
+	///   3. Updates every body's velocity to the new accelerated, dampened, and "solved" velocity for it.
+	///   4. Synchronizes every body's transform (by updating it to transform one of the body's sweep).
+	///   5. Reports to the listener.
 	void Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep);
 
 	void SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_count_t toiIndexB);

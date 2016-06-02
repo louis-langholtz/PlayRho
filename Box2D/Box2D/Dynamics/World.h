@@ -237,8 +237,8 @@ private:
 	/// @param step Time step value to use.
 	void SolveTOI(const TimeStep& step);
 	
-	void SolveToiUnsetBodies();
-	void SolveToiUnsetContacts();
+	void ResetBodiesForSolveTOI();
+	void ResetContactsForSolveTOI();
 	
 	struct ContactToiPair
 	{

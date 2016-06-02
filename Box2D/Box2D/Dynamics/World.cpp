@@ -546,7 +546,7 @@ void World::Solve(const TimeStep& step)
 	}
 }
 
-void World::SolveToiUnsetBodies()
+void World::ResetBodiesForSolveTOI()
 {
 	for (auto b = m_bodyList; b; b = b->m_next)
 	{
@@ -555,7 +555,7 @@ void World::SolveToiUnsetBodies()
 	}
 }
 
-void World::SolveToiUnsetContacts()
+void World::ResetContactsForSolveTOI()
 {
 	for (auto c = m_contactManager.GetContactList(); c; c = c->m_next)
 	{
@@ -613,8 +613,8 @@ void World::SolveTOI(const TimeStep& step)
 
 	if (m_stepComplete)
 	{
-		SolveToiUnsetBodies();
-		SolveToiUnsetContacts();
+		ResetBodiesForSolveTOI();
+		ResetContactsForSolveTOI();
 	}
 
 	// Find TOI events and solve them.
