@@ -420,7 +420,7 @@ void World::Solve(const TimeStep& step)
 
 	// Size the island for the worst case.
 	Island island(m_bodyCount, m_contactManager.GetContactCount(), m_jointCount,
-				  &m_stackAllocator, m_contactManager.m_contactListener);
+				  m_stackAllocator, m_contactManager.m_contactListener);
 	
 	// Build and simulate all awake islands.
 	const auto stackSize = m_bodyCount;
@@ -609,7 +609,7 @@ static inline bool IsFullOfContacts(const Island& island)
 // Find TOI contacts and solve them.
 void World::SolveTOI(const TimeStep& step)
 {
-	Island island(2 * MaxTOIContacts, MaxTOIContacts, 0, &m_stackAllocator, m_contactManager.m_contactListener);
+	Island island(2 * MaxTOIContacts, MaxTOIContacts, 0, m_stackAllocator, m_contactManager.m_contactListener);
 
 	if (m_stepComplete)
 	{

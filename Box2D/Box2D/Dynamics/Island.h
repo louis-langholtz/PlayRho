@@ -39,7 +39,7 @@ class Island
 {
 public:
 	Island(island_count_t bodyCapacity, island_count_t contactCapacity, island_count_t jointCapacity,
-			StackAllocator* allocator, ContactListener* listener);
+		   StackAllocator& allocator, ContactListener* listener);
 
 	/// Destructor.
 	/// @detail Sets all bodies's island indexes to Body::InvalidIslandIndex and then frees allocated memory.
@@ -145,7 +145,7 @@ private:
 	island_count_t m_contactCount = 0; ///< Count of contacts added to the island. Max of m_contactCapacity.
 	island_count_t m_jointCount = 0; ///< Count of joints added to the island. Max of m_jointCapacity.
 	
-	StackAllocator* const m_allocator; ///< Stack-style memory allocator set on construction.
+	StackAllocator& m_allocator; ///< Stack-style memory allocator set on construction.
 	ContactListener* const m_listener;
 
 	Body** const m_bodies;

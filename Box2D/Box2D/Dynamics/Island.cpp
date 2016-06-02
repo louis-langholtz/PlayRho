@@ -151,18 +151,18 @@ Island::Island(
 	island_count_t bodyCapacity,
 	island_count_t contactCapacity,
 	island_count_t jointCapacity,
-	StackAllocator* allocator,
+	StackAllocator& allocator,
 	ContactListener* listener):
 m_bodyCapacity(bodyCapacity),
 m_contactCapacity(contactCapacity),
 m_jointCapacity(jointCapacity),
 m_allocator(allocator),
 m_listener(listener),
-m_bodies(m_allocator->Allocate<Body*>(bodyCapacity)),
-m_contacts(m_allocator->Allocate<Contact*>(contactCapacity)),
-m_joints(m_allocator->Allocate<Joint*>(jointCapacity)),
-m_velocities(m_allocator->Allocate<Velocity>(bodyCapacity)),
-m_positions(m_allocator->Allocate<Position>(bodyCapacity))
+m_bodies(m_allocator.Allocate<Body*>(bodyCapacity)),
+m_contacts(m_allocator.Allocate<Contact*>(contactCapacity)),
+m_joints(m_allocator.Allocate<Joint*>(jointCapacity)),
+m_velocities(m_allocator.Allocate<Velocity>(bodyCapacity)),
+m_positions(m_allocator.Allocate<Position>(bodyCapacity))
 {
 }
 
@@ -171,11 +171,11 @@ Island::~Island()
 	ClearBodies();
 
 	// Warning: the order MUST BE the reverse of the constructor order.
-	m_allocator->Free(m_positions);
-	m_allocator->Free(m_velocities);
-	m_allocator->Free(m_joints);
-	m_allocator->Free(m_contacts);
-	m_allocator->Free(m_bodies);
+	m_allocator.Free(m_positions);
+	m_allocator.Free(m_velocities);
+	m_allocator.Free(m_joints);
+	m_allocator.Free(m_contacts);
+	m_allocator.Free(m_bodies);
 }
 
 void Island::Clear() noexcept
@@ -279,7 +279,7 @@ void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 	contactSolverDef.count = m_contactCount;
 	contactSolverDef.positions = m_positions;
 	contactSolverDef.velocities = m_velocities;
-	contactSolverDef.allocator = m_allocator;
+	contactSolverDef.allocator = &m_allocator;
 
 	ContactSolver contactSolver(&contactSolverDef);
 	contactSolver.UpdateVelocityConstraints();
@@ -390,7 +390,7 @@ void Island::SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_
 	ContactSolverDef contactSolverDef;
 	contactSolverDef.contacts = m_contacts;
 	contactSolverDef.count = m_contactCount;
-	contactSolverDef.allocator = m_allocator;
+	contactSolverDef.allocator = &m_allocator;
 	contactSolverDef.step = subStep;
 	contactSolverDef.positions = m_positions;
 	contactSolverDef.velocities = m_velocities;
