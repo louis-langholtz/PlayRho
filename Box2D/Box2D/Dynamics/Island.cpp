@@ -158,11 +158,11 @@ m_contactCapacity(contactCapacity),
 m_jointCapacity(jointCapacity),
 m_allocator(allocator),
 m_listener(listener),
-m_bodies(static_cast<Body**>(m_allocator->Allocate(bodyCapacity * sizeof(Body*)))),
-m_contacts(static_cast<Contact**>(m_allocator->Allocate(contactCapacity * sizeof(Contact*)))),
-m_joints(static_cast<Joint**>(m_allocator->Allocate(jointCapacity * sizeof(Joint*)))),
-m_velocities(static_cast<Velocity*>(m_allocator->Allocate(bodyCapacity * sizeof(Velocity)))),
-m_positions(static_cast<Position*>(m_allocator->Allocate(bodyCapacity * sizeof(Position))))
+m_bodies(m_allocator->Allocate<Body*>(bodyCapacity)),
+m_contacts(m_allocator->Allocate<Contact*>(contactCapacity)),
+m_joints(m_allocator->Allocate<Joint*>(jointCapacity)),
+m_velocities(m_allocator->Allocate<Velocity>(bodyCapacity)),
+m_positions(m_allocator->Allocate<Position>(bodyCapacity))
 {
 }
 
