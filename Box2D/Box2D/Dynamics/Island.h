@@ -91,6 +91,8 @@ public:
 		return m_jointCapacity;
 	}
 
+	/// Gets the body count.
+	/// @return Count of bodies added to this island.
 	inline island_count_t GetBodyCount() const noexcept
 	{
 		return m_bodyCount;
