@@ -31,11 +31,11 @@ class StackAllocator
 public:
 	using size_type = size_t;
 
-	static constexpr auto StackSize = unsigned{100 * 1024};	// 100k
+	static constexpr auto StackSize = unsigned{100 * 1024};	///< Stack size (100k).
 	static constexpr auto MaxStackEntries = unsigned{32};
 	
-	StackAllocator();
-	~StackAllocator();
+	StackAllocator() noexcept;
+	~StackAllocator() noexcept;
 
 	void* Allocate(size_type size);
 	void Free(void* p);
@@ -51,7 +51,7 @@ private:
 	{
 		using size_type = size_t;
 		
-		char* data;
+		void* data;
 		size_type size;
 		bool usedMalloc;
 	};

@@ -21,9 +21,9 @@
 
 using namespace box2d;
 
-StackAllocator::StackAllocator() = default;
+StackAllocator::StackAllocator() noexcept = default;
 
-StackAllocator::~StackAllocator()
+StackAllocator::~StackAllocator() noexcept
 {
 	assert(m_index == 0);
 	assert(m_entryCount == 0);
@@ -32,10 +32,13 @@ StackAllocator::~StackAllocator()
 void* StackAllocator::Allocate(size_type size)
 {
 	assert(m_entryCount < MaxStackEntries);
+	assert(m_index <= StackSize);
 
 	auto entry = m_entries + m_entryCount;
 	entry->size = size;
-	if (m_index + size > StackSize)
+	
+	const auto available = StackSize - m_index;
+	if (size > available)
 	{
 		entry->data = static_cast<decltype(entry->data)>(alloc(size));
 		entry->usedMalloc = true;
