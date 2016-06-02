@@ -145,7 +145,7 @@ private:
 	island_count_t m_contactCount = 0; ///< Count of contacts added to the island. Max of m_contactCapacity.
 	island_count_t m_jointCount = 0; ///< Count of joints added to the island. Max of m_jointCapacity.
 	
-	StackAllocator* const m_allocator;
+	StackAllocator* const m_allocator; ///< Stack-style memory allocator set on construction.
 	ContactListener* const m_listener;
 
 	Body** const m_bodies;

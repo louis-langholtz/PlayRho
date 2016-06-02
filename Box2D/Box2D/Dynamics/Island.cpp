@@ -170,7 +170,7 @@ Island::~Island()
 {
 	ClearBodies();
 
-	// Warning: the order should reverse the constructor order.
+	// Warning: the order MUST BE the reverse of the constructor order.
 	m_allocator->Free(m_positions);
 	m_allocator->Free(m_velocities);
 	m_allocator->Free(m_joints);
