@@ -42,6 +42,12 @@ public:
 	/// Allocate memory. This will use alloc if the size is larger than MaxBlockSize.
 	void* Allocate(size_type size);
 
+	template <typename T>
+	T* Allocate(size_type size)
+	{
+		return static_cast<T*>(Allocate(size * sizeof(T)));
+	}
+
 	/// Free memory. This will use free if the size is larger than MaxBlockSize.
 	void Free(void* p, size_type size);
 

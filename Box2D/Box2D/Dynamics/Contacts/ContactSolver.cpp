@@ -186,18 +186,13 @@ ContactSolver::ContactSolver(ContactSolverDef* def) :
 	m_allocator{def->allocator},
 	m_contacts{def->contacts},
 	m_count{def->count},
-	m_positionConstraints{InitPositionConstraints(AllocPositionConstraints(m_allocator, def->count), def->count, def->contacts)},
-	m_velocityConstraints{InitVelocityConstraints(AllocVelocityConstraints(m_allocator, def->count), def->count, def->contacts,
+	m_positionConstraints{InitPositionConstraints(m_allocator->Allocate<ContactPositionConstraint>(def->count), def->count, def->contacts)},
+	m_velocityConstraints{InitVelocityConstraints(m_allocator->Allocate<ContactVelocityConstraint>(def->count), def->count, def->contacts,
 												  m_step.warmStarting? m_step.dtRatio: float_t{0})}
 {
 	// Intentionally empty.
 }
 	
-ContactPositionConstraint* ContactSolver::AllocPositionConstraints(StackAllocator* allocator, ContactSolver::size_type count)
-{
-	return static_cast<ContactPositionConstraint*>(allocator->Allocate(count * sizeof(ContactPositionConstraint)));
-}
-
 ContactPositionConstraint* ContactSolver::InitPositionConstraints(ContactPositionConstraint* constraints, ContactSolver::size_type count, Contact** contacts)
 {
 	for (auto i = decltype(count){0}; i < count; ++i)
@@ -205,11 +200,6 @@ ContactPositionConstraint* ContactSolver::InitPositionConstraints(ContactPositio
 		constraints[i] = GetPositionConstraint(*contacts[i]);
 	}
 	return constraints;
-}
-
-ContactVelocityConstraint* ContactSolver::AllocVelocityConstraints(StackAllocator* allocator, size_type count)
-{
-	return static_cast<ContactVelocityConstraint*>(allocator->Allocate(count * sizeof(ContactVelocityConstraint)));
 }
 	
 ContactVelocityConstraint* ContactSolver::InitVelocityConstraints(ContactVelocityConstraint* constraints, size_type count, Contact** contacts, float_t dtRatio)

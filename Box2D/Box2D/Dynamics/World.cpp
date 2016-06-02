@@ -31,9 +31,11 @@
 #include <Box2D/Collision/TimeOfImpact.h>
 #include <Box2D/Common/Draw.h>
 #include <Box2D/Common/Timer.h>
+
 #include <new>
 #include <functional>
 #include <type_traits>
+#include <memory>
 
 namespace box2d
 {
@@ -422,7 +424,7 @@ void World::Solve(const TimeStep& step)
 	
 	// Build and simulate all awake islands.
 	const auto stackSize = m_bodyCount;
-	auto stack = static_cast<Body**>(m_stackAllocator.Allocate(stackSize * sizeof(Body*)));
+	auto stack = std::unique_ptr<Body*[], StackAllocator&>(m_stackAllocator.Allocate<Body*>(stackSize), m_stackAllocator);
 	for (auto seed = m_bodyList; seed; seed = seed->GetNext())
 	{
 		// Skip seed (body) if already in island, not-awake, not-active, or is static.
@@ -522,8 +524,6 @@ void World::Solve(const TimeStep& step)
 			}
 		}
 	}
-
-	m_stackAllocator.Free(stack);
 
 	{
 		Timer timer;

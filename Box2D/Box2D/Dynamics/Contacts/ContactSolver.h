@@ -207,11 +207,9 @@ public:
 	}
 
 private:
-	static ContactPositionConstraint* AllocPositionConstraints(StackAllocator* allocator, size_type count);
 	static ContactPositionConstraint* InitPositionConstraints(ContactPositionConstraint* constraints, size_type count, Contact** contacts);
-
-	static ContactVelocityConstraint* AllocVelocityConstraints(StackAllocator* allocator, size_type count);
-	static ContactVelocityConstraint* InitVelocityConstraints(ContactVelocityConstraint* constraints, size_type count, Contact** contacts, float_t dtRatio = 0);
+	static ContactVelocityConstraint* InitVelocityConstraints(ContactVelocityConstraint* constraints, size_type count, Contact** contacts,
+															  float_t dtRatio = 0);
 	
 	static void Assign(ContactPositionConstraintBodyData& var, const Body& val);
 	static ContactVelocityConstraintBodyData GetVelocityConstraintBodyData(const Body& val);
@@ -234,7 +232,7 @@ private:
 	const TimeStep m_step;
 	Position* const m_positions;
 	Velocity* const m_velocities;
-	StackAllocator* const m_allocator;
+	StackAllocator* const m_allocator; ///< Stack-style memory allocator set on construction.
 	
 	const size_type m_count; ///< Count of elements in the contact position-constraint and velocity-constraint arrays.
 	Contact** const m_contacts; ///< Array of contacts.
