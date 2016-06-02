@@ -29,7 +29,7 @@ StackAllocator::~StackAllocator() noexcept
 	assert(m_entryCount == 0);
 }
 
-void* StackAllocator::Allocate(size_type size)
+void* StackAllocator::Allocate(size_type size) noexcept
 {
 	assert(m_entryCount < MaxStackEntries);
 	assert(m_index <= StackSize);
@@ -57,7 +57,7 @@ void* StackAllocator::Allocate(size_type size)
 	return entry->data;
 }
 
-void StackAllocator::Free(void* p)
+void StackAllocator::Free(void* p) noexcept
 {
 	assert(m_entryCount > 0);
 	const auto entry = m_entries + m_entryCount - 1;
@@ -74,4 +74,9 @@ void StackAllocator::Free(void* p)
 	assert(m_allocation >= entry->size);
 	m_allocation -= entry->size;
 	--m_entryCount;
+}
+
+void StackAllocator::operator()(void *p) noexcept
+{
+	Free(p);
 }
