@@ -154,6 +154,8 @@ void ContactManager::Collide()
 		}
 
 		// The contact persists.
+
+		// Update the contact manifold and notify the listener.
 		c->Update(m_contactListener);
 	}
 }

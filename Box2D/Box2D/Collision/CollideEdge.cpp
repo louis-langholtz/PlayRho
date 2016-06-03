@@ -28,6 +28,19 @@ namespace box2d {
 // This accounts for edge connectivity.
 Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const CircleShape& shapeB, const Transform& xfB)
 {
+	/*
+	 * Consider:
+	 *   "-" Is an edge parallel to the horizon bounded by vertex A on the left and vertex B
+	 *       on the right.
+	 *   "|" Is a line perpendicular to the edge.
+	 *   "." Is the center of a circle whose position is called Q.
+	 *
+	 * Then:
+	 *   When Q is anywhere to the left of A (as in ".|-"), it's said to be in region A.
+	 *   When Q is anywhere to the right of B (as in "-|."), it's said to be in region B.
+	 *   Otheriwse (when Q is between A and B), Q is said to be in region AB.
+	 */
+
 	// Compute circle in frame of edge
 	const auto Q = MulT(xfA, Mul(xfB, shapeB.GetPosition())); ///< Circle's position in frame of edge.
 	
@@ -43,7 +56,7 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const Circ
 	const auto v = Dot(e, Q - A);
 	if (v <= 0)
 	{
-		const auto P = A;
+		const auto P = A; ///< Point of relavance (is A).
 		const auto d = Q - P;
 		if (d.LengthSquared() > Square(totalRadius))
 		{
@@ -73,7 +86,7 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const Circ
 	const auto u = Dot(e, B - Q);
 	if (u <= 0)
 	{
-		const auto P = B;
+		const auto P = B; ///< Point of relavance (is B).
 		const auto d = Q - P;
 		if (d.LengthSquared() > Square(totalRadius))
 		{
@@ -100,9 +113,9 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const Circ
 	}
 	
 	// Region AB
-	const auto den = e.LengthSquared();
-	assert(den > 0);
-	const auto P = (float_t{1} / den) * (u * A + v * B);
+	const auto eLenSquared = e.LengthSquared();
+	assert(eLenSquared > 0);
+	const auto P = (u * A + v * B) * (float_t{1} / eLenSquared);
 	const auto d = Q - P;
 
 	if (d.LengthSquared() > Square(totalRadius))

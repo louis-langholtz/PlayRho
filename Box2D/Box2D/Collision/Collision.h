@@ -132,23 +132,34 @@ public:
 	enum Type: uint8
 	{
 		e_unset,
-		e_circles,
-		e_faceA,
-		e_faceB
+		e_circles, ///< Indicates local point is local center of circle A and local normal is not used.
+		e_faceA, ///< Indicates local point is center of face A and local normal is normal on shape A.
+		e_faceB ///< Indicates local point is center of face B and local normal is normal on shape B.
 	};
 
 	Manifold() noexcept = default;
 
-	/// Constructs a manifold with the given values.
+	/// Constructs manifold with zero points using the given values.
 	/// @param t Manifold type.
 	/// @param ln Local normal.
 	/// @param lp Local point.
 	constexpr explicit Manifold(Type t, Vec2 ln = Vec2_zero, Vec2 lp = Vec2_zero) noexcept:
 		type{t}, localNormal{ln}, localPoint{lp}, pointCount{0}, points{} {}
 
+	/// Constructs manifold with one point using the given values.
+	/// @param t Manifold type.
+	/// @param ln Local normal.
+	/// @param lp Local point.
+	/// @param mp1 Manifold point 1.
 	constexpr Manifold(Type t, Vec2 ln, Vec2 lp, const ManifoldPoint& mp1) noexcept:
 		type{t}, localNormal{ln}, localPoint{lp}, pointCount{1}, points{mp1} {}
 
+	/// Constructs manifold with two points using the given values.
+	/// @param t Manifold type.
+	/// @param ln Local normal.
+	/// @param lp Local point.
+	/// @param mp1 Manifold point 1.
+	/// @param mp2 Manifold point 2.
 	constexpr Manifold(Type t, Vec2 ln, Vec2 lp, const ManifoldPoint& mp1, const ManifoldPoint& mp2) noexcept:
 		type{t}, localNormal{ln}, localPoint{lp}, pointCount{2}, points{mp1, mp2} {}
 

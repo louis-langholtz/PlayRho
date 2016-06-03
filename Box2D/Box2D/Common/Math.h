@@ -439,6 +439,12 @@ constexpr inline Vec2 GetForwardPerpendicular(const Vec2 vector) noexcept
 }
 
 /// Performs the dot product on two vectors (A and B).
+/// @detail The dot product of two vectors is defined as the magnitude of vector A
+///   mulitiplied by the magnitude of vector B multiplied by the cosine of the angle
+///   between the two vectors (A and B). Thus the dot product of two vectors is a
+///   value ranging between plus and minus of the magnitudes of each vector times each
+///   other. The middle value of 0 indicates that two vectors are at an angle to each other
+///   of +/- 90 degrees.
 /// @param a Vector A.
 /// @param b Vector B.
 /// @return Dot product of the vectors (0 means the two vectors are perpendicular).

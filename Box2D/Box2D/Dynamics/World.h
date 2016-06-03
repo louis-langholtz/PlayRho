@@ -242,8 +242,8 @@ private:
 	
 	struct ContactToiPair
 	{
-		Contact* contact;
-		float_t toi;
+		Contact* contact; ///< Contact for which the time of impact is relavant.
+		float_t toi; ///< Time of impact (TOI) as a fractional value between 0 and 1.
 	};
 
 	/// Updates the contact times of impact.
