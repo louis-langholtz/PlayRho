@@ -44,6 +44,9 @@ public:
 	/// @return Time step amount in seconds.
 	float_t get_dt() const noexcept { return dt; }
 
+	/// Gets the inverse delta-t value.
+	/// @return 1/dt or 0 if dt is 0.
+	/// @sa get_dt().
 	float_t get_inv_dt() const noexcept { return inv_dt; }
 	
 	void set_dt(float_t value) noexcept
@@ -52,9 +55,14 @@ public:
 		inv_dt = (value != 0)? float_t{1} / value: float_t{0};
 	}
 
-	float_t dtRatio; ///< dt * inv_dt0
+	/// Delta t ratio.
+	/// @detail This is the delta-t times the inverse delta t from the previous world step.
+	///   Value of 1 indicates that the time step has not varied.
+	float_t dtRatio;
+
 	unsigned velocityIterations; ///< Velocity iterations.
 	unsigned positionIterations; ///< Position iterations.
+	
 	bool warmStarting; ///< Whether or not to perform warm starting.
 
 private:

@@ -280,7 +280,8 @@ private:
 	DestructionListener* m_destructionListener = nullptr;
 	Draw* g_debugDraw = nullptr;
 
-	/// Used to compute the time step ratio to support a variable time step.
+	/// Inverse delta-t from previous step. Used to compute time step ratio to support a variable time step.
+	/// @sa Step.
 	float_t m_inv_dt0 = float_t{0};
 
 	// These are for debugging the solver.
