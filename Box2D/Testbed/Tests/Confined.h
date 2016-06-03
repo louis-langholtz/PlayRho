@@ -42,7 +42,7 @@ public:
 
 			FixtureDef fd;
 			fd.shape = &shape;
-			fd.restitution = float_t(0.9);
+			fd.restitution = float_t(0); // originally 0.9
 
 			// Floor
 			shape.Set(Vec2(-wall_length/2, 0.0f), Vec2(wall_length/2, 0.0f));
@@ -114,7 +114,7 @@ public:
 		FixtureDef fd;
 		fd.shape = &shape;
 		fd.density = 1.0f;
-		fd.restitution = float_t(0.8);
+		fd.restitution = float_t(0); // originally 0.8
 		
 		BodyDef bd;
 		bd.type = BodyType::Dynamic;

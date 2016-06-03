@@ -150,7 +150,7 @@ struct ContactSolverDef
 {
 	using size_type = size_t;
 
-	TimeStep step;
+	float_t dtRatio; ///< Delta-t ratio. Set to step.dtRatio if warm starting otherwise 0.
 	Contact** contacts; ///< Pointers to contacts.
 	size_type count; ///< Count of contacts.
 	Position* positions; ///< Array of positions, one for every body referenced by a contact.
@@ -170,7 +170,7 @@ public:
 	/// Minimum time of impact separation for TOI position constraints.
 	static constexpr auto MinToiSeparation = -LinearSlop * float_t(1.5);
 
-	ContactSolver(ContactSolverDef* def);
+	ContactSolver(const ContactSolverDef& def);
 	~ContactSolver();
 
 	ContactSolver() = delete;
@@ -192,12 +192,16 @@ public:
 	void SolveVelocityConstraints();
 
 	/// Solves position constraints.
+	/// @detail This updates positions (and nothing else).
 	/// @return true if the minimum separation is above the minimum separation threshold, false otherwise.
 	/// @sa MinSeparationThreshold.
 	bool SolvePositionConstraints();
 	
-	/// Sequential position solver for TOI-based position constraints.
-	/// @detail This updates positions (and nothing else).
+	/// Solves TOI position constraints.
+	/// @detail Sequential position solver for TOI-based position constraints.
+	///   This only updates positions for the bodies identified by the given indexes (and nothing else).
+	/// @param indexA Index within the island of body A.
+	/// @param indexB Index within the island of body B.
 	/// @return true if the minimum separation is above the minimum TOI separation value, false otherwise.
 	bool SolveTOIPositionConstraints(size_type indexA, size_type indexB);
 
@@ -229,7 +233,6 @@ private:
 	/// @param pc Position constraint.
 	void UpdateVelocityConstraint(ContactVelocityConstraint& vc, const ContactPositionConstraint& pc);
 
-	const TimeStep m_step;
 	Position* const m_positions;
 	Velocity* const m_velocities;
 	StackAllocator* const m_allocator; ///< Stack-style memory allocator set on construction.

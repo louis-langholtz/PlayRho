@@ -266,8 +266,8 @@ Velocity Body::GetVelocity(float_t h, Vec2 gravity) const noexcept
 	if (m_type == BodyType::Dynamic)
 	{
 		// Integrate velocities.
-		velocity.v += h * (m_gravityScale * gravity + m_invMass * m_force);
-		velocity.w += h * m_invI * m_torque;
+		velocity.v += h * ((m_gravityScale * gravity) + (m_force * m_invMass));
+		velocity.w += h * (m_torque * m_invI);
 		
 		// Apply damping.
 		// ODE: dv/dt + c * v = 0

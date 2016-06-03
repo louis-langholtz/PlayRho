@@ -179,18 +179,17 @@ ContactPositionConstraint ContactSolver::GetPositionConstraint(const Contact& co
 	return constraint;
 }
 
-ContactSolver::ContactSolver(ContactSolverDef* def) :
-	m_step{def->step},
-	m_positions{def->positions},
-	m_velocities{def->velocities},
-	m_allocator{def->allocator},
-	m_contacts{def->contacts},
-	m_count{def->count},
-	m_positionConstraints{InitPositionConstraints(m_allocator->Allocate<ContactPositionConstraint>(def->count), def->count, def->contacts)},
-	m_velocityConstraints{InitVelocityConstraints(m_allocator->Allocate<ContactVelocityConstraint>(def->count), def->count, def->contacts,
-												  m_step.warmStarting? m_step.dtRatio: float_t{0})}
+ContactSolver::ContactSolver(const ContactSolverDef& def) :
+	m_positions{def.positions},
+	m_velocities{def.velocities},
+	m_allocator{def.allocator},
+	m_contacts{def.contacts},
+	m_count{def.count},
+	m_positionConstraints{m_allocator->Allocate<ContactPositionConstraint>(def.count)},
+	m_velocityConstraints{m_allocator->Allocate<ContactVelocityConstraint>(def.count)}
 {
-	// Intentionally empty.
+	InitPositionConstraints(m_positionConstraints, def.count, def.contacts);
+	InitVelocityConstraints(m_velocityConstraints, def.count, def.contacts, def.dtRatio);
 }
 	
 ContactPositionConstraint* ContactSolver::InitPositionConstraints(ContactPositionConstraint* constraints, ContactSolver::size_type count, Contact** contacts)
@@ -801,7 +800,11 @@ static inline float_t SolvePositionConstraint(const ContactPositionConstraint& p
 			const auto rB = psm.point - posB.c;
 			
 			// Compute the effective mass.
-			const auto K = invMassTotal + (invInertiaA * Square(Cross(rA, psm.normal))) + (invInertiaB * Square(Cross(rB, psm.normal)));
+			const auto K = [&]() {
+				const auto rnA = Cross(rA, psm.normal);
+				const auto rnB = Cross(rB, psm.normal);
+				return invMassTotal + (invInertiaA * Square(rnA)) + (invInertiaB * Square(rnB));
+			}();
 			
 			assert(K > 0);
 			if (K > 0)
@@ -852,13 +855,15 @@ bool ContactSolver::SolveTOIPositionConstraints(size_type indexA, size_type inde
 		auto pc = m_positionConstraints[i];
 		assert(pc.bodyA.index != pc.bodyB.index);
 		
-		if ((indexA != pc.bodyA.index) && (indexB != pc.bodyA.index))
+		// Modify local copy of the position constraint to only let position
+		// of bodies identified by either given indexes be changed.
+
+		if ((pc.bodyA.index != indexA) && (pc.bodyA.index != indexB))
 		{
 			pc.bodyA.invMass = float_t{0};
 			pc.bodyA.invI = float_t{0};
 		}
-		
-		if ((indexA != pc.bodyB.index) && (indexB != pc.bodyB.index))
+		if ((pc.bodyB.index != indexA) && (pc.bodyB.index != indexB))
 		{
 			pc.bodyB.invMass = float_t{0};
 			pc.bodyB.invI = float_t{0};

@@ -165,6 +165,8 @@ public:
 	/// Get the local position of the center of mass.
 	Vec2 GetLocalCenter() const noexcept;
 
+	Velocity GetVelocity() const noexcept;
+
 	/// Set the linear velocity of the center of mass.
 	/// @param v the new linear velocity of the center of mass.
 	void SetLinearVelocity(const Vec2& v) noexcept;
@@ -530,6 +532,11 @@ inline Vec2 Body::GetLocalCenter() const noexcept
 	return m_sweep.localCenter;
 }
 
+inline Velocity Body::GetVelocity() const noexcept
+{
+	return m_velocity;
+}
+	
 inline void Body::SetLinearVelocity(const Vec2& v) noexcept
 {
 	if (m_type == BodyType::Static)

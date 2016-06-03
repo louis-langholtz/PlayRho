@@ -266,6 +266,14 @@ void Island::CopyOut(const island_count_t count, const Position* positions, cons
 	}
 }
 
+void Island::IntegratePositions(float_t h)
+{
+	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
+	{
+		m_positions[i] += CalculateMovement(m_velocities[i], h);
+	}
+}
+
 void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 {
 	// Initialize the bodies
@@ -290,14 +298,14 @@ void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 
 	// Initialize velocity constraints.
 	ContactSolverDef contactSolverDef;
-	contactSolverDef.step = step;
+	contactSolverDef.dtRatio = step.warmStarting? step.dtRatio: float_t{0};
 	contactSolverDef.contacts = m_contacts;
 	contactSolverDef.count = m_contactCount;
 	contactSolverDef.positions = m_positions;
 	contactSolverDef.velocities = m_velocities;
 	contactSolverDef.allocator = &m_allocator;
 
-	ContactSolver contactSolver(&contactSolverDef);
+	ContactSolver contactSolver(contactSolverDef);
 	contactSolver.UpdateVelocityConstraints();
 
 	if (step.warmStarting)
@@ -317,11 +325,7 @@ void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 	// Update normal and tangent impulses of contacts' manifold points
 	contactSolver.StoreImpulses();
 
-	// Integrate positions
-	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
-	{
-		m_positions[i] += CalculateMovement(m_velocities[i], h);
-	}
+	IntegratePositions(h);
 
 	// Solve position constraints
 	auto positionSolved = false;
@@ -393,17 +397,17 @@ void Island::SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_
 	{
 		const auto& body = *m_bodies[i];
 		m_positions[i] = body.m_sweep.pos1;
-		m_velocities[i] = body.m_velocity;
+		m_velocities[i] = body.GetVelocity();
 	}
 
 	ContactSolverDef contactSolverDef;
 	contactSolverDef.contacts = m_contacts;
 	contactSolverDef.count = m_contactCount;
 	contactSolverDef.allocator = &m_allocator;
-	contactSolverDef.step = subStep;
+	contactSolverDef.dtRatio = subStep.warmStarting? subStep.dtRatio: float_t{0};
 	contactSolverDef.positions = m_positions;
 	contactSolverDef.velocities = m_velocities;
-	ContactSolver contactSolver(&contactSolverDef);
+	ContactSolver contactSolver(contactSolverDef);
 
 	// Solve TOI-based position constraints.
 	for (auto i = decltype(subStep.positionIterations){0}; i < subStep.positionIterations; ++i)
@@ -419,19 +423,19 @@ void Island::SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_
 	// Is the new position really safe?
 	for (auto i = decltype(m_contactCount){0}; i < m_contactCount; ++i)
 	{
-		Contact* c = m_contacts[i];
-		Fixture* fA = c->GetFixtureA();
-		Fixture* fB = c->GetFixtureB();
+		const auto c = m_contacts[i];
+		const auto fA = c->GetFixtureA();
+		const auto fB = c->GetFixtureB();
 
-		Body* bA = fA->GetBody();
-		Body* bB = fB->GetBody();
+		const auto bA = fA->GetBody();
+		const auto bB = fB->GetBody();
 
-		int32 indexA = c->GetChildIndexA();
-		int32 indexB = c->GetChildIndexB();
+		const auto indexA = c->GetChildIndexA();
+		const auto indexB = c->GetChildIndexB();
 
 		DistanceInput input;
-		input.proxyA.Set(*fA->GetShape(), indexA);
-		input.proxyB.Set(*fB->GetShape(), indexB);
+		input.proxyA = GetDistanceProxy(*fA->GetShape(), indexA);
+		input.proxyB = GetDistanceProxy(*fB->GetShape(), indexB);
 		input.transformA = bA->GetTransform();
 		input.transformB = bB->GetTransform();
 		input.useRadii = false;
@@ -459,19 +463,10 @@ void Island::SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_
 		contactSolver.SolveVelocityConstraints();
 	}
 
-	// Don't store the TOI contact forces for warm starting
-	// because they can be quite large.
+	// Don't store TOI contact forces for warm starting because they can be quite large.
 
-	const auto h = subStep.get_dt();
-
-	// Integrate positions
-	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
-	{
-		m_positions[i] += CalculateMovement(m_velocities[i], h);
-	}
-
+	IntegratePositions(subStep.get_dt());
 	CopyOut(m_bodyCount, m_positions, m_velocities, m_bodies);
-
 	Report(contactSolver.GetVelocityConstraints());
 }
 

@@ -800,7 +800,7 @@ void World::Step(float_t dt, unsigned velocityIterations, unsigned positionItera
 	step.set_dt(dt);
 	step.velocityIterations	= velocityIterations;
 	step.positionIterations = positionIterations;
-	step.dtRatio = m_inv_dt0 * dt;
+	step.dtRatio = dt * m_inv_dt0;
 	step.warmStarting = m_warmStarting;
 	
 	// Update contacts. This is where some contacts are destroyed.

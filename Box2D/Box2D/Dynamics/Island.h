@@ -131,6 +131,7 @@ private:
 	bool SolveJointPositionConstraints(const SolverData& solverData);
 
 	float_t UpdateSleepTimes(float_t h);
+	void IntegratePositions(float_t h);
 
 	/// Clears this island of added bodies.
 	/// @detail This sets all bodies's island indexes to Body::InvalidIslandIndex and resets
