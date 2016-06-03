@@ -229,6 +229,9 @@ static inline bool IsSleepable(Velocity velocity)
 	return (Square(velocity.w) <= AngSleepTolSquared) && (velocity.v.LengthSquared() <= LinSleepTolSquared);
 }
 
+/// Calculates movement.
+/// @detail Calculate the positional displacement based on the given velocity
+///    that's possibly clamped to the maximum translation and rotation.
 static inline Position CalculateMovement(Velocity& velocity, float_t h)
 {
 	auto translation = h * velocity.v;
@@ -248,6 +251,19 @@ static inline Position CalculateMovement(Velocity& velocity, float_t h)
 	}
 	
 	return Position{translation, rotation};
+}
+
+void Island::CopyOut(const island_count_t count, const Position* positions, const Velocity* velocities,
+					 Body** bodies)
+{
+	// Copy velocity and position array data back out to the bodies
+	for (auto i = decltype(count){0}; i < count; ++i)
+	{
+		auto& body = *bodies[i];
+		body.m_velocity = velocities[i];
+		body.m_sweep.pos1 = positions[i];
+		body.m_xf = GetTransformOne(body.m_sweep);
+	}
 }
 
 void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
@@ -322,14 +338,7 @@ void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 		}
 	}
 
-	// Copy velocity and position array data back out to the bodies
-	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
-	{
-		auto& body = *m_bodies[i];
-		body.m_velocity = m_velocities[i];
-		body.m_sweep.pos1 = m_positions[i];
-		body.m_xf = GetTransformOne(body.m_sweep);
-	}
+	CopyOut(m_bodyCount, m_positions, m_velocities, m_bodies);
 
 	Report(contactSolver.GetVelocityConstraints());
 
@@ -461,14 +470,7 @@ void Island::SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_
 		m_positions[i] += CalculateMovement(m_velocities[i], h);
 	}
 
-	// Sync bodies
-	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
-	{
-		auto& body = *m_bodies[i];
-		body.m_velocity = m_velocities[i];
-		body.m_sweep.pos1 = m_positions[i];
-		body.m_xf = GetTransformOne(body.m_sweep);
-	}
+	CopyOut(m_bodyCount, m_positions, m_velocities, m_bodies);
 
 	Report(contactSolver.GetVelocityConstraints());
 }

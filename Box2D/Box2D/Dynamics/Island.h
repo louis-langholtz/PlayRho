@@ -123,11 +123,13 @@ public:
 	}
 
 private:
+	static void CopyOut(const island_count_t count, const Position* positions, const Velocity* velocities,
+						Body** bodies);
 	
 	void InitJointVelocityConstraints(const SolverData& solverData);
 	void SolveJointVelocityConstraints(const SolverData& solverData);
 	bool SolveJointPositionConstraints(const SolverData& solverData);
-	
+
 	float_t UpdateSleepTimes(float_t h);
 
 	/// Clears this island of added bodies.
