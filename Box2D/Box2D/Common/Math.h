@@ -196,7 +196,7 @@ constexpr auto Vec3_zero = Vec3{0, 0, 0};
 struct Mat22
 {
 	/// The default constructor does nothing (for performance).
-	Mat22() = default;
+	Mat22() noexcept = default;
 
 	/// Construct this matrix using columns.
 	constexpr Mat22(const Vec2& c1, const Vec2& c2) noexcept: ex{c1}, ey{c2} {}
@@ -243,10 +243,10 @@ constexpr auto Mat22_identity = Mat22(Vec2{1, 0}, Vec2{0, 1});
 struct Mat33
 {
 	/// The default constructor does nothing (for performance).
-	Mat33() = default;
+	Mat33() noexcept = default;
 
 	/// Construct this matrix using columns.
-	constexpr Mat33(const Vec3& c1, const Vec3& c2, const Vec3& c3):
+	constexpr Mat33(const Vec3& c1, const Vec3& c2, const Vec3& c3) noexcept:
 		ex(c1), ey(c2), ez(c3) {}
 
 	/// Solve A * x = b, where b is a column vector. This is more efficient
