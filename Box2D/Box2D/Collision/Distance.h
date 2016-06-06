@@ -22,6 +22,8 @@
 
 #include <Box2D/Common/Math.h>
 
+#include <array>
+
 namespace box2d
 {
 
@@ -51,14 +53,16 @@ public:
 
 	DistanceProxy() noexcept = default;
 	
-	constexpr DistanceProxy(const DistanceProxy& copy) noexcept = default;
+	constexpr DistanceProxy(const DistanceProxy& copy) noexcept:
+		m_buffer{copy.m_buffer}, m_vertices{copy.m_vertices == &copy.m_buffer[0]? &m_buffer[0]: copy.m_vertices}, m_count{copy.m_count}, m_radius{copy.m_radius}
+	{}
 
 	constexpr DistanceProxy(float_t radius, Vec2 v0) noexcept:
-		m_radius{radius}, m_buffer{v0}, m_count{1}
+		m_radius{radius}, m_buffer{{v0}}, m_count{1}
 	{}
 
 	constexpr DistanceProxy(float_t radius, Vec2 v0, Vec2 v1) noexcept:
-		m_radius{radius}, m_buffer{v0, v1}, m_count{2}
+		m_radius{radius}, m_buffer{{v0, v1}}, m_count{2}
 	{}
 
 	constexpr DistanceProxy(float_t radius, const Vec2* vertices, size_type count) noexcept:
@@ -86,8 +90,8 @@ public:
 	Vec2 GetVertex(size_type index) const;
 
 private:
-	Vec2 m_buffer[2];
-	const Vec2* m_vertices = m_buffer;
+	std::array<Vec2,2> m_buffer;
+	const Vec2* m_vertices = &m_buffer[0];
 	size_type m_count = 0; ///< Count of valid elements at m_vertices.
 	float_t m_radius = float_t{0}; ///< "Radius" of the associated shape.
 };
