@@ -649,7 +649,7 @@ void World::SolveTOI(const TimeStep& step)
 		// Is contact disabled or separated?
 		if (!minContactToi.contact->IsEnabled() || !minContactToi.contact->IsTouching())
 		{
-			// Restore the sweeps.
+			// Restore the sweeps by undoing the Advance calls (and anything else done movement-wise)
 			minContactToi.contact->UnsetEnabled();
 			bA->m_sweep = backupA;
 			bA->m_xf = GetTransformOne(bA->m_sweep);
