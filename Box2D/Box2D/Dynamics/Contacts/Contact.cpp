@@ -277,12 +277,9 @@ bool Contact::UpdateTOI()
 	bA->m_sweep.Advance(maxAlpha0);
 	bB->m_sweep.Advance(maxAlpha0);
 	
-	// Compute the time of impact in interval [0, minTOI]
-	const auto input = TOIInput{
-		GetDistanceProxy(*fA->GetShape(), GetChildIndexA()), bA->m_sweep,
-		GetDistanceProxy(*fB->GetShape(), GetChildIndexB()), bB->m_sweep
-	};
-	const auto output = TimeOfImpact(input);
+	// Compute the time of impact in interval [0, 1]
+	const auto output = TimeOfImpact(GetDistanceProxy(*fA->GetShape(), GetChildIndexA()), bA->m_sweep,
+									 GetDistanceProxy(*fB->GetShape(), GetChildIndexB()), bB->m_sweep);
 	
 	// Beta is the fraction of the remaining portion of the .
 	const auto beta = output.get_t();

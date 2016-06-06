@@ -42,8 +42,7 @@ public:
 		const auto sweepA = Sweep{Position{Vec2(24.0f, -60.0f), 2.95f}};
 		const auto sweepB = Sweep{Position{Vec2(53.474274f, -50.252514f), 513.36676f}, Position{Vec2(54.595478f, -51.083473f), 513.62781f}};
 
-		const auto input = TOIInput{GetDistanceProxy(m_shapeA, 0), sweepA, GetDistanceProxy(m_shapeB, 0), sweepB};
-		const auto output = TimeOfImpact(input);
+		const auto output = TimeOfImpact(GetDistanceProxy(m_shapeA, 0), sweepA, GetDistanceProxy(m_shapeB, 0), sweepB);
 
 		g_debugDraw.DrawString(5, m_textLine, "toi = %g", output.get_t());
 		m_textLine += DRAW_STRING_NEW_LINE;

@@ -31,6 +31,17 @@ float_t toiTime, toiMaxTime;
 uint32 toiCalls, toiIters, toiMaxIters;
 uint32 toiRootIters, toiMaxRootIters;
 
+struct Separation
+{
+	Separation() noexcept = default;
+	Separation(const Separation& copy) noexcept = default;
+	
+	constexpr Separation(IndexPair ip, float_t d) noexcept: indexPair{ip}, distance{d} {}
+
+	IndexPair indexPair;
+	float_t distance;
+};
+
 class SeparationFunction
 {
 public:
@@ -115,27 +126,23 @@ public:
 	}
 
 	/// Finds the minimum separation.
-	/// @param indexPair Returns the indexes of proxy A's and proxy B's vertexes for the returned separation.
-	/// @param indexB Returns the index of proxy B's vertex for the returned separation.
 	/// @param t Time factor in [0, 1] for which the calculation should be performed.
-	/// @return minimum distance between the two identified vertces or zero.
-	float_t FindMinSeparation(IndexPair& indexPair, float_t t) const
+	/// @return indexes of proxy A's and proxy B's vertices that have the minimum distance between them and what that distance is.
+	Separation FindMinSeparation(float_t t) const
 	{
 		const auto xfA = GetTransform(m_sweepA, t);
 		const auto xfB = GetTransform(m_sweepB, t);
 
 		switch (m_type)
 		{
-			case e_points: return FindMinSeparationForPoints(indexPair, xfA, xfB);
-			case e_faceA: return FindMinSeparationForFaceA(indexPair, xfA, xfB);
-			case e_faceB: return FindMinSeparationForFaceB(indexPair, xfA, xfB);
+			case e_points: return FindMinSeparationForPoints(xfA, xfB);
+			case e_faceA: return FindMinSeparationForFaceA(xfA, xfB);
+			case e_faceB: return FindMinSeparationForFaceB(xfA, xfB);
 		}
 
 		// Should never be reached
 		assert(false);
-		indexPair.a = IndexPair::InvalidIndex;
-		indexPair.b = IndexPair::InvalidIndex;
-		return float_t{0};
+		return Separation{IndexPair{IndexPair::InvalidIndex, IndexPair::InvalidIndex}, 0};
 	}
 	
 	/// Evaluates the separation of the identified proxy vertices at the given time factor.
@@ -166,53 +173,33 @@ public:
 	Vec2 m_axis;
 	
 private:
-	float_t FindMinSeparationForPoints(IndexPair& indexPair, const Transform& xfA, const Transform& xfB) const
+	Separation FindMinSeparationForPoints(const Transform& xfA, const Transform& xfB) const
 	{
-		const auto axisA = MulT(xfA.q,  m_axis);
-		const auto axisB = MulT(xfB.q, -m_axis);
-		
-		indexPair.a = m_proxyA.GetSupportIndex(axisA);
-		indexPair.b = m_proxyB.GetSupportIndex(axisB);
-		
-		const auto localPointA = m_proxyA.GetVertex(indexPair.a);
-		const auto localPointB = m_proxyB.GetVertex(indexPair.b);
-		
-		const auto pointA = Mul(xfA, localPointA);
-		const auto pointB = Mul(xfB, localPointB);
-		
-		return Dot(pointB - pointA, m_axis);
+		const auto indexA = m_proxyA.GetSupportIndex(MulT(xfA.q,  m_axis));
+		const auto pointA = Mul(xfA, m_proxyA.GetVertex(indexA));
+		const auto indexB = m_proxyB.GetSupportIndex(MulT(xfB.q, -m_axis));
+		const auto pointB = Mul(xfB, m_proxyB.GetVertex(indexB));
+		return Separation{IndexPair{indexA, indexB}, Dot(pointB - pointA, m_axis)};
 	}
 	
-	float_t FindMinSeparationForFaceA(IndexPair& indexPair, const Transform& xfA, const Transform& xfB) const
+	Separation FindMinSeparationForFaceA(const Transform& xfA, const Transform& xfB) const
 	{
 		const auto normal = Mul(xfA.q, m_axis);
+		const auto indexA = static_cast<DistanceProxy::size_type>(-1);
 		const auto pointA = Mul(xfA, m_localPoint);
-		
-		const auto axisB = MulT(xfB.q, -normal);
-		
-		indexPair.a = static_cast<DistanceProxy::size_type>(-1);
-		indexPair.b = m_proxyB.GetSupportIndex(axisB);
-		
-		const auto localPointB = m_proxyB.GetVertex(indexPair.b);
-		const auto pointB = Mul(xfB, localPointB);
-		
-		return Dot(pointB - pointA, normal);
+		const auto indexB = m_proxyB.GetSupportIndex(MulT(xfB.q, -normal));
+		const auto pointB = Mul(xfB, m_proxyB.GetVertex(indexB));
+		return Separation{IndexPair{indexA, indexB}, Dot(pointB - pointA, normal)};
 	}
 	
-	float_t FindMinSeparationForFaceB(IndexPair& indexPair, const Transform& xfA, const Transform& xfB) const
+	Separation FindMinSeparationForFaceB(const Transform& xfA, const Transform& xfB) const
 	{
 		const auto normal = Mul(xfB.q, m_axis);
+		const auto indexA = m_proxyA.GetSupportIndex(MulT(xfA.q, -normal));
+		const auto pointA = Mul(xfA, m_proxyA.GetVertex(indexA));
+		const auto indexB = static_cast<DistanceProxy::size_type>(-1);
 		const auto pointB = Mul(xfB, m_localPoint);
-		
-		const auto axisA = MulT(xfA.q, -normal);
-		
-		indexPair.a = m_proxyA.GetSupportIndex(axisA);
-		indexPair.b = static_cast<DistanceProxy::size_type>(-1);
-		
-		const auto localPointA = m_proxyA.GetVertex(indexPair.a);
-		const auto pointA = Mul(xfA, localPointA);
-		
-		return Dot(pointA - pointB, normal);
+		return Separation{IndexPair{indexA, indexB}, Dot(pointA - pointB, normal)};
 	}
 	
 	float_t EvaluateForPoints(IndexPair indexPair, const Transform& xfA, const Transform& xfB) const
@@ -245,17 +232,17 @@ private:
 
 // CCD via the local separating axis method. This seeks progression
 // by computing the largest time at which separation is maintained.
-TOIOutput TimeOfImpact(const TOIInput& input)
+TOIOutput TimeOfImpact(DistanceProxy proxyA, Sweep sweepA, DistanceProxy proxyB, Sweep sweepB, float_t tMax)
 {
 	++toiCalls;
 
-	auto output = TOIOutput{TOIOutput::e_unknown, input.tMax};
+	auto output = TOIOutput{TOIOutput::e_unknown, tMax};
 
 	// Large rotations can make the root finder fail, so we normalize the  sweep angles.
-	const auto sweepA = GetAnglesNormalized(input.sweepA);
-	const auto sweepB = GetAnglesNormalized(input.sweepB);
+	sweepA = GetAnglesNormalized(sweepA);
+	sweepB = GetAnglesNormalized(sweepB);
 
-	const auto totalRadius = input.proxyA.GetRadius() + input.proxyB.GetRadius();
+	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius();
 	const auto target = Max(LinearSlop, totalRadius - (float_t{3} * LinearSlop));
 	constexpr auto tolerance = LinearSlop / float_t{4};
 	assert(target >= tolerance);
@@ -266,8 +253,8 @@ TOIOutput TimeOfImpact(const TOIInput& input)
 	// Prepare input for distance query.
 	SimplexCache cache;
 	DistanceInput distanceInput;
-	distanceInput.proxyA = input.proxyA;
-	distanceInput.proxyB = input.proxyB;
+	distanceInput.proxyA = proxyA;
+	distanceInput.proxyB = proxyB;
 	distanceInput.useRadii = false;
 
 	// The outer loop progressively attempts to compute new separating axes.
@@ -295,7 +282,7 @@ TOIOutput TimeOfImpact(const TOIInput& input)
 		}
 
 		// Initialize the separating axis.
-		SeparationFunction fcn(cache, input.proxyA, sweepA, input.proxyB, sweepB, t1);
+		SeparationFunction fcn(cache, proxyA, sweepA, proxyB, sweepB, t1);
 #if 0
 		// Dump the curve seen by the root finder
 		{
@@ -325,18 +312,18 @@ TOIOutput TimeOfImpact(const TOIInput& input)
 		// Compute the TOI on the separating axis. We do this by successively
 		// resolving the deepest point. This loop is bounded by the number of vertices.
 		auto done = false;
-		auto t2 = input.tMax;
+		auto t2 = tMax;
 		for (auto pushBackIter = decltype(MaxPolygonVertices){0}; pushBackIter < MaxPolygonVertices; ++pushBackIter)
 		{
 			// Find the deepest point at t2. Store the witness point indices.
-			IndexPair indexPair;
-			auto s2 = fcn.FindMinSeparation(indexPair, t2);
+			const auto minSeparation = fcn.FindMinSeparation(t2);
+			auto s2 = minSeparation.distance;
 
 			// Is the final configuration separated?
 			if (s2 > (target + tolerance))
 			{
 				// Victory!
-				assert(t2 == input.tMax);
+				assert(t2 == tMax);
 				// Formerly this used input.tMax as in...
 				// output = TOIOutput{TOIOutput::e_separated, input.tMax};
 				// t2 seems more appropriate however given s2 was derived from it.
@@ -355,7 +342,7 @@ TOIOutput TimeOfImpact(const TOIInput& input)
 			}
 
 			// Compute the initial separation of the witness points.
-			auto s1 = fcn.Evaluate(indexPair, t1);
+			auto s1 = fcn.Evaluate(minSeparation.indexPair, t1);
 
 			// Check for initial overlap. This might happen if the root finder
 			// runs out of iterations.
@@ -388,7 +375,7 @@ TOIOutput TimeOfImpact(const TOIInput& input)
 					(a1 + a2) / float_t{2};
 				++rootIterCount;
 
-				const auto s = fcn.Evaluate(indexPair, t);
+				const auto s = fcn.Evaluate(minSeparation.indexPair, t);
 
 				if (Abs(s - target) < tolerance)
 				{

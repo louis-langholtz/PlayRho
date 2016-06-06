@@ -24,22 +24,6 @@
 
 namespace box2d {
 
-/// Input parameters for TimeOfImpact
-struct TOIInput
-{
-	TOIInput() noexcept = default;
-	TOIInput(const TOIInput& copy) noexcept = default;
-	
-	constexpr TOIInput(const DistanceProxy& pA, const Sweep& sA, const DistanceProxy& pB, const Sweep& sB, float_t max = 1) noexcept:
-		proxyA{pA}, sweepA{sA}, proxyB{pB}, sweepB{sB}, tMax{max} {};
-
-	DistanceProxy proxyA;
-	Sweep sweepA;
-	DistanceProxy proxyB;
-	Sweep sweepB;
-	float_t tMax; ///< Maximum sweep interval time fraction (in the range of [0, 1]).
-};
-
 /// Output parameters for TimeOfImpact.
 class TOIOutput
 {
@@ -79,7 +63,7 @@ private:
 /// non-tunneling collision. If you change the time interval, you should call this function
 /// again.
 /// @note Use Distance to compute the contact point and normal at the time of impact.
-TOIOutput TimeOfImpact(const TOIInput& input);
+TOIOutput TimeOfImpact(DistanceProxy proxyA, Sweep sweepA, DistanceProxy proxyB, Sweep sweepB, float_t tMax = 1);
 
 } // namespace box2d
 
