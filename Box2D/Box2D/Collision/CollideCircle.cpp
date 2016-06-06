@@ -34,9 +34,7 @@ Manifold CollideShapes(const CircleShape& shapeA, const Transform& xfA, const Ci
 		return Manifold{};
 	}
 
-	auto manifold = Manifold{Manifold::e_circles, Vec2_zero, shapeA.GetPosition()};
-	manifold.AddPoint(ManifoldPoint{shapeB.GetPosition()});
-	return manifold;
+	return Manifold{Manifold::e_circles, Vec2_zero, shapeA.GetPosition(), ManifoldPoint{shapeB.GetPosition()}};
 }
 
 Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const CircleShape& shapeB, const Transform& xfB)
@@ -78,9 +76,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const C
 	// If the center is inside the polygon ...
 	if (separation < Epsilon)
 	{
-		auto manifold = Manifold{Manifold::e_faceA, shapeA.GetNormal(normalIndex), (v1 + v2) / float_t(2)};
-		manifold.AddPoint(ManifoldPoint{shapeB.GetPosition()});
-		return manifold;
+		return Manifold{Manifold::e_faceA, shapeA.GetNormal(normalIndex), (v1 + v2) / float_t(2), ManifoldPoint{shapeB.GetPosition()}};
 	}
 
 	// Compute barycentric coordinates
@@ -93,9 +89,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const C
 			return Manifold{};
 		}
 
-		auto manifold = Manifold{Manifold::e_faceA, Normalize(cLocal - v1), v1};
-		manifold.AddPoint(ManifoldPoint{shapeB.GetPosition()});
-		return manifold;
+		return Manifold{Manifold::e_faceA, Normalize(cLocal - v1), v1, ManifoldPoint{shapeB.GetPosition()}};
 	}
 	if (u2 <= float_t{0})
 	{
@@ -104,9 +98,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const C
 			return Manifold{};
 		}
 
-		auto manifold = Manifold{Manifold::e_faceA, Normalize(cLocal - v2), v2};
-		manifold.AddPoint(ManifoldPoint{shapeB.GetPosition()});
-		return manifold;
+		return Manifold{Manifold::e_faceA, Normalize(cLocal - v2), v2, ManifoldPoint{shapeB.GetPosition()}};
 	}
 
 	const auto faceCenter = (v1 + v2) / float_t(2);
@@ -116,11 +108,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const C
 		return Manifold{};
 	}
 
-	auto manifold = Manifold{Manifold::e_faceA};
-	manifold.SetLocalNormal(shapeA.GetNormal(vertIndex1));
-	manifold.SetLocalPoint(faceCenter);
-	manifold.AddPoint(ManifoldPoint{shapeB.GetPosition()});
-	return manifold;
+	return Manifold{Manifold::e_faceA, shapeA.GetNormal(vertIndex1), faceCenter, ManifoldPoint{shapeB.GetPosition()}};
 }
 	
 } // namespace box2d
