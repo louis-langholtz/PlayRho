@@ -49,40 +49,40 @@ bool Find(const IndexPairArray& array, IndexPair key, std::size_t count)
 	return false;
 }
 
+inline DistanceProxy GetDistanceProxy(const CircleShape& shape, child_count_t index)
+{
+	return DistanceProxy{shape.GetRadius(), shape.GetPosition()};
 }
 
+inline DistanceProxy GetDistanceProxy(const PolygonShape& shape, child_count_t index)
+{
+	return DistanceProxy{shape.GetRadius(), shape.GetVertices(), shape.GetVertexCount()};		
+}
+
+inline DistanceProxy GetDistanceProxy(const ChainShape& shape, child_count_t index)
+{
+	return DistanceProxy{shape.GetRadius(), shape.GetVertex(index), shape.GetVertex(shape.GetNextIndex(index))};
+}
+
+inline DistanceProxy GetDistanceProxy(const EdgeShape& shape, child_count_t index)
+{
+	return DistanceProxy{shape.GetRadius(), shape.GetVertex1(), shape.GetVertex2()};
+}
+	
+}
+	
 DistanceProxy GetDistanceProxy(const Shape& shape, child_count_t index)
 {
 	switch (shape.GetType())
 	{
-		case Shape::e_circle:
-		{
-			const auto& circle = *static_cast<const CircleShape*>(&shape);
-			return DistanceProxy{circle.GetRadius(), circle.GetPosition()};
-		}
-			
-		case Shape::e_polygon:
-		{
-			const auto& polygon = *static_cast<const PolygonShape*>(&shape);
-			return DistanceProxy{polygon.GetRadius(), polygon.GetVertices(), polygon.GetVertexCount()};
-		}
-			
-		case Shape::e_chain:
-		{
-			const auto& chain = *static_cast<const ChainShape*>(&shape);
-			return DistanceProxy{chain.GetRadius(), chain.GetVertex(index), chain.GetVertex(chain.GetNextIndex(index))};
-		}
-			
-		case Shape::e_edge:
-		{
-			const auto& edge = *static_cast<const EdgeShape*>(&shape);
-			return DistanceProxy{edge.GetRadius(), edge.GetVertex1(), edge.GetVertex2()};
-		}
-			
-		case Shape::e_typeCount:
-			break;
+		case Shape::e_circle: return GetDistanceProxy(*static_cast<const CircleShape*>(&shape), index);
+		case Shape::e_polygon: return GetDistanceProxy(*static_cast<const PolygonShape*>(&shape), index);
+		case Shape::e_chain: return GetDistanceProxy(*static_cast<const ChainShape*>(&shape), index);
+		case Shape::e_edge: return GetDistanceProxy(*static_cast<const EdgeShape*>(&shape), index);
+		case Shape::e_typeCount: break;
 	}
 	assert(false);
+	return DistanceProxy{0, nullptr, 0};
 }
 
 class SimplexVertex
