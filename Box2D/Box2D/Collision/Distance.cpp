@@ -140,7 +140,7 @@ private:
 class Simplex
 {
 public:
-	using size_type = std::remove_cv<decltype(MaxSimplexVertices)>::type;
+	using size_type = std::remove_const<decltype(MaxSimplexVertices)>::type;
 
 	Simplex() = default;
 	

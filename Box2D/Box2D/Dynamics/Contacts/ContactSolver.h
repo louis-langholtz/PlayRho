@@ -65,7 +65,7 @@ struct ContactVelocityConstraintBodyData
 class ContactVelocityConstraint
 {
 public:
-	using size_type = std::remove_cv<decltype(MaxManifoldPoints)>::type;
+	using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
 	using index_type = size_t;
 	
 	/// Gets the count of points added to this object.

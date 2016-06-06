@@ -127,7 +127,7 @@ struct ManifoldPoint
 class Manifold
 {
 public:
-	using size_type = std::remove_cv<decltype(MaxPolygonVertices)>::type;
+	using size_type = std::remove_const<decltype(MaxPolygonVertices)>::type;
 
 	enum Type: uint8
 	{
@@ -238,7 +238,7 @@ struct PointSeparation
 class WorldManifold
 {
 public:
-	using size_type = std::remove_cv<decltype(MaxPolygonVertices)>::type;
+	using size_type = std::remove_const<decltype(MaxPolygonVertices)>::type;
 
 	WorldManifold() noexcept = default;
 

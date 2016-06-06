@@ -108,7 +108,7 @@ public:
 	/// @sa AddIndex.
 	static constexpr auto MaxCount = unsigned{3};
 
-	using size_type = std::remove_cv<decltype(MaxCount)>::type;
+	using size_type = std::remove_const<decltype(MaxCount)>::type;
 
 	using index_t = size_t;
 

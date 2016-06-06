@@ -50,7 +50,7 @@ struct ContactPositionConstraintBodyData
 class ContactPositionConstraint
 {
 public:
-	using size_type = std::remove_cv<decltype(MaxManifoldPoints)>::type;
+	using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
 
 	Vec2 localNormal;
 	Vec2 localPoint;
@@ -686,7 +686,7 @@ void ContactSolver::StoreImpulses()
 
 struct PositionSolverManifold
 {
-	using index_t = std::remove_cv<decltype(MaxManifoldPoints)>::type;
+	using index_t = std::remove_const<decltype(MaxManifoldPoints)>::type;
 
 	PositionSolverManifold() noexcept = default;
 	PositionSolverManifold(const PositionSolverManifold& copy) noexcept = default;

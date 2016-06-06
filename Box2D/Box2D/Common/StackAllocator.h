@@ -76,7 +76,7 @@ private:
 	size_type m_maxAllocation = 0;
 
 	StackEntry m_entries[MaxStackEntries];
-	std::remove_cv<decltype(MaxStackEntries)>::type m_entryCount = 0;
+	std::remove_const<decltype(MaxStackEntries)>::type m_entryCount = 0;
 };
 
 } // namespace box2d

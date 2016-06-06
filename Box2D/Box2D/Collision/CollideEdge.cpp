@@ -159,7 +159,7 @@ struct EPAxis
 class TempPolygon
 {
 public:
-	using size_type = std::remove_cv<decltype(MaxPolygonVertices)>::type;
+	using size_type = std::remove_const<decltype(MaxPolygonVertices)>::type;
 
 	TempPolygon() = default;
 

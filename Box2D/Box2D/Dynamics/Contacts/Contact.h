@@ -251,7 +251,7 @@ protected:
 
 	Manifold m_manifold; ///< Manifold of the contact.
 
-	std::remove_cv<decltype(MaxSubSteps)>::type m_toiCount = 0; ///< Count of TOI substeps contact has gone through [0,MaxSubSteps].
+	std::remove_const<decltype(MaxSubSteps)>::type m_toiCount = 0; ///< Count of TOI substeps contact has gone through [0,MaxSubSteps].
 
 	float_t m_toi; // only valid if m_flags & e_toiFlag
 
