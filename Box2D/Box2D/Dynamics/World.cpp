@@ -658,15 +658,12 @@ void World::SolveTOI(const TimeStep& step)
 		island.Add(minContactToi.contact);
 		minContactToi.contact->SetInIsland();
 
+		// Get contacts on bodyA and bodyB.
+		for (auto body: {bA, bB})
 		{
-			// Get contacts on bodyA and bodyB.
-			Body* bodies[2] = {bA, bB};
-			for (auto body: bodies)
+			if (body->m_type == BodyType::Dynamic)
 			{
-				if (body->m_type == BodyType::Dynamic)
-				{
-					ProcessContactsForTOI(island, *body, minContactToi.toi);
-				}
+				ProcessContactsForTOI(island, *body, minContactToi.toi);
 			}
 		}
 
@@ -684,18 +681,16 @@ void World::SolveTOI(const TimeStep& step)
 			auto body = island.GetBody(i);
 			body->UnsetInIsland();
 
-			if (body->m_type != BodyType::Dynamic)
+			if (body->m_type == BodyType::Dynamic)
 			{
-				continue;
-			}
-
-			body->SynchronizeFixtures();
-
-			// Invalidate all contact TOIs on this displaced body.
-			for (auto ce = body->m_contactList; ce; ce = ce->next)
-			{
-				ce->contact->UnsetInIsland();
-				ce->contact->UnsetToi();
+				body->SynchronizeFixtures();
+				
+				// Invalidate all contact TOIs on this displaced body.
+				for (auto ce = body->m_contactList; ce; ce = ce->next)
+				{
+					ce->contact->UnsetInIsland();
+					ce->contact->UnsetToi();
+				}
 			}
 		}
 
