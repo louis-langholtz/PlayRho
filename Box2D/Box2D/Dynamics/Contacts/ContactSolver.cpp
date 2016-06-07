@@ -52,46 +52,13 @@ class ContactPositionConstraint
 public:
 	using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
 
-	Vec2 localNormal;
-	Vec2 localPoint;
+	Manifold manifold; ///< Copy of contact's manifold.
 
 	ContactPositionConstraintBodyData bodyA;
 	ContactPositionConstraintBodyData bodyB;
 
-	Manifold::Type type = Manifold::e_unset;
-
 	float_t radiusA; ///< "Radius" distance from the associated shape of fixture A.
 	float_t radiusB; ///< "Radius" distance from the associated shape of fixture B.
-
-	/// Gets point count.
-	/// @detail This is the number of points this constraint was constructed with or the number of points that have been added.
-	/// @return Value between 0 and MaxManifoldPoints.
-	/// @sa void AddPoint(const Vec2& val).
-	/// @sa MaxManifoldPoints.
-	size_type GetPointCount() const noexcept { return pointCount; }
-
-	Vec2 GetPoint(size_type index) const
-	{
-		assert(index >= 0);
-		assert(index < pointCount);
-		return localPoints[index];
-	}
-
-	void ClearPoints() noexcept
-	{
-		pointCount = 0;
-	}
-
-	void AddPoint(const Vec2& val)
-	{
-		assert(pointCount < MaxManifoldPoints);
-		localPoints[pointCount] = val;
-		++pointCount;
-	}
-
-private:
-	size_type pointCount = 0;
-	Vec2 localPoints[MaxManifoldPoints];
 };
 
 void ContactSolver::Assign(ContactPositionConstraintBodyData& var, const Body& val)
@@ -144,37 +111,21 @@ ContactVelocityConstraint ContactSolver::GetVelocityConstraint(const Contact& co
 		
 		constraint.AddPoint(vcp);
 	}
-	
+
 	return constraint;
 }
 
-ContactPositionConstraint ContactSolver::GetPositionConstraint(const Contact& contact)
+ContactPositionConstraint ContactSolver::GetPositionConstraint(const Manifold& manifold, Fixture* fixtureA, Fixture* fixtureB)
 {
 	ContactPositionConstraint constraint;
 	
-	const auto fixtureA = contact.m_fixtureA;
-	const auto fixtureB = contact.m_fixtureB;
-	const auto shapeA = fixtureA->GetShape();
-	const auto shapeB = fixtureB->GetShape();
-	const auto bodyA = fixtureA->GetBody();
-	const auto bodyB = fixtureB->GetBody();
-	const auto& manifold = contact.GetManifold();
+	constraint.manifold = manifold;
 	
-	Assign(constraint.bodyA, *bodyA);
-	Assign(constraint.bodyB, *bodyB);
-	constraint.localNormal = manifold.GetLocalNormal();
-	constraint.localPoint = manifold.GetLocalPoint();
-	constraint.radiusA = shapeA->GetRadius();
-	constraint.radiusB = shapeB->GetRadius();
-	constraint.type = manifold.GetType();
-	constraint.ClearPoints();
-	const auto pointCount = manifold.GetPointCount();
-	assert(pointCount > 0);
-	for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
-	{
-		const auto& mp = manifold.GetPoint(j);
-		constraint.AddPoint(mp.localPoint);
-	}
+	Assign(constraint.bodyA, *(fixtureA->GetBody()));
+	constraint.radiusA = fixtureA->GetShape()->GetRadius();
+	
+	Assign(constraint.bodyB, *(fixtureB->GetBody()));
+	constraint.radiusB = fixtureB->GetShape()->GetRadius();
 	
 	return constraint;
 }
@@ -183,7 +134,6 @@ ContactSolver::ContactSolver(const ContactSolverDef& def) :
 	m_positions{def.positions},
 	m_velocities{def.velocities},
 	m_allocator{def.allocator},
-	m_contacts{def.contacts},
 	m_count{def.count},
 	m_positionConstraints{m_allocator->Allocate<ContactPositionConstraint>(def.count)},
 	m_velocityConstraints{m_allocator->Allocate<ContactVelocityConstraint>(def.count)}
@@ -196,7 +146,8 @@ ContactPositionConstraint* ContactSolver::InitPositionConstraints(ContactPositio
 {
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
-		constraints[i] = GetPositionConstraint(*contacts[i]);
+		auto& contact = *contacts[i];
+		constraints[i] = GetPositionConstraint(contact.m_manifold, contact.m_fixtureA, contact.m_fixtureB);
 	}
 	return constraints;
 }
@@ -264,7 +215,7 @@ void ContactSolver::UpdateVelocityConstraint(ContactVelocityConstraint& vc, cons
 	const auto worldManifold = [&]() {
 		const auto xfA = GetTransform(posA, pc.bodyA.localCenter);
 		const auto xfB = GetTransform(posB, pc.bodyB.localCenter);
-		return GetWorldManifold(m_contacts[vc.contactIndex]->GetManifold(), xfA, pc.radiusA, xfB, pc.radiusB);
+		return GetWorldManifold(pc.manifold, xfA, pc.radiusA, xfB, pc.radiusB);
 	}();
 	
 	vc.normal = worldManifold.GetNormal();
@@ -667,12 +618,12 @@ static inline void AssignImpulses(ManifoldPoint& var, const VelocityConstraintPo
 	var.tangentImpulse = val.tangentImpulse;
 }
 
-void ContactSolver::StoreImpulses()
+void ContactSolver::StoreImpulses(Contact** contacts)
 {
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		const auto& vc = m_velocityConstraints[i];
-		auto& manifold = (m_contacts[vc.contactIndex]->GetManifold());
+		auto& manifold = contacts[vc.contactIndex]->GetManifold();
 
 		const auto point_count = vc.GetPointCount();
 		for (auto j = decltype(point_count){0}; j < point_count; ++j)
@@ -701,8 +652,8 @@ static inline PositionSolverManifold GetPSM_ForCircles(const ContactPositionCons
 													   PositionSolverManifold::index_t index)
 {
 	assert(index == 0);
-	const auto pointA = Mul(xfA, pc.localPoint);
-	const auto pointB = Mul(xfB, pc.GetPoint(index));
+	const auto pointA = Mul(xfA, pc.manifold.GetLocalPoint());
+	const auto pointB = Mul(xfB, pc.manifold.GetPoint(index).localPoint);
 	const auto delta = pointB - pointA;
 	const auto normal = Normalize(delta);
 	const auto point = (pointA + pointB) / float_t{2};
@@ -715,9 +666,9 @@ static inline PositionSolverManifold GetPSM_ForFaceA(const ContactPositionConstr
 												   const Transform& xfA, const Transform& xfB,
 												   PositionSolverManifold::index_t index)
 {
-	const auto planePoint = Mul(xfA, pc.localPoint);
-	const auto clipPoint = Mul(xfB, pc.GetPoint(index));
-	const auto normal = Mul(xfA.q, pc.localNormal);
+	const auto planePoint = Mul(xfA, pc.manifold.GetLocalPoint());
+	const auto clipPoint = Mul(xfB, pc.manifold.GetPoint(index).localPoint);
+	const auto normal = Mul(xfA.q, pc.manifold.GetLocalNormal());
 	const auto totalRadius = pc.radiusA + pc.radiusB;
 	const auto separation = Dot(clipPoint - planePoint, normal) - totalRadius;
 	return PositionSolverManifold{normal, clipPoint, separation};
@@ -727,9 +678,9 @@ static inline PositionSolverManifold GetPSM_ForFaceB(const ContactPositionConstr
 											   const Transform& xfA, const Transform& xfB,
 											   PositionSolverManifold::index_t index)
 {
-	const auto planePoint = Mul(xfB, pc.localPoint);
-	const auto clipPoint = Mul(xfA, pc.GetPoint(index));
-	const auto normal = Mul(xfB.q, pc.localNormal);
+	const auto planePoint = Mul(xfB, pc.manifold.GetLocalPoint());
+	const auto clipPoint = Mul(xfA, pc.manifold.GetPoint(index).localPoint);
+	const auto normal = Mul(xfB.q, pc.manifold.GetLocalNormal());
 	const auto totalRadius = pc.radiusA + pc.radiusB;
 	const auto separation = Dot(clipPoint - planePoint, normal) - totalRadius;
 	// Negate normal to ensure the PSM normal points from A to B
@@ -740,13 +691,13 @@ static PositionSolverManifold GetPSM(const ContactPositionConstraint& pc,
 									 const Transform& xfA, const Transform& xfB,
 									 PositionSolverManifold::index_t index)
 {
-	assert(pc.type != Manifold::e_unset);
-	assert(pc.GetPointCount() > 0);
+	assert(pc.manifold.GetType() != Manifold::e_unset);
+	assert(pc.manifold.GetPointCount() > 0);
 	
 	// Note for valid manifold types:
 	//   Sum the radius values and subtract this sum to reduce FP losses in cases where the radius
 	//   values would otherwise be insignificant compared to the values being subtracted from.
-	switch (pc.type)
+	switch (pc.manifold.GetType())
 	{
 		case Manifold::e_circles: return GetPSM_ForCircles(pc, xfA, xfB, index);
 		case Manifold::e_faceA: return GetPSM_ForFaceA(pc, xfA, xfB, index);
@@ -782,7 +733,7 @@ static inline float_t SolvePositionConstraint(const ContactPositionConstraint& p
 		const auto invMassTotal = invMassA + invMassB;
 
 		// Solve normal constraints
-		const auto pointCount = pc.GetPointCount();
+		const auto pointCount = pc.manifold.GetPointCount();
 		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 		{
 			const auto psm = [&]() {

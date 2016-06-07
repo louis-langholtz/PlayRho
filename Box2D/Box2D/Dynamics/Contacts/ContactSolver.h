@@ -30,6 +30,7 @@ class Body;
 class StackAllocator;
 struct ContactPositionConstraint;
 struct ContactPositionConstraintBodyData;
+class Fixture;
 
 /// Velocity constraint point.
 struct VelocityConstraintPoint
@@ -185,7 +186,7 @@ public:
 	/// Stores impulses.
 	/// @detail Saves the normal and tangent impulses of all the velocity constraint points back to their
 	///   associated contacts' manifold points.
-	void StoreImpulses();
+	void StoreImpulses(Contact** contacts);
 
 	/// "Solves" the velocity constraints.
 	/// @detail Updates the velocities and velocity constraint points' normal and tangent impulses.
@@ -221,7 +222,7 @@ private:
 	/// Gets the position-independent velocity constraint for the given contact, index, and time slot values.
 	static ContactVelocityConstraint GetVelocityConstraint(const Contact& contact, size_type index, float_t dtRatio);
 	
-	static ContactPositionConstraint GetPositionConstraint(const Contact& contact);
+	static ContactPositionConstraint GetPositionConstraint(const Manifold& manifold, Fixture* fixtureA, Fixture* fixtureB);
 	
 	/// Updates the velocity constraint data with the given position constraint data.
 	/// @detail Specifically this:
@@ -238,7 +239,6 @@ private:
 	StackAllocator* const m_allocator; ///< Stack-style memory allocator set on construction.
 	
 	const size_type m_count; ///< Count of elements in the contact position-constraint and velocity-constraint arrays.
-	Contact** const m_contacts; ///< Array of pointers to contacts having manifolds with one or more contact points.
 	ContactPositionConstraint* const m_positionConstraints; ///< Array of position-constraints (1 per contact).
 	ContactVelocityConstraint* const m_velocityConstraints; ///< Array of velocity-constraints (1 per contact).
 };

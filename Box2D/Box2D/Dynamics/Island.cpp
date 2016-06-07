@@ -323,7 +323,7 @@ void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 	}
 
 	// Update normal and tangent impulses of contacts' manifold points
-	contactSolver.StoreImpulses();
+	contactSolver.StoreImpulses(m_contacts);
 
 	IntegratePositions(h);
 
