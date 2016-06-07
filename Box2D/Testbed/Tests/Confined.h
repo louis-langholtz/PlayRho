@@ -46,19 +46,19 @@ public:
 
 			// Floor
 			shape.Set(Vec2(-wall_length/2, 0.0f), Vec2(wall_length/2, 0.0f));
-			ground->CreateFixture(&fd);
+			ground->CreateFixture(fd);
 
 			// Left wall
 			shape.Set(Vec2(-wall_length/2, 0.0f), Vec2(-wall_length/2, wall_length));
-			ground->CreateFixture(&fd);
+			ground->CreateFixture(fd);
 
 			// Right wall
 			shape.Set(Vec2(wall_length/2, 0.0f), Vec2(wall_length/2, wall_length));
-			ground->CreateFixture(&fd);
+			ground->CreateFixture(fd);
 
 			// Roof
 			shape.Set(Vec2(-wall_length/2, wall_length), Vec2(wall_length/2, wall_length));
-			ground->CreateFixture(&fd);
+			ground->CreateFixture(fd);
 		}
 
 		float_t radius = 0.5f;
@@ -78,7 +78,7 @@ public:
 				bd.position = Vec2(-10.0f + (2.1f * j + 1.0f + 0.01f * i) * radius, (2.0f * i + 1.0f) * radius);
 				Body* body = m_world->CreateBody(&bd);
 
-				body->CreateFixture(&fd);
+				body->CreateFixture(fd);
 			}
 		}
 
@@ -102,7 +102,7 @@ public:
 		//bd.allowSleep = false;
 		Body* body = m_world->CreateBody(&bd);
 
-		body->CreateFixture(&fd);
+		body->CreateFixture(fd);
 	}
 
 	void CreateBox()
@@ -121,7 +121,7 @@ public:
 		bd.bullet = m_bullet_mode;
 		bd.position = Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));
 		auto* body = m_world->CreateBody(&bd);
-		body->CreateFixture(&fd);
+		body->CreateFixture(fd);
 	}
 
 	void ToggleBulletMode()

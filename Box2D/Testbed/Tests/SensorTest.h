@@ -48,7 +48,7 @@ public:
 				FixtureDef sd;
 				sd.SetAsBox(10.0f, 2.0f, Vec2(0.0f, 20.0f), 0.0f);
 				sd.isSensor = true;
-				m_sensor = ground->CreateFixture(&sd);
+				m_sensor = ground->CreateFixture(sd);
 			}
 #else
 			{
@@ -57,7 +57,7 @@ public:
 				FixtureDef fd;
 				fd.shape = &shape;
 				fd.isSensor = true;
-				m_sensor = ground->CreateFixture(&fd);
+				m_sensor = ground->CreateFixture(fd);
 			}
 #endif
 		}

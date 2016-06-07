@@ -38,7 +38,7 @@ public:
 			fd.shape = &shape;
 			//fd.filter.categoryBits = 2;
 
-			ground->CreateFixture(&fd);
+			ground->CreateFixture(fd);
 		}
 
 		{
@@ -84,7 +84,7 @@ public:
 			fd.shape = &circle_shape;
 
 			m_ball = m_world->CreateBody(&circle_bd);
-			m_ball->CreateFixture(&fd);
+			m_ball->CreateFixture(fd);
 
 			PolygonShape polygon_shape;
 			polygon_shape.SetAsBox(10.0f, 0.2f, Vec2 (-10.0f, 0.0f), 0.0f);
@@ -121,7 +121,7 @@ public:
 			polyFixtureDef.shape = &polyShape;
 			polyFixtureDef.density = 1;
 
-			body->CreateFixture(&polyFixtureDef);	//assertion hits inside here
+			body->CreateFixture(polyFixtureDef);	//assertion hits inside here
 		}
 
 	}

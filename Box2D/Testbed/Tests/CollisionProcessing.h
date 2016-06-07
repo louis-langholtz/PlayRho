@@ -40,7 +40,7 @@ public:
 
 			BodyDef bd;
 			Body* ground = m_world->CreateBody(&bd);
-			ground->CreateFixture(&sd);
+			ground->CreateFixture(sd);
 		}
 
 		float_t xLo = -5.0f, xHi = 5.0f;
@@ -64,7 +64,7 @@ public:
 		triangleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
 		Body* body1 = m_world->CreateBody(&triangleBodyDef);
-		body1->CreateFixture(&triangleShapeDef);
+		body1->CreateFixture(triangleShapeDef);
 
 		// Large triangle (recycle definitions)
 		vertices[0] *= 2.0f;
@@ -75,7 +75,7 @@ public:
 		triangleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
 		Body* body2 = m_world->CreateBody(&triangleBodyDef);
-		body2->CreateFixture(&triangleShapeDef);
+		body2->CreateFixture(triangleShapeDef);
 		
 		// Small box
 		polygon.SetAsBox(1.0f, 0.5f);
@@ -89,14 +89,14 @@ public:
 		boxBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
 		Body* body3 = m_world->CreateBody(&boxBodyDef);
-		body3->CreateFixture(&boxShapeDef);
+		body3->CreateFixture(boxShapeDef);
 
 		// Large box (recycle definitions)
 		polygon.SetAsBox(2.0f, 1.0f);
 		boxBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 		
 		Body* body4 = m_world->CreateBody(&boxBodyDef);
-		body4->CreateFixture(&boxShapeDef);
+		body4->CreateFixture(boxShapeDef);
 
 		// Small circle
 		CircleShape circle;
@@ -111,14 +111,14 @@ public:
 		circleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
 		Body* body5 = m_world->CreateBody(&circleBodyDef);
-		body5->CreateFixture(&circleShapeDef);
+		body5->CreateFixture(circleShapeDef);
 
 		// Large circle
 		circle.SetRadius(circle.GetRadius() * 2);
 		circleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 
 		Body* body6 = m_world->CreateBody(&circleBodyDef);
-		body6->CreateFixture(&circleShapeDef);
+		body6->CreateFixture(circleShapeDef);
 	}
 
 	void Step(Settings* settings)

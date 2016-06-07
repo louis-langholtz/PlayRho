@@ -252,7 +252,7 @@ void Test::LaunchBomb(const Vec2& position, const Vec2& velocity)
 	fd.density = 20.0f;
 	fd.restitution = 0.0f;
 	
-	m_bomb->CreateFixture(&fd);
+	m_bomb->CreateFixture(fd);
 }
 
 void Test::Step(Settings* settings)

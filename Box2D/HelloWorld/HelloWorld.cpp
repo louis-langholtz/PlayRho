@@ -75,7 +75,7 @@ int main(int argc, char** argv)
 	fixtureDef.friction = 0.3f;
 
 	// Add the shape to the body.
-	body->CreateFixture(&fixtureDef);
+	body->CreateFixture(fixtureDef);
 
 	// Prepare for simulation. Typically we use a time step of 1/60 of a
 	// second (60Hz) and 10 iterations. This provides a high quality simulation

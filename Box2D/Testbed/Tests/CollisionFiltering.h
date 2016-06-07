@@ -55,7 +55,7 @@ public:
 
 			BodyDef bd;
 			Body* ground = m_world->CreateBody(&bd);
-			ground->CreateFixture(&sd);
+			ground->CreateFixture(sd);
 		}
 
 		// Small triangle
@@ -79,7 +79,7 @@ public:
 		triangleBodyDef.position = Vec2(-5.0f, 2.0f);
 
 		Body* body1 = m_world->CreateBody(&triangleBodyDef);
-		body1->CreateFixture(&triangleShapeDef);
+		body1->CreateFixture(triangleShapeDef);
 
 		// Large triangle (recycle definitions)
 		vertices[0] *= 2.0f;
@@ -91,7 +91,7 @@ public:
 		triangleBodyDef.fixedRotation = true; // look at me!
 
 		Body* body2 = m_world->CreateBody(&triangleBodyDef);
-		body2->CreateFixture(&triangleShapeDef);
+		body2->CreateFixture(triangleShapeDef);
 
 		{
 			BodyDef bd;
@@ -132,7 +132,7 @@ public:
 		boxBodyDef.position = Vec2(0.0f, 2.0f);
 
 		Body* body3 = m_world->CreateBody(&boxBodyDef);
-		body3->CreateFixture(&boxShapeDef);
+		body3->CreateFixture(boxShapeDef);
 
 		// Large box (recycle definitions)
 		polygon.SetAsBox(2.0f, 1.0f);
@@ -140,7 +140,7 @@ public:
 		boxBodyDef.position = Vec2(0.0f, 6.0f);
 
 		Body* body4 = m_world->CreateBody(&boxBodyDef);
-		body4->CreateFixture(&boxShapeDef);
+		body4->CreateFixture(boxShapeDef);
 
 		// Small circle
 		CircleShape circle;
@@ -159,7 +159,7 @@ public:
 		circleBodyDef.position = Vec2(5.0f, 2.0f);
 		
 		Body* body5 = m_world->CreateBody(&circleBodyDef);
-		body5->CreateFixture(&circleShapeDef);
+		body5->CreateFixture(circleShapeDef);
 
 		// Large circle
 		circle.SetRadius(circle.GetRadius() * 2);
@@ -167,7 +167,7 @@ public:
 		circleBodyDef.position = Vec2(5.0f, 6.0f);
 
 		Body* body6 = m_world->CreateBody(&circleBodyDef);
-		body6->CreateFixture(&circleShapeDef);
+		body6->CreateFixture(circleShapeDef);
 	}
 
 	static Test* Create()

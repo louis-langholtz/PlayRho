@@ -89,8 +89,8 @@ public:
 		Body* body1 = m_world->CreateBody(&bd1);
 		Body* body2 = m_world->CreateBody(&bd2);
 
-		body1->CreateFixture(&fd1);
-		body2->CreateFixture(&fd2);
+		body1->CreateFixture(fd1);
+		body2->CreateFixture(fd2);
 
 		DistanceJointDef djd;
 
@@ -168,7 +168,7 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.position = pivot + m_offset;
 			m_chassis = m_world->CreateBody(&bd);
-			m_chassis->CreateFixture(&sd);
+			m_chassis->CreateFixture(sd);
 		}
 
 		{
@@ -183,7 +183,7 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.position = pivot + m_offset;
 			m_wheel = m_world->CreateBody(&bd);
-			m_wheel->CreateFixture(&sd);
+			m_wheel->CreateFixture(sd);
 		}
 
 		{

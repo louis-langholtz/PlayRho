@@ -46,7 +46,7 @@ public:
 			FixtureDef fd;
 			fd.shape = &loop;
 			fd.density = 0.0f;
-			ground->CreateFixture(&fd);
+			ground->CreateFixture(fd);
 		}
 
 		// Flippers
@@ -69,8 +69,8 @@ public:
 			fd.shape = &box;
 			fd.density = 1.0f;
 
-			leftFlipper->CreateFixture(&fd);
-			rightFlipper->CreateFixture(&fd);
+			leftFlipper->CreateFixture(fd);
+			rightFlipper->CreateFixture(fd);
 
 			RevoluteJointDef jd;
 			jd.bodyA = ground;
@@ -109,7 +109,7 @@ public:
 			FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 1.0f;
-			m_ball->CreateFixture(&fd);
+			m_ball->CreateFixture(fd);
 		}
 
 		m_button = false;

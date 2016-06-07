@@ -45,19 +45,19 @@ public:
 
 			// Left vertical
 			shape.Set(Vec2(-20.0f, -20.0f), Vec2(-20.0f, 20.0f));
-			ground->CreateFixture(&sd);
+			ground->CreateFixture(sd);
 
 			// Right vertical
 			shape.Set(Vec2(20.0f, -20.0f), Vec2(20.0f, 20.0f));
-			ground->CreateFixture(&sd);
+			ground->CreateFixture(sd);
 
 			// Top horizontal
 			shape.Set(Vec2(-20.0f, 20.0f), Vec2(20.0f, 20.0f));
-			ground->CreateFixture(&sd);
+			ground->CreateFixture(sd);
 
 			// Bottom horizontal
 			shape.Set(Vec2(-20.0f, -20.0f), Vec2(20.0f, -20.0f));
-			ground->CreateFixture(&sd);
+			ground->CreateFixture(sd);
 		}
 
 		{
@@ -101,8 +101,8 @@ public:
 			bd.angle = Pi;
 			bd.allowSleep = false;
 			m_body = m_world->CreateBody(&bd);
-			m_body->CreateFixture(&sd1);
-			m_body->CreateFixture(&sd2);
+			m_body->CreateFixture(sd1);
+			m_body->CreateFixture(sd2);
 		}
 
 		{
@@ -122,7 +122,7 @@ public:
 				bd.position = Vec2(float_t{0}, 5.0f + 1.54f * i);
 				Body* body = m_world->CreateBody(&bd);
 
-				body->CreateFixture(&fd);
+				body->CreateFixture(fd);
 
 				float_t gravity = 10.0f;
 				float_t I = body->GetInertia();

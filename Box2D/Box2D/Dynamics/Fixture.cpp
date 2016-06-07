@@ -29,16 +29,16 @@
 
 using namespace box2d;
 
-void Fixture::Create(BlockAllocator* allocator, const FixtureDef* def)
+void Fixture::Create(BlockAllocator* allocator, const FixtureDef& def)
 {
-	assert(def->density >= 0);
-	m_userData = def->userData;
-	m_friction = def->friction;
-	m_restitution = def->restitution;
-	m_filter = def->filter;
-	m_isSensor = def->isSensor;
-	m_density = Max(def->density, float_t{0});
-	m_shape = def->shape->Clone(allocator);
+	assert(def.density >= 0);
+	m_userData = def.userData;
+	m_friction = def.friction;
+	m_restitution = def.restitution;
+	m_filter = def.filter;
+	m_isSensor = def.isSensor;
+	m_density = Max(def.density, float_t{0});
+	m_shape = def.shape->Clone(allocator);
 
 	// Reserve proxy space
 	const auto childCount = m_shape->GetChildCount();
@@ -276,5 +276,5 @@ void Fixture::Dump(island_count_t bodyIndex)
 	log("\n");
 	log("    fd.shape = &shape;\n");
 	log("\n");
-	log("    bodies[%d]->CreateFixture(&fd);\n", bodyIndex);
+	log("    bodies[%d]->CreateFixture(fd);\n", bodyIndex);
 }

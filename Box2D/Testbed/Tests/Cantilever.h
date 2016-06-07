@@ -66,7 +66,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-14.5f + 1.0f * i, 5.0f);
 				Body* body = m_world->CreateBody(&bd);
-				body->CreateFixture(&fd);
+				body->CreateFixture(fd);
 
 				Vec2 anchor(-15.0f + 1.0f * i, 5.0f);
 				jd.Initialize(prevBody, body, anchor);
@@ -96,7 +96,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-14.0f + 2.0f * i, 15.0f);
 				Body* body = m_world->CreateBody(&bd);
-				body->CreateFixture(&fd);
+				body->CreateFixture(fd);
 
 				Vec2 anchor(-15.0f + 2.0f * i, 15.0f);
 				jd.Initialize(prevBody, body, anchor);
@@ -124,7 +124,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-4.5f + 1.0f * i, 5.0f);
 				Body* body = m_world->CreateBody(&bd);
-				body->CreateFixture(&fd);
+				body->CreateFixture(fd);
 
 				if (i > 0)
 				{
@@ -157,7 +157,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(5.5f + 1.0f * i, 10.0f);
 				Body* body = m_world->CreateBody(&bd);
-				body->CreateFixture(&fd);
+				body->CreateFixture(fd);
 
 				if (i > 0)
 				{
@@ -189,7 +189,7 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-8.0f + 8.0f * i, 12.0f);
 			Body* body = m_world->CreateBody(&bd);
-			body->CreateFixture(&fd);
+			body->CreateFixture(fd);
 		}
 
 		// Creates circles
@@ -206,7 +206,7 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-6.0f + 6.0f * i, 10.0f);
 			Body* body = m_world->CreateBody(&bd);
-			body->CreateFixture(&fd);
+			body->CreateFixture(fd);
 		}
 	}
 

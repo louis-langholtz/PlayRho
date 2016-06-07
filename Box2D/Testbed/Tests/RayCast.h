@@ -269,7 +269,7 @@ public:
 			FixtureDef fd;
 			fd.shape = m_polygons + index;
 			fd.friction = 0.3f;
-			m_bodies[m_bodyIndex]->CreateFixture(&fd);
+			m_bodies[m_bodyIndex]->CreateFixture(fd);
 		}
 		else if (index < 5)
 		{
@@ -277,7 +277,7 @@ public:
 			fd.shape = &m_circle;
 			fd.friction = 0.3f;
 
-			m_bodies[m_bodyIndex]->CreateFixture(&fd);
+			m_bodies[m_bodyIndex]->CreateFixture(fd);
 		}
 		else
 		{
@@ -285,7 +285,7 @@ public:
 			fd.shape = &m_edge;
 			fd.friction = 0.3f;
 
-			m_bodies[m_bodyIndex]->CreateFixture(&fd);
+			m_bodies[m_bodyIndex]->CreateFixture(fd);
 		}
 
 		m_bodyIndex = (m_bodyIndex + 1) % e_maxBodies;

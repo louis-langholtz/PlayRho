@@ -53,7 +53,9 @@ struct Filter
 struct FixtureDef
 {
 	/// The constructor sets the default fixture definition values.
-	constexpr FixtureDef() = default;
+	constexpr FixtureDef() noexcept = default;
+
+	constexpr FixtureDef(const Shape* s, float_t d) noexcept: shape{s}, density{d} {}
 
 	/// The shape, this must be set. The shape will be cloned, so you
 	/// can create the shape on the stack.
@@ -202,7 +204,7 @@ protected:
 
 	// We need separation create/destroy functions from the constructor/destructor because
 	// the destructor cannot access the allocator (no destructor arguments allowed by C++).
-	void Create(BlockAllocator* allocator, const FixtureDef* def);
+	void Create(BlockAllocator* allocator, const FixtureDef& def);
 	void Destroy(BlockAllocator* allocator);
 
 	// These support body activation/deactivation.

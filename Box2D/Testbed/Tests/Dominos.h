@@ -62,7 +62,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-6.0f + 1.0f * i, 11.25f);
 				Body* body = m_world->CreateBody(&bd);
-				body->CreateFixture(&fd);
+				body->CreateFixture(fd);
 			}
 		}
 
@@ -140,13 +140,13 @@ public:
 			fd.friction = 0.1f;
 
 			shape.SetAsBox(1.0f, 0.1f, Vec2(0.0f, -0.9f), 0.0f);
-			b5->CreateFixture(&fd);
+			b5->CreateFixture(fd);
 
 			shape.SetAsBox(0.1f, 1.0f, Vec2(-0.9f, 0.0f), 0.0f);
-			b5->CreateFixture(&fd);
+			b5->CreateFixture(fd);
 
 			shape.SetAsBox(0.1f, 1.0f, Vec2(0.9f, 0.0f), 0.0f);
-			b5->CreateFixture(&fd);
+			b5->CreateFixture(fd);
 		}
 
 		anchor = Vec2(6.0f, 2.0f);

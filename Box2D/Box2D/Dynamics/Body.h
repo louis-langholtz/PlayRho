@@ -113,14 +113,15 @@ struct BodyDef
 class Body
 {
 public:
-	/// Creates a fixture and attach it to this body. Use this function if you need
-	/// to set some fixture parameters, like friction. Otherwise you can create the
-	/// fixture directly from a shape.
+	/// Creates a fixture and attaches it to this body.
+	/// @detail 
+	/// Use this function if you need to set some fixture parameters, like friction.
+	/// Otherwise you can create the fixture directly from a shape.
 	/// If the density is non-zero, this function automatically updates the mass of the body.
 	/// Contacts are not created until the next time step.
 	/// @param def the fixture definition.
 	/// @warning This function is locked during callbacks.
-	Fixture* CreateFixture(const FixtureDef* def);
+	Fixture* CreateFixture(const FixtureDef& def);
 
 	/// Creates a fixture from a shape and attach it to this body.
 	/// This is a convenience function. Use FixtureDef if you need to set parameters

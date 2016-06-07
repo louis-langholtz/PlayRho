@@ -49,7 +49,7 @@ public:
 			FixtureDef fd;
 			fd.shape = &shape;
 			fd.friction = 0.8f;
-			m_platform = body->CreateFixture(&fd);
+			m_platform = body->CreateFixture(fd);
 		}
 
 		// Boxes

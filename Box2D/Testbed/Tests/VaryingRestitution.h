@@ -57,7 +57,7 @@ public:
 				Body* body = m_world->CreateBody(&bd);
 
 				fd.restitution = restitution[i];
-				body->CreateFixture(&fd);
+				body->CreateFixture(fd);
 			}
 		}
 	}

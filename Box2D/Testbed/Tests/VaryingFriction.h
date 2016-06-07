@@ -112,7 +112,7 @@ public:
 				Body* body = m_world->CreateBody(&bd);
 
 				fd.friction = friction[i];
-				body->CreateFixture(&fd);
+				body->CreateFixture(fd);
 			}
 		}
 	}

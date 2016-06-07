@@ -140,7 +140,7 @@ public:
 			FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 20.0f;
-			body->CreateFixture(&fd);
+			body->CreateFixture(fd);
 		}
 
 		// Square character 2
@@ -159,7 +159,7 @@ public:
 			FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 20.0f;
-			body->CreateFixture(&fd);
+			body->CreateFixture(fd);
 		}
 
 		// Hexagon character
@@ -187,7 +187,7 @@ public:
 			FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 20.0f;
-			body->CreateFixture(&fd);
+			body->CreateFixture(fd);
 		}
 
 		// Circle character
@@ -206,7 +206,7 @@ public:
 			FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 20.0f;
-			body->CreateFixture(&fd);
+			body->CreateFixture(fd);
 		}
 
 		// Circle character
@@ -225,7 +225,7 @@ public:
 			fd.shape = &shape;
 			fd.density = 20.0f;
 			fd.friction = 1.0f;
-			m_character->CreateFixture(&fd);
+			m_character->CreateFixture(fd);
 		}
 	}
 

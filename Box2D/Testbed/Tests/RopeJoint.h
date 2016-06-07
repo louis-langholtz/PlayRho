@@ -79,7 +79,7 @@ public:
 
 				Body* body = m_world->CreateBody(&bd);
 
-				body->CreateFixture(&fd);
+				body->CreateFixture(fd);
 
 				Vec2 anchor(float_t(i), y);
 				jd.Initialize(prevBody, body, anchor);

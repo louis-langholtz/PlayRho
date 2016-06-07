@@ -40,7 +40,7 @@ public:
 			FixtureDef fd;
 			fd.shape = &shape;
 
-			ground->CreateFixture(&fd);
+			ground->CreateFixture(fd);
 		}
 
 		// Define motorized body
@@ -57,7 +57,7 @@ public:
 			fd.shape = &shape;
 			fd.friction = 0.6f;
 			fd.density = 2.0f;
-			body->CreateFixture(&fd);
+			body->CreateFixture(fd);
 
 			MotorJointDef mjd;
 			mjd.Initialize(ground, body);

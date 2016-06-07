@@ -78,7 +78,7 @@ public:
 
 				fd.shape = &shape;
 
-				bodies[0]->CreateFixture(&fd);
+				bodies[0]->CreateFixture(fd);
 			}
 		}
 		{
@@ -119,7 +119,7 @@ public:
 
 				fd.shape = &shape;
 
-				bodies[1]->CreateFixture(&fd);
+				bodies[1]->CreateFixture(fd);
 			}
 		}
 		{
@@ -158,7 +158,7 @@ public:
 
 				fd.shape = &shape;
 
-				bodies[2]->CreateFixture(&fd);
+				bodies[2]->CreateFixture(fd);
 			}
 		}
 		free(joints);

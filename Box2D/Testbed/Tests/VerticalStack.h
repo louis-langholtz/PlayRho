@@ -79,7 +79,7 @@ public:
 
 				m_bodies[n] = body;
 
-				body->CreateFixture(&fd);
+				body->CreateFixture(fd);
 			}
 		}
 
@@ -112,7 +112,7 @@ public:
 				bd.position = Vec2(-31.0f, 5.0f);
 
 				m_bullet = m_world->CreateBody(&bd);
-				m_bullet->CreateFixture(&fd);
+				m_bullet->CreateFixture(fd);
 
 				m_bullet->SetLinearVelocity(Vec2(400.0f, 0.0f));
 			}
@@ -153,7 +153,7 @@ public:
 		//		bd.position = Vec2(-31.0f, 5.0f);
 
 		//		m_bullet = m_world->CreateBody(&bd);
-		//		m_bullet->CreateFixture(&fd);
+		//		m_bullet->CreateFixture(fd);
 
 		//		m_bullet->SetLinearVelocity(Vec2(400.0f, 0.0f));
 		//	}

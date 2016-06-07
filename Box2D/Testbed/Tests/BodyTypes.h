@@ -37,7 +37,7 @@ public:
 			FixtureDef fd;
 			fd.shape = &shape;
 
-			ground->CreateFixture(&fd);
+			ground->CreateFixture(fd);
 		}
 
 		// Define attachment
@@ -66,7 +66,7 @@ public:
 			fd.shape = &shape;
 			fd.friction = 0.6f;
 			fd.density = 2.0f;
-			m_platform->CreateFixture(&fd);
+			m_platform->CreateFixture(fd);
 
 			RevoluteJointDef rjd;
 			rjd.Initialize(m_attachment, m_platform, Vec2(0.0f, 5.0f));
@@ -103,7 +103,7 @@ public:
 			fd.friction = 0.6f;
 			fd.density = 2.0f;
 
-			body->CreateFixture(&fd);
+			body->CreateFixture(fd);
 		}
 	}
 
