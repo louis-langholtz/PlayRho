@@ -151,7 +151,7 @@ struct ContactSolverDef
 	using size_type = size_t;
 
 	float_t dtRatio; ///< Delta-t ratio. Set to step.dtRatio if warm starting otherwise 0.
-	Contact** contacts; ///< Pointers to contacts.
+	Contact** contacts; ///< Array of pointers to contacts having manifolds with one or more contact points.
 	size_type count; ///< Count of contacts.
 	Position* positions; ///< Array of positions, one for every body referenced by a contact.
 	Velocity* velocities; ///< Array of velocities, for every body referenced by a contact.
@@ -165,10 +165,10 @@ public:
 	using size_type = size_t;
 	
 	/// Minimum separation for position constraints.
-	static constexpr auto MinSeparationThreshold = -LinearSlop * float_t(3);
+	static constexpr auto MinSeparationThreshold = -LinearSlop * float_t{3};
 
 	/// Minimum time of impact separation for TOI position constraints.
-	static constexpr auto MinToiSeparation = -LinearSlop * float_t(1.5);
+	static constexpr auto MinToiSeparation = -LinearSlop * float_t{3} / float_t{2}; // aka -LinearSlop * 1.5
 
 	ContactSolver(const ContactSolverDef& def);
 	~ContactSolver();
@@ -238,7 +238,7 @@ private:
 	StackAllocator* const m_allocator; ///< Stack-style memory allocator set on construction.
 	
 	const size_type m_count; ///< Count of elements in the contact position-constraint and velocity-constraint arrays.
-	Contact** const m_contacts; ///< Array of contacts.
+	Contact** const m_contacts; ///< Array of pointers to contacts having manifolds with one or more contact points.
 	ContactPositionConstraint* const m_positionConstraints; ///< Array of position-constraints (1 per contact).
 	ContactVelocityConstraint* const m_velocityConstraints; ///< Array of velocity-constraints (1 per contact).
 };

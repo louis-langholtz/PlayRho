@@ -70,6 +70,10 @@ public:
 	/// @param body Body to add to this island.
 	void Add(Body* body);
 
+	/// Adds the given contact to this island.
+	/// @note Only contacts having manifolds with one or more contact points should be added.
+	/// @warning Behavior is undefined if contact's manifold has no contact points.
+	/// @param contact Non-null contact whose manifold has one or more contact points.
 	void Add(Contact* contact);
 
 	void Add(Joint* joint);
@@ -126,8 +130,12 @@ public:
 private:
 	
 	/// Copy's the position and velocity elements out to the bodies.
-	/// @detail Flushes out internal position and velocity data to all the bodies in this island
+	/// @detail This basically flushes out internal position and velocity data to all the bodies in this island
 	///   and synchronizes those bodies transformations with their new sweeps.
+	/// In specific, this updates this island's bodies' velocities, sweep position 1, and transforms by:
+	///    1. setting the velocities to the matching velocity element,
+	///    2. setting the sweep position 1 value to the matching position element, and
+	///    3. synchronizing the transform with the new sweep value.
 	static void CopyOut(const island_count_t count, const Position* positions, const Velocity* velocities,
 						Body** bodies);
 	
@@ -175,6 +183,16 @@ private:
 	Position* const m_positions;
 };
 
+inline bool IsFullOfBodies(const Island& island)
+{
+	return island.GetBodyCount() == island.GetBodyCapacity();
+}
+
+inline bool IsFullOfContacts(const Island& island)
+{
+	return island.GetContactCount() == island.GetContactCapacity();
+}
+	
 } // namespace box2d
 
 #endif

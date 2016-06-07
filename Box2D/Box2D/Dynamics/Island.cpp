@@ -483,6 +483,8 @@ void Island::Add(Contact* contact)
 {
 	assert(contact != nullptr);
 	assert(m_contactCount < m_contactCapacity);
+	assert(contact->IsEnabled());
+	assert(contact->GetManifold().GetPointCount() > 0);
 	m_contacts[m_contactCount] = contact;
 	++m_contactCount;
 }

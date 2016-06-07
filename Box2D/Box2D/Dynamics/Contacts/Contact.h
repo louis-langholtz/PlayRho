@@ -192,7 +192,7 @@ protected:
 	Contact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB);
 	virtual ~Contact() = default;
 
-	/// Updates the contact manifold and touching status.
+	/// Updates the contact manifold and touching status and notifies listener (if one given).
 	/// @param listener Listener that if non-null is called with status information.
 	void Update(ContactListener* listener);
 
@@ -228,7 +228,13 @@ protected:
 	void SetInIsland() noexcept;
 	void UnsetInIsland() noexcept;
 
+	/// Sets the touching flag state.
+	/// @note This should only be called if either:
+ 	///   1. The contact's manifold has more than 0 contact points, or
+	///   2. The contact has sensors and the two shapes of this contact are found to be overlapping.
+	/// @sa IsTouching().
 	void SetTouching() noexcept;
+
 	void UnsetTouching() noexcept;
 
 	uint32 m_flags = e_enabledFlag;

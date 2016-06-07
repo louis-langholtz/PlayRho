@@ -175,9 +175,9 @@ public:
 	}
 
 	/// Gets the manifold point count.
-	/// @detail This is the count of points added using the AddPoint() method.
+	/// @detail This is the count of contact points for this manifold.
 	///   Only up to this many points can be validly accessed using the GetPoint() method.
-	///   Non-zero values indicate that the two shapes are touching.
+	/// @note Non-zero values indicate that the two shapes are touching.
 	/// @return Value between 0 and MaxManifoldPoints.
 	/// @sa MaxManifoldPoints.
 	/// @sa AddPoint().
