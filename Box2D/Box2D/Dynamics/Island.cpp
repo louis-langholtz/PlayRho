@@ -412,8 +412,7 @@ void Island::SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_
 	// Solve TOI-based position constraints.
 	for (auto i = decltype(subStep.positionIterations){0}; i < subStep.positionIterations; ++i)
 	{
-		const auto contactsOkay = contactSolver.SolveTOIPositionConstraints(toiIndexA, toiIndexB);
-		if (contactsOkay)
+		if (contactSolver.SolveTOIPositionConstraints(toiIndexA, toiIndexB))
 		{
 			break;
 		}
