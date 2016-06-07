@@ -63,6 +63,7 @@ public:
 	///   5. Reports to the listener.
 	void Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep);
 
+	/// Solves this island in terms of Time Of Impact.
 	void SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_count_t toiIndexB);
 
 	/// Adds the given body to this island.
@@ -123,6 +124,10 @@ public:
 	}
 
 private:
+	
+	/// Copy's the position and velocity elements out to the bodies.
+	/// @detail Flushes out internal position and velocity data to all the bodies in this island
+	///   and synchronizes those bodies transformations with their new sweeps.
 	static void CopyOut(const island_count_t count, const Position* positions, const Velocity* velocities,
 						Body** bodies);
 	
@@ -131,6 +136,10 @@ private:
 	bool SolveJointPositionConstraints(const SolverData& solverData);
 
 	float_t UpdateSleepTimes(float_t h);
+
+	/// Integrates positions.
+	/// @detail Updates all positions by application of velocity over time to each position.
+	/// @param h Time in seconds.
 	void IntegratePositions(float_t h);
 
 	/// Clears this island of added bodies.
