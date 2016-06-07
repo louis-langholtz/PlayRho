@@ -25,7 +25,6 @@
 #include <Box2D/Dynamics/Contacts/ContactSolver.h>
 #include <Box2D/Dynamics/Joints/Joint.h>
 #include <Box2D/Common/StackAllocator.h>
-#include <Box2D/Common/Timer.h>
 
 /*
 Position Correction Notes
@@ -153,16 +152,16 @@ Island::Island(
 	island_count_t jointCapacity,
 	StackAllocator& allocator,
 	ContactListener* listener):
-m_bodyCapacity(bodyCapacity),
-m_contactCapacity(contactCapacity),
-m_jointCapacity(jointCapacity),
-m_allocator(allocator),
-m_listener(listener),
-m_bodies(m_allocator.Allocate<Body*>(bodyCapacity)),
-m_contacts(m_allocator.Allocate<Contact*>(contactCapacity)),
-m_joints(m_allocator.Allocate<Joint*>(jointCapacity)),
-m_velocities(m_allocator.Allocate<Velocity>(bodyCapacity)),
-m_positions(m_allocator.Allocate<Position>(bodyCapacity))
+m_bodyCapacity{bodyCapacity},
+m_contactCapacity{contactCapacity},
+m_jointCapacity{jointCapacity},
+m_allocator{allocator},
+m_listener{listener},
+m_bodies{m_allocator.Allocate<Body*>(bodyCapacity)},
+m_contacts{m_allocator.Allocate<Contact*>(contactCapacity)},
+m_joints{m_allocator.Allocate<Joint*>(jointCapacity)},
+m_velocities{m_allocator.Allocate<Velocity>(bodyCapacity)},
+m_positions{m_allocator.Allocate<Position>(bodyCapacity)}
 {
 }
 
@@ -322,9 +321,6 @@ void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 		contactSolver.SolveVelocityConstraints();
 	}
 
-	// Update normal and tangent impulses of contacts' manifold points
-	contactSolver.StoreImpulses(m_contacts);
-
 	IntegratePositions(h);
 
 	// Solve position constraints
@@ -341,6 +337,9 @@ void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 			break;
 		}
 	}
+
+	// Update normal and tangent impulses of contacts' manifold points
+	contactSolver.StoreImpulses(m_contacts);
 
 	CopyOut(m_bodyCount, m_positions, m_velocities, m_bodies);
 

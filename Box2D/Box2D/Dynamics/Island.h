@@ -67,15 +67,20 @@ public:
 	void SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_count_t toiIndexB);
 
 	/// Adds the given body to this island.
-	/// @param body Body to add to this island.
+	/// @warning Behavior is undefined if body has already been added to this island.
+	/// @param body Non-null body to add to this island.
 	void Add(Body* body);
 
 	/// Adds the given contact to this island.
 	/// @note Only contacts having manifolds with one or more contact points should be added.
 	/// @warning Behavior is undefined if contact's manifold has no contact points.
+	/// @warning Behavior is undefined if contact has already been added to this island.
 	/// @param contact Non-null contact whose manifold has one or more contact points.
 	void Add(Contact* contact);
 
+	/// Adds the given joint to this island.
+	/// @warning Behavior is undefined if joint has already been added to this island.
+	/// @param joint Non-null joint to add.
 	void Add(Joint* joint);
 
 	/// Reports the given constraints to the listener.
