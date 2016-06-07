@@ -262,11 +262,9 @@ void ContactSolver::UpdateVelocityConstraint(ContactVelocityConstraint& vc, cons
 	const auto velB = m_velocities[vc.bodyB.index];
 	
 	const auto worldManifold = [&]() {
-		const auto& manifold = m_contacts[vc.contactIndex]->GetManifold();
-		assert(manifold.GetPointCount() > 0);
 		const auto xfA = GetTransform(posA, pc.bodyA.localCenter);
 		const auto xfB = GetTransform(posB, pc.bodyB.localCenter);
-		return GetWorldManifold(manifold, xfA, pc.radiusA, xfB, pc.radiusB);
+		return GetWorldManifold(m_contacts[vc.contactIndex]->GetManifold(), xfA, pc.radiusA, xfB, pc.radiusB);
 	}();
 	
 	vc.normal = worldManifold.GetNormal();
