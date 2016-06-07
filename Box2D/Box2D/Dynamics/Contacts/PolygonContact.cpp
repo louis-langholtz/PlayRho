@@ -18,7 +18,6 @@
 
 #include <Box2D/Dynamics/Contacts/PolygonContact.h>
 #include <Box2D/Common/BlockAllocator.h>
-#include <Box2D/Collision/TimeOfImpact.h>
 #include <Box2D/Dynamics/Body.h>
 #include <Box2D/Dynamics/Fixture.h>
 #include <Box2D/Dynamics/WorldCallbacks.h>
