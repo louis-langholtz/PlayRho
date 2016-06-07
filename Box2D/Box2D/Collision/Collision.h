@@ -139,6 +139,8 @@ public:
 
 	Manifold() noexcept = default;
 
+	Manifold(const Manifold& copy) noexcept = default;
+	
 	/// Constructs manifold with zero points using the given values.
 	/// @param t Manifold type.
 	/// @param ln Local normal.
@@ -267,21 +269,21 @@ public:
 		return separations[index];
 	}
 
-private:
-	/// Evaluate the manifold with supplied transforms. This assumes
-	/// modest motion from the original state. This does not change the
-	/// point count, impulses, etc. The radii must come from the shapes
-	/// that generated the manifold.
-	void Assign(const Manifold& manifold,
-				const Transform& xfA, float_t radiusA,
-				const Transform& xfB, float_t radiusB);
-	
+private:	
 	Vec2 normal;								///< world vector pointing from A to B
 	size_type count = 0;
 	Vec2 points[MaxManifoldPoints];		///< world contact point (point of intersection)
 	float_t separations[MaxManifoldPoints];	///< a negative value indicates overlap, in meters
 };
 
+/// Gets the world manifold for the given data.
+/// @param manifold Manifold to use.
+///   Specifically this uses the manifold's type, local point, local normal, point-count,
+///   and the indexed-points' local point data.
+/// @param xfA Transform A.
+/// @param radiusA Radius of shape A.
+/// @param xfB Transform B.
+/// @param radiusB Radius of shape B.
 WorldManifold GetWorldManifold(const Manifold& manifold,
 							   const Transform& xfA, const float_t radiusA,
 							   const Transform& xfB, const float_t radiusB);
