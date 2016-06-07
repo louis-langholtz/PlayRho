@@ -38,6 +38,7 @@ class Body;
 class Draw;
 class Fixture;
 class Joint;
+class Island;
 
 /// The world class manages all physics entities, dynamic simulation,
 /// and asynchronous queries. The world also contains efficient memory
@@ -239,6 +240,7 @@ private:
 	
 	void ResetBodiesForSolveTOI();
 	void ResetContactsForSolveTOI();
+	void ProcessContactsForTOI(Island& island, Body& body, float_t toi);
 	
 	struct ContactToiPair
 	{

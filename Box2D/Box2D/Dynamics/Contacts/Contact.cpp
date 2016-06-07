@@ -81,9 +81,8 @@ static constexpr ContactRegister s_registers[Shape::e_typeCount][Shape::e_typeCo
 	},
 };
 
-Contact* Contact::Create(Fixture* fixtureA, child_count_t indexA,
-							 Fixture* fixtureB, child_count_t indexB,
-							 BlockAllocator* allocator)
+Contact* Contact::Create(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB,
+						 BlockAllocator* allocator)
 {
 	const auto type1 = fixtureA->GetType();
 	const auto type2 = fixtureB->GetType();
@@ -234,6 +233,11 @@ void Contact::Update(ContactListener* listener)
 	}
 }
 
+static inline bool IsValidForTime(TOIOutput::State state)
+{
+	return state == TOIOutput::e_touching;
+}
+
 bool Contact::UpdateTOI()
 {
 	const auto fA = GetFixtureA();
@@ -281,11 +285,8 @@ bool Contact::UpdateTOI()
 	const auto output = TimeOfImpact(GetDistanceProxy(*fA->GetShape(), GetChildIndexA()), bA->m_sweep,
 									 GetDistanceProxy(*fB->GetShape(), GetChildIndexB()), bB->m_sweep);
 	
-	// Beta is the fraction of the remaining portion of the .
-	const auto beta = output.get_t();
-	const auto alpha = (output.get_state() == TOIOutput::e_touching)?
-		Min(maxAlpha0 + (float_t{1} - maxAlpha0) * beta, float_t{1}): float_t{1};
-	
+	const auto alpha = IsValidForTime(output.get_state())?
+		Min(maxAlpha0 + (float_t{1} - maxAlpha0) * output.get_t(), float_t{1}): float_t{1};
 	SetToi(alpha);
 	
 	return true;

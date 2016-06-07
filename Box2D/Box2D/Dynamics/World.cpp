@@ -28,7 +28,6 @@
 #include <Box2D/Collision/Shapes/EdgeShape.h>
 #include <Box2D/Collision/Shapes/ChainShape.h>
 #include <Box2D/Collision/Shapes/PolygonShape.h>
-#include <Box2D/Collision/TimeOfImpact.h>
 #include <Box2D/Common/Draw.h>
 #include <Box2D/Common/Timer.h>
 
@@ -453,8 +452,7 @@ void World::Solve(const TimeStep& step)
 			// Make sure the body is awake.
 			b->SetAwake();
 
-			// To keep islands as small as possible, we don't
-			// propagate islands across static bodies.
+			// To keep islands smaller, don't propagate islands across static bodies.
 			if (b->GetType() == BodyType::Static)
 			{
 				continue;
@@ -596,16 +594,6 @@ World::ContactToiPair World::UpdateContactTOIs()
 	return ContactToiPair{minContact, minToi};
 }
 
-static inline bool IsFullOfBodies(const Island& island)
-{
-	return island.GetBodyCount() == island.GetBodyCapacity();
-}
-
-static inline bool IsFullOfContacts(const Island& island)
-{
-	return island.GetContactCount() == island.GetContactCapacity();
-}
-
 // Find TOI contacts and solve them.
 void World::SolveTOI(const TimeStep& step)
 {
@@ -631,13 +619,13 @@ void World::SolveTOI(const TimeStep& step)
 			break;
 		}
 
-		// Advance the bodies to the TOI.
 		auto bA = minContactToi.contact->GetFixtureA()->GetBody();
 		auto bB = minContactToi.contact->GetFixtureB()->GetBody();
 
 		const auto backupA = bA->m_sweep;
 		const auto backupB = bB->m_sweep;
 
+		// Advance the bodies to the TOI.
 		bA->Advance(minContactToi.toi);
 		bB->Advance(minContactToi.toi);
 
@@ -670,73 +658,14 @@ void World::SolveTOI(const TimeStep& step)
 		island.Add(minContactToi.contact);
 		minContactToi.contact->SetInIsland();
 
-		// Get contacts on bodyA and bodyB.
-		Body* bodies[2] = {bA, bB};
-		for (auto body: bodies)
 		{
-			if (body->m_type == BodyType::Dynamic)
+			// Get contacts on bodyA and bodyB.
+			Body* bodies[2] = {bA, bB};
+			for (auto body: bodies)
 			{
-				for (auto ce = body->m_contactList; ce; ce = ce->next)
+				if (body->m_type == BodyType::Dynamic)
 				{
-					if (IsFullOfBodies(island) || IsFullOfContacts(island))
-					{
-						break; // processed all bodies or all contacts, done.
-					}
-
-					auto contact = ce->contact;
-
-					// Skip already added or sensor contacts
-					if (contact->IsInIsland() || contact->HasSensor())
-					{
-						continue;
-					}
-
-					// Only static, kinematic, or bullet bodies are appropriate for CCD.
-					auto other = ce->other;
-					
-					// Skip if neither bodies are appropriate for CCD
-					if ((other->m_type == BodyType::Dynamic) && !other->IsBullet() && !body->IsBullet())
-					{
-						continue;
-					}
-
-					// Tentatively advance the body to the TOI.
-					const auto backup = other->m_sweep;
-					if (!other->IsInIsland())
-					{
-						other->Advance(minContactToi.toi);
-					}
-
-					// Update the contact points
-					contact->Update(m_contactManager.m_contactListener);
-
-					// Revert and skip if contact disabled by user or if there are there no contact points anymore.
-					if (!contact->IsEnabled() || !contact->IsTouching())
-					{
-						other->m_sweep = backup;
-						other->m_xf = GetTransformOne(other->m_sweep);
-						continue;
-					}
-
-					// Add the contact to the island
-					contact->SetInIsland();
-					island.Add(contact);
-
-					// Has the other body already been added to the island?
-					if (other->IsInIsland())
-					{
-						continue;
-					}
-					
-					// Add the other body to the island.
-					other->SetInIsland();
-
-					if (other->m_type != BodyType::Static)
-					{
-						other->SetAwake();
-					}
-
-					island.Add(other);
+					ProcessContactsForTOI(island, *body, minContactToi.toi);
 				}
 			}
 		}
@@ -779,6 +708,74 @@ void World::SolveTOI(const TimeStep& step)
 			m_stepComplete = false;
 			break;
 		}
+	}
+}
+
+void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi)
+{
+	assert(body.m_type == BodyType::Dynamic);
+
+	for (auto ce = body.m_contactList; ce; ce = ce->next)
+	{
+		if (IsFullOfBodies(island) || IsFullOfContacts(island))
+		{
+			break; // processed all bodies or all contacts, done.
+		}
+		
+		auto contact = ce->contact;
+		
+		// Skip already added or sensor contacts
+		if (contact->IsInIsland() || contact->HasSensor())
+		{
+			continue;
+		}
+		
+		// Only static, kinematic, or bullet bodies are appropriate for CCD.
+		auto other = ce->other;
+		
+		// Skip if neither bodies are appropriate for CCD
+		if ((other->m_type == BodyType::Dynamic) && !other->IsBullet() && !body.IsBullet())
+		{
+			continue;
+		}
+		
+		// Tentatively advance the body to the TOI.
+		const auto backup = other->m_sweep;
+		if (!other->IsInIsland())
+		{
+			other->Advance(toi);
+		}
+		
+		// Update the contact points
+		contact->Update(m_contactManager.m_contactListener);
+		
+		// Revert and skip if contact disabled by user or if there are there no contact points anymore.
+		if (!contact->IsEnabled() || !contact->IsTouching())
+		{
+			other->m_sweep = backup;
+			other->m_xf = GetTransformOne(other->m_sweep);
+			continue;
+		}
+		
+		// Add the contact to the island
+		island.Add(contact);
+		contact->SetInIsland();
+		
+		// Has the other body already been added to the island?
+		if (other->IsInIsland())
+		{
+			continue;
+		}
+		
+		// Add the other body to the island.
+		other->SetInIsland();
+		
+		if (other->m_type != BodyType::Static)
+		{
+			other->SetAwake();
+		}
+		
+		island.Add(other);
 	}
 }
 
