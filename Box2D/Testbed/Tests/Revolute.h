@@ -52,7 +52,7 @@ public:
 
 			bd.position = Vec2(-10.0f, 20.0f);
 			Body* body = m_world->CreateBody(&bd);
-			body->CreateFixture(&shape, 5.0f);
+			body->CreateFixture(FixtureDef{&shape, 5.0f});
 
 			float_t w = 100.0f;
 			body->SetAngularVelocity(w);
@@ -94,7 +94,7 @@ public:
 			polygon_bd.type = BodyType::Dynamic;
 			polygon_bd.bullet = true;
 			Body* polygon_body = m_world->CreateBody(&polygon_bd);
-			polygon_body->CreateFixture(&polygon_shape, 2.0f);
+			polygon_body->CreateFixture(FixtureDef{&polygon_shape, 2.0f});
 
 			RevoluteJointDef rjd;
 			rjd.Initialize(ground, polygon_body, Vec2(20.0f, 10.0f));

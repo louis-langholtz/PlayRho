@@ -37,7 +37,7 @@ public:
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
 		{
@@ -60,7 +60,7 @@ public:
 					bd.type = BodyType::Dynamic;
 					bd.position = y;
 					Body* body = m_world->CreateBody(&bd);
-					body->CreateFixture(&shape, 5.0f);
+					body->CreateFixture(FixtureDef{&shape, 5.0f});
 
 					y += deltaY;
 				}

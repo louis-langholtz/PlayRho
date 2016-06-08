@@ -101,7 +101,7 @@ public:
 
 			PolygonShape p;
 			p.SetAsBox(0.5f, 1.0f);
-			body->CreateFixture(&p, 1.0f);
+			body->CreateFixture(FixtureDef{&p, 1.0f});
 
 			PrismaticJointDef jd;
 			jd.bodyA = body2;

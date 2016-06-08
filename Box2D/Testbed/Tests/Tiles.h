@@ -54,7 +54,7 @@ public:
 				{
 					PolygonShape shape;
 					shape.SetAsBox(a, a, position, 0.0f);
-					ground->CreateFixture(&shape, 0.0f);
+					ground->CreateFixture(FixtureDef{&shape, 0.0f});
 					++m_fixtureCount;
 					position.x += 2.0f * a;
 				}
@@ -72,7 +72,7 @@ public:
 				{
 					PolygonShape shape;
 					shape.SetAsBox(a, a, position, 0.0f);
-					ground->CreateFixture(&shape, 0.0f);
+					ground->CreateFixture(FixtureDef{&shape, 0.0f});
 					position.y -= 2.0f * a;
 				}
 				position.x += 2.0f * a;
@@ -110,7 +110,7 @@ public:
 					//}
 
 					Body* body = m_world->CreateBody(&bd);
-					body->CreateFixture(&shape, 5.0f);
+					body->CreateFixture(FixtureDef{&shape, 5.0f});
 					++m_fixtureCount;
 					y += deltaY;
 				}

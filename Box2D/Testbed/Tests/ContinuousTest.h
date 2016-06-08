@@ -35,11 +35,11 @@ public:
 			EdgeShape edge;
 
 			edge.Set(Vec2(-10.0f, 0.0f), Vec2(10.0f, 0.0f));
-			body->CreateFixture(&edge, 0.0f);
+			body->CreateFixture(FixtureDef{&edge, 0.0f});
 
 			PolygonShape shape;
 			shape.SetAsBox(0.2f, 1.0f, Vec2(0.5f, 1.0f), 0.0f);
-			body->CreateFixture(&shape, 0.0f);
+			body->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
 #if 1
@@ -53,7 +53,7 @@ public:
 			shape.SetAsBox(2.0f, 0.1f);
 
 			m_body = m_world->CreateBody(&bd);
-			m_body->CreateFixture(&shape, 1.0f);
+			m_body->CreateFixture(FixtureDef{&shape, 1.0f});
 
 			m_angularVelocity = RandomFloat(-50.0f, 50.0f);
 			//m_angularVelocity = 46.661274f;
@@ -70,12 +70,12 @@ public:
 			CircleShape shape;
 			shape.m_p.SetZero();
 			shape.m_radius = 0.5f;
-			body->CreateFixture(&shape, 1.0f);
+			body->CreateFixture(FixtureDef{&shape, 1.0f});
 
 			bd.bullet = true;
 			bd.position = Vec2(0.0f, 10.0f);
 			body = m_world->CreateBody(&bd);
-			body->CreateFixture(&shape, 1.0f);
+			body->CreateFixture(FixtureDef{&shape, 1.0f});
 			body->SetLinearVelocity(Vec2(0.0f, -100.0f));
 		}
 #endif

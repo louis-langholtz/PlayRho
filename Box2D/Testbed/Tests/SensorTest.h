@@ -40,7 +40,7 @@ public:
 			{
 				EdgeShape shape;
 				shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-				ground->CreateFixture(&shape, 0.0f);
+				ground->CreateFixture(FixtureDef{&shape, 0.0f});
 			}
 
 #if 0
@@ -76,7 +76,7 @@ public:
 				m_touching[i] = false;
 				m_bodies[i] = m_world->CreateBody(&bd);
 
-				m_bodies[i]->CreateFixture(&shape, 1.0f);
+				m_bodies[i]->CreateFixture(FixtureDef{&shape, 1.0f});
 			}
 		}
 	}

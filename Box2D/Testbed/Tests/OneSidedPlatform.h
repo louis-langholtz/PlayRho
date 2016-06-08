@@ -41,7 +41,7 @@ public:
 
 			EdgeShape shape;
 			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
 		// Platform
@@ -52,7 +52,7 @@ public:
 
 			PolygonShape shape;
 			shape.SetAsBox(3.0f, 0.5f);
-			m_platform = body->CreateFixture(&shape, 0.0f);
+			m_platform = body->CreateFixture(FixtureDef{&shape, 0.0f});
 
 			m_bottom = 10.0f - 0.5f;
 			m_top = 10.0f + 0.5f;
@@ -68,7 +68,7 @@ public:
 			m_radius = 0.5f;
 			CircleShape shape;
 			shape.SetRadius(float_t(m_radius));
-			m_character = body->CreateFixture(&shape, 20.0f);
+			m_character = body->CreateFixture(FixtureDef{&shape, 20.0f});
 
 			body->SetLinearVelocity(Vec2(0.0f, -50.0f));
 

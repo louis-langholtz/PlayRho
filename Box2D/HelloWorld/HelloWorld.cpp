@@ -52,7 +52,7 @@ int main(int argc, char** argv)
 	groundBox.SetAsBox(50.0f, 10.0f);
 
 	// Add the ground fixture to the ground body.
-	groundBody->CreateFixture(&groundBox, 0.0f);
+	groundBody->CreateFixture(FixtureDef{&groundBox, 0.0f});
 
 	// Define the dynamic body. We set its position and call the body factory.
 	BodyDef bodyDef;

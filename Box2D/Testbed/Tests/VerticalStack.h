@@ -43,10 +43,10 @@ public:
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 
 			shape.Set(Vec2(20.0f, 0.0f), Vec2(20.0f, 20.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
 		float_t xs[5] = {0.0f, -10.0f, -5.0f, 5.0f, 10.0f};

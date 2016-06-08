@@ -132,13 +132,13 @@ public:
 
 			EdgeShape shape;
 			shape.Set(Vec2(-50.0f, 0.0f), Vec2(50.0f, 0.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 
 			shape.Set(Vec2(-50.0f, 0.0f), Vec2(-50.0f, 10.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 
 			shape.Set(Vec2(50.0f, 0.0f), Vec2(50.0f, 10.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
 		// Balls
@@ -152,7 +152,7 @@ public:
 			bd.position = Vec2(-40.0f + 2.0f * i, 0.5f);
 
 			Body* body = m_world->CreateBody(&bd);
-			body->CreateFixture(&shape, 1.0f);
+			body->CreateFixture(FixtureDef{&shape, 1.0f});
 		}
 
 		// Chassis

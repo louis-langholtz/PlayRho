@@ -97,7 +97,7 @@ public:
 
 			PolygonShape box;
 			box.SetAsBox(10.0f, 0.25f);
-			body->CreateFixture(&box, 1.0f);
+			body->CreateFixture(FixtureDef{&box, 1.0f});
 
 			RevoluteJointDef jd;
 			jd.Initialize(ground, body, body->GetPosition());
@@ -154,23 +154,23 @@ public:
 
 			bd.position = Vec2(230.0f, 0.5f);
 			body = m_world->CreateBody(&bd);
-			body->CreateFixture(&box, 0.5f);
+			body->CreateFixture(FixtureDef{&box, 0.5f});
 
 			bd.position = Vec2(230.0f, 1.5f);
 			body = m_world->CreateBody(&bd);
-			body->CreateFixture(&box, 0.5f);
+			body->CreateFixture(FixtureDef{&box, 0.5f});
 
 			bd.position = Vec2(230.0f, 2.5f);
 			body = m_world->CreateBody(&bd);
-			body->CreateFixture(&box, 0.5f);
+			body->CreateFixture(FixtureDef{&box, 0.5f});
 
 			bd.position = Vec2(230.0f, 3.5f);
 			body = m_world->CreateBody(&bd);
-			body->CreateFixture(&box, 0.5f);
+			body->CreateFixture(FixtureDef{&box, 0.5f});
 
 			bd.position = Vec2(230.0f, 4.5f);
 			body = m_world->CreateBody(&bd);
-			body->CreateFixture(&box, 0.5f);
+			body->CreateFixture(FixtureDef{&box, 0.5f});
 		}
 
 		// Car
@@ -192,7 +192,7 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(0.0f, 1.0f);
 			m_car = m_world->CreateBody(&bd);
-			m_car->CreateFixture(&chassis, 1.0f);
+			m_car->CreateFixture(FixtureDef{&chassis, 1.0f});
 
 			FixtureDef fd;
 			fd.shape = &circle;

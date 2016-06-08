@@ -33,7 +33,7 @@ public:
             
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
         
 		BodyDef bd;
@@ -43,11 +43,11 @@ public:
         
 		CircleShape shape;
 		shape.SetRadius(float_t(0.5));
-        body->CreateFixture(&shape, 10.0f);
+		body->CreateFixture(FixtureDef{&shape, 10.0f});
         
         bd.position = Vec2(0.0f, 3.5f);
         body = m_world->CreateBody(&bd);
-        body->CreateFixture(&shape, 10.0f);
+		body->CreateFixture(FixtureDef{&shape, 10.0f});
         
         m_heavy = nullptr;
 	}
@@ -68,7 +68,7 @@ public:
             
             CircleShape shape;
             shape.SetRadius(float_t(5));
-            m_heavy->CreateFixture(&shape, 10.0f);
+			m_heavy->CreateFixture(FixtureDef{&shape, 10.0f});
         }
     }
     

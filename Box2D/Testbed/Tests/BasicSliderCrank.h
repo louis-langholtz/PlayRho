@@ -46,7 +46,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-8.0f, 20.0f);
 				Body* body = m_world->CreateBody(&bd);
-				body->CreateFixture(&shape, 2.0f);
+				body->CreateFixture(FixtureDef{&shape, 2.0f});
                 
 				RevoluteJointDef rjd;
 				rjd.Initialize(prevBody, body, Vec2(-12.0f, 20.0f));
@@ -64,7 +64,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(4.0f, 20.0f);
 				Body* body = m_world->CreateBody(&bd);
-				body->CreateFixture(&shape, 2.0f);
+				body->CreateFixture(FixtureDef{&shape, 2.0f});
                 
 				RevoluteJointDef rjd;
 				rjd.Initialize(prevBody, body, Vec2(-4.0f, 20.0f));
@@ -83,7 +83,7 @@ public:
 				bd.fixedRotation = true;
 				bd.position = Vec2(12.0f, 20.0f);
 				Body* body = m_world->CreateBody(&bd);
-				body->CreateFixture(&shape, 2.0f);
+				body->CreateFixture(FixtureDef{&shape, 2.0f});
                 
 				RevoluteJointDef rjd;
 				rjd.Initialize(prevBody, body, Vec2(12.0f, 20.0f));

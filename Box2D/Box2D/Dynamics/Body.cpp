@@ -164,11 +164,6 @@ Fixture* Body::CreateFixture(const FixtureDef& def)
 	return fixture;
 }
 
-Fixture* Body::CreateFixture(const Shape* shape, float_t density)
-{
-	return CreateFixture(FixtureDef{shape, density});
-}
-
 void Body::DestroyFixture(Fixture* fixture)
 {
 	assert(!m_world->IsLocked());

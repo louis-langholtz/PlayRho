@@ -47,13 +47,13 @@ public:
 
 			PolygonShape shape;
 			shape.SetAsBox(0.5f, 10.0f, Vec2( 10.0f, 0.0f), 0.0);
-			body->CreateFixture(&shape, 5.0f);
+			body->CreateFixture(FixtureDef{&shape, 5.0f});
 			shape.SetAsBox(0.5f, 10.0f, Vec2(-10.0f, 0.0f), 0.0);
-			body->CreateFixture(&shape, 5.0f);
+			body->CreateFixture(FixtureDef{&shape, 5.0f});
 			shape.SetAsBox(10.0f, 0.5f, Vec2(0.0f, 10.0f), 0.0);
-			body->CreateFixture(&shape, 5.0f);
+			body->CreateFixture(FixtureDef{&shape, 5.0f});
 			shape.SetAsBox(10.0f, 0.5f, Vec2(0.0f, -10.0f), 0.0);
-			body->CreateFixture(&shape, 5.0f);
+			body->CreateFixture(FixtureDef{&shape, 5.0f});
 
 			RevoluteJointDef jd;
 			jd.bodyA = ground;
@@ -83,7 +83,7 @@ public:
 
 			PolygonShape shape;
 			shape.SetAsBox(0.125f, 0.125f);
-			body->CreateFixture(&shape, 1.0f);
+			body->CreateFixture(FixtureDef{&shape, 1.0f});
 
 			++m_count;
 		}

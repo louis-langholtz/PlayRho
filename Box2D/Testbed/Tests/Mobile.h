@@ -68,7 +68,7 @@ public:
 
 		PolygonShape shape;
 		shape.SetAsBox(0.25f * a, a);
-		body->CreateFixture(&shape, density);
+		body->CreateFixture(FixtureDef{&shape, density});
 
 		if (depth == e_depth)
 		{

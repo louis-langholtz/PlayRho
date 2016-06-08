@@ -49,7 +49,7 @@ public:
 
 			PolygonShape shape;
 			shape.SetAsBox(0.5f, 2.0f);
-			m_attachment->CreateFixture(&shape, 2.0f);
+			m_attachment->CreateFixture(FixtureDef{&shape, 2.0f});
 		}
 
 		// Define platform

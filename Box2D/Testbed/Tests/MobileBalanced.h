@@ -68,7 +68,7 @@ public:
 
 		PolygonShape shape;
 		shape.SetAsBox(0.25f * a, a);
-		body->CreateFixture(&shape, density);
+		body->CreateFixture(FixtureDef{&shape, density});
 
 		if (depth == e_depth)
 		{
@@ -76,7 +76,7 @@ public:
 		}
 
 		shape.SetAsBox(offset, 0.25f * a, Vec2(0, -a), 0.0f);
-		body->CreateFixture(&shape, density);
+		body->CreateFixture(FixtureDef{&shape, density});
 
 		Vec2 a1 = Vec2(offset, -a);
 		Vec2 a2 = Vec2(-offset, -a);

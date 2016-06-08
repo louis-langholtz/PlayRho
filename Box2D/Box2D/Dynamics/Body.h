@@ -123,15 +123,6 @@ public:
 	/// @warning This function is locked during callbacks.
 	Fixture* CreateFixture(const FixtureDef& def);
 
-	/// Creates a fixture from a shape and attach it to this body.
-	/// This is a convenience function. Use FixtureDef if you need to set parameters
-	/// like friction, restitution, user data, or filtering.
-	/// If the density is non-zero, this function automatically updates the mass of the body.
-	/// @param shape the shape to be cloned.
-	/// @param density Density of the shape in kg/m^2 (set to zero for static bodies).
-	/// @warning This function is locked during callbacks.
-	Fixture* CreateFixture(const Shape* shape, float_t density);
-
 	/// Destroy a fixture. This removes the fixture from the broad-phase and
 	/// destroys all contacts associated with this fixture. This will
 	/// automatically adjust the mass of the body if the body is dynamic and the

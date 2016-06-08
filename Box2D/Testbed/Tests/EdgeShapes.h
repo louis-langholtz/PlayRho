@@ -69,7 +69,7 @@ public:
 
 				EdgeShape shape;
 				shape.Set(Vec2(x1, y1), Vec2(x2, y2));
-				ground->CreateFixture(&shape, 0.0f);
+				ground->CreateFixture(FixtureDef{&shape, 0.0f});
 
 				x1 = x2;
 				y1 = y2;

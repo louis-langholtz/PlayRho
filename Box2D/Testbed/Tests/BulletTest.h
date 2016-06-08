@@ -35,11 +35,11 @@ public:
 			EdgeShape edge;
 
 			edge.Set(Vec2(-10.0f, 0.0f), Vec2(10.0f, 0.0f));
-			body->CreateFixture(&edge, 0.0f);
+			body->CreateFixture(FixtureDef{&edge, 0.0f});
 
 			PolygonShape shape;
 			shape.SetAsBox(0.2f, 1.0f, Vec2(0.5f, 1.0f), 0.0f);
-			body->CreateFixture(&shape, 0.0f);
+			body->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
 		{
@@ -51,7 +51,7 @@ public:
 			box.SetAsBox(2.0f, 0.1f);
 
 			m_body = m_world->CreateBody(&bd);
-			m_body->CreateFixture(&box, 1.0f);
+			m_body->CreateFixture(FixtureDef{&box, 1.0f});
 
 			box.SetAsBox(0.25f, 0.25f);
 
@@ -61,7 +61,7 @@ public:
 			bd.bullet = true;
 
 			m_bullet = m_world->CreateBody(&bd);
-			m_bullet->CreateFixture(&box, 100.0f);
+			m_bullet->CreateFixture(FixtureDef{&box, 100.0f});
 
 			m_bullet->SetLinearVelocity(Vec2(0.0f, -50.0f));
 		}

@@ -36,7 +36,7 @@ public:
 
 			EdgeShape shape;
 			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
 		// Collinear edges with no adjacency information.
@@ -48,11 +48,11 @@ public:
 
 			EdgeShape shape;
 			shape.Set(Vec2(-8.0f, 1.0f), Vec2(-6.0f, 1.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 			shape.Set(Vec2(-6.0f, 1.0f), Vec2(-4.0f, 1.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 			shape.Set(Vec2(-4.0f, 1.0f), Vec2(-2.0f, 1.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
 		// Chain shape
@@ -68,7 +68,7 @@ public:
 			vs[3] = Vec2(8.0f, 7.0f);
 			ChainShape shape;
 			shape.CreateChain(vs, 4);
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
 		// Square tiles. This shows that adjacency shapes may
@@ -80,11 +80,11 @@ public:
 
 			PolygonShape shape;
 			shape.SetAsBox(1.0f, 1.0f, Vec2(4.0f, 3.0f), 0.0f);
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 			shape.SetAsBox(1.0f, 1.0f, Vec2(6.0f, 3.0f), 0.0f);
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 			shape.SetAsBox(1.0f, 1.0f, Vec2(8.0f, 3.0f), 0.0f);
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
 		// Square made from an edge loop. Collision should be smooth.
@@ -99,7 +99,7 @@ public:
 			vs[3] = Vec2(-1.0f, 5.0f);
 			ChainShape shape;
 			shape.CreateLoop(vs, 4);
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
 		// Edge loop. Collision should be smooth.
@@ -121,7 +121,7 @@ public:
 			vs[9] = Vec2(-6.0f, 0.0f);
 			ChainShape shape;
 			shape.CreateLoop(vs, 10);
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
 		// Square character 1

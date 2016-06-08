@@ -38,31 +38,31 @@ public:
 
 			shape.Set(v1, v2);
 			shape.SetVertex3(v3);
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 
 			shape.Set(v2, v3);
 			shape.SetVertex0(v1);
 			shape.SetVertex3(v4);
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 
 			shape.Set(v3, v4);
 			shape.SetVertex0(v2);
 			shape.SetVertex3(v5);
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 
 			shape.Set(v4, v5);
 			shape.SetVertex0(v3);
 			shape.SetVertex3(v6);
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 
 			shape.Set(v5, v6);
 			shape.SetVertex0(v4);
 			shape.SetVertex3(v7);
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 
 			shape.Set(v6, v7);
 			shape.SetVertex0(v5);
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
 		{
@@ -75,7 +75,7 @@ public:
 			CircleShape shape;
 			shape.SetRadius(float_t(0.5));
 
-			body->CreateFixture(&shape, 1.0f);
+			body->CreateFixture(FixtureDef{&shape, 1.0f});
 		}
 
 		{
@@ -88,7 +88,7 @@ public:
 			PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.5f);
 
-			body->CreateFixture(&shape, 1.0f);
+			body->CreateFixture(FixtureDef{&shape, 1.0f});
 		}
 	}
 

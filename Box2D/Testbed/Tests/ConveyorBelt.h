@@ -34,7 +34,7 @@ public:
 
 			EdgeShape shape;
 			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
 		// Platform
@@ -62,7 +62,7 @@ public:
 
 			PolygonShape shape;
 			shape.SetAsBox(0.5f, 0.5f);
-			body->CreateFixture(&shape, 20.0f);
+			body->CreateFixture(FixtureDef{&shape, 20.0f});
 		}
 	}
 

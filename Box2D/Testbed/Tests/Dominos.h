@@ -34,7 +34,7 @@ public:
 
 			BodyDef bd;
 			b1 = m_world->CreateBody(&bd);
-			b1->CreateFixture(&shape, 0.0f);
+			b1->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
 		{
@@ -44,7 +44,7 @@ public:
 			BodyDef bd;
 			bd.position = Vec2(-1.5f, 10.0f);
 			Body* ground = m_world->CreateBody(&bd);
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
 		{
@@ -73,7 +73,7 @@ public:
 			BodyDef bd;
 			bd.position = Vec2(1.0f, 6.0f);
 			Body* ground = m_world->CreateBody(&bd);
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
 		Body* b2;
@@ -84,7 +84,7 @@ public:
 			BodyDef bd;
 			bd.position = Vec2(-7.0f, 4.0f);
 			b2 = m_world->CreateBody(&bd);
-			b2->CreateFixture(&shape, 0.0f);
+			b2->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
 		Body* b3;
@@ -98,7 +98,7 @@ public:
 			bd.angle = -0.15f;
 
 			b3 = m_world->CreateBody(&bd);
-			b3->CreateFixture(&shape, 10.0f);
+			b3->CreateFixture(FixtureDef{&shape, 10.0f});
 		}
 
 		RevoluteJointDef jd;
@@ -118,7 +118,7 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-10.0f, 15.0f);
 			b4 = m_world->CreateBody(&bd);
-			b4->CreateFixture(&shape, 10.0f);
+			b4->CreateFixture(FixtureDef{&shape, 10.0f});
 		}
 
 		anchor = Vec2(-7.0f, 15.0f);
@@ -162,7 +162,7 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(6.5f, 4.1f);
 			b6 = m_world->CreateBody(&bd);
-			b6->CreateFixture(&shape, 30.0f);
+			b6->CreateFixture(FixtureDef{&shape, 30.0f});
 		}
 
 		anchor = Vec2(7.5f, 4.0f);
@@ -179,7 +179,7 @@ public:
 			bd.position = Vec2(7.4f, 1.0f);
 
 			b7 = m_world->CreateBody(&bd);
-			b7->CreateFixture(&shape, 10.0f);
+			b7->CreateFixture(FixtureDef{&shape, 10.0f});
 		}
 
 		DistanceJointDef djd;
@@ -203,7 +203,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(5.9f + 2.0f * radius * i, 2.4f);
 				Body* body = m_world->CreateBody(&bd);
-				body->CreateFixture(&shape, 10.0f);
+				body->CreateFixture(FixtureDef{&shape, 10.0f});
 			}
 		}
 	}

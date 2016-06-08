@@ -33,7 +33,7 @@ public:
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape, 0.0f);
+			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
 		BodyDef bd;
@@ -43,7 +43,7 @@ public:
 
 		PolygonShape shape;
 		shape.SetAsBox(4.0f, 4.0f, Vec2(0.0f, 0.0f), 0.0f);
-		m_fixture1 = m_body->CreateFixture(&shape, 10.0f);
+		m_fixture1 = m_body->CreateFixture(FixtureDef{&shape, 10.0f});
 
 		m_fixture2 = nullptr;
 
@@ -58,7 +58,7 @@ public:
 			if (m_fixture2 == nullptr)
 			{
 				CircleShape shape(3.0, Vec2(0.5f, -4.0f));
-				m_fixture2 = m_body->CreateFixture(&shape, 10.0f);
+				m_fixture2 = m_body->CreateFixture(FixtureDef{&shape, 10.0f});
 				m_body->SetAwake();
 			}
 			break;
