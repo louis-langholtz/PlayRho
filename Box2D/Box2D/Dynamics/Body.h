@@ -357,10 +357,6 @@ public:
 	ContactEdge* GetContactList() noexcept;
 	const ContactEdge* GetContactList() const noexcept;
 
-	/// Get the next body in the world's body list.
-	Body* GetNext() noexcept;
-	const Body* GetNext() const noexcept;
-
 	/// Get the user data pointer that was provided in the body definition.
 	void* GetUserData() const noexcept;
 
@@ -381,6 +377,8 @@ private:
 	friend class ContactManager;
 	friend class ContactSolver;
 	friend class Contact;
+	friend class BodyIterator;
+	friend class ConstBodyIterator;
 	
 	friend class DistanceJoint;
 	friend class FrictionJoint;
@@ -451,6 +449,10 @@ private:
 	/// Gets the velocity of this body after the given time with the given gravity.
 	Velocity GetVelocity(float_t h, Vec2 gravity) const noexcept;
 
+	/// Get the next body in the world's body list.
+	Body* GetNext() noexcept;
+	const Body* GetNext() const noexcept;
+	
 	BodyType m_type;
 
 	uint16 m_flags = 0;

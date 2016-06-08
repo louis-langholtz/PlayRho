@@ -175,14 +175,14 @@ public:
 	void Step(Settings* settings)
 	{
 		bool sleeping = true;
-		for (Body* b = m_world->GetBodyList(); b; b = b->GetNext())
+		for (auto& b: m_world->GetBodies())
 		{
-			if (b->GetType() != BodyType::Dynamic)
+			if (b.GetType() != BodyType::Dynamic)
 			{
 				continue;
 			}
 
-			if (b->IsAwake())
+			if (b.IsAwake())
 			{
 				sleeping = false;
 			}
@@ -200,14 +200,14 @@ public:
 
 		Test::Step(settings);
 
-		for (Body* b = m_world->GetBodyList(); b; b = b->GetNext())
+		for (auto& b: m_world->GetBodies())
 		{
-			if (b->GetType() != BodyType::Dynamic)
+			if (b.GetType() != BodyType::Dynamic)
 			{
 				continue;
 			}
 
-			Vec2 p = b->GetPosition();
+			Vec2 p = b.GetPosition();
 			if (p.x <= -wall_length/2 || wall_length/2 <= p.x || p.y <= 0.0f || wall_length <= p.y)
 			{
 				p.x += 0.0f;

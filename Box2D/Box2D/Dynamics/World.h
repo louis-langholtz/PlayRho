@@ -125,13 +125,12 @@ public:
 	/// @param point2 the ray ending point
 	void RayCast(RayCastFixtureReporter* callback, const Vec2& point1, const Vec2& point2) const;
 
-	/// Get the world body list. With the returned body, use Body::GetNext to get
-	/// the next body in the world list. A nullptr body indicates the end of the list.
-	/// @return the head of the world body list.
-	Body* GetBodyList() noexcept;
-	const Body* GetBodyList() const noexcept;
-
+	/// Gets the world body list.
+	/// @return Body list that can be iterated over using its begin and end methods or using ranged-based for-loops.
 	BodyList GetBodies() noexcept;
+
+	/// Gets the world body list for this constant world.
+	/// @return Body list that can be iterated over using its begin and end methods or using ranged-based for-loops.
 	ConstBodyList GetBodies() const noexcept;
 
 	/// Get the world joint list. With the returned joint, use Joint::GetNext to get
@@ -295,16 +294,6 @@ private:
 
 	Profile m_profile;
 };
-
-inline Body* World::GetBodyList() noexcept
-{
-	return m_bodyList;
-}
-
-inline const Body* World::GetBodyList() const noexcept
-{
-	return m_bodyList;
-}
 
 inline BodyList World::GetBodies() noexcept
 {
