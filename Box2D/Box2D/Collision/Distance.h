@@ -51,7 +51,7 @@ public:
 
 	static constexpr size_type InvalidIndex = static_cast<size_type>(-1);
 
-	DistanceProxy() noexcept = default;
+	DistanceProxy() = default;
 	
 	constexpr DistanceProxy(const DistanceProxy& copy) noexcept:
 		m_buffer{copy.m_buffer}, m_vertices{copy.m_vertices == &copy.m_buffer[0]? &m_buffer[0]: copy.m_vertices}, m_count{copy.m_count}, m_radius{copy.m_radius}
@@ -87,7 +87,7 @@ public:
 	/// @param index A valid index value (must not be InvalidIndex).
 	/// @note Behavior is undefined if InvalidIndex is given as the index value.
 	/// @return 2D vector value at the given index.
-	Vec2 GetVertex(size_type index) const;
+	Vec2 GetVertex(size_type index) const noexcept;
 
 private:
 	std::array<Vec2,2> m_buffer;
@@ -203,7 +203,7 @@ DistanceOutput Distance(SimplexCache& cache,  const DistanceInput& input);
 
 //////////////////////////////////////////////////////////////////////////
 
-inline Vec2 DistanceProxy::GetVertex(size_type index) const
+inline Vec2 DistanceProxy::GetVertex(size_type index) const noexcept
 {
 	assert(index != InvalidIndex);
 	assert(index < m_count);
