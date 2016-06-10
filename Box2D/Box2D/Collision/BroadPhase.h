@@ -30,6 +30,12 @@ namespace box2d {
 struct ProxyIdPair
 {
 	using size_type = size_t;
+	
+	ProxyIdPair() = default;
+	ProxyIdPair(const ProxyIdPair& copy) = default;
+	
+	constexpr ProxyIdPair(size_type idA, size_type idB) noexcept: proxyIdA{idA}, proxyIdB{idB} {}
+
 	size_type proxyIdA;
 	size_type proxyIdB;
 };
