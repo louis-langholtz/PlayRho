@@ -67,7 +67,7 @@ public:
 class ContactImpulse
 {
 public:
-	using count_t = unsigned int;
+	using count_t = std::remove_const<decltype(MaxManifoldPoints)>::type;
 
 	count_t GetCount() const noexcept { return count; }
 
