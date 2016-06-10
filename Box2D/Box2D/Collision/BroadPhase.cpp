@@ -21,8 +21,8 @@
 using namespace box2d;
 
 BroadPhase::BroadPhase():
-	m_pairBuffer(static_cast<ProxyIdPair*>(alloc(m_pairCapacity * sizeof(ProxyIdPair)))),
-	m_moveBuffer(static_cast<size_type*>(alloc(m_moveCapacity * sizeof(size_type))))
+	m_pairBuffer(alloc<ProxyIdPair>(m_pairCapacity)),
+	m_moveBuffer(alloc<size_type>(m_moveCapacity))
 {}
 
 BroadPhase::~BroadPhase()
@@ -66,7 +66,7 @@ void BroadPhase::BufferMove(size_type proxyId)
 	if (m_moveCount == m_moveCapacity)
 	{
 		m_moveCapacity *= BufferGrowthRate;
-		m_moveBuffer = static_cast<size_type*>(realloc(m_moveBuffer, m_moveCapacity * sizeof(size_type)));
+		m_moveBuffer = realloc<size_type>(m_moveBuffer, m_moveCapacity);
 	}
 
 	m_moveBuffer[m_moveCount] = proxyId;
@@ -97,11 +97,10 @@ bool BroadPhase::QueryCallback(size_type proxyId)
 	if (m_pairCapacity == m_pairCount)
 	{
 		m_pairCapacity *= BufferGrowthRate;
-		m_pairBuffer = static_cast<ProxyIdPair*>(realloc(m_pairBuffer, m_pairCapacity * sizeof(ProxyIdPair)));
+		m_pairBuffer = realloc<ProxyIdPair>(m_pairBuffer, m_pairCapacity);
 	}
 
-	m_pairBuffer[m_pairCount].proxyIdA = Min(proxyId, m_queryProxyId);
-	m_pairBuffer[m_pairCount].proxyIdB = Max(proxyId, m_queryProxyId);
+	m_pairBuffer[m_pairCount] = ProxyIdPair{Min(proxyId, m_queryProxyId), Max(proxyId, m_queryProxyId)};
 	++m_pairCount;
 
 	return true;
