@@ -164,8 +164,20 @@ constexpr auto AngularSleepTolerance = Pi * float_t{2} / float_t{180};
 /// Implement this function to use your own memory allocator.
 void* alloc(size_t size);
 
+template <typename T>
+T* alloc(size_t size)
+{
+	return static_cast<T*>(alloc(size * sizeof(T)));
+}
+	
 /// Implement this function to use your own memory allocator.
 void* realloc(void* ptr, size_t new_size);
+
+template <typename T>
+T* realloc(T* ptr, size_t size)
+{
+	return static_cast<T*>(realloc(ptr, size * sizeof(T)));
+}
 
 /// If you implement alloc, you should also implement this function.
 void free(void* mem);
