@@ -81,7 +81,7 @@ struct BlockAllocator::Block
 };
 
 BlockAllocator::BlockAllocator():
-	m_chunks(static_cast<Chunk*>(alloc(m_chunkSpace * sizeof(Chunk))))
+	m_chunks(alloc<Chunk>(m_chunkSpace))
 {
 	assert(BlockSizes < std::numeric_limits<uint8>::max());
 	std::memset(m_chunks, 0, m_chunkSpace * sizeof(Chunk));
@@ -123,7 +123,7 @@ void* BlockAllocator::Allocate(size_type size)
 	if (m_chunkCount == m_chunkSpace)
 	{
 		m_chunkSpace += ChunkArrayIncrement;
-		m_chunks = static_cast<Chunk*>(realloc(m_chunks, m_chunkSpace * sizeof(Chunk)));
+		m_chunks = realloc<Chunk>(m_chunks, m_chunkSpace);
 		std::memset(m_chunks + m_chunkCount, 0, ChunkArrayIncrement * sizeof(Chunk));
 	}
 

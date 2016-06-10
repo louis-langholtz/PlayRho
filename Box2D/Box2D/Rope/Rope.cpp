@@ -35,10 +35,10 @@ void Rope::Initialize(const RopeDef* def)
 {
 	assert(def->count >= 3);
 	m_count = def->count;
-	m_ps = static_cast<Vec2*>(alloc(m_count * sizeof(Vec2)));
-	m_p0s = static_cast<Vec2*>(alloc(m_count * sizeof(Vec2)));
-	m_vs = static_cast<Vec2*>(alloc(m_count * sizeof(Vec2)));
-	m_ims = static_cast<float_t*>(alloc(m_count * sizeof(float_t)));
+	m_ps = alloc<Vec2>(m_count);
+	m_p0s = alloc<Vec2>(m_count);
+	m_vs = alloc<Vec2>(m_count);
+	m_ims = alloc<float_t>(m_count);
 
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
@@ -59,8 +59,8 @@ void Rope::Initialize(const RopeDef* def)
 
 	const auto count2 = m_count - 1;
 	const auto count3 = m_count - 2;
-	m_Ls = static_cast<float_t*>(alloc(count2 * sizeof(float_t)));
-	m_as = static_cast<float_t*>(alloc(count3 * sizeof(float_t)));
+	m_Ls = alloc<float_t>(count2);
+	m_as = alloc<float_t>(count3);
 
 	for (auto i = decltype(count2){0}; i < count2; ++i)
 	{

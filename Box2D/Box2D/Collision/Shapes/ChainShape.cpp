@@ -47,7 +47,7 @@ void ChainShape::CreateLoop(const Vec2* vertices, child_count_t count)
 	}
 
 	m_count = count + 1;
-	m_vertices = static_cast<Vec2*>(alloc(m_count * sizeof(Vec2)));
+	m_vertices = alloc<Vec2>(m_count);
 	memcpy(m_vertices, vertices, count * sizeof(Vec2));
 	m_vertices[count] = m_vertices[0];
 	m_prevVertex = m_vertices[m_count - 2];
@@ -67,7 +67,7 @@ void ChainShape::CreateChain(const Vec2* vertices, child_count_t count)
 	}
 
 	m_count = count;
-	m_vertices = static_cast<Vec2*>(alloc(count * sizeof(Vec2)));
+	m_vertices = alloc<Vec2>(count);
 	memcpy(m_vertices, vertices, m_count * sizeof(Vec2));
 
 	m_hasPrevVertex = false;

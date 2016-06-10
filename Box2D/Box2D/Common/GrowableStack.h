@@ -50,7 +50,7 @@ public:
 		{
 			T* old = m_stack;
 			m_capacity *= BufferGrowthRate;
-			m_stack = static_cast<T*>(alloc(m_capacity * sizeof(T)));
+			m_stack = alloc<T>(m_capacity);
 			std::memcpy(m_stack, old, m_count * sizeof(T));
 			if (old != m_array)
 			{
