@@ -176,7 +176,7 @@ void* realloc(void* ptr, size_t new_size);
 template <typename T>
 T* realloc(T* ptr, size_t size)
 {
-	return static_cast<T*>(realloc(ptr, size * sizeof(T)));
+	return static_cast<T*>(realloc(static_cast<void *>(ptr), size * sizeof(T)));
 }
 
 /// If you implement alloc, you should also implement this function.
