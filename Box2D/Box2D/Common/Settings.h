@@ -41,8 +41,6 @@ using int32 = std::int32_t;
 using uint8 = std::uint8_t;
 using uint16 = std::uint16_t;
 using uint32 = std::uint32_t;
-using float32 = float;
-using float64 = double;
 
 /// Box2D floating point type.
 /// This should be float, double, or long double.

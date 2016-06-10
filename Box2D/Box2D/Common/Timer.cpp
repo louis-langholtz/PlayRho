@@ -23,7 +23,7 @@ using namespace box2d;
 #if defined(DO_TIMER_FOR_REALS)
 #if defined(_WIN32)
 
-float64 Timer::s_invFrequency = float_t{0};
+double Timer::s_invFrequency = float_t{0};
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -35,7 +35,7 @@ Timer::Timer()
 	if (s_invFrequency == float_t{0})
 	{
 		QueryPerformanceFrequency(&largeInteger);
-		s_invFrequency = float64(largeInteger.QuadPart);
+		s_invFrequency = double(largeInteger.QuadPart);
 		if (s_invFrequency > float_t{0})
 		{
 			s_invFrequency = 1000.0f / s_invFrequency;
@@ -43,21 +43,21 @@ Timer::Timer()
 	}
 
 	QueryPerformanceCounter(&largeInteger);
-	m_start = float64(largeInteger.QuadPart);
+	m_start = double(largeInteger.QuadPart);
 }
 
 void Timer::Reset()
 {
 	LARGE_INTEGER largeInteger;
 	QueryPerformanceCounter(&largeInteger);
-	m_start = float64(largeInteger.QuadPart);
+	m_start = double(largeInteger.QuadPart);
 }
 
 float_t Timer::GetMilliseconds() const
 {
 	LARGE_INTEGER largeInteger;
 	QueryPerformanceCounter(&largeInteger);
-	float64 count = float64(largeInteger.QuadPart);
+	double count = double(largeInteger.QuadPart);
 	float_t ms = float_t(s_invFrequency * (count - m_start));
 	return ms;
 }

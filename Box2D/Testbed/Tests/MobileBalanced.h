@@ -41,7 +41,7 @@ public:
 			ground = m_world->CreateBody(&bodyDef);
 		}
 
-		float32 a = 0.5f;
+		float a = 0.5f;
 		Vec2 h(0.0f, a);
 
 		Body* root = AddNode(ground, Vec2_zero, 0, 3.0f, a);
@@ -54,9 +54,9 @@ public:
 		m_world->CreateJoint(&jointDef);
 	}
 
-	Body* AddNode(Body* parent, const Vec2& localAnchor, int32 depth, float32 offset, float32 a)
+	Body* AddNode(Body* parent, const Vec2& localAnchor, int32 depth, float offset, float a)
 	{
-		float32 density = 20.0f;
+		float density = 20.0f;
 		Vec2 h(0.0f, a);
 
 		Vec2 p = parent->GetPosition() + localAnchor - h;

@@ -91,7 +91,7 @@ public:
 		linearOffset.x = 6.0f * sinf(2.0f * m_time);
 		linearOffset.y = 8.0f + 4.0f * sinf(1.0f * m_time);
 		
-		float32 angularOffset = 4.0f * m_time;
+		float angularOffset = 4.0f * m_time;
 
 		m_joint->SetLinearOffset(linearOffset);
 		m_joint->SetAngularOffset(angularOffset);
@@ -109,7 +109,7 @@ public:
 	}
 
 	MotorJoint* m_joint;
-	float32 m_time;
+	float m_time;
 	bool m_go;
 };
 
