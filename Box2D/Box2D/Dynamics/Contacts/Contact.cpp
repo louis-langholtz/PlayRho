@@ -252,8 +252,8 @@ bool Contact::UpdateTOI()
 	const auto bA = fA->GetBody();
 	const auto bB = fB->GetBody();
 	
-	const auto typeA = bA->m_type;
-	const auto typeB = bB->m_type;
+	const auto typeA = bA->GetType();
+	const auto typeB = bB->GetType();
 	assert((typeA == BodyType::Dynamic) || (typeB == BodyType::Dynamic));
 	
 	const auto activeA = bA->IsAwake() && (typeA != BodyType::Static);

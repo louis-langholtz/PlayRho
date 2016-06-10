@@ -197,10 +197,8 @@ void World::DestroyBody(Body* b)
 		m_blockAllocator.Free(f0, sizeof(Fixture));
 
 		b->m_fixtureList = f;
-		b->m_fixtureCount -= 1;
 	}
 	b->m_fixtureList = nullptr;
-	b->m_fixtureCount = 0;
 
 	// Remove world body list.
 	if (b->m_prev)
@@ -426,9 +424,12 @@ void World::Solve(const TimeStep& step)
 	auto stack = std::unique_ptr<Body*[], StackAllocator&>(m_stackAllocator.Allocate<Body*>(stackSize), m_stackAllocator);
 	for (auto seed = m_bodyList; seed; seed = seed->GetNext())
 	{
-		// Skip seed (body) if already in island, not-awake, not-active, or is static.
-		if (seed->IsInIsland() || (!seed->IsAwake()) || (!seed->IsActive()) || (seed->GetType() == BodyType::Static))
+		// Skip seed (body) if static, already in island, not-awake, or not-active.
+		if ((seed->GetType() == BodyType::Static) || seed->IsInIsland() || !seed->IsAwake() || !seed->IsActive())
 		{
+			// ((seed->m_flags & (Body::e_accelerationFlag|Body::e_velocityFlag)) == 0) ||
+			// (seed->m_flags & Body::e_islandFlag) ||
+			// (~(seed->m_flags) & (Body::e_awakeFlag|Body::e_activeFlag));
 			continue;
 		}
 
@@ -437,8 +438,7 @@ void World::Solve(const TimeStep& step)
 		// Reset island and stack.
 		island.Clear();
 		auto stackCount = size_type{0};
-		stack[stackCount] = seed;
-		++stackCount;
+		stack[stackCount++] = seed;
 		seed->SetInIsland();
 
 		// Perform a depth first search (DFS) on the constraint graph.
@@ -458,7 +458,7 @@ void World::Solve(const TimeStep& step)
 				continue;
 			}
 
-			// Add to island appropriate contacts of current body and appropriate 'other' bodies of those contacts.
+			// Add to island: appropriate contacts of current body and appropriate 'other' bodies of those contacts.
 			for (auto ce = b->m_contactList; ce; ce = ce->next)
 			{
 				const auto contact = ce->contact;
@@ -483,7 +483,7 @@ void World::Solve(const TimeStep& step)
 				other->SetInIsland();
 			}
 
-			// Add to island appropriate joints of current body and appropriate 'other' bodies of those joint.
+			// Add to island: appropriate joints of current body and appropriate 'other' bodies of those joint.
 			for (auto je = b->m_jointList; je; je = je->next)
 			{
 				const auto joint = je->joint;
@@ -528,14 +528,12 @@ void World::Solve(const TimeStep& step)
 		// Synchronize fixtures, check for out of range bodies.
 		for (auto b = m_bodyList; b; b = b->GetNext())
 		{
-			// If a body was not in an island or is static then it did not move.
-			if (!(b->IsInIsland()) || (b->GetType() == BodyType::Static))
+			// A non-static body that was in an island may have moved.
+			if ((b->GetType() != BodyType::Static) && b->IsInIsland())
 			{
-				continue;
+				// Update fixtures (for broad-phase).
+				b->SynchronizeFixtures();
 			}
-
-			// Update fixtures (for broad-phase).
-			b->SynchronizeFixtures();
 		}
 
 		// Look for new contacts.
@@ -661,7 +659,7 @@ void World::SolveTOI(const TimeStep& step)
 		// Get contacts on bodyA and bodyB.
 		for (auto body: {bA, bB})
 		{
-			if (body->m_type == BodyType::Dynamic)
+			if (body->GetType() == BodyType::Dynamic)
 			{
 				ProcessContactsForTOI(island, *body, minContactToi.toi);
 			}
@@ -681,7 +679,7 @@ void World::SolveTOI(const TimeStep& step)
 			auto body = island.GetBody(i);
 			body->UnsetInIsland();
 
-			if (body->m_type == BodyType::Dynamic)
+			if (body->GetType() == BodyType::Dynamic)
 			{
 				body->SynchronizeFixtures();
 				
@@ -708,7 +706,7 @@ void World::SolveTOI(const TimeStep& step)
 
 void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi)
 {
-	assert(body.m_type == BodyType::Dynamic);
+	assert(body.GetType() == BodyType::Dynamic);
 
 	for (auto ce = body.m_contactList; ce; ce = ce->next)
 	{
@@ -729,7 +727,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi)
 		auto other = ce->other;
 		
 		// Skip if neither bodies are appropriate for CCD
-		if ((other->m_type == BodyType::Dynamic) && !other->IsBullet() && !body.IsBullet())
+		if ((other->GetType() == BodyType::Dynamic) && !other->IsBullet() && !body.IsBullet())
 		{
 			continue;
 		}
@@ -765,7 +763,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi)
 		// Add the other body to the island.
 		other->SetInIsland();
 		
-		if (other->m_type != BodyType::Static)
+		if (other->GetType() != BodyType::Static)
 		{
 			other->SetAwake();
 		}

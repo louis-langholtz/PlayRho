@@ -41,8 +41,23 @@ struct ContactEdge;
 /// dynamic: positive mass, non-zero velocity determined by forces, moved by solver
 enum class BodyType
 {
+	/// Static body type.
+	/// @detail
+	/// Static bodies have no mass, have no forces applied to them, and aren't moved by physical processeses.
+	/// Physics applied: none.
 	Static = 0,
+	
+	/// Kinematic body type.
+	/// @detail
+	/// Kinematic bodies have no mass and have no forces applied to them, but can move at set velocities.
+	/// Physics applied: velocity.
 	Kinematic,
+
+	/// Dynamic body type.
+	/// @detail
+	/// Dynamic bodies are fully simulated bodies.
+	/// Dynamic bodies always have a positive non-zero mass.
+	/// Physics applied: velocity, acceleration.
 	Dynamic
 
 	// TODO_ERIN
@@ -104,9 +119,6 @@ struct BodyDef
 
 	/// Use this to store application specific body data.
 	void* userData = nullptr;
-
-	/// Scale the gravity applied to this body.
-	float_t gravityScale = float_t{1};
 };
 
 /// A rigid body. These are created via World::CreateBody.
@@ -275,12 +287,6 @@ public:
 	/// Set the angular damping of the body.
 	void SetAngularDamping(float_t angularDamping) noexcept;
 
-	/// Get the gravity scale of the body.
-	float_t GetGravityScale() const noexcept;
-
-	/// Set the gravity scale of the body.
-	void SetGravityScale(float_t scale) noexcept;
-
 	/// Set the type of this body. This may alter the mass and velocity.
 	void SetType(BodyType type);
 
@@ -393,7 +399,7 @@ private:
 	friend class WheelJoint;
 
 	// m_flags
-	enum : uint16
+	enum : uint32
 	{
 		e_islandFlag		= 0x0001,
 		e_awakeFlag			= 0x0002,
@@ -401,7 +407,17 @@ private:
 		e_bulletFlag		= 0x0008,
 		e_fixedRotationFlag	= 0x0010,
 		e_activeFlag		= 0x0020,
-		e_toiFlag			= 0x0040
+		e_toiFlag			= 0x0040,
+		
+		/// Velocity flag.
+		/// @detail Set this to enable changes in position due to velocity.
+		/// Bodies with this set are either kinematic or dynamic bodies.
+		e_velocityFlag      = 0x0080,
+
+		/// Acceleration flag.
+		/// @detail Set this to enable changes in velocity due to physical properties (like forces).
+		/// Bodies with this set are dynamic bodies.
+		e_accelerationFlag  = 0x0100
 	};
 	
 	static uint16 GetFlags(const BodyDef& bd) noexcept;
@@ -453,52 +469,55 @@ private:
 	Body* GetNext() noexcept;
 	const Body* GetNext() const noexcept;
 	
-	BodyType m_type;
-
-	uint16 m_flags = 0;
-
-	static constexpr auto InvalidIslandIndex = static_cast<island_count_t>(-1);
-
-	island_count_t m_islandIndex = InvalidIslandIndex;
-	
 	bool IsValidIslandIndex() const noexcept;
+	
+	static constexpr auto InvalidIslandIndex = static_cast<island_count_t>(-1);
+	
+	// Member variables. Try to keep total size small.
 
-	Transform m_xf; ///< Transform for body origin.
-	Sweep m_sweep; ///< Sweep motion for CCD
+	uint32 m_flags = 0; ///< Flags. 4-bytes.
 
-	Velocity m_velocity;
+	island_count_t m_islandIndex = InvalidIslandIndex; ///< Island index. 8-bytes.
+	
+	Transform m_xf; ///< Transform for body origin. 16-bytes.
+	Sweep m_sweep; ///< Sweep motion for CCD. 36-bytes.
 
-	Vec2 m_force = Vec2_zero;
-	float_t m_torque = float_t{0};
+	Velocity m_velocity; ///< Velocity (linear and angular). 12-bytes.
 
-	World* const m_world;
-	Body* m_prev = nullptr;
-	Body* m_next = nullptr;
+	Vec2 m_force = Vec2_zero; ///< Force. 8-bytes.
+	float_t m_torque = float_t{0}; ///< Torque. 4-bytes.
 
-	Fixture* m_fixtureList = nullptr;
-	size_t m_fixtureCount = 0;
+	World* const m_world; ///< World to which this body belongs. 8-bytes.
+	Body* m_prev = nullptr; ///< Previous body. 8-bytes.
+	Body* m_next = nullptr; ///< Next body. 8-bytes.
 
-	JointEdge* m_jointList = nullptr;
-	ContactEdge* m_contactList = nullptr;
+	Fixture* m_fixtureList = nullptr; ///< Pointer to first fixture in a linked list. 8-bytes.
+	JointEdge* m_jointList = nullptr; ///< Pointer to first joint in a linked list. 8-bytes.
+	ContactEdge* m_contactList = nullptr; ///< Pointer to first contact in a linked list. 8-bytes.
 
-	float_t m_mass; ///< Mass of the body (a non-negative value). This is the sum total mass of all associated fixtures.
+	float_t m_mass; ///< Mass of the body (in kg). A non-negative value. The sum total mass of all associated fixtures. 0 if Static or Kinematic.
 	float_t m_invMass; ///< Inverse of m_mass or 0 if m_mass == 0 (this is a non-negative value). @see m_mass.
 
-	float_t m_I = float_t{0}; ///< Rotational inertia about the center of mass (a non-negative value).
-	float_t m_invI = float_t{0}; ///< Inverse of m_I or 0 if m_I == 0 (this is a non-negative value). @see m_I.
+	float_t m_I = float_t{0}; ///< Rotational inertia about the center of mass. A non-negative value).
+	float_t m_invI = float_t{0}; ///< Inverse rotational inertia (inverse of m_I or 0 if m_I == 0). A non-negative value. @see m_I.
 
-	float_t m_linearDamping;
-	float_t m_angularDamping;
-	float_t m_gravityScale;
+	float_t m_linearDamping; ///< Linear damping.
+	float_t m_angularDamping; ///< Angular damping.
 
 	float_t m_sleepTime = float_t{0};
 
-	void* m_userData;
+	void* m_userData; ///< User data. 8-bytes.
 };
 
 inline BodyType Body::GetType() const noexcept
 {
-	return m_type;
+	switch (m_flags & (e_accelerationFlag|e_velocityFlag))
+	{
+		case e_velocityFlag|e_accelerationFlag: return BodyType::Dynamic;
+		case e_velocityFlag: return BodyType::Kinematic;
+		default: break; // handle case 0 this way so compiler doesn't warn of no default handling.
+	}
+	return BodyType::Static;
 }
 
 inline Transform Body::GetTransform() const noexcept
@@ -533,7 +552,7 @@ inline Velocity Body::GetVelocity() const noexcept
 	
 inline void Body::SetLinearVelocity(const Vec2& v) noexcept
 {
-	if (m_type == BodyType::Static)
+	if (GetType() == BodyType::Static)
 	{
 		return;
 	}
@@ -553,7 +572,7 @@ inline Vec2 Body::GetLinearVelocity() const noexcept
 
 inline void Body::SetAngularVelocity(float_t w) noexcept
 {
-	if (m_type == BodyType::Static)
+	if (GetType() == BodyType::Static)
 	{
 		return;
 	}
@@ -634,16 +653,6 @@ inline float_t Body::GetAngularDamping() const noexcept
 inline void Body::SetAngularDamping(float_t angularDamping) noexcept
 {
 	m_angularDamping = angularDamping;
-}
-
-inline float_t Body::GetGravityScale() const noexcept
-{
-	return m_gravityScale;
-}
-
-inline void Body::SetGravityScale(float_t scale) noexcept
-{
-	m_gravityScale = scale;
 }
 
 inline void Body::SetBullet(bool flag) noexcept
@@ -788,7 +797,7 @@ inline void* Body::GetUserData() const noexcept
 
 inline void Body::ApplyForce(const Vec2& force, const Vec2& point, bool wake) noexcept
 {
-	if (m_type != BodyType::Dynamic)
+	if (GetType() != BodyType::Dynamic)
 	{
 		return;
 	}
@@ -808,7 +817,7 @@ inline void Body::ApplyForce(const Vec2& force, const Vec2& point, bool wake) no
 
 inline void Body::ApplyForceToCenter(const Vec2& force, bool wake) noexcept
 {
-	if (m_type != BodyType::Dynamic)
+	if (GetType() != BodyType::Dynamic)
 	{
 		return;
 	}
@@ -827,7 +836,7 @@ inline void Body::ApplyForceToCenter(const Vec2& force, bool wake) noexcept
 
 inline void Body::ApplyTorque(float_t torque, bool wake) noexcept
 {
-	if (m_type != BodyType::Dynamic)
+	if (GetType() != BodyType::Dynamic)
 	{
 		return;
 	}
@@ -846,7 +855,7 @@ inline void Body::ApplyTorque(float_t torque, bool wake) noexcept
 
 inline void Body::ApplyLinearImpulse(const Vec2& impulse, const Vec2& point, bool wake) noexcept
 {
-	if (m_type != BodyType::Dynamic)
+	if (GetType() != BodyType::Dynamic)
 	{
 		return;
 	}
@@ -866,7 +875,7 @@ inline void Body::ApplyLinearImpulse(const Vec2& impulse, const Vec2& point, boo
 
 inline void Body::ApplyAngularImpulse(float_t impulse, bool wake) noexcept
 {
-	if (m_type != BodyType::Dynamic)
+	if (GetType() != BodyType::Dynamic)
 	{
 		return;
 	}

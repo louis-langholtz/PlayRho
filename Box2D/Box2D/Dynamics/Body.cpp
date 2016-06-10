@@ -47,16 +47,22 @@ uint16 Body::GetFlags(const BodyDef& bd) noexcept
 	{
 		flags |= e_activeFlag;
 	}
+	switch (bd.type)
+	{
+		case BodyType::Dynamic: flags |= (e_velocityFlag|e_accelerationFlag); break;
+		case BodyType::Kinematic: flags |= e_velocityFlag; break;
+		case BodyType::Static: break;
+	}
 	return flags;
 }
 
 Body::Body(const BodyDef* bd, World* world):
-	m_type{bd->type}, m_flags{GetFlags(*bd)}, m_xf{bd->position, Rot{bd->angle}}, m_world{world},
+	m_flags{GetFlags(*bd)}, m_xf{bd->position, Rot{bd->angle}}, m_world{world},
 	m_sweep{Sweep{Position{m_xf.p, bd->angle}, Position{m_xf.p, bd->angle}, Vec2_zero}},
 	m_velocity{Velocity{bd->linearVelocity, bd->angularVelocity}},
 	m_mass{(bd->type == BodyType::Dynamic)? float_t{1}: float_t{0}},
 	m_invMass{(bd->type == BodyType::Dynamic)? float_t{1}: float_t{0}},
-	m_linearDamping{bd->linearDamping}, m_angularDamping{bd->angularDamping}, m_gravityScale{bd->gravityScale},
+	m_linearDamping{bd->linearDamping}, m_angularDamping{bd->angularDamping},
 	m_userData{bd->userData}
 {
 	assert(bd->position.IsValid());
@@ -93,16 +99,21 @@ void Body::SetType(BodyType type)
 		return;
 	}
 
-	if (m_type == type)
+	if (GetType() == type)
 	{
 		return;
 	}
 
-	m_type = type;
+	switch (type)
+	{
+		case BodyType::Dynamic: m_flags |= (e_velocityFlag|e_accelerationFlag); break;
+		case BodyType::Kinematic: m_flags |= e_velocityFlag; break;
+		case BodyType::Static: break;
+	}
 
 	ResetMassData();
 
-	if (m_type == BodyType::Static)
+	if (GetType() == BodyType::Static)
 	{
 		m_velocity = Velocity{Vec2_zero, 0};
 		m_sweep.pos0 = m_sweep.pos1;
@@ -149,7 +160,6 @@ Fixture* Body::CreateFixture(const FixtureDef& def)
 
 	fixture->m_next = m_fixtureList;
 	m_fixtureList = fixture;
-	++m_fixtureCount;
 
 	// Adjust mass properties if needed.
 	if (fixture->m_density > float_t{0})
@@ -173,7 +183,6 @@ void Body::DestroyFixture(Fixture* fixture)
 	}
 
 	assert(fixture->m_body == this);
-	assert(m_fixtureCount > 0);
 
 	// Remove the fixture from this body's singly linked list.
 	auto found = false;
@@ -224,8 +233,6 @@ void Body::DestroyFixture(Fixture* fixture)
 	fixture->~Fixture();
 	allocator->Free(fixture, sizeof(Fixture));
 
-	--m_fixtureCount;
-
 	// Reset the mass data.
 	ResetMassData();
 }
@@ -254,10 +261,10 @@ Velocity Body::GetVelocity(float_t h, Vec2 gravity) const noexcept
 {
 	// Integrate velocity and apply damping.
 	auto velocity = m_velocity;
-	if (m_type == BodyType::Dynamic)
+	if (GetType() == BodyType::Dynamic)
 	{
 		// Integrate velocities.
-		velocity.v += h * ((m_gravityScale * gravity) + (m_force * m_invMass));
+		velocity.v += h * (gravity + (m_force * m_invMass));
 		velocity.w += h * (m_torque * m_invI);
 		
 		// Apply damping.
@@ -278,7 +285,7 @@ void Body::ResetMassData()
 	// Compute mass data from shapes. Each shape has its own density.
 
 	// Static and kinematic bodies have zero mass.
-	if ((m_type == BodyType::Static) || (m_type == BodyType::Kinematic))
+	if (GetType() != BodyType::Dynamic)
 	{
 		m_mass = float_t{0};
 		m_invMass = float_t{0};
@@ -291,8 +298,6 @@ void Body::ResetMassData()
 		m_sweep.pos1 = position;
 		return;
 	}
-
-	assert(m_type == BodyType::Dynamic);
 
 	const auto massData = CalculateMassData();
 
@@ -334,7 +339,7 @@ void Body::SetMassData(const MassData* massData)
 		return;
 	}
 
-	if (m_type != BodyType::Dynamic)
+	if (GetType() != BodyType::Dynamic)
 	{
 		return;
 	}
@@ -366,7 +371,7 @@ void Body::SetMassData(const MassData* massData)
 bool Body::ShouldCollide(const Body* other) const
 {
 	// At least one body should be dynamic.
-	if ((m_type != BodyType::Dynamic) && (other->m_type != BodyType::Dynamic))
+	if ((GetType() != BodyType::Dynamic) && (other->GetType() != BodyType::Dynamic))
 	{
 		return false;
 	}
@@ -485,7 +490,7 @@ void Body::Dump()
 
 	log("{\n");
 	log("  BodyDef bd;\n");
-	log("  bd.type = BodyType(%d);\n", m_type);
+	log("  bd.type = BodyType(%d);\n", GetType());
 	log("  bd.position = Vec2(%.15lef, %.15lef);\n", m_xf.p.x, m_xf.p.y);
 	log("  bd.angle = %.15lef;\n", m_sweep.pos1.a);
 	log("  bd.linearVelocity = Vec2(%.15lef, %.15lef);\n", m_velocity.v.x, m_velocity.v.y);
@@ -497,7 +502,6 @@ void Body::Dump()
 	log("  bd.fixedRotation = bool(%d);\n", m_flags & e_fixedRotationFlag);
 	log("  bd.bullet = bool(%d);\n", m_flags & e_bulletFlag);
 	log("  bd.active = bool(%d);\n", m_flags & e_activeFlag);
-	log("  bd.gravityScale = %.15lef;\n", m_gravityScale);
 	log("  bodies[%d] = m_world->CreateBody(&bd);\n", m_islandIndex);
 	log("\n");
 	for (auto f = m_fixtureList; f; f = f->m_next)
