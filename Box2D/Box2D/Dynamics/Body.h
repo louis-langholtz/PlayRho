@@ -398,8 +398,10 @@ private:
 	friend class WeldJoint;
 	friend class WheelJoint;
 
+	using flags_type = uint16;
+
 	// m_flags
-	enum : uint32
+	enum Flag: flags_type
 	{
 		e_islandFlag		= 0x0001,
 		e_awakeFlag			= 0x0002,
@@ -470,14 +472,16 @@ private:
 	const Body* GetNext() const noexcept;
 	
 	bool IsValidIslandIndex() const noexcept;
-	
-	static constexpr auto InvalidIslandIndex = static_cast<island_count_t>(-1);
-	
+
+	static constexpr auto InvalidIslandIndex = static_cast<body_count_t>(-1);
+
+	//
 	// Member variables. Try to keep total size small.
+	//
 
-	uint32 m_flags = 0; ///< Flags. 4-bytes.
+	flags_type m_flags = 0; ///< Flags. 2-bytes.
 
-	island_count_t m_islandIndex = InvalidIslandIndex; ///< Island index. 8-bytes.
+	body_count_t m_islandIndex = InvalidIslandIndex; ///< Index of this body in its island (only valid when in an island). 2-bytes.
 	
 	Transform m_xf; ///< Transform for body origin. 16-bytes.
 	Sweep m_sweep; ///< Sweep motion for CCD. 36-bytes.

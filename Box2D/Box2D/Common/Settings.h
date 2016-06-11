@@ -41,13 +41,14 @@ using int32 = std::int32_t;
 using uint8 = std::uint8_t;
 using uint16 = std::uint16_t;
 using uint32 = std::uint32_t;
+using uint64 = std::uint64_t;
 
 /// Box2D floating point type.
 /// This should be float, double, or long double.
 using float_t = float;
 
 using child_count_t = unsigned; // relating to "children" of Shape
-using size_t = std::size_t;
+using size_t = std::size_t; ///< Size type for sizing data.
 using island_count_t = size_t; // relating to items in a Island
 
 constexpr auto MaxFloat = std::numeric_limits<float_t>::max(); // FLT_MAX
@@ -145,6 +146,17 @@ constexpr auto Baumgarte = float_t{2} / float_t{10}; // aka 0.2.
 /// @sa Baumgarte.
 constexpr auto ToiBaumgarte = float_t{75} / float_t{100}; // aka .75
 
+/// Maximum number of bodies in a world.
+constexpr auto MaxBodies = uint16{std::numeric_limits<uint16>::max() - uint16{1}};
+	
+using body_count_t = std::remove_const<decltype(MaxBodies)>::type;
+
+using contact_count_t = std::conditional<sizeof(body_count_t) < sizeof(uint32), uint32, uint64>::type;
+
+/// Maximum number of contacts in a world.
+/// @detail Uses the formula for the maximum number of edges in an undirectional graph of MaxBodies nodes. 
+/// This occurs when every possible body is connected to every other body.
+constexpr auto MaxContacts = contact_count_t{MaxBodies} * contact_count_t{MaxBodies - 1} / contact_count_t{2};
 
 // Sleep
 

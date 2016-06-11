@@ -1156,7 +1156,7 @@ void World::Dump()
 
 	log("Body** bodies = (Body**)alloc(%d * sizeof(Body*));\n", m_bodyCount);
 	log("Joint** joints = (Joint**)alloc(%d * sizeof(Joint*));\n", m_jointCount);
-	auto i = island_count_t{0};
+	auto i = body_count_t{0};
 	for (auto b = m_bodyList; b; b = b->m_next)
 	{
 		b->m_islandIndex = i;

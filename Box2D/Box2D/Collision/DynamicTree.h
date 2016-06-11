@@ -35,10 +35,10 @@ namespace box2d {
 class DynamicTree
 {
 public:
-	using size_type = size_t;
+	using size_type = std::remove_const<decltype(MaxContacts)>::type;
 
 	/// Null node index value.
-	static constexpr auto NullNode = static_cast<size_t>(-1);
+	static constexpr auto NullNode = static_cast<size_type>(-1);
 	
 	/// Constructing the tree initializes the node pool.
 	DynamicTree();

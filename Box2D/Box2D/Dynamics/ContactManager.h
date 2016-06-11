@@ -35,8 +35,6 @@ struct FixtureProxy;
 class ContactManager
 {
 public:
-	using size_type = size_t;
-
 	ContactManager(BlockAllocator* allocator, ContactFilter* filter, ContactListener* listener):
 		m_allocator(allocator), m_contactFilter(filter), m_contactListener(listener) {}
 	
@@ -65,7 +63,7 @@ public:
 	
 	/// Gets the contact count.
 	/// @return Number of contacts referenced by the contact list (0 if empty).
-	inline size_type GetContactCount() const noexcept { return m_contactCount; }
+	inline contact_count_t GetContactCount() const noexcept { return m_contactCount; }
 
 	/// Gets the contact list.
 	/// @return Contact list or <code>nullptr</code> if empty.
@@ -84,7 +82,7 @@ private:
 	void Add(Contact* contact);
 	void Remove(Contact* contact);
 	
-	size_type m_contactCount = 0;
+	contact_count_t m_contactCount = 0;
 	Contact* m_contactList = nullptr;
 	BlockAllocator* const m_allocator;
 };

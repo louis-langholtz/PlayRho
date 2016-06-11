@@ -147,8 +147,8 @@ However, we can compute sin+cos of the same angle fast.
 using namespace box2d;
 
 Island::Island(
-	island_count_t bodyCapacity,
-	island_count_t contactCapacity,
+	body_count_t bodyCapacity,
+	contact_count_t contactCapacity,
 	island_count_t jointCapacity,
 	StackAllocator& allocator,
 	ContactListener* listener):

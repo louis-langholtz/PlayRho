@@ -272,7 +272,7 @@ private:
 	Body* m_bodyList = nullptr; ///< Body list linked-list.
 	Joint* m_jointList = nullptr; ///< Joint list linked-list.
 
-	size_type m_bodyCount = 0; ///< Count of bodies in body list.
+	body_count_t m_bodyCount = 0; ///< Count of bodies in body list.
 	size_type m_jointCount = 0; ///< Count of joints in joint list.
 
 	Vec2 m_gravity;

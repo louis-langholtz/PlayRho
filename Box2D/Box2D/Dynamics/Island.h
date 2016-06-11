@@ -38,7 +38,7 @@ struct Profile;
 class Island
 {
 public:
-	Island(island_count_t bodyCapacity, island_count_t contactCapacity, island_count_t jointCapacity,
+	Island(body_count_t bodyCapacity, contact_count_t contactCapacity, island_count_t jointCapacity,
 		   StackAllocator& allocator, ContactListener* listener);
 
 	/// Destructor.
@@ -162,12 +162,12 @@ private:
 	/// @sa Body::InvalidIslandIndex.
 	void ClearBodies() noexcept;
 
-	const island_count_t m_bodyCapacity; ///< Body capacity.
-	const island_count_t m_contactCapacity; ///< Contact capacity.
+	const body_count_t m_bodyCapacity; ///< Body capacity.
+	const contact_count_t m_contactCapacity; ///< Contact capacity.
 	const island_count_t m_jointCapacity; ///< Joint capacity.
 
-	island_count_t m_bodyCount = 0; ///< Count of bodies added to the island. Max of m_bodyCapacity.
-	island_count_t m_contactCount = 0; ///< Count of contacts added to the island. Max of m_contactCapacity.
+	body_count_t m_bodyCount = 0; ///< Count of bodies added to the island. Max of m_bodyCapacity.
+	contact_count_t m_contactCount = 0; ///< Count of contacts added to the island. Max of m_contactCapacity.
 	island_count_t m_jointCount = 0; ///< Count of joints added to the island. Max of m_jointCapacity.
 	
 	StackAllocator& m_allocator; ///< Stack-style memory allocator set on construction.

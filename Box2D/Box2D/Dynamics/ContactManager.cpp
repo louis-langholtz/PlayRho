@@ -167,8 +167,8 @@ void ContactManager::FindNewContacts()
 }
 
 static inline bool IsFor(const Contact& contact,
-						 const Fixture* fixtureA, ContactManager::size_type indexA,
-						 const Fixture* fixtureB, ContactManager::size_type indexB)
+						 const Fixture* fixtureA, child_count_t indexA,
+						 const Fixture* fixtureB, child_count_t indexB)
 {
 	const auto fA = contact.GetFixtureA();
 	const auto fB = contact.GetFixtureB();
@@ -235,6 +235,8 @@ void ContactManager::Add(FixtureProxy* proxyA, FixtureProxy* proxyB)
 		return;
 	}
 
+	assert(m_contactCount < MaxContacts);
+	
 	// Call the contact factory create method.
 	const auto c = Contact::Create(fixtureA, indexA, fixtureB, indexB, m_allocator);
 	assert(c);
@@ -248,6 +250,8 @@ void ContactManager::Add(FixtureProxy* proxyA, FixtureProxy* proxyB)
 
 void ContactManager::Add(Contact* c)
 {
+	assert(m_contactCount < MaxContacts);
+
 	// Contact creation may swap fixtures.
 	const auto fixtureA = c->GetFixtureA();
 	const auto fixtureB = c->GetFixtureB();

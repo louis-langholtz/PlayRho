@@ -29,7 +29,7 @@ namespace box2d {
 /// Proxy ID pair.
 struct ProxyIdPair
 {
-	using size_type = size_t;
+	using size_type = std::remove_const<decltype(MaxContacts)>::type;
 	
 	ProxyIdPair() = default;
 	ProxyIdPair(const ProxyIdPair& copy) = default;
@@ -57,7 +57,7 @@ class BroadPhase
 {
 public:
 
-	using size_type = size_t;
+	using size_type = std::remove_const<decltype(MaxContacts)>::type;
 
 	enum: size_type
 	{

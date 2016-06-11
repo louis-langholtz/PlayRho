@@ -84,11 +84,11 @@ struct FixtureDef
 /// This proxy is used internally to connect fixtures to the broad-phase.
 struct FixtureProxy
 {
-	using size_type = size_t;
+	using size_type = std::remove_const<decltype(MaxContacts)>::type;
 
 	AABB aabb;
 	Fixture* fixture;
-	child_count_t childIndex;
+	child_count_t childIndex; ///< Child index.
 	size_type proxyId;
 };
 

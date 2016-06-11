@@ -39,7 +39,7 @@ bool g_blockSolve = true;
 
 struct ContactPositionConstraintBodyData
 {
-	using index_t = size_t;
+	using index_t = std::remove_const<decltype(MaxBodies)>::type;
 
 	index_t index; ///< Index within island of the associated body.
 	float_t invMass; ///< Inverse mass of associated body (a non-negative value).
