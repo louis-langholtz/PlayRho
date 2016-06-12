@@ -45,9 +45,9 @@ void ContactManager::Remove(Contact* c)
 		c->m_next->m_prev = c->m_prev;
 	}
 	
-	if (c == m_contactList)
+	if (c == m_contacts)
 	{
-		m_contactList = c->m_next;
+		m_contacts = c->m_next;
 	}
 	
 	// Remove from body 1
@@ -61,9 +61,9 @@ void ContactManager::Remove(Contact* c)
 		c->m_nodeA.next->prev = c->m_nodeA.prev;
 	}
 	
-	if (&c->m_nodeA == bodyA->m_contactList)
+	if (&c->m_nodeA == bodyA->m_contacts)
 	{
-		bodyA->m_contactList = c->m_nodeA.next;
+		bodyA->m_contacts = c->m_nodeA.next;
 	}
 	
 	// Remove from body 2
@@ -77,9 +77,9 @@ void ContactManager::Remove(Contact* c)
 		c->m_nodeB.next->prev = c->m_nodeB.prev;
 	}
 	
-	if (&c->m_nodeB == bodyB->m_contactList)
+	if (&c->m_nodeB == bodyB->m_contacts)
 	{
-		bodyB->m_contactList = c->m_nodeB.next;
+		bodyB->m_contacts = c->m_nodeB.next;
 	}
 
 	--m_contactCount;	
@@ -102,7 +102,7 @@ void ContactManager::Collide()
 {
 	// Update awake contacts.
 	auto next = static_cast<Contact*>(nullptr);
-	for (auto c = m_contactList; c; c = next)
+	for (auto c = m_contacts; c; c = next)
 	{
 		next = c->GetNext();
 
@@ -261,12 +261,12 @@ void ContactManager::Add(Contact* c)
 
 	// Insert into the world.
 	c->m_prev = nullptr;
-	c->m_next = m_contactList;
-	if (m_contactList)
+	c->m_next = m_contacts;
+	if (m_contacts)
 	{
-		m_contactList->m_prev = c;
+		m_contacts->m_prev = c;
 	}
-	m_contactList = c;
+	m_contacts = c;
 
 	// Connect to island graph.
 
@@ -274,23 +274,23 @@ void ContactManager::Add(Contact* c)
 	c->m_nodeA.contact = c;
 	c->m_nodeA.other = bodyB;
 	c->m_nodeA.prev = nullptr;
-	c->m_nodeA.next = bodyA->m_contactList;
-	if (bodyA->m_contactList)
+	c->m_nodeA.next = bodyA->m_contacts;
+	if (bodyA->m_contacts)
 	{
-		bodyA->m_contactList->prev = &c->m_nodeA;
+		bodyA->m_contacts->prev = &c->m_nodeA;
 	}
-	bodyA->m_contactList = &c->m_nodeA;
+	bodyA->m_contacts = &c->m_nodeA;
 
 	// Connect to body B
 	c->m_nodeB.contact = c;
 	c->m_nodeB.other = bodyA;
 	c->m_nodeB.prev = nullptr;
-	c->m_nodeB.next = bodyB->m_contactList;
-	if (bodyB->m_contactList)
+	c->m_nodeB.next = bodyB->m_contacts;
+	if (bodyB->m_contacts)
 	{
-		bodyB->m_contactList->prev = &c->m_nodeB;
+		bodyB->m_contacts->prev = &c->m_nodeB;
 	}
-	bodyB->m_contactList = &c->m_nodeB;
+	bodyB->m_contacts = &c->m_nodeB;
 
 	// Wake up the bodies
 	if (!fixtureA->IsSensor() && !fixtureB->IsSensor())

@@ -82,11 +82,11 @@ World::World(const Vec2& gravity): m_gravity(gravity)
 World::~World()
 {
 	// Some shapes allocate using alloc.
-	auto b = m_bodyList;
+	auto b = m_bodies;
 	while (b)
 	{
 		auto bNext = b->m_next;
-		auto f = b->m_fixtureList;
+		auto f = b->m_fixtures;
 		while (f)
 		{
 			auto fNext = f->m_next;
@@ -151,12 +151,12 @@ bool World::Add(Body& b)
 	
 	// Add to world doubly linked list.
 	b.m_prev = nullptr;
-	b.m_next = m_bodyList;
-	if (m_bodyList)
+	b.m_next = m_bodies;
+	if (m_bodies)
 	{
-		m_bodyList->m_prev = &b;
+		m_bodies->m_prev = &b;
 	}
-	m_bodyList = &b;
+	m_bodies = &b;
 	
 	++m_bodyCount;
 	return true;
@@ -181,9 +181,9 @@ bool World::Remove(Body& b)
 		b.m_next->m_prev = b.m_prev;
 	}
 	
-	if (&b == m_bodyList)
+	if (&b == m_bodies)
 	{
-		m_bodyList = b.m_next;
+		m_bodies = b.m_next;
 	}
 
 	--m_bodyCount;
@@ -220,28 +220,28 @@ Joint* World::CreateJoint(const JointDef* def)
 
 	// Connect to the world list.
 	j->m_prev = nullptr;
-	j->m_next = m_jointList;
-	if (m_jointList)
+	j->m_next = m_joints;
+	if (m_joints)
 	{
-		m_jointList->m_prev = j;
+		m_joints->m_prev = j;
 	}
-	m_jointList = j;
+	m_joints = j;
 	++m_jointCount;
 
 	// Connect to the bodies' doubly linked lists.
 	j->m_edgeA.joint = j;
 	j->m_edgeA.other = j->m_bodyB;
 	j->m_edgeA.prev = nullptr;
-	j->m_edgeA.next = j->m_bodyA->m_jointList;
-	if (j->m_bodyA->m_jointList) j->m_bodyA->m_jointList->prev = &j->m_edgeA;
-	j->m_bodyA->m_jointList = &j->m_edgeA;
+	j->m_edgeA.next = j->m_bodyA->m_joints;
+	if (j->m_bodyA->m_joints) j->m_bodyA->m_joints->prev = &j->m_edgeA;
+	j->m_bodyA->m_joints = &j->m_edgeA;
 
 	j->m_edgeB.joint = j;
 	j->m_edgeB.other = j->m_bodyA;
 	j->m_edgeB.prev = nullptr;
-	j->m_edgeB.next = j->m_bodyB->m_jointList;
-	if (j->m_bodyB->m_jointList) j->m_bodyB->m_jointList->prev = &j->m_edgeB;
-	j->m_bodyB->m_jointList = &j->m_edgeB;
+	j->m_edgeB.next = j->m_bodyB->m_joints;
+	if (j->m_bodyB->m_joints) j->m_bodyB->m_joints->prev = &j->m_edgeB;
+	j->m_bodyB->m_joints = &j->m_edgeB;
 
 	auto bodyA = def->bodyA;
 	auto bodyB = def->bodyB;
@@ -289,9 +289,9 @@ void World::DestroyJoint(Joint* j)
 		j->m_next->m_prev = j->m_prev;
 	}
 
-	if (j == m_jointList)
+	if (j == m_joints)
 	{
-		m_jointList = j->m_next;
+		m_joints = j->m_next;
 	}
 
 	// Disconnect from island graph.
@@ -313,9 +313,9 @@ void World::DestroyJoint(Joint* j)
 		j->m_edgeA.next->prev = j->m_edgeA.prev;
 	}
 
-	if (&j->m_edgeA == bodyA->m_jointList)
+	if (&j->m_edgeA == bodyA->m_joints)
 	{
-		bodyA->m_jointList = j->m_edgeA.next;
+		bodyA->m_joints = j->m_edgeA.next;
 	}
 
 	j->m_edgeA.prev = nullptr;
@@ -332,9 +332,9 @@ void World::DestroyJoint(Joint* j)
 		j->m_edgeB.next->prev = j->m_edgeB.prev;
 	}
 
-	if (&j->m_edgeB == bodyB->m_jointList)
+	if (&j->m_edgeB == bodyB->m_joints)
 	{
-		bodyB->m_jointList = j->m_edgeB.next;
+		bodyB->m_joints = j->m_edgeB.next;
 	}
 
 	j->m_edgeB.prev = nullptr;
@@ -374,7 +374,7 @@ void World::SetAllowSleeping(bool flag) noexcept
 	m_allowSleep = flag;
 	if (!m_allowSleep)
 	{
-		for (auto b = m_bodyList; b; b = b->m_next)
+		for (auto b = m_bodies; b; b = b->m_next)
 		{
 			b->SetAwake();
 		}
@@ -388,7 +388,7 @@ void World::Solve(const TimeStep& step)
 	m_profile.solvePosition = float_t{0};
 
 	// Clear all the island flags.
-	for (auto b = m_bodyList; b; b = b->GetNext())
+	for (auto b = m_bodies; b; b = b->GetNext())
 	{
 		assert(b->m_islandIndex == Body::InvalidIslandIndex);
 		b->UnsetInIsland();
@@ -397,7 +397,7 @@ void World::Solve(const TimeStep& step)
 	{
 		c->UnsetInIsland();
 	}
-	for (auto j = m_jointList; j; j = j->GetNext())
+	for (auto j = m_joints; j; j = j->GetNext())
 	{
 		j->SetInIsland(false);
 	}
@@ -409,7 +409,7 @@ void World::Solve(const TimeStep& step)
 	// Build and simulate all awake islands.
 	const auto stackSize = m_bodyCount;
 	auto stack = std::unique_ptr<Body*[], StackAllocator&>(m_stackAllocator.Allocate<Body*>(stackSize), m_stackAllocator);
-	for (auto seed = m_bodyList; seed; seed = seed->GetNext())
+	for (auto seed = m_bodies; seed; seed = seed->GetNext())
 	{
 		// Skip seed (body) if static, already in island, not-awake, or not-active.
 		if ((seed->GetType() == BodyType::Static) || seed->IsInIsland() || !seed->IsAwake() || !seed->IsActive())
@@ -446,7 +446,7 @@ void World::Solve(const TimeStep& step)
 			}
 
 			// Add to island: appropriate contacts of current body and appropriate 'other' bodies of those contacts.
-			for (auto ce = b->m_contactList; ce; ce = ce->next)
+			for (auto ce = b->m_contacts; ce; ce = ce->next)
 			{
 				const auto contact = ce->contact;
 
@@ -471,7 +471,7 @@ void World::Solve(const TimeStep& step)
 			}
 
 			// Add to island: appropriate joints of current body and appropriate 'other' bodies of those joint.
-			for (auto je = b->m_jointList; je; je = je->next)
+			for (auto je = b->m_joints; je; je = je->next)
 			{
 				const auto joint = je->joint;
 				const auto other = je->other;
@@ -513,7 +513,7 @@ void World::Solve(const TimeStep& step)
 	{
 		Timer timer;
 		// Synchronize fixtures, check for out of range bodies.
-		for (auto b = m_bodyList; b; b = b->GetNext())
+		for (auto b = m_bodies; b; b = b->GetNext())
 		{
 			// A non-static body that was in an island may have moved.
 			if ((b->GetType() != BodyType::Static) && b->IsInIsland())
@@ -531,7 +531,7 @@ void World::Solve(const TimeStep& step)
 
 void World::ResetBodiesForSolveTOI()
 {
-	for (auto b = m_bodyList; b; b = b->m_next)
+	for (auto b = m_bodies; b; b = b->m_next)
 	{
 		b->UnsetInIsland();
 		b->m_sweep.ResetAlpha0();
@@ -671,7 +671,7 @@ void World::SolveTOI(const TimeStep& step)
 				body->SynchronizeFixtures();
 				
 				// Invalidate all contact TOIs on this displaced body.
-				for (auto ce = body->m_contactList; ce; ce = ce->next)
+				for (auto ce = body->m_contacts; ce; ce = ce->next)
 				{
 					ce->contact->UnsetInIsland();
 					ce->contact->UnsetToi();
@@ -695,7 +695,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi)
 {
 	assert(body.GetType() == BodyType::Dynamic);
 
-	for (auto ce = body.m_contactList; ce; ce = ce->next)
+	for (auto ce = body.m_contacts; ce; ce = ce->next)
 	{
 		if (IsFullOfBodies(island) || IsFullOfContacts(island))
 		{
@@ -818,7 +818,7 @@ void World::Step(float_t dt, unsigned velocityIterations, unsigned positionItera
 
 void World::ClearForces() noexcept
 {
-	for (auto body = m_bodyList; body; body = body->GetNext())
+	for (auto body = m_bodies; body; body = body->GetNext())
 	{
 		body->m_force = Vec2_zero;
 		body->m_torque = float_t{0};
@@ -995,7 +995,7 @@ void World::DrawDebugData()
 
 	if (flags & Draw::e_shapeBit)
 	{
-		for (auto b = m_bodyList; b; b = b->GetNext())
+		for (auto b = m_bodies; b; b = b->GetNext())
 		{
 			const auto xf = b->GetTransform();
 			for (auto f = b->GetFixtureList(); f; f = f->GetNext())
@@ -1026,7 +1026,7 @@ void World::DrawDebugData()
 
 	if (flags & Draw::e_jointBit)
 	{
-		for (auto j = m_jointList; j; j = j->GetNext())
+		for (auto j = m_joints; j; j = j->GetNext())
 		{
 			DrawJoint(j);
 		}
@@ -1052,7 +1052,7 @@ void World::DrawDebugData()
 		const Color color(0.9f, 0.3f, 0.9f);
 		const auto bp = &m_contactManager.m_broadPhase;
 
-		for (auto b = m_bodyList; b; b = b->GetNext())
+		for (auto b = m_bodies; b; b = b->GetNext())
 		{
 			if (!b->IsActive())
 			{
@@ -1079,7 +1079,7 @@ void World::DrawDebugData()
 
 	if (flags & Draw::e_centerOfMassBit)
 	{
-		for (auto b = m_bodyList; b; b = b->GetNext())
+		for (auto b = m_bodies; b; b = b->GetNext())
 		{
 			auto xf = b->GetTransform();
 			xf.p = b->GetWorldCenter();
@@ -1116,14 +1116,14 @@ void World::ShiftOrigin(const Vec2& newOrigin)
 		return;
 	}
 
-	for (auto b = m_bodyList; b; b = b->m_next)
+	for (auto b = m_bodies; b; b = b->m_next)
 	{
 		b->m_xf.p -= newOrigin;
 		b->m_sweep.pos0.c -= newOrigin;
 		b->m_sweep.pos1.c -= newOrigin;
 	}
 
-	for (auto j = m_jointList; j; j = j->m_next)
+	for (auto j = m_joints; j; j = j->m_next)
 	{
 		j->ShiftOrigin(newOrigin);
 	}
@@ -1144,7 +1144,7 @@ void World::Dump()
 	log("Body** bodies = (Body**)alloc(%d * sizeof(Body*));\n", m_bodyCount);
 	log("Joint** joints = (Joint**)alloc(%d * sizeof(Joint*));\n", m_jointCount);
 	auto i = body_count_t{0};
-	for (auto b = m_bodyList; b; b = b->m_next)
+	for (auto b = m_bodies; b; b = b->m_next)
 	{
 		b->m_islandIndex = i;
 		b->Dump();
@@ -1152,14 +1152,14 @@ void World::Dump()
 	}
 
 	i = 0;
-	for (auto j = m_jointList; j; j = j->m_next)
+	for (auto j = m_joints; j; j = j->m_next)
 	{
 		j->m_index = i;
 		++i;
 	}
 
 	// First pass on joints, skip gear joints.
-	for (auto j = m_jointList; j; j = j->m_next)
+	for (auto j = m_joints; j; j = j->m_next)
 	{
 		if (j->m_type == e_gearJoint)
 		{
@@ -1172,7 +1172,7 @@ void World::Dump()
 	}
 
 	// Second pass on joints, only gear joints.
-	for (auto j = m_jointList; j; j = j->m_next)
+	for (auto j = m_joints; j; j = j->m_next)
 	{
 		if (j->m_type != e_gearJoint)
 		{

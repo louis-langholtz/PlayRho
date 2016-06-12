@@ -497,9 +497,9 @@ private:
 	Body* m_prev = nullptr; ///< Previous body. 8-bytes.
 	Body* m_next = nullptr; ///< Next body. 8-bytes.
 
-	Fixture* m_fixtureList = nullptr; ///< Pointer to first fixture in a linked list. 8-bytes.
-	JointEdge* m_jointList = nullptr; ///< Pointer to first joint in a linked list. 8-bytes.
-	ContactEdge* m_contactList = nullptr; ///< Pointer to first contact in a linked list. 8-bytes.
+	Fixture* m_fixtures = nullptr; ///< Pointer to first fixture in a linked list. 8-bytes.
+	JointEdge* m_joints = nullptr; ///< Pointer to first joint in a linked list. 8-bytes.
+	ContactEdge* m_contacts = nullptr; ///< Pointer to first contact in a linked list. 8-bytes.
 
 	float_t m_mass; ///< Mass of the body (in kg). A non-negative value. The sum total mass of all associated fixtures. 0 if Static or Kinematic.
 	float_t m_invMass; ///< Inverse of m_mass or 0 if m_mass == 0 (this is a non-negative value). @see m_mass.
@@ -743,42 +743,42 @@ inline bool Body::IsSleepingAllowed() const noexcept
 
 inline Fixture* Body::GetFixtureList() noexcept
 {
-	return m_fixtureList;
+	return m_fixtures;
 }
 
 inline const Fixture* Body::GetFixtureList() const noexcept
 {
-	return m_fixtureList;
+	return m_fixtures;
 }
 
 inline FixtureList Body::GetFixtures() noexcept
 {
-	return FixtureList(m_fixtureList);
+	return FixtureList(m_fixtures);
 }
 
 inline ConstFixtureList Body::GetFixtures() const noexcept
 {
-	return ConstFixtureList(m_fixtureList);
+	return ConstFixtureList(m_fixtures);
 }
 
 inline JointEdge* Body::GetJointList() noexcept
 {
-	return m_jointList;
+	return m_joints;
 }
 
 inline const JointEdge* Body::GetJointList() const noexcept
 {
-	return m_jointList;
+	return m_joints;
 }
 
 inline ContactEdge* Body::GetContactList() noexcept
 {
-	return m_contactList;
+	return m_contacts;
 }
 
 inline const ContactEdge* Body::GetContactList() const noexcept
 {
-	return m_contactList;
+	return m_contacts;
 }
 
 inline Body* Body::GetNext() noexcept

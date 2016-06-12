@@ -272,8 +272,8 @@ private:
 
 	ContactManager m_contactManager{&m_blockAllocator, &m_defaultFilter, &m_defaultListener};
 
-	Body* m_bodyList = nullptr; ///< Body list linked-list.
-	Joint* m_jointList = nullptr; ///< Joint list linked-list.
+	Body* m_bodies = nullptr; ///< Body list linked-list.
+	Joint* m_joints = nullptr; ///< Joint list linked-list.
 
 	body_count_t m_bodyCount = 0; ///< Count of bodies in body list.
 	size_type m_jointCount = 0; ///< Count of joints in joint list.
@@ -300,22 +300,22 @@ private:
 
 inline BodyList World::GetBodies() noexcept
 {
-	return BodyList(m_bodyList);
+	return BodyList(m_bodies);
 }
 
 inline ConstBodyList World::GetBodies() const noexcept
 {
-	return ConstBodyList(m_bodyList);
+	return ConstBodyList(m_bodies);
 }
 
 inline Joint* World::GetJointList() noexcept
 {
-	return m_jointList;
+	return m_joints;
 }
 
 inline const Joint* World::GetJointList() const noexcept
 {
-	return m_jointList;
+	return m_joints;
 }
 
 inline Contact* World::GetContactList() noexcept

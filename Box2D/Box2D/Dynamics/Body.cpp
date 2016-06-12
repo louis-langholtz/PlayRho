@@ -83,20 +83,20 @@ Body::~Body()
 void Body::DestroyContacts()
 {
 	// Destroy the attached contacts.
-	auto ce = m_contactList;
+	auto ce = m_contacts;
 	while (ce)
 	{
 		const auto ce0 = ce;
 		ce = ce->next;
 		m_world->m_contactManager.Destroy(ce0->contact);
 	}
-	m_contactList = nullptr;
+	m_contacts = nullptr;
 }
 
 void Body::DestroyJoints()
 {
 	// Delete the attached joints.
-	auto je = m_jointList;
+	auto je = m_joints;
 	while (je)
 	{
 		auto je0 = je;
@@ -109,15 +109,15 @@ void Body::DestroyJoints()
 		
 		m_world->DestroyJoint(je0->joint);
 		
-		m_jointList = je;
+		m_joints = je;
 	}
-	m_jointList = nullptr;
+	m_joints = nullptr;
 }
 
 void Body::DestroyFixtures()
 {
 	// Delete the attached fixtures. This destroys broad-phase proxies.
-	auto f = m_fixtureList;
+	auto f = m_fixtures;
 	while (f)
 	{
 		auto f0 = f;
@@ -133,9 +133,9 @@ void Body::DestroyFixtures()
 		f0->~Fixture();
 		m_world->m_blockAllocator.Free(f0, sizeof(Fixture));
 		
-		m_fixtureList = f;
+		m_fixtures = f;
 	}
-	m_fixtureList = nullptr;
+	m_fixtures = nullptr;
 }
 
 void Body::SetType(BodyType type)
@@ -176,7 +176,7 @@ void Body::SetType(BodyType type)
 
 	// Touch the proxies so that new contacts will be created (when appropriate)
 	auto& broadPhase = m_world->m_contactManager.m_broadPhase;
-	for (auto f = m_fixtureList; f; f = f->m_next)
+	for (auto f = m_fixtures; f; f = f->m_next)
 	{
 		const auto proxyCount = f->m_proxyCount;
 		for (auto i = decltype(proxyCount){0}; i < proxyCount; ++i)
@@ -205,8 +205,8 @@ Fixture* Body::CreateFixture(const FixtureDef& def)
 		fixture->CreateProxies(m_world->m_contactManager.m_broadPhase, m_xf);
 	}
 
-	fixture->m_next = m_fixtureList;
-	m_fixtureList = fixture;
+	fixture->m_next = m_fixtures;
+	m_fixtures = fixture;
 
 	// Adjust mass properties if needed.
 	if (fixture->m_density > float_t{0})
@@ -234,7 +234,7 @@ void Body::DestroyFixture(Fixture* fixture)
 	// Remove the fixture from this body's singly linked list.
 	auto found = false;
 	{
-		auto node = &m_fixtureList;
+		auto node = &m_fixtures;
 		while (*node != nullptr)
 		{
 			if (*node == fixture)
@@ -251,7 +251,7 @@ void Body::DestroyFixture(Fixture* fixture)
 	assert(found);
 
 	// Destroy any contacts associated with the fixture.
-	auto edge = m_contactList;
+	auto edge = m_contacts;
 	while (edge)
 	{
 		auto c = edge->contact;
@@ -289,7 +289,7 @@ MassData Body::CalculateMassData() const noexcept
 	auto mass = float_t{0};
 	auto I = float_t{0};
 	auto center = Vec2_zero;
-	for (auto f = m_fixtureList; f; f = f->m_next)
+	for (auto f = m_fixtures; f; f = f->m_next)
 	{
 		if (f->m_density == float_t{0})
 		{
@@ -424,7 +424,7 @@ bool Body::ShouldCollide(const Body* other) const
 	}
 
 	// Does a joint prevent collision?
-	for (auto jn = m_jointList; jn; jn = jn->next)
+	for (auto jn = m_joints; jn; jn = jn->next)
 	{
 		if (jn->other == other)
 		{
@@ -456,7 +456,7 @@ void Body::SetTransform(const Vec2& position, float_t angle)
 	}
 
 	auto& broadPhase = m_world->m_contactManager.m_broadPhase;
-	for (auto f = m_fixtureList; f; f = f->m_next)
+	for (auto f = m_fixtures; f; f = f->m_next)
 	{
 		f->Synchronize(broadPhase, m_xf, m_xf);
 	}
@@ -466,7 +466,7 @@ void Body::SynchronizeFixtures()
 {
 	const auto xf1 = GetTransformZero(m_sweep);
 	auto& broadPhase = m_world->m_contactManager.m_broadPhase;
-	for (auto f = m_fixtureList; f; f = f->m_next)
+	for (auto f = m_fixtures; f; f = f->m_next)
 	{
 		f->Synchronize(broadPhase, xf1, m_xf);
 	}
@@ -487,7 +487,7 @@ void Body::SetActive(bool flag)
 
 		// Create all proxies.
 		auto& broadPhase = m_world->m_contactManager.m_broadPhase;
-		for (auto f = m_fixtureList; f; f = f->m_next)
+		for (auto f = m_fixtures; f; f = f->m_next)
 		{
 			f->CreateProxies(broadPhase, m_xf);
 		}
@@ -500,7 +500,7 @@ void Body::SetActive(bool flag)
 
 		// Destroy all proxies.
 		auto& broadPhase = m_world->m_contactManager.m_broadPhase;
-		for (auto f = m_fixtureList; f; f = f->m_next)
+		for (auto f = m_fixtures; f; f = f->m_next)
 		{
 			f->DestroyProxies(broadPhase);
 		}
@@ -551,7 +551,7 @@ void Body::Dump()
 	log("  bd.active = bool(%d);\n", m_flags & e_activeFlag);
 	log("  bodies[%d] = m_world->CreateBody(&bd);\n", m_islandIndex);
 	log("\n");
-	for (auto f = m_fixtureList; f; f = f->m_next)
+	for (auto f = m_fixtures; f; f = f->m_next)
 	{
 		log("  {\n");
 		f->Dump(bodyIndex);

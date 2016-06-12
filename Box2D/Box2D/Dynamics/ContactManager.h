@@ -67,11 +67,11 @@ public:
 
 	/// Gets the contact list.
 	/// @return Contact list or <code>nullptr</code> if empty.
-	const Contact* GetContactList() const noexcept { return m_contactList; }
+	const Contact* GetContactList() const noexcept { return m_contacts; }
 	
 	/// Gets the contact list.
 	/// @return Contact list or <code>nullptr</code> if empty.
-	Contact* GetContactList() noexcept { return m_contactList; }
+	Contact* GetContactList() noexcept { return m_contacts; }
 
 	BroadPhase m_broadPhase;
 	ContactFilter* m_contactFilter;
@@ -87,7 +87,7 @@ private:
 	void Remove(Contact* contact);
 	
 	contact_count_t m_contactCount = 0; ///< Count of contacts managed by this manager.
-	Contact* m_contactList = nullptr; ///< Container of contacts managed by this manager.
+	Contact* m_contacts = nullptr; ///< Container of contacts managed by this manager.
 	BlockAllocator* const m_allocator;
 };
 
