@@ -176,12 +176,12 @@ void Body::SetType(BodyType type)
 
 	// Touch the proxies so that new contacts will be created (when appropriate)
 	auto& broadPhase = m_world->m_contactManager.m_broadPhase;
-	for (auto f = m_fixtures; f; f = f->m_next)
+	for (auto&& f: m_fixtures)
 	{
-		const auto proxyCount = f->m_proxyCount;
+		const auto proxyCount = f.m_proxyCount;
 		for (auto i = decltype(proxyCount){0}; i < proxyCount; ++i)
 		{
-			broadPhase.TouchProxy(f->m_proxies[i].proxyId);
+			broadPhase.TouchProxy(f.m_proxies[i].proxyId);
 		}
 	}
 }
@@ -289,14 +289,14 @@ MassData Body::CalculateMassData() const noexcept
 	auto mass = float_t{0};
 	auto I = float_t{0};
 	auto center = Vec2_zero;
-	for (auto f = m_fixtures; f; f = f->m_next)
+	for (auto&& f: m_fixtures)
 	{
-		if (f->m_density == float_t{0})
+		if (f.m_density == float_t{0})
 		{
 			continue;
 		}
 		
-		const auto massData = f->GetMassData();
+		const auto massData = f.GetMassData();
 		mass += massData.mass;
 		center += massData.mass * massData.center;
 		I += massData.I;
@@ -456,9 +456,9 @@ void Body::SetTransform(const Vec2& position, float_t angle)
 	}
 
 	auto& broadPhase = m_world->m_contactManager.m_broadPhase;
-	for (auto f = m_fixtures; f; f = f->m_next)
+	for (auto&& f: m_fixtures)
 	{
-		f->Synchronize(broadPhase, m_xf, m_xf);
+		f.Synchronize(broadPhase, m_xf, m_xf);
 	}
 }
 
@@ -466,9 +466,9 @@ void Body::SynchronizeFixtures()
 {
 	const auto xf1 = GetTransformZero(m_sweep);
 	auto& broadPhase = m_world->m_contactManager.m_broadPhase;
-	for (auto f = m_fixtures; f; f = f->m_next)
+	for (auto&& f: m_fixtures)
 	{
-		f->Synchronize(broadPhase, xf1, m_xf);
+		f.Synchronize(broadPhase, xf1, m_xf);
 	}
 }
 
@@ -487,9 +487,9 @@ void Body::SetActive(bool flag)
 
 		// Create all proxies.
 		auto& broadPhase = m_world->m_contactManager.m_broadPhase;
-		for (auto f = m_fixtures; f; f = f->m_next)
+		for (auto&& f: m_fixtures)
 		{
-			f->CreateProxies(broadPhase, m_xf);
+			f.CreateProxies(broadPhase, m_xf);
 		}
 
 		// Contacts are created the next time step.
@@ -500,9 +500,9 @@ void Body::SetActive(bool flag)
 
 		// Destroy all proxies.
 		auto& broadPhase = m_world->m_contactManager.m_broadPhase;
-		for (auto f = m_fixtures; f; f = f->m_next)
+		for (auto&& f: m_fixtures)
 		{
-			f->DestroyProxies(broadPhase);
+			f.DestroyProxies(broadPhase);
 		}
 
 		DestroyContacts();
@@ -551,10 +551,10 @@ void Body::Dump()
 	log("  bd.active = bool(%d);\n", m_flags & e_activeFlag);
 	log("  bodies[%d] = m_world->CreateBody(&bd);\n", m_islandIndex);
 	log("\n");
-	for (auto f = m_fixtures; f; f = f->m_next)
+	for (auto&& f: m_fixtures)
 	{
 		log("  {\n");
-		f->Dump(bodyIndex);
+		f.Dump(bodyIndex);
 		log("  }\n");
 	}
 	log("}\n");
