@@ -241,6 +241,9 @@ private:
 	void ResetContactsForSolveTOI();
 	void ProcessContactsForTOI(Island& island, Body& body, float_t toi);
 	
+	bool Add(Body& b);
+	bool Remove(Body& b);
+
 	struct ContactToiPair
 	{
 		Contact* contact; ///< Contact for which the time of impact is relavant.

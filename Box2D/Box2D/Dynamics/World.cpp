@@ -120,12 +120,6 @@ void World::SetDebugDraw(Draw* debugDraw) noexcept
 
 Body* World::CreateBody(const BodyDef* def)
 {
-	assert(m_bodyCount < MaxBodies);
-	if (m_bodyCount >= MaxBodies)
-	{
-		return nullptr;
-	}
-
 	assert(!IsLocked());
 	if (IsLocked())
 	{
@@ -134,46 +128,80 @@ Body* World::CreateBody(const BodyDef* def)
 
 	void* mem = m_blockAllocator.Allocate(sizeof(Body));
 	auto b = new (mem) Body(def, this);
-
-	// Add to world doubly linked list.
-	b->m_prev = nullptr;
-	b->m_next = m_bodyList;
-	if (m_bodyList)
+	if (b)
 	{
-		m_bodyList->m_prev = b;
+		if (!Add(*b))
+		{
+			b->~Body();
+			m_blockAllocator.Free(b, sizeof(Body));
+			return nullptr;
+		}		
 	}
-	m_bodyList = b;
-	++m_bodyCount;
 
 	return b;
 }
 
-void World::DestroyBody(Body* b)
+bool World::Add(Body& b)
+{
+	assert(m_bodyCount < MaxBodies);
+	if (m_bodyCount >= MaxBodies)
+	{
+		return false;
+	}
+	
+	// Add to world doubly linked list.
+	b.m_prev = nullptr;
+	b.m_next = m_bodyList;
+	if (m_bodyList)
+	{
+		m_bodyList->m_prev = &b;
+	}
+	m_bodyList = &b;
+	
+	++m_bodyCount;
+	return true;
+}
+
+bool World::Remove(Body& b)
 {
 	assert(m_bodyCount > 0);
+	if (m_bodyCount == 0)
+	{
+		return false;
+	}
+
+	// Remove world body list.
+	if (b.m_prev)
+	{
+		b.m_prev->m_next = b.m_next;
+	}
+	
+	if (b.m_next)
+	{
+		b.m_next->m_prev = b.m_prev;
+	}
+	
+	if (&b == m_bodyList)
+	{
+		m_bodyList = b.m_next;
+	}
+
+	--m_bodyCount;
+	return true;
+}
+
+void World::DestroyBody(Body* b)
+{
+	assert(b->m_world == this);
+	
 	assert(!IsLocked());
 	if (IsLocked())
 	{
 		return;
 	}
-
-	// Remove world body list.
-	if (b->m_prev)
-	{
-		b->m_prev->m_next = b->m_next;
-	}
-
-	if (b->m_next)
-	{
-		b->m_next->m_prev = b->m_prev;
-	}
-
-	if (b == m_bodyList)
-	{
-		m_bodyList = b->m_next;
-	}
-
-	--m_bodyCount;
+	
+	Remove(*b);
+	
 	b->~Body();
 	m_blockAllocator.Free(b, sizeof(Body));
 }
