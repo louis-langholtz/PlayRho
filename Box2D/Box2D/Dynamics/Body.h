@@ -348,8 +348,6 @@ public:
 	bool IsFixedRotation() const noexcept;
 
 	/// Get the list of all fixtures attached to this body.
-	Fixture* GetFixtureList() noexcept;
-	const Fixture* GetFixtureList() const noexcept;
 	FixtureList GetFixtures() noexcept;
 	ConstFixtureList GetFixtures() const noexcept;
 
@@ -739,16 +737,6 @@ inline void Body::SetSleepingAllowed(bool flag) noexcept
 inline bool Body::IsSleepingAllowed() const noexcept
 {
 	return (m_flags & e_autoSleepFlag) != 0;
-}
-
-inline Fixture* Body::GetFixtureList() noexcept
-{
-	return m_fixtures;
-}
-
-inline const Fixture* Body::GetFixtureList() const noexcept
-{
-	return m_fixtures;
 }
 
 inline FixtureList Body::GetFixtures() noexcept

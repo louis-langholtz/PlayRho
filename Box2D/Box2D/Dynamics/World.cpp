@@ -998,27 +998,27 @@ void World::DrawDebugData()
 		for (auto b = m_bodies; b; b = b->GetNext())
 		{
 			const auto xf = b->GetTransform();
-			for (auto f = b->GetFixtureList(); f; f = f->GetNext())
+			for (auto&& f: b->GetFixtures())
 			{
 				if (!b->IsActive())
 				{
-					DrawShape(f, xf, Color(0.5f, 0.5f, 0.3f));
+					DrawShape(&f, xf, Color(0.5f, 0.5f, 0.3f));
 				}
 				else if (b->GetType() == BodyType::Static)
 				{
-					DrawShape(f, xf, Color(0.5f, 0.9f, 0.5f));
+					DrawShape(&f, xf, Color(0.5f, 0.9f, 0.5f));
 				}
 				else if (b->GetType() == BodyType::Kinematic)
 				{
-					DrawShape(f, xf, Color(0.5f, 0.5f, 0.9f));
+					DrawShape(&f, xf, Color(0.5f, 0.5f, 0.9f));
 				}
 				else if (!b->IsAwake())
 				{
-					DrawShape(f, xf, Color(0.6f, 0.6f, 0.6f));
+					DrawShape(&f, xf, Color(0.6f, 0.6f, 0.6f));
 				}
 				else
 				{
-					DrawShape(f, xf, Color(0.9f, 0.7f, 0.7f));
+					DrawShape(&f, xf, Color(0.9f, 0.7f, 0.7f));
 				}
 			}
 		}
@@ -1059,11 +1059,11 @@ void World::DrawDebugData()
 				continue;
 			}
 
-			for (auto f = b->GetFixtureList(); f; f = f->GetNext())
+			for (auto&& f: b->GetFixtures())
 			{
-				for (auto i = decltype(f->m_proxyCount){0}; i < f->m_proxyCount; ++i)
+				for (auto i = decltype(f.m_proxyCount){0}; i < f.m_proxyCount; ++i)
 				{
-					const auto proxy = f->m_proxies + i;
+					const auto proxy = f.m_proxies + i;
 					const auto aabb = bp->GetFatAABB(proxy->proxyId);
 					Vec2 vs[4];
 					vs[0] = Vec2{aabb.GetLowerBound().x, aabb.GetLowerBound().y};
