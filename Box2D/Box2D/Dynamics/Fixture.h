@@ -340,7 +340,7 @@ inline const AABB& Fixture::GetAABB(child_count_t childIndex) const
 	return m_proxies[childIndex].aabb;
 }
 
-inline void SetAwake(Fixture& f)
+inline void SetAwake(Fixture& f) noexcept
 {
 	const auto b = f.GetBody();
 	if (b)

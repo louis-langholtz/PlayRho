@@ -26,6 +26,7 @@ using namespace box2d;
 
 void ContactManager::Remove(Contact* c)
 {
+	assert(c != nullptr);
 	assert(m_contactCount > 0);
 	
 	const auto fixtureA = c->GetFixtureA();
