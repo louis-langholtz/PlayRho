@@ -32,7 +32,7 @@ public:
 	using size_type = size_t;
 
 	static constexpr auto ChunkSize = size_type{16 * 1024};
-	static constexpr auto MaxBlockSize = size_type{640};
+	static constexpr auto MaxBlockSize = size_type{640}; ///< Max block size (before using external allocator).
 	static constexpr auto BlockSizes = size_type{14};
 	static constexpr auto ChunkArrayIncrement = size_type{128};
 
