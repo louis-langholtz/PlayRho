@@ -167,13 +167,13 @@ public:
 	size_type GetProxyCount() const noexcept;
 
 	/// Get the number of bodies.
-	size_type GetBodyCount() const noexcept;
+	body_count_t GetBodyCount() const noexcept;
 
 	/// Get the number of joints.
 	size_type GetJointCount() const noexcept;
 
 	/// Get the number of contacts (each may have 0 or more contact points).
-	size_type GetContactCount() const noexcept;
+	contact_count_t GetContactCount() const noexcept;
 
 	/// Get the height of the dynamic tree.
 	size_type GetTreeHeight() const noexcept;
@@ -325,7 +325,7 @@ inline const Contact* World::GetContactList() const noexcept
 	return m_contactManager.GetContactList();
 }
 
-inline World::size_type World::GetBodyCount() const noexcept
+inline body_count_t World::GetBodyCount() const noexcept
 {
 	return m_bodyCount;
 }
@@ -335,7 +335,7 @@ inline World::size_type World::GetJointCount() const noexcept
 	return m_jointCount;
 }
 
-inline World::size_type World::GetContactCount() const noexcept
+inline contact_count_t World::GetContactCount() const noexcept
 {
 	return m_contactManager.GetContactCount();
 }
