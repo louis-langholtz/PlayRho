@@ -19,9 +19,10 @@ class ConstBodyList
 {
 public:
 	using const_iterator = ConstBodyIterator;
-	
+	using const_pointer = const Body*;
+
 	ConstBodyList() = default;
-	ConstBodyList(const Body* b): p(b) {}
+	constexpr ConstBodyList(const_pointer b) noexcept: p{b} {}
 	
 	const_iterator begin() noexcept { return const_iterator(p); }
 	const_iterator end() noexcept { return const_iterator(nullptr); }
@@ -29,8 +30,11 @@ public:
 	const_iterator begin() const noexcept { return const_iterator(p); }
 	const_iterator end() const noexcept { return const_iterator(nullptr); }
 	
+	constexpr explicit operator bool() const noexcept { return p != nullptr; }
+	constexpr bool operator! () const noexcept { return p == nullptr; }
+
 private:
-	const Body* p = nullptr;
+	const_pointer p = nullptr;
 };
 
 } // namespace box2d

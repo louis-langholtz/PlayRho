@@ -21,9 +21,13 @@ class FixtureList
 public:
 	using iterator = FixtureIterator;
 	using const_iterator = ConstFixtureIterator;
+	using pointer = Fixture*;
 	
 	FixtureList() = default;
-	FixtureList(Fixture* b): p(b) {}
+	constexpr FixtureList(const FixtureList& copy) noexcept: p{copy.p} {}
+	constexpr FixtureList(pointer b) noexcept: p{b} {}
+	
+	FixtureList& operator= (const FixtureList& rhs) noexcept { p = rhs.p; return *this; }
 	
 	iterator begin() noexcept { return iterator(p); }
 	iterator end() noexcept { return iterator(nullptr); }
@@ -31,8 +35,17 @@ public:
 	const_iterator begin() const noexcept { return const_iterator(p); }
 	const_iterator end() const noexcept { return const_iterator(nullptr); }
 	
+	constexpr explicit operator bool() const noexcept { return p != nullptr; }
+	constexpr bool operator! () const noexcept { return p == nullptr; }
+	constexpr bool operator== (const FixtureList& rhs) const noexcept { return p == rhs.p; }
+	constexpr bool operator!= (const FixtureList& rhs) const noexcept { return p != rhs.p; }
+
+	constexpr pointer get() const noexcept { return p; }
+	pointer operator-> () const { return p; }
+	typename std::add_lvalue_reference<Fixture>::type operator*() const { return *p; }
+
 private:
-	Fixture* p = nullptr;
+	pointer p = nullptr;
 };
 
 } // namespace box2d

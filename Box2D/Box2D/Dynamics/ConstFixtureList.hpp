@@ -10,6 +10,7 @@
 #define ConstFixtureList_hpp
 
 #include <Box2D/Common/ConstFixtureIterator.hpp>
+#include <Box2D/Dynamics/FixtureList.hpp>
 
 namespace box2d {
 
@@ -19,9 +20,16 @@ class ConstFixtureList
 {
 public:
 	using const_iterator = ConstFixtureIterator;
+	using pointer = const Fixture*;
+	using reference = const Fixture&;
 	
 	ConstFixtureList() = default;
-	ConstFixtureList(const Fixture* b): p(b) {}
+	constexpr ConstFixtureList(const ConstFixtureList& copy) noexcept: p{copy.p} {}
+
+	constexpr ConstFixtureList(pointer f) noexcept: p{f} {}
+	constexpr ConstFixtureList(const FixtureList& f) noexcept: p{f.get()} {}
+
+	ConstFixtureList& operator= (const ConstFixtureList& rhs) noexcept { p = rhs.p; return *this; }
 	
 	const_iterator begin() noexcept { return const_iterator(p); }
 	const_iterator end() noexcept { return const_iterator(nullptr); }
@@ -29,8 +37,15 @@ public:
 	const_iterator begin() const noexcept { return const_iterator(p); }
 	const_iterator end() const noexcept { return const_iterator(nullptr); }
 	
+	constexpr explicit operator bool() const noexcept { return p != nullptr; }
+	constexpr bool operator! () const noexcept { return p == nullptr; }
+
+	constexpr pointer get() const noexcept { return p; }
+	pointer operator-> () const { return p; }
+	reference operator*() const { return *p; }
+
 private:
-	const Fixture* p = nullptr;
+	pointer p = nullptr;
 };
 
 } // namespace box2d

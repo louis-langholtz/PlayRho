@@ -18,14 +18,14 @@ class Body;
 class BodyIterator: public std::iterator<std::forward_iterator_tag, Body>
 {
 public:
-	BodyIterator(pointer b) noexcept: p(b) {}
-	BodyIterator(const BodyIterator& it) noexcept: p(it.p) {}
+	constexpr explicit BodyIterator(pointer b) noexcept: p{b} {}
+	constexpr BodyIterator(const BodyIterator& it) noexcept: p{it.p} {}
 	
 	BodyIterator& operator++() noexcept { p = next(p); return *this; }
 	BodyIterator operator++(int) { BodyIterator tmp(*this); operator++(); return tmp; }
 	
-	bool operator==(const BodyIterator& rhs) const noexcept {return p == rhs.p; }
-	bool operator!=(const BodyIterator& rhs) const noexcept {return p != rhs.p; }
+	constexpr bool operator==(const BodyIterator& rhs) const noexcept {return p == rhs.p; }
+	constexpr bool operator!=(const BodyIterator& rhs) const noexcept {return p != rhs.p; }
 	
 	reference operator*() const noexcept { return *p; }
 	

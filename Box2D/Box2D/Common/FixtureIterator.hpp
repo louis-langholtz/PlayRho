@@ -18,14 +18,14 @@ class Fixture;
 class FixtureIterator: public std::iterator<std::forward_iterator_tag, Fixture>
 {
 public:
-	FixtureIterator(pointer b) noexcept: p(b) {}
-	FixtureIterator(const FixtureIterator& it) noexcept: p(it.p) {}
+	constexpr explicit FixtureIterator(pointer b) noexcept: p{b} {}
+	constexpr FixtureIterator(const FixtureIterator& it) noexcept: p{it.p} {}
 	
 	FixtureIterator& operator++() noexcept { p = next(p); return *this; }
-	FixtureIterator operator++(int) { FixtureIterator tmp(*this); operator++(); return tmp; }
+	FixtureIterator operator++(int) { FixtureIterator tmp{*this}; operator++(); return tmp; }
 	
-	bool operator==(const FixtureIterator& rhs) const noexcept {return p == rhs.p; }
-	bool operator!=(const FixtureIterator& rhs) const noexcept {return p != rhs.p; }
+	constexpr bool operator==(const FixtureIterator& rhs) const noexcept {return p == rhs.p; }
+	constexpr bool operator!=(const FixtureIterator& rhs) const noexcept {return p != rhs.p; }
 	
 	reference operator*() const noexcept { return *p; }
 	
