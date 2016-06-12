@@ -137,8 +137,8 @@ public:
 
 	/// Get the next fixture in the parent body's fixture list.
 	/// @return the next shape.
-	Fixture* GetNext();
-	const Fixture* GetNext() const;
+	FixtureList GetNext();
+	ConstFixtureList GetNext() const;
 
 	/// Get the user data that was assigned in the fixture definition. Use this to
 	/// store your application specific data.
@@ -221,7 +221,7 @@ protected:
 
 	Body* const m_body;
 	float_t m_density = float_t{0};
-	Fixture* m_next = nullptr;
+	FixtureList m_next = nullptr;
 	Shape* m_shape = nullptr;
 	float_t m_friction; ///< Friction as a coefficient.
 	float_t m_restitution; ///< Restitution as a coefficient.
@@ -277,12 +277,12 @@ inline const Body* Fixture::GetBody() const noexcept
 	return m_body;
 }
 
-inline Fixture* Fixture::GetNext()
+inline FixtureList Fixture::GetNext()
 {
 	return m_next;
 }
 
-inline const Fixture* Fixture::GetNext() const
+inline ConstFixtureList Fixture::GetNext() const
 {
 	return m_next;
 }

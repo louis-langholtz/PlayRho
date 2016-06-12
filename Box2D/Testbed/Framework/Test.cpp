@@ -21,15 +21,15 @@
 
 using namespace box2d;
 
-void TestDestructionListener::SayGoodbye(Joint* joint)
+void TestDestructionListener::SayGoodbye(Joint& joint)
 {
-	if (test->m_mouseJoint == joint)
+	if (test->m_mouseJoint == &joint)
 	{
 		test->m_mouseJoint = nullptr;
 	}
 	else
 	{
-		test->JointDestroyed(joint);
+		test->JointDestroyed(&joint);
 	}
 }
 

@@ -119,8 +119,8 @@ extern TestEntry g_testEntries[];
 class TestDestructionListener : public DestructionListener
 {
 public:
-	void SayGoodbye(Fixture* fixture) { BOX2D_NOT_USED(fixture); }
-	void SayGoodbye(Joint* joint);
+	void SayGoodbye(Fixture& fixture) { BOX2D_NOT_USED(fixture); }
+	void SayGoodbye(Joint& joint);
 
 	Test* test;
 };

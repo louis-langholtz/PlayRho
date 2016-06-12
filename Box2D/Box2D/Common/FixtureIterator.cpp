@@ -13,5 +13,5 @@ using namespace box2d;
 
 FixtureIterator::pointer FixtureIterator::next(pointer q) const noexcept
 {
-	return p->GetNext();
+	return p->GetNext().get();
 }

@@ -104,7 +104,7 @@ void Body::DestroyJoints()
 		
 		if (m_world->m_destructionListener)
 		{
-			m_world->m_destructionListener->SayGoodbye(je0->joint);
+			m_world->m_destructionListener->SayGoodbye(*je0->joint);
 		}
 		
 		m_world->DestroyJoint(je0->joint);
@@ -125,13 +125,13 @@ void Body::DestroyFixtures()
 		
 		if (m_world->m_destructionListener)
 		{
-			m_world->m_destructionListener->SayGoodbye(f0);
+			m_world->m_destructionListener->SayGoodbye(*f0);
 		}
 		
 		f0->DestroyProxies(m_world->m_contactManager.m_broadPhase);
 		f0->Destroy(&m_world->m_blockAllocator);
 		f0->~Fixture();
-		m_world->m_blockAllocator.Free(f0, sizeof(Fixture));
+		m_world->m_blockAllocator.Free(f0.get(), sizeof(Fixture));
 		
 		m_fixtures = f;
 	}
@@ -235,7 +235,7 @@ void Body::DestroyFixture(Fixture* fixture)
 	auto found = false;
 	{
 		auto node = &m_fixtures;
-		while (*node != nullptr)
+		while (*node)
 		{
 			if (*node == fixture)
 			{
