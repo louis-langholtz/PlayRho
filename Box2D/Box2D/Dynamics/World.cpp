@@ -120,6 +120,12 @@ void World::SetDebugDraw(Draw* debugDraw) noexcept
 
 Body* World::CreateBody(const BodyDef* def)
 {
+	assert(m_bodyCount < MaxBodies);
+	if (m_bodyCount >= MaxBodies)
+	{
+		return nullptr;
+	}
+
 	assert(!IsLocked());
 	if (IsLocked())
 	{
