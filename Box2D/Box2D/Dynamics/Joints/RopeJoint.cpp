@@ -30,13 +30,13 @@ using namespace box2d;
 // K = J * invM * JT
 //   = invMassA + invIA * cross(rA, u)^2 + invMassB + invIB * cross(rB, u)^2
 
-RopeJoint::RopeJoint(const RopeJointDef* def)
+RopeJoint::RopeJoint(const RopeJointDef& def)
 : Joint(def)
 {
-	m_localAnchorA = def->localAnchorA;
-	m_localAnchorB = def->localAnchorB;
+	m_localAnchorA = def.localAnchorA;
+	m_localAnchorB = def.localAnchorB;
 
-	m_maxLength = def->maxLength;
+	m_maxLength = def.maxLength;
 
 	m_mass = float_t{0};
 	m_impulse = float_t{0};

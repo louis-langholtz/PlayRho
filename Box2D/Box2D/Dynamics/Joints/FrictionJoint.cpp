@@ -42,13 +42,13 @@ void FrictionJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor)
 	localAnchorB = bodyB->GetLocalPoint(anchor);
 }
 
-FrictionJoint::FrictionJoint(const FrictionJointDef* def)
+FrictionJoint::FrictionJoint(const FrictionJointDef& def)
 : Joint(def)
 {
-	m_localAnchorA = def->localAnchorA;
-	m_localAnchorB = def->localAnchorB;
-	m_maxForce = def->maxForce;
-	m_maxTorque = def->maxTorque;
+	m_localAnchorA = def.localAnchorA;
+	m_localAnchorB = def.localAnchorB;
+	m_maxForce = def.maxForce;
+	m_maxTorque = def.maxTorque;
 }
 
 void FrictionJoint::InitVelocityConstraints(const SolverData& data)

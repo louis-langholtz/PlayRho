@@ -93,7 +93,7 @@ public:
 protected:
 	friend class Joint;
 
-	MouseJoint(const MouseJointDef* def);
+	MouseJoint(const MouseJointDef& def);
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

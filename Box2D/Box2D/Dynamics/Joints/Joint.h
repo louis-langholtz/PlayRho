@@ -155,10 +155,10 @@ protected:
 	friend class Island;
 	friend class GearJoint;
 
-	static Joint* Create(const JointDef* def, BlockAllocator* allocator);
+	static Joint* Create(const JointDef& def, BlockAllocator* allocator);
 	static void Destroy(Joint* joint, BlockAllocator* allocator);
 
-	Joint(const JointDef* def);
+	Joint(const JointDef& def);
 	virtual ~Joint() {}
 
 	virtual void InitVelocityConstraints(const SolverData& data) = 0;

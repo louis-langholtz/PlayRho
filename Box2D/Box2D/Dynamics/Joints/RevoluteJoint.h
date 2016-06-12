@@ -149,7 +149,7 @@ protected:
 	friend class Joint;
 	friend class GearJoint;
 
-	RevoluteJoint(const RevoluteJointDef* def);
+	RevoluteJoint(const RevoluteJointDef& def);
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

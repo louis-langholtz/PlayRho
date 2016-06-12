@@ -98,7 +98,7 @@ public:
 protected:
 
 	friend class Joint;
-	DistanceJoint(const DistanceJointDef* data);
+	DistanceJoint(const DistanceJointDef& data);
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

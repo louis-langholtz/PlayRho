@@ -53,21 +53,21 @@ void PulleyJointDef::Initialize(Body* bA, Body* bB,
 	assert(ratio > Epsilon);
 }
 
-PulleyJoint::PulleyJoint(const PulleyJointDef* def)
+PulleyJoint::PulleyJoint(const PulleyJointDef& def)
 : Joint(def)
 {
-	m_groundAnchorA = def->groundAnchorA;
-	m_groundAnchorB = def->groundAnchorB;
-	m_localAnchorA = def->localAnchorA;
-	m_localAnchorB = def->localAnchorB;
+	m_groundAnchorA = def.groundAnchorA;
+	m_groundAnchorB = def.groundAnchorB;
+	m_localAnchorA = def.localAnchorA;
+	m_localAnchorB = def.localAnchorB;
 
-	m_lengthA = def->lengthA;
-	m_lengthB = def->lengthB;
+	m_lengthA = def.lengthA;
+	m_lengthB = def.lengthB;
 
-	assert(def->ratio != float_t{0});
-	m_ratio = def->ratio;
+	assert(def.ratio != float_t{0});
+	m_ratio = def.ratio;
 
-	m_constant = def->lengthA + m_ratio * def->lengthB;
+	m_constant = def.lengthA + m_ratio * def.lengthB;
 
 	m_impulse = float_t{0};
 }

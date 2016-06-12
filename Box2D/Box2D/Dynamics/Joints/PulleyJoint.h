@@ -107,7 +107,7 @@ public:
 protected:
 
 	friend class Joint;
-	PulleyJoint(const PulleyJointDef* data);
+	PulleyJoint(const PulleyJointDef& data);
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

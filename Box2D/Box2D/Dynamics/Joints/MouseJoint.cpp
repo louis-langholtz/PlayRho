@@ -30,19 +30,19 @@ using namespace box2d;
 // Identity used:
 // w k % (rx i + ry j) = w * (-ry i + rx j)
 
-MouseJoint::MouseJoint(const MouseJointDef* def)
+MouseJoint::MouseJoint(const MouseJointDef& def)
 : Joint(def)
 {
-	assert(def->target.IsValid());
-	assert(IsValid(def->maxForce) && (def->maxForce >= float_t{0}));
-	assert(IsValid(def->frequencyHz) && (def->frequencyHz >= float_t{0}));
-	assert(IsValid(def->dampingRatio) && (def->dampingRatio >= float_t{0}));
+	assert(def.target.IsValid());
+	assert(IsValid(def.maxForce) && (def.maxForce >= float_t{0}));
+	assert(IsValid(def.frequencyHz) && (def.frequencyHz >= float_t{0}));
+	assert(IsValid(def.dampingRatio) && (def.dampingRatio >= float_t{0}));
 
-	m_targetA = def->target;
-	m_localAnchorB = MulT(m_bodyB->GetTransform(), def->target);
-	m_maxForce = def->maxForce;
-	m_frequencyHz = def->frequencyHz;
-	m_dampingRatio = def->dampingRatio;
+	m_targetA = def.target;
+	m_localAnchorB = MulT(m_bodyB->GetTransform(), def.target);
+	m_maxForce = def.maxForce;
+	m_frequencyHz = def.frequencyHz;
+	m_dampingRatio = def.dampingRatio;
 }
 
 void MouseJoint::SetTarget(const Vec2& target)

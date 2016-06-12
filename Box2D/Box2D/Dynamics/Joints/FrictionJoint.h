@@ -81,7 +81,7 @@ protected:
 
 	friend class Joint;
 
-	FrictionJoint(const FrictionJointDef* def);
+	FrictionJoint(const FrictionJointDef& def);
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

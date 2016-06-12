@@ -47,12 +47,12 @@ void WheelJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor, const Vec
 	localAxisA = bodyA->GetLocalVector(axis);
 }
 
-WheelJoint::WheelJoint(const WheelJointDef* def)
+WheelJoint::WheelJoint(const WheelJointDef& def)
 : Joint(def)
 {
-	m_localAnchorA = def->localAnchorA;
-	m_localAnchorB = def->localAnchorB;
-	m_localXAxisA = def->localAxisA;
+	m_localAnchorA = def.localAnchorA;
+	m_localAnchorB = def.localAnchorB;
+	m_localXAxisA = def.localAxisA;
 	m_localYAxisA = Cross(float_t{1}, m_localXAxisA);
 
 	m_mass = float_t{0};
@@ -62,12 +62,12 @@ WheelJoint::WheelJoint(const WheelJointDef* def)
 	m_springMass = float_t{0};
 	m_springImpulse = float_t{0};
 
-	m_maxMotorTorque = def->maxMotorTorque;
-	m_motorSpeed = def->motorSpeed;
-	m_enableMotor = def->enableMotor;
+	m_maxMotorTorque = def.maxMotorTorque;
+	m_motorSpeed = def.motorSpeed;
+	m_enableMotor = def.enableMotor;
 
-	m_frequencyHz = def->frequencyHz;
-	m_dampingRatio = def->dampingRatio;
+	m_frequencyHz = def.frequencyHz;
+	m_dampingRatio = def.dampingRatio;
 
 	m_bias = float_t{0};
 	m_gamma = float_t{0};

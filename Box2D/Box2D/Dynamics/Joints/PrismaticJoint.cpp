@@ -99,25 +99,25 @@ void PrismaticJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor, const
 	referenceAngle = bodyB->GetAngle() - bodyA->GetAngle();
 }
 
-PrismaticJoint::PrismaticJoint(const PrismaticJointDef* def)
+PrismaticJoint::PrismaticJoint(const PrismaticJointDef& def)
 : Joint(def)
 {
-	m_localAnchorA = def->localAnchorA;
-	m_localAnchorB = def->localAnchorB;
-	m_localXAxisA = Normalize(def->localAxisA);
+	m_localAnchorA = def.localAnchorA;
+	m_localAnchorB = def.localAnchorB;
+	m_localXAxisA = Normalize(def.localAxisA);
 	m_localYAxisA = Cross(float_t{1}, m_localXAxisA);
-	m_referenceAngle = def->referenceAngle;
+	m_referenceAngle = def.referenceAngle;
 
 	m_impulse = Vec3_zero;
 	m_motorMass = float_t{0};
 	m_motorImpulse = float_t{0};
 
-	m_lowerTranslation = def->lowerTranslation;
-	m_upperTranslation = def->upperTranslation;
-	m_maxMotorForce = def->maxMotorForce;
-	m_motorSpeed = def->motorSpeed;
-	m_enableLimit = def->enableLimit;
-	m_enableMotor = def->enableMotor;
+	m_lowerTranslation = def.lowerTranslation;
+	m_upperTranslation = def.upperTranslation;
+	m_maxMotorForce = def.maxMotorForce;
+	m_motorSpeed = def.motorSpeed;
+	m_enableLimit = def.enableLimit;
+	m_enableMotor = def.enableMotor;
 	m_limitState = e_inactiveLimit;
 
 	m_axis = Vec2_zero;

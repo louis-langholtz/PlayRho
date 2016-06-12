@@ -48,14 +48,14 @@ void DistanceJointDef::Initialize(Body* b1, Body* b2,
 	length = d.Length();
 }
 
-DistanceJoint::DistanceJoint(const DistanceJointDef* def)
+DistanceJoint::DistanceJoint(const DistanceJointDef& def)
 : Joint(def)
 {
-	m_localAnchorA = def->localAnchorA;
-	m_localAnchorB = def->localAnchorB;
-	m_length = def->length;
-	m_frequencyHz = def->frequencyHz;
-	m_dampingRatio = def->dampingRatio;
+	m_localAnchorA = def.localAnchorA;
+	m_localAnchorB = def.localAnchorB;
+	m_length = def.length;
+	m_frequencyHz = def.frequencyHz;
+	m_dampingRatio = def.dampingRatio;
 }
 
 void DistanceJoint::InitVelocityConstraints(const SolverData& data)

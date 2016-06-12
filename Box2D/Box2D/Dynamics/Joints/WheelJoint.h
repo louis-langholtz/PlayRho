@@ -123,7 +123,7 @@ public:
 protected:
 
 	friend class Joint;
-	WheelJoint(const WheelJointDef* def);
+	WheelJoint(const WheelJointDef& def);
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

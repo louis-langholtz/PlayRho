@@ -44,22 +44,22 @@ void RevoluteJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor)
 	referenceAngle = bodyB->GetAngle() - bodyA->GetAngle();
 }
 
-RevoluteJoint::RevoluteJoint(const RevoluteJointDef* def)
+RevoluteJoint::RevoluteJoint(const RevoluteJointDef& def)
 : Joint(def)
 {
-	m_localAnchorA = def->localAnchorA;
-	m_localAnchorB = def->localAnchorB;
-	m_referenceAngle = def->referenceAngle;
+	m_localAnchorA = def.localAnchorA;
+	m_localAnchorB = def.localAnchorB;
+	m_referenceAngle = def.referenceAngle;
 
 	m_impulse = Vec3_zero;
 	m_motorImpulse = float_t{0};
 
-	m_lowerAngle = def->lowerAngle;
-	m_upperAngle = def->upperAngle;
-	m_maxMotorTorque = def->maxMotorTorque;
-	m_motorSpeed = def->motorSpeed;
-	m_enableLimit = def->enableLimit;
-	m_enableMotor = def->enableMotor;
+	m_lowerAngle = def.lowerAngle;
+	m_upperAngle = def.upperAngle;
+	m_maxMotorTorque = def.maxMotorTorque;
+	m_motorSpeed = def.motorSpeed;
+	m_enableLimit = def.enableLimit;
+	m_enableMotor = def.enableMotor;
 	m_limitState = e_inactiveLimit;
 }
 

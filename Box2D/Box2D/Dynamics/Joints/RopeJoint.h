@@ -77,7 +77,7 @@ public:
 protected:
 
 	friend class Joint;
-	RopeJoint(const RopeJointDef* data);
+	RopeJoint(const RopeJointDef& data);
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

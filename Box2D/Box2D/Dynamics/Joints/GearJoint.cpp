@@ -43,11 +43,11 @@ using namespace box2d;
 // J = [ug cross(r, ug)]
 // K = J * invM * JT = invMass + invI * cross(r, ug)^2
 
-GearJoint::GearJoint(const GearJointDef* def)
+GearJoint::GearJoint(const GearJointDef& def)
 : Joint(def)
 {
-	m_joint1 = def->joint1;
-	m_joint2 = def->joint2;
+	m_joint1 = def.joint1;
+	m_joint2 = def.joint2;
 
 	m_typeA = m_joint1->GetType();
 	m_typeB = m_joint2->GetType();
@@ -70,7 +70,7 @@ GearJoint::GearJoint(const GearJointDef* def)
 
 	if (m_typeA == e_revoluteJoint)
 	{
-		const auto revolute = static_cast<RevoluteJoint*>(def->joint1);
+		const auto revolute = static_cast<RevoluteJoint*>(def.joint1);
 		m_localAnchorC = revolute->m_localAnchorA;
 		m_localAnchorA = revolute->m_localAnchorB;
 		m_referenceAngleA = revolute->m_referenceAngle;
@@ -80,7 +80,7 @@ GearJoint::GearJoint(const GearJointDef* def)
 	}
 	else
 	{
-		const auto prismatic = static_cast<PrismaticJoint*>(def->joint1);
+		const auto prismatic = static_cast<PrismaticJoint*>(def.joint1);
 		m_localAnchorC = prismatic->m_localAnchorA;
 		m_localAnchorA = prismatic->m_localAnchorB;
 		m_referenceAngleA = prismatic->m_referenceAngle;
@@ -102,7 +102,7 @@ GearJoint::GearJoint(const GearJointDef* def)
 
 	if (m_typeB == e_revoluteJoint)
 	{
-		const auto revolute = static_cast<RevoluteJoint*>(def->joint2);
+		const auto revolute = static_cast<RevoluteJoint*>(def.joint2);
 		m_localAnchorD = revolute->m_localAnchorA;
 		m_localAnchorB = revolute->m_localAnchorB;
 		m_referenceAngleB = revolute->m_referenceAngle;
@@ -112,7 +112,7 @@ GearJoint::GearJoint(const GearJointDef* def)
 	}
 	else
 	{
-		const auto prismatic = static_cast<PrismaticJoint*>(def->joint2);
+		const auto prismatic = static_cast<PrismaticJoint*>(def.joint2);
 		m_localAnchorD = prismatic->m_localAnchorA;
 		m_localAnchorB = prismatic->m_localAnchorB;
 		m_referenceAngleB = prismatic->m_referenceAngle;
@@ -123,7 +123,7 @@ GearJoint::GearJoint(const GearJointDef* def)
 		coordinateB = Dot(pB - pD, m_localAxisD);
 	}
 
-	m_ratio = def->ratio;
+	m_ratio = def.ratio;
 
 	m_constant = coordinateA + m_ratio * coordinateB;
 

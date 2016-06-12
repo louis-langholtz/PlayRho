@@ -92,7 +92,7 @@ protected:
 
 	friend class Joint;
 
-	MotorJoint(const MotorJointDef* def);
+	MotorJoint(const MotorJointDef& def);
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

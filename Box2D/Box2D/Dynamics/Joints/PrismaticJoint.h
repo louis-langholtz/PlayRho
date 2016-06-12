@@ -139,7 +139,7 @@ public:
 protected:
 	friend class Joint;
 	friend class GearJoint;
-	PrismaticJoint(const PrismaticJointDef* def);
+	PrismaticJoint(const PrismaticJointDef& def);
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

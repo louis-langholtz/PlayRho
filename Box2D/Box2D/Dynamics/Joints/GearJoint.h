@@ -74,7 +74,7 @@ public:
 protected:
 
 	friend class Joint;
-	GearJoint(const GearJointDef* data);
+	GearJoint(const GearJointDef& data);
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

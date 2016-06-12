@@ -208,13 +208,15 @@ void World::DestroyBody(Body* b)
 
 Joint* World::CreateJoint(const JointDef* def)
 {
+	assert(def != nullptr);
+
 	assert(!IsLocked());
 	if (IsLocked())
 	{
 		return nullptr;
 	}
 
-	auto j = Joint::Create(def, &m_blockAllocator);
+	auto j = Joint::Create(*def, &m_blockAllocator);
 
 	// Connect to the world list.
 	j->m_prev = nullptr;

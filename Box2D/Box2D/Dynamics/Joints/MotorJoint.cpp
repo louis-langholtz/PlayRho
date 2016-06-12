@@ -42,18 +42,18 @@ void MotorJointDef::Initialize(Body* bA, Body* bB)
 	angularOffset = bodyB->GetAngle() - bodyA->GetAngle();
 }
 
-MotorJoint::MotorJoint(const MotorJointDef* def)
+MotorJoint::MotorJoint(const MotorJointDef& def)
 : Joint(def)
 {
-	m_linearOffset = def->linearOffset;
-	m_angularOffset = def->angularOffset;
+	m_linearOffset = def.linearOffset;
+	m_angularOffset = def.angularOffset;
 
 	m_linearImpulse = Vec2_zero;
 	m_angularImpulse = float_t{0};
 
-	m_maxForce = def->maxForce;
-	m_maxTorque = def->maxTorque;
-	m_correctionFactor = def->correctionFactor;
+	m_maxForce = def.maxForce;
+	m_maxTorque = def.maxTorque;
+	m_correctionFactor = def.correctionFactor;
 }
 
 void MotorJoint::InitVelocityConstraints(const SolverData& data)

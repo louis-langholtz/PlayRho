@@ -45,14 +45,14 @@ void WeldJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor)
 	referenceAngle = bodyB->GetAngle() - bodyA->GetAngle();
 }
 
-WeldJoint::WeldJoint(const WeldJointDef* def)
+WeldJoint::WeldJoint(const WeldJointDef& def)
 : Joint(def)
 {
-	m_localAnchorA = def->localAnchorA;
-	m_localAnchorB = def->localAnchorB;
-	m_referenceAngle = def->referenceAngle;
-	m_frequencyHz = def->frequencyHz;
-	m_dampingRatio = def->dampingRatio;
+	m_localAnchorA = def.localAnchorA;
+	m_localAnchorB = def.localAnchorB;
+	m_referenceAngle = def.referenceAngle;
+	m_frequencyHz = def.frequencyHz;
+	m_dampingRatio = def.dampingRatio;
 
 	m_impulse = Vec3_zero;
 }
