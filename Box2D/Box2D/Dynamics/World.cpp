@@ -151,55 +151,6 @@ void World::DestroyBody(Body* b)
 		return;
 	}
 
-	// Delete the attached joints.
-	auto je = b->m_jointList;
-	while (je)
-	{
-		auto je0 = je;
-		je = je->next;
-
-		if (m_destructionListener)
-		{
-			m_destructionListener->SayGoodbye(je0->joint);
-		}
-
-		DestroyJoint(je0->joint);
-
-		b->m_jointList = je;
-	}
-	b->m_jointList = nullptr;
-
-	// Delete the attached contacts.
-	auto ce = b->m_contactList;
-	while (ce)
-	{
-		auto ce0 = ce;
-		ce = ce->next;
-		m_contactManager.Destroy(ce0->contact);
-	}
-	b->m_contactList = nullptr;
-
-	// Delete the attached fixtures. This destroys broad-phase proxies.
-	auto f = b->m_fixtureList;
-	while (f)
-	{
-		auto f0 = f;
-		f = f->m_next;
-
-		if (m_destructionListener)
-		{
-			m_destructionListener->SayGoodbye(f0);
-		}
-
-		f0->DestroyProxies(m_contactManager.m_broadPhase);
-		f0->Destroy(&m_blockAllocator);
-		f0->~Fixture();
-		m_blockAllocator.Free(f0, sizeof(Fixture));
-
-		b->m_fixtureList = f;
-	}
-	b->m_fixtureList = nullptr;
-
 	// Remove world body list.
 	if (b->m_prev)
 	{

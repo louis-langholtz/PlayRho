@@ -75,7 +75,9 @@ Body::Body(const BodyDef* bd, World* world):
 
 Body::~Body()
 {
-	// shapes and joints are destroyed in World::Destroy
+	DestroyJoints();
+	DestroyContacts();
+	DestroyFixtures();
 }
 
 void Body::DestroyContacts()
@@ -89,6 +91,51 @@ void Body::DestroyContacts()
 		m_world->m_contactManager.Destroy(ce0->contact);
 	}
 	m_contactList = nullptr;
+}
+
+void Body::DestroyJoints()
+{
+	// Delete the attached joints.
+	auto je = m_jointList;
+	while (je)
+	{
+		auto je0 = je;
+		je = je->next;
+		
+		if (m_world->m_destructionListener)
+		{
+			m_world->m_destructionListener->SayGoodbye(je0->joint);
+		}
+		
+		m_world->DestroyJoint(je0->joint);
+		
+		m_jointList = je;
+	}
+	m_jointList = nullptr;
+}
+
+void Body::DestroyFixtures()
+{
+	// Delete the attached fixtures. This destroys broad-phase proxies.
+	auto f = m_fixtureList;
+	while (f)
+	{
+		auto f0 = f;
+		f = f->m_next;
+		
+		if (m_world->m_destructionListener)
+		{
+			m_world->m_destructionListener->SayGoodbye(f0);
+		}
+		
+		f0->DestroyProxies(m_world->m_contactManager.m_broadPhase);
+		f0->Destroy(&m_world->m_blockAllocator);
+		f0->~Fixture();
+		m_world->m_blockAllocator.Free(f0, sizeof(Fixture));
+		
+		m_fixtureList = f;
+	}
+	m_fixtureList = nullptr;
 }
 
 void Body::SetType(BodyType type)

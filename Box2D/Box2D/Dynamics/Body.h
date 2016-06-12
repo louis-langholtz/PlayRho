@@ -442,6 +442,8 @@ private:
 	void Advance(float_t t);
 
 	void DestroyContacts();
+	void DestroyJoints();
+	void DestroyFixtures();
 
 	/// Checks if flagged as being in an island or not.
 	/// @return true if flagged for being in an island, false otherwise.
