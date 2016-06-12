@@ -244,8 +244,8 @@ protected:
 	Contact* m_next = nullptr;
 
 	// Nodes for connecting bodies.
-	ContactEdge m_nodeA = { nullptr, nullptr, nullptr, nullptr};
-	ContactEdge m_nodeB = { nullptr, nullptr, nullptr, nullptr};
+	ContactEdge m_nodeA = { nullptr, nullptr, nullptr, nullptr}; ///< Node A's contact edge.
+	ContactEdge m_nodeB = { nullptr, nullptr, nullptr, nullptr}; ///< Node B's contact edge.
 
 	Fixture* const m_fixtureA;
 	Fixture* const m_fixtureB;

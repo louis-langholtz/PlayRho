@@ -80,10 +80,14 @@ public:
 private:
 	void Add(FixtureProxy* proxyA, FixtureProxy* proxyB);
 	void Add(Contact* contact);
+
+	/// Removes contact from this manager.
+	/// @warning Behavior is undefined if called with a contact that is not managed by this manager.
+	/// @param contact Non-null pointer to a contact that is managed by this manager.
 	void Remove(Contact* contact);
 	
-	contact_count_t m_contactCount = 0;
-	Contact* m_contactList = nullptr;
+	contact_count_t m_contactCount = 0; ///< Count of contacts managed by this manager.
+	Contact* m_contactList = nullptr; ///< Container of contacts managed by this manager.
 	BlockAllocator* const m_allocator;
 };
 
