@@ -288,7 +288,7 @@ void Test::Step(Settings* settings)
 
 	m_pointCount = 0;
 
-	m_world->Step(timeStep, settings->velocityIterations, settings->positionIterations);
+	m_world->Step(timeStep, static_cast<unsigned>(settings->velocityIterations), static_cast<unsigned>(settings->positionIterations));
 
 	m_world->DrawDebugData();
     g_debugDraw.Flush();
