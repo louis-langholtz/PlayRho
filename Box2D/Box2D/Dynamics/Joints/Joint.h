@@ -125,10 +125,6 @@ public:
 	/// Get the reaction torque on bodyB in N*m.
 	virtual float_t GetReactionTorque(float_t inv_dt) const = 0;
 
-	/// Get the next joint the world joint list.
-	Joint* GetNext() noexcept;
-	const Joint* GetNext() const noexcept;
-
 	/// Get the user data pointer.
 	void* GetUserData() const noexcept;
 
@@ -154,6 +150,8 @@ protected:
 	friend class Body;
 	friend class Island;
 	friend class GearJoint;
+	friend class JointIterator;
+	friend class JointList;
 
 	static Joint* Create(const JointDef& def, BlockAllocator* allocator);
 	static void Destroy(Joint* joint, BlockAllocator* allocator);
@@ -167,6 +165,10 @@ protected:
 	// This returns true if the position errors are within tolerance.
 	virtual bool SolvePositionConstraints(const SolverData& data) = 0;
 
+	/// Get the next joint the world joint list.
+	Joint* GetNext() noexcept;
+	const Joint* GetNext() const noexcept;
+	
 	bool IsInIsland() const noexcept;
 	void SetInIsland(bool value) noexcept;
 

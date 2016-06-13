@@ -22,23 +22,21 @@ public:
 	using const_iterator = ConstFixtureIterator;
 	using pointer = const Fixture*;
 	using reference = const Fixture&;
-	
+
 	ConstFixtureList() = default;
 	constexpr ConstFixtureList(const ConstFixtureList& copy) noexcept: p{copy.p} {}
 	constexpr ConstFixtureList(pointer f) noexcept: p{f} {}
-	constexpr ConstFixtureList(const FixtureList& f) noexcept: p{f.get()} {}
+	constexpr ConstFixtureList(const FixtureList& f) noexcept: p{f.p} {}
 
 	ConstFixtureList& operator= (const ConstFixtureList& rhs) noexcept { p = rhs.p; return *this; }
 		
 	const_iterator begin() noexcept { return const_iterator{&p}; }
 	const_iterator end() noexcept { return const_iterator{&q}; }
 	
-	constexpr explicit operator bool() const noexcept { return p != nullptr; }
-	constexpr bool operator! () const noexcept { return p == nullptr; }
+	constexpr bool operator== (const ConstFixtureList& rhs) const noexcept { return p == rhs.p; }
+	constexpr bool operator!= (const ConstFixtureList& rhs) const noexcept { return p != rhs.p; }
 
-	constexpr pointer get() const noexcept { return p; }
-	pointer operator-> () const { return p; }
-	reference operator*() const { return *p; }
+	reference front() const noexcept { return *p; }
 
 private:
 	pointer p = nullptr;

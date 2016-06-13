@@ -26,7 +26,7 @@
 #include <Box2D/Dynamics/WorldCallbacks.h>
 #include <Box2D/Dynamics/TimeStep.h>
 #include <Box2D/Dynamics/BodyList.hpp>
-#include <Box2D/Dynamics/ConstBodyList.hpp>
+#include <Box2D/Dynamics/JointList.hpp>
 
 namespace box2d {
 
@@ -127,17 +127,17 @@ public:
 
 	/// Gets the world body list.
 	/// @return Body list that can be iterated over using its begin and end methods or using ranged-based for-loops.
-	BodyList GetBodies() noexcept;
+	BodyList& GetBodies() noexcept;
 
 	/// Gets the world body list for this constant world.
 	/// @return Body list that can be iterated over using its begin and end methods or using ranged-based for-loops.
-	ConstBodyList GetBodies() const noexcept;
+	const BodyList& GetBodies() const noexcept;
 
 	/// Get the world joint list. With the returned joint, use Joint::GetNext to get
 	/// the next joint in the world list. A nullptr joint indicates the end of the list.
 	/// @return the head of the world joint list.
-	Joint* GetJointList() noexcept;
-	const Joint* GetJointList() const noexcept;
+	Joint* GetJoints() noexcept;
+	const Joint* GetJoints() const noexcept;
 
 	/// Get the world contact list. With the returned contact, use Contact::GetNext to get
 	/// the next contact in the world list. A nullptr contact indicates the end of the list.
@@ -297,22 +297,22 @@ private:
 	Profile m_profile;
 };
 
-inline BodyList World::GetBodies() noexcept
+inline BodyList& World::GetBodies() noexcept
 {
 	return m_bodies;
 }
 
-inline ConstBodyList World::GetBodies() const noexcept
+inline const BodyList& World::GetBodies() const noexcept
 {
 	return m_bodies;
 }
 
-inline Joint* World::GetJointList() noexcept
+inline Joint* World::GetJoints() noexcept
 {
 	return m_joints;
 }
 
-inline const Joint* World::GetJointList() const noexcept
+inline const Joint* World::GetJoints() const noexcept
 {
 	return m_joints;
 }

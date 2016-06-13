@@ -22,9 +22,7 @@
 #include <Box2D/Common/Math.h>
 #include <Box2D/Collision/Shapes/Shape.h>
 #include <Box2D/Dynamics/BodyList.hpp>
-#include <Box2D/Dynamics/ConstBodyList.hpp>
 #include <Box2D/Dynamics/FixtureList.hpp>
-#include <Box2D/Dynamics/ConstFixtureList.hpp>
 #include <memory>
 
 namespace box2d {
@@ -350,12 +348,12 @@ public:
 	bool IsFixedRotation() const noexcept;
 
 	/// Get the list of all fixtures attached to this body.
-	FixtureList GetFixtures() noexcept;
-	ConstFixtureList GetFixtures() const noexcept;
+	FixtureList& GetFixtures() noexcept;
+	const FixtureList& GetFixtures() const noexcept;
 
 	/// Get the list of all joints attached to this body.
-	JointEdge* GetJointList() noexcept;
-	const JointEdge* GetJointList() const noexcept;
+	JointEdge* GetJoints() noexcept;
+	const JointEdge* GetJoints() const noexcept;
 
 	/// Get the list of all contacts attached to this body.
 	/// @warning this list changes during the time step and you may
@@ -386,7 +384,6 @@ private:
 	friend class BodyIterator;
 	friend class ConstBodyIterator;
 	friend class BodyList;
-	friend class ConstBodyList;
 	
 	friend class DistanceJoint;
 	friend class FrictionJoint;
@@ -743,22 +740,22 @@ inline bool Body::IsSleepingAllowed() const noexcept
 	return (m_flags & e_autoSleepFlag) != 0;
 }
 
-inline FixtureList Body::GetFixtures() noexcept
+inline FixtureList& Body::GetFixtures() noexcept
 {
-	return FixtureList(m_fixtures);
+	return m_fixtures;
 }
 
-inline ConstFixtureList Body::GetFixtures() const noexcept
+inline const FixtureList& Body::GetFixtures() const noexcept
 {
-	return ConstFixtureList(m_fixtures);
+	return m_fixtures;
 }
 
-inline JointEdge* Body::GetJointList() noexcept
+inline JointEdge* Body::GetJoints() noexcept
 {
 	return m_joints;
 }
 
-inline const JointEdge* Body::GetJointList() const noexcept
+inline const JointEdge* Body::GetJoints() const noexcept
 {
 	return m_joints;
 }

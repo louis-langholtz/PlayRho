@@ -19,7 +19,7 @@ void FixtureList::push_front(pointer value) noexcept
 
 void FixtureList::pop_front() noexcept
 {
-	*this = p->m_next;
+	p = p->m_next;
 }
 
 FixtureList::iterator FixtureList::erase(FixtureList::iterator pos)

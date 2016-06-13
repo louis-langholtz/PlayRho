@@ -117,7 +117,7 @@ void Body::DestroyJoints()
 void Body::DestroyFixtures()
 {
 	// Delete the attached fixtures. This destroys broad-phase proxies.
-	while (m_fixtures)
+	while (!m_fixtures.empty())
 	{
 		auto& f = m_fixtures.front();
 		m_fixtures.pop_front();

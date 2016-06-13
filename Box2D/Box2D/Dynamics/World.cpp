@@ -85,7 +85,7 @@ World::~World()
 	for (auto&& b: m_bodies)
 	{
 		auto& fixtures = b.m_fixtures;
-		while (fixtures)
+		while (!fixtures.empty())
 		{
 			auto& f = fixtures.front();
 			fixtures.pop_front();

@@ -21,30 +21,29 @@ class ConstBodyList
 public:
 	using const_iterator = ConstBodyIterator;
 	using const_pointer = const Body*;
+	using size_type = body_count_t;
 
 	ConstBodyList() = default;
-	constexpr ConstBodyList(const ConstBodyList& copy) noexcept: p{copy.p} {}
-	constexpr ConstBodyList(const_pointer b) noexcept: p{b} {}
-	constexpr ConstBodyList(const BodyList& b) noexcept: p{b.get()} {}
+	constexpr ConstBodyList(const ConstBodyList& copy) noexcept: m_bodies{copy.m_bodies} {}
+	constexpr ConstBodyList(const BodyList& b) noexcept: m_bodies{&b} {}
 
-	ConstBodyList& operator= (const ConstBodyList& rhs) noexcept { p = rhs.p; return *this; }
+	ConstBodyList& operator= (const ConstBodyList& rhs) noexcept { m_bodies = rhs.m_bodies; return *this; }
 
-	const_iterator begin() noexcept { return const_iterator(p); }
+	const_iterator begin() noexcept { return const_iterator(m_bodies->p); }
 	const_iterator end() noexcept { return const_iterator(nullptr); }
 	
-	const_iterator begin() const noexcept { return const_iterator(p); }
+	const_iterator begin() const noexcept { return const_iterator(m_bodies->p); }
 	const_iterator end() const noexcept { return const_iterator(nullptr); }
 	
-	constexpr bool empty() const noexcept { return p == nullptr; }
-	constexpr explicit operator bool() const noexcept { return p != nullptr; }
-	constexpr bool operator! () const noexcept { return p == nullptr; }
-	constexpr bool operator== (const ConstBodyList& rhs) const noexcept { return p == rhs.p; }
-	constexpr bool operator!= (const ConstBodyList& rhs) const noexcept { return p != rhs.p; }
+	constexpr bool empty() const noexcept { return m_bodies == nullptr || m_bodies->p == nullptr; }
+	size_type size() const noexcept { return (m_bodies == nullptr)? 0: m_bodies->n; }
+	constexpr size_type max_size() const noexcept { return MaxBodies; }
 
-	constexpr const_pointer get() const noexcept { return p; }
+	constexpr bool operator== (const ConstBodyList& rhs) const noexcept { return m_bodies == rhs.m_bodies; }
+	constexpr bool operator!= (const ConstBodyList& rhs) const noexcept { return m_bodies != rhs.m_bodies; }
 
 private:
-	const_pointer p = nullptr;
+	const BodyList* m_bodies = nullptr;
 };
 
 } // namespace box2d

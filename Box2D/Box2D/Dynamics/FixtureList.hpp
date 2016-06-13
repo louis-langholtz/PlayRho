@@ -26,10 +26,9 @@ public:
 	using const_reference = const Fixture&;
 	
 	FixtureList() = default;
-	constexpr FixtureList(const FixtureList& copy) noexcept: p{copy.p} {}
-	constexpr FixtureList(pointer b) noexcept: p{b} {}
+	FixtureList(const FixtureList& copy) = delete;
 	
-	FixtureList& operator= (const FixtureList& rhs) noexcept { p = rhs.p; return *this; }
+	FixtureList& operator= (const FixtureList& rhs) = delete;
 	
 	iterator begin() noexcept { return iterator{&p}; }
 	iterator end() noexcept { return iterator{&q}; }
@@ -37,14 +36,10 @@ public:
 	const_iterator begin() const noexcept { return const_iterator{&p}; }
 	const_iterator end() const noexcept { return const_iterator{&q}; }
 	
-	constexpr explicit operator bool() const noexcept { return p != nullptr; }
-	constexpr bool operator! () const noexcept { return p == nullptr; }
+	constexpr bool empty() const noexcept { return p == nullptr; }
+
 	constexpr bool operator== (const FixtureList& rhs) const noexcept { return p == rhs.p; }
 	constexpr bool operator!= (const FixtureList& rhs) const noexcept { return p != rhs.p; }
-
-	constexpr pointer get() const noexcept { return p; }
-	pointer operator-> () const { return p; }
-	typename std::add_lvalue_reference<Fixture>::type operator*() const { return *p; }
 
 	void push_front(pointer value) noexcept;
 	void pop_front() noexcept;
@@ -54,6 +49,8 @@ public:
 	const_reference front() const noexcept { return *p; }
 
 private:
+	friend class ConstFixtureList;
+
 	pointer p = nullptr;
 	pointer q = nullptr;
 };

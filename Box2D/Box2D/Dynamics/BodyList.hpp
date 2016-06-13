@@ -23,13 +23,13 @@ public:
 	using iterator = BodyIterator;
 	using const_iterator = ConstBodyIterator;
 	using pointer = Body*;
+	using reference = Body&;
 	using size_type = body_count_t;
 
 	BodyList() = default;
-	constexpr BodyList(const BodyList& copy) noexcept: p{copy.p} {}
-	constexpr BodyList(pointer b) noexcept: p{b} {}
+	BodyList(const BodyList& copy) = delete;
 	
-	BodyList& operator= (const BodyList& rhs) noexcept { p = rhs.p; return *this; }
+	BodyList& operator= (const BodyList& rhs) = delete;
 
 	iterator begin() noexcept { return iterator(p); }
 	iterator end() noexcept { return iterator(nullptr); }
@@ -41,19 +41,17 @@ public:
 	size_type size() const noexcept { return n; }
 	constexpr size_type max_size() const noexcept { return MaxBodies; }
 
-	constexpr explicit operator bool() const noexcept { return p != nullptr; }
-	constexpr bool operator! () const noexcept { return p == nullptr; }
 	constexpr bool operator== (const BodyList& rhs) const noexcept { return p == rhs.p; }
 	constexpr bool operator!= (const BodyList& rhs) const noexcept { return p != rhs.p; }
-
-	constexpr pointer get() const noexcept { return p; }
-	pointer operator-> () const { return p; }
-	typename std::add_lvalue_reference<Body>::type operator*() const { return *p; }
 
 	void push_front(pointer value) noexcept;
 	iterator erase(iterator pos);
 
+	reference front() noexcept { return *p; }
+
 private:
+	friend class ConstBodyList;
+
 	pointer p = nullptr;
 	size_type n = 0;
 };
