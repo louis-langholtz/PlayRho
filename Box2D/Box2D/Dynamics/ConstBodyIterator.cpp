@@ -6,7 +6,7 @@
 //
 //
 
-#include <Box2D/Common/ConstBodyIterator.hpp>
+#include <Box2D/Dynamics/ConstBodyIterator.hpp>
 #include <Box2D/Dynamics/Body.h>
 
 using namespace box2d;

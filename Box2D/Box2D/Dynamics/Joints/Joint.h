@@ -151,6 +151,7 @@ protected:
 	friend class Island;
 	friend class GearJoint;
 	friend class JointIterator;
+	friend class ConstJointIterator;
 	friend class JointList;
 
 	static Joint* Create(const JointDef& def, BlockAllocator* allocator);

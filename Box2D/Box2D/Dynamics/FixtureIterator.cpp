@@ -6,7 +6,7 @@
 //
 //
 
-#include <Box2D/Common/FixtureIterator.hpp>
+#include <Box2D/Dynamics/FixtureIterator.hpp>
 #include <Box2D/Dynamics/Fixture.h>
 
 using namespace box2d;
