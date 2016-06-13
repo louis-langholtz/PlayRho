@@ -50,8 +50,6 @@ public:
 	reference front() noexcept { return *p; }
 
 private:
-	friend class ConstBodyList;
-
 	pointer p = nullptr;
 	size_type n = 0;
 };

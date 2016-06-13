@@ -49,8 +49,6 @@ public:
 	const_reference front() const noexcept { return *p; }
 
 private:
-	friend class ConstFixtureList;
-
 	pointer p = nullptr;
 	pointer q = nullptr;
 };

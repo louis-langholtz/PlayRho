@@ -13,14 +13,10 @@
 		4721348A1C8CF86F009536F9 /* BodyIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472134881C8CF86F009536F9 /* BodyIterator.hpp */; };
 		4721348D1C8CF9F9009536F9 /* ConstBodyIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4721348B1C8CF9F9009536F9 /* ConstBodyIterator.cpp */; };
 		4721348E1C8CF9FA009536F9 /* ConstBodyIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4721348C1C8CF9F9009536F9 /* ConstBodyIterator.hpp */; };
-		472134911C8CFC0B009536F9 /* ConstBodyList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4721348F1C8CFC0B009536F9 /* ConstBodyList.cpp */; };
-		472134921C8CFC0B009536F9 /* ConstBodyList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472134901C8CFC0B009536F9 /* ConstBodyList.hpp */; };
 		472134931C8D03B8009536F9 /* ConstBodyIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4721348B1C8CF9F9009536F9 /* ConstBodyIterator.cpp */; };
 		472134941C8D03BD009536F9 /* ConstBodyIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4721348C1C8CF9F9009536F9 /* ConstBodyIterator.hpp */; };
 		472134951C8D03C3009536F9 /* BodyIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472134881C8CF86F009536F9 /* BodyIterator.hpp */; };
 		472134961C8D03C6009536F9 /* BodyIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472134871C8CF86F009536F9 /* BodyIterator.cpp */; };
-		472134971C8D03CE009536F9 /* ConstBodyList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472134901C8CFC0B009536F9 /* ConstBodyList.hpp */; };
-		472134981C8D03D2009536F9 /* ConstBodyList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4721348F1C8CFC0B009536F9 /* ConstBodyList.cpp */; };
 		472134991C8D03D6009536F9 /* BodyList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472134841C8CD7CF009536F9 /* BodyList.hpp */; };
 		4721349A1C8D03D9009536F9 /* BodyList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472134831C8CD7CF009536F9 /* BodyList.cpp */; };
 		4721349D1C8E4CB5009536F9 /* FixtureList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4721349B1C8E4CB5009536F9 /* FixtureList.cpp */; };
@@ -35,10 +31,6 @@
 		472134AA1C8E4E12009536F9 /* ConstFixtureIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472134A71C8E4E12009536F9 /* ConstFixtureIterator.cpp */; };
 		472134AB1C8E4E12009536F9 /* ConstFixtureIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472134A81C8E4E12009536F9 /* ConstFixtureIterator.hpp */; };
 		472134AC1C8E4E12009536F9 /* ConstFixtureIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472134A81C8E4E12009536F9 /* ConstFixtureIterator.hpp */; };
-		472134AF1C8E4F38009536F9 /* ConstFixtureList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472134AD1C8E4F38009536F9 /* ConstFixtureList.cpp */; };
-		472134B01C8E4F38009536F9 /* ConstFixtureList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472134AD1C8E4F38009536F9 /* ConstFixtureList.cpp */; };
-		472134B11C8E4F38009536F9 /* ConstFixtureList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472134AE1C8E4F38009536F9 /* ConstFixtureList.hpp */; };
-		472134B21C8E4F38009536F9 /* ConstFixtureList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472134AE1C8E4F38009536F9 /* ConstFixtureList.hpp */; };
 		4751EE291CEDD78F00D459CB /* Mobile.h in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE281CEDD78F00D459CB /* Mobile.h */; };
 		4751EE2B1CEDD79900D459CB /* ConveyorBelt.h in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE2A1CEDD79900D459CB /* ConveyorBelt.h */; };
 		4751EE2E1CEDD7A300D459CB /* MotorJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE2C1CEDD7A300D459CB /* MotorJoint.h */; };
@@ -324,16 +316,12 @@
 		472134881C8CF86F009536F9 /* BodyIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyIterator.hpp; sourceTree = "<group>"; };
 		4721348B1C8CF9F9009536F9 /* ConstBodyIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConstBodyIterator.cpp; sourceTree = "<group>"; };
 		4721348C1C8CF9F9009536F9 /* ConstBodyIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConstBodyIterator.hpp; sourceTree = "<group>"; };
-		4721348F1C8CFC0B009536F9 /* ConstBodyList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConstBodyList.cpp; sourceTree = "<group>"; };
-		472134901C8CFC0B009536F9 /* ConstBodyList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConstBodyList.hpp; sourceTree = "<group>"; };
 		4721349B1C8E4CB5009536F9 /* FixtureList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FixtureList.cpp; sourceTree = "<group>"; };
 		4721349C1C8E4CB5009536F9 /* FixtureList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureList.hpp; sourceTree = "<group>"; };
 		472134A11C8E4D47009536F9 /* FixtureIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FixtureIterator.cpp; sourceTree = "<group>"; };
 		472134A21C8E4D47009536F9 /* FixtureIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureIterator.hpp; sourceTree = "<group>"; };
 		472134A71C8E4E12009536F9 /* ConstFixtureIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConstFixtureIterator.cpp; sourceTree = "<group>"; };
 		472134A81C8E4E12009536F9 /* ConstFixtureIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConstFixtureIterator.hpp; sourceTree = "<group>"; };
-		472134AD1C8E4F38009536F9 /* ConstFixtureList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConstFixtureList.cpp; sourceTree = "<group>"; };
-		472134AE1C8E4F38009536F9 /* ConstFixtureList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConstFixtureList.hpp; sourceTree = "<group>"; };
 		4751EE281CEDD78F00D459CB /* Mobile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mobile.h; sourceTree = "<group>"; };
 		4751EE2A1CEDD79900D459CB /* ConveyorBelt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConveyorBelt.h; sourceTree = "<group>"; };
 		4751EE2C1CEDD7A300D459CB /* MotorJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MotorJoint.h; sourceTree = "<group>"; };
@@ -702,12 +690,8 @@
 				80BB8959141C3E5900F1753A /* WorldCallbacks.h */,
 				472134831C8CD7CF009536F9 /* BodyList.cpp */,
 				472134841C8CD7CF009536F9 /* BodyList.hpp */,
-				4721348F1C8CFC0B009536F9 /* ConstBodyList.cpp */,
-				472134901C8CFC0B009536F9 /* ConstBodyList.hpp */,
 				4721349B1C8E4CB5009536F9 /* FixtureList.cpp */,
 				4721349C1C8E4CB5009536F9 /* FixtureList.hpp */,
-				472134AD1C8E4F38009536F9 /* ConstFixtureList.cpp */,
-				472134AE1C8E4F38009536F9 /* ConstFixtureList.hpp */,
 				47A983341D0F4EFF00AA7D1A /* JointList.cpp */,
 				47A983351D0F4EFF00AA7D1A /* JointList.hpp */,
 				47A983381D0F51A300AA7D1A /* JointIterator.cpp */,
@@ -918,10 +902,8 @@
 				47AA5DCB1C4C5FBE008AF2BA /* Box2D.h in Headers */,
 				47AA5DCC1C4C5FBE008AF2BA /* BroadPhase.h in Headers */,
 				47AA5DCD1C4C5FBE008AF2BA /* Collision.h in Headers */,
-				472134971C8D03CE009536F9 /* ConstBodyList.hpp in Headers */,
 				47AA5DCE1C4C5FBE008AF2BA /* Distance.h in Headers */,
 				47AA5DCF1C4C5FBE008AF2BA /* DynamicTree.h in Headers */,
-				472134B21C8E4F38009536F9 /* ConstFixtureList.hpp in Headers */,
 				47AA5DD01C4C5FBE008AF2BA /* TimeOfImpact.h in Headers */,
 				472134AC1C8E4E12009536F9 /* ConstFixtureIterator.hpp in Headers */,
 				47AA5DD11C4C5FBE008AF2BA /* ChainShape.h in Headers */,
@@ -991,12 +973,10 @@
 			files = (
 				80BB8987141C3E5900F1753A /* Box2D.h in Headers */,
 				80BB8989141C3E5900F1753A /* BroadPhase.h in Headers */,
-				472134921C8CFC0B009536F9 /* ConstBodyList.hpp in Headers */,
 				80BB898E141C3E5900F1753A /* Collision.h in Headers */,
 				80BB8990141C3E5900F1753A /* Distance.h in Headers */,
 				80BB8992141C3E5900F1753A /* DynamicTree.h in Headers */,
 				80BB8994141C3E5900F1753A /* TimeOfImpact.h in Headers */,
-				472134B11C8E4F38009536F9 /* ConstFixtureList.hpp in Headers */,
 				80BB8996141C3E5900F1753A /* ChainShape.h in Headers */,
 				472134AB1C8E4E12009536F9 /* ConstFixtureIterator.hpp in Headers */,
 				80BB8998141C3E5900F1753A /* CircleShape.h in Headers */,
@@ -1217,7 +1197,6 @@
 				472134AA1C8E4E12009536F9 /* ConstFixtureIterator.cpp in Sources */,
 				47AA5DBC1C4C5FBE008AF2BA /* DistanceJoint.cpp in Sources */,
 				47AA5DBD1C4C5FBE008AF2BA /* FrictionJoint.cpp in Sources */,
-				472134B01C8E4F38009536F9 /* ConstFixtureList.cpp in Sources */,
 				47AA5DBE1C4C5FBE008AF2BA /* GearJoint.cpp in Sources */,
 				47AA5DBF1C4C5FBE008AF2BA /* Joint.cpp in Sources */,
 				47AA5DC01C4C5FBE008AF2BA /* MouseJoint.cpp in Sources */,
@@ -1230,7 +1209,6 @@
 				47AA5DC61C4C5FBE008AF2BA /* WheelJoint.cpp in Sources */,
 				47AA5DC71C4C5FBE008AF2BA /* Rope.cpp in Sources */,
 				47AA5DC81C4C5FBE008AF2BA /* MotorJoint.cpp in Sources */,
-				472134981C8D03D2009536F9 /* ConstBodyList.cpp in Sources */,
 				472134A41C8E4D47009536F9 /* FixtureIterator.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1325,7 +1303,6 @@
 				472134A91C8E4E12009536F9 /* ConstFixtureIterator.cpp in Sources */,
 				80BB89C8141C3E5900F1753A /* PolygonContact.cpp in Sources */,
 				80BB89CA141C3E5900F1753A /* DistanceJoint.cpp in Sources */,
-				472134AF1C8E4F38009536F9 /* ConstFixtureList.cpp in Sources */,
 				80BB89CC141C3E5900F1753A /* FrictionJoint.cpp in Sources */,
 				80BB89CE141C3E5900F1753A /* GearJoint.cpp in Sources */,
 				80BB89D0141C3E5900F1753A /* Joint.cpp in Sources */,
@@ -1338,7 +1315,6 @@
 				80BB89DE141C3E5900F1753A /* WheelJoint.cpp in Sources */,
 				80BB89E0141C3E5900F1753A /* Rope.cpp in Sources */,
 				80620F8F168B934600D46C8D /* MotorJoint.cpp in Sources */,
-				472134911C8CFC0B009536F9 /* ConstBodyList.cpp in Sources */,
 				472134A31C8E4D47009536F9 /* FixtureIterator.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
