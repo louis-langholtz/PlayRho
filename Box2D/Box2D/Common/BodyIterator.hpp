@@ -30,6 +30,8 @@ public:
 	reference operator*() const noexcept { return *p; }
 	
 private:
+	friend class BodyList;
+
 	pointer next(pointer q) const noexcept;
 	
 	pointer p;

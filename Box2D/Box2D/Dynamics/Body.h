@@ -21,6 +21,8 @@
 
 #include <Box2D/Common/Math.h>
 #include <Box2D/Collision/Shapes/Shape.h>
+#include <Box2D/Dynamics/BodyList.hpp>
+#include <Box2D/Dynamics/ConstBodyList.hpp>
 #include <Box2D/Dynamics/FixtureList.hpp>
 #include <Box2D/Dynamics/ConstFixtureList.hpp>
 #include <memory>
@@ -383,6 +385,8 @@ private:
 	friend class Contact;
 	friend class BodyIterator;
 	friend class ConstBodyIterator;
+	friend class BodyList;
+	friend class ConstBodyList;
 	
 	friend class DistanceJoint;
 	friend class FrictionJoint;
@@ -495,7 +499,7 @@ private:
 	Body* m_prev = nullptr; ///< Previous body. 8-bytes.
 	Body* m_next = nullptr; ///< Next body. 8-bytes.
 
-	FixtureList m_fixtures = nullptr; ///< Pointer to first fixture in a linked list. 8-bytes.
+	FixtureList m_fixtures; ///< Pointer to first fixture in a linked list. 8-bytes.
 	JointEdge* m_joints = nullptr; ///< Pointer to first joint in a linked list. 8-bytes.
 	ContactEdge* m_contacts = nullptr; ///< Pointer to first contact in a linked list. 8-bytes.
 

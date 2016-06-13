@@ -13,5 +13,5 @@ using namespace box2d;
 
 BodyIterator::pointer BodyIterator::next(pointer q) const noexcept
 {
-	return p->GetNext();
+	return p->m_next;
 }

@@ -117,25 +117,21 @@ void Body::DestroyJoints()
 void Body::DestroyFixtures()
 {
 	// Delete the attached fixtures. This destroys broad-phase proxies.
-	auto f = m_fixtures;
-	while (f)
+	while (m_fixtures)
 	{
-		auto f0 = f;
-		f = f->m_next;
+		auto& f = m_fixtures.front();
+		m_fixtures.pop_front();
 		
 		if (m_world->m_destructionListener)
 		{
-			m_world->m_destructionListener->SayGoodbye(*f0);
+			m_world->m_destructionListener->SayGoodbye(f);
 		}
 		
-		f0->DestroyProxies(m_world->m_contactManager.m_broadPhase);
-		f0->Destroy(&m_world->m_blockAllocator);
-		f0->~Fixture();
-		m_world->m_blockAllocator.Free(f0.get(), sizeof(Fixture));
-		
-		m_fixtures = f;
+		f.DestroyProxies(m_world->m_contactManager.m_broadPhase);
+		f.Destroy(&m_world->m_blockAllocator);
+		f.~Fixture();
+		m_world->m_blockAllocator.Free(&f, sizeof(Fixture));
 	}
-	m_fixtures = nullptr;
 }
 
 void Body::SetType(BodyType type)
@@ -205,8 +201,7 @@ Fixture* Body::CreateFixture(const FixtureDef& def)
 		fixture->CreateProxies(m_world->m_contactManager.m_broadPhase, m_xf);
 	}
 
-	fixture->m_next = m_fixtures;
-	m_fixtures = fixture;
+	m_fixtures.push_front(fixture);
 
 	// Adjust mass properties if needed.
 	if (fixture->m_density > float_t{0})
@@ -234,16 +229,14 @@ void Body::DestroyFixture(Fixture* fixture)
 	// Remove the fixture from this body's singly linked list.
 	auto found = false;
 	{
-		auto node = &m_fixtures;
-		while (*node)
+		for (auto it = m_fixtures.begin(); it != m_fixtures.end(); ++it)
 		{
-			if (*node == fixture)
+			if (&(*it) == fixture)
 			{
-				*node = fixture->m_next;
+				m_fixtures.erase(it);
 				found = true;
 				break;
 			}
-			node = &(*node)->m_next;
 		}
 	}
 
@@ -275,8 +268,8 @@ void Body::DestroyFixture(Fixture* fixture)
 		fixture->DestroyProxies(m_world->m_contactManager.m_broadPhase);
 	}
 
-	fixture->Destroy(allocator);
 	fixture->m_next = nullptr;
+	fixture->Destroy(allocator);
 	fixture->~Fixture();
 	allocator->Free(fixture, sizeof(Fixture));
 

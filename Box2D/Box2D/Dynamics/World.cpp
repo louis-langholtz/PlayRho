@@ -82,19 +82,16 @@ World::World(const Vec2& gravity): m_gravity(gravity)
 World::~World()
 {
 	// Some shapes allocate using alloc.
-	auto b = m_bodies;
-	while (b)
+	for (auto&& b: m_bodies)
 	{
-		auto bNext = b->m_next;
-		auto f = b->m_fixtures;
-		while (f)
+		auto& fixtures = b.m_fixtures;
+		while (fixtures)
 		{
-			auto fNext = f->m_next;
-			f->m_proxyCount = 0;
-			f->Destroy(&m_blockAllocator);
-			f = fNext;
+			auto& f = fixtures.front();
+			fixtures.pop_front();
+			f.m_proxyCount = 0;
+			f.Destroy(&m_blockAllocator);
 		}
-		b = bNext;
 	}
 }
 
@@ -143,50 +140,29 @@ Body* World::CreateBody(const BodyDef* def)
 
 bool World::Add(Body& b)
 {
-	assert(m_bodyCount < MaxBodies);
-	if (m_bodyCount >= MaxBodies)
+	assert(!b.m_prev);
+	assert(!b.m_next);
+
+	assert(m_bodies.size() < m_bodies.max_size());
+	if (m_bodies.size() >= m_bodies.max_size())
 	{
 		return false;
 	}
 	
 	// Add to world doubly linked list.
-	b.m_prev = nullptr;
-	b.m_next = m_bodies;
-	if (m_bodies)
-	{
-		m_bodies->m_prev = &b;
-	}
-	m_bodies = &b;
-	
-	++m_bodyCount;
+	m_bodies.push_front(&b);
 	return true;
 }
 
 bool World::Remove(Body& b)
 {
-	assert(m_bodyCount > 0);
-	if (m_bodyCount == 0)
+	assert(!m_bodies.empty());
+	if (m_bodies.empty())
 	{
 		return false;
 	}
 
-	// Remove world body list.
-	if (b.m_prev)
-	{
-		b.m_prev->m_next = b.m_next;
-	}
-	
-	if (b.m_next)
-	{
-		b.m_next->m_prev = b.m_prev;
-	}
-	
-	if (&b == m_bodies)
-	{
-		m_bodies = b.m_next;
-	}
-
-	--m_bodyCount;
+	m_bodies.erase(BodyIterator{&b});
 	return true;
 }
 
@@ -374,9 +350,9 @@ void World::SetAllowSleeping(bool flag) noexcept
 	m_allowSleep = flag;
 	if (!m_allowSleep)
 	{
-		for (auto b = m_bodies; b; b = b->m_next)
+		for (auto&& b: m_bodies)
 		{
-			b->SetAwake();
+			b.SetAwake();
 		}
 	}
 }
@@ -388,10 +364,10 @@ void World::Solve(const TimeStep& step)
 	m_profile.solvePosition = float_t{0};
 
 	// Clear all the island flags.
-	for (auto b = m_bodies; b; b = b->GetNext())
+	for (auto&& b: m_bodies)
 	{
-		assert(b->m_islandIndex == Body::InvalidIslandIndex);
-		b->UnsetInIsland();
+		assert(b.m_islandIndex == Body::InvalidIslandIndex);
+		b.UnsetInIsland();
 	}
 	for (auto c = m_contactManager.GetContactList(); c; c = c->GetNext())
 	{
@@ -403,11 +379,11 @@ void World::Solve(const TimeStep& step)
 	}
 
 	// Size the island for the worst case.
-	Island island(m_bodyCount, m_contactManager.GetContactCount(), m_jointCount,
+	Island island(GetBodyCount(), m_contactManager.GetContactCount(), m_jointCount,
 				  m_stackAllocator, m_contactManager.m_contactListener);
 	
 	// Build and simulate all awake islands.
-	const auto stackSize = m_bodyCount;
+	const auto stackSize = GetBodyCount();
 	auto stack = std::unique_ptr<Body*[], StackAllocator&>(m_stackAllocator.Allocate<Body*>(stackSize), m_stackAllocator);
 	for (auto seed = m_bodies; seed; seed = seed->GetNext())
 	{
@@ -425,7 +401,7 @@ void World::Solve(const TimeStep& step)
 		// Reset island and stack.
 		island.Clear();
 		auto stackCount = size_type{0};
-		stack[stackCount++] = seed;
+		stack[stackCount++] = seed.get();
 		seed->SetInIsland();
 
 		// Perform a depth first search (DFS) on the constraint graph.
@@ -513,13 +489,13 @@ void World::Solve(const TimeStep& step)
 	{
 		Timer timer;
 		// Synchronize fixtures, check for out of range bodies.
-		for (auto b = m_bodies; b; b = b->GetNext())
+		for (auto&& b: m_bodies)
 		{
 			// A non-static body that was in an island may have moved.
-			if ((b->GetType() != BodyType::Static) && b->IsInIsland())
+			if ((b.GetType() != BodyType::Static) && b.IsInIsland())
 			{
 				// Update fixtures (for broad-phase).
-				b->SynchronizeFixtures();
+				b.SynchronizeFixtures();
 			}
 		}
 
@@ -531,10 +507,10 @@ void World::Solve(const TimeStep& step)
 
 void World::ResetBodiesForSolveTOI()
 {
-	for (auto b = m_bodies; b; b = b->m_next)
+	for (auto&& b: m_bodies)
 	{
-		b->UnsetInIsland();
-		b->m_sweep.ResetAlpha0();
+		b.UnsetInIsland();
+		b.m_sweep.ResetAlpha0();
 	}
 }
 
@@ -818,10 +794,10 @@ void World::Step(float_t dt, unsigned velocityIterations, unsigned positionItera
 
 void World::ClearForces() noexcept
 {
-	for (auto body = m_bodies; body; body = body->GetNext())
+	for (auto&& body: m_bodies)
 	{
-		body->m_force = Vec2_zero;
-		body->m_torque = float_t{0};
+		body.m_force = Vec2_zero;
+		body.m_torque = float_t{0};
 	}
 }
 
@@ -995,24 +971,24 @@ void World::DrawDebugData()
 
 	if (flags & Draw::e_shapeBit)
 	{
-		for (auto b = m_bodies; b; b = b->GetNext())
+		for (auto&& b: m_bodies)
 		{
-			const auto xf = b->GetTransform();
-			for (auto&& f: b->GetFixtures())
+			const auto xf = b.GetTransform();
+			for (auto&& f: b.GetFixtures())
 			{
-				if (!b->IsActive())
+				if (!b.IsActive())
 				{
 					DrawShape(&f, xf, Color(0.5f, 0.5f, 0.3f));
 				}
-				else if (b->GetType() == BodyType::Static)
+				else if (b.GetType() == BodyType::Static)
 				{
 					DrawShape(&f, xf, Color(0.5f, 0.9f, 0.5f));
 				}
-				else if (b->GetType() == BodyType::Kinematic)
+				else if (b.GetType() == BodyType::Kinematic)
 				{
 					DrawShape(&f, xf, Color(0.5f, 0.5f, 0.9f));
 				}
-				else if (!b->IsAwake())
+				else if (!b.IsAwake())
 				{
 					DrawShape(&f, xf, Color(0.6f, 0.6f, 0.6f));
 				}
@@ -1052,14 +1028,14 @@ void World::DrawDebugData()
 		const Color color(0.9f, 0.3f, 0.9f);
 		const auto bp = &m_contactManager.m_broadPhase;
 
-		for (auto b = m_bodies; b; b = b->GetNext())
+		for (auto&& b: m_bodies)
 		{
-			if (!b->IsActive())
+			if (!b.IsActive())
 			{
 				continue;
 			}
 
-			for (auto&& f: b->GetFixtures())
+			for (auto&& f: b.GetFixtures())
 			{
 				for (auto i = decltype(f.m_proxyCount){0}; i < f.m_proxyCount; ++i)
 				{
@@ -1079,10 +1055,10 @@ void World::DrawDebugData()
 
 	if (flags & Draw::e_centerOfMassBit)
 	{
-		for (auto b = m_bodies; b; b = b->GetNext())
+		for (auto&& b: m_bodies)
 		{
-			auto xf = b->GetTransform();
-			xf.p = b->GetWorldCenter();
+			auto xf = b.GetTransform();
+			xf.p = b.GetWorldCenter();
 			g_debugDraw->DrawTransform(xf);
 		}
 	}
@@ -1116,11 +1092,11 @@ void World::ShiftOrigin(const Vec2& newOrigin)
 		return;
 	}
 
-	for (auto b = m_bodies; b; b = b->m_next)
+	for (auto&& b: m_bodies)
 	{
-		b->m_xf.p -= newOrigin;
-		b->m_sweep.pos0.c -= newOrigin;
-		b->m_sweep.pos1.c -= newOrigin;
+		b.m_xf.p -= newOrigin;
+		b.m_sweep.pos0.c -= newOrigin;
+		b.m_sweep.pos1.c -= newOrigin;
 	}
 
 	for (auto j = m_joints; j; j = j->m_next)
@@ -1141,13 +1117,13 @@ void World::Dump()
 	log("Vec2 g(%.15lef, %.15lef);\n", m_gravity.x, m_gravity.y);
 	log("m_world->SetGravity(g);\n");
 
-	log("Body** bodies = (Body**)alloc(%d * sizeof(Body*));\n", m_bodyCount);
+	log("Body** bodies = (Body**)alloc(%d * sizeof(Body*));\n", GetBodyCount());
 	log("Joint** joints = (Joint**)alloc(%d * sizeof(Joint*));\n", m_jointCount);
 	auto i = body_count_t{0};
-	for (auto b = m_bodies; b; b = b->m_next)
+	for (auto&& b: m_bodies)
 	{
-		b->m_islandIndex = i;
-		b->Dump();
+		b.m_islandIndex = i;
+		b.Dump();
 		++i;
 	}
 

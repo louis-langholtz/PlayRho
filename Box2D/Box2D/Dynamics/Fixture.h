@@ -135,11 +135,6 @@ public:
 	Body* GetBody() noexcept;
 	const Body* GetBody() const noexcept;
 
-	/// Get the next fixture in the parent body's fixture list.
-	/// @return the next shape.
-	FixtureList GetNext();
-	ConstFixtureList GetNext() const;
-
 	/// Get the user data that was assigned in the fixture definition. Use this to
 	/// store your application specific data.
 	void* GetUserData() const noexcept;
@@ -199,8 +194,16 @@ protected:
 	friend class Body;
 	friend class World;
 	friend class ContactManager;
+	friend class FixtureList;
+	friend class FixtureIterator;
+	friend class ConstFixtureIterator;
 
 	Fixture(Body* body) noexcept: m_body(body) {}
+
+	/// Get the next fixture in the parent body's fixture list.
+	/// @return the next shape.
+	Fixture* GetNext();
+	const Fixture* GetNext() const;
 
 	// We need separation create/destroy functions from the constructor/destructor because
 	// the destructor cannot access the allocator (no destructor arguments allowed by C++).
@@ -221,7 +224,7 @@ protected:
 
 	Body* const m_body;
 	float_t m_density = float_t{0};
-	FixtureList m_next = nullptr;
+	Fixture* m_next = nullptr;
 	Shape* m_shape = nullptr;
 	float_t m_friction; ///< Friction as a coefficient.
 	float_t m_restitution; ///< Restitution as a coefficient.
@@ -277,12 +280,12 @@ inline const Body* Fixture::GetBody() const noexcept
 	return m_body;
 }
 
-inline FixtureList Fixture::GetNext()
+inline Fixture* Fixture::GetNext()
 {
 	return m_next;
 }
 
-inline ConstFixtureList Fixture::GetNext() const
+inline const Fixture* Fixture::GetNext() const
 {
 	return m_next;
 }

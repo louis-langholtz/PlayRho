@@ -25,17 +25,13 @@ public:
 	
 	ConstFixtureList() = default;
 	constexpr ConstFixtureList(const ConstFixtureList& copy) noexcept: p{copy.p} {}
-
 	constexpr ConstFixtureList(pointer f) noexcept: p{f} {}
 	constexpr ConstFixtureList(const FixtureList& f) noexcept: p{f.get()} {}
 
 	ConstFixtureList& operator= (const ConstFixtureList& rhs) noexcept { p = rhs.p; return *this; }
-	
-	const_iterator begin() noexcept { return const_iterator(p); }
-	const_iterator end() noexcept { return const_iterator(nullptr); }
-	
-	const_iterator begin() const noexcept { return const_iterator(p); }
-	const_iterator end() const noexcept { return const_iterator(nullptr); }
+		
+	const_iterator begin() noexcept { return const_iterator{&p}; }
+	const_iterator end() noexcept { return const_iterator{&q}; }
 	
 	constexpr explicit operator bool() const noexcept { return p != nullptr; }
 	constexpr bool operator! () const noexcept { return p == nullptr; }
@@ -46,6 +42,7 @@ public:
 
 private:
 	pointer p = nullptr;
+	pointer q = nullptr;
 };
 
 } // namespace box2d

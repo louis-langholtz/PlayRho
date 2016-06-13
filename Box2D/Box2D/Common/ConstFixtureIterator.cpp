@@ -11,7 +11,7 @@
 
 using namespace box2d;
 
-ConstFixtureIterator::pointer ConstFixtureIterator::next(pointer q) const noexcept
+ConstFixtureIterator::pointer const * ConstFixtureIterator::next(pointer const * q) const noexcept
 {
-	return p->GetNext().get();
+	return &((*q)->m_next);
 }
