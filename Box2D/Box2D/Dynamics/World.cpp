@@ -385,10 +385,10 @@ void World::Solve(const TimeStep& step)
 	// Build and simulate all awake islands.
 	const auto stackSize = GetBodyCount();
 	auto stack = std::unique_ptr<Body*[], StackAllocator&>(m_stackAllocator.Allocate<Body*>(stackSize), m_stackAllocator);
-	for (auto seed = m_bodies; seed; seed = seed->GetNext())
+	for (auto&& seed: m_bodies)
 	{
 		// Skip seed (body) if static, already in island, not-awake, or not-active.
-		if ((seed->GetType() == BodyType::Static) || seed->IsInIsland() || !seed->IsAwake() || !seed->IsActive())
+		if ((seed.GetType() == BodyType::Static) || seed.IsInIsland() || !seed.IsAwake() || !seed.IsActive())
 		{
 			// ((seed->m_flags & (Body::e_accelerationFlag|Body::e_velocityFlag)) == 0) ||
 			// (seed->m_flags & Body::e_islandFlag) ||
@@ -401,8 +401,8 @@ void World::Solve(const TimeStep& step)
 		// Reset island and stack.
 		island.Clear();
 		auto stackCount = size_type{0};
-		stack[stackCount++] = seed.get();
-		seed->SetInIsland();
+		stack[stackCount++] = &seed;
+		seed.SetInIsland();
 
 		// Perform a depth first search (DFS) on the constraint graph.
 		while (stackCount > 0)
