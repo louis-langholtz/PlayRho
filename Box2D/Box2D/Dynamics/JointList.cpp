@@ -14,7 +14,6 @@ using namespace box2d;
 void JointList::push_front(pointer value) noexcept
 {
 	assert(n < max_size());
-	
 	if (n < max_size())
 	{
 		value->m_prev = nullptr;

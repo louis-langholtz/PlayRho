@@ -25,10 +25,9 @@ public:
 	using size_type = joint_count_t;
 
 	JointList() = default;
-	constexpr JointList(const JointList& copy) noexcept: p{copy.p} {}
-	constexpr JointList(pointer b) noexcept: p{b} {}
+	constexpr JointList(const JointList& copy) = delete;
 
-	JointList& operator= (const JointList& rhs) noexcept { p = rhs.p; return *this; }
+	JointList& operator= (const JointList& rhs) = delete;
 	
 	iterator begin() noexcept { return iterator(p); }
 	iterator end() noexcept { return iterator(nullptr); }

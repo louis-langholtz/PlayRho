@@ -136,8 +136,8 @@ public:
 	/// Get the world joint list. With the returned joint, use Joint::GetNext to get
 	/// the next joint in the world list. A nullptr joint indicates the end of the list.
 	/// @return the head of the world joint list.
-	Joint* GetJoints() noexcept;
-	const Joint* GetJoints() const noexcept;
+	JointList& GetJoints() noexcept;
+	const JointList& GetJoints() const noexcept;
 
 	/// Get the world contact list. With the returned contact, use Contact::GetNext to get
 	/// the next contact in the world list. A nullptr contact indicates the end of the list.
@@ -273,9 +273,7 @@ private:
 	ContactManager m_contactManager{&m_blockAllocator, &m_defaultFilter, &m_defaultListener};
 
 	BodyList m_bodies; ///< Body list linked-list.
-	Joint* m_joints = nullptr; ///< Joint list linked-list.
-
-	size_type m_jointCount = 0; ///< Count of joints in joint list.
+	JointList m_joints; ///< Joint list linked-list.
 
 	Vec2 m_gravity;
 	bool m_allowSleep = true;
@@ -307,12 +305,12 @@ inline const BodyList& World::GetBodies() const noexcept
 	return m_bodies;
 }
 
-inline Joint* World::GetJoints() noexcept
+inline JointList& World::GetJoints() noexcept
 {
 	return m_joints;
 }
 
-inline const Joint* World::GetJoints() const noexcept
+inline const JointList& World::GetJoints() const noexcept
 {
 	return m_joints;
 }
@@ -334,7 +332,7 @@ inline body_count_t World::GetBodyCount() const noexcept
 
 inline World::size_type World::GetJointCount() const noexcept
 {
-	return m_jointCount;
+	return m_joints.size();
 }
 
 inline contact_count_t World::GetContactCount() const noexcept

@@ -195,14 +195,7 @@ Joint* World::CreateJoint(const JointDef* def)
 	auto j = Joint::Create(*def, &m_blockAllocator);
 
 	// Connect to the world list.
-	j->m_prev = nullptr;
-	j->m_next = m_joints;
-	if (m_joints)
-	{
-		m_joints->m_prev = j;
-	}
-	m_joints = j;
-	++m_jointCount;
+	m_joints.push_front(j);
 
 	// Connect to the bodies' doubly linked lists.
 	j->m_edgeA.joint = j;
@@ -253,23 +246,7 @@ void World::DestroyJoint(Joint* j)
 	}
 
 	const auto collideConnected = j->m_collideConnected;
-
-	// Remove from the doubly linked list.
-	if (j->m_prev)
-	{
-		j->m_prev->m_next = j->m_next;
-	}
-
-	if (j->m_next)
-	{
-		j->m_next->m_prev = j->m_prev;
-	}
-
-	if (j == m_joints)
-	{
-		m_joints = j->m_next;
-	}
-
+	
 	// Disconnect from island graph.
 	auto bodyA = j->m_bodyA;
 	auto bodyB = j->m_bodyB;
@@ -316,10 +293,9 @@ void World::DestroyJoint(Joint* j)
 	j->m_edgeB.prev = nullptr;
 	j->m_edgeB.next = nullptr;
 
-	Joint::Destroy(j, &m_blockAllocator);
+	m_joints.erase(JointIterator{j});
 
-	assert(m_jointCount > 0);
-	--m_jointCount;
+	Joint::Destroy(j, &m_blockAllocator);
 
 	// If the joint prevents collisions, then flag any contacts for filtering.
 	if (!collideConnected)
@@ -373,13 +349,13 @@ void World::Solve(const TimeStep& step)
 	{
 		c->UnsetInIsland();
 	}
-	for (auto j = m_joints; j; j = j->GetNext())
+	for (auto&& j: m_joints)
 	{
-		j->SetInIsland(false);
+		j.SetInIsland(false);
 	}
 
 	// Size the island for the worst case.
-	Island island(GetBodyCount(), m_contactManager.GetContactCount(), m_jointCount,
+	Island island(GetBodyCount(), m_contactManager.GetContactCount(), m_joints.size(),
 				  m_stackAllocator, m_contactManager.m_contactListener);
 	
 	// Build and simulate all awake islands.
@@ -1002,9 +978,9 @@ void World::DrawDebugData()
 
 	if (flags & Draw::e_jointBit)
 	{
-		for (auto j = m_joints; j; j = j->GetNext())
+		for (auto&& j: m_joints)
 		{
-			DrawJoint(j);
+			DrawJoint(&j);
 		}
 	}
 
@@ -1099,9 +1075,9 @@ void World::ShiftOrigin(const Vec2& newOrigin)
 		b.m_sweep.pos1.c -= newOrigin;
 	}
 
-	for (auto j = m_joints; j; j = j->m_next)
+	for (auto&& j: m_joints)
 	{
-		j->ShiftOrigin(newOrigin);
+		j.ShiftOrigin(newOrigin);
 	}
 
 	m_contactManager.m_broadPhase.ShiftOrigin(newOrigin);
@@ -1118,7 +1094,7 @@ void World::Dump()
 	log("m_world->SetGravity(g);\n");
 
 	log("Body** bodies = (Body**)alloc(%d * sizeof(Body*));\n", GetBodyCount());
-	log("Joint** joints = (Joint**)alloc(%d * sizeof(Joint*));\n", m_jointCount);
+	log("Joint** joints = (Joint**)alloc(%d * sizeof(Joint*));\n", m_joints.size());
 	auto i = body_count_t{0};
 	for (auto&& b: m_bodies)
 	{
@@ -1128,35 +1104,35 @@ void World::Dump()
 	}
 
 	i = 0;
-	for (auto j = m_joints; j; j = j->m_next)
+	for (auto&& j: m_joints)
 	{
-		j->m_index = i;
+		j.m_index = i;
 		++i;
 	}
 
 	// First pass on joints, skip gear joints.
-	for (auto j = m_joints; j; j = j->m_next)
+	for (auto&& j: m_joints)
 	{
-		if (j->m_type == e_gearJoint)
+		if (j.m_type == e_gearJoint)
 		{
 			continue;
 		}
 
 		log("{\n");
-		j->Dump();
+		j.Dump();
 		log("}\n");
 	}
 
 	// Second pass on joints, only gear joints.
-	for (auto j = m_joints; j; j = j->m_next)
+	for (auto&& j: m_joints)
 	{
-		if (j->m_type != e_gearJoint)
+		if (j.m_type != e_gearJoint)
 		{
 			continue;
 		}
 
 		log("{\n");
-		j->Dump();
+		j.Dump();
 		log("}\n");
 	}
 
