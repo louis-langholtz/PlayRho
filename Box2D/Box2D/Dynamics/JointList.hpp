@@ -44,10 +44,12 @@ public:
 	constexpr bool operator== (const JointList& rhs) const noexcept { return p == rhs.p; }
 	constexpr bool operator!= (const JointList& rhs) const noexcept { return p != rhs.p; }
 
+private:
+	friend class World;
+
 	void push_front(pointer value) noexcept;
 	iterator erase(iterator pos);
 
-private:
 	pointer p = nullptr;
 	joint_count_t n = 0;
 };

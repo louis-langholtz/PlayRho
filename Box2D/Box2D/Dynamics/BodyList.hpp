@@ -44,12 +44,14 @@ public:
 	constexpr bool operator== (const BodyList& rhs) const noexcept { return p == rhs.p; }
 	constexpr bool operator!= (const BodyList& rhs) const noexcept { return p != rhs.p; }
 
-	void push_front(pointer value) noexcept;
-	iterator erase(iterator pos);
-
 	reference front() noexcept { return *p; }
 
 private:
+	friend class World;
+
+	void push_front(pointer value) noexcept;
+	iterator erase(iterator pos);
+
 	pointer p = nullptr;
 	size_type n = 0;
 };

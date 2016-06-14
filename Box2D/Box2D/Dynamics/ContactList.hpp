@@ -44,10 +44,12 @@ namespace box2d {
 		constexpr bool operator== (const ContactList& rhs) const noexcept { return p == rhs.p; }
 		constexpr bool operator!= (const ContactList& rhs) const noexcept { return p != rhs.p; }
 		
+	private:
+		friend class ContactManager;
+
 		void push_front(pointer value) noexcept;
 		iterator erase(iterator pos);
 		
-	private:
 		pointer p = nullptr;
 		contact_count_t n = 0;
 	};

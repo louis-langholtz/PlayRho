@@ -41,14 +41,17 @@ public:
 	constexpr bool operator== (const FixtureList& rhs) const noexcept { return p == rhs.p; }
 	constexpr bool operator!= (const FixtureList& rhs) const noexcept { return p != rhs.p; }
 
-	void push_front(pointer value) noexcept;
-	void pop_front() noexcept;
-	iterator erase(iterator pos);
-
 	reference front() noexcept { return *p; }
 	const_reference front() const noexcept { return *p; }
 
 private:
+	friend class Body;
+	friend class World;
+
+	void push_front(pointer value) noexcept;
+	void pop_front() noexcept;
+	iterator erase(iterator pos);
+
 	pointer p = nullptr;
 	pointer q = nullptr;
 };
