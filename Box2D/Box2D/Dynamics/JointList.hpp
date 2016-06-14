@@ -11,7 +11,7 @@
 
 #include <Box2D/Common/Settings.h>
 #include <Box2D/Dynamics/JointIterator.hpp>
-// #include <Box2D/Dynamics/ConstJointIterator.hpp>
+#include <Box2D/Dynamics/ConstJointIterator.hpp>
 
 namespace box2d {
 
@@ -21,6 +21,8 @@ class JointList
 {
 public:
 	using iterator = JointIterator;
+	using const_iterator = ConstJointIterator;
+
 	using pointer = Joint*;
 	using size_type = joint_count_t;
 
@@ -31,6 +33,9 @@ public:
 	
 	iterator begin() noexcept { return iterator(p); }
 	iterator end() noexcept { return iterator(nullptr); }
+
+	const_iterator begin() const noexcept { return const_iterator{p}; }
+	const_iterator end() const noexcept { return const_iterator{nullptr}; }
 
 	constexpr bool empty() const noexcept { return p == nullptr; }
 	size_type size() const noexcept { return n; }
