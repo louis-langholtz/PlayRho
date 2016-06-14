@@ -200,11 +200,6 @@ protected:
 
 	Fixture(Body* body) noexcept: m_body(body) {}
 
-	/// Get the next fixture in the parent body's fixture list.
-	/// @return the next shape.
-	Fixture* GetNext();
-	const Fixture* GetNext() const;
-
 	// We need separation create/destroy functions from the constructor/destructor because
 	// the destructor cannot access the allocator (no destructor arguments allowed by C++).
 	void Create(BlockAllocator* allocator, const FixtureDef& def);
@@ -278,16 +273,6 @@ inline Body* Fixture::GetBody() noexcept
 inline const Body* Fixture::GetBody() const noexcept
 {
 	return m_body;
-}
-
-inline Fixture* Fixture::GetNext()
-{
-	return m_next;
-}
-
-inline const Fixture* Fixture::GetNext() const
-{
-	return m_next;
 }
 
 inline void Fixture::SetDensity(float_t density)

@@ -165,7 +165,7 @@ void Fixture::Refilter()
 	}
 
 	// Flag associated contacts for filtering.
-	auto edge = m_body->GetContactList();
+	auto edge = m_body->GetContactEdges();
 	while (edge)
 	{
 		auto contact = edge->contact;

@@ -91,21 +91,14 @@ Contact* Contact::Create(Fixture* fixtureA, child_count_t indexA, Fixture* fixtu
 	assert(0 <= type2 && type2 < Shape::e_typeCount);
 	
 	const auto createFcn = s_registers[type1][type2].createFcn;
-	if (createFcn)
-	{
-		if (s_registers[type1][type2].primary)
-		{
-			return createFcn(fixtureA, indexA, fixtureB, indexB, allocator);
-		}
-		else
-		{
-			return createFcn(fixtureB, indexB, fixtureA, indexA, allocator);
-		}
-	}
-	else
+	if (!createFcn)
 	{
 		return nullptr;
 	}
+
+	return (s_registers[type1][type2].primary)?
+		createFcn(fixtureA, indexA, fixtureB, indexB, allocator):
+		createFcn(fixtureB, indexB, fixtureA, indexA, allocator);
 }
 
 void Contact::Destroy(Contact* contact, BlockAllocator* allocator)

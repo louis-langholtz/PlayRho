@@ -27,29 +27,16 @@ using namespace box2d;
 void ContactManager::Remove(Contact* c)
 {
 	assert(c != nullptr);
-	assert(m_contactCount > 0);
+
+	// Remove from the world.
+	assert(!m_contacts.empty());
+	m_contacts.erase(ContactIterator{c});
 	
 	const auto fixtureA = c->GetFixtureA();
 	const auto fixtureB = c->GetFixtureB();
 	const auto bodyA = fixtureA->GetBody();
 	const auto bodyB = fixtureB->GetBody();
-	
-	// Remove from the world.
-	if (c->m_prev)
-	{
-		c->m_prev->m_next = c->m_next;
-	}
-	
-	if (c->m_next)
-	{
-		c->m_next->m_prev = c->m_prev;
-	}
-	
-	if (c == m_contacts)
-	{
-		m_contacts = c->m_next;
-	}
-	
+		
 	// Remove from body 1
 	if (c->m_nodeA.prev)
 	{
@@ -81,8 +68,6 @@ void ContactManager::Remove(Contact* c)
 	{
 		bodyB->m_contacts = c->m_nodeB.next;
 	}
-
-	--m_contactCount;	
 }
 
 void ContactManager::Destroy(Contact* c)
@@ -101,10 +86,10 @@ void ContactManager::Destroy(Contact* c)
 void ContactManager::Collide()
 {
 	// Update awake contacts.
-	auto next = static_cast<Contact*>(nullptr);
-	for (auto c = m_contacts; c; c = next)
+	auto next = ContactIterator{nullptr};
+	for (auto c = m_contacts.begin(); c != m_contacts.end(); c = next)
 	{
-		next = c->GetNext();
+		next = std::next(c);
 
 		const auto fixtureA = c->GetFixtureA();
 		const auto fixtureB = c->GetFixtureB();
@@ -117,14 +102,14 @@ void ContactManager::Collide()
 			// Can these bodies collide?
 			if (!(bodyB->ShouldCollide(bodyA)))
 			{
-				Destroy(c);
+				Destroy(&(*c));
 				continue;
 			}
 
 			// Check user filtering.
 			if (m_contactFilter && !(m_contactFilter->ShouldCollide(fixtureA, fixtureB)))
 			{
-				Destroy(c);
+				Destroy(&(*c));
 				continue;
 			}
 
@@ -150,7 +135,7 @@ void ContactManager::Collide()
 		// Here we destroy contacts that cease to overlap in the broad-phase.
 		if (!overlap)
 		{
-			Destroy(c);
+			Destroy(&(*c));
 			continue;
 		}
 
@@ -212,7 +197,7 @@ void ContactManager::Add(FixtureProxy* proxyA, FixtureProxy* proxyB)
 	// bodies have a lot of contacts.
 	// Does a contact already exist?
 	{
-		auto contactEdge = bodyB->GetContactList();
+		auto contactEdge = bodyB->GetContactEdges();
 		while (contactEdge)
 		{
 			if (contactEdge->other == bodyA)
@@ -236,37 +221,28 @@ void ContactManager::Add(FixtureProxy* proxyA, FixtureProxy* proxyB)
 		return;
 	}
 
-	assert(m_contactCount < MaxContacts);
-	
-	// Call the contact factory create method.
-	const auto c = Contact::Create(fixtureA, indexA, fixtureB, indexB, m_allocator);
-	assert(c);
-	if (!c)
+	assert(GetContactCount() < MaxContacts);
+	if (GetContactCount() < MaxContacts)
 	{
-		return;
+		// Call the contact factory create method.
+		const auto c = Contact::Create(fixtureA, indexA, fixtureB, indexB, m_allocator);
+		assert(c);
+		if (!c)
+		{
+			return;
+		}
+		
+		Add(c);
 	}
-	
-	Add(c);
 }
 
 void ContactManager::Add(Contact* c)
 {
-	assert(m_contactCount < MaxContacts);
-
 	// Contact creation may swap fixtures.
 	const auto fixtureA = c->GetFixtureA();
 	const auto fixtureB = c->GetFixtureB();
 	const auto bodyA = fixtureA->GetBody();
 	const auto bodyB = fixtureB->GetBody();
-
-	// Insert into the world.
-	c->m_prev = nullptr;
-	c->m_next = m_contacts;
-	if (m_contacts)
-	{
-		m_contacts->m_prev = c;
-	}
-	m_contacts = c;
 
 	// Connect to island graph.
 
@@ -298,6 +274,7 @@ void ContactManager::Add(Contact* c)
 		bodyA->SetAwake();
 		bodyB->SetAwake();
 	}
-
-	++m_contactCount;
+	
+	// Insert into the world.
+	m_contacts.push_front(c);
 }

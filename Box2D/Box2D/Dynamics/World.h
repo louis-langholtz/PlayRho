@@ -27,6 +27,7 @@
 #include <Box2D/Dynamics/TimeStep.h>
 #include <Box2D/Dynamics/BodyList.hpp>
 #include <Box2D/Dynamics/JointList.hpp>
+#include <Box2D/Dynamics/ContactList.hpp>
 
 namespace box2d {
 
@@ -133,19 +134,25 @@ public:
 	/// @return Body list that can be iterated over using its begin and end methods or using ranged-based for-loops.
 	const BodyList& GetBodies() const noexcept;
 
-	/// Get the world joint list. With the returned joint, use Joint::GetNext to get
-	/// the next joint in the world list. A nullptr joint indicates the end of the list.
-	/// @return the head of the world joint list.
+	/// Gets the world joint list.
+	/// @return World joint list.
 	JointList& GetJoints() noexcept;
+
+	/// Gets the world joint list.
+	/// @return World joint list.
 	const JointList& GetJoints() const noexcept;
 
-	/// Get the world contact list. With the returned contact, use Contact::GetNext to get
-	/// the next contact in the world list. A nullptr contact indicates the end of the list.
-	/// @return the head of the world contact list.
+	/// Gets the world contact list.
 	/// @warning contacts are created and destroyed in the middle of a time step.
 	/// Use ContactListener to avoid missing contacts.
-	Contact* GetContactList() noexcept;
-	const Contact* GetContactList() const noexcept;
+	/// @return the head of the world contact list.
+	ContactList& GetContacts() noexcept;
+
+	/// Gets the world contact list.
+	/// @warning contacts are created and destroyed in the middle of a time step.
+	/// Use ContactListener to avoid missing contacts.
+	/// @return the head of the world contact list.
+	const ContactList& GetContacts() const noexcept;
 
 	/// Enable/disable sleep.
 	void SetAllowSleeping(bool flag) noexcept;
@@ -315,19 +322,19 @@ inline const JointList& World::GetJoints() const noexcept
 	return m_joints;
 }
 
-inline Contact* World::GetContactList() noexcept
+inline ContactList& World::GetContacts() noexcept
 {
-	return m_contactManager.GetContactList();
+	return m_contactManager.GetContacts();
 }
 
-inline const Contact* World::GetContactList() const noexcept
+inline const ContactList& World::GetContacts() const noexcept
 {
-	return m_contactManager.GetContactList();
+	return m_contactManager.GetContacts();
 }
 
 inline body_count_t World::GetBodyCount() const noexcept
 {
-	return m_bodies.size();
+	return static_cast<body_count_t>(m_bodies.size());
 }
 
 inline World::size_type World::GetJointCount() const noexcept

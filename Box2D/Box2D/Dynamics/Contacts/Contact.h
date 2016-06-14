@@ -99,10 +99,6 @@ public:
 	/// Has this contact been disabled?
 	bool IsEnabled() const noexcept;
 
-	/// Get the next contact in the world's contact list.
-	Contact* GetNext() noexcept;
-	const Contact* GetNext() const noexcept;
-
 	/// Get fixture A in this contact.
 	Fixture* GetFixtureA() noexcept;
 	const Fixture* GetFixtureA() const noexcept;
@@ -156,6 +152,8 @@ protected:
 	friend class ContactSolver;
 	friend class Body;
 	friend class Fixture;
+	friend class ContactList;
+	friend class ContactIterator;
 
 	// Flags stored in m_flags
 	enum: uint32
@@ -236,7 +234,7 @@ protected:
 	void SetTouching() noexcept;
 
 	void UnsetTouching() noexcept;
-
+	
 	uint32 m_flags = e_enabledFlag;
 
 	// World pool and list pointers.
@@ -321,16 +319,6 @@ inline void Contact::SetTouching() noexcept
 inline void Contact::UnsetTouching() noexcept
 {
 	m_flags &= ~e_touchingFlag;
-}
-
-inline Contact* Contact::GetNext() noexcept
-{
-	return m_next;
-}
-
-inline const Contact* Contact::GetNext() const noexcept
-{
-	return m_next;
 }
 
 inline Fixture* Contact::GetFixtureA() noexcept

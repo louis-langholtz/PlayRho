@@ -358,8 +358,8 @@ public:
 	/// Get the list of all contacts attached to this body.
 	/// @warning this list changes during the time step and you may
 	/// miss some collisions if you don't use ContactListener.
-	ContactEdge* GetContactList() noexcept;
-	const ContactEdge* GetContactList() const noexcept;
+	ContactEdge* GetContactEdges() noexcept;
+	const ContactEdge* GetContactEdges() const noexcept;
 
 	/// Get the user data pointer that was provided in the body definition.
 	void* GetUserData() const noexcept;
@@ -467,10 +467,6 @@ private:
 
 	/// Gets the velocity of this body after the given time with the given gravity.
 	Velocity GetVelocity(float_t h, Vec2 gravity) const noexcept;
-
-	/// Get the next body in the world's body list.
-	Body* GetNext() noexcept;
-	const Body* GetNext() const noexcept;
 	
 	bool IsValidIslandIndex() const noexcept;
 
@@ -496,7 +492,7 @@ private:
 	Body* m_prev = nullptr; ///< Previous body. 8-bytes.
 	Body* m_next = nullptr; ///< Next body. 8-bytes.
 
-	FixtureList m_fixtures; ///< Pointer to first fixture in a linked list. 8-bytes.
+	FixtureList m_fixtures; ///< Container of fixtures. 8-bytes.
 	JointEdge* m_joints = nullptr; ///< Pointer to first joint in a linked list. 8-bytes.
 	ContactEdge* m_contacts = nullptr; ///< Pointer to first contact in a linked list. 8-bytes.
 
@@ -760,24 +756,14 @@ inline const JointEdge* Body::GetJoints() const noexcept
 	return m_joints;
 }
 
-inline ContactEdge* Body::GetContactList() noexcept
+inline ContactEdge* Body::GetContactEdges() noexcept
 {
 	return m_contacts;
 }
 
-inline const ContactEdge* Body::GetContactList() const noexcept
+inline const ContactEdge* Body::GetContactEdges() const noexcept
 {
 	return m_contacts;
-}
-
-inline Body* Body::GetNext() noexcept
-{
-	return m_next;
-}
-
-inline const Body* Body::GetNext() const noexcept
-{
-	return m_next;
 }
 
 inline void Body::SetUserData(void* data) noexcept

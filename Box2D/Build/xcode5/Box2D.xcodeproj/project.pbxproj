@@ -126,6 +126,12 @@
 		47AA639F1D0F7FDA00726CA2 /* ConstFixtureIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47AA63971D0F7FDA00726CA2 /* ConstFixtureIterator.hpp */; };
 		47AA63A01D0F7FDA00726CA2 /* FixtureIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47AA63981D0F7FDA00726CA2 /* FixtureIterator.hpp */; };
 		47AA63A11D0F7FDA00726CA2 /* ConstBodyIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47AA63991D0F7FDA00726CA2 /* ConstBodyIterator.hpp */; };
+		47AA63A41D1077E600726CA2 /* ContactList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AA63A21D1077E600726CA2 /* ContactList.cpp */; };
+		47AA63A51D1077E600726CA2 /* ContactList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47AA63A31D1077E600726CA2 /* ContactList.hpp */; };
+		47AA63A81D10786F00726CA2 /* ContactIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AA63A61D10786F00726CA2 /* ContactIterator.cpp */; };
+		47AA63A91D10786F00726CA2 /* ContactIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47AA63A71D10786F00726CA2 /* ContactIterator.hpp */; };
+		47AA63AC1D1078D000726CA2 /* ConstContactIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AA63AA1D1078D000726CA2 /* ConstContactIterator.cpp */; };
+		47AA63AD1D1078D000726CA2 /* ConstContactIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47AA63AB1D1078D000726CA2 /* ConstContactIterator.hpp */; };
 		805900B1184EEE0F00C8ECA3 /* DebugDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 805900AA184EEE0F00C8ECA3 /* DebugDraw.cpp */; };
 		805900B2184EEE0F00C8ECA3 /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 805900AC184EEE0F00C8ECA3 /* imgui.cpp */; };
 		805900B3184EEE0F00C8ECA3 /* RenderGL3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 805900AE184EEE0F00C8ECA3 /* RenderGL3.cpp */; };
@@ -327,6 +333,12 @@
 		47AA63971D0F7FDA00726CA2 /* ConstFixtureIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConstFixtureIterator.hpp; sourceTree = "<group>"; };
 		47AA63981D0F7FDA00726CA2 /* FixtureIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureIterator.hpp; sourceTree = "<group>"; };
 		47AA63991D0F7FDA00726CA2 /* ConstBodyIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConstBodyIterator.hpp; sourceTree = "<group>"; };
+		47AA63A21D1077E600726CA2 /* ContactList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactList.cpp; sourceTree = "<group>"; };
+		47AA63A31D1077E600726CA2 /* ContactList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactList.hpp; sourceTree = "<group>"; };
+		47AA63A61D10786F00726CA2 /* ContactIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactIterator.cpp; sourceTree = "<group>"; };
+		47AA63A71D10786F00726CA2 /* ContactIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactIterator.hpp; sourceTree = "<group>"; };
+		47AA63AA1D1078D000726CA2 /* ConstContactIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConstContactIterator.cpp; sourceTree = "<group>"; };
+		47AA63AB1D1078D000726CA2 /* ConstContactIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConstContactIterator.hpp; sourceTree = "<group>"; };
 		80154ACD141DED6B00C8251F /* Tumbler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tumbler.h; sourceTree = "<group>"; };
 		805900AA184EEE0F00C8ECA3 /* DebugDraw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DebugDraw.cpp; sourceTree = "<group>"; };
 		805900AB184EEE0F00C8ECA3 /* DebugDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugDraw.h; sourceTree = "<group>"; };
@@ -694,6 +706,12 @@
 				47A983391D0F51A300AA7D1A /* JointIterator.hpp */,
 				47A9833C1D0F7ABA00AA7D1A /* ConstJointIterator.cpp */,
 				47A9833D1D0F7ABA00AA7D1A /* ConstJointIterator.hpp */,
+				47AA63A21D1077E600726CA2 /* ContactList.cpp */,
+				47AA63A31D1077E600726CA2 /* ContactList.hpp */,
+				47AA63A61D10786F00726CA2 /* ContactIterator.cpp */,
+				47AA63A71D10786F00726CA2 /* ContactIterator.hpp */,
+				47AA63AA1D1078D000726CA2 /* ConstContactIterator.cpp */,
+				47AA63AB1D1078D000726CA2 /* ConstContactIterator.hpp */,
 				80BB895A141C3E5900F1753A /* Contacts */,
 				80BB896D141C3E5900F1753A /* Joints */,
 			);
@@ -1002,6 +1020,7 @@
 				47A9833B1D0F51A300AA7D1A /* JointIterator.hpp in Headers */,
 				80BB89BD141C3E5900F1753A /* CircleContact.h in Headers */,
 				47A9833F1D0F7ABA00AA7D1A /* ConstJointIterator.hpp in Headers */,
+				47AA63A91D10786F00726CA2 /* ContactIterator.hpp in Headers */,
 				80BB89BF141C3E5900F1753A /* Contact.h in Headers */,
 				80BB89C1141C3E5900F1753A /* ContactSolver.h in Headers */,
 				80BB89C3141C3E5900F1753A /* EdgeAndCircleContact.h in Headers */,
@@ -1010,6 +1029,7 @@
 				80BB89C9141C3E5900F1753A /* PolygonContact.h in Headers */,
 				80BB89CB141C3E5900F1753A /* DistanceJoint.h in Headers */,
 				80BB89CD141C3E5900F1753A /* FrictionJoint.h in Headers */,
+				47AA63A51D1077E600726CA2 /* ContactList.hpp in Headers */,
 				472134861C8CD7CF009536F9 /* BodyList.hpp in Headers */,
 				80BB89CF141C3E5900F1753A /* GearJoint.h in Headers */,
 				80BB89D1141C3E5900F1753A /* Joint.h in Headers */,
@@ -1025,6 +1045,7 @@
 				4751EE2E1CEDD7A300D459CB /* MotorJoint.h in Headers */,
 				80BB89E1141C3E5900F1753A /* Rope.h in Headers */,
 				80620F90168B934600D46C8D /* MotorJoint.h in Headers */,
+				47AA63AD1D1078D000726CA2 /* ConstContactIterator.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1253,6 +1274,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47AA63A81D10786F00726CA2 /* ContactIterator.cpp in Sources */,
+				47AA63A41D1077E600726CA2 /* ContactList.cpp in Sources */,
 				80BB8988141C3E5900F1753A /* BroadPhase.cpp in Sources */,
 				47AA639B1D0F7FDA00726CA2 /* ConstFixtureIterator.cpp in Sources */,
 				80BB898A141C3E5900F1753A /* CollideCircle.cpp in Sources */,
@@ -1275,6 +1298,7 @@
 				80BB89A5141C3E5900F1753A /* Settings.cpp in Sources */,
 				80BB89A7141C3E5900F1753A /* StackAllocator.cpp in Sources */,
 				80BB89A9141C3E5900F1753A /* Timer.cpp in Sources */,
+				47AA63AC1D1078D000726CA2 /* ConstContactIterator.cpp in Sources */,
 				47AA639C1D0F7FDA00726CA2 /* FixtureIterator.cpp in Sources */,
 				80BB89AB141C3E5900F1753A /* Body.cpp in Sources */,
 				80BB89AD141C3E5900F1753A /* ContactManager.cpp in Sources */,

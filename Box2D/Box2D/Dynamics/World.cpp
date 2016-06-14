@@ -143,8 +143,8 @@ bool World::Add(Body& b)
 	assert(!b.m_prev);
 	assert(!b.m_next);
 
-	assert(m_bodies.size() < m_bodies.max_size());
-	if (m_bodies.size() >= m_bodies.max_size())
+	assert(m_bodies.size() < MaxBodies);
+	if (m_bodies.size() >= MaxBodies)
 	{
 		return false;
 	}
@@ -192,10 +192,8 @@ Joint* World::CreateJoint(const JointDef* def)
 		return nullptr;
 	}
 
+	// Note: creating a joint doesn't wake the bodies.
 	auto j = Joint::Create(*def, &m_blockAllocator);
-
-	// Connect to the world list.
-	m_joints.push_front(j);
 
 	// Connect to the bodies' doubly linked lists.
 	j->m_edgeA.joint = j;
@@ -218,7 +216,7 @@ Joint* World::CreateJoint(const JointDef* def)
 	// If the joint prevents collisions, then flag any contacts for filtering.
 	if (!def->collideConnected)
 	{
-		auto edge = bodyB->GetContactList();
+		auto edge = bodyB->GetContactEdges();
 		while (edge)
 		{
 			if (edge->other == bodyA)
@@ -232,8 +230,9 @@ Joint* World::CreateJoint(const JointDef* def)
 		}
 	}
 
-	// Note: creating a joint doesn't wake the bodies.
-
+	// Connect to the world list.
+	m_joints.push_front(j);
+	
 	return j;
 }
 
@@ -244,6 +243,8 @@ void World::DestroyJoint(Joint* j)
 	{
 		return;
 	}
+
+	m_joints.erase(JointIterator{j});
 
 	const auto collideConnected = j->m_collideConnected;
 	
@@ -293,14 +294,12 @@ void World::DestroyJoint(Joint* j)
 	j->m_edgeB.prev = nullptr;
 	j->m_edgeB.next = nullptr;
 
-	m_joints.erase(JointIterator{j});
-
 	Joint::Destroy(j, &m_blockAllocator);
 
 	// If the joint prevents collisions, then flag any contacts for filtering.
 	if (!collideConnected)
 	{
-		auto edge = bodyB->GetContactList();
+		auto edge = bodyB->GetContactEdges();
 		while (edge)
 		{
 			if (edge->other == bodyA)
@@ -345,9 +344,9 @@ void World::Solve(const TimeStep& step)
 		assert(b.m_islandIndex == Body::InvalidIslandIndex);
 		b.UnsetInIsland();
 	}
-	for (auto c = m_contactManager.GetContactList(); c; c = c->GetNext())
+	for (auto&& c: m_contactManager.GetContacts())
 	{
-		c->UnsetInIsland();
+		c.UnsetInIsland();
 	}
 	for (auto&& j: m_joints)
 	{
@@ -492,12 +491,12 @@ void World::ResetBodiesForSolveTOI()
 
 void World::ResetContactsForSolveTOI()
 {
-	for (auto c = m_contactManager.GetContactList(); c; c = c->m_next)
+	for (auto&& c: m_contactManager.GetContacts())
 	{
 		// Invalidate TOI
-		c->UnsetInIsland();
-		c->UnsetToi();
-		c->m_toiCount = 0;
+		c.UnsetInIsland();
+		c.UnsetToi();
+		c.m_toiCount = 0;
 	}	
 }
 
@@ -506,24 +505,24 @@ World::ContactToiPair World::UpdateContactTOIs()
 	auto minContact = static_cast<Contact*>(nullptr);
 	auto minToi = float_t{1};
 	
-	for (auto c = m_contactManager.GetContactList(); c; c = c->m_next)
+	for (auto&& c: m_contactManager.GetContacts())
 	{
 		// Skip the disabled and excessive sub-stepped contacts
-		if (!c->IsEnabled() || (c->m_toiCount >= MaxSubSteps))
+		if (!c.IsEnabled() || (c.m_toiCount >= MaxSubSteps))
 		{
 			continue;
 		}
 		
-		if (!c->HasValidToi() && !c->UpdateTOI())
+		if (!c.HasValidToi() && !c.UpdateTOI())
 		{
 			continue;
 		}
 		
-		const auto toi = c->GetToi();
+		const auto toi = c.GetToi();
 		if (minToi > toi)
 		{
 			// This is the minimum TOI found so far.
-			minContact = c;
+			minContact = &c;
 			minToi = toi;
 		}
 	}
@@ -986,17 +985,17 @@ void World::DrawDebugData()
 
 	if (flags & Draw::e_pairBit)
 	{
-		const Color color(0.3f, 0.9f, 0.9f);
-		for (auto c = m_contactManager.GetContactList(); c; c = c->GetNext())
-		{
-			//Fixture* fixtureA = c->GetFixtureA();
-			//Fixture* fixtureB = c->GetFixtureB();
+		//const Color color(0.3f, 0.9f, 0.9f);
+		//for (auto&& c: m_contactManager.GetContacts())
+		//{
+			//Fixture* fixtureA = c.GetFixtureA();
+			//Fixture* fixtureB = c.GetFixtureB();
 
 			//Vec2 cA = fixtureA->GetAABB().GetCenter();
 			//Vec2 cB = fixtureB->GetAABB().GetCenter();
 
 			//g_debugDraw->DrawSegment(cA, cB, color);
-		}
+		//}
 	}
 
 	if (flags & Draw::e_aabbBit)

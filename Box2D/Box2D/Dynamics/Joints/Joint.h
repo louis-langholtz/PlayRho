@@ -165,10 +165,6 @@ protected:
 
 	// This returns true if the position errors are within tolerance.
 	virtual bool SolvePositionConstraints(const SolverData& data) = 0;
-
-	/// Get the next joint the world joint list.
-	Joint* GetNext() noexcept;
-	const Joint* GetNext() const noexcept;
 	
 	bool IsInIsland() const noexcept;
 	void SetInIsland(bool value) noexcept;
@@ -202,16 +198,6 @@ inline Body* Joint::GetBodyA() noexcept
 inline Body* Joint::GetBodyB() noexcept
 {
 	return m_bodyB;
-}
-
-inline Joint* Joint::GetNext() noexcept
-{
-	return m_next;
-}
-
-inline const Joint* Joint::GetNext() const noexcept
-{
-	return m_next;
 }
 
 inline void* Joint::GetUserData() const noexcept

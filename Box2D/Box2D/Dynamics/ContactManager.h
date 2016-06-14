@@ -20,6 +20,7 @@
 #define B2_CONTACT_MANAGER_H
 
 #include <Box2D/Collision/BroadPhase.h>
+#include <Box2D/Dynamics/ContactList.hpp>
 
 namespace box2d {
 
@@ -63,15 +64,15 @@ public:
 	
 	/// Gets the contact count.
 	/// @return Number of contacts referenced by the contact list (0 if empty).
-	inline contact_count_t GetContactCount() const noexcept { return m_contactCount; }
+	inline contact_count_t GetContactCount() const noexcept { return static_cast<contact_count_t>(m_contacts.size()); }
 
 	/// Gets the contact list.
 	/// @return Contact list or <code>nullptr</code> if empty.
-	const Contact* GetContactList() const noexcept { return m_contacts; }
+	const ContactList& GetContacts() const noexcept { return m_contacts; }
 	
 	/// Gets the contact list.
 	/// @return Contact list or <code>nullptr</code> if empty.
-	Contact* GetContactList() noexcept { return m_contacts; }
+	ContactList& GetContacts() noexcept { return m_contacts; }
 
 	BroadPhase m_broadPhase;
 	ContactFilter* m_contactFilter;
@@ -86,8 +87,7 @@ private:
 	/// @param contact Non-null pointer to a contact that is managed by this manager.
 	void Remove(Contact* contact);
 	
-	contact_count_t m_contactCount = 0; ///< Count of contacts managed by this manager.
-	Contact* m_contacts = nullptr; ///< Container of contacts managed by this manager.
+	ContactList m_contacts; ///< Container of contacts managed by this manager.
 	BlockAllocator* const m_allocator;
 };
 
