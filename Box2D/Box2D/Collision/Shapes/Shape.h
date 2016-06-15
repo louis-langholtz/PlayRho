@@ -76,7 +76,7 @@ public:
 	/// @param radius Non-negative "radius" distance of this object (whose meaning is
 	///   class dependent).
 	/// @note Behavior is undefined if a negative radius is given.
-	constexpr Shape(Type type, float_t radius) noexcept: m_type(type), m_radius(radius)
+	constexpr Shape(Type type, float_t radius) noexcept: m_type{type}, m_radius{radius}
 	{
 		assert(radius >= 0);
 	}
