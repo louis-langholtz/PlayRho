@@ -243,13 +243,24 @@ private:
 	/// @detail Used for continuous physics.
 	/// @param step Time step value to use.
 	void SolveTOI(const TimeStep& step);
-	
+
+	void SolveTOI(const TimeStep& step, Island& island, Contact& contact, float_t toi);
+
 	void ResetBodiesForSolveTOI();
 	void ResetContactsForSolveTOI();
+
+	/// Processes the contacts of a given body for TOI handling.
+	/// @detail This does the following:
+	///   1. Adds the appropriate contacts of the given body to the given island.
+ 	///   2. Adds the added contact's appropriate associated other bodies to the given island.
+	///   3. Advances those added other bodies to the given TOI (advancing their sweeps and
+ 	///      synchronizing their transforms to their new sweeps).
 	void ProcessContactsForTOI(Island& island, Body& body, float_t toi);
 	
 	bool Add(Body& b);
 	bool Remove(Body& b);
+
+	void Clear(Island& island);
 
 	struct ContactToiPair
 	{

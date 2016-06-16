@@ -135,8 +135,8 @@ ContactSolver::ContactSolver(const ContactSolverDef& def) :
 	m_velocities{def.velocities},
 	m_allocator{def.allocator},
 	m_count{def.count},
-	m_positionConstraints{m_allocator->Allocate<ContactPositionConstraint>(def.count)},
-	m_velocityConstraints{m_allocator->Allocate<ContactVelocityConstraint>(def.count)}
+	m_positionConstraints{m_allocator->AllocateArray<ContactPositionConstraint>(def.count)},
+	m_velocityConstraints{m_allocator->AllocateArray<ContactVelocityConstraint>(def.count)}
 {
 	InitPositionConstraints(m_positionConstraints, def.count, def.contacts);
 	InitVelocityConstraints(m_velocityConstraints, def.count, def.contacts, def.dtRatio);
@@ -709,6 +709,7 @@ static PositionSolverManifold GetPSM(const ContactPositionConstraint& pc,
 }
 
 /// Solves position constraint.
+/// @detail
 /// This updates the two given positions for every point in the contact position constraint
 /// and returns the minimum separation value from the position solver manifold for each point.
 static inline float_t SolvePositionConstraint(const ContactPositionConstraint& pc,

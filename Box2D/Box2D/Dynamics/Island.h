@@ -20,6 +20,7 @@
 #define B2_ISLAND_H
 
 #include <Box2D/Common/Math.h>
+#include <Box2D/Common/AllocatedArray.hpp>
 #include <Box2D/Dynamics/TimeStep.h>
 
 namespace box2d {
@@ -38,21 +39,18 @@ struct Profile;
 class Island
 {
 public:
+	using BodyArray = AllocatedArray<Body*, StackAllocator&>;
+	using ContactArray = AllocatedArray<Contact*, StackAllocator&>;
+	using JointArray = AllocatedArray<Joint*, StackAllocator&>;
+	using VelocityArray = AllocatedArray<Velocity, StackAllocator&>;
+	using PositionArray = AllocatedArray<Position, StackAllocator&>;
+	
 	Island(body_count_t bodyCapacity, contact_count_t contactCapacity, island_count_t jointCapacity,
 		   StackAllocator& allocator, ContactListener* listener);
 
 	/// Destructor.
 	/// @detail Sets all bodies's island indexes to Body::InvalidIslandIndex and then frees allocated memory.
 	~Island();
-
-	/// Clears this island.
-	/// @detail This undoes the adds of all bodies contacts and joints - removing them.
-	///   On return, the get body contact and joint count methods will all return 0.
-	///   Additionally all removed bodies will have their island indexes set to Body::InvalidIslandIndex.
-	/// @sa void Add(Body* body).
-	/// @sa void Add(Contact* contact).
-	/// @sa void Add(Joint* joint).
-	void Clear() noexcept;
 
 	/// Solves this island.
 	/// @detail This:
@@ -63,77 +61,20 @@ public:
 	///   5. Reports to the listener.
 	void Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep);
 
-	/// Solves this island in terms of Time Of Impact.
-	void SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_count_t toiIndexB);
+	/// Solves the time of impact for the two bodies identified by the given island indexes.
+	/// @detail This:
+	///   1. Updates pos0 of the sweeps of the two bodies identified by their indexes.
+	///   2. Updates pos1 of the sweeps, the transforms, and the velocities of the other bodies in this island.
+	/// @param subStep Sub step time step information.
+	/// @param indexA Island index for body A.
+	/// @param indexB Island index for body B.
+	void SolveTOI(const TimeStep& subStep, island_count_t indexA, island_count_t indexB);
 
-	/// Adds the given body to this island.
-	/// @warning Behavior is undefined if body has already been added to this island.
-	/// @param body Non-null body to add to this island.
-	void Add(Body* body);
-
-	/// Adds the given contact to this island.
-	/// @note Only contacts having manifolds with one or more contact points should be added.
-	/// @warning Behavior is undefined if contact's manifold has no contact points.
-	/// @warning Behavior is undefined if contact has already been added to this island.
-	/// @param contact Non-null contact whose manifold has one or more contact points.
-	void Add(Contact* contact);
-
-	/// Adds the given joint to this island.
-	/// @warning Behavior is undefined if joint has already been added to this island.
-	/// @param joint Non-null joint to add.
-	void Add(Joint* joint);
-
-	/// Reports the given constraints to the listener.
-	/// This calls the listener's PostSolve method for all m_contactCount elements of the given array of constraints.
-	/// @param constraints Array of m_contactCount contact velocity constraint elements.
-	void Report(const ContactVelocityConstraint* constraints);
-
-	inline island_count_t GetBodyCapacity() const noexcept
-	{
-		return m_bodyCapacity;
-	}
-
-	inline island_count_t GetContactCapacity() const noexcept
-	{
-		return m_contactCapacity;
-	}
+	BodyArray m_bodies;
+	ContactArray m_contacts;
+	JointArray m_joints;
 	
-	inline island_count_t GetJointCapacity() const noexcept
-	{
-		return m_jointCapacity;
-	}
-
-	/// Gets the body count.
-	/// @return Count of bodies added to this island.
-	inline island_count_t GetBodyCount() const noexcept
-	{
-		return m_bodyCount;
-	}
-
-	inline island_count_t GetContactCount() const noexcept
-	{
-		return m_contactCount;
-	}
-
-	inline island_count_t GetJointCount() const noexcept
-	{
-		return m_jointCount;
-	}
-
-	inline const Body* GetBody(island_count_t i) const
-	{
-		assert((0 <= i) && (i < m_bodyCount));
-		return m_bodies[i];
-	}
-
-	inline Body* GetBody(island_count_t i)
-	{
-		assert((0 <= i) && (i < m_bodyCount));
-		return m_bodies[i];
-	}
-
 private:
-	
 	/// Copy's the position and velocity elements out to the bodies.
 	/// @detail This basically flushes out internal position and velocity data to all the bodies in this island
 	///   and synchronizes those bodies transformations with their new sweeps.
@@ -141,8 +82,7 @@ private:
 	///    1. setting the velocities to the matching velocity element,
 	///    2. setting the sweep position 1 value to the matching position element, and
 	///    3. synchronizing the transform with the new sweep value.
-	static void CopyOut(const island_count_t count, const Position* positions, const Velocity* velocities,
-						Body** bodies);
+	static void CopyOut(const Position* positions, const Velocity* velocities, BodyArray& bodies);
 	
 	void InitJointVelocityConstraints(const SolverData& solverData);
 	void SolveJointVelocityConstraints(const SolverData& solverData);
@@ -150,52 +90,23 @@ private:
 
 	float_t UpdateSleepTimes(float_t h);
 
-	/// Integrates positions.
-	/// @detail Updates all positions by application of velocity over time to each position.
-	/// @param h Time in seconds.
-	void IntegratePositions(float_t h);
-
-	/// Clears this island of added bodies.
-	/// @detail This sets all bodies's island indexes to Body::InvalidIslandIndex and resets
-	///   the body count to 0.
-	/// @sa Add(Body* body).
-	/// @sa Body::InvalidIslandIndex.
-	void ClearBodies() noexcept;
-
-	const body_count_t m_bodyCapacity; ///< Body capacity.
-	const contact_count_t m_contactCapacity; ///< Contact capacity.
-	const island_count_t m_jointCapacity; ///< Joint capacity.
-
-	body_count_t m_bodyCount = 0; ///< Count of bodies added to the island. Max of m_bodyCapacity.
-	contact_count_t m_contactCount = 0; ///< Count of contacts added to the island. Max of m_contactCapacity.
-	island_count_t m_jointCount = 0; ///< Count of joints added to the island. Max of m_jointCapacity.
-	
+	/// Reports the given constraints to the listener.
+	/// This calls the listener's PostSolve method for all m_contactCount elements of the given array of constraints.
+	/// @param constraints Array of m_contactCount contact velocity constraint elements.
+	void Report(const ContactVelocityConstraint* constraints);
+		
 	StackAllocator& m_allocator; ///< Stack-style memory allocator set on construction.
 	ContactListener* const m_listener;
-
-	Body** const m_bodies;
-	Contact** const m_contacts;
-	Joint** const m_joints;
-
-	/// Buffer of velocities allocated on construction.
-	/// @detail This is a body-capacity-sized array of velocities.
-	/// @sa m_bodyCapacity.
-	Velocity* const m_velocities;
-	
-	/// Buffer of positions allocated on construction.
- 	/// @detail This is a body-capacity-sized array of positions.
-	/// @sa m_bodyCapacity.
-	Position* const m_positions;
 };
 
 inline bool IsFullOfBodies(const Island& island)
 {
-	return island.GetBodyCount() == island.GetBodyCapacity();
+	return island.m_bodies.size() == island.m_bodies.max_size();
 }
 
 inline bool IsFullOfContacts(const Island& island)
 {
-	return island.GetContactCount() == island.GetContactCapacity();
+	return island.m_contacts.size() == island.m_contacts.max_size();
 }
 	
 } // namespace box2d

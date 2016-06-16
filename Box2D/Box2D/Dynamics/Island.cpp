@@ -152,69 +152,40 @@ Island::Island(
 	island_count_t jointCapacity,
 	StackAllocator& allocator,
 	ContactListener* listener):
-m_bodyCapacity{bodyCapacity},
-m_contactCapacity{contactCapacity},
-m_jointCapacity{jointCapacity},
 m_allocator{allocator},
 m_listener{listener},
-m_bodies{m_allocator.Allocate<Body*>(bodyCapacity)},
-m_contacts{m_allocator.Allocate<Contact*>(contactCapacity)},
-m_joints{m_allocator.Allocate<Joint*>(jointCapacity)},
-m_velocities{m_allocator.Allocate<Velocity>(bodyCapacity)},
-m_positions{m_allocator.Allocate<Position>(bodyCapacity)}
+m_bodies{bodyCapacity, allocator.AllocateArray<Body*>(bodyCapacity), allocator},
+m_contacts{contactCapacity, allocator.AllocateArray<Contact*>(contactCapacity), allocator},
+m_joints{jointCapacity, allocator.AllocateArray<Joint*>(jointCapacity), allocator}
 {
 }
 
 Island::~Island()
 {
-	ClearBodies();
-
-	// Warning: the order MUST BE the reverse of the constructor order.
-	m_allocator.Free(m_positions);
-	m_allocator.Free(m_velocities);
-	m_allocator.Free(m_joints);
-	m_allocator.Free(m_contacts);
-	m_allocator.Free(m_bodies);
-}
-
-void Island::Clear() noexcept
-{
-	ClearBodies();
-	m_contactCount = 0;
-	m_jointCount = 0;
-}
-
-void Island::ClearBodies() noexcept
-{
-	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
-	{
-		m_bodies[i]->m_islandIndex = Body::InvalidIslandIndex;
-	}
-	m_bodyCount = 0;
 }
 
 void Island::InitJointVelocityConstraints(const SolverData& solverData)
 {
-	for (auto i = decltype(m_jointCount){0}; i < m_jointCount; ++i)
+	for (auto&& joint: m_joints)
 	{
-		m_joints[i]->InitVelocityConstraints(solverData);
+		joint->InitVelocityConstraints(solverData);
 	}
 }
 
 void Island::SolveJointVelocityConstraints(const SolverData& solverData)
 {
-	for (auto j = decltype(m_jointCount){0}; j < m_jointCount; ++j)
+	for (auto&& joint: m_joints)
 	{
-		m_joints[j]->SolveVelocityConstraints(solverData);
+		joint->SolveVelocityConstraints(solverData);
 	}
 }
 
 bool Island::SolveJointPositionConstraints(const SolverData& solverData)
 {
 	auto jointsOkay = true;
-	for (auto j = decltype(m_jointCount){0}; j < m_jointCount; ++j)
+	for (auto&& joint: m_joints)
 	{
-		const auto jointOkay = m_joints[j]->SolvePositionConstraints(solverData);
+		const auto jointOkay = joint->SolvePositionConstraints(solverData);
 		jointsOkay = jointsOkay && jointOkay;
 	}
 	return jointsOkay;
@@ -252,56 +223,61 @@ static inline Position CalculateMovement(Velocity& velocity, float_t h)
 	return Position{translation, rotation};
 }
 
-void Island::CopyOut(const island_count_t count, const Position* positions, const Velocity* velocities,
-					 Body** bodies)
+void Island::CopyOut(const Position* positions, const Velocity* velocities, BodyArray& bodies)
 {
 	// Copy velocity and position array data back out to the bodies
-	for (auto i = decltype(count){0}; i < count; ++i)
+	auto i = size_t{0};
+	for (auto&& body: bodies)
 	{
-		auto& body = *bodies[i];
-		body.m_velocity = velocities[i];
-		body.m_sweep.pos1 = positions[i];
-		body.m_xf = GetTransformOne(body.m_sweep);
+		body->m_velocity = velocities[i];
+		body->m_sweep.pos1 = positions[i];
+		body->m_xf = GetTransformOne(body->m_sweep);
+		++i;
 	}
 }
 
-void Island::IntegratePositions(float_t h)
+static void IntegratePositions(Island::PositionArray& m_positions,Island::VelocityArray& m_velocities, float_t h)
 {
-	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
+	auto i = size_t{0};
+	for (auto&& velocity: m_velocities)
 	{
-		m_positions[i] += CalculateMovement(m_velocities[i], h);
+		m_positions[i] += CalculateMovement(velocity, h);
+		++i;
 	}
 }
 
 void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 {
 	// Initialize the bodies
-	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
+	for (auto&& body: m_bodies)
 	{
-		auto& body = *m_bodies[i];
-		body.m_sweep.pos0 = body.m_sweep.pos1;
+		body->m_sweep.pos0 = body->m_sweep.pos1;
 	}
 
 	const auto h = step.get_dt(); ///< Time step (in seconds).
 
+	auto velocities = VelocityArray{m_bodies.size(), m_allocator.AllocateArray<Velocity>(m_bodies.size()), m_allocator};
+	auto positions = PositionArray{m_bodies.size(), m_allocator.AllocateArray<Position>(m_bodies.size()), m_allocator};
+																						
 	// Copy body position and velocity data into local arrays.
-	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 	{
-		const auto& body = *m_bodies[i];
-		m_positions[i] = body.m_sweep.pos1;
-		m_velocities[i] = body.GetVelocity(h, gravity);
+		for (auto&& body: m_bodies)
+		{
+			positions.push_back(body->m_sweep.pos1);
+			velocities.push_back(body->GetVelocity(h, gravity));
+		}
 	}
 
 	// Solver data
-	const auto solverData = SolverData{step, m_positions, m_velocities};
+	const auto solverData = SolverData{step, positions.data(), velocities.data()};
 
 	// Initialize velocity constraints.
 	ContactSolverDef contactSolverDef;
 	contactSolverDef.dtRatio = step.warmStarting? step.dtRatio: float_t{0};
-	contactSolverDef.contacts = m_contacts;
-	contactSolverDef.count = m_contactCount;
-	contactSolverDef.positions = m_positions;
-	contactSolverDef.velocities = m_velocities;
+	contactSolverDef.contacts = m_contacts.data();
+	contactSolverDef.count = m_contacts.size();
+	contactSolverDef.positions = positions.data();
+	contactSolverDef.velocities = velocities.data();
 	contactSolverDef.allocator = &m_allocator;
 
 	ContactSolver contactSolver(contactSolverDef);
@@ -321,7 +297,7 @@ void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 		contactSolver.SolveVelocityConstraints();
 	}
 
-	IntegratePositions(h);
+	IntegratePositions(positions, velocities, h);
 
 	// Solve position constraints
 	auto positionSolved = false;
@@ -339,9 +315,9 @@ void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 	}
 
 	// Update normal and tangent impulses of contacts' manifold points
-	contactSolver.StoreImpulses(m_contacts);
+	contactSolver.StoreImpulses(m_contacts.data());
 
-	CopyOut(m_bodyCount, m_positions, m_velocities, m_bodies);
+	CopyOut(positions.data(), velocities.data(), m_bodies);
 
 	Report(contactSolver.GetVelocityConstraints());
 
@@ -351,9 +327,9 @@ void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 		if ((minSleepTime >= TimeToSleep) && positionSolved)
 		{
 			// Sleep the bodies
-			for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
+			for (auto&& body: m_bodies)
 			{
-				m_bodies[i]->UnsetAwake();
+				body->UnsetAwake();
 			}
 		}
 	}
@@ -363,22 +339,21 @@ float_t Island::UpdateSleepTimes(float_t h)
 {
 	auto minSleepTime = MaxFloat;
 	
-	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
+	for (auto&& body: m_bodies)
 	{
-		auto& body = *m_bodies[i];
-		if (body.GetType() == BodyType::Static)
+		if (body->GetType() == BodyType::Static)
 		{
 			continue;
 		}
 		
-		if (body.IsSleepingAllowed() && IsSleepable(body.m_velocity))
+		if (body->IsSleepingAllowed() && IsSleepable(body->m_velocity))
 		{
-			body.m_sleepTime += h;
-			minSleepTime = Min(minSleepTime, body.m_sleepTime);
+			body->m_sleepTime += h;
+			minSleepTime = Min(minSleepTime, body->m_sleepTime);
 		}
 		else
 		{
-			body.m_sleepTime = float_t{0};
+			body->m_sleepTime = float_t{0};
 			minSleepTime = float_t{0};
 		}
 	}
@@ -386,32 +361,36 @@ float_t Island::UpdateSleepTimes(float_t h)
 	return minSleepTime;
 }
 
-void Island::SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_count_t toiIndexB)
+void Island::SolveTOI(const TimeStep& subStep, island_count_t indexA, island_count_t indexB)
 {
-	assert(toiIndexA < m_bodyCount);
-	assert(toiIndexB < m_bodyCount);
+	assert(indexA < m_bodies.size());
+	assert(indexB < m_bodies.size());
+
+	auto velocities = VelocityArray{m_bodies.size(), m_allocator.AllocateArray<Velocity>(m_bodies.size()), m_allocator};
+	auto positions = PositionArray{m_bodies.size(), m_allocator.AllocateArray<Position>(m_bodies.size()), m_allocator};
 
 	// Initialize the body state.
-	for (auto i = decltype(m_bodyCount){0}; i < m_bodyCount; ++i)
 	{
-		const auto& body = *m_bodies[i];
-		m_positions[i] = body.m_sweep.pos1;
-		m_velocities[i] = body.GetVelocity();
+		for (auto&& body: m_bodies)
+		{
+			positions.push_back(body->m_sweep.pos1);
+			velocities.push_back(body->GetVelocity());
+		}
 	}
 
 	ContactSolverDef contactSolverDef;
-	contactSolverDef.contacts = m_contacts;
-	contactSolverDef.count = m_contactCount;
+	contactSolverDef.contacts = m_contacts.data();
+	contactSolverDef.count = m_contacts.size();
 	contactSolverDef.allocator = &m_allocator;
 	contactSolverDef.dtRatio = subStep.warmStarting? subStep.dtRatio: float_t{0};
-	contactSolverDef.positions = m_positions;
-	contactSolverDef.velocities = m_velocities;
+	contactSolverDef.positions = positions.data();
+	contactSolverDef.velocities = velocities.data();
 	ContactSolver contactSolver(contactSolverDef);
 
 	// Solve TOI-based position constraints.
 	for (auto i = decltype(subStep.positionIterations){0}; i < subStep.positionIterations; ++i)
 	{
-		if (contactSolver.SolveTOIPositionConstraints(toiIndexA, toiIndexB))
+		if (contactSolver.SolveTOIPositionConstraints(indexA, indexB))
 		{
 			break;
 		}
@@ -448,8 +427,8 @@ void Island::SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_
 #endif
 
 	// Leap of faith to new safe state.
-	m_bodies[toiIndexA]->m_sweep.pos0 = m_positions[toiIndexA];
-	m_bodies[toiIndexB]->m_sweep.pos0 = m_positions[toiIndexB];
+	m_bodies[indexA]->m_sweep.pos0 = positions[indexA];
+	m_bodies[indexB]->m_sweep.pos0 = positions[indexB];
 
 	// No warm starting is needed for TOI events because warm
 	// starting impulses were applied in the discrete solver.
@@ -463,37 +442,9 @@ void Island::SolveTOI(const TimeStep& subStep, island_count_t toiIndexA, island_
 
 	// Don't store TOI contact forces for warm starting because they can be quite large.
 
-	IntegratePositions(subStep.get_dt());
-	CopyOut(m_bodyCount, m_positions, m_velocities, m_bodies);
+	IntegratePositions(positions, velocities, subStep.get_dt());
+	CopyOut(positions.data(), velocities.data(), m_bodies);
 	Report(contactSolver.GetVelocityConstraints());
-}
-
-void Island::Add(Body* body)
-{
-	assert(body != nullptr);
-	assert(body->m_islandIndex == Body::InvalidIslandIndex);
-	assert(m_bodyCount < m_bodyCapacity);
-	body->m_islandIndex = m_bodyCount;
-	m_bodies[m_bodyCount] = body;
-	++m_bodyCount;
-}
-
-void Island::Add(Contact* contact)
-{
-	assert(contact != nullptr);
-	assert(m_contactCount < m_contactCapacity);
-	assert(contact->IsEnabled());
-	assert(contact->GetManifold().GetPointCount() > 0);
-	m_contacts[m_contactCount] = contact;
-	++m_contactCount;
-}
-
-void Island::Add(Joint* joint)
-{
-	assert(joint != nullptr);
-	assert(m_jointCount < m_jointCapacity);
-	m_joints[m_jointCount] = joint;
-	++m_jointCount;
 }
 
 static inline ContactImpulse GetContactImpulse(const ContactVelocityConstraint& vc)
@@ -512,7 +463,7 @@ void Island::Report(const ContactVelocityConstraint* constraints)
 {
 	if (m_listener)
 	{
-		for (auto i = decltype(m_contactCount){0}; i < m_contactCount; ++i)
+		for (auto i = size_t{0}; i < m_contacts.size(); ++i)
 		{
 			const auto impulse = GetContactImpulse(constraints[i]);
 			m_listener->PostSolve(m_contacts[i], &impulse);

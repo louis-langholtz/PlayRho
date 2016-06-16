@@ -75,8 +75,3 @@ void StackAllocator::Free(void* p) noexcept
 	m_allocation -= entry->size;
 	--m_entryCount;
 }
-
-void StackAllocator::operator()(void *p) noexcept
-{
-	Free(p);
-}

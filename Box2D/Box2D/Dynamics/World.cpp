@@ -30,6 +30,7 @@
 #include <Box2D/Collision/Shapes/PolygonShape.h>
 #include <Box2D/Common/Draw.h>
 #include <Box2D/Common/Timer.h>
+#include <Box2D/Common/AllocatedArray.hpp>
 
 #include <new>
 #include <functional>
@@ -332,6 +333,17 @@ void World::SetAllowSleeping(bool flag) noexcept
 	}
 }
 
+void World::Clear(Island& island)
+{
+	for (auto&& b: island.m_bodies)
+	{
+		b->m_islandIndex = Body::InvalidIslandIndex;
+	}
+	island.m_bodies.clear();
+	island.m_joints.clear();
+	island.m_contacts.clear();
+}
+
 void World::Solve(const TimeStep& step)
 {
 	m_profile.solveInit = float_t{0};
@@ -341,7 +353,6 @@ void World::Solve(const TimeStep& step)
 	// Clear all the island flags.
 	for (auto&& b: m_bodies)
 	{
-		assert(b.m_islandIndex == Body::InvalidIslandIndex);
 		b.UnsetInIsland();
 	}
 	for (auto&& c: m_contactManager.GetContacts())
@@ -359,7 +370,7 @@ void World::Solve(const TimeStep& step)
 	
 	// Build and simulate all awake islands.
 	const auto stackSize = GetBodyCount();
-	auto stack = std::unique_ptr<Body*[], StackAllocator&>(m_stackAllocator.Allocate<Body*>(stackSize), m_stackAllocator);
+	auto stack = AllocatedArray<Body*, StackAllocator&>(stackSize, m_stackAllocator.AllocateArray<Body*>(stackSize), m_stackAllocator);
 	for (auto&& seed: m_bodies)
 	{
 		// Skip seed (body) if static, already in island, not-awake, or not-active.
@@ -374,18 +385,21 @@ void World::Solve(const TimeStep& step)
 		// Seed (body): is not in island, is awake, is active, and, is dynamic or kinematic.
 
 		// Reset island and stack.
-		island.Clear();
-		auto stackCount = size_type{0};
-		stack[stackCount++] = &seed;
+		Clear(island);
+
+		stack.push_back(&seed);
 		seed.SetInIsland();
 
 		// Perform a depth first search (DFS) on the constraint graph.
-		while (stackCount > 0)
+		while (!stack.empty())
 		{
 			// Grab the next body off the stack and add it to the island.
-			const auto b = stack[--stackCount];
+			const auto b = stack.back();
+			stack.pop_back();
+
 			assert(b->IsActive());
-			island.Add(b);
+			b->m_islandIndex = static_cast<body_count_t>(island.m_bodies.size());
+			island.m_bodies.push_back(b);
 
 			// Make sure the body is awake.
 			b->SetAwake();
@@ -407,7 +421,7 @@ void World::Solve(const TimeStep& step)
 					continue;
 				}
 
-				island.Add(contact);
+				island.m_contacts.push_back(contact);
 				contact->SetInIsland();
 
 				const auto other = ce->other;
@@ -416,8 +430,7 @@ void World::Solve(const TimeStep& step)
 					continue; // Other already in island, skip it.
 				}
 
-				assert(stackCount < stackSize);
-				stack[stackCount++] = other;
+				stack.push_back(other);
 				other->SetInIsland();
 			}
 
@@ -433,7 +446,7 @@ void World::Solve(const TimeStep& step)
 					continue;
 				}
 
-				island.Add(joint);
+				island.m_joints.push_back(joint);
 				joint->SetInIsland(true);
 
 				if (other->IsInIsland())
@@ -441,8 +454,7 @@ void World::Solve(const TimeStep& step)
 					continue;
 				}
 
-				assert(stackCount < stackSize);
-				stack[stackCount++] = other;
+				stack.push_back(other);
 				other->SetInIsland();
 			}
 		}
@@ -450,10 +462,9 @@ void World::Solve(const TimeStep& step)
 		island.Solve(step, m_gravity, m_allowSleep);
 
 		// Post solve cleanup.
-		for (auto i = decltype(island.GetBodyCount()){0}; i < island.GetBodyCount(); ++i)
+		for (auto&& b: island.m_bodies)
 		{
 			// Allow static bodies to participate in other islands.
-			auto b = island.GetBody(i);
 			if (b->GetType() == BodyType::Static)
 			{
 				b->UnsetInIsland();
@@ -555,91 +566,104 @@ void World::SolveTOI(const TimeStep& step)
 			break;
 		}
 
-		auto bA = minContactToi.contact->GetFixtureA()->GetBody();
-		auto bB = minContactToi.contact->GetFixtureB()->GetBody();
-
-		const auto backupA = bA->m_sweep;
-		const auto backupB = bB->m_sweep;
-
-		// Advance the bodies to the TOI.
-		bA->Advance(minContactToi.toi);
-		bB->Advance(minContactToi.toi);
-
-		// The TOI contact likely has some new contact points.
-		minContactToi.contact->Update(m_contactManager.m_contactListener);
-		minContactToi.contact->UnsetToi();
-		++(minContactToi.contact->m_toiCount);
-
-		// Is contact disabled or separated?
-		if (!minContactToi.contact->IsEnabled() || !minContactToi.contact->IsTouching())
-		{
-			// Restore the sweeps by undoing the Advance calls (and anything else done movement-wise)
-			minContactToi.contact->UnsetEnabled();
-			bA->m_sweep = backupA;
-			bA->m_xf = GetTransformOne(bA->m_sweep);
-			bB->m_sweep = backupB;
-			bB->m_xf = GetTransformOne(bB->m_sweep);
-			continue;
-		}
-
-		bA->SetAwake();
-		bB->SetAwake();
-
-		// Build the island
-		island.Clear();
-		island.Add(bA);
-		bA->SetInIsland();
-		island.Add(bB);
-		bB->SetInIsland();
-		island.Add(minContactToi.contact);
-		minContactToi.contact->SetInIsland();
-
-		// Get contacts on bodyA and bodyB.
-		for (auto body: {bA, bB})
-		{
-			if (body->GetType() == BodyType::Dynamic)
-			{
-				ProcessContactsForTOI(island, *body, minContactToi.toi);
-			}
-		}
-
-		TimeStep subStep;
-		subStep.set_dt((float_t{1} - minContactToi.toi) * step.get_dt());
-		subStep.dtRatio = float_t{1};
-		subStep.positionIterations = MaxSubStepPositionIterations;
-		subStep.velocityIterations = step.velocityIterations;
-		subStep.warmStarting = false;
-		island.SolveTOI(subStep, bA->m_islandIndex, bB->m_islandIndex);
-
-		// Reset island flags and synchronize broad-phase proxies.
-		for (auto i = decltype(island.GetBodyCount()){0}; i < island.GetBodyCount(); ++i)
-		{
-			auto body = island.GetBody(i);
-			body->UnsetInIsland();
-
-			if (body->GetType() == BodyType::Dynamic)
-			{
-				body->SynchronizeFixtures();
-				
-				// Invalidate all contact TOIs on this displaced body.
-				for (auto ce = body->m_contacts; ce; ce = ce->next)
-				{
-					ce->contact->UnsetInIsland();
-					ce->contact->UnsetToi();
-				}
-			}
-		}
-
-		// Commit fixture proxy movements to the broad-phase so that new contacts are created.
-		// Also, some contacts can be destroyed.
-		m_contactManager.FindNewContacts();
-
+		SolveTOI(step, island, *minContactToi.contact, minContactToi.toi);
+		
 		if (m_subStepping)
 		{
 			m_stepComplete = false;
 			break;
 		}
 	}
+}
+
+void World::SolveTOI(const TimeStep& step, Island& island, Contact& contact, float_t toi)
+{
+	auto bA = contact.GetFixtureA()->GetBody();
+	auto bB = contact.GetFixtureB()->GetBody();
+
+	const auto backupA = bA->m_sweep;
+	const auto backupB = bB->m_sweep;
+
+	// Advance the bodies to the TOI.
+	bA->Advance(toi);
+	bB->Advance(toi);
+
+	// The TOI contact likely has some new contact points.
+	contact.Update(m_contactManager.m_contactListener);
+	contact.UnsetToi();
+	++contact.m_toiCount;
+
+	// Is contact disabled or separated?
+	if (!contact.IsEnabled() || !contact.IsTouching())
+	{
+		// Restore the sweeps by undoing the Advance calls (and anything else done movement-wise)
+		contact.UnsetEnabled();
+		bA->m_sweep = backupA;
+		bA->m_xf = GetTransformOne(bA->m_sweep);
+		bB->m_sweep = backupB;
+		bB->m_xf = GetTransformOne(bB->m_sweep);
+		return;
+	}
+
+	bA->SetAwake();
+	bB->SetAwake();
+
+	// Build the island
+	Clear(island);
+
+	const auto indexA = static_cast<body_count_t>(island.m_bodies.size());
+	bA->m_islandIndex = indexA;
+	island.m_bodies.push_back(bA);
+	bA->SetInIsland();
+
+	const auto indexB = static_cast<body_count_t>(island.m_bodies.size());
+	bB->m_islandIndex = indexB;
+	island.m_bodies.push_back(bB);
+	bB->SetInIsland();
+
+	island.m_contacts.push_back(&contact);
+	contact.SetInIsland();
+
+	// Process the contacts of the bodies, adding appropriate ones to the island,
+	// adding appropriate other bodies of added contacts, and advance those other
+	// bodies sweeps and transforms to the minimum contact's TOI.
+	for (auto body: {bA, bB})
+	{
+		if (body->GetType() == BodyType::Dynamic)
+		{
+			ProcessContactsForTOI(island, *body, toi);
+		}
+	}
+
+	TimeStep subStep;
+	subStep.set_dt((float_t{1} - toi) * step.get_dt());
+	subStep.dtRatio = float_t{1};
+	subStep.positionIterations = MaxSubStepPositionIterations;
+	subStep.velocityIterations = step.velocityIterations;
+	subStep.warmStarting = false;
+	island.SolveTOI(subStep, indexA, indexB);
+
+	// Reset island flags and synchronize broad-phase proxies.
+	for (auto&& body: island.m_bodies)
+	{
+		body->UnsetInIsland();
+
+		if (body->GetType() == BodyType::Dynamic)
+		{
+			body->SynchronizeFixtures();
+			
+			// Invalidate all contact TOIs on this displaced body.
+			for (auto ce = body->m_contacts; ce; ce = ce->next)
+			{
+				ce->contact->UnsetInIsland();
+				ce->contact->UnsetToi();
+			}
+		}
+	}
+
+	// Commit fixture proxy movements to the broad-phase so that new contacts are created.
+	// Also, some contacts can be destroyed.
+	m_contactManager.FindNewContacts();
 }
 
 void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi)
@@ -689,7 +713,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi)
 		}
 		
 		// Add the contact to the island
-		island.Add(contact);
+		island.m_contacts.push_back(contact);
 		contact->SetInIsland();
 		
 		// Has the other body already been added to the island?
@@ -706,7 +730,8 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi)
 			other->SetAwake();
 		}
 		
-		island.Add(other);
+		other->m_islandIndex = static_cast<body_count_t>(island.m_bodies.size());
+		island.m_bodies.push_back(other);
 	}
 }
 

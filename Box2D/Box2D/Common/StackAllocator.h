@@ -28,6 +28,7 @@ namespace box2d {
 /// This is a stack allocator used for fast per step allocations.
 /// You must nest allocate/free pairs. The code will assert
 /// if you try to interleave multiple allocate/free pairs.
+/// @note This class satisfies the C++11 std::unique_ptr() Deleter concept.
 class StackAllocator
 {
 public:
@@ -43,15 +44,23 @@ public:
 	void Free(void* p) noexcept;
 
 	template <typename T>
-	T* Allocate(size_type size) noexcept
+	T* AllocateArray(size_type size) noexcept
 	{
 		return static_cast<T*>(Allocate(size * sizeof(T)));
+	}
+
+	void* operator()(size_type size) noexcept
+	{
+		return Allocate(size);
 	}
 
 	/// Functional operator for freeing memory allocated by this object.
 	/// @detail This method frees memory (like called Free) and allows this object
 	///   to be used as deleter to std::unique_ptr.
-	void operator()(void *p) noexcept;
+	void operator()(void *p) noexcept
+	{
+		Free(p);
+	}
 
 	size_type GetMaxAllocation() const noexcept
 	{

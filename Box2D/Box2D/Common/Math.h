@@ -369,6 +369,13 @@ struct Velocity
 
 	constexpr Velocity(Vec2 v_, float_t w_) noexcept: v{v_}, w{w_} {}
 	
+	Velocity& operator= (const Velocity& rhs) noexcept
+	{
+		v = rhs.v;
+		w = rhs.w;
+		return *this;
+	}
+
 	Vec2 v; ///< Linear velocity (in meters/second).
 	float_t w; ///< Angular velocity (in radians/second).
 };
