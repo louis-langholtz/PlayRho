@@ -65,7 +65,7 @@ struct FixtureDef
 	void* userData = nullptr;
 
 	/// The friction coefficient, usually in the range [0,1].
-	float_t friction = float_t(0.2);
+	float_t friction = float_t{2} / float_t{10};
 
 	/// The restitution (elasticity) usually in the range [0,1].
 	float_t restitution = float_t{0};
@@ -198,7 +198,7 @@ protected:
 	friend class FixtureIterator;
 	friend class ConstFixtureIterator;
 
-	Fixture(Body* body) noexcept: m_body(body) {}
+	Fixture(Body* body) noexcept: m_body{body} {}
 
 	// We need separation create/destroy functions from the constructor/destructor because
 	// the destructor cannot access the allocator (no destructor arguments allowed by C++).
@@ -217,16 +217,16 @@ protected:
 
 	void Synchronize(BroadPhase& broadPhase, const Transform& xf1, const Transform& xf2);
 
-	Body* const m_body;
+	Body* m_body = nullptr; ///< Parent body.
 	float_t m_density = float_t{0};
-	Fixture* m_next = nullptr;
-	Shape* m_shape = nullptr;
-	float_t m_friction; ///< Friction as a coefficient.
-	float_t m_restitution; ///< Restitution as a coefficient.
-	FixtureProxy* m_proxies = nullptr;
+	Fixture* m_next = nullptr; ///< Next fixture in parent body's fixture list.
+	Shape* m_shape = nullptr; ///< Pointer to shape. Either null or pointer to a heap-memory private copy of the assigned shape.
+	float_t m_friction = float_t{2} / float_t{10}; ///< Friction as a coefficient.
+	float_t m_restitution = float_t{0}; ///< Restitution as a coefficient.
+	FixtureProxy* m_proxies = nullptr; ///< Array of fixture proxies for the assigned shape.
 	child_count_t m_proxyCount = 0; ///< Proxy count. @detail This is the fixture shape's child count after proxy creation.
 	Filter m_filter;
-	bool m_isSensor;
+	bool m_isSensor = false;
 	void* m_userData = nullptr;
 };
 
