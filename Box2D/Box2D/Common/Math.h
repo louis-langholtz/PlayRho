@@ -393,9 +393,9 @@ public:
 	
 	constexpr explicit Sweep(const Position& p, const Vec2& lc = Vec2_zero, float_t a0 = 0) noexcept: Sweep{p, p, lc, a0} {}
 
-	/// Advances the sweep forward to the given time factor.
-	/// This updates pos0.c and pos0.a and sets alpha0 to the given time alpha.
-	/// @param alpha New time factor in [0,1) to advance the sweep to.
+	/// Advances the sweep by a factor of the difference between the given time alpha and the sweep's alpha0.
+	/// @detail This advances position 0 of the sweep towards position 1 by a factor of the difference between the given alpha and the alpha0.
+	/// @param alpha New time factor in [0,1) to update the sweep to.
 	void Advance(float_t alpha);
 
 	Position pos0; ///< Center world position and world angle at time "0".
