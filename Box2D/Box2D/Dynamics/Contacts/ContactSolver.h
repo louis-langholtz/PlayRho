@@ -44,23 +44,6 @@ struct VelocityConstraintPoint
 	float_t velocityBias; ///< Velocity bias.
 };
 
-/// Contact velocity constraint body data.
-/// @note This structure is intentionally toplevel like the ContactPositionConstraintBodyData
-///   structure.
-struct ContactVelocityConstraintBodyData
-{
-	using index_t = size_t;
-
-	ContactVelocityConstraintBodyData() noexcept = default;
-	ContactVelocityConstraintBodyData(const ContactVelocityConstraintBodyData& copy) noexcept = default;
-	
-	constexpr ContactVelocityConstraintBodyData(index_t i, float_t iM, float_t iI) noexcept: index{i}, invMass{iM}, invI{iI} {}
-
-	index_t index; ///< Index within island of body.
-	float_t invMass; ///< Inverse mass of body.
-	float_t invI; ///< Inverse rotational interia of body.
-};
-
 /// Contact velocity constraint.
 /// @note A valid contact velocity constraint must have a point count of either 1 or 2.
 class ContactVelocityConstraint
@@ -68,6 +51,19 @@ class ContactVelocityConstraint
 public:
 	using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
 	using index_type = size_t;
+
+	/// Contact velocity constraint body data.
+	struct BodyData
+	{
+		BodyData() noexcept = default;
+		BodyData(const BodyData& copy) noexcept = default;
+		
+		constexpr BodyData(index_type i, float_t iM, float_t iI) noexcept: index{i}, invMass{iM}, invI{iI} {}
+		
+		index_type index; ///< Index within island of body.
+		float_t invMass; ///< Inverse mass of body.
+		float_t invI; ///< Inverse rotational interia of body.
+	};
 	
 	/// Gets the count of points added to this object.
 	/// @return Value between 0 and MaxManifoldPoints
@@ -131,8 +127,8 @@ public:
 
 	Vec2 normal;
 
-	ContactVelocityConstraintBodyData bodyA; ///< Body A contact velocity constraint data.
-	ContactVelocityConstraintBodyData bodyB; ///< Body B contact velocity constraint data.
+	BodyData bodyA; ///< Body A contact velocity constraint data.
+	BodyData bodyB; ///< Body B contact velocity constraint data.
 	float_t friction; ///< Friction coefficient. Usually in the range of [0,1].
 	float_t restitution; ///< Restitution coefficient.
 	float_t tangentSpeed;
@@ -147,6 +143,30 @@ private:
 	size_type pointCount;
 };
 
+class ContactPositionConstraint
+{
+public:
+	using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
+	
+	struct BodyData
+	{
+		using index_type = std::remove_const<decltype(MaxBodies)>::type;
+		
+		index_type index; ///< Index within island of the associated body.
+		float_t invMass; ///< Inverse mass of associated body (a non-negative value).
+		Vec2 localCenter; ///< Local center of the associated body's sweep.
+		float_t invI; ///< Inverse rotational inertia about the center of mass of the associated body (a non-negative value).
+	};
+	
+	Manifold manifold; ///< Copy of contact's manifold.
+	
+	BodyData bodyA;
+	BodyData bodyB;
+	
+	float_t radiusA; ///< "Radius" distance from the associated shape of fixture A.
+	float_t radiusB; ///< "Radius" distance from the associated shape of fixture B.
+};
+	
 struct ContactSolverDef
 {
 	using size_type = size_t;
@@ -216,8 +236,8 @@ private:
 	static ContactVelocityConstraint* InitVelocityConstraints(ContactVelocityConstraint* constraints, size_type count, Contact** contacts,
 															  float_t dtRatio = 0);
 	
-	static void Assign(ContactPositionConstraintBodyData& var, const Body& val);
-	static ContactVelocityConstraintBodyData GetVelocityConstraintBodyData(const Body& val);
+	static void Assign(ContactPositionConstraint::BodyData& var, const Body& val);
+	static ContactVelocityConstraint::BodyData GetVelocityConstraintBodyData(const Body& val);
 
 	/// Gets the position-independent velocity constraint for the given contact, index, and time slot values.
 	static ContactVelocityConstraint GetVelocityConstraint(const Contact& contact, size_type index, float_t dtRatio);

@@ -37,31 +37,7 @@ static constexpr auto k_majorErrorTol = float_t(1e-2); ///< error tolerance
 
 bool g_blockSolve = true;
 
-struct ContactPositionConstraintBodyData
-{
-	using index_t = std::remove_const<decltype(MaxBodies)>::type;
-
-	index_t index; ///< Index within island of the associated body.
-	float_t invMass; ///< Inverse mass of associated body (a non-negative value).
-	Vec2 localCenter; ///< Local center of the associated body's sweep.
-	float_t invI; ///< Inverse rotational inertia about the center of mass of the associated body (a non-negative value).
-};
-
-class ContactPositionConstraint
-{
-public:
-	using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
-
-	Manifold manifold; ///< Copy of contact's manifold.
-
-	ContactPositionConstraintBodyData bodyA;
-	ContactPositionConstraintBodyData bodyB;
-
-	float_t radiusA; ///< "Radius" distance from the associated shape of fixture A.
-	float_t radiusB; ///< "Radius" distance from the associated shape of fixture B.
-};
-
-void ContactSolver::Assign(ContactPositionConstraintBodyData& var, const Body& val)
+void ContactSolver::Assign(ContactPositionConstraint::BodyData& var, const Body& val)
 {
 	assert(val.IsValidIslandIndex());
 	var.index = val.m_islandIndex;
@@ -70,10 +46,10 @@ void ContactSolver::Assign(ContactPositionConstraintBodyData& var, const Body& v
 	var.localCenter = val.m_sweep.localCenter;
 }
 
-ContactVelocityConstraintBodyData ContactSolver::GetVelocityConstraintBodyData(const Body& val)
+ContactVelocityConstraint::BodyData ContactSolver::GetVelocityConstraintBodyData(const Body& val)
 {
 	assert(val.IsValidIslandIndex());
-	return ContactVelocityConstraintBodyData{val.m_islandIndex, val.m_invMass, val.m_invI};
+	return ContactVelocityConstraint::BodyData{val.m_islandIndex, val.m_invMass, val.m_invI};
 }
 
 ContactVelocityConstraint ContactSolver::GetVelocityConstraint(const Contact& contact, size_type index, float_t dtRatio)
