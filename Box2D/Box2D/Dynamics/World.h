@@ -260,8 +260,6 @@ private:
 	bool Add(Body& b);
 	bool Remove(Body& b);
 
-	void Clear(Island& island);
-
 	struct ContactToiPair
 	{
 		Contact* contact; ///< Contact for which the time of impact is relavant.
@@ -288,7 +286,7 @@ private:
 	void SetNewFixtures() noexcept { m_flags |= World::e_newFixture; }
 	void UnsetNewFixtures() noexcept { m_flags &= ~e_newFixture; }
 
-	ContactManager m_contactManager{&m_blockAllocator, &m_defaultFilter, &m_defaultListener};
+	ContactManager m_contactMgr{&m_blockAllocator, &m_defaultFilter, &m_defaultListener};
 
 	BodyList m_bodies; ///< Body list linked-list.
 	JointList m_joints; ///< Joint list linked-list.
@@ -335,12 +333,12 @@ inline const JointList& World::GetJoints() const noexcept
 
 inline ContactList& World::GetContacts() noexcept
 {
-	return m_contactManager.GetContacts();
+	return m_contactMgr.GetContacts();
 }
 
 inline const ContactList& World::GetContacts() const noexcept
 {
-	return m_contactManager.GetContacts();
+	return m_contactMgr.GetContacts();
 }
 
 inline body_count_t World::GetBodyCount() const noexcept
@@ -355,7 +353,7 @@ inline World::size_type World::GetJointCount() const noexcept
 
 inline contact_count_t World::GetContactCount() const noexcept
 {
-	return m_contactManager.GetContactCount();
+	return m_contactMgr.GetContactCount();
 }
 
 inline void World::SetGravity(const Vec2& gravity) noexcept
@@ -393,7 +391,7 @@ inline bool World::GetAutoClearForces() const noexcept
 
 inline const ContactManager& World::GetContactManager() const noexcept
 {
-	return m_contactManager;
+	return m_contactMgr;
 }
 
 inline const Profile& World::GetProfile() const noexcept

@@ -187,7 +187,7 @@ void Fixture::Refilter()
 	}
 
 	// Touch each proxy so that new pairs may be created
-	auto broadPhase = &world->m_contactManager.m_broadPhase;
+	auto broadPhase = &world->m_contactMgr.m_broadPhase;
 	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
 	{
 		broadPhase->TouchProxy(m_proxies[i].proxyId);

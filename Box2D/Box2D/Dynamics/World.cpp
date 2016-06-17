@@ -103,12 +103,12 @@ void World::SetDestructionListener(DestructionListener* listener) noexcept
 
 void World::SetContactFilter(ContactFilter* filter) noexcept
 {
-	m_contactManager.m_contactFilter = filter;
+	m_contactMgr.m_contactFilter = filter;
 }
 
 void World::SetContactListener(ContactListener* listener) noexcept
 {
-	m_contactManager.m_contactListener = listener;
+	m_contactMgr.m_contactListener = listener;
 }
 
 void World::SetDebugDraw(Draw* debugDraw) noexcept
@@ -333,17 +333,6 @@ void World::SetAllowSleeping(bool flag) noexcept
 	}
 }
 
-void World::Clear(Island& island)
-{
-	for (auto&& b: island.m_bodies)
-	{
-		b->m_islandIndex = Body::InvalidIslandIndex;
-	}
-	island.m_bodies.clear();
-	island.m_joints.clear();
-	island.m_contacts.clear();
-}
-
 void World::Solve(const TimeStep& step)
 {
 	m_profile.solveInit = float_t{0};
@@ -355,7 +344,7 @@ void World::Solve(const TimeStep& step)
 	{
 		b.UnsetInIsland();
 	}
-	for (auto&& c: m_contactManager.GetContacts())
+	for (auto&& c: m_contactMgr.GetContacts())
 	{
 		c.UnsetInIsland();
 	}
@@ -364,26 +353,25 @@ void World::Solve(const TimeStep& step)
 		j.SetInIsland(false);
 	}
 
-	// Size the island for the worst case.
-	Island island(GetBodyCount(), m_contactManager.GetContactCount(), m_joints.size(),
-				  m_stackAllocator, m_contactManager.m_contactListener);
-	
+	auto remNumBodies = GetBodyCount(); ///< Remaining number of bodies.
+	auto remNumContacts = m_contactMgr.GetContactCount(); ///< Remaining number of contacts.
+	auto remNumJoints = m_joints.size(); ///< Remaining number of joints.
+
 	// Build and simulate all awake islands.
 	const auto stackSize = GetBodyCount();
 	auto stack = AllocatedArray<Body*, StackAllocator&>(stackSize, m_stackAllocator.AllocateArray<Body*>(stackSize), m_stackAllocator);
 	for (auto&& seed: m_bodies)
 	{
-		// Skip seed (body) if already in island, not-speedable, not-awake, or not-active.
-		if (((seed.m_flags & Body::e_islandFlag) != 0)
-			|| ((seed.m_flags & (Body::e_velocityFlag|Body::e_awakeFlag|Body::e_activeFlag)) == 0))
+		// Skip bodies that are already in island, not-speedable, not-awake, or not-active.
+		if (seed.IsInIsland() || !seed.IsSpeedable() || !seed.IsAwake() || !seed.IsActive())
 		{
 			continue;
 		}
 
 		// Seed (body): is not in island, is awake, is active, and, is dynamic or kinematic.
 
-		// Reset island and stack.
-		Clear(island);
+		// Size the island for the remaining un-evaluated bodies, contacts, and joints.
+		Island island(remNumBodies, remNumContacts, remNumJoints, m_stackAllocator, m_contactMgr.m_contactListener);
 
 		stack.push_back(&seed);
 		seed.SetInIsland();
@@ -398,6 +386,7 @@ void World::Solve(const TimeStep& step)
 			assert(b->IsActive());
 			b->m_islandIndex = static_cast<body_count_t>(island.m_bodies.size());
 			island.m_bodies.push_back(b);
+			--remNumBodies;
 
 			// Make sure the body is awake.
 			b->SetAwake();
@@ -420,6 +409,7 @@ void World::Solve(const TimeStep& step)
 				}
 
 				island.m_contacts.push_back(contact);
+				--remNumContacts;
 				contact->SetInIsland();
 
 				const auto other = ce->other;
@@ -445,6 +435,7 @@ void World::Solve(const TimeStep& step)
 				}
 
 				island.m_joints.push_back(joint);
+				--remNumJoints;
 				joint->SetInIsland(true);
 
 				if (other->IsInIsland())
@@ -459,13 +450,13 @@ void World::Solve(const TimeStep& step)
 
 		island.Solve(step, m_gravity, m_allowSleep);
 
-		// Post solve cleanup.
 		for (auto&& b: island.m_bodies)
 		{
 			// Allow static bodies to participate in other islands.
 			if (!b->IsSpeedable())
 			{
 				b->UnsetInIsland();
+				++remNumBodies;
 			}
 		}
 	}
@@ -484,7 +475,7 @@ void World::Solve(const TimeStep& step)
 		}
 
 		// Look for new contacts.
-		m_contactManager.FindNewContacts();
+		m_contactMgr.FindNewContacts();
 		m_profile.broadphase = timer.GetMilliseconds();
 	}
 }
@@ -500,7 +491,7 @@ void World::ResetBodiesForSolveTOI()
 
 void World::ResetContactsForSolveTOI()
 {
-	for (auto&& c: m_contactManager.GetContacts())
+	for (auto&& c: m_contactMgr.GetContacts())
 	{
 		// Invalidate TOI
 		c.UnsetInIsland();
@@ -514,7 +505,7 @@ World::ContactToiPair World::UpdateContactTOIs()
 	auto minContact = static_cast<Contact*>(nullptr);
 	auto minToi = float_t{1};
 	
-	for (auto&& c: m_contactManager.GetContacts())
+	for (auto&& c: m_contactMgr.GetContacts())
 	{
 		// Skip the disabled and excessive sub-stepped contacts
 		if (!c.IsEnabled() || (c.m_toiCount >= MaxSubSteps))
@@ -585,7 +576,7 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 	bB->Advance(toi);
 
 	// The TOI contact likely has some new contact points.
-	contact.Update(m_contactManager.m_contactListener);
+	contact.Update(m_contactMgr.m_contactListener);
 	contact.UnsetToi();
 	++contact.m_toiCount;
 
@@ -605,7 +596,7 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 	bB->SetAwake();
 
 	// Build the island
-	Island island(2 * MaxTOIContacts, MaxTOIContacts, 0, m_stackAllocator, m_contactManager.m_contactListener);
+	Island island(2 * MaxTOIContacts, MaxTOIContacts, 0, m_stackAllocator, m_contactMgr.m_contactListener);
 
 	const auto indexA = static_cast<body_count_t>(island.m_bodies.size());
 	bA->m_islandIndex = indexA;
@@ -659,7 +650,7 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 
 	// Commit fixture proxy movements to the broad-phase so that new contacts are created.
 	// Also, some contacts can be destroyed.
-	m_contactManager.FindNewContacts();
+	m_contactMgr.FindNewContacts();
 }
 
 void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi)
@@ -698,7 +689,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi)
 		}
 		
 		// Update the contact points
-		contact->Update(m_contactManager.m_contactListener);
+		contact->Update(m_contactMgr.m_contactListener);
 		
 		// Revert and skip if contact disabled by user or if there are there no contact points anymore.
 		if (!contact->IsEnabled() || !contact->IsTouching())
@@ -721,7 +712,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi)
 		// Add the other body to the island.
 		other->SetInIsland();
 		
-		if (other->GetType() != BodyType::Static)
+		if (other->IsSpeedable())
 		{
 			other->SetAwake();
 		}
@@ -738,7 +729,7 @@ void World::Step(float_t dt, unsigned velocityIterations, unsigned positionItera
 	// If new fixtures were added, we need to find the new contacts.
 	if (HasNewFixtures())
 	{
-		m_contactManager.FindNewContacts();
+		m_contactMgr.FindNewContacts();
 		UnsetNewFixtures();
 	}
 
@@ -755,7 +746,7 @@ void World::Step(float_t dt, unsigned velocityIterations, unsigned positionItera
 	// Update contacts. This is where some contacts are destroyed.
 	{
 		Timer timer;
-		m_contactManager.Collide();
+		m_contactMgr.Collide();
 		m_profile.collide = timer.GetMilliseconds();
 	}
 
@@ -814,9 +805,9 @@ struct WorldQueryWrapper
 void World::QueryAABB(QueryFixtureReporter* callback, const AABB& aabb) const
 {
 	WorldQueryWrapper wrapper;
-	wrapper.broadPhase = &m_contactManager.m_broadPhase;
+	wrapper.broadPhase = &m_contactMgr.m_broadPhase;
 	wrapper.callback = callback;
-	m_contactManager.m_broadPhase.Query(&wrapper, aabb);
+	m_contactMgr.m_broadPhase.Query(&wrapper, aabb);
 }
 
 struct WorldRayCastWrapper
@@ -853,9 +844,9 @@ struct WorldRayCastWrapper
 
 void World::RayCast(RayCastFixtureReporter* callback, const Vec2& point1, const Vec2& point2) const
 {
-	WorldRayCastWrapper wrapper(&m_contactManager.m_broadPhase, callback);
+	WorldRayCastWrapper wrapper(&m_contactMgr.m_broadPhase, callback);
 	const auto input = RayCastInput{point1, point2, float_t{1}};
-	m_contactManager.m_broadPhase.RayCast(&wrapper, input);
+	m_contactMgr.m_broadPhase.RayCast(&wrapper, input);
 }
 
 void World::DrawShape(const Fixture* fixture, const Transform& xf, const Color& color)
@@ -1007,7 +998,7 @@ void World::DrawDebugData()
 	if (flags & Draw::e_pairBit)
 	{
 		//const Color color(0.3f, 0.9f, 0.9f);
-		//for (auto&& c: m_contactManager.GetContacts())
+		//for (auto&& c: m_contactMgr.GetContacts())
 		//{
 			//Fixture* fixtureA = c.GetFixtureA();
 			//Fixture* fixtureB = c.GetFixtureB();
@@ -1022,7 +1013,7 @@ void World::DrawDebugData()
 	if (flags & Draw::e_aabbBit)
 	{
 		const Color color(0.9f, 0.3f, 0.9f);
-		const auto bp = &m_contactManager.m_broadPhase;
+		const auto bp = &m_contactMgr.m_broadPhase;
 
 		for (auto&& b: m_bodies)
 		{
@@ -1062,22 +1053,22 @@ void World::DrawDebugData()
 
 World::size_type World::GetProxyCount() const noexcept
 {
-	return m_contactManager.m_broadPhase.GetProxyCount();
+	return m_contactMgr.m_broadPhase.GetProxyCount();
 }
 
 World::size_type World::GetTreeHeight() const noexcept
 {
-	return m_contactManager.m_broadPhase.GetTreeHeight();
+	return m_contactMgr.m_broadPhase.GetTreeHeight();
 }
 
 World::size_type World::GetTreeBalance() const
 {
-	return m_contactManager.m_broadPhase.GetTreeBalance();
+	return m_contactMgr.m_broadPhase.GetTreeBalance();
 }
 
 float_t World::GetTreeQuality() const
 {
-	return m_contactManager.m_broadPhase.GetTreeQuality();
+	return m_contactMgr.m_broadPhase.GetTreeQuality();
 }
 
 void World::ShiftOrigin(const Vec2& newOrigin)
@@ -1100,7 +1091,7 @@ void World::ShiftOrigin(const Vec2& newOrigin)
 		j.ShiftOrigin(newOrigin);
 	}
 
-	m_contactManager.m_broadPhase.ShiftOrigin(newOrigin);
+	m_contactMgr.m_broadPhase.ShiftOrigin(newOrigin);
 }
 
 void World::Dump()

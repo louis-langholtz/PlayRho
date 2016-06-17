@@ -88,7 +88,7 @@ void Body::DestroyContacts()
 	{
 		const auto ce0 = ce;
 		ce = ce->next;
-		m_world->m_contactManager.Destroy(ce0->contact);
+		m_world->m_contactMgr.Destroy(ce0->contact);
 	}
 	m_contacts = nullptr;
 }
@@ -127,7 +127,7 @@ void Body::DestroyFixtures()
 			m_world->m_destructionListener->SayGoodbye(f);
 		}
 		
-		f.DestroyProxies(m_world->m_contactManager.m_broadPhase);
+		f.DestroyProxies(m_world->m_contactMgr.m_broadPhase);
 		f.Destroy(&m_world->m_blockAllocator);
 		f.~Fixture();
 		m_world->m_blockAllocator.Free(&f, sizeof(Fixture));
@@ -172,7 +172,7 @@ void Body::SetType(BodyType type)
 	DestroyContacts();
 
 	// Touch the proxies so that new contacts will be created (when appropriate)
-	auto& broadPhase = m_world->m_contactManager.m_broadPhase;
+	auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
 	for (auto&& f: m_fixtures)
 	{
 		const auto proxyCount = f.m_proxyCount;
@@ -199,7 +199,7 @@ Fixture* Body::CreateFixture(const FixtureDef& def)
 
 	if (IsActive())
 	{
-		fixture->CreateProxies(m_world->m_contactManager.m_broadPhase, m_xf);
+		fixture->CreateProxies(m_world->m_contactMgr.m_broadPhase, m_xf);
 	}
 
 	m_fixtures.push_front(fixture);
@@ -258,7 +258,7 @@ void Body::DestroyFixture(Fixture* fixture)
 		{
 			// This destroys the contact and removes it from
 			// this body's contact list.
-			m_world->m_contactManager.Destroy(c);
+			m_world->m_contactMgr.Destroy(c);
 		}
 	}
 
@@ -266,7 +266,7 @@ void Body::DestroyFixture(Fixture* fixture)
 
 	if (IsActive())
 	{
-		fixture->DestroyProxies(m_world->m_contactManager.m_broadPhase);
+		fixture->DestroyProxies(m_world->m_contactMgr.m_broadPhase);
 	}
 
 	fixture->m_next = nullptr;
@@ -449,7 +449,7 @@ void Body::SetTransform(const Vec2& position, float_t angle)
 		m_sweep.pos0 = newPosition;
 	}
 
-	auto& broadPhase = m_world->m_contactManager.m_broadPhase;
+	auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
 	for (auto&& f: m_fixtures)
 	{
 		f.Synchronize(broadPhase, m_xf, m_xf);
@@ -459,7 +459,7 @@ void Body::SetTransform(const Vec2& position, float_t angle)
 void Body::SynchronizeFixtures()
 {
 	const auto xf1 = GetTransformZero(m_sweep);
-	auto& broadPhase = m_world->m_contactManager.m_broadPhase;
+	auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
 	for (auto&& f: m_fixtures)
 	{
 		f.Synchronize(broadPhase, xf1, m_xf);
@@ -480,7 +480,7 @@ void Body::SetActive(bool flag)
 		m_flags |= e_activeFlag;
 
 		// Create all proxies.
-		auto& broadPhase = m_world->m_contactManager.m_broadPhase;
+		auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
 		for (auto&& f: m_fixtures)
 		{
 			f.CreateProxies(broadPhase, m_xf);
@@ -493,7 +493,7 @@ void Body::SetActive(bool flag)
 		m_flags &= ~e_activeFlag;
 
 		// Destroy all proxies.
-		auto& broadPhase = m_world->m_contactManager.m_broadPhase;
+		auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
 		for (auto&& f: m_fixtures)
 		{
 			f.DestroyProxies(broadPhase);
