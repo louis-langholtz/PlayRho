@@ -44,12 +44,14 @@ enum class BodyType
 	/// Static body type.
 	/// @detail
 	/// Static bodies have no mass, have no forces applied to them, and aren't moved by physical processeses.
+	/// They are impenetrable.
 	/// Physics applied: none.
 	Static = 0,
 	
 	/// Kinematic body type.
 	/// @detail
 	/// Kinematic bodies have no mass and have no forces applied to them, but can move at set velocities.
+	/// They are impenetrable.
 	/// Physics applied: velocity.
 	Kinematic,
 
@@ -57,6 +59,7 @@ enum class BodyType
 	/// @detail
 	/// Dynamic bodies are fully simulated bodies.
 	/// Dynamic bodies always have a positive non-zero mass.
+	/// They may be penetrable.
 	/// Physics applied: velocity, acceleration.
 	Dynamic
 
@@ -111,7 +114,7 @@ struct BodyDef
 	/// Is this a fast moving body that should be prevented from tunneling through
 	/// other moving bodies? Note that all bodies are prevented from tunneling through
 	/// kinematic and static bodies. This setting is only considered on dynamic bodies.
-	/// @warning You should use this flag sparingly since it increases processing time.
+	/// @note Use this flag sparingly since it increases processing time.
 	bool bullet = false;
 
 	/// Does this body start out active?
@@ -293,11 +296,22 @@ public:
 	/// Get the type of this body.
 	BodyType GetType() const noexcept;
 
+	/// Is "speedable".
+	/// @detail Is this body able to have a non-zero speed associated with it.
+	/// Kinematic and Dynamic bodies are speedable. Static bodies are not.
+	bool IsSpeedable() const noexcept;
+
+	/// Is accelerable.
+	/// @detail Indicates whether this body is accelerable, ie. whether it is effected by
+	///   forces. Only Dynamic bodies are accelerable.
+	/// @return true if the body is accelerable, false otherwise.
+	bool IsAccelerable() const noexcept;
+
 	/// Should this body be treated like a bullet for continuous collision detection?
 	void SetBullet(bool flag) noexcept;
 
 	/// Is this body treated like a bullet for continuous collision detection?
-	bool IsBullet() const noexcept;
+	bool IsImpenetrable() const noexcept;
 
 	/// You can disable sleeping on this body. If you disable sleeping, the
 	/// body will be woken.
@@ -405,9 +419,19 @@ private:
 		e_islandFlag		= 0x0001,
 		e_awakeFlag			= 0x0002,
 		e_autoSleepFlag		= 0x0004,
-		e_bulletFlag		= 0x0008,
+
+		/// Impenetrable flag.
+		/// @detail Indicates whether CCD should be done for this body.
+		/// All static and kinematic bodies have this flag enabled.
+		e_impenetrableFlag	= 0x0008,
+		
 		e_fixedRotationFlag	= 0x0010,
+		
 		e_activeFlag		= 0x0020,
+
+		/// TOI valid flag.
+		/// @detail Indicates whether the TOI field is valid.
+		/// Enabled indicates TOI field is valid. It's otherwise invalid.
 		e_toiFlag			= 0x0040,
 		
 		/// Velocity flag.
@@ -553,17 +577,14 @@ inline Velocity Body::GetVelocity() const noexcept
 	
 inline void Body::SetLinearVelocity(const Vec2& v) noexcept
 {
-	if (GetType() == BodyType::Static)
+	if (IsSpeedable())
 	{
-		return;
+		if (v != Vec2_zero)
+		{
+			SetAwake();
+		}
+		m_velocity.v = v;
 	}
-
-	if (v != Vec2_zero)
-	{
-		SetAwake();
-	}
-
-	m_velocity.v = v;
 }
 
 inline Vec2 Body::GetLinearVelocity() const noexcept
@@ -573,17 +594,14 @@ inline Vec2 Body::GetLinearVelocity() const noexcept
 
 inline void Body::SetAngularVelocity(float_t w) noexcept
 {
-	if (GetType() == BodyType::Static)
+	if (IsSpeedable())
 	{
-		return;
+		if (w != float_t{0})
+		{
+			SetAwake();
+		}		
+		m_velocity.w = w;
 	}
-
-	if (w != float_t{0})
-	{
-		SetAwake();
-	}
-
-	m_velocity.w = w;
 }
 
 inline float_t Body::GetAngularVelocity() const noexcept
@@ -660,17 +678,17 @@ inline void Body::SetBullet(bool flag) noexcept
 {
 	if (flag)
 	{
-		m_flags |= e_bulletFlag;
+		m_flags |= e_impenetrableFlag;
 	}
 	else
 	{
-		m_flags &= ~e_bulletFlag;
+		m_flags &= ~e_impenetrableFlag;
 	}
 }
 
-inline bool Body::IsBullet() const noexcept
+inline bool Body::IsImpenetrable() const noexcept
 {
-	return (m_flags & e_bulletFlag) != 0;
+	return (m_flags & e_impenetrableFlag) != 0;
 }
 
 inline void Body::SetAwake(bool flag) noexcept
@@ -716,6 +734,16 @@ inline bool Body::IsActive() const noexcept
 inline bool Body::IsFixedRotation() const noexcept
 {
 	return (m_flags & e_fixedRotationFlag) != 0;
+}
+
+inline bool Body::IsSpeedable() const noexcept
+{
+	return (m_flags & e_velocityFlag) != 0;
+}
+
+inline bool Body::IsAccelerable() const noexcept
+{
+	return (m_flags & e_accelerationFlag) != 0;
 }
 
 inline void Body::SetSleepingAllowed(bool flag) noexcept
@@ -778,98 +806,88 @@ inline void* Body::GetUserData() const noexcept
 
 inline void Body::ApplyForce(const Vec2& force, const Vec2& point, bool wake) noexcept
 {
-	if (GetType() != BodyType::Dynamic)
+	if (IsAccelerable())
 	{
-		return;
-	}
-
-	if (wake)
-	{
-		SetAwake();
-	}
-
-	// Don't accumulate a force if the body is sleeping.
-	if (IsAwake())
-	{
-		m_force += force;
-		m_torque += Cross(point - m_sweep.pos1.c, force);
+		if (wake)
+		{
+			SetAwake();
+		}
+		
+		// Don't accumulate a force if the body is sleeping.
+		if (IsAwake())
+		{
+			m_force += force;
+			m_torque += Cross(point - m_sweep.pos1.c, force);
+		}
 	}
 }
-
+	
 inline void Body::ApplyForceToCenter(const Vec2& force, bool wake) noexcept
 {
-	if (GetType() != BodyType::Dynamic)
+	if (IsAccelerable())
 	{
-		return;
-	}
+		if (wake)
+		{
+			SetAwake();
+		}
 
-	if (wake)
-	{
-		SetAwake();
-	}
-
-	// Don't accumulate a force if the body is sleeping
-	if (IsAwake())
-	{
-		m_force += force;
+		// Don't accumulate a force if the body is sleeping
+		if (IsAwake())
+		{
+			m_force += force;
+		}
 	}
 }
 
 inline void Body::ApplyTorque(float_t torque, bool wake) noexcept
 {
-	if (GetType() != BodyType::Dynamic)
+	if (IsAccelerable())
 	{
-		return;
-	}
-
-	if (wake)
-	{
-		SetAwake();
-	}
-
-	// Don't accumulate a force if the body is sleeping
-	if (IsAwake())
-	{
-		m_torque += torque;
+		if (wake)
+		{
+			SetAwake();
+		}
+		
+		// Don't accumulate a force if the body is sleeping
+		if (IsAwake())
+		{
+			m_torque += torque;
+		}
 	}
 }
 
 inline void Body::ApplyLinearImpulse(const Vec2& impulse, const Vec2& point, bool wake) noexcept
 {
-	if (GetType() != BodyType::Dynamic)
+	if (IsAccelerable())
 	{
-		return;
-	}
-
-	if (wake)
-	{
-		SetAwake();
-	}
-
-	// Don't accumulate velocity if the body is sleeping
-	if (IsAwake())
-	{
-		m_velocity.v += m_invMass * impulse;
-		m_velocity.w += m_invI * Cross(point - m_sweep.pos1.c, impulse);
+		if (wake)
+		{
+			SetAwake();
+		}
+		
+		// Don't accumulate velocity if the body is sleeping
+		if (IsAwake())
+		{
+			m_velocity.v += m_invMass * impulse;
+			m_velocity.w += m_invI * Cross(point - m_sweep.pos1.c, impulse);
+		}
 	}
 }
 
 inline void Body::ApplyAngularImpulse(float_t impulse, bool wake) noexcept
 {
-	if (GetType() != BodyType::Dynamic)
+	if (IsAccelerable())
 	{
-		return;
-	}
+		if (wake)
+		{
+			SetAwake();
+		}
 
-	if (wake)
-	{
-		SetAwake();
-	}
-
-	// Don't accumulate velocity if the body is sleeping
-	if (IsAwake())
-	{
-		m_velocity.w += m_invI * impulse;
+		// Don't accumulate velocity if the body is sleeping
+		if (IsAwake())
+		{
+			m_velocity.w += m_invI * impulse;
+		}
 	}
 }
 

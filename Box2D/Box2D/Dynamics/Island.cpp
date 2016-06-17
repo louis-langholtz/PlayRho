@@ -341,7 +341,7 @@ float_t Island::UpdateSleepTimes(float_t h)
 	
 	for (auto&& body: m_bodies)
 	{
-		if (body->GetType() == BodyType::Static)
+		if (!body->IsSpeedable())
 		{
 			continue;
 		}

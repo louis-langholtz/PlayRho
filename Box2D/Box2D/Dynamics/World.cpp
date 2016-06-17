@@ -373,12 +373,10 @@ void World::Solve(const TimeStep& step)
 	auto stack = AllocatedArray<Body*, StackAllocator&>(stackSize, m_stackAllocator.AllocateArray<Body*>(stackSize), m_stackAllocator);
 	for (auto&& seed: m_bodies)
 	{
-		// Skip seed (body) if static, already in island, not-awake, or not-active.
-		if ((seed.GetType() == BodyType::Static) || seed.IsInIsland() || !seed.IsAwake() || !seed.IsActive())
+		// Skip seed (body) if already in island, not-speedable, not-awake, or not-active.
+		if (((seed.m_flags & Body::e_islandFlag) != 0)
+			|| ((seed.m_flags & (Body::e_velocityFlag|Body::e_awakeFlag|Body::e_activeFlag)) == 0))
 		{
-			// ((seed->m_flags & (Body::e_accelerationFlag|Body::e_velocityFlag)) == 0) ||
-			// (seed->m_flags & Body::e_islandFlag) ||
-			// (~(seed->m_flags) & (Body::e_awakeFlag|Body::e_activeFlag));
 			continue;
 		}
 
@@ -404,8 +402,8 @@ void World::Solve(const TimeStep& step)
 			// Make sure the body is awake.
 			b->SetAwake();
 
-			// To keep islands smaller, don't propagate islands across static bodies.
-			if (b->GetType() == BodyType::Static)
+			// To keep islands smaller, don't propagate islands across bodies that can't have a velocity (static bodies).
+			if (!b->IsSpeedable())
 			{
 				continue;
 			}
@@ -465,7 +463,7 @@ void World::Solve(const TimeStep& step)
 		for (auto&& b: island.m_bodies)
 		{
 			// Allow static bodies to participate in other islands.
-			if (b->GetType() == BodyType::Static)
+			if (!b->IsSpeedable())
 			{
 				b->UnsetInIsland();
 			}
@@ -478,7 +476,7 @@ void World::Solve(const TimeStep& step)
 		for (auto&& b: m_bodies)
 		{
 			// A non-static body that was in an island may have moved.
-			if ((b.GetType() != BodyType::Static) && b.IsInIsland())
+			if ((b.m_flags & (Body::e_velocityFlag|Body::e_islandFlag)) == (Body::e_velocityFlag|Body::e_islandFlag))
 			{
 				// Update fixtures (for broad-phase).
 				b.SynchronizeFixtures();
@@ -544,8 +542,6 @@ World::ContactToiPair World::UpdateContactTOIs()
 // Find TOI contacts and solve them.
 void World::SolveTOI(const TimeStep& step)
 {
-	Island island(2 * MaxTOIContacts, MaxTOIContacts, 0, m_stackAllocator, m_contactManager.m_contactListener);
-
 	if (m_stepComplete)
 	{
 		ResetBodiesForSolveTOI();
@@ -566,7 +562,7 @@ void World::SolveTOI(const TimeStep& step)
 			break;
 		}
 
-		SolveTOI(step, island, *minContactToi.contact, minContactToi.toi);
+		SolveTOI(step, *minContactToi.contact, minContactToi.toi);
 		
 		if (m_subStepping)
 		{
@@ -576,7 +572,7 @@ void World::SolveTOI(const TimeStep& step)
 	}
 }
 
-void World::SolveTOI(const TimeStep& step, Island& island, Contact& contact, float_t toi)
+void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 {
 	auto bA = contact.GetFixtureA()->GetBody();
 	auto bB = contact.GetFixtureB()->GetBody();
@@ -609,7 +605,7 @@ void World::SolveTOI(const TimeStep& step, Island& island, Contact& contact, flo
 	bB->SetAwake();
 
 	// Build the island
-	Clear(island);
+	Island island(2 * MaxTOIContacts, MaxTOIContacts, 0, m_stackAllocator, m_contactManager.m_contactListener);
 
 	const auto indexA = static_cast<body_count_t>(island.m_bodies.size());
 	bA->m_islandIndex = indexA;
@@ -689,7 +685,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi)
 		auto other = ce->other;
 		
 		// Skip if neither bodies are appropriate for CCD
-		if ((other->GetType() == BodyType::Dynamic) && !other->IsBullet() && !body.IsBullet())
+		if (!other->IsImpenetrable() && !body.IsImpenetrable())
 		{
 			continue;
 		}

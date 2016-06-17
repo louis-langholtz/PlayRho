@@ -29,7 +29,7 @@ uint16 Body::GetFlags(const BodyDef& bd) noexcept
 	uint16 flags = 0;
 	if (bd.bullet)
 	{
-		flags |= e_bulletFlag;
+		flags |= e_impenetrableFlag;
 	}
 	if (bd.fixedRotation)
 	{
@@ -49,9 +49,9 @@ uint16 Body::GetFlags(const BodyDef& bd) noexcept
 	}
 	switch (bd.type)
 	{
-		case BodyType::Dynamic: flags |= (e_velocityFlag|e_accelerationFlag); break;
-		case BodyType::Kinematic: flags |= e_velocityFlag; break;
-		case BodyType::Static: break;
+		case BodyType::Dynamic:   flags |= (e_velocityFlag|e_accelerationFlag); break;
+		case BodyType::Kinematic: flags |= (e_impenetrableFlag|e_velocityFlag); break;
+		case BodyType::Static:    flags |= (e_impenetrableFlag); break;
 	}
 	return flags;
 }
@@ -147,16 +147,17 @@ void Body::SetType(BodyType type)
 		return;
 	}
 
+	m_flags &= ~(e_impenetrableFlag|e_velocityFlag|e_accelerationFlag);
 	switch (type)
 	{
-		case BodyType::Dynamic: m_flags |= (e_velocityFlag|e_accelerationFlag); break;
-		case BodyType::Kinematic: m_flags |= e_velocityFlag; break;
-		case BodyType::Static: break;
+		case BodyType::Dynamic:   m_flags |= (e_velocityFlag|e_accelerationFlag); break;
+		case BodyType::Kinematic: m_flags |= (e_impenetrableFlag|e_velocityFlag); break;
+		case BodyType::Static:    m_flags |= (e_impenetrableFlag); break;
 	}
 
 	ResetMassData();
 
-	if (GetType() == BodyType::Static)
+	if (type == BodyType::Static)
 	{
 		m_velocity = Velocity{Vec2_zero, 0};
 		m_sweep.pos0 = m_sweep.pos1;
@@ -301,7 +302,7 @@ Velocity Body::GetVelocity(float_t h, Vec2 gravity) const noexcept
 {
 	// Integrate velocity and apply damping.
 	auto velocity = m_velocity;
-	if (GetType() == BodyType::Dynamic)
+	if (IsAccelerable())
 	{
 		// Integrate velocities.
 		velocity.v += h * (gravity + (m_force * m_invMass));
@@ -324,8 +325,8 @@ void Body::ResetMassData()
 {
 	// Compute mass data from shapes. Each shape has its own density.
 
-	// Static and kinematic bodies have zero mass.
-	if (GetType() != BodyType::Dynamic)
+	// Non-dynamic bodies (Static and kinematic ones) have zero mass.
+	if (!IsAccelerable())
 	{
 		m_mass = float_t{0};
 		m_invMass = float_t{0};
@@ -379,7 +380,7 @@ void Body::SetMassData(const MassData* massData)
 		return;
 	}
 
-	if (GetType() != BodyType::Dynamic)
+	if (!IsAccelerable())
 	{
 		return;
 	}
@@ -540,7 +541,7 @@ void Body::Dump()
 	log("  bd.allowSleep = bool(%d);\n", m_flags & e_autoSleepFlag);
 	log("  bd.awake = bool(%d);\n", m_flags & e_awakeFlag);
 	log("  bd.fixedRotation = bool(%d);\n", m_flags & e_fixedRotationFlag);
-	log("  bd.bullet = bool(%d);\n", m_flags & e_bulletFlag);
+	log("  bd.bullet = bool(%d);\n", m_flags & e_impenetrableFlag);
 	log("  bd.active = bool(%d);\n", m_flags & e_activeFlag);
 	log("  bodies[%d] = m_world->CreateBody(&bd);\n", m_islandIndex);
 	log("\n");

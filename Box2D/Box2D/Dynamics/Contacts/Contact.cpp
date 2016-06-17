@@ -258,16 +258,14 @@ bool Contact::UpdateTOI()
 		return false;
 	}
 	
-	const auto collideA = bA->IsBullet() || (typeA != BodyType::Dynamic);
-	const auto collideB = bB->IsBullet() || (typeB != BodyType::Dynamic);
-	
-	// Are these two non-bullet dynamic bodies?
-	if ((!collideA) && (!collideB))
+	// Are both bodies penetratable (are both non-bullet dynamic bodies)?
+	if (!bA->IsImpenetrable() && !bB->IsImpenetrable())
 	{
+		// No need then to do further CCD processing for this contact.
 		return false;
 	}
 	
-	// Compute the TOI for this contact.
+	// Compute the TOI for this contact (one or both bodies are impenetrable).
 	// Put the sweeps onto the same time interval.
 	const auto maxAlpha0 = Max(bA->m_sweep.GetAlpha0(), bB->m_sweep.GetAlpha0());
 	assert(maxAlpha0 < float_t{1});

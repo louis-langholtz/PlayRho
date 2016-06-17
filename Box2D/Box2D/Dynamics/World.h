@@ -244,7 +244,7 @@ private:
 	/// @param step Time step value to use.
 	void SolveTOI(const TimeStep& step);
 
-	void SolveTOI(const TimeStep& step, Island& island, Contact& contact, float_t toi);
+	void SolveTOI(const TimeStep& step, Contact& contact, float_t toi);
 
 	void ResetBodiesForSolveTOI();
 	void ResetContactsForSolveTOI();
