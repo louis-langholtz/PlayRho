@@ -44,14 +44,6 @@ enum class JointType
 	Motor
 };
 
-enum JointLimit
-{
-	e_inactiveLimit,
-	e_atLowerLimit,
-	e_atUpperLimit,
-	e_equalLimits
-};
-
 struct Jacobian
 {
 	Vec2 linear;
@@ -102,6 +94,14 @@ struct JointDef
 class Joint
 {
 public:
+	enum LimitState
+	{
+		e_inactiveLimit,
+		e_atLowerLimit,
+		e_atUpperLimit,
+		e_equalLimits
+	};
+	
 	using index_t = size_t;
 
 	/// Get the type of the concrete joint.

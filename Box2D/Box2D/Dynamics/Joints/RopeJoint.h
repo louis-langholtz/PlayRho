@@ -69,7 +69,7 @@ public:
 	void SetMaxLength(float_t length) { m_maxLength = length; }
 	float_t GetMaxLength() const;
 
-	JointLimit GetLimitState() const;
+	LimitState GetLimitState() const;
 
 	/// Dump joint to dmLog
 	void Dump() override;
@@ -103,7 +103,7 @@ protected:
 	float_t m_invIA;
 	float_t m_invIB;
 	float_t m_mass;
-	JointLimit m_state;
+	LimitState m_state;
 };
 
 } // namespace box2d

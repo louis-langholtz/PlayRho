@@ -183,7 +183,7 @@ protected:
 	float_t m_invIB;
 	Mat33 m_mass;			// effective mass for point-to-point constraint.
 	float_t m_motorMass;	// effective mass for motor/limit angular constraint.
-	JointLimit m_limitState;
+	LimitState m_limitState;
 };
 
 inline float_t RevoluteJoint::GetMotorSpeed() const
