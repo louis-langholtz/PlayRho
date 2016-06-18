@@ -200,16 +200,16 @@ Joint* World::CreateJoint(const JointDef* def)
 	j->m_edgeA.joint = j;
 	j->m_edgeA.other = j->m_bodyB;
 	j->m_edgeA.prev = nullptr;
-	j->m_edgeA.next = j->m_bodyA->m_joints;
-	if (j->m_bodyA->m_joints) j->m_bodyA->m_joints->prev = &j->m_edgeA;
-	j->m_bodyA->m_joints = &j->m_edgeA;
+	j->m_edgeA.next = j->m_bodyA->m_joints.p;
+	if (j->m_bodyA->m_joints.p) j->m_bodyA->m_joints.p->prev = &j->m_edgeA;
+	j->m_bodyA->m_joints.p = &j->m_edgeA;
 
 	j->m_edgeB.joint = j;
 	j->m_edgeB.other = j->m_bodyA;
 	j->m_edgeB.prev = nullptr;
-	j->m_edgeB.next = j->m_bodyB->m_joints;
-	if (j->m_bodyB->m_joints) j->m_bodyB->m_joints->prev = &j->m_edgeB;
-	j->m_bodyB->m_joints = &j->m_edgeB;
+	j->m_edgeB.next = j->m_bodyB->m_joints.p;
+	if (j->m_bodyB->m_joints.p) j->m_bodyB->m_joints.p->prev = &j->m_edgeB;
+	j->m_bodyB->m_joints.p = &j->m_edgeB;
 
 	auto bodyA = def->bodyA;
 	auto bodyB = def->bodyB;
@@ -265,9 +265,9 @@ void World::DestroyJoint(Joint* j)
 		j->m_edgeA.next->prev = j->m_edgeA.prev;
 	}
 
-	if (&j->m_edgeA == bodyA->m_joints)
+	if (&j->m_edgeA == bodyA->m_joints.p)
 	{
-		bodyA->m_joints = j->m_edgeA.next;
+		bodyA->m_joints.p = j->m_edgeA.next;
 	}
 
 	j->m_edgeA.prev = nullptr;
@@ -284,9 +284,9 @@ void World::DestroyJoint(Joint* j)
 		j->m_edgeB.next->prev = j->m_edgeB.prev;
 	}
 
-	if (&j->m_edgeB == bodyB->m_joints)
+	if (&j->m_edgeB == bodyB->m_joints.p)
 	{
-		bodyB->m_joints = j->m_edgeB.next;
+		bodyB->m_joints.p = j->m_edgeB.next;
 	}
 
 	j->m_edgeB.prev = nullptr;
@@ -417,10 +417,10 @@ void World::Solve(const TimeStep& step)
 			}
 
 			// Add to island: appropriate joints of current body and appropriate 'other' bodies of those joint.
-			for (auto je = b->m_joints; je; je = je->next)
+			for (auto&& je: b->m_joints)
 			{
-				const auto joint = je->joint;
-				const auto other = je->other;
+				const auto joint = je.joint;
+				const auto other = je.other;
 				
 				// Skip joints already in island or that are connected to inactive bodies.
 				if (joint->IsInIsland() || !other->IsActive())

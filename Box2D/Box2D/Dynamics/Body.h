@@ -24,6 +24,7 @@
 #include <Box2D/Dynamics/BodyList.hpp>
 #include <Box2D/Dynamics/FixtureList.hpp>
 #include <Box2D/Dynamics/Contacts/ContactEdgeList.hpp>
+#include <Box2D/Dynamics/Joints/JointEdgeList.hpp>
 #include <memory>
 
 namespace box2d {
@@ -33,8 +34,6 @@ class Joint;
 class Contact;
 class World;
 struct FixtureDef;
-struct JointEdge;
-struct ContactEdge;
 
 /// The body type.
 /// static: zero mass, zero velocity, may be manually moved
@@ -367,8 +366,8 @@ public:
 	const FixtureList& GetFixtures() const noexcept;
 
 	/// Get the list of all joints attached to this body.
-	JointEdge* GetJoints() noexcept;
-	const JointEdge* GetJoints() const noexcept;
+	JointEdgeList& GetJoints() noexcept;
+	const JointEdgeList& GetJoints() const noexcept;
 
 	/// Get the list of all contacts attached to this body.
 	/// @warning this list changes during the time step and you may
@@ -518,7 +517,7 @@ private:
 	Body* m_next = nullptr; ///< Next body. 8-bytes.
 
 	FixtureList m_fixtures; ///< Container of fixtures. 8-bytes.
-	JointEdge* m_joints = nullptr; ///< Pointer to first joint in a linked list. 8-bytes.
+	JointEdgeList m_joints; ///< Container of joint edges. 8-bytes.
 	ContactEdgeList m_contacts; ///< Container of contact edges. 8-bytes.
 
 	float_t m_mass; ///< Mass of the body (in kg). A non-negative value. The sum total mass of all associated fixtures. 0 if Static or Kinematic.
@@ -775,12 +774,12 @@ inline const FixtureList& Body::GetFixtures() const noexcept
 	return m_fixtures;
 }
 
-inline JointEdge* Body::GetJoints() noexcept
+inline JointEdgeList& Body::GetJoints() noexcept
 {
 	return m_joints;
 }
 
-inline const JointEdge* Body::GetJoints() const noexcept
+inline const JointEdgeList& Body::GetJoints() const noexcept
 {
 	return m_joints;
 }

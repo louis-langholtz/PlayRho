@@ -94,22 +94,17 @@ void Body::DestroyContacts()
 void Body::DestroyJoints()
 {
 	// Delete the attached joints.
-	auto je = m_joints;
-	while (je)
+	while (!m_joints.empty())
 	{
-		auto je0 = je;
-		je = je->next;
-		
+		auto& je = m_joints.front();
+		m_joints.pop_front();
 		if (m_world->m_destructionListener)
 		{
-			m_world->m_destructionListener->SayGoodbye(*je0->joint);
+			m_world->m_destructionListener->SayGoodbye(*(je.joint));
 		}
 		
-		m_world->DestroyJoint(je0->joint);
-		
-		m_joints = je;
+		m_world->DestroyJoint(je.joint);
 	}
-	m_joints = nullptr;
 }
 
 void Body::DestroyFixtures()
@@ -416,11 +411,11 @@ bool Body::ShouldCollide(const Body* other) const
 	}
 
 	// Does a joint prevent collision?
-	for (auto jn = m_joints; jn; jn = jn->next)
+	for (auto&& jn: m_joints)
 	{
-		if (jn->other == other)
+		if (jn.other == other)
 		{
-			if (!jn->joint->m_collideConnected)
+			if (!jn.joint->m_collideConnected)
 			{
 				return false;
 			}
