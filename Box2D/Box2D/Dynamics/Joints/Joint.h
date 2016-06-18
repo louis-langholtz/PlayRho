@@ -30,18 +30,18 @@ class BlockAllocator;
 
 enum class JointType
 {
-	e_unknownJoint,
-	e_revoluteJoint,
-	e_prismaticJoint,
-	e_distanceJoint,
-	e_pulleyJoint,
-	e_mouseJoint,
-	e_gearJoint,
-	e_wheelJoint,
-    e_weldJoint,
-	e_frictionJoint,
-	e_ropeJoint,
-	e_motorJoint
+	Unknown,
+	Revolute,
+	Prismatic,
+	Distance,
+	Pulley,
+	Mouse,
+	Gear,
+	Wheel,
+    Weld,
+	Friction,
+	Rope,
+	Motor
 };
 
 enum LimitState

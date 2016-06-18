@@ -27,7 +27,7 @@ namespace box2d {
 /// two dynamic body anchor points, and a pulley ratio.
 struct PulleyJointDef : public JointDef
 {
-	PulleyJointDef() noexcept: JointDef(JointType::e_pulleyJoint)
+	PulleyJointDef() noexcept: JointDef(JointType::Pulley)
 	{
 		collideConnected = true;
 	}

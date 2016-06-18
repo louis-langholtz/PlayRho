@@ -52,8 +52,8 @@ GearJoint::GearJoint(const GearJointDef& def)
 	m_typeA = m_joint1->GetType();
 	m_typeB = m_joint2->GetType();
 
-	assert(m_typeA == JointType::e_revoluteJoint || m_typeA == JointType::e_prismaticJoint);
-	assert(m_typeB == JointType::e_revoluteJoint || m_typeB == JointType::e_prismaticJoint);
+	assert(m_typeA == JointType::Revolute || m_typeA == JointType::Prismatic);
+	assert(m_typeB == JointType::Revolute || m_typeB == JointType::Prismatic);
 
 	float_t coordinateA, coordinateB;
 
@@ -68,7 +68,7 @@ GearJoint::GearJoint(const GearJointDef& def)
 	const auto xfC = m_bodyC->m_xf;
 	const auto aC = m_bodyC->m_sweep.pos1.a;
 
-	if (m_typeA == JointType::e_revoluteJoint)
+	if (m_typeA == JointType::Revolute)
 	{
 		const auto revolute = static_cast<RevoluteJoint*>(def.joint1);
 		m_localAnchorC = revolute->m_localAnchorA;
@@ -100,7 +100,7 @@ GearJoint::GearJoint(const GearJointDef& def)
 	const auto xfD = m_bodyD->m_xf;
 	const auto aD = m_bodyD->m_sweep.pos1.a;
 
-	if (m_typeB == JointType::e_revoluteJoint)
+	if (m_typeB == JointType::Revolute)
 	{
 		const auto revolute = static_cast<RevoluteJoint*>(def.joint2);
 		m_localAnchorD = revolute->m_localAnchorA;
@@ -172,7 +172,7 @@ void GearJoint::InitVelocityConstraints(const SolverData& data)
 
 	m_mass = float_t{0};
 
-	if (m_typeA == JointType::e_revoluteJoint)
+	if (m_typeA == JointType::Revolute)
 	{
 		m_JvAC = Vec2_zero;
 		m_JwA = float_t{1};
@@ -190,7 +190,7 @@ void GearJoint::InitVelocityConstraints(const SolverData& data)
 		m_mass += m_mC + m_mA + m_iC * Square(m_JwC) + m_iA * Square(m_JwA);
 	}
 
-	if (m_typeB == JointType::e_revoluteJoint)
+	if (m_typeB == JointType::Revolute)
 	{
 		m_JvBD = Vec2_zero;
 		m_JwB = m_ratio;
@@ -294,7 +294,7 @@ bool GearJoint::SolvePositionConstraints(const SolverData& data)
 	float_t JwA, JwB, JwC, JwD;
 	auto mass = float_t{0};
 
-	if (m_typeA == JointType::e_revoluteJoint)
+	if (m_typeA == JointType::Revolute)
 	{
 		JvAC = Vec2_zero;
 		JwA = float_t{1};
@@ -318,7 +318,7 @@ bool GearJoint::SolvePositionConstraints(const SolverData& data)
 		coordinateA = Dot(pA - pC, m_localAxisC);
 	}
 
-	if (m_typeB == JointType::e_revoluteJoint)
+	if (m_typeB == JointType::Revolute)
 	{
 		JvBD = Vec2_zero;
 		JwB = m_ratio;

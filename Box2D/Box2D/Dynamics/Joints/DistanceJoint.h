@@ -31,7 +31,7 @@ namespace box2d {
 /// @warning Do not use a zero or short length.
 struct DistanceJointDef : public JointDef
 {
-	constexpr DistanceJointDef() noexcept: JointDef(JointType::e_distanceJoint) {}
+	constexpr DistanceJointDef() noexcept: JointDef(JointType::Distance) {}
 
 	/// Initialize the bodies, anchors, and length using the world
 	/// anchors.

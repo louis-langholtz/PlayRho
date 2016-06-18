@@ -36,7 +36,7 @@ namespace box2d {
 ///    the joints will be broken.
 struct RevoluteJointDef : public JointDef
 {
-	constexpr RevoluteJointDef() noexcept: JointDef(JointType::e_revoluteJoint) {}
+	constexpr RevoluteJointDef() noexcept: JointDef(JointType::Revolute) {}
 
 	/// Initialize the bodies, anchors, and reference angle using a world
 	/// anchor point.

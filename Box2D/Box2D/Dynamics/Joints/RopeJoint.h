@@ -29,7 +29,7 @@ namespace box2d {
 /// see collideConnected in JointDef.
 struct RopeJointDef : public JointDef
 {
-	constexpr RopeJointDef() noexcept: JointDef(JointType::e_ropeJoint) {}
+	constexpr RopeJointDef() noexcept: JointDef(JointType::Rope) {}
 
 	/// The local anchor point relative to bodyA's origin.
 	Vec2 localAnchorA = Vec2{-float_t{1}, float_t{0}};

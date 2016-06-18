@@ -27,7 +27,7 @@ namespace box2d {
 /// tuning parameters, and the time step.
 struct MouseJointDef : public JointDef
 {
-	constexpr MouseJointDef() noexcept: JointDef(JointType::e_mouseJoint) {}
+	constexpr MouseJointDef() noexcept: JointDef(JointType::Mouse) {}
 
 	/// The initial world target point. This is assumed
 	/// to coincide with the body anchor initially.

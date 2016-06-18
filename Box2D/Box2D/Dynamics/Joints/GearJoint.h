@@ -27,7 +27,7 @@ namespace box2d {
 /// revolute or prismatic joints (any combination will work).
 struct GearJointDef : public JointDef
 {
-	constexpr GearJointDef() noexcept: JointDef(JointType::e_gearJoint) {}
+	constexpr GearJointDef() noexcept: JointDef(JointType::Gear) {}
 
 	/// The first revolute/prismatic joint attached to the gear joint.
 	Joint* joint1 = nullptr;

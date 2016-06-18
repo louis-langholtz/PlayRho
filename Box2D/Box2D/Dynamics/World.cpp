@@ -915,11 +915,11 @@ void World::DrawJoint(Joint* joint)
 
 	switch (joint->GetType())
 	{
-	case JointType::e_distanceJoint:
+	case JointType::Distance:
 		g_debugDraw->DrawSegment(p1, p2, color);
 		break;
 
-	case JointType::e_pulleyJoint:
+	case JointType::Pulley:
 		{
 			const auto pulley = static_cast<PulleyJoint*>(joint);
 			const auto s1 = pulley->GetGroundAnchorA();
@@ -930,7 +930,7 @@ void World::DrawJoint(Joint* joint)
 		}
 		break;
 
-	case JointType::e_mouseJoint:
+	case JointType::Mouse:
 		// don't draw this
 		break;
 
@@ -1118,7 +1118,7 @@ void World::Dump()
 	// First pass on joints, skip gear joints.
 	for (auto&& j: m_joints)
 	{
-		if (j.m_type == JointType::e_gearJoint)
+		if (j.m_type == JointType::Gear)
 		{
 			continue;
 		}
@@ -1131,7 +1131,7 @@ void World::Dump()
 	// Second pass on joints, only gear joints.
 	for (auto&& j: m_joints)
 	{
-		if (j.m_type != JointType::e_gearJoint)
+		if (j.m_type != JointType::Gear)
 		{
 			continue;
 		}

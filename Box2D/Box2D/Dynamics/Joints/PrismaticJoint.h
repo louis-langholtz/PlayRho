@@ -31,7 +31,7 @@ namespace box2d {
 /// anchors and a local axis helps when saving and loading a game.
 struct PrismaticJointDef : public JointDef
 {
-	constexpr PrismaticJointDef() noexcept: JointDef(JointType::e_prismaticJoint) {}
+	constexpr PrismaticJointDef() noexcept: JointDef(JointType::Prismatic) {}
 
 	/// Initialize the bodies, anchors, axis, and reference angle using the world
 	/// anchor and unit world axis.

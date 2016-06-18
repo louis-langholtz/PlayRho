@@ -26,7 +26,7 @@ namespace box2d {
 /// Friction joint definition.
 struct FrictionJointDef : public JointDef
 {
-	constexpr FrictionJointDef() noexcept: JointDef(JointType::e_frictionJoint) {}
+	constexpr FrictionJointDef() noexcept: JointDef(JointType::Friction) {}
 
 	/// Initialize the bodies, anchors, axis, and reference angle using the world
 	/// anchor and world axis.
