@@ -53,7 +53,7 @@ private:
 	iterator erase(iterator pos);
 
 	pointer p = nullptr;
-	pointer q = nullptr;
+	static pointer q; ///< Used for end-list detection.
 };
 
 } // namespace box2d

@@ -11,6 +11,8 @@
 
 using namespace box2d;
 
+FixtureList::pointer FixtureList::q = nullptr;
+
 void FixtureList::push_front(pointer value) noexcept
 {
 	value->m_next = p;
