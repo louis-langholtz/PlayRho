@@ -217,17 +217,14 @@ Joint* World::CreateJoint(const JointDef* def)
 	// If the joint prevents collisions, then flag any contacts for filtering.
 	if (!def->collideConnected)
 	{
-		auto edge = bodyB->GetContactEdges();
-		while (edge)
+		for (auto&& edge: bodyB->GetContactEdges())
 		{
-			if (edge->other == bodyA)
+			if (edge.other == bodyA)
 			{
 				// Flag the contact for filtering at the next time step (where either
 				// body is awake).
-				edge->contact->FlagForFiltering();
+				edge.contact->FlagForFiltering();
 			}
-
-			edge = edge->next;
 		}
 	}
 
@@ -300,17 +297,14 @@ void World::DestroyJoint(Joint* j)
 	// If the joint prevents collisions, then flag any contacts for filtering.
 	if (!collideConnected)
 	{
-		auto edge = bodyB->GetContactEdges();
-		while (edge)
+		for (auto&& edge: bodyB->GetContactEdges())
 		{
-			if (edge->other == bodyA)
+			if (edge.other == bodyA)
 			{
 				// Flag the contact for filtering at the next time step (where either
 				// body is awake).
-				edge->contact->FlagForFiltering();
+				edge.contact->FlagForFiltering();
 			}
-
-			edge = edge->next;
 		}
 	}
 }
@@ -398,9 +392,9 @@ void World::Solve(const TimeStep& step)
 			}
 
 			// Add to island: appropriate contacts of current body and appropriate 'other' bodies of those contacts.
-			for (auto ce = b->m_contacts; ce; ce = ce->next)
+			for (auto&& ce: b->m_contacts)
 			{
-				const auto contact = ce->contact;
+				const auto contact = ce.contact;
 
 				// Skip contacts that are already in island, disabled, not-touching, or that have sensors.
 				if ((contact->IsInIsland()) || (!contact->IsEnabled()) || (!contact->IsTouching()) || (contact->HasSensor()))
@@ -412,7 +406,7 @@ void World::Solve(const TimeStep& step)
 				--remNumContacts;
 				contact->SetInIsland();
 
-				const auto other = ce->other;
+				const auto other = ce.other;
 				if (other->IsInIsland())
 				{
 					continue; // Other already in island, skip it.
@@ -640,10 +634,10 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 			body->SynchronizeFixtures();
 			
 			// Invalidate all contact TOIs on this displaced body.
-			for (auto ce = body->m_contacts; ce; ce = ce->next)
+			for (auto&& ce: body->m_contacts)
 			{
-				ce->contact->UnsetInIsland();
-				ce->contact->UnsetToi();
+				ce.contact->UnsetInIsland();
+				ce.contact->UnsetToi();
 			}
 		}
 	}
@@ -657,14 +651,14 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi)
 {
 	assert(body.GetType() == BodyType::Dynamic);
 
-	for (auto ce = body.m_contacts; ce; ce = ce->next)
+	for (auto&& ce: body.m_contacts)
 	{
 		if (IsFullOfBodies(island) || IsFullOfContacts(island))
 		{
 			break; // processed all bodies or all contacts, done.
 		}
 		
-		auto contact = ce->contact;
+		auto contact = ce.contact;
 		
 		// Skip already added or sensor contacts
 		if (contact->IsInIsland() || contact->HasSensor())
@@ -673,7 +667,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi)
 		}
 		
 		// Only static, kinematic, or bullet bodies are appropriate for CCD.
-		auto other = ce->other;
+		auto other = ce.other;
 		
 		// Skip if neither bodies are appropriate for CCD
 		if (!other->IsImpenetrable() && !body.IsImpenetrable())

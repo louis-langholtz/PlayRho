@@ -23,6 +23,7 @@
 #include <Box2D/Collision/Shapes/Shape.h>
 #include <Box2D/Dynamics/BodyList.hpp>
 #include <Box2D/Dynamics/FixtureList.hpp>
+#include <Box2D/Dynamics/Contacts/ContactEdgeList.hpp>
 #include <memory>
 
 namespace box2d {
@@ -372,8 +373,8 @@ public:
 	/// Get the list of all contacts attached to this body.
 	/// @warning this list changes during the time step and you may
 	/// miss some collisions if you don't use ContactListener.
-	ContactEdge* GetContactEdges() noexcept;
-	const ContactEdge* GetContactEdges() const noexcept;
+	ContactEdgeList& GetContactEdges() noexcept;
+	const ContactEdgeList& GetContactEdges() const noexcept;
 
 	/// Get the user data pointer that was provided in the body definition.
 	void* GetUserData() const noexcept;
@@ -518,7 +519,7 @@ private:
 
 	FixtureList m_fixtures; ///< Container of fixtures. 8-bytes.
 	JointEdge* m_joints = nullptr; ///< Pointer to first joint in a linked list. 8-bytes.
-	ContactEdge* m_contacts = nullptr; ///< Pointer to first contact in a linked list. 8-bytes.
+	ContactEdgeList m_contacts; ///< Container of contact edges. 8-bytes.
 
 	float_t m_mass; ///< Mass of the body (in kg). A non-negative value. The sum total mass of all associated fixtures. 0 if Static or Kinematic.
 	float_t m_invMass; ///< Inverse of m_mass or 0 if m_mass == 0 (this is a non-negative value). @see m_mass.
@@ -784,12 +785,12 @@ inline const JointEdge* Body::GetJoints() const noexcept
 	return m_joints;
 }
 
-inline ContactEdge* Body::GetContactEdges() noexcept
+inline ContactEdgeList& Body::GetContactEdges() noexcept
 {
 	return m_contacts;
 }
 
-inline const ContactEdge* Body::GetContactEdges() const noexcept
+inline const ContactEdgeList& Body::GetContactEdges() const noexcept
 {
 	return m_contacts;
 }

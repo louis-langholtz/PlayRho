@@ -48,9 +48,9 @@ void ContactManager::Remove(Contact* c)
 		c->m_nodeA.next->prev = c->m_nodeA.prev;
 	}
 	
-	if (&c->m_nodeA == bodyA->m_contacts)
+	if (&c->m_nodeA == bodyA->m_contacts.p)
 	{
-		bodyA->m_contacts = c->m_nodeA.next;
+		bodyA->m_contacts.p = c->m_nodeA.next;
 	}
 	
 	// Remove from body 2
@@ -64,9 +64,9 @@ void ContactManager::Remove(Contact* c)
 		c->m_nodeB.next->prev = c->m_nodeB.prev;
 	}
 	
-	if (&c->m_nodeB == bodyB->m_contacts)
+	if (&c->m_nodeB == bodyB->m_contacts.p)
 	{
-		bodyB->m_contacts = c->m_nodeB.next;
+		bodyB->m_contacts.p = c->m_nodeB.next;
 	}
 }
 
@@ -197,15 +197,13 @@ void ContactManager::Add(FixtureProxy* proxyA, FixtureProxy* proxyB)
 	// bodies have a lot of contacts.
 	// Does a contact already exist?
 	{
-		auto contactEdge = bodyB->GetContactEdges();
-		while (contactEdge)
+		for (auto&& contactEdge: bodyB->GetContactEdges())
 		{
-			if (contactEdge->other == bodyA)
+			if (contactEdge.other == bodyA)
 			{
-				if (IsFor(*(contactEdge->contact), fixtureA, indexA, fixtureB, indexB))
+				if (IsFor(*(contactEdge.contact), fixtureA, indexA, fixtureB, indexB))
 					return;
 			}
-			contactEdge = contactEdge->next;
 		}
 	}
 
@@ -250,23 +248,23 @@ void ContactManager::Add(Contact* c)
 	c->m_nodeA.contact = c;
 	c->m_nodeA.other = bodyB;
 	c->m_nodeA.prev = nullptr;
-	c->m_nodeA.next = bodyA->m_contacts;
-	if (bodyA->m_contacts)
+	c->m_nodeA.next = bodyA->m_contacts.p;
+	if (!bodyA->m_contacts.empty())
 	{
-		bodyA->m_contacts->prev = &c->m_nodeA;
+		bodyA->m_contacts.p->prev = &c->m_nodeA;
 	}
-	bodyA->m_contacts = &c->m_nodeA;
+	bodyA->m_contacts.p = &c->m_nodeA;
 
 	// Connect to body B
 	c->m_nodeB.contact = c;
 	c->m_nodeB.other = bodyA;
 	c->m_nodeB.prev = nullptr;
-	c->m_nodeB.next = bodyB->m_contacts;
-	if (bodyB->m_contacts)
+	c->m_nodeB.next = bodyB->m_contacts.p;
+	if (!bodyB->m_contacts.empty())
 	{
-		bodyB->m_contacts->prev = &c->m_nodeB;
+		bodyB->m_contacts.p->prev = &c->m_nodeB;
 	}
-	bodyB->m_contacts = &c->m_nodeB;
+	bodyB->m_contacts.p = &c->m_nodeB;
 
 	// Wake up the bodies
 	if (!fixtureA->IsSensor() && !fixtureB->IsSensor())

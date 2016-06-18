@@ -165,18 +165,15 @@ void Fixture::Refilter()
 	}
 
 	// Flag associated contacts for filtering.
-	auto edge = m_body->GetContactEdges();
-	while (edge)
+	for (auto&& edge: m_body->GetContactEdges())
 	{
-		auto contact = edge->contact;
+		auto contact = edge.contact;
 		const auto fixtureA = contact->GetFixtureA();
 		const auto fixtureB = contact->GetFixtureB();
 		if ((fixtureA == this) || (fixtureB == this))
 		{
 			contact->FlagForFiltering();
 		}
-
-		edge = edge->next;
 	}
 
 	auto world = m_body->GetWorld();

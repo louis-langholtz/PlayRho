@@ -83,14 +83,12 @@ Body::~Body()
 void Body::DestroyContacts()
 {
 	// Destroy the attached contacts.
-	auto ce = m_contacts;
-	while (ce)
+	while (!m_contacts.empty())
 	{
-		const auto ce0 = ce;
-		ce = ce->next;
-		m_world->m_contactMgr.Destroy(ce0->contact);
+		auto& ce = m_contacts.front();
+		m_contacts.pop_front();
+		m_world->m_contactMgr.Destroy(ce.contact);
 	}
-	m_contacts = nullptr;
 }
 
 void Body::DestroyJoints()
@@ -245,7 +243,7 @@ void Body::DestroyFixture(Fixture* fixture)
 	assert(found);
 
 	// Destroy any contacts associated with the fixture.
-	auto edge = m_contacts;
+	auto edge = m_contacts.p;
 	while (edge)
 	{
 		auto c = edge->contact;
