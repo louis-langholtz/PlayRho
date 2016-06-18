@@ -44,7 +44,7 @@ enum class JointType
 	Motor
 };
 
-enum LimitState
+enum JointLimit
 {
 	e_inactiveLimit,
 	e_atLowerLimit,

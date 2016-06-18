@@ -159,7 +159,7 @@ protected:
 	float_t m_motorSpeed;
 	bool m_enableLimit;
 	bool m_enableMotor;
-	LimitState m_limitState;
+	JointLimit m_limitState;
 
 	// Solver temp
 	index_t m_indexA;

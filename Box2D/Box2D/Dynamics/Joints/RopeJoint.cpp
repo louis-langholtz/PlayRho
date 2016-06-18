@@ -221,7 +221,7 @@ float_t RopeJoint::GetMaxLength() const
 	return m_maxLength;
 }
 
-LimitState RopeJoint::GetLimitState() const
+JointLimit RopeJoint::GetLimitState() const
 {
 	return m_state;
 }
