@@ -28,7 +28,7 @@ class Joint;
 struct SolverData;
 class BlockAllocator;
 
-enum JointType
+enum class JointType
 {
 	e_unknownJoint,
 	e_revoluteJoint,

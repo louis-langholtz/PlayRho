@@ -28,7 +28,7 @@ namespace box2d {
 /// of the anchor points is important for computing the reaction torque.
 struct WeldJointDef : public JointDef
 {
-	constexpr WeldJointDef() noexcept: JointDef(e_weldJoint) {}
+	constexpr WeldJointDef() noexcept: JointDef(JointType::e_weldJoint) {}
 
 	/// Initialize the bodies, anchors, and reference angle using a world
 	/// anchor point.

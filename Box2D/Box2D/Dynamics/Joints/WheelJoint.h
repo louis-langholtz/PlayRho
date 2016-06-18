@@ -31,7 +31,7 @@ namespace box2d {
 /// anchors and a local axis helps when saving and loading a game.
 struct WheelJointDef : public JointDef
 {
-	constexpr WheelJointDef() noexcept: JointDef(e_wheelJoint) {}
+	constexpr WheelJointDef() noexcept: JointDef(JointType::e_wheelJoint) {}
 
 	/// Initialize the bodies, anchors, axis, and reference angle using the world
 	/// anchor and world axis.

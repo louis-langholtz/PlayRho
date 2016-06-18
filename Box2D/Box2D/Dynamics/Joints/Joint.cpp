@@ -43,77 +43,77 @@ Joint* Joint::Create(const JointDef& def, BlockAllocator* allocator)
 
 	switch (def.type)
 	{
-	case e_distanceJoint:
+	case JointType::e_distanceJoint:
 		{
 			void* mem = allocator->Allocate(sizeof(DistanceJoint));
 			joint = new (mem) DistanceJoint(static_cast<const DistanceJointDef&>(def));
 		}
 		break;
 
-	case e_mouseJoint:
+	case JointType::e_mouseJoint:
 		{
 			void* mem = allocator->Allocate(sizeof(MouseJoint));
 			joint = new (mem) MouseJoint(static_cast<const MouseJointDef&>(def));
 		}
 		break;
 
-	case e_prismaticJoint:
+	case JointType::e_prismaticJoint:
 		{
 			void* mem = allocator->Allocate(sizeof(PrismaticJoint));
 			joint = new (mem) PrismaticJoint(static_cast<const PrismaticJointDef&>(def));
 		}
 		break;
 
-	case e_revoluteJoint:
+	case JointType::e_revoluteJoint:
 		{
 			void* mem = allocator->Allocate(sizeof(RevoluteJoint));
 			joint = new (mem) RevoluteJoint(static_cast<const RevoluteJointDef&>(def));
 		}
 		break;
 
-	case e_pulleyJoint:
+	case JointType::e_pulleyJoint:
 		{
 			void* mem = allocator->Allocate(sizeof(PulleyJoint));
 			joint = new (mem) PulleyJoint(static_cast<const PulleyJointDef&>(def));
 		}
 		break;
 
-	case e_gearJoint:
+	case JointType::e_gearJoint:
 		{
 			void* mem = allocator->Allocate(sizeof(GearJoint));
 			joint = new (mem) GearJoint(static_cast<const GearJointDef&>(def));
 		}
 		break;
 
-	case e_wheelJoint:
+	case JointType::e_wheelJoint:
 		{
 			void* mem = allocator->Allocate(sizeof(WheelJoint));
 			joint = new (mem) WheelJoint(static_cast<const WheelJointDef&>(def));
 		}
 		break;
 
-	case e_weldJoint:
+	case JointType::e_weldJoint:
 		{
 			void* mem = allocator->Allocate(sizeof(WeldJoint));
 			joint = new (mem) WeldJoint(static_cast<const WeldJointDef&>(def));
 		}
 		break;
         
-	case e_frictionJoint:
+	case JointType::e_frictionJoint:
 		{
 			void* mem = allocator->Allocate(sizeof(FrictionJoint));
 			joint = new (mem) FrictionJoint(static_cast<const FrictionJointDef&>(def));
 		}
 		break;
 
-	case e_ropeJoint:
+	case JointType::e_ropeJoint:
 		{
 			void* mem = allocator->Allocate(sizeof(RopeJoint));
 			joint = new (mem) RopeJoint(static_cast<const RopeJointDef&>(def));
 		}
 		break;
 
-	case e_motorJoint:
+	case JointType::e_motorJoint:
 		{
 			void* mem = allocator->Allocate(sizeof(MotorJoint));
 			joint = new (mem) MotorJoint(static_cast<const MotorJointDef&>(def));
@@ -133,47 +133,47 @@ void Joint::Destroy(Joint* joint, BlockAllocator* allocator)
 	joint->~Joint();
 	switch (joint->m_type)
 	{
-	case e_distanceJoint:
+	case JointType::e_distanceJoint:
 		allocator->Free(joint, sizeof(DistanceJoint));
 		break;
 
-	case e_mouseJoint:
+	case JointType::e_mouseJoint:
 		allocator->Free(joint, sizeof(MouseJoint));
 		break;
 
-	case e_prismaticJoint:
+	case JointType::e_prismaticJoint:
 		allocator->Free(joint, sizeof(PrismaticJoint));
 		break;
 
-	case e_revoluteJoint:
+	case JointType::e_revoluteJoint:
 		allocator->Free(joint, sizeof(RevoluteJoint));
 		break;
 
-	case e_pulleyJoint:
+	case JointType::e_pulleyJoint:
 		allocator->Free(joint, sizeof(PulleyJoint));
 		break;
 
-	case e_gearJoint:
+	case JointType::e_gearJoint:
 		allocator->Free(joint, sizeof(GearJoint));
 		break;
 
-	case e_wheelJoint:
+	case JointType::e_wheelJoint:
 		allocator->Free(joint, sizeof(WheelJoint));
 		break;
     
-	case e_weldJoint:
+	case JointType::e_weldJoint:
 		allocator->Free(joint, sizeof(WeldJoint));
 		break;
 
-	case e_frictionJoint:
+	case JointType::e_frictionJoint:
 		allocator->Free(joint, sizeof(FrictionJoint));
 		break;
 
-	case e_ropeJoint:
+	case JointType::e_ropeJoint:
 		allocator->Free(joint, sizeof(RopeJoint));
 		break;
 
-	case e_motorJoint:
+	case JointType::e_motorJoint:
 		allocator->Free(joint, sizeof(MotorJoint));
 		break;
 

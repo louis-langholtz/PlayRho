@@ -26,7 +26,7 @@ namespace box2d {
 /// Motor joint definition.
 struct MotorJointDef : public JointDef
 {
-	constexpr MotorJointDef() noexcept: JointDef(e_motorJoint) {}
+	constexpr MotorJointDef() noexcept: JointDef(JointType::e_motorJoint) {}
 
 	/// Initialize the bodies and offsets using the current transforms.
 	void Initialize(Body* bodyA, Body* bodyB);
