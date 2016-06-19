@@ -217,17 +217,17 @@ protected:
 
 	void Synchronize(BroadPhase& broadPhase, const Transform& xf1, const Transform& xf2);
 
-	Body* m_body = nullptr; ///< Parent body.
-	float_t m_density = float_t{0};
-	Fixture* m_next = nullptr; ///< Next fixture in parent body's fixture list.
-	Shape* m_shape = nullptr; ///< Pointer to shape. Either null or pointer to a heap-memory private copy of the assigned shape.
-	float_t m_friction = float_t{2} / float_t{10}; ///< Friction as a coefficient.
-	float_t m_restitution = float_t{0}; ///< Restitution as a coefficient.
-	FixtureProxy* m_proxies = nullptr; ///< Array of fixture proxies for the assigned shape.
-	child_count_t m_proxyCount = 0; ///< Proxy count. @detail This is the fixture shape's child count after proxy creation.
-	Filter m_filter;
-	bool m_isSensor = false;
-	void* m_userData = nullptr;
+	Body* m_body = nullptr; ///< Parent body. 8-bytes.
+	float_t m_density = float_t{0}; ///< Density. 4-bytes.
+	Fixture* m_next = nullptr; ///< Next fixture in parent body's fixture list. 8-bytes.
+	Shape* m_shape = nullptr; ///< Pointer to shape. Either null or pointer to a heap-memory private copy of the assigned shape. 8-bytes.
+	float_t m_friction = float_t{2} / float_t{10}; ///< Friction as a coefficient. 4-bytes.
+	float_t m_restitution = float_t{0}; ///< Restitution as a coefficient. 4-bytes.
+	FixtureProxy* m_proxies = nullptr; ///< Array of fixture proxies for the assigned shape. 8-bytes.
+	child_count_t m_proxyCount = 0; ///< Proxy count. @detail This is the fixture shape's child count after proxy creation. 4-bytes.
+	Filter m_filter; ///< Filter object. 8-bytes.
+	bool m_isSensor = false; ///< Is/is-not sensor. 4-bytes.
+	void* m_userData = nullptr; ///< User data. 8-bytes.
 };
 
 inline Shape::Type Fixture::GetType() const noexcept
