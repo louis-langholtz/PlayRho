@@ -28,10 +28,10 @@ bool ContactFilter::ShouldCollide(Fixture* fixtureA, Fixture* fixtureB)
 	const Filter& filterA = fixtureA->GetFilterData();
 	const Filter& filterB = fixtureB->GetFilterData();
 
-	if (filterA.groupIndex == filterB.groupIndex && filterA.groupIndex != 0)
+	if ((filterA.groupIndex == filterB.groupIndex) && (filterA.groupIndex != 0))
 	{
 		return filterA.groupIndex > 0;
 	}
 
-	return (filterA.maskBits & filterB.categoryBits) != 0 && (filterA.categoryBits & filterB.maskBits) != 0;
+	return ((filterA.maskBits & filterB.categoryBits) != 0) && ((filterA.categoryBits & filterB.maskBits) != 0);
 }
