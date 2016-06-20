@@ -72,8 +72,8 @@ class Contact
 public:
 	Contact() = delete;
 
-	/// Get the contact manifold. Do not modify the manifold unless you understand the
-	/// internals of Box2D.
+	/// Gets the contact manifold.
+	/// @warning Do not modify the manifold unless you understand the internals of Box2D.
 	Manifold& GetManifold() noexcept;
 	const Manifold& GetManifold() const noexcept;
 
@@ -84,6 +84,11 @@ public:
 	bool HasSensor() const noexcept;
 
 	/// Is this contact touching?
+	/// @detail
+	/// Touching is defined as either:
+	///   1. This contact's manifold has more than 0 contact points, or
+	///   2. This contact has sensors and the two shapes of this contact are found to be overlapping.
+	/// @return true if this contact is said to be touching, false otherwise.
 	bool IsTouching() const noexcept;
 
 	/// Enable/disable this contact. This can be used inside the pre-solve
