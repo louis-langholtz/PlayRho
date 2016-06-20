@@ -247,6 +247,8 @@ TOIOutput TimeOfImpact(DistanceProxy proxyA, Sweep sweepA, DistanceProxy proxyB,
 	const auto target = Max(LinearSlop, totalRadius - (float_t{3} * LinearSlop));
 	constexpr auto tolerance = LinearSlop / float_t{4};
 	assert(target >= tolerance);
+	const auto maxTarget = target + tolerance;
+	const auto minTarget = target - tolerance;
 
 	auto t1 = float_t{0};
 	auto iter = decltype(MaxTOIIterations){0};
@@ -276,7 +278,7 @@ TOIOutput TimeOfImpact(DistanceProxy proxyA, Sweep sweepA, DistanceProxy proxyB,
 			break;
 		}
 
-		if (distanceOutput.distance < (target + tolerance)) // Victory!
+		if (distanceOutput.distance < maxTarget) // Victory!
 		{
 			output = TOIOutput{TOIOutput::e_touching, t1};
 			break;
@@ -321,7 +323,7 @@ TOIOutput TimeOfImpact(DistanceProxy proxyA, Sweep sweepA, DistanceProxy proxyB,
 			auto s2 = minSeparation.distance;
 
 			// Is the final configuration separated?
-			if (s2 > (target + tolerance))
+			if (s2 > maxTarget)
 			{
 				// Victory!
 				assert(t2 == tMax);
@@ -335,7 +337,7 @@ TOIOutput TimeOfImpact(DistanceProxy proxyA, Sweep sweepA, DistanceProxy proxyB,
 			}
 
 			// Has the separation reached tolerance?
-			if (s2 > (target - tolerance))
+			if (s2 > minTarget)
 			{
 				// Advance the sweeps
 				t1 = t2;
@@ -347,7 +349,7 @@ TOIOutput TimeOfImpact(DistanceProxy proxyA, Sweep sweepA, DistanceProxy proxyB,
 
 			// Check for initial overlap. This might happen if the root finder
 			// runs out of iterations.
-			if (s1 < (target - tolerance))
+			if (s1 < minTarget)
 			{
 				output = TOIOutput{TOIOutput::e_failed, t1};
 				done = true;
@@ -355,7 +357,7 @@ TOIOutput TimeOfImpact(DistanceProxy proxyA, Sweep sweepA, DistanceProxy proxyB,
 			}
 
 			// Check for touching
-			if (s1 <= (target + tolerance))
+			if (s1 <= maxTarget)
 			{
 				// Victory! t1 should hold the TOI (could be 0.0).
 				output = TOIOutput{TOIOutput::e_touching, t1};
