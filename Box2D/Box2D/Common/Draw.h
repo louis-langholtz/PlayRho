@@ -1,5 +1,7 @@
 /*
-* Copyright (c) 2011 Erin Catto http://box2d.org
+* Original work Original work Copyright (c) 2011 Erin Catto http://www.box2d.org
+* Modified work Copyright (c) 2016 Louis Langholtz https://github.com/louis-langholtz/Box2D
+* Modified work Copyright (c) 2016 Louis Langholtz https://github.com/louis-langholtz/Box2D
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
