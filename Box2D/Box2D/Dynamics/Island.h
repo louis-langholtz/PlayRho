@@ -66,6 +66,11 @@ public:
 	/// @detail This:
 	///   1. Updates pos0 of the sweeps of the two bodies identified by their indexes.
 	///   2. Updates pos1 of the sweeps, the transforms, and the velocities of the other bodies in this island.
+	/// @detail Preconditions:
+	///   m_bodies contains the two bodies specified by indexA and indexB;
+	///   m_bodies contains appropriate other bodies of the contacts of the two bodies;
+	///   m_contacts contains the contact that specified the two identified bodies;
+	///   m_contacts contains appropriate other contacts of the two bodies.
 	/// @param subStep Sub step time step information.
 	/// @param indexA Island index for body A.
 	/// @param indexB Island index for body B.
