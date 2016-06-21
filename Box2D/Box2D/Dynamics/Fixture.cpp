@@ -43,7 +43,7 @@ void Fixture::Create(BlockAllocator* allocator, const FixtureDef& def)
 
 	// Reserve proxy space
 	const auto childCount = m_shape->GetChildCount();
-	m_proxies = allocator->Allocate<FixtureProxy>(childCount);
+	m_proxies = allocator->AllocateArray<FixtureProxy>(childCount);
 	for (auto i = decltype(childCount){0}; i < childCount; ++i)
 	{
 		m_proxies[i].fixture = nullptr;

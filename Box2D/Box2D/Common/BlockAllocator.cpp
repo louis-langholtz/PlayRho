@@ -99,26 +99,30 @@ BlockAllocator::~BlockAllocator()
 	free(m_chunks);
 }
 
-void* BlockAllocator::Allocate(size_type size)
+void* BlockAllocator::Allocate(size_type n)
 {
-	if (size == 0)
-		return nullptr;
-
-	assert(0 < size);
-
-	if (size > MaxBlockSize)
+	if (n == 0)
 	{
-		return alloc(size);
+		return nullptr;
 	}
 
-	const auto index = s_blockSizeLookup[size];
+	assert(0 < n);
+
+	if (n > MaxBlockSize)
+	{
+		return alloc(n);
+	}
+
+	const auto index = s_blockSizeLookup[n];
 	assert((0 <= index) && (index < BlockSizes));
 
-	if (m_freeLists[index])
 	{
 		const auto block = m_freeLists[index];
-		m_freeLists[index] = block->next;
-		return block;
+		if (block)
+		{
+			m_freeLists[index] = block->next;
+			return block;
+		}
 	}
 
 	if (m_chunkCount == m_chunkSpace)
@@ -153,22 +157,22 @@ void* BlockAllocator::Allocate(size_type size)
 	return chunk->blocks;
 }
 
-void BlockAllocator::Free(void* p, size_type size)
+void BlockAllocator::Free(void* p, size_type n)
 {
-	if (size == 0)
+	if (n == 0)
 	{
 		return;
 	}
 
-	assert(size > 0);
+	assert(n > 0);
 
-	if (size > MaxBlockSize)
+	if (n > MaxBlockSize)
 	{
 		free(p);
 		return;
 	}
 
-	const auto index = s_blockSizeLookup[size];
+	const auto index = s_blockSizeLookup[n];
 	assert((0 <= index) && (index < BlockSizes));
 
 #define _DEBUG

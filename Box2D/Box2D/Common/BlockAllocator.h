@@ -31,8 +31,9 @@ class BlockAllocator
 {
 public:
 	using size_type = size_t;
+	using value_type = void;
 
-	static constexpr auto ChunkSize = size_type{16 * 1024};
+	static constexpr auto ChunkSize = size_type{16 * 1024}; ///< Chunk size.
 	static constexpr auto MaxBlockSize = size_type{640}; ///< Max block size (before using external allocator).
 	static constexpr auto BlockSizes = size_type{14};
 	static constexpr auto ChunkArrayIncrement = size_type{128};
@@ -41,16 +42,16 @@ public:
 	~BlockAllocator();
 
 	/// Allocate memory. This will use alloc if the size is larger than MaxBlockSize.
-	void* Allocate(size_type size);
+	void* Allocate(size_type n);
 
 	template <typename T>
-	T* Allocate(size_type size)
+	T* AllocateArray(size_type n)
 	{
-		return static_cast<T*>(Allocate(size * sizeof(T)));
+		return static_cast<T*>(Allocate(n * sizeof(T)));
 	}
 
 	/// Free memory. This will use free if the size is larger than MaxBlockSize.
-	void Free(void* p, size_type size);
+	void Free(void* p, size_type n);
 
 	void Clear();
 
