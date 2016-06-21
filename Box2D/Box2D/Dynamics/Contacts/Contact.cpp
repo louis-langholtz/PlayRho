@@ -82,11 +82,11 @@ static constexpr ContactRegister s_registers[Shape::e_typeCount][Shape::e_typeCo
 	},
 };
 
-Contact* Contact::Create(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB,
+Contact* Contact::Create(Fixture& fixtureA, child_count_t indexA, Fixture& fixtureB, child_count_t indexB,
 						 BlockAllocator* allocator)
 {
-	const auto type1 = fixtureA->GetType();
-	const auto type2 = fixtureB->GetType();
+	const auto type1 = fixtureA.GetType();
+	const auto type2 = fixtureB.GetType();
 
 	assert(0 <= type1 && type1 < Shape::e_typeCount);
 	assert(0 <= type2 && type2 < Shape::e_typeCount);
@@ -98,8 +98,8 @@ Contact* Contact::Create(Fixture* fixtureA, child_count_t indexA, Fixture* fixtu
 	}
 
 	return (s_registers[type1][type2].primary)?
-		createFcn(fixtureA, indexA, fixtureB, indexB, allocator):
-		createFcn(fixtureB, indexB, fixtureA, indexA, allocator);
+		createFcn(&fixtureA, indexA, &fixtureB, indexB, allocator):
+		createFcn(&fixtureB, indexB, &fixtureA, indexA, allocator);
 }
 
 void Contact::Destroy(Contact* contact, BlockAllocator* allocator)
@@ -246,12 +246,8 @@ bool Contact::UpdateTOI()
 	const auto bA = fA->GetBody();
 	const auto bB = fB->GetBody();
 	
-	const auto typeA = bA->GetType();
-	const auto typeB = bB->GetType();
-	assert((typeA == BodyType::Dynamic) || (typeB == BodyType::Dynamic));
-	
-	const auto activeA = bA->IsAwake() && (typeA != BodyType::Static);
-	const auto activeB = bB->IsAwake() && (typeB != BodyType::Static);
+	const bool activeA = (bA->m_flags & (Body::e_awakeFlag|Body::e_velocityFlag)) == (Body::e_awakeFlag|Body::e_velocityFlag);
+	const bool activeB = (bB->m_flags & (Body::e_awakeFlag|Body::e_velocityFlag)) == (Body::e_awakeFlag|Body::e_velocityFlag);
 	
 	// Is at least one body active (awake and dynamic or kinematic)?
 	if ((!activeA) && (!activeB))

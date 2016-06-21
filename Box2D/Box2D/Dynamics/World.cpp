@@ -606,14 +606,14 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 	island.m_contacts.push_back(&contact);
 	contact.SetInIsland();
 
-	// Process the contacts of the bodies, adding appropriate ones to the island,
-	// adding appropriate other bodies of added contacts, and advance those other
+	// Process the contacts of the two bodies, adding appropriate ones to the island,
+	// adding appropriate other bodies of added contacts, and advancing those other
 	// bodies sweeps and transforms to the minimum contact's TOI.
 	for (auto body: {bA, bB})
 	{
-		if (body->GetType() == BodyType::Dynamic)
+		if (body->IsAccelerable())
 		{
-			ProcessContactsForTOI(island, *body, toi);
+			ProcessContactsForTOI(island, *body, toi, m_contactMgr.m_contactListener);
 		}
 	}
 
@@ -630,7 +630,7 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 	{
 		body->UnsetInIsland();
 
-		if (body->GetType() == BodyType::Dynamic)
+		if (body->IsAccelerable())
 		{
 			body->SynchronizeFixtures();
 			
@@ -648,17 +648,12 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 	m_contactMgr.FindNewContacts();
 }
 
-void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi)
+void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi, ContactListener* listener)
 {
 	assert(body.GetType() == BodyType::Dynamic);
 
 	for (auto&& ce: body.m_contacts)
 	{
-		if (IsFullOfBodies(island) || IsFullOfContacts(island))
-		{
-			break; // processed all bodies or all contacts, done.
-		}
-		
 		auto contact = ce.contact;
 		
 		// Skip already added or sensor contacts
@@ -684,7 +679,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi)
 		}
 		
 		// Update the contact points
-		contact->Update(m_contactMgr.m_contactListener);
+		contact->Update(listener);
 		
 		// Revert and skip if contact disabled by user or if there are there no contact points anymore.
 		if (!contact->IsEnabled() || !contact->IsTouching())

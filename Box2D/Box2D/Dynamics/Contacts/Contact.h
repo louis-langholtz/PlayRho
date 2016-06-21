@@ -188,9 +188,11 @@ protected:
 	void UnflagForFiltering() noexcept;
 	bool NeedsFiltering() const noexcept;
 
-	static Contact* Create(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB,
+	static Contact* Create(Fixture& fixtureA, child_count_t indexA, Fixture& fixtureB, child_count_t indexB,
 						   BlockAllocator* allocator);
+
 	static void Destroy(Contact* contact, Shape::Type typeA, Shape::Type typeB, BlockAllocator* allocator);
+	
 	static void Destroy(Contact* contact, BlockAllocator* allocator);
 
 	Contact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB);
@@ -251,8 +253,8 @@ protected:
 	ContactEdge m_nodeA = { nullptr, nullptr, nullptr, nullptr}; ///< Node A's contact edge.
 	ContactEdge m_nodeB = { nullptr, nullptr, nullptr, nullptr}; ///< Node B's contact edge.
 
-	Fixture* const m_fixtureA;
-	Fixture* const m_fixtureB;
+	Fixture* const m_fixtureA; ///< Fixture A. @detail Non-null pointer to fixture A.
+	Fixture* const m_fixtureB; ///< Fixture B. @detail Non-null pointer to fixture B.
 
 	child_count_t const m_indexA;
 	child_count_t const m_indexB;

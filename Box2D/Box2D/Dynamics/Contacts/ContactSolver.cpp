@@ -689,8 +689,8 @@ static PositionSolverManifold GetPSM(const ContactPositionConstraint& pc,
 /// @detail
 /// This updates the two given positions for every point in the contact position constraint
 /// and returns the minimum separation value from the position solver manifold for each point.
-static inline float_t SolvePositionConstraint(const ContactPositionConstraint& pc,
-											  Position& positionA, Position& positionB, float_t baumgarte)
+static inline float_t Solve(const ContactPositionConstraint& pc,
+							Position& positionA, Position& positionB, float_t baumgarte)
 {
 	// see http://allenchou.net/2013/12/game-physics-resolution-contact-constraints/
 	auto minSeparation = MaxFloat;
@@ -701,15 +701,16 @@ static inline float_t SolvePositionConstraint(const ContactPositionConstraint& p
 	{
 		const auto invMassA = pc.bodyA.invMass;
 		const auto invInertiaA = pc.bodyA.invI;
+		const auto localCenterA = pc.bodyA.localCenter;
 
 		const auto invMassB = pc.bodyB.invMass;
 		const auto invInertiaB = pc.bodyB.invI;
-
-		const auto localCenterA = pc.bodyA.localCenter;
 		const auto localCenterB = pc.bodyB.localCenter;
 		
+		// Compute inverse mass total.
+		// This must be > 0 unless doing TOI solving and neither bodies were the bodies specified.
 		const auto invMassTotal = invMassA + invMassB;
-
+		
 		// Solve normal constraints
 		const auto pointCount = pc.manifold.GetPointCount();
 		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
@@ -723,24 +724,23 @@ static inline float_t SolvePositionConstraint(const ContactPositionConstraint& p
 			// Track max constraint error.
 			minSeparation = Min(minSeparation, psm.separation);
 
-			const auto rA = psm.point - posA.c;
-			const auto rB = psm.point - posB.c;
-			
-			// Compute the effective mass.
-			const auto K = [&]() {
-				const auto rnA = Cross(rA, psm.normal);
-				const auto rnB = Cross(rB, psm.normal);
-				return invMassTotal + (invInertiaA * Square(rnA)) + (invInertiaB * Square(rnB));
-			}();
-			
-			assert(K > 0);
-			if (K > 0)
+			if (invMassTotal > float_t{0})
 			{
+				const auto rA = psm.point - posA.c;
+				const auto rB = psm.point - posB.c;
+				
+				// Compute the effective mass.
+				const auto K = [&]() {
+					const auto rnA = Cross(rA, psm.normal);
+					const auto rnB = Cross(rB, psm.normal);
+					return invMassTotal + (invInertiaA * Square(rnA)) + (invInertiaB * Square(rnB));
+				}();
+
 				// Prevent large corrections and allow slop.
 				const auto C = Clamp(baumgarte * (psm.separation + LinearSlop), -MaxLinearCorrection, float_t{0});
 				
 				// Compute normal impulse
-				const auto P = -C * psm.normal / K;
+				const auto P = psm.normal * -C / K;
 				
 				posA.c -= invMassA * P;
 				posA.a -= invInertiaA * Cross(rA, P);
@@ -765,8 +765,8 @@ bool ContactSolver::SolvePositionConstraints()
 	{
 		const auto& pc = m_positionConstraints[i];
 		assert(pc.bodyA.index != pc.bodyB.index);
-		const auto s = SolvePositionConstraint(pc, m_positions[pc.bodyA.index], m_positions[pc.bodyB.index], Baumgarte);
-		minSeparation = Min(minSeparation, s);
+		const auto separation = Solve(pc, m_positions[pc.bodyA.index], m_positions[pc.bodyB.index], Baumgarte);
+		minSeparation = Min(minSeparation, separation);
 	}
 	
 	// Can't expect minSpeparation >= -LinearSlop because we don't push the separation above -LinearSlop.
@@ -780,7 +780,8 @@ bool ContactSolver::SolveTOIPositionConstraints(size_type indexA, size_type inde
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		auto pc = m_positionConstraints[i];
-		assert(pc.bodyA.index != pc.bodyB.index);
+
+		assert(pc.bodyA.index != pc.bodyB.index); // Confirm ContactManager::Add() did its job.
 		
 		// Modify local copy of the position constraint to only let position
 		// of bodies identified by either given indexes be changed.
@@ -796,8 +797,8 @@ bool ContactSolver::SolveTOIPositionConstraints(size_type indexA, size_type inde
 			pc.bodyB.invI = float_t{0};
 		}
 
-		const auto s = SolvePositionConstraint(pc, m_positions[pc.bodyA.index], m_positions[pc.bodyB.index], ToiBaumgarte);
-		minSeparation = Min(minSeparation, s);
+		const auto separation = Solve(pc, m_positions[pc.bodyA.index], m_positions[pc.bodyB.index], ToiBaumgarte);
+		minSeparation = Min(minSeparation, separation);
 	}
 
 	// Can't expect minSpeparation >= -LinearSlop because we don't push the separation above -LinearSlop.

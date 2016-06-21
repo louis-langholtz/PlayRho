@@ -118,8 +118,9 @@ void ContactManager::Collide()
 			c->UnflagForFiltering();
 		}
 
-		const bool activeA = bodyA->IsAwake() && (bodyA->GetType() != BodyType::Static);
-		const bool activeB = bodyB->IsAwake() && (bodyB->GetType() != BodyType::Static);
+		// active = is-awake && is-speedable
+		const bool activeA = (bodyA->m_flags & (Body::e_awakeFlag|Body::e_velocityFlag)) == (Body::e_awakeFlag|Body::e_velocityFlag);
+		const bool activeB = (bodyB->m_flags & (Body::e_awakeFlag|Body::e_velocityFlag)) == (Body::e_awakeFlag|Body::e_velocityFlag);
 
 		// At least one body must be awake and it must be dynamic or kinematic.
 		if (!activeA && !activeB)
@@ -177,10 +178,10 @@ static inline bool IsFor(const Contact& contact,
 	return false;
 }
 
-void ContactManager::Add(FixtureProxy* proxyA, FixtureProxy* proxyB)
+void ContactManager::Add(FixtureProxy& proxyA, FixtureProxy& proxyB)
 {
-	const auto fixtureA = proxyA->fixture; ///< Fixture of proxyA (but may get switched with fixtureB).
-	const auto fixtureB = proxyB->fixture; ///< Fixture of proxyB (but may get switched with fixtureA).
+	const auto fixtureA = proxyA.fixture; ///< Fixture of proxyA (but may get switched with fixtureB).
+	const auto fixtureB = proxyB.fixture; ///< Fixture of proxyB (but may get switched with fixtureA).
 
 	const auto bodyA = fixtureA->GetBody();
 	const auto bodyB = fixtureB->GetBody();
@@ -191,8 +192,8 @@ void ContactManager::Add(FixtureProxy* proxyA, FixtureProxy* proxyB)
 		return;
 	}
 
-	const auto indexA = proxyA->childIndex;
-	const auto indexB = proxyB->childIndex;
+	const auto indexA = proxyA.childIndex;
+	const auto indexB = proxyB.childIndex;
 	
 	// TODO_ERIN use a hash table to remove a potential bottleneck when both
 	// bodies have a lot of contacts.
@@ -203,7 +204,10 @@ void ContactManager::Add(FixtureProxy* proxyA, FixtureProxy* proxyB)
 			if (contactEdge.other == bodyA)
 			{
 				if (IsFor(*(contactEdge.contact), fixtureA, indexA, fixtureB, indexB))
+				{
+					// Already have a contact for proxyA with proxyB, bail!
 					return;
+				}
 			}
 		}
 	}
@@ -221,18 +225,16 @@ void ContactManager::Add(FixtureProxy* proxyA, FixtureProxy* proxyB)
 	}
 
 	assert(GetContactCount() < MaxContacts);
-	if (GetContactCount() < MaxContacts)
+
+	// Call the contact factory create method.
+	const auto c = Contact::Create(*fixtureA, indexA, *fixtureB, indexB, m_allocator);
+	assert(c);
+	if (!c)
 	{
-		// Call the contact factory create method.
-		const auto c = Contact::Create(fixtureA, indexA, fixtureB, indexB, m_allocator);
-		assert(c);
-		if (!c)
-		{
-			return;
-		}
-		
-		Add(c);
+		return;
 	}
+	
+	Add(c);
 }
 
 void ContactManager::Add(Contact* c)

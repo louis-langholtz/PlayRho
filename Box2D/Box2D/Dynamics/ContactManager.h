@@ -43,7 +43,7 @@ public:
 	// Broad-phase callback.
 	void AddPair(void* proxyUserDataA, void* proxyUserDataB)
 	{
-		Add(static_cast<FixtureProxy*>(proxyUserDataA), static_cast<FixtureProxy*>(proxyUserDataB));
+		Add(*static_cast<FixtureProxy*>(proxyUserDataA), *static_cast<FixtureProxy*>(proxyUserDataB));
 	}
 
 	void FindNewContacts();
@@ -80,7 +80,20 @@ public:
 	ContactListener* m_contactListener;
 
 private:
-	void Add(FixtureProxy* proxyA, FixtureProxy* proxyB);
+
+	/// Adds a contact for proxyA and proxyB if appropriate.
+	/// @detail Adds a new contact object to represent a contact between proxy A and proxy B if
+	/// all of the following are true:
+	///   1. The bodies of the fixtures of the proxies are not the one and the same.
+	///   2. No contact already exists for these two proxies.
+	///   3. The bodies of the proxies should collide (according to Body::ShouldCollide).
+	///   4. The contact filter says the fixtures of the proxies should collide.
+	///   5. There exists a contact-create function for the pair of shapes of the proxies.
+	/// @param proxyA Proxy A.
+	/// @param proxyB Proxy B.
+	/// @sa bool Body::ShouldCollide(const Body* other) const
+	void Add(FixtureProxy& proxyA, FixtureProxy& proxyB);
+	
 	void Add(Contact* contact);
 
 	/// Removes contact from this manager.

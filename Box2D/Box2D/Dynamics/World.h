@@ -252,11 +252,18 @@ private:
 
 	/// Processes the contacts of a given body for TOI handling.
 	/// @detail This does the following:
-	///   1. Adds the appropriate contacts of the given body to the given island.
- 	///   2. Adds the added contact's appropriate associated other bodies to the given island.
-	///   3. Advances those added other bodies to the given TOI (advancing their sweeps and
- 	///      synchronizing their transforms to their new sweeps).
-	void ProcessContactsForTOI(Island& island, Body& body, float_t toi);
+	///   1. Advances the appropriate associated other bodies to the given TOI (advancing
+	///      their sweeps and synchronizing their transforms to their new sweeps).
+	///   2. Updates the contact manifolds and touching statuses and notifies listener (if one given) of
+	///      the appropriate contacts of the body.
+	///   3. Adds those contacts that are still enabled and still touching to the given island
+	///      (or resets the other bodies advancement).
+ 	///   4. Adds to the island, those other bodies that haven't already been added of the contacts that got added.
+	/// @param island Island.
+	/// @param body A dynamic/accelerable body.
+	/// @param toi Time of impact. Value between 0 and 1.
+	/// @param listener Pointer to listener that will be called, or nullptr.
+	static void ProcessContactsForTOI(Island& island, Body& body, float_t toi, ContactListener* listener);
 	
 	bool Add(Body& b);
 	bool Remove(Body& b);

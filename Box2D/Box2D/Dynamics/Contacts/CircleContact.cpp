@@ -51,6 +51,6 @@ CircleContact::CircleContact(Fixture* fixtureA, Fixture* fixtureB)
 
 Manifold CircleContact::Evaluate(const Transform& xfA, const Transform& xfB)
 {
-	return CollideShapes(*static_cast<CircleShape*>(m_fixtureA->GetShape()), xfA, *static_cast<CircleShape*>(m_fixtureB->GetShape()), xfB);
-
+	return CollideShapes(*static_cast<CircleShape*>(m_fixtureA->GetShape()), xfA,
+						 *static_cast<CircleShape*>(m_fixtureB->GetShape()), xfB);
 }

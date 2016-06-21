@@ -405,8 +405,8 @@ void Body::SetMassData(const MassData* massData)
 
 bool Body::ShouldCollide(const Body* other) const
 {
-	// At least one body should be dynamic.
-	if ((GetType() != BodyType::Dynamic) && (other->GetType() != BodyType::Dynamic))
+	// At least one body should be accelerable/dynamic.
+	if (!IsAccelerable() && !other->IsAccelerable())
 	{
 		return false;
 	}
