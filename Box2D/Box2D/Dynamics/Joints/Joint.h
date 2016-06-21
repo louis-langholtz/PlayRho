@@ -181,7 +181,7 @@ protected:
 	index_t m_index = 0;
 
 	bool m_islandFlag = false;
-	bool m_collideConnected;
+	bool m_collideConnected = false;
 
 	void* m_userData;
 };
