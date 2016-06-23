@@ -474,13 +474,23 @@ constexpr inline float_t Cross(const Vec2& a, const Vec2& b) noexcept
 	return (a.x * b.y) - (a.y * b.x);
 }
 
-/// Perform the cross product on a vector and a scalar. In 2D this produces a vector.
+/// Performs the cross product on a vector and a scalar. In 2D this produces a vector.
+/// @detail
+/// Performs a 90 degree clockwise rotation of the given vector and multiplies its magnitude by the given scalar.
+/// @param a Vector.
+/// @param s Scalar.
+/// @return Vector whose x value will be the scalar * y and whose y value will be the scalar * -x.
 constexpr inline Vec2 Cross(const Vec2& a, float_t s) noexcept
 {
 	return Vec2{s * a.y, -s * a.x};
 }
 
-/// Perform the cross product on a scalar and a vector. In 2D this produces a vector.
+/// Performs the cross product on a scalar and a vector. In 2D this produces a vector.
+/// @detail Performs a 90 degree counter-clockwise rotation of the given vector and
+/// multiplies its magnitude by the given scalar.
+/// @param s Scalar.
+/// @param a Vector.
+/// @return Vector whose x value will be the scalar * -y and whose y value will be the scalar * x.
 constexpr inline Vec2 Cross(float_t s, const Vec2& a) noexcept
 {
 	return Vec2{-s * a.y, s * a.x};
