@@ -144,9 +144,8 @@ private:
 	size_type pointCount;
 };
 
-class ContactPositionConstraint
+struct ContactPositionConstraint
 {
-public:
 	using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
 	
 	struct BodyData
