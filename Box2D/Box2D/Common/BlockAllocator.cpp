@@ -185,12 +185,11 @@ void BlockAllocator::Free(void* p, size_type n)
 		const auto chunk = m_chunks + i;
 		if (chunk->blockSize != blockSize)
 		{
-			assert(	(int8*)p + blockSize <= (int8*)chunk->blocks ||
-						(int8*)chunk->blocks + ChunkSize <= (int8*)p);
+			assert(((int8*)p + blockSize <= (int8*)chunk->blocks) || ((int8*)chunk->blocks + ChunkSize <= (int8*)p));
 		}
 		else
 		{
-			if ((int8*)chunk->blocks <= (int8*)p && (int8*)p + blockSize <= (int8*)chunk->blocks + ChunkSize)
+			if (((int8*)chunk->blocks <= (int8*)p) && ((int8*)p + blockSize <= (int8*)chunk->blocks + ChunkSize))
 			{
 				found = true;
 			}
