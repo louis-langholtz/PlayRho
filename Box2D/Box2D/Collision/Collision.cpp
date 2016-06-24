@@ -54,8 +54,6 @@ static inline WorldManifold GetWorldManifoldForFaceA(const Manifold& manifold,
 													 const Transform& xfA, const float_t radiusA,
 													 const Transform& xfB, const float_t radiusB)
 {
-	assert(manifold.GetPointCount() <= 2);
-	
 	const auto normal = Mul(xfA.q, manifold.GetLocalNormal());
 	const auto planePoint = Mul(xfA, manifold.GetLocalPoint());
 	const auto pointFn = [&](Manifold::size_type index) {
@@ -64,6 +62,8 @@ static inline WorldManifold GetWorldManifoldForFaceA(const Manifold& manifold,
 		const auto cB = clipPoint - (radiusB * normal);
 		return PointSeparation{(cA + cB) / float_t{2}, Dot(cB - cA, normal)};
 	};
+	
+	assert(manifold.GetPointCount() <= 2);
 	
 	switch (manifold.GetPointCount())
 	{
@@ -81,8 +81,6 @@ static inline WorldManifold GetWorldManifoldForFaceB(const Manifold& manifold,
 													 const Transform& xfA, const float_t radiusA,
 													 const Transform& xfB, const float_t radiusB)
 {
-	assert(manifold.GetPointCount() <= 2);
-	
 	const auto normal = Mul(xfB.q, manifold.GetLocalNormal());
 	const auto planePoint = Mul(xfB, manifold.GetLocalPoint());
 	const auto pointFn = [&](Manifold::size_type index) {
@@ -91,6 +89,8 @@ static inline WorldManifold GetWorldManifoldForFaceB(const Manifold& manifold,
 		const auto cA = clipPoint - (radiusA * normal);
 		return PointSeparation{(cA + cB) / float_t{2}, Dot(cA - cB, normal)};
 	};
+	
+	assert(manifold.GetPointCount() <= 2);
 	
 	// Negate normal given to world manifold constructor to ensure it points from A to B.
 	switch (manifold.GetPointCount())

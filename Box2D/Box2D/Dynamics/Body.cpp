@@ -363,7 +363,7 @@ void Body::ResetMassData()
 	m_sweep.pos0.c = m_sweep.pos1.c = Mul(m_xf, m_sweep.localCenter);
 
 	// Update center of mass velocity.
-	m_velocity.v += Cross(m_velocity.w, m_sweep.pos1.c - oldCenter);
+	m_velocity.v += GetReversePerpendicular(m_sweep.pos1.c - oldCenter) * m_velocity.w;
 }
 
 void Body::SetMassData(const MassData* massData)
@@ -400,7 +400,7 @@ void Body::SetMassData(const MassData* massData)
 	m_sweep.pos0.c = m_sweep.pos1.c = Mul(m_xf, m_sweep.localCenter);
 
 	// Update center of mass velocity.
-	m_velocity.v += Cross(m_velocity.w, m_sweep.pos1.c - oldCenter);
+	m_velocity.v += GetReversePerpendicular(m_sweep.pos1.c - oldCenter) * m_velocity.w;
 }
 
 bool Body::ShouldCollide(const Body* other) const

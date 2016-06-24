@@ -433,7 +433,7 @@ void Test::Step(Settings* settings)
 
 			if (settings->drawFrictionImpulse == 1)
 			{
-				Vec2 tangent = Cross(point->normal, 1.0f);
+				Vec2 tangent = GetForwardPerpendicular(point->normal);
 				Vec2 p1 = point->position;
 				Vec2 p2 = p1 + k_impulseScale * point->tangentImpulse * tangent;
 				g_debugDraw.DrawSegment(p1, p2, Color(0.9f, 0.9f, 0.3f));

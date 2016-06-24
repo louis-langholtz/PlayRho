@@ -163,14 +163,14 @@ static inline void Update(VelocityConstraintPoint& vcp,
 		return (kNormal > float_t{0})? float_t{1} / kNormal : float_t{0};
 	}();
 	vcp.tangentMass = [&]() {
-		const auto tangent = Cross(vc.normal, float_t{1});
+		const auto tangent = GetForwardPerpendicular(vc.normal);
 		const auto rtA = Cross(vcp_rA, tangent);
 		const auto rtB = Cross(vcp_rB, tangent);
 		const auto kTangent = totalInvMass + (vc.bodyA.invI * Square(rtA)) + (vc.bodyB.invI * Square(rtB));
 		return (kTangent > float_t{0}) ? float_t{1} /  kTangent : float_t{0};
 	}();
 	vcp.velocityBias = [&]() {
-		const auto dv = (velB.v + Cross(velB.w, vcp_rB)) - (velA.v + Cross(velA.w, vcp_rA));
+		const auto dv = (velB.v + (GetReversePerpendicular(vcp_rB) * velB.w)) - (velA.v + (GetReversePerpendicular(vcp_rA) * velA.w));
 		const auto vRel = Dot(dv, vc.normal); // Relative velocity at contact
 		return (vRel < -VelocityThreshold)? -vc.restitution * vRel: float_t{0};
 	}();
@@ -246,7 +246,7 @@ void ContactSolver::UpdateVelocityConstraints()
 
 static inline void WarmStart(const ContactVelocityConstraint& vc, Velocity& velA, Velocity& velB)
 {
-	const auto tangent = Cross(vc.normal, float_t{1});
+	const auto tangent = GetForwardPerpendicular(vc.normal);
 	const auto pointCount = vc.GetPointCount();	
 	for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 	{
@@ -281,7 +281,7 @@ static void SolveTangentConstraint(const ContactVelocityConstraint& vc, const Ve
 								   Velocity& velA, Velocity& velB, VelocityConstraintPoint& vcp)
 {
 	// Relative velocity at contact
-	const auto dv = (velB.v + Cross(velB.w, vcp.rB)) - (velA.v + Cross(velA.w, vcp.rA));
+	const auto dv = (velB.v + (GetReversePerpendicular(vcp.rB) * velB.w)) - (velA.v + (GetReversePerpendicular(vcp.rA) * velA.w));
 	
 	// Compute tangent force
 	const auto vt = Dot(dv, tangent) - vc.tangentSpeed;
@@ -309,7 +309,7 @@ static void SolveNormalConstraint(const ContactVelocityConstraint& vc,
 								  Velocity& velA, Velocity& velB, VelocityConstraintPoint& vcp)
 {
 	// Relative velocity at contact
-	const auto dv = (velB.v + Cross(velB.w, vcp.rB)) - (velA.v + Cross(velA.w, vcp.rA));
+	const auto dv = (velB.v + (GetReversePerpendicular(vcp.rB) * velB.w)) - (velA.v + (GetReversePerpendicular(vcp.rA) * velA.w));
 	
 	// Compute normal impulse
 	const auto vn = Dot(dv, vc.normal);
@@ -509,8 +509,8 @@ static inline void BlockSolveNormalConstraint(const ContactVelocityConstraint& v
 	
 	const auto b_prime = [=]{
 		// Relative velocity at contact
-		const auto dv1 = (velB.v + Cross(velB.w, vcp1.rB)) - (velA.v + Cross(velA.w, vcp1.rA));
-		const auto dv2 = (velB.v + Cross(velB.w, vcp2.rB)) - (velA.v + Cross(velA.w, vcp2.rA));
+		const auto dv1 = (velB.v + (GetReversePerpendicular(vcp1.rB) * velB.w)) - (velA.v + (GetReversePerpendicular(vcp1.rA) * velA.w));
+		const auto dv2 = (velB.v + (GetReversePerpendicular(vcp2.rB) * velB.w)) - (velA.v + (GetReversePerpendicular(vcp2.rA) * velA.w));
 		
 		// Compute normal velocity
 		const auto normal_vn1 = Dot(dv1, vc.normal);
@@ -552,7 +552,7 @@ static inline void SolveVelocityConstraint(ContactVelocityConstraint& vc, Veloci
 		auto& vcp = vc.GetPoint(0);
 
 		{
-			const auto tangent = Cross(vc.normal, float_t{1});
+			const auto tangent = GetForwardPerpendicular(vc.normal);
 			SolveTangentConstraint(vc, tangent, velA, velB, vcp);
 		}
 
@@ -564,7 +564,7 @@ static inline void SolveVelocityConstraint(ContactVelocityConstraint& vc, Veloci
 		auto& vcp2 = vc.GetPoint(1); ///< Velocity constraint point.
 
 		{
-			const auto tangent = Cross(vc.normal, float_t{1});
+			const auto tangent = GetForwardPerpendicular(vc.normal);
 			SolveTangentConstraint(vc, tangent, velA, velB, vcp1);
 			SolveTangentConstraint(vc, tangent, velA, velB, vcp2);
 		}

@@ -162,8 +162,8 @@ void DistanceJoint::SolveVelocityConstraints(const SolverData& data)
 	auto wB = data.velocities[m_indexB].w;
 
 	// Cdot = dot(u, v + cross(w, r))
-	const auto vpA = vA + Cross(wA, m_rA);
-	const auto vpB = vB + Cross(wB, m_rB);
+	const auto vpA = vA + GetReversePerpendicular(m_rA) * wA;
+	const auto vpB = vB + GetReversePerpendicular(m_rB) * wB;
 	const auto Cdot = Dot(m_u, vpB - vpA);
 
 	const auto impulse = -m_mass * (Cdot + m_bias + m_gamma * m_impulse);

@@ -647,7 +647,7 @@ inline Vec2 Body::GetLocalVector(const Vec2& worldVector) const noexcept
 
 inline Vec2 Body::GetLinearVelocityFromWorldPoint(const Vec2& worldPoint) const noexcept
 {
-	return m_velocity.v + Cross(m_velocity.w, worldPoint - m_sweep.pos1.c);
+	return m_velocity.v + GetReversePerpendicular(worldPoint - m_sweep.pos1.c) * m_velocity.w;
 }
 
 inline Vec2 Body::GetLinearVelocityFromLocalPoint(const Vec2& localPoint) const noexcept

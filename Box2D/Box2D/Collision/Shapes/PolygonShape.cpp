@@ -96,7 +96,7 @@ static inline Vec2 ComputeCentroid(const Vec2 vs[], PolygonShape::vertex_count_t
 		// Triangle vertices.
 		const auto p1 = pRef;
 		const auto p2 = vs[i];
-		const auto p3 = (i + 1 < count) ? vs[i+1] : vs[0];
+		const auto p3 = vs[(i + 1) % count];
 
 		const auto e1 = p2 - p1;
 		const auto e2 = p3 - p1;
@@ -238,10 +238,10 @@ void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 	for (auto i = decltype(m){0}; i < m; ++i)
 	{
 		const auto i1 = i;
-		const auto i2 = ((i + 1) < m) ? i + 1 : 0;
+		const auto i2 = (i + 1) % m;
 		const auto edge = m_vertices[i2] - m_vertices[i1];
 		assert(edge.LengthSquared() > Square(Epsilon));
-		m_normals[i] = Normalize(Cross(edge, float_t{1}));
+		m_normals[i] = Normalize(GetForwardPerpendicular(edge));
 	}
 
 	// Compute the polygon centroid.
@@ -407,7 +407,7 @@ MassData PolygonShape::ComputeMass(float_t density) const
 	{
 		// Triangle vertices.
 		const auto e1 = m_vertices[i] - s;
-		const auto e2 = ((i + 1) < m_count) ? m_vertices[i+1] - s : m_vertices[0] - s;
+		const auto e2 = m_vertices[(i + 1) % m_count] - s;
 
 		const auto D = Cross(e1, e2);
 
@@ -446,7 +446,7 @@ bool PolygonShape::Validate() const
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		const auto i1 = i;
-		const auto i2 = (i < (m_count - 1)) ? i1 + 1 : 0;
+		const auto i2 = (i1 + 1) % m_count;
 		const auto p = m_vertices[i1];
 		const auto e = m_vertices[i2] - p;
 

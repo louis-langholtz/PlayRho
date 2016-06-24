@@ -105,8 +105,7 @@ public:
 	child_count_t GetNextIndex(child_count_t index) const noexcept
 	{
 		assert(index < m_count);
-		const auto next = index + 1;
-		return (next < m_count)? next: 0;
+		return (index + 1) % m_count;
 	}
 	
 private:

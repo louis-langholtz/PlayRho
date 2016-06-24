@@ -31,7 +31,6 @@ struct Vec3;
 constexpr inline float_t Dot(const Vec2& a, const Vec2& b) noexcept;
 constexpr inline float_t Dot(const Vec3& a, const Vec3& b) noexcept;
 constexpr inline float_t Cross(const Vec2& a, const Vec2& b) noexcept;
-constexpr inline Vec2 Cross(const Vec2& a, float_t s) noexcept;
 constexpr inline Vec3 Cross(const Vec3& a, const Vec3& b) noexcept;
 
 /// This function is used to ensure that a floating point number is not a NaN or infinity.
@@ -472,28 +471,6 @@ constexpr inline float_t Dot(const Vec2& a, const Vec2& b) noexcept
 constexpr inline float_t Cross(const Vec2& a, const Vec2& b) noexcept
 {
 	return (a.x * b.y) - (a.y * b.x);
-}
-
-/// Performs the cross product on a vector and a scalar. In 2D this produces a vector.
-/// @detail
-/// Performs a 90 degree clockwise rotation of the given vector and multiplies its magnitude by the given scalar.
-/// @param a Vector.
-/// @param s Scalar.
-/// @return Vector whose x value will be the scalar * y and whose y value will be the scalar * -x.
-constexpr inline Vec2 Cross(const Vec2& a, float_t s) noexcept
-{
-	return Vec2{s * a.y, -s * a.x};
-}
-
-/// Performs the cross product on a scalar and a vector. In 2D this produces a vector.
-/// @detail Performs a 90 degree counter-clockwise rotation of the given vector and
-/// multiplies its magnitude by the given scalar.
-/// @param s Scalar.
-/// @param a Vector.
-/// @return Vector whose x value will be the scalar * -y and whose y value will be the scalar * x.
-constexpr inline Vec2 Cross(float_t s, const Vec2& a) noexcept
-{
-	return Vec2{-s * a.y, s * a.x};
 }
 
 /// Multiply a matrix times a vector. If a rotation matrix is provided,

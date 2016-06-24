@@ -22,13 +22,18 @@
 
 namespace box2d {
 
+struct EdgeSeparation
+{
+	PolygonShape::vertex_count_t edge;
+	float_t separation;
+};
+
 // Find the max separation between shape1 and shape2 using edge normals from shape1.
-static float_t FindMaxSeparation(PolygonShape::vertex_count_t& edgeIndex,
-								   const PolygonShape& shape1, const Transform& xf1,
-								   const PolygonShape& shape2, const Transform& xf2)
+static EdgeSeparation FindMaxSeparation(const PolygonShape& shape1, const Transform& xf1,
+										const PolygonShape& shape2, const Transform& xf2)
 {
 	auto maxSeparation = -MaxFloat;
-	auto shape1_index_of_max_separation = PolygonShape::vertex_count_t{0};
+	auto index_of_max = PolygonShape::vertex_count_t{0};
 	{
 		const auto count1 = shape1.GetVertexCount();
 		const auto count2 = shape2.GetVertexCount();
@@ -51,12 +56,11 @@ static float_t FindMaxSeparation(PolygonShape::vertex_count_t& edgeIndex,
 			if (maxSeparation < min_sij)
 			{
 				maxSeparation = min_sij;
-				shape1_index_of_max_separation = i;
+				index_of_max = i;
 			}
 		}
 	}
-	edgeIndex = shape1_index_of_max_separation;
-	return maxSeparation;
+	return EdgeSeparation{index_of_max, maxSeparation};
 }
 
 static inline ClipArray FindIncidentEdge(PolygonShape::vertex_count_t index1,
@@ -88,8 +92,7 @@ static inline ClipArray FindIncidentEdge(PolygonShape::vertex_count_t index1,
 
 	// Build the clip vertices for the incident edge.
 	const auto i1 = index_of_min_dot;
-	const auto i1_next = static_cast<decltype(i1)>(i1 + 1);
-	const auto i2 = (i1_next < count2) ? i1_next: static_cast<decltype(i1)>(0);
+	const auto i2 = static_cast<decltype(i1)>((i1 + 1) % count2);
 
 	return ClipArray{{
 		{Mul(xf2, shape2.GetVertex(i1)), ContactFeature{ContactFeature::e_face, index1, ContactFeature::e_vertex, i1}},
@@ -108,16 +111,14 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const P
 {
 	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
 
-	auto edgeIndexA = PolygonShape::vertex_count_t{0};
-	const auto separationA = FindMaxSeparation(edgeIndexA, shapeA, xfA, shapeB, xfB);
-	if (separationA > totalRadius)
+	const auto edgeSepA = FindMaxSeparation(shapeA, xfA, shapeB, xfB);
+	if (edgeSepA.separation > totalRadius)
 	{
 		return Manifold{};
 	}
 
-	auto edgeIndexB = PolygonShape::vertex_count_t{0};
-	const auto separationB = FindMaxSeparation(edgeIndexB, shapeB, xfB, shapeA, xfA);
-	if (separationB > totalRadius)
+	const auto edgeSepB = FindMaxSeparation(shapeB, xfB, shapeA, xfA);
+	if (edgeSepB.separation > totalRadius)
 	{
 		return Manifold{};
 	}
@@ -125,18 +126,18 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const P
 	const PolygonShape* shape1;	// reference polygon
 	const PolygonShape* shape2;	// incident polygon
 	Transform xf1, xf2;
-	PolygonShape::vertex_count_t edgeIndex1; // reference edge
+	PolygonShape::vertex_count_t edgeIndex; // reference edge
 	bool flip;
 	constexpr auto k_tol = LinearSlop / 10;
 
-	auto manifoldType = Manifold::e_unset;
-	if (separationB > (separationA + k_tol))
+	Manifold::Type manifoldType;
+	if (edgeSepB.separation > (edgeSepA.separation + k_tol))
 	{
 		shape1 = &shapeB;
 		shape2 = &shapeA;
 		xf1 = xfB;
 		xf2 = xfA;
-		edgeIndex1 = edgeIndexB;
+		edgeIndex = edgeSepB.edge;
 		manifoldType = Manifold::e_faceB;
 		flip = true;
 	}
@@ -146,29 +147,28 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const P
 		shape2 = &shapeB;
 		xf1 = xfA;
 		xf2 = xfB;
-		edgeIndex1 = edgeIndexA;
+		edgeIndex = edgeSepA.edge;
 		manifoldType = Manifold::e_faceA;
 		flip = false;
 	}
 
-	const auto incidentEdge = FindIncidentEdge(edgeIndex1, *shape1, xf1, *shape2, xf2);
+	const auto incidentEdge = FindIncidentEdge(edgeIndex, *shape1, xf1, *shape2, xf2);
 
 	const auto count1 = shape1->GetVertexCount();
 
-	const auto iv1 = edgeIndex1;
-	const auto iv1_next = static_cast<decltype(iv1)>(edgeIndex1 + 1);
-	const auto iv2 = (iv1_next < count1)? iv1_next: static_cast<decltype(iv1)>(0);
+	const auto iv1 = edgeIndex;
+	const auto iv2 = static_cast<decltype(iv1)>((edgeIndex + 1) % count1);
 
 	auto v11 = shape1->GetVertex(iv1);
 	auto v12 = shape1->GetVertex(iv2);
 
 	const auto localTangent = Normalize(v12 - v11);
 	
-	const auto localNormal = Cross(localTangent, float_t{1});
+	const auto localNormal = GetForwardPerpendicular(localTangent);
 	const auto planePoint = (v11 + v12) / float_t(2);
 
 	const auto tangent = Mul(xf1.q, localTangent);
-	const auto normal = Cross(tangent, float_t{1});
+	const auto normal = GetForwardPerpendicular(tangent);
 	
 	v11 = Mul(xf1, v11);
 	v12 = Mul(xf1, v12);
@@ -197,17 +197,16 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const P
 	}
 
 	// Now clipPoints2 contains the clipped points.
-	
-	auto manifold = Manifold{manifoldType};
-	manifold.SetLocalNormal(localNormal);
-	manifold.SetLocalPoint(planePoint);
-	for (auto i = decltype(clipPoints2.size()){0}; i < clipPoints2.size(); ++i)
+
+	auto manifold = (manifoldType == Manifold::e_faceA)?
+		Manifold::GetForFaceA(localNormal, planePoint): Manifold::GetForFaceB(localNormal, planePoint);
+	for (auto&& clipPoint: clipPoints2)
 	{
-		const auto separation = Dot(normal, clipPoints2[i].v) - frontOffset;
+		const auto separation = Dot(normal, clipPoint.v) - frontOffset;
 		if (separation <= totalRadius)
 		{
-			const auto cf = flip? Flip(clipPoints2[i].cf): clipPoints2[i].cf;
-			manifold.AddPoint(ManifoldPoint{MulT(xf2, clipPoints2[i].v), cf});
+			const auto cf = flip? Flip(clipPoint.cf): clipPoint.cf;
+			manifold.AddPoint(ManifoldPoint{MulT(xf2, clipPoint.v), cf});
 		}
 	}
 	return manifold;

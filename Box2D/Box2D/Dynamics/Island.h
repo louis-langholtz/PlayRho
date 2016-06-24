@@ -40,11 +40,11 @@ struct Profile;
 class Island
 {
 public:
-	using BodyArray = AllocatedArray<Body*, StackAllocator&>;
-	using ContactArray = AllocatedArray<Contact*, StackAllocator&>;
-	using JointArray = AllocatedArray<Joint*, StackAllocator&>;
-	using VelocityArray = AllocatedArray<Velocity, StackAllocator&>;
-	using PositionArray = AllocatedArray<Position, StackAllocator&>;
+	using BodyContainer = AllocatedArray<Body*, StackAllocator&>;
+	using ContactContainer = AllocatedArray<Contact*, StackAllocator&>;
+	using JointContainer = AllocatedArray<Joint*, StackAllocator&>;
+	using VelocityContainer = AllocatedArray<Velocity, StackAllocator&>;
+	using PositionContainer = AllocatedArray<Position, StackAllocator&>;
 	
 	Island(body_count_t bodyCapacity, contact_count_t contactCapacity, island_count_t jointCapacity,
 		   StackAllocator& allocator, ContactListener* listener);
@@ -76,9 +76,9 @@ public:
 	/// @param indexB Island index for body B.
 	void SolveTOI(const TimeStep& subStep, island_count_t indexA, island_count_t indexB);
 
-	BodyArray m_bodies;
-	ContactArray m_contacts;
-	JointArray m_joints;
+	BodyContainer m_bodies;
+	ContactContainer m_contacts;
+	JointContainer m_joints;
 	
 private:
 	/// Copy's the position and velocity elements out to the bodies.
@@ -88,7 +88,7 @@ private:
 	///    1. setting the velocities to the matching velocity element,
 	///    2. setting the sweep position 1 value to the matching position element, and
 	///    3. synchronizing the transform with the new sweep value.
-	static void CopyOut(const Position* positions, const Velocity* velocities, BodyArray& bodies);
+	static void CopyOut(const Position* positions, const Velocity* velocities, BodyContainer& bodies);
 	
 	void InitJointVelocityConstraints(const SolverData& solverData);
 	void SolveJointVelocityConstraints(const SolverData& solverData);

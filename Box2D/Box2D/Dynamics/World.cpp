@@ -84,16 +84,10 @@ World::World(const Vec2& gravity): m_gravity(gravity)
 World::~World()
 {
 	// Some shapes allocate using alloc.
-	for (auto&& b: m_bodies)
+	while (!m_bodies.empty())
 	{
-		auto& fixtures = b.m_fixtures;
-		while (!fixtures.empty())
-		{
-			auto& f = fixtures.front();
-			fixtures.pop_front();
-			f.m_proxyCount = 0;
-			f.Destroy(&m_blockAllocator);
-		}
+		auto&& b = m_bodies.front();
+		DestroyBody(&b);
 	}
 }
 
@@ -202,14 +196,20 @@ Joint* World::CreateJoint(const JointDef* def)
 	j->m_edgeA.other = j->m_bodyB;
 	j->m_edgeA.prev = nullptr;
 	j->m_edgeA.next = j->m_bodyA->m_joints.p;
-	if (j->m_bodyA->m_joints.p) j->m_bodyA->m_joints.p->prev = &j->m_edgeA;
+	if (j->m_bodyA->m_joints.p)
+	{
+		j->m_bodyA->m_joints.p->prev = &j->m_edgeA;
+	}
 	j->m_bodyA->m_joints.p = &j->m_edgeA;
 
 	j->m_edgeB.joint = j;
 	j->m_edgeB.other = j->m_bodyA;
 	j->m_edgeB.prev = nullptr;
 	j->m_edgeB.next = j->m_bodyB->m_joints.p;
-	if (j->m_bodyB->m_joints.p) j->m_bodyB->m_joints.p->prev = &j->m_edgeB;
+	if (j->m_bodyB->m_joints.p)
+	{
+		j->m_bodyB->m_joints.p->prev = &j->m_edgeB;
+	}
 	j->m_bodyB->m_joints.p = &j->m_edgeB;
 
 	auto bodyA = def->bodyA;
@@ -229,10 +229,21 @@ Joint* World::CreateJoint(const JointDef* def)
 		}
 	}
 
-	// Connect to the world list.
-	m_joints.push_front(j);
+	Add(*j);
 	
 	return j;
+}
+
+bool World::Add(Joint& j)
+{
+	m_joints.push_front(&j);
+	return true;
+}
+
+bool World::Remove(Joint& j)
+{
+	const auto it = JointIterator{&j};
+	return m_joints.erase(it) != it;
 }
 
 void World::DestroyJoint(Joint* j)
@@ -243,7 +254,10 @@ void World::DestroyJoint(Joint* j)
 		return;
 	}
 
-	m_joints.erase(JointIterator{j});
+	if (!Remove(*j))
+	{
+		return;
+	}
 
 	const auto collideConnected = j->m_collideConnected;
 	

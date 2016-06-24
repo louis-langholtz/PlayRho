@@ -224,7 +224,7 @@ static inline Position CalculateMovement(Velocity& velocity, float_t h)
 	return Position{translation, rotation};
 }
 
-void Island::CopyOut(const Position* positions, const Velocity* velocities, BodyArray& bodies)
+void Island::CopyOut(const Position* positions, const Velocity* velocities, BodyContainer& bodies)
 {
 	// Copy velocity and position array data back out to the bodies
 	auto i = size_t{0};
@@ -237,7 +237,7 @@ void Island::CopyOut(const Position* positions, const Velocity* velocities, Body
 	}
 }
 
-static void IntegratePositions(Island::PositionArray& m_positions,Island::VelocityArray& m_velocities, float_t h)
+static void IntegratePositions(Island::PositionContainer& m_positions,Island::VelocityContainer& m_velocities, float_t h)
 {
 	auto i = size_t{0};
 	for (auto&& velocity: m_velocities)
@@ -257,8 +257,8 @@ void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 
 	const auto h = step.get_dt(); ///< Time step (in seconds).
 
-	auto velocities = VelocityArray{m_bodies.size(), m_allocator.AllocateArray<Velocity>(m_bodies.size()), m_allocator};
-	auto positions = PositionArray{m_bodies.size(), m_allocator.AllocateArray<Position>(m_bodies.size()), m_allocator};
+	auto velocities = VelocityContainer{m_bodies.size(), m_allocator.AllocateArray<Velocity>(m_bodies.size()), m_allocator};
+	auto positions = PositionContainer{m_bodies.size(), m_allocator.AllocateArray<Position>(m_bodies.size()), m_allocator};
 																						
 	// Copy body position and velocity data into local arrays.
 	{
@@ -367,8 +367,8 @@ void Island::SolveTOI(const TimeStep& subStep, island_count_t indexA, island_cou
 	assert(indexA < m_bodies.size());
 	assert(indexB < m_bodies.size());
 
-	auto velocities = VelocityArray{m_bodies.size(), m_allocator.AllocateArray<Velocity>(m_bodies.size()), m_allocator};
-	auto positions = PositionArray{m_bodies.size(), m_allocator.AllocateArray<Position>(m_bodies.size()), m_allocator};
+	auto velocities = VelocityContainer{m_bodies.size(), m_allocator.AllocateArray<Velocity>(m_bodies.size()), m_allocator};
+	auto positions = PositionContainer{m_bodies.size(), m_allocator.AllocateArray<Position>(m_bodies.size()), m_allocator};
 
 	// Initialize the body state.
 	{

@@ -50,6 +50,7 @@ private:
 	friend class World;
 
 	void push_front(pointer value) noexcept;
+	void pop_front() noexcept;
 	iterator erase(iterator pos);
 
 	pointer p = nullptr;

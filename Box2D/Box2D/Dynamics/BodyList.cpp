@@ -27,6 +27,21 @@ void BodyList::push_front(pointer value) noexcept
 	}
 }
 
+void BodyList::pop_front() noexcept
+{
+	assert(n > 0);
+	if (p->m_prev)
+	{
+		p->m_prev->m_next = p->m_next;
+	}
+	if (p->m_next)
+	{
+		p->m_next->m_prev = p->m_prev;
+	}
+	p = p->m_next;
+	--n;
+}
+
 BodyList::iterator BodyList::erase(BodyList::iterator pos)
 {
 	if (n > 0)

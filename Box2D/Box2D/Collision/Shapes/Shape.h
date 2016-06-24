@@ -23,6 +23,7 @@
 #include <Box2D/Common/BlockAllocator.h>
 #include <Box2D/Common/Math.h>
 #include <Box2D/Collision/Collision.h>
+#include <memory>
 
 namespace box2d {
 
@@ -69,6 +70,23 @@ public:
 		e_chain = 3,
 		e_typeCount = 4
 	};
+
+	struct Deleter
+	{
+		Deleter() = default;
+		
+		Deleter(BlockAllocator* a, BlockAllocator::size_type n) noexcept: deallocator{a, n} {}
+
+		void operator()(Shape *p) noexcept
+		{
+			p->~Shape();
+			deallocator(p);
+		}
+
+		BlockDeallocator deallocator;
+	};
+
+	//using unique_ptr = std::unique_ptr<Shape, Deleter>;
 
 	Shape() = delete;
 

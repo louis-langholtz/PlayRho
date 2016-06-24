@@ -266,7 +266,10 @@ private:
 	static void ProcessContactsForTOI(Island& island, Body& body, float_t toi, ContactListener* listener);
 	
 	bool Add(Body& b);
+	bool Add(Joint& j);
+
 	bool Remove(Body& b);
+	bool Remove(Joint& j);
 
 	struct ContactToiPair
 	{
@@ -296,8 +299,8 @@ private:
 
 	ContactManager m_contactMgr{&m_blockAllocator, &m_defaultFilter, &m_defaultListener};
 
-	BodyList m_bodies; ///< Body list linked-list.
-	JointList m_joints; ///< Joint list linked-list.
+	BodyList m_bodies; ///< Body collection.
+	JointList m_joints; ///< Joint collection.
 
 	Vec2 m_gravity;
 	bool m_allowSleep = true;

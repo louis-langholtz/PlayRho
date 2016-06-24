@@ -250,7 +250,7 @@ public:
 				const auto e12 = m_vertices[1].get_w() - m_vertices[0].get_w();
 				const auto sgn = Cross(e12, -m_vertices[0].get_w());
 				// If sgn > 0, then origin is left of e12, else origin is right of e12.
-				return (sgn > float_t{0})? Cross(float_t{1}, e12): Cross(e12, float_t{1});
+				return (sgn > float_t{0})? GetReversePerpendicular(e12): GetForwardPerpendicular(e12);
 			}
 
 		default:

@@ -80,7 +80,7 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const Circ
 		}
 		
 		const auto cf = ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 0};
-		return Manifold{Manifold::e_circles, Vec2_zero, P, ManifoldPoint{shapeB.GetPosition(), cf}};
+		return Manifold::GetForCircles(P, ManifoldPoint{shapeB.GetPosition(), cf});
 	}
 	
 	// Region B
@@ -110,7 +110,7 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const Circ
 		}
 		
 		const auto cf = ContactFeature{ContactFeature::e_vertex, 1, ContactFeature::e_vertex, 0};
-		return Manifold{Manifold::e_circles, Vec2_zero, P, ManifoldPoint{shapeB.GetPosition(), cf}};
+		return Manifold::GetForCircles(P, ManifoldPoint{shapeB.GetPosition(), cf});
 	}
 	
 	// Region AB
@@ -130,7 +130,7 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const Circ
 	}();
 	
 	const auto cf = ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_vertex, 0};
-	return Manifold{Manifold::e_faceA, Normalize(n), A, ManifoldPoint{shapeB.GetPosition(), cf}};
+	return Manifold::GetForFaceA(Normalize(n), A, ManifoldPoint{shapeB.GetPosition(), cf});
 }
 
 // This structure is used to keep track of the best separating axis.
@@ -585,19 +585,15 @@ Manifold EPCollider::Collide(const EdgeInfo& edgeInfo, const PolygonShape& shape
 		edgeAxis: (polygonAxis.separation > ((k_relativeTol * edgeAxis.separation) + k_absoluteTol))?
 			polygonAxis: edgeAxis;
 	
-	auto manifoldType = Manifold::e_unset;
 	ClipArray incidentEdge;
 	ReferenceFace rf;
 	if (primaryAxis.type == EPAxis::e_edgeA)
 	{
-		manifoldType = Manifold::e_faceA;
-		
 		// Search for the polygon normal that is most anti-parallel to the edge normal.
 		const auto bestIndex = GetIndexOfMinimum(localShapeB, edgeInfo);
 		
 		const auto i1 = bestIndex;
-		const auto iNext = static_cast<decltype(i1)>(i1 + 1);
-		const auto i2 = (iNext < localShapeB.GetCount())? iNext: decltype(i1){0};
+		const auto i2 = static_cast<decltype(i1)>((i1 + 1) % localShapeB.GetCount());
 		
 		incidentEdge[0] = ClipVertex{localShapeB.GetVertex(i1), ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_vertex, i1}};
 		incidentEdge[1] = ClipVertex{localShapeB.GetVertex(i2), ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_vertex, i2}};
@@ -621,13 +617,11 @@ Manifold EPCollider::Collide(const EdgeInfo& edgeInfo, const PolygonShape& shape
 	}
 	else
 	{
-		manifoldType = Manifold::e_faceB;
-		
 		incidentEdge[0] = ClipVertex{edgeInfo.GetVertex1(), ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_face, primaryAxis.index}};
 		incidentEdge[1] = ClipVertex{edgeInfo.GetVertex2(), ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_face, primaryAxis.index}};
 		
 		rf.i1 = primaryAxis.index;
-		rf.i2 = ((rf.i1 + 1) < localShapeB.GetCount()) ? rf.i1 + 1 : 0;
+		rf.i2 = static_cast<decltype(rf.i1)>((rf.i1 + 1) % localShapeB.GetCount());
 		rf.v1 = localShapeB.GetVertex(rf.i1);
 		rf.v2 = localShapeB.GetVertex(rf.i2);
 		rf.normal = localShapeB.GetNormal(rf.i1);
@@ -656,12 +650,9 @@ Manifold EPCollider::Collide(const EdgeInfo& edgeInfo, const PolygonShape& shape
 	
 	// Now clipPoints2 contains the clipped points.	
 	
-	auto manifold = Manifold{manifoldType};
-	
 	if (primaryAxis.type == EPAxis::e_edgeA)
 	{
-		manifold.SetLocalNormal(rf.normal);
-		manifold.SetLocalPoint(rf.v1);
+		auto manifold = Manifold::GetForFaceA(rf.normal, rf.v1);
 		for (auto i = decltype(clipPoints2.size()){0}; i < clipPoints2.size(); ++i)
 		{
 			const auto separation = Dot(rf.normal, clipPoints2[i].v - rf.v1);
@@ -670,11 +661,11 @@ Manifold EPCollider::Collide(const EdgeInfo& edgeInfo, const PolygonShape& shape
 				manifold.AddPoint(ManifoldPoint{MulT(m_xf, clipPoints2[i].v), clipPoints2[i].cf});
 			}
 		}
+		return manifold;
 	}
 	else
 	{
-		manifold.SetLocalNormal(shapeB.GetNormal(rf.i1));
-		manifold.SetLocalPoint(shapeB.GetVertex(rf.i1));
+		auto manifold = Manifold::GetForFaceB(shapeB.GetNormal(rf.i1), shapeB.GetVertex(rf.i1));
 		for (auto i = decltype(clipPoints2.size()){0}; i < clipPoints2.size(); ++i)
 		{
 			const auto separation = Dot(rf.normal, clipPoints2[i].v - rf.v1);
@@ -683,9 +674,8 @@ Manifold EPCollider::Collide(const EdgeInfo& edgeInfo, const PolygonShape& shape
 				manifold.AddPoint(ManifoldPoint{clipPoints2[i].v, Flip(clipPoints2[i].cf)});
 			}
 		}
+		return manifold;
 	}
-
-	return manifold;
 }
 
 Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const PolygonShape& shapeB, const Transform& xfB)

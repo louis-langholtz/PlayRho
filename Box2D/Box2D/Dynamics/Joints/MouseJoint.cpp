@@ -167,8 +167,7 @@ void MouseJoint::SolveVelocityConstraints(const SolverData& data)
 	auto vB = data.velocities[m_indexB].v;
 	auto wB = data.velocities[m_indexB].w;
 
-	// Cdot = v + cross(w, r)
-	const auto Cdot = vB + Cross(wB, m_rB);
+	const auto Cdot = vB + (GetReversePerpendicular(m_rB) * wB);
 	auto impulse = Mul(m_mass, -(Cdot + m_C + m_gamma * m_impulse));
 
 	const auto oldImpulse = m_impulse;
