@@ -66,8 +66,8 @@ public:
 		const_pointer m_p = nullptr;
 	};
 
-	AllocatedArray(size_type count, pointer data, deleter_type deleter = nullptr):
-		m_capacity{count}, m_data{data}, m_deleter{deleter}
+	AllocatedArray(size_type capacity, pointer data, deleter_type deleter = nullptr):
+		m_capacity{capacity}, m_data{data}, m_deleter{deleter}
 	{}
 	
 	~AllocatedArray() noexcept
