@@ -84,7 +84,11 @@ public:
 	/// Get a vertex by index.
 	Vec2 GetVertex(vertex_count_t index) const;
 
-	/// Get a normal by index.
+	/// Gets a normal by index.
+	/// @detail
+	/// The normals are 90 degree clockwise normalized vectors defined by consecutive pairs of vertices.
+	/// @param index Index of the normal to get.
+	/// @return Normal for the given index.
 	Vec2 GetNormal(vertex_count_t index) const;
 
 	const Vec2* GetVertices() const noexcept { return m_vertices; }
@@ -99,8 +103,16 @@ public:
 
 private:
 	Vec2 m_centroid = Vec2_zero;
+
+	/// Vertices.
+	/// @detail Consecutive vertices constitute "edges" of the polygon.
 	Vec2 m_vertices[MaxPolygonVertices];
+
+	/// Normals of edges.
+	/// @detail
+	/// These are 90 degree clockwise normalized vectors defined by consecutive pairs of elements of m_vertices.
 	Vec2 m_normals[MaxPolygonVertices];
+	
 	vertex_count_t m_count = 0;
 };
 

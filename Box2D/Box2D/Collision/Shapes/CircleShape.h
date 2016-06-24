@@ -52,6 +52,7 @@ public:
 	/// @see Shape::ComputeMass
 	MassData ComputeMass(float_t density) const override;
 
+	/// Gets the position of the center of this circle shape.
 	Vec2 GetPosition() const noexcept { return m_p; }
 
 	void SetPosition(const Vec2& value) noexcept { m_p = value; }
