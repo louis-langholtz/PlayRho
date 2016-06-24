@@ -31,7 +31,6 @@ class BlockAllocator
 {
 public:
 	using size_type = size_t;
-	using value_type = void;
 
 	static constexpr auto ChunkSize = size_type{16 * 1024}; ///< Chunk size.
 	static constexpr auto MaxBlockSize = size_type{640}; ///< Max block size (before using external allocator).
@@ -64,6 +63,24 @@ private:
 	Chunk* m_chunks;
 	Block* m_freeLists[BlockSizes];
 };
+	
+struct BlockDeallocator
+{
+	using size_type = BlockAllocator::size_type;
+
+	BlockDeallocator() = default;
+
+	constexpr BlockDeallocator(BlockAllocator* a, size_type n) noexcept: allocator{a}, nelem{n} {} 
+	
+	void operator()(void *p) noexcept
+	{
+		allocator->Free(p, nelem);
+	}
+	
+	BlockAllocator* allocator;
+	size_type nelem;
+};
+
 
 } // namespace box2d
 
