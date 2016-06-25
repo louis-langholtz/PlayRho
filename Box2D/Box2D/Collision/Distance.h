@@ -171,9 +171,9 @@ public:
 
 private:
 	bool metric_set = false; ///< Whether the metric has been set or not.
-	float_t metric;		///< length or area
+	float_t metric; ///< length or area
 	size_type count = 0;
-	IndexPair indexPair[MaxCount];	///< Vertices on shape A and B.
+	IndexPair indexPair[MaxCount]; ///< Vertices on shape A and B.
 };
 
 /// Input for Distance.
@@ -188,11 +188,16 @@ struct DistanceInput
 	bool useRadii;
 };
 
+struct WitnessPoints
+{
+	Vec2 a;
+	Vec2 b;
+};
+	
 /// Output for Distance.
 struct DistanceOutput
 {
-	Vec2 pointA;		///< closest point on shapeA
-	Vec2 pointB;		///< closest point on shapeB
+	WitnessPoints witnessPoints; ///< closest point on shapeA and closest point on shapeB
 	float_t distance;
 	unsigned iterations;	///< number of GJK iterations used
 };

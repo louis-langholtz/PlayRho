@@ -88,8 +88,8 @@ public:
 			}
 		}
 
-		Vec2 x1 = output.pointA;
-		Vec2 x2 = output.pointB;
+		Vec2 x1 = output.witnessPoints.a;
+		Vec2 x2 = output.witnessPoints.b;
 
 		Color c1(1.0f, 0.0f, 0.0f);
 		g_debugDraw.DrawPoint(x1, 4.0f, c1);

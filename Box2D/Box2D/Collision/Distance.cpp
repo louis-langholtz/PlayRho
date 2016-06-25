@@ -71,7 +71,10 @@ inline DistanceProxy GetDistanceProxy(const EdgeShape& shape, child_count_t inde
 }
 	
 }
-	
+
+class Simplex;
+static float_t GetMetric(const Simplex& simplex);
+
 DistanceProxy GetDistanceProxy(const Shape& shape, child_count_t index)
 {
 	switch (shape.GetType())
@@ -138,6 +141,24 @@ private:
 	float_t a; ///< Barycentric coordinate for closest point
 };
 
+static inline Vec2 GetScaledPointA(const SimplexVertex& sv)
+{
+	return sv.get_wA() * sv.get_a();
+}
+
+static inline Vec2 GetScaledPointB(const SimplexVertex& sv)
+{
+	return sv.get_wB() * sv.get_a();
+}
+
+#if defined(DO_COMPUTE_CLOSEST_POINT)
+
+static inline Vec2 GetScaledDelta(const SimplexVertex& sv)
+{
+	return sv.get_w() * sv.get_a();
+}
+#endif
+
 class Simplex
 {
 public:
@@ -150,182 +171,130 @@ public:
 	{}
 
 	Simplex(const SimplexVertex& sv1, const SimplexVertex& sv2) noexcept:
-		m_count{2}, m_vertices{sv1, sv2}, m_metric{Distance(m_vertices[0].get_w(), m_vertices[1].get_w())}
+		m_count{2}, m_vertices{sv1, sv2}
 	{}
 	
 	Simplex(const SimplexVertex& sv1, const SimplexVertex& sv2, const SimplexVertex& sv3) noexcept:
-		m_count{3}, m_vertices{sv1, sv2, sv3}, m_metric{Cross(m_vertices[1].get_w() - m_vertices[0].get_w(), m_vertices[2].get_w() - m_vertices[0].get_w())}
+		m_count{3}, m_vertices{sv1, sv2, sv3}
 	{}
 
 	/// Gets count of valid vertices.
  	/// @return Value between 0 and MaxSimplexVertices.
 	/// @see MaxSimplexVertices
-	size_type GetCount() const noexcept
+	size_type size() const noexcept
 	{
 		return m_count;
 	}
 
-	const SimplexVertex& GetVertex(size_type index) const noexcept
+	const SimplexVertex& operator[](size_type index) const noexcept
 	{
 		assert(index < m_count);
 		return m_vertices[index];
 	}
 
-	const SimplexVertex* GetVertices() const noexcept
+	void clear() noexcept
 	{
-		return m_vertices;
+		m_count = 0;
 	}
 
-	void AddVertex(const SimplexVertex& vertex) noexcept
+	void push_back(const SimplexVertex& vertex) noexcept
 	{
 		assert(m_count < MaxSimplexVertices);
 		m_vertices[m_count] = vertex;
 		++m_count;
 	}
 
-	void ReadCache(const SimplexCache& cache,
-				   const DistanceProxy& proxyA, const Transform& transformA,
-				   const DistanceProxy& proxyB, const Transform& transformB)
-	{
-		assert(cache.GetCount() <= MaxSimplexVertices);
-		
-		// Copy data from cache.
-		{
-			const auto count = cache.GetCount();
-			for (auto i = decltype(count){0}; i < count; ++i)
-			{
-				const auto indexPair = cache.GetIndexPair(i);
-				const auto wA = Mul(transformA, proxyA.GetVertex(indexPair.a));
-				const auto wB = Mul(transformB, proxyB.GetVertex(indexPair.b));
-				m_vertices[i] = SimplexVertex{wA, indexPair.a, wB, indexPair.b, float_t{0}};
-			}
-			m_count = count;
-		}
-
-		// Compute the new simplex metric, if it is substantially different than
-		// old metric then flush the simplex.
-		if (m_count > 1)
-		{
-			const auto metric1 = cache.GetMetric();
-			const auto metric2 = GetMetric();
-			if ((metric2 < (metric1 / float_t{2})) || (metric2 > (metric1 * float_t{2})) || (metric2 < Epsilon))
-			{
-				// Reset the simplex.
-				m_count = 0;
-			}
-		}
-
-		// If the cache is empty or invalid ...
-		if (m_count == 0)
-		{
-			const auto indexA = SimplexCache::index_t{0};
-			const auto indexB = SimplexCache::index_t{0};
-			const auto wA = Mul(transformA, proxyA.GetVertex(indexA));
-			const auto wB = Mul(transformB, proxyB.GetVertex(indexB));
-			m_vertices[0] = SimplexVertex{wA, indexA, wB, indexB, float_t{1}};
-			m_count = 1;
-		}
-	}
-
-	void WriteCache(SimplexCache& cache) const
-	{
-		cache.SetMetric(GetMetric());
-		cache.ClearIndices();
-		for (auto i = decltype(m_count){0}; i < m_count; ++i)
-		{
-			cache.AddIndex(m_vertices[i].indexPair);
-		}
-	}
-
-	Vec2 GetSearchDirection() const
-	{
-		assert((m_count == 1) || (m_count == 2));
-		switch (m_count)
-		{
-		case 1:
-			return -m_vertices[0].get_w();
-
-		case 2:
-			{
-				const auto e12 = m_vertices[1].get_w() - m_vertices[0].get_w();
-				const auto sgn = Cross(e12, -m_vertices[0].get_w());
-				// If sgn > 0, then origin is left of e12, else origin is right of e12.
-				return (sgn > float_t{0})? GetReversePerpendicular(e12): GetForwardPerpendicular(e12);
-			}
-
-		default:
-			return Vec2_zero;
-		}
-	}
-
-	/// Gets the "closest point".
-	/// @note This uses the vertices "A" values when count is 2.
-	Vec2 GetClosestPoint() const
-	{
-		assert(m_count == 1 || m_count == 2 || m_count == 3);
-		
-		switch (m_count)
-		{
-		case 1: return m_vertices[0].get_w();
-		case 2: return m_vertices[0].get_a() * m_vertices[0].get_w() + m_vertices[1].get_a() * m_vertices[1].get_w();
-		case 3: return Vec2_zero;
-		default: return Vec2_zero;
-		}
-	}
-
-	void GetWitnessPoints(Vec2* pA, Vec2* pB) const
-	{
-		assert(m_count == 1 || m_count == 2 || m_count == 3);
-
-		switch (m_count)
-		{
-		case 1:
-			*pA = m_vertices[0].get_wA();
-			*pB = m_vertices[0].get_wB();
-			break;
-
-		case 2:
-			*pA = m_vertices[0].get_a() * m_vertices[0].get_wA() + m_vertices[1].get_a() * m_vertices[1].get_wA();
-			*pB = m_vertices[0].get_a() * m_vertices[0].get_wB() + m_vertices[1].get_a() * m_vertices[1].get_wB();
-			break;
-
-		case 3:
-			*pA = m_vertices[0].get_a() * m_vertices[0].get_wA()
-				+ m_vertices[1].get_a() * m_vertices[1].get_wA()
-				+ m_vertices[2].get_a() * m_vertices[2].get_wA();
-			*pB = *pA;
-			break;
-
-		default:
-			break;
-		}
-	}
-
-	float_t GetMetric() const
-	{
-		assert(m_count == 1 || m_count == 2 || m_count == 3);
-		switch (m_count)
-		{
-		case 1:	return float_t{0};
-		case 2:	return Distance(m_vertices[0].get_w(), m_vertices[1].get_w());
-		case 3:	return Cross(m_vertices[1].get_w() - m_vertices[0].get_w(), m_vertices[2].get_w() - m_vertices[0].get_w());
-		default: return float_t{0};
-		}
-	}
-
-	/// "Solves" the simplex.
-	/// @detail This updates the simplex vertexes - setting the "A" value of each and possibly changing the simplex vertex count.
-	/// @sa GetCount().
-	void Solve() noexcept;
-
 private:
-	void Solve2() noexcept;
-	void Solve3() noexcept;
-
 	size_type m_count = 0; ///< Count of valid vertex entries in m_vertices. Value between 0 and MaxVertices. @see m_vertices.
 	SimplexVertex m_vertices[MaxSimplexVertices]; ///< Vertices. Only elements < m_count are valid. @see m_count.
-	float_t m_metric = 0;
 };
+
+static inline Vec2 GetSearchDirection(const Simplex& simplex) noexcept
+{
+	const auto count = simplex.size();
+	assert((count == 1) || (count == 2));
+	switch (count)
+	{
+		case 1:
+			return -simplex[0].get_w();
+			
+		case 2:
+		{
+			const auto e12 = simplex[1].get_w() - simplex[0].get_w();
+			const auto sgn = Cross(e12, -simplex[0].get_w());
+			// If sgn > 0, then origin is left of e12, else origin is right of e12.
+			return (sgn > float_t{0})? GetReversePerpendicular(e12): GetForwardPerpendicular(e12);
+		}
+			
+		default:
+			return Vec2_zero;
+	}
+}
+
+#if defined(DO_COMPUTE_CLOSEST_POINT)
+
+/// Gets the "closest point".
+/// @note This uses the vertices "a" values when count is 2.
+static inline Vec2 GetClosestPoint(const Simplex& simplex)
+{
+	const auto count = simplex.GetCount();
+	assert(count < 4);
+	switch (count)
+	{
+		case 1: return simplex[0].get_w();
+		case 2: return GetScaledDelta(simplex[0]) + GetScaledDelta(simplex[1]);
+		case 3: return Vec2_zero;
+		default: return Vec2_zero;
+	}
+}
+
+#endif
+				
+static float_t GetMetric(const Simplex& simplex)
+{
+	assert(simplex.size() < 4);
+	switch (simplex.size())
+	{
+		case 0: break;
+		case 1: break;
+		case 2:	return Distance(simplex[0].get_w(), simplex[1].get_w());
+		case 3:	return Cross(simplex[1].get_w() - simplex[0].get_w(), simplex[2].get_w() - simplex[0].get_w());
+		default: break; // should not be reached
+	}
+	return float_t{0};
+}
+
+static inline WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept
+{
+	const auto count = simplex.size();
+
+	assert(count == 1 || count == 2 || count == 3);
+	
+	switch (count)
+	{
+		case 1:
+			return WitnessPoints{
+				simplex[0].get_wA(), 
+				simplex[0].get_wB()
+			};
+		case 2:
+			return WitnessPoints{
+				GetScaledPointA(simplex[0]) + GetScaledPointA(simplex[1]),
+				GetScaledPointB(simplex[0]) + GetScaledPointB(simplex[1])
+			};
+		case 3:
+		{
+			const auto point =
+				GetScaledPointA(simplex[0]) +
+				GetScaledPointA(simplex[1]) +
+				GetScaledPointA(simplex[2]);
+			return WitnessPoints{point, point};
+		}
+		default: // should not be reached!
+			break;
+	}
+	return WitnessPoints{};
+}
 
 static SimplexVertex GetSimplexVertex(IndexPair indexPair,
 									  const DistanceProxy& proxyA, const Transform& xfA,
@@ -336,32 +305,18 @@ static SimplexVertex GetSimplexVertex(IndexPair indexPair,
 	return SimplexVertex{wA, indexPair.a, wB, indexPair.b, float_t{0}};	
 }
 
-static Simplex GetSimplex(const SimplexCache& cache,
+static inline Simplex GetSimplex(const SimplexCache& cache,
 						  const DistanceProxy& proxyA, const Transform& xfA,
 						  const DistanceProxy& proxyB, const Transform& xfB)
 {
+	Simplex simplex;
 	const auto count = cache.GetCount();
-	assert(count <= 3);
-	switch (count)
+	assert(count <= MaxSimplexVertices);
+	for (auto i = decltype(count){0}; i < count; ++i)
 	{
-		case 1:
-			return Simplex{
-				GetSimplexVertex(cache.GetIndexPair(0), proxyA, xfA, proxyB, xfB)
-			};
-		case 2:
-			return Simplex{
-				GetSimplexVertex(cache.GetIndexPair(0), proxyA, xfA, proxyB, xfB),
-				GetSimplexVertex(cache.GetIndexPair(1), proxyA, xfA, proxyB, xfB)
-			};
-		case 3:
-			return Simplex{
-				GetSimplexVertex(cache.GetIndexPair(0), proxyA, xfA, proxyB, xfB),
-				GetSimplexVertex(cache.GetIndexPair(1), proxyA, xfA, proxyB, xfB),
-				GetSimplexVertex(cache.GetIndexPair(2), proxyA, xfA, proxyB, xfB)
-			};
-		default: break;
+		simplex.push_back(GetSimplexVertex(cache.GetIndexPair(i), proxyA, xfA, proxyB, xfB));
 	}
-	return Simplex{};
+	return simplex;
 }
 	
 // Solve a line segment using barycentric coordinates.
@@ -387,10 +342,10 @@ static Simplex GetSimplex(const SimplexCache& cache,
 // Solution
 // a1 = d12_1 / d12
 // a2 = d12_2 / d12
-void Simplex::Solve2() noexcept
+static inline Simplex Solve2(const Simplex& simplex) noexcept
 {
-	const auto w1 = m_vertices[0].get_w();
-	const auto w2 = m_vertices[1].get_w();
+	const auto w1 = simplex[0].get_w();
+	const auto w2 = simplex[1].get_w();
 	const auto e12 = w2 - w1;
 
 	// w1 region
@@ -398,9 +353,7 @@ void Simplex::Solve2() noexcept
 	if (d12_2 <= float_t{0})
 	{
 		// a2 <= 0, so we clamp it to 0
-		m_vertices[0].set_a(float_t{1});
-		m_count = 1;
-		return;
+		return Simplex{SimplexVertex{simplex[0], float_t{1}}};
 	}
 
 	// w2 region
@@ -408,17 +361,12 @@ void Simplex::Solve2() noexcept
 	if (d12_1 <= float_t{0})
 	{
 		// a1 <= 0, so we clamp it to 0
-		m_vertices[1].set_a(float_t{1});
-		m_vertices[0] = m_vertices[1];
-		m_count = 1;
-		return;
+		return Simplex{SimplexVertex{simplex[1], float_t{1}}};
 	}
 
 	// Must be in e12 region.
 	const auto inv_d12 = float_t{1} / (d12_1 + d12_2);
-	m_vertices[0].set_a(d12_1 * inv_d12);
-	m_vertices[1].set_a(d12_2 * inv_d12);
-	m_count = 2;
+	return Simplex{SimplexVertex{simplex[0], d12_1 * inv_d12}, SimplexVertex{simplex[1], d12_2 * inv_d12}};
 }
 
 // Possible regions:
@@ -426,11 +374,11 @@ void Simplex::Solve2() noexcept
 // - edge points[0]-points[2]
 // - edge points[1]-points[2]
 // - inside the triangle
-void Simplex::Solve3() noexcept
+static inline Simplex Solve3(const Simplex& simplex) noexcept
 {
-	const auto w1 = m_vertices[0].get_w();
-	const auto w2 = m_vertices[1].get_w();
-	const auto w3 = m_vertices[2].get_w();
+	const auto w1 = simplex[0].get_w();
+	const auto w2 = simplex[1].get_w();
+	const auto w3 = simplex[2].get_w();
 
 	// Edge12
 	// [1      1     ][a1] = [1]
@@ -472,97 +420,80 @@ void Simplex::Solve3() noexcept
 	// w1 region
 	if ((d12_2 <= float_t{0}) && (d13_2 <= float_t{0}))
 	{
-		m_vertices[0].set_a(float_t{1});
-		m_count = 1;
-		return;
+		return Simplex{SimplexVertex{simplex[0], float_t{1}}};
 	}
 
 	// e12
 	if ((d12_1 > float_t{0}) && (d12_2 > float_t{0}) && (d123_3 <= float_t{0}))
 	{
 		const auto inv_d12 = float_t{1} / (d12_1 + d12_2);
-		m_vertices[0].set_a(d12_1 * inv_d12);
-		m_vertices[1].set_a(d12_2 * inv_d12);
-		m_count = 2;
-		return;
+		return Simplex{
+			SimplexVertex{simplex[0], d12_1 * inv_d12},
+			SimplexVertex{simplex[1], d12_2 * inv_d12}
+		};
 	}
 
 	// e13
 	if ((d13_1 > float_t{0}) && (d13_2 > float_t{0}) && (d123_2 <= float_t{0}))
 	{
 		const auto inv_d13 = float_t{1} / (d13_1 + d13_2);
-		m_vertices[0].set_a(d13_1 * inv_d13);
-		m_vertices[2].set_a(d13_2 * inv_d13);
-		m_count = 2;
-		m_vertices[1] = m_vertices[2];
-		return;
+		return Simplex{
+			SimplexVertex{simplex[0], d13_1 * inv_d13},
+			SimplexVertex{simplex[2], d13_2 * inv_d13}
+		};
 	}
 
 	// w2 region
 	if ((d12_1 <= float_t{0}) && (d23_2 <= float_t{0}))
 	{
-		m_vertices[1].set_a(float_t{1});
-		m_count = 1;
-		m_vertices[0] = m_vertices[1];
-		return;
+		return Simplex{SimplexVertex{simplex[1], float_t{1}}};
 	}
 
 	// w3 region
 	if ((d13_1 <= float_t{0}) && (d23_1 <= float_t{0}))
 	{
-		m_vertices[2].set_a(float_t{1});
-		m_count = 1;
-		m_vertices[0] = m_vertices[2];
-		return;
+		return Simplex{SimplexVertex{simplex[2], float_t{1}}};
 	}
 
 	// e23
 	if ((d23_1 > float_t{0}) && (d23_2 > float_t{0}) && (d123_1 <= float_t{0}))
 	{
 		const auto inv_d23 = float_t{1} / (d23_1 + d23_2);
-		m_vertices[1].set_a(d23_1 * inv_d23);
-		m_vertices[2].set_a(d23_2 * inv_d23);
-		m_count = 2;
-		m_vertices[0] = m_vertices[2];
-		return;
+		return Simplex{
+			SimplexVertex{simplex[2], d23_2 * inv_d23},
+			SimplexVertex{simplex[1], d23_1 * inv_d23}
+		};
 	}
 
 	// Must be in triangle123
 	const auto inv_d123 = float_t{1} / (d123_1 + d123_2 + d123_3);
-	m_vertices[0].set_a(d123_1 * inv_d123);
-	m_vertices[1].set_a(d123_2 * inv_d123);
-	m_vertices[2].set_a(d123_3 * inv_d123);
-	m_count = 3;
+	return Simplex{
+		SimplexVertex{simplex[0], d123_1 * inv_d123},
+		SimplexVertex{simplex[1], d123_2 * inv_d123},
+		SimplexVertex{simplex[2], d123_3 * inv_d123}
+	};
 }
 
-void Simplex::Solve() noexcept
+static inline Simplex Solve(const Simplex& simplex) noexcept
 {
-	assert(m_count == 1 || m_count == 2 || m_count == 3);
-	
-	switch (m_count)
+	const auto count = simplex.size();
+	assert(count == 1 || count == 2 || count == 3);
+	switch (count)
 	{
-		case 1:
-			break;
-			
-		case 2:
-			Solve2();
-			break;
-			
-		case 3:
-			Solve3();
-			break;
-			
-		default:
-			break;
+		case 1: return simplex;
+		case 2: return Solve2(simplex);
+		case 3: return Solve3(simplex);
+		default: break;
 	}
+	return simplex;
 }
 
-static inline auto CopyIndexPairs(IndexPairArray& dst, const Simplex& src)
+static inline auto CopyIndexPairs(IndexPairArray& dst, const Simplex& src) noexcept
 {
-	const auto count = src.GetCount();
+	const auto count = src.size();
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
-		dst[i] = src.GetVertex(i).indexPair;
+		dst[i] = src[i].indexPair;
 	}
 	return count;
 }
@@ -577,8 +508,24 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 	assert(input.proxyB.GetVertexCount() > 0);
 
 	// Initialize the simplex.
-	Simplex simplex; // = GetSimplex(cache, input.proxyA, input.transformA, input.proxyB, input.transformB);
-	simplex.ReadCache(cache, input.proxyA, input.transformA, input.proxyB, input.transformB);
+	auto simplex = GetSimplex(cache, input.proxyA, input.transformA, input.proxyB, input.transformB);
+
+	// Compute the new simplex metric, if it is substantially different than
+	// old metric then flush the simplex.
+	if (simplex.size() > 1)
+	{
+		const auto metric1 = cache.GetMetric();
+		const auto metric2 = GetMetric(simplex);
+		if ((metric2 < (metric1 / float_t{2})) || (metric2 > (metric1 * float_t{2})) || (metric2 < Epsilon))
+		{
+			simplex.clear();
+		}
+	}
+	
+	if (simplex.size() == 0)
+	{
+		simplex.push_back(GetSimplexVertex(IndexPair{0, 0}, input.proxyA, input.transformA, input.proxyB, input.transformB));
+	}
 
 	// Get simplex vertices as an array.
 	constexpr auto k_maxIters = unsigned{20}; ///< Max number of support point calls.
@@ -598,17 +545,17 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 		// Copy simplex so we can identify duplicates.
 		const auto savedCount = CopyIndexPairs(savedIndices, simplex);
 
-		simplex.Solve();
+		simplex = Solve(simplex);
 
 		// If we have max points (3), then the origin is in the corresponding triangle.
-		if (simplex.GetCount() == MaxSimplexVertices)
+		if (simplex.size() == MaxSimplexVertices)
 		{
 			break;
 		}
 
 #if defined(DO_COMPUTE_CLOSEST_POINT)
 		// Compute closest point.
-		const auto p = simplex.GetClosestPoint();
+		const auto p = GetClosestPoint(simplex);
 		const auto distanceSqr2 = p.LengthSquared();
 
 		// Ensure progress
@@ -619,7 +566,7 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 		distanceSqr1 = distanceSqr2;
 #endif
 		// Get search direction.
-		const auto d = simplex.GetSearchDirection();
+		const auto d = GetSearchDirection(simplex);
 
 		// Ensure the search direction is numerically fit.
 		if (d.LengthSquared() < Square(Epsilon))
@@ -650,7 +597,7 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 		// New vertex is ok and needed.
 		const auto wA = Mul(input.transformA, input.proxyA.GetVertex(indexA));
 		const auto wB = Mul(input.transformB, input.proxyB.GetVertex(indexB));
-		simplex.AddVertex(SimplexVertex{wA, indexA, wB, indexB, 0});
+		simplex.push_back(SimplexVertex{wA, indexA, wB, indexB, 0});
 	}
 
 #if defined(DO_GJK_PROFILING)
@@ -660,13 +607,19 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 
 	// Prepare output.
 	DistanceOutput output;
-	simplex.GetWitnessPoints(&output.pointA, &output.pointB);
-	output.distance = Distance(output.pointA, output.pointB);
+	const auto witnessPoints = GetWitnessPoints(simplex);
+	output.witnessPoints = witnessPoints;
+	output.distance = Distance(output.witnessPoints.a, output.witnessPoints.b);
 	output.iterations = iter;
 
 	// Cache the simplex.
-	simplex.WriteCache(cache);
-
+	cache.SetMetric(GetMetric(simplex));
+	cache.ClearIndices();
+	for (auto i = decltype(simplex.size()){0}; i < simplex.size(); ++i)
+	{
+		cache.AddIndex(simplex[i].indexPair);
+	}
+	
 	// Apply radii if requested.
 	if (input.useRadii)
 	{
@@ -679,17 +632,17 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 			// Shapes are still no overlapped.
 			// Move the witness points to the outer surface.
 			output.distance -= totalRadius;
-			const auto normal = Normalize(output.pointB - output.pointA);
-			output.pointA += rA * normal;
-			output.pointB -= rB * normal;
+			const auto normal = Normalize(output.witnessPoints.b - output.witnessPoints.a);
+			output.witnessPoints.a += rA * normal;
+			output.witnessPoints.b -= rB * normal;
 		}
 		else
 		{
 			// Shapes are overlapped when radii are considered.
 			// Move the witness points to the middle.
-			const auto p = (output.pointA + output.pointB) / float_t{2};
-			output.pointA = p;
-			output.pointB = p;
+			const auto p = (output.witnessPoints.a + output.witnessPoints.b) / float_t{2};
+			output.witnessPoints.a = p;
+			output.witnessPoints.b = p;
 			output.distance = float_t{0};
 		}
 	}
