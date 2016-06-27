@@ -277,22 +277,17 @@ bool TestOverlap(const Shape& shapeA, child_count_t indexA,
 	SimplexCache cache;
 	auto output = Distance(cache, proxyA, xfA, proxyB, xfB);
 	
-	auto distanceSquared = DistanceSquared(output.witnessPoints.a, output.witnessPoints.b);
-
-	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius();
-	const auto totalRadiusSquared = Square(totalRadius);
+	const auto distanceSquared = DistanceSquared(output.witnessPoints.a, output.witnessPoints.b);
+	const auto totalRadiusSquared = Square(proxyA.GetRadius() + proxyB.GetRadius());
 	
-	if ((distanceSquared > totalRadiusSquared) && (distanceSquared > Epsilon))
+	if ((distanceSquared > totalRadiusSquared) && (distanceSquared > Square(Epsilon)))
 	{
 		// Shapes are still not overlapped.
-		distanceSquared -= totalRadiusSquared;
-		return distanceSquared < Square(Epsilon * 10);
+		return (distanceSquared - totalRadiusSquared) < Square(Epsilon * 10);
 	}
-	else
-	{
-		// Shapes are overlapped when radii are considered.
-		return true;
-	}
+
+	// Shapes are overlapped when radii are considered.
+	return true;
 }
 
 } // namespace box2d
