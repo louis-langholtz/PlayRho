@@ -141,6 +141,7 @@ public:
 	
 	// For Circles...
 
+	/// Gets a circle-typed manifold.
 	/// @param lp Local center of circle A.
 	/// @param mp1 Manifold point 1.
 	static constexpr Manifold GetForCircles(Vec2 lp, const ManifoldPoint& mp1) noexcept
@@ -150,6 +151,7 @@ public:
 
 	// For Face A...
 
+	/// Gets a face A typed manifold.
 	/// @param ln Normal on polygon A.
 	/// @param lp Center of face A.
 	static constexpr Manifold GetForFaceA(Vec2 ln, Vec2 lp) noexcept
@@ -157,6 +159,7 @@ public:
 		return Manifold{e_faceA, ln, lp, 0, {{}}};
 	}
 	
+	/// Gets a face A typed manifold.
 	/// @param ln Normal on polygon A.
 	/// @param lp Center of face A.
 	/// @param mp1 Manifold point 1 (of 1).
@@ -165,6 +168,7 @@ public:
 		return Manifold{e_faceA, ln, lp, 1, {{mp1}}};
 	}
 
+	/// Gets a face A typed manifold.
 	/// @param ln Normal on polygon A.
 	/// @param lp Center of face A.
 	/// @param mp1 Manifold point 1 (of 2).
@@ -176,6 +180,7 @@ public:
 
 	// For Face B...
 
+	/// Gets a face B typed manifold.
 	/// @param ln Normal on polygon B.
 	/// @param lp Center of face B.
 	static constexpr Manifold GetForFaceB(Vec2 ln, Vec2 lp) noexcept
@@ -183,6 +188,7 @@ public:
 		return Manifold{e_faceB, ln, lp, 0, {{}}};
 	}
 	
+	/// Gets a face B typed manifold.
 	/// @param ln Normal on polygon B.
 	/// @param lp Center of face B.
 	/// @param mp1 Manifold point 1.
@@ -191,6 +197,7 @@ public:
 		return Manifold{e_faceB, ln, lp, 1, {{mp1}}};
 	}
 
+	/// Gets a face B typed manifold.
 	/// @param ln Normal on polygon B.
 	/// @param lp Center of face B.
 	/// @param mp1 Manifold point 1 (of 2).
