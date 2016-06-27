@@ -161,7 +161,10 @@ static inline Vec2 GetScaledDelta(const SimplexVertex& sv)
 
 /// Simplex.
 /// @detail
+/// An encapsulation of a point, line segment, or triangle.
+/// These are defined respectively as: a 0-simplex, a 1-simplex, and a 2-simplex.
 /// Used in doing GJK collision detection.
+/// @sa https://en.wikipedia.org/wiki/Simplex
 /// @sa https://en.wikipedia.org/wiki/Gilbert%2DJohnson%2DKeerthi_distance_algorithm
 class Simplex
 {

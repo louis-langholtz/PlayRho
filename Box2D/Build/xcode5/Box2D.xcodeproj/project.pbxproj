@@ -15,6 +15,8 @@
 		4721349E1C8E4CB5009536F9 /* FixtureList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4721349B1C8E4CB5009536F9 /* FixtureList.cpp */; };
 		4721349F1C8E4CB5009536F9 /* FixtureList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4721349C1C8E4CB5009536F9 /* FixtureList.hpp */; };
 		472134A01C8E4CB5009536F9 /* FixtureList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4721349C1C8E4CB5009536F9 /* FixtureList.hpp */; };
+		475039911D2180D600D32047 /* DistanceProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4750398F1D2180D600D32047 /* DistanceProxy.cpp */; };
+		475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 475039901D2180D600D32047 /* DistanceProxy.hpp */; };
 		4751EE291CEDD78F00D459CB /* Mobile.h in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE281CEDD78F00D459CB /* Mobile.h */; };
 		4751EE2B1CEDD79900D459CB /* ConveyorBelt.h in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE2A1CEDD79900D459CB /* ConveyorBelt.h */; };
 		4751EE2E1CEDD7A300D459CB /* MotorJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE2C1CEDD7A300D459CB /* MotorJoint.h */; };
@@ -330,6 +332,8 @@
 		472134841C8CD7CF009536F9 /* BodyList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyList.hpp; sourceTree = "<group>"; };
 		4721349B1C8E4CB5009536F9 /* FixtureList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FixtureList.cpp; sourceTree = "<group>"; };
 		4721349C1C8E4CB5009536F9 /* FixtureList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureList.hpp; sourceTree = "<group>"; };
+		4750398F1D2180D600D32047 /* DistanceProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceProxy.cpp; sourceTree = "<group>"; };
+		475039901D2180D600D32047 /* DistanceProxy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DistanceProxy.hpp; sourceTree = "<group>"; };
 		4751EE281CEDD78F00D459CB /* Mobile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mobile.h; sourceTree = "<group>"; };
 		4751EE2A1CEDD79900D459CB /* ConveyorBelt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConveyorBelt.h; sourceTree = "<group>"; };
 		4751EE2C1CEDD7A300D459CB /* MotorJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MotorJoint.h; sourceTree = "<group>"; };
@@ -659,6 +663,8 @@
 				80BB892D141C3E5900F1753A /* Collision.h */,
 				80BB892E141C3E5900F1753A /* Distance.cpp */,
 				80BB892F141C3E5900F1753A /* Distance.h */,
+				4750398F1D2180D600D32047 /* DistanceProxy.cpp */,
+				475039901D2180D600D32047 /* DistanceProxy.hpp */,
 				80BB8930141C3E5900F1753A /* DynamicTree.cpp */,
 				80BB8931141C3E5900F1753A /* DynamicTree.h */,
 				80BB8932141C3E5900F1753A /* TimeOfImpact.cpp */,
@@ -1099,6 +1105,7 @@
 				4751EE2E1CEDD7A300D459CB /* MotorJoint.h in Headers */,
 				80BB89E1141C3E5900F1753A /* Rope.h in Headers */,
 				477DB2991D14BB2000846ED6 /* ContactEdgeIterator.hpp in Headers */,
+				475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */,
 				80620F90168B934600D46C8D /* MotorJoint.h in Headers */,
 				47F932A61D11C283006A193C /* AllocatedArray.hpp in Headers */,
 				47AA63AD1D1078D000726CA2 /* ConstContactIterator.hpp in Headers */,
@@ -1367,6 +1374,7 @@
 				47F932A51D11C283006A193C /* AllocatedArray.cpp in Sources */,
 				477DB2A01D15F5C000846ED6 /* JointEdgeList.cpp in Sources */,
 				80BB89B1141C3E5900F1753A /* Island.cpp in Sources */,
+				475039911D2180D600D32047 /* DistanceProxy.cpp in Sources */,
 				80BB89B4141C3E5900F1753A /* World.cpp in Sources */,
 				80BB89B6141C3E5900F1753A /* WorldCallbacks.cpp in Sources */,
 				80BB89B8141C3E5900F1753A /* ChainAndCircleContact.cpp in Sources */,
