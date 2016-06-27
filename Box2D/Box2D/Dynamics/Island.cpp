@@ -416,7 +416,6 @@ void Island::SolveTOI(const TimeStep& subStep, island_count_t indexA, island_cou
 		input.proxyB = GetDistanceProxy(*fB->GetShape(), indexB);
 		input.transformA = bA->GetTransform();
 		input.transformB = bB->GetTransform();
-		input.useRadii = false;
 
 		SimplexCache cache;
 		const auto output = Distance(cache, input);

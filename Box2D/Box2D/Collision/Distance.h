@@ -123,7 +123,6 @@ struct DistanceInput
 	DistanceProxy proxyB;
 	Transform transformA;
 	Transform transformB;
-	bool useRadii;
 };
 
 struct WitnessPoints
@@ -136,7 +135,6 @@ struct WitnessPoints
 struct DistanceOutput
 {
 	WitnessPoints witnessPoints; ///< closest point on shapeA and closest point on shapeB
-	float_t distance;
 	unsigned iterations;	///< number of GJK iterations used
 };
 

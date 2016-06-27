@@ -647,35 +647,7 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 	// Prepare output.
 	DistanceOutput output;
 	output.witnessPoints = GetWitnessPoints(simplex);
-	output.distance = Distance(output.witnessPoints.a, output.witnessPoints.b);
 	output.iterations = iter;
-
-	// Apply radii if requested.
-	if (input.useRadii)
-	{
-		const auto rA = input.proxyA.GetRadius();
-		const auto rB = input.proxyB.GetRadius();
-		const auto totalRadius = rA + rB;
-
-		if ((output.distance > totalRadius) && (output.distance > Epsilon))
-		{
-			// Shapes are still not overlapped.
-			// Move the witness points to the outer surface.
-			output.distance -= totalRadius;
-			const auto normal = Normalize(output.witnessPoints.b - output.witnessPoints.a);
-			output.witnessPoints.a += rA * normal;
-			output.witnessPoints.b -= rB * normal;
-		}
-		else
-		{
-			// Shapes are overlapped when radii are considered.
-			// Move the witness points to the middle.
-			const auto p = (output.witnessPoints.a + output.witnessPoints.b) / float_t{2};
-			output.witnessPoints.a = p;
-			output.witnessPoints.b = p;
-			output.distance = float_t{0};
-		}
-	}
 	return output;
 }
 

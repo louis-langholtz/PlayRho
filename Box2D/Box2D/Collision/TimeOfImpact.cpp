@@ -258,7 +258,6 @@ TOIOutput TimeOfImpact(DistanceProxy proxyA, Sweep sweepA, DistanceProxy proxyB,
 	DistanceInput distanceInput;
 	distanceInput.proxyA = proxyA;
 	distanceInput.proxyB = proxyB;
-	distanceInput.useRadii = false;
 
 	// The outer loop progressively attempts to compute new separating axes.
 	// This loop terminates when an axis is repeated (no progress is made).
@@ -270,15 +269,17 @@ TOIOutput TimeOfImpact(DistanceProxy proxyA, Sweep sweepA, DistanceProxy proxyB,
 		// Get the distance between shapes. We can also use the results
 		// to get a separating axis.
 		const auto distanceOutput = Distance(cache, distanceInput);
+		const auto distance = Distance(distanceOutput.witnessPoints.a, distanceOutput.witnessPoints.b);
 
 		// If the shapes are overlapped, we give up on continuous collision.
-		if (distanceOutput.distance <= float_t{0}) // Failure!
+		// should this instead be simply less-than 0 (as in distance < float_t{0})?
+		if (distance <= float_t{0}) // Failure!
 		{
 			output = TOIOutput{TOIOutput::e_overlapped, 0};
 			break;
 		}
 
-		if (distanceOutput.distance < maxTarget) // Victory!
+		if (distance < maxTarget) // Victory!
 		{
 			output = TOIOutput{TOIOutput::e_touching, t1};
 			break;
@@ -349,6 +350,7 @@ TOIOutput TimeOfImpact(DistanceProxy proxyA, Sweep sweepA, DistanceProxy proxyB,
 
 			// Check for initial overlap. This might happen if the root finder
 			// runs out of iterations.
+			//assert(s1 >= minTarget);
 			if (s1 < minTarget)
 			{
 				output = TOIOutput{TOIOutput::e_failed, t1};
