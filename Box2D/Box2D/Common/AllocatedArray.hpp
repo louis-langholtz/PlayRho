@@ -11,12 +11,11 @@
 
 #include <Box2D/Common/Settings.h>
 
-#include <memory>
-#include <iterator>
+#include <functional>
 
 namespace box2d {
 
-template <typename T, typename Deleter = std::default_delete<T> >
+template <typename T, typename Deleter = std::function<void (void *)> >
 class AllocatedArray
 {
 public:
@@ -30,44 +29,11 @@ public:
 	using difference_type = std::ptrdiff_t;
 	using deleter_type = Deleter;
 
-	class iterator: public std::iterator<std::random_access_iterator_tag, value_type>
-	{
-	public:
-		iterator() = default;
-		iterator(pointer p): m_p{p} {}
+	using iterator = pointer;
+	using const_iterator = const_pointer;
 
-		iterator& operator++() noexcept { ++m_p; return *this; }
-		iterator operator++(int) { iterator tmp(*this); operator++(); return tmp; }
-		
-		constexpr bool operator==(const iterator& rhs) const noexcept {return m_p == rhs.m_p; }
-		constexpr bool operator!=(const iterator& rhs) const noexcept {return m_p != rhs.m_p; }
-		
-		reference operator*() const noexcept { return *m_p; }
-
-	private:
-		pointer m_p = nullptr;
-	};
-
-	class const_iterator: public std::iterator<std::random_access_iterator_tag, const_value_type>
-	{
-	public:
-		const_iterator() = default;
-		const_iterator(const_pointer p): m_p{p} {}
-
-		const_iterator& operator++() noexcept { ++m_p; return *this; }
-		const_iterator operator++(int) { iterator tmp(*this); operator++(); return tmp; }
-		
-		constexpr bool operator==(const const_iterator& rhs) const noexcept {return m_p == rhs.m_p; }
-		constexpr bool operator!=(const const_iterator& rhs) const noexcept {return m_p != rhs.m_p; }
-		
-		reference operator*() const noexcept { return *m_p; }
-
-	private:
-		const_pointer m_p = nullptr;
-	};
-
-	AllocatedArray(size_type capacity, pointer data, deleter_type deleter = nullptr):
-		m_capacity{capacity}, m_data{data}, m_deleter{deleter}
+	AllocatedArray(size_type max_size, pointer data, deleter_type deleter = noop_deleter):
+		m_max_size{max_size}, m_data{data}, m_deleter{deleter}
 	{}
 	
 	~AllocatedArray() noexcept
@@ -76,7 +42,7 @@ public:
 	}
 
 	size_type size() const noexcept { return m_size; }
-	size_type max_size() const noexcept { return m_capacity; }
+	size_type max_size() const noexcept { return m_max_size; }
 	bool empty() const noexcept { return size() == 0; }
 
 	pointer data() const noexcept { return m_data; }
@@ -93,13 +59,13 @@ public:
 		return m_data[i];
 	}
 
-	iterator begin() { return iterator{&m_data[0]}; }
-	iterator end() { return iterator{&m_data[0] + size()}; }
-	const_iterator begin() const { return const_iterator{&m_data[0]}; }
-	const_iterator end() const { return const_iterator{&m_data[0] + size()}; }
+	iterator begin() { return iterator{m_data}; }
+	iterator end() { return iterator{m_data + size()}; }
+	const_iterator begin() const { return const_iterator{m_data}; }
+	const_iterator end() const { return const_iterator{m_data + size()}; }
 	
-	const_iterator cbegin() const { return const_iterator{&m_data[0]}; }
-	const_iterator cend() const { return const_iterator{&m_data[0] + size()}; }
+	const_iterator cbegin() const { return const_iterator{m_data}; }
+	const_iterator cend() const { return const_iterator{m_data + size()}; }
 
 	reference back() noexcept
 	{
@@ -120,7 +86,7 @@ public:
 
 	void push_back(const_reference value)
 	{
-		assert(m_size < m_capacity);
+		assert(m_size < m_max_size);
 		m_data[m_size] = value;
 		++m_size;
 	}
@@ -132,9 +98,9 @@ public:
 	}
 
 private:
-	static void deletor(void *) {}
+	static void noop_deleter(void*) {}
 
-	size_type m_capacity = 0;
+	size_type m_max_size = 0;
 	size_type m_size = 0;
 	pointer m_data = nullptr;
 	deleter_type m_deleter;
