@@ -250,6 +250,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA, const Distance
 	assert(target >= tolerance);
 	const auto maxTarget = target + tolerance;
 	const auto minTarget = target - tolerance;
+	const auto maxTargetSquared = Square(maxTarget);
 
 	auto t1 = float_t{0};
 	auto iter = decltype(MaxTOIIterations){0};
@@ -261,26 +262,27 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA, const Distance
 	// This loop terminates when an axis is repeated (no progress is made).
 	for(;;)
 	{
-		const auto transformA = GetTransform(sweepA, t1);
-		const auto transformB = GetTransform(sweepB, t1);
-
-		// Get the distance between shapes. We can also use the results
-		// to get a separating axis.
-		const auto distanceOutput = Distance(cache, proxyA, transformA, proxyB, transformB);
-		const auto distance = Distance(distanceOutput.witnessPoints.a, distanceOutput.witnessPoints.b);
-
-		// If the shapes are overlapped, we give up on continuous collision.
-		// should this instead be simply less-than 0 (as in distance < float_t{0})?
-		if (distance <= float_t{0}) // Failure!
 		{
-			output = TOIOutput{TOIOutput::e_overlapped, 0};
-			break;
-		}
+			const auto transformA = GetTransform(sweepA, t1);
+			const auto transformB = GetTransform(sweepB, t1);
 
-		if (distance < maxTarget) // Victory!
-		{
-			output = TOIOutput{TOIOutput::e_touching, t1};
-			break;
+			// Get the distance between shapes. We can also use the results
+			// to get a separating axis.
+			const auto distanceOutput = Distance(cache, proxyA, transformA, proxyB, transformB);
+			const auto distanceSquared = DistanceSquared(distanceOutput.witnessPoints.a, distanceOutput.witnessPoints.b);
+
+			// If the shapes are overlapped, we give up on continuous collision.
+			if (distanceSquared <= float_t{0}) // Failure!
+			{
+				output = TOIOutput{TOIOutput::e_overlapped, 0};
+				break;
+			}
+
+			if (distanceSquared < maxTargetSquared) // Victory!
+			{
+				output = TOIOutput{TOIOutput::e_touching, t1};
+				break;
+			}
 		}
 
 		// Initialize the separating axis.
