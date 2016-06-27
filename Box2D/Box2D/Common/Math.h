@@ -462,7 +462,9 @@ constexpr inline float_t Dot(const Vec2& a, const Vec2& b) noexcept
 	return (a.x * b.x) + (a.y * b.y);
 }
 
-/// Perform the cross product on two vectors.
+/// Performs the cross product on two vectors.
+/// @detail
+/// This is defined as the result of: <code>(a.x * b.y) - (a.y * b.x)</code>.
 /// @note In 2D this produces a scalar.
 /// @note The result will be 0 if either vectors (A or B) have a length of zero.
 /// @param a Vector A.

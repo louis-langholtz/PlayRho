@@ -132,9 +132,17 @@ struct DistanceOutput
 	unsigned iterations;	///< number of GJK iterations used
 };
 
-/// Compute the closest points between two shapes. Supports any combination of:
+/// Determines the closest points between two shapes.
+/// @detail
+/// Supports any combination of:
 /// CircleShape, PolygonShape, EdgeShape. The simplex cache is input/output.
-/// On the first call, SimplexCache.count should be set to zero.
+/// @note On the first call, the SimplexCache.count should be set to zero.
+/// @param cache Simplex cache for assistance the determination.
+/// @param proxyA Proxy A.
+/// @param transformA Transoform of A.
+/// @param proxyB Proxy B.
+/// @param transformB Transoform of B.
+/// @return Closest points between the two shapes and the count of iterations it took to determine them.
 DistanceOutput Distance(SimplexCache& cache,
 						const DistanceProxy& proxyA, const Transform& transformA,
 						const DistanceProxy& proxyB, const Transform& transformB);
