@@ -546,11 +546,6 @@ constexpr inline float_t DistanceSquared(const Vec2& a, const Vec2& b) noexcept
 	return c.LengthSquared();
 }
 
-inline float_t Distance(const Vec2& a, const Vec2& b)
-{
-	return Sqrt(DistanceSquared(a, b));
-}
-
 constexpr inline Vec3 operator * (float_t s, const Vec3& a) noexcept
 {
 	return Vec3{s * a.x, s * a.y, s * a.z};

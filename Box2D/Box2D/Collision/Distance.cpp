@@ -268,7 +268,7 @@ static float_t GetMetric(const Simplex& simplex)
 	{
 		case 0: break;
 		case 1: break;
-		case 2:	return Distance(simplex[0].get_w(), simplex[1].get_w());
+		case 2:	return Sqrt(DistanceSquared(simplex[0].get_w(), simplex[1].get_w()));
 		case 3:	return Cross(simplex[1].get_w() - simplex[0].get_w(), simplex[2].get_w() - simplex[0].get_w());
 		default: break; // should not be reached
 	}
