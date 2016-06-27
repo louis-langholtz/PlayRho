@@ -51,18 +51,17 @@ public:
 	{
 		Test::Step(settings);
 
-		DistanceInput input;
-		input.proxyA = GetDistanceProxy(m_polygonA, 0);
-		input.proxyB = GetDistanceProxy(m_polygonB, 0);
-		input.transformA = m_transformA;
-		input.transformB = m_transformB;
+		const auto proxyA = GetDistanceProxy(m_polygonA, 0);
+		const auto proxyB = GetDistanceProxy(m_polygonB, 0);
+		const auto transformA = m_transformA;
+		const auto transformB = m_transformB;
 
 		SimplexCache cache;
-		auto output = Distance(cache, input);
+		auto output = Distance(cache, proxyA, transformA, proxyB, transformB);
 		auto distance = Distance(output.witnessPoints.a, output.witnessPoints.b);
 		
-		const auto rA = input.proxyA.GetRadius();
-		const auto rB = input.proxyB.GetRadius();
+		const auto rA = proxyA.GetRadius();
+		const auto rB = proxyB.GetRadius();
 		const auto totalRadius = rA + rB;
 		
 		if ((distance > totalRadius) && (distance > Epsilon))

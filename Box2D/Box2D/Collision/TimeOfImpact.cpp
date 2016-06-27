@@ -233,7 +233,8 @@ private:
 
 // CCD via the local separating axis method. This seeks progression
 // by computing the largest time at which separation is maintained.
-TOIOutput TimeOfImpact(DistanceProxy proxyA, Sweep sweepA, DistanceProxy proxyB, Sweep sweepB, float_t tMax)
+TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA, const DistanceProxy& proxyB, Sweep sweepB,
+					   float_t tMax)
 {
 	++toiCalls;
 
@@ -255,20 +256,17 @@ TOIOutput TimeOfImpact(DistanceProxy proxyA, Sweep sweepA, DistanceProxy proxyB,
 
 	// Prepare input for distance query.
 	SimplexCache cache;
-	DistanceInput distanceInput;
-	distanceInput.proxyA = proxyA;
-	distanceInput.proxyB = proxyB;
 
 	// The outer loop progressively attempts to compute new separating axes.
 	// This loop terminates when an axis is repeated (no progress is made).
 	for(;;)
 	{
-		distanceInput.transformA = GetTransform(sweepA, t1);
-		distanceInput.transformB = GetTransform(sweepB, t1);
+		const auto transformA = GetTransform(sweepA, t1);
+		const auto transformB = GetTransform(sweepB, t1);
 
 		// Get the distance between shapes. We can also use the results
 		// to get a separating axis.
-		const auto distanceOutput = Distance(cache, distanceInput);
+		const auto distanceOutput = Distance(cache, proxyA, transformA, proxyB, transformB);
 		const auto distance = Distance(distanceOutput.witnessPoints.a, distanceOutput.witnessPoints.b);
 
 		// If the shapes are overlapped, we give up on continuous collision.

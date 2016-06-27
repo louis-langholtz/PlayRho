@@ -271,19 +271,16 @@ bool TestOverlap(const Shape& shapeA, child_count_t indexA,
 				   const Shape& shapeB, child_count_t indexB,
 				   const Transform& xfA, const Transform& xfB)
 {
-	DistanceInput input;
-	input.proxyA = GetDistanceProxy(shapeA, indexA);
-	input.proxyB = GetDistanceProxy(shapeB, indexB);
-	input.transformA = xfA;
-	input.transformB = xfB;
+	const auto proxyA = GetDistanceProxy(shapeA, indexA);
+	const auto proxyB = GetDistanceProxy(shapeB, indexB);
 
 	SimplexCache cache;
-	auto output = Distance(cache, input);
+	auto output = Distance(cache, proxyA, xfA, proxyB, xfB);
 
 	auto distance = Distance(output.witnessPoints.a, output.witnessPoints.b);
 
-	const auto rA = input.proxyA.GetRadius();
-	const auto rB = input.proxyB.GetRadius();
+	const auto rA = proxyA.GetRadius();
+	const auto rB = proxyB.GetRadius();
 	const auto totalRadius = rA + rB;
 	
 	if ((distance > totalRadius) && (distance > Epsilon))

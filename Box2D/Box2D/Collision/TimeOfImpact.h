@@ -64,7 +64,8 @@ private:
 /// non-tunneling collision. If you change the time interval, you should call this function
 /// again.
 /// @note Use Distance to compute the contact point and normal at the time of impact.
-TOIOutput TimeOfImpact(DistanceProxy proxyA, Sweep sweepA, DistanceProxy proxyB, Sweep sweepB, float_t tMax = 1);
+TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA, const DistanceProxy& proxyB, Sweep sweepB,
+					   float_t tMax = 1);
 
 } // namespace box2d
 

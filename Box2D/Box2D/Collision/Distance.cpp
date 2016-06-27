@@ -529,17 +529,19 @@ static inline auto CopyIndexPairs(IndexPairArray& dst, const Simplex& src) noexc
 	return count;
 }
 
-DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
+DistanceOutput Distance(SimplexCache& cache,
+						const DistanceProxy& proxyA, const Transform& transformA,
+						const DistanceProxy& proxyB, const Transform& transformB)
 {
 #if defined(DO_GJK_PROFILING)
 	++gjkCalls;
 #endif
 
-	assert(input.proxyA.GetVertexCount() > 0);
-	assert(input.proxyB.GetVertexCount() > 0);
+	assert(proxyA.GetVertexCount() > 0);
+	assert(proxyB.GetVertexCount() > 0);
 
 	// Initialize the simplex.
-	auto simplex = GetSimplex(cache, input.proxyA, input.transformA, input.proxyB, input.transformB);
+	auto simplex = GetSimplex(cache, proxyA, transformA, proxyB, transformB);
 
 	// Compute the new simplex metric, if it is substantially different than
 	// old metric then flush the simplex.
@@ -555,7 +557,7 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 	
 	if (simplex.size() == 0)
 	{
-		simplex.push_back(GetSimplexVertex(IndexPair{0, 0}, input.proxyA, input.transformA, input.proxyB, input.transformB));
+		simplex.push_back(GetSimplexVertex(IndexPair{0, 0}, proxyA, transformA, proxyB, transformB));
 	}
 
 	// Get simplex vertices as an array.
@@ -615,8 +617,8 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 		++iter;
 		
 		// Compute a tentative new simplex vertex using support points.
-		const auto indexA = input.proxyA.GetSupportIndex(MulT(input.transformA.q, -d));
-		const auto indexB = input.proxyB.GetSupportIndex(MulT(input.transformB.q, d));
+		const auto indexA = proxyA.GetSupportIndex(MulT(transformA.q, -d));
+		const auto indexB = proxyB.GetSupportIndex(MulT(transformB.q, d));
 
 		// Check for duplicate support points. This is the main termination criteria.
 		// If there's a duplicate support point, code must exit loop to avoid cycling.
@@ -626,8 +628,8 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 		}
 
 		// New vertex is ok and needed.
-		const auto wA = Mul(input.transformA, input.proxyA.GetVertex(indexA));
-		const auto wB = Mul(input.transformB, input.proxyB.GetVertex(indexB));
+		const auto wA = Mul(transformA, proxyA.GetVertex(indexA));
+		const auto wB = Mul(transformB, proxyB.GetVertex(indexB));
 		simplex.push_back(SimplexVertex{wA, indexA, wB, indexB, 0});
 	}
 

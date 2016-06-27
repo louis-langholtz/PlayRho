@@ -114,17 +114,6 @@ private:
 	IndexPair indexPair[MaxCount]; ///< Vertices on shape A and B.
 };
 
-/// Input for Distance.
-/// You have to option to use the shape radii
-/// in the computation. Even 
-struct DistanceInput
-{
-	DistanceProxy proxyA;
-	DistanceProxy proxyB;
-	Transform transformA;
-	Transform transformB;
-};
-
 struct WitnessPoints
 {
 	Vec2 a;
@@ -141,7 +130,9 @@ struct DistanceOutput
 /// Compute the closest points between two shapes. Supports any combination of:
 /// CircleShape, PolygonShape, EdgeShape. The simplex cache is input/output.
 /// On the first call, SimplexCache.count should be set to zero.
-DistanceOutput Distance(SimplexCache& cache,  const DistanceInput& input);
+DistanceOutput Distance(SimplexCache& cache,
+						const DistanceProxy& proxyA, const Transform& transformA,
+						const DistanceProxy& proxyB, const Transform& transformB);
 
 } /* namespace box2d */
 
