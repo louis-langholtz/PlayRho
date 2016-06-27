@@ -37,7 +37,7 @@ constexpr auto MaxSimplexVertices = unsigned{3};
 
 using IndexPairArray = std::array<IndexPair, MaxSimplexVertices>;
 
-bool Find(const IndexPairArray& array, IndexPair key, std::size_t count)
+inline bool Find(const IndexPairArray& array, IndexPair key, std::size_t count)
 {
 	assert(count <= array.size());
 	for (std::size_t i = std::size_t{0}; i < count; ++i)
@@ -159,6 +159,10 @@ static inline Vec2 GetScaledDelta(const SimplexVertex& sv)
 }
 #endif
 
+/// Simplex.
+/// @detail
+/// Used in doing GJK collision detection.
+/// @sa https://en.wikipedia.org/wiki/Gilbert%2DJohnson%2DKeerthi_distance_algorithm
 class Simplex
 {
 public:
@@ -209,6 +213,10 @@ private:
 	SimplexVertex m_vertices[MaxSimplexVertices]; ///< Vertices. Only elements < m_count are valid. @see m_count.
 };
 
+/// Gets the "search direction" for the given simplex.
+/// @param simplex A one or two vertex simplex.
+/// @warning Behavior is undefined if the given simplex has zero vertices.
+/// @return "search direction" vertor.
 static inline Vec2 GetSearchDirection(const Simplex& simplex) noexcept
 {
 	const auto count = simplex.size();
@@ -319,29 +327,36 @@ static inline Simplex GetSimplex(const SimplexCache& cache,
 	return simplex;
 }
 	
-// Solve a line segment using barycentric coordinates.
-//
-// p = a1 * w1 + a2 * w2
-// a1 + a2 = 1
-//
-// The vector from the origin to the closest point on the line is
-// perpendicular to the line.
-// e12 = w2 - w1
-// dot(p, e) = 0
-// a1 * dot(w1, e) + a2 * dot(w2, e) = 0
-//
-// 2-by-2 linear system
-// [1      1     ][a1] = [1]
-// [w1.e12 w2.e12][a2] = [0]
-//
-// Define
-// d12_1 =  dot(w2, e12)
-// d12_2 = -dot(w1, e12)
-// d12 = d12_1 + d12_2
-//
-// Solution
-// a1 = d12_1 / d12
-// a2 = d12_2 / d12
+/// Solves the given line segment simplex using barycentric coordinates.
+///
+/// @note The given simplex must have two simplex vertices.
+/// @warning Behavior is undefined if the given simplex doesn't have two vertices.
+///
+/// @detail
+/// p = a1 * w1 + a2 * w2
+/// a1 + a2 = 1
+///
+/// The vector from the origin to the closest point on the line is
+/// perpendicular to the line.
+/// e12 = w2 - w1
+/// dot(p, e) = 0
+/// a1 * dot(w1, e) + a2 * dot(w2, e) = 0
+///
+/// 2-by-2 linear system
+/// [1      1     ][a1] = [1]
+/// [w1.e12 w2.e12][a2] = [0]
+///
+/// Define
+/// d12_1 =  dot(w2, e12)
+/// d12_2 = -dot(w1, e12)
+/// d12 = d12_1 + d12_2
+///
+/// Solution
+/// a1 = d12_1 / d12
+/// a2 = d12_2 / d12
+///
+/// @param simplex Two-vertex simplex to provide a "solution" for.
+/// @result One or two vertex "solution".
 static inline Simplex Solve2(const Simplex& simplex) noexcept
 {
 	const auto w1 = simplex[0].get_w();
@@ -369,11 +384,20 @@ static inline Simplex Solve2(const Simplex& simplex) noexcept
 	return Simplex{SimplexVertex{simplex[0], d12_1 * inv_d12}, SimplexVertex{simplex[1], d12_2 * inv_d12}};
 }
 
-// Possible regions:
-// - points[2]
-// - edge points[0]-points[2]
-// - edge points[1]-points[2]
-// - inside the triangle
+/// Solves the given 3-vertex simplex.
+///
+/// @note The given simplex must have three simplex vertices.
+/// @warning Behavior is undefined if the given simplex doesn't have three vertices.
+///
+/// @detail
+/// Possible regions:
+/// - points[2]
+/// - edge points[0]-points[2]
+/// - edge points[1]-points[2]
+/// - inside the triangle
+///
+/// @param simplex Three-vertex simplex to provide a "solution" for.
+/// @result One, two, or three vertex "solution".
 static inline Simplex Solve3(const Simplex& simplex) noexcept
 {
 	const auto w1 = simplex[0].get_w();
@@ -474,6 +498,10 @@ static inline Simplex Solve3(const Simplex& simplex) noexcept
 	};
 }
 
+/// Solves the given simplex.
+/// @param simplex A one, two, or three vertex simplex.
+/// @warning Behavior is undefined if the given simplex has zero vertices.
+/// @return One, two, or three vertex "solution".
 static inline Simplex Solve(const Simplex& simplex) noexcept
 {
 	const auto count = simplex.size();
@@ -516,7 +544,7 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 	{
 		const auto metric1 = cache.GetMetric();
 		const auto metric2 = GetMetric(simplex);
-		if ((metric2 < (metric1 / float_t{2})) || (metric2 > (metric1 * float_t{2})) || (metric2 < Epsilon))
+		if ((metric2 < (metric1 / 2)) || (metric2 > (metric1 * 2)) || (metric2 < Epsilon))
 		{
 			simplex.clear();
 		}
@@ -605,13 +633,6 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 	gjkMaxIters = Max(gjkMaxIters, iter);
 #endif
 
-	// Prepare output.
-	DistanceOutput output;
-	const auto witnessPoints = GetWitnessPoints(simplex);
-	output.witnessPoints = witnessPoints;
-	output.distance = Distance(output.witnessPoints.a, output.witnessPoints.b);
-	output.iterations = iter;
-
 	// Cache the simplex.
 	cache.SetMetric(GetMetric(simplex));
 	cache.ClearIndices();
@@ -620,6 +641,13 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 		cache.AddIndex(simplex[i].indexPair);
 	}
 	
+	// Prepare output.
+	DistanceOutput output;
+	const auto witnessPoints = GetWitnessPoints(simplex);
+	output.witnessPoints = witnessPoints;
+	output.distance = Distance(output.witnessPoints.a, output.witnessPoints.b);
+	output.iterations = iter;
+
 	// Apply radii if requested.
 	if (input.useRadii)
 	{
@@ -629,7 +657,7 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 
 		if ((output.distance > totalRadius) && (output.distance > Epsilon))
 		{
-			// Shapes are still no overlapped.
+			// Shapes are still not overlapped.
 			// Move the witness points to the outer surface.
 			output.distance -= totalRadius;
 			const auto normal = Normalize(output.witnessPoints.b - output.witnessPoints.a);

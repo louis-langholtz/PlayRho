@@ -43,8 +43,11 @@ constexpr inline bool operator == (IndexPair lhs, IndexPair rhs)
 	return (lhs.a == rhs.a) && (lhs.b == rhs.b);
 }
 
+/// Distance Proxy.
+/// @detail
 /// A distance proxy is used by the GJK algorithm.
 /// It encapsulates any shape.
+/// @sa https://en.wikipedia.org/wiki/Gilbert%2DJohnson%2DKeerthi_distance_algorithm
 class DistanceProxy
 {
 public:
@@ -60,21 +63,27 @@ public:
 
 	constexpr DistanceProxy(float_t radius, Vec2 v0) noexcept:
 		m_radius{radius}, m_buffer{{v0}}, m_count{1}
-	{}
+	{
+		assert(radius >= 0);
+	}
 
 	constexpr DistanceProxy(float_t radius, Vec2 v0, Vec2 v1) noexcept:
 		m_radius{radius}, m_buffer{{v0, v1}}, m_count{2}
-	{}
+	{
+		assert(radius >= 0);
+	}
 
 	constexpr DistanceProxy(float_t radius, const Vec2* vertices, size_type count) noexcept:
 		m_radius{radius}, m_buffer{}, m_vertices{vertices}, m_count{count}
-	{}
+	{
+		assert(radius >= 0);
+	}
 
 	/// Gets the "radius" of the associated shape.
 	/// @return Non-negative distance.
 	float_t GetRadius() const noexcept { return m_radius; }
 
-	/// Get the supporting vertex index in the given direction.
+	/// Gets the supporting vertex index in the given direction.
 	/// @param d Direction vector to find index for.
 	/// @return InvalidIndex if the count of vertices is zero or a value from 0 to one less than count.
 	/// @sa GetVertexCount().
@@ -93,7 +102,7 @@ public:
 private:
 	std::array<Vec2,2> m_buffer;
 	const Vec2* m_vertices = &m_buffer[0];
-	size_type m_count = 0; ///< Count of valid elements at m_vertices.
+	size_type m_count = 0; ///< Count of valid elements of m_vertices.
 	float_t m_radius = float_t{0}; ///< "Radius" of the associated shape.
 };
 
@@ -218,18 +227,18 @@ inline Vec2 DistanceProxy::GetVertex(size_type index) const noexcept
 
 inline DistanceProxy::size_type DistanceProxy::GetSupportIndex(const Vec2& d) const noexcept
 {
-	auto bestIndex = InvalidIndex;
-	auto bestValue = -MaxFloat;
+	auto index = InvalidIndex; ///< Index of vertex that when dotted with d has the max value.
+	auto maxValue = -MaxFloat; ///< Max dot value.
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		const auto value = Dot(m_vertices[i], d);
-		if (bestValue < value)
+		if (maxValue < value)
 		{
-			bestValue = value;
-			bestIndex = i;
+			maxValue = value;
+			index = i;
 		}
 	}
-	return bestIndex;
+	return index;
 }
 
 } /* namespace box2d */
