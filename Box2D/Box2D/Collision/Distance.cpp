@@ -646,8 +646,7 @@ DistanceOutput Distance(SimplexCache& cache, const DistanceInput& input)
 	
 	// Prepare output.
 	DistanceOutput output;
-	const auto witnessPoints = GetWitnessPoints(simplex);
-	output.witnessPoints = witnessPoints;
+	output.witnessPoints = GetWitnessPoints(simplex);
 	output.distance = Distance(output.witnessPoints.a, output.witnessPoints.b);
 	output.iterations = iter;
 
