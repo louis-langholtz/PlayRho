@@ -123,6 +123,11 @@ struct WitnessPoints
 /// Output for Distance.
 struct DistanceOutput
 {
+	DistanceOutput() = default;
+	DistanceOutput(const DistanceOutput& copy) = default;
+
+	constexpr DistanceOutput(const WitnessPoints& wp, unsigned it) noexcept: witnessPoints{wp}, iterations{it} {}
+
 	WitnessPoints witnessPoints; ///< closest point on shapeA and closest point on shapeB
 	unsigned iterations;	///< number of GJK iterations used
 };

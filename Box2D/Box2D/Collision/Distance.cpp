@@ -645,12 +645,8 @@ DistanceOutput Distance(SimplexCache& cache,
 	{
 		cache.AddIndex(simplex[i].indexPair);
 	}
-	
-	// Prepare output.
-	DistanceOutput output;
-	output.witnessPoints = GetWitnessPoints(simplex);
-	output.iterations = iter;
-	return output;
+
+	return DistanceOutput{GetWitnessPoints(simplex), iter};
 }
 
 } // namespace box2d
