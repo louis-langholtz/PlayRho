@@ -245,6 +245,12 @@ private:
 	/// @param step Time step value to use.
 	void SolveTOI(const TimeStep& step);
 
+	/// "Solves" collisions for the given time of impact.
+	/// @param step Time step to solve for.
+	/// @param contact Contact.
+	/// @param toi Time of impact to solve for.
+	/// @note Precondition 1: there is no contact having a lower TOI in this time step that has not already been solved for.
+	/// @note Precondition 2: there is not a lower TOI in the time step for which collisions have not already been processed.
 	void SolveTOI(const TimeStep& step, Contact& contact, float_t toi);
 
 	void ResetBodiesForSolveTOI();
@@ -259,9 +265,10 @@ private:
 	///   3. Adds those contacts that are still enabled and still touching to the given island
 	///      (or resets the other bodies advancement).
  	///   4. Adds to the island, those other bodies that haven't already been added of the contacts that got added.
+	/// @note Precondition: there should be no lower TOI for which contacts have not already been processed.
 	/// @param island Island.
 	/// @param body A dynamic/accelerable body.
-	/// @param toi Time of impact. Value between 0 and 1.
+	/// @param toi Time of impact (TOI). Value between 0 and 1.
 	/// @param listener Pointer to listener that will be called, or nullptr.
 	static void ProcessContactsForTOI(Island& island, Body& body, float_t toi, ContactListener* listener);
 	

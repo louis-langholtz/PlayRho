@@ -401,7 +401,9 @@ public:
 	constexpr explicit Sweep(const Position& p, const Vec2& lc = Vec2_zero, float_t a0 = 0) noexcept: Sweep{p, p, lc, a0} {}
 
 	/// Advances the sweep by a factor of the difference between the given time alpha and the sweep's alpha0.
-	/// @detail This advances position 0 of the sweep towards position 1 by a factor of the difference between the given alpha and the alpha0.
+	/// @detail
+	/// This advances position 0 (<code>pos0</code>) of the sweep towards position 1 (<code>pos1</code>)
+	/// by a factor of the difference between the given alpha and the alpha0.
 	/// @param alpha New time factor in [0,1) to update the sweep to.
 	void Advance(float_t alpha);
 
@@ -410,6 +412,8 @@ public:
 
 	Vec2 localCenter;	///< local center of mass position
 	
+	/// Gets the alpha0 for this sweep.
+	/// @return Value between 0 and less than 1.
 	float_t GetAlpha0() noexcept { return alpha0; }
 	
 	void ResetAlpha0() noexcept
