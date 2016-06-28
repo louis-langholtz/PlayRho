@@ -271,7 +271,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA, const Distance
 			const auto distanceOutput = Distance(cache, proxyA, transformA, proxyB, transformB);
 			const auto distanceSquared = DistanceSquared(distanceOutput.witnessPoints.a, distanceOutput.witnessPoints.b);
 
-			// If the shapes are overlapped, we give up on continuous collision.
+			// If the shapes aren't separated, give up on continuous collision.
 			if (distanceSquared <= float_t{0}) // Failure!
 			{
 				output = TOIOutput{TOIOutput::e_overlapped, 0};

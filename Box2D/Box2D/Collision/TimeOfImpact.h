@@ -54,12 +54,12 @@ public:
 	float_t get_t() const noexcept { return t; }
 
 private:
-	State state; ///< State at time factor.
+	State state = e_unknown; ///< State at time factor.
 	float_t t; 	///< Time factor in range of [0,1] into the future.
 };
 
 /// Computes the upper bound on time before two shapes penetrate.
-/// Time is represented as a fraction between [0,TOIInput::tMax].
+/// Time is represented as a fraction between [0,tMax].
 /// This uses a swept separating axis and may miss some intermediate,
 /// non-tunneling collision. If you change the time interval, you should call this function
 /// again.
