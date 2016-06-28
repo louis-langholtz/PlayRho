@@ -35,7 +35,7 @@ namespace box2d
 	class DistanceProxy
 	{
 	public:
-		using size_type = size_t; // must be big enough to hold max posible count of vertices
+		using size_type = uint16; ///< Size type. @detail Must be big enough to hold max posible count of vertices.
 		
 		static constexpr size_type InvalidIndex = static_cast<size_type>(-1);
 		
@@ -68,7 +68,7 @@ namespace box2d
 		
 		/// Gets the "radius" of the associated shape.
 		/// @return Non-negative distance.
-		float_t GetRadius() const noexcept { return m_radius; }
+		auto GetRadius() const noexcept { return m_radius; }
 		
 		/// Gets the supporting vertex index in the given direction.
 		/// @param d Direction vector to find index for.
@@ -78,13 +78,18 @@ namespace box2d
 		
 		/// Get the vertex count.
 		/// @detail This is the count of valid vertex elements that this object provides.
-		inline size_type GetVertexCount() const noexcept { return m_count; }
+		inline auto GetVertexCount() const noexcept { return m_count; }
 		
 		/// Get a vertex by index. Used by Distance.
 		/// @param index A valid index value (must not be InvalidIndex).
 		/// @note Behavior is undefined if InvalidIndex is given as the index value.
 		/// @return 2D vector value at the given index.
-		Vec2 GetVertex(size_type index) const noexcept;
+		auto GetVertex(size_type index) const noexcept
+		{
+			assert(index != InvalidIndex);
+			assert(index < m_count);
+			return m_vertices[index];
+		}
 		
 	private:
 		std::array<Vec2,2> m_buffer;
@@ -92,13 +97,6 @@ namespace box2d
 		size_type m_count = 0; ///< Count of valid elements of m_vertices.
 		float_t m_radius = float_t{0}; ///< "Radius" of the associated shape.
 	};
-
-	inline Vec2 DistanceProxy::GetVertex(size_type index) const noexcept
-	{
-		assert(index != InvalidIndex);
-		assert(index < m_count);
-		return m_vertices[index];
-	}
 	
 	/// Initialize the proxy using the given shape.
 	/// @note The shape must remain in scope while the proxy is in use.

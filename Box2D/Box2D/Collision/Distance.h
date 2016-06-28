@@ -28,10 +28,14 @@ namespace box2d
 	
 struct IndexPair
 {
-	static constexpr size_t InvalidIndex = static_cast<size_t>(-1);
+	/// Size type.
+	/// @detail Data type large enough to hold maximum value usable by this library.
+	using size_type = DistanceProxy::size_type;
 
-	size_t a;
-	size_t b;
+	static constexpr size_type InvalidIndex = static_cast<size_type>(-1);
+
+	size_type a;
+	size_type b;
 };
 
 constexpr inline bool operator == (IndexPair lhs, IndexPair rhs)
@@ -49,15 +53,13 @@ public:
 
 	using size_type = std::remove_const<decltype(MaxCount)>::type;
 
-	using index_t = size_t;
-
 	/// Gets the metric that was set.
 	/// @note Behavior is undefined if metric was not previously set.
 	///   The IsMetricSet() method can be used to check dynamically if unsure.
 	/// @sa SetMetric.
 	/// @sa IsMetricSet.
 	/// @return Value previously set.
-	float_t GetMetric() const noexcept
+	auto GetMetric() const noexcept
 	{
 		assert(metric_set);
 		return metric;
@@ -70,21 +72,21 @@ public:
 	/// @sa MaxCount.
 	/// @sa AddIndex.
 	/// @sa ClearIndices.
-	size_type GetCount() const noexcept { return count; }
+	auto GetCount() const noexcept { return count; }
 
-	IndexPair GetIndexPair(size_type index) const noexcept
+	auto GetIndexPair(size_type index) const noexcept
 	{
 		assert(index < count);
 		return indexPair[index];
 	}
 
-	index_t GetIndexA(size_type index) const
+	auto GetIndexA(size_type index) const
 	{
 		assert(index < count);
 		return indexPair[index].a;
 	}
 
-	index_t GetIndexB(size_type index) const
+	auto GetIndexB(size_type index) const
 	{
 		assert(index < count);
 		return indexPair[index].b;
@@ -92,7 +94,7 @@ public:
 
 	void ClearIndices() noexcept { count = 0; }
 
-	bool IsMetricSet() const noexcept { return metric_set; }
+	auto IsMetricSet() const noexcept { return metric_set; }
 
 	void SetMetric(float_t m) noexcept
 	{
