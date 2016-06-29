@@ -250,8 +250,8 @@ public:
 		++pointCount;
 	}
 
-	/// Gets the local normal.
-	/// @note Value only defined for Face A or Face B typed manifolds.
+	/// Gets the local normal for a face typed manifold.
+	/// @warning Behavior is undefined if the manifold type is other than face A or face B.
 	/// @return Local normal.
 	/// @sa SetLocalNormal.
 	Vec2 GetLocalNormal() const noexcept
