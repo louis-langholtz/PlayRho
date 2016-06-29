@@ -129,8 +129,8 @@ void PrismaticJoint::InitVelocityConstraints(const SolverData& data)
 {
 	m_indexA = m_bodyA->m_islandIndex;
 	m_indexB = m_bodyB->m_islandIndex;
-	m_localCenterA = m_bodyA->m_sweep.localCenter;
-	m_localCenterB = m_bodyB->m_sweep.localCenter;
+	m_localCenterA = m_bodyA->GetLocalCenter();
+	m_localCenterB = m_bodyB->GetLocalCenter();
 	m_invMassA = m_bodyA->m_invMass;
 	m_invMassB = m_bodyB->m_invMass;
 	m_invIA = m_bodyA->m_invI;
@@ -513,10 +513,10 @@ float_t PrismaticJoint::GetJointSpeed() const
 	const auto bA = m_bodyA;
 	const auto bB = m_bodyB;
 
-	const auto rA = Mul(bA->m_xf.q, m_localAnchorA - bA->m_sweep.localCenter);
-	const auto rB = Mul(bB->m_xf.q, m_localAnchorB - bB->m_sweep.localCenter);
-	const auto p1 = bA->m_sweep.pos1.c + rA;
-	const auto p2 = bB->m_sweep.pos1.c + rB;
+	const auto rA = Mul(bA->m_xf.q, m_localAnchorA - bA->GetLocalCenter());
+	const auto rB = Mul(bB->m_xf.q, m_localAnchorB - bB->GetLocalCenter());
+	const auto p1 = bA->GetWorldCenter() + rA;
+	const auto p2 = bB->GetWorldCenter() + rB;
 	const auto d = p2 - p1;
 	const auto axis = Mul(bA->m_xf.q, m_localXAxisA);
 

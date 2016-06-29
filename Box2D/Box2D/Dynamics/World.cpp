@@ -554,8 +554,7 @@ void World::SolveTOI(const TimeStep& step)
 		// Find the first TOI - the soonest one.
 		const auto minContactToi = UpdateContactTOIs();
 
-		//if ((!minContactToi.contact) || (minContactToi.toi >= float_t{1}))
-		if ((!minContactToi.contact) || (minContactToi.toi > (float_t{1} - (float_t{10} * Epsilon))))
+		if ((!minContactToi.contact) || (minContactToi.toi > (float_t{1} - BOX2D_MAGIC(Epsilon * 10))))
 		{
 			// No more TOI events. Done!
 			m_stepComplete = true;
@@ -592,7 +591,7 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 	// Is contact disabled or separated?
 	if (!contact.IsEnabled() || !contact.IsTouching())
 	{
-		// Restore the sweeps by undoing the Advance calls (and anything else done movement-wise)
+		// Restore the sweeps by undoing the body "advance" calls (and anything else done movement-wise)
 		contact.UnsetEnabled();
 		bA->m_sweep = backupA;
 		bA->m_xf = GetTransformOne(bA->m_sweep);
@@ -605,7 +604,7 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 	bB->SetAwake();
 
 	// Build the island
-	Island island(2 * MaxTOIContacts, MaxTOIContacts, 0, m_stackAllocator, m_contactMgr.m_contactListener);
+	Island island(GetBodyCount(), m_contactMgr.GetContactCount(), 0, m_stackAllocator, m_contactMgr.m_contactListener);
 
 	const auto indexA = static_cast<body_count_t>(island.m_bodies.size());
 	bA->m_islandIndex = indexA;

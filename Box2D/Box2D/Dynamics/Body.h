@@ -568,7 +568,7 @@ inline Vec2 Body::GetWorldCenter() const noexcept
 
 inline Vec2 Body::GetLocalCenter() const noexcept
 {
-	return m_sweep.localCenter;
+	return m_sweep.GetLocalCenter();
 }
 
 inline Velocity Body::GetVelocity() const noexcept
@@ -617,12 +617,12 @@ inline float_t Body::GetMass() const noexcept
 
 inline float_t Body::GetInertia() const noexcept
 {
-	return m_I + m_mass * m_sweep.localCenter.LengthSquared();
+	return m_I + m_mass * GetLocalCenter().LengthSquared();
 }
 
 inline MassData Body::GetMassData() const noexcept
 {
-	return MassData{m_mass, m_sweep.localCenter, m_I + m_mass * m_sweep.localCenter.LengthSquared()};
+	return MassData{m_mass, GetLocalCenter(), m_I + m_mass * GetLocalCenter().LengthSquared()};
 }
 
 inline Vec2 Body::GetWorldPoint(const Vec2& localPoint) const noexcept
@@ -647,7 +647,7 @@ inline Vec2 Body::GetLocalVector(const Vec2& worldVector) const noexcept
 
 inline Vec2 Body::GetLinearVelocityFromWorldPoint(const Vec2& worldPoint) const noexcept
 {
-	return m_velocity.v + GetReversePerpendicular(worldPoint - m_sweep.pos1.c) * m_velocity.w;
+	return m_velocity.v + GetReversePerpendicular(worldPoint - GetWorldCenter()) * m_velocity.w;
 }
 
 inline Vec2 Body::GetLinearVelocityFromLocalPoint(const Vec2& localPoint) const noexcept
@@ -818,7 +818,7 @@ inline void Body::ApplyForce(const Vec2& force, const Vec2& point, bool wake) no
 		if (IsAwake())
 		{
 			m_force += force;
-			m_torque += Cross(point - m_sweep.pos1.c, force);
+			m_torque += Cross(point - GetWorldCenter(), force);
 		}
 	}
 }
@@ -870,7 +870,7 @@ inline void Body::ApplyLinearImpulse(const Vec2& impulse, const Vec2& point, boo
 		if (IsAwake())
 		{
 			m_velocity.v += m_invMass * impulse;
-			m_velocity.w += m_invI * Cross(point - m_sweep.pos1.c, impulse);
+			m_velocity.w += m_invI * Cross(point - GetWorldCenter(), impulse);
 		}
 	}
 }
@@ -894,8 +894,10 @@ inline void Body::ApplyAngularImpulse(float_t impulse, bool wake) noexcept
 
 inline void Body::Advance(float_t alpha)
 {
+	assert(m_sweep.GetAlpha0() <= alpha);
+
 	// Advance to the new safe time. This doesn't sync the broad-phase.
-	m_sweep.Advance(alpha);
+	m_sweep.Advance0(alpha);
 	m_sweep.pos1 = m_sweep.pos0;
 	m_xf = GetTransformOne(m_sweep);
 }

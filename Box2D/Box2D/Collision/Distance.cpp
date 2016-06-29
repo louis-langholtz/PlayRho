@@ -219,7 +219,7 @@ private:
 /// Gets the "search direction" for the given simplex.
 /// @param simplex A one or two vertex simplex.
 /// @warning Behavior is undefined if the given simplex has zero vertices.
-/// @return "search direction" vertor.
+/// @return "search direction" vector.
 static inline Vec2 GetSearchDirection(const Simplex& simplex) noexcept
 {
 	const auto count = simplex.size();
@@ -549,7 +549,7 @@ DistanceOutput Distance(SimplexCache& cache,
 	{
 		const auto metric1 = cache.GetMetric();
 		const auto metric2 = GetMetric(simplex);
-		if ((metric2 < (metric1 / 2)) || (metric2 > (metric1 * 2)) || (metric2 < Epsilon))
+		if ((metric2 < (metric1 / 2)) || (metric2 > (metric1 * 2)) || BOX2D_MAGIC(metric2 < Epsilon))
 		{
 			simplex.clear();
 		}
@@ -561,7 +561,7 @@ DistanceOutput Distance(SimplexCache& cache,
 	}
 
 	// Get simplex vertices as an array.
-	constexpr auto k_maxIters = unsigned{20}; ///< Max number of support point calls.
+	constexpr auto k_maxIters = BOX2D_MAGIC(unsigned{20}); ///< Max number of support point calls.
 
 	// These store the vertices of the last simplex so that we
 	// can check for duplicates and prevent cycling.
@@ -602,7 +602,7 @@ DistanceOutput Distance(SimplexCache& cache,
 		const auto d = GetSearchDirection(simplex);
 
 		// Ensure the search direction is numerically fit.
-		if (d.LengthSquared() < Square(Epsilon))
+		if (d.LengthSquared() < Square(BOX2D_MAGIC(Epsilon)))
 		{
 			// The origin is probably contained by a line segment
 			// or triangle. Thus the shapes are overlapped.

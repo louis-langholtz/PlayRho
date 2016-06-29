@@ -45,7 +45,7 @@ void ContactSolver::Assign(ContactPositionConstraint::BodyData& var, const Body&
 	var.index = val.m_islandIndex;
 	var.invMass = val.m_invMass;
 	var.invI = val.m_invI;
-	var.localCenter = val.m_sweep.localCenter;
+	var.localCenter = val.GetLocalCenter();
 }
 
 ContactVelocityConstraint::BodyData ContactSolver::GetVelocityConstraintBodyData(const Body& val)
@@ -615,8 +615,8 @@ void ContactSolver::StoreImpulses(Contact** contacts)
 /// @detail
 /// This updates the two given positions for every point in the contact position constraint
 /// and returns the minimum separation value from the position solver manifold for each point.
-static inline float_t Solve(const ContactPositionConstraint& pc,
-							Position& positionA, Position& positionB, float_t baumgarte)
+static float_t Solve(const ContactPositionConstraint& pc,
+					 Position& positionA, Position& positionB, float_t baumgarte)
 {
 	// see http://allenchou.net/2013/12/game-physics-resolution-contact-constraints/
 	auto minSeparation = MaxFloat;
@@ -637,6 +637,8 @@ static inline float_t Solve(const ContactPositionConstraint& pc,
 		// This must be > 0 unless doing TOI solving and neither bodies were the bodies specified.
 		const auto invMassTotal = invMassA + invMassB;
 		
+		const auto totalRadius = pc.radiusA + pc.radiusB;
+
 		// Solve normal constraints
 		const auto pointCount = pc.manifold.GetPointCount();
 		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
@@ -644,7 +646,7 @@ static inline float_t Solve(const ContactPositionConstraint& pc,
 			const auto psm = [&]() {
 				const auto xfA = GetTransform(posA, localCenterA);
 				const auto xfB = GetTransform(posB, localCenterB);
-				return GetPSM(pc, xfA, xfB, j);
+				return GetPSM(pc.manifold, totalRadius, xfA, xfB, j);
 			}();
 			
 			// Track max constraint error.

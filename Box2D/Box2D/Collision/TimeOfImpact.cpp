@@ -40,7 +40,7 @@ struct Separation
 	constexpr Separation(IndexPair ip, float_t d) noexcept: indexPair{ip}, distance{d} {}
 
 	IndexPair indexPair;
-	float_t distance;
+	float_t distance; ///< Distance of separation (in meters).
 };
 
 class SeparationFunction
@@ -170,16 +170,16 @@ public:
 	const DistanceProxy& m_proxyB;
 	const Sweep m_sweepA, m_sweepB;
 	const Type m_type;
-	Vec2 m_localPoint; // used if type is e_faceA or e_faceB
-	Vec2 m_axis;
 	
 private:
 	Separation FindMinSeparationForPoints(const Transform& xfA, const Transform& xfB) const
 	{
 		const auto indexA = m_proxyA.GetSupportIndex(MulT(xfA.q,  m_axis));
-		const auto pointA = Mul(xfA, m_proxyA.GetVertex(indexA));
 		const auto indexB = m_proxyB.GetSupportIndex(MulT(xfB.q, -m_axis));
+		
+		const auto pointA = Mul(xfA, m_proxyA.GetVertex(indexA));
 		const auto pointB = Mul(xfB, m_proxyB.GetVertex(indexB));
+		
 		return Separation{IndexPair{indexA, indexB}, Dot(pointB - pointA, m_axis)};
 	}
 	
@@ -205,10 +205,8 @@ private:
 	
 	float_t EvaluateForPoints(IndexPair indexPair, const Transform& xfA, const Transform& xfB) const
 	{
-		const auto localPointA = m_proxyA.GetVertex(indexPair.a);
-		const auto localPointB = m_proxyB.GetVertex(indexPair.b);
-		const auto pointA = Mul(xfA, localPointA);
-		const auto pointB = Mul(xfB, localPointB);
+		const auto pointA = Mul(xfA, m_proxyA.GetVertex(indexPair.a));
+		const auto pointB = Mul(xfB, m_proxyB.GetVertex(indexPair.b));
 		return Dot(pointB - pointA, m_axis);
 	}
 	
@@ -216,8 +214,7 @@ private:
 	{
 		const auto normal = Mul(xfA.q, m_axis);
 		const auto pointA = Mul(xfA, m_localPoint);
-		const auto localPointB = m_proxyB.GetVertex(indexPair.b);
-		const auto pointB = Mul(xfB, localPointB);
+		const auto pointB = Mul(xfB, m_proxyB.GetVertex(indexPair.b));
 		return Dot(pointB - pointA, normal);
 	}
 	
@@ -225,10 +222,12 @@ private:
 	{
 		const auto normal = Mul(xfB.q, m_axis);
 		const auto pointB = Mul(xfB, m_localPoint);
-		const auto localPointA = m_proxyA.GetVertex(indexPair.a);
-		const auto pointA = Mul(xfA, localPointA);
+		const auto pointA = Mul(xfA, m_proxyA.GetVertex(indexPair.a));
 		return Dot(pointA - pointB, normal);
 	}
+	
+	Vec2 m_axis; ///< Axis. @detail Normalized vector (a pure directional vector) of the axis of separation.
+	Vec2 m_localPoint; // used if type is e_faceA or e_faceB
 };
 
 // CCD via the local separating axis method. This seeks progression
@@ -245,8 +244,8 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA, const Distance
 	sweepB = GetAnglesNormalized(sweepB);
 
 	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius();
-	const auto target = Max(LinearSlop, totalRadius - (float_t{3} * LinearSlop));
-	constexpr auto tolerance = LinearSlop / float_t{4};
+	const auto target = Max(LinearSlop, totalRadius - BOX2D_MAGIC(float_t{3} * LinearSlop));
+	constexpr auto tolerance = BOX2D_MAGIC(LinearSlop / float_t{4});
 	assert(target >= tolerance);
 	const auto maxTarget = target + tolerance;
 	const auto minTarget = target - tolerance;
@@ -317,7 +316,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA, const Distance
 		// resolving the deepest point. This loop is bounded by the number of vertices.
 		auto done = false;
 		auto t2 = tMax;
-		for (auto pushBackIter = decltype(MaxPolygonVertices){0}; pushBackIter < MaxPolygonVertices; ++pushBackIter)
+		for (auto pushBackIter = decltype(MaxPolygonVertices){0}; pushBackIter < BOX2D_MAGIC(MaxPolygonVertices); ++pushBackIter)
 		{
 			// Find the deepest point at t2. Store the witness point indices.
 			const auto minSeparation = fcn.FindMinSeparation(t2);
@@ -328,8 +327,8 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA, const Distance
 			{
 				// Victory!
 				assert(t2 == tMax);
-				// Formerly this used input.tMax as in...
-				// output = TOIOutput{TOIOutput::e_separated, input.tMax};
+				// Formerly this used tMax as in...
+				// output = TOIOutput{TOIOutput::e_separated, tMax};
 				// t2 seems more appropriate however given s2 was derived from it.
 				// Meanwhile t2 always seems equal to input.tMax at this point.
 				output = TOIOutput{TOIOutput::e_separated, t2};

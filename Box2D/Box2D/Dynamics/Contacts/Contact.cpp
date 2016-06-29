@@ -263,19 +263,21 @@ bool Contact::UpdateTOI()
 	}
 	
 	// Compute the TOI for this contact (one or both bodies are impenetrable).
+
 	// Put the sweeps onto the same time interval.
-	const auto maxAlpha0 = Max(bA->m_sweep.GetAlpha0(), bB->m_sweep.GetAlpha0());
-	assert(maxAlpha0 < float_t{1});
-	bA->m_sweep.Advance(maxAlpha0);
-	bB->m_sweep.Advance(maxAlpha0);
+	const auto alpha0 = BOX2D_MAGIC(Max(bA->m_sweep.GetAlpha0(), bB->m_sweep.GetAlpha0())); // why Max? why not Min?
+	assert(alpha0 >= 0 && alpha0 < 1);
+	bA->m_sweep.Advance0(alpha0);
+	bB->m_sweep.Advance0(alpha0);
 	
-	// Compute the time of impact in interval [0, 1]
+	// Computes the time of impact in interval [0, 1]
 	const auto output = TimeOfImpact(GetDistanceProxy(*fA->GetShape(), GetChildIndexA()), bA->m_sweep,
 									 GetDistanceProxy(*fB->GetShape(), GetChildIndexB()), bB->m_sweep);
 	
-	const auto alpha = IsValidForTime(output.get_state())?
-		Min(maxAlpha0 + (float_t{1} - maxAlpha0) * output.get_t(), float_t{1}): float_t{1};
-	SetToi(alpha);
+	// Uses Min function to handle floating point imprecision possibly otherwise calculating a TOI > 1.
+	const auto toi = IsValidForTime(output.get_state())?
+		Min(alpha0 + (float_t{1} - alpha0) * output.get_t(), float_t{1}): float_t{1};
+	SetToi(toi);
 	
 	return true;
 }

@@ -65,9 +65,9 @@ GearJoint::GearJoint(const GearJointDef& def)
 
 	// Get geometry of joint1
 	const auto xfA = m_bodyA->m_xf;
-	const auto aA = m_bodyA->m_sweep.pos1.a;
+	const auto aA = m_bodyA->GetAngle();
 	const auto xfC = m_bodyC->m_xf;
-	const auto aC = m_bodyC->m_sweep.pos1.a;
+	const auto aC = m_bodyC->GetAngle();
 
 	if (m_typeA == JointType::Revolute)
 	{
@@ -97,9 +97,9 @@ GearJoint::GearJoint(const GearJointDef& def)
 
 	// Get geometry of joint2
 	const auto xfB = m_bodyB->m_xf;
-	const auto aB = m_bodyB->m_sweep.pos1.a;
+	const auto aB = m_bodyB->GetAngle();
 	const auto xfD = m_bodyD->m_xf;
-	const auto aD = m_bodyD->m_sweep.pos1.a;
+	const auto aD = m_bodyD->GetAngle();
 
 	if (m_typeB == JointType::Revolute)
 	{
@@ -137,10 +137,10 @@ void GearJoint::InitVelocityConstraints(const SolverData& data)
 	m_indexB = m_bodyB->m_islandIndex;
 	m_indexC = m_bodyC->m_islandIndex;
 	m_indexD = m_bodyD->m_islandIndex;
-	m_lcA = m_bodyA->m_sweep.localCenter;
-	m_lcB = m_bodyB->m_sweep.localCenter;
-	m_lcC = m_bodyC->m_sweep.localCenter;
-	m_lcD = m_bodyD->m_sweep.localCenter;
+	m_lcA = m_bodyA->GetLocalCenter();
+	m_lcB = m_bodyB->GetLocalCenter();
+	m_lcC = m_bodyC->GetLocalCenter();
+	m_lcD = m_bodyD->GetLocalCenter();
 	m_mA = m_bodyA->m_invMass;
 	m_mB = m_bodyB->m_invMass;
 	m_mC = m_bodyC->m_invMass;

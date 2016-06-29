@@ -29,9 +29,9 @@ struct PositionSolverManifold
 	float_t separation; ///< "separation" between two points (of a contact position constraint).
 };
 
-struct ContactPositionConstraint;
+class Manifold;
 
-PositionSolverManifold GetPSM(const ContactPositionConstraint& pc,
+PositionSolverManifold GetPSM(const Manifold& manifold, float_t totalRadius,
 							  const Transform& xfA, const Transform& xfB, PositionSolverManifold::index_t index);
 
 }; // namespace box2d

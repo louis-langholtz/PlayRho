@@ -59,7 +59,7 @@ uint16 Body::GetFlags(const BodyDef& bd) noexcept
 
 Body::Body(const BodyDef* bd, World* world):
 	m_flags{GetFlags(*bd)}, m_xf{bd->position, Rot{bd->angle}}, m_world{world},
-	m_sweep{Sweep{Position{m_xf.p, bd->angle}, Position{m_xf.p, bd->angle}, Vec2_zero}},
+	m_sweep{Position{m_xf.p, bd->angle}},
 	m_velocity{Velocity{bd->linearVelocity, bd->angularVelocity}},
 	m_mass{(bd->type == BodyType::Dynamic)? float_t{1}: float_t{0}},
 	m_invMass{(bd->type == BodyType::Dynamic)? float_t{1}: float_t{0}},
@@ -326,11 +326,7 @@ void Body::ResetMassData()
 		m_invMass = float_t{0};
 		m_I = float_t{0};
 		m_invI = float_t{0};
-
-		m_sweep.localCenter = Vec2_zero;
-		const auto position = Position{m_xf.p, m_sweep.pos1.a};
-		m_sweep.pos0 = position;
-		m_sweep.pos1 = position;
+		m_sweep = Sweep{Position{m_xf.p, GetAngle()}};
 		return;
 	}
 
@@ -358,12 +354,11 @@ void Body::ResetMassData()
 	}
 
 	// Move center of mass.
-	const auto oldCenter = m_sweep.pos1.c;
-	m_sweep.localCenter = localCenter;
-	m_sweep.pos0.c = m_sweep.pos1.c = Mul(m_xf, m_sweep.localCenter);
+	const auto oldCenter = GetWorldCenter();
+	m_sweep = Sweep{Position{Mul(m_xf, localCenter), GetAngle()}, localCenter};
 
 	// Update center of mass velocity.
-	m_velocity.v += GetReversePerpendicular(m_sweep.pos1.c - oldCenter) * m_velocity.w;
+	m_velocity.v += GetReversePerpendicular(GetWorldCenter() - oldCenter) * m_velocity.w;
 }
 
 void Body::SetMassData(const MassData* massData)
@@ -395,12 +390,12 @@ void Body::SetMassData(const MassData* massData)
 	}
 
 	// Move center of mass.
-	const auto oldCenter = m_sweep.pos1.c;
-	m_sweep.localCenter =  massData->center;
-	m_sweep.pos0.c = m_sweep.pos1.c = Mul(m_xf, m_sweep.localCenter);
+	const auto oldCenter = GetWorldCenter();
+
+	m_sweep = Sweep{Position{Mul(m_xf, massData->center), GetAngle()}, massData->center};
 
 	// Update center of mass velocity.
-	m_velocity.v += GetReversePerpendicular(m_sweep.pos1.c - oldCenter) * m_velocity.w;
+	m_velocity.v += GetReversePerpendicular(GetWorldCenter() - oldCenter) * m_velocity.w;
 }
 
 bool Body::ShouldCollide(const Body* other) const
@@ -435,13 +430,7 @@ void Body::SetTransform(const Vec2& position, float_t angle)
 	}
 
 	m_xf = Transform{position, Rot(angle)};
-
-	{
-		const auto center = Mul(m_xf, m_sweep.localCenter);
-		const auto newPosition = Position{center, angle};
-		m_sweep.pos1 = newPosition;
-		m_sweep.pos0 = newPosition;
-	}
+	m_sweep = Sweep{Position{Mul(m_xf, GetLocalCenter()), angle}, GetLocalCenter()};
 
 	auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
 	for (auto&& f: m_fixtures)
@@ -527,7 +516,7 @@ void Body::Dump()
 	log("  BodyDef bd;\n");
 	log("  bd.type = BodyType(%d);\n", GetType());
 	log("  bd.position = Vec2(%.15lef, %.15lef);\n", m_xf.p.x, m_xf.p.y);
-	log("  bd.angle = %.15lef;\n", m_sweep.pos1.a);
+	log("  bd.angle = %.15lef;\n", GetAngle());
 	log("  bd.linearVelocity = Vec2(%.15lef, %.15lef);\n", m_velocity.v.x, m_velocity.v.y);
 	log("  bd.angularVelocity = %.15lef;\n", m_velocity.w);
 	log("  bd.linearDamping = %.15lef;\n", m_linearDamping);

@@ -68,8 +68,8 @@ void RevoluteJoint::InitVelocityConstraints(const SolverData& data)
 {
 	m_indexA = m_bodyA->m_islandIndex;
 	m_indexB = m_bodyB->m_islandIndex;
-	m_localCenterA = m_bodyA->m_sweep.localCenter;
-	m_localCenterB = m_bodyB->m_sweep.localCenter;
+	m_localCenterA = m_bodyA->GetLocalCenter();
+	m_localCenterB = m_bodyB->GetLocalCenter();
 	m_invMassA = m_bodyA->m_invMass;
 	m_invMassB = m_bodyB->m_invMass;
 	m_invIA = m_bodyA->m_invI;
@@ -401,7 +401,7 @@ float_t RevoluteJoint::GetReactionTorque(float_t inv_dt) const
 
 float_t RevoluteJoint::GetJointAngle() const
 {
-	return m_bodyB->m_sweep.pos1.a - m_bodyA->m_sweep.pos1.a - m_referenceAngle;
+	return m_bodyB->GetAngle() - m_bodyA->GetAngle() - m_referenceAngle;
 }
 
 float_t RevoluteJoint::GetJointSpeed() const

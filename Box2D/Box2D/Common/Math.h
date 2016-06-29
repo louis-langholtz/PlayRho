@@ -64,11 +64,14 @@ struct Vec2
 
 #if !defined(NO_B2VEC2_INDEXING)
 
-	using index_t = unsigned;
-	static constexpr auto NumElements = index_t(2);
+	using index_type = unsigned;
+
+	/// Number of elements in this vector.
+	/// @detail This is this vector type's dimensionality.
+	static constexpr auto NumElements = index_type{2};
 
 	/// Read from and indexed element.
-	float_t operator () (index_t i) const
+	float_t operator () (index_type i) const
 	{
 		assert((i >= 0) && (i < NumElements));
 		switch (i)
@@ -81,7 +84,7 @@ struct Vec2
 	}
 
 	/// Write to an indexed element.
-	float_t& operator () (index_t i)
+	float_t& operator () (index_type i)
 	{
 		assert((i >= 0) && (i < NumElements));
 		switch (i)
@@ -131,7 +134,7 @@ struct Vec2
 	float_t Normalize()
 	{
 		const auto length = Length();
-		if (length < Epsilon)
+		if (BOX2D_MAGIC(length < Epsilon))
 		{
 			return float_t{0};
 		}
@@ -398,23 +401,23 @@ public:
 		assert(a0 < 1);
 	}
 	
-	constexpr explicit Sweep(const Position& p, const Vec2& lc = Vec2_zero, float_t a0 = 0) noexcept: Sweep{p, p, lc, a0} {}
+	constexpr explicit Sweep(const Position& p, const Vec2& lc = Vec2_zero) noexcept: Sweep{p, p, lc, 0} {}
 
 	/// Advances the sweep by a factor of the difference between the given time alpha and the sweep's alpha0.
 	/// @detail
 	/// This advances position 0 (<code>pos0</code>) of the sweep towards position 1 (<code>pos1</code>)
 	/// by a factor of the difference between the given alpha and the alpha0.
 	/// @param alpha New time factor in [0,1) to update the sweep to.
-	void Advance(float_t alpha);
+	void Advance0(float_t alpha);
 
 	Position pos0; ///< Center world position and world angle at time "0".
 	Position pos1; ///< Center world position and world angle at time "1".
 
-	Vec2 localCenter;	///< local center of mass position
-	
+	Vec2 GetLocalCenter() const noexcept { return localCenter; }
+
 	/// Gets the alpha0 for this sweep.
 	/// @return Value between 0 and less than 1.
-	float_t GetAlpha0() noexcept { return alpha0; }
+	float_t GetAlpha0() const noexcept { return alpha0; }
 	
 	void ResetAlpha0() noexcept
 	{
@@ -422,6 +425,8 @@ public:
 	}
 
 private:
+	Vec2 localCenter;	///< local center of mass position
+
 	/// Fraction of the current time step in the range [0,1]
 	/// pos0.c and pos0.a are the positions at alpha0.
 	float_t alpha0;
@@ -528,7 +533,7 @@ inline Vec2 Normalize(Vec2 value)
 {
 	// implementation mirrors implementation of Vec2::Normalize()
 	const auto length = value.Length();
-	if (length < Epsilon)
+	if (BOX2D_MAGIC(length < Epsilon))
 	{
 		return value;
 	}
@@ -758,6 +763,16 @@ constexpr inline Position operator- (const Position& lhs, const Position& rhs)
 	return Position{lhs.c - rhs.c, lhs.a - rhs.a};
 }
 
+constexpr inline Position operator* (const Position& pos, const float_t scalar)
+{
+	return Position{pos.c * scalar, pos.a * scalar};
+}
+
+constexpr inline Position operator* (const float_t scalar, const Position& pos)
+{
+	return Position{pos.c * scalar, pos.a * scalar};
+}
+
 constexpr inline Transform GetTransform(const Vec2& ctr, const Rot& rot, const Vec2& local_ctr) noexcept
 {
 	return Transform{ctr - Mul(rot, local_ctr), rot};
@@ -781,7 +796,7 @@ inline Transform GetTransform(const Sweep& sweep, float_t beta)
 		one_minus_beta * sweep.pos0.c + beta * sweep.pos1.c,
 		one_minus_beta * sweep.pos0.a + beta * sweep.pos1.a
 	};
-	return GetTransform(pos_beta, sweep.localCenter);
+	return GetTransform(pos_beta, sweep.GetLocalCenter());
 }
 
 /// Gets the transform at "time" zero.
@@ -791,7 +806,7 @@ inline Transform GetTransform(const Sweep& sweep, float_t beta)
 /// @return Transform of the given sweep at time zero.
 inline Transform GetTransformZero(const Sweep& sweep)
 {
-	return GetTransform(sweep.pos0, sweep.localCenter);
+	return GetTransform(sweep.pos0, sweep.GetLocalCenter());
 }
 
 /// Gets the transform at "time" one.
@@ -801,10 +816,10 @@ inline Transform GetTransformZero(const Sweep& sweep)
 /// @return Transform of the given sweep at time one.
 inline Transform GetTransformOne(const Sweep& sweep)
 {
-	return GetTransform(sweep.pos1, sweep.localCenter);
+	return GetTransform(sweep.pos1, sweep.GetLocalCenter());
 }
 
-inline void Sweep::Advance(float_t alpha)
+inline void Sweep::Advance0(float_t alpha)
 {
 	assert(alpha >= 0);
 	assert(alpha < 1);
@@ -812,8 +827,7 @@ inline void Sweep::Advance(float_t alpha)
 	assert(alpha0 < 1);
 	
 	const auto beta = (alpha - alpha0) / (float_t{1} - alpha0);
-	pos0.c += beta * (pos1.c - pos0.c);
-	pos0.a += beta * (pos1.a - pos0.a);
+	pos0 += (pos1 - pos0) * beta;
 	alpha0 = alpha;
 }
 

@@ -28,6 +28,7 @@
 #include <cstdint>
 
 #define BOX2D_NOT_USED(x) ((void)(x))
+#define BOX2D_MAGIC(x) (x)
 
 /// Current version.
 #define BOX2D_MAJOR_VERSION 3
@@ -53,7 +54,9 @@ using size_t = std::size_t; ///< Size type for sizing data.
 using island_count_t = size_t; // relating to items in a Island
 
 constexpr auto MaxFloat = std::numeric_limits<float_t>::max(); // FLT_MAX
+
 constexpr auto Epsilon = std::numeric_limits<float_t>::epsilon(); // FLT_EPSILON;
+
 constexpr auto Pi = static_cast<float_t>(M_PI); ///< Pi as the "float_t" float-type (any narrowing is intentional).
 
 /// @file
@@ -106,7 +109,7 @@ constexpr auto MaxSubSteps = unsigned{10}; // originally 8, often hit but no app
 constexpr auto MaxSubStepPositionIterations = unsigned{20};
 
 /// Maximum time of impact iterations.
-constexpr auto MaxTOIIterations = unsigned{20};
+constexpr auto MaxTOIIterations = BOX2D_MAGIC(unsigned{20});
 
 /// Maximum time of impact root iterator count.
 constexpr auto MaxTOIRootIterCount = unsigned{50};
