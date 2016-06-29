@@ -12,13 +12,13 @@
 #include <Box2D/Common/Settings.h>
 #include <Box2D/Common/Math.h>
 
+#include <Box2D/Dynamics/Contacts/ContactSolver.h>
+
 namespace box2d
 {
 
 struct PositionSolverManifold
 {
-	using index_t = std::remove_const<decltype(MaxManifoldPoints)>::type;
-	
 	PositionSolverManifold() noexcept = default;
 	PositionSolverManifold(const PositionSolverManifold& copy) noexcept = default;
 	
@@ -29,10 +29,8 @@ struct PositionSolverManifold
 	float_t separation; ///< "separation" between two points (of a contact position constraint).
 };
 
-class Manifold;
-
 PositionSolverManifold GetPSM(const Manifold& manifold, float_t totalRadius,
-							  const Transform& xfA, const Transform& xfB, PositionSolverManifold::index_t index);
+							  const Transform& xfA, const Transform& xfB, Manifold::size_type index);
 
 }; // namespace box2d
 
