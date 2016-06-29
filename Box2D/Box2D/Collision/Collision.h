@@ -129,7 +129,7 @@ struct ManifoldPoint
 class Manifold
 {
 public:
-	using size_type = std::remove_const<decltype(MaxPolygonVertices)>::type;
+	using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
 	
 	enum Type: uint8
 	{
