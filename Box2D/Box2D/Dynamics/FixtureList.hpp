@@ -46,7 +46,6 @@ public:
 
 private:
 	friend class Body;
-	friend class World;
 
 	void push_front(pointer value) noexcept;
 	void pop_front() noexcept;
