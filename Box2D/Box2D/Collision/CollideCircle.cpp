@@ -83,7 +83,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const C
 		{
 			return Manifold{};
 		}
-		return Manifold::GetForFaceA(Normalize(cLocal - v1), v1, ManifoldPoint{shapeB.GetPosition()});
+		return Manifold::GetForFaceA(GetUnitVector(cLocal - v1), v1, ManifoldPoint{shapeB.GetPosition()});
 	}
 
 	if (Dot(cLocal - v2, v1 - v2) <= float_t{0})
@@ -92,7 +92,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const C
 		{
 			return Manifold{};
 		}
-		return Manifold::GetForFaceA(Normalize(cLocal - v2), v2, ManifoldPoint{shapeB.GetPosition()});
+		return Manifold::GetForFaceA(GetUnitVector(cLocal - v2), v2, ManifoldPoint{shapeB.GetPosition()});
 	}
 
 	const auto faceCenter = (v1 + v2) / 2;

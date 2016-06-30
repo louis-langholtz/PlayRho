@@ -201,7 +201,7 @@ bool DistanceJoint::SolvePositionConstraints(const SolverData& data)
 	const auto rB = Mul(qB, m_localAnchorB - m_localCenterB);
 	auto u = cB + rB - cA - rA;
 
-	const auto length = u.Normalize();
+	const auto length = Normalize(u);
 	const auto deltaLength = length - m_length;
 	const auto C = Clamp(deltaLength, -MaxLinearCorrection, MaxLinearCorrection);
 

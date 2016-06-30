@@ -174,7 +174,7 @@ bool RopeJoint::SolvePositionConstraints(const SolverData& data)
 	const auto rB = Mul(qB, m_localAnchorB - m_localCenterB);
 	auto u = cB + rB - cA - rA;
 
-	const auto length = u.Normalize();
+	const auto length = Normalize(u);
 	auto C = length - m_maxLength;
 
 	C = Clamp(C, float_t{0}, MaxLinearCorrection);

@@ -62,25 +62,26 @@ struct Vec2
 	Vec2() noexcept = default;
 	
 	Vec2(const Vec2& copy) noexcept = default;
-
+	
 	/// Construct using coordinates.
 	constexpr Vec2(float_t x_, float_t y_) noexcept : x{x_}, y{y_} {}
-
+	
 	/// Negate this vector.
-	constexpr Vec2 operator -() const noexcept { return Vec2{-x, -y}; }
+	constexpr auto operator- () const noexcept { return Vec2{-x, -y}; }
 
 #if !defined(NO_B2VEC2_INDEXING)
-
+	
 	using index_type = unsigned;
-
+	
 	/// Number of elements in this vector.
 	/// @detail This is this vector type's dimensionality.
 	static constexpr auto NumElements = index_type{2};
-
-	/// Read from and indexed element.
-	float_t operator () (index_type i) const
+	
+	/// Accesses element by index.
+	/// @param i Index (0 for x, 1 for y).
+	auto operator[] (index_type i) const
 	{
-		assert((i >= 0) && (i < NumElements));
+		assert(i < NumElements);
 		switch (i)
 		{
 			case 0: return x;
@@ -88,44 +89,24 @@ struct Vec2
 			default: break;
 		}
 		return x;
-	}
-
-	/// Write to an indexed element.
-	float_t& operator () (index_type i)
-	{
-		assert((i >= 0) && (i < NumElements));
-		switch (i)
-		{
-			case 0: return x;
-			case 1: return y;
-			default: break;
-		}
-		return x;
-	}
-
-#endif
-
-	/// Add a vector to this vector.
-	constexpr void operator += (Vec2 v) noexcept
-	{
-		x += v.x; y += v.y;
 	}
 	
-	/// Subtract a vector from this vector.
-	constexpr void operator -= (Vec2 v) noexcept
+	/// Accesses element by index.
+	/// @param i Index (0 for x, 1 for y).
+	auto& operator[] (index_type i)
 	{
-		x -= v.x; y -= v.y;
+		assert(i < NumElements);
+		switch (i)
+		{
+			case 0: return x;
+			case 1: return y;
+			default: break;
+		}
+		return x;
 	}
-
-	/// Multiply this vector by a scalar.
-	constexpr void operator *= (float_t a) noexcept
-	{
-		x *= a; y *= a;
-	}
-
-	/// Convert this vector into a unit vector. Returns the length.
-	float_t Normalize();
-
+	
+#endif
+		
 	float_t x, y;
 };
 
@@ -143,25 +124,7 @@ struct Vec3
 	constexpr Vec3(float_t x_, float_t y_, float_t z_) noexcept : x(x_), y(y_), z(z_) {}
 
 	/// Negate this vector.
-	constexpr Vec3 operator -() const noexcept { return Vec3{-x, -y, -z}; }
-
-	/// Add a vector to this vector.
-	constexpr void operator += (const Vec3& v) noexcept
-	{
-		x += v.x; y += v.y; z += v.z;
-	}
-
-	/// Subtract a vector from this vector.
-	constexpr void operator -= (const Vec3& v) noexcept
-	{
-		x -= v.x; y -= v.y; z -= v.z;
-	}
-
-	/// Multiply this vector by a scalar.
-	constexpr void operator *= (float_t s) noexcept
-	{
-		x *= s; y *= s; z *= s;
-	}
+	constexpr auto operator- () const noexcept { return Vec3{-x, -y, -z}; }
 
 	float_t x, y, z;
 };
@@ -200,7 +163,7 @@ inline bool IsValid(Vec2 value)
 {
 	return IsValid(value.x) && IsValid(value.y);
 }
-	
+
 /// A 2-by-2 matrix. Stored in column-major order.
 struct Mat22
 {
@@ -504,6 +467,29 @@ constexpr inline Vec2 MulT(const Mat22& A, const Vec2& v) noexcept
 	return Vec2{Dot(v, A.ex), Dot(v, A.ey)};
 }
 
+/// Increment the left hand side value by the right hand side value.
+constexpr Vec2& operator += (Vec2& lhs, Vec2 rhs) noexcept
+{
+	lhs.x += rhs.x;
+	lhs.y += rhs.y;
+	return lhs;
+}
+
+/// Decrement the left hand side value by the right hand side value.
+constexpr Vec2& operator -= (Vec2& lhs, Vec2 rhs) noexcept
+{
+	lhs.x -= rhs.x;
+	lhs.y -= rhs.y;
+	return lhs;
+}
+
+constexpr Vec2& operator *= (Vec2& lhs, float_t rhs) noexcept
+{
+	lhs.x *= rhs;
+	lhs.y *= rhs;
+	return lhs;
+}
+
 /// Add two vectors component-wise.
 constexpr inline Vec2 operator + (const Vec2& a, const Vec2& b) noexcept
 {
@@ -531,13 +517,13 @@ constexpr Vec2 operator/ (const Vec2& a, float_t s) noexcept
 	return Vec2{a.x / s, a.y / s};
 }
 
-/// Normalizes the given value.
-/// @param value Value to normalize.
+/// Gets the unit vector for the given value.
+/// @param value Value to get the unit vector for.
 /// @return value divided by its length if length not less than Epsilon otherwise value.
 /// @sa Epsilon.
-inline Vec2 Normalize(Vec2 value)
+inline Vec2 GetUnitVector(Vec2 value)
 {
-	// implementation mirrors implementation of Vec2::Normalize()
+	// implementation similar to that of Normalize(Vec2&)
 	const auto length = Sqrt(LengthSquared(value));
 	if (BOX2D_MAGIC(length < Epsilon))
 	{
@@ -560,6 +546,30 @@ constexpr inline bool operator != (Vec2 a, Vec2 b) noexcept
 constexpr inline float_t DistanceSquared(const Vec2& a, const Vec2& b) noexcept
 {
 	return LengthSquared(a - b);
+}
+
+constexpr Vec3& operator += (Vec3& lhs, const Vec3& rhs) noexcept
+{
+	lhs.x += rhs.x;
+	lhs.y += rhs.y;
+	lhs.z += rhs.z;
+	return lhs;
+}
+
+constexpr Vec3& operator -= (Vec3& lhs, const Vec3& rhs) noexcept
+{
+	lhs.x -= rhs.x;
+	lhs.y -= rhs.y;
+	lhs.z -= rhs.z;
+	return lhs;
+}
+
+constexpr Vec3& operator *= (Vec3& lhs, float_t rhs) noexcept
+{
+	lhs.x *= rhs;
+	lhs.y *= rhs;
+	lhs.z *= rhs;
+	return lhs;
 }
 
 constexpr inline Vec3 operator * (float_t s, const Vec3& a) noexcept
@@ -848,16 +858,17 @@ inline Sweep GetAnglesNormalized(Sweep sweep)
 	return sweep;
 }
 
-inline float_t Vec2::Normalize()
+/// Converts the given vector into a unit vector and returns its original length.
+inline float_t Normalize(Vec2& vector)
 {
-	const auto length = Sqrt(LengthSquared(*this));
+	const auto length = Length(vector);
 	if (BOX2D_MAGIC(length < Epsilon))
 	{
 		return float_t{0};
 	}
 	const auto invLength = float_t{1} / length;
-	x *= invLength;
-	y *= invLength;
+	vector.x *= invLength;
+	vector.y *= invLength;
 	
 	return length;
 }

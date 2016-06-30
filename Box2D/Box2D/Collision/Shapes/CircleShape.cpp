@@ -72,7 +72,7 @@ bool CircleShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 	{
 		const auto fraction = a / rr;
 		output->fraction = fraction;
-		output->normal = Normalize(s + fraction * r);
+		output->normal = GetUnitVector(s + fraction * r);
 		return true;
 	}
 

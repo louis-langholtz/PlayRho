@@ -69,7 +69,7 @@ public:
 			// Shapes are still not overlapped.
 			// Move the witness points to the outer surface.
 			distance -= totalRadius;
-			const auto normal = Normalize(output.witnessPoints.b - output.witnessPoints.a);
+			const auto normal = GetUnitVector(output.witnessPoints.b - output.witnessPoints.a);
 			output.witnessPoints.a += rA * normal;
 			output.witnessPoints.b -= rB * normal;
 		}

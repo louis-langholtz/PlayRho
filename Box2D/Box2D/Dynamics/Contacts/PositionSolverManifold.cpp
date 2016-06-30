@@ -17,7 +17,7 @@ static inline PositionSolverManifold GetPSM_ForCircles(Vec2 lp, Vec2 plp, float_
 	const auto pointA = Mul(xfA, lp);
 	const auto pointB = Mul(xfB, plp);
 	const auto delta = pointB - pointA;
-	const auto normal = Normalize(delta);
+	const auto normal = GetUnitVector(delta);
 	const auto point = (pointA + pointB) / float_t{2};
 	const auto separation = Dot(delta, normal) - totalRadius;
 	return PositionSolverManifold{normal, point, separation};

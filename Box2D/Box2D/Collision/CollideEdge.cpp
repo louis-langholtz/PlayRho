@@ -130,7 +130,7 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const Circ
 	}();
 	
 	const auto cf = ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_vertex, 0};
-	return Manifold::GetForFaceA(Normalize(n), A, ManifoldPoint{shapeB.GetPosition(), cf});
+	return Manifold::GetForFaceA(GetUnitVector(n), A, ManifoldPoint{shapeB.GetPosition(), cf});
 }
 
 // This structure is used to keep track of the best separating axis.
@@ -259,7 +259,7 @@ private:
 
 inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2& centroid):
 	m_vertex1(edge.GetVertex1()), m_vertex2(edge.GetVertex2()),
-	m_edge1(Normalize(m_vertex2 - m_vertex1)), m_normal1(m_edge1.y, -m_edge1.x)
+	m_edge1(GetUnitVector(m_vertex2 - m_vertex1)), m_normal1(m_edge1.y, -m_edge1.x)
 {
 	const auto hasVertex0 = edge.HasVertex0();
 	const auto hasVertex3 = edge.HasVertex3();
@@ -270,13 +270,13 @@ inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2& centroid):
 	if (hasVertex0 && hasVertex3)
 	{
 		const auto vertex0 = edge.GetVertex0();
-		const auto edge0 = Normalize(m_vertex1 - vertex0);
+		const auto edge0 = GetUnitVector(m_vertex1 - vertex0);
 		const auto normal0 = GetForwardPerpendicular(edge0);
 		const auto convex1 = Cross(edge0, m_edge1) >= float_t{0};
 		const auto offset0 = Dot(normal0, centroid - vertex0);
 
 		const auto vertex3 = edge.GetVertex3();
-		const auto edge2 = Normalize(vertex3 - m_vertex2);
+		const auto edge2 = GetUnitVector(vertex3 - m_vertex2);
 		const auto normal2 = GetForwardPerpendicular(edge2);
 		const auto convex2 = Cross(m_edge1, edge2) > float_t{0};
 		const auto offset2 = Dot(normal2, centroid - m_vertex2);
@@ -349,7 +349,7 @@ inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2& centroid):
 	else if (hasVertex0)
 	{
 		const auto vertex0 = edge.GetVertex0();
-		const auto edge0 = Normalize(m_vertex1 - vertex0);
+		const auto edge0 = GetUnitVector(m_vertex1 - vertex0);
 		const auto normal0 = GetForwardPerpendicular(edge0);
 		const auto convex1 = Cross(edge0, m_edge1) >= float_t{0};
 		const auto offset0 = Dot(normal0, centroid - vertex0);
@@ -390,7 +390,7 @@ inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2& centroid):
 	else if (hasVertex3)
 	{
 		const auto vertex3 = edge.GetVertex3();
-		const auto edge2 = Normalize(vertex3 - m_vertex2);
+		const auto edge2 = GetUnitVector(vertex3 - m_vertex2);
 		const auto normal2 = GetForwardPerpendicular(edge2);
 		const auto convex2 = Cross(m_edge1, edge2) > float_t{0};
 		const auto offset2 = Dot(normal2, centroid - m_vertex2);

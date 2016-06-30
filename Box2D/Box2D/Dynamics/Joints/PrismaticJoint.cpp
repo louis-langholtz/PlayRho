@@ -105,7 +105,7 @@ PrismaticJoint::PrismaticJoint(const PrismaticJointDef& def)
 {
 	m_localAnchorA = def.localAnchorA;
 	m_localAnchorB = def.localAnchorB;
-	m_localXAxisA = Normalize(def.localAxisA);
+	m_localXAxisA = GetUnitVector(def.localAxisA);
 	m_localYAxisA = GetReversePerpendicular(m_localXAxisA);
 	m_referenceAngle = def.referenceAngle;
 

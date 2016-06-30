@@ -241,7 +241,7 @@ void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 		const auto i2 = (i + 1) % m;
 		const auto edge = m_vertices[i2] - m_vertices[i1];
 		assert(LengthSquared(edge) > Square(Epsilon));
-		m_normals[i] = Normalize(GetForwardPerpendicular(edge));
+		m_normals[i] = GetUnitVector(GetForwardPerpendicular(edge));
 	}
 
 	// Compute the polygon centroid.

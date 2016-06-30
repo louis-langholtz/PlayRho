@@ -162,7 +162,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const P
 	auto v11 = shape1->GetVertex(iv1);
 	auto v12 = shape1->GetVertex(iv2);
 
-	const auto localTangent = Normalize(v12 - v11);
+	const auto localTangent = GetUnitVector(v12 - v11);
 	
 	const auto localNormal = GetForwardPerpendicular(localTangent);
 	const auto planePoint = (v11 + v12) / float_t(2);

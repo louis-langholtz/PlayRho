@@ -221,7 +221,7 @@ inline void DynamicTree::RayCast(T* callback, const RayCastInput& input) const
 	const auto p2 = input.p2;
 	const auto dp = p2 - p1;
 	assert(LengthSquared(dp) > float_t{0});
-	const auto r = Normalize(dp);
+	const auto r = GetUnitVector(dp);
 
 	// v is perpendicular to the segment.
 	const auto v = GetReversePerpendicular(r);

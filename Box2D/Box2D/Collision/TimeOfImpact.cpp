@@ -76,7 +76,7 @@ public:
 			const auto localPointB = proxyB.GetVertex(cache.GetIndexB(0));
 			const auto pointA = Mul(xfA, localPointA);
 			const auto pointB = Mul(xfB, localPointB);
-			m_axis = Normalize(pointB - pointA);
+			m_axis = GetUnitVector(pointB - pointA);
 			break;
 		}
 		case e_faceB:
@@ -85,7 +85,7 @@ public:
 			const auto localPointB1 = proxyB.GetVertex(cache.GetIndexB(0));
 			const auto localPointB2 = proxyB.GetVertex(cache.GetIndexB(1));
 
-			m_axis = Normalize(GetForwardPerpendicular(localPointB2 - localPointB1));
+			m_axis = GetUnitVector(GetForwardPerpendicular(localPointB2 - localPointB1));
 			const auto normal = Mul(xfB.q, m_axis);
 
 			m_localPoint = (localPointB1 + localPointB2) / float_t(2);
@@ -107,7 +107,7 @@ public:
 			const auto localPointA1 = proxyA.GetVertex(cache.GetIndexA(0));
 			const auto localPointA2 = proxyA.GetVertex(cache.GetIndexA(1));
 			
-			m_axis = Normalize(GetForwardPerpendicular(localPointA2 - localPointA1));
+			m_axis = GetUnitVector(GetForwardPerpendicular(localPointA2 - localPointA1));
 			const auto normal = Mul(xfA.q, m_axis);
 
 			m_localPoint = (localPointA1 + localPointA2) / float_t(2);

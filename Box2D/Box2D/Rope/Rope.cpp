@@ -137,7 +137,7 @@ void Rope::SolveC2()
 		auto p2 = m_ps[i + 1];
 
 		auto d = p2 - p1;
-		const auto L = d.Normalize();
+		const auto L = Normalize(d);
 
 		const auto im1 = m_ims[i];
 		const auto im2 = m_ims[i + 1];

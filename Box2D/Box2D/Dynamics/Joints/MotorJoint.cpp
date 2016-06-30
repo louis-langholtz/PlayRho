@@ -177,8 +177,7 @@ void MotorJoint::SolveVelocityConstraints(const SolverData& data)
 
 		if (LengthSquared(m_linearImpulse) > Square(maxImpulse))
 		{
-			m_linearImpulse.Normalize();
-			m_linearImpulse *= maxImpulse;
+			m_linearImpulse = GetUnitVector(m_linearImpulse) * maxImpulse;
 		}
 
 		impulse = m_linearImpulse - oldImpulse;

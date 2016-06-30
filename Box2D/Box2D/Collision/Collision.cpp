@@ -36,7 +36,7 @@ static inline WorldManifold GetWorldManifoldForCircles(const Manifold& manifold,
 			const auto pointB = Mul(xfB, manifold.GetPoint(0).localPoint);
 			const auto delta = pointB - pointA;
 			const auto normal = (LengthSquared(delta) > Square(BOX2D_MAGIC(Epsilon)))?
-				Normalize(delta): Vec2{float_t{1}, float_t{0}};
+				GetUnitVector(delta): Vec2{float_t{1}, float_t{0}};
 			const auto cA = pointA + (radiusA * normal);
 			const auto cB = pointB - (radiusB * normal);
 			const auto p0 = (cA + cB) / float_t{2};
@@ -179,21 +179,22 @@ bool AABB::RayCast(RayCastOutput* output, const RayCastInput& input) const
 
 	Vec2 normal;
 
+#pragma unroll
 	for (auto i = decltype(Vec2::NumElements){0}; i < Vec2::NumElements; ++i)
 	{
-		if (absD(i) < BOX2D_MAGIC(Epsilon))
+		if (absD[i] < BOX2D_MAGIC(Epsilon))
 		{
 			// Parallel.
-			if ((p(i) < lowerBound(i)) || (upperBound(i) < p(i)))
+			if ((p[i] < lowerBound[i]) || (upperBound[i] < p[i]))
 			{
 				return false;
 			}
 		}
 		else
 		{
-			const auto inv_d = float_t{1} / d(i);
-			auto t1 = (lowerBound(i) - p(i)) * inv_d;
-			auto t2 = (upperBound(i) - p(i)) * inv_d;
+			const auto inv_d = float_t{1} / d[i];
+			auto t1 = (lowerBound[i] - p[i]) * inv_d;
+			auto t2 = (upperBound[i] - p[i]) * inv_d;
 
 			// Sign of the normal vector.
 			auto s = float_t{-1};
@@ -208,7 +209,7 @@ bool AABB::RayCast(RayCastOutput* output, const RayCastInput& input) const
 			if (t1 > tmin)
 			{
 				normal = Vec2_zero;
-				normal(i) = s;
+				normal[i] = s;
 				tmin = t1;
 			}
 
