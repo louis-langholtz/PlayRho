@@ -179,8 +179,7 @@ bool AABB::RayCast(RayCastOutput* output, const RayCastInput& input) const
 
 	Vec2 normal;
 
-#pragma unroll
-	for (auto i = decltype(Vec2::NumElements){0}; i < Vec2::NumElements; ++i)
+	for (auto i = decltype(normal.max_size()){0}; i < normal.max_size(); ++i)
 	{
 		if (absD[i] < BOX2D_MAGIC(Epsilon))
 		{
@@ -195,37 +194,37 @@ bool AABB::RayCast(RayCastOutput* output, const RayCastInput& input) const
 			const auto inv_d = float_t{1} / d[i];
 			auto t1 = (lowerBound[i] - p[i]) * inv_d;
 			auto t2 = (upperBound[i] - p[i]) * inv_d;
-
+			
 			// Sign of the normal vector.
 			auto s = float_t{-1};
-
+			
 			if (t1 > t2)
 			{
 				Swap(t1, t2);
 				s = float_t{1};
 			}
-
+			
 			// Push the min up
-			if (t1 > tmin)
+			if (tmin < t1)
 			{
 				normal = Vec2_zero;
 				normal[i] = s;
 				tmin = t1;
 			}
-
+			
 			// Pull the max down
 			tmax = Min(tmax, t2);
-
+			
 			if (tmin > tmax)
 			{
 				return false;
 			}
 		}
-	}
+	};
 
 	// Does the ray start inside the box?
 	// Does the ray intersect beyond the max fraction?
-	if ((tmin < float_t{0}) || (input.maxFraction < tmin))
+	if ((tmin < float_t{0}) || (tmin > input.maxFraction))
 	{
 		return false;
 	}

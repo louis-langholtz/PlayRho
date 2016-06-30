@@ -58,6 +58,8 @@ inline auto Atan2(T y, T x) { return std::atan2(y, x); }
 /// A 2D column vector.
 struct Vec2
 {
+	using size_type = size_t;
+
 	/// Default constructor does nothing (for performance).
 	Vec2() noexcept = default;
 	
@@ -68,20 +70,16 @@ struct Vec2
 	
 	/// Negate this vector.
 	constexpr auto operator- () const noexcept { return Vec2{-x, -y}; }
-
-#if !defined(NO_B2VEC2_INDEXING)
 	
-	using index_type = unsigned;
-	
-	/// Number of elements in this vector.
+	/// Maximum size.
 	/// @detail This is this vector type's dimensionality.
-	static constexpr auto NumElements = index_type{2};
+	constexpr size_type max_size() const noexcept { return 2; }
 	
 	/// Accesses element by index.
 	/// @param i Index (0 for x, 1 for y).
-	auto operator[] (index_type i) const
+	auto operator[] (size_type i) const
 	{
-		assert(i < NumElements);
+		assert(i < max_size());
 		switch (i)
 		{
 			case 0: return x;
@@ -93,9 +91,9 @@ struct Vec2
 	
 	/// Accesses element by index.
 	/// @param i Index (0 for x, 1 for y).
-	auto& operator[] (index_type i)
+	auto& operator[] (size_type i)
 	{
-		assert(i < NumElements);
+		assert(i < max_size());
 		switch (i)
 		{
 			case 0: return x;
@@ -104,9 +102,7 @@ struct Vec2
 		}
 		return x;
 	}
-	
-#endif
-		
+
 	float_t x, y;
 };
 
@@ -137,7 +133,7 @@ constexpr auto Vec3_zero = Vec3{0, 0, 0};
 /// For performance, use this instead of Length(T value) (if possible).
 /// @return Non-negative value.
 template <typename T>
-constexpr inline float_t LengthSquared(T value) { return float_t{0}; }
+constexpr inline float_t LengthSquared(T value) noexcept { return float_t{0}; }
 
 template <>
 constexpr inline float_t LengthSquared(Vec2 value) noexcept
@@ -146,7 +142,7 @@ constexpr inline float_t LengthSquared(Vec2 value) noexcept
 }
 
 template <>
-constexpr inline float_t LengthSquared(Vec3 value)
+constexpr inline float_t LengthSquared(Vec3 value) noexcept
 {
 	return Square(value.x) + Square(value.y) + Square(value.z);		
 }
