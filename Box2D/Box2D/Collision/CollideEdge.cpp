@@ -59,7 +59,7 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const Circ
 	{
 		const auto P = A; ///< Point of relavance (is A).
 		const auto d = Q - P;
-		if (d.LengthSquared() > Square(totalRadius))
+		if (LengthSquared(d) > Square(totalRadius))
 		{
 			return Manifold{};
 		}
@@ -89,7 +89,7 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const Circ
 	{
 		const auto P = B; ///< Point of relavance (is B).
 		const auto d = Q - P;
-		if (d.LengthSquared() > Square(totalRadius))
+		if (LengthSquared(d) > Square(totalRadius))
 		{
 			return Manifold{};
 		}
@@ -114,12 +114,12 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const Circ
 	}
 	
 	// Region AB
-	const auto eLenSquared = e.LengthSquared();
+	const auto eLenSquared = LengthSquared(e);
 	assert(eLenSquared > 0);
 	const auto P = (u * A + v * B) * (float_t{1} / eLenSquared);
 	const auto d = Q - P;
 
-	if (d.LengthSquared() > Square(totalRadius))
+	if (LengthSquared(d) > Square(totalRadius))
 	{
 		return Manifold{};
 	}

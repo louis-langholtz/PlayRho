@@ -35,8 +35,8 @@ static inline WorldManifold GetWorldManifoldForCircles(const Manifold& manifold,
 			const auto pointA = Mul(xfA, manifold.GetLocalPoint());
 			const auto pointB = Mul(xfB, manifold.GetPoint(0).localPoint);
 			const auto delta = pointB - pointA;
-			const auto normal = (delta.LengthSquared() > Square(BOX2D_MAGIC(Epsilon)))? Normalize(delta): Vec2{float_t{1}, float_t{0}};
-
+			const auto normal = (LengthSquared(delta) > Square(BOX2D_MAGIC(Epsilon)))?
+				Normalize(delta): Vec2{float_t{1}, float_t{0}};
 			const auto cA = pointA + (radiusA * normal);
 			const auto cB = pointB - (radiusB * normal);
 			const auto p0 = (cA + cB) / float_t{2};

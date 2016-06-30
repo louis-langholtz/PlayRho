@@ -158,7 +158,7 @@ public:
 			Vec2 position = body->GetPosition();
 
 			Vec2 d = center - position;
-			if (d.LengthSquared() < FLT_EPSILON * FLT_EPSILON)
+			if (LengthSquared(d) < Square(FLT_EPSILON))
 			{
 				continue;
 			}

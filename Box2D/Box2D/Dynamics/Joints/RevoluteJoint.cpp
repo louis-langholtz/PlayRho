@@ -350,7 +350,7 @@ bool RevoluteJoint::SolvePositionConstraints(const SolverData& data)
 		const auto rB = Mul(qB, m_localAnchorB - m_localCenterB);
 
 		const auto C = cB + rB - cA - rA;
-		positionError = C.Length();
+		positionError = Length(C);
 
 		const auto mA = m_invMassA, mB = m_invMassB;
 		const auto iA = m_invIA, iB = m_invIB;

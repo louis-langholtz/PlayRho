@@ -259,7 +259,7 @@ bool WeldJoint::SolvePositionConstraints(const SolverData& data)
 	{
 		const auto C1 =  cB + rB - cA - rA;
 
-		positionError = C1.Length();
+		positionError = Length(C1);
 		angularError = float_t{0};
 
 		const auto P = -K.Solve22(C1);
@@ -275,7 +275,7 @@ bool WeldJoint::SolvePositionConstraints(const SolverData& data)
 		const auto C1 =  cB + rB - cA - rA;
 		const auto C2 = aB - aA - m_referenceAngle;
 
-		positionError = C1.Length();
+		positionError = Length(C1);
 		angularError = Abs(C2);
 
 		const auto C = Vec3(C1.x, C1.y, C2);

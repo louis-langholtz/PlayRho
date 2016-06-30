@@ -36,8 +36,7 @@ child_count_t CircleShape::GetChildCount() const
 bool CircleShape::TestPoint(const Transform& transform, const Vec2& p) const
 {
 	const auto center = transform.p + Mul(transform.q, m_p);
-	const auto d = p - center;
-	return d.LengthSquared() <= Square(GetRadius());
+	return LengthSquared(p - center) <= Square(GetRadius());
 }
 
 // Collision Detection in Interactive 3D Environments by Gino van den Bergen
@@ -51,12 +50,12 @@ bool CircleShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 
 	const auto position = transform.p + Mul(transform.q, m_p);
 	const auto s = input.p1 - position;
-	const auto b = s.LengthSquared() - Square(GetRadius());
+	const auto b = LengthSquared(s) - Square(GetRadius());
 
 	// Solve quadratic equation.
 	const auto r = input.p2 - input.p1;
 	const auto c =  Dot(s, r);
-	const auto rr = r.LengthSquared();
+	const auto rr = LengthSquared(r);
 	const auto sigma = Square(c) - rr * b;
 
 	// Check for negative discriminant and short segment.
@@ -92,6 +91,6 @@ MassData CircleShape::ComputeMass(float_t density) const
 {
 	assert(density >= 0);
 	const auto mass = density * Pi * Square(GetRadius());
-	const auto I = mass * ((Square(GetRadius()) / float_t{2}) + m_p.LengthSquared());
+	const auto I = mass * ((Square(GetRadius()) / float_t{2}) + LengthSquared(m_p));
 	return MassData{mass, m_p, I};
 }

@@ -589,7 +589,7 @@ DistanceOutput Distance(SimplexCache& cache,
 #if defined(DO_COMPUTE_CLOSEST_POINT)
 		// Compute closest point.
 		const auto p = GetClosestPoint(simplex);
-		const auto distanceSqr2 = p.LengthSquared();
+		const auto distanceSqr2 = LengthSquared(p);
 
 		// Ensure progress
 		if (distanceSqr2 >= distanceSqr1)
@@ -602,7 +602,7 @@ DistanceOutput Distance(SimplexCache& cache,
 		const auto d = GetSearchDirection(simplex);
 
 		// Ensure the search direction is numerically fit.
-		if (d.LengthSquared() < Square(BOX2D_MAGIC(Epsilon)))
+		if (LengthSquared(d) < Square(BOX2D_MAGIC(Epsilon)))
 		{
 			// The origin is probably contained by a line segment
 			// or triangle. Thus the shapes are overlapped.

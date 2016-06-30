@@ -34,7 +34,7 @@ using namespace box2d;
 MouseJoint::MouseJoint(const MouseJointDef& def)
 : Joint(def)
 {
-	assert(def.target.IsValid());
+	assert(IsValid(def.target));
 	assert(IsValid(def.maxForce) && (def.maxForce >= float_t{0}));
 	assert(IsValid(def.frequencyHz) && (def.frequencyHz >= float_t{0}));
 	assert(IsValid(def.dampingRatio) && (def.dampingRatio >= float_t{0}));
@@ -173,9 +173,9 @@ void MouseJoint::SolveVelocityConstraints(const SolverData& data)
 	const auto oldImpulse = m_impulse;
 	m_impulse += impulse;
 	const auto maxImpulse = data.step.get_dt() * m_maxForce;
-	if (m_impulse.LengthSquared() > maxImpulse * maxImpulse)
+	if (LengthSquared(m_impulse) > Square(maxImpulse))
 	{
-		m_impulse *= maxImpulse / m_impulse.Length();
+		m_impulse *= maxImpulse / Length(m_impulse);
 	}
 	impulse = m_impulse - oldImpulse;
 

@@ -33,7 +33,14 @@ constexpr inline float_t Dot(const Vec3& a, const Vec3& b) noexcept;
 constexpr inline float_t Cross(const Vec2& a, const Vec2& b) noexcept;
 constexpr inline Vec3 Cross(const Vec3& a, const Vec3& b) noexcept;
 
+template <typename T>
+inline bool IsValid(T value)
+{
+	return false;
+}
+	
 /// This function is used to ensure that a floating point number is not a NaN or infinity.
+template <>
 inline bool IsValid(float_t x)
 {
 	return !std::isnan(x) && !std::isinf(x);
@@ -116,40 +123,8 @@ struct Vec2
 		x *= a; y *= a;
 	}
 
-	/// Gets the length squared.
-	/// For performance, use this instead of Vec2::Length (if possible).
-	/// @return Non-negative value.
-	constexpr float_t LengthSquared() const noexcept
-	{
-		return Square(x) + Square(y);
-	}
-
-	/// Get the length of this vector (the norm).
-	float_t Length() const
-	{
-		return Sqrt(LengthSquared());
-	}
-	
 	/// Convert this vector into a unit vector. Returns the length.
-	float_t Normalize()
-	{
-		const auto length = Length();
-		if (BOX2D_MAGIC(length < Epsilon))
-		{
-			return float_t{0};
-		}
-		const auto invLength = float_t{1} / length;
-		x *= invLength;
-		y *= invLength;
-
-		return length;
-	}
-
-	/// Does this vector contain finite coordinates?
-	bool IsValid() const
-	{
-		return ::box2d::IsValid(x) && ::box2d::IsValid(y);
-	}
+	float_t Normalize();
 
 	float_t x, y;
 };
@@ -194,7 +169,38 @@ struct Vec3
 /// An all zero Vec3 value.
 /// @see Vec3.
 constexpr auto Vec3_zero = Vec3{0, 0, 0};
+	
+/// Gets the square of the length/magnitude of the given value.
+/// For performance, use this instead of Length(T value) (if possible).
+/// @return Non-negative value.
+template <typename T>
+constexpr inline float_t LengthSquared(T value) { return float_t{0}; }
 
+template <>
+constexpr inline float_t LengthSquared(Vec2 value) noexcept
+{
+	return Square(value.x) + Square(value.y);		
+}
+
+template <>
+constexpr inline float_t LengthSquared(Vec3 value)
+{
+	return Square(value.x) + Square(value.y) + Square(value.z);		
+}
+
+template <typename T>
+inline float_t Length(T value)
+{
+	return Sqrt(LengthSquared(value));
+}
+
+/// Does this vector contain finite coordinates?
+template <>
+inline bool IsValid(Vec2 value)
+{
+	return IsValid(value.x) && IsValid(value.y);
+}
+	
 /// A 2-by-2 matrix. Stored in column-major order.
 struct Mat22
 {
@@ -464,7 +470,7 @@ constexpr inline Vec2 GetForwardPerpendicular(const Vec2 vector) noexcept
 /// @param a Vector A.
 /// @param b Vector B.
 /// @return Dot product of the vectors (0 means the two vectors are perpendicular).
-/// @note If A and B are the same vectors, Vec2::LengthSquared() returns the same value
+/// @note If A and B are the same vectors, LengthSquared(Vec2) returns the same value
 ///   using effectively one less input parameter.
 constexpr inline float_t Dot(const Vec2& a, const Vec2& b) noexcept
 {
@@ -532,7 +538,7 @@ constexpr Vec2 operator/ (const Vec2& a, float_t s) noexcept
 inline Vec2 Normalize(Vec2 value)
 {
 	// implementation mirrors implementation of Vec2::Normalize()
-	const auto length = value.Length();
+	const auto length = Sqrt(LengthSquared(value));
 	if (BOX2D_MAGIC(length < Epsilon))
 	{
 		return value;
@@ -553,8 +559,7 @@ constexpr inline bool operator != (Vec2 a, Vec2 b) noexcept
 
 constexpr inline float_t DistanceSquared(const Vec2& a, const Vec2& b) noexcept
 {
-	const auto c = a - b;
-	return c.LengthSquared();
+	return LengthSquared(a - b);
 }
 
 constexpr inline Vec3 operator * (float_t s, const Vec3& a) noexcept
@@ -841,6 +846,20 @@ inline Sweep GetAnglesNormalized(Sweep sweep)
 	sweep.pos0.a -= d;
 	sweep.pos1.a -= d;
 	return sweep;
+}
+
+inline float_t Vec2::Normalize()
+{
+	const auto length = Sqrt(LengthSquared(*this));
+	if (BOX2D_MAGIC(length < Epsilon))
+	{
+		return float_t{0};
+	}
+	const auto invLength = float_t{1} / length;
+	x *= invLength;
+	y *= invLength;
+	
+	return length;
 }
 
 }

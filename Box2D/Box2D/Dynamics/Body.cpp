@@ -66,8 +66,8 @@ Body::Body(const BodyDef* bd, World* world):
 	m_linearDamping{bd->linearDamping}, m_angularDamping{bd->angularDamping},
 	m_userData{bd->userData}
 {
-	assert(bd->position.IsValid());
-	assert(bd->linearVelocity.IsValid());
+	assert(IsValid(bd->position));
+	assert(IsValid(bd->linearVelocity));
 	assert(IsValid(bd->angle));
 	assert(IsValid(bd->angularVelocity));
 	assert(IsValid(bd->angularDamping) && (bd->angularDamping >= float_t{0}));
@@ -343,7 +343,7 @@ void Body::ResetMassData()
 	if ((m_I > float_t{0}) && (!IsFixedRotation()))
 	{
 		// Center the inertia about the center of mass.
-		m_I -= m_mass * localCenter.LengthSquared();
+		m_I -= m_mass * LengthSquared(localCenter);
 		assert(m_I > float_t{0});
 		m_invI = float_t{1} / m_I;
 	}
@@ -379,7 +379,7 @@ void Body::SetMassData(const MassData* massData)
 
 	if ((massData->I > float_t{0}) && (!IsFixedRotation()))
 	{
-		m_I = massData->I - m_mass * massData->center.LengthSquared();
+		m_I = massData->I - m_mass * LengthSquared(massData->center);
 		assert(m_I > float_t{0});
 		m_invI = float_t{1} / m_I;
 	}

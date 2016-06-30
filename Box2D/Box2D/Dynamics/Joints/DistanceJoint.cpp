@@ -46,7 +46,7 @@ void DistanceJointDef::Initialize(Body* b1, Body* b2,
 	localAnchorA = bodyA->GetLocalPoint(anchor1);
 	localAnchorB = bodyB->GetLocalPoint(anchor2);
 	const auto d = anchor2 - anchor1;
-	length = d.Length();
+	length = Length(d);
 }
 
 DistanceJoint::DistanceJoint(const DistanceJointDef& def)
@@ -87,7 +87,7 @@ void DistanceJoint::InitVelocityConstraints(const SolverData& data)
 	m_u = (cB + m_rB) - (cA + m_rA);
 
 	// Handle singularity.
-	const auto length = m_u.Length();
+	const auto length = Length(m_u);
 	if (length > LinearSlop)
 	{
 		m_u *= float_t(1) / length;

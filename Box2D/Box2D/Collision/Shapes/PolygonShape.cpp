@@ -203,7 +203,7 @@ void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 			}
 
 			// Collinearity check
-			if ((c == float_t{0}) && (v.LengthSquared() > r.LengthSquared()))
+			if ((c == float_t{0}) && (LengthSquared(v) > LengthSquared(r)))
 			{
 				ie = j;
 			}
@@ -240,7 +240,7 @@ void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 		const auto i1 = i;
 		const auto i2 = (i + 1) % m;
 		const auto edge = m_vertices[i2] - m_vertices[i1];
-		assert(edge.LengthSquared() > Square(Epsilon));
+		assert(LengthSquared(edge) > Square(Epsilon));
 		m_normals[i] = Normalize(GetForwardPerpendicular(edge));
 	}
 
@@ -436,7 +436,7 @@ MassData PolygonShape::ComputeMass(float_t density) const
 
 	// Inertia tensor relative to the local origin (point s).
 	// Shift to center of mass then to original body origin.
-	const auto massDataI = (density * I) + (mass * (massDataCenter.LengthSquared() - center.LengthSquared()));
+	const auto massDataI = (density * I) + (mass * (LengthSquared(massDataCenter) - LengthSquared(center)));
 	
 	return MassData{mass, massDataCenter, massDataI};
 }

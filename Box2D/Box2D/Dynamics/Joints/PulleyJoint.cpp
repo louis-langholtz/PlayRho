@@ -47,9 +47,9 @@ void PulleyJointDef::Initialize(Body* bA, Body* bB,
 	localAnchorA = bodyA->GetLocalPoint(anchorA);
 	localAnchorB = bodyB->GetLocalPoint(anchorB);
 	Vec2 dA = anchorA - groundA;
-	lengthA = dA.Length();
+	lengthA = Length(dA);
 	Vec2 dB = anchorB - groundB;
-	lengthB = dB.Length();
+	lengthB = Length(dB);
 	ratio = r;
 	assert(ratio > Epsilon);
 }
@@ -103,8 +103,8 @@ void PulleyJoint::InitVelocityConstraints(const SolverData& data)
 	m_uA = cA + m_rA - m_groundAnchorA;
 	m_uB = cB + m_rB - m_groundAnchorB;
 
-	const auto lengthA = m_uA.Length();
-	const auto lengthB = m_uB.Length();
+	const auto lengthA = Length(m_uA);
+	const auto lengthB = Length(m_uB);
 
 	if (lengthA > (float_t(10) * LinearSlop))
 	{
@@ -206,8 +206,8 @@ bool PulleyJoint::SolvePositionConstraints(const SolverData& data)
 	auto uA = cA + rA - m_groundAnchorA;
 	auto uB = cB + rB - m_groundAnchorB;
 
-	const auto lengthA = uA.Length();
-	const auto lengthB = uB.Length();
+	const auto lengthA = Length(uA);
+	const auto lengthB = Length(uB);
 
 	if (lengthA > (float_t(10) * LinearSlop))
 	{
@@ -313,7 +313,7 @@ float_t PulleyJoint::GetCurrentLengthA() const
 	Vec2 p = m_bodyA->GetWorldPoint(m_localAnchorA);
 	Vec2 s = m_groundAnchorA;
 	Vec2 d = p - s;
-	return d.Length();
+	return Length(d);
 }
 
 float_t PulleyJoint::GetCurrentLengthB() const
@@ -321,7 +321,7 @@ float_t PulleyJoint::GetCurrentLengthB() const
 	const auto p = m_bodyB->GetWorldPoint(m_localAnchorB);
 	const auto s = m_groundAnchorB;
 	const auto d = p - s;
-	return d.Length();
+	return Length(d);
 }
 
 void PulleyJoint::Dump()

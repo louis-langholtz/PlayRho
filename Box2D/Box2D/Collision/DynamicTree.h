@@ -220,7 +220,7 @@ inline void DynamicTree::RayCast(T* callback, const RayCastInput& input) const
 	const auto p1 = input.p1;
 	const auto p2 = input.p2;
 	const auto dp = p2 - p1;
-	assert(dp.LengthSquared() > float_t{0});
+	assert(LengthSquared(dp) > float_t{0});
 	const auto r = Normalize(dp);
 
 	// v is perpendicular to the segment.

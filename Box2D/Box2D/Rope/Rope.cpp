@@ -184,8 +184,8 @@ void Rope::SolveC3()
 		const auto d1 = p2 - p1;
 		const auto d2 = p3 - p2;
 
-		const auto L1sqr = d1.LengthSquared();
-		const auto L2sqr = d2.LengthSquared();
+		const auto L1sqr = LengthSquared(d1);
+		const auto L2sqr = LengthSquared(d2);
 
 		if (L1sqr * L2sqr == float_t{0})
 		{

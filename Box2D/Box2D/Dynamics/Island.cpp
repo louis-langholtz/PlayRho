@@ -197,7 +197,7 @@ static inline bool IsSleepable(Velocity velocity)
 	constexpr auto LinSleepTolSquared = Square(LinearSleepTolerance);
 	constexpr auto AngSleepTolSquared = Square(AngularSleepTolerance);
 
-	return (Square(velocity.w) <= AngSleepTolSquared) && (velocity.v.LengthSquared() <= LinSleepTolSquared);
+	return (Square(velocity.w) <= AngSleepTolSquared) && (LengthSquared(velocity.v) <= LinSleepTolSquared);
 }
 
 /// Calculates movement.
@@ -206,9 +206,9 @@ static inline bool IsSleepable(Velocity velocity)
 static inline Position CalculateMovement(Velocity& velocity, float_t h)
 {
 	auto translation = h * velocity.v;
-	if (translation.LengthSquared() > Square(MaxTranslation))
+	if (LengthSquared(translation) > Square(MaxTranslation))
 	{
-		const auto ratio = MaxTranslation / translation.Length();
+		const auto ratio = MaxTranslation / Sqrt(LengthSquared(translation));
 		velocity.v *= ratio;
 		translation = h * velocity.v;
 	}

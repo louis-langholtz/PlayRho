@@ -189,7 +189,7 @@ public:
 		djd.localAnchorA = Vec2(6.0f, 0.0f);
 		djd.localAnchorB = Vec2(0.0f, -1.0f);
 		Vec2 d = djd.bodyB->GetWorldPoint(djd.localAnchorB) - djd.bodyA->GetWorldPoint(djd.localAnchorA);
-		djd.length = d.Length();
+		djd.length = Length(d);
 		m_world->CreateJoint(&djd);
 
 		{

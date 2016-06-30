@@ -89,7 +89,7 @@ bool EdgeShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 	// q = v1 + s * r
 	// s = dot(q - v1, r) / dot(r, r)
 	const auto r = v2 - v1;
-	const auto rr = r.LengthSquared();
+	const auto rr = LengthSquared(r);
 	if (rr == float_t{0})
 	{
 		return false;

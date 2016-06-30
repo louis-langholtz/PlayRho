@@ -30,7 +30,7 @@ Manifold CollideShapes(const CircleShape& shapeA, const Transform& xfA, const Ci
 	const auto d = pB - pA;
 	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
 
-	if (d.LengthSquared() > Square(totalRadius))
+	if (LengthSquared(d) > Square(totalRadius))
 	{
 		return Manifold{};
 	}

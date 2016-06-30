@@ -72,7 +72,7 @@ void RopeJoint::InitVelocityConstraints(const SolverData& data)
 	m_rB = Mul(qB, m_localAnchorB - m_localCenterB);
 	m_u = cB + m_rB - cA - m_rA;
 
-	m_length = m_u.Length();
+	m_length = Length(m_u);
 
 	const auto C = m_length - m_maxLength;
 	if (C > float_t{0})

@@ -617,12 +617,12 @@ inline float_t Body::GetMass() const noexcept
 
 inline float_t Body::GetInertia() const noexcept
 {
-	return m_I + m_mass * GetLocalCenter().LengthSquared();
+	return m_I + m_mass * LengthSquared(GetLocalCenter());
 }
 
 inline MassData Body::GetMassData() const noexcept
 {
-	return MassData{m_mass, GetLocalCenter(), m_I + m_mass * GetLocalCenter().LengthSquared()};
+	return MassData{m_mass, GetLocalCenter(), m_I + m_mass * LengthSquared(GetLocalCenter())};
 }
 
 inline Vec2 Body::GetWorldPoint(const Vec2& localPoint) const noexcept

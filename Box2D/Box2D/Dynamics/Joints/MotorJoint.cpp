@@ -175,7 +175,7 @@ void MotorJoint::SolveVelocityConstraints(const SolverData& data)
 
 		const auto maxImpulse = h * m_maxForce;
 
-		if (m_linearImpulse.LengthSquared() > maxImpulse * maxImpulse)
+		if (LengthSquared(m_linearImpulse) > Square(maxImpulse))
 		{
 			m_linearImpulse.Normalize();
 			m_linearImpulse *= maxImpulse;
