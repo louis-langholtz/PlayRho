@@ -750,6 +750,16 @@ constexpr inline void Swap(T& a, T& b)
 	b = tmp;
 }
 
+constexpr inline bool operator==(const Position& lhs, const Position& rhs)
+{
+	return (lhs.c == rhs.c) && (lhs.a == rhs.a);
+}
+
+constexpr inline bool operator!=(const Position& lhs, const Position& rhs)
+{
+	return (lhs.c != rhs.c) || (lhs.a != rhs.a);
+}
+
 constexpr inline Position& operator+= (Position& lhs, const Position& rhs)
 {
 	lhs.c += rhs.c;
@@ -815,7 +825,7 @@ inline Transform GetTransform(const Sweep& sweep, float_t beta)
 /// @sa GetTransform(const Sweep& sweep, float_t beta).
 /// @param sweep Sweep data to get the transform from.
 /// @return Transform of the given sweep at time zero.
-inline Transform GetTransformZero(const Sweep& sweep)
+inline Transform GetTransform0(const Sweep& sweep)
 {
 	return GetTransform(sweep.pos0, sweep.GetLocalCenter());
 }
@@ -825,7 +835,7 @@ inline Transform GetTransformZero(const Sweep& sweep)
 /// @sa GetTransform(const Sweep& sweep, float_t beta).
 /// @param sweep Sweep data to get the transform from.
 /// @return Transform of the given sweep at time one.
-inline Transform GetTransformOne(const Sweep& sweep)
+inline Transform GetTransform1(const Sweep& sweep)
 {
 	return GetTransform(sweep.pos1, sweep.GetLocalCenter());
 }
