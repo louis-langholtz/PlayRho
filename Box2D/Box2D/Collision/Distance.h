@@ -139,7 +139,7 @@ struct DistanceOutput
 /// Supports any combination of:
 /// CircleShape, PolygonShape, EdgeShape. The simplex cache is input/output.
 /// @note On the first call, the SimplexCache.count should be set to zero.
-/// @param cache Simplex cache for assistance the determination.
+/// @param cache Simplex cache for assisting the determination.
 /// @param proxyA Proxy A.
 /// @param transformA Transoform of A.
 /// @param proxyB Proxy B.
