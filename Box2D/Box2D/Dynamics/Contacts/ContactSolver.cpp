@@ -120,7 +120,8 @@ ContactSolver::ContactSolver(const ContactSolverDef& def) :
 	InitVelocityConstraints(m_velocityConstraints, def.count, def.contacts, def.dtRatio);
 }
 	
-ContactPositionConstraint* ContactSolver::InitPositionConstraints(ContactPositionConstraint* constraints, ContactSolver::size_type count, Contact** contacts)
+ContactPositionConstraint* ContactSolver::InitPositionConstraints(ContactPositionConstraint* constraints,
+																  size_type count, Contact** contacts)
 {
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
@@ -130,7 +131,8 @@ ContactPositionConstraint* ContactSolver::InitPositionConstraints(ContactPositio
 	return constraints;
 }
 	
-ContactVelocityConstraint* ContactSolver::InitVelocityConstraints(ContactVelocityConstraint* constraints, size_type count, Contact** contacts, float_t dtRatio)
+ContactVelocityConstraint* ContactSolver::InitVelocityConstraints(ContactVelocityConstraint* constraints,
+																  size_type count, Contact** contacts, float_t dtRatio)
 {
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
@@ -180,7 +182,7 @@ static inline void Update(VelocityConstraintPoint& vcp,
 	// vcp.tangentImpulse
 }
 
-void ContactSolver::UpdateVelocityConstraint(ContactVelocityConstraint& vc, const ContactPositionConstraint& pc)
+void ContactSolver::UpdateVelocityConstraint(ContactVelocityConstraint& vc, const ContactPositionConstraint& pc) const
 {
 	assert(vc.bodyA.index >= 0);
 	const auto posA = m_positions[vc.bodyA.index];

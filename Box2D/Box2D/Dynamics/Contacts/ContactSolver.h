@@ -244,7 +244,7 @@ private:
 	
 	static ContactPositionConstraint GetPositionConstraint(const Manifold& manifold, Fixture* fixtureA, Fixture* fixtureB);
 	
-	/// Updates the velocity constraint data with the given position constraint data.
+	/// Updates the given velocity constraint data with the given position constraint data.
 	/// @detail Specifically this:
 	///   1. Sets the normal to the calculated world manifold normal.
 	///   2. Sets the velocity constraint point information (short of the impulse data).
@@ -252,7 +252,7 @@ private:
 	///   4. Checks for redundant velocity constraint point and removes it if found.
 	/// @param vc Velocity constraint.
 	/// @param pc Position constraint.
-	void UpdateVelocityConstraint(ContactVelocityConstraint& vc, const ContactPositionConstraint& pc);
+	void UpdateVelocityConstraint(ContactVelocityConstraint& vc, const ContactPositionConstraint& pc) const;
 
 	Position* const m_positions;
 	Velocity* const m_velocities;
