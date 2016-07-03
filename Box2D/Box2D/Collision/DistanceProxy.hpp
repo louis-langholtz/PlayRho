@@ -48,18 +48,24 @@ namespace box2d
 			m_radius{copy.m_radius}
 		{}
 		
+		/// Initializing constructor.
+		/// @detail Constructs a distance proxy for a single point shape (like a circle).
 		constexpr DistanceProxy(float_t radius, Vec2 v0) noexcept:
 			m_radius{radius}, m_buffer{{v0}}, m_count{1}
 		{
 			assert(radius >= 0);
 		}
 		
+		/// Initializing constructor.
+		/// @detail Constructs a distance proxy for dual point shape (like an edge or a chain).
 		constexpr DistanceProxy(float_t radius, Vec2 v0, Vec2 v1) noexcept:
 			m_radius{radius}, m_buffer{{v0, v1}}, m_count{2}
 		{
 			assert(radius >= 0);
 		}
 		
+		/// Initializing constructor.
+		/// @detail Constructs a distance proxy for n-point shape (like a polygon).
 		constexpr DistanceProxy(float_t radius, const Vec2* vertices, size_type count) noexcept:
 			m_radius{radius}, m_buffer{}, m_vertices{vertices}, m_count{count}
 		{
