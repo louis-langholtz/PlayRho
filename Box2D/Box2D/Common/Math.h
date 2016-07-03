@@ -804,6 +804,11 @@ inline Transform GetTransform(Position pos, const Vec2& local_ctr) noexcept
 	return GetTransform(pos.c, Rot{pos.a}, local_ctr);
 }
 
+inline Position GetPosition(Position pos0, Position pos1, float_t beta)
+{
+	return pos0 * (float_t{1} - beta) + pos1 * beta;
+}
+
 /// Gets the interpolated transform at a specific time.
 /// @param sweep Sweep data to get the transform from.
 /// @param beta Time factor in [0,1], where 0 indicates alpha0.
@@ -812,12 +817,7 @@ inline Transform GetTransform(const Sweep& sweep, float_t beta)
 {
 	assert(beta >= 0);
 	assert(beta <= 1);
-	const auto one_minus_beta = float_t{1} - beta;
-	const auto pos_beta = Position{
-		one_minus_beta * sweep.pos0.c + beta * sweep.pos1.c,
-		one_minus_beta * sweep.pos0.a + beta * sweep.pos1.a
-	};
-	return GetTransform(pos_beta, sweep.GetLocalCenter());
+	return GetTransform(GetPosition(sweep.pos0, sweep.pos1, beta), sweep.GetLocalCenter());
 }
 
 /// Gets the transform at "time" zero.
@@ -844,11 +844,10 @@ inline void Sweep::Advance0(float_t alpha)
 {
 	assert(alpha >= 0);
 	assert(alpha < 1);
-
 	assert(alpha0 < 1);
 	
 	const auto beta = (alpha - alpha0) / (float_t{1} - alpha0);
-	pos0 += (pos1 - pos0) * beta;
+	pos0 = GetPosition(pos0, pos1, beta);
 	alpha0 = alpha;
 }
 

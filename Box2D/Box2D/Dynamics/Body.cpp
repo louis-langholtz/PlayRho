@@ -441,7 +441,7 @@ void Body::SetTransform(const Vec2& position, float_t angle)
 
 void Body::SynchronizeFixtures()
 {
-	const auto xf1 = GetTransformZero(m_sweep);
+	const auto xf1 = GetTransform0(m_sweep);
 	auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
 	for (auto&& f: m_fixtures)
 	{

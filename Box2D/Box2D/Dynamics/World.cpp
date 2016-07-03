@@ -406,6 +406,7 @@ void World::Solve(const TimeStep& step)
 				continue;
 			}
 
+			const auto numContacts = island.m_contacts.size();
 			// Add to island: appropriate contacts of current body and appropriate 'other' bodies of those contacts.
 			for (auto&& ce: b->m_contacts)
 			{
@@ -418,7 +419,6 @@ void World::Solve(const TimeStep& step)
 				}
 
 				island.m_contacts.push_back(contact);
-				--remNumContacts;
 				contact->SetInIsland();
 
 				const auto other = ce.other;
@@ -430,7 +430,9 @@ void World::Solve(const TimeStep& step)
 				stack.push_back(other);
 				other->SetInIsland();
 			}
+			remNumContacts -= island.m_contacts.size() - numContacts;
 
+			const auto numJoints = island.m_joints.size();
 			// Add to island: appropriate joints of current body and appropriate 'other' bodies of those joint.
 			for (auto&& je: b->m_joints)
 			{
@@ -444,7 +446,6 @@ void World::Solve(const TimeStep& step)
 				}
 
 				island.m_joints.push_back(joint);
-				--remNumJoints;
 				joint->SetInIsland(true);
 
 				if (other->IsInIsland())
@@ -455,6 +456,7 @@ void World::Solve(const TimeStep& step)
 				stack.push_back(other);
 				other->SetInIsland();
 			}
+			remNumJoints -= island.m_joints.size() - numJoints;
 		}
 
 		island.Solve(step, m_gravity, m_allowSleep);
@@ -470,23 +472,19 @@ void World::Solve(const TimeStep& step)
 		}
 	}
 
+	// Synchronize fixtures, check for out of range bodies.
+	for (auto&& b: m_bodies)
 	{
-		Timer timer;
-		// Synchronize fixtures, check for out of range bodies.
-		for (auto&& b: m_bodies)
+		// A non-static body that was in an island may have moved.
+		if ((b.m_flags & (Body::e_velocityFlag|Body::e_islandFlag)) == (Body::e_velocityFlag|Body::e_islandFlag))
 		{
-			// A non-static body that was in an island may have moved.
-			if ((b.m_flags & (Body::e_velocityFlag|Body::e_islandFlag)) == (Body::e_velocityFlag|Body::e_islandFlag))
-			{
-				// Update fixtures (for broad-phase).
-				b.SynchronizeFixtures();
-			}
+			// Update fixtures (for broad-phase).
+			b.SynchronizeFixtures();
 		}
-
-		// Look for new contacts.
-		m_contactMgr.FindNewContacts();
-		m_profile.broadphase = timer.GetMilliseconds();
 	}
+
+	// Look for new contacts.
+	m_contactMgr.FindNewContacts();
 }
 
 void World::ResetBodiesForSolveTOI()
@@ -563,6 +561,10 @@ void World::SolveTOI(const TimeStep& step)
 
 		SolveTOI(step, *minContactToi.contact, minContactToi.toi);
 		
+		// Commit fixture proxy movements to the broad-phase so that new contacts are created.
+		// Also, some contacts can be destroyed.
+		m_contactMgr.FindNewContacts();
+
 		if (m_subStepping)
 		{
 			m_stepComplete = false;
@@ -594,9 +596,9 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 		// Restore the sweeps by undoing the body "advance" calls (and anything else done movement-wise)
 		contact.UnsetEnabled();
 		bA->m_sweep = backupA;
-		bA->m_xf = GetTransformOne(bA->m_sweep);
+		bA->m_xf = GetTransform1(bA->m_sweep);
 		bB->m_sweep = backupB;
-		bB->m_xf = GetTransformOne(bB->m_sweep);
+		bB->m_xf = GetTransform1(bB->m_sweep);
 		return;
 	}
 
@@ -655,10 +657,6 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 			}
 		}
 	}
-
-	// Commit fixture proxy movements to the broad-phase so that new contacts are created.
-	// Also, some contacts can be destroyed.
-	m_contactMgr.FindNewContacts();
 }
 
 void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi, ContactListener* listener)
@@ -698,7 +696,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi, Conta
 		if (!contact->IsEnabled() || !contact->IsTouching())
 		{
 			other->m_sweep = backup;
-			other->m_xf = GetTransformOne(other->m_sweep);
+			other->m_xf = GetTransform1(other->m_sweep);
 			continue;
 		}
 		

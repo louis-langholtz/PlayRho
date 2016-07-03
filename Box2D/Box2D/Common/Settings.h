@@ -173,7 +173,7 @@ constexpr auto MaxJoints = joint_count_t{MaxBodies} * joint_count_t{MaxBodies};
 // Sleep
 
 /// The time that a body must be still before it will go to sleep.
-constexpr auto TimeToSleep = float_t{1} / float_t{2}; // aka 0.5
+constexpr auto MinStillTimeToSleep = float_t{1} / float_t{2}; // aka 0.5
 
 /// A body cannot sleep if its linear velocity is above this tolerance.
 constexpr auto LinearSleepTolerance = float_t{1} / float_t{100}; // aka 0.01

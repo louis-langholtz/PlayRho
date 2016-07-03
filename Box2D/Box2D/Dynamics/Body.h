@@ -894,12 +894,12 @@ inline void Body::ApplyAngularImpulse(float_t impulse, bool wake) noexcept
 
 inline void Body::Advance(float_t alpha)
 {
-	assert(m_sweep.GetAlpha0() <= alpha);
+	//assert(m_sweep.GetAlpha0() <= alpha);
 
 	// Advance to the new safe time. This doesn't sync the broad-phase.
 	m_sweep.Advance0(alpha);
 	m_sweep.pos1 = m_sweep.pos0;
-	m_xf = GetTransformOne(m_sweep);
+	m_xf = GetTransform1(m_sweep);
 }
 
 inline World* Body::GetWorld() noexcept

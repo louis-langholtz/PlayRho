@@ -251,7 +251,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA, const Distance
 	const auto minTarget = target - tolerance;
 	const auto maxTargetSquared = Square(maxTarget);
 
-	auto t1 = float_t{0};
+	auto t1 = float_t{0}; // Will be set to value of t2
 	auto iter = decltype(MaxTOIIterations){0};
 
 	// Prepare input for distance query.
@@ -315,15 +315,14 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA, const Distance
 		// Compute the TOI on the separating axis. We do this by successively
 		// resolving the deepest point. This loop is bounded by the number of vertices.
 		auto done = false;
-		auto t2 = tMax;
+		auto t2 = tMax; // Will be set to the value of t
 		for (auto pushBackIter = decltype(MaxPolygonVertices){0}; pushBackIter < BOX2D_MAGIC(MaxPolygonVertices); ++pushBackIter)
 		{
 			// Find the deepest point at t2. Store the witness point indices.
 			const auto minSeparation = fcn.FindMinSeparation(t2);
-			auto s2 = minSeparation.distance;
 
 			// Is the final configuration separated?
-			if (s2 > maxTarget)
+			if (minSeparation.distance > maxTarget)
 			{
 				// Victory!
 				assert(t2 == tMax);
@@ -337,7 +336,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA, const Distance
 			}
 
 			// Has the separation reached tolerance?
-			if (s2 > minTarget)
+			if (minSeparation.distance > minTarget)
 			{
 				// Advance the sweeps
 				t1 = t2;
@@ -345,12 +344,12 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA, const Distance
 			}
 
 			// Compute the initial separation of the witness points.
-			auto s1 = fcn.Evaluate(minSeparation.indexPair, t1);
+			const auto evaluatedDistance = fcn.Evaluate(minSeparation.indexPair, t1);
 
 			// Check for initial overlap. This might happen if the root finder
 			// runs out of iterations.
 			//assert(s1 >= minTarget);
-			if (s1 < minTarget)
+			if (evaluatedDistance < minTarget)
 			{
 				output = TOIOutput{TOIOutput::e_failed, t1};
 				done = true;
@@ -358,7 +357,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA, const Distance
 			}
 
 			// Check for touching
-			if (s1 <= maxTarget)
+			if (evaluatedDistance <= maxTarget)
 			{
 				// Victory! t1 should hold the TOI (could be 0.0).
 				output = TOIOutput{TOIOutput::e_touching, t1};
@@ -370,6 +369,8 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA, const Distance
 			auto rootIterCount = decltype(MaxTOIRootIterCount){0};
 			auto a1 = t1;
 			auto a2 = t2;
+			auto s1 = evaluatedDistance;
+			auto s2 = minSeparation.distance;
 			do
 			{
 				// Uses secant method to improve convergence (see https://en.wikipedia.org/wiki/Secant_method ).
