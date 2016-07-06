@@ -31,3 +31,30 @@ TEST(Vec2, Indexing) {
 	vector[1] = float_t{-2};
 	EXPECT_EQ(float_t{-2}, vector[1]);
 }
+
+TEST(Vec2, Negate)
+{
+	Vec2 v10{1, 0};
+	Vec2 n10 = -v10;
+	Vec2 v01{0, 1};
+	Vec2 n01 = -v01;
+	EXPECT_EQ(-v10.x, n10.x);
+	EXPECT_EQ(-v10.y, n10.y);
+	EXPECT_EQ(-v01.x, n01.x);
+	EXPECT_EQ(-v01.y, n01.y);
+	
+	EXPECT_EQ(-22, (-Vec2{22, 0}).x);
+	EXPECT_EQ(-3, (-Vec2{0, 3}).y);
+}
+
+TEST(Vec2, Rotate)
+{
+	Vec2 v10{1, 0};
+	Vec2 v01{0, 1};
+
+	EXPECT_EQ(round(v01), round(Rotate(v10, Rot(DegreesToRadians(90)))));
+
+	EXPECT_EQ(round(Vec2{22, 30}), round(Rotate(Vec2{22, 30}, Rot(DegreesToRadians(0)))));
+	EXPECT_EQ(round(Vec2{22, 30}, 1000), round(Rotate(Vec2{22, 30}, Rot(DegreesToRadians(360))), 1000));
+	EXPECT_EQ(round(-Vec2{22, 30}, 1000), round(Rotate(Vec2{22, 30}, Rot(DegreesToRadians(180))), 1000));
+}

@@ -61,6 +61,15 @@ constexpr inline T Abs(T a)
 	return (a >= T(0)) ? a : -a;
 }
 
+template <typename T>
+inline T round(T value, unsigned precision = 1000000);
+
+template <>
+inline float_t round(float_t value, unsigned precision)
+{
+	return std::round(value * precision) / precision;
+}
+
 /// A 2D column vector.
 struct Vec2
 {
@@ -115,6 +124,12 @@ struct Vec2
 /// An all zero Vec2 value.
 /// @see Vec2.
 constexpr auto Vec2_zero = Vec2{0, 0};
+
+template <>
+inline Vec2 round(Vec2 value, unsigned precision)
+{
+	return Vec2{std::round(value.x * precision) / precision, std::round(value.y * precision) / precision};
+}
 
 /// A 2D column vector with 3 elements.
 struct Vec3

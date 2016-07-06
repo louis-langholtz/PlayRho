@@ -11,11 +11,6 @@
 
 using namespace box2d;
 
-static inline float_t round(float_t value, unsigned precision = 1000000)
-{
-	return std::round(value * precision) / precision;
-}
-
 TEST(Rot, sin)
 {
 	Rot rot0(0);
