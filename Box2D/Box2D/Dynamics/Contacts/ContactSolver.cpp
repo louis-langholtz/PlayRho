@@ -193,8 +193,8 @@ void ContactSolver::UpdateVelocityConstraint(ContactVelocityConstraint& vc, cons
 	const auto velB = m_velocities[vc.bodyB.index];
 	
 	const auto worldManifold = [&]() {
-		const auto xfA = GetTransform(posA, pc.bodyA.localCenter);
-		const auto xfB = GetTransform(posB, pc.bodyB.localCenter);
+		const auto xfA = GetTransformation(posA, pc.bodyA.localCenter);
+		const auto xfB = GetTransformation(posB, pc.bodyB.localCenter);
 		return GetWorldManifold(pc.manifold, xfA, pc.radiusA, xfB, pc.radiusB);
 	}();
 	
@@ -646,8 +646,8 @@ static float_t Solve(const ContactPositionConstraint& pc,
 		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 		{
 			const auto psm = [&]() {
-				const auto xfA = GetTransform(posA, localCenterA);
-				const auto xfB = GetTransform(posB, localCenterB);
+				const auto xfA = GetTransformation(posA, localCenterA);
+				const auto xfB = GetTransformation(posB, localCenterB);
 				return GetPSM(pc.manifold, totalRadius, xfA, xfB, j);
 			}();
 			

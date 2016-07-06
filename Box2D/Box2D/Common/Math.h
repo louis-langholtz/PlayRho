@@ -845,14 +845,14 @@ constexpr inline Position operator* (const float_t scalar, const Position& pos)
 	return Position{pos.c * scalar, pos.a * scalar};
 }
 
-constexpr inline Transformation GetTransform(const Vec2& ctr, const Rot& rot, const Vec2& local_ctr) noexcept
+constexpr inline Transformation GetTransformation(const Vec2& ctr, const Rot& rot, const Vec2& local_ctr) noexcept
 {
 	return Transformation{ctr - Rotate(local_ctr, rot), rot};
 }
 
-inline Transformation GetTransform(Position pos, const Vec2& local_ctr) noexcept
+inline Transformation GetTransformation(Position pos, const Vec2& local_ctr) noexcept
 {
-	return GetTransform(pos.c, Rot{pos.a}, local_ctr);
+	return GetTransformation(pos.c, Rot{pos.a}, local_ctr);
 }
 
 inline Position GetPosition(Position pos0, Position pos1, float_t beta)
@@ -864,31 +864,31 @@ inline Position GetPosition(Position pos0, Position pos1, float_t beta)
 /// @param sweep Sweep data to get the transform from.
 /// @param beta Time factor in [0,1], where 0 indicates alpha0.
 /// @return Transformation of the given sweep at the specified time.
-inline Transformation GetTransform(const Sweep& sweep, float_t beta)
+inline Transformation GetTransformation(const Sweep& sweep, float_t beta)
 {
 	assert(beta >= 0);
 	assert(beta <= 1);
-	return GetTransform(GetPosition(sweep.pos0, sweep.pos1, beta), sweep.GetLocalCenter());
+	return GetTransformation(GetPosition(sweep.pos0, sweep.pos1, beta), sweep.GetLocalCenter());
 }
 
 /// Gets the transform at "time" zero.
-/// @note This is like calling GetTransform(sweep, 0.0), except more efficiently.
-/// @sa GetTransform(const Sweep& sweep, float_t beta).
+/// @note This is like calling GetTransformation(sweep, 0.0), except more efficiently.
+/// @sa GetTransformation(const Sweep& sweep, float_t beta).
 /// @param sweep Sweep data to get the transform from.
 /// @return Transformation of the given sweep at time zero.
 inline Transformation GetTransform0(const Sweep& sweep)
 {
-	return GetTransform(sweep.pos0, sweep.GetLocalCenter());
+	return GetTransformation(sweep.pos0, sweep.GetLocalCenter());
 }
 
 /// Gets the transform at "time" one.
-/// @note This is like calling GetTransform(sweep, 1.0), except more efficiently.
-/// @sa GetTransform(const Sweep& sweep, float_t beta).
+/// @note This is like calling GetTransformation(sweep, 1.0), except more efficiently.
+/// @sa GetTransformation(const Sweep& sweep, float_t beta).
 /// @param sweep Sweep data to get the transform from.
 /// @return Transformation of the given sweep at time one.
 inline Transformation GetTransform1(const Sweep& sweep)
 {
-	return GetTransform(sweep.pos1, sweep.GetLocalCenter());
+	return GetTransformation(sweep.pos1, sweep.GetLocalCenter());
 }
 
 constexpr inline float_t DegreesToRadians(float_t value)

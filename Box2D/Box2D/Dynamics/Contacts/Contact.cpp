@@ -148,8 +148,8 @@ void Contact::Update(ContactListener* listener)
 	assert(bodyA != nullptr);
 	assert(bodyB != nullptr);
 
-	const auto xfA = bodyA->GetTransform();
-	const auto xfB = bodyB->GetTransform();
+	const auto xfA = bodyA->GetTransformation();
+	const auto xfB = bodyB->GetTransformation();
 
 	// Is this contact a sensor?
 	const auto sensor = HasSensor();

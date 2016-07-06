@@ -65,8 +65,8 @@ public:
 		assert(proxyA.GetVertexCount() > 0);
 		assert(proxyB.GetVertexCount() > 0);
 		
-		const auto xfA = GetTransform(m_sweepA, t1);
-		const auto xfB = GetTransform(m_sweepB, t1);
+		const auto xfA = GetTransformation(m_sweepA, t1);
+		const auto xfB = GetTransformation(m_sweepB, t1);
 
 		switch (m_type)
 		{
@@ -131,8 +131,8 @@ public:
 	/// @return indexes of proxy A's and proxy B's vertices that have the minimum distance between them and what that distance is.
 	Separation FindMinSeparation(float_t t) const
 	{
-		const auto xfA = GetTransform(m_sweepA, t);
-		const auto xfB = GetTransform(m_sweepB, t);
+		const auto xfA = GetTransformation(m_sweepA, t);
+		const auto xfB = GetTransformation(m_sweepB, t);
 
 		switch (m_type)
 		{
@@ -152,8 +152,8 @@ public:
 	/// @return Separation distance.
 	float_t Evaluate(IndexPair indexPair, float_t t) const
 	{
-		const auto xfA = GetTransform(m_sweepA, t);
-		const auto xfB = GetTransform(m_sweepB, t);
+		const auto xfA = GetTransformation(m_sweepA, t);
+		const auto xfB = GetTransformation(m_sweepB, t);
 
 		switch (m_type)
 		{
@@ -262,8 +262,8 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA, const Distance
 	for(;;)
 	{
 		{
-			const auto transformA = GetTransform(sweepA, t1);
-			const auto transformB = GetTransform(sweepB, t1);
+			const auto transformA = GetTransformation(sweepA, t1);
+			const auto transformB = GetTransformation(sweepB, t1);
 
 			// Get the distance between shapes. We can also use the results
 			// to get a separating axis.
@@ -298,8 +298,8 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA, const Distance
 
 			for (auto i = decltype(N){0}; i <= N; ++i)
 			{
-				const auto xfA = GetTransform(sweepA, x);
-				const auto xfB = GetTransform(sweepB, x);
+				const auto xfA = GetTransformation(sweepA, x);
+				const auto xfB = GetTransformation(sweepB, x);
 				float_t f = fcn.Evaluate(xfA, xfB) - target;
 
 				printf("%g %g\n", x, f);

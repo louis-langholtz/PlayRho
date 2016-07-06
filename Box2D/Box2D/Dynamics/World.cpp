@@ -911,8 +911,8 @@ void World::DrawJoint(Joint* joint)
 {
 	const auto bodyA = joint->GetBodyA();
 	const auto bodyB = joint->GetBodyB();
-	const auto xf1 = bodyA->GetTransform();
-	const auto xf2 = bodyB->GetTransform();
+	const auto xf1 = bodyA->GetTransformation();
+	const auto xf2 = bodyB->GetTransformation();
 	const auto x1 = xf1.p;
 	const auto x2 = xf2.p;
 	const auto p1 = joint->GetAnchorA();
@@ -961,7 +961,7 @@ void World::DrawDebugData()
 	{
 		for (auto&& b: m_bodies)
 		{
-			const auto xf = b.GetTransform();
+			const auto xf = b.GetTransformation();
 			for (auto&& f: b.GetFixtures())
 			{
 				if (!b.IsActive())
@@ -1045,7 +1045,7 @@ void World::DrawDebugData()
 	{
 		for (auto&& b: m_bodies)
 		{
-			auto xf = b.GetTransform();
+			auto xf = b.GetTransformation();
 			xf.p = b.GetWorldCenter();
 			g_debugDraw->DrawTransform(xf);
 		}

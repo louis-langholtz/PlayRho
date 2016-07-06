@@ -157,7 +157,7 @@ public:
 
 	/// Get the body transform for the body's origin.
 	/// @return the world transform of the body's origin.
-	Transformation GetTransform() const noexcept;
+	Transformation GetTransformation() const noexcept;
 
 	/// Get the world body origin position.
 	/// @return the world position of the body's origin.
@@ -546,7 +546,7 @@ inline BodyType Body::GetType() const noexcept
 	return BodyType::Static;
 }
 
-inline Transformation Body::GetTransform() const noexcept
+inline Transformation Body::GetTransformation() const noexcept
 {
 	return m_xf;
 }

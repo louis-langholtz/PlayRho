@@ -309,12 +309,12 @@ inline void Fixture::SetRestitution(float_t restitution)
 
 inline bool Fixture::TestPoint(const Vec2& p) const
 {
-	return m_shape->TestPoint(m_body->GetTransform(), p);
+	return m_shape->TestPoint(m_body->GetTransformation(), p);
 }
 
 inline bool Fixture::RayCast(RayCastOutput* output, const RayCastInput& input, child_count_t childIndex) const
 {
-	return m_shape->RayCast(output, input, m_body->GetTransform(), childIndex);
+	return m_shape->RayCast(output, input, m_body->GetTransformation(), childIndex);
 }
 
 inline MassData Fixture::GetMassData() const

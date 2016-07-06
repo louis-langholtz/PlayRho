@@ -45,7 +45,7 @@ public:
 	void DrawFixture(Fixture* fixture)
 	{
 		Color color(0.95f, 0.95f, 0.6f);
-		const Transformation& xf = fixture->GetBody()->GetTransform();
+		const Transformation& xf = fixture->GetBody()->GetTransformation();
 
 		switch (fixture->GetType())
 		{
@@ -93,7 +93,7 @@ public:
 		Body* body = fixture->GetBody();
 		Shape* shape = fixture->GetShape();
 
-		bool overlap = TestOverlap(*shape, 0, m_circle, 0, body->GetTransform(), m_transform);
+		bool overlap = TestOverlap(*shape, 0, m_circle, 0, body->GetTransformation(), m_transform);
 
 		if (overlap)
 		{

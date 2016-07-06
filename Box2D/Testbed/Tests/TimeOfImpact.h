@@ -55,7 +55,7 @@ public:
 		Vec2 vertices[MaxPolygonVertices];
 
 		{
-			const auto transformA = GetTransform(sweepA, 0.0f);
+			const auto transformA = GetTransformation(sweepA, 0.0f);
 			const auto vertexCount = m_shapeA.GetVertexCount();
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
@@ -65,7 +65,7 @@ public:
 		}
 
 		{
-			const auto transformB = GetTransform(sweepB, 0.0f);
+			const auto transformB = GetTransformation(sweepB, 0.0f);
 			const auto vertexCount = m_shapeB.GetVertexCount();
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
@@ -75,7 +75,7 @@ public:
 		}
 
 		{
-			const auto transformB = GetTransform(sweepB, output.get_t());
+			const auto transformB = GetTransformation(sweepB, output.get_t());
 			const auto vertexCount = m_shapeB.GetVertexCount();
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
@@ -85,7 +85,7 @@ public:
 		}
 
 		{
-			const auto transformB = GetTransform(sweepB, 1.0f);
+			const auto transformB = GetTransformation(sweepB, 1.0f);
 			const auto vertexCount = m_shapeB.GetVertexCount();
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
@@ -97,7 +97,7 @@ public:
 #if 0
 		for (float_t t = 0.0f; t < 1.0f; t += 0.1f)
 		{
-			transformB = sweepB.GetTransform(t);
+			transformB = sweepB.GetTransformation(t);
 			for (int32 i = 0; i < m_shapeB.GetVertexCount(); ++i)
 			{
 				vertices[i] = Mul(transformB, m_shapeB.GetVertex(i));

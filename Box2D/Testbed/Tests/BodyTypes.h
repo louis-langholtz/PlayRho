@@ -133,7 +133,7 @@ public:
 		// Drive the kinematic body.
 		if (m_platform->GetType() == BodyType::Kinematic)
 		{
-			Vec2 p = m_platform->GetTransform().p;
+			Vec2 p = m_platform->GetTransformation().p;
 			Vec2 v = m_platform->GetLinearVelocity();
 
 			if ((p.x < -10.0f && v.x < 0.0f) ||

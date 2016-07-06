@@ -288,7 +288,7 @@ inline WorldManifold Contact::GetWorldManifold() const
 	const auto bodyB = m_fixtureB->GetBody();
 	const auto shapeA = m_fixtureA->GetShape();
 	const auto shapeB = m_fixtureB->GetShape();
-	return box2d::GetWorldManifold(m_manifold, bodyA->GetTransform(), shapeA->GetRadius(), bodyB->GetTransform(), shapeB->GetRadius());
+	return box2d::GetWorldManifold(m_manifold, bodyA->GetTransformation(), shapeA->GetRadius(), bodyB->GetTransformation(), shapeB->GetRadius());
 }
 
 inline void Contact::SetEnabled(bool flag) noexcept
