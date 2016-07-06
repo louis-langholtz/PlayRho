@@ -58,8 +58,8 @@ bool EdgeShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 	BOX2D_NOT_USED(childIndex);
 
 	// Put the ray into the edge's frame of reference.
-	const auto p1 = MulT(xf.q, input.p1 - xf.p);
-	const auto p2 = MulT(xf.q, input.p2 - xf.p);
+	const auto p1 = InverseRotate(input.p1 - xf.p, xf.q);
+	const auto p2 = InverseRotate(input.p2 - xf.p, xf.q);
 	const auto d = p2 - p1;
 
 	const auto v1 = m_vertex1;

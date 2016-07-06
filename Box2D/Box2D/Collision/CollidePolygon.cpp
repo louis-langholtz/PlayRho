@@ -76,7 +76,7 @@ static inline ClipArray FindIncidentEdge(PolygonShape::vertex_count_t index1,
 	auto index_of_min_dot = decltype(count2){0};
 	{
 		// Get the normal of the reference edge in shape2's frame.
-		const auto normal1 = MulT(xf2.q, Rotate(shape1.GetNormal(index1), xf1.q));
+		const auto normal1 = InverseRotate(Rotate(shape1.GetNormal(index1), xf1.q), xf2.q);
 		
 		auto minDot = MaxFloat;
 		for (auto i = decltype(count2){0}; i < count2; ++i)

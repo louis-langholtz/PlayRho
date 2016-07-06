@@ -712,9 +712,9 @@ constexpr inline Vec2 Rotate(const Vec2& vector, const Rot& angle) noexcept
 }
 
 /// Inverse rotate a vector
-constexpr inline Vec2 MulT(const Rot& q, const Vec2& v) noexcept
+constexpr inline Vec2 InverseRotate(const Vec2& vector, const Rot& angle) noexcept
 {
-	return Vec2{(q.cos() * v.x) + (q.sin() * v.y), (q.cos() * v.y) - (q.sin() * v.x)};
+	return Vec2{(angle.cos() * vector.x) + (angle.sin() * vector.y), (angle.cos() * vector.y) - (angle.sin() * vector.x)};
 }
 
 constexpr inline Vec2 Mul(const Transformation& T, const Vec2& v) noexcept
@@ -744,7 +744,7 @@ constexpr inline Transformation Mul(const Transformation& A, const Transformatio
 //    = A.q' * B.q * v1 + A.q' * (B.p - A.p)
 constexpr inline Transformation MulT(const Transformation& A, const Transformation& B) noexcept
 {
-	return Transformation{MulT(A.q, B.p - A.p), B.q - A.q};
+	return Transformation{InverseRotate(B.p - A.p, A.q), B.q - A.q};
 }
 
 template <>

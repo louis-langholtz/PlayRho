@@ -642,7 +642,7 @@ inline Vec2 Body::GetLocalPoint(const Vec2& worldPoint) const noexcept
 
 inline Vec2 Body::GetLocalVector(const Vec2& worldVector) const noexcept
 {
-	return MulT(m_xf.q, worldVector);
+	return InverseRotate(worldVector, m_xf.q);
 }
 
 inline Vec2 Body::GetLinearVelocityFromWorldPoint(const Vec2& worldPoint) const noexcept

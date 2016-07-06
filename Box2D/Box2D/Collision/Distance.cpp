@@ -617,8 +617,8 @@ DistanceOutput Distance(SimplexCache& cache,
 		++iter;
 		
 		// Compute a tentative new simplex vertex using support points.
-		const auto indexA = proxyA.GetSupportIndex(MulT(transformA.q, -d));
-		const auto indexB = proxyB.GetSupportIndex(MulT(transformB.q, d));
+		const auto indexA = proxyA.GetSupportIndex(InverseRotate(-d, transformA.q));
+		const auto indexB = proxyB.GetSupportIndex(InverseRotate(d, transformB.q));
 
 		// Check for duplicate support points. This is the main termination criteria.
 		// If there's a duplicate support point, code must exit loop to avoid cycling.

@@ -250,7 +250,7 @@ void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 
 bool PolygonShape::TestPoint(const Transformation& xf, const Vec2& p) const
 {
-	const auto pLocal = MulT(xf.q, p - xf.p);
+	const auto pLocal = InverseRotate(p - xf.p, xf.q);
 
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
@@ -270,8 +270,8 @@ bool PolygonShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 	BOX2D_NOT_USED(childIndex);
 
 	// Put the ray into the polygon's frame of reference.
-	const auto p1 = MulT(xf.q, input.p1 - xf.p);
-	const auto p2 = MulT(xf.q, input.p2 - xf.p);
+	const auto p1 = InverseRotate(input.p1 - xf.p, xf.q);
+	const auto p2 = InverseRotate(input.p2 - xf.p, xf.q);
 	const auto d = p2 - p1;
 
 	auto lower = float_t{0};

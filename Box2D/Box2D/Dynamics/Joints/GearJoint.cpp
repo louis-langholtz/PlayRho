@@ -88,7 +88,7 @@ GearJoint::GearJoint(const GearJointDef& def)
 		m_localAxisC = prismatic->m_localXAxisA;
 
 		const auto pC = m_localAnchorC;
-		const auto pA = MulT(xfC.q, Rotate(m_localAnchorA, xfA.q) + (xfA.p - xfC.p));
+		const auto pA = InverseRotate(Rotate(m_localAnchorA, xfA.q) + (xfA.p - xfC.p), xfC.q);
 		coordinateA = Dot(pA - pC, m_localAxisC);
 	}
 
@@ -120,7 +120,7 @@ GearJoint::GearJoint(const GearJointDef& def)
 		m_localAxisD = prismatic->m_localXAxisA;
 
 		const auto pD = m_localAnchorD;
-		const auto pB = MulT(xfD.q, Rotate(m_localAnchorB, xfB.q) + (xfB.p - xfD.p));
+		const auto pB = InverseRotate(Rotate(m_localAnchorB, xfB.q) + (xfB.p - xfD.p), xfD.q);
 		coordinateB = Dot(pB - pD, m_localAxisD);
 	}
 
@@ -315,7 +315,7 @@ bool GearJoint::SolvePositionConstraints(const SolverData& data)
 		mass += m_mC + m_mA + m_iC * Square(JwC) + m_iA * Square(JwA);
 
 		const auto pC = m_localAnchorC - m_lcC;
-		const auto pA = MulT(qC, rA + (cA - cC));
+		const auto pA = InverseRotate(rA + (cA - cC), qC);
 		coordinateA = Dot(pA - pC, m_localAxisC);
 	}
 
@@ -339,7 +339,7 @@ bool GearJoint::SolvePositionConstraints(const SolverData& data)
 		mass += Square(m_ratio) * (m_mD + m_mB) + m_iD * Square(JwD) + m_iB * Square(JwB);
 
 		const auto pD = m_localAnchorD - m_lcD;
-		const auto pB = MulT(qD, rB + (cB - cD));
+		const auto pB = InverseRotate(rB + (cB - cD), qD);
 		coordinateB = Dot(pB - pD, m_localAxisD);
 	}
 
