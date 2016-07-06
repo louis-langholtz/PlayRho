@@ -25,8 +25,8 @@ namespace box2d {
 
 Manifold CollideShapes(const CircleShape& shapeA, const Transformation& xfA, const CircleShape& shapeB, const Transformation& xfB)
 {
-	const auto pA = Mul(shapeA.GetPosition(), xfA);
-	const auto pB = Mul(shapeB.GetPosition(), xfB);
+	const auto pA = Transform(shapeA.GetPosition(), xfA);
+	const auto pB = Transform(shapeB.GetPosition(), xfB);
 	const auto d = pB - pA;
 	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
 
@@ -40,7 +40,7 @@ Manifold CollideShapes(const CircleShape& shapeA, const Transformation& xfA, con
 Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, const CircleShape& shapeB, const Transformation& xfB)
 {
 	// Compute circle position in the frame of the polygon.
-	const auto cLocal = MulT(xfA, Mul(shapeB.GetPosition(), xfB)); ///< Center of the circle in the frame of the polygon.
+	const auto cLocal = MulT(xfA, Transform(shapeB.GetPosition(), xfB)); ///< Center of the circle in the frame of the polygon.
 
 	// Find the min separating edge.
 	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();

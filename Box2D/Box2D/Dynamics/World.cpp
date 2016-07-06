@@ -857,7 +857,7 @@ void World::DrawShape(const Fixture* fixture, const Transformation& xf, const Co
 	case Shape::e_circle:
 		{
 			const auto circle = static_cast<const CircleShape*>(fixture->GetShape());
-			const auto center = Mul(circle->GetPosition(), xf);
+			const auto center = Transform(circle->GetPosition(), xf);
 			const auto radius = circle->GetRadius();
 			const auto axis = Rotate(Vec2{float_t{1}, float_t{0}}, xf.q);
 			g_debugDraw->DrawSolidCircle(center, radius, axis, color);
@@ -867,8 +867,8 @@ void World::DrawShape(const Fixture* fixture, const Transformation& xf, const Co
 	case Shape::e_edge:
 		{
 			const auto edge = static_cast<const EdgeShape*>(fixture->GetShape());
-			const auto v1 = Mul(edge->GetVertex1(), xf);
-			const auto v2 = Mul(edge->GetVertex2(), xf);
+			const auto v1 = Transform(edge->GetVertex1(), xf);
+			const auto v2 = Transform(edge->GetVertex2(), xf);
 			g_debugDraw->DrawSegment(v1, v2, color);
 		}
 		break;
@@ -877,10 +877,10 @@ void World::DrawShape(const Fixture* fixture, const Transformation& xf, const Co
 		{
 			const auto chain = static_cast<const ChainShape*>(fixture->GetShape());
 			const auto count = chain->GetVertexCount();
-			auto v1 = Mul(chain->GetVertex(0), xf);
+			auto v1 = Transform(chain->GetVertex(0), xf);
 			for (auto i = decltype(count){1}; i < count; ++i)
 			{
-				const auto v2 = Mul(chain->GetVertex(i), xf);
+				const auto v2 = Transform(chain->GetVertex(i), xf);
 				g_debugDraw->DrawSegment(v1, v2, color);
 				g_debugDraw->DrawCircle(v1, float_t(0.05), color);
 				v1 = v2;
@@ -896,7 +896,7 @@ void World::DrawShape(const Fixture* fixture, const Transformation& xf, const Co
 			Vec2 vertices[MaxPolygonVertices];
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
-				vertices[i] = Mul(poly->GetVertex(i), xf);
+				vertices[i] = Transform(poly->GetVertex(i), xf);
 			}
 			g_debugDraw->DrawSolidPolygon(vertices, vertexCount, color);
 		}

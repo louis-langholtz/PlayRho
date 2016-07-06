@@ -60,7 +60,7 @@ void PolygonShape::SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t 
 	// Transformation vertices and normals.
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
-		m_vertices[i] = Mul(m_vertices[i], xf);
+		m_vertices[i] = Transform(m_vertices[i], xf);
 		m_normals[i] = Rotate(m_normals[i], xf.q);
 	}
 }
@@ -342,12 +342,12 @@ AABB PolygonShape::ComputeAABB(const Transformation& xf, child_count_t childInde
 	
 	assert(m_count > 0);
 
-	auto lower = Mul(m_vertices[0], xf);
+	auto lower = Transform(m_vertices[0], xf);
 	auto upper = lower;
 
 	for (auto i = decltype(m_count){1}; i < m_count; ++i)
 	{
-		const auto v = Mul(m_vertices[i], xf);
+		const auto v = Transform(m_vertices[i], xf);
 		lower = Min(lower, v);
 		upper = Max(upper, v);
 	}

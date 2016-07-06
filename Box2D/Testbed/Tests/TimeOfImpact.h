@@ -59,7 +59,7 @@ public:
 			const auto vertexCount = m_shapeA.GetVertexCount();
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
-				vertices[i] = Mul(m_shapeA.GetVertex(i), transformA);
+				vertices[i] = Transform(m_shapeA.GetVertex(i), transformA);
 			}
 			g_debugDraw.DrawPolygon(vertices, vertexCount, Color(0.9f, 0.9f, 0.9f));
 		}
@@ -69,7 +69,7 @@ public:
 			const auto vertexCount = m_shapeB.GetVertexCount();
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
-				vertices[i] = Mul(m_shapeB.GetVertex(i), transformB);
+				vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
 			}
 			g_debugDraw.DrawPolygon(vertices, vertexCount, Color(0.5f, 0.9f, 0.5f));
 		}
@@ -79,7 +79,7 @@ public:
 			const auto vertexCount = m_shapeB.GetVertexCount();
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
-				vertices[i] = Mul(m_shapeB.GetVertex(i), transformB);
+				vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
 			}
 			g_debugDraw.DrawPolygon(vertices, vertexCount, Color(0.5f, 0.7f, 0.9f));
 		}
@@ -89,7 +89,7 @@ public:
 			const auto vertexCount = m_shapeB.GetVertexCount();
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
-				vertices[i] = Mul(m_shapeB.GetVertex(i), transformB);
+				vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
 			}
 			g_debugDraw.DrawPolygon(vertices, vertexCount, Color(0.9f, 0.5f, 0.5f));
 		}
@@ -100,7 +100,7 @@ public:
 			transformB = sweepB.GetTransformation(t);
 			for (int32 i = 0; i < m_shapeB.GetVertexCount(); ++i)
 			{
-				vertices[i] = Mul(transformB, m_shapeB.GetVertex(i));
+				vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
 			}
 			g_debugDraw.DrawPolygon(vertices, m_shapeB.GetVertexCount(), Color(0.9f, 0.5f, 0.5f));
 		}

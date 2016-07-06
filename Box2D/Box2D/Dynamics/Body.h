@@ -627,7 +627,7 @@ inline MassData Body::GetMassData() const noexcept
 
 inline Vec2 Body::GetWorldPoint(const Vec2& localPoint) const noexcept
 {
-	return Mul(localPoint, m_xf);
+	return Transform(localPoint, m_xf);
 }
 
 inline Vec2 Body::GetWorldVector(const Vec2& localVector) const noexcept

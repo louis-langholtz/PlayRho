@@ -311,8 +311,8 @@ static SimplexVertex GetSimplexVertex(IndexPair indexPair,
 									  const DistanceProxy& proxyA, const Transformation& xfA,
 									  const DistanceProxy& proxyB, const Transformation& xfB)
 {
-	const auto wA = Mul(proxyA.GetVertex(indexPair.a), xfA);
-	const auto wB = Mul(proxyB.GetVertex(indexPair.b), xfB);
+	const auto wA = Transform(proxyA.GetVertex(indexPair.a), xfA);
+	const auto wB = Transform(proxyB.GetVertex(indexPair.b), xfB);
 	return SimplexVertex{wA, indexPair.a, wB, indexPair.b, float_t{0}};	
 }
 
@@ -628,8 +628,8 @@ DistanceOutput Distance(SimplexCache& cache,
 		}
 
 		// New vertex is ok and needed.
-		const auto wA = Mul(proxyA.GetVertex(indexA), transformA);
-		const auto wB = Mul(proxyB.GetVertex(indexB), transformB);
+		const auto wA = Transform(proxyA.GetVertex(indexA), transformA);
+		const auto wB = Transform(proxyB.GetVertex(indexB), transformB);
 		simplex.push_back(SimplexVertex{wA, indexA, wB, indexB, 0});
 	}
 

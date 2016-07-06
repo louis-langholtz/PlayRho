@@ -14,8 +14,8 @@ namespace box2d
 static inline PositionSolverManifold GetPSM_ForCircles(Vec2 lp, Vec2 plp, float_t totalRadius,
 													   const Transformation& xfA, const Transformation& xfB)
 {
-	const auto pointA = Mul(lp, xfA);
-	const auto pointB = Mul(plp, xfB);
+	const auto pointA = Transform(lp, xfA);
+	const auto pointB = Transform(plp, xfB);
 	const auto delta = pointB - pointA;
 	const auto normal = GetUnitVector(delta);
 	const auto point = (pointA + pointB) / float_t{2};
@@ -27,8 +27,8 @@ static inline PositionSolverManifold GetPSM_ForFaceA(Vec2 lp, Vec2 plp, float_t 
 													 const Transformation& xfA, const Transformation& xfB,
 													 Vec2 ln)
 {
-	const auto planePoint = Mul(lp, xfA);
-	const auto clipPoint = Mul(plp, xfB);
+	const auto planePoint = Transform(lp, xfA);
+	const auto clipPoint = Transform(plp, xfB);
 	const auto normal = Rotate(ln, xfA.q);
 	const auto separation = Dot(clipPoint - planePoint, normal) - totalRadius;
 	return PositionSolverManifold{normal, clipPoint, separation};
@@ -38,8 +38,8 @@ static inline PositionSolverManifold GetPSM_ForFaceB(Vec2 lp, Vec2 plp, float_t 
 													 const Transformation& xfA, const Transformation& xfB,
 													 Vec2 ln)
 {
-	const auto planePoint = Mul(lp, xfB);
-	const auto clipPoint = Mul(plp, xfA);
+	const auto planePoint = Transform(lp, xfB);
+	const auto clipPoint = Transform(plp, xfA);
 	const auto normal = Rotate(ln, xfB.q);
 	const auto separation = Dot(clipPoint - planePoint, normal) - totalRadius;
 	// Negate normal to ensure the PSM normal points from A to B

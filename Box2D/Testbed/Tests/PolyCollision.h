@@ -62,7 +62,7 @@ public:
 				const auto vertexCount = m_polygonA.GetVertexCount();
 				for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 				{
-					v[i] = Mul(m_polygonA.GetVertex(i), m_transformA);
+					v[i] = Transform(m_polygonA.GetVertex(i), m_transformA);
 				}
 				g_debugDraw.DrawPolygon(v, vertexCount, color);
 			}
@@ -71,7 +71,7 @@ public:
 				const auto vertexCount = m_polygonB.GetVertexCount();
 				for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 				{
-					v[i] = Mul(m_polygonB.GetVertex(i), m_transformB);
+					v[i] = Transform(m_polygonB.GetVertex(i), m_transformB);
 				}
 				g_debugDraw.DrawPolygon(v, vertexCount, color);
 			}

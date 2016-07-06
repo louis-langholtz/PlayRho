@@ -455,7 +455,7 @@ public:
 			Vec2 vs[4];
 			for (int32 i = 0; i < 4; ++i)
 			{
-				vs[i] = Mul(xf, shape.m_vertices[i]);
+				vs[i] = Transform(shape.m_vertices[i], xf);
 			}
 
 			g_debugDraw.DrawPolygon(vs, 4, color);
