@@ -355,7 +355,7 @@ void Body::ResetMassData()
 
 	// Move center of mass.
 	const auto oldCenter = GetWorldCenter();
-	m_sweep = Sweep{Position{Mul(m_xf, localCenter), GetAngle()}, localCenter};
+	m_sweep = Sweep{Position{Mul(localCenter, m_xf), GetAngle()}, localCenter};
 
 	// Update center of mass velocity.
 	m_velocity.v += GetReversePerpendicular(GetWorldCenter() - oldCenter) * m_velocity.w;
@@ -392,7 +392,7 @@ void Body::SetMassData(const MassData* massData)
 	// Move center of mass.
 	const auto oldCenter = GetWorldCenter();
 
-	m_sweep = Sweep{Position{Mul(m_xf, massData->center), GetAngle()}, massData->center};
+	m_sweep = Sweep{Position{Mul(massData->center, m_xf), GetAngle()}, massData->center};
 
 	// Update center of mass velocity.
 	m_velocity.v += GetReversePerpendicular(GetWorldCenter() - oldCenter) * m_velocity.w;
@@ -430,7 +430,7 @@ void Body::SetTransform(const Vec2& position, float_t angle)
 	}
 
 	m_xf = Transformation{position, Rot(angle)};
-	m_sweep = Sweep{Position{Mul(m_xf, GetLocalCenter()), angle}, GetLocalCenter()};
+	m_sweep = Sweep{Position{Mul(GetLocalCenter(), m_xf), angle}, GetLocalCenter()};
 
 	auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
 	for (auto&& f: m_fixtures)

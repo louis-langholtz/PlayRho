@@ -67,9 +67,9 @@ public:
 			xf1.p = GetXAxis(xf1.q);
 
 			Vec2 vertices[3];
-			vertices[0] = Mul(xf1, Vec2(-1.0f, float_t{0}));
-			vertices[1] = Mul(xf1, Vec2(1.0f, float_t{0}));
-			vertices[2] = Mul(xf1, Vec2(float_t{0}, 0.5f));
+			vertices[0] = Mul(Vec2(-1.0f, float_t{0}), xf1);
+			vertices[1] = Mul(Vec2(1.0f, float_t{0}), xf1);
+			vertices[2] = Mul(Vec2(float_t{0}, 0.5f), xf1);
 			
 			PolygonShape poly1;
 			poly1.Set(vertices, 3);
@@ -82,9 +82,9 @@ public:
 			xf2.q = Rot(-0.3524f * Pi);
 			xf2.p = -GetXAxis(xf2.q);
 
-			vertices[0] = Mul(xf2, Vec2(-1.0f, float_t{0}));
-			vertices[1] = Mul(xf2, Vec2(1.0f, float_t{0}));
-			vertices[2] = Mul(xf2, Vec2(float_t{0}, 0.5f));
+			vertices[0] = Mul(Vec2(-1.0f, float_t{0}), xf2);
+			vertices[1] = Mul(Vec2(1.0f, float_t{0}), xf2);
+			vertices[2] = Mul(Vec2(float_t{0}, 0.5f), xf2);
 			
 			PolygonShape poly2;
 			poly2.Set(vertices, 3);

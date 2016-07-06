@@ -32,8 +32,8 @@ static inline WorldManifold GetWorldManifoldForCircles(const Manifold& manifold,
 	{
 		case 1:
 		{
-			const auto pointA = Mul(xfA, manifold.GetLocalPoint());
-			const auto pointB = Mul(xfB, manifold.GetPoint(0).localPoint);
+			const auto pointA = Mul(manifold.GetLocalPoint(), xfA);
+			const auto pointB = Mul(manifold.GetPoint(0).localPoint, xfB);
 			const auto delta = pointB - pointA;
 			const auto normal = (LengthSquared(delta) > Square(BOX2D_MAGIC(Epsilon)))?
 				GetUnitVector(delta): Vec2{float_t{1}, float_t{0}};
@@ -55,9 +55,9 @@ static inline WorldManifold GetWorldManifoldForFaceA(const Manifold& manifold,
 													 const Transformation& xfB, const float_t radiusB)
 {
 	const auto normal = Rotate(manifold.GetLocalNormal(), xfA.q);
-	const auto planePoint = Mul(xfA, manifold.GetLocalPoint());
+	const auto planePoint = Mul(manifold.GetLocalPoint(), xfA);
 	const auto pointFn = [&](Manifold::size_type index) {
-		const auto clipPoint = Mul(xfB, manifold.GetPoint(index).localPoint);
+		const auto clipPoint = Mul(manifold.GetPoint(index).localPoint, xfB);
 		const auto cA = clipPoint + (radiusA - Dot(clipPoint - planePoint, normal)) * normal;
 		const auto cB = clipPoint - (radiusB * normal);
 		return PointSeparation{(cA + cB) / float_t{2}, Dot(cB - cA, normal)};
@@ -82,9 +82,9 @@ static inline WorldManifold GetWorldManifoldForFaceB(const Manifold& manifold,
 													 const Transformation& xfB, const float_t radiusB)
 {
 	const auto normal = Rotate(manifold.GetLocalNormal(), xfB.q);
-	const auto planePoint = Mul(xfB, manifold.GetLocalPoint());
+	const auto planePoint = Mul(manifold.GetLocalPoint(), xfB);
 	const auto pointFn = [&](Manifold::size_type index) {
-		const auto clipPoint = Mul(xfA, manifold.GetPoint(index).localPoint);
+		const auto clipPoint = Mul(manifold.GetPoint(index).localPoint, xfA);
 		const auto cB = clipPoint + (radiusB - Dot(clipPoint - planePoint, normal)) * normal;
 		const auto cA = clipPoint - (radiusA * normal);
 		return PointSeparation{(cA + cB) / float_t{2}, Dot(cA - cB, normal)};

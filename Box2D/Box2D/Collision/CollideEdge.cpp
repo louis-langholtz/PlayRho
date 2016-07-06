@@ -43,7 +43,7 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transformation& xfA, const
 	 */
 
 	// Compute circle in frame of edge
-	const auto Q = MulT(xfA, Mul(xfB, shapeB.GetPosition())); ///< Circle's position in frame of edge.
+	const auto Q = MulT(xfA, Mul(shapeB.GetPosition(), xfB)); ///< Circle's position in frame of edge.
 	
 	const auto A = shapeA.GetVertex1(); ///< Edge shape's vertex 1.
 	const auto B = shapeA.GetVertex2(); ///< Edge shape's vertex 2.
@@ -207,7 +207,7 @@ inline TempPolygon::TempPolygon(const PolygonShape& shape, const Transformation&
 	const auto num_vertices = shape.GetVertexCount();
 	for (auto i = decltype(num_vertices){0}; i < num_vertices; ++i)
 	{
-		Append(Mul(xf, shape.GetVertex(i)), Rotate(shape.GetNormal(i), xf.q));
+		Append(Mul(shape.GetVertex(i), xf), Rotate(shape.GetNormal(i), xf.q));
 	}	
 }
 
@@ -543,7 +543,7 @@ private:
 
 Manifold EPCollider::Collide(const EdgeShape& shapeA, const PolygonShape& shapeB) const
 {
-	return Collide(EdgeInfo{shapeA, Mul(m_xf, shapeB.GetCentroid())}, shapeB);
+	return Collide(EdgeInfo{shapeA, Mul(shapeB.GetCentroid(), m_xf)}, shapeB);
 }
 
 // Algorithm:

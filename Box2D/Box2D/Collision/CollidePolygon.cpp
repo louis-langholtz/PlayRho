@@ -43,7 +43,7 @@ static EdgeSeparation FindMaxSeparation(const PolygonShape& shape1, const Transf
 		{
 			// Get shape1 normal in frame2.
 			const auto n = Rotate(shape1.GetNormal(i), xf.q);
-			const auto v1 = Mul(xf, shape1.GetVertex(i));
+			const auto v1 = Mul(shape1.GetVertex(i), xf);
 
 			// Find deepest point for normal i.
 			auto min_sij = MaxFloat;
@@ -95,8 +95,8 @@ static inline ClipArray FindIncidentEdge(PolygonShape::vertex_count_t index1,
 	const auto i2 = static_cast<decltype(i1)>((i1 + 1) % count2);
 
 	return ClipArray{{
-		{Mul(xf2, shape2.GetVertex(i1)), ContactFeature{ContactFeature::e_face, index1, ContactFeature::e_vertex, i1}},
-		{Mul(xf2, shape2.GetVertex(i2)), ContactFeature{ContactFeature::e_face, index1, ContactFeature::e_vertex, i2}}
+		{Mul(shape2.GetVertex(i1), xf2), ContactFeature{ContactFeature::e_face, index1, ContactFeature::e_vertex, i1}},
+		{Mul(shape2.GetVertex(i2), xf2), ContactFeature{ContactFeature::e_face, index1, ContactFeature::e_vertex, i2}}
 	}};
 }
 
@@ -170,8 +170,8 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, co
 	const auto tangent = Rotate(localTangent, xf1.q);
 	const auto normal = GetForwardPerpendicular(tangent);
 	
-	v11 = Mul(xf1, v11);
-	v12 = Mul(xf1, v12);
+	v11 = Mul(v11, xf1);
+	v12 = Mul(v12, xf1);
 
 	// Face offset.
 	const auto frontOffset = Dot(normal, v11);

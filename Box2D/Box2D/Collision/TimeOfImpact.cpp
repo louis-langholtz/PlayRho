@@ -74,8 +74,8 @@ public:
 		{
 			const auto localPointA = proxyA.GetVertex(cache.GetIndexA(0));
 			const auto localPointB = proxyB.GetVertex(cache.GetIndexB(0));
-			const auto pointA = Mul(xfA, localPointA);
-			const auto pointB = Mul(xfB, localPointB);
+			const auto pointA = Mul(localPointA, xfA);
+			const auto pointB = Mul(localPointB, xfB);
 			m_axis = GetUnitVector(pointB - pointA);
 			break;
 		}
@@ -89,10 +89,10 @@ public:
 			const auto normal = Rotate(m_axis, xfB.q);
 
 			m_localPoint = (localPointB1 + localPointB2) / float_t(2);
-			const auto pointB = Mul(xfB, m_localPoint);
+			const auto pointB = Mul(m_localPoint, xfB);
 
 			const auto localPointA = proxyA.GetVertex(cache.GetIndexA(0));
-			const auto pointA = Mul(xfA, localPointA);
+			const auto pointA = Mul(localPointA, xfA);
 
 			auto s = Dot(pointA - pointB, normal);
 			if (s < float_t{0})
@@ -111,10 +111,10 @@ public:
 			const auto normal = Rotate(m_axis, xfA.q);
 
 			m_localPoint = (localPointA1 + localPointA2) / float_t(2);
-			const auto pointA = Mul(xfA, m_localPoint);
+			const auto pointA = Mul(m_localPoint, xfA);
 
 			const auto localPointB = proxyB.GetVertex(cache.GetIndexB(0));
-			const auto pointB = Mul(xfB, localPointB);
+			const auto pointB = Mul(localPointB, xfB);
 
 			auto s = Dot(pointB - pointA, normal);
 			if (s < float_t{0})
@@ -177,8 +177,8 @@ private:
 		const auto indexA = m_proxyA.GetSupportIndex(InverseRotate(m_axis, xfA.q));
 		const auto indexB = m_proxyB.GetSupportIndex(InverseRotate(-m_axis, xfB.q));
 		
-		const auto pointA = Mul(xfA, m_proxyA.GetVertex(indexA));
-		const auto pointB = Mul(xfB, m_proxyB.GetVertex(indexB));
+		const auto pointA = Mul(m_proxyA.GetVertex(indexA), xfA);
+		const auto pointB = Mul(m_proxyB.GetVertex(indexB), xfB);
 		
 		return Separation{IndexPair{indexA, indexB}, Dot(pointB - pointA, m_axis)};
 	}
@@ -187,9 +187,9 @@ private:
 	{
 		const auto normal = Rotate(m_axis, xfA.q);
 		const auto indexA = static_cast<DistanceProxy::size_type>(-1);
-		const auto pointA = Mul(xfA, m_localPoint);
+		const auto pointA = Mul(m_localPoint, xfA);
 		const auto indexB = m_proxyB.GetSupportIndex(InverseRotate(-normal, xfB.q));
-		const auto pointB = Mul(xfB, m_proxyB.GetVertex(indexB));
+		const auto pointB = Mul(m_proxyB.GetVertex(indexB), xfB);
 		return Separation{IndexPair{indexA, indexB}, Dot(pointB - pointA, normal)};
 	}
 	
@@ -197,32 +197,32 @@ private:
 	{
 		const auto normal = Rotate(m_axis, xfB.q);
 		const auto indexA = m_proxyA.GetSupportIndex(InverseRotate(-normal, xfA.q));
-		const auto pointA = Mul(xfA, m_proxyA.GetVertex(indexA));
+		const auto pointA = Mul(m_proxyA.GetVertex(indexA), xfA);
 		const auto indexB = static_cast<DistanceProxy::size_type>(-1);
-		const auto pointB = Mul(xfB, m_localPoint);
+		const auto pointB = Mul(m_localPoint, xfB);
 		return Separation{IndexPair{indexA, indexB}, Dot(pointA - pointB, normal)};
 	}
 	
 	float_t EvaluateForPoints(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
 	{
-		const auto pointA = Mul(xfA, m_proxyA.GetVertex(indexPair.a));
-		const auto pointB = Mul(xfB, m_proxyB.GetVertex(indexPair.b));
+		const auto pointA = Mul(m_proxyA.GetVertex(indexPair.a), xfA);
+		const auto pointB = Mul(m_proxyB.GetVertex(indexPair.b), xfB);
 		return Dot(pointB - pointA, m_axis);
 	}
 	
 	float_t EvaluateForFaceA(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
 	{
 		const auto normal = Rotate(m_axis, xfA.q);
-		const auto pointA = Mul(xfA, m_localPoint);
-		const auto pointB = Mul(xfB, m_proxyB.GetVertex(indexPair.b));
+		const auto pointA = Mul(m_localPoint, xfA);
+		const auto pointB = Mul(m_proxyB.GetVertex(indexPair.b), xfB);
 		return Dot(pointB - pointA, normal);
 	}
 	
 	float_t EvaluateForFaceB(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
 	{
 		const auto normal = Rotate(m_axis, xfB.q);
-		const auto pointB = Mul(xfB, m_localPoint);
-		const auto pointA = Mul(xfA, m_proxyA.GetVertex(indexPair.a));
+		const auto pointB = Mul(m_localPoint, xfB);
+		const auto pointA = Mul(m_proxyA.GetVertex(indexPair.a), xfA);
 		return Dot(pointA - pointB, normal);
 	}
 	

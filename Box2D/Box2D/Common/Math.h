@@ -717,7 +717,7 @@ constexpr inline Vec2 InverseRotate(const Vec2& vector, const Rot& angle) noexce
 	return Vec2{(angle.cos() * vector.x) + (angle.sin() * vector.y), (angle.cos() * vector.y) - (angle.sin() * vector.x)};
 }
 
-constexpr inline Vec2 Mul(const Transformation& T, const Vec2& v) noexcept
+constexpr inline Vec2 Mul(const Vec2& v, const Transformation& T) noexcept
 {
 	const auto x = (T.q.cos() * v.x - T.q.sin() * v.y) + T.p.x;
 	const auto y = (T.q.sin() * v.x + T.q.cos() * v.y) + T.p.y;

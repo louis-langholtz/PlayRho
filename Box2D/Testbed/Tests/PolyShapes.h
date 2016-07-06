@@ -53,7 +53,7 @@ public:
 			{
 				CircleShape* circle = (CircleShape*)fixture->GetShape();
 
-				Vec2 center = Mul(xf, circle->GetPosition());
+				Vec2 center = Mul(circle->GetPosition(), xf);
 				float_t radius = circle->GetRadius();
 
 				g_debugDraw->DrawCircle(center, radius, color);
@@ -69,7 +69,7 @@ public:
 
 				for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 				{
-					vertices[i] = Mul(xf, poly->GetVertex(i));
+					vertices[i] = Mul(poly->GetVertex(i), xf);
 				}
 
 				g_debugDraw->DrawPolygon(vertices, vertexCount, color);

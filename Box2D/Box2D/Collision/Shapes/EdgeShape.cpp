@@ -110,8 +110,8 @@ AABB EdgeShape::ComputeAABB(const Transformation& xf, child_count_t childIndex) 
 {
 	BOX2D_NOT_USED(childIndex);
 
-	const auto v1 = Mul(xf, m_vertex1);
-	const auto v2 = Mul(xf, m_vertex2);
+	const auto v1 = Mul(m_vertex1, xf);
+	const auto v2 = Mul(m_vertex2, xf);
 
 	const auto lower = Min(v1, v2);
 	const auto upper = Max(v1, v2);

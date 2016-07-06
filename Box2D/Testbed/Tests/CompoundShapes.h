@@ -85,9 +85,9 @@ public:
 			Vec2 vertices[3];
 
 			PolygonShape triangle1;
-			vertices[0] = Mul(xf1, Vec2(-1.0f, 0.0f));
-			vertices[1] = Mul(xf1, Vec2(1.0f, 0.0f));
-			vertices[2] = Mul(xf1, Vec2(0.0f, 0.5f));
+			vertices[0] = Mul(Vec2(-1.0f, 0.0f), xf1);
+			vertices[1] = Mul(Vec2(1.0f, 0.0f), xf1);
+			vertices[2] = Mul(Vec2(0.0f, 0.5f), xf1);
 			triangle1.Set(vertices, 3);
 
 			Transformation xf2;
@@ -95,9 +95,9 @@ public:
 			xf2.p = -GetXAxis(xf2.q);
 
 			PolygonShape triangle2;
-			vertices[0] = Mul(xf2, Vec2(-1.0f, 0.0f));
-			vertices[1] = Mul(xf2, Vec2(1.0f, 0.0f));
-			vertices[2] = Mul(xf2, Vec2(0.0f, 0.5f));
+			vertices[0] = Mul(Vec2(-1.0f, 0.0f), xf2);
+			vertices[1] = Mul(Vec2(1.0f, 0.0f), xf2);
+			vertices[2] = Mul(Vec2(0.0f, 0.5f), xf2);
 			triangle2.Set(vertices, 3);
 
 			for (int32 i = 0; i < 10; ++i)

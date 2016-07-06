@@ -160,8 +160,8 @@ AABB ChainShape::ComputeAABB(const Transformation& xf, child_count_t childIndex)
 
 	const auto i1 = childIndex;
 	const auto i2 = GetNextIndex(childIndex);
-	const auto v1 = Mul(xf, m_vertices[i1]);
-	const auto v2 = Mul(xf, m_vertices[i2]);
+	const auto v1 = Mul(m_vertices[i1], xf);
+	const auto v2 = Mul(m_vertices[i2], xf);
 	return AABB{v1, v2};
 }
 
