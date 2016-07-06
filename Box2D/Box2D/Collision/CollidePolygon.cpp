@@ -29,8 +29,8 @@ struct EdgeSeparation
 };
 
 // Find the max separation between shape1 and shape2 using edge normals from shape1.
-static EdgeSeparation FindMaxSeparation(const PolygonShape& shape1, const Transform& xf1,
-										const PolygonShape& shape2, const Transform& xf2)
+static EdgeSeparation FindMaxSeparation(const PolygonShape& shape1, const Transformation& xf1,
+										const PolygonShape& shape2, const Transformation& xf2)
 {
 	auto maxSeparation = -MaxFloat;
 	auto index_of_max = PolygonShape::vertex_count_t{0};
@@ -64,8 +64,8 @@ static EdgeSeparation FindMaxSeparation(const PolygonShape& shape1, const Transf
 }
 
 static inline ClipArray FindIncidentEdge(PolygonShape::vertex_count_t index1,
-									  const PolygonShape& shape1, const Transform& xf1,
-									  const PolygonShape& shape2, const Transform& xf2)
+									  const PolygonShape& shape1, const Transformation& xf1,
+									  const PolygonShape& shape2, const Transformation& xf2)
 {
 	assert(index1 >= 0);
 	assert(index1 < shape1.GetVertexCount());
@@ -107,7 +107,7 @@ static inline ClipArray FindIncidentEdge(PolygonShape::vertex_count_t index1,
 // Clip
 
 // The normal points from 1 to 2
-Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const PolygonShape& shapeB, const Transform& xfB)
+Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, const PolygonShape& shapeB, const Transformation& xfB)
 {
 	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
 
@@ -125,7 +125,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const P
 
 	const PolygonShape* shape1;	// reference polygon
 	const PolygonShape* shape2;	// incident polygon
-	Transform xf1, xf2;
+	Transformation xf1, xf2;
 	PolygonShape::vertex_count_t edgeIndex; // reference edge
 	bool flip;
 	constexpr auto k_tol = LinearSlop / 10;

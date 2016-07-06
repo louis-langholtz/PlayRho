@@ -146,11 +146,11 @@ public:
 	float_t GetTangentSpeed() const noexcept;
 
 	/// Gets this contact's collision manifold for the given transforms.
-	/// @param xfA Transform for the contact's fixture A shape.
-	/// @param xfB Transform for the contact's fixture B shape.
+	/// @param xfA Transformation for the contact's fixture A shape.
+	/// @param xfB Transformation for the contact's fixture B shape.
 	/// @return Contact manifold for the given transforms with one or more points
 	///   if the shapes are considered touching (collided).
-	virtual Manifold Evaluate(const Transform& xfA, const Transform& xfB) = 0;
+	virtual Manifold Evaluate(const Transformation& xfA, const Transformation& xfB) = 0;
 
 protected:
 	friend class ContactManager;

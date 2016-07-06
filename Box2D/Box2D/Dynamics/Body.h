@@ -157,7 +157,7 @@ public:
 
 	/// Get the body transform for the body's origin.
 	/// @return the world transform of the body's origin.
-	Transform GetTransform() const noexcept;
+	Transformation GetTransform() const noexcept;
 
 	/// Get the world body origin position.
 	/// @return the world position of the body's origin.
@@ -505,7 +505,7 @@ private:
 
 	body_count_t m_islandIndex = InvalidIslandIndex; ///< Index of this body in its island (only valid when in an island). 2-bytes.
 	
-	Transform m_xf; ///< Transform for body origin. 16-bytes.
+	Transformation m_xf; ///< Transformation for body origin. 16-bytes.
 	Sweep m_sweep; ///< Sweep motion for CCD. 36-bytes.
 
 	Velocity m_velocity; ///< Velocity (linear and angular). 12-bytes.
@@ -546,7 +546,7 @@ inline BodyType Body::GetType() const noexcept
 	return BodyType::Static;
 }
 
-inline Transform Body::GetTransform() const noexcept
+inline Transformation Body::GetTransform() const noexcept
 {
 	return m_xf;
 }

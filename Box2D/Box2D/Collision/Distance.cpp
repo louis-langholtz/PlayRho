@@ -308,8 +308,8 @@ static inline WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept
 }
 
 static SimplexVertex GetSimplexVertex(IndexPair indexPair,
-									  const DistanceProxy& proxyA, const Transform& xfA,
-									  const DistanceProxy& proxyB, const Transform& xfB)
+									  const DistanceProxy& proxyA, const Transformation& xfA,
+									  const DistanceProxy& proxyB, const Transformation& xfB)
 {
 	const auto wA = Mul(xfA, proxyA.GetVertex(indexPair.a));
 	const auto wB = Mul(xfB, proxyB.GetVertex(indexPair.b));
@@ -317,8 +317,8 @@ static SimplexVertex GetSimplexVertex(IndexPair indexPair,
 }
 
 static inline Simplex GetSimplex(const SimplexCache& cache,
-						  const DistanceProxy& proxyA, const Transform& xfA,
-						  const DistanceProxy& proxyB, const Transform& xfB)
+						  const DistanceProxy& proxyA, const Transformation& xfA,
+						  const DistanceProxy& proxyB, const Transformation& xfB)
 {
 	Simplex simplex;
 	const auto count = cache.GetCount();
@@ -530,8 +530,8 @@ static inline auto CopyIndexPairs(IndexPairArray& dst, const Simplex& src) noexc
 }
 
 DistanceOutput Distance(SimplexCache& cache,
-						const DistanceProxy& proxyA, const Transform& transformA,
-						const DistanceProxy& proxyB, const Transform& transformB)
+						const DistanceProxy& proxyA, const Transformation& transformA,
+						const DistanceProxy& proxyB, const Transformation& transformB)
 {
 #if defined(DO_GJK_PROFILING)
 	++gjkCalls;

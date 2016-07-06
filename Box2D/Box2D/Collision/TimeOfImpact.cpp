@@ -172,7 +172,7 @@ public:
 	const Type m_type;
 	
 private:
-	Separation FindMinSeparationForPoints(const Transform& xfA, const Transform& xfB) const
+	Separation FindMinSeparationForPoints(const Transformation& xfA, const Transformation& xfB) const
 	{
 		const auto indexA = m_proxyA.GetSupportIndex(MulT(xfA.q,  m_axis));
 		const auto indexB = m_proxyB.GetSupportIndex(MulT(xfB.q, -m_axis));
@@ -183,7 +183,7 @@ private:
 		return Separation{IndexPair{indexA, indexB}, Dot(pointB - pointA, m_axis)};
 	}
 	
-	Separation FindMinSeparationForFaceA(const Transform& xfA, const Transform& xfB) const
+	Separation FindMinSeparationForFaceA(const Transformation& xfA, const Transformation& xfB) const
 	{
 		const auto normal = Rotate(m_axis, xfA.q);
 		const auto indexA = static_cast<DistanceProxy::size_type>(-1);
@@ -193,7 +193,7 @@ private:
 		return Separation{IndexPair{indexA, indexB}, Dot(pointB - pointA, normal)};
 	}
 	
-	Separation FindMinSeparationForFaceB(const Transform& xfA, const Transform& xfB) const
+	Separation FindMinSeparationForFaceB(const Transformation& xfA, const Transformation& xfB) const
 	{
 		const auto normal = Rotate(m_axis, xfB.q);
 		const auto indexA = m_proxyA.GetSupportIndex(MulT(xfA.q, -normal));
@@ -203,14 +203,14 @@ private:
 		return Separation{IndexPair{indexA, indexB}, Dot(pointA - pointB, normal)};
 	}
 	
-	float_t EvaluateForPoints(IndexPair indexPair, const Transform& xfA, const Transform& xfB) const
+	float_t EvaluateForPoints(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
 	{
 		const auto pointA = Mul(xfA, m_proxyA.GetVertex(indexPair.a));
 		const auto pointB = Mul(xfB, m_proxyB.GetVertex(indexPair.b));
 		return Dot(pointB - pointA, m_axis);
 	}
 	
-	float_t EvaluateForFaceA(IndexPair indexPair, const Transform& xfA, const Transform& xfB) const
+	float_t EvaluateForFaceA(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
 	{
 		const auto normal = Rotate(m_axis, xfA.q);
 		const auto pointA = Mul(xfA, m_localPoint);
@@ -218,7 +218,7 @@ private:
 		return Dot(pointB - pointA, normal);
 	}
 	
-	float_t EvaluateForFaceB(IndexPair indexPair, const Transform& xfA, const Transform& xfB) const
+	float_t EvaluateForFaceB(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
 	{
 		const auto normal = Rotate(m_axis, xfB.q);
 		const auto pointB = Mul(xfB, m_localPoint);

@@ -74,7 +74,7 @@ public:
 
 	virtual void DrawSegment(const Vec2& p1, const Vec2& p2, const Color& color) override;
 
-	virtual void DrawTransform(const Transform& xf) override;
+	virtual void DrawTransform(const Transformation& xf) override;
 
     void DrawPoint(const Vec2& p, float_t size, const Color& color);
 

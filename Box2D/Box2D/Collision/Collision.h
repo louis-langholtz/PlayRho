@@ -351,13 +351,13 @@ private:
 /// @param manifold Manifold to use.
 ///   Specifically this uses the manifold's type, local point, local normal, point-count,
 ///   and the indexed-points' local point data.
-/// @param xfA Transform A.
+/// @param xfA Transformation A.
 /// @param radiusA Radius of shape A.
-/// @param xfB Transform B.
+/// @param xfB Transformation B.
 /// @param radiusB Radius of shape B.
 WorldManifold GetWorldManifold(const Manifold& manifold,
-							   const Transform& xfA, const float_t radiusA,
-							   const Transform& xfB, const float_t radiusB);
+							   const Transformation& xfA, const float_t radiusA,
+							   const Transformation& xfB, const float_t radiusB);
 	
 /// This is used for determining the state of contact points.
 enum class PointState
@@ -476,43 +476,43 @@ constexpr inline AABB operator + (const AABB& lhs, Vec2 rhs)
 
 /// Computes the collision manifold between two circles.
 /// @param shapeA Shape A.
-/// @param xfA Transform for shape A.
+/// @param xfA Transformation for shape A.
 /// @param shapeB Shape B.
-/// @param xfB Transform for shape B.
+/// @param xfB Transformation for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-Manifold CollideShapes(const CircleShape& shapeA, const Transform& xfA, const CircleShape& shapeB, const Transform& xfB);
+Manifold CollideShapes(const CircleShape& shapeA, const Transformation& xfA, const CircleShape& shapeB, const Transformation& xfB);
 
 /// Computes the collision manifold between a polygon and a circle.
 /// @param shapeA Shape A.
-/// @param xfA Transform for shape A.
+/// @param xfA Transformation for shape A.
 /// @param shapeB Shape B.
-/// @param xfB Transform for shape B.
+/// @param xfB Transformation for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const CircleShape& shapeB, const Transform& xfB);
+Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, const CircleShape& shapeB, const Transformation& xfB);
 
 /// Computes the collision manifold between two polygons.
 /// @param shapeA Shape A.
-/// @param xfA Transform for shape A.
+/// @param xfA Transformation for shape A.
 /// @param shapeB Shape B.
-/// @param xfB Transform for shape B.
+/// @param xfB Transformation for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const PolygonShape& shapeB, const Transform& xfB);
+Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, const PolygonShape& shapeB, const Transformation& xfB);
 
 /// Computes the collision manifold between an edge and a circle.
 /// @param shapeA Shape A.
-/// @param xfA Transform for shape A.
+/// @param xfA Transformation for shape A.
 /// @param shapeB Shape B.
-/// @param xfB Transform for shape B.
+/// @param xfB Transformation for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const CircleShape& shapeB, const Transform& xfB);
+Manifold CollideShapes(const EdgeShape& shapeA, const Transformation& xfA, const CircleShape& shapeB, const Transformation& xfB);
 
 /// Computes the collision manifold between an edge and a circle.
 /// @param shapeA Shape A.
-/// @param xfA Transform for shape A.
+/// @param xfA Transformation for shape A.
 /// @param shapeB Shape B.
-/// @param xfB Transform for shape B.
+/// @param xfB Transformation for shape B.
 /// @return Manifold value with one or more points if the shapes are touching.
-Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const PolygonShape& shapeB, const Transform& xfB);
+Manifold CollideShapes(const EdgeShape& shapeA, const Transformation& xfA, const PolygonShape& shapeB, const Transformation& xfB);
 
 /// Clip array for ClipSegmentToLine.
 /// @see ClipSegmentToLine.
@@ -533,7 +533,7 @@ ClipArray::size_type ClipSegmentToLine(ClipArray& vOut, const ClipArray& vIn,
 /// Determine if two generic shapes overlap.
 bool TestOverlap(const Shape& shapeA, child_count_t indexA,
 				   const Shape& shapeB, child_count_t indexB,
-				   const Transform& xfA, const Transform& xfB);
+				   const Transformation& xfA, const Transformation& xfB);
 
 // ---------------- Inline Functions ------------------------------------------
 

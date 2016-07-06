@@ -64,14 +64,14 @@ public:
 	void SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t angle);
 
 	/// @see Shape::TestPoint
-	bool TestPoint(const Transform& transform, const Vec2& p) const override;
+	bool TestPoint(const Transformation& transform, const Vec2& p) const override;
 
 	/// Implement Shape.
 	bool RayCast(RayCastOutput* output, const RayCastInput& input,
-					const Transform& transform, child_count_t childIndex) const override;
+					const Transformation& transform, child_count_t childIndex) const override;
 
 	/// @see Shape::ComputeAABB
-	AABB ComputeAABB(const Transform& transform, child_count_t childIndex) const override;
+	AABB ComputeAABB(const Transformation& transform, child_count_t childIndex) const override;
 
 	/// @see Shape::ComputeMass
 	MassData ComputeMass(float_t density) const override;

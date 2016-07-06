@@ -49,7 +49,7 @@ CircleContact::CircleContact(Fixture* fixtureA, Fixture* fixtureB)
 	assert(m_fixtureB->GetType() == Shape::e_circle);
 }
 
-Manifold CircleContact::Evaluate(const Transform& xfA, const Transform& xfB)
+Manifold CircleContact::Evaluate(const Transformation& xfA, const Transformation& xfB)
 {
 	return CollideShapes(*static_cast<CircleShape*>(m_fixtureA->GetShape()), xfA,
 						 *static_cast<CircleShape*>(m_fixtureB->GetShape()), xfB);

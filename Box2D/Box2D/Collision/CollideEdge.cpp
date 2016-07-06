@@ -27,7 +27,7 @@
 namespace box2d {
 
 // This accounts for edge connectivity.
-Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const CircleShape& shapeB, const Transform& xfB)
+Manifold CollideShapes(const EdgeShape& shapeA, const Transformation& xfA, const CircleShape& shapeB, const Transformation& xfB)
 {
 	/*
 	 * Consider:
@@ -164,7 +164,7 @@ public:
 
 	TempPolygon() = default;
 
-	TempPolygon(const PolygonShape& shape, const Transform& xf);
+	TempPolygon(const PolygonShape& shape, const Transformation& xf);
 
 	/// Gets count of appended elements (vertex-normal pairs).
 	/// @return value between 0 and MaxPolygonVertices inclusive.
@@ -202,7 +202,7 @@ private:
 };
 
 /// Gets a TempPolygon object from a given shape in terms of a given transform.
-inline TempPolygon::TempPolygon(const PolygonShape& shape, const Transform& xf)
+inline TempPolygon::TempPolygon(const PolygonShape& shape, const Transformation& xf)
 {
 	const auto num_vertices = shape.GetVertexCount();
 	for (auto i = decltype(num_vertices){0}; i < num_vertices; ++i)
@@ -531,14 +531,14 @@ static inline EPAxis ComputePolygonSeparation(const TempPolygon& shape, const Ed
 class EPCollider
 {
 public:
-	EPCollider(const Transform& xf): m_xf(xf) {}
+	EPCollider(const Transformation& xf): m_xf(xf) {}
 	
 	Manifold Collide(const EdgeShape& shapeA, const PolygonShape& shapeB) const;
 	
 private:
 	Manifold Collide(const EdgeInfo& shapeA, const PolygonShape& shapeB) const;
 
-	const Transform m_xf;
+	const Transformation m_xf;
 };
 
 Manifold EPCollider::Collide(const EdgeShape& shapeA, const PolygonShape& shapeB) const
@@ -678,7 +678,7 @@ Manifold EPCollider::Collide(const EdgeInfo& edgeInfo, const PolygonShape& shape
 	}
 }
 
-Manifold CollideShapes(const EdgeShape& shapeA, const Transform& xfA, const PolygonShape& shapeB, const Transform& xfB)
+Manifold CollideShapes(const EdgeShape& shapeA, const Transformation& xfA, const PolygonShape& shapeB, const Transformation& xfB)
 {
 	const auto collider = EPCollider{MulT(xfA, xfB)};
 	return collider.Collide(shapeA, shapeB);

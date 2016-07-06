@@ -118,7 +118,7 @@ public:
 	/// Test a point for containment in this shape. This only works for convex shapes.
 	/// @param xf the shape world transform.
 	/// @param p a point in world coordinates.
-	virtual bool TestPoint(const Transform& xf, const Vec2& p) const = 0;
+	virtual bool TestPoint(const Transformation& xf, const Vec2& p) const = 0;
 
 	/// Cast a ray against a child shape.
 	/// @param output the ray-cast results.
@@ -126,13 +126,13 @@ public:
 	/// @param transform the transform to be applied to the shape.
 	/// @param childIndex the child shape index
 	virtual bool RayCast(RayCastOutput* output, const RayCastInput& input,
-						const Transform& transform, child_count_t childIndex) const = 0;
+						const Transformation& transform, child_count_t childIndex) const = 0;
 
 	/// Given a transform, compute the associated axis aligned bounding box for a child shape.
 	/// @param xf the world transform of the shape.
 	/// @param childIndex the child shape
 	/// @return the axis aligned box.
-	virtual AABB ComputeAABB(const Transform& xf, child_count_t childIndex) const = 0;
+	virtual AABB ComputeAABB(const Transformation& xf, child_count_t childIndex) const = 0;
 
 	/// Computes the mass properties of this shape using its dimensions and density.
 	/// The inertia tensor is computed about the local origin.

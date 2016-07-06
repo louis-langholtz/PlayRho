@@ -104,7 +104,7 @@ void Fixture::Destroy(BlockAllocator* allocator)
 	m_shape = nullptr;
 }
 
-void Fixture::CreateProxies(BroadPhase& broadPhase, const Transform& xf)
+void Fixture::CreateProxies(BroadPhase& broadPhase, const Transformation& xf)
 {
 	assert(m_proxyCount == 0);
 
@@ -134,7 +134,7 @@ void Fixture::DestroyProxies(BroadPhase& broadPhase)
 	m_proxyCount = 0;
 }
 
-void Fixture::Synchronize(BroadPhase& broadPhase, const Transform& transform1, const Transform& transform2)
+void Fixture::Synchronize(BroadPhase& broadPhase, const Transformation& transform1, const Transformation& transform2)
 {
 	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
 	{

@@ -50,7 +50,7 @@ ChainAndCircleContact::ChainAndCircleContact(Fixture* fixtureA, child_count_t in
 	assert(m_fixtureB->GetType() == Shape::e_circle);
 }
 
-Manifold ChainAndCircleContact::Evaluate(const Transform& xfA, const Transform& xfB)
+Manifold ChainAndCircleContact::Evaluate(const Transformation& xfA, const Transformation& xfB)
 {
 	EdgeShape edge;
 	{

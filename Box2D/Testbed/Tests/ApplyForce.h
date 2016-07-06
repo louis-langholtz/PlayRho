@@ -62,7 +62,7 @@ public:
 		}
 
 		{
-			Transform xf1;
+			Transformation xf1;
 			xf1.q = Rot(0.3524f * Pi);
 			xf1.p = GetXAxis(xf1.q);
 
@@ -78,7 +78,7 @@ public:
 			sd1.shape = &poly1;
 			sd1.density = 4.0f;
 
-			Transform xf2;
+			Transformation xf2;
 			xf2.q = Rot(-0.3524f * Pi);
 			xf2.p = -GetXAxis(xf2.q);
 

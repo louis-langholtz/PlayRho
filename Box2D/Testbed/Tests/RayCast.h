@@ -442,7 +442,7 @@ public:
 			//input.maxFraction = 0.567623f;
 			input.maxFraction = 0.56762173f;
 
-			Transform xf;
+			Transformation xf;
 			xf.SetIdentity();
 			xf.position = Vec2(23.0f, 5.0f);
 

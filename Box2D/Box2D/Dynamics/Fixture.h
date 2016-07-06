@@ -210,13 +210,13 @@ protected:
 	
 	/// Creates proxies for every child of this fixture's shape.
 	/// This sets the proxy count to the child count of the shape.
-	void CreateProxies(BroadPhase& broadPhase, const Transform& xf);
+	void CreateProxies(BroadPhase& broadPhase, const Transformation& xf);
 
 	/// Destroys this fixture's proxies.
 	/// This resets the proxy count to 0.
 	void DestroyProxies(BroadPhase& broadPhase);
 
-	void Synchronize(BroadPhase& broadPhase, const Transform& xf1, const Transform& xf2);
+	void Synchronize(BroadPhase& broadPhase, const Transformation& xf1, const Transformation& xf2);
 
 	Body* m_body = nullptr; ///< Parent body. 8-bytes.
 	float_t m_density = float_t{0}; ///< Density. 4-bytes.

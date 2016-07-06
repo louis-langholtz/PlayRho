@@ -50,7 +50,7 @@ ChainAndPolygonContact::ChainAndPolygonContact(Fixture* fixtureA, child_count_t 
 	assert(m_fixtureB->GetType() == Shape::e_polygon);
 }
 
-Manifold ChainAndPolygonContact::Evaluate(const Transform& xfA, const Transform& xfB)
+Manifold ChainAndPolygonContact::Evaluate(const Transformation& xfA, const Transformation& xfB)
 {
 	EdgeShape edge;
 	{

@@ -429,7 +429,7 @@ void Body::SetTransform(const Vec2& position, float_t angle)
 		return;
 	}
 
-	m_xf = Transform{position, Rot(angle)};
+	m_xf = Transformation{position, Rot(angle)};
 	m_sweep = Sweep{Position{Mul(m_xf, GetLocalCenter()), angle}, GetLocalCenter()};
 
 	auto& broadPhase = m_world->m_contactMgr.m_broadPhase;

@@ -30,7 +30,7 @@ struct PositionSolverManifold
 };
 
 PositionSolverManifold GetPSM(const Manifold& manifold, float_t totalRadius,
-							  const Transform& xfA, const Transform& xfB, Manifold::size_type index);
+							  const Transformation& xfA, const Transformation& xfB, Manifold::size_type index);
 
 }; // namespace box2d
 

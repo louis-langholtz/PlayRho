@@ -136,7 +136,7 @@ void ChainShape::GetChildEdge(EdgeShape* edge, child_count_t index) const
 	}
 }
 
-bool ChainShape::TestPoint(const Transform& xf, const Vec2& p) const
+bool ChainShape::TestPoint(const Transformation& xf, const Vec2& p) const
 {
 	BOX2D_NOT_USED(xf);
 	BOX2D_NOT_USED(p);
@@ -144,7 +144,7 @@ bool ChainShape::TestPoint(const Transform& xf, const Vec2& p) const
 }
 
 bool ChainShape::RayCast(RayCastOutput* output, const RayCastInput& input,
-							const Transform& xf, child_count_t childIndex) const
+							const Transformation& xf, child_count_t childIndex) const
 {
 	assert(childIndex < m_count);
 
@@ -154,7 +154,7 @@ bool ChainShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 	return edgeShape.RayCast(output, input, xf, 0);
 }
 
-AABB ChainShape::ComputeAABB(const Transform& xf, child_count_t childIndex) const
+AABB ChainShape::ComputeAABB(const Transformation& xf, child_count_t childIndex) const
 {
 	assert(childIndex < m_count);
 

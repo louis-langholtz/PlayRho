@@ -55,9 +55,9 @@ void PolygonShape::SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t 
 	m_normals[3] = Vec2{-float_t{1}, float_t{0}};
 	m_centroid = center;
 
-	const auto xf = Transform{center, Rot{angle}};
+	const auto xf = Transformation{center, Rot{angle}};
 
-	// Transform vertices and normals.
+	// Transformation vertices and normals.
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		m_vertices[i] = Mul(xf, m_vertices[i]);
@@ -248,7 +248,7 @@ void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 	m_centroid = ComputeCentroid(m_vertices, m);
 }
 
-bool PolygonShape::TestPoint(const Transform& xf, const Vec2& p) const
+bool PolygonShape::TestPoint(const Transformation& xf, const Vec2& p) const
 {
 	const auto pLocal = MulT(xf.q, p - xf.p);
 
@@ -265,7 +265,7 @@ bool PolygonShape::TestPoint(const Transform& xf, const Vec2& p) const
 }
 
 bool PolygonShape::RayCast(RayCastOutput* output, const RayCastInput& input,
-								const Transform& xf, child_count_t childIndex) const
+								const Transformation& xf, child_count_t childIndex) const
 {
 	BOX2D_NOT_USED(childIndex);
 
@@ -336,7 +336,7 @@ bool PolygonShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 	return false;
 }
 
-AABB PolygonShape::ComputeAABB(const Transform& xf, child_count_t childIndex) const
+AABB PolygonShape::ComputeAABB(const Transformation& xf, child_count_t childIndex) const
 {
 	BOX2D_NOT_USED(childIndex);
 	

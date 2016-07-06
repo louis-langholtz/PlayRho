@@ -146,8 +146,8 @@ struct DistanceOutput
 /// @param transformB Transoform of B.
 /// @return Closest points between the two shapes and the count of iterations it took to determine them.
 DistanceOutput Distance(SimplexCache& cache,
-						const DistanceProxy& proxyA, const Transform& transformA,
-						const DistanceProxy& proxyB, const Transform& transformB);
+						const DistanceProxy& proxyA, const Transformation& transformA,
+						const DistanceProxy& proxyB, const Transformation& transformB);
 
 } /* namespace box2d */
 

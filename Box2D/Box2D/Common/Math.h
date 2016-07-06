@@ -277,7 +277,7 @@ struct Mat33
 
 constexpr auto Mat33_zero = Mat33(Vec3_zero, Vec3_zero, Vec3_zero);
 
-/// Rotation
+/// Rotational transformation.
 class Rot
 {
 public:
@@ -342,21 +342,21 @@ constexpr inline Vec2 GetYAxis(Rot rot) noexcept
 
 /// A transform contains translation and rotation. It is used to represent
 /// the position and orientation of rigid frames.
-struct Transform
+struct Transformation
 {
 	/// The default constructor does nothing.
-	Transform() noexcept = default;
+	Transformation() noexcept = default;
 
-	/// Initialize using a position vector and a rotation.
-	constexpr Transform(Vec2 position, Rot rotation) noexcept: p{position}, q{rotation} {}
+	/// Initialize using a translation and a rotation.
+	constexpr Transformation(Vec2 translation, Rot rotation) noexcept: p{translation}, q{rotation} {}
 
-	constexpr Transform(const Transform& copy) noexcept = default;
+	constexpr Transformation(const Transformation& copy) noexcept = default;
 
-	Vec2 p; ///< Positional portion of the transformation.
+	Vec2 p; ///< Translational portion of the transformation.
 	Rot q; ///< Rotational portion of the transformation.
 };
 
-constexpr auto Transform_identity = Transform{Vec2_zero, Rot_identity};
+constexpr auto Transform_identity = Transformation{Vec2_zero, Rot_identity};
 
 /// Positional data structure.
 struct Position
@@ -582,6 +582,16 @@ constexpr inline bool operator != (Vec2 a, Vec2 b) noexcept
 	return (a.x != b.x) || (a.y != b.y);
 }
 
+constexpr inline bool operator == (Transformation lhs, Transformation rhs) noexcept
+{
+	return (lhs.p == rhs.p) && (lhs.q == rhs.q);
+}
+
+constexpr inline bool operator != (Transformation lhs, Transformation rhs) noexcept
+{
+	return (lhs.p != rhs.p) || (lhs.q != rhs.q);
+}
+
 constexpr Vec3& operator += (Vec3& lhs, const Vec3& rhs) noexcept
 {
 	lhs.x += rhs.x;
@@ -707,14 +717,14 @@ constexpr inline Vec2 MulT(const Rot& q, const Vec2& v) noexcept
 	return Vec2{(q.cos() * v.x) + (q.sin() * v.y), (q.cos() * v.y) - (q.sin() * v.x)};
 }
 
-constexpr inline Vec2 Mul(const Transform& T, const Vec2& v) noexcept
+constexpr inline Vec2 Mul(const Transformation& T, const Vec2& v) noexcept
 {
 	const auto x = (T.q.cos() * v.x - T.q.sin() * v.y) + T.p.x;
 	const auto y = (T.q.sin() * v.x + T.q.cos() * v.y) + T.p.y;
 	return Vec2{x, y};
 }
 
-constexpr inline Vec2 MulT(const Transform& T, const Vec2& v) noexcept
+constexpr inline Vec2 MulT(const Transformation& T, const Vec2& v) noexcept
 {
 	const auto px = v.x - T.p.x;
 	const auto py = v.y - T.p.y;
@@ -725,16 +735,16 @@ constexpr inline Vec2 MulT(const Transform& T, const Vec2& v) noexcept
 
 // v2 = A.q.Rot(B.q.Rot(v1) + B.p) + A.p
 //    = (A.q * B.q).Rot(v1) + A.q.Rot(B.p) + A.p
-constexpr inline Transform Mul(const Transform& A, const Transform& B) noexcept
+constexpr inline Transformation Mul(const Transformation& A, const Transformation& B) noexcept
 {
-	return Transform{Rotate(B.p, A.q) + A.p, A.q + B.q};
+	return Transformation{A.p + Rotate(B.p, A.q), A.q + B.q};
 }
 
 // v2 = A.q' * (B.q * v1 + B.p - A.p)
 //    = A.q' * B.q * v1 + A.q' * (B.p - A.p)
-constexpr inline Transform MulT(const Transform& A, const Transform& B) noexcept
+constexpr inline Transformation MulT(const Transformation& A, const Transformation& B) noexcept
 {
-	return Transform{MulT(A.q, B.p - A.p), B.q - A.q};
+	return Transformation{MulT(A.q, B.p - A.p), B.q - A.q};
 }
 
 template <>
@@ -835,12 +845,12 @@ constexpr inline Position operator* (const float_t scalar, const Position& pos)
 	return Position{pos.c * scalar, pos.a * scalar};
 }
 
-constexpr inline Transform GetTransform(const Vec2& ctr, const Rot& rot, const Vec2& local_ctr) noexcept
+constexpr inline Transformation GetTransform(const Vec2& ctr, const Rot& rot, const Vec2& local_ctr) noexcept
 {
-	return Transform{ctr - Rotate(local_ctr, rot), rot};
+	return Transformation{ctr - Rotate(local_ctr, rot), rot};
 }
 
-inline Transform GetTransform(Position pos, const Vec2& local_ctr) noexcept
+inline Transformation GetTransform(Position pos, const Vec2& local_ctr) noexcept
 {
 	return GetTransform(pos.c, Rot{pos.a}, local_ctr);
 }
@@ -853,8 +863,8 @@ inline Position GetPosition(Position pos0, Position pos1, float_t beta)
 /// Gets the interpolated transform at a specific time.
 /// @param sweep Sweep data to get the transform from.
 /// @param beta Time factor in [0,1], where 0 indicates alpha0.
-/// @return Transform of the given sweep at the specified time.
-inline Transform GetTransform(const Sweep& sweep, float_t beta)
+/// @return Transformation of the given sweep at the specified time.
+inline Transformation GetTransform(const Sweep& sweep, float_t beta)
 {
 	assert(beta >= 0);
 	assert(beta <= 1);
@@ -865,8 +875,8 @@ inline Transform GetTransform(const Sweep& sweep, float_t beta)
 /// @note This is like calling GetTransform(sweep, 0.0), except more efficiently.
 /// @sa GetTransform(const Sweep& sweep, float_t beta).
 /// @param sweep Sweep data to get the transform from.
-/// @return Transform of the given sweep at time zero.
-inline Transform GetTransform0(const Sweep& sweep)
+/// @return Transformation of the given sweep at time zero.
+inline Transformation GetTransform0(const Sweep& sweep)
 {
 	return GetTransform(sweep.pos0, sweep.GetLocalCenter());
 }
@@ -875,8 +885,8 @@ inline Transform GetTransform0(const Sweep& sweep)
 /// @note This is like calling GetTransform(sweep, 1.0), except more efficiently.
 /// @sa GetTransform(const Sweep& sweep, float_t beta).
 /// @param sweep Sweep data to get the transform from.
-/// @return Transform of the given sweep at time one.
-inline Transform GetTransform1(const Sweep& sweep)
+/// @return Transformation of the given sweep at time one.
+inline Transformation GetTransform1(const Sweep& sweep)
 {
 	return GetTransform(sweep.pos1, sweep.GetLocalCenter());
 }

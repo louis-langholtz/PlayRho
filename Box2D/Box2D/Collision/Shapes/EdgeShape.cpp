@@ -41,7 +41,7 @@ child_count_t EdgeShape::GetChildCount() const
 	return 1;
 }
 
-bool EdgeShape::TestPoint(const Transform& xf, const Vec2& p) const
+bool EdgeShape::TestPoint(const Transformation& xf, const Vec2& p) const
 {
 	BOX2D_NOT_USED(xf);
 	BOX2D_NOT_USED(p);
@@ -53,7 +53,7 @@ bool EdgeShape::TestPoint(const Transform& xf, const Vec2& p) const
 // p1 + t * d = v1 + s * e
 // s * e - t * d = p1 - v1
 bool EdgeShape::RayCast(RayCastOutput* output, const RayCastInput& input,
-							const Transform& xf, child_count_t childIndex) const
+							const Transformation& xf, child_count_t childIndex) const
 {
 	BOX2D_NOT_USED(childIndex);
 
@@ -106,7 +106,7 @@ bool EdgeShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 	return true;
 }
 
-AABB EdgeShape::ComputeAABB(const Transform& xf, child_count_t childIndex) const
+AABB EdgeShape::ComputeAABB(const Transformation& xf, child_count_t childIndex) const
 {
 	BOX2D_NOT_USED(childIndex);
 

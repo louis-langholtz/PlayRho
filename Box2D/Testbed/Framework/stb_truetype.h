@@ -1230,7 +1230,7 @@ int stbtt_GetGlyphShape(const stbtt_fontinfo *info, int glyph_index, stbtt_verte
          // Get indexed glyph.
          comp_num_verts = stbtt_GetGlyphShape(info, gidx, &comp_verts);
          if (comp_num_verts > 0) {
-            // Transform vertices.
+            // Transformation vertices.
             for (i = 0; i < comp_num_verts; ++i) {
                stbtt_vertex* v = &comp_verts[i];
                stbtt_vertex_type x,y;

@@ -45,7 +45,7 @@ public:
 	void DrawFixture(Fixture* fixture)
 	{
 		Color color(0.95f, 0.95f, 0.6f);
-		const Transform& xf = fixture->GetBody()->GetTransform();
+		const Transformation& xf = fixture->GetBody()->GetTransform();
 
 		switch (fixture->GetType())
 		{
@@ -105,7 +105,7 @@ public:
 	}
 
 	CircleShape m_circle;
-	Transform m_transform;
+	Transformation m_transform;
 	Draw* g_debugDraw;
 	int32 m_count;
 };

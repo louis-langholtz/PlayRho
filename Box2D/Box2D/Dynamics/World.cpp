@@ -850,7 +850,7 @@ void World::RayCast(RayCastFixtureReporter* callback, const Vec2& point1, const 
 	m_contactMgr.m_broadPhase.RayCast(&wrapper, input);
 }
 
-void World::DrawShape(const Fixture* fixture, const Transform& xf, const Color& color)
+void World::DrawShape(const Fixture* fixture, const Transformation& xf, const Color& color)
 {
 	switch (fixture->GetType())
 	{

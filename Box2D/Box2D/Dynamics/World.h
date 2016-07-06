@@ -291,7 +291,7 @@ private:
 	ContactToiPair UpdateContactTOIs();
 
 	void DrawJoint(Joint* joint);
-	void DrawShape(const Fixture* shape, const Transform& xf, const Color& color);
+	void DrawShape(const Fixture* shape, const Transformation& xf, const Color& color);
 
 	BlockAllocator m_blockAllocator;
 	StackAllocator m_stackAllocator;

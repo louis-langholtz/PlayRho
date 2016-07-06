@@ -12,7 +12,7 @@ namespace box2d
 {
 
 static inline PositionSolverManifold GetPSM_ForCircles(Vec2 lp, Vec2 plp, float_t totalRadius,
-													   const Transform& xfA, const Transform& xfB)
+													   const Transformation& xfA, const Transformation& xfB)
 {
 	const auto pointA = Mul(xfA, lp);
 	const auto pointB = Mul(xfB, plp);
@@ -24,7 +24,7 @@ static inline PositionSolverManifold GetPSM_ForCircles(Vec2 lp, Vec2 plp, float_
 }
 
 static inline PositionSolverManifold GetPSM_ForFaceA(Vec2 lp, Vec2 plp, float_t totalRadius,
-													 const Transform& xfA, const Transform& xfB,
+													 const Transformation& xfA, const Transformation& xfB,
 													 Vec2 ln)
 {
 	const auto planePoint = Mul(xfA, lp);
@@ -35,7 +35,7 @@ static inline PositionSolverManifold GetPSM_ForFaceA(Vec2 lp, Vec2 plp, float_t 
 }
 
 static inline PositionSolverManifold GetPSM_ForFaceB(Vec2 lp, Vec2 plp, float_t totalRadius,
-													 const Transform& xfA, const Transform& xfB,
+													 const Transformation& xfA, const Transformation& xfB,
 													 Vec2 ln)
 {
 	const auto planePoint = Mul(xfB, lp);
@@ -47,7 +47,7 @@ static inline PositionSolverManifold GetPSM_ForFaceB(Vec2 lp, Vec2 plp, float_t 
 }
 
 PositionSolverManifold GetPSM(const Manifold& manifold, float_t totalRadius,
-							  const Transform& xfA, const Transform& xfB,
+							  const Transformation& xfA, const Transformation& xfB,
 							  Manifold::size_type index)
 {
 	assert(manifold.GetType() != Manifold::e_unset);

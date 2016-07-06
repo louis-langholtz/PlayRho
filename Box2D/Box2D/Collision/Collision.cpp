@@ -23,8 +23,8 @@
 namespace box2d {
 
 static inline WorldManifold GetWorldManifoldForCircles(const Manifold& manifold,
-													   const Transform& xfA, const float_t radiusA,
-													   const Transform& xfB, const float_t radiusB)
+													   const Transformation& xfA, const float_t radiusA,
+													   const Transformation& xfB, const float_t radiusB)
 {
 	assert(manifold.GetPointCount() == 1);
 	
@@ -51,8 +51,8 @@ static inline WorldManifold GetWorldManifoldForCircles(const Manifold& manifold,
 }
 
 static inline WorldManifold GetWorldManifoldForFaceA(const Manifold& manifold,
-													 const Transform& xfA, const float_t radiusA,
-													 const Transform& xfB, const float_t radiusB)
+													 const Transformation& xfA, const float_t radiusA,
+													 const Transformation& xfB, const float_t radiusB)
 {
 	const auto normal = Rotate(manifold.GetLocalNormal(), xfA.q);
 	const auto planePoint = Mul(xfA, manifold.GetLocalPoint());
@@ -78,8 +78,8 @@ static inline WorldManifold GetWorldManifoldForFaceA(const Manifold& manifold,
 }
 
 static inline WorldManifold GetWorldManifoldForFaceB(const Manifold& manifold,
-													 const Transform& xfA, const float_t radiusA,
-													 const Transform& xfB, const float_t radiusB)
+													 const Transformation& xfA, const float_t radiusA,
+													 const Transformation& xfB, const float_t radiusB)
 {
 	const auto normal = Rotate(manifold.GetLocalNormal(), xfB.q);
 	const auto planePoint = Mul(xfB, manifold.GetLocalPoint());
@@ -106,8 +106,8 @@ static inline WorldManifold GetWorldManifoldForFaceB(const Manifold& manifold,
 }
 
 WorldManifold GetWorldManifold(const Manifold& manifold,
-							   const Transform& xfA, const float_t radiusA,
-							   const Transform& xfB, const float_t radiusB)
+							   const Transformation& xfA, const float_t radiusA,
+							   const Transformation& xfB, const float_t radiusB)
 {
 	const auto type = manifold.GetType();
 	assert((type == Manifold::e_circles) || (type == Manifold::e_faceA) || (type == Manifold::e_faceB) || (type == Manifold::e_unset));
@@ -269,7 +269,7 @@ ClipArray::size_type ClipSegmentToLine(ClipArray& vOut, const ClipArray& vIn,
 
 bool TestOverlap(const Shape& shapeA, child_count_t indexA,
 				   const Shape& shapeB, child_count_t indexB,
-				   const Transform& xfA, const Transform& xfB)
+				   const Transformation& xfA, const Transformation& xfB)
 {
 	const auto proxyA = GetDistanceProxy(shapeA, indexA);
 	const auto proxyB = GetDistanceProxy(shapeB, indexB);

@@ -16,6 +16,7 @@
 		4721349F1C8E4CB5009536F9 /* FixtureList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4721349C1C8E4CB5009536F9 /* FixtureList.hpp */; };
 		472134A01C8E4CB5009536F9 /* FixtureList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4721349C1C8E4CB5009536F9 /* FixtureList.hpp */; };
 		4726DD031D2CD1EF0012A882 /* Rot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD021D2CD1EF0012A882 /* Rot.cpp */; };
+		4726DD051D2DA64D0012A882 /* Transformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD041D2DA64D0012A882 /* Transformation.cpp */; };
 		475039911D2180D600D32047 /* DistanceProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4750398F1D2180D600D32047 /* DistanceProxy.cpp */; };
 		475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 475039901D2180D600D32047 /* DistanceProxy.hpp */; };
 		4751EE291CEDD78F00D459CB /* Mobile.h in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE281CEDD78F00D459CB /* Mobile.h */; };
@@ -355,6 +356,7 @@
 		4721349B1C8E4CB5009536F9 /* FixtureList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FixtureList.cpp; sourceTree = "<group>"; };
 		4721349C1C8E4CB5009536F9 /* FixtureList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureList.hpp; sourceTree = "<group>"; };
 		4726DD021D2CD1EF0012A882 /* Rot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Rot.cpp; sourceTree = "<group>"; };
+		4726DD041D2DA64D0012A882 /* Transformation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Transformation.cpp; sourceTree = "<group>"; };
 		4750398F1D2180D600D32047 /* DistanceProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceProxy.cpp; sourceTree = "<group>"; };
 		475039901D2180D600D32047 /* DistanceProxy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DistanceProxy.hpp; sourceTree = "<group>"; };
 		4751EE281CEDD78F00D459CB /* Mobile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mobile.h; sourceTree = "<group>"; };
@@ -652,6 +654,7 @@
 				47769D441D29B8B50078A9C5 /* Vec2.cpp */,
 				47769D4A1D2C26D70078A9C5 /* DistanceProxy.cpp */,
 				4726DD021D2CD1EF0012A882 /* Rot.cpp */,
+				4726DD041D2DA64D0012A882 /* Transformation.cpp */,
 			);
 			path = "Unit Tests";
 			sourceTree = "<group>";
@@ -1311,6 +1314,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4726DD051D2DA64D0012A882 /* Transformation.cpp in Sources */,
 				4767DB991D25D25E000CDB91 /* main.cpp in Sources */,
 				47769D461D29B8B50078A9C5 /* Vec2.cpp in Sources */,
 				47769D491D29B9C60078A9C5 /* Sweep.cpp in Sources */,

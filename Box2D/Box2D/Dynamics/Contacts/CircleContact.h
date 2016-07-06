@@ -37,7 +37,7 @@ public:
 	CircleContact(Fixture* fixtureA, Fixture* fixtureB);
 	~CircleContact() {}
 
-	Manifold Evaluate(const Transform& xfA, const Transform& xfB) override;
+	Manifold Evaluate(const Transformation& xfA, const Transformation& xfB) override;
 };
 
 } // namespace box2d

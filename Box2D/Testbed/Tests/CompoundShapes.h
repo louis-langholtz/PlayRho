@@ -78,7 +78,7 @@ public:
 		}
 
 		{
-			Transform xf1;
+			Transformation xf1;
 			xf1.q = Rot(0.3524f * Pi);
 			xf1.p = GetXAxis(xf1.q);
 
@@ -90,7 +90,7 @@ public:
 			vertices[2] = Mul(xf1, Vec2(0.0f, 0.5f));
 			triangle1.Set(vertices, 3);
 
-			Transform xf2;
+			Transformation xf2;
 			xf2.q = Rot(-0.3524f * Pi);
 			xf2.p = -GetXAxis(xf2.q);
 

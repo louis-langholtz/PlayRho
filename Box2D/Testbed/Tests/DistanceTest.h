@@ -36,7 +36,7 @@ public:
 		{
 			m_positionB = Vec2(12.017401f, 0.13678508f);
 			m_angleB = -0.0109265f;
-			m_transformB = Transform{m_positionB, Rot(m_angleB)};
+			m_transformB = Transformation{m_positionB, Rot(m_angleB)};
 
 			m_polygonB.SetAsBox(2.0f, 0.1f);
 		}
@@ -150,14 +150,14 @@ public:
 			break;
 		}
 
-		m_transformB = Transform{m_positionB, Rot(m_angleB)};
+		m_transformB = Transformation{m_positionB, Rot(m_angleB)};
 	}
 
 	Vec2 m_positionB;
 	float_t m_angleB;
 
-	Transform m_transformA;
-	Transform m_transformB;
+	Transformation m_transformA;
+	Transformation m_transformB;
 	PolygonShape m_polygonA;
 	PolygonShape m_polygonB;
 };
