@@ -207,7 +207,7 @@ inline TempPolygon::TempPolygon(const PolygonShape& shape, const Transform& xf)
 	const auto num_vertices = shape.GetVertexCount();
 	for (auto i = decltype(num_vertices){0}; i < num_vertices; ++i)
 	{
-		Append(Mul(xf, shape.GetVertex(i)), Rotate(xf.q, shape.GetNormal(i)));
+		Append(Mul(xf, shape.GetVertex(i)), Rotate(shape.GetNormal(i), xf.q));
 	}	
 }
 

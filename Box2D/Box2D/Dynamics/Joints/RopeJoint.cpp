@@ -68,8 +68,8 @@ void RopeJoint::InitVelocityConstraints(const SolverData& data)
 
 	const Rot qA(aA), qB(aB);
 
-	m_rA = Rotate(qA, m_localAnchorA - m_localCenterA);
-	m_rB = Rotate(qB, m_localAnchorB - m_localCenterB);
+	m_rA = Rotate(m_localAnchorA - m_localCenterA, qA);
+	m_rB = Rotate(m_localAnchorB - m_localCenterB, qB);
 	m_u = cB + m_rB - cA - m_rA;
 
 	m_length = Length(m_u);
@@ -170,8 +170,8 @@ bool RopeJoint::SolvePositionConstraints(const SolverData& data)
 
 	const Rot qA(aA), qB(aB);
 
-	const auto rA = Rotate(qA, m_localAnchorA - m_localCenterA);
-	const auto rB = Rotate(qB, m_localAnchorB - m_localCenterB);
+	const auto rA = Rotate(m_localAnchorA - m_localCenterA, qA);
+	const auto rB = Rotate(m_localAnchorB - m_localCenterB, qB);
 	auto u = cB + rB - cA - rA;
 
 	const auto length = Normalize(u);

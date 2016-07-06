@@ -102,7 +102,7 @@ bool EdgeShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 	}
 
 	output->fraction = t;
-	output->normal = (numerator > float_t{0})? -Rotate(xf.q, normal): Rotate(xf.q, normal);
+	output->normal = (numerator > float_t{0})? -Rotate(normal, xf.q): Rotate(normal, xf.q);
 	return true;
 }
 

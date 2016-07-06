@@ -75,8 +75,8 @@ void FrictionJoint::InitVelocityConstraints(const SolverData& data)
 	const auto qB = Rot(aB);
 
 	// Compute the effective mass matrix.
-	m_rA = Rotate(qA, m_localAnchorA - m_localCenterA);
-	m_rB = Rotate(qB, m_localAnchorB - m_localCenterB);
+	m_rA = Rotate(m_localAnchorA - m_localCenterA, qA);
+	m_rB = Rotate(m_localAnchorB - m_localCenterB, qB);
 
 	// J = [-I -r1_skew I r2_skew]
 	//     [ 0       -1 0       1]

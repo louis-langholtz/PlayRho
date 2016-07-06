@@ -82,8 +82,8 @@ void MotorJoint::InitVelocityConstraints(const SolverData& data)
 	const auto qB = Rot(aB);
 
 	// Compute the effective mass matrix.
-	m_rA = Rotate(qA, -m_localCenterA);
-	m_rB = Rotate(qB, -m_localCenterB);
+	m_rA = Rotate(-m_localCenterA, qA);
+	m_rB = Rotate(-m_localCenterB, qB);
 
 	// J = [-I -r1_skew I r2_skew]
 	//     [ 0       -1 0       1]
@@ -111,7 +111,7 @@ void MotorJoint::InitVelocityConstraints(const SolverData& data)
 		m_angularMass = float_t{1} / m_angularMass;
 	}
 
-	m_linearError = cB + m_rB - cA - m_rA - Rotate(qA, m_linearOffset);
+	m_linearError = cB + m_rB - cA - m_rA - Rotate(m_linearOffset, qA);
 	m_angularError = aB - aA - m_angularOffset;
 
 	if (data.step.warmStarting)

@@ -54,7 +54,7 @@ static inline WorldManifold GetWorldManifoldForFaceA(const Manifold& manifold,
 													 const Transform& xfA, const float_t radiusA,
 													 const Transform& xfB, const float_t radiusB)
 {
-	const auto normal = Rotate(xfA.q, manifold.GetLocalNormal());
+	const auto normal = Rotate(manifold.GetLocalNormal(), xfA.q);
 	const auto planePoint = Mul(xfA, manifold.GetLocalPoint());
 	const auto pointFn = [&](Manifold::size_type index) {
 		const auto clipPoint = Mul(xfB, manifold.GetPoint(index).localPoint);
@@ -81,7 +81,7 @@ static inline WorldManifold GetWorldManifoldForFaceB(const Manifold& manifold,
 													 const Transform& xfA, const float_t radiusA,
 													 const Transform& xfB, const float_t radiusB)
 {
-	const auto normal = Rotate(xfB.q, manifold.GetLocalNormal());
+	const auto normal = Rotate(manifold.GetLocalNormal(), xfB.q);
 	const auto planePoint = Mul(xfB, manifold.GetLocalPoint());
 	const auto pointFn = [&](Manifold::size_type index) {
 		const auto clipPoint = Mul(xfA, manifold.GetPoint(index).localPoint);

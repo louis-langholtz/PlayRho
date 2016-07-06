@@ -150,8 +150,8 @@ void PrismaticJoint::InitVelocityConstraints(const SolverData& data)
 	const auto qB = Rot(aB);
 
 	// Compute the effective masses.
-	const auto rA = Rotate(qA, m_localAnchorA - m_localCenterA);
-	const auto rB = Rotate(qB, m_localAnchorB - m_localCenterB);
+	const auto rA = Rotate(m_localAnchorA - m_localCenterA, qA);
+	const auto rB = Rotate(m_localAnchorB - m_localCenterB, qB);
 	const auto d = (cB - cA) + rB - rA;
 
 	const auto mA = m_invMassA, mB = m_invMassB;
@@ -159,7 +159,7 @@ void PrismaticJoint::InitVelocityConstraints(const SolverData& data)
 
 	// Compute motor Jacobian and effective mass.
 	{
-		m_axis = Rotate(qA, m_localXAxisA);
+		m_axis = Rotate(m_localXAxisA, qA);
 		m_a1 = Cross(d + rA, m_axis);
 		m_a2 = Cross(rB, m_axis);
 
@@ -172,7 +172,7 @@ void PrismaticJoint::InitVelocityConstraints(const SolverData& data)
 
 	// Prismatic constraint.
 	{
-		m_perp = Rotate(qA, m_localYAxisA);
+		m_perp = Rotate(m_localYAxisA, qA);
 
 		m_s1 = Cross(d + rA, m_perp);
 		m_s2 = Cross(rB, m_perp);
@@ -377,14 +377,14 @@ bool PrismaticJoint::SolvePositionConstraints(const SolverData& data)
 	const auto iA = m_invIA, iB = m_invIB;
 
 	// Compute fresh Jacobians
-	const auto rA = Rotate(qA, m_localAnchorA - m_localCenterA);
-	const auto rB = Rotate(qB, m_localAnchorB - m_localCenterB);
+	const auto rA = Rotate(m_localAnchorA - m_localCenterA, qA);
+	const auto rB = Rotate(m_localAnchorB - m_localCenterB, qB);
 	const auto d = cB + rB - cA - rA;
 
-	const auto axis = Rotate(qA, m_localXAxisA);
+	const auto axis = Rotate(m_localXAxisA, qA);
 	const auto a1 = Cross(d + rA, axis);
 	const auto a2 = Cross(rB, axis);
-	const auto perp = Rotate(qA, m_localYAxisA);
+	const auto perp = Rotate(m_localYAxisA, qA);
 
 	const auto s1 = Cross(d + rA, perp);
 	const auto s2 = Cross(rB, perp);
@@ -513,12 +513,12 @@ float_t PrismaticJoint::GetJointSpeed() const
 	const auto bA = m_bodyA;
 	const auto bB = m_bodyB;
 
-	const auto rA = Rotate(bA->m_xf.q, m_localAnchorA - bA->GetLocalCenter());
-	const auto rB = Rotate(bB->m_xf.q, m_localAnchorB - bB->GetLocalCenter());
+	const auto rA = Rotate(m_localAnchorA - bA->GetLocalCenter(), bA->m_xf.q);
+	const auto rB = Rotate(m_localAnchorB - bB->GetLocalCenter(), bB->m_xf.q);
 	const auto p1 = bA->GetWorldCenter() + rA;
 	const auto p2 = bB->GetWorldCenter() + rB;
 	const auto d = p2 - p1;
-	const auto axis = Rotate(bA->m_xf.q, m_localXAxisA);
+	const auto axis = Rotate(m_localXAxisA, bA->m_xf.q);
 
 	const auto vA = bA->m_velocity.v;
 	const auto vB = bB->m_velocity.v;

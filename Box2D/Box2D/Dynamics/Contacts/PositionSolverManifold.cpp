@@ -29,7 +29,7 @@ static inline PositionSolverManifold GetPSM_ForFaceA(Vec2 lp, Vec2 plp, float_t 
 {
 	const auto planePoint = Mul(xfA, lp);
 	const auto clipPoint = Mul(xfB, plp);
-	const auto normal = Rotate(xfA.q, ln);
+	const auto normal = Rotate(ln, xfA.q);
 	const auto separation = Dot(clipPoint - planePoint, normal) - totalRadius;
 	return PositionSolverManifold{normal, clipPoint, separation};
 }
@@ -40,7 +40,7 @@ static inline PositionSolverManifold GetPSM_ForFaceB(Vec2 lp, Vec2 plp, float_t 
 {
 	const auto planePoint = Mul(xfB, lp);
 	const auto clipPoint = Mul(xfA, plp);
-	const auto normal = Rotate(xfB.q, ln);
+	const auto normal = Rotate(ln, xfB.q);
 	const auto separation = Dot(clipPoint - planePoint, normal) - totalRadius;
 	// Negate normal to ensure the PSM normal points from A to B
 	return PositionSolverManifold{-normal, clipPoint, separation};

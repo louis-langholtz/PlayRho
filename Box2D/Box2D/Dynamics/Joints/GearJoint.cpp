@@ -88,7 +88,7 @@ GearJoint::GearJoint(const GearJointDef& def)
 		m_localAxisC = prismatic->m_localXAxisA;
 
 		const auto pC = m_localAnchorC;
-		const auto pA = MulT(xfC.q, Rotate(xfA.q, m_localAnchorA) + (xfA.p - xfC.p));
+		const auto pA = MulT(xfC.q, Rotate(m_localAnchorA, xfA.q) + (xfA.p - xfC.p));
 		coordinateA = Dot(pA - pC, m_localAxisC);
 	}
 
@@ -120,7 +120,7 @@ GearJoint::GearJoint(const GearJointDef& def)
 		m_localAxisD = prismatic->m_localXAxisA;
 
 		const auto pD = m_localAnchorD;
-		const auto pB = MulT(xfD.q, Rotate(xfB.q, m_localAnchorB) + (xfB.p - xfD.p));
+		const auto pB = MulT(xfD.q, Rotate(m_localAnchorB, xfB.q) + (xfB.p - xfD.p));
 		coordinateB = Dot(pB - pD, m_localAxisD);
 	}
 
@@ -182,9 +182,9 @@ void GearJoint::InitVelocityConstraints(const SolverData& data)
 	}
 	else
 	{
-		const auto u = Rotate(qC, m_localAxisC);
-		const auto rC = Rotate(qC, m_localAnchorC - m_lcC);
-		const auto rA = Rotate(qA, m_localAnchorA - m_lcA);
+		const auto u = Rotate(m_localAxisC, qC);
+		const auto rC = Rotate(m_localAnchorC - m_lcC, qC);
+		const auto rA = Rotate(m_localAnchorA - m_lcA, qA);
 		m_JvAC = u;
 		m_JwC = Cross(rC, u);
 		m_JwA = Cross(rA, u);
@@ -200,9 +200,9 @@ void GearJoint::InitVelocityConstraints(const SolverData& data)
 	}
 	else
 	{
-		Vec2 u = Rotate(qD, m_localAxisD);
-		Vec2 rD = Rotate(qD, m_localAnchorD - m_lcD);
-		Vec2 rB = Rotate(qB, m_localAnchorB - m_lcB);
+		Vec2 u = Rotate(m_localAxisD, qD);
+		Vec2 rD = Rotate(m_localAnchorD - m_lcD, qD);
+		Vec2 rB = Rotate(m_localAnchorB - m_lcB, qB);
 		m_JvBD = m_ratio * u;
 		m_JwD = m_ratio * Cross(rD, u);
 		m_JwB = m_ratio * Cross(rB, u);
@@ -306,9 +306,9 @@ bool GearJoint::SolvePositionConstraints(const SolverData& data)
 	}
 	else
 	{
-		const auto u = Rotate(qC, m_localAxisC);
-		const auto rC = Rotate(qC, m_localAnchorC - m_lcC);
-		const auto rA = Rotate(qA, m_localAnchorA - m_lcA);
+		const auto u = Rotate(m_localAxisC, qC);
+		const auto rC = Rotate(m_localAnchorC - m_lcC, qC);
+		const auto rA = Rotate(m_localAnchorA - m_lcA, qA);
 		JvAC = u;
 		JwC = Cross(rC, u);
 		JwA = Cross(rA, u);
@@ -330,9 +330,9 @@ bool GearJoint::SolvePositionConstraints(const SolverData& data)
 	}
 	else
 	{
-		const auto u = Rotate(qD, m_localAxisD);
-		const auto rD = Rotate(qD, m_localAnchorD - m_lcD);
-		const auto rB = Rotate(qB, m_localAnchorB - m_lcB);
+		const auto u = Rotate(m_localAxisD, qD);
+		const auto rD = Rotate(m_localAnchorD - m_lcD, qD);
+		const auto rB = Rotate(m_localAnchorB - m_lcB, qB);
 		JvBD = m_ratio * u;
 		JwD = m_ratio * Cross(rD, u);
 		JwB = m_ratio * Cross(rB, u);

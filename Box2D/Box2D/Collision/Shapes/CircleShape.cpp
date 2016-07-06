@@ -35,7 +35,7 @@ child_count_t CircleShape::GetChildCount() const
 
 bool CircleShape::TestPoint(const Transform& transform, const Vec2& p) const
 {
-	const auto center = transform.p + Rotate(transform.q, GetPosition());
+	const auto center = transform.p + Rotate(GetPosition(), transform.q);
 	return LengthSquared(p - center) <= Square(GetRadius());
 }
 
@@ -48,7 +48,7 @@ bool CircleShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 {
 	BOX2D_NOT_USED(childIndex);
 
-	const auto position = transform.p + Rotate(transform.q, m_p);
+	const auto position = transform.p + Rotate(m_p, transform.q);
 	const auto s = input.p1 - position;
 	const auto b = LengthSquared(s) - Square(GetRadius());
 
@@ -83,7 +83,7 @@ AABB CircleShape::ComputeAABB(const Transform& transform, child_count_t childInd
 {
 	BOX2D_NOT_USED(childIndex);
 
-	const auto p = transform.p + Rotate(transform.q, m_p);
+	const auto p = transform.p + Rotate(m_p, transform.q);
 	return AABB{p, p} + Vec2{GetRadius(), GetRadius()};
 }
 

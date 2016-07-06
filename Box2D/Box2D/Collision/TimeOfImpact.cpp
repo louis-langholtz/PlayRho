@@ -86,7 +86,7 @@ public:
 			const auto localPointB2 = proxyB.GetVertex(cache.GetIndexB(1));
 
 			m_axis = GetUnitVector(GetForwardPerpendicular(localPointB2 - localPointB1));
-			const auto normal = Rotate(xfB.q, m_axis);
+			const auto normal = Rotate(m_axis, xfB.q);
 
 			m_localPoint = (localPointB1 + localPointB2) / float_t(2);
 			const auto pointB = Mul(xfB, m_localPoint);
@@ -108,7 +108,7 @@ public:
 			const auto localPointA2 = proxyA.GetVertex(cache.GetIndexA(1));
 			
 			m_axis = GetUnitVector(GetForwardPerpendicular(localPointA2 - localPointA1));
-			const auto normal = Rotate(xfA.q, m_axis);
+			const auto normal = Rotate(m_axis, xfA.q);
 
 			m_localPoint = (localPointA1 + localPointA2) / float_t(2);
 			const auto pointA = Mul(xfA, m_localPoint);
@@ -185,7 +185,7 @@ private:
 	
 	Separation FindMinSeparationForFaceA(const Transform& xfA, const Transform& xfB) const
 	{
-		const auto normal = Rotate(xfA.q, m_axis);
+		const auto normal = Rotate(m_axis, xfA.q);
 		const auto indexA = static_cast<DistanceProxy::size_type>(-1);
 		const auto pointA = Mul(xfA, m_localPoint);
 		const auto indexB = m_proxyB.GetSupportIndex(MulT(xfB.q, -normal));
@@ -195,7 +195,7 @@ private:
 	
 	Separation FindMinSeparationForFaceB(const Transform& xfA, const Transform& xfB) const
 	{
-		const auto normal = Rotate(xfB.q, m_axis);
+		const auto normal = Rotate(m_axis, xfB.q);
 		const auto indexA = m_proxyA.GetSupportIndex(MulT(xfA.q, -normal));
 		const auto pointA = Mul(xfA, m_proxyA.GetVertex(indexA));
 		const auto indexB = static_cast<DistanceProxy::size_type>(-1);
@@ -212,7 +212,7 @@ private:
 	
 	float_t EvaluateForFaceA(IndexPair indexPair, const Transform& xfA, const Transform& xfB) const
 	{
-		const auto normal = Rotate(xfA.q, m_axis);
+		const auto normal = Rotate(m_axis, xfA.q);
 		const auto pointA = Mul(xfA, m_localPoint);
 		const auto pointB = Mul(xfB, m_proxyB.GetVertex(indexPair.b));
 		return Dot(pointB - pointA, normal);
@@ -220,7 +220,7 @@ private:
 	
 	float_t EvaluateForFaceB(IndexPair indexPair, const Transform& xfA, const Transform& xfB) const
 	{
-		const auto normal = Rotate(xfB.q, m_axis);
+		const auto normal = Rotate(m_axis, xfB.q);
 		const auto pointB = Mul(xfB, m_localPoint);
 		const auto pointA = Mul(xfA, m_proxyA.GetVertex(indexPair.a));
 		return Dot(pointA - pointB, normal);

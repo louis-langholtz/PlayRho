@@ -42,7 +42,7 @@ static EdgeSeparation FindMaxSeparation(const PolygonShape& shape1, const Transf
 		for (auto i = decltype(count1){0}; i < count1; ++i)
 		{
 			// Get shape1 normal in frame2.
-			const auto n = Rotate(xf.q, shape1.GetNormal(i));
+			const auto n = Rotate(shape1.GetNormal(i), xf.q);
 			const auto v1 = Mul(xf, shape1.GetVertex(i));
 
 			// Find deepest point for normal i.
@@ -76,7 +76,7 @@ static inline ClipArray FindIncidentEdge(PolygonShape::vertex_count_t index1,
 	auto index_of_min_dot = decltype(count2){0};
 	{
 		// Get the normal of the reference edge in shape2's frame.
-		const auto normal1 = MulT(xf2.q, Rotate(xf1.q, shape1.GetNormal(index1)));
+		const auto normal1 = MulT(xf2.q, Rotate(shape1.GetNormal(index1), xf1.q));
 		
 		auto minDot = MaxFloat;
 		for (auto i = decltype(count2){0}; i < count2; ++i)
@@ -167,7 +167,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const P
 	const auto localNormal = GetForwardPerpendicular(localTangent);
 	const auto planePoint = (v11 + v12) / float_t(2);
 
-	const auto tangent = Rotate(xf1.q, localTangent);
+	const auto tangent = Rotate(localTangent, xf1.q);
 	const auto normal = GetForwardPerpendicular(tangent);
 	
 	v11 = Mul(xf1, v11);

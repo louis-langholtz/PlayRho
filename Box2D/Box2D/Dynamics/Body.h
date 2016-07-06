@@ -632,7 +632,7 @@ inline Vec2 Body::GetWorldPoint(const Vec2& localPoint) const noexcept
 
 inline Vec2 Body::GetWorldVector(const Vec2& localVector) const noexcept
 {
-	return Rotate(m_xf.q, localVector);
+	return Rotate(localVector, m_xf.q);
 }
 
 inline Vec2 Body::GetLocalPoint(const Vec2& worldPoint) const noexcept

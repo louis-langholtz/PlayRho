@@ -61,7 +61,7 @@ void PolygonShape::SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t 
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		m_vertices[i] = Mul(xf, m_vertices[i]);
-		m_normals[i] = Rotate(xf.q, m_normals[i]);
+		m_normals[i] = Rotate(m_normals[i], xf.q);
 	}
 }
 
@@ -329,7 +329,7 @@ bool PolygonShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 	if (index != InvalidIndex)
 	{
 		output->fraction = lower;
-		output->normal = Rotate(xf.q, m_normals[index]);
+		output->normal = Rotate(m_normals[index], xf.q);
 		return true;
 	}
 

@@ -79,8 +79,8 @@ void WeldJoint::InitVelocityConstraints(const SolverData& data)
 
 	const Rot qA(aA), qB(aB);
 
-	m_rA = Rotate(qA, m_localAnchorA - m_localCenterA);
-	m_rB = Rotate(qB, m_localAnchorB - m_localCenterB);
+	m_rA = Rotate(m_localAnchorA - m_localCenterA, qA);
+	m_rB = Rotate(m_localAnchorB - m_localCenterB, qB);
 
 	// J = [-I -r1_skew I r2_skew]
 	//     [ 0       -1 0       1]
@@ -239,8 +239,8 @@ bool WeldJoint::SolvePositionConstraints(const SolverData& data)
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
 
-	const auto rA = Rotate(qA, m_localAnchorA - m_localCenterA);
-	const auto rB = Rotate(qB, m_localAnchorB - m_localCenterB);
+	const auto rA = Rotate(m_localAnchorA - m_localCenterA, qA);
+	const auto rB = Rotate(m_localAnchorB - m_localCenterB, qB);
 
 	float_t positionError, angularError;
 

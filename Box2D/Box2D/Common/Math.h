@@ -680,10 +680,10 @@ constexpr inline Rot operator- (const Rot& lhs, const Rot& rhs) noexcept
 	return Rot{rhs.cos() * lhs.sin() - rhs.sin() * lhs.cos(), rhs.cos() * lhs.cos() + rhs.sin() * lhs.sin()};
 }
 
-/// Rotate a vector
-constexpr inline Vec2 Rotate(const Rot& q, const Vec2& v) noexcept
+/// Rotates a vector by a given angle.
+constexpr inline Vec2 Rotate(const Vec2& vector, const Rot& angle) noexcept
 {
-	return Vec2{(q.cos() * v.x) - (q.sin() * v.y), (q.sin() * v.x) + (q.cos() * v.y)};
+	return Vec2{(angle.cos() * vector.x) - (angle.sin() * vector.y), (angle.sin() * vector.x) + (angle.cos() * vector.y)};
 }
 
 /// Inverse rotate a vector
@@ -712,7 +712,7 @@ constexpr inline Vec2 MulT(const Transform& T, const Vec2& v) noexcept
 //    = (A.q * B.q).Rot(v1) + A.q.Rot(B.p) + A.p
 constexpr inline Transform Mul(const Transform& A, const Transform& B) noexcept
 {
-	return Transform{Rotate(A.q, B.p) + A.p, A.q + B.q};
+	return Transform{Rotate(B.p, A.q) + A.p, A.q + B.q};
 }
 
 // v2 = A.q' * (B.q * v1 + B.p - A.p)
@@ -822,7 +822,7 @@ constexpr inline Position operator* (const float_t scalar, const Position& pos)
 
 constexpr inline Transform GetTransform(const Vec2& ctr, const Rot& rot, const Vec2& local_ctr) noexcept
 {
-	return Transform{ctr - Rotate(rot, local_ctr), rot};
+	return Transform{ctr - Rotate(local_ctr, rot), rot};
 }
 
 inline Transform GetTransform(Position pos, const Vec2& local_ctr) noexcept
