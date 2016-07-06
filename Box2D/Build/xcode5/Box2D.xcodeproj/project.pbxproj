@@ -15,6 +15,7 @@
 		4721349E1C8E4CB5009536F9 /* FixtureList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4721349B1C8E4CB5009536F9 /* FixtureList.cpp */; };
 		4721349F1C8E4CB5009536F9 /* FixtureList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4721349C1C8E4CB5009536F9 /* FixtureList.hpp */; };
 		472134A01C8E4CB5009536F9 /* FixtureList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4721349C1C8E4CB5009536F9 /* FixtureList.hpp */; };
+		4726DD031D2CD1EF0012A882 /* Rot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD021D2CD1EF0012A882 /* Rot.cpp */; };
 		475039911D2180D600D32047 /* DistanceProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4750398F1D2180D600D32047 /* DistanceProxy.cpp */; };
 		475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 475039901D2180D600D32047 /* DistanceProxy.hpp */; };
 		4751EE291CEDD78F00D459CB /* Mobile.h in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE281CEDD78F00D459CB /* Mobile.h */; };
@@ -25,6 +26,7 @@
 		47769D431D25DBEB0078A9C5 /* libBox2D.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80FF01D2141C3D980059E59D /* libBox2D.a */; };
 		47769D461D29B8B50078A9C5 /* Vec2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47769D441D29B8B50078A9C5 /* Vec2.cpp */; };
 		47769D491D29B9C60078A9C5 /* Sweep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47769D471D29B9C60078A9C5 /* Sweep.cpp */; };
+		47769D4B1D2C26D70078A9C5 /* DistanceProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47769D4A1D2C26D70078A9C5 /* DistanceProxy.cpp */; };
 		477DB2941D14B9D500846ED6 /* ContactEdgeList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477DB2921D14B9D500846ED6 /* ContactEdgeList.cpp */; };
 		477DB2951D14B9D500846ED6 /* ContactEdgeList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 477DB2931D14B9D500846ED6 /* ContactEdgeList.hpp */; };
 		477DB2981D14BB2000846ED6 /* ContactEdgeIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477DB2961D14BB2000846ED6 /* ContactEdgeIterator.cpp */; };
@@ -352,6 +354,7 @@
 		472134841C8CD7CF009536F9 /* BodyList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyList.hpp; sourceTree = "<group>"; };
 		4721349B1C8E4CB5009536F9 /* FixtureList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FixtureList.cpp; sourceTree = "<group>"; };
 		4721349C1C8E4CB5009536F9 /* FixtureList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureList.hpp; sourceTree = "<group>"; };
+		4726DD021D2CD1EF0012A882 /* Rot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Rot.cpp; sourceTree = "<group>"; };
 		4750398F1D2180D600D32047 /* DistanceProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceProxy.cpp; sourceTree = "<group>"; };
 		475039901D2180D600D32047 /* DistanceProxy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DistanceProxy.hpp; sourceTree = "<group>"; };
 		4751EE281CEDD78F00D459CB /* Mobile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mobile.h; sourceTree = "<group>"; };
@@ -362,6 +365,7 @@
 		4767DB981D25D25E000CDB91 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		47769D441D29B8B50078A9C5 /* Vec2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vec2.cpp; sourceTree = "<group>"; };
 		47769D471D29B9C60078A9C5 /* Sweep.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sweep.cpp; sourceTree = "<group>"; };
+		47769D4A1D2C26D70078A9C5 /* DistanceProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceProxy.cpp; sourceTree = "<group>"; };
 		477DB2921D14B9D500846ED6 /* ContactEdgeList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactEdgeList.cpp; sourceTree = "<group>"; };
 		477DB2931D14B9D500846ED6 /* ContactEdgeList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactEdgeList.hpp; sourceTree = "<group>"; };
 		477DB2961D14BB2000846ED6 /* ContactEdgeIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactEdgeIterator.cpp; sourceTree = "<group>"; };
@@ -646,6 +650,8 @@
 				4767DB981D25D25E000CDB91 /* main.cpp */,
 				47769D471D29B9C60078A9C5 /* Sweep.cpp */,
 				47769D441D29B8B50078A9C5 /* Vec2.cpp */,
+				47769D4A1D2C26D70078A9C5 /* DistanceProxy.cpp */,
+				4726DD021D2CD1EF0012A882 /* Rot.cpp */,
 			);
 			path = "Unit Tests";
 			sourceTree = "<group>";
@@ -1308,6 +1314,8 @@
 				4767DB991D25D25E000CDB91 /* main.cpp in Sources */,
 				47769D461D29B8B50078A9C5 /* Vec2.cpp in Sources */,
 				47769D491D29B9C60078A9C5 /* Sweep.cpp in Sources */,
+				47769D4B1D2C26D70078A9C5 /* DistanceProxy.cpp in Sources */,
+				4726DD031D2CD1EF0012A882 /* Rot.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

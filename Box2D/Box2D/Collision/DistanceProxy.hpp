@@ -77,6 +77,9 @@ namespace box2d
 		auto GetRadius() const noexcept { return m_radius; }
 		
 		/// Gets the supporting vertex index in the given direction.
+		/// @detail This finds the vertex that's most significantly in the direction of the given
+		///   vector and returns its index.
+		/// @note 0 is returned for a given zero length direction vector.
 		/// @param d Direction vector to find index for.
 		/// @return InvalidIndex if the count of vertices is zero or a value from 0 to one less than count.
 		/// @sa GetVertexCount().
@@ -101,7 +104,7 @@ namespace box2d
 		std::array<Vec2,2> m_buffer;
 		const Vec2* m_vertices = &m_buffer[0];
 		size_type m_count = 0; ///< Count of valid elements of m_vertices.
-		float_t m_radius = float_t{0}; ///< "Radius" of the associated shape.
+		float_t m_radius = float_t{0}; ///< "Radius" of the associated shape (in meters).
 	};
 	
 	/// Initialize the proxy using the given shape.

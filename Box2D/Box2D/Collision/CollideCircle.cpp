@@ -79,7 +79,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const C
 
 	if (Dot(cLocal - v1, v2 - v1) <= float_t{0})
 	{
-		if (DistanceSquared(cLocal, v1) > Square(totalRadius))
+		if (LengthSquared(cLocal - v1) > Square(totalRadius))
 		{
 			return Manifold{};
 		}
@@ -88,7 +88,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transform& xfA, const C
 
 	if (Dot(cLocal - v2, v1 - v2) <= float_t{0})
 	{
-		if (DistanceSquared(cLocal, v2) > Square(totalRadius))
+		if (LengthSquared(cLocal - v2) > Square(totalRadius))
 		{
 			return Manifold{};
 		}

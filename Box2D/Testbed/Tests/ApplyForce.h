@@ -64,7 +64,7 @@ public:
 		{
 			Transform xf1;
 			xf1.q = Rot(0.3524f * Pi);
-			xf1.p = xf1.q.GetXAxis();
+			xf1.p = GetXAxis(xf1.q);
 
 			Vec2 vertices[3];
 			vertices[0] = Mul(xf1, Vec2(-1.0f, float_t{0}));
@@ -80,7 +80,7 @@ public:
 
 			Transform xf2;
 			xf2.q = Rot(-0.3524f * Pi);
-			xf2.p = -xf2.q.GetXAxis();
+			xf2.p = -GetXAxis(xf2.q);
 
 			vertices[0] = Mul(xf2, Vec2(-1.0f, float_t{0}));
 			vertices[1] = Mul(xf2, Vec2(1.0f, float_t{0}));

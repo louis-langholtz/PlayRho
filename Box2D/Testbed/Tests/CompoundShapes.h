@@ -80,7 +80,7 @@ public:
 		{
 			Transform xf1;
 			xf1.q = Rot(0.3524f * Pi);
-			xf1.p = xf1.q.GetXAxis();
+			xf1.p = GetXAxis(xf1.q);
 
 			Vec2 vertices[3];
 
@@ -92,7 +92,7 @@ public:
 
 			Transform xf2;
 			xf2.q = Rot(-0.3524f * Pi);
-			xf2.p = -xf2.q.GetXAxis();
+			xf2.p = -GetXAxis(xf2.q);
 
 			PolygonShape triangle2;
 			vertices[0] = Mul(xf2, Vec2(-1.0f, 0.0f));

@@ -104,13 +104,13 @@ void WheelJoint::InitVelocityConstraints(const SolverData& data)
 	const Rot qA(aA), qB(aB);
 
 	// Compute the effective masses.
-	const auto rA = Mul(qA, m_localAnchorA - m_localCenterA);
-	const auto rB = Mul(qB, m_localAnchorB - m_localCenterB);
+	const auto rA = Rotate(qA, m_localAnchorA - m_localCenterA);
+	const auto rB = Rotate(qB, m_localAnchorB - m_localCenterB);
 	const auto dd = cB + rB - cA - rA;
 
 	// Point to line constraint
 	{
-		m_ay = Mul(qA, m_localYAxisA);
+		m_ay = Rotate(qA, m_localYAxisA);
 		m_sAy = Cross(dd + rA, m_ay);
 		m_sBy = Cross(rB, m_ay);
 
@@ -128,7 +128,7 @@ void WheelJoint::InitVelocityConstraints(const SolverData& data)
 	m_gamma = float_t{0};
 	if (m_frequencyHz > float_t{0})
 	{
-		m_ax = Mul(qA, m_localXAxisA);
+		m_ax = Rotate(qA, m_localXAxisA);
 		m_sAx = Cross(dd + rA, m_ax);
 		m_sBx = Cross(rB, m_ax);
 
@@ -289,11 +289,11 @@ bool WheelJoint::SolvePositionConstraints(const SolverData& data)
 
 	const Rot qA{aA}, qB{aB};
 
-	const auto rA = Mul(qA, m_localAnchorA - m_localCenterA);
-	const auto rB = Mul(qB, m_localAnchorB - m_localCenterB);
+	const auto rA = Rotate(qA, m_localAnchorA - m_localCenterA);
+	const auto rB = Rotate(qB, m_localAnchorB - m_localCenterB);
 	const auto d = (cB - cA) + rB - rA;
 
-	const auto ay = Mul(qA, m_localYAxisA);
+	const auto ay = Rotate(qA, m_localYAxisA);
 
 	const auto sAy = Cross(d + rA, ay);
 	const auto sBy = Cross(rB, ay);

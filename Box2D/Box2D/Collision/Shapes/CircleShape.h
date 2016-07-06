@@ -58,7 +58,7 @@ public:
 	void SetPosition(const Vec2& value) noexcept { m_p = value; }
 
 private:
-	/// Position
+	/// Linear position of the shape as initialized on construction or as assigned using the SetPosition method.
 	Vec2 m_p = Vec2_zero;
 };
 

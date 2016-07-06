@@ -68,7 +68,7 @@ void Rope::Initialize(const RopeDef* def)
 	{
 		const auto p1 = m_ps[i];
 		const auto p2 = m_ps[i+1];
-		m_Ls[i] = Sqrt(DistanceSquared(p1, p2));
+		m_Ls[i] = Sqrt(LengthSquared(p1 - p2));
 	}
 
 	for (auto i = decltype(count3){0}; i < count3; ++i)

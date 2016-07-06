@@ -86,7 +86,8 @@ public:
 
 	/// Gets a normal by index.
 	/// @detail
-	/// The normals are 90 degree clockwise normalized vectors defined by consecutive pairs of vertices.
+	/// These are 90-degree clockwise-rotated unit-vectors of the vectors defined by
+	/// consecutive pairs of elements of vertices.
 	/// @param index Index of the normal to get.
 	/// @return Normal for the given index.
 	Vec2 GetNormal(vertex_count_t index) const;
@@ -110,7 +111,8 @@ private:
 
 	/// Normals of edges.
 	/// @detail
-	/// These are 90 degree clockwise normalized vectors defined by consecutive pairs of elements of m_vertices.
+	/// These are 90-degree clockwise-rotated unit-vectors of the vectors defined by
+	/// consecutive pairs of elements of vertices.
 	Vec2 m_normals[MaxPolygonVertices];
 	
 	vertex_count_t m_count = 0;

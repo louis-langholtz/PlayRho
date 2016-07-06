@@ -859,7 +859,7 @@ void World::DrawShape(const Fixture* fixture, const Transform& xf, const Color& 
 			const auto circle = static_cast<const CircleShape*>(fixture->GetShape());
 			const auto center = Mul(xf, circle->GetPosition());
 			const auto radius = circle->GetRadius();
-			const auto axis = Mul(xf.q, Vec2{float_t{1}, float_t{0}});
+			const auto axis = Rotate(xf.q, Vec2{float_t{1}, float_t{0}});
 			g_debugDraw->DrawSolidCircle(center, radius, axis, color);
 		}
 		break;

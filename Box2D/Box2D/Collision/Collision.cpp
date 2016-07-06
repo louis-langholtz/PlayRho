@@ -54,7 +54,7 @@ static inline WorldManifold GetWorldManifoldForFaceA(const Manifold& manifold,
 													 const Transform& xfA, const float_t radiusA,
 													 const Transform& xfB, const float_t radiusB)
 {
-	const auto normal = Mul(xfA.q, manifold.GetLocalNormal());
+	const auto normal = Rotate(xfA.q, manifold.GetLocalNormal());
 	const auto planePoint = Mul(xfA, manifold.GetLocalPoint());
 	const auto pointFn = [&](Manifold::size_type index) {
 		const auto clipPoint = Mul(xfB, manifold.GetPoint(index).localPoint);
@@ -81,7 +81,7 @@ static inline WorldManifold GetWorldManifoldForFaceB(const Manifold& manifold,
 													 const Transform& xfA, const float_t radiusA,
 													 const Transform& xfB, const float_t radiusB)
 {
-	const auto normal = Mul(xfB.q, manifold.GetLocalNormal());
+	const auto normal = Rotate(xfB.q, manifold.GetLocalNormal());
 	const auto planePoint = Mul(xfB, manifold.GetLocalPoint());
 	const auto pointFn = [&](Manifold::size_type index) {
 		const auto clipPoint = Mul(xfA, manifold.GetPoint(index).localPoint);
@@ -277,7 +277,7 @@ bool TestOverlap(const Shape& shapeA, child_count_t indexA,
 	SimplexCache cache;
 	const auto output = Distance(cache, proxyA, xfA, proxyB, xfB);
 	
-	const auto distanceSquared = DistanceSquared(output.witnessPoints.a, output.witnessPoints.b);
+	const auto distanceSquared = LengthSquared(output.witnessPoints.a - output.witnessPoints.b);
 	const auto totalRadiusSquared = Square(proxyA.GetRadius() + proxyB.GetRadius());
 	
 	return (distanceSquared - totalRadiusSquared) < Square(BOX2D_MAGIC(Epsilon * 10));

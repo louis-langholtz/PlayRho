@@ -55,6 +55,12 @@ inline auto Sqrt(T t) { return std::sqrt(t); }
 template<typename T>
 inline auto Atan2(T y, T x) { return std::atan2(y, x); }
 
+template <typename T>
+constexpr inline T Abs(T a)
+{
+	return (a >= T(0)) ? a : -a;
+}
+
 /// A 2D column vector.
 struct Vec2
 {
@@ -257,14 +263,22 @@ struct Mat33
 constexpr auto Mat33_zero = Mat33(Vec3_zero, Vec3_zero, Vec3_zero);
 
 /// Rotation
-struct Rot
+class Rot
 {
-	Rot() noexcept = default;
+public:
+	Rot() = default;
 	
 	constexpr Rot(const Rot& copy) noexcept = default;
 
 	/// Initialize from sine and cosine values.
-	constexpr Rot(float_t sine, float_t cosine) noexcept: s{sine}, c{cosine} {}
+	constexpr Rot(float_t sine, float_t cosine) noexcept: s{sine}, c{cosine}
+	{
+		assert(sine >= -1 - Epsilon * (Abs(sine) + 1));
+		assert(sine <= +1 + Epsilon * (Abs(sine) + 1));
+		assert(cosine >= -1 - Epsilon * (Abs(cosine) + 1));
+		assert(cosine <= +1 + Epsilon * (Abs(cosine) + 1));
+		assert(Abs(Square(sine) + Square(cosine) - 1) < Epsilon * (Square(sine) + Square(cosine) + 1) * 2);
+	}
 
 	/// Initialize from an angle.
 	/// @param angle Angle in radians.
@@ -273,29 +287,43 @@ struct Rot
 		// TODO_ERIN optimize
 	}
 	
-	/// Get the angle in radians
-	float_t GetAngle() const
-	{
-		return Atan2(s, c);
-	}
+	constexpr auto sin() const noexcept { return s; }
+	constexpr auto cos() const noexcept { return c; }
 
-	/// Get the x-axis
-	constexpr Vec2 GetXAxis() const noexcept
-	{
-		return Vec2{c, s};
-	}
-
-	/// Get the u-axis
-	constexpr Vec2 GetYAxis() const noexcept
-	{
-		return Vec2{-s, c};
-	}
-
-	/// Sine and cosine
-	float_t s, c;
+private:
+	float_t s; ///< Sine value.
+	float_t c; ///< Cosine value.
 };
 
 constexpr auto Rot_identity = Rot(0, 1);
+
+constexpr inline bool operator == (Rot lhs, Rot rhs)
+{
+	return (lhs.sin() == rhs.sin()) && (lhs.cos() == rhs.cos());
+}
+
+constexpr inline bool operator != (Rot lhs, Rot rhs)
+{
+	return lhs.sin() != rhs.sin() || lhs.cos() != rhs.cos();
+}
+
+/// Get the angle in radians
+inline float_t GetAngle(Rot rot)
+{
+	return Atan2(rot.sin(), rot.cos());
+}
+
+/// Get the x-axis
+constexpr inline Vec2 GetXAxis(Rot rot) noexcept
+{
+	return Vec2{rot.cos(), rot.sin()};
+}
+
+/// Get the u-axis ("u"??? is that a typo??? Anyway, this is the reverse perpendicular vector of rot as a directional vector)
+constexpr inline Vec2 GetYAxis(Rot rot) noexcept
+{
+	return Vec2{-rot.sin(), rot.cos()};
+}
 
 /// A transform contains translation and rotation. It is used to represent
 /// the position and orientation of rigid frames.
@@ -539,11 +567,6 @@ constexpr inline bool operator != (Vec2 a, Vec2 b) noexcept
 	return (a.x != b.x) || (a.y != b.y);
 }
 
-constexpr inline float_t DistanceSquared(const Vec2& a, const Vec2& b) noexcept
-{
-	return LengthSquared(a - b);
-}
-
 constexpr Vec3& operator += (Vec3& lhs, const Vec3& rhs) noexcept
 {
 	lhs.x += rhs.x;
@@ -628,42 +651,51 @@ constexpr inline Vec2 Mul22(const Mat33& A, const Vec2& v) noexcept
 	return Vec2{A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y};
 }
 
-/// Multiply two rotations: q * r
-constexpr inline Rot Mul(const Rot& q, const Rot& r) noexcept
+/// Adds two rotations.
+/// @detail In terms of angles, this is simply the addition of the two angles.
+constexpr inline Rot operator+ (const Rot lhs, const Rot rhs) noexcept
 {
+	// In terms of sines and cosines, what'd be an addition is instead done as a multiplication:
 	// [qc -qs] * [rc -rs] = [qc*rc-qs*rs -qc*rs-qs*rc]
 	// [qs  qc]   [rs  rc]   [qs*rc+qc*rs -qs*rs+qc*rc]
 	// s = qs * rc + qc * rs
 	// c = qc * rc - qs * rs
-	return Rot(q.s * r.c + q.c * r.s, q.c * r.c - q.s * r.s);
+	return Rot(lhs.sin() * rhs.cos() + lhs.cos() * rhs.sin(), lhs.cos() * rhs.cos() - lhs.sin() * rhs.sin());
 }
 
-/// Transpose multiply two rotations: qT * r
-constexpr inline Rot MulT(const Rot& q, const Rot& r) noexcept
+constexpr inline Rot operator- (Rot value)
 {
+	return Rot{-value.sin(), value.cos()};
+}
+
+/// Subtracts rhs from lhs.
+constexpr inline Rot operator- (const Rot& lhs, const Rot& rhs) noexcept
+{
+	// Let q be lhs and r be rhs...
+	// Transpose multiply two rotations: qT * r
 	// [ qc qs] * [rc -rs] = [qc*rc+qs*rs -qc*rs+qs*rc]
 	// [-qs qc]   [rs  rc]   [-qs*rc+qc*rs qs*rs+qc*rc]
 	// s = qc * rs - qs * rc
 	// c = qc * rc + qs * rs
-	return Rot{q.c * r.s - q.s * r.c, q.c * r.c + q.s * r.s};
+	return Rot{rhs.cos() * lhs.sin() - rhs.sin() * lhs.cos(), rhs.cos() * lhs.cos() + rhs.sin() * lhs.sin()};
 }
 
 /// Rotate a vector
-constexpr inline Vec2 Mul(const Rot& q, const Vec2& v) noexcept
+constexpr inline Vec2 Rotate(const Rot& q, const Vec2& v) noexcept
 {
-	return Vec2{q.c * v.x - q.s * v.y, q.s * v.x + q.c * v.y};
+	return Vec2{(q.cos() * v.x) - (q.sin() * v.y), (q.sin() * v.x) + (q.cos() * v.y)};
 }
 
 /// Inverse rotate a vector
 constexpr inline Vec2 MulT(const Rot& q, const Vec2& v) noexcept
 {
-	return Vec2{q.c * v.x + q.s * v.y, -q.s * v.x + q.c * v.y};
+	return Vec2{(q.cos() * v.x) + (q.sin() * v.y), (q.cos() * v.y) - (q.sin() * v.x)};
 }
 
 constexpr inline Vec2 Mul(const Transform& T, const Vec2& v) noexcept
 {
-	const auto x = (T.q.c * v.x - T.q.s * v.y) + T.p.x;
-	const auto y = (T.q.s * v.x + T.q.c * v.y) + T.p.y;
+	const auto x = (T.q.cos() * v.x - T.q.sin() * v.y) + T.p.x;
+	const auto y = (T.q.sin() * v.x + T.q.cos() * v.y) + T.p.y;
 	return Vec2{x, y};
 }
 
@@ -671,8 +703,8 @@ constexpr inline Vec2 MulT(const Transform& T, const Vec2& v) noexcept
 {
 	const auto px = v.x - T.p.x;
 	const auto py = v.y - T.p.y;
-	const auto x = T.q.c * px + T.q.s * py;
-	const auto y = -T.q.s * px + T.q.c * py;
+	const auto x = T.q.cos() * px + T.q.sin() * py;
+	const auto y = -T.q.sin() * px + T.q.cos() * py;
 	return Vec2{x, y};
 }
 
@@ -680,20 +712,14 @@ constexpr inline Vec2 MulT(const Transform& T, const Vec2& v) noexcept
 //    = (A.q * B.q).Rot(v1) + A.q.Rot(B.p) + A.p
 constexpr inline Transform Mul(const Transform& A, const Transform& B) noexcept
 {
-	return Transform{Mul(A.q, B.p) + A.p, Mul(A.q, B.q)};
+	return Transform{Rotate(A.q, B.p) + A.p, A.q + B.q};
 }
 
 // v2 = A.q' * (B.q * v1 + B.p - A.p)
 //    = A.q' * B.q * v1 + A.q' * (B.p - A.p)
 constexpr inline Transform MulT(const Transform& A, const Transform& B) noexcept
 {
-	return Transform{MulT(A.q, B.p - A.p), MulT(A.q, B.q)};
-}
-
-template <typename T>
-constexpr inline T Abs(T a)
-{
-	return (a >= T(0)) ? a : -a;
+	return Transform{MulT(A.q, B.p - A.p), B.q - A.q};
 }
 
 template <>
@@ -796,7 +822,7 @@ constexpr inline Position operator* (const float_t scalar, const Position& pos)
 
 constexpr inline Transform GetTransform(const Vec2& ctr, const Rot& rot, const Vec2& local_ctr) noexcept
 {
-	return Transform{ctr - Mul(rot, local_ctr), rot};
+	return Transform{ctr - Rotate(rot, local_ctr), rot};
 }
 
 inline Transform GetTransform(Position pos, const Vec2& local_ctr) noexcept
@@ -838,6 +864,11 @@ inline Transform GetTransform0(const Sweep& sweep)
 inline Transform GetTransform1(const Sweep& sweep)
 {
 	return GetTransform(sweep.pos1, sweep.GetLocalCenter());
+}
+
+constexpr inline float_t DegreesToRadians(float_t value)
+{
+	return value * Pi / 180;
 }
 
 inline void Sweep::Advance0(float_t alpha)

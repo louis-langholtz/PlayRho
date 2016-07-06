@@ -82,8 +82,8 @@ void DistanceJoint::InitVelocityConstraints(const SolverData& data)
 
 	const Rot qA(aA), qB(aB);
 
-	m_rA = Mul(qA, m_localAnchorA - m_localCenterA);
-	m_rB = Mul(qB, m_localAnchorB - m_localCenterB);
+	m_rA = Rotate(qA, m_localAnchorA - m_localCenterA);
+	m_rB = Rotate(qB, m_localAnchorB - m_localCenterB);
 	m_u = (cB + m_rB) - (cA + m_rA);
 
 	// Handle singularity.
@@ -197,8 +197,8 @@ bool DistanceJoint::SolvePositionConstraints(const SolverData& data)
 	const auto qA = Rot(aA);
 	const auto qB = Rot(aB);
 
-	const auto rA = Mul(qA, m_localAnchorA - m_localCenterA);
-	const auto rB = Mul(qB, m_localAnchorB - m_localCenterB);
+	const auto rA = Rotate(qA, m_localAnchorA - m_localCenterA);
+	const auto rB = Rotate(qB, m_localAnchorB - m_localCenterB);
 	auto u = cB + rB - cA - rA;
 
 	const auto length = Normalize(u);

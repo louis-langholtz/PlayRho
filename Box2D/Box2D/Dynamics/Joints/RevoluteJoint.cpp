@@ -85,8 +85,8 @@ void RevoluteJoint::InitVelocityConstraints(const SolverData& data)
 
 	const Rot qA(aA), qB(aB);
 
-	m_rA = Mul(qA, m_localAnchorA - m_localCenterA);
-	m_rB = Mul(qB, m_localAnchorB - m_localCenterB);
+	m_rA = Rotate(qA, m_localAnchorA - m_localCenterA);
+	m_rB = Rotate(qB, m_localAnchorB - m_localCenterB);
 
 	// J = [-I -r1_skew I r2_skew]
 	//     [ 0       -1 0       1]
@@ -346,8 +346,8 @@ bool RevoluteJoint::SolvePositionConstraints(const SolverData& data)
 	{
 		qA = Rot(aA);
 		qB = Rot(aB);
-		const auto rA = Mul(qA, m_localAnchorA - m_localCenterA);
-		const auto rB = Mul(qB, m_localAnchorB - m_localCenterB);
+		const auto rA = Rotate(qA, m_localAnchorA - m_localCenterA);
+		const auto rB = Rotate(qB, m_localAnchorB - m_localCenterB);
 
 		const auto C = cB + rB - cA - rA;
 		positionError = Length(C);

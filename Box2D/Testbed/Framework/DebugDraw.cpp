@@ -644,7 +644,7 @@ void DebugDraw::Destroy()
 void DebugDraw::DrawPolygon(const Vec2* vertices, size_type vertexCount, const Color& color)
 {
     Vec2 p1 = vertices[vertexCount - 1];
-	for (int32 i = 0; i < vertexCount; ++i)
+	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 	{
         Vec2 p2 = vertices[i];
 		m_lines->Vertex(p1, color);
@@ -658,7 +658,7 @@ void DebugDraw::DrawSolidPolygon(const Vec2* vertices, size_type vertexCount, co
 {
 	Color fillColor(0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f);
 
-    for (int32 i = 1; i < vertexCount - 1; ++i)
+    for (auto i = decltype(vertexCount){1}; i < vertexCount - 1; ++i)
     {
         m_triangles->Vertex(vertices[0], fillColor);
         m_triangles->Vertex(vertices[i], fillColor);
@@ -666,7 +666,7 @@ void DebugDraw::DrawSolidPolygon(const Vec2* vertices, size_type vertexCount, co
     }
 
     Vec2 p1 = vertices[vertexCount - 1];
-	for (int32 i = 0; i < vertexCount; ++i)
+	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 	{
         Vec2 p2 = vertices[i];
 		m_lines->Vertex(p1, color);
@@ -759,11 +759,11 @@ void DebugDraw::DrawTransform(const Transform& xf)
 	Vec2 p1 = xf.p, p2;
 
 	m_lines->Vertex(p1, red);
-	p2 = p1 + k_axisScale * xf.q.GetXAxis();
+	p2 = p1 + k_axisScale * GetXAxis(xf.q);
 	m_lines->Vertex(p2, red);
 
 	m_lines->Vertex(p1, green);
-	p2 = p1 + k_axisScale * xf.q.GetYAxis();
+	p2 = p1 + k_axisScale * GetYAxis(xf.q);
 	m_lines->Vertex(p2, green);
 }
 
