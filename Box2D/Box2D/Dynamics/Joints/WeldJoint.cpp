@@ -140,7 +140,7 @@ void WeldJoint::InitVelocityConstraints(const SolverData& data)
 	}
 	else
 	{
-		K.GetSymInverse33(&m_mass);
+		m_mass = GetSymInverse33(K);
 		m_gamma = float_t{0};
 		m_bias = float_t{0};
 	}

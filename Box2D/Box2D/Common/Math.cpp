@@ -20,29 +20,3 @@
 #include <Box2D/Common/Math.h>
 
 using namespace box2d;
-
-/// Returns the zero matrix if singular.
-void Mat33::GetSymInverse33(Mat33* M) const
-{
-	auto det = Dot(ex, Cross(ey, ez));
-	if (det != float_t{0})
-	{
-		det = float_t{1} / det;
-	}
-
-	const auto a11 = ex.x, a12 = ey.x, a13 = ez.x;
-	const auto a22 = ey.y, a23 = ez.y;
-	const auto a33 = ez.z;
-
-	M->ex.x = det * (a22 * a33 - a23 * a23);
-	M->ex.y = det * (a13 * a23 - a12 * a33);
-	M->ex.z = det * (a12 * a23 - a13 * a22);
-
-	M->ey.x = M->ex.y;
-	M->ey.y = det * (a11 * a33 - a13 * a13);
-	M->ey.z = det * (a13 * a12 - a11 * a23);
-
-	M->ez.x = M->ex.z;
-	M->ez.y = M->ey.z;
-	M->ez.z = det * (a11 * a22 - a12 * a12);
-}

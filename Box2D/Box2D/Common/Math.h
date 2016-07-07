@@ -181,6 +181,13 @@ inline bool IsValid(Vec2 value)
 	return IsValid(value.x) && IsValid(value.y);
 }
 
+/// Does this vector contain finite coordinates?
+template <>
+inline bool IsValid(Vec3 value)
+{
+	return IsValid(value.x) && IsValid(value.y) && IsValid(value.z);
+}
+
 /// A 2-by-2 matrix. Stored in column-major order.
 struct Mat22
 {
@@ -240,7 +247,7 @@ struct Mat33
 
 	/// Solve A * x = b, where b is a column vector. This is more efficient
 	/// than computing the inverse in one-shot cases.
-	constexpr Vec3 Solve33(const Vec3& b) const
+	constexpr Vec3 Solve33(const Vec3& b) const noexcept
 	{
 		auto det = Dot(ex, Cross(ey, ez));
 		if (det != float_t{0})
@@ -253,7 +260,7 @@ struct Mat33
 	/// Solve A * x = b, where b is a column vector. This is more efficient
 	/// than computing the inverse in one-shot cases. Solve only the upper
 	/// 2-by-2 matrix equation.
-	constexpr Vec2 Solve22(const Vec2& b) const
+	constexpr Vec2 Solve22(const Vec2& b) const noexcept
 	{
 		const auto a11 = ex.x, a12 = ey.x, a21 = ex.y, a22 = ey.y;
 		auto det = a11 * a22 - a12 * a21;
@@ -263,10 +270,6 @@ struct Mat33
 		}
 		return Vec2{det * (a22 * b.x - a12 * b.y), det * (a11 * b.y - a21 * b.x)};
 	}
-
-	/// Get the symmetric inverse of this matrix as a 3-by-3.
-	/// Returns the zero matrix if singular.
-	void GetSymInverse33(Mat33* M) const;
 
 	Vec3 ex, ey, ez;
 };
@@ -284,6 +287,31 @@ constexpr inline Mat33 GetInverse22(const Mat33& value) noexcept
 		det = float_t{1} / det;
 	}
 	return Mat33{Vec3{det * d, -det * c, float_t{0}}, Vec3{-det * b, det * a, 0}, Vec3{0, 0, 0}};
+}
+	
+/// Get the symmetric inverse of this matrix as a 3-by-3.
+/// Returns the zero matrix if singular.
+constexpr inline Mat33 GetSymInverse33(const Mat33& value) noexcept
+{
+	auto det = Dot(value.ex, Cross(value.ey, value.ez));
+	if (det != float_t{0})
+	{
+		det = float_t{1} / det;
+	}
+	
+	const auto a11 = value.ex.x, a12 = value.ey.x, a13 = value.ez.x;
+	const auto a22 = value.ey.y, a23 = value.ez.y;
+	const auto a33 = value.ez.z;
+	
+	const auto ex_y = det * (a13 * a23 - a12 * a33);
+	const auto ey_z = det * (a13 * a12 - a11 * a23);
+	const auto ex_z = det * (a12 * a23 - a13 * a22);
+	
+	return Mat33{
+		Vec3{det * (a22 * a33 - a23 * a23), ex_y, ex_z},
+		Vec3{ex_y, det * (a11 * a33 - a13 * a13), ey_z},
+		Vec3{ex_z, ey_z, det * (a11 * a22 - a12 * a12)}
+	};
 }
 
 /// Rotational transformation.
