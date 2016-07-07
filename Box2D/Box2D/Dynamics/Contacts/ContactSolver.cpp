@@ -365,7 +365,7 @@ static inline bool BlockSolveNormalCase1(const ContactVelocityConstraint& vc, co
 	//
 	// x = -inv(A) * b'
 	//
-	const auto newImpulse = -Mul(vc.GetNormalMass(), b_prime);
+	const auto newImpulse = -Transform(b_prime, vc.GetNormalMass());
 	if ((newImpulse.x >= float_t{0}) && (newImpulse.y >= float_t{0}))
 	{
 		BlockSolveUpdate(vc, oldImpulse, newImpulse, velA, velB, vcp1, vcp2);
@@ -522,7 +522,7 @@ static inline void BlockSolveNormalConstraint(const ContactVelocityConstraint& v
 		const auto b = Vec2{normal_vn1 - vcp1.velocityBias, normal_vn2 - vcp2.velocityBias};
 		
 		// Return b'
-		return b - Mul(vc.GetK(), oldImpulse);
+		return b - Transform(oldImpulse, vc.GetK());
 	}();
 	
 	

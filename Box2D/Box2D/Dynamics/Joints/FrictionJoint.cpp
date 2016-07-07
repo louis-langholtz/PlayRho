@@ -158,7 +158,7 @@ void FrictionJoint::SolveVelocityConstraints(const SolverData& data)
 	{
 		const auto Cdot = vB + (GetReversePerpendicular(m_rB) * wB) - vA - (GetReversePerpendicular(m_rA) * wA);
 
-		auto impulse = -Mul(m_linearMass, Cdot);
+		auto impulse = -Transform(Cdot, m_linearMass);
 		const auto oldImpulse = m_linearImpulse;
 		m_linearImpulse += impulse;
 

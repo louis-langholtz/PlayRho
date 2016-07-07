@@ -494,14 +494,14 @@ constexpr inline float_t Cross(const Vec2& a, const Vec2& b) noexcept
 
 /// Multiply a matrix times a vector. If a rotation matrix is provided,
 /// then this transforms the vector from one frame to another.
-constexpr inline Vec2 Mul(const Mat22& A, const Vec2& v) noexcept
+constexpr inline Vec2 Transform(const Vec2& v, const Mat22& A) noexcept
 {
 	return Vec2{A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y};
 }
 
 /// Multiply a matrix transpose times a vector. If a rotation matrix is provided,
 /// then this transforms the vector from one frame to another (inverse transform).
-constexpr inline Vec2 MulT(const Mat22& A, const Vec2& v) noexcept
+constexpr inline Vec2 InverseTransform(const Vec2& v, const Mat22& A) noexcept
 {
 	return Vec2{Dot(v, A.ex), Dot(v, A.ey)};
 }
@@ -653,7 +653,7 @@ constexpr inline Mat22 operator + (const Mat22& A, const Mat22& B) noexcept
 // A * B
 constexpr inline Mat22 Mul(const Mat22& A, const Mat22& B) noexcept
 {
-	return Mat22{Mul(A, B.ex), Mul(A, B.ey)};
+	return Mat22{Transform(B.ex, A), Transform(B.ey, A)};
 }
 
 // A^T * B
