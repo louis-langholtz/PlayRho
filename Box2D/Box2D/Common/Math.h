@@ -264,10 +264,6 @@ struct Mat33
 		return Vec2{det * (a22 * b.x - a12 * b.y), det * (a11 * b.y - a21 * b.x)};
 	}
 
-	/// Get the inverse of this matrix as a 2-by-2.
-	/// Returns the zero matrix if singular.
-	Mat33 GetInverse22() const noexcept;
-
 	/// Get the symmetric inverse of this matrix as a 3-by-3.
 	/// Returns the zero matrix if singular.
 	void GetSymInverse33(Mat33* M) const;
@@ -276,6 +272,19 @@ struct Mat33
 };
 
 constexpr auto Mat33_zero = Mat33(Vec3_zero, Vec3_zero, Vec3_zero);
+
+/// Get the inverse of this matrix as a 2-by-2.
+/// Returns the zero matrix if singular.
+constexpr inline Mat33 GetInverse22(const Mat33& value) noexcept
+{
+	const auto a = value.ex.x, b = value.ey.x, c = value.ex.y, d = value.ey.y;
+	auto det = (a * d) - (b * c);
+	if (det != float_t{0})
+	{
+		det = float_t{1} / det;
+	}
+	return Mat33{Vec3{det * d, -det * c, float_t{0}}, Vec3{-det * b, det * a, 0}, Vec3{0, 0, 0}};
+}
 
 /// Rotational transformation.
 /// @detail An angle expressed in terms of its sine and cosine values.

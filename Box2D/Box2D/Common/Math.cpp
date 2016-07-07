@@ -21,18 +21,6 @@
 
 using namespace box2d;
 
-Mat33 Mat33::GetInverse22() const noexcept
-{
-	const auto a = ex.x, b = ey.x, c = ex.y, d = ey.y;
-	auto det = (a * d) - (b * c);
-	if (det != float_t{0})
-	{
-		det = float_t{1} / det;
-	}
-
-	return Mat33{Vec3{det * d, -det * c, float_t{0}}, Vec3{-det * b, det * a, 0}, Vec3{0, 0, 0}};
-}
-
 /// Returns the zero matrix if singular.
 void Mat33::GetSymInverse33(Mat33* M) const
 {

@@ -29,7 +29,7 @@ TEST(Mat33, GetInverse)
 	Vec3 c3{3, 3, 3};
 	const Mat33 foo{c1, c2, c3};
 	Mat33 boo{c1, c2, c3};
-	boo = foo.GetInverse22();
+	boo = GetInverse22(foo);
 
 	EXPECT_EQ(0, boo.ez.x);
 	EXPECT_EQ(0, boo.ez.y);
