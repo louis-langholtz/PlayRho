@@ -193,17 +193,6 @@ struct Mat22
 	/// Construct this matrix using scalars.
 	constexpr Mat22(float_t a11, float_t a12, float_t a21, float_t a22) noexcept: ex{a11, a21}, ey{a12, a22} {}
 
-	constexpr Mat22 GetInverse() const noexcept
-	{
-		const auto a = ex.x, b = ey.x, c = ex.y, d = ey.y;
-		auto det = (a * d) - (b * c);
-		if (det != float_t{0})
-		{
-			det = float_t{1} / det;
-		}
-		return Mat22(Vec2{det * d, -det * c}, Vec2{-det * b, det * a});
-	}
-
 	/// Solve A * x = b, where b is a column vector. This is more efficient
 	/// than computing the inverse in one-shot cases.
 	constexpr Vec2 Solve(const Vec2& b) const noexcept
@@ -227,6 +216,17 @@ constexpr auto Mat22_zero = Mat22(Vec2_zero, Vec2_zero);
 /// Identity value for Mat22 objects.
 /// @see Mat22.
 constexpr auto Mat22_identity = Mat22(Vec2{1, 0}, Vec2{0, 1});
+
+constexpr Mat22 Invert(const Mat22& value) noexcept
+{
+	const auto a = value.ex.x, b = value.ey.x, c = value.ex.y, d = value.ey.y;
+	auto det = (a * d) - (b * c);
+	if (det != float_t{0})
+	{
+		det = float_t{1} / det;
+	}
+	return Mat22{Vec2{det * d, -det * c}, Vec2{-det * b, det * a}};
+}
 
 /// A 3-by-3 matrix. Stored in column-major order.
 struct Mat33

@@ -103,7 +103,7 @@ void MotorJoint::InitVelocityConstraints(const SolverData& data)
 	K.ey.x = K.ex.y;
 	K.ey.y = mA + mB + iA * m_rA.x * m_rA.x + iB * m_rB.x * m_rB.x;
 
-	m_linearMass = K.GetInverse();
+	m_linearMass = Invert(K);
 
 	m_angularMass = iA + iB;
 	if (m_angularMass > float_t{0})

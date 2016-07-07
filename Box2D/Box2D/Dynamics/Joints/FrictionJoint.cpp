@@ -96,7 +96,7 @@ void FrictionJoint::InitVelocityConstraints(const SolverData& data)
 	K.ey.x = K.ex.y;
 	K.ey.y = mA + mB + iA * Square(m_rA.x) + iB * Square(m_rB.x);
 
-	m_linearMass = K.GetInverse();
+	m_linearMass = Invert(K);
 
 	m_angularMass = iA + iB;
 	if (m_angularMass > float_t{0})

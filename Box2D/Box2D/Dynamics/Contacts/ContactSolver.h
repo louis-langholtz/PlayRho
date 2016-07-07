@@ -120,7 +120,7 @@ public:
 	void SetK(const Mat22& value) noexcept
 	{
 		K = value;
-		normalMass = value.GetInverse();
+		normalMass = Invert(value);
 	}
 
 	Mat22 GetK() const noexcept { return K; }

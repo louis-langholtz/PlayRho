@@ -139,7 +139,7 @@ void MouseJoint::InitVelocityConstraints(const SolverData& data)
 	K.ey.x = K.ex.y;
 	K.ey.y = m_invMassB + m_invIB * m_rB.x * m_rB.x + m_gamma;
 
-	m_mass = K.GetInverse();
+	m_mass = Invert(K);
 
 	m_C = cB + m_rB - m_targetA;
 	m_C *= m_beta;
