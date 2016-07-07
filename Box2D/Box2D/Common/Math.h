@@ -266,7 +266,7 @@ struct Mat33
 
 	/// Get the inverse of this matrix as a 2-by-2.
 	/// Returns the zero matrix if singular.
-	void GetInverse22(Mat33* M) const;
+	Mat33 GetInverse22() const noexcept;
 
 	/// Get the symmetric inverse of this matrix as a 3-by-3.
 	/// Returns the zero matrix if singular.
@@ -581,6 +581,16 @@ constexpr inline bool operator == (Vec2 a, Vec2 b) noexcept
 constexpr inline bool operator != (Vec2 a, Vec2 b) noexcept
 {
 	return (a.x != b.x) || (a.y != b.y);
+}
+
+constexpr inline bool operator == (const Vec3 lhs, const Vec3 rhs) noexcept
+{
+	return (lhs.x == rhs.x) && (lhs.y == rhs.y) && (lhs.z == rhs.z);
+}
+
+constexpr inline bool operator != (const Vec3 lhs, const Vec3 rhs) noexcept
+{
+	return (lhs.x != rhs.x) || (lhs.y != rhs.y) || (lhs.z != rhs.z);
 }
 
 constexpr inline bool operator == (Transformation lhs, Transformation rhs) noexcept

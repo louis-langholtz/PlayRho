@@ -107,7 +107,7 @@ void WeldJoint::InitVelocityConstraints(const SolverData& data)
 
 	if (m_frequencyHz > float_t{0})
 	{
-		K.GetInverse22(&m_mass);
+		m_mass = K.GetInverse22();
 
 		auto invM = iA + iB;
 		const auto m = (invM > float_t{0}) ? float_t{1} / invM : float_t{0};
@@ -134,7 +134,7 @@ void WeldJoint::InitVelocityConstraints(const SolverData& data)
 	}
 	else if (K.ez.z == float_t{0})
 	{
-		K.GetInverse22(&m_mass);
+		m_mass = K.GetInverse22();
 		m_gamma = float_t{0};
 		m_bias = float_t{0};
 	}
