@@ -51,8 +51,11 @@ TEST(Transformation, Mul)
 	const Vec2 translation2{4, 8};
 	const Rot rotation2{Pi};
 
-	EXPECT_EQ(xfm2.p.x, translation2.x);
-	EXPECT_EQ(xfm2.p.y, translation2.y);
+	const auto Ap = xfm.p;
+	const auto Bp = xfm.p;
+	const auto newP = Ap + Rotate(Bp, xfm.q);
+	EXPECT_EQ(xfm2.p.x, newP.x);
+	EXPECT_EQ(xfm2.p.y, newP.y);
 	
 	EXPECT_EQ(xfm2.q.cos(), rotation2.cos());
 	EXPECT_EQ(xfm2.q.sin(), rotation2.sin());
