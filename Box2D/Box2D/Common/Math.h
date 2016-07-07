@@ -278,6 +278,7 @@ struct Mat33
 constexpr auto Mat33_zero = Mat33(Vec3_zero, Vec3_zero, Vec3_zero);
 
 /// Rotational transformation.
+/// @detail An angle expressed in terms of its sine and cosine values.
 class Rot
 {
 public:
@@ -665,13 +666,13 @@ constexpr inline Mat22 MulT(const Mat22& A, const Mat22& B) noexcept
 }
 
 /// Multiply a matrix times a vector.
-constexpr inline Vec3 Mul(const Mat33& A, const Vec3& v) noexcept
+constexpr inline Vec3 Transform(const Vec3& v, const Mat33& A) noexcept
 {
 	return (v.x * A.ex) + (v.y * A.ey) + (v.z * A.ez);
 }
 
 /// Multiply a matrix times a vector.
-constexpr inline Vec2 Mul22(const Mat33& A, const Vec2& v) noexcept
+constexpr inline Vec2 Transform(const Vec2& v, const Mat33& A) noexcept
 {
 	return Vec2{A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y};
 }

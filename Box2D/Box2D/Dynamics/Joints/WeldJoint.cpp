@@ -191,7 +191,7 @@ void WeldJoint::SolveVelocityConstraints(const SolverData& data)
 
 		const auto Cdot1 = vB + (GetReversePerpendicular(m_rB) * wB) - vA - (GetReversePerpendicular(m_rA) * wA);
 
-		const auto impulse1 = -Mul22(m_mass, Cdot1);
+		const auto impulse1 = -Transform(Cdot1, m_mass);
 		m_impulse.x += impulse1.x;
 		m_impulse.y += impulse1.y;
 
@@ -209,7 +209,7 @@ void WeldJoint::SolveVelocityConstraints(const SolverData& data)
 		const auto Cdot2 = wB - wA;
 		const auto Cdot = Vec3(Cdot1.x, Cdot1.y, Cdot2);
 
-		const auto impulse = -Mul(m_mass, Cdot);
+		const auto impulse = -Transform(Cdot, m_mass);
 		m_impulse += impulse;
 
 		const auto P = Vec2{impulse.x, impulse.y};
