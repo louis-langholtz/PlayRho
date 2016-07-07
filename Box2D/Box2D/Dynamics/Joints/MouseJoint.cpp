@@ -40,7 +40,7 @@ MouseJoint::MouseJoint(const MouseJointDef& def)
 	assert(IsValid(def.dampingRatio) && (def.dampingRatio >= float_t{0}));
 
 	m_targetA = def.target;
-	m_localAnchorB = MulT(m_bodyB->GetTransformation(), def.target);
+	m_localAnchorB = InverseTransform(def.target, m_bodyB->GetTransformation());
 	m_maxForce = def.maxForce;
 	m_frequencyHz = def.frequencyHz;
 	m_dampingRatio = def.dampingRatio;

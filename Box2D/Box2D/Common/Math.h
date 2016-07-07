@@ -724,7 +724,7 @@ constexpr inline Vec2 Transform(const Vec2& v, const Transformation& T) noexcept
 	return Vec2{x, y};
 }
 
-constexpr inline Vec2 MulT(const Transformation& T, const Vec2& v) noexcept
+constexpr inline Vec2 InverseTransform(const Vec2& v, const Transformation& T) noexcept
 {
 	const auto px = v.x - T.p.x;
 	const auto py = v.y - T.p.y;

@@ -637,7 +637,7 @@ inline Vec2 Body::GetWorldVector(const Vec2& localVector) const noexcept
 
 inline Vec2 Body::GetLocalPoint(const Vec2& worldPoint) const noexcept
 {
-	return MulT(m_xf, worldPoint);
+	return InverseTransform(worldPoint, m_xf);
 }
 
 inline Vec2 Body::GetLocalVector(const Vec2& worldVector) const noexcept

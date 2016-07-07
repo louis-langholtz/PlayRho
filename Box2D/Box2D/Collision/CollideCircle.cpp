@@ -40,7 +40,7 @@ Manifold CollideShapes(const CircleShape& shapeA, const Transformation& xfA, con
 Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, const CircleShape& shapeB, const Transformation& xfB)
 {
 	// Compute circle position in the frame of the polygon.
-	const auto cLocal = MulT(xfA, Transform(shapeB.GetPosition(), xfB)); ///< Center of the circle in the frame of the polygon.
+	const auto cLocal = InverseTransform(Transform(shapeB.GetPosition(), xfB), xfA); ///< Center of the circle in the frame of the polygon.
 
 	// Find the min separating edge.
 	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();

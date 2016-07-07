@@ -43,7 +43,7 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transformation& xfA, const
 	 */
 
 	// Compute circle in frame of edge
-	const auto Q = MulT(xfA, Transform(shapeB.GetPosition(), xfB)); ///< Circle's position in frame of edge.
+	const auto Q = InverseTransform(Transform(shapeB.GetPosition(), xfB), xfA); ///< Circle's position in frame of edge.
 	
 	const auto A = shapeA.GetVertex1(); ///< Edge shape's vertex 1.
 	const auto B = shapeA.GetVertex2(); ///< Edge shape's vertex 2.
@@ -658,7 +658,7 @@ Manifold EPCollider::Collide(const EdgeInfo& edgeInfo, const PolygonShape& shape
 			const auto separation = Dot(rf.normal, clipPoints2[i].v - rf.v1);
 			if (separation <= MaxEPSeparation)
 			{
-				manifold.AddPoint(ManifoldPoint{MulT(m_xf, clipPoints2[i].v), clipPoints2[i].cf});
+				manifold.AddPoint(ManifoldPoint{InverseTransform(clipPoints2[i].v, m_xf), clipPoints2[i].cf});
 			}
 		}
 		return manifold;

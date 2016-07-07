@@ -206,7 +206,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, co
 		if (separation <= totalRadius)
 		{
 			const auto cf = flip? Flip(clipPoint.cf): clipPoint.cf;
-			manifold.AddPoint(ManifoldPoint{MulT(xf2, clipPoint.v), cf});
+			manifold.AddPoint(ManifoldPoint{InverseTransform(clipPoint.v, xf2), cf});
 		}
 	}
 	return manifold;
