@@ -24,6 +24,11 @@
 		4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD101D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD121D3015A80012A882 /* IndexPair.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD111D3015A80012A882 /* IndexPair.cpp */; };
+		4726DD141D3022C30012A882 /* Distance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD131D3022C30012A882 /* Distance.cpp */; };
+		4726DD171D30230A0012A882 /* SimplexCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD151D30230A0012A882 /* SimplexCache.cpp */; };
+		4726DD181D30230A0012A882 /* SimplexCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD151D30230A0012A882 /* SimplexCache.cpp */; };
+		4726DD191D30230A0012A882 /* SimplexCache.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD161D30230A0012A882 /* SimplexCache.hpp */; };
+		4726DD1A1D30230A0012A882 /* SimplexCache.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD161D30230A0012A882 /* SimplexCache.hpp */; };
 		475039911D2180D600D32047 /* DistanceProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4750398F1D2180D600D32047 /* DistanceProxy.cpp */; };
 		475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 475039901D2180D600D32047 /* DistanceProxy.hpp */; };
 		4751EE291CEDD78F00D459CB /* Mobile.h in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE281CEDD78F00D459CB /* Mobile.h */; };
@@ -369,6 +374,9 @@
 		4726DD0B1D3014990012A882 /* IndexPair.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IndexPair.cpp; sourceTree = "<group>"; };
 		4726DD0C1D3014990012A882 /* IndexPair.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IndexPair.hpp; sourceTree = "<group>"; };
 		4726DD111D3015A80012A882 /* IndexPair.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IndexPair.cpp; sourceTree = "<group>"; };
+		4726DD131D3022C30012A882 /* Distance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Distance.cpp; sourceTree = "<group>"; };
+		4726DD151D30230A0012A882 /* SimplexCache.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimplexCache.cpp; sourceTree = "<group>"; };
+		4726DD161D30230A0012A882 /* SimplexCache.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SimplexCache.hpp; sourceTree = "<group>"; };
 		4750398F1D2180D600D32047 /* DistanceProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceProxy.cpp; sourceTree = "<group>"; };
 		475039901D2180D600D32047 /* DistanceProxy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DistanceProxy.hpp; sourceTree = "<group>"; };
 		4751EE281CEDD78F00D459CB /* Mobile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mobile.h; sourceTree = "<group>"; };
@@ -670,6 +678,7 @@
 				4726DD061D2DF6990012A882 /* Mat33.cpp */,
 				4726DD111D3015A80012A882 /* IndexPair.cpp */,
 				4726DD081D3010C50012A882 /* SimplexCache.cpp */,
+				4726DD131D3022C30012A882 /* Distance.cpp */,
 			);
 			path = "Unit Tests";
 			sourceTree = "<group>";
@@ -729,6 +738,8 @@
 				80BB892D141C3E5900F1753A /* Collision.h */,
 				80BB892E141C3E5900F1753A /* Distance.cpp */,
 				80BB892F141C3E5900F1753A /* Distance.h */,
+				4726DD151D30230A0012A882 /* SimplexCache.cpp */,
+				4726DD161D30230A0012A882 /* SimplexCache.hpp */,
 				4726DD0B1D3014990012A882 /* IndexPair.cpp */,
 				4726DD0C1D3014990012A882 /* IndexPair.hpp */,
 				4750398F1D2180D600D32047 /* DistanceProxy.cpp */,
@@ -1047,6 +1058,7 @@
 				47AA5DD11C4C5FBE008AF2BA /* ChainShape.h in Headers */,
 				47AA5DD21C4C5FBE008AF2BA /* CircleShape.h in Headers */,
 				47AA5DD31C4C5FBE008AF2BA /* EdgeShape.h in Headers */,
+				4726DD1A1D30230A0012A882 /* SimplexCache.hpp in Headers */,
 				472134991C8D03D6009536F9 /* BodyList.hpp in Headers */,
 				47AA5DD41C4C5FBE008AF2BA /* PolygonShape.h in Headers */,
 				47AA5DD51C4C5FBE008AF2BA /* Shape.h in Headers */,
@@ -1146,6 +1158,7 @@
 				4721349F1C8E4CB5009536F9 /* FixtureList.hpp in Headers */,
 				4751EE2B1CEDD79900D459CB /* ConveyorBelt.h in Headers */,
 				477DB2AD1D1C4BE800846ED6 /* PositionSolverManifold.hpp in Headers */,
+				4726DD191D30230A0012A882 /* SimplexCache.hpp in Headers */,
 				47A9833B1D0F51A300AA7D1A /* JointIterator.hpp in Headers */,
 				80BB89BD141C3E5900F1753A /* CircleContact.h in Headers */,
 				477DB2A91D15F64A00846ED6 /* ConstJointEdgeIterator.hpp in Headers */,
@@ -1339,6 +1352,7 @@
 				47769D461D29B8B50078A9C5 /* Vec2.cpp in Sources */,
 				47769D491D29B9C60078A9C5 /* Sweep.cpp in Sources */,
 				4726DD071D2DF6990012A882 /* Mat33.cpp in Sources */,
+				4726DD141D3022C30012A882 /* Distance.cpp in Sources */,
 				47769D4B1D2C26D70078A9C5 /* DistanceProxy.cpp in Sources */,
 				4726DD031D2CD1EF0012A882 /* Rot.cpp in Sources */,
 				4726DD0A1D3010C50012A882 /* SimplexCache.cpp in Sources */,
@@ -1386,6 +1400,7 @@
 				47AA5DBA1C4C5FBE008AF2BA /* PolygonAndCircleContact.cpp in Sources */,
 				47AA5DBB1C4C5FBE008AF2BA /* PolygonContact.cpp in Sources */,
 				47AA5DBC1C4C5FBE008AF2BA /* DistanceJoint.cpp in Sources */,
+				4726DD181D30230A0012A882 /* SimplexCache.cpp in Sources */,
 				47AA5DBD1C4C5FBE008AF2BA /* FrictionJoint.cpp in Sources */,
 				47AA5DBE1C4C5FBE008AF2BA /* GearJoint.cpp in Sources */,
 				47AA5DBF1C4C5FBE008AF2BA /* Joint.cpp in Sources */,
@@ -1488,6 +1503,7 @@
 				477DB2A01D15F5C000846ED6 /* JointEdgeList.cpp in Sources */,
 				80BB89B1141C3E5900F1753A /* Island.cpp in Sources */,
 				475039911D2180D600D32047 /* DistanceProxy.cpp in Sources */,
+				4726DD171D30230A0012A882 /* SimplexCache.cpp in Sources */,
 				80BB89B4141C3E5900F1753A /* World.cpp in Sources */,
 				80BB89B6141C3E5900F1753A /* WorldCallbacks.cpp in Sources */,
 				80BB89B8141C3E5900F1753A /* ChainAndCircleContact.cpp in Sources */,

@@ -22,83 +22,10 @@
 
 #include <Box2D/Common/Math.h>
 #include <Box2D/Collision/DistanceProxy.hpp>
-#include <Box2D/Collision/IndexPair.hpp>
+#include <Box2D/Collision/SimplexCache.hpp>
 
 namespace box2d
 {
-
-/// Used to warm start Distance.
-class SimplexCache
-{
-public:
-	/// Maximum count of times this object's add-index method may be called.
-	/// @sa AddIndex.
-	static constexpr auto MaxCount = unsigned{3};
-
-	using size_type = std::remove_const<decltype(MaxCount)>::type;
-
-	/// Gets the metric that was set.
-	/// @note Behavior is undefined if metric was not previously set.
-	///   The IsMetricSet() method can be used to check dynamically if unsure.
-	/// @sa SetMetric.
-	/// @sa IsMetricSet.
-	/// @return Value previously set.
-	auto GetMetric() const noexcept
-	{
-		assert(metric_set);
-		return metric;
-	}
-
-	/// Gets the count.
- 	/// @detail This is the count of times this object's add-index method has been called
-	///   since the last clearing of the indexes was done.
-	/// @return Value between 0 and MaxCount.
-	/// @sa MaxCount.
-	/// @sa AddIndex.
-	/// @sa ClearIndices.
-	auto GetCount() const noexcept { return count; }
-
-	auto GetIndexPair(size_type index) const noexcept
-	{
-		assert(index < count);
-		return indexPair[index];
-	}
-
-	auto GetIndexA(size_type index) const
-	{
-		assert(index < count);
-		return indexPair[index].a;
-	}
-
-	auto GetIndexB(size_type index) const
-	{
-		assert(index < count);
-		return indexPair[index].b;
-	}
-
-	void ClearIndices() noexcept { count = 0; }
-
-	auto IsMetricSet() const noexcept { return metric_set; }
-
-	void SetMetric(float_t m) noexcept
-	{
-		metric = m;
-		metric_set = true;
-	}
-
-	void AddIndex(IndexPair ip)
-	{
-		assert(count < MaxCount);
-		indexPair[count] = ip;
-		++count;
-	}
-
-private:
-	bool metric_set = false; ///< Whether the metric has been set or not.
-	float_t metric; ///< length or area
-	size_type count = 0;
-	IndexPair indexPair[MaxCount]; ///< Vertices on shape A and B.
-};
 
 struct WitnessPoints
 {
