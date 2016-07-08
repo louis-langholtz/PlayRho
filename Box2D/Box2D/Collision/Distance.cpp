@@ -266,8 +266,8 @@ static float_t GetMetric(const Simplex& simplex)
 	assert(simplex.size() < 4);
 	switch (simplex.size())
 	{
-		case 0: break;
-		case 1: break;
+		case 0: return float_t{0};
+		case 1: return float_t{0};
 		case 2:	return Sqrt(LengthSquared(simplex[0].get_w() - simplex[1].get_w()));
 		case 3:	return Cross(simplex[1].get_w() - simplex[0].get_w(), simplex[2].get_w() - simplex[0].get_w());
 		default: break; // should not be reached
