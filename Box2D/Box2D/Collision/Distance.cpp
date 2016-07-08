@@ -92,7 +92,7 @@ DistanceProxy GetDistanceProxy(const Shape& shape, child_count_t index)
 class SimplexVertex
 {
 public:
-	using size_type = DistanceProxy::size_type;
+	using size_type = IndexPair::size_type;
 
 	SimplexVertex() = default;
 

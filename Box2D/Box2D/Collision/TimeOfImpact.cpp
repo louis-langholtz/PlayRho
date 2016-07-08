@@ -186,7 +186,7 @@ private:
 	Separation FindMinSeparationForFaceA(const Transformation& xfA, const Transformation& xfB) const
 	{
 		const auto normal = Rotate(m_axis, xfA.q);
-		const auto indexA = static_cast<DistanceProxy::size_type>(-1);
+		const auto indexA = IndexPair::InvalidIndex;
 		const auto pointA = Transform(m_localPoint, xfA);
 		const auto indexB = m_proxyB.GetSupportIndex(InverseRotate(-normal, xfB.q));
 		const auto pointB = Transform(m_proxyB.GetVertex(indexB), xfB);
@@ -198,7 +198,7 @@ private:
 		const auto normal = Rotate(m_axis, xfB.q);
 		const auto indexA = m_proxyA.GetSupportIndex(InverseRotate(-normal, xfA.q));
 		const auto pointA = Transform(m_proxyA.GetVertex(indexA), xfA);
-		const auto indexB = static_cast<DistanceProxy::size_type>(-1);
+		const auto indexB = IndexPair::InvalidIndex;
 		const auto pointB = Transform(m_localPoint, xfB);
 		return Separation{IndexPair{indexA, indexB}, Dot(pointA - pointB, normal)};
 	}

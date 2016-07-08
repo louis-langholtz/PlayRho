@@ -32,6 +32,23 @@ TEST(Vec2, Indexing) {
 	EXPECT_EQ(float_t{-2}, vector[1]);
 }
 
+TEST(Vec2, Equality)
+{	
+	Vec2 vector{float_t{5}, float_t{-3}};
+	EXPECT_EQ(vector.x, vector.x);
+	EXPECT_EQ(vector.y, vector.y);
+	EXPECT_EQ(vector, vector);
+}
+
+TEST(Vec2, Inequality)
+{	
+	Vec2 vector1{float_t{5}, float_t{-3}};
+	Vec2 vector2{float_t{-5}, float_t{+3}};
+	EXPECT_NE(vector1.x, vector2.x);
+	EXPECT_NE(vector1.y, vector2.y);
+	EXPECT_NE(vector1, vector2);
+}
+
 TEST(Vec2, Negate)
 {
 	Vec2 v10{1, 0};

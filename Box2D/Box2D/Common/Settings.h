@@ -76,6 +76,9 @@ constexpr auto MaxManifoldPoints = uint8{2};
 /// @note For memory efficiency, uses the smallest integral type that can hold the value. 
 constexpr auto MaxPolygonVertices = uint8{16}; // 8
 
+/// Maximum number of vertices for any shape type.
+constexpr auto MaxShapeVertices = MaxPolygonVertices;
+
 /// This is used to fatten AABBs in the dynamic tree. This is used to predict
 /// the future position based on the current displacement.
 /// This is a dimensionless multiplier.

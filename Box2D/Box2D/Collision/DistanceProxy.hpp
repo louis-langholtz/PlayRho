@@ -35,7 +35,9 @@ namespace box2d
 	class DistanceProxy
 	{
 	public:
-		using size_type = uint16; ///< Size type. @detail Must be big enough to hold max posible count of vertices.
+		/// Size type.
+		/// @detail Must be big enough to hold max posible count of vertices.
+		using size_type = std::remove_const<decltype(MaxShapeVertices)>::type;
 		
 		static constexpr size_type InvalidIndex = static_cast<size_type>(-1);
 		

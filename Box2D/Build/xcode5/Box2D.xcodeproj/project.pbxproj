@@ -18,6 +18,12 @@
 		4726DD031D2CD1EF0012A882 /* Rot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD021D2CD1EF0012A882 /* Rot.cpp */; };
 		4726DD051D2DA64D0012A882 /* Transformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD041D2DA64D0012A882 /* Transformation.cpp */; };
 		4726DD071D2DF6990012A882 /* Mat33.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD061D2DF6990012A882 /* Mat33.cpp */; };
+		4726DD0A1D3010C50012A882 /* SimplexCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD081D3010C50012A882 /* SimplexCache.cpp */; };
+		4726DD0D1D3014990012A882 /* IndexPair.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD0B1D3014990012A882 /* IndexPair.cpp */; };
+		4726DD0E1D3014990012A882 /* IndexPair.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD0B1D3014990012A882 /* IndexPair.cpp */; };
+		4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
+		4726DD101D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
+		4726DD121D3015A80012A882 /* IndexPair.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD111D3015A80012A882 /* IndexPair.cpp */; };
 		475039911D2180D600D32047 /* DistanceProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4750398F1D2180D600D32047 /* DistanceProxy.cpp */; };
 		475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 475039901D2180D600D32047 /* DistanceProxy.hpp */; };
 		4751EE291CEDD78F00D459CB /* Mobile.h in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE281CEDD78F00D459CB /* Mobile.h */; };
@@ -359,6 +365,10 @@
 		4726DD021D2CD1EF0012A882 /* Rot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Rot.cpp; sourceTree = "<group>"; };
 		4726DD041D2DA64D0012A882 /* Transformation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Transformation.cpp; sourceTree = "<group>"; };
 		4726DD061D2DF6990012A882 /* Mat33.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mat33.cpp; sourceTree = "<group>"; };
+		4726DD081D3010C50012A882 /* SimplexCache.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimplexCache.cpp; sourceTree = "<group>"; };
+		4726DD0B1D3014990012A882 /* IndexPair.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IndexPair.cpp; sourceTree = "<group>"; };
+		4726DD0C1D3014990012A882 /* IndexPair.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IndexPair.hpp; sourceTree = "<group>"; };
+		4726DD111D3015A80012A882 /* IndexPair.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IndexPair.cpp; sourceTree = "<group>"; };
 		4750398F1D2180D600D32047 /* DistanceProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceProxy.cpp; sourceTree = "<group>"; };
 		475039901D2180D600D32047 /* DistanceProxy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DistanceProxy.hpp; sourceTree = "<group>"; };
 		4751EE281CEDD78F00D459CB /* Mobile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mobile.h; sourceTree = "<group>"; };
@@ -658,6 +668,8 @@
 				4726DD021D2CD1EF0012A882 /* Rot.cpp */,
 				4726DD041D2DA64D0012A882 /* Transformation.cpp */,
 				4726DD061D2DF6990012A882 /* Mat33.cpp */,
+				4726DD111D3015A80012A882 /* IndexPair.cpp */,
+				4726DD081D3010C50012A882 /* SimplexCache.cpp */,
 			);
 			path = "Unit Tests";
 			sourceTree = "<group>";
@@ -717,6 +729,8 @@
 				80BB892D141C3E5900F1753A /* Collision.h */,
 				80BB892E141C3E5900F1753A /* Distance.cpp */,
 				80BB892F141C3E5900F1753A /* Distance.h */,
+				4726DD0B1D3014990012A882 /* IndexPair.cpp */,
+				4726DD0C1D3014990012A882 /* IndexPair.hpp */,
 				4750398F1D2180D600D32047 /* DistanceProxy.cpp */,
 				475039901D2180D600D32047 /* DistanceProxy.hpp */,
 				80BB8930141C3E5900F1753A /* DynamicTree.cpp */,
@@ -1053,6 +1067,7 @@
 				47AA5DE41C4C5FBE008AF2BA /* ChainAndCircleContact.h in Headers */,
 				47AA5DE51C4C5FBE008AF2BA /* ChainAndPolygonContact.h in Headers */,
 				472134A01C8E4CB5009536F9 /* FixtureList.hpp in Headers */,
+				4726DD101D3014990012A882 /* IndexPair.hpp in Headers */,
 				47AA5DE61C4C5FBE008AF2BA /* CircleContact.h in Headers */,
 				47AA5DE71C4C5FBE008AF2BA /* Contact.h in Headers */,
 				47AA5DE81C4C5FBE008AF2BA /* ContactSolver.h in Headers */,
@@ -1119,6 +1134,7 @@
 				477DB2951D14B9D500846ED6 /* ContactEdgeList.hpp in Headers */,
 				80BB89AE141C3E5900F1753A /* ContactManager.h in Headers */,
 				80BB89B0141C3E5900F1753A /* Fixture.h in Headers */,
+				4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */,
 				80BB89B2141C3E5900F1753A /* Island.h in Headers */,
 				80BB89B3141C3E5900F1753A /* TimeStep.h in Headers */,
 				47AA63A01D0F7FDA00726CA2 /* FixtureIterator.hpp in Headers */,
@@ -1317,6 +1333,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4726DD121D3015A80012A882 /* IndexPair.cpp in Sources */,
 				4726DD051D2DA64D0012A882 /* Transformation.cpp in Sources */,
 				4767DB991D25D25E000CDB91 /* main.cpp in Sources */,
 				47769D461D29B8B50078A9C5 /* Vec2.cpp in Sources */,
@@ -1324,6 +1341,7 @@
 				4726DD071D2DF6990012A882 /* Mat33.cpp in Sources */,
 				47769D4B1D2C26D70078A9C5 /* DistanceProxy.cpp in Sources */,
 				4726DD031D2CD1EF0012A882 /* Rot.cpp in Sources */,
+				4726DD0A1D3010C50012A882 /* SimplexCache.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1358,6 +1376,7 @@
 				47AA5DB11C4C5FBE008AF2BA /* World.cpp in Sources */,
 				47AA5DB21C4C5FBE008AF2BA /* WorldCallbacks.cpp in Sources */,
 				47AA5DB31C4C5FBE008AF2BA /* ChainAndCircleContact.cpp in Sources */,
+				4726DD0E1D3014990012A882 /* IndexPair.cpp in Sources */,
 				47AA5DB41C4C5FBE008AF2BA /* ChainAndPolygonContact.cpp in Sources */,
 				47AA5DB51C4C5FBE008AF2BA /* CircleContact.cpp in Sources */,
 				47AA5DB61C4C5FBE008AF2BA /* Contact.cpp in Sources */,
@@ -1481,6 +1500,7 @@
 				80BB89C4141C3E5900F1753A /* EdgeAndPolygonContact.cpp in Sources */,
 				80BB89C6141C3E5900F1753A /* PolygonAndCircleContact.cpp in Sources */,
 				80BB89C8141C3E5900F1753A /* PolygonContact.cpp in Sources */,
+				4726DD0D1D3014990012A882 /* IndexPair.cpp in Sources */,
 				80BB89CA141C3E5900F1753A /* DistanceJoint.cpp in Sources */,
 				80BB89CC141C3E5900F1753A /* FrictionJoint.cpp in Sources */,
 				80BB89CE141C3E5900F1753A /* GearJoint.cpp in Sources */,

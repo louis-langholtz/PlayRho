@@ -22,26 +22,10 @@
 
 #include <Box2D/Common/Math.h>
 #include <Box2D/Collision/DistanceProxy.hpp>
+#include <Box2D/Collision/IndexPair.hpp>
 
 namespace box2d
 {
-	
-struct IndexPair
-{
-	/// Size type.
-	/// @detail Data type large enough to hold maximum value usable by this library.
-	using size_type = DistanceProxy::size_type;
-
-	static constexpr size_type InvalidIndex = static_cast<size_type>(-1);
-
-	size_type a;
-	size_type b;
-};
-
-constexpr inline bool operator == (IndexPair lhs, IndexPair rhs)
-{
-	return (lhs.a == rhs.a) && (lhs.b == rhs.b);
-}
 
 /// Used to warm start Distance.
 class SimplexCache
