@@ -21,6 +21,7 @@
 #define B2_COLLISION_H
 
 #include <Box2D/Common/Math.h>
+#include <Box2D/Collision/ContactFeature.hpp>
 
 #include <climits>
 #include <array>
@@ -37,50 +38,6 @@ class Shape;
 class CircleShape;
 class EdgeShape;
 class PolygonShape;
-
-/// Contact Feature.
-/// @detail The features that intersect to form the contact point.
-/// @note This structure is designed to be compact and passed-by-value.
-struct ContactFeature
-{
-	using index_t = uint8;
-
-	enum Type: uint8
-	{
-		e_vertex = 0,
-		e_face = 1
-	};
-
-	ContactFeature() noexcept = default;
-	ContactFeature(const ContactFeature& copy) noexcept = default;
-	
-	constexpr ContactFeature(Type ta, index_t ia, Type tb, index_t ib) noexcept:
-		typeA{ta}, indexA{ia}, typeB{tb}, indexB{ib}
-	{
-		static_assert(sizeof(struct ContactFeature) == 4, "bad size");
-	}
-
-	// Fit data into 4-byte large structure...
-
-	Type typeA; ///< The feature type on shape A
-	Type typeB; ///< The feature type on shape B
-	index_t indexA; ///< Feature index on shape A
-	index_t indexB; ///< Feature index on shape B
-};
-
-/// Default contact feature value.
-constexpr auto DefaultContactFeature = ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 0};
-
-/// Flips contact features information.
-constexpr ContactFeature Flip(ContactFeature val)
-{
-	return ContactFeature{val.typeB, val.indexB, val.typeA, val.indexA};
-}
-
-constexpr bool operator==(ContactFeature lhs, ContactFeature rhs)
-{
-	return (lhs.typeA == rhs.typeA) && (lhs.typeB == rhs.typeB) && (lhs.indexA == rhs.indexA) && (lhs.indexB == rhs.indexB);
-}
 
 /// Manifold point data.
 /// @detail A manifold point is a contact point belonging to a contact

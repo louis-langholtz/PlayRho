@@ -29,6 +29,11 @@
 		4726DD181D30230A0012A882 /* SimplexCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD151D30230A0012A882 /* SimplexCache.cpp */; };
 		4726DD191D30230A0012A882 /* SimplexCache.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD161D30230A0012A882 /* SimplexCache.hpp */; };
 		4726DD1A1D30230A0012A882 /* SimplexCache.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD161D30230A0012A882 /* SimplexCache.hpp */; };
+		4726DD1D1D305E5D0012A882 /* ContactFeature.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD1B1D305E5D0012A882 /* ContactFeature.cpp */; };
+		4726DD1E1D305E5D0012A882 /* ContactFeature.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD1B1D305E5D0012A882 /* ContactFeature.cpp */; };
+		4726DD1F1D305E5D0012A882 /* ContactFeature.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */; };
+		4726DD201D305E5D0012A882 /* ContactFeature.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */; };
+		4726DD221D305F720012A882 /* ContactFeature.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD211D305F720012A882 /* ContactFeature.cpp */; };
 		475039911D2180D600D32047 /* DistanceProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4750398F1D2180D600D32047 /* DistanceProxy.cpp */; };
 		475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 475039901D2180D600D32047 /* DistanceProxy.hpp */; };
 		4751EE291CEDD78F00D459CB /* Mobile.h in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE281CEDD78F00D459CB /* Mobile.h */; };
@@ -377,6 +382,9 @@
 		4726DD131D3022C30012A882 /* Distance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Distance.cpp; sourceTree = "<group>"; };
 		4726DD151D30230A0012A882 /* SimplexCache.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimplexCache.cpp; sourceTree = "<group>"; };
 		4726DD161D30230A0012A882 /* SimplexCache.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SimplexCache.hpp; sourceTree = "<group>"; };
+		4726DD1B1D305E5D0012A882 /* ContactFeature.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactFeature.cpp; sourceTree = "<group>"; };
+		4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactFeature.hpp; sourceTree = "<group>"; };
+		4726DD211D305F720012A882 /* ContactFeature.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactFeature.cpp; sourceTree = "<group>"; };
 		4750398F1D2180D600D32047 /* DistanceProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceProxy.cpp; sourceTree = "<group>"; };
 		475039901D2180D600D32047 /* DistanceProxy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DistanceProxy.hpp; sourceTree = "<group>"; };
 		4751EE281CEDD78F00D459CB /* Mobile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mobile.h; sourceTree = "<group>"; };
@@ -679,6 +687,7 @@
 				4726DD111D3015A80012A882 /* IndexPair.cpp */,
 				4726DD081D3010C50012A882 /* SimplexCache.cpp */,
 				4726DD131D3022C30012A882 /* Distance.cpp */,
+				4726DD211D305F720012A882 /* ContactFeature.cpp */,
 			);
 			path = "Unit Tests";
 			sourceTree = "<group>";
@@ -736,6 +745,8 @@
 				80BB892B141C3E5900F1753A /* CollidePolygon.cpp */,
 				80BB892C141C3E5900F1753A /* Collision.cpp */,
 				80BB892D141C3E5900F1753A /* Collision.h */,
+				4726DD1B1D305E5D0012A882 /* ContactFeature.cpp */,
+				4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */,
 				80BB892E141C3E5900F1753A /* Distance.cpp */,
 				80BB892F141C3E5900F1753A /* Distance.h */,
 				4726DD151D30230A0012A882 /* SimplexCache.cpp */,
@@ -1081,6 +1092,7 @@
 				472134A01C8E4CB5009536F9 /* FixtureList.hpp in Headers */,
 				4726DD101D3014990012A882 /* IndexPair.hpp in Headers */,
 				47AA5DE61C4C5FBE008AF2BA /* CircleContact.h in Headers */,
+				4726DD201D305E5D0012A882 /* ContactFeature.hpp in Headers */,
 				47AA5DE71C4C5FBE008AF2BA /* Contact.h in Headers */,
 				47AA5DE81C4C5FBE008AF2BA /* ContactSolver.h in Headers */,
 				47AA5DE91C4C5FBE008AF2BA /* EdgeAndCircleContact.h in Headers */,
@@ -1120,6 +1132,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4726DD1F1D305E5D0012A882 /* ContactFeature.hpp in Headers */,
 				80BB8987141C3E5900F1753A /* Box2D.h in Headers */,
 				80BB8989141C3E5900F1753A /* BroadPhase.h in Headers */,
 				477DB29D1D14BCA700846ED6 /* ConstContactEdgeIterator.hpp in Headers */,
@@ -1353,6 +1366,7 @@
 				47769D491D29B9C60078A9C5 /* Sweep.cpp in Sources */,
 				4726DD071D2DF6990012A882 /* Mat33.cpp in Sources */,
 				4726DD141D3022C30012A882 /* Distance.cpp in Sources */,
+				4726DD221D305F720012A882 /* ContactFeature.cpp in Sources */,
 				47769D4B1D2C26D70078A9C5 /* DistanceProxy.cpp in Sources */,
 				4726DD031D2CD1EF0012A882 /* Rot.cpp in Sources */,
 				4726DD0A1D3010C50012A882 /* SimplexCache.cpp in Sources */,
@@ -1383,6 +1397,7 @@
 				47AA5DAB1C4C5FBE008AF2BA /* StackAllocator.cpp in Sources */,
 				47AA5DAC1C4C5FBE008AF2BA /* Timer.cpp in Sources */,
 				47AA5DAD1C4C5FBE008AF2BA /* Body.cpp in Sources */,
+				4726DD1E1D305E5D0012A882 /* ContactFeature.cpp in Sources */,
 				47AA5DAE1C4C5FBE008AF2BA /* ContactManager.cpp in Sources */,
 				47AA5DAF1C4C5FBE008AF2BA /* Fixture.cpp in Sources */,
 				4721349A1C8D03D9009536F9 /* BodyList.cpp in Sources */,
@@ -1530,6 +1545,7 @@
 				477DB2AC1D1C4BE800846ED6 /* PositionSolverManifold.cpp in Sources */,
 				80BB89DA141C3E5900F1753A /* RopeJoint.cpp in Sources */,
 				80BB89DC141C3E5900F1753A /* WeldJoint.cpp in Sources */,
+				4726DD1D1D305E5D0012A882 /* ContactFeature.cpp in Sources */,
 				80BB89DE141C3E5900F1753A /* WheelJoint.cpp in Sources */,
 				80BB89E0141C3E5900F1753A /* Rope.cpp in Sources */,
 				47A9833E1D0F7ABA00AA7D1A /* ConstJointIterator.cpp in Sources */,
