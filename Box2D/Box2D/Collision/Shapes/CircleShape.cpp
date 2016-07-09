@@ -68,7 +68,7 @@ bool CircleShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 	const auto a = -(c + Sqrt(sigma));
 
 	// Is the intersection point on the segment?
-	if ((float_t{0} <= a) && (a <= (input.maxFraction * rr)))
+	if ((a >= float_t{0}) && (a <= (input.maxFraction * rr)))
 	{
 		const auto fraction = a / rr;
 		output->fraction = fraction;

@@ -79,7 +79,7 @@ bool EdgeShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 	}
 
 	const auto t = numerator / denominator;
-	if ((t < float_t{0}) || (input.maxFraction < t))
+	if ((t < float_t{0}) || (t > input.maxFraction))
 	{
 		return false;
 	}
