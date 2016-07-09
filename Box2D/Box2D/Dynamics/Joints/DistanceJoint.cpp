@@ -45,8 +45,7 @@ void DistanceJointDef::Initialize(Body* b1, Body* b2,
 	bodyB = b2;
 	localAnchorA = bodyA->GetLocalPoint(anchor1);
 	localAnchorB = bodyB->GetLocalPoint(anchor2);
-	const auto d = anchor2 - anchor1;
-	length = Length(d);
+	length = Length(anchor2 - anchor1);
 }
 
 DistanceJoint::DistanceJoint(const DistanceJointDef& def)

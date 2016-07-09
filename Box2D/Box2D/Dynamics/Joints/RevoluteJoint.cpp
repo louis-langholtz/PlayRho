@@ -390,8 +390,7 @@ Vec2 RevoluteJoint::GetAnchorB() const
 
 Vec2 RevoluteJoint::GetReactionForce(float_t inv_dt) const
 {
-	const auto P = Vec2{m_impulse.x, m_impulse.y};
-	return inv_dt * P;
+	return inv_dt * Vec2{m_impulse.x, m_impulse.y};
 }
 
 float_t RevoluteJoint::GetReactionTorque(float_t inv_dt) const

@@ -287,7 +287,8 @@ bool WheelJoint::SolvePositionConstraints(const SolverData& data)
 	auto cB = data.positions[m_indexB].c;
 	auto aB = data.positions[m_indexB].a;
 
-	const Rot qA{aA}, qB{aB};
+	const auto qA = Rot{aA};
+	const auto qB = Rot{aB};
 
 	const auto rA = Rotate(m_localAnchorA - m_localCenterA, qA);
 	const auto rB = Rotate(m_localAnchorB - m_localCenterB, qB);

@@ -75,14 +75,7 @@ void RopeJoint::InitVelocityConstraints(const SolverData& data)
 	m_length = Length(m_u);
 
 	const auto C = m_length - m_maxLength;
-	if (C > float_t{0})
-	{
-		m_state = e_atUpperLimit;
-	}
-	else
-	{
-		m_state = e_inactiveLimit;
-	}
+	m_state = (C > float_t{0})? e_atUpperLimit: e_inactiveLimit;
 
 	if (m_length > LinearSlop)
 	{

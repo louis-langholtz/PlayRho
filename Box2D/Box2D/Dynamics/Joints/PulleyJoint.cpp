@@ -46,10 +46,8 @@ void PulleyJointDef::Initialize(Body* bA, Body* bB,
 	groundAnchorB = groundB;
 	localAnchorA = bodyA->GetLocalPoint(anchorA);
 	localAnchorB = bodyB->GetLocalPoint(anchorB);
-	Vec2 dA = anchorA - groundA;
-	lengthA = Length(dA);
-	Vec2 dB = anchorB - groundB;
-	lengthB = Length(dB);
+	lengthA = Length(anchorA - groundA);
+	lengthB = Length(anchorB - groundB);
 	ratio = r;
 	assert((ratio > 0) && !almost_equal(ratio, 0));
 }
@@ -310,18 +308,12 @@ float_t PulleyJoint::GetRatio() const
 
 float_t PulleyJoint::GetCurrentLengthA() const
 {
-	Vec2 p = m_bodyA->GetWorldPoint(m_localAnchorA);
-	Vec2 s = m_groundAnchorA;
-	Vec2 d = p - s;
-	return Length(d);
+	return Length(m_bodyA->GetWorldPoint(m_localAnchorA) - m_groundAnchorA);
 }
 
 float_t PulleyJoint::GetCurrentLengthB() const
 {
-	const auto p = m_bodyB->GetWorldPoint(m_localAnchorB);
-	const auto s = m_groundAnchorB;
-	const auto d = p - s;
-	return Length(d);
+	return Length(m_bodyB->GetWorldPoint(m_localAnchorB) - m_groundAnchorB);
 }
 
 void PulleyJoint::Dump()

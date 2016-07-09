@@ -234,7 +234,8 @@ bool WeldJoint::SolvePositionConstraints(const SolverData& data)
 	auto cB = data.positions[m_indexB].c;
 	auto aB = data.positions[m_indexB].a;
 
-	const Rot qA(aA), qB(aB);
+	const auto qA = Rot{aA};
+	const auto qB = Rot{aB};
 
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
