@@ -71,6 +71,7 @@
 #include "VaryingRestitution.h"
 #include "VerticalStack.h"
 #include "Web.h"
+#include "NewtonsCradle.hpp"
 
 namespace box2d {
 
@@ -128,6 +129,7 @@ TestEntry g_testEntries[] =
 	{"Sensor Test", SensorTest::Create},
 	{"Varying Friction", VaryingFriction::Create},
 	{"Add Pair Stress Test", AddPair::Create},
+	{"Newton's Cradle", NewtonsCradle::Create},
 	{nullptr, nullptr}
 };
 	

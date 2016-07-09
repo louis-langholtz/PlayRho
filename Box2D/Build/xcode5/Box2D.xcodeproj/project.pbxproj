@@ -387,6 +387,7 @@
 		4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactFeature.hpp; sourceTree = "<group>"; };
 		4726DD211D305F720012A882 /* ContactFeature.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactFeature.cpp; sourceTree = "<group>"; };
 		4726DD231D306D480012A882 /* Epsilon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Epsilon.cpp; sourceTree = "<group>"; };
+		4726DD261D3180980012A882 /* NewtonsCradle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NewtonsCradle.hpp; sourceTree = "<group>"; };
 		4750398F1D2180D600D32047 /* DistanceProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceProxy.cpp; sourceTree = "<group>"; };
 		475039901D2180D600D32047 /* DistanceProxy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DistanceProxy.hpp; sourceTree = "<group>"; };
 		4751EE281CEDD78F00D459CB /* Mobile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mobile.h; sourceTree = "<group>"; };
@@ -981,6 +982,7 @@
 				80BB8A42141C3E8500F1753A /* Bridge.h */,
 				80BB8A43141C3E8500F1753A /* BulletTest.h */,
 				80BB8A44141C3E8500F1753A /* Cantilever.h */,
+				4726DD261D3180980012A882 /* NewtonsCradle.hpp */,
 				80BB8A45141C3E8500F1753A /* Car.h */,
 				80BB8A46141C3E8500F1753A /* Chain.h */,
 				80BB8A47141C3E8500F1753A /* CharacterCollision.h */,
