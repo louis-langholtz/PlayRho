@@ -119,8 +119,9 @@ void MouseJoint::InitVelocityConstraints(const SolverData& data)
 	// gamma has units of inverse mass.
 	// beta has units of inverse time.
 	const auto h = data.step.get_dt();
-	assert(d + h * k > Epsilon);
-	m_gamma = h * (d + h * k);
+	const auto tmp = d + h * k;
+	assert((tmp > 0) && !almost_equal(tmp, 0));
+	m_gamma = h * tmp;
 	if (m_gamma != float_t{0})
 	{
 		m_gamma = float_t{1} / m_gamma;

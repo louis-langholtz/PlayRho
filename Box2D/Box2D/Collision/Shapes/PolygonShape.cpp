@@ -111,7 +111,7 @@ static inline Vec2 ComputeCentroid(const Vec2 vs[], PolygonShape::vertex_count_t
 	}
 
 	// Centroid
-	assert(area > Epsilon);
+	assert((area > 0) && !almost_equal(area, 0));
 	c *= float_t{1} / area;
 	return c;
 }
@@ -240,7 +240,7 @@ void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 		const auto i1 = i;
 		const auto i2 = (i + 1) % m;
 		const auto edge = m_vertices[i2] - m_vertices[i1];
-		assert(LengthSquared(edge) > Square(Epsilon));
+		assert(!almost_equal(LengthSquared(edge), 0));
 		m_normals[i] = GetUnitVector(GetForwardPerpendicular(edge));
 	}
 
@@ -430,7 +430,7 @@ MassData PolygonShape::ComputeMass(float_t density) const
 	const auto mass = density * area;
 
 	// Center of mass
-	assert(area > Epsilon);
+	assert((area > 0) && !almost_equal(area, 0));
 	center *= float_t{1} / area;
 	const auto massDataCenter = center + s;
 

@@ -70,7 +70,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, co
 	const auto v2 = shapeA.GetVertex(vertIndex2);
 
 	// If the center is inside the polygon ...
-	if (maxSeparation < Epsilon)
+	if ((maxSeparation < 0) || almost_equal(maxSeparation, 0))
 	{
 		return Manifold::GetForFaceA(shapeA.GetNormal(normalIndex), (v1 + v2) / 2, ManifoldPoint{shapeB.GetPosition()});
 	}

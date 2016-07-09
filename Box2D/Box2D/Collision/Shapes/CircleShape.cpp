@@ -59,7 +59,7 @@ bool CircleShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 	const auto sigma = Square(c) - rr * b;
 
 	// Check for negative discriminant and short segment.
-	if ((sigma < float_t{0}) || (rr < Epsilon))
+	if ((sigma < float_t{0}) || almost_equal(rr, 0))
 	{
 		return false;
 	}

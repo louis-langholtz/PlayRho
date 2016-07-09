@@ -51,7 +51,7 @@ void PulleyJointDef::Initialize(Body* bA, Body* bB,
 	Vec2 dB = anchorB - groundB;
 	lengthB = Length(dB);
 	ratio = r;
-	assert(ratio > Epsilon);
+	assert((ratio > 0) && !almost_equal(ratio, 0));
 }
 
 PulleyJoint::PulleyJoint(const PulleyJointDef& def)
