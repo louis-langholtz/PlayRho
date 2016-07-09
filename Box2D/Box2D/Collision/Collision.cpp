@@ -35,8 +35,7 @@ static inline WorldManifold GetWorldManifoldForCircles(const Manifold& manifold,
 			const auto pointA = Transform(manifold.GetLocalPoint(), xfA);
 			const auto pointB = Transform(manifold.GetPoint(0).localPoint, xfB);
 			const auto delta = pointB - pointA;
-			const auto normal = (LengthSquared(delta) > Square(BOX2D_MAGIC(Epsilon)))?
-				GetUnitVector(delta): Vec2{float_t{1}, float_t{0}};
+			const auto normal = (almost_equal(LengthSquared(delta), 0))? Vec2{float_t{1}, float_t{0}}: GetUnitVector(delta);
 			const auto cA = pointA + (radiusA * normal);
 			const auto cB = pointB - (radiusB * normal);
 			const auto p0 = (cA + cB) / float_t{2};
@@ -175,13 +174,12 @@ bool AABB::RayCast(RayCastOutput* output, const RayCastInput& input) const
 
 	const auto p = input.p1;
 	const auto d = input.p2 - input.p1;
-	const auto absD = Abs(d);
 
 	Vec2 normal;
 
 	for (auto i = decltype(normal.max_size()){0}; i < normal.max_size(); ++i)
 	{
-		if (absD[i] < BOX2D_MAGIC(Epsilon))
+		if (almost_equal(d[i], 0))
 		{
 			// Parallel.
 			if ((p[i] < lowerBound[i]) || (upperBound[i] < p[i]))
@@ -279,8 +277,9 @@ bool TestOverlap(const Shape& shapeA, child_count_t indexA,
 	
 	const auto distanceSquared = LengthSquared(output.witnessPoints.a - output.witnessPoints.b);
 	const auto totalRadiusSquared = Square(proxyA.GetRadius() + proxyB.GetRadius());
+	const auto separation_amount = distanceSquared - totalRadiusSquared;
 	
-	return (distanceSquared - totalRadiusSquared) < Square(BOX2D_MAGIC(Epsilon * 10));
+	return (separation_amount < 0) || almost_equal(separation_amount, 0);
 }
 
 } // namespace box2d

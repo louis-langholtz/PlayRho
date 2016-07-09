@@ -549,7 +549,7 @@ DistanceOutput Distance(SimplexCache& cache,
 	{
 		const auto metric1 = cache.GetMetric();
 		const auto metric2 = GetMetric(simplex);
-		if ((metric2 < (metric1 / 2)) || (metric2 > (metric1 * 2)) || BOX2D_MAGIC(metric2 < Epsilon))
+		if ((metric2 < (metric1 / 2)) || (metric2 > (metric1 * 2)) || (metric2 < float_t{0}) || almost_equal(metric2, float_t{0}))
 		{
 			simplex.clear();
 		}
@@ -602,7 +602,7 @@ DistanceOutput Distance(SimplexCache& cache,
 		const auto d = GetSearchDirection(simplex);
 
 		// Ensure the search direction is numerically fit.
-		if (LengthSquared(d) < Square(BOX2D_MAGIC(Epsilon)))
+		if (almost_equal(LengthSquared(d), float_t{0}))
 		{
 			// The origin is probably contained by a line segment
 			// or triangle. Thus the shapes are overlapped.

@@ -552,7 +552,7 @@ void World::SolveTOI(const TimeStep& step)
 		// Find the first TOI - the soonest one.
 		const auto minContactToi = UpdateContactTOIs();
 
-		if ((!minContactToi.contact) || (minContactToi.toi > (float_t{1} - BOX2D_MAGIC(Epsilon * 10))))
+		if ((!minContactToi.contact) || (almost_equal(minContactToi.toi, float_t{1})))
 		{
 			// No more TOI events. Done!
 			m_stepComplete = true;

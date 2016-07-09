@@ -70,6 +70,15 @@ inline float_t round(float_t value, unsigned precision)
 	return std::round(value * precision) / precision;
 }
 
+constexpr inline bool almost_equal(float_t x, float_t y, int ulp = 2)
+{
+	// From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
+	// "the machine epsilon has to be scaled to the magnitude of the values used
+	// and multiplied by the desired precision in ULPs (units in the last place)
+	// unless the result is subnormal".
+	return (Abs(x - y) < (Epsilon * Abs(x + y) * ulp)) || (Abs(x - y) < std::numeric_limits<float_t>::min());
+}
+
 /// A 2D column vector.
 struct Vec2
 {
@@ -596,13 +605,13 @@ constexpr Vec2 operator/ (const Vec2& a, float_t s) noexcept
 
 /// Gets the unit vector for the given value.
 /// @param value Value to get the unit vector for.
-/// @return value divided by its length if length not less than Epsilon otherwise value.
-/// @sa Epsilon.
+/// @return value divided by its length if length not almost zero otherwise value.
+/// @sa almost_equal.
 inline Vec2 GetUnitVector(Vec2 value)
 {
 	// implementation similar to that of Normalize(Vec2&)
 	const auto length = Sqrt(LengthSquared(value));
-	if (BOX2D_MAGIC(length < Epsilon))
+	if (almost_equal(length, 0))
 	{
 		return value;
 	}
@@ -971,7 +980,7 @@ inline Sweep GetAnglesNormalized(Sweep sweep)
 inline float_t Normalize(Vec2& vector)
 {
 	const auto length = Length(vector);
-	if (BOX2D_MAGIC(length < Epsilon))
+	if (almost_equal(length, 0))
 	{
 		return float_t{0};
 	}
