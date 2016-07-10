@@ -22,7 +22,6 @@
 
 #include <Box2D/Common/Math.h>
 #include <Box2D/Collision/ContactFeature.hpp>
-#include <Box2D/Collision/AABB.hpp>
 
 #include <climits>
 #include <array>
@@ -339,22 +338,6 @@ struct ClipVertex
 	ContactFeature cf; ///< Contact feature information.
 };
 
-/// Ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
-struct RayCastInput
-{
-	Vec2 p1; ///< Point 1.
-	Vec2 p2; ///< Point 2.
-	float_t maxFraction; ///< Max fraction.
-};
-
-/// Ray-cast output data. The ray hits at p1 + fraction * (p2 - p1), where p1 and p2
-/// come from RayCastInput.
-struct RayCastOutput
-{
-	Vec2 normal;
-	float_t fraction;
-};
-
 /// Computes the collision manifold between two circles.
 /// @param shapeA Shape A.
 /// @param xfA Transformation for shape A.
@@ -417,19 +400,6 @@ bool TestOverlap(const Shape& shapeA, child_count_t indexA,
 				   const Transformation& xfA, const Transformation& xfB);
 
 // ---------------- Inline Functions ------------------------------------------
-
-inline bool TestOverlap(const AABB& a, const AABB& b) noexcept
-{
-	const auto d1 = b.GetLowerBound() - a.GetUpperBound();
-	if ((d1.x > float_t{0}) || (d1.y > float_t{0}))
-		return false;
-
-	const auto d2 = a.GetLowerBound() - b.GetUpperBound();
-	if ((d2.x > float_t{0}) || (d2.y > float_t{0}))
-		return false;
-
-	return true;
-}
 
 } /* namespace box2d */
 

@@ -25,7 +25,6 @@
 #include <Box2D/Collision/Shapes/PolygonShape.h>
 #include <Box2D/Collision/Shapes/ChainShape.h>
 #include <Box2D/Collision/BroadPhase.h>
-#include <Box2D/Collision/Collision.h>
 #include <Box2D/Common/BlockAllocator.h>
 
 using namespace box2d;

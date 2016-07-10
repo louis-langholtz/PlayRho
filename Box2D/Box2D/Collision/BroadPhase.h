@@ -21,7 +21,6 @@
 #define B2_BROAD_PHASE_H
 
 #include <Box2D/Common/Settings.h>
-#include <Box2D/Collision/Collision.h>
 #include <Box2D/Collision/DynamicTree.h>
 #include <algorithm>
 

@@ -24,9 +24,6 @@
 
 namespace box2d
 {
-	struct RayCastOutput;
-	struct RayCastInput;
-
 	/// An axis aligned bounding box.
 	class AABB
 	{
@@ -34,7 +31,7 @@ namespace box2d
 		AABB() = default;
 		
 		constexpr AABB(Vec2 a, Vec2 b) noexcept:
-		lowerBound(Vec2{Min(a.x, b.x), Min(a.y, b.y)}), upperBound(Vec2{Max(a.x, b.x), Max(a.y, b.y)}) {}
+			lowerBound{Vec2{Min(a.x, b.x), Min(a.y, b.y)}}, upperBound{Vec2{Max(a.x, b.x), Max(a.y, b.y)}} {}
 		
 		/// Get the center of the AABB.
 		constexpr Vec2 GetCenter() const noexcept
@@ -53,7 +50,7 @@ namespace box2d
 		{
 			const auto wx = upperBound.x - lowerBound.x;
 			const auto wy = upperBound.y - lowerBound.y;
-			return float_t(2) * (wx + wy);
+			return (wx + wy) * 2;
 		}
 		
 		/// Combine an AABB into this one.
@@ -71,9 +68,7 @@ namespace box2d
 			(lowerBound.x <= aabb.lowerBound.x) && (lowerBound.y <= aabb.lowerBound.y) &&
 			(aabb.upperBound.x <= upperBound.x) && (aabb.upperBound.y <= upperBound.y);
 		}
-		
-		bool RayCast(RayCastOutput* output, const RayCastInput& input) const;
-		
+				
 		Vec2 GetLowerBound() const noexcept { return lowerBound; }
 		Vec2 GetUpperBound() const noexcept { return upperBound; }
 		
@@ -103,6 +98,38 @@ namespace box2d
 	{
 		return AABB{lhs.GetLowerBound() - rhs, lhs.GetUpperBound() + rhs};
 	}
+
+	inline bool TestOverlap(const AABB& a, const AABB& b) noexcept
+	{
+		const auto d1 = b.GetLowerBound() - a.GetUpperBound();
+		if ((d1.x > float_t{0}) || (d1.y > float_t{0}))
+			return false;
+		
+		const auto d2 = a.GetLowerBound() - b.GetUpperBound();
+		if ((d2.x > float_t{0}) || (d2.y > float_t{0}))
+			return false;
+		
+		return true;
+	}
+	
+	/// Ray-cast input data.
+	/// @detail The ray extends from p1 to p1 + maxFraction * (p2 - p1).
+	struct RayCastInput
+	{
+		Vec2 p1; ///< Point 1.
+		Vec2 p2; ///< Point 2.
+		float_t maxFraction; ///< Max fraction.
+	};
+	
+	/// Ray-cast output data.
+	/// @detail The ray hits at p1 + fraction * (p2 - p1), where p1 and p2 come from RayCastInput.
+	struct RayCastOutput
+	{
+		Vec2 normal;
+		float_t fraction;
+	};
+
+	bool RayCast(const AABB& aabb, RayCastOutput* output, const RayCastInput& input);
 
 } // namespace box2d
 

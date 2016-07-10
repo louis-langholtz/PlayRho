@@ -21,7 +21,6 @@
 #define B2_FIXTURE_H
 
 #include <Box2D/Dynamics/Body.h>
-#include <Box2D/Collision/Collision.h>
 #include <Box2D/Collision/Shapes/Shape.h>
 
 namespace box2d {

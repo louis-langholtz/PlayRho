@@ -22,7 +22,7 @@
 
 #include <Box2D/Common/BlockAllocator.h>
 #include <Box2D/Common/Math.h>
-#include <Box2D/Collision/Collision.h>
+#include <Box2D/Collision/AABB.hpp>
 #include <memory>
 
 namespace box2d {

@@ -17,11 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Collision/Collision.h>
 #include <Box2D/Collision/Distance.h>
 #include <Box2D/Collision/TimeOfImpact.h>
-#include <Box2D/Collision/Shapes/CircleShape.h>
-#include <Box2D/Collision/Shapes/PolygonShape.h>
 #include <Box2D/Common/Timer.h>
 
 #include <stdio.h>

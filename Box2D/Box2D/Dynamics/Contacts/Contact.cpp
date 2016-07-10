@@ -27,7 +27,6 @@
 #include <Box2D/Dynamics/Contacts/ChainAndPolygonContact.h>
 #include <Box2D/Dynamics/Contacts/ContactSolver.h>
 
-#include <Box2D/Collision/Collision.h>
 #include <Box2D/Collision/TimeOfImpact.h>
 #include <Box2D/Collision/Shapes/Shape.h>
 #include <Box2D/Common/BlockAllocator.h>

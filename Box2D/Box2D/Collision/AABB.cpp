@@ -18,12 +18,12 @@
  */
 
 #include <Box2D/Collision/AABB.hpp>
-#include <Box2D/Collision/Collision.h>
 
 namespace box2d
 {
+	
 	// From Real-time Collision Detection, p179.
-	bool AABB::RayCast(RayCastOutput* output, const RayCastInput& input) const
+	bool RayCast(const AABB& aabb, RayCastOutput* output, const RayCastInput& input)
 	{
 		auto tmin = -MaxFloat;
 		auto tmax = MaxFloat;
@@ -38,7 +38,7 @@ namespace box2d
 			if (almost_equal(d[i], 0))
 			{
 				// Parallel.
-				if ((p[i] < lowerBound[i]) || (upperBound[i] < p[i]))
+				if ((p[i] < aabb.GetLowerBound()[i]) || (aabb.GetUpperBound()[i] < p[i]))
 				{
 					return false;
 				}
@@ -46,8 +46,8 @@ namespace box2d
 			else
 			{
 				const auto inv_d = float_t{1} / d[i];
-				auto t1 = (lowerBound[i] - p[i]) * inv_d;
-				auto t2 = (upperBound[i] - p[i]) * inv_d;
+				auto t1 = (aabb.GetLowerBound()[i] - p[i]) * inv_d;
+				auto t2 = (aabb.GetUpperBound()[i] - p[i]) * inv_d;
 				
 				// Sign of the normal vector.
 				auto s = float_t{-1};
