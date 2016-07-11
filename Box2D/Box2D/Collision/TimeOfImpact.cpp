@@ -36,8 +36,8 @@ struct Separation
 	
 	constexpr Separation(IndexPair ip, float_t d) noexcept: indexPair{ip}, distance{d} {}
 
-	IndexPair indexPair;
-	float_t distance; ///< Distance of separation (in meters).
+	IndexPair indexPair; ///< Pair of indices of vertices for which distance is being returned for.
+	float_t distance; ///< Distance of separation (in meters) between vertices indexed by the index-pair.
 };
 
 class SeparationFunction
@@ -173,10 +173,8 @@ private:
 	{
 		const auto indexA = m_proxyA.GetSupportIndex(InverseRotate(m_axis, xfA.q));
 		const auto indexB = m_proxyB.GetSupportIndex(InverseRotate(-m_axis, xfB.q));
-		
 		const auto pointA = Transform(m_proxyA.GetVertex(indexA), xfA);
 		const auto pointB = Transform(m_proxyB.GetVertex(indexB), xfB);
-		
 		return Separation{IndexPair{indexA, indexB}, Dot(pointB - pointA, m_axis)};
 	}
 	
@@ -227,11 +225,13 @@ private:
 	Vec2 m_localPoint; // used if type is e_faceA or e_faceB
 };
 
-// CCD via the local separating axis method. This seeks progression
-// by computing the largest time at which separation is maintained.
-TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA, const DistanceProxy& proxyB, Sweep sweepB,
+TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
+					   const DistanceProxy& proxyB, Sweep sweepB,
 					   float_t tMax)
 {
+	// CCD via the local separating axis method. This seeks progression
+	// by computing the largest time at which separation is maintained.
+	
 	++toiCalls;
 
 	auto output = TOIOutput{TOIOutput::e_unknown, tMax};
@@ -240,7 +240,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA, const Distance
 	sweepA = GetAnglesNormalized(sweepA);
 	sweepB = GetAnglesNormalized(sweepB);
 
-	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius();
+	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius(); // 2 polygons = 2 * PolygonRadius = 4 * LinearSlop
 	const auto target = Max(LinearSlop, totalRadius - BOX2D_MAGIC(float_t{3} * LinearSlop));
 	constexpr auto tolerance = BOX2D_MAGIC(LinearSlop / float_t{4});
 	assert(target >= tolerance);
@@ -313,7 +313,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA, const Distance
 		// resolving the deepest point. This loop is bounded by the number of vertices.
 		auto done = false;
 		auto t2 = tMax; // Will be set to the value of t
-		for (auto pushBackIter = decltype(MaxPolygonVertices){0}; pushBackIter < BOX2D_MAGIC(MaxPolygonVertices); ++pushBackIter)
+		for (auto pushBackIter = decltype(MaxShapeVertices){0}; pushBackIter < MaxShapeVertices; ++pushBackIter)
 		{
 			// Find the deepest point at t2. Store the witness point indices.
 			const auto minSeparation = fcn.FindMinSeparation(t2);
