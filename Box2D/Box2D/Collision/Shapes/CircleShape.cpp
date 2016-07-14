@@ -91,6 +91,6 @@ MassData CircleShape::ComputeMass(float_t density) const
 {
 	assert(density >= 0);
 	const auto mass = density * Pi * Square(GetRadius());
-	const auto I = mass * ((Square(GetRadius()) / float_t{2}) + LengthSquared(m_p));
-	return MassData{mass, m_p, I};
+	const auto I = mass * ((Square(GetRadius()) / float_t{2}) + LengthSquared(GetPosition()));
+	return MassData{mass, GetPosition(), I};
 }
