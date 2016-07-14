@@ -140,7 +140,7 @@ public:
 	void* GetUserData() const noexcept;
 
 	/// Set the user data. Use this to store your application specific data.
-	void SetUserData(void* data);
+	void SetUserData(void* data) noexcept;
 
 	/// Test a point for containment in this fixture.
 	/// @param p a point in world coordinates.
@@ -163,25 +163,25 @@ public:
 	///   You must call Body::ResetMassData to update the body's mass.
 	/// @warning Behavior is undefined if given a negative value.
 	/// @param density Non-negative density in kg/m^2.
-	void SetDensity(float_t density);
+	void SetDensity(float_t density) noexcept;
 
 	/// Gets the density of this fixture.
 	/// @return Non-negative density in kg/m^2.
-	float_t GetDensity() const;
+	float_t GetDensity() const noexcept;
 
 	/// Gets the coefficient of friction.
-	float_t GetFriction() const;
+	float_t GetFriction() const noexcept;
 
 	/// Sets the coefficient of friction. This will _not_ change the friction of
 	/// existing contacts.
-	void SetFriction(float_t friction);
+	void SetFriction(float_t friction) noexcept;
 
 	/// Gets the coefficient of restitution.
-	float_t GetRestitution() const;
+	float_t GetRestitution() const noexcept;
 
 	/// Sets the coefficient of restitution. This will _not_ change the restitution of
 	/// existing contacts.
-	void SetRestitution(float_t restitution);
+	void SetRestitution(float_t restitution) noexcept;
 
 	/// Get the fixture's AABB. This AABB may be enlarge and/or stale.
 	/// If you need a more accurate AABB, compute it using the shape and
@@ -262,7 +262,7 @@ inline void* Fixture::GetUserData() const noexcept
 	return m_userData;
 }
 
-inline void Fixture::SetUserData(void* data)
+inline void Fixture::SetUserData(void* data) noexcept
 {
 	m_userData = data;
 }
@@ -277,33 +277,33 @@ inline const Body* Fixture::GetBody() const noexcept
 	return m_body;
 }
 
-inline void Fixture::SetDensity(float_t density)
+inline void Fixture::SetDensity(float_t density) noexcept
 {
 	assert(IsValid(density) && density >= float_t{0});
-	m_density = Max(density, float_t{0});
+	m_density = density;
 }
 
-inline float_t Fixture::GetDensity() const
+inline float_t Fixture::GetDensity() const noexcept
 {
 	return m_density;
 }
 
-inline float_t Fixture::GetFriction() const
+inline float_t Fixture::GetFriction() const noexcept
 {
 	return m_friction;
 }
 
-inline void Fixture::SetFriction(float_t friction)
+inline void Fixture::SetFriction(float_t friction) noexcept
 {
 	m_friction = friction;
 }
 
-inline float_t Fixture::GetRestitution() const
+inline float_t Fixture::GetRestitution() const noexcept
 {
 	return m_restitution;
 }
 
-inline void Fixture::SetRestitution(float_t restitution)
+inline void Fixture::SetRestitution(float_t restitution) noexcept
 {
 	m_restitution = restitution;
 }
