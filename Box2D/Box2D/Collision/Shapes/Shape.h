@@ -115,9 +115,10 @@ public:
 	/// @return Positive non-zero count.
 	virtual child_count_t GetChildCount() const = 0;
 
-	/// Test a point for containment in this shape. This only works for convex shapes.
+	/// Tests a point for containment in this shape.
 	/// @param xf the shape world transform.
 	/// @param p a point in world coordinates.
+	/// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
 	virtual bool TestPoint(const Transformation& xf, const Vec2& p) const = 0;
 
 	/// Cast a ray against a child shape.
