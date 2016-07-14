@@ -57,3 +57,19 @@ TEST(CircleShape, TestPoint)
 	EXPECT_FALSE(foo.TestPoint(Transform_identity, Vec2{+1,  +1}));
 	EXPECT_FALSE(foo.TestPoint(Transform_identity, Vec2{+float_t(0.9),  +float_t(0.9)}));
 }
+
+TEST(CircleShape, ComputeAABB)
+{
+	const auto radius = float_t(2.4);
+	const auto position = Vec2{2, 1};
+	CircleShape foo{radius, position};
+	const auto aabb = foo.ComputeAABB(Transform_identity, 0);
+	EXPECT_EQ(aabb.GetLowerBound().x, position.x - radius);
+	EXPECT_EQ(aabb.GetLowerBound().y, position.y - radius);
+	EXPECT_EQ(aabb.GetUpperBound().x, position.x + radius);
+	EXPECT_EQ(aabb.GetUpperBound().y, position.y + radius);
+	EXPECT_EQ(aabb.GetExtents().x, radius);
+	EXPECT_EQ(aabb.GetExtents().y, radius);
+	EXPECT_EQ(aabb.GetCenter().x, position.x);
+	EXPECT_EQ(aabb.GetCenter().y, position.y);
+}

@@ -272,7 +272,7 @@ void Body::DestroyFixture(Fixture* fixture)
 	ResetMassData();
 }
 
-MassData Body::CalculateMassData() const noexcept
+MassData Body::ComputeMassData() const noexcept
 {
 	auto mass = float_t{0};
 	auto I = float_t{0};
@@ -284,7 +284,7 @@ MassData Body::CalculateMassData() const noexcept
 			continue;
 		}
 		
-		const auto massData = f.GetMassData();
+		const auto massData = f.ComputeMassData();
 		mass += massData.mass;
 		center += massData.mass * massData.center;
 		I += massData.I;
@@ -330,7 +330,7 @@ void Body::ResetMassData()
 		return;
 	}
 
-	const auto massData = CalculateMassData();
+	const auto massData = ComputeMassData();
 
 	// Force all dynamic bodies to have a positive mass.
 	m_mass = (massData.mass > float_t{0})? massData.mass: float_t{1};

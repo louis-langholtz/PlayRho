@@ -151,10 +151,12 @@ public:
 	/// @param input the ray-cast input parameters.
 	bool RayCast(RayCastOutput* output, const RayCastInput& input, child_count_t childIndex) const;
 
-	/// Get the mass data for this fixture. The mass data is based on the density and
+	/// Computes the mass data for this fixture.
+	/// @detail
+	/// The mass data is based on the density and
 	/// the shape. The rotational inertia is about the shape's origin. This operation
 	/// may be expensive.
-	MassData GetMassData() const;
+	MassData ComputeMassData() const;
 
 	/// Sets the density of this fixture.
 	/// @note This will _not_ automatically adjust the mass of the body.
@@ -316,7 +318,7 @@ inline bool Fixture::RayCast(RayCastOutput* output, const RayCastInput& input, c
 	return m_shape->RayCast(output, input, m_body->GetTransformation(), childIndex);
 }
 
-inline MassData Fixture::GetMassData() const
+inline MassData Fixture::ComputeMassData() const
 {
 	return m_shape->ComputeMass(m_density);
 }

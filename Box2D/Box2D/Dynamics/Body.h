@@ -484,11 +484,11 @@ private:
 	/// @sa IsInIsland().
 	void UnsetInIsland() noexcept;
 
-	/// Calculates mass data.
+	/// Computes mass data.
  	/// @detail This basically accumulates the mass data over all fixtures.
 	/// @note The center is the mass weighted sum of all fixture centers. Make sure to divide it by the mass to get the averaged center.
 	/// @return accumalated mass data for all fixtures associated with this body.
-	MassData CalculateMassData() const noexcept;
+	MassData ComputeMassData() const noexcept;
 
 	/// Gets the velocity of this body after the given time with the given gravity.
 	Velocity GetVelocity(float_t h, Vec2 gravity) const noexcept;
