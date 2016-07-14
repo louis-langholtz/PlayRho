@@ -112,7 +112,7 @@ constexpr auto MaxSubSteps = unsigned{10}; // originally 8, often hit but no app
 constexpr auto MaxSubStepPositionIterations = unsigned{20};
 
 /// Maximum time of impact iterations.
-constexpr auto MaxTOIIterations = BOX2D_MAGIC(unsigned{20});
+constexpr auto MaxTOIIterations = BOX2D_MAGIC(uint16{20});
 
 /// Maximum time of impact root iterator count.
 constexpr auto MaxTOIRootIterCount = unsigned{50};

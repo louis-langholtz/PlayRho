@@ -28,6 +28,7 @@
 #include <Box2D/Dynamics/Contacts/ContactSolver.h>
 
 #include <Box2D/Collision/TimeOfImpact.h>
+#include <Box2D/Collision/DistanceProxy.hpp>
 #include <Box2D/Collision/Shapes/Shape.h>
 #include <Box2D/Common/BlockAllocator.h>
 #include <Box2D/Dynamics/Body.h>

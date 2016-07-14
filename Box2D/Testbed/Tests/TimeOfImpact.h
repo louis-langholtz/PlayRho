@@ -48,7 +48,8 @@ public:
 		g_debugDraw.DrawString(5, m_textLine, "toi = %g", output.get_t());
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		extern int32 toiMaxIters, toiMaxRootIters;
+		extern std::remove_const<decltype(MaxTOIIterations)>::type toiMaxIters;
+		extern int32 toiMaxRootIters;
 		g_debugDraw.DrawString(5, m_textLine, "max toi iters = %d, max root iters = %d", toiMaxIters, toiMaxRootIters);
 		m_textLine += DRAW_STRING_NEW_LINE;
 

@@ -26,7 +26,8 @@
 namespace box2d {
 
 float_t toiTime, toiMaxTime;
-uint32 toiCalls, toiIters, toiMaxIters;
+uint32 toiCalls, toiIters;
+std::remove_const<decltype(MaxTOIIterations)>::type toiMaxIters;
 uint32 toiRootIters, toiMaxRootIters;
 
 struct Separation
@@ -234,7 +235,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 	
 	++toiCalls;
 
-	auto output = TOIOutput{TOIOutput::e_unknown, tMax};
+	auto output = TOIOutput{TOIOutput::e_unknown, 0, tMax};
 
 	// Large rotations can make the root finder fail, so we normalize the  sweep angles.
 	sweepA = GetAnglesNormalized(sweepA);
@@ -249,7 +250,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 	const auto maxTargetSquared = Square(maxTarget);
 
 	auto t1 = float_t{0}; // Will be set to value of t2
-	auto iter = decltype(MaxTOIIterations){0};
+	auto iter = TOIOutput::count_type{0};
 
 	// Prepare input for distance query.
 	SimplexCache cache;
@@ -270,13 +271,13 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 			// If the shapes aren't separated, give up on continuous collision.
 			if (distanceSquared <= float_t{0}) // Failure!
 			{
-				output = TOIOutput{TOIOutput::e_overlapped, 0};
+				output = TOIOutput{TOIOutput::e_overlapped, iter, 0};
 				break;
 			}
 
 			if (distanceSquared < maxTargetSquared) // Victory!
 			{
-				output = TOIOutput{TOIOutput::e_touching, t1};
+				output = TOIOutput{TOIOutput::e_touching, iter, t1};
 				break;
 			}
 		}
@@ -327,7 +328,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 				// output = TOIOutput{TOIOutput::e_separated, tMax};
 				// t2 seems more appropriate however given s2 was derived from it.
 				// Meanwhile t2 always seems equal to input.tMax at this point.
-				output = TOIOutput{TOIOutput::e_separated, t2};
+				output = TOIOutput{TOIOutput::e_separated, iter, t2};
 				done = true;
 				break;
 			}
@@ -348,7 +349,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 			//assert(s1 >= minTarget);
 			if (evaluatedDistance < minTarget)
 			{
-				output = TOIOutput{TOIOutput::e_failed, t1};
+				output = TOIOutput{TOIOutput::e_failed, iter, t1};
 				done = true;
 				break;
 			}
@@ -357,7 +358,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 			if (evaluatedDistance <= maxTarget)
 			{
 				// Victory! t1 should hold the TOI (could be 0.0).
-				output = TOIOutput{TOIOutput::e_touching, t1};
+				output = TOIOutput{TOIOutput::e_touching, iter, t1};
 				done = true;
 				break;
 			}
@@ -412,7 +413,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 		if (iter == MaxTOIIterations)
 		{
 			// Root finder got stuck. Semi-victory.
-			output = TOIOutput{TOIOutput::e_failed, t1};
+			output = TOIOutput{TOIOutput::e_failed, iter, t1};
 			break;
 		}
 	}

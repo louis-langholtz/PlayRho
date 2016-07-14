@@ -80,7 +80,8 @@ public:
 		m_bullet->SetAngularVelocity(0.0f);
 
 		extern uint32 gjkCalls, gjkIters, gjkMaxIters;
-		extern int32 toiCalls, toiIters, toiMaxIters;
+		extern int32 toiCalls, toiIters;
+		extern std::remove_const<decltype(MaxTOIIterations)>::type toiMaxIters;
 		extern int32 toiRootIters, toiMaxRootIters;
 
 		gjkCalls = 0;
