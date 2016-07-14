@@ -240,7 +240,7 @@ public:
 	/// Note that this changes the center of mass position.
 	/// Note that creating or destroying fixtures can also alter the mass.
 	/// This function has no effect if the body isn't dynamic.
-	/// @param massData the mass properties.
+	/// @param data the mass properties.
 	void SetMassData(const MassData* data);
 
 	/// Resets the mass data properties.
@@ -260,22 +260,22 @@ public:
 	Vec2 GetWorldVector(const Vec2& localVector) const noexcept;
 
 	/// Gets a local point relative to the body's origin given a world point.
-	/// @param a point in world coordinates.
+	/// @param worldPoint point in world coordinates.
 	/// @return the corresponding local point relative to the body's origin.
 	Vec2 GetLocalPoint(const Vec2& worldPoint) const noexcept;
 
 	/// Gets a local vector given a world vector.
-	/// @param a vector in world coordinates.
+	/// @param worldVector vector in world coordinates.
 	/// @return the corresponding local vector.
 	Vec2 GetLocalVector(const Vec2& worldVector) const noexcept;
 
 	/// Get the world linear velocity of a world point attached to this body.
-	/// @param a point in world coordinates.
+	/// @param worldPoint point in world coordinates.
 	/// @return the world velocity of a point.
 	Vec2 GetLinearVelocityFromWorldPoint(const Vec2& worldPoint) const noexcept;
 
 	/// Get the world velocity of a local point.
-	/// @param a point in local coordinates.
+	/// @param localPoint point in local coordinates.
 	/// @return the world velocity of a point.
 	Vec2 GetLinearVelocityFromLocalPoint(const Vec2& localPoint) const noexcept;
 

@@ -52,6 +52,8 @@ namespace box2d
 		
 		/// Initializing constructor.
 		/// @detail Constructs a distance proxy for a single point shape (like a circle).
+		/// @param radius Radius.
+		/// @param v0 Vertex 0 (relative to the shape's origin).
 		constexpr DistanceProxy(float_t radius, Vec2 v0) noexcept:
 			m_radius{radius}, m_buffer{{v0}}, m_count{1}
 		{
@@ -60,6 +62,9 @@ namespace box2d
 		
 		/// Initializing constructor.
 		/// @detail Constructs a distance proxy for dual point shape (like an edge or a chain).
+		/// @param radius Radius.
+		/// @param v0 Vertex 0 (relative to the shape's origin).
+		/// @param v1 Vertex 1 (relative to the shape's origin).
 		constexpr DistanceProxy(float_t radius, Vec2 v0, Vec2 v1) noexcept:
 			m_radius{radius}, m_buffer{{v0, v1}}, m_count{2}
 		{
@@ -68,6 +73,9 @@ namespace box2d
 		
 		/// Initializing constructor.
 		/// @detail Constructs a distance proxy for n-point shape (like a polygon).
+		/// @param radius Radius.
+		/// @param vertices Vertices of the shape (relative to the shape's origin).
+		/// @param count Count of vertices.
 		constexpr DistanceProxy(float_t radius, const Vec2* vertices, size_type count) noexcept:
 			m_radius{radius}, m_buffer{}, m_vertices{vertices}, m_count{count}
 		{
@@ -94,7 +102,7 @@ namespace box2d
 		/// Get a vertex by index. Used by Distance.
 		/// @param index A valid index value (must not be InvalidIndex).
 		/// @note Behavior is undefined if InvalidIndex is given as the index value.
-		/// @return 2D vector value at the given index.
+		/// @return 2D vector position (relative to the shape's origin) at the given index.
 		auto GetVertex(size_type index) const noexcept
 		{
 			assert(index != InvalidIndex);

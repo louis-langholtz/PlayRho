@@ -35,8 +35,8 @@ struct MassData
 	/// Initializing constructor.
 	/// @param m Non-negative mass in kg.
 	/// @param c Position of the shape's centroid relative to the shape's origin.
-	/// @param I Non-negative rotational inertia of the shape about the local origin.
-	constexpr MassData(float_t m, Vec2 c, float_t _I) noexcept: mass{m}, center{c}, I{_I}
+	/// @param i Non-negative rotational inertia of the shape about the local origin.
+	constexpr MassData(float_t m, Vec2 c, float_t i) noexcept: mass{m}, center{c}, I{i}
 	{
 		assert(mass >= 0);
 		assert(I >= 0);
@@ -137,8 +137,8 @@ public:
 	/// Computes the mass properties of this shape using its dimensions and density.
 	/// The inertia tensor is computed about the local origin.
 	/// @note Behavior is undefined if the given density is negative.
-	/// @param massData returns the mass data for this shape.
 	/// @param density Density in kilograms per meter squared (must be non-negative).
+	/// @return Mass data for this shape.
 	virtual MassData ComputeMass(float_t density) const = 0;
 
 	/// Gets the "radius" of the shape.

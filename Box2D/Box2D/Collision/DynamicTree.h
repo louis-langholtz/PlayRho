@@ -51,7 +51,7 @@ public:
 	DynamicTree& operator=(const DynamicTree&) = delete;
 
 	/// Creates a proxy. Provide a tight fitting AABB and a userData pointer.
-	/// @return 
+	/// @return ID of the created proxy.
 	size_type CreateProxy(const AABB& aabb, void* userData);
 
 	/// Destroys a proxy. This asserts if the id is invalid.
