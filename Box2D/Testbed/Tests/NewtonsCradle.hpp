@@ -37,7 +37,7 @@ namespace box2d {
 			}();
 
 			const auto radius = float_t(2);
-			const auto num_arms = unsigned{3};
+			const auto num_arms = unsigned{5};
 			const auto frame_width_per_arm = radius * 2;
 			for (auto i = decltype(num_arms){0}; i < num_arms; ++i)
 			{
@@ -45,7 +45,7 @@ namespace box2d {
 
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
-				bd.bullet = true;
+				bd.bullet = m_bullet_mode;
 				bd.position = Vec2{x, frame_height - (arm_length / 2)};
 				
 				const auto body = m_world->CreateBody(&bd);
@@ -75,10 +75,43 @@ namespace box2d {
 			return body->CreateFixture(FixtureDef{&shape, 20});
 		}
 
+		void ToggleBulletMode()
+		{
+			m_bullet_mode = !m_bullet_mode;
+			for (auto& b: m_world->GetBodies())
+			{
+				if (b.GetType() == BodyType::Dynamic)
+				{
+					b.SetBullet(m_bullet_mode);
+				}
+			}
+		}
+
+		void Keyboard(int key)
+		{
+			switch (key)
+			{
+				case GLFW_KEY_PERIOD:
+					ToggleBulletMode();
+					break;
+			}
+		}
+		
+		void Step(Settings* settings)
+		{
+			Test::Step(settings);
+			g_debugDraw.DrawString(5, m_textLine, "Drag a circle with mouse, then let go to see how the physics is simulated");
+			m_textLine += DRAW_STRING_NEW_LINE;
+			g_debugDraw.DrawString(5, m_textLine, "Press '.' to toggle bullet mode (currently %s).", m_bullet_mode? "on": "off");
+			m_textLine += DRAW_STRING_NEW_LINE;
+		}
+		
 		static Test* Create()
 		{
 			return new NewtonsCradle;
 		}
+	
+		bool m_bullet_mode = false;
 	};
 
 } // namespace box2d
