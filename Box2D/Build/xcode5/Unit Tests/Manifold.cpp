@@ -37,3 +37,103 @@ TEST(Manifold, GetForCircles)
 	EXPECT_EQ(foo.GetType(), Manifold::e_circles);
 	EXPECT_EQ(foo.GetPointCount(), 1);
 }
+
+TEST(Manifold, GetForFaceA)
+{
+	const auto ln = Vec2{0, 0};
+	const auto lp = Vec2{0, 0};
+	{
+		Manifold foo = Manifold::GetForFaceA(ln, lp);
+		EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
+		EXPECT_EQ(foo.GetLocalNormal(), ln);
+		EXPECT_EQ(foo.GetLocalPoint(), lp);
+		EXPECT_EQ(foo.GetPointCount(), 0);
+	}
+	{
+		const auto pl = Vec2{float_t(-0.12), float_t(0.34)};
+		const auto cf = DefaultContactFeature;
+		const auto ni = float_t(2.9);
+		const auto ti = float_t(.7);
+		Manifold foo = Manifold::GetForFaceA(ln, lp, Manifold::Point{pl, cf, ni, ti});
+		EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
+		EXPECT_EQ(foo.GetLocalNormal(), ln);
+		EXPECT_EQ(foo.GetLocalPoint(), lp);
+		EXPECT_EQ(foo.GetPointCount(), 1);
+		const auto p0 = foo.GetPoint(0);
+		EXPECT_EQ(p0.localPoint, pl);
+		EXPECT_EQ(p0.contactFeature, cf);
+		EXPECT_EQ(p0.normalImpulse, ni);
+		EXPECT_EQ(p0.tangentImpulse, ti);
+	}
+	{
+		const auto pl = Vec2{float_t(-0.12), float_t(0.34)};
+		const auto cf = DefaultContactFeature;
+		const auto ni = float_t(2.9);
+		const auto ti = float_t(.7);
+		Manifold foo = Manifold::GetForFaceA(ln, lp, Manifold::Point{pl, cf, ni, ti}, Manifold::Point{-pl, Flip(cf), -ni, -ti});
+		EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
+		EXPECT_EQ(foo.GetLocalNormal(), ln);
+		EXPECT_EQ(foo.GetLocalPoint(), lp);
+		EXPECT_EQ(foo.GetPointCount(), 2);
+		const auto p0 = foo.GetPoint(0);
+		EXPECT_EQ(p0.localPoint, pl);
+		EXPECT_EQ(p0.contactFeature, cf);
+		EXPECT_EQ(p0.normalImpulse, ni);
+		EXPECT_EQ(p0.tangentImpulse, ti);
+		const auto p1 = foo.GetPoint(1);
+		EXPECT_EQ(p1.localPoint, -pl);
+		EXPECT_EQ(p1.contactFeature, Flip(cf));
+		EXPECT_EQ(p1.normalImpulse, -ni);
+		EXPECT_EQ(p1.tangentImpulse, -ti);
+	}
+}
+
+TEST(Manifold, GetForFaceB)
+{
+	const auto ln = Vec2{0, 0};
+	const auto lp = Vec2{0, 0};
+	{
+		Manifold foo = Manifold::GetForFaceB(ln, lp);
+		EXPECT_EQ(foo.GetType(), Manifold::e_faceB);
+		EXPECT_EQ(foo.GetLocalNormal(), ln);
+		EXPECT_EQ(foo.GetLocalPoint(), lp);
+		EXPECT_EQ(foo.GetPointCount(), 0);
+	}
+	{
+		const auto pl = Vec2{float_t(-0.12), float_t(0.34)};
+		const auto cf = DefaultContactFeature;
+		const auto ni = float_t(2.9);
+		const auto ti = float_t(.7);
+		Manifold foo = Manifold::GetForFaceB(ln, lp, Manifold::Point{pl, cf, ni, ti});
+		EXPECT_EQ(foo.GetType(), Manifold::e_faceB);
+		EXPECT_EQ(foo.GetLocalNormal(), ln);
+		EXPECT_EQ(foo.GetLocalPoint(), lp);
+		EXPECT_EQ(foo.GetPointCount(), 1);
+		const auto p0 = foo.GetPoint(0);
+		EXPECT_EQ(p0.localPoint, pl);
+		EXPECT_EQ(p0.contactFeature, cf);
+		EXPECT_EQ(p0.normalImpulse, ni);
+		EXPECT_EQ(p0.tangentImpulse, ti);
+	}
+	{
+		const auto pl = Vec2{float_t(-0.12), float_t(0.34)};
+		const auto cf = DefaultContactFeature;
+		const auto ni = float_t(2.9);
+		const auto ti = float_t(.7);
+		Manifold foo = Manifold::GetForFaceB(ln, lp, Manifold::Point{pl, cf, ni, ti}, Manifold::Point{-pl, Flip(cf), -ni, -ti});
+		EXPECT_EQ(foo.GetType(), Manifold::e_faceB);
+		EXPECT_EQ(foo.GetLocalNormal(), ln);
+		EXPECT_EQ(foo.GetLocalPoint(), lp);
+		EXPECT_EQ(foo.GetPointCount(), 2);
+		const auto p0 = foo.GetPoint(0);
+		EXPECT_EQ(p0.localPoint, pl);
+		EXPECT_EQ(p0.contactFeature, cf);
+		EXPECT_EQ(p0.normalImpulse, ni);
+		EXPECT_EQ(p0.tangentImpulse, ti);
+		const auto p1 = foo.GetPoint(1);
+		EXPECT_EQ(p1.localPoint, -pl);
+		EXPECT_EQ(p1.contactFeature, Flip(cf));
+		EXPECT_EQ(p1.normalImpulse, -ni);
+		EXPECT_EQ(p1.tangentImpulse, -ti);
+	}
+}
