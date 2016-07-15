@@ -242,8 +242,8 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 	sweepB = GetAnglesNormalized(sweepB);
 
 	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius(); // 2 polygons = 2 * PolygonRadius = 4 * LinearSlop
-	const auto target = Max(LinearSlop, totalRadius - BOX2D_MAGIC(float_t{3} * LinearSlop));
-	constexpr auto tolerance = BOX2D_MAGIC(LinearSlop / float_t{4});
+	const auto target = Max(LinearSlop, totalRadius - BOX2D_MAGIC(LinearSlop * float_t{3}));
+	const auto tolerance = BOX2D_MAGIC(LinearSlop / 4);
 	assert(target >= tolerance);
 	const auto maxTarget = target + tolerance;
 	const auto minTarget = target - tolerance;
