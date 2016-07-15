@@ -42,7 +42,7 @@ void PolygonAndCircleContact::Destroy(Contact* contact, BlockAllocator* allocato
 }
 
 PolygonAndCircleContact::PolygonAndCircleContact(Fixture* fixtureA, Fixture* fixtureB)
-: Contact(fixtureA, 0, fixtureB, 0)
+: Contact{fixtureA, 0, fixtureB, 0}
 {
 	assert(m_fixtureA->GetType() == Shape::e_polygon);
 	assert(m_fixtureB->GetType() == Shape::e_circle);

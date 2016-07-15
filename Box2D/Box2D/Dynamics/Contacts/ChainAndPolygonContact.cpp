@@ -44,7 +44,7 @@ void ChainAndPolygonContact::Destroy(Contact* contact, BlockAllocator* allocator
 
 ChainAndPolygonContact::ChainAndPolygonContact(Fixture* fixtureA, child_count_t indexA,
 												   Fixture* fixtureB, child_count_t indexB)
-: Contact(fixtureA, indexA, fixtureB, indexB)
+: Contact{fixtureA, indexA, fixtureB, indexB}
 {
 	assert(m_fixtureA->GetType() == Shape::e_chain);
 	assert(m_fixtureB->GetType() == Shape::e_polygon);
