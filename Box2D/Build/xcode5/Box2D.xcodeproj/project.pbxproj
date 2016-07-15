@@ -41,6 +41,11 @@
 		4726DD2D1D31B4090012A882 /* AABB.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD291D31B4090012A882 /* AABB.hpp */; };
 		4726DD2F1D328A8A0012A882 /* TimeOfImpact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD2E1D328A8A0012A882 /* TimeOfImpact.cpp */; };
 		4726DD311D38125F0012A882 /* CircleShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD301D38125F0012A882 /* CircleShape.cpp */; };
+		4726DD331D3852B60012A882 /* Manifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD321D3852B60012A882 /* Manifold.cpp */; };
+		4726DD361D387D630012A882 /* Manifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD341D387D630012A882 /* Manifold.cpp */; };
+		4726DD371D387D630012A882 /* Manifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD341D387D630012A882 /* Manifold.cpp */; };
+		4726DD381D387D630012A882 /* Manifold.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD351D387D630012A882 /* Manifold.hpp */; };
+		4726DD391D387D630012A882 /* Manifold.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD351D387D630012A882 /* Manifold.hpp */; };
 		475039911D2180D600D32047 /* DistanceProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4750398F1D2180D600D32047 /* DistanceProxy.cpp */; };
 		475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 475039901D2180D600D32047 /* DistanceProxy.hpp */; };
 		4751EE291CEDD78F00D459CB /* Mobile.h in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE281CEDD78F00D459CB /* Mobile.h */; };
@@ -398,6 +403,9 @@
 		4726DD291D31B4090012A882 /* AABB.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AABB.hpp; sourceTree = "<group>"; };
 		4726DD2E1D328A8A0012A882 /* TimeOfImpact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeOfImpact.cpp; sourceTree = "<group>"; };
 		4726DD301D38125F0012A882 /* CircleShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CircleShape.cpp; sourceTree = "<group>"; };
+		4726DD321D3852B60012A882 /* Manifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Manifold.cpp; sourceTree = "<group>"; };
+		4726DD341D387D630012A882 /* Manifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Manifold.cpp; sourceTree = "<group>"; };
+		4726DD351D387D630012A882 /* Manifold.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Manifold.hpp; sourceTree = "<group>"; };
 		4750398F1D2180D600D32047 /* DistanceProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceProxy.cpp; sourceTree = "<group>"; };
 		475039901D2180D600D32047 /* DistanceProxy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DistanceProxy.hpp; sourceTree = "<group>"; };
 		4751EE281CEDD78F00D459CB /* Mobile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mobile.h; sourceTree = "<group>"; };
@@ -704,6 +712,7 @@
 				4726DD231D306D480012A882 /* Epsilon.cpp */,
 				4726DD2E1D328A8A0012A882 /* TimeOfImpact.cpp */,
 				4726DD301D38125F0012A882 /* CircleShape.cpp */,
+				4726DD321D3852B60012A882 /* Manifold.cpp */,
 			);
 			path = "Unit Tests";
 			sourceTree = "<group>";
@@ -761,6 +770,8 @@
 				80BB892B141C3E5900F1753A /* CollidePolygon.cpp */,
 				80BB892C141C3E5900F1753A /* Collision.cpp */,
 				80BB892D141C3E5900F1753A /* Collision.h */,
+				4726DD341D387D630012A882 /* Manifold.cpp */,
+				4726DD351D387D630012A882 /* Manifold.hpp */,
 				4726DD281D31B4090012A882 /* AABB.cpp */,
 				4726DD291D31B4090012A882 /* AABB.hpp */,
 				4726DD1B1D305E5D0012A882 /* ContactFeature.cpp */,
@@ -1099,6 +1110,7 @@
 				47AA5DDA1C4C5FBE008AF2BA /* Settings.h in Headers */,
 				47AA5DDB1C4C5FBE008AF2BA /* StackAllocator.h in Headers */,
 				47AA5DDC1C4C5FBE008AF2BA /* Timer.h in Headers */,
+				4726DD391D387D630012A882 /* Manifold.hpp in Headers */,
 				47AA5DDD1C4C5FBE008AF2BA /* Body.h in Headers */,
 				47AA5DDE1C4C5FBE008AF2BA /* ContactManager.h in Headers */,
 				47AA5DDF1C4C5FBE008AF2BA /* Fixture.h in Headers */,
@@ -1167,6 +1179,7 @@
 				80BB899D141C3E5900F1753A /* Shape.h in Headers */,
 				4751EE2F1CEDD7A300D459CB /* MobileBalanced.h in Headers */,
 				80BB899F141C3E5900F1753A /* BlockAllocator.h in Headers */,
+				4726DD381D387D630012A882 /* Manifold.hpp in Headers */,
 				80BB89A1141C3E5900F1753A /* Draw.h in Headers */,
 				47AA63A11D0F7FDA00726CA2 /* ConstBodyIterator.hpp in Headers */,
 				80BB89A2141C3E5900F1753A /* GrowableStack.h in Headers */,
@@ -1387,6 +1400,7 @@
 				47769D491D29B9C60078A9C5 /* Sweep.cpp in Sources */,
 				4726DD071D2DF6990012A882 /* Mat33.cpp in Sources */,
 				4726DD2F1D328A8A0012A882 /* TimeOfImpact.cpp in Sources */,
+				4726DD331D3852B60012A882 /* Manifold.cpp in Sources */,
 				4726DD241D306D480012A882 /* Epsilon.cpp in Sources */,
 				4726DD141D3022C30012A882 /* Distance.cpp in Sources */,
 				4726DD221D305F720012A882 /* ContactFeature.cpp in Sources */,
@@ -1439,6 +1453,7 @@
 				47AA5DB91C4C5FBE008AF2BA /* EdgeAndPolygonContact.cpp in Sources */,
 				47AA5DBA1C4C5FBE008AF2BA /* PolygonAndCircleContact.cpp in Sources */,
 				47AA5DBB1C4C5FBE008AF2BA /* PolygonContact.cpp in Sources */,
+				4726DD371D387D630012A882 /* Manifold.cpp in Sources */,
 				47AA5DBC1C4C5FBE008AF2BA /* DistanceJoint.cpp in Sources */,
 				4726DD181D30230A0012A882 /* SimplexCache.cpp in Sources */,
 				47AA5DBD1C4C5FBE008AF2BA /* FrictionJoint.cpp in Sources */,
@@ -1536,6 +1551,7 @@
 				80BB89A9141C3E5900F1753A /* Timer.cpp in Sources */,
 				47AA63AC1D1078D000726CA2 /* ConstContactIterator.cpp in Sources */,
 				47AA639C1D0F7FDA00726CA2 /* FixtureIterator.cpp in Sources */,
+				4726DD361D387D630012A882 /* Manifold.cpp in Sources */,
 				80BB89AB141C3E5900F1753A /* Body.cpp in Sources */,
 				80BB89AD141C3E5900F1753A /* ContactManager.cpp in Sources */,
 				47A9833A1D0F51A300AA7D1A /* JointIterator.cpp in Sources */,
