@@ -42,12 +42,13 @@ void Fixture::Create(BlockAllocator* allocator, const FixtureDef& def)
 
 	// Reserve proxy space
 	const auto childCount = m_shape->GetChildCount();
-	m_proxies = allocator->AllocateArray<FixtureProxy>(childCount);
+	const auto proxies = allocator->AllocateArray<FixtureProxy>(childCount);
 	for (auto i = decltype(childCount){0}; i < childCount; ++i)
 	{
-		m_proxies[i].fixture = nullptr;
-		m_proxies[i].proxyId = BroadPhase::e_nullProxy;
+		proxies[i].fixture = nullptr;
+		proxies[i].proxyId = BroadPhase::e_nullProxy;
 	}
+	m_proxies = proxies;
 }
 
 void Fixture::Destroy(BlockAllocator* allocator)
