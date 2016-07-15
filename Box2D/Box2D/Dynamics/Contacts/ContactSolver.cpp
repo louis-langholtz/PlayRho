@@ -592,7 +592,7 @@ void ContactSolver::SolveVelocityConstraints()
 	}
 }
 
-static inline void AssignImpulses(ManifoldPoint& var, const VelocityConstraintPoint& val)
+static inline void AssignImpulses(Manifold::Point& var, const VelocityConstraintPoint& val)
 {
 	var.normalImpulse = val.normalImpulse;
 	var.tangentImpulse = val.tangentImpulse;

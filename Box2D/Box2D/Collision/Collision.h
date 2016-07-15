@@ -39,33 +39,6 @@ class CircleShape;
 class EdgeShape;
 class PolygonShape;
 
-/// Manifold point data.
-/// @detail A manifold point is a contact point belonging to a contact
-/// manifold. It holds details related to the geometry and dynamics
-/// of the contact points.
-/// The local point usage depends on the manifold type:
-///   1. e_circles: The local center of circle B;
-///   2. e_faceA: The local center of cirlce B or the clip point of polygon B; or,
-///   3. e_faceB: The clip point of polygon A.
-/// This structure is stored across time steps, so we keep it small.
-/// @note The impulses are used for internal caching and may not
-///   provide reliable contact forces especially for high speed collisions.
-struct ManifoldPoint
-{
-	ManifoldPoint() noexcept = default;
-	ManifoldPoint(const ManifoldPoint& copy) noexcept = default;
-
-	constexpr explicit ManifoldPoint(Vec2 lp, ContactFeature cf = DefaultContactFeature,
-									 float_t ni = float_t{0}, float_t ti = float_t{0}) noexcept:
-		localPoint{lp}, contactFeature{cf}, normalImpulse{ni}, tangentImpulse{ti}
-	{}
-
-	Vec2 localPoint;		///< usage depends on manifold type
-	float_t normalImpulse;	///< the non-penetration impulse
-	float_t tangentImpulse;	///< the friction impulse
-	ContactFeature contactFeature; ///< uniquely identifies a contact point between two shapes
-};
-
 /// A manifold for two touching convex shapes.
 /// @detail
 /// Multiple types of contact are supported:
@@ -96,12 +69,39 @@ public:
 		e_faceB ///< Indicates local point is center of face B and local normal is normal on shape B.
 	};
 	
+	/// Manifold point data.
+	/// @detail A manifold point is a contact point belonging to a contact
+	/// manifold. It holds details related to the geometry and dynamics
+	/// of the contact points.
+	/// The local point usage depends on the manifold type:
+	///   1. e_circles: The local center of circle B;
+	///   2. e_faceA: The local center of cirlce B or the clip point of polygon B; or,
+	///   3. e_faceB: The clip point of polygon A.
+	/// This structure is stored across time steps, so we keep it small.
+	/// @note The impulses are used for internal caching and may not
+	///   provide reliable contact forces especially for high speed collisions.
+	struct Point
+	{
+		Point() noexcept = default;
+		Point(const Point& copy) = default;
+		
+		constexpr explicit Point(Vec2 lp, ContactFeature cf = DefaultContactFeature,
+										 float_t ni = float_t{0}, float_t ti = float_t{0}) noexcept:
+			localPoint{lp}, contactFeature{cf}, normalImpulse{ni}, tangentImpulse{ti}
+		{}
+		
+		Vec2 localPoint;		///< usage depends on manifold type
+		float_t normalImpulse;	///< the non-penetration impulse
+		float_t tangentImpulse;	///< the friction impulse
+		ContactFeature contactFeature; ///< uniquely identifies a contact point between two shapes
+	};
+	
 	// For Circles...
-
+	
 	/// Gets a circle-typed manifold.
 	/// @param lp Local center of circle A.
 	/// @param mp1 Manifold point 1.
-	static constexpr Manifold GetForCircles(Vec2 lp, const ManifoldPoint& mp1) noexcept
+	static constexpr Manifold GetForCircles(Vec2 lp, const Point& mp1) noexcept
 	{
 		return Manifold{e_circles, Vec2_zero, lp, 1, {{mp1}}};
 	}
@@ -120,7 +120,7 @@ public:
 	/// @param ln Normal on polygon A.
 	/// @param lp Center of face A.
 	/// @param mp1 Manifold point 1 (of 1).
-	static constexpr Manifold GetForFaceA(Vec2 ln, Vec2 lp, const ManifoldPoint& mp1) noexcept
+	static constexpr Manifold GetForFaceA(Vec2 ln, Vec2 lp, const Point& mp1) noexcept
 	{
 		return Manifold{e_faceA, ln, lp, 1, {{mp1}}};
 	}
@@ -130,7 +130,7 @@ public:
 	/// @param lp Center of face A.
 	/// @param mp1 Manifold point 1 (of 2).
 	/// @param mp2 Manifold point 2 (of 2).
-	static constexpr Manifold GetForFaceA(Vec2 ln, Vec2 lp, const ManifoldPoint& mp1, const ManifoldPoint& mp2) noexcept
+	static constexpr Manifold GetForFaceA(Vec2 ln, Vec2 lp, const Point& mp1, const Point& mp2) noexcept
 	{
 		return Manifold{e_faceA, ln, lp, 2, {{mp1, mp2}}};
 	}
@@ -149,7 +149,7 @@ public:
 	/// @param ln Normal on polygon B.
 	/// @param lp Center of face B.
 	/// @param mp1 Manifold point 1.
-	static constexpr Manifold GetForFaceB(Vec2 ln, Vec2 lp, const ManifoldPoint& mp1) noexcept
+	static constexpr Manifold GetForFaceB(Vec2 ln, Vec2 lp, const Point& mp1) noexcept
 	{
 		return Manifold{e_faceB, ln, lp, 1, {{mp1}}};
 	}
@@ -159,7 +159,7 @@ public:
 	/// @param lp Center of face B.
 	/// @param mp1 Manifold point 1 (of 2).
 	/// @param mp2 Manifold point 2 (of 2).
-	static constexpr Manifold GetForFaceB(Vec2 ln, Vec2 lp, const ManifoldPoint& mp1, const ManifoldPoint& mp2) noexcept
+	static constexpr Manifold GetForFaceB(Vec2 ln, Vec2 lp, const Point& mp1, const Point& mp2) noexcept
 	{
 		return Manifold{e_faceB, ln, lp, 2, {{mp1, mp2}}};
 	}
@@ -181,13 +181,13 @@ public:
 	/// @sa GetPoint().
 	size_type GetPointCount() const noexcept { return pointCount; }
 
-	const ManifoldPoint& GetPoint(size_type index) const
+	const Point& GetPoint(size_type index) const
 	{
 		assert((0 <= index) && (index < pointCount));
 		return points[index];
 	}
 
-	ManifoldPoint& GetPoint(size_type index)
+	Point& GetPoint(size_type index)
 	{
 		assert((0 <= index) && (index < pointCount));
 		return points[index];
@@ -198,7 +198,7 @@ public:
 	/// GetPointCount() can be called to find out how many points have already been added.
 	/// @note Behavior is undefined if this object's type is e_unset.
 	/// @note Behavior is undefined if this is called more than MaxManifoldPoints times. 
-	void AddPoint(const ManifoldPoint& mp)
+	void AddPoint(const Point& mp)
 	{
 		assert(type != e_unset);
 		assert(type != e_circles || pointCount == 0);
@@ -233,7 +233,7 @@ public:
 	}
 
 private:
-	using ManifoldPointArray = std::array<ManifoldPoint, MaxManifoldPoints>;
+	using PointArray = std::array<Point, MaxManifoldPoints>;
 
 	/// Constructs manifold with array of points using the given values.
 	/// @param t Manifold type.
@@ -241,7 +241,7 @@ private:
 	/// @param lp Local point.
 	/// @param n number of points defined in arary.
 	/// @param mpa Manifold point array.
-	constexpr Manifold(Type t, Vec2 ln, Vec2 lp, size_type n, const ManifoldPointArray& mpa) noexcept:
+	constexpr Manifold(Type t, Vec2 ln, Vec2 lp, size_type n, const PointArray& mpa) noexcept:
 		type{t}, localNormal{ln}, localPoint{lp}, pointCount{n}, points{mpa} {}
 	
 	Type type = e_unset; ///< Type of collision this manifold is associated with.
@@ -250,7 +250,7 @@ private:
 	Vec2 localNormal; ///< Local normal. @detail Exact usage depends on manifold type. @note Undefined for Type::e_circles.
 	Vec2 localPoint; ///< Local point. @detail Exact usage depends on manifold type.
 	
-	ManifoldPointArray points; ///< Points of contact. @sa pointCount.
+	PointArray points; ///< Points of contact. @sa pointCount.
 };
 
 struct PointSeparation

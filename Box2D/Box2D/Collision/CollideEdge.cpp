@@ -80,7 +80,7 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transformation& xfA, const
 		}
 		
 		const auto cf = ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 0};
-		return Manifold::GetForCircles(P, ManifoldPoint{shapeB.GetPosition(), cf});
+		return Manifold::GetForCircles(P, Manifold::Point{shapeB.GetPosition(), cf});
 	}
 	
 	// Region B
@@ -110,7 +110,7 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transformation& xfA, const
 		}
 		
 		const auto cf = ContactFeature{ContactFeature::e_vertex, 1, ContactFeature::e_vertex, 0};
-		return Manifold::GetForCircles(P, ManifoldPoint{shapeB.GetPosition(), cf});
+		return Manifold::GetForCircles(P, Manifold::Point{shapeB.GetPosition(), cf});
 	}
 	
 	// Region AB
@@ -130,7 +130,7 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transformation& xfA, const
 	}();
 	
 	const auto cf = ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_vertex, 0};
-	return Manifold::GetForFaceA(GetUnitVector(n), A, ManifoldPoint{shapeB.GetPosition(), cf});
+	return Manifold::GetForFaceA(GetUnitVector(n), A, Manifold::Point{shapeB.GetPosition(), cf});
 }
 
 // This structure is used to keep track of the best separating axis.
@@ -658,7 +658,7 @@ Manifold EPCollider::Collide(const EdgeInfo& edgeInfo, const PolygonShape& shape
 			const auto separation = Dot(rf.normal, clipPoints2[i].v - rf.v1);
 			if (separation <= MaxEPSeparation)
 			{
-				manifold.AddPoint(ManifoldPoint{InverseTransform(clipPoints2[i].v, m_xf), clipPoints2[i].cf});
+				manifold.AddPoint(Manifold::Point{InverseTransform(clipPoints2[i].v, m_xf), clipPoints2[i].cf});
 			}
 		}
 		return manifold;
@@ -671,7 +671,7 @@ Manifold EPCollider::Collide(const EdgeInfo& edgeInfo, const PolygonShape& shape
 			const auto separation = Dot(rf.normal, clipPoints2[i].v - rf.v1);
 			if (separation <= MaxEPSeparation)
 			{
-				manifold.AddPoint(ManifoldPoint{clipPoints2[i].v, Flip(clipPoints2[i].cf)});
+				manifold.AddPoint(Manifold::Point{clipPoints2[i].v, Flip(clipPoints2[i].cf)});
 			}
 		}
 		return manifold;

@@ -34,7 +34,7 @@ Manifold CollideShapes(const CircleShape& shapeA, const Transformation& xfA, con
 	{
 		return Manifold{};
 	}
-	return Manifold::GetForCircles(shapeA.GetPosition(), ManifoldPoint{shapeB.GetPosition()});
+	return Manifold::GetForCircles(shapeA.GetPosition(), Manifold::Point{shapeB.GetPosition()});
 }
 
 Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, const CircleShape& shapeB, const Transformation& xfB)
@@ -72,7 +72,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, co
 	// If the center is inside the polygon ...
 	if ((maxSeparation < 0) || almost_equal(maxSeparation, 0))
 	{
-		return Manifold::GetForFaceA(shapeA.GetNormal(normalIndex), (v1 + v2) / 2, ManifoldPoint{shapeB.GetPosition()});
+		return Manifold::GetForFaceA(shapeA.GetNormal(normalIndex), (v1 + v2) / 2, Manifold::Point{shapeB.GetPosition()});
 	}
 
 	// Compute barycentric coordinates
@@ -83,7 +83,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, co
 		{
 			return Manifold{};
 		}
-		return Manifold::GetForFaceA(GetUnitVector(cLocal - v1), v1, ManifoldPoint{shapeB.GetPosition()});
+		return Manifold::GetForFaceA(GetUnitVector(cLocal - v1), v1, Manifold::Point{shapeB.GetPosition()});
 	}
 
 	if (Dot(cLocal - v2, v1 - v2) <= float_t{0})
@@ -92,7 +92,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, co
 		{
 			return Manifold{};
 		}
-		return Manifold::GetForFaceA(GetUnitVector(cLocal - v2), v2, ManifoldPoint{shapeB.GetPosition()});
+		return Manifold::GetForFaceA(GetUnitVector(cLocal - v2), v2, Manifold::Point{shapeB.GetPosition()});
 	}
 
 	const auto faceCenter = (v1 + v2) / 2;
@@ -100,7 +100,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, co
 	{
 		return Manifold{};
 	}
-	return Manifold::GetForFaceA(shapeA.GetNormal(vertIndex1), faceCenter, ManifoldPoint{shapeB.GetPosition()});
+	return Manifold::GetForFaceA(shapeA.GetNormal(vertIndex1), faceCenter, Manifold::Point{shapeB.GetPosition()});
 }
 	
 } // namespace box2d
