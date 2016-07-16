@@ -49,9 +49,14 @@ using uint64 = std::uint64_t;
 /// This should be float, double, or long double.
 using float_t = float;
 
-using child_count_t = unsigned; // relating to "children" of Shape
-using size_t = std::size_t; ///< Size type for sizing data.
-using island_count_t = size_t; // relating to items in a Island
+/// Child count type. @detail Relating to "children" of Shape.
+using child_count_t = unsigned;
+
+/// Size type for sizing data.
+using size_t = std::size_t;
+
+/// Island count type. @detail Relating to items in a Island.
+using island_count_t = size_t;
 
 constexpr auto MaxFloat = std::numeric_limits<float_t>::max(); // FLT_MAX
 

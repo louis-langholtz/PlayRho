@@ -70,6 +70,8 @@ public:
 	void* GetUserData(size_type proxyId) const;
 
 	/// Gets the fat AABB for a proxy.
+	/// @param proxyId Proxy ID. Must be a valid ID.
+	/// @warning Behavior is undefined if the given proxy ID is not a valid ID.
 	const AABB& GetFatAABB(size_type proxyId) const;
 
 	/// Query an AABB for overlapping proxies. The callback class

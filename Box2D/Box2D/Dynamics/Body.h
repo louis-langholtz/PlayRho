@@ -417,8 +417,13 @@ private:
 	// m_flags
 	enum Flag: flags_type
 	{
+		/// Island flag.
 		e_islandFlag		= 0x0001,
+		
+		/// Awake flag.
 		e_awakeFlag			= 0x0002,
+		
+		/// Auto sleep flag.
 		e_autoSleepFlag		= 0x0004,
 
 		/// Impenetrable flag.
@@ -426,8 +431,10 @@ private:
 		/// All static and kinematic bodies have this flag enabled.
 		e_impenetrableFlag	= 0x0008,
 		
+		/// Fixed rotation flag.
 		e_fixedRotationFlag	= 0x0010,
 		
+		/// Active flag.
 		e_activeFlag		= 0x0020,
 
 		/// TOI valid flag.

@@ -91,6 +91,8 @@ public:
 	void* GetUserData(size_type proxyId) const;
 
 	/// Tests overlap of fat AABBs.
+	/// @param proxyIdA Proxy ID A.
+	/// @param proxyIdB Proxy ID B.
 	bool TestOverlap(size_type proxyIdA, size_type proxyIdB) const;
 
 	/// Get the number of proxies.
