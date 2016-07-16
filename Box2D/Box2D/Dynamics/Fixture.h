@@ -91,11 +91,11 @@ struct FixtureProxy
 	FixtureProxy(const FixtureProxy& copy) = default;
 	
 	FixtureProxy(const AABB& bb, size_type pid, Fixture* f, child_count_t ci):
-		aabb{bb}, proxyId{pid}, fixture{f}, childIndex{ci} {}
+		aabb{bb}, fixture{f}, proxyId{pid}, childIndex{ci} {}
 
 	AABB aabb; ///< Axis Aligned Bounding Box.
-	size_type proxyId; ///< Proxy ID.
 	Fixture* fixture; ///< Fixture.
+	size_type proxyId; ///< Proxy ID.
 	child_count_t childIndex; ///< Child index.
 };
 
