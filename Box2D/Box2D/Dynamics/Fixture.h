@@ -86,10 +86,17 @@ struct FixtureProxy
 {
 	using size_type = std::remove_const<decltype(MaxContacts)>::type;
 
-	AABB aabb;
-	Fixture* fixture;
+	FixtureProxy() = default;
+	
+	FixtureProxy(const FixtureProxy& copy) = default;
+	
+	FixtureProxy(const AABB& bb, size_type pid, Fixture* f, child_count_t ci):
+		aabb{bb}, proxyId{pid}, fixture{f}, childIndex{ci} {}
+
+	AABB aabb; ///< Axis Aligned Bounding Box.
+	size_type proxyId; ///< Proxy ID.
+	Fixture* fixture; ///< Fixture.
 	child_count_t childIndex; ///< Child index.
-	size_type proxyId;
 };
 
 /// A fixture is used to attach a shape to a body for collision detection. A fixture

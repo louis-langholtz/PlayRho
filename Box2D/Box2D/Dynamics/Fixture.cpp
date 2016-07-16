@@ -113,11 +113,8 @@ void Fixture::CreateProxies(BroadPhase& broadPhase, const Transformation& xf)
 	// Create proxies in the broad-phase.
 	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
 	{
-		auto& proxy = m_proxies[i];
-		proxy.aabb = m_shape->ComputeAABB(xf, i);
-		proxy.proxyId = broadPhase.CreateProxy(proxy.aabb, &proxy);
-		proxy.fixture = this;
-		proxy.childIndex = i;
+		const auto aabb = m_shape->ComputeAABB(xf, i);
+		m_proxies[i] = FixtureProxy{aabb, broadPhase.CreateProxy(aabb, m_proxies + i), this, i};
 	}
 }
 
@@ -145,9 +142,7 @@ void Fixture::Synchronize(BroadPhase& broadPhase, const Transformation& transfor
 		const auto aabb2 = m_shape->ComputeAABB(transform2, proxy.childIndex);
 		proxy.aabb = aabb1 + aabb2;
 
-		const auto displacement = transform2.p - transform1.p;
-
-		broadPhase.MoveProxy(proxy.proxyId, proxy.aabb, displacement);
+		broadPhase.MoveProxy(proxy.proxyId, proxy.aabb, transform2.p - transform1.p);
 	}
 }
 
