@@ -46,14 +46,14 @@ TEST(Collision, CollidePolygonCircle)
 {
 	const auto r2 = float_t(1);
 	auto s1 = PolygonShape{};
-	const auto hx = float_t(3.2);
-	const auto hy = float_t(3.8);
+	const auto hx = float_t(2.2);
+	const auto hy = float_t(4.8);
 	s1.SetAsBox(hx, hy);
 	const auto s2 = CircleShape{r2};
 	const auto p1 = Vec2{-1, 0};
 	const auto p2 = Vec2{3, 0};
-	const auto t1 = Transformation{p1, Rot_identity};
-	const auto t2 = Transformation{p2, Rot_identity};
+	const auto t1 = Transformation{p1, Rot{DegreesToRadians(45)}};
+	const auto t2 = Transformation{p2, Rot{0}};
 	const auto manifold = CollideShapes(s1, t1, s2, t2);
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
@@ -61,7 +61,7 @@ TEST(Collision, CollidePolygonCircle)
 	EXPECT_EQ(manifold.GetLocalNormal().x, 1);
 	EXPECT_EQ(manifold.GetLocalNormal().y, 0);
 	
-	EXPECT_EQ(manifold.GetLocalPoint().x, float_t(3.2));
+	EXPECT_EQ(manifold.GetLocalPoint().x, hx);
 	EXPECT_EQ(manifold.GetLocalPoint().y, 0);
 	
 	EXPECT_EQ(manifold.GetPointCount(), 1);
