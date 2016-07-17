@@ -35,7 +35,7 @@ TEST(Manifold, GetForCircles)
 {
 	Manifold foo = Manifold::GetForCircles(Vec2{0, 0}, Manifold::Point{});
 	EXPECT_EQ(foo.GetType(), Manifold::e_circles);
-	EXPECT_EQ(foo.GetPointCount(), 1);
+	EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(1));
 }
 
 TEST(Manifold, GetForFaceA)
@@ -47,7 +47,7 @@ TEST(Manifold, GetForFaceA)
 		EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
 		EXPECT_EQ(foo.GetLocalNormal(), ln);
 		EXPECT_EQ(foo.GetLocalPoint(), lp);
-		EXPECT_EQ(foo.GetPointCount(), 0);
+		EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(0));
 	}
 	{
 		const auto pl = Vec2{float_t(-0.12), float_t(0.34)};
@@ -58,7 +58,8 @@ TEST(Manifold, GetForFaceA)
 		EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
 		EXPECT_EQ(foo.GetLocalNormal(), ln);
 		EXPECT_EQ(foo.GetLocalPoint(), lp);
-		EXPECT_EQ(foo.GetPointCount(), 1);
+
+		EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(1));
 		const auto p0 = foo.GetPoint(0);
 		EXPECT_EQ(p0.localPoint, pl);
 		EXPECT_EQ(p0.contactFeature, cf);
@@ -74,7 +75,8 @@ TEST(Manifold, GetForFaceA)
 		EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
 		EXPECT_EQ(foo.GetLocalNormal(), ln);
 		EXPECT_EQ(foo.GetLocalPoint(), lp);
-		EXPECT_EQ(foo.GetPointCount(), 2);
+
+		EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(2));
 		const auto p0 = foo.GetPoint(0);
 		EXPECT_EQ(p0.localPoint, pl);
 		EXPECT_EQ(p0.contactFeature, cf);
@@ -97,7 +99,7 @@ TEST(Manifold, GetForFaceB)
 		EXPECT_EQ(foo.GetType(), Manifold::e_faceB);
 		EXPECT_EQ(foo.GetLocalNormal(), ln);
 		EXPECT_EQ(foo.GetLocalPoint(), lp);
-		EXPECT_EQ(foo.GetPointCount(), 0);
+		EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(0));
 	}
 	{
 		const auto pl = Vec2{float_t(-0.12), float_t(0.34)};
@@ -108,7 +110,8 @@ TEST(Manifold, GetForFaceB)
 		EXPECT_EQ(foo.GetType(), Manifold::e_faceB);
 		EXPECT_EQ(foo.GetLocalNormal(), ln);
 		EXPECT_EQ(foo.GetLocalPoint(), lp);
-		EXPECT_EQ(foo.GetPointCount(), 1);
+
+		EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(1));
 		const auto p0 = foo.GetPoint(0);
 		EXPECT_EQ(p0.localPoint, pl);
 		EXPECT_EQ(p0.contactFeature, cf);
@@ -124,7 +127,8 @@ TEST(Manifold, GetForFaceB)
 		EXPECT_EQ(foo.GetType(), Manifold::e_faceB);
 		EXPECT_EQ(foo.GetLocalNormal(), ln);
 		EXPECT_EQ(foo.GetLocalPoint(), lp);
-		EXPECT_EQ(foo.GetPointCount(), 2);
+		
+		EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(2));
 		const auto p0 = foo.GetPoint(0);
 		EXPECT_EQ(p0.localPoint, pl);
 		EXPECT_EQ(p0.contactFeature, cf);

@@ -16,7 +16,7 @@ TEST(PolygonShape, DefaultConstruction)
 	PolygonShape shape{};
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(shape.GetVertexCount(), 0);
-	EXPECT_EQ(shape.GetChildCount(), 1);
+	EXPECT_EQ(shape.GetChildCount(), child_count_t(1));
 	EXPECT_EQ(shape.GetRadius(), PolygonRadius);
 }
 
@@ -27,10 +27,10 @@ TEST(PolygonShape, SetAsBox)
 	const auto hy = float_t(54.1);
 	shape.SetAsBox(hx, hy);
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
-	EXPECT_EQ(shape.GetChildCount(), 1);
+	EXPECT_EQ(shape.GetChildCount(), child_count_t(1));
 	EXPECT_EQ(shape.GetRadius(), PolygonRadius);
 
-	EXPECT_EQ(shape.GetVertexCount(), 4);
+	EXPECT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));
 	
 	// vertices go counter-clockwise (and normals follow their edges)...
 

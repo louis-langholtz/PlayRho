@@ -32,7 +32,7 @@ TEST(Collision, CollideCircleCircle)
 	EXPECT_EQ(manifold.GetLocalPoint().x, 0);
 	EXPECT_EQ(manifold.GetLocalPoint().y, 0);
 	
-	EXPECT_EQ(manifold.GetPointCount(), 1);
+	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
 
 	EXPECT_EQ(manifold.GetPoint(0).localPoint.x, 0);
 	EXPECT_EQ(manifold.GetPoint(0).localPoint.y, 0);
@@ -64,7 +64,7 @@ TEST(Collision, CollidePolygonCircle)
 	EXPECT_EQ(manifold.GetLocalPoint().x, hx);
 	EXPECT_EQ(manifold.GetLocalPoint().y, 0);
 	
-	EXPECT_EQ(manifold.GetPointCount(), 1);
+	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
 	
 	EXPECT_EQ(manifold.GetPoint(0).localPoint.x, 0);
 	EXPECT_EQ(manifold.GetPoint(0).localPoint.y, 0);
