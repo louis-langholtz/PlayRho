@@ -102,14 +102,9 @@ namespace box2d
 	inline bool TestOverlap(const AABB& a, const AABB& b) noexcept
 	{
 		const auto d1 = b.GetLowerBound() - a.GetUpperBound();
-		if ((d1.x > float_t{0}) || (d1.y > float_t{0}))
-			return false;
-		
 		const auto d2 = a.GetLowerBound() - b.GetUpperBound();
-		if ((d2.x > float_t{0}) || (d2.y > float_t{0}))
-			return false;
-		
-		return true;
+
+		return (d1.x <= float_t{0}) && (d1.y <= float_t{0}) && (d2.x <= float_t{0}) && (d2.y <= float_t{0});
 	}
 	
 	/// Ray-cast input data.
