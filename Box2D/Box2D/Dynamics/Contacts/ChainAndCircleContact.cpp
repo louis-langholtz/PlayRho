@@ -38,8 +38,7 @@ Contact* ChainAndCircleContact::Create(Fixture* fixtureA, child_count_t indexA,
 
 void ChainAndCircleContact::Destroy(Contact* contact, BlockAllocator* allocator)
 {
-	(static_cast<ChainAndCircleContact*>(contact))->~ChainAndCircleContact();
-	allocator->Free(contact, sizeof(ChainAndCircleContact));
+	Delete(static_cast<ChainAndCircleContact*>(contact), *allocator);
 }
 
 ChainAndCircleContact::ChainAndCircleContact(Fixture* fixtureA, child_count_t indexA,

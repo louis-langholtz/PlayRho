@@ -123,8 +123,7 @@ void Body::DestroyFixtures()
 		
 		f.DestroyProxies(m_world->m_contactMgr.m_broadPhase);
 		f.Destroy(&m_world->m_blockAllocator);
-		f.~Fixture();
-		m_world->m_blockAllocator.Free(&f, sizeof(Fixture));
+		Delete(&f, m_world->m_blockAllocator);
 	}
 }
 
@@ -265,8 +264,7 @@ void Body::DestroyFixture(Fixture* fixture)
 
 	fixture->m_next = nullptr;
 	fixture->Destroy(allocator);
-	fixture->~Fixture();
-	allocator->Free(fixture, sizeof(Fixture));
+	Delete(fixture, *allocator);
 
 	// Reset the mass data.
 	ResetMassData();

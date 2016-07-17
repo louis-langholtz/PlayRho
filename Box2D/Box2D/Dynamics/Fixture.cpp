@@ -51,6 +51,29 @@ void Fixture::Create(BlockAllocator* allocator, const FixtureDef& def)
 	m_proxies = proxies;
 }
 
+template <>
+inline void box2d::Delete(Shape* shape, BlockAllocator& allocator)
+{
+	switch (shape->GetType())
+	{
+		case Shape::e_circle:
+			Delete(static_cast<CircleShape*>(shape), allocator);
+			break;
+		case Shape::e_edge:
+			Delete(static_cast<EdgeShape*>(shape), allocator);
+			break;
+		case Shape::e_polygon:
+			Delete(static_cast<PolygonShape*>(shape), allocator);
+			break;
+		case Shape::e_chain:
+			Delete(static_cast<ChainShape*>(shape), allocator);
+			break;
+		default:
+			assert(false);
+			break;
+	}
+}
+
 void Fixture::Destroy(BlockAllocator* allocator)
 {
 	// The proxies must be destroyed before calling this.
@@ -62,45 +85,7 @@ void Fixture::Destroy(BlockAllocator* allocator)
 	m_proxies = nullptr;
 
 	// Free the child shape.
-	switch (m_shape->GetType())
-	{
-	case Shape::e_circle:
-		{
-			auto s = static_cast<CircleShape*>(m_shape);
-			s->~CircleShape();
-			allocator->Free(s, sizeof(CircleShape));
-		}
-		break;
-
-	case Shape::e_edge:
-		{
-			auto s = static_cast<EdgeShape*>(m_shape);
-			s->~EdgeShape();
-			allocator->Free(s, sizeof(EdgeShape));
-		}
-		break;
-
-	case Shape::e_polygon:
-		{
-			auto s = static_cast<PolygonShape*>(m_shape);
-			s->~PolygonShape();
-			allocator->Free(s, sizeof(PolygonShape));
-		}
-		break;
-
-	case Shape::e_chain:
-		{
-			auto s = static_cast<ChainShape*>(m_shape);
-			s->~ChainShape();
-			allocator->Free(s, sizeof(ChainShape));
-		}
-		break;
-
-	default:
-		assert(false);
-		break;
-	}
-
+	Delete(m_shape, *allocator);
 	m_shape = nullptr;
 }
 

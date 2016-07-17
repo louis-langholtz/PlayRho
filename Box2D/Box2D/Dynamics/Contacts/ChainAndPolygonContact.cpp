@@ -38,8 +38,7 @@ Contact* ChainAndPolygonContact::Create(Fixture* fixtureA, child_count_t indexA,
 
 void ChainAndPolygonContact::Destroy(Contact* contact, BlockAllocator* allocator)
 {
-	(static_cast<ChainAndPolygonContact*>(contact))->~ChainAndPolygonContact();
-	allocator->Free(contact, sizeof(ChainAndPolygonContact));
+	Delete(static_cast<ChainAndPolygonContact*>(contact), *allocator);
 }
 
 ChainAndPolygonContact::ChainAndPolygonContact(Fixture* fixtureA, child_count_t indexA,

@@ -37,8 +37,7 @@ Contact* PolygonAndCircleContact::Create(Fixture* fixtureA, child_count_t,
 
 void PolygonAndCircleContact::Destroy(Contact* contact, BlockAllocator* allocator)
 {
-	(static_cast<PolygonAndCircleContact*>(contact))->~PolygonAndCircleContact();
-	allocator->Free(contact, sizeof(PolygonAndCircleContact));
+	Delete(static_cast<PolygonAndCircleContact*>(contact), *allocator);
 }
 
 PolygonAndCircleContact::PolygonAndCircleContact(Fixture* fixtureA, Fixture* fixtureB)

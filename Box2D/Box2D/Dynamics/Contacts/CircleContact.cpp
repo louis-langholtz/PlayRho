@@ -38,8 +38,7 @@ Contact* CircleContact::Create(Fixture* fixtureA, child_count_t,
 
 void CircleContact::Destroy(Contact* contact, BlockAllocator* allocator)
 {
-	(static_cast<CircleContact*>(contact))->~CircleContact();
-	allocator->Free(contact, sizeof(CircleContact));
+	Delete(static_cast<CircleContact*>(contact), *allocator);
 }
 
 CircleContact::CircleContact(Fixture* fixtureA, Fixture* fixtureB)

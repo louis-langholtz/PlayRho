@@ -38,8 +38,7 @@ Contact* PolygonContact::Create(Fixture* fixtureA, child_count_t,
 
 void PolygonContact::Destroy(Contact* contact, BlockAllocator* allocator)
 {
-	(static_cast<PolygonContact*>(contact))->~PolygonContact();
-	allocator->Free(contact, sizeof(PolygonContact));
+	Delete(static_cast<PolygonContact*>(contact), *allocator);
 }
 
 PolygonContact::PolygonContact(Fixture* fixtureA, Fixture* fixtureB)

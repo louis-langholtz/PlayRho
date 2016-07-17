@@ -37,8 +37,7 @@ Contact* EdgeAndCircleContact::Create(Fixture* fixtureA, child_count_t,
 
 void EdgeAndCircleContact::Destroy(Contact* contact, BlockAllocator* allocator)
 {
-	(static_cast<EdgeAndCircleContact*>(contact))->~EdgeAndCircleContact();
-	allocator->Free(contact, sizeof(EdgeAndCircleContact));
+	Delete(static_cast<EdgeAndCircleContact*>(contact), *allocator);
 }
 
 EdgeAndCircleContact::EdgeAndCircleContact(Fixture* fixtureA, Fixture* fixtureB)

@@ -37,8 +37,7 @@ Contact* EdgeAndPolygonContact::Create(Fixture* fixtureA, child_count_t,
 
 void EdgeAndPolygonContact::Destroy(Contact* contact, BlockAllocator* allocator)
 {
-	(static_cast<EdgeAndPolygonContact*>(contact))->~EdgeAndPolygonContact();
-	allocator->Free(contact, sizeof(EdgeAndPolygonContact));
+	Delete(static_cast<EdgeAndPolygonContact*>(contact), *allocator);
 }
 
 EdgeAndPolygonContact::EdgeAndPolygonContact(Fixture* fixtureA, Fixture* fixtureB)
