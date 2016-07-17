@@ -113,10 +113,16 @@ public:
 	/// @return the shape type.
 	Shape::Type GetType() const noexcept;
 
-	/// Get the child shape. You can modify the child shape, however you should not change the
+	/// Gets the child shape.
+	/// @detail You can modify the child shape, however you should not change the
 	/// number of vertices because this will crash some collision caching mechanisms.
 	/// Manipulating the shape may lead to non-physical behavior.
 	Shape* GetShape() noexcept;
+
+	/// Gets the child shape.
+	/// @detail You can modify the child shape, however you should not change the
+	/// number of vertices because this will crash some collision caching mechanisms.
+	/// Manipulating the shape may lead to non-physical behavior.
 	const Shape* GetShape() const noexcept;
 
 	/// Set if this fixture is a sensor.
@@ -137,9 +143,14 @@ public:
 	/// Call this if you want to establish collision that was previously disabled by ContactFilter::ShouldCollide.
 	void Refilter();
 
-	/// Get the parent body of this fixture. This is nullptr if the fixture is not attached.
+	/// Gets the parent body of this fixture.
+	/// @detail This is nullptr if the fixture is not attached.
 	/// @return the parent body.
 	Body* GetBody() noexcept;
+
+	/// Gets the parent body of this fixture.
+	/// @detail This is nullptr if the fixture is not attached.
+	/// @return the parent body.
 	const Body* GetBody() const noexcept;
 
 	/// Get the user data that was assigned in the fixture definition. Use this to
