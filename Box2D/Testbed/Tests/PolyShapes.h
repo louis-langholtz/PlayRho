@@ -47,7 +47,7 @@ public:
 		Color color(0.95f, 0.95f, 0.6f);
 		const Transformation& xf = fixture->GetBody()->GetTransformation();
 
-		switch (fixture->GetType())
+		switch (GetType(*fixture))
 		{
 		case Shape::e_circle:
 			{

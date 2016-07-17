@@ -85,8 +85,8 @@ static constexpr ContactRegister s_registers[Shape::e_typeCount][Shape::e_typeCo
 Contact* Contact::Create(Fixture& fixtureA, child_count_t indexA, Fixture& fixtureB, child_count_t indexB,
 						 BlockAllocator* allocator)
 {
-	const auto type1 = fixtureA.GetType();
-	const auto type2 = fixtureB.GetType();
+	const auto type1 = GetType(fixtureA);
+	const auto type2 = GetType(fixtureB);
 
 	assert(0 <= type1 && type1 < Shape::e_typeCount);
 	assert(0 <= type2 && type2 < Shape::e_typeCount);
@@ -114,8 +114,8 @@ void Contact::Destroy(Contact* contact, BlockAllocator* allocator)
 		SetAwake(*fixtureB);
 	}
 
-	const auto typeA = fixtureA->GetType();
-	const auto typeB = fixtureB->GetType();
+	const auto typeA = GetType(*fixtureA);
+	const auto typeB = GetType(*fixtureB);
 
 	assert(0 <= typeA && typeB < Shape::e_typeCount);
 	assert(0 <= typeA && typeB < Shape::e_typeCount);
@@ -129,6 +129,8 @@ Contact::Contact(Fixture* fA, child_count_t indexA, Fixture* fB, child_count_t i
 	m_friction{MixFriction(fA->GetFriction(), fB->GetFriction())},
 	m_restitution{MixRestitution(fA->GetRestitution(), fB->GetRestitution())}
 {
+	assert(fA->GetShape() != nullptr);
+	assert(fB->GetShape() != nullptr);
 }
 
 void Contact::Update(ContactListener* listener)

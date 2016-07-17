@@ -851,7 +851,7 @@ void World::RayCast(RayCastFixtureReporter* callback, const Vec2& point1, const 
 
 void World::DrawShape(const Fixture* fixture, const Transformation& xf, const Color& color)
 {
-	switch (fixture->GetType())
+	switch (GetType(*fixture))
 	{
 	case Shape::e_circle:
 		{

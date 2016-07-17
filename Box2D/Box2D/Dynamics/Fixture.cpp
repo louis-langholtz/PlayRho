@@ -29,7 +29,7 @@
 
 using namespace box2d;
 
-void Fixture::Create(BlockAllocator* allocator, const FixtureDef& def)
+void Fixture::Create(BlockAllocator& allocator, const FixtureDef& def)
 {
 	assert(def.density >= 0);
 	m_userData = def.userData;
@@ -38,17 +38,7 @@ void Fixture::Create(BlockAllocator* allocator, const FixtureDef& def)
 	m_filter = def.filter;
 	m_isSensor = def.isSensor;
 	m_density = Max(def.density, float_t{0});
-	m_shape = def.shape->Clone(allocator);
-
-	// Reserve proxy space
-	const auto childCount = m_shape->GetChildCount();
-	const auto proxies = allocator->AllocateArray<FixtureProxy>(childCount);
-	for (auto i = decltype(childCount){0}; i < childCount; ++i)
-	{
-		proxies[i].fixture = nullptr;
-		proxies[i].proxyId = BroadPhase::e_nullProxy;
-	}
-	m_proxies = proxies;
+	m_shape = def.shape->Clone(&allocator);
 }
 
 template <>
@@ -74,46 +64,45 @@ inline void box2d::Delete(Shape* shape, BlockAllocator& allocator)
 	}
 }
 
-void Fixture::Destroy(BlockAllocator* allocator)
+void Fixture::Destroy(BlockAllocator& allocator)
 {
 	// The proxies must be destroyed before calling this.
 	assert(m_proxyCount == 0);
-
-	// Free the proxy array.
-	const auto childCount = m_shape->GetChildCount();
-	allocator->Free(m_proxies, childCount * sizeof(FixtureProxy));
-	m_proxies = nullptr;
+	assert(m_proxies == nullptr);
 
 	// Free the child shape.
-	Delete(m_shape, *allocator);
+	Delete(m_shape, allocator);
 	m_shape = nullptr;
 }
 
-void Fixture::CreateProxies(BroadPhase& broadPhase, const Transformation& xf)
+void Fixture::CreateProxies(BlockAllocator& allocator, BroadPhase& broadPhase, const Transformation& xf)
 {
 	assert(m_proxyCount == 0);
 
-	m_proxyCount = m_shape->GetChildCount();
-
-	// Create proxies in the broad-phase.
-	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
+	// Reserve proxy space and create proxies in the broad-phase.
+	const auto childCount = m_shape->GetChildCount();
+	const auto proxies = allocator.AllocateArray<FixtureProxy>(childCount);
+	for (auto i = decltype(childCount){0}; i < childCount; ++i)
 	{
-		const auto aabb = m_shape->ComputeAABB(xf, i);
-		m_proxies[i] = FixtureProxy{aabb, broadPhase.CreateProxy(aabb, m_proxies + i), this, i};
+		const auto aabb = GetShape()->ComputeAABB(xf, i);
+		proxies[i] = FixtureProxy{aabb, broadPhase.CreateProxy(aabb, proxies + i), this, i};
 	}
+	m_proxies = proxies;
+	m_proxyCount = childCount;
 }
 
-void Fixture::DestroyProxies(BroadPhase& broadPhase)
+void Fixture::DestroyProxies(BlockAllocator& allocator, BroadPhase& broadPhase)
 {
 	// Destroy proxies in the broad-phase.
-	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
+	const auto childCount = m_proxyCount;
+	const auto proxies = m_proxies;
+	for (auto i = decltype(childCount){0}; i < childCount; ++i)
 	{
-		auto& proxy = m_proxies[i];
-		broadPhase.DestroyProxy(proxy.proxyId);
-		proxy.proxyId = BroadPhase::e_nullProxy;
+		broadPhase.DestroyProxy(proxies[i].proxyId);
 	}
-
+	allocator.Free(proxies, childCount * sizeof(FixtureProxy));
 	m_proxyCount = 0;
+	m_proxies = nullptr;
 }
 
 void Fixture::Synchronize(BroadPhase& broadPhase, const Transformation& transform1, const Transformation& transform2)
@@ -123,8 +112,8 @@ void Fixture::Synchronize(BroadPhase& broadPhase, const Transformation& transfor
 		auto& proxy = m_proxies[i];
 
 		// Compute an AABB that covers the swept shape (may miss some rotation effect).
-		const auto aabb1 = m_shape->ComputeAABB(transform1, proxy.childIndex);
-		const auto aabb2 = m_shape->ComputeAABB(transform2, proxy.childIndex);
+		const auto aabb1 = GetShape()->ComputeAABB(transform1, proxy.childIndex);
+		const auto aabb2 = GetShape()->ComputeAABB(transform2, proxy.childIndex);
 		proxy.aabb = aabb1 + aabb2;
 
 		broadPhase.MoveProxy(proxy.proxyId, proxy.aabb, transform2.p - transform1.p);
@@ -192,11 +181,11 @@ void Fixture::Dump(island_count_t bodyIndex)
 	log("    fd.filter.maskBits = uint16(%d);\n", m_filter.maskBits);
 	log("    fd.filter.groupIndex = int16(%d);\n", m_filter.groupIndex);
 
-	switch (m_shape->GetType())
+	switch (GetShape()->GetType())
 	{
 	case Shape::e_circle:
 		{
-			auto s = static_cast<CircleShape*>(m_shape);
+			auto s = static_cast<CircleShape*>(GetShape());
 			log("    CircleShape shape;\n");
 			log("    shape.m_radius = %.15lef;\n", s->GetRadius());
 			log("    shape.m_p = Vec2(%.15lef, %.15lef);\n", s->GetPosition().x, s->GetPosition().y);
@@ -205,7 +194,7 @@ void Fixture::Dump(island_count_t bodyIndex)
 
 	case Shape::e_edge:
 		{
-			auto s = static_cast<EdgeShape*>(m_shape);
+			auto s = static_cast<EdgeShape*>(GetShape());
 			log("    EdgeShape shape;\n");
 			log("    shape.m_radius = %.15lef;\n", s->GetRadius());
 			log("    shape.m_vertex0.Set(%.15lef, %.15lef);\n", s->GetVertex0().x, s->GetVertex0().y);
@@ -219,7 +208,7 @@ void Fixture::Dump(island_count_t bodyIndex)
 
 	case Shape::e_polygon:
 		{
-			auto s = static_cast<PolygonShape*>(m_shape);
+			auto s = static_cast<PolygonShape*>(GetShape());
 			log("    PolygonShape shape;\n");
 			log("    Vec2 vs[%d];\n", MaxPolygonVertices);
 			for (auto i = decltype(s->GetVertexCount()){0}; i < s->GetVertexCount(); ++i)
@@ -232,7 +221,7 @@ void Fixture::Dump(island_count_t bodyIndex)
 
 	case Shape::e_chain:
 		{
-			auto s = static_cast<ChainShape*>(m_shape);
+			auto s = static_cast<ChainShape*>(GetShape());
 			log("    ChainShape shape;\n");
 			log("    Vec2 vs[%d];\n", s->GetVertexCount());
 			for (auto i = decltype(s->GetVertexCount()){0}; i < s->GetVertexCount(); ++i)

@@ -109,10 +109,6 @@ class Fixture
 public:
 	Fixture() = delete;
 
-	/// Get the type of the child shape. You can use this to down cast to the concrete shape.
-	/// @return the shape type.
-	Shape::Type GetType() const noexcept;
-
 	/// Gets the child shape.
 	/// @detail You can modify the child shape, however you should not change the
 	/// number of vertices because this will crash some collision caching mechanisms.
@@ -222,18 +218,18 @@ protected:
 
 	// We need separation create/destroy functions from the constructor/destructor because
 	// the destructor cannot access the allocator (no destructor arguments allowed by C++).
-	void Create(BlockAllocator* allocator, const FixtureDef& def);
-	void Destroy(BlockAllocator* allocator);
+	void Create(BlockAllocator& allocator, const FixtureDef& def);
+	void Destroy(BlockAllocator& allocator);
 
 	// These support body activation/deactivation.
 	
 	/// Creates proxies for every child of this fixture's shape.
 	/// This sets the proxy count to the child count of the shape.
-	void CreateProxies(BroadPhase& broadPhase, const Transformation& xf);
+	void CreateProxies(BlockAllocator& allocator, BroadPhase& broadPhase, const Transformation& xf);
 
 	/// Destroys this fixture's proxies.
 	/// This resets the proxy count to 0.
-	void DestroyProxies(BroadPhase& broadPhase);
+	void DestroyProxies(BlockAllocator& allocator, BroadPhase& broadPhase);
 
 	void Synchronize(BroadPhase& broadPhase, const Transformation& xf1, const Transformation& xf2);
 
@@ -249,11 +245,6 @@ protected:
 	bool m_isSensor = false; ///< Is/is-not sensor. 4-bytes.
 	void* m_userData = nullptr; ///< User data. 8-bytes.
 };
-
-inline Shape::Type Fixture::GetType() const noexcept
-{
-	return m_shape->GetType();
-}
 
 inline Shape* Fixture::GetShape() noexcept
 {
@@ -328,17 +319,17 @@ inline void Fixture::SetRestitution(float_t restitution) noexcept
 
 inline bool Fixture::TestPoint(const Vec2& p) const
 {
-	return m_shape->TestPoint(m_body->GetTransformation(), p);
+	return GetShape()->TestPoint(m_body->GetTransformation(), p);
 }
 
 inline bool Fixture::RayCast(RayCastOutput* output, const RayCastInput& input, child_count_t childIndex) const
 {
-	return m_shape->RayCast(output, input, m_body->GetTransformation(), childIndex);
+	return GetShape()->RayCast(output, input, m_body->GetTransformation(), childIndex);
 }
 
 inline MassData Fixture::ComputeMassData() const
 {
-	return m_shape->ComputeMass(m_density);
+	return GetShape()->ComputeMass(m_density);
 }
 
 inline const AABB& Fixture::GetAABB(child_count_t childIndex) const
@@ -355,6 +346,11 @@ inline void SetAwake(Fixture& f) noexcept
 	{
 		b->SetAwake();
 	}
+}
+
+inline Shape::Type GetType(const Fixture& fixture) noexcept
+{
+	return fixture.GetShape()->GetType();
 }
 
 } // namespace box2d
