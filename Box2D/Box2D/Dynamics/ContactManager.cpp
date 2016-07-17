@@ -119,11 +119,11 @@ void ContactManager::Collide()
 		}
 
 		// active = is-awake && is-speedable
-		const bool activeA = (bodyA->m_flags & (Body::e_awakeFlag|Body::e_velocityFlag)) == (Body::e_awakeFlag|Body::e_velocityFlag);
-		const bool activeB = (bodyB->m_flags & (Body::e_awakeFlag|Body::e_velocityFlag)) == (Body::e_awakeFlag|Body::e_velocityFlag);
+		const bool a_collidable = (bodyA->m_flags & (Body::e_awakeFlag|Body::e_velocityFlag)) == (Body::e_awakeFlag|Body::e_velocityFlag);
+		const bool b_collidable = (bodyB->m_flags & (Body::e_awakeFlag|Body::e_velocityFlag)) == (Body::e_awakeFlag|Body::e_velocityFlag);
 
 		// At least one body must be awake and it must be dynamic or kinematic.
-		if (!activeA && !activeB)
+		if (!a_collidable && !b_collidable)
 		{
 			continue;
 		}
