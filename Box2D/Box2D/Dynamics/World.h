@@ -183,9 +183,6 @@ public:
 	/// Get the number of broad-phase proxies.
 	size_type GetProxyCount() const noexcept;
 
-	/// Get the number of joints.
-	size_type GetJointCount() const noexcept;
-
 	/// Get the number of contacts (each may have 0 or more contact points).
 	contact_count_t GetContactCount() const noexcept;
 
@@ -366,11 +363,6 @@ inline const ContactList& World::GetContacts() const noexcept
 	return m_contactMgr.GetContacts();
 }
 
-inline World::size_type World::GetJointCount() const noexcept
-{
-	return m_joints.size();
-}
-
 inline contact_count_t World::GetContactCount() const noexcept
 {
 	return m_contactMgr.GetContactCount();
@@ -423,7 +415,12 @@ inline body_count_t GetBodyCount(const World& world) noexcept
 {
 	return world.GetBodies().size();
 }
-	
+
+inline World::size_type GetJointCount(const World& world) noexcept
+{
+	return world.GetJoints().size();
+}
+
 } // namespace box2d
 
 #endif
