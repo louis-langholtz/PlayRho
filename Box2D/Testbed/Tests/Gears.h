@@ -67,11 +67,11 @@ public:
 
 			RevoluteJointDef jd1;
 			jd1.Initialize(body2, body1, bd1.position);
-			Joint* joint1 = m_world->CreateJoint(&jd1);
+			Joint* joint1 = m_world->CreateJoint(jd1);
 
 			RevoluteJointDef jd2;
 			jd2.Initialize(body2, body3, bd3.position);
-			Joint* joint2 = m_world->CreateJoint(&jd2);
+			Joint* joint2 = m_world->CreateJoint(jd2);
 
 			GearJointDef jd4;
 			jd4.bodyA = body1;
@@ -79,7 +79,7 @@ public:
 			jd4.joint1 = joint1;
 			jd4.joint2 = joint2;
 			jd4.ratio = circle2.GetRadius() / circle1.GetRadius();
-			m_world->CreateJoint(&jd4);
+			m_world->CreateJoint(jd4);
 		}
 
 		{
@@ -104,7 +104,7 @@ public:
 			jd1.localAnchorA = ground->GetLocalPoint(bd1.position);
 			jd1.localAnchorB = body1->GetLocalPoint(bd1.position);
 			jd1.referenceAngle = body1->GetAngle() - ground->GetAngle();
-			m_joint1 = (RevoluteJoint*)m_world->CreateJoint(&jd1);
+			m_joint1 = (RevoluteJoint*)m_world->CreateJoint(jd1);
 
 			BodyDef bd2;
 			bd2.type = BodyType::Dynamic;
@@ -114,7 +114,7 @@ public:
 
 			RevoluteJointDef jd2;
 			jd2.Initialize(ground, body2, bd2.position);
-			m_joint2 = (RevoluteJoint*)m_world->CreateJoint(&jd2);
+			m_joint2 = (RevoluteJoint*)m_world->CreateJoint(jd2);
 
 			BodyDef bd3;
 			bd3.type = BodyType::Dynamic;
@@ -128,7 +128,7 @@ public:
 			jd3.upperTranslation = 5.0f;
 			jd3.enableLimit = true;
 
-			m_joint3 = (PrismaticJoint*)m_world->CreateJoint(&jd3);
+			m_joint3 = (PrismaticJoint*)m_world->CreateJoint(jd3);
 
 			GearJointDef jd4;
 			jd4.bodyA = body1;
@@ -136,7 +136,7 @@ public:
 			jd4.joint1 = m_joint1;
 			jd4.joint2 = m_joint2;
 			jd4.ratio = circle2.GetRadius() / circle1.GetRadius();
-			m_joint4 = (GearJoint*)m_world->CreateJoint(&jd4);
+			m_joint4 = (GearJoint*)m_world->CreateJoint(jd4);
 
 			GearJointDef jd5;
 			jd5.bodyA = body2;
@@ -144,7 +144,7 @@ public:
 			jd5.joint1 = m_joint2;
 			jd5.joint2 = m_joint3;
 			jd5.ratio = -1.0f / circle2.GetRadius();
-			m_joint5 = (GearJoint*)m_world->CreateJoint(&jd5);
+			m_joint5 = (GearJoint*)m_world->CreateJoint(jd5);
 		}
 	}
 

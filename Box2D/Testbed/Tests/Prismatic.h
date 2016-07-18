@@ -66,7 +66,7 @@ public:
 			pjd.upperTranslation = 20.0f;
 			pjd.enableLimit = true;
 
-			m_joint = (PrismaticJoint*)m_world->CreateJoint(&pjd);
+			m_joint = (PrismaticJoint*)m_world->CreateJoint(pjd);
 		}
 	}
 

@@ -617,5 +617,5 @@ void PrismaticJoint::Dump()
 	log("  jd.enableMotor = bool(%d);\n", m_enableMotor);
 	log("  jd.motorSpeed = %.15lef;\n", m_motorSpeed);
 	log("  jd.maxMotorForce = %.15lef;\n", m_maxMotorForce);
-	log("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);
+	log("  joints[%d] = m_world->CreateJoint(jd);\n", m_index);
 }

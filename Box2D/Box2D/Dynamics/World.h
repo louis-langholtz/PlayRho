@@ -91,7 +91,7 @@ public:
 	/// Create a joint to constrain bodies together. No reference to the definition
 	/// is retained. This may cause the connected bodies to cease colliding.
 	/// @warning This function is locked during callbacks.
-	Joint* CreateJoint(const JointDef* def);
+	Joint* CreateJoint(const JointDef& def);
 
 	/// Destroy a joint. This may cause the connected bodies to begin colliding.
 	/// @warning This function is locked during callbacks.

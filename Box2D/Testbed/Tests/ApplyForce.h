@@ -141,7 +141,7 @@ public:
 				jd.maxForce = mass * gravity;
 				jd.maxTorque = mass * radius * gravity;
 
-				m_world->CreateJoint(&jd);
+				m_world->CreateJoint(jd);
 			}
 		}
 	}

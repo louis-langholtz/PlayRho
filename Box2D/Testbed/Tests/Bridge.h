@@ -65,7 +65,7 @@ public:
 
 				Vec2 anchor(-15.0f + 1.0f * i, 5.0f);
 				jd.Initialize(prevBody, body, anchor);
-				m_world->CreateJoint(&jd);
+				m_world->CreateJoint(jd);
 
 				if (i == (e_count >> 1))
 				{
@@ -76,7 +76,7 @@ public:
 
 			Vec2 anchor(-15.0f + 1.0f * e_count, 5.0f);
 			jd.Initialize(prevBody, ground, anchor);
-			m_world->CreateJoint(&jd);
+			m_world->CreateJoint(jd);
 		}
 
 		for (int32 i = 0; i < 2; ++i)

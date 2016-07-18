@@ -65,7 +65,7 @@ public:
 			jd.motorSpeed = 0.05f * Pi;
 			jd.maxMotorTorque = 1e8f;
 			jd.enableMotor = true;
-			m_joint = (RevoluteJoint*)m_world->CreateJoint(&jd);
+			m_joint = (RevoluteJoint*)m_world->CreateJoint(jd);
 		}
 
 		m_count = 0;

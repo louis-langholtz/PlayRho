@@ -71,7 +71,7 @@ public:
 
 				Vec2 anchor(-15.0f + 1.0f * i, 5.0f);
 				jd.Initialize(prevBody, body, anchor);
-				m_world->CreateJoint(&jd);
+				m_world->CreateJoint(jd);
 
 				prevBody = body;
 			}
@@ -101,7 +101,7 @@ public:
 
 				Vec2 anchor(-15.0f + 2.0f * i, 15.0f);
 				jd.Initialize(prevBody, body, anchor);
-				m_world->CreateJoint(&jd);
+				m_world->CreateJoint(jd);
 
 				prevBody = body;
 			}
@@ -131,7 +131,7 @@ public:
 				{
 					Vec2 anchor(-5.0f + 1.0f * i, 5.0f);
 					jd.Initialize(prevBody, body, anchor);
-					m_world->CreateJoint(&jd);
+					m_world->CreateJoint(jd);
 				}
 
 				prevBody = body;
@@ -164,7 +164,7 @@ public:
 				{
 					Vec2 anchor(5.0f + 1.0f * i, 10.0f);
 					jd.Initialize(prevBody, body, anchor);
-					m_world->CreateJoint(&jd);
+					m_world->CreateJoint(jd);
 				}
 
 				prevBody = body;

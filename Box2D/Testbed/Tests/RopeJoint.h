@@ -84,7 +84,7 @@ public:
 
 				Vec2 anchor(float_t(i), y);
 				jd.Initialize(prevBody, body, anchor);
-				m_world->CreateJoint(&jd);
+				m_world->CreateJoint(jd);
 
 				prevBody = body;
 			}
@@ -98,7 +98,7 @@ public:
 
 		{
 			m_ropeDef.bodyA = ground;
-			m_rope = m_world->CreateJoint(&m_ropeDef);
+			m_rope = m_world->CreateJoint(m_ropeDef);
 		}
 	}
 
@@ -114,7 +114,7 @@ public:
 			}
 			else
 			{
-				m_rope = m_world->CreateJoint(&m_ropeDef);
+				m_rope = m_world->CreateJoint(m_ropeDef);
 			}
 			break;
 		}

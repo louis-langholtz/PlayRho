@@ -419,5 +419,5 @@ void GearJoint::Dump()
 	log("  jd.joint1 = joints[%d];\n", index1);
 	log("  jd.joint2 = joints[%d];\n", index2);
 	log("  jd.ratio = %.15lef;\n", m_ratio);
-	log("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);
+	log("  joints[%d] = m_world->CreateJoint(jd);\n", m_index);
 }

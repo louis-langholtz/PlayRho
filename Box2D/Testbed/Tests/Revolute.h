@@ -68,7 +68,7 @@ public:
 			rjd.enableLimit = true;
 			rjd.collideConnected = true;
 
-			m_joint = (RevoluteJoint*)m_world->CreateJoint(&rjd);
+			m_joint = (RevoluteJoint*)m_world->CreateJoint(rjd);
 		}
 
 		{
@@ -102,7 +102,7 @@ public:
 			rjd.lowerAngle = -0.25f * Pi;
 			rjd.upperAngle = 0.0f * Pi;
 			rjd.enableLimit = true;
-			m_world->CreateJoint(&rjd);
+			m_world->CreateJoint(rjd);
 		}
 
 		// Tests mass computation of a small object far from the origin

@@ -64,7 +64,7 @@ public:
 			mjd.Initialize(ground, body);
 			mjd.maxForce = 1000.0f;
 			mjd.maxTorque = 1000.0f;
-			m_joint = (MotorJoint*)m_world->CreateJoint(&mjd);
+			m_joint = (MotorJoint*)m_world->CreateJoint(mjd);
 		}
 
 		m_go = false;

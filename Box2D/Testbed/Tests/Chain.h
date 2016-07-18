@@ -61,7 +61,7 @@ public:
 
 				Vec2 anchor(float_t(i), y);
 				jd.Initialize(prevBody, body, anchor);
-				m_world->CreateJoint(&jd);
+				m_world->CreateJoint(jd);
 
 				prevBody = body;
 			}

@@ -52,7 +52,7 @@ public:
 		jointDef.bodyB = root;
 		jointDef.localAnchorA = Vec2_zero;
 		jointDef.localAnchorB = h;
-		m_world->CreateJoint(&jointDef);
+		m_world->CreateJoint(jointDef);
 	}
 
 	Body* AddNode(Body* parent, const Vec2& localAnchor, int32 depth, float offset, float a)
@@ -87,11 +87,11 @@ public:
 
 		jointDef.localAnchorA = a1;
 		jointDef.bodyB = body1;
-		m_world->CreateJoint(&jointDef);
+		m_world->CreateJoint(jointDef);
 
 		jointDef.localAnchorA = a2;
 		jointDef.bodyB = body2;
-		m_world->CreateJoint(&jointDef);
+		m_world->CreateJoint(jointDef);
 
 		return body;
 	}

@@ -108,7 +108,7 @@ public:
 		anchor = Vec2(-2.0f, 1.0f);
 		jd.Initialize(b1, b3, anchor);
 		jd.collideConnected = true;
-		m_world->CreateJoint(&jd);
+		m_world->CreateJoint(jd);
 
 		Body* b4;
 		{
@@ -124,7 +124,7 @@ public:
 
 		anchor = Vec2(-7.0f, 15.0f);
 		jd.Initialize(b2, b4, anchor);
-		m_world->CreateJoint(&jd);
+		m_world->CreateJoint(jd);
 
 		Body* b5;
 		{
@@ -152,7 +152,7 @@ public:
 
 		anchor = Vec2(6.0f, 2.0f);
 		jd.Initialize(b1, b5, anchor);
-		m_world->CreateJoint(&jd);
+		m_world->CreateJoint(jd);
 
 		Body* b6;
 		{
@@ -168,7 +168,7 @@ public:
 
 		anchor = Vec2(7.5f, 4.0f);
 		jd.Initialize(b5, b6, anchor);
-		m_world->CreateJoint(&jd);
+		m_world->CreateJoint(jd);
 
 		Body* b7;
 		{
@@ -190,7 +190,7 @@ public:
 		djd.localAnchorB = Vec2(0.0f, -1.0f);
 		Vec2 d = djd.bodyB->GetWorldPoint(djd.localAnchorB) - djd.bodyA->GetWorldPoint(djd.localAnchorA);
 		djd.length = Length(d);
-		m_world->CreateJoint(&djd);
+		m_world->CreateJoint(djd);
 
 		{
 			float_t radius = 0.2f;

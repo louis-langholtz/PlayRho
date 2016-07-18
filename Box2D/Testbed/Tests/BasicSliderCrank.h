@@ -51,7 +51,7 @@ public:
                 
 				RevoluteJointDef rjd;
 				rjd.Initialize(prevBody, body, Vec2(-12.0f, 20.0f));
-				m_world->CreateJoint(&rjd);
+				m_world->CreateJoint(rjd);
                 
 				prevBody = body;
 			}
@@ -69,7 +69,7 @@ public:
                 
 				RevoluteJointDef rjd;
 				rjd.Initialize(prevBody, body, Vec2(-4.0f, 20.0f));
-				m_world->CreateJoint(&rjd);
+				m_world->CreateJoint(rjd);
                 
 				prevBody = body;
 			}
@@ -88,11 +88,11 @@ public:
                 
 				RevoluteJointDef rjd;
 				rjd.Initialize(prevBody, body, Vec2(12.0f, 20.0f));
-				m_world->CreateJoint(&rjd);
+				m_world->CreateJoint(rjd);
                 
 				PrismaticJointDef pjd;
 				pjd.Initialize(ground, body, Vec2(12.0f, 17.0f), Vec2(1.0f, 0.0f));
-				m_world->CreateJoint(&pjd);
+				m_world->CreateJoint(pjd);
 			}
   		}
 	}

@@ -105,7 +105,7 @@ public:
 			jd.lowerAngle = -8.0f * Pi / 180.0f;
 			jd.upperAngle = 8.0f * Pi / 180.0f;
 			jd.enableLimit = true;
-			m_world->CreateJoint(&jd);
+			m_world->CreateJoint(jd);
 
 			body->ApplyAngularImpulse(100.0f, true);
 		}
@@ -134,14 +134,14 @@ public:
 
 				Vec2 anchor(160.0f + 2.0f * i, -0.125f);
 				jd.Initialize(prevBody, body, anchor);
-				m_world->CreateJoint(&jd);
+				m_world->CreateJoint(jd);
 
 				prevBody = body;
 			}
 
 			Vec2 anchor(160.0f + 2.0f * N, -0.125f);
 			jd.Initialize(prevBody, ground, anchor);
-			m_world->CreateJoint(&jd);
+			m_world->CreateJoint(jd);
 		}
 
 		// Boxes
@@ -217,7 +217,7 @@ public:
 			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
-			m_spring1 = (WheelJoint*)m_world->CreateJoint(&jd);
+			m_spring1 = (WheelJoint*)m_world->CreateJoint(jd);
 
 			jd.Initialize(m_car, m_wheel2, m_wheel2->GetPosition(), axis);
 			jd.motorSpeed = 0.0f;
@@ -225,7 +225,7 @@ public:
 			jd.enableMotor = false;
 			jd.frequencyHz = m_hz;
 			jd.dampingRatio = m_zeta;
-			m_spring2 = (WheelJoint*)m_world->CreateJoint(&jd);
+			m_spring2 = (WheelJoint*)m_world->CreateJoint(jd);
 		}
 	}
 

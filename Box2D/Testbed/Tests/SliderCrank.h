@@ -58,7 +58,7 @@ public:
 				rjd.motorSpeed = 1.0f * Pi;
 				rjd.maxMotorTorque = 10000.0f;
 				rjd.enableMotor = true;
-				m_joint1 = (RevoluteJoint*)m_world->CreateJoint(&rjd);
+				m_joint1 = (RevoluteJoint*)m_world->CreateJoint(rjd);
 
 				prevBody = body;
 			}
@@ -77,7 +77,7 @@ public:
 				RevoluteJointDef rjd;
 				rjd.Initialize(prevBody, body, Vec2(0.0f, 9.0f));
 				rjd.enableMotor = false;
-				m_world->CreateJoint(&rjd);
+				m_world->CreateJoint(rjd);
 
 				prevBody = body;
 			}
@@ -96,7 +96,7 @@ public:
 
 				RevoluteJointDef rjd;
 				rjd.Initialize(prevBody, body, Vec2(0.0f, 17.0f));
-				m_world->CreateJoint(&rjd);
+				m_world->CreateJoint(rjd);
 
 				PrismaticJointDef pjd;
 				pjd.Initialize(ground, body, Vec2(0.0f, 17.0f), Vec2(0.0f, 1.0f));
@@ -104,7 +104,7 @@ public:
 				pjd.maxMotorForce = 1000.0f;
 				pjd.enableMotor = true;
 
-				m_joint2 = (PrismaticJoint*)m_world->CreateJoint(&pjd);
+				m_joint2 = (PrismaticJoint*)m_world->CreateJoint(pjd);
 			}
 
 			// Create a payload

@@ -114,7 +114,7 @@ public:
 			jd.lowerTranslation = -1.0f;
 			jd.upperTranslation = 1.0f;
 
-			m_world->CreateJoint(&jd);
+			m_world->CreateJoint(jd);
 		}
 
 		// Small box

@@ -73,7 +73,7 @@ public:
 			rjd.Initialize(m_attachment, m_platform, Vec2(0.0f, 5.0f));
 			rjd.maxMotorTorque = 50.0f;
 			rjd.enableMotor = true;
-			m_world->CreateJoint(&rjd);
+			m_world->CreateJoint(rjd);
 
 			PrismaticJointDef pjd;
 			pjd.Initialize(ground, m_platform, Vec2(0.0f, 5.0f), Vec2(1.0f, 0.0f));
@@ -84,7 +84,7 @@ public:
 			pjd.upperTranslation = 10.0f;
 			pjd.enableLimit = true;
 
-			m_world->CreateJoint(&pjd);
+			m_world->CreateJoint(pjd);
 
 			m_speed = 3.0f;
 		}

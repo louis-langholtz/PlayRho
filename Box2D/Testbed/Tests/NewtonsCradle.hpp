@@ -54,7 +54,7 @@ namespace box2d {
 				
 				RevoluteJointDef rjd;
 				rjd.Initialize(frame, body, Vec2{x, frame_height});
-				m_world->CreateJoint(&rjd);
+				m_world->CreateJoint(rjd);
 			}
 		}
 		

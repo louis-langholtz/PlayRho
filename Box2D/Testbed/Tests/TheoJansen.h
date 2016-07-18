@@ -102,21 +102,21 @@ public:
 		djd.frequencyHz = 10.0f;
 
 		djd.Initialize(body1, body2, p2 + m_offset, p5 + m_offset);
-		m_world->CreateJoint(&djd);
+		m_world->CreateJoint(djd);
 
 		djd.Initialize(body1, body2, p3 + m_offset, p4 + m_offset);
-		m_world->CreateJoint(&djd);
+		m_world->CreateJoint(djd);
 
 		djd.Initialize(body1, m_wheel, p3 + m_offset, wheelAnchor + m_offset);
-		m_world->CreateJoint(&djd);
+		m_world->CreateJoint(djd);
 
 		djd.Initialize(body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset);
-		m_world->CreateJoint(&djd);
+		m_world->CreateJoint(djd);
 
 		RevoluteJointDef rjd;
 
 		rjd.Initialize(body2, m_chassis, p4 + m_offset);
-		m_world->CreateJoint(&rjd);
+		m_world->CreateJoint(rjd);
 	}
 
 	TheoJansen()
@@ -194,7 +194,7 @@ public:
 			jd.motorSpeed = m_motorSpeed;
 			jd.maxMotorTorque = 400.0f;
 			jd.enableMotor = m_motorOn;
-			m_motorJoint = (RevoluteJoint*)m_world->CreateJoint(&jd);
+			m_motorJoint = (RevoluteJoint*)m_world->CreateJoint(jd);
 		}
 
 		Vec2 wheelAnchor;

@@ -177,10 +177,8 @@ void World::DestroyBody(Body* b)
 	m_blockAllocator.Free(b, sizeof(Body));
 }
 
-Joint* World::CreateJoint(const JointDef* def)
+Joint* World::CreateJoint(const JointDef& def)
 {
-	assert(def != nullptr);
-
 	assert(!IsLocked());
 	if (IsLocked())
 	{
@@ -188,7 +186,7 @@ Joint* World::CreateJoint(const JointDef* def)
 	}
 
 	// Note: creating a joint doesn't wake the bodies.
-	auto j = Joint::Create(*def, &m_blockAllocator);
+	auto j = Joint::Create(def, &m_blockAllocator);
 
 	// Connect to the bodies' doubly linked lists.
 	j->m_edgeA.joint = j;
@@ -211,11 +209,11 @@ Joint* World::CreateJoint(const JointDef* def)
 	}
 	j->m_bodyB->m_joints.p = &j->m_edgeB;
 
-	auto bodyA = def->bodyA;
-	auto bodyB = def->bodyB;
+	auto bodyA = def.bodyA;
+	auto bodyB = def.bodyB;
 
 	// If the joint prevents collisions, then flag any contacts for filtering.
-	if (!def->collideConnected)
+	if (!def.collideConnected)
 	{
 		for (auto&& edge: bodyB->GetContactEdges())
 		{
