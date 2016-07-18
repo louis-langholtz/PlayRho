@@ -29,18 +29,6 @@
 
 using namespace box2d;
 
-void Fixture::Create(BlockAllocator& allocator, const FixtureDef& def)
-{
-	assert(def.density >= 0);
-	m_userData = def.userData;
-	m_friction = def.friction;
-	m_restitution = def.restitution;
-	m_filter = def.filter;
-	m_isSensor = def.isSensor;
-	m_density = Max(def.density, float_t{0});
-	m_shape = def.shape->Clone(&allocator);
-}
-
 template <>
 inline void box2d::Delete(Shape* shape, BlockAllocator& allocator)
 {
@@ -62,6 +50,18 @@ inline void box2d::Delete(Shape* shape, BlockAllocator& allocator)
 			assert(false);
 			break;
 	}
+}
+
+void Fixture::Create(BlockAllocator& allocator, const FixtureDef& def)
+{
+	assert(def.density >= 0);
+	m_userData = def.userData;
+	m_friction = def.friction;
+	m_restitution = def.restitution;
+	m_filter = def.filter;
+	m_isSensor = def.isSensor;
+	m_density = Max(def.density, float_t{0});
+	m_shape = def.shape->Clone(&allocator);
 }
 
 void Fixture::Destroy(BlockAllocator& allocator)
