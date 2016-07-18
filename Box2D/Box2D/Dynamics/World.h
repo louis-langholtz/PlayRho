@@ -183,9 +183,6 @@ public:
 	/// Get the number of broad-phase proxies.
 	size_type GetProxyCount() const noexcept;
 
-	/// Get the number of contacts (each may have 0 or more contact points).
-	contact_count_t GetContactCount() const noexcept;
-
 	/// Get the height of the dynamic tree.
 	size_type GetTreeHeight() const noexcept;
 
@@ -363,11 +360,6 @@ inline const ContactList& World::GetContacts() const noexcept
 	return m_contactMgr.GetContacts();
 }
 
-inline contact_count_t World::GetContactCount() const noexcept
-{
-	return m_contactMgr.GetContactCount();
-}
-
 inline void World::SetGravity(const Vec2& gravity) noexcept
 {
 	m_gravity = gravity;
@@ -419,6 +411,11 @@ inline body_count_t GetBodyCount(const World& world) noexcept
 inline World::size_type GetJointCount(const World& world) noexcept
 {
 	return world.GetJoints().size();
+}
+
+inline contact_count_t GetContactCount(const World& world) noexcept
+{
+	return world.GetContacts().size();
 }
 
 } // namespace box2d

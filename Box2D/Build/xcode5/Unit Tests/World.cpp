@@ -19,7 +19,7 @@ TEST(World, DefaultInit)
 	EXPECT_EQ(GetBodyCount(world), body_count_t(0));
 	EXPECT_EQ(world.GetProxyCount(), World::size_type(0));
 	EXPECT_EQ(GetJointCount(world), World::size_type(0));
-	EXPECT_EQ(world.GetContactCount(), contact_count_t(0));
+	EXPECT_EQ(GetContactCount(world), contact_count_t(0));
 	EXPECT_EQ(world.GetTreeHeight(), World::size_type(0));
 	EXPECT_EQ(world.GetTreeQuality(), float_t(0));
 
