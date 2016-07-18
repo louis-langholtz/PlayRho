@@ -48,7 +48,21 @@ TEST(AABB, TestOverlap)
 {
 	{
 		AABB bb1{Vec2{-2, -3}, Vec2{-1, 0}};
+		EXPECT_TRUE(TestOverlap(bb1, bb1));
+	}
+	{
+		const auto vec = Vec2{-2, -3};
+		AABB bb1{vec, vec};
+		EXPECT_TRUE(TestOverlap(bb1, bb1));
+	}
+	{
+		AABB bb1{Vec2{-2, -3}, Vec2{-1, 0}};
 		AABB bb2{Vec2{-1, -1}, Vec2{1, 2}};
+		EXPECT_TRUE(TestOverlap(bb1, bb2));
+	}
+	{
+		AABB bb1{Vec2{-99, -3}, Vec2{-1, 0}};
+		AABB bb2{Vec2{76, -1}, Vec2{-2, 2}};
 		EXPECT_TRUE(TestOverlap(bb1, bb2));
 	}
 	{

@@ -53,6 +53,7 @@
 		4751EE2E1CEDD7A300D459CB /* MotorJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE2C1CEDD7A300D459CB /* MotorJoint.h */; };
 		4751EE2F1CEDD7A300D459CB /* MobileBalanced.h in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE2D1CEDD7A300D459CB /* MobileBalanced.h */; };
 		4767DB991D25D25E000CDB91 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4767DB981D25D25E000CDB91 /* main.cpp */; };
+		4774E6211D3D6A2C0003E7F9 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4774E6201D3D6A2C0003E7F9 /* World.cpp */; };
 		47769D431D25DBEB0078A9C5 /* libBox2D.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80FF01D2141C3D980059E59D /* libBox2D.a */; };
 		47769D461D29B8B50078A9C5 /* Vec2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47769D441D29B8B50078A9C5 /* Vec2.cpp */; };
 		47769D491D29B9C60078A9C5 /* Sweep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47769D471D29B9C60078A9C5 /* Sweep.cpp */; };
@@ -417,6 +418,7 @@
 		4751EE2D1CEDD7A300D459CB /* MobileBalanced.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobileBalanced.h; sourceTree = "<group>"; };
 		4767DB961D25D25E000CDB91 /* Unit Tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Unit Tests"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4767DB981D25D25E000CDB91 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		4774E6201D3D6A2C0003E7F9 /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
 		47769D441D29B8B50078A9C5 /* Vec2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vec2.cpp; sourceTree = "<group>"; };
 		47769D471D29B9C60078A9C5 /* Sweep.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sweep.cpp; sourceTree = "<group>"; };
 		47769D4A1D2C26D70078A9C5 /* DistanceProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceProxy.cpp; sourceTree = "<group>"; };
@@ -722,6 +724,7 @@
 				4726DD321D3852B60012A882 /* Manifold.cpp */,
 				47A12FDE1D3AAA69003A6ADE /* Collision.cpp */,
 				47A12FE21D3AEF3C003A6ADE /* AABB.cpp */,
+				4774E6201D3D6A2C0003E7F9 /* World.cpp */,
 			);
 			path = "Unit Tests";
 			sourceTree = "<group>";
@@ -1406,6 +1409,7 @@
 				4726DD051D2DA64D0012A882 /* Transformation.cpp in Sources */,
 				4767DB991D25D25E000CDB91 /* main.cpp in Sources */,
 				47769D461D29B8B50078A9C5 /* Vec2.cpp in Sources */,
+				4774E6211D3D6A2C0003E7F9 /* World.cpp in Sources */,
 				47769D491D29B9C60078A9C5 /* Sweep.cpp in Sources */,
 				4726DD071D2DF6990012A882 /* Mat33.cpp in Sources */,
 				4726DD2F1D328A8A0012A882 /* TimeOfImpact.cpp in Sources */,
