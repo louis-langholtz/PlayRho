@@ -124,6 +124,7 @@ public:
 	size_type GetTreeBalance() const;
 
 	/// Gets the quality metric of the embedded tree.
+	/// @return Value of zero or more.
 	float_t GetTreeQuality() const;
 
 	/// Shifts the world origin. Useful for large worlds.

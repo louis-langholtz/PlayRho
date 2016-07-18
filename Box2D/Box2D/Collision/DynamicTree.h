@@ -93,13 +93,16 @@ public:
 	void Validate() const;
 
 	/// Gets the height of the binary tree.
+	/// @return Zero or more.
 	size_type GetHeight() const noexcept;
 
 	/// Gets the maximum balance of an node in the tree. The balance is the difference
 	/// in height of the two children of a node.
 	size_type GetMaxBalance() const;
 
-	/// Gets the ratio of the sum of the node areas to the root area.
+	/// Gets the ratio of the sum of the perimeters of nodes to the root perimeter.
+	/// @note Zero is returned if no proxies exist at the time of the call.
+	/// @return Value of zero or more.
 	float_t GetAreaRatio() const;
 
 	/// Build an optimal tree. Very expensive. For testing.

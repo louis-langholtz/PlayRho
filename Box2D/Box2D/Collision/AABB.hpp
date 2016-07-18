@@ -45,7 +45,8 @@ namespace box2d
 			return (upperBound - lowerBound) / float_t(2);
 		}
 		
-		/// Get the perimeter length
+		/// Gets the perimeter length.
+		/// @return Twice the sum of the width and height.
 		constexpr float_t GetPerimeter() const noexcept
 		{
 			const auto wx = upperBound.x - lowerBound.x;
