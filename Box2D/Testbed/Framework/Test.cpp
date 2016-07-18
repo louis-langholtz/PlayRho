@@ -301,7 +301,7 @@ void Test::Step(Settings* settings)
 
 	if (settings->drawStats)
 	{
-		const auto bodyCount = m_world->GetBodyCount();
+		const auto bodyCount = GetBodyCount(*m_world);
 		const auto contactCount = m_world->GetContactCount();
 		const auto jointCount = m_world->GetJointCount();
 		g_debugDraw.DrawString(5, m_textLine, "bodies/contacts/joints = %d/%d/%d", bodyCount, contactCount, jointCount);

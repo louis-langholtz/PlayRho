@@ -77,23 +77,25 @@ public:
 	/// by you and must remain in scope.
 	void SetDebugDraw(Draw* debugDraw) noexcept;
 
-	/// Create a rigid body given a definition. No reference to the definition
-	/// is retained.
+	/// Creates a rigid body given a definition.
+	/// @note No reference to the definition is retained.
 	/// @warning This function is locked during callbacks.
 	Body* CreateBody(const BodyDef& def);
 
-	/// Destroy a rigid body given a definition. No reference to the definition
-	/// is retained. This function is locked during callbacks.
+	/// Destroys the given body.
+	/// @note This function is locked during callbacks.
 	/// @warning This automatically deletes all associated shapes and joints.
 	/// @warning This function is locked during callbacks.
 	void DestroyBody(Body* body);
 
-	/// Create a joint to constrain bodies together. No reference to the definition
+	/// Creates a joint to constrain bodies together.
+	/// @detail No reference to the definition
 	/// is retained. This may cause the connected bodies to cease colliding.
 	/// @warning This function is locked during callbacks.
 	Joint* CreateJoint(const JointDef& def);
 
-	/// Destroy a joint. This may cause the connected bodies to begin colliding.
+	/// Destroys a joint.
+	/// @detail This may cause the connected bodies to begin colliding.
 	/// @warning This function is locked during callbacks.
 	void DestroyJoint(Joint* joint);
 
@@ -180,9 +182,6 @@ public:
 
 	/// Get the number of broad-phase proxies.
 	size_type GetProxyCount() const noexcept;
-
-	/// Get the number of bodies.
-	body_count_t GetBodyCount() const noexcept;
 
 	/// Get the number of joints.
 	size_type GetJointCount() const noexcept;
@@ -367,11 +366,6 @@ inline const ContactList& World::GetContacts() const noexcept
 	return m_contactMgr.GetContacts();
 }
 
-inline body_count_t World::GetBodyCount() const noexcept
-{
-	return static_cast<body_count_t>(m_bodies.size());
-}
-
 inline World::size_type World::GetJointCount() const noexcept
 {
 	return m_joints.size();
@@ -423,6 +417,11 @@ inline const ContactManager& World::GetContactManager() const noexcept
 inline const Profile& World::GetProfile() const noexcept
 {
 	return m_profile;
+}
+
+inline body_count_t GetBodyCount(const World& world) noexcept
+{
+	return world.GetBodies().size();
 }
 	
 } // namespace box2d

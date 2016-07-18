@@ -8,6 +8,7 @@
 
 #include "gtest/gtest.h"
 #include <Box2D/Dynamics/World.h>
+#include <Box2D/Dynamics/Body.h>
 
 using namespace box2d;
 
@@ -15,7 +16,7 @@ TEST(World, DefaultInit)
 {
 	World world;
 
-	EXPECT_EQ(world.GetBodyCount(), body_count_t(0));
+	EXPECT_EQ(GetBodyCount(world), body_count_t(0));
 	EXPECT_EQ(world.GetProxyCount(), World::size_type(0));
 	EXPECT_EQ(world.GetJointCount(), World::size_type(0));
 	EXPECT_EQ(world.GetContactCount(), contact_count_t(0));
@@ -72,7 +73,22 @@ TEST(World, SetContinuousPhysics)
 	EXPECT_TRUE(world.GetContinuousPhysics());
 }
 
-TEST(World, Foo)
+TEST(World, CreateAndDestoryBody)
 {
+	BodyDef bodyDef;
 	World world;
+	EXPECT_EQ(GetBodyCount(world), body_count_t(0));
+
+	const auto body = world.CreateBody(bodyDef);
+	EXPECT_NE(body, nullptr);
+	EXPECT_EQ(GetBodyCount(world), body_count_t(1));
+	EXPECT_FALSE(world.GetBodies().empty());
+	EXPECT_EQ(world.GetBodies().size(), body_count_t(1));
+	EXPECT_NE(world.GetBodies().begin(), world.GetBodies().end());
+
+	world.DestroyBody(body);
+	EXPECT_EQ(GetBodyCount(world), body_count_t(0));
+	EXPECT_TRUE(world.GetBodies().empty());
+	EXPECT_EQ(world.GetBodies().size(), body_count_t(0));
+	EXPECT_EQ(world.GetBodies().begin(), world.GetBodies().end());
 }

@@ -359,12 +359,12 @@ void World::Solve(const TimeStep& step)
 		j.SetInIsland(false);
 	}
 
-	auto remNumBodies = GetBodyCount(); ///< Remaining number of bodies.
+	auto remNumBodies = m_bodies.size(); ///< Remaining number of bodies.
 	auto remNumContacts = m_contactMgr.GetContactCount(); ///< Remaining number of contacts.
 	auto remNumJoints = m_joints.size(); ///< Remaining number of joints.
 
 	// Build and simulate all awake islands.
-	const auto stackSize = GetBodyCount();
+	const auto stackSize = m_bodies.size();
 	auto stack = AllocatedArray<Body*, StackAllocator&>(stackSize, m_stackAllocator.AllocateArray<Body*>(stackSize), m_stackAllocator);
 	for (auto&& seed: m_bodies)
 	{
@@ -603,7 +603,7 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 	bB->SetAwake();
 
 	// Build the island
-	Island island(GetBodyCount(), m_contactMgr.GetContactCount(), 0, m_stackAllocator, m_contactMgr.m_contactListener);
+	Island island(m_bodies.size(), m_contactMgr.GetContactCount(), 0, m_stackAllocator, m_contactMgr.m_contactListener);
 
 	const auto indexA = static_cast<body_count_t>(island.m_bodies.size());
 	bA->m_islandIndex = indexA;
@@ -1102,7 +1102,7 @@ void World::Dump()
 	log("Vec2 g(%.15lef, %.15lef);\n", m_gravity.x, m_gravity.y);
 	log("m_world->SetGravity(g);\n");
 
-	log("Body** bodies = (Body**)alloc(%d * sizeof(Body*));\n", GetBodyCount());
+	log("Body** bodies = (Body**)alloc(%d * sizeof(Body*));\n", m_bodies.size());
 	log("Joint** joints = (Joint**)alloc(%d * sizeof(Joint*));\n", m_joints.size());
 	auto i = body_count_t{0};
 	for (auto&& b: m_bodies)
