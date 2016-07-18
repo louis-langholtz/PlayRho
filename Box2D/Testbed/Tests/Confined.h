@@ -37,7 +37,7 @@ public:
 	{
 		{
 			BodyDef bd;
-			Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(bd);
 
 			EdgeShape shape;
 
@@ -77,7 +77,7 @@ public:
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-10.0f + (2.1f * j + 1.0f + 0.01f * i) * radius, (2.0f * i + 1.0f) * radius);
-				Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(bd);
 
 				body->CreateFixture(fd);
 			}
@@ -101,7 +101,7 @@ public:
 		bd.bullet = m_bullet_mode;
 		bd.position = Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));
 		//bd.allowSleep = false;
-		Body* body = m_world->CreateBody(&bd);
+		Body* body = m_world->CreateBody(bd);
 
 		body->CreateFixture(fd);
 	}
@@ -121,7 +121,7 @@ public:
 		bd.type = BodyType::Dynamic;
 		bd.bullet = m_bullet_mode;
 		bd.position = Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));
-		auto* body = m_world->CreateBody(&bd);
+		auto* body = m_world->CreateBody(bd);
 		body->CreateFixture(fd);
 	}
 

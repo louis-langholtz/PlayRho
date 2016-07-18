@@ -75,7 +75,7 @@ private:
 	std::function<void(T&)> m_on_destruction;
 };
 
-World::World(const Vec2& gravity): m_gravity(gravity)
+World::World(const Vec2 gravity): m_gravity(gravity)
 {
 	memset(&m_profile, 0, sizeof(Profile));
 }
@@ -110,7 +110,7 @@ void World::SetDebugDraw(Draw* debugDraw) noexcept
 	g_debugDraw = debugDraw;
 }
 
-Body* World::CreateBody(const BodyDef* def)
+Body* World::CreateBody(const BodyDef& def)
 {
 	assert(!IsLocked());
 	if (IsLocked())

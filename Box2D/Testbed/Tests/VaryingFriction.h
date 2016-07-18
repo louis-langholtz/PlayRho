@@ -30,7 +30,7 @@ public:
 	{
 		{
 			BodyDef bd;
-			Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(bd);
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -45,7 +45,7 @@ public:
 			bd.position = Vec2(-4.0f, 22.0f);
 			bd.angle = -0.25f;
 
-			Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(bd);
 			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
@@ -56,7 +56,7 @@ public:
 			BodyDef bd;
 			bd.position = Vec2(10.5f, 19.0f);
 
-			Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(bd);
 			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
@@ -68,7 +68,7 @@ public:
 			bd.position = Vec2(4.0f, 14.0f);
 			bd.angle = 0.25f;
 
-			Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(bd);
 			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
@@ -79,7 +79,7 @@ public:
 			BodyDef bd;
 			bd.position = Vec2(-10.5f, 11.0f);
 
-			Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(bd);
 			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
@@ -91,7 +91,7 @@ public:
 			bd.position = Vec2(-4.0f, 6.0f);
 			bd.angle = -0.25f;
 
-			Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(bd);
 			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
@@ -110,7 +110,7 @@ public:
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-15.0f + 4.0f * i, 28.0f);
-				Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(bd);
 
 				fd.friction = friction[i];
 				body->CreateFixture(fd);

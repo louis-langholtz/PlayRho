@@ -30,7 +30,7 @@ public:
 	{
 		{
 			BodyDef bd;
-			Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(bd);
             
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -40,14 +40,14 @@ public:
 		BodyDef bd;
 		bd.type = BodyType::Dynamic;
 		bd.position = Vec2(0.0f, 0.5f);
-		Body* body = m_world->CreateBody(&bd);
+		Body* body = m_world->CreateBody(bd);
         
 		CircleShape shape;
 		shape.SetRadius(float_t(0.5));
 		body->CreateFixture(FixtureDef{&shape, 10.0f});
         
         bd.position = Vec2(0.0f, 6.0f);
-        body = m_world->CreateBody(&bd);
+        body = m_world->CreateBody(bd);
         shape.SetRadius(float_t(5));
 		body->CreateFixture(FixtureDef{&shape, 10.0f});
 	}

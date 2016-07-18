@@ -55,7 +55,7 @@ public:
 			sd.friction = 0.3f;
 
 			BodyDef bd;
-			Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(bd);
 			ground->CreateFixture(sd);
 		}
 
@@ -79,7 +79,7 @@ public:
 		triangleBodyDef.type = BodyType::Dynamic;
 		triangleBodyDef.position = Vec2(-5.0f, 2.0f);
 
-		Body* body1 = m_world->CreateBody(&triangleBodyDef);
+		Body* body1 = m_world->CreateBody(triangleBodyDef);
 		body1->CreateFixture(triangleShapeDef);
 
 		// Large triangle (recycle definitions)
@@ -91,14 +91,14 @@ public:
 		triangleBodyDef.position = Vec2(-5.0f, 6.0f);
 		triangleBodyDef.fixedRotation = true; // look at me!
 
-		Body* body2 = m_world->CreateBody(&triangleBodyDef);
+		Body* body2 = m_world->CreateBody(triangleBodyDef);
 		body2->CreateFixture(triangleShapeDef);
 
 		{
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-5.0f, 10.0f);
-			Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(bd);
 
 			PolygonShape p;
 			p.SetAsBox(0.5f, 1.0f);
@@ -132,7 +132,7 @@ public:
 		boxBodyDef.type = BodyType::Dynamic;
 		boxBodyDef.position = Vec2(0.0f, 2.0f);
 
-		Body* body3 = m_world->CreateBody(&boxBodyDef);
+		Body* body3 = m_world->CreateBody(boxBodyDef);
 		body3->CreateFixture(boxShapeDef);
 
 		// Large box (recycle definitions)
@@ -140,7 +140,7 @@ public:
 		boxShapeDef.filter.groupIndex = k_largeGroup;
 		boxBodyDef.position = Vec2(0.0f, 6.0f);
 
-		Body* body4 = m_world->CreateBody(&boxBodyDef);
+		Body* body4 = m_world->CreateBody(boxBodyDef);
 		body4->CreateFixture(boxShapeDef);
 
 		// Small circle
@@ -159,7 +159,7 @@ public:
 		circleBodyDef.type = BodyType::Dynamic;
 		circleBodyDef.position = Vec2(5.0f, 2.0f);
 		
-		Body* body5 = m_world->CreateBody(&circleBodyDef);
+		Body* body5 = m_world->CreateBody(circleBodyDef);
 		body5->CreateFixture(circleShapeDef);
 
 		// Large circle
@@ -167,7 +167,7 @@ public:
 		circleShapeDef.filter.groupIndex = k_largeGroup;
 		circleBodyDef.position = Vec2(5.0f, 6.0f);
 
-		Body* body6 = m_world->CreateBody(&circleBodyDef);
+		Body* body6 = m_world->CreateBody(circleBodyDef);
 		body6->CreateFixture(circleShapeDef);
 	}
 

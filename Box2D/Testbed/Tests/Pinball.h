@@ -33,7 +33,7 @@ public:
 		Body* ground = nullptr;
 		{
 			BodyDef bd;
-			ground = m_world->CreateBody(&bd);
+			ground = m_world->CreateBody(bd);
 
 			Vec2 vs[5];
 			vs[0] = Vec2(0.0f, -2.0f);
@@ -58,10 +58,10 @@ public:
 			bd.type = BodyType::Dynamic;
 
 			bd.position = p1;
-			Body* leftFlipper = m_world->CreateBody(&bd);
+			Body* leftFlipper = m_world->CreateBody(bd);
 
 			bd.position = p2;
-			Body* rightFlipper = m_world->CreateBody(&bd);
+			Body* rightFlipper = m_world->CreateBody(bd);
 
 			PolygonShape box;
 			box.SetAsBox(1.75f, 0.1f);
@@ -102,7 +102,7 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.bullet = true;
 
-			m_ball = m_world->CreateBody(&bd);
+			m_ball = m_world->CreateBody(bd);
 
 			CircleShape shape;
 			shape.SetRadius(float_t(0.2));

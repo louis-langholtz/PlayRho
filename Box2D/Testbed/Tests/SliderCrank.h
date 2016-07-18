@@ -32,7 +32,7 @@ public:
 		Body* ground = nullptr;
 		{
 			BodyDef bd;
-			ground = m_world->CreateBody(&bd);
+			ground = m_world->CreateBody(bd);
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -50,7 +50,7 @@ public:
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(0.0f, 7.0f);
-				Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(bd);
 				body->CreateFixture(FixtureDef{&shape, 2.0f});
 
 				RevoluteJointDef rjd;
@@ -71,7 +71,7 @@ public:
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(0.0f, 13.0f);
-				Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(bd);
 				body->CreateFixture(FixtureDef{&shape, 2.0f});
 
 				RevoluteJointDef rjd;
@@ -91,7 +91,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.fixedRotation = true;
 				bd.position = Vec2(0.0f, 17.0f);
-				Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(bd);
 				body->CreateFixture(FixtureDef{&shape, 2.0f});
 
 				RevoluteJointDef rjd;
@@ -115,7 +115,7 @@ public:
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(0.0f, 23.0f);
-				Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(bd);
 				body->CreateFixture(FixtureDef{&shape, 2.0f});
 			}
 		}

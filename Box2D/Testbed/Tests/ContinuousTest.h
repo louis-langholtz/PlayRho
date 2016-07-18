@@ -31,7 +31,7 @@ public:
 		{
 			BodyDef bd;
 			bd.position = Vec2(0.0f, 0.0f);
-			Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(bd);
 
 			EdgeShape edge;
 
@@ -53,7 +53,7 @@ public:
 			PolygonShape shape;
 			shape.SetAsBox(2.0f, 0.1f);
 
-			m_body = m_world->CreateBody(&bd);
+			m_body = m_world->CreateBody(bd);
 			m_body->CreateFixture(FixtureDef{&shape, 1.0f});
 
 			m_angularVelocity = RandomFloat(-50.0f, 50.0f);
@@ -66,7 +66,7 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(0.0f, 2.0f);
-			Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(bd);
 
 			CircleShape shape;
 			shape.m_p.SetZero();
@@ -75,7 +75,7 @@ public:
 
 			bd.bullet = true;
 			bd.position = Vec2(0.0f, 10.0f);
-			body = m_world->CreateBody(&bd);
+			body = m_world->CreateBody(bd);
 			body->CreateFixture(FixtureDef{&shape, 1.0f});
 			body->SetLinearVelocity(Vec2(0.0f, -100.0f));
 		}

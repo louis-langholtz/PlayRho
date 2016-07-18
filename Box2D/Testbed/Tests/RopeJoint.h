@@ -38,7 +38,7 @@ public:
 		Body* ground = nullptr;
 		{
 			BodyDef bd;
-			ground = m_world->CreateBody(&bd);
+			ground = m_world->CreateBody(bd);
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -78,7 +78,7 @@ public:
 					bd.angularDamping = 0.4f;
 				}
 
-				Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(bd);
 
 				body->CreateFixture(fd);
 

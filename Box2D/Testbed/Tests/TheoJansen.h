@@ -87,8 +87,8 @@ public:
 		bd1.angularDamping = 10.0f;
 		bd2.angularDamping = 10.0f;
 
-		Body* body1 = m_world->CreateBody(&bd1);
-		Body* body2 = m_world->CreateBody(&bd2);
+		Body* body1 = m_world->CreateBody(bd1);
+		Body* body2 = m_world->CreateBody(bd2);
 
 		body1->CreateFixture(fd1);
 		body2->CreateFixture(fd2);
@@ -129,7 +129,7 @@ public:
 		// Ground
 		{
 			BodyDef bd;
-			Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(bd);
 
 			EdgeShape shape;
 			shape.Set(Vec2(-50.0f, 0.0f), Vec2(50.0f, 0.0f));
@@ -152,7 +152,7 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-40.0f + 2.0f * i, 0.5f);
 
-			Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(bd);
 			body->CreateFixture(FixtureDef{&shape, 1.0f});
 		}
 
@@ -168,7 +168,7 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = pivot + m_offset;
-			m_chassis = m_world->CreateBody(&bd);
+			m_chassis = m_world->CreateBody(bd);
 			m_chassis->CreateFixture(sd);
 		}
 
@@ -183,7 +183,7 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = pivot + m_offset;
-			m_wheel = m_world->CreateBody(&bd);
+			m_wheel = m_world->CreateBody(bd);
 			m_wheel->CreateFixture(sd);
 		}
 

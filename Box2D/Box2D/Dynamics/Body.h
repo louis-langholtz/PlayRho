@@ -241,7 +241,7 @@ public:
 	/// Note that creating or destroying fixtures can also alter the mass.
 	/// This function has no effect if the body isn't dynamic.
 	/// @param data the mass properties.
-	void SetMassData(const MassData* data);
+	void SetMassData(const MassData& data);
 
 	/// Resets the mass data properties.
 	/// @detail This resets the mass data to the sum of the mass properties of the fixtures.
@@ -362,18 +362,26 @@ public:
 	/// Does this body have fixed rotation?
 	bool IsFixedRotation() const noexcept;
 
-	/// Get the list of all fixtures attached to this body.
+	/// Gets the list of all fixtures attached to this body.
 	FixtureList& GetFixtures() noexcept;
+	
+	/// Gets the list of all fixtures attached to this body.
 	const FixtureList& GetFixtures() const noexcept;
 
-	/// Get the list of all joints attached to this body.
+	/// Gets the list of all joints attached to this body.
 	JointEdgeList& GetJoints() noexcept;
+	
+	/// Gets the list of all joints attached to this body.
 	const JointEdgeList& GetJoints() const noexcept;
 
-	/// Get the list of all contacts attached to this body.
-	/// @warning this list changes during the time step and you may
+	/// Gets the list of all contacts attached to this body.
+	/// @warning This list changes during the time step and you may
 	/// miss some collisions if you don't use ContactListener.
 	ContactEdgeList& GetContactEdges() noexcept;
+
+	/// Gets the list of all contacts attached to this body.
+	/// @warning This list changes during the time step and you may
+	/// miss some collisions if you don't use ContactListener.
 	const ContactEdgeList& GetContactEdges() const noexcept;
 
 	/// Get the user data pointer that was provided in the body definition.
@@ -382,8 +390,10 @@ public:
 	/// Set the user data. Use this to store your application specific data.
 	void SetUserData(void* data) noexcept;
 
-	/// Get the parent world of this body.
+	/// Gets the parent world of this body.
 	World* GetWorld() noexcept;
+
+	/// Gets the parent world of this body.
 	const World* GetWorld() const noexcept;
 
 	/// Dump this body to a log file
@@ -455,7 +465,7 @@ private:
 	
 	static uint16 GetFlags(const BodyDef& bd) noexcept;
 
-	Body(const BodyDef* bd, World* world);
+	Body(const BodyDef& bd, World* world);
 	~Body();
 
 	void SynchronizeFixtures();

@@ -28,7 +28,7 @@ namespace box2d {
 				BodyDef bd;
 				bd.type = BodyType::Static;
 				bd.position = Vec2{0, frame_height};
-				const auto body = m_world->CreateBody(&bd);
+				const auto body = m_world->CreateBody(bd);
 
 				PolygonShape shape;
 				shape.SetAsBox(frame_width/2, frame_width / 24);
@@ -48,7 +48,7 @@ namespace box2d {
 				bd.bullet = m_bullet_mode;
 				bd.position = Vec2{x, frame_height - (arm_length / 2)};
 				
-				const auto body = m_world->CreateBody(&bd);
+				const auto body = m_world->CreateBody(bd);
 				CreateArm(body, arm_length);
 				CreateBall(body, Vec2{0, -arm_length / 2}, radius);
 				

@@ -57,21 +57,21 @@ uint16 Body::GetFlags(const BodyDef& bd) noexcept
 	return flags;
 }
 
-Body::Body(const BodyDef* bd, World* world):
-	m_flags{GetFlags(*bd)}, m_xf{bd->position, Rot{bd->angle}}, m_world{world},
-	m_sweep{Position{m_xf.p, bd->angle}},
-	m_velocity{Velocity{bd->linearVelocity, bd->angularVelocity}},
-	m_mass{(bd->type == BodyType::Dynamic)? float_t{1}: float_t{0}},
-	m_invMass{(bd->type == BodyType::Dynamic)? float_t{1}: float_t{0}},
-	m_linearDamping{bd->linearDamping}, m_angularDamping{bd->angularDamping},
-	m_userData{bd->userData}
+Body::Body(const BodyDef& bd, World* world):
+	m_flags{GetFlags(bd)}, m_xf{bd.position, Rot{bd.angle}}, m_world{world},
+	m_sweep{Position{m_xf.p, bd.angle}},
+	m_velocity{Velocity{bd.linearVelocity, bd.angularVelocity}},
+	m_mass{(bd.type == BodyType::Dynamic)? float_t{1}: float_t{0}},
+	m_invMass{(bd.type == BodyType::Dynamic)? float_t{1}: float_t{0}},
+	m_linearDamping{bd.linearDamping}, m_angularDamping{bd.angularDamping},
+	m_userData{bd.userData}
 {
-	assert(IsValid(bd->position));
-	assert(IsValid(bd->linearVelocity));
-	assert(IsValid(bd->angle));
-	assert(IsValid(bd->angularVelocity));
-	assert(IsValid(bd->angularDamping) && (bd->angularDamping >= float_t{0}));
-	assert(IsValid(bd->linearDamping) && (bd->linearDamping >= float_t{0}));
+	assert(IsValid(bd.position));
+	assert(IsValid(bd.linearVelocity));
+	assert(IsValid(bd.angle));
+	assert(IsValid(bd.angularVelocity));
+	assert(IsValid(bd.angularDamping) && (bd.angularDamping >= float_t{0}));
+	assert(IsValid(bd.linearDamping) && (bd.linearDamping >= float_t{0}));
 }
 
 Body::~Body()
@@ -357,7 +357,7 @@ void Body::ResetMassData()
 	m_velocity.v += GetReversePerpendicular(GetWorldCenter() - oldCenter) * m_velocity.w;
 }
 
-void Body::SetMassData(const MassData* massData)
+void Body::SetMassData(const MassData& massData)
 {
 	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())
@@ -370,12 +370,12 @@ void Body::SetMassData(const MassData* massData)
 		return;
 	}
 
-	m_mass = (massData->mass > float_t(0))? massData->mass: float_t{1};
+	m_mass = (massData.mass > float_t(0))? massData.mass: float_t{1};
 	m_invMass = float_t{1} / m_mass;
 
-	if ((massData->I > float_t{0}) && (!IsFixedRotation()))
+	if ((massData.I > float_t{0}) && (!IsFixedRotation()))
 	{
-		m_I = massData->I - m_mass * LengthSquared(massData->center);
+		m_I = massData.I - m_mass * LengthSquared(massData.center);
 		assert(m_I > float_t{0});
 		m_invI = float_t{1} / m_I;
 	}
@@ -388,7 +388,7 @@ void Body::SetMassData(const MassData* massData)
 	// Move center of mass.
 	const auto oldCenter = GetWorldCenter();
 
-	m_sweep = Sweep{Position{Transform(massData->center, m_xf), GetAngle()}, massData->center};
+	m_sweep = Sweep{Position{Transform(massData.center, m_xf), GetAngle()}, massData.center};
 
 	// Update center of mass velocity.
 	m_velocity.v += GetReversePerpendicular(GetWorldCenter() - oldCenter) * m_velocity.w;
@@ -524,7 +524,7 @@ void Body::Dump()
 	log("  bd.fixedRotation = bool(%d);\n", m_flags & e_fixedRotationFlag);
 	log("  bd.bullet = bool(%d);\n", m_flags & e_impenetrableFlag);
 	log("  bd.active = bool(%d);\n", m_flags & e_activeFlag);
-	log("  bodies[%d] = m_world->CreateBody(&bd);\n", m_islandIndex);
+	log("  bodies[%d] = m_world->CreateBody(bd);\n", m_islandIndex);
 	log("\n");
 	for (auto&& fixture: m_fixtures)
 	{

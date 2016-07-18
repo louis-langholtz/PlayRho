@@ -57,7 +57,7 @@ public:
 			bd.fixedRotation = bool(0);
 			bd.bullet = bool(0);
 			bd.active = bool(32);
-			bodies[0] = m_world->CreateBody(&bd);
+			bodies[0] = m_world->CreateBody(bd);
 
 			{
 				FixtureDef fd;
@@ -95,7 +95,7 @@ public:
 			bd.fixedRotation = bool(0);
 			bd.bullet = bool(0);
 			bd.active = bool(32);
-			bodies[1] = m_world->CreateBody(&bd);
+			bodies[1] = m_world->CreateBody(bd);
 
 			{
 				FixtureDef fd;
@@ -135,7 +135,7 @@ public:
 			bd.fixedRotation = bool(0);
 			bd.bullet = bool(0);
 			bd.active = bool(32);
-			bodies[2] = m_world->CreateBody(&bd);
+			bodies[2] = m_world->CreateBody(bd);
 
 			{
 				FixtureDef fd;

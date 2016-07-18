@@ -35,7 +35,7 @@ public:
 		Body* ground = nullptr;
 		{
 			BodyDef bd;
-			ground = m_world->CreateBody(&bd);
+			ground = m_world->CreateBody(bd);
 
 			EdgeShape shape;
 
@@ -94,7 +94,7 @@ public:
 			BodyDef bd;
 			bd.position = Vec2(140.0f, 1.0f);
 			bd.type = BodyType::Dynamic;
-			Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(bd);
 
 			PolygonShape box;
 			box.SetAsBox(10.0f, 0.25f);
@@ -129,7 +129,7 @@ public:
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(161.0f + 2.0f * i, -0.125f);
-				Body* body = m_world->CreateBody(&bd);
+				Body* body = m_world->CreateBody(bd);
 				body->CreateFixture(fd);
 
 				Vec2 anchor(160.0f + 2.0f * i, -0.125f);
@@ -154,23 +154,23 @@ public:
 			bd.type = BodyType::Dynamic;
 
 			bd.position = Vec2(230.0f, 0.5f);
-			body = m_world->CreateBody(&bd);
+			body = m_world->CreateBody(bd);
 			body->CreateFixture(FixtureDef{&box, 0.5f});
 
 			bd.position = Vec2(230.0f, 1.5f);
-			body = m_world->CreateBody(&bd);
+			body = m_world->CreateBody(bd);
 			body->CreateFixture(FixtureDef{&box, 0.5f});
 
 			bd.position = Vec2(230.0f, 2.5f);
-			body = m_world->CreateBody(&bd);
+			body = m_world->CreateBody(bd);
 			body->CreateFixture(FixtureDef{&box, 0.5f});
 
 			bd.position = Vec2(230.0f, 3.5f);
-			body = m_world->CreateBody(&bd);
+			body = m_world->CreateBody(bd);
 			body->CreateFixture(FixtureDef{&box, 0.5f});
 
 			bd.position = Vec2(230.0f, 4.5f);
-			body = m_world->CreateBody(&bd);
+			body = m_world->CreateBody(bd);
 			body->CreateFixture(FixtureDef{&box, 0.5f});
 		}
 
@@ -192,7 +192,7 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(0.0f, 1.0f);
-			m_car = m_world->CreateBody(&bd);
+			m_car = m_world->CreateBody(bd);
 			m_car->CreateFixture(FixtureDef{&chassis, 1.0f});
 
 			FixtureDef fd;
@@ -201,11 +201,11 @@ public:
 			fd.friction = 0.9f;
 
 			bd.position = Vec2(-1.0f, 0.35f);
-			m_wheel1 = m_world->CreateBody(&bd);
+			m_wheel1 = m_world->CreateBody(bd);
 			m_wheel1->CreateFixture(fd);
 
 			bd.position = Vec2(1.0f, 0.4f);
-			m_wheel2 = m_world->CreateBody(&bd);
+			m_wheel2 = m_world->CreateBody(bd);
 			m_wheel2->CreateFixture(fd);
 
 			WheelJointDef jd;

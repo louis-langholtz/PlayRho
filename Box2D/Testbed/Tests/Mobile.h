@@ -39,7 +39,7 @@ public:
 		{
 			BodyDef bodyDef;
 			bodyDef.position = Vec2(0.0f, 20.0f);
-			ground = m_world->CreateBody(&bodyDef);
+			ground = m_world->CreateBody(bodyDef);
 		}
 
 		float a = 0.5f;
@@ -65,7 +65,7 @@ public:
 		BodyDef bodyDef;
 		bodyDef.type = BodyType::Dynamic;
 		bodyDef.position = p;
-		Body* body = m_world->CreateBody(&bodyDef);
+		Body* body = m_world->CreateBody(bodyDef);
 
 		PolygonShape shape;
 		shape.SetAsBox(0.25f * a, a);

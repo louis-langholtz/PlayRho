@@ -59,7 +59,7 @@ public:
 		// Ground body
 		{
 			BodyDef bd;
-			Body* ground = m_world->CreateBody(&bd);
+			Body* ground = m_world->CreateBody(bd);
 
 			float_t x1 = -20.0f;
 			float_t y1 = 2.0f * cosf(x1 / 10.0f * Pi);
@@ -146,7 +146,7 @@ public:
 			bd.angularDamping = 0.02f;
 		}
 
-		m_bodies[m_bodyIndex] = m_world->CreateBody(&bd);
+		m_bodies[m_bodyIndex] = m_world->CreateBody(bd);
 
 		if (index < 4)
 		{

@@ -42,6 +42,8 @@ class Fixture;
 class Joint;
 class Island;
 
+constexpr auto EarthlyGravity = Vec2{0, float_t(-9.8)};
+
 /// The world class manages all physics entities, dynamic simulation,
 /// and asynchronous queries. The world also contains efficient memory
 /// management facilities.
@@ -49,10 +51,10 @@ class World
 {
 public:
 	using size_type = size_t;
-
+	
 	/// Construct a world object.
 	/// @param gravity the world gravity vector.
-	World(const Vec2& gravity);
+	World(const Vec2 gravity = EarthlyGravity);
 
 	/// Destruct the world. All physics entities are destroyed and all heap memory is released.
 	~World();
@@ -78,7 +80,7 @@ public:
 	/// Create a rigid body given a definition. No reference to the definition
 	/// is retained.
 	/// @warning This function is locked during callbacks.
-	Body* CreateBody(const BodyDef* def);
+	Body* CreateBody(const BodyDef& def);
 
 	/// Destroy a rigid body given a definition. No reference to the definition
 	/// is retained. This function is locked during callbacks.
@@ -157,18 +159,23 @@ public:
 
 	/// Enable/disable sleep.
 	void SetAllowSleeping(bool flag) noexcept;
+	
 	bool GetAllowSleeping() const noexcept { return m_allowSleep; }
 
 	/// Enable/disable warm starting. For testing.
 	void SetWarmStarting(bool flag) noexcept { m_warmStarting = flag; }
+
 	bool GetWarmStarting() const noexcept { return m_warmStarting; }
 
 	/// Enable/disable continuous physics. For testing.
 	void SetContinuousPhysics(bool flag) noexcept { m_continuousPhysics = flag; }
+
+	/// Gets whether continuous physics is enabled or not.
 	bool GetContinuousPhysics() const noexcept { return m_continuousPhysics; }
 
 	/// Enable/disable single stepped continuous physics. For testing.
 	void SetSubStepping(bool flag) noexcept { m_subStepping = flag; }
+
 	bool GetSubStepping() const noexcept { return m_subStepping; }
 
 	/// Get the number of broad-phase proxies.
@@ -189,8 +196,9 @@ public:
 	/// Get the balance of the dynamic tree.
 	size_type GetTreeBalance() const;
 
-	/// Get the quality metric of the dynamic tree. The smaller the better.
-	/// The minimum is 1.
+	/// Gets the quality metric of the dynamic tree.
+	/// @detail The smaller the better.
+	/// @return Value of zero or more.
 	float_t GetTreeQuality() const;
 
 	/// Change the global gravity vector.

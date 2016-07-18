@@ -35,7 +35,7 @@ public:
 		Body* ground = nullptr;
 		{
 			BodyDef bd;
-			ground = m_world->CreateBody(&bd);
+			ground = m_world->CreateBody(bd);
 
 			EdgeShape edge;
 			edge.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -58,11 +58,11 @@ public:
 
 			//bd.fixedRotation = true;
 			bd.position = Vec2(-10.0f, y);
-			Body* body1 = m_world->CreateBody(&bd);
+			Body* body1 = m_world->CreateBody(bd);
 			body1->CreateFixture(FixtureDef{&shape, 5.0f});
 
 			bd.position = Vec2(10.0f, y);
-			Body* body2 = m_world->CreateBody(&bd);
+			Body* body2 = m_world->CreateBody(bd);
 			body2->CreateFixture(FixtureDef{&shape, 5.0f});
 
 			PulleyJointDef pulleyDef;

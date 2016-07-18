@@ -30,7 +30,7 @@ public:
 		Body* ground = nullptr;
 		{
 			BodyDef bd;
-			ground = m_world->CreateBody(&bd);
+			ground = m_world->CreateBody(bd);
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -52,7 +52,7 @@ public:
 			RevoluteJointDef rjd;
 
 			bd.position = Vec2(-10.0f, 20.0f);
-			Body* body = m_world->CreateBody(&bd);
+			Body* body = m_world->CreateBody(bd);
 			body->CreateFixture(FixtureDef{&shape, 5.0f});
 
 			float_t w = 100.0f;
@@ -84,7 +84,7 @@ public:
 			fd.filter.maskBits = 1;
 			fd.shape = &circle_shape;
 
-			m_ball = m_world->CreateBody(&circle_bd);
+			m_ball = m_world->CreateBody(circle_bd);
 			m_ball->CreateFixture(fd);
 
 			PolygonShape polygon_shape;
@@ -94,7 +94,7 @@ public:
 			polygon_bd.position = Vec2(20.0f, 10.0f);
 			polygon_bd.type = BodyType::Dynamic;
 			polygon_bd.bullet = true;
-			Body* polygon_body = m_world->CreateBody(&polygon_bd);
+			Body* polygon_body = m_world->CreateBody(polygon_bd);
 			polygon_body->CreateFixture(FixtureDef{&polygon_shape, 2.0f});
 
 			RevoluteJointDef rjd;
@@ -109,7 +109,7 @@ public:
 		{
 			BodyDef bodyDef;
 			bodyDef.type = BodyType::Dynamic;
-			Body* body = m_world->CreateBody(&bodyDef);
+			Body* body = m_world->CreateBody(bodyDef);
 		
 			PolygonShape polyShape;		
 			Vec2 verts[3];

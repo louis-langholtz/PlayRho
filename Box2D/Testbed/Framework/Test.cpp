@@ -54,7 +54,7 @@ Test::Test()
 	m_stepCount = 0;
 
 	BodyDef bodyDef;
-	m_groundBody = m_world->CreateBody(&bodyDef);
+	m_groundBody = m_world->CreateBody(bodyDef);
 
 	memset(&m_maxProfile, 0, sizeof(Profile));
 	memset(&m_totalProfile, 0, sizeof(Profile));
@@ -243,7 +243,7 @@ void Test::LaunchBomb(const Vec2& position, const Vec2& velocity)
 	bd.type = BodyType::Dynamic;
 	bd.position = position;
 	bd.bullet = true;
-	m_bomb = m_world->CreateBody(&bd);
+	m_bomb = m_world->CreateBody(bd);
 	m_bomb->SetLinearVelocity(velocity);
 	
 	CircleShape circle(0.3f);
