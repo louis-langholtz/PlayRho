@@ -38,7 +38,7 @@ class ContactManager
 {
 public:
 	ContactManager(BlockAllocator* allocator, ContactFilter* filter, ContactListener* listener):
-		m_allocator(allocator), m_contactFilter(filter), m_contactListener(listener) {}
+		m_allocator{allocator}, m_contactFilter{filter}, m_contactListener{listener} {}
 	
 	// Broad-phase callback.
 	void AddPair(void* proxyUserDataA, void* proxyUserDataB)
