@@ -181,12 +181,12 @@ namespace {
 		return Position{translation, rotation};
 	}
 
-	void IntegratePositions(Island::PositionContainer& m_positions,Island::VelocityContainer& m_velocities, float_t h)
+	void IntegratePositions(Island::PositionContainer& positions, Island::VelocityContainer& velocities, float_t h)
 	{
 		auto i = size_t{0};
-		for (auto&& velocity: m_velocities)
+		for (auto&& velocity: velocities)
 		{
-			m_positions[i] += CalculateMovement(velocity, h);
+			positions[i] += CalculateMovement(velocity, h);
 			++i;
 		}
 	}
