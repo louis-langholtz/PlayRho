@@ -44,6 +44,7 @@ TEST(World, DefaultInit)
 	EXPECT_EQ(world.GetJoints().begin(), world.GetJoints().end());
 	
 	EXPECT_FALSE(world.GetSubStepping());
+	EXPECT_FALSE(world.IsLocked());
 }
 
 TEST(World, Init)
@@ -51,6 +52,7 @@ TEST(World, Init)
 	const auto gravity = Vec2{float_t(-4.2), float_t(3.4)};
 	World world{gravity};
 	EXPECT_EQ(world.GetGravity(), gravity);
+	EXPECT_FALSE(world.IsLocked());
 }
 
 TEST(World, SetGravity)
@@ -127,4 +129,44 @@ TEST(World, CreateAndDestroyJoint)
 	EXPECT_EQ(GetJointCount(world), joint_count_t(0));
 	EXPECT_TRUE(world.GetJoints().empty());
 	EXPECT_EQ(world.GetJoints().begin(), world.GetJoints().end());
+}
+
+TEST(World, GravitationalBodyMovement)
+{
+	auto p0 = Vec2{0, 1};
+	auto body_def = BodyDef{};
+	body_def.type = BodyType::Dynamic;
+	body_def.position = p0;
+
+	const auto a = float_t(-10);
+	const auto gravity = Vec2{0, a};
+	const auto t = float_t(.01);
+	
+	World world{gravity};
+
+	const auto body = world.CreateBody(body_def);
+	EXPECT_EQ(body->GetLinearVelocity().x, 0);
+	EXPECT_EQ(body->GetLinearVelocity().y, 0);
+	EXPECT_EQ(body->GetPosition().x, p0.x);
+	EXPECT_EQ(body->GetPosition().y, p0.y);
+
+	world.Step(t);
+	EXPECT_EQ(body->GetLinearVelocity().x, 0);
+	EXPECT_EQ(body->GetLinearVelocity().y, a * (t * 1));
+	EXPECT_EQ(body->GetPosition().x, p0.x);
+	EXPECT_EQ(body->GetPosition().y, p0.y + (body->GetLinearVelocity().y * t));
+
+	p0 = body->GetPosition();
+	world.Step(t);
+	EXPECT_EQ(body->GetLinearVelocity().x, 0);
+	EXPECT_EQ(body->GetLinearVelocity().y, a * (t * 2));
+	EXPECT_EQ(body->GetPosition().x, p0.x);
+	EXPECT_EQ(body->GetPosition().y, p0.y + (body->GetLinearVelocity().y * t));
+	
+	p0 = body->GetPosition();
+	world.Step(t);
+	EXPECT_EQ(body->GetLinearVelocity().x, 0);
+	EXPECT_EQ(body->GetLinearVelocity().y, a * (t * 3));
+	EXPECT_EQ(body->GetPosition().x, p0.x);
+	EXPECT_EQ(body->GetPosition().y, p0.y + (body->GetLinearVelocity().y * t));
 }

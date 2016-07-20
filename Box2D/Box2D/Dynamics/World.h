@@ -99,12 +99,19 @@ public:
 	/// @warning This function is locked during callbacks.
 	void DestroyJoint(Joint* joint);
 
-	/// Take a time step. This performs collision detection, integration,
-	/// and constraint solving.
-	/// @param timeStep the amount of time to simulate, this should not vary.
-	/// @param velocityIterations for the velocity constraint solver.
-	/// @param positionIterations for the position constraint solver.
-	void Step(float_t timeStep, unsigned velocityIterations, unsigned positionIterations);
+	/// Steps the world ahead by a given time amount.
+	/// @detail This performs position and velocity updating, collision detection, and constraint solving.
+	/// @note While body velocities are updated accordingly (per the sum of forces acting on them),
+	///   body positions (barring any collisions) are updated as if they had moved the entire time step
+	///   at those resulting velocities.
+	///   In other words, a body initially at p0 going v0 fast with a sum acceleration of a,
+	///   after time t and barring any collisions,
+	///   will have a new velocity (v1) of v0 + (a * t) and a new position (p1) of p0 + v1 * t.
+	/// @warning Varying the time step can lead to non-physical behaviors.
+	/// @param timeStep Amount of time to simulate (in seconds). This should not vary.
+	/// @param velocityIterations Number of iterations for the velocity constraint solver.
+	/// @param positionIterations Number of iterations for the position constraint solver.
+	void Step(float_t timeStep, unsigned velocityIterations = 8, unsigned positionIterations = 3);
 
 	/// Manually clear the force buffer on all bodies. By default, forces are cleared automatically
 	/// after each call to Step. The default behavior is modified by calling SetAutoClearForces.
