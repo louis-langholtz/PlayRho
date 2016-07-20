@@ -32,12 +32,13 @@ namespace box2d {
 /// @warning Do not use a zero or short length.
 struct DistanceJointDef : public JointDef
 {
-	constexpr DistanceJointDef() noexcept: JointDef(JointType::Distance) {}
+	constexpr DistanceJointDef() noexcept: JointDef{JointType::Distance} {}
+	DistanceJointDef(const DistanceJointDef& copy) = default;
 
-	/// Initialize the bodies, anchors, and length using the world
-	/// anchors.
-	void Initialize(Body* bodyA, Body* bodyB,
-					const Vec2& anchorA, const Vec2& anchorB);
+	/// Initialize the bodies, anchors, and length using the world anchors.
+	DistanceJointDef(Body* bodyA, Body* bodyB,
+					 const Vec2& anchorA = Vec2_zero, const Vec2& anchorB = Vec2_zero,
+					 float_t freq = float_t{0}, float_t damp = float_t{0}) noexcept;
 
 	/// The local anchor point relative to bodyA's origin.
 	Vec2 localAnchorA = Vec2_zero;

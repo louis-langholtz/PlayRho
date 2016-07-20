@@ -65,14 +65,20 @@ struct JointEdge
 	JointEdge* next;		///< the next joint edge in the body's joint list
 };
 
-/// Joint definitions are used to construct joints.
+/// Abstract base Joint Definition class.
+/// @detail Joint definitions are used to construct joints.
+/// @note This class is not meant to be directly instantiated; it is meant
+///   to be inherreted from.
 struct JointDef
 {
-	JointDef() = delete;
+	/// Deleted default constructor for abstract base class.
+	JointDef() = delete; // deleted to prevent direct instantiation.
+
+	JointDef(const JointDef& copy) = default;
 
 	constexpr JointDef(JointType t) noexcept: type(t) {}
 	constexpr JointDef(JointType t, Body* bA, Body* bB) noexcept:
-		type(t), bodyA(bA), bodyB(bB) {}
+		type{t}, bodyA{bA}, bodyB{bB} {}
 
 	/// The joint type is set automatically for concrete joint types.
 	const JointType type;

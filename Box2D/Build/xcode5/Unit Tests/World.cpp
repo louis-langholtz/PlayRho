@@ -9,6 +9,7 @@
 #include "gtest/gtest.h"
 #include <Box2D/Dynamics/World.h>
 #include <Box2D/Dynamics/Body.h>
+#include <Box2D/Dynamics/Joints/DistanceJoint.h>
 
 using namespace box2d;
 
@@ -73,22 +74,57 @@ TEST(World, SetContinuousPhysics)
 	EXPECT_TRUE(world.GetContinuousPhysics());
 }
 
-TEST(World, CreateAndDestoryBody)
+TEST(World, CreateAndDestroyBody)
 {
-	BodyDef bodyDef;
 	World world;
 	EXPECT_EQ(GetBodyCount(world), body_count_t(0));
 
-	const auto body = world.CreateBody(bodyDef);
+	const auto body = world.CreateBody(BodyDef{});
 	EXPECT_NE(body, nullptr);
 	EXPECT_EQ(GetBodyCount(world), body_count_t(1));
 	EXPECT_FALSE(world.GetBodies().empty());
 	EXPECT_EQ(world.GetBodies().size(), body_count_t(1));
 	EXPECT_NE(world.GetBodies().begin(), world.GetBodies().end());
+	const auto& first = *(world.GetBodies().begin());
+	EXPECT_EQ(body, &first);
 
 	world.DestroyBody(body);
 	EXPECT_EQ(GetBodyCount(world), body_count_t(0));
 	EXPECT_TRUE(world.GetBodies().empty());
 	EXPECT_EQ(world.GetBodies().size(), body_count_t(0));
 	EXPECT_EQ(world.GetBodies().begin(), world.GetBodies().end());
+}
+
+TEST(World, CreateAndDestroyJoint)
+{
+	World world;
+
+	const auto body1 = world.CreateBody(BodyDef{});
+	const auto body2 = world.CreateBody(BodyDef{});
+	EXPECT_NE(body1, nullptr);
+	EXPECT_NE(body2, nullptr);
+	EXPECT_EQ(GetBodyCount(world), body_count_t(2));
+	EXPECT_EQ(GetJointCount(world), joint_count_t(0));
+	EXPECT_TRUE(world.GetJoints().empty());
+	EXPECT_EQ(world.GetJoints().begin(), world.GetJoints().end());
+	
+	const auto anchorA = Vec2{float_t(+0.4), float_t(-1.2)};
+	const auto anchorB = Vec2{float_t(-2.3), float_t(+0.7)};
+	const auto joint = world.CreateJoint(DistanceJointDef{body1, body2, anchorA, anchorB});
+	EXPECT_EQ(GetJointCount(world), joint_count_t(1));
+	EXPECT_FALSE(world.GetJoints().empty());
+	EXPECT_NE(world.GetJoints().begin(), world.GetJoints().end());
+	const auto& first = *world.GetJoints().begin();
+	EXPECT_EQ(joint, &first);
+	EXPECT_EQ(joint->GetType(), JointType::Distance);
+	EXPECT_EQ(joint->GetBodyA(), body1);
+	EXPECT_EQ(joint->GetBodyB(), body2);
+	EXPECT_EQ(joint->GetAnchorA(), anchorA);
+	EXPECT_EQ(joint->GetAnchorB(), anchorB);
+	EXPECT_FALSE(joint->GetCollideConnected());
+
+	world.DestroyJoint(joint);
+	EXPECT_EQ(GetJointCount(world), joint_count_t(0));
+	EXPECT_TRUE(world.GetJoints().empty());
+	EXPECT_EQ(world.GetJoints().begin(), world.GetJoints().end());
 }

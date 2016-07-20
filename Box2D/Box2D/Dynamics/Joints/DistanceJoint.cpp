@@ -38,14 +38,12 @@ using namespace box2d;
 // K = J * invM * JT
 //   = invMass1 + invI1 * cross(r1, u)^2 + invMass2 + invI2 * cross(r2, u)^2
 
-void DistanceJointDef::Initialize(Body* b1, Body* b2,
-									const Vec2& anchor1, const Vec2& anchor2)
+DistanceJointDef::DistanceJointDef(Body* bA, Body* bB, const Vec2& anchor1, const Vec2& anchor2, float_t freq, float_t damp) noexcept:
+	JointDef{JointType::Distance, bA, bB},
+	localAnchorA{bA->GetLocalPoint(anchor1)}, localAnchorB{bB->GetLocalPoint(anchor2)},
+	length{Length(anchor2 - anchor1)},
+	frequencyHz{freq}, dampingRatio{damp}
 {
-	bodyA = b1;
-	bodyB = b2;
-	localAnchorA = bodyA->GetLocalPoint(anchor1);
-	localAnchorB = bodyB->GetLocalPoint(anchor2);
-	length = Length(anchor2 - anchor1);
 }
 
 DistanceJoint::DistanceJoint(const DistanceJointDef& def)

@@ -93,25 +93,13 @@ public:
 		body1->CreateFixture(fd1);
 		body2->CreateFixture(fd2);
 
-		DistanceJointDef djd;
-
 		// Using a soft distance constraint can reduce some jitter.
 		// It also makes the structure seem a bit more fluid by
 		// acting like a suspension system.
-		djd.dampingRatio = 0.5f;
-		djd.frequencyHz = 10.0f;
-
-		djd.Initialize(body1, body2, p2 + m_offset, p5 + m_offset);
-		m_world->CreateJoint(djd);
-
-		djd.Initialize(body1, body2, p3 + m_offset, p4 + m_offset);
-		m_world->CreateJoint(djd);
-
-		djd.Initialize(body1, m_wheel, p3 + m_offset, wheelAnchor + m_offset);
-		m_world->CreateJoint(djd);
-
-		djd.Initialize(body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset);
-		m_world->CreateJoint(djd);
+		m_world->CreateJoint(DistanceJointDef{body1, body2, p2 + m_offset, p5 + m_offset, float_t(10), float_t(0.5)});
+		m_world->CreateJoint(DistanceJointDef{body1, body2, p3 + m_offset, p4 + m_offset, float_t(10), float_t(0.5)});
+		m_world->CreateJoint(DistanceJointDef(body1, m_wheel, p3 + m_offset, wheelAnchor + m_offset, float_t(10), float_t(0.5)));
+		m_world->CreateJoint(DistanceJointDef(body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset, float_t(10), float_t(0.5)));
 
 		RevoluteJointDef rjd;
 
