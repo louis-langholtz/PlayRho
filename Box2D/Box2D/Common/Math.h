@@ -619,12 +619,12 @@ inline Vec2 GetUnitVector(Vec2 value)
 	return value * invLength;
 }
 
-constexpr inline bool operator == (Vec2 a, Vec2 b) noexcept
+constexpr inline bool operator == (const Vec2 a, const Vec2 b) noexcept
 {
 	return (a.x == b.x) && (a.y == b.y);
 }
 
-constexpr inline bool operator != (Vec2 a, Vec2 b) noexcept
+constexpr inline bool operator != (const Vec2 a, const Vec2 b) noexcept
 {
 	return (a.x != b.x) || (a.y != b.y);
 }
@@ -900,6 +900,50 @@ constexpr inline Position operator* (const Position& pos, const float_t scalar)
 constexpr inline Position operator* (const float_t scalar, const Position& pos)
 {
 	return Position{pos.c * scalar, pos.a * scalar};
+}
+	
+constexpr inline bool operator==(const Velocity& lhs, const Velocity& rhs)
+{
+	return (lhs.v == rhs.v) && (lhs.w == rhs.w);
+}
+
+constexpr inline bool operator!=(const Velocity& lhs, const Velocity& rhs)
+{
+	return (lhs.v != rhs.v) || (lhs.w != rhs.w);
+}
+
+constexpr inline Velocity& operator+= (Velocity& lhs, const Velocity& rhs)
+{
+	lhs.v += rhs.v;
+	lhs.w += rhs.w;
+	return lhs;
+}
+
+constexpr inline Velocity operator+ (const Velocity& lhs, const Velocity& rhs)
+{
+	return Velocity{lhs.v + rhs.v, lhs.w + rhs.w};
+}
+
+constexpr inline Velocity& operator-= (Velocity& lhs, const Velocity& rhs)
+{
+	lhs.v -= rhs.v;
+	lhs.w -= rhs.w;
+	return lhs;
+}
+
+constexpr inline Velocity operator- (const Velocity& lhs, const Velocity& rhs)
+{
+	return Velocity{lhs.v - rhs.v, lhs.w - rhs.w};
+}
+
+constexpr inline Velocity operator* (const Velocity& lhs, const float_t rhs)
+{
+	return Velocity{lhs.v * rhs, lhs.w * rhs};
+}
+
+constexpr inline Velocity operator* (const float_t lhs, const Velocity& rhs)
+{
+	return Velocity{rhs.v * lhs, rhs.w * lhs};
 }
 
 constexpr inline Transformation GetTransformation(const Vec2& ctr, const Rot& rot, const Vec2& local_ctr) noexcept
