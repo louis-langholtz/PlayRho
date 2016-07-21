@@ -9,7 +9,10 @@
 #include "gtest/gtest.h"
 #include <Box2D/Dynamics/World.h>
 #include <Box2D/Dynamics/Body.h>
+#include <Box2D/Dynamics/Fixture.h>
+#include <Box2D/Dynamics/Contacts/Contact.h>
 #include <Box2D/Dynamics/Joints/DistanceJoint.h>
+#include <Box2D/Collision/Shapes/CircleShape.h>
 
 using namespace box2d;
 
@@ -134,6 +137,7 @@ TEST(World, CreateAndDestroyJoint)
 TEST(World, GravitationalBodyMovement)
 {
 	auto p0 = Vec2{0, 1};
+
 	auto body_def = BodyDef{};
 	body_def.type = BodyType::Dynamic;
 	body_def.position = p0;
@@ -169,4 +173,104 @@ TEST(World, GravitationalBodyMovement)
 	EXPECT_EQ(body->GetLinearVelocity().y, a * (t * 3));
 	EXPECT_EQ(body->GetPosition().x, p0.x);
 	EXPECT_EQ(body->GetPosition().y, p0.y + (body->GetLinearVelocity().y * t));
+}
+
+class MyContactListener: public ContactListener
+{
+public:
+	void BeginContact(Contact* contact) override
+	{
+		contacting = true;
+		touching = contact->IsTouching();
+	}
+	
+	void EndContact(Contact* contact) override
+	{
+		contacting = false;
+		touching = contact->IsTouching();
+	}
+	
+	void PreSolve(Contact* contact, const Manifold* oldManifold) override
+	{
+		touching = contact->IsTouching();		
+	}
+	
+	bool contacting = false;
+	bool touching = false;
+};
+
+TEST(World, CollidingBodies)
+{
+	const auto x = float_t(10);
+
+	auto body_def = BodyDef{};
+	body_def.type = BodyType::Dynamic;
+	
+	MyContactListener listener;
+
+	const auto gravity = Vec2_zero;
+	World world{gravity};
+	EXPECT_EQ(world.GetGravity(), gravity);
+	world.SetContactListener(&listener);
+	
+	CircleShape shape{1};
+	FixtureDef fixtureDef;
+	fixtureDef.shape = &shape;
+	fixtureDef.density = 1;
+	fixtureDef.restitution = 0;
+
+	body_def.position = Vec2{-(x + 1), 0};
+	body_def.linearVelocity = Vec2{+x, 0};
+	const auto body1 = world.CreateBody(body_def);
+	ASSERT_NE(body1, nullptr);
+	const auto fixture1 = body1->CreateFixture(fixtureDef);
+	ASSERT_NE(fixture1, nullptr);
+
+	body_def.position = Vec2{+(x + 1), 0};
+	body_def.linearVelocity = Vec2{-x, 0};
+	const auto body2 = world.CreateBody(body_def);
+	ASSERT_NE(body2, nullptr);
+	const auto fixture2 = body2->CreateFixture(fixtureDef);
+	ASSERT_NE(fixture2, nullptr);
+	
+	const auto t = float_t(.01);
+	auto elapsed_time = float_t(0);
+	for (;;)
+	{
+		world.Step(t);
+		elapsed_time += t;
+		if (listener.contacting)
+		{
+			break;
+		}
+	}
+	EXPECT_TRUE(listener.touching);
+
+	EXPECT_FLOAT_EQ(elapsed_time, float_t(1.0099994));
+
+	const auto expected_x = float_t(0.9999944);
+	
+	EXPECT_EQ(body1->GetPosition().y, 0);
+	EXPECT_GT(body1->GetPosition().x, -1);
+	EXPECT_LT(body1->GetPosition().x, 0);
+	EXPECT_FLOAT_EQ(body1->GetPosition().x, -expected_x);
+
+	EXPECT_EQ(body2->GetPosition().y, 0);
+	EXPECT_LT(body2->GetPosition().x, +1);
+	EXPECT_GT(body2->GetPosition().x, 0);
+	EXPECT_FLOAT_EQ(body2->GetPosition().x, +expected_x);
+#if 0
+	for (;;)
+	{
+		world.Step(t);
+		elapsed_time += t;
+		if (!listener.contacting)
+		{
+			break;
+		}
+	}
+	EXPECT_FALSE(listener.touching);
+	
+	EXPECT_FLOAT_EQ(elapsed_time, float_t(1.0099994));
+#endif
 }
