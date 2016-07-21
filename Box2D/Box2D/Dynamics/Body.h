@@ -86,7 +86,7 @@ struct BodyDef
 	/// The world angle of the body in radians.
 	float_t angle = float_t{0};
 
-	/// The linear velocity of the body's origin in world co-ordinates.
+	/// The linear velocity of the body's origin in world co-ordinates (in m/s).
 	Vec2 linearVelocity = Vec2_zero;
 
 	/// The angular velocity of the body.
