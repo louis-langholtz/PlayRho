@@ -626,7 +626,7 @@ inline float_t Body::GetInertia() const noexcept
 
 inline MassData Body::GetMassData() const noexcept
 {
-	return MassData{m_mass, GetLocalCenter(), m_I + m_mass * LengthSquared(GetLocalCenter())};
+	return MassData{GetMass(), GetLocalCenter(), GetInertia()};
 }
 
 /// Gets the world coordinates of a point given in coordinates relative to the body's origin.
@@ -667,7 +667,8 @@ inline Vec2 GetLocalVector(const Body& body, const Vec2& worldVector) noexcept
 
 inline Vec2 Body::GetLinearVelocityFromWorldPoint(const Vec2& worldPoint) const noexcept
 {
-	return m_velocity.v + GetReversePerpendicular(worldPoint - GetWorldCenter()) * m_velocity.w;
+	const auto velocity = GetVelocity();
+	return velocity.v + GetReversePerpendicular(worldPoint - GetWorldCenter()) * velocity.w;
 }
 
 inline Vec2 Body::GetLinearVelocityFromLocalPoint(const Vec2& localPoint) const noexcept
