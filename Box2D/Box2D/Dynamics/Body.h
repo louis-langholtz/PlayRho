@@ -256,11 +256,6 @@ public:
 	/// the mass and you later want to reset the mass.
 	void ResetMassData();
 
-	/// Get the world coordinates of a vector given the local coordinates.
-	/// @param localVector a vector fixed in the body.
-	/// @return the same vector expressed in world coordinates.
-	Vec2 GetWorldVector(const Vec2& localVector) const noexcept;
-
 	/// Gets a local vector given a world vector.
 	/// @param worldVector vector in world coordinates.
 	/// @return the corresponding local vector.
@@ -648,9 +643,13 @@ inline Vec2 GetWorldPoint(const Body& body, const Vec2& localPoint) noexcept
 	return Transform(localPoint, body.GetTransformation());
 }
 
-inline Vec2 Body::GetWorldVector(const Vec2& localVector) const noexcept
+/// Gets the world coordinates of a vector given the local coordinates.
+/// @param body Body that the given vector is relative to.
+/// @param localVector a vector fixed in the body.
+/// @return the same vector expressed in world coordinates.
+inline Vec2 GetWorldVector(const Body& body, const Vec2& localVector) noexcept
 {
-	return Rotate(localVector, GetTransformation().q);
+	return Rotate(localVector, body.GetTransformation().q);
 }
 
 /// Gets a local point relative to the body's origin given a world point.

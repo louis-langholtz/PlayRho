@@ -347,7 +347,7 @@ float_t WheelJoint::GetJointTranslation() const
 	const auto pA = GetWorldPoint(*m_bodyA, m_localAnchorA);
 	const auto pB = GetWorldPoint(*m_bodyB, m_localAnchorB);
 	const auto d = pB - pA;
-	const auto axis = m_bodyA->GetWorldVector(m_localXAxisA);
+	const auto axis = GetWorldVector(*m_bodyA, m_localXAxisA);
 	return Dot(d, axis);
 }
 
