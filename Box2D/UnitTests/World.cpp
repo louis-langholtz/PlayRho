@@ -86,6 +86,11 @@ TEST(World, CreateAndDestroyBody)
 
 	const auto body = world.CreateBody(BodyDef{});
 	EXPECT_NE(body, nullptr);
+	EXPECT_EQ(body->GetType(), BodyType::Static);
+	EXPECT_FALSE(body->IsSpeedable());
+	EXPECT_FALSE(body->IsAccelerable());
+	EXPECT_TRUE(body->IsImpenetrable());
+
 	EXPECT_EQ(GetBodyCount(world), body_count_t(1));
 	EXPECT_FALSE(world.GetBodies().empty());
 	EXPECT_EQ(world.GetBodies().size(), body_count_t(1));
@@ -149,6 +154,9 @@ TEST(World, GravitationalBodyMovement)
 	World world{gravity};
 
 	const auto body = world.CreateBody(body_def);
+	ASSERT_NE(body, nullptr);
+	EXPECT_FALSE(body->IsImpenetrable());
+	EXPECT_EQ(body->GetType(), BodyType::Dynamic);
 	EXPECT_EQ(body->GetLinearVelocity().x, 0);
 	EXPECT_EQ(body->GetLinearVelocity().y, 0);
 	EXPECT_EQ(body->GetPosition().x, p0.x);
@@ -182,12 +190,18 @@ public:
 	{
 		contacting = true;
 		touching = contact->IsTouching();
+		
+		body_a[0] = contact->GetFixtureA()->GetBody()->GetPosition();
+		body_b[0] = contact->GetFixtureB()->GetBody()->GetPosition();
 	}
 	
 	void EndContact(Contact* contact) override
 	{
 		contacting = false;
 		touching = contact->IsTouching();
+
+		body_a[1] = contact->GetFixtureA()->GetBody()->GetPosition();
+		body_b[1] = contact->GetFixtureB()->GetBody()->GetPosition();
 	}
 	
 	void PreSolve(Contact* contact, const Manifold* oldManifold) override
@@ -197,9 +211,11 @@ public:
 	
 	bool contacting = false;
 	bool touching = false;
+	Vec2 body_a[2] = {Vec2_zero, Vec2_zero};
+	Vec2 body_b[2] = {Vec2_zero, Vec2_zero};
 };
 
-TEST(World, CollidingBodies)
+TEST(World, CollidingDynamicBodies)
 {
 	const auto x = float_t(10);
 
@@ -216,54 +232,74 @@ TEST(World, CollidingBodies)
 	CircleShape shape{1};
 	FixtureDef fixtureDef;
 	fixtureDef.shape = &shape;
-	fixtureDef.density = 1;
-	fixtureDef.restitution = 0;
+	fixtureDef.density = float_t(1);
+	fixtureDef.restitution = float_t(1); // changes where bodies will be after collision
 
 	body_def.position = Vec2{-(x + 1), 0};
 	body_def.linearVelocity = Vec2{+x, 0};
-	const auto body1 = world.CreateBody(body_def);
-	ASSERT_NE(body1, nullptr);
-	const auto fixture1 = body1->CreateFixture(fixtureDef);
+	const auto body_a = world.CreateBody(body_def);
+	ASSERT_NE(body_a, nullptr);
+	EXPECT_EQ(body_a->GetType(), BodyType::Dynamic);
+	EXPECT_TRUE(body_a->IsSpeedable());
+	EXPECT_TRUE(body_a->IsAccelerable());
+
+	const auto fixture1 = body_a->CreateFixture(fixtureDef);
 	ASSERT_NE(fixture1, nullptr);
 
 	body_def.position = Vec2{+(x + 1), 0};
 	body_def.linearVelocity = Vec2{-x, 0};
-	const auto body2 = world.CreateBody(body_def);
-	ASSERT_NE(body2, nullptr);
-	const auto fixture2 = body2->CreateFixture(fixtureDef);
+	const auto body_b = world.CreateBody(body_def);
+	ASSERT_NE(body_b, nullptr);
+	const auto fixture2 = body_b->CreateFixture(fixtureDef);
 	ASSERT_NE(fixture2, nullptr);
+	EXPECT_EQ(body_b->GetType(), BodyType::Dynamic);
+	EXPECT_TRUE(body_b->IsSpeedable());
+	EXPECT_TRUE(body_b->IsAccelerable());
+
+	EXPECT_EQ(body_a->GetLinearVelocity().x, +x);
+	EXPECT_EQ(body_a->GetLinearVelocity().y, 0);
+	EXPECT_EQ(body_b->GetLinearVelocity().x, -x);
+	EXPECT_EQ(body_b->GetLinearVelocity().y, 0);
 	
-	const auto t = float_t(.01);
+	const auto time_collision = float_t(1.0099994);
+	const auto time_inc = float_t(.01);
+	
 	auto elapsed_time = float_t(0);
 	for (;;)
 	{
-		world.Step(t);
-		elapsed_time += t;
+		world.Step(time_inc);
+		elapsed_time += time_inc;
 		if (listener.contacting)
 		{
 			break;
 		}
 	}
+
 	EXPECT_TRUE(listener.touching);
+	EXPECT_FLOAT_EQ(elapsed_time, time_collision);
+	EXPECT_EQ(body_a->GetPosition().y, 0);
+	EXPECT_EQ(body_b->GetPosition().y, 0);
 
-	EXPECT_FLOAT_EQ(elapsed_time, float_t(1.0099994));
-
-	const auto expected_x = float_t(0.9999944);
+	const auto tolerance = float_t(0.1);
 	
-	EXPECT_EQ(body1->GetPosition().y, 0);
-	EXPECT_GT(body1->GetPosition().x, -1);
-	EXPECT_LT(body1->GetPosition().x, 0);
-	EXPECT_FLOAT_EQ(body1->GetPosition().x, -expected_x);
+	// x position for body1 depends on restitution but it should be around -1
+	EXPECT_GT(body_a->GetPosition().x, float_t(-1) - tolerance);
+	EXPECT_LT(body_a->GetPosition().x, float_t(-1) + tolerance);
 
-	EXPECT_EQ(body2->GetPosition().y, 0);
-	EXPECT_LT(body2->GetPosition().x, +1);
-	EXPECT_GT(body2->GetPosition().x, 0);
-	EXPECT_FLOAT_EQ(body2->GetPosition().x, +expected_x);
-#if 0
+	// x position for body2 depends on restitution but it should be around +1
+	EXPECT_LT(body_b->GetPosition().x, float_t(+1) + tolerance);
+	EXPECT_GT(body_b->GetPosition().x, float_t(+1) - tolerance);
+	
+	// and their deltas from -1 and +1 should be about equal.
+	EXPECT_FLOAT_EQ(body_a->GetPosition().x + 1, 1 - body_b->GetPosition().x);
+
+	EXPECT_GT(listener.body_a[0].x, -1);
+	EXPECT_LT(listener.body_b[0].x, +1);
+
 	for (;;)
 	{
-		world.Step(t);
-		elapsed_time += t;
+		world.Step(time_inc);
+		elapsed_time += time_inc;
 		if (!listener.contacting)
 		{
 			break;
@@ -271,6 +307,22 @@ TEST(World, CollidingBodies)
 	}
 	EXPECT_FALSE(listener.touching);
 	
-	EXPECT_FLOAT_EQ(elapsed_time, float_t(1.0099994));
-#endif
+	EXPECT_FLOAT_EQ(elapsed_time, time_collision + time_inc);
+	
+	// collision should be fully resolved now...
+	EXPECT_LT(body_a->GetPosition().x, float_t(-1));
+	EXPECT_GT(body_b->GetPosition().x, float_t(+1));
+	
+	// and their deltas from -1 and +1 should be about equal.
+	EXPECT_FLOAT_EQ(body_a->GetPosition().x + 1, 1 - body_b->GetPosition().x);
+
+	EXPECT_LT(listener.body_a[1].x, -1);
+	EXPECT_GT(listener.body_b[1].x, +1);
+	
+	// confirm conservation of momentum:
+	// velocities should now be same magnitude but in opposite directions
+	EXPECT_EQ(body_a->GetLinearVelocity().x, -x);
+	EXPECT_EQ(body_a->GetLinearVelocity().y, 0);
+	EXPECT_EQ(body_b->GetLinearVelocity().x, +x);
+	EXPECT_EQ(body_b->GetLinearVelocity().y, 0);
 }

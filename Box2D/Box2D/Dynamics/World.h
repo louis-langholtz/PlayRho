@@ -99,7 +99,7 @@ public:
 	/// @warning This function is locked during callbacks.
 	void DestroyJoint(Joint* joint);
 
-	/// Steps the world ahead by a given time amount.
+	/// Steps the world ahead by a given time amount potentially moving non-static bodies.
 	/// @detail This performs position and velocity updating, collision detection, and constraint solving.
 	/// @note While body velocities are updated accordingly (per the sum of forces acting on them),
 	///   body positions (barring any collisions) are updated as if they had moved the entire time step
@@ -108,11 +108,18 @@ public:
 	///   after time t and barring any collisions,
 	///   will have a new velocity (v1) of v0 + (a * t) and a new position (p1) of p0 + v1 * t.
 	/// @warning Varying the time step can lead to non-physical behaviors.
+	/// @post Static bodies are unmoved.
+	/// @post Kinetic bodies are moved based on their previous velocities.
+	/// @post Dynamic bodies are moved based on their previous velocities, gravity,
+	///   applied forces, applied impulses, masses, damping, and the restitution and friction values
+	///   of their fixtures when they experience collisions.	
 	/// @param timeStep Amount of time to simulate (in seconds). This should not vary.
 	/// @param velocityIterations Number of iterations for the velocity constraint solver.
 	/// @param positionIterations Number of iterations for the position constraint solver.
 	void Step(float_t timeStep, unsigned velocityIterations = 8, unsigned positionIterations = 3);
 
+	/// Clears forces.
+	/// @detail
 	/// Manually clear the force buffer on all bodies. By default, forces are cleared automatically
 	/// after each call to Step. The default behavior is modified by calling SetAutoClearForces.
 	/// The purpose of this function is to support sub-stepping. Sub-stepping is often used to maintain
