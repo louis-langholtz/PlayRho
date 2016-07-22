@@ -256,11 +256,6 @@ public:
 	/// the mass and you later want to reset the mass.
 	void ResetMassData();
 
-	/// Gets a local vector given a world vector.
-	/// @param worldVector vector in world coordinates.
-	/// @return the corresponding local vector.
-	Vec2 GetLocalVector(const Vec2& worldVector) const noexcept;
-
 	/// Get the world linear velocity of a world point attached to this body.
 	/// @param worldPoint point in world coordinates.
 	/// @return the world velocity of a point.
@@ -661,9 +656,13 @@ inline Vec2 GetLocalPoint(const Body& body, const Vec2& worldPoint) noexcept
 	return InverseTransform(worldPoint, body.GetTransformation());
 }
 
-inline Vec2 Body::GetLocalVector(const Vec2& worldVector) const noexcept
+/// Gets a local vector given a world vector.
+/// @param body Body that the returned vector should be relative to.
+/// @param worldVector vector in world coordinates.
+/// @return the corresponding local vector.
+inline Vec2 GetLocalVector(const Body& body, const Vec2& worldVector) noexcept
 {
-	return InverseRotate(worldVector, GetTransformation().q);
+	return InverseRotate(worldVector, body.GetTransformation().q);
 }
 
 inline Vec2 Body::GetLinearVelocityFromWorldPoint(const Vec2& worldPoint) const noexcept

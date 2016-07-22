@@ -45,7 +45,7 @@ void WheelJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor, const Vec
 	bodyB = bB;
 	localAnchorA = GetLocalPoint(*bodyA, anchor);
 	localAnchorB = GetLocalPoint(*bodyB, anchor);
-	localAxisA = bodyA->GetLocalVector(axis);
+	localAxisA = GetLocalVector(*bodyA, axis);
 }
 
 WheelJoint::WheelJoint(const WheelJointDef& def)
