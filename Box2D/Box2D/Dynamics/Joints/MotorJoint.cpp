@@ -39,7 +39,7 @@ void MotorJointDef::Initialize(Body* bA, Body* bB)
 {
 	bodyA = bA;
 	bodyB = bB;
-	linearOffset = bodyA->GetLocalPoint(bodyB->GetPosition());
+	linearOffset = GetLocalPoint(*bodyA, bodyB->GetPosition());
 	angularOffset = bodyB->GetAngle() - bodyA->GetAngle();
 }
 

@@ -44,8 +44,8 @@ void PulleyJointDef::Initialize(Body* bA, Body* bB,
 	bodyB = bB;
 	groundAnchorA = groundA;
 	groundAnchorB = groundB;
-	localAnchorA = bodyA->GetLocalPoint(anchorA);
-	localAnchorB = bodyB->GetLocalPoint(anchorB);
+	localAnchorA = GetLocalPoint(*bodyA, anchorA);
+	localAnchorB = GetLocalPoint(*bodyB, anchorB);
 	lengthA = Length(anchorA - groundA);
 	lengthB = Length(anchorB - groundB);
 	ratio = r;

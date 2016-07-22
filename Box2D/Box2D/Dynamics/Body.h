@@ -261,11 +261,6 @@ public:
 	/// @return the same vector expressed in world coordinates.
 	Vec2 GetWorldVector(const Vec2& localVector) const noexcept;
 
-	/// Gets a local point relative to the body's origin given a world point.
-	/// @param worldPoint point in world coordinates.
-	/// @return the corresponding local point relative to the body's origin.
-	Vec2 GetLocalPoint(const Vec2& worldPoint) const noexcept;
-
 	/// Gets a local vector given a world vector.
 	/// @param worldVector vector in world coordinates.
 	/// @return the corresponding local vector.
@@ -658,9 +653,13 @@ inline Vec2 Body::GetWorldVector(const Vec2& localVector) const noexcept
 	return Rotate(localVector, GetTransformation().q);
 }
 
-inline Vec2 Body::GetLocalPoint(const Vec2& worldPoint) const noexcept
+/// Gets a local point relative to the body's origin given a world point.
+/// @param body Body that the returned point should be relative to.
+/// @param worldPoint point in world coordinates.
+/// @return the corresponding local point relative to the body's origin.
+inline Vec2 GetLocalPoint(const Body& body, const Vec2& worldPoint) noexcept
 {
-	return InverseTransform(worldPoint, GetTransformation());
+	return InverseTransform(worldPoint, body.GetTransformation());
 }
 
 inline Vec2 Body::GetLocalVector(const Vec2& worldVector) const noexcept

@@ -40,7 +40,7 @@ using namespace box2d;
 
 DistanceJointDef::DistanceJointDef(Body* bA, Body* bB, const Vec2& anchor1, const Vec2& anchor2, float_t freq, float_t damp) noexcept:
 	JointDef{JointType::Distance, bA, bB},
-	localAnchorA{bA->GetLocalPoint(anchor1)}, localAnchorB{bB->GetLocalPoint(anchor2)},
+	localAnchorA{GetLocalPoint(*bA, anchor1)}, localAnchorB{GetLocalPoint(*bB, anchor2)},
 	length{Length(anchor2 - anchor1)},
 	frequencyHz{freq}, dampingRatio{damp}
 {

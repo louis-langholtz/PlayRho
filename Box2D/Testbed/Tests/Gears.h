@@ -101,8 +101,8 @@ public:
 			RevoluteJointDef jd1;
 			jd1.bodyA = ground;
 			jd1.bodyB = body1;
-			jd1.localAnchorA = ground->GetLocalPoint(bd1.position);
-			jd1.localAnchorB = body1->GetLocalPoint(bd1.position);
+			jd1.localAnchorA = GetLocalPoint(*ground, bd1.position);
+			jd1.localAnchorB = GetLocalPoint(*body1, bd1.position);
 			jd1.referenceAngle = body1->GetAngle() - ground->GetAngle();
 			m_joint1 = (RevoluteJoint*)m_world->CreateJoint(jd1);
 

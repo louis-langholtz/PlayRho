@@ -94,8 +94,8 @@ void PrismaticJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor, const
 {
 	bodyA = bA;
 	bodyB = bB;
-	localAnchorA = bodyA->GetLocalPoint(anchor);
-	localAnchorB = bodyB->GetLocalPoint(anchor);
+	localAnchorA = GetLocalPoint(*bodyA, anchor);
+	localAnchorB = GetLocalPoint(*bodyB, anchor);
 	localAxisA = bodyA->GetLocalVector(axis);
 	referenceAngle = bodyB->GetAngle() - bodyA->GetAngle();
 }

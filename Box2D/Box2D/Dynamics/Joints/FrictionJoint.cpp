@@ -39,8 +39,8 @@ void FrictionJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor)
 {
 	bodyA = bA;
 	bodyB = bB;
-	localAnchorA = bodyA->GetLocalPoint(anchor);
-	localAnchorB = bodyB->GetLocalPoint(anchor);
+	localAnchorA = GetLocalPoint(*bodyA, anchor);
+	localAnchorB = GetLocalPoint(*bodyB, anchor);
 }
 
 FrictionJoint::FrictionJoint(const FrictionJointDef& def)
