@@ -153,7 +153,7 @@ public:
 		case GLFW_KEY_W:
 			{
 				Vec2 f = m_body->GetWorldVector(Vec2(float_t{0}, -200.0f));
-				Vec2 p = m_body->GetWorldPoint(Vec2(float_t{0}, 2.0f));
+				Vec2 p = GetWorldPoint(*m_body, Vec2(float_t{0}, 2.0f));
 				m_body->ApplyForce(f, p, true);
 			}
 			break;

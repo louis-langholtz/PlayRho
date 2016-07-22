@@ -375,12 +375,12 @@ bool GearJoint::SolvePositionConstraints(const SolverData& data)
 
 Vec2 GearJoint::GetAnchorA() const
 {
-	return m_bodyA->GetWorldPoint(m_localAnchorA);
+	return GetWorldPoint(*m_bodyA, m_localAnchorA);
 }
 
 Vec2 GearJoint::GetAnchorB() const
 {
-	return m_bodyB->GetWorldPoint(m_localAnchorB);
+	return GetWorldPoint(*m_bodyB, m_localAnchorB);
 }
 
 Vec2 GearJoint::GetReactionForce(float_t inv_dt) const

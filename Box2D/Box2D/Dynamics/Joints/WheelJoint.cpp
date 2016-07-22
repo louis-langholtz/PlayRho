@@ -324,12 +324,12 @@ bool WheelJoint::SolvePositionConstraints(const SolverData& data)
 
 Vec2 WheelJoint::GetAnchorA() const
 {
-	return m_bodyA->GetWorldPoint(m_localAnchorA);
+	return GetWorldPoint(*m_bodyA, m_localAnchorA);
 }
 
 Vec2 WheelJoint::GetAnchorB() const
 {
-	return m_bodyB->GetWorldPoint(m_localAnchorB);
+	return GetWorldPoint(*m_bodyB, m_localAnchorB);
 }
 
 Vec2 WheelJoint::GetReactionForce(float_t inv_dt) const
@@ -344,8 +344,8 @@ float_t WheelJoint::GetReactionTorque(float_t inv_dt) const
 
 float_t WheelJoint::GetJointTranslation() const
 {
-	const auto pA = m_bodyA->GetWorldPoint(m_localAnchorA);
-	const auto pB = m_bodyB->GetWorldPoint(m_localAnchorB);
+	const auto pA = GetWorldPoint(*m_bodyA, m_localAnchorA);
+	const auto pB = GetWorldPoint(*m_bodyB, m_localAnchorB);
 	const auto d = pB - pA;
 	const auto axis = m_bodyA->GetWorldVector(m_localXAxisA);
 	return Dot(d, axis);

@@ -256,11 +256,6 @@ public:
 	/// the mass and you later want to reset the mass.
 	void ResetMassData();
 
-	/// Get the world coordinates of a point given the local coordinates.
-	/// @param localPoint a point on the body measured relative the the body's origin.
-	/// @return the same point expressed in world coordinates.
-	Vec2 GetWorldPoint(const Vec2& localPoint) const noexcept;
-
 	/// Get the world coordinates of a vector given the local coordinates.
 	/// @param localVector a vector fixed in the body.
 	/// @return the same vector expressed in world coordinates.
@@ -649,24 +644,28 @@ inline MassData Body::GetMassData() const noexcept
 	return MassData{m_mass, GetLocalCenter(), m_I + m_mass * LengthSquared(GetLocalCenter())};
 }
 
-inline Vec2 Body::GetWorldPoint(const Vec2& localPoint) const noexcept
+/// Gets the world coordinates of a point given in coordinates relative to the body's origin.
+/// @param body Body that the given point is relative to.
+/// @param localPoint a point measured relative the the body's origin.
+/// @return the same point expressed in world coordinates.
+inline Vec2 GetWorldPoint(const Body& body, const Vec2& localPoint) noexcept
 {
-	return Transform(localPoint, m_xf);
+	return Transform(localPoint, body.GetTransformation());
 }
 
 inline Vec2 Body::GetWorldVector(const Vec2& localVector) const noexcept
 {
-	return Rotate(localVector, m_xf.q);
+	return Rotate(localVector, GetTransformation().q);
 }
 
 inline Vec2 Body::GetLocalPoint(const Vec2& worldPoint) const noexcept
 {
-	return InverseTransform(worldPoint, m_xf);
+	return InverseTransform(worldPoint, GetTransformation());
 }
 
 inline Vec2 Body::GetLocalVector(const Vec2& worldVector) const noexcept
 {
-	return InverseRotate(worldVector, m_xf.q);
+	return InverseRotate(worldVector, GetTransformation().q);
 }
 
 inline Vec2 Body::GetLinearVelocityFromWorldPoint(const Vec2& worldPoint) const noexcept
@@ -676,7 +675,7 @@ inline Vec2 Body::GetLinearVelocityFromWorldPoint(const Vec2& worldPoint) const 
 
 inline Vec2 Body::GetLinearVelocityFromLocalPoint(const Vec2& localPoint) const noexcept
 {
-	return GetLinearVelocityFromWorldPoint(GetWorldPoint(localPoint));
+	return GetLinearVelocityFromWorldPoint(GetWorldPoint(*this, localPoint));
 }
 
 inline float_t Body::GetLinearDamping() const noexcept

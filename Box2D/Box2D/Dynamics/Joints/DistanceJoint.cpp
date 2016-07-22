@@ -220,12 +220,12 @@ bool DistanceJoint::SolvePositionConstraints(const SolverData& data)
 
 Vec2 DistanceJoint::GetAnchorA() const
 {
-	return m_bodyA->GetWorldPoint(m_localAnchorA);
+	return GetWorldPoint(*m_bodyA, m_localAnchorA);
 }
 
 Vec2 DistanceJoint::GetAnchorB() const
 {
-	return m_bodyB->GetWorldPoint(m_localAnchorB);
+	return GetWorldPoint(*m_bodyB, m_localAnchorB);
 }
 
 Vec2 DistanceJoint::GetReactionForce(float_t inv_dt) const

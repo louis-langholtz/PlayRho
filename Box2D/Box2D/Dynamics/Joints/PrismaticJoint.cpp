@@ -480,12 +480,12 @@ bool PrismaticJoint::SolvePositionConstraints(const SolverData& data)
 
 Vec2 PrismaticJoint::GetAnchorA() const
 {
-	return m_bodyA->GetWorldPoint(m_localAnchorA);
+	return GetWorldPoint(*m_bodyA, m_localAnchorA);
 }
 
 Vec2 PrismaticJoint::GetAnchorB() const
 {
-	return m_bodyB->GetWorldPoint(m_localAnchorB);
+	return GetWorldPoint(*m_bodyB, m_localAnchorB);
 }
 
 Vec2 PrismaticJoint::GetReactionForce(float_t inv_dt) const
@@ -500,8 +500,8 @@ float_t PrismaticJoint::GetReactionTorque(float_t inv_dt) const
 
 float_t PrismaticJoint::GetJointTranslation() const
 {
-	const auto pA = m_bodyA->GetWorldPoint(m_localAnchorA);
-	const auto pB = m_bodyB->GetWorldPoint(m_localAnchorB);
+	const auto pA = GetWorldPoint(*m_bodyA, m_localAnchorA);
+	const auto pB = GetWorldPoint(*m_bodyB, m_localAnchorB);
 	const auto d = pB - pA;
 	const auto axis = m_bodyA->GetWorldVector(m_localXAxisA);
 

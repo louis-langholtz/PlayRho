@@ -71,8 +71,8 @@ public:
 			jd.bodyB = m_bodies[0];
 			jd.localAnchorA = Vec2(-10.0f, 0.0f);
 			jd.localAnchorB = Vec2(-0.5f, -0.5f);
-			p1 = jd.bodyA->GetWorldPoint(jd.localAnchorA);
-			p2 = jd.bodyB->GetWorldPoint(jd.localAnchorB);
+			p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
+			p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
 			d = p2 - p1;
 			jd.length = Length(d);
 			m_joints[0] = m_world->CreateJoint(jd);
@@ -81,8 +81,8 @@ public:
 			jd.bodyB = m_bodies[1];
 			jd.localAnchorA = Vec2(10.0f, 0.0f);
 			jd.localAnchorB = Vec2(0.5f, -0.5f);
-			p1 = jd.bodyA->GetWorldPoint(jd.localAnchorA);
-			p2 = jd.bodyB->GetWorldPoint(jd.localAnchorB);
+			p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
+			p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
 			d = p2 - p1;
 			jd.length = Length(d);
 			m_joints[1] = m_world->CreateJoint(jd);
@@ -91,8 +91,8 @@ public:
 			jd.bodyB = m_bodies[2];
 			jd.localAnchorA = Vec2(10.0f, 20.0f);
 			jd.localAnchorB = Vec2(0.5f, 0.5f);
-			p1 = jd.bodyA->GetWorldPoint(jd.localAnchorA);
-			p2 = jd.bodyB->GetWorldPoint(jd.localAnchorB);
+			p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
+			p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
 			d = p2 - p1;
 			jd.length = Length(d);
 			m_joints[2] = m_world->CreateJoint(jd);
@@ -101,8 +101,8 @@ public:
 			jd.bodyB = m_bodies[3];
 			jd.localAnchorA = Vec2(-10.0f, 20.0f);
 			jd.localAnchorB = Vec2(-0.5f, 0.5f);
-			p1 = jd.bodyA->GetWorldPoint(jd.localAnchorA);
-			p2 = jd.bodyB->GetWorldPoint(jd.localAnchorB);
+			p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
+			p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
 			d = p2 - p1;
 			jd.length = Length(d);
 			m_joints[3] = m_world->CreateJoint(jd);
@@ -111,8 +111,8 @@ public:
 			jd.bodyB = m_bodies[1];
 			jd.localAnchorA = Vec2(0.5f, 0.0f);
 			jd.localAnchorB = Vec2(-0.5f, 0.0f);;
-			p1 = jd.bodyA->GetWorldPoint(jd.localAnchorA);
-			p2 = jd.bodyB->GetWorldPoint(jd.localAnchorB);
+			p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
+			p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
 			d = p2 - p1;
 			jd.length = Length(d);
 			m_joints[4] = m_world->CreateJoint(jd);
@@ -121,8 +121,8 @@ public:
 			jd.bodyB = m_bodies[2];
 			jd.localAnchorA = Vec2(0.0f, 0.5f);
 			jd.localAnchorB = Vec2(0.0f, -0.5f);
-			p1 = jd.bodyA->GetWorldPoint(jd.localAnchorA);
-			p2 = jd.bodyB->GetWorldPoint(jd.localAnchorB);
+			p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
+			p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
 			d = p2 - p1;
 			jd.length = Length(d);
 			m_joints[5] = m_world->CreateJoint(jd);
@@ -131,8 +131,8 @@ public:
 			jd.bodyB = m_bodies[3];
 			jd.localAnchorA = Vec2(-0.5f, 0.0f);
 			jd.localAnchorB = Vec2(0.5f, 0.0f);
-			p1 = jd.bodyA->GetWorldPoint(jd.localAnchorA);
-			p2 = jd.bodyB->GetWorldPoint(jd.localAnchorB);
+			p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
+			p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
 			d = p2 - p1;
 			jd.length = Length(d);
 			m_joints[6] = m_world->CreateJoint(jd);
@@ -141,8 +141,8 @@ public:
 			jd.bodyB = m_bodies[0];
 			jd.localAnchorA = Vec2(0.0f, -0.5f);
 			jd.localAnchorB = Vec2(0.0f, 0.5f);
-			p1 = jd.bodyA->GetWorldPoint(jd.localAnchorA);
-			p2 = jd.bodyB->GetWorldPoint(jd.localAnchorB);
+			p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
+			p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
 			d = p2 - p1;
 			jd.length = Length(d);
 			m_joints[7] = m_world->CreateJoint(jd);

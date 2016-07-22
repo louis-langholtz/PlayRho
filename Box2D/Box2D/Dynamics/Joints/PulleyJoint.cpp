@@ -262,12 +262,12 @@ bool PulleyJoint::SolvePositionConstraints(const SolverData& data)
 
 Vec2 PulleyJoint::GetAnchorA() const
 {
-	return m_bodyA->GetWorldPoint(m_localAnchorA);
+	return GetWorldPoint(*m_bodyA, m_localAnchorA);
 }
 
 Vec2 PulleyJoint::GetAnchorB() const
 {
-	return m_bodyB->GetWorldPoint(m_localAnchorB);
+	return GetWorldPoint(*m_bodyB, m_localAnchorB);
 }
 
 Vec2 PulleyJoint::GetReactionForce(float_t inv_dt) const
@@ -308,12 +308,12 @@ float_t PulleyJoint::GetRatio() const
 
 float_t PulleyJoint::GetCurrentLengthA() const
 {
-	return Length(m_bodyA->GetWorldPoint(m_localAnchorA) - m_groundAnchorA);
+	return Length(GetWorldPoint(*m_bodyA, m_localAnchorA) - m_groundAnchorA);
 }
 
 float_t PulleyJoint::GetCurrentLengthB() const
 {
-	return Length(m_bodyB->GetWorldPoint(m_localAnchorB) - m_groundAnchorB);
+	return Length(GetWorldPoint(*m_bodyB, m_localAnchorB) - m_groundAnchorB);
 }
 
 void PulleyJoint::Dump()

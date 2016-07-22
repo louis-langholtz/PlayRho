@@ -200,7 +200,7 @@ Vec2 MouseJoint::GetAnchorA() const
 
 Vec2 MouseJoint::GetAnchorB() const
 {
-	return m_bodyB->GetWorldPoint(m_localAnchorB);
+	return GetWorldPoint(*m_bodyB, m_localAnchorB);
 }
 
 Vec2 MouseJoint::GetReactionForce(float_t inv_dt) const

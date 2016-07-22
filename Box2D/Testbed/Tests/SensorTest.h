@@ -153,7 +153,7 @@ public:
 			Body* ground = m_sensor->GetBody();
 
 			CircleShape* circle = (CircleShape*)m_sensor->GetShape();
-			Vec2 center = ground->GetWorldPoint(circle->GetPosition());
+			Vec2 center = GetWorldPoint(*ground, circle->GetPosition());
 
 			Vec2 position = body->GetPosition();
 
