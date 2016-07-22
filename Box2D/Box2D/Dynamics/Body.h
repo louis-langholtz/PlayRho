@@ -1,21 +1,21 @@
 /*
-* Original work Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2016 Louis Langholtz https://github.com/louis-langholtz/Box2D
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2016 Louis Langholtz https://github.com/louis-langholtz/Box2D
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #ifndef B2_BODY_H
 #define B2_BODY_H
@@ -255,16 +255,6 @@ public:
 	/// This normally does not need to be called unless you called SetMassData to override
 	/// the mass and you later want to reset the mass.
 	void ResetMassData();
-
-	/// Get the world linear velocity of a world point attached to this body.
-	/// @param worldPoint point in world coordinates.
-	/// @return the world velocity of a point.
-	Vec2 GetLinearVelocityFromWorldPoint(const Vec2& worldPoint) const noexcept;
-
-	/// Get the world velocity of a local point.
-	/// @param localPoint point in local coordinates.
-	/// @return the world velocity of a point.
-	Vec2 GetLinearVelocityFromLocalPoint(const Vec2& localPoint) const noexcept;
 
 	/// Get the linear damping of the body.
 	float_t GetLinearDamping() const noexcept;
@@ -629,53 +619,6 @@ inline MassData Body::GetMassData() const noexcept
 	return MassData{GetMass(), GetLocalCenter(), GetInertia()};
 }
 
-/// Gets the world coordinates of a point given in coordinates relative to the body's origin.
-/// @param body Body that the given point is relative to.
-/// @param localPoint a point measured relative the the body's origin.
-/// @return the same point expressed in world coordinates.
-inline Vec2 GetWorldPoint(const Body& body, const Vec2& localPoint) noexcept
-{
-	return Transform(localPoint, body.GetTransformation());
-}
-
-/// Gets the world coordinates of a vector given the local coordinates.
-/// @param body Body that the given vector is relative to.
-/// @param localVector a vector fixed in the body.
-/// @return the same vector expressed in world coordinates.
-inline Vec2 GetWorldVector(const Body& body, const Vec2& localVector) noexcept
-{
-	return Rotate(localVector, body.GetTransformation().q);
-}
-
-/// Gets a local point relative to the body's origin given a world point.
-/// @param body Body that the returned point should be relative to.
-/// @param worldPoint point in world coordinates.
-/// @return the corresponding local point relative to the body's origin.
-inline Vec2 GetLocalPoint(const Body& body, const Vec2& worldPoint) noexcept
-{
-	return InverseTransform(worldPoint, body.GetTransformation());
-}
-
-/// Gets a local vector given a world vector.
-/// @param body Body that the returned vector should be relative to.
-/// @param worldVector vector in world coordinates.
-/// @return the corresponding local vector.
-inline Vec2 GetLocalVector(const Body& body, const Vec2& worldVector) noexcept
-{
-	return InverseRotate(worldVector, body.GetTransformation().q);
-}
-
-inline Vec2 Body::GetLinearVelocityFromWorldPoint(const Vec2& worldPoint) const noexcept
-{
-	const auto velocity = GetVelocity();
-	return velocity.v + GetReversePerpendicular(worldPoint - GetWorldCenter()) * velocity.w;
-}
-
-inline Vec2 Body::GetLinearVelocityFromLocalPoint(const Vec2& localPoint) const noexcept
-{
-	return GetLinearVelocityFromWorldPoint(GetWorldPoint(*this, localPoint));
-}
-
 inline float_t Body::GetLinearDamping() const noexcept
 {
 	return m_linearDamping;
@@ -959,6 +902,59 @@ inline void Body::UnsetInIsland() noexcept
 inline bool Body::IsValidIslandIndex() const noexcept
 {
 	return IsInIsland() && (m_islandIndex != InvalidIslandIndex);
+}
+
+/// Gets the world coordinates of a point given in coordinates relative to the body's origin.
+/// @param body Body that the given point is relative to.
+/// @param localPoint a point measured relative the the body's origin.
+/// @return the same point expressed in world coordinates.
+inline Vec2 GetWorldPoint(const Body& body, const Vec2& localPoint) noexcept
+{
+	return Transform(localPoint, body.GetTransformation());
+}
+
+/// Gets the world coordinates of a vector given the local coordinates.
+/// @param body Body that the given vector is relative to.
+/// @param localVector a vector fixed in the body.
+/// @return the same vector expressed in world coordinates.
+inline Vec2 GetWorldVector(const Body& body, const Vec2& localVector) noexcept
+{
+	return Rotate(localVector, body.GetTransformation().q);
+}
+
+/// Gets a local point relative to the body's origin given a world point.
+/// @param body Body that the returned point should be relative to.
+/// @param worldPoint point in world coordinates.
+/// @return the corresponding local point relative to the body's origin.
+inline Vec2 GetLocalPoint(const Body& body, const Vec2& worldPoint) noexcept
+{
+	return InverseTransform(worldPoint, body.GetTransformation());
+}
+
+/// Gets a local vector given a world vector.
+/// @param body Body that the returned vector should be relative to.
+/// @param worldVector vector in world coordinates.
+/// @return the corresponding local vector.
+inline Vec2 GetLocalVector(const Body& body, const Vec2& worldVector) noexcept
+{
+	return InverseRotate(worldVector, body.GetTransformation().q);
+}
+
+/// Get the world linear velocity of a world point attached to this body.
+/// @param worldPoint point in world coordinates.
+/// @return the world velocity of a point.
+inline Vec2 GetLinearVelocityFromWorldPoint(const Body& body, const Vec2& worldPoint) noexcept
+{
+	const auto velocity = body.GetVelocity();
+	return velocity.v + GetReversePerpendicular(worldPoint - body.GetWorldCenter()) * velocity.w;
+}
+
+/// Get the world velocity of a local point.
+/// @param localPoint point in local coordinates.
+/// @return the world velocity of a point.
+inline Vec2 GetLinearVelocityFromLocalPoint(const Body& body, const Vec2& localPoint) noexcept
+{
+	return GetLinearVelocityFromWorldPoint(body, GetWorldPoint(body, localPoint));
 }
 
 } // namespace box2d
