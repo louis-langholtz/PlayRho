@@ -115,7 +115,7 @@ public:
 				m_bullet = m_world->CreateBody(bd);
 				m_bullet->CreateFixture(fd);
 
-				m_bullet->SetLinearVelocity(Vec2(400.0f, 0.0f));
+				m_bullet->SetVelocity(Velocity{Vec2(400.0f, 0.0f), 0});
 			}
 			break;
                 

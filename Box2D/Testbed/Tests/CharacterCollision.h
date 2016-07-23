@@ -232,9 +232,9 @@ public:
 
 	void Step(Settings* settings)
 	{
-		Vec2 v = m_character->GetLinearVelocity();
-		v.x = -5.0f;
-		m_character->SetLinearVelocity(v);
+		auto velocity = m_character->GetVelocity();
+		velocity.v.x = -5.0f;
+		m_character->SetVelocity(velocity);
 
 		Test::Step(settings);
 		g_debugDraw.DrawString(5, m_textLine, "This tests various character collision shapes.");

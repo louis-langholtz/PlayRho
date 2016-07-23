@@ -56,9 +56,8 @@ public:
 			body->CreateFixture(FixtureDef{&shape, 5.0f});
 
 			float_t w = 100.0f;
-			body->SetAngularVelocity(w);
-			body->SetLinearVelocity(Vec2(-8.0f * w, 0.0f));
-
+			body->SetVelocity(Velocity{Vec2(-8.0f * w, 0.0f), w});
+			
 			rjd.Initialize(ground, body, Vec2(-10.0f, 12.0f));
 			rjd.motorSpeed = 1.0f * Pi;
 			rjd.maxMotorTorque = 10000.0f;

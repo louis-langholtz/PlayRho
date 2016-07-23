@@ -122,8 +122,7 @@ public:
 
 		case GLFW_KEY_K:
 			m_platform->SetType(BodyType::Kinematic);
-			m_platform->SetLinearVelocity(Vec2(-m_speed, 0.0f));
-			m_platform->SetAngularVelocity(0.0f);
+			m_platform->SetVelocity(Velocity{Vec2(-m_speed, 0.0f), 0});
 			break;
 		}
 	}
@@ -134,13 +133,12 @@ public:
 		if (m_platform->GetType() == BodyType::Kinematic)
 		{
 			Vec2 p = m_platform->GetTransformation().p;
-			Vec2 v = m_platform->GetLinearVelocity();
+			const auto velocity = m_platform->GetVelocity();
 
-			if ((p.x < -10.0f && v.x < 0.0f) ||
-				(p.x > 10.0f && v.x > 0.0f))
+			if ((p.x < -10.0f && velocity.v.x < 0.0f) ||
+				(p.x > 10.0f && velocity.v.x > 0.0f))
 			{
-				v.x = -v.x;
-				m_platform->SetLinearVelocity(v);
+				m_platform->SetVelocity(Velocity{Vec2{-velocity.v.x, velocity.v.y}, velocity.w});
 			}
 		}
 

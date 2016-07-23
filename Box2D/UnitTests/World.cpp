@@ -13,6 +13,7 @@
 #include <Box2D/Dynamics/Contacts/Contact.h>
 #include <Box2D/Dynamics/Joints/DistanceJoint.h>
 #include <Box2D/Collision/Shapes/CircleShape.h>
+#include <Box2D/Collision/Shapes/EdgeShape.h>
 
 using namespace box2d;
 
@@ -157,30 +158,30 @@ TEST(World, GravitationalBodyMovement)
 	ASSERT_NE(body, nullptr);
 	EXPECT_FALSE(body->IsImpenetrable());
 	EXPECT_EQ(body->GetType(), BodyType::Dynamic);
-	EXPECT_EQ(body->GetLinearVelocity().x, 0);
-	EXPECT_EQ(body->GetLinearVelocity().y, 0);
+	EXPECT_EQ(GetLinearVelocity(*body).x, 0);
+	EXPECT_EQ(GetLinearVelocity(*body).y, 0);
 	EXPECT_EQ(body->GetPosition().x, p0.x);
 	EXPECT_EQ(body->GetPosition().y, p0.y);
 
 	world.Step(t);
-	EXPECT_EQ(body->GetLinearVelocity().x, 0);
-	EXPECT_EQ(body->GetLinearVelocity().y, a * (t * 1));
+	EXPECT_EQ(GetLinearVelocity(*body).x, 0);
+	EXPECT_EQ(GetLinearVelocity(*body).y, a * (t * 1));
 	EXPECT_EQ(body->GetPosition().x, p0.x);
-	EXPECT_EQ(body->GetPosition().y, p0.y + (body->GetLinearVelocity().y * t));
+	EXPECT_EQ(body->GetPosition().y, p0.y + (GetLinearVelocity(*body).y * t));
 
 	p0 = body->GetPosition();
 	world.Step(t);
-	EXPECT_EQ(body->GetLinearVelocity().x, 0);
-	EXPECT_EQ(body->GetLinearVelocity().y, a * (t * 2));
+	EXPECT_EQ(GetLinearVelocity(*body).x, 0);
+	EXPECT_EQ(GetLinearVelocity(*body).y, a * (t * 2));
 	EXPECT_EQ(body->GetPosition().x, p0.x);
-	EXPECT_EQ(body->GetPosition().y, p0.y + (body->GetLinearVelocity().y * t));
+	EXPECT_EQ(body->GetPosition().y, p0.y + (GetLinearVelocity(*body).y * t));
 	
 	p0 = body->GetPosition();
 	world.Step(t);
-	EXPECT_EQ(body->GetLinearVelocity().x, 0);
-	EXPECT_EQ(body->GetLinearVelocity().y, a * (t * 3));
+	EXPECT_EQ(GetLinearVelocity(*body).x, 0);
+	EXPECT_EQ(GetLinearVelocity(*body).y, a * (t * 3));
 	EXPECT_EQ(body->GetPosition().x, p0.x);
-	EXPECT_EQ(body->GetPosition().y, p0.y + (body->GetLinearVelocity().y * t));
+	EXPECT_EQ(body->GetPosition().y, p0.y + (GetLinearVelocity(*body).y * t));
 }
 
 class MyContactListener: public ContactListener
@@ -217,7 +218,7 @@ public:
 
 TEST(World, CollidingDynamicBodies)
 {
-	const auto x = float_t(10);
+	const auto x = float_t(10); // other test parameters tuned to this value being 10
 
 	auto body_def = BodyDef{};
 	body_def.type = BodyType::Dynamic;
@@ -256,12 +257,12 @@ TEST(World, CollidingDynamicBodies)
 	EXPECT_TRUE(body_b->IsSpeedable());
 	EXPECT_TRUE(body_b->IsAccelerable());
 
-	EXPECT_EQ(body_a->GetLinearVelocity().x, +x);
-	EXPECT_EQ(body_a->GetLinearVelocity().y, 0);
-	EXPECT_EQ(body_b->GetLinearVelocity().x, -x);
-	EXPECT_EQ(body_b->GetLinearVelocity().y, 0);
+	EXPECT_EQ(GetLinearVelocity(*body_a).x, +x);
+	EXPECT_EQ(GetLinearVelocity(*body_a).y, 0);
+	EXPECT_EQ(GetLinearVelocity(*body_b).x, -x);
+	EXPECT_EQ(GetLinearVelocity(*body_b).y, 0);
 	
-	const auto time_collision = float_t(1.0099994);
+	const auto time_collision = float_t(1.0099994); // only valid for x >= around 4.214
 	const auto time_inc = float_t(.01);
 	
 	auto elapsed_time = float_t(0);
@@ -274,40 +275,42 @@ TEST(World, CollidingDynamicBodies)
 			break;
 		}
 	}
+	
+	const auto time_contacting = elapsed_time;
 
 	EXPECT_TRUE(listener.touching);
-	EXPECT_FLOAT_EQ(elapsed_time, time_collision);
+	EXPECT_FLOAT_EQ(time_contacting, time_collision);
 	EXPECT_EQ(body_a->GetPosition().y, 0);
 	EXPECT_EQ(body_b->GetPosition().y, 0);
 
-	const auto tolerance = float_t(0.1);
+	const auto tolerance = x / 100;
 	
 	// x position for body1 depends on restitution but it should be around -1
-	EXPECT_GT(body_a->GetPosition().x, float_t(-1) - tolerance);
+	EXPECT_GE(body_a->GetPosition().x, float_t(-1) - tolerance);
 	EXPECT_LT(body_a->GetPosition().x, float_t(-1) + tolerance);
 
 	// x position for body2 depends on restitution but it should be around +1
-	EXPECT_LT(body_b->GetPosition().x, float_t(+1) + tolerance);
+	EXPECT_LE(body_b->GetPosition().x, float_t(+1) + tolerance);
 	EXPECT_GT(body_b->GetPosition().x, float_t(+1) - tolerance);
 	
 	// and their deltas from -1 and +1 should be about equal.
 	EXPECT_FLOAT_EQ(body_a->GetPosition().x + 1, 1 - body_b->GetPosition().x);
 
-	EXPECT_GT(listener.body_a[0].x, -1);
-	EXPECT_LT(listener.body_b[0].x, +1);
+	EXPECT_GE(listener.body_a[0].x, -1);
+	EXPECT_LE(listener.body_b[0].x, +1);
 
 	for (;;)
 	{
 		world.Step(time_inc);
 		elapsed_time += time_inc;
-		if (!listener.contacting)
+		if (!listener.contacting && !listener.touching)
 		{
 			break;
 		}
 	}
 	EXPECT_FALSE(listener.touching);
 	
-	EXPECT_FLOAT_EQ(elapsed_time, time_collision + time_inc);
+	EXPECT_FLOAT_EQ(elapsed_time, time_contacting + time_inc);
 	
 	// collision should be fully resolved now...
 	EXPECT_LT(body_a->GetPosition().x, float_t(-1));
@@ -321,8 +324,50 @@ TEST(World, CollidingDynamicBodies)
 	
 	// confirm conservation of momentum:
 	// velocities should now be same magnitude but in opposite directions
-	EXPECT_EQ(body_a->GetLinearVelocity().x, -x);
-	EXPECT_EQ(body_a->GetLinearVelocity().y, 0);
-	EXPECT_EQ(body_b->GetLinearVelocity().x, +x);
-	EXPECT_EQ(body_b->GetLinearVelocity().y, 0);
+	EXPECT_EQ(GetLinearVelocity(*body_a).x, -x);
+	EXPECT_EQ(GetLinearVelocity(*body_a).y, 0);
+	EXPECT_EQ(GetLinearVelocity(*body_b).x, +x);
+	EXPECT_EQ(GetLinearVelocity(*body_b).y, 0);
+}
+
+TEST(World, PreventsTunnelling)
+{
+	World world{Vec2_zero};
+	
+	BodyDef body_def;
+	FixtureDef fixtureDef;
+	EdgeShape edge_shape;
+	CircleShape circle_shape;
+
+	body_def.type = BodyType::Static;
+	body_def.position = Vec2{0, 0};
+	const auto wall_body = world.CreateBody(body_def);
+	ASSERT_NE(wall_body, nullptr);
+
+	edge_shape.Set(Vec2{0, +10}, Vec2{0, -10});
+	fixtureDef.shape = &edge_shape;
+	fixtureDef.restitution = float_t(1); // changes where bodies will be after collision
+	const auto wall_fixture = wall_body->CreateFixture(fixtureDef);
+	ASSERT_NE(wall_fixture, nullptr);
+	
+	body_def.type = BodyType::Dynamic;
+	body_def.position = Vec2{-10, 0};
+	const auto ball_body = world.CreateBody(body_def);
+	ASSERT_NE(ball_body, nullptr);
+	
+	circle_shape.SetRadius(1);
+	fixtureDef.shape = &circle_shape;
+	fixtureDef.density = float_t(1);
+	fixtureDef.restitution = float_t(1); // changes where bodies will be after collision
+	const auto ball_fixture = ball_body->CreateFixture(fixtureDef);
+	ASSERT_NE(ball_fixture, nullptr);
+
+	const auto velocity = Vec2{+10, 0};
+	ball_body->SetVelocity(Velocity{velocity, 0});
+	
+	const auto time_inc = float_t(.01);
+	world.Step(time_inc);
+	
+	EXPECT_EQ(GetLinearVelocity(*ball_body).x, velocity.x);
+	EXPECT_EQ(GetLinearVelocity(*ball_body).y, velocity.y);
 }

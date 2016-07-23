@@ -58,8 +58,7 @@ public:
 
 			m_angularVelocity = RandomFloat(-50.0f, 50.0f);
 			//m_angularVelocity = 46.661274f;
-			m_body->SetLinearVelocity(Vec2(0.0f, -100.0f));
-			m_body->SetAngularVelocity(m_angularVelocity);
+			m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f), m_angularVelocity});
 		}
 #else
 		{
@@ -106,8 +105,7 @@ public:
 
 		m_body->SetTransform(Vec2(0.0f, 20.0f), 0.0f);
 		m_angularVelocity = RandomFloat(-50.0f, 50.0f);
-		m_body->SetLinearVelocity(Vec2(0.0f, -100.0f));
-		m_body->SetAngularVelocity(m_angularVelocity);
+		m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f), m_angularVelocity});
 	}
 
 	void Step(Settings* settings)

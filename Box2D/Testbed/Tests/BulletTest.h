@@ -64,20 +64,18 @@ public:
 			m_bullet = m_world->CreateBody(bd);
 			m_bullet->CreateFixture(FixtureDef{&box, 100.0f});
 
-			m_bullet->SetLinearVelocity(Vec2(0.0f, -50.0f));
+			m_bullet->SetVelocity(Velocity{Vec2{0.0f, -50.0f}, 0});
 		}
 	}
 
 	void Launch()
 	{
 		m_body->SetTransform(Vec2(0.0f, 4.0f), 0.0f);
-		m_body->SetLinearVelocity(Vec2_zero);
-		m_body->SetAngularVelocity(0.0f);
+		m_body->SetVelocity(Velocity{Vec2_zero, 0});
 
 		m_x = RandomFloat(-1.0f, 1.0f);
 		m_bullet->SetTransform(Vec2(m_x, 10.0f), 0.0f);
-		m_bullet->SetLinearVelocity(Vec2(0.0f, -50.0f));
-		m_bullet->SetAngularVelocity(0.0f);
+		m_bullet->SetVelocity(Velocity{Vec2(0.0f, -50.0f), 0});
 
 		extern uint32 gjkCalls, gjkIters, gjkMaxIters;
 		extern int32 toiCalls, toiIters;

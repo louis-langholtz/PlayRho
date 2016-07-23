@@ -231,7 +231,7 @@ void Test::LaunchBomb()
 	LaunchBomb(p, v);
 }
 
-void Test::LaunchBomb(const Vec2& position, const Vec2& velocity)
+void Test::LaunchBomb(const Vec2& position, const Vec2& linearVelocity)
 {
 	if (m_bomb)
 	{
@@ -244,7 +244,7 @@ void Test::LaunchBomb(const Vec2& position, const Vec2& velocity)
 	bd.position = position;
 	bd.bullet = true;
 	m_bomb = m_world->CreateBody(bd);
-	m_bomb->SetLinearVelocity(velocity);
+	m_bomb->SetVelocity(Velocity{linearVelocity, 0});
 	
 	CircleShape circle(0.3f);
 

@@ -56,7 +56,7 @@ public:
 			bd.bullet = true;
 			Body* body = m_world->CreateBody(bd);
 			body->CreateFixture(FixtureDef{&shape, 1.0f});
-			body->SetLinearVelocity(Vec2(150.0f, 0.0f));
+			body->SetVelocity(Velocity{Vec2(150.0f, 0.0f), 0});
 		}
 	}
 

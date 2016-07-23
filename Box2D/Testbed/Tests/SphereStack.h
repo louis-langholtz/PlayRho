@@ -56,7 +56,7 @@ public:
 
 				m_bodies[i]->CreateFixture(FixtureDef{&shape, 1.0f});
 
-				m_bodies[i]->SetLinearVelocity(Vec2(0.0f, -50.0f));
+				m_bodies[i]->SetVelocity(Velocity{Vec2(0.0f, -50.0f), 0});
 			}
 		}
 	}

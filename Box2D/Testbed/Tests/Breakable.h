@@ -112,11 +112,8 @@ public:
 		Vec2 velocity1 = m_velocity + GetReversePerpendicular(center1 - center) * m_angularVelocity;
 		Vec2 velocity2 = m_velocity + GetReversePerpendicular(center2 - center) * m_angularVelocity;
 
-		body1->SetAngularVelocity(m_angularVelocity);
-		body1->SetLinearVelocity(velocity1);
-
-		body2->SetAngularVelocity(m_angularVelocity);
-		body2->SetLinearVelocity(velocity2);
+		body1->SetVelocity(Velocity{velocity1, m_angularVelocity});
+		body2->SetVelocity(Velocity{velocity2, m_angularVelocity});
 	}
 
 	void Step(Settings* settings)
@@ -131,8 +128,9 @@ public:
 		// Cache velocities to improve movement on breakage.
 		if (m_broke == false)
 		{
-			m_velocity = m_body1->GetLinearVelocity();
-			m_angularVelocity = m_body1->GetAngularVelocity();
+			const auto velocity = m_body1->GetVelocity();
+			m_velocity = velocity.v;
+			m_angularVelocity = velocity.w;
 		}
 
 		Test::Step(settings);

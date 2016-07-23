@@ -71,7 +71,7 @@ public:
 			shape.SetRadius(float_t(m_radius));
 			m_character = body->CreateFixture(FixtureDef{&shape, 20.0f});
 
-			body->SetLinearVelocity(Vec2(0.0f, -50.0f));
+			body->SetVelocity(Velocity{Vec2(0.0f, -50.0f), 0});
 
 			m_state = e_unknown;
 		}
@@ -116,7 +116,7 @@ public:
 		g_debugDraw.DrawString(5, m_textLine, "Press: (c) create a shape, (d) destroy a shape.");
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-        Vec2 v = m_character->GetBody()->GetLinearVelocity();
+        Vec2 v = GetLinearVelocity(*(m_character->GetBody()));
         g_debugDraw.DrawString(5, m_textLine, "Character Linear Velocity: %f", v.y);
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}

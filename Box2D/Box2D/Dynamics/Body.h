@@ -182,21 +182,7 @@ public:
 
 	Velocity GetVelocity() const noexcept;
 
-	/// Set the linear velocity of the center of mass.
-	/// @param v the new linear velocity of the center of mass.
-	void SetLinearVelocity(const Vec2& v) noexcept;
-
-	/// Get the linear velocity of the center of mass.
-	/// @return the linear velocity of the center of mass.
-	Vec2 GetLinearVelocity() const noexcept;
-
-	/// Set the angular velocity.
-	/// @param omega the new angular velocity in radians/second.
-	void SetAngularVelocity(float_t omega) noexcept;
-
-	/// Get the angular velocity.
-	/// @return the angular velocity in radians/second.
-	float_t GetAngularVelocity() const noexcept;
+	void SetVelocity(const Velocity& v) noexcept;
 
 	/// Apply a force at a world point. If the force is not
 	/// applied at the center of mass, it will generate a torque and
@@ -569,41 +555,19 @@ inline Velocity Body::GetVelocity() const noexcept
 {
 	return m_velocity;
 }
-	
-inline void Body::SetLinearVelocity(const Vec2& v) noexcept
+
+inline void Body::SetVelocity(const Velocity& velocity) noexcept
 {
 	if (IsSpeedable())
 	{
-		if (v != Vec2_zero)
+		if (velocity.v != Vec2_zero || velocity.w != 0)
 		{
 			SetAwake();
 		}
-		m_velocity.v = v;
+		m_velocity = velocity;
 	}
 }
-
-inline Vec2 Body::GetLinearVelocity() const noexcept
-{
-	return m_velocity.v;
-}
-
-inline void Body::SetAngularVelocity(float_t w) noexcept
-{
-	if (IsSpeedable())
-	{
-		if (w != float_t{0})
-		{
-			SetAwake();
-		}		
-		m_velocity.w = w;
-	}
-}
-
-inline float_t Body::GetAngularVelocity() const noexcept
-{
-	return m_velocity.w;
-}
-
+	
 inline float_t Body::GetMass() const noexcept
 {
 	return m_mass;
@@ -902,6 +866,38 @@ inline void Body::UnsetInIsland() noexcept
 inline bool Body::IsValidIslandIndex() const noexcept
 {
 	return IsInIsland() && (m_islandIndex != InvalidIslandIndex);
+}
+
+/// Get the linear velocity of the center of mass.
+/// @param body Body to get the linear velocity for.
+/// @return the linear velocity of the center of mass.
+inline Vec2 GetLinearVelocity(const Body& body) noexcept
+{
+	return body.GetVelocity().v;
+}
+
+/// Get the angular velocity.
+/// @param body Body to get the angular velocity for.
+/// @return the angular velocity in radians/second.
+inline float_t GetAngularVelocity(const Body& body) noexcept
+{
+	return body.GetVelocity().w;
+}
+
+/// Set the linear velocity of the center of mass.
+/// @param body Body to set the linear velocity of.
+/// @param v the new linear velocity of the center of mass.
+inline void SetLinearVelocity(Body& body, const Vec2& v) noexcept
+{
+	body.SetVelocity(Velocity{v, GetAngularVelocity(body)});
+}
+
+/// Set the angular velocity.
+/// @param body Body to set the angular velocity of.
+/// @param omega the new angular velocity in radians/second.
+inline void SetAngularVelocity(Body& body, float_t omega) noexcept
+{
+	body.SetVelocity(Velocity{GetLinearVelocity(body), omega});
 }
 
 /// Gets the world coordinates of a point given in coordinates relative to the body's origin.
