@@ -367,14 +367,15 @@ void Body::SetMassData(const MassData& massData)
 
 void Body::SetVelocity(const Velocity& velocity) noexcept
 {
-	if (IsSpeedable())
+	if ((velocity.v != Vec2_zero) || (velocity.w != 0))
 	{
-		if ((velocity.v != Vec2_zero) || (velocity.w != 0))
+		if (!IsSpeedable())
 		{
-			SetAwake();
+			return;
 		}
-		m_velocity = velocity;
+		SetAwake();
 	}
+	m_velocity = velocity;
 }
 
 void Body::SetForces(const Vec2& linear, const float_t rotational) noexcept
