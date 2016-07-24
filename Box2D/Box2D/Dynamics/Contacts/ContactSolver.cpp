@@ -41,7 +41,7 @@ bool g_blockSolve = true;
 
 void ContactSolver::Assign(ContactPositionConstraint::BodyData& var, const Body& val)
 {
-	assert(val.IsValidIslandIndex());
+	assert(IsValidIslandIndex(val));
 	var.index = val.GetIslandIndex();
 	var.invMass = val.GetInverseMass();
 	var.invI = val.GetInverseInertia();
@@ -50,7 +50,7 @@ void ContactSolver::Assign(ContactPositionConstraint::BodyData& var, const Body&
 
 ContactVelocityConstraint::BodyData ContactSolver::GetVelocityConstraintBodyData(const Body& val)
 {
-	assert(val.IsValidIslandIndex());
+	assert(IsValidIslandIndex(val));
 	return ContactVelocityConstraint::BodyData{val.GetIslandIndex(), val.GetInverseMass(), val.GetInverseInertia()};
 }
 

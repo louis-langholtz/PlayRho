@@ -129,6 +129,8 @@ struct BodyDef
 class Body
 {
 public:
+	static constexpr auto InvalidIslandIndex = static_cast<body_count_t>(-1);
+	
 	/// Creates a fixture and attaches it to this body.
 	/// @detail 
 	/// Use this function if you need to set some fixture parameters, like friction.
@@ -341,6 +343,11 @@ public:
 	/// Gets the parent world of this body.
 	const World* GetWorld() const noexcept;
 
+	/// Checks if flagged as being in an island or not.
+	/// @return true if flagged for being in an island, false otherwise.
+	/// @sa Island.
+	bool IsInIsland() const noexcept;
+	
 	body_count_t GetIslandIndex() const noexcept;
 
 	/// Dump this body to a log file
@@ -351,7 +358,6 @@ private:
 	friend class World;
 	friend class Island;
 	friend class ContactManager;
-	friend class ContactSolver;
 	friend class Contact;
 	friend class BodyIterator;
 	friend class ConstBodyIterator;
@@ -421,11 +427,6 @@ private:
 	void DestroyJoints();
 	void DestroyFixtures();
 
-	/// Checks if flagged as being in an island or not.
-	/// @return true if flagged for being in an island, false otherwise.
-	/// @sa Island.
-	bool IsInIsland() const noexcept;
-
 	[[deprecated]] void SetInIsland(bool value) noexcept;
 
 	void SetInIsland() noexcept;
@@ -441,10 +442,6 @@ private:
 	/// @note The center is the mass weighted sum of all fixture centers. Make sure to divide it by the mass to get the averaged center.
 	/// @return accumalated mass data for all fixtures associated with this body.
 	MassData ComputeMassData() const noexcept;
-
-	bool IsValidIslandIndex() const noexcept;
-
-	static constexpr auto InvalidIslandIndex = static_cast<body_count_t>(-1);
 
 	//
 	// Member variables. Try to keep total size small.
@@ -741,14 +738,14 @@ inline void Body::UnsetInIsland() noexcept
 	m_flags &= ~Body::e_islandFlag;
 }
 
-inline bool Body::IsValidIslandIndex() const noexcept
-{
-	return IsInIsland() && (m_islandIndex != InvalidIslandIndex);
-}
-
 inline body_count_t Body::GetIslandIndex() const noexcept
 {
 	return m_islandIndex;
+}
+
+inline bool IsValidIslandIndex(const Body& body) noexcept
+{
+	return body.IsInIsland() && (body.GetIslandIndex() != Body::InvalidIslandIndex);
 }
 
 /// Gets the total mass of the body.
