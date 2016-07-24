@@ -184,38 +184,15 @@ public:
 
 	void SetVelocity(const Velocity& v) noexcept;
 
-	/// Apply a force at a world point. If the force is not
-	/// applied at the center of mass, it will generate a torque and
-	/// affect the angular velocity. This wakes up the body.
-	/// @param force the world force vector, usually in Newtons (N).
-	/// @param point the world position of the point of application.
-	/// @param wake also wake up the body
-	void ApplyForce(const Vec2& force, const Vec2& point, bool wake) noexcept;
+	/// Sets the linear and rotational forces on this body.
+	/// @note This has no effect on non-accelerable bodies.
+	/// @param linear Linear force.
+	/// @param rotational Rotational force or torque.
+	void SetForces(const Vec2& linear, const float_t rotational) noexcept;
 
-	/// Apply a force to the center of mass. This wakes up the body.
-	/// @param force the world force vector, usually in Newtons (N).
-	/// @param wake also wake up the body
-	void ApplyForceToCenter(const Vec2& force, bool wake) noexcept;
-
-	/// Apply a torque. This affects the angular velocity
-	/// without affecting the linear velocity of the center of mass.
-	/// This wakes up the body.
-	/// @param torque about the z-axis (out of the screen), usually in N-m.
-	/// @param wake also wake up the body
-	void ApplyTorque(float_t torque, bool wake) noexcept;
-
-	/// Apply an impulse at a point. This immediately modifies the velocity.
-	/// It also modifies the angular velocity if the point of application
-	/// is not at the center of mass. This wakes up the body.
-	/// @param impulse the world impulse vector, usually in N-seconds or kg-m/s.
-	/// @param point the world position of the point of application.
-	/// @param wake also wake up the body
-	void ApplyLinearImpulse(const Vec2& impulse, const Vec2& point, bool wake) noexcept;
-
-	/// Apply an angular impulse.
-	/// @param impulse the angular impulse in units of kg*m*m/s
-	/// @param wake also wake up the body
-	void ApplyAngularImpulse(float_t impulse, bool wake) noexcept;
+	Vec2 GetForce() const noexcept;
+	
+	float_t GetTorque() const noexcept;
 
 	/// Gets the total mass of the body.
 	/// @return Value of zero or more representing the body's mass (in kg).
@@ -568,18 +545,6 @@ inline Velocity Body::GetVelocity() const noexcept
 {
 	return m_velocity;
 }
-
-inline void Body::SetVelocity(const Velocity& velocity) noexcept
-{
-	if (IsSpeedable())
-	{
-		if (velocity.v != Vec2_zero || velocity.w != 0)
-		{
-			SetAwake();
-		}
-		m_velocity = velocity;
-	}
-}
 	
 inline float_t Body::GetMass() const noexcept
 {
@@ -751,91 +716,14 @@ inline void* Body::GetUserData() const noexcept
 	return m_userData;
 }
 
-inline void Body::ApplyForce(const Vec2& force, const Vec2& point, bool wake) noexcept
+inline Vec2 Body::GetForce() const noexcept
 {
-	if (IsAccelerable())
-	{
-		if (wake)
-		{
-			SetAwake();
-		}
-		
-		// Don't accumulate a force if the body is sleeping.
-		if (IsAwake())
-		{
-			m_force += force;
-			m_torque += Cross(point - GetWorldCenter(), force);
-		}
-	}
-}
-	
-inline void Body::ApplyForceToCenter(const Vec2& force, bool wake) noexcept
-{
-	if (IsAccelerable())
-	{
-		if (wake)
-		{
-			SetAwake();
-		}
-
-		// Don't accumulate a force if the body is sleeping
-		if (IsAwake())
-		{
-			m_force += force;
-		}
-	}
+	return m_force;
 }
 
-inline void Body::ApplyTorque(float_t torque, bool wake) noexcept
+inline float_t Body::GetTorque() const noexcept
 {
-	if (IsAccelerable())
-	{
-		if (wake)
-		{
-			SetAwake();
-		}
-		
-		// Don't accumulate a force if the body is sleeping
-		if (IsAwake())
-		{
-			m_torque += torque;
-		}
-	}
-}
-
-inline void Body::ApplyLinearImpulse(const Vec2& impulse, const Vec2& point, bool wake) noexcept
-{
-	if (IsAccelerable())
-	{
-		if (wake)
-		{
-			SetAwake();
-		}
-		
-		// Don't accumulate velocity if the body is sleeping
-		if (IsAwake())
-		{
-			m_velocity.v += GetInverseMass() * impulse;
-			m_velocity.w += GetInverseInertia() * Cross(point - GetWorldCenter(), impulse);
-		}
-	}
-}
-
-inline void Body::ApplyAngularImpulse(float_t impulse, bool wake) noexcept
-{
-	if (IsAccelerable())
-	{
-		if (wake)
-		{
-			SetAwake();
-		}
-
-		// Don't accumulate velocity if the body is sleeping
-		if (IsAwake())
-		{
-			m_velocity.w += GetInverseInertia() * impulse;
-		}
-	}
+	return m_torque;
 }
 
 inline void Body::Advance(float_t alpha)
@@ -884,6 +772,55 @@ inline void Body::UnsetInIsland() noexcept
 inline bool Body::IsValidIslandIndex() const noexcept
 {
 	return IsInIsland() && (m_islandIndex != InvalidIslandIndex);
+}
+
+/// Apply a force at a world point. If the force is not
+/// applied at the center of mass, it will generate a torque and
+/// affect the angular velocity. Non-zero forces wakes up the body.
+/// @param force the world force vector, usually in Newtons (N).
+/// @param point the world position of the point of application.
+inline void ApplyForce(Body& body, const Vec2& force, const Vec2& point) noexcept
+{
+	body.SetForces(body.GetForce() + force, body.GetTorque() + Cross(point - body.GetWorldCenter(), force));
+}
+
+/// Apply a force to the center of mass. Non-zero forces wakes up the body.
+/// @param force the world force vector, usually in Newtons (N).
+inline void ApplyForceToCenter(Body& body, const Vec2& force) noexcept
+{
+	body.SetForces(body.GetForce() + force, body.GetTorque());
+}
+
+/// Apply a torque. This affects the angular velocity
+/// without affecting the linear velocity of the center of mass.
+/// Non-zero forces wakes up the body.
+/// @param torque about the z-axis (out of the screen), usually in N-m.
+inline void ApplyTorque(Body& body, float_t torque) noexcept
+{
+	body.SetForces(body.GetForce(), body.GetTorque() + torque);
+}
+
+/// Apply an impulse at a point. This immediately modifies the velocity.
+/// It also modifies the angular velocity if the point of application
+/// is not at the center of mass. Non-zero impulses wakes up the body.
+/// @param impulse the world impulse vector, usually in N-seconds or kg-m/s.
+/// @param point the world position of the point of application.
+inline void ApplyLinearImpulse(Body& body, const Vec2& impulse, const Vec2& point) noexcept
+{
+	auto velocity = body.GetVelocity();
+	velocity.v += body.GetInverseMass() * impulse;
+	velocity.w += body.GetInverseInertia() * Cross(point - body.GetWorldCenter(), impulse);
+	body.SetVelocity(velocity);
+}
+
+/// Apply an angular impulse.
+/// @param body Body to apply the angular impulse to.
+/// @param impulse the angular impulse in units of kg*m*m/s
+inline void ApplyAngularImpulse(Body& body, float_t impulse) noexcept
+{
+	auto velocity = body.GetVelocity();
+	velocity.w += body.GetInverseInertia() * impulse;
+	body.SetVelocity(velocity);
 }
 
 /// Gets the rotational inertia of the body about the local origin.

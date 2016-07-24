@@ -154,19 +154,19 @@ public:
 			{
 				Vec2 f = GetWorldVector(*m_body, Vec2(float_t{0}, -200.0f));
 				Vec2 p = GetWorldPoint(*m_body, Vec2(float_t{0}, 2.0f));
-				m_body->ApplyForce(f, p, true);
+				box2d::ApplyForce(*m_body, f, p);
 			}
 			break;
 
 		case GLFW_KEY_A:
 			{
-				m_body->ApplyTorque(50.0f, true);
+				ApplyTorque(*m_body, 50.0f);
 			}
 			break;
 
 		case GLFW_KEY_D:
 			{
-				m_body->ApplyTorque(-50.0f, true);
+				ApplyTorque(*m_body, -50.0f);
 			}
 			break;
 		}

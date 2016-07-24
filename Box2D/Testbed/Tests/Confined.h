@@ -149,7 +149,7 @@ public:
 				const auto direction = opposite_angle;
 				const auto magnitude = Sqrt(Square(wall_length) * 2) * b.GetMass() * 20;
 				const auto impulse = Rotate(Vec2(magnitude, 0.0f), Rot(direction));
-				b.ApplyLinearImpulse(impulse, b.GetWorldCenter(), true);
+				ApplyLinearImpulse(b, impulse, b.GetWorldCenter());
 			}
 		}		
 	}

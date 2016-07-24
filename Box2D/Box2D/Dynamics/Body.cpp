@@ -394,6 +394,31 @@ void Body::SetMassData(const MassData& massData)
 	m_velocity.v += GetReversePerpendicular(GetWorldCenter() - oldCenter) * m_velocity.w;
 }
 
+void Body::SetVelocity(const Velocity& velocity) noexcept
+{
+	if (IsSpeedable())
+	{
+		if ((velocity.v != Vec2_zero) || (velocity.w != 0))
+		{
+			SetAwake();
+		}
+		m_velocity = velocity;
+	}
+}
+
+void Body::SetForces(const Vec2& linear, const float_t rotational) noexcept
+{
+	if (IsAccelerable())
+	{
+		if ((linear != Vec2_zero) || (rotational != 0))
+		{
+			SetAwake();
+		}			
+		m_force = linear;
+		m_torque = rotational;
+	}
+}
+
 bool Body::ShouldCollide(const Body* other) const
 {
 	// At least one body should be accelerable/dynamic.

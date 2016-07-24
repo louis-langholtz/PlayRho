@@ -164,7 +164,7 @@ public:
 			}
 
 			Vec2 F = 100.0f * GetUnitVector(d);
-			body->ApplyForce(F, position, false);
+			ApplyForce(*body, F, position);
 		}
 	}
 
