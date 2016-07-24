@@ -126,7 +126,7 @@ public:
 				body->CreateFixture(fd);
 
 				float_t gravity = 10.0f;
-				float_t I = body->GetInertia();
+				float_t I = GetLocalInertia(*body);
 				float_t mass = body->GetMass();
 
 				// For a circle: I = 0.5 * m * r * r ==> r = sqrt(2 * I / m)

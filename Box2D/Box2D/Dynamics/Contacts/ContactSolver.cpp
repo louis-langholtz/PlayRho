@@ -43,7 +43,7 @@ void ContactSolver::Assign(ContactPositionConstraint::BodyData& var, const Body&
 {
 	assert(val.IsValidIslandIndex());
 	var.index = val.m_islandIndex;
-	var.invMass = val.m_invMass;
+	var.invMass = val.GetInverseMass();
 	var.invI = val.m_invI;
 	var.localCenter = val.GetLocalCenter();
 }
@@ -51,7 +51,7 @@ void ContactSolver::Assign(ContactPositionConstraint::BodyData& var, const Body&
 ContactVelocityConstraint::BodyData ContactSolver::GetVelocityConstraintBodyData(const Body& val)
 {
 	assert(val.IsValidIslandIndex());
-	return ContactVelocityConstraint::BodyData{val.m_islandIndex, val.m_invMass, val.m_invI};
+	return ContactVelocityConstraint::BodyData{val.m_islandIndex, val.GetInverseMass(), val.m_invI};
 }
 
 ContactVelocityConstraint ContactSolver::GetVelocityConstraint(const Contact& contact, size_type index, float_t dtRatio)

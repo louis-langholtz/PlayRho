@@ -217,17 +217,30 @@ public:
 	/// @param wake also wake up the body
 	void ApplyAngularImpulse(float_t impulse, bool wake) noexcept;
 
-	/// Get the total mass of the body.
-	/// @return the mass, usually in kilograms (kg).
+	/// Gets the total mass of the body.
+	/// @return Value of zero or more representing the body's mass (in kg).
+	/// @sa SetMassData.
 	float_t GetMass() const noexcept;
 
-	/// Get the rotational inertia of the body about the local origin.
+	/// Gets the inverse total mass of the body.
+	/// @detail This is the cached result of dividing 1 by the body's mass.
+	/// Often floating division is much slower than multiplication.
+	/// As such, it's likely faster to multiply values by this inverse value than to redivide
+	/// them all the time by the mass.
+	/// @return Value of zero or more representing the body's inverse mass (in 1/kg).
+	/// @sa SetMassData.
+	float_t GetInverseMass() const noexcept;
+	
+	/// Gets the rotational inertia of the body.
 	/// @return the rotational inertia, usually in kg-m^2.
 	float_t GetInertia() const noexcept;
 
-	/// Get the mass data of the body.
-	/// @return a struct containing the mass, inertia and center of the body.
-	MassData GetMassData() const noexcept;
+	/// Gets the inverse rotational inertia of the body.
+	/// @detail This is the cached result of dividing 1 by the body's rotational inertia.
+	/// Often floating division is much slower than multiplication.
+	/// As such, it's likely faster to multiply values by this inverse value than to redivide
+	/// them all the time by the rotational inertia.
+	float_t GetInverseInertia() const noexcept;
 
 	/// Set the mass properties to override the mass properties of the fixtures.
 	/// Note that this changes the center of mass position.
@@ -573,14 +586,19 @@ inline float_t Body::GetMass() const noexcept
 	return m_mass;
 }
 
-inline float_t Body::GetInertia() const noexcept
+inline float_t Body::GetInverseMass() const noexcept
 {
-	return m_I + m_mass * LengthSquared(GetLocalCenter());
+	return m_invMass;
 }
 
-inline MassData Body::GetMassData() const noexcept
+inline float_t Body::GetInertia() const noexcept
 {
-	return MassData{GetMass(), GetLocalCenter(), GetInertia()};
+	return m_I;
+}
+
+inline float_t Body::GetInverseInertia() const noexcept
+{
+	return m_invI;
 }
 
 inline float_t Body::GetLinearDamping() const noexcept
@@ -797,8 +815,8 @@ inline void Body::ApplyLinearImpulse(const Vec2& impulse, const Vec2& point, boo
 		// Don't accumulate velocity if the body is sleeping
 		if (IsAwake())
 		{
-			m_velocity.v += m_invMass * impulse;
-			m_velocity.w += m_invI * Cross(point - GetWorldCenter(), impulse);
+			m_velocity.v += GetInverseMass() * impulse;
+			m_velocity.w += GetInverseInertia() * Cross(point - GetWorldCenter(), impulse);
 		}
 	}
 }
@@ -815,7 +833,7 @@ inline void Body::ApplyAngularImpulse(float_t impulse, bool wake) noexcept
 		// Don't accumulate velocity if the body is sleeping
 		if (IsAwake())
 		{
-			m_velocity.w += m_invI * impulse;
+			m_velocity.w += GetInverseInertia() * impulse;
 		}
 	}
 }
@@ -866,6 +884,20 @@ inline void Body::UnsetInIsland() noexcept
 inline bool Body::IsValidIslandIndex() const noexcept
 {
 	return IsInIsland() && (m_islandIndex != InvalidIslandIndex);
+}
+
+/// Gets the rotational inertia of the body about the local origin.
+/// @return the rotational inertia, usually in kg-m^2.
+inline float_t GetLocalInertia(const Body& body) noexcept
+{
+	return body.GetInertia() + body.GetMass() * LengthSquared(body.GetLocalCenter());
+}
+
+/// Get the mass data of the body.
+/// @return a struct containing the mass, inertia and center of the body.
+inline MassData GetMassData(const Body& body) noexcept
+{
+	return MassData{body.GetMass(), body.GetLocalCenter(), GetLocalInertia(body)};
 }
 
 /// Get the linear velocity of the center of mass.
