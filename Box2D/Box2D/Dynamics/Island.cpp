@@ -274,7 +274,7 @@ float_t Island::UpdateSleepTimes(float_t h)
 			continue;
 		}
 		
-		if (body->IsSleepingAllowed() && IsSleepable(body->m_velocity))
+		if (body->IsSleepingAllowed() && IsSleepable(body->GetVelocity()))
 		{
 			body->m_sleepTime += h;
 			minSleepTime = Min(minSleepTime, body->m_sleepTime);
@@ -306,7 +306,7 @@ void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 	for (auto&& body: m_bodies)
 	{
 		positions.push_back(body->m_sweep.pos1);
-		velocities.push_back(body->GetVelocity(h, gravity));
+		velocities.push_back(GetVelocity(*body, h, gravity));
 	}
 
 	// Solver data

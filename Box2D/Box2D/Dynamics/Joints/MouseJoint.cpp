@@ -92,10 +92,10 @@ float_t MouseJoint::GetDampingRatio() const
 
 void MouseJoint::InitVelocityConstraints(const SolverData& data)
 {
-	m_indexB = m_bodyB->m_islandIndex;
+	m_indexB = m_bodyB->GetIslandIndex();
 	m_localCenterB = m_bodyB->GetLocalCenter();
-	m_invMassB = m_bodyB->m_invMass;
-	m_invIB = m_bodyB->m_invI;
+	m_invMassB = m_bodyB->GetInverseMass();
+	m_invIB = m_bodyB->GetInverseInertia();
 
 	const auto cB = data.positions[m_indexB].c;
 	const auto aB = data.positions[m_indexB].a;
@@ -104,7 +104,7 @@ void MouseJoint::InitVelocityConstraints(const SolverData& data)
 
 	const Rot qB(aB);
 
-	const auto mass = m_bodyB->GetMass();
+	const auto mass = GetMass(*m_bodyB);
 
 	// Frequency
 	const auto omega = float_t(2) * Pi * m_frequencyHz;
@@ -220,8 +220,8 @@ void MouseJoint::ShiftOrigin(const Vec2& newOrigin)
 
 void MouseJoint::Dump()
 {
-	const auto indexA = m_bodyA->m_islandIndex;
-	const auto indexB = m_bodyB->m_islandIndex;
+	const auto indexA = m_bodyA->GetIslandIndex();
+	const auto indexB = m_bodyB->GetIslandIndex();
 	
 	log("  MouseJoint jd;\n");
 	log("  jd.bodyA = bodies[%d];\n", indexA);

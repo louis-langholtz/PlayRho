@@ -73,14 +73,14 @@ PulleyJoint::PulleyJoint(const PulleyJointDef& def)
 
 void PulleyJoint::InitVelocityConstraints(const SolverData& data)
 {
-	m_indexA = m_bodyA->m_islandIndex;
-	m_indexB = m_bodyB->m_islandIndex;
+	m_indexA = m_bodyA->GetIslandIndex();
+	m_indexB = m_bodyB->GetIslandIndex();
 	m_localCenterA = m_bodyA->GetLocalCenter();
 	m_localCenterB = m_bodyB->GetLocalCenter();
-	m_invMassA = m_bodyA->m_invMass;
-	m_invMassB = m_bodyB->m_invMass;
-	m_invIA = m_bodyA->m_invI;
-	m_invIB = m_bodyB->m_invI;
+	m_invMassA = m_bodyA->GetInverseMass();
+	m_invMassB = m_bodyB->GetInverseMass();
+	m_invIA = m_bodyA->GetInverseInertia();
+	m_invIB = m_bodyB->GetInverseInertia();
 
 	const auto cA = data.positions[m_indexA].c;
 	const auto aA = data.positions[m_indexA].a;
@@ -318,8 +318,8 @@ float_t PulleyJoint::GetCurrentLengthB() const
 
 void PulleyJoint::Dump()
 {
-	const auto indexA = m_bodyA->m_islandIndex;
-	const auto indexB = m_bodyB->m_islandIndex;
+	const auto indexA = m_bodyA->GetIslandIndex();
+	const auto indexB = m_bodyB->GetIslandIndex();
 
 	log("  PulleyJointDef jd;\n");
 	log("  jd.bodyA = bodies[%d];\n", indexA);

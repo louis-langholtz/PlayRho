@@ -127,14 +127,14 @@ PrismaticJoint::PrismaticJoint(const PrismaticJointDef& def)
 
 void PrismaticJoint::InitVelocityConstraints(const SolverData& data)
 {
-	m_indexA = m_bodyA->m_islandIndex;
-	m_indexB = m_bodyB->m_islandIndex;
+	m_indexA = m_bodyA->GetIslandIndex();
+	m_indexB = m_bodyB->GetIslandIndex();
 	m_localCenterA = m_bodyA->GetLocalCenter();
 	m_localCenterB = m_bodyB->GetLocalCenter();
-	m_invMassA = m_bodyA->m_invMass;
-	m_invMassB = m_bodyB->m_invMass;
-	m_invIA = m_bodyA->m_invI;
-	m_invIB = m_bodyB->m_invI;
+	m_invMassA = m_bodyA->GetInverseMass();
+	m_invMassB = m_bodyB->GetInverseMass();
+	m_invIA = m_bodyA->GetInverseInertia();
+	m_invIB = m_bodyB->GetInverseInertia();
 
 	const auto cA = data.positions[m_indexA].c;
 	const auto aA = data.positions[m_indexA].a;
@@ -513,17 +513,17 @@ float_t PrismaticJoint::GetJointSpeed() const
 	const auto bA = m_bodyA;
 	const auto bB = m_bodyB;
 
-	const auto rA = Rotate(m_localAnchorA - bA->GetLocalCenter(), bA->m_xf.q);
-	const auto rB = Rotate(m_localAnchorB - bB->GetLocalCenter(), bB->m_xf.q);
+	const auto rA = Rotate(m_localAnchorA - bA->GetLocalCenter(), bA->GetTransformation().q);
+	const auto rB = Rotate(m_localAnchorB - bB->GetLocalCenter(), bB->GetTransformation().q);
 	const auto p1 = bA->GetWorldCenter() + rA;
 	const auto p2 = bB->GetWorldCenter() + rB;
 	const auto d = p2 - p1;
-	const auto axis = Rotate(m_localXAxisA, bA->m_xf.q);
+	const auto axis = Rotate(m_localXAxisA, bA->GetTransformation().q);
 
-	const auto vA = bA->m_velocity.v;
-	const auto vB = bB->m_velocity.v;
-	const auto wA = bA->m_velocity.w;
-	const auto wB = bB->m_velocity.w;
+	const auto vA = bA->GetVelocity().v;
+	const auto vB = bB->GetVelocity().v;
+	const auto wA = bA->GetVelocity().w;
+	const auto wB = bB->GetVelocity().w;
 
 	return Dot(d, (GetReversePerpendicular(axis) * wA)) + Dot(axis, vB + (GetReversePerpendicular(rB) * wB) - vA - (GetReversePerpendicular(rA) * wA));
 }
@@ -600,8 +600,8 @@ float_t PrismaticJoint::GetMotorForce(float_t inv_dt) const noexcept
 
 void PrismaticJoint::Dump()
 {
-	const auto indexA = m_bodyA->m_islandIndex;
-	const auto indexB = m_bodyB->m_islandIndex;
+	const auto indexA = m_bodyA->GetIslandIndex();
+	const auto indexB = m_bodyB->GetIslandIndex();
 
 	log("  PrismaticJointDef jd;\n");
 	log("  jd.bodyA = bodies[%d];\n", indexA);

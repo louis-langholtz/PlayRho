@@ -64,9 +64,9 @@ GearJoint::GearJoint(const GearJointDef& def)
 	m_bodyA = m_joint1->GetBodyB();
 
 	// Get geometry of joint1
-	const auto xfA = m_bodyA->m_xf;
+	const auto xfA = m_bodyA->GetTransformation();
 	const auto aA = m_bodyA->GetAngle();
-	const auto xfC = m_bodyC->m_xf;
+	const auto xfC = m_bodyC->GetTransformation();
 	const auto aC = m_bodyC->GetAngle();
 
 	if (m_typeA == JointType::Revolute)
@@ -96,9 +96,9 @@ GearJoint::GearJoint(const GearJointDef& def)
 	m_bodyB = m_joint2->GetBodyB();
 
 	// Get geometry of joint2
-	const auto xfB = m_bodyB->m_xf;
+	const auto xfB = m_bodyB->GetTransformation();
 	const auto aB = m_bodyB->GetAngle();
-	const auto xfD = m_bodyD->m_xf;
+	const auto xfD = m_bodyD->GetTransformation();
 	const auto aD = m_bodyD->GetAngle();
 
 	if (m_typeB == JointType::Revolute)
@@ -133,22 +133,22 @@ GearJoint::GearJoint(const GearJointDef& def)
 
 void GearJoint::InitVelocityConstraints(const SolverData& data)
 {
-	m_indexA = m_bodyA->m_islandIndex;
-	m_indexB = m_bodyB->m_islandIndex;
-	m_indexC = m_bodyC->m_islandIndex;
-	m_indexD = m_bodyD->m_islandIndex;
+	m_indexA = m_bodyA->GetIslandIndex();
+	m_indexB = m_bodyB->GetIslandIndex();
+	m_indexC = m_bodyC->GetIslandIndex();
+	m_indexD = m_bodyD->GetIslandIndex();
 	m_lcA = m_bodyA->GetLocalCenter();
 	m_lcB = m_bodyB->GetLocalCenter();
 	m_lcC = m_bodyC->GetLocalCenter();
 	m_lcD = m_bodyD->GetLocalCenter();
-	m_mA = m_bodyA->m_invMass;
-	m_mB = m_bodyB->m_invMass;
-	m_mC = m_bodyC->m_invMass;
-	m_mD = m_bodyD->m_invMass;
-	m_iA = m_bodyA->m_invI;
-	m_iB = m_bodyB->m_invI;
-	m_iC = m_bodyC->m_invI;
-	m_iD = m_bodyD->m_invI;
+	m_mA = m_bodyA->GetInverseMass();
+	m_mB = m_bodyB->GetInverseMass();
+	m_mC = m_bodyC->GetInverseMass();
+	m_mD = m_bodyD->GetInverseMass();
+	m_iA = m_bodyA->GetInverseInertia();
+	m_iB = m_bodyB->GetInverseInertia();
+	m_iC = m_bodyC->GetInverseInertia();
+	m_iD = m_bodyD->GetInverseInertia();
 
 	const auto aA = data.positions[m_indexA].a;
 	auto vA = data.velocities[m_indexA].v;
@@ -406,8 +406,8 @@ float_t GearJoint::GetRatio() const
 
 void GearJoint::Dump()
 {
-	const auto indexA = m_bodyA->m_islandIndex;
-	const auto indexB = m_bodyB->m_islandIndex;
+	const auto indexA = m_bodyA->GetIslandIndex();
+	const auto indexB = m_bodyB->GetIslandIndex();
 
 	const auto index1 = m_joint1->m_index;
 	const auto index2 = m_joint2->m_index;

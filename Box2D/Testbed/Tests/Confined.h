@@ -147,7 +147,7 @@ public:
 				const auto angle_from_center = Atan2(position.y - wall_length/2, position.x);
 				const auto opposite_angle = angle_from_center + Pi;
 				const auto direction = opposite_angle;
-				const auto magnitude = Sqrt(Square(wall_length) * 2) * b.GetMass() * 20;
+				const auto magnitude = Sqrt(Square(wall_length) * 2) * GetMass(b) * 20;
 				const auto impulse = Rotate(Vec2(magnitude, 0.0f), Rot(direction));
 				ApplyLinearImpulse(b, impulse, b.GetWorldCenter());
 			}

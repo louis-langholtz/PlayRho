@@ -79,14 +79,14 @@ WheelJoint::WheelJoint(const WheelJointDef& def)
 
 void WheelJoint::InitVelocityConstraints(const SolverData& data)
 {
-	m_indexA = m_bodyA->m_islandIndex;
-	m_indexB = m_bodyB->m_islandIndex;
+	m_indexA = m_bodyA->GetIslandIndex();
+	m_indexB = m_bodyB->GetIslandIndex();
 	m_localCenterA = m_bodyA->GetLocalCenter();
 	m_localCenterB = m_bodyB->GetLocalCenter();
-	m_invMassA = m_bodyA->m_invMass;
-	m_invMassB = m_bodyB->m_invMass;
-	m_invIA = m_bodyA->m_invI;
-	m_invIB = m_bodyB->m_invI;
+	m_invMassA = m_bodyA->GetInverseMass();
+	m_invMassB = m_bodyB->GetInverseMass();
+	m_invIA = m_bodyA->GetInverseInertia();
+	m_invIB = m_bodyB->GetInverseInertia();
 
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
@@ -353,7 +353,7 @@ float_t WheelJoint::GetJointTranslation() const
 
 float_t WheelJoint::GetJointSpeed() const
 {
-	return m_bodyB->m_velocity.w - m_bodyA->m_velocity.w;
+	return m_bodyB->GetVelocity().w - m_bodyA->GetVelocity().w;
 }
 
 bool WheelJoint::IsMotorEnabled() const
@@ -389,8 +389,8 @@ float_t WheelJoint::GetMotorTorque(float_t inv_dt) const
 
 void WheelJoint::Dump()
 {
-	const auto indexA = m_bodyA->m_islandIndex;
-	const auto indexB = m_bodyB->m_islandIndex;
+	const auto indexA = m_bodyA->GetIslandIndex();
+	const auto indexB = m_bodyB->GetIslandIndex();
 
 	log("  WheelJointDef jd;\n");
 	log("  jd.bodyA = bodies[%d];\n", indexA);

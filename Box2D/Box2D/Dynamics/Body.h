@@ -194,11 +194,6 @@ public:
 	
 	float_t GetTorque() const noexcept;
 
-	/// Gets the total mass of the body.
-	/// @return Value of zero or more representing the body's mass (in kg).
-	/// @sa SetMassData.
-	float_t GetMass() const noexcept;
-
 	/// Gets the inverse total mass of the body.
 	/// @detail This is the cached result of dividing 1 by the body's mass.
 	/// Often floating division is much slower than multiplication.
@@ -208,15 +203,12 @@ public:
 	/// @sa SetMassData.
 	float_t GetInverseMass() const noexcept;
 	
-	/// Gets the rotational inertia of the body.
-	/// @return the rotational inertia, usually in kg-m^2.
-	float_t GetInertia() const noexcept;
-
 	/// Gets the inverse rotational inertia of the body.
 	/// @detail This is the cached result of dividing 1 by the body's rotational inertia.
 	/// Often floating division is much slower than multiplication.
 	/// As such, it's likely faster to multiply values by this inverse value than to redivide
 	/// them all the time by the rotational inertia.
+	/// @return Inverse rotational intertia (in 1/kg-m^2).
 	float_t GetInverseInertia() const noexcept;
 
 	/// Set the mass properties to override the mass properties of the fixtures.
@@ -349,6 +341,8 @@ public:
 	/// Gets the parent world of this body.
 	const World* GetWorld() const noexcept;
 
+	body_count_t GetIslandIndex() const noexcept;
+
 	/// Dump this body to a log file
 	void Dump();
 
@@ -363,18 +357,6 @@ private:
 	friend class ConstBodyIterator;
 	friend class BodyList;
 	
-	friend class DistanceJoint;
-	friend class FrictionJoint;
-	friend class GearJoint;
-	friend class MotorJoint;
-	friend class MouseJoint;
-	friend class PrismaticJoint;
-	friend class PulleyJoint;
-	friend class RevoluteJoint;
-	friend class RopeJoint;
-	friend class WeldJoint;
-	friend class WheelJoint;
-
 	using flags_type = uint16;
 
 	// m_flags
@@ -460,9 +442,6 @@ private:
 	/// @return accumalated mass data for all fixtures associated with this body.
 	MassData ComputeMassData() const noexcept;
 
-	/// Gets the velocity of this body after the given time with the given gravity.
-	Velocity GetVelocity(float_t h, Vec2 gravity) const noexcept;
-	
 	bool IsValidIslandIndex() const noexcept;
 
 	static constexpr auto InvalidIslandIndex = static_cast<body_count_t>(-1);
@@ -491,11 +470,14 @@ private:
 	JointEdgeList m_joints; ///< Container of joint edges. 8-bytes.
 	ContactEdgeList m_contacts; ///< Container of contact edges. 8-bytes.
 
-	float_t m_mass; ///< Mass of the body (in kg). A non-negative value. The sum total mass of all associated fixtures. 0 if Static or Kinematic.
-	float_t m_invMass; ///< Inverse of m_mass or 0 if m_mass == 0 (this is a non-negative value). @see m_mass.
-
-	float_t m_I = float_t{0}; ///< Rotational inertia about the center of mass. A non-negative value).
-	float_t m_invI = float_t{0}; ///< Inverse rotational inertia (inverse of m_I or 0 if m_I == 0). A non-negative value. @see m_I.
+	/// Inverse mass of the body.
+	/// @detail A non-negative value (in units of 1/kg).
+	/// Can only be zero for non-accelerable bodies.
+	float_t m_invMass = float_t{0};	
+	
+	/// Inverse rotational inertia about the center of mass.
+	/// @detail A non-negative value (in units of 1/(kg*m^2)).
+	float_t m_invI = float_t{0};
 
 	float_t m_linearDamping; ///< Linear damping.
 	float_t m_angularDamping; ///< Angular damping.
@@ -546,19 +528,9 @@ inline Velocity Body::GetVelocity() const noexcept
 	return m_velocity;
 }
 	
-inline float_t Body::GetMass() const noexcept
-{
-	return m_mass;
-}
-
 inline float_t Body::GetInverseMass() const noexcept
 {
 	return m_invMass;
-}
-
-inline float_t Body::GetInertia() const noexcept
-{
-	return m_I;
 }
 
 inline float_t Body::GetInverseInertia() const noexcept
@@ -774,6 +746,20 @@ inline bool Body::IsValidIslandIndex() const noexcept
 	return IsInIsland() && (m_islandIndex != InvalidIslandIndex);
 }
 
+inline body_count_t Body::GetIslandIndex() const noexcept
+{
+	return m_islandIndex;
+}
+
+/// Gets the total mass of the body.
+/// @return Value of zero or more representing the body's mass (in kg).
+/// @sa GetInverseMass.
+/// @sa SetMassData.
+inline float_t GetMass(const Body& body) noexcept
+{
+	return float_t{1} / body.GetInverseMass();
+}
+
 /// Apply a force at a world point. If the force is not
 /// applied at the center of mass, it will generate a torque and
 /// affect the angular velocity. Non-zero forces wakes up the body.
@@ -823,18 +809,25 @@ inline void ApplyAngularImpulse(Body& body, float_t impulse) noexcept
 	body.SetVelocity(velocity);
 }
 
+/// Gets the rotational inertia of the body.
+/// @return the rotational inertia, usually in kg-m^2.
+inline float_t GetInertia(const Body& body) noexcept
+{
+	return float_t{1} / body.GetInverseInertia();
+}
+
 /// Gets the rotational inertia of the body about the local origin.
 /// @return the rotational inertia, usually in kg-m^2.
 inline float_t GetLocalInertia(const Body& body) noexcept
 {
-	return body.GetInertia() + body.GetMass() * LengthSquared(body.GetLocalCenter());
+	return GetInertia(body) + GetMass(body) * LengthSquared(body.GetLocalCenter());
 }
 
 /// Get the mass data of the body.
 /// @return a struct containing the mass, inertia and center of the body.
 inline MassData GetMassData(const Body& body) noexcept
 {
-	return MassData{body.GetMass(), body.GetLocalCenter(), GetLocalInertia(body)};
+	return MassData{GetMass(body), body.GetLocalCenter(), GetLocalInertia(body)};
 }
 
 /// Get the linear velocity of the center of mass.
@@ -922,6 +915,9 @@ inline Vec2 GetLinearVelocityFromLocalPoint(const Body& body, const Vec2& localP
 	return GetLinearVelocityFromWorldPoint(body, GetWorldPoint(body, localPoint));
 }
 
+/// Gets the velocity of this body after the given time with the given gravity.
+Velocity GetVelocity(const Body& body, float_t h, Vec2 gravity) noexcept;
+	
 } // namespace box2d
 
 #endif

@@ -141,8 +141,8 @@ public:
 
 			Body* body1 = point->fixtureA->GetBody();
 			Body* body2 = point->fixtureB->GetBody();
-			float_t mass1 = body1->GetMass();
-			float_t mass2 = body2->GetMass();
+			const auto mass1 = GetMass(*body1);
+			const auto mass2 = GetMass(*body2);
 
 			if (mass1 > 0.0f && mass2 > 0.0f)
 			{

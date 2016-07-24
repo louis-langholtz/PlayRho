@@ -781,8 +781,7 @@ void World::ClearForces() noexcept
 {
 	for (auto&& body: m_bodies)
 	{
-		body.m_force = Vec2_zero;
-		body.m_torque = float_t{0};
+		body.SetForces(Vec2_zero, float_t{0});
 	}
 }
 

@@ -61,7 +61,6 @@ Body::Body(const BodyDef& bd, World* world):
 	m_flags{GetFlags(bd)}, m_xf{bd.position, Rot{bd.angle}}, m_world{world},
 	m_sweep{Position{m_xf.p, bd.angle}},
 	m_velocity{Velocity{bd.linearVelocity, bd.angularVelocity}},
-	m_mass{(bd.type == BodyType::Dynamic)? float_t{1}: float_t{0}},
 	m_invMass{(bd.type == BodyType::Dynamic)? float_t{1}: float_t{0}},
 	m_linearDamping{bd.linearDamping}, m_angularDamping{bd.angularDamping},
 	m_userData{bd.userData}
@@ -288,29 +287,6 @@ MassData Body::ComputeMassData() const noexcept
 	return MassData{mass, center, I};
 }
 
-Velocity Body::GetVelocity(float_t h, Vec2 gravity) const noexcept
-{
-	// Integrate velocity and apply damping.
-	auto velocity = m_velocity;
-	if (IsAccelerable())
-	{
-		// Integrate velocities.
-		velocity.v += h * (gravity + (m_force * m_invMass));
-		velocity.w += h * (m_torque * m_invI);
-		
-		// Apply damping.
-		// ODE: dv/dt + c * v = 0
-		// Solution: v(t) = v0 * exp(-c * t)
-		// Time step: v(t + dt) = v0 * exp(-c * (t + dt)) = v0 * exp(-c * t) * exp(-c * dt) = v * exp(-c * dt)
-		// v2 = exp(-c * dt) * v1
-		// Pade approximation:
-		// v2 = v1 * 1 / (1 + c * dt)
-		velocity.v *= float_t{1} / (float_t{1} + h * m_linearDamping);
-		velocity.w *= float_t{1} / (float_t{1} + h * m_angularDamping);
-	}
-	return velocity;
-}
-
 void Body::ResetMassData()
 {
 	// Compute mass data from shapes. Each shape has its own density.
@@ -318,9 +294,7 @@ void Body::ResetMassData()
 	// Non-dynamic bodies (Static and kinematic ones) have zero mass.
 	if (!IsAccelerable())
 	{
-		m_mass = float_t{0};
 		m_invMass = float_t{0};
-		m_I = float_t{0};
 		m_invI = float_t{0};
 		m_sweep = Sweep{Position{m_xf.p, GetAngle()}};
 		return;
@@ -329,23 +303,21 @@ void Body::ResetMassData()
 	const auto massData = ComputeMassData();
 
 	// Force all dynamic bodies to have a positive mass.
-	m_mass = (massData.mass > float_t{0})? massData.mass: float_t{1};
-	m_invMass = float_t{1} / m_mass;
-	m_I = massData.I;
+	const auto mass = (massData.mass > float_t{0})? massData.mass: float_t{1};
+	m_invMass = float_t{1} / mass;
 	
 	// Compute center of mass.
 	const auto localCenter = massData.center * m_invMass;
 	
-	if ((m_I > float_t{0}) && (!IsFixedRotation()))
+	const auto I = massData.I;
+	if ((I > float_t{0}) && (!IsFixedRotation()))
 	{
 		// Center the inertia about the center of mass.
-		m_I -= m_mass * LengthSquared(localCenter);
-		assert(m_I > float_t{0});
-		m_invI = float_t{1} / m_I;
+		assert((I - mass * LengthSquared(localCenter)) > float_t{0});
+		m_invI = float_t{1} / (I - mass * LengthSquared(localCenter));
 	}
 	else
 	{
-		m_I = float_t{0};
 		m_invI = float_t{0};
 	}
 
@@ -370,18 +342,17 @@ void Body::SetMassData(const MassData& massData)
 		return;
 	}
 
-	m_mass = (massData.mass > float_t(0))? massData.mass: float_t{1};
-	m_invMass = float_t{1} / m_mass;
+	const auto mass = (massData.mass > float_t(0))? massData.mass: float_t{1};
+	m_invMass = float_t{1} / mass;
 
 	if ((massData.I > float_t{0}) && (!IsFixedRotation()))
 	{
-		m_I = massData.I - m_mass * LengthSquared(massData.center);
-		assert(m_I > float_t{0});
-		m_invI = float_t{1} / m_I;
+		const auto I = massData.I - mass * LengthSquared(massData.center);
+		assert(I > float_t{0});
+		m_invI = float_t{1} / I;
 	}
 	else
 	{
-		m_I = float_t{0};
 		m_invI = float_t{0};
 	}
 
@@ -408,15 +379,16 @@ void Body::SetVelocity(const Velocity& velocity) noexcept
 
 void Body::SetForces(const Vec2& linear, const float_t rotational) noexcept
 {
-	if (IsAccelerable())
+	if ((linear != Vec2_zero) || (rotational != 0))
 	{
-		if ((linear != Vec2_zero) || (rotational != 0))
+		if (!IsAccelerable())
 		{
-			SetAwake();
-		}			
-		m_force = linear;
-		m_torque = rotational;
-	}
+			return;
+		}
+		SetAwake();
+	}			
+	m_force = linear;
+	m_torque = rotational;
 }
 
 bool Body::ShouldCollide(const Body* other) const
@@ -538,17 +510,17 @@ void Body::Dump()
 	log("{\n");
 	log("  BodyDef bd;\n");
 	log("  bd.type = BodyType(%d);\n", GetType());
-	log("  bd.position = Vec2(%.15lef, %.15lef);\n", m_xf.p.x, m_xf.p.y);
+	log("  bd.position = Vec2(%.15lef, %.15lef);\n", GetPosition().x, GetPosition().y);
 	log("  bd.angle = %.15lef;\n", GetAngle());
-	log("  bd.linearVelocity = Vec2(%.15lef, %.15lef);\n", m_velocity.v.x, m_velocity.v.y);
-	log("  bd.angularVelocity = %.15lef;\n", m_velocity.w);
-	log("  bd.linearDamping = %.15lef;\n", m_linearDamping);
-	log("  bd.angularDamping = %.15lef;\n", m_angularDamping);
-	log("  bd.allowSleep = bool(%d);\n", m_flags & e_autoSleepFlag);
-	log("  bd.awake = bool(%d);\n", m_flags & e_awakeFlag);
-	log("  bd.fixedRotation = bool(%d);\n", m_flags & e_fixedRotationFlag);
-	log("  bd.bullet = bool(%d);\n", m_flags & e_impenetrableFlag);
-	log("  bd.active = bool(%d);\n", m_flags & e_activeFlag);
+	log("  bd.linearVelocity = Vec2(%.15lef, %.15lef);\n", GetVelocity().v.x, GetVelocity().v.y);
+	log("  bd.angularVelocity = %.15lef;\n", GetVelocity().w);
+	log("  bd.linearDamping = %.15lef;\n", GetLinearDamping());
+	log("  bd.angularDamping = %.15lef;\n", GetAngularDamping());
+	log("  bd.allowSleep = bool(%d);\n", IsSleepingAllowed());
+	log("  bd.awake = bool(%d);\n", IsAwake());
+	log("  bd.fixedRotation = bool(%d);\n", IsFixedRotation());
+	log("  bd.bullet = bool(%d);\n", IsImpenetrable());
+	log("  bd.active = bool(%d);\n", IsActive());
 	log("  bodies[%d] = m_world->CreateBody(bd);\n", m_islandIndex);
 	log("\n");
 	for (auto&& fixture: m_fixtures)
@@ -558,4 +530,27 @@ void Body::Dump()
 		log("  }\n");
 	}
 	log("}\n");
+}
+
+Velocity box2d::GetVelocity(const Body& body, float_t h, Vec2 gravity) noexcept
+{
+	// Integrate velocity and apply damping.
+	auto velocity = body.GetVelocity();
+	if (body.IsAccelerable())
+	{
+		// Integrate velocities.
+		velocity.v += h * (gravity + (body.GetForce() * body.GetInverseMass()));
+		velocity.w += h * (body.GetTorque() * body.GetInverseInertia());
+		
+		// Apply damping.
+		// ODE: dv/dt + c * v = 0
+		// Solution: v(t) = v0 * exp(-c * t)
+		// Time step: v(t + dt) = v0 * exp(-c * (t + dt)) = v0 * exp(-c * t) * exp(-c * dt) = v * exp(-c * dt)
+		// v2 = exp(-c * dt) * v1
+		// Pade approximation:
+		// v2 = v1 * 1 / (1 + c * dt)
+		velocity.v *= float_t{1} / (float_t{1} + h * body.GetLinearDamping());
+		velocity.w *= float_t{1} / (float_t{1} + h * body.GetAngularDamping());
+	}
+	return velocity;
 }

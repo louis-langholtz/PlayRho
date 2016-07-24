@@ -127,7 +127,7 @@ public:
 
 				float_t gravity = 10.0f;
 				float_t I = GetLocalInertia(*body);
-				float_t mass = body->GetMass();
+				float_t mass = GetMass(*body);
 
 				// For a circle: I = 0.5 * m * r * r ==> r = sqrt(2 * I / m)
 				float_t radius = Sqrt(2.0f * I / mass);
