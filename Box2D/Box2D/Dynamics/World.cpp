@@ -1,21 +1,21 @@
 /*
-* Original work Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2016 Louis Langholtz https://github.com/louis-langholtz/Box2D
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2016 Louis Langholtz https://github.com/louis-langholtz/Box2D
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #include <Box2D/Dynamics/World.h>
 #include <Box2D/Dynamics/Body.h>
@@ -470,7 +470,27 @@ void World::Solve(const TimeStep& step)
 			remNumJoints -= island.m_joints.size() - numJoints;
 		}
 
-		island.Solve(step, m_allowSleep);
+		const auto constraintsSolved = island.Solve(step);
+
+		if (m_allowSleep)
+		{
+			auto minSleepTime = MaxFloat;
+			for (auto&& b: island.m_bodies)
+			{
+				if (b->IsSpeedable())
+				{
+					minSleepTime = Min(minSleepTime, b->UpdateSleepTime(step.get_dt()));
+				}
+			}
+			if ((minSleepTime >= MinStillTimeToSleep) && constraintsSolved)
+			{
+				// Sleep the bodies
+				for (auto&& b: island.m_bodies)
+				{
+					b->UnsetAwake();
+				}
+			}
+		}
 
 		for (auto&& b: island.m_bodies)
 		{
@@ -480,7 +500,7 @@ void World::Solve(const TimeStep& step)
 				b->UnsetInIsland();
 				++remNumBodies;
 			}
-		}
+		}	
 	}
 
 	// Synchronize fixtures, check for out of range bodies.

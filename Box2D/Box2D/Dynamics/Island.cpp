@@ -149,14 +149,6 @@ using namespace box2d;
 
 namespace {
 
-	inline bool IsSleepable(Velocity velocity)
-	{
-		constexpr auto LinSleepTolSquared = Square(LinearSleepTolerance);
-		constexpr auto AngSleepTolSquared = Square(AngularSleepTolerance);
-		
-		return (Square(velocity.w) <= AngSleepTolSquared) && (LengthSquared(velocity.v) <= LinSleepTolSquared);
-	}
-
 	/// Calculates movement.
 	/// @detail Calculate the positional displacement based on the given velocity
 	///    that's possibly clamped to the maximum translation and rotation.
@@ -263,33 +255,7 @@ void Island::CopyOut(const Position* positions, const Velocity* velocities, Body
 	}
 }
 
-float_t Island::UpdateSleepTimes(float_t h)
-{
-	auto minSleepTime = MaxFloat;
-	
-	for (auto&& body: m_bodies)
-	{
-		if (!body->IsSpeedable())
-		{
-			continue;
-		}
-		
-		if (body->IsSleepingAllowed() && IsSleepable(body->GetVelocity()))
-		{
-			body->m_sleepTime += h;
-			minSleepTime = Min(minSleepTime, body->m_sleepTime);
-		}
-		else
-		{
-			body->m_sleepTime = float_t{0};
-			minSleepTime = float_t{0};
-		}
-	}
-	
-	return minSleepTime;
-}
-
-bool Island::Solve(const TimeStep& step, bool allowSleep)
+bool Island::Solve(const TimeStep& step)
 {
 	// Initialize the bodies
 	for (auto&& body: m_bodies)
@@ -363,19 +329,6 @@ bool Island::Solve(const TimeStep& step, bool allowSleep)
 	CopyOut(positions.data(), velocities.data(), m_bodies);
 
 	Report(contactSolver.GetVelocityConstraints());
-
-	if (allowSleep)
-	{
-		const auto minSleepTime = UpdateSleepTimes(h);
-		if ((minSleepTime >= MinStillTimeToSleep) && constraintsSolved)
-		{
-			// Sleep the bodies
-			for (auto&& body: m_bodies)
-			{
-				body->UnsetAwake();
-			}
-		}
-	}
 
 	return constraintsSolved;
 }

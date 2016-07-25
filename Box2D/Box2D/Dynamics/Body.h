@@ -284,6 +284,15 @@ public:
 	/// @return true if the body is awake.
 	bool IsAwake() const noexcept;
 
+	float_t GetSleepTime() const noexcept;
+	
+	/// Updates the body's sleep time for speedable bodies.
+	/// @param h Time to increment sleep time by if permissible.
+	/// @post Sleep time will be zero if not permissible. Otheriwse it's the incremented sleep time.
+	/// @note Behavior is undefined if called and this body is not speedable.
+	/// @return New sleep time for this body.
+	float_t UpdateSleepTime(float_t h) noexcept;
+
 	/// Set the active state of the body. An inactive body is not
 	/// simulated and cannot be collided with or woken up.
 	/// If you pass a flag of true, all fixtures will be added to the
@@ -603,6 +612,19 @@ inline void Body::UnsetAwake() noexcept
 inline bool Body::IsAwake() const noexcept
 {
 	return (m_flags & e_awakeFlag) != 0;
+}
+
+inline float_t Body::GetSleepTime() const noexcept
+{
+	return m_sleepTime;
+}
+
+inline float_t Body::UpdateSleepTime(float_t h) noexcept
+{
+	assert(IsSpeedable());
+	const auto newSleepTime = (IsSleepingAllowed() && IsSleepable(GetVelocity()))? GetSleepTime() + h: float_t{0};
+	m_sleepTime = newSleepTime;
+	return newSleepTime;
 }
 
 inline bool Body::IsActive() const noexcept

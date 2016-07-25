@@ -1035,5 +1035,11 @@ inline float_t Normalize(Vec2& vector)
 	return length;
 }
 
+inline bool IsSleepable(Velocity velocity)
+{
+	return (Square(velocity.w) <= Square(AngularSleepTolerance))
+	    && (LengthSquared(velocity.v) <= Square(LinearSleepTolerance));
+}
+
 }
 #endif

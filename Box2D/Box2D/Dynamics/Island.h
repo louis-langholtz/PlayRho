@@ -61,7 +61,7 @@ public:
 	///   4. Synchronizes every body's transform (by updating it to transform one of the body's sweep).
 	///   5. Reports to the listener.
 	/// @return True if the contact and joint constraints were solved, false otherwise.
-	bool Solve(const TimeStep& step, bool allowSleep);
+	bool Solve(const TimeStep& step);
 
 	/// Solves the time of impact for the two bodies identified by the given island indexes.
 	/// @detail This:
@@ -94,8 +94,6 @@ private:
 	void InitJointVelocityConstraints(const SolverData& solverData);
 	void SolveJointVelocityConstraints(const SolverData& solverData);
 	bool SolveJointPositionConstraints(const SolverData& solverData);
-
-	float_t UpdateSleepTimes(float_t h);
 
 	/// Reports the given constraints to the listener.
 	/// This calls the listener's PostSolve method for all m_contactCount elements of the given array of constraints.
