@@ -782,13 +782,6 @@ void World::Step(float_t dt, unsigned velocityIterations, unsigned positionItera
 	{
 		m_inv_dt0 = step.get_inv_dt();
 	}
-
-	if (GetAutoClearForces())
-	{
-		ClearForces();
-	}
-
-	m_profile.step = stepTimer.GetMilliseconds();
 }
 
 void World::ClearForces() noexcept
