@@ -61,7 +61,7 @@ public:
 	///   4. Synchronizes every body's transform (by updating it to transform one of the body's sweep).
 	///   5. Reports to the listener.
 	/// @return True if the contact and joint constraints were solved, false otherwise.
-	bool Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep);
+	bool Solve(const TimeStep& step, bool allowSleep);
 
 	/// Solves the time of impact for the two bodies identified by the given island indexes.
 	/// @detail This:

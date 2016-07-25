@@ -470,7 +470,7 @@ void World::Solve(const TimeStep& step)
 			remNumJoints -= island.m_joints.size() - numJoints;
 		}
 
-		island.Solve(step, m_gravity, m_allowSleep);
+		island.Solve(step, m_allowSleep);
 
 		for (auto&& b: island.m_bodies)
 		{

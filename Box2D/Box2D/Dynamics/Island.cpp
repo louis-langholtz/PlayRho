@@ -289,7 +289,7 @@ float_t Island::UpdateSleepTimes(float_t h)
 	return minSleepTime;
 }
 
-bool Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
+bool Island::Solve(const TimeStep& step, bool allowSleep)
 {
 	// Initialize the bodies
 	for (auto&& body: m_bodies)
@@ -306,7 +306,7 @@ bool Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 	for (auto&& body: m_bodies)
 	{
 		positions.push_back(body->m_sweep.pos1);
-		velocities.push_back(GetVelocity(*body, h, gravity));
+		velocities.push_back(GetVelocity(*body, h));
 	}
 
 	// Solver data

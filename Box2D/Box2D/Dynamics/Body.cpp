@@ -536,7 +536,7 @@ void Body::Dump()
 	log("}\n");
 }
 
-Velocity box2d::GetVelocity(const Body& body, float_t h, Vec2 gravity) noexcept
+Velocity box2d::GetVelocity(const Body& body, float_t h) noexcept
 {
 	// Integrate velocity and apply damping.
 	auto velocity = body.GetVelocity();

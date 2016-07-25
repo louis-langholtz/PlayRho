@@ -931,8 +931,8 @@ inline float_t GetTorque(const Body& body) noexcept
 	return body.GetAngularAcceleration() * GetInertia(body);;
 }
 
-/// Gets the velocity of this body after the given time with the given gravity.
-Velocity GetVelocity(const Body& body, float_t h, Vec2 gravity) noexcept;
+/// Gets the velocity of the body after the given time accounting for the body's acceleration.
+Velocity GetVelocity(const Body& body, float_t h) noexcept;
 	
 } // namespace box2d
 
