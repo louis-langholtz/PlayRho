@@ -289,7 +289,7 @@ float_t Island::UpdateSleepTimes(float_t h)
 	return minSleepTime;
 }
 
-void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
+bool Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 {
 	// Initialize the bodies
 	for (auto&& body: m_bodies)
@@ -342,7 +342,7 @@ void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 	IntegratePositions(positions, velocities, h);
 
 	// Solve position constraints
-	auto positionSolved = false;
+	auto constraintsSolved = false;
 	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
 	{
 		const auto contactsOkay = contactSolver.SolvePositionConstraints();
@@ -351,7 +351,7 @@ void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 		if (contactsOkay && jointsOkay)
 		{
 			// Exit early if the position errors are small.
-			positionSolved = true;
+			constraintsSolved = true;
 			break;
 		}
 	}
@@ -367,7 +367,7 @@ void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 	if (allowSleep)
 	{
 		const auto minSleepTime = UpdateSleepTimes(h);
-		if ((minSleepTime >= MinStillTimeToSleep) && positionSolved)
+		if ((minSleepTime >= MinStillTimeToSleep) && constraintsSolved)
 		{
 			// Sleep the bodies
 			for (auto&& body: m_bodies)
@@ -376,6 +376,8 @@ void Island::Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep)
 			}
 		}
 	}
+
+	return constraintsSolved;
 }
 
 void Island::SolveTOI(const TimeStep& subStep, island_count_t indexA, island_count_t indexB)

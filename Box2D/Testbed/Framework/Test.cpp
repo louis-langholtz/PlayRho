@@ -301,10 +301,21 @@ void Test::Step(Settings* settings)
 
 	if (settings->drawStats)
 	{
+		const auto sleepCount = [&](){
+			auto count = unsigned(0);
+			for (auto&& body: m_world->GetBodies())
+			{
+				if (!body.IsAwake())
+				{
+					++count;
+				}
+			}
+			return count;
+		}();
 		const auto bodyCount = GetBodyCount(*m_world);
 		const auto contactCount = GetContactCount(*m_world);
 		const auto jointCount = GetJointCount(*m_world);
-		g_debugDraw.DrawString(5, m_textLine, "bodies/contacts/joints = %d/%d/%d", bodyCount, contactCount, jointCount);
+		g_debugDraw.DrawString(5, m_textLine, "sleep/bodies/contacts/joints = %d/%d/%d/%d", sleepCount, bodyCount, contactCount, jointCount);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		const auto proxyCount = m_world->GetProxyCount();

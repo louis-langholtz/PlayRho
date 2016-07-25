@@ -186,15 +186,15 @@ public:
 
 	void SetVelocity(const Velocity& v) noexcept;
 
-	/// Sets the linear and rotational forces on this body.
+	/// Sets the linear and rotational accelerations on this body.
 	/// @note This has no effect on non-accelerable bodies.
-	/// @param linear Linear force.
-	/// @param rotational Rotational force or torque.
-	void SetForces(const Vec2& linear, const float_t rotational) noexcept;
+	/// @param linear Linear acceleration.
+	/// @param angular Angular acceleration.
+	void SetAcceleration(const Vec2& linear, const float_t angular) noexcept;
 
-	Vec2 GetForce() const noexcept;
-	
-	float_t GetTorque() const noexcept;
+	Vec2 GetLinearAcceleration() const noexcept;
+
+	float_t GetAngularAcceleration() const noexcept;
 
 	/// Gets the inverse total mass of the body.
 	/// @detail This is the cached result of dividing 1 by the body's mass.
@@ -456,8 +456,8 @@ private:
 
 	Velocity m_velocity; ///< Velocity (linear and angular). 12-bytes.
 
-	Vec2 m_force = Vec2_zero; ///< Force. 8-bytes.
-	float_t m_torque = float_t{0}; ///< Torque. 4-bytes.
+	Vec2 m_linearAcceleration = Vec2_zero; ///< Linear acceleration. 8-bytes.
+	float_t m_angularAcceleration = float_t{0}; ///< Angular acceleration. 4-bytes.
 
 	World* const m_world; ///< World to which this body belongs. 8-bytes.
 	Body* m_prev = nullptr; ///< Previous body. 8-bytes.
@@ -598,8 +598,6 @@ inline void Body::UnsetAwake() noexcept
 	m_flags &= ~e_awakeFlag;
 	m_sleepTime = float_t{0};
 	m_velocity = Velocity{Vec2_zero, 0};
-	m_force = Vec2_zero;
-	m_torque = float_t{0};
 }
 
 inline bool Body::IsAwake() const noexcept
@@ -685,14 +683,14 @@ inline void* Body::GetUserData() const noexcept
 	return m_userData;
 }
 
-inline Vec2 Body::GetForce() const noexcept
+inline Vec2 Body::GetLinearAcceleration() const noexcept
 {
-	return m_force;
+	return m_linearAcceleration;
 }
 
-inline float_t Body::GetTorque() const noexcept
+inline float_t Body::GetAngularAcceleration() const noexcept
 {
-	return m_torque;
+	return m_angularAcceleration;
 }
 
 inline void Body::Advance(float_t alpha)
@@ -757,6 +755,11 @@ inline float_t GetMass(const Body& body) noexcept
 	return float_t{1} / body.GetInverseMass();
 }
 
+inline void ApplyLinearAcceleration(Body& body, const Vec2 amount)
+{
+	body.SetAcceleration(body.GetLinearAcceleration() + amount, body.GetAngularAcceleration());
+}
+
 /// Apply a force at a world point. If the force is not
 /// applied at the center of mass, it will generate a torque and
 /// affect the angular velocity. Non-zero forces wakes up the body.
@@ -764,14 +767,18 @@ inline float_t GetMass(const Body& body) noexcept
 /// @param point the world position of the point of application.
 inline void ApplyForce(Body& body, const Vec2& force, const Vec2& point) noexcept
 {
-	body.SetForces(body.GetForce() + force, body.GetTorque() + Cross(point - body.GetWorldCenter(), force));
+	const auto linAccel = body.GetLinearAcceleration() + force * body.GetInverseMass();
+	const auto angAccel = body.GetAngularAcceleration() + Cross(point - body.GetWorldCenter(), force) * body.GetInverseInertia();
+	body.SetAcceleration(linAccel, angAccel);
 }
 
 /// Apply a force to the center of mass. Non-zero forces wakes up the body.
 /// @param force the world force vector, usually in Newtons (N).
 inline void ApplyForceToCenter(Body& body, const Vec2& force) noexcept
 {
-	body.SetForces(body.GetForce() + force, body.GetTorque());
+	const auto linAccel = body.GetLinearAcceleration() + force * body.GetInverseMass();
+	const auto angAccel = body.GetAngularAcceleration();
+	body.SetAcceleration(linAccel, angAccel);
 }
 
 /// Apply a torque. This affects the angular velocity
@@ -780,7 +787,9 @@ inline void ApplyForceToCenter(Body& body, const Vec2& force) noexcept
 /// @param torque about the z-axis (out of the screen), usually in N-m.
 inline void ApplyTorque(Body& body, float_t torque) noexcept
 {
-	body.SetForces(body.GetForce(), body.GetTorque() + torque);
+	const auto linAccel = body.GetLinearAcceleration();
+	const auto angAccel = body.GetAngularAcceleration() + torque * body.GetInverseInertia();
+	body.SetAcceleration(linAccel, angAccel);
 }
 
 /// Apply an impulse at a point. This immediately modifies the velocity.
@@ -910,6 +919,16 @@ inline Vec2 GetLinearVelocityFromWorldPoint(const Body& body, const Vec2& worldP
 inline Vec2 GetLinearVelocityFromLocalPoint(const Body& body, const Vec2& localPoint) noexcept
 {
 	return GetLinearVelocityFromWorldPoint(body, GetWorldPoint(body, localPoint));
+}
+
+inline Vec2 GetForce(const Body& body) noexcept
+{
+	return body.GetLinearAcceleration() * GetMass(body);
+}
+
+inline float_t GetTorque(const Body& body) noexcept
+{
+	return body.GetAngularAcceleration() * GetInertia(body);;
 }
 
 /// Gets the velocity of this body after the given time with the given gravity.

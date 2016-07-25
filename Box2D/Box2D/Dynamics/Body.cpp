@@ -158,8 +158,12 @@ void Body::SetType(BodyType type)
 
 	SetAwake();
 
-	m_force = Vec2_zero;
-	m_torque = float_t{0};
+	m_linearAcceleration = Vec2_zero;
+	m_angularAcceleration = float_t{0};
+	if (IsAccelerable())
+	{
+		m_linearAcceleration += m_world->GetGravity();
+	}
 
 	DestroyContacts();
 
@@ -378,18 +382,17 @@ void Body::SetVelocity(const Velocity& velocity) noexcept
 	m_velocity = velocity;
 }
 
-void Body::SetForces(const Vec2& linear, const float_t rotational) noexcept
+void Body::SetAcceleration(const Vec2& linear, const float_t angular) noexcept
 {
-	if ((linear != Vec2_zero) || (rotational != 0))
+	if ((linear != Vec2_zero) || (angular != 0))
 	{
 		if (!IsAccelerable())
 		{
 			return;
 		}
-		SetAwake();
-	}			
-	m_force = linear;
-	m_torque = rotational;
+	}
+	m_linearAcceleration = linear;
+	m_angularAcceleration = angular;
 }
 
 bool Body::ShouldCollide(const Body* other) const
@@ -540,8 +543,8 @@ Velocity box2d::GetVelocity(const Body& body, float_t h, Vec2 gravity) noexcept
 	if (body.IsAccelerable())
 	{
 		// Integrate velocities.
-		velocity.v += h * (gravity + (body.GetForce() * body.GetInverseMass()));
-		velocity.w += h * (body.GetTorque() * body.GetInverseInertia());
+		velocity.v += h * body.GetLinearAcceleration();
+		velocity.w += h * body.GetAngularAcceleration();
 		
 		// Apply damping.
 		// ODE: dv/dt + c * v = 0

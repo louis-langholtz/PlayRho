@@ -60,7 +60,8 @@ public:
 	///   3. Updates every body's velocity to the new accelerated, dampened, and "solved" velocity for it.
 	///   4. Synchronizes every body's transform (by updating it to transform one of the body's sweep).
 	///   5. Reports to the listener.
-	void Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep);
+	/// @return True if the contact and joint constraints were solved, false otherwise.
+	bool Solve(const TimeStep& step, const Vec2& gravity, bool allowSleep);
 
 	/// Solves the time of impact for the two bodies identified by the given island indexes.
 	/// @detail This:

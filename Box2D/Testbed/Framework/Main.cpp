@@ -234,7 +234,6 @@ static void sMouseButton(GLFWwindow*, int32 button, int32 action, int32 mods)
 	// Use the mouse to move things around.
 	if (button == GLFW_MOUSE_BUTTON_1)
 	{
-        //<##>
         //ps = Vec2(0, 0);
 		Vec2 pw = g_camera.ConvertScreenToWorld(ps);
 		if (action == GLFW_PRESS)

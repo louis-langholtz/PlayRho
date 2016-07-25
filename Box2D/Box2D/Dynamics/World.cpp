@@ -110,6 +110,19 @@ void World::SetDebugDraw(Draw* debugDraw) noexcept
 	g_debugDraw = debugDraw;
 }
 
+void World::SetGravity(const Vec2& gravity) noexcept
+{
+	if (m_gravity != gravity)
+	{
+		const auto diff = gravity - m_gravity;
+		for (auto&& body: m_bodies)
+		{
+			ApplyLinearAcceleration(body, diff);
+		}
+		m_gravity = gravity;
+	}
+}
+
 Body* World::CreateBody(const BodyDef& def)
 {
 	assert(!IsLocked());
@@ -130,6 +143,7 @@ Body* World::CreateBody(const BodyDef& def)
 		}		
 	}
 
+	b->SetAcceleration(m_gravity, 0);
 	return b;
 }
 
@@ -781,7 +795,7 @@ void World::ClearForces() noexcept
 {
 	for (auto&& body: m_bodies)
 	{
-		body.SetForces(Vec2_zero, float_t{0});
+		body.SetAcceleration(m_gravity, 0);
 	}
 }
 

@@ -217,10 +217,11 @@ public:
 	/// Is the world locked (in the middle of a time step).
 	bool IsLocked() const noexcept;
 
-	/// Set flag to control automatic clearing of forces after each time step.
+	/// Set flag to control automatic clearing of non-gravitational forces after each time step.
 	void SetAutoClearForces(bool flag) noexcept;
 
-	/// Get the flag that controls automatic clearing of forces after each time step.
+	/// Gets the flag that controls automatic clearing of forces after each time step.
+	/// @note This only removes non-gravitational forces.
 	bool GetAutoClearForces() const noexcept;
 
 	/// Shift the world origin. Useful for large worlds.
@@ -374,11 +375,6 @@ inline const ContactList& World::GetContacts() const noexcept
 	return m_contactMgr.GetContacts();
 }
 
-inline void World::SetGravity(const Vec2& gravity) noexcept
-{
-	m_gravity = gravity;
-}
-
 inline Vec2 World::GetGravity() const noexcept
 {
 	return m_gravity;
@@ -401,7 +397,6 @@ inline void World::SetAutoClearForces(bool flag) noexcept
 	}
 }
 
-/// Get the flag that controls automatic clearing of forces after each time step.
 inline bool World::GetAutoClearForces() const noexcept
 {
 	return (m_flags & e_clearForces) != 0;
