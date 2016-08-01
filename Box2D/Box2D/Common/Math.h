@@ -34,14 +34,14 @@ constexpr inline float_t Cross(const Vec2& a, const Vec2& b) noexcept;
 constexpr inline Vec3 Cross(const Vec3& a, const Vec3& b) noexcept;
 
 template <typename T>
-inline bool IsValid(T value)
+inline bool IsValid(const T& value)
 {
 	return false;
 }
 	
 /// This function is used to ensure that a floating point number is not a NaN or infinity.
 template <>
-inline bool IsValid(float_t x)
+inline bool IsValid(const float_t& x)
 {
 	return !std::isnan(x) && !std::isinf(x);
 }
@@ -134,6 +134,8 @@ struct Vec2
 /// @see Vec2.
 constexpr auto Vec2_zero = Vec2{0, 0};
 
+constexpr auto Vec2_invalid = Vec2{std::numeric_limits<float_t>::infinity(), std::numeric_limits<float_t>::infinity()};
+
 template <>
 inline Vec2 round(Vec2 value, unsigned precision)
 {
@@ -185,14 +187,14 @@ inline float_t Length(T value)
 
 /// Does this vector contain finite coordinates?
 template <>
-inline bool IsValid(Vec2 value)
+inline bool IsValid(const Vec2& value)
 {
 	return IsValid(value.x) && IsValid(value.y);
 }
 
 /// Does this vector contain finite coordinates?
 template <>
-inline bool IsValid(Vec3 value)
+inline bool IsValid(const Vec3& value)
 {
 	return IsValid(value.x) && IsValid(value.y) && IsValid(value.z);
 }
@@ -225,10 +227,18 @@ struct Mat22
 	Vec2 ex, ey;
 };
 
+template <>
+inline bool IsValid(const Mat22& value)
+{
+	return IsValid(value.ex) && IsValid(value.ey);
+}
+
 /// An all zero Mat22 value.
 /// @see Mat22.
 constexpr auto Mat22_zero = Mat22(Vec2_zero, Vec2_zero);
 
+constexpr auto Mat22_invalid = Mat22(Vec2_invalid, Vec2_invalid);
+	
 /// Identity value for Mat22 objects.
 /// @see Mat22.
 constexpr auto Mat22_identity = Mat22(Vec2{1, 0}, Vec2{0, 1});
@@ -359,6 +369,12 @@ private:
 
 constexpr auto Rot_identity = Rot(0, 1);
 
+template <>
+inline bool IsValid(const Rot& value)
+{
+	return IsValid(value.sin()) && IsValid(value.cos());
+}
+
 constexpr inline bool operator == (Rot lhs, Rot rhs)
 {
 	return (lhs.sin() == rhs.sin()) && (lhs.cos() == rhs.cos());
@@ -405,6 +421,12 @@ struct Transformation
 
 constexpr auto Transform_identity = Transformation{Vec2_zero, Rot_identity};
 
+template <>
+inline bool IsValid(const Transformation& value)
+{
+	return IsValid(value.p) && IsValid(value.q);
+}
+
 /// Positional data structure.
 struct Position
 {
@@ -417,7 +439,13 @@ struct Position
 	Vec2 c; ///< Linear position (in meters).
 	float_t a; ///< Angular position (in radians).
 };
-	
+
+template <>
+inline bool IsValid(const Position& value)
+{
+	return IsValid(value.c) && IsValid(value.a);
+}
+
 /// Velocity related data structure.
 struct Velocity
 {
@@ -437,6 +465,12 @@ struct Velocity
 	Vec2 v; ///< Linear velocity (in meters/second).
 	float_t w; ///< Angular velocity (in radians/second).
 };
+
+template <>
+inline bool IsValid(const Velocity& value)
+{
+	return IsValid(value.v) && IsValid(value.w);
+}
 
 /// This describes the motion of a body/shape for TOI computation.
 /// Shapes are defined with respect to the body origin, which may
@@ -462,7 +496,7 @@ public:
 	/// @detail
 	/// This advances position 0 (<code>pos0</code>) of the sweep towards position 1 (<code>pos1</code>)
 	/// by a factor of the difference between the given alpha and the alpha0.
-	/// @param alpha New time factor in [0,1) to update the sweep to.
+	/// @param alpha Valid new time factor in [0,1) to update the sweep to. Behavior is undefined if value is invalid.
 	void Advance0(float_t alpha);
 
 	Position pos0; ///< Center world position and world angle at time "0".
@@ -953,6 +987,8 @@ constexpr inline Transformation GetTransformation(const Vec2& ctr, const Rot& ro
 
 inline Transformation GetTransformation(Position pos, const Vec2& local_ctr) noexcept
 {
+	assert(IsValid(pos));
+	assert(IsValid(local_ctr));
 	return GetTransformation(pos.c, Rot{pos.a}, local_ctr);
 }
 
@@ -999,6 +1035,7 @@ constexpr inline float_t DegreesToRadians(float_t value)
 
 inline void Sweep::Advance0(float_t alpha)
 {
+	assert(IsValid(alpha));
 	assert(alpha >= 0);
 	assert(alpha < 1);
 	assert(alpha0 < 1);
