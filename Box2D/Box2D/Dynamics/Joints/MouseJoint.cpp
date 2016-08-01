@@ -31,63 +31,25 @@ using namespace box2d;
 // Identity used:
 // w k % (rx i + ry j) = w * (-ry i + rx j)
 
-MouseJoint::MouseJoint(const MouseJointDef& def)
-: Joint(def)
+MouseJoint::MouseJoint(const MouseJointDef& def):
+	Joint{def},
+	m_localAnchorB{InverseTransform(def.target, m_bodyB->GetTransformation())},
+	m_targetA{def.target}, m_maxForce{def.maxForce}, m_frequencyHz{def.frequencyHz}, m_dampingRatio{def.dampingRatio}
 {
 	assert(IsValid(def.target));
 	assert(IsValid(def.maxForce) && (def.maxForce >= float_t{0}));
 	assert(IsValid(def.frequencyHz) && (def.frequencyHz >= float_t{0}));
 	assert(IsValid(def.dampingRatio) && (def.dampingRatio >= float_t{0}));
-
-	m_targetA = def.target;
-	m_localAnchorB = InverseTransform(def.target, m_bodyB->GetTransformation());
-	m_maxForce = def.maxForce;
-	m_frequencyHz = def.frequencyHz;
-	m_dampingRatio = def.dampingRatio;
 }
 
 void MouseJoint::SetTarget(const Vec2& target)
 {
+	assert(IsValid(target));
 	if (!m_bodyB->IsAwake())
 	{
 		m_bodyB->SetAwake();
 	}
 	m_targetA = target;
-}
-
-const Vec2& MouseJoint::GetTarget() const
-{
-	return m_targetA;
-}
-
-void MouseJoint::SetMaxForce(float_t force)
-{
-	m_maxForce = force;
-}
-
-float_t MouseJoint::GetMaxForce() const
-{
-	return m_maxForce;
-}
-
-void MouseJoint::SetFrequency(float_t hz)
-{
-	m_frequencyHz = hz;
-}
-
-float_t MouseJoint::GetFrequency() const
-{
-	return m_frequencyHz;
-}
-
-void MouseJoint::SetDampingRatio(float_t ratio)
-{
-	m_dampingRatio = ratio;
-}
-
-float_t MouseJoint::GetDampingRatio() const
-{
-	return m_dampingRatio;
 }
 
 void MouseJoint::InitVelocityConstraints(const SolverData& data)
@@ -97,10 +59,15 @@ void MouseJoint::InitVelocityConstraints(const SolverData& data)
 	m_invMassB = m_bodyB->GetInverseMass();
 	m_invIB = m_bodyB->GetInverseInertia();
 
-	const auto cB = data.positions[m_indexB].c;
-	const auto aB = data.positions[m_indexB].a;
-	auto vB = data.velocities[m_indexB].v;
-	auto wB = data.velocities[m_indexB].w;
+	const auto positionB = data.positions[m_indexB];
+	assert(IsValid(positionB));
+	const auto cB = positionB.c;
+	const auto aB = positionB.a;
+
+	const auto velocityB = data.velocities[m_indexB];
+	assert(IsValid(velocityB));
+	auto vB = velocityB.v;
+	auto wB = velocityB.w;
 
 	const Rot qB(aB);
 
@@ -113,20 +80,22 @@ void MouseJoint::InitVelocityConstraints(const SolverData& data)
 	const auto d = float_t(2) * mass * m_dampingRatio * omega;
 
 	// Spring stiffness
-	const auto k = mass * (omega * omega);
+	const auto k = mass * Square(omega);
 
 	// magic formulas
 	// gamma has units of inverse mass.
 	// beta has units of inverse time.
 	const auto h = data.step.get_dt();
 	const auto tmp = d + h * k;
+	assert(IsValid(tmp));
 	assert((tmp > 0) && !almost_equal(tmp, 0));
 	m_gamma = h * tmp;
+	assert(IsValid(m_gamma));
 	if (m_gamma != float_t{0})
 	{
 		m_gamma = float_t{1} / m_gamma;
 	}
-	m_beta = h * k * m_gamma;
+	const auto beta = h * k * m_gamma;
 
 	// Compute the effective mass matrix.
 	m_rB = Rotate(m_localAnchorB - m_localCenterB, qB);
@@ -142,8 +111,8 @@ void MouseJoint::InitVelocityConstraints(const SolverData& data)
 
 	m_mass = Invert(K);
 
-	m_C = cB + m_rB - m_targetA;
-	m_C *= m_beta;
+	m_C = ((cB + m_rB) - m_targetA) * beta;
+	assert(IsValid(m_C));
 
 	// Cheat with some damping
 	wB *= float_t(0.98);
@@ -165,23 +134,27 @@ void MouseJoint::InitVelocityConstraints(const SolverData& data)
 
 void MouseJoint::SolveVelocityConstraints(const SolverData& data)
 {
-	auto vB = data.velocities[m_indexB].v;
-	auto wB = data.velocities[m_indexB].w;
+	const auto velocityB = data.velocities[m_indexB];
+	assert(IsValid(velocityB));
+	auto vB = velocityB.v;
+	auto wB = velocityB.w;
 
 	const auto Cdot = vB + (GetReversePerpendicular(m_rB) * wB);
-	auto impulse = Transform(-(Cdot + m_C + m_gamma * m_impulse), m_mass);
 
 	const auto oldImpulse = m_impulse;
-	m_impulse += impulse;
+	const auto addImpulse = Transform(-(Cdot + m_C + m_gamma * m_impulse), m_mass);
+	assert(IsValid(addImpulse));
+	m_impulse += addImpulse;
 	const auto maxImpulse = data.step.get_dt() * m_maxForce;
 	if (LengthSquared(m_impulse) > Square(maxImpulse))
 	{
 		m_impulse *= maxImpulse / Length(m_impulse);
 	}
-	impulse = m_impulse - oldImpulse;
 
-	vB += m_invMassB * impulse;
-	wB += m_invIB * Cross(m_rB, impulse);
+	const auto deltaImpulse = m_impulse - oldImpulse;
+
+	vB += m_invMassB * deltaImpulse;
+	wB += m_invIB * Cross(m_rB, deltaImpulse);
 
 	data.velocities[m_indexB].v = vB;
 	data.velocities[m_indexB].w = wB;
@@ -191,11 +164,6 @@ bool MouseJoint::SolvePositionConstraints(const SolverData& data)
 {
 	BOX2D_NOT_USED(data);
 	return true;
-}
-
-Vec2 MouseJoint::GetAnchorA() const
-{
-	return m_targetA;
 }
 
 Vec2 MouseJoint::GetAnchorB() const

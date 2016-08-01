@@ -34,12 +34,19 @@ struct MouseJointDef : public JointDef
 	/// to coincide with the body anchor initially.
 	Vec2 target = Vec2_zero;
 
+	/// Max force.
+	/// @detail
 	/// The maximum constraint force that can be exerted
 	/// to move the candidate body. Usually you will express
 	/// as some multiple of the weight (multiplier * mass * gravity).
+	/// @note This may not be negative.
+	/// @warning Behavior is undefined if this is a negative value.
 	float_t maxForce = float_t{0};
 
-	/// The response speed.
+	/// Frequency.
+	/// @detail The has to do with the response speed.
+	/// @note This value may not be negative.
+	/// @warning Behavior is undefined if this is a negative value.
 	float_t frequencyHz = float_t(5);
 
 	/// The damping ratio. 0 = no damping, 1 = critical damping.
@@ -71,7 +78,7 @@ public:
 
 	/// Use this to update the target point.
 	void SetTarget(const Vec2& target);
-	const Vec2& GetTarget() const;
+	Vec2 GetTarget() const;
 
 	/// Set/get the maximum force in Newtons.
 	void SetMaxForce(float_t force);
@@ -104,15 +111,13 @@ protected:
 	Vec2 m_targetA;
 	float_t m_frequencyHz;
 	float_t m_dampingRatio;
-	float_t m_beta = float_t{0};
 	
 	// Solver shared
 	Vec2 m_impulse = Vec2_zero;
 	float_t m_maxForce;
 	float_t m_gamma = float_t{0};
 
-	// Solver temp
-	index_t m_indexA;
+	// Solver variables. These are only valid after InitVelocityConstraints called.
 	index_t m_indexB;
 	Vec2 m_rB;
 	Vec2 m_localCenterB;
@@ -121,6 +126,46 @@ protected:
 	Mat22 m_mass;
 	Vec2 m_C;
 };
+
+inline Vec2 MouseJoint::GetAnchorA() const
+{
+	return m_targetA;
+}
+
+inline Vec2 MouseJoint::GetTarget() const
+{
+	return m_targetA;
+}
+
+inline void MouseJoint::SetMaxForce(float_t force)
+{
+	m_maxForce = force;
+}
+
+inline float_t MouseJoint::GetMaxForce() const
+{
+	return m_maxForce;
+}
+
+inline void MouseJoint::SetFrequency(float_t hz)
+{
+	m_frequencyHz = hz;
+}
+
+inline float_t MouseJoint::GetFrequency() const
+{
+	return m_frequencyHz;
+}
+
+inline void MouseJoint::SetDampingRatio(float_t ratio)
+{
+	m_dampingRatio = ratio;
+}
+
+inline float_t MouseJoint::GetDampingRatio() const
+{
+	return m_dampingRatio;
+}
 
 } // namespace box2d
 
