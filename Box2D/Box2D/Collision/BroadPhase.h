@@ -61,6 +61,7 @@ public:
 
 	enum: size_type
 	{
+		/// Null proxy ID.
 		e_nullProxy = static_cast<size_type>(-1)
 	};
 
@@ -77,8 +78,13 @@ public:
 	/// Destroys a proxy. It is up to the client to remove any pairs.
 	void DestroyProxy(size_type proxyId);
 
+	/// Moves the proxy.
+	/// @detail
 	/// Call MoveProxy as many times as you like, then when you are done
 	/// call UpdatePairs to finalized the proxy pairs (for your time step).
+	/// @param proxyId Proxy ID. Behavior is undefined if this is the null proxy ID.
+	/// @param aabb Axis aligned bounding box.
+	/// @param displacement Displacement. Behavior is undefined if this is an invalid value.
 	void MoveProxy(size_type proxyId, const AABB& aabb, const Vec2& displacement);
 
 	/// Call to trigger a re-processing of it's pairs on the next call to UpdatePairs.
