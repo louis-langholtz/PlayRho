@@ -153,8 +153,8 @@ public:
 	/// Set the position of the body's origin and rotation.
 	/// Manipulating a body's transform may cause non-physical behavior.
 	/// Note: contacts are updated on the next call to World::Step.
-	/// @param position the world position of the body's local origin.
-	/// @param angle the world rotation in radians.
+	/// @param position Valid world position of the body's local origin. Behavior is undefined if value is invalid.
+	/// @param angle Valid world rotation in radians. Behavior is undefined if value is invalid.
 	void SetTransform(const Vec2& position, float_t angle);
 
 	/// Get the body transform for the body's origin.
@@ -429,7 +429,7 @@ private:
 	///    1. advances the body's sweep to the given time ratio;
 	///    2. updates the body's sweep positions (linear and angular) to the advanced ones; and
 	///    3. updates the body's transform to the new sweep one settings.
-	/// @param t New time factor in [0,1) to advance the sweep to.
+	/// @param t Valid new time factor in [0,1) to advance the sweep to.
 	void Advance(float_t t);
 
 	void DestroyContacts();
@@ -954,6 +954,8 @@ inline float_t GetTorque(const Body& body) noexcept
 }
 
 /// Gets the velocity of the body after the given time accounting for the body's acceleration.
+/// @param body Body to get the velocity for.
+/// @param h Time elapsed to get velocity for. Behavior is undefined if this value is invalid.
 Velocity GetVelocity(const Body& body, float_t h) noexcept;
 	
 } // namespace box2d

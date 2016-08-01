@@ -384,6 +384,9 @@ void Body::SetVelocity(const Velocity& velocity) noexcept
 
 void Body::SetAcceleration(const Vec2& linear, const float_t angular) noexcept
 {
+	assert(IsValid(linear));
+	assert(IsValid(angular));
+
 	if ((linear != Vec2_zero) || (angular != 0))
 	{
 		if (!IsAccelerable())
@@ -420,6 +423,9 @@ bool Body::ShouldCollide(const Body* other) const
 
 void Body::SetTransform(const Vec2& position, float_t angle)
 {
+	assert(IsValid(position));
+	assert(IsValid(angle));
+
 	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())
 	{
@@ -538,6 +544,8 @@ void Body::Dump()
 
 Velocity box2d::GetVelocity(const Body& body, float_t h) noexcept
 {
+	assert(IsValid(h));
+
 	// Integrate velocity and apply damping.
 	auto velocity = body.GetVelocity();
 	if (body.IsAccelerable())
