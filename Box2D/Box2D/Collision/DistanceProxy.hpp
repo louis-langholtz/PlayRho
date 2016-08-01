@@ -91,7 +91,7 @@ namespace box2d
 		///   vector and returns its index.
 		/// @note 0 is returned for a given zero length direction vector.
 		/// @param d Direction vector to find index for.
-		/// @return InvalidIndex if the count of vertices is zero or a value from 0 to one less than count.
+		/// @return InvalidIndex if d is invalid or the count of vertices is zero, otherwise a value from 0 to one less than count.
 		/// @sa GetVertexCount().
 		size_type GetSupportIndex(const Vec2& d) const noexcept;
 		

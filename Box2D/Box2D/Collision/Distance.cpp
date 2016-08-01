@@ -539,8 +539,10 @@ DistanceOutput Distance(SimplexCache& cache,
 #endif
 
 	assert(proxyA.GetVertexCount() > 0);
+	assert(IsValid(transformA.p));
 	assert(proxyB.GetVertexCount() > 0);
-
+	assert(IsValid(transformB.p));
+	
 	// Initialize the simplex.
 	auto simplex = GetSimplex(cache, proxyA, transformA, proxyB, transformB);
 
@@ -601,6 +603,7 @@ DistanceOutput Distance(SimplexCache& cache,
 #endif
 		// Get search direction.
 		const auto d = GetSearchDirection(simplex);
+		assert(IsValid(d));
 
 		// Ensure the search direction is numerically fit.
 		if (almost_equal(LengthSquared(d), float_t{0}))

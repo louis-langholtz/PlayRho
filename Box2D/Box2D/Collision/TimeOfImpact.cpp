@@ -232,6 +232,10 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 {
 	// CCD via the local separating axis method. This seeks progression
 	// by computing the largest time at which separation is maintained.
+	assert(IsValid(sweepA.pos0));
+	assert(IsValid(sweepA.pos1));
+	assert(IsValid(sweepB.pos0));
+	assert(IsValid(sweepB.pos1));
 	
 	++toiCalls;
 

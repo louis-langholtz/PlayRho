@@ -107,6 +107,9 @@ void Fixture::DestroyProxies(BlockAllocator& allocator, BroadPhase& broadPhase)
 
 void Fixture::Synchronize(BroadPhase& broadPhase, const Transformation& transform1, const Transformation& transform2)
 {
+	assert(IsValid(transform1));
+	assert(IsValid(transform2));
+
 	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
 	{
 		auto& proxy = m_proxies[i];

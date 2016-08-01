@@ -60,8 +60,11 @@ public:
 	/// Move a proxy with a swepted AABB. If the proxy has moved outside of its fattened AABB,
 	/// then the proxy is removed from the tree and re-inserted. Otherwise
 	/// the function returns immediately.
+	/// @param proxyId Proxy ID. Behavior is undefined if this is the null proxy ID.
+	/// @param aabb Axis aligned bounding box.
+	/// @param displacement Displacement. Behavior is undefined if this is an invalid value.
 	/// @return true if the proxy was re-inserted.
-	bool MoveProxy(size_type proxyId, const AABB& aabb1, const Vec2& displacement);
+	bool MoveProxy(size_type proxyId, const AABB& aabb, const Vec2& displacement);
 
 	/// Gets the user data for the node identified by the given identifier.
 	/// @param proxyId Identifier of node to get the user data for.

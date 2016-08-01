@@ -120,7 +120,7 @@ void DynamicTree::DestroyProxy(size_type proxyId)
 bool DynamicTree::MoveProxy(size_type proxyId, const AABB& aabb, const Vec2& displacement)
 {
 	assert((0 <= proxyId) && (proxyId < m_nodeCapacity));
-
+	assert(IsValid(displacement));
 	assert(m_nodes[proxyId].IsLeaf());
 
 	if (m_nodes[proxyId].aabb.Contains(aabb))
