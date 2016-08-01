@@ -185,8 +185,8 @@ void Joint::Destroy(Joint* joint, BlockAllocator* allocator)
 }
 
 Joint::Joint(const JointDef& def):
-	m_type(def.type), m_bodyA(def.bodyA), m_bodyB(def.bodyB),
-	m_collideConnected(def.collideConnected), m_userData(def.userData)
+	m_type{def.type}, m_bodyA{def.bodyA}, m_bodyB{def.bodyB},
+	m_collideConnected{def.collideConnected}, m_userData{def.userData}
 {
 	assert(def.bodyA != def.bodyB);
 }
