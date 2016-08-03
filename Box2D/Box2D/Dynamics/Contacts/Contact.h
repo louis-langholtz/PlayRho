@@ -70,6 +70,8 @@ struct ContactEdge
 class Contact
 {
 public:
+	using substep_type = std::remove_const<decltype(MaxSubSteps)>::type;
+
 	Contact() = delete;
 
 	/// Gets the contact manifold.
@@ -152,6 +154,19 @@ public:
 	///   if the shapes are considered touching (collided).
 	virtual Manifold Evaluate(const Transformation& xfA, const Transformation& xfB) = 0;
 
+	substep_type GetToiCount() const noexcept;
+
+	/// Gets whether a TOI is set.
+	/// @return true if this object has a TOI set for it, false otherwise.
+	bool HasValidToi() const noexcept;
+	
+	/// Gets the time of impact (TOI) as a fraction.
+	/// @note This is only valid if a TOI has been set.
+	/// @sa void SetToi(float_t toi).
+	/// @return Time of impact fraction in the range of 0 to 1 if set (where 1
+	///   means no actual impact in current time slot), otheriwse undefined.
+	float_t GetToi() const;
+	
 protected:
 	friend class ContactManager;
 	friend class World;
@@ -201,17 +216,6 @@ protected:
 	/// Updates the contact manifold and touching status and notifies listener (if one given).
 	/// @param listener Listener that if non-null is called with status information.
 	void Update(ContactListener* listener);
-
-	/// Gets whether a TOI is set.
-	/// @return true if this object has a TOI set for it, false otherwise.
-	bool HasValidToi() const noexcept;
-
-	/// Gets the time of impact (TOI) as a fraction.
-	/// @note This is only valid if a TOI has been set.
-	/// @sa void SetToi(float_t toi).
-	/// @return Time of impact fraction in the range of 0 to 1 if set (where 1
-	///   means no actual impact in current time slot), otheriwse undefined.
-	float_t GetToi() const;
 
 	/// Sets the time of impact (TOI).
 	/// @detail After returning, this object will have a TOI that is set as indicated by <code>HasValidToi()</code>.
@@ -263,7 +267,7 @@ protected:
 
 	Manifold m_manifold; ///< Manifold of the contact.
 
-	std::remove_const<decltype(MaxSubSteps)>::type m_toiCount = 0; ///< Count of TOI substeps contact has gone through [0,MaxSubSteps].
+	substep_type m_toiCount = 0; ///< Count of TOI substeps contact has gone through [0,MaxSubSteps].
 
 	float_t m_toi; // only valid if m_flags & e_toiFlag
 
@@ -461,6 +465,11 @@ inline void SetAwake(Contact& c) noexcept
 {
 	SetAwake(*c.GetFixtureA());
 	SetAwake(*c.GetFixtureB());
+}
+
+inline Contact::substep_type Contact::GetToiCount() const noexcept
+{
+	return m_toiCount;
 }
 
 } // namespace box2d
