@@ -41,6 +41,10 @@ struct Profile
 class TimeStep
 {
 public:
+	using iteration_type = unsigned;
+
+	static constexpr auto InvalidIteration = static_cast<iteration_type>(-1);
+
 	/// Gets the delta time (time amount for this time step).
 	/// @return Time step amount in seconds.
 	float_t get_dt() const noexcept { return dt; }
@@ -61,8 +65,8 @@ public:
 	///   Value of 1 indicates that the time step has not varied.
 	float_t dtRatio;
 
-	unsigned velocityIterations; ///< Velocity iterations.
-	unsigned positionIterations; ///< Position iterations.
+	iteration_type velocityIterations; ///< Velocity iterations.
+	iteration_type positionIterations; ///< Position iterations.
 	
 	bool warmStarting; ///< Whether or not to perform warm starting.
 
