@@ -224,7 +224,7 @@ void ContactManager::Add(FixtureProxy& proxyA, FixtureProxy& proxyB)
 		return;
 	}
 
-	assert(GetContactCount() < MaxContacts);
+	assert(GetContacts().size() < MaxContacts);
 
 	// Call the contact factory create method.
 	const auto c = Contact::Create(*fixtureA, indexA, *fixtureB, indexB, m_allocator);

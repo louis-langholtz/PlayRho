@@ -50,11 +50,6 @@ public:
 		return static_cast<T*>(Allocate(size * sizeof(T)));
 	}
 
-	void* operator()(size_type size) noexcept
-	{
-		return Allocate(size);
-	}
-
 	/// Functional operator for freeing memory allocated by this object.
 	/// @detail This method frees memory (like called Free) and allows this object
 	///   to be used as deleter to std::unique_ptr.

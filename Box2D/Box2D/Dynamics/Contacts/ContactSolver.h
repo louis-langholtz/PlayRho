@@ -54,18 +54,30 @@ public:
 	using index_type = size_t;
 
 	/// Contact velocity constraint body data.
-	struct BodyData
+	class BodyData
 	{
+	public:
 		BodyData() noexcept = default;
 		BodyData(const BodyData& copy) noexcept = default;
 		
 		constexpr BodyData(index_type i, float_t iM, float_t iI) noexcept: index{i}, invMass{iM}, invI{iI} {}
-		
-		index_type index; ///< Index within island of body.
+	
+		index_type GetIndex() const noexcept { return index; }
+
 		float_t invMass; ///< Inverse mass of body.
 		float_t invI; ///< Inverse rotational interia of body.
+
+	private:
+		index_type index; ///< Index within island of body.
 	};
 	
+	ContactVelocityConstraint() = default;
+	ContactVelocityConstraint(const ContactVelocityConstraint& copy) = default;
+	ContactVelocityConstraint& operator= (const ContactVelocityConstraint& copy) = default;
+
+	ContactVelocityConstraint(index_type ci, float_t f, float_t r, float_t ts):
+		contactIndex{ci}, friction{f}, restitution{r}, tangentSpeed{ts} {}
+
 	/// Gets the count of points added to this object.
 	/// @return Value between 0 and MaxManifoldPoints
 	/// @sa MaxManifoldPoints.
@@ -102,68 +114,120 @@ public:
 	/// @param val Velocity constraint point value to add.
 	/// @note Behavior is undefined if an attempt is made to add more than MaxManifoldPoints points.
 	/// @sa GetPointCount().
-	void AddPoint(const VelocityConstraintPoint& val)
-	{
-		assert(pointCount < MaxManifoldPoints);
-		points[pointCount] = val;
-		++pointCount;
-	}
+	void AddPoint(const VelocityConstraintPoint& val);
 
-	void RemovePoint()
-	{
-		assert(pointCount > 0);
-		--pointCount;
-	}
+	void RemovePoint() noexcept;
 
 	/// Sets this object's K value.
 	/// @param value A position constraint dependent value or the zero matrix (Mat22_zero).
-	void SetK(const Mat22& value) noexcept
-	{
-		K = value;
-		normalMass = Invert(value);
-	}
+	void SetK(const Mat22& value) noexcept;
 
-	Mat22 GetK() const noexcept { return K; }
-	Mat22 GetNormalMass() const noexcept { return normalMass; }
+	/// Gets the "K" value.
+	/// @note This value is only valid if SetK had previously been called with a valid value.
+	/// @warning Behavior is undefined if called before SetK was called.
+	/// @return "K" value previously set.
+	Mat22 GetK() const noexcept;
 
-	Vec2 normal;
+	Mat22 GetNormalMass() const noexcept;
+
+	/// Gets the contact index.
+	/// @note This value can only be set via the initializing constructor.
+	/// @return Index of the associated contact (the index of the contact that this constraint is for).
+	index_type GetContactIndex() const noexcept { return contactIndex; }
+
+	/// Gets the combined friction of the associated contact.
+	float_t GetFriction() const noexcept { return friction; }
+	
+	/// Gets the combined restitution of the associated contact.
+	float_t GetRestitution() const noexcept { return restitution; }
+	
+	/// Gets the tangent speed of the associated contact.
+	float_t GetTangentSpeed() const noexcept { return tangentSpeed; }
+	
+	Vec2 normal; ///< Normal of the world manifold.
 
 	BodyData bodyA; ///< Body A contact velocity constraint data.
 	BodyData bodyB; ///< Body B contact velocity constraint data.
+
+private:
 	float_t friction; ///< Friction coefficient. Usually in the range of [0,1].
 	float_t restitution; ///< Restitution coefficient.
 	float_t tangentSpeed;
+	
 	index_type contactIndex; ///< Index of the contact that this constraint is for.
-
-private:
+	
 	// K and normalMass fields are only used for the block solver.
-	Mat22 K; ///< Block solver "K" info (only used by block solver).
-	Mat22 normalMass; ///< Block solver "normal mass" info (only used by block solver).
+	Mat22 K = Mat22_invalid; ///< Block solver "K" info (only used by block solver).
+	Mat22 normalMass = Mat22_invalid; ///< Block solver "normal mass" info (only used by block solver).
 
 	VelocityConstraintPoint points[MaxManifoldPoints];
-	size_type pointCount;
+	size_type pointCount = 0;
 };
+
+inline void ContactVelocityConstraint::AddPoint(const VelocityConstraintPoint& val)
+{
+	assert(pointCount < MaxManifoldPoints);
+	points[pointCount] = val;
+	++pointCount;
+}
+
+inline void ContactVelocityConstraint::RemovePoint() noexcept
+{
+	assert(pointCount > 0);
+	--pointCount;
+}
+
+inline void ContactVelocityConstraint::SetK(const Mat22& value) noexcept
+{
+	assert(IsValid(value));
+	K = value;
+	normalMass = Invert(value);
+}
+
+inline Mat22 ContactVelocityConstraint::GetK() const noexcept
+{
+	assert(IsValid(K));
+	return K;
+}
+
+inline Mat22 ContactVelocityConstraint::GetNormalMass() const noexcept
+{
+	assert(IsValid(normalMass));
+	return normalMass;
+}
 
 struct ContactPositionConstraint
 {
 	using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
 	
+	/// Position constraint body data.
 	struct BodyData
 	{
 		using index_type = std::remove_const<decltype(MaxBodies)>::type;
 		
+		BodyData() noexcept = default;
+	
+		constexpr BodyData(index_type i, float_t iM, float_t iI, Vec2 lc) noexcept: index{i}, invMass{iM}, invI{iI}, localCenter{lc} {}
+		
 		index_type index; ///< Index within island of the associated body.
 		float_t invMass; ///< Inverse mass of associated body (a non-negative value).
-		Vec2 localCenter; ///< Local center of the associated body's sweep.
 		float_t invI; ///< Inverse rotational inertia about the center of mass of the associated body (a non-negative value).
+		Vec2 localCenter; ///< Local center of the associated body's sweep.
 	};
 	
+	ContactPositionConstraint() = default;
+	
+	ContactPositionConstraint(const Manifold& m, const BodyData& bA, float_t rA, const BodyData& bB, float_t rB):
+		manifold{m}, bodyA{bA}, radiusA{rA}, bodyB{bB}, radiusB{rB} {}
+
 	Manifold manifold; ///< Copy of contact's manifold.
 	
 	BodyData bodyA;
-	BodyData bodyB;
 	
 	float_t radiusA; ///< "Radius" distance from the associated shape of fixture A.
+
+	BodyData bodyB;
+	
 	float_t radiusB; ///< "Radius" distance from the associated shape of fixture B.
 };
 	
@@ -186,10 +250,10 @@ public:
 	using size_type = size_t;
 	
 	/// Minimum separation for position constraints.
-	static constexpr auto MinSeparationThreshold = -LinearSlop * float_t{3};
+	static constexpr auto MinSeparationThreshold = BOX2D_MAGIC(-LinearSlop * 3);
 
 	/// Minimum time of impact separation for TOI position constraints.
-	static constexpr auto MinToiSeparation = -LinearSlop * float_t{3} / float_t{2}; // aka -LinearSlop * 1.5
+	static constexpr auto MinToiSeparation = BOX2D_MAGIC(-LinearSlop * float_t{3} / float_t{2}); // aka -LinearSlop * 1.5
 
 	ContactSolver(const ContactSolverDef& def);
 	~ContactSolver();
@@ -197,8 +261,12 @@ public:
 	ContactSolver() = delete;
 	ContactSolver(const ContactSolver& copy) = delete;
 
+	/// Updates velocity constraints.
+	/// @detail
 	/// Updates the position dependent portions of the velocity constraints with the
 	/// information from the current position constraints.
+	/// @post Velocity constraints will have their "normal" field set to the world manifold normal for them.
+	/// @post Velocity constraints will have their constraint points updated.
 	void UpdateVelocityConstraints();
 
 	void WarmStart();
@@ -232,18 +300,7 @@ public:
 	}
 
 private:
-	static ContactPositionConstraint* InitPositionConstraints(ContactPositionConstraint* constraints, size_type count, Contact** contacts);
-	static ContactVelocityConstraint* InitVelocityConstraints(ContactVelocityConstraint* constraints, size_type count, Contact** contacts,
-															  float_t dtRatio = 0);
-	
-	static void Assign(ContactPositionConstraint::BodyData& var, const Body& val);
-	static ContactVelocityConstraint::BodyData GetVelocityConstraintBodyData(const Body& val);
-
-	/// Gets the position-independent velocity constraint for the given contact, index, and time slot values.
-	static ContactVelocityConstraint GetVelocityConstraint(const Contact& contact, size_type index, float_t dtRatio);
-	
-	static ContactPositionConstraint GetPositionConstraint(const Manifold& manifold, Fixture* fixtureA, Fixture* fixtureB);
-	
+		
 	/// Updates the given velocity constraint data with the given position constraint data.
 	/// @detail Specifically this:
 	///   1. Sets the normal to the calculated world manifold normal.

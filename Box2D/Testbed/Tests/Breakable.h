@@ -63,7 +63,7 @@ public:
 		m_broke = false;
 	}
 
-	void PostSolve(Contact* contact, const ContactImpulse* impulse)
+	void PostSolve(Contact* contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) override
 	{
 		if (m_broke)
 		{
@@ -72,15 +72,16 @@ public:
 		}
 
 		// Should the body break?
-		const auto count = contact->GetManifold().GetPointCount();
-
-		float_t maxImpulse = 0.0f;
-		for (int32 i = 0; i < count; ++i)
+		auto maxImpulse = float_t(0);
 		{
-			maxImpulse = Max(maxImpulse, impulse->GetEntryNormal(i));
+			const auto count = contact->GetManifold().GetPointCount();
+			for (auto i = decltype(count){0}; i < count; ++i)
+			{
+				maxImpulse = Max(maxImpulse, impulse.GetEntryNormal(i));
+			}
 		}
 
-		if (maxImpulse > 40.0f)
+		if (maxImpulse > 40)
 		{
 			// Flag the body for breaking.
 			m_break = true;
@@ -116,7 +117,7 @@ public:
 		body2->SetVelocity(Velocity{velocity2, m_angularVelocity});
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings* settings) override
 	{
 		if (m_break)
 		{

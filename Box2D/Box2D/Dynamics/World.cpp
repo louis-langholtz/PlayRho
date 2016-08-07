@@ -353,12 +353,115 @@ void World::SetAllowSleeping(bool flag) noexcept
 	}
 }
 
+static inline float_t UpdateSleepTimes(Island::BodyContainer& bodies, float_t h)
+{
+	auto minSleepTime = MaxFloat;
+	for (auto&& b: bodies)
+	{
+		if (b->IsSpeedable())
+		{
+			minSleepTime = Min(minSleepTime, b->UpdateSleepTime(h));
+		}
+	}
+	return minSleepTime;
+}
+
+static inline void Sleepem(Island::BodyContainer& bodies)
+{
+	for (auto&& b: bodies)
+	{
+		b->UnsetAwake();
+	}
+}
+
+Island World::BuildIsland(Body& seed,
+				  BodyList::size_type& remNumBodies,
+				  contact_count_t& remNumContacts,
+				  JointList::size_type& remNumJoints)
+{
+	assert(remNumBodies != 0);
+
+	// Size the island for the remaining un-evaluated bodies, contacts, and joints.
+	Island island(remNumBodies, remNumContacts, remNumJoints, m_stackAllocator);
+
+	// Perform a depth first search (DFS) on the constraint graph.
+	AllocatedArray<Body*, StackAllocator&> stack(remNumBodies, m_stackAllocator.AllocateArray<Body*>(remNumBodies), m_stackAllocator);
+	stack.push_back(&seed);
+	seed.SetInIsland();
+	while (!stack.empty())
+	{
+		// Grab the next body off the stack and add it to the island.
+		const auto b = stack.back();
+		stack.pop_back();
+		
+		assert(b->IsActive());
+		b->m_islandIndex = static_cast<body_count_t>(island.m_bodies.size());
+		island.m_bodies.push_back(b);
+		--remNumBodies;
+		
+		// Make sure the body is awake.
+		b->SetAwake();
+		
+		// To keep islands smaller, don't propagate islands across bodies that can't have a velocity (static bodies).
+		if (!b->IsSpeedable())
+		{
+			continue;
+		}
+		
+		const auto numContacts = island.m_contacts.size();
+		// Add to island: appropriate contacts of current body and appropriate 'other' bodies of those contacts.
+		for (auto&& ce: b->m_contacts)
+		{
+			const auto contact = ce.contact;
+			
+			// Skip contacts that are already in island, disabled, not-touching, or that have sensors.
+			if ((contact->IsInIsland()) || (!contact->IsEnabled()) || (!contact->IsTouching()) || (contact->HasSensor()))
+			{
+				continue;
+			}
+			
+			island.m_contacts.push_back(contact);
+			contact->SetInIsland();
+			
+			const auto other = ce.other;
+			if (other->IsInIsland())
+			{
+				continue; // Other already in island, skip it.
+			}
+			
+			stack.push_back(other);
+			other->SetInIsland();
+		}
+		remNumContacts -= island.m_contacts.size() - numContacts;
+		
+		const auto numJoints = island.m_joints.size();
+		// Add to island: appropriate joints of current body and appropriate 'other' bodies of those joint.
+		for (auto&& je: b->m_joints)
+		{
+			const auto joint = je.joint;
+			const auto other = je.other;
+			
+			// Skip joints already in island or that are connected to inactive bodies.
+			if (!joint->IsInIsland() && other->IsActive())
+			{
+				island.m_joints.push_back(joint);
+				joint->SetInIsland(true);
+				
+				if (!other->IsInIsland())
+				{					
+					stack.push_back(other);
+					other->SetInIsland();
+				}
+			}
+		}
+		remNumJoints -= island.m_joints.size() - numJoints;
+	}
+	
+	return std::move(island);
+}
+	
 void World::Solve(const TimeStep& step)
 {
-	m_profile.solveInit = float_t{0};
-	m_profile.solveVelocity = float_t{0};
-	m_profile.solvePosition = float_t{0};
-
 	// Clear all the island flags.
 	for (auto&& b: m_bodies)
 	{
@@ -373,134 +476,40 @@ void World::Solve(const TimeStep& step)
 		j.SetInIsland(false);
 	}
 
-	auto remNumBodies = m_bodies.size(); ///< Remaining number of bodies.
-	auto remNumContacts = m_contactMgr.GetContactCount(); ///< Remaining number of contacts.
-	auto remNumJoints = m_joints.size(); ///< Remaining number of joints.
-
-	// Build and simulate all awake islands.
-	const auto stackSize = m_bodies.size();
-	auto stack = AllocatedArray<Body*, StackAllocator&>(stackSize, m_stackAllocator.AllocateArray<Body*>(stackSize), m_stackAllocator);
-	for (auto&& seed: m_bodies)
 	{
-		// Skip bodies that are already in island, not-speedable, not-awake, or not-active.
-		if (seed.IsInIsland() || !seed.IsSpeedable() || !seed.IsAwake() || !seed.IsActive())
+		auto remNumBodies = m_bodies.size(); ///< Remaining number of bodies.
+		auto remNumContacts = m_contactMgr.GetContacts().size(); ///< Remaining number of contacts.
+		auto remNumJoints = m_joints.size(); ///< Remaining number of joints.
+		
+		// Build and simulate all awake islands.
+		for (auto&& body: m_bodies)
 		{
-			continue;
-		}
-
-		// Seed (body): is not in island, is awake, is active, and, is dynamic or kinematic.
-
-		// Size the island for the remaining un-evaluated bodies, contacts, and joints.
-		Island island(remNumBodies, remNumContacts, remNumJoints, m_stackAllocator, m_contactMgr.m_contactListener);
-
-		stack.push_back(&seed);
-		seed.SetInIsland();
-
-		// Perform a depth first search (DFS) on the constraint graph.
-		while (!stack.empty())
-		{
-			// Grab the next body off the stack and add it to the island.
-			const auto b = stack.back();
-			stack.pop_back();
-
-			assert(b->IsActive());
-			b->m_islandIndex = static_cast<body_count_t>(island.m_bodies.size());
-			island.m_bodies.push_back(b);
-			--remNumBodies;
-
-			// Make sure the body is awake.
-			b->SetAwake();
-
-			// To keep islands smaller, don't propagate islands across bodies that can't have a velocity (static bodies).
-			if (!b->IsSpeedable())
+			if (!body.IsInIsland() && body.IsSpeedable() && body.IsAwake() && body.IsActive())
 			{
-				continue;
-			}
-
-			const auto numContacts = island.m_contacts.size();
-			// Add to island: appropriate contacts of current body and appropriate 'other' bodies of those contacts.
-			for (auto&& ce: b->m_contacts)
-			{
-				const auto contact = ce.contact;
-
-				// Skip contacts that are already in island, disabled, not-touching, or that have sensors.
-				if ((contact->IsInIsland()) || (!contact->IsEnabled()) || (!contact->IsTouching()) || (contact->HasSensor()))
-				{
-					continue;
-				}
-
-				island.m_contacts.push_back(contact);
-				contact->SetInIsland();
-
-				const auto other = ce.other;
-				if (other->IsInIsland())
-				{
-					continue; // Other already in island, skip it.
-				}
-
-				stack.push_back(other);
-				other->SetInIsland();
-			}
-			remNumContacts -= island.m_contacts.size() - numContacts;
-
-			const auto numJoints = island.m_joints.size();
-			// Add to island: appropriate joints of current body and appropriate 'other' bodies of those joint.
-			for (auto&& je: b->m_joints)
-			{
-				const auto joint = je.joint;
-				const auto other = je.other;
+				auto island = BuildIsland(body, remNumBodies, remNumContacts, remNumJoints);
 				
-				// Skip joints already in island or that are connected to inactive bodies.
-				if (joint->IsInIsland() || !other->IsActive())
+				const auto constraintsSolved = island.Solve(step, m_contactMgr.m_contactListener, m_stackAllocator);
+				
+				if (m_allowSleep)
 				{
-					continue;
+					const auto minSleepTime = UpdateSleepTimes(island.m_bodies, step.get_dt());
+					if ((minSleepTime >= MinStillTimeToSleep) && constraintsSolved)
+					{
+						Sleepem(island.m_bodies);
+					}
 				}
-
-				island.m_joints.push_back(joint);
-				joint->SetInIsland(true);
-
-				if (other->IsInIsland())
-				{
-					continue;
-				}
-
-				stack.push_back(other);
-				other->SetInIsland();
-			}
-			remNumJoints -= island.m_joints.size() - numJoints;
-		}
-
-		const auto constraintsSolved = island.Solve(step);
-
-		if (m_allowSleep)
-		{
-			auto minSleepTime = MaxFloat;
-			for (auto&& b: island.m_bodies)
-			{
-				if (b->IsSpeedable())
-				{
-					minSleepTime = Min(minSleepTime, b->UpdateSleepTime(step.get_dt()));
-				}
-			}
-			if ((minSleepTime >= MinStillTimeToSleep) && constraintsSolved)
-			{
-				// Sleep the bodies
+				
 				for (auto&& b: island.m_bodies)
 				{
-					b->UnsetAwake();
+					// Allow static bodies to participate in other islands.
+					if (!b->IsSpeedable())
+					{
+						b->UnsetInIsland();
+						++remNumBodies;
+					}
 				}
-			}
+			}		
 		}
-
-		for (auto&& b: island.m_bodies)
-		{
-			// Allow static bodies to participate in other islands.
-			if (!b->IsSpeedable())
-			{
-				b->UnsetInIsland();
-				++remNumBodies;
-			}
-		}	
 	}
 
 	// Synchronize fixtures, check for out of range bodies.
@@ -545,23 +554,14 @@ World::ContactToiPair World::UpdateContactTOIs()
 	
 	for (auto&& c: m_contactMgr.GetContacts())
 	{
-		// Skip the disabled and excessive sub-stepped contacts
-		if (!c.IsEnabled() || (c.m_toiCount >= MaxSubSteps))
+		if (c.IsEnabled() && (c.m_toiCount < MaxSubSteps) && (c.HasValidToi() || c.UpdateTOI()))
 		{
-			continue;
-		}
-		
-		if (!c.HasValidToi() && !c.UpdateTOI())
-		{
-			continue;
-		}
-		
-		const auto toi = c.GetToi();
-		if (minToi > toi)
-		{
-			// This is the minimum TOI found so far.
-			minContact = &c;
-			minToi = toi;
+			const auto toi = c.GetToi();
+			if (minToi > toi)
+			{
+				minToi = toi;
+				minContact = &c;
+			}
 		}
 	}
 
@@ -637,7 +637,7 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 	bB->SetAwake();
 
 	// Build the island
-	Island island(m_bodies.size(), m_contactMgr.GetContactCount(), 0, m_stackAllocator, m_contactMgr.m_contactListener);
+	Island island(m_bodies.size(), m_contactMgr.GetContacts().size(), 0, m_stackAllocator);
 
 	const auto indexA = static_cast<body_count_t>(island.m_bodies.size());
 	bA->m_islandIndex = indexA;
@@ -669,7 +669,7 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 	subStep.positionIterations = MaxSubStepPositionIterations;
 	subStep.velocityIterations = step.velocityIterations;
 	subStep.warmStarting = false;
-	island.SolveTOI(subStep, indexA, indexB);
+	island.SolveTOI(subStep, m_contactMgr.m_contactListener, m_stackAllocator, indexA, indexB);
 
 	// Reset island flags and synchronize broad-phase proxies.
 	for (auto&& body: island.m_bodies)
@@ -756,8 +756,6 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi, Conta
 
 void World::Step(float_t dt, unsigned velocityIterations, unsigned positionIterations)
 {
-	Timer stepTimer;
-
 	// If new fixtures were added, we need to find the new contacts.
 	if (HasNewFixtures())
 	{
@@ -776,30 +774,22 @@ void World::Step(float_t dt, unsigned velocityIterations, unsigned positionItera
 	step.warmStarting = m_warmStarting;
 	
 	// Update contacts. This is where some contacts are destroyed.
-	{
-		Timer timer;
-		m_contactMgr.Collide();
-		m_profile.collide = timer.GetMilliseconds();
-	}
+	m_contactMgr.Collide();
 
-	// Integrate velocities, solve velocity constraints, and integrate positions.
-	if (m_stepComplete && (step.get_dt() > float_t{0}))
+	if (step.get_dt() > 0)
 	{
-		Timer timer;
-		Solve(step);
-		m_profile.solve = timer.GetMilliseconds();
-	}
+		// Integrate velocities, solve velocity constraints, and integrate positions.
+		if (m_stepComplete)
+		{
+			Solve(step);
+		}
 
-	// Handle TOI events.
-	if (m_continuousPhysics && (step.get_dt() > float_t{0}))
-	{
-		Timer timer;
-		SolveTOI(step);
-		m_profile.solveTOI = timer.GetMilliseconds();
-	}
+		// Handle TOI events.
+		if (m_continuousPhysics)
+		{
+			SolveTOI(step);
+		}
 
-	if (step.get_dt() > float_t{0})
-	{
 		m_inv_dt0 = step.get_inv_dt();
 	}
 }

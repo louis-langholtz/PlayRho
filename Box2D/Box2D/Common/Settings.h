@@ -111,10 +111,10 @@ constexpr auto AngularSlop = Pi * float_t{2} / float_t{180};
 constexpr auto PolygonRadius = LinearSlop * float_t{2};
 
 /// Maximum number of sub-steps per contact in continuous physics simulation.
-constexpr auto MaxSubSteps = unsigned{10}; // originally 8, often hit but no apparent help against tunneling
+constexpr auto MaxSubSteps = BOX2D_MAGIC(unsigned{10}); // originally 8, often hit but no apparent help against tunneling
 
 /// Maximum number of sub-step position iterations.
-constexpr auto MaxSubStepPositionIterations = unsigned{20};
+constexpr auto MaxSubStepPositionIterations = BOX2D_MAGIC(unsigned{20});
 
 /// Maximum time of impact iterations.
 constexpr auto MaxTOIIterations = BOX2D_MAGIC(uint16{20});
@@ -133,7 +133,7 @@ constexpr auto VelocityThreshold = float_t{8} / float_t{10}; // float_t{1};
 
 /// Maximum linear position correction used when solving constraints.
 /// This helps to prevent overshoot.
-constexpr auto MaxLinearCorrection = LinearSlop * float_t{40}; // aka 0.002, originally 0.2
+constexpr auto MaxLinearCorrection = BOX2D_MAGIC(LinearSlop * float_t{40}); // aka 0.002, originally 0.2
 
 /// Maximum angular position correction used when solving constraints.
 /// This helps to prevent overshoot.

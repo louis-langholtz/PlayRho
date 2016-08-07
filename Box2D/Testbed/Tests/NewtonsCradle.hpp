@@ -36,6 +36,17 @@ namespace box2d {
 				return body;
 			}();
 
+			{
+				BodyDef def;
+				def.type = BodyType::Static;
+				def.position = Vec2{frame_width / 2 + frame_height/24, frame_height / 2};
+				const auto body = m_world->CreateBody(def);
+				
+				PolygonShape shape;
+				shape.SetAsBox(frame_height/24, frame_height);
+				body->CreateFixture(FixtureDef{&shape, 20});
+			}
+
 			const auto radius = float_t(2);
 			const auto num_arms = unsigned{5};
 			const auto frame_width_per_arm = radius * 2;

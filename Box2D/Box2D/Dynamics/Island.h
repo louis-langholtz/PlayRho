@@ -24,6 +24,8 @@
 #include <Box2D/Common/AllocatedArray.hpp>
 #include <Box2D/Dynamics/TimeStep.h>
 
+#include <utility>
+
 namespace box2d {
 
 class Body;
@@ -47,35 +49,52 @@ public:
 	using PositionContainer = AllocatedArray<Position, StackAllocator&>;
 	
 	Island(body_count_t bodyCapacity, contact_count_t contactCapacity, island_count_t jointCapacity,
-		   StackAllocator& allocator, ContactListener* listener);
+		   StackAllocator& allocator);
+
+	Island(const Island& copy) = delete;
+
+	Island(Island&& other):
+		m_bodies{std::move(other.m_bodies)},
+		m_contacts{std::move(other.m_contacts)},
+		m_joints{std::move(other.m_joints)}
+	{}
 
 	/// Destructor.
-	/// @detail Sets all bodies's island indexes to Body::InvalidIslandIndex and then frees allocated memory.
-	~Island();
+	~Island() = default;
+
+	Island& operator= (Island&& other) = delete;
 
 	/// Solves this island.
+	///
 	/// @detail This:
 	///   1. Updates every body's sweep.pos0 to its sweep.pos1.
 	///   2. Updates every body's sweep.pos1 to the new "solved" position for it.
 	///   3. Updates every body's velocity to the new accelerated, dampened, and "solved" velocity for it.
 	///   4. Synchronizes every body's transform (by updating it to transform one of the body's sweep).
-	///   5. Reports to the listener.
-	/// @return True if the contact and joint constraints were solved, false otherwise.
-	bool Solve(const TimeStep& step);
+	///   5. Reports to the listener (if non-null).
+	///
+	/// @param step Time step information.
+	/// @param listener Listener to call if non-null.
+	///
+	/// @return <code>true</code> if the contact and joint position constraints were solved, <code>false</code> otherwise.
+	bool Solve(const TimeStep& step, ContactListener* listener, StackAllocator& allocator);
 
 	/// Solves the time of impact for the two bodies identified by the given island indexes.
+	///
 	/// @detail This:
 	///   1. Updates pos0 of the sweeps of the two bodies identified by their indexes.
 	///   2. Updates pos1 of the sweeps, the transforms, and the velocities of the other bodies in this island.
-	/// @detail Preconditions:
-	///   m_bodies contains the two bodies specified by indexA and indexB;
-	///   m_bodies contains appropriate other bodies of the contacts of the two bodies;
-	///   m_contacts contains the contact that specified the two identified bodies;
-	///   m_contacts contains appropriate other contacts of the two bodies.
-	/// @param subStep Sub step time step information.
+	///
+	/// @pre m_bodies contains the two bodies specified by indexA and indexB.
+	/// @pre m_bodies contains appropriate other bodies of the contacts of the two bodies.
+	/// @pre m_contacts contains the contact that specified the two identified bodies.
+	/// @pre m_contacts contains appropriate other contacts of the two bodies.
+	///
+	/// @param step Sub step time step information.
+	/// @param listener Listener to call if non-null.
 	/// @param indexA Island index for body A.
 	/// @param indexB Island index for body B.
-	void SolveTOI(const TimeStep& subStep, island_count_t indexA, island_count_t indexB);
+	bool SolveTOI(const TimeStep& step, ContactListener* listener, StackAllocator& allocator, island_count_t indexA, island_count_t indexB);
 
 	BodyContainer m_bodies;
 	ContactContainer m_contacts;
@@ -90,18 +109,6 @@ private:
 	///    2. setting the sweep position 1 value to the matching position element, and
 	///    3. synchronizing the transform with the new sweep value.
 	static void CopyOut(const Position* positions, const Velocity* velocities, BodyContainer& bodies);
-	
-	void InitJointVelocityConstraints(const SolverData& solverData);
-	void SolveJointVelocityConstraints(const SolverData& solverData);
-	bool SolveJointPositionConstraints(const SolverData& solverData);
-
-	/// Reports the given constraints to the listener.
-	/// This calls the listener's PostSolve method for all m_contactCount elements of the given array of constraints.
-	/// @param constraints Array of m_contactCount contact velocity constraint elements.
-	void Report(const ContactVelocityConstraint* constraints);
-		
-	StackAllocator& m_allocator; ///< Stack-style memory allocator set on construction.
-	ContactListener* const m_listener;
 };
 
 inline bool IsFullOfBodies(const Island& island)

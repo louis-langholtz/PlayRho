@@ -67,7 +67,7 @@ public:
 		}
 	}
 
-	void PreSolve(Contact* contact, const Manifold* oldManifold)
+	void PreSolve(Contact* contact, const Manifold& oldManifold)
 	{
 		Test::PreSolve(contact, oldManifold);
 

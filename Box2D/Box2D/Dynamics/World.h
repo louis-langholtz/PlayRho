@@ -256,6 +256,11 @@ private:
 	/// Finds islands, integrates and solves constraints, solves position constraints.
 	void Solve(const TimeStep& step);
 
+	Island BuildIsland(Body& seed,
+						 BodyList::size_type& remNumBodies,
+						 contact_count_t& remNumContacts,
+						 JointList::size_type& remNumJoints);
+
 	/// Solves Time Of Impact Events.
 	/// @detail Used for continuous physics.
 	/// @param step Time step value to use.

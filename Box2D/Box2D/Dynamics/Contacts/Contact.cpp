@@ -224,7 +224,7 @@ void Contact::Update(ContactListener* listener)
 
 		if (!sensor && touching)
 		{
-			listener->PreSolve(this, &oldManifold);
+			listener->PreSolve(this, oldManifold);
 		}
 	}
 }

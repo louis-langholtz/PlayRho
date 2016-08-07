@@ -67,7 +67,7 @@ Test::~Test()
 	m_world = nullptr;
 }
 
-void Test::PreSolve(Contact* contact, const Manifold* oldManifold)
+void Test::PreSolve(Contact* contact, const Manifold& oldManifold)
 {
 	const auto& manifold = contact->GetManifold();
 
@@ -82,7 +82,7 @@ void Test::PreSolve(Contact* contact, const Manifold* oldManifold)
 
 	PointStateArray state1;
 	PointStateArray state2;
-	GetPointStates(state1, state2, *oldManifold, manifold);
+	GetPointStates(state1, state2, oldManifold, manifold);
 
 	const auto worldManifold = contact->GetWorldManifold();
 

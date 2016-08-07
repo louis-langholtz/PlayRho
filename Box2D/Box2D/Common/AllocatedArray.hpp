@@ -32,13 +32,24 @@ public:
 	using iterator = pointer;
 	using const_iterator = const_pointer;
 
-	AllocatedArray(size_type max_size, pointer data, deleter_type deleter = noop_deleter):
+	constexpr AllocatedArray(size_type max_size, pointer data, deleter_type deleter = noop_deleter):
 		m_max_size{max_size}, m_data{data}, m_deleter{deleter}
 	{}
 	
 	~AllocatedArray() noexcept
 	{
 		m_deleter(m_data);
+		m_data = nullptr;
+	}
+
+	AllocatedArray() = delete;
+	AllocatedArray(const AllocatedArray& copy) = delete;
+
+	AllocatedArray(AllocatedArray&& other) noexcept:
+		m_max_size{other.m_max_size}, m_size{other.m_size}, m_data{other.m_data}, m_deleter{other.m_deleter}
+	{
+		other.m_size = 0;
+		other.m_data = nullptr;
 	}
 
 	size_type size() const noexcept { return m_size; }

@@ -63,10 +63,6 @@ public:
 	/// Essentially this really just purges contacts that are no longer relevant.
 	void Collide();
 	
-	/// Gets the contact count.
-	/// @return Number of contacts referenced by the contact list (0 if empty).
-	inline contact_count_t GetContactCount() const noexcept { return static_cast<contact_count_t>(m_contacts.size()); }
-
 	/// Gets the contact list.
 	/// @return Contact list or <code>nullptr</code> if empty.
 	const ContactList& GetContacts() const noexcept { return m_contacts; }

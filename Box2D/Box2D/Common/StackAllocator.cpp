@@ -60,19 +60,22 @@ void* StackAllocator::Allocate(size_type size) noexcept
 
 void StackAllocator::Free(void* p) noexcept
 {
-	assert(m_entryCount > 0);
-	const auto entry = m_entries + m_entryCount - 1;
-	assert(p == entry->data);
-	if (entry->usedMalloc)
+	if (p)
 	{
-		free(p);
+		assert(m_entryCount > 0);
+		const auto entry = m_entries + m_entryCount - 1;
+		assert(p == entry->data);
+		if (entry->usedMalloc)
+		{
+			free(p);
+		}
+		else
+		{
+			assert(m_index >= entry->size);
+			m_index -= entry->size;
+		}
+		assert(m_allocation >= entry->size);
+		m_allocation -= entry->size;
+		--m_entryCount;
 	}
-	else
-	{
-		assert(m_index >= entry->size);
-		m_index -= entry->size;
-	}
-	assert(m_allocation >= entry->size);
-	m_allocation -= entry->size;
-	--m_entryCount;
 }

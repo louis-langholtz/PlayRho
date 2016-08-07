@@ -62,7 +62,9 @@ public:
 	virtual bool ShouldCollide(Fixture* fixtureA, Fixture* fixtureB);
 };
 
-/// Contact impulses for reporting. Impulses are used instead of forces because
+/// Contact Impulse.
+/// @detail
+/// Used for reporting. Impulses are used instead of forces because
 /// sub-step forces may approach infinity for rigid body collisions. These
 /// match up one-to-one with the contact points in Manifold.
 class ContactImpulse
@@ -101,6 +103,8 @@ private:
 class ContactListener
 {
 public:
+	using iteration_type = unsigned;
+
 	virtual ~ContactListener() {}
 
 	/// Called when two fixtures begin to touch.
@@ -109,32 +113,37 @@ public:
 	/// Called when two fixtures cease to touch.
 	virtual void EndContact(Contact* contact) { BOX2D_NOT_USED(contact); }
 
+	/// Pre-solve callback.
+	/// @detail
 	/// This is called after a contact is updated. This allows you to inspect a
 	/// contact before it goes to the solver. If you are careful, you can modify the
 	/// contact manifold (e.g. disable contact).
 	/// A copy of the old manifold is provided so that you can detect changes.
-	/// Note: this is called only for awake bodies.
-	/// Note: this is called even when the number of contact points is zero.
-	/// Note: this is not called for sensors.
-	/// Note: if you set the number of contact points to zero, you will not
+	/// @note This is called only for awake bodies.
+	/// @note This is called even when the number of contact points is zero.
+	/// @note This is not called for sensors.
+	/// @note If you set the number of contact points to zero, you will not
 	/// get an EndContact callback. However, you may get a BeginContact callback
 	/// the next step.
-	virtual void PreSolve(Contact* contact, const Manifold* oldManifold)
+	virtual void PreSolve(Contact* contact, const Manifold& oldManifold)
 	{
 		BOX2D_NOT_USED(contact);
 		BOX2D_NOT_USED(oldManifold);
 	}
 
+	/// Post-solve callback.
+	/// @detail
 	/// This lets you inspect a contact after the solver is finished. This is useful
 	/// for inspecting impulses.
-	/// Note: the contact manifold does not include time of impact impulses, which can be
+	/// @note The contact manifold does not include time of impact impulses, which can be
 	/// arbitrarily large if the sub-step is small. Hence the impulse is provided explicitly
 	/// in a separate data structure.
-	/// Note: this is only called for contacts that are touching, solid, and awake.
-	virtual void PostSolve(Contact* contact, const ContactImpulse* impulse)
+	/// @note This is only called for contacts that are touching, solid, and awake.
+	virtual void PostSolve(Contact* contact, const ContactImpulse& impulse, iteration_type solved)
 	{
 		BOX2D_NOT_USED(contact);
 		BOX2D_NOT_USED(impulse);
+		BOX2D_NOT_USED(solved);
 	}
 };
 
