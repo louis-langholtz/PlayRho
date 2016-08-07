@@ -125,7 +125,7 @@ struct BodyDef
 	void* userData = nullptr;
 };
 
-/// A rigid body. These are created via World::CreateBody.
+/// A rigid body. These are created via World::Create.
 class Body
 {
 public:

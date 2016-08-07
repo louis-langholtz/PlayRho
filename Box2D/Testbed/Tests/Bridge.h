@@ -36,7 +36,7 @@ public:
 		Body* ground = nullptr;
 		{
 			BodyDef bd;
-			ground = m_world->CreateBody(bd);
+			ground = m_world->Create(bd);
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -60,12 +60,12 @@ public:
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-14.5f + 1.0f * i, 5.0f);
-				Body* body = m_world->CreateBody(bd);
+				Body* body = m_world->Create(bd);
 				body->CreateFixture(fd);
 
 				Vec2 anchor(-15.0f + 1.0f * i, 5.0f);
 				jd.Initialize(prevBody, body, anchor);
-				m_world->CreateJoint(jd);
+				m_world->Create(jd);
 
 				if (i == (e_count >> 1))
 				{
@@ -76,7 +76,7 @@ public:
 
 			Vec2 anchor(-15.0f + 1.0f * e_count, 5.0f);
 			jd.Initialize(prevBody, ground, anchor);
-			m_world->CreateJoint(jd);
+			m_world->Create(jd);
 		}
 
 		for (int32 i = 0; i < 2; ++i)
@@ -96,7 +96,7 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-8.0f + 8.0f * i, 12.0f);
-			Body* body = m_world->CreateBody(bd);
+			Body* body = m_world->Create(bd);
 			body->CreateFixture(fd);
 		}
 
@@ -112,7 +112,7 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-6.0f + 6.0f * i, 10.0f);
-			Body* body = m_world->CreateBody(bd);
+			Body* body = m_world->Create(bd);
 			body->CreateFixture(fd);
 		}
 	}

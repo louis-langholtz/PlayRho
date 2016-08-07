@@ -36,7 +36,7 @@ public:
 	{
 		{
 			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
+			Body* ground = m_world->Create(bd);
 
 			{
 				EdgeShape shape;
@@ -75,7 +75,7 @@ public:
 				bd.userData = m_touching + i;
 
 				m_touching[i] = false;
-				m_bodies[i] = m_world->CreateBody(bd);
+				m_bodies[i] = m_world->Create(bd);
 
 				m_bodies[i]->CreateFixture(FixtureDef{&shape, 1.0f});
 			}

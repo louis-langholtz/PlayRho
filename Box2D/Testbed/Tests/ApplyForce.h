@@ -35,7 +35,7 @@ public:
 		{
 			BodyDef bd;
 			bd.position = Vec2(float_t{0}, 20.0f);
-			ground = m_world->CreateBody(bd);
+			ground = m_world->Create(bd);
 
 			EdgeShape shape;
 
@@ -101,7 +101,7 @@ public:
 			bd.position = Vec2(float_t{0}, 2.0);
 			bd.angle = Pi;
 			bd.allowSleep = false;
-			m_body = m_world->CreateBody(bd);
+			m_body = m_world->Create(bd);
 			m_body->CreateFixture(sd1);
 			m_body->CreateFixture(sd2);
 		}
@@ -121,7 +121,7 @@ public:
 				bd.type = BodyType::Dynamic;
 
 				bd.position = Vec2(float_t{0}, 5.0f + 1.54f * i);
-				Body* body = m_world->CreateBody(bd);
+				Body* body = m_world->Create(bd);
 
 				body->CreateFixture(fd);
 
@@ -141,7 +141,7 @@ public:
 				jd.maxForce = mass * gravity;
 				jd.maxTorque = mass * radius * gravity;
 
-				m_world->CreateJoint(jd);
+				m_world->Create(jd);
 			}
 		}
 	}

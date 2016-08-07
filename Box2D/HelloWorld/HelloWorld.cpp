@@ -44,7 +44,7 @@ int main(int argc, char** argv)
 	// Call the body factory which allocates memory for the ground body
 	// from a pool and creates the ground box shape (also from a pool).
 	// The body is also added to the world.
-	Body* groundBody = world.CreateBody(groundBodyDef);
+	Body* groundBody = world.Create(groundBodyDef);
 
 	// Define the ground box shape.
 	PolygonShape groundBox;
@@ -59,7 +59,7 @@ int main(int argc, char** argv)
 	BodyDef bodyDef;
 	bodyDef.type = BodyType::Dynamic;
 	bodyDef.position = Vec2(0.0f, 4.0f);
-	Body* body = world.CreateBody(bodyDef);
+	Body* body = world.Create(bodyDef);
 
 	// Define another box shape for our dynamic body.
 	PolygonShape dynamicBox;

@@ -36,7 +36,7 @@ public:
 		Body* ground = nullptr;
 		{
 			BodyDef bd;
-			ground = m_world->CreateBody(bd);
+			ground = m_world->Create(bd);
 		}
 
 		{
@@ -44,7 +44,7 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.allowSleep = false;
 			bd.position = Vec2(0.0f, 10.0f);
-			Body* body = m_world->CreateBody(bd);
+			Body* body = m_world->Create(bd);
 
 			PolygonShape shape;
 			shape.SetAsBox(0.5f, 10.0f, Vec2( 10.0f, 0.0f), 0.0);
@@ -65,7 +65,7 @@ public:
 			jd.motorSpeed = 0.05f * Pi;
 			jd.maxMotorTorque = 1e8f;
 			jd.enableMotor = true;
-			m_joint = (RevoluteJoint*)m_world->CreateJoint(jd);
+			m_joint = (RevoluteJoint*)m_world->Create(jd);
 		}
 
 		m_count = 0;
@@ -80,7 +80,7 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(0.0f, 10.0f);
-			Body* body = m_world->CreateBody(bd);
+			Body* body = m_world->Create(bd);
 
 			PolygonShape shape;
 			shape.SetAsBox(0.125f, 0.125f);

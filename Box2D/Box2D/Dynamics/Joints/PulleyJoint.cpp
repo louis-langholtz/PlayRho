@@ -332,7 +332,7 @@ void PulleyJoint::Dump()
 	log("  jd.lengthA = %.15lef;\n", m_lengthA);
 	log("  jd.lengthB = %.15lef;\n", m_lengthB);
 	log("  jd.ratio = %.15lef;\n", m_ratio);
-	log("  joints[%d] = m_world->CreateJoint(jd);\n", m_index);
+	log("  joints[%d] = m_world->Create(jd);\n", m_index);
 }
 
 void PulleyJoint::ShiftOrigin(const Vec2& newOrigin)

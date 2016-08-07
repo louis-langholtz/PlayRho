@@ -34,7 +34,7 @@ public:
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 
 			BodyDef bd;
-			b1 = m_world->CreateBody(bd);
+			b1 = m_world->Create(bd);
 			b1->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
@@ -44,7 +44,7 @@ public:
 
 			BodyDef bd;
 			bd.position = Vec2(-1.5f, 10.0f);
-			Body* ground = m_world->CreateBody(bd);
+			Body* ground = m_world->Create(bd);
 			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
@@ -62,7 +62,7 @@ public:
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-6.0f + 1.0f * i, 11.25f);
-				Body* body = m_world->CreateBody(bd);
+				Body* body = m_world->Create(bd);
 				body->CreateFixture(fd);
 			}
 		}
@@ -73,7 +73,7 @@ public:
 
 			BodyDef bd;
 			bd.position = Vec2(1.0f, 6.0f);
-			Body* ground = m_world->CreateBody(bd);
+			Body* ground = m_world->Create(bd);
 			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
@@ -84,7 +84,7 @@ public:
 
 			BodyDef bd;
 			bd.position = Vec2(-7.0f, 4.0f);
-			b2 = m_world->CreateBody(bd);
+			b2 = m_world->Create(bd);
 			b2->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
@@ -98,7 +98,7 @@ public:
 			bd.position = Vec2(-0.9f, 1.0f);
 			bd.angle = -0.15f;
 
-			b3 = m_world->CreateBody(bd);
+			b3 = m_world->Create(bd);
 			b3->CreateFixture(FixtureDef{&shape, 10.0f});
 		}
 
@@ -108,7 +108,7 @@ public:
 		anchor = Vec2(-2.0f, 1.0f);
 		jd.Initialize(b1, b3, anchor);
 		jd.collideConnected = true;
-		m_world->CreateJoint(jd);
+		m_world->Create(jd);
 
 		Body* b4;
 		{
@@ -118,20 +118,20 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-10.0f, 15.0f);
-			b4 = m_world->CreateBody(bd);
+			b4 = m_world->Create(bd);
 			b4->CreateFixture(FixtureDef{&shape, 10.0f});
 		}
 
 		anchor = Vec2(-7.0f, 15.0f);
 		jd.Initialize(b2, b4, anchor);
-		m_world->CreateJoint(jd);
+		m_world->Create(jd);
 
 		Body* b5;
 		{
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(6.5f, 3.0f);
-			b5 = m_world->CreateBody(bd);
+			b5 = m_world->Create(bd);
 
 			PolygonShape shape;
 			FixtureDef fd;
@@ -152,7 +152,7 @@ public:
 
 		anchor = Vec2(6.0f, 2.0f);
 		jd.Initialize(b1, b5, anchor);
-		m_world->CreateJoint(jd);
+		m_world->Create(jd);
 
 		Body* b6;
 		{
@@ -162,13 +162,13 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(6.5f, 4.1f);
-			b6 = m_world->CreateBody(bd);
+			b6 = m_world->Create(bd);
 			b6->CreateFixture(FixtureDef{&shape, 30.0f});
 		}
 
 		anchor = Vec2(7.5f, 4.0f);
 		jd.Initialize(b5, b6, anchor);
-		m_world->CreateJoint(jd);
+		m_world->Create(jd);
 
 		Body* b7;
 		{
@@ -179,7 +179,7 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(7.4f, 1.0f);
 
-			b7 = m_world->CreateBody(bd);
+			b7 = m_world->Create(bd);
 			b7->CreateFixture(FixtureDef{&shape, 10.0f});
 		}
 
@@ -190,7 +190,7 @@ public:
 		djd.localAnchorB = Vec2(0.0f, -1.0f);
 		Vec2 d = GetWorldPoint(*djd.bodyB, djd.localAnchorB) - GetWorldPoint(*djd.bodyA, djd.localAnchorA);
 		djd.length = Length(d);
-		m_world->CreateJoint(djd);
+		m_world->Create(djd);
 
 		{
 			float_t radius = 0.2f;
@@ -203,7 +203,7 @@ public:
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(5.9f + 2.0f * radius * i, 2.4f);
-				Body* body = m_world->CreateBody(bd);
+				Body* body = m_world->Create(bd);
 				body->CreateFixture(FixtureDef{&shape, 10.0f});
 			}
 		}

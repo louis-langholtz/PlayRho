@@ -32,7 +32,7 @@ public:
 		Body* ground = nullptr;
 		{
 			BodyDef bd;
-			ground = m_world->CreateBody(bd);
+			ground = m_world->Create(bd);
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -50,7 +50,7 @@ public:
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(0.0f, 7.0f);
-				Body* body = m_world->CreateBody(bd);
+				Body* body = m_world->Create(bd);
 				body->CreateFixture(FixtureDef{&shape, 2.0f});
 
 				RevoluteJointDef rjd;
@@ -58,7 +58,7 @@ public:
 				rjd.motorSpeed = 1.0f * Pi;
 				rjd.maxMotorTorque = 10000.0f;
 				rjd.enableMotor = true;
-				m_joint1 = (RevoluteJoint*)m_world->CreateJoint(rjd);
+				m_joint1 = (RevoluteJoint*)m_world->Create(rjd);
 
 				prevBody = body;
 			}
@@ -71,13 +71,13 @@ public:
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(0.0f, 13.0f);
-				Body* body = m_world->CreateBody(bd);
+				Body* body = m_world->Create(bd);
 				body->CreateFixture(FixtureDef{&shape, 2.0f});
 
 				RevoluteJointDef rjd;
 				rjd.Initialize(prevBody, body, Vec2(0.0f, 9.0f));
 				rjd.enableMotor = false;
-				m_world->CreateJoint(rjd);
+				m_world->Create(rjd);
 
 				prevBody = body;
 			}
@@ -91,12 +91,12 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.fixedRotation = true;
 				bd.position = Vec2(0.0f, 17.0f);
-				Body* body = m_world->CreateBody(bd);
+				Body* body = m_world->Create(bd);
 				body->CreateFixture(FixtureDef{&shape, 2.0f});
 
 				RevoluteJointDef rjd;
 				rjd.Initialize(prevBody, body, Vec2(0.0f, 17.0f));
-				m_world->CreateJoint(rjd);
+				m_world->Create(rjd);
 
 				PrismaticJointDef pjd;
 				pjd.Initialize(ground, body, Vec2(0.0f, 17.0f), Vec2(0.0f, 1.0f));
@@ -104,7 +104,7 @@ public:
 				pjd.maxMotorForce = 1000.0f;
 				pjd.enableMotor = true;
 
-				m_joint2 = (PrismaticJoint*)m_world->CreateJoint(pjd);
+				m_joint2 = (PrismaticJoint*)m_world->Create(pjd);
 			}
 
 			// Create a payload
@@ -115,7 +115,7 @@ public:
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(0.0f, 23.0f);
-				Body* body = m_world->CreateBody(bd);
+				Body* body = m_world->Create(bd);
 				body->CreateFixture(FixtureDef{&shape, 2.0f});
 			}
 		}

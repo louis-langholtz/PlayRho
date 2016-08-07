@@ -86,7 +86,7 @@ World::~World()
 	while (!m_bodies.empty())
 	{
 		auto&& b = m_bodies.front();
-		DestroyBody(&b);
+		Destroy(&b);
 	}
 }
 
@@ -123,7 +123,7 @@ void World::SetGravity(const Vec2& gravity) noexcept
 	}
 }
 
-Body* World::CreateBody(const BodyDef& def)
+Body* World::Create(const BodyDef& def)
 {
 	assert(!IsLocked());
 	if (IsLocked())
@@ -175,7 +175,7 @@ bool World::Remove(Body& b)
 	return true;
 }
 
-void World::DestroyBody(Body* b)
+void World::Destroy(Body* b)
 {
 	assert(b->m_world == this);
 	
@@ -191,7 +191,7 @@ void World::DestroyBody(Body* b)
 	m_blockAllocator.Free(b, sizeof(Body));
 }
 
-Joint* World::CreateJoint(const JointDef& def)
+Joint* World::Create(const JointDef& def)
 {
 	assert(!IsLocked());
 	if (IsLocked())
@@ -257,7 +257,7 @@ bool World::Remove(Joint& j)
 	return m_joints.erase(it) != it;
 }
 
-void World::DestroyJoint(Joint* j)
+void World::Destroy(Joint* j)
 {
 	assert(!IsLocked());
 	if (IsLocked())

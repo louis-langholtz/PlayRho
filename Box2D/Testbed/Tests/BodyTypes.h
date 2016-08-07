@@ -30,7 +30,7 @@ public:
 		Body* ground = nullptr;
 		{
 			BodyDef bd;
-			ground = m_world->CreateBody(bd);
+			ground = m_world->Create(bd);
 
 			EdgeShape shape;
 			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
@@ -46,7 +46,7 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(0.0f, 3.0f);
-			m_attachment = m_world->CreateBody(bd);
+			m_attachment = m_world->Create(bd);
 
 			PolygonShape shape;
 			shape.SetAsBox(0.5f, 2.0f);
@@ -58,7 +58,7 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-4.0f, 5.0f);
-			m_platform = m_world->CreateBody(bd);
+			m_platform = m_world->Create(bd);
 
 			PolygonShape shape;
 			shape.SetAsBox(0.5f, 4.0f, Vec2(4.0f, 0.0f), 0.5f * Pi);
@@ -73,7 +73,7 @@ public:
 			rjd.Initialize(m_attachment, m_platform, Vec2(0.0f, 5.0f));
 			rjd.maxMotorTorque = 50.0f;
 			rjd.enableMotor = true;
-			m_world->CreateJoint(rjd);
+			m_world->Create(rjd);
 
 			PrismaticJointDef pjd;
 			pjd.Initialize(ground, m_platform, Vec2(0.0f, 5.0f), Vec2(1.0f, 0.0f));
@@ -84,7 +84,7 @@ public:
 			pjd.upperTranslation = 10.0f;
 			pjd.enableLimit = true;
 
-			m_world->CreateJoint(pjd);
+			m_world->Create(pjd);
 
 			m_speed = 3.0f;
 		}
@@ -94,7 +94,7 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(0.0f, 8.0f);
-			Body* body = m_world->CreateBody(bd);
+			Body* body = m_world->Create(bd);
 
 			PolygonShape shape;
 			shape.SetAsBox(0.75f, 0.75f);

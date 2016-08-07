@@ -295,7 +295,7 @@ bool Island::Solve(const TimeStep& step, ContactListener* listener, StackAllocat
 		contactSolver.SolveVelocityConstraints();
 	}
 
-	// updates positions per the velocities as if there were no obstacles...
+	// updates array of tentative new body positions per the velocities as if there were no obstacles...
 	IntegratePositions(positions, velocities, h);
 
 	// Solve position constraints

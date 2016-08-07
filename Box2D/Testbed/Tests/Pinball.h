@@ -33,7 +33,7 @@ public:
 		Body* ground = nullptr;
 		{
 			BodyDef bd;
-			ground = m_world->CreateBody(bd);
+			ground = m_world->Create(bd);
 
 			Vec2 vs[5];
 			vs[0] = Vec2(0.0f, -2.0f);
@@ -58,10 +58,10 @@ public:
 			bd.type = BodyType::Dynamic;
 
 			bd.position = p1;
-			Body* leftFlipper = m_world->CreateBody(bd);
+			Body* leftFlipper = m_world->Create(bd);
 
 			bd.position = p2;
-			Body* rightFlipper = m_world->CreateBody(bd);
+			Body* rightFlipper = m_world->Create(bd);
 
 			PolygonShape box;
 			box.SetAsBox(1.75f, 0.1f);
@@ -85,14 +85,14 @@ public:
 			jd.bodyB = leftFlipper;
 			jd.lowerAngle = -30.0f * Pi / 180.0f;
 			jd.upperAngle = 5.0f * Pi / 180.0f;
-			m_leftJoint = (RevoluteJoint*)m_world->CreateJoint(jd);
+			m_leftJoint = (RevoluteJoint*)m_world->Create(jd);
 
 			jd.motorSpeed = 0.0f;
 			jd.localAnchorA = p2;
 			jd.bodyB = rightFlipper;
 			jd.lowerAngle = -5.0f * Pi / 180.0f;
 			jd.upperAngle = 30.0f * Pi / 180.0f;
-			m_rightJoint = (RevoluteJoint*)m_world->CreateJoint(jd);
+			m_rightJoint = (RevoluteJoint*)m_world->Create(jd);
 		}
 
 		// Circle character
@@ -102,7 +102,7 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.bullet = true;
 
-			m_ball = m_world->CreateBody(bd);
+			m_ball = m_world->Create(bd);
 
 			CircleShape shape;
 			shape.SetRadius(float_t(0.2));

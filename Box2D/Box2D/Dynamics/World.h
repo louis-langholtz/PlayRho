@@ -80,26 +80,26 @@ public:
 	/// Creates a rigid body given a definition.
 	/// @note No reference to the definition is retained.
 	/// @warning This function is locked during callbacks.
-	Body* CreateBody(const BodyDef& def);
+	Body* Create(const BodyDef& def);
 
 	/// Destroys the given body.
 	/// @note This function is locked during callbacks.
 	/// @warning This automatically deletes all associated shapes and joints.
 	/// @warning This function is locked during callbacks.
-	void DestroyBody(Body* body);
+	void Destroy(Body* body);
 
 	/// Creates a joint to constrain bodies together.
 	/// @detail No reference to the definition
 	/// is retained. This may cause the connected bodies to cease colliding.
 	/// @warning This function is locked during callbacks.
-	Joint* CreateJoint(const JointDef& def);
+	Joint* Create(const JointDef& def);
 
 	/// Destroys a joint.
 	/// @detail This may cause the connected bodies to begin colliding.
 	/// @warning This function is locked during callbacks.
-	void DestroyJoint(Joint* joint);
+	void Destroy(Joint* joint);
 
-	/// Steps the world ahead by a given time amount potentially moving non-static bodies.
+	/// Steps the world ahead by a given time amount.
 	/// @detail This performs position and velocity updating, collision detection, and constraint solving.
 	/// @note While body velocities are updated accordingly (per the sum of forces acting on them),
 	///   body positions (barring any collisions) are updated as if they had moved the entire time step

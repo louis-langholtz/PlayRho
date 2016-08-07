@@ -54,7 +54,7 @@ Test::Test()
 	m_stepCount = 0;
 
 	BodyDef bodyDef;
-	m_groundBody = m_world->CreateBody(bodyDef);
+	m_groundBody = m_world->Create(bodyDef);
 
 	memset(&m_maxProfile, 0, sizeof(Profile));
 	memset(&m_totalProfile, 0, sizeof(Profile));
@@ -163,7 +163,7 @@ void Test::MouseDown(const Vec2& p)
 		md.bodyB = body;
 		md.target = p;
 		md.maxForce = 1000.0f * GetMass(*body);
-		m_mouseJoint = (MouseJoint*)m_world->CreateJoint(md);
+		m_mouseJoint = (MouseJoint*)m_world->Create(md);
 		body->SetAwake();
 	}
 }
@@ -204,7 +204,7 @@ void Test::MouseUp(const Vec2& p)
 {
 	if (m_mouseJoint)
 	{
-		m_world->DestroyJoint(m_mouseJoint);
+		m_world->Destroy(m_mouseJoint);
 		m_mouseJoint = nullptr;
 	}
 	
@@ -235,7 +235,7 @@ void Test::LaunchBomb(const Vec2& position, const Vec2& linearVelocity)
 {
 	if (m_bomb)
 	{
-		m_world->DestroyBody(m_bomb);
+		m_world->Destroy(m_bomb);
 		m_bomb = nullptr;
 	}
 
@@ -243,7 +243,7 @@ void Test::LaunchBomb(const Vec2& position, const Vec2& linearVelocity)
 	bd.type = BodyType::Dynamic;
 	bd.position = position;
 	bd.bullet = true;
-	m_bomb = m_world->CreateBody(bd);
+	m_bomb = m_world->Create(bd);
 	m_bomb->SetVelocity(Velocity{linearVelocity, 0});
 	
 	CircleShape circle(0.3f);

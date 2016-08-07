@@ -40,7 +40,7 @@ public:
 	{
 		{
 			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
+			Body* ground = m_world->Create(bd);
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -76,7 +76,7 @@ public:
 				//float_t x = RandomFloat(-0.02f, 0.02f);
 				//float_t x = i % 2 == 0 ? -0.01f : 0.01f;
 				bd.position = Vec2(xs[j] + x, 0.55f + 1.1f * i);
-				Body* body = m_world->CreateBody(bd);
+				Body* body = m_world->Create(bd);
 
 				m_bodies[n] = body;
 
@@ -94,7 +94,7 @@ public:
 		case GLFW_KEY_COMMA:
 			if (m_bullet != nullptr)
 			{
-				m_world->DestroyBody(m_bullet);
+				m_world->Destroy(m_bullet);
 				m_bullet = nullptr;
 			}
 
@@ -112,7 +112,7 @@ public:
 				bd.bullet = true;
 				bd.position = Vec2(-31.0f, 5.0f);
 
-				m_bullet = m_world->CreateBody(bd);
+				m_bullet = m_world->Create(bd);
 				m_bullet->CreateFixture(fd);
 
 				m_bullet->SetVelocity(Velocity{Vec2(400.0f, 0.0f), 0});
@@ -135,7 +135,7 @@ public:
 		//{
 		//	if (m_bullet != nullptr)
 		//	{
-		//		m_world->DestroyBody(m_bullet);
+		//		m_world->Destroy(m_bullet);
 		//		m_bullet = nullptr;
 		//	}
 
@@ -153,7 +153,7 @@ public:
 		//		bd.bullet = true;
 		//		bd.position = Vec2(-31.0f, 5.0f);
 
-		//		m_bullet = m_world->CreateBody(bd);
+		//		m_bullet = m_world->Create(bd);
 		//		m_bullet->CreateFixture(fd);
 
 		//		m_bullet->SetLinearVelocity(Vec2(400.0f, 0.0f));

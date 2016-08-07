@@ -33,7 +33,7 @@ public:
 		Body* ground = NULL;
 		{
 			BodyDef bd;
-			ground = m_world->CreateBody(bd);
+			ground = m_world->Create(bd);
 
 			EdgeShape shape;
 			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
@@ -49,7 +49,7 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(0.0f, 8.0f);
-			Body* body = m_world->CreateBody(bd);
+			Body* body = m_world->Create(bd);
 
 			PolygonShape shape;
 			shape.SetAsBox(2.0f, 0.5f);
@@ -64,7 +64,7 @@ public:
 			mjd.Initialize(ground, body);
 			mjd.maxForce = 1000.0f;
 			mjd.maxTorque = 1000.0f;
-			m_joint = (MotorJoint*)m_world->CreateJoint(mjd);
+			m_joint = (MotorJoint*)m_world->Create(mjd);
 		}
 
 		m_go = false;

@@ -91,7 +91,7 @@ TEST(World, CreateAndDestroyBody)
 	World world;
 	EXPECT_EQ(GetBodyCount(world), body_count_t(0));
 
-	const auto body = world.CreateBody(BodyDef{});
+	const auto body = world.Create(BodyDef{});
 	EXPECT_NE(body, nullptr);
 	EXPECT_EQ(body->GetType(), BodyType::Static);
 	EXPECT_FALSE(body->IsSpeedable());
@@ -105,7 +105,7 @@ TEST(World, CreateAndDestroyBody)
 	const auto& first = *(world.GetBodies().begin());
 	EXPECT_EQ(body, &first);
 
-	world.DestroyBody(body);
+	world.Destroy(body);
 	EXPECT_EQ(GetBodyCount(world), body_count_t(0));
 	EXPECT_TRUE(world.GetBodies().empty());
 	EXPECT_EQ(world.GetBodies().size(), body_count_t(0));
@@ -116,8 +116,8 @@ TEST(World, CreateAndDestroyJoint)
 {
 	World world;
 
-	const auto body1 = world.CreateBody(BodyDef{});
-	const auto body2 = world.CreateBody(BodyDef{});
+	const auto body1 = world.Create(BodyDef{});
+	const auto body2 = world.Create(BodyDef{});
 	EXPECT_NE(body1, nullptr);
 	EXPECT_NE(body2, nullptr);
 	EXPECT_EQ(GetBodyCount(world), body_count_t(2));
@@ -127,7 +127,7 @@ TEST(World, CreateAndDestroyJoint)
 	
 	const auto anchorA = Vec2{float_t(+0.4), float_t(-1.2)};
 	const auto anchorB = Vec2{float_t(-2.3), float_t(+0.7)};
-	const auto joint = world.CreateJoint(DistanceJointDef{body1, body2, anchorA, anchorB});
+	const auto joint = world.Create(DistanceJointDef{body1, body2, anchorA, anchorB});
 	EXPECT_EQ(GetJointCount(world), joint_count_t(1));
 	EXPECT_FALSE(world.GetJoints().empty());
 	EXPECT_NE(world.GetJoints().begin(), world.GetJoints().end());
@@ -140,7 +140,7 @@ TEST(World, CreateAndDestroyJoint)
 	EXPECT_EQ(joint->GetAnchorB(), anchorB);
 	EXPECT_FALSE(joint->GetCollideConnected());
 
-	world.DestroyJoint(joint);
+	world.Destroy(joint);
 	EXPECT_EQ(GetJointCount(world), joint_count_t(0));
 	EXPECT_TRUE(world.GetJoints().empty());
 	EXPECT_EQ(world.GetJoints().begin(), world.GetJoints().end());
@@ -160,7 +160,7 @@ TEST(World, GravitationalBodyMovement)
 	
 	World world{gravity};
 
-	const auto body = world.CreateBody(body_def);
+	const auto body = world.Create(body_def);
 	ASSERT_NE(body, nullptr);
 	EXPECT_FALSE(body->IsImpenetrable());
 	EXPECT_EQ(body->GetType(), BodyType::Dynamic);
@@ -263,7 +263,7 @@ TEST(World, CollidingDynamicBodies)
 
 	body_def.position = Vec2{-(x + 1), 0};
 	body_def.linearVelocity = Vec2{+x, 0};
-	const auto body_a = world.CreateBody(body_def);
+	const auto body_a = world.Create(body_def);
 	ASSERT_NE(body_a, nullptr);
 	EXPECT_EQ(body_a->GetType(), BodyType::Dynamic);
 	EXPECT_TRUE(body_a->IsSpeedable());
@@ -274,7 +274,7 @@ TEST(World, CollidingDynamicBodies)
 
 	body_def.position = Vec2{+(x + 1), 0};
 	body_def.linearVelocity = Vec2{-x, 0};
-	const auto body_b = world.CreateBody(body_def);
+	const auto body_b = world.Create(body_def);
 	ASSERT_NE(body_b, nullptr);
 	const auto fixture2 = body_b->CreateFixture(fixtureDef);
 	ASSERT_NE(fixture2, nullptr);
@@ -399,7 +399,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 	body_def.type = BodyType::Static;
 
 	body_def.position = Vec2{left_edge_x, 0};
-	const auto left_wall_body = world.CreateBody(body_def);
+	const auto left_wall_body = world.Create(body_def);
 	ASSERT_NE(left_wall_body, nullptr);
 	{
 		const auto wall_fixture = left_wall_body->CreateFixture(fixtureDef);
@@ -407,7 +407,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 	}
 
 	body_def.position = Vec2{right_edge_x, 0};
-	const auto right_wall_body = world.CreateBody(body_def);
+	const auto right_wall_body = world.Create(body_def);
 	ASSERT_NE(right_wall_body, nullptr);
 	{
 		const auto wall_fixture = right_wall_body->CreateFixture(fixtureDef);
@@ -419,7 +419,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 	body_def.type = BodyType::Dynamic;
 	body_def.position = Vec2{begin_x, 0};
 	body_def.bullet = true;
-	const auto ball_body = world.CreateBody(body_def);
+	const auto ball_body = world.Create(body_def);
 	ASSERT_NE(ball_body, nullptr);
 	
 	const auto ball_radius = float_t(.01);
@@ -554,7 +554,7 @@ TEST(World, MouseJointWontTunnelBulletBall)
 
 	body_def.position = Vec2{left_edge_x, 0};
 	{
-		const auto left_wall_body = world.CreateBody(body_def);
+		const auto left_wall_body = world.Create(body_def);
 		ASSERT_NE(left_wall_body, nullptr);
 		{
 			const auto wall_fixture = left_wall_body->CreateFixture(fixtureDef);
@@ -564,7 +564,7 @@ TEST(World, MouseJointWontTunnelBulletBall)
 	
 	body_def.position = Vec2{right_edge_x, 0};
 	{
-		const auto right_wall_body = world.CreateBody(body_def);
+		const auto right_wall_body = world.Create(body_def);
 		ASSERT_NE(right_wall_body, nullptr);
 		{
 			const auto wall_fixture = right_wall_body->CreateFixture(fixtureDef);
@@ -576,7 +576,7 @@ TEST(World, MouseJointWontTunnelBulletBall)
 	
 	body_def.position = Vec2{0, btm_edge_y};
 	{
-		const auto btm_wall_body = world.CreateBody(body_def);
+		const auto btm_wall_body = world.Create(body_def);
 		ASSERT_NE(btm_wall_body, nullptr);
 		{
 			const auto wall_fixture = btm_wall_body->CreateFixture(fixtureDef);
@@ -586,7 +586,7 @@ TEST(World, MouseJointWontTunnelBulletBall)
 	
 	body_def.position = Vec2{0, top_edge_y};
 	{
-		const auto top_wall_body = world.CreateBody(body_def);
+		const auto top_wall_body = world.Create(body_def);
 		ASSERT_NE(top_wall_body, nullptr);
 		{
 			const auto wall_fixture = top_wall_body->CreateFixture(fixtureDef);
@@ -598,7 +598,7 @@ TEST(World, MouseJointWontTunnelBulletBall)
 	body_def.position = Vec2_zero;
 	body_def.bullet = true;
 	
-	const auto ball_body = world.CreateBody(body_def);
+	const auto ball_body = world.Create(body_def);
 	ASSERT_NE(ball_body, nullptr);
 	ASSERT_EQ(ball_body->GetPosition().x, 0);
 	ASSERT_EQ(ball_body->GetPosition().y, 0);
@@ -622,7 +622,7 @@ TEST(World, MouseJointWontTunnelBulletBall)
 		const auto x = ball_radius * float_t(2.1) * std::cos(angle);
 		const auto y = ball_radius * float_t(2.1) * std::sin(angle);
 		body_def.position = Vec2{x, y};
-		bodies[i] = world.CreateBody(body_def);
+		bodies[i] = world.Create(body_def);
 		ASSERT_NE(bodies[i], nullptr);
 		ASSERT_EQ(bodies[i]->GetPosition().x, x);
 		ASSERT_EQ(bodies[i]->GetPosition().y, y);
@@ -634,7 +634,7 @@ TEST(World, MouseJointWontTunnelBulletBall)
 	}
 
 	BodyDef bodyDef;
-	const auto spare_body = world.CreateBody(bodyDef);
+	const auto spare_body = world.Create(bodyDef);
 
 	const auto mouse_joint = [&]() {
 		MouseJointDef mjd;
@@ -643,7 +643,7 @@ TEST(World, MouseJointWontTunnelBulletBall)
 		const auto ball_body_pos = ball_body->GetPosition();
 		mjd.target = Vec2{ball_body_pos.x - ball_radius / 2, ball_body_pos.y + ball_radius / 2};
 		mjd.maxForce = float_t(1000) * GetMass(*ball_body);
-		return static_cast<MouseJoint*>(world.CreateJoint(mjd));
+		return static_cast<MouseJoint*>(world.Create(mjd));
 	}();
 	ASSERT_NE(mouse_joint, nullptr);
 

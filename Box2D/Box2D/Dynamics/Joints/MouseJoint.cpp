@@ -199,6 +199,6 @@ void MouseJoint::Dump()
 	log("  jd.frequencyHz = %.15lef;\n", m_frequencyHz);
 	log("  jd.dampingRatio = %.15lef;\n", m_dampingRatio);
 	log("  jd.maxForce = %.15lef;\n", m_maxForce);
-	log("  joints[%d] = m_world->CreateJoint(jd);\n", m_index);
+	log("  joints[%d] = m_world->Create(jd);\n", m_index);
 }
 

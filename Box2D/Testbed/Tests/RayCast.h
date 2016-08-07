@@ -179,7 +179,7 @@ public:
 		// Ground body
 		{
 			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
+			Body* ground = m_world->Create(bd);
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -244,7 +244,7 @@ public:
 	{
 		if (m_bodies[m_bodyIndex] != nullptr)
 		{
-			m_world->DestroyBody(m_bodies[m_bodyIndex]);
+			m_world->Destroy(m_bodies[m_bodyIndex]);
 			m_bodies[m_bodyIndex] = nullptr;
 		}
 
@@ -263,7 +263,7 @@ public:
 			bd.angularDamping = 0.02f;
 		}
 
-		m_bodies[m_bodyIndex] = m_world->CreateBody(bd);
+		m_bodies[m_bodyIndex] = m_world->Create(bd);
 
 		if (index < 4)
 		{
@@ -292,13 +292,13 @@ public:
 		m_bodyIndex = (m_bodyIndex + 1) % e_maxBodies;
 	}
 
-	void DestroyBody()
+	void Destroy()
 	{
 		for (int32 i = 0; i < e_maxBodies; ++i)
 		{
 			if (m_bodies[i] != nullptr)
 			{
-				m_world->DestroyBody(m_bodies[i]);
+				m_world->Destroy(m_bodies[i]);
 				m_bodies[i] = nullptr;
 				return;
 			}
@@ -319,7 +319,7 @@ public:
 			break;
 
 		case GLFW_KEY_D:
-			DestroyBody();
+			Destroy();
 			break;
 
 		case GLFW_KEY_M:

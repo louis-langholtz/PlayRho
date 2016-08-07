@@ -31,7 +31,7 @@ public:
 		{
 			BodyDef bd;
 			bd.position = Vec2(0.0f, 0.0f);
-			Body* body = m_world->CreateBody(bd);
+			Body* body = m_world->Create(bd);
 
 			EdgeShape edge;
 
@@ -51,7 +51,7 @@ public:
 			PolygonShape box;
 			box.SetAsBox(2.0f, 0.1f);
 
-			m_body = m_world->CreateBody(bd);
+			m_body = m_world->Create(bd);
 			m_body->CreateFixture(FixtureDef{&box, 1.0f});
 
 			box.SetAsBox(0.25f, 0.25f);
@@ -61,7 +61,7 @@ public:
 			bd.position = Vec2(m_x, 10.0f);
 			bd.bullet = true;
 
-			m_bullet = m_world->CreateBody(bd);
+			m_bullet = m_world->Create(bd);
 			m_bullet->CreateFixture(FixtureDef{&box, 100.0f});
 
 			m_bullet->SetVelocity(Velocity{Vec2{0.0f, -50.0f}, 0});

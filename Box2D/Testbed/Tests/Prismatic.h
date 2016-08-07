@@ -31,7 +31,7 @@ public:
 		Body* ground = nullptr;
 		{
 			BodyDef bd;
-			ground = m_world->CreateBody(bd);
+			ground = m_world->Create(bd);
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -47,7 +47,7 @@ public:
 			bd.position = Vec2(-10.0f, 10.0f);
 			bd.angle = 0.5f * Pi;
 			bd.allowSleep = false;
-			Body* body = m_world->CreateBody(bd);
+			Body* body = m_world->Create(bd);
 			body->CreateFixture(FixtureDef{&shape, 5.0f});
 
 			PrismaticJointDef pjd;
@@ -66,7 +66,7 @@ public:
 			pjd.upperTranslation = 20.0f;
 			pjd.enableLimit = true;
 
-			m_joint = (PrismaticJoint*)m_world->CreateJoint(pjd);
+			m_joint = (PrismaticJoint*)m_world->Create(pjd);
 		}
 	}
 

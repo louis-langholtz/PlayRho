@@ -38,7 +38,7 @@ public:
 		Body* ground = nullptr;
 		{
 			BodyDef bd;
-			ground = m_world->CreateBody(bd);
+			ground = m_world->Create(bd);
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -78,13 +78,13 @@ public:
 					bd.angularDamping = 0.4f;
 				}
 
-				Body* body = m_world->CreateBody(bd);
+				Body* body = m_world->Create(bd);
 
 				body->CreateFixture(fd);
 
 				Vec2 anchor(float_t(i), y);
 				jd.Initialize(prevBody, body, anchor);
-				m_world->CreateJoint(jd);
+				m_world->Create(jd);
 
 				prevBody = body;
 			}
@@ -98,7 +98,7 @@ public:
 
 		{
 			m_ropeDef.bodyA = ground;
-			m_rope = m_world->CreateJoint(m_ropeDef);
+			m_rope = m_world->Create(m_ropeDef);
 		}
 	}
 
@@ -109,12 +109,12 @@ public:
 		case GLFW_KEY_J:
 			if (m_rope)
 			{
-				m_world->DestroyJoint(m_rope);
+				m_world->Destroy(m_rope);
 				m_rope = nullptr;
 			}
 			else
 			{
-				m_rope = m_world->CreateJoint(m_ropeDef);
+				m_rope = m_world->Create(m_ropeDef);
 			}
 			break;
 		}
