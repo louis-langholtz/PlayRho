@@ -77,12 +77,12 @@ public:
 		}
 	}
 
-	void PreSolve(Contact* contact, const Manifold& oldManifold)
+	void PreSolve(Contact& contact, const Manifold& oldManifold) override
 	{
 		Test::PreSolve(contact, oldManifold);
 
-		Fixture* fixtureA = contact->GetFixtureA();
-		Fixture* fixtureB = contact->GetFixtureB();
+		Fixture* fixtureA = contact.GetFixtureA();
+		Fixture* fixtureB = contact.GetFixtureB();
 
 		if (fixtureA != m_platform && fixtureA != m_character)
 		{
@@ -99,18 +99,18 @@ public:
 
 		if (position.y < m_top + m_radius - 3.0f * LinearSlop)
 		{
-			contact->UnsetEnabled();
+			contact.UnsetEnabled();
 		}
 #else
         Vec2 v = m_character->GetBody()->GetLinearVelocity();
         if (v.y > 0.0f)
 		{
-            contact->UnsetEnabled();
+            contact.UnsetEnabled();
         }
 #endif
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings* settings) override
 	{
 		Test::Step(settings);
 		g_debugDraw.DrawString(5, m_textLine, "Press: (c) create a shape, (d) destroy a shape.");

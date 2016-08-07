@@ -83,10 +83,10 @@ public:
 	}
 
 	// Implement contact listener.
-	void BeginContact(Contact* contact)
+	void BeginContact(Contact& contact) override
 	{
-		Fixture* fixtureA = contact->GetFixtureA();
-		Fixture* fixtureB = contact->GetFixtureB();
+		Fixture* fixtureA = contact.GetFixtureA();
+		Fixture* fixtureB = contact.GetFixtureB();
 
 		if (fixtureA == m_sensor)
 		{
@@ -110,10 +110,10 @@ public:
 	}
 
 	// Implement contact listener.
-	void EndContact(Contact* contact)
+	void EndContact(Contact& contact) override
 	{
-		Fixture* fixtureA = contact->GetFixtureA();
-		Fixture* fixtureB = contact->GetFixtureB();
+		Fixture* fixtureA = contact.GetFixtureA();
+		Fixture* fixtureB = contact.GetFixtureB();
 
 		if (fixtureA == m_sensor)
 		{
@@ -136,7 +136,7 @@ public:
 		}
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings* settings) override
 	{
 		Test::Step(settings);
 

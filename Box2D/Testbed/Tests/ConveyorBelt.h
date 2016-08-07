@@ -67,25 +67,25 @@ public:
 		}
 	}
 
-	void PreSolve(Contact* contact, const Manifold& oldManifold)
+	void PreSolve(Contact& contact, const Manifold& oldManifold) override
 	{
 		Test::PreSolve(contact, oldManifold);
 
-		Fixture* fixtureA = contact->GetFixtureA();
-		Fixture* fixtureB = contact->GetFixtureB();
+		Fixture* fixtureA = contact.GetFixtureA();
+		Fixture* fixtureB = contact.GetFixtureB();
 
 		if (fixtureA == m_platform)
 		{
-			contact->SetTangentSpeed(5.0f);
+			contact.SetTangentSpeed(5.0f);
 		}
 
 		if (fixtureB == m_platform)
 		{
-			contact->SetTangentSpeed(-5.0f);
+			contact.SetTangentSpeed(-5.0f);
 		}
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings* settings) override
 	{
 		Test::Step(settings);
 	}

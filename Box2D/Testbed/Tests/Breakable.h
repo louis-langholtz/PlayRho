@@ -63,7 +63,7 @@ public:
 		m_broke = false;
 	}
 
-	void PostSolve(Contact* contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) override
+	void PostSolve(Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) override
 	{
 		if (m_broke)
 		{
@@ -74,7 +74,7 @@ public:
 		// Should the body break?
 		auto maxImpulse = float_t(0);
 		{
-			const auto count = contact->GetManifold().GetPointCount();
+			const auto count = contact.GetManifold().GetPointCount();
 			for (auto i = decltype(count){0}; i < count; ++i)
 			{
 				maxImpulse = Max(maxImpulse, impulse.GetEntryNormal(i));

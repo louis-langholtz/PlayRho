@@ -75,7 +75,7 @@ void ContactManager::Destroy(Contact* c)
 {
 	if (m_contactListener && c->IsTouching())
 	{
-		m_contactListener->EndContact(c);
+		m_contactListener->EndContact(*c);
 	}
 
 	Remove(c);

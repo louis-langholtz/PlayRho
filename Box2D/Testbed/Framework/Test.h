@@ -165,10 +165,10 @@ public:
 	virtual void JointDestroyed(Joint* joint) { BOX2D_NOT_USED(joint); }
 
 	// Callbacks for derived classes.
-	virtual void BeginContact(Contact* contact) override { BOX2D_NOT_USED(contact); }
-	virtual void EndContact(Contact* contact) override { BOX2D_NOT_USED(contact); }
-	virtual void PreSolve(Contact* contact, const Manifold& oldManifold) override;
-	virtual void PostSolve(Contact* contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) override
+	virtual void BeginContact(Contact& contact) override { BOX2D_NOT_USED(contact); }
+	virtual void EndContact(Contact& contact) override { BOX2D_NOT_USED(contact); }
+	virtual void PreSolve(Contact& contact, const Manifold& oldManifold) override;
+	virtual void PostSolve(Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) override
 	{
 		BOX2D_NOT_USED(contact);
 		BOX2D_NOT_USED(impulse);

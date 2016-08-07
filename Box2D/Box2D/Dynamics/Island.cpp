@@ -211,7 +211,7 @@ namespace {
 	{
 		for (auto i = size_t{0}; i < contacts.size(); ++i)
 		{
-			listener.PostSolve(contacts[i], GetContactImpulse(constraints[i]), solved);
+			listener.PostSolve(*contacts[i], GetContactImpulse(constraints[i]), solved);
 		}
 	}
 };

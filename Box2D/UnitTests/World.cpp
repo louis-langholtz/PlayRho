@@ -193,38 +193,38 @@ TEST(World, GravitationalBodyMovement)
 class MyContactListener: public ContactListener
 {
 public:
-	using PreSolver = std::function<void(Contact*, const Manifold&)>;
-	using PostSolver = std::function<void(Contact*, const ContactImpulse&, ContactListener::iteration_type)>;
+	using PreSolver = std::function<void(Contact&, const Manifold&)>;
+	using PostSolver = std::function<void(Contact&, const ContactImpulse&, ContactListener::iteration_type)>;
 
 	MyContactListener(PreSolver&& pre, PostSolver&& post): presolver(pre), postsolver(post) {}
 
 	virtual ~MyContactListener() {}
 
-	void BeginContact(Contact* contact) override
+	void BeginContact(Contact& contact) override
 	{
 		++begin_contacts;
 		contacting = true;
-		touching = contact->IsTouching();
+		touching = contact.IsTouching();
 		
-		body_a[0] = contact->GetFixtureA()->GetBody()->GetPosition();
-		body_b[0] = contact->GetFixtureB()->GetBody()->GetPosition();
+		body_a[0] = contact.GetFixtureA()->GetBody()->GetPosition();
+		body_b[0] = contact.GetFixtureB()->GetBody()->GetPosition();
 	}
 	
-	void EndContact(Contact* contact) override
+	void EndContact(Contact& contact) override
 	{
 		contacting = false;
-		touching = contact->IsTouching();
+		touching = contact.IsTouching();
 
-		body_a[1] = contact->GetFixtureA()->GetBody()->GetPosition();
-		body_b[1] = contact->GetFixtureB()->GetBody()->GetPosition();
+		body_a[1] = contact.GetFixtureA()->GetBody()->GetPosition();
+		body_b[1] = contact.GetFixtureB()->GetBody()->GetPosition();
 	}
 	
-	void PreSolve(Contact* contact, const Manifold& oldManifold) override
+	void PreSolve(Contact& contact, const Manifold& oldManifold) override
 	{
 		presolver(contact, oldManifold);
 	}
 	
-	void PostSolve(Contact* contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) override
+	void PostSolve(Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) override
 	{
 		postsolver(contact, impulse, solved);
 	}
@@ -246,8 +246,8 @@ TEST(World, CollidingDynamicBodies)
 	body_def.type = BodyType::Dynamic;
 	
 	MyContactListener listener{
-		[](Contact* contact, const Manifold& oldManifold) {},
-		[](Contact* contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) {}
+		[](Contact& contact, const Manifold& oldManifold) {},
+		[](Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) {}
 	};
 
 	const auto gravity = Vec2_zero;
@@ -378,8 +378,8 @@ TEST(World, SpeedingBulletBallWontTunnel)
 	World world{Vec2_zero};
 
 	MyContactListener listener{
-		[](Contact* contact, const Manifold& oldManifold) {},
-		[](Contact* contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) {}
+		[](Contact& contact, const Manifold& oldManifold) {},
+		[](Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) {}
 	};
 	world.SetContactListener(&listener);
 
@@ -666,13 +666,13 @@ TEST(World, MouseJointWontTunnelBulletBall)
 	const auto distance_accel = float_t(1.001);
 
 	MyContactListener listener{
-		[&](Contact* contact, const Manifold& old_manifold)
+		[&](Contact& contact, const Manifold& old_manifold)
 		{
 		},
-		[&](Contact* contact, const ContactImpulse& impulse, ContactListener::iteration_type solved)
+		[&](Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved)
 		{
-			const auto fA = contact->GetFixtureA();
-			const auto fB = contact->GetFixtureB();
+			const auto fA = contact.GetFixtureA();
+			const auto fB = contact.GetFixtureB();
 
 			ASSERT_NE(fA, nullptr);
 			ASSERT_NE(fB, nullptr);
@@ -708,7 +708,7 @@ TEST(World, MouseJointWontTunnelBulletBall)
 			if (fail_count > 0)
 			{
 				std::cout << " angl=" << angle;
-				std::cout << " ctoi=" << contact->GetToiCount();
+				std::cout << " ctoi=" << contact.GetToiCount();
 				std::cout << " solv=" << solved;
 				std::cout << " targ=(" << distance * std::cos(angle) << "," << distance * std::sin(angle) << ")";
 				std::cout << " maxv=" << max_velocity;

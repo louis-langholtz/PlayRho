@@ -67,9 +67,9 @@ Test::~Test()
 	m_world = nullptr;
 }
 
-void Test::PreSolve(Contact* contact, const Manifold& oldManifold)
+void Test::PreSolve(Contact& contact, const Manifold& oldManifold)
 {
-	const auto& manifold = contact->GetManifold();
+	const auto& manifold = contact.GetManifold();
 
 	const auto manifoldPointCount = manifold.GetPointCount();
 	if (manifoldPointCount == 0)
@@ -77,18 +77,18 @@ void Test::PreSolve(Contact* contact, const Manifold& oldManifold)
 		return;
 	}
 
-	Fixture* fixtureA = contact->GetFixtureA();
-	Fixture* fixtureB = contact->GetFixtureB();
+	auto fixtureA = contact.GetFixtureA();
+	auto fixtureB = contact.GetFixtureB();
 
 	PointStateArray state1;
 	PointStateArray state2;
 	GetPointStates(state1, state2, oldManifold, manifold);
 
-	const auto worldManifold = contact->GetWorldManifold();
+	const auto worldManifold = contact.GetWorldManifold();
 
 	for (auto i = decltype(manifoldPointCount){0}; (i < manifoldPointCount) && (m_pointCount < k_maxContactPoints); ++i)
 	{
-		ContactPoint* cp = m_points + m_pointCount;
+		auto cp = m_points + m_pointCount;
 		cp->fixtureA = fixtureA;
 		cp->fixtureB = fixtureB;
 		cp->position = worldManifold.GetPoint(i);

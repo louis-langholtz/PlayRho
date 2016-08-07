@@ -214,17 +214,17 @@ void Contact::Update(ContactListener* listener)
 	{
 		if (!wasTouching && touching)
 		{
-			listener->BeginContact(this);
+			listener->BeginContact(*this);
 		}
 
 		if (wasTouching && !touching)
 		{
-			listener->EndContact(this);
+			listener->EndContact(*this);
 		}
 
 		if (!sensor && touching)
 		{
-			listener->PreSolve(this, oldManifold);
+			listener->PreSolve(*this, oldManifold);
 		}
 	}
 }

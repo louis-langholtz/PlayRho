@@ -108,10 +108,10 @@ public:
 	virtual ~ContactListener() {}
 
 	/// Called when two fixtures begin to touch.
-	virtual void BeginContact(Contact* contact) { BOX2D_NOT_USED(contact); }
+	virtual void BeginContact(Contact& contact) { BOX2D_NOT_USED(contact); }
 
 	/// Called when two fixtures cease to touch.
-	virtual void EndContact(Contact* contact) { BOX2D_NOT_USED(contact); }
+	virtual void EndContact(Contact& contact) { BOX2D_NOT_USED(contact); }
 
 	/// Pre-solve callback.
 	/// @detail
@@ -125,7 +125,7 @@ public:
 	/// @note If you set the number of contact points to zero, you will not
 	/// get an EndContact callback. However, you may get a BeginContact callback
 	/// the next step.
-	virtual void PreSolve(Contact* contact, const Manifold& oldManifold)
+	virtual void PreSolve(Contact& contact, const Manifold& oldManifold)
 	{
 		BOX2D_NOT_USED(contact);
 		BOX2D_NOT_USED(oldManifold);
@@ -139,7 +139,7 @@ public:
 	/// arbitrarily large if the sub-step is small. Hence the impulse is provided explicitly
 	/// in a separate data structure.
 	/// @note This is only called for contacts that are touching, solid, and awake.
-	virtual void PostSolve(Contact* contact, const ContactImpulse& impulse, iteration_type solved)
+	virtual void PostSolve(Contact& contact, const ContactImpulse& impulse, iteration_type solved)
 	{
 		BOX2D_NOT_USED(contact);
 		BOX2D_NOT_USED(impulse);
