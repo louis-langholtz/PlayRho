@@ -181,7 +181,7 @@ namespace {
 		return Position{translation, rotation};
 	}
 
-	void IntegratePositions(PositionContainer& positions, VelocityContainer& velocities, float_t h)
+	inline void IntegratePositions(PositionContainer& positions, VelocityContainer& velocities, float_t h)
 	{
 		auto i = size_t{0};
 		for (auto&& velocity: velocities)
@@ -234,7 +234,7 @@ namespace {
 	}
 
 	/// Gets the position-independent velocity constraint for the given contact, index, and time slot values.
-	ContactVelocityConstraint GetVelocityConstraint(const Contact& contact, ContactVelocityConstraint::index_type index, float_t dtRatio)
+	inline ContactVelocityConstraint GetVelocityConstraint(const Contact& contact, ContactVelocityConstraint::index_type index, float_t dtRatio)
 	{
 		ContactVelocityConstraint constraint(index, contact.GetFriction(), contact.GetRestitution(), contact.GetTangentSpeed());
 		
@@ -290,6 +290,30 @@ namespace {
 			constraints[i] = GetVelocityConstraint(*contacts[i], i, dtRatio);
 		}
 	}
+	
+	inline void AssignImpulses(Manifold::Point& var, const VelocityConstraintPoint& val)
+	{
+		var.normalImpulse = val.normalImpulse;
+		var.tangentImpulse = val.tangentImpulse;
+	}
+	
+	/// Stores impulses.
+	/// @detail Saves the normal and tangent impulses of all the velocity constraint points back to their
+	///   associated contacts' manifold points.
+	void StoreImpulses(size_t count, const ContactVelocityConstraint* velocityConstraints, Contact** contacts)
+	{
+		for (auto i = decltype(count){0}; i < count; ++i)
+		{
+			const auto& vc = velocityConstraints[i];
+			auto& manifold = contacts[vc.GetContactIndex()]->GetManifold();
+			
+			const auto point_count = vc.GetPointCount();
+			for (auto j = decltype(point_count){0}; j < point_count; ++j)
+			{
+				AssignImpulses(manifold.GetPoint(j), vc.GetPoint(j));
+			}
+		}
+	}
 };
 
 Island::Island(body_count_t bodyCapacity, contact_count_t contactCapacity, island_count_t jointCapacity,
@@ -310,30 +334,6 @@ void Island::CopyOut(const Position* positions, const Velocity* velocities, Body
 		body->m_sweep.pos1 = positions[i];
 		body->m_xf = GetTransform1(body->m_sweep);
 		++i;
-	}
-}
-
-static inline void AssignImpulses(Manifold::Point& var, const VelocityConstraintPoint& val)
-{
-	var.normalImpulse = val.normalImpulse;
-	var.tangentImpulse = val.tangentImpulse;
-}
-
-/// Stores impulses.
-/// @detail Saves the normal and tangent impulses of all the velocity constraint points back to their
-///   associated contacts' manifold points.
-static void StoreImpulses(size_t count, const ContactVelocityConstraint* velocityConstraints, Contact** contacts)
-{
-	for (auto i = decltype(count){0}; i < count; ++i)
-	{
-		const auto& vc = velocityConstraints[i];
-		auto& manifold = contacts[vc.GetContactIndex()]->GetManifold();
-		
-		const auto point_count = vc.GetPointCount();
-		for (auto j = decltype(point_count){0}; j < point_count; ++j)
-		{
-			AssignImpulses(manifold.GetPoint(j), vc.GetPoint(j));
-		}
 	}
 }
 
@@ -371,10 +371,10 @@ bool Island::Solve(const TimeStep& step, ContactListener* listener, StackAllocat
 	// Initialize velocity constraints.
 	ContactSolverDef contactSolverDef;
 	contactSolverDef.count = m_contacts.size();
-	contactSolverDef.positions = positions.data();
-	contactSolverDef.velocities = velocities.data();
 	contactSolverDef.positionConstraints = positionConstraints.data();
 	contactSolverDef.velocityConstraints = velocityConstraints.data();
+	contactSolverDef.positions = positions.data();
+	contactSolverDef.velocities = velocities.data();
 
 	ContactSolver contactSolver{contactSolverDef};
 	contactSolver.UpdateVelocityConstraints();
@@ -434,7 +434,7 @@ bool Island::Solve(const TimeStep& step, ContactListener* listener, StackAllocat
 
 	if (listener)
 	{
-		Report(*listener, m_contacts, contactSolver.GetVelocityConstraints(), positionConstraintsSolved);
+		Report(*listener, m_contacts, velocityConstraints.data(), positionConstraintsSolved);
 	}
 
 	return positionConstraintsSolved != TimeStep::InvalidIteration;
@@ -502,7 +502,7 @@ bool Island::SolveTOI(const TimeStep& step, ContactListener* listener, StackAllo
 
 	if (listener)
 	{
-		Report(*listener, m_contacts, contactSolver.GetVelocityConstraints(), positionConstraintsSolved);
+		Report(*listener, m_contacts, velocityConstraints.data(), positionConstraintsSolved);
 	}
 	
 	return positionConstraintsSolved != TimeStep::InvalidIteration;

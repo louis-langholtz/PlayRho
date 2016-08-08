@@ -288,11 +288,6 @@ public:
 	/// @return true if the minimum separation is above the minimum TOI separation value, false otherwise.
 	bool SolveTOIPositionConstraints(size_type indexA, size_type indexB);
 
-	const ContactVelocityConstraint* GetVelocityConstraints() const noexcept
-	{
-		return m_velocityConstraints;
-	}
-
 private:
 		
 	/// Updates the given velocity constraint data with the given position constraint data.
