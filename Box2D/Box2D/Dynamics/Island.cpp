@@ -313,6 +313,30 @@ void Island::CopyOut(const Position* positions, const Velocity* velocities, Body
 	}
 }
 
+static inline void AssignImpulses(Manifold::Point& var, const VelocityConstraintPoint& val)
+{
+	var.normalImpulse = val.normalImpulse;
+	var.tangentImpulse = val.tangentImpulse;
+}
+
+/// Stores impulses.
+/// @detail Saves the normal and tangent impulses of all the velocity constraint points back to their
+///   associated contacts' manifold points.
+static void StoreImpulses(size_t count, const ContactVelocityConstraint* velocityConstraints, Contact** contacts)
+{
+	for (auto i = decltype(count){0}; i < count; ++i)
+	{
+		const auto& vc = velocityConstraints[i];
+		auto& manifold = contacts[vc.GetContactIndex()]->GetManifold();
+		
+		const auto point_count = vc.GetPointCount();
+		for (auto j = decltype(point_count){0}; j < point_count; ++j)
+		{
+			AssignImpulses(manifold.GetPoint(j), vc.GetPoint(j));
+		}
+	}
+}
+
 bool Island::Solve(const TimeStep& step, ContactListener* listener, StackAllocator& allocator)
 {
 	// Initialize the bodies
@@ -403,7 +427,7 @@ bool Island::Solve(const TimeStep& step, ContactListener* listener, StackAllocat
 	}
 
 	// Update normal and tangent impulses of contacts' manifold points
-	contactSolver.StoreImpulses(m_contacts.data());
+	StoreImpulses(m_contacts.size(), velocityConstraints.data(), m_contacts.data());
 
 	// Updates m_bodies[i].m_sweep.pos1 to positions[i]
 	CopyOut(positions.data(), velocities.data(), m_bodies);

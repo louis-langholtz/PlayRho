@@ -270,11 +270,6 @@ public:
 
 	void WarmStart();
 
-	/// Stores impulses.
-	/// @detail Saves the normal and tangent impulses of all the velocity constraint points back to their
-	///   associated contacts' manifold points.
-	void StoreImpulses(Contact** contacts);
-
 	/// "Solves" the velocity constraints.
 	/// @detail Updates the velocities and velocity constraint points' normal and tangent impulses.
 	void SolveVelocityConstraints();

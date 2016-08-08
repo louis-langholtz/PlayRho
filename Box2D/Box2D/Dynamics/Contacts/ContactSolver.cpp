@@ -20,8 +20,6 @@
 #include <Box2D/Dynamics/Contacts/ContactSolver.h>
 #include <Box2D/Dynamics/Contacts/PositionSolverManifold.hpp>
 
-#include <Box2D/Dynamics/Contacts/Contact.h>
-
 namespace box2d {
 
 #if !defined(NDEBUG)
@@ -507,27 +505,6 @@ void ContactSolver::SolveVelocityConstraints()
 	{
 		auto& vc = m_velocityConstraints[i];
 		SolveVelocityConstraint(vc, m_velocities[vc.bodyA.GetIndex()], m_velocities[vc.bodyB.GetIndex()]);
-	}
-}
-
-static inline void AssignImpulses(Manifold::Point& var, const VelocityConstraintPoint& val)
-{
-	var.normalImpulse = val.normalImpulse;
-	var.tangentImpulse = val.tangentImpulse;
-}
-
-void ContactSolver::StoreImpulses(Contact** contacts)
-{
-	for (auto i = decltype(m_count){0}; i < m_count; ++i)
-	{
-		const auto& vc = m_velocityConstraints[i];
-		auto& manifold = contacts[vc.GetContactIndex()]->GetManifold();
-
-		const auto point_count = vc.GetPointCount();
-		for (auto j = decltype(point_count){0}; j < point_count; ++j)
-		{
-			AssignImpulses(manifold.GetPoint(j), vc.GetPoint(j));
-		}
 	}
 }
 
