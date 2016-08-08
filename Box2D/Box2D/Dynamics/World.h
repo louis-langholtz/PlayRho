@@ -253,7 +253,9 @@ private:
 	friend class Fixture;
 	friend class ContactManager;
 
-	/// Finds islands, integrates and solves constraints, solves position constraints.
+	/// Sloves the step.
+	/// @detail Finds islands, integrates and solves constraints, solves position constraints.
+	/// @note This may miss collisions involving fast moving bodies and allow them to tunnel through each other.
 	void Solve(const TimeStep& step);
 
 	Island BuildIsland(Body& seed,
@@ -261,8 +263,9 @@ private:
 						 contact_count_t& remNumContacts,
 						 JointList::size_type& remNumJoints);
 
-	/// Solves Time Of Impact Events.
+	/// Solves the step using successive time of impact (TOI) events.
 	/// @detail Used for continuous physics.
+	/// @note This is intended to detect and prevent the tunneling that the faster Solve method may miss.
 	/// @param step Time step value to use.
 	void SolveTOI(const TimeStep& step);
 

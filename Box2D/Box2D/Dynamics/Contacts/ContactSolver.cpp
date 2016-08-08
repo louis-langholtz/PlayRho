@@ -21,9 +21,6 @@
 #include <Box2D/Dynamics/Contacts/PositionSolverManifold.hpp>
 
 #include <Box2D/Dynamics/Contacts/Contact.h>
-#include <Box2D/Dynamics/Body.h>
-#include <Box2D/Dynamics/Fixture.h>
-#include <Box2D/Dynamics/World.h>
 
 namespace box2d {
 
@@ -38,76 +35,6 @@ static constexpr auto k_majorErrorTol = float_t(1e-2); ///< error tolerance
 #endif
 
 bool g_blockSolve = true;
-
-static inline ContactVelocityConstraint::BodyData GetVelocityConstraintBodyData(const Body& val)
-{
-	assert(IsValidIslandIndex(val));
-	return ContactVelocityConstraint::BodyData{val.GetIslandIndex(), val.GetInverseMass(), val.GetInverseInertia()};
-}
-
-/// Gets the position-independent velocity constraint for the given contact, index, and time slot values.
-static ContactVelocityConstraint GetVelocityConstraint(const Contact& contact, ContactVelocityConstraint::index_type index, float_t dtRatio)
-{
-	ContactVelocityConstraint constraint(index, contact.GetFriction(), contact.GetRestitution(), contact.GetTangentSpeed());
-
-	constraint.normal = Vec2_zero;
-	
-	constraint.bodyA = GetVelocityConstraintBodyData(*(contact.GetFixtureA()->GetBody()));
-	constraint.bodyB = GetVelocityConstraintBodyData(*(contact.GetFixtureB()->GetBody()));
-		
-	const auto& manifold = contact.GetManifold();
-	const auto pointCount = manifold.GetPointCount();
-	assert(pointCount > 0);
-	for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
-	{
-		VelocityConstraintPoint vcp;
-
-		const auto& mp = manifold.GetPoint(j);
-		vcp.normalImpulse = dtRatio * mp.normalImpulse;
-		vcp.tangentImpulse = dtRatio * mp.tangentImpulse;
-		vcp.rA = Vec2_zero;
-		vcp.rB = Vec2_zero;
-		vcp.normalMass = float_t{0};
-		vcp.tangentMass = float_t{0};
-		vcp.velocityBias = float_t{0};
-		
-		constraint.AddPoint(vcp);
-	}
-
-	return constraint;
-}
-
-static inline ContactPositionConstraint::BodyData GetPositionConstraintBodyData(const Body& val)
-{
-	assert(IsValidIslandIndex(val));
-	return ContactPositionConstraint::BodyData{val.GetIslandIndex(), val.GetInverseMass(), val.GetInverseInertia(), val.GetLocalCenter()};
-}
-
-static inline ContactPositionConstraint GetPositionConstraint(const Manifold& manifold, const Fixture& fixtureA, const Fixture& fixtureB)
-{
-	return ContactPositionConstraint{manifold,
-		GetPositionConstraintBodyData(*(fixtureA.GetBody())), fixtureA.GetShape()->GetRadius(),
-		GetPositionConstraintBodyData(*(fixtureB.GetBody())), fixtureB.GetShape()->GetRadius()};
-}
-
-static inline void InitPositionConstraints(ContactPositionConstraint* constraints,
-										   ContactSolver::size_type count, Contact** contacts)
-{
-	for (auto i = decltype(count){0}; i < count; ++i)
-	{
-		const auto& contact = *contacts[i];
-		constraints[i] = GetPositionConstraint(contact.GetManifold(), *contact.GetFixtureA(), *contact.GetFixtureB());
-	}
-}
-
-static inline void InitVelocityConstraints(ContactVelocityConstraint* constraints,
-										   ContactSolver::size_type count, Contact** contacts, float_t dtRatio)
-{
-	for (auto i = decltype(count){0}; i < count; ++i)
-	{
-		constraints[i] = GetVelocityConstraint(*contacts[i], i, dtRatio);
-	}
-}
 
 static inline void Update(VelocityConstraintPoint& vcp,
 						  const ContactVelocityConstraint& vc, const Vec2 worldPoint,
@@ -171,19 +98,10 @@ static inline void WarmStart(const ContactVelocityConstraint& vc, Velocity& velA
 ContactSolver::ContactSolver(const ContactSolverDef& def) :
 	m_positions{def.positions},
 	m_velocities{def.velocities},
-	m_allocator{def.allocator},
 	m_count{def.count},
-	m_positionConstraints{m_allocator->AllocateArray<ContactPositionConstraint>(def.count)},
-	m_velocityConstraints{m_allocator->AllocateArray<ContactVelocityConstraint>(def.count)}
+	m_positionConstraints{def.positionConstraints},
+	m_velocityConstraints{def.velocityConstraints}
 {
-	InitPositionConstraints(m_positionConstraints, def.count, def.contacts);
-	InitVelocityConstraints(m_velocityConstraints, def.count, def.contacts, def.dtRatio);
-}
-
-ContactSolver::~ContactSolver()
-{
-	m_allocator->Free(m_velocityConstraints);
-	m_allocator->Free(m_positionConstraints);
 }
 
 void ContactSolver::UpdateVelocityConstraint(ContactVelocityConstraint& vc, const ContactPositionConstraint& pc) const

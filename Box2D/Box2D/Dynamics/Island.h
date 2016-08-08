@@ -45,8 +45,6 @@ public:
 	using BodyContainer = AllocatedArray<Body*, StackAllocator&>;
 	using ContactContainer = AllocatedArray<Contact*, StackAllocator&>;
 	using JointContainer = AllocatedArray<Joint*, StackAllocator&>;
-	using VelocityContainer = AllocatedArray<Velocity, StackAllocator&>;
-	using PositionContainer = AllocatedArray<Position, StackAllocator&>;
 	
 	Island(body_count_t bodyCapacity, contact_count_t contactCapacity, island_count_t jointCapacity,
 		   StackAllocator& allocator);

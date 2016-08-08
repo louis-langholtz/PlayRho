@@ -1,21 +1,21 @@
 /*
-* Original work Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2016 Louis Langholtz https://github.com/louis-langholtz/Box2D
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2016 Louis Langholtz https://github.com/louis-langholtz/Box2D
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #include <Box2D/Collision/Distance.h>
 #include <Box2D/Dynamics/Island.h>
@@ -147,6 +147,11 @@ However, we can compute sin+cos of the same angle fast.
 
 using namespace box2d;
 
+using VelocityContainer = AllocatedArray<Velocity, StackAllocator&>;
+using PositionContainer = AllocatedArray<Position, StackAllocator&>;
+using PositionConstraintsContainer = AllocatedArray<ContactPositionConstraint, StackAllocator&>;
+using VelocityConstraintsContainer = AllocatedArray<ContactVelocityConstraint, StackAllocator&>;
+
 namespace {
 
 	/// Calculates movement.
@@ -176,7 +181,7 @@ namespace {
 		return Position{translation, rotation};
 	}
 
-	void IntegratePositions(Island::PositionContainer& positions, Island::VelocityContainer& velocities, float_t h)
+	void IntegratePositions(PositionContainer& positions, VelocityContainer& velocities, float_t h)
 	{
 		auto i = size_t{0};
 		for (auto&& velocity: velocities)
@@ -209,9 +214,80 @@ namespace {
 					   const ContactVelocityConstraint* constraints,
 					   TimeStep::iteration_type solved)
 	{
-		for (auto i = size_t{0}; i < contacts.size(); ++i)
+		const auto size = contacts.size();
+		for (auto i = decltype(size){0}; i < size; ++i)
 		{
 			listener.PostSolve(*contacts[i], GetContactImpulse(constraints[i]), solved);
+		}
+	}
+	
+	inline ContactVelocityConstraint::BodyData GetVelocityConstraintBodyData(const Body& val)
+	{
+		assert(IsValidIslandIndex(val));
+		return ContactVelocityConstraint::BodyData{val.GetIslandIndex(), val.GetInverseMass(), val.GetInverseInertia()};
+	}
+	
+	inline ContactPositionConstraint::BodyData GetPositionConstraintBodyData(const Body& val)
+	{
+		assert(IsValidIslandIndex(val));
+		return ContactPositionConstraint::BodyData{val.GetIslandIndex(), val.GetInverseMass(), val.GetInverseInertia(), val.GetLocalCenter()};
+	}
+
+	/// Gets the position-independent velocity constraint for the given contact, index, and time slot values.
+	ContactVelocityConstraint GetVelocityConstraint(const Contact& contact, ContactVelocityConstraint::index_type index, float_t dtRatio)
+	{
+		ContactVelocityConstraint constraint(index, contact.GetFriction(), contact.GetRestitution(), contact.GetTangentSpeed());
+		
+		constraint.normal = Vec2_zero;
+		
+		constraint.bodyA = GetVelocityConstraintBodyData(*(contact.GetFixtureA()->GetBody()));
+		constraint.bodyB = GetVelocityConstraintBodyData(*(contact.GetFixtureB()->GetBody()));
+		
+		const auto& manifold = contact.GetManifold();
+		const auto pointCount = manifold.GetPointCount();
+		assert(pointCount > 0);
+		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
+		{
+			VelocityConstraintPoint vcp;
+			
+			const auto& mp = manifold.GetPoint(j);
+			vcp.normalImpulse = dtRatio * mp.normalImpulse;
+			vcp.tangentImpulse = dtRatio * mp.tangentImpulse;
+			vcp.rA = Vec2_zero;
+			vcp.rB = Vec2_zero;
+			vcp.normalMass = float_t{0};
+			vcp.tangentMass = float_t{0};
+			vcp.velocityBias = float_t{0};
+			
+			constraint.AddPoint(vcp);
+		}
+		
+		return constraint;
+	}
+
+	inline ContactPositionConstraint GetPositionConstraint(const Manifold& manifold, const Fixture& fixtureA, const Fixture& fixtureB)
+	{
+		return ContactPositionConstraint{manifold,
+			GetPositionConstraintBodyData(*(fixtureA.GetBody())), fixtureA.GetShape()->GetRadius(),
+			GetPositionConstraintBodyData(*(fixtureB.GetBody())), fixtureB.GetShape()->GetRadius()};
+	}
+
+	inline void InitPositionConstraints(ContactPositionConstraint* constraints,
+											   ContactSolver::size_type count, Contact** contacts)
+	{
+		for (auto i = decltype(count){0}; i < count; ++i)
+		{
+			const auto& contact = *contacts[i];
+			constraints[i] = GetPositionConstraint(contact.GetManifold(), *contact.GetFixtureA(), *contact.GetFixtureB());
+		}
+	}
+	
+	inline void InitVelocityConstraints(ContactVelocityConstraint* constraints,
+											   ContactSolver::size_type count, Contact** contacts, float_t dtRatio)
+	{
+		for (auto i = decltype(count){0}; i < count; ++i)
+		{
+			constraints[i] = GetVelocityConstraint(*contacts[i], i, dtRatio);
 		}
 	}
 };
@@ -249,7 +325,9 @@ bool Island::Solve(const TimeStep& step, ContactListener* listener, StackAllocat
 
 	auto velocities = VelocityContainer{m_bodies.size(), allocator.AllocateArray<Velocity>(m_bodies.size()), allocator};
 	auto positions = PositionContainer{m_bodies.size(), allocator.AllocateArray<Position>(m_bodies.size()), allocator};
-																						
+	auto positionConstraints = PositionConstraintsContainer{m_contacts.size(), allocator.AllocateArray<ContactPositionConstraint>(m_contacts.size()), allocator};
+	auto velocityConstraints = VelocityConstraintsContainer{m_contacts.size(), allocator.AllocateArray<ContactVelocityConstraint>(m_contacts.size()), allocator};
+
 	// Copy body position and velocity data into local arrays.
 	for (auto&& body: m_bodies)
 	{
@@ -263,14 +341,16 @@ bool Island::Solve(const TimeStep& step, ContactListener* listener, StackAllocat
 	// Solver data
 	const auto solverData = SolverData{step, positions.data(), velocities.data()};
 
+	InitPositionConstraints(positionConstraints.data(), m_contacts.size(), m_contacts.data());
+	InitVelocityConstraints(velocityConstraints.data(), m_contacts.size(), m_contacts.data(), step.warmStarting? step.dtRatio: float_t{0});
+	
 	// Initialize velocity constraints.
 	ContactSolverDef contactSolverDef;
-	contactSolverDef.dtRatio = step.warmStarting? step.dtRatio: float_t{0};
-	contactSolverDef.contacts = m_contacts.data();
 	contactSolverDef.count = m_contacts.size();
 	contactSolverDef.positions = positions.data();
 	contactSolverDef.velocities = velocities.data();
-	contactSolverDef.allocator = &allocator;
+	contactSolverDef.positionConstraints = positionConstraints.data();
+	contactSolverDef.velocityConstraints = velocityConstraints.data();
 
 	ContactSolver contactSolver{contactSolverDef};
 	contactSolver.UpdateVelocityConstraints();
@@ -343,6 +423,8 @@ bool Island::SolveTOI(const TimeStep& step, ContactListener* listener, StackAllo
 
 	auto velocities = VelocityContainer{m_bodies.size(), allocator.AllocateArray<Velocity>(m_bodies.size()), allocator};
 	auto positions = PositionContainer{m_bodies.size(), allocator.AllocateArray<Position>(m_bodies.size()), allocator};
+	auto positionConstraints = PositionConstraintsContainer{m_contacts.size(), allocator.AllocateArray<ContactPositionConstraint>(m_contacts.size()), allocator};
+	auto velocityConstraints = VelocityConstraintsContainer{m_contacts.size(), allocator.AllocateArray<ContactVelocityConstraint>(m_contacts.size()), allocator};
 
 	// Initialize the body state.
 	for (auto&& body: m_bodies)
@@ -351,13 +433,15 @@ bool Island::SolveTOI(const TimeStep& step, ContactListener* listener, StackAllo
 		velocities.push_back(body->GetVelocity());
 	}
 
+	InitPositionConstraints(positionConstraints.data(), m_contacts.size(), m_contacts.data());
+	InitVelocityConstraints(velocityConstraints.data(), m_contacts.size(), m_contacts.data(), step.warmStarting? step.dtRatio: float_t{0});
+
 	ContactSolverDef contactSolverDef;
-	contactSolverDef.contacts = m_contacts.data();
 	contactSolverDef.count = m_contacts.size();
-	contactSolverDef.allocator = &allocator;
-	contactSolverDef.dtRatio = step.warmStarting? step.dtRatio: float_t{0};
 	contactSolverDef.positions = positions.data();
 	contactSolverDef.velocities = velocities.data();
+	contactSolverDef.positionConstraints = positionConstraints.data();
+	contactSolverDef.velocityConstraints = velocityConstraints.data();
 	ContactSolver contactSolver{contactSolverDef};
 
 	// Solve TOI-based position constraints.

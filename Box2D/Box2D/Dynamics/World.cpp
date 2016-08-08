@@ -488,6 +488,7 @@ void World::Solve(const TimeStep& step)
 			{
 				auto island = BuildIsland(body, remNumBodies, remNumContacts, remNumJoints);
 				
+				// Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions
 				const auto constraintsSolved = island.Solve(step, m_contactMgr.m_contactListener, m_stackAllocator);
 				
 				if (m_allowSleep)
@@ -512,7 +513,6 @@ void World::Solve(const TimeStep& step)
 		}
 	}
 
-	// Synchronize fixtures, check for out of range bodies.
 	for (auto&& b: m_bodies)
 	{
 		// A non-static body that was in an island may have moved.
@@ -697,60 +697,42 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi, Conta
 	for (auto&& ce: body.m_contacts)
 	{
 		auto contact = ce.contact;
-		
-		// Skip already added or sensor contacts
-		if (contact->IsInIsland() || contact->HasSensor())
-		{
-			continue;
-		}
-		
-		// Only static, kinematic, or bullet bodies are appropriate for CCD.
 		auto other = ce.other;
-		
-		// Skip if neither bodies are appropriate for CCD
-		if (!other->IsImpenetrable() && !body.IsImpenetrable())
+
+		if (!contact->IsInIsland() && !contact->HasSensor() && (other->IsImpenetrable() || body.IsImpenetrable()))
 		{
-			continue;
-		}
-		
-		// Tentatively advance the body to the TOI.
-		const auto backup = other->m_sweep;
-		if (!other->IsInIsland())
-		{
-			other->Advance(toi);
-		}
-		
-		// Update the contact points
-		contact->Update(listener);
-		
-		// Revert and skip if contact disabled by user or if there are there no contact points anymore.
-		if (!contact->IsEnabled() || !contact->IsTouching())
-		{
-			other->m_sweep = backup;
-			other->m_xf = GetTransform1(other->m_sweep);
-			continue;
-		}
-		
-		// Add the contact to the island
-		island.m_contacts.push_back(contact);
-		contact->SetInIsland();
-		
-		// Has the other body already been added to the island?
-		if (other->IsInIsland())
-		{
-			continue;
-		}
-		
-		// Add the other body to the island.
-		other->SetInIsland();
-		
-		if (other->IsSpeedable())
-		{
-			other->SetAwake();
-		}
-		
-		other->m_islandIndex = static_cast<body_count_t>(island.m_bodies.size());
-		island.m_bodies.push_back(other);
+			// Tentatively advance the body to the TOI.
+			const auto backup = other->m_sweep;
+			if (!other->IsInIsland())
+			{
+				other->Advance(toi);
+			}
+			
+			// Update the contact points
+			contact->Update(listener);
+			
+			// Revert and skip if contact disabled by user or no contact points anymore.
+			if (!contact->IsEnabled() || !contact->IsTouching())
+			{
+				other->m_sweep = backup;
+				other->m_xf = GetTransform1(other->m_sweep);
+				continue;
+			}
+			
+			island.m_contacts.push_back(contact);
+			contact->SetInIsland();
+			
+			if (!other->IsInIsland())
+			{
+				other->SetInIsland();			
+				if (other->IsSpeedable())
+				{
+					other->SetAwake();
+				}
+				other->m_islandIndex = static_cast<body_count_t>(island.m_bodies.size());
+				island.m_bodies.push_back(other);
+			}		
+		}		
 	}
 }
 
