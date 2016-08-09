@@ -273,7 +273,7 @@ namespace {
 	}
 
 	inline void InitPositionConstraints(ContactPositionConstraint* constraints,
-											   ContactSolver::size_type count, Contact** contacts)
+										contact_count_t count, Contact** contacts)
 	{
 		for (auto i = decltype(count){0}; i < count; ++i)
 		{
@@ -283,7 +283,7 @@ namespace {
 	}
 	
 	inline void InitVelocityConstraints(ContactVelocityConstraint* constraints,
-											   ContactSolver::size_type count, Contact** contacts, float_t dtRatio)
+										contact_count_t count, Contact** contacts, float_t dtRatio)
 	{
 		for (auto i = decltype(count){0}; i < count; ++i)
 		{
@@ -300,7 +300,7 @@ namespace {
 	/// Stores impulses.
 	/// @detail Saves the normal and tangent impulses of all the velocity constraint points back to their
 	///   associated contacts' manifold points.
-	void StoreImpulses(size_t count, const ContactVelocityConstraint* velocityConstraints, Contact** contacts)
+	inline void StoreImpulses(size_t count, const ContactVelocityConstraint* velocityConstraints, Contact** contacts)
 	{
 		for (auto i = decltype(count){0}; i < count; ++i)
 		{
@@ -339,44 +339,33 @@ void Island::CopyOut(const Position* positions, const Velocity* velocities, Body
 
 bool Island::Solve(const TimeStep& step, ContactListener* listener, StackAllocator& allocator)
 {
-	// Initialize the bodies
-	for (auto&& body: m_bodies)
-	{
-		body->m_sweep.pos0 = body->m_sweep.pos1; // like Advance0(1) on the sweep.
-	}
+	// Would be nice to actually allocate this data on the actual stack but the running thread may not have nearly enough stack space for this.
+	auto positionConstraints = PositionConstraintsContainer{m_contacts.size(), allocator.AllocateArray<ContactPositionConstraint>(m_contacts.size()), allocator};
+	auto velocityConstraints = VelocityConstraintsContainer{m_contacts.size(), allocator.AllocateArray<ContactVelocityConstraint>(m_contacts.size()), allocator};
+	InitPositionConstraints(positionConstraints.data(), static_cast<contact_count_t>(m_contacts.size()), m_contacts.data());
+	InitVelocityConstraints(velocityConstraints.data(), static_cast<contact_count_t>(m_contacts.size()), m_contacts.data(),
+							step.warmStarting? step.dtRatio: float_t{0});
+	auto velocities = VelocityContainer{m_bodies.size(), allocator.AllocateArray<Velocity>(m_bodies.size()), allocator};
+	auto positions = PositionContainer{m_bodies.size(), allocator.AllocateArray<Position>(m_bodies.size()), allocator};
 
 	const auto h = step.get_dt(); ///< Time step (in seconds).
 
-	auto velocities = VelocityContainer{m_bodies.size(), allocator.AllocateArray<Velocity>(m_bodies.size()), allocator};
-	auto positions = PositionContainer{m_bodies.size(), allocator.AllocateArray<Position>(m_bodies.size()), allocator};
-	auto positionConstraints = PositionConstraintsContainer{m_contacts.size(), allocator.AllocateArray<ContactPositionConstraint>(m_contacts.size()), allocator};
-	auto velocityConstraints = VelocityConstraintsContainer{m_contacts.size(), allocator.AllocateArray<ContactVelocityConstraint>(m_contacts.size()), allocator};
-
-	// Copy body position and velocity data into local arrays.
+	// Update bodies' pos0 values then copy their pos1 and velocity data into local arrays.
 	for (auto&& body: m_bodies)
 	{
+		body->m_sweep.pos0 = body->m_sweep.pos1; // like Advance0(1) on the sweep.
 		positions.push_back(body->m_sweep.pos1);
-		
 		const auto new_velocity = GetVelocity(*body, h);
 		assert(IsValid(new_velocity));
 		velocities.push_back(new_velocity);
 	}
 
-	// Solver data
 	const auto solverData = SolverData{step, positions.data(), velocities.data()};
 
-	InitPositionConstraints(positionConstraints.data(), m_contacts.size(), m_contacts.data());
-	InitVelocityConstraints(velocityConstraints.data(), m_contacts.size(), m_contacts.data(), step.warmStarting? step.dtRatio: float_t{0});
-	
-	// Initialize velocity constraints.
-	ContactSolverDef contactSolverDef;
-	contactSolverDef.count = m_contacts.size();
-	contactSolverDef.positionConstraints = positionConstraints.data();
-	contactSolverDef.velocityConstraints = velocityConstraints.data();
-	contactSolverDef.positions = positions.data();
-	contactSolverDef.velocities = velocities.data();
-
-	ContactSolver contactSolver{contactSolverDef};
+	ContactSolver contactSolver{positions.data(), velocities.data(),
+		static_cast<contact_count_t>(m_contacts.size()),
+		positionConstraints.data(), velocityConstraints.data()
+	};
 	contactSolver.UpdateVelocityConstraints();
 
 	if (step.warmStarting)
@@ -389,7 +378,6 @@ bool Island::Solve(const TimeStep& step, ContactListener* listener, StackAllocat
 		joint->InitVelocityConstraints(solverData);
 	}
 
-	// Solve velocity constraints
 	for (auto i = decltype(step.velocityIterations){0}; i < step.velocityIterations; ++i)
 	{
 		for (auto&& joint: m_joints)
@@ -449,6 +437,9 @@ bool Island::SolveTOI(const TimeStep& step, ContactListener* listener, StackAllo
 	auto positions = PositionContainer{m_bodies.size(), allocator.AllocateArray<Position>(m_bodies.size()), allocator};
 	auto positionConstraints = PositionConstraintsContainer{m_contacts.size(), allocator.AllocateArray<ContactPositionConstraint>(m_contacts.size()), allocator};
 	auto velocityConstraints = VelocityConstraintsContainer{m_contacts.size(), allocator.AllocateArray<ContactVelocityConstraint>(m_contacts.size()), allocator};
+	InitPositionConstraints(positionConstraints.data(), static_cast<contact_count_t>(m_contacts.size()), m_contacts.data());
+	InitVelocityConstraints(velocityConstraints.data(), static_cast<contact_count_t>(m_contacts.size()), m_contacts.data(),
+							step.warmStarting? step.dtRatio: float_t{0});
 
 	// Initialize the body state.
 	for (auto&& body: m_bodies)
@@ -457,16 +448,10 @@ bool Island::SolveTOI(const TimeStep& step, ContactListener* listener, StackAllo
 		velocities.push_back(body->GetVelocity());
 	}
 
-	InitPositionConstraints(positionConstraints.data(), m_contacts.size(), m_contacts.data());
-	InitVelocityConstraints(velocityConstraints.data(), m_contacts.size(), m_contacts.data(), step.warmStarting? step.dtRatio: float_t{0});
-
-	ContactSolverDef contactSolverDef;
-	contactSolverDef.count = m_contacts.size();
-	contactSolverDef.positions = positions.data();
-	contactSolverDef.velocities = velocities.data();
-	contactSolverDef.positionConstraints = positionConstraints.data();
-	contactSolverDef.velocityConstraints = velocityConstraints.data();
-	ContactSolver contactSolver{contactSolverDef};
+	ContactSolver contactSolver{positions.data(), velocities.data(),
+		static_cast<contact_count_t>(m_contacts.size()),
+		positionConstraints.data(), velocityConstraints.data()
+	};
 
 	// Solve TOI-based position constraints.
 	auto positionConstraintsSolved = TimeStep::InvalidIteration;

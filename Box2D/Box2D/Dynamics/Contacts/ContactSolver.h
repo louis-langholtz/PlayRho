@@ -34,19 +34,21 @@ struct ContactPositionConstraintBodyData;
 class Fixture;
 
 /// Velocity constraint point.
+/// @note This structure is at least 36-bytes large.
 struct VelocityConstraintPoint
 {
-	Vec2 rA; ///< Position of body A relative to world manifold point
-	Vec2 rB; ///< Position of body B relative to world manifold point
-	float_t normalImpulse; ///< Normal impulse.
-	float_t tangentImpulse; ///< Tangent impulse.
-	float_t normalMass; ///< Normal mass.
-	float_t tangentMass; ///< Tangent mass.
-	float_t velocityBias; ///< Velocity bias.
+	Vec2 rA; ///< Position of body A relative to world manifold point (8-bytes).
+	Vec2 rB; ///< Position of body B relative to world manifold point (8-bytes).
+	float_t normalImpulse; ///< Normal impulse (4-bytes).
+	float_t tangentImpulse; ///< Tangent impulse (4-bytes).
+	float_t normalMass; ///< Normal mass (4-bytes).
+	float_t tangentMass; ///< Tangent mass (4-bytes).
+	float_t velocityBias; ///< Velocity bias (4-bytes).
 };
 
 /// Contact velocity constraint.
 /// @note A valid contact velocity constraint must have a point count of either 1 or 2.
+/// @note This data structure is at least 125-bytes large.
 class ContactVelocityConstraint
 {
 public:
@@ -150,18 +152,18 @@ public:
 	BodyData bodyB; ///< Body B contact velocity constraint data.
 
 private:
-	float_t friction; ///< Friction coefficient. Usually in the range of [0,1].
-	float_t restitution; ///< Restitution coefficient.
-	float_t tangentSpeed;
+	float_t friction; ///< Friction coefficient (4-bytes). Usually in the range of [0,1].
+	float_t restitution; ///< Restitution coefficient (4-bytes).
+	float_t tangentSpeed; ///< Tangent speed (4-bytes).
 	
-	index_type contactIndex; ///< Index of the contact that this constraint is for.
+	index_type contactIndex; ///< Index of the contact that this constraint is for (typically 8-bytes).
 	
 	// K and normalMass fields are only used for the block solver.
-	Mat22 K = Mat22_invalid; ///< Block solver "K" info (only used by block solver).
-	Mat22 normalMass = Mat22_invalid; ///< Block solver "normal mass" info (only used by block solver).
+	Mat22 K = Mat22_invalid; ///< Block solver "K" info (only used by block solver, 16-bytes).
+	Mat22 normalMass = Mat22_invalid; ///< Block solver "normal mass" info (only used by block solver, 16-bytes).
 
-	VelocityConstraintPoint points[MaxManifoldPoints];
-	size_type pointCount = 0;
+	VelocityConstraintPoint points[MaxManifoldPoints]; ///< Velocity constraint points array (at least 72-bytes).
+	size_type pointCount = 0; ///< Point count (at least 1-byte).
 };
 
 inline void ContactVelocityConstraint::AddPoint(const VelocityConstraintPoint& val)
@@ -196,6 +198,8 @@ inline Mat22 ContactVelocityConstraint::GetNormalMass() const noexcept
 	return normalMass;
 }
 
+/// Contact Position Constraint.
+/// @note This structure is at least 104-bytes large.
 struct ContactPositionConstraint
 {
 	using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
@@ -209,10 +213,10 @@ struct ContactPositionConstraint
 	
 		constexpr BodyData(index_type i, float_t iM, float_t iI, Vec2 lc) noexcept: index{i}, invMass{iM}, invI{iI}, localCenter{lc} {}
 		
-		index_type index; ///< Index within island of the associated body.
-		float_t invMass; ///< Inverse mass of associated body (a non-negative value).
-		float_t invI; ///< Inverse rotational inertia about the center of mass of the associated body (a non-negative value).
-		Vec2 localCenter; ///< Local center of the associated body's sweep.
+		index_type index; ///< Index within island of the associated body (2-bytes).
+		float_t invMass; ///< Inverse mass of associated body (a non-negative value, 4-bytes).
+		float_t invI; ///< Inverse rotational inertia about the center of mass of the associated body (a non-negative value, 4-bytes).
+		Vec2 localCenter; ///< Local center of the associated body's sweep (8-bytes).
 	};
 	
 	ContactPositionConstraint() = default;
@@ -220,41 +224,45 @@ struct ContactPositionConstraint
 	ContactPositionConstraint(const Manifold& m, const BodyData& bA, float_t rA, const BodyData& bB, float_t rB):
 		manifold{m}, bodyA{bA}, radiusA{rA}, bodyB{bB}, radiusB{rB} {}
 
-	Manifold manifold; ///< Copy of contact's manifold.
+	Manifold manifold; ///< Copy of contact's manifold (at least 59-bytes).
 	
-	BodyData bodyA;
+	BodyData bodyA; ///< Body A data (at least 18-bytes).
 	
-	float_t radiusA; ///< "Radius" distance from the associated shape of fixture A.
+	float_t radiusA; ///< "Radius" distance from the associated shape of fixture A (4-bytes).
 
-	BodyData bodyB;
+	BodyData bodyB; ///< Body A data (at least 18-bytes).
 	
-	float_t radiusB; ///< "Radius" distance from the associated shape of fixture B.
+	float_t radiusB; ///< "Radius" distance from the associated shape of fixture B (4-bytes).
 };
 	
-struct ContactSolverDef
-{
-	using size_type = size_t;
-
-	size_type count; ///< Count of contacts.
-	Position* positions; ///< Array of positions, one for every body referenced by a contact.
-	Velocity* velocities; ///< Array of velocities, for every body referenced by a contact.
-	ContactPositionConstraint* positionConstraints; ///< Array of position-constraints (1 per contact).
-	ContactVelocityConstraint* velocityConstraints; ///< Array of velocity-constraints (1 per contact).
-};
-
 /// Contact Solver.
 class ContactSolver
 {
 public:
-	using size_type = size_t;
-	
 	/// Minimum separation for position constraints.
 	static constexpr auto MinSeparationThreshold = BOX2D_MAGIC(-LinearSlop * 3);
 
 	/// Minimum time of impact separation for TOI position constraints.
 	static constexpr auto MinToiSeparation = BOX2D_MAGIC(-LinearSlop * float_t{3} / float_t{2}); // aka -LinearSlop * 1.5
 
-	ContactSolver(const ContactSolverDef& def);
+	/// Initializing constructor.
+	/// @param positions Array of positions, one for every body referenced by a contact.
+	/// @param velocities Array of velocities, for every body referenced by a contact.
+	/// @param count Count of contacts.
+	/// @param positionConstraints Array of position-constraints (1 per contact).
+	/// @param velocityConstraints Array of velocity-constraints (1 per contact).
+	ContactSolver(Position* positions, Velocity* velocities,
+				  contact_count_t count,
+				  ContactPositionConstraint* positionConstraints,
+				  ContactVelocityConstraint* velocityConstraints) noexcept :
+		m_positions{positions},
+		m_velocities{velocities},
+		m_count{count},
+		m_positionConstraints{positionConstraints},
+		m_velocityConstraints{velocityConstraints}
+	{
+	}
+	
 	~ContactSolver() = default;
 
 	ContactSolver() = delete;
@@ -286,24 +294,14 @@ public:
 	/// @param indexA Index within the island of body A.
 	/// @param indexB Index within the island of body B.
 	/// @return true if the minimum separation is above the minimum TOI separation value, false otherwise.
-	bool SolveTOIPositionConstraints(size_type indexA, size_type indexB);
+	bool SolveTOIPositionConstraints(island_count_t indexA, island_count_t indexB);
 
 private:
-		
-	/// Updates the given velocity constraint data with the given position constraint data.
-	/// @detail Specifically this:
-	///   1. Sets the normal to the calculated world manifold normal.
-	///   2. Sets the velocity constraint point information (short of the impulse data).
-	///   3. Sets the K value (for the 2-point block solver).
-	///   4. Checks for redundant velocity constraint point and removes it if found.
-	/// @param vc Velocity constraint.
-	/// @param pc Position constraint.
-	void UpdateVelocityConstraint(ContactVelocityConstraint& vc, const ContactPositionConstraint& pc) const;
 
 	Position* const m_positions;
 	Velocity* const m_velocities;
 	
-	const size_type m_count; ///< Count of elements in the contact position-constraint and velocity-constraint arrays.
+	const contact_count_t m_count; ///< Count of elements (contacts) in the contact position-constraint and velocity-constraint arrays.
 	ContactPositionConstraint* const m_positionConstraints; ///< Array of position-constraints (1 per contact).
 	ContactVelocityConstraint* const m_velocityConstraints; ///< Array of velocity-constraints (1 per contact).
 };

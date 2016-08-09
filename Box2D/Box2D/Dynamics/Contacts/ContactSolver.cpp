@@ -34,48 +34,7 @@ static constexpr auto k_majorErrorTol = float_t(1e-2); ///< error tolerance
 
 bool g_blockSolve = true;
 
-static inline void Update(VelocityConstraintPoint& vcp,
-						  const ContactVelocityConstraint& vc, const Vec2 worldPoint,
-						  const Position posA, const Velocity velA, const Position posB, const Velocity velB)
-{
-	assert(IsValid(worldPoint));
-	assert(IsValid(posA));
-	assert(IsValid(velA));
-	assert(IsValid(posB));
-	assert(IsValid(velB));
-
-	const auto vcp_rA = worldPoint - posA.c;
-	const auto vcp_rB = worldPoint - posB.c;
-
-	const auto totalInvMass = vc.bodyA.invMass + vc.bodyB.invMass;
-	
-	vcp.rA = vcp_rA;
-	vcp.rB = vcp_rB;
-	vcp.normalMass = [&]() {
-		const auto rnA = Cross(vcp_rA, vc.normal);
-		const auto rnB = Cross(vcp_rB, vc.normal);
-		const auto kNormal = totalInvMass + (vc.bodyA.invI * Square(rnA)) + (vc.bodyB.invI * Square(rnB));
-		return (kNormal > float_t{0})? float_t{1} / kNormal : float_t{0};
-	}();
-	vcp.tangentMass = [&]() {
-		const auto tangent = GetForwardPerpendicular(vc.normal);
-		const auto rtA = Cross(vcp_rA, tangent);
-		const auto rtB = Cross(vcp_rB, tangent);
-		const auto kTangent = totalInvMass + (vc.bodyA.invI * Square(rtA)) + (vc.bodyB.invI * Square(rtB));
-		return (kTangent > float_t{0}) ? float_t{1} /  kTangent : float_t{0};
-	}();
-	vcp.velocityBias = [&]() {
-		const auto dv = (velB.v + (GetReversePerpendicular(vcp_rB) * velB.w)) - (velA.v + (GetReversePerpendicular(vcp_rA) * velA.w));
-		const auto vRel = Dot(dv, vc.normal); // Relative velocity at contact
-		return (vRel < -VelocityThreshold)? -vc.GetRestitution() * vRel: float_t{0};
-	}();
-	
-	// The following fields are assumed to be set already (by ContactSolver constructor).
-	// vcp.normalImpulse
-	// vcp.tangentImpulse
-}
-
-static inline void WarmStart(const ContactVelocityConstraint& vc, Velocity& velA, Velocity& velB)
+static inline void WarmStartVelocities(const ContactVelocityConstraint& vc, Velocity& velA, Velocity& velB)
 {
 	assert(IsValid(velA));
 	assert(IsValid(velB));
@@ -93,37 +52,62 @@ static inline void WarmStart(const ContactVelocityConstraint& vc, Velocity& velA
 	}
 }
 
-ContactSolver::ContactSolver(const ContactSolverDef& def) :
-	m_positions{def.positions},
-	m_velocities{def.velocities},
-	m_count{def.count},
-	m_positionConstraints{def.positionConstraints},
-	m_velocityConstraints{def.velocityConstraints}
-{
-}
-
-void ContactSolver::UpdateVelocityConstraint(ContactVelocityConstraint& vc, const ContactPositionConstraint& pc) const
+/// Updates the given velocity constraint data with the given position constraint data.
+/// @detail Specifically this:
+///   1. Sets the normal to the calculated world manifold normal.
+///   2. Sets the velocity constraint point information (short of the impulse data).
+///   3. Sets the K value (for the 2-point block solver).
+///   4. Checks for redundant velocity constraint point and removes it if found.
+/// @param vc Velocity constraint.
+/// @param pc Position constraint.
+static inline void UpdateVelocityConstraint(ContactVelocityConstraint& vc,
+											const ContactPositionConstraint& pc,
+											const Position* positions, const Velocity* velocities)
 {
 	assert(vc.bodyA.GetIndex() >= 0);
-	const auto posA = m_positions[vc.bodyA.GetIndex()];
-	const auto velA = m_velocities[vc.bodyA.GetIndex()];
+	const auto posA = positions[vc.bodyA.GetIndex()];
+	const auto velA = velocities[vc.bodyA.GetIndex()];
 	
 	assert(vc.bodyB.GetIndex() >= 0);
-	const auto posB = m_positions[vc.bodyB.GetIndex()];
-	const auto velB = m_velocities[vc.bodyB.GetIndex()];
+	const auto posB = positions[vc.bodyB.GetIndex()];
+	const auto velB = velocities[vc.bodyB.GetIndex()];
 	
 	const auto worldManifold = [&]() {
 		const auto xfA = GetTransformation(posA, pc.bodyA.localCenter);
 		const auto xfB = GetTransformation(posB, pc.bodyB.localCenter);
 		return GetWorldManifold(pc.manifold, xfA, pc.radiusA, xfB, pc.radiusB);
 	}();
+	const auto totalInvMass = vc.bodyA.invMass + vc.bodyB.invMass;
 	
 	vc.normal = worldManifold.GetNormal();
 	
 	const auto pointCount = vc.GetPointCount();
 	for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 	{
-		box2d::Update(vc.GetPoint(j), vc, worldManifold.GetPoint(j), posA, velA, posB, velB);	
+		const auto worldPoint = worldManifold.GetPoint(j);
+		const auto vcp_rA = worldPoint - posA.c;
+		const auto vcp_rB = worldPoint - posB.c;
+		auto& vcp = vc.GetPoint(j);
+		vcp.rA = vcp_rA;
+		vcp.rB = vcp_rB;
+		vcp.normalMass = [&]() {
+			const auto rnA = Cross(vcp_rA, vc.normal);
+			const auto rnB = Cross(vcp_rB, vc.normal);
+			const auto kNormal = totalInvMass + (vc.bodyA.invI * Square(rnA)) + (vc.bodyB.invI * Square(rnB));
+			return (kNormal > float_t{0})? float_t{1} / kNormal : float_t{0};
+		}();
+		vcp.tangentMass = [&]() {
+			const auto tangent = GetForwardPerpendicular(vc.normal);
+			const auto rtA = Cross(vcp_rA, tangent);
+			const auto rtB = Cross(vcp_rB, tangent);
+			const auto kTangent = totalInvMass + (vc.bodyA.invI * Square(rtA)) + (vc.bodyB.invI * Square(rtB));
+			return (kTangent > float_t{0}) ? float_t{1} /  kTangent : float_t{0};
+		}();
+		vcp.velocityBias = [&]() {
+			const auto dv = (velB.v + (GetReversePerpendicular(vcp_rB) * velB.w)) - (velA.v + (GetReversePerpendicular(vcp_rA) * velA.w));
+			const auto vRel = Dot(dv, vc.normal); // Relative velocity at contact
+			return (vRel < -VelocityThreshold)? -vc.GetRestitution() * vRel: float_t{0};
+		}();
 	}
 	
 	// If we have two points, then prepare the block solver.
@@ -137,13 +121,12 @@ void ContactSolver::UpdateVelocityConstraint(ContactVelocityConstraint& vc, cons
 		const auto rn2A = Cross(vcp2.rA, vc.normal);
 		const auto rn2B = Cross(vcp2.rB, vc.normal);
 		
-		const auto totalInvMass = vc.bodyA.invMass + vc.bodyB.invMass;
 		const auto k11 = totalInvMass + (vc.bodyA.invI * Square(rn1A)) + (vc.bodyB.invI * Square(rn1B));
 		const auto k22 = totalInvMass + (vc.bodyA.invI * Square(rn2A)) + (vc.bodyB.invI * Square(rn2B));
 		const auto k12 = totalInvMass + (vc.bodyA.invI * rn1A * rn2A)  + (vc.bodyB.invI * rn1B * rn2B);
 		
 		// Ensure a reasonable condition number.
-		constexpr auto k_maxConditionNumber = float_t(1000);
+		constexpr auto k_maxConditionNumber = BOX2D_MAGIC(float_t(1000));
 		if (Square(k11) < (k_maxConditionNumber * (k11 * k22 - Square(k12))))
 		{
 			// K is safe to invert.
@@ -155,24 +138,6 @@ void ContactSolver::UpdateVelocityConstraint(ContactVelocityConstraint& vc, cons
 			// TODO_ERIN use deepest?
 			vc.RemovePoint();
 		}
-	}
-}
-
-void ContactSolver::UpdateVelocityConstraints()
-{
-	for (auto i = decltype(m_count){0}; i < m_count; ++i)
-	{
-		UpdateVelocityConstraint(m_velocityConstraints[i], m_positionConstraints[i]);
-	}
-}
-
-void ContactSolver::WarmStart()
-{
-	// Warm start.
-	for (auto i = decltype(m_count){0}; i < m_count; ++i)
-	{
-		const auto& vc = m_velocityConstraints[i];
-		::box2d::WarmStart(vc, m_velocities[vc.bodyA.GetIndex()], m_velocities[vc.bodyB.GetIndex()]);
 	}
 }
 
@@ -499,15 +464,6 @@ static inline void SolveVelocityConstraint(ContactVelocityConstraint& vc, Veloci
 	}
 }
 
-void ContactSolver::SolveVelocityConstraints()
-{
-	for (auto i = decltype(m_count){0}; i < m_count; ++i)
-	{
-		auto& vc = m_velocityConstraints[i];
-		SolveVelocityConstraint(vc, m_velocities[vc.bodyA.GetIndex()], m_velocities[vc.bodyB.GetIndex()]);
-	}
-}
-
 /// Solves position constraint.
 /// @detail
 /// This updates the two given positions for every point in the contact position constraint
@@ -517,15 +473,15 @@ static float_t Solve(const ContactPositionConstraint& pc,
 {
 	// see http://allenchou.net/2013/12/game-physics-resolution-contact-constraints/
 	auto minSeparation = MaxFloat;
-
+	
 	auto posA = positionA;
 	auto posB = positionB;
-
+	
 	{
 		const auto invMassA = pc.bodyA.invMass;
 		const auto invInertiaA = pc.bodyA.invI;
 		const auto localCenterA = pc.bodyA.localCenter;
-
+		
 		const auto invMassB = pc.bodyB.invMass;
 		const auto invInertiaB = pc.bodyB.invI;
 		const auto localCenterB = pc.bodyB.localCenter;
@@ -535,7 +491,7 @@ static float_t Solve(const ContactPositionConstraint& pc,
 		const auto invMassTotal = invMassA + invMassB;
 		
 		const auto totalRadius = pc.radiusA + pc.radiusB;
-
+		
 		// Solve normal constraints
 		const auto pointCount = pc.manifold.GetPointCount();
 		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
@@ -548,7 +504,7 @@ static float_t Solve(const ContactPositionConstraint& pc,
 			
 			// Track max constraint error.
 			minSeparation = Min(minSeparation, psm.separation);
-
+			
 			if (invMassTotal > float_t{0})
 			{
 				const auto rA = psm.point - posA.c;
@@ -560,7 +516,7 @@ static float_t Solve(const ContactPositionConstraint& pc,
 					const auto rnB = Cross(rB, psm.normal);
 					return invMassTotal + (invInertiaA * Square(rnA)) + (invInertiaB * Square(rnB));
 				}();
-
+				
 				// Prevent large corrections and don't push the separation above -LinearSlop.
 				const auto C = Clamp(baumgarte * (psm.separation + LinearSlop),
 									 BOX2D_MAGIC(-MaxLinearCorrection), float_t{0});
@@ -582,6 +538,33 @@ static float_t Solve(const ContactPositionConstraint& pc,
 	return minSeparation;
 }
 
+void ContactSolver::UpdateVelocityConstraints()
+{
+	for (auto i = decltype(m_count){0}; i < m_count; ++i)
+	{
+		UpdateVelocityConstraint(m_velocityConstraints[i], m_positionConstraints[i], m_positions, m_velocities);
+	}
+}
+
+void ContactSolver::WarmStart()
+{
+	// Warm start.
+	for (auto i = decltype(m_count){0}; i < m_count; ++i)
+	{
+		const auto& vc = m_velocityConstraints[i];
+		WarmStartVelocities(vc, m_velocities[vc.bodyA.GetIndex()], m_velocities[vc.bodyB.GetIndex()]);
+	}
+}
+
+void ContactSolver::SolveVelocityConstraints()
+{
+	for (auto i = decltype(m_count){0}; i < m_count; ++i)
+	{
+		auto& vc = m_velocityConstraints[i];
+		SolveVelocityConstraint(vc, m_velocities[vc.bodyA.GetIndex()], m_velocities[vc.bodyB.GetIndex()]);
+	}
+}
+
 // Sequential solver.
 bool ContactSolver::SolvePositionConstraints()
 {
@@ -599,7 +582,7 @@ bool ContactSolver::SolvePositionConstraints()
 	return minSeparation >= MinSeparationThreshold;
 }
 	
-bool ContactSolver::SolveTOIPositionConstraints(size_type indexA, size_type indexB)
+bool ContactSolver::SolveTOIPositionConstraints(island_count_t indexA, island_count_t indexB)
 {
 	auto minSeparation = MaxFloat;
 
