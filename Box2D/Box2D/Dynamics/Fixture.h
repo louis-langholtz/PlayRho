@@ -99,11 +99,14 @@ struct FixtureProxy
 	child_count_t childIndex; ///< Child index.
 };
 
+/// Fixture.
+/// @detail
 /// A fixture is used to attach a shape to a body for collision detection. A fixture
 /// inherits its transform from its parent. Fixtures hold additional non-geometric data
 /// such as friction, collision filters, etc.
 /// Fixtures are created via Body::CreateFixture.
 /// @warning you cannot reuse fixtures.
+/// @note This structure is at least 68-bytes large.
 class Fixture
 {
 public:

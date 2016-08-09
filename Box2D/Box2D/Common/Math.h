@@ -199,7 +199,9 @@ inline bool IsValid(const Vec3& value)
 	return IsValid(value.x) && IsValid(value.y) && IsValid(value.z);
 }
 
-/// A 2-by-2 matrix. Stored in column-major order.
+/// A 2-by-2 matrix.
+/// @detail Stored in column-major order.
+/// @note This structure is likely about 16-bytes large.
 struct Mat22
 {
 	/// The default constructor does nothing (for performance).
@@ -472,6 +474,8 @@ inline bool IsValid(const Velocity& value)
 	return IsValid(value.v) && IsValid(value.w);
 }
 
+/// Sweep.
+/// @detail
 /// This describes the motion of a body/shape for TOI computation.
 /// Shapes are defined with respect to the body origin, which may
 /// not coincide with the center of mass. However, to support dynamics
@@ -479,10 +483,13 @@ inline bool IsValid(const Velocity& value)
 class Sweep
 {
 public:
+	/// Default constructor.
 	Sweep() = default;
 
+	/// Copy constructor.
 	constexpr Sweep(const Sweep& copy) noexcept = default;
 
+	/// Initializing constructor.
 	constexpr Sweep(const Position& p0, const Position& p1, const Vec2& lc = Vec2_zero, float_t a0 = 0) noexcept:
 		pos0{p0}, pos1{p1}, localCenter{lc}, alpha0{a0}
 	{
@@ -490,6 +497,7 @@ public:
 		assert(a0 < 1);
 	}
 	
+	/// Initializing constructor.
 	constexpr explicit Sweep(const Position& p, const Vec2& lc = Vec2_zero) noexcept: Sweep{p, p, lc, 0} {}
 
 	/// Advances the sweep by a factor of the difference between the given time alpha and the sweep's alpha0.
@@ -502,6 +510,8 @@ public:
 	Position pos0; ///< Center world position and world angle at time "0".
 	Position pos1; ///< Center world position and world angle at time "1".
 
+	/// Gets the local center of mass position.
+ 	/// @note This value can only be set via a sweep constructed using an initializing constructor.
 	Vec2 GetLocalCenter() const noexcept { return localCenter; }
 
 	/// Gets the alpha0 for this sweep.
@@ -514,7 +524,7 @@ public:
 	}
 
 private:
-	Vec2 localCenter;	///< local center of mass position
+	Vec2 localCenter; ///< Local center of mass position.
 
 	/// Fraction of the current time step in the range [0,1]
 	/// pos0.c and pos0.a are the positions at alpha0.

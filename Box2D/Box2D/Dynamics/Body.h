@@ -126,6 +126,7 @@ struct BodyDef
 };
 
 /// A rigid body. These are created via World::Create.
+/// @note This data structure is at least 156-bytes large.
 class Body
 {
 public:
@@ -179,7 +180,7 @@ public:
 	/// Get the world position of the center of mass.
 	Vec2 GetWorldCenter() const noexcept;
 
-	/// Get the local position of the center of mass.
+	/// Gets the local position of the center of mass.
 	Vec2 GetLocalCenter() const noexcept;
 
 	Velocity GetVelocity() const noexcept;
@@ -479,16 +480,18 @@ private:
 	/// Inverse mass of the body.
 	/// @detail A non-negative value (in units of 1/kg).
 	/// Can only be zero for non-accelerable bodies.
+	/// @note 4-bytes.
 	float_t m_invMass = float_t{0};	
 	
 	/// Inverse rotational inertia about the center of mass.
 	/// @detail A non-negative value (in units of 1/(kg*m^2)).
+	/// @note 4-bytes.
 	float_t m_invI = float_t{0};
 
-	float_t m_linearDamping; ///< Linear damping.
-	float_t m_angularDamping; ///< Angular damping.
+	float_t m_linearDamping; ///< Linear damping. 4-bytes.
+	float_t m_angularDamping; ///< Angular damping. 4-bytes.
 
-	float_t m_sleepTime = float_t{0};
+	float_t m_sleepTime = float_t{0}; ///< Sleep time. 4-bytes.
 
 	void* m_userData; ///< User data. 8-bytes.
 };

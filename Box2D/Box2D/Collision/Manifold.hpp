@@ -45,6 +45,7 @@ namespace box2d
 	/// account for movement, which is critical for continuous physics.
 	/// All contact scenarios must be expressed in one of these types.
 	/// This structure is stored across time steps, so we keep it small.
+	/// It's at least 59-bytes large.
 	class Manifold
 	{
 	public:
@@ -69,6 +70,7 @@ namespace box2d
 		/// This structure is stored across time steps, so we keep it small.
 		/// @note The impulses are used for internal caching and may not
 		///   provide reliable contact forces especially for high speed collisions.
+		/// @note This structure is at least 20-bytes large.
 		struct Point
 		{
 			Point() noexcept = default;
@@ -79,10 +81,10 @@ namespace box2d
 			localPoint{lp}, contactFeature{cf}, normalImpulse{ni}, tangentImpulse{ti}
 			{}
 			
-			Vec2 localPoint;		///< usage depends on manifold type
-			float_t normalImpulse;	///< the non-penetration impulse
-			float_t tangentImpulse;	///< the friction impulse
-			ContactFeature contactFeature; ///< uniquely identifies a contact point between two shapes
+			Vec2 localPoint; ///< usage depends on manifold type (8-bytes).
+			float_t normalImpulse; ///< the non-penetration impulse (4-bytes).
+			float_t tangentImpulse; ///< the friction impulse (4-bytes).
+			ContactFeature contactFeature; ///< uniquely identifies a contact point between two shapes (4-bytes).
 		};
 		
 		// For Circles...
@@ -233,13 +235,13 @@ namespace box2d
 		constexpr Manifold(Type t, Vec2 ln, Vec2 lp, size_type n, const PointArray& mpa) noexcept:
 			type{t}, localNormal{ln}, localPoint{lp}, pointCount{n}, points{mpa} {}
 		
-		Type type = e_unset; ///< Type of collision this manifold is associated with.
-		size_type pointCount = 0; ///< Number of defined manifold points.
+		Type type = e_unset; ///< Type of collision this manifold is associated with (1-byte).
+		size_type pointCount = 0; ///< Number of defined manifold points (2-bytes).
 		
-		Vec2 localNormal; ///< Local normal. @detail Exact usage depends on manifold type. @note Undefined for Type::e_circles.
-		Vec2 localPoint; ///< Local point. @detail Exact usage depends on manifold type.
+		Vec2 localNormal; ///< Local normal. @detail Exact usage depends on manifold type (8-bytes). @note Undefined for Type::e_circles.
+		Vec2 localPoint; ///< Local point. @detail Exact usage depends on manifold type (8-bytes).
 		
-		PointArray points; ///< Points of contact. @sa pointCount.
+		PointArray points; ///< Points of contact (at least 40-bytes). @sa pointCount.
 	};
 
 } // namespace box2d

@@ -158,7 +158,7 @@ constexpr auto Baumgarte = float_t{2} / float_t{10}; // aka 0.2.
 /// @sa Baumgarte.
 constexpr auto ToiBaumgarte = float_t{75} / float_t{100}; // aka .75
 
-/// Maximum number of bodies in a world.
+/// Maximum number of bodies in a world (65534 based off uint16 and eliminating one value for invalid).
 constexpr auto MaxBodies = uint16{std::numeric_limits<uint16>::max() - uint16{1}};
 
 /// Body count type.
@@ -167,7 +167,7 @@ using body_count_t = std::remove_const<decltype(MaxBodies)>::type;
 /// Contact count type.
 using contact_count_t = std::conditional<sizeof(body_count_t) < sizeof(uint32), uint32, uint64>::type;
 	
-/// Maximum number of contacts in a world.
+/// Maximum number of contacts in a world (2147319811).
 /// @detail Uses the formula for the maximum number of edges in an undirectional graph of MaxBodies nodes. 
 /// This occurs when every possible body is connected to every other body.
 constexpr auto MaxContacts = contact_count_t{MaxBodies} * contact_count_t{MaxBodies - 1} / contact_count_t{2};

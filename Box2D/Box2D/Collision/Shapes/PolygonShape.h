@@ -38,6 +38,7 @@ public:
 	PolygonShape(): Shape(e_polygon, PolygonRadius) {}
 
 	PolygonShape(const PolygonShape&) = default;
+
 	/// Implement Shape.
 	Shape* Clone(BlockAllocator* allocator) const override;
 

@@ -76,6 +76,7 @@ private:
 
 	/// Optional adjacent vertices. These are used for smooth collision.
 	Vec2 m_vertex0 = Vec2_zero, m_vertex3 = Vec2_zero;
+
 	bool m_hasVertex0 = false, m_hasVertex3 = false;
 };
 
