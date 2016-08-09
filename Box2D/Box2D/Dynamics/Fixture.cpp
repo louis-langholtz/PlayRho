@@ -85,7 +85,7 @@ void Fixture::CreateProxies(BlockAllocator& allocator, BroadPhase& broadPhase, c
 	for (auto i = decltype(childCount){0}; i < childCount; ++i)
 	{
 		const auto aabb = GetShape()->ComputeAABB(xf, i);
-		proxies[i] = FixtureProxy{aabb, broadPhase.CreateProxy(aabb, proxies + i), this, i};
+		new (proxies + i) FixtureProxy{aabb, broadPhase.CreateProxy(aabb, proxies + i), this, i};
 	}
 	m_proxies = proxies;
 	m_proxyCount = childCount;
@@ -99,6 +99,7 @@ void Fixture::DestroyProxies(BlockAllocator& allocator, BroadPhase& broadPhase)
 	for (auto i = decltype(childCount){0}; i < childCount; ++i)
 	{
 		broadPhase.DestroyProxy(proxies[i].proxyId);
+		proxies[i].~FixtureProxy();
 	}
 	allocator.Free(proxies, childCount * sizeof(FixtureProxy));
 	m_proxyCount = 0;
