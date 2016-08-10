@@ -50,7 +50,7 @@ template<class T>
 constexpr inline auto Square(T t) noexcept { return t * t; }
 
 template<typename T>
-inline auto Sqrt(T t) noexcept { return std::sqrt(t); }
+inline auto Sqrt(T t) noexcept(noexcept(std::sqrt(t))) { return std::sqrt(t); }
 
 template<typename T>
 inline auto Atan2(T y, T x) { return std::atan2(y, x); }

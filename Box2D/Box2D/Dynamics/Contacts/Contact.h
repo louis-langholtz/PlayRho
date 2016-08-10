@@ -39,7 +39,7 @@ class ContactListener;
 
 /// Friction mixing law. The idea is to allow either fixture to drive the restitution to zero.
 /// For example, anything slides on ice.
-inline float_t MixFriction(float_t friction1, float_t friction2) noexcept
+inline float_t MixFriction(float_t friction1, float_t friction2) noexcept(noexcept(Sqrt(friction1 * friction2)))
 {
 	return Sqrt(friction1 * friction2);
 }
@@ -210,7 +210,7 @@ protected:
 	
 	static void Destroy(Contact* contact, BlockAllocator* allocator);
 
-	Contact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB) noexcept;
+	Contact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB);
 	virtual ~Contact() = default;
 
 	/// Updates the contact manifold and touching status and notifies listener (if one given).

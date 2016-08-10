@@ -41,7 +41,7 @@ void CircleContact::Destroy(Contact* contact, BlockAllocator* allocator)
 	Delete(static_cast<CircleContact*>(contact), *allocator);
 }
 
-CircleContact::CircleContact(Fixture* fixtureA, Fixture* fixtureB) noexcept
+CircleContact::CircleContact(Fixture* fixtureA, Fixture* fixtureB)
 	: Contact{fixtureA, 0, fixtureB, 0}
 {
 	assert(GetType(*m_fixtureA) == Shape::e_circle);

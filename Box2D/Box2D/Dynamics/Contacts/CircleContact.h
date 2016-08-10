@@ -34,7 +34,7 @@ public:
 						   BlockAllocator* allocator);
 	static void Destroy(Contact* contact, BlockAllocator* allocator);
 
-	CircleContact(Fixture* fixtureA, Fixture* fixtureB) noexcept;
+	CircleContact(Fixture* fixtureA, Fixture* fixtureB);
 	~CircleContact() = default;
 
 	Manifold Evaluate(const Transformation& xfA, const Transformation& xfB) override;

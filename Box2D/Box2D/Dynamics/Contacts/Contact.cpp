@@ -124,7 +124,7 @@ void Contact::Destroy(Contact* contact, BlockAllocator* allocator)
 	destroyFcn(contact, allocator);
 }
 
-Contact::Contact(Fixture* fA, child_count_t indexA, Fixture* fB, child_count_t indexB) noexcept:
+Contact::Contact(Fixture* fA, child_count_t indexA, Fixture* fB, child_count_t indexB):
 	m_fixtureA{fA}, m_fixtureB{fB}, m_indexA{indexA}, m_indexB{indexB},
 	m_friction{MixFriction(fA->GetFriction(), fB->GetFriction())},
 	m_restitution{MixRestitution(fA->GetRestitution(), fB->GetRestitution())}
