@@ -453,7 +453,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 
 	body_def.type = BodyType::Dynamic;
 	body_def.position = Vec2{begin_x, 0};
-	body_def.bullet = true;
+	body_def.bullet = false;
 	const auto ball_body = world.Create(body_def);
 	ASSERT_NE(ball_body, nullptr);
 	
@@ -563,7 +563,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 	}
 }
 
-TEST(World, MouseJointWontTunnelBulletBall)
+TEST(World, MouseJointWontCauseTunnelling)
 {
 	World world{Vec2_zero};
 	world.SetContinuousPhysics(true);

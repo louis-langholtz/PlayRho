@@ -22,16 +22,8 @@
 
 #include <Box2D/Common/Math.h>
 #include <Box2D/Collision/Collision.h>
-#include <Box2D/Dynamics/TimeStep.h>
 
 namespace box2d {
-
-class Contact;
-class Body;
-class StackAllocator;
-struct ContactPositionConstraint;
-struct ContactPositionConstraintBodyData;
-class Fixture;
 
 /// Velocity constraint point.
 /// @note This structure is at least 36-bytes large.
@@ -188,13 +180,11 @@ inline void ContactVelocityConstraint::SetK(const Mat22& value) noexcept
 
 inline Mat22 ContactVelocityConstraint::GetK() const noexcept
 {
-	assert(IsValid(K));
 	return K;
 }
 
 inline Mat22 ContactVelocityConstraint::GetNormalMass() const noexcept
 {
-	assert(IsValid(normalMass));
 	return normalMass;
 }
 
@@ -236,6 +226,7 @@ struct ContactPositionConstraint
 };
 	
 /// Contact Solver.
+/// @note This data structure is at least 36-bytes large.
 class ContactSolver
 {
 public:
@@ -298,12 +289,12 @@ public:
 
 private:
 
-	Position* const m_positions;
-	Velocity* const m_velocities;
+	Position* const m_positions; ///< Array of positions (8-bytes).
+	Velocity* const m_velocities; ///< Array of velocities (8-bytes).
 	
-	const contact_count_t m_count; ///< Count of elements (contacts) in the contact position-constraint and velocity-constraint arrays.
-	ContactPositionConstraint* const m_positionConstraints; ///< Array of position-constraints (1 per contact).
-	ContactVelocityConstraint* const m_velocityConstraints; ///< Array of velocity-constraints (1 per contact).
+	const contact_count_t m_count; ///< Count of elements (contacts) in the contact position-constraint and velocity-constraint arrays (4-bytes).
+	ContactPositionConstraint* const m_positionConstraints; ///< Array of position-constraints (1 per contact, 8-bytes).
+	ContactVelocityConstraint* const m_velocityConstraints; ///< Array of velocity-constraints (1 per contact, 8-bytes).
 };
 
 } // namespace box2d

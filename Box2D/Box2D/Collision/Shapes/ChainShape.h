@@ -35,7 +35,7 @@ class EdgeShape;
 class ChainShape : public Shape
 {
 public:
-	ChainShape(): Shape(e_chain, PolygonRadius) {}
+	ChainShape(): Shape{e_chain, PolygonRadius} {}
 
 	ChainShape(const ChainShape&) = delete;
 

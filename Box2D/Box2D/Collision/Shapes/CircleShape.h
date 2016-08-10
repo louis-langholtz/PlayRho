@@ -29,7 +29,7 @@ class CircleShape : public Shape
 {
 public:
 	constexpr explicit CircleShape(float_t radius = 0, Vec2 position = Vec2_zero) noexcept:
-		Shape(e_circle, radius), m_p(position) {}
+		Shape{e_circle, radius}, m_p(position) {}
 
 	CircleShape(const CircleShape&) = default;
 

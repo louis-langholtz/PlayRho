@@ -55,6 +55,8 @@ inline void box2d::Delete(Shape* shape, BlockAllocator& allocator)
 void Fixture::Create(BlockAllocator& allocator, const FixtureDef& def)
 {
 	assert(def.density >= 0);
+	assert(def.shape != nullptr);
+
 	m_userData = def.userData;
 	m_friction = def.friction;
 	m_restitution = def.restitution;
