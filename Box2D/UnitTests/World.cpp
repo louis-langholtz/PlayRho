@@ -16,6 +16,7 @@
 #include <Box2D/Collision/Shapes/PolygonShape.h>
 #include <Box2D/Collision/Shapes/EdgeShape.h>
 #include <Box2D/Dynamics/Joints/MouseJoint.h>
+#include <Box2D/Dynamics/Joints/RopeJoint.h>
 
 #include <unistd.h>
 #include <setjmp.h>
@@ -193,7 +194,7 @@ TEST(World, GravitationalBodyMovement)
 TEST(World, MaxBodies)
 {
 	World world;
-	for (auto i = 0; i < MaxBodies; ++i)
+	for (auto i = decltype(MaxBodies){0}; i < MaxBodies; ++i)
 	{
 		const auto body = world.Create(BodyDef{});
 		ASSERT_NE(body, nullptr);
@@ -201,6 +202,26 @@ TEST(World, MaxBodies)
 	{
 		const auto body = world.Create(BodyDef{});
 		EXPECT_EQ(body, nullptr);		
+	}
+}
+
+TEST(World, MaxJoints)
+{
+	World world;
+
+	const auto body1 = world.Create(BodyDef{});
+	ASSERT_NE(body1, nullptr);
+	const auto body2 = world.Create(BodyDef{});
+	ASSERT_NE(body2, nullptr);
+
+	for (auto i = decltype(MaxJoints){0}; i < MaxJoints; ++i)
+	{
+		const auto joint = world.Create(RopeJointDef{body1, body2});
+		ASSERT_NE(joint, nullptr);
+	}
+	{
+		const auto joint = world.Create(RopeJointDef{body1, body2});
+		EXPECT_EQ(joint, nullptr);
 	}
 }
 

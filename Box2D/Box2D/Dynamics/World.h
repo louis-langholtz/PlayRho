@@ -92,6 +92,7 @@ public:
 	/// @detail No reference to the definition
 	/// is retained. This may cause the connected bodies to cease colliding.
 	/// @warning This function is locked during callbacks.
+	/// @return <code>nullptr</code> if world has <code>MaxJoints</code>, else pointer to newly created joint.
 	Joint* Create(const JointDef& def);
 
 	/// Destroys a joint.

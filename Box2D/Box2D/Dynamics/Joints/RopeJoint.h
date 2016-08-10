@@ -32,6 +32,8 @@ struct RopeJointDef : public JointDef
 {
 	constexpr RopeJointDef() noexcept: JointDef(JointType::Rope) {}
 
+	constexpr RopeJointDef(Body* bodyA, Body* bodyB) noexcept: JointDef(JointType::Rope, bodyA, bodyB) {}
+
 	/// The local anchor point relative to bodyA's origin.
 	Vec2 localAnchorA = Vec2{-float_t{1}, float_t{0}};
 

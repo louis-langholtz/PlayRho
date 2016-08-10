@@ -175,8 +175,8 @@ constexpr auto MaxContacts = contact_count_t{MaxBodies} * contact_count_t{MaxBod
 /// Joint count type.
 using joint_count_t = std::conditional<sizeof(body_count_t) < sizeof(uint32), uint32, uint64>::type;
 
-/// Maximum number of joints in a world.
-constexpr auto MaxJoints = joint_count_t{MaxBodies} * joint_count_t{MaxBodies};
+/// Maximum number of joints in a world (65534 based off uint16 and eliminating one value for invalid).
+constexpr auto MaxJoints = uint16{std::numeric_limits<uint16>::max() - uint16{1}};
 
 // Sleep
 

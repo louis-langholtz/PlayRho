@@ -192,6 +192,11 @@ void World::Destroy(Body* b)
 
 Joint* World::Create(const JointDef& def)
 {
+	if (m_joints.size() >= m_joints.max_size())
+	{
+		return nullptr;
+	}
+
 	assert(!IsLocked());
 	if (IsLocked())
 	{
