@@ -33,7 +33,7 @@ Contact* CircleContact::Create(Fixture* fixtureA, child_count_t,
 							   BlockAllocator* allocator)
 {
 	void* mem = allocator->Allocate(sizeof(CircleContact));
-	return new (mem) CircleContact(fixtureA, fixtureB);
+	return new (mem) CircleContact{fixtureA, fixtureB};
 }
 
 void CircleContact::Destroy(Contact* contact, BlockAllocator* allocator)
@@ -41,7 +41,7 @@ void CircleContact::Destroy(Contact* contact, BlockAllocator* allocator)
 	Delete(static_cast<CircleContact*>(contact), *allocator);
 }
 
-CircleContact::CircleContact(Fixture* fixtureA, Fixture* fixtureB)
+CircleContact::CircleContact(Fixture* fixtureA, Fixture* fixtureB) noexcept
 	: Contact{fixtureA, 0, fixtureB, 0}
 {
 	assert(GetType(*m_fixtureA) == Shape::e_circle);

@@ -190,6 +190,20 @@ TEST(World, GravitationalBodyMovement)
 	EXPECT_EQ(body->GetPosition().y, p0.y + (GetLinearVelocity(*body).y * t));
 }
 
+TEST(World, MaxBodies)
+{
+	World world;
+	for (auto i = 0; i < MaxBodies; ++i)
+	{
+		const auto body = world.Create(BodyDef{});
+		ASSERT_NE(body, nullptr);
+	}
+	{
+		const auto body = world.Create(BodyDef{});
+		EXPECT_EQ(body, nullptr);		
+	}
+}
+
 class MyContactListener: public ContactListener
 {
 public:

@@ -152,7 +152,6 @@ bool World::Add(Body& b)
 	assert(!b.m_prev);
 	assert(!b.m_next);
 
-	assert(m_bodies.size() < MaxBodies);
 	if (m_bodies.size() >= MaxBodies)
 	{
 		return false;
