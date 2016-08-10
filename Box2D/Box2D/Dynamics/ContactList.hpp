@@ -39,7 +39,7 @@ namespace box2d {
 		
 		constexpr bool empty() const noexcept { return p == nullptr; }
 		size_type size() const noexcept { return n; }
-		constexpr size_type max_size() const noexcept { return MaxJoints; }
+		constexpr size_type max_size() const noexcept { return MaxContacts; }
 		
 		constexpr bool operator== (const ContactList& rhs) const noexcept { return p == rhs.p; }
 		constexpr bool operator!= (const ContactList& rhs) const noexcept { return p != rhs.p; }
