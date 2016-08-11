@@ -80,7 +80,7 @@ public:
 	/// Creates a rigid body given a definition.
 	/// @note No reference to the definition is retained.
 	/// @warning This function is locked during callbacks.
-	Body* Create(const BodyDef& def);
+	Body* CreateBody(const BodyDef& def);
 
 	/// Destroys the given body.
 	/// @note This function is locked during callbacks.
@@ -93,7 +93,7 @@ public:
 	/// is retained. This may cause the connected bodies to cease colliding.
 	/// @warning This function is locked during callbacks.
 	/// @return <code>nullptr</code> if world has <code>MaxJoints</code>, else pointer to newly created joint.
-	Joint* Create(const JointDef& def);
+	Joint* CreateJoint(const JointDef& def);
 
 	/// Destroys a joint.
 	/// @detail This may cause the connected bodies to begin colliding.

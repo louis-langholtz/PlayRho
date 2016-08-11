@@ -37,7 +37,7 @@ public:
 		// Ground body
 		{
 			BodyDef bd;
-			Body* ground = m_world->Create(bd);
+			Body* ground = m_world->CreateBody(bd);
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -50,7 +50,7 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(0.0f, 40.0f);
 			bd.angle = 0.25f * Pi;
-			m_body1 = m_world->Create(bd);
+			m_body1 = m_world->CreateBody(bd);
 
 			m_shape1.SetAsBox(0.5f, 0.5f, Vec2(-0.5f, 0.0f), 0.0f);
 			m_piece1 = m_body1->CreateFixture(FixtureDef{&m_shape1, 1.0f});
@@ -102,7 +102,7 @@ public:
 		bd.position = body1->GetPosition();
 		bd.angle = body1->GetAngle();
 
-		Body* body2 = m_world->Create(bd);
+		Body* body2 = m_world->CreateBody(bd);
 		m_piece2 = body2->CreateFixture(FixtureDef{&m_shape2, 1.0f});
 
 		// Compute consistent velocities for new bodies based on

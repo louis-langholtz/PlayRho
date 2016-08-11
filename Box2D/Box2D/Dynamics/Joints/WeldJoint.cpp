@@ -344,5 +344,5 @@ void WeldJoint::Dump()
 	log("  jd.referenceAngle = %.15lef;\n", m_referenceAngle);
 	log("  jd.frequencyHz = %.15lef;\n", m_frequencyHz);
 	log("  jd.dampingRatio = %.15lef;\n", m_dampingRatio);
-	log("  joints[%d] = m_world->Create(jd);\n", m_index);
+	log("  joints[%d] = m_world->CreateJoint(jd);\n", m_index);
 }

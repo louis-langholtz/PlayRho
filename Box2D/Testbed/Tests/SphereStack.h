@@ -35,7 +35,7 @@ public:
 	{
 		{
 			BodyDef bd;
-			Body* ground = m_world->Create(bd);
+			Body* ground = m_world->CreateBody(bd);
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -52,7 +52,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(0.0, 4.0f + 3.0f * i);
 
-				m_bodies[i] = m_world->Create(bd);
+				m_bodies[i] = m_world->CreateBody(bd);
 
 				m_bodies[i]->CreateFixture(FixtureDef{&shape, 1.0f});
 

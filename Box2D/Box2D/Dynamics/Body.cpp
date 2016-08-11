@@ -531,7 +531,7 @@ void Body::Dump()
 	log("  bd.fixedRotation = bool(%d);\n", IsFixedRotation());
 	log("  bd.bullet = bool(%d);\n", IsImpenetrable());
 	log("  bd.active = bool(%d);\n", IsActive());
-	log("  bodies[%d] = m_world->Create(bd);\n", m_islandIndex);
+	log("  bodies[%d] = m_world->CreateBody(bd);\n", m_islandIndex);
 	log("\n");
 	for (auto&& fixture: m_fixtures)
 	{

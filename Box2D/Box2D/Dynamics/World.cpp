@@ -123,7 +123,7 @@ void World::SetGravity(const Vec2& gravity) noexcept
 	}
 }
 
-Body* World::Create(const BodyDef& def)
+Body* World::CreateBody(const BodyDef& def)
 {
 	assert(!IsLocked());
 	if (IsLocked())
@@ -190,7 +190,7 @@ void World::Destroy(Body* b)
 	m_blockAllocator.Free(b, sizeof(Body));
 }
 
-Joint* World::Create(const JointDef& def)
+Joint* World::CreateJoint(const JointDef& def)
 {
 	if (m_joints.size() >= m_joints.max_size())
 	{

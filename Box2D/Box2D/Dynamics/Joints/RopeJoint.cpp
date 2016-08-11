@@ -231,5 +231,5 @@ void RopeJoint::Dump()
 	log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
 	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
 	log("  jd.maxLength = %.15lef;\n", m_maxLength);
-	log("  joints[%d] = m_world->Create(jd);\n", m_index);
+	log("  joints[%d] = m_world->CreateJoint(jd);\n", m_index);
 }

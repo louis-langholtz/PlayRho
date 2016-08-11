@@ -19,7 +19,7 @@ TEST(Body, DefaultCreation)
 {
 	World world;
 	
-	auto body = world.Create(BodyDef{});
+	auto body = world.CreateBody(BodyDef{});
 	ASSERT_NE(body, nullptr);
 
 	EXPECT_EQ(body->GetWorld(), &world);
@@ -67,7 +67,7 @@ TEST(Body, CreateAndDestroyFixture)
 {
 	World world;
 
-	auto body = world.Create(BodyDef{});
+	auto body = world.CreateBody(BodyDef{});
 	ASSERT_NE(body, nullptr);
 	EXPECT_TRUE(body->GetFixtures().empty());
 
@@ -99,7 +99,7 @@ TEST(Body, CreateFixtures)
 {
 	World world;
 	
-	auto body = world.Create(BodyDef{});
+	auto body = world.CreateBody(BodyDef{});
 	ASSERT_NE(body, nullptr);
 	EXPECT_TRUE(body->GetFixtures().empty());
 	

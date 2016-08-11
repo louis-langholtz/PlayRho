@@ -39,7 +39,7 @@ public:
 		{
 			BodyDef bodyDef;
 			bodyDef.position = Vec2(0.0f, 20.0f);
-			ground = m_world->Create(bodyDef);
+			ground = m_world->CreateBody(bodyDef);
 		}
 
 		float a = 0.5f;
@@ -52,7 +52,7 @@ public:
 		jointDef.bodyB = root;
 		jointDef.localAnchorA = Vec2_zero;
 		jointDef.localAnchorB = h;
-		m_world->Create(jointDef);
+		m_world->CreateJoint(jointDef);
 	}
 
 	Body* AddNode(Body* parent, const Vec2& localAnchor, int32 depth, float offset, float a)
@@ -65,7 +65,7 @@ public:
 		BodyDef bodyDef;
 		bodyDef.type = BodyType::Dynamic;
 		bodyDef.position = p;
-		Body* body = m_world->Create(bodyDef);
+		Body* body = m_world->CreateBody(bodyDef);
 
 		PolygonShape shape;
 		shape.SetAsBox(0.25f * a, a);
@@ -87,11 +87,11 @@ public:
 
 		jointDef.localAnchorA = a1;
 		jointDef.bodyB = body1;
-		m_world->Create(jointDef);
+		m_world->CreateJoint(jointDef);
 
 		jointDef.localAnchorA = a2;
 		jointDef.bodyB = body2;
-		m_world->Create(jointDef);
+		m_world->CreateJoint(jointDef);
 
 		return body;
 	}

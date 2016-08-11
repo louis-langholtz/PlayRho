@@ -497,5 +497,5 @@ void RevoluteJoint::Dump()
 	log("  jd.enableMotor = bool(%d);\n", m_enableMotor);
 	log("  jd.motorSpeed = %.15lef;\n", m_motorSpeed);
 	log("  jd.maxMotorTorque = %.15lef;\n", m_maxMotorTorque);
-	log("  joints[%d] = m_world->Create(jd);\n", m_index);
+	log("  joints[%d] = m_world->CreateJoint(jd);\n", m_index);
 }

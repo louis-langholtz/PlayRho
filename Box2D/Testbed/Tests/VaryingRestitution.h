@@ -32,7 +32,7 @@ public:
 	{
 		{
 			BodyDef bd;
-			Body* ground = m_world->Create(bd);
+			Body* ground = m_world->CreateBody(bd);
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -55,7 +55,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-10.0f + 3.0f * i, 20.0f);
 
-				Body* body = m_world->Create(bd);
+				Body* body = m_world->CreateBody(bd);
 
 				fd.restitution = restitution[i];
 				body->CreateFixture(fd);

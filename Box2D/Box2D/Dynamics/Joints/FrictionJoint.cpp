@@ -246,5 +246,5 @@ void FrictionJoint::Dump()
 	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
 	log("  jd.maxForce = %.15lef;\n", m_maxForce);
 	log("  jd.maxTorque = %.15lef;\n", m_maxTorque);
-	log("  joints[%d] = m_world->Create(jd);\n", m_index);
+	log("  joints[%d] = m_world->CreateJoint(jd);\n", m_index);
 }

@@ -124,7 +124,7 @@ public:
 		// Ground body
 		{
 			BodyDef bd;
-			Body* ground = m_world->Create(bd);
+			Body* ground = m_world->CreateBody(bd);
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -197,7 +197,7 @@ public:
 			bd.angularDamping = 0.02f;
 		}
 
-		m_bodies[m_bodyIndex] = m_world->Create(bd);
+		m_bodies[m_bodyIndex] = m_world->CreateBody(bd);
 
 		if (index < 4)
 		{

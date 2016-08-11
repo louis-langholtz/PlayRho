@@ -41,7 +41,7 @@ public:
 			float_t a = 0.5f;
 			BodyDef bd;
 			bd.position.y = -a;
-			Body* ground = m_world->Create(bd);
+			Body* ground = m_world->CreateBody(bd);
 
 #if 1
 			int32 N = 200;
@@ -110,7 +110,7 @@ public:
 					//	bd.allowSleep = true;
 					//}
 
-					Body* body = m_world->Create(bd);
+					Body* body = m_world->CreateBody(bd);
 					body->CreateFixture(FixtureDef{&shape, 5.0f});
 					++m_fixtureCount;
 					y += deltaY;
