@@ -163,19 +163,9 @@ static inline bool IsFor(const Contact& contact,
 	const auto iA = contact.GetChildIndexA();
 	const auto iB = contact.GetChildIndexB();
 	
-	if ((fA == fixtureA) && (fB == fixtureB) && (iA == indexA) && (iB == indexB))
-	{
-		// A contact already exists.
-		return true;
-	}
-	
-	if ((fA == fixtureB) && (fB == fixtureA) && (iA == indexB) && (iB == indexA))
-	{
-		// A contact already exists.
-		return true;
-	}
-	
-	return false;
+	return
+		((fA == fixtureA) && (fB == fixtureB) && (iA == indexA) && (iB == indexB)) ||
+		((fA == fixtureB) && (fB == fixtureA) && (iA == indexB) && (iB == indexA));
 }
 
 void ContactManager::Add(FixtureProxy& proxyA, FixtureProxy& proxyB)
@@ -198,16 +188,14 @@ void ContactManager::Add(FixtureProxy& proxyA, FixtureProxy& proxyB)
 	// TODO_ERIN use a hash table to remove a potential bottleneck when both
 	// bodies have a lot of contacts.
 	// Does a contact already exist?
+	for (auto&& contactEdge: bodyB->GetContactEdges())
 	{
-		for (auto&& contactEdge: bodyB->GetContactEdges())
+		if (contactEdge.other == bodyA)
 		{
-			if (contactEdge.other == bodyA)
+			if (IsFor(*(contactEdge.contact), fixtureA, indexA, fixtureB, indexB))
 			{
-				if (IsFor(*(contactEdge.contact), fixtureA, indexA, fixtureB, indexB))
-				{
-					// Already have a contact for proxyA with proxyB, bail!
-					return;
-				}
+				// Already have a contact for proxyA with proxyB, bail!
+				return;
 			}
 		}
 	}
