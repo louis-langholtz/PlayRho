@@ -55,6 +55,9 @@ struct FixtureDef
 	/// The constructor sets the default fixture definition values.
 	constexpr FixtureDef() noexcept = default;
 
+	/// Initializing constructor.
+	/// @param s Shape.
+	/// @param d Density.
 	constexpr FixtureDef(const Shape* s, float_t d) noexcept: shape{s}, density{d} {}
 
 	/// The shape, this must be set. The shape will be cloned, so you

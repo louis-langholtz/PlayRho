@@ -179,7 +179,7 @@ void Body::SetType(BodyType type)
 	}
 }
 
-Fixture* Body::CreateFixture(const FixtureDef& def)
+Fixture* Body::CreateFixture(const FixtureDef& def, bool resetMassData)
 {
 	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())
@@ -201,7 +201,7 @@ Fixture* Body::CreateFixture(const FixtureDef& def)
 	m_fixtures.push_front(fixture);
 
 	// Adjust mass properties if needed.
-	if (fixture->m_density > float_t{0})
+	if (resetMassData && (fixture->m_density > float_t{0}))
 	{
 		ResetMassData();
 	}

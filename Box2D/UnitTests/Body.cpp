@@ -99,19 +99,23 @@ TEST(Body, CreateFixtures)
 {
 	World world;
 	
-	auto body = world.CreateBody(BodyDef{});
+	BodyDef bd;
+	bd.type = BodyType::Dynamic;
+
+	auto body = world.CreateBody(bd);
 	ASSERT_NE(body, nullptr);
 	EXPECT_TRUE(body->GetFixtures().empty());
 	
 	CircleShape shape{float_t(2.871), Vec2{float_t(1.912), float_t(-77.31)}};
 	
-	const auto num = 10000;
+	const auto num = 20000;
 	
 	for (auto i = decltype(num){0}; i < num; ++i)
 	{
-		auto fixture = body->CreateFixture(FixtureDef{&shape, 0});
+		auto fixture = body->CreateFixture(FixtureDef{&shape, float_t(1.3)}, false);
 		ASSERT_NE(fixture, nullptr);
 	}
+	body->ResetMassData();
 	
 	EXPECT_FALSE(body->GetFixtures().empty());
 	{

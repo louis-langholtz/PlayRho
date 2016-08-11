@@ -140,7 +140,7 @@ public:
 	/// Contacts are not created until the next time step.
 	/// @param def the fixture definition.
 	/// @warning This function is locked during callbacks.
-	Fixture* CreateFixture(const FixtureDef& def);
+	Fixture* CreateFixture(const FixtureDef& def, bool resetMassData = true);
 
 	/// Destroy a fixture. This removes the fixture from the broad-phase and
 	/// destroys all contacts associated with this fixture. This will
