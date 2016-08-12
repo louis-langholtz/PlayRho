@@ -142,14 +142,15 @@ public:
 	/// @warning This function is locked during callbacks.
 	Fixture* CreateFixture(const FixtureDef& def, bool resetMassData = true);
 
-	/// Destroy a fixture. This removes the fixture from the broad-phase and
-	/// destroys all contacts associated with this fixture. This will
-	/// automatically adjust the mass of the body if the body is dynamic and the
-	/// fixture has positive density.
+	/// Destroys a fixture.
+	/// @detail This removes the fixture from the broad-phase and
+	/// destroys all contacts associated with this fixture.
 	/// All fixtures attached to a body are implicitly destroyed when the body is destroyed.
-	/// @param fixture the fixture to be removed.
 	/// @warning This function is locked during callbacks.
-	void DestroyFixture(Fixture* fixture);
+	/// @note Make sure to explicitly call ResetMassData after fixtures have been destroyed.
+	/// @sa ResetMassData.
+	/// @param fixture the fixture to be removed.
+	void DestroyFixture(Fixture* fixture, bool resetMassData = true);
 
 	/// Set the position of the body's origin and rotation.
 	/// Manipulating a body's transform may cause non-physical behavior.
@@ -223,8 +224,9 @@ public:
 
 	/// Resets the mass data properties.
 	/// @detail This resets the mass data to the sum of the mass properties of the fixtures.
-	/// This normally does not need to be called unless you called SetMassData to override
-	/// the mass and you later want to reset the mass.
+	/// @note This method must be called after calling <code>CreateFixture</code> to update the
+	///   body mass data properties unless <code>SetMassData</code> is used.
+	/// @sa SetMassData.
 	void ResetMassData();
 
 	/// Get the linear damping of the body.
@@ -360,6 +362,8 @@ public:
 	
 	body_count_t GetIslandIndex() const noexcept;
 
+	bool IsMassDataDirty() const noexcept;
+
 	/// Dump this body to a log file
 	void Dump();
 
@@ -411,7 +415,10 @@ private:
 		/// Acceleration flag.
 		/// @detail Set this to enable changes in velocity due to physical properties (like forces).
 		/// Bodies with this set are dynamic bodies.
-		e_accelerationFlag  = 0x0100
+		e_accelerationFlag  = 0x0100,
+		
+		/// Mass Data Dirty Flag.
+		e_massDataDirtyFlag	= 0x0200,
 	};
 	
 	static uint16 GetFlags(const BodyDef& bd) noexcept;
@@ -436,6 +443,9 @@ private:
 	void DestroyContacts();
 	void DestroyJoints();
 	void DestroyFixtures();
+
+	void SetMassDataDirty() noexcept;
+	void UnsetMassDataDirty() noexcept;
 
 	[[deprecated]] void SetInIsland(bool value) noexcept;
 
@@ -736,6 +746,21 @@ inline World* Body::GetWorld() noexcept
 inline const World* Body::GetWorld() const noexcept
 {
 	return m_world;
+}
+
+inline void Body::SetMassDataDirty() noexcept
+{
+	m_flags |= e_massDataDirtyFlag;
+}
+
+inline void Body::UnsetMassDataDirty() noexcept
+{
+	m_flags &= ~e_massDataDirtyFlag;
+}
+
+inline bool Body::IsMassDataDirty() const noexcept
+{
+	return m_flags & e_massDataDirtyFlag;
 }
 
 inline bool Body::IsInIsland() const noexcept

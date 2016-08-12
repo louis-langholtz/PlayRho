@@ -70,10 +70,11 @@ TEST(Body, CreateAndDestroyFixture)
 	auto body = world.CreateBody(BodyDef{});
 	ASSERT_NE(body, nullptr);
 	EXPECT_TRUE(body->GetFixtures().empty());
+	EXPECT_FALSE(body->IsMassDataDirty());
 
 	CircleShape shape{float_t(2.871), Vec2{float_t(1.912), float_t(-77.31)}};
 	
-	auto fixture = body->CreateFixture(FixtureDef{&shape, 0});
+	auto fixture = body->CreateFixture(FixtureDef{&shape, 1}, false);
 	ASSERT_NE(fixture, nullptr);
 	ASSERT_NE(fixture->GetShape(), nullptr);
 	EXPECT_EQ(fixture->GetShape()->GetType(), shape.GetType());
@@ -90,12 +91,19 @@ TEST(Body, CreateAndDestroyFixture)
 		}
 		EXPECT_EQ(i, 1);
 	}
+	EXPECT_TRUE(body->IsMassDataDirty());
+	body->ResetMassData();
+	EXPECT_FALSE(body->IsMassDataDirty());
 
-	body->DestroyFixture(fixture);
+	body->DestroyFixture(fixture, false);
 	EXPECT_TRUE(body->GetFixtures().empty());
+	EXPECT_TRUE(body->IsMassDataDirty());
+	
+	body->ResetMassData();
+	EXPECT_FALSE(body->IsMassDataDirty());
 }
 
-TEST(Body, CreateFixtures)
+TEST(Body, CreateLotsOfFixtures)
 {
 	World world;
 	
@@ -108,7 +116,7 @@ TEST(Body, CreateFixtures)
 	
 	CircleShape shape{float_t(2.871), Vec2{float_t(1.912), float_t(-77.31)}};
 	
-	const auto num = 20000;
+	const auto num = 10000;
 	
 	for (auto i = decltype(num){0}; i < num; ++i)
 	{

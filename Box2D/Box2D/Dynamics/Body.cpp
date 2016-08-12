@@ -22,8 +22,35 @@
 #include <Box2D/Dynamics/World.h>
 #include <Box2D/Dynamics/Contacts/Contact.h>
 #include <Box2D/Dynamics/Joints/Joint.h>
+#include <Box2D/Collision/Shapes/CircleShape.h>
+#include <Box2D/Collision/Shapes/EdgeShape.h>
+#include <Box2D/Collision/Shapes/PolygonShape.h>
+#include <Box2D/Collision/Shapes/ChainShape.h>
 
 using namespace box2d;
+
+template <>
+inline void box2d::Delete(Shape* shape, BlockAllocator& allocator)
+{
+	switch (shape->GetType())
+	{
+		case Shape::e_circle:
+			Delete(static_cast<CircleShape*>(shape), allocator);
+			break;
+		case Shape::e_edge:
+			Delete(static_cast<EdgeShape*>(shape), allocator);
+			break;
+		case Shape::e_polygon:
+			Delete(static_cast<PolygonShape*>(shape), allocator);
+			break;
+		case Shape::e_chain:
+			Delete(static_cast<ChainShape*>(shape), allocator);
+			break;
+		default:
+			assert(false);
+			break;
+	}
+}
 
 uint16 Body::GetFlags(const BodyDef& bd) noexcept
 {
@@ -121,8 +148,9 @@ void Body::DestroyFixtures()
 		}
 		
 		fixture.DestroyProxies(m_world->m_blockAllocator, m_world->m_contactMgr.m_broadPhase);
-		fixture.Destroy(m_world->m_blockAllocator);
+		const auto shape = fixture.GetShape();
 		Delete(&fixture, m_world->m_blockAllocator);
+		Delete(shape, m_world->m_blockAllocator);
 	}
 }
 
@@ -189,10 +217,10 @@ Fixture* Body::CreateFixture(const FixtureDef& def, bool resetMassData)
 
 	auto& allocator = m_world->m_blockAllocator;
 
+	const auto shape = def.shape->Clone(&allocator);
 	const auto memory = allocator.Allocate(sizeof(Fixture));
-	const auto fixture = new (memory) Fixture(this);
-	fixture->Create(allocator, def);
-
+	const auto fixture = new (memory) Fixture{this, def, shape};
+	
 	if (IsActive())
 	{
 		fixture->CreateProxies(allocator, m_world->m_contactMgr.m_broadPhase, m_xf);
@@ -201,9 +229,13 @@ Fixture* Body::CreateFixture(const FixtureDef& def, bool resetMassData)
 	m_fixtures.push_front(fixture);
 
 	// Adjust mass properties if needed.
-	if (resetMassData && (fixture->m_density > float_t{0}))
+	if (fixture->GetDensity() > float_t{0})
 	{
-		ResetMassData();
+		SetMassDataDirty();
+		if (resetMassData)
+		{
+			ResetMassData();
+		}
 	}
 
 	// Let the world know we have a new fixture. This will cause new contacts
@@ -213,7 +245,7 @@ Fixture* Body::CreateFixture(const FixtureDef& def, bool resetMassData)
 	return fixture;
 }
 
-void Body::DestroyFixture(Fixture* fixture)
+void Body::DestroyFixture(Fixture* fixture, bool resetMassData)
 {
 	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())
@@ -258,17 +290,19 @@ void Body::DestroyFixture(Fixture* fixture)
 		}
 	}
 
-	if (IsActive())
-	{
-		fixture->DestroyProxies(m_world->m_blockAllocator, m_world->m_contactMgr.m_broadPhase);
-	}
+	fixture->DestroyProxies(m_world->m_blockAllocator, m_world->m_contactMgr.m_broadPhase);
 
 	fixture->m_next = nullptr;
-	fixture->Destroy(m_world->m_blockAllocator);
+	
+	const auto shape = fixture->GetShape();
 	Delete(fixture, m_world->m_blockAllocator);
-
-	// Reset the mass data.
-	ResetMassData();
+	Delete(shape, m_world->m_blockAllocator);
+	
+	SetMassDataDirty();		
+	if (resetMassData)
+	{
+		ResetMassData();
+	}
 }
 
 MassData Body::ComputeMassData() const noexcept
@@ -278,7 +312,7 @@ MassData Body::ComputeMassData() const noexcept
 	auto center = Vec2_zero;
 	for (auto&& fixture: m_fixtures)
 	{
-		if (fixture.m_density == float_t{0})
+		if (fixture.GetDensity() == float_t{0})
 		{
 			continue;
 		}
@@ -301,6 +335,7 @@ void Body::ResetMassData()
 		m_invMass = float_t{0};
 		m_invI = float_t{0};
 		m_sweep = Sweep{Position{m_xf.p, GetAngle()}};
+		UnsetMassDataDirty();
 		return;
 	}
 
@@ -331,6 +366,8 @@ void Body::ResetMassData()
 
 	// Update center of mass velocity.
 	m_velocity.v += GetReversePerpendicular(GetWorldCenter() - oldCenter) * m_velocity.w;
+	
+	UnsetMassDataDirty();
 }
 
 void Body::SetMassData(const MassData& massData)
@@ -367,6 +404,8 @@ void Body::SetMassData(const MassData& massData)
 
 	// Update center of mass velocity.
 	m_velocity.v += GetReversePerpendicular(GetWorldCenter() - oldCenter) * m_velocity.w;
+	
+	UnsetMassDataDirty();
 }
 
 void Body::SetVelocity(const Velocity& velocity) noexcept

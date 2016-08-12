@@ -220,15 +220,21 @@ protected:
 	friend class FixtureIterator;
 	friend class ConstFixtureIterator;
 
-	Fixture(Body* body) noexcept: m_body{body} {}
+	Fixture(Body* body, const FixtureDef& def, Shape* shape):
+		m_body{body},
+		m_density{Max(def.density, float_t{0})}, 
+		m_friction{def.friction},
+		m_restitution{def.restitution},
+		m_filter{def.filter},
+		m_isSensor{def.isSensor},
+		m_shape{shape},
+		m_userData{def.userData}
+	{
+		assert(body != nullptr);
+		assert(shape != nullptr);
+		assert(def.density >= 0);
+	}
 
-	// We need separation create/destroy functions from the constructor/destructor because
-	// the destructor cannot access the allocator (no destructor arguments allowed by C++).
-	void Create(BlockAllocator& allocator, const FixtureDef& def);
-	void Destroy(BlockAllocator& allocator);
-
-	// These support body activation/deactivation.
-	
 	/// Creates proxies for every child of this fixture's shape.
 	/// This sets the proxy count to the child count of the shape.
 	void CreateProxies(BlockAllocator& allocator, BroadPhase& broadPhase, const Transformation& xf);
@@ -335,7 +341,7 @@ inline bool Fixture::RayCast(RayCastOutput* output, const RayCastInput& input, c
 
 inline MassData Fixture::ComputeMassData() const
 {
-	return GetShape()->ComputeMass(m_density);
+	return GetShape()->ComputeMass(GetDensity());
 }
 
 inline const AABB& Fixture::GetAABB(child_count_t childIndex) const

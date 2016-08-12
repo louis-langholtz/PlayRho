@@ -29,60 +29,12 @@
 
 using namespace box2d;
 
-template <>
-inline void box2d::Delete(Shape* shape, BlockAllocator& allocator)
-{
-	switch (shape->GetType())
-	{
-		case Shape::e_circle:
-			Delete(static_cast<CircleShape*>(shape), allocator);
-			break;
-		case Shape::e_edge:
-			Delete(static_cast<EdgeShape*>(shape), allocator);
-			break;
-		case Shape::e_polygon:
-			Delete(static_cast<PolygonShape*>(shape), allocator);
-			break;
-		case Shape::e_chain:
-			Delete(static_cast<ChainShape*>(shape), allocator);
-			break;
-		default:
-			assert(false);
-			break;
-	}
-}
-
-void Fixture::Create(BlockAllocator& allocator, const FixtureDef& def)
-{
-	assert(def.density >= 0);
-	assert(def.shape != nullptr);
-
-	m_userData = def.userData;
-	m_friction = def.friction;
-	m_restitution = def.restitution;
-	m_filter = def.filter;
-	m_isSensor = def.isSensor;
-	m_density = Max(def.density, float_t{0});
-	m_shape = def.shape->Clone(&allocator);
-}
-
-void Fixture::Destroy(BlockAllocator& allocator)
-{
-	// The proxies must be destroyed before calling this.
-	assert(m_proxyCount == 0);
-	assert(m_proxies == nullptr);
-
-	// Free the child shape.
-	Delete(m_shape, allocator);
-	m_shape = nullptr;
-}
-
 void Fixture::CreateProxies(BlockAllocator& allocator, BroadPhase& broadPhase, const Transformation& xf)
 {
 	assert(m_proxyCount == 0);
 
 	// Reserve proxy space and create proxies in the broad-phase.
-	const auto childCount = m_shape->GetChildCount();
+	const auto childCount = GetShape()->GetChildCount();
 	const auto proxies = allocator.AllocateArray<FixtureProxy>(childCount);
 	for (auto i = decltype(childCount){0}; i < childCount; ++i)
 	{
@@ -181,7 +133,7 @@ void Fixture::Dump(island_count_t bodyIndex)
 	log("    FixtureDef fd;\n");
 	log("    fd.friction = %.15lef;\n", m_friction);
 	log("    fd.restitution = %.15lef;\n", m_restitution);
-	log("    fd.density = %.15lef;\n", m_density);
+	log("    fd.density = %.15lef;\n", GetDensity());
 	log("    fd.isSensor = bool(%d);\n", m_isSensor);
 	log("    fd.filter.categoryBits = uint16(%d);\n", m_filter.categoryBits);
 	log("    fd.filter.maskBits = uint16(%d);\n", m_filter.maskBits);
