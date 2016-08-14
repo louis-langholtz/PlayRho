@@ -670,7 +670,7 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 	TimeStep subStep;
 	subStep.set_dt((float_t{1} - toi) * step.get_dt());
 	subStep.dtRatio = float_t{1};
-	subStep.positionIterations = MaxSubStepPositionIterations;
+	subStep.positionIterations = step.positionIterations? MaxSubStepPositionIterations: 0;
 	subStep.velocityIterations = step.velocityIterations;
 	subStep.warmStarting = false;
 	island.SolveTOI(subStep, m_contactMgr.m_contactListener, m_stackAllocator, indexA, indexB);
@@ -752,18 +752,18 @@ void World::Step(float_t dt, unsigned velocityIterations, unsigned positionItera
 	assert(!IsLocked());
 	FlagGuard<decltype(m_flags)> flagGaurd(m_flags, e_locked);
 
-	TimeStep step;
-	step.set_dt(dt);
-	step.velocityIterations	= velocityIterations;
-	step.positionIterations = positionIterations;
-	step.dtRatio = dt * m_inv_dt0;
-	step.warmStarting = m_warmStarting;
-	
 	// Update contacts. This is where some contacts are destroyed.
 	m_contactMgr.Collide();
 
-	if (step.get_dt() > 0)
+	if (dt > 0)
 	{
+		TimeStep step;
+		step.set_dt(dt);
+		step.velocityIterations	= velocityIterations;
+		step.positionIterations = positionIterations;
+		step.dtRatio = dt * m_inv_dt0;
+		step.warmStarting = m_warmStarting;
+
 		// Integrate velocities, solve velocity constraints, and integrate positions.
 		if (m_stepComplete)
 		{
@@ -771,7 +771,7 @@ void World::Step(float_t dt, unsigned velocityIterations, unsigned positionItera
 		}
 
 		// Handle TOI events.
-		if (m_continuousPhysics)
+		if (GetContinuousPhysics())
 		{
 			SolveTOI(step);
 		}

@@ -13,6 +13,8 @@
 #include <Box2D/Dynamics/Joints/Joint.h>
 #include <Box2D/Collision/Shapes/CircleShape.h>
 
+#include <chrono>
+
 using namespace box2d;
 
 TEST(Body, DefaultCreation)
@@ -105,34 +107,68 @@ TEST(Body, CreateAndDestroyFixture)
 
 TEST(Body, CreateLotsOfFixtures)
 {
-	World world;
-	
 	BodyDef bd;
 	bd.type = BodyType::Dynamic;
-
-	auto body = world.CreateBody(bd);
-	ASSERT_NE(body, nullptr);
-	EXPECT_TRUE(body->GetFixtures().empty());
-	
 	CircleShape shape{float_t(2.871), Vec2{float_t(1.912), float_t(-77.31)}};
+	const auto num = 5000;
+	std::chrono::time_point<std::chrono::system_clock> start, end;
 	
-	const auto num = 10000;
-	
-	for (auto i = decltype(num){0}; i < num; ++i)
+	start = std::chrono::system_clock::now();
 	{
-		auto fixture = body->CreateFixture(FixtureDef{&shape, float_t(1.3)}, false);
-		ASSERT_NE(fixture, nullptr);
-	}
-	body->ResetMassData();
-	
-	EXPECT_FALSE(body->GetFixtures().empty());
-	{
-		int i = decltype(num){0};
-		for (auto&& f: body->GetFixtures())
+		World world;
+
+		auto body = world.CreateBody(bd);
+		ASSERT_NE(body, nullptr);
+		EXPECT_TRUE(body->GetFixtures().empty());
+		
+		for (auto i = decltype(num){0}; i < num; ++i)
 		{
-			BOX2D_NOT_USED(f);
-			++i;
+			auto fixture = body->CreateFixture(FixtureDef{&shape, float_t(1.3)}, false);
+			ASSERT_NE(fixture, nullptr);
 		}
-		EXPECT_EQ(i, num);
+		body->ResetMassData();
+		
+		EXPECT_FALSE(body->GetFixtures().empty());
+		{
+			int i = decltype(num){0};
+			for (auto&& f: body->GetFixtures())
+			{
+				BOX2D_NOT_USED(f);
+				++i;
+			}
+			EXPECT_EQ(i, num);
+		}
 	}
+	end = std::chrono::system_clock::now();
+	const std::chrono::duration<double> elapsed_secs_resetting_at_end = end - start;
+
+	start = std::chrono::system_clock::now();
+	{
+		World world;
+		
+		auto body = world.CreateBody(bd);
+		ASSERT_NE(body, nullptr);
+		EXPECT_TRUE(body->GetFixtures().empty());
+		
+		for (auto i = decltype(num){0}; i < num; ++i)
+		{
+			auto fixture = body->CreateFixture(FixtureDef{&shape, float_t(1.3)}, true);
+			ASSERT_NE(fixture, nullptr);
+		}
+		
+		EXPECT_FALSE(body->GetFixtures().empty());
+		{
+			int i = decltype(num){0};
+			for (auto&& f: body->GetFixtures())
+			{
+				BOX2D_NOT_USED(f);
+				++i;
+			}
+			EXPECT_EQ(i, num);
+		}
+	}
+	end = std::chrono::system_clock::now();
+	const std::chrono::duration<double> elapsed_secs_resetting_in_create = end - start;
+
+	EXPECT_LT(elapsed_secs_resetting_at_end.count(), elapsed_secs_resetting_in_create.count());
 }

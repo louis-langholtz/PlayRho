@@ -118,21 +118,25 @@ void ContactManager::Collide()
 			c->UnflagForFiltering();
 		}
 
-		// active = is-awake && is-speedable
-		const bool a_collidable = (bodyA->m_flags & (Body::e_awakeFlag|Body::e_velocityFlag)) == (Body::e_awakeFlag|Body::e_velocityFlag);
-		const bool b_collidable = (bodyB->m_flags & (Body::e_awakeFlag|Body::e_velocityFlag)) == (Body::e_awakeFlag|Body::e_velocityFlag);
+		// collidable means is-awake && is-speedable (dynamic or kinematic)
+		auto is_collidable = [&](Body* b) {
+			constexpr auto awake_and_speedable = Body::e_awakeFlag|Body::e_velocityFlag;
+			return (b->m_flags & awake_and_speedable) == awake_and_speedable;
+		};
 
-		// At least one body must be awake and it must be dynamic or kinematic.
-		if (!a_collidable && !b_collidable)
+		// At least one body must be collidable
+		if (!is_collidable(bodyA) && !is_collidable(bodyB))
 		{
 			continue;
 		}
 
-		const auto indexA = c->GetChildIndexA();
-		const auto indexB = c->GetChildIndexB();
-		const auto proxyIdA = fixtureA->m_proxies[indexA].proxyId;
-		const auto proxyIdB = fixtureB->m_proxies[indexB].proxyId;
-		const auto overlap = m_broadPhase.TestOverlap(proxyIdA, proxyIdB);
+		const auto overlap = [&]() {
+			const auto indexA = c->GetChildIndexA();
+			const auto indexB = c->GetChildIndexB();
+			const auto proxyIdA = fixtureA->m_proxies[indexA].proxyId;
+			const auto proxyIdB = fixtureB->m_proxies[indexB].proxyId;
+			return m_broadPhase.TestOverlap(proxyIdA, proxyIdB);
+		}();
 
 		// Here we destroy contacts that cease to overlap in the broad-phase.
 		if (!overlap)

@@ -147,6 +147,79 @@ TEST(World, CreateAndDestroyJoint)
 	EXPECT_EQ(world.GetJoints().begin(), world.GetJoints().end());
 }
 
+TEST(World, MaxBodies)
+{
+	World world;
+	for (auto i = decltype(MaxBodies){0}; i < MaxBodies; ++i)
+	{
+		const auto body = world.CreateBody(BodyDef{});
+		ASSERT_NE(body, nullptr);
+	}
+	{
+		const auto body = world.CreateBody(BodyDef{});
+		EXPECT_EQ(body, nullptr);		
+	}
+}
+
+TEST(World, MaxJoints)
+{
+	World world;
+	
+	const auto body1 = world.CreateBody(BodyDef{});
+	ASSERT_NE(body1, nullptr);
+	const auto body2 = world.CreateBody(BodyDef{});
+	ASSERT_NE(body2, nullptr);
+	
+	for (auto i = decltype(MaxJoints){0}; i < MaxJoints; ++i)
+	{
+		const auto joint = world.CreateJoint(RopeJointDef{body1, body2});
+		ASSERT_NE(joint, nullptr);
+	}
+	{
+		const auto joint = world.CreateJoint(RopeJointDef{body1, body2});
+		EXPECT_EQ(joint, nullptr);
+	}
+}
+
+TEST(World, StepZeroTimeDoesNothing)
+{
+	const auto gravity = Vec2{0, float_t(-9.8)};
+	
+	World world{gravity};
+	
+	BodyDef def;
+	def.position = Vec2{float_t(31.9), float_t(-19.24)};
+	def.type = BodyType::Dynamic;
+	
+	const auto body = world.CreateBody(def);
+	ASSERT_NE(body, nullptr);
+	EXPECT_EQ(body->GetPosition().x, def.position.x);
+	EXPECT_EQ(body->GetPosition().y, def.position.y);
+	EXPECT_EQ(GetLinearVelocity(*body).x, float_t(0));
+	EXPECT_EQ(GetLinearVelocity(*body).y, float_t(0));
+	EXPECT_EQ(body->GetLinearAcceleration().x, 0);
+	EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
+	
+	const auto time_inc = float_t(0);
+	
+	auto pos = body->GetPosition();
+	auto vel = GetLinearVelocity(*body);
+	for (auto i = 0; i < 100; ++i)
+	{
+		world.Step(time_inc);
+		
+		EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
+		
+		EXPECT_EQ(body->GetPosition().x, def.position.x);
+		EXPECT_EQ(body->GetPosition().y, pos.y);
+		pos = body->GetPosition();
+		
+		EXPECT_EQ(GetLinearVelocity(*body).x, float_t(0));
+		EXPECT_FLOAT_EQ(GetLinearVelocity(*body).y, vel.y);
+		vel = GetLinearVelocity(*body);
+	}
+}
+
 TEST(World, GravitationalBodyMovement)
 {
 	auto p0 = Vec2{0, 1};
@@ -191,37 +264,44 @@ TEST(World, GravitationalBodyMovement)
 	EXPECT_EQ(body->GetPosition().y, p0.y + (GetLinearVelocity(*body).y * t));
 }
 
-TEST(World, MaxBodies)
+TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
 {
-	World world;
-	for (auto i = decltype(MaxBodies){0}; i < MaxBodies; ++i)
+	const auto gravity = Vec2{0, float_t(-9.8)};
+	
+	World world{gravity};
+	
+	BodyDef def;
+	def.position = Vec2{float_t(31.9), float_t(-19.24)};
+	def.type = BodyType::Dynamic;
+	
+	const auto body = world.CreateBody(def);
+	ASSERT_NE(body, nullptr);
+	EXPECT_EQ(body->GetPosition().x, def.position.x);
+	EXPECT_EQ(body->GetPosition().y, def.position.y);
+	EXPECT_EQ(GetLinearVelocity(*body).x, float_t(0));
+	EXPECT_EQ(GetLinearVelocity(*body).y, float_t(0));
+	EXPECT_EQ(body->GetLinearAcceleration().x, 0);
+	EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
+	
+	const auto time_inc = float_t(0.01);
+	
+	auto pos = body->GetPosition();
+	auto vel = GetLinearVelocity(*body);
+	for (auto i = 0; i < 100; ++i)
 	{
-		const auto body = world.CreateBody(BodyDef{});
-		ASSERT_NE(body, nullptr);
-	}
-	{
-		const auto body = world.CreateBody(BodyDef{});
-		EXPECT_EQ(body, nullptr);		
-	}
-}
-
-TEST(World, MaxJoints)
-{
-	World world;
-
-	const auto body1 = world.CreateBody(BodyDef{});
-	ASSERT_NE(body1, nullptr);
-	const auto body2 = world.CreateBody(BodyDef{});
-	ASSERT_NE(body2, nullptr);
-
-	for (auto i = decltype(MaxJoints){0}; i < MaxJoints; ++i)
-	{
-		const auto joint = world.CreateJoint(RopeJointDef{body1, body2});
-		ASSERT_NE(joint, nullptr);
-	}
-	{
-		const auto joint = world.CreateJoint(RopeJointDef{body1, body2});
-		EXPECT_EQ(joint, nullptr);
+		world.Step(time_inc, 0, 0);
+		
+		EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
+		
+		EXPECT_EQ(body->GetPosition().x, def.position.x);
+		EXPECT_LT(body->GetPosition().y, pos.y);
+		EXPECT_EQ(body->GetPosition().y, pos.y + (vel.y + gravity.y * time_inc) * time_inc);
+		pos = body->GetPosition();
+		
+		EXPECT_EQ(GetLinearVelocity(*body).x, float_t(0));
+		EXPECT_LT(GetLinearVelocity(*body).y, vel.y);
+		EXPECT_FLOAT_EQ(GetLinearVelocity(*body).y, vel.y + gravity.y * time_inc);
+		vel = GetLinearVelocity(*body);
 	}
 }
 
@@ -247,6 +327,7 @@ public:
 	
 	void EndContact(Contact& contact) override
 	{
+		++end_contacts;
 		contacting = false;
 		touching = contact.IsTouching();
 
@@ -265,6 +346,7 @@ public:
 	}
 
 	unsigned begin_contacts = 0;
+	unsigned end_contacts = 0;
 	bool contacting = false;
 	bool touching = false;
 	Vec2 body_a[2] = {Vec2_zero, Vec2_zero};
@@ -272,6 +354,92 @@ public:
 	PreSolver presolver;
 	PostSolver postsolver;
 };
+
+TEST(World, NoCorrectionsWithNoVelOrPosIterations)
+{
+	const auto x = float_t(10); // other test parameters tuned to this value being 10
+
+	auto presolved = unsigned{0};
+	auto postsolved = unsigned{0};
+	MyContactListener listener{
+		[&](Contact& contact, const Manifold& oldManifold) { ++presolved; },
+		[&](Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) { ++postsolved; }
+	};
+
+	const Vec2 gravity{0, 0};
+	World world{gravity};
+	world.SetContactListener(&listener);
+	
+	ASSERT_EQ(listener.begin_contacts, 0);
+	ASSERT_EQ(listener.end_contacts, 0);
+	
+	auto body_def = BodyDef{};
+	body_def.type = BodyType::Dynamic;
+	body_def.bullet = true;
+	
+	CircleShape shape{1};
+	FixtureDef fixtureDef;
+	fixtureDef.shape = &shape;
+	fixtureDef.density = float_t(1);
+	fixtureDef.restitution = float_t(1);
+	
+	body_def.position = Vec2{-x, 0};
+	body_def.linearVelocity = Vec2{+x, 0};
+	const auto body_a = world.CreateBody(body_def);
+	ASSERT_NE(body_a, nullptr);
+	EXPECT_EQ(body_a->GetType(), BodyType::Dynamic);
+	EXPECT_TRUE(body_a->IsSpeedable());
+	EXPECT_TRUE(body_a->IsAccelerable());
+	const auto fixture1 = body_a->CreateFixture(fixtureDef);
+	ASSERT_NE(fixture1, nullptr);
+	
+	body_def.position = Vec2{+x, 0};
+	body_def.linearVelocity = Vec2{-x, 0};
+	const auto body_b = world.CreateBody(body_def);
+	ASSERT_NE(body_b, nullptr);
+	const auto fixture2 = body_b->CreateFixture(fixtureDef);
+	ASSERT_NE(fixture2, nullptr);
+	EXPECT_EQ(body_b->GetType(), BodyType::Dynamic);
+	EXPECT_TRUE(body_b->IsSpeedable());
+	EXPECT_TRUE(body_b->IsAccelerable());
+
+	EXPECT_EQ(GetLinearVelocity(*body_a).x, +x);
+	EXPECT_EQ(GetLinearVelocity(*body_a).y, 0);
+	EXPECT_EQ(GetLinearVelocity(*body_b).x, -x);
+	EXPECT_EQ(GetLinearVelocity(*body_b).y, 0);
+
+	const auto time_inc = float_t(.01);
+
+	auto pos_a = body_a->GetPosition();
+	auto pos_b = body_b->GetPosition();
+	ASSERT_LT(pos_a.x, pos_b.x);
+
+	auto steps = unsigned{0};
+	while (pos_a.x < x && pos_b.x > -x)
+	{
+		world.Step(time_inc, 0, 0);
+		++steps;
+		
+		EXPECT_EQ(body_a->GetPosition().x, pos_a.x + x * time_inc);
+		EXPECT_EQ(body_a->GetPosition().y, 0);
+		EXPECT_EQ(body_b->GetPosition().x, pos_b.x - x * time_inc);
+		EXPECT_EQ(body_b->GetPosition().y, 0);
+
+		EXPECT_EQ(GetLinearVelocity(*body_a).x, +x);
+		EXPECT_EQ(GetLinearVelocity(*body_a).y, 0);
+		EXPECT_EQ(GetLinearVelocity(*body_b).x, -x);
+		EXPECT_EQ(GetLinearVelocity(*body_b).y, 0);
+
+		pos_a = body_a->GetPosition();
+		pos_b = body_b->GetPosition();
+	}
+	
+	// d = v * t
+	// d = 20, v = 10:
+	// 20 = 10 * t, t = d/v = 20 / 10 = 2
+	// steps = t / time_inc = 200
+	EXPECT_EQ(steps, ((x * 2) / x) / time_inc);
+}
 
 TEST(World, CollidingDynamicBodies)
 {
@@ -303,7 +471,6 @@ TEST(World, CollidingDynamicBodies)
 	EXPECT_EQ(body_a->GetType(), BodyType::Dynamic);
 	EXPECT_TRUE(body_a->IsSpeedable());
 	EXPECT_TRUE(body_a->IsAccelerable());
-
 	const auto fixture1 = body_a->CreateFixture(fixtureDef);
 	ASSERT_NE(fixture1, nullptr);
 

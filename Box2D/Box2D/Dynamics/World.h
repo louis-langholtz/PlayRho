@@ -96,24 +96,38 @@ public:
 	Joint* CreateJoint(const JointDef& def);
 
 	/// Destroys a joint.
+	///
 	/// @detail This may cause the connected bodies to begin colliding.
+	///
 	/// @warning This function is locked during callbacks.
+	/// @warning Behavior is undefined if the passed joint was not created by this world.
+	///
+	/// @param joint Joint, created by this world, to destroy.
 	void Destroy(Joint* joint);
 
 	/// Steps the world ahead by a given time amount.
-	/// @detail This performs position and velocity updating, collision detection, and constraint solving.
+	///
+	/// @detail
+	/// This performs position and velocity updating, the sleeping non-moving bodies, updating
+	/// of the world's contacts, and notifying the world's contact listener of begin-contact,
+	/// end-contact, pre-solve, and post-solve events.
+	/// If the given velocity and position iterations are more than zero,
+	/// this method also performs collision detection and constraint solving.
 	/// @note While body velocities are updated accordingly (per the sum of forces acting on them),
-	///   body positions (barring any collisions) are updated as if they had moved the entire time step
-	///   at those resulting velocities.
-	///   In other words, a body initially at p0 going v0 fast with a sum acceleration of a,
-	///   after time t and barring any collisions,
-	///   will have a new velocity (v1) of v0 + (a * t) and a new position (p1) of p0 + v1 * t.
+	/// body positions (barring any collisions) are updated as if they had moved the entire time step
+	/// at those resulting velocities.
+	/// In other words, a body initially at p0 going v0 fast with a sum acceleration of a,
+	/// after time t and barring any collisions,
+	/// will have a new velocity (v1) of v0 + (a * t) and a new position (p1) of p0 + v1 * t.
+	///
 	/// @warning Varying the time step can lead to non-physical behaviors.
+	///
 	/// @post Static bodies are unmoved.
 	/// @post Kinetic bodies are moved based on their previous velocities.
 	/// @post Dynamic bodies are moved based on their previous velocities, gravity,
-	///   applied forces, applied impulses, masses, damping, and the restitution and friction values
-	///   of their fixtures when they experience collisions.	
+	/// applied forces, applied impulses, masses, damping, and the restitution and friction values
+	/// of their fixtures when they experience collisions.	
+	///
 	/// @param timeStep Amount of time to simulate (in seconds). This should not vary.
 	/// @param velocityIterations Number of iterations for the velocity constraint solver.
 	/// @param positionIterations Number of iterations for the position constraint solver.
@@ -349,7 +363,7 @@ private:
 	bool m_continuousPhysics = true;
 	bool m_subStepping = false;
 
-	bool m_stepComplete = true;
+	bool m_stepComplete = true; ///< Step complete. @detail Used for sub-stepping. @sa m_subStepping.
 
 	Profile m_profile;
 };
