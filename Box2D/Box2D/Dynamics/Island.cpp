@@ -272,8 +272,8 @@ namespace {
 			GetPositionConstraintBodyData(*(fixtureB.GetBody())), fixtureB.GetShape()->GetRadius()};
 	}
 
-	inline void InitPositionConstraints(ContactPositionConstraint* constraints,
-										contact_count_t count, Contact** contacts)
+	inline void InitPosConstraints(ContactPositionConstraint* constraints,
+								   contact_count_t count, Contact** contacts)
 	{
 		for (auto i = decltype(count){0}; i < count; ++i)
 		{
@@ -282,8 +282,8 @@ namespace {
 		}
 	}
 	
-	inline void InitVelocityConstraints(ContactVelocityConstraint* constraints,
-										contact_count_t count, Contact** contacts, float_t dtRatio)
+	inline void InitVelConstraints(ContactVelocityConstraint* constraints,
+								   contact_count_t count, Contact** contacts, float_t dtRatio)
 	{
 		for (auto i = decltype(count){0}; i < count; ++i)
 		{
@@ -342,9 +342,9 @@ bool Island::Solve(const TimeStep& step, ContactListener* listener, StackAllocat
 	// Would be nice to actually allocate this data on the actual stack but the running thread may not have nearly enough stack space for this.
 	auto positionConstraints = PositionConstraintsContainer{m_contacts.size(), allocator.AllocateArray<ContactPositionConstraint>(m_contacts.size()), allocator};
 	auto velocityConstraints = VelocityConstraintsContainer{m_contacts.size(), allocator.AllocateArray<ContactVelocityConstraint>(m_contacts.size()), allocator};
-	InitPositionConstraints(positionConstraints.data(), static_cast<contact_count_t>(m_contacts.size()), m_contacts.data());
-	InitVelocityConstraints(velocityConstraints.data(), static_cast<contact_count_t>(m_contacts.size()), m_contacts.data(),
-							step.warmStarting? step.dtRatio: float_t{0});
+	InitPosConstraints(positionConstraints.data(), static_cast<contact_count_t>(m_contacts.size()), m_contacts.data());
+	InitVelConstraints(velocityConstraints.data(), static_cast<contact_count_t>(m_contacts.size()), m_contacts.data(),
+					   step.warmStarting? step.dtRatio: float_t{0});
 	auto velocities = VelocityContainer{m_bodies.size(), allocator.AllocateArray<Velocity>(m_bodies.size()), allocator};
 	auto positions = PositionContainer{m_bodies.size(), allocator.AllocateArray<Position>(m_bodies.size()), allocator};
 
@@ -437,9 +437,9 @@ bool Island::SolveTOI(const TimeStep& step, ContactListener* listener, StackAllo
 	auto positions = PositionContainer{m_bodies.size(), allocator.AllocateArray<Position>(m_bodies.size()), allocator};
 	auto positionConstraints = PositionConstraintsContainer{m_contacts.size(), allocator.AllocateArray<ContactPositionConstraint>(m_contacts.size()), allocator};
 	auto velocityConstraints = VelocityConstraintsContainer{m_contacts.size(), allocator.AllocateArray<ContactVelocityConstraint>(m_contacts.size()), allocator};
-	InitPositionConstraints(positionConstraints.data(), static_cast<contact_count_t>(m_contacts.size()), m_contacts.data());
-	InitVelocityConstraints(velocityConstraints.data(), static_cast<contact_count_t>(m_contacts.size()), m_contacts.data(),
-							step.warmStarting? step.dtRatio: float_t{0});
+	InitPosConstraints(positionConstraints.data(), static_cast<contact_count_t>(m_contacts.size()), m_contacts.data());
+	InitVelConstraints(velocityConstraints.data(), static_cast<contact_count_t>(m_contacts.size()), m_contacts.data(),
+					   step.warmStarting? step.dtRatio: float_t{0});
 
 	// Initialize the body state.
 	for (auto&& body: m_bodies)

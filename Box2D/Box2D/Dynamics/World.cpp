@@ -413,44 +413,34 @@ Island World::BuildIsland(Body& seed,
 		}
 		
 		const auto numContacts = island.m_contacts.size();
-		// Add to island: appropriate contacts of current body and appropriate 'other' bodies of those contacts.
+		// Adds appropriate contacts of current body and appropriate 'other' bodies of those contacts.
 		for (auto&& ce: b->m_contacts)
 		{
 			const auto contact = ce.contact;
-			
-			// Skip contacts that are already in island, disabled, not-touching, or that have sensors.
-			if ((contact->IsInIsland()) || (!contact->IsEnabled()) || (!contact->IsTouching()) || (contact->HasSensor()))
+			if (!contact->IsInIsland() && contact->IsEnabled() && contact->IsTouching() && !contact->HasSensor())
 			{
-				continue;
-			}
-			
-			island.m_contacts.push_back(contact);
-			contact->SetInIsland();
-			
-			const auto other = ce.other;
-			if (other->IsInIsland())
-			{
-				continue; // Other already in island, skip it.
-			}
-			
-			stack.push_back(other);
-			other->SetInIsland();
+				island.m_contacts.push_back(contact);
+				contact->SetInIsland();
+				const auto other = ce.other;
+				if (!other->IsInIsland())
+				{				
+					stack.push_back(other);
+					other->SetInIsland();
+				}
+			}			
 		}
 		remNumContacts -= island.m_contacts.size() - numContacts;
 		
 		const auto numJoints = island.m_joints.size();
-		// Add to island: appropriate joints of current body and appropriate 'other' bodies of those joint.
+		// Adds appropriate joints of current body and appropriate 'other' bodies of those joint.
 		for (auto&& je: b->m_joints)
 		{
 			const auto joint = je.joint;
 			const auto other = je.other;
-			
-			// Skip joints already in island or that are connected to inactive bodies.
 			if (!joint->IsInIsland() && other->IsActive())
 			{
 				island.m_joints.push_back(joint);
 				joint->SetInIsland(true);
-				
 				if (!other->IsInIsland())
 				{					
 					stack.push_back(other);
@@ -763,6 +753,7 @@ void World::Step(float_t dt, unsigned velocityIterations, unsigned positionItera
 		step.positionIterations = positionIterations;
 		step.dtRatio = dt * m_inv_dt0;
 		step.warmStarting = m_warmStarting;
+		m_inv_dt0 = step.get_inv_dt();
 
 		// Integrate velocities, solve velocity constraints, and integrate positions.
 		if (m_stepComplete)
@@ -775,8 +766,6 @@ void World::Step(float_t dt, unsigned velocityIterations, unsigned positionItera
 		{
 			SolveTOI(step);
 		}
-
-		m_inv_dt0 = step.get_inv_dt();
 	}
 }
 

@@ -108,11 +108,12 @@ public:
 	/// Steps the world ahead by a given time amount.
 	///
 	/// @detail
-	/// This performs position and velocity updating, the sleeping non-moving bodies, updating
-	/// of the world's contacts, and notifying the world's contact listener of begin-contact,
-	/// end-contact, pre-solve, and post-solve events.
+	/// Performs position and velocity updating, sleeping of non-moving bodies, updating
+	/// of the contacts, and notifying the contact listener of begin-contact, end-contact,
+	/// pre-solve, and post-solve events.
 	/// If the given velocity and position iterations are more than zero,
-	/// this method also performs collision detection and constraint solving.
+	/// this method also respectively performs velocity and position resolution of the contacting bodies.
+	///
 	/// @note While body velocities are updated accordingly (per the sum of forces acting on them),
 	/// body positions (barring any collisions) are updated as if they had moved the entire time step
 	/// at those resulting velocities.
@@ -120,7 +121,7 @@ public:
 	/// after time t and barring any collisions,
 	/// will have a new velocity (v1) of v0 + (a * t) and a new position (p1) of p0 + v1 * t.
 	///
-	/// @warning Varying the time step can lead to non-physical behaviors.
+	/// @warning Varying the time step may lead to non-physical behaviors.
 	///
 	/// @post Static bodies are unmoved.
 	/// @post Kinetic bodies are moved based on their previous velocities.
@@ -131,6 +132,7 @@ public:
 	/// @param timeStep Amount of time to simulate (in seconds). This should not vary.
 	/// @param velocityIterations Number of iterations for the velocity constraint solver.
 	/// @param positionIterations Number of iterations for the position constraint solver.
+	///   The position constraint solver resolves the positions of bodies that overlap.
 	void Step(float_t timeStep, unsigned velocityIterations = 8, unsigned positionIterations = 3);
 
 	/// Clears forces.
@@ -273,6 +275,9 @@ private:
 	/// @note This may miss collisions involving fast moving bodies and allow them to tunnel through each other.
 	void Solve(const TimeStep& step);
 
+	/// Builds island based off of a given "seed" body.
+	/// @post Contacts are listed in the island in the order that bodies list those contacts.
+	/// @post Joints are listed the island in the order that bodies list those joints.
 	Island BuildIsland(Body& seed,
 						 BodyList::size_type& remNumBodies,
 						 contact_count_t& remNumContacts,

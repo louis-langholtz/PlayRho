@@ -46,6 +46,7 @@ public:
 	static constexpr auto InvalidIteration = static_cast<iteration_type>(-1);
 
 	/// Gets the delta time (time amount for this time step).
+	/// @sa set_dt(float_t).
 	/// @return Time step amount in seconds.
 	float_t get_dt() const noexcept { return dt; }
 
@@ -54,6 +55,11 @@ public:
 	/// @sa get_dt().
 	float_t get_inv_dt() const noexcept { return inv_dt; }
 	
+	/// Sets the delta time value.
+	/// @post Getting the delta time will return this set value.
+	/// @post The inverse delta time value is the inverse of this set value or zero if the value is zero.
+	/// @sa get_inv_dt().
+	/// @param value Elapsed time amount (in seconds).
 	void set_dt(float_t value) noexcept
 	{
 		dt = value;
