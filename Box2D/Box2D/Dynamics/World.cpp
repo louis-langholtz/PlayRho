@@ -548,7 +548,7 @@ World::ContactToiPair World::UpdateContactTOIs()
 	
 	for (auto&& c: m_contactMgr.GetContacts())
 	{
-		if (c.IsEnabled() && (c.m_toiCount < MaxSubSteps) && (c.HasValidToi() || c.UpdateTOI()))
+		if (c.IsEnabled() && (c.GetToiCount() < MaxSubSteps) && (c.HasValidToi() || c.UpdateTOI()))
 		{
 			const auto toi = c.GetToi();
 			if (minToi > toi)
