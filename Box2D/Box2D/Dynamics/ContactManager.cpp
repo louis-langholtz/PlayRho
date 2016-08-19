@@ -75,6 +75,7 @@ void ContactManager::Destroy(Contact* c)
 {
 	if (m_contactListener && c->IsTouching())
 	{
+		// EndContact hadn't been called in Collide() since is-touching, so call it now
 		m_contactListener->EndContact(*c);
 	}
 
