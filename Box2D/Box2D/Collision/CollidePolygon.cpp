@@ -128,7 +128,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, co
 	Transformation xf1, xf2;
 	PolygonShape::vertex_count_t edgeIndex; // reference edge
 	bool flip;
-	constexpr auto k_tol = LinearSlop / 10;
+	constexpr auto k_tol = BOX2D_MAGIC(LinearSlop / 10);
 
 	Manifold::Type manifoldType;
 	if (edgeSepB.separation > (edgeSepA.separation + k_tol))
@@ -200,14 +200,27 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, co
 
 	auto manifold = (manifoldType == Manifold::e_faceA)?
 		Manifold::GetForFaceA(localNormal, planePoint): Manifold::GetForFaceB(localNormal, planePoint);
-	for (auto&& clipPoint: clipPoints2)
+	if (flip)
 	{
-		const auto separation = Dot(normal, clipPoint.v) - frontOffset;
-		if (separation <= totalRadius)
+		for (auto&& cp: clipPoints2)
 		{
-			const auto cf = flip? Flip(clipPoint.cf): clipPoint.cf;
-			manifold.AddPoint(Manifold::Point{InverseTransform(clipPoint.v, xf2), cf});
+			if ((Dot(normal, cp.v) - frontOffset) <= totalRadius)
+			{
+				manifold.AddPoint(Manifold::Point{InverseTransform(cp.v, xf2), Flip(cp.cf)});
+			}
 		}
+		
+	}
+	else
+	{
+		for (auto&& cp: clipPoints2)
+		{
+			if ((Dot(normal, cp.v) - frontOffset) <= totalRadius)
+			{
+				manifold.AddPoint(Manifold::Point{InverseTransform(cp.v, xf2), cp.cf});
+			}
+		}
+		
 	}
 	return manifold;
 }
