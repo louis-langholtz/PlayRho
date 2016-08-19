@@ -47,7 +47,7 @@ PolygonAndCircleContact::PolygonAndCircleContact(Fixture* fixtureA, Fixture* fix
 	assert(GetType(*m_fixtureB) == Shape::e_circle);
 }
 
-Manifold PolygonAndCircleContact::Evaluate(const Transformation& xfA, const Transformation& xfB)
+Manifold PolygonAndCircleContact::Evaluate(const Transformation& xfA, const Transformation& xfB) const
 {
 	return CollideShapes(*static_cast<PolygonShape*>(m_fixtureA->GetShape()), xfA, *static_cast<CircleShape*>(m_fixtureB->GetShape()), xfB);
 }

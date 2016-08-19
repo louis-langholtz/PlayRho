@@ -37,7 +37,7 @@ public:
 	ChainAndPolygonContact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB);
 	~ChainAndPolygonContact() {}
 
-	Manifold Evaluate(const Transformation& xfA, const Transformation& xfB) override;
+	Manifold Evaluate(const Transformation& xfA, const Transformation& xfB) const override;
 };
 
 } // namespace box2d

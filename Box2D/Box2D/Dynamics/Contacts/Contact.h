@@ -152,7 +152,7 @@ public:
 	/// @param xfB Transformation for the contact's fixture B shape.
 	/// @return Contact manifold for the given transforms with one or more points
 	///   if the shapes are considered touching (collided).
-	virtual Manifold Evaluate(const Transformation& xfA, const Transformation& xfB) = 0;
+	virtual Manifold Evaluate(const Transformation& xfA, const Transformation& xfB) const = 0;
 
 	substep_type GetToiCount() const noexcept;
 
