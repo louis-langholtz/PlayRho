@@ -110,7 +110,17 @@ public:
 	/// Called when two fixtures begin to touch.
 	virtual void BeginContact(Contact& contact) { BOX2D_NOT_USED(contact); }
 
-	/// Called when two fixtures cease to touch.
+	/// End contact callback.
+	/// @detail
+	/// Called when the contact's "touching" property becomes false, or just before the contact
+	/// is destroyed.
+	/// @note This contact persists until the broadphase determines there's no overlap anymore
+	///   between the two fixtures.
+	/// @note If the contact's "touching" property becomes true again, BeginContact will be called
+	///   again for this contact.
+	/// @sa Contact::IsTouching().
+	/// @param contact Contact that's about to be destroyed or whose "touching" property has become
+	///   false.
 	virtual void EndContact(Contact& contact) { BOX2D_NOT_USED(contact); }
 
 	/// Pre-solve callback.
