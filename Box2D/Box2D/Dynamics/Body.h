@@ -471,7 +471,11 @@ private:
 
 	body_count_t m_islandIndex = InvalidIslandIndex; ///< Index of this body in its island (only valid when in an island). 2-bytes.
 	
-	Transformation m_xf; ///< Transformation for body origin. 16-bytes.
+	/// Transformation for body origin.
+	/// @detail
+	/// This is essentially the cached result of <code>GetTransform1(m_sweep)</code>. 16-bytes.
+	Transformation m_xf;
+
 	Sweep m_sweep; ///< Sweep motion for CCD. 36-bytes.
 
 	Velocity m_velocity; ///< Velocity (linear and angular). 12-bytes.
@@ -524,7 +528,7 @@ inline Transformation Body::GetTransformation() const noexcept
 
 inline Vec2 Body::GetPosition() const noexcept
 {
-	return m_xf.p;
+	return GetTransformation().p;
 }
 
 inline float_t Body::GetAngle() const noexcept
