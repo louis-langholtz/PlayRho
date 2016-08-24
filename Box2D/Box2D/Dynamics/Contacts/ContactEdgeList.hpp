@@ -44,7 +44,6 @@ namespace box2d {
 		reference front() noexcept { return *p; }
 
 	private:
-		//friend class World;
 		friend class ContactManager;
 		friend class Body;
 
