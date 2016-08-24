@@ -72,9 +72,9 @@ GearJoint::GearJoint(const GearJointDef& def)
 	if (m_typeA == JointType::Revolute)
 	{
 		const auto revolute = static_cast<RevoluteJoint*>(def.joint1);
-		m_localAnchorC = revolute->m_localAnchorA;
-		m_localAnchorA = revolute->m_localAnchorB;
-		m_referenceAngleA = revolute->m_referenceAngle;
+		m_localAnchorC = revolute->GetLocalAnchorA();
+		m_localAnchorA = revolute->GetLocalAnchorB();
+		m_referenceAngleA = revolute->GetReferenceAngle();
 		m_localAxisC = Vec2_zero;
 
 		coordinateA = aA - aC - m_referenceAngleA;
@@ -82,10 +82,10 @@ GearJoint::GearJoint(const GearJointDef& def)
 	else
 	{
 		const auto prismatic = static_cast<PrismaticJoint*>(def.joint1);
-		m_localAnchorC = prismatic->m_localAnchorA;
-		m_localAnchorA = prismatic->m_localAnchorB;
-		m_referenceAngleA = prismatic->m_referenceAngle;
-		m_localAxisC = prismatic->m_localXAxisA;
+		m_localAnchorC = prismatic->GetLocalAnchorA();
+		m_localAnchorA = prismatic->GetLocalAnchorB();
+		m_referenceAngleA = prismatic->GetReferenceAngle();
+		m_localAxisC = prismatic->GetLocalAxisA();
 
 		const auto pC = m_localAnchorC;
 		const auto pA = InverseRotate(Rotate(m_localAnchorA, xfA.q) + (xfA.p - xfC.p), xfC.q);
@@ -104,9 +104,9 @@ GearJoint::GearJoint(const GearJointDef& def)
 	if (m_typeB == JointType::Revolute)
 	{
 		const auto revolute = static_cast<RevoluteJoint*>(def.joint2);
-		m_localAnchorD = revolute->m_localAnchorA;
-		m_localAnchorB = revolute->m_localAnchorB;
-		m_referenceAngleB = revolute->m_referenceAngle;
+		m_localAnchorD = revolute->GetLocalAnchorA();
+		m_localAnchorB = revolute->GetLocalAnchorB();
+		m_referenceAngleB = revolute->GetReferenceAngle();
 		m_localAxisD = Vec2_zero;
 
 		coordinateB = aB - aD - m_referenceAngleB;
@@ -114,10 +114,10 @@ GearJoint::GearJoint(const GearJointDef& def)
 	else
 	{
 		const auto prismatic = static_cast<PrismaticJoint*>(def.joint2);
-		m_localAnchorD = prismatic->m_localAnchorA;
-		m_localAnchorB = prismatic->m_localAnchorB;
-		m_referenceAngleB = prismatic->m_referenceAngle;
-		m_localAxisD = prismatic->m_localXAxisA;
+		m_localAnchorD = prismatic->GetLocalAnchorA();
+		m_localAnchorB = prismatic->GetLocalAnchorB();
+		m_referenceAngleB = prismatic->GetReferenceAngle();
+		m_localAxisD = prismatic->GetLocalAxisA();
 
 		const auto pD = m_localAnchorD;
 		const auto pB = InverseRotate(Rotate(m_localAnchorB, xfB.q) + (xfB.p - xfD.p), xfD.q);
