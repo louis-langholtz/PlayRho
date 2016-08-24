@@ -70,6 +70,8 @@ struct WheelJointDef : public JointDef
 class WheelJoint : public Joint
 {
 public:
+	WheelJoint(const WheelJointDef& def);
+	
 	Vec2 GetAnchorA() const override;
 	Vec2 GetAnchorB() const override;
 
@@ -122,9 +124,6 @@ public:
 	void Dump() override;
 
 protected:
-
-	friend class Joint;
-	WheelJoint(const WheelJointDef& def);
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

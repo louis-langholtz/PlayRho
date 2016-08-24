@@ -56,6 +56,8 @@ struct RopeJointDef : public JointDef
 class RopeJoint : public Joint
 {
 public:
+	RopeJoint(const RopeJointDef& data);
+
 	Vec2 GetAnchorA() const override;
 	Vec2 GetAnchorB() const override;
 
@@ -78,9 +80,6 @@ public:
 	void Dump() override;
 
 protected:
-
-	friend class Joint;
-	RopeJoint(const RopeJointDef& data);
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

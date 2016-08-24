@@ -81,6 +81,8 @@ struct RevoluteJointDef : public JointDef
 class RevoluteJoint : public Joint
 {
 public:
+	RevoluteJoint(const RevoluteJointDef& def);
+
 	Vec2 GetAnchorA() const override;
 	Vec2 GetAnchorB() const override;
 
@@ -147,10 +149,7 @@ public:
 
 protected:
 	
-	friend class Joint;
 	friend class GearJoint;
-
-	RevoluteJoint(const RevoluteJointDef& def);
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

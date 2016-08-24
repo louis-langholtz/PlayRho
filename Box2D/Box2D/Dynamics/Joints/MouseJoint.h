@@ -63,6 +63,7 @@ struct MouseJointDef : public JointDef
 class MouseJoint : public Joint
 {
 public:
+	MouseJoint(const MouseJointDef& def);
 
 	/// Implements Joint.
 	Vec2 GetAnchorA() const override;
@@ -99,10 +100,6 @@ public:
 	void ShiftOrigin(const Vec2& newOrigin) override;
 
 protected:
-	friend class Joint;
-
-	MouseJoint(const MouseJointDef& def);
-
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;
 	bool SolvePositionConstraints(const SolverData& data) override;

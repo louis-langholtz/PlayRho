@@ -76,6 +76,8 @@ struct PrismaticJointDef : public JointDef
 class PrismaticJoint : public Joint
 {
 public:
+	PrismaticJoint(const PrismaticJointDef& def);
+
 	Vec2 GetAnchorA() const override;
 	Vec2 GetAnchorB() const override;
 
@@ -138,9 +140,7 @@ public:
 	void Dump() override;
 
 protected:
-	friend class Joint;
 	friend class GearJoint;
-	PrismaticJoint(const PrismaticJointDef& def);
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

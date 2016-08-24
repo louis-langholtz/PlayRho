@@ -57,6 +57,8 @@ struct WeldJointDef : public JointDef
 class WeldJoint : public Joint
 {
 public:
+	WeldJoint(const WeldJointDef& def);
+
 	Vec2 GetAnchorA() const override;
 	Vec2 GetAnchorB() const override;
 
@@ -84,10 +86,6 @@ public:
 	void Dump() override;
 
 protected:
-
-	friend class Joint;
-
-	WeldJoint(const WeldJointDef& def);
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

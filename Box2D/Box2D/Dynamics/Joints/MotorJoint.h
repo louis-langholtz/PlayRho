@@ -54,6 +54,8 @@ struct MotorJointDef : public JointDef
 class MotorJoint : public Joint
 {
 public:
+	MotorJoint(const MotorJointDef& def);
+
 	Vec2 GetAnchorA() const override;
 	Vec2 GetAnchorB() const override;
 
@@ -90,10 +92,6 @@ public:
 	void Dump() override;
 
 protected:
-
-	friend class Joint;
-
-	MotorJoint(const MotorJointDef& def);
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

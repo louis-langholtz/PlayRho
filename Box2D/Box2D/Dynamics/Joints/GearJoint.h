@@ -53,6 +53,8 @@ struct GearJointDef : public JointDef
 class GearJoint : public Joint
 {
 public:
+	GearJoint(const GearJointDef& data);
+	
 	Vec2 GetAnchorA() const override;
 	Vec2 GetAnchorB() const override;
 
@@ -73,9 +75,6 @@ public:
 	void Dump() override;
 
 protected:
-
-	friend class Joint;
-	GearJoint(const GearJointDef& data);
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

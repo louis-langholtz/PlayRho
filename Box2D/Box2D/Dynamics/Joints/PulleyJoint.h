@@ -72,6 +72,8 @@ struct PulleyJointDef : public JointDef
 class PulleyJoint : public Joint
 {
 public:
+	PulleyJoint(const PulleyJointDef& data);
+
 	Vec2 GetAnchorA() const override;
 	Vec2 GetAnchorB() const override;
 
@@ -106,9 +108,6 @@ public:
 	void ShiftOrigin(const Vec2& newOrigin) override;
 
 protected:
-
-	friend class Joint;
-	PulleyJoint(const PulleyJointDef& data);
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

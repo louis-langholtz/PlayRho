@@ -51,6 +51,8 @@ struct FrictionJointDef : public JointDef
 class FrictionJoint : public Joint
 {
 public:
+	FrictionJoint(const FrictionJointDef& def);
+
 	Vec2 GetAnchorA() const override;
 	Vec2 GetAnchorB() const override;
 
@@ -79,10 +81,6 @@ public:
 	void Dump() override;
 
 protected:
-
-	friend class Joint;
-
-	FrictionJoint(const FrictionJointDef& def);
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;
