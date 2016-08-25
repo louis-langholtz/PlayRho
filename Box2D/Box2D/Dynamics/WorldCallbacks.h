@@ -25,12 +25,9 @@
 namespace box2d {
 
 struct Vec2;
-struct Transformation;
 class Fixture;
-class Body;
 class Joint;
 class Contact;
-struct ContactResult;
 struct Manifold;
 
 /// Joints and fixtures are destroyed when their associated

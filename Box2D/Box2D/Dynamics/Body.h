@@ -31,8 +31,6 @@
 namespace box2d {
 
 class Fixture;
-class Joint;
-class Contact;
 class World;
 struct FixtureDef;
 

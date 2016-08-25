@@ -33,8 +33,6 @@ class Contact;
 class Joint;
 class StackAllocator;
 class ContactListener;
-struct ContactVelocityConstraint;
-struct Profile;
 
 /// Island.
 /// @detail A container of bodies contacts and joints relavent to handling world dynamics.
