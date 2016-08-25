@@ -23,38 +23,10 @@
 #include <Box2D/Common/BlockAllocator.h>
 #include <Box2D/Common/Math.h>
 #include <Box2D/Collision/AABB.hpp>
+#include <Box2D/Collision/MassData.hpp>
 #include <memory>
 
 namespace box2d {
-
-/// This holds the mass data computed for a shape.
-struct MassData
-{
-	MassData() = default;
-
-	/// Initializing constructor.
-	/// @param m Non-negative mass in kg.
-	/// @param c Position of the shape's centroid relative to the shape's origin.
-	/// @param i Non-negative rotational inertia of the shape about the local origin.
-	constexpr MassData(float_t m, Vec2 c, float_t i) noexcept: mass{m}, center{c}, I{i}
-	{
-		assert(mass >= 0);
-		assert(I >= 0);
-	}
-
-	/// Mass of the shape in kilograms.
-	/// This should NEVER be a negative value.
-	/// @note Behavior is undefined if this value is negative.
-	float_t mass;
-
-	/// The position of the shape's centroid relative to the shape's origin.
-	Vec2 center;
-
-	/// The rotational inertia of the shape about the local origin.
-	/// This should NEVER be a negative value.
-	/// @note Behavior is undefined if this value is negative.
-	float_t I;
-};
 
 /// Abstract base class for shapes.
 /// @detail A shape is used for collision detection. You can create a shape however you like.

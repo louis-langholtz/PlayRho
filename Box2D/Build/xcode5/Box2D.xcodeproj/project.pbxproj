@@ -189,6 +189,8 @@
 		47AA63A91D10786F00726CA2 /* ContactIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47AA63A71D10786F00726CA2 /* ContactIterator.hpp */; };
 		47AA63AC1D1078D000726CA2 /* ConstContactIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AA63AA1D1078D000726CA2 /* ConstContactIterator.cpp */; };
 		47AA63AD1D1078D000726CA2 /* ConstContactIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47AA63AB1D1078D000726CA2 /* ConstContactIterator.hpp */; };
+		47CB34401D6F3A8500828126 /* MassData.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47CB343D1D6F3A8500828126 /* MassData.hpp */; };
+		47CB34411D6F3A8500828126 /* MassData.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47CB343D1D6F3A8500828126 /* MassData.hpp */; };
 		47F932A51D11C283006A193C /* AllocatedArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47F932A31D11C283006A193C /* AllocatedArray.cpp */; };
 		47F932A61D11C283006A193C /* AllocatedArray.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47F932A41D11C283006A193C /* AllocatedArray.hpp */; };
 		805900B1184EEE0F00C8ECA3 /* DebugDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 805900AA184EEE0F00C8ECA3 /* DebugDraw.cpp */; };
@@ -462,6 +464,7 @@
 		47AA63A71D10786F00726CA2 /* ContactIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactIterator.hpp; sourceTree = "<group>"; };
 		47AA63AA1D1078D000726CA2 /* ConstContactIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConstContactIterator.cpp; sourceTree = "<group>"; };
 		47AA63AB1D1078D000726CA2 /* ConstContactIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConstContactIterator.hpp; sourceTree = "<group>"; };
+		47CB343D1D6F3A8500828126 /* MassData.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MassData.hpp; sourceTree = "<group>"; };
 		47F932A31D11C283006A193C /* AllocatedArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AllocatedArray.cpp; sourceTree = "<group>"; };
 		47F932A41D11C283006A193C /* AllocatedArray.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AllocatedArray.hpp; sourceTree = "<group>"; };
 		80154ACD141DED6B00C8251F /* Tumbler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tumbler.h; sourceTree = "<group>"; };
@@ -804,6 +807,7 @@
 				80BB8931141C3E5900F1753A /* DynamicTree.h */,
 				80BB8932141C3E5900F1753A /* TimeOfImpact.cpp */,
 				80BB8933141C3E5900F1753A /* TimeOfImpact.h */,
+				47CB343D1D6F3A8500828126 /* MassData.hpp */,
 				80BB8934141C3E5900F1753A /* Shapes */,
 			);
 			path = Collision;
@@ -1132,6 +1136,7 @@
 				47AA5DDF1C4C5FBE008AF2BA /* Fixture.h in Headers */,
 				47AA5DE01C4C5FBE008AF2BA /* Island.h in Headers */,
 				47AA5DE11C4C5FBE008AF2BA /* TimeStep.h in Headers */,
+				47CB34411D6F3A8500828126 /* MassData.hpp in Headers */,
 				47AA5DE21C4C5FBE008AF2BA /* World.h in Headers */,
 				4726DD2D1D31B4090012A882 /* AABB.hpp in Headers */,
 				47AA5DE31C4C5FBE008AF2BA /* WorldCallbacks.h in Headers */,
@@ -1186,6 +1191,7 @@
 				477DB29D1D14BCA700846ED6 /* ConstContactEdgeIterator.hpp in Headers */,
 				80BB898E141C3E5900F1753A /* Collision.h in Headers */,
 				80BB8990141C3E5900F1753A /* Distance.h in Headers */,
+				47CB34401D6F3A8500828126 /* MassData.hpp in Headers */,
 				80BB8992141C3E5900F1753A /* DynamicTree.h in Headers */,
 				80BB8994141C3E5900F1753A /* TimeOfImpact.h in Headers */,
 				80BB8996141C3E5900F1753A /* ChainShape.h in Headers */,

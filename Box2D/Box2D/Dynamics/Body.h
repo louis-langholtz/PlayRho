@@ -21,7 +21,7 @@
 #define B2_BODY_H
 
 #include <Box2D/Common/Math.h>
-#include <Box2D/Collision/Shapes/Shape.h>
+#include <Box2D/Collision/MassData.hpp>
 #include <Box2D/Dynamics/BodyList.hpp>
 #include <Box2D/Dynamics/FixtureList.hpp>
 #include <Box2D/Dynamics/Contacts/ContactEdgeList.hpp>
