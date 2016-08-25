@@ -131,10 +131,10 @@ void Fixture::SetSensor(bool sensor)
 void Fixture::Dump(island_count_t bodyIndex)
 {
 	log("    FixtureDef fd;\n");
-	log("    fd.friction = %.15lef;\n", m_friction);
-	log("    fd.restitution = %.15lef;\n", m_restitution);
+	log("    fd.friction = %.15lef;\n", GetFriction());
+	log("    fd.restitution = %.15lef;\n", GetRestitution());
 	log("    fd.density = %.15lef;\n", GetDensity());
-	log("    fd.isSensor = bool(%d);\n", m_isSensor);
+	log("    fd.isSensor = bool(%d);\n", IsSensor());
 	log("    fd.filter.categoryBits = uint16(%d);\n", m_filter.categoryBits);
 	log("    fd.filter.maskBits = uint16(%d);\n", m_filter.maskBits);
 	log("    fd.filter.groupIndex = int16(%d);\n", m_filter.groupIndex);
