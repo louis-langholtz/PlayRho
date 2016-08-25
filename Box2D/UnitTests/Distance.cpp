@@ -25,7 +25,7 @@ TEST(Distance, MatchingCircles)
 	
 	EXPECT_EQ(output.witnessPoints.a, pos1);
 	EXPECT_EQ(output.witnessPoints.b, pos1);
-	EXPECT_EQ(decltype(output.iterations){0}, output.iterations);
+	EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
 	
 	EXPECT_EQ(cache.GetCount(), decltype(cache.GetCount()){1});
 	
@@ -399,7 +399,7 @@ TEST(Distance, SquareTwice)
 	EXPECT_EQ(output.witnessPoints.b.x, 2);
 	EXPECT_EQ(output.witnessPoints.b.y, 2);
 
-	EXPECT_EQ(decltype(output.iterations){0}, output.iterations);
+	EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
 	
 	EXPECT_EQ(cache.GetCount(), decltype(cache.GetCount()){1});
 	
@@ -541,7 +541,7 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
 	EXPECT_EQ(output.witnessPoints.b.x, 0);
 	EXPECT_EQ(output.witnessPoints.b.y, 0.5);
 	
-	EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
+	EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
 	
 	EXPECT_EQ(cache.GetCount(), decltype(cache.GetCount()){3});
 	

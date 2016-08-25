@@ -181,11 +181,6 @@ using ClipArray = std::array<ClipVertex, MaxManifoldPoints>;
 ClipArray::size_type ClipSegmentToLine(ClipArray& vOut, const ClipArray& vIn,
 										   const Vec2& normal, float_t offset, ContactFeature::index_t indexA);
 
-/// Determine if two generic shapes overlap.
-bool TestOverlap(const Shape& shapeA, child_count_t indexA,
-				   const Shape& shapeB, child_count_t indexB,
-				   const Transformation& xfA, const Transformation& xfB);
-
 // ---------------- Inline Functions ------------------------------------------
 
 } /* namespace box2d */

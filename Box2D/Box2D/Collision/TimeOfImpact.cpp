@@ -25,11 +25,6 @@
 
 namespace box2d {
 
-float_t toiTime, toiMaxTime;
-uint32 toiCalls, toiIters;
-std::remove_const<decltype(MaxTOIIterations)>::type toiMaxIters;
-uint32 toiRootIters, toiMaxRootIters;
-
 struct Separation
 {
 	Separation() noexcept = default;
@@ -237,9 +232,8 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 	assert(IsValid(sweepB.pos0));
 	assert(IsValid(sweepB.pos1));
 	
-	++toiCalls;
-
-	auto output = TOIOutput{TOIOutput::e_unknown, 0, tMax};
+	auto stats = TOIOutput::Stats{0, 0, 0, 0, 0};
+	auto output = TOIOutput{TOIOutput::e_unknown, tMax, stats};
 
 	// Large rotations can make the root finder fail, so we normalize the  sweep angles.
 	sweepA = GetAnglesNormalized(sweepA);
@@ -254,7 +248,6 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 	const auto maxTargetSquared = Square(maxTarget);
 
 	auto t1 = float_t{0}; // Will be set to value of t2
-	auto iter = TOIOutput::count_type{0};
 
 	// Prepare input for distance query.
 	SimplexCache cache;
@@ -269,19 +262,22 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 
 			// Get the distance between shapes. We can also use the results
 			// to get a separating axis.
-			const auto distanceOutput = Distance(cache, proxyA, transformA, proxyB, transformB);
-			const auto distanceSquared = LengthSquared(distanceOutput.witnessPoints.a - distanceOutput.witnessPoints.b);
+			const auto distanceInfo = Distance(cache, proxyA, transformA, proxyB, transformB);
+			++stats.toi_iters;
+			stats.sum_dist_iters += distanceInfo.iterations;
+			stats.max_dist_iters = Max(stats.max_dist_iters, distanceInfo.iterations);
+			const auto distanceSquared = LengthSquared(distanceInfo.witnessPoints.a - distanceInfo.witnessPoints.b);
 
 			// If the shapes aren't separated, give up on continuous collision.
 			if (distanceSquared <= float_t{0}) // Failure!
 			{
-				output = TOIOutput{TOIOutput::e_overlapped, iter, 0};
+				output = TOIOutput{TOIOutput::e_overlapped, 0, stats};
 				break;
 			}
 
 			if (distanceSquared < maxTargetSquared) // Victory!
 			{
-				output = TOIOutput{TOIOutput::e_touching, iter, t1};
+				output = TOIOutput{TOIOutput::e_touching, t1, stats};
 				break;
 			}
 		}
@@ -332,7 +328,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 				// output = TOIOutput{TOIOutput::e_separated, tMax};
 				// t2 seems more appropriate however given s2 was derived from it.
 				// Meanwhile t2 always seems equal to input.tMax at this point.
-				output = TOIOutput{TOIOutput::e_separated, iter, t2};
+				output = TOIOutput{TOIOutput::e_separated, t2, stats};
 				done = true;
 				break;
 			}
@@ -353,7 +349,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 			//assert(s1 >= minTarget);
 			if (evaluatedDistance < minTarget)
 			{
-				output = TOIOutput{TOIOutput::e_failed, iter, t1};
+				output = TOIOutput{TOIOutput::e_failed, t1, stats};
 				done = true;
 				break;
 			}
@@ -362,7 +358,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 			if (evaluatedDistance <= maxTarget)
 			{
 				// Victory! t1 should hold the TOI (could be 0.0).
-				output = TOIOutput{TOIOutput::e_touching, iter, t1};
+				output = TOIOutput{TOIOutput::e_touching, t1, stats};
 				done = true;
 				break;
 			}
@@ -404,27 +400,37 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 			}
 			while (rootIterCount < MaxTOIRootIterCount);
 
-			toiRootIters += rootIterCount;
-			toiMaxRootIters = Max(toiMaxRootIters, rootIterCount);
+			stats.sum_root_iters += rootIterCount;
+			stats.max_root_iters = Max(stats.max_root_iters, rootIterCount);
 		}
-
-		++iter;
-		++toiIters;
 
 		if (done)
 			break;
 
-		if (iter == MaxTOIIterations)
+		if (stats.toi_iters == MaxTOIIterations)
 		{
 			// Root finder got stuck. Semi-victory.
-			output = TOIOutput{TOIOutput::e_failed, iter, t1};
+			output = TOIOutput{TOIOutput::e_failed, t1, stats};
 			break;
 		}
 	}
 
-	toiMaxIters = Max(toiMaxIters, iter);
-	
 	return output;
 }
+
+bool TestOverlap(const Shape& shapeA, child_count_t indexA,
+				 const Shape& shapeB, child_count_t indexB,
+				 const Transformation& xfA, const Transformation& xfB)
+{
+	const auto proxyA = GetDistanceProxy(shapeA, indexA);
+	const auto proxyB = GetDistanceProxy(shapeB, indexB);
 	
+	SimplexCache cache;
+	const auto distanceInfo = Distance(cache, proxyA, xfA, proxyB, xfB);
+	const auto distanceSquared = LengthSquared(distanceInfo.witnessPoints.a - distanceInfo.witnessPoints.b);
+	const auto totalRadiusSquared = Square(proxyA.GetRadius() + proxyB.GetRadius());
+	const auto separation_amount = distanceSquared - totalRadiusSquared;
+	return (separation_amount < 0) || almost_equal(separation_amount, 0);
+}
+
 } // namespace box2d

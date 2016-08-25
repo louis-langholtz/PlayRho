@@ -310,8 +310,9 @@ class MyContactListener: public ContactListener
 public:
 	using PreSolver = std::function<void(Contact&, const Manifold&)>;
 	using PostSolver = std::function<void(Contact&, const ContactImpulse&, ContactListener::iteration_type)>;
+	using Ender = std::function<void(Contact&)>;
 
-	MyContactListener(PreSolver&& pre, PostSolver&& post): presolver(pre), postsolver(post) {}
+	MyContactListener(PreSolver&& pre, PostSolver&& post, Ender&& end): presolver(pre), postsolver(post), ender(end) {}
 
 	virtual ~MyContactListener() {}
 
@@ -333,6 +334,8 @@ public:
 
 		body_a[1] = contact.GetFixtureA()->GetBody()->GetPosition();
 		body_b[1] = contact.GetFixtureB()->GetBody()->GetPosition();
+		
+		ender(contact);
 	}
 	
 	void PreSolve(Contact& contact, const Manifold& oldManifold) override
@@ -353,6 +356,7 @@ public:
 	Vec2 body_b[2] = {Vec2_zero, Vec2_zero};
 	PreSolver presolver;
 	PostSolver postsolver;
+	Ender ender;
 };
 
 TEST(World, NoCorrectionsWithNoVelOrPosIterations)
@@ -363,15 +367,16 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 	auto postsolved = unsigned{0};
 	MyContactListener listener{
 		[&](Contact& contact, const Manifold& oldManifold) { ++presolved; },
-		[&](Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) { ++postsolved; }
+		[&](Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) { ++postsolved; },
+		[&](Contact& contact) {},
 	};
 
 	const Vec2 gravity{0, 0};
 	World world{gravity};
 	world.SetContactListener(&listener);
 	
-	ASSERT_EQ(listener.begin_contacts, 0);
-	ASSERT_EQ(listener.end_contacts, 0);
+	ASSERT_EQ(listener.begin_contacts, unsigned(0));
+	ASSERT_EQ(listener.end_contacts, unsigned(0));
 	
 	auto body_def = BodyDef{};
 	body_def.type = BodyType::Dynamic;
@@ -450,7 +455,8 @@ TEST(World, CollidingDynamicBodies)
 	
 	MyContactListener listener{
 		[](Contact& contact, const Manifold& oldManifold) {},
-		[](Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) {}
+		[](Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) {},
+		[&](Contact& contact) {},
 	};
 
 	const auto gravity = Vec2_zero;
@@ -581,7 +587,8 @@ TEST(World, SpeedingBulletBallWontTunnel)
 
 	MyContactListener listener{
 		[](Contact& contact, const Manifold& oldManifold) {},
-		[](Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) {}
+		[](Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) {},
+		[&](Contact& contact) {},
 	};
 	world.SetContactListener(&listener);
 
@@ -815,7 +822,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 		ASSERT_NE(ball_fixture, nullptr);
 	}
 
-	constexpr unsigned numBodies = 6;
+	constexpr unsigned numBodies = 1;
 	Vec2 last_opos[numBodies];
 	Body *bodies[numBodies];
 	for (auto i = decltype(numBodies){0}; i < numBodies; ++i)
@@ -858,7 +865,11 @@ TEST(World, MouseJointWontCauseTunnelling)
 
 	auto max_velocity = float_t(0);
 
-	const auto time_inc = float_t(.01);
+	//const auto time_inc = float_t(.0043268126901); // numBodies = 6, somewhat dependent on fixture density (10 or less?).
+	//const auto time_inc = float_t(.0039224); // numBodies = 4, maybe dependent on fixture density
+	//const auto time_inc = float_t(.003746); // numBodies = 2, maybe dependent on fixture density
+	//const auto time_inc = float_t(.0036728129); // numBodies = 1, maybe dependent on fixture density
+	const auto time_inc = float_t(.00367281295); // numBodies = 1, maybe dependent on fixture density
 
 	auto angle = float_t(0);
 	auto anglular_speed = float_t(0.01); // radians / timestep
@@ -870,6 +881,25 @@ TEST(World, MouseJointWontCauseTunnelling)
 	MyContactListener listener{
 		[&](Contact& contact, const Manifold& old_manifold)
 		{
+			// PreSolve...
+			const auto new_manifold = contact.GetManifold();
+			ASSERT_NE(old_manifold.GetType(), Manifold::e_circles);
+			ASSERT_NE(new_manifold.GetType(), Manifold::e_circles);
+#if 0
+			if (old_manifold.GetType() != Manifold::e_unset && new_manifold.GetType() != Manifold::e_unset)
+			{
+				if (old_manifold.GetType() != new_manifold.GetType())
+				{
+					const auto oln = old_manifold.GetLocalNormal();
+					const auto nln = new_manifold.GetLocalNormal();
+					if (Dot(oln, nln) <= 0)
+					{
+						std::cout << "PreSolve normal changed";
+						std::cout << std::endl;
+					}
+				}
+			}
+#endif
 		},
 		[&](Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved)
 		{
@@ -926,15 +956,66 @@ TEST(World, MouseJointWontCauseTunnelling)
 				std::cout << " bodyA=(" << body_a->GetPosition().x << "," << body_a->GetPosition().y << ")";
 				if (body_a == ball_body) std::cout << " ball";
 				if (!body_a->IsSpeedable()) std::cout << " wall";
+				std::cout << " " << body_a;
 				std::cout << std::endl;
 				std::cout << " bodyB=(" << body_b->GetPosition().x << "," << body_b->GetPosition().y << ")";
 				if (body_b == ball_body) std::cout << " ball";
 				if (!body_b->IsSpeedable()) std::cout << " wall";
+				std::cout << " " << body_b;
 				std::cout << std::endl;
 
 				//GTEST_FATAL_FAILURE_("");				
 			}
-		}
+		},
+		[=](Contact& contact) {
+			const auto fA = contact.GetFixtureA();
+			const auto fB = contact.GetFixtureB();
+			const auto body_a = fA->GetBody();
+			const auto body_b = fB->GetBody();
+
+			auto escaped = false;
+			for (auto&& body: {body_a, body_b})
+			{
+				if (!body->IsSpeedable())
+				{
+					continue;
+				}
+
+				if (body->GetPosition().x >= right_edge_x)
+				{
+					escaped = true;
+				}
+				if (body->GetPosition().y >= top_edge_y)
+				{
+					escaped = true;
+				}
+				if (body->GetPosition().x <= left_edge_x)
+				{
+					escaped = true;
+				}
+				if (body->GetPosition().y <= btm_edge_y)
+				{
+					escaped = true;					
+				}
+			}
+			if (escaped && !contact.IsTouching())
+			{
+				std::cout << "Escaped at EndContact[" << &contact << "]:";
+				std::cout << " toiSteps=" << static_cast<unsigned>(contact.GetToiCount());
+				std::cout << " toiCalls=" << static_cast<unsigned>(contact.GetToiCalls());
+				std::cout << " itersTot=" << static_cast<unsigned>(contact.GetToiItersTotal());
+				std::cout << " itersMax=" << static_cast<unsigned>(contact.GetToiItersMax());
+				std::cout << " distSum=" << static_cast<unsigned>(contact.GetDistItersTotal());
+				std::cout << " distMax=" << static_cast<unsigned>(contact.GetDistItersMax());
+				std::cout << " rootSum=" << static_cast<unsigned>(contact.GetRootItersTotal());
+				std::cout << " rootMax=" << static_cast<unsigned>(contact.GetRootItersMax());
+				std::cout << " toiValid=" << contact.HasValidToi();
+				std::cout << " a[" << body_a << "]@(" << body_a->GetPosition().x << "," << body_a->GetPosition().y << ")";
+				std::cout << " b[" << body_b << "]@(" << body_b->GetPosition().x << "," << body_b->GetPosition().y << ")";
+				std::cout << std::endl;
+				//exit(1);
+			}
+		},
 	};
 	world.SetContactListener(&listener);
 	ASSERT_EQ(listener.begin_contacts, unsigned{0});
@@ -952,15 +1033,12 @@ TEST(World, MouseJointWontCauseTunnelling)
 			
 			ASSERT_LT(ball_body->GetPosition().x, right_edge_x);
 			ASSERT_LT(ball_body->GetPosition().y, top_edge_y);
-
 			ASSERT_GT(ball_body->GetPosition().x, left_edge_x);
 			ASSERT_GT(ball_body->GetPosition().y, btm_edge_y);
-			
 			for (auto i = decltype(numBodies){0}; i < numBodies; ++i)
 			{
 				ASSERT_LT(bodies[i]->GetPosition().x, right_edge_x);
-				ASSERT_LT(bodies[i]->GetPosition().y, top_edge_y);
-			
+				ASSERT_LT(bodies[i]->GetPosition().y, top_edge_y);			
 				ASSERT_GT(bodies[i]->GetPosition().x, left_edge_x);
 				ASSERT_GT(bodies[i]->GetPosition().y, btm_edge_y);
 			}
@@ -1002,7 +1080,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 		distance_speed *= distance_accel;
 
 		ASSERT_NE(ball_body->GetPosition(), Vec2_zero);
-		
+#if 0
 		if (outer > 100)
 		{
 			for (auto i = decltype(numBodies){0}; i < numBodies; ++i)
@@ -1012,6 +1090,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 				last_opos[i] = bodies[i]->GetPosition();
 			}
 		}
+#endif
 	}
 	std::cout << "angle=" << angle;
 	std::cout << " target=(" << distance * std::cos(angle) << "," << distance * std::sin(angle) << ")";

@@ -25,7 +25,6 @@
 #include <Box2D/Dynamics/Contacts/EdgeAndPolygonContact.h>
 #include <Box2D/Dynamics/Contacts/ChainAndCircleContact.h>
 #include <Box2D/Dynamics/Contacts/ChainAndPolygonContact.h>
-#include <Box2D/Dynamics/Contacts/ContactSolver.h>
 
 #include <Box2D/Collision/TimeOfImpact.h>
 #include <Box2D/Collision/DistanceProxy.hpp>
@@ -141,8 +140,8 @@ void Contact::Update(ContactListener* listener)
 	m_flags |= e_enabledFlag;
 
 	// Note: do not assume the fixture AABBs are overlapping or are valid.
-	auto touching = false;
 	auto wasTouching = IsTouching();
+	auto touching = false;
 
 	const auto bodyA = m_fixtureA->GetBody();
 	const auto bodyB = m_fixtureB->GetBody();
@@ -201,14 +200,7 @@ void Contact::Update(ContactListener* listener)
 		}
 	}
 
-	if (touching)
-	{
-		SetTouching();
-	}
-	else
-	{
-		UnsetTouching();
-	}
+	SetTouching(touching);
 
 	if (listener)
 	{
@@ -275,6 +267,15 @@ bool Contact::UpdateTOI()
 	// Computes the time of impact in interval [0, 1]
 	const auto output = TimeOfImpact(GetDistanceProxy(*fA->GetShape(), GetChildIndexA()), bA->m_sweep,
 									 GetDistanceProxy(*fB->GetShape(), GetChildIndexB()), bB->m_sweep);
+	++m_toiCalls;
+	
+	m_toiItersTotal += output.get_toi_iters();
+	m_distItersTotal += output.get_sum_dist_iters();
+	m_rootItersTotal += output.get_sum_root_iters();
+
+	m_max_toi_iters = Max(m_max_toi_iters, output.get_toi_iters());
+	m_max_dist_iters = Max(m_max_dist_iters, output.get_max_dist_iters());
+	m_max_root_iters = Max(m_max_root_iters, output.get_max_root_iters());
 	
 	// Uses Min function to handle floating point imprecision possibly otherwise calculating a TOI > 1.
 	const auto toi = IsValidForTime(output.get_state())?

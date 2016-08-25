@@ -77,17 +77,14 @@ public:
 		m_bullet->SetTransform(Vec2(m_x, 10.0f), 0.0f);
 		m_bullet->SetVelocity(Velocity{Vec2(0.0f, -50.0f), 0});
 
-		extern uint32 gjkCalls, gjkIters, gjkMaxIters;
-		extern int32 toiCalls, toiIters;
-		extern std::remove_const<decltype(MaxTOIIterations)>::type toiMaxIters;
-		extern int32 toiRootIters, toiMaxRootIters;
+		uint32 gjkCalls, gjkIters, gjkMaxIters;
+		std::remove_const<decltype(MaxTOIIterations)>::type toiMaxIters;
+		int32 toiRootIters, toiMaxRootIters;
 
 		gjkCalls = 0;
 		gjkIters = 0;
 		gjkMaxIters = 0;
 
-		toiCalls = 0;
-		toiIters = 0;
 		toiMaxIters = 0;
 		toiRootIters = 0;
 		toiMaxRootIters = 0;
@@ -97,9 +94,8 @@ public:
 	{
 		Test::Step(settings);
 
-		extern uint32 gjkCalls, gjkIters, gjkMaxIters;
-		extern int32 toiCalls, toiIters;
-		extern int32 toiRootIters, toiMaxRootIters;
+		uint32 gjkCalls = 0, gjkIters = 0, gjkMaxIters = 0;
+		int32 toiRootIters = 0, toiMaxRootIters = 0;
 
 		if (gjkCalls > 0)
 		{
@@ -108,6 +104,15 @@ public:
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
+		unsigned toiCalls = 0;
+		unsigned toiIters = 0;
+#if 0
+		for (auto&& c: m_world->GetContacts())
+		{
+			c.GetToiCount();
+			c.m_toiCalls;
+		}
+#endif
 		if (toiCalls > 0)
 		{
 			g_debugDraw.DrawString(5, m_textLine, "toi calls = %d, ave toi iters = %3.1f, max toi iters = %d",

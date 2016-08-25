@@ -79,29 +79,13 @@ public:
 			body->SetLinearVelocity(Vec2(0.0f, -100.0f));
 		}
 #endif
-
-		extern uint32 gjkCalls, gjkIters, gjkMaxIters;
-		extern int32 toiCalls, toiIters;
-		extern int32 toiRootIters, toiMaxRootIters;
-		extern float_t toiTime, toiMaxTime;
-
-		gjkCalls = 0; gjkIters = 0; gjkMaxIters = 0;
-		toiCalls = 0; toiIters = 0;
-		toiRootIters = 0; toiMaxRootIters = 0;
-		toiTime = 0.0f; toiMaxTime = 0.0f;
 	}
 
 	void Launch()
 	{
-		extern uint32 gjkCalls, gjkIters, gjkMaxIters;
-		extern int32 toiCalls, toiIters;
-		extern int32 toiRootIters, toiMaxRootIters;
-		extern float_t toiTime, toiMaxTime;
+		uint32 gjkCalls, gjkIters, gjkMaxIters;
 
 		gjkCalls = 0; gjkIters = 0; gjkMaxIters = 0;
-		toiCalls = 0; toiIters = 0;
-		toiRootIters = 0; toiMaxRootIters = 0;
-		toiTime = 0.0f; toiMaxTime = 0.0f;
 
 		m_body->SetTransform(Vec2(0.0f, 20.0f), 0.0f);
 		m_angularVelocity = RandomFloat(-50.0f, 50.0f);
@@ -112,7 +96,7 @@ public:
 	{
 		Test::Step(settings);
 
-		extern uint32 gjkCalls, gjkIters, gjkMaxIters;
+		uint32 gjkCalls = 0, gjkIters = 0, gjkMaxIters = 0;
 
 		if (gjkCalls > 0)
 		{
@@ -121,9 +105,8 @@ public:
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
-		extern int32 toiCalls, toiIters;
-		extern int32 toiRootIters, toiMaxRootIters;
-		extern float_t toiTime, toiMaxTime;
+		int32 toiCalls = 0, toiIters = 0;
+		int32 toiRootIters = 0, toiMaxRootIters = 0;
 
 		if (toiCalls > 0)
 		{
@@ -135,8 +118,6 @@ public:
 				toiRootIters / float_t(toiCalls), toiMaxRootIters);
 			m_textLine += DRAW_STRING_NEW_LINE;
 
-			g_debugDraw.DrawString(5, m_textLine, "ave [max] toi time = %.1f [%.1f] (microseconds)",
-				1000.0f * toiTime / float_t(toiCalls), 1000.0f * toiMaxTime);
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 

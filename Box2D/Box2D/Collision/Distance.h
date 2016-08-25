@@ -34,16 +34,27 @@ namespace box2d
 		Vec2 b;
 	};
 		
-	/// Output for Distance.
+	/// Distance Output.
 	struct DistanceOutput
 	{
+		using iteration_type = std::remove_const<decltype(MaxDistanceIterations)>::type;
+
 		DistanceOutput() = default;
 		DistanceOutput(const DistanceOutput& copy) = default;
 
-		constexpr DistanceOutput(const WitnessPoints& wp, unsigned it) noexcept: witnessPoints{wp}, iterations{it} {}
+		/// Initializing constructor.
+		/// @note Behavior is undefined if the given iterations value is greater than
+		///   <code>MaxDistanceIterations</code>.
+		/// @param wp Witness points (closest points on shapeA and shapeB).
+		/// @param it Iterations it took to determine the witness points (0 to
+		///   <code>MaxDistanceIterations</code>).
+		constexpr DistanceOutput(const WitnessPoints& wp, iteration_type it) noexcept: witnessPoints{wp}, iterations{it}
+		{
+			assert(it <= MaxDistanceIterations);
+		}
 
-		WitnessPoints witnessPoints; ///< closest point on shapeA and closest point on shapeB
-		unsigned iterations;	///< number of GJK iterations used
+		WitnessPoints witnessPoints; ///< Closest points on shapeA and shapeB.
+		iteration_type iterations; ///< Count of iterations performed to return result.
 	};
 
 	/// Determines the closest points between two shapes.
@@ -56,7 +67,9 @@ namespace box2d
 	/// @param transformA Transoform of A.
 	/// @param proxyB Proxy B.
 	/// @param transformB Transoform of B.
-	/// @return Closest points between the two shapes and the count of iterations it took to determine them.
+	/// @return Closest points between the two shapes and the count of iterations it took to
+	///   determine them. The iteration count will always be greater than zero unless
+	///   <code>MaxDistanceIterations</code> is zero.
 	DistanceOutput Distance(SimplexCache& cache,
 							const DistanceProxy& proxyA, const Transformation& transformA,
 							const DistanceProxy& proxyB, const Transformation& transformB);

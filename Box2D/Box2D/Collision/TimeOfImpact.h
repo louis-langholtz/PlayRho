@@ -24,13 +24,46 @@
 
 namespace box2d {
 
-	class DistanceProxy;
+	class Shape;
 	
+	/// Determine if two generic shapes overlap.
+	bool TestOverlap(const Shape& shapeA, child_count_t indexA,
+					 const Shape& shapeB, child_count_t indexB,
+					 const Transformation& xfA, const Transformation& xfB);
+
 	/// TimeOfImpact Output data.
 	class TOIOutput
 	{
 	public:
-		using count_type = std::remove_const<decltype(MaxTOIIterations)>::type;
+		using toi_iter_type = std::remove_const<decltype(MaxTOIIterations)>::type;
+		using dist_iter_type = std::remove_const<decltype(MaxDistanceIterations)>::type;
+		using root_iter_type = std::remove_const<decltype(MaxTOIRootIterCount)>::type;
+		using dist_sum_type = std::conditional<sizeof(dist_iter_type) < sizeof(uint16), uint16, uint32>::type;
+		using root_sum_type = std::conditional<sizeof(root_iter_type) < sizeof(uint16), uint16, uint32>::type;
+
+		struct Stats
+		{
+			Stats() = default;
+
+			constexpr Stats(toi_iter_type toi,
+							dist_sum_type dist_sum, dist_iter_type dist_max,
+							root_sum_type root_sum, root_iter_type root_max) noexcept:
+				toi_iters{toi},
+				max_dist_iters{dist_max},
+				max_root_iters{root_max},
+				sum_dist_iters{dist_sum},
+				sum_root_iters{root_sum}
+			{}
+
+			// 3-bytes
+			toi_iter_type toi_iters; ///< Time of impact iterations.
+			dist_iter_type max_dist_iters; ///< Max. distance iterations count.
+			root_iter_type max_root_iters; ///< Max. root finder iterations for all TOI iterations.
+
+			// 4-bytes
+			dist_sum_type sum_dist_iters; ///< Sum total distance iterations.
+			root_sum_type sum_root_iters; ///< Sum total of root finder iterations.
+		};
 
 		enum State: uint16
 		{
@@ -43,26 +76,36 @@ namespace box2d {
 
 		TOIOutput() = default;
 		
-		constexpr TOIOutput(State _state, count_type iters, float_t _t): state(_state), iterations(iters), t(_t)
+		constexpr TOIOutput(State state, float_t time, Stats stats): m_state(state), m_time(time), m_stats(stats)
 		{
-			assert(t >= 0);
-			assert(t <= 1);
+			assert(time >= 0);
+			assert(time <= 1);
 		}
 
 		/// Gets the state at time factor.
-		State get_state() const noexcept { return state; }
+		State get_state() const noexcept { return m_state; }
 
 		/// Gets time factor at which state occurs.
 		/// @return Time factor in range of [0,1] into the future.
-		float_t get_t() const noexcept { return t; }
+		float_t get_t() const noexcept { return m_time; }
 
-		count_type get_iterations() const noexcept { return iterations; }
+		toi_iter_type get_toi_iters() const noexcept { return m_stats.toi_iters; }
+		
+		dist_sum_type get_sum_dist_iters() const noexcept { return m_stats.sum_dist_iters; }
+		
+		dist_iter_type get_max_dist_iters() const noexcept { return m_stats.max_dist_iters; }
 
+		root_sum_type get_sum_root_iters() const noexcept { return m_stats.sum_root_iters; }
+		
+		root_iter_type get_max_root_iters() const noexcept { return m_stats.max_root_iters; }
+		
 	private:
-		State state = e_unknown; ///< State at time factor.
-		count_type iterations;
-		float_t t; 	///< Time factor in range of [0,1] into the future.
+		State m_state = e_unknown; ///< State at time factor.
+		float_t m_time; ///< Time factor in range of [0,1] into the future.
+		Stats m_stats;
 	};
+
+	class DistanceProxy;
 
 	/// Calculates the time of impact.
 	/// @detail
@@ -80,7 +123,7 @@ namespace box2d {
 	/// @return Time of impact output data.
 	TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 						   const DistanceProxy& proxyB, Sweep sweepB,
-					   float_t tMax = float_t(1));
+						   float_t tMax = float_t(1));
 
 } // namespace box2d
 

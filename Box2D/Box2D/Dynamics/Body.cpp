@@ -85,11 +85,14 @@ uint16 Body::GetFlags(const BodyDef& bd) noexcept
 }
 
 Body::Body(const BodyDef& bd, World* world):
-	m_flags{GetFlags(bd)}, m_xf{bd.position, Rot{bd.angle}}, m_world{world},
-	m_sweep{Position{m_xf.p, bd.angle}},
+	m_flags{GetFlags(bd)},
+	m_xf{bd.position, Rot{bd.angle}},
+	m_world{world},
+	m_sweep{Position{bd.position, bd.angle}},
 	m_velocity{Velocity{bd.linearVelocity, bd.angularVelocity}},
 	m_invMass{(bd.type == BodyType::Dynamic)? float_t{1}: float_t{0}},
-	m_linearDamping{bd.linearDamping}, m_angularDamping{bd.angularDamping},
+	m_linearDamping{bd.linearDamping},
+	m_angularDamping{bd.angularDamping},
 	m_userData{bd.userData}
 {
 	assert(IsValid(bd.position));
@@ -223,7 +226,7 @@ Fixture* Body::CreateFixture(const FixtureDef& def, bool resetMassData)
 	
 	if (IsActive())
 	{
-		fixture->CreateProxies(allocator, m_world->m_contactMgr.m_broadPhase, m_xf);
+		fixture->CreateProxies(allocator, m_world->m_contactMgr.m_broadPhase, GetTransformation());
 	}
 
 	m_fixtures.push_front(fixture);
@@ -334,7 +337,7 @@ void Body::ResetMassData()
 	{
 		m_invMass = float_t{0};
 		m_invI = float_t{0};
-		m_sweep = Sweep{Position{m_xf.p, GetAngle()}};
+		m_sweep = Sweep{Position{GetPosition(), GetAngle()}};
 		UnsetMassDataDirty();
 		return;
 	}
@@ -362,7 +365,7 @@ void Body::ResetMassData()
 
 	// Move center of mass.
 	const auto oldCenter = GetWorldCenter();
-	m_sweep = Sweep{Position{Transform(localCenter, m_xf), GetAngle()}, localCenter};
+	m_sweep = Sweep{Position{Transform(localCenter, GetTransformation()), GetAngle()}, localCenter};
 
 	// Update center of mass velocity.
 	m_velocity.v += GetReversePerpendicular(GetWorldCenter() - oldCenter) * m_velocity.w;
@@ -400,7 +403,7 @@ void Body::SetMassData(const MassData& massData)
 	// Move center of mass.
 	const auto oldCenter = GetWorldCenter();
 
-	m_sweep = Sweep{Position{Transform(massData.center, m_xf), GetAngle()}, massData.center};
+	m_sweep = Sweep{Position{Transform(massData.center, GetTransformation()), GetAngle()}, massData.center};
 
 	// Update center of mass velocity.
 	m_velocity.v += GetReversePerpendicular(GetWorldCenter() - oldCenter) * m_velocity.w;
@@ -471,23 +474,26 @@ void Body::SetTransform(const Vec2& position, float_t angle)
 		return;
 	}
 
-	m_xf = Transformation{position, Rot(angle)};
-	m_sweep = Sweep{Position{Transform(GetLocalCenter(), m_xf), angle}, GetLocalCenter()};
+	const auto xf = Transformation{position, Rot(angle)};
+	m_xf = xf;
+	m_sweep = Sweep{Position{Transform(GetLocalCenter(), xf), angle}, GetLocalCenter()};
 
 	auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
 	for (auto&& fixture: m_fixtures)
 	{
-		fixture.Synchronize(broadPhase, m_xf, m_xf);
+		fixture.Synchronize(broadPhase, xf, xf);
 	}
 }
 
 void Body::SynchronizeFixtures()
 {
-	const auto xf1 = GetTransform0(m_sweep);
+	const auto xf0 = GetTransform0(m_sweep);
+	const auto xf1 = GetTransformation();
+
 	auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
 	for (auto&& fixture: m_fixtures)
 	{
-		fixture.Synchronize(broadPhase, xf1, m_xf);
+		fixture.Synchronize(broadPhase, xf0, xf1);
 	}
 }
 
@@ -507,9 +513,10 @@ void Body::SetActive(bool flag)
 		// Create all proxies.
 		auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
 		auto& allocator = m_world->m_blockAllocator;
+		const auto xf = GetTransformation();
 		for (auto&& fixture: m_fixtures)
 		{
-			fixture.CreateProxies(allocator, broadPhase, m_xf);
+			fixture.CreateProxies(allocator, broadPhase, xf);
 		}
 
 		// Contacts are created the next time step.

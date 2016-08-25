@@ -1,21 +1,21 @@
 /*
-* Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2016 Louis Langholtz https://github.com/louis-langholtz/Box2D
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2016 Louis Langholtz https://github.com/louis-langholtz/Box2D
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #ifndef B2_CONTACT_H
 #define B2_CONTACT_H
@@ -72,6 +72,14 @@ class Contact
 public:
 	using substep_type = std::remove_const<decltype(MaxSubSteps)>::type;
 
+	using toi_max_type = std::remove_const<decltype(MaxTOIIterations)>::type;
+	using dist_max_type = std::remove_const<decltype(MaxDistanceIterations)>::type;
+	using root_max_type = std::remove_const<decltype(MaxTOIRootIterCount)>::type;
+	
+	using toi_sum_type = std::conditional<sizeof(toi_max_type) < sizeof(uint16), uint16, uint32>::type;
+	using dist_sum_type = std::conditional<sizeof(dist_max_type) < sizeof(uint16), uint16, uint32>::type;
+	using root_sum_type = std::conditional<sizeof(root_max_type) < sizeof(uint16), uint16, uint32>::type;
+	
 	Contact() = delete;
 
 	/// Gets the contact manifold.
@@ -144,10 +152,10 @@ public:
 	/// Set the desired tangent speed for a conveyor belt behavior. In meters per second.
 	void SetTangentSpeed(float_t speed) noexcept;
 
-	/// Get the desired tangent speed. In meters per second.
+	/// Gets the desired tangent speed. In meters per second.
 	float_t GetTangentSpeed() const noexcept;
 
-	/// Gets this contact's collision manifold for the given transforms.
+	/// Calculates this contact's collision manifold for the given transforms.
 	/// @param xfA Transformation for the contact's fixture A shape.
 	/// @param xfB Transformation for the contact's fixture B shape.
 	/// @return Contact manifold for the given transforms with one or more points
@@ -155,6 +163,16 @@ public:
 	virtual Manifold Evaluate(const Transformation& xfA, const Transformation& xfB) const = 0;
 
 	substep_type GetToiCount() const noexcept;
+
+	unsigned GetToiCalls() const noexcept;
+
+	toi_sum_type GetToiItersTotal() const noexcept;
+	dist_sum_type GetDistItersTotal() const noexcept;
+	root_sum_type GetRootItersTotal() const noexcept;
+	
+	toi_max_type GetToiItersMax() const noexcept;
+	dist_max_type GetDistItersMax() const noexcept;
+	root_max_type GetRootItersMax() const noexcept;
 
 	/// Gets whether a TOI is set.
 	/// @return true if this object has a TOI set for it, false otherwise.
@@ -170,7 +188,6 @@ public:
 protected:
 	friend class ContactManager;
 	friend class World;
-	friend class ContactSolver;
 	friend class Body;
 	friend class Fixture;
 	friend class ContactList;
@@ -191,11 +208,8 @@ protected:
 		// This contact needs filtering because a fixture filter was changed.
 		e_filterFlag		= 0x0008,
 
-		// This bullet contact had a TOI event
-		e_bulletHitFlag		= 0x0010,
-
 		// This contact has a valid TOI in m_toi
-		e_toiFlag			= 0x0020
+		e_toiFlag			= 0x0010
 	};
 
 	/// Flag this contact for filtering. Filtering will occur the next time step.
@@ -247,6 +261,8 @@ protected:
 
 	void UnsetTouching() noexcept;
 	
+	void SetTouching(bool value) noexcept;
+
 	uint32 m_flags = e_enabledFlag;
 
 	// World pool and list pointers.
@@ -268,7 +284,16 @@ protected:
 	Manifold m_manifold; ///< Manifold of the contact.
 
 	substep_type m_toiCount = 0; ///< Count of TOI substeps contact has gone through [0,MaxSubSteps].
+	substep_type m_toiCalls = 0;
 
+	toi_sum_type m_toiItersTotal = 0;
+	toi_max_type m_max_toi_iters = 0;
+	
+	dist_sum_type m_distItersTotal = 0;
+	root_sum_type m_rootItersTotal = 0;
+	dist_max_type m_max_dist_iters = 0;
+	root_max_type m_max_root_iters = 0;
+	
 	float_t m_toi; // only valid if m_flags & e_toiFlag
 
 	// initialized on construction (construction-time depedent)
@@ -333,6 +358,18 @@ inline void Contact::UnsetTouching() noexcept
 	m_flags &= ~e_touchingFlag;
 }
 
+inline void Contact::SetTouching(bool value) noexcept
+{
+	if (value)
+	{
+		SetTouching();
+	}
+	else
+	{
+		UnsetTouching();
+	}
+}
+	
 inline Fixture* Contact::GetFixtureA() noexcept
 {
 	return m_fixtureA;
@@ -470,6 +507,41 @@ inline void SetAwake(Contact& c) noexcept
 inline Contact::substep_type Contact::GetToiCount() const noexcept
 {
 	return m_toiCount;
+}
+
+inline unsigned Contact::GetToiCalls() const noexcept
+{
+	return m_toiCalls;
+}
+
+inline Contact::toi_sum_type Contact::GetToiItersTotal() const noexcept
+{
+	return m_toiItersTotal;
+}
+
+inline Contact::dist_sum_type Contact::GetDistItersTotal() const noexcept
+{
+	return m_distItersTotal;
+}
+	
+inline Contact::root_sum_type Contact::GetRootItersTotal() const noexcept
+{
+	return m_rootItersTotal;
+}
+
+inline Contact::toi_max_type Contact::GetToiItersMax() const noexcept
+{
+	return m_max_toi_iters;
+}
+
+inline Contact::dist_max_type Contact::GetDistItersMax() const noexcept
+{
+	return m_max_dist_iters;
+}
+
+inline Contact::root_max_type Contact::GetRootItersMax() const noexcept
+{
+	return m_max_root_iters;
 }
 
 } // namespace box2d

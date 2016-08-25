@@ -18,7 +18,6 @@
 */
 
 #include <Box2D/Collision/Collision.h>
-#include <Box2D/Collision/Distance.h>
 
 namespace box2d {
 
@@ -196,23 +195,6 @@ ClipArray::size_type ClipSegmentToLine(ClipArray& vOut, const ClipArray& vIn,
 	}
 
 	return numOut;
-}
-
-bool TestOverlap(const Shape& shapeA, child_count_t indexA,
-				   const Shape& shapeB, child_count_t indexB,
-				   const Transformation& xfA, const Transformation& xfB)
-{
-	const auto proxyA = GetDistanceProxy(shapeA, indexA);
-	const auto proxyB = GetDistanceProxy(shapeB, indexB);
-
-	SimplexCache cache;
-	const auto output = Distance(cache, proxyA, xfA, proxyB, xfB);
-	
-	const auto distanceSquared = LengthSquared(output.witnessPoints.a - output.witnessPoints.b);
-	const auto totalRadiusSquared = Square(proxyA.GetRadius() + proxyB.GetRadius());
-	const auto separation_amount = distanceSquared - totalRadiusSquared;
-	
-	return (separation_amount < 0) || almost_equal(separation_amount, 0);
 }
 
 } // namespace box2d

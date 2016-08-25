@@ -275,20 +275,59 @@ namespace {
 	inline void InitPosConstraints(ContactPositionConstraint* constraints,
 								   contact_count_t count, Contact** contacts)
 	{
+#if 0 // makes no difference in bullet tunneling
+		for (auto i = decltype(count){0}; i < count; ++i)
+		{
+			const auto& contact = *contacts[i];
+			//assert(!contact.GetFixtureA()->GetBody()->IsImpenetrable() && !contact.GetFixtureB()->GetBody()->IsImpenetrable());
+			//assert(!contact.GetFixtureA()->GetBody()->IsImpenetrable() || !contact.GetFixtureB()->GetBody()->IsImpenetrable());
+			//assert(contact.GetFixtureA()->GetBody()->IsImpenetrable() && contact.GetFixtureB()->GetBody()->IsImpenetrable());
+			//assert(contact.GetFixtureA()->GetBody()->IsImpenetrable() || contact.GetFixtureB()->GetBody()->IsImpenetrable());
+			if (!contact.GetFixtureA()->GetBody()->IsImpenetrable() && !contact.GetFixtureB()->GetBody()->IsImpenetrable())
+			{
+				constraints[i] = GetPositionConstraint(contact.GetManifold(), *contact.GetFixtureA(), *contact.GetFixtureB());
+			}
+		}
+		for (auto i = decltype(count){0}; i < count; ++i)
+		{
+			const auto& contact = *contacts[i];
+			//assert(contact.GetFixtureA()->GetBody()->IsImpenetrable() || contact.GetFixtureB()->GetBody()->IsImpenetrable());
+			if (contact.GetFixtureA()->GetBody()->IsImpenetrable() || contact.GetFixtureB()->GetBody()->IsImpenetrable())
+				constraints[i] = GetPositionConstraint(contact.GetManifold(), *contact.GetFixtureA(), *contact.GetFixtureB());
+		}
+#else
 		for (auto i = decltype(count){0}; i < count; ++i)
 		{
 			const auto& contact = *contacts[i];
 			constraints[i] = GetPositionConstraint(contact.GetManifold(), *contact.GetFixtureA(), *contact.GetFixtureB());
 		}
+#endif
 	}
 	
 	inline void InitVelConstraints(ContactVelocityConstraint* constraints,
 								   contact_count_t count, Contact** contacts, float_t dtRatio)
 	{
+#if 0 // makes no difference in bullet tunneling
+		for (auto i = decltype(count){0}; i < count; ++i)
+		{
+			const auto& contact = *contacts[i];
+			if (!contact.GetFixtureA()->GetBody()->IsImpenetrable() && !contact.GetFixtureB()->GetBody()->IsImpenetrable())
+			{
+				constraints[i] = GetVelocityConstraint(*contacts[i], i, dtRatio);
+			}
+		}
+		for (auto i = decltype(count){0}; i < count; ++i)
+		{
+			const auto& contact = *contacts[i];
+			if (contact.GetFixtureA()->GetBody()->IsImpenetrable() || contact.GetFixtureB()->GetBody()->IsImpenetrable())
+				constraints[i] = GetVelocityConstraint(*contacts[i], i, dtRatio);
+		}
+#else
 		for (auto i = decltype(count){0}; i < count; ++i)
 		{
 			constraints[i] = GetVelocityConstraint(*contacts[i], i, dtRatio);
 		}
+#endif
 	}
 	
 	inline void AssignImpulses(Manifold::Point& var, const VelocityConstraintPoint& val)
@@ -328,11 +367,11 @@ void Island::CopyOut(const Position* positions, const Velocity* velocities, Body
 {
 	// Copy velocity and position array data back out to the bodies
 	auto i = size_t{0};
-	for (auto&& body: bodies)
+	for (auto&& b: bodies)
 	{
-		body->m_velocity = velocities[i];
-		body->m_sweep.pos1 = positions[i];
-		body->m_xf = GetTransform1(body->m_sweep);
+		b->m_velocity = velocities[i]; // sets what Body::GetVelocity returns
+		b->m_sweep.pos1 = positions[i]; // sets what Body::GetWorldCenter returns
+		b->m_xf = GetTransformation(b->m_sweep.pos1, b->m_sweep.GetLocalCenter()); // sets what Body::GetPosition returns
 		++i;
 	}
 }
@@ -391,7 +430,7 @@ bool Island::Solve(const TimeStep& step, ContactListener* listener, StackAllocat
 	IntegratePositions(positions, velocities, h);
 
 	// Solve position constraints
-	auto positionConstraintsSolved = TimeStep::InvalidIteration;
+	auto iterationSolved = TimeStep::InvalidIteration;
 	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
 	{
 		const auto contactsOkay = contactSolver.SolvePositionConstraints();
@@ -409,7 +448,7 @@ bool Island::Solve(const TimeStep& step, ContactListener* listener, StackAllocat
 		if (contactsOkay && jointsOkay)
 		{
 			// Exit early if the position errors are small.
-			positionConstraintsSolved = i;
+			iterationSolved = i;
 			break;
 		}
 	}
@@ -422,10 +461,10 @@ bool Island::Solve(const TimeStep& step, ContactListener* listener, StackAllocat
 
 	if (listener)
 	{
-		Report(*listener, m_contacts, velocityConstraints.data(), positionConstraintsSolved);
+		Report(*listener, m_contacts, velocityConstraints.data(), iterationSolved);
 	}
 
-	return positionConstraintsSolved != TimeStep::InvalidIteration;
+	return iterationSolved != TimeStep::InvalidIteration;
 }
 
 bool Island::SolveTOI(const TimeStep& step, ContactListener* listener, StackAllocator& allocator, island_count_t indexA, island_count_t indexB)

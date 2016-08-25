@@ -486,6 +486,7 @@ static float_t Solve(const ContactPositionConstraint& pc,
 		const auto invInertiaB = pc.bodyB.invI;
 		const auto localCenterB = pc.bodyB.localCenter;
 		
+		//baumgarte += (invMassA == 0 || invMassB == 0) * (float_t(1) - baumgarte);
 		// Compute inverse mass total.
 		// This must be > 0 unless doing TOI solving and neither bodies were the bodies specified.
 		const auto invMassTotal = invMassA + invMassB;
@@ -518,8 +519,10 @@ static float_t Solve(const ContactPositionConstraint& pc,
 				}();
 				
 				// Prevent large corrections and don't push the separation above -LinearSlop.
+				//const auto C = Clamp(baumgarte * (psm.separation + LinearSlop * (invMassA != 0 && invMassB != 0)),
 				const auto C = Clamp(baumgarte * (psm.separation + LinearSlop),
 									 BOX2D_MAGIC(-MaxLinearCorrection), float_t{0});
+				//BOX2D_MAGIC(-MaxLinearCorrection), float_t{0});
 				
 				// Compute normal impulse
 				const auto P = psm.normal * -C / K;
@@ -579,7 +582,8 @@ bool ContactSolver::SolvePositionConstraints()
 	}
 	
 	// Can't expect minSpeparation >= -LinearSlop because we don't push the separation above -LinearSlop.
-	return minSeparation >= MinSeparationThreshold;
+	//return minSeparation >= MinSeparationThreshold;
+	return minSeparation >= -LinearSlop * 2;
 }
 	
 bool ContactSolver::SolveTOIPositionConstraints(island_count_t indexA, island_count_t indexB)
@@ -611,7 +615,8 @@ bool ContactSolver::SolveTOIPositionConstraints(island_count_t indexA, island_co
 	}
 
 	// Can't expect minSpeparation >= -LinearSlop because we don't push the separation above -LinearSlop.
-	return minSeparation >= MinToiSeparation;
+	//return minSeparation >= MinToiSeparation;
+	return minSeparation >= -LinearSlop * float_t(3) / float_t(2); // 1.5;
 }
 	
 } // namespace box2d
