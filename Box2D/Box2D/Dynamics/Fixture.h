@@ -243,6 +243,9 @@ protected:
 	/// This resets the proxy count to 0.
 	void DestroyProxies(BlockAllocator& allocator, BroadPhase& broadPhase);
 
+	/// Touches each proxy so that new pairs may be created.
+	void TouchProxies(BroadPhase& broadPhase);
+
 	void Synchronize(BroadPhase& broadPhase, const Transformation& xf1, const Transformation& xf2);
 
 	Body* m_body = nullptr; ///< Parent body. 8-bytes.

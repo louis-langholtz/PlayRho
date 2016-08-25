@@ -60,6 +60,14 @@ void Fixture::DestroyProxies(BlockAllocator& allocator, BroadPhase& broadPhase)
 	m_proxies = nullptr;
 }
 
+void Fixture::TouchProxies(BroadPhase& broadPhase)
+{
+	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
+	{
+		broadPhase.TouchProxy(m_proxies[i].proxyId);
+	}
+}
+
 void Fixture::Synchronize(BroadPhase& broadPhase, const Transformation& transform1, const Transformation& transform2)
 {
 	assert(IsValid(transform1));
@@ -87,35 +95,25 @@ void Fixture::SetFilterData(const Filter& filter)
 
 void Fixture::Refilter()
 {
-	if (m_body == nullptr)
+	if (m_body)
 	{
-		return;
-	}
-
-	// Flag associated contacts for filtering.
-	for (auto&& edge: m_body->GetContactEdges())
-	{
-		auto contact = edge.contact;
-		const auto fixtureA = contact->GetFixtureA();
-		const auto fixtureB = contact->GetFixtureB();
-		if ((fixtureA == this) || (fixtureB == this))
+		// Flag associated contacts for filtering.
+		for (auto&& edge: m_body->GetContactEdges())
 		{
-			contact->FlagForFiltering();
+			auto contact = edge.contact;
+			const auto fixtureA = contact->GetFixtureA();
+			const auto fixtureB = contact->GetFixtureB();
+			if ((fixtureA == this) || (fixtureB == this))
+			{
+				contact->FlagForFiltering();
+			}
 		}
-	}
-
-	auto world = m_body->GetWorld();
-
-	if (world == nullptr)
-	{
-		return;
-	}
-
-	// Touch each proxy so that new pairs may be created
-	auto broadPhase = &world->m_contactMgr.m_broadPhase;
-	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
-	{
-		broadPhase->TouchProxy(m_proxies[i].proxyId);
+		
+		auto world = m_body->GetWorld();
+		if (world)
+		{
+			TouchProxies(world->m_contactMgr.m_broadPhase);
+		}
 	}
 }
 

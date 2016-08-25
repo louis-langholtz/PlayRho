@@ -198,15 +198,10 @@ void Body::SetType(BodyType type)
 
 	DestroyContacts();
 
-	// Touch the proxies so that new contacts will be created (when appropriate)
 	auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
-	for (auto&& fixture: m_fixtures)
+	for (auto&& fixture: GetFixtures())
 	{
-		const auto proxyCount = fixture.m_proxyCount;
-		for (auto i = decltype(proxyCount){0}; i < proxyCount; ++i)
-		{
-			broadPhase.TouchProxy(fixture.m_proxies[i].proxyId);
-		}
+		fixture.TouchProxies(broadPhase);
 	}
 }
 
@@ -313,17 +308,15 @@ MassData Body::ComputeMassData() const noexcept
 	auto mass = float_t{0};
 	auto I = float_t{0};
 	auto center = Vec2_zero;
-	for (auto&& fixture: m_fixtures)
+	for (auto&& fixture: GetFixtures())
 	{
-		if (fixture.GetDensity() == float_t{0})
+		if (fixture.GetDensity() != float_t{0})
 		{
-			continue;
+			const auto massData = fixture.ComputeMassData();
+			mass += massData.mass;
+			center += massData.mass * massData.center;
+			I += massData.I;
 		}
-		
-		const auto massData = fixture.ComputeMassData();
-		mass += massData.mass;
-		center += massData.mass * massData.center;
-		I += massData.I;
 	}
 	return MassData{mass, center, I};
 }
@@ -479,7 +472,7 @@ void Body::SetTransform(const Vec2& position, float_t angle)
 	m_sweep = Sweep{Position{Transform(GetLocalCenter(), xf), angle}, GetLocalCenter()};
 
 	auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
-	for (auto&& fixture: m_fixtures)
+	for (auto&& fixture: GetFixtures())
 	{
 		fixture.Synchronize(broadPhase, xf, xf);
 	}
@@ -491,7 +484,7 @@ void Body::SynchronizeFixtures()
 	const auto xf1 = GetTransformation();
 
 	auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
-	for (auto&& fixture: m_fixtures)
+	for (auto&& fixture: GetFixtures())
 	{
 		fixture.Synchronize(broadPhase, xf0, xf1);
 	}
@@ -514,7 +507,7 @@ void Body::SetActive(bool flag)
 		auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
 		auto& allocator = m_world->m_blockAllocator;
 		const auto xf = GetTransformation();
-		for (auto&& fixture: m_fixtures)
+		for (auto&& fixture: GetFixtures())
 		{
 			fixture.CreateProxies(allocator, broadPhase, xf);
 		}
@@ -528,7 +521,7 @@ void Body::SetActive(bool flag)
 		// Destroy all proxies.
 		auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
 		auto& allocator = m_world->m_blockAllocator;
-		for (auto&& fixture: m_fixtures)
+		for (auto&& fixture: GetFixtures())
 		{
 			fixture.DestroyProxies(allocator, broadPhase);
 		}
@@ -579,7 +572,7 @@ void Body::Dump()
 	log("  bd.active = bool(%d);\n", IsActive());
 	log("  bodies[%d] = m_world->CreateBody(bd);\n", m_islandIndex);
 	log("\n");
-	for (auto&& fixture: m_fixtures)
+	for (auto&& fixture: GetFixtures())
 	{
 		log("  {\n");
 		fixture.Dump(bodyIndex);
