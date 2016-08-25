@@ -61,8 +61,7 @@ public:
 				Body* body = m_world->CreateBody(bd);
 				body->CreateFixture(fd);
 
-				Vec2 anchor(-15.0f + 1.0f * i, 5.0f);
-				m_world->CreateJoint(RevoluteJointDef{prevBody, body, anchor});
+				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-15.0f + 1.0f * i, 5.0f)});
 
 				if (i == (e_count >> 1))
 				{
@@ -71,8 +70,7 @@ public:
 				prevBody = body;
 			}
 
-			Vec2 anchor(-15.0f + 1.0f * e_count, 5.0f);
-			m_world->CreateJoint(RevoluteJointDef{prevBody, ground, anchor});
+			m_world->CreateJoint(RevoluteJointDef{prevBody, ground, Vec2(-15.0f + 1.0f * e_count, 5.0f)});
 		}
 
 		for (int32 i = 0; i < 2; ++i)

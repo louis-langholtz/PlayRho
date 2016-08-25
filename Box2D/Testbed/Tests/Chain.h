@@ -56,10 +56,7 @@ public:
 				Body* body = m_world->CreateBody(bd);
 				body->CreateFixture(fd);
 
-				Vec2 anchor(float_t(i), y);
-				RevoluteJointDef jd(prevBody, body, anchor);
-				jd.collideConnected = false;
-				m_world->CreateJoint(jd);
+				m_world->CreateJoint(RevoluteJointDef(prevBody, body, Vec2(float_t(i), y)));
 
 				prevBody = body;
 			}

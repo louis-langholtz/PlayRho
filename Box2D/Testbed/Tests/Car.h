@@ -129,14 +129,14 @@ public:
 				Body* body = m_world->CreateBody(bd);
 				body->CreateFixture(fd);
 
-				Vec2 anchor(160.0f + 2.0f * i, -0.125f);
-				m_world->CreateJoint(RevoluteJointDef{prevBody, body, anchor});
+				m_world->CreateJoint(RevoluteJointDef{prevBody, body,
+					Vec2(160.0f + 2.0f * i, -0.125f)});
 
 				prevBody = body;
 			}
 
-			Vec2 anchor(160.0f + 2.0f * N, -0.125f);
-			m_world->CreateJoint(RevoluteJointDef{prevBody, ground, anchor});
+			m_world->CreateJoint(RevoluteJointDef{prevBody, ground,
+				Vec2(160.0f + 2.0f * N, -0.125f)});
 		}
 
 		// Boxes

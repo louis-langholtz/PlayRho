@@ -12,7 +12,7 @@
 #include <Box2D/Common/Settings.h>
 #include <Box2D/Common/Math.h>
 
-#include <Box2D/Dynamics/Contacts/ContactSolver.h>
+#include <Box2D/Collision/Manifold.hpp>
 
 namespace box2d
 {

@@ -102,10 +102,7 @@ public:
 			b3->CreateFixture(FixtureDef{&shape, 10.0f});
 		}
 
-		Vec2 anchor;
-
-		anchor = Vec2(-2.0f, 1.0f);
-		m_world->CreateJoint(RevoluteJointDef{b1, b3, anchor, true});
+		m_world->CreateJoint(RevoluteJointDef{b1, b3, Vec2(-2.0f, 1.0f), true});
 
 		Body* b4;
 		{
@@ -119,8 +116,7 @@ public:
 			b4->CreateFixture(FixtureDef{&shape, 10.0f});
 		}
 
-		anchor = Vec2(-7.0f, 15.0f);
-		m_world->CreateJoint(RevoluteJointDef{b2, b4, anchor, true});
+		m_world->CreateJoint(RevoluteJointDef{b2, b4, Vec2(-7.0f, 15.0f), true});
 
 		Body* b5;
 		{
@@ -146,8 +142,7 @@ public:
 			b5->CreateFixture(fd);
 		}
 
-		anchor = Vec2(6.0f, 2.0f);
-		m_world->CreateJoint(RevoluteJointDef{b1, b5, anchor, true});
+		m_world->CreateJoint(RevoluteJointDef{b1, b5, Vec2(6.0f, 2.0f), true});
 
 		Body* b6;
 		{
@@ -161,8 +156,7 @@ public:
 			b6->CreateFixture(FixtureDef{&shape, 30.0f});
 		}
 
-		anchor = Vec2(7.5f, 4.0f);
-		m_world->CreateJoint(RevoluteJointDef{b5, b6, anchor, true});
+		m_world->CreateJoint(RevoluteJointDef{b5, b6, Vec2(7.5f, 4.0f), true});
 
 		Body* b7;
 		{
