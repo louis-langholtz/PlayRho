@@ -52,8 +52,6 @@ public:
 			fd.density = 20.0f;
 			fd.friction = 0.2f;
 
-			RevoluteJointDef jd;
-
 			Body* prevBody = ground;
 			for (int32 i = 0; i < e_count; ++i)
 			{
@@ -64,8 +62,7 @@ public:
 				body->CreateFixture(fd);
 
 				Vec2 anchor(-15.0f + 1.0f * i, 5.0f);
-				jd.Initialize(prevBody, body, anchor);
-				m_world->CreateJoint(jd);
+				m_world->CreateJoint(RevoluteJointDef{prevBody, body, anchor});
 
 				if (i == (e_count >> 1))
 				{
@@ -75,8 +72,7 @@ public:
 			}
 
 			Vec2 anchor(-15.0f + 1.0f * e_count, 5.0f);
-			jd.Initialize(prevBody, ground, anchor);
-			m_world->CreateJoint(jd);
+			m_world->CreateJoint(RevoluteJointDef{prevBody, ground, anchor});
 		}
 
 		for (int32 i = 0; i < 2; ++i)

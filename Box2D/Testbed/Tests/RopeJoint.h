@@ -56,9 +56,6 @@ public:
 			fd.filter.categoryBits = 0x0001;
 			fd.filter.maskBits = 0xFFFF & ~0x0002;
 
-			RevoluteJointDef jd;
-			jd.collideConnected = false;
-
 			const int32 N = 10;
 			const float_t y = 15.0f;
 			m_ropeDef.localAnchorA = Vec2(0.0f, y);
@@ -83,7 +80,8 @@ public:
 				body->CreateFixture(fd);
 
 				Vec2 anchor(float_t(i), y);
-				jd.Initialize(prevBody, body, anchor);
+				RevoluteJointDef jd{prevBody, body, anchor};
+				jd.collideConnected = false;
 				m_world->CreateJoint(jd);
 
 				prevBody = body;

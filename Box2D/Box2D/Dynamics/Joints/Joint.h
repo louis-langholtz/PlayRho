@@ -74,17 +74,15 @@ struct JointDef
 	/// Deleted default constructor for abstract base class.
 	JointDef() = delete; // deleted to prevent direct instantiation.
 
-	JointDef(const JointDef& copy) = default;
+	JointDef(const JointDef& copy) = delete;
 
 	constexpr JointDef(JointType t) noexcept: type(t) {}
-	constexpr JointDef(JointType t, Body* bA, Body* bB) noexcept:
-		type{t}, bodyA{bA}, bodyB{bB} {}
+
+	constexpr JointDef(JointType t, Body* bA, Body* bB, bool cc = false, void* u = nullptr) noexcept:
+		type{t}, bodyA{bA}, bodyB{bB}, collideConnected{cc}, userData{u} {}
 
 	/// The joint type is set automatically for concrete joint types.
 	const JointType type;
-
-	/// Use this to attach application specific data to your joints.
-	void* userData = nullptr;
 
 	/// The first attached body.
 	Body* bodyA = nullptr;
@@ -94,6 +92,9 @@ struct JointDef
 
 	/// Set this flag to true if the attached bodies should collide.
 	bool collideConnected = false;
+	
+	/// Use this to attach application specific data to your joints.
+	void* userData = nullptr;
 };
 
 /// The base joint class. Joints are used to constraint two bodies together in

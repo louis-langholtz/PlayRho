@@ -37,11 +37,11 @@ namespace box2d {
 ///    the joints will be broken.
 struct RevoluteJointDef : public JointDef
 {
-	constexpr RevoluteJointDef() noexcept: JointDef(JointType::Revolute) {}
+	constexpr RevoluteJointDef() noexcept: JointDef{JointType::Revolute} {}
 
 	/// Initialize the bodies, anchors, and reference angle using a world
 	/// anchor point.
-	void Initialize(Body* bodyA, Body* bodyB, const Vec2& anchor);
+	RevoluteJointDef(Body* bodyA, Body* bodyB, const Vec2& anchor, bool cc = false);
 
 	/// The local anchor point relative to bodyA's origin.
 	Vec2 localAnchorA = Vec2_zero;

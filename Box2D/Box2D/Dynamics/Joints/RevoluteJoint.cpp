@@ -36,13 +36,12 @@ using namespace box2d;
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-void RevoluteJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor)
+RevoluteJointDef::RevoluteJointDef(Body* bA, Body* bB, const Vec2& anchor, bool cc):
+	JointDef{JointType::Revolute, bA, bB, cc},
+	localAnchorA{GetLocalPoint(*bA, anchor)},
+	localAnchorB{GetLocalPoint(*bB, anchor)},
+	referenceAngle{bB->GetAngle() - bA->GetAngle()}
 {
-	bodyA = bA;
-	bodyB = bB;
-	localAnchorA = GetLocalPoint(*bodyA, anchor);
-	localAnchorB = GetLocalPoint(*bodyB, anchor);
-	referenceAngle = bodyB->GetAngle() - bodyA->GetAngle();
 }
 
 RevoluteJoint::RevoluteJoint(const RevoluteJointDef& def)

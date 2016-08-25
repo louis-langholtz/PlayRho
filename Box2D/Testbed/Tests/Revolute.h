@@ -49,8 +49,6 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 
-			RevoluteJointDef rjd;
-
 			bd.position = Vec2(-10.0f, 20.0f);
 			Body* body = m_world->CreateBody(bd);
 			body->CreateFixture(FixtureDef{&shape, 5.0f});
@@ -58,7 +56,7 @@ public:
 			float_t w = 100.0f;
 			body->SetVelocity(Velocity{Vec2(-8.0f * w, 0.0f), w});
 			
-			rjd.Initialize(ground, body, Vec2(-10.0f, 12.0f));
+			RevoluteJointDef rjd(ground, body, Vec2(-10.0f, 12.0f));
 			rjd.motorSpeed = 1.0f * Pi;
 			rjd.maxMotorTorque = 10000.0f;
 			rjd.enableMotor = false;
@@ -96,8 +94,7 @@ public:
 			Body* polygon_body = m_world->CreateBody(polygon_bd);
 			polygon_body->CreateFixture(FixtureDef{&polygon_shape, 2.0f});
 
-			RevoluteJointDef rjd;
-			rjd.Initialize(ground, polygon_body, Vec2(20.0f, 10.0f));
+			RevoluteJointDef rjd(ground, polygon_body, Vec2(20.0f, 10.0f));
 			rjd.lowerAngle = -0.25f * Pi;
 			rjd.upperAngle = 0.0f * Pi;
 			rjd.enableLimit = true;

@@ -53,8 +53,7 @@ public:
 				Body* body = m_world->CreateBody(bd);
 				body->CreateFixture(FixtureDef{&shape, 2.0f});
 
-				RevoluteJointDef rjd;
-				rjd.Initialize(prevBody, body, Vec2(0.0f, 5.0f));
+				RevoluteJointDef rjd{prevBody, body, Vec2(0.0f, 5.0f)};
 				rjd.motorSpeed = 1.0f * Pi;
 				rjd.maxMotorTorque = 10000.0f;
 				rjd.enableMotor = true;
@@ -74,8 +73,7 @@ public:
 				Body* body = m_world->CreateBody(bd);
 				body->CreateFixture(FixtureDef{&shape, 2.0f});
 
-				RevoluteJointDef rjd;
-				rjd.Initialize(prevBody, body, Vec2(0.0f, 9.0f));
+				RevoluteJointDef rjd{prevBody, body, Vec2(0.0f, 9.0f)};
 				rjd.enableMotor = false;
 				m_world->CreateJoint(rjd);
 
@@ -94,9 +92,7 @@ public:
 				Body* body = m_world->CreateBody(bd);
 				body->CreateFixture(FixtureDef{&shape, 2.0f});
 
-				RevoluteJointDef rjd;
-				rjd.Initialize(prevBody, body, Vec2(0.0f, 17.0f));
-				m_world->CreateJoint(rjd);
+				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(0.0f, 17.0f)});
 
 				PrismaticJointDef pjd;
 				pjd.Initialize(ground, body, Vec2(0.0f, 17.0f), Vec2(0.0f, 1.0f));

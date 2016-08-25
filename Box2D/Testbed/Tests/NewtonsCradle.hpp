@@ -63,9 +63,7 @@ namespace box2d {
 				CreateArm(body, arm_length);
 				CreateBall(body, Vec2{0, -arm_length / 2}, radius);
 				
-				RevoluteJointDef rjd;
-				rjd.Initialize(frame, body, Vec2{x, frame_height});
-				m_world->CreateJoint(rjd);
+				m_world->CreateJoint(RevoluteJointDef{frame, body, Vec2{x, frame_height}});
 			}
 		}
 		

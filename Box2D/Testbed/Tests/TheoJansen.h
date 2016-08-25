@@ -100,11 +100,7 @@ public:
 		m_world->CreateJoint(DistanceJointDef{body1, body2, p3 + m_offset, p4 + m_offset, float_t(10), float_t(0.5)});
 		m_world->CreateJoint(DistanceJointDef(body1, m_wheel, p3 + m_offset, wheelAnchor + m_offset, float_t(10), float_t(0.5)));
 		m_world->CreateJoint(DistanceJointDef(body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset, float_t(10), float_t(0.5)));
-
-		RevoluteJointDef rjd;
-
-		rjd.Initialize(body2, m_chassis, p4 + m_offset);
-		m_world->CreateJoint(rjd);
+		m_world->CreateJoint(RevoluteJointDef{body2, m_chassis, p4 + m_offset});
 	}
 
 	TheoJansen()
@@ -176,8 +172,7 @@ public:
 		}
 
 		{
-			RevoluteJointDef jd;
-			jd.Initialize(m_wheel, m_chassis, pivot + m_offset);
+			RevoluteJointDef jd{m_wheel, m_chassis, pivot + m_offset};
 			jd.collideConnected = false;
 			jd.motorSpeed = m_motorSpeed;
 			jd.maxMotorTorque = 400.0f;

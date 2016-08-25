@@ -49,9 +49,7 @@ public:
 				Body* body = m_world->CreateBody(bd);
 				body->CreateFixture(FixtureDef{&shape, 2.0f});
                 
-				RevoluteJointDef rjd;
-				rjd.Initialize(prevBody, body, Vec2(-12.0f, 20.0f));
-				m_world->CreateJoint(rjd);
+				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-12.0f, 20.0f)});
                 
 				prevBody = body;
 			}
@@ -67,9 +65,7 @@ public:
 				Body* body = m_world->CreateBody(bd);
 				body->CreateFixture(FixtureDef{&shape, 2.0f});
                 
-				RevoluteJointDef rjd;
-				rjd.Initialize(prevBody, body, Vec2(-4.0f, 20.0f));
-				m_world->CreateJoint(rjd);
+				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-4.0f, 20.0f)});
                 
 				prevBody = body;
 			}
@@ -86,9 +82,7 @@ public:
 				Body* body = m_world->CreateBody(bd);
 				body->CreateFixture(FixtureDef{&shape, 2.0f});
                 
-				RevoluteJointDef rjd;
-				rjd.Initialize(prevBody, body, Vec2(12.0f, 20.0f));
-				m_world->CreateJoint(rjd);
+				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(12.0f, 20.0f)});
                 
 				PrismaticJointDef pjd;
 				pjd.Initialize(ground, body, Vec2(12.0f, 17.0f), Vec2(1.0f, 0.0f));

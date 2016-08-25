@@ -102,13 +102,10 @@ public:
 			b3->CreateFixture(FixtureDef{&shape, 10.0f});
 		}
 
-		RevoluteJointDef jd;
 		Vec2 anchor;
 
 		anchor = Vec2(-2.0f, 1.0f);
-		jd.Initialize(b1, b3, anchor);
-		jd.collideConnected = true;
-		m_world->CreateJoint(jd);
+		m_world->CreateJoint(RevoluteJointDef{b1, b3, anchor, true});
 
 		Body* b4;
 		{
@@ -123,8 +120,7 @@ public:
 		}
 
 		anchor = Vec2(-7.0f, 15.0f);
-		jd.Initialize(b2, b4, anchor);
-		m_world->CreateJoint(jd);
+		m_world->CreateJoint(RevoluteJointDef{b2, b4, anchor, true});
 
 		Body* b5;
 		{
@@ -151,8 +147,7 @@ public:
 		}
 
 		anchor = Vec2(6.0f, 2.0f);
-		jd.Initialize(b1, b5, anchor);
-		m_world->CreateJoint(jd);
+		m_world->CreateJoint(RevoluteJointDef{b1, b5, anchor, true});
 
 		Body* b6;
 		{
@@ -167,8 +162,7 @@ public:
 		}
 
 		anchor = Vec2(7.5f, 4.0f);
-		jd.Initialize(b5, b6, anchor);
-		m_world->CreateJoint(jd);
+		m_world->CreateJoint(RevoluteJointDef{b5, b6, anchor, true});
 
 		Body* b7;
 		{

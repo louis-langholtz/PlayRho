@@ -69,8 +69,7 @@ public:
 			fd.density = 2.0f;
 			m_platform->CreateFixture(fd);
 
-			RevoluteJointDef rjd;
-			rjd.Initialize(m_attachment, m_platform, Vec2(0.0f, 5.0f));
+			RevoluteJointDef rjd(m_attachment, m_platform, Vec2(0.0f, 5.0f));
 			rjd.maxMotorTorque = 50.0f;
 			rjd.enableMotor = true;
 			m_world->CreateJoint(rjd);

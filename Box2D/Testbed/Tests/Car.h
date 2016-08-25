@@ -100,8 +100,7 @@ public:
 			box.SetAsBox(10.0f, 0.25f);
 			body->CreateFixture(FixtureDef{&box, 1.0f});
 
-			RevoluteJointDef jd;
-			jd.Initialize(ground, body, body->GetPosition());
+			RevoluteJointDef jd(ground, body, body->GetPosition());
 			jd.lowerAngle = -8.0f * Pi / 180.0f;
 			jd.upperAngle = 8.0f * Pi / 180.0f;
 			jd.enableLimit = true;
@@ -121,8 +120,6 @@ public:
 			fd.density = 1.0f;
 			fd.friction = 0.6f;
 
-			RevoluteJointDef jd;
-
 			Body* prevBody = ground;
 			for (int32 i = 0; i < N; ++i)
 			{
@@ -133,15 +130,13 @@ public:
 				body->CreateFixture(fd);
 
 				Vec2 anchor(160.0f + 2.0f * i, -0.125f);
-				jd.Initialize(prevBody, body, anchor);
-				m_world->CreateJoint(jd);
+				m_world->CreateJoint(RevoluteJointDef{prevBody, body, anchor});
 
 				prevBody = body;
 			}
 
 			Vec2 anchor(160.0f + 2.0f * N, -0.125f);
-			jd.Initialize(prevBody, ground, anchor);
-			m_world->CreateJoint(jd);
+			m_world->CreateJoint(RevoluteJointDef{prevBody, ground, anchor});
 		}
 
 		// Boxes

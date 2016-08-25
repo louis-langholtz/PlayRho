@@ -65,13 +65,8 @@ public:
 			Body* body3 = m_world->CreateBody(bd3);
 			body3->CreateFixture(FixtureDef{&circle2, 5.0f});
 
-			RevoluteJointDef jd1;
-			jd1.Initialize(body2, body1, bd1.position);
-			Joint* joint1 = m_world->CreateJoint(jd1);
-
-			RevoluteJointDef jd2;
-			jd2.Initialize(body2, body3, bd3.position);
-			Joint* joint2 = m_world->CreateJoint(jd2);
+			Joint* joint1 = m_world->CreateJoint(RevoluteJointDef{body2, body1, bd1.position});
+			Joint* joint2 = m_world->CreateJoint(RevoluteJointDef{body2, body3, bd3.position});
 
 			GearJointDef jd4;
 			jd4.bodyA = body1;
@@ -112,8 +107,7 @@ public:
 			Body* body2 = m_world->CreateBody(bd2);
 			body2->CreateFixture(FixtureDef{&circle2, 5.0f});
 
-			RevoluteJointDef jd2;
-			jd2.Initialize(ground, body2, bd2.position);
+			RevoluteJointDef jd2(ground, body2, bd2.position);
 			m_joint2 = (RevoluteJoint*)m_world->CreateJoint(jd2);
 
 			BodyDef bd3;

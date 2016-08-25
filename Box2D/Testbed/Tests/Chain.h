@@ -46,9 +46,6 @@ public:
 			fd.density = 20.0f;
 			fd.friction = 0.2f;
 
-			RevoluteJointDef jd;
-			jd.collideConnected = false;
-
 			const float_t y = 25.0f;
 			Body* prevBody = ground;
 			for (int32 i = 0; i < 30; ++i)
@@ -60,7 +57,8 @@ public:
 				body->CreateFixture(fd);
 
 				Vec2 anchor(float_t(i), y);
-				jd.Initialize(prevBody, body, anchor);
+				RevoluteJointDef jd(prevBody, body, anchor);
+				jd.collideConnected = false;
 				m_world->CreateJoint(jd);
 
 				prevBody = body;
