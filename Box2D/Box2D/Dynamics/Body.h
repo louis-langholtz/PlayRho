@@ -424,6 +424,8 @@ private:
 	Body(const BodyDef& bd, World* world);
 	~Body();
 
+	void SynchronizeFixtures(const Transformation& t1, const Transformation& t2);
+	
 	void SynchronizeFixtures();
 	
 	/// Determines whether this body should possibly be able to collide with the given other body.

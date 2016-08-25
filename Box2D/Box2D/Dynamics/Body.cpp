@@ -456,6 +456,15 @@ bool Body::ShouldCollide(const Body* other) const
 	return true;
 }
 
+void Body::SynchronizeFixtures(const Transformation& t1, const Transformation& t2)
+{
+	auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
+	for (auto&& fixture: GetFixtures())
+	{
+		fixture.Synchronize(broadPhase, t1, t2);
+	}
+}
+
 void Body::SetTransform(const Vec2& position, float_t angle)
 {
 	assert(IsValid(position));
@@ -470,24 +479,12 @@ void Body::SetTransform(const Vec2& position, float_t angle)
 	const auto xf = Transformation{position, Rot(angle)};
 	m_xf = xf;
 	m_sweep = Sweep{Position{Transform(GetLocalCenter(), xf), angle}, GetLocalCenter()};
-
-	auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
-	for (auto&& fixture: GetFixtures())
-	{
-		fixture.Synchronize(broadPhase, xf, xf);
-	}
+	SynchronizeFixtures(xf, xf);
 }
 
 void Body::SynchronizeFixtures()
 {
-	const auto xf0 = GetTransform0(m_sweep);
-	const auto xf1 = GetTransformation();
-
-	auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
-	for (auto&& fixture: GetFixtures())
-	{
-		fixture.Synchronize(broadPhase, xf0, xf1);
-	}
+	SynchronizeFixtures(GetTransform0(m_sweep), GetTransformation());
 }
 
 void Body::SetActive(bool flag)
