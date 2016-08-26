@@ -95,9 +95,6 @@ public:
 	void SetDampingRatio(float_t ratio);
 	float_t GetDampingRatio() const noexcept;
 
-	/// Dump joint to dmLog
-	void Dump() override;
-
 protected:
 
 	void InitVelocityConstraints(const SolverData& data) override;
@@ -160,6 +157,9 @@ inline float_t DistanceJoint::GetDampingRatio() const noexcept
 	return m_dampingRatio;
 }
 
+/// Dump joint to dmLog
+void Dump(const DistanceJoint& joint, size_t index);
+	
 } // namespace box2d
 
 #endif

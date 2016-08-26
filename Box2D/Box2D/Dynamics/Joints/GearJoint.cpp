@@ -404,20 +404,14 @@ float_t GearJoint::GetRatio() const
 	return m_ratio;
 }
 
-void GearJoint::Dump()
+void box2d::Dump(const GearJoint& joint, size_t index)
 {
-	const auto indexA = m_bodyA->GetIslandIndex();
-	const auto indexB = m_bodyB->GetIslandIndex();
-
-	const auto index1 = m_joint1->m_index;
-	const auto index2 = m_joint2->m_index;
-
 	log("  GearJointDef jd;\n");
-	log("  jd.bodyA = bodies[%d];\n", indexA);
-	log("  jd.bodyB = bodies[%d];\n", indexB);
-	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	log("  jd.joint1 = joints[%d];\n", index1);
-	log("  jd.joint2 = joints[%d];\n", index2);
-	log("  jd.ratio = %.15lef;\n", m_ratio);
-	log("  joints[%d] = m_world->CreateJoint(jd);\n", m_index);
+	log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
+	log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
+	log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
+	log("  jd.joint1 = joints[%d];\n", GetWorldIndex(joint.GetJoint1()));
+	log("  jd.joint2 = joints[%d];\n", GetWorldIndex(joint.GetJoint2()));
+	log("  jd.ratio = %.15lef;\n", joint.GetRatio());
+	log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }

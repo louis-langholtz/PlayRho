@@ -77,6 +77,8 @@ public:
 	/// Implements Joint.
 	float_t GetReactionTorque(float_t inv_dt) const override;
 
+	Vec2 GetLocalAnchorB() const noexcept;
+
 	/// Use this to update the target point.
 	void SetTarget(const Vec2& target);
 	Vec2 GetTarget() const;
@@ -92,9 +94,6 @@ public:
 	/// Set/get the damping ratio (dimensionless).
 	void SetDampingRatio(float_t ratio);
 	float_t GetDampingRatio() const;
-
-	/// The mouse joint does not support dumping.
-	void Dump() override;
 
 	/// Implement Joint::ShiftOrigin
 	void ShiftOrigin(const Vec2& newOrigin) override;
@@ -123,6 +122,11 @@ protected:
 	Mat22 m_mass;
 	Vec2 m_C;
 };
+
+inline Vec2 MouseJoint::GetLocalAnchorB() const noexcept
+{
+	return m_localAnchorB;
+}
 
 inline Vec2 MouseJoint::GetAnchorA() const
 {
@@ -163,6 +167,8 @@ inline float_t MouseJoint::GetDampingRatio() const
 {
 	return m_dampingRatio;
 }
+
+void Dump(const MouseJoint& joint, size_t index);
 
 } // namespace box2d
 

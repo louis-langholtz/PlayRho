@@ -208,9 +208,6 @@ public:
 	/// the body transform.
 	const AABB& GetAABB(child_count_t childIndex) const;
 
-	/// Dump this fixture to the log file.
-	void Dump(island_count_t bodyIndex);
-
 protected:
 
 	friend class Body;
@@ -367,6 +364,9 @@ inline Shape::Type GetType(const Fixture& fixture) noexcept
 {
 	return fixture.GetShape()->GetType();
 }
+
+/// Dump fixture to log file.
+void Dump(const Fixture& fixture, size_t bodyIndex);
 
 } // namespace box2d
 

@@ -82,9 +82,6 @@ public:
 	void SetDampingRatio(float_t ratio) { m_dampingRatio = ratio; }
 	float_t GetDampingRatio() const { return m_dampingRatio; }
 
-	/// Dump to log
-	void Dump() override;
-
 protected:
 
 	void InitVelocityConstraints(const SolverData& data) override;
@@ -115,6 +112,8 @@ protected:
 	float_t m_invIB;
 	Mat33 m_mass;
 };
+
+void Dump(const WeldJoint& joint, size_t index);
 
 } // namespace box2d
 

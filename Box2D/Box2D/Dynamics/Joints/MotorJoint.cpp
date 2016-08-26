@@ -285,19 +285,16 @@ float_t MotorJoint::GetAngularOffset() const
 	return m_angularOffset;
 }
 
-void MotorJoint::Dump()
+void box2d::Dump(const MotorJoint& joint, size_t index)
 {
-	const auto indexA = m_bodyA->GetIslandIndex();
-	const auto indexB = m_bodyB->GetIslandIndex();
-
 	log("  MotorJointDef jd;\n");
-	log("  jd.bodyA = bodies[%d];\n", indexA);
-	log("  jd.bodyB = bodies[%d];\n", indexB);
-	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	log("  jd.linearOffset = Vec2(%.15lef, %.15lef);\n", m_linearOffset.x, m_linearOffset.y);
-	log("  jd.angularOffset = %.15lef;\n", m_angularOffset);
-	log("  jd.maxForce = %.15lef;\n", m_maxForce);
-	log("  jd.maxTorque = %.15lef;\n", m_maxTorque);
-	log("  jd.correctionFactor = %.15lef;\n", m_correctionFactor);
-	log("  joints[%d] = m_world->CreateJoint(jd);\n", m_index);
+	log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
+	log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
+	log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
+	log("  jd.linearOffset = Vec2(%.15lef, %.15lef);\n", joint.GetLinearOffset().x, joint.GetLinearOffset().y);
+	log("  jd.angularOffset = %.15lef;\n", joint.GetAngularOffset());
+	log("  jd.maxForce = %.15lef;\n", joint.GetMaxForce());
+	log("  jd.maxTorque = %.15lef;\n", joint.GetMaxTorque());
+	log("  jd.correctionFactor = %.15lef;\n", joint.GetCorrectionFactor());
+	log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }

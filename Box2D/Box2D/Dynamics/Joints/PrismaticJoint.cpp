@@ -598,24 +598,21 @@ float_t PrismaticJoint::GetMotorForce(float_t inv_dt) const noexcept
 	return inv_dt * m_motorImpulse;
 }
 
-void PrismaticJoint::Dump()
+void box2d::Dump(const PrismaticJoint& joint, size_t index)
 {
-	const auto indexA = m_bodyA->GetIslandIndex();
-	const auto indexB = m_bodyB->GetIslandIndex();
-
 	log("  PrismaticJointDef jd;\n");
-	log("  jd.bodyA = bodies[%d];\n", indexA);
-	log("  jd.bodyB = bodies[%d];\n", indexB);
-	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
-	log("  jd.localAxisA = Vec2(%.15lef, %.15lef);\n", m_localXAxisA.x, m_localXAxisA.y);
-	log("  jd.referenceAngle = %.15lef;\n", m_referenceAngle);
-	log("  jd.enableLimit = bool(%d);\n", m_enableLimit);
-	log("  jd.lowerTranslation = %.15lef;\n", m_lowerTranslation);
-	log("  jd.upperTranslation = %.15lef;\n", m_upperTranslation);
-	log("  jd.enableMotor = bool(%d);\n", m_enableMotor);
-	log("  jd.motorSpeed = %.15lef;\n", m_motorSpeed);
-	log("  jd.maxMotorForce = %.15lef;\n", m_maxMotorForce);
-	log("  joints[%d] = m_world->CreateJoint(jd);\n", m_index);
+	log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
+	log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
+	log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
+	log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorA().x, joint.GetLocalAnchorA().y);
+	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorB().x, joint.GetLocalAnchorB().y);
+	log("  jd.localAxisA = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAxisA().x, joint.GetLocalAxisA().y);
+	log("  jd.referenceAngle = %.15lef;\n", joint.GetReferenceAngle());
+	log("  jd.enableLimit = bool(%d);\n", joint.IsLimitEnabled());
+	log("  jd.lowerTranslation = %.15lef;\n", joint.GetLowerLimit());
+	log("  jd.upperTranslation = %.15lef;\n", joint.GetUpperLimit());
+	log("  jd.enableMotor = bool(%d);\n", joint.IsMotorEnabled());
+	log("  jd.motorSpeed = %.15lef;\n", joint.GetMotorSpeed());
+	log("  jd.maxMotorForce = %.15lef;\n", joint.GetMaxMotorForce());
+	log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }

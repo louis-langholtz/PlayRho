@@ -362,9 +362,6 @@ public:
 
 	bool IsMassDataDirty() const noexcept;
 
-	/// Dump this body to a log file
-	void Dump();
-
 private:
 
 	friend class World;
@@ -989,6 +986,11 @@ inline float_t GetTorque(const Body& body) noexcept
 /// @param body Body to get the velocity for.
 /// @param h Time elapsed to get velocity for. Behavior is undefined if this value is invalid.
 Velocity GetVelocity(const Body& body, float_t h) noexcept;
+
+size_t GetWorldIndex(const Body* body);
+	
+/// Dump body to a log file
+void Dump(const Body& body, size_t bodyIndex);
 	
 } // namespace box2d
 

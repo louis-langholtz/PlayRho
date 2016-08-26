@@ -62,17 +62,20 @@ public:
 	float_t GetReactionTorque(float_t inv_dt) const override;
 
 	/// Get the first joint.
-	Joint* GetJoint1() { return m_joint1; }
+	Joint* GetJoint1() noexcept { return m_joint1; }
 
 	/// Get the second joint.
-	Joint* GetJoint2() { return m_joint2; }
+	Joint* GetJoint2() noexcept { return m_joint2; }
 
+	/// Get the first joint.
+	const Joint* GetJoint1() const noexcept { return m_joint1; }
+	
+	/// Get the second joint.
+	const Joint* GetJoint2() const noexcept { return m_joint2; }
+	
 	/// Set/Get the gear ratio.
 	void SetRatio(float_t ratio);
 	float_t GetRatio() const;
-
-	/// Dump joint to dmLog
-	void Dump() override;
 
 protected:
 
@@ -118,6 +121,8 @@ protected:
 	float_t m_mass;
 };
 
+void Dump(const GearJoint& joint, size_t index);
+	
 } // namespace box2d
 
 #endif

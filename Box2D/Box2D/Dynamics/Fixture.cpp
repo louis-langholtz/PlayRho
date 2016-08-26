@@ -126,22 +126,22 @@ void Fixture::SetSensor(bool sensor)
 	}
 }
 
-void Fixture::Dump(island_count_t bodyIndex)
+void box2d::Dump(const Fixture& fixture, size_t bodyIndex)
 {
 	log("    FixtureDef fd;\n");
-	log("    fd.friction = %.15lef;\n", GetFriction());
-	log("    fd.restitution = %.15lef;\n", GetRestitution());
-	log("    fd.density = %.15lef;\n", GetDensity());
-	log("    fd.isSensor = bool(%d);\n", IsSensor());
-	log("    fd.filter.categoryBits = uint16(%d);\n", m_filter.categoryBits);
-	log("    fd.filter.maskBits = uint16(%d);\n", m_filter.maskBits);
-	log("    fd.filter.groupIndex = int16(%d);\n", m_filter.groupIndex);
+	log("    fd.friction = %.15lef;\n", fixture.GetFriction());
+	log("    fd.restitution = %.15lef;\n", fixture.GetRestitution());
+	log("    fd.density = %.15lef;\n", fixture.GetDensity());
+	log("    fd.isSensor = bool(%d);\n", fixture.IsSensor());
+	log("    fd.filter.categoryBits = uint16(%d);\n", fixture.GetFilterData().categoryBits);
+	log("    fd.filter.maskBits = uint16(%d);\n", fixture.GetFilterData().maskBits);
+	log("    fd.filter.groupIndex = int16(%d);\n", fixture.GetFilterData().groupIndex);
 
-	switch (GetShape()->GetType())
+	switch (fixture.GetShape()->GetType())
 	{
 	case Shape::e_circle:
 		{
-			auto s = static_cast<CircleShape*>(GetShape());
+			auto s = static_cast<const CircleShape*>(fixture.GetShape());
 			log("    CircleShape shape;\n");
 			log("    shape.m_radius = %.15lef;\n", s->GetRadius());
 			log("    shape.m_p = Vec2(%.15lef, %.15lef);\n", s->GetPosition().x, s->GetPosition().y);
@@ -150,7 +150,7 @@ void Fixture::Dump(island_count_t bodyIndex)
 
 	case Shape::e_edge:
 		{
-			auto s = static_cast<EdgeShape*>(GetShape());
+			auto s = static_cast<const EdgeShape*>(fixture.GetShape());
 			log("    EdgeShape shape;\n");
 			log("    shape.m_radius = %.15lef;\n", s->GetRadius());
 			log("    shape.m_vertex0.Set(%.15lef, %.15lef);\n", s->GetVertex0().x, s->GetVertex0().y);
@@ -164,7 +164,7 @@ void Fixture::Dump(island_count_t bodyIndex)
 
 	case Shape::e_polygon:
 		{
-			auto s = static_cast<PolygonShape*>(GetShape());
+			auto s = static_cast<const PolygonShape*>(fixture.GetShape());
 			log("    PolygonShape shape;\n");
 			log("    Vec2 vs[%d];\n", MaxPolygonVertices);
 			for (auto i = decltype(s->GetVertexCount()){0}; i < s->GetVertexCount(); ++i)
@@ -177,7 +177,7 @@ void Fixture::Dump(island_count_t bodyIndex)
 
 	case Shape::e_chain:
 		{
-			auto s = static_cast<ChainShape*>(GetShape());
+			auto s = static_cast<const ChainShape*>(fixture.GetShape());
 			log("    ChainShape shape;\n");
 			log("    Vec2 vs[%d];\n", s->GetVertexCount());
 			for (auto i = decltype(s->GetVertexCount()){0}; i < s->GetVertexCount(); ++i)

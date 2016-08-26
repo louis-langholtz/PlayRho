@@ -88,9 +88,6 @@ public:
 	/// Get the position correction factor in the range [0,1].
 	float_t GetCorrectionFactor() const;
 
-	/// Dump to log
-	void Dump() override;
-
 protected:
 
 	void InitVelocityConstraints(const SolverData& data) override;
@@ -122,6 +119,8 @@ protected:
 	Mat22 m_linearMass;
 	float_t m_angularMass;
 };
+
+void Dump(const MotorJoint& joint, size_t index);
 
 } // namespace box2d
 

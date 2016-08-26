@@ -74,6 +74,9 @@ class PulleyJoint : public Joint
 public:
 	PulleyJoint(const PulleyJointDef& data);
 
+	Vec2 GetLocalAnchorA() const noexcept;
+	Vec2 GetLocalAnchorB() const noexcept;
+
 	Vec2 GetAnchorA() const override;
 	Vec2 GetAnchorB() const override;
 
@@ -87,22 +90,19 @@ public:
 	Vec2 GetGroundAnchorB() const;
 
 	/// Get the current length of the segment attached to bodyA.
-	float_t GetLengthA() const;
+	float_t GetLengthA() const noexcept;
 
 	/// Get the current length of the segment attached to bodyB.
-	float_t GetLengthB() const;
+	float_t GetLengthB() const noexcept;
 
 	/// Get the pulley ratio.
-	float_t GetRatio() const;
+	float_t GetRatio() const noexcept;
 
 	/// Get the current length of the segment attached to bodyA.
 	float_t GetCurrentLengthA() const;
 
 	/// Get the current length of the segment attached to bodyB.
 	float_t GetCurrentLengthB() const;
-
-	/// Dump joint to dmLog
-	void Dump() override;
 
 	/// Implement Joint::ShiftOrigin
 	void ShiftOrigin(const Vec2& newOrigin) override;
@@ -140,6 +140,34 @@ protected:
 	float_t m_invIB;
 	float_t m_mass;
 };
+	
+inline Vec2 PulleyJoint::GetLocalAnchorA() const noexcept
+{
+	return m_localAnchorA;
+}
+
+inline Vec2 PulleyJoint::GetLocalAnchorB() const noexcept
+{
+	return m_localAnchorB;
+}
+
+inline float_t PulleyJoint::GetLengthA() const noexcept
+{
+	return m_lengthA;
+}
+
+inline float_t PulleyJoint::GetLengthB() const noexcept
+{
+	return m_lengthB;
+}
+
+inline float_t PulleyJoint::GetRatio() const noexcept
+{
+	return m_ratio;
+}
+
+/// Dump joint to dmLog
+void Dump(const PulleyJoint& joint, size_t index);
 
 } // namespace box2d
 

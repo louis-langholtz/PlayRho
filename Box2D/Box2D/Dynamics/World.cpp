@@ -1083,57 +1083,30 @@ void World::ShiftOrigin(const Vec2& newOrigin)
 	m_contactMgr.m_broadPhase.ShiftOrigin(newOrigin);
 }
 
-void World::Dump()
+void Dump(const World& world)
 {
-	if (IsLocked())
-	{
-		return;
-	}
-
-	log("Vec2 g(%.15lef, %.15lef);\n", m_gravity.x, m_gravity.y);
+	const auto gravity = world.GetGravity();
+	log("Vec2 g(%.15lef, %.15lef);\n", gravity.x, gravity.y);
 	log("m_world->SetGravity(g);\n");
 
-	log("Body** bodies = (Body**)alloc(%d * sizeof(Body*));\n", m_bodies.size());
-	log("Joint** joints = (Joint**)alloc(%d * sizeof(Joint*));\n", m_joints.size());
-	auto i = body_count_t{0};
-	for (auto&& b: m_bodies)
+	const auto& bodies = world.GetBodies();
+	log("Body** bodies = (Body**)alloc(%d * sizeof(Body*));\n", bodies.size());
+	auto i = size_t{0};
+	for (auto&& b: bodies)
 	{
-		b.m_islandIndex = i;
-		b.Dump();
+		Dump(b, i);
 		++i;
 	}
 
+	const auto& joints = world.GetJoints();
+	log("Joint** joints = (Joint**)alloc(%d * sizeof(Joint*));\n", joints.size());
 	i = 0;
-	for (auto&& j: m_joints)
+	for (auto&& j: joints)
 	{
-		j.m_index = i;
+		log("{\n");
+		Dump(j, i);
+		log("}\n");
 		++i;
-	}
-
-	// First pass on joints, skip gear joints.
-	for (auto&& j: m_joints)
-	{
-		if (j.m_type == JointType::Gear)
-		{
-			continue;
-		}
-
-		log("{\n");
-		j.Dump();
-		log("}\n");
-	}
-
-	// Second pass on joints, only gear joints.
-	for (auto&& j: m_joints)
-	{
-		if (j.m_type != JointType::Gear)
-		{
-			continue;
-		}
-
-		log("{\n");
-		j.Dump();
-		log("}\n");
 	}
 
 	log("free(joints);\n");

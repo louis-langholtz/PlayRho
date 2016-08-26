@@ -22,7 +22,7 @@
 
 namespace box2d {
 
-// This test holds worlds dumped using World::Dump.
+// This test holds worlds dumped using Dump(World&).
 class DumpShell : public Test
 {
 public:

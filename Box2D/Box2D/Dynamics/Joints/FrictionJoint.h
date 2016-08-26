@@ -77,9 +77,6 @@ public:
 	/// Get the maximum friction torque in N*m.
 	float_t GetMaxTorque() const;
 
-	/// Dump joint to dmLog
-	void Dump() override;
-
 protected:
 
 	void InitVelocityConstraints(const SolverData& data) override;
@@ -109,6 +106,9 @@ protected:
 	Mat22 m_linearMass;
 	float_t m_angularMass;
 };
+
+/// Dump joint to the log file.
+void Dump(const FrictionJoint& joint, size_t index);
 
 } // namespace box2d
 

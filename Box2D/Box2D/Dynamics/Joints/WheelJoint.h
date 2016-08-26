@@ -94,7 +94,7 @@ public:
 	float_t GetJointSpeed() const;
 
 	/// Is the joint motor enabled?
-	bool IsMotorEnabled() const;
+	bool IsMotorEnabled() const noexcept { return m_enableMotor; }
 
 	/// Enable/disable the joint motor.
 	void EnableMotor(bool flag);
@@ -119,9 +119,6 @@ public:
 	/// Set/Get the spring damping ratio
 	void SetSpringDampingRatio(float_t ratio);
 	float_t GetSpringDampingRatio() const;
-
-	/// Dump to log
-	void Dump() override;
 
 protected:
 
@@ -197,6 +194,8 @@ inline float_t WheelJoint::GetSpringDampingRatio() const
 {
 	return m_dampingRatio;
 }
+
+void Dump(const WheelJoint& joint, size_t index);
 
 } // namespace box2d
 

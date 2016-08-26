@@ -262,12 +262,12 @@ bool PulleyJoint::SolvePositionConstraints(const SolverData& data)
 
 Vec2 PulleyJoint::GetAnchorA() const
 {
-	return GetWorldPoint(*m_bodyA, m_localAnchorA);
+	return GetWorldPoint(*m_bodyA, GetLocalAnchorA());
 }
 
 Vec2 PulleyJoint::GetAnchorB() const
 {
-	return GetWorldPoint(*m_bodyB, m_localAnchorB);
+	return GetWorldPoint(*m_bodyB, GetLocalAnchorB());
 }
 
 Vec2 PulleyJoint::GetReactionForce(float_t inv_dt) const
@@ -291,21 +291,6 @@ Vec2 PulleyJoint::GetGroundAnchorB() const
 	return m_groundAnchorB;
 }
 
-float_t PulleyJoint::GetLengthA() const
-{
-	return m_lengthA;
-}
-
-float_t PulleyJoint::GetLengthB() const
-{
-	return m_lengthB;
-}
-
-float_t PulleyJoint::GetRatio() const
-{
-	return m_ratio;
-}
-
 float_t PulleyJoint::GetCurrentLengthA() const
 {
 	return Length(GetWorldPoint(*m_bodyA, m_localAnchorA) - m_groundAnchorA);
@@ -316,27 +301,24 @@ float_t PulleyJoint::GetCurrentLengthB() const
 	return Length(GetWorldPoint(*m_bodyB, m_localAnchorB) - m_groundAnchorB);
 }
 
-void PulleyJoint::Dump()
-{
-	const auto indexA = m_bodyA->GetIslandIndex();
-	const auto indexB = m_bodyB->GetIslandIndex();
-
-	log("  PulleyJointDef jd;\n");
-	log("  jd.bodyA = bodies[%d];\n", indexA);
-	log("  jd.bodyB = bodies[%d];\n", indexB);
-	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	log("  jd.groundAnchorA = Vec2(%.15lef, %.15lef);\n", m_groundAnchorA.x, m_groundAnchorA.y);
-	log("  jd.groundAnchorB = Vec2(%.15lef, %.15lef);\n", m_groundAnchorB.x, m_groundAnchorB.y);
-	log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
-	log("  jd.lengthA = %.15lef;\n", m_lengthA);
-	log("  jd.lengthB = %.15lef;\n", m_lengthB);
-	log("  jd.ratio = %.15lef;\n", m_ratio);
-	log("  joints[%d] = m_world->CreateJoint(jd);\n", m_index);
-}
-
 void PulleyJoint::ShiftOrigin(const Vec2& newOrigin)
 {
 	m_groundAnchorA -= newOrigin;
 	m_groundAnchorB -= newOrigin;
+}
+
+void box2d::Dump(const PulleyJoint& joint, size_t index)
+{
+	log("  PulleyJointDef jd;\n");
+	log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
+	log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
+	log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
+	log("  jd.groundAnchorA = Vec2(%.15lef, %.15lef);\n", joint.GetGroundAnchorA().x, joint.GetGroundAnchorA().y);
+	log("  jd.groundAnchorB = Vec2(%.15lef, %.15lef);\n", joint.GetGroundAnchorB().x, joint.GetGroundAnchorB().y);
+	log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorA().x,  joint.GetLocalAnchorA().y);
+	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n",  joint.GetLocalAnchorB().x,  joint.GetLocalAnchorB().y);
+	log("  jd.lengthA = %.15lef;\n", joint.GetLengthA());
+	log("  jd.lengthB = %.15lef;\n", joint.GetLengthB());
+	log("  jd.ratio = %.15lef;\n", joint.GetRatio());
+	log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }

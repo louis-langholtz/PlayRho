@@ -144,9 +144,6 @@ public:
 	/// Unit is N*m.
 	float_t GetMotorTorque(float_t inv_dt) const;
 
-	/// Dump to log.
-	void Dump() override;
-
 protected:
 	
 	friend class GearJoint;
@@ -190,6 +187,8 @@ inline float_t RevoluteJoint::GetMotorSpeed() const
 {
 	return m_motorSpeed;
 }
+
+void Dump(const RevoluteJoint& joint, size_t index);
 
 } // namespace box2d
 

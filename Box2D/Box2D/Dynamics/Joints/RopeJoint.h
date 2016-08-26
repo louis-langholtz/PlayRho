@@ -76,9 +76,6 @@ public:
 
 	LimitState GetLimitState() const;
 
-	/// Dump joint to dmLog
-	void Dump() override;
-
 protected:
 
 	void InitVelocityConstraints(const SolverData& data) override;
@@ -107,6 +104,8 @@ protected:
 	float_t m_mass;
 	LimitState m_state;
 };
+
+void Dump(const RopeJoint& joint, size_t index);
 
 } // namespace box2d
 

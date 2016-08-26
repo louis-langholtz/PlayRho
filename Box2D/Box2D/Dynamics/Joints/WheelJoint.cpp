@@ -356,11 +356,6 @@ float_t WheelJoint::GetJointSpeed() const
 	return m_bodyB->GetVelocity().w - m_bodyA->GetVelocity().w;
 }
 
-bool WheelJoint::IsMotorEnabled() const
-{
-	return m_enableMotor;
-}
-
 void WheelJoint::EnableMotor(bool flag)
 {
 	m_bodyA->SetAwake();
@@ -387,22 +382,19 @@ float_t WheelJoint::GetMotorTorque(float_t inv_dt) const
 	return inv_dt * m_motorImpulse;
 }
 
-void WheelJoint::Dump()
+void box2d::Dump(const WheelJoint& joint, size_t index)
 {
-	const auto indexA = m_bodyA->GetIslandIndex();
-	const auto indexB = m_bodyB->GetIslandIndex();
-
 	log("  WheelJointDef jd;\n");
-	log("  jd.bodyA = bodies[%d];\n", indexA);
-	log("  jd.bodyB = bodies[%d];\n", indexB);
-	log("  jd.collideConnected = bool(%d);\n", m_collideConnected);
-	log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n", m_localAnchorA.x, m_localAnchorA.y);
-	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", m_localAnchorB.x, m_localAnchorB.y);
-	log("  jd.localAxisA = Vec2(%.15lef, %.15lef);\n", m_localXAxisA.x, m_localXAxisA.y);
-	log("  jd.enableMotor = bool(%d);\n", m_enableMotor);
-	log("  jd.motorSpeed = %.15lef;\n", m_motorSpeed);
-	log("  jd.maxMotorTorque = %.15lef;\n", m_maxMotorTorque);
-	log("  jd.frequencyHz = %.15lef;\n", m_frequencyHz);
-	log("  jd.dampingRatio = %.15lef;\n", m_dampingRatio);
-	log("  joints[%d] = m_world->CreateJoint(jd);\n", m_index);
+	log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
+	log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
+	log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
+	log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorA().x, joint.GetLocalAnchorA().y);
+	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorB().x, joint.GetLocalAnchorB().y);
+	log("  jd.localAxisA = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAxisA().x, joint.GetLocalAxisA().y);
+	log("  jd.enableMotor = bool(%d);\n", joint.IsMotorEnabled());
+	log("  jd.motorSpeed = %.15lef;\n", joint.GetMotorSpeed());
+	log("  jd.maxMotorTorque = %.15lef;\n", joint.GetMaxMotorTorque());
+	log("  jd.frequencyHz = %.15lef;\n", joint.GetSpringFrequencyHz());
+	log("  jd.dampingRatio = %.15lef;\n", joint.GetSpringDampingRatio());
+	log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }

@@ -549,30 +549,47 @@ void Body::SetFixedRotation(bool flag)
 	ResetMassData();
 }
 
-void Body::Dump()
+box2d::size_t box2d::GetWorldIndex(const Body* body)
 {
-	const auto bodyIndex = m_islandIndex;
+	if (body)
+	{
+		const auto world = body->GetWorld();
+		
+		auto i = size_t{0};
+		for (auto&& b: world->GetBodies())
+		{
+			if (&b == body)
+			{
+				return i;
+			}
+			++i;
+		}
+	}
+	return size_t(-1);
+}
 
+void box2d::Dump(const Body& body, size_t bodyIndex)
+{
 	log("{\n");
 	log("  BodyDef bd;\n");
-	log("  bd.type = BodyType(%d);\n", GetType());
-	log("  bd.position = Vec2(%.15lef, %.15lef);\n", GetPosition().x, GetPosition().y);
-	log("  bd.angle = %.15lef;\n", GetAngle());
-	log("  bd.linearVelocity = Vec2(%.15lef, %.15lef);\n", GetVelocity().v.x, GetVelocity().v.y);
-	log("  bd.angularVelocity = %.15lef;\n", GetVelocity().w);
-	log("  bd.linearDamping = %.15lef;\n", GetLinearDamping());
-	log("  bd.angularDamping = %.15lef;\n", GetAngularDamping());
-	log("  bd.allowSleep = bool(%d);\n", IsSleepingAllowed());
-	log("  bd.awake = bool(%d);\n", IsAwake());
-	log("  bd.fixedRotation = bool(%d);\n", IsFixedRotation());
-	log("  bd.bullet = bool(%d);\n", IsImpenetrable());
-	log("  bd.active = bool(%d);\n", IsActive());
-	log("  bodies[%d] = m_world->CreateBody(bd);\n", m_islandIndex);
+	log("  bd.type = BodyType(%d);\n", body.GetType());
+	log("  bd.position = Vec2(%.15lef, %.15lef);\n", body.GetPosition().x, body.GetPosition().y);
+	log("  bd.angle = %.15lef;\n", body.GetAngle());
+	log("  bd.linearVelocity = Vec2(%.15lef, %.15lef);\n", body.GetVelocity().v.x, body.GetVelocity().v.y);
+	log("  bd.angularVelocity = %.15lef;\n", body.GetVelocity().w);
+	log("  bd.linearDamping = %.15lef;\n", body.GetLinearDamping());
+	log("  bd.angularDamping = %.15lef;\n", body.GetAngularDamping());
+	log("  bd.allowSleep = bool(%d);\n", body.IsSleepingAllowed());
+	log("  bd.awake = bool(%d);\n", body.IsAwake());
+	log("  bd.fixedRotation = bool(%d);\n", body.IsFixedRotation());
+	log("  bd.bullet = bool(%d);\n", body.IsImpenetrable());
+	log("  bd.active = bool(%d);\n", body.IsActive());
+	log("  bodies[%d] = m_world->CreateBody(bd);\n", bodyIndex);
 	log("\n");
-	for (auto&& fixture: GetFixtures())
+	for (auto&& fixture: body.GetFixtures())
 	{
 		log("  {\n");
-		fixture.Dump(bodyIndex);
+		Dump(fixture, bodyIndex);
 		log("  }\n");
 	}
 	log("}\n");

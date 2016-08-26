@@ -252,10 +252,6 @@ public:
 	/// Get the current profile.
 	const Profile& GetProfile() const noexcept;
 
-	/// Dump the world into the log file.
-	/// @warning this should be called outside of a time step.
-	void Dump();
-
 private:
 
 	// m_flags
@@ -454,6 +450,10 @@ inline contact_count_t GetContactCount(const World& world) noexcept
 {
 	return world.GetContacts().size();
 }
+
+/// Dump the world into the log file.
+/// @warning this should be called outside of a time step.
+void Dump(const World& world);
 
 } // namespace box2d
 

@@ -136,9 +136,6 @@ public:
 	/// Get the current motor force given the inverse time step, usually in N.
 	float_t GetMotorForce(float_t inv_dt) const noexcept;
 
-	/// Dump to log
-	void Dump() override;
-
 protected:
 	friend class GearJoint;
 
@@ -182,7 +179,9 @@ inline float_t PrismaticJoint::GetMotorSpeed() const noexcept
 {
 	return m_motorSpeed;
 }
-
+	
+void Dump(const PrismaticJoint& joint, size_t index);
+	
 } // namespace box2d
 
 #endif

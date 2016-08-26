@@ -121,6 +121,12 @@ public:
 	/// Get the second body attached to this joint.
 	Body* GetBodyB() noexcept;
 
+	/// Get the first body attached to this joint.
+	const Body* GetBodyA() const noexcept;
+	
+	/// Get the second body attached to this joint.
+	const Body* GetBodyB() const noexcept;
+
 	/// Get the anchor point on bodyA in world coordinates.
 	virtual Vec2 GetAnchorA() const = 0;
 
@@ -146,9 +152,6 @@ public:
 	/// Note: modifying the collide connect flag won't work correctly because
 	/// the flag is only checked when fixture AABBs begin to overlap.
 	bool GetCollideConnected() const noexcept;
-
-	/// Dump this joint to the log file.
-	virtual void Dump() { log("// Dump is not supported for this joint type.\n"); }
 
 	/// Shift the origin for any points stored in world coordinates.
 	virtual void ShiftOrigin(const Vec2& newOrigin) { BOX2D_NOT_USED(newOrigin);  }
@@ -208,6 +211,16 @@ inline Body* Joint::GetBodyB() noexcept
 	return m_bodyB;
 }
 
+inline const Body* Joint::GetBodyA() const noexcept
+{
+	return m_bodyA;
+}
+
+inline const Body* Joint::GetBodyB() const noexcept
+{
+	return m_bodyB;
+}
+
 inline void* Joint::GetUserData() const noexcept
 {
 	return m_userData;
@@ -235,6 +248,11 @@ inline void Joint::SetInIsland(bool value) noexcept
 
 // Wakes up the joined bodies.
 void SetAwake(Joint& j) noexcept;
+
+size_t GetWorldIndex(const Joint* joint);
+
+/// Dump joint to the log file.
+void Dump(const Joint& joint, size_t index);
 
 } // namespace box2d
 

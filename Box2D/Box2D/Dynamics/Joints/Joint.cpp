@@ -121,7 +121,7 @@ Joint* Joint::Create(const JointDef& def, BlockAllocator* allocator)
 		}
 		break;
 
-	default:
+	case JointType::Unknown:
 		assert(false);
 		break;
 	}
@@ -178,7 +178,7 @@ void Joint::Destroy(Joint* joint, BlockAllocator* allocator)
 		allocator->Free(joint, sizeof(MotorJoint));
 		break;
 
-	default:
+	case JointType::Unknown:
 		assert(false);
 		break;
 	}
@@ -200,6 +200,72 @@ void SetAwake(Joint& j) noexcept
 {
 	j.GetBodyA()->SetAwake();
 	j.GetBodyB()->SetAwake();
+}
+
+size_t GetWorldIndex(const Joint* joint)
+{
+	if (joint)
+	{
+		const auto bA = joint->GetBodyA();
+		const auto bB = joint->GetBodyB();
+		const auto world = bA? bA->GetWorld(): bB? bB->GetWorld(): static_cast<const World*>(nullptr);
+		if (world)
+		{
+			auto i = size_t{0};
+			for (auto&& j: world->GetJoints())
+			{
+				if (&j == joint)
+				{
+					return i;
+				}
+				++i;
+			}
+		}
+	}
+	return size_t(-1);
+}
+
+void Dump(const Joint& joint, size_t index)
+{
+	switch (joint.GetType())
+	{
+		case JointType::Pulley:
+			Dump(static_cast<const PulleyJoint&>(joint), index);
+			break;
+		case JointType::Distance:
+			Dump(static_cast<const DistanceJoint&>(joint), index);
+			break;
+		case JointType::Friction:
+			Dump(static_cast<const FrictionJoint&>(joint), index);
+			break;
+		case JointType::Motor:
+			Dump(static_cast<const MotorJoint&>(joint), index);
+			break;
+		case JointType::Weld:
+			Dump(static_cast<const WeldJoint&>(joint), index);
+			break;
+		case JointType::Mouse:
+			Dump(static_cast<const MouseJoint&>(joint), index);
+			break;
+		case JointType::Revolute:
+			Dump(static_cast<const RevoluteJoint&>(joint), index);
+			break;
+		case JointType::Prismatic:
+			Dump(static_cast<const PrismaticJoint&>(joint), index);
+			break;
+		case JointType::Gear:
+			Dump(static_cast<const GearJoint&>(joint), index);
+			break;
+		case JointType::Rope:
+			Dump(static_cast<const RopeJoint&>(joint), index);
+			break;
+		case JointType::Wheel:
+			Dump(static_cast<const WheelJoint&>(joint), index);
+			break;
+		case JointType::Unknown:
+			assert(false);
+			break;
+	}
 }
 
 } // namespace box2d
