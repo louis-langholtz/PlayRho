@@ -37,7 +37,7 @@ class BlockAllocator;
 class StackAllocator;
 class ContactListener;
 
-/// Friction mixing law. The idea is to allow either fixture to drive the restitution to zero.
+/// Friction mixing law. The idea is to allow either fixture to drive the resulting friction to zero.
 /// For example, anything slides on ice.
 inline float_t MixFriction(float_t friction1, float_t friction2) noexcept(noexcept(Sqrt(friction1 * friction2)))
 {
