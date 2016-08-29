@@ -229,7 +229,9 @@ protected:
 
 	/// Updates the contact manifold and touching status and notifies listener (if one given).
 	/// @param listener Listener that if non-null is called with status information.
-	void Update(ContactListener* listener);
+	/// @sa GetManifold.
+	/// @sa IsTouching.
+	void Update(ContactListener* listener = nullptr);
 
 	/// Sets the time of impact (TOI).
 	/// @detail After returning, this object will have a TOI that is set as indicated by <code>HasValidToi()</code>.

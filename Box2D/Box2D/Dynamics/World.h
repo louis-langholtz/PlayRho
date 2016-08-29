@@ -271,6 +271,8 @@ private:
 	/// @note This may miss collisions involving fast moving bodies and allow them to tunnel through each other.
 	void Solve(const TimeStep& step);
 
+	static body_count_t AddToIsland(Island& island, Body& body);
+
 	/// Builds island based off of a given "seed" body.
 	/// @post Contacts are listed in the island in the order that bodies list those contacts.
 	/// @post Joints are listed the island in the order that bodies list those joints.
@@ -295,6 +297,7 @@ private:
 
 	void ResetBodiesForSolveTOI();
 	void ResetContactsForSolveTOI();
+	void ResetContactsForSolveTOI(Body& body);
 
 	/// Processes the contacts of a given body for TOI handling.
 	/// @detail This does the following:
@@ -306,11 +309,11 @@ private:
 	///      (or resets the other bodies advancement).
  	///   4. Adds to the island, those other bodies that haven't already been added of the contacts that got added.
 	/// @note Precondition: there should be no lower TOI for which contacts have not already been processed.
-	/// @param island Island.
-	/// @param body A dynamic/accelerable body.
-	/// @param toi Time of impact (TOI). Value between 0 and 1.
+	/// @param[in,out] island Island. On return this may contain additional contacts or bodies.
+	/// @param[in,out] body A dynamic/accelerable body.
+	/// @param[in] toi Time of impact (TOI). Value between 0 and 1.
 	/// @param listener Pointer to listener that will be called, or nullptr.
-	static void ProcessContactsForTOI(Island& island, Body& body, float_t toi, ContactListener* listener);
+	static void ProcessContactsForTOI(Island& island, Body& body, float_t toi, ContactListener* listener = nullptr);
 	
 	bool Add(Body& b);
 	bool Add(Joint& j);

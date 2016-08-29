@@ -377,6 +377,14 @@ static inline void Sleepem(Island::BodyContainer& bodies)
 		b->UnsetAwake();
 	}
 }
+	
+body_count_t World::AddToIsland(Island& island, Body& body)
+{
+	const auto index = static_cast<body_count_t>(island.m_bodies.size());
+	body.m_islandIndex = index;
+	island.m_bodies.push_back(&body);
+	return index;
+}
 
 Island World::BuildIsland(Body& seed,
 				  BodyList::size_type& remNumBodies,
@@ -399,8 +407,7 @@ Island World::BuildIsland(Body& seed,
 		stack.pop_back();
 		
 		assert(b->IsActive());
-		b->m_islandIndex = static_cast<body_count_t>(island.m_bodies.size());
-		island.m_bodies.push_back(b);
+		AddToIsland(island, *b);
 		--remNumBodies;
 		
 		// Make sure the body is awake.
@@ -414,7 +421,7 @@ Island World::BuildIsland(Body& seed,
 		
 		const auto numContacts = island.m_contacts.size();
 		// Adds appropriate contacts of current body and appropriate 'other' bodies of those contacts.
-		for (auto&& ce: b->m_contacts)
+		for (auto&& ce: b->GetContactEdges())
 		{
 			const auto contact = ce.contact;
 			if (!contact->IsInIsland() && contact->IsEnabled() && contact->IsTouching() && !contact->HasSensor())
@@ -633,14 +640,10 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 	// Build the island
 	Island island(m_bodies.size(), m_contactMgr.GetContacts().size(), 0, m_stackAllocator);
 
-	const auto indexA = static_cast<body_count_t>(island.m_bodies.size());
-	bA->m_islandIndex = indexA;
-	island.m_bodies.push_back(bA);
+	const auto indexA = AddToIsland(island, *bA);
 	bA->SetInIsland();
 
-	const auto indexB = static_cast<body_count_t>(island.m_bodies.size());
-	bB->m_islandIndex = indexB;
-	island.m_bodies.push_back(bB);
+	const auto indexB = AddToIsland(island, *bB);
 	bB->SetInIsland();
 
 	island.m_contacts.push_back(&contact);
@@ -649,12 +652,13 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 	// Process the contacts of the two bodies, adding appropriate ones to the island,
 	// adding appropriate other bodies of added contacts, and advancing those other
 	// bodies sweeps and transforms to the minimum contact's TOI.
-	for (auto body: {bA, bB})
+	if (bA->IsAccelerable())
 	{
-		if (body->IsAccelerable())
-		{
-			ProcessContactsForTOI(island, *body, toi, m_contactMgr.m_contactListener);
-		}
+		ProcessContactsForTOI(island, *bA, toi, m_contactMgr.m_contactListener);
+	}
+	if (bB->IsAccelerable())
+	{
+		ProcessContactsForTOI(island, *bB, toi, m_contactMgr.m_contactListener);
 	}
 
 	TimeStep subStep;
@@ -673,22 +677,26 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 		if (body->IsAccelerable())
 		{
 			body->SynchronizeFixtures();
-			
-			// Invalidate all contact TOIs on this displaced body.
-			for (auto&& ce: body->m_contacts)
-			{
-				ce.contact->UnsetInIsland();
-				ce.contact->UnsetToi();
-			}
+			ResetContactsForSolveTOI(*body);
 		}
+	}
+}
+
+void World::ResetContactsForSolveTOI(Body& body)
+{
+	// Invalidate all contact TOIs on this displaced body.
+	for (auto&& ce: body.GetContactEdges())
+	{
+		ce.contact->UnsetInIsland();
+		ce.contact->UnsetToi();
 	}
 }
 
 void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi, ContactListener* listener)
 {
-	assert(body.GetType() == BodyType::Dynamic);
+	assert(body.IsAccelerable());
 
-	for (auto&& ce: body.m_contacts)
+	for (auto&& ce: body.GetContactEdges())
 	{
 		auto contact = ce.contact;
 		auto other = ce.other;
@@ -723,8 +731,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi, Conta
 				{
 					other->SetAwake();
 				}
-				other->m_islandIndex = static_cast<body_count_t>(island.m_bodies.size());
-				island.m_bodies.push_back(other);
+				AddToIsland(island, *other);
 			}		
 		}		
 	}

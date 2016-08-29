@@ -469,6 +469,7 @@ bool Island::Solve(const TimeStep& step, ContactListener* listener, StackAllocat
 
 bool Island::SolveTOI(const TimeStep& step, ContactListener* listener, StackAllocator& allocator, island_count_t indexA, island_count_t indexB)
 {
+	assert(m_bodies.size() >= 2);
 	assert(indexA < m_bodies.size());
 	assert(indexB < m_bodies.size());
 
