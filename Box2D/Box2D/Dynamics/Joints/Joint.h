@@ -171,7 +171,14 @@ protected:
 	Joint(const JointDef& def);
 	virtual ~Joint() {}
 
+	/// Initializes velocity constraint data based on the given solver data.
+	/// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.
+	/// @sa SolveVelocityConstraints.
 	virtual void InitVelocityConstraints(const SolverData& data) = 0;
+
+	/// Solves velocity constraints for the given solver data.
+	/// @pre <code>InitVelocityConstraints</code> has been called.
+	/// @sa InitVelocityConstraints.
 	virtual void SolveVelocityConstraints(const SolverData& data) = 0;
 
 	// This returns true if the position errors are within tolerance.
