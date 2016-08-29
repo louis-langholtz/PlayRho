@@ -33,7 +33,7 @@ struct VelocityConstraintPoint
 	Vec2 rB; ///< Position of body B relative to world manifold point (8-bytes).
 	float_t normalImpulse; ///< Normal impulse (4-bytes).
 	float_t tangentImpulse; ///< Tangent impulse (4-bytes).
-	float_t normalMass; ///< Normal mass (4-bytes).
+	float_t normalMass; ///< Normal mass (4-bytes). 0 or greater.
 	float_t tangentMass; ///< Tangent mass (4-bytes).
 	float_t velocityBias; ///< Velocity bias (4-bytes).
 };
@@ -48,21 +48,40 @@ public:
 	using index_type = size_t;
 
 	/// Contact velocity constraint body data.
+	/// @invariant The inverse mass is a value of zero or more.
+	/// @invariant The inverse rotational inertia is a value of zero or more.
 	class BodyData
 	{
 	public:
 		BodyData() noexcept = default;
 		BodyData(const BodyData& copy) noexcept = default;
 		
-		constexpr BodyData(index_type i, float_t iM, float_t iI) noexcept: index{i}, invMass{iM}, invI{iI} {}
+		/// Initializing constructor.
+		/// @note Behavior is undefined if the given inverse mass or given inverse rotational
+		///   inertia is less than zero.
+		/// @param iM Inverse mass. A value of 0 or more.
+		/// @param iI Inverse rotational inertia. A value of 0 or more.
+		constexpr BodyData(index_type i, float_t iM, float_t iI) noexcept:
+			index{i}, invMass{iM}, invI{iI}
+		{
+			assert(iM >= 0);
+			assert(iI >= 0);
+		}
 	
 		index_type GetIndex() const noexcept { return index; }
 
-		float_t invMass; ///< Inverse mass of body.
-		float_t invI; ///< Inverse rotational interia of body.
+		/// Gets the inverse mass.
+		/// @return 0 or greater value.
+		float_t GetInvMass() const noexcept { return invMass; }
+
+		/// Gets the inverse rotational inertia.
+		/// @return 0 or greater value.
+		float_t GetInvRotI() const noexcept { return invI; }
 
 	private:
-		index_type index; ///< Index within island of body.
+		float_t invMass = 0; ///< Inverse mass of body. Value of 0 or greater.
+		float_t invI = 0; ///< Inverse rotational interia of body. Value of 0 or greater.
+		index_type index = 0; ///< Index within island of body.
 	};
 	
 	ContactVelocityConstraint() = default;
@@ -185,6 +204,7 @@ inline Mat22 ContactVelocityConstraint::GetK() const noexcept
 
 inline Mat22 ContactVelocityConstraint::GetNormalMass() const noexcept
 {
+	assert(IsValid(normalMass));
 	return normalMass;
 }
 
@@ -201,7 +221,12 @@ struct ContactPositionConstraint
 		
 		BodyData() noexcept = default;
 	
-		constexpr BodyData(index_type i, float_t iM, float_t iI, Vec2 lc) noexcept: index{i}, invMass{iM}, invI{iI}, localCenter{lc} {}
+		constexpr BodyData(index_type i, float_t iM, float_t iI, Vec2 lc) noexcept:
+			index{i}, invMass{iM}, invI{iI}, localCenter{lc}
+		{
+			assert(iM >= 0);
+			assert(iI >= 0);
+		}
 		
 		index_type index; ///< Index within island of the associated body (2-bytes).
 		float_t invMass; ///< Inverse mass of associated body (a non-negative value, 4-bytes).
@@ -212,17 +237,22 @@ struct ContactPositionConstraint
 	ContactPositionConstraint() = default;
 	
 	ContactPositionConstraint(const Manifold& m, const BodyData& bA, float_t rA, const BodyData& bB, float_t rB):
-		manifold{m}, bodyA{bA}, radiusA{rA}, bodyB{bB}, radiusB{rB} {}
+		manifold{m}, bodyA{bA}, radiusA{rA}, bodyB{bB}, radiusB{rB}
+	{
+		assert(m.GetPointCount() > 0);
+		assert(rA >= 0);
+		assert(rB >= 0);
+	}
 
-	Manifold manifold; ///< Copy of contact's manifold (at least 59-bytes).
+	Manifold manifold; ///< Copy of contact's manifold with 1 or more contact points (at least 59-bytes).
 	
 	BodyData bodyA; ///< Body A data (at least 18-bytes).
 	
-	float_t radiusA; ///< "Radius" distance from the associated shape of fixture A (4-bytes).
+	float_t radiusA; ///< "Radius" distance from the associated shape of fixture A (4-bytes). 0 or greater.
 
 	BodyData bodyB; ///< Body A data (at least 18-bytes).
 	
-	float_t radiusB; ///< "Radius" distance from the associated shape of fixture B (4-bytes).
+	float_t radiusB; ///< "Radius" distance from the associated shape of fixture B (4-bytes). 0 or greater.
 };
 	
 /// Contact Solver.
@@ -263,14 +293,17 @@ public:
 	/// @detail
 	/// Updates the position dependent portions of the velocity constraints with the
 	/// information from the current position constraints.
+	/// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.
 	/// @post Velocity constraints will have their "normal" field set to the world manifold normal for them.
 	/// @post Velocity constraints will have their constraint points updated.
+	/// @sa SolveVelocityConstraints.
 	void UpdateVelocityConstraints();
 
 	void WarmStart();
 
 	/// "Solves" the velocity constraints.
 	/// @detail Updates the velocities and velocity constraint points' normal and tangent impulses.
+	/// @pre <code>UpdateVelocityConstraints</code> has been called on this object.
 	void SolveVelocityConstraints();
 
 	/// Solves position constraints.

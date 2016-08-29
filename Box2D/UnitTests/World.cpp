@@ -340,16 +340,20 @@ public:
 	
 	void PreSolve(Contact& contact, const Manifold& oldManifold) override
 	{
+		++pre_solves;
 		presolver(contact, oldManifold);
 	}
 	
 	void PostSolve(Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) override
 	{
+		++post_solves;
 		postsolver(contact, impulse, solved);
 	}
 
 	unsigned begin_contacts = 0;
 	unsigned end_contacts = 0;
+	unsigned pre_solves = 0;
+	unsigned post_solves = 0;
 	bool contacting = false;
 	bool touching = false;
 	Vec2 body_a[2] = {Vec2_zero, Vec2_zero};
@@ -448,6 +452,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 
 TEST(World, CollidingDynamicBodies)
 {
+	const auto radius = float_t(1);
 	const auto x = float_t(10); // other test parameters tuned to this value being 10
 
 	auto body_def = BodyDef{};
@@ -464,7 +469,7 @@ TEST(World, CollidingDynamicBodies)
 	EXPECT_EQ(world.GetGravity(), gravity);
 	world.SetContactListener(&listener);
 	
-	CircleShape shape{1};
+	CircleShape shape{radius};
 	FixtureDef fixtureDef;
 	fixtureDef.shape = &shape;
 	fixtureDef.density = float_t(1);
@@ -1097,4 +1102,157 @@ TEST(World, MouseJointWontCauseTunnelling)
 	std::cout << " maxvel=" << max_velocity;
 	std::cout << " range=(" << min_x << "," << min_y << ")-(" << max_x << "," << max_y << ")";
 	std::cout << std::endl;
+}
+
+static void smaller_still_conserves_momentum(bool bullet, float_t multiplier, float_t time_inc)
+{
+	const auto radius = float_t(1);
+	const auto start_distance = float_t(10);
+	
+	auto scale = float_t(1);
+	for (;;)
+	{
+		const auto gravity = Vec2_zero;
+		World world{gravity};
+		ASSERT_EQ(world.GetGravity().x, 0);
+		ASSERT_EQ(world.GetGravity().y, 0);
+
+		auto maxNormalImpulse = float_t(0);
+		auto maxTangentImpulse = float_t(0);
+		auto maxPoints = 0u;
+		auto numSteps = 0u;
+		auto failed = false;
+		auto preB1 = Vec2_zero;
+		auto preB2 = Vec2_zero;
+		
+		MyContactListener listener{
+			[&](Contact& contact, const Manifold& old_manifold)
+			{
+				const auto fA = contact.GetFixtureA();
+				const auto fB = contact.GetFixtureB();
+				const auto bA = fA->GetBody();
+				const auto bB = fB->GetBody();
+				preB1 = bA->GetPosition();
+				preB2 = bB->GetPosition();
+			},
+			[&](Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved)
+			{
+				{
+					const auto count = impulse.GetCount();
+					maxPoints = Max(maxPoints, decltype(maxPoints){count});
+					for (auto i = decltype(count){0}; i < count; ++i)
+					{
+						maxNormalImpulse = Max(maxNormalImpulse, impulse.GetEntryNormal(i));
+						maxTangentImpulse = Max(maxTangentImpulse, impulse.GetEntryTanget(i));
+					}
+				}
+				if (maxNormalImpulse == 0 && maxTangentImpulse == 0)
+				{
+					failed = true;
+					const auto& manifold = contact.GetManifold();
+					std::cout << " solved=" << unsigned(solved);
+					std::cout << " numstp=" << numSteps;
+					std::cout << " type=" << unsigned(manifold.GetType());
+					std::cout << " lp.x=" << manifold.GetLocalPoint().x;
+					std::cout << " lp.y=" << manifold.GetLocalPoint().y;
+					const auto count = manifold.GetPointCount();
+					std::cout << " points=" << unsigned(count);
+					for (auto i = decltype(count){0}; i < count; ++i)
+					{
+						std::cout << " ni[" << unsigned(i) << "]=" << manifold.GetPoint(i).normalImpulse;
+						std::cout << " ti[" << unsigned(i) << "]=" << manifold.GetPoint(i).tangentImpulse;
+						std::cout << " lp[" << unsigned(i) << "].x=" << manifold.GetPoint(i).localPoint.x;
+						std::cout << " lp[" << unsigned(i) << "].y=" << manifold.GetPoint(i).localPoint.y;
+					}
+					std::cout << std::endl;
+				}
+			},
+			[=](Contact& contact) {
+			}
+		};
+		world.SetContactListener(&listener);
+
+		const auto shape = CircleShape{scale * radius};
+		ASSERT_EQ(shape.GetRadius(), scale * radius);
+		
+		auto fixture_def = FixtureDef{&shape, 1};
+		fixture_def.friction = 0;
+		fixture_def.restitution = 1;
+		
+		auto body_def = BodyDef{};
+		body_def.type = BodyType::Dynamic;
+		body_def.bullet = bullet;
+		
+		body_def.position = Vec2{+(scale * start_distance), 0};
+		body_def.linearVelocity = Vec2{-start_distance, 0};
+		const auto body_1 = world.CreateBody(body_def);
+		ASSERT_EQ(body_1->GetPosition().x, body_def.position.x);
+		ASSERT_EQ(body_1->GetPosition().y, body_def.position.y);
+		ASSERT_EQ(GetLinearVelocity(*body_1).x, body_def.linearVelocity.x);
+		ASSERT_EQ(GetLinearVelocity(*body_1).y, body_def.linearVelocity.y);
+		body_1->CreateFixture(fixture_def);
+		
+		body_def.position = Vec2{-(scale * start_distance), 0};
+		body_def.linearVelocity = Vec2{+start_distance, 0};
+		const auto body_2 = world.CreateBody(body_def);
+		ASSERT_EQ(body_2->GetPosition().x, body_def.position.x);
+		ASSERT_EQ(body_2->GetPosition().y, body_def.position.y);
+		ASSERT_EQ(GetLinearVelocity(*body_2).x, body_def.linearVelocity.x);
+		ASSERT_EQ(GetLinearVelocity(*body_2).y, body_def.linearVelocity.y);
+		body_2->CreateFixture(fixture_def);
+		
+		for (;;)
+		{
+			const auto relative_velocity = GetLinearVelocity(*body_1) - GetLinearVelocity(*body_2);
+			if (relative_velocity.x >= 0)
+			{
+				EXPECT_FLOAT_EQ(relative_velocity.x, Abs(body_def.linearVelocity.x) * +2);
+				break;
+			}
+			if (failed)
+			{
+				std::cout << " scale=" << scale;
+				std::cout << " dist0=" << (scale * start_distance * 2);
+				std::cout << " bcont=" << listener.begin_contacts;
+				std::cout << " econt=" << listener.end_contacts;
+				std::cout << " pre-#=" << listener.pre_solves;
+				std::cout << " post#=" << listener.post_solves;
+				std::cout << " normi=" << maxNormalImpulse;
+				std::cout << " tangi=" << maxTangentImpulse;
+				std::cout << " n-pts=" << maxPoints;
+				std::cout << std::endl;
+				std::cout << " pre1.x=" << preB1.x;
+				std::cout << " pre2.x=" << preB2.x;
+				std::cout << " pos1.x=" << body_1->GetPosition().x;
+				std::cout << " pos2.x=" << body_2->GetPosition().x;
+				std::cout << " preDel=" << (preB1.x - preB2.x);
+				std::cout << " posDel=" << (body_1->GetPosition().x - body_2->GetPosition().x);
+				std::cout << " travel=" << (body_1->GetPosition().x - preB1.x);
+				std::cout << std::endl;
+				ASSERT_FALSE(failed);
+			}
+			
+			EXPECT_FLOAT_EQ(relative_velocity.x, Abs(body_def.linearVelocity.x) * -2);
+			world.Step(time_inc);
+			++numSteps;
+		}
+		
+		scale *= multiplier;
+	}
+}
+
+TEST(World, SmallerStillConservesMomemtum)
+{
+	// smaller_still_conserves_momentum(false, float_t(0.999), float_t(0.01));
+	// fails around scale=0.0899796 dist0=1.79959
+	// goin to smaller time increment fails nearly same point.
+	smaller_still_conserves_momentum(false, float_t(0.999), float_t(0.01));
+}
+
+TEST(World, SmallerBulletStillConservesMomemtum)
+{
+	// smaller_still_conserves_momentum(true, float_t(0.999), float_t(0.01))
+	// fails around scale=4.99832e-05 dist0=0.000999664
+	// goin to smaller time increment fails nearly same point.
+	smaller_still_conserves_momentum(true, float_t(0.999), float_t(0.01));
 }

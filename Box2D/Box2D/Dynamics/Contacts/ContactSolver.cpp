@@ -34,6 +34,12 @@ static constexpr auto k_majorErrorTol = float_t(1e-2); ///< error tolerance
 
 bool g_blockSolve = true;
 
+static inline Vec2 GetContactRelativeVelocity(const Velocity velA, const Vec2 vcp_rA,
+											  const Velocity velB, const Vec2 vcp_rB) noexcept
+{
+	return (velB.v + (GetReversePerpendicular(vcp_rB) * velB.w)) - (velA.v + (GetReversePerpendicular(vcp_rA) * velA.w));
+}
+	
 static inline void WarmStartVelocities(const ContactVelocityConstraint& vc, Velocity& velA, Velocity& velB)
 {
 	assert(IsValid(velA));
@@ -45,10 +51,10 @@ static inline void WarmStartVelocities(const ContactVelocityConstraint& vc, Velo
 	{
 		const auto vcp = vc.GetPoint(j); ///< Velocity constraint point.
 		const auto P = vcp.normalImpulse * vc.normal + vcp.tangentImpulse * tangent;
-		velA.v -= vc.bodyA.invMass * P;
-		velA.w -= vc.bodyA.invI * Cross(vcp.rA, P);
-		velB.v += vc.bodyB.invMass * P;
-		velB.w += vc.bodyB.invI * Cross(vcp.rB, P);
+		velA.v -= vc.bodyA.GetInvMass() * P;
+		velA.w -= vc.bodyA.GetInvRotI() * Cross(vcp.rA, P);
+		velB.v += vc.bodyB.GetInvMass() * P;
+		velB.w += vc.bodyB.GetInvRotI() * Cross(vcp.rB, P);
 	}
 }
 
@@ -77,7 +83,7 @@ static inline void UpdateVelocityConstraint(ContactVelocityConstraint& vc,
 		const auto xfB = GetTransformation(posB, pc.bodyB.localCenter);
 		return GetWorldManifold(pc.manifold, xfA, pc.radiusA, xfB, pc.radiusB);
 	}();
-	const auto totalInvMass = vc.bodyA.invMass + vc.bodyB.invMass;
+	const auto totalInvMass = vc.bodyA.GetInvMass() + vc.bodyB.GetInvMass();
 	
 	vc.normal = worldManifold.GetNormal();
 	
@@ -93,20 +99,19 @@ static inline void UpdateVelocityConstraint(ContactVelocityConstraint& vc,
 		vcp.normalMass = [&]() {
 			const auto rnA = Cross(vcp_rA, vc.normal);
 			const auto rnB = Cross(vcp_rB, vc.normal);
-			const auto kNormal = totalInvMass + (vc.bodyA.invI * Square(rnA)) + (vc.bodyB.invI * Square(rnB));
+			const auto kNormal = totalInvMass + (vc.bodyA.GetInvRotI() * Square(rnA)) + (vc.bodyB.GetInvRotI() * Square(rnB));
 			return (kNormal > float_t{0})? float_t{1} / kNormal : float_t{0};
 		}();
 		vcp.tangentMass = [&]() {
 			const auto tangent = GetForwardPerpendicular(vc.normal);
 			const auto rtA = Cross(vcp_rA, tangent);
 			const auto rtB = Cross(vcp_rB, tangent);
-			const auto kTangent = totalInvMass + (vc.bodyA.invI * Square(rtA)) + (vc.bodyB.invI * Square(rtB));
+			const auto kTangent = totalInvMass + (vc.bodyA.GetInvRotI() * Square(rtA)) + (vc.bodyB.GetInvRotI() * Square(rtB));
 			return (kTangent > float_t{0}) ? float_t{1} /  kTangent : float_t{0};
 		}();
 		vcp.velocityBias = [&]() {
-			const auto dv = (velB.v + (GetReversePerpendicular(vcp_rB) * velB.w)) - (velA.v + (GetReversePerpendicular(vcp_rA) * velA.w));
-			const auto vRel = Dot(dv, vc.normal); // Relative velocity at contact
-			return (vRel < -VelocityThreshold)? -vc.GetRestitution() * vRel: float_t{0};
+			const auto vn = Dot(GetContactRelativeVelocity(velA, vcp_rA, velB, vcp_rB), vc.normal);
+			return (vn < -VelocityThreshold)? -vc.GetRestitution() * vn: float_t{0};
 		}();
 	}
 	
@@ -121,9 +126,9 @@ static inline void UpdateVelocityConstraint(ContactVelocityConstraint& vc,
 		const auto rn2A = Cross(vcp2.rA, vc.normal);
 		const auto rn2B = Cross(vcp2.rB, vc.normal);
 		
-		const auto k11 = totalInvMass + (vc.bodyA.invI * Square(rn1A)) + (vc.bodyB.invI * Square(rn1B));
-		const auto k22 = totalInvMass + (vc.bodyA.invI * Square(rn2A)) + (vc.bodyB.invI * Square(rn2B));
-		const auto k12 = totalInvMass + (vc.bodyA.invI * rn1A * rn2A)  + (vc.bodyB.invI * rn1B * rn2B);
+		const auto k11 = totalInvMass + (vc.bodyA.GetInvRotI() * Square(rn1A)) + (vc.bodyB.GetInvRotI() * Square(rn1B));
+		const auto k22 = totalInvMass + (vc.bodyA.GetInvRotI() * Square(rn2A)) + (vc.bodyB.GetInvRotI() * Square(rn2B));
+		const auto k12 = totalInvMass + (vc.bodyA.GetInvRotI() * rn1A * rn2A)  + (vc.bodyB.GetInvRotI() * rn1B * rn2B);
 		
 		// Ensure a reasonable condition number.
 		constexpr auto k_maxConditionNumber = BOX2D_MAGIC(float_t(1000));
@@ -155,12 +160,9 @@ static void SolveTangentConstraint(const ContactVelocityConstraint& vc, const Ve
 	assert(IsValid(tangent));
 	assert(IsValid(velA));
 	assert(IsValid(velB));
-
-	// Relative velocity at contact
-	const auto dv = (velB.v + (GetReversePerpendicular(vcp.rB) * velB.w)) - (velA.v + (GetReversePerpendicular(vcp.rA) * velA.w));
 	
 	// Compute tangent force
-	const auto vt = Dot(dv, tangent) - vc.GetTangentSpeed();
+	const auto vt = Dot(GetContactRelativeVelocity(velA, vcp.rA, velB, vcp.rB), tangent) - vc.GetTangentSpeed();
 	const auto lambda = vcp.tangentMass * (-vt);
 	
 	// Clamp the accumulated force
@@ -174,10 +176,10 @@ static void SolveTangentConstraint(const ContactVelocityConstraint& vc, const Ve
 	
 	// Apply contact impulse
 	const auto P = incImpulse * tangent;
-	velA.v -= vc.bodyA.invMass * P;
-	velA.w -= vc.bodyA.invI * Cross(vcp.rA, P);
-	velB.v += vc.bodyB.invMass * P;
-	velB.w += vc.bodyB.invI * Cross(vcp.rB, P);
+	velA.v -= vc.bodyA.GetInvMass() * P;
+	velA.w -= vc.bodyA.GetInvRotI() * Cross(vcp.rA, P);
+	velB.v += vc.bodyB.GetInvMass() * P;
+	velB.w += vc.bodyB.GetInvRotI() * Cross(vcp.rB, P);
 }
 
 /// Solves the velocities and constraint point for the normal constraint.
@@ -187,16 +189,13 @@ static void SolveNormalConstraint(const ContactVelocityConstraint& vc,
 	assert(IsValid(velA));
 	assert(IsValid(velB));
 	
-	// Relative velocity at contact
-	const auto dv = (velB.v + (GetReversePerpendicular(vcp.rB) * velB.w)) - (velA.v + (GetReversePerpendicular(vcp.rA) * velA.w));
-	
 	// Compute normal impulse
-	const auto vn = Dot(dv, vc.normal);
+	const auto vn = Dot(GetContactRelativeVelocity(velA, vcp.rA, velB, vcp.rB), vc.normal);
 	const auto lambda = -vcp.normalMass * (vn - vcp.velocityBias);
 	
 	// Clamp the accumulated impulse
 	const auto oldImpulse = vcp.normalImpulse;
-	const auto newImpulse = Max(vcp.normalImpulse + lambda, float_t{0});
+	const auto newImpulse = Max(oldImpulse + lambda, float_t{0});
 	const auto incImpulse = newImpulse - oldImpulse;
 	
 	// Save new impulse
@@ -204,10 +203,10 @@ static void SolveNormalConstraint(const ContactVelocityConstraint& vc,
 	
 	// Apply contact impulse
 	const auto P = incImpulse * vc.normal;
-	velA.v -= vc.bodyA.invMass * P;
-	velA.w -= vc.bodyA.invI * Cross(vcp.rA, P);
-	velB.v += vc.bodyB.invMass * P;
-	velB.w += vc.bodyB.invI * Cross(vcp.rB, P);
+	velA.v -= vc.bodyA.GetInvMass() * P;
+	velA.w -= vc.bodyA.GetInvRotI() * Cross(vcp.rA, P);
+	velB.v += vc.bodyB.GetInvMass() * P;
+	velB.w += vc.bodyB.GetInvRotI() * Cross(vcp.rB, P);
 }
 
 static inline void BlockSolveUpdate(const ContactVelocityConstraint& vc, const Vec2 oldImpulse, const Vec2 newImpulse,
@@ -225,10 +224,10 @@ static inline void BlockSolveUpdate(const ContactVelocityConstraint& vc, const V
 	const auto P1 = incImpulse.x * vc.normal;
 	const auto P2 = incImpulse.y * vc.normal;
 	const auto P = P1 + P2;
-	velA.v -= vc.bodyA.invMass * P;
-	velA.w -= vc.bodyA.invI * (Cross(vcp1.rA, P1) + Cross(vcp2.rA, P2));
-	velB.v += vc.bodyB.invMass * P;
-	velB.w += vc.bodyB.invI * (Cross(vcp1.rB, P1) + Cross(vcp2.rB, P2));
+	velA.v -= vc.bodyA.GetInvMass() * P;
+	velA.w -= vc.bodyA.GetInvRotI() * (Cross(vcp1.rA, P1) + Cross(vcp2.rA, P2));
+	velB.v += vc.bodyB.GetInvMass() * P;
+	velB.w += vc.bodyB.GetInvRotI() * (Cross(vcp1.rB, P1) + Cross(vcp2.rB, P2));
 	
 	// Save new impulse
 	vcp1.normalImpulse = newImpulse.x;
@@ -393,16 +392,12 @@ static inline void BlockSolveNormalConstraint(const ContactVelocityConstraint& v
 	assert((oldImpulse.x >= float_t{0}) && (oldImpulse.y >= float_t{0}));
 	
 	const auto b_prime = [=]{
-		// Relative velocity at contact
-		const auto dv1 = (velB.v + (GetReversePerpendicular(vcp1.rB) * velB.w)) - (velA.v + (GetReversePerpendicular(vcp1.rA) * velA.w));
-		const auto dv2 = (velB.v + (GetReversePerpendicular(vcp2.rB) * velB.w)) - (velA.v + (GetReversePerpendicular(vcp2.rA) * velA.w));
-		
 		// Compute normal velocity
-		const auto normal_vn1 = Dot(dv1, vc.normal);
-		const auto normal_vn2 = Dot(dv2, vc.normal);
+		const auto vn1 = Dot(GetContactRelativeVelocity(velA, vcp1.rA, velB, vcp1.rB), vc.normal);
+		const auto vn2 = Dot(GetContactRelativeVelocity(velA, vcp2.rA, velB, vcp2.rB), vc.normal);
 		
 		// Compute b
-		const auto b = Vec2{normal_vn1 - vcp1.velocityBias, normal_vn2 - vcp2.velocityBias};
+		const auto b = Vec2{vn1 - vcp1.velocityBias, vn2 - vcp2.velocityBias};
 		
 		// Return b'
 		return b - Transform(oldImpulse, vc.GetK());
@@ -490,6 +485,7 @@ static float_t Solve(const ContactPositionConstraint& pc,
 		// Compute inverse mass total.
 		// This must be > 0 unless doing TOI solving and neither bodies were the bodies specified.
 		const auto invMassTotal = invMassA + invMassB;
+		assert(invMassTotal >= 0);
 		
 		const auto totalRadius = pc.radiusA + pc.radiusB;
 		

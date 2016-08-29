@@ -732,9 +732,9 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi, Conta
 
 void World::Step(float_t dt, unsigned velocityIterations, unsigned positionIterations)
 {
-	// If new fixtures were added, we need to find the new contacts.
 	if (HasNewFixtures())
 	{
+		// New fixtures were added: need to find and create the new contacts.
 		m_contactMgr.FindNewContacts();
 		UnsetNewFixtures();
 	}
@@ -742,7 +742,7 @@ void World::Step(float_t dt, unsigned velocityIterations, unsigned positionItera
 	assert(!IsLocked());
 	FlagGuard<decltype(m_flags)> flagGaurd(m_flags, e_locked);
 
-	// Update contacts. This is where some contacts are destroyed.
+	// Update and destroy contacts. No new contacts are created though.
 	m_contactMgr.Collide();
 
 	if (dt > 0)
