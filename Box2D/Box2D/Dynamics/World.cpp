@@ -490,7 +490,7 @@ void World::Solve(const TimeStep& step)
 				auto island = BuildIsland(body, remNumBodies, remNumContacts, remNumJoints);
 				
 				// Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions
-				const auto constraintsSolved = island.Solve(step, m_contactMgr.m_contactListener, m_stackAllocator);
+				const auto constraintsSolved = Solve(step, island);
 				
 				if (m_allowSleep)
 				{
@@ -526,6 +526,11 @@ void World::Solve(const TimeStep& step)
 
 	// Look for new contacts.
 	m_contactMgr.FindNewContacts();
+}
+
+bool World::Solve(const TimeStep& step, Island& island)
+{
+	return island.Solve(step, m_contactMgr.m_contactListener, m_stackAllocator);
 }
 
 void World::ResetBodiesForSolveTOI()

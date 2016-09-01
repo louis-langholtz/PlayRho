@@ -19,6 +19,8 @@
 
 #include <Box2D/Dynamics/Contacts/ContactSolver.h>
 #include <Box2D/Dynamics/Contacts/PositionSolverManifold.hpp>
+#include <Box2D/Dynamics/Contacts/ContactVelocityConstraint.hpp>
+#include <Box2D/Dynamics/Contacts/ContactPositionConstraint.hpp>
 
 namespace box2d {
 

@@ -271,6 +271,8 @@ private:
 	/// @note This may miss collisions involving fast moving bodies and allow them to tunnel through each other.
 	void Solve(const TimeStep& step);
 
+	bool Solve(const TimeStep& step, Island& island);
+
 	static body_count_t AddToIsland(Island& island, Body& body);
 
 	/// Builds island based off of a given "seed" body.
