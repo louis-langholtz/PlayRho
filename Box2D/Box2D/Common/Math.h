@@ -500,16 +500,6 @@ public:
 	/// Initializing constructor.
 	constexpr explicit Sweep(const Position& p, const Vec2& lc = Vec2_zero) noexcept: Sweep{p, p, lc, 0} {}
 
-	/// Advances the sweep by a factor of the difference between the given time alpha and the sweep's alpha0.
-	/// @detail
-	/// This advances position 0 (<code>pos0</code>) of the sweep towards position 1 (<code>pos1</code>)
-	/// by a factor of the difference between the given alpha and the alpha0.
-	/// @param alpha Valid new time factor in [0,1) to update the sweep to. Behavior is undefined if value is invalid.
-	void Advance0(float_t alpha);
-
-	Position pos0; ///< Center world position and world angle at time "0".
-	Position pos1; ///< Center world position and world angle at time "1".
-
 	/// Gets the local center of mass position.
  	/// @note This value can only be set via a sweep constructed using an initializing constructor.
 	Vec2 GetLocalCenter() const noexcept { return localCenter; }
@@ -517,11 +507,18 @@ public:
 	/// Gets the alpha0 for this sweep.
 	/// @return Value between 0 and less than 1.
 	float_t GetAlpha0() const noexcept { return alpha0; }
-	
-	void ResetAlpha0() noexcept
-	{
-		alpha0 = float_t{0};
-	}
+
+	/// Advances the sweep by a factor of the difference between the given time alpha and the sweep's alpha0.
+	/// @detail
+	/// This advances position 0 (<code>pos0</code>) of the sweep towards position 1 (<code>pos1</code>)
+	/// by a factor of the difference between the given alpha and the alpha0.
+	/// @param alpha Valid new time factor in [0,1) to update the sweep to. Behavior is undefined if value is invalid.
+	void Advance0(float_t alpha);
+
+	void ResetAlpha0() noexcept;
+
+	Position pos0; ///< Center world position and world angle at time "0".
+	Position pos1; ///< Center world position and world angle at time "1".
 
 private:
 	Vec2 localCenter; ///< Local center of mass position.
@@ -1053,6 +1050,11 @@ inline void Sweep::Advance0(float_t alpha)
 	const auto beta = (alpha - alpha0) / (float_t{1} - alpha0);
 	pos0 = GetPosition(pos0, pos1, beta);
 	alpha0 = alpha;
+}
+
+inline void Sweep::ResetAlpha0() noexcept
+{
+	alpha0 = float_t{0};
 }
 
 /// Gets a sweep with the given sweep's angles normalized.
