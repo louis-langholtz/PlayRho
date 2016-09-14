@@ -88,9 +88,6 @@ public:
 	Manifold& GetManifold() noexcept;
 	const Manifold& GetManifold() const noexcept;
 
-	/// Does this contact have a sensor fixture?
-	bool HasSensor() const noexcept;
-
 	/// Is this contact touching?
 	/// @detail
 	/// Touching is defined as either:
@@ -468,11 +465,6 @@ inline void Contact::UnsetInIsland() noexcept
 	m_flags &= ~Contact::e_islandFlag;
 }
 
-inline bool Contact::HasSensor() const noexcept
-{
-	return m_fixtureA->IsSensor() || m_fixtureB->IsSensor();
-}
-
 inline Contact::substep_type Contact::GetToiCount() const noexcept
 {
 	return m_toiCount;
@@ -511,6 +503,11 @@ inline Contact::dist_max_type Contact::GetDistItersMax() const noexcept
 inline Contact::root_max_type Contact::GetRootItersMax() const noexcept
 {
 	return m_max_root_iters;
+}
+
+inline bool HasSensor(const Contact& contact) noexcept
+{
+	return contact.GetFixtureA()->IsSensor() || contact.GetFixtureB()->IsSensor();
 }
 
 inline void SetAwake(Contact& c) noexcept

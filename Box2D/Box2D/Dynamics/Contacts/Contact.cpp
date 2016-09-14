@@ -154,7 +154,7 @@ void Contact::Update(ContactListener* listener)
 	const auto xfB = bodyB->GetTransformation();
 
 	// Is this contact a sensor?
-	const auto sensor = HasSensor();
+	const auto sensor = HasSensor(*this);
 	if (sensor)
 	{
 		const auto shapeA = m_fixtureA->GetShape();

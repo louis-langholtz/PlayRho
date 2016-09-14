@@ -429,7 +429,7 @@ Island World::BuildIsland(Body& seed,
 		for (auto&& ce: b->GetContactEdges())
 		{
 			const auto contact = ce.contact;
-			if (!contact->IsInIsland() && contact->IsEnabled() && contact->IsTouching() && !contact->HasSensor())
+			if (!contact->IsInIsland() && contact->IsEnabled() && contact->IsTouching() && !HasSensor(*contact))
 			{
 				island.m_contacts.push_back(contact);
 				contact->SetInIsland();
@@ -1098,7 +1098,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi, Conta
 		auto contact = ce.contact;
 		auto other = ce.other;
 
-		if (!contact->IsInIsland() && !contact->HasSensor() && (other->IsImpenetrable() || body.IsImpenetrable()))
+		if (!contact->IsInIsland() && !HasSensor(*contact) && (other->IsImpenetrable() || body.IsImpenetrable()))
 		{
 			// Tentatively advance the body to the TOI.
 			const auto backup = other->m_sweep;
