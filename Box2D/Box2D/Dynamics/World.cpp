@@ -18,6 +18,7 @@
  */
 
 #include <Box2D/Dynamics/World.h>
+#include <Box2D/Dynamics/SolverData.hpp>
 #include <Box2D/Dynamics/Body.h>
 #include <Box2D/Dynamics/Fixture.h>
 #include <Box2D/Dynamics/Island.h>
@@ -31,6 +32,10 @@
 #include <Box2D/Common/Draw.h>
 #include <Box2D/Common/Timer.h>
 #include <Box2D/Common/AllocatedArray.hpp>
+
+#include <Box2D/Dynamics/Contacts/ContactSolver.h>
+#include <Box2D/Dynamics/Contacts/ContactVelocityConstraint.hpp>
+#include <Box2D/Dynamics/Contacts/ContactPositionConstraint.hpp>
 
 #include <new>
 #include <functional>
@@ -528,9 +533,319 @@ void World::Solve(const TimeStep& step)
 	m_contactMgr.FindNewContacts();
 }
 
+	// ==== begin
+	using VelocityContainer = AllocatedArray<Velocity, StackAllocator&>;
+	using PositionContainer = AllocatedArray<Position, StackAllocator&>;
+	using PositionConstraintsContainer = AllocatedArray<ContactPositionConstraint, StackAllocator&>;
+	using VelocityConstraintsContainer = AllocatedArray<ContactVelocityConstraint, StackAllocator&>;
+	
+	namespace {
+		
+		/// Calculates movement.
+		/// @detail Calculate the positional displacement based on the given velocity
+		///    that's possibly clamped to the maximum translation and rotation.
+		inline Position CalculateMovement(Velocity& velocity, float_t h)
+		{
+			assert(IsValid(velocity));
+			assert(IsValid(h));
+			
+			auto translation = h * velocity.v;
+			if (LengthSquared(translation) > Square(MaxTranslation))
+			{
+				const auto ratio = MaxTranslation / Sqrt(LengthSquared(translation));
+				velocity.v *= ratio;
+				translation = h * velocity.v;
+			}
+			
+			auto rotation = h * velocity.w;
+			if (Abs(rotation) > MaxRotation)
+			{
+				const auto ratio = MaxRotation / Abs(rotation);
+				velocity.w *= ratio;
+				rotation = h * velocity.w;
+			}
+			
+			return Position{translation, rotation};
+		}
+		
+		inline void IntegratePositions(PositionContainer& positions, VelocityContainer& velocities, float_t h)
+		{
+			auto i = size_t{0};
+			for (auto&& velocity: velocities)
+			{
+				positions[i] += CalculateMovement(velocity, h);
+				++i;
+			}
+		}
+		
+		inline ContactImpulse GetContactImpulse(const ContactVelocityConstraint& vc)
+		{
+			ContactImpulse impulse;
+			const auto count = vc.GetPointCount();
+			for (auto j = decltype(count){0}; j < count; ++j)
+			{
+				const auto point = vc.GetPoint(j);
+				impulse.AddEntry(point.normalImpulse, point.tangentImpulse);
+			}
+			return impulse;
+		}
+		
+		/// Reports the given constraints to the listener.
+		/// @detail
+		/// This calls the listener's PostSolve method for all contacts.size() elements of
+		/// the given array of constraints.
+		/// @param listener Listener to call.
+		/// @param constraints Array of m_contactCount contact velocity constraint elements.
+		inline void Report(ContactListener& listener,
+						   Island::ContactContainer& contacts,
+						   const ContactVelocityConstraint* constraints,
+						   TimeStep::iteration_type solved)
+		{
+			const auto size = contacts.size();
+			for (auto i = decltype(size){0}; i < size; ++i)
+			{
+				listener.PostSolve(*contacts[i], GetContactImpulse(constraints[i]), solved);
+			}
+		}
+		
+		inline ContactVelocityConstraint::BodyData GetVelocityConstraintBodyData(const Body& val)
+		{
+			assert(IsValidIslandIndex(val));
+			return ContactVelocityConstraint::BodyData{val.GetIslandIndex(), val.GetInverseMass(), val.GetInverseInertia()};
+		}
+		
+		inline ContactPositionConstraint::BodyData GetPositionConstraintBodyData(const Body& val)
+		{
+			assert(IsValidIslandIndex(val));
+			return ContactPositionConstraint::BodyData{val.GetIslandIndex(), val.GetInverseMass(), val.GetInverseInertia(), val.GetLocalCenter()};
+		}
+		
+		/// Gets the position-independent velocity constraint for the given contact, index, and time slot values.
+		inline ContactVelocityConstraint GetVelocityConstraint(const Contact& contact, ContactVelocityConstraint::index_type index, float_t dtRatio)
+		{
+			ContactVelocityConstraint constraint(index, contact.GetFriction(), contact.GetRestitution(), contact.GetTangentSpeed());
+			
+			constraint.normal = Vec2_zero;
+			
+			constraint.bodyA = GetVelocityConstraintBodyData(*(contact.GetFixtureA()->GetBody()));
+			constraint.bodyB = GetVelocityConstraintBodyData(*(contact.GetFixtureB()->GetBody()));
+			
+			const auto& manifold = contact.GetManifold();
+			const auto pointCount = manifold.GetPointCount();
+			assert(pointCount > 0);
+			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
+			{
+				VelocityConstraintPoint vcp;
+				
+				const auto& mp = manifold.GetPoint(j);
+				vcp.normalImpulse = dtRatio * mp.normalImpulse;
+				vcp.tangentImpulse = dtRatio * mp.tangentImpulse;
+				vcp.rA = Vec2_zero;
+				vcp.rB = Vec2_zero;
+				vcp.normalMass = float_t{0};
+				vcp.tangentMass = float_t{0};
+				vcp.velocityBias = float_t{0};
+				
+				constraint.AddPoint(vcp);
+			}
+			
+			return constraint;
+		}
+		
+		inline ContactPositionConstraint GetPositionConstraint(const Manifold& manifold, const Fixture& fixtureA, const Fixture& fixtureB)
+		{
+			return ContactPositionConstraint{manifold,
+				GetPositionConstraintBodyData(*(fixtureA.GetBody())), fixtureA.GetShape()->GetRadius(),
+				GetPositionConstraintBodyData(*(fixtureB.GetBody())), fixtureB.GetShape()->GetRadius()};
+		}
+		
+		inline void InitPosConstraints(ContactPositionConstraint* constraints,
+									   contact_count_t count, Contact** contacts)
+		{
+			for (auto i = decltype(count){0}; i < count; ++i)
+			{
+				const auto& contact = *contacts[i];
+				constraints[i] = GetPositionConstraint(contact.GetManifold(), *contact.GetFixtureA(), *contact.GetFixtureB());
+			}
+		}
+		
+		inline void InitVelConstraints(ContactVelocityConstraint* constraints,
+									   contact_count_t count, Contact** contacts, float_t dtRatio)
+		{
+			for (auto i = decltype(count){0}; i < count; ++i)
+			{
+				constraints[i] = GetVelocityConstraint(*contacts[i], i, dtRatio);
+			}
+		}
+		
+		inline void AssignImpulses(Manifold::Point& var, const VelocityConstraintPoint& val)
+		{
+			var.normalImpulse = val.normalImpulse;
+			var.tangentImpulse = val.tangentImpulse;
+		}
+		
+		/// Stores impulses.
+		/// @detail Saves the normal and tangent impulses of all the velocity constraint points back to their
+		///   associated contacts' manifold points.
+		inline void StoreImpulses(size_t count, const ContactVelocityConstraint* velocityConstraints, Contact** contacts)
+		{
+			for (auto i = decltype(count){0}; i < count; ++i)
+			{
+				const auto& vc = velocityConstraints[i];
+				auto& manifold = contacts[vc.GetContactIndex()]->GetManifold();
+				
+				const auto point_count = vc.GetPointCount();
+				for (auto j = decltype(point_count){0}; j < point_count; ++j)
+				{
+					AssignImpulses(manifold.GetPoint(j), vc.GetPoint(j));
+				}
+			}
+		}
+		
+		struct VelocityPair
+		{
+			Velocity a;
+			Velocity b;
+		};
+		
+		inline VelocityPair CalcWarmStartVelocityDeltas(const ContactVelocityConstraint& vc)
+		{
+			VelocityPair vp{Velocity{Vec2_zero, float_t{0}}, Velocity{Vec2_zero, float_t{0}}};
+			
+			const auto tangent = GetForwardPerpendicular(vc.normal);
+			const auto pointCount = vc.GetPointCount();	
+			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
+			{
+				const auto vcp = vc.GetPoint(j); ///< Velocity constraint point.
+				const auto P = vcp.normalImpulse * vc.normal + vcp.tangentImpulse * tangent;
+				vp.a.v -= vc.bodyA.GetInvMass() * P;
+				vp.a.w -= vc.bodyA.GetInvRotI() * Cross(vcp.rA, P);
+				vp.b.v += vc.bodyB.GetInvMass() * P;
+				vp.b.w += vc.bodyB.GetInvRotI() * Cross(vcp.rB, P);
+			}
+			
+			return vp;
+		}
+		
+		void WarmStart(contact_count_t count, ContactVelocityConstraint* velocityConstraints, Velocity* const velocities)
+		{
+			for (auto i = decltype(count){0}; i < count; ++i)
+			{
+				const auto& vc = velocityConstraints[i];
+				const auto vp = CalcWarmStartVelocityDeltas(vc);
+				velocities[vc.bodyA.GetIndex()] += vp.a;
+				velocities[vc.bodyB.GetIndex()] += vp.b;
+			}		
+		}
+	};
+	
+	// ==== end
+	
 bool World::Solve(const TimeStep& step, Island& island)
 {
-	return island.Solve(step, m_contactMgr.m_contactListener, m_stackAllocator);
+	// Would be nice to actually allocate this data on the actual stack but the running thread may not have nearly enough stack space for this.
+	auto positionConstraints = PositionConstraintsContainer{island.m_contacts.size(), m_stackAllocator.AllocateArray<ContactPositionConstraint>(island.m_contacts.size()), m_stackAllocator};
+	InitPosConstraints(positionConstraints.data(), static_cast<contact_count_t>(island.m_contacts.size()), island.m_contacts.data());
+	
+	auto velocityConstraints = VelocityConstraintsContainer{island.m_contacts.size(), m_stackAllocator.AllocateArray<ContactVelocityConstraint>(island.m_contacts.size()), m_stackAllocator};
+	InitVelConstraints(velocityConstraints.data(), static_cast<contact_count_t>(island.m_contacts.size()), island.m_contacts.data(),
+					   step.warmStarting? step.dtRatio: float_t{0});
+	
+	auto velocities = VelocityContainer{island.m_bodies.size(), m_stackAllocator.AllocateArray<Velocity>(island.m_bodies.size()), m_stackAllocator};
+	
+	auto positions = PositionContainer{island.m_bodies.size(), m_stackAllocator.AllocateArray<Position>(island.m_bodies.size()), m_stackAllocator};
+	
+	const auto h = step.get_dt(); ///< Time step (in seconds).
+	
+	// Update bodies' pos0 values then copy their pos1 and velocity data into local arrays.
+	for (auto&& body: island.m_bodies)
+	{
+		body->m_sweep.pos0 = body->m_sweep.pos1; // like Advance0(1) on the sweep.
+		positions.push_back(body->m_sweep.pos1);
+		const auto new_velocity = GetVelocity(*body, h);
+		assert(IsValid(new_velocity));
+		velocities.push_back(new_velocity);
+	}
+	
+	const auto solverData = SolverData{step, positions.data(), velocities.data()};
+	
+	ContactSolver contactSolver{positions.data(), velocities.data(),
+		static_cast<contact_count_t>(island.m_contacts.size()),
+		positionConstraints.data(), velocityConstraints.data()
+	};
+	contactSolver.UpdateVelocityConstraints();
+	
+	if (step.warmStarting)
+	{
+		WarmStart(static_cast<contact_count_t>(island.m_contacts.size()), velocityConstraints.data(), velocities.data());
+	}
+	
+	for (auto&& joint: island.m_joints)
+	{
+		joint->InitVelocityConstraints(solverData);
+	}
+	
+	for (auto i = decltype(step.velocityIterations){0}; i < step.velocityIterations; ++i)
+	{
+		for (auto&& joint: island.m_joints)
+		{
+			joint->SolveVelocityConstraints(solverData);
+		}
+		contactSolver.SolveVelocityConstraints();
+	}
+	
+	// updates array of tentative new body positions per the velocities as if there were no obstacles...
+	IntegratePositions(positions, velocities, h);
+	
+	// Solve position constraints
+	auto iterationSolved = TimeStep::InvalidIteration;
+	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
+	{
+		const auto contactsOkay = contactSolver.SolvePositionConstraints();
+		const auto jointsOkay = [&]()
+		{
+			auto allOkay = true;
+			for (auto&& joint: island.m_joints)
+			{
+				if (!joint->SolvePositionConstraints(solverData))
+				{
+					allOkay = false;
+				}
+			}
+			return allOkay;
+		}();
+		
+		if (contactsOkay && jointsOkay)
+		{
+			// Exit early if the position errors are small.
+			iterationSolved = i;
+			break;
+		}
+	}
+	
+	// Update normal and tangent impulses of contacts' manifold points
+	StoreImpulses(island.m_contacts.size(), velocityConstraints.data(), island.m_contacts.data());
+	
+	// Updates m_bodies[i].m_sweep.pos1 to positions[i]
+//	CopyOut(positions.data(), velocities.data(), island.m_bodies);
+	// Copy velocity and position array data back out to the bodies
+	{
+		auto i = size_t{0};
+		for (auto&& b: island.m_bodies)
+		{
+			b->m_velocity = velocities[i]; // sets what Body::GetVelocity returns
+			b->m_sweep.pos1 = positions[i]; // sets what Body::GetWorldCenter returns
+			b->m_xf = GetTransformation(b->m_sweep.pos1, b->m_sweep.GetLocalCenter()); // sets what Body::GetPosition returns
+			++i;
+		}
+	}
+
+	if (m_contactMgr.m_contactListener)
+	{
+		Report(*m_contactMgr.m_contactListener, island.m_contacts, velocityConstraints.data(), iterationSolved);
+	}
+	
+	return iterationSolved != TimeStep::InvalidIteration;
 }
 
 void World::ResetBodiesForSolveTOI()
@@ -646,9 +961,11 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 	Island island(m_bodies.size(), m_contactMgr.GetContacts().size(), 0, m_stackAllocator);
 
 	const auto indexA = AddToIsland(island, *bA);
+	assert(indexA == 0);
 	bA->SetInIsland();
 
 	const auto indexB = AddToIsland(island, *bB);
+	assert(indexB == 1);
 	bB->SetInIsland();
 
 	island.m_contacts.push_back(&contact);
@@ -672,7 +989,7 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 	subStep.positionIterations = step.positionIterations? MaxSubStepPositionIterations: 0;
 	subStep.velocityIterations = step.velocityIterations;
 	subStep.warmStarting = false;
-	island.SolveTOI(subStep, m_contactMgr.m_contactListener, m_stackAllocator, indexA, indexB);
+	SolveTOI(subStep, island);
 
 	// Reset island flags and synchronize broad-phase proxies.
 	for (auto&& body: island.m_bodies)
@@ -687,6 +1004,81 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 	}
 }
 
+bool World::SolveTOI(const TimeStep& step, Island& island)
+{
+	assert(island.m_bodies.size() >= 2);
+	
+	auto velocities = VelocityContainer{island.m_bodies.size(), m_stackAllocator.AllocateArray<Velocity>(island.m_bodies.size()), m_stackAllocator};
+	auto positions = PositionContainer{island.m_bodies.size(), m_stackAllocator.AllocateArray<Position>(island.m_bodies.size()), m_stackAllocator};
+	auto positionConstraints = PositionConstraintsContainer{island.m_contacts.size(), m_stackAllocator.AllocateArray<ContactPositionConstraint>(island.m_contacts.size()), m_stackAllocator};
+	auto velocityConstraints = VelocityConstraintsContainer{island.m_contacts.size(), m_stackAllocator.AllocateArray<ContactVelocityConstraint>(island.m_contacts.size()), m_stackAllocator};
+	InitPosConstraints(positionConstraints.data(), static_cast<contact_count_t>(island.m_contacts.size()), island.m_contacts.data());
+	InitVelConstraints(velocityConstraints.data(), static_cast<contact_count_t>(island.m_contacts.size()), island.m_contacts.data(),
+					   step.warmStarting? step.dtRatio: float_t{0});
+	
+	// Initialize the body state.
+	for (auto&& body: island.m_bodies)
+	{
+		positions.push_back(body->m_sweep.pos1);
+		velocities.push_back(body->GetVelocity());
+	}
+	
+	ContactSolver contactSolver{positions.data(), velocities.data(),
+		static_cast<contact_count_t>(island.m_contacts.size()),
+		positionConstraints.data(), velocityConstraints.data()
+	};
+	
+	// Solve TOI-based position constraints.
+	auto positionConstraintsSolved = TimeStep::InvalidIteration;
+	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
+	{
+		if (contactSolver.SolveTOIPositionConstraints(0, 1))
+		{
+			positionConstraintsSolved = i;
+			break;
+		}
+	}
+	
+	// Leap of faith to new safe state.
+	island.m_bodies[0]->m_sweep.pos0 = positions[0];
+	island.m_bodies[1]->m_sweep.pos0 = positions[1];	
+	
+	// No warm starting is needed for TOI events because warm
+	// starting impulses were applied in the discrete solver.
+	contactSolver.UpdateVelocityConstraints();
+	
+	// Solve velocity constraints.
+	for (auto i = decltype(step.velocityIterations){0}; i < step.velocityIterations; ++i)
+	{
+		contactSolver.SolveVelocityConstraints();
+	}
+	
+	// Don't store TOI contact forces for warm starting because they can be quite large.
+	
+	IntegratePositions(positions, velocities, step.get_dt());
+	
+	// Update m_bodies[i].m_sweep.pos1 to position[i]
+//		CopyOut(positions.data(), velocities.data(), island.m_bodies);
+	// Copy velocity and position array data back out to the bodies
+	{
+		auto i = size_t{0};
+		for (auto&& b: island.m_bodies)
+		{
+			b->m_velocity = velocities[i]; // sets what Body::GetVelocity returns
+			b->m_sweep.pos1 = positions[i]; // sets what Body::GetWorldCenter returns
+			b->m_xf = GetTransformation(b->m_sweep.pos1, b->m_sweep.GetLocalCenter()); // sets what Body::GetPosition returns
+			++i;
+		}
+	}
+
+	if (m_contactMgr.m_contactListener)
+	{
+		Report(*m_contactMgr.m_contactListener, island.m_contacts, velocityConstraints.data(), positionConstraintsSolved);
+	}
+	
+	return positionConstraintsSolved != TimeStep::InvalidIteration;
+}
+	
 void World::ResetContactsForSolveTOI(Body& body)
 {
 	// Invalidate all contact TOIs on this displaced body.

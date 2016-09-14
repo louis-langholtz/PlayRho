@@ -21,7 +21,7 @@
 #include <Box2D/Dynamics/Joints/RevoluteJoint.h>
 #include <Box2D/Dynamics/Joints/PrismaticJoint.h>
 #include <Box2D/Dynamics/Body.h>
-#include <Box2D/Dynamics/TimeStep.h>
+#include <Box2D/Dynamics/SolverData.hpp>
 
 using namespace box2d;
 

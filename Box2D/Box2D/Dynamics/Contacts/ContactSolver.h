@@ -21,7 +21,6 @@
 #define B2_CONTACT_SOLVER_H
 
 #include <Box2D/Common/Math.h>
-#include <Box2D/Collision/Collision.h>
 
 namespace box2d {
 
@@ -71,9 +70,7 @@ namespace box2d {
 		/// @post Velocity constraints will have their constraint points updated.
 		/// @sa SolveVelocityConstraints.
 		void UpdateVelocityConstraints();
-		
-		void WarmStart();
-		
+				
 		/// "Solves" the velocity constraints.
 		/// @detail Updates the velocities and velocity constraint points' normal and tangent impulses.
 		/// @pre <code>UpdateVelocityConstraints</code> has been called on this object.

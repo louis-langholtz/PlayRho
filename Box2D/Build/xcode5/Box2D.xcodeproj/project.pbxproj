@@ -53,6 +53,14 @@
 		4751EE2B1CEDD79900D459CB /* ConveyorBelt.h in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE2A1CEDD79900D459CB /* ConveyorBelt.h */; };
 		4751EE2E1CEDD7A300D459CB /* MotorJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE2C1CEDD7A300D459CB /* MotorJoint.h */; };
 		4751EE2F1CEDD7A300D459CB /* MobileBalanced.h in Headers */ = {isa = PBXBuildFile; fileRef = 4751EE2D1CEDD7A300D459CB /* MobileBalanced.h */; };
+		47578BE11D8869110078CD40 /* WorldManifold.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47578BDE1D8869110078CD40 /* WorldManifold.hpp */; };
+		47578BE21D8869110078CD40 /* WorldManifold.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47578BDE1D8869110078CD40 /* WorldManifold.hpp */; };
+		47578BE41D886FED0078CD40 /* WorldManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47578BE31D886FED0078CD40 /* WorldManifold.cpp */; };
+		47578BE51D886FED0078CD40 /* WorldManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47578BE31D886FED0078CD40 /* WorldManifold.cpp */; };
+		47578BEA1D8896670078CD40 /* SolverData.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47578BE71D8896670078CD40 /* SolverData.hpp */; };
+		47578BEB1D8896670078CD40 /* SolverData.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47578BE71D8896670078CD40 /* SolverData.hpp */; };
+		47578BF01D8899710078CD40 /* Profile.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47578BED1D8899710078CD40 /* Profile.hpp */; };
+		47578BF11D8899710078CD40 /* Profile.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47578BED1D8899710078CD40 /* Profile.hpp */; };
 		477DB2941D14B9D500846ED6 /* ContactEdgeList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477DB2921D14B9D500846ED6 /* ContactEdgeList.cpp */; };
 		477DB2951D14B9D500846ED6 /* ContactEdgeList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 477DB2931D14B9D500846ED6 /* ContactEdgeList.hpp */; };
 		477DB2981D14BB2000846ED6 /* ContactEdgeIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477DB2961D14BB2000846ED6 /* ContactEdgeIterator.cpp */; };
@@ -425,6 +433,10 @@
 		4751EE2A1CEDD79900D459CB /* ConveyorBelt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConveyorBelt.h; sourceTree = "<group>"; };
 		4751EE2C1CEDD7A300D459CB /* MotorJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MotorJoint.h; sourceTree = "<group>"; };
 		4751EE2D1CEDD7A300D459CB /* MobileBalanced.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobileBalanced.h; sourceTree = "<group>"; };
+		47578BDE1D8869110078CD40 /* WorldManifold.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldManifold.hpp; sourceTree = "<group>"; };
+		47578BE31D886FED0078CD40 /* WorldManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldManifold.cpp; sourceTree = "<group>"; };
+		47578BE71D8896670078CD40 /* SolverData.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SolverData.hpp; sourceTree = "<group>"; };
+		47578BED1D8899710078CD40 /* Profile.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Profile.hpp; sourceTree = "<group>"; };
 		477DB2921D14B9D500846ED6 /* ContactEdgeList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactEdgeList.cpp; sourceTree = "<group>"; };
 		477DB2931D14B9D500846ED6 /* ContactEdgeList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactEdgeList.hpp; sourceTree = "<group>"; };
 		477DB2961D14BB2000846ED6 /* ContactEdgeIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactEdgeIterator.cpp; sourceTree = "<group>"; };
@@ -793,6 +805,8 @@
 				80BB892C141C3E5900F1753A /* Collision.cpp */,
 				80BB892D141C3E5900F1753A /* Collision.h */,
 				4726DD351D387D630012A882 /* Manifold.hpp */,
+				47578BE31D886FED0078CD40 /* WorldManifold.cpp */,
+				47578BDE1D8869110078CD40 /* WorldManifold.hpp */,
 				4726DD281D31B4090012A882 /* AABB.cpp */,
 				4726DD291D31B4090012A882 /* AABB.hpp */,
 				4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */,
@@ -862,6 +876,8 @@
 				80BB8953141C3E5900F1753A /* Island.cpp */,
 				80BB8954141C3E5900F1753A /* Island.h */,
 				80BB8955141C3E5900F1753A /* TimeStep.h */,
+				47578BED1D8899710078CD40 /* Profile.hpp */,
+				47578BE71D8896670078CD40 /* SolverData.hpp */,
 				80BB8956141C3E5900F1753A /* World.cpp */,
 				80BB8957141C3E5900F1753A /* World.h */,
 				80BB8958141C3E5900F1753A /* WorldCallbacks.cpp */,
@@ -1150,6 +1166,7 @@
 				4726DD101D3014990012A882 /* IndexPair.hpp in Headers */,
 				47AA5DE61C4C5FBE008AF2BA /* CircleContact.h in Headers */,
 				4726DD201D305E5D0012A882 /* ContactFeature.hpp in Headers */,
+				47578BEB1D8896670078CD40 /* SolverData.hpp in Headers */,
 				47AA5DE71C4C5FBE008AF2BA /* Contact.h in Headers */,
 				47AA5DE81C4C5FBE008AF2BA /* ContactSolver.h in Headers */,
 				47AA5DE91C4C5FBE008AF2BA /* EdgeAndCircleContact.h in Headers */,
@@ -1160,6 +1177,7 @@
 				47AA5DEE1C4C5FBE008AF2BA /* FrictionJoint.h in Headers */,
 				47AA5DEF1C4C5FBE008AF2BA /* GearJoint.h in Headers */,
 				47AA5DF01C4C5FBE008AF2BA /* Joint.h in Headers */,
+				47578BE21D8869110078CD40 /* WorldManifold.hpp in Headers */,
 				47AA5DF11C4C5FBE008AF2BA /* MouseJoint.h in Headers */,
 				47AA5DF21C4C5FBE008AF2BA /* PrismaticJoint.h in Headers */,
 				47AA5DF31C4C5FBE008AF2BA /* PulleyJoint.h in Headers */,
@@ -1169,6 +1187,7 @@
 				47AA5DF61C4C5FBE008AF2BA /* WeldJoint.h in Headers */,
 				47AA5DF71C4C5FBE008AF2BA /* WheelJoint.h in Headers */,
 				47AA5DF81C4C5FBE008AF2BA /* Rope.h in Headers */,
+				47578BF11D8899710078CD40 /* Profile.hpp in Headers */,
 				47AA5DF91C4C5FBE008AF2BA /* MotorJoint.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1255,6 +1274,7 @@
 				80BB89CF141C3E5900F1753A /* GearJoint.h in Headers */,
 				80BB89D1141C3E5900F1753A /* Joint.h in Headers */,
 				80BB89D3141C3E5900F1753A /* MouseJoint.h in Headers */,
+				47578BF01D8899710078CD40 /* Profile.hpp in Headers */,
 				80BB89D5141C3E5900F1753A /* PrismaticJoint.h in Headers */,
 				47AA639F1D0F7FDA00726CA2 /* ConstFixtureIterator.hpp in Headers */,
 				47A983371D0F4EFF00AA7D1A /* JointList.hpp in Headers */,
@@ -1265,7 +1285,9 @@
 				80BB89DF141C3E5900F1753A /* WheelJoint.h in Headers */,
 				4751EE2E1CEDD7A300D459CB /* MotorJoint.h in Headers */,
 				80BB89E1141C3E5900F1753A /* Rope.h in Headers */,
+				47578BE11D8869110078CD40 /* WorldManifold.hpp in Headers */,
 				477DB2991D14BB2000846ED6 /* ContactEdgeIterator.hpp in Headers */,
+				47578BEA1D8896670078CD40 /* SolverData.hpp in Headers */,
 				475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */,
 				80620F90168B934600D46C8D /* MotorJoint.h in Headers */,
 				47F932A61D11C283006A193C /* AllocatedArray.hpp in Headers */,
@@ -1490,6 +1512,7 @@
 				47AA5DBB1C4C5FBE008AF2BA /* PolygonContact.cpp in Sources */,
 				47AA5DBC1C4C5FBE008AF2BA /* DistanceJoint.cpp in Sources */,
 				47AA5DBD1C4C5FBE008AF2BA /* FrictionJoint.cpp in Sources */,
+				47578BE51D886FED0078CD40 /* WorldManifold.cpp in Sources */,
 				47AA5DBE1C4C5FBE008AF2BA /* GearJoint.cpp in Sources */,
 				47AA5DBF1C4C5FBE008AF2BA /* Joint.cpp in Sources */,
 				47AA5DC01C4C5FBE008AF2BA /* MouseJoint.cpp in Sources */,
@@ -1592,6 +1615,7 @@
 				80BB89AF141C3E5900F1753A /* Fixture.cpp in Sources */,
 				47F932A51D11C283006A193C /* AllocatedArray.cpp in Sources */,
 				477DB2A01D15F5C000846ED6 /* JointEdgeList.cpp in Sources */,
+				47578BE41D886FED0078CD40 /* WorldManifold.cpp in Sources */,
 				80BB89B1141C3E5900F1753A /* Island.cpp in Sources */,
 				475039911D2180D600D32047 /* DistanceProxy.cpp in Sources */,
 				80BB89B4141C3E5900F1753A /* World.cpp in Sources */,

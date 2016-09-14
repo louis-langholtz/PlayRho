@@ -18,6 +18,8 @@
  */
 
 #include <Box2D/Dynamics/Contacts/ContactSolver.h>
+#include <Box2D/Collision/Collision.h>
+#include <Box2D/Collision/WorldManifold.hpp>
 #include <Box2D/Dynamics/Contacts/PositionSolverManifold.hpp>
 #include <Box2D/Dynamics/Contacts/ContactVelocityConstraint.hpp>
 #include <Box2D/Dynamics/Contacts/ContactPositionConstraint.hpp>
@@ -36,31 +38,13 @@ static constexpr auto k_majorErrorTol = float_t(1e-2); ///< error tolerance
 
 bool g_blockSolve = true;
 
-static inline Vec2 GetContactRelativeVelocity(const Velocity velA, const Vec2 vcp_rA,
-											  const Velocity velB, const Vec2 vcp_rB) noexcept
+static inline Vec2 GetContactRelVelocity(const Velocity velA, const Vec2 vcp_rA,
+										 const Velocity velB, const Vec2 vcp_rB) noexcept
 {
 	return (velB.v + (GetReversePerpendicular(vcp_rB) * velB.w)) - (velA.v + (GetReversePerpendicular(vcp_rA) * velA.w));
 }
-	
-static inline void WarmStartVelocities(const ContactVelocityConstraint& vc, Velocity& velA, Velocity& velB)
-{
-	assert(IsValid(velA));
-	assert(IsValid(velB));
-	
-	const auto tangent = GetForwardPerpendicular(vc.normal);
-	const auto pointCount = vc.GetPointCount();	
-	for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
-	{
-		const auto vcp = vc.GetPoint(j); ///< Velocity constraint point.
-		const auto P = vcp.normalImpulse * vc.normal + vcp.tangentImpulse * tangent;
-		velA.v -= vc.bodyA.GetInvMass() * P;
-		velA.w -= vc.bodyA.GetInvRotI() * Cross(vcp.rA, P);
-		velB.v += vc.bodyB.GetInvMass() * P;
-		velB.w += vc.bodyB.GetInvRotI() * Cross(vcp.rB, P);
-	}
-}
 
-/// Updates the given velocity constraint data with the given position constraint data.
+/// Updates the velocity constraint data with the given data.
 /// @detail Specifically this:
 ///   1. Sets the normal to the calculated world manifold normal.
 ///   2. Sets the velocity constraint point information (short of the impulse data).
@@ -112,7 +96,7 @@ static inline void UpdateVelocityConstraint(ContactVelocityConstraint& vc,
 			return (kTangent > float_t{0}) ? float_t{1} /  kTangent : float_t{0};
 		}();
 		vcp.velocityBias = [&]() {
-			const auto vn = Dot(GetContactRelativeVelocity(velA, vcp_rA, velB, vcp_rB), vc.normal);
+			const auto vn = Dot(GetContactRelVelocity(velA, vcp_rA, velB, vcp_rB), vc.normal);
 			return (vn < -VelocityThreshold)? -vc.GetRestitution() * vn: float_t{0};
 		}();
 	}
@@ -147,24 +131,24 @@ static inline void UpdateVelocityConstraint(ContactVelocityConstraint& vc,
 		}
 	}
 }
-
+	
 /// Solves the velocities and constraint point for the tangent constraint.
 /// @detail This updates the tangent impulse on the given velocity constraint point and
 ///   updates the two given velocity structures.
 /// @param vc Contact velocity constraint.
-/// @param tangent Tangent vector.
 /// @param velA Velocity structure for body A. This is an input and output parameter modified to meet the constraint.
 /// @param velB Velocity structure for body B. This is an input and output parameter modified to meet the constraint.
 /// @param vcp Velocity constraint point. This is an input and output parameter whose tangent impulse is modified.
-static void SolveTangentConstraint(const ContactVelocityConstraint& vc, const Vec2 tangent,
+static void SolveTangentConstraint(const ContactVelocityConstraint& vc,
 								   Velocity& velA, Velocity& velB, VelocityConstraintPoint& vcp)
 {
-	assert(IsValid(tangent));
 	assert(IsValid(velA));
 	assert(IsValid(velB));
+
+	const auto tangent = GetForwardPerpendicular(vc.normal);
 	
 	// Compute tangent force
-	const auto vt = Dot(GetContactRelativeVelocity(velA, vcp.rA, velB, vcp.rB), tangent) - vc.GetTangentSpeed();
+	const auto vt = Dot(GetContactRelVelocity(velA, vcp.rA, velB, vcp.rB), tangent) - vc.GetTangentSpeed();
 	const auto lambda = vcp.tangentMass * (-vt);
 	
 	// Clamp the accumulated force
@@ -192,7 +176,7 @@ static void SolveNormalConstraint(const ContactVelocityConstraint& vc,
 	assert(IsValid(velB));
 	
 	// Compute normal impulse
-	const auto vn = Dot(GetContactRelativeVelocity(velA, vcp.rA, velB, vcp.rB), vc.normal);
+	const auto vn = Dot(GetContactRelVelocity(velA, vcp.rA, velB, vcp.rB), vc.normal);
 	const auto lambda = -vcp.normalMass * (vn - vcp.velocityBias);
 	
 	// Clamp the accumulated impulse
@@ -395,8 +379,8 @@ static inline void BlockSolveNormalConstraint(const ContactVelocityConstraint& v
 	
 	const auto b_prime = [=]{
 		// Compute normal velocity
-		const auto vn1 = Dot(GetContactRelativeVelocity(velA, vcp1.rA, velB, vcp1.rB), vc.normal);
-		const auto vn2 = Dot(GetContactRelativeVelocity(velA, vcp2.rA, velB, vcp2.rB), vc.normal);
+		const auto vn1 = Dot(GetContactRelVelocity(velA, vcp1.rA, velB, vcp1.rB), vc.normal);
+		const auto vn2 = Dot(GetContactRelVelocity(velA, vcp2.rA, velB, vcp2.rB), vc.normal);
 		
 		// Compute b
 		const auto b = Vec2{vn1 - vcp1.velocityBias, vn2 - vcp2.velocityBias};
@@ -432,13 +416,11 @@ static inline void SolveVelocityConstraint(ContactVelocityConstraint& vc, Veloci
 	// Solve tangent constraints first, because non-penetration is more important than friction.
 	// Solve normal constraints second.
 
-	const auto tangent = GetForwardPerpendicular(vc.normal);
-	
 	if (pointCount == 1)
 	{
 		auto& vcp = vc.GetPoint(0);
 
-		SolveTangentConstraint(vc, tangent, velA, velB, vcp);
+		SolveTangentConstraint(vc, velA, velB, vcp);
 		SolveNormalConstraint(vc, velA, velB, vcp);
 	}
 	else // pointCount == 2
@@ -446,8 +428,8 @@ static inline void SolveVelocityConstraint(ContactVelocityConstraint& vc, Veloci
 		auto& vcp1 = vc.GetPoint(0); ///< Velocity constraint point.
 		auto& vcp2 = vc.GetPoint(1); ///< Velocity constraint point.
 
-		SolveTangentConstraint(vc, tangent, velA, velB, vcp1);
-		SolveTangentConstraint(vc, tangent, velA, velB, vcp2);
+		SolveTangentConstraint(vc, velA, velB, vcp1);
+		SolveTangentConstraint(vc, velA, velB, vcp2);
 
 		if (!g_blockSolve)
 		{
@@ -544,16 +526,6 @@ void ContactSolver::UpdateVelocityConstraints()
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		UpdateVelocityConstraint(m_velocityConstraints[i], m_positionConstraints[i], m_positions, m_velocities);
-	}
-}
-
-void ContactSolver::WarmStart()
-{
-	// Warm start.
-	for (auto i = decltype(m_count){0}; i < m_count; ++i)
-	{
-		const auto& vc = m_velocityConstraints[i];
-		WarmStartVelocities(vc, m_velocities[vc.bodyA.GetIndex()], m_velocities[vc.bodyB.GetIndex()]);
 	}
 }
 

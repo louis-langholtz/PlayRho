@@ -84,7 +84,7 @@ void Test::PreSolve(Contact& contact, const Manifold& oldManifold)
 	PointStateArray state2;
 	GetPointStates(state1, state2, oldManifold, manifold);
 
-	const auto worldManifold = contact.GetWorldManifold();
+	const auto worldManifold = GetWorldManifold(contact);
 
 	for (auto i = decltype(manifoldPointCount){0}; (i < manifoldPointCount) && (m_pointCount < k_maxContactPoints); ++i)
 	{

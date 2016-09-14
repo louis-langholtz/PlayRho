@@ -24,7 +24,6 @@
 #include <Box2D/Collision/ContactFeature.hpp>
 #include <Box2D/Collision/Manifold.hpp>
 
-#include <climits>
 #include <array>
 #include <type_traits>
 
@@ -35,73 +34,9 @@ namespace box2d
 /// Structures and functions used for computing contact points, distance
 /// queries, and TOI queries.
 
-class Shape;
 class CircleShape;
 class EdgeShape;
 class PolygonShape;
-
-struct PointSeparation
-{
-	PointSeparation() noexcept = default;
-	PointSeparation(const PointSeparation& copy) noexcept = default;
-	
-	constexpr PointSeparation(Vec2 point, float_t separation) noexcept: p{point}, s{separation} {}
-	
-	Vec2 p; ///< Point.
-	float_t s; ///< Separation.
-};
-
-/// This is used to compute the current state of a contact manifold.
-class WorldManifold
-{
-public:
-	using size_type = std::remove_const<decltype(MaxPolygonVertices)>::type;
-
-	WorldManifold() noexcept = default;
-
-	constexpr explicit WorldManifold(Vec2 n) noexcept:
-		normal{n}, count{0}, points{}, separations{} {}
-
-	constexpr explicit WorldManifold(Vec2 n, PointSeparation ps0) noexcept:
-		normal{n}, count{1}, points{ps0.p}, separations{ps0.s} {}
-	
-	constexpr explicit WorldManifold(Vec2 n, PointSeparation ps0, PointSeparation ps1) noexcept:
-		normal{n}, count{2}, points{ps0.p, ps1.p}, separations{ps0.s, ps1.s} {}
-	
-	size_type GetPointCount() const noexcept { return count; }
-
-	Vec2 GetNormal() const { return normal; }
-
-	Vec2 GetPoint(size_type index) const
-	{
-		assert(index < MaxManifoldPoints);
-		return points[index];
-	}
-
-	float_t GetSeparation(size_type index) const
-	{
-		assert(index < MaxManifoldPoints);
-		return separations[index];
-	}
-
-private:	
-	Vec2 normal; ///< world vector pointing from A to B
-	size_type count = 0;
-	Vec2 points[MaxManifoldPoints]; ///< world contact point (point of intersection)
-	float_t separations[MaxManifoldPoints]; ///< a negative value indicates overlap, in meters
-};
-
-/// Gets the world manifold for the given data.
-/// @param manifold Manifold to use.
-///   Specifically this uses the manifold's type, local point, local normal, point-count,
-///   and the indexed-points' local point data.
-/// @param xfA Transformation A.
-/// @param radiusA Radius of shape A.
-/// @param xfB Transformation B.
-/// @param radiusB Radius of shape B.
-WorldManifold GetWorldManifold(const Manifold& manifold,
-							   const Transformation& xfA, const float_t radiusA,
-							   const Transformation& xfB, const float_t radiusB);
 	
 /// This is used for determining the state of contact points.
 enum class PointState

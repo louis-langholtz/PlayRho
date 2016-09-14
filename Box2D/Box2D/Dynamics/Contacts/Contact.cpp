@@ -26,6 +26,7 @@
 #include <Box2D/Dynamics/Contacts/ChainAndCircleContact.h>
 #include <Box2D/Dynamics/Contacts/ChainAndPolygonContact.h>
 
+#include <Box2D/Collision/Collision.h>
 #include <Box2D/Collision/TimeOfImpact.h>
 #include <Box2D/Collision/DistanceProxy.hpp>
 #include <Box2D/Collision/Shapes/Shape.h>
@@ -283,4 +284,17 @@ bool Contact::UpdateTOI()
 	SetToi(toi);
 	
 	return true;
+}
+
+WorldManifold box2d::GetWorldManifold(const Contact& contact)
+{
+	const auto fA = contact.GetFixtureA();
+	const auto fB = contact.GetFixtureB();
+	const auto bodyA = fA->GetBody();
+	const auto bodyB = fB->GetBody();
+	const auto shapeA = fA->GetShape();
+	const auto shapeB = fB->GetShape();
+	return GetWorldManifold(contact.GetManifold(),
+							bodyA->GetTransformation(), shapeA->GetRadius(),
+							bodyB->GetTransformation(), shapeB->GetRadius());
 }

@@ -41,6 +41,7 @@ For discussion please visit http://box2d.org/forum
 #include <Box2D/Collision/Shapes/ChainShape.h>
 #include <Box2D/Collision/Shapes/PolygonShape.h>
 
+#include <Box2D/Collision/Collision.h>
 #include <Box2D/Collision/BroadPhase.h>
 #include <Box2D/Collision/Distance.h>
 #include <Box2D/Collision/DynamicTree.h>

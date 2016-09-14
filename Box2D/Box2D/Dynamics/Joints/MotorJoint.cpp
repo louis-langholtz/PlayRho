@@ -19,7 +19,7 @@
 
 #include <Box2D/Dynamics/Joints/MotorJoint.h>
 #include <Box2D/Dynamics/Body.h>
-#include <Box2D/Dynamics/TimeStep.h>
+#include <Box2D/Dynamics/SolverData.hpp>
 
 using namespace box2d;
 
@@ -44,7 +44,7 @@ void MotorJointDef::Initialize(Body* bA, Body* bB)
 }
 
 MotorJoint::MotorJoint(const MotorJointDef& def)
-: Joint(def)
+: Joint{def}
 {
 	m_linearOffset = def.linearOffset;
 	m_angularOffset = def.angularOffset;
@@ -60,12 +60,13 @@ MotorJoint::MotorJoint(const MotorJointDef& def)
 void MotorJoint::InitVelocityConstraints(const SolverData& data)
 {
 	m_indexA = m_bodyA->GetIslandIndex();
-	m_indexB = m_bodyB->GetIslandIndex();
 	m_localCenterA = m_bodyA->GetLocalCenter();
-	m_localCenterB = m_bodyB->GetLocalCenter();
 	m_invMassA = m_bodyA->GetInverseMass();
-	m_invMassB = m_bodyB->GetInverseMass();
 	m_invIA = m_bodyA->GetInverseInertia();
+
+	m_indexB = m_bodyB->GetIslandIndex();
+	m_localCenterB = m_bodyB->GetLocalCenter();
+	m_invMassB = m_bodyB->GetInverseMass();
 	m_invIB = m_bodyB->GetInverseInertia();
 
 	const auto cA = data.positions[m_indexA].c;

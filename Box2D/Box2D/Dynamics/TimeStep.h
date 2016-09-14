@@ -24,19 +24,6 @@
 
 namespace box2d {
 
-/// Profiling data. Times are in milliseconds.
-struct Profile
-{
-	float_t step;
-	float_t collide;
-	float_t solve;
-	float_t solveInit;
-	float_t solveVelocity;
-	float_t solvePosition;
-	float_t broadphase;
-	float_t solveTOI;
-};
-
 /// This is an internal structure.
 class TimeStep
 {
@@ -79,14 +66,6 @@ public:
 private:
 	float_t dt; ///< Delta time. This is the time step in seconds.
 	float_t inv_dt; ///< Inverse time step (1/dt or 0 if dt == 0). @see dt.
-};
-
-/// Solver Data
-struct SolverData
-{
-	TimeStep step;
-	Position* positions;
-	Velocity* velocities;
 };
 
 } // namespace box2d

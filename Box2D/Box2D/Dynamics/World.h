@@ -25,10 +25,10 @@
 #include <Box2D/Common/StackAllocator.h>
 #include <Box2D/Dynamics/ContactManager.h>
 #include <Box2D/Dynamics/WorldCallbacks.h>
-#include <Box2D/Dynamics/TimeStep.h>
 #include <Box2D/Dynamics/BodyList.hpp>
 #include <Box2D/Dynamics/JointList.hpp>
 #include <Box2D/Dynamics/ContactList.hpp>
+#include <Box2D/Dynamics/Profile.hpp>
 
 namespace box2d {
 
@@ -41,6 +41,7 @@ class Draw;
 class Fixture;
 class Joint;
 class Island;
+class TimeStep;
 
 constexpr auto EarthlyGravity = Vec2{0, float_t(-9.8)};
 
@@ -271,6 +272,19 @@ private:
 	/// @note This may miss collisions involving fast moving bodies and allow them to tunnel through each other.
 	void Solve(const TimeStep& step);
 
+	/// Solves the given island.
+	///
+	/// @detail This:
+	///   1. Updates every island-body's sweep.pos0 to its sweep.pos1.
+	///   2. Updates every island-body's sweep.pos1 to the new "solved" position for it.
+	///   3. Updates every island-body's velocity to the new accelerated, dampened, and "solved" velocity for it.
+	///   4. Synchronizes every island-body's transform (by updating it to transform one of the body's sweep).
+	///   5. Reports to the listener (if non-null).
+	///
+	/// @param step Time step information.
+	/// @param island Island of bodies, contacts, and joints to solve for.
+	///
+	/// @return <code>true</code> if the contact and joint position constraints were solved, <code>false</code> otherwise.
 	bool Solve(const TimeStep& step, Island& island);
 
 	static body_count_t AddToIsland(Island& island, Body& body);
@@ -290,12 +304,33 @@ private:
 	void SolveTOI(const TimeStep& step);
 
 	/// "Solves" collisions for the given time of impact.
+	///
 	/// @param step Time step to solve for.
 	/// @param contact Contact.
 	/// @param toi Time of impact to solve for.
+	///
 	/// @note Precondition 1: there is no contact having a lower TOI in this time step that has not already been solved for.
 	/// @note Precondition 2: there is not a lower TOI in the time step for which collisions have not already been processed.
+	///
 	void SolveTOI(const TimeStep& step, Contact& contact, float_t toi);
+
+	/// Solves the time of impact for bodies 0 and 1 of the given island.
+	///
+	/// @detail This:
+	///   1. Updates pos0 of the sweeps of bodies 0 and 1.
+	///   2. Updates pos1 of the sweeps, the transforms, and the velocities of the other bodies in this island.
+	///
+	/// @pre <code>island.m_bodies</code> contains at least two bodies, the first two of which are bodies 0 and 1.
+	/// @pre <code>island.m_bodies</code> contains appropriate other bodies of the contacts of the two bodies.
+	/// @pre <code>island.m_contacts</code> contains the contact that specified the two identified bodies.
+	/// @pre <code>island.m_contacts</code> contains appropriate other contacts of the two bodies.
+	///
+	/// @param step Time step information.
+	/// @param island Island to do time of impact solving for.
+	///
+	/// @return <code>true</code> if successful, <code>false</code> otherwise.
+	///
+	bool SolveTOI(const TimeStep& step, Island& island);
 
 	void ResetBodiesForSolveTOI();
 	void ResetContactsForSolveTOI();

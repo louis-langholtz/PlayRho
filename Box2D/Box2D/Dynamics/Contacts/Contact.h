@@ -21,7 +21,8 @@
 #define B2_CONTACT_H
 
 #include <Box2D/Common/Math.h>
-#include <Box2D/Collision/Collision.h>
+#include <Box2D/Collision/Manifold.hpp>
+#include <Box2D/Collision/WorldManifold.hpp>
 #include <Box2D/Collision/Shapes/Shape.h>
 #include <Box2D/Dynamics/Fixture.h>
 
@@ -87,9 +88,6 @@ public:
 	Manifold& GetManifold() noexcept;
 	const Manifold& GetManifold() const noexcept;
 
-	/// Get the world manifold.
-	WorldManifold GetWorldManifold() const;
-
 	/// Does this contact have a sensor fixture?
 	bool HasSensor() const noexcept;
 
@@ -136,18 +134,12 @@ public:
 	/// Get the friction.
 	float_t GetFriction() const noexcept;
 
-	/// Reset the friction mixture to the default value.
-	void ResetFriction();
-
 	/// Override the default restitution mixture. You can call this in ContactListener::PreSolve.
 	/// The value persists until you set or reset.
 	void SetRestitution(float_t restitution) noexcept;
 
 	/// Get the restitution.
 	float_t GetRestitution() const noexcept;
-
-	/// Reset the restitution to the default value.
-	void ResetRestitution() noexcept;
 
 	/// Set the desired tangent speed for a conveyor belt behavior. In meters per second.
 	void SetTangentSpeed(float_t speed) noexcept;
@@ -313,15 +305,6 @@ inline const Manifold& Contact::GetManifold() const noexcept
 	return m_manifold;
 }
 
-inline WorldManifold Contact::GetWorldManifold() const
-{
-	const auto bodyA = m_fixtureA->GetBody();
-	const auto bodyB = m_fixtureB->GetBody();
-	const auto shapeA = m_fixtureA->GetShape();
-	const auto shapeB = m_fixtureB->GetShape();
-	return box2d::GetWorldManifold(m_manifold, bodyA->GetTransformation(), shapeA->GetRadius(), bodyB->GetTransformation(), shapeB->GetRadius());
-}
-
 inline void Contact::SetEnabled(bool flag) noexcept
 {
 	if (flag)
@@ -427,11 +410,6 @@ inline float_t Contact::GetFriction() const noexcept
 	return m_friction;
 }
 
-inline void Contact::ResetFriction()
-{
-	m_friction = MixFriction(m_fixtureA->GetFriction(), m_fixtureB->GetFriction());
-}
-
 inline void Contact::SetRestitution(float_t restitution) noexcept
 {
 	m_restitution = restitution;
@@ -440,11 +418,6 @@ inline void Contact::SetRestitution(float_t restitution) noexcept
 inline float_t Contact::GetRestitution() const noexcept
 {
 	return m_restitution;
-}
-
-inline void Contact::ResetRestitution() noexcept
-{
-	m_restitution = MixRestitution(m_fixtureA->GetRestitution(), m_fixtureB->GetRestitution());
 }
 
 inline void Contact::SetTangentSpeed(float_t speed) noexcept
@@ -500,12 +473,6 @@ inline bool Contact::HasSensor() const noexcept
 	return m_fixtureA->IsSensor() || m_fixtureB->IsSensor();
 }
 
-inline void SetAwake(Contact& c) noexcept
-{
-	SetAwake(*c.GetFixtureA());
-	SetAwake(*c.GetFixtureB());
-}
-
 inline Contact::substep_type Contact::GetToiCount() const noexcept
 {
 	return m_toiCount;
@@ -545,6 +512,26 @@ inline Contact::root_max_type Contact::GetRootItersMax() const noexcept
 {
 	return m_max_root_iters;
 }
+
+inline void SetAwake(Contact& c) noexcept
+{
+	SetAwake(*c.GetFixtureA());
+	SetAwake(*c.GetFixtureB());
+}
+
+/// Resets the friction mixture to the default value.
+inline void ResetFriction(Contact& contact)
+{
+	contact.SetFriction(MixFriction(contact.GetFixtureA()->GetFriction(), contact.GetFixtureB()->GetFriction()));
+}
+
+/// Reset the restitution to the default value.
+inline void ResetRestitution(Contact& contact) noexcept
+{
+	contact.SetRestitution(MixRestitution(contact.GetFixtureA()->GetRestitution(), contact.GetFixtureB()->GetRestitution()));
+}
+
+WorldManifold GetWorldManifold(const Contact& contact);
 
 } // namespace box2d
 
