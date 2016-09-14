@@ -136,7 +136,7 @@ void ContactManager::Collide()
 			const auto indexB = c->GetChildIndexB();
 			const auto proxyIdA = fixtureA->m_proxies[indexA].proxyId;
 			const auto proxyIdB = fixtureB->m_proxies[indexB].proxyId;
-			return m_broadPhase.TestOverlap(proxyIdA, proxyIdB);
+			return TestOverlap(m_broadPhase, proxyIdA, proxyIdB);
 		}();
 
 		// Here we destroy contacts that cease to overlap in the broad-phase.

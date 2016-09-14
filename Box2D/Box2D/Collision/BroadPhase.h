@@ -96,11 +96,6 @@ public:
 	/// Gets user data from a proxy.
 	void* GetUserData(size_type proxyId) const;
 
-	/// Tests overlap of fat AABBs.
-	/// @param proxyIdA Proxy ID A.
-	/// @param proxyIdB Proxy ID B.
-	bool TestOverlap(size_type proxyIdA, size_type proxyIdB) const;
-
 	/// Get the number of proxies.
 	size_type GetProxyCount() const noexcept;
 
@@ -186,13 +181,6 @@ inline bool PairLessThan(const ProxyIdPair& pair1, const ProxyIdPair& pair2) noe
 inline void* BroadPhase::GetUserData(size_type proxyId) const
 {
 	return m_tree.GetUserData(proxyId);
-}
-
-inline bool BroadPhase::TestOverlap(size_type proxyIdA, size_type proxyIdB) const
-{
-	const auto& aabbA = m_tree.GetFatAABB(proxyIdA);
-	const auto& aabbB = m_tree.GetFatAABB(proxyIdB);
-	return box2d::TestOverlap(aabbA, aabbB);
 }
 
 inline const AABB& BroadPhase::GetFatAABB(size_type proxyId) const
@@ -291,7 +279,12 @@ inline void BroadPhase::ShiftOrigin(const Vec2& newOrigin)
 {
 	m_tree.ShiftOrigin(newOrigin);
 }
-		
+
+inline bool TestOverlap(const BroadPhase& bp, BroadPhase::size_type proxyIdA, BroadPhase::size_type proxyIdB)
+{
+	return TestOverlap(bp.GetFatAABB(proxyIdA), bp.GetFatAABB(proxyIdB));
+}
+
 } // namespace box2d
 
 #endif
