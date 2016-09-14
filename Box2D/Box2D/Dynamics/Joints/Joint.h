@@ -145,9 +145,6 @@ public:
 	/// Set the user data pointer.
 	void SetUserData(void* data) noexcept;
 
-	/// Short-cut function to determine if either body is inactive.
-	bool IsActive() const noexcept;
-
 	/// Get collide connected.
 	/// Note: modifying the collide connect flag won't work correctly because
 	/// the flag is only checked when fixture AABBs begin to overlap.
@@ -252,6 +249,9 @@ inline void Joint::SetInIsland(bool value) noexcept
 {
 	m_islandFlag = value;
 }
+
+/// Short-cut function to determine if either body is inactive.
+bool IsActive(const Joint& j) noexcept;
 
 // Wakes up the joined bodies.
 void SetAwake(Joint& j) noexcept;

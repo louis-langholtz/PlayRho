@@ -191,9 +191,9 @@ Joint::Joint(const JointDef& def):
 	assert(def.bodyA != def.bodyB);
 }
 
-bool Joint::IsActive() const noexcept
+bool IsActive(const Joint& j) noexcept
 {
-	return m_bodyA->IsActive() && m_bodyB->IsActive();
+	return j.GetBodyA()->IsActive() && j.GetBodyB()->IsActive();
 }
 
 void SetAwake(Joint& j) noexcept
