@@ -48,8 +48,10 @@ struct Filter
 	int16 groupIndex = 0;
 };
 
-/// A fixture definition is used to create a fixture. This class defines an
-/// abstract fixture definition. You can reuse fixture definitions safely.
+/// Fixture definition.
+/// @detail
+/// A fixture definition is used to create a fixture.
+/// @sa Body::CreateFixture.
 struct FixtureDef
 {
 	/// The constructor sets the default fixture definition values.
@@ -60,8 +62,7 @@ struct FixtureDef
 	/// @param d Density.
 	constexpr FixtureDef(const Shape* s, float_t d) noexcept: shape{s}, density{d} {}
 
-	/// The shape, this must be set. The shape will be copied, so you
-	/// can create the shape on the stack.
+	/// Shape.
 	const Shape* shape = nullptr;
 
 	/// Use this to store application specific fixture data.

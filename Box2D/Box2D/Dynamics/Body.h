@@ -131,12 +131,11 @@ public:
 	static constexpr auto InvalidIslandIndex = static_cast<body_count_t>(-1);
 	
 	/// Creates a fixture and attaches it to this body.
-	/// @detail 
-	/// Use this function if you need to set some fixture parameters, like friction.
-	/// Otherwise you can create the fixture directly from a shape.
+	/// @detail
 	/// If the density is non-zero, this function automatically updates the mass of the body.
 	/// Contacts are not created until the next time step.
-	/// @param def the fixture definition.
+	/// The shape given by the fixture definition will be copied, so it can be on the stack.
+	/// @param def Fixture definition.
 	/// @warning This function is locked during callbacks.
 	Fixture* CreateFixture(const FixtureDef& def, bool resetMassData = true);
 

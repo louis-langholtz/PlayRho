@@ -40,9 +40,6 @@ public:
 	/// Set this as an isolated edge.
 	void Set(const Vec2& v1, const Vec2& v2);
 
-	/// Implement Shape.
-	Shape* Clone(BlockAllocator* allocator) const override;
-
 	/// @see Shape::GetChildCount
 	child_count_t GetChildCount() const override;
 

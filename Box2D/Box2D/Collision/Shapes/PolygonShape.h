@@ -39,9 +39,6 @@ public:
 
 	PolygonShape(const PolygonShape&) = default;
 
-	/// Implement Shape.
-	Shape* Clone(BlockAllocator* allocator) const override;
-
 	/// @see Shape::GetChildCount
 	child_count_t GetChildCount() const override;
 

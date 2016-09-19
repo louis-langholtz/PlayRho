@@ -25,6 +25,32 @@
 
 using namespace box2d;
 
+ChainShape::ChainShape(const ChainShape& other):
+	Shape{e_chain, PolygonRadius}
+{
+	*this = other;
+}
+
+ChainShape& ChainShape::operator=(const ChainShape& other)
+{
+	if (&other != this)
+	{
+		Clear();
+		
+		m_count = other.m_count;
+		
+		m_vertices = alloc<Vec2>(other.m_count);
+		memcpy(m_vertices, other.m_vertices, other.m_count * sizeof(Vec2));
+		
+		m_hasPrevVertex = other.m_hasPrevVertex;
+		m_prevVertex = other.m_prevVertex;
+		
+		m_hasNextVertex = other.m_hasNextVertex;
+		m_nextVertex = other.m_nextVertex;
+	}
+	return *this;
+}
+
 ChainShape::~ChainShape()
 {
 	Clear();
@@ -89,18 +115,6 @@ void ChainShape::SetNextVertex(const Vec2& nextVertex) noexcept
 {
 	m_nextVertex = nextVertex;
 	m_hasNextVertex = true;
-}
-
-Shape* ChainShape::Clone(BlockAllocator* allocator) const
-{
-	void* mem = allocator->Allocate(sizeof(ChainShape));
-	const auto clone = new (mem) ChainShape;
-	clone->CreateChain(m_vertices, m_count);
-	clone->m_prevVertex = m_prevVertex;
-	clone->m_nextVertex = m_nextVertex;
-	clone->m_hasPrevVertex = m_hasPrevVertex;
-	clone->m_hasNextVertex = m_hasNextVertex;
-	return clone;
 }
 
 child_count_t ChainShape::GetChildCount() const

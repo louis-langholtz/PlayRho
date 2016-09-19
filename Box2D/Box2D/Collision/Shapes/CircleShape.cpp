@@ -23,12 +23,6 @@
 
 using namespace box2d;
 
-Shape* CircleShape::Clone(BlockAllocator* allocator) const
-{
-	void* mem = allocator->Allocate(sizeof(CircleShape));
-	return new (mem) CircleShape(*this);
-}
-
 child_count_t CircleShape::GetChildCount() const
 {
 	return 1;

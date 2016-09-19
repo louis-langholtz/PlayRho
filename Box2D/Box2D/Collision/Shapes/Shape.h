@@ -27,8 +27,6 @@
 
 namespace box2d {
 
-class BlockAllocator;
-
 /// Abstract base class for shapes.
 /// @detail A shape is used for collision detection. You can create a shape however you like.
 /// Shapes used for simulation in World are created automatically when a Fixture
@@ -60,9 +58,6 @@ public:
 	Shape(const Shape&) = default;
 
 	virtual ~Shape() = default;
-
-	/// Clone the concrete shape using the provided allocator.
-	virtual Shape* Clone(BlockAllocator* allocator) const = 0;
 
 	/// Get the type of this shape. You can use this to down cast to the concrete shape.
 	/// @return the shape type.

@@ -33,8 +33,7 @@ public:
 
 	CircleShape(const CircleShape&) = default;
 
-	/// Implement Shape.
-	Shape* Clone(BlockAllocator* allocator) const override;
+	CircleShape& operator=(const CircleShape& other) = default;
 
 	/// @see Shape::GetChildCount
 	child_count_t GetChildCount() const override;

@@ -18,16 +18,9 @@
 */
 
 #include <Box2D/Collision/Shapes/PolygonShape.h>
-#include <Box2D/Common/BlockAllocator.h>
 #include <new>
 
 using namespace box2d;
-
-Shape* PolygonShape::Clone(BlockAllocator* allocator) const
-{
-	void* mem = allocator->Allocate(sizeof(PolygonShape));
-	return new (mem) PolygonShape(*this);
-}
 
 void PolygonShape::SetAsBox(float_t hx, float_t hy) noexcept
 {

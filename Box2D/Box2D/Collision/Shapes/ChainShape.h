@@ -41,12 +41,12 @@ class ChainShape : public Shape
 public:
 	ChainShape(): Shape{e_chain, PolygonRadius} {}
 
-	ChainShape(const ChainShape&) = delete;
+	ChainShape(const ChainShape& other);
 
 	/// The destructor frees the vertices using free.
 	~ChainShape();
 
-	ChainShape& operator=(const ChainShape&) = delete;
+	ChainShape& operator=(const ChainShape& other);
 
 	/// Clear all data.
 	void Clear();
@@ -69,9 +69,6 @@ public:
 	/// Establish connectivity to a vertex that follows the last vertex.
 	/// Don't call this for loops.
 	void SetNextVertex(const Vec2& nextVertex) noexcept;
-
-	/// Implement Shape. Vertices are cloned using alloc.
-	Shape* Clone(BlockAllocator* allocator) const override;
 
 	/// @see Shape::GetChildCount
 	child_count_t GetChildCount() const override;

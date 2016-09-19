@@ -18,7 +18,6 @@
 */
 
 #include <Box2D/Collision/Shapes/EdgeShape.h>
-#include <Box2D/Common/BlockAllocator.h>
 #include <new>
 
 using namespace box2d;
@@ -29,12 +28,6 @@ void EdgeShape::Set(const Vec2& v1, const Vec2& v2)
 	m_vertex2 = v2;
 	m_hasVertex0 = false;
 	m_hasVertex3 = false;
-}
-
-Shape* EdgeShape::Clone(BlockAllocator* allocator) const
-{
-	void* mem = allocator->Allocate(sizeof(EdgeShape));
-	return new (mem) EdgeShape(*this);
 }
 
 child_count_t EdgeShape::GetChildCount() const

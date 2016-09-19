@@ -52,6 +52,40 @@ inline void box2d::Delete(Shape* shape, BlockAllocator& allocator)
 	}
 }
 
+static Shape* Clone(const Shape* shape, BlockAllocator& allocator)
+{
+	if (shape)
+	{
+		switch (shape->GetType())
+		{
+			case Shape::e_typeCount:
+				break;
+				
+			case Shape::e_circle:
+			{
+				void* mem = allocator.Allocate(sizeof(CircleShape));
+				return new (mem) CircleShape(*static_cast<const CircleShape *>(shape));
+			}
+			case Shape::e_chain:
+			{
+				void* mem = allocator.Allocate(sizeof(ChainShape));
+				return new (mem) ChainShape(*static_cast<const ChainShape *>(shape));
+			}
+			case Shape::e_edge:
+			{
+				void* mem = allocator.Allocate(sizeof(EdgeShape));
+				return new (mem) EdgeShape(*static_cast<const EdgeShape *>(shape));
+			}
+			case Shape::e_polygon:
+			{
+				void* mem = allocator.Allocate(sizeof(PolygonShape));
+				return new (mem) PolygonShape(*static_cast<const PolygonShape *>(shape));
+			}
+		}
+	}
+	return nullptr;
+}
+
 uint16 Body::GetFlags(const BodyDef& bd) noexcept
 {
 	uint16 flags = 0;
@@ -215,7 +249,7 @@ Fixture* Body::CreateFixture(const FixtureDef& def, bool resetMassData)
 
 	auto& allocator = m_world->m_blockAllocator;
 
-	const auto shape = def.shape->Clone(&allocator);
+	const auto shape = Clone(def.shape, allocator);
 	const auto memory = allocator.Allocate(sizeof(Fixture));
 	const auto fixture = new (memory) Fixture{this, def, shape};
 	
