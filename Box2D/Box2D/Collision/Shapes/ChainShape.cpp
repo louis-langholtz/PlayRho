@@ -19,6 +19,7 @@
 
 #include <Box2D/Collision/Shapes/ChainShape.h>
 #include <Box2D/Collision/Shapes/EdgeShape.h>
+#include <Box2D/Common/BlockAllocator.h>
 #include <new>
 #include <string.h>
 

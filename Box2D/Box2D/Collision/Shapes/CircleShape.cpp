@@ -18,6 +18,7 @@
 */
 
 #include <Box2D/Collision/Shapes/CircleShape.h>
+#include <Box2D/Common/BlockAllocator.h>
 #include <new>
 
 using namespace box2d;

@@ -20,13 +20,14 @@
 #ifndef B2_SHAPE_H
 #define B2_SHAPE_H
 
-#include <Box2D/Common/BlockAllocator.h>
 #include <Box2D/Common/Math.h>
 #include <Box2D/Collision/AABB.hpp>
 #include <Box2D/Collision/MassData.hpp>
 #include <memory>
 
 namespace box2d {
+
+class BlockAllocator;
 
 /// Abstract base class for shapes.
 /// @detail A shape is used for collision detection. You can create a shape however you like.
@@ -43,23 +44,6 @@ public:
 		e_chain = 3,
 		e_typeCount = 4
 	};
-
-	struct Deleter
-	{
-		Deleter() = default;
-		
-		Deleter(BlockAllocator* a, BlockAllocator::size_type n) noexcept: deallocator{a, n} {}
-
-		void operator()(Shape *p) noexcept
-		{
-			p->~Shape();
-			deallocator(p);
-		}
-
-		BlockDeallocator deallocator;
-	};
-
-	//using unique_ptr = std::unique_ptr<Shape, Deleter>;
 
 	Shape() = delete;
 
