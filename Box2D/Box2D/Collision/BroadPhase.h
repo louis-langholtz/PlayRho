@@ -22,7 +22,7 @@
 
 #include <Box2D/Common/Settings.h>
 #include <Box2D/Collision/DynamicTree.h>
-#include <algorithm>
+#include <algorithm> // for std::sort
 
 namespace box2d {
 
