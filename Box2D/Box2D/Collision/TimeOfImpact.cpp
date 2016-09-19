@@ -18,6 +18,8 @@
 */
 
 #include <Box2D/Collision/Distance.h>
+#include <Box2D/Collision/DistanceProxy.hpp>
+#include <Box2D/Collision/SimplexCache.hpp>
 #include <Box2D/Collision/TimeOfImpact.h>
 #include <Box2D/Common/Timer.h>
 

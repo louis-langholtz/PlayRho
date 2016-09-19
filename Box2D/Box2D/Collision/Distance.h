@@ -21,12 +21,12 @@
 #define B2_DISTANCE_H
 
 #include <Box2D/Common/Math.h>
-#include <Box2D/Collision/DistanceProxy.hpp>
-#include <Box2D/Collision/SimplexCache.hpp>
 
 namespace box2d
 {
-
+	class DistanceProxy;
+	class SimplexCache;
+	
 	/// Witness Points.
 	struct WitnessPoints
 	{

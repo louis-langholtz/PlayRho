@@ -19,6 +19,7 @@
 
 #include <Box2D/Collision/Distance.h>
 #include <Box2D/Collision/DistanceProxy.hpp>
+#include <Box2D/Collision/SimplexCache.hpp>
 #include <Box2D/Collision/Shapes/CircleShape.h>
 #include <Box2D/Collision/Shapes/EdgeShape.h>
 #include <Box2D/Collision/Shapes/ChainShape.h>
