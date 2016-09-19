@@ -18,6 +18,7 @@
 */
 
 #include <Box2D/Collision/Collision.h>
+#include <Box2D/Collision/Manifold.hpp>
 
 namespace box2d {
 
