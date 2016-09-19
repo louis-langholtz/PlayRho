@@ -332,6 +332,8 @@ private:
 	///
 	bool SolveTOI(const TimeStep& step, Island& island);
 
+	static void Update(Body& body, const Position pos, const Velocity vel);
+
 	void ResetBodiesForSolveTOI();
 	void ResetContactsForSolveTOI();
 	void ResetContactsForSolveTOI(Body& body);
