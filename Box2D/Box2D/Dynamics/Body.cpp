@@ -361,7 +361,7 @@ void Body::ResetMassData()
 	m_sweep = Sweep{Position{Transform(localCenter, GetTransformation()), GetAngle()}, localCenter};
 
 	// Update center of mass velocity.
-	m_velocity.v += GetReversePerpendicular(GetWorldCenter() - oldCenter) * m_velocity.w;
+	m_velocity.v += GetRevPerpendicular(GetWorldCenter() - oldCenter) * m_velocity.w;
 	
 	UnsetMassDataDirty();
 }
@@ -399,7 +399,7 @@ void Body::SetMassData(const MassData& massData)
 	m_sweep = Sweep{Position{Transform(massData.center, GetTransformation()), GetAngle()}, massData.center};
 
 	// Update center of mass velocity.
-	m_velocity.v += GetReversePerpendicular(GetWorldCenter() - oldCenter) * m_velocity.w;
+	m_velocity.v += GetRevPerpendicular(GetWorldCenter() - oldCenter) * m_velocity.w;
 	
 	UnsetMassDataDirty();
 }

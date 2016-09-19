@@ -961,7 +961,7 @@ inline Vec2 GetLocalVector(const Body& body, const Vec2& worldVector) noexcept
 inline Vec2 GetLinearVelocityFromWorldPoint(const Body& body, const Vec2& worldPoint) noexcept
 {
 	const auto velocity = body.GetVelocity();
-	return velocity.v + GetReversePerpendicular(worldPoint - body.GetWorldCenter()) * velocity.w;
+	return velocity.v + GetRevPerpendicular(worldPoint - body.GetWorldCenter()) * velocity.w;
 }
 
 /// Get the world velocity of a local point.

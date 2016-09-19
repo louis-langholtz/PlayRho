@@ -532,8 +532,8 @@ private:
 /// @detail This takes a vector of form (x, y) and returns the vector (-y, x).
 /// @param vector Vector to return a counter-clockwise perpendicular equivalent for.
 /// @return A counter-clockwise 90-degree rotation of the given vector.
-/// @sa GetForwardPerpendicular.
-constexpr inline Vec2 GetReversePerpendicular(const Vec2 vector) noexcept
+/// @sa GetFwdPerpendicular.
+constexpr inline Vec2 GetRevPerpendicular(const Vec2 vector) noexcept
 {
 	// See http://mathworld.wolfram.com/PerpendicularVector.html
 	return Vec2{-vector.y, vector.x};
@@ -543,8 +543,8 @@ constexpr inline Vec2 GetReversePerpendicular(const Vec2 vector) noexcept
 /// @detail This takes a vector of form (x, y) and returns the vector (y, -x).
 /// @param vector Vector to return a clockwise perpendicular equivalent for.
 /// @return A clockwise 90-degree rotation of the given vector.
-/// @sa GetReversePerpendicular.
-constexpr inline Vec2 GetForwardPerpendicular(const Vec2 vector) noexcept
+/// @sa GetRevPerpendicular.
+constexpr inline Vec2 GetFwdPerpendicular(const Vec2 vector) noexcept
 {
 	// See http://mathworld.wolfram.com/PerpendicularVector.html
 	return Vec2{vector.y, -vector.x};

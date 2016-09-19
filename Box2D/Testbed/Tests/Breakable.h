@@ -110,8 +110,8 @@ public:
 		Vec2 center1 = body1->GetWorldCenter();
 		Vec2 center2 = body2->GetWorldCenter();
 		
-		Vec2 velocity1 = m_velocity + GetReversePerpendicular(center1 - center) * m_angularVelocity;
-		Vec2 velocity2 = m_velocity + GetReversePerpendicular(center2 - center) * m_angularVelocity;
+		Vec2 velocity1 = m_velocity + GetRevPerpendicular(center1 - center) * m_angularVelocity;
+		Vec2 velocity2 = m_velocity + GetRevPerpendicular(center2 - center) * m_angularVelocity;
 
 		body1->SetVelocity(Velocity{velocity1, m_angularVelocity});
 		body2->SetVelocity(Velocity{velocity2, m_angularVelocity});

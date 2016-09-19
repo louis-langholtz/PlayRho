@@ -106,7 +106,7 @@ PrismaticJoint::PrismaticJoint(const PrismaticJointDef& def)
 	m_localAnchorA = def.localAnchorA;
 	m_localAnchorB = def.localAnchorB;
 	m_localXAxisA = GetUnitVector(def.localAxisA);
-	m_localYAxisA = GetReversePerpendicular(m_localXAxisA);
+	m_localYAxisA = GetRevPerpendicular(m_localXAxisA);
 	m_referenceAngle = def.referenceAngle;
 
 	m_impulse = Vec3_zero;
@@ -525,7 +525,7 @@ float_t PrismaticJoint::GetJointSpeed() const
 	const auto wA = bA->GetVelocity().w;
 	const auto wB = bB->GetVelocity().w;
 
-	return Dot(d, (GetReversePerpendicular(axis) * wA)) + Dot(axis, vB + (GetReversePerpendicular(rB) * wB) - vA - (GetReversePerpendicular(rA) * wA));
+	return Dot(d, (GetRevPerpendicular(axis) * wA)) + Dot(axis, vB + (GetRevPerpendicular(rB) * wB) - vA - (GetRevPerpendicular(rA) * wA));
 }
 
 bool PrismaticJoint::IsLimitEnabled() const noexcept

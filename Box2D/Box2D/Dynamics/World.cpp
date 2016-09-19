@@ -712,7 +712,7 @@ void World::Solve(const TimeStep& step)
 		{
 			VelocityPair vp{Velocity{Vec2_zero, float_t{0}}, Velocity{Vec2_zero, float_t{0}}};
 			
-			const auto tangent = GetForwardPerpendicular(vc.normal);
+			const auto tangent = GetFwdPerpendicular(vc.normal);
 			const auto pointCount = vc.GetPointCount();	
 			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 			{

@@ -211,7 +211,7 @@ void RevoluteJoint::SolveVelocityConstraints(const SolverData& data)
 	// Solve limit constraint.
 	if (m_enableLimit && (m_limitState != e_inactiveLimit) && !fixedRotation)
 	{
-		const auto Cdot1 = vB + (GetReversePerpendicular(m_rB) * wB) - vA - (GetReversePerpendicular(m_rA) * wA);
+		const auto Cdot1 = vB + (GetRevPerpendicular(m_rB) * wB) - vA - (GetRevPerpendicular(m_rA) * wA);
 		const auto Cdot2 = wB - wA;
 		const auto Cdot = Vec3(Cdot1.x, Cdot1.y, Cdot2);
 
@@ -271,7 +271,7 @@ void RevoluteJoint::SolveVelocityConstraints(const SolverData& data)
 	else
 	{
 		// Solve point-to-point constraint
-		const auto Cdot = vB + (GetReversePerpendicular(m_rB) * wB) - vA - (GetReversePerpendicular(m_rA) * wA);
+		const auto Cdot = vB + (GetRevPerpendicular(m_rB) * wB) - vA - (GetRevPerpendicular(m_rA) * wA);
 		const auto impulse = m_mass.Solve22(-Cdot);
 
 		m_impulse.x += impulse.x;

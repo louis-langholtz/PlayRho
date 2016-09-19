@@ -78,7 +78,7 @@ public:
 			const auto localPointB1 = proxyB.GetVertex(cache.GetIndexB(0));
 			const auto localPointB2 = proxyB.GetVertex(cache.GetIndexB(1));
 
-			m_axis = GetUnitVector(GetForwardPerpendicular(localPointB2 - localPointB1));
+			m_axis = GetUnitVector(GetFwdPerpendicular(localPointB2 - localPointB1));
 			const auto normal = Rotate(m_axis, xfB.q);
 
 			m_localPoint = (localPointB1 + localPointB2) / float_t(2);
@@ -100,7 +100,7 @@ public:
 			const auto localPointA1 = proxyA.GetVertex(cache.GetIndexA(0));
 			const auto localPointA2 = proxyA.GetVertex(cache.GetIndexA(1));
 			
-			m_axis = GetUnitVector(GetForwardPerpendicular(localPointA2 - localPointA1));
+			m_axis = GetUnitVector(GetFwdPerpendicular(localPointA2 - localPointA1));
 			const auto normal = Rotate(m_axis, xfA.q);
 
 			m_localPoint = (localPointA1 + localPointA2) / float_t(2);

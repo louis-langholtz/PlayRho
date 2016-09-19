@@ -41,7 +41,7 @@ bool g_blockSolve = true;
 static inline Vec2 GetContactRelVelocity(const Velocity velA, const Vec2 vcp_rA,
 										 const Velocity velB, const Vec2 vcp_rB) noexcept
 {
-	return (velB.v + (GetReversePerpendicular(vcp_rB) * velB.w)) - (velA.v + (GetReversePerpendicular(vcp_rA) * velA.w));
+	return (velB.v + (GetRevPerpendicular(vcp_rB) * velB.w)) - (velA.v + (GetRevPerpendicular(vcp_rA) * velA.w));
 }
 
 /// Updates the velocity constraint data with the given data.
@@ -89,7 +89,7 @@ static inline void UpdateVelocityConstraint(ContactVelocityConstraint& vc,
 			return (kNormal > float_t{0})? float_t{1} / kNormal : float_t{0};
 		}();
 		vcp.tangentMass = [&]() {
-			const auto tangent = GetForwardPerpendicular(vc.normal);
+			const auto tangent = GetFwdPerpendicular(vc.normal);
 			const auto rtA = Cross(vcp_rA, tangent);
 			const auto rtB = Cross(vcp_rB, tangent);
 			const auto kTangent = totalInvMass + (vc.bodyA.GetInvRotI() * Square(rtA)) + (vc.bodyB.GetInvRotI() * Square(rtB));
@@ -145,7 +145,7 @@ static void SolveTangentConstraint(const ContactVelocityConstraint& vc,
 	assert(IsValid(velA));
 	assert(IsValid(velB));
 
-	const auto tangent = GetForwardPerpendicular(vc.normal);
+	const auto tangent = GetFwdPerpendicular(vc.normal);
 	
 	// Compute tangent force
 	const auto vt = Dot(GetContactRelVelocity(velA, vcp.rA, velB, vcp.rB), tangent) - vc.GetTangentSpeed();

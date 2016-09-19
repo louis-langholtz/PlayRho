@@ -65,7 +65,7 @@ bool EdgeShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 	const auto v1 = m_vertex1;
 	const auto v2 = m_vertex2;
 	const auto e = v2 - v1;
-	const auto normal = GetUnitVector(GetForwardPerpendicular(e));
+	const auto normal = GetUnitVector(GetFwdPerpendicular(e));
 
 	// q = p1 + t * d
 	// dot(normal, q - v1) = 0

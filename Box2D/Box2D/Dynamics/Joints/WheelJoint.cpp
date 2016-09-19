@@ -54,7 +54,7 @@ WheelJoint::WheelJoint(const WheelJointDef& def)
 	m_localAnchorA = def.localAnchorA;
 	m_localAnchorB = def.localAnchorB;
 	m_localXAxisA = def.localAxisA;
-	m_localYAxisA = GetReversePerpendicular(m_localXAxisA);
+	m_localYAxisA = GetRevPerpendicular(m_localXAxisA);
 
 	m_mass = float_t{0};
 	m_impulse = float_t{0};

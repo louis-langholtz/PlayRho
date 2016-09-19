@@ -233,7 +233,7 @@ static inline Vec2 GetSearchDirection(const Simplex& simplex) noexcept
 			const auto e12 = GetW(simplex[1]) - GetW(simplex[0]);
 			const auto sgn = Cross(e12, -GetW(simplex[0]));
 			// If sgn > 0, then origin is left of e12, else origin is right of e12.
-			return (sgn > float_t{0})? GetReversePerpendicular(e12): GetForwardPerpendicular(e12);
+			return (sgn > float_t{0})? GetRevPerpendicular(e12): GetFwdPerpendicular(e12);
 		}
 			
 		default:

@@ -164,11 +164,11 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, co
 
 	const auto localTangent = GetUnitVector(v12 - v11);
 	
-	const auto localNormal = GetForwardPerpendicular(localTangent);
+	const auto localNormal = GetFwdPerpendicular(localTangent);
 	const auto planePoint = (v11 + v12) / float_t(2);
 
 	const auto tangent = Rotate(localTangent, xf1.q);
-	const auto normal = GetForwardPerpendicular(tangent);
+	const auto normal = GetFwdPerpendicular(tangent);
 	
 	v11 = Transform(v11, xf1);
 	v12 = Transform(v12, xf1);

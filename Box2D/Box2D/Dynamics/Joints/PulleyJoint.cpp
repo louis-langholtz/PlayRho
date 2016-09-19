@@ -168,8 +168,8 @@ void PulleyJoint::SolveVelocityConstraints(const SolverData& data)
 	auto vB = data.velocities[m_indexB].v;
 	auto wB = data.velocities[m_indexB].w;
 
-	const auto vpA = vA + GetReversePerpendicular(m_rA) * wA;
-	const auto vpB = vB + GetReversePerpendicular(m_rB) * wB;
+	const auto vpA = vA + GetRevPerpendicular(m_rA) * wA;
+	const auto vpB = vB + GetRevPerpendicular(m_rB) * wB;
 
 	const auto Cdot = -Dot(m_uA, vpA) - m_ratio * Dot(m_uB, vpB);
 	const auto impulse = -m_mass * Cdot;
