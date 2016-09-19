@@ -60,7 +60,7 @@ struct FixtureDef
 	/// @param d Density.
 	constexpr FixtureDef(const Shape* s, float_t d) noexcept: shape{s}, density{d} {}
 
-	/// The shape, this must be set. The shape will be cloned, so you
+	/// The shape, this must be set. The shape will be copied, so you
 	/// can create the shape on the stack.
 	const Shape* shape = nullptr;
 

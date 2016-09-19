@@ -26,12 +26,16 @@ namespace box2d {
 
 class EdgeShape;
 
-/// A chain shape is a free form sequence of line segments.
+/// Chain shape.
+///
+/// @detail A chain shape is a free form sequence of line segments.
 /// The chain has two-sided collision, so you can use inside and outside collision.
 /// Therefore, you may use any winding order.
 /// Since there may be many vertices, they are allocated using alloc.
 /// Connectivity information is used to create smooth collisions.
-/// WARNING: The chain will not collide properly if there are self-intersections.
+///
+/// @warning The chain will not collide properly if there are self-intersections.
+///
 class ChainShape : public Shape
 {
 public:
