@@ -64,29 +64,26 @@ public:
 	void SetVertex0(const Vec2& v) noexcept;
 	void SetVertex3(const Vec2& v) noexcept;
 
-	bool HasVertex0() const noexcept { return m_hasVertex0; }
-	bool HasVertex3() const noexcept { return m_hasVertex3; }
+	bool HasVertex0() const noexcept { return IsValid(m_vertex0); }
+	bool HasVertex3() const noexcept { return IsValid(m_vertex3); }
 
 private:
 	/// These are the edge vertices
 	Vec2 m_vertex1, m_vertex2;
 
 	/// Optional adjacent vertices. These are used for smooth collision.
-	Vec2 m_vertex0 = Vec2_zero, m_vertex3 = Vec2_zero;
-
-	bool m_hasVertex0 = false, m_hasVertex3 = false;
+	Vec2 m_vertex0 = Vec2_invalid;
+	Vec2 m_vertex3 = Vec2_invalid;
 };
 
 inline void EdgeShape::SetVertex0(const Vec2& v) noexcept
 {
 	m_vertex0 = v;
-	m_hasVertex0 = true;
 }
 
 inline void EdgeShape::SetVertex3(const Vec2& v) noexcept
 {
 	m_vertex3 = v;
-	m_hasVertex3 = true;
 }
 	
 } // namespace box2d

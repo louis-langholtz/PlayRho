@@ -26,8 +26,8 @@ void EdgeShape::Set(const Vec2& v1, const Vec2& v2)
 {
 	m_vertex1 = v1;
 	m_vertex2 = v2;
-	m_hasVertex0 = false;
-	m_hasVertex3 = false;
+	m_vertex0 = Vec2_invalid;
+	m_vertex3 = Vec2_invalid;
 }
 
 child_count_t EdgeShape::GetChildCount() const
