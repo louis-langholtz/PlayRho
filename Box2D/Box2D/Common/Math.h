@@ -1090,5 +1090,11 @@ inline bool IsSleepable(Velocity velocity)
 	    && (LengthSquared(velocity.v) <= Square(LinearSleepTolerance));
 }
 
+inline Vec2 GetContactRelVelocity(const Velocity velA, const Vec2 vcp_rA,
+								  const Velocity velB, const Vec2 vcp_rB) noexcept
+{
+	return (velB.v + (GetRevPerpendicular(vcp_rB) * velB.w)) - (velA.v + (GetRevPerpendicular(vcp_rA) * velA.w));
+}
+
 }
 #endif

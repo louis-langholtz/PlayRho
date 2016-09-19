@@ -38,12 +38,6 @@ static constexpr auto k_majorErrorTol = float_t(1e-2); ///< error tolerance
 
 bool g_blockSolve = true;
 
-static inline Vec2 GetContactRelVelocity(const Velocity velA, const Vec2 vcp_rA,
-										 const Velocity velB, const Vec2 vcp_rB) noexcept
-{
-	return (velB.v + (GetRevPerpendicular(vcp_rB) * velB.w)) - (velA.v + (GetRevPerpendicular(vcp_rA) * velA.w));
-}
-
 /// Updates the velocity constraint data with the given data.
 /// @detail Specifically this:
 ///   1. Sets the normal to the calculated world manifold normal.
