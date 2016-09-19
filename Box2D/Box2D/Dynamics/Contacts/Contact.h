@@ -22,7 +22,6 @@
 
 #include <Box2D/Common/Math.h>
 #include <Box2D/Collision/Manifold.hpp>
-#include <Box2D/Collision/WorldManifold.hpp>
 #include <Box2D/Collision/Shapes/Shape.h>
 #include <Box2D/Dynamics/Fixture.h>
 
@@ -527,8 +526,6 @@ inline void ResetRestitution(Contact& contact) noexcept
 {
 	contact.SetRestitution(MixRestitution(contact.GetFixtureA()->GetRestitution(), contact.GetFixtureB()->GetRestitution()));
 }
-
-WorldManifold GetWorldManifold(const Contact& contact);
 
 } // namespace box2d
 

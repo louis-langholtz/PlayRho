@@ -19,6 +19,7 @@
 
 #include <Box2D/Collision/WorldManifold.hpp>
 #include <Box2D/Collision/Manifold.hpp>
+#include <Box2D/Dynamics/Contacts/Contact.h>
 
 namespace box2d {
 
@@ -121,5 +122,18 @@ namespace box2d {
 		// should never be reached
 		return WorldManifold{Vec2_zero};
 	}	
+
+	WorldManifold GetWorldManifold(const Contact& contact)
+	{
+		const auto fA = contact.GetFixtureA();
+		const auto fB = contact.GetFixtureB();
+		const auto bodyA = fA->GetBody();
+		const auto bodyB = fB->GetBody();
+		const auto shapeA = fA->GetShape();
+		const auto shapeB = fB->GetShape();
+		return GetWorldManifold(contact.GetManifold(),
+								bodyA->GetTransformation(), shapeA->GetRadius(),
+								bodyB->GetTransformation(), shapeB->GetRadius());
+	}
 
 } /* namespace box2d */

@@ -285,16 +285,3 @@ bool Contact::UpdateTOI()
 	
 	return true;
 }
-
-WorldManifold box2d::GetWorldManifold(const Contact& contact)
-{
-	const auto fA = contact.GetFixtureA();
-	const auto fB = contact.GetFixtureB();
-	const auto bodyA = fA->GetBody();
-	const auto bodyB = fB->GetBody();
-	const auto shapeA = fA->GetShape();
-	const auto shapeB = fB->GetShape();
-	return GetWorldManifold(contact.GetManifold(),
-							bodyA->GetTransformation(), shapeA->GetRadius(),
-							bodyB->GetTransformation(), shapeB->GetRadius());
-}

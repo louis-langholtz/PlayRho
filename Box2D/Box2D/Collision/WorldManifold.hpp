@@ -25,6 +25,7 @@
 namespace box2d
 {
 	class Manifold;
+	class Contact;
 
 	/// This is used to compute the current state of a contact manifold.
 	class WorldManifold
@@ -95,6 +96,8 @@ namespace box2d
 	WorldManifold GetWorldManifold(const Manifold& manifold,
 								   const Transformation& xfA, const float_t radiusA,
 								   const Transformation& xfB, const float_t radiusB);
+	
+	WorldManifold GetWorldManifold(const Contact& contact);	
 }
 
 #endif /* WorldManifold_hpp */
