@@ -36,16 +36,13 @@ ChainShape& ChainShape::operator=(const ChainShape& other)
 	if (&other != this)
 	{
 		Clear();
-		
+
 		m_count = other.m_count;
-		
+
 		m_vertices = alloc<Vec2>(other.m_count);
 		memcpy(m_vertices, other.m_vertices, other.m_count * sizeof(Vec2));
-		
-		m_hasPrevVertex = other.m_hasPrevVertex;
-		m_prevVertex = other.m_prevVertex;
-		
-		m_hasNextVertex = other.m_hasNextVertex;
+
+		m_prevVertex = other.m_prevVertex;		
 		m_nextVertex = other.m_nextVertex;
 	}
 	return *this;
@@ -67,7 +64,11 @@ void ChainShape::CreateLoop(const Vec2* vertices, child_count_t count)
 {
 	assert(vertices != nullptr);
 	assert(count >= 3);
+	assert(IsValid(vertices[count - 1]));
+	assert(IsValid(vertices[1]));
+	
 	assert(m_vertices == nullptr && m_count == 0);
+	
 	for (auto i = decltype(count){1}; i < count; ++i)
 	{
 		// If the code crashes here, it means your vertices are too close together.
@@ -80,8 +81,6 @@ void ChainShape::CreateLoop(const Vec2* vertices, child_count_t count)
 	m_vertices[count] = m_vertices[0];
 	m_prevVertex = m_vertices[m_count - 2];
 	m_nextVertex = m_vertices[1];
-	m_hasPrevVertex = true;
-	m_hasNextVertex = true;
 }
 
 void ChainShape::CreateChain(const Vec2* vertices, child_count_t count)
@@ -98,23 +97,18 @@ void ChainShape::CreateChain(const Vec2* vertices, child_count_t count)
 	m_vertices = alloc<Vec2>(count);
 	memcpy(m_vertices, vertices, m_count * sizeof(Vec2));
 
-	m_hasPrevVertex = false;
-	m_hasNextVertex = false;
-
-	m_prevVertex = Vec2_zero;
-	m_nextVertex = Vec2_zero;
+	m_prevVertex = Vec2_invalid;
+	m_nextVertex = Vec2_invalid;
 }
 
 void ChainShape::SetPrevVertex(const Vec2& prevVertex) noexcept
 {
 	m_prevVertex = prevVertex;
-	m_hasPrevVertex = true;
 }
 
 void ChainShape::SetNextVertex(const Vec2& nextVertex) noexcept
 {
 	m_nextVertex = nextVertex;
-	m_hasNextVertex = true;
 }
 
 child_count_t ChainShape::GetChildCount() const
@@ -135,7 +129,7 @@ void ChainShape::GetChildEdge(EdgeShape* edge, child_count_t index) const
 	{
 		edge->SetVertex0(m_vertices[index - 1]);
 	}
-	else if (m_hasPrevVertex)
+	else if (HasPrevVertex())
 	{
 		edge->SetVertex0(m_prevVertex);
 	}
@@ -145,7 +139,7 @@ void ChainShape::GetChildEdge(EdgeShape* edge, child_count_t index) const
 	{
 		edge->SetVertex3(m_vertices[index + 2]);
 	}
-	else if (m_hasNextVertex)
+	else if (HasNextVertex())
 	{
 		edge->SetVertex3(m_nextVertex);
 	}
