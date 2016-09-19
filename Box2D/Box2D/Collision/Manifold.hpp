@@ -28,7 +28,7 @@
 namespace box2d
 {
 
-	/// A manifold for two touching convex shapes.
+	/// Manifold for two touching convex shapes.
 	/// @detail
 	/// Multiple types of contact are supported:
 	/// - clip point versus plane with radius
