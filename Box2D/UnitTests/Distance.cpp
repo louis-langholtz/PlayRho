@@ -8,6 +8,8 @@
 
 #include "gtest/gtest.h"
 #include <Box2D/Collision/Distance.h>
+#include <Box2D/Collision/SimplexCache.hpp>
+#include <Box2D/Collision/DistanceProxy.hpp>
 
 using namespace box2d;
 

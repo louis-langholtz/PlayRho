@@ -15,6 +15,7 @@ TEST(CircleShape, DefaultConstruction)
 {
 	CircleShape foo{};
 	
+	EXPECT_EQ(foo.GetType(), Shape::e_circle);
 	EXPECT_EQ(foo.GetChildCount(), child_count_t{1});
 	EXPECT_EQ(foo.GetRadius(), 0);
 	EXPECT_EQ(foo.GetPosition().x, 0);
@@ -32,6 +33,7 @@ TEST(CircleShape, InitConstruction)
 	const auto position = Vec2{-1, 1};
 	CircleShape foo{radius, position};
 	
+	EXPECT_EQ(foo.GetType(), Shape::e_circle);
 	EXPECT_EQ(foo.GetChildCount(), child_count_t{1});
 	EXPECT_EQ(foo.GetRadius(), radius);
 	EXPECT_EQ(foo.GetPosition().x, position.x);
