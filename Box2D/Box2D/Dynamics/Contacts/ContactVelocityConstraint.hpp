@@ -96,23 +96,23 @@ namespace box2d {
 		/// @sa AddPoint.
 		size_type GetPointCount() const noexcept { return pointCount; }
 		
-		/// Gets the point identified by the given index.
+		/// Accesses the point identified by the given index.
 		/// @note Behavior is undefined if the identified point does not exist.
 		/// @param index Index of the point to return. This is a value less than returned by GetPointCount().
 		/// @return velocity constraint point for the given index.
 		/// @sa GetPointCount.
-		const VelocityConstraintPoint& GetPoint(size_type index) const
+		const VelocityConstraintPoint& Point(size_type index) const
 		{
 			assert(index < pointCount);
 			return points[index];
 		}
 		
-		/// Gets the point identified by the given index.
+		/// Accesses the point identified by the given index.
 		/// @note Behavior is undefined if the identified point does not exist.
 		/// @param index Index of the point to return. This is a value less than returned by GetPointCount().
 		/// @return velocity constraint point for the given index.
 		/// @sa GetPointCount.
-		VelocityConstraintPoint& GetPoint(size_type index)
+		VelocityConstraintPoint& Point(size_type index)
 		{
 			assert(index < pointCount);
 			return points[index];

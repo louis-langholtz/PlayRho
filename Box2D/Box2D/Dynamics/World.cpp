@@ -584,7 +584,7 @@ void World::Solve(const TimeStep& step)
 			const auto count = vc.GetPointCount();
 			for (auto j = decltype(count){0}; j < count; ++j)
 			{
-				const auto point = vc.GetPoint(j);
+				const auto point = vc.Point(j);
 				impulse.AddEntry(point.normalImpulse, point.tangentImpulse);
 			}
 			return impulse;
@@ -697,7 +697,7 @@ void World::Solve(const TimeStep& step)
 				const auto point_count = vc.GetPointCount();
 				for (auto j = decltype(point_count){0}; j < point_count; ++j)
 				{
-					AssignImpulses(manifold.GetPoint(j), vc.GetPoint(j));
+					AssignImpulses(manifold.GetPoint(j), vc.Point(j));
 				}
 			}
 		}
@@ -716,7 +716,7 @@ void World::Solve(const TimeStep& step)
 			const auto pointCount = vc.GetPointCount();	
 			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 			{
-				const auto vcp = vc.GetPoint(j); ///< Velocity constraint point.
+				const auto vcp = vc.Point(j); ///< Velocity constraint point.
 				const auto P = vcp.normalImpulse * vc.normal + vcp.tangentImpulse * tangent;
 				vp.a.v -= vc.bodyA.GetInvMass() * P;
 				vp.a.w -= vc.bodyA.GetInvRotI() * Cross(vcp.rA, P);

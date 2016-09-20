@@ -74,7 +74,7 @@ static inline void UpdateVelocityConstraint(ContactVelocityConstraint& vc,
 		const auto worldPoint = worldManifold.GetPoint(j);
 		const auto vcp_rA = worldPoint - posA.c;
 		const auto vcp_rB = worldPoint - posB.c;
-		auto& vcp = vc.GetPoint(j);
+		auto& vcp = vc.Point(j);
 		vcp.rA = vcp_rA;
 		vcp.rB = vcp_rB;
 		vcp.normalMass = [&]() {
@@ -99,11 +99,11 @@ static inline void UpdateVelocityConstraint(ContactVelocityConstraint& vc,
 	// If we have two points, then prepare the block solver.
 	if ((pointCount == 2) && g_blockSolve)
 	{
-		const auto vcp1 = vc.GetPoint(0);
+		const auto vcp1 = vc.Point(0);
 		const auto rn1A = Cross(vcp1.rA, vc.normal);
 		const auto rn1B = Cross(vcp1.rB, vc.normal);
 
-		const auto vcp2 = vc.GetPoint(1);
+		const auto vcp2 = vc.Point(1);
 		const auto rn2A = Cross(vcp2.rA, vc.normal);
 		const auto rn2B = Cross(vcp2.rB, vc.normal);
 		
@@ -413,15 +413,15 @@ static inline void SolveVelocityConstraint(ContactVelocityConstraint& vc, Veloci
 
 	if (pointCount == 1)
 	{
-		auto& vcp = vc.GetPoint(0);
+		auto& vcp = vc.Point(0);
 
 		SolveTangentConstraint(vc, velA, velB, vcp);
 		SolveNormalConstraint(vc, velA, velB, vcp);
 	}
 	else // pointCount == 2
 	{
-		auto& vcp1 = vc.GetPoint(0); ///< Velocity constraint point.
-		auto& vcp2 = vc.GetPoint(1); ///< Velocity constraint point.
+		auto& vcp1 = vc.Point(0); ///< Velocity constraint point.
+		auto& vcp2 = vc.Point(1); ///< Velocity constraint point.
 
 		SolveTangentConstraint(vc, velA, velB, vcp1);
 		SolveTangentConstraint(vc, velA, velB, vcp2);
