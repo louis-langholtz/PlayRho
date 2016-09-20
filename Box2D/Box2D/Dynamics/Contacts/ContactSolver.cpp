@@ -58,12 +58,13 @@ static inline void UpdateVelocityConstraint(ContactVelocityConstraint& vc,
 	const auto posB = positions[vc.bodyB.GetIndex()];
 	const auto velB = velocities[vc.bodyB.GetIndex()];
 	
+	const auto totalInvMass = vc.bodyA.GetInvMass() + vc.bodyB.GetInvMass();
+	
 	const auto worldManifold = [&]() {
 		const auto xfA = GetTransformation(posA, pc.bodyA.localCenter);
 		const auto xfB = GetTransformation(posB, pc.bodyB.localCenter);
 		return GetWorldManifold(pc.manifold, xfA, pc.radiusA, xfB, pc.radiusB);
 	}();
-	const auto totalInvMass = vc.bodyA.GetInvMass() + vc.bodyB.GetInvMass();
 	
 	vc.normal = worldManifold.GetNormal();
 	
