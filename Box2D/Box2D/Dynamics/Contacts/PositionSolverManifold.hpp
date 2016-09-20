@@ -44,7 +44,7 @@ namespace box2d
 	};
 
 	/// Gets the normal-point-separation data for the given inputs.
-	PositionSolverManifold GetPSM(const Manifold& manifold, float_t totalRadius,
+	PositionSolverManifold GetPSM(const Manifold& manifold,
 								  const Transformation& xfA, const Transformation& xfB,
 								  Manifold::size_type index);
 }; // namespace box2d

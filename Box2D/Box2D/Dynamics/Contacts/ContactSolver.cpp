@@ -475,11 +475,13 @@ static float_t Solve(const ContactPositionConstraint& pc,
 			const auto psm = [&]() {
 				const auto xfA = GetTransformation(posA, localCenterA);
 				const auto xfB = GetTransformation(posB, localCenterB);
-				return GetPSM(pc.manifold, totalRadius, xfA, xfB, j);
+				return GetPSM(pc.manifold, xfA, xfB, j);
 			}();
 			
+			const auto separation = psm.separation - totalRadius;
+
 			// Track max constraint error.
-			minSeparation = Min(minSeparation, psm.separation);
+			minSeparation = Min(minSeparation, separation);
 			
 			if (invMassTotal > float_t{0})
 			{
@@ -494,8 +496,8 @@ static float_t Solve(const ContactPositionConstraint& pc,
 				}();
 				
 				// Prevent large corrections and don't push the separation above -LinearSlop.
-				//const auto C = Clamp(baumgarte * (psm.separation + LinearSlop * (invMassA != 0 && invMassB != 0)),
-				const auto C = Clamp(baumgarte * (psm.separation + LinearSlop),
+				//const auto C = Clamp(baumgarte * (separation + LinearSlop * (invMassA != 0 && invMassB != 0)),
+				const auto C = Clamp(baumgarte * (separation + LinearSlop),
 									 BOX2D_MAGIC(-MaxLinearCorrection), float_t{0});
 				//BOX2D_MAGIC(-MaxLinearCorrection), float_t{0});
 				
