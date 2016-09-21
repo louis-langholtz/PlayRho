@@ -73,11 +73,6 @@ public:
 	/// remain in scope.
 	void SetContactListener(ContactListener* listener) noexcept;
 
-	/// Register a routine for debug drawing. The debug draw functions are called
-	/// inside with World::DrawDebugData method. The debug draw object is owned
-	/// by you and must remain in scope.
-	void SetDebugDraw(Draw* debugDraw) noexcept;
-
 	/// Creates a rigid body given a definition.
 	/// @note No reference to the definition is retained.
 	/// @warning This function is locked during callbacks.
@@ -146,9 +141,6 @@ public:
 	/// ClearForces after all sub-steps are complete in one pass of your game loop.
 	/// @see SetAutoClearForces
 	void ClearForces() noexcept;
-
-	/// Call this to draw shapes and other debug draw data. This is intentionally non-const.
-	void DrawDebugData();
 
 	/// Queries the world for all fixtures that potentially overlap the provided AABB.
 	/// @param callback a user implemented callback class.
@@ -372,9 +364,6 @@ private:
 	/// @return Contact with the least time of impact and its time of impact, or null contact.
 	ContactToiPair UpdateContactTOIs();
 
-	void DrawJoint(Joint* joint);
-	void DrawShape(const Fixture* shape, const Transformation& xf, const Color& color);
-
 	BlockAllocator m_blockAllocator;
 	StackAllocator m_stackAllocator;
 	ContactFilter m_defaultFilter;
@@ -395,7 +384,6 @@ private:
 	bool m_allowSleep = true;
 
 	DestructionListener* m_destructionListener = nullptr;
-	Draw* g_debugDraw = nullptr;
 
 	/// Inverse delta-t from previous step. Used to compute time step ratio to support a variable time step.
 	/// @sa Step.
@@ -496,6 +484,12 @@ inline contact_count_t GetContactCount(const World& world) noexcept
 /// Dump the world into the log file.
 /// @warning this should be called outside of a time step.
 void Dump(const World& world);
+
+/// Call this to draw shapes and other debug draw data.
+void DrawDebugData(Draw& draw, const World& world);
+
+void DrawJoint(Draw& draw, const Joint& joint);
+void DrawShape(Draw& draw, const Fixture& shape, const Transformation& xf, const Color& color);
 
 } // namespace box2d
 

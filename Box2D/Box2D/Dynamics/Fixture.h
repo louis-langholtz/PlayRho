@@ -209,6 +209,9 @@ public:
 	/// the body transform.
 	const AABB& GetAABB(child_count_t childIndex) const;
 
+	child_count_t GetProxyCount() const;
+	const FixtureProxy* GetProxy(child_count_t index) const;
+
 protected:
 
 	friend class Body;
@@ -350,6 +353,17 @@ inline const AABB& Fixture::GetAABB(child_count_t childIndex) const
 	assert(childIndex >= 0);
 	assert(childIndex < m_proxyCount);
 	return m_proxies[childIndex].aabb;
+}
+
+inline child_count_t Fixture::GetProxyCount() const
+{
+	return m_proxyCount;
+}
+
+inline const FixtureProxy* Fixture::GetProxy(child_count_t index) const
+{
+	assert(index < m_proxyCount);
+	return (index < m_proxyCount)? m_proxies + index: nullptr;
 }
 
 inline void SetAwake(Fixture& f) noexcept

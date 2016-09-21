@@ -47,7 +47,6 @@ Test::Test()
 	m_destructionListener.test = this;
 	m_world->SetDestructionListener(&m_destructionListener);
 	m_world->SetContactListener(this);
-	m_world->SetDebugDraw(&g_debugDraw);
 	
 	m_bombSpawning = false;
 
@@ -291,7 +290,7 @@ void Test::Step(Settings* settings)
 
 	m_world->Step(timeStep, static_cast<unsigned>(settings->velocityIterations), static_cast<unsigned>(settings->positionIterations));
 
-	m_world->DrawDebugData();
+	DrawDebugData(g_debugDraw, *m_world);
     g_debugDraw.Flush();
 
 	if (timeStep > 0.0f)

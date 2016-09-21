@@ -110,11 +110,6 @@ void World::SetContactListener(ContactListener* listener) noexcept
 	m_contactMgr.m_contactListener = listener;
 }
 
-void World::SetDebugDraw(Draw* debugDraw) noexcept
-{
-	g_debugDraw = debugDraw;
-}
-
 void World::SetGravity(const Vec2& gravity) noexcept
 {
 	if (m_gravity != gravity)
@@ -1245,208 +1240,6 @@ void World::RayCast(RayCastFixtureReporter* callback, const Vec2& point1, const 
 	m_contactMgr.m_broadPhase.RayCast(&wrapper, input);
 }
 
-void World::DrawShape(const Fixture* fixture, const Transformation& xf, const Color& color)
-{
-	switch (GetType(*fixture))
-	{
-	case Shape::e_circle:
-		{
-			const auto circle = static_cast<const CircleShape*>(fixture->GetShape());
-			const auto center = Transform(circle->GetPosition(), xf);
-			const auto radius = circle->GetRadius();
-			const auto axis = Rotate(Vec2{float_t{1}, float_t{0}}, xf.q);
-			g_debugDraw->DrawSolidCircle(center, radius, axis, color);
-		}
-		break;
-
-	case Shape::e_edge:
-		{
-			const auto edge = static_cast<const EdgeShape*>(fixture->GetShape());
-			const auto v1 = Transform(edge->GetVertex1(), xf);
-			const auto v2 = Transform(edge->GetVertex2(), xf);
-			g_debugDraw->DrawSegment(v1, v2, color);
-		}
-		break;
-
-	case Shape::e_chain:
-		{
-			const auto chain = static_cast<const ChainShape*>(fixture->GetShape());
-			const auto count = chain->GetVertexCount();
-			auto v1 = Transform(chain->GetVertex(0), xf);
-			for (auto i = decltype(count){1}; i < count; ++i)
-			{
-				const auto v2 = Transform(chain->GetVertex(i), xf);
-				g_debugDraw->DrawSegment(v1, v2, color);
-				g_debugDraw->DrawCircle(v1, float_t(0.05), color);
-				v1 = v2;
-			}
-		}
-		break;
-
-	case Shape::e_polygon:
-		{
-			const auto poly = static_cast<const PolygonShape*>(fixture->GetShape());
-			const auto vertexCount = poly->GetVertexCount();
-			assert(vertexCount <= MaxPolygonVertices);
-			Vec2 vertices[MaxPolygonVertices];
-			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-			{
-				vertices[i] = Transform(poly->GetVertex(i), xf);
-			}
-			g_debugDraw->DrawSolidPolygon(vertices, vertexCount, color);
-		}
-		break;
-            
-    default:
-        break;
-	}
-}
-
-void World::DrawJoint(Joint* joint)
-{
-	const auto bodyA = joint->GetBodyA();
-	const auto bodyB = joint->GetBodyB();
-	const auto xf1 = bodyA->GetTransformation();
-	const auto xf2 = bodyB->GetTransformation();
-	const auto x1 = xf1.p;
-	const auto x2 = xf2.p;
-	const auto p1 = joint->GetAnchorA();
-	const auto p2 = joint->GetAnchorB();
-
-	const Color color(float_t(0.5), float_t(0.8), float_t(0.8));
-
-	switch (joint->GetType())
-	{
-	case JointType::Distance:
-		g_debugDraw->DrawSegment(p1, p2, color);
-		break;
-
-	case JointType::Pulley:
-		{
-			const auto pulley = static_cast<PulleyJoint*>(joint);
-			const auto s1 = pulley->GetGroundAnchorA();
-			const auto s2 = pulley->GetGroundAnchorB();
-			g_debugDraw->DrawSegment(s1, p1, color);
-			g_debugDraw->DrawSegment(s2, p2, color);
-			g_debugDraw->DrawSegment(s1, s2, color);
-		}
-		break;
-
-	case JointType::Mouse:
-		// don't draw this
-		break;
-
-	default:
-		g_debugDraw->DrawSegment(x1, p1, color);
-		g_debugDraw->DrawSegment(p1, p2, color);
-		g_debugDraw->DrawSegment(x2, p2, color);
-	}
-}
-
-void World::DrawDebugData()
-{
-	if (g_debugDraw == nullptr)
-	{
-		return;
-	}
-
-	const auto flags = g_debugDraw->GetFlags();
-
-	if (flags & Draw::e_shapeBit)
-	{
-		for (auto&& b: m_bodies)
-		{
-			const auto xf = b.GetTransformation();
-			for (auto&& f: b.GetFixtures())
-			{
-				if (!b.IsActive())
-				{
-					DrawShape(&f, xf, Color(0.5f, 0.5f, 0.3f));
-				}
-				else if (b.GetType() == BodyType::Static)
-				{
-					DrawShape(&f, xf, Color(0.5f, 0.9f, 0.5f));
-				}
-				else if (b.GetType() == BodyType::Kinematic)
-				{
-					DrawShape(&f, xf, Color(0.5f, 0.5f, 0.9f));
-				}
-				else if (!b.IsAwake())
-				{
-					DrawShape(&f, xf, Color(0.6f, 0.6f, 0.6f));
-				}
-				else
-				{
-					DrawShape(&f, xf, Color(0.9f, 0.7f, 0.7f));
-				}
-			}
-		}
-	}
-
-	if (flags & Draw::e_jointBit)
-	{
-		for (auto&& j: m_joints)
-		{
-			DrawJoint(&j);
-		}
-	}
-
-	if (flags & Draw::e_pairBit)
-	{
-		//const Color color(0.3f, 0.9f, 0.9f);
-		//for (auto&& c: m_contactMgr.GetContacts())
-		//{
-			//Fixture* fixtureA = c.GetFixtureA();
-			//Fixture* fixtureB = c.GetFixtureB();
-
-			//Vec2 cA = fixtureA->GetAABB().GetCenter();
-			//Vec2 cB = fixtureB->GetAABB().GetCenter();
-
-			//g_debugDraw->DrawSegment(cA, cB, color);
-		//}
-	}
-
-	if (flags & Draw::e_aabbBit)
-	{
-		const Color color(0.9f, 0.3f, 0.9f);
-		const auto bp = &m_contactMgr.m_broadPhase;
-
-		for (auto&& b: m_bodies)
-		{
-			if (!b.IsActive())
-			{
-				continue;
-			}
-
-			for (auto&& f: b.GetFixtures())
-			{
-				for (auto i = decltype(f.m_proxyCount){0}; i < f.m_proxyCount; ++i)
-				{
-					const auto proxy = f.m_proxies + i;
-					const auto aabb = bp->GetFatAABB(proxy->proxyId);
-					Vec2 vs[4];
-					vs[0] = Vec2{aabb.GetLowerBound().x, aabb.GetLowerBound().y};
-					vs[1] = Vec2{aabb.GetUpperBound().x, aabb.GetLowerBound().y};
-					vs[2] = Vec2{aabb.GetUpperBound().x, aabb.GetUpperBound().y};
-					vs[3] = Vec2{aabb.GetLowerBound().x, aabb.GetUpperBound().y};
-
-					g_debugDraw->DrawPolygon(vs, 4, color);
-				}
-			}
-		}
-	}
-
-	if (flags & Draw::e_centerOfMassBit)
-	{
-		for (auto&& b: m_bodies)
-		{
-			auto xf = b.GetTransformation();
-			xf.p = b.GetWorldCenter();
-			g_debugDraw->DrawTransform(xf);
-		}
-	}
-}
-
 World::size_type World::GetProxyCount() const noexcept
 {
 	return m_contactMgr.m_broadPhase.GetProxyCount();
@@ -1521,5 +1314,204 @@ void Dump(const World& world)
 	log("joints = nullptr;\n");
 	log("bodies = nullptr;\n");
 }
+
+void DrawDebugData(Draw& draw, const World& world)
+{
+	const auto flags = draw.GetFlags();
+	
+	if (flags & Draw::e_shapeBit)
+	{
+		for (auto&& b: world.GetBodies())
+		{
+			const auto xf = b.GetTransformation();
+			for (auto&& f: b.GetFixtures())
+			{
+				if (!b.IsActive())
+				{
+					DrawShape(draw, f, xf, Color(0.5f, 0.5f, 0.3f));
+				}
+				else if (b.GetType() == BodyType::Static)
+				{
+					DrawShape(draw, f, xf, Color(0.5f, 0.9f, 0.5f));
+				}
+				else if (b.GetType() == BodyType::Kinematic)
+				{
+					DrawShape(draw, f, xf, Color(0.5f, 0.5f, 0.9f));
+				}
+				else if (!b.IsAwake())
+				{
+					DrawShape(draw, f, xf, Color(0.6f, 0.6f, 0.6f));
+				}
+				else
+				{
+					DrawShape(draw, f, xf, Color(0.9f, 0.7f, 0.7f));
+				}
+			}
+		}
+	}
+	
+	if (flags & Draw::e_jointBit)
+	{
+		for (auto&& j: world.GetJoints())
+		{
+			DrawJoint(draw, j);
+		}
+	}
+	
+	if (flags & Draw::e_pairBit)
+	{
+		//const Color color(0.3f, 0.9f, 0.9f);
+		//for (auto&& c: m_contactMgr.GetContacts())
+		//{
+		//Fixture* fixtureA = c.GetFixtureA();
+		//Fixture* fixtureB = c.GetFixtureB();
+		
+		//Vec2 cA = fixtureA->GetAABB().GetCenter();
+		//Vec2 cB = fixtureB->GetAABB().GetCenter();
+		
+		//draw.DrawSegment(cA, cB, color);
+		//}
+	}
+	
+	if (flags & Draw::e_aabbBit)
+	{
+		const Color color(0.9f, 0.3f, 0.9f);
+		const auto bp = &world.GetContactManager().m_broadPhase;
+		
+		for (auto&& b: world.GetBodies())
+		{
+			if (!b.IsActive())
+			{
+				continue;
+			}
+			
+			for (auto&& f: b.GetFixtures())
+			{
+				const auto proxy_count = f.GetProxyCount();
+				for (auto i = decltype(proxy_count){0}; i < proxy_count; ++i)
+				{
+					const auto proxy = f.GetProxy(i);
+					const auto aabb = bp->GetFatAABB(proxy->proxyId);
+					Vec2 vs[4];
+					vs[0] = Vec2{aabb.GetLowerBound().x, aabb.GetLowerBound().y};
+					vs[1] = Vec2{aabb.GetUpperBound().x, aabb.GetLowerBound().y};
+					vs[2] = Vec2{aabb.GetUpperBound().x, aabb.GetUpperBound().y};
+					vs[3] = Vec2{aabb.GetLowerBound().x, aabb.GetUpperBound().y};
+					
+					draw.DrawPolygon(vs, 4, color);
+				}
+			}
+		}
+	}
+	
+	if (flags & Draw::e_centerOfMassBit)
+	{
+		for (auto&& b: world.GetBodies())
+		{
+			auto xf = b.GetTransformation();
+			xf.p = b.GetWorldCenter();
+			draw.DrawTransform(xf);
+		}
+	}
+}
+
+void DrawShape(Draw& draw, const Fixture& fixture, const Transformation& xf, const Color& color)
+{
+	switch (GetType(fixture))
+	{
+		case Shape::e_circle:
+		{
+			const auto circle = static_cast<const CircleShape*>(fixture.GetShape());
+			const auto center = Transform(circle->GetPosition(), xf);
+			const auto radius = circle->GetRadius();
+			const auto axis = Rotate(Vec2{float_t{1}, float_t{0}}, xf.q);
+			draw.DrawSolidCircle(center, radius, axis, color);
+		}
+			break;
+			
+		case Shape::e_edge:
+		{
+			const auto edge = static_cast<const EdgeShape*>(fixture.GetShape());
+			const auto v1 = Transform(edge->GetVertex1(), xf);
+			const auto v2 = Transform(edge->GetVertex2(), xf);
+			draw.DrawSegment(v1, v2, color);
+		}
+			break;
+			
+		case Shape::e_chain:
+		{
+			const auto chain = static_cast<const ChainShape*>(fixture.GetShape());
+			const auto count = chain->GetVertexCount();
+			auto v1 = Transform(chain->GetVertex(0), xf);
+			for (auto i = decltype(count){1}; i < count; ++i)
+			{
+				const auto v2 = Transform(chain->GetVertex(i), xf);
+				draw.DrawSegment(v1, v2, color);
+				draw.DrawCircle(v1, float_t(0.05), color);
+				v1 = v2;
+			}
+		}
+			break;
+			
+		case Shape::e_polygon:
+		{
+			const auto poly = static_cast<const PolygonShape*>(fixture.GetShape());
+			const auto vertexCount = poly->GetVertexCount();
+			assert(vertexCount <= MaxPolygonVertices);
+			Vec2 vertices[MaxPolygonVertices];
+			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+			{
+				vertices[i] = Transform(poly->GetVertex(i), xf);
+			}
+			draw.DrawSolidPolygon(vertices, vertexCount, color);
+		}
+			break;
+			
+		default:
+			break;
+	}
+}
+
+void DrawJoint(Draw& draw, const Joint& joint)
+{
+	const auto bodyA = joint.GetBodyA();
+	const auto bodyB = joint.GetBodyB();
+	const auto xf1 = bodyA->GetTransformation();
+	const auto xf2 = bodyB->GetTransformation();
+	const auto x1 = xf1.p;
+	const auto x2 = xf2.p;
+	const auto p1 = joint.GetAnchorA();
+	const auto p2 = joint.GetAnchorB();
+	
+	const Color color(float_t(0.5), float_t(0.8), float_t(0.8));
+	
+	switch (joint.GetType())
+	{
+		case JointType::Distance:
+			draw.DrawSegment(p1, p2, color);
+			break;
+			
+		case JointType::Pulley:
+		{
+			const auto pulley = static_cast<const PulleyJoint&>(joint);
+			const auto s1 = pulley.GetGroundAnchorA();
+			const auto s2 = pulley.GetGroundAnchorB();
+			draw.DrawSegment(s1, p1, color);
+			draw.DrawSegment(s2, p2, color);
+			draw.DrawSegment(s1, s2, color);
+		}
+			break;
+			
+		case JointType::Mouse:
+			// don't draw this
+			break;
+			
+		default:
+			draw.DrawSegment(x1, p1, color);
+			draw.DrawSegment(p1, p2, color);
+			draw.DrawSegment(x2, p2, color);
+	}
+}
+
 
 } // namespace box2d
