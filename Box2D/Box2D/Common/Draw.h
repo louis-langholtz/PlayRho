@@ -85,7 +85,7 @@ public:
 	/// @param xf a transform.
 	virtual void DrawTransform(const Transformation& xf) = 0;
 
-protected:
+private:
 	uint32 m_drawFlags = 0;
 };
 
