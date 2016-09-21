@@ -11,9 +11,7 @@
 
 using namespace box2d;
 
-TEST(BlockAllocator, DefaultInit)
+TEST(BlockAllocator, ByteSizeIs136)
 {
-	BlockAllocator allocator;
-	
-	EXPECT_LE(sizeof(allocator), size_t(136));
+	EXPECT_EQ(sizeof(BlockAllocator), size_t(136));
 }

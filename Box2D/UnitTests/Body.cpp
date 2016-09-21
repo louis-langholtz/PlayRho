@@ -17,7 +17,13 @@
 
 using namespace box2d;
 
-TEST(Body, DefaultCreation)
+TEST(Body, ByteSizeIs160)
+{
+	// architecture dependent...
+	EXPECT_EQ(sizeof(Body), size_t(160));
+}
+
+TEST(Body, WorldCreated)
 {
 	World world;
 	
