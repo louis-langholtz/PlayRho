@@ -28,6 +28,8 @@ TEST(World, DefaultInit)
 {
 	World world;
 
+	EXPECT_LE(sizeof(world), size_t(103568));
+
 	EXPECT_EQ(GetBodyCount(world), body_count_t(0));
 	EXPECT_EQ(world.GetProxyCount(), World::size_type(0));
 	EXPECT_EQ(GetJointCount(world), World::size_type(0));
