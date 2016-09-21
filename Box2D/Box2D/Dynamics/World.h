@@ -203,7 +203,7 @@ public:
 	void SetSubStepping(bool flag) noexcept { m_subStepping = flag; }
 
 	bool GetSubStepping() const noexcept { return m_subStepping; }
-
+	
 	/// Get the number of broad-phase proxies.
 	size_type GetProxyCount() const noexcept;
 
@@ -351,6 +351,9 @@ private:
 
 	bool Remove(Body& b);
 	bool Remove(Joint& j);
+
+	bool IsStepComplete() const noexcept { return m_stepComplete; }
+	void SetStepComplete(bool value) noexcept { m_stepComplete = value; }
 
 	struct ContactToiPair
 	{

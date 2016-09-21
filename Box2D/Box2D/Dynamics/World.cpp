@@ -885,7 +885,7 @@ World::ContactToiPair World::UpdateContactTOIs()
 // Find TOI contacts and solve them.
 void World::SolveTOI(const TimeStep& step)
 {
-	if (m_stepComplete)
+	if (IsStepComplete())
 	{
 		ResetBodiesForSolveTOI();
 		ResetContactsForSolveTOI();
@@ -900,7 +900,7 @@ void World::SolveTOI(const TimeStep& step)
 		if ((!minContactToi.contact) || (almost_equal(minContactToi.toi, float_t{1})))
 		{
 			// No more TOI events. Done!
-			m_stepComplete = true;
+			SetStepComplete(true);
 			break;
 		}
 
@@ -910,9 +910,9 @@ void World::SolveTOI(const TimeStep& step)
 		// Also, some contacts can be destroyed.
 		m_contactMgr.FindNewContacts();
 
-		if (m_subStepping)
+		if (GetSubStepping())
 		{
-			m_stepComplete = false;
+			SetStepComplete(false);
 			break;
 		}
 	}
@@ -1154,11 +1154,11 @@ void World::Step(float_t dt, unsigned velocityIterations, unsigned positionItera
 		step.velocityIterations	= velocityIterations;
 		step.positionIterations = positionIterations;
 		step.dtRatio = dt * m_inv_dt0;
-		step.warmStarting = m_warmStarting;
+		step.warmStarting = GetWarmStarting();
 		m_inv_dt0 = step.get_inv_dt();
 
 		// Integrate velocities, solve velocity constraints, and integrate positions.
-		if (m_stepComplete)
+		if (IsStepComplete())
 		{
 			Solve(step);
 		}
