@@ -38,8 +38,8 @@ bool box2d::TestPoint(const CircleShape& shape, const Transformation& transform,
 // From Section 3.1.2
 // x = s + a * r
 // norm(x) = radius
-bool box2d::RayCast(const CircleShape& shape, RayCastOutput* output, const RayCastInput& input,
-							const Transformation& transform, child_count_t childIndex)
+RayCastOutput box2d::RayCast(const CircleShape& shape, const RayCastInput& input,
+							 const Transformation& transform, child_count_t childIndex)
 {
 	BOX2D_NOT_USED(childIndex);
 
@@ -56,7 +56,7 @@ bool box2d::RayCast(const CircleShape& shape, RayCastOutput* output, const RayCa
 	// Check for negative discriminant and short segment.
 	if ((sigma < float_t{0}) || almost_equal(rr, 0))
 	{
-		return false;
+		return RayCastOutput{};
 	}
 
 	// Find the point of intersection of the line with the circle.
@@ -66,12 +66,10 @@ bool box2d::RayCast(const CircleShape& shape, RayCastOutput* output, const RayCa
 	if ((a >= float_t{0}) && (a <= (input.maxFraction * rr)))
 	{
 		const auto fraction = a / rr;
-		output->fraction = fraction;
-		output->normal = GetUnitVector(s + fraction * r);
-		return true;
+		return RayCastOutput{GetUnitVector(s + fraction * r), fraction};
 	}
 
-	return false;
+	return RayCastOutput{};
 }
 
 AABB box2d::ComputeAABB(const CircleShape& shape, const Transformation& transform, child_count_t childIndex)

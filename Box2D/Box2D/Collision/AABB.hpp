@@ -121,11 +121,16 @@ namespace box2d
 	/// @detail The ray hits at p1 + fraction * (p2 - p1), where p1 and p2 come from RayCastInput.
 	struct RayCastOutput
 	{
-		Vec2 normal;
-		float_t fraction;
+		RayCastOutput() = default;
+
+		constexpr RayCastOutput(Vec2 n, float_t f, bool h = true) noexcept: normal{n}, fraction{f}, hit{h} {}
+
+		Vec2 normal = Vec2_invalid;
+		float_t fraction = 0;
+		bool hit = false;
 	};
 
-	bool RayCast(const AABB& aabb, RayCastOutput* output, const RayCastInput& input);
+	RayCastOutput RayCast(const AABB& aabb, const RayCastInput& input);
 
 } // namespace box2d
 

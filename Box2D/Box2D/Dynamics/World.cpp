@@ -1211,10 +1211,9 @@ struct WorldRayCastWrapper
 		const auto proxy = static_cast<FixtureProxy*>(userData);
 		auto fixture = proxy->fixture;
 		const auto index = proxy->childIndex;
-		RayCastOutput output;
-		const auto hit = RayCast(*fixture, &output, input, index);
+		const auto output = RayCast(*fixture, input, index);
 
-		if (hit)
+		if (output.hit)
 		{
 			const auto fraction = output.fraction;
 			assert(fraction >= 0 && fraction <= 1);

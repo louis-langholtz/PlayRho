@@ -286,8 +286,8 @@ bool box2d::TestPoint(const PolygonShape& shape, const Transformation& xf, const
 	return true;
 }
 
-bool box2d::RayCast(const PolygonShape& shape, RayCastOutput* output, const RayCastInput& input,
-								const Transformation& xf, child_count_t childIndex)
+RayCastOutput box2d::RayCast(const PolygonShape& shape, const RayCastInput& input,
+							 const Transformation& xf, child_count_t childIndex)
 {
 	BOX2D_NOT_USED(childIndex);
 
@@ -313,7 +313,7 @@ bool box2d::RayCast(const PolygonShape& shape, RayCastOutput* output, const RayC
 		{	
 			if (numerator < float_t{0})
 			{
-				return false;
+				return RayCastOutput{};
 			}
 		}
 		else
@@ -343,7 +343,7 @@ bool box2d::RayCast(const PolygonShape& shape, RayCastOutput* output, const RayC
 		//if (upper < lower - Epsilon)
 		if (upper < lower)
 		{
-			return false;
+			return RayCastOutput{};
 		}
 	}
 
@@ -351,12 +351,10 @@ bool box2d::RayCast(const PolygonShape& shape, RayCastOutput* output, const RayC
 
 	if (index != InvalidIndex)
 	{
-		output->fraction = lower;
-		output->normal = Rotate(shape.GetNormal(index), xf.q);
-		return true;
+		return RayCastOutput{Rotate(shape.GetNormal(index), xf.q), lower};
 	}
 
-	return false;
+	return RayCastOutput{};
 }
 
 AABB box2d::ComputeAABB(const PolygonShape& shape, const Transformation& xf, child_count_t childIndex)

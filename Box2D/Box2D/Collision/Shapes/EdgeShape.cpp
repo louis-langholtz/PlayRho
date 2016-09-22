@@ -46,8 +46,8 @@ bool box2d::TestPoint(const EdgeShape& shape, const Transformation& xf, const Ve
 // v = v1 + s * e
 // p1 + t * d = v1 + s * e
 // s * e - t * d = p1 - v1
-bool box2d::RayCast(const EdgeShape& shape, RayCastOutput* output, const RayCastInput& input,
-							const Transformation& xf, child_count_t childIndex)
+RayCastOutput box2d::RayCast(const EdgeShape& shape, const RayCastInput& input,
+							 const Transformation& xf, child_count_t childIndex)
 {
 	BOX2D_NOT_USED(childIndex);
 
@@ -69,13 +69,13 @@ bool box2d::RayCast(const EdgeShape& shape, RayCastOutput* output, const RayCast
 
 	if (denominator == float_t{0})
 	{
-		return false;
+		return RayCastOutput{};
 	}
 
 	const auto t = numerator / denominator;
 	if ((t < float_t{0}) || (t > input.maxFraction))
 	{
-		return false;
+		return RayCastOutput{};
 	}
 
 	const auto q = p1 + t * d;
@@ -86,18 +86,17 @@ bool box2d::RayCast(const EdgeShape& shape, RayCastOutput* output, const RayCast
 	const auto rr = LengthSquared(r);
 	if (rr == float_t{0})
 	{
-		return false;
+		return RayCastOutput{};
 	}
 
 	const auto s = Dot(q - v1, r) / rr;
 	if ((s < float_t{0}) || (float_t{1} < s))
 	{
-		return false;
+		return RayCastOutput{};
 	}
 
-	output->fraction = t;
-	output->normal = (numerator > float_t{0})? -Rotate(normal, xf.q): Rotate(normal, xf.q);
-	return true;
+	const auto n = (numerator > float_t{0})? -Rotate(normal, xf.q): Rotate(normal, xf.q);
+	return RayCastOutput{n, t};
 }
 
 AABB box2d::ComputeAABB(const EdgeShape& shape, const Transformation& xf, child_count_t childIndex)

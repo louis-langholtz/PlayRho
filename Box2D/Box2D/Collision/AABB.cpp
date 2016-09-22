@@ -23,7 +23,7 @@ namespace box2d
 {
 	
 	// From Real-time Collision Detection, p179.
-	bool RayCast(const AABB& aabb, RayCastOutput* output, const RayCastInput& input)
+	RayCastOutput RayCast(const AABB& aabb, const RayCastInput& input)
 	{
 		auto tmin = -MaxFloat;
 		auto tmax = MaxFloat;
@@ -40,7 +40,7 @@ namespace box2d
 				// Parallel.
 				if ((p[i] < aabb.GetLowerBound()[i]) || (aabb.GetUpperBound()[i] < p[i]))
 				{
-					return false;
+					return RayCastOutput{};
 				}
 			}
 			else
@@ -71,7 +71,7 @@ namespace box2d
 				
 				if (tmin > tmax)
 				{
-					return false;
+					return RayCastOutput{};
 				}
 			}
 		};
@@ -80,13 +80,11 @@ namespace box2d
 		// Does the ray intersect beyond the max fraction?
 		if ((tmin < float_t{0}) || (tmin > input.maxFraction))
 		{
-			return false;
+			return RayCastOutput{};
 		}
 		
 		// Intersection.
-		output->fraction = tmin;
-		output->normal = normal;
-		return true;
+		return RayCastOutput{normal, tmin};
 	}
 	
 } // namespace box2d

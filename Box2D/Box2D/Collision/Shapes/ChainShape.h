@@ -119,12 +119,11 @@ child_count_t GetChildCount(const ChainShape& shape);
 bool TestPoint(const ChainShape& shape, const Transformation& xf, const Vec2& p);
 
 /// Cast a ray against a child shape.
-/// @param output the ray-cast results.
 /// @param input the ray-cast input parameters.
 /// @param transform the transform to be applied to the shape.
 /// @param childIndex the child shape index
-bool RayCast(const ChainShape& shape, RayCastOutput* output, const RayCastInput& input,
-			 const Transformation& transform, child_count_t childIndex);
+RayCastOutput RayCast(const ChainShape& shape, const RayCastInput& input,
+					  const Transformation& transform, child_count_t childIndex);
 
 /// Given a transform, compute the associated axis aligned bounding box for a child shape.
 /// @param xf the world transform of the shape.

@@ -51,17 +51,17 @@ namespace box2d {
 		}
 	}
 	
-	bool RayCast(const Shape& shape, RayCastOutput* output, const RayCastInput& input,
-				 const Transformation& xf, child_count_t childIndex)
+	RayCastOutput RayCast(const Shape& shape, const RayCastInput& input,
+						  const Transformation& xf, child_count_t childIndex)
 	{
 		assert(shape.GetType() < Shape::e_typeCount);
 		switch (shape.GetType())
 		{
-			case Shape::e_edge: return RayCast(static_cast<const EdgeShape&>(shape), output, input, xf, childIndex);
-			case Shape::e_chain: return RayCast(static_cast<const ChainShape&>(shape), output, input, xf, childIndex);
-			case Shape::e_circle: return RayCast(static_cast<const CircleShape&>(shape), output, input, xf, childIndex);
-			case Shape::e_polygon: return RayCast(static_cast<const PolygonShape&>(shape), output, input, xf, childIndex);
-			case Shape::e_typeCount: return false;
+			case Shape::e_edge: return RayCast(static_cast<const EdgeShape&>(shape), input, xf, childIndex);
+			case Shape::e_chain: return RayCast(static_cast<const ChainShape&>(shape), input, xf, childIndex);
+			case Shape::e_circle: return RayCast(static_cast<const CircleShape&>(shape), input, xf, childIndex);
+			case Shape::e_polygon: return RayCast(static_cast<const PolygonShape&>(shape), input, xf, childIndex);
+			case Shape::e_typeCount: return RayCastOutput{};
 		}
 	}
 	

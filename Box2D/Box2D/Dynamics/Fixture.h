@@ -352,11 +352,12 @@ inline bool TestPoint(const Fixture& f, const Vec2& p)
 }
 
 /// Cast a ray against the shape of the given fixture.
-/// @param output the ray-cast results.
+/// @param f Fixture.
 /// @param input the ray-cast input parameters.
-inline bool RayCast(const Fixture& f, RayCastOutput* output, const RayCastInput& input, child_count_t childIndex)
+/// @param childIndex Child index.
+inline RayCastOutput RayCast(const Fixture& f, const RayCastInput& input, child_count_t childIndex)
 {
-	return RayCast(*f.GetShape(), output, input, f.GetBody()->GetTransformation(), childIndex);
+	return RayCast(*f.GetShape(), input, f.GetBody()->GetTransformation(), childIndex);
 }
 
 /// Computes the mass data for the given fixture.

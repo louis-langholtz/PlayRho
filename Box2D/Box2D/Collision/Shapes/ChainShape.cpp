@@ -152,15 +152,15 @@ bool box2d::TestPoint(const ChainShape& shape, const Transformation& xf, const V
 	return false;
 }
 
-bool box2d::RayCast(const ChainShape& shape, RayCastOutput* output, const RayCastInput& input,
-			 const Transformation& xf, child_count_t childIndex)
+RayCastOutput box2d::RayCast(const ChainShape& shape, const RayCastInput& input,
+							 const Transformation& xf, child_count_t childIndex)
 {
 	assert(childIndex < shape.GetVertexCount());
 
 	const auto i1 = childIndex;
 	const auto i2 = shape.GetNextIndex(childIndex);
 	const auto edgeShape = EdgeShape(shape.GetVertex(i1), shape.GetVertex(i2));
-	return RayCast(edgeShape, output, input, xf, 0);
+	return RayCast(edgeShape, input, xf, 0);
 }
 
 AABB box2d::ComputeAABB(const ChainShape& shape, const Transformation& xf, child_count_t childIndex)

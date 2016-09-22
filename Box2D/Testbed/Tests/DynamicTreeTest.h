@@ -170,10 +170,9 @@ public:
 	{
 		auto actor = static_cast<Actor*>(m_tree.GetUserData(proxyId));
 
-		RayCastOutput output;
-		const auto hit = box2d::RayCast(actor->aabb, &output, input);
+		const auto output = box2d::RayCast(actor->aabb, input);
 
-		if (hit)
+		if (output.hit)
 		{
 			m_rayCastOutput = output;
 			m_rayActor = actor;
@@ -323,9 +322,8 @@ private:
 				continue;
 			}
 
-			RayCastOutput output;
-			const auto hit = box2d::RayCast(m_actors[i].aabb, &output, input);
-			if (hit)
+			const auto output = box2d::RayCast(m_actors[i].aabb, input);
+			if (output.hit)
 			{
 				bruteActor = m_actors + i;
 				bruteOutput = output;
