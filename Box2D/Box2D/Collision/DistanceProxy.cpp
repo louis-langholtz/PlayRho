@@ -21,13 +21,14 @@
 
 using namespace box2d;
 
-DistanceProxy::size_type DistanceProxy::GetSupportIndex(const Vec2& d) const noexcept
+DistanceProxy::size_type box2d::GetSupportIndex(const DistanceProxy& proxy, const Vec2& d) noexcept
 {
-	auto index = InvalidIndex; ///< Index of vertex that when dotted with d has the max value.
+	auto index = DistanceProxy::InvalidIndex; ///< Index of vertex that when dotted with d has the max value.
 	auto maxValue = -MaxFloat; ///< Max dot value.
-	for (auto i = decltype(m_count){0}; i < m_count; ++i)
+	const auto count = proxy.GetVertexCount();
+	for (auto i = decltype(count){0}; i < count; ++i)
 	{
-		const auto value = Dot(m_vertices[i], d);
+		const auto value = Dot(proxy.GetVertex(i), d);
 		if (maxValue < value)
 		{
 			maxValue = value;

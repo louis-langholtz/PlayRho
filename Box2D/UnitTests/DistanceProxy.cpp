@@ -31,9 +31,9 @@ TEST(DistanceProxy, OneVecSupportIndex)
 	const auto radius = float_t{1};
 	const auto vertex0 = Vec2{float_t(2), float_t(-3)};
 	DistanceProxy foo{radius, vertex0};
-	EXPECT_EQ(0, foo.GetSupportIndex(vertex0));
-	EXPECT_EQ(0, foo.GetSupportIndex(Vec2_zero));
-	EXPECT_EQ(0, foo.GetSupportIndex(Vec2{vertex0.y, vertex0.x}));
+	EXPECT_EQ(0, GetSupportIndex(foo, vertex0));
+	EXPECT_EQ(0, GetSupportIndex(foo, Vec2_zero));
+	EXPECT_EQ(0, GetSupportIndex(foo, Vec2{vertex0.y, vertex0.x}));
 }
 
 TEST(DistanceProxy, TwoVecInitialization)
@@ -54,11 +54,11 @@ TEST(DistanceProxy, TwoVecSupportIndex)
 	const auto vertex0 = Vec2{float_t(2), float_t(3)};
 	const auto vertex1 = Vec2{float_t(-10), float_t(-1)};
 	DistanceProxy foo{radius, vertex0, vertex1};
-	EXPECT_EQ(0, foo.GetSupportIndex(vertex0));
-	EXPECT_EQ(0, foo.GetSupportIndex(Vec2{vertex0.y, vertex0.x}));
-	EXPECT_EQ(0, foo.GetSupportIndex(Vec2_zero));
-	EXPECT_EQ(1, foo.GetSupportIndex(vertex1));
-	EXPECT_EQ(1, foo.GetSupportIndex(Vec2{vertex1.y, vertex1.x}));
+	EXPECT_EQ(0, GetSupportIndex(foo, vertex0));
+	EXPECT_EQ(0, GetSupportIndex(foo, Vec2{vertex0.y, vertex0.x}));
+	EXPECT_EQ(0, GetSupportIndex(foo, Vec2_zero));
+	EXPECT_EQ(1, GetSupportIndex(foo, vertex1));
+	EXPECT_EQ(1, GetSupportIndex(foo, Vec2{vertex1.y, vertex1.x}));
 }
 
 TEST(DistanceProxy, ThreeVertices)

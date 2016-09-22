@@ -86,15 +86,6 @@ namespace box2d
 		/// @return Non-negative distance.
 		auto GetRadius() const noexcept { return m_radius; }
 		
-		/// Gets the supporting vertex index in the given direction.
-		/// @detail This finds the vertex that's most significantly in the direction of the given
-		///   vector and returns its index.
-		/// @note 0 is returned for a given zero length direction vector.
-		/// @param d Direction vector to find index for.
-		/// @return InvalidIndex if d is invalid or the count of vertices is zero, otherwise a value from 0 to one less than count.
-		/// @sa GetVertexCount().
-		size_type GetSupportIndex(const Vec2& d) const noexcept;
-		
 		/// Get the vertex count.
 		/// @detail This is the count of valid vertex elements that this object provides.
 		inline auto GetVertexCount() const noexcept { return m_count; }
@@ -121,6 +112,16 @@ namespace box2d
 	/// @note The shape must remain in scope while the proxy is in use.
 	DistanceProxy GetDistanceProxy(const Shape& shape, child_count_t index);
 
+	/// Gets the supporting vertex index in the given direction for the given distance proxy.
+	/// @detail This finds the vertex that's most significantly in the direction of the given
+	///   vector and returns its index.
+	/// @note 0 is returned for a given zero length direction vector.
+	/// @param proxy Distance proxy object to find index in if a valid index exists for it.
+	/// @param d Direction vector to find index for.
+	/// @return InvalidIndex if d is invalid or the count of vertices is zero, otherwise a value from 0 to one less than count.
+	/// @sa GetVertexCount().
+	DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, const Vec2& d) noexcept;
+	
 }; // namespace box2d
 
 #endif /* DistanceProxy_hpp */

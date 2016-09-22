@@ -169,8 +169,8 @@ public:
 private:
 	Separation FindMinSeparationForPoints(const Transformation& xfA, const Transformation& xfB) const
 	{
-		const auto indexA = m_proxyA.GetSupportIndex(InverseRotate(m_axis, xfA.q));
-		const auto indexB = m_proxyB.GetSupportIndex(InverseRotate(-m_axis, xfB.q));
+		const auto indexA = GetSupportIndex(m_proxyA, InverseRotate(m_axis, xfA.q));
+		const auto indexB = GetSupportIndex(m_proxyB, InverseRotate(-m_axis, xfB.q));
 		const auto pointA = Transform(m_proxyA.GetVertex(indexA), xfA);
 		const auto pointB = Transform(m_proxyB.GetVertex(indexB), xfB);
 		return Separation{IndexPair{indexA, indexB}, Dot(pointB - pointA, m_axis)};
@@ -181,7 +181,7 @@ private:
 		const auto normal = Rotate(m_axis, xfA.q);
 		const auto indexA = IndexPair::InvalidIndex;
 		const auto pointA = Transform(m_localPoint, xfA);
-		const auto indexB = m_proxyB.GetSupportIndex(InverseRotate(-normal, xfB.q));
+		const auto indexB = GetSupportIndex(m_proxyB, InverseRotate(-normal, xfB.q));
 		const auto pointB = Transform(m_proxyB.GetVertex(indexB), xfB);
 		return Separation{IndexPair{indexA, indexB}, Dot(pointB - pointA, normal)};
 	}
@@ -189,7 +189,7 @@ private:
 	Separation FindMinSeparationForFaceB(const Transformation& xfA, const Transformation& xfB) const
 	{
 		const auto normal = Rotate(m_axis, xfB.q);
-		const auto indexA = m_proxyA.GetSupportIndex(InverseRotate(-normal, xfA.q));
+		const auto indexA = GetSupportIndex(m_proxyA, InverseRotate(-normal, xfA.q));
 		const auto pointA = Transform(m_proxyA.GetVertex(indexA), xfA);
 		const auto indexB = IndexPair::InvalidIndex;
 		const auto pointB = Transform(m_localPoint, xfB);
