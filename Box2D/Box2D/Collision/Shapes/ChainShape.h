@@ -70,26 +70,8 @@ public:
 	/// Don't call this for loops.
 	void SetNextVertex(const Vec2& nextVertex) noexcept;
 
-	/// @see Shape::GetChildCount
-	child_count_t GetChildCount() const override;
-
 	/// Get a child edge.
 	void GetChildEdge(EdgeShape* edge, child_count_t index) const;
-
-	/// This always return false.
-	/// @see Shape::TestPoint
-	bool TestPoint(const Transformation& transform, const Vec2& p) const override;
-
-	/// Implement Shape.
-	bool RayCast(RayCastOutput* output, const RayCastInput& input,
-					const Transformation& transform, child_count_t childIndex) const override;
-
-	/// @see Shape::ComputeAABB
-	AABB ComputeAABB(const Transformation& transform, child_count_t childIndex) const override;
-
-	/// Chains have zero mass.
-	/// @see Shape::ComputeMass
-	MassData ComputeMass(float_t density) const override;
 
 	/// Get the vertex count.
 	child_count_t GetVertexCount() const noexcept { return m_count; }
@@ -125,6 +107,37 @@ inline const Vec2& ChainShape::GetVertex(child_count_t index) const
 	assert((0 <= index) && (index < m_count));
 	return m_vertices[index];
 }
+
+/// Gets the number of child primitives.
+/// @return Positive non-zero count.
+child_count_t GetChildCount(const ChainShape& shape);
+
+/// Tests a point for containment in this shape.
+/// @param xf the shape world transform.
+/// @param p a point in world coordinates.
+/// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
+bool TestPoint(const ChainShape& shape, const Transformation& xf, const Vec2& p);
+
+/// Cast a ray against a child shape.
+/// @param output the ray-cast results.
+/// @param input the ray-cast input parameters.
+/// @param transform the transform to be applied to the shape.
+/// @param childIndex the child shape index
+bool RayCast(const ChainShape& shape, RayCastOutput* output, const RayCastInput& input,
+			 const Transformation& transform, child_count_t childIndex);
+
+/// Given a transform, compute the associated axis aligned bounding box for a child shape.
+/// @param xf the world transform of the shape.
+/// @param childIndex the child shape
+/// @return the axis aligned box.
+AABB ComputeAABB(const ChainShape& shape, const Transformation& xf, child_count_t childIndex);
+
+/// Computes the mass properties of this shape using its dimensions and density.
+/// The inertia tensor is computed about the local origin.
+/// @note Behavior is undefined if the given density is negative.
+/// @param density Density in kilograms per meter squared (must be non-negative).
+/// @return Mass data for this shape.
+MassData ComputeMass(const ChainShape& shape, float_t density);
 
 } // namespace box2d
 

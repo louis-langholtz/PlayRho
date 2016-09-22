@@ -36,11 +36,11 @@ void Fixture::CreateProxies(BlockAllocator& allocator, BroadPhase& broadPhase, c
 	const auto shape = GetShape();
 
 	// Reserve proxy space and create proxies in the broad-phase.
-	const auto childCount = shape->GetChildCount();
+	const auto childCount = GetChildCount(*shape);
 	const auto proxies = allocator.AllocateArray<FixtureProxy>(childCount);
 	for (auto i = decltype(childCount){0}; i < childCount; ++i)
 	{
-		const auto aabb = shape->ComputeAABB(xf, i);
+		const auto aabb = ComputeAABB(*shape, xf, i);
 		new (proxies + i) FixtureProxy{aabb, broadPhase.CreateProxy(aabb, proxies + i), this, i};
 	}
 	m_proxies = proxies;
@@ -82,8 +82,8 @@ void Fixture::Synchronize(BroadPhase& broadPhase, const Transformation& transfor
 		auto& proxy = m_proxies[i];
 
 		// Compute an AABB that covers the swept shape (may miss some rotation effect).
-		const auto aabb1 = shape->ComputeAABB(transform1, proxy.childIndex);
-		const auto aabb2 = shape->ComputeAABB(transform2, proxy.childIndex);
+		const auto aabb1 = ComputeAABB(*shape, transform1, proxy.childIndex);
+		const auto aabb2 = ComputeAABB(*shape, transform2, proxy.childIndex);
 		proxy.aabb = aabb1 + aabb2;
 
 		broadPhase.MoveProxy(proxy.proxyId, proxy.aabb, transform2.p - transform1.p);

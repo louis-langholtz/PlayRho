@@ -30,12 +30,12 @@ void EdgeShape::Set(const Vec2& v1, const Vec2& v2)
 	m_vertex3 = Vec2_invalid;
 }
 
-child_count_t EdgeShape::GetChildCount() const
+child_count_t box2d::GetChildCount(const EdgeShape& shape)
 {
 	return 1;
 }
 
-bool EdgeShape::TestPoint(const Transformation& xf, const Vec2& p) const
+bool box2d::TestPoint(const EdgeShape& shape, const Transformation& xf, const Vec2& p)
 {
 	BOX2D_NOT_USED(xf);
 	BOX2D_NOT_USED(p);
@@ -46,8 +46,8 @@ bool EdgeShape::TestPoint(const Transformation& xf, const Vec2& p) const
 // v = v1 + s * e
 // p1 + t * d = v1 + s * e
 // s * e - t * d = p1 - v1
-bool EdgeShape::RayCast(RayCastOutput* output, const RayCastInput& input,
-							const Transformation& xf, child_count_t childIndex) const
+bool box2d::RayCast(const EdgeShape& shape, RayCastOutput* output, const RayCastInput& input,
+							const Transformation& xf, child_count_t childIndex)
 {
 	BOX2D_NOT_USED(childIndex);
 
@@ -56,8 +56,8 @@ bool EdgeShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 	const auto p2 = InverseRotate(input.p2 - xf.p, xf.q);
 	const auto d = p2 - p1;
 
-	const auto v1 = m_vertex1;
-	const auto v2 = m_vertex2;
+	const auto v1 = shape.GetVertex1();
+	const auto v2 = shape.GetVertex2();
 	const auto e = v2 - v1;
 	const auto normal = GetUnitVector(GetFwdPerpendicular(e));
 
@@ -100,23 +100,23 @@ bool EdgeShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 	return true;
 }
 
-AABB EdgeShape::ComputeAABB(const Transformation& xf, child_count_t childIndex) const
+AABB box2d::ComputeAABB(const EdgeShape& shape, const Transformation& xf, child_count_t childIndex)
 {
 	BOX2D_NOT_USED(childIndex);
 
-	const auto v1 = Transform(m_vertex1, xf);
-	const auto v2 = Transform(m_vertex2, xf);
+	const auto v1 = Transform(shape.GetVertex1(), xf);
+	const auto v2 = Transform(shape.GetVertex2(), xf);
 
 	const auto lower = Min(v1, v2);
 	const auto upper = Max(v1, v2);
 
-	const auto r = Vec2{GetRadius(), GetRadius()};
+	const auto r = Vec2{shape.GetRadius(), shape.GetRadius()};
 	return AABB{lower - r, upper + r};
 }
 
-MassData EdgeShape::ComputeMass(float_t density) const
+MassData box2d::ComputeMass(const EdgeShape& shape, float_t density)
 {
 	BOX2D_NOT_USED(density);
 
-	return MassData{float_t{0}, (m_vertex1 + m_vertex2) / float_t(2), float_t{0}};
+	return MassData{float_t{0}, (shape.GetVertex1() + shape.GetVertex2()) / float_t(2), float_t{0}};
 }

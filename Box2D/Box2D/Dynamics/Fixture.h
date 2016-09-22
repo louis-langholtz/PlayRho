@@ -348,7 +348,7 @@ inline const FixtureProxy* Fixture::GetProxy(child_count_t index) const
 /// @param p Point in world coordinates.	
 inline bool TestPoint(const Fixture& f, const Vec2& p)
 {
-	return f.GetShape()->TestPoint(f.GetBody()->GetTransformation(), p);
+	return TestPoint(*f.GetShape(), f.GetBody()->GetTransformation(), p);
 }
 
 /// Cast a ray against the shape of the given fixture.
@@ -356,7 +356,7 @@ inline bool TestPoint(const Fixture& f, const Vec2& p)
 /// @param input the ray-cast input parameters.
 inline bool RayCast(const Fixture& f, RayCastOutput* output, const RayCastInput& input, child_count_t childIndex)
 {
-	return f.GetShape()->RayCast(output, input, f.GetBody()->GetTransformation(), childIndex);
+	return RayCast(*f.GetShape(), output, input, f.GetBody()->GetTransformation(), childIndex);
 }
 
 /// Computes the mass data for the given fixture.
@@ -366,7 +366,7 @@ inline bool RayCast(const Fixture& f, RayCastOutput* output, const RayCastInput&
 /// may be expensive.
 inline MassData ComputeMassData(const Fixture& f)
 {
-	return f.GetShape()->ComputeMass(f.GetDensity());
+	return ComputeMass(*f.GetShape(), f.GetDensity());
 }
 
 inline void SetAwake(Fixture& f) noexcept

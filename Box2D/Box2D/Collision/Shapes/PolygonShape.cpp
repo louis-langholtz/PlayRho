@@ -59,11 +59,6 @@ void PolygonShape::SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t 
 	}
 }
 
-child_count_t PolygonShape::GetChildCount() const
-{
-	return 1;
-}
-
 static inline Vec2 ComputeCentroid(const Vec2 vs[], PolygonShape::vertex_count_t count)
 {
 	assert(count >= 3);
@@ -242,13 +237,46 @@ void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 	m_centroid = ComputeCentroid(m_vertices, m);
 }
 
-bool PolygonShape::TestPoint(const Transformation& xf, const Vec2& p) const
+bool PolygonShape::Validate() const
 {
-	const auto pLocal = InverseRotate(p - xf.p, xf.q);
-
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
-		const auto dot = Dot(m_normals[i], pLocal - m_vertices[i]);
+		const auto i1 = i;
+		const auto i2 = (i1 + 1) % m_count;
+		const auto p = m_vertices[i1];
+		const auto e = m_vertices[i2] - p;
+		
+		for (auto j = decltype(m_count){0}; j < m_count; ++j)
+		{
+			if ((j == i1) || (j == i2))
+			{
+				continue;
+			}
+			
+			const auto v = m_vertices[j] - p;
+			const auto c = Cross(e, v);
+			if (c < float_t{0})
+			{
+				return false;
+			}
+		}
+	}
+	
+	return true;
+}
+
+child_count_t box2d::GetChildCount(const PolygonShape& shape)
+{
+	return 1;
+}
+
+bool box2d::TestPoint(const PolygonShape& shape, const Transformation& xf, const Vec2& p)
+{
+	const auto pLocal = InverseRotate(p - xf.p, xf.q);
+	const auto count = shape.GetVertexCount();
+	for (auto i = decltype(count){0}; i < count; ++i)
+	{
+		const auto dot = Dot(shape.GetNormal(i), pLocal - shape.GetVertex(i));
 		if (dot > float_t{0})
 		{
 			return false;
@@ -258,8 +286,8 @@ bool PolygonShape::TestPoint(const Transformation& xf, const Vec2& p) const
 	return true;
 }
 
-bool PolygonShape::RayCast(RayCastOutput* output, const RayCastInput& input,
-								const Transformation& xf, child_count_t childIndex) const
+bool box2d::RayCast(const PolygonShape& shape, RayCastOutput* output, const RayCastInput& input,
+								const Transformation& xf, child_count_t childIndex)
 {
 	BOX2D_NOT_USED(childIndex);
 
@@ -270,15 +298,16 @@ bool PolygonShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 
 	auto lower = float_t{0};
 	auto upper = input.maxFraction;
-	constexpr auto InvalidIndex = static_cast<child_count_t>(-1);
+	constexpr auto InvalidIndex = static_cast<PolygonShape::vertex_count_t>(-1);
 	auto index = InvalidIndex;
-	for (auto i = decltype(m_count){0}; i < m_count; ++i)
+	const auto count = shape.GetVertexCount();
+	for (auto i = decltype(count){0}; i < count; ++i)
 	{
 		// p = p1 + a * d
 		// dot(normal, p - v) = 0
 		// dot(normal, p1 - v) + a * dot(normal, d) = 0
-		const auto numerator = Dot(m_normals[i], m_vertices[i] - p1);
-		const auto denominator = Dot(m_normals[i], d);
+		const auto numerator = Dot(shape.GetNormal(i), shape.GetVertex(i) - p1);
+		const auto denominator = Dot(shape.GetNormal(i), d);
 
 		if (denominator == float_t{0})
 		{	
@@ -323,34 +352,35 @@ bool PolygonShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 	if (index != InvalidIndex)
 	{
 		output->fraction = lower;
-		output->normal = Rotate(m_normals[index], xf.q);
+		output->normal = Rotate(shape.GetNormal(index), xf.q);
 		return true;
 	}
 
 	return false;
 }
 
-AABB PolygonShape::ComputeAABB(const Transformation& xf, child_count_t childIndex) const
+AABB box2d::ComputeAABB(const PolygonShape& shape, const Transformation& xf, child_count_t childIndex)
 {
 	BOX2D_NOT_USED(childIndex);
 	
-	assert(m_count > 0);
+	assert(shape.GetVertexCount() > 0);
 
-	auto lower = Transform(m_vertices[0], xf);
+	auto lower = Transform(shape.GetVertex(0), xf);
 	auto upper = lower;
 
-	for (auto i = decltype(m_count){1}; i < m_count; ++i)
+	const auto count = shape.GetVertexCount();
+	for (auto i = decltype(count){1}; i < count; ++i)
 	{
-		const auto v = Transform(m_vertices[i], xf);
+		const auto v = Transform(shape.GetVertex(i), xf);
 		lower = Min(lower, v);
 		upper = Max(upper, v);
 	}
 
-	const auto r = Vec2{GetRadius(), GetRadius()};
+	const auto r = Vec2{shape.GetRadius(), shape.GetRadius()};
 	return AABB{lower - r, upper + r};
 }
 
-MassData PolygonShape::ComputeMass(float_t density) const
+MassData box2d::ComputeMass(const PolygonShape& shape, float_t density)
 {
 	assert(density >= 0);
 
@@ -378,7 +408,8 @@ MassData PolygonShape::ComputeMass(float_t density) const
 	//
 	// The rest of the derivation is handled by computer algebra.
 
-	assert(m_count >= 3);
+	const auto count = shape.GetVertexCount();
+	assert(count >= 3);
 
 	auto center = Vec2_zero;
 	auto area = float_t{0};
@@ -389,19 +420,19 @@ MassData PolygonShape::ComputeMass(float_t density) const
 	auto s = Vec2_zero;
 
 	// This code would put the reference point inside the polygon.
-	for (auto i = decltype(m_count){0}; i < m_count; ++i)
+	for (auto i = decltype(count){0}; i < count; ++i)
 	{
-		s += m_vertices[i];
+		s += shape.GetVertex(i);
 	}
-	s *= float_t{1} / m_count;
+	s *= float_t{1} / count;
 
 	constexpr auto k_inv3 = float_t{1} / float_t{3};
 
-	for (auto i = decltype(m_count){0}; i < m_count; ++i)
+	for (auto i = decltype(count){0}; i < count; ++i)
 	{
 		// Triangle vertices.
-		const auto e1 = m_vertices[i] - s;
-		const auto e2 = m_vertices[(i + 1) % m_count] - s;
+		const auto e1 = shape.GetVertex(i) - s;
+		const auto e2 = shape.GetVertex((i + 1) % count) - s;
 
 		const auto D = Cross(e1, e2);
 
@@ -433,32 +464,4 @@ MassData PolygonShape::ComputeMass(float_t density) const
 	const auto massDataI = (density * I) + (mass * (LengthSquared(massDataCenter) - LengthSquared(center)));
 	
 	return MassData{mass, massDataCenter, massDataI};
-}
-
-bool PolygonShape::Validate() const
-{
-	for (auto i = decltype(m_count){0}; i < m_count; ++i)
-	{
-		const auto i1 = i;
-		const auto i2 = (i1 + 1) % m_count;
-		const auto p = m_vertices[i1];
-		const auto e = m_vertices[i2] - p;
-
-		for (auto j = decltype(m_count){0}; j < m_count; ++j)
-		{
-			if ((j == i1) || (j == i2))
-			{
-				continue;
-			}
-
-			const auto v = m_vertices[j] - p;
-			const auto c = Cross(e, v);
-			if (c < float_t{0})
-			{
-				return false;
-			}
-		}
-	}
-
-	return true;
 }

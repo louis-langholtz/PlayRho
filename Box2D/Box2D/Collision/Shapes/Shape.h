@@ -52,63 +52,64 @@ public:
 	/// @note Behavior is undefined if a negative radius is given.
 	constexpr Shape(Type type, float_t radius) noexcept: m_type{type}, m_radius{radius}
 	{
+		assert(type < e_typeCount);
 		assert(radius >= 0);
 	}
 
 	Shape(const Shape&) = default;
 
-	virtual ~Shape() = default;
+	~Shape() = default;
 
 	/// Get the type of this shape. You can use this to down cast to the concrete shape.
 	/// @return the shape type.
 	Type GetType() const noexcept { return m_type; }
 
-	/// Gets the number of child primitives.
-	/// @return Positive non-zero count.
-	virtual child_count_t GetChildCount() const = 0;
-
-	/// Tests a point for containment in this shape.
-	/// @param xf the shape world transform.
-	/// @param p a point in world coordinates.
-	/// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
-	virtual bool TestPoint(const Transformation& xf, const Vec2& p) const = 0;
-
-	/// Cast a ray against a child shape.
-	/// @param output the ray-cast results.
-	/// @param input the ray-cast input parameters.
-	/// @param transform the transform to be applied to the shape.
-	/// @param childIndex the child shape index
-	virtual bool RayCast(RayCastOutput* output, const RayCastInput& input,
-						const Transformation& transform, child_count_t childIndex) const = 0;
-
-	/// Given a transform, compute the associated axis aligned bounding box for a child shape.
-	/// @param xf the world transform of the shape.
-	/// @param childIndex the child shape
-	/// @return the axis aligned box.
-	virtual AABB ComputeAABB(const Transformation& xf, child_count_t childIndex) const = 0;
-
-	/// Computes the mass properties of this shape using its dimensions and density.
-	/// The inertia tensor is computed about the local origin.
-	/// @note Behavior is undefined if the given density is negative.
-	/// @param density Density in kilograms per meter squared (must be non-negative).
-	/// @return Mass data for this shape.
-	virtual MassData ComputeMass(float_t density) const = 0;
-
 	/// Gets the "radius" of the shape.
 	/// @return a non-negative distance whose meaning is dependent on the object's class.
 	float_t GetRadius() const noexcept { return m_radius; }
-
+	
 	void SetRadius(float_t radius) noexcept
 	{
 		assert(radius >= 0);
 		m_radius = radius;
 	}
-
+	
 private:
 	const Type m_type;
 	float_t m_radius;
 };
 
+/// Gets the number of child primitives.
+/// @return Positive non-zero count.
+child_count_t GetChildCount(const Shape& shape);
+
+/// Tests a point for containment in this shape.
+/// @param xf the shape world transform.
+/// @param p a point in world coordinates.
+/// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
+bool TestPoint(const Shape& shape, const Transformation& xf, const Vec2& p);
+
+/// Casts a ray against a child shape.
+/// @param output the ray-cast results.
+/// @param input the ray-cast input parameters.
+/// @param xf Transform to be applied to the shape.
+/// @param childIndex the child shape index
+bool RayCast(const Shape& shape, RayCastOutput* output, const RayCastInput& input,
+					 const Transformation& xf, child_count_t childIndex);
+
+/// Given a transform, compute the associated axis aligned bounding box for a child shape.
+/// @param xf the world transform of the shape.
+/// @param childIndex the child shape
+/// @return the axis aligned box.
+AABB ComputeAABB(const Shape& shape, const Transformation& xf, child_count_t childIndex);
+
+/// Computes the mass properties of this shape using its dimensions and density.
+/// The inertia tensor is computed about the local origin.
+/// @note Behavior is undefined if the given density is negative.
+/// @param density Density in kilograms per meter squared (must be non-negative).
+/// @return Mass data for this shape.
+MassData ComputeMass(const Shape& shape, float_t density);
+	
 } // namespace box2d
 
 #endif

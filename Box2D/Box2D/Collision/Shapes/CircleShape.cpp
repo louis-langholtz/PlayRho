@@ -23,29 +23,29 @@
 
 using namespace box2d;
 
-child_count_t CircleShape::GetChildCount() const
+child_count_t box2d::GetChildCount(const CircleShape& shape)
 {
 	return 1;
 }
 
-bool CircleShape::TestPoint(const Transformation& transform, const Vec2& p) const
+bool box2d::TestPoint(const CircleShape& shape, const Transformation& transform, const Vec2& p)
 {
-	const auto center = transform.p + Rotate(GetPosition(), transform.q);
-	return LengthSquared(p - center) <= Square(GetRadius());
+	const auto center = transform.p + Rotate(shape.GetPosition(), transform.q);
+	return LengthSquared(p - center) <= Square(shape.GetRadius());
 }
 
 // Collision Detection in Interactive 3D Environments by Gino van den Bergen
 // From Section 3.1.2
 // x = s + a * r
 // norm(x) = radius
-bool CircleShape::RayCast(RayCastOutput* output, const RayCastInput& input,
-							const Transformation& transform, child_count_t childIndex) const
+bool box2d::RayCast(const CircleShape& shape, RayCastOutput* output, const RayCastInput& input,
+							const Transformation& transform, child_count_t childIndex)
 {
 	BOX2D_NOT_USED(childIndex);
 
-	const auto position = transform.p + Rotate(m_p, transform.q);
+	const auto position = transform.p + Rotate(shape.GetPosition(), transform.q);
 	const auto s = input.p1 - position;
-	const auto b = LengthSquared(s) - Square(GetRadius());
+	const auto b = LengthSquared(s) - Square(shape.GetRadius());
 
 	// Solve quadratic equation.
 	const auto r = input.p2 - input.p1;
@@ -74,18 +74,18 @@ bool CircleShape::RayCast(RayCastOutput* output, const RayCastInput& input,
 	return false;
 }
 
-AABB CircleShape::ComputeAABB(const Transformation& transform, child_count_t childIndex) const
+AABB box2d::ComputeAABB(const CircleShape& shape, const Transformation& transform, child_count_t childIndex)
 {
 	BOX2D_NOT_USED(childIndex);
 
-	const auto p = transform.p + Rotate(m_p, transform.q);
-	return AABB{p, p} + Vec2{GetRadius(), GetRadius()};
+	const auto p = transform.p + Rotate(shape.GetPosition(), transform.q);
+	return AABB{p, p} + Vec2{shape.GetRadius(), shape.GetRadius()};
 }
 
-MassData CircleShape::ComputeMass(float_t density) const
+MassData box2d::ComputeMass(const CircleShape& shape, float_t density)
 {
 	assert(density >= 0);
-	const auto mass = density * Pi * Square(GetRadius());
-	const auto I = mass * ((Square(GetRadius()) / float_t{2}) + LengthSquared(GetPosition()));
-	return MassData{mass, GetPosition(), I};
+	const auto mass = density * Pi * Square(shape.GetRadius());
+	const auto I = mass * ((Square(shape.GetRadius()) / float_t{2}) + LengthSquared(shape.GetPosition()));
+	return MassData{mass, shape.GetPosition(), I};
 }

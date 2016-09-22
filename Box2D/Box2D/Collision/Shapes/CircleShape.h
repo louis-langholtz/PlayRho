@@ -39,27 +39,42 @@ public:
 	Vec2 GetPosition() const noexcept { return m_p; }
 	
 	void SetPosition(const Vec2& value) noexcept { m_p = value; }
-	
-	/// @see Shape::GetChildCount
-	child_count_t GetChildCount() const override;
-
-	/// Implement Shape.
-	bool TestPoint(const Transformation& transform, const Vec2& p) const override;
-
-	/// Implement Shape.
-	bool RayCast(RayCastOutput* output, const RayCastInput& input,
-				const Transformation& transform, child_count_t childIndex) const override;
-
-	/// @see Shape::ComputeAABB
-	AABB ComputeAABB(const Transformation& transform, child_count_t childIndex) const override;
-
-	/// @see Shape::ComputeMass
-	MassData ComputeMass(float_t density) const override;
 
 private:
 	/// Linear position of the shape as initialized on construction or as assigned using the SetPosition method.
 	Vec2 m_p = Vec2_zero;
 };
+
+/// Gets the number of child primitives.
+/// @return Positive non-zero count.
+child_count_t GetChildCount(const CircleShape& shape);
+
+/// Tests a point for containment in this shape.
+/// @param xf the shape world transform.
+/// @param p a point in world coordinates.
+/// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
+bool TestPoint(const CircleShape& shape, const Transformation& xf, const Vec2& p);
+
+/// Cast a ray against a child shape.
+/// @param output the ray-cast results.
+/// @param input the ray-cast input parameters.
+/// @param transform the transform to be applied to the shape.
+/// @param childIndex the child shape index
+bool RayCast(const CircleShape& shape, RayCastOutput* output, const RayCastInput& input,
+			 const Transformation& transform, child_count_t childIndex);
+
+/// Given a transform, compute the associated axis aligned bounding box for a child shape.
+/// @param xf the world transform of the shape.
+/// @param childIndex the child shape
+/// @return the axis aligned box.
+AABB ComputeAABB(const CircleShape& shape, const Transformation& xf, child_count_t childIndex);
+
+/// Computes the mass properties of this shape using its dimensions and density.
+/// The inertia tensor is computed about the local origin.
+/// @note Behavior is undefined if the given density is negative.
+/// @param density Density in kilograms per meter squared (must be non-negative).
+/// @return Mass data for this shape.
+MassData ComputeMass(const CircleShape& shape, float_t density);
 
 } // namespace box2d
 

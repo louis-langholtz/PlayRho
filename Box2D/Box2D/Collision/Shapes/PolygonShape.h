@@ -39,9 +39,6 @@ public:
 
 	PolygonShape(const PolygonShape&) = default;
 
-	/// @see Shape::GetChildCount
-	child_count_t GetChildCount() const override;
-
 	/// Create a convex hull from the given array of local points.
 	/// The count must be in the range [3, MaxPolygonVertices].
 	/// @warning the points may be re-ordered, even if they form a convex polygon
@@ -60,19 +57,6 @@ public:
 	/// @param center the center of the box in local coordinates.
 	/// @param angle the rotation of the box in local coordinates.
 	void SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t angle);
-
-	/// @see Shape::TestPoint
-	bool TestPoint(const Transformation& transform, const Vec2& p) const override;
-
-	/// Implement Shape.
-	bool RayCast(RayCastOutput* output, const RayCastInput& input,
-					const Transformation& transform, child_count_t childIndex) const override;
-
-	/// @see Shape::ComputeAABB
-	AABB ComputeAABB(const Transformation& transform, child_count_t childIndex) const override;
-
-	/// @see Shape::ComputeMass
-	MassData ComputeMass(float_t density) const override;
 
 	/// Gets the vertex count.
 	/// @return value between 0 and MaxPolygonVertices inclusive.
@@ -99,19 +83,21 @@ public:
 	/// Validate convexity. This is a very time consuming operation.
 	/// @returns true if valid
 	bool Validate() const;
-
+	
 private:
-	Vec2 m_centroid = Vec2_zero;
-
-	/// Vertices.
+	/// Array of vertices.
 	/// @detail Consecutive vertices constitute "edges" of the polygon.
+	/// @note This is some 16 x 8-bytes or 128-bytes large (on at least one platform).
 	Vec2 m_vertices[MaxPolygonVertices];
 
 	/// Normals of edges.
 	/// @detail
 	/// These are 90-degree clockwise-rotated unit-vectors of the vectors defined by
 	/// consecutive pairs of elements of vertices.
+	/// @note This is some 16 x 8-bytes or 128-bytes large (on at least one platform).
 	Vec2 m_normals[MaxPolygonVertices];
+
+	Vec2 m_centroid = Vec2_zero;
 	
 	vertex_count_t m_count = 0;
 };
@@ -127,6 +113,37 @@ inline Vec2 PolygonShape::GetNormal(vertex_count_t index) const
 	assert(0 <= index && index < m_count);
 	return m_normals[index];
 }
-	
+
+/// Gets the number of child primitives.
+/// @return Positive non-zero count.
+child_count_t GetChildCount(const PolygonShape& shape);
+
+/// Tests a point for containment in this shape.
+/// @param xf the shape world transform.
+/// @param p a point in world coordinates.
+/// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
+bool TestPoint(const PolygonShape& shape, const Transformation& xf, const Vec2& p);
+
+/// Cast a ray against a child shape.
+/// @param output the ray-cast results.
+/// @param input the ray-cast input parameters.
+/// @param transform the transform to be applied to the shape.
+/// @param childIndex the child shape index
+bool RayCast(const PolygonShape& shape, RayCastOutput* output, const RayCastInput& input,
+			 const Transformation& transform, child_count_t childIndex);
+
+/// Given a transform, compute the associated axis aligned bounding box for a child shape.
+/// @param xf the world transform of the shape.
+/// @param childIndex the child shape
+/// @return the axis aligned box.
+AABB ComputeAABB(const PolygonShape& shape, const Transformation& xf, child_count_t childIndex);
+
+/// Computes the mass properties of this shape using its dimensions and density.
+/// The inertia tensor is computed about the local origin.
+/// @note Behavior is undefined if the given density is negative.
+/// @param density Density in kilograms per meter squared (must be non-negative).
+/// @return Mass data for this shape.
+MassData ComputeMass(const PolygonShape& shape, float_t density);
+
 } // namespace box2d
 #endif

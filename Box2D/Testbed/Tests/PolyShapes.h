@@ -272,7 +272,7 @@ public:
 		callback.m_transform = Transform_identity;
 		callback.g_debugDraw = &g_debugDraw;
 
-		AABB aabb = callback.m_circle.ComputeAABB(callback.m_transform, 0);
+		AABB aabb = ComputeAABB(callback.m_circle, callback.m_transform, 0);
 
 		m_world->QueryAABB(&callback, aabb);
 

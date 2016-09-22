@@ -111,13 +111,6 @@ void ChainShape::SetNextVertex(const Vec2& nextVertex) noexcept
 	m_nextVertex = nextVertex;
 }
 
-child_count_t ChainShape::GetChildCount() const
-{
-	// edge count = vertex count - 1
-	assert(m_count > 0);
-	return m_count - 1;
-}
-
 void ChainShape::GetChildEdge(EdgeShape* edge, child_count_t index) const
 {
 	assert((0 <= index) && (index < (m_count - 1)));
@@ -145,36 +138,43 @@ void ChainShape::GetChildEdge(EdgeShape* edge, child_count_t index) const
 	}
 }
 
-bool ChainShape::TestPoint(const Transformation& xf, const Vec2& p) const
+child_count_t box2d::GetChildCount(const ChainShape& shape)
+{
+	// edge count = vertex count - 1
+	assert(shape.GetVertexCount() > 0);
+	return shape.GetVertexCount() - 1;
+}
+
+bool box2d::TestPoint(const ChainShape& shape, const Transformation& xf, const Vec2& p)
 {
 	BOX2D_NOT_USED(xf);
 	BOX2D_NOT_USED(p);
 	return false;
 }
 
-bool ChainShape::RayCast(RayCastOutput* output, const RayCastInput& input,
-							const Transformation& xf, child_count_t childIndex) const
+bool box2d::RayCast(const ChainShape& shape, RayCastOutput* output, const RayCastInput& input,
+			 const Transformation& xf, child_count_t childIndex)
 {
-	assert(childIndex < m_count);
+	assert(childIndex < shape.GetVertexCount());
 
 	const auto i1 = childIndex;
-	const auto i2 = GetNextIndex(childIndex);
-	const auto edgeShape = EdgeShape(m_vertices[i1], m_vertices[i2]);
-	return edgeShape.RayCast(output, input, xf, 0);
+	const auto i2 = shape.GetNextIndex(childIndex);
+	const auto edgeShape = EdgeShape(shape.GetVertex(i1), shape.GetVertex(i2));
+	return RayCast(edgeShape, output, input, xf, 0);
 }
 
-AABB ChainShape::ComputeAABB(const Transformation& xf, child_count_t childIndex) const
+AABB box2d::ComputeAABB(const ChainShape& shape, const Transformation& xf, child_count_t childIndex)
 {
-	assert(childIndex < m_count);
+	assert(childIndex < shape.GetVertexCount());
 
 	const auto i1 = childIndex;
-	const auto i2 = GetNextIndex(childIndex);
-	const auto v1 = Transform(m_vertices[i1], xf);
-	const auto v2 = Transform(m_vertices[i2], xf);
+	const auto i2 = shape.GetNextIndex(childIndex);
+	const auto v1 = Transform(shape.GetVertex(i1), xf);
+	const auto v2 = Transform(shape.GetVertex(i2), xf);
 	return AABB{v1, v2};
 }
 
-MassData ChainShape::ComputeMass(float_t density) const
+MassData box2d::ComputeMass(const ChainShape& shape, float_t density)
 {
 	BOX2D_NOT_USED(density);
 

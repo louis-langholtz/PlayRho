@@ -63,6 +63,8 @@
 		47578BF11D8899710078CD40 /* Profile.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47578BED1D8899710078CD40 /* Profile.hpp */; };
 		475A94541D930503000CA9A8 /* BlockAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94531D930503000CA9A8 /* BlockAllocator.cpp */; };
 		475A94561D930E6C000CA9A8 /* Fixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94551D930E6C000CA9A8 /* Fixture.cpp */; };
+		475A94581D9453A1000CA9A8 /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94571D9453A1000CA9A8 /* Shape.cpp */; };
+		475A94591D9453A1000CA9A8 /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94571D9453A1000CA9A8 /* Shape.cpp */; };
 		477DB2941D14B9D500846ED6 /* ContactEdgeList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477DB2921D14B9D500846ED6 /* ContactEdgeList.cpp */; };
 		477DB2951D14B9D500846ED6 /* ContactEdgeList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 477DB2931D14B9D500846ED6 /* ContactEdgeList.hpp */; };
 		477DB2981D14BB2000846ED6 /* ContactEdgeIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477DB2961D14BB2000846ED6 /* ContactEdgeIterator.cpp */; };
@@ -441,6 +443,7 @@
 		47578BED1D8899710078CD40 /* Profile.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Profile.hpp; sourceTree = "<group>"; };
 		475A94531D930503000CA9A8 /* BlockAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlockAllocator.cpp; sourceTree = "<group>"; };
 		475A94551D930E6C000CA9A8 /* Fixture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fixture.cpp; sourceTree = "<group>"; };
+		475A94571D9453A1000CA9A8 /* Shape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shape.cpp; sourceTree = "<group>"; };
 		477DB2921D14B9D500846ED6 /* ContactEdgeList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactEdgeList.cpp; sourceTree = "<group>"; };
 		477DB2931D14B9D500846ED6 /* ContactEdgeList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactEdgeList.hpp; sourceTree = "<group>"; };
 		477DB2961D14BB2000846ED6 /* ContactEdgeIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactEdgeIterator.cpp; sourceTree = "<group>"; };
@@ -843,6 +846,7 @@
 				80BB893A141C3E5900F1753A /* EdgeShape.h */,
 				80BB893B141C3E5900F1753A /* PolygonShape.cpp */,
 				80BB893C141C3E5900F1753A /* PolygonShape.h */,
+				475A94571D9453A1000CA9A8 /* Shape.cpp */,
 				80BB893D141C3E5900F1753A /* Shape.h */,
 			);
 			path = Shapes;
@@ -1507,6 +1511,7 @@
 				4721349A1C8D03D9009536F9 /* BodyList.cpp in Sources */,
 				47AA5DB01C4C5FBE008AF2BA /* Island.cpp in Sources */,
 				47AA5DB11C4C5FBE008AF2BA /* World.cpp in Sources */,
+				475A94591D9453A1000CA9A8 /* Shape.cpp in Sources */,
 				47AA5DB21C4C5FBE008AF2BA /* WorldCallbacks.cpp in Sources */,
 				4788690F1D78BF7200AEC7F1 /* ContactVelocityConstraint.cpp in Sources */,
 				47AA5DB31C4C5FBE008AF2BA /* ChainAndCircleContact.cpp in Sources */,
@@ -1619,6 +1624,7 @@
 				47AA639C1D0F7FDA00726CA2 /* FixtureIterator.cpp in Sources */,
 				80BB89AB141C3E5900F1753A /* Body.cpp in Sources */,
 				80BB89AD141C3E5900F1753A /* ContactManager.cpp in Sources */,
+				475A94581D9453A1000CA9A8 /* Shape.cpp in Sources */,
 				47A9833A1D0F51A300AA7D1A /* JointIterator.cpp in Sources */,
 				80BB89AF141C3E5900F1753A /* Fixture.cpp in Sources */,
 				47F932A51D11C283006A193C /* AllocatedArray.cpp in Sources */,
