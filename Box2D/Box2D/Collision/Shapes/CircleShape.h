@@ -35,6 +35,11 @@ public:
 
 	CircleShape& operator=(const CircleShape& other) = default;
 
+	/// Gets the position of the center of this circle shape.
+	Vec2 GetPosition() const noexcept { return m_p; }
+	
+	void SetPosition(const Vec2& value) noexcept { m_p = value; }
+	
 	/// @see Shape::GetChildCount
 	child_count_t GetChildCount() const override;
 
@@ -50,11 +55,6 @@ public:
 
 	/// @see Shape::ComputeMass
 	MassData ComputeMass(float_t density) const override;
-
-	/// Gets the position of the center of this circle shape.
-	Vec2 GetPosition() const noexcept { return m_p; }
-
-	void SetPosition(const Vec2& value) noexcept { m_p = value; }
 
 private:
 	/// Linear position of the shape as initialized on construction or as assigned using the SetPosition method.

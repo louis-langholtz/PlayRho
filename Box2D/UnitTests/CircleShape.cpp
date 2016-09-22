@@ -11,6 +11,11 @@
 
 using namespace box2d;
 
+TEST(CircleShape, ByteSizeIs16)
+{
+	EXPECT_EQ(sizeof(CircleShape), size_t(16));
+}
+
 TEST(CircleShape, DefaultConstruction)
 {
 	CircleShape foo{};

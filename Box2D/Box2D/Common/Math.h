@@ -79,7 +79,9 @@ constexpr inline bool almost_equal(float_t x, float_t y, int ulp = 2)
 	return (Abs(x - y) < (Epsilon * Abs(x + y) * ulp)) || (Abs(x - y) < std::numeric_limits<float_t>::min());
 }
 
-/// A 2D column vector.
+/// Vector 2D.
+/// @note This data structure is two-times the size of the <code>float_t</code> type.
+/// This is two times 4-bytes for a total of 8-bytes (on at least one 64-bit platform).
 struct Vec2
 {
 	using size_type = size_t;

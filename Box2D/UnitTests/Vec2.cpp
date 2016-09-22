@@ -11,6 +11,11 @@
 
 using namespace box2d;
 
+TEST(Vec2, ByteSizeIs8)
+{
+	EXPECT_EQ(sizeof(Vec2), size_t(8));
+}
+
 TEST(Vec2, max_size) {
 	Vec2 vector;
 	EXPECT_EQ(Vec2::size_type{2}, vector.max_size());
