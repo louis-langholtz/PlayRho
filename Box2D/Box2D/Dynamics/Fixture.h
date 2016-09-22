@@ -114,7 +114,33 @@ struct FixtureProxy
 class Fixture
 {
 public:
-	Fixture() = delete;
+	Fixture() = delete; // explicitly deleted
+
+	/// Initializing constructor.
+	Fixture(Body* body, const FixtureDef& def, Shape* shape):
+		m_body{body},
+		m_shape{shape},
+		m_density{Max(def.density, float_t{0})}, 
+		m_friction{def.friction},
+		m_restitution{def.restitution},
+		m_filter{def.filter},
+		m_isSensor{def.isSensor},
+		m_userData{def.userData}
+	{
+		assert(body != nullptr);
+		assert(shape != nullptr);
+		assert(def.density >= 0);
+	}
+
+	/// Gets the parent body of this fixture.
+	/// @detail This is nullptr if the fixture is not attached.
+	/// @return the parent body.
+	Body* GetBody() noexcept;
+	
+	/// Gets the parent body of this fixture.
+	/// @detail This is nullptr if the fixture is not attached.
+	/// @return the parent body.
+	const Body* GetBody() const noexcept;
 
 	/// Gets the child shape.
 	/// @detail You can modify the child shape, however you should not change the
@@ -145,16 +171,6 @@ public:
 
 	/// Call this if you want to establish collision that was previously disabled by ContactFilter::ShouldCollide.
 	void Refilter();
-
-	/// Gets the parent body of this fixture.
-	/// @detail This is nullptr if the fixture is not attached.
-	/// @return the parent body.
-	Body* GetBody() noexcept;
-
-	/// Gets the parent body of this fixture.
-	/// @detail This is nullptr if the fixture is not attached.
-	/// @return the parent body.
-	const Body* GetBody() const noexcept;
 
 	/// Get the user data that was assigned in the fixture definition. Use this to
 	/// store your application specific data.
@@ -204,21 +220,6 @@ protected:
 	friend class FixtureList;
 	friend class FixtureIterator;
 	friend class ConstFixtureIterator;
-
-	Fixture(Body* body, const FixtureDef& def, Shape* shape):
-		m_body{body},
-		m_shape{shape},
-		m_density{Max(def.density, float_t{0})}, 
-		m_friction{def.friction},
-		m_restitution{def.restitution},
-		m_filter{def.filter},
-		m_isSensor{def.isSensor},
-		m_userData{def.userData}
-	{
-		assert(body != nullptr);
-		assert(shape != nullptr);
-		assert(def.density >= 0);
-	}
 
 	/// Creates proxies for every child of this fixture's shape.
 	/// This sets the proxy count to the child count of the shape.
