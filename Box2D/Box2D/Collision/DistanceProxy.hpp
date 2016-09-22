@@ -102,8 +102,14 @@ namespace box2d
 		}
 		
 	private:
+	
+		// Note: m_buffer and m_vertices could be combined in a union to save some 8-bytes.
+		//   The savings in memory would come at the expense of a conditional in GetVertex.
+		//   This trade-off is presumed not-worth-it performance-wise.
+
 		std::array<Vec2,2> m_buffer;
 		const Vec2* m_vertices = &m_buffer[0];
+		
 		size_type m_count = 0; ///< Count of valid elements of m_vertices.
 		float_t m_radius = float_t{0}; ///< "Radius" of the associated shape (in meters).
 	};

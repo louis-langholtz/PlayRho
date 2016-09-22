@@ -52,8 +52,8 @@ public:
 		const DistanceProxy& proxyA, const Sweep& sweepA,
 		const DistanceProxy& proxyB, const Sweep& sweepB,
 		float_t t1):
-		m_proxyA(proxyA), m_proxyB(proxyB), m_sweepA(sweepA), m_sweepB(sweepB),
-		m_type((cache.GetCount() != 1)? ((cache.GetIndexA(0) == cache.GetIndexA(1))? e_faceB: e_faceA): e_points)
+		m_proxyA{proxyA}, m_proxyB{proxyB}, m_sweepA{sweepA}, m_sweepB{sweepB},
+		m_type{(cache.GetCount() != 1)? ((cache.GetIndexA(0) == cache.GetIndexA(1))? e_faceB: e_faceA): e_points}
 	{
 		assert(cache.GetCount() > 0);
 		assert(cache.GetCount() <= 3); // < 3 or <= 3?
