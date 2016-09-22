@@ -110,7 +110,7 @@ struct FixtureProxy
 /// such as friction, collision filters, etc.
 /// Fixtures are created via Body::CreateFixture.
 /// @warning you cannot reuse fixtures.
-/// @note This structure is at least 68-bytes large.
+/// @note This structure is 64-bytes large (on at least one 64-bit architecture/build).
 class Fixture
 {
 public:
@@ -163,22 +163,6 @@ public:
 	/// Set the user data. Use this to store your application specific data.
 	void SetUserData(void* data) noexcept;
 
-	/// Test a point for containment in this fixture.
-	/// @param p a point in world coordinates.
-	bool TestPoint(const Vec2& p) const;
-
-	/// Cast a ray against this shape.
-	/// @param output the ray-cast results.
-	/// @param input the ray-cast input parameters.
-	bool RayCast(RayCastOutput* output, const RayCastInput& input, child_count_t childIndex) const;
-
-	/// Computes the mass data for this fixture.
-	/// @detail
-	/// The mass data is based on the density and
-	/// the shape. The rotational inertia is about the shape's origin. This operation
-	/// may be expensive.
-	MassData ComputeMassData() const;
-
 	/// Sets the density of this fixture.
 	/// @note This will _not_ automatically adjust the mass of the body.
 	///   You must call Body::ResetMassData to update the body's mass.
@@ -223,12 +207,12 @@ protected:
 
 	Fixture(Body* body, const FixtureDef& def, Shape* shape):
 		m_body{body},
+		m_shape{shape},
 		m_density{Max(def.density, float_t{0})}, 
 		m_friction{def.friction},
 		m_restitution{def.restitution},
 		m_filter{def.filter},
 		m_isSensor{def.isSensor},
-		m_shape{shape},
 		m_userData{def.userData}
 	{
 		assert(body != nullptr);
@@ -249,17 +233,24 @@ protected:
 
 	void Synchronize(BroadPhase& broadPhase, const Transformation& xf1, const Transformation& xf2);
 
-	Body* m_body = nullptr; ///< Parent body. 8-bytes.
-	float_t m_density = float_t{0}; ///< Density. 4-bytes.
+	// Data ordered here for memory compaction.
+	
+	// 0-bytes of memory (at first).
+	Body* const m_body = nullptr; ///< Parent body. Set on construction. 8-bytes.
+	Shape* const m_shape; ///< Shape (of fixture). Set on construction. Either null or pointer to a heap-memory private copy of the assigned shape. 8-bytes.
 	Fixture* m_next = nullptr; ///< Next fixture in parent body's fixture list. 8-bytes.
-	Shape* m_shape = nullptr; ///< Pointer to shape. Either null or pointer to a heap-memory private copy of the assigned shape. 8-bytes.
+	FixtureProxy* m_proxies = nullptr; ///< Array of fixture proxies for the assigned shape. 8-bytes.
+	void* m_userData = nullptr; ///< User data. 8-bytes.
+	// 40-bytes so far.
+	float_t m_density = float_t{0}; ///< Density. 4-bytes.
 	float_t m_friction = float_t{2} / float_t{10}; ///< Friction as a coefficient. 4-bytes.
 	float_t m_restitution = float_t{0}; ///< Restitution as a coefficient. 4-bytes.
-	FixtureProxy* m_proxies = nullptr; ///< Array of fixture proxies for the assigned shape. 8-bytes.
 	child_count_t m_proxyCount = 0; ///< Proxy count. @detail This is the fixture shape's child count after proxy creation. 4-bytes.
-	Filter m_filter; ///< Filter object. 8-bytes.
-	bool m_isSensor = false; ///< Is/is-not sensor. 4-bytes.
-	void* m_userData = nullptr; ///< User data. 8-bytes.
+	// 40 + 16 = 56-bytes now.
+	Filter m_filter; ///< Filter object. 6-bytes.
+	bool m_isSensor = false; ///< Is/is-not sensor. 1-bytes.
+
+	// 63-bytes data + 1-byte alignment padding is 64-bytes.
 };
 
 inline Shape* Fixture::GetShape() noexcept
@@ -333,21 +324,6 @@ inline void Fixture::SetRestitution(float_t restitution) noexcept
 	m_restitution = restitution;
 }
 
-inline bool Fixture::TestPoint(const Vec2& p) const
-{
-	return GetShape()->TestPoint(m_body->GetTransformation(), p);
-}
-
-inline bool Fixture::RayCast(RayCastOutput* output, const RayCastInput& input, child_count_t childIndex) const
-{
-	return GetShape()->RayCast(output, input, m_body->GetTransformation(), childIndex);
-}
-
-inline MassData Fixture::ComputeMassData() const
-{
-	return GetShape()->ComputeMass(GetDensity());
-}
-
 inline const AABB& Fixture::GetAABB(child_count_t childIndex) const
 {
 	assert(childIndex >= 0);
@@ -364,6 +340,32 @@ inline const FixtureProxy* Fixture::GetProxy(child_count_t index) const
 {
 	assert(index < m_proxyCount);
 	return (index < m_proxyCount)? m_proxies + index: nullptr;
+}
+
+/// Test a point for containment in a fixture.
+/// @param f Fixture to use for test.
+/// @param p Point in world coordinates.	
+inline bool TestPoint(const Fixture& f, const Vec2& p)
+{
+	return f.GetShape()->TestPoint(f.GetBody()->GetTransformation(), p);
+}
+
+/// Cast a ray against the shape of the given fixture.
+/// @param output the ray-cast results.
+/// @param input the ray-cast input parameters.
+inline bool RayCast(const Fixture& f, RayCastOutput* output, const RayCastInput& input, child_count_t childIndex)
+{
+	return f.GetShape()->RayCast(output, input, f.GetBody()->GetTransformation(), childIndex);
+}
+
+/// Computes the mass data for the given fixture.
+/// @detail
+/// The mass data is based on the density and
+/// the shape of the fixture. The rotational inertia is about the shape's origin. This operation
+/// may be expensive.
+inline MassData ComputeMassData(const Fixture& f)
+{
+	return f.GetShape()->ComputeMass(f.GetDensity());
 }
 
 inline void SetAwake(Fixture& f) noexcept

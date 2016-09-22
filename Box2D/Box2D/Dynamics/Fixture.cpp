@@ -33,12 +33,14 @@ void Fixture::CreateProxies(BlockAllocator& allocator, BroadPhase& broadPhase, c
 {
 	assert(m_proxyCount == 0);
 
+	const auto shape = GetShape();
+
 	// Reserve proxy space and create proxies in the broad-phase.
-	const auto childCount = GetShape()->GetChildCount();
+	const auto childCount = shape->GetChildCount();
 	const auto proxies = allocator.AllocateArray<FixtureProxy>(childCount);
 	for (auto i = decltype(childCount){0}; i < childCount; ++i)
 	{
-		const auto aabb = GetShape()->ComputeAABB(xf, i);
+		const auto aabb = shape->ComputeAABB(xf, i);
 		new (proxies + i) FixtureProxy{aabb, broadPhase.CreateProxy(aabb, proxies + i), this, i};
 	}
 	m_proxies = proxies;
@@ -73,13 +75,15 @@ void Fixture::Synchronize(BroadPhase& broadPhase, const Transformation& transfor
 	assert(IsValid(transform1));
 	assert(IsValid(transform2));
 
+	const auto shape = GetShape();
+
 	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
 	{
 		auto& proxy = m_proxies[i];
 
 		// Compute an AABB that covers the swept shape (may miss some rotation effect).
-		const auto aabb1 = GetShape()->ComputeAABB(transform1, proxy.childIndex);
-		const auto aabb2 = GetShape()->ComputeAABB(transform2, proxy.childIndex);
+		const auto aabb1 = shape->ComputeAABB(transform1, proxy.childIndex);
+		const auto aabb2 = shape->ComputeAABB(transform2, proxy.childIndex);
 		proxy.aabb = aabb1 + aabb2;
 
 		broadPhase.MoveProxy(proxy.proxyId, proxy.aabb, transform2.p - transform1.p);
@@ -95,10 +99,11 @@ void Fixture::SetFilterData(const Filter& filter)
 
 void Fixture::Refilter()
 {
-	if (m_body)
+	const auto body = GetBody();
+	if (body)
 	{
 		// Flag associated contacts for filtering.
-		for (auto&& edge: m_body->GetContactEdges())
+		for (auto&& edge: body->GetContactEdges())
 		{
 			auto contact = edge.contact;
 			const auto fixtureA = contact->GetFixtureA();
@@ -109,7 +114,7 @@ void Fixture::Refilter()
 			}
 		}
 		
-		auto world = m_body->GetWorld();
+		const auto world = body->GetWorld();
 		if (world)
 		{
 			TouchProxies(world->m_contactMgr.m_broadPhase);
@@ -121,8 +126,8 @@ void Fixture::SetSensor(bool sensor)
 {
 	if (sensor != m_isSensor)
 	{
-		m_body->SetAwake();
 		m_isSensor = sensor;
+		m_body->SetAwake();
 	}
 }
 

@@ -1212,7 +1212,7 @@ struct WorldRayCastWrapper
 		auto fixture = proxy->fixture;
 		const auto index = proxy->childIndex;
 		RayCastOutput output;
-		const auto hit = fixture->RayCast(&output, input, index);
+		const auto hit = RayCast(*fixture, &output, input, index);
 
 		if (hit)
 		{

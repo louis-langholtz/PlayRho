@@ -120,7 +120,7 @@ public:
 		Body* body = fixture->GetBody();
 		if (body->GetType() == BodyType::Dynamic)
 		{
-			bool inside = fixture->TestPoint(m_point);
+			bool inside = TestPoint(*fixture, m_point);
 			if (inside)
 			{
 				m_fixture = fixture;
