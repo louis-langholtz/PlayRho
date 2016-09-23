@@ -407,8 +407,11 @@ constexpr inline Vec2 GetYAxis(Rot rot) noexcept
 	return Vec2{-rot.sin(), rot.cos()};
 }
 
+/// Transformation.
+/// @detail
 /// A transform contains translation and rotation. It is used to represent
 /// the position and orientation of rigid frames.
+/// @note This data structure is 16-bytes large (on at least one 64-bit platform).
 struct Transformation
 {
 	/// The default constructor does nothing.
@@ -419,8 +422,8 @@ struct Transformation
 
 	constexpr Transformation(const Transformation& copy) noexcept = default;
 
-	Vec2 p; ///< Translational portion of the transformation.
-	Rot q; ///< Rotational portion of the transformation.
+	Vec2 p; ///< Translational portion of the transformation. 8-bytes.
+	Rot q; ///< Rotational portion of the transformation. 8-bytes.
 };
 
 constexpr auto Transform_identity = Transformation{Vec2_zero, Rot_identity};

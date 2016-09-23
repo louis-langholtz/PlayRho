@@ -11,6 +11,11 @@
 
 using namespace box2d;
 
+TEST(Transformation, ByteSizeIs16)
+{
+	EXPECT_EQ(sizeof(Transformation), size_t(16));
+}
+
 TEST(Transformation, Initialize)
 {
 	const Vec2 translation{2, 4};

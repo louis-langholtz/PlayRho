@@ -455,6 +455,99 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 	EXPECT_EQ(steps, ((x * 2) / x) / time_inc);
 }
 
+TEST(World, PerfectlyOverlappedCirclesStayPut)
+{
+	const auto radius = float_t(1);
+	const CircleShape shape{radius};
+	const Vec2 gravity{0, 0};
+
+	World world{gravity};
+	
+	auto body_def = BodyDef{};
+	body_def.type = BodyType::Dynamic;
+	body_def.bullet = false;
+	body_def.position = Vec2{float_t(0), float_t(0)};
+
+	FixtureDef fixtureDef;
+	fixtureDef.shape = &shape;
+	fixtureDef.density = float_t(1);
+	fixtureDef.restitution = float_t(1); // changes where bodies will be after collision
+
+	const auto body1 = world.CreateBody(body_def);
+	{
+		const auto fixture = body1->CreateFixture(fixtureDef);
+		ASSERT_NE(fixture, nullptr);
+	}
+	ASSERT_EQ(body1->GetPosition().x, body_def.position.x);
+	ASSERT_EQ(body1->GetPosition().y, body_def.position.y);
+	
+	const auto body2 = world.CreateBody(body_def);
+	{
+		const auto fixture = body2->CreateFixture(fixtureDef);
+		ASSERT_NE(fixture, nullptr);
+	}
+	ASSERT_EQ(body2->GetPosition().x, body_def.position.x);
+	ASSERT_EQ(body2->GetPosition().y, body_def.position.y);
+	
+	const auto time_inc = float_t(.01);
+	for (auto i = 0; i < 100; ++i)
+	{
+		world.Step(time_inc);
+		EXPECT_EQ(body1->GetPosition().x, body_def.position.x);
+		EXPECT_EQ(body1->GetPosition().y, body_def.position.y);
+		EXPECT_EQ(body2->GetPosition().x, body_def.position.x);
+		EXPECT_EQ(body2->GetPosition().y, body_def.position.y);
+	}
+}
+
+TEST(World, PartiallyOverlappedCirclesSeparate)
+{
+	const auto radius = float_t(1);
+	
+	const Vec2 gravity{0, 0};
+	World world{gravity};
+	
+	auto body_def = BodyDef{};
+	body_def.type = BodyType::Dynamic;
+	body_def.bullet = false; // separation is faster if true.
+	
+	CircleShape shape{radius};
+	FixtureDef fixtureDef;
+	fixtureDef.shape = &shape;
+	fixtureDef.density = float_t(1);
+	fixtureDef.restitution = float_t(1); // changes where bodies will be after collision
+	
+	const auto body1pos = Vec2{float_t(-radius/4), float_t(0)};
+	body_def.position = body1pos;
+	const auto body1 = world.CreateBody(body_def);
+	{
+		const auto fixture = body1->CreateFixture(fixtureDef);
+		ASSERT_NE(fixture, nullptr);
+	}
+	ASSERT_EQ(body1->GetPosition().x, body_def.position.x);
+	ASSERT_EQ(body1->GetPosition().y, body_def.position.y);
+	
+	const auto body2pos = Vec2{float_t(radius/4), float_t(0)};
+	body_def.position = body2pos;
+	const auto body2 = world.CreateBody(body_def);
+	{
+		const auto fixture = body2->CreateFixture(fixtureDef);
+		ASSERT_NE(fixture, nullptr);
+	}
+	ASSERT_EQ(body2->GetPosition().x, body_def.position.x);
+	ASSERT_EQ(body2->GetPosition().y, body_def.position.y);
+	
+	const auto time_inc = float_t(.01);
+	for (auto i = 0; i < 100; ++i)
+	{
+		world.Step(time_inc);
+		EXPECT_EQ(body1->GetPosition().x, body1pos.x);
+		EXPECT_EQ(body1->GetPosition().y, body1pos.y);
+		EXPECT_EQ(body2->GetPosition().x, body2pos.x);
+		EXPECT_EQ(body2->GetPosition().y, body2pos.y);
+	}
+}
+
 TEST(World, CollidingDynamicBodies)
 {
 	const auto radius = float_t(1);

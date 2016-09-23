@@ -11,6 +11,11 @@
 
 using namespace box2d;
 
+TEST(Manifold, ByteSizeIs60)
+{
+	EXPECT_EQ(sizeof(Manifold), size_t(60));
+}
+
 TEST(Manifold, DefaultConstruction)
 {
 	Manifold foo;
