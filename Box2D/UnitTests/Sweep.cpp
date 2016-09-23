@@ -11,6 +11,11 @@
 
 using namespace box2d;
 
+TEST(Sweep, ByteSizeIs36)
+{
+	EXPECT_EQ(sizeof(Sweep), size_t(36));
+}
+
 TEST(Sweep, ConstructorSetsPos0and1) {
 	const auto pos = Position{Vec2{float_t(-0.4), float_t(2.34)}, float_t(3.14)};
 	Sweep sweep{pos};

@@ -210,14 +210,14 @@ struct Mat22
 	Mat22() noexcept = default;
 
 	/// Construct this matrix using columns.
-	constexpr Mat22(const Vec2& c1, const Vec2& c2) noexcept: ex{c1}, ey{c2} {}
+	constexpr Mat22(const Vec2 c1, const Vec2 c2) noexcept: ex{c1}, ey{c2} {}
 
 	/// Construct this matrix using scalars.
 	constexpr Mat22(float_t a11, float_t a12, float_t a21, float_t a22) noexcept: ex{a11, a21}, ey{a12, a22} {}
 
 	/// Solve A * x = b, where b is a column vector. This is more efficient
 	/// than computing the inverse in one-shot cases.
-	constexpr Vec2 Solve(const Vec2& b) const noexcept
+	constexpr Vec2 Solve(const Vec2 b) const noexcept
 	{
 		const auto a11 = ex.x, a12 = ey.x, a21 = ex.y, a22 = ey.y;
 		auto det = (a11 * a22) - (a12 * a21);
@@ -247,7 +247,7 @@ constexpr auto Mat22_invalid = Mat22(Vec2_invalid, Vec2_invalid);
 /// @see Mat22.
 constexpr auto Mat22_identity = Mat22(Vec2{1, 0}, Vec2{0, 1});
 
-constexpr Mat22 Invert(const Mat22& value) noexcept
+constexpr Mat22 Invert(const Mat22 value) noexcept
 {
 	const auto a = value.ex.x, b = value.ey.x, c = value.ex.y, d = value.ey.y;
 	auto det = (a * d) - (b * c);
@@ -265,12 +265,12 @@ struct Mat33
 	Mat33() noexcept = default;
 
 	/// Construct this matrix using columns.
-	constexpr Mat33(const Vec3& c1, const Vec3& c2, const Vec3& c3) noexcept:
-		ex(c1), ey(c2), ez(c3) {}
+	constexpr Mat33(const Vec3 c1, const Vec3 c2, const Vec3 c3) noexcept:
+		ex{c1}, ey{c2}, ez{c3} {}
 
 	/// Solve A * x = b, where b is a column vector. This is more efficient
 	/// than computing the inverse in one-shot cases.
-	constexpr Vec3 Solve33(const Vec3& b) const noexcept
+	constexpr Vec3 Solve33(const Vec3 b) const noexcept
 	{
 		auto det = Dot(ex, Cross(ey, ez));
 		if (det != float_t{0})
@@ -283,7 +283,7 @@ struct Mat33
 	/// Solve A * x = b, where b is a column vector. This is more efficient
 	/// than computing the inverse in one-shot cases. Solve only the upper
 	/// 2-by-2 matrix equation.
-	constexpr Vec2 Solve22(const Vec2& b) const noexcept
+	constexpr Vec2 Solve22(const Vec2 b) const noexcept
 	{
 		const auto a11 = ex.x, a12 = ey.x, a21 = ex.y, a22 = ey.y;
 		auto det = a11 * a22 - a12 * a21;
@@ -435,6 +435,7 @@ inline bool IsValid(const Transformation& value)
 }
 
 /// Positional data structure.
+/// @note This structure is likely to be 12-bytes large (at least on 64-bit platforms).
 struct Position
 {
 	Position() noexcept = default;
@@ -485,6 +486,7 @@ inline bool IsValid(const Velocity& value)
 /// Shapes are defined with respect to the body origin, which may
 /// not coincide with the center of mass. However, to support dynamics
 /// we must interpolate the center of mass position.
+/// @note This data structure is likely 36-bytes (at least on 64-bit platforms).
 class Sweep
 {
 public:
@@ -522,14 +524,15 @@ public:
 
 	void ResetAlpha0() noexcept;
 
-	Position pos0; ///< Center world position and world angle at time "0".
-	Position pos1; ///< Center world position and world angle at time "1".
+	Position pos0; ///< Center world position and world angle at time "0". 12-bytes.
+	Position pos1; ///< Center world position and world angle at time "1". 12-bytes.
 
 private:
-	Vec2 localCenter; ///< Local center of mass position.
+	Vec2 localCenter; ///< Local center of mass position. 8-bytes.
 
 	/// Fraction of the current time step in the range [0,1]
 	/// pos0.c and pos0.a are the positions at alpha0.
+	/// @note 4-bytes.
 	float_t alpha0;
 };
 
