@@ -546,6 +546,7 @@ TEST(World, PartiallyOverlappedCirclesSeparate)
 	auto lastpos2 = body2->GetPosition();
 
 	const auto time_inc = float_t(.01);
+	const auto full_separation = radius * 2 - LinearSlop; // Solver won't separate more than -LinearSlop.
 	for (auto i = 0; i < 100; ++i)
 	{
 		world.Step(time_inc);
@@ -553,7 +554,7 @@ TEST(World, PartiallyOverlappedCirclesSeparate)
 		const auto new_pos_diff = body2->GetPosition() - body1->GetPosition();
 		const auto new_distance = Length(new_pos_diff);
 		
-		if (new_distance >= radius * 2)
+		if (almost_equal(new_distance, full_separation) || new_distance > full_separation)
 		{
 			break;
 		}
