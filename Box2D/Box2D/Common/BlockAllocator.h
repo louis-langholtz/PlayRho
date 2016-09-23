@@ -24,9 +24,11 @@
 
 namespace box2d {
 
+	/// Block allocator.
+	/// @detail
 	/// This is a small object allocator used for allocating small
 	/// objects that persist for more than one time step.
-	/// See: http://www.codeproject.com/useritems/Small_Block_Allocator.asp
+	/// @sa http://www.codeproject.com/useritems/Small_Block_Allocator.asp
 	class BlockAllocator
 	{
 	public:
@@ -40,7 +42,10 @@ namespace box2d {
 		BlockAllocator();
 		~BlockAllocator();
 		
-		/// Allocate memory. This will use alloc if the size is larger than MaxBlockSize.
+		/// Allocates memory.
+		/// @detail Allocates uninitialized storage.
+		/// This will use <code>alloc</code> if the size is larger than <code>MaxBlockSize</code>.
+		/// @sa alloc.
 		void* Allocate(size_type n);
 		
 		template <typename T>
@@ -49,7 +54,8 @@ namespace box2d {
 			return static_cast<T*>(Allocate(n * sizeof(T)));
 		}
 		
-		/// Free memory. This will use free if the size is larger than MaxBlockSize.
+		/// Free memory.
+		/// @detail This will use free if the size is larger than <code>MaxBlockSize</code>.
 		void Free(void* p, size_type n);
 		
 		void Clear();
@@ -88,6 +94,15 @@ namespace box2d {
 		size_type nelem;
 	};
 	
+	inline bool operator==(const BlockAllocator& a, const BlockAllocator& b)
+	{
+		return &a == &b;
+	}
+	
+	inline bool operator!=(const BlockAllocator& a, const BlockAllocator& b)
+	{
+		return &a != &b;
+	}
 	
 } // namespace box2d
 

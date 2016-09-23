@@ -65,6 +65,8 @@
 		475A94561D930E6C000CA9A8 /* Fixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94551D930E6C000CA9A8 /* Fixture.cpp */; };
 		475A94581D9453A1000CA9A8 /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94571D9453A1000CA9A8 /* Shape.cpp */; };
 		475A94591D9453A1000CA9A8 /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94571D9453A1000CA9A8 /* Shape.cpp */; };
+		475A945B1D9593A4000CA9A8 /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A945A1D9593A4000CA9A8 /* Shape.cpp */; };
+		475A945D1D959537000CA9A8 /* Joint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A945C1D959537000CA9A8 /* Joint.cpp */; };
 		477DB2941D14B9D500846ED6 /* ContactEdgeList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477DB2921D14B9D500846ED6 /* ContactEdgeList.cpp */; };
 		477DB2951D14B9D500846ED6 /* ContactEdgeList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 477DB2931D14B9D500846ED6 /* ContactEdgeList.hpp */; };
 		477DB2981D14BB2000846ED6 /* ContactEdgeIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477DB2961D14BB2000846ED6 /* ContactEdgeIterator.cpp */; };
@@ -444,6 +446,8 @@
 		475A94531D930503000CA9A8 /* BlockAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlockAllocator.cpp; sourceTree = "<group>"; };
 		475A94551D930E6C000CA9A8 /* Fixture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fixture.cpp; sourceTree = "<group>"; };
 		475A94571D9453A1000CA9A8 /* Shape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shape.cpp; sourceTree = "<group>"; };
+		475A945A1D9593A4000CA9A8 /* Shape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shape.cpp; sourceTree = "<group>"; };
+		475A945C1D959537000CA9A8 /* Joint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Joint.cpp; sourceTree = "<group>"; };
 		477DB2921D14B9D500846ED6 /* ContactEdgeList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactEdgeList.cpp; sourceTree = "<group>"; };
 		477DB2931D14B9D500846ED6 /* ContactEdgeList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactEdgeList.hpp; sourceTree = "<group>"; };
 		477DB2961D14BB2000846ED6 /* ContactEdgeIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactEdgeIterator.cpp; sourceTree = "<group>"; };
@@ -744,12 +748,14 @@
 				474BC3FA1D41278800447DCD /* Epsilon.cpp */,
 				475A94551D930E6C000CA9A8 /* Fixture.cpp */,
 				474BC3FB1D41278800447DCD /* IndexPair.cpp */,
+				475A945C1D959537000CA9A8 /* Joint.cpp */,
 				474BC3FC1D41278800447DCD /* main.cpp */,
 				474BC3FD1D41278800447DCD /* Manifold.cpp */,
 				474BC3FE1D41278800447DCD /* Mat33.cpp */,
 				474BC3FF1D41278800447DCD /* PolygonShape.cpp */,
 				474BC4001D41278800447DCD /* Rot.cpp */,
 				474BC4011D41278800447DCD /* SimplexCache.cpp */,
+				475A945A1D9593A4000CA9A8 /* Shape.cpp */,
 				474BC4021D41278800447DCD /* Sweep.cpp */,
 				474BC4031D41278800447DCD /* TimeOfImpact.cpp */,
 				474BC4041D41278800447DCD /* Transformation.cpp */,
@@ -1460,11 +1466,13 @@
 				474BC42E1D413DC200447DCD /* ContactFeature.cpp in Sources */,
 				474BC42F1D413DC200447DCD /* Distance.cpp in Sources */,
 				474BC4301D413DC200447DCD /* DistanceProxy.cpp in Sources */,
+				475A945D1D959537000CA9A8 /* Joint.cpp in Sources */,
 				474BC4311D413DC200447DCD /* Epsilon.cpp in Sources */,
 				474BC4321D413DC200447DCD /* IndexPair.cpp in Sources */,
 				474BC4331D413DC200447DCD /* main.cpp in Sources */,
 				475A94541D930503000CA9A8 /* BlockAllocator.cpp in Sources */,
 				474BC4341D413DC200447DCD /* Manifold.cpp in Sources */,
+				475A945B1D9593A4000CA9A8 /* Shape.cpp in Sources */,
 				474BC4351D413DC200447DCD /* Mat33.cpp in Sources */,
 				474BC4361D413DC200447DCD /* PolygonShape.cpp in Sources */,
 				474BC4371D413DC200447DCD /* Rot.cpp in Sources */,

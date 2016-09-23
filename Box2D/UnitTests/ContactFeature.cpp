@@ -11,6 +11,11 @@
 
 using namespace box2d;
 
+TEST(ContactFeature, ByteSizeIs4)
+{
+	EXPECT_EQ(sizeof(ContactFeature), size_t(4));
+}
+
 TEST(ContactFeature, Init)
 {
 	const auto typeA = ContactFeature::e_vertex;
