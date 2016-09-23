@@ -80,7 +80,9 @@ private:
 	std::function<void(T&)> m_on_destruction;
 };
 
-World::World(const Vec2 gravity): m_gravity(gravity)
+World::World(const Vec2 gravity):
+	m_gravity{gravity},
+	m_stackAllocator{*(new (alloc(sizeof(StackAllocator))) StackAllocator{})}
 {
 	memset(&m_profile, 0, sizeof(Profile));
 }
@@ -93,6 +95,8 @@ World::~World()
 		auto&& b = m_bodies.front();
 		Destroy(&b);
 	}
+	m_stackAllocator.~StackAllocator();
+	free(&m_stackAllocator);
 }
 
 void World::SetDestructionListener(DestructionListener* listener) noexcept

@@ -30,6 +30,7 @@ namespace box2d {
 /// You must nest allocate/free pairs. The code will assert
 /// if you try to interleave multiple allocate/free pairs.
 /// @note This class satisfies the C++11 std::unique_ptr() Deleter concept.
+/// @note This data structure is 103200-bytes large (on at least one 64-bit platform).
 class StackAllocator
 {
 public:

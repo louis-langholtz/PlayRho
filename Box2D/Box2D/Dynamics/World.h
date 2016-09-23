@@ -45,9 +45,12 @@ class TimeStep;
 
 constexpr auto EarthlyGravity = Vec2{0, float_t(-9.8)};
 
+/// World.
+/// @detail
 /// The world class manages all physics entities, dynamic simulation,
 /// and asynchronous queries. The world also contains efficient memory
 /// management facilities.
+/// @note This data structure is 376-bytes large (on at least one 64-bit platform).
 class World
 {
 public:
@@ -367,9 +370,15 @@ private:
 	/// @return Contact with the least time of impact and its time of impact, or null contact.
 	ContactToiPair UpdateContactTOIs();
 
-	BlockAllocator m_blockAllocator;
-	StackAllocator m_stackAllocator;
+	BlockAllocator m_blockAllocator; ///< Block allocator.
+
+	/// Stack allocator.
+	/// @note This variable is orders of magnitude larger than all other World data combined. So its
+	///   actual memory is allocated separately (from the world object) via <code>alloc()</code>.
+	StackAllocator& m_stackAllocator;
+	
 	ContactFilter m_defaultFilter;
+	
 	ContactListener m_defaultListener;
 
 	uint32 m_flags = e_clearForces;
