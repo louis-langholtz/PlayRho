@@ -144,6 +144,12 @@ inline Vec2 round(Vec2 value, unsigned precision)
 	return Vec2{std::round(value.x * precision) / precision, std::round(value.y * precision) / precision};
 }
 
+/// Gets the angle in radians
+inline float_t GetAngle(Vec2 value)
+{
+	return Atan2(value.y, value.x);
+}
+
 /// A 2D column vector with 3 elements.
 struct Vec3
 {

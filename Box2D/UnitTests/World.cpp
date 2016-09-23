@@ -509,7 +509,7 @@ TEST(World, PartiallyOverlappedCirclesSeparate)
 	
 	auto body_def = BodyDef{};
 	body_def.type = BodyType::Dynamic;
-	body_def.bullet = false; // separation is faster if true.
+	body_def.bullet = true; // separation is faster if true.
 	
 	CircleShape shape{radius};
 	FixtureDef fixtureDef;
@@ -537,14 +537,57 @@ TEST(World, PartiallyOverlappedCirclesSeparate)
 	ASSERT_EQ(body2->GetPosition().x, body_def.position.x);
 	ASSERT_EQ(body2->GetPosition().y, body_def.position.y);
 	
+	auto position_diff = body2pos - body1pos;
+	auto distance = Length(position_diff);
+
+	const auto angle = GetAngle(position_diff);
+
+	auto lastpos1 = body1->GetPosition();
+	auto lastpos2 = body2->GetPosition();
+
 	const auto time_inc = float_t(.01);
 	for (auto i = 0; i < 100; ++i)
 	{
 		world.Step(time_inc);
-		EXPECT_EQ(body1->GetPosition().x, body1pos.x);
-		EXPECT_EQ(body1->GetPosition().y, body1pos.y);
-		EXPECT_EQ(body2->GetPosition().x, body2pos.x);
-		EXPECT_EQ(body2->GetPosition().y, body2pos.y);
+
+		const auto new_pos_diff = body2->GetPosition() - body1->GetPosition();
+		const auto new_distance = Length(new_pos_diff);
+		
+		if (new_distance >= radius * 2)
+		{
+			break;
+		}
+		
+		if (new_distance == distance)
+		{
+			if (cos(angle) != 0)
+			{
+				EXPECT_NE(body1->GetPosition().x, lastpos1.x);
+				EXPECT_NE(body2->GetPosition().x, lastpos2.x);
+			}
+			if (sin(angle) != 0)
+			{
+				EXPECT_NE(body1->GetPosition().y, lastpos1.y);
+				EXPECT_NE(body2->GetPosition().y, lastpos2.y);
+			}
+			ASSERT_GE(new_distance, float_t(2));
+			break;
+		}
+
+		ASSERT_NE(body1->GetPosition(), lastpos1);
+		ASSERT_NE(body2->GetPosition(), lastpos2);
+		
+		lastpos1 = body1->GetPosition();
+		lastpos2 = body2->GetPosition();
+
+		ASSERT_NE(new_pos_diff, position_diff);
+		position_diff = new_pos_diff;
+
+		ASSERT_NE(new_distance, distance);
+		distance = new_distance;
+
+		const auto new_angle = GetAngle(new_pos_diff);
+		EXPECT_EQ(angle, new_angle);
 	}
 }
 
