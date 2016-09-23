@@ -32,9 +32,7 @@ namespace box2d {
 class Body;
 class Contact;
 class Fixture;
-class World;
 class BlockAllocator;
-class StackAllocator;
 class ContactListener;
 
 /// Friction mixing law. The idea is to allow either fixture to drive the resulting friction to zero.

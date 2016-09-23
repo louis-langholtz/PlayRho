@@ -67,6 +67,7 @@
 		475A94591D9453A1000CA9A8 /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94571D9453A1000CA9A8 /* Shape.cpp */; };
 		475A945B1D9593A4000CA9A8 /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A945A1D9593A4000CA9A8 /* Shape.cpp */; };
 		475A945D1D959537000CA9A8 /* Joint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A945C1D959537000CA9A8 /* Joint.cpp */; };
+		475A945F1D95A15A000CA9A8 /* StackAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A945E1D95A15A000CA9A8 /* StackAllocator.cpp */; };
 		477DB2941D14B9D500846ED6 /* ContactEdgeList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477DB2921D14B9D500846ED6 /* ContactEdgeList.cpp */; };
 		477DB2951D14B9D500846ED6 /* ContactEdgeList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 477DB2931D14B9D500846ED6 /* ContactEdgeList.hpp */; };
 		477DB2981D14BB2000846ED6 /* ContactEdgeIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477DB2961D14BB2000846ED6 /* ContactEdgeIterator.cpp */; };
@@ -448,6 +449,7 @@
 		475A94571D9453A1000CA9A8 /* Shape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shape.cpp; sourceTree = "<group>"; };
 		475A945A1D9593A4000CA9A8 /* Shape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shape.cpp; sourceTree = "<group>"; };
 		475A945C1D959537000CA9A8 /* Joint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Joint.cpp; sourceTree = "<group>"; };
+		475A945E1D95A15A000CA9A8 /* StackAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StackAllocator.cpp; sourceTree = "<group>"; };
 		477DB2921D14B9D500846ED6 /* ContactEdgeList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactEdgeList.cpp; sourceTree = "<group>"; };
 		477DB2931D14B9D500846ED6 /* ContactEdgeList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactEdgeList.hpp; sourceTree = "<group>"; };
 		477DB2961D14BB2000846ED6 /* ContactEdgeIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactEdgeIterator.cpp; sourceTree = "<group>"; };
@@ -756,6 +758,7 @@
 				474BC4001D41278800447DCD /* Rot.cpp */,
 				474BC4011D41278800447DCD /* SimplexCache.cpp */,
 				475A945A1D9593A4000CA9A8 /* Shape.cpp */,
+				475A945E1D95A15A000CA9A8 /* StackAllocator.cpp */,
 				474BC4021D41278800447DCD /* Sweep.cpp */,
 				474BC4031D41278800447DCD /* TimeOfImpact.cpp */,
 				474BC4041D41278800447DCD /* Transformation.cpp */,
@@ -1462,6 +1465,7 @@
 			files = (
 				474BC42B1D413DC200447DCD /* AABB.cpp in Sources */,
 				474BC42C1D413DC200447DCD /* CircleShape.cpp in Sources */,
+				475A945F1D95A15A000CA9A8 /* StackAllocator.cpp in Sources */,
 				474BC42D1D413DC200447DCD /* Collision.cpp in Sources */,
 				474BC42E1D413DC200447DCD /* ContactFeature.cpp in Sources */,
 				474BC42F1D413DC200447DCD /* Distance.cpp in Sources */,
