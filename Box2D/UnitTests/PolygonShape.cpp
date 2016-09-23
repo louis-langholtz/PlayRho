@@ -11,9 +11,9 @@
 
 using namespace box2d;
 
-TEST(PolygonShape, ByteSizeIs276)
+TEST(PolygonShape, ByteSizeIs272)
 {
-	EXPECT_EQ(sizeof(PolygonShape), size_t(276));
+	EXPECT_EQ(sizeof(PolygonShape), size_t(272));
 }
 
 TEST(PolygonShape, DefaultConstruction)
@@ -22,7 +22,7 @@ TEST(PolygonShape, DefaultConstruction)
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(shape.GetVertexCount(), 0);
 	EXPECT_EQ(GetChildCount(shape), child_count_t(1));
-	EXPECT_EQ(shape.GetRadius(), PolygonRadius);
+	EXPECT_EQ(GetRadius(shape), PolygonRadius);
 }
 
 TEST(PolygonShape, SetAsBox)
@@ -33,7 +33,7 @@ TEST(PolygonShape, SetAsBox)
 	shape.SetAsBox(hx, hy);
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(GetChildCount(shape), child_count_t(1));
-	EXPECT_EQ(shape.GetRadius(), PolygonRadius);
+	EXPECT_EQ(GetRadius(shape), PolygonRadius);
 
 	EXPECT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));
 	

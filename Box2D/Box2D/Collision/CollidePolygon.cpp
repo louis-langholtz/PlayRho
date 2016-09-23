@@ -110,7 +110,7 @@ static inline ClipArray FindIncidentEdge(PolygonShape::vertex_count_t index1,
 // The normal points from 1 to 2
 Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, const PolygonShape& shapeB, const Transformation& xfB)
 {
-	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
+	const auto totalRadius = GetRadius(shapeA) + GetRadius(shapeB);
 
 	const auto edgeSepA = FindMaxSeparation(shapeA, xfA, shapeB, xfB);
 	if (edgeSepA.separation > totalRadius)

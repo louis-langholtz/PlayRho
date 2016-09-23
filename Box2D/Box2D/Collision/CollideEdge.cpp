@@ -52,7 +52,7 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transformation& xfA, const
 	
 	// Barycentric coordinates
 	
-	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
+	const auto totalRadius = GetRadius(shapeA) + GetRadius(shapeB);
 
 	// Region A
 	const auto v = Dot(e, Q - A);

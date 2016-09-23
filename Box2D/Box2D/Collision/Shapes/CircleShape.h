@@ -28,12 +28,32 @@ namespace box2d {
 class CircleShape : public Shape
 {
 public:
+	
+	/// Initializing constructor.
+	///
+	/// @note Behavior is undefined if a negative radius is given.
+	///
+	/// @param radius Radius of the circle shape (in meters).
+	/// @param position Position of the center of this shape.
 	constexpr explicit CircleShape(float_t radius = 0, Vec2 position = Vec2_zero) noexcept:
-		Shape{e_circle, radius}, m_p(position) {}
+		Shape{e_circle}, m_radius{radius}, m_p{position}
+	{
+		assert(radius >= 0);
+	}
 
 	CircleShape(const CircleShape&) = default;
 
 	CircleShape& operator=(const CircleShape& other) = default;
+
+	/// Gets the "radius" of the shape.
+	/// @return Non-negative distance.
+	float_t GetRadius() const noexcept { return m_radius; }
+	
+	void SetRadius(float_t radius) noexcept
+	{
+		assert(radius >= 0);
+		m_radius = radius;
+	}
 
 	/// Gets the position of the center of this circle shape.
 	Vec2 GetPosition() const noexcept { return m_p; }
@@ -41,9 +61,14 @@ public:
 	void SetPosition(const Vec2& value) noexcept { m_p = value; }
 
 private:
+	float_t m_radius;
+	
 	/// Linear position of the shape as initialized on construction or as assigned using the SetPosition method.
 	Vec2 m_p = Vec2_zero;
 };
+
+/// Gets the "radius" of the given shape.
+float_t GetRadius(const CircleShape& shape);
 
 /// Gets the number of child primitives.
 /// @return Positive non-zero count.

@@ -47,13 +47,9 @@ public:
 
 	/// Initializing constructor.
 	/// @param type Type of this shape object.
-	/// @param radius Non-negative "radius" distance of this object (whose meaning is
-	///   class dependent).
-	/// @note Behavior is undefined if a negative radius is given.
-	constexpr Shape(Type type, float_t radius) noexcept: m_type{type}, m_radius{radius}
+	constexpr Shape(Type type) noexcept: m_type{type}
 	{
 		assert(type < e_typeCount);
-		assert(radius >= 0);
 	}
 
 	Shape(const Shape&) = default;
@@ -63,22 +59,14 @@ public:
 	/// Get the type of this shape. You can use this to down cast to the concrete shape.
 	/// @return the shape type.
 	Type GetType() const noexcept { return m_type; }
-
-	/// Gets the "radius" of the shape.
-	/// @return a non-negative distance whose meaning is dependent on the object's class.
-	float_t GetRadius() const noexcept { return m_radius; }
-	
-	void SetRadius(float_t radius) noexcept
-	{
-		assert(radius >= 0);
-		m_radius = radius;
-	}
 	
 private:
 	const Type m_type;
-	float_t m_radius;
 };
 
+/// Gets the "radius" of the given shape.
+float_t GetRadius(const Shape& shape);
+	
 /// Gets the number of child primitives.
 /// @return Positive non-zero count.
 child_count_t GetChildCount(const Shape& shape);

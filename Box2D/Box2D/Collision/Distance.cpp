@@ -49,22 +49,22 @@ inline bool Find(const IndexPairArray& array, IndexPair key, std::size_t count)
 
 inline DistanceProxy GetDistanceProxy(const CircleShape& shape, child_count_t index)
 {
-	return DistanceProxy{shape.GetRadius(), shape.GetPosition()};
+	return DistanceProxy{GetRadius(shape), shape.GetPosition()};
 }
 
 inline DistanceProxy GetDistanceProxy(const PolygonShape& shape, child_count_t index)
 {
-	return DistanceProxy{shape.GetRadius(), shape.GetVertices(), shape.GetVertexCount()};		
+	return DistanceProxy{GetRadius(shape), shape.GetVertices(), shape.GetVertexCount()};		
 }
 
 inline DistanceProxy GetDistanceProxy(const ChainShape& shape, child_count_t index)
 {
-	return DistanceProxy{shape.GetRadius(), shape.GetVertex(index), shape.GetVertex(shape.GetNextIndex(index))};
+	return DistanceProxy{GetRadius(shape), shape.GetVertex(index), shape.GetVertex(shape.GetNextIndex(index))};
 }
 
 inline DistanceProxy GetDistanceProxy(const EdgeShape& shape, child_count_t index)
 {
-	return DistanceProxy{shape.GetRadius(), shape.GetVertex1(), shape.GetVertex2()};
+	return DistanceProxy{GetRadius(shape), shape.GetVertex1(), shape.GetVertex2()};
 }
 	
 }

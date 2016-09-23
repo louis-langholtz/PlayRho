@@ -30,6 +30,11 @@ void EdgeShape::Set(const Vec2& v1, const Vec2& v2)
 	m_vertex3 = Vec2_invalid;
 }
 
+float_t box2d::GetRadius(const EdgeShape& shape)
+{
+	return PolygonRadius;
+}
+
 child_count_t box2d::GetChildCount(const EdgeShape& shape)
 {
 	return 1;
@@ -109,7 +114,7 @@ AABB box2d::ComputeAABB(const EdgeShape& shape, const Transformation& xf, child_
 	const auto lower = Min(v1, v2);
 	const auto upper = Max(v1, v2);
 
-	const auto r = Vec2{shape.GetRadius(), shape.GetRadius()};
+	const auto r = Vec2{GetRadius(shape), GetRadius(shape)};
 	return AABB{lower - r, upper + r};
 }
 

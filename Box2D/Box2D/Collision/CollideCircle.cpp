@@ -43,7 +43,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, co
 	const auto cLocal = InverseTransform(Transform(shapeB.GetPosition(), xfB), xfA); ///< Center of the circle in the frame of the polygon.
 
 	// Find the min separating edge.
-	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
+	const auto totalRadius = GetRadius(shapeA) + GetRadius(shapeB);
 	const auto vertexCount = shapeA.GetVertexCount();
 	auto normalIndex = decltype(vertexCount){0};
 	auto maxSeparation = -MaxFloat;

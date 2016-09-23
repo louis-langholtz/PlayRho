@@ -35,7 +35,7 @@ public:
 	/// Vertex count type.
 	using vertex_count_t = std::remove_const<decltype(MaxPolygonVertices)>::type;
 
-	PolygonShape(): Shape{e_polygon, PolygonRadius} {}
+	PolygonShape(): Shape{e_polygon} {}
 
 	PolygonShape(const PolygonShape&) = default;
 
@@ -113,6 +113,9 @@ inline Vec2 PolygonShape::GetNormal(vertex_count_t index) const
 	assert(0 <= index && index < m_count);
 	return m_normals[index];
 }
+
+/// Gets the "radius" of the given shape.
+float_t GetRadius(const PolygonShape& shape);
 
 /// Gets the number of child primitives.
 /// @return Positive non-zero count.

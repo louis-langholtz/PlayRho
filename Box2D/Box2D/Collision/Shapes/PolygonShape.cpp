@@ -265,6 +265,11 @@ bool PolygonShape::Validate() const
 	return true;
 }
 
+float_t box2d::GetRadius(const PolygonShape& shape)
+{
+	return PolygonRadius;
+}
+
 child_count_t box2d::GetChildCount(const PolygonShape& shape)
 {
 	return 1;
@@ -374,7 +379,7 @@ AABB box2d::ComputeAABB(const PolygonShape& shape, const Transformation& xf, chi
 		upper = Max(upper, v);
 	}
 
-	const auto r = Vec2{shape.GetRadius(), shape.GetRadius()};
+	const auto r = Vec2{GetRadius(shape), GetRadius(shape)};
 	return AABB{lower - r, upper + r};
 }
 

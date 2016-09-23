@@ -39,7 +39,7 @@ class EdgeShape;
 class ChainShape : public Shape
 {
 public:
-	ChainShape(): Shape{e_chain, PolygonRadius} {}
+	ChainShape(): Shape{e_chain} {}
 
 	ChainShape(const ChainShape& other);
 
@@ -107,6 +107,9 @@ inline const Vec2& ChainShape::GetVertex(child_count_t index) const
 	assert((0 <= index) && (index < m_count));
 	return m_vertices[index];
 }
+
+/// Gets the "radius" of the given shape.
+float_t GetRadius(const ChainShape& shape);
 
 /// Gets the number of child primitives.
 /// @return Positive non-zero count.

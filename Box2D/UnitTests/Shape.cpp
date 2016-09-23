@@ -11,7 +11,7 @@
 
 using namespace box2d;
 
-TEST(Shape, ByteSizeIs8)
+TEST(Shape, ByteSizeIs4)
 {
-	EXPECT_EQ(sizeof(Shape), size_t(8));
+	EXPECT_EQ(sizeof(Shape), size_t(4));
 }

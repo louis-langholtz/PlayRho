@@ -650,8 +650,8 @@ void World::Solve(const TimeStep& step)
 		inline ContactPositionConstraint GetPositionConstraint(const Manifold& manifold, const Fixture& fixtureA, const Fixture& fixtureB)
 		{
 			return ContactPositionConstraint{manifold,
-				GetPositionConstraintBodyData(*(fixtureA.GetBody())), fixtureA.GetShape()->GetRadius(),
-				GetPositionConstraintBodyData(*(fixtureB.GetBody())), fixtureB.GetShape()->GetRadius()};
+				GetPositionConstraintBodyData(*(fixtureA.GetBody())), GetRadius(*fixtureA.GetShape()),
+				GetPositionConstraintBodyData(*(fixtureB.GetBody())), GetRadius(*fixtureB.GetShape())};
 		}
 		
 		inline void InitPosConstraints(ContactPositionConstraint* constraints,

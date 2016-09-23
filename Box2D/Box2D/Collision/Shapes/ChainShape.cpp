@@ -26,7 +26,7 @@
 using namespace box2d;
 
 ChainShape::ChainShape(const ChainShape& other):
-	Shape{e_chain, PolygonRadius}
+	Shape{e_chain}
 {
 	*this = other;
 }
@@ -114,7 +114,6 @@ void ChainShape::SetNextVertex(const Vec2& nextVertex) noexcept
 void ChainShape::GetChildEdge(EdgeShape* edge, child_count_t index) const
 {
 	assert((0 <= index) && (index < (m_count - 1)));
-	edge->SetRadius(GetRadius());
 
 	edge->Set(m_vertices[index + 0], m_vertices[index + 1]);
 
@@ -136,6 +135,11 @@ void ChainShape::GetChildEdge(EdgeShape* edge, child_count_t index) const
 	{
 		edge->SetVertex3(m_nextVertex);
 	}
+}
+
+float_t box2d::GetRadius(const ChainShape& shape)
+{
+	return PolygonRadius;
 }
 
 child_count_t box2d::GetChildCount(const ChainShape& shape)

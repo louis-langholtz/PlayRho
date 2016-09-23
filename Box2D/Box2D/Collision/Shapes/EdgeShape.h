@@ -30,10 +30,10 @@ namespace box2d {
 class EdgeShape : public Shape
 {
 public:
-	EdgeShape(): Shape{e_edge, PolygonRadius} {}
+	EdgeShape(): Shape{e_edge} {}
 
 	constexpr EdgeShape(const Vec2& v1, const Vec2& v2):
-		Shape{e_edge, PolygonRadius}, m_vertex1{v1}, m_vertex2{v2} {}
+		Shape{e_edge}, m_vertex1{v1}, m_vertex2{v2} {}
 
 	EdgeShape(const EdgeShape&) = default;
 
@@ -69,6 +69,9 @@ inline void EdgeShape::SetVertex3(const Vec2& v) noexcept
 {
 	m_vertex3 = v;
 }
+	
+/// Gets the "radius" of the given shape.
+float_t GetRadius(const EdgeShape& shape);
 
 /// Gets the number of child primitives.
 /// @return Positive non-zero count.

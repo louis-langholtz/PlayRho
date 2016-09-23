@@ -157,7 +157,7 @@ void box2d::Dump(const Fixture& fixture, size_t bodyIndex)
 		{
 			auto s = static_cast<const EdgeShape*>(fixture.GetShape());
 			log("    EdgeShape shape;\n");
-			log("    shape.m_radius = %.15lef;\n", s->GetRadius());
+			log("    shape.m_radius = %.15lef;\n", GetRadius(*s));
 			log("    shape.m_vertex0.Set(%.15lef, %.15lef);\n", s->GetVertex0().x, s->GetVertex0().y);
 			log("    shape.m_vertex1.Set(%.15lef, %.15lef);\n", s->GetVertex1().x, s->GetVertex1().y);
 			log("    shape.m_vertex2.Set(%.15lef, %.15lef);\n", s->GetVertex2().x, s->GetVertex2().y);
