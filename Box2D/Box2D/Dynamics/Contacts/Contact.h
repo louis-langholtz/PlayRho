@@ -258,8 +258,8 @@ protected:
 	Contact* m_next = nullptr;
 
 	// Nodes for connecting bodies.
-	ContactEdge m_nodeA = { nullptr, nullptr, nullptr, nullptr}; ///< Node A's contact edge.
-	ContactEdge m_nodeB = { nullptr, nullptr, nullptr, nullptr}; ///< Node B's contact edge.
+	ContactEdge m_nodeA = { nullptr, nullptr, nullptr, nullptr}; ///< Node A's contact edge. 32-bytes.
+	ContactEdge m_nodeB = { nullptr, nullptr, nullptr, nullptr}; ///< Node B's contact edge. 32-bytes.
 
 	Fixture* const m_fixtureA; ///< Fixture A. @detail Non-null pointer to fixture A.
 	Fixture* const m_fixtureB; ///< Fixture B. @detail Non-null pointer to fixture B.
@@ -269,7 +269,7 @@ protected:
 
 	float_t m_tangentSpeed = float_t{0};
 
-	Manifold m_manifold; ///< Manifold of the contact.
+	Manifold m_manifold; ///< Manifold of the contact. 60-bytes.
 
 	substep_type m_toiCount = 0; ///< Count of TOI substeps contact has gone through [0,MaxSubSteps].
 	substep_type m_toiCalls = 0;
