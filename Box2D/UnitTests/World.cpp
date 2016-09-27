@@ -509,7 +509,7 @@ TEST(World, PartiallyOverlappedCirclesSeparate)
 	
 	auto body_def = BodyDef{};
 	body_def.type = BodyType::Dynamic;
-	body_def.bullet = true; // separation is faster if true.
+	body_def.bullet = false; // separation is faster if true.
 	
 	CircleShape shape{radius};
 	FixtureDef fixtureDef;

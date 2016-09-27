@@ -191,7 +191,7 @@ void World::Destroy(Body* b)
 	Remove(*b);
 	
 	b->~Body();
-	m_blockAllocator.Free(b, sizeof(Body));
+	m_blockAllocator.Free(b, sizeof(*b));
 }
 
 Joint* World::CreateJoint(const JointDef& def)
