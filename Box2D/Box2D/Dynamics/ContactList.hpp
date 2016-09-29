@@ -27,6 +27,7 @@ namespace box2d {
 		using size_type = contact_count_t;
 		
 		ContactList() = default;
+
 		constexpr ContactList(const ContactList& copy) = delete;
 		
 		ContactList& operator= (const ContactList& rhs) = delete;

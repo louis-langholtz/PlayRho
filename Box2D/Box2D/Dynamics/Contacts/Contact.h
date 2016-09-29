@@ -110,15 +110,19 @@ public:
 	/// Has this contact been disabled?
 	bool IsEnabled() const noexcept;
 
-	/// Get fixture A in this contact.
+	/// Gets fixture A in this contact.
 	Fixture* GetFixtureA() noexcept;
+	
+	/// Gets fixture A in this contact.
 	const Fixture* GetFixtureA() const noexcept;
 
 	/// Get the child primitive index for fixture A.
 	child_count_t GetChildIndexA() const noexcept;
 
-	/// Get fixture B in this contact.
+	/// Gets fixture B in this contact.
 	Fixture* GetFixtureB() noexcept;
+	
+	/// Gets fixture B in this contact.
 	const Fixture* GetFixtureB() const noexcept;
 
 	/// Get the child primitive index for fixture B.
@@ -181,6 +185,7 @@ protected:
 	friend class Fixture;
 	friend class ContactList;
 	friend class ContactIterator;
+	friend class ConstContactIterator;
 
 	// Flags stored in m_flags
 	enum: uint32
