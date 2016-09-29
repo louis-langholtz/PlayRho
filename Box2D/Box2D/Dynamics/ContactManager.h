@@ -32,6 +32,7 @@ class BlockAllocator;
 struct FixtureProxy;
 
 /// Contact Manager.
+/// @detail
 /// This is a delegate of World (every World instance has one of these).
 /// Objects of this class manage the contacts for the world they are in.
 class ContactManager

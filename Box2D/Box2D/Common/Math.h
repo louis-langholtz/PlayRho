@@ -369,7 +369,12 @@ public:
 		// TODO_ERIN optimize
 	}
 	
+	/// Sine value.
+	/// @return Value between -1 and 1 (inclusive).
 	constexpr auto sin() const noexcept { return s; }
+
+	/// Cosine value.
+	/// @return Value between -1 and 1 (inclusive).
 	constexpr auto cos() const noexcept { return c; }
 
 private:
@@ -829,6 +834,16 @@ constexpr inline Vec2 InverseRotate(const Vec2& vector, const Rot& angle) noexce
 	return Vec2{(angle.cos() * vector.x) + (angle.sin() * vector.y), (angle.cos() * vector.y) - (angle.sin() * vector.x)};
 }
 
+/// Transforms the given 2-D vector with the given transformation.
+/// @detail
+/// Translate and rotate the given 2-D vector according to the translation and rotation defined by
+/// the given transformation.
+/// @note Passing the output of this function to <code>InverseTransform</code> (with the same
+/// transformation again) will result in the original vector being returned.
+/// @sa <code>InverseTransform</code>.
+/// @param v 2-D vector to transform (translate and rotate).
+/// @param T Transformation (a translation and rotation) to apply to the given vector.
+/// @return Transformed vector.
 constexpr inline Vec2 Transform(const Vec2& v, const Transformation& T) noexcept
 {
 	const auto x = (T.q.cos() * v.x - T.q.sin() * v.y) + T.p.x;
@@ -836,6 +851,16 @@ constexpr inline Vec2 Transform(const Vec2& v, const Transformation& T) noexcept
 	return Vec2{x, y};
 }
 
+/// Inverse transforms the given 2-D vector with the given transformation.
+/// @detail
+/// Inverse translate and rotate the given 2-D vector according to the translation and rotation
+/// defined by the given transformation.
+/// @note Passing the output of this function to <code>Transform</code> (with the same
+/// transformation again) will result in the original vector being returned.
+/// @sa <code>Transform</code>.
+/// @param v 2-D vector to inverse transform (inverse translate and rotate).
+/// @param T Transformation (a translation and rotation) to invertedly apply to the given vector.
+/// @return Inverse transformed vector.
 constexpr inline Vec2 InverseTransform(const Vec2& v, const Transformation& T) noexcept
 {
 	const auto px = v.x - T.p.x;

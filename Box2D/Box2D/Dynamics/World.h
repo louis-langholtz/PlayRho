@@ -355,7 +355,11 @@ private:
 	bool Remove(Body& b);
 	bool Remove(Joint& j);
 
+	/// Whether or not "step" is complete.
+	/// @detail The "step" is completed when there are no more TOI events for the current time step.
+	/// @sa <code>SetStepComplete</code>.
 	bool IsStepComplete() const noexcept { return m_stepComplete; }
+
 	void SetStepComplete(bool value) noexcept { m_stepComplete = value; }
 
 	struct ContactToiPair

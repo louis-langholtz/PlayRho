@@ -75,7 +75,7 @@ constexpr auto Pi = static_cast<float_t>(M_PI); ///< Pi as the "float_t" float-t
 // Collision
 
 /// Maximum manifold points.
-/// This is the number of contact points between two convex shapes.
+/// This is the maximum number of contact points between two convex shapes.
 /// Do not change this value.
 /// @note For memory efficiency, uses the smallest integral type that can hold the value. 
 constexpr auto MaxManifoldPoints = uint8{2};

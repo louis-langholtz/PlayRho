@@ -39,10 +39,10 @@ void PolygonShape::SetAsBox(float_t hx, float_t hy) noexcept
 void PolygonShape::SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t angle)
 {
 	m_count = 4;
-	m_vertices[0] = Vec2{-hx, -hy};
-	m_vertices[1] = Vec2{ hx, -hy};
-	m_vertices[2] = Vec2{ hx,  hy};
-	m_vertices[3] = Vec2{-hx,  hy};
+	m_vertices[0] = Vec2{-hx, -hy}; // bottom left
+	m_vertices[1] = Vec2{ hx, -hy}; // bottom right
+	m_vertices[2] = Vec2{ hx,  hy}; // top right
+	m_vertices[3] = Vec2{-hx,  hy}; // top left
 	m_normals[0] = Vec2{float_t{0}, -float_t{1}};
 	m_normals[1] = Vec2{float_t{1}, float_t{0}};
 	m_normals[2] = Vec2{float_t{0}, float_t{1}};

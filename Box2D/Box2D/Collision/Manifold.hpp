@@ -201,7 +201,7 @@ namespace box2d
 			++pointCount;
 		}
 		
-		/// Gets the local normal for a face typed manifold.
+		/// Gets the local normal for a face-type manifold.
 		/// @warning Behavior is undefined if the manifold type is other than face A or face B.
 		/// @return Local normal.
 		/// @sa SetLocalNormal.
