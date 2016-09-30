@@ -919,13 +919,12 @@ constexpr inline Vec2 Max(Vec2 a, Vec2 b)
 	return Vec2{Max(a.x, b.x), Max(a.y, b.y)};
 }
 
+/// Clamps the given value within the given range (inclusive).
+/// @param a Value to clamp.
+/// @param low Lowest value to return.
+/// @param high Highest value to return.
 template <typename T>
 constexpr inline T Clamp(T a, T low, T high)
-{
-	return Max(low, Min(a, high));
-}
-
-constexpr inline Vec2 Clamp(const Vec2& a, const Vec2& low, const Vec2& high)
 {
 	return Max(low, Min(a, high));
 }
