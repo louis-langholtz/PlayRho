@@ -453,6 +453,9 @@ struct Position
 	
 	constexpr Position(const Position& copy) noexcept = default;
 	
+	/// Initializing constructor.
+	/// @param c_ Linear position.
+	/// @param a_ Angular position.
 	constexpr Position(Vec2 c_, float_t a_) noexcept: c{c_}, a{a_} {}
 	
 	Vec2 c; ///< Linear position (in meters).
