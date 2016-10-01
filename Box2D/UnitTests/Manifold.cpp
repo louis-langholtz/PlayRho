@@ -59,7 +59,7 @@ TEST(Manifold, GetForFaceA)
 		const auto cf = DefaultContactFeature;
 		const auto ni = float_t(2.9);
 		const auto ti = float_t(.7);
-		Manifold foo = Manifold::GetForFaceA(ln, lp, Manifold::Point{pl, cf, ni, ti});
+		const auto foo = Manifold::GetForFaceA(ln, lp, Manifold::Point{pl, cf, ni, ti});
 		EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
 		EXPECT_EQ(foo.GetLocalNormal(), ln);
 		EXPECT_EQ(foo.GetLocalPoint(), lp);
@@ -76,7 +76,7 @@ TEST(Manifold, GetForFaceA)
 		const auto cf = DefaultContactFeature;
 		const auto ni = float_t(2.9);
 		const auto ti = float_t(.7);
-		Manifold foo = Manifold::GetForFaceA(ln, lp, Manifold::Point{pl, cf, ni, ti}, Manifold::Point{-pl, Flip(cf), -ni, -ti});
+		const auto foo = Manifold::GetForFaceA(ln, lp, Manifold::Point{pl, cf, ni, ti}, Manifold::Point{-pl, Flip(cf), -ni, -ti});
 		EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
 		EXPECT_EQ(foo.GetLocalNormal(), ln);
 		EXPECT_EQ(foo.GetLocalPoint(), lp);
