@@ -438,14 +438,9 @@ static inline void SolveVelocityConstraint(ContactVelocityConstraint& vc, Veloci
 	}
 }
 
-/// Solves position constraint.
-/// @detail
-/// This updates the two given positions for every point in the contact position constraint
-/// and returns the minimum separation value from the position solver manifold for each point.
-static float_t Solve(const ContactPositionConstraint& pc,
-					 Position& positionA, Position& positionB, float_t baumgarte)
+float_t Solve(const ContactPositionConstraint& pc, Position& positionA, Position& positionB,
+			  float_t resolution_rate, float_t max_separation, float_t max_correction)
 {
-	// see http://allenchou.net/2013/12/game-physics-resolution-contact-constraints/
 	auto minSeparation = MaxFloat;
 	
 	auto posA = positionA;
@@ -495,11 +490,9 @@ static float_t Solve(const ContactPositionConstraint& pc,
 					return invMassTotal + (invInertiaA * Square(rnA)) + (invInertiaB * Square(rnB));
 				}();
 				
-				// Prevent large corrections and don't push the separation above -LinearSlop.
-				//const auto C = Clamp(baumgarte * (separation + LinearSlop * (invMassA != 0 && invMassB != 0)),
-				const auto C = Clamp(baumgarte * (separation + LinearSlop),
-									 BOX2D_MAGIC(-MaxLinearCorrection), float_t{0});
-				//BOX2D_MAGIC(-MaxLinearCorrection), float_t{0});
+				// Prevent large corrections and don't push the separation above max_separation.
+				const auto C = Clamp(resolution_rate * (separation - max_separation),
+									 -max_correction, float_t{0});
 				
 				// Compute normal impulse
 				const auto P = psm.normal * -C / K;
@@ -544,7 +537,8 @@ bool ContactSolver::SolvePositionConstraints()
 	{
 		const auto& pc = m_positionConstraints[i];
 		assert(pc.bodyA.index != pc.bodyB.index);
-		const auto separation = Solve(pc, m_positions[pc.bodyA.index], m_positions[pc.bodyB.index], Baumgarte);
+		const auto separation = Solve(pc, m_positions[pc.bodyA.index], m_positions[pc.bodyB.index],
+									  Baumgarte, -LinearSlop, MaxLinearCorrection);
 		minSeparation = Min(minSeparation, separation);
 	}
 	
@@ -577,7 +571,8 @@ bool ContactSolver::SolveTOIPositionConstraints(island_count_t indexA, island_co
 			pc.bodyB.invI = float_t{0};
 		}
 
-		const auto separation = Solve(pc, m_positions[pc.bodyA.index], m_positions[pc.bodyB.index], ToiBaumgarte);
+		const auto separation = Solve(pc, m_positions[pc.bodyA.index], m_positions[pc.bodyB.index],
+									  ToiBaumgarte, -LinearSlop, MaxLinearCorrection);
 		minSeparation = Min(minSeparation, separation);
 	}
 

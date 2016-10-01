@@ -43,17 +43,22 @@ namespace box2d {
 		/// @param velocities Array of velocities, for every body referenced by a contact.
 		/// @param count Count of contacts.
 		/// @param positionConstraints Array of position-constraints (1 per contact).
+		///   Must be non-null if count is greater than zero.
 		/// @param velocityConstraints Array of velocity-constraints (1 per contact).
+		///   Must be non-null if count is greater than zero.
+		/// @note Behavior is undefined if count is greater than zero and any of the arrays are
+		///   <code>nullptr</code>.
 		ContactSolver(Position* positions, Velocity* velocities,
 					  contact_count_t count,
 					  ContactPositionConstraint* positionConstraints,
 					  ContactVelocityConstraint* velocityConstraints) noexcept :
-		m_positions{positions},
-		m_velocities{velocities},
-		m_count{count},
-		m_positionConstraints{positionConstraints},
-		m_velocityConstraints{velocityConstraints}
+			m_positions{positions},
+			m_velocities{velocities},
+			m_count{count},
+			m_positionConstraints{positionConstraints},
+			m_velocityConstraints{velocityConstraints}
 		{
+			assert((count == 0) || (positions && velocities && positionConstraints && velocityConstraints));
 		}
 		
 		~ContactSolver() = default;
@@ -100,6 +105,22 @@ namespace box2d {
 		ContactVelocityConstraint* const m_velocityConstraints; ///< Array of velocity-constraints (1 per contact, 8-bytes).
 	};
 	
+	/// Solves the given position constraint.
+	/// @detail
+	/// This updates the two given positions for every point in the contact position constraint
+	/// and returns the minimum separation value from the position solver manifold for each point.
+	/// @param resolution_rate Resolution rate. Value greater than zero and less than or equal to one.
+	///   Defines the percentage of the overlap that should get resolved in a single call to this
+	///   function. Recommended values are: <code>Baumgarte</code> or <code>ToiBaumgarte</code>.
+	/// @param max_separation Maximum separation to create. Recommended value: <code>-LinearSlop</code>.
+	/// @param max_correction Maximum correction. Maximum amount of overlap to resolve in a single
+	///   call to this function. Recommended value: <code>MaxLinearCorrection</code>.
+	/// @sa http://allenchou.net/2013/12/game-physics-resolution-contact-constraints/
+	/// @return Minimum separation distance of the position constraint's manifold points
+	///   (prior to "solving").
+	float_t Solve(const ContactPositionConstraint& pc, Position& positionA, Position& positionB,
+				  float_t resolution_rate, float_t max_separation, float_t max_correction);
+
 } // namespace box2d
 
 #endif
