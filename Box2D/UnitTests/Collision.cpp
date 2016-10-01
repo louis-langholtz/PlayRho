@@ -14,7 +14,7 @@
 
 using namespace box2d;
 
-TEST(Collision, CollideCircleCircle)
+TEST(Collision, CircleCircle)
 {
 	const auto r1 = float_t(1);
 	const auto r2 = float_t(1);
@@ -43,7 +43,7 @@ TEST(Collision, CollideCircleCircle)
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
 }
 
-TEST(Collision, CollidePolygonCircle)
+TEST(Collision, PolygonCircle)
 {
 	const auto r2 = float_t(1);
 	auto s1 = PolygonShape{};
@@ -73,4 +73,44 @@ TEST(Collision, CollidePolygonCircle)
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 0);
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_vertex);
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
+}
+
+TEST(Collision, IdenticalOverlappingSquares)
+{
+	const auto dim = float_t(2);
+	auto shape = PolygonShape{};
+	shape.SetAsBox(dim, dim);
+	
+	const auto xfm = Transformation(Vec2_zero, Rot{0});
+	const auto manifold = CollideShapes(shape, xfm, shape, xfm);
+	
+	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
+
+	EXPECT_EQ(manifold.GetLocalPoint().x, float_t(0));
+	EXPECT_EQ(manifold.GetLocalPoint().y, float_t(-2));
+	
+	EXPECT_EQ(manifold.GetLocalNormal().x, float_t(0));
+	EXPECT_EQ(manifold.GetLocalNormal().y, float_t(-1));
+	
+	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
+
+	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
+	EXPECT_EQ(manifold.GetPoint(0).localPoint.x, 2);
+	EXPECT_EQ(manifold.GetPoint(0).localPoint.y, 2);
+	EXPECT_EQ(manifold.GetPoint(0).normalImpulse, float_t(0));
+	EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, float_t(0));
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_face);
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexA, 0);
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 2);
+
+	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
+	EXPECT_EQ(manifold.GetPoint(1).localPoint.x, -2);
+	EXPECT_EQ(manifold.GetPoint(1).localPoint.y, 2);
+	EXPECT_EQ(manifold.GetPoint(1).normalImpulse, float_t(0));
+	EXPECT_EQ(manifold.GetPoint(1).tangentImpulse, float_t(0));
+	EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeA, ContactFeature::e_face);
+	EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexA, 0);
+	EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeB, ContactFeature::e_vertex);
+	EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexB, 3);
 }

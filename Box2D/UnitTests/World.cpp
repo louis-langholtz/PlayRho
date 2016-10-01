@@ -455,7 +455,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 	EXPECT_EQ(steps, ((x * 2) / x) / time_inc);
 }
 
-TEST(World, PerfectlyOverlappedCirclesStayPut)
+TEST(World, PerfectlyOverlappedIdenticalCirclesStayPut)
 {
 	const auto radius = float_t(1);
 	const CircleShape shape{radius};
@@ -484,6 +484,58 @@ TEST(World, PerfectlyOverlappedCirclesStayPut)
 	const auto body2 = world.CreateBody(body_def);
 	{
 		const auto fixture = body2->CreateFixture(fixtureDef);
+		ASSERT_NE(fixture, nullptr);
+	}
+	ASSERT_EQ(body2->GetPosition().x, body_def.position.x);
+	ASSERT_EQ(body2->GetPosition().y, body_def.position.y);
+	
+	const auto time_inc = float_t(.01);
+	for (auto i = 0; i < 100; ++i)
+	{
+		world.Step(time_inc);
+		EXPECT_EQ(body1->GetPosition().x, body_def.position.x);
+		EXPECT_EQ(body1->GetPosition().y, body_def.position.y);
+		EXPECT_EQ(body2->GetPosition().x, body_def.position.x);
+		EXPECT_EQ(body2->GetPosition().y, body_def.position.y);
+	}
+}
+
+TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
+{
+	const auto radius1 = float_t(1);
+	const auto radius2 = float_t(0.6);
+	const CircleShape shape1{radius1};
+	const CircleShape shape2{radius2};
+	const Vec2 gravity{0, 0};
+	
+	World world{gravity};
+	
+	auto body_def = BodyDef{};
+	body_def.type = BodyType::Dynamic;
+	body_def.bullet = false;
+	body_def.position = Vec2{float_t(0), float_t(0)};
+	
+	FixtureDef fixtureDef1;
+	fixtureDef1.shape = &shape1;
+	fixtureDef1.density = float_t(1);
+	fixtureDef1.restitution = float_t(1); // changes where bodies will be after collision
+	
+	FixtureDef fixtureDef2;
+	fixtureDef2.shape = &shape2;
+	fixtureDef2.density = float_t(1);
+	fixtureDef2.restitution = float_t(1); // changes where bodies will be after collision
+
+	const auto body1 = world.CreateBody(body_def);
+	{
+		const auto fixture = body1->CreateFixture(fixtureDef1);
+		ASSERT_NE(fixture, nullptr);
+	}
+	ASSERT_EQ(body1->GetPosition().x, body_def.position.x);
+	ASSERT_EQ(body1->GetPosition().y, body_def.position.y);
+	
+	const auto body2 = world.CreateBody(body_def);
+	{
+		const auto fixture = body2->CreateFixture(fixtureDef2);
 		ASSERT_NE(fixture, nullptr);
 	}
 	ASSERT_EQ(body2->GetPosition().x, body_def.position.x);
@@ -589,6 +641,213 @@ TEST(World, PartiallyOverlappedCirclesSeparate)
 
 		const auto new_angle = GetAngle(new_pos_diff);
 		EXPECT_EQ(angle, new_angle);
+	}
+}
+
+TEST(World, PerfectlyOverlappedIdenticalSquaresSeparate)
+{
+	PolygonShape shape;
+	shape.SetAsBox(1, 1);
+	const Vec2 gravity{0, 0};
+	
+	World world{gravity};
+	
+	auto body_def = BodyDef{};
+	body_def.type = BodyType::Dynamic;
+	body_def.bullet = false;
+	body_def.position = Vec2{float_t(0), float_t(0)};
+	
+	FixtureDef fixtureDef;
+	fixtureDef.shape = &shape;
+	fixtureDef.density = float_t(1);
+	fixtureDef.restitution = float_t(1); // changes where bodies will be after collision
+	
+	const auto body1 = world.CreateBody(body_def);
+	{
+		const auto fixture = body1->CreateFixture(fixtureDef);
+		ASSERT_NE(fixture, nullptr);
+	}
+	ASSERT_EQ(body1->GetPosition().x, body_def.position.x);
+	ASSERT_EQ(body1->GetPosition().y, body_def.position.y);
+	
+	const auto body2 = world.CreateBody(body_def);
+	{
+		const auto fixture = body2->CreateFixture(fixtureDef);
+		ASSERT_NE(fixture, nullptr);
+	}
+	ASSERT_EQ(body2->GetPosition().x, body_def.position.x);
+	ASSERT_EQ(body2->GetPosition().y, body_def.position.y);
+	
+	auto lastpos1 = body1->GetPosition();
+	auto lastpos2 = body2->GetPosition();
+
+	const auto time_inc = float_t(.01);
+	for (auto i = 0; i < 100; ++i)
+	{
+		world.Step(time_inc);
+		
+		// body1 moves left and up
+		EXPECT_LT(body1->GetPosition().x, lastpos1.x);
+		EXPECT_GT(body1->GetPosition().y, lastpos1.y);
+
+		// body2 moves right and down
+		EXPECT_GT(body2->GetPosition().x, lastpos2.x);
+		EXPECT_LT(body2->GetPosition().y, lastpos2.y);
+		
+		// body1 and body2 move away from each other equally.
+		EXPECT_EQ(body1->GetPosition().x, -body2->GetPosition().x);
+		EXPECT_EQ(body1->GetPosition().y, -body2->GetPosition().y);
+		
+		lastpos1 = body1->GetPosition();
+		lastpos2 = body2->GetPosition();
+	}
+}
+
+TEST(World, PartiallyOverlappedSquaresSeparateProperly)
+{
+	const Vec2 gravity{0, 0};
+	World world{gravity};
+	
+	auto body_def = BodyDef{};
+	body_def.type = BodyType::Dynamic;
+	body_def.bullet = false; // separation is faster if true.
+	
+	const auto half_dim = float_t(64); // 1 causes additional y-axis separation
+	PolygonShape shape;
+	shape.SetAsBox(half_dim, half_dim);
+	FixtureDef fixtureDef;
+	fixtureDef.shape = &shape;
+	fixtureDef.density = float_t(1);
+	fixtureDef.restitution = float_t(1); // changes where bodies will be after collision
+	
+	const auto body1pos = Vec2{float_t(half_dim/2), float_t(0)}; // 0 causes additional y-axis separation
+	body_def.position = body1pos;
+	const auto body1 = world.CreateBody(body_def);
+	{
+		const auto fixture = body1->CreateFixture(fixtureDef);
+		ASSERT_NE(fixture, nullptr);
+	}
+	ASSERT_EQ(body1->GetPosition().x, body1pos.x);
+	ASSERT_EQ(body1->GetPosition().y, body1pos.y);
+	
+	const auto body2pos = Vec2{-float_t(half_dim/2), float_t(0)}; // 0 causes additional y-axis separation
+	body_def.position = body2pos;
+	const auto body2 = world.CreateBody(body_def);
+	{
+		const auto fixture = body2->CreateFixture(fixtureDef);
+		ASSERT_NE(fixture, nullptr);
+	}
+	ASSERT_EQ(body2->GetPosition().x, body2pos.x);
+	ASSERT_EQ(body2->GetPosition().y, body2pos.y);
+
+	ASSERT_EQ(body1->GetAngle(), float_t(0));
+	ASSERT_EQ(body2->GetAngle(), float_t(0));
+	auto last_angle_1 = body1->GetAngle();
+	auto last_angle_2 = body2->GetAngle();
+
+	ASSERT_EQ(world.GetBodies().size(), BodyList::size_type(2));
+	ASSERT_EQ(world.GetContacts().size(), ContactList::size_type(0));
+
+	auto position_diff = body1pos - body2pos;
+	auto distance = Length(position_diff);
+	
+	auto angle = GetAngle(position_diff);
+	ASSERT_FLOAT_EQ(angle, float_t(0));
+	
+	auto lastpos1 = body1->GetPosition();
+	auto lastpos2 = body2->GetPosition();
+	
+	const auto velocity_iters = 10u;
+	const auto position_iters = 10u;
+	
+	const auto time_inc = float_t(.01);
+	const auto full_separation = half_dim * 2 - LinearSlop; // Solver won't separate more than -LinearSlop.
+	for (auto i = 0; i < 100; ++i)
+	{
+		world.Step(time_inc, velocity_iters, position_iters);
+		
+		ASSERT_EQ(world.GetContacts().size(), decltype(world.GetContacts().size())(1));
+
+		auto count = decltype(world.GetContacts().size())(0);
+		const auto& contacts = world.GetContacts();
+		for (auto&& c: contacts)
+		{
+			++count;
+
+			const auto fa = c.GetFixtureA();
+			const auto fb = c.GetFixtureB();
+			const auto body_a = fa->GetBody();
+			const auto body_b = fb->GetBody();
+			EXPECT_EQ(body_a, body1);
+			EXPECT_EQ(body_b, body2);
+			
+			const auto& manifold = c.GetManifold();
+			EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
+			EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
+		}
+		ASSERT_EQ(count, decltype(world.GetContacts().size())(1));
+
+		const auto v1 = body1->GetVelocity();
+		EXPECT_EQ(v1.w, float_t(0));
+		EXPECT_EQ(v1.v.x, float_t(0));
+		EXPECT_EQ(v1.v.y, float_t(0));
+
+		const auto v2 = body2->GetVelocity();
+		EXPECT_EQ(v2.w, float_t(0));
+		EXPECT_EQ(v2.v.x, float_t(0));
+		EXPECT_EQ(v2.v.y, float_t(0));
+
+		EXPECT_FLOAT_EQ(body1->GetAngle(), last_angle_1);
+		EXPECT_FLOAT_EQ(body2->GetAngle(), last_angle_2);
+		last_angle_1 = body1->GetAngle();
+		last_angle_2 = body2->GetAngle();
+
+		const auto new_pos_diff = body1->GetPosition() - body2->GetPosition();
+		const auto new_distance = Length(new_pos_diff);
+		
+		if (almost_equal(new_distance, full_separation) || new_distance > full_separation)
+		{
+			break;
+		}
+		
+		if (new_distance == distance)
+		{
+			if (cos(angle) != 0)
+			{
+				EXPECT_NE(body1->GetPosition().x, lastpos1.x);
+				EXPECT_NE(body2->GetPosition().x, lastpos2.x);
+			}
+			if (sin(angle) != 0)
+			{
+				EXPECT_NE(body1->GetPosition().y, lastpos1.y);
+				EXPECT_NE(body2->GetPosition().y, lastpos2.y);
+			}
+			ASSERT_GE(new_distance, float_t(2));
+			break;
+		}
+		
+		ASSERT_NE(body1->GetPosition(), lastpos1);
+		ASSERT_NE(body2->GetPosition(), lastpos2);
+		
+		EXPECT_GT(body1->GetPosition().x, lastpos1.x);
+		EXPECT_FLOAT_EQ(body1->GetPosition().y, lastpos1.y);
+
+		EXPECT_LT(body2->GetPosition().x, lastpos2.x);
+		EXPECT_FLOAT_EQ(body2->GetPosition().y, lastpos2.y);
+
+		lastpos1 = body1->GetPosition();
+		lastpos2 = body2->GetPosition();
+		
+		ASSERT_NE(new_pos_diff, position_diff);
+		position_diff = new_pos_diff;
+		
+		ASSERT_NE(new_distance, distance);
+		distance = new_distance;
+		
+		const auto new_angle = GetAngle(new_pos_diff);
+		EXPECT_FLOAT_EQ(angle, new_angle);
+		
+		angle = new_angle;
 	}
 }
 
