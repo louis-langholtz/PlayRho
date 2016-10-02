@@ -71,7 +71,7 @@ public:
 	vertex_count_t GetVertexCount() const noexcept { return m_count; }
 
 	/// Gets a vertex by index.
-	/// @detail Vertices go counter-clockwise.
+	/// @detail Vertices go counter-clockwise with lowest right-most vertex at index 0.
 	Vec2 GetVertex(vertex_count_t index) const;
 
 	/// Gets a normal by index.
@@ -82,6 +82,8 @@ public:
 	/// @return Normal for the given index.
 	Vec2 GetNormal(vertex_count_t index) const;
 
+	/// Gets the array of vertices.
+	/// @detail Vertices go counter-clockwise with lowest right-most vertex at index 0.
 	const Vec2* GetVertices() const noexcept { return m_vertices; }
 
 	const Vec2* GetNormals() const noexcept { return m_normals; }
@@ -118,6 +120,8 @@ inline Vec2 PolygonShape::GetNormal(vertex_count_t index) const
 	return m_normals[index];
 }
 
+Vec2 GetEdge(const PolygonShape& shape, PolygonShape::vertex_count_t index);
+	
 /// Gets the "radius" of the given shape.
 float_t GetRadius(const PolygonShape& shape);
 
@@ -155,6 +159,8 @@ MassData ComputeMass(const PolygonShape& shape, float_t density);
 /// @note This is a time consuming operation.
 /// @returns true if valid
 bool Validate(const PolygonShape& shape);
-	
+
+size_t FindLowestRightMostVertex(const Vec2 *vertices, size_t count);
+
 } // namespace box2d
 #endif

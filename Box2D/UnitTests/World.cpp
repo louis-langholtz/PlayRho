@@ -685,13 +685,13 @@ TEST(World, PerfectlyOverlappedIdenticalSquaresSeparate)
 	{
 		world.Step(time_inc);
 		
-		// body1 moves left and up
+		// body1 moves left and down
 		EXPECT_LT(body1->GetPosition().x, lastpos1.x);
-		EXPECT_GT(body1->GetPosition().y, lastpos1.y);
+		EXPECT_LT(body1->GetPosition().y, lastpos1.y);
 
-		// body2 moves right and down
+		// body2 moves right and up
 		EXPECT_GT(body2->GetPosition().x, lastpos2.x);
-		EXPECT_LT(body2->GetPosition().y, lastpos2.y);
+		EXPECT_GT(body2->GetPosition().y, lastpos2.y);
 		
 		// body1 and body2 move away from each other equally.
 		EXPECT_EQ(body1->GetPosition().x, -body2->GetPosition().x);

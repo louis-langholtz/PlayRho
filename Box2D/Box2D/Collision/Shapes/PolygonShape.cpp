@@ -30,47 +30,65 @@ PolygonShape::PolygonShape(float_t hx, float_t hy) noexcept: Shape{e_polygon}
 void PolygonShape::SetAsBox(float_t hx, float_t hy) noexcept
 {
 	m_count = 4;
-	m_vertices[0] = Vec2{-hx, -hy};
-	m_vertices[1] = Vec2{ hx, -hy};
-	m_vertices[2] = Vec2{ hx,  hy};
-	m_vertices[3] = Vec2{-hx,  hy};
-	m_normals[0] = Vec2{float_t{0}, float_t{-1}};
-	m_normals[1] = Vec2{float_t{1}, float_t{0}};
-	m_normals[2] = Vec2{float_t{0}, float_t{1}};
-	m_normals[3] = Vec2{float_t{-1}, float_t{0}};
 	m_centroid = Vec2_zero;
+
+	// vertices must be counter-clockwise starting at the lowest right-most vertex
+
+	const auto btm_rgt = Vec2{+hx, -hy};
+	const auto top_rgt = Vec2{ hx,  hy};
+	const auto top_lft = Vec2{-hx, +hy};
+	const auto btm_lft = Vec2{-hx, -hy};
+
+	const auto btm_norm = Vec2{float_t{0}, float_t{-1}};
+	const auto top_norm = Vec2{float_t{0}, float_t{1}};
+	const auto rgt_norm = Vec2{float_t{1}, float_t{0}};
+	const auto lft_norm = Vec2{float_t{-1}, float_t{0}};
+	
+	m_vertices[0] = btm_rgt;
+	m_vertices[1] = top_rgt;
+	m_vertices[2] = top_lft;
+	m_vertices[3] = btm_lft;
+
+	m_normals[0] = rgt_norm;
+	m_normals[1] = top_norm;
+	m_normals[2] = lft_norm;
+	m_normals[3] = btm_norm;
 }
 
 void PolygonShape::SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t angle)
 {
-	m_count = 4;
-	m_vertices[0] = Vec2{-hx, -hy}; // bottom left
-	m_vertices[1] = Vec2{ hx, -hy}; // bottom right
-	m_vertices[2] = Vec2{ hx,  hy}; // top right
-	m_vertices[3] = Vec2{-hx,  hy}; // top left
-	m_normals[0] = Vec2{float_t{0}, -float_t{1}};
-	m_normals[1] = Vec2{float_t{1}, float_t{0}};
-	m_normals[2] = Vec2{float_t{0}, float_t{1}};
-	m_normals[3] = Vec2{-float_t{1}, float_t{0}};
-	m_centroid = center;
+	SetAsBox(hx, hy);
+	
+	Vec2 vertices[MaxPolygonVertices];
+	Vec2 normals[MaxPolygonVertices];
 
 	const auto xf = Transformation{center, Rot{angle}};
-
-	// Transformation vertices and normals.
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
-		m_vertices[i] = Transform(m_vertices[i], xf);
-		m_normals[i] = Rotate(m_normals[i], xf.q);
+		vertices[i] = Transform(m_vertices[i], xf);
+		normals[i] = Rotate(m_normals[i], xf.q);
 	}
+	
+	{
+		auto src_index = static_cast<decltype(m_count)>(FindLowestRightMostVertex(vertices, m_count));
+		for (auto i = decltype(m_count){0}; i < m_count; ++i)
+		{
+			m_vertices[i] = vertices[src_index];
+			m_normals[i] = normals[src_index];
+			src_index = static_cast<decltype(m_count)>((src_index + 1) % m_count);
+		}
+	}
+	
+	m_centroid = xf.p;
 }
 
-static inline Vec2 ComputeCentroid(const Vec2 vs[], PolygonShape::vertex_count_t count)
+static inline Vec2 ComputeCentroid(const Vec2 *vertices, PolygonShape::vertex_count_t count)
 {
 	assert(count >= 3);
-
+	
 	auto c = Vec2_zero;
 	auto area = float_t{0};
-
+	
 	// pRef is the reference point for forming triangles.
 	// It's location doesn't change the result (except for rounding error).
 	const auto pRef = Vec2_zero;
@@ -82,28 +100,28 @@ static inline Vec2 ComputeCentroid(const Vec2 vs[], PolygonShape::vertex_count_t
 	}
 	pRef *= float_t{1} / count;
 #endif
-
+	
 	const auto inv3 = float_t{1} / float_t(3);
-
+	
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
 		// Triangle vertices.
 		const auto p1 = pRef;
-		const auto p2 = vs[i];
-		const auto p3 = vs[(i + 1) % count];
-
+		const auto p2 = vertices[i];
+		const auto p3 = vertices[(i + 1) % count];
+		
 		const auto e1 = p2 - p1;
 		const auto e2 = p3 - p1;
-
+		
 		const auto D = Cross(e1, e2);
-
+		
 		const auto triangleArea = D / float_t(2);
 		area += triangleArea;
-
+		
 		// Area weighted centroid
 		c += triangleArea * inv3 * (p1 + p2 + p3);
 	}
-
+	
 	// Centroid
 	assert((area > 0) && !almost_equal(area, 0));
 	c *= float_t{1} / area;
@@ -158,22 +176,11 @@ void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 	// Create the convex hull using the Gift wrapping algorithm
 	// http://en.wikipedia.org/wiki/Gift_wrapping_algorithm
 
-	// Find the right most point on the hull
-	auto i0 = decltype(n){0};
-	auto x0 = ps[0].x;
-	for (auto i = decltype(n){1}; i < n; ++i)
-	{
-		const auto x = ps[i].x;
-		if ((x > x0) || ((x == x0) && (ps[i].y < ps[i0].y)))
-		{
-			i0 = i;
-			x0 = x;
-		}
-	}
+	const auto index0 = static_cast<decltype(n)>(FindLowestRightMostVertex(ps, n));
 
 	vertex_count_t hull[MaxPolygonVertices];
 	auto m = decltype(m_count){0};
-	auto ih = i0;
+	auto ih = index0;
 
 	for (;;)
 	{
@@ -206,7 +213,7 @@ void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 		++m;
 		ih = ie;
 
-		if (ie == i0)
+		if (ie == index0)
 		{
 			break;
 		}
@@ -231,15 +238,35 @@ void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 	// Compute normals. Ensure the edges have non-zero length.
 	for (auto i = decltype(m){0}; i < m; ++i)
 	{
-		const auto i1 = i;
-		const auto i2 = (i + 1) % m;
-		const auto edge = m_vertices[i2] - m_vertices[i1];
-		assert(!almost_equal(LengthSquared(edge), 0));
-		m_normals[i] = GetUnitVector(GetFwdPerpendicular(edge));
+		m_normals[i] = GetUnitVector(GetFwdPerpendicular(GetEdge(*this, i)));
 	}
 
 	// Compute the polygon centroid.
 	m_centroid = ComputeCentroid(m_vertices, m);
+}
+
+size_t box2d::FindLowestRightMostVertex(const Vec2 *vertices, size_t count)
+{
+	assert(count > 0);
+	auto i0 = decltype(count){0};
+	auto max_x = vertices[0].x;
+	for (auto i = decltype(count){1}; i < count; ++i)
+	{
+		const auto x = vertices[i].x;
+		if ((max_x < x) || ((max_x == x) && (vertices[i].y < vertices[i0].y)))
+		{
+			max_x = x;
+			i0 = i;
+		}
+	}
+	return i0;
+}
+
+Vec2 box2d::GetEdge(const PolygonShape& shape, PolygonShape::vertex_count_t index)
+{
+	const auto i0 = index;
+	const auto i1 = static_cast<PolygonShape::vertex_count_t>((index + 1) % shape.GetVertexCount());
+	return shape.GetVertex(i1) - shape.GetVertex(i0);
 }
 
 bool box2d::Validate(const PolygonShape& shape)
