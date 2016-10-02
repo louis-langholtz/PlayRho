@@ -22,6 +22,11 @@
 
 using namespace box2d;
 
+PolygonShape::PolygonShape(float_t hx, float_t hy) noexcept: Shape{e_polygon}
+{
+	SetAsBox(hx, hy);
+}
+
 void PolygonShape::SetAsBox(float_t hx, float_t hy) noexcept
 {
 	m_count = 4;
