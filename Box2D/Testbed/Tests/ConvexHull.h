@@ -93,9 +93,10 @@ public:
 			g_debugDraw.DrawString(m_points[i] + Vec2(0.05f, 0.05f), "%d", i);
 		}
 
-		if (shape.Validate() == false)
+		if (!Validate(shape))
 		{
-			m_textLine += 0;
+			g_debugDraw.DrawString(5, m_textLine, "Note: Invalid convex hull");
+			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
 		if (m_auto)

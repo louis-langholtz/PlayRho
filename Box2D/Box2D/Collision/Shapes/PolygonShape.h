@@ -80,10 +80,6 @@ public:
 	const Vec2* GetNormals() const noexcept { return m_normals; }
 	
 	Vec2 GetCentroid() const noexcept { return m_centroid; }
-
-	/// Validate convexity. This is a very time consuming operation.
-	/// @returns true if valid
-	bool Validate() const;
 	
 private:
 	/// Array of vertices.
@@ -148,5 +144,10 @@ AABB ComputeAABB(const PolygonShape& shape, const Transformation& xf, child_coun
 /// @return Mass data for this shape.
 MassData ComputeMass(const PolygonShape& shape, float_t density);
 
+/// Validate convexity of the given shape.
+/// @note This is a time consuming operation.
+/// @returns true if valid
+bool Validate(const PolygonShape& shape);
+	
 } // namespace box2d
 #endif

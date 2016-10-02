@@ -237,25 +237,26 @@ void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 	m_centroid = ComputeCentroid(m_vertices, m);
 }
 
-bool PolygonShape::Validate() const
+bool box2d::Validate(const PolygonShape& shape)
 {
-	for (auto i = decltype(m_count){0}; i < m_count; ++i)
+	const auto count = shape.GetVertexCount();
+	for (auto i = decltype(count){0}; i < count; ++i)
 	{
 		const auto i1 = i;
-		const auto i2 = (i1 + 1) % m_count;
-		const auto p = m_vertices[i1];
-		const auto e = m_vertices[i2] - p;
+		const auto i2 = static_cast<decltype(count)>((i1 + 1) % count);
+		const auto p = shape.GetVertex(i1);
+		const auto e = shape.GetVertex(i2) - p;
 		
-		for (auto j = decltype(m_count){0}; j < m_count; ++j)
+		for (auto j = decltype(count){0}; j < count; ++j)
 		{
 			if ((j == i1) || (j == i2))
 			{
 				continue;
 			}
 			
-			const auto v = m_vertices[j] - p;
+			const auto v = shape.GetVertex(j) - p;
 			const auto c = Cross(e, v);
-			if (c < float_t{0})
+			if (c < 0)
 			{
 				return false;
 			}
