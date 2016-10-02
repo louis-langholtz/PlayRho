@@ -38,7 +38,7 @@ public:
 	PolygonShape(): Shape{e_polygon} {}
 
 	PolygonShape(const PolygonShape&) = default;
-
+	
 	/// Create a convex hull from the given array of local points.
 	/// The count must be in the range [3, MaxPolygonVertices].
 	/// @warning the points may be re-ordered, even if they form a convex polygon
@@ -63,13 +63,14 @@ public:
 	/// @see MaxPolygonVertices.
 	vertex_count_t GetVertexCount() const noexcept { return m_count; }
 
-	/// Get a vertex by index.
+	/// Gets a vertex by index.
+	/// @detail Vertices go counter-clockwise.
 	Vec2 GetVertex(vertex_count_t index) const;
 
 	/// Gets a normal by index.
 	/// @detail
-	/// These are 90-degree clockwise-rotated unit-vectors of the vectors defined by
-	/// consecutive pairs of elements of vertices.
+	/// These are 90-degree clockwise-rotated (outward-facing) unit-vectors of the edges defined
+	/// by consecutive pairs of vertices starting with vertex 0.
 	/// @param index Index of the normal to get.
 	/// @return Normal for the given index.
 	Vec2 GetNormal(vertex_count_t index) const;
