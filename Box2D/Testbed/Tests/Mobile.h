@@ -67,8 +67,7 @@ public:
 		bodyDef.position = p;
 		Body* body = m_world->CreateBody(bodyDef);
 
-		PolygonShape shape;
-		shape.SetAsBox(0.25f * a, a);
+		const auto shape = PolygonShape(0.25f * a, a);
 		body->CreateFixture(FixtureDef{&shape, density});
 
 		if (depth == e_depth)

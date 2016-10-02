@@ -646,8 +646,7 @@ TEST(World, PartiallyOverlappedCirclesSeparate)
 
 TEST(World, PerfectlyOverlappedIdenticalSquaresSeparate)
 {
-	PolygonShape shape;
-	shape.SetAsBox(1, 1);
+	const auto shape = PolygonShape(1, 1);
 	const Vec2 gravity{0, 0};
 	
 	World world{gravity};
@@ -713,8 +712,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	body_def.bullet = false; // separation is faster if true.
 	
 	const auto half_dim = float_t(64); // 1 causes additional y-axis separation
-	PolygonShape shape;
-	shape.SetAsBox(half_dim, half_dim);
+	const auto shape = PolygonShape{half_dim, half_dim};
 	FixtureDef fixtureDef;
 	fixtureDef.shape = &shape;
 	fixtureDef.density = float_t(1);
@@ -1219,8 +1217,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 	ASSERT_EQ(ball_body->GetPosition().y, 0);
 	
 	const auto ball_radius = float_t(half_box_width / 4);
-	PolygonShape object_shape;
-	object_shape.SetAsBox(ball_radius, ball_radius);
+	const auto object_shape = PolygonShape{ball_radius, ball_radius};
 	fixtureDef.shape = &object_shape;
 	fixtureDef.density = float_t(10);
 	{

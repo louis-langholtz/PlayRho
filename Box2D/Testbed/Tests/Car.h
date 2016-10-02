@@ -96,8 +96,7 @@ public:
 			bd.type = BodyType::Dynamic;
 			Body* body = m_world->CreateBody(bd);
 
-			PolygonShape box;
-			box.SetAsBox(10.0f, 0.25f);
+			const auto box = PolygonShape(10.0f, 0.25f);
 			body->CreateFixture(FixtureDef{&box, 1.0f});
 
 			RevoluteJointDef jd(ground, body, body->GetPosition());
@@ -112,8 +111,7 @@ public:
 		// Bridge
 		{
 			int32 N = 20;
-			PolygonShape shape;
-			shape.SetAsBox(1.0f, 0.125f);
+			const auto shape = PolygonShape(1.0f, 0.125f);
 
 			FixtureDef fd;
 			fd.shape = &shape;
@@ -141,8 +139,7 @@ public:
 
 		// Boxes
 		{
-			PolygonShape box;
-			box.SetAsBox(0.5f, 0.5f);
+			const auto box = PolygonShape(0.5f, 0.5f);
 
 			Body* body = nullptr;
 			BodyDef bd;

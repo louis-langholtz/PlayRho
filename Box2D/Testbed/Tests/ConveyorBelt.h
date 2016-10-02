@@ -44,8 +44,7 @@ public:
 			bd.position = Vec2(-5.0f, 5.0f);
 			Body* body = m_world->CreateBody(bd);
 
-			PolygonShape shape;
-			shape.SetAsBox(10.0f, 0.5f);
+			const auto shape = PolygonShape(10.0f, 0.5f);
 
 			FixtureDef fd;
 			fd.shape = &shape;
@@ -61,8 +60,7 @@ public:
 			bd.position = Vec2(-10.0f + 2.0f * i, 7.0f);
 			Body* body = m_world->CreateBody(bd);
 
-			PolygonShape shape;
-			shape.SetAsBox(0.5f, 0.5f);
+			const auto shape = PolygonShape(0.5f, 0.5f);
 			body->CreateFixture(FixtureDef{&shape, 20.0f});
 		}
 	}

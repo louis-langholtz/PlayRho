@@ -41,8 +41,7 @@ public:
 			CircleShape circle1;
 			circle1.SetRadius(float_t(1.0));
 
-			PolygonShape box;
-			box.SetAsBox(0.5f, 5.0f);
+			const auto box = PolygonShape(0.5f, 5.0f);
 
 			CircleShape circle2;
 			circle2.SetRadius(float_t(2.0));
@@ -84,8 +83,7 @@ public:
 			CircleShape circle2;
 			circle2.SetRadius(float_t(2));
 			
-			PolygonShape box;
-			box.SetAsBox(0.5f, 5.0f);
+			const auto box = PolygonShape(0.5f, 5.0f);
 
 			BodyDef bd1;
 			bd1.type = BodyType::Dynamic;

@@ -51,8 +51,7 @@ public:
 			bd.position = Vec2(0.0f, 10.0f);
 			Body* body = m_world->CreateBody(bd);
 
-			PolygonShape shape;
-			shape.SetAsBox(3.0f, 0.5f);
+			const auto shape = PolygonShape(3.0f, 0.5f);
 			m_platform = body->CreateFixture(FixtureDef{&shape, 0.0f});
 
 			m_bottom = 10.0f - 0.5f;

@@ -109,8 +109,7 @@ public:
 	void CreateBox()
 	{
 		constexpr auto side_length = float_t(wall_length/5); // 4
-		PolygonShape shape;
-		shape.SetAsBox(side_length/2, side_length/2);
+		const auto shape = PolygonShape(side_length/2, side_length/2);
 
 		FixtureDef fd;
 		fd.shape = &shape;

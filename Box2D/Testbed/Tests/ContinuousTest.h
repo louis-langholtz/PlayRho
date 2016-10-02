@@ -50,8 +50,7 @@ public:
 			bd.position = Vec2(0.0f, 20.0f);
 			//bd.angle = 0.1f;
 
-			PolygonShape shape;
-			shape.SetAsBox(2.0f, 0.1f);
+			const auto shape = PolygonShape(2.0f, 0.1f);
 
 			m_body = m_world->CreateBody(bd);
 			m_body->CreateFixture(FixtureDef{&shape, 1.0f});

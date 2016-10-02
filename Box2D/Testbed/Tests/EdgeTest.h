@@ -86,8 +86,7 @@ public:
 			bd.allowSleep = false;
 			Body* body = m_world->CreateBody(bd);
 
-			PolygonShape shape;
-			shape.SetAsBox(0.5f, 0.5f);
+			const auto shape = PolygonShape(0.5f, 0.5f);
 
 			body->CreateFixture(FixtureDef{&shape, 1.0f});
 		}

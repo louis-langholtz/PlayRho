@@ -135,8 +135,7 @@ public:
 
 			Body* body = m_world->CreateBody(bd);
 
-			PolygonShape shape;
-			shape.SetAsBox(0.5f, 0.5f);
+			const auto shape = PolygonShape(0.5f, 0.5f);
 
 			FixtureDef fd;
 			fd.shape = &shape;
@@ -154,8 +153,7 @@ public:
 
 			Body* body = m_world->CreateBody(bd);
 
-			PolygonShape shape;
-			shape.SetAsBox(0.25f, 0.25f);
+			const auto shape = PolygonShape(0.25f, 0.25f);
 
 			FixtureDef fd;
 			fd.shape = &shape;

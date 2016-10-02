@@ -39,8 +39,7 @@ public:
 		}
 
 		{
-			PolygonShape shape;
-			shape.SetAsBox(6.0f, 0.25f);
+			const auto shape = PolygonShape(6.0f, 0.25f);
 
 			BodyDef bd;
 			bd.position = Vec2(-1.5f, 10.0f);
@@ -49,8 +48,7 @@ public:
 		}
 
 		{
-			PolygonShape shape;
-			shape.SetAsBox(0.1f, 1.0f);
+			const auto shape = PolygonShape(0.1f, 1.0f);
 
 			FixtureDef fd;
 			fd.shape = &shape;
@@ -79,8 +77,7 @@ public:
 
 		Body* b2;
 		{
-			PolygonShape shape;
-			shape.SetAsBox(0.25f, 1.5f);
+			const auto shape = PolygonShape(0.25f, 1.5f);
 
 			BodyDef bd;
 			bd.position = Vec2(-7.0f, 4.0f);
@@ -90,8 +87,7 @@ public:
 
 		Body* b3;
 		{
-			PolygonShape shape;
-			shape.SetAsBox(6.0f, 0.125f);
+			const auto shape = PolygonShape(6.0f, 0.125f);
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
@@ -106,8 +102,7 @@ public:
 
 		Body* b4;
 		{
-			PolygonShape shape;
-			shape.SetAsBox(0.25f, 0.25f);
+			const auto shape = PolygonShape(0.25f, 0.25f);
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
@@ -146,8 +141,7 @@ public:
 
 		Body* b6;
 		{
-			PolygonShape shape;
-			shape.SetAsBox(1.0f, 0.1f);
+			const auto shape = PolygonShape(1.0f, 0.1f);
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
@@ -160,8 +154,7 @@ public:
 
 		Body* b7;
 		{
-			PolygonShape shape;
-			shape.SetAsBox(0.1f, 1.0f);
+			const auto shape = PolygonShape(0.1f, 1.0f);
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;

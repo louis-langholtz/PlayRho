@@ -50,8 +50,7 @@ public:
 
 		{
 
-			PolygonShape shape;
-			shape.SetAsBox(a, b);
+			const auto shape = PolygonShape(a, b);
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;

@@ -34,8 +34,7 @@ TEST(ContactSolver, SolveTouching)
 	auto pB = Position{Vec2{+2, 0}, 0};
 
 	const auto dim = float_t(2);
-	auto shape = PolygonShape{};
-	shape.SetAsBox(dim, dim);
+	const auto shape = PolygonShape(dim, dim);
 	const auto xfmA = Transformation(pA.c, Rot{pA.a});
 	const auto xfmB = Transformation(pB.c, Rot{pB.a});
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
@@ -72,8 +71,7 @@ TEST(ContactSolver, SolveOverlappingZeroRateDoesntMove)
 	auto pB = Position{Vec2{0, 0}, 0};
 	
 	const auto dim = float_t(2);
-	auto shape = PolygonShape{};
-	shape.SetAsBox(dim, dim);
+	const auto shape = PolygonShape(dim, dim);
 	const auto xfmA = Transformation(Vec2_zero, Rot{0});
 	const auto xfmB = Transformation(Vec2_zero, Rot{0});
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
@@ -110,8 +108,7 @@ TEST(ContactSolver, SolveOverlapping)
 	auto pB = Position{Vec2{0, 0}, 0};
 	
 	const auto dim = float_t(2);
-	auto shape = PolygonShape{};
-	shape.SetAsBox(dim, dim);
+	const auto shape = PolygonShape(dim, dim);
 	const auto xfmA = Transformation(Vec2_zero, Rot{0});
 	const auto xfmB = Transformation(Vec2_zero, Rot{0});
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);

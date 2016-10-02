@@ -107,8 +107,7 @@ public:
 		}
 
 		{
-			PolygonShape shape;
-			shape.SetAsBox(0.5f, 0.5f);
+			const auto shape = PolygonShape(0.5f, 0.5f);
 
 			FixtureDef fd;
 			fd.shape = &shape;

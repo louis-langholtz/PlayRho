@@ -47,10 +47,8 @@ int main(int argc, char** argv)
 	Body* groundBody = world.Create(groundBodyDef);
 
 	// Define the ground box shape.
-	PolygonShape groundBox;
-
 	// The extents are the half-widths of the box.
-	groundBox.SetAsBox(50.0f, 10.0f);
+	const auto groundBox = PolygonShape(50.0f, 10.0f);
 
 	// Add the ground fixture to the ground body.
 	groundBody->CreateFixture(FixtureDef{&groundBox, 0.0f});
@@ -62,8 +60,7 @@ int main(int argc, char** argv)
 	Body* body = world.Create(bodyDef);
 
 	// Define another box shape for our dynamic body.
-	PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(1.0f, 1.0f);
+	const auto dynamicBox = PolygonShape(1.0f, 1.0f);
 
 	// Define the dynamic body fixture.
 	FixtureDef fixtureDef;

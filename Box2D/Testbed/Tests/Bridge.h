@@ -44,8 +44,7 @@ public:
 		}
 
 		{
-			PolygonShape shape;
-			shape.SetAsBox(0.5f, 0.125f);
+			const auto shape = PolygonShape(0.5f, 0.125f);
 
 			FixtureDef fd;
 			fd.shape = &shape;

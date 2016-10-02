@@ -142,8 +142,7 @@ public:
 
 		// Chassis
 		{
-			PolygonShape shape;
-			shape.SetAsBox(2.5f, 1.0f);
+			const auto shape = PolygonShape(2.5f, 1.0f);
 
 			FixtureDef sd;
 			sd.density = 1.0f;

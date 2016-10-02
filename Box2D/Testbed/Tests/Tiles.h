@@ -83,8 +83,7 @@ public:
 
 		{
 			float_t a = 0.5f;
-			PolygonShape shape;
-			shape.SetAsBox(a, a);
+			const auto shape = PolygonShape(a, a);
 
 			Vec2 x(-7.0f, 0.75f);
 			Vec2 y;

@@ -58,8 +58,7 @@ public:
 		}
 
 		{
-			PolygonShape polygon1;
-			polygon1.SetAsBox(0.25f, 0.5f);
+			const auto polygon1 = PolygonShape(0.25f, 0.5f);
 
 			PolygonShape polygon2;
 			polygon2.SetAsBox(0.25f, 0.5f, Vec2(0.0f, -0.5f), 0.5f * Pi);
@@ -114,8 +113,7 @@ public:
 		}
 
 		{
-			PolygonShape bottom;
-			bottom.SetAsBox( 1.5f, 0.15f );
+			const auto bottom = PolygonShape( 1.5f, 0.15f );
 
 			PolygonShape left;
 			left.SetAsBox(0.15f, 2.7f, Vec2(-1.45f, 2.35f), 0.2f);

@@ -100,8 +100,7 @@ public:
 			bd.position = Vec2(-5.0f, 10.0f);
 			Body* body = m_world->CreateBody(bd);
 
-			PolygonShape p;
-			p.SetAsBox(0.5f, 1.0f);
+			const auto p = PolygonShape(0.5f, 1.0f);
 			body->CreateFixture(FixtureDef{&p, 1.0f});
 
 			PrismaticJointDef jd;

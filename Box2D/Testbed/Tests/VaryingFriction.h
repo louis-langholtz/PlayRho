@@ -38,8 +38,7 @@ public:
 		}
 
 		{
-			PolygonShape shape;
-			shape.SetAsBox(13.0f, 0.25f);
+			const auto shape = PolygonShape(13.0f, 0.25f);
 
 			BodyDef bd;
 			bd.position = Vec2(-4.0f, 22.0f);
@@ -50,8 +49,7 @@ public:
 		}
 
 		{
-			PolygonShape shape;
-			shape.SetAsBox(0.25f, 1.0f);
+			const auto shape = PolygonShape(0.25f, 1.0f);
 
 			BodyDef bd;
 			bd.position = Vec2(10.5f, 19.0f);
@@ -61,8 +59,7 @@ public:
 		}
 
 		{
-			PolygonShape shape;
-			shape.SetAsBox(13.0f, 0.25f);
+			const auto shape = PolygonShape(13.0f, 0.25f);
 
 			BodyDef bd;
 			bd.position = Vec2(4.0f, 14.0f);
@@ -73,8 +70,7 @@ public:
 		}
 
 		{
-			PolygonShape shape;
-			shape.SetAsBox(0.25f, 1.0f);
+			const auto shape = PolygonShape(0.25f, 1.0f);
 
 			BodyDef bd;
 			bd.position = Vec2(-10.5f, 11.0f);
@@ -84,8 +80,7 @@ public:
 		}
 
 		{
-			PolygonShape shape;
-			shape.SetAsBox(13.0f, 0.25f);
+			const auto shape = PolygonShape(13.0f, 0.25f);
 
 			BodyDef bd;
 			bd.position = Vec2(-4.0f, 6.0f);
@@ -96,8 +91,7 @@ public:
 		}
 
 		{
-			PolygonShape shape;
-			shape.SetAsBox(0.5f, 0.5f);
+			const auto shape = PolygonShape(0.5f, 0.5f);
 
 			FixtureDef fd;
 			fd.shape = &shape;

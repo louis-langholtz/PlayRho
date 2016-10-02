@@ -51,8 +51,7 @@ public:
 
 		// Creates left-end-fixed 8-part plank (below the top one)
 		{
-			PolygonShape shape;
-			shape.SetAsBox(0.5f, 0.125f);
+			const auto shape = PolygonShape(0.5f, 0.125f);
 
 			FixtureDef fd;
 			fd.shape = &shape;
@@ -79,8 +78,7 @@ public:
 
 		// Creates left-end-fixed 3-part plank at top
 		{
-			PolygonShape shape;
-			shape.SetAsBox(1.0f, 0.125f);
+			const auto shape = PolygonShape(1.0f, 0.125f);
 
 			FixtureDef fd;
 			fd.shape = &shape;
@@ -109,8 +107,7 @@ public:
 
 		// Creates 8-part plank to the right of the fixed planks (but not farthest right)
 		{
-			PolygonShape shape;
-			shape.SetAsBox(0.5f, 0.125f);
+			const auto shape = PolygonShape(0.5f, 0.125f);
 
 			FixtureDef fd;
 			fd.shape = &shape;
@@ -140,8 +137,7 @@ public:
 
 		// Creates 8-part farthest-right plank
 		{
-			PolygonShape shape;
-			shape.SetAsBox(0.5f, 0.125f);
+			const auto shape = PolygonShape(0.5f, 0.125f);
 
 			FixtureDef fd;
 			fd.shape = &shape;

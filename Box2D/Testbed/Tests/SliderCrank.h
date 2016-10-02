@@ -44,8 +44,7 @@ public:
 
 			// Define crank.
 			{
-				PolygonShape shape;
-				shape.SetAsBox(0.5f, 2.0f);
+				const auto shape = PolygonShape(0.5f, 2.0f);
 
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
@@ -64,8 +63,7 @@ public:
 
 			// Define follower.
 			{
-				PolygonShape shape;
-				shape.SetAsBox(0.5f, 4.0f);
+				const auto shape = PolygonShape(0.5f, 4.0f);
 
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
@@ -82,8 +80,7 @@ public:
 
 			// Define piston
 			{
-				PolygonShape shape;
-				shape.SetAsBox(1.5f, 1.5f);
+				const auto shape = PolygonShape(1.5f, 1.5f);
 
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
@@ -105,8 +102,7 @@ public:
 
 			// Create a payload
 			{
-				PolygonShape shape;
-				shape.SetAsBox(1.5f, 1.5f);
+				const auto shape = PolygonShape(1.5f, 1.5f);
 
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;

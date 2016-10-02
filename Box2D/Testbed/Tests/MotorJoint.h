@@ -51,8 +51,7 @@ public:
 			bd.position = Vec2(0.0f, 8.0f);
 			Body* body = m_world->CreateBody(bd);
 
-			PolygonShape shape;
-			shape.SetAsBox(2.0f, 0.5f);
+			const auto shape = PolygonShape(2.0f, 0.5f);
 
 			FixtureDef fd;
 			fd.shape = &shape;

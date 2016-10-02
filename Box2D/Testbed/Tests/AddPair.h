@@ -48,8 +48,7 @@ public:
 		}
 		
 		{
-			PolygonShape shape;
-			shape.SetAsBox(1.5f, 1.5f);
+			const auto shape = PolygonShape(1.5f, 1.5f);
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-40.0f,5.0f);

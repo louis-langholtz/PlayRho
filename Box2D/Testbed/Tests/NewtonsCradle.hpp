@@ -46,10 +46,8 @@ namespace box2d {
 				bd.position = Vec2{0, frame_height};
 				const auto body = m_world->CreateBody(bd);
 				
-				PolygonShape shape;
-				
 				const auto frame_width = m_num_arms * frame_width_per_arm;
-				shape.SetAsBox(frame_width/2, frame_width / 24);
+				const auto shape = PolygonShape(frame_width/2, frame_width / 24);
 				body->CreateFixture(FixtureDef{&shape, 20});
 				return body;
 			}();
@@ -100,8 +98,7 @@ namespace box2d {
 				def.position = Vec2{frame_width / 2 + frame_width/24, frame_height - (arm_length / 2)};
 				const auto body = m_world->CreateBody(def);
 				
-				PolygonShape shape;
-				shape.SetAsBox(frame_width/24, arm_length / 2 + frame_width / 24);
+				const auto shape = PolygonShape(frame_width/24, arm_length / 2 + frame_width / 24);
 				body->CreateFixture(FixtureDef{&shape, 20});
 				
 				m_right_side_wall = body;
@@ -118,8 +115,7 @@ namespace box2d {
 				def.position = Vec2{-(frame_width / 2 + frame_width/24), frame_height - (arm_length / 2)};
 				const auto body = m_world->CreateBody(def);
 				
-				PolygonShape shape;
-				shape.SetAsBox(frame_width/24, arm_length / 2 + frame_width / 24);
+				const auto shape = PolygonShape(frame_width/24, arm_length / 2 + frame_width / 24);
 				body->CreateFixture(FixtureDef{&shape, 20});
 				
 				m_left_side_wall = body;
@@ -157,8 +153,7 @@ namespace box2d {
 
 		Fixture* CreateArm(Body* body, float_t length = float_t(10))
 		{
-			PolygonShape shape;
-			shape.SetAsBox(length / 2000, length / 2);
+			const auto shape = PolygonShape(length / 2000, length / 2);
 			return body->CreateFixture(FixtureDef{&shape, 20});
 		}
 

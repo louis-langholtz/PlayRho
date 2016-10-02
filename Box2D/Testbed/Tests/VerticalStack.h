@@ -54,8 +54,7 @@ public:
 
 		for (int32 j = 0; j < e_columnCount; ++j)
 		{
-			PolygonShape shape;
-			shape.SetAsBox(0.5f, 0.5f);
+			const auto shape = PolygonShape(0.5f, 0.5f);
 
 			FixtureDef fd;
 			fd.shape = &shape;

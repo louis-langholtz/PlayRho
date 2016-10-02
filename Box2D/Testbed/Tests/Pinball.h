@@ -63,8 +63,7 @@ public:
 			bd.position = p2;
 			Body* rightFlipper = m_world->CreateBody(bd);
 
-			PolygonShape box;
-			box.SetAsBox(1.75f, 0.1f);
+			const auto box = PolygonShape(1.75f, 0.1f);
 
 			FixtureDef fd;
 			fd.shape = &box;

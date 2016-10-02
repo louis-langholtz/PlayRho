@@ -39,8 +39,7 @@ public:
 		}
 
 		{
-			PolygonShape shape;
-			shape.SetAsBox(2.0f, 0.5f);
+			const auto shape = PolygonShape(2.0f, 0.5f);
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;

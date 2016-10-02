@@ -40,8 +40,7 @@ public:
             
 			// Define crank.
 			{
-				PolygonShape shape;
-				shape.SetAsBox(4.0f, 1.0f);
+				const auto shape = PolygonShape(4.0f, 1.0f);
                 
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
@@ -56,8 +55,7 @@ public:
             
 			// Define connecting rod
 			{
-				PolygonShape shape;
-				shape.SetAsBox(8.0f, 1.0f);
+				const auto shape = PolygonShape(8.0f, 1.0f);
                 
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
@@ -72,8 +70,7 @@ public:
             
 			// Define piston
 			{
-				PolygonShape shape;
-				shape.SetAsBox(3.0f, 3.0f);
+				const auto shape = PolygonShape(3.0f, 3.0f);
                 
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
