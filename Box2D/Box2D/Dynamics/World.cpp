@@ -1140,9 +1140,10 @@ void World::Step(float_t dt, unsigned velocityIterations, unsigned positionItera
 {
 	if (HasNewFixtures())
 	{
+		UnsetNewFixtures();
+		
 		// New fixtures were added: need to find and create the new contacts.
 		m_contactMgr.FindNewContacts();
-		UnsetNewFixtures();
 	}
 
 	assert(!IsLocked());
