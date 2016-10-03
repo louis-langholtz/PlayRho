@@ -102,7 +102,7 @@ TEST(ContactSolver, SolveOverlappingZeroRateDoesntMove)
 	EXPECT_EQ(old_pB.a, pB.a);
 }
 
-TEST(ContactSolver, SolveOverlapping)
+TEST(ContactSolver, SolvePerfectlyOverlappingSquares)
 {
 	auto pA = Position{Vec2{0, 0}, 0};
 	auto pB = Position{Vec2{0, 0}, 0};
@@ -121,7 +121,7 @@ TEST(ContactSolver, SolveOverlapping)
 	const auto lcB = Vec2{};
 	const auto bA = ContactPositionConstraint::BodyData{indexA, float_t(1), float_t(1), lcA};
 	const auto bB = ContactPositionConstraint::BodyData{indexB, float_t(1), float_t(1), lcB};
-	ContactPositionConstraint pc{manifold, bA, 0, bB, 0};
+	ContactPositionConstraint pc{manifold, bA, GetRadius(shape), bB, GetRadius(shape)};
 	
 	const auto old_pA = pA;
 	const auto old_pB = pB;
