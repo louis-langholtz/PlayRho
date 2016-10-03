@@ -455,7 +455,6 @@ float_t Solve(const ContactPositionConstraint& pc, Position& positionA, Position
 		const auto invInertiaB = pc.bodyB.invI;
 		const auto localCenterB = pc.bodyB.localCenter;
 		
-		//baumgarte += (invMassA == 0 || invMassB == 0) * (float_t(1) - baumgarte);
 		// Compute inverse mass total.
 		// This must be > 0 unless doing TOI solving and neither bodies were the bodies specified.
 		const auto invMassTotal = invMassA + invMassB;
@@ -497,10 +496,8 @@ float_t Solve(const ContactPositionConstraint& pc, Position& positionA, Position
 				// Compute normal impulse
 				const auto P = psm.normal * -C / K;
 				
-				posA.c -= invMassA * P;
-				posA.a -= invInertiaA * Cross(rA, P);
-				posB.c += invMassB * P;
-				posB.a += invInertiaB * Cross(rB, P);
+				posA -= Position{invMassA * P, invInertiaA * Cross(rA, P)};
+				posB += Position{invMassB * P, invInertiaB * Cross(rB, P)};
 			}
 		}
 	}
