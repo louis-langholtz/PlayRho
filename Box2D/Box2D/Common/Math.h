@@ -1076,9 +1076,9 @@ inline Transformation GetTransform1(const Sweep& sweep)
 	return GetTransformation(sweep.pos1, sweep.GetLocalCenter());
 }
 
-constexpr inline float_t DegreesToRadians(float_t value)
+constexpr inline float_t DegreesToRadians(double value)
 {
-	return value * Pi / 180;
+	return static_cast<float_t>(value * M_PI / 180);
 }
 
 inline void Sweep::Advance0(float_t alpha)
