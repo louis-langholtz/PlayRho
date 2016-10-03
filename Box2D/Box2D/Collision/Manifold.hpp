@@ -48,7 +48,7 @@ namespace box2d
 	/// account for movement, which is critical for continuous physics.
 	/// All contact scenarios must be expressed in one of these types.
 	/// This structure is stored across time steps, so we keep it small.
-	/// It's at least 59-bytes large.
+	/// @note This data structure is at least 59-bytes large.
 	class Manifold
 	{
 	public:
