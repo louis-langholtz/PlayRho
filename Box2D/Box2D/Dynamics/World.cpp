@@ -34,8 +34,8 @@
 #include <Box2D/Common/AllocatedArray.hpp>
 
 #include <Box2D/Dynamics/Contacts/ContactSolver.h>
-#include <Box2D/Dynamics/Contacts/ContactVelocityConstraint.hpp>
-#include <Box2D/Dynamics/Contacts/ContactPositionConstraint.hpp>
+#include <Box2D/Dynamics/Contacts/VelocityConstraint.hpp>
+#include <Box2D/Dynamics/Contacts/PositionConstraint.hpp>
 
 #include <new>
 #include <functional>
