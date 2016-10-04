@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Common/Drawer.h>
+#include "Drawer.h"
 
 using namespace box2d;
 
