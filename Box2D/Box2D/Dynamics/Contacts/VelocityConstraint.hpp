@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef ContactVelocityConstraint_hpp
-#define ContactVelocityConstraint_hpp
+#ifndef VelocityConstraint_hpp
+#define VelocityConstraint_hpp
 
 #include <Box2D/Common/Math.h>
 
@@ -209,4 +209,4 @@ namespace box2d {
 	
 } // namespace box2d
 
-#endif /* ContactVelocityConstraint_hpp */
+#endif /* VelocityConstraint_hpp */

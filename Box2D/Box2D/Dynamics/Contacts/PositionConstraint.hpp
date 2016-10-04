@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef ContactPositionConstraint_hpp
-#define ContactPositionConstraint_hpp
+#ifndef PositionConstraint_hpp
+#define PositionConstraint_hpp
 
 #include <Box2D/Collision/Manifold.hpp>
 
@@ -73,4 +73,4 @@ namespace box2d {
 
 } // namespace box2d
 
-#endif /* ContactPositionConstraint_hpp */
+#endif /* PositionConstraint_hpp */
