@@ -242,8 +242,9 @@ void Rope::Draw(box2d::Draw* draw) const
 {
 	const auto c = Color(float_t(0.4), float_t(0.5), float_t(0.7));
 
-	for (auto i = decltype(m_count - 1){0}; i < m_count - 1; ++i)
+	const auto count = GetVertexCount();
+	for (auto i = decltype(count - 1){0}; i < count - 1; ++i)
 	{
-		draw->DrawSegment(m_ps[i], m_ps[i+1], c);
+		draw->DrawSegment(GetVertex(i), GetVertex(i + 1), c);
 	}
 }

@@ -82,6 +82,12 @@ public:
 		return m_ps;
 	}
 
+	Vec2 GetVertex(size_type index) const noexcept
+	{
+		assert(index < m_count);
+		return m_ps[index];
+	}
+
 	///
 	void Draw(Draw* draw) const;
 
