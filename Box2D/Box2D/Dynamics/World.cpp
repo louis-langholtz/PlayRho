@@ -29,7 +29,7 @@
 #include <Box2D/Collision/Shapes/EdgeShape.h>
 #include <Box2D/Collision/Shapes/ChainShape.h>
 #include <Box2D/Collision/Shapes/PolygonShape.h>
-#include <Box2D/Common/Draw.h>
+#include <Box2D/Common/Drawer.h>
 #include <Box2D/Common/Timer.h>
 #include <Box2D/Common/AllocatedArray.hpp>
 
