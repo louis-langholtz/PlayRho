@@ -501,11 +501,9 @@ inline contact_count_t GetContactCount(const World& world) noexcept
 /// @warning this should be called outside of a time step.
 void Dump(const World& world);
 
-/// Call this to draw shapes and other debug draw data.
-void DrawDebugData(Drawer& draw, const World& world);
-
-void DrawJoint(Drawer& draw, const Joint& joint);
-void DrawShape(Drawer& draw, const Fixture& shape, const Transformation& xf, const Color& color);
+void Draw(Drawer& draw, const World& world);
+void Draw(Drawer& draw, const Joint& joint);
+void Draw(Drawer& draw, const Fixture& shape, const Transformation& xf, const Color& color);
 
 } // namespace box2d
 

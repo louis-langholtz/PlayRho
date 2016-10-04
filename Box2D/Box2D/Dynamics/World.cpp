@@ -1319,7 +1319,7 @@ void Dump(const World& world)
 	log("bodies = nullptr;\n");
 }
 
-void DrawDebugData(Drawer& draw, const World& world)
+void Draw(Drawer& draw, const World& world)
 {
 	const auto flags = draw.GetFlags();
 	
@@ -1332,23 +1332,23 @@ void DrawDebugData(Drawer& draw, const World& world)
 			{
 				if (!b.IsActive())
 				{
-					DrawShape(draw, f, xf, Color(0.5f, 0.5f, 0.3f));
+					Draw(draw, f, xf, Color(0.5f, 0.5f, 0.3f));
 				}
 				else if (b.GetType() == BodyType::Static)
 				{
-					DrawShape(draw, f, xf, Color(0.5f, 0.9f, 0.5f));
+					Draw(draw, f, xf, Color(0.5f, 0.9f, 0.5f));
 				}
 				else if (b.GetType() == BodyType::Kinematic)
 				{
-					DrawShape(draw, f, xf, Color(0.5f, 0.5f, 0.9f));
+					Draw(draw, f, xf, Color(0.5f, 0.5f, 0.9f));
 				}
 				else if (!b.IsAwake())
 				{
-					DrawShape(draw, f, xf, Color(0.6f, 0.6f, 0.6f));
+					Draw(draw, f, xf, Color(0.6f, 0.6f, 0.6f));
 				}
 				else
 				{
-					DrawShape(draw, f, xf, Color(0.9f, 0.7f, 0.7f));
+					Draw(draw, f, xf, Color(0.9f, 0.7f, 0.7f));
 				}
 			}
 		}
@@ -1358,7 +1358,7 @@ void DrawDebugData(Drawer& draw, const World& world)
 	{
 		for (auto&& j: world.GetJoints())
 		{
-			DrawJoint(draw, j);
+			Draw(draw, j);
 		}
 	}
 	
@@ -1419,7 +1419,7 @@ void DrawDebugData(Drawer& draw, const World& world)
 	}
 }
 
-void DrawShape(Drawer& draw, const Fixture& fixture, const Transformation& xf, const Color& color)
+void Draw(Drawer& draw, const Fixture& fixture, const Transformation& xf, const Color& color)
 {
 	switch (GetType(fixture))
 	{
@@ -1476,7 +1476,7 @@ void DrawShape(Drawer& draw, const Fixture& fixture, const Transformation& xf, c
 	}
 }
 
-void DrawJoint(Drawer& draw, const Joint& joint)
+void Draw(Drawer& draw, const Joint& joint)
 {
 	const auto bodyA = joint.GetBodyA();
 	const auto bodyB = joint.GetBodyB();
