@@ -33,7 +33,6 @@ For discussion please visit http://box2d.org/forum
 // These include files constitute the main Box2D API
 
 #include <Box2D/Common/Settings.h>
-#include <Box2D/Common/Drawer.h>
 #include <Box2D/Common/Timer.h>
 
 #include <Box2D/Collision/Shapes/CircleShape.h>

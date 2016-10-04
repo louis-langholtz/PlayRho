@@ -34,10 +34,8 @@ namespace box2d {
 
 struct AABB;
 struct BodyDef;
-struct Color;
 struct JointDef;
 class Body;
-class Drawer;
 class Fixture;
 class Joint;
 class Island;
@@ -500,10 +498,6 @@ inline contact_count_t GetContactCount(const World& world) noexcept
 /// Dump the world into the log file.
 /// @warning this should be called outside of a time step.
 void Dump(const World& world);
-
-void Draw(Drawer& draw, const World& world);
-void Draw(Drawer& draw, const Joint& joint);
-void Draw(Drawer& draw, const Fixture& shape, const Transformation& xf, const Color& color);
 
 } // namespace box2d
 

@@ -87,6 +87,16 @@ private:
 	uint32 m_drawFlags = 0;
 };
 
+class World;
+class Joint;
+class Fixture;
+class Rope;
+	
+void Draw(Drawer& draw, const World& world);
+void Draw(Drawer& draw, const Joint& joint);
+void Draw(Drawer& draw, const Fixture& shape, const Transformation& xf, const Color& color);
+void Draw(Drawer& drawer, const Rope& rope);
+
 } // namespace box2d
 
 #endif

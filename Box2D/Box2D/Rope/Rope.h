@@ -111,10 +111,6 @@ private:
 	float_t m_k3 = float_t(0.1);
 };
 
-class Drawer;
-
-void Draw(Drawer& drawer, const Rope& rope);
-
 } // namespace box2d
 
 #endif

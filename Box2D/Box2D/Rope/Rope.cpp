@@ -19,7 +19,6 @@
 */
 
 #include <Box2D/Rope/Rope.h>
-#include <Box2D/Common/Drawer.h>
 
 using namespace box2d;
 
@@ -235,16 +234,5 @@ void Rope::SolveC3()
 		m_ps[i] = p1;
 		m_ps[i + 1] = p2;
 		m_ps[i + 2] = p3;
-	}
-}
-
-void box2d::Draw(Drawer& drawer, const Rope& rope)
-{
-	const auto c = Color(float_t(0.4), float_t(0.5), float_t(0.7));
-
-	const auto count = rope.GetVertexCount();
-	for (auto i = decltype(count - 1){0}; i < count - 1; ++i)
-	{
-		drawer.DrawSegment(rope.GetVertex(i), rope.GetVertex(i + 1), c);
 	}
 }
