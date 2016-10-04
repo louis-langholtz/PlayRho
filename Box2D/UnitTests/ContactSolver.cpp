@@ -41,13 +41,13 @@ TEST(ContactSolver, SolveTouching)
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
 	ASSERT_EQ(manifold.GetPointCount(), 2);
 
-	const auto indexA = ContactPositionConstraint::BodyData::index_type{0};
-	const auto indexB = ContactPositionConstraint::BodyData::index_type{0};
+	const auto indexA = PositionConstraint::BodyData::index_type{0};
+	const auto indexB = PositionConstraint::BodyData::index_type{0};
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
-	const auto bA = ContactPositionConstraint::BodyData{indexA, float_t(1), float_t(1), lcA};
-	const auto bB = ContactPositionConstraint::BodyData{indexB, float_t(1), float_t(1), lcB};
-	ContactPositionConstraint pc{manifold, bA, 0, bB, 0};
+	const auto bA = PositionConstraint::BodyData{indexA, float_t(1), float_t(1), lcA};
+	const auto bB = PositionConstraint::BodyData{indexB, float_t(1), float_t(1), lcB};
+	PositionConstraint pc{manifold, bA, 0, bB, 0};
 	
 	const auto old_pA = pA;
 	const auto old_pB = pB;
@@ -78,13 +78,13 @@ TEST(ContactSolver, SolveOverlappingZeroRateDoesntMove)
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
 	ASSERT_EQ(manifold.GetPointCount(), 2);
 	
-	const auto indexA = ContactPositionConstraint::BodyData::index_type{0};
-	const auto indexB = ContactPositionConstraint::BodyData::index_type{0};
+	const auto indexA = PositionConstraint::BodyData::index_type{0};
+	const auto indexB = PositionConstraint::BodyData::index_type{0};
 	const auto lcA = Vec2{};
 	const auto lcB = Vec2{};
-	const auto bA = ContactPositionConstraint::BodyData{indexA, float_t(1), float_t(1), lcA};
-	const auto bB = ContactPositionConstraint::BodyData{indexB, float_t(1), float_t(1), lcB};
-	ContactPositionConstraint pc{manifold, bA, 0, bB, 0};
+	const auto bA = PositionConstraint::BodyData{indexA, float_t(1), float_t(1), lcA};
+	const auto bB = PositionConstraint::BodyData{indexB, float_t(1), float_t(1), lcB};
+	PositionConstraint pc{manifold, bA, 0, bB, 0};
 	
 	const auto old_pA = pA;
 	const auto old_pB = pB;
@@ -115,13 +115,13 @@ TEST(ContactSolver, SolvePerfectlyOverlappingSquares)
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
 	ASSERT_EQ(manifold.GetPointCount(), 2);
 
-	const auto indexA = ContactPositionConstraint::BodyData::index_type{0};
-	const auto indexB = ContactPositionConstraint::BodyData::index_type{0};
+	const auto indexA = PositionConstraint::BodyData::index_type{0};
+	const auto indexB = PositionConstraint::BodyData::index_type{0};
 	const auto lcA = Vec2{};
 	const auto lcB = Vec2{};
-	const auto bA = ContactPositionConstraint::BodyData{indexA, float_t(1), float_t(1), lcA};
-	const auto bB = ContactPositionConstraint::BodyData{indexB, float_t(1), float_t(1), lcB};
-	ContactPositionConstraint pc{manifold, bA, GetRadius(shape), bB, GetRadius(shape)};
+	const auto bA = PositionConstraint::BodyData{indexA, float_t(1), float_t(1), lcA};
+	const auto bB = PositionConstraint::BodyData{indexB, float_t(1), float_t(1), lcB};
+	PositionConstraint pc{manifold, bA, GetRadius(shape), bB, GetRadius(shape)};
 	
 	const auto old_pA = pA;
 	const auto old_pB = pB;

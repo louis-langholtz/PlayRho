@@ -46,8 +46,8 @@ bool g_blockSolve = true;
 ///   4. Checks for redundant velocity constraint point and removes it if found.
 /// @param vc Velocity constraint.
 /// @param pc Position constraint.
-static inline void UpdateVelocityConstraint(ContactVelocityConstraint& vc,
-											const ContactPositionConstraint& pc,
+static inline void UpdateVelocityConstraint(VelocityConstraint& vc,
+											const PositionConstraint& pc,
 											const Position* positions, const Velocity* velocities)
 {
 	assert(vc.bodyA.GetIndex() >= 0);
@@ -134,7 +134,7 @@ static inline void UpdateVelocityConstraint(ContactVelocityConstraint& vc,
 /// @param velA Velocity structure for body A. This is an input and output parameter modified to meet the constraint.
 /// @param velB Velocity structure for body B. This is an input and output parameter modified to meet the constraint.
 /// @param vcp Velocity constraint point. This is an input and output parameter whose tangent impulse is modified.
-static void SolveTangentConstraint(const ContactVelocityConstraint& vc,
+static void SolveTangentConstraint(const VelocityConstraint& vc,
 								   Velocity& velA, Velocity& velB, VelocityConstraintPoint& vcp)
 {
 	assert(IsValid(velA));
@@ -164,7 +164,7 @@ static void SolveTangentConstraint(const ContactVelocityConstraint& vc,
 }
 
 /// Solves the velocities and constraint point for the normal constraint.
-static void SolveNormalConstraint(const ContactVelocityConstraint& vc,
+static void SolveNormalConstraint(const VelocityConstraint& vc,
 								  Velocity& velA, Velocity& velB, VelocityConstraintPoint& vcp)
 {
 	assert(IsValid(velA));
@@ -190,7 +190,7 @@ static void SolveNormalConstraint(const ContactVelocityConstraint& vc,
 	velB.w += vc.bodyB.GetInvRotI() * Cross(vcp.rB, P);
 }
 
-static inline void BlockSolveUpdate(const ContactVelocityConstraint& vc, const Vec2 oldImpulse, const Vec2 newImpulse,
+static inline void BlockSolveUpdate(const VelocityConstraint& vc, const Vec2 oldImpulse, const Vec2 newImpulse,
 									Velocity& velA, Velocity& velB, VelocityConstraintPoint& vcp1, VelocityConstraintPoint& vcp2)
 {
 	assert(IsValid(oldImpulse));
@@ -215,7 +215,7 @@ static inline void BlockSolveUpdate(const ContactVelocityConstraint& vc, const V
 	vcp2.normalImpulse = newImpulse.y;
 }
 
-static inline bool BlockSolveNormalCase1(const ContactVelocityConstraint& vc, const Vec2 oldImpulse, const Vec2 b_prime,
+static inline bool BlockSolveNormalCase1(const VelocityConstraint& vc, const Vec2 oldImpulse, const Vec2 b_prime,
 										 Velocity& velA, Velocity& velB, VelocityConstraintPoint& vcp1, VelocityConstraintPoint& vcp2)
 {
 	//
@@ -251,7 +251,7 @@ static inline bool BlockSolveNormalCase1(const ContactVelocityConstraint& vc, co
 	return false;
 }
 
-static inline bool BlockSolveNormalCase2(const ContactVelocityConstraint& vc, const Vec2 oldImpulse, const Vec2 b_prime,
+static inline bool BlockSolveNormalCase2(const VelocityConstraint& vc, const Vec2 oldImpulse, const Vec2 b_prime,
 										 Velocity& velA, Velocity& velB, VelocityConstraintPoint& vcp1, VelocityConstraintPoint& vcp2)
 {
 	//
@@ -281,7 +281,7 @@ static inline bool BlockSolveNormalCase2(const ContactVelocityConstraint& vc, co
 	return false;
 }
 
-static inline bool BlockSolveNormalCase3(const ContactVelocityConstraint& vc, const Vec2 oldImpulse, const Vec2 b_prime,
+static inline bool BlockSolveNormalCase3(const VelocityConstraint& vc, const Vec2 oldImpulse, const Vec2 b_prime,
 										 Velocity& velA, Velocity& velB, VelocityConstraintPoint& vcp1, VelocityConstraintPoint& vcp2)
 {
 	//
@@ -311,7 +311,7 @@ static inline bool BlockSolveNormalCase3(const ContactVelocityConstraint& vc, co
 	return false;
 }
 
-static inline bool BlockSolveNormalCase4(const ContactVelocityConstraint& vc, const Vec2 oldImpulse, const Vec2 b_prime,
+static inline bool BlockSolveNormalCase4(const VelocityConstraint& vc, const Vec2 oldImpulse, const Vec2 b_prime,
 										 Velocity& velA, Velocity& velB, VelocityConstraintPoint& vcp1, VelocityConstraintPoint& vcp2)
 {
 	//
@@ -330,7 +330,7 @@ static inline bool BlockSolveNormalCase4(const ContactVelocityConstraint& vc, co
 	return false;
 }
 
-static inline void BlockSolveNormalConstraint(const ContactVelocityConstraint& vc,
+static inline void BlockSolveNormalConstraint(const VelocityConstraint& vc,
 											  Velocity& velA, Velocity& velB, VelocityConstraintPoint& vcp1, VelocityConstraintPoint& vcp2)
 {
 	// Block solver developed in collaboration with Dirk Gregorius (back in 01/07 on Box2D_Lite).
@@ -400,7 +400,7 @@ static inline void BlockSolveNormalConstraint(const ContactVelocityConstraint& v
 /// Solves the velocity constraint.
 /// @detail This updates the tangent and normal impulses of the velocity constraint points of the given velocity
 ///   constraint and updates the given velocities.
-static inline void SolveVelocityConstraint(ContactVelocityConstraint& vc, Velocity& velA, Velocity& velB)
+static inline void SolveVelocityConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
 {
 	const auto pointCount = vc.GetPointCount();
 	assert((pointCount == 1) || (pointCount == 2));
@@ -438,7 +438,7 @@ static inline void SolveVelocityConstraint(ContactVelocityConstraint& vc, Veloci
 	}
 }
 
-float_t Solve(const ContactPositionConstraint& pc, Position& positionA, Position& positionB,
+float_t Solve(const PositionConstraint& pc, Position& positionA, Position& positionB,
 			  float_t resolution_rate, float_t max_separation, float_t max_correction)
 {
 	auto minSeparation = MaxFloat;

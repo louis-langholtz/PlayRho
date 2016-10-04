@@ -24,8 +24,8 @@
 
 namespace box2d {
 
-	class ContactVelocityConstraint;
-	class ContactPositionConstraint;
+	class VelocityConstraint;
+	class PositionConstraint;
 
 	/// Contact Solver.
 	/// @note This data structure is at least 36-bytes large.
@@ -50,8 +50,8 @@ namespace box2d {
 		///   <code>nullptr</code>.
 		ContactSolver(Position* positions, Velocity* velocities,
 					  contact_count_t count,
-					  ContactPositionConstraint* positionConstraints,
-					  ContactVelocityConstraint* velocityConstraints) noexcept :
+					  PositionConstraint* positionConstraints,
+					  VelocityConstraint* velocityConstraints) noexcept :
 			m_positions{positions},
 			m_velocities{velocities},
 			m_count{count},
@@ -101,8 +101,8 @@ namespace box2d {
 		Velocity* const m_velocities; ///< Array of velocities (8-bytes).
 		
 		const contact_count_t m_count; ///< Count of elements (contacts) in the contact position-constraint and velocity-constraint arrays (4-bytes).
-		ContactPositionConstraint* const m_positionConstraints; ///< Array of position-constraints (1 per contact, 8-bytes).
-		ContactVelocityConstraint* const m_velocityConstraints; ///< Array of velocity-constraints (1 per contact, 8-bytes).
+		PositionConstraint* const m_positionConstraints; ///< Array of position-constraints (1 per contact, 8-bytes).
+		VelocityConstraint* const m_velocityConstraints; ///< Array of velocity-constraints (1 per contact, 8-bytes).
 	};
 	
 	/// Solves the given position constraint.
@@ -118,7 +118,7 @@ namespace box2d {
 	/// @sa http://allenchou.net/2013/12/game-physics-resolution-contact-constraints/
 	/// @return Minimum separation distance of the position constraint's manifold points
 	///   (prior to "solving").
-	float_t Solve(const ContactPositionConstraint& pc, Position& positionA, Position& positionB,
+	float_t Solve(const PositionConstraint& pc, Position& positionA, Position& positionB,
 				  float_t resolution_rate, float_t max_separation, float_t max_correction);
 
 } // namespace box2d

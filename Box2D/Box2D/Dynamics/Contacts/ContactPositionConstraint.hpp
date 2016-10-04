@@ -26,7 +26,7 @@ namespace box2d {
 
 	/// Contact Position Constraint.
 	/// @note This structure is at least 104-bytes large.
-	struct ContactPositionConstraint
+	struct PositionConstraint
 	{
 		using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
 		
@@ -50,9 +50,9 @@ namespace box2d {
 			Vec2 localCenter; ///< Local center of the associated body's sweep (8-bytes).
 		};
 		
-		ContactPositionConstraint() = default;
+		PositionConstraint() = default;
 		
-		ContactPositionConstraint(const Manifold& m, const BodyData& bA, float_t rA, const BodyData& bB, float_t rB):
+		PositionConstraint(const Manifold& m, const BodyData& bA, float_t rA, const BodyData& bB, float_t rB):
 			manifold{m}, bodyA{bA}, radiusA{rA}, bodyB{bB}, radiusB{rB}
 		{
 			assert(m.GetPointCount() > 0);

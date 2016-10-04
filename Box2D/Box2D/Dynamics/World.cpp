@@ -535,8 +535,8 @@ void World::Solve(const TimeStep& step)
 	// ==== begin
 	using VelocityContainer = AllocatedArray<Velocity, StackAllocator&>;
 	using PositionContainer = AllocatedArray<Position, StackAllocator&>;
-	using PositionConstraintsContainer = AllocatedArray<ContactPositionConstraint, StackAllocator&>;
-	using VelocityConstraintsContainer = AllocatedArray<ContactVelocityConstraint, StackAllocator&>;
+	using PositionConstraintsContainer = AllocatedArray<PositionConstraint, StackAllocator&>;
+	using VelocityConstraintsContainer = AllocatedArray<VelocityConstraint, StackAllocator&>;
 	
 	namespace {
 		
@@ -577,7 +577,7 @@ void World::Solve(const TimeStep& step)
 			}
 		}
 		
-		inline ContactImpulse GetContactImpulse(const ContactVelocityConstraint& vc)
+		inline ContactImpulse GetContactImpulse(const VelocityConstraint& vc)
 		{
 			ContactImpulse impulse;
 			const auto count = vc.GetPointCount();
@@ -597,7 +597,7 @@ void World::Solve(const TimeStep& step)
 		/// @param constraints Array of m_contactCount contact velocity constraint elements.
 		inline void Report(ContactListener& listener,
 						   Island::ContactContainer& contacts,
-						   const ContactVelocityConstraint* constraints,
+						   const VelocityConstraint* constraints,
 						   TimeStep::iteration_type solved)
 		{
 			const auto size = contacts.size();
@@ -607,22 +607,22 @@ void World::Solve(const TimeStep& step)
 			}
 		}
 		
-		inline ContactVelocityConstraint::BodyData GetVelocityConstraintBodyData(const Body& val)
+		inline VelocityConstraint::BodyData GetVelocityConstraintBodyData(const Body& val)
 		{
 			assert(IsValidIslandIndex(val));
-			return ContactVelocityConstraint::BodyData{val.GetIslandIndex(), val.GetInverseMass(), val.GetInverseInertia()};
+			return VelocityConstraint::BodyData{val.GetIslandIndex(), val.GetInverseMass(), val.GetInverseInertia()};
 		}
 		
-		inline ContactPositionConstraint::BodyData GetPositionConstraintBodyData(const Body& val)
+		inline PositionConstraint::BodyData GetPositionConstraintBodyData(const Body& val)
 		{
 			assert(IsValidIslandIndex(val));
-			return ContactPositionConstraint::BodyData{val.GetIslandIndex(), val.GetInverseMass(), val.GetInverseInertia(), val.GetLocalCenter()};
+			return PositionConstraint::BodyData{val.GetIslandIndex(), val.GetInverseMass(), val.GetInverseInertia(), val.GetLocalCenter()};
 		}
 		
 		/// Gets the position-independent velocity constraint for the given contact, index, and time slot values.
-		inline ContactVelocityConstraint GetVelocityConstraint(const Contact& contact, ContactVelocityConstraint::index_type index, float_t dtRatio)
+		inline VelocityConstraint GetVelocityConstraint(const Contact& contact, VelocityConstraint::index_type index, float_t dtRatio)
 		{
-			ContactVelocityConstraint constraint(index, contact.GetFriction(), contact.GetRestitution(), contact.GetTangentSpeed());
+			VelocityConstraint constraint(index, contact.GetFriction(), contact.GetRestitution(), contact.GetTangentSpeed());
 			
 			constraint.normal = Vec2_zero;
 			
@@ -651,14 +651,14 @@ void World::Solve(const TimeStep& step)
 			return constraint;
 		}
 		
-		inline ContactPositionConstraint GetPositionConstraint(const Manifold& manifold, const Fixture& fixtureA, const Fixture& fixtureB)
+		inline PositionConstraint GetPositionConstraint(const Manifold& manifold, const Fixture& fixtureA, const Fixture& fixtureB)
 		{
-			return ContactPositionConstraint{manifold,
+			return PositionConstraint{manifold,
 				GetPositionConstraintBodyData(*(fixtureA.GetBody())), GetRadius(*fixtureA.GetShape()),
 				GetPositionConstraintBodyData(*(fixtureB.GetBody())), GetRadius(*fixtureB.GetShape())};
 		}
 		
-		inline void InitPosConstraints(ContactPositionConstraint* constraints,
+		inline void InitPosConstraints(PositionConstraint* constraints,
 									   contact_count_t count, Contact** contacts)
 		{
 			for (auto i = decltype(count){0}; i < count; ++i)
@@ -668,7 +668,7 @@ void World::Solve(const TimeStep& step)
 			}
 		}
 		
-		inline void InitVelConstraints(ContactVelocityConstraint* constraints,
+		inline void InitVelConstraints(VelocityConstraint* constraints,
 									   contact_count_t count, Contact** contacts, float_t dtRatio)
 		{
 			for (auto i = decltype(count){0}; i < count; ++i)
@@ -686,7 +686,7 @@ void World::Solve(const TimeStep& step)
 		/// Stores impulses.
 		/// @detail Saves the normal and tangent impulses of all the velocity constraint points back to their
 		///   associated contacts' manifold points.
-		inline void StoreImpulses(size_t count, const ContactVelocityConstraint* velocityConstraints, Contact** contacts)
+		inline void StoreImpulses(size_t count, const VelocityConstraint* velocityConstraints, Contact** contacts)
 		{
 			for (auto i = decltype(count){0}; i < count; ++i)
 			{
@@ -707,7 +707,7 @@ void World::Solve(const TimeStep& step)
 			Velocity b;
 		};
 		
-		inline VelocityPair CalcWarmStartVelocityDeltas(const ContactVelocityConstraint& vc)
+		inline VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc)
 		{
 			VelocityPair vp{Velocity{Vec2_zero, float_t{0}}, Velocity{Vec2_zero, float_t{0}}};
 			
@@ -726,7 +726,7 @@ void World::Solve(const TimeStep& step)
 			return vp;
 		}
 		
-		void WarmStart(contact_count_t count, ContactVelocityConstraint* velocityConstraints, Velocity* const velocities)
+		void WarmStart(contact_count_t count, VelocityConstraint* velocityConstraints, Velocity* const velocities)
 		{
 			for (auto i = decltype(count){0}; i < count; ++i)
 			{
@@ -743,10 +743,10 @@ void World::Solve(const TimeStep& step)
 bool World::Solve(const TimeStep& step, Island& island)
 {
 	// Would be nice to actually allocate this data on the actual stack but the running thread may not have nearly enough stack space for this.
-	auto positionConstraints = PositionConstraintsContainer{island.m_contacts.size(), m_stackAllocator.AllocateArray<ContactPositionConstraint>(island.m_contacts.size()), m_stackAllocator};
+	auto positionConstraints = PositionConstraintsContainer{island.m_contacts.size(), m_stackAllocator.AllocateArray<PositionConstraint>(island.m_contacts.size()), m_stackAllocator};
 	InitPosConstraints(positionConstraints.data(), static_cast<contact_count_t>(island.m_contacts.size()), island.m_contacts.data());
 	
-	auto velocityConstraints = VelocityConstraintsContainer{island.m_contacts.size(), m_stackAllocator.AllocateArray<ContactVelocityConstraint>(island.m_contacts.size()), m_stackAllocator};
+	auto velocityConstraints = VelocityConstraintsContainer{island.m_contacts.size(), m_stackAllocator.AllocateArray<VelocityConstraint>(island.m_contacts.size()), m_stackAllocator};
 	InitVelConstraints(velocityConstraints.data(), static_cast<contact_count_t>(island.m_contacts.size()), island.m_contacts.data(),
 					   step.warmStarting? step.dtRatio: float_t{0});
 	
@@ -1014,8 +1014,8 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	
 	auto velocities = VelocityContainer{island.m_bodies.size(), m_stackAllocator.AllocateArray<Velocity>(island.m_bodies.size()), m_stackAllocator};
 	auto positions = PositionContainer{island.m_bodies.size(), m_stackAllocator.AllocateArray<Position>(island.m_bodies.size()), m_stackAllocator};
-	auto positionConstraints = PositionConstraintsContainer{island.m_contacts.size(), m_stackAllocator.AllocateArray<ContactPositionConstraint>(island.m_contacts.size()), m_stackAllocator};
-	auto velocityConstraints = VelocityConstraintsContainer{island.m_contacts.size(), m_stackAllocator.AllocateArray<ContactVelocityConstraint>(island.m_contacts.size()), m_stackAllocator};
+	auto positionConstraints = PositionConstraintsContainer{island.m_contacts.size(), m_stackAllocator.AllocateArray<PositionConstraint>(island.m_contacts.size()), m_stackAllocator};
+	auto velocityConstraints = VelocityConstraintsContainer{island.m_contacts.size(), m_stackAllocator.AllocateArray<VelocityConstraint>(island.m_contacts.size()), m_stackAllocator};
 	InitPosConstraints(positionConstraints.data(), static_cast<contact_count_t>(island.m_contacts.size()), island.m_contacts.data());
 	InitVelConstraints(velocityConstraints.data(), static_cast<contact_count_t>(island.m_contacts.size()), island.m_contacts.data(),
 					   step.warmStarting? step.dtRatio: float_t{0});

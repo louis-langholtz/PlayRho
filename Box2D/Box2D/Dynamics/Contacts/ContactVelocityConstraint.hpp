@@ -40,7 +40,7 @@ namespace box2d {
 	/// Contact velocity constraint.
 	/// @note A valid contact velocity constraint must have a point count of either 1 or 2.
 	/// @note This data structure is at least 125-bytes large.
-	class ContactVelocityConstraint
+	class VelocityConstraint
 	{
 	public:
 		using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
@@ -83,11 +83,11 @@ namespace box2d {
 			index_type index = 0; ///< Index within island of body.
 		};
 		
-		ContactVelocityConstraint() = default;
-		ContactVelocityConstraint(const ContactVelocityConstraint& copy) = default;
-		ContactVelocityConstraint& operator= (const ContactVelocityConstraint& copy) = default;
+		VelocityConstraint() = default;
+		VelocityConstraint(const VelocityConstraint& copy) = default;
+		VelocityConstraint& operator= (const VelocityConstraint& copy) = default;
 		
-		ContactVelocityConstraint(index_type ci, float_t f, float_t r, float_t ts):
+		VelocityConstraint(index_type ci, float_t f, float_t r, float_t ts):
 		contactIndex{ci}, friction{f}, restitution{r}, tangentSpeed{ts} {}
 		
 		/// Gets the count of points added to this object.
@@ -176,32 +176,32 @@ namespace box2d {
 		size_type pointCount = 0; ///< Point count (at least 1-byte).
 	};
 	
-	inline void ContactVelocityConstraint::AddPoint(const VelocityConstraintPoint& val)
+	inline void VelocityConstraint::AddPoint(const VelocityConstraintPoint& val)
 	{
 		assert(pointCount < MaxManifoldPoints);
 		points[pointCount] = val;
 		++pointCount;
 	}
 	
-	inline void ContactVelocityConstraint::RemovePoint() noexcept
+	inline void VelocityConstraint::RemovePoint() noexcept
 	{
 		assert(pointCount > 0);
 		--pointCount;
 	}
 	
-	inline void ContactVelocityConstraint::SetK(const Mat22& value) noexcept
+	inline void VelocityConstraint::SetK(const Mat22& value) noexcept
 	{
 		assert(IsValid(value));
 		K = value;
 		normalMass = Invert(value);
 	}
 	
-	inline Mat22 ContactVelocityConstraint::GetK() const noexcept
+	inline Mat22 VelocityConstraint::GetK() const noexcept
 	{
 		return K;
 	}
 	
-	inline Mat22 ContactVelocityConstraint::GetNormalMass() const noexcept
+	inline Mat22 VelocityConstraint::GetNormalMass() const noexcept
 	{
 		assert(IsValid(normalMass));
 		return normalMass;
