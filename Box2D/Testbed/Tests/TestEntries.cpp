@@ -59,6 +59,7 @@
 #include "RayCast.h"
 #include "Revolute.h"
 #include "RopeJoint.h"
+#include "Rope.h"
 #include "SensorTest.h"
 #include "ShapeEditing.h"
 #include "SliderCrank.h"
@@ -109,6 +110,7 @@ TestEntry g_testEntries[] =
 	{"Pulleys", Pulleys::Create},
 	{"Polygon Shapes", PolyShapes::Create},
 	{"Web", Web::Create},
+	{"Rope", RopeTest::Create},
 	{"RopeJoint", RopeJointTest::Create},
 	{"Pinball", Pinball::Create},
 	{"Bullet Test", BulletTest::Create},

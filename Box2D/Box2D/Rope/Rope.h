@@ -24,8 +24,6 @@
 
 namespace box2d {
 
-class Drawer;
-
 /// 
 struct RopeDef
 {
@@ -89,9 +87,6 @@ public:
 	}
 
 	///
-	void Draw(Drawer* draw) const;
-
-	///
 	void SetAngle(float_t angle);
 
 private:
@@ -115,6 +110,10 @@ private:
 	float_t m_k2 = float_t{1};
 	float_t m_k3 = float_t(0.1);
 };
+
+class Drawer;
+
+void Draw(Drawer& drawer, const Rope& rope);
 
 } // namespace box2d
 

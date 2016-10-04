@@ -238,13 +238,13 @@ void Rope::SolveC3()
 	}
 }
 
-void Rope::Draw(box2d::Drawer* draw) const
+void box2d::Draw(Drawer& drawer, const Rope& rope)
 {
 	const auto c = Color(float_t(0.4), float_t(0.5), float_t(0.7));
 
-	const auto count = GetVertexCount();
+	const auto count = rope.GetVertexCount();
 	for (auto i = decltype(count - 1){0}; i < count - 1; ++i)
 	{
-		draw->DrawSegment(GetVertex(i), GetVertex(i + 1), c);
+		drawer.DrawSegment(rope.GetVertex(i), rope.GetVertex(i + 1), c);
 	}
 }
