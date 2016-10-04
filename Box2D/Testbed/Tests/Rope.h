@@ -86,7 +86,7 @@ public:
 
 		Test::Step(settings);
 
-		Draw(g_debugDraw, m_rope);
+		g_debugDraw.Draw(m_rope);
 
 		g_debugDraw.DrawString(5, m_textLine, "Press (q,e) to adjust target angle");
 		m_textLine += DRAW_STRING_NEW_LINE;

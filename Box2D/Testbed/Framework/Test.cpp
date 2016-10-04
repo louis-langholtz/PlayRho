@@ -290,7 +290,7 @@ void Test::Step(Settings* settings)
 
 	m_world->Step(timeStep, static_cast<unsigned>(settings->velocityIterations), static_cast<unsigned>(settings->positionIterations));
 
-	Draw(g_debugDraw, *m_world);
+	g_debugDraw.Draw(*m_world);
     g_debugDraw.Flush();
 
 	if (timeStep > 0.0f)

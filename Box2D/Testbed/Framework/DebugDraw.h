@@ -77,6 +77,11 @@ public:
 
 	virtual void DrawTransform(const Transformation& xf) override;
 
+	virtual void Draw(const World& world) override;
+	virtual void Draw(const Joint& joint) override;
+	virtual void Draw(const Fixture& shape, const Transformation& xf, const Color& color) override;
+	virtual void Draw(const Rope& rope) override;
+
     void DrawPoint(const Vec2& p, float_t size, const Color& color);
 
     void DrawString(int x, int y, const char* string, ...); 

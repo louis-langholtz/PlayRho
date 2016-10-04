@@ -34,6 +34,11 @@ struct Color
 	float_t r, g, b, a;
 };
 
+class World;
+class Joint;
+class Fixture;
+class Rope;
+
 class Drawer
 {
 public:
@@ -83,19 +88,14 @@ public:
 	/// @param xf a transform.
 	virtual void DrawTransform(const Transformation& xf) = 0;
 
+	virtual void Draw(const World& world) = 0;
+	virtual void Draw(const Joint& joint) = 0;
+	virtual void Draw(const Fixture& shape, const Transformation& xf, const Color& color) = 0;
+	virtual void Draw(const Rope& rope) = 0;
+	
 private:
 	uint32 m_drawFlags = 0;
 };
-
-class World;
-class Joint;
-class Fixture;
-class Rope;
-	
-void Draw(Drawer& draw, const World& world);
-void Draw(Drawer& draw, const Joint& joint);
-void Draw(Drawer& draw, const Fixture& shape, const Transformation& xf, const Color& color);
-void Draw(Drawer& drawer, const Rope& rope);
 
 } // namespace box2d
 
