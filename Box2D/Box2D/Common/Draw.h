@@ -34,8 +34,6 @@ struct Color
 	float_t r, g, b, a;
 };
 
-/// Implement and register this class with a World to provide debug drawing of physics
-/// entities in your game.
 class Draw
 {
 public:
