@@ -11,6 +11,10 @@
 
 namespace box2d {
 	
+	/// Newton's Cradle test.
+	/// @detail
+	/// Demonstrates the problems that are endemic to the handling multiple collisions.
+	/// @sa http://www.myphysicslab.com/Collision-methods.html
 	class NewtonsCradle : public Test
 	{
 	public:
