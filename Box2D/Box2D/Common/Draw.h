@@ -34,14 +34,14 @@ struct Color
 	float_t r, g, b, a;
 };
 
-class Draw
+class Drawer
 {
 public:
 	using size_type = size_t;
 
-	Draw() = default;
+	Drawer() = default;
 
-	virtual ~Draw() = default;
+	virtual ~Drawer() = default;
 
 	enum
 	{

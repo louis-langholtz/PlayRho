@@ -24,7 +24,7 @@
 
 namespace box2d {
 
-class Draw;
+class Drawer;
 
 /// 
 struct RopeDef
@@ -89,7 +89,7 @@ public:
 	}
 
 	///
-	void Draw(Draw* draw) const;
+	void Draw(Drawer* draw) const;
 
 	///
 	void SetAngle(float_t angle);

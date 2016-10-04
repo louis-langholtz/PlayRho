@@ -22,22 +22,22 @@
 
 using namespace box2d;
 
-void Draw::SetFlags(uint32 flags)
+void Drawer::SetFlags(uint32 flags)
 {
 	m_drawFlags = flags;
 }
 
-uint32 Draw::GetFlags() const
+uint32 Drawer::GetFlags() const
 {
 	return m_drawFlags;
 }
 
-void Draw::AppendFlags(uint32 flags)
+void Drawer::AppendFlags(uint32 flags)
 {
 	m_drawFlags |= flags;
 }
 
-void Draw::ClearFlags(uint32 flags)
+void Drawer::ClearFlags(uint32 flags)
 {
 	m_drawFlags &= ~flags;
 }

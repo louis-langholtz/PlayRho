@@ -275,10 +275,10 @@ void Test::Step(Settings* settings)
 	}
 
 	uint32 flags = 0;
-	flags += settings->drawShapes			* Draw::e_shapeBit;
-	flags += settings->drawJoints			* Draw::e_jointBit;
-	flags += settings->drawAABBs			* Draw::e_aabbBit;
-	flags += settings->drawCOMs				* Draw::e_centerOfMassBit;
+	flags += settings->drawShapes			* Drawer::e_shapeBit;
+	flags += settings->drawJoints			* Drawer::e_jointBit;
+	flags += settings->drawAABBs			* Drawer::e_aabbBit;
+	flags += settings->drawCOMs				* Drawer::e_centerOfMassBit;
 	g_debugDraw.SetFlags(flags);
 
 	m_world->SetAllowSleeping(settings->enableSleep);

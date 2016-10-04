@@ -106,7 +106,7 @@ public:
 
 	CircleShape m_circle;
 	Transformation m_transform;
-	Draw* g_debugDraw;
+	Drawer* g_debugDraw;
 	int32 m_count;
 };
 

@@ -238,7 +238,7 @@ void Rope::SolveC3()
 	}
 }
 
-void Rope::Draw(box2d::Draw* draw) const
+void Rope::Draw(box2d::Drawer* draw) const
 {
 	const auto c = Color(float_t(0.4), float_t(0.5), float_t(0.7));
 

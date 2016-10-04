@@ -55,7 +55,7 @@ struct Camera
 
 // This class implements debug drawing callbacks that are invoked
 // inside World::Step.
-class DebugDraw : public Draw
+class DebugDraw : public Drawer
 {
 public:
 	DebugDraw();

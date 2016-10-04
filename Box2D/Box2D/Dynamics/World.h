@@ -37,7 +37,7 @@ struct BodyDef;
 struct Color;
 struct JointDef;
 class Body;
-class Draw;
+class Drawer;
 class Fixture;
 class Joint;
 class Island;
@@ -502,10 +502,10 @@ inline contact_count_t GetContactCount(const World& world) noexcept
 void Dump(const World& world);
 
 /// Call this to draw shapes and other debug draw data.
-void DrawDebugData(Draw& draw, const World& world);
+void DrawDebugData(Drawer& draw, const World& world);
 
-void DrawJoint(Draw& draw, const Joint& joint);
-void DrawShape(Draw& draw, const Fixture& shape, const Transformation& xf, const Color& color);
+void DrawJoint(Drawer& draw, const Joint& joint);
+void DrawShape(Drawer& draw, const Fixture& shape, const Transformation& xf, const Color& color);
 
 } // namespace box2d
 

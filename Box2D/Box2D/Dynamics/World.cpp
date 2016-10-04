@@ -1319,11 +1319,11 @@ void Dump(const World& world)
 	log("bodies = nullptr;\n");
 }
 
-void DrawDebugData(Draw& draw, const World& world)
+void DrawDebugData(Drawer& draw, const World& world)
 {
 	const auto flags = draw.GetFlags();
 	
-	if (flags & Draw::e_shapeBit)
+	if (flags & Drawer::e_shapeBit)
 	{
 		for (auto&& b: world.GetBodies())
 		{
@@ -1354,7 +1354,7 @@ void DrawDebugData(Draw& draw, const World& world)
 		}
 	}
 	
-	if (flags & Draw::e_jointBit)
+	if (flags & Drawer::e_jointBit)
 	{
 		for (auto&& j: world.GetJoints())
 		{
@@ -1362,7 +1362,7 @@ void DrawDebugData(Draw& draw, const World& world)
 		}
 	}
 	
-	if (flags & Draw::e_pairBit)
+	if (flags & Drawer::e_pairBit)
 	{
 		//const Color color(0.3f, 0.9f, 0.9f);
 		//for (auto&& c: m_contactMgr.GetContacts())
@@ -1377,7 +1377,7 @@ void DrawDebugData(Draw& draw, const World& world)
 		//}
 	}
 	
-	if (flags & Draw::e_aabbBit)
+	if (flags & Drawer::e_aabbBit)
 	{
 		const Color color(0.9f, 0.3f, 0.9f);
 		const auto bp = &world.GetContactManager().m_broadPhase;
@@ -1408,7 +1408,7 @@ void DrawDebugData(Draw& draw, const World& world)
 		}
 	}
 	
-	if (flags & Draw::e_centerOfMassBit)
+	if (flags & Drawer::e_centerOfMassBit)
 	{
 		for (auto&& b: world.GetBodies())
 		{
@@ -1419,7 +1419,7 @@ void DrawDebugData(Draw& draw, const World& world)
 	}
 }
 
-void DrawShape(Draw& draw, const Fixture& fixture, const Transformation& xf, const Color& color)
+void DrawShape(Drawer& draw, const Fixture& fixture, const Transformation& xf, const Color& color)
 {
 	switch (GetType(fixture))
 	{
@@ -1476,7 +1476,7 @@ void DrawShape(Draw& draw, const Fixture& fixture, const Transformation& xf, con
 	}
 }
 
-void DrawJoint(Draw& draw, const Joint& joint)
+void DrawJoint(Drawer& draw, const Joint& joint)
 {
 	const auto bodyA = joint.GetBodyA();
 	const auto bodyB = joint.GetBodyB();
