@@ -218,6 +218,54 @@ TEST(Collision, IdenticalHorizontalTouchingSquares)
 	EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexB, 3);
 }
 
+TEST(Collision, SquareCornerUnderSquareFace)
+{
+	const auto dim = float_t(2);
+	const auto shape = PolygonShape(dim, dim);
+	ASSERT_EQ(shape.GetVertex(0).x, float_t(+2)); // right
+	ASSERT_EQ(shape.GetVertex(0).y, float_t(-2)); // bottom
+	ASSERT_EQ(shape.GetVertex(1).x, float_t(+2)); // right
+	ASSERT_EQ(shape.GetVertex(1).y, float_t(+2)); // top
+	ASSERT_EQ(shape.GetVertex(2).x, float_t(-2)); // left
+	ASSERT_EQ(shape.GetVertex(2).y, float_t(+2)); // top
+	ASSERT_EQ(shape.GetVertex(3).x, float_t(-2)); // left
+	ASSERT_EQ(shape.GetVertex(3).y, float_t(-2)); // bottom
+	
+	const auto xfm0 = Transformation(Vec2{0, -1}, Rot{DegreesToRadians(45)}); // bottom
+	const auto xfm1 = Transformation(Vec2{0, +1}, Rot{0}); // top
+	const auto manifold = CollideShapes(shape, xfm0, shape, xfm1);
+	
+	EXPECT_EQ(manifold.GetType(), Manifold::e_faceB);
+	
+	EXPECT_EQ(manifold.GetLocalPoint().x, float_t(0));
+	EXPECT_EQ(manifold.GetLocalPoint().y, float_t(-2));
+	
+	EXPECT_EQ(manifold.GetLocalNormal().x, float_t(0));
+	EXPECT_EQ(manifold.GetLocalNormal().y, float_t(-1));
+	
+	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
+	
+	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
+	EXPECT_FLOAT_EQ(manifold.GetPoint(0).localPoint.x, float_t(+2)); // left
+	EXPECT_FLOAT_EQ(manifold.GetPoint(0).localPoint.y, float_t(+2)); // bottom
+	EXPECT_FLOAT_EQ(manifold.GetPoint(0).normalImpulse, float_t(0));
+	EXPECT_FLOAT_EQ(manifold.GetPoint(0).tangentImpulse, float_t(0));
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_vertex);
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexA, 1);
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_face);
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 3);
+	
+	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
+	EXPECT_FLOAT_EQ(manifold.GetPoint(1).localPoint.x, float_t(+2)); // right
+	EXPECT_FLOAT_EQ(manifold.GetPoint(1).localPoint.y, float_t(-0.8289929)); // bottom
+	EXPECT_FLOAT_EQ(manifold.GetPoint(1).normalImpulse, float_t(0));
+	EXPECT_FLOAT_EQ(manifold.GetPoint(1).tangentImpulse, float_t(0));
+	EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeA, ContactFeature::e_face);
+	EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexA, 0);
+	EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeB, ContactFeature::e_vertex);
+	EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexB, 0);
+}
+
 TEST(Collision, HorizontalOverlappingRects1)
 {
 	// square
