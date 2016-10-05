@@ -34,24 +34,15 @@ struct AABB;
 //
 struct Camera
 {
-	Camera()
-	{
-		m_center = Vec2(0.0f, 20.0f);
-		m_extent = 25.0f;
-		m_zoom = 1.0f;
-		m_width = 1280;
-		m_height = 800;
-	}
-
 	Vec2 ConvertScreenToWorld(const Vec2& screenPoint);
 	Vec2 ConvertWorldToScreen(const Vec2& worldPoint);
 	void BuildProjectionMatrix(float_t* m, float_t zBias);
 
-	Vec2 m_center;
-	float_t m_extent;
-	float_t m_zoom;
-	int32 m_width;
-	int32 m_height;
+	Vec2 m_center = Vec2(0.0f, 20.0f);
+	float_t m_extent = 25.0f;
+	float_t m_zoom = 1.0f;
+	int32 m_width = 1280;
+	int32 m_height = 800;
 };
 
 // This class implements debug drawing callbacks that are invoked
