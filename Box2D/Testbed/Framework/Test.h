@@ -63,48 +63,25 @@ inline float_t RandomFloat(float_t lo, float_t hi)
 /// Test settings. Some can be controlled in the GUI.
 struct Settings
 {
-	Settings()
-	{
-		hz = 60.0f;
-		velocityIterations = 8;
-		positionIterations = 3;
-		drawShapes = true;
-		drawJoints = true;
-		drawAABBs = false;
-		drawContactPoints = false;
-		drawContactNormals = false;
-		drawContactImpulse = false;
-		drawFrictionImpulse = false;
-		drawCOMs = false;
-		drawStats = false;
-		drawProfile = false;
-		enableWarmStarting = true;
-		enableContinuous = true;
-		enableSubStepping = false;
-		enableSleep = true;
-		pause = false;
-		singleStep = false;
-	}
-
-	float_t hz;
-	int32 velocityIterations;
-	int32 positionIterations;
-	bool drawShapes;
-	bool drawJoints;
-	bool drawAABBs;
-	bool drawContactPoints;
-	bool drawContactNormals;
-	bool drawContactImpulse;
-	bool drawFrictionImpulse;
-	bool drawCOMs;
-	bool drawStats;
-	bool drawProfile;
-	bool enableWarmStarting;
-	bool enableContinuous;
-	bool enableSubStepping;
-	bool enableSleep;
-	bool pause;
-	bool singleStep;
+	float_t hz = float_t(60);
+	int32 velocityIterations = 8;
+	int32 positionIterations = 3;
+	bool drawShapes = true;
+	bool drawJoints = true;
+	bool drawAABBs = false;
+	bool drawContactPoints = false;
+	bool drawContactNormals = false;
+	bool drawContactImpulse = false;
+	bool drawFrictionImpulse = false;
+	bool drawCOMs = false;
+	bool drawStats = false;
+	bool drawProfile = false;
+	bool enableWarmStarting = true;
+	bool enableContinuous = true;
+	bool enableSubStepping = false;
+	bool enableSleep = true;
+	bool pause = false;
+	bool singleStep = false;
 };
 
 struct TestEntry
