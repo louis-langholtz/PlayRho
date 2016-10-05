@@ -31,13 +31,14 @@ struct GLRenderTriangles;
 
 struct AABB;
 
+struct ProjectionMatrix
+{
+	float m[16];
+};
+	
 //
 struct Camera
 {
-	Vec2 ConvertScreenToWorld(const Vec2& screenPoint);
-	Vec2 ConvertWorldToScreen(const Vec2& worldPoint);
-	void BuildProjectionMatrix(float_t* m, float_t zBias);
-
 	Vec2 m_center = Vec2(0.0f, 20.0f);
 	float_t m_extent = 25.0f;
 	float_t m_zoom = 1.0f;
@@ -45,6 +46,10 @@ struct Camera
 	int32 m_height = 800;
 };
 
+Vec2 ConvertScreenToWorld(const Camera& camera, const Vec2 screenPoint);
+Vec2 ConvertWorldToScreen(const Camera& camera, const Vec2 worldPoint);
+ProjectionMatrix GetProjectionMatrix(const Camera& camera, float_t zBias);
+	
 // This class implements debug drawing callbacks that are invoked
 // inside World::Step.
 class DebugDraw : public Drawer

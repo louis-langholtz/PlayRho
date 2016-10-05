@@ -49,79 +49,69 @@ namespace box2d {
 Camera g_camera;
 
 //
-Vec2 Camera::ConvertScreenToWorld(const Vec2& ps)
+Vec2 ConvertScreenToWorld(const Camera& camera, const Vec2 ps)
 {
-    float_t w = float_t(m_width);
-    float_t h = float_t(m_height);
-	float_t u = ps.x / w;
-	float_t v = (h - ps.y) / h;
+    const auto w = float_t(camera.m_width);
+    const auto h = float_t(camera.m_height);
+	const auto u = ps.x / w;
+	const auto v = (h - ps.y) / h;
 
-	float_t ratio = w / h;
-	Vec2 extents(ratio * 25.0f, 25.0f);
-	extents *= m_zoom;
+	const auto ratio = w / h;
+	const auto extents = Vec2(ratio * 25.0f, 25.0f) * camera.m_zoom;
 
-	Vec2 lower = m_center - extents;
-	Vec2 upper = m_center + extents;
+	const auto lower = camera.m_center - extents;
+	const auto upper = camera.m_center + extents;
 
-	Vec2 pw;
-	pw.x = (1.0f - u) * lower.x + u * upper.x;
-	pw.y = (1.0f - v) * lower.y + v * upper.y;
-	return pw;
+	return Vec2{(float_t(1) - u) * lower.x + u * upper.x, (float_t(1) - v) * lower.y + v * upper.y};
 }
 
 //
-Vec2 Camera::ConvertWorldToScreen(const Vec2& pw)
+Vec2 ConvertWorldToScreen(const Camera& camera, const Vec2 pw)
 {
-	float_t w = float_t(m_width);
-	float_t h = float_t(m_height);
-	float_t ratio = w / h;
-	Vec2 extents(ratio * 25.0f, 25.0f);
-	extents *= m_zoom;
+	const auto w = float_t(camera.m_width);
+	const auto h = float_t(camera.m_height);
+	const auto ratio = w / h;
+	const auto extents = Vec2(ratio * 25.0f, 25.0f) * camera.m_zoom;
 
-	Vec2 lower = m_center - extents;
-	Vec2 upper = m_center + extents;
+	const auto lower = camera.m_center - extents;
+	const auto upper = camera.m_center + extents;
 
-	float_t u = (pw.x - lower.x) / (upper.x - lower.x);
-	float_t v = (pw.y - lower.y) / (upper.y - lower.y);
+	const auto u = (pw.x - lower.x) / (upper.x - lower.x);
+	const auto v = (pw.y - lower.y) / (upper.y - lower.y);
 
-	Vec2 ps;
-	ps.x = u * w;
-	ps.y = (1.0f - v) * h;
-	return ps;
+	return Vec2{u * w, (float_t(1) - v) * h};
 }
 
 // Convert from world coordinates to normalized device coordinates.
 // http://www.songho.ca/opengl/gl_projectionmatrix.html
-void Camera::BuildProjectionMatrix(float_t* m, float_t zBias)
+ProjectionMatrix GetProjectionMatrix(const Camera& camera, float_t zBias)
 {
-	float_t w = float_t(m_width);
-	float_t h = float_t(m_height);
-	float_t ratio = w / h;
-	Vec2 extents(ratio * 25.0f, 25.0f);
-	extents *= m_zoom;
+	const auto w = float_t(camera.m_width);
+	const auto h = float_t(camera.m_height);
+	const auto ratio = w / h;
+	const auto extents = Vec2(ratio * 25.0f, 25.0f) * camera.m_zoom;
 
-	Vec2 lower = m_center - extents;
-	Vec2 upper = m_center + extents;
+	const auto lower = camera.m_center - extents;
+	const auto upper = camera.m_center + extents;
 
-	m[0] = 2.0f / (upper.x - lower.x);
-	m[1] = 0.0f;
-	m[2] = 0.0f;
-	m[3] = 0.0f;
-
-	m[4] = 0.0f;
-	m[5] = 2.0f / (upper.y - lower.y);
-	m[6] = 0.0f;
-	m[7] = 0.0f;
-
-	m[8] = 0.0f;
-	m[9] = 0.0f;
-	m[10] = 1.0f;
-	m[11] = 0.0f;
-
-	m[12] = -(upper.x + lower.x) / (upper.x - lower.x);
-	m[13] = -(upper.y + lower.y) / (upper.y - lower.y);
-	m[14] = zBias;
-	m[15] = 1.0f;
+	return ProjectionMatrix{{
+		2.0f / (upper.x - lower.x), // 0
+		0.0f, // 1
+		0.0f, // 2
+		0.0f, // 3
+		0.0f, // 4
+		2.0f / (upper.y - lower.y), // 5
+		0.0f, // 6
+		0.0f, // 7
+		0.0f, // 8
+		0.0f, // 9
+		1.0f, // 10
+		0.0f, // 11
+		-(upper.x + lower.x) / (upper.x - lower.x), // 12
+		-(upper.y + lower.y) / (upper.y - lower.y), // 13
+		zBias, // 14
+		1.0f
+}};
 }
 
 //
@@ -303,10 +293,9 @@ struct GLRenderPoints
         
 		glUseProgram(m_programId);
         
-		float_t proj[16] = { 0.0f };
-		g_camera.BuildProjectionMatrix(proj, 0.0f);
+		const auto proj = GetProjectionMatrix(g_camera, 0.0f);
         
-		glUniformMatrix4fv(m_projectionUniform, 1, GL_FALSE, proj);
+		glUniformMatrix4fv(m_projectionUniform, 1, GL_FALSE, proj.m);
         
 		glBindVertexArray(m_vaoId);
         
@@ -438,10 +427,9 @@ struct GLRenderLines
         
 		glUseProgram(m_programId);
         
-		GLfloat proj[16] = { 0.0f };
-		g_camera.BuildProjectionMatrix(proj, 0.1f);
+		const auto proj = GetProjectionMatrix(g_camera, 0.1f);
         
-		glUniformMatrix4fv(m_projectionUniform, 1, GL_FALSE, proj);
+		glUniformMatrix4fv(m_projectionUniform, 1, GL_FALSE, proj.m);
         
 		glBindVertexArray(m_vaoId);
         
@@ -566,10 +554,9 @@ struct GLRenderTriangles
         
 		glUseProgram(m_programId);
         
-		float_t proj[16] = { 0.0f };
-		g_camera.BuildProjectionMatrix(proj, 0.2f);
-        
-		glUniformMatrix4fv(m_projectionUniform, 1, GL_FALSE, proj);
+		const auto proj = GetProjectionMatrix(g_camera, 0.2f);
+		
+		glUniformMatrix4fv(m_projectionUniform, 1, GL_FALSE, proj.m);
         
 		glBindVertexArray(m_vaoId);
         
@@ -798,7 +785,7 @@ void DebugDraw::DrawString(int x, int y, const char *string, ...)
 
 void DebugDraw::DrawString(const Vec2& pw, const char *string, ...)
 {
-	Vec2 ps = g_camera.ConvertWorldToScreen(pw);
+	Vec2 ps = ConvertWorldToScreen(g_camera, pw);
 	float_t h = float_t(g_camera.m_height);
 
 	char buffer[128];

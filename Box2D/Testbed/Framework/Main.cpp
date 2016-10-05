@@ -235,7 +235,7 @@ static void sMouseButton(GLFWwindow*, int32 button, int32 action, int32 mods)
 	if (button == GLFW_MOUSE_BUTTON_1)
 	{
         //ps = Vec2(0, 0);
-		Vec2 pw = g_camera.ConvertScreenToWorld(ps);
+		Vec2 pw = ConvertScreenToWorld(g_camera, ps);
 		if (action == GLFW_PRESS)
 		{
 			if (mods == GLFW_MOD_SHIFT)
@@ -257,7 +257,7 @@ static void sMouseButton(GLFWwindow*, int32 button, int32 action, int32 mods)
 	{
 		if (action == GLFW_PRESS)
 		{	
-			lastp = g_camera.ConvertScreenToWorld(ps);
+			lastp = ConvertScreenToWorld(g_camera, ps);
 			rightMouseDown = true;
 		}
 
@@ -273,7 +273,7 @@ static void sMouseMotion(GLFWwindow*, double xd, double yd)
 {
 	Vec2 ps((float)xd, (float)yd);
 
-	Vec2 pw = g_camera.ConvertScreenToWorld(ps);
+	Vec2 pw = ConvertScreenToWorld(g_camera, ps);
 	test->MouseMove(pw);
 	
 	if (rightMouseDown)
@@ -281,7 +281,7 @@ static void sMouseMotion(GLFWwindow*, double xd, double yd)
 		Vec2 diff = pw - lastp;
 		g_camera.m_center.x -= diff.x;
 		g_camera.m_center.y -= diff.y;
-		lastp = g_camera.ConvertScreenToWorld(ps);
+		lastp = ConvertScreenToWorld(g_camera, ps);
 	}
 }
 
