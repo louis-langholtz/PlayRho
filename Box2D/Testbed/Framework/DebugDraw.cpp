@@ -139,7 +139,13 @@ static void sPrintLog(GLuint object)
 		return;
 	}
 
-	char* log = (char*)malloc(log_length);
+	if (log_length < 0)
+	{
+		fprintf(stderr, "printlog: got negative log length??\n");
+		return;
+	}
+
+	char* log = (char*)malloc(static_cast<size_t>(log_length));
 
 	if (glIsShader(object))
 		glGetShaderInfoLog(object, log_length, nullptr, log);
@@ -300,13 +306,13 @@ struct GLRenderPoints
 		glBindVertexArray(m_vaoId);
         
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[0]);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, m_count * sizeof(Vec2), m_vertices);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<unsigned>(m_count) * sizeof(Vec2), m_vertices);
         
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[1]);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, m_count * sizeof(Color), m_colors);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<unsigned>(m_count) * sizeof(Color), m_colors);
         
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[2]);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, m_count * sizeof(float_t), m_sizes);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<unsigned>(m_count) * sizeof(float_t), m_sizes);
 
 		glEnable(GL_PROGRAM_POINT_SIZE);
 		glDrawArrays(GL_POINTS, 0, m_count);
@@ -332,9 +338,9 @@ struct GLRenderPoints
 	GLuint m_vboIds[3];
 	GLuint m_programId;
 	GLint m_projectionUniform;
-	GLint m_vertexAttribute;
-	GLint m_colorAttribute;
-	GLint m_sizeAttribute;
+	GLuint m_vertexAttribute;
+	GLuint m_colorAttribute;
+	GLuint m_sizeAttribute;
 };
 
 //
@@ -434,10 +440,10 @@ struct GLRenderLines
 		glBindVertexArray(m_vaoId);
         
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[0]);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, m_count * sizeof(Vec2), m_vertices);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<unsigned>(m_count) * sizeof(Vec2), m_vertices);
         
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[1]);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, m_count * sizeof(Color), m_colors);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<unsigned>(m_count) * sizeof(Color), m_colors);
         
 		glDrawArrays(GL_LINES, 0, m_count);
         
@@ -460,8 +466,8 @@ struct GLRenderLines
 	GLuint m_vboIds[2];
 	GLuint m_programId;
 	GLint m_projectionUniform;
-	GLint m_vertexAttribute;
-	GLint m_colorAttribute;
+	GLuint m_vertexAttribute;
+	GLuint m_colorAttribute;
 };
 
 //
@@ -561,10 +567,10 @@ struct GLRenderTriangles
 		glBindVertexArray(m_vaoId);
         
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[0]);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, m_count * sizeof(Vec2), m_vertices);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<unsigned>(m_count) * sizeof(Vec2), m_vertices);
         
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[1]);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, m_count * sizeof(Color), m_colors);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<unsigned>(m_count) * sizeof(Color), m_colors);
         
         glEnable(GL_BLEND);
         glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -590,8 +596,8 @@ struct GLRenderTriangles
 	GLuint m_vboIds[2];
 	GLuint m_programId;
 	GLint m_projectionUniform;
-	GLint m_vertexAttribute;
-	GLint m_colorAttribute;
+	GLuint m_vertexAttribute;
+	GLuint m_colorAttribute;
 };
 
 //
