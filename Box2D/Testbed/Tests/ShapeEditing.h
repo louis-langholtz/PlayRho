@@ -51,7 +51,7 @@ public:
 		m_sensor = false;
 	}
 
-	void Keyboard(int key)
+	void Keyboard(int key) override
 	{
 		switch (key)
 		{

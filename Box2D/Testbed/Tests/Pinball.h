@@ -135,7 +135,7 @@ public:
 
 	}
 
-	void Keyboard(int key)
+	void Keyboard(int key) override
 	{
 		switch (key)
 		{
@@ -145,7 +145,7 @@ public:
 		}
 	}
 
-	void KeyboardUp(int key)
+	void KeyboardUp(int key) override
 	{
 		switch (key)
 		{

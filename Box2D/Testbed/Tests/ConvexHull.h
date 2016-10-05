@@ -61,7 +61,7 @@ public:
 		return new ConvexHull;
 	}
 
-	void Keyboard(int key)
+	void Keyboard(int key) override
 	{
 		switch (key)
 		{

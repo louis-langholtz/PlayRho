@@ -86,7 +86,7 @@ public:
 		m_bullet = nullptr;
 	}
 
-	void Keyboard(int key)
+	void Keyboard(int key) override
 	{
 		switch (key)
 		{

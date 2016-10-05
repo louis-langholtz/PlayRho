@@ -137,7 +137,7 @@ public:
 		++m_stepCount;
 	}
 
-	void Keyboard(int key)
+	void Keyboard(int key) override
 	{
 		switch (key)
 		{

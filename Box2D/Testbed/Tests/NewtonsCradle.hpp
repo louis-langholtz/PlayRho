@@ -185,7 +185,7 @@ namespace box2d {
 			}
 		}
 
-		void Keyboard(int key)
+		void Keyboard(int key) override
 		{
 			switch (key)
 			{

@@ -148,7 +148,7 @@ public:
 		}
 	}
 
-	void Keyboard(int key)
+	void Keyboard(int key) override
 	{
 		switch (key)
 		{
@@ -187,7 +187,7 @@ public:
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 
-	void JointDestroyed(Joint* joint)
+	void JointDestroyed(Joint* joint) override
 	{
 		for (int32 i = 0; i < 8; ++i)
 		{
