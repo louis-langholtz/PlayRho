@@ -50,6 +50,8 @@ struct UIState
 //
 namespace
 {
+	Camera g_camera;
+	
 	GLFWwindow* mainWindow = nullptr;
 	UIState ui;
 
@@ -485,7 +487,7 @@ int main(int argc, char** argv)
 	}
 #endif
     
-	DebugDraw drawer;
+	DebugDraw drawer(g_camera);
 	drawer.Create();
 
 	sCreateUI();

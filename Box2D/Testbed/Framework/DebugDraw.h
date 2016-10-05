@@ -55,7 +55,7 @@ ProjectionMatrix GetProjectionMatrix(const Camera& camera, float_t zBias);
 class DebugDraw : public Drawer
 {
 public:
-	DebugDraw();
+	DebugDraw(Camera& camera);
 	virtual ~DebugDraw();
 
 	void Create();
@@ -87,14 +87,16 @@ public:
     void DrawAABB(AABB* aabb, const Color& color) override;
 
     void Flush() override;
-    
+	
+	Vec2 GetTranslation() const override;
+	void SetTranslation(Vec2 value) override;
+
 private:
+	Camera& m_camera;
 	GLRenderPoints* m_points;
     GLRenderLines* m_lines;
     GLRenderTriangles* m_triangles;
 };
-
-extern Camera g_camera;
 
 } // namespace box2d
 

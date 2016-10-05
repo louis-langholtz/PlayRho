@@ -46,8 +46,6 @@
 
 namespace box2d {
 
-Camera g_camera;
-
 //
 Vec2 ConvertScreenToWorld(const Camera& camera, const Vec2 ps)
 {
@@ -281,10 +279,10 @@ struct GLRenderPoints
 		}
 	}
     
-	void Vertex(const Vec2& v, const Color& c, float_t size)
+	void Vertex(Camera& camera, const Vec2& v, const Color& c, float_t size)
 	{
 		if (m_count == e_maxVertices)
-			Flush();
+			Flush(camera);
         
 		m_vertices[m_count] = v;
 		m_colors[m_count] = c;
@@ -292,14 +290,14 @@ struct GLRenderPoints
 		++m_count;
 	}
     
-    void Flush()
+    void Flush(Camera& camera)
 	{
         if (m_count == 0)
             return;
         
 		glUseProgram(m_programId);
         
-		const auto proj = GetProjectionMatrix(g_camera, 0.0f);
+		const auto proj = GetProjectionMatrix(camera, 0.0f);
         
 		glUniformMatrix4fv(m_projectionUniform, 1, GL_FALSE, proj.m);
         
@@ -416,24 +414,24 @@ struct GLRenderLines
 		}
 	}
     
-	void Vertex(const Vec2& v, const Color& c)
+	void Vertex(Camera& camera, const Vec2& v, const Color& c)
 	{
 		if (m_count == e_maxVertices)
-			Flush();
+			Flush(camera);
         
 		m_vertices[m_count] = v;
 		m_colors[m_count] = c;
 		++m_count;
 	}
     
-    void Flush()
+    void Flush(Camera& camera)
 	{
         if (m_count == 0)
             return;
         
 		glUseProgram(m_programId);
         
-		const auto proj = GetProjectionMatrix(g_camera, 0.1f);
+		const auto proj = GetProjectionMatrix(camera, 0.1f);
         
 		glUniformMatrix4fv(m_projectionUniform, 1, GL_FALSE, proj.m);
         
@@ -543,24 +541,24 @@ struct GLRenderTriangles
 		}
 	}
 
-	void Vertex(const Vec2& v, const Color& c)
+	void Vertex(Camera& camera, const Vec2& v, const Color& c)
 	{
 		if (m_count == e_maxVertices)
-			Flush();
+			Flush(camera);
 
 		m_vertices[m_count] = v;
 		m_colors[m_count] = c;
 		++m_count;
 	}
 
-    void Flush()
+    void Flush(Camera& camera)
 	{
         if (m_count == 0)
             return;
         
 		glUseProgram(m_programId);
         
-		const auto proj = GetProjectionMatrix(g_camera, 0.2f);
+		const auto proj = GetProjectionMatrix(camera, 0.2f);
 		
 		glUniformMatrix4fv(m_projectionUniform, 1, GL_FALSE, proj.m);
         
@@ -601,7 +599,7 @@ struct GLRenderTriangles
 };
 
 //
-DebugDraw::DebugDraw()
+DebugDraw::DebugDraw(Camera& camera): m_camera(camera)
 {
 	m_points = nullptr;
     m_lines = nullptr;
@@ -650,8 +648,8 @@ void DebugDraw::DrawPolygon(const Vec2* vertices, size_type vertexCount, const C
 	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 	{
         Vec2 p2 = vertices[i];
-		m_lines->Vertex(p1, color);
-		m_lines->Vertex(p2, color);
+		m_lines->Vertex(m_camera, p1, color);
+		m_lines->Vertex(m_camera, p2, color);
         p1 = p2;
 	}
 }
@@ -663,17 +661,17 @@ void DebugDraw::DrawSolidPolygon(const Vec2* vertices, size_type vertexCount, co
 
     for (auto i = decltype(vertexCount){1}; i < vertexCount - 1; ++i)
     {
-        m_triangles->Vertex(vertices[0], fillColor);
-        m_triangles->Vertex(vertices[i], fillColor);
-        m_triangles->Vertex(vertices[i+1], fillColor);
+        m_triangles->Vertex(m_camera, vertices[0], fillColor);
+        m_triangles->Vertex(m_camera, vertices[i], fillColor);
+        m_triangles->Vertex(m_camera, vertices[i+1], fillColor);
     }
 
     Vec2 p1 = vertices[vertexCount - 1];
 	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 	{
         Vec2 p2 = vertices[i];
-		m_lines->Vertex(p1, color);
-		m_lines->Vertex(p2, color);
+		m_lines->Vertex(m_camera, p1, color);
+		m_lines->Vertex(m_camera, p2, color);
         p1 = p2;
 	}
 }
@@ -694,8 +692,8 @@ void DebugDraw::DrawCircle(const Vec2& center, float_t radius, const Color& colo
         r2.x = cosInc * r1.x - sinInc * r1.y;
         r2.y = sinInc * r1.x + cosInc * r1.y;
 		Vec2 v2 = center + radius * r2;
-        m_lines->Vertex(v1, color);
-        m_lines->Vertex(v2, color);
+        m_lines->Vertex(m_camera, v1, color);
+        m_lines->Vertex(m_camera, v2, color);
         r1 = r2;
         v1 = v2;
 	}
@@ -719,9 +717,9 @@ void DebugDraw::DrawSolidCircle(const Vec2& center, float_t radius, const Vec2& 
         r2.x = cosInc * r1.x - sinInc * r1.y;
         r2.y = sinInc * r1.x + cosInc * r1.y;
 		Vec2 v2 = center + radius * r2;
-		m_triangles->Vertex(v0, fillColor);
-        m_triangles->Vertex(v1, fillColor);
-        m_triangles->Vertex(v2, fillColor);
+		m_triangles->Vertex(m_camera, v0, fillColor);
+        m_triangles->Vertex(m_camera, v1, fillColor);
+        m_triangles->Vertex(m_camera, v2, fillColor);
         r1 = r2;
         v1 = v2;
 	}
@@ -734,23 +732,23 @@ void DebugDraw::DrawSolidCircle(const Vec2& center, float_t radius, const Vec2& 
         r2.x = cosInc * r1.x - sinInc * r1.y;
         r2.y = sinInc * r1.x + cosInc * r1.y;
 		Vec2 v2 = center + radius * r2;
-        m_lines->Vertex(v1, color);
-        m_lines->Vertex(v2, color);
+        m_lines->Vertex(m_camera, v1, color);
+        m_lines->Vertex(m_camera, v2, color);
         r1 = r2;
         v1 = v2;
 	}
 
     // Draw a line fixed in the circle to animate rotation.
 	Vec2 p = center + radius * axis;
-	m_lines->Vertex(center, color);
-	m_lines->Vertex(p, color);
+	m_lines->Vertex(m_camera, center, color);
+	m_lines->Vertex(m_camera, p, color);
 }
 
 //
 void DebugDraw::DrawSegment(const Vec2& p1, const Vec2& p2, const Color& color)
 {
-	m_lines->Vertex(p1, color);
-	m_lines->Vertex(p2, color);
+	m_lines->Vertex(m_camera, p1, color);
+	m_lines->Vertex(m_camera, p2, color);
 }
 
 //
@@ -761,23 +759,23 @@ void DebugDraw::DrawTransform(const Transformation& xf)
     Color green(0.0f, 1.0f, 0.0f);
 	Vec2 p1 = xf.p, p2;
 
-	m_lines->Vertex(p1, red);
+	m_lines->Vertex(m_camera, p1, red);
 	p2 = p1 + k_axisScale * GetXAxis(xf.q);
-	m_lines->Vertex(p2, red);
+	m_lines->Vertex(m_camera, p2, red);
 
-	m_lines->Vertex(p1, green);
+	m_lines->Vertex(m_camera, p1, green);
 	p2 = p1 + k_axisScale * GetYAxis(xf.q);
-	m_lines->Vertex(p2, green);
+	m_lines->Vertex(m_camera, p2, green);
 }
 
 void DebugDraw::DrawPoint(const Vec2& p, float_t size, const Color& color)
 {
-    m_points->Vertex(p, color, size);
+    m_points->Vertex(m_camera, p, color, size);
 }
 
 void DebugDraw::DrawString(int x, int y, const char *string, ...)
 {
-	float_t h = float_t(g_camera.m_height);
+	float_t h = float_t(m_camera.m_height);
 
 	char buffer[128];
 
@@ -791,8 +789,8 @@ void DebugDraw::DrawString(int x, int y, const char *string, ...)
 
 void DebugDraw::DrawString(const Vec2& pw, const char *string, ...)
 {
-	Vec2 ps = ConvertWorldToScreen(g_camera, pw);
-	float_t h = float_t(g_camera.m_height);
+	Vec2 ps = ConvertWorldToScreen(m_camera, pw);
+	float_t h = float_t(m_camera.m_height);
 
 	char buffer[128];
 
@@ -811,27 +809,37 @@ void DebugDraw::DrawAABB(AABB* aabb, const Color& c)
     Vec2 p3 = aabb->GetUpperBound();
     Vec2 p4 = Vec2(aabb->GetLowerBound().x, aabb->GetUpperBound().y);
     
-    m_lines->Vertex(p1, c);
-    m_lines->Vertex(p2, c);
+    m_lines->Vertex(m_camera, p1, c);
+    m_lines->Vertex(m_camera, p2, c);
 
-    m_lines->Vertex(p2, c);
-    m_lines->Vertex(p3, c);
+    m_lines->Vertex(m_camera, p2, c);
+    m_lines->Vertex(m_camera, p3, c);
 
-    m_lines->Vertex(p3, c);
-    m_lines->Vertex(p4, c);
+    m_lines->Vertex(m_camera, p3, c);
+    m_lines->Vertex(m_camera, p4, c);
 
-    m_lines->Vertex(p4, c);
-    m_lines->Vertex(p1, c);
+    m_lines->Vertex(m_camera, p4, c);
+    m_lines->Vertex(m_camera, p1, c);
 }
 
 //
 void DebugDraw::Flush()
 {
-    m_triangles->Flush();
-    m_lines->Flush();
-    m_points->Flush();
+    m_triangles->Flush(m_camera);
+    m_lines->Flush(m_camera);
+    m_points->Flush(m_camera);
 }
-	
+
+Vec2 DebugDraw::GetTranslation() const
+{
+	return m_camera.m_center;
+}
+
+void DebugDraw::SetTranslation(Vec2 value)
+{
+	m_camera.m_center = value;
+}
+
 void DebugDraw::Draw(const World& world)
 {
 	const auto flags = GetFlags();

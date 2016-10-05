@@ -258,7 +258,7 @@ public:
 		drawer.DrawString(5, m_textLine, "frequency = %g hz, damping ratio = %g", m_hz, m_zeta);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		g_camera.m_center.x = m_car->GetPosition().x;
+		drawer.SetTranslation(Vec2{m_car->GetPosition().x, drawer.GetTranslation().y});
 		Test::Step(settings, drawer);
 	}
 

@@ -104,6 +104,9 @@ public:
 	
 	virtual void Flush() = 0;
 	
+	virtual void SetTranslation(Vec2 value) = 0;
+	virtual Vec2 GetTranslation() const = 0;
+	
 private:
 	uint32 m_drawFlags = 0;
 };
