@@ -338,25 +338,25 @@ public:
 		}
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
-		bool advanceRay = !settings->pause || settings->singleStep;
+		bool advanceRay = !settings.pause || settings.singleStep;
 
-		Test::Step(settings);
-		g_debugDraw.DrawString(5, m_textLine, "Press 1-6 to drop stuff, m to change the mode");
+		Test::Step(settings, drawer);
+		drawer.DrawString(5, m_textLine, "Press 1-6 to drop stuff, m to change the mode");
 		m_textLine += DRAW_STRING_NEW_LINE;
 		switch (m_mode)
 		{
 		case e_closest:
-			g_debugDraw.DrawString(5, m_textLine, "Ray-cast mode: closest - find closest fixture along the ray");
+			drawer.DrawString(5, m_textLine, "Ray-cast mode: closest - find closest fixture along the ray");
 			break;
 		
 		case e_any:
-			g_debugDraw.DrawString(5, m_textLine, "Ray-cast mode: any - check for obstruction");
+			drawer.DrawString(5, m_textLine, "Ray-cast mode: any - check for obstruction");
 			break;
 
 		case e_multiple:
-			g_debugDraw.DrawString(5, m_textLine, "Ray-cast mode: multiple - gather multiple fixtures");
+			drawer.DrawString(5, m_textLine, "Ray-cast mode: multiple - gather multiple fixtures");
 			break;
 		}
 
@@ -374,14 +374,14 @@ public:
 
 			if (callback.m_hit)
 			{
-				g_debugDraw.DrawPoint(callback.m_point, 5.0f, Color(0.4f, 0.9f, 0.4f));
-				g_debugDraw.DrawSegment(point1, callback.m_point, Color(0.8f, 0.8f, 0.8f));
+				drawer.DrawPoint(callback.m_point, 5.0f, Color(0.4f, 0.9f, 0.4f));
+				drawer.DrawSegment(point1, callback.m_point, Color(0.8f, 0.8f, 0.8f));
 				Vec2 head = callback.m_point + 0.5f * callback.m_normal;
-				g_debugDraw.DrawSegment(callback.m_point, head, Color(0.9f, 0.9f, 0.4f));
+				drawer.DrawSegment(callback.m_point, head, Color(0.9f, 0.9f, 0.4f));
 			}
 			else
 			{
-				g_debugDraw.DrawSegment(point1, point2, Color(0.8f, 0.8f, 0.8f));
+				drawer.DrawSegment(point1, point2, Color(0.8f, 0.8f, 0.8f));
 			}
 		}
 		else if (m_mode == e_any)
@@ -391,30 +391,30 @@ public:
 
 			if (callback.m_hit)
 			{
-				g_debugDraw.DrawPoint(callback.m_point, 5.0f, Color(0.4f, 0.9f, 0.4f));
-				g_debugDraw.DrawSegment(point1, callback.m_point, Color(0.8f, 0.8f, 0.8f));
+				drawer.DrawPoint(callback.m_point, 5.0f, Color(0.4f, 0.9f, 0.4f));
+				drawer.DrawSegment(point1, callback.m_point, Color(0.8f, 0.8f, 0.8f));
 				Vec2 head = callback.m_point + 0.5f * callback.m_normal;
-				g_debugDraw.DrawSegment(callback.m_point, head, Color(0.9f, 0.9f, 0.4f));
+				drawer.DrawSegment(callback.m_point, head, Color(0.9f, 0.9f, 0.4f));
 			}
 			else
 			{
-				g_debugDraw.DrawSegment(point1, point2, Color(0.8f, 0.8f, 0.8f));
+				drawer.DrawSegment(point1, point2, Color(0.8f, 0.8f, 0.8f));
 			}
 		}
 		else if (m_mode == e_multiple)
 		{
 			RayCastMultipleCallback callback;
 			m_world->RayCast(&callback, point1, point2);
-			g_debugDraw.DrawSegment(point1, point2, Color(0.8f, 0.8f, 0.8f));
+			drawer.DrawSegment(point1, point2, Color(0.8f, 0.8f, 0.8f));
 
 			for (int32 i = 0; i < callback.m_count; ++i)
 			{
 				Vec2 p = callback.m_points[i];
 				Vec2 n = callback.m_normals[i];
-				g_debugDraw.DrawPoint(p, 5.0f, Color(0.4f, 0.9f, 0.4f));
-				g_debugDraw.DrawSegment(point1, p, Color(0.8f, 0.8f, 0.8f));
+				drawer.DrawPoint(p, 5.0f, Color(0.4f, 0.9f, 0.4f));
+				drawer.DrawSegment(point1, p, Color(0.8f, 0.8f, 0.8f));
 				Vec2 head = p + 0.5f * n;
-				g_debugDraw.DrawSegment(p, head, Color(0.9f, 0.9f, 0.4f));
+				drawer.DrawSegment(p, head, Color(0.9f, 0.9f, 0.4f));
 			}
 		}
 
@@ -458,8 +458,8 @@ public:
 				vs[i] = Transform(shape.m_vertices[i], xf);
 			}
 
-			g_debugDraw.DrawPolygon(vs, 4, color);
-			g_debugDraw.DrawSegment(input.p1, input.p2, color);
+			drawer.DrawPolygon(vs, 4, color);
+			drawer.DrawSegment(input.p1, input.p2, color);
 		}
 #endif
 	}

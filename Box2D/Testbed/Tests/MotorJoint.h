@@ -80,11 +80,11 @@ public:
 		}
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
-		if (m_go && settings->hz > 0.0f)
+		if (m_go && settings.hz > 0.0f)
 		{
-			m_time += 1.0f / settings->hz;
+			m_time += 1.0f / settings.hz;
 		}
 
 		Vec2 linearOffset;
@@ -96,10 +96,10 @@ public:
 		m_joint->SetLinearOffset(linearOffset);
 		m_joint->SetAngularOffset(angularOffset);
 
-		g_debugDraw.DrawPoint(linearOffset, 4.0f, Color(0.9f, 0.9f, 0.9f));
+		drawer.DrawPoint(linearOffset, 4.0f, Color(0.9f, 0.9f, 0.9f));
 
-		Test::Step(settings);
-		g_debugDraw.DrawString(5, m_textLine, "Keys: (s) pause");
+		Test::Step(settings, drawer);
+		drawer.DrawString(5, m_textLine, "Keys: (s) pause");
 		m_textLine += 15;
 	}
 

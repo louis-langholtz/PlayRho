@@ -38,6 +38,7 @@ class World;
 class Joint;
 class Fixture;
 class Rope;
+class AABB;
 
 class Drawer
 {
@@ -88,10 +89,20 @@ public:
 	/// @param xf a transform.
 	virtual void DrawTransform(const Transformation& xf) = 0;
 
+	virtual void DrawPoint(const Vec2& p, float_t size, const Color& color) = 0;
+	
+	virtual void DrawString(int x, int y, const char* string, ...) = 0; 
+	
+	virtual void DrawString(const Vec2& p, const char* string, ...) = 0;
+	
+	virtual void DrawAABB(AABB* aabb, const Color& color) = 0;
+	
 	virtual void Draw(const World& world) = 0;
 	virtual void Draw(const Joint& joint) = 0;
 	virtual void Draw(const Fixture& shape, const Transformation& xf, const Color& color) = 0;
 	virtual void Draw(const Rope& rope) = 0;
+	
+	virtual void Flush() = 0;
 	
 private:
 	uint32 m_drawFlags = 0;

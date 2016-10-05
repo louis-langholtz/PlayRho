@@ -117,7 +117,7 @@ public:
 		body2->SetVelocity(Velocity{velocity2, m_angularVelocity});
 	}
 
-	void Step(Settings* settings) override
+	void Step(Settings& settings, Drawer& drawer) override
 	{
 		if (m_break)
 		{
@@ -134,7 +134,7 @@ public:
 			m_angularVelocity = velocity.w;
 		}
 
-		Test::Step(settings);
+		Test::Step(settings, drawer);
 	}
 
 	static Test* Create()

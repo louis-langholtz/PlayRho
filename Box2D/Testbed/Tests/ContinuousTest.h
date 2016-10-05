@@ -91,15 +91,15 @@ public:
 		m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f), m_angularVelocity});
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings);
+		Test::Step(settings, drawer);
 
 		uint32 gjkCalls = 0, gjkIters = 0, gjkMaxIters = 0;
 
 		if (gjkCalls > 0)
 		{
-			g_debugDraw.DrawString(5, m_textLine, "gjk calls = %d, ave gjk iters = %3.1f, max gjk iters = %d",
+			drawer.DrawString(5, m_textLine, "gjk calls = %d, ave gjk iters = %3.1f, max gjk iters = %d",
 				gjkCalls, gjkIters / float_t(gjkCalls), gjkMaxIters);
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
@@ -109,11 +109,11 @@ public:
 
 		if (toiCalls > 0)
 		{
-			g_debugDraw.DrawString(5, m_textLine, "toi calls = %d, ave [max] toi iters = %3.1f [%d]",
+			drawer.DrawString(5, m_textLine, "toi calls = %d, ave [max] toi iters = %3.1f [%d]",
 								toiCalls, toiIters / float_t(toiCalls), toiMaxRootIters);
 			m_textLine += DRAW_STRING_NEW_LINE;
 			
-			g_debugDraw.DrawString(5, m_textLine, "ave [max] toi root iters = %3.1f [%d]",
+			drawer.DrawString(5, m_textLine, "ave [max] toi root iters = %3.1f [%d]",
 				toiRootIters / float_t(toiCalls), toiMaxRootIters);
 			m_textLine += DRAW_STRING_NEW_LINE;
 

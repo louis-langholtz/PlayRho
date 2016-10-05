@@ -172,7 +172,7 @@ public:
 		}
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
 		bool sleeping = true;
 		for (auto& b: m_world->GetBodies())
@@ -198,7 +198,7 @@ public:
 		//	CreateCircle();
 		//}
 
-		Test::Step(settings);
+		Test::Step(settings, drawer);
 
 		for (auto& b: m_world->GetBodies())
 		{
@@ -214,13 +214,13 @@ public:
 			}
 		}
 
-		g_debugDraw.DrawString(5, m_textLine, "Press 'c' to create a circle.");
+		drawer.DrawString(5, m_textLine, "Press 'c' to create a circle.");
 		m_textLine += DRAW_STRING_NEW_LINE;
-		g_debugDraw.DrawString(5, m_textLine, "Press 'b' to create a box.");
+		drawer.DrawString(5, m_textLine, "Press 'b' to create a box.");
 		m_textLine += DRAW_STRING_NEW_LINE;
-		g_debugDraw.DrawString(5, m_textLine, "Press '.' to toggle bullet mode (currently %s).", m_bullet_mode? "on": "off");
+		drawer.DrawString(5, m_textLine, "Press '.' to toggle bullet mode (currently %s).", m_bullet_mode? "on": "off");
 		m_textLine += DRAW_STRING_NEW_LINE;
-		g_debugDraw.DrawString(5, m_textLine, "Press 'i' to impart impulses.");
+		drawer.DrawString(5, m_textLine, "Press 'i' to impart impulses.");
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 

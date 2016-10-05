@@ -137,10 +137,10 @@ public:
 		}
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings);
-		g_debugDraw.DrawString(5, m_textLine, "Keys: (l) limits, (m) motor");
+		Test::Step(settings, drawer);
+		drawer.DrawString(5, m_textLine, "Keys: (l) limits, (m) motor");
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		//if (m_stepCount == 360)
@@ -149,7 +149,7 @@ public:
 		//}
 
 		//float_t torque1 = m_joint1->GetMotorTorque();
-		//g_debugDraw.DrawString(5, m_textLine, "Motor Torque = %4.0f, %4.0f : Motor Force = %4.0f", (float) torque1, (float) torque2, (float) force3);
+		//drawer.DrawString(5, m_textLine, "Motor Torque = %4.0f, %4.0f : Motor Force = %4.0f", (float) torque1, (float) torque2, (float) force3);
 		//m_textLine += DRAW_STRING_NEW_LINE;
 	}
 

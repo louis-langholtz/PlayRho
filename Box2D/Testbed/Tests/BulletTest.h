@@ -90,16 +90,16 @@ public:
 		toiMaxRootIters = 0;
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings);
+		Test::Step(settings, drawer);
 
 		uint32 gjkCalls = 0, gjkIters = 0, gjkMaxIters = 0;
 		int32 toiRootIters = 0, toiMaxRootIters = 0;
 
 		if (gjkCalls > 0)
 		{
-			g_debugDraw.DrawString(5, m_textLine, "gjk calls = %d, ave gjk iters = %3.1f, max gjk iters = %d",
+			drawer.DrawString(5, m_textLine, "gjk calls = %d, ave gjk iters = %3.1f, max gjk iters = %d",
 				gjkCalls, gjkIters / float_t(gjkCalls), gjkMaxIters);
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
@@ -115,11 +115,11 @@ public:
 #endif
 		if (toiCalls > 0)
 		{
-			g_debugDraw.DrawString(5, m_textLine, "toi calls = %d, ave toi iters = %3.1f, max toi iters = %d",
+			drawer.DrawString(5, m_textLine, "toi calls = %d, ave toi iters = %3.1f, max toi iters = %d",
 				toiCalls, toiIters / float_t(toiCalls), toiMaxRootIters);
 			m_textLine += DRAW_STRING_NEW_LINE;
 
-			g_debugDraw.DrawString(5, m_textLine, "ave toi root iters = %3.1f, max toi root iters = %d",
+			drawer.DrawString(5, m_textLine, "ave toi root iters = %3.1f, max toi root iters = %d",
 				toiRootIters / float_t(toiCalls), toiMaxRootIters);
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}

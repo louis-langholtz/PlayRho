@@ -60,37 +60,37 @@ class DebugDraw : public Drawer
 {
 public:
 	DebugDraw();
-	~DebugDraw();
+	virtual ~DebugDraw();
 
 	void Create();
 	void Destroy();
 	
-	virtual void DrawPolygon(const Vec2* vertices, size_type vertexCount, const Color& color) override;
+	void DrawPolygon(const Vec2* vertices, size_type vertexCount, const Color& color) override;
 
-	virtual void DrawSolidPolygon(const Vec2* vertices, size_type vertexCount, const Color& color) override;
+	void DrawSolidPolygon(const Vec2* vertices, size_type vertexCount, const Color& color) override;
 
-	virtual void DrawCircle(const Vec2& center, float_t radius, const Color& color) override;
+	void DrawCircle(const Vec2& center, float_t radius, const Color& color) override;
 
-	virtual void DrawSolidCircle(const Vec2& center, float_t radius, const Vec2& axis, const Color& color) override;
+	void DrawSolidCircle(const Vec2& center, float_t radius, const Vec2& axis, const Color& color) override;
 
-	virtual void DrawSegment(const Vec2& p1, const Vec2& p2, const Color& color) override;
+	void DrawSegment(const Vec2& p1, const Vec2& p2, const Color& color) override;
 
-	virtual void DrawTransform(const Transformation& xf) override;
+	void DrawTransform(const Transformation& xf) override;
 
-	virtual void Draw(const World& world) override;
-	virtual void Draw(const Joint& joint) override;
-	virtual void Draw(const Fixture& shape, const Transformation& xf, const Color& color) override;
-	virtual void Draw(const Rope& rope) override;
+	void Draw(const World& world) override;
+	void Draw(const Joint& joint) override;
+	void Draw(const Fixture& shape, const Transformation& xf, const Color& color) override;
+	void Draw(const Rope& rope) override;
 
-    void DrawPoint(const Vec2& p, float_t size, const Color& color);
+    void DrawPoint(const Vec2& p, float_t size, const Color& color) override;
 
-    void DrawString(int x, int y, const char* string, ...); 
+    void DrawString(int x, int y, const char* string, ...) override; 
 
-    void DrawString(const Vec2& p, const char* string, ...);
+    void DrawString(const Vec2& p, const char* string, ...) override;
 
-    void DrawAABB(AABB* aabb, const Color& color);
+    void DrawAABB(AABB* aabb, const Color& color) override;
 
-    void Flush();
+    void Flush() override;
     
 private:
 	GLRenderPoints* m_points;
@@ -98,7 +98,6 @@ private:
     GLRenderTriangles* m_triangles;
 };
 
-extern DebugDraw g_debugDraw;
 extern Camera g_camera;
 
 } // namespace box2d

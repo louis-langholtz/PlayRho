@@ -147,8 +147,8 @@ public:
 	Test();
 	virtual ~Test();
 
-	void DrawTitle(const char *string);
-	virtual void Step(Settings* settings);
+	void DrawTitle(Drawer& drawer, const char *string);
+	virtual void Step(Settings& settings, Drawer& drawer);
 	virtual void Keyboard(int key) { BOX2D_NOT_USED(key); }
 	virtual void KeyboardUp(int key) { BOX2D_NOT_USED(key); }
 	void ShiftMouseDown(const Vec2& p);

@@ -75,13 +75,13 @@ public:
 		}
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings);
+		Test::Step(settings, drawer);
 
 		float_t ratio = m_joint1->GetRatio();
 		float_t L = m_joint1->GetCurrentLengthA() + ratio * m_joint1->GetCurrentLengthB();
-		g_debugDraw.DrawString(5, m_textLine, "L1 + %4.2f * L2 = %4.2f", (float) ratio, (float) L);
+		drawer.DrawString(5, m_textLine, "L1 + %4.2f * L2 = %4.2f", (float) ratio, (float) L);
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 

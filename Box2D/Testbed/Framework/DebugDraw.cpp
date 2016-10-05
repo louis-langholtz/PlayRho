@@ -46,7 +46,6 @@
 
 namespace box2d {
 
-DebugDraw g_debugDraw;
 Camera g_camera;
 
 //

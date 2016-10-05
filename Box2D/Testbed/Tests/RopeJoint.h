@@ -115,18 +115,18 @@ public:
 		}
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings);
-		g_debugDraw.DrawString(5, m_textLine, "Press (j) to toggle the rope joint.");
+		Test::Step(settings, drawer);
+		drawer.DrawString(5, m_textLine, "Press (j) to toggle the rope joint.");
 		m_textLine += DRAW_STRING_NEW_LINE;
 		if (m_rope)
 		{
-			g_debugDraw.DrawString(5, m_textLine, "Rope ON");
+			drawer.DrawString(5, m_textLine, "Rope ON");
 		}
 		else
 		{
-			g_debugDraw.DrawString(5, m_textLine, "Rope OFF");
+			drawer.DrawString(5, m_textLine, "Rope OFF");
 		}
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}

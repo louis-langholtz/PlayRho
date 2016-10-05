@@ -109,14 +109,14 @@ public:
 #endif
 	}
 
-	void Step(Settings* settings) override
+	void Step(Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings);
-		g_debugDraw.DrawString(5, m_textLine, "Press: (c) create a shape, (d) destroy a shape.");
+		Test::Step(settings, drawer);
+		drawer.DrawString(5, m_textLine, "Press: (c) create a shape, (d) destroy a shape.");
 		m_textLine += DRAW_STRING_NEW_LINE;
 
         Vec2 v = GetLinearVelocity(*(m_character->GetBody()));
-        g_debugDraw.DrawString(5, m_textLine, "Character Linear Velocity: %f", v.y);
+        drawer.DrawString(5, m_textLine, "Character Linear Velocity: %f", v.y);
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 

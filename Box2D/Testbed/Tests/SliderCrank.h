@@ -129,13 +129,13 @@ public:
 		}
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings);
-		g_debugDraw.DrawString(5, m_textLine, "Keys: (f) toggle friction, (m) toggle motor");
+		Test::Step(settings, drawer);
+		drawer.DrawString(5, m_textLine, "Keys: (f) toggle friction, (m) toggle motor");
 		m_textLine += DRAW_STRING_NEW_LINE;
-		float_t torque = m_joint1->GetMotorTorque(settings->hz);
-		g_debugDraw.DrawString(5, m_textLine, "Motor Torque = %5.0f", (float) torque);
+		float_t torque = m_joint1->GetMotorTorque(settings.hz);
+		drawer.DrawString(5, m_textLine, "Motor Torque = %5.0f", (float) torque);
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 

@@ -122,9 +122,9 @@ public:
 		body6->CreateFixture(circleShapeDef);
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings);
+		Test::Step(settings, drawer);
 
 		// We are going to destroy some bodies according to contact
 		// points. We must buffer the bodies that should be destroyed

@@ -70,9 +70,9 @@ public:
 		}
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings);
+		Test::Step(settings, drawer);
 
 		//DynamicTree* tree = &m_world->m_contactManager.m_broadPhase.m_tree;
 

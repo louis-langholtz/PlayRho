@@ -36,21 +36,21 @@ public:
 		return new TimeOfImpactTest;
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings);
+		Test::Step(settings, drawer);
 
 		const auto sweepA = Sweep{Position{Vec2(24.0f, -60.0f), 2.95f}};
 		const auto sweepB = Sweep{Position{Vec2(53.474274f, -50.252514f), 513.36676f}, Position{Vec2(54.595478f, -51.083473f), 513.62781f}};
 
 		const auto output = TimeOfImpact(GetDistanceProxy(m_shapeA, 0), sweepA, GetDistanceProxy(m_shapeB, 0), sweepB);
 
-		g_debugDraw.DrawString(5, m_textLine, "toi = %g", output.get_t());
+		drawer.DrawString(5, m_textLine, "toi = %g", output.get_t());
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		std::remove_const<decltype(MaxTOIIterations)>::type toiMaxIters = 0;
 		int32 toiMaxRootIters = 0;
-		g_debugDraw.DrawString(5, m_textLine, "max toi iters = %d, max root iters = %d", toiMaxIters, toiMaxRootIters);
+		drawer.DrawString(5, m_textLine, "max toi iters = %d, max root iters = %d", toiMaxIters, toiMaxRootIters);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		Vec2 vertices[MaxPolygonVertices];
@@ -62,7 +62,7 @@ public:
 			{
 				vertices[i] = Transform(m_shapeA.GetVertex(i), transformA);
 			}
-			g_debugDraw.DrawPolygon(vertices, vertexCount, Color(0.9f, 0.9f, 0.9f));
+			drawer.DrawPolygon(vertices, vertexCount, Color(0.9f, 0.9f, 0.9f));
 		}
 
 		{
@@ -72,7 +72,7 @@ public:
 			{
 				vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
 			}
-			g_debugDraw.DrawPolygon(vertices, vertexCount, Color(0.5f, 0.9f, 0.5f));
+			drawer.DrawPolygon(vertices, vertexCount, Color(0.5f, 0.9f, 0.5f));
 		}
 
 		{
@@ -82,7 +82,7 @@ public:
 			{
 				vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
 			}
-			g_debugDraw.DrawPolygon(vertices, vertexCount, Color(0.5f, 0.7f, 0.9f));
+			drawer.DrawPolygon(vertices, vertexCount, Color(0.5f, 0.7f, 0.9f));
 		}
 
 		{
@@ -92,7 +92,7 @@ public:
 			{
 				vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
 			}
-			g_debugDraw.DrawPolygon(vertices, vertexCount, Color(0.9f, 0.5f, 0.5f));
+			drawer.DrawPolygon(vertices, vertexCount, Color(0.9f, 0.5f, 0.5f));
 		}
 
 #if 0
@@ -103,7 +103,7 @@ public:
 			{
 				vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
 			}
-			g_debugDraw.DrawPolygon(vertices, m_shapeB.GetVertexCount(), Color(0.9f, 0.5f, 0.5f));
+			drawer.DrawPolygon(vertices, m_shapeB.GetVertexCount(), Color(0.9f, 0.5f, 0.5f));
 		}
 #endif
 	}

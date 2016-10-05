@@ -73,24 +73,24 @@ public:
 		}
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
-		float_t dt = settings->hz > 0.0f ? 1.0f / settings->hz : 0.0f;
+		float_t dt = settings.hz > 0.0f ? 1.0f / settings.hz : 0.0f;
 
-		if (settings->pause && !settings->singleStep)
+		if (settings.pause && !settings.singleStep)
 		{
 			dt = 0.0f;
 		}
 
 		m_rope.Step(dt, 1);
 
-		Test::Step(settings);
+		Test::Step(settings, drawer);
 
-		g_debugDraw.Draw(m_rope);
+		drawer.Draw(m_rope);
 
-		g_debugDraw.DrawString(5, m_textLine, "Press (q,e) to adjust target angle");
+		drawer.DrawString(5, m_textLine, "Press (q,e) to adjust target angle");
 		m_textLine += DRAW_STRING_NEW_LINE;
-		g_debugDraw.DrawString(5, m_textLine, "Target angle = %g degrees", m_angle * 180.0f / Pi);
+		drawer.DrawString(5, m_textLine, "Target angle = %g degrees", m_angle * 180.0f / Pi);
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 

@@ -124,7 +124,7 @@ public:
 		}
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
 		// Drive the kinematic body.
 		if (m_platform->GetType() == BodyType::Kinematic)
@@ -139,8 +139,8 @@ public:
 			}
 		}
 
-		Test::Step(settings);
-		g_debugDraw.DrawString(5, m_textLine, "Keys: (d) dynamic, (s) static, (k) kinematic");
+		Test::Step(settings, drawer);
+		drawer.DrawString(5, m_textLine, "Keys: (d) dynamic, (s) static, (k) kinematic");
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 

@@ -178,12 +178,12 @@ public:
 		}
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings);
-		g_debugDraw.DrawString(5, m_textLine, "This demonstrates a soft distance joint.");
+		Test::Step(settings, drawer);
+		drawer.DrawString(5, m_textLine, "This demonstrates a soft distance joint.");
 		m_textLine += DRAW_STRING_NEW_LINE;
-		g_debugDraw.DrawString(5, m_textLine, "Press: (b) to delete a body, (j) to delete a joint");
+		drawer.DrawString(5, m_textLine, "Press: (b) to delete a body, (j) to delete a joint");
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 

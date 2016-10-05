@@ -226,18 +226,18 @@ namespace box2d {
 			}
 		}
 		
-		void Step(Settings* settings)
+		void Step(Settings& settings, Drawer& drawer) override
 		{
-			Test::Step(settings);
-			g_debugDraw.DrawString(5, m_textLine, "Drag a circle with mouse, then let go to see how the physics is simulated");
+			Test::Step(settings, drawer);
+			drawer.DrawString(5, m_textLine, "Drag a circle with mouse, then let go to see how the physics is simulated");
 			m_textLine += DRAW_STRING_NEW_LINE;
-			g_debugDraw.DrawString(5, m_textLine, "Press '.' to toggle bullet mode (currently %s).", m_bullet_mode? "on": "off");
+			drawer.DrawString(5, m_textLine, "Press '.' to toggle bullet mode (currently %s).", m_bullet_mode? "on": "off");
 			m_textLine += DRAW_STRING_NEW_LINE;
-			g_debugDraw.DrawString(5, m_textLine, "Press 'A' to toggle left side wall (currently %s).", m_left_side_wall? "on": "off");
+			drawer.DrawString(5, m_textLine, "Press 'A' to toggle left side wall (currently %s).", m_left_side_wall? "on": "off");
 			m_textLine += DRAW_STRING_NEW_LINE;
-			g_debugDraw.DrawString(5, m_textLine, "Press 'D' to toggle right side wall (currently %s).", m_right_side_wall? "on": "off");
+			drawer.DrawString(5, m_textLine, "Press 'D' to toggle right side wall (currently %s).", m_right_side_wall? "on": "off");
 			m_textLine += DRAW_STRING_NEW_LINE;
-			g_debugDraw.DrawString(5, m_textLine, "Press '1-5' to set # of balls (currently %d).", m_num_arms);
+			drawer.DrawString(5, m_textLine, "Press '1-5' to set # of balls (currently %d).", m_num_arms);
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 		

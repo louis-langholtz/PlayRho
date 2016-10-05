@@ -136,9 +136,9 @@ public:
 		}
 	}
 
-	void Step(Settings* settings) override
+	void Step(Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings);
+		Test::Step(settings, drawer);
 
 		// Traverse the contact results. Apply a force on shapes
 		// that overlap the sensor.

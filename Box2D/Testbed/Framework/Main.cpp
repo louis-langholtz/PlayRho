@@ -314,12 +314,12 @@ static void sRestart()
 }
 
 //
-static void sSimulate()
+static void sSimulate(Drawer& drawer)
 {
 	glEnable(GL_DEPTH_TEST);
-	test->Step(&settings);
+	test->Step(settings, drawer);
 
-	test->DrawTitle(entry->name);
+	test->DrawTitle(drawer, entry->name);
 	glDisable(GL_DEPTH_TEST);
 
 	if (testSelection != testIndex)
@@ -485,7 +485,8 @@ int main(int argc, char** argv)
 	}
 #endif
     
-	g_debugDraw.Create();
+	DebugDraw drawer;
+	drawer.Create();
 
 	sCreateUI();
 
@@ -532,7 +533,7 @@ int main(int argc, char** argv)
 
 		imguiBeginFrame(mousex, mousey, mousebutton, mscroll);
 
-		sSimulate();
+		sSimulate(drawer);
 		sInterface();
         
         // Measure speed
@@ -555,7 +556,7 @@ int main(int argc, char** argv)
 		glfwPollEvents();
 	}
 
-	g_debugDraw.Destroy();
+	drawer.Destroy();
 	RenderGLDestroy();
 	glfwTerminate();
 

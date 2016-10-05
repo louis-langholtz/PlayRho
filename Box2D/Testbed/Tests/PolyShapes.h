@@ -262,28 +262,28 @@ public:
 		}
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings);
+		Test::Step(settings, drawer);
 
 		PolyShapesCallback callback;
 		callback.m_circle.SetRadius(float_t(2.0));
 		callback.m_circle.SetPosition(Vec2(0.0f, 1.1f));
 		callback.m_transform = Transform_identity;
-		callback.g_debugDraw = &g_debugDraw;
+		callback.g_debugDraw = &drawer;
 
 		AABB aabb = ComputeAABB(callback.m_circle, callback.m_transform, 0);
 
 		m_world->QueryAABB(&callback, aabb);
 
 		Color color(0.4f, 0.7f, 0.8f);
-		g_debugDraw.DrawCircle(callback.m_circle.GetPosition(), callback.m_circle.GetRadius(), color);
+		drawer.DrawCircle(callback.m_circle.GetPosition(), callback.m_circle.GetRadius(), color);
 
-		g_debugDraw.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
+		drawer.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
 		m_textLine += DRAW_STRING_NEW_LINE;
-		g_debugDraw.DrawString(5, m_textLine, "Press 'a' to (de)activate some bodies");
+		drawer.DrawString(5, m_textLine, "Press 'a' to (de)activate some bodies");
 		m_textLine += DRAW_STRING_NEW_LINE;
-		g_debugDraw.DrawString(5, m_textLine, "Press 'd' to destroy a body");
+		drawer.DrawString(5, m_textLine, "Press 'd' to destroy a body");
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 

@@ -47,9 +47,9 @@ public:
 		return new DistanceTest;
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings);
+		Test::Step(settings, drawer);
 
 		const auto proxyA = GetDistanceProxy(m_polygonA, 0);
 		const auto proxyB = GetDistanceProxy(m_polygonB, 0);
@@ -83,10 +83,10 @@ public:
 			distance = float_t{0};
 		}
 		
-		g_debugDraw.DrawString(5, m_textLine, "distance = %g", distance);
+		drawer.DrawString(5, m_textLine, "distance = %g", distance);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		g_debugDraw.DrawString(5, m_textLine, "iterations = %d", output.iterations);
+		drawer.DrawString(5, m_textLine, "iterations = %d", output.iterations);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		{
@@ -98,7 +98,7 @@ public:
 				{
 					v[i] = Transform(m_polygonA.GetVertex(i), m_transformA);
 				}
-				g_debugDraw.DrawPolygon(v, vertexCount, color);
+				drawer.DrawPolygon(v, vertexCount, color);
 			}
 
 			{
@@ -107,7 +107,7 @@ public:
 				{
 					v[i] = Transform(m_polygonB.GetVertex(i), m_transformB);
 				}
-				g_debugDraw.DrawPolygon(v, m_polygonB.GetVertexCount(), color);
+				drawer.DrawPolygon(v, m_polygonB.GetVertexCount(), color);
 			}
 		}
 
@@ -115,10 +115,10 @@ public:
 		Vec2 x2 = output.witnessPoints.b;
 
 		Color c1(1.0f, 0.0f, 0.0f);
-		g_debugDraw.DrawPoint(x1, 4.0f, c1);
+		drawer.DrawPoint(x1, 4.0f, c1);
 
 		Color c2(1.0f, 1.0f, 0.0f);
-		g_debugDraw.DrawPoint(x2, 4.0f, c2);
+		drawer.DrawPoint(x2, 4.0f, c2);
 	}
 
 	void Keyboard(int key)

@@ -71,9 +71,9 @@ public:
 		m_count = 0;
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings);
+		Test::Step(settings, drawer);
 
 		if (m_count < e_count)
 		{

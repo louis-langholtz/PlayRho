@@ -61,9 +61,9 @@ public:
 		}
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings);
+		Test::Step(settings, drawer);
 
 		//for (int32 i = 0; i < e_count; ++i)
 		//{

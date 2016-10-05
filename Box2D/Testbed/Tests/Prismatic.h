@@ -87,13 +87,13 @@ public:
 		}
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings);
-		g_debugDraw.DrawString(5, m_textLine, "Keys: (l) limits, (m) motors, (s) speed");
+		Test::Step(settings, drawer);
+		drawer.DrawString(5, m_textLine, "Keys: (l) limits, (m) motors, (s) speed");
 		m_textLine += DRAW_STRING_NEW_LINE;
-		float_t force = m_joint->GetMotorForce(settings->hz);
-		g_debugDraw.DrawString(5, m_textLine, "Motor Force = %4.0f", (float) force);
+		float_t force = m_joint->GetMotorForce(settings.hz);
+		drawer.DrawString(5, m_textLine, "Motor Force = %4.0f", (float) force);
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 

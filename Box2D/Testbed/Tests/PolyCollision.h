@@ -45,14 +45,14 @@ public:
 		return new PolyCollision;
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
 		BOX2D_NOT_USED(settings);
 
 		const auto manifold = CollideShapes(m_polygonA, m_transformA, m_polygonB, m_transformB);
 		const auto pointCount = manifold.GetPointCount();
 
-		g_debugDraw.DrawString(5, m_textLine, "point count = %d", pointCount);
+		drawer.DrawString(5, m_textLine, "point count = %d", pointCount);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		{
@@ -64,7 +64,7 @@ public:
 				{
 					v[i] = Transform(m_polygonA.GetVertex(i), m_transformA);
 				}
-				g_debugDraw.DrawPolygon(v, vertexCount, color);
+				drawer.DrawPolygon(v, vertexCount, color);
 			}
 
 			{
@@ -73,14 +73,14 @@ public:
 				{
 					v[i] = Transform(m_polygonB.GetVertex(i), m_transformB);
 				}
-				g_debugDraw.DrawPolygon(v, vertexCount, color);
+				drawer.DrawPolygon(v, vertexCount, color);
 			}
 		}
 
 		const auto worldManifold = GetWorldManifold(manifold, m_transformA, GetRadius(m_polygonA), m_transformB, GetRadius(m_polygonB));
 		for (auto i = decltype(pointCount){0}; i < pointCount; ++i)
 		{
-			g_debugDraw.DrawPoint(worldManifold.GetPoint(i), 4.0f, Color(0.9f, 0.3f, 0.3f));
+			drawer.DrawPoint(worldManifold.GetPoint(i), 4.0f, Color(0.9f, 0.3f, 0.3f));
 		}
 	}
 

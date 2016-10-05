@@ -115,7 +115,7 @@ public:
 		m_button = false;
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
 		if (m_button)
 		{
@@ -128,9 +128,9 @@ public:
 			m_rightJoint->SetMotorSpeed(10.0f);
 		}
 
-		Test::Step(settings);
+		Test::Step(settings, drawer);
 
-		g_debugDraw.DrawString(5, m_textLine, "Press 'a' to control the flippers");
+		drawer.DrawString(5, m_textLine, "Press 'a' to control the flippers");
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 	}

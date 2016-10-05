@@ -64,7 +64,7 @@ public:
 		return new DynamicTreeTest;
 	}
 
-	void Step(Settings* settings)
+	void Step(Settings& settings, Drawer& drawer) override
 	{
 		BOX2D_NOT_USED(settings);
 
@@ -108,29 +108,29 @@ public:
 				c.Set(0.6f, 0.6f, 0.9f);
 			}
 
-			g_debugDraw.DrawAABB(&actor->aabb, c);
+			drawer.DrawAABB(&actor->aabb, c);
 		}
 
 		Color c(0.7f, 0.7f, 0.7f);
-		g_debugDraw.DrawAABB(&m_queryAABB, c);
+		drawer.DrawAABB(&m_queryAABB, c);
 
-		g_debugDraw.DrawSegment(m_rayCastInput.p1, m_rayCastInput.p2, c);
+		drawer.DrawSegment(m_rayCastInput.p1, m_rayCastInput.p2, c);
 
 		Color c1(0.2f, 0.9f, 0.2f);
 		Color c2(0.9f, 0.2f, 0.2f);
-		g_debugDraw.DrawPoint(m_rayCastInput.p1, 6.0f, c1);
-		g_debugDraw.DrawPoint(m_rayCastInput.p2, 6.0f, c2);
+		drawer.DrawPoint(m_rayCastInput.p1, 6.0f, c1);
+		drawer.DrawPoint(m_rayCastInput.p2, 6.0f, c2);
 
 		if (m_rayActor)
 		{
 			Color cr(0.2f, 0.2f, 0.9f);
 			Vec2 p = m_rayCastInput.p1 + m_rayActor->fraction * (m_rayCastInput.p2 - m_rayCastInput.p1);
-			g_debugDraw.DrawPoint(p, 6.0f, cr);
+			drawer.DrawPoint(p, 6.0f, cr);
 		}
 
 		{
 			DynamicTree::size_type height = m_tree.GetHeight();
-			g_debugDraw.DrawString(5, m_textLine, "dynamic tree height = %d", height);
+			drawer.DrawString(5, m_textLine, "dynamic tree height = %d", height);
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
