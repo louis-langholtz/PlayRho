@@ -1137,5 +1137,7 @@ inline Vec2 GetContactRelVelocity(const Velocity velA, const Vec2 vcp_rA,
 	return (velB.v + (GetRevPerpendicular(vcp_rB) * velB.w)) - (velA.v + (GetRevPerpendicular(vcp_rA) * velA.w));
 }
 
+Vec2 ComputeCentroid(const Vec2 *vertices, size_t count);
+
 }
 #endif

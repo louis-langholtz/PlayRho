@@ -20,3 +20,49 @@
 #include <Box2D/Common/Math.h>
 
 using namespace box2d;
+
+Vec2 box2d::ComputeCentroid(const Vec2 *vertices, size_t count)
+{
+	assert(count >= 3);
+	
+	auto c = Vec2_zero;
+	auto area = float_t{0};
+	
+	// pRef is the reference point for forming triangles.
+	// It's location doesn't change the result (except for rounding error).
+	const auto pRef = Vec2_zero;
+#if 0
+	// This code would put the reference point inside the polygon.
+	for (auto i = decltype(count){0}; i < count; ++i)
+	{
+		pRef += vs[i];
+	}
+	pRef *= float_t{1} / count;
+#endif
+	
+	const auto inv3 = float_t{1} / float_t(3);
+	
+	for (auto i = decltype(count){0}; i < count; ++i)
+	{
+		// Triangle vertices.
+		const auto p1 = pRef;
+		const auto p2 = vertices[i];
+		const auto p3 = vertices[(i + 1) % count];
+		
+		const auto e1 = p2 - p1;
+		const auto e2 = p3 - p1;
+		
+		const auto D = Cross(e1, e2);
+		
+		const auto triangleArea = D / float_t(2);
+		area += triangleArea;
+		
+		// Area weighted centroid
+		c += triangleArea * inv3 * (p1 + p2 + p3);
+	}
+	
+	// Centroid
+	assert((area > 0) && !almost_equal(area, 0));
+	c *= float_t{1} / area;
+	return c;
+}
