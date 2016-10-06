@@ -30,18 +30,16 @@ Vec2 box2d::ComputeCentroid(const Vec2 *vertices, size_t count)
 	
 	// pRef is the reference point for forming triangles.
 	// It's location doesn't change the result (except for rounding error).
-	const auto pRef = Vec2_zero;
-#if 0
-	// This code would put the reference point inside the polygon.
-	for (auto i = decltype(count){0}; i < count; ++i)
-	{
-		pRef += vs[i];
-	}
-	pRef *= float_t{1} / count;
-#endif
-	
-	const auto inv3 = float_t{1} / float_t(3);
-	
+	const auto pRef = [](const Vec2 *vs, size_t n){
+		auto sum = Vec2_zero;
+		// This code would put the reference point inside the polygon.
+		for (auto i = decltype(n){0}; i < n; ++i)
+		{
+			sum += vs[i];
+		}
+		return sum / n;
+	}(vertices, count);
+		
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
 		// Triangle vertices.
@@ -51,18 +49,15 @@ Vec2 box2d::ComputeCentroid(const Vec2 *vertices, size_t count)
 		
 		const auto e1 = p2 - p1;
 		const auto e2 = p3 - p1;
-		
-		const auto D = Cross(e1, e2);
-		
-		const auto triangleArea = D / float_t(2);
+				
+		const auto triangleArea = Cross(e1, e2) / 2;
 		area += triangleArea;
 		
 		// Area weighted centroid
-		c += triangleArea * inv3 * (p1 + p2 + p3);
+		c += triangleArea * (p1 + p2 + p3) / 3;
 	}
 	
 	// Centroid
 	assert((area > 0) && !almost_equal(area, 0));
-	c *= float_t{1} / area;
-	return c;
+	return c / area;
 }
