@@ -30,8 +30,7 @@
 		473971A61D99DFFF00F7137F /* List.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473971A51D99DFFE00F7137F /* List.cpp */; };
 		473971A81D9D9B4C00F7137F /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473971A71D9D9B4C00F7137F /* Math.cpp */; };
 		473971AA1D9F0E4E00F7137F /* ContactSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473971A91D9F0E4E00F7137F /* ContactSolver.cpp */; };
-		473971AE1DA45C4C00F7137F /* Drawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473971AC1DA45C4C00F7137F /* Drawer.cpp */; };
-		473971AF1DA45C4C00F7137F /* Drawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 473971AD1DA45C4C00F7137F /* Drawer.h */; };
+		473971B01DA6C8DE00F7137F /* Drawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473971AC1DA45C4C00F7137F /* Drawer.cpp */; };
 		474BC4291D413D7400447DCD /* libBox2D.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80FF01D2141C3D980059E59D /* libBox2D.a */; };
 		474BC42B1D413DC200447DCD /* AABB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474BC3F41D41278800447DCD /* AABB.cpp */; };
 		474BC42C1D413DC200447DCD /* CircleShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474BC3F51D41278800447DCD /* CircleShape.cpp */; };
@@ -1273,7 +1272,6 @@
 				80BB89B9141C3E5900F1753A /* ChainAndCircleContact.h in Headers */,
 				4751EE291CEDD78F00D459CB /* Mobile.h in Headers */,
 				80BB89BB141C3E5900F1753A /* ChainAndPolygonContact.h in Headers */,
-				473971AF1DA45C4C00F7137F /* Drawer.h in Headers */,
 				4721349F1C8E4CB5009536F9 /* FixtureList.hpp in Headers */,
 				4751EE2B1CEDD79900D459CB /* ConveyorBelt.h in Headers */,
 				477DB2AD1D1C4BE800846ED6 /* PositionSolverManifold.hpp in Headers */,
@@ -1600,6 +1598,7 @@
 				80BB8A6D141C3E8600F1753A /* Test.cpp in Sources */,
 				805900B3184EEE0F00C8ECA3 /* RenderGL3.cpp in Sources */,
 				80BB8A6E141C3E8600F1753A /* TestEntries.cpp in Sources */,
+				473971B01DA6C8DE00F7137F /* Drawer.cpp in Sources */,
 				805900B1184EEE0F00C8ECA3 /* DebugDraw.cpp in Sources */,
 				805900B2184EEE0F00C8ECA3 /* imgui.cpp in Sources */,
 			);
@@ -1613,7 +1612,6 @@
 				47AA63A41D1077E600726CA2 /* ContactList.cpp in Sources */,
 				80BB8988141C3E5900F1753A /* BroadPhase.cpp in Sources */,
 				47AA639B1D0F7FDA00726CA2 /* ConstFixtureIterator.cpp in Sources */,
-				473971AE1DA45C4C00F7137F /* Drawer.cpp in Sources */,
 				80BB898A141C3E5900F1753A /* CollideCircle.cpp in Sources */,
 				80BB898B141C3E5900F1753A /* CollideEdge.cpp in Sources */,
 				80BB898C141C3E5900F1753A /* CollidePolygon.cpp in Sources */,
