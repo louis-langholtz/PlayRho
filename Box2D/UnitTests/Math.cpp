@@ -38,3 +38,19 @@ TEST(Math, TransformInverseTransformedIsOriginal)
 	EXPECT_FLOAT_EQ(vector.x, transformed_inverse_vector.x);
 	EXPECT_FLOAT_EQ(vector.y, transformed_inverse_vector.y);
 }
+
+TEST(Math, ComputeCentroid)
+{
+	const auto hx = float_t(1);
+	const auto hy = float_t(1);
+	const auto real_center = Vec2{1000, 1000};
+	const auto vertices = {
+		Vec2{real_center.x + hx, real_center.y + hy},
+		Vec2{real_center.x - hx, real_center.y + hy},
+		Vec2{real_center.x - hx, real_center.y - hy},
+		Vec2{real_center.x + hx, real_center.y - hy}
+	};
+	const auto center = ComputeCentroid(vertices.begin(), vertices.size());
+	EXPECT_FLOAT_EQ(center.x, real_center.x);
+	EXPECT_FLOAT_EQ(center.y, real_center.y);
+}
