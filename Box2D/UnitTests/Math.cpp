@@ -39,7 +39,39 @@ TEST(Math, TransformInverseTransformedIsOriginal)
 	EXPECT_FLOAT_EQ(vector.y, transformed_inverse_vector.y);
 }
 
-TEST(Math, ComputeCentroid)
+TEST(Math, ComputeCentroidCenteredR1)
+{
+	const auto hx = float_t(1);
+	const auto hy = float_t(1);
+	const auto real_center = Vec2{0, 0};
+	const auto vertices = {
+		Vec2{real_center.x + hx, real_center.y + hy},
+		Vec2{real_center.x - hx, real_center.y + hy},
+		Vec2{real_center.x - hx, real_center.y - hy},
+		Vec2{real_center.x + hx, real_center.y - hy}
+	};
+	const auto center = ComputeCentroid(vertices.begin(), vertices.size());
+	EXPECT_EQ(center.x, real_center.x);
+	EXPECT_EQ(center.y, real_center.y);
+}
+
+TEST(Math, ComputeCentroidCentered0R1000)
+{
+	const auto hx = float_t(1000);
+	const auto hy = float_t(1000);
+	const auto real_center = Vec2{0, 0};
+	const auto vertices = {
+		Vec2{real_center.x + hx, real_center.y + hy},
+		Vec2{real_center.x - hx, real_center.y + hy},
+		Vec2{real_center.x - hx, real_center.y - hy},
+		Vec2{real_center.x + hx, real_center.y - hy}
+	};
+	const auto center = ComputeCentroid(vertices.begin(), vertices.size());
+	EXPECT_EQ(center.x, real_center.x);
+	EXPECT_EQ(center.y, real_center.y);
+}
+
+TEST(Math, ComputeCentroidUpRight1000R1)
 {
 	const auto hx = float_t(1);
 	const auto hy = float_t(1);
@@ -51,6 +83,54 @@ TEST(Math, ComputeCentroid)
 		Vec2{real_center.x + hx, real_center.y - hy}
 	};
 	const auto center = ComputeCentroid(vertices.begin(), vertices.size());
-	EXPECT_FLOAT_EQ(center.x, real_center.x);
-	EXPECT_FLOAT_EQ(center.y, real_center.y);
+	EXPECT_EQ(center.x, real_center.x);
+	EXPECT_EQ(center.y, real_center.y);
+}
+
+TEST(Math, ComputeCentroidUpRight1000R100)
+{
+	const auto hx = float_t(100);
+	const auto hy = float_t(100);
+	const auto real_center = Vec2{1000, 1000};
+	const auto vertices = {
+		Vec2{real_center.x + hx, real_center.y + hy},
+		Vec2{real_center.x - hx, real_center.y + hy},
+		Vec2{real_center.x - hx, real_center.y - hy},
+		Vec2{real_center.x + hx, real_center.y - hy}
+	};
+	const auto center = ComputeCentroid(vertices.begin(), vertices.size());
+	EXPECT_EQ(center.x, real_center.x);
+	EXPECT_EQ(center.y, real_center.y);
+}
+
+TEST(Math, ComputeCentroidUpRight10000R01)
+{
+	const auto hx = float_t(0.1);
+	const auto hy = float_t(0.1);
+	const auto real_center = Vec2{10000, 10000};
+	const auto vertices = {
+		Vec2{real_center.x + hx, real_center.y + hy},
+		Vec2{real_center.x - hx, real_center.y + hy},
+		Vec2{real_center.x - hx, real_center.y - hy},
+		Vec2{real_center.x + hx, real_center.y - hy}
+	};
+	const auto center = ComputeCentroid(vertices.begin(), vertices.size());
+	EXPECT_EQ(center.x, real_center.x);
+	EXPECT_EQ(center.y, real_center.y);
+}
+
+TEST(Math, ComputeCentroidDownLeft1000R1)
+{
+	const auto hx = float_t(1);
+	const auto hy = float_t(1);
+	const auto real_center = Vec2{-1000, -1000};
+	const auto vertices = {
+		Vec2{real_center.x + hx, real_center.y + hy},
+		Vec2{real_center.x - hx, real_center.y + hy},
+		Vec2{real_center.x - hx, real_center.y - hy},
+		Vec2{real_center.x + hx, real_center.y - hy}
+	};
+	const auto center = ComputeCentroid(vertices.begin(), vertices.size());
+	EXPECT_EQ(center.x, real_center.x);
+	EXPECT_EQ(center.y, real_center.y);
 }
