@@ -34,10 +34,6 @@ struct Color
 	float_t r, g, b, a;
 };
 
-class World;
-class Joint;
-class Fixture;
-class Rope;
 class AABB;
 
 class Drawer
@@ -48,27 +44,6 @@ public:
 	Drawer() = default;
 
 	virtual ~Drawer() = default;
-
-	enum
-	{
-		e_shapeBit				= 0x0001,	///< draw shapes
-		e_jointBit				= 0x0002,	///< draw joint connections
-		e_aabbBit				= 0x0004,	///< draw axis aligned bounding boxes
-		e_pairBit				= 0x0008,	///< draw broad-phase pairs
-		e_centerOfMassBit		= 0x0010	///< draw center of mass frame
-	};
-
-	/// Set the drawing flags.
-	void SetFlags(uint32 flags);
-
-	/// Get the drawing flags.
-	uint32 GetFlags() const;
-	
-	/// Append flags to the current flags.
-	void AppendFlags(uint32 flags);
-
-	/// Clear flags from the current flags.
-	void ClearFlags(uint32 flags);
 
 	/// Draw a closed polygon provided in CCW order.
 	virtual void DrawPolygon(const Vec2* vertices, size_type vertexCount, const Color& color) = 0;
@@ -97,18 +72,10 @@ public:
 	
 	virtual void DrawAABB(AABB* aabb, const Color& color) = 0;
 	
-	virtual void Draw(const World& world) = 0;
-	virtual void Draw(const Joint& joint) = 0;
-	virtual void Draw(const Fixture& shape, const Transformation& xf, const Color& color) = 0;
-	virtual void Draw(const Rope& rope) = 0;
-	
 	virtual void Flush() = 0;
 	
 	virtual void SetTranslation(Vec2 value) = 0;
 	virtual Vec2 GetTranslation() const = 0;
-	
-private:
-	uint32 m_drawFlags = 0;
 };
 
 } // namespace box2d

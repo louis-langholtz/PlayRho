@@ -18,9 +18,201 @@
 */
 
 #include "Test.h"
+#include "Drawer.h"
 #include <stdio.h>
 
+#include <Box2D/Rope/Rope.h>
+
 using namespace box2d;
+
+static void Draw(Drawer& drawer, const Fixture& fixture, const Transformation& xf, const Color& color)
+{
+	switch (GetType(fixture))
+	{
+		case Shape::e_circle:
+		{
+			const auto circle = static_cast<const CircleShape*>(fixture.GetShape());
+			const auto center = Transform(circle->GetPosition(), xf);
+			const auto radius = circle->GetRadius();
+			const auto axis = Rotate(Vec2{float_t{1}, float_t{0}}, xf.q);
+			drawer.DrawSolidCircle(center, radius, axis, color);
+		}
+			break;
+			
+		case Shape::e_edge:
+		{
+			const auto edge = static_cast<const EdgeShape*>(fixture.GetShape());
+			const auto v1 = Transform(edge->GetVertex1(), xf);
+			const auto v2 = Transform(edge->GetVertex2(), xf);
+			drawer.DrawSegment(v1, v2, color);
+		}
+			break;
+			
+		case Shape::e_chain:
+		{
+			const auto chain = static_cast<const ChainShape*>(fixture.GetShape());
+			const auto count = chain->GetVertexCount();
+			auto v1 = Transform(chain->GetVertex(0), xf);
+			for (auto i = decltype(count){1}; i < count; ++i)
+			{
+				const auto v2 = Transform(chain->GetVertex(i), xf);
+				drawer.DrawSegment(v1, v2, color);
+				drawer.DrawCircle(v1, float_t(0.05), color);
+				v1 = v2;
+			}
+		}
+			break;
+			
+		case Shape::e_polygon:
+		{
+			const auto poly = static_cast<const PolygonShape*>(fixture.GetShape());
+			const auto vertexCount = poly->GetVertexCount();
+			assert(vertexCount <= MaxPolygonVertices);
+			Vec2 vertices[MaxPolygonVertices];
+			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+			{
+				vertices[i] = Transform(poly->GetVertex(i), xf);
+			}
+			drawer.DrawSolidPolygon(vertices, vertexCount, color);
+		}
+			break;
+			
+		default:
+			break;
+	}
+}
+
+static Color GetColor(const Body& body)
+{
+	if (!body.IsActive())
+	{
+		return Color(0.5f, 0.5f, 0.3f);
+	}
+	if (body.GetType() == BodyType::Static)
+	{
+		return Color(0.5f, 0.9f, 0.5f);
+	}
+	if (body.GetType() == BodyType::Kinematic)
+	{
+		return Color(0.5f, 0.5f, 0.9f);
+	}
+	if (!body.IsAwake())
+	{
+		return Color(0.6f, 0.6f, 0.6f);
+	}
+	return Color(0.9f, 0.7f, 0.7f);
+}
+
+static void Draw(Drawer& drawer, const Body& body)
+{
+	const auto xf = body.GetTransformation();
+	const auto color = GetColor(body);
+	for (auto&& f: body.GetFixtures())
+	{
+		Draw(drawer, f, xf, color);
+	}
+}
+
+static void Draw(Drawer& drawer, const Joint& joint)
+{
+	const auto bodyA = joint.GetBodyA();
+	const auto bodyB = joint.GetBodyB();
+	const auto xf1 = bodyA->GetTransformation();
+	const auto xf2 = bodyB->GetTransformation();
+	const auto x1 = xf1.p;
+	const auto x2 = xf2.p;
+	const auto p1 = joint.GetAnchorA();
+	const auto p2 = joint.GetAnchorB();
+	
+	const Color color(float_t(0.5), float_t(0.8), float_t(0.8));
+	
+	switch (joint.GetType())
+	{
+		case JointType::Distance:
+			drawer.DrawSegment(p1, p2, color);
+			break;
+			
+		case JointType::Pulley:
+		{
+			const auto pulley = static_cast<const PulleyJoint&>(joint);
+			const auto s1 = pulley.GetGroundAnchorA();
+			const auto s2 = pulley.GetGroundAnchorB();
+			drawer.DrawSegment(s1, p1, color);
+			drawer.DrawSegment(s2, p2, color);
+			drawer.DrawSegment(s1, s2, color);
+		}
+			break;
+			
+		case JointType::Mouse:
+			// don't draw this
+			break;
+			
+		default:
+			drawer.DrawSegment(x1, p1, color);
+			drawer.DrawSegment(p1, p2, color);
+			drawer.DrawSegment(x2, p2, color);
+	}
+}
+
+static void Draw(Drawer& drawer, const World& world, const Settings& settings)
+{
+	if (settings.drawShapes)
+	{
+		for (auto&& b: world.GetBodies())
+		{
+			Draw(drawer, b);
+		}
+	}
+	
+	if (settings.drawJoints)
+	{
+		for (auto&& j: world.GetJoints())
+		{
+			Draw(drawer, j);
+		}
+	}
+	
+	if (settings.drawAABBs)
+	{
+		const Color color(0.9f, 0.3f, 0.9f);
+		const auto bp = &world.GetContactManager().m_broadPhase;
+		
+		for (auto&& b: world.GetBodies())
+		{
+			if (!b.IsActive())
+			{
+				continue;
+			}
+			
+			for (auto&& f: b.GetFixtures())
+			{
+				const auto proxy_count = f.GetProxyCount();
+				for (auto i = decltype(proxy_count){0}; i < proxy_count; ++i)
+				{
+					const auto proxy = f.GetProxy(i);
+					const auto aabb = bp->GetFatAABB(proxy->proxyId);
+					Vec2 vs[4];
+					vs[0] = Vec2{aabb.GetLowerBound().x, aabb.GetLowerBound().y};
+					vs[1] = Vec2{aabb.GetUpperBound().x, aabb.GetLowerBound().y};
+					vs[2] = Vec2{aabb.GetUpperBound().x, aabb.GetUpperBound().y};
+					vs[3] = Vec2{aabb.GetLowerBound().x, aabb.GetUpperBound().y};
+					
+					drawer.DrawPolygon(vs, 4, color);
+				}
+			}
+		}
+	}
+	
+	if (settings.drawCOMs)
+	{
+		for (auto&& b: world.GetBodies())
+		{
+			auto xf = b.GetTransformation();
+			xf.p = b.GetWorldCenter();
+			drawer.DrawTransform(xf);
+		}
+	}
+}
 
 void TestDestructionListener::SayGoodbye(Joint& joint)
 {
@@ -274,13 +466,6 @@ void Test::Step(Settings& settings, Drawer& drawer)
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 
-	uint32 flags = 0;
-	flags += settings.drawShapes			* Drawer::e_shapeBit;
-	flags += settings.drawJoints			* Drawer::e_jointBit;
-	flags += settings.drawAABBs			* Drawer::e_aabbBit;
-	flags += settings.drawCOMs				* Drawer::e_centerOfMassBit;
-	drawer.SetFlags(flags);
-
 	m_world->SetAllowSleeping(settings.enableSleep);
 	m_world->SetWarmStarting(settings.enableWarmStarting);
 	m_world->SetContinuousPhysics(settings.enableContinuous);
@@ -290,8 +475,9 @@ void Test::Step(Settings& settings, Drawer& drawer)
 
 	m_world->Step(timeStep, static_cast<unsigned>(settings.velocityIterations), static_cast<unsigned>(settings.positionIterations));
 
-	drawer.Draw(*m_world);
-    drawer.Flush();
+	Draw(drawer, *m_world, settings);
+
+	drawer.Flush();
 
 	if (timeStep > 0.0f)
 	{
@@ -456,3 +642,4 @@ void Test::ShiftOrigin(const Vec2& newOrigin)
 {
 	m_world->ShiftOrigin(newOrigin);
 }
+

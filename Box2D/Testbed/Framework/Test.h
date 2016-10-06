@@ -21,16 +21,10 @@
 #define TEST_H
 
 #include <Box2D/Box2D.h>
-#include "DebugDraw.h"
-
-#if defined(__APPLE__)
-#include <OpenGL/gl3.h>
-#else
-#include <glew/glew.h>
-#endif
-#include <glfw/glfw3.h>
-
 #include <cstdlib>
+#include "Drawer.h"
+
+#include <glfw/glfw3.h>
 
 namespace box2d {
 
@@ -90,7 +84,8 @@ struct TestEntry
 	TestCreateFcn *createFcn;
 };
 
-extern TestEntry g_testEntries[];
+extern const TestEntry g_testEntries[];
+
 // This is called when a joint in the world is implicitly destroyed
 // because an attached body is destroyed. This gives us a chance to
 // nullify the mouse joint.

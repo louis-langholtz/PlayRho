@@ -59,7 +59,7 @@
 #include "RayCast.h"
 #include "Revolute.h"
 #include "RopeJoint.h"
-#include "Rope.h"
+//#include "Rope.h"
 #include "SensorTest.h"
 #include "ShapeEditing.h"
 #include "SliderCrank.h"
@@ -76,7 +76,7 @@
 
 namespace box2d {
 
-TestEntry g_testEntries[] =
+const TestEntry g_testEntries[] =
 {
 	{"Tiles", Tiles::Create},
 	{"Heavy on Light", HeavyOnLight::Create},
@@ -110,7 +110,7 @@ TestEntry g_testEntries[] =
 	{"Pulleys", Pulleys::Create},
 	{"Polygon Shapes", PolyShapes::Create},
 	{"Web", Web::Create},
-	{"Rope", RopeTest::Create},
+	// {"Rope", RopeTest::Create},
 	{"RopeJoint", RopeJointTest::Create},
 	{"Pinball", Pinball::Create},
 	{"Bullet Test", BulletTest::Create},

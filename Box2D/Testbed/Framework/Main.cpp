@@ -50,6 +50,16 @@ struct UIState
 //
 namespace
 {
+	auto CountTests()
+	{
+		auto count = int32{0};
+		while (g_testEntries[count].createFcn)
+		{
+			++count;
+		}
+		return count;
+	}
+	
 	Camera g_camera;
 	
 	GLFWwindow* mainWindow = nullptr;
@@ -57,8 +67,8 @@ namespace
 
 	int32 testIndex = 0;
 	int32 testSelection = 0;
-	int32 testCount = 0;
-	TestEntry* entry;
+	const auto testCount = CountTests();
+	const TestEntry* entry;
 	Test* test;
 	Settings settings;
 	bool rightMouseDown;
@@ -486,79 +496,73 @@ int main(int argc, char** argv)
 		exit(EXIT_FAILURE);
 	}
 #endif
-    
-	DebugDraw drawer(g_camera);
-	drawer.Create();
 
+	
 	sCreateUI();
-
-	testCount = 0;
-	while (g_testEntries[testCount].createFcn != nullptr)
-	{
-		++testCount;
-	}
-
+	
 	testIndex = Clamp(testIndex, 0, testCount - 1);
 	testSelection = testIndex;
-
+	
 	entry = g_testEntries + testIndex;
 	test = entry->createFcn();
-
+	
 	// Control the frame rate. One draw per monitor refresh.
 	glfwSwapInterval(1);
-
-    double time1 = glfwGetTime();
-    double frameTime = 0.0;
-   
-    glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 	
- 	while (!glfwWindowShouldClose(mainWindow))
+	double time1 = glfwGetTime();
+	double frameTime = 0.0;
+	
+	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
+	
 	{
- 		glfwGetWindowSize(mainWindow, &g_camera.m_width, &g_camera.m_height);
-		glViewport(0, 0, g_camera.m_width, g_camera.m_height);
+		DebugDraw drawer(g_camera);
+		while (!glfwWindowShouldClose(mainWindow))
+		{
+			glfwGetWindowSize(mainWindow, &g_camera.m_width, &g_camera.m_height);
+			glViewport(0, 0, g_camera.m_width, g_camera.m_height);
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		unsigned char mousebutton = 0;
-		int mscroll = ui.scroll;
-		ui.scroll = 0;
+			unsigned char mousebutton = 0;
+			int mscroll = ui.scroll;
+			ui.scroll = 0;
 
-		double xd, yd;
-		glfwGetCursorPos(mainWindow, &xd, &yd);
-		int mousex = int(xd);
-		int mousey = int(yd);
+			double xd, yd;
+			glfwGetCursorPos(mainWindow, &xd, &yd);
+			int mousex = int(xd);
+			int mousey = int(yd);
 
-		mousey = g_camera.m_height - mousey;
-		int leftButton = glfwGetMouseButton(mainWindow, GLFW_MOUSE_BUTTON_LEFT);
-		if (leftButton == GLFW_PRESS)
-			mousebutton |= IMGUI_MBUT_LEFT;
+			mousey = g_camera.m_height - mousey;
+			int leftButton = glfwGetMouseButton(mainWindow, GLFW_MOUSE_BUTTON_LEFT);
+			if (leftButton == GLFW_PRESS)
+				mousebutton |= IMGUI_MBUT_LEFT;
 
-		imguiBeginFrame(mousex, mousey, mousebutton, mscroll);
+			imguiBeginFrame(mousex, mousey, mousebutton, mscroll);
 
-		sSimulate(drawer);
-		sInterface();
-        
-        // Measure speed
-        double time2 = glfwGetTime();
-        double alpha = 0.9f;
-        frameTime = alpha * frameTime + (1.0 - alpha) * (time2 - time1);
-        time1 = time2;
+			sSimulate(drawer);
+			sInterface();
+			
+			// Measure speed
+			double time2 = glfwGetTime();
+			double alpha = 0.9f;
+			frameTime = alpha * frameTime + (1.0 - alpha) * (time2 - time1);
+			time1 = time2;
 
-        char buffer[32];
-        snprintf(buffer, 32, "%.1f ms", 1000.0 * frameTime);
-        AddGfxCmdText(5, 5, TEXT_ALIGN_LEFT, buffer, WHITE);
-        
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glDisable(GL_DEPTH_TEST);
-		RenderGLFlush(g_camera.m_width, g_camera.m_height);
+			char buffer[32];
+			snprintf(buffer, 32, "%.1f ms", 1000.0 * frameTime);
+			AddGfxCmdText(5, 5, TEXT_ALIGN_LEFT, buffer, static_cast<unsigned int>(WHITE));
+			
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glDisable(GL_DEPTH_TEST);
+			RenderGLFlush(g_camera.m_width, g_camera.m_height);
 
-		glfwSwapBuffers(mainWindow);
+			glfwSwapBuffers(mainWindow);
 
-		glfwPollEvents();
+			glfwPollEvents();
+		}
 	}
 
-	drawer.Destroy();
 	RenderGLDestroy();
 	glfwTerminate();
 
