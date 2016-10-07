@@ -105,6 +105,13 @@ namespace box2d {
 		VelocityConstraint* const m_velocityConstraints; ///< Array of velocity-constraints (1 per contact, 8-bytes).
 	};
 	
+	struct PositionSolution
+	{
+		Position pos_a;
+		Position pos_b;
+		float_t min_separation;
+	};
+
 	/// Solves the given position constraint.
 	/// @detail
 	/// This updates the two given positions for every point in the contact position constraint
@@ -118,8 +125,8 @@ namespace box2d {
 	/// @sa http://allenchou.net/2013/12/game-physics-resolution-contact-constraints/
 	/// @return Minimum separation distance of the position constraint's manifold points
 	///   (prior to "solving").
-	float_t Solve(const PositionConstraint& pc, Position& positionA, Position& positionB,
-				  float_t resolution_rate, float_t max_separation, float_t max_correction);
+	PositionSolution Solve(const PositionConstraint& pc, Position positionA, Position positionB,
+						   float_t resolution_rate, float_t max_separation, float_t max_correction);
 
 } // namespace box2d
 

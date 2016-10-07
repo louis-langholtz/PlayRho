@@ -438,74 +438,64 @@ static inline void SolveVelocityConstraint(VelocityConstraint& vc, Velocity& vel
 	}
 }
 
-float_t Solve(const PositionConstraint& pc, Position& positionA, Position& positionB,
-			  float_t resolution_rate, float_t max_separation, float_t max_correction)
+PositionSolution Solve(const PositionConstraint& pc, Position posA, Position posB,
+					   float_t resolution_rate, float_t max_separation, float_t max_correction)
 {
 	auto minSeparation = MaxFloat;
+	const auto invMassA = pc.bodyA.invMass;
+	const auto invInertiaA = pc.bodyA.invI;
+	const auto localCenterA = pc.bodyA.localCenter;
 	
-	auto posA = positionA;
-	auto posB = positionB;
+	const auto invMassB = pc.bodyB.invMass;
+	const auto invInertiaB = pc.bodyB.invI;
+	const auto localCenterB = pc.bodyB.localCenter;
 	
+	// Compute inverse mass total.
+	// This must be > 0 unless doing TOI solving and neither bodies were the bodies specified.
+	const auto invMassTotal = invMassA + invMassB;
+	assert(invMassTotal >= 0);
+	
+	const auto totalRadius = pc.radiusA + pc.radiusB;
+	
+	// Solve normal constraints
+	const auto pointCount = pc.manifold.GetPointCount();
+	for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 	{
-		const auto invMassA = pc.bodyA.invMass;
-		const auto invInertiaA = pc.bodyA.invI;
-		const auto localCenterA = pc.bodyA.localCenter;
+		const auto psm = [&]() {
+			const auto xfA = GetTransformation(posA, localCenterA);
+			const auto xfB = GetTransformation(posB, localCenterB);
+			return GetPSM(pc.manifold, xfA, xfB, j);
+		}();
 		
-		const auto invMassB = pc.bodyB.invMass;
-		const auto invInertiaB = pc.bodyB.invI;
-		const auto localCenterB = pc.bodyB.localCenter;
+		const auto separation = psm.separation - totalRadius;
+
+		// Track max constraint error.
+		minSeparation = Min(minSeparation, separation);
 		
-		// Compute inverse mass total.
-		// This must be > 0 unless doing TOI solving and neither bodies were the bodies specified.
-		const auto invMassTotal = invMassA + invMassB;
-		assert(invMassTotal >= 0);
-		
-		const auto totalRadius = pc.radiusA + pc.radiusB;
-		
-		// Solve normal constraints
-		const auto pointCount = pc.manifold.GetPointCount();
-		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
+		if (invMassTotal > float_t{0})
 		{
-			const auto psm = [&]() {
-				const auto xfA = GetTransformation(posA, localCenterA);
-				const auto xfB = GetTransformation(posB, localCenterB);
-				return GetPSM(pc.manifold, xfA, xfB, j);
+			const auto rA = psm.point - posA.c;
+			const auto rB = psm.point - posB.c;
+			
+			// Compute the effective mass.
+			const auto K = [&]() {
+				const auto rnA = Cross(rA, psm.normal);
+				const auto rnB = Cross(rB, psm.normal);
+				return invMassTotal + (invInertiaA * Square(rnA)) + (invInertiaB * Square(rnB));
 			}();
 			
-			const auto separation = psm.separation - totalRadius;
-
-			// Track max constraint error.
-			minSeparation = Min(minSeparation, separation);
+			// Prevent large corrections and don't push the separation above max_separation.
+			const auto C = Clamp(resolution_rate * (separation - max_separation),
+								 -max_correction, float_t{0});
 			
-			if (invMassTotal > float_t{0})
-			{
-				const auto rA = psm.point - posA.c;
-				const auto rB = psm.point - posB.c;
-				
-				// Compute the effective mass.
-				const auto K = [&]() {
-					const auto rnA = Cross(rA, psm.normal);
-					const auto rnB = Cross(rB, psm.normal);
-					return invMassTotal + (invInertiaA * Square(rnA)) + (invInertiaB * Square(rnB));
-				}();
-				
-				// Prevent large corrections and don't push the separation above max_separation.
-				const auto C = Clamp(resolution_rate * (separation - max_separation),
-									 -max_correction, float_t{0});
-				
-				// Compute normal impulse
-				const auto P = psm.normal * -C / K;
-				
-				posA -= Position{invMassA * P, invInertiaA * Cross(rA, P)};
-				posB += Position{invMassB * P, invInertiaB * Cross(rB, P)};
-			}
+			// Compute normal impulse
+			const auto P = psm.normal * -C / K;
+			
+			posA -= Position{invMassA * P, invInertiaA * Cross(rA, P)};
+			posB += Position{invMassB * P, invInertiaB * Cross(rB, P)};
 		}
 	}
-	
-	positionA = posA;
-	positionB = posB;
-	
-	return minSeparation;
+	return PositionSolution{posA, posB, minSeparation};
 }
 
 void ContactSolver::UpdateVelocityConstraints()
@@ -534,9 +524,11 @@ bool ContactSolver::SolvePositionConstraints()
 	{
 		const auto& pc = m_positionConstraints[i];
 		assert(pc.bodyA.index != pc.bodyB.index);
-		const auto separation = Solve(pc, m_positions[pc.bodyA.index], m_positions[pc.bodyB.index],
-									  Baumgarte, -LinearSlop, MaxLinearCorrection);
-		minSeparation = Min(minSeparation, separation);
+		const auto solution = Solve(pc, m_positions[pc.bodyA.index], m_positions[pc.bodyB.index],
+									Baumgarte, -LinearSlop, MaxLinearCorrection);
+		m_positions[pc.bodyA.index] = solution.pos_a;
+		m_positions[pc.bodyB.index] = solution.pos_b;
+		minSeparation = Min(minSeparation, solution.min_separation);
 	}
 	
 	// Can't expect minSpeparation >= -LinearSlop because we don't push the separation above -LinearSlop.
@@ -568,9 +560,11 @@ bool ContactSolver::SolveTOIPositionConstraints(island_count_t indexA, island_co
 			pc.bodyB.invI = float_t{0};
 		}
 
-		const auto separation = Solve(pc, m_positions[pc.bodyA.index], m_positions[pc.bodyB.index],
-									  ToiBaumgarte, -LinearSlop, MaxLinearCorrection);
-		minSeparation = Min(minSeparation, separation);
+		const auto solution = Solve(pc, m_positions[pc.bodyA.index], m_positions[pc.bodyB.index],
+									ToiBaumgarte, -LinearSlop, MaxLinearCorrection);
+		m_positions[pc.bodyA.index] = solution.pos_a;
+		m_positions[pc.bodyB.index] = solution.pos_b;
+		minSeparation = Min(minSeparation, solution.min_separation);
 	}
 
 	// Can't expect minSpeparation >= -LinearSlop because we don't push the separation above -LinearSlop.

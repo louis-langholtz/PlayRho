@@ -40,13 +40,13 @@ TEST(ContactSolver, ZeroCountInit)
 
 TEST(ContactSolver, SolveTouching)
 {
-	auto pA = Position{Vec2{-2, 0}, 0};
-	auto pB = Position{Vec2{+2, 0}, 0};
+	const auto old_pA = Position{Vec2{-2, 0}, 0};
+	const auto old_pB = Position{Vec2{+2, 0}, 0};
 
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
-	const auto xfmA = Transformation(pA.c, Rot{pA.a});
-	const auto xfmB = Transformation(pB.c, Rot{pB.a});
+	const auto xfmA = Transformation(old_pA.c, Rot{old_pA.a});
+	const auto xfmB = Transformation(old_pB.c, Rot{old_pB.a});
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
 	ASSERT_EQ(manifold.GetPointCount(), 2);
@@ -57,29 +57,23 @@ TEST(ContactSolver, SolveTouching)
 	const auto lcB = Vec2{0, 0};
 	const auto bA = PositionConstraint::BodyData{indexA, float_t(1), float_t(1), lcA};
 	const auto bB = PositionConstraint::BodyData{indexB, float_t(1), float_t(1), lcB};
-	PositionConstraint pc{manifold, bA, 0, bB, 0};
+	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 	
-	const auto old_pA = pA;
-	const auto old_pB = pB;
+	const auto solution = Solve(pc, old_pA, old_pB, Baumgarte, 0, MaxLinearCorrection);
+	
+	EXPECT_EQ(solution.min_separation, 0);
+	
+	EXPECT_EQ(old_pA.c.x, solution.pos_a.c.x);
+	EXPECT_EQ(old_pA.c.y, solution.pos_a.c.y);
+	EXPECT_EQ(old_pA.a, solution.pos_a.a);
 
-	const auto min_sep = Solve(pc, pA, pB, Baumgarte, 0, MaxLinearCorrection);
-	
-	EXPECT_EQ(min_sep, 0);
-	
-	EXPECT_EQ(old_pA.c.x, pA.c.x);
-	EXPECT_EQ(old_pA.c.y, pA.c.y);
-	EXPECT_EQ(old_pA.a, pA.a);
-
-	EXPECT_EQ(old_pB.c.x, pB.c.x);
-	EXPECT_EQ(old_pB.c.y, pB.c.y);
-	EXPECT_EQ(old_pB.a, pB.a);
+	EXPECT_EQ(old_pB.c.x, solution.pos_b.c.x);
+	EXPECT_EQ(old_pB.c.y, solution.pos_b.c.y);
+	EXPECT_EQ(old_pB.a, solution.pos_b.a);
 }
 
 TEST(ContactSolver, SolveOverlappingZeroRateDoesntMove)
 {
-	auto pA = Position{Vec2{0, 0}, 0};
-	auto pB = Position{Vec2{0, 0}, 0};
-	
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
 	const auto xfmA = Transformation(Vec2_zero, Rot{0});
@@ -94,29 +88,26 @@ TEST(ContactSolver, SolveOverlappingZeroRateDoesntMove)
 	const auto lcB = Vec2{};
 	const auto bA = PositionConstraint::BodyData{indexA, float_t(1), float_t(1), lcA};
 	const auto bB = PositionConstraint::BodyData{indexB, float_t(1), float_t(1), lcB};
-	PositionConstraint pc{manifold, bA, 0, bB, 0};
+	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
+
+	const auto old_pA = Position{Vec2{0, 0}, 0};
+	const auto old_pB = Position{Vec2{0, 0}, 0};
 	
-	const auto old_pA = pA;
-	const auto old_pB = pB;
+	const auto solution = Solve(pc, old_pA, old_pB, 0, -LinearSlop, MaxLinearCorrection);
+
+	EXPECT_EQ(solution.min_separation, -2 * dim);
 	
-	const auto min_sep = Solve(pc, pA, pB, 0, -LinearSlop, MaxLinearCorrection);
+	EXPECT_EQ(old_pA.c.x, solution.pos_a.c.x);
+	EXPECT_EQ(old_pA.c.y, solution.pos_a.c.y);
+	EXPECT_EQ(old_pA.a, solution.pos_a.a);
 	
-	EXPECT_EQ(min_sep, -2 * dim);
-	
-	EXPECT_EQ(old_pA.c.x, pA.c.x);
-	EXPECT_EQ(old_pA.c.y, pA.c.y);
-	EXPECT_EQ(old_pA.a, pA.a);
-	
-	EXPECT_EQ(old_pB.c.x, pB.c.x);
-	EXPECT_EQ(old_pB.c.y, pB.c.y);
-	EXPECT_EQ(old_pB.a, pB.a);
+	EXPECT_EQ(old_pB.c.x, solution.pos_b.c.x);
+	EXPECT_EQ(old_pB.c.y, solution.pos_b.c.y);
+	EXPECT_EQ(old_pB.a, solution.pos_b.a);
 }
 
 TEST(ContactSolver, SolvePerfectlyOverlappingSquares)
 {
-	auto pA = Position{Vec2{0, 0}, 0};
-	auto pB = Position{Vec2{0, 0}, 0};
-	
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
 	const auto xfmA = Transformation(Vec2_zero, Rot{0});
@@ -131,21 +122,21 @@ TEST(ContactSolver, SolvePerfectlyOverlappingSquares)
 	const auto lcB = Vec2{};
 	const auto bA = PositionConstraint::BodyData{indexA, float_t(1), float_t(1), lcA};
 	const auto bB = PositionConstraint::BodyData{indexB, float_t(1), float_t(1), lcB};
-	PositionConstraint pc{manifold, bA, GetRadius(shape), bB, GetRadius(shape)};
-	
-	const auto old_pA = pA;
-	const auto old_pB = pB;
+	const auto pc = PositionConstraint{manifold, bA, GetRadius(shape), bB, GetRadius(shape)};
+
+	const auto old_pA = Position{Vec2{0, 0}, 0};
+	const auto old_pB = Position{Vec2{0, 0}, 0};
 
 	const auto max_sep = -LinearSlop;
-	const auto min_sep = Solve(pc, pA, pB, Baumgarte, max_sep, MaxLinearCorrection);
+	const auto solution = Solve(pc, old_pA, old_pB, Baumgarte, max_sep, MaxLinearCorrection);
 	
-	EXPECT_LT(min_sep, max_sep);
+	EXPECT_LT(solution.min_separation, max_sep);
 	
-	EXPECT_EQ(old_pA.c.x, pA.c.x);
-	EXPECT_EQ(old_pA.c.y, pA.c.y);
-	EXPECT_EQ(old_pA.a, pA.a);
+	EXPECT_EQ(old_pA.c.x, solution.pos_a.c.x);
+	EXPECT_EQ(old_pA.c.y, solution.pos_a.c.y);
+	EXPECT_EQ(old_pA.a, solution.pos_a.a);
 	
-	EXPECT_EQ(old_pB.c.x, pB.c.x);
-	EXPECT_EQ(old_pB.c.y, pB.c.y);
-	EXPECT_EQ(old_pB.a, pB.a);
+	EXPECT_EQ(old_pB.c.x, solution.pos_b.c.x);
+	EXPECT_EQ(old_pB.c.y, solution.pos_b.c.y);
+	EXPECT_EQ(old_pB.a, solution.pos_b.a);
 }
