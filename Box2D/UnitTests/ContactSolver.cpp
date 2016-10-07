@@ -140,10 +140,11 @@ TEST(ContactSolver, SolveOverlappingZeroRateDoesntMove)
 	EXPECT_EQ(old_pB.a, solution.pos_b.a);
 }
 
-TEST(ContactSolver, SolveHorizontallyOverlapping)
+TEST(ContactSolver, SolveHorizontallyOverlappingMovesHorizontallyOnly)
 {
-	const auto old_pA = Position{Vec2{-1, 0}, 0};
-	const auto old_pB = Position{Vec2{+1, 0}, 0};
+	const auto ctr_x = float_t(100);
+	const auto old_pA = Position{{ctr_x - 1, 0}, 0};
+	const auto old_pB = Position{{ctr_x + 1, 0}, 0};
 	
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
@@ -173,10 +174,10 @@ TEST(ContactSolver, SolveHorizontallyOverlapping)
 	
 	EXPECT_FLOAT_EQ(solution.min_separation, float_t(-2.002398));
 		
-	// object a moves down left and rotates counter-clockwise
+	// object a just moves left
 	EXPECT_LT(solution.pos_a.c.x, old_pA.c.x);
-	EXPECT_LT(solution.pos_a.c.y, old_pA.c.y);
-	EXPECT_LT(solution.pos_a.a, old_pA.a);
+	EXPECT_EQ(solution.pos_a.c.y, old_pA.c.y);
+	EXPECT_EQ(solution.pos_a.a, old_pA.a);
 
 	{
 		// confirm object a moves more in x direction than in y direction.
@@ -184,10 +185,10 @@ TEST(ContactSolver, SolveHorizontallyOverlapping)
 		EXPECT_GT(Abs(mov_a.c.x), Abs(mov_a.c.y));
 	}
 	
-	// object b moves up right and rotates clockwise.
+	// object b just moves right
 	EXPECT_GT(solution.pos_b.c.x, old_pB.c.x);
-	EXPECT_GT(solution.pos_b.c.y, old_pB.c.y);
-	EXPECT_GT(solution.pos_b.a, old_pB.a);
+	EXPECT_EQ(solution.pos_b.c.y, old_pB.c.y);
+	EXPECT_EQ(solution.pos_b.a, old_pB.a);
 
 	{
 		// confirm object a moves more in x direction than in y direction.
