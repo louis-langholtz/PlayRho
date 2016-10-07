@@ -46,16 +46,12 @@ static inline PositionSolverManifold GetForFaceB(Vec2 lp, Vec2 plp,
 	return PositionSolverManifold{-normal, clipPoint, separation};
 }
 
-PositionSolverManifold GetPSM(const Manifold& manifold,
-							  const Transformation& xfA, const Transformation& xfB,
-							  Manifold::size_type index)
+PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
+							  const Transformation& xfA, const Transformation& xfB)
 {
 	assert(manifold.GetType() != Manifold::e_unset);
 	assert(manifold.GetPointCount() > 0);
 	
-	// Note for valid manifold types:
-	//   Sum the radius values and subtract this sum to reduce FP losses in cases where the radius
-	//   values would otherwise be insignificant compared to the values being subtracted from.
 	switch (manifold.GetType())
 	{
 		case Manifold::e_circles:

@@ -44,9 +44,18 @@ namespace box2d
 	};
 
 	/// Gets the normal-point-separation data for the given inputs.
-	PositionSolverManifold GetPSM(const Manifold& manifold,
-								  const Transformation& xfA, const Transformation& xfB,
-								  Manifold::size_type index);
+	PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
+								  const Transformation& xfA, const Transformation& xfB);
+	
+	inline PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
+										 Position pos_a, Vec2 lc_ctr_a,
+										 Position pos_b, Vec2 lc_ctr_b)
+	{
+		const auto xfA = GetTransformation(pos_a, lc_ctr_a);
+		const auto xfB = GetTransformation(pos_b, lc_ctr_b);
+		return GetPSM(manifold, index, xfA, xfB);
+	}
+	
 }; // namespace box2d
 
 #endif /* PositionSolverManifold_hpp */

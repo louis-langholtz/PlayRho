@@ -461,11 +461,7 @@ PositionSolution Solve(const PositionConstraint& pc, Position posA, Position pos
 	const auto pointCount = pc.manifold.GetPointCount();
 	for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 	{
-		const auto psm = [&]() {
-			const auto xfA = GetTransformation(posA, localCenterA);
-			const auto xfB = GetTransformation(posB, localCenterB);
-			return GetPSM(pc.manifold, xfA, xfB, j);
-		}();
+		const auto psm = GetPSM(pc.manifold, j, posA, localCenterA, posB, localCenterB);
 		
 		const auto separation = psm.separation - totalRadius;
 
