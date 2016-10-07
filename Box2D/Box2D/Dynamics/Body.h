@@ -455,7 +455,8 @@ private:
 
 	/// Computes mass data.
  	/// @detail This basically accumulates the mass data over all fixtures.
-	/// @note The center is the mass weighted sum of all fixture centers. Make sure to divide it by the mass to get the averaged center.
+	/// @note The center is the mass weighted sum of all fixture centers. Divide it by the
+	///   mass to get the averaged center.
 	/// @return accumalated mass data for all fixtures associated with this body.
 	MassData ComputeMassData() const noexcept;
 
