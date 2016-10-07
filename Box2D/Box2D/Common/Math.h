@@ -79,6 +79,17 @@ constexpr inline bool almost_equal(float_t x, float_t y, int ulp = 2)
 	return (Abs(x - y) < (Epsilon * Abs(x + y) * ulp)) || (Abs(x - y) < std::numeric_limits<float_t>::min());
 }
 
+template <typename T>
+inline T Average(const T* elements, size_t count)
+{
+	auto sum = T(0);
+	for (auto i = size_t(0); i < count; ++i)
+	{
+		sum += elements[i];
+	}
+	return sum / count;
+}
+
 /// Vector 2D.
 /// @note This data structure is two-times the size of the <code>float_t</code> type.
 /// This is two times 4-bytes for a total of 8-bytes (on at least one 64-bit platform).
@@ -1137,6 +1148,20 @@ inline Vec2 GetContactRelVelocity(const Velocity velA, const Vec2 vcp_rA,
 	return (velB.v + (GetRevPerpendicular(vcp_rB) * velB.w)) - (velA.v + (GetRevPerpendicular(vcp_rA) * velA.w));
 }
 
+template <>
+inline Vec2 Average(const Vec2* elements, size_t count)
+{
+	auto sum = Vec2(0, 0);
+	for (auto i = size_t(0); i < count; ++i)
+	{
+		sum += elements[i];
+	}
+	return sum / count;
+}
+
+/// Computes the centroid of a counter-clockwise array of 3 or more vertices.
+/// @note Behavior is undefined if there are less than 3 vertices or the vertices don't
+///   go counter-clockwise.
 Vec2 ComputeCentroid(const Vec2 *vertices, size_t count);
 
 }

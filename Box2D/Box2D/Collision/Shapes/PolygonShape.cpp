@@ -407,14 +407,8 @@ MassData box2d::ComputeMass(const PolygonShape& shape, float_t density)
 
 	// s is the reference point for forming triangles.
 	// It's location doesn't change the result (except for rounding error).
-	auto s = Vec2_zero;
-
-	// This code would put the reference point inside the polygon.
-	for (auto i = decltype(count){0}; i < count; ++i)
-	{
-		s += shape.GetVertex(i);
-	}
-	s *= float_t{1} / count;
+	// This code puts the reference point inside the polygon.
+	const auto s = Average(shape.GetVertices(), count);
 
 	constexpr auto k_inv3 = float_t{1} / float_t{3};
 
@@ -426,17 +420,14 @@ MassData box2d::ComputeMass(const PolygonShape& shape, float_t density)
 
 		const auto D = Cross(e1, e2);
 
-		const auto triangleArea = D / float_t{2};
+		const auto triangleArea = D / 2;
 		area += triangleArea;
 
 		// Area weighted centroid
 		center += triangleArea * k_inv3 * (e1 + e2);
 
-		const auto ex1 = e1.x, ey1 = e1.y;
-		const auto ex2 = e2.x, ey2 = e2.y;
-
-		const auto intx2 = ex1*ex1 + ex2*ex1 + ex2*ex2;
-		const auto inty2 = ey1*ey1 + ey2*ey1 + ey2*ey2;
+		const auto intx2 = e1.x * e1.x + e2.x * e1.x + e2.x * e2.x;
+		const auto inty2 = e1.y * e1.y + e2.y * e1.y + e2.y * e2.y;
 
 		I += (D * k_inv3 / 4) * (intx2 + inty2);
 	}

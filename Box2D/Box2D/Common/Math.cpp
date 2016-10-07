@@ -30,16 +30,8 @@ Vec2 box2d::ComputeCentroid(const Vec2 *vertices, size_t count)
 	
 	// pRef is the reference point for forming triangles.
 	// It's location doesn't change the result (except for rounding error).
-	const auto pRef = [](const Vec2 *vs, size_t n){
-		auto sum = Vec2_zero;
-		// This code would put the reference point inside the polygon.
-		for (auto i = decltype(n){0}; i < n; ++i)
-		{
-			sum += vs[i];
-		}
-		return sum / n;
-	}(vertices, count);
-		
+	const auto pRef = Average(vertices, count);
+
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
 		// Triangle vertices.

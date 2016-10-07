@@ -63,6 +63,10 @@ TEST(Math, ComputeCentroidCenteredR1)
 	const auto center = ComputeCentroid(vertices.begin(), vertices.size());
 	EXPECT_EQ(center.x, real_center.x);
 	EXPECT_EQ(center.y, real_center.y);
+	
+	const auto average = Average(vertices.begin(), vertices.size());
+	EXPECT_EQ(average.x, center.x);
+	EXPECT_EQ(average.y, center.y);
 }
 
 TEST(Math, ComputeCentroidCentered0R1000)
@@ -79,6 +83,10 @@ TEST(Math, ComputeCentroidCentered0R1000)
 	const auto center = ComputeCentroid(vertices.begin(), vertices.size());
 	EXPECT_EQ(center.x, real_center.x);
 	EXPECT_EQ(center.y, real_center.y);
+	
+	const auto average = Average(vertices.begin(), vertices.size());
+	EXPECT_EQ(average.x, center.x);
+	EXPECT_EQ(average.y, center.y);
 }
 
 TEST(Math, ComputeCentroidUpRight1000R1)
@@ -95,6 +103,10 @@ TEST(Math, ComputeCentroidUpRight1000R1)
 	const auto center = ComputeCentroid(vertices.begin(), vertices.size());
 	EXPECT_EQ(center.x, real_center.x);
 	EXPECT_EQ(center.y, real_center.y);
+	
+	const auto average = Average(vertices.begin(), vertices.size());
+	EXPECT_EQ(average.x, center.x);
+	EXPECT_EQ(average.y, center.y);
 }
 
 TEST(Math, ComputeCentroidUpRight1000R100)
@@ -111,6 +123,10 @@ TEST(Math, ComputeCentroidUpRight1000R100)
 	const auto center = ComputeCentroid(vertices.begin(), vertices.size());
 	EXPECT_EQ(center.x, real_center.x);
 	EXPECT_EQ(center.y, real_center.y);
+	
+	const auto average = Average(vertices.begin(), vertices.size());
+	EXPECT_EQ(average.x, center.x);
+	EXPECT_EQ(average.y, center.y);
 }
 
 TEST(Math, ComputeCentroidUpRight10000R01)
@@ -127,6 +143,10 @@ TEST(Math, ComputeCentroidUpRight10000R01)
 	const auto center = ComputeCentroid(vertices.begin(), vertices.size());
 	EXPECT_EQ(center.x, real_center.x);
 	EXPECT_EQ(center.y, real_center.y);
+	
+	const auto average = Average(vertices.begin(), vertices.size());
+	EXPECT_EQ(average.x, center.x);
+	EXPECT_EQ(average.y, center.y);
 }
 
 TEST(Math, ComputeCentroidDownLeft1000R1)
@@ -143,4 +163,30 @@ TEST(Math, ComputeCentroidDownLeft1000R1)
 	const auto center = ComputeCentroid(vertices.begin(), vertices.size());
 	EXPECT_EQ(center.x, real_center.x);
 	EXPECT_EQ(center.y, real_center.y);
+	
+	const auto average = Average(vertices.begin(), vertices.size());
+	EXPECT_EQ(average.x, center.x);
+	EXPECT_EQ(average.y, center.y);
+}
+
+TEST(Math, ComputeCentroidOfHexagonalVertices)
+{
+	const auto hx = float_t(1);
+	const auto hy = float_t(1);
+	const auto real_center = Vec2{-1000, -1000};
+	const auto vertices = {
+		Vec2{real_center.x + 00, real_center.y + 2 * hy},
+		Vec2{real_center.x - hx, real_center.y + 1 * hy},
+		Vec2{real_center.x - hx, real_center.y - 1 * hy},
+		Vec2{real_center.x + 00, real_center.y - 2 * hy},
+		Vec2{real_center.x + hx, real_center.y - 1 * hy},
+		Vec2{real_center.x + hx, real_center.y + 1 * hy},
+	};
+	const auto center = ComputeCentroid(vertices.begin(), vertices.size());
+	EXPECT_EQ(center.x, real_center.x);
+	EXPECT_EQ(center.y, real_center.y);
+	
+	const auto average = Average(vertices.begin(), vertices.size());
+	EXPECT_EQ(average.x, center.x);
+	EXPECT_EQ(average.y, center.y);
 }
