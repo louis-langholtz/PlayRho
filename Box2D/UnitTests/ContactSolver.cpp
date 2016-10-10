@@ -172,7 +172,7 @@ TEST(ContactSolver, SolveHorizontallyOverlappingMovesHorizontallyOnly)
 	
 	const auto solution = Solve(pc, old_pA, old_pB, Baumgarte, 0, MaxLinearCorrection);
 	
-	EXPECT_FLOAT_EQ(solution.min_separation, float_t(-2.002398));
+	EXPECT_FLOAT_EQ(solution.min_separation, float_t(-2)); // -2.002398
 		
 	// object a just moves left
 	EXPECT_LT(solution.pos_a.c.x, old_pA.c.x);
@@ -194,6 +194,63 @@ TEST(ContactSolver, SolveHorizontallyOverlappingMovesHorizontallyOnly)
 		// confirm object a moves more in x direction than in y direction.
 		const auto mov_b = solution.pos_b - old_pB;
 		EXPECT_GT(Abs(mov_b.c.x), Abs(mov_b.c.y));
+	}
+}
+
+TEST(ContactSolver, SolveVerticallyOverlappingMovesVerticallyOnly)
+{
+	const auto ctr_y = float_t(100);
+	const auto old_pA = Position{{0, ctr_y - 1}, 0};
+	const auto old_pB = Position{{0, ctr_y + 1}, 0};
+	
+	const auto dim = float_t(2);
+	const auto shape = PolygonShape(dim, dim);
+	const auto xfmA = Transformation(old_pA.c, Rot{old_pA.a});
+	const auto xfmB = Transformation(old_pB.c, Rot{old_pB.a});
+	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
+	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
+	ASSERT_EQ(manifold.GetLocalNormal().x, float_t(0));
+	ASSERT_EQ(manifold.GetLocalNormal().y, float_t(1));
+	ASSERT_EQ(manifold.GetLocalPoint().x, float_t(0));
+	ASSERT_EQ(manifold.GetLocalPoint().y, float_t(2));
+	ASSERT_EQ(manifold.GetPointCount(), 2);
+	ASSERT_EQ(manifold.GetPoint(0).localPoint.x, float_t(-2));
+	ASSERT_EQ(manifold.GetPoint(0).localPoint.y, float_t(-2));
+	ASSERT_EQ(manifold.GetPoint(1).localPoint.x, float_t(+2));
+	ASSERT_EQ(manifold.GetPoint(1).localPoint.y, float_t(-2));
+	
+	const auto indexA = PositionConstraint::BodyData::index_type{0};
+	const auto indexB = PositionConstraint::BodyData::index_type{0};
+	const auto lcA = Vec2{0, 0};
+	const auto lcB = Vec2{0, 0};
+	const auto bA = PositionConstraint::BodyData{indexA, float_t(1), float_t(1), lcA};
+	const auto bB = PositionConstraint::BodyData{indexB, float_t(1), float_t(1), lcB};
+	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
+	
+	const auto solution = Solve(pc, old_pA, old_pB, Baumgarte, 0, MaxLinearCorrection);
+	
+	EXPECT_FLOAT_EQ(solution.min_separation, float_t(-2)); // -2.002398
+	
+	// object a just moves down only
+	EXPECT_EQ(solution.pos_a.c.x, old_pA.c.x);
+	EXPECT_LT(solution.pos_a.c.y, old_pA.c.y);
+	EXPECT_EQ(solution.pos_a.a, old_pA.a);
+	
+	{
+		// confirm object a moves more in x direction than in y direction.
+		const auto mov_a = solution.pos_a - old_pA;	
+		EXPECT_LT(Abs(mov_a.c.x), Abs(mov_a.c.y));
+	}
+	
+	// object b just moves up only
+	EXPECT_EQ(solution.pos_b.c.x, old_pB.c.x);
+	EXPECT_GT(solution.pos_b.c.y, old_pB.c.y);
+	EXPECT_EQ(solution.pos_b.a, old_pB.a);
+	
+	{
+		// confirm object a moves more in x direction than in y direction.
+		const auto mov_b = solution.pos_b - old_pB;
+		EXPECT_LT(Abs(mov_b.c.x), Abs(mov_b.c.y));
 	}
 }
 
@@ -223,13 +280,13 @@ TEST(ContactSolver, SolvePerfectlyOverlappingSquares)
 	
 	EXPECT_LT(solution.min_separation, max_sep);
 	
-	// object a moves down left and rotates counter-clockwise
+	// object a moves left only
 	EXPECT_LT(solution.pos_a.c.x, old_pA.c.x);
-	EXPECT_LT(solution.pos_a.c.y, old_pA.c.y);
-	EXPECT_LT(solution.pos_a.a, old_pA.a);
+	EXPECT_EQ(solution.pos_a.c.y, old_pA.c.y);
+	EXPECT_EQ(solution.pos_a.a, old_pA.a);
 	
-	// object b moves up right and rotates clockwise.
+	// object b moves right only.
 	EXPECT_GT(solution.pos_b.c.x, old_pB.c.x);
-	EXPECT_GT(solution.pos_b.c.y, old_pB.c.y);
-	EXPECT_GT(solution.pos_b.a, old_pB.a);
+	EXPECT_EQ(solution.pos_b.c.y, old_pB.c.y);
+	EXPECT_EQ(solution.pos_b.a, old_pB.a);
 }
