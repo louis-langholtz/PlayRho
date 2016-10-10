@@ -112,9 +112,19 @@ namespace box2d {
 		float_t min_separation;
 	};
 
+	inline PositionSolution operator+ (PositionSolution lhs, PositionSolution rhs)
+	{
+		return PositionSolution{lhs.pos_a + rhs.pos_a, lhs.pos_b + rhs.pos_b, lhs.min_separation + rhs.min_separation};
+	}
+
+	inline PositionSolution operator- (PositionSolution lhs, PositionSolution rhs)
+	{
+		return PositionSolution{lhs.pos_a - rhs.pos_a, lhs.pos_b - rhs.pos_b, lhs.min_separation - rhs.min_separation};
+	}
+
 	/// Solves the given position constraint.
 	/// @detail
-	/// This updates the two given positions for every point in the contact position constraint
+	/// This pushes apart the two given positions for every point in the contact position constraint
 	/// and returns the minimum separation value from the position solver manifold for each point.
 	/// @param resolution_rate Resolution rate. Value greater than zero and less than or equal to one.
 	///   Defines the percentage of the overlap that should get resolved in a single call to this

@@ -961,6 +961,16 @@ constexpr inline bool operator!=(const Position& lhs, const Position& rhs)
 	return (lhs.c != rhs.c) || (lhs.a != rhs.a);
 }
 
+constexpr inline Position operator- (const Position& value)
+{
+	return Position{-value.c, -value.a};
+}
+
+constexpr inline Position operator+ (const Position& value)
+{
+	return value;
+}
+
 constexpr inline Position& operator+= (Position& lhs, const Position& rhs)
 {
 	lhs.c += rhs.c;
