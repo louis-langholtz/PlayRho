@@ -22,6 +22,8 @@
 
 #include <Box2D/Common/Math.h>
 
+//#define BOX2D_CACHE_VC_POINT_MASSES
+
 namespace box2d {
 	
 	/// Contact velocity constraint.
@@ -41,8 +43,10 @@ namespace box2d {
 			Vec2 rB; ///< Position of body B relative to world manifold point (8-bytes).
 			float_t normalImpulse; ///< Normal impulse (4-bytes).
 			float_t tangentImpulse; ///< Tangent impulse (4-bytes).
+#if defined(BOX2D_CACHE_VC_POINT_MASSES)
 			float_t normalMass; ///< Normal mass (4-bytes). 0 or greater.
 			float_t tangentMass; ///< Tangent mass (4-bytes).
+#endif
 			float_t velocityBias; ///< Velocity bias (4-bytes).
 		};
 
@@ -224,7 +228,7 @@ namespace box2d {
 		return vc.bodyA.GetInvMass() + vc.bodyB.GetInvMass();
 	}
 
-	inline float_t GetNormalMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
+	inline float_t ComputeNormalMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
 	{
 		const auto value = GetInverseMass(vc)
 			+ (vc.bodyA.GetInvRotI() * Square(Cross(vc.PointAt(index).rA, GetNormal(vc))))
@@ -232,12 +236,30 @@ namespace box2d {
 		return (value != 0)? float_t{1} / value : float_t{0};
 	}
 	
-	inline float_t GetTangentMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
+	inline float_t GetNormalMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
+	{
+#if defined(BOX2D_CACHE_VC_POINT_MASSES)
+		return vc.PointAt(index).normalMass;
+#else
+		return ComputeNormalMassAtPoint(vc, index);
+#endif
+	}
+	
+	inline float_t ComputeTangentMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
 	{
 		const auto value = GetInverseMass(vc)
 			+ (vc.bodyA.GetInvRotI() * Square(Cross(vc.PointAt(index).rA, GetTangent(vc))))
 			+ (vc.bodyB.GetInvRotI() * Square(Cross(vc.PointAt(index).rB, GetTangent(vc))));
 		return (value != 0)? float_t{1} / value : float_t{0};
+	}
+
+	inline float_t GetTangentMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
+	{
+#if defined(BOX2D_CACHE_VC_POINT_MASSES)
+		return vc.PointAt(index).normalMass;
+#else
+		return ComputeTangentMassAtPoint(vc, index);
+#endif
 	}
 
 	inline Vec2 GetNormalImpulses(const VelocityConstraint& vc)

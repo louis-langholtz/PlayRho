@@ -640,8 +640,10 @@ void World::Solve(const TimeStep& step)
 				vcp.tangentImpulse = dtRatio * mp.tangentImpulse;
 				vcp.rA = Vec2_zero;
 				vcp.rB = Vec2_zero;
+#if defined(BOX2D_CACHE_VC_POINT_MASSES)
 				vcp.normalMass = float_t{0};
 				vcp.tangentMass = float_t{0};
+#endif
 				vcp.velocityBias = float_t{0};
 				
 				constraint.AddPoint(vcp);
@@ -710,16 +712,13 @@ void World::Solve(const TimeStep& step)
 		{
 			VelocityPair vp{Velocity{Vec2_zero, float_t{0}}, Velocity{Vec2_zero, float_t{0}}};
 			
-			const auto tangent = GetFwdPerpendicular(vc.normal);
 			const auto pointCount = vc.GetPointCount();	
 			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 			{
 				const auto vcp = vc.PointAt(j); ///< Velocity constraint point.
-				const auto P = vcp.normalImpulse * vc.normal + vcp.tangentImpulse * tangent;
-				vp.a.v -= vc.bodyA.GetInvMass() * P;
-				vp.a.w -= vc.bodyA.GetInvRotI() * Cross(vcp.rA, P);
-				vp.b.v += vc.bodyB.GetInvMass() * P;
-				vp.b.w += vc.bodyB.GetInvRotI() * Cross(vcp.rB, P);
+				const auto P = vcp.normalImpulse * GetNormal(vc) + vcp.tangentImpulse * GetTangent(vc);
+				vp.a -= Velocity{vc.bodyA.GetInvMass() * P, vc.bodyA.GetInvRotI() * Cross(vcp.rA, P)};
+				vp.b += Velocity{vc.bodyB.GetInvMass() * P, vc.bodyB.GetInvRotI() * Cross(vcp.rB, P)};
 			}
 			
 			return vp;

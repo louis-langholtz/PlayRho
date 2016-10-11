@@ -21,7 +21,11 @@
 
 using namespace box2d;
 
-TEST(VelocityConstraint, ByteSizeIs176)
+TEST(VelocityConstraint, ByteSizeIs176or160)
 {
+#if defined(BOX2D_CACHE_VC_POINT_MASSES)
 	EXPECT_EQ(sizeof(VelocityConstraint), size_t(176));
+#else
+	EXPECT_EQ(sizeof(VelocityConstraint), size_t(160));
+#endif
 }

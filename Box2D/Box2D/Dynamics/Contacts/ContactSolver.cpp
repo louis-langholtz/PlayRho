@@ -28,7 +28,7 @@ namespace box2d {
 
 #if !defined(NDEBUG)
 // Solver debugging is normally disabled because the block solver sometimes has to deal with a poorly conditioned effective mass matrix.
-// #define B2_DEBUG_SOLVER 1
+//#define B2_DEBUG_SOLVER 1
 #endif
 
 #if defined(B2_DEBUG_SOLVER)
@@ -58,7 +58,7 @@ static inline void UpdateVelocityConstraint(VelocityConstraint& vc,
 	const auto posB = positions[vc.bodyB.GetIndex()];
 	const auto velB = velocities[vc.bodyB.GetIndex()];
 	
-	const auto totalInvMass = vc.bodyA.GetInvMass() + vc.bodyB.GetInvMass();
+	const auto totalInvMass = GetInverseMass(vc);
 	
 	const auto worldManifold = [&]() {
 		const auto xfA = GetTransformation(posA, pc.bodyA.localCenter);
@@ -77,19 +77,10 @@ static inline void UpdateVelocityConstraint(VelocityConstraint& vc,
 		auto& vcp = vc.PointAt(j);
 		vcp.rA = vcp_rA;
 		vcp.rB = vcp_rB;
-		vcp.normalMass = [&]() {
-			const auto kNormal = totalInvMass
-				+ (vc.bodyA.GetInvRotI() * Square(Cross(vcp_rA, vc.normal)))
-				+ (vc.bodyB.GetInvRotI() * Square(Cross(vcp_rB, vc.normal)));
-			return (kNormal > float_t{0})? float_t{1} / kNormal : float_t{0};
-		}();
-		vcp.tangentMass = [&]() {
-			const auto tangent = GetFwdPerpendicular(vc.normal);
-			const auto kTangent = totalInvMass
-				+ (vc.bodyA.GetInvRotI() * Square(Cross(vcp_rA, tangent)))
-				+ (vc.bodyB.GetInvRotI() * Square(Cross(vcp_rB, tangent)));
-			return (kTangent > float_t{0}) ? float_t{1} /  kTangent : float_t{0};
-		}();
+#if defined(BOX2D_CACHE_VC_POINT_MASSES)
+		vcp.normalMass = ComputeNormalMassAtPoint(vc, j);
+		vcp.tangentMass = ComputeTangentMassAtPoint(vc, j);
+#endif
 		vcp.velocityBias = [&]() {
 			const auto vn = Dot(GetContactRelVelocity(velA, vcp_rA, velB, vcp_rB), vc.normal);
 			return (vn < -VelocityThreshold)? -vc.GetRestitution() * vn: float_t{0};
@@ -148,7 +139,7 @@ static void SolveTangentConstraint(VelocityConstraint& vc, Velocity& velA, Veloc
 		auto& vcp = vc.PointAt(i);
 
 		// Compute tangent force
-		const auto lambda = vcp.tangentMass * (vc.GetTangentSpeed() - Dot(GetContactRelVelocity(velA, vcp.rA, velB, vcp.rB), tangent));
+		const auto lambda = GetTangentMassAtPoint(vc, i) * (vc.GetTangentSpeed() - Dot(GetContactRelVelocity(velA, vcp.rA, velB, vcp.rB), tangent));
 		
 		// Clamp the accumulated force
 		const auto maxImpulse = vc.GetFriction() * vcp.normalImpulse;
@@ -166,31 +157,40 @@ static void SolveTangentConstraint(VelocityConstraint& vc, Velocity& velA, Veloc
 	}
 }
 
-static inline void BlockSolveUpdate(const VelocityConstraint& vc, const Vec2 oldImpulse, const Vec2 newImpulse,
-									Velocity& velA, Velocity& velB, VelocityConstraint::Point& vcp1, VelocityConstraint::Point& vcp2)
+struct VelocityPair
 {
-	assert(IsValid(oldImpulse));
-	assert(IsValid(newImpulse));
-	assert(IsValid(velA));
-	assert(IsValid(velB));
-	
-	// Get the incremental impulse
-	const auto incImpulse = newImpulse - oldImpulse;
-	
+	Velocity a;
+	Velocity b;
+};
+
+static inline VelocityPair ApplyIncrementalImpulse(const VelocityConstraint& vc, const Vec2 incImpulse)
+{
+	assert(IsValid(incImpulse));
+
 	// Apply incremental impulse
 	const auto P1 = incImpulse.x * vc.normal;
 	const auto P2 = incImpulse.y * vc.normal;
 	const auto P = P1 + P2;
-	velA -= Velocity{vc.bodyA.GetInvMass() * P, vc.bodyA.GetInvRotI() * (Cross(vcp1.rA, P1) + Cross(vcp2.rA, P2))};
-	velB += Velocity{vc.bodyB.GetInvMass() * P, vc.bodyB.GetInvRotI() * (Cross(vcp1.rB, P1) + Cross(vcp2.rB, P2))};
-	
-	// Save new impulse
-	vcp1.normalImpulse = newImpulse.x;
-	vcp2.normalImpulse = newImpulse.y;
+	return VelocityPair{
+		-Velocity{vc.bodyA.GetInvMass() * P, vc.bodyA.GetInvRotI() * (Cross(vc.PointAt(0).rA, P1) + Cross(vc.PointAt(1).rA, P2))},
+		+Velocity{vc.bodyB.GetInvMass() * P, vc.bodyB.GetInvRotI() * (Cross(vc.PointAt(0).rB, P1) + Cross(vc.PointAt(1).rB, P2))}
+	};
 }
 
-static inline bool BlockSolveNormalCase1(const VelocityConstraint& vc, const Vec2 oldImpulse, const Vec2 b_prime,
-										 Velocity& velA, Velocity& velB, VelocityConstraint::Point& vcp1, VelocityConstraint::Point& vcp2)
+static inline void BlockSolveUpdate(VelocityConstraint& vc, Velocity& velA, Velocity& velB,
+									const Vec2 newImpulses)
+{
+	const auto delta_v = ApplyIncrementalImpulse(vc, newImpulses - GetNormalImpulses(vc));
+	velA += delta_v.a;
+	velB += delta_v.b;
+	
+	// Save new impulse
+	vc.PointAt(0).normalImpulse = newImpulses.x;
+	vc.PointAt(1).normalImpulse = newImpulses.y;		
+}
+
+static inline bool BlockSolveNormalCase1(VelocityConstraint& vc, Velocity& velA, Velocity& velB,
+										 const Vec2 b_prime)
 {
 	//
 	// Case 1: vn = 0
@@ -204,12 +204,15 @@ static inline bool BlockSolveNormalCase1(const VelocityConstraint& vc, const Vec
 	const auto newImpulse = -Transform(b_prime, vc.GetNormalMass());
 	if ((newImpulse.x >= float_t{0}) && (newImpulse.y >= float_t{0}))
 	{
-		BlockSolveUpdate(vc, oldImpulse, newImpulse, velA, velB, vcp1, vcp2);
+		BlockSolveUpdate(vc, velA, velB, newImpulse);
 		
 #if defined(B2_DEBUG_SOLVER)
+		auto& vcp1 = vc.PointAt(0);
+		auto& vcp2 = vc.PointAt(1);
+
 		// Postconditions
-		const auto post_dv1 = (velB.v + Cross(velB.w, vcp1.rB)) - (velA.v + Cross(velA.w, vcp1.rA));
-		const auto post_dv2 = (velB.v + Cross(velB.w, vcp2.rB)) - (velA.v + Cross(velA.w, vcp2.rA));
+		const auto post_dv1 = (velB.v + (velB.w * GetRevPerpendicular(vcp1.rB))) - (velA.v + (velA.w * GetRevPerpendicular(vcp1.rA)));
+		const auto post_dv2 = (velB.v + (velB.w * GetRevPerpendicular(vcp2.rB))) - (velA.v + (velA.w * GetRevPerpendicular(vcp2.rA)));
 		
 		// Compute normal velocity
 		const auto post_vn1 = Dot(post_dv1, vc.normal);
@@ -225,8 +228,8 @@ static inline bool BlockSolveNormalCase1(const VelocityConstraint& vc, const Vec
 	return false;
 }
 
-static inline bool BlockSolveNormalCase2(const VelocityConstraint& vc, const Vec2 oldImpulse, const Vec2 b_prime,
-										 Velocity& velA, Velocity& velB, VelocityConstraint::Point& vcp1, VelocityConstraint::Point& vcp2)
+static inline bool BlockSolveNormalCase2(VelocityConstraint& vc, Velocity& velA, Velocity& velB,
+										 const Vec2 b_prime)
 {
 	//
 	// Case 2: vn1 = 0 and x2 = 0
@@ -234,15 +237,17 @@ static inline bool BlockSolveNormalCase2(const VelocityConstraint& vc, const Vec
 	//   0 = a11 * x1 + a12 * 0 + b1' 
 	// vn2 = a21 * x1 + a22 * 0 + b2'
 	//
-	const auto newImpulse = Vec2{-vcp1.normalMass * b_prime.x, float_t{0}};
+	const auto newImpulse = Vec2{-GetNormalMassAtPoint(vc, 0) * b_prime.x, float_t{0}};
 	const auto vn2 = vc.GetK().ex.y * newImpulse.x + b_prime.y;
 	if ((newImpulse.x >= float_t{0}) && (vn2 >= float_t{0}))
 	{
-		BlockSolveUpdate(vc, oldImpulse, newImpulse, velA, velB, vcp1, vcp2);
+		BlockSolveUpdate(vc, velA, velB, newImpulse);
 		
 #if defined(B2_DEBUG_SOLVER)
+		auto& vcp1 = vc.PointAt(0);
+	
 		// Postconditions
-		const auto post_dv1 = (velB.v + Cross(velB.w, vcp1.rB)) - (velA.v + Cross(velA.w, vcp1.rA));
+		const auto post_dv1 = (velB.v + (velB.w * GetRevPerpendicular(vcp1.rB))) - (velA.v + (velA.w * GetRevPerpendicular(vcp1.rA)));
 		
 		// Compute normal velocity
 		const auto post_vn1 = Dot(post_dv1, vc.normal);
@@ -250,13 +255,14 @@ static inline bool BlockSolveNormalCase2(const VelocityConstraint& vc, const Vec
 		assert(Abs(post_vn1 - vcp1.velocityBias) < k_majorErrorTol);
 		assert(Abs(post_vn1 - vcp1.velocityBias) < k_errorTol);
 #endif
+		
 		return true;
 	}
 	return false;
 }
 
-static inline bool BlockSolveNormalCase3(const VelocityConstraint& vc, const Vec2 oldImpulse, const Vec2 b_prime,
-										 Velocity& velA, Velocity& velB, VelocityConstraint::Point& vcp1, VelocityConstraint::Point& vcp2)
+static inline bool BlockSolveNormalCase3(VelocityConstraint& vc, Velocity& velA, Velocity& velB,
+										 const Vec2 b_prime)
 {
 	//
 	// Case 3: vn2 = 0 and x1 = 0
@@ -264,15 +270,17 @@ static inline bool BlockSolveNormalCase3(const VelocityConstraint& vc, const Vec
 	// vn1 = a11 * 0 + a12 * x2 + b1' 
 	//   0 = a21 * 0 + a22 * x2 + b2'
 	//
-	const auto newImpulse = Vec2{float_t{0}, -vcp2.normalMass * b_prime.y};
+	const auto newImpulse = Vec2{float_t{0}, -GetNormalMassAtPoint(vc, 1) * b_prime.y};
 	const auto vn1 = vc.GetK().ey.x * newImpulse.y + b_prime.x;
 	if ((newImpulse.y >= float_t{0}) && (vn1 >= float_t{0}))
 	{
-		BlockSolveUpdate(vc, oldImpulse, newImpulse, velA, velB, vcp1, vcp2);
+		BlockSolveUpdate(vc, velA, velB, newImpulse);
 		
 #if defined(B2_DEBUG_SOLVER)
+		auto& vcp2 = vc.PointAt(1);
+
 		// Postconditions
-		const auto post_dv2 = (velB.v + Cross(velB.w, vcp2.rB)) - (velA.v + Cross(velA.w, vcp2.rA));
+		const auto post_dv2 = (velB.v + (velB.w * GetRevPerpendicular(vcp2.rB))) - (velA.v + (velA.w * GetRevPerpendicular(vcp2.rA)));
 		
 		// Compute normal velocity
 		const auto post_vn2 = Dot(post_dv2, vc.normal);
@@ -280,13 +288,14 @@ static inline bool BlockSolveNormalCase3(const VelocityConstraint& vc, const Vec
 		assert(Abs(post_vn2 - vcp2.velocityBias) < k_majorErrorTol);
 		assert(Abs(post_vn2 - vcp2.velocityBias) < k_errorTol);
 #endif
+		
 		return true;
 	}
 	return false;
 }
 
-static inline bool BlockSolveNormalCase4(const VelocityConstraint& vc, const Vec2 oldImpulse, const Vec2 b_prime,
-										 Velocity& velA, Velocity& velB, VelocityConstraint::Point& vcp1, VelocityConstraint::Point& vcp2)
+static inline bool BlockSolveNormalCase4(VelocityConstraint& vc, Velocity& velA, Velocity& velB,
+										 const Vec2 b_prime)
 {
 	//
 	// Case 4: x1 = 0 and x2 = 0
@@ -298,7 +307,7 @@ static inline bool BlockSolveNormalCase4(const VelocityConstraint& vc, const Vec
 	const auto vn2 = b_prime.y;
 	if ((vn1 >= float_t{0}) && (vn2 >= float_t{0}))
 	{
-		BlockSolveUpdate(vc, oldImpulse, newImpulse, velA, velB, vcp1, vcp2);
+		BlockSolveUpdate(vc, velA, velB, newImpulse);
 		return true;
 	}
 	return false;
@@ -342,9 +351,6 @@ static inline void BlockSolveNormalConstraint(VelocityConstraint& vc, Velocity& 
 	//    = A * x + b'
 	// b' = b - A * a;
 
-	const auto oldImpulse = Vec2{vcp1.normalImpulse, vcp2.normalImpulse};
-	assert((oldImpulse.x >= float_t{0}) && (oldImpulse.y >= float_t{0}));
-	
 	const auto b_prime = [=]{
 		// Compute normal velocity
 		const auto vn1 = Dot(GetContactRelVelocity(velA, vcp1.rA, velB, vcp1.rB), vc.normal);
@@ -354,17 +360,17 @@ static inline void BlockSolveNormalConstraint(VelocityConstraint& vc, Velocity& 
 		const auto b = Vec2{vn1 - vcp1.velocityBias, vn2 - vcp2.velocityBias};
 		
 		// Return b'
-		return b - Transform(oldImpulse, vc.GetK());
+		return b - Transform(GetNormalImpulses(vc), vc.GetK());
 	}();
 	
 	
-	if (BlockSolveNormalCase1(vc, oldImpulse, b_prime, velA, velB, vcp1, vcp2))
+	if (BlockSolveNormalCase1(vc, velA, velB, b_prime))
 		return;
-	if (BlockSolveNormalCase2(vc, oldImpulse, b_prime, velA, velB, vcp1, vcp2))
+	if (BlockSolveNormalCase2(vc, velA, velB, b_prime))
 		return;
-	if (BlockSolveNormalCase3(vc, oldImpulse, b_prime, velA, velB, vcp1, vcp2))
+	if (BlockSolveNormalCase3(vc, velA, velB, b_prime))
 		return;
-	if (BlockSolveNormalCase4(vc, oldImpulse, b_prime, velA, velB, vcp1, vcp2))
+	if (BlockSolveNormalCase4(vc, velA, velB, b_prime))
 		return;
 	
 	// No solution, give up. This is hit sometimes, but it doesn't seem to matter.
@@ -386,7 +392,7 @@ static void SolveNormalConstraint(VelocityConstraint& vc, Velocity& velA, Veloci
 			auto& vcp = vc.PointAt(i);
 			
 			// Compute normal impulse
-			const auto lambda = vcp.normalMass * (Dot(GetContactRelVelocity(velA, vcp.rA, velB, vcp.rB), vc.normal) - vcp.velocityBias);
+			const auto lambda = GetNormalMassAtPoint(vc, i) * (Dot(GetContactRelVelocity(velA, vcp.rA, velB, vcp.rB), vc.normal) - vcp.velocityBias);
 			
 			// Clamp the accumulated impulse
 			const auto oldImpulse = vcp.normalImpulse;
