@@ -240,6 +240,11 @@ namespace box2d {
 		return (value != 0)? float_t{1} / value : float_t{0};
 	}
 
+	inline Vec2 GetNormalImpulses(const VelocityConstraint& vc)
+	{
+		return Vec2{vc.PointAt(0).normalImpulse, vc.PointAt(1).normalImpulse};
+	}
+	
 } // namespace box2d
 
 #endif /* VelocityConstraint_hpp */
