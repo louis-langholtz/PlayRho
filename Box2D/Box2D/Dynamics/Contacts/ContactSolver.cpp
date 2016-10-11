@@ -58,8 +58,6 @@ static inline void UpdateVelocityConstraint(VelocityConstraint& vc,
 	const auto posB = positions[vc.bodyB.GetIndex()];
 	const auto velB = velocities[vc.bodyB.GetIndex()];
 	
-	const auto totalInvMass = GetInverseMass(vc);
-	
 	const auto worldManifold = [&]() {
 		const auto xfA = GetTransformation(posA, pc.bodyA.localCenter);
 		const auto xfB = GetTransformation(posB, pc.bodyB.localCenter);
@@ -90,14 +88,13 @@ static inline void UpdateVelocityConstraint(VelocityConstraint& vc,
 	// If we have two points, then prepare the block solver.
 	if ((pointCount == 2) && g_blockSolve)
 	{
-		const auto vcp1 = vc.PointAt(0);
-		const auto rn1A = Cross(vcp1.rA, vc.normal);
-		const auto rn1B = Cross(vcp1.rB, vc.normal);
+		const auto rn1A = Cross(vc.PointAt(0).rA, vc.normal);
+		const auto rn1B = Cross(vc.PointAt(0).rB, vc.normal);
 
-		const auto vcp2 = vc.PointAt(1);
-		const auto rn2A = Cross(vcp2.rA, vc.normal);
-		const auto rn2B = Cross(vcp2.rB, vc.normal);
+		const auto rn2A = Cross(vc.PointAt(1).rA, vc.normal);
+		const auto rn2B = Cross(vc.PointAt(1).rB, vc.normal);
 		
+		const auto totalInvMass = GetInverseMass(vc);
 		const auto k11 = totalInvMass + (vc.bodyA.GetInvRotI() * Square(rn1A)) + (vc.bodyB.GetInvRotI() * Square(rn1B));
 		const auto k22 = totalInvMass + (vc.bodyA.GetInvRotI() * Square(rn2A)) + (vc.bodyB.GetInvRotI() * Square(rn2B));
 		const auto k12 = totalInvMass + (vc.bodyA.GetInvRotI() * rn1A * rn2A)  + (vc.bodyB.GetInvRotI() * rn1B * rn2B);
@@ -124,12 +121,12 @@ static inline void UpdateVelocityConstraint(VelocityConstraint& vc,
 /// @param vc Contact velocity constraint.
 /// @param velA Velocity structure for body A. This is an input and output parameter modified to meet the constraint.
 /// @param velB Velocity structure for body B. This is an input and output parameter modified to meet the constraint.
-static void SolveTangentConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
+static inline void SolveTangentConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
 {
 	assert(IsValid(velA));
 	assert(IsValid(velB));
 
-	const auto tangent = GetFwdPerpendicular(vc.normal);
+	const auto tangent = GetTangent(vc);
 	
 	const auto count = vc.GetPointCount();
 	assert((count == 1) || (count == 2));
@@ -315,9 +312,6 @@ static inline bool BlockSolveNormalCase4(VelocityConstraint& vc, Velocity& velA,
 
 static inline void BlockSolveNormalConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
 {
-	auto& vcp1 = vc.PointAt(0); ///< Velocity constraint point.
-	auto& vcp2 = vc.PointAt(1); ///< Velocity constraint point.
-
 	// Block solver developed in collaboration with Dirk Gregorius (back in 01/07 on Box2D_Lite).
 	// Build the mini LCP for this contact patch
 	//
@@ -352,6 +346,9 @@ static inline void BlockSolveNormalConstraint(VelocityConstraint& vc, Velocity& 
 	// b' = b - A * a;
 
 	const auto b_prime = [=]{
+		auto& vcp1 = vc.PointAt(0); ///< Velocity constraint point.
+		auto& vcp2 = vc.PointAt(1); ///< Velocity constraint point.
+
 		// Compute normal velocity
 		const auto vn1 = Dot(GetContactRelVelocity(velA, vcp1.rA, velB, vcp1.rB), vc.normal);
 		const auto vn2 = Dot(GetContactRelVelocity(velA, vcp2.rA, velB, vcp2.rB), vc.normal);
@@ -377,7 +374,7 @@ static inline void BlockSolveNormalConstraint(VelocityConstraint& vc, Velocity& 
 }
 
 /// Solves the normal portion of the velocity constraint.	
-static void SolveNormalConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
+static inline void SolveNormalConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
 {
 	assert(IsValid(velA));
 	assert(IsValid(velB));
@@ -417,7 +414,7 @@ static void SolveNormalConstraint(VelocityConstraint& vc, Velocity& velA, Veloci
 /// Solves the velocity constraint.
 /// @detail This updates the tangent and normal impulses of the velocity constraint points of the given velocity
 ///   constraint and updates the given velocities.
-static inline void SolveVelocityConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
+void SolveVelocityConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
 {
 	assert(IsValid(velA));
 	assert(IsValid(velB));

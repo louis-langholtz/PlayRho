@@ -82,9 +82,10 @@ namespace box2d {
 		void SolveVelocityConstraints();
 		
 		/// Solves position constraints.
-		/// @detail This updates positions (and nothing else).
+		/// @detail This updates positions (and nothing else) by calling the position constraint solving function.
 		/// @return true if the minimum separation is above the minimum separation threshold, false otherwise.
 		/// @sa MinSeparationThreshold.
+		/// @sa Solve.
 		bool SolvePositionConstraints();
 		
 		/// Solves TOI position constraints.
@@ -138,6 +139,8 @@ namespace box2d {
 	PositionSolution Solve(const PositionConstraint& pc, Position positionA, Position positionB,
 						   float_t resolution_rate, float_t max_separation, float_t max_correction);
 
+	void SolveVelocityConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB);
+	
 } // namespace box2d
 
 #endif
