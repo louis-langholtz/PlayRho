@@ -34,6 +34,21 @@ constexpr inline float_t Cross(const Vec2& a, const Vec2& b) noexcept;
 constexpr inline Vec3 Cross(const Vec3& a, const Vec3& b) noexcept;
 
 template <typename T>
+constexpr inline T GetInvalid() noexcept;
+
+template <>
+constexpr float_t GetInvalid() noexcept
+{
+	return std::numeric_limits<float_t>::infinity();
+}
+
+template <>
+constexpr size_t GetInvalid() noexcept
+{
+	return static_cast<size_t>(-1);
+}
+
+template <typename T>
 inline bool IsValid(const T& value)
 {
 	return false;
@@ -147,7 +162,13 @@ struct Vec2
 /// @see Vec2.
 constexpr auto Vec2_zero = Vec2{0, 0};
 
-constexpr auto Vec2_invalid = Vec2{std::numeric_limits<float_t>::infinity(), std::numeric_limits<float_t>::infinity()};
+constexpr auto Vec2_invalid = Vec2{GetInvalid<float_t>(), GetInvalid<float_t>()};
+
+template <>
+constexpr inline Vec2 GetInvalid() noexcept
+{
+	return Vec2{GetInvalid<float_t>(), GetInvalid<float_t>()};
+}
 
 template <>
 inline Vec2 round(Vec2 value, unsigned precision)
@@ -179,7 +200,13 @@ struct Vec3
 /// An all zero Vec3 value.
 /// @see Vec3.
 constexpr auto Vec3_zero = Vec3{0, 0, 0};
-	
+
+template <>
+constexpr inline Vec3 GetInvalid() noexcept
+{
+	return Vec3{GetInvalid<float_t>(), GetInvalid<float_t>(), GetInvalid<float_t>()};
+}
+
 /// Gets the square of the length/magnitude of the given value.
 /// For performance, use this instead of Length(T value) (if possible).
 /// @return Non-negative value.
@@ -245,8 +272,12 @@ inline bool IsValid(const Mat22& value)
 /// @see Mat22.
 constexpr auto Mat22_zero = Mat22(Vec2_zero, Vec2_zero);
 
-constexpr auto Mat22_invalid = Mat22(Vec2_invalid, Vec2_invalid);
-	
+template <>
+constexpr inline Mat22 GetInvalid() noexcept
+{
+	return Mat22{GetInvalid<Vec2>(), GetInvalid<Vec2>()};
+}
+
 /// Identity value for Mat22 objects.
 /// @see Mat22.
 constexpr auto Mat22_identity = Mat22(Vec2{1, 0}, Vec2{0, 1});
@@ -1157,8 +1188,10 @@ inline bool IsSleepable(Velocity velocity)
 	    && (LengthSquared(velocity.v) <= Square(LinearSleepTolerance));
 }
 
-inline Vec2 GetContactRelVelocity(const Velocity velA, const Vec2 vcp_rA,
-								  const Velocity velB, const Vec2 vcp_rB) noexcept
+/// Gets the contact relative velocity.
+/// @note If vcp_rA and vcp_rB are the zero vectors the resulting value is simply velB.v - velA.v.
+constexpr inline Vec2 GetContactRelVelocity(const Velocity velA, const Vec2 vcp_rA,
+											const Velocity velB, const Vec2 vcp_rB) noexcept
 {
 	return (velB.v + (GetRevPerpendicular(vcp_rB) * velB.w)) - (velA.v + (GetRevPerpendicular(vcp_rA) * velA.w));
 }
