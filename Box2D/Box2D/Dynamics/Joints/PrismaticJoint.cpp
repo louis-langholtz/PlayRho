@@ -455,7 +455,7 @@ bool PrismaticJoint::SolvePositionConstraints(const SolverData& data)
 
 		const auto K = Mat22{Vec2{k11, k12}, Vec2{k12, k22}};
 
-		const auto impulse1 = K.Solve(-C1);
+		const auto impulse1 = Solve(K, -C1);
 		impulse.x = impulse1.x;
 		impulse.y = impulse1.y;
 		impulse.z = float_t{0};

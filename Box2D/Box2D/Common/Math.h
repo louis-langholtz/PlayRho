@@ -232,19 +232,6 @@ struct Mat22
 	/// Construct this matrix using scalars.
 	constexpr Mat22(float_t a11, float_t a12, float_t a21, float_t a22) noexcept: ex{a11, a21}, ey{a12, a22} {}
 
-	/// Solve A * x = b, where b is a column vector. This is more efficient
-	/// than computing the inverse in one-shot cases.
-	constexpr Vec2 Solve(const Vec2 b) const noexcept
-	{
-		const auto a11 = ex.x, a12 = ey.x, a21 = ex.y, a22 = ey.y;
-		auto det = (a11 * a22) - (a12 * a21);
-		if (det != float_t{0})
-		{
-			det = float_t{1} / det;
-		}
-		return Vec2{det * (a22 * b.x - a12 * b.y), det * (a11 * b.y - a21 * b.x)};
-	}
-
 	Vec2 ex, ey;
 };
 
@@ -264,15 +251,23 @@ constexpr auto Mat22_invalid = Mat22(Vec2_invalid, Vec2_invalid);
 /// @see Mat22.
 constexpr auto Mat22_identity = Mat22(Vec2{1, 0}, Vec2{0, 1});
 
+/// Solve A * x = b, where b is a column vector. This is more efficient
+/// than computing the inverse in one-shot cases.
+constexpr Vec2 Solve(const Mat22 mat, const Vec2 b) noexcept
+{
+	const auto cp = Cross(mat.ex, mat.ey);
+	const auto det = (cp != 0)? float_t{1} / cp: float_t{0};
+	
+	// (a.x * b.y) - (a.y * b.x)
+	// Vec2{det * Cross(b, mat.ey), det * Cross(mat.ex, b)}
+	return Vec2{det * (mat.ey.y * b.x - mat.ey.x * b.y), det * (mat.ex.x * b.y - mat.ex.y * b.x)};
+}
+
 constexpr Mat22 Invert(const Mat22 value) noexcept
 {
-	const auto a = value.ex.x, b = value.ey.x, c = value.ex.y, d = value.ey.y;
-	auto det = (a * d) - (b * c);
-	if (det != float_t{0})
-	{
-		det = float_t{1} / det;
-	}
-	return Mat22{Vec2{det * d, -det * c}, Vec2{-det * b, det * a}};
+	const auto cp = Cross(value.ex, value.ey);
+	const auto det = (cp != 0)? float_t{1} / cp: float_t{0};
+	return Mat22{Vec2{det * value.ey.y, -det * value.ex.y}, Vec2{-det * value.ey.x, det * value.ex.x}};
 }
 
 /// A 3-by-3 matrix. Stored in column-major order.

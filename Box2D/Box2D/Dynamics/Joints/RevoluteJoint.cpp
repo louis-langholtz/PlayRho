@@ -360,7 +360,7 @@ bool RevoluteJoint::SolvePositionConstraints(const SolverData& data)
 		K.ey.x = K.ex.y;
 		K.ey.y = mA + mB + iA * rA.x * rA.x + iB * rB.x * rB.x;
 
-		const auto impulse = -K.Solve(C);
+		const auto impulse = -Solve(K, C);
 
 		cA -= mA * impulse;
 		aA -= iA * Cross(rA, impulse);
