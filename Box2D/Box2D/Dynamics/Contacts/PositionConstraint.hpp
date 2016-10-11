@@ -25,7 +25,7 @@
 namespace box2d {
 
 	/// Contact Position Constraint.
-	/// @note This structure is at least 104-bytes large.
+	/// @note This structure is 108-bytes large on at least one 64-bit platform.
 	struct PositionConstraint
 	{
 		using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;

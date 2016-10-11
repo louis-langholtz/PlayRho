@@ -582,7 +582,7 @@ void World::Solve(const TimeStep& step)
 			const auto count = vc.GetPointCount();
 			for (auto j = decltype(count){0}; j < count; ++j)
 			{
-				const auto point = vc.Point(j);
+				const auto point = vc.PointAt(j);
 				impulse.AddEntry(point.normalImpulse, point.tangentImpulse);
 			}
 			return impulse;
@@ -633,7 +633,7 @@ void World::Solve(const TimeStep& step)
 			assert(pointCount > 0);
 			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 			{
-				VelocityConstraintPoint vcp;
+				VelocityConstraint::Point vcp;
 				
 				const auto& mp = manifold.GetPoint(j);
 				vcp.normalImpulse = dtRatio * mp.normalImpulse;
@@ -676,7 +676,7 @@ void World::Solve(const TimeStep& step)
 			}
 		}
 		
-		inline void AssignImpulses(Manifold::Point& var, const VelocityConstraintPoint& val)
+		inline void AssignImpulses(Manifold::Point& var, const VelocityConstraint::Point& val)
 		{
 			var.normalImpulse = val.normalImpulse;
 			var.tangentImpulse = val.tangentImpulse;
@@ -695,7 +695,7 @@ void World::Solve(const TimeStep& step)
 				const auto point_count = vc.GetPointCount();
 				for (auto j = decltype(point_count){0}; j < point_count; ++j)
 				{
-					AssignImpulses(manifold.GetPoint(j), vc.Point(j));
+					AssignImpulses(manifold.GetPoint(j), vc.PointAt(j));
 				}
 			}
 		}
@@ -714,7 +714,7 @@ void World::Solve(const TimeStep& step)
 			const auto pointCount = vc.GetPointCount();	
 			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 			{
-				const auto vcp = vc.Point(j); ///< Velocity constraint point.
+				const auto vcp = vc.PointAt(j); ///< Velocity constraint point.
 				const auto P = vcp.normalImpulse * vc.normal + vcp.tangentImpulse * tangent;
 				vp.a.v -= vc.bodyA.GetInvMass() * P;
 				vp.a.w -= vc.bodyA.GetInvRotI() * Cross(vcp.rA, P);
