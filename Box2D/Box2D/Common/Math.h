@@ -1034,6 +1034,16 @@ constexpr inline Velocity operator- (const Velocity& lhs, const Velocity& rhs)
 	return Velocity{lhs.v - rhs.v, lhs.w - rhs.w};
 }
 
+constexpr inline Velocity operator- (const Velocity& value)
+{
+	return Velocity{-value.v, -value.w};
+}
+
+constexpr inline Velocity operator+ (const Velocity& value)
+{
+	return value;
+}
+
 constexpr inline Velocity operator* (const Velocity& lhs, const float_t rhs)
 {
 	return Velocity{lhs.v * rhs, lhs.w * rhs};
