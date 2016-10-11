@@ -56,8 +56,8 @@ private:
 	Vec2 m_vertex1, m_vertex2;
 
 	/// Optional adjacent vertices. These are used for smooth collision.
-	Vec2 m_vertex0 = Vec2_invalid;
-	Vec2 m_vertex3 = Vec2_invalid;
+	Vec2 m_vertex0 = GetInvalid<Vec2>();
+	Vec2 m_vertex3 = GetInvalid<Vec2>();
 };
 
 inline void EdgeShape::SetVertex0(const Vec2& v) noexcept

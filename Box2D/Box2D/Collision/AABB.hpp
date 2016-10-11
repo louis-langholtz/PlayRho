@@ -85,6 +85,12 @@ namespace box2d
 		Vec2 upperBound;	///< the upper vertex
 	};
 	
+	template <>
+	constexpr AABB GetInvalid() noexcept
+	{
+		return AABB{GetInvalid<Vec2>(), GetInvalid<Vec2>()};
+	}
+	
 	constexpr inline AABB operator + (const AABB& aabb1, const AABB& aabb2)
 	{
 		return AABB{Min(aabb1.GetLowerBound(), aabb2.GetLowerBound()), Max(aabb1.GetUpperBound(), aabb2.GetUpperBound())};

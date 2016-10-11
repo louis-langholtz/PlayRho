@@ -98,8 +98,8 @@ private:
 	/// The vertex count.
 	child_count_t m_count = 0;
 
-	Vec2 m_prevVertex = Vec2_invalid;
-	Vec2 m_nextVertex = Vec2_invalid;
+	Vec2 m_prevVertex = GetInvalid<Vec2>();
+	Vec2 m_nextVertex = GetInvalid<Vec2>();
 };
 
 inline const Vec2& ChainShape::GetVertex(child_count_t index) const

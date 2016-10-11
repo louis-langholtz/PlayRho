@@ -97,8 +97,8 @@ void ChainShape::CreateChain(const Vec2* vertices, child_count_t count)
 	m_vertices = alloc<Vec2>(count);
 	memcpy(m_vertices, vertices, m_count * sizeof(Vec2));
 
-	m_prevVertex = Vec2_invalid;
-	m_nextVertex = Vec2_invalid;
+	m_prevVertex = GetInvalid<Vec2>();
+	m_nextVertex = GetInvalid<Vec2>();
 }
 
 void ChainShape::SetPrevVertex(const Vec2& prevVertex) noexcept

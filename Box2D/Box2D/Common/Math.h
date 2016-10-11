@@ -162,8 +162,6 @@ struct Vec2
 /// @see Vec2.
 constexpr auto Vec2_zero = Vec2{0, 0};
 
-constexpr auto Vec2_invalid = Vec2{GetInvalid<float_t>(), GetInvalid<float_t>()};
-
 template <>
 constexpr inline Vec2 GetInvalid() noexcept
 {

@@ -87,7 +87,7 @@ namespace box2d {
 			case Shape::e_chain: return ComputeAABB(static_cast<const ChainShape&>(shape), xf, childIndex);
 			case Shape::e_circle: return ComputeAABB(static_cast<const CircleShape&>(shape), xf, childIndex);
 			case Shape::e_polygon: return ComputeAABB(static_cast<const PolygonShape&>(shape), xf, childIndex);
-			case Shape::e_typeCount: return AABB{Vec2_invalid, Vec2_invalid};
+			case Shape::e_typeCount: return GetInvalid<AABB>();
 		}
 	}
 	
@@ -100,7 +100,7 @@ namespace box2d {
 			case Shape::e_chain: return ComputeMass(static_cast<const ChainShape&>(shape), density);
 			case Shape::e_circle: return ComputeMass(static_cast<const CircleShape&>(shape), density);
 			case Shape::e_polygon: return ComputeMass(static_cast<const PolygonShape&>(shape), density);
-			case Shape::e_typeCount: return MassData{0, Vec2_invalid, 0};
+			case Shape::e_typeCount: return MassData{0, GetInvalid<Vec2>(), 0};
 		}		
 	}
 

@@ -26,8 +26,8 @@ void EdgeShape::Set(const Vec2& v1, const Vec2& v2)
 {
 	m_vertex1 = v1;
 	m_vertex2 = v2;
-	m_vertex0 = Vec2_invalid;
-	m_vertex3 = Vec2_invalid;
+	m_vertex0 = GetInvalid<Vec2>();
+	m_vertex3 = GetInvalid<Vec2>();
 }
 
 float_t box2d::GetRadius(const EdgeShape& shape)
