@@ -156,34 +156,31 @@ static inline void SolveTangentConstraint(VelocityConstraint& vc, Velocity& velA
 
 struct VelocityPair
 {
-	Velocity a;
-	Velocity b;
+	Velocity vel_a;
+	Velocity vel_b;
 };
 
-static inline VelocityPair ApplyIncrementalImpulse(const VelocityConstraint& vc, const Vec2 incImpulse)
+static inline VelocityPair ApplyImpulses(const VelocityConstraint& vc, const Vec2 impulses)
 {
-	assert(IsValid(incImpulse));
+	assert(IsValid(impulses));
 
 	// Apply incremental impulse
-	const auto P1 = incImpulse.x * vc.normal;
-	const auto P2 = incImpulse.y * vc.normal;
-	const auto P = P1 + P2;
+	const auto P0 = impulses[0] * vc.normal;
+	const auto P1 = impulses[1] * vc.normal;
+	const auto P = P0 + P1;
 	return VelocityPair{
-		-Velocity{vc.bodyA.GetInvMass() * P, vc.bodyA.GetInvRotI() * (Cross(vc.PointAt(0).rA, P1) + Cross(vc.PointAt(1).rA, P2))},
-		+Velocity{vc.bodyB.GetInvMass() * P, vc.bodyB.GetInvRotI() * (Cross(vc.PointAt(0).rB, P1) + Cross(vc.PointAt(1).rB, P2))}
+		-Velocity{vc.bodyA.GetInvMass() * P, vc.bodyA.GetInvRotI() * (Cross(vc.PointAt(0).rA, P0) + Cross(vc.PointAt(1).rA, P1))},
+		+Velocity{vc.bodyB.GetInvMass() * P, vc.bodyB.GetInvRotI() * (Cross(vc.PointAt(0).rB, P0) + Cross(vc.PointAt(1).rB, P1))}
 	};
 }
 
 static inline void BlockSolveUpdate(VelocityConstraint& vc, Velocity& velA, Velocity& velB,
 									const Vec2 newImpulses)
 {
-	const auto delta_v = ApplyIncrementalImpulse(vc, newImpulses - GetNormalImpulses(vc));
-	velA += delta_v.a;
-	velB += delta_v.b;
-	
-	// Save new impulse
-	vc.PointAt(0).normalImpulse = newImpulses.x;
-	vc.PointAt(1).normalImpulse = newImpulses.y;		
+	const auto delta_v = ApplyImpulses(vc, newImpulses - GetNormalImpulses(vc));
+	velA += delta_v.vel_a;
+	velB += delta_v.vel_b;
+	SetNormalImpulses(vc, newImpulses);
 }
 
 static inline bool BlockSolveNormalCase1(VelocityConstraint& vc, Velocity& velA, Velocity& velB,
@@ -198,10 +195,13 @@ static inline bool BlockSolveNormalCase1(VelocityConstraint& vc, Velocity& velA,
 	//
 	// x = -inv(A) * b'
 	//
-	const auto newImpulse = -Transform(b_prime, vc.GetNormalMass());
-	if ((newImpulse.x >= float_t{0}) && (newImpulse.y >= float_t{0}))
+	const auto normalMass = vc.GetNormalMass();
+	assert(IsValid(normalMass));
+
+	const auto newImpulses = -Transform(b_prime, normalMass);
+	if ((newImpulses[0] >= float_t{0}) && (newImpulses[1] >= float_t{0}))
 	{
-		BlockSolveUpdate(vc, velA, velB, newImpulse);
+		BlockSolveUpdate(vc, velA, velB, newImpulses);
 		
 #if defined(B2_DEBUG_SOLVER)
 		auto& vcp1 = vc.PointAt(0);
@@ -235,7 +235,9 @@ static inline bool BlockSolveNormalCase2(VelocityConstraint& vc, Velocity& velA,
 	// vn2 = a21 * x1 + a22 * 0 + b2'
 	//
 	const auto newImpulse = Vec2{-GetNormalMassAtPoint(vc, 0) * b_prime.x, float_t{0}};
-	const auto vn2 = vc.GetK().ex.y * newImpulse.x + b_prime.y;
+	const auto K = vc.GetK();
+	assert(IsValid(K));
+	const auto vn2 = K.ex.y * newImpulse.x + b_prime.y;
 	if ((newImpulse.x >= float_t{0}) && (vn2 >= float_t{0}))
 	{
 		BlockSolveUpdate(vc, velA, velB, newImpulse);
@@ -268,7 +270,9 @@ static inline bool BlockSolveNormalCase3(VelocityConstraint& vc, Velocity& velA,
 	//   0 = a21 * 0 + a22 * x2 + b2'
 	//
 	const auto newImpulse = Vec2{float_t{0}, -GetNormalMassAtPoint(vc, 1) * b_prime.y};
-	const auto vn1 = vc.GetK().ey.x * newImpulse.y + b_prime.x;
+	const auto K = vc.GetK();
+	assert(IsValid(K));
+	const auto vn1 = K.ey.x * newImpulse.y + b_prime.x;
 	if ((newImpulse.y >= float_t{0}) && (vn1 >= float_t{0}))
 	{
 		BlockSolveUpdate(vc, velA, velB, newImpulse);
@@ -357,7 +361,9 @@ static inline void BlockSolveNormalConstraint(VelocityConstraint& vc, Velocity& 
 		const auto b = Vec2{vn1 - vcp1.velocityBias, vn2 - vcp2.velocityBias};
 		
 		// Return b'
-		return b - Transform(GetNormalImpulses(vc), vc.GetK());
+		const auto K = vc.GetK();
+		assert(IsValid(K));
+		return b - Transform(GetNormalImpulses(vc), K);
 	}();
 	
 	
