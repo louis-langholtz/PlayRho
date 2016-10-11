@@ -28,7 +28,8 @@ namespace box2d {
 	
 	/// Contact velocity constraint.
 	/// @note A valid contact velocity constraint must have a point count of either 1 or 2.
-	/// @note This data structure is 176-bytes large on at least one 64-bit platform.
+	/// @note This data structure is 176-bytes large (on at least one 64-bit platform) if
+	///   <code>BOX2D_CACHE_VC_POINT_MASSES</code> is defined. It's 160-bytes large otherwise.
 	class VelocityConstraint
 	{
 	public:
