@@ -97,6 +97,10 @@ namespace box2d {
 			index_type index = 0; ///< Index within island of body.
 		};
 		
+		/// Default constructor.
+		/// @detail
+		/// Initializes object with: a zero point count, an invalid K, an invalid normal mass,
+		/// an invalid normal, invalid friction, invalid restitution, an invalid tangent speed.
 		VelocityConstraint() = default;
 		
 		VelocityConstraint(const VelocityConstraint& copy) = default;
@@ -172,21 +176,21 @@ namespace box2d {
 		/// Gets the tangent speed of the associated contact.
 		float_t GetTangentSpeed() const noexcept { return tangentSpeed; }
 		
-		Vec2 normal; ///< Normal of the world manifold.
+		Vec2 normal = GetInvalid<Vec2>(); ///< Normal of the world manifold.
 		
 		BodyData bodyA; ///< Body A contact velocity constraint data.
 		BodyData bodyB; ///< Body B contact velocity constraint data.
 		
 	private:
-		float_t friction; ///< Friction coefficient (4-bytes). Usually in the range of [0,1].
-		float_t restitution; ///< Restitution coefficient (4-bytes).
-		float_t tangentSpeed; ///< Tangent speed (4-bytes).
+		float_t friction = GetInvalid<float_t>(); ///< Friction coefficient (4-bytes). Usually in the range of [0,1].
+		float_t restitution = GetInvalid<float_t>(); ///< Restitution coefficient (4-bytes).
+		float_t tangentSpeed = GetInvalid<float_t>(); ///< Tangent speed (4-bytes).
 		
-		index_type contactIndex; ///< Index of the contact that this constraint is for (typically 8-bytes).
+		index_type contactIndex = GetInvalid<index_type>(); ///< Index of the contact that this constraint is for (typically 8-bytes).
 		
 		// K and normalMass fields are only used for the block solver.
-		Mat22 K = Mat22_invalid; ///< Block solver "K" info (only used by block solver, 16-bytes).
-		Mat22 normalMass = Mat22_invalid; ///< Block solver "normal mass" info (only used by block solver, 16-bytes).
+		Mat22 K = GetInvalid<Mat22>(); ///< Block solver "K" info (only used by block solver, 16-bytes).
+		Mat22 normalMass = GetInvalid<Mat22>(); ///< Block solver "normal mass" info (only used by block solver, 16-bytes).
 		
 		Point points[MaxManifoldPoints]; ///< Velocity constraint points array (at least 72-bytes).
 		size_type pointCount = 0; ///< Point count (at least 1-byte).
@@ -212,14 +216,19 @@ namespace box2d {
 		normalMass = Invert(value);
 	}
 	
+	/// Gets the "K" value.
+	/// @return "K" value or the invalid Mat22 if no other value has been set.
+	/// @sa SetK.
 	inline Mat22 VelocityConstraint::GetK() const noexcept
 	{
 		return K;
 	}
 	
+	/// Gets the "normal mass" value.
+	/// @return "normal mass" value or the invalid Mat22 if no other value has been set.
+	/// @sa SetK.
 	inline Mat22 VelocityConstraint::GetNormalMass() const noexcept
 	{
-		assert(IsValid(normalMass));
 		return normalMass;
 	}
 	
@@ -277,6 +286,23 @@ namespace box2d {
 		return Vec2{vc.PointAt(0).normalImpulse, vc.PointAt(1).normalImpulse};
 	}
 	
+	inline void SetNormalImpulses(VelocityConstraint& vc, const Vec2 impulses)
+	{
+		vc.PointAt(0).normalImpulse = impulses[0];
+		vc.PointAt(1).normalImpulse = impulses[1];
+	}
+	
+	inline Vec2 GetTangentImpulses(const VelocityConstraint& vc)
+	{
+		return Vec2{vc.PointAt(0).tangentImpulse, vc.PointAt(1).tangentImpulse};
+	}
+
+	inline void SetTangentImpulses(VelocityConstraint& vc, const Vec2 impulses)
+	{
+		vc.PointAt(0).tangentImpulse = impulses[0];
+		vc.PointAt(1).tangentImpulse = impulses[1];
+	}
+
 } // namespace box2d
 
 #endif /* VelocityConstraint_hpp */

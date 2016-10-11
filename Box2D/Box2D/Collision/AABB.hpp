@@ -125,7 +125,7 @@ namespace box2d
 
 		constexpr RayCastOutput(Vec2 n, float_t f, bool h = true) noexcept: normal{n}, fraction{f}, hit{h} {}
 
-		Vec2 normal = Vec2_invalid;
+		Vec2 normal = GetInvalid<Vec2>();
 		float_t fraction = 0;
 		bool hit = false;
 	};
