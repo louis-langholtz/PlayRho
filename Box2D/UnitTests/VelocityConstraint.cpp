@@ -29,3 +29,30 @@ TEST(VelocityConstraint, ByteSizeIs176or160)
 	EXPECT_EQ(sizeof(VelocityConstraint), size_t(160));
 #endif
 }
+
+TEST(VelocityConstraint, DefaultInit)
+{
+	VelocityConstraint vc;
+	EXPECT_EQ(vc.GetPointCount(), VelocityConstraint::size_type{0});
+	EXPECT_FALSE(IsValid(vc.GetK()));
+	EXPECT_FALSE(IsValid(vc.GetNormalMass()));
+	EXPECT_FALSE(IsValid(vc.normal));
+	EXPECT_FALSE(IsValid(vc.GetFriction()));
+	EXPECT_FALSE(IsValid(vc.GetRestitution()));
+	EXPECT_FALSE(IsValid(vc.GetTangentSpeed()));
+	EXPECT_FALSE(IsValid(vc.GetContactIndex()));
+}
+
+TEST(VelocityConstraint, InitializingConstructor)
+{
+	const auto contact_index = VelocityConstraint::index_type{3};
+	const auto friction = float_t(0.432);
+	const auto restitution = float_t(0.989);
+	const auto tangent_speed = float_t(1.876);
+	
+	const VelocityConstraint vc(contact_index, friction, restitution, tangent_speed);
+	EXPECT_EQ(vc.GetContactIndex(), contact_index);
+	EXPECT_EQ(vc.GetFriction(), friction);
+	EXPECT_EQ(vc.GetRestitution(), restitution);
+	EXPECT_EQ(vc.GetTangentSpeed(), tangent_speed);
+}

@@ -190,3 +190,14 @@ TEST(Math, ComputeCentroidOfHexagonalVertices)
 	EXPECT_EQ(average.x, center.x);
 	EXPECT_EQ(average.y, center.y);
 }
+
+TEST(Math, GetContactRelVelocity)
+{
+	const auto velA = Velocity{Vec2(+1, +4), float_t(3.2)};
+	const auto velB = Velocity{Vec2(+3, +1), float_t(0.4)};
+	const auto relA = Vec2(0, 0);
+	const auto relB = Vec2(0, 0);
+	const auto result = GetContactRelVelocity(velA, relA, velB, relB);
+	
+	EXPECT_EQ(result, velB.v - velA.v);
+}
