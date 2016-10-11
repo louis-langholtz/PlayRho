@@ -22,7 +22,16 @@
 
 #include <Box2D/Common/Math.h>
 
-//#define BOX2D_CACHE_VC_POINT_MASSES
+// Define <code>BOX2D_CACHE_VC_POINT_MASSES</code> to cache velocity constraint point masses
+// instead of re-computing them every time these values are read. This uses an additional
+// 16-bytes of memory per VelocityConstraint object.
+//
+// Note that with up to 4000 elements in the Tumbler test and using a library built without
+// optimizations enabled, caching the masses does seem to result in faster simulations.
+// It's unknown whether increasing the number of elements would eventually result in it being
+// faster not to cache the mass values.
+//
+#define BOX2D_CACHE_VC_POINT_MASSES
 
 namespace box2d {
 	
@@ -237,6 +246,14 @@ namespace box2d {
 		return (value != 0)? float_t{1} / value : float_t{0};
 	}
 	
+	inline float_t ComputeTangentMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
+	{
+		const auto value = GetInverseMass(vc)
+			+ (vc.bodyA.GetInvRotI() * Square(Cross(vc.PointAt(index).rA, GetTangent(vc))))
+			+ (vc.bodyB.GetInvRotI() * Square(Cross(vc.PointAt(index).rB, GetTangent(vc))));
+		return (value != 0)? float_t{1} / value : float_t{0};
+	}
+	
 	inline float_t GetNormalMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
 	{
 #if defined(BOX2D_CACHE_VC_POINT_MASSES)
@@ -246,14 +263,6 @@ namespace box2d {
 #endif
 	}
 	
-	inline float_t ComputeTangentMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
-	{
-		const auto value = GetInverseMass(vc)
-			+ (vc.bodyA.GetInvRotI() * Square(Cross(vc.PointAt(index).rA, GetTangent(vc))))
-			+ (vc.bodyB.GetInvRotI() * Square(Cross(vc.PointAt(index).rB, GetTangent(vc))));
-		return (value != 0)? float_t{1} / value : float_t{0};
-	}
-
 	inline float_t GetTangentMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
 	{
 #if defined(BOX2D_CACHE_VC_POINT_MASSES)
