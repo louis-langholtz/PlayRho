@@ -452,19 +452,19 @@ PositionSolution Solve(const PositionConstraint& pc, Position posA, Position pos
 	const auto idx_fn = [=](Manifold::size_type index, Position pos_a, Position pos_b) {
 		const auto psm = GetPSM(pc.manifold, index, pos_a, localCenterA, pos_b, localCenterB);
 		
-		const auto separation = psm.separation - totalRadius;
+		const auto separation = psm.m_separation - totalRadius;
 		
 		// Track max constraint error.
 		
 		if (invMassTotal > float_t{0})
 		{
-			const auto rA = psm.point - pos_a.c;
-			const auto rB = psm.point - pos_b.c;
+			const auto rA = psm.m_point - pos_a.c;
+			const auto rB = psm.m_point - pos_b.c;
 			
 			// Compute the effective mass.
 			const auto K = [&]() {
-				const auto rnA = Cross(rA, psm.normal);
-				const auto rnB = Cross(rB, psm.normal);
+				const auto rnA = Cross(rA, psm.m_normal);
+				const auto rnB = Cross(rB, psm.m_normal);
 				return invMassTotal + (invInertiaA * Square(rnA)) + (invInertiaB * Square(rnB));
 			}();
 			
@@ -473,7 +473,7 @@ PositionSolution Solve(const PositionConstraint& pc, Position posA, Position pos
 								 -max_correction, float_t{0});
 			
 			// Compute normal impulse
-			const auto P = psm.normal * -C / K;
+			const auto P = psm.m_normal * -C / K;
 			
 			return PositionSolution{
 				-Position{invMassA * P, invInertiaA * Cross(rA, P)},
@@ -496,13 +496,13 @@ PositionSolution Solve(const PositionConstraint& pc, Position posA, Position pos
 		// solve most penatrating point first or solve simultaneously if about the same penetration
 		const auto psm0 = GetPSM(pc.manifold, 0, posA, localCenterA, posB, localCenterB);
 		const auto psm1 = GetPSM(pc.manifold, 1, posA, localCenterA, posB, localCenterB);
-		if (almost_equal(psm0.separation, psm1.separation))
+		if (almost_equal(psm0.m_separation, psm1.m_separation))
 		{
 			const auto s0 = idx_fn(0, posA, posB);
 			const auto s1 = idx_fn(1, posA, posB);
 			return PositionSolution{posA + s0.pos_a + s1.pos_a, posB + s0.pos_b + s1.pos_b, s0.min_separation};
 		}
-		if (psm0.separation < psm1.separation)
+		if (psm0.m_separation < psm1.m_separation)
 		{
 			const auto s0 = idx_fn(0, posA, posB);
 			posA += s0.pos_a;

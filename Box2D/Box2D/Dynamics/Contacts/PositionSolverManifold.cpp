@@ -11,6 +11,12 @@
 namespace box2d
 {
 
+/// Gets the position solver manifold for a circles-type manifold.
+/// @param lp Local point.
+/// @param plp Point's local point.
+/// @param xfA Transformation for body A.
+/// @param xfB Transformation for body B.
+	/// @return Separation is the dot-product of the positional difference of the two bodies 
 static inline PositionSolverManifold GetForCircles(Vec2 lp, Vec2 plp,
 												   const Transformation& xfA, const Transformation& xfB)
 {
@@ -23,6 +29,11 @@ static inline PositionSolverManifold GetForCircles(Vec2 lp, Vec2 plp,
 	return PositionSolverManifold{normal, point, separation};
 }
 
+/// Gets the position solver manifold for a face-a-type manifold.
+/// @param lp Local point.
+/// @param plp Point's local point.
+/// @param xfA Transformation for body A.
+/// @param xfB Transformation for body B.
 static inline PositionSolverManifold GetForFaceA(Vec2 lp, Vec2 plp,
 												 const Transformation& xfA, const Transformation& xfB,
 												 Vec2 ln)
@@ -34,6 +45,11 @@ static inline PositionSolverManifold GetForFaceA(Vec2 lp, Vec2 plp,
 	return PositionSolverManifold{normal, clipPoint, separation};
 }
 
+/// Gets the position solver manifold for a face-b-type manifold.
+/// @param lp Local point.
+/// @param plp Point's local point.
+/// @param xfA Transformation for body A.
+/// @param xfB Transformation for body B.
 static inline PositionSolverManifold GetForFaceB(Vec2 lp, Vec2 plp,
 												 const Transformation& xfA, const Transformation& xfB,
 												 Vec2 ln)

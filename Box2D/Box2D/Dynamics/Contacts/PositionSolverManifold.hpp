@@ -35,12 +35,12 @@ namespace box2d
 		PositionSolverManifold() noexcept = default;
 		PositionSolverManifold(const PositionSolverManifold& copy) noexcept = default;
 		
-		constexpr PositionSolverManifold(Vec2 n, Vec2 p, float_t s) noexcept:
-			normal{n}, point{p}, separation{s} {}
+		constexpr PositionSolverManifold(Vec2 normal, Vec2 point, float_t separation) noexcept:
+			m_normal{normal}, m_point{point}, m_separation{separation} {}
 		
-		Vec2 normal; ///< Normal.
-		Vec2 point; ///< Point.
-		float_t separation; ///< "separation" between two points (of a contact position constraint).
+		Vec2 m_normal; ///< Normal.
+		Vec2 m_point; ///< Point.
+		float_t m_separation; ///< "separation" between two points (of a contact position constraint).
 	};
 
 	/// Gets the normal-point-separation data for the given inputs.
