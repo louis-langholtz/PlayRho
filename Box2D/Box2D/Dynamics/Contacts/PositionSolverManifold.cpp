@@ -16,7 +16,9 @@ namespace box2d
 /// @param plp Point's local point.
 /// @param xfA Transformation for body A.
 /// @param xfB Transformation for body B.
-	/// @return Separation is the dot-product of the positional difference of the two bodies 
+/// @return Separation is the dot-product of:
+///   the positional difference of the two bodies, and
+///   the unit vector of that positional difference.
 static inline PositionSolverManifold GetForCircles(Vec2 lp, Vec2 plp,
 												   const Transformation& xfA, const Transformation& xfB)
 {
@@ -34,6 +36,10 @@ static inline PositionSolverManifold GetForCircles(Vec2 lp, Vec2 plp,
 /// @param plp Point's local point.
 /// @param xfA Transformation for body A.
 /// @param xfB Transformation for body B.
+/// @param ln Local normal.
+/// @return Separation is the dot-product of:
+///   the positional difference between the two bodies, and
+///   the local normal rotated by the rotational component of xfA.
 static inline PositionSolverManifold GetForFaceA(Vec2 lp, Vec2 plp,
 												 const Transformation& xfA, const Transformation& xfB,
 												 Vec2 ln)
@@ -50,6 +56,7 @@ static inline PositionSolverManifold GetForFaceA(Vec2 lp, Vec2 plp,
 /// @param plp Point's local point.
 /// @param xfA Transformation for body A.
 /// @param xfB Transformation for body B.
+/// @param ln Local normal.
 static inline PositionSolverManifold GetForFaceB(Vec2 lp, Vec2 plp,
 												 const Transformation& xfA, const Transformation& xfB,
 												 Vec2 ln)

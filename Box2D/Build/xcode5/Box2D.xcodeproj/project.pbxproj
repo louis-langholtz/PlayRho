@@ -206,6 +206,7 @@
 		47AA63AC1D1078D000726CA2 /* ConstContactIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AA63AA1D1078D000726CA2 /* ConstContactIterator.cpp */; };
 		47AA63AD1D1078D000726CA2 /* ConstContactIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47AA63AB1D1078D000726CA2 /* ConstContactIterator.hpp */; };
 		47AB01BA1D6FA40C0084D721 /* Dump.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AB01B91D6FA40C0084D721 /* Dump.cpp */; };
+		47AFC3051DAEBC120023E9D1 /* PositionSolverManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */; };
 		47CB34401D6F3A8500828126 /* MassData.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47CB343D1D6F3A8500828126 /* MassData.hpp */; };
 		47CB34411D6F3A8500828126 /* MassData.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47CB343D1D6F3A8500828126 /* MassData.hpp */; };
 		47F932A51D11C283006A193C /* AllocatedArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47F932A31D11C283006A193C /* AllocatedArray.cpp */; };
@@ -498,6 +499,7 @@
 		47AA63AA1D1078D000726CA2 /* ConstContactIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConstContactIterator.cpp; sourceTree = "<group>"; };
 		47AA63AB1D1078D000726CA2 /* ConstContactIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConstContactIterator.hpp; sourceTree = "<group>"; };
 		47AB01B91D6FA40C0084D721 /* Dump.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dump.cpp; sourceTree = "<group>"; };
+		47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PositionSolverManifold.cpp; sourceTree = "<group>"; };
 		47CB343D1D6F3A8500828126 /* MassData.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MassData.hpp; sourceTree = "<group>"; };
 		47F932A31D11C283006A193C /* AllocatedArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AllocatedArray.cpp; sourceTree = "<group>"; };
 		47F932A41D11C283006A193C /* AllocatedArray.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AllocatedArray.hpp; sourceTree = "<group>"; };
@@ -769,6 +771,7 @@
 				474BC3FE1D41278800447DCD /* Mat33.cpp */,
 				474BC3FF1D41278800447DCD /* PolygonShape.cpp */,
 				47FFD0FC1DAC6235000D6D0E /* PositionConstraint.cpp */,
+				47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */,
 				474BC4001D41278800447DCD /* Rot.cpp */,
 				474BC4011D41278800447DCD /* SimplexCache.cpp */,
 				475A945A1D9593A4000CA9A8 /* Shape.cpp */,
@@ -1508,6 +1511,7 @@
 				474BC43D1D413DC200447DCD /* World.cpp in Sources */,
 				475A94561D930E6C000CA9A8 /* Fixture.cpp in Sources */,
 				479039D11D5BB9ED001A2145 /* Body.cpp in Sources */,
+				47AFC3051DAEBC120023E9D1 /* PositionSolverManifold.cpp in Sources */,
 				473971A81D9D9B4C00F7137F /* Math.cpp in Sources */,
 				47FFD0FD1DAC6235000D6D0E /* PositionConstraint.cpp in Sources */,
 			);

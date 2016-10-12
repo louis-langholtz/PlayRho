@@ -1,4 +1,11 @@
 ##About
+This is a fork by Louis Langholtz of Box2D. Influences on this fork are:
+- C++14;
+- [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md);
+- Effective Modern C++ by Scott Meyers; and
+- Hardware capabilities of popular CPU architectures like the
+  [Intel-64 architecture](http://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-manual-325462.pdf).
+ 
 Box2D is a 2D physics engine for games.
 
 For help with Box2D, please visit http://www.box2d.org. There is a forum there where you may post your questions.
