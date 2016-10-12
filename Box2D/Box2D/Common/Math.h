@@ -28,10 +28,10 @@ namespace box2d
 // forward declarations
 struct Vec2;
 struct Vec3;
-constexpr inline float_t Dot(const Vec2& a, const Vec2& b) noexcept;
-constexpr inline float_t Dot(const Vec3& a, const Vec3& b) noexcept;
-constexpr inline float_t Cross(const Vec2& a, const Vec2& b) noexcept;
-constexpr inline Vec3 Cross(const Vec3& a, const Vec3& b) noexcept;
+constexpr inline float_t Dot(const Vec2 a, const Vec2 b) noexcept;
+constexpr inline float_t Dot(const Vec3 a, const Vec3 b) noexcept;
+constexpr inline float_t Cross(const Vec2 a, const Vec2 b) noexcept;
+constexpr inline Vec3 Cross(const Vec3 a, const Vec3 b) noexcept;
 
 template <typename T>
 constexpr inline T GetInvalid() noexcept;
@@ -546,7 +546,7 @@ public:
 	constexpr Sweep(const Sweep& copy) noexcept = default;
 
 	/// Initializing constructor.
-	constexpr Sweep(const Position& p0, const Position& p1, const Vec2& lc = Vec2_zero, float_t a0 = 0) noexcept:
+	constexpr Sweep(const Position& p0, const Position& p1, const Vec2 lc = Vec2_zero, float_t a0 = 0) noexcept:
 		pos0{p0}, pos1{p1}, localCenter{lc}, alpha0{a0}
 	{
 		assert(a0 >= 0);
@@ -554,7 +554,7 @@ public:
 	}
 	
 	/// Initializing constructor.
-	constexpr explicit Sweep(const Position& p, const Vec2& lc = Vec2_zero) noexcept: Sweep{p, p, lc, 0} {}
+	constexpr explicit Sweep(const Position& p, const Vec2 lc = Vec2_zero) noexcept: Sweep{p, p, lc, 0} {}
 
 	/// Gets the local center of mass position.
  	/// @note This value can only be set via a sweep constructed using an initializing constructor.
@@ -619,7 +619,7 @@ constexpr inline Vec2 GetFwdPerpendicular(const Vec2 vector) noexcept
 /// @return Dot product of the vectors (0 means the two vectors are perpendicular).
 /// @note If A and B are the same vectors, LengthSquared(Vec2) returns the same value
 ///   using effectively one less input parameter.
-constexpr inline float_t Dot(const Vec2& a, const Vec2& b) noexcept
+constexpr inline float_t Dot(const Vec2 a, const Vec2 b) noexcept
 {
 	return (a.x * b.x) + (a.y * b.y);
 }
@@ -632,21 +632,21 @@ constexpr inline float_t Dot(const Vec2& a, const Vec2& b) noexcept
 /// @param a Vector A.
 /// @param b Vector B.
 /// @return Cross product of the two vectors. 
-constexpr inline float_t Cross(const Vec2& a, const Vec2& b) noexcept
+constexpr inline float_t Cross(const Vec2 a, const Vec2 b) noexcept
 {
 	return (a.x * b.y) - (a.y * b.x);
 }
 
 /// Multiply a matrix times a vector. If a rotation matrix is provided,
 /// then this transforms the vector from one frame to another.
-constexpr inline Vec2 Transform(const Vec2& v, const Mat22& A) noexcept
+constexpr inline Vec2 Transform(const Vec2 v, const Mat22& A) noexcept
 {
 	return Vec2{A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y};
 }
 
 /// Multiply a matrix transpose times a vector. If a rotation matrix is provided,
 /// then this transforms the vector from one frame to another (inverse transform).
-constexpr inline Vec2 InverseTransform(const Vec2& v, const Mat22& A) noexcept
+constexpr inline Vec2 InverseTransform(const Vec2 v, const Mat22& A) noexcept
 {
 	return Vec2{Dot(v, A.ex), Dot(v, A.ey)};
 }
@@ -675,28 +675,28 @@ constexpr Vec2& operator *= (Vec2& lhs, float_t rhs) noexcept
 }
 
 /// Add two vectors component-wise.
-constexpr inline Vec2 operator + (const Vec2& a, const Vec2& b) noexcept
+constexpr inline Vec2 operator + (const Vec2 a, const Vec2 b) noexcept
 {
 	return Vec2{a.x + b.x, a.y + b.y};
 }
 
 /// Subtract two vectors component-wise.
-constexpr inline Vec2 operator - (const Vec2& a, const Vec2& b) noexcept
+constexpr inline Vec2 operator - (const Vec2 a, const Vec2 b) noexcept
 {
 	return Vec2{a.x - b.x, a.y - b.y};
 }
 
-constexpr inline Vec2 operator * (float_t s, const Vec2& a) noexcept
+constexpr inline Vec2 operator * (float_t s, const Vec2 a) noexcept
 {
 	return Vec2{s * a.x, s * a.y};
 }
 
-constexpr inline Vec2 operator * (const Vec2& a, float_t s) noexcept
+constexpr inline Vec2 operator * (const Vec2 a, const float_t s) noexcept
 {
 	return Vec2{a.x * s, a.y * s};
 }
 
-constexpr Vec2 operator/ (const Vec2& a, float_t s) noexcept
+constexpr Vec2 operator/ (const Vec2 a, const float_t s) noexcept
 {
 	return Vec2{a.x / s, a.y / s};
 }
@@ -705,7 +705,7 @@ constexpr Vec2 operator/ (const Vec2& a, float_t s) noexcept
 /// @param value Value to get the unit vector for.
 /// @return value divided by its length if length not almost zero otherwise value.
 /// @sa almost_equal.
-inline Vec2 GetUnitVector(Vec2 value)
+inline Vec2 GetUnitVector(const Vec2 value)
 {
 	// implementation similar to that of Normalize(Vec2&)
 	const auto length = Sqrt(LengthSquared(value));
@@ -763,7 +763,7 @@ constexpr Vec3& operator -= (Vec3& lhs, const Vec3& rhs) noexcept
 	return lhs;
 }
 
-constexpr Vec3& operator *= (Vec3& lhs, float_t rhs) noexcept
+constexpr Vec3& operator *= (Vec3& lhs, const float_t rhs) noexcept
 {
 	lhs.x *= rhs;
 	lhs.y *= rhs;
@@ -771,36 +771,36 @@ constexpr Vec3& operator *= (Vec3& lhs, float_t rhs) noexcept
 	return lhs;
 }
 
-constexpr inline Vec3 operator * (float_t s, const Vec3& a) noexcept
+constexpr inline Vec3 operator * (const float_t s, const Vec3 a) noexcept
 {
 	return Vec3{s * a.x, s * a.y, s * a.z};
 }
 
 /// Add two vectors component-wise.
-constexpr inline Vec3 operator + (const Vec3& a, const Vec3& b) noexcept
+constexpr inline Vec3 operator + (const Vec3 a, const Vec3 b) noexcept
 {
 	return Vec3{a.x + b.x, a.y + b.y, a.z + b.z};
 }
 
 /// Subtract two vectors component-wise.
-constexpr inline Vec3 operator - (const Vec3& a, const Vec3& b) noexcept
+constexpr inline Vec3 operator - (const Vec3 a, const Vec3 b) noexcept
 {
 	return Vec3{a.x - b.x, a.y - b.y, a.z - b.z};
 }
 
 /// Perform the dot product on two vectors.
-constexpr inline float_t Dot(const Vec3& a, const Vec3& b) noexcept
+constexpr inline float_t Dot(const Vec3 a, const Vec3 b) noexcept
 {
 	return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
 }
 
 /// Perform the cross product on two vectors.
-constexpr inline Vec3 Cross(const Vec3& a, const Vec3& b) noexcept
+constexpr inline Vec3 Cross(const Vec3 a, const Vec3 b) noexcept
 {
 	return Vec3{a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x};
 }
 
-constexpr inline Mat22 operator + (const Mat22& A, const Mat22& B) noexcept
+constexpr inline Mat22 operator + (const Mat22 A, const Mat22 B) noexcept
 {
 	return Mat22{A.ex + B.ex, A.ey + B.ey};
 }
@@ -826,7 +826,7 @@ constexpr inline Vec3 Transform(const Vec3& v, const Mat33& A) noexcept
 }
 
 /// Multiply a matrix times a vector.
-constexpr inline Vec2 Transform(const Vec2& v, const Mat33& A) noexcept
+constexpr inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
 {
 	return Vec2{A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y};
 }
@@ -861,13 +861,13 @@ constexpr inline Rot operator- (const Rot& lhs, const Rot& rhs) noexcept
 }
 
 /// Rotates a vector by a given angle.
-constexpr inline Vec2 Rotate(const Vec2& vector, const Rot& angle) noexcept
+constexpr inline Vec2 Rotate(const Vec2 vector, const Rot& angle) noexcept
 {
 	return Vec2{(angle.cos() * vector.x) - (angle.sin() * vector.y), (angle.sin() * vector.x) + (angle.cos() * vector.y)};
 }
 
 /// Inverse rotate a vector
-constexpr inline Vec2 InverseRotate(const Vec2& vector, const Rot& angle) noexcept
+constexpr inline Vec2 InverseRotate(const Vec2 vector, const Rot& angle) noexcept
 {
 	return Vec2{(angle.cos() * vector.x) + (angle.sin() * vector.y), (angle.cos() * vector.y) - (angle.sin() * vector.x)};
 }
@@ -882,7 +882,7 @@ constexpr inline Vec2 InverseRotate(const Vec2& vector, const Rot& angle) noexce
 /// @param v 2-D vector to transform (translate and rotate).
 /// @param T Transformation (a translation and rotation) to apply to the given vector.
 /// @return Transformed vector.
-constexpr inline Vec2 Transform(const Vec2& v, const Transformation& T) noexcept
+constexpr inline Vec2 Transform(const Vec2 v, const Transformation T) noexcept
 {
 	const auto x = (T.q.cos() * v.x - T.q.sin() * v.y) + T.p.x;
 	const auto y = (T.q.sin() * v.x + T.q.cos() * v.y) + T.p.y;
@@ -899,7 +899,7 @@ constexpr inline Vec2 Transform(const Vec2& v, const Transformation& T) noexcept
 /// @param v 2-D vector to inverse transform (inverse translate and rotate).
 /// @param T Transformation (a translation and rotation) to invertedly apply to the given vector.
 /// @return Inverse transformed vector.
-constexpr inline Vec2 InverseTransform(const Vec2& v, const Transformation& T) noexcept
+constexpr inline Vec2 InverseTransform(const Vec2 v, const Transformation T) noexcept
 {
 	const auto px = v.x - T.p.x;
 	const auto py = v.y - T.p.y;
@@ -1083,19 +1083,19 @@ constexpr inline Velocity operator* (const float_t lhs, const Velocity& rhs)
 	return Velocity{rhs.v * lhs, rhs.w * lhs};
 }
 
-constexpr inline Transformation GetTransformation(const Vec2& ctr, const Rot& rot, const Vec2& local_ctr) noexcept
+constexpr inline Transformation GetTransformation(const Vec2 ctr, const Rot& rot, const Vec2 local_ctr) noexcept
 {
 	return Transformation{ctr - Rotate(local_ctr, rot), rot};
 }
 
-inline Transformation GetTransformation(Position pos, const Vec2& local_ctr) noexcept
+inline Transformation GetTransformation(const Position pos, const Vec2 local_ctr) noexcept
 {
 	assert(IsValid(pos));
 	assert(IsValid(local_ctr));
 	return GetTransformation(pos.c, Rot{pos.a}, local_ctr);
 }
 
-inline Position GetPosition(Position pos0, Position pos1, float_t beta)
+inline Position GetPosition(const Position pos0, const Position pos1, const float_t beta)
 {
 	return pos0 * (float_t{1} - beta) + pos1 * beta;
 }
@@ -1104,7 +1104,7 @@ inline Position GetPosition(Position pos0, Position pos1, float_t beta)
 /// @param sweep Sweep data to get the transform from.
 /// @param beta Time factor in [0,1], where 0 indicates alpha0.
 /// @return Transformation of the given sweep at the specified time.
-inline Transformation GetTransformation(const Sweep& sweep, float_t beta)
+inline Transformation GetTransformation(const Sweep& sweep, const float_t beta)
 {
 	assert(beta >= 0);
 	assert(beta <= 1);
@@ -1131,12 +1131,12 @@ inline Transformation GetTransform1(const Sweep& sweep)
 	return GetTransformation(sweep.pos1, sweep.GetLocalCenter());
 }
 
-constexpr inline float_t DegreesToRadians(double value)
+constexpr inline float_t DegreesToRadians(const double value)
 {
 	return static_cast<float_t>(value * M_PI / 180);
 }
 
-inline void Sweep::Advance0(float_t alpha)
+inline void Sweep::Advance0(const float_t alpha)
 {
 	assert(IsValid(alpha));
 	assert(alpha >= 0);
