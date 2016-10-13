@@ -26,6 +26,7 @@ namespace box2d
 {
 	class Manifold;
 	class Contact;
+	class PositionConstraint;
 
 	/// This is used to compute the current state of a contact manifold.
 	class WorldManifold
@@ -146,7 +147,9 @@ namespace box2d
 	///   the given manifold has. The returned world manifold points will be the mid-points of the
 	///   contact's intersection.
 	///
-	WorldManifold GetWorldManifold(const Contact& contact);	
+	WorldManifold GetWorldManifold(const Contact& contact);
+	
+	WorldManifold GetWorldManifold(const PositionConstraint& pc, Position posA, Position posB);
 }
 
 #endif /* WorldManifold_hpp */
