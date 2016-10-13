@@ -72,29 +72,29 @@ namespace box2d {
 			/// Initializing constructor.
 			/// @note Behavior is undefined if the given inverse mass or given inverse rotational
 			///   inertia is less than zero.
-			/// @param iM Inverse mass. A value of 0 or more.
-			/// @param iI Inverse rotational inertia. A value of 0 or more.
-			constexpr BodyData(index_type i, float_t iM, float_t iI) noexcept:
-				index{i}, invMass{iM}, invI{iI}
+			/// @param invMass Inverse mass. A value of 0 or more.
+			/// @param invI Inverse rotational inertia. A value of 0 or more.
+			constexpr BodyData(index_type index, float_t invMass, float_t invI) noexcept:
+				m_index{index}, m_invMass{invMass}, m_invI{invI}
 			{
-				assert(iM >= 0);
-				assert(iI >= 0);
+				assert(invMass >= 0);
+				assert(invI >= 0);
 			}
 			
-			index_type GetIndex() const noexcept { return index; }
+			index_type GetIndex() const noexcept { return m_index; }
 			
 			/// Gets the inverse mass.
 			/// @return 0 or greater value.
-			float_t GetInvMass() const noexcept { return invMass; }
+			float_t GetInvMass() const noexcept { return m_invMass; }
 			
 			/// Gets the inverse rotational inertia.
 			/// @return 0 or greater value.
-			float_t GetInvRotI() const noexcept { return invI; }
+			float_t GetInvRotI() const noexcept { return m_invI; }
 			
 		private:
-			float_t invMass = 0; ///< Inverse mass of body. Value of 0 or greater.
-			float_t invI = 0; ///< Inverse rotational interia of body. Value of 0 or greater.
-			index_type index = 0; ///< Index within island of body.
+			float_t m_invMass = 0; ///< Inverse mass of body. Value of 0 or greater.
+			float_t m_invI = 0; ///< Inverse rotational interia of body. Value of 0 or greater.
+			index_type m_index = GetInvalid<index_type>(); ///< Index within island of body.
 		};
 		
 		/// Default constructor.
