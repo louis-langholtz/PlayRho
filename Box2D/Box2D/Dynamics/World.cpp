@@ -582,8 +582,7 @@ void World::Solve(const TimeStep& step)
 			const auto count = vc.GetPointCount();
 			for (auto j = decltype(count){0}; j < count; ++j)
 			{
-				const auto point = vc.PointAt(j);
-				impulse.AddEntry(point.normalImpulse, point.tangentImpulse);
+				impulse.AddEntry(GetNormalImpulseAtPoint(vc, j), GetTangentImpulseAtPoint(vc, j));
 			}
 			return impulse;
 		}
@@ -678,10 +677,17 @@ void World::Solve(const TimeStep& step)
 			}
 		}
 		
-		inline void AssignImpulses(Manifold::Point& var, const VelocityConstraint::Point& val)
+		inline void AssignImpulses(Manifold& var, const VelocityConstraint& vc)
 		{
-			var.normalImpulse = val.normalImpulse;
-			var.tangentImpulse = val.tangentImpulse;
+			assert(var.GetPointCount() >= vc.GetPointCount());
+
+			const auto count = vc.GetPointCount();
+			for (auto i = decltype(count){0}; i < count; ++i)
+			{
+				auto&& mp = var.GetPoint(i);
+				mp.normalImpulse = GetNormalImpulseAtPoint(vc, i);
+				mp.tangentImpulse = GetTangentImpulseAtPoint(vc, i);
+			}
 		}
 		
 		/// Stores impulses.
@@ -693,12 +699,7 @@ void World::Solve(const TimeStep& step)
 			{
 				const auto& vc = velocityConstraints[i];
 				auto& manifold = contacts[vc.GetContactIndex()]->GetManifold();
-				
-				const auto point_count = vc.GetPointCount();
-				for (auto j = decltype(point_count){0}; j < point_count; ++j)
-				{
-					AssignImpulses(manifold.GetPoint(j), vc.PointAt(j));
-				}
+				AssignImpulses(manifold, vc);
 			}
 		}
 		
@@ -715,10 +716,9 @@ void World::Solve(const TimeStep& step)
 			const auto pointCount = vc.GetPointCount();	
 			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 			{
-				const auto vcp = vc.PointAt(j); ///< Velocity constraint point.
-				const auto P = vcp.normalImpulse * GetNormal(vc) + vcp.tangentImpulse * GetTangent(vc);
-				vp.a -= Velocity{vc.bodyA.GetInvMass() * P, vc.bodyA.GetInvRotI() * Cross(vcp.rA, P)};
-				vp.b += Velocity{vc.bodyB.GetInvMass() * P, vc.bodyB.GetInvRotI() * Cross(vcp.rB, P)};
+				const auto P = GetNormalImpulseAtPoint(vc, j) * GetNormal(vc) + GetTangentImpulseAtPoint(vc, j) * GetTangent(vc);
+				vp.a -= Velocity{vc.bodyA.GetInvMass() * P, vc.bodyA.GetInvRotI() * Cross(GetPointRelPosA(vc, j), P)};
+				vp.b += Velocity{vc.bodyB.GetInvMass() * P, vc.bodyB.GetInvRotI() * Cross(GetPointRelPosB(vc, j), P)};
 			}
 			
 			return vp;

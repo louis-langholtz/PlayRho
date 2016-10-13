@@ -126,17 +126,15 @@ TEST(VelocityConstraint, AddPoint)
 	vc.AddPoint(point);
 	EXPECT_EQ(vc.GetPointCount(), VelocityConstraint::size_type(1));
 	
-	const auto point0 = vc.PointAt(0);
-	
-	EXPECT_EQ(point0.rA, rA);
-	EXPECT_EQ(point0.rB, rB);
-	EXPECT_EQ(point0.normalImpulse, ni);
-	EXPECT_EQ(point0.tangentImpulse, ti);
+	EXPECT_EQ(GetPointRelPosA(vc, 0), rA);
+	EXPECT_EQ(GetPointRelPosB(vc, 0), rB);
+	EXPECT_EQ(GetNormalImpulseAtPoint(vc, 0), ni);
+	EXPECT_EQ(GetTangentImpulseAtPoint(vc, 0), ti);
 #if defined(BOX2D_CACHE_VC_POINT_MASSES)
-	EXPECT_EQ(point0.normalMass, nm);
-	EXPECT_EQ(point0.tangentMass, tm);
+	EXPECT_EQ(GetNormalMassAtPoint(vc, 0), nm);
+	EXPECT_EQ(GetTangentMassAtPoint(vc, 0), tm);
 #endif
-	EXPECT_EQ(point0.velocityBias, vb);
+	EXPECT_EQ(GetVelocityBiasAtPoint(vc, 0), vb);
 }
 
 #if defined(BOX2D_CACHE_VC_POINT_MASSES)
