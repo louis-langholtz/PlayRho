@@ -398,7 +398,7 @@ public:
 	}
 
 	/// Initialize from an angle.
-	/// @param angle Angle in radians.
+	/// @param angle Angle in radians (counter-clockwise from the normal of Vec2(1, 0)).
 	explicit Rot(float_t angle): s{std::sin(angle)}, c{std::cos(angle)}
 	{
 		// TODO_ERIN optimize
@@ -884,9 +884,7 @@ constexpr inline Vec2 InverseRotate(const Vec2 vector, const Rot& angle) noexcep
 /// @return Transformed vector.
 constexpr inline Vec2 Transform(const Vec2 v, const Transformation T) noexcept
 {
-	const auto x = (T.q.cos() * v.x - T.q.sin() * v.y) + T.p.x;
-	const auto y = (T.q.sin() * v.x + T.q.cos() * v.y) + T.p.y;
-	return Vec2{x, y};
+	return Rotate(v, T.q) + T.p;
 }
 
 /// Inverse transforms the given 2-D vector with the given transformation.
@@ -896,16 +894,12 @@ constexpr inline Vec2 Transform(const Vec2 v, const Transformation T) noexcept
 /// @note Passing the output of this function to <code>Transform</code> (with the same
 /// transformation again) will result in the original vector being returned.
 /// @sa <code>Transform</code>.
-/// @param v 2-D vector to inverse transform (inverse translate and rotate).
+/// @param v 2-D vector to inverse transform (inverse translate and inverse rotate).
 /// @param T Transformation (a translation and rotation) to invertedly apply to the given vector.
 /// @return Inverse transformed vector.
 constexpr inline Vec2 InverseTransform(const Vec2 v, const Transformation T) noexcept
 {
-	const auto px = v.x - T.p.x;
-	const auto py = v.y - T.p.y;
-	const auto x = T.q.cos() * px + T.q.sin() * py;
-	const auto y = -T.q.sin() * px + T.q.cos() * py;
-	return Vec2{x, y};
+	return InverseRotate(v - T.p, T.q);
 }
 
 // v2 = A.q.Rot(B.q.Rot(v1) + B.p) + A.p

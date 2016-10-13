@@ -21,6 +21,34 @@
 
 using namespace box2d;
 
+TEST(Math, TransformIsRotatePlusTranslate)
+{
+	const auto vector = Vec2{float_t(19), float_t(-0.5)};
+	const auto translation = Vec2{float_t(-3), float_t(+5)};
+	const auto rotation = Rot{DegreesToRadians(90)};
+	const auto transformation = Transformation{translation, rotation};
+	
+	const auto transformed_vector = Transform(vector, transformation);
+	const auto alt = Rotate(vector, rotation) + translation;
+	
+	EXPECT_EQ(transformed_vector.x, alt.x);
+	EXPECT_EQ(transformed_vector.y, alt.y);
+}
+
+TEST(Math, InverseTransformIsUntranslateAndInverseRotate)
+{
+	const auto vector = Vec2{float_t(19), float_t(-0.5)};
+	const auto translation = Vec2{float_t(-3), float_t(+5)};
+	const auto rotation = Rot{DegreesToRadians(90)};
+	const auto transformation = Transformation{translation, rotation};
+	
+	const auto inv_vector = InverseTransform(vector, transformation);
+	const auto alt = InverseRotate(vector - translation, rotation);
+	
+	EXPECT_EQ(inv_vector.x, alt.x);
+	EXPECT_EQ(inv_vector.y, alt.y);
+}
+
 TEST(Math, InverseTransformTransformedIsOriginal)
 {
 	const auto vector = Vec2{float_t(19), float_t(-0.5)};
