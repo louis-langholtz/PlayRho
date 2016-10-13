@@ -74,7 +74,7 @@ namespace box2d
 	private:	
 		Vec2 normal; ///< world vector pointing from A to B
 		size_type count = 0;
-		Vec2 points[MaxManifoldPoints]; ///< world contact point (point of intersection)
+		Vec2 points[MaxManifoldPoints]; ///< world contact point (mid-point of intersection)
 		float_t separations[MaxManifoldPoints]; ///< a negative value indicates overlap, in meters
 	};
 	
