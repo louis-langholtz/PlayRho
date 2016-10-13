@@ -291,7 +291,7 @@ namespace box2d {
 	inline float_t GetTangentMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
 	{
 #if defined(BOX2D_CACHE_VC_POINT_MASSES)
-		return vc.PointAt(index).normalMass;
+		return vc.PointAt(index).tangentMass;
 #else
 		return ComputeTangentMassAtPoint(vc, index);
 #endif
