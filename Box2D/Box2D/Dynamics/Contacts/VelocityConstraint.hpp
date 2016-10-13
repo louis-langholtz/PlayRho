@@ -70,8 +70,8 @@ namespace box2d {
 			float_t normalImpulse; ///< Normal impulse (4-bytes).
 			float_t tangentImpulse; ///< Tangent impulse (4-bytes).
 #if defined(BOX2D_CACHE_VC_POINT_MASSES)
-			float_t normalMass; ///< Normal mass (4-bytes). 0 or greater.
-			float_t tangentMass; ///< Tangent mass (4-bytes). 0 or greater.
+			float_t normalMass; ///< Normal mass (4-bytes). Dependent on rA and rB. 0 or greater.
+			float_t tangentMass; ///< Tangent mass (4-bytes). Dependent on rA and rB. 0 or greater.
 #endif
 			float_t velocityBias; ///< Velocity bias (4-bytes).
 		};
@@ -148,7 +148,7 @@ namespace box2d {
 		/// @param index Index of the point to return. This is a value less than returned by GetPointCount().
 		/// @return velocity constraint point for the given index.
 		/// @sa GetPointCount.
-		struct Point& PointAt(size_type index)
+		Point& PointAt(size_type index)
 		{
 			assert(index < pointCount);
 			return points[index];
@@ -295,6 +295,57 @@ namespace box2d {
 #else
 		return ComputeTangentMassAtPoint(vc, index);
 #endif
+	}
+
+	inline Vec2 GetPointRelPosA(const VelocityConstraint& vc, VelocityConstraint::size_type index)
+	{
+		return vc.PointAt(index).rA;
+	}
+	
+	inline Vec2 GetPointRelPosB(const VelocityConstraint& vc, VelocityConstraint::size_type index)
+	{
+		return vc.PointAt(index).rB;
+	}
+
+	inline void SetPointRelPositions(VelocityConstraint& vc, VelocityConstraint::size_type index, Vec2 a, Vec2 b)
+	{
+		auto& vcp = vc.PointAt(index);
+		vcp.rA = a;
+		vcp.rB = b;
+#if defined(BOX2D_CACHE_VC_POINT_MASSES)
+		vcp.normalMass = ComputeNormalMassAtPoint(vc, index);
+		vcp.tangentMass = ComputeTangentMassAtPoint(vc, index);
+#endif
+		
+	}
+	inline float_t GetNormalImpulseAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
+	{
+		return vc.PointAt(index).normalImpulse;
+	}
+	
+	inline void SetNormalImpulseAtPoint(VelocityConstraint& vc, VelocityConstraint::size_type index, float_t value)
+	{
+		vc.PointAt(index).normalImpulse = value;
+	}
+	
+	inline float_t GetTangentImpulseAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
+	{
+		return vc.PointAt(index).tangentImpulse;
+	}
+	
+	inline void SetTangentImpulseAtPoint(VelocityConstraint& vc, VelocityConstraint::size_type index, float_t value)
+	{
+		vc.PointAt(index).tangentImpulse = value;		
+	}
+	
+	inline float_t GetVelocityBiasAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
+	{
+		return vc.PointAt(index).velocityBias;
+	}
+	
+	inline void SetVelocityBiasAtPoint(VelocityConstraint& vc, VelocityConstraint::size_type index, float_t value)
+	{
+		vc.PointAt(index).velocityBias = value;
 	}
 
 	inline Vec2 GetNormalImpulses(const VelocityConstraint& vc)
