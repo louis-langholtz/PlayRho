@@ -68,6 +68,8 @@ namespace box2d
 		///
 		size_type GetPointCount() const noexcept { return count; }
 		
+		/// Gets the normal of the contact.
+		/// @detail This is a directional unit-vector.
 		Vec2 GetNormal() const { return normal; }
 		
 		/// Gets the indexed point's location in world coordinates.
