@@ -405,11 +405,11 @@ public:
 	}
 	
 	/// Sine value.
-	/// @return Value between -1 and 1 (inclusive).
+	/// @return Value approximately between -1 and +1 (inclusive).
 	constexpr auto sin() const noexcept { return s; }
 
 	/// Cosine value.
-	/// @return Value between -1 and 1 (inclusive).
+	/// @return Value approximately between -1 and +1 (inclusive).
 	constexpr auto cos() const noexcept { return c; }
 
 private:
