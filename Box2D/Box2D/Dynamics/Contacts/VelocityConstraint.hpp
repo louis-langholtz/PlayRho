@@ -49,13 +49,29 @@ namespace box2d {
 		/// @note This structure is at least 36-bytes large.
 		struct Point
 		{
+			Point() = default;
+			
+#if defined(BOX2D_CACHE_VC_POINT_MASSES)
+			Point(Vec2 a, Vec2 b, float_t ni, float_t ti, float_t nm, float_t tm, float_t vb) :
+				rA{a}, rB{b}, normalImpulse{ni}, tangentImpulse{ti}, normalMass{nm}, tangentMass{tm}, velocityBias{vb}
+			{
+				assert(nm >= 0);
+				assert(tm >= 0);
+			}
+#else
+			Point(Vec2 a, Vec2 b, float_t ni, float_t ti, float_t vb) :
+				rA{a}, rB{b}, normalImpulse{ni}, tangentImpulse{ti}, velocityBias{vb}
+			{
+			}
+#endif
+
 			Vec2 rA; ///< Position of body A relative to world manifold point (8-bytes).
 			Vec2 rB; ///< Position of body B relative to world manifold point (8-bytes).
 			float_t normalImpulse; ///< Normal impulse (4-bytes).
 			float_t tangentImpulse; ///< Tangent impulse (4-bytes).
 #if defined(BOX2D_CACHE_VC_POINT_MASSES)
 			float_t normalMass; ///< Normal mass (4-bytes). 0 or greater.
-			float_t tangentMass; ///< Tangent mass (4-bytes).
+			float_t tangentMass; ///< Tangent mass (4-bytes). 0 or greater.
 #endif
 			float_t velocityBias; ///< Velocity bias (4-bytes).
 		};
