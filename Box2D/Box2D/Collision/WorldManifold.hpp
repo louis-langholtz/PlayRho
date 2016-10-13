@@ -47,24 +47,55 @@ namespace box2d
 		WorldManifold() noexcept = default;
 		
 		constexpr explicit WorldManifold(Vec2 n) noexcept:
-			normal{n}, count{0}, points{}, separations{} {}
+			normal{n}, count{0},
+			points{GetInvalid<Vec2>(), GetInvalid<Vec2>()},
+			separations{GetInvalid<float_t>(), GetInvalid<float_t>()} {}
 		
 		constexpr explicit WorldManifold(Vec2 n, PointSeparation ps0) noexcept:
-			normal{n}, count{1}, points{ps0.p}, separations{ps0.s} {}
+			normal{n}, count{1},
+			points{ps0.p, GetInvalid<Vec2>()},
+			separations{ps0.s, GetInvalid<float_t>()} {}
 		
 		constexpr explicit WorldManifold(Vec2 n, PointSeparation ps0, PointSeparation ps1) noexcept:
 			normal{n}, count{2}, points{ps0.p, ps1.p}, separations{ps0.s, ps1.s} {}
 		
+		/// Gets the point count.
+		///
+		/// @detail This is the maximum index value that can be used to access valid point or
+		///   separation information.
+		///
+		/// @return Value between 0 and 2.
+		///
 		size_type GetPointCount() const noexcept { return count; }
 		
 		Vec2 GetNormal() const { return normal; }
 		
+		/// Gets the indexed point's location in world coordinates.
+		///
+		/// @note Behavior is undefined if the index value is not less than
+		///   <code>MaxManifoldPoints</code>
+		///
+		/// @param index Index to return point for. This must be between 0 and
+		///   <code>GetPointCount()</code> to get a valid point from this method.
+		///
+		/// @return Point or an invalid value if the given index was invalid.
+		///
 		Vec2 GetPoint(size_type index) const
 		{
 			assert(index < MaxManifoldPoints);
 			return points[index];
 		}
 		
+		/// Gets the amount of separation at the given indexed point.
+		///
+		/// @note Behavior is undefined if the index value is not less than
+		///   <code>MaxManifoldPoints</code>
+		/// @param index Index to return separation for. This must be between 0 and
+		///   <code>GetPointCount()</code>.
+		///
+		/// @return Separation amount (a negative value), or an invalid value if the given index
+		///   was invalid.
+		///
 		float_t GetSeparation(size_type index) const
 		{
 			assert(index < MaxManifoldPoints);
@@ -73,9 +104,16 @@ namespace box2d
 		
 	private:	
 		Vec2 normal; ///< world vector pointing from A to B
+		
 		size_type count = 0;
-		Vec2 points[MaxManifoldPoints]; ///< world contact point (mid-point of intersection)
-		float_t separations[MaxManifoldPoints]; ///< a negative value indicates overlap, in meters
+
+		/// Points.
+		/// @detail Manifold's contact points in world coordinates (mid-point of intersection)
+		Vec2 points[MaxManifoldPoints] = {GetInvalid<Vec2>(), GetInvalid<Vec2>()};
+		
+		/// Separations (in meters).
+		/// @detail A negative value indicates overlap.
+		float_t separations[MaxManifoldPoints];
 	};
 	
 	/// Gets the world manifold for the given data.
@@ -91,12 +129,21 @@ namespace box2d
 	/// @param radiusB Radius of shape B.
 	///
 	/// @return World manifold value for the given inputs which will have the same number of points as
-	///   the given manifold has.
+	///   the given manifold has. The returned world manifold points will be the mid-points of the
+	///   manifold intersection.
 	///
 	WorldManifold GetWorldManifold(const Manifold& manifold,
 								   const Transformation& xfA, const float_t radiusA,
 								   const Transformation& xfB, const float_t radiusB);
 	
+	/// Gets the world manifold for the given data.
+	///
+	/// @param contact Contact to return a world manifold for.
+	///
+	/// @return World manifold value for the given inputs which will have the same number of points as
+	///   the given manifold has. The returned world manifold points will be the mid-points of the
+	///   contact's intersection.
+	///
 	WorldManifold GetWorldManifold(const Contact& contact);	
 }
 

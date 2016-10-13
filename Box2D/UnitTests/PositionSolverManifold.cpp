@@ -114,10 +114,12 @@ TEST(PositionSolverManifold, GetPSM)
 		ASSERT_GT(world_manifold.GetPointCount(), Manifold::size_type(0));
 		ASSERT_FLOAT_EQ(world_manifold.GetPoint(0).x, float_t(+0.5));
 		ASSERT_FLOAT_EQ(world_manifold.GetPoint(0).y, float_t(-1.5) - total_radius);
+		ASSERT_FLOAT_EQ(world_manifold.GetSeparation(0), float_t(-1) - total_radius);
 		
 		ASSERT_GT(world_manifold.GetPointCount(), Manifold::size_type(1));
 		ASSERT_FLOAT_EQ(world_manifold.GetPoint(1).x, float_t(+0.5));
 		ASSERT_FLOAT_EQ(world_manifold.GetPoint(1).y, float_t(+1.5) + total_radius);
+		ASSERT_FLOAT_EQ(world_manifold.GetSeparation(1), float_t(-1) - total_radius);
 	}
 	
 	{
