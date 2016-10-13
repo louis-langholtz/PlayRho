@@ -39,7 +39,7 @@ constexpr inline T GetInvalid() noexcept;
 template <>
 constexpr float_t GetInvalid() noexcept
 {
-	return std::numeric_limits<float_t>::infinity();
+	return std::numeric_limits<float_t>::signaling_NaN();
 }
 
 template <>
@@ -390,16 +390,16 @@ public:
 	/// Initialize from sine and cosine values.
 	constexpr Rot(float_t sine, float_t cosine) noexcept: s{sine}, c{cosine}
 	{
-		assert(sine >= -1 - Epsilon * (Abs(sine) + 1));
-		assert(sine <= +1 + Epsilon * (Abs(sine) + 1));
-		assert(cosine >= -1 - Epsilon * (Abs(cosine) + 1));
-		assert(cosine <= +1 + Epsilon * (Abs(cosine) + 1));
-		assert(Abs(Square(sine) + Square(cosine) - 1) < Epsilon * (Square(sine) + Square(cosine) + 1) * 2);
+		// assert(sine >= -1);
+		// assert(sine <= +1);
+		// assert(cosine >= -1);
+		// assert(cosine <= +1);
+		assert(almost_equal(Square(sine) + Square(cosine), float_t(1)));
 	}
 
 	/// Initialize from an angle.
 	/// @param angle Angle in radians (counter-clockwise from the normal of Vec2(1, 0)).
-	explicit Rot(float_t angle): s{std::sin(angle)}, c{std::cos(angle)}
+	explicit Rot(float_t angle): Rot{std::sin(angle), std::cos(angle)}
 	{
 		// TODO_ERIN optimize
 	}
