@@ -36,29 +36,29 @@ constexpr inline Vec3 Cross(const Vec3 a, const Vec3 b) noexcept;
 template <typename T>
 constexpr inline T GetInvalid() noexcept;
 
+template <typename T>
+inline bool IsValid(const T& value)
+{
+	return value != GetInvalid<T>();
+}
+
 template <>
 constexpr float_t GetInvalid() noexcept
 {
 	return std::numeric_limits<float_t>::signaling_NaN();
 }
 
-template <>
-constexpr size_t GetInvalid() noexcept
-{
-	return static_cast<size_t>(-1);
-}
-
-template <typename T>
-inline bool IsValid(const T& value)
-{
-	return false;
-}
-	
 /// This function is used to ensure that a floating point number is not a NaN or infinity.
 template <>
 inline bool IsValid(const float_t& x)
 {
 	return !std::isnan(x) && !std::isinf(x);
+}
+
+template <>
+constexpr size_t GetInvalid() noexcept
+{
+	return static_cast<size_t>(-1);
 }
 
 template<class T>
