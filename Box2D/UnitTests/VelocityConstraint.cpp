@@ -113,8 +113,6 @@ TEST(VelocityConstraint, AddPoint)
 	EXPECT_EQ(GetTangentImpulseAtPoint(vc, 1), ti + 2);
 }
 
-#if defined(BOX2D_CACHE_VC_POINT_MASSES)
-
 TEST(VelocityConstraint, Update)
 {
 	const auto contact_index = VelocityConstraint::index_type{3};
@@ -176,4 +174,3 @@ TEST(VelocityConstraint, Update)
 	EXPECT_FALSE(IsValid(vc.GetPointRelPosB(1)));
 }
 
-#endif

@@ -117,7 +117,8 @@ namespace box2d {
 		}
 		
 		/// Gets the normal of the contact in world coordinates.
-		/// @note This value is set via the <code>SetNormal</code> method.
+		/// @note This value is only valid if previously set.
+		/// @note Call the <code>Update</code> method to set this value.
 		/// @return Contact normal (in world coordinates) if previously set, an invalid value
 		///   otherwise.
 		Vec2 GetNormal() const noexcept { return m_normal; }
@@ -136,11 +137,15 @@ namespace box2d {
 		void AddPoint(float_t normalImpulse, float_t tangentImpulse);
 		
 		/// Gets the "K" value.
-		/// @note This value is only valid if SetK had previously been called with a valid value.
-		/// @warning Behavior is undefined if called before SetK was called.
-		/// @return "K" value previously set.
+		/// @note This value is only valid if previously set.
+		/// @note Call the <code>Update</code> method to set this value.
+		/// @return "K" value previously set or an invalid value.
 		Mat22 GetK() const noexcept;
 		
+		/// Gets the normal mass.
+		/// @note This value is only valid if previously set.
+		/// @note Call the <code>Update</code> method to set this value.
+		/// @return normal mass previously set or an invalid value.
 		Mat22 GetNormalMass() const noexcept;
 		
 		/// Gets the contact index.
@@ -161,11 +166,22 @@ namespace box2d {
 		
 		BodyData bodyB; ///< Body B contact velocity constraint data.
 		
+		/// Gets the normal impulse at the given point.
+		/// @note Call the <code>AddPoint</code> or <code>SetNormalImpulseAtPoint</code> method
+		///   to set this value.
+		/// @return Value previously set, or an invalid value.
+		/// @sa SetNormalImpulseAtPoint.
 		float_t GetNormalImpulseAtPoint(size_type index) const noexcept;
 		
+		/// Gets the tangent impulse at the given point.
+		/// @note Call the <code>AddPoint</code> or <code>SetTangentImpulseAtPoint</code> method
+		///   to set this value.
+		/// @return Value previously set, or an invalid value.
+		/// @sa SetTangentImpulseAtPoint.
 		float_t GetTangentImpulseAtPoint(size_type index) const noexcept;
 		
 		/// Gets the velocity bias at the given point.
+		/// @note Call the <code>Update</code> method to set this value.
 		/// @return Previously set value or an invalid value.
 		float_t GetVelocityBiasAtPoint(size_type index) const noexcept;
 
@@ -175,6 +191,7 @@ namespace box2d {
 		///   the bodies' inverse-rotational-inertia,
 		///   the point-relative A and B positions, and
 		///   the normal.
+		/// @note Call the <code>Update</code> method to set this value.
 		float_t GetNormalMassAtPoint(size_type index) const noexcept;
 		
 		/// Gets the tangent mass at the given point.
@@ -183,13 +200,16 @@ namespace box2d {
 		///   the bodies' inverse-rotational-inertia,
 		///   the point-relative A and B positions, and
 		///   the tangent.
+		/// @note Call the <code>Update</code> method to set this value.
 		float_t GetTangentMassAtPoint(size_type index) const noexcept;
 
 		/// Gets the point relative position of A.
+		/// @note Call the <code>Update</code> method to set this value.
 		/// @return Previously set value or an invalid value.
 		Vec2 GetPointRelPosA(size_type index) const noexcept;
 
 		/// Gets the point relative position of B.
+		/// @note Call the <code>Update</code> method to set this value.
 		/// @return Previously set value or an invalid value.
 		Vec2 GetPointRelPosB(size_type index) const noexcept;
 
