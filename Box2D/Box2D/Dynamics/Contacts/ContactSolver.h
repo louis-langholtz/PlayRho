@@ -74,7 +74,7 @@ namespace box2d {
 		/// @post Velocity constraints will have their "normal" field set to the world manifold normal for them.
 		/// @post Velocity constraints will have their constraint points updated.
 		/// @sa SolveVelocityConstraints.
-		void UpdateVelocityConstraints();
+		[[deprecated]] void UpdateVelocityConstraints();
 				
 		/// "Solves" the velocity constraints.
 		/// @detail Updates the velocities and velocity constraint points' normal and tangent impulses.
@@ -123,6 +123,12 @@ namespace box2d {
 		return PositionSolution{lhs.pos_a - rhs.pos_a, lhs.pos_b - rhs.pos_b, lhs.min_separation - rhs.min_separation};
 	}
 
+	bool SolvePositionConstraints(PositionConstraint* positionConstraints, size_t count,
+								  Position* positions);
+
+	bool SolveTOIPositionConstraints(PositionConstraint* positionConstraints, size_t count,
+									 Position* positions, island_count_t indexA, island_count_t indexB);
+
 	/// Solves the given position constraint.
 	/// @detail
 	/// This pushes apart the two given positions for every point in the contact position constraint
@@ -139,6 +145,13 @@ namespace box2d {
 	PositionSolution Solve(const PositionConstraint& pc, Position positionA, Position positionB,
 						   float_t resolution_rate, float_t max_separation, float_t max_correction);
 
+	class WorldManifold;
+
+	/// Solves the velocity constraint.
+	/// @detail This updates the tangent and normal impulses of the velocity constraint points of the given velocity
+	///   constraint and updates the given velocities.
+	/// @pre The velocity constraint must have a valid normal, a valid tangent,
+	///   valid point relative positions, and valid velocity biases.
 	void SolveVelocityConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB);
 	
 } // namespace box2d

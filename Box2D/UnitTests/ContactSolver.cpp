@@ -34,7 +34,6 @@ TEST(ContactSolver, ZeroCountInit)
 	ContactSolver solver{nullptr, nullptr, 0, nullptr, nullptr};
 	EXPECT_TRUE(solver.SolvePositionConstraints());
 	solver.SolveVelocityConstraints();
-	solver.UpdateVelocityConstraints();
 	EXPECT_TRUE(solver.SolveTOIPositionConstraints(0, 0));
 }
 

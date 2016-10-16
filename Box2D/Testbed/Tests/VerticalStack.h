@@ -22,7 +22,7 @@
 
 namespace box2d {
 
-extern bool g_blockSolve;
+bool g_blockSolve = true;
 
 class VerticalStack : public Test
 {

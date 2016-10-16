@@ -28,7 +28,10 @@ namespace box2d
 	class Contact;
 	class PositionConstraint;
 
-	/// This is used to compute the current state of a contact manifold.
+	/// World manifold.
+	/// @details
+	/// This is used to recoginze the current state of a contact manifold in world coordinates.
+	/// @note This data structure is 36-bytes large (on at least one 64-bit platform).
 	class WorldManifold
 	{
 	public:

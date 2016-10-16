@@ -29,6 +29,7 @@
 #include <Box2D/Collision/Shapes/EdgeShape.h>
 #include <Box2D/Collision/Shapes/ChainShape.h>
 #include <Box2D/Collision/Shapes/PolygonShape.h>
+#include <Box2D/Collision/WorldManifold.hpp>
 #include <Box2D/Common/Timer.h>
 #include <Box2D/Common/AllocatedArray.hpp>
 
@@ -620,32 +621,20 @@ void World::Solve(const TimeStep& step)
 		/// Gets the position-independent velocity constraint for the given contact, index, and time slot values.
 		inline VelocityConstraint GetVelocityConstraint(const Contact& contact, VelocityConstraint::index_type index, float_t dtRatio)
 		{
-			VelocityConstraint constraint(index, contact.GetFriction(), contact.GetRestitution(), contact.GetTangentSpeed());
-			
-			constraint.normal = Vec2_zero;
-			
-			constraint.bodyA = GetVelocityConstraintBodyData(*(contact.GetFixtureA()->GetBody()));
-			constraint.bodyB = GetVelocityConstraintBodyData(*(contact.GetFixtureB()->GetBody()));
-			
+			VelocityConstraint constraint(index,
+										  contact.GetFriction(),
+										  contact.GetRestitution(),
+										  contact.GetTangentSpeed(),
+										  GetVelocityConstraintBodyData(*(contact.GetFixtureA()->GetBody())),
+										  GetVelocityConstraintBodyData(*(contact.GetFixtureB()->GetBody())));
+		
 			const auto& manifold = contact.GetManifold();
 			const auto pointCount = manifold.GetPointCount();
 			assert(pointCount > 0);
 			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 			{
-				VelocityConstraint::Point vcp;
-				
 				const auto& mp = manifold.GetPoint(j);
-				vcp.normalImpulse = dtRatio * mp.normalImpulse;
-				vcp.tangentImpulse = dtRatio * mp.tangentImpulse;
-				vcp.rA = Vec2_zero;
-				vcp.rB = Vec2_zero;
-#if defined(BOX2D_CACHE_VC_POINT_MASSES)
-				vcp.normalMass = float_t{0};
-				vcp.tangentMass = float_t{0};
-#endif
-				vcp.velocityBias = float_t{0};
-				
-				constraint.AddPoint(vcp);
+				constraint.AddPoint(dtRatio * mp.normalImpulse, dtRatio * mp.tangentImpulse);
 			}
 			
 			return constraint;
@@ -713,10 +702,12 @@ void World::Solve(const TimeStep& step)
 		{
 			VelocityPair vp{Velocity{Vec2_zero, float_t{0}}, Velocity{Vec2_zero, float_t{0}}};
 			
+			const auto normal = GetNormal(vc);
+			const auto tangent = GetTangent(vc);
 			const auto pointCount = vc.GetPointCount();	
 			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 			{
-				const auto P = GetNormalImpulseAtPoint(vc, j) * GetNormal(vc) + GetTangentImpulseAtPoint(vc, j) * GetTangent(vc);
+				const auto P = GetNormalImpulseAtPoint(vc, j) * normal + GetTangentImpulseAtPoint(vc, j) * tangent;
 				vp.a -= Velocity{vc.bodyA.GetInvMass() * P, vc.bodyA.GetInvRotI() * Cross(GetPointRelPosA(vc, j), P)};
 				vp.b += Velocity{vc.bodyB.GetInvMass() * P, vc.bodyB.GetInvRotI() * Cross(GetPointRelPosB(vc, j), P)};
 			}
@@ -764,19 +755,25 @@ bool World::Solve(const TimeStep& step, Island& island)
 		velocities.push_back(new_velocity);
 	}
 	
-	const auto solverData = SolverData{step, positions.data(), velocities.data()};
-	
-	ContactSolver contactSolver{positions.data(), velocities.data(),
-		static_cast<contact_count_t>(island.m_contacts.size()),
-		positionConstraints.data(), velocityConstraints.data()
-	};
-	contactSolver.UpdateVelocityConstraints();
+	{
+		const auto count = island.m_contacts.size();
+		for (auto i = decltype(count){0}; i < count; ++i)
+		{
+			const auto& pc = positionConstraints.data()[i];
+			const auto posA = positions.data()[pc.bodyA.index];
+			const auto posB = positions.data()[pc.bodyB.index];
+			const auto worldManifold = GetWorldManifold(pc, posA, posB);
+			velocityConstraints.data()[i].Update(worldManifold, posA.c, posB.c, velocities.data(), true);
+		}
+	}
 	
 	if (step.warmStarting)
 	{
 		WarmStart(static_cast<contact_count_t>(island.m_contacts.size()), velocityConstraints.data(), velocities.data());
 	}
-	
+
+	const auto solverData = SolverData{step, positions.data(), velocities.data()};
+
 	for (auto&& joint: island.m_joints)
 	{
 		joint->InitVelocityConstraints(solverData);
@@ -788,7 +785,13 @@ bool World::Solve(const TimeStep& step, Island& island)
 		{
 			joint->SolveVelocityConstraints(solverData);
 		}
-		contactSolver.SolveVelocityConstraints();
+
+		const auto count = island.m_contacts.size();
+		for (auto j = decltype(count){0}; j < count; ++j)
+		{
+			auto& vc = velocityConstraints.data()[j];
+			SolveVelocityConstraint(vc, velocities.data()[vc.bodyA.GetIndex()], velocities.data()[vc.bodyB.GetIndex()]);
+		}
 	}
 	
 	// updates array of tentative new body positions per the velocities as if there were no obstacles...
@@ -798,7 +801,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 	auto iterationSolved = TimeStep::InvalidIteration;
 	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
 	{
-		const auto contactsOkay = contactSolver.SolvePositionConstraints();
+		const auto contactsOkay = SolvePositionConstraints(positionConstraints.data(), island.m_contacts.size(), positions.data());
 		const auto jointsOkay = [&]()
 		{
 			auto allOkay = true;
@@ -1025,16 +1028,11 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 		velocities.push_back(body->GetVelocity());
 	}
 	
-	ContactSolver contactSolver{positions.data(), velocities.data(),
-		static_cast<contact_count_t>(island.m_contacts.size()),
-		positionConstraints.data(), velocityConstraints.data()
-	};
-	
 	// Solve TOI-based position constraints.
 	auto positionConstraintsSolved = TimeStep::InvalidIteration;
 	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
 	{
-		if (contactSolver.SolveTOIPositionConstraints(0, 1))
+		if (SolveTOIPositionConstraints(positionConstraints.data(), island.m_contacts.size(), positions.data(), 0, 1))
 		{
 			positionConstraintsSolved = i;
 			break;
@@ -1047,12 +1045,27 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	
 	// No warm starting is needed for TOI events because warm
 	// starting impulses were applied in the discrete solver.
-	contactSolver.UpdateVelocityConstraints();
-	
+	{
+		const auto count = island.m_contacts.size();
+		for (auto i = decltype(count){0}; i < count; ++i)
+		{
+			const auto& pc = positionConstraints.data()[i];
+			const auto posA = positions.data()[pc.bodyA.index];
+			const auto posB = positions.data()[pc.bodyB.index];
+			const auto worldManifold = GetWorldManifold(pc, posA, posB);
+			velocityConstraints.data()[i].Update(worldManifold, posA.c, posB.c, velocities.data(), true);
+		}
+	}
+
 	// Solve velocity constraints.
 	for (auto i = decltype(step.velocityIterations){0}; i < step.velocityIterations; ++i)
 	{
-		contactSolver.SolveVelocityConstraints();
+		const auto count = island.m_contacts.size();
+		for (auto j = decltype(count){0}; j < count; ++j)
+		{
+			auto& vc = velocityConstraints.data()[j];
+			SolveVelocityConstraint(vc, velocities.data()[vc.bodyA.GetIndex()], velocities.data()[vc.bodyB.GetIndex()]);
+		}
 	}
 	
 	// Don't store TOI contact forces for warm starting because they can be quite large.

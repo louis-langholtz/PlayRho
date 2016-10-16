@@ -209,6 +209,9 @@
 		47AFC3051DAEBC120023E9D1 /* PositionSolverManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */; };
 		47CB34401D6F3A8500828126 /* MassData.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47CB343D1D6F3A8500828126 /* MassData.hpp */; };
 		47CB34411D6F3A8500828126 /* MassData.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47CB343D1D6F3A8500828126 /* MassData.hpp */; };
+		47E841701DB3FDC400E5F311 /* WorldManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47E8416F1DB3FDC400E5F311 /* WorldManifold.cpp */; };
+		47E841721DB4018D00E5F311 /* VelocityConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47E841711DB4018D00E5F311 /* VelocityConstraint.cpp */; };
+		47E841731DB4018D00E5F311 /* VelocityConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47E841711DB4018D00E5F311 /* VelocityConstraint.cpp */; };
 		47F932A51D11C283006A193C /* AllocatedArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47F932A31D11C283006A193C /* AllocatedArray.cpp */; };
 		47F932A61D11C283006A193C /* AllocatedArray.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47F932A41D11C283006A193C /* AllocatedArray.hpp */; };
 		47FFD0F91DABDC63000D6D0E /* Mat22.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47FFD0F81DABDC63000D6D0E /* Mat22.cpp */; };
@@ -501,6 +504,8 @@
 		47AB01B91D6FA40C0084D721 /* Dump.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dump.cpp; sourceTree = "<group>"; };
 		47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PositionSolverManifold.cpp; sourceTree = "<group>"; };
 		47CB343D1D6F3A8500828126 /* MassData.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MassData.hpp; sourceTree = "<group>"; };
+		47E8416F1DB3FDC400E5F311 /* WorldManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldManifold.cpp; sourceTree = "<group>"; };
+		47E841711DB4018D00E5F311 /* VelocityConstraint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VelocityConstraint.cpp; sourceTree = "<group>"; };
 		47F932A31D11C283006A193C /* AllocatedArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AllocatedArray.cpp; sourceTree = "<group>"; };
 		47F932A41D11C283006A193C /* AllocatedArray.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AllocatedArray.hpp; sourceTree = "<group>"; };
 		47FFD0F81DABDC63000D6D0E /* Mat22.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mat22.cpp; sourceTree = "<group>"; };
@@ -782,6 +787,7 @@
 				474BC4051D41278800447DCD /* Vec2.cpp */,
 				47FFD0FA1DAC3EFC000D6D0E /* VelocityConstraint.cpp */,
 				474BC4061D41278800447DCD /* World.cpp */,
+				47E8416F1DB3FDC400E5F311 /* WorldManifold.cpp */,
 			);
 			name = UnitTests;
 			path = ../../UnitTests;
@@ -969,6 +975,7 @@
 				80BB8964141C3E5900F1753A /* ContactSolver.h */,
 				478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */,
 				4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */,
+				47E841711DB4018D00E5F311 /* VelocityConstraint.cpp */,
 				80BB8965141C3E5900F1753A /* EdgeAndCircleContact.cpp */,
 				80BB8966141C3E5900F1753A /* EdgeAndCircleContact.h */,
 				80BB8967141C3E5900F1753A /* EdgeAndPolygonContact.cpp */,
@@ -1508,6 +1515,7 @@
 				474BC43C1D413DC200447DCD /* Vec2.cpp in Sources */,
 				47AB01BA1D6FA40C0084D721 /* Dump.cpp in Sources */,
 				47FFD0FB1DAC3EFC000D6D0E /* VelocityConstraint.cpp in Sources */,
+				47E841701DB3FDC400E5F311 /* WorldManifold.cpp in Sources */,
 				474BC43D1D413DC200447DCD /* World.cpp in Sources */,
 				475A94561D930E6C000CA9A8 /* Fixture.cpp in Sources */,
 				479039D11D5BB9ED001A2145 /* Body.cpp in Sources */,
@@ -1564,6 +1572,7 @@
 				47AA5DBF1C4C5FBE008AF2BA /* Joint.cpp in Sources */,
 				47AA5DC01C4C5FBE008AF2BA /* MouseJoint.cpp in Sources */,
 				47AA5DC11C4C5FBE008AF2BA /* PrismaticJoint.cpp in Sources */,
+				47E841731DB4018D00E5F311 /* VelocityConstraint.cpp in Sources */,
 				47AA5DC21C4C5FBE008AF2BA /* PulleyJoint.cpp in Sources */,
 				47AA5DC31C4C5FBE008AF2BA /* RevoluteJoint.cpp in Sources */,
 				47AA5DC41C4C5FBE008AF2BA /* RopeJoint.cpp in Sources */,
@@ -1661,6 +1670,7 @@
 				80BB89AF141C3E5900F1753A /* Fixture.cpp in Sources */,
 				47F932A51D11C283006A193C /* AllocatedArray.cpp in Sources */,
 				477DB2A01D15F5C000846ED6 /* JointEdgeList.cpp in Sources */,
+				47E841721DB4018D00E5F311 /* VelocityConstraint.cpp in Sources */,
 				47578BE41D886FED0078CD40 /* WorldManifold.cpp in Sources */,
 				80BB89B1141C3E5900F1753A /* Island.cpp in Sources */,
 				475039911D2180D600D32047 /* DistanceProxy.cpp in Sources */,

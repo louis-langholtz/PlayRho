@@ -24,7 +24,7 @@
 #include <Box2D/Dynamics/Contacts/VelocityConstraint.hpp>
 #include <Box2D/Dynamics/Contacts/PositionConstraint.hpp>
 
-namespace box2d {
+using namespace box2d;
 
 #if !defined(NDEBUG)
 // Solver debugging is normally disabled because the block solver sometimes has to deal with a poorly conditioned effective mass matrix.
@@ -36,75 +36,12 @@ static constexpr auto k_errorTol = float_t(2e-3); ///< error tolerance
 static constexpr auto k_majorErrorTol = float_t(1e-2); ///< error tolerance
 #endif
 
-bool g_blockSolve = true;
-
-/// Updates the velocity constraint data with the given data.
-/// @detail Specifically this:
-///   1. Sets the normal to the calculated world manifold normal.
-///   2. Sets the velocity constraint point information (short of the impulse data).
-///   3. Sets the K value (for the 2-point block solver).
-///   4. Checks for redundant velocity constraint point and removes it if found.
-/// @param vc Velocity constraint.
-/// @param pc Position constraint.
-static inline void UpdateVelocityConstraint(VelocityConstraint& vc,
-											const PositionConstraint& pc,
-											const Position* positions, const Velocity* velocities)
+struct VelocityPair
 {
-	assert(vc.bodyA.GetIndex() >= 0);
-	const auto posA = positions[vc.bodyA.GetIndex()];
-	const auto velA = velocities[vc.bodyA.GetIndex()];
-	
-	assert(vc.bodyB.GetIndex() >= 0);
-	const auto posB = positions[vc.bodyB.GetIndex()];
-	const auto velB = velocities[vc.bodyB.GetIndex()];
-	
-	const auto worldManifold = GetWorldManifold(pc, posA, posB);
-	
-	vc.normal = worldManifold.GetNormal();
-	
-	const auto pointCount = vc.GetPointCount();
-	for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
-	{
-		const auto worldPoint = worldManifold.GetPoint(j);
-		const auto vcp_rA = worldPoint - posA.c;
-		const auto vcp_rB = worldPoint - posB.c;
-		SetPointRelPositions(vc, j, vcp_rA, vcp_rB);
-		SetVelocityBiasAtPoint(vc, j, [&]() {
-			const auto vn = Dot(GetContactRelVelocity(velA, vcp_rA, velB, vcp_rB), vc.normal);
-			return (vn < -VelocityThreshold)? -vc.GetRestitution() * vn: float_t{0};
-		}());
-	}
-	
-	// If we have two points, then prepare the block solver.
-	if ((pointCount == 2) && g_blockSolve)
-	{
-		const auto rn1A = Cross(GetPointRelPosA(vc, 0), vc.normal);
-		const auto rn1B = Cross(GetPointRelPosB(vc, 0), vc.normal);
+	Velocity vel_a;
+	Velocity vel_b;
+};
 
-		const auto rn2A = Cross(GetPointRelPosA(vc, 1), vc.normal);
-		const auto rn2B = Cross(GetPointRelPosB(vc, 1), vc.normal);
-		
-		const auto totalInvMass = GetInverseMass(vc);
-		const auto k11 = totalInvMass + (vc.bodyA.GetInvRotI() * Square(rn1A)) + (vc.bodyB.GetInvRotI() * Square(rn1B));
-		const auto k22 = totalInvMass + (vc.bodyA.GetInvRotI() * Square(rn2A)) + (vc.bodyB.GetInvRotI() * Square(rn2B));
-		const auto k12 = totalInvMass + (vc.bodyA.GetInvRotI() * rn1A * rn2A)  + (vc.bodyB.GetInvRotI() * rn1B * rn2B);
-		
-		// Ensure a reasonable condition number.
-		constexpr auto k_maxConditionNumber = BOX2D_MAGIC(float_t(1000));
-		if (Square(k11) < (k_maxConditionNumber * (k11 * k22 - Square(k12))))
-		{
-			// K is safe to invert.
-			vc.SetK(Mat22{Vec2{k11, k12}, Vec2{k12, k22}});
-		}
-		else
-		{
-			// The constraints are redundant, just use one.
-			// TODO_ERIN use deepest?
-			vc.RemovePoint();
-		}
-	}
-}
-	
 /// Solves the tangential portion of the velocity constraint.
 /// @detail This updates the tangent impulses on the velocity constraint points and
 ///   updates the two given velocity structures.
@@ -145,19 +82,45 @@ static inline void SolveTangentConstraint(VelocityConstraint& vc, Velocity& velA
 	}
 }
 
-struct VelocityPair
+static inline void SeqSolveNormalConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
 {
-	Velocity vel_a;
-	Velocity vel_b;
-};
+	const auto normal = GetNormal(vc);
+	const auto count = vc.GetPointCount();
+	for (auto i = decltype(count){0}; i < count; ++i)
+	{
+		const auto rA = GetPointRelPosA(vc, i);
+		const auto rB = GetPointRelPosB(vc, i);
+		
+		// Compute normal impulse
+		const auto lambda = [&](){
+			const auto dv = GetContactRelVelocity(velA, rA, velB, rB);
+			const auto vn = Dot(dv, normal);
+			return GetNormalMassAtPoint(vc, i) * (vn - GetVelocityBiasAtPoint(vc, i));
+		}();
+		
+		// Clamp the accumulated impulse
+		const auto oldImpulse = GetNormalImpulseAtPoint(vc, i);
+		const auto newImpulse = Max(oldImpulse - lambda, float_t{0});
+		const auto incImpulse = newImpulse - oldImpulse;
+		
+		// Save new impulse
+		SetNormalImpulseAtPoint(vc, i, newImpulse);
+		
+		// Apply contact impulse
+		const auto P = incImpulse * normal;
+		velA -= Velocity{vc.bodyA.GetInvMass() * P, vc.bodyA.GetInvRotI() * Cross(rA, P)};
+		velB += Velocity{vc.bodyB.GetInvMass() * P, vc.bodyB.GetInvRotI() * Cross(rB, P)};
+	}
+}
 
 static inline VelocityPair ApplyImpulses(const VelocityConstraint& vc, const Vec2 impulses)
 {
 	assert(IsValid(impulses));
 
 	// Apply incremental impulse
-	const auto P0 = impulses[0] * vc.normal;
-	const auto P1 = impulses[1] * vc.normal;
+	const auto normal = GetNormal(vc);
+	const auto P0 = impulses[0] * normal;
+	const auto P1 = impulses[1] * normal;
 	const auto P = P0 + P1;
 	return VelocityPair{
 		-Velocity{vc.bodyA.GetInvMass() * P, vc.bodyA.GetInvRotI() * (Cross(GetPointRelPosA(vc, 0), P0) + Cross(GetPointRelPosA(vc, 1), P1))},
@@ -307,6 +270,9 @@ static inline bool BlockSolveNormalCase4(VelocityConstraint& vc, Velocity& velA,
 
 static inline void BlockSolveNormalConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
 {
+	const auto K = vc.GetK();
+	assert(IsValid(K));
+	
 	// Block solver developed in collaboration with Dirk Gregorius (back in 01/07 on Box2D_Lite).
 	// Build the mini LCP for this contact patch
 	//
@@ -342,15 +308,14 @@ static inline void BlockSolveNormalConstraint(VelocityConstraint& vc, Velocity& 
 
 	const auto b_prime = [=]{
 		// Compute normal velocity
-		const auto vn1 = Dot(GetContactRelVelocity(velA, GetPointRelPosA(vc, 0), velB, GetPointRelPosB(vc, 0)), vc.normal);
-		const auto vn2 = Dot(GetContactRelVelocity(velA, GetPointRelPosA(vc, 1), velB, GetPointRelPosB(vc, 1)), vc.normal);
+		const auto normal = GetNormal(vc);
+		const auto vn1 = Dot(GetContactRelVelocity(velA, GetPointRelPosA(vc, 0), velB, GetPointRelPosB(vc, 0)), normal);
+		const auto vn2 = Dot(GetContactRelVelocity(velA, GetPointRelPosA(vc, 1), velB, GetPointRelPosB(vc, 1)), normal);
 		
 		// Compute b
 		const auto b = Vec2{vn1 - GetVelocityBiasAtPoint(vc, 0), vn2 - GetVelocityBiasAtPoint(vc, 1)};
 		
 		// Return b'
-		const auto K = vc.GetK();
-		assert(IsValid(K));
 		return b - Transform(GetNormalImpulses(vc), K);
 	}();
 	
@@ -376,33 +341,9 @@ static inline void SolveNormalConstraint(VelocityConstraint& vc, Velocity& velA,
 	const auto count = vc.GetPointCount();
 	assert((count == 1) || (count == 2));
 	
-	if ((count == 1) || (!g_blockSolve))
+	if ((count == 1) || (!IsValid(vc.GetK())))
 	{
-		for (auto i = decltype(count){0}; i < count; ++i)
-		{
-			const auto rA = GetPointRelPosA(vc, i);
-			const auto rB = GetPointRelPosB(vc, i);
-
-			// Compute normal impulse
-			const auto lambda = [&](){
-				const auto dv = GetContactRelVelocity(velA, rA, velB, rB);
-				const auto vn = Dot(dv, vc.normal);
-				return GetNormalMassAtPoint(vc, i) * (vn - GetVelocityBiasAtPoint(vc, i));
-			}();
-			
-			// Clamp the accumulated impulse
-			const auto oldImpulse = GetNormalImpulseAtPoint(vc, i);
-			const auto newImpulse = Max(oldImpulse - lambda, float_t{0});
-			const auto incImpulse = newImpulse - oldImpulse;
-			
-			// Save new impulse
-			SetNormalImpulseAtPoint(vc, i, newImpulse);
-			
-			// Apply contact impulse
-			const auto P = incImpulse * vc.normal;
-			velA -= Velocity{vc.bodyA.GetInvMass() * P, vc.bodyA.GetInvRotI() * Cross(rA, P)};
-			velB += Velocity{vc.bodyB.GetInvMass() * P, vc.bodyB.GetInvRotI() * Cross(rB, P)};
-		}
+		SeqSolveNormalConstraint(vc, velA, velB);
 	}
 	else
 	{
@@ -410,10 +351,7 @@ static inline void SolveNormalConstraint(VelocityConstraint& vc, Velocity& velA,
 	}
 }
 	
-/// Solves the velocity constraint.
-/// @detail This updates the tangent and normal impulses of the velocity constraint points of the given velocity
-///   constraint and updates the given velocities.
-void SolveVelocityConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
+void box2d::SolveVelocityConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
 {
 	assert(IsValid(velA));
 	assert(IsValid(velB));
@@ -423,8 +361,8 @@ void SolveVelocityConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& v
 	SolveNormalConstraint(vc, velA, velB);
 }
 
-PositionSolution Solve(const PositionConstraint& pc, Position posA, Position posB,
-					   float_t resolution_rate, float_t max_separation, float_t max_correction)
+PositionSolution box2d::Solve(const PositionConstraint& pc, Position posA, Position posB,
+							  float_t resolution_rate, float_t max_separation, float_t max_correction)
 {
 	auto minSeparation = MaxFloat;
 	const auto invMassA = pc.bodyA.invMass;
@@ -523,7 +461,11 @@ void ContactSolver::UpdateVelocityConstraints()
 {
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
-		UpdateVelocityConstraint(m_velocityConstraints[i], m_positionConstraints[i], m_positions, m_velocities);
+		const auto& pc = m_positionConstraints[i];
+		const auto posA = m_positions[pc.bodyA.index];
+		const auto posB = m_positions[pc.bodyB.index];
+		const auto worldManifold = GetWorldManifold(pc, posA, posB);
+		m_velocityConstraints[i].Update(worldManifold, posA.c, posB.c, m_velocities, true);
 	}
 }
 
@@ -536,19 +478,19 @@ void ContactSolver::SolveVelocityConstraints()
 	}
 }
 
-// Sequential solver.
-bool ContactSolver::SolvePositionConstraints()
+bool box2d::SolvePositionConstraints(PositionConstraint* positionConstraints, size_t count,
+									 Position* positions)
 {
 	auto minSeparation = MaxFloat;
 	
-	for (auto i = decltype(m_count){0}; i < m_count; ++i)
+	for (auto i = decltype(count){0}; i < count; ++i)
 	{
-		const auto& pc = m_positionConstraints[i];
+		const auto& pc = positionConstraints[i];
 		assert(pc.bodyA.index != pc.bodyB.index);
-		const auto solution = Solve(pc, m_positions[pc.bodyA.index], m_positions[pc.bodyB.index],
+		const auto solution = Solve(pc, positions[pc.bodyA.index], positions[pc.bodyB.index],
 									Baumgarte, -LinearSlop, MaxLinearCorrection);
-		m_positions[pc.bodyA.index] = solution.pos_a;
-		m_positions[pc.bodyB.index] = solution.pos_b;
+		positions[pc.bodyA.index] = solution.pos_a;
+		positions[pc.bodyB.index] = solution.pos_b;
 		minSeparation = Min(minSeparation, solution.min_separation);
 	}
 	
@@ -556,20 +498,27 @@ bool ContactSolver::SolvePositionConstraints()
 	//return minSeparation >= MinSeparationThreshold;
 	return minSeparation >= -LinearSlop * 2;
 }
-	
-bool ContactSolver::SolveTOIPositionConstraints(island_count_t indexA, island_count_t indexB)
+
+// Sequential solver.
+bool ContactSolver::SolvePositionConstraints()
+{
+	return ::box2d::SolvePositionConstraints(m_positionConstraints, m_count, m_positions);
+}
+
+bool box2d::SolveTOIPositionConstraints(PositionConstraint* positionConstraints, size_t count,
+										Position* positions, island_count_t indexA, island_count_t indexB)
 {
 	auto minSeparation = MaxFloat;
-
-	for (auto i = decltype(m_count){0}; i < m_count; ++i)
+	
+	for (auto i = decltype(count){0}; i < count; ++i)
 	{
-		auto pc = m_positionConstraints[i];
-
+		auto pc = positionConstraints[i];
+		
 		assert(pc.bodyA.index != pc.bodyB.index); // Confirm ContactManager::Add() did its job.
 		
 		// Modify local copy of the position constraint to only let position
 		// of bodies identified by either given indexes be changed.
-
+		
 		if ((pc.bodyA.index != indexA) && (pc.bodyA.index != indexB))
 		{
 			pc.bodyA.invMass = float_t{0};
@@ -580,17 +529,20 @@ bool ContactSolver::SolveTOIPositionConstraints(island_count_t indexA, island_co
 			pc.bodyB.invMass = float_t{0};
 			pc.bodyB.invI = float_t{0};
 		}
-
-		const auto solution = Solve(pc, m_positions[pc.bodyA.index], m_positions[pc.bodyB.index],
+		
+		const auto solution = Solve(pc, positions[pc.bodyA.index], positions[pc.bodyB.index],
 									ToiBaumgarte, -LinearSlop, MaxLinearCorrection);
-		m_positions[pc.bodyA.index] = solution.pos_a;
-		m_positions[pc.bodyB.index] = solution.pos_b;
+		positions[pc.bodyA.index] = solution.pos_a;
+		positions[pc.bodyB.index] = solution.pos_b;
 		minSeparation = Min(minSeparation, solution.min_separation);
 	}
-
+	
 	// Can't expect minSpeparation >= -LinearSlop because we don't push the separation above -LinearSlop.
 	//return minSeparation >= MinToiSeparation;
 	return minSeparation >= -LinearSlop * float_t(3) / float_t(2); // 1.5;
 }
-	
-} // namespace box2d
+
+bool ContactSolver::SolveTOIPositionConstraints(island_count_t indexA, island_count_t indexB)
+{
+	return ::box2d::SolveTOIPositionConstraints(m_positionConstraints, m_count, m_positions, indexA, indexB);
+}
