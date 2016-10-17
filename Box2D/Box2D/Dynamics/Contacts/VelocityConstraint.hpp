@@ -309,7 +309,7 @@ namespace box2d {
 			return m_points[index];
 		}
 
-		Vec2 m_normal = GetInvalid<Vec2>(); ///< Normal of the world manifold.
+		Vec2 m_normal = GetInvalid<Vec2>(); ///< Normal of the world manifold. 8-bytes.
 
 		/// Friction coefficient (4-bytes). Usually in the range of [0,1].
 		float_t m_friction = GetInvalid<float_t>();
