@@ -56,6 +56,9 @@ public:
 	}
 
 	/// Gets the position of the center of this circle shape.
+	/// @return The origin (0, 0) unless explicitly set otherwise on construction or via
+	///   the set position method.
+	/// @sa SetPosition.
 	Vec2 GetPosition() const noexcept { return m_p; }
 	
 	void SetPosition(const Vec2& value) noexcept { m_p = value; }

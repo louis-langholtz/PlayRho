@@ -875,14 +875,15 @@ constexpr inline Vec2 InverseRotate(const Vec2 vector, const Rot& angle) noexcep
 
 /// Transforms the given 2-D vector with the given transformation.
 /// @detail
-/// Translate and rotate the given 2-D vector according to the translation and rotation defined by
-/// the given transformation.
+/// Rotate and translate the given 2-D linear position according to the rotation and translation
+/// defined by the given transformation.
 /// @note Passing the output of this function to <code>InverseTransform</code> (with the same
 /// transformation again) will result in the original vector being returned.
+/// @note For a 2-D linear position of the origin (0, 0), the result is simply the translation.
 /// @sa <code>InverseTransform</code>.
-/// @param v 2-D vector to transform (translate and rotate).
+/// @param v 2-D position to transform (to rotate and then translate).
 /// @param T Transformation (a translation and rotation) to apply to the given vector.
-/// @return Transformed vector.
+/// @return Rotated and translated vector.
 constexpr inline Vec2 Transform(const Vec2 v, const Transformation T) noexcept
 {
 	return Rotate(v, T.q) + T.p;

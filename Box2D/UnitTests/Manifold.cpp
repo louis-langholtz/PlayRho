@@ -50,8 +50,10 @@ TEST(Manifold, PointInitializingConstructor)
 
 TEST(Manifold, GetForCircles)
 {
-	const auto foo = Manifold::GetForCircles(Vec2{0, 0}, Manifold::Point{});
+	const auto ctr = Vec2{99, 21};
+	const auto foo = Manifold::GetForCircles(ctr, Manifold::Point{});
 	EXPECT_EQ(foo.GetType(), Manifold::e_circles);
+	EXPECT_EQ(foo.GetLocalPoint(), ctr);
 	EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(1));
 	EXPECT_FALSE(IsValid(foo.GetLocalNormal()));
 }

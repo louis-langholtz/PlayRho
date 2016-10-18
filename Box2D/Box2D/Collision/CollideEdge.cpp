@@ -31,7 +31,14 @@ namespace box2d {
 Manifold CollideShapes(const EdgeShape& shapeA, const Transformation& xfA, const CircleShape& shapeB, const Transformation& xfB)
 {
 	/*
-	 * Consider:
+	 * Determine the collision manifold between the edge and the circle.
+	 *
+	 * To do this, this code treats the edge like an end-rounded strait-line drawn by an air
+	 * brush having the radius that GetRadius(shapeA) returns. As such, the collision is
+	 * categorized as either a collision with the first end-point, the second end-point, or the
+	 * conceptual rectangle between the end-points.
+	 *
+	 * Definitions:
 	 *   "-" Is an edge parallel to the horizon bounded by vertex A on the left and vertex B
 	 *       on the right.
 	 *   "|" Is a line perpendicular to the edge.
@@ -54,13 +61,12 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transformation& xfA, const
 	
 	const auto totalRadius = GetRadius(shapeA) + GetRadius(shapeB);
 
-	// Region A
+	// Check if circle's center is relatively left of first vertex of edge - this is "Region A"
 	const auto v = Dot(e, Q - A);
 	if (v <= 0)
 	{
 		const auto P = A; ///< Point of relavance (is A).
-		const auto d = Q - P;
-		if (LengthSquared(d) > Square(totalRadius))
+		if (LengthSquared(Q - P) > Square(totalRadius))
 		{
 			return Manifold{};
 		}
@@ -84,13 +90,12 @@ Manifold CollideShapes(const EdgeShape& shapeA, const Transformation& xfA, const
 		return Manifold::GetForCircles(P, Manifold::Point{shapeB.GetPosition(), cf});
 	}
 	
-	// Region B
+	// Check if circle's center is relatively right of second vertex of edge - this is "Region B"
 	const auto u = Dot(e, B - Q);
 	if (u <= 0)
 	{
 		const auto P = B; ///< Point of relavance (is B).
-		const auto d = Q - P;
-		if (LengthSquared(d) > Square(totalRadius))
+		if (LengthSquared(Q - P) > Square(totalRadius))
 		{
 			return Manifold{};
 		}

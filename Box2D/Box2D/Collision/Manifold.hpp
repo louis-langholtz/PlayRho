@@ -56,20 +56,33 @@ namespace box2d
 		
 		enum Type: uint8
 		{
-			e_unset, ///< Manifold is unset. Point count is zero, point data is undefined, and all other properties are invalid.
-			e_circles, ///< Indicates local point is local center of circle A and local normal is invalid.
-			e_faceA, ///< Indicates local point is center of face A and local normal is normal on shape A.
-			e_faceB ///< Indicates local point is center of face B and local normal is normal on shape B.
+			/// Unset type.
+			/// @detail Manifold is unset.
+			/// Point count is zero, point data is undefined, and all other properties are invalid.
+			e_unset,
+			
+			/// Circles type.
+			/// @detail Manifold is for circle-to-circle like collisions.
+			/// For manifolds of this type:
+			///   the local point is local center of "circle-A" (where shape A wasn't necessarily
+			///     a circle but treating it as such is useful),
+			///   the local normal is invalid, and
+			///   the point count will be zero or one.
+			e_circles,
+
+			/// Face-A type.
+			/// @detail Indicates local point is center of face A and local normal is normal on shape A.
+			e_faceA,
+
+			/// Face-B type.
+			/// @detail Indicates local point is center of face B and local normal is normal on shape B.
+			e_faceB
 		};
 		
 		/// Manifold point data.
 		/// @detail A manifold point is a contact point belonging to a contact
 		/// manifold. It holds details related to the geometry and dynamics
 		/// of the contact points.
-		/// The local point usage depends on the manifold type:
-		///   1. e_circles: The local center of circle B;
-		///   2. e_faceA: The local center of cirlce B or the clip point of polygon B; or,
-		///   3. e_faceB: The clip point of polygon A.
 		/// This structure is stored across time steps, so we keep it small.
 		/// @note The impulses are used for internal caching and may not
 		///   provide reliable contact forces especially for high speed collisions.
@@ -84,23 +97,32 @@ namespace box2d
 				localPoint{lp}, contactFeature{cf}, normalImpulse{ni}, tangentImpulse{ti}
 			{}
 			
-			Vec2 localPoint; ///< usage depends on manifold type (8-bytes).
+			/// Local point.
+			/// @detail Usage depends on manifold type.
+			/// For circles type manifolds, this is the local center of circle B.
+			/// For face-A type manifolds, this is the local center of cirlce B or the clip point of polygon B.
+			/// For face-B type manifolds, this is the clip point of polygon A.
+			/// @note 8-bytes.
+			Vec2 localPoint;
+
 			float_t normalImpulse; ///< the non-penetration impulse (4-bytes).
+			
 			float_t tangentImpulse; ///< the friction impulse (4-bytes).
+			
 			ContactFeature contactFeature; ///< uniquely identifies a contact point between two shapes (4-bytes).
 		};
 		
-		// For Circles...
+		// For Circles type manifolds...
 		
 		/// Gets a circle-typed manifold.
-		/// @param lp Local center of circle A.
-		/// @param mp1 Manifold point 1.
+		/// @param lp Local center of "circle" A.
+		/// @param mp1 Manifold point 1 whose local point is the center of circle B.
 		static constexpr Manifold GetForCircles(Vec2 lp, const Point& mp1) noexcept
 		{
 			return Manifold{e_circles, GetInvalid<Vec2>(), lp, 1, {{mp1}}};
 		}
 		
-		// For Face A...
+		// For Face A type manifolds...
 		
 		/// Gets a face A typed manifold.
 		/// @param ln Normal on polygon A.
@@ -218,7 +240,7 @@ namespace box2d
 		/// Gets the local point.
 		/// @detail
 		/// This is the:
-		/// local center of circle A for circle-type manifolds,
+		/// local center of "circle" A for circles-type manifolds,
 		/// the center of face A for face-A-type manifolds, and
 		/// the center of face B for face-B-type manifolds.
 		/// @note Value invalid for unset (e_unset) type manifolds.
@@ -266,7 +288,7 @@ namespace box2d
 	/// @param xfA Transformation for shape A.
 	/// @param shapeB Shape B.
 	/// @param xfB Transformation for shape B.
-	/// @return An unset-type manifold if the shapes aren't touching, else a circle-type manifold with one or more points.
+	/// @return An unset-type manifold if the shapes aren't touching, else a circle-type manifold with one point.
 	Manifold CollideShapes(const CircleShape& shapeA, const Transformation& xfA, const CircleShape& shapeB, const Transformation& xfB);
 	
 	/// Computes the collision manifold between a polygon and a circle.
