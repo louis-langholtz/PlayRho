@@ -39,15 +39,13 @@ TEST(Collision, CircleCircle)
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_circles);
 	
-	//EXPECT_EQ(manifold.GetLocalNormal(), Vec2_zero);
-	
-	EXPECT_EQ(manifold.GetLocalPoint().x, 0);
-	EXPECT_EQ(manifold.GetLocalPoint().y, 0);
+	EXPECT_FALSE(IsValid(manifold.GetLocalNormal()));
+	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(0, 0));
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
 
-	EXPECT_EQ(manifold.GetPoint(0).localPoint.x, 0);
-	EXPECT_EQ(manifold.GetPoint(0).localPoint.y, 0);
+	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
+	EXPECT_EQ(manifold.GetPoint(0).localPoint, Vec2(0, 0));
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexA, 0);
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 0);
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_vertex);
@@ -69,11 +67,8 @@ TEST(Collision, PolygonCircle)
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	
-	EXPECT_EQ(manifold.GetLocalNormal().x, 1);
-	EXPECT_EQ(manifold.GetLocalNormal().y, 0);
-	
-	EXPECT_EQ(manifold.GetLocalPoint().x, hx);
-	EXPECT_EQ(manifold.GetLocalPoint().y, 0);
+	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(1, 0));
+	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(hx, 0));
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
 	
@@ -89,25 +84,18 @@ TEST(Collision, IdenticalOverlappingSquares)
 {
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
-	ASSERT_EQ(shape.GetVertex(0).x, float_t(+2)); // right
-	ASSERT_EQ(shape.GetVertex(0).y, float_t(-2)); // bottom
-	ASSERT_EQ(shape.GetVertex(1).x, float_t(+2)); // right
-	ASSERT_EQ(shape.GetVertex(1).y, float_t(+2)); // top
-	ASSERT_EQ(shape.GetVertex(2).x, float_t(-2)); // left
-	ASSERT_EQ(shape.GetVertex(2).y, float_t(+2)); // top
-	ASSERT_EQ(shape.GetVertex(3).x, float_t(-2)); // left
-	ASSERT_EQ(shape.GetVertex(3).y, float_t(-2)); // bottom
+	ASSERT_EQ(shape.GetVertex(0), Vec2(+2,-2)); // bottom right
+	ASSERT_EQ(shape.GetVertex(1), Vec2(+2,+2)); // top right
+	ASSERT_EQ(shape.GetVertex(2), Vec2(-2,+2)); // top left
+	ASSERT_EQ(shape.GetVertex(3), Vec2(-2,-2)); // bottom left
 
 	const auto xfm = Transformation(Vec2_zero, Rot{0});
 	const auto manifold = CollideShapes(shape, xfm, shape, xfm);
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 
-	EXPECT_EQ(manifold.GetLocalPoint().x, float_t(+2));
-	EXPECT_EQ(manifold.GetLocalPoint().y, float_t(0));
-	
-	EXPECT_EQ(manifold.GetLocalNormal().x, float_t(+1));
-	EXPECT_EQ(manifold.GetLocalNormal().y, float_t(0));
+	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(+2,0));
+	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(+1,0));
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
 
@@ -136,14 +124,10 @@ TEST(Collision, IdenticalVerticalTouchingSquares)
 {
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
-	ASSERT_EQ(shape.GetVertex(0).x, float_t(+2)); // right
-	ASSERT_EQ(shape.GetVertex(0).y, float_t(-2)); // bottom
-	ASSERT_EQ(shape.GetVertex(1).x, float_t(+2)); // right
-	ASSERT_EQ(shape.GetVertex(1).y, float_t(+2)); // top
-	ASSERT_EQ(shape.GetVertex(2).x, float_t(-2)); // left
-	ASSERT_EQ(shape.GetVertex(2).y, float_t(+2)); // top
-	ASSERT_EQ(shape.GetVertex(3).x, float_t(-2)); // left
-	ASSERT_EQ(shape.GetVertex(3).y, float_t(-2)); // bottom
+	ASSERT_EQ(shape.GetVertex(0), Vec2(+2,-2)); // bottom right
+	ASSERT_EQ(shape.GetVertex(1), Vec2(+2,+2)); // top right
+	ASSERT_EQ(shape.GetVertex(2), Vec2(-2,+2)); // top left
+	ASSERT_EQ(shape.GetVertex(3), Vec2(-2,-2)); // bottom left
 
 	const auto xfm0 = Transformation(Vec2{0, -1}, Rot{0}); // bottom
 	const auto xfm1 = Transformation(Vec2{0, +1}, Rot{0}); // top
@@ -151,11 +135,8 @@ TEST(Collision, IdenticalVerticalTouchingSquares)
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	
-	EXPECT_EQ(manifold.GetLocalPoint().x, float_t(0));
-	EXPECT_EQ(manifold.GetLocalPoint().y, float_t(+2));
-	
-	EXPECT_EQ(manifold.GetLocalNormal().x, float_t(0));
-	EXPECT_EQ(manifold.GetLocalNormal().y, float_t(+1));
+	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(0,+2));	
+	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(0,+1));
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
 	
@@ -184,14 +165,10 @@ TEST(Collision, IdenticalHorizontalTouchingSquares)
 {
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
-	ASSERT_EQ(shape.GetVertex(0).x, float_t(+2)); // right
-	ASSERT_EQ(shape.GetVertex(0).y, float_t(-2)); // bottom
-	ASSERT_EQ(shape.GetVertex(1).x, float_t(+2)); // right
-	ASSERT_EQ(shape.GetVertex(1).y, float_t(+2)); // top
-	ASSERT_EQ(shape.GetVertex(2).x, float_t(-2)); // left
-	ASSERT_EQ(shape.GetVertex(2).y, float_t(+2)); // top
-	ASSERT_EQ(shape.GetVertex(3).x, float_t(-2)); // left
-	ASSERT_EQ(shape.GetVertex(3).y, float_t(-2)); // bottom
+	ASSERT_EQ(shape.GetVertex(0), Vec2(+2,-2)); // bottom right
+	ASSERT_EQ(shape.GetVertex(1), Vec2(+2,+2)); // top right
+	ASSERT_EQ(shape.GetVertex(2), Vec2(-2,+2)); // top left
+	ASSERT_EQ(shape.GetVertex(3), Vec2(-2,-2)); // bottom left
 
 	const auto xfm0 = Transformation(Vec2{-2, 0}, Rot{0}); // left
 	const auto xfm1 = Transformation(Vec2{+2, 0}, Rot{0}); // right
@@ -199,11 +176,8 @@ TEST(Collision, IdenticalHorizontalTouchingSquares)
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	
-	EXPECT_EQ(manifold.GetLocalPoint().x, float_t(+2));
-	EXPECT_EQ(manifold.GetLocalPoint().y, float_t(0));
-	
-	EXPECT_EQ(manifold.GetLocalNormal().x, float_t(+1));
-	EXPECT_EQ(manifold.GetLocalNormal().y, float_t(0));
+	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(+2, 0));	
+	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(+1, 0));
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
 	
@@ -232,14 +206,10 @@ TEST(Collision, SquareCornerUnderSquareFace)
 {
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
-	ASSERT_EQ(shape.GetVertex(0).x, float_t(+2)); // right
-	ASSERT_EQ(shape.GetVertex(0).y, float_t(-2)); // bottom
-	ASSERT_EQ(shape.GetVertex(1).x, float_t(+2)); // right
-	ASSERT_EQ(shape.GetVertex(1).y, float_t(+2)); // top
-	ASSERT_EQ(shape.GetVertex(2).x, float_t(-2)); // left
-	ASSERT_EQ(shape.GetVertex(2).y, float_t(+2)); // top
-	ASSERT_EQ(shape.GetVertex(3).x, float_t(-2)); // left
-	ASSERT_EQ(shape.GetVertex(3).y, float_t(-2)); // bottom
+	ASSERT_EQ(shape.GetVertex(0), Vec2(+2,-2)); // bottom right
+	ASSERT_EQ(shape.GetVertex(1), Vec2(+2,+2)); // top right
+	ASSERT_EQ(shape.GetVertex(2), Vec2(-2,+2)); // top left
+	ASSERT_EQ(shape.GetVertex(3), Vec2(-2,-2)); // bottom left
 	
 	const auto rot0 = Rot{DegreesToRadians(45)};
 	const auto rot1 = Rot{0};
@@ -288,39 +258,28 @@ TEST(Collision, HorizontalOverlappingRects1)
 {
 	// square
 	const auto shape0 = PolygonShape(2, 2);
-	ASSERT_EQ(shape0.GetVertex(0).x, float_t(+2)); // right
-	ASSERT_EQ(shape0.GetVertex(0).y, float_t(-2)); // bottom
-	ASSERT_EQ(shape0.GetVertex(1).x, float_t(+2)); // right
-	ASSERT_EQ(shape0.GetVertex(1).y, float_t(+2)); // top
-	ASSERT_EQ(shape0.GetVertex(2).x, float_t(-2)); // left
-	ASSERT_EQ(shape0.GetVertex(2).y, float_t(+2)); // top
-	ASSERT_EQ(shape0.GetVertex(3).x, float_t(-2)); // left
-	ASSERT_EQ(shape0.GetVertex(3).y, float_t(-2)); // bottom
+	ASSERT_EQ(shape0.GetVertex(0), Vec2(+2,-2)); // bottom right
+	ASSERT_EQ(shape0.GetVertex(1), Vec2(+2,+2)); // top right
+	ASSERT_EQ(shape0.GetVertex(2), Vec2(-2,+2)); // top left
+	ASSERT_EQ(shape0.GetVertex(3), Vec2(-2,-2)); // bottom left
 	
 	// wide rectangle
 	const auto shape1 = PolygonShape(3, 1.5);
-	ASSERT_EQ(shape1.GetVertex(0).x, float_t(+3.0)); // right
-	ASSERT_EQ(shape1.GetVertex(0).y, float_t(-1.5)); // bottom
-	ASSERT_EQ(shape1.GetVertex(1).x, float_t(+3.0)); // right
-	ASSERT_EQ(shape1.GetVertex(1).y, float_t(+1.5)); // top
-	ASSERT_EQ(shape1.GetVertex(2).x, float_t(-3.0)); // left
-	ASSERT_EQ(shape1.GetVertex(2).y, float_t(+1.5)); // top
-	ASSERT_EQ(shape1.GetVertex(3).x, float_t(-3.0)); // left
-	ASSERT_EQ(shape1.GetVertex(3).y, float_t(-1.5)); // bottom
+	ASSERT_EQ(shape1.GetVertex(0), Vec2(float_t(+3.0), float_t(-1.5))); // bottom right
+	ASSERT_EQ(shape1.GetVertex(1), Vec2(float_t(+3.0), float_t(+1.5))); // top right
+	ASSERT_EQ(shape1.GetVertex(2), Vec2(float_t(-3.0), float_t(+1.5))); // top left
+	ASSERT_EQ(shape1.GetVertex(3), Vec2(float_t(-3.0), float_t(-1.5))); // bottom left
 
 	const auto xfm0 = Transformation(Vec2{-2, 0}, Rot{0}); // left
 	const auto xfm1 = Transformation(Vec2{+2, 0}, Rot{0}); // right
 	
-	// square left, wide rectangle right
+	// put square left, wide rectangle right
 	const auto manifold = CollideShapes(shape0, xfm0, shape1, xfm1);
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	
-	EXPECT_EQ(manifold.GetLocalPoint().x, float_t(+2));
-	EXPECT_EQ(manifold.GetLocalPoint().y, float_t(0));
-	
-	EXPECT_EQ(manifold.GetLocalNormal().x, float_t(+1));
-	EXPECT_EQ(manifold.GetLocalNormal().y, float_t(0));
+	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(float_t(+2), float_t(0)));
+	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(float_t(+1), float_t(0)));
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
 	
@@ -363,25 +322,17 @@ TEST(Collision, HorizontalOverlappingRects2)
 {
 	// wide rectangle
 	const auto shape0 = PolygonShape(3, 1.5);
-	ASSERT_EQ(shape0.GetVertex(0).x, float_t(+3.0)); // right
-	ASSERT_EQ(shape0.GetVertex(0).y, float_t(-1.5)); // bottom
-	ASSERT_EQ(shape0.GetVertex(1).x, float_t(+3.0)); // right
-	ASSERT_EQ(shape0.GetVertex(1).y, float_t(+1.5)); // top
-	ASSERT_EQ(shape0.GetVertex(2).x, float_t(-3.0)); // left
-	ASSERT_EQ(shape0.GetVertex(2).y, float_t(+1.5)); // top
-	ASSERT_EQ(shape0.GetVertex(3).x, float_t(-3.0)); // left
-	ASSERT_EQ(shape0.GetVertex(3).y, float_t(-1.5)); // bottom
+	ASSERT_EQ(shape0.GetVertex(0), Vec2(float_t(+3.0), float_t(-1.5))); // bottom right
+	ASSERT_EQ(shape0.GetVertex(1), Vec2(float_t(+3.0), float_t(+1.5))); // top right
+	ASSERT_EQ(shape0.GetVertex(2), Vec2(float_t(-3.0), float_t(+1.5))); // top left
+	ASSERT_EQ(shape0.GetVertex(3), Vec2(float_t(-3.0), float_t(-1.5))); // bottom left
 	
 	// square
 	const auto shape1 = PolygonShape(2, 2);
-	ASSERT_EQ(shape1.GetVertex(0).x, float_t(+2)); // right
-	ASSERT_EQ(shape1.GetVertex(0).y, float_t(-2)); // bottom
-	ASSERT_EQ(shape1.GetVertex(1).x, float_t(+2)); // right
-	ASSERT_EQ(shape1.GetVertex(1).y, float_t(+2)); // top
-	ASSERT_EQ(shape1.GetVertex(2).x, float_t(-2)); // left
-	ASSERT_EQ(shape1.GetVertex(2).y, float_t(+2)); // top
-	ASSERT_EQ(shape1.GetVertex(3).x, float_t(-2)); // left
-	ASSERT_EQ(shape1.GetVertex(3).y, float_t(-2)); // bottom
+	ASSERT_EQ(shape1.GetVertex(0), Vec2(+2,-2)); // bottom right
+	ASSERT_EQ(shape1.GetVertex(1), Vec2(+2,+2)); // top right
+	ASSERT_EQ(shape1.GetVertex(2), Vec2(-2,+2)); // top left
+	ASSERT_EQ(shape1.GetVertex(3), Vec2(-2,-2)); // bottom left
 	
 	const auto xfm0 = Transformation(Vec2{-2, 0}, Rot{0}); // left
 	const auto xfm1 = Transformation(Vec2{+2, 0}, Rot{0}); // right
@@ -391,11 +342,8 @@ TEST(Collision, HorizontalOverlappingRects2)
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	
-	EXPECT_EQ(manifold.GetLocalPoint().x, float_t(+3));
-	EXPECT_EQ(manifold.GetLocalPoint().y, float_t(0));
-	
-	EXPECT_EQ(manifold.GetLocalNormal().x, float_t(+1));
-	EXPECT_EQ(manifold.GetLocalNormal().y, float_t(0));
+	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(float_t(+3), float_t(0)));
+	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(float_t(+1), float_t(0)));
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
 	
