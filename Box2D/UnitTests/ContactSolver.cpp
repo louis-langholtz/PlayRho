@@ -141,15 +141,11 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
 	const auto xfmB = Transformation(old_pB.c, Rot{old_pB.a});
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
-	ASSERT_EQ(manifold.GetLocalNormal().x, float_t(+1));
-	ASSERT_EQ(manifold.GetLocalNormal().y, float_t(0));
-	ASSERT_EQ(manifold.GetLocalPoint().x, float_t(+2));
-	ASSERT_EQ(manifold.GetLocalPoint().y, float_t(0));
+	ASSERT_EQ(manifold.GetLocalNormal(), Vec2(+1, 0));
+	ASSERT_EQ(manifold.GetLocalPoint(), Vec2(+2, 0));
 	ASSERT_EQ(manifold.GetPointCount(), 2);
-	ASSERT_EQ(manifold.GetPoint(0).localPoint.x, float_t(-2));
-	ASSERT_EQ(manifold.GetPoint(0).localPoint.y, float_t(+2));
-	ASSERT_EQ(manifold.GetPoint(1).localPoint.x, float_t(-2));
-	ASSERT_EQ(manifold.GetPoint(1).localPoint.y, float_t(-2));
+	ASSERT_EQ(manifold.GetPoint(0).localPoint, Vec2(-2, +2));
+	ASSERT_EQ(manifold.GetPoint(1).localPoint, Vec2(-2, -2));
 	
 	const auto indexA = PositionConstraint::BodyData::index_type{0};
 	const auto indexB = PositionConstraint::BodyData::index_type{0};
@@ -189,15 +185,11 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
 	const auto xfmB = Transformation(old_pB.c, Rot{old_pB.a});
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
-	ASSERT_EQ(manifold.GetLocalNormal().x, float_t(-1));
-	ASSERT_EQ(manifold.GetLocalNormal().y, float_t(0));
-	ASSERT_EQ(manifold.GetLocalPoint().x, float_t(-2));
-	ASSERT_EQ(manifold.GetLocalPoint().y, float_t(0));
+	ASSERT_EQ(manifold.GetLocalNormal(), Vec2(-1, 0));
+	ASSERT_EQ(manifold.GetLocalPoint(), Vec2(-2, 0));
 	ASSERT_EQ(manifold.GetPointCount(), 2);
-	ASSERT_EQ(manifold.GetPoint(0).localPoint.x, float_t(+2));
-	ASSERT_EQ(manifold.GetPoint(0).localPoint.y, float_t(-2));
-	ASSERT_EQ(manifold.GetPoint(1).localPoint.x, float_t(+2));
-	ASSERT_EQ(manifold.GetPoint(1).localPoint.y, float_t(+2));
+	ASSERT_EQ(manifold.GetPoint(0).localPoint, Vec2(+2, -2));
+	ASSERT_EQ(manifold.GetPoint(1).localPoint, Vec2(+2, +2));
 	
 	const auto indexA = PositionConstraint::BodyData::index_type{0};
 	const auto indexB = PositionConstraint::BodyData::index_type{0};
@@ -237,15 +229,11 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
 	const auto xfmB = Transformation(old_pB.c, Rot{old_pB.a});
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
-	ASSERT_EQ(manifold.GetLocalNormal().x, float_t(0));
-	ASSERT_EQ(manifold.GetLocalNormal().y, float_t(1));
-	ASSERT_EQ(manifold.GetLocalPoint().x, float_t(0));
-	ASSERT_EQ(manifold.GetLocalPoint().y, float_t(2));
+	ASSERT_EQ(manifold.GetLocalNormal(), Vec2(0, 1));
+	ASSERT_EQ(manifold.GetLocalPoint(), Vec2(0, 2));
 	ASSERT_EQ(manifold.GetPointCount(), 2);
-	ASSERT_EQ(manifold.GetPoint(0).localPoint.x, float_t(-2));
-	ASSERT_EQ(manifold.GetPoint(0).localPoint.y, float_t(-2));
-	ASSERT_EQ(manifold.GetPoint(1).localPoint.x, float_t(+2));
-	ASSERT_EQ(manifold.GetPoint(1).localPoint.y, float_t(-2));
+	ASSERT_EQ(manifold.GetPoint(0).localPoint, Vec2(-2, -2));
+	ASSERT_EQ(manifold.GetPoint(1).localPoint, Vec2(+2, -2));
 	
 	const auto indexA = PositionConstraint::BodyData::index_type{0};
 	const auto indexB = PositionConstraint::BodyData::index_type{0};
@@ -296,16 +284,13 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
 	const auto xfmA = Transformation(old_pA.c, Rot{old_pA.a});
 	const auto xfmB = Transformation(old_pB.c, Rot{old_pB.a});
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
+	
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
-	ASSERT_EQ(manifold.GetLocalNormal().x, float_t(0));
-	ASSERT_EQ(manifold.GetLocalNormal().y, float_t(-1));
-	ASSERT_EQ(manifold.GetLocalPoint().x, float_t(0));
-	ASSERT_EQ(manifold.GetLocalPoint().y, float_t(-2));
+	ASSERT_EQ(manifold.GetLocalNormal(), Vec2(0, -1));
+	ASSERT_EQ(manifold.GetLocalPoint(), Vec2(0, -2));
 	ASSERT_EQ(manifold.GetPointCount(), 2);
-	ASSERT_EQ(manifold.GetPoint(0).localPoint.x, float_t(+2));
-	ASSERT_EQ(manifold.GetPoint(0).localPoint.y, float_t(+2));
-	ASSERT_EQ(manifold.GetPoint(1).localPoint.x, float_t(-2));
-	ASSERT_EQ(manifold.GetPoint(1).localPoint.y, float_t(+2));
+	ASSERT_EQ(manifold.GetPoint(0).localPoint, Vec2(+2, +2));
+	ASSERT_EQ(manifold.GetPoint(1).localPoint, Vec2(-2, +2));
 	
 	const auto indexA = PositionConstraint::BodyData::index_type{0};
 	const auto indexB = PositionConstraint::BodyData::index_type{0};
