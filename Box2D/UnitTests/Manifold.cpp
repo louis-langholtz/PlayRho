@@ -28,9 +28,11 @@ TEST(Manifold, ByteSizeIs60)
 
 TEST(Manifold, DefaultConstruction)
 {
-	Manifold foo;
+	const auto foo = Manifold{};
 	EXPECT_EQ(foo.GetType(), Manifold::e_unset);
 	EXPECT_EQ(foo.GetPointCount(), 0);
+	EXPECT_FALSE(IsValid(foo.GetLocalNormal()));
+	EXPECT_FALSE(IsValid(foo.GetLocalPoint()));
 }
 
 TEST(Manifold, PointInitializingConstructor)
@@ -48,9 +50,10 @@ TEST(Manifold, PointInitializingConstructor)
 
 TEST(Manifold, GetForCircles)
 {
-	Manifold foo = Manifold::GetForCircles(Vec2{0, 0}, Manifold::Point{});
+	const auto foo = Manifold::GetForCircles(Vec2{0, 0}, Manifold::Point{});
 	EXPECT_EQ(foo.GetType(), Manifold::e_circles);
 	EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(1));
+	EXPECT_FALSE(IsValid(foo.GetLocalNormal()));
 }
 
 TEST(Manifold, GetForFaceA)

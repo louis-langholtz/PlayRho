@@ -56,8 +56,8 @@ namespace box2d
 		
 		enum Type: uint8
 		{
-			e_unset, ///< Manifold is unset. All other properties are undefined.
-			e_circles, ///< Indicates local point is local center of circle A and local normal is not used.
+			e_unset, ///< Manifold is unset. Point count is zero, point data is undefined, and all other properties are invalid.
+			e_circles, ///< Indicates local point is local center of circle A and local normal is invalid.
 			e_faceA, ///< Indicates local point is center of face A and local normal is normal on shape A.
 			e_faceB ///< Indicates local point is center of face B and local normal is normal on shape B.
 		};
@@ -81,7 +81,7 @@ namespace box2d
 			
 			constexpr explicit Point(Vec2 lp, ContactFeature cf = DefaultContactFeature,
 									 float_t ni = float_t{0}, float_t ti = float_t{0}) noexcept:
-			localPoint{lp}, contactFeature{cf}, normalImpulse{ni}, tangentImpulse{ti}
+				localPoint{lp}, contactFeature{cf}, normalImpulse{ni}, tangentImpulse{ti}
 			{}
 			
 			Vec2 localPoint; ///< usage depends on manifold type (8-bytes).
@@ -97,7 +97,7 @@ namespace box2d
 		/// @param mp1 Manifold point 1.
 		static constexpr Manifold GetForCircles(Vec2 lp, const Point& mp1) noexcept
 		{
-			return Manifold{e_circles, Vec2_zero, lp, 1, {{mp1}}};
+			return Manifold{e_circles, GetInvalid<Vec2>(), lp, 1, {{mp1}}};
 		}
 		
 		// For Face A...
@@ -158,6 +158,11 @@ namespace box2d
 			return Manifold{e_faceB, ln, lp, 2, {{mp1, mp2}}};
 		}
 		
+		/// Default constructor.
+		/// @detail
+		/// Constructs an unset-type manifold.
+		/// For an unset-type manifold:
+		/// point count is zero, point data is undefined, and all other properties are invalid.
 		Manifold() noexcept = default;
 		
 		Manifold(const Manifold& copy) noexcept = default;
@@ -188,7 +193,8 @@ namespace box2d
 		}
 		
 		/// Adds a new point.
-		/// @detail This can be called up to MaxManifoldPoints times.
+		/// @detail This can be called once for circle type manifolds,
+		///   and up to MaxManifoldPoints times for face-A or face-B type manifolds.
 		/// GetPointCount() can be called to find out how many points have already been added.
 		/// @note Behavior is undefined if this object's type is e_unset.
 		/// @note Behavior is undefined if this is called more than MaxManifoldPoints times. 
@@ -202,27 +208,24 @@ namespace box2d
 		}
 		
 		/// Gets the local normal for a face-type manifold.
-		/// @warning Behavior is undefined if the manifold type is other than face A or face B.
-		/// @return Local normal.
+		/// @return Local normal if the manifold type is face A or face B, else invalid value.
 		/// @sa SetLocalNormal.
 		Vec2 GetLocalNormal() const noexcept
 		{
-			assert(type == e_faceA || type == e_faceB);
 			return localNormal;
 		}
 		
 		/// Gets the local point.
 		/// @detail
 		/// This is the:
-		/// local center of circle A for circle type manifolds,
-		/// the center of face A for face A type manifolds, and
-		/// the center of face B for face B type manifolds.
-		/// @note Value undefined for unset (e_unset) type manifolds.
+		/// local center of circle A for circle-type manifolds,
+		/// the center of face A for face-A-type manifolds, and
+		/// the center of face B for face-B-type manifolds.
+		/// @note Value invalid for unset (e_unset) type manifolds.
 		/// @return Local point.
 		/// @sa SetLocalPoint.
 		Vec2 GetLocalPoint() const noexcept
 		{
-			assert(type != e_unset);
 			return localPoint;
 		}
 		
@@ -236,13 +239,24 @@ namespace box2d
 		/// @param n number of points defined in arary.
 		/// @param mpa Manifold point array.
 		constexpr Manifold(Type t, Vec2 ln, Vec2 lp, size_type n, const PointArray& mpa) noexcept:
-			type{t}, localNormal{ln}, localPoint{lp}, pointCount{n}, points{mpa} {}
+			type{t}, localNormal{ln}, localPoint{lp}, pointCount{n}, points{mpa}
+		{
+			assert(t != e_unset || n == 0);
+			assert(t != e_circles || (n == 1 && !IsValid(ln)));
+		}
 		
 		Type type = e_unset; ///< Type of collision this manifold is associated with (1-byte).
 		size_type pointCount = 0; ///< Number of defined manifold points (2-bytes).
 		
-		Vec2 localNormal; ///< Local normal. @detail Exact usage depends on manifold type (8-bytes). @note Undefined for Type::e_circles.
-		Vec2 localPoint; ///< Local point. @detail Exact usage depends on manifold type (8-bytes).
+		/// Local normal.
+		/// @detail Exact usage depends on manifold type (8-bytes).
+		/// @note Invalid for the unset and circle manifold types.
+		Vec2 localNormal = GetInvalid<Vec2>();
+
+		/// Local point.
+		/// @detail Exact usage depends on manifold type (8-bytes).
+		/// @note Invalid for the unset manifold type.
+		Vec2 localPoint = GetInvalid<Vec2>();
 		
 		PointArray points; ///< Points of contact (at least 40-bytes). @sa pointCount.
 	};
@@ -252,7 +266,7 @@ namespace box2d
 	/// @param xfA Transformation for shape A.
 	/// @param shapeB Shape B.
 	/// @param xfB Transformation for shape B.
-	/// @return Manifold value with one or more points if the shapes are touching.
+	/// @return An unset-type manifold if the shapes aren't touching, else a circle-type manifold with one or more points.
 	Manifold CollideShapes(const CircleShape& shapeA, const Transformation& xfA, const CircleShape& shapeB, const Transformation& xfB);
 	
 	/// Computes the collision manifold between a polygon and a circle.
