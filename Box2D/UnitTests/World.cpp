@@ -714,6 +714,14 @@ TEST(World, PerfectlyOverlappedIdenticalSquaresSeparate)
 
 TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 {
+	/*
+	 * Sets up 2 equally sized squares - body A and body B - where body A is to the right of body B
+	 * but they partially overlap. Position solver code should move body A to the right more and
+	 * move body B to the left more till they're almost separated.
+	 *
+	 * This tests at a high level what the position solver code does with overlapping shapes.
+	 */
+
 	const Vec2 gravity{0, 0};
 	World world{gravity};
 	
@@ -837,9 +845,11 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 		ASSERT_NE(body1->GetPosition(), lastpos1);
 		ASSERT_NE(body2->GetPosition(), lastpos2);
 		
+		// Body 1 moves right only.
 		EXPECT_GT(body1->GetPosition().x, lastpos1.x);
 		EXPECT_FLOAT_EQ(body1->GetPosition().y, lastpos1.y);
 
+		// Body 2 moves left only.
 		EXPECT_LT(body2->GetPosition().x, lastpos2.x);
 		EXPECT_FLOAT_EQ(body2->GetPosition().y, lastpos2.y);
 
