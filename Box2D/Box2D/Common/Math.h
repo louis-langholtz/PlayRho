@@ -22,6 +22,7 @@
 
 #include <Box2D/Common/Settings.h>
 #include <cmath>
+#include <iostream>
 
 namespace box2d
 {
@@ -1204,5 +1205,7 @@ inline Vec2 Average(const Vec2* elements, size_t count)
 ///   go counter-clockwise.
 Vec2 ComputeCentroid(const Vec2 *vertices, size_t count);
 
+::std::ostream& operator<<(::std::ostream& os, const Vec2& value);
+	
 }
 #endif

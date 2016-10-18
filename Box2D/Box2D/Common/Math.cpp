@@ -53,3 +53,8 @@ Vec2 box2d::ComputeCentroid(const Vec2 *vertices, size_t count)
 	assert((area > 0) && !almost_equal(area, 0));
 	return c / area;
 }
+
+::std::ostream& box2d::operator<<(::std::ostream& os, const Vec2& value)
+{
+	return os << "{" << value.x << "," << value.y << "}";
+}

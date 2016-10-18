@@ -18,6 +18,7 @@
 
 #include "gtest/gtest.h"
 #include <Box2D/Common/Math.h>
+#include <sstream>
 
 using namespace box2d;
 
@@ -35,6 +36,14 @@ TEST(Vec2, Constructor) {
 	Vec2 vector{float_t{5}, float_t{-3}};
 	EXPECT_EQ(float_t{5}, vector.x);
 	EXPECT_EQ(float_t{-3}, vector.y);
+}
+
+TEST(Vec2, OutputOperator)
+{
+	std::stringstream os;
+	const Vec2 value{float_t(1.5), float_t(-2.3)};
+	os << value;
+	EXPECT_EQ(os.str(), "{1.5,-2.3}");
 }
 
 TEST(Vec2, Indexing) {
