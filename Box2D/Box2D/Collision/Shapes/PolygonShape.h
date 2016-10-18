@@ -41,7 +41,7 @@ public:
 
 	PolygonShape(const PolygonShape&) = default;
 	
-	/// Initializing constructor for boxes.
+	/// Initializing constructor for rectangles.
 	/// @param hx the half-width.
 	/// @param hy the half-height.
 	explicit PolygonShape(float_t hx, float_t hy) noexcept;
