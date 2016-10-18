@@ -715,7 +715,7 @@ void World::Solve(const TimeStep& step)
 			return vp;
 		}
 		
-		void WarmStart(contact_count_t count, VelocityConstraint* velocityConstraints, Velocity* const velocities)
+		inline void WarmStartVelocities(contact_count_t count, const VelocityConstraint* velocityConstraints, Velocity* const velocities)
 		{
 			for (auto i = decltype(count){0}; i < count; ++i)
 			{
@@ -725,6 +725,35 @@ void World::Solve(const TimeStep& step)
 				velocities[vc.bodyB.GetIndex()] += vp.b;
 			}		
 		}
+		
+		inline void UpdateVelocityConstraints(VelocityConstraint* velocityConstraints,
+									   const Velocity* const velocities,
+									   contact_count_t count,
+									   const PositionConstraint* positionConstraints,
+									   const Position* const positions)
+		{
+			for (auto i = decltype(count){0}; i < count; ++i)
+			{
+				const auto& pc = positionConstraints[i];
+				const auto posA = positions[pc.bodyA.index];
+				const auto posB = positions[pc.bodyB.index];
+				const auto worldManifold = GetWorldManifold(pc, posA, posB);
+				velocityConstraints[i].Update(worldManifold, posA.c, posB.c, velocities, true);
+			}
+		}
+		
+		inline void SolveVelocityConstraints(contact_count_t count,
+									  VelocityConstraint* velocityConstraints,
+									  Velocity* const velocities)
+		{
+			for (auto j = decltype(count){0}; j < count; ++j)
+			{
+				auto& vc = velocityConstraints[j];
+				SolveVelocityConstraint(vc,
+										velocities[vc.bodyA.GetIndex()],
+										velocities[vc.bodyB.GetIndex()]);
+			}
+		}
 	};
 	
 	// ==== end
@@ -732,11 +761,18 @@ void World::Solve(const TimeStep& step)
 bool World::Solve(const TimeStep& step, Island& island)
 {
 	// Would be nice to actually allocate this data on the actual stack but the running thread may not have nearly enough stack space for this.
-	auto positionConstraints = PositionConstraintsContainer{island.m_contacts.size(), m_stackAllocator.AllocateArray<PositionConstraint>(island.m_contacts.size()), m_stackAllocator};
-	InitPosConstraints(positionConstraints.data(), static_cast<contact_count_t>(island.m_contacts.size()), island.m_contacts.data());
 	
-	auto velocityConstraints = VelocityConstraintsContainer{island.m_contacts.size(), m_stackAllocator.AllocateArray<VelocityConstraint>(island.m_contacts.size()), m_stackAllocator};
-	InitVelConstraints(velocityConstraints.data(), static_cast<contact_count_t>(island.m_contacts.size()), island.m_contacts.data(),
+	const auto contacts_count = static_cast<contact_count_t>(island.m_contacts.size());
+
+	auto positionConstraints = PositionConstraintsContainer{
+		contacts_count, m_stackAllocator.AllocateArray<PositionConstraint>(contacts_count), m_stackAllocator
+	};
+	InitPosConstraints(positionConstraints.data(), contacts_count, island.m_contacts.data());
+
+	auto velocityConstraints = VelocityConstraintsContainer{
+		contacts_count, m_stackAllocator.AllocateArray<VelocityConstraint>(contacts_count), m_stackAllocator
+	};
+	InitVelConstraints(velocityConstraints.data(), contacts_count, island.m_contacts.data(),
 					   step.warmStarting? step.dtRatio: float_t{0});
 	
 	auto velocities = VelocityContainer{island.m_bodies.size(), m_stackAllocator.AllocateArray<Velocity>(island.m_bodies.size()), m_stackAllocator};
@@ -755,21 +791,14 @@ bool World::Solve(const TimeStep& step, Island& island)
 		velocities.push_back(new_velocity);
 	}
 	
-	{
-		const auto count = island.m_contacts.size();
-		for (auto i = decltype(count){0}; i < count; ++i)
-		{
-			const auto& pc = positionConstraints.data()[i];
-			const auto posA = positions.data()[pc.bodyA.index];
-			const auto posB = positions.data()[pc.bodyB.index];
-			const auto worldManifold = GetWorldManifold(pc, posA, posB);
-			velocityConstraints.data()[i].Update(worldManifold, posA.c, posB.c, velocities.data(), true);
-		}
-	}
+	UpdateVelocityConstraints(velocityConstraints.data(),
+							  velocities.data(),
+							  contacts_count,
+							  positionConstraints.data(), positions.data());
 	
 	if (step.warmStarting)
 	{
-		WarmStart(static_cast<contact_count_t>(island.m_contacts.size()), velocityConstraints.data(), velocities.data());
+		WarmStartVelocities(contacts_count, velocityConstraints.data(), velocities.data());
 	}
 
 	const auto solverData = SolverData{step, positions.data(), velocities.data()};
@@ -786,12 +815,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 			joint->SolveVelocityConstraints(solverData);
 		}
 
-		const auto count = island.m_contacts.size();
-		for (auto j = decltype(count){0}; j < count; ++j)
-		{
-			auto& vc = velocityConstraints.data()[j];
-			SolveVelocityConstraint(vc, velocities.data()[vc.bodyA.GetIndex()], velocities.data()[vc.bodyB.GetIndex()]);
-		}
+		SolveVelocityConstraints(contacts_count, velocityConstraints.data(), velocities.data());
 	}
 	
 	// updates array of tentative new body positions per the velocities as if there were no obstacles...
@@ -801,7 +825,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 	auto iterationSolved = TimeStep::InvalidIteration;
 	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
 	{
-		const auto contactsOkay = SolvePositionConstraints(positionConstraints.data(), island.m_contacts.size(), positions.data());
+		const auto contactsOkay = SolvePositionConstraints(positionConstraints.data(), contacts_count, positions.data());
 		const auto jointsOkay = [&]()
 		{
 			auto allOkay = true;
@@ -824,7 +848,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 	}
 	
 	// Update normal and tangent impulses of contacts' manifold points
-	StoreImpulses(island.m_contacts.size(), velocityConstraints.data(), island.m_contacts.data());
+	StoreImpulses(contacts_count, velocityConstraints.data(), island.m_contacts.data());
 	
 	// Updates m_bodies[i].m_sweep.pos1 to positions[i]
 //	CopyOut(positions.data(), velocities.data(), island.m_bodies);
@@ -1012,13 +1036,14 @@ void World::Update(Body& body, const Position pos, const Velocity vel)
 bool World::SolveTOI(const TimeStep& step, Island& island)
 {
 	assert(island.m_bodies.size() >= 2);
-	
+	const auto contacts_count = static_cast<contact_count_t>(island.m_contacts.size());
+
 	auto velocities = VelocityContainer{island.m_bodies.size(), m_stackAllocator.AllocateArray<Velocity>(island.m_bodies.size()), m_stackAllocator};
 	auto positions = PositionContainer{island.m_bodies.size(), m_stackAllocator.AllocateArray<Position>(island.m_bodies.size()), m_stackAllocator};
-	auto positionConstraints = PositionConstraintsContainer{island.m_contacts.size(), m_stackAllocator.AllocateArray<PositionConstraint>(island.m_contacts.size()), m_stackAllocator};
-	auto velocityConstraints = VelocityConstraintsContainer{island.m_contacts.size(), m_stackAllocator.AllocateArray<VelocityConstraint>(island.m_contacts.size()), m_stackAllocator};
-	InitPosConstraints(positionConstraints.data(), static_cast<contact_count_t>(island.m_contacts.size()), island.m_contacts.data());
-	InitVelConstraints(velocityConstraints.data(), static_cast<contact_count_t>(island.m_contacts.size()), island.m_contacts.data(),
+	auto positionConstraints = PositionConstraintsContainer{contacts_count, m_stackAllocator.AllocateArray<PositionConstraint>(contacts_count), m_stackAllocator};
+	auto velocityConstraints = VelocityConstraintsContainer{contacts_count, m_stackAllocator.AllocateArray<VelocityConstraint>(contacts_count), m_stackAllocator};
+	InitPosConstraints(positionConstraints.data(), contacts_count, island.m_contacts.data());
+	InitVelConstraints(velocityConstraints.data(), contacts_count, island.m_contacts.data(),
 					   step.warmStarting? step.dtRatio: float_t{0});
 	
 	// Initialize the body state.
@@ -1032,7 +1057,7 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	auto positionConstraintsSolved = TimeStep::InvalidIteration;
 	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
 	{
-		if (SolveTOIPositionConstraints(positionConstraints.data(), island.m_contacts.size(), positions.data(), 0, 1))
+		if (SolveTOIPositionConstraints(positionConstraints.data(), contacts_count, positions.data(), 0, 1))
 		{
 			positionConstraintsSolved = i;
 			break;
@@ -1045,27 +1070,13 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	
 	// No warm starting is needed for TOI events because warm
 	// starting impulses were applied in the discrete solver.
-	{
-		const auto count = island.m_contacts.size();
-		for (auto i = decltype(count){0}; i < count; ++i)
-		{
-			const auto& pc = positionConstraints.data()[i];
-			const auto posA = positions.data()[pc.bodyA.index];
-			const auto posB = positions.data()[pc.bodyB.index];
-			const auto worldManifold = GetWorldManifold(pc, posA, posB);
-			velocityConstraints.data()[i].Update(worldManifold, posA.c, posB.c, velocities.data(), true);
-		}
-	}
+	UpdateVelocityConstraints(velocityConstraints.data(), velocities.data(), contacts_count,
+							  positionConstraints.data(), positions.data());
 
 	// Solve velocity constraints.
 	for (auto i = decltype(step.velocityIterations){0}; i < step.velocityIterations; ++i)
 	{
-		const auto count = island.m_contacts.size();
-		for (auto j = decltype(count){0}; j < count; ++j)
-		{
-			auto& vc = velocityConstraints.data()[j];
-			SolveVelocityConstraint(vc, velocities.data()[vc.bodyA.GetIndex()], velocities.data()[vc.bodyB.GetIndex()]);
-		}
+		SolveVelocityConstraints(contacts_count, velocityConstraints.data(), velocities.data());
 	}
 	
 	// Don't store TOI contact forces for warm starting because they can be quite large.
