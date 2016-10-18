@@ -37,73 +37,6 @@ namespace box2d {
 		
 		/// Minimum time of impact separation for TOI position constraints.
 		static constexpr auto MinToiSeparation = BOX2D_MAGIC(-LinearSlop * float_t{3} / float_t{2}); // aka -LinearSlop * 1.5
-		
-		/// Initializing constructor.
-		/// @param positions Array of positions, one for every body referenced by a contact.
-		/// @param velocities Array of velocities, for every body referenced by a contact.
-		/// @param count Count of contacts.
-		/// @param positionConstraints Array of position-constraints (1 per contact).
-		///   Must be non-null if count is greater than zero.
-		/// @param velocityConstraints Array of velocity-constraints (1 per contact).
-		///   Must be non-null if count is greater than zero.
-		/// @note Behavior is undefined if count is greater than zero and any of the arrays are
-		///   <code>nullptr</code>.
-		ContactSolver(Position* positions, Velocity* velocities,
-					  contact_count_t count,
-					  PositionConstraint* positionConstraints,
-					  VelocityConstraint* velocityConstraints) noexcept :
-			m_positions{positions},
-			m_velocities{velocities},
-			m_count{count},
-			m_positionConstraints{positionConstraints},
-			m_velocityConstraints{velocityConstraints}
-		{
-			assert((count == 0) || (positions && velocities && positionConstraints && velocityConstraints));
-		}
-		
-		~ContactSolver() = default;
-		
-		ContactSolver() = delete;
-		ContactSolver(const ContactSolver& copy) = delete;
-		
-		/// Updates velocity constraints.
-		/// @detail
-		/// Updates the position dependent portions of the velocity constraints with the
-		/// information from the current position constraints.
-		/// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.
-		/// @post Velocity constraints will have their "normal" field set to the world manifold normal for them.
-		/// @post Velocity constraints will have their constraint points updated.
-		/// @sa SolveVelocityConstraints.
-		[[deprecated]] void UpdateVelocityConstraints();
-				
-		/// "Solves" the velocity constraints.
-		/// @detail Updates the velocities and velocity constraint points' normal and tangent impulses.
-		/// @pre <code>UpdateVelocityConstraints</code> has been called on this object.
-		void SolveVelocityConstraints();
-		
-		/// Solves position constraints.
-		/// @detail This updates positions (and nothing else) by calling the position constraint solving function.
-		/// @return true if the minimum separation is above the minimum separation threshold, false otherwise.
-		/// @sa MinSeparationThreshold.
-		/// @sa Solve.
-		bool SolvePositionConstraints();
-		
-		/// Solves TOI position constraints.
-		/// @detail Sequential position solver for TOI-based position constraints.
-		///   This only updates positions for the bodies identified by the given indexes (and nothing else).
-		/// @param indexA Index within the island of body A.
-		/// @param indexB Index within the island of body B.
-		/// @return true if the minimum separation is above the minimum TOI separation value, false otherwise.
-		bool SolveTOIPositionConstraints(island_count_t indexA, island_count_t indexB);
-		
-	private:
-		
-		Position* const m_positions; ///< Array of positions (8-bytes).
-		Velocity* const m_velocities; ///< Array of velocities (8-bytes).
-		
-		const contact_count_t m_count; ///< Count of elements (contacts) in the contact position-constraint and velocity-constraint arrays (4-bytes).
-		PositionConstraint* const m_positionConstraints; ///< Array of position-constraints (1 per contact, 8-bytes).
-		VelocityConstraint* const m_velocityConstraints; ///< Array of velocity-constraints (1 per contact, 8-bytes).
 	};
 	
 	struct PositionSolution
@@ -123,12 +56,6 @@ namespace box2d {
 		return PositionSolution{lhs.pos_a - rhs.pos_a, lhs.pos_b - rhs.pos_b, lhs.min_separation - rhs.min_separation};
 	}
 
-	bool SolvePositionConstraints(PositionConstraint* positionConstraints, size_t count,
-								  Position* positions);
-
-	bool SolveTOIPositionConstraints(PositionConstraint* positionConstraints, size_t count,
-									 Position* positions, island_count_t indexA, island_count_t indexB);
-
 	/// Solves the given position constraint.
 	/// @detail
 	/// This pushes apart the two given positions for every point in the contact position constraint
@@ -145,14 +72,28 @@ namespace box2d {
 	PositionSolution Solve(const PositionConstraint& pc, Position positionA, Position positionB,
 						   float_t resolution_rate, float_t max_separation, float_t max_correction);
 
-	class WorldManifold;
-
 	/// Solves the velocity constraint.
 	/// @detail This updates the tangent and normal impulses of the velocity constraint points of the given velocity
 	///   constraint and updates the given velocities.
 	/// @pre The velocity constraint must have a valid normal, a valid tangent,
 	///   valid point relative positions, and valid velocity biases.
 	void SolveVelocityConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB);
+	
+	/// Solves the given position constraints.
+	/// @detail This updates positions (and nothing else) by calling the position constraint solving function.
+	/// @return true if the minimum separation is above the minimum separation threshold, false otherwise.
+	/// @sa MinSeparationThreshold.
+	/// @sa Solve.
+	bool SolvePositionConstraints(const PositionConstraint* positionConstraints, size_t count,
+								  Position* positions);
+	
+	/// Solves the given position constraints for TOI.
+	/// @detail This updates positions for the bodies identified by the given indexes (and nothing else).
+	/// @param indexA Index within the island of body A.
+	/// @param indexB Index within the island of body B.
+	/// @return true if the minimum separation is above the minimum TOI separation value, false otherwise.
+	bool SolveTOIPositionConstraints(const PositionConstraint* positionConstraints, size_t count,
+									 Position* positions, island_count_t indexA, island_count_t indexB);
 	
 } // namespace box2d
 

@@ -726,6 +726,14 @@ void World::Solve(const TimeStep& step)
 			}		
 		}
 		
+		/// Updates the given velocity constraints.
+		/// @detail
+		/// Updates the position dependent portions of the velocity constraints with the
+		/// information from the current position constraints.
+		/// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.
+		/// @post Velocity constraints will have their "normal" field set to the world manifold normal for them.
+		/// @post Velocity constraints will have their constraint points updated.
+		/// @sa SolveVelocityConstraints.
 		inline void UpdateVelocityConstraints(VelocityConstraint* velocityConstraints,
 									   const Velocity* const velocities,
 									   contact_count_t count,
@@ -742,9 +750,12 @@ void World::Solve(const TimeStep& step)
 			}
 		}
 		
+		/// "Solves" the velocity constraints.
+		/// @detail Updates the velocities and velocity constraint points' normal and tangent impulses.
+		/// @pre <code>UpdateVelocityConstraints</code> has been called on the velocity constraints.
 		inline void SolveVelocityConstraints(contact_count_t count,
 									  VelocityConstraint* velocityConstraints,
-									  Velocity* const velocities)
+									  Velocity* velocities)
 		{
 			for (auto j = decltype(count){0}; j < count; ++j)
 			{

@@ -457,28 +457,7 @@ PositionSolution box2d::Solve(const PositionConstraint& pc, Position posA, Posit
 	return PositionSolution{posA, posB, minSeparation};
 }
 
-void ContactSolver::UpdateVelocityConstraints()
-{
-	for (auto i = decltype(m_count){0}; i < m_count; ++i)
-	{
-		const auto& pc = m_positionConstraints[i];
-		const auto posA = m_positions[pc.bodyA.index];
-		const auto posB = m_positions[pc.bodyB.index];
-		const auto worldManifold = GetWorldManifold(pc, posA, posB);
-		m_velocityConstraints[i].Update(worldManifold, posA.c, posB.c, m_velocities, true);
-	}
-}
-
-void ContactSolver::SolveVelocityConstraints()
-{
-	for (auto i = decltype(m_count){0}; i < m_count; ++i)
-	{
-		auto& vc = m_velocityConstraints[i];
-		SolveVelocityConstraint(vc, m_velocities[vc.bodyA.GetIndex()], m_velocities[vc.bodyB.GetIndex()]);
-	}
-}
-
-bool box2d::SolvePositionConstraints(PositionConstraint* positionConstraints, size_t count,
+bool box2d::SolvePositionConstraints(const PositionConstraint* positionConstraints, size_t count,
 									 Position* positions)
 {
 	auto minSeparation = MaxFloat;
@@ -499,13 +478,7 @@ bool box2d::SolvePositionConstraints(PositionConstraint* positionConstraints, si
 	return minSeparation >= -LinearSlop * 2;
 }
 
-// Sequential solver.
-bool ContactSolver::SolvePositionConstraints()
-{
-	return ::box2d::SolvePositionConstraints(m_positionConstraints, m_count, m_positions);
-}
-
-bool box2d::SolveTOIPositionConstraints(PositionConstraint* positionConstraints, size_t count,
+bool box2d::SolveTOIPositionConstraints(const PositionConstraint* positionConstraints, size_t count,
 										Position* positions, island_count_t indexA, island_count_t indexB)
 {
 	auto minSeparation = MaxFloat;
@@ -542,7 +515,3 @@ bool box2d::SolveTOIPositionConstraints(PositionConstraint* positionConstraints,
 	return minSeparation >= -LinearSlop * float_t(3) / float_t(2); // 1.5;
 }
 
-bool ContactSolver::SolveTOIPositionConstraints(island_count_t indexA, island_count_t indexB)
-{
-	return ::box2d::SolveTOIPositionConstraints(m_positionConstraints, m_count, m_positions, indexA, indexB);
-}

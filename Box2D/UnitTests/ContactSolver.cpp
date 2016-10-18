@@ -24,19 +24,6 @@
 
 using namespace box2d;
 
-TEST(ContactSolver, ByteSizeIs40)
-{
-	EXPECT_EQ(sizeof(ContactSolver), size_t(40));
-}
-
-TEST(ContactSolver, ZeroCountInit)
-{
-	ContactSolver solver{nullptr, nullptr, 0, nullptr, nullptr};
-	EXPECT_TRUE(solver.SolvePositionConstraints());
-	solver.SolveVelocityConstraints();
-	EXPECT_TRUE(solver.SolveTOIPositionConstraints(0, 0));
-}
-
 TEST(ContactSolver, SolveHorizontallyTouchingDoesntMove)
 {
 	const auto old_pA = Position{Vec2{-2, 0}, 0};
