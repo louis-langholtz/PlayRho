@@ -24,16 +24,22 @@
 
 namespace box2d {
 
+/// Edge shape.
+/// @detail
 /// A line segment (edge) shape. These can be connected in chains or loops
 /// to other edge shapes. The connectivity information is used to ensure
 /// correct contact normals.
+/// @note This data structure is 32-bytes.
 class EdgeShape : public Shape
 {
 public:
-	EdgeShape(): Shape{e_edge} {}
+	EdgeShape() noexcept: Shape{e_edge} {}
 
-	constexpr EdgeShape(const Vec2& v1, const Vec2& v2):
-		Shape{e_edge}, m_vertex1{v1}, m_vertex2{v2} {}
+	constexpr EdgeShape(Vec2 v1, Vec2 v2, Vec2 v0 = GetInvalid<Vec2>(), Vec2 v3 = GetInvalid<Vec2>()) noexcept:
+		Shape{e_edge},
+		m_vertex0{v0}, m_vertex1{v1}, m_vertex2{v2}, m_vertex3{v3}
+	{
+	}
 
 	EdgeShape(const EdgeShape&) = default;
 

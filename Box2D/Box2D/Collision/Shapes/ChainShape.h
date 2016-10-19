@@ -71,7 +71,7 @@ public:
 	void SetNextVertex(const Vec2& nextVertex) noexcept;
 
 	/// Get a child edge.
-	void GetChildEdge(EdgeShape* edge, child_count_t index) const;
+	EdgeShape GetChildEdge(child_count_t index) const;
 
 	/// Get the vertex count.
 	child_count_t GetVertexCount() const noexcept { return m_count; }

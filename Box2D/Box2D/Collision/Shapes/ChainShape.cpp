@@ -111,30 +111,14 @@ void ChainShape::SetNextVertex(const Vec2& nextVertex) noexcept
 	m_nextVertex = nextVertex;
 }
 
-void ChainShape::GetChildEdge(EdgeShape* edge, child_count_t index) const
+EdgeShape ChainShape::GetChildEdge(child_count_t index) const
 {
 	assert((0 <= index) && (index < (m_count - 1)));
-
-	edge->Set(m_vertices[index + 0], m_vertices[index + 1]);
-
-	if (index > 0)
-	{
-		edge->SetVertex0(m_vertices[index - 1]);
-	}
-	else if (HasPrevVertex())
-	{
-		edge->SetVertex0(m_prevVertex);
-	}
-
 	assert(m_count >= 2);
-	if (index < (m_count - 2))
-	{
-		edge->SetVertex3(m_vertices[index + 2]);
-	}
-	else if (HasNextVertex())
-	{
-		edge->SetVertex3(m_nextVertex);
-	}
+
+	const auto v0 = (index > 0)? m_vertices[index - 1]: m_prevVertex;
+	const auto v3 = (index < (m_count - 2))? m_vertices[index + 2]: m_nextVertex;
+	return EdgeShape{m_vertices[index + 0], m_vertices[index + 1], v0, v3};
 }
 
 float_t box2d::GetRadius(const ChainShape& shape)

@@ -52,10 +52,6 @@ ChainAndPolygonContact::ChainAndPolygonContact(Fixture* fixtureA, child_count_t 
 
 Manifold ChainAndPolygonContact::Evaluate(const Transformation& xfA, const Transformation& xfB) const
 {
-	EdgeShape edge;
-	{
-		const auto chain = static_cast<ChainShape*>(m_fixtureA->GetShape());
-		chain->GetChildEdge(&edge, m_indexA);
-	}
+	const auto edge = static_cast<ChainShape*>(m_fixtureA->GetShape())->GetChildEdge(m_indexA);
 	return CollideShapes(edge, xfA, *static_cast<PolygonShape*>(m_fixtureB->GetShape()), xfB);
 }

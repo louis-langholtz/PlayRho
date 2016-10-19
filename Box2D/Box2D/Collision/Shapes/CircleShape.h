@@ -24,7 +24,7 @@
 
 namespace box2d {
 
-/// A circle shape.
+/// Circle shape.
 class CircleShape : public Shape
 {
 public:
