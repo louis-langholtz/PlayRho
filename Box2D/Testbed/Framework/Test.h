@@ -23,6 +23,7 @@
 #include <Box2D/Box2D.h>
 #include <cstdlib>
 #include "Drawer.h"
+#include <Box2D/Collision/CollideShapes.hpp>
 
 #include <glfw/glfw3.h>
 

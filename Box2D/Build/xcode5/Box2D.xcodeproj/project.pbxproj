@@ -28,6 +28,10 @@
 		4726DD381D387D630012A882 /* Manifold.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD351D387D630012A882 /* Manifold.hpp */; };
 		4726DD391D387D630012A882 /* Manifold.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD351D387D630012A882 /* Manifold.hpp */; };
 		4736DE891DB7DB3B003993CB /* Vec3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4736DE881DB7DB3B003993CB /* Vec3.cpp */; };
+		4736DE8C1DB806AE003993CB /* CollideShapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4736DE8A1DB806AE003993CB /* CollideShapes.cpp */; };
+		4736DE8D1DB806AE003993CB /* CollideShapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4736DE8A1DB806AE003993CB /* CollideShapes.cpp */; };
+		4736DE8E1DB806AE003993CB /* CollideShapes.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4736DE8B1DB806AE003993CB /* CollideShapes.hpp */; };
+		4736DE8F1DB806AE003993CB /* CollideShapes.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4736DE8B1DB806AE003993CB /* CollideShapes.hpp */; };
 		473971A61D99DFFF00F7137F /* List.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473971A51D99DFFE00F7137F /* List.cpp */; };
 		473971A81D9D9B4C00F7137F /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473971A71D9D9B4C00F7137F /* Math.cpp */; };
 		473971AA1D9F0E4E00F7137F /* ContactSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473971A91D9F0E4E00F7137F /* ContactSolver.cpp */; };
@@ -102,9 +106,6 @@
 		47A9833E1D0F7ABA00AA7D1A /* ConstJointIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47A9833C1D0F7ABA00AA7D1A /* ConstJointIterator.cpp */; };
 		47A9833F1D0F7ABA00AA7D1A /* ConstJointIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47A9833D1D0F7ABA00AA7D1A /* ConstJointIterator.hpp */; };
 		47AA5D9B1C4C5FBE008AF2BA /* BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8927141C3E5900F1753A /* BroadPhase.cpp */; };
-		47AA5D9C1C4C5FBE008AF2BA /* CollideCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8929141C3E5900F1753A /* CollideCircle.cpp */; };
-		47AA5D9D1C4C5FBE008AF2BA /* CollideEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB892A141C3E5900F1753A /* CollideEdge.cpp */; };
-		47AA5D9E1C4C5FBE008AF2BA /* CollidePolygon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB892B141C3E5900F1753A /* CollidePolygon.cpp */; };
 		47AA5D9F1C4C5FBE008AF2BA /* Collision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB892C141C3E5900F1753A /* Collision.cpp */; };
 		47AA5DA01C4C5FBE008AF2BA /* Distance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB892E141C3E5900F1753A /* Distance.cpp */; };
 		47AA5DA11C4C5FBE008AF2BA /* DynamicTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8930141C3E5900F1753A /* DynamicTree.cpp */; };
@@ -253,9 +254,6 @@
 		80BB8987141C3E5900F1753A /* Box2D.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8923141C3E5900F1753A /* Box2D.h */; };
 		80BB8988141C3E5900F1753A /* BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8927141C3E5900F1753A /* BroadPhase.cpp */; };
 		80BB8989141C3E5900F1753A /* BroadPhase.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8928141C3E5900F1753A /* BroadPhase.h */; };
-		80BB898A141C3E5900F1753A /* CollideCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8929141C3E5900F1753A /* CollideCircle.cpp */; };
-		80BB898B141C3E5900F1753A /* CollideEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB892A141C3E5900F1753A /* CollideEdge.cpp */; };
-		80BB898C141C3E5900F1753A /* CollidePolygon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB892B141C3E5900F1753A /* CollidePolygon.cpp */; };
 		80BB898D141C3E5900F1753A /* Collision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB892C141C3E5900F1753A /* Collision.cpp */; };
 		80BB898E141C3E5900F1753A /* Collision.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB892D141C3E5900F1753A /* Collision.h */; };
 		80BB898F141C3E5900F1753A /* Distance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB892E141C3E5900F1753A /* Distance.cpp */; };
@@ -422,6 +420,8 @@
 		4726DD291D31B4090012A882 /* AABB.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AABB.hpp; sourceTree = "<group>"; };
 		4726DD351D387D630012A882 /* Manifold.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Manifold.hpp; sourceTree = "<group>"; };
 		4736DE881DB7DB3B003993CB /* Vec3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vec3.cpp; sourceTree = "<group>"; };
+		4736DE8A1DB806AE003993CB /* CollideShapes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollideShapes.cpp; sourceTree = "<group>"; };
+		4736DE8B1DB806AE003993CB /* CollideShapes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CollideShapes.hpp; sourceTree = "<group>"; };
 		473971A51D99DFFE00F7137F /* List.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = List.cpp; sourceTree = "<group>"; };
 		473971A71D9D9B4C00F7137F /* Math.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Math.cpp; sourceTree = "<group>"; };
 		473971A91D9F0E4E00F7137F /* ContactSolver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactSolver.cpp; sourceTree = "<group>"; };
@@ -558,9 +558,6 @@
 		80BB8923141C3E5900F1753A /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
 		80BB8927141C3E5900F1753A /* BroadPhase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BroadPhase.cpp; sourceTree = "<group>"; };
 		80BB8928141C3E5900F1753A /* BroadPhase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BroadPhase.h; sourceTree = "<group>"; };
-		80BB8929141C3E5900F1753A /* CollideCircle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollideCircle.cpp; sourceTree = "<group>"; };
-		80BB892A141C3E5900F1753A /* CollideEdge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollideEdge.cpp; sourceTree = "<group>"; };
-		80BB892B141C3E5900F1753A /* CollidePolygon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollidePolygon.cpp; sourceTree = "<group>"; };
 		80BB892C141C3E5900F1753A /* Collision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; path = Collision.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		80BB892D141C3E5900F1753A /* Collision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 2; path = Collision.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		80BB892E141C3E5900F1753A /* Distance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; path = Distance.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -844,9 +841,8 @@
 			children = (
 				80BB8927141C3E5900F1753A /* BroadPhase.cpp */,
 				80BB8928141C3E5900F1753A /* BroadPhase.h */,
-				80BB8929141C3E5900F1753A /* CollideCircle.cpp */,
-				80BB892A141C3E5900F1753A /* CollideEdge.cpp */,
-				80BB892B141C3E5900F1753A /* CollidePolygon.cpp */,
+				4736DE8A1DB806AE003993CB /* CollideShapes.cpp */,
+				4736DE8B1DB806AE003993CB /* CollideShapes.hpp */,
 				80BB892C141C3E5900F1753A /* Collision.cpp */,
 				80BB892D141C3E5900F1753A /* Collision.h */,
 				4726DD351D387D630012A882 /* Manifold.hpp */,
@@ -1202,6 +1198,7 @@
 				47AA5DDF1C4C5FBE008AF2BA /* Fixture.h in Headers */,
 				47AA5DE01C4C5FBE008AF2BA /* Island.h in Headers */,
 				47AA5DE11C4C5FBE008AF2BA /* TimeStep.h in Headers */,
+				4736DE8F1DB806AE003993CB /* CollideShapes.hpp in Headers */,
 				47CB34411D6F3A8500828126 /* MassData.hpp in Headers */,
 				47AA5DE21C4C5FBE008AF2BA /* World.h in Headers */,
 				4726DD2D1D31B4090012A882 /* AABB.hpp in Headers */,
@@ -1338,6 +1335,7 @@
 				80620F90168B934600D46C8D /* MotorJoint.h in Headers */,
 				47F932A61D11C283006A193C /* AllocatedArray.hpp in Headers */,
 				47AA63AD1D1078D000726CA2 /* ConstContactIterator.hpp in Headers */,
+				4736DE8E1DB806AE003993CB /* CollideShapes.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1534,10 +1532,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				47AA5D9B1C4C5FBE008AF2BA /* BroadPhase.cpp in Sources */,
-				47AA5D9C1C4C5FBE008AF2BA /* CollideCircle.cpp in Sources */,
-				47AA5D9D1C4C5FBE008AF2BA /* CollideEdge.cpp in Sources */,
 				4726DD2B1D31B4090012A882 /* AABB.cpp in Sources */,
-				47AA5D9E1C4C5FBE008AF2BA /* CollidePolygon.cpp in Sources */,
 				47AA5D9F1C4C5FBE008AF2BA /* Collision.cpp in Sources */,
 				47AA5DA01C4C5FBE008AF2BA /* Distance.cpp in Sources */,
 				47AA5DA11C4C5FBE008AF2BA /* DynamicTree.cpp in Sources */,
@@ -1551,6 +1546,7 @@
 				47AA5DA91C4C5FBE008AF2BA /* Math.cpp in Sources */,
 				47AA5DAA1C4C5FBE008AF2BA /* Settings.cpp in Sources */,
 				47AA5DAB1C4C5FBE008AF2BA /* StackAllocator.cpp in Sources */,
+				4736DE8D1DB806AE003993CB /* CollideShapes.cpp in Sources */,
 				47AA5DAC1C4C5FBE008AF2BA /* Timer.cpp in Sources */,
 				47AA5DAD1C4C5FBE008AF2BA /* Body.cpp in Sources */,
 				47AA5DAE1C4C5FBE008AF2BA /* ContactManager.cpp in Sources */,
@@ -1641,9 +1637,6 @@
 				47AA63A41D1077E600726CA2 /* ContactList.cpp in Sources */,
 				80BB8988141C3E5900F1753A /* BroadPhase.cpp in Sources */,
 				47AA639B1D0F7FDA00726CA2 /* ConstFixtureIterator.cpp in Sources */,
-				80BB898A141C3E5900F1753A /* CollideCircle.cpp in Sources */,
-				80BB898B141C3E5900F1753A /* CollideEdge.cpp in Sources */,
-				80BB898C141C3E5900F1753A /* CollidePolygon.cpp in Sources */,
 				477DB2981D14BB2000846ED6 /* ContactEdgeIterator.cpp in Sources */,
 				80BB898D141C3E5900F1753A /* Collision.cpp in Sources */,
 				477DB2A41D15F60B00846ED6 /* JointEdgeIterator.cpp in Sources */,
@@ -1686,6 +1679,7 @@
 				47A983361D0F4EFF00AA7D1A /* JointList.cpp in Sources */,
 				80BB89BE141C3E5900F1753A /* Contact.cpp in Sources */,
 				80BB89C0141C3E5900F1753A /* ContactSolver.cpp in Sources */,
+				4736DE8C1DB806AE003993CB /* CollideShapes.cpp in Sources */,
 				80BB89C2141C3E5900F1753A /* EdgeAndCircleContact.cpp in Sources */,
 				80BB89C4141C3E5900F1753A /* EdgeAndPolygonContact.cpp in Sources */,
 				80BB89C6141C3E5900F1753A /* PolygonAndCircleContact.cpp in Sources */,
