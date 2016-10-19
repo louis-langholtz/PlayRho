@@ -25,10 +25,6 @@
 #include <Box2D/Dynamics/Joints/PulleyJoint.h>
 #include <Box2D/Dynamics/Contacts/Contact.h>
 #include <Box2D/Collision/BroadPhase.h>
-#include <Box2D/Collision/Shapes/CircleShape.h>
-#include <Box2D/Collision/Shapes/EdgeShape.h>
-#include <Box2D/Collision/Shapes/ChainShape.h>
-#include <Box2D/Collision/Shapes/PolygonShape.h>
 #include <Box2D/Collision/WorldManifold.hpp>
 #include <Box2D/Common/Timer.h>
 #include <Box2D/Common/AllocatedArray.hpp>
