@@ -27,6 +27,7 @@
 		4726DD2D1D31B4090012A882 /* AABB.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD291D31B4090012A882 /* AABB.hpp */; };
 		4726DD381D387D630012A882 /* Manifold.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD351D387D630012A882 /* Manifold.hpp */; };
 		4726DD391D387D630012A882 /* Manifold.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD351D387D630012A882 /* Manifold.hpp */; };
+		4736DE891DB7DB3B003993CB /* Vec3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4736DE881DB7DB3B003993CB /* Vec3.cpp */; };
 		473971A61D99DFFF00F7137F /* List.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473971A51D99DFFE00F7137F /* List.cpp */; };
 		473971A81D9D9B4C00F7137F /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473971A71D9D9B4C00F7137F /* Math.cpp */; };
 		473971AA1D9F0E4E00F7137F /* ContactSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473971A91D9F0E4E00F7137F /* ContactSolver.cpp */; };
@@ -420,6 +421,7 @@
 		4726DD281D31B4090012A882 /* AABB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AABB.cpp; sourceTree = "<group>"; };
 		4726DD291D31B4090012A882 /* AABB.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AABB.hpp; sourceTree = "<group>"; };
 		4726DD351D387D630012A882 /* Manifold.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Manifold.hpp; sourceTree = "<group>"; };
+		4736DE881DB7DB3B003993CB /* Vec3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vec3.cpp; sourceTree = "<group>"; };
 		473971A51D99DFFE00F7137F /* List.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = List.cpp; sourceTree = "<group>"; };
 		473971A71D9D9B4C00F7137F /* Math.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Math.cpp; sourceTree = "<group>"; };
 		473971A91D9F0E4E00F7137F /* ContactSolver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactSolver.cpp; sourceTree = "<group>"; };
@@ -785,6 +787,7 @@
 				474BC4031D41278800447DCD /* TimeOfImpact.cpp */,
 				474BC4041D41278800447DCD /* Transformation.cpp */,
 				474BC4051D41278800447DCD /* Vec2.cpp */,
+				4736DE881DB7DB3B003993CB /* Vec3.cpp */,
 				47FFD0FA1DAC3EFC000D6D0E /* VelocityConstraint.cpp */,
 				474BC4061D41278800447DCD /* World.cpp */,
 				47E8416F1DB3FDC400E5F311 /* WorldManifold.cpp */,
@@ -1505,6 +1508,7 @@
 				474BC4351D413DC200447DCD /* Mat33.cpp in Sources */,
 				475A94611D9996B6000CA9A8 /* Contact.cpp in Sources */,
 				474BC4361D413DC200447DCD /* PolygonShape.cpp in Sources */,
+				4736DE891DB7DB3B003993CB /* Vec3.cpp in Sources */,
 				474BC4371D413DC200447DCD /* Rot.cpp in Sources */,
 				474BC4381D413DC200447DCD /* SimplexCache.cpp in Sources */,
 				47FFD0F91DABDC63000D6D0E /* Mat22.cpp in Sources */,

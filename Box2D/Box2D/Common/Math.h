@@ -182,6 +182,8 @@ inline float_t GetAngle(Vec2 value)
 }
 
 /// A 2D column vector with 3 elements.
+/// @note This data structure is 3 times the size of <code>float_t</code> -
+///   i.e. 12-bytes (with 4-byte float_t).
 struct Vec3
 {
 	/// Default constructor does nothing (for performance).
@@ -301,6 +303,7 @@ constexpr Mat22 Invert(const Mat22 value) noexcept
 }
 
 /// A 3-by-3 matrix. Stored in column-major order.
+/// @note This data structure is 36-bytes large (on at least one 64-bit platform with 4-byte float_t).
 struct Mat33
 {
 	/// The default constructor does nothing (for performance).

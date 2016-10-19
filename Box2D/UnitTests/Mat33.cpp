@@ -21,6 +21,11 @@
 
 using namespace box2d;
 
+TEST(Mat33, ByteSizeIs36)
+{
+	EXPECT_EQ(sizeof(Mat33), size_t(36));
+}
+
 TEST(Mat33, Init)
 {
 	Vec3 c1{1, 1, 1};

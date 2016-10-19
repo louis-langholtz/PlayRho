@@ -288,7 +288,7 @@ namespace box2d
 	/// @param xfA Transformation for shape A.
 	/// @param shapeB Shape B.
 	/// @param xfB Transformation for shape B.
-	/// @return An unset-type manifold if the shapes aren't touching, else a circle-type manifold with one point.
+	/// @return An unset-type manifold if the shapes aren't touching, a circles-type manifold with one point otherwise.
 	Manifold CollideShapes(const CircleShape& shapeA, const Transformation& xfA, const CircleShape& shapeB, const Transformation& xfB);
 	
 	/// Computes the collision manifold between a polygon and a circle.
@@ -296,7 +296,7 @@ namespace box2d
 	/// @param xfA Transformation for shape A.
 	/// @param shapeB Shape B.
 	/// @param xfB Transformation for shape B.
-	/// @return Manifold value with one or more points if the shapes are touching.
+	/// @return An unset-type manifold if the shapes aren't touching, a face-A-type manifold with one point otherwise.
 	Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, const CircleShape& shapeB, const Transformation& xfB);
 	
 	/// Computes the collision manifold between two polygons.
@@ -304,7 +304,7 @@ namespace box2d
 	/// @param xfA Transformation for shape A.
 	/// @param shapeB Shape B.
 	/// @param xfB Transformation for shape B.
-	/// @return Manifold value with one or more points if the shapes are touching.
+	/// @return An unset-type manifold if the shapes aren't touching, a face-A or face-B type manifold with one or two points otherwise.
 	Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, const PolygonShape& shapeB, const Transformation& xfB);
 	
 	/// Computes the collision manifold between an edge and a circle.
