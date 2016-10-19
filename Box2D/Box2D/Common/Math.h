@@ -612,30 +612,47 @@ constexpr inline Vec2 GetFwdPerpendicular(const Vec2 vector) noexcept
 }
 
 /// Performs the dot product on two vectors (A and B).
-/// @detail The dot product of two vectors is defined as the magnitude of vector A
-///   mulitiplied by the magnitude of vector B multiplied by the cosine of the angle
-///   between the two vectors (A and B). Thus the dot product of two vectors is a
-///   value ranging between plus and minus of the magnitudes of each vector times each
-///   other. The middle value of 0 indicates that two vectors are at an angle to each other
-///   of +/- 90 degrees.
-/// @param a Vector A.
-/// @param b Vector B.
-/// @return Dot product of the vectors (0 means the two vectors are perpendicular).
+///
+/// @detail The dot product of two vectors is defined as:
+///   the magnitude of vector A, mulitiplied by, the magnitude of vector B,
+///   multiplied by, the cosine of the angle between the two vectors (A and B).
+///   Thus the dot product of two vectors is a value ranging between plus and minus the
+///   magnitudes of each vector times each other.
+///   The middle value of 0 indicates that two vectors are at an angle of +/- 90 degrees
+///   to each other.
+///
+/// @note This operation is commutative.
 /// @note If A and B are the same vectors, LengthSquared(Vec2) returns the same value
 ///   using effectively one less input parameter.
+///
+/// @sa https://en.wikipedia.org/wiki/Dot_product
+///
+/// @param a Vector A.
+/// @param b Vector B.
+///
+/// @return Dot product of the vectors (0 means the two vectors are perpendicular).
+///
 constexpr inline float_t Dot(const Vec2 a, const Vec2 b) noexcept
 {
 	return (a.x * b.x) + (a.y * b.y);
 }
 
 /// Performs the cross product on two vectors.
+///
 /// @detail
 /// This is defined as the result of: <code>(a.x * b.y) - (a.y * b.x)</code>.
+///
+/// @note This operation is anti-commutative.
 /// @note In 2D this produces a scalar.
 /// @note The result will be 0 if either vectors (A or B) have a length of zero.
+///
+/// @sa https://en.wikipedia.org/wiki/Cross_product
+///
 /// @param a Vector A.
 /// @param b Vector B.
-/// @return Cross product of the two vectors. 
+///
+/// @return Cross product of the two vectors.
+///
 constexpr inline float_t Cross(const Vec2 a, const Vec2 b) noexcept
 {
 	return (a.x * b.y) - (a.y * b.x);

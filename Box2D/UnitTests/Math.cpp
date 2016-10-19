@@ -21,6 +21,27 @@
 
 using namespace box2d;
 
+TEST(Math, DotProductOfTwoVecTwoIsCommutative)
+{
+	const auto a = Vec2{float_t(-3.2), float_t(1.9)};
+	const auto b = Vec2{float_t(4.01), float_t(-0.002)};
+	EXPECT_EQ(Dot(a, b), Dot(b, a));
+}
+
+TEST(Math, DotProductOfTwoVecThreeIsCommutative)
+{
+	const auto a = Vec3{float_t(-3.2), float_t(1.9), float_t(36.01)};
+	const auto b = Vec3{float_t(4.01), float_t(-0.002), float_t(1.2)};
+	EXPECT_EQ(Dot(a, b), Dot(b, a));
+}
+
+TEST(Math, CrossProductOfTwoVecTwoIsAntiCommutative)
+{
+	const auto a = Vec2{float_t(-3.2), float_t(1.9)};
+	const auto b = Vec2{float_t(4.01), float_t(-0.002)};
+	EXPECT_EQ(Cross(a, b), -Cross(b, a));
+}
+
 TEST(Math, TransformIsRotatePlusTranslate)
 {
 	const auto vector = Vec2{float_t(19), float_t(-0.5)};
