@@ -23,14 +23,16 @@
 
 namespace box2d {
 
-struct EdgeSeparation
+struct ShapeSeparation
 {
-	PolygonShape::vertex_count_t edge;
+	using index_t = std::remove_const<decltype(MaxShapeVertices)>::type;
+	
+	index_t index;
 	float_t separation;
 };
 
 // Find the max separation between shape1 and shape2 using edge normals from shape1.
-static EdgeSeparation FindMaxSeparation(const PolygonShape& shape1, const Transformation& xf1,
+static ShapeSeparation FindMaxSeparation(const PolygonShape& shape1, const Transformation& xf1,
 										const PolygonShape& shape2, const Transformation& xf2)
 {
 	auto maxSeparation = -MaxFloat;
@@ -61,7 +63,7 @@ static EdgeSeparation FindMaxSeparation(const PolygonShape& shape1, const Transf
 			}
 		}
 	}
-	return EdgeSeparation{index_of_max, maxSeparation};
+	return ShapeSeparation{index_of_max, maxSeparation};
 }
 
 static inline ClipArray FindIncidentEdge(PolygonShape::vertex_count_t index1,
@@ -130,7 +132,6 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, co
 	PolygonShape::vertex_count_t edgeIndex; // reference edge
 	bool flip;
 	constexpr auto k_tol = BOX2D_MAGIC(LinearSlop / 10);
-
 	Manifold::Type manifoldType;
 	if (edgeSepB.separation > (edgeSepA.separation + k_tol))
 	{
@@ -138,7 +139,7 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, co
 		shape2 = &shapeA;
 		xf1 = xfB;
 		xf2 = xfA;
-		edgeIndex = edgeSepB.edge;
+		edgeIndex = static_cast<decltype(edgeIndex)>(edgeSepB.index);
 		manifoldType = Manifold::e_faceB;
 		flip = true;
 	}
@@ -148,17 +149,15 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, co
 		shape2 = &shapeB;
 		xf1 = xfA;
 		xf2 = xfB;
-		edgeIndex = edgeSepA.edge;
+		edgeIndex = static_cast<decltype(edgeIndex)>(edgeSepA.index);
 		manifoldType = Manifold::e_faceA;
 		flip = false;
 	}
 
 	const auto incidentEdge = FindIncidentEdge(edgeIndex, *shape1, xf1, *shape2, xf2);
 
-	const auto count1 = shape1->GetVertexCount();
-
 	const auto iv1 = edgeIndex;
-	const auto iv2 = static_cast<decltype(iv1)>((edgeIndex + 1) % count1);
+	const auto iv2 = static_cast<decltype(iv1)>((edgeIndex + 1) % (shape1->GetVertexCount()));
 
 	auto v11 = shape1->GetVertex(iv1);
 	auto v12 = shape1->GetVertex(iv2);
@@ -174,30 +173,31 @@ Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA, co
 	v11 = Transform(v11, xf1);
 	v12 = Transform(v12, xf1);
 
-	// Face offset.
-	const auto frontOffset = Dot(normal, v11);
-
-	// Side offsets, extended by polytope skin thickness.
-	const auto sideOffset1 = -Dot(tangent, v11) + totalRadius;
-	const auto sideOffset2 = Dot(tangent, v12) + totalRadius;
-
 	// Clip incident edge against extruded edge1 side edges.
 
-	// Clip to box side 1
-	ClipArray clipPoints1;
-	if (ClipSegmentToLine(clipPoints1, incidentEdge, -tangent, sideOffset1, iv1) < clipPoints1.size())
-	{
-		return Manifold{};
-	}
-
-	// Clip to negative box side 1
 	ClipArray clipPoints2;
-	if (ClipSegmentToLine(clipPoints2, clipPoints1,  tangent, sideOffset2, iv2) < clipPoints2.size())
 	{
-		return Manifold{};
-	}
+		// Side offsets, extended by polytope skin thickness.
+		const auto sideOffset1 = -Dot(tangent, v11) + totalRadius;
 
+		// Clip to box side 1
+		ClipArray clipPoints1;
+		if (ClipSegmentToLine(clipPoints1, incidentEdge, -tangent, sideOffset1, iv1) < clipPoints1.size())
+		{
+			return Manifold{};
+		}
+
+		const auto sideOffset2 = Dot(tangent, v12) + totalRadius;
+
+		// Clip to negative box side 1
+		if (ClipSegmentToLine(clipPoints2, clipPoints1,  tangent, sideOffset2, iv2) < clipPoints2.size())
+		{
+			return Manifold{};
+		}
+	}
 	// Now clipPoints2 contains the clipped points.
+
+	const auto frontOffset = Dot(normal, v11); ///< Face offset.
 
 	auto manifold = (manifoldType == Manifold::e_faceA)?
 		Manifold::GetForFaceA(localNormal, planePoint): Manifold::GetForFaceB(localNormal, planePoint);

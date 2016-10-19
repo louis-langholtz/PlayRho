@@ -491,8 +491,7 @@ static inline EPAxis ComputePolygonSeparation(const TempPolygon& shape, const Ed
 {
 	auto axis = EPAxis{EPAxis::e_unknown, EPAxis::InvalidIndex, -MaxFloat};
 	
-	const auto normal = edgeInfo.GetNormal();
-	const auto perp = GetRevPerpendicular(normal);
+	const auto perp = GetRevPerpendicular(edgeInfo.GetNormal());
 	const auto count = shape.GetCount();
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
