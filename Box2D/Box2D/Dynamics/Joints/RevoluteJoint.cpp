@@ -65,14 +65,14 @@ RevoluteJoint::RevoluteJoint(const RevoluteJointDef& def)
 
 void RevoluteJoint::InitVelocityConstraints(const SolverData& data)
 {
-	m_indexA = m_bodyA->GetIslandIndex();
-	m_indexB = m_bodyB->GetIslandIndex();
-	m_localCenterA = m_bodyA->GetLocalCenter();
-	m_localCenterB = m_bodyB->GetLocalCenter();
-	m_invMassA = m_bodyA->GetInverseMass();
-	m_invMassB = m_bodyB->GetInverseMass();
-	m_invIA = m_bodyA->GetInverseInertia();
-	m_invIB = m_bodyB->GetInverseInertia();
+	m_indexA = GetBodyA()->GetIslandIndex();
+	m_indexB = GetBodyB()->GetIslandIndex();
+	m_localCenterA = GetBodyA()->GetLocalCenter();
+	m_localCenterB = GetBodyB()->GetLocalCenter();
+	m_invMassA = GetBodyA()->GetInverseMass();
+	m_invMassB = GetBodyB()->GetInverseMass();
+	m_invIA = GetBodyA()->GetInverseInertia();
+	m_invIB = GetBodyB()->GetInverseInertia();
 
 	const auto aA = data.positions[m_indexA].a;
 	auto vA = data.velocities[m_indexA].v;
@@ -379,12 +379,12 @@ bool RevoluteJoint::SolvePositionConstraints(const SolverData& data)
 
 Vec2 RevoluteJoint::GetAnchorA() const
 {
-	return GetWorldPoint(*m_bodyA, m_localAnchorA);
+	return GetWorldPoint(*GetBodyA(), m_localAnchorA);
 }
 
 Vec2 RevoluteJoint::GetAnchorB() const
 {
-	return GetWorldPoint(*m_bodyB, m_localAnchorB);
+	return GetWorldPoint(*GetBodyB(), m_localAnchorB);
 }
 
 Vec2 RevoluteJoint::GetReactionForce(float_t inv_dt) const
@@ -399,12 +399,12 @@ float_t RevoluteJoint::GetReactionTorque(float_t inv_dt) const
 
 float_t RevoluteJoint::GetJointAngle() const
 {
-	return m_bodyB->GetAngle() - m_bodyA->GetAngle() - m_referenceAngle;
+	return GetBodyB()->GetAngle() - GetBodyA()->GetAngle() - m_referenceAngle;
 }
 
 float_t RevoluteJoint::GetJointSpeed() const
 {
-	return m_bodyB->GetVelocity().w - m_bodyA->GetVelocity().w;
+	return GetBodyB()->GetVelocity().w - GetBodyA()->GetVelocity().w;
 }
 
 bool RevoluteJoint::IsMotorEnabled() const
@@ -414,8 +414,8 @@ bool RevoluteJoint::IsMotorEnabled() const
 
 void RevoluteJoint::EnableMotor(bool flag)
 {
-	m_bodyA->SetAwake();
-	m_bodyB->SetAwake();
+	GetBodyA()->SetAwake();
+	GetBodyB()->SetAwake();
 	m_enableMotor = flag;
 }
 
@@ -426,15 +426,15 @@ float_t RevoluteJoint::GetMotorTorque(float_t inv_dt) const
 
 void RevoluteJoint::SetMotorSpeed(float_t speed)
 {
-	m_bodyA->SetAwake();
-	m_bodyB->SetAwake();
+	GetBodyA()->SetAwake();
+	GetBodyB()->SetAwake();
 	m_motorSpeed = speed;
 }
 
 void RevoluteJoint::SetMaxMotorTorque(float_t torque)
 {
-	m_bodyA->SetAwake();
-	m_bodyB->SetAwake();
+	GetBodyA()->SetAwake();
+	GetBodyB()->SetAwake();
 	m_maxMotorTorque = torque;
 }
 
@@ -447,8 +447,8 @@ void RevoluteJoint::EnableLimit(bool flag)
 {
 	if (flag != m_enableLimit)
 	{
-		m_bodyA->SetAwake();
-		m_bodyB->SetAwake();
+		GetBodyA()->SetAwake();
+		GetBodyB()->SetAwake();
 		m_enableLimit = flag;
 		m_impulse.z = float_t{0};
 	}
@@ -470,8 +470,8 @@ void RevoluteJoint::SetLimits(float_t lower, float_t upper)
 	
 	if ((lower != m_lowerAngle) || (upper != m_upperAngle))
 	{
-		m_bodyA->SetAwake();
-		m_bodyB->SetAwake();
+		GetBodyA()->SetAwake();
+		GetBodyB()->SetAwake();
 		m_impulse.z = float_t{0};
 		m_lowerAngle = lower;
 		m_upperAngle = upper;

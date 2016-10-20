@@ -79,14 +79,14 @@ WheelJoint::WheelJoint(const WheelJointDef& def)
 
 void WheelJoint::InitVelocityConstraints(const SolverData& data)
 {
-	m_indexA = m_bodyA->GetIslandIndex();
-	m_indexB = m_bodyB->GetIslandIndex();
-	m_localCenterA = m_bodyA->GetLocalCenter();
-	m_localCenterB = m_bodyB->GetLocalCenter();
-	m_invMassA = m_bodyA->GetInverseMass();
-	m_invMassB = m_bodyB->GetInverseMass();
-	m_invIA = m_bodyA->GetInverseInertia();
-	m_invIB = m_bodyB->GetInverseInertia();
+	m_indexA = GetBodyA()->GetIslandIndex();
+	m_indexB = GetBodyB()->GetIslandIndex();
+	m_localCenterA = GetBodyA()->GetLocalCenter();
+	m_localCenterB = GetBodyB()->GetLocalCenter();
+	m_invMassA = GetBodyA()->GetInverseMass();
+	m_invMassB = GetBodyB()->GetInverseMass();
+	m_invIA = GetBodyA()->GetInverseInertia();
+	m_invIB = GetBodyB()->GetInverseInertia();
 
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
@@ -324,12 +324,12 @@ bool WheelJoint::SolvePositionConstraints(const SolverData& data)
 
 Vec2 WheelJoint::GetAnchorA() const
 {
-	return GetWorldPoint(*m_bodyA, m_localAnchorA);
+	return GetWorldPoint(*GetBodyA(), m_localAnchorA);
 }
 
 Vec2 WheelJoint::GetAnchorB() const
 {
-	return GetWorldPoint(*m_bodyB, m_localAnchorB);
+	return GetWorldPoint(*GetBodyB(), m_localAnchorB);
 }
 
 Vec2 WheelJoint::GetReactionForce(float_t inv_dt) const
@@ -344,36 +344,36 @@ float_t WheelJoint::GetReactionTorque(float_t inv_dt) const
 
 float_t WheelJoint::GetJointTranslation() const
 {
-	const auto pA = GetWorldPoint(*m_bodyA, m_localAnchorA);
-	const auto pB = GetWorldPoint(*m_bodyB, m_localAnchorB);
+	const auto pA = GetWorldPoint(*GetBodyA(), m_localAnchorA);
+	const auto pB = GetWorldPoint(*GetBodyB(), m_localAnchorB);
 	const auto d = pB - pA;
-	const auto axis = GetWorldVector(*m_bodyA, m_localXAxisA);
+	const auto axis = GetWorldVector(*GetBodyA(), m_localXAxisA);
 	return Dot(d, axis);
 }
 
 float_t WheelJoint::GetJointSpeed() const
 {
-	return m_bodyB->GetVelocity().w - m_bodyA->GetVelocity().w;
+	return GetBodyB()->GetVelocity().w - GetBodyA()->GetVelocity().w;
 }
 
 void WheelJoint::EnableMotor(bool flag)
 {
-	m_bodyA->SetAwake();
-	m_bodyB->SetAwake();
+	GetBodyA()->SetAwake();
+	GetBodyB()->SetAwake();
 	m_enableMotor = flag;
 }
 
 void WheelJoint::SetMotorSpeed(float_t speed)
 {
-	m_bodyA->SetAwake();
-	m_bodyB->SetAwake();
+	GetBodyA()->SetAwake();
+	GetBodyB()->SetAwake();
 	m_motorSpeed = speed;
 }
 
 void WheelJoint::SetMaxMotorTorque(float_t torque)
 {
-	m_bodyA->SetAwake();
-	m_bodyB->SetAwake();
+	GetBodyA()->SetAwake();
+	GetBodyB()->SetAwake();
 	m_maxMotorTorque = torque;
 }
 

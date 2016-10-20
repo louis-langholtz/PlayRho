@@ -61,11 +61,11 @@ GearJoint::GearJoint(const GearJointDef& def)
 	// TODO_ERIN there might be some problem with the joint edges in Joint.
 
 	m_bodyC = m_joint1->GetBodyA();
-	m_bodyA = m_joint1->GetBodyB();
+	SetBodyA(m_joint1->GetBodyB());
 
 	// Get geometry of joint1
-	const auto xfA = m_bodyA->GetTransformation();
-	const auto aA = m_bodyA->GetAngle();
+	const auto xfA = GetBodyA()->GetTransformation();
+	const auto aA = GetBodyA()->GetAngle();
 	const auto xfC = m_bodyC->GetTransformation();
 	const auto aC = m_bodyC->GetAngle();
 
@@ -93,11 +93,11 @@ GearJoint::GearJoint(const GearJointDef& def)
 	}
 
 	m_bodyD = m_joint2->GetBodyA();
-	m_bodyB = m_joint2->GetBodyB();
+	SetBodyB(m_joint2->GetBodyB());
 
 	// Get geometry of joint2
-	const auto xfB = m_bodyB->GetTransformation();
-	const auto aB = m_bodyB->GetAngle();
+	const auto xfB = GetBodyB()->GetTransformation();
+	const auto aB = GetBodyB()->GetAngle();
 	const auto xfD = m_bodyD->GetTransformation();
 	const auto aD = m_bodyD->GetAngle();
 
@@ -133,20 +133,20 @@ GearJoint::GearJoint(const GearJointDef& def)
 
 void GearJoint::InitVelocityConstraints(const SolverData& data)
 {
-	m_indexA = m_bodyA->GetIslandIndex();
-	m_indexB = m_bodyB->GetIslandIndex();
+	m_indexA = GetBodyA()->GetIslandIndex();
+	m_indexB = GetBodyB()->GetIslandIndex();
 	m_indexC = m_bodyC->GetIslandIndex();
 	m_indexD = m_bodyD->GetIslandIndex();
-	m_lcA = m_bodyA->GetLocalCenter();
-	m_lcB = m_bodyB->GetLocalCenter();
+	m_lcA = GetBodyA()->GetLocalCenter();
+	m_lcB = GetBodyB()->GetLocalCenter();
 	m_lcC = m_bodyC->GetLocalCenter();
 	m_lcD = m_bodyD->GetLocalCenter();
-	m_mA = m_bodyA->GetInverseMass();
-	m_mB = m_bodyB->GetInverseMass();
+	m_mA = GetBodyA()->GetInverseMass();
+	m_mB = GetBodyB()->GetInverseMass();
 	m_mC = m_bodyC->GetInverseMass();
 	m_mD = m_bodyD->GetInverseMass();
-	m_iA = m_bodyA->GetInverseInertia();
-	m_iB = m_bodyB->GetInverseInertia();
+	m_iA = GetBodyA()->GetInverseInertia();
+	m_iB = GetBodyB()->GetInverseInertia();
 	m_iC = m_bodyC->GetInverseInertia();
 	m_iD = m_bodyD->GetInverseInertia();
 
@@ -375,12 +375,12 @@ bool GearJoint::SolvePositionConstraints(const SolverData& data)
 
 Vec2 GearJoint::GetAnchorA() const
 {
-	return GetWorldPoint(*m_bodyA, m_localAnchorA);
+	return GetWorldPoint(*GetBodyA(), m_localAnchorA);
 }
 
 Vec2 GearJoint::GetAnchorB() const
 {
-	return GetWorldPoint(*m_bodyB, m_localAnchorB);
+	return GetWorldPoint(*GetBodyB(), m_localAnchorB);
 }
 
 Vec2 GearJoint::GetReactionForce(float_t inv_dt) const

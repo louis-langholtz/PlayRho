@@ -47,14 +47,14 @@ RopeJoint::RopeJoint(const RopeJointDef& def)
 
 void RopeJoint::InitVelocityConstraints(const SolverData& data)
 {
-	m_indexA = m_bodyA->GetIslandIndex();
-	m_indexB = m_bodyB->GetIslandIndex();
-	m_localCenterA = m_bodyA->GetLocalCenter();
-	m_localCenterB = m_bodyB->GetLocalCenter();
-	m_invMassA = m_bodyA->GetInverseMass();
-	m_invMassB = m_bodyB->GetInverseMass();
-	m_invIA = m_bodyA->GetInverseInertia();
-	m_invIB = m_bodyB->GetInverseInertia();
+	m_indexA = GetBodyA()->GetIslandIndex();
+	m_indexB = GetBodyB()->GetIslandIndex();
+	m_localCenterA = GetBodyA()->GetLocalCenter();
+	m_localCenterB = GetBodyB()->GetLocalCenter();
+	m_invMassA = GetBodyA()->GetInverseMass();
+	m_invMassB = GetBodyB()->GetInverseMass();
+	m_invIA = GetBodyA()->GetInverseInertia();
+	m_invIB = GetBodyB()->GetInverseInertia();
 
 	const auto cA = data.positions[m_indexA].c;
 	const auto aA = data.positions[m_indexA].a;
@@ -190,12 +190,12 @@ bool RopeJoint::SolvePositionConstraints(const SolverData& data)
 
 Vec2 RopeJoint::GetAnchorA() const
 {
-	return GetWorldPoint(*m_bodyA, m_localAnchorA);
+	return GetWorldPoint(*GetBodyA(), m_localAnchorA);
 }
 
 Vec2 RopeJoint::GetAnchorB() const
 {
-	return GetWorldPoint(*m_bodyB, m_localAnchorB);
+	return GetWorldPoint(*GetBodyB(), m_localAnchorB);
 }
 
 Vec2 RopeJoint::GetReactionForce(float_t inv_dt) const

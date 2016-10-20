@@ -33,7 +33,7 @@ using namespace box2d;
 
 MouseJoint::MouseJoint(const MouseJointDef& def):
 	Joint{def},
-	m_localAnchorB{InverseTransform(def.target, m_bodyB->GetTransformation())},
+	m_localAnchorB{InverseTransform(def.target, GetBodyB()->GetTransformation())},
 	m_targetA{def.target}, m_maxForce{def.maxForce}, m_frequencyHz{def.frequencyHz}, m_dampingRatio{def.dampingRatio}
 {
 	assert(IsValid(def.target));
@@ -45,19 +45,19 @@ MouseJoint::MouseJoint(const MouseJointDef& def):
 void MouseJoint::SetTarget(const Vec2& target)
 {
 	assert(IsValid(target));
-	if (!m_bodyB->IsAwake())
+	if (!GetBodyB()->IsAwake())
 	{
-		m_bodyB->SetAwake();
+		GetBodyB()->SetAwake();
 	}
 	m_targetA = target;
 }
 
 void MouseJoint::InitVelocityConstraints(const SolverData& data)
 {
-	m_indexB = m_bodyB->GetIslandIndex();
-	m_localCenterB = m_bodyB->GetLocalCenter();
-	m_invMassB = m_bodyB->GetInverseMass();
-	m_invIB = m_bodyB->GetInverseInertia();
+	m_indexB = GetBodyB()->GetIslandIndex();
+	m_localCenterB = GetBodyB()->GetLocalCenter();
+	m_invMassB = GetBodyB()->GetInverseMass();
+	m_invIB = GetBodyB()->GetInverseInertia();
 
 	const auto positionB = data.positions[m_indexB];
 	assert(IsValid(positionB));
@@ -71,7 +71,7 @@ void MouseJoint::InitVelocityConstraints(const SolverData& data)
 
 	const Rot qB(aB);
 
-	const auto mass = GetMass(*m_bodyB);
+	const auto mass = GetMass(*GetBodyB());
 
 	// Frequency
 	const auto omega = float_t(2) * Pi * m_frequencyHz;
@@ -168,7 +168,7 @@ bool MouseJoint::SolvePositionConstraints(const SolverData& data)
 
 Vec2 MouseJoint::GetAnchorB() const
 {
-	return GetWorldPoint(*m_bodyB, m_localAnchorB);
+	return GetWorldPoint(*GetBodyB(), m_localAnchorB);
 }
 
 Vec2 MouseJoint::GetReactionForce(float_t inv_dt) const

@@ -154,19 +154,22 @@ public:
 	virtual void ShiftOrigin(const Vec2& newOrigin) { BOX2D_NOT_USED(newOrigin);  }
 
 protected:
+	Joint(const JointDef& def);
+	virtual ~Joint() {}
+	
+	void SetBodyA(Body* value) noexcept;
+	void SetBodyB(Body* value) noexcept;
+
+private:
 	friend class World;
 	friend class Body;
 	friend class Island;
-	friend class GearJoint;
 	friend class JointIterator;
 	friend class ConstJointIterator;
 	friend class JointList;
 
 	static Joint* Create(const JointDef& def, BlockAllocator* allocator);
 	static void Destroy(Joint* joint, BlockAllocator* allocator);
-
-	Joint(const JointDef& def);
-	virtual ~Joint() {}
 
 	/// Initializes velocity constraint data based on the given solver data.
 	/// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.
@@ -208,6 +211,16 @@ inline JointType Joint::GetType() const noexcept
 inline Body* Joint::GetBodyA() noexcept
 {
 	return m_bodyA;
+}
+
+inline void Joint::SetBodyA(Body* value) noexcept
+{
+	m_bodyA = value;
+}
+
+inline void Joint::SetBodyB(Body* value) noexcept
+{
+	m_bodyB = value;
 }
 
 inline Body* Joint::GetBodyB() noexcept

@@ -59,15 +59,15 @@ MotorJoint::MotorJoint(const MotorJointDef& def)
 
 void MotorJoint::InitVelocityConstraints(const SolverData& data)
 {
-	m_indexA = m_bodyA->GetIslandIndex();
-	m_localCenterA = m_bodyA->GetLocalCenter();
-	m_invMassA = m_bodyA->GetInverseMass();
-	m_invIA = m_bodyA->GetInverseInertia();
+	m_indexA = GetBodyA()->GetIslandIndex();
+	m_localCenterA = GetBodyA()->GetLocalCenter();
+	m_invMassA = GetBodyA()->GetInverseMass();
+	m_invIA = GetBodyA()->GetInverseInertia();
 
-	m_indexB = m_bodyB->GetIslandIndex();
-	m_localCenterB = m_bodyB->GetLocalCenter();
-	m_invMassB = m_bodyB->GetInverseMass();
-	m_invIB = m_bodyB->GetInverseInertia();
+	m_indexB = GetBodyB()->GetIslandIndex();
+	m_localCenterB = GetBodyB()->GetLocalCenter();
+	m_invMassB = GetBodyB()->GetInverseMass();
+	m_invIB = GetBodyB()->GetInverseInertia();
 
 	const auto cA = data.positions[m_indexA].c;
 	const auto aA = data.positions[m_indexA].a;
@@ -205,12 +205,12 @@ bool MotorJoint::SolvePositionConstraints(const SolverData& data)
 
 Vec2 MotorJoint::GetAnchorA() const
 {
-	return m_bodyA->GetPosition();
+	return GetBodyA()->GetPosition();
 }
 
 Vec2 MotorJoint::GetAnchorB() const
 {
-	return m_bodyB->GetPosition();
+	return GetBodyB()->GetPosition();
 }
 
 Vec2 MotorJoint::GetReactionForce(float_t inv_dt) const
@@ -260,8 +260,8 @@ void MotorJoint::SetLinearOffset(const Vec2& linearOffset)
 {
 	if ((linearOffset.x != m_linearOffset.x) || (linearOffset.y != m_linearOffset.y))
 	{
-		m_bodyA->SetAwake();
-		m_bodyB->SetAwake();
+		GetBodyA()->SetAwake();
+		GetBodyB()->SetAwake();
 		m_linearOffset = linearOffset;
 	}
 }
@@ -275,8 +275,8 @@ void MotorJoint::SetAngularOffset(float_t angularOffset)
 {
 	if (angularOffset != m_angularOffset)
 	{
-		m_bodyA->SetAwake();
-		m_bodyB->SetAwake();
+		GetBodyA()->SetAwake();
+		GetBodyB()->SetAwake();
 		m_angularOffset = angularOffset;
 	}
 }

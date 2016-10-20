@@ -73,14 +73,14 @@ PulleyJoint::PulleyJoint(const PulleyJointDef& def)
 
 void PulleyJoint::InitVelocityConstraints(const SolverData& data)
 {
-	m_indexA = m_bodyA->GetIslandIndex();
-	m_indexB = m_bodyB->GetIslandIndex();
-	m_localCenterA = m_bodyA->GetLocalCenter();
-	m_localCenterB = m_bodyB->GetLocalCenter();
-	m_invMassA = m_bodyA->GetInverseMass();
-	m_invMassB = m_bodyB->GetInverseMass();
-	m_invIA = m_bodyA->GetInverseInertia();
-	m_invIB = m_bodyB->GetInverseInertia();
+	m_indexA = GetBodyA()->GetIslandIndex();
+	m_indexB = GetBodyB()->GetIslandIndex();
+	m_localCenterA = GetBodyA()->GetLocalCenter();
+	m_localCenterB = GetBodyB()->GetLocalCenter();
+	m_invMassA = GetBodyA()->GetInverseMass();
+	m_invMassB = GetBodyB()->GetInverseMass();
+	m_invIA = GetBodyA()->GetInverseInertia();
+	m_invIB = GetBodyB()->GetInverseInertia();
 
 	const auto cA = data.positions[m_indexA].c;
 	const auto aA = data.positions[m_indexA].a;
@@ -262,12 +262,12 @@ bool PulleyJoint::SolvePositionConstraints(const SolverData& data)
 
 Vec2 PulleyJoint::GetAnchorA() const
 {
-	return GetWorldPoint(*m_bodyA, GetLocalAnchorA());
+	return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
 }
 
 Vec2 PulleyJoint::GetAnchorB() const
 {
-	return GetWorldPoint(*m_bodyB, GetLocalAnchorB());
+	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
 Vec2 PulleyJoint::GetReactionForce(float_t inv_dt) const
@@ -293,12 +293,12 @@ Vec2 PulleyJoint::GetGroundAnchorB() const
 
 float_t PulleyJoint::GetCurrentLengthA() const
 {
-	return Length(GetWorldPoint(*m_bodyA, m_localAnchorA) - m_groundAnchorA);
+	return Length(GetWorldPoint(*GetBodyA(), m_localAnchorA) - m_groundAnchorA);
 }
 
 float_t PulleyJoint::GetCurrentLengthB() const
 {
-	return Length(GetWorldPoint(*m_bodyB, m_localAnchorB) - m_groundAnchorB);
+	return Length(GetWorldPoint(*GetBodyB(), m_localAnchorB) - m_groundAnchorB);
 }
 
 void PulleyJoint::ShiftOrigin(const Vec2& newOrigin)

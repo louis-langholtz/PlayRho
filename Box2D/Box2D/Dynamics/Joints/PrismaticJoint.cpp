@@ -127,14 +127,14 @@ PrismaticJoint::PrismaticJoint(const PrismaticJointDef& def)
 
 void PrismaticJoint::InitVelocityConstraints(const SolverData& data)
 {
-	m_indexA = m_bodyA->GetIslandIndex();
-	m_indexB = m_bodyB->GetIslandIndex();
-	m_localCenterA = m_bodyA->GetLocalCenter();
-	m_localCenterB = m_bodyB->GetLocalCenter();
-	m_invMassA = m_bodyA->GetInverseMass();
-	m_invMassB = m_bodyB->GetInverseMass();
-	m_invIA = m_bodyA->GetInverseInertia();
-	m_invIB = m_bodyB->GetInverseInertia();
+	m_indexA = GetBodyA()->GetIslandIndex();
+	m_indexB = GetBodyB()->GetIslandIndex();
+	m_localCenterA = GetBodyA()->GetLocalCenter();
+	m_localCenterB = GetBodyB()->GetLocalCenter();
+	m_invMassA = GetBodyA()->GetInverseMass();
+	m_invMassB = GetBodyB()->GetInverseMass();
+	m_invIA = GetBodyA()->GetInverseInertia();
+	m_invIB = GetBodyB()->GetInverseInertia();
 
 	const auto cA = data.positions[m_indexA].c;
 	const auto aA = data.positions[m_indexA].a;
@@ -480,12 +480,12 @@ bool PrismaticJoint::SolvePositionConstraints(const SolverData& data)
 
 Vec2 PrismaticJoint::GetAnchorA() const
 {
-	return GetWorldPoint(*m_bodyA, m_localAnchorA);
+	return GetWorldPoint(*GetBodyA(), m_localAnchorA);
 }
 
 Vec2 PrismaticJoint::GetAnchorB() const
 {
-	return GetWorldPoint(*m_bodyB, m_localAnchorB);
+	return GetWorldPoint(*GetBodyB(), m_localAnchorB);
 }
 
 Vec2 PrismaticJoint::GetReactionForce(float_t inv_dt) const
@@ -500,18 +500,18 @@ float_t PrismaticJoint::GetReactionTorque(float_t inv_dt) const
 
 float_t PrismaticJoint::GetJointTranslation() const
 {
-	const auto pA = GetWorldPoint(*m_bodyA, m_localAnchorA);
-	const auto pB = GetWorldPoint(*m_bodyB, m_localAnchorB);
+	const auto pA = GetWorldPoint(*GetBodyA(), m_localAnchorA);
+	const auto pB = GetWorldPoint(*GetBodyB(), m_localAnchorB);
 	const auto d = pB - pA;
-	const auto axis = GetWorldVector(*m_bodyA, m_localXAxisA);
+	const auto axis = GetWorldVector(*GetBodyA(), m_localXAxisA);
 
 	return Dot(d, axis);
 }
 
 float_t PrismaticJoint::GetJointSpeed() const
 {
-	const auto bA = m_bodyA;
-	const auto bB = m_bodyB;
+	const auto bA = GetBodyA();
+	const auto bB = GetBodyB();
 
 	const auto rA = Rotate(m_localAnchorA - bA->GetLocalCenter(), bA->GetTransformation().q);
 	const auto rB = Rotate(m_localAnchorB - bB->GetLocalCenter(), bB->GetTransformation().q);
@@ -537,8 +537,8 @@ void PrismaticJoint::EnableLimit(bool flag) noexcept
 {
 	if (m_enableLimit != flag)
 	{
-		m_bodyA->SetAwake();
-		m_bodyB->SetAwake();
+		GetBodyA()->SetAwake();
+		GetBodyB()->SetAwake();
 		m_enableLimit = flag;
 		m_impulse.z = float_t{0};
 	}
@@ -559,8 +559,8 @@ void PrismaticJoint::SetLimits(float_t lower, float_t upper)
 	assert(lower <= upper);
 	if ((lower != m_lowerTranslation) || (upper != m_upperTranslation))
 	{
-		m_bodyA->SetAwake();
-		m_bodyB->SetAwake();
+		GetBodyA()->SetAwake();
+		GetBodyB()->SetAwake();
 		m_lowerTranslation = lower;
 		m_upperTranslation = upper;
 		m_impulse.z = float_t{0};
@@ -574,22 +574,22 @@ bool PrismaticJoint::IsMotorEnabled() const noexcept
 
 void PrismaticJoint::EnableMotor(bool flag) noexcept
 {
-	m_bodyA->SetAwake();
-	m_bodyB->SetAwake();
+	GetBodyA()->SetAwake();
+	GetBodyB()->SetAwake();
 	m_enableMotor = flag;
 }
 
 void PrismaticJoint::SetMotorSpeed(float_t speed) noexcept
 {
-	m_bodyA->SetAwake();
-	m_bodyB->SetAwake();
+	GetBodyA()->SetAwake();
+	GetBodyB()->SetAwake();
 	m_motorSpeed = speed;
 }
 
 void PrismaticJoint::SetMaxMotorForce(float_t force) noexcept
 {
-	m_bodyA->SetAwake();
-	m_bodyB->SetAwake();
+	GetBodyA()->SetAwake();
+	GetBodyB()->SetAwake();
 	m_maxMotorForce = force;
 }
 
