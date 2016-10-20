@@ -77,7 +77,7 @@ public:
 	child_count_t GetVertexCount() const noexcept { return m_count; }
 
 	/// Get a vertex by index.
-	const Vec2& GetVertex(child_count_t index) const;
+	Vec2 GetVertex(child_count_t index) const;
 
 	bool HasPrevVertex() const noexcept { return IsValid(m_prevVertex); }
 	bool HasNextVertex() const noexcept { return IsValid(m_nextVertex); }
@@ -102,7 +102,7 @@ private:
 	Vec2 m_nextVertex = GetInvalid<Vec2>();
 };
 
-inline const Vec2& ChainShape::GetVertex(child_count_t index) const
+inline Vec2 ChainShape::GetVertex(child_count_t index) const
 {
 	assert((0 <= index) && (index < m_count));
 	return m_vertices[index];
