@@ -44,11 +44,12 @@ void PolygonAndCircleContact::Destroy(Contact* contact, BlockAllocator* allocato
 PolygonAndCircleContact::PolygonAndCircleContact(Fixture* fixtureA, Fixture* fixtureB)
 : Contact{fixtureA, 0, fixtureB, 0}
 {
-	assert(GetType(*m_fixtureA) == Shape::e_polygon);
-	assert(GetType(*m_fixtureB) == Shape::e_circle);
+	assert(GetType(*fixtureA) == Shape::e_polygon);
+	assert(GetType(*fixtureB) == Shape::e_circle);
 }
 
 Manifold PolygonAndCircleContact::Evaluate(const Transformation& xfA, const Transformation& xfB) const
 {
-	return CollideShapes(*static_cast<PolygonShape*>(m_fixtureA->GetShape()), xfA, *static_cast<CircleShape*>(m_fixtureB->GetShape()), xfB);
+	return CollideShapes(*static_cast<const PolygonShape*>(GetFixtureA()->GetShape()), xfA,
+						 *static_cast<const CircleShape*>(GetFixtureB()->GetShape()), xfB);
 }

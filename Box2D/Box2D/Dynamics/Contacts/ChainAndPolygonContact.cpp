@@ -46,12 +46,12 @@ ChainAndPolygonContact::ChainAndPolygonContact(Fixture* fixtureA, child_count_t 
 											   Fixture* fixtureB, child_count_t indexB)
 : Contact{fixtureA, indexA, fixtureB, indexB}
 {
-	assert(GetType(*m_fixtureA) == Shape::e_chain);
-	assert(GetType(*m_fixtureB) == Shape::e_polygon);
+	assert(GetType(*fixtureA) == Shape::e_chain);
+	assert(GetType(*fixtureB) == Shape::e_polygon);
 }
 
 Manifold ChainAndPolygonContact::Evaluate(const Transformation& xfA, const Transformation& xfB) const
 {
-	const auto edge = static_cast<ChainShape*>(m_fixtureA->GetShape())->GetChildEdge(m_indexA);
-	return CollideShapes(edge, xfA, *static_cast<PolygonShape*>(m_fixtureB->GetShape()), xfB);
+	const auto edge = static_cast<const ChainShape*>(GetFixtureA()->GetShape())->GetChildEdge(GetChildIndexA());
+	return CollideShapes(edge, xfA, *static_cast<const PolygonShape*>(GetFixtureB()->GetShape()), xfB);
 }

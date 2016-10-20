@@ -46,12 +46,12 @@ ChainAndCircleContact::ChainAndCircleContact(Fixture* fixtureA, child_count_t in
 											 Fixture* fixtureB, child_count_t indexB)
 : Contact{fixtureA, indexA, fixtureB, indexB}
 {
-	assert(GetType(*m_fixtureA) == Shape::e_chain);
-	assert(GetType(*m_fixtureB) == Shape::e_circle);
+	assert(GetType(*fixtureA) == Shape::e_chain);
+	assert(GetType(*fixtureB) == Shape::e_circle);
 }
 
 Manifold ChainAndCircleContact::Evaluate(const Transformation& xfA, const Transformation& xfB) const
 {
-	const auto edge = static_cast<ChainShape*>(m_fixtureA->GetShape())->GetChildEdge(m_indexA);
-	return CollideShapes(edge, xfA, *static_cast<CircleShape*>(m_fixtureB->GetShape()), xfB);
+	const auto edge = static_cast<const ChainShape*>(GetFixtureA()->GetShape())->GetChildEdge(GetChildIndexA());
+	return CollideShapes(edge, xfA, *static_cast<const CircleShape*>(GetFixtureB()->GetShape()), xfB);
 }

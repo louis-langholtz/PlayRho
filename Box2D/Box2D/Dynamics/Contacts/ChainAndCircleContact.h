@@ -34,7 +34,8 @@ public:
 							 BlockAllocator* allocator);
 	static void Destroy(Contact* contact, BlockAllocator* allocator);
 
-	ChainAndCircleContact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB);
+	ChainAndCircleContact(Fixture* fixtureA, child_count_t indexA,
+						  Fixture* fixtureB, child_count_t indexB);
 	~ChainAndCircleContact() {}
 
 	Manifold Evaluate(const Transformation& xfA, const Transformation& xfB) const override;

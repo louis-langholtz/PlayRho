@@ -44,12 +44,12 @@ void CircleContact::Destroy(Contact* contact, BlockAllocator* allocator)
 CircleContact::CircleContact(Fixture* fixtureA, Fixture* fixtureB)
 	: Contact{fixtureA, 0, fixtureB, 0}
 {
-	assert(GetType(*m_fixtureA) == Shape::e_circle);
-	assert(GetType(*m_fixtureB) == Shape::e_circle);
+	assert(GetType(*fixtureA) == Shape::e_circle);
+	assert(GetType(*fixtureB) == Shape::e_circle);
 }
 
 Manifold CircleContact::Evaluate(const Transformation& xfA, const Transformation& xfB) const
 {
-	return CollideShapes(*static_cast<CircleShape*>(m_fixtureA->GetShape()), xfA,
-						 *static_cast<CircleShape*>(m_fixtureB->GetShape()), xfB);
+	return CollideShapes(*static_cast<const CircleShape*>(GetFixtureA()->GetShape()), xfA,
+						 *static_cast<const CircleShape*>(GetFixtureB()->GetShape()), xfB);
 }

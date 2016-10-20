@@ -259,6 +259,7 @@ protected:
 	
 	void SetTouching(bool value) noexcept;
 
+private:
 	uint32 m_flags = e_enabledFlag;
 
 	// World pool and list pointers.

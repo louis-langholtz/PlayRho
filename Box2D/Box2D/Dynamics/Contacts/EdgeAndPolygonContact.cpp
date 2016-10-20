@@ -44,11 +44,12 @@ void EdgeAndPolygonContact::Destroy(Contact* contact, BlockAllocator* allocator)
 EdgeAndPolygonContact::EdgeAndPolygonContact(Fixture* fixtureA, Fixture* fixtureB)
 : Contact{fixtureA, 0, fixtureB, 0}
 {
-	assert(GetType(*m_fixtureA) == Shape::e_edge);
-	assert(GetType(*m_fixtureB) == Shape::e_polygon);
+	assert(GetType(*fixtureA) == Shape::e_edge);
+	assert(GetType(*fixtureB) == Shape::e_polygon);
 }
 
 Manifold EdgeAndPolygonContact::Evaluate(const Transformation& xfA, const Transformation& xfB) const
 {
-	return CollideShapes(*static_cast<EdgeShape*>(m_fixtureA->GetShape()), xfA, *static_cast<PolygonShape*>(m_fixtureB->GetShape()), xfB);
+	return CollideShapes(*static_cast<const EdgeShape*>(GetFixtureA()->GetShape()), xfA,
+						 *static_cast<const PolygonShape*>(GetFixtureB()->GetShape()), xfB);
 }

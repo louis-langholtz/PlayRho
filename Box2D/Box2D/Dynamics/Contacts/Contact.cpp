@@ -103,8 +103,8 @@ Contact* Contact::Create(Fixture& fixtureA, child_count_t indexA, Fixture& fixtu
 
 void Contact::Destroy(Contact* contact, BlockAllocator* allocator)
 {
-	const auto fixtureA = contact->m_fixtureA;
-	const auto fixtureB = contact->m_fixtureB;
+	const auto fixtureA = contact->GetFixtureA();
+	const auto fixtureB = contact->GetFixtureB();
 
 	if ((contact->m_manifold.GetPointCount() > 0) &&
 		!fixtureA->IsSensor() && !fixtureB->IsSensor())
@@ -143,8 +143,8 @@ void Contact::Update(ContactListener* listener)
 	auto wasTouching = IsTouching();
 	auto touching = false;
 
-	const auto bodyA = m_fixtureA->GetBody();
-	const auto bodyB = m_fixtureB->GetBody();
+	const auto bodyA = GetFixtureA()->GetBody();
+	const auto bodyB = GetFixtureB()->GetBody();
 	
 	assert(bodyA != nullptr);
 	assert(bodyB != nullptr);
@@ -156,8 +156,8 @@ void Contact::Update(ContactListener* listener)
 	const auto sensor = HasSensor(*this);
 	if (sensor)
 	{
-		const auto shapeA = m_fixtureA->GetShape();
-		const auto shapeB = m_fixtureB->GetShape();
+		const auto shapeA = GetFixtureA()->GetShape();
+		const auto shapeB = GetFixtureB()->GetShape();
 
 		touching = TestOverlap(*shapeA, m_indexA, *shapeB, m_indexB, xfA, xfB);
 
