@@ -77,7 +77,7 @@ public:
 	/// Get the maximum friction torque in N*m.
 	float_t GetMaxTorque() const;
 
-protected:
+private:
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

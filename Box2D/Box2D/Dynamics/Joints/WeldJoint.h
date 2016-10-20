@@ -82,7 +82,7 @@ public:
 	void SetDampingRatio(float_t ratio) { m_dampingRatio = ratio; }
 	float_t GetDampingRatio() const { return m_dampingRatio; }
 
-protected:
+private:
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

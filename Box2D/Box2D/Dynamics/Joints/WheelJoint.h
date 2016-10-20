@@ -120,7 +120,7 @@ public:
 	void SetSpringDampingRatio(float_t ratio);
 	float_t GetSpringDampingRatio() const;
 
-protected:
+private:
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

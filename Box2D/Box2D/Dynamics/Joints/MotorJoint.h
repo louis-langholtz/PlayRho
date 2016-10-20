@@ -88,7 +88,7 @@ public:
 	/// Get the position correction factor in the range [0,1].
 	float_t GetCorrectionFactor() const;
 
-protected:
+private:
 
 	void InitVelocityConstraints(const SolverData& data) override;
 	void SolveVelocityConstraints(const SolverData& data) override;

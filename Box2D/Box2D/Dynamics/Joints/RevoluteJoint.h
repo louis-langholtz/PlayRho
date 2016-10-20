@@ -144,7 +144,7 @@ public:
 	/// Unit is N*m.
 	float_t GetMotorTorque(float_t inv_dt) const;
 
-protected:
+private:
 	
 	friend class GearJoint;
 
