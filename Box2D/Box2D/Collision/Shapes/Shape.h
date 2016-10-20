@@ -30,7 +30,7 @@ namespace box2d {
 /// Base class for shapes.
 /// @detail A shape is used for collision detection. You can create a shape however you like.
 /// Shapes used for simulation in World are created automatically when a Fixture
-/// is created. Shapes may encapsulate a one or more child shapes.
+/// is created. Shapes may encapsulate one or more child shapes.
 class Shape
 {
 public:
