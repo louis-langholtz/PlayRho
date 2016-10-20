@@ -212,7 +212,7 @@ public:
 	child_count_t GetProxyCount() const;
 	const FixtureProxy* GetProxy(child_count_t index) const;
 
-protected:
+private:
 
 	friend class Body;
 	friend class World;
