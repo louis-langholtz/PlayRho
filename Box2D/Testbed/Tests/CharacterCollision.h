@@ -180,8 +180,7 @@ public:
 				angle += delta;
 			}
 
-			PolygonShape shape;
-			shape.Set(vertices, 6);
+			const auto shape = PolygonShape(vertices, 6);
 
 			FixtureDef fd;
 			fd.shape = &shape;
@@ -199,8 +198,7 @@ public:
 
 			Body* body = m_world->CreateBody(bd);
 
-			CircleShape shape;
-			shape.SetRadius(float_t(0.5));
+			const auto shape = CircleShape(float_t(0.5));
 
 			FixtureDef fd;
 			fd.shape = &shape;

@@ -68,8 +68,7 @@ public:
 				float_t x2 = x1 + 0.5f;
 				float_t y2 = 2.0f * cosf(x2 / 10.0f * Pi);
 
-				EdgeShape shape;
-				shape.Set(Vec2(x1, y1), Vec2(x2, y2));
+				const auto shape = EdgeShape(Vec2(x1, y1), Vec2(x2, y2));
 				ground->CreateFixture(FixtureDef{&shape, 0.0f});
 
 				x1 = x2;
@@ -77,47 +76,29 @@ public:
 			}
 		}
 
-		{
-		Vec2 vertices[3];
-		vertices[0] = Vec2(-0.5f, 0.0f);
-		vertices[1] = Vec2(0.5f, 0.0f);
-		vertices[2] = Vec2(0.0f, 1.5f);
-		m_polygons[0].Set(vertices, 3);
-	}
-
-		{
-			Vec2 vertices[3];
-			vertices[0] = Vec2(-0.1f, 0.0f);
-			vertices[1] = Vec2(0.1f, 0.0f);
-			vertices[2] = Vec2(0.0f, 1.5f);
-			m_polygons[1].Set(vertices, 3);
-		}
+		m_polygons[0].Set({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
+		m_polygons[1].Set({Vec2(-0.1f, 0.0f), Vec2(0.1f, 0.0f), Vec2(0.0f, 1.5f)});
 
 		{
 			float_t w = 1.0f;
 			float_t b = w / (2.0f + Sqrt(2.0f));
 			float_t s = Sqrt(2.0f) * b;
 
-			Vec2 vertices[8];
-			vertices[0] = Vec2(0.5f * s, 0.0f);
-			vertices[1] = Vec2(0.5f * w, b);
-			vertices[2] = Vec2(0.5f * w, b + s);
-			vertices[3] = Vec2(0.5f * s, w);
-			vertices[4] = Vec2(-0.5f * s, w);
-			vertices[5] = Vec2(-0.5f * w, b + s);
-			vertices[6] = Vec2(-0.5f * w, b);
-			vertices[7] = Vec2(-0.5f * s, 0.0f);
-
-			m_polygons[2].Set(vertices, 8);
+			m_polygons[2].Set({
+				Vec2(0.5f * s, 0.0f),
+				Vec2(0.5f * w, b),
+				Vec2(0.5f * w, b + s),
+				Vec2(0.5f * s, w),
+				Vec2(-0.5f * s, w),
+				Vec2(-0.5f * w, b + s),
+				Vec2(-0.5f * w, b),
+				Vec2(-0.5f * s, 0.0f)
+			});
 		}
 
-		{
-			m_polygons[3].SetAsBox(0.5f, 0.5f);
-		}
+		m_polygons[3].SetAsBox(0.5f, 0.5f);
 
-		{
-			m_circle.SetRadius(float_t(0.5));
-		}
+		m_circle.SetRadius(float_t(0.5));
 
 		m_bodyIndex = 0;
 		memset(m_bodies, 0, sizeof(m_bodies));
@@ -201,7 +182,7 @@ public:
 
 	void Step(Settings& settings, Drawer& drawer) override
 	{
-		bool advanceRay = !settings.pause || settings.singleStep;
+		const auto advanceRay = !settings.pause || settings.singleStep;
 
 		Test::Step(settings, drawer);
 		drawer.DrawString(5, m_textLine, "Press 1-5 to drop stuff");

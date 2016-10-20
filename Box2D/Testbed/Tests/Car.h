@@ -168,18 +168,16 @@ public:
 
 		// Car
 		{
-			PolygonShape chassis;
-			Vec2 vertices[8];
-			vertices[0] = Vec2(-1.5f, -0.5f);
-			vertices[1] = Vec2(1.5f, -0.5f);
-			vertices[2] = Vec2(1.5f, 0.0f);
-			vertices[3] = Vec2(0.0f, 0.9f);
-			vertices[4] = Vec2(-1.15f, 0.9f);
-			vertices[5] = Vec2(-1.5f, 0.2f);
-			chassis.Set(vertices, 6);
+			const auto chassis = PolygonShape{
+				Vec2(-1.5f, -0.5f),
+				Vec2(1.5f, -0.5f),
+				Vec2(1.5f, 0.0f),
+				Vec2(0.0f, 0.9f),
+				Vec2(-1.15f, 0.9f),
+				Vec2(-1.5f, 0.2f)
+			};
 
-			CircleShape circle;
-			circle.SetRadius(float_t(0.4));
+			const auto circle = CircleShape(float_t(0.4));
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;

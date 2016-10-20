@@ -21,16 +21,18 @@
 #define B2_POLYGON_SHAPE_H
 
 #include <Box2D/Collision/Shapes/Shape.h>
+#include <initializer_list>
 #include <type_traits>
 
 namespace box2d {
 
 /// Polygon shape.
 /// @detail
-/// A convex polygon. It is assumed that the interior of the polygon is to
-/// the left of each edge.
+/// A convex polygon. The interior of the polygon is to the left of each edge.
 /// Polygons have a maximum number of vertices equal to MaxPolygonVertices.
 /// In most cases you should not need many vertices for a convex polygon.
+/// @note This data structure is 272-bytes large (with 4-byte float_t and MaxPolygonVertices
+///    of 16).
 class PolygonShape : public Shape
 {
 public:
@@ -46,12 +48,17 @@ public:
 	/// @param hy the half-height.
 	explicit PolygonShape(float_t hx, float_t hy) noexcept;
 	
+	PolygonShape(std::initializer_list<Vec2> points) noexcept;
+	PolygonShape(const Vec2* points, size_t count) noexcept;
+	
+	void Set(std::initializer_list<Vec2> points) noexcept;
+	
 	/// Create a convex hull from the given array of local points.
 	/// The count must be in the range [3, MaxPolygonVertices].
 	/// @warning the points may be re-ordered, even if they form a convex polygon
 	/// @warning collinear points are handled but not removed. Collinear points
 	/// may lead to poor stacking behavior.
-	void Set(const Vec2 points[], vertex_count_t count);
+	void Set(const Vec2* points, size_t count) noexcept;
 
 	/// Build vertices to represent an axis-aligned box centered on the local origin.
 	/// @param hx the half-width.
@@ -103,8 +110,10 @@ private:
 	/// @note This is some 16 x 8-bytes or 128-bytes large (on at least one platform).
 	Vec2 m_normals[MaxPolygonVertices];
 
+	/// Centroid of this shape.
 	Vec2 m_centroid = Vec2_zero;
 	
+	/// Count of valid vertices/normals.
 	vertex_count_t m_count = 0;
 };
 

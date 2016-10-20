@@ -79,8 +79,7 @@ public:
 	{
 		Test::Step(settings, drawer);
 
-		PolygonShape shape;
-		shape.Set(m_points, m_count);
+		const auto shape = PolygonShape(m_points, m_count);
 
 		drawer.DrawString(5, m_textLine, "Press g to generate a new random convex hull");
 		m_textLine += DRAW_STRING_NEW_LINE;

@@ -71,8 +71,7 @@ public:
 			vertices[1] = Transform(Vec2(1.0f, float_t{0}), xf1);
 			vertices[2] = Transform(Vec2(float_t{0}, 0.5f), xf1);
 			
-			PolygonShape poly1;
-			poly1.Set(vertices, 3);
+			const auto poly1 = PolygonShape(vertices, 3);
 
 			FixtureDef sd1;
 			sd1.shape = &poly1;
@@ -86,8 +85,7 @@ public:
 			vertices[1] = Transform(Vec2(1.0f, float_t{0}), xf2);
 			vertices[2] = Transform(Vec2(float_t{0}, 0.5f), xf2);
 			
-			PolygonShape poly2;
-			poly2.Set(vertices, 3);
+			const auto poly2 = PolygonShape(vertices, 3);
 
 			FixtureDef sd2;
 			sd2.shape = &poly2;

@@ -187,19 +187,11 @@ public:
 		}
 
 		{
-			Vec2 vertices[3];
-			vertices[0] = Vec2(-0.5f, 0.0f);
-			vertices[1] = Vec2(0.5f, 0.0f);
-			vertices[2] = Vec2(0.0f, 1.5f);
-			m_polygons[0].Set(vertices, 3);
+			m_polygons[0].Set({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
 		}
 
 		{
-			Vec2 vertices[3];
-			vertices[0] = Vec2(-0.1f, 0.0f);
-			vertices[1] = Vec2(0.1f, 0.0f);
-			vertices[2] = Vec2(0.0f, 1.5f);
-			m_polygons[1].Set(vertices, 3);
+			m_polygons[1].Set({Vec2(-0.1f, 0.0f), Vec2(0.1f, 0.0f), Vec2(0.0f, 1.5f)});
 		}
 
 		{
@@ -207,17 +199,16 @@ public:
 			float_t b = w / (2.0f + Sqrt(2.0f));
 			float_t s = Sqrt(2.0f) * b;
 
-			Vec2 vertices[8];
-			vertices[0] = Vec2(0.5f * s, 0.0f);
-			vertices[1] = Vec2(0.5f * w, b);
-			vertices[2] = Vec2(0.5f * w, b + s);
-			vertices[3] = Vec2(0.5f * s, w);
-			vertices[4] = Vec2(-0.5f * s, w);
-			vertices[5] = Vec2(-0.5f * w, b + s);
-			vertices[6] = Vec2(-0.5f * w, b);
-			vertices[7] = Vec2(-0.5f * s, 0.0f);
-
-			m_polygons[2].Set(vertices, 8);
+			m_polygons[2].Set({
+				Vec2(0.5f * s, 0.0f),
+				Vec2(0.5f * w, b),
+				Vec2(0.5f * w, b + s),
+				Vec2(0.5f * s, w),
+				Vec2(-0.5f * s, w),
+				Vec2(-0.5f * w, b + s),
+				Vec2(-0.5f * w, b),
+				Vec2(-0.5f * s, 0.0f)
+			});
 		}
 
 		{

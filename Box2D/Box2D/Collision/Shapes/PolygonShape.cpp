@@ -27,6 +27,16 @@ PolygonShape::PolygonShape(float_t hx, float_t hy) noexcept: Shape{e_polygon}
 	SetAsBox(hx, hy);
 }
 
+PolygonShape::PolygonShape(std::initializer_list<Vec2> points) noexcept: Shape{e_polygon}
+{
+	Set(points);
+}
+
+PolygonShape::PolygonShape(const Vec2* points, size_t count) noexcept: Shape{e_polygon}
+{
+	Set(points, count);
+}
+
 void PolygonShape::SetAsBox(float_t hx, float_t hy) noexcept
 {
 	m_count = 4;
@@ -82,7 +92,12 @@ void PolygonShape::SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t 
 	m_centroid = xf.p;
 }
 
-void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
+void PolygonShape::Set(std::initializer_list<Vec2> points) noexcept
+{
+	Set(points.begin(), points.size());
+}
+
+void PolygonShape::Set(const Vec2* vertices, size_t count) noexcept
 {
 	assert((count >= 3) && (count <= MaxPolygonVertices));
 	if (count < 3)
@@ -91,34 +106,35 @@ void PolygonShape::Set(const Vec2 vertices[], vertex_count_t count)
 		return;
 	}
 	
-	auto n = Min(count, MaxPolygonVertices);
-
 	// Perform welding and copy vertices into local buffer.
 	Vec2 ps[MaxPolygonVertices];
-	auto uniqueCount = decltype(n){0};
-	for (auto i = decltype(n){0}; i < n; ++i)
+	const auto n = [&]()
 	{
-		const auto v = vertices[i];
-
-		auto unique = true;
-		for (auto j = decltype(uniqueCount){0}; j < uniqueCount; ++j)
+		const auto clampedCount = static_cast<vertex_count_t>(Min(count, size_t{MaxPolygonVertices}));
+		auto uniqueCount = decltype(clampedCount){0};
+		for (auto i = decltype(clampedCount){0}; i < clampedCount; ++i)
 		{
-			if (LengthSquared(v - ps[j]) < Square(LinearSlop / 2))
+			const auto v = vertices[i];
+
+			auto unique = true;
+			for (auto j = decltype(uniqueCount){0}; j < uniqueCount; ++j)
 			{
-				unique = false;
-				break;
+				if (LengthSquared(v - ps[j]) < Square(LinearSlop / 2))
+				{
+					unique = false;
+					break;
+				}
+			}
+
+			if (unique)
+			{
+				ps[uniqueCount] = v;
+				++uniqueCount;
 			}
 		}
+		return uniqueCount;
+	}();
 
-		if (unique)
-		{
-			ps[uniqueCount] = v;
-			++uniqueCount;
-		}
-	}
-
-	n = uniqueCount;
-	
 	assert(n >= 3);
 	if (n < 3)
 	{

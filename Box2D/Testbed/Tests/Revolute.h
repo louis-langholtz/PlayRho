@@ -107,12 +107,7 @@ public:
 			bodyDef.type = BodyType::Dynamic;
 			Body* body = m_world->CreateBody(bodyDef);
 		
-			PolygonShape polyShape;		
-			Vec2 verts[3];
-			verts[0] = Vec2( 17.63f, 36.31f );
-			verts[1] = Vec2( 17.52f, 36.69f );
-			verts[2] = Vec2( 17.19f, 36.36f );
-			polyShape.Set(verts, 3);
+			const auto polyShape = PolygonShape{Vec2(17.63f, 36.31f), Vec2(17.52f, 36.69f), Vec2(17.19f, 36.36f)};
 		
 			FixtureDef polyFixtureDef;
 			polyFixtureDef.shape = &polyShape;

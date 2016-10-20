@@ -45,34 +45,15 @@ public:
 		fd2.density = 1.0f;
 
 		PolygonShape poly1, poly2;
-
 		if (s > 0.0f)
 		{
-			Vec2 vertices[3];
-
-			vertices[0] = p1;
-			vertices[1] = p2;
-			vertices[2] = p3;
-			poly1.Set(vertices, 3);
-
-			vertices[0] = Vec2_zero;
-			vertices[1] = p5 - p4;
-			vertices[2] = p6 - p4;
-			poly2.Set(vertices, 3);
+			poly1.Set({p1, p2, p3});
+			poly2.Set({Vec2_zero, p5 - p4, p6 - p4});
 		}
 		else
 		{
-			Vec2 vertices[3];
-
-			vertices[0] = p1;
-			vertices[1] = p3;
-			vertices[2] = p2;
-			poly1.Set(vertices, 3);
-
-			vertices[0] = Vec2_zero;
-			vertices[1] = p6 - p4;
-			vertices[2] = p5 - p4;
-			poly2.Set(vertices, 3);
+			poly1.Set({p1, p3, p2});
+			poly2.Set({Vec2_zero, p6 - p4, p5 - p4});
 		}
 
 		fd1.shape = &poly1;

@@ -170,13 +170,7 @@ public:
 		// Creates triangles
 		for (int32 i = 0; i < 2; ++i)
 		{
-			Vec2 vertices[3];
-			vertices[0] = Vec2(-0.5f, 0.0f);
-			vertices[1] = Vec2(0.5f, 0.0f);
-			vertices[2] = Vec2(0.0f, 1.5f);
-
-			PolygonShape shape;
-			shape.Set(vertices, 3);
+			const auto shape = PolygonShape{Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)};
 
 			FixtureDef fd;
 			fd.shape = &shape;
