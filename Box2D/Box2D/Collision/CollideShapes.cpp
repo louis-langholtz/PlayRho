@@ -344,8 +344,10 @@ private:
 };
 
 inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2& centroid):
-m_vertex1(edge.GetVertex1()), m_vertex2(edge.GetVertex2()),
-m_edge1(GetUnitVector(m_vertex2 - m_vertex1)), m_normal1(m_edge1.y, -m_edge1.x)
+	m_vertex1(edge.GetVertex1()),
+	m_vertex2(edge.GetVertex2()),
+	m_edge1(GetUnitVector(m_vertex2 - m_vertex1)),
+	m_normal1(m_edge1.y, -m_edge1.x)
 {
 	const auto hasVertex0 = edge.HasVertex0();
 	const auto hasVertex3 = edge.HasVertex3();
