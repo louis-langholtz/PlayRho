@@ -21,23 +21,23 @@
 
 using namespace box2d;
 
-Vec2 box2d::ComputeCentroid(const Vec2 *vertices, size_t count)
+Vec2 box2d::ComputeCentroid(const Span<const Vec2>& vertices)
 {
-	assert(count >= 3);
+	assert(vertices.size() >= 3);
 	
 	auto c = Vec2_zero;
 	auto area = float_t{0};
 	
 	// pRef is the reference point for forming triangles.
 	// It's location doesn't change the result (except for rounding error).
-	const auto pRef = Average(vertices, count);
+	const auto pRef = Average(vertices);
 
-	for (auto i = decltype(count){0}; i < count; ++i)
+	for (auto i = decltype(vertices.size()){0}; i < vertices.size(); ++i)
 	{
 		// Triangle vertices.
 		const auto p1 = pRef;
 		const auto p2 = vertices[i];
-		const auto p3 = vertices[(i + 1) % count];
+		const auto p3 = vertices[(i + 1) % vertices.size()];
 		
 		const auto e1 = p2 - p1;
 		const auto e2 = p3 - p1;

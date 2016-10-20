@@ -212,7 +212,7 @@ void PolygonShape::Set(const Vec2* vertices, size_t count) noexcept
 	}
 
 	// Compute the polygon centroid.
-	m_centroid = ComputeCentroid(m_vertices, m);
+	m_centroid = ComputeCentroid(Span<const Vec2>(m_vertices, m));
 }
 
 size_t box2d::FindLowestRightMostVertex(const Vec2 *vertices, size_t count)
@@ -424,7 +424,7 @@ MassData box2d::ComputeMass(const PolygonShape& shape, float_t density)
 	// s is the reference point for forming triangles.
 	// It's location doesn't change the result (except for rounding error).
 	// This code puts the reference point inside the polygon.
-	const auto s = Average(shape.GetVertices(), count);
+	const auto s = Average(Span<const Vec2>(shape.GetVertices(), count));
 
 	constexpr auto k_inv3 = float_t{1} / float_t{3};
 

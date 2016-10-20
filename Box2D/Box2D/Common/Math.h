@@ -96,14 +96,57 @@ constexpr inline bool almost_equal(float_t x, float_t y, int ulp = 2)
 }
 
 template <typename T>
-inline T Average(const T* elements, size_t count)
+class Span
+{
+public:
+	using pointer = T*;
+	using const_pointer = const typename std::remove_const<T>::type *;
+	using size_type = size_t;
+
+	Span() = default;
+	Span(const Span& span) = default;
+
+	template <typename U>
+	Span(const Span<U>& span) noexcept: m_array{span.m_array}, m_size{span.m_size} {}
+
+	constexpr Span(pointer array, size_type size) noexcept: m_array{array}, m_size{size} {}
+	
+	pointer begin() noexcept { return m_array; }
+	const_pointer begin() const noexcept { return m_array; }
+	const_pointer cbegin() const noexcept { return m_array; }
+
+	pointer end() noexcept { return m_array + m_size; }
+	const_pointer end() const noexcept { return m_array + m_size; }
+	const_pointer cend() const noexcept { return m_array + m_size; }
+	
+	T& operator[](size_type index) noexcept
+	{
+		assert(index < m_size);
+		return m_array[index];
+	}
+
+	const T& operator[](size_type index) const noexcept
+	{
+		assert(index < m_size);
+		return m_array[index];
+	}
+
+	size_type size() const noexcept { return m_size; }
+
+private:
+	pointer m_array = nullptr;
+	size_type m_size = 0;
+};
+
+template <typename T>
+inline T Average(const Span<const T>& span)
 {
 	auto sum = T(0);
-	for (auto i = size_t(0); i < count; ++i)
+	for (auto&& element: span)
 	{
-		sum += elements[i];
+		sum += element;
 	}
-	return sum / count;
+	return sum / span.size();
 }
 
 /// Vector 2D.
@@ -1211,20 +1254,20 @@ constexpr inline Vec2 GetContactRelVelocity(const Velocity velA, const Vec2 vcp_
 }
 
 template <>
-inline Vec2 Average(const Vec2* elements, size_t count)
+inline Vec2 Average(const Span<const Vec2>& span)
 {
 	auto sum = Vec2(0, 0);
-	for (auto i = size_t(0); i < count; ++i)
+	for (auto&& element: span)
 	{
-		sum += elements[i];
+		sum += element;
 	}
-	return sum / count;
+	return sum / span.size();
 }
 
 /// Computes the centroid of a counter-clockwise array of 3 or more vertices.
 /// @note Behavior is undefined if there are less than 3 vertices or the vertices don't
 ///   go counter-clockwise.
-Vec2 ComputeCentroid(const Vec2 *vertices, size_t count);
+Vec2 ComputeCentroid(const Span<const Vec2>& vertices);
 
 ::std::ostream& operator<<(::std::ostream& os, const Vec2& value);
 	
