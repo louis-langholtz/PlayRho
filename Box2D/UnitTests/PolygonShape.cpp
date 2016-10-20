@@ -28,7 +28,7 @@ TEST(PolygonShape, ByteSizeIs272)
 
 TEST(PolygonShape, DefaultConstruction)
 {
-	PolygonShape shape{};
+	PolygonShape shape;
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(shape.GetVertexCount(), 0);
 	EXPECT_EQ(shape.GetCentroid().x, float_t(0));
@@ -75,7 +75,7 @@ TEST(PolygonShape, SetAsBox)
 {
 	const auto hx = float_t(2.3);
 	const auto hy = float_t(54.1);
-	PolygonShape shape{};
+	PolygonShape shape;
 	shape.SetAsBox(hx, hy);
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(shape.GetCentroid().x, float_t(0));
@@ -110,7 +110,7 @@ TEST(PolygonShape, SetAsZeroCenteredRotatedBox)
 {
 	const auto hx = float_t(2.3);
 	const auto hy = float_t(54.1);
-	PolygonShape shape{};
+	PolygonShape shape;
 	shape.SetAsBox(hx, hy, Vec2_zero, 0);
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(shape.GetCentroid().x, float_t(0));
@@ -145,7 +145,7 @@ TEST(PolygonShape, SetAsCenteredBox)
 {
 	const auto hx = float_t(2.3);
 	const auto hy = float_t(54.1);
-	PolygonShape shape{};
+	PolygonShape shape;
 	const auto x_off = float_t(10.2);
 	const auto y_off = float_t(-5);
 	shape.SetAsBox(hx, hy, Vec2(x_off, y_off), 0);
@@ -182,7 +182,7 @@ TEST(PolygonShape, SetAsBoxAngledDegrees90)
 {
 	const auto hx = float_t(2.3);
 	const auto hy = float_t(54.1);
-	PolygonShape shape{};
+	PolygonShape shape;
 	const auto angle = DegreesToRadians(90);
 	shape.SetAsBox(hx, hy, Vec2_zero, angle);
 
@@ -227,9 +227,9 @@ TEST(PolygonShape, SetAsBoxAngledDegrees90)
 
 TEST(PolygonShape, SetPoints)
 {
-	PolygonShape shape{};
-	const auto points = std::vector<Vec2>{{ Vec2{-1, +2}, Vec2{+3, +3}, Vec2{+2, -1}, Vec2{-1, -2}, Vec2{-4, -1} }};
-	shape.Set(&points[0], static_cast<PolygonShape::vertex_count_t>(points.size()));
+	PolygonShape shape;
+	const auto points = Span<const Vec2>{ Vec2{-1, +2}, Vec2{+3, +3}, Vec2{+2, -1}, Vec2{-1, -2}, Vec2{-4, -1} };
+	shape.Set(points);
 	
 	ASSERT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(5));
 

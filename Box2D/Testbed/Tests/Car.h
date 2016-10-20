@@ -168,14 +168,14 @@ public:
 
 		// Car
 		{
-			const auto chassis = PolygonShape{
+			const auto chassis = PolygonShape({
 				Vec2(-1.5f, -0.5f),
 				Vec2(1.5f, -0.5f),
 				Vec2(1.5f, 0.0f),
 				Vec2(0.0f, 0.9f),
 				Vec2(-1.15f, 0.9f),
 				Vec2(-1.5f, 0.2f)
-			};
+			});
 
 			const auto circle = CircleShape(float_t(0.4));
 

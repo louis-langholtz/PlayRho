@@ -21,6 +21,46 @@
 
 using namespace box2d;
 
+TEST(Math, Average)
+{
+	EXPECT_EQ(Average<int>({}), 0);
+	EXPECT_EQ(Average<float>({}), float(0));
+
+	EXPECT_EQ(Average<int>({0}), 0);
+	EXPECT_EQ(Average<int>({4}), 4);
+	EXPECT_EQ(Average<int>({-3}), -3);
+	EXPECT_EQ(Average<float>({float(-3)}), float(-3));
+
+	EXPECT_EQ(Average<int>({0, 0}), 0);
+	EXPECT_EQ(Average<int>({2, 2}), 2);
+	EXPECT_EQ(Average<int>({2, 4}), 3);
+	EXPECT_EQ(Average<float>({float(2), float(3)}), float(2.5));
+
+	EXPECT_EQ(Average<int>({2, 4, 6}), 4);
+	EXPECT_EQ(Average<int>({2, 4, 12}), 6);
+	EXPECT_EQ(Average<double>({2.0, 4.0, 6.0}), 4.0);
+	EXPECT_EQ(Average<double>({2.0, 4.0, 12.0}), 6.0);
+}
+
+TEST(Math, AverageVec2)
+{
+	EXPECT_EQ(Average<Vec2>({}), Vec2(0, 0));
+	
+	{
+		const auto val = Vec2{float_t(3.9), float_t(-0.1)};
+		EXPECT_EQ(Average<Vec2>({val}), val);
+	}
+	
+	{
+		const auto val1 = Vec2{float_t(2.2), float_t(-1.1)};
+		const auto val2 = Vec2{float_t(4.4), float_t(-1.3)};
+		const auto average = Average<Vec2>({val1, val2});
+		const auto expected = Vec2(float_t(3.3), float_t(-1.2));
+		EXPECT_FLOAT_EQ(average.x, expected.x);
+		EXPECT_FLOAT_EQ(average.y, expected.y);
+	}
+}
+
 TEST(Math, DotProductOfTwoVecTwoIsCommutative)
 {
 	const auto a = Vec2{float_t(-3.2), float_t(1.9)};

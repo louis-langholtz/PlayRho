@@ -180,7 +180,7 @@ public:
 				angle += delta;
 			}
 
-			const auto shape = PolygonShape(vertices, 6);
+			const auto shape = PolygonShape(Span<const Vec2>(vertices, 6));
 
 			FixtureDef fd;
 			fd.shape = &shape;

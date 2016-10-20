@@ -21,7 +21,6 @@
 #define B2_POLYGON_SHAPE_H
 
 #include <Box2D/Collision/Shapes/Shape.h>
-#include <initializer_list>
 #include <type_traits>
 
 namespace box2d {
@@ -48,17 +47,14 @@ public:
 	/// @param hy the half-height.
 	explicit PolygonShape(float_t hx, float_t hy) noexcept;
 	
-	PolygonShape(std::initializer_list<Vec2> points) noexcept;
-	PolygonShape(const Vec2* points, size_t count) noexcept;
-	
-	void Set(std::initializer_list<Vec2> points) noexcept;
+	PolygonShape(Span<const Vec2> points) noexcept;
 	
 	/// Create a convex hull from the given array of local points.
-	/// The count must be in the range [3, MaxPolygonVertices].
+	/// The size of the span must be in the range [3, MaxPolygonVertices].
 	/// @warning the points may be re-ordered, even if they form a convex polygon
 	/// @warning collinear points are handled but not removed. Collinear points
 	/// may lead to poor stacking behavior.
-	void Set(const Vec2* points, size_t count) noexcept;
+	void Set(Span<const Vec2> points) noexcept;
 
 	/// Build vertices to represent an axis-aligned box centered on the local origin.
 	/// @param hx the half-width.
@@ -89,11 +85,11 @@ public:
 	/// @return Normal for the given index.
 	Vec2 GetNormal(vertex_count_t index) const;
 
-	/// Gets the array of vertices.
+	/// Gets the span of vertices.
 	/// @detail Vertices go counter-clockwise with lowest right-most vertex at index 0.
-	const Vec2* GetVertices() const noexcept { return m_vertices; }
+	Span<const Vec2> GetVertices() const noexcept { return Span<const Vec2>(m_vertices, m_count); }
 
-	const Vec2* GetNormals() const noexcept { return m_normals; }
+	Span<const Vec2> GetNormals() const noexcept { return Span<const Vec2>(m_normals, m_count); }
 	
 	Vec2 GetCentroid() const noexcept { return m_centroid; }
 	

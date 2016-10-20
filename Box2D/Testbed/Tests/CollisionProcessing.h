@@ -54,7 +54,7 @@ public:
 		vertices[2] = Vec2(0.0f, 2.0f);
 
 		PolygonShape polygon;
-		polygon.Set(vertices, 3);
+		polygon.Set(Span<const Vec2>{vertices, 3});
 
 		FixtureDef triangleShapeDef;
 		triangleShapeDef.shape = &polygon;
@@ -71,7 +71,7 @@ public:
 		vertices[0] *= 2.0f;
 		vertices[1] *= 2.0f;
 		vertices[2] *= 2.0f;
-		polygon.Set(vertices, 3);
+		polygon.Set(Span<const Vec2>{vertices, 3});
 
 		triangleBodyDef.position = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi));
 

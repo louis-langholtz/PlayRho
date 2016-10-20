@@ -170,7 +170,7 @@ public:
 		// Creates triangles
 		for (int32 i = 0; i < 2; ++i)
 		{
-			const auto shape = PolygonShape{Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)};
+			const auto shape = PolygonShape({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
 
 			FixtureDef fd;
 			fd.shape = &shape;

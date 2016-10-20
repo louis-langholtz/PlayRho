@@ -104,21 +104,30 @@ public:
 	using size_type = size_t;
 
 	Span() = default;
-	Span(const Span& span) = default;
+	
+	Span(const Span& copy) = default;
+
+	Span(Span&& span) noexcept: m_array{std::move(span.begin())}, m_size{std::move(span.size())}
+	{
+		span.m_array = nullptr;
+		span.m_size = 0;
+	}
+
 	constexpr Span(pointer array, size_type size) noexcept: m_array{array}, m_size{size} {}
 
 	template <typename U>
-	constexpr Span(const Span<U>& span) noexcept: m_array{span.m_array}, m_size{span.m_size} {}
+	constexpr Span(const Span<U>& span) noexcept: m_array{span.begin()}, m_size{span.size()} {}
 
 	template <typename U>
 	constexpr Span(std::initializer_list<U> list) noexcept: m_array{list.begin()}, m_size{list.size()} {}
+
+	template <class U, std::size_t S>
+	constexpr Span(const std::array<U, S>& value) noexcept: m_array{value.begin()}, m_size{value.size()} {}
 	
-	pointer begin() noexcept { return m_array; }
-	const_pointer begin() const noexcept { return m_array; }
+	pointer begin() const noexcept { return m_array; }
 	const_pointer cbegin() const noexcept { return m_array; }
 
-	pointer end() noexcept { return m_array + m_size; }
-	const_pointer end() const noexcept { return m_array + m_size; }
+	pointer end() const noexcept { return m_array + m_size; }
 	const_pointer cend() const noexcept { return m_array + m_size; }
 	
 	T& operator[](size_type index) noexcept
@@ -141,14 +150,16 @@ private:
 };
 
 template <typename T>
-inline T Average(const Span<const T>& span)
+inline T Average(Span<const T> span)
 {
-	auto sum = T(0);
+	assert(span.size() < std::numeric_limits<T>::max());
+
+	auto sum = T{0};
 	for (auto&& element: span)
 	{
 		sum += element;
 	}
-	return sum / span.size();
+	return (span.size() > decltype(span.size()){0})? sum / static_cast<T>(span.size()): sum;
 }
 
 /// Vector 2D.
@@ -157,6 +168,7 @@ inline T Average(const Span<const T>& span)
 struct Vec2
 {
 	using size_type = size_t;
+	using data_type = float_t;
 
 	/// Default constructor does nothing (for performance).
 	Vec2() noexcept = default;
@@ -164,7 +176,7 @@ struct Vec2
 	Vec2(const Vec2& copy) noexcept = default;
 	
 	/// Construct using coordinates.
-	constexpr Vec2(float_t x_, float_t y_) noexcept : x{x_}, y{y_} {}
+	constexpr Vec2(data_type x_, data_type y_) noexcept : x{x_}, y{y_} {}
 	
 	/// Negate this vector.
 	constexpr auto operator- () const noexcept { return Vec2{-x, -y}; }
@@ -201,7 +213,7 @@ struct Vec2
 		return x;
 	}
 
-	float_t x, y;
+	data_type x, y;
 };
 
 /// An all zero Vec2 value.
@@ -733,7 +745,7 @@ constexpr Vec2& operator -= (Vec2& lhs, Vec2 rhs) noexcept
 	return lhs;
 }
 
-constexpr Vec2& operator *= (Vec2& lhs, float_t rhs) noexcept
+constexpr Vec2& operator *= (Vec2& lhs, Vec2::data_type rhs) noexcept
 {
 	lhs.x *= rhs;
 	lhs.y *= rhs;
@@ -752,17 +764,17 @@ constexpr inline Vec2 operator - (const Vec2 a, const Vec2 b) noexcept
 	return Vec2{a.x - b.x, a.y - b.y};
 }
 
-constexpr inline Vec2 operator * (float_t s, const Vec2 a) noexcept
+constexpr inline Vec2 operator * (Vec2::data_type s, const Vec2 a) noexcept
 {
 	return Vec2{s * a.x, s * a.y};
 }
 
-constexpr inline Vec2 operator * (const Vec2 a, const float_t s) noexcept
+constexpr inline Vec2 operator * (const Vec2 a, const Vec2::data_type s) noexcept
 {
 	return Vec2{a.x * s, a.y * s};
 }
 
-constexpr Vec2 operator/ (const Vec2 a, const float_t s) noexcept
+constexpr Vec2 operator/ (const Vec2 a, const Vec2::data_type s) noexcept
 {
 	return Vec2{a.x / s, a.y / s};
 }
@@ -1256,14 +1268,15 @@ constexpr inline Vec2 GetContactRelVelocity(const Velocity velA, const Vec2 vcp_
 }
 
 template <>
-inline Vec2 Average(const Span<const Vec2>& span)
+inline Vec2 Average(Span<const Vec2> span)
 {
+	assert(span.size() < std::numeric_limits<Vec2::data_type>::max());
 	auto sum = Vec2(0, 0);
 	for (auto&& element: span)
 	{
 		sum += element;
 	}
-	return sum / span.size();
+	return (span.size() > decltype(span.size()){0})? sum / span.size(): sum;
 }
 
 /// Computes the centroid of a counter-clockwise array of 3 or more vertices.

@@ -65,7 +65,7 @@ public:
 		vertices[1] = Vec2(1.0f, 0.0f);
 		vertices[2] = Vec2(0.0f, 2.0f);
 		PolygonShape polygon;
-		polygon.Set(vertices, 3);
+		polygon.Set(Span<const Vec2>{vertices, 3});
 
 		FixtureDef triangleShapeDef;
 		triangleShapeDef.shape = &polygon;
@@ -86,7 +86,7 @@ public:
 		vertices[0] *= 2.0f;
 		vertices[1] *= 2.0f;
 		vertices[2] *= 2.0f;
-		polygon.Set(vertices, 3);
+		polygon.Set(Span<const Vec2>{vertices, 3});
 		triangleShapeDef.filter.groupIndex = k_largeGroup;
 		triangleBodyDef.position = Vec2(-5.0f, 6.0f);
 		triangleBodyDef.fixedRotation = true; // look at me!

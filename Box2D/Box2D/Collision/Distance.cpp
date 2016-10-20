@@ -54,7 +54,7 @@ inline DistanceProxy GetDistanceProxy(const CircleShape& shape, child_count_t in
 
 inline DistanceProxy GetDistanceProxy(const PolygonShape& shape, child_count_t index)
 {
-	return DistanceProxy{GetRadius(shape), shape.GetVertices(), shape.GetVertexCount()};		
+	return DistanceProxy{GetRadius(shape), shape.GetVertices()};		
 }
 
 inline DistanceProxy GetDistanceProxy(const ChainShape& shape, child_count_t index)
@@ -83,7 +83,7 @@ DistanceProxy GetDistanceProxy(const Shape& shape, child_count_t index)
 		case Shape::e_typeCount: break;
 	}
 	assert(false);
-	return DistanceProxy{0, nullptr, 0};
+	return DistanceProxy{0, Span<Vec2>({})};
 }
 
 class SimplexVertex

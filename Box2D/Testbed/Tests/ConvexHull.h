@@ -79,12 +79,12 @@ public:
 	{
 		Test::Step(settings, drawer);
 
-		const auto shape = PolygonShape(m_points, m_count);
+		const auto shape = PolygonShape(Span<const Vec2>{m_points, m_count});
 
 		drawer.DrawString(5, m_textLine, "Press g to generate a new random convex hull");
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		drawer.DrawPolygon(shape.GetVertices(), shape.GetVertexCount(), Color(0.9f, 0.9f, 0.9f));
+		drawer.DrawPolygon(shape.GetVertices().begin(), shape.GetVertexCount(), Color(0.9f, 0.9f, 0.9f));
 
 		for (int32 i = 0; i < m_count; ++i)
 		{

@@ -27,14 +27,9 @@ PolygonShape::PolygonShape(float_t hx, float_t hy) noexcept: Shape{e_polygon}
 	SetAsBox(hx, hy);
 }
 
-PolygonShape::PolygonShape(std::initializer_list<Vec2> points) noexcept: Shape{e_polygon}
+PolygonShape::PolygonShape(Span<const Vec2> points) noexcept: Shape{e_polygon}
 {
 	Set(points);
-}
-
-PolygonShape::PolygonShape(const Vec2* points, size_t count) noexcept: Shape{e_polygon}
-{
-	Set(points, count);
 }
 
 void PolygonShape::SetAsBox(float_t hx, float_t hy) noexcept
@@ -92,15 +87,10 @@ void PolygonShape::SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t 
 	m_centroid = xf.p;
 }
 
-void PolygonShape::Set(std::initializer_list<Vec2> points) noexcept
+void PolygonShape::Set(Span<const Vec2> points) noexcept
 {
-	Set(points.begin(), points.size());
-}
-
-void PolygonShape::Set(const Vec2* vertices, size_t count) noexcept
-{
-	assert((count >= 3) && (count <= MaxPolygonVertices));
-	if (count < 3)
+	assert((points.size() >= 3) && (points.size() <= MaxPolygonVertices));
+	if (points.size() < 3)
 	{
 		SetAsBox(float_t{1}, float_t{1});
 		return;
@@ -110,11 +100,11 @@ void PolygonShape::Set(const Vec2* vertices, size_t count) noexcept
 	Vec2 ps[MaxPolygonVertices];
 	const auto n = [&]()
 	{
-		const auto clampedCount = static_cast<vertex_count_t>(Min(count, size_t{MaxPolygonVertices}));
+		const auto clampedCount = static_cast<vertex_count_t>(Min(points.size(), size_t{MaxPolygonVertices}));
 		auto uniqueCount = decltype(clampedCount){0};
 		for (auto i = decltype(clampedCount){0}; i < clampedCount; ++i)
 		{
-			const auto v = vertices[i];
+			const auto v = points[i];
 
 			auto unique = true;
 			for (auto j = decltype(uniqueCount){0}; j < uniqueCount; ++j)
@@ -424,7 +414,7 @@ MassData box2d::ComputeMass(const PolygonShape& shape, float_t density)
 	// s is the reference point for forming triangles.
 	// It's location doesn't change the result (except for rounding error).
 	// This code puts the reference point inside the polygon.
-	const auto s = Average(Span<const Vec2>(shape.GetVertices(), count));
+	const auto s = Average(shape.GetVertices());
 
 	constexpr auto k_inv3 = float_t{1} / float_t{3};
 

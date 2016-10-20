@@ -314,8 +314,8 @@ TEST(Distance, HorEdgeSquareTouching)
 	const auto pos2 = Vec2{1, 3};
 	const auto pos3 = Vec2{3, 3};
 	const auto pos4 = Vec2{3, 1};
-	const Vec2 square[] = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{float_t(0.5), square, 4};
+	const auto square = {pos1, pos2, pos3, pos4};
+	DistanceProxy dp1{float_t(0.5), square};
 
 	const auto pos5 = Vec2{-2, 0};
 	const auto pos6 = Vec2{6, 0};
@@ -355,8 +355,8 @@ TEST(Distance, VerEdgeSquareTouching)
 	const auto pos2 = Vec2{1, 3};
 	const auto pos3 = Vec2{3, 3};
 	const auto pos4 = Vec2{3, 1};
-	const Vec2 square[] = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{float_t(0.5), square, 4};
+	const auto square = {pos1, pos2, pos3, pos4};
+	DistanceProxy dp1{float_t(0.5), square};
 	
 	const auto pos5 = Vec2{4, -2};
 	const auto pos6 = Vec2{4, 6};
@@ -397,8 +397,8 @@ TEST(Distance, SquareTwice)
 	const auto pos2 = Vec2{2, 4};
 	const auto pos3 = Vec2{4, 4};
 	const auto pos4 = Vec2{4, 2};
-	const Vec2 square[] = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{float_t(0.05), square, 4};
+	const auto square = {pos1, pos2, pos3, pos4};
+	DistanceProxy dp1{float_t(0.05), square};
 
 	SimplexCache cache;
 	Transformation xfm = Transform_identity;
@@ -430,15 +430,15 @@ TEST(Distance, SquareSquareTouchingVertically)
 	const auto pos2 = Vec2{2, 4};
 	const auto pos3 = Vec2{4, 4};
 	const auto pos4 = Vec2{4, 2};
-	const Vec2 square1[] = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{float_t(0.05), square1, 4};
+	const auto square1 = {pos1, pos2, pos3, pos4};
+	DistanceProxy dp1{float_t(0.05), square1};
 	
 	const auto pos5 = Vec2{4, 2};
 	const auto pos6 = Vec2{4, 4};
 	const auto pos7 = Vec2{6, 4};
 	const auto pos8 = Vec2{6, 2};
-	const Vec2 square2[] = {pos5, pos6, pos7, pos8};
-	DistanceProxy dp2{float_t(0.05), square2, 4};
+	const auto square2 = {pos5, pos6, pos7, pos8};
+	DistanceProxy dp2{float_t(0.05), square2};
 
 	SimplexCache cache;
 	Transformation xfm = Transform_identity;
@@ -469,15 +469,15 @@ TEST(Distance, SquareSquareDiagonally)
 	const auto pos2 = Vec2{-3, -1};
 	const auto pos3 = Vec2{-1, -1};
 	const auto pos4 = Vec2{-1, -3};
-	const Vec2 square1[] = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{float_t(0.05), square1, 4};
+	const auto square1 = {pos1, pos2, pos3, pos4};
+	DistanceProxy dp1{float_t(0.05), square1};
 	
 	const auto pos5 = Vec2{1, 3};
 	const auto pos6 = Vec2{3, 3};
 	const auto pos7 = Vec2{3, 1};
 	const auto pos8 = Vec2{1, 1};
-	const Vec2 square2[] = {pos5, pos6, pos7, pos8};
-	DistanceProxy dp2{float_t(0.05), square2, 4};
+	const auto square2 = {pos5, pos6, pos7, pos8};
+	DistanceProxy dp2{float_t(0.05), square2};
 	
 	SimplexCache cache;
 	Transformation xfm = Transform_identity;
@@ -520,8 +520,8 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
 	const auto pos2 = Vec2{-3, -3};
 	const auto pos3 = Vec2{1, -3};
 	const auto pos4 = Vec2{1, 1};
-	const Vec2 square1[] = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{0, square1, 4};
+	const auto square1 = {pos1, pos2, pos3, pos4};
+	DistanceProxy dp1{0, square1};
 	
 	/*
 	 *  +-3-----+
@@ -539,8 +539,8 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
 	const auto pos6 = Vec2{-1, 3};
 	const auto pos7 = Vec2{-1, -1};
 	const auto pos8 = Vec2{-1, 3};
-	const Vec2 square2[] = {pos5, pos6, pos7, pos8};
-	DistanceProxy dp2{0, square2, 4};
+	const auto square2 = {pos5, pos6, pos7, pos8};
+	DistanceProxy dp2{0, square2};
 	
 	SimplexCache cache;
 	Transformation xfm = Transform_identity;

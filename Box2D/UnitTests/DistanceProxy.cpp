@@ -80,7 +80,7 @@ TEST(DistanceProxy, ThreeVertices)
 	const auto v2 = Vec2{float_t(-6), float_t(5)};
 	const auto vertices = std::array<Vec2, count>{{v0, v1, v2}};
 	
-	const DistanceProxy foo{radius, vertices.data(), count};
+	const DistanceProxy foo{radius, vertices};
 	
 	EXPECT_EQ(foo.GetRadius(), radius);
 	ASSERT_EQ(foo.GetVertexCount(), count);

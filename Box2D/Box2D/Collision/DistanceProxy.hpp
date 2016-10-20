@@ -75,11 +75,14 @@ namespace box2d
 		/// @detail Constructs a distance proxy for n-point shape (like a polygon).
 		/// @param radius Radius.
 		/// @param vertices Vertices of the shape (relative to the shape's origin).
-		/// @param count Count of vertices.
-		constexpr DistanceProxy(float_t radius, const Vec2* vertices, size_type count) noexcept:
-			m_radius{radius}, m_buffer{}, m_vertices{vertices}, m_count{count}
+		constexpr DistanceProxy(float_t radius, const Span<const Vec2>& vertices) noexcept:
+			m_radius{radius},
+			m_buffer{},
+			m_vertices{vertices.begin()},
+			m_count{static_cast<size_type>(vertices.size())}
 		{
 			assert(radius >= 0);
+			assert(vertices.size() <= MaxShapeVertices);
 		}
 		
 		/// Gets the "radius" of the associated shape.

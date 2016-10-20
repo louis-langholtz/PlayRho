@@ -81,21 +81,21 @@ public:
 			xf1.q = Rot(0.3524f * Pi);
 			xf1.p = GetXAxis(xf1.q);
 
-			const auto triangle1 = PolygonShape{
+			const auto triangle1 = PolygonShape({
 				Transform(Vec2(-1.0f, 0.0f), xf1),
 				Transform(Vec2(1.0f, 0.0f), xf1),
 				Transform(Vec2(0.0f, 0.5f), xf1)
-			};
+			});
 
 			Transformation xf2;
 			xf2.q = Rot(-0.3524f * Pi);
 			xf2.p = -GetXAxis(xf2.q);
 
-			const auto triangle2 = PolygonShape{
+			const auto triangle2 = PolygonShape({
 				Transform(Vec2(-1.0f, 0.0f), xf2),
 				Transform(Vec2(1.0f, 0.0f), xf2),
 				Transform(Vec2(0.0f, 0.5f), xf2)
-			};
+			});
 			
 			for (int32 i = 0; i < 10; ++i)
 			{

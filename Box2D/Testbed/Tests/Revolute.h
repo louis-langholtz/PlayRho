@@ -107,7 +107,7 @@ public:
 			bodyDef.type = BodyType::Dynamic;
 			Body* body = m_world->CreateBody(bodyDef);
 		
-			const auto polyShape = PolygonShape{Vec2(17.63f, 36.31f), Vec2(17.52f, 36.69f), Vec2(17.19f, 36.36f)};
+			const auto polyShape = PolygonShape({Vec2(17.63f, 36.31f), Vec2(17.52f, 36.69f), Vec2(17.19f, 36.36f)});
 		
 			FixtureDef polyFixtureDef;
 			polyFixtureDef.shape = &polyShape;
