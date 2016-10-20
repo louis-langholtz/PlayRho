@@ -109,11 +109,11 @@ TEST(Math, ComputeCentroidCenteredR1)
 		Vec2{real_center.x - hx, real_center.y - hy},
 		Vec2{real_center.x + hx, real_center.y - hy}
 	};
-	const auto center = ComputeCentroid(vertices.begin(), vertices.size());
+	const auto center = ComputeCentroid(vertices);
 	EXPECT_EQ(center.x, real_center.x);
 	EXPECT_EQ(center.y, real_center.y);
 	
-	const auto average = Average(vertices.begin(), vertices.size());
+	const auto average = Average<Vec2>(vertices);
 	EXPECT_EQ(average.x, center.x);
 	EXPECT_EQ(average.y, center.y);
 }
@@ -129,11 +129,11 @@ TEST(Math, ComputeCentroidCentered0R1000)
 		Vec2{real_center.x - hx, real_center.y - hy},
 		Vec2{real_center.x + hx, real_center.y - hy}
 	};
-	const auto center = ComputeCentroid(vertices.begin(), vertices.size());
+	const auto center = ComputeCentroid(vertices);
 	EXPECT_EQ(center.x, real_center.x);
 	EXPECT_EQ(center.y, real_center.y);
 	
-	const auto average = Average(vertices.begin(), vertices.size());
+	const auto average = Average<Vec2>(vertices);
 	EXPECT_EQ(average.x, center.x);
 	EXPECT_EQ(average.y, center.y);
 }
@@ -149,11 +149,11 @@ TEST(Math, ComputeCentroidUpRight1000R1)
 		Vec2{real_center.x - hx, real_center.y - hy},
 		Vec2{real_center.x + hx, real_center.y - hy}
 	};
-	const auto center = ComputeCentroid(vertices.begin(), vertices.size());
+	const auto center = ComputeCentroid(vertices);
 	EXPECT_EQ(center.x, real_center.x);
 	EXPECT_EQ(center.y, real_center.y);
 	
-	const auto average = Average(vertices.begin(), vertices.size());
+	const auto average = Average<Vec2>(vertices);
 	EXPECT_EQ(average.x, center.x);
 	EXPECT_EQ(average.y, center.y);
 }
@@ -169,11 +169,11 @@ TEST(Math, ComputeCentroidUpRight1000R100)
 		Vec2{real_center.x - hx, real_center.y - hy},
 		Vec2{real_center.x + hx, real_center.y - hy}
 	};
-	const auto center = ComputeCentroid(vertices.begin(), vertices.size());
+	const auto center = ComputeCentroid(vertices);
 	EXPECT_EQ(center.x, real_center.x);
 	EXPECT_EQ(center.y, real_center.y);
 	
-	const auto average = Average(vertices.begin(), vertices.size());
+	const auto average = Average<Vec2>(vertices);
 	EXPECT_EQ(average.x, center.x);
 	EXPECT_EQ(average.y, center.y);
 }
@@ -189,11 +189,11 @@ TEST(Math, ComputeCentroidUpRight10000R01)
 		Vec2{real_center.x - hx, real_center.y - hy},
 		Vec2{real_center.x + hx, real_center.y - hy}
 	};
-	const auto center = ComputeCentroid(vertices.begin(), vertices.size());
+	const auto center = ComputeCentroid(vertices);
 	EXPECT_EQ(center.x, real_center.x);
 	EXPECT_EQ(center.y, real_center.y);
 	
-	const auto average = Average(vertices.begin(), vertices.size());
+	const auto average = Average<Vec2>(vertices);
 	EXPECT_EQ(average.x, center.x);
 	EXPECT_EQ(average.y, center.y);
 }
@@ -209,11 +209,11 @@ TEST(Math, ComputeCentroidDownLeft1000R1)
 		Vec2{real_center.x - hx, real_center.y - hy},
 		Vec2{real_center.x + hx, real_center.y - hy}
 	};
-	const auto center = ComputeCentroid(vertices.begin(), vertices.size());
+	const auto center = ComputeCentroid(vertices);
 	EXPECT_EQ(center.x, real_center.x);
 	EXPECT_EQ(center.y, real_center.y);
 	
-	const auto average = Average(vertices.begin(), vertices.size());
+	const auto average = Average<Vec2>(vertices);
 	EXPECT_EQ(average.x, center.x);
 	EXPECT_EQ(average.y, center.y);
 }
@@ -231,11 +231,11 @@ TEST(Math, ComputeCentroidOfHexagonalVertices)
 		Vec2{real_center.x + hx, real_center.y - 1 * hy},
 		Vec2{real_center.x + hx, real_center.y + 1 * hy},
 	};
-	const auto center = ComputeCentroid(vertices.begin(), vertices.size());
+	const auto center = ComputeCentroid(vertices);
 	EXPECT_EQ(center.x, real_center.x);
 	EXPECT_EQ(center.y, real_center.y);
 	
-	const auto average = Average(vertices.begin(), vertices.size());
+	const auto average = Average<Vec2>(vertices);
 	EXPECT_EQ(average.x, center.x);
 	EXPECT_EQ(average.y, center.y);
 }

@@ -100,16 +100,18 @@ class Span
 {
 public:
 	using pointer = T*;
-	using const_pointer = const typename std::remove_const<T>::type *;
+	using const_pointer = const T *;
 	using size_type = size_t;
 
 	Span() = default;
 	Span(const Span& span) = default;
+	constexpr Span(pointer array, size_type size) noexcept: m_array{array}, m_size{size} {}
 
 	template <typename U>
-	Span(const Span<U>& span) noexcept: m_array{span.m_array}, m_size{span.m_size} {}
+	constexpr Span(const Span<U>& span) noexcept: m_array{span.m_array}, m_size{span.m_size} {}
 
-	constexpr Span(pointer array, size_type size) noexcept: m_array{array}, m_size{size} {}
+	template <typename U>
+	constexpr Span(std::initializer_list<U> list) noexcept: m_array{list.begin()}, m_size{list.size()} {}
 	
 	pointer begin() noexcept { return m_array; }
 	const_pointer begin() const noexcept { return m_array; }
