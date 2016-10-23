@@ -109,6 +109,11 @@ void PolygonShape::Set(Span<const Vec2> points) noexcept
 			point_set.add(points[i]);
 		}
 	}
+	Set(point_set);
+}
+
+void PolygonShape::Set(const VertexSet<MaxPolygonVertices>& point_set) noexcept
+{
 	const auto n = static_cast<vertex_count_t>(point_set.size());
 
 	assert(n >= 3);
@@ -144,13 +149,7 @@ void PolygonShape::Set(Span<const Vec2> points) noexcept
 			const auto r = point_set[ie] - point_set[hull[m]];
 			const auto v = point_set[j] - point_set[hull[m]];
 			const auto c = Cross(r, v);
-			if (c < float_t{0})
-			{
-				ie = j;
-			}
-
-			// Collinearity check
-			if ((c == float_t{0}) && (LengthSquared(v) > LengthSquared(r)))
+			if ((c < 0) || ((c == 0) && (LengthSquared(v) > LengthSquared(r))))
 			{
 				ie = j;
 			}

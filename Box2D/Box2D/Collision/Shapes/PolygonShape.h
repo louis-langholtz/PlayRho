@@ -21,6 +21,7 @@
 #define B2_POLYGON_SHAPE_H
 
 #include <Box2D/Collision/Shapes/Shape.h>
+#include <Box2D/Common/VertexSet.hpp>
 #include <type_traits>
 
 namespace box2d {
@@ -56,6 +57,8 @@ public:
 	/// may lead to poor stacking behavior.
 	void Set(Span<const Vec2> points) noexcept;
 
+	void Set(const VertexSet<MaxPolygonVertices>& points) noexcept;
+	
 	/// Build vertices to represent an axis-aligned box centered on the local origin.
 	/// @param hx the half-width.
 	/// @param hy the half-height.
