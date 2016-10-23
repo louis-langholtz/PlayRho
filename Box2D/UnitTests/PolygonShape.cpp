@@ -31,8 +31,7 @@ TEST(PolygonShape, DefaultConstruction)
 	PolygonShape shape;
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(shape.GetVertexCount(), 0);
-	EXPECT_EQ(shape.GetCentroid().x, float_t(0));
-	EXPECT_EQ(shape.GetCentroid().y, float_t(0));
+	EXPECT_EQ(shape.GetCentroid(), Vec2(0, 0));
 	EXPECT_EQ(GetChildCount(shape), child_count_t(1));
 	EXPECT_EQ(GetRadius(shape), PolygonRadius);
 }
@@ -57,8 +56,7 @@ TEST(PolygonShape, BoxConstruction)
 	const auto hy = float_t(54.1);
 	const auto shape = PolygonShape{hx, hy};
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
-	EXPECT_EQ(shape.GetCentroid().x, float_t(0));
-	EXPECT_EQ(shape.GetCentroid().y, float_t(0));
+	EXPECT_EQ(shape.GetCentroid(), Vec2(0, 0));
 	EXPECT_EQ(GetChildCount(shape), child_count_t(1));
 	EXPECT_EQ(GetRadius(shape), PolygonRadius);
 
@@ -66,23 +64,59 @@ TEST(PolygonShape, BoxConstruction)
 	
 	// vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
 
-	EXPECT_EQ(shape.GetVertex(0).x, hx); // right
-	EXPECT_EQ(shape.GetVertex(0).y, -hy); // bottom
-	EXPECT_EQ(shape.GetVertex(1).x, hx); // right
-	EXPECT_EQ(shape.GetVertex(1).y, hy); // top
-	EXPECT_EQ(shape.GetVertex(2).x, -hx); // left
-	EXPECT_EQ(shape.GetVertex(2).y, hy); // top
-	EXPECT_EQ(shape.GetVertex(3).x, -hx); // left
-	EXPECT_EQ(shape.GetVertex(3).y, -hy); // bottom
+	EXPECT_EQ(shape.GetVertex(0), Vec2(hx, -hy)); // bottom right
+	EXPECT_EQ(shape.GetVertex(1), Vec2(hx, hy)); // top right
+	EXPECT_EQ(shape.GetVertex(2), Vec2(-hx, hy)); // top left
+	EXPECT_EQ(shape.GetVertex(3), Vec2(-hx, -hy)); // bottom left
 
-	EXPECT_EQ(shape.GetNormal(0).x, +1);
-	EXPECT_EQ(shape.GetNormal(0).y, 0);
-	EXPECT_EQ(shape.GetNormal(1).x, 0);
-	EXPECT_EQ(shape.GetNormal(1).y, +1);
-	EXPECT_EQ(shape.GetNormal(2).x, -1);
-	EXPECT_EQ(shape.GetNormal(2).y, 0);
-	EXPECT_EQ(shape.GetNormal(3).x, 0);
-	EXPECT_EQ(shape.GetNormal(3).y, -1);
+	EXPECT_EQ(shape.GetNormal(0), Vec2(+1, 0));
+	EXPECT_EQ(shape.GetNormal(1), Vec2(0, +1));
+	EXPECT_EQ(shape.GetNormal(2), Vec2(-1, 0));
+	EXPECT_EQ(shape.GetNormal(3), Vec2(0, -1));
+}
+
+TEST(PolygonShape, Translate)
+{
+	const auto hx = float_t(2.3);
+	const auto hy = float_t(54.1);
+	
+	auto shape = PolygonShape{hx, hy};
+	ASSERT_EQ(shape.GetType(), Shape::e_polygon);
+	ASSERT_EQ(shape.GetCentroid(), Vec2(0, 0));
+	ASSERT_EQ(GetChildCount(shape), child_count_t(1));
+	ASSERT_EQ(GetRadius(shape), PolygonRadius);
+	ASSERT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));
+	
+	// vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
+	ASSERT_EQ(shape.GetVertex(0), Vec2(hx, -hy)); // bottom right
+	ASSERT_EQ(shape.GetVertex(1), Vec2(hx, hy)); // top right
+	ASSERT_EQ(shape.GetVertex(2), Vec2(-hx, hy)); // top left
+	ASSERT_EQ(shape.GetVertex(3), Vec2(-hx, -hy)); // bottom left
+	
+	ASSERT_EQ(shape.GetNormal(0), Vec2(+1, 0));
+	ASSERT_EQ(shape.GetNormal(1), Vec2(0, +1));
+	ASSERT_EQ(shape.GetNormal(2), Vec2(-1, 0));
+	ASSERT_EQ(shape.GetNormal(3), Vec2(0, -1));
+	
+	const auto new_ctr = Vec2{-3, 67};
+	shape.Transform(Transformation{new_ctr, Rot(0)});
+	
+	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
+	EXPECT_EQ(shape.GetCentroid(), new_ctr);
+	EXPECT_EQ(GetChildCount(shape), child_count_t(1));
+	EXPECT_EQ(GetRadius(shape), PolygonRadius);
+
+	ASSERT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));
+
+	EXPECT_EQ(shape.GetVertex(0), Vec2(hx, -hy) + new_ctr); // bottom right
+	EXPECT_EQ(shape.GetVertex(1), Vec2(hx, hy) + new_ctr); // top right
+	EXPECT_EQ(shape.GetVertex(2), Vec2(-hx, hy) + new_ctr); // top left
+	EXPECT_EQ(shape.GetVertex(3), Vec2(-hx, -hy) + new_ctr); // bottom left
+
+	EXPECT_EQ(shape.GetNormal(0), Vec2(+1, 0));
+	EXPECT_EQ(shape.GetNormal(1), Vec2(0, +1));
+	EXPECT_EQ(shape.GetNormal(2), Vec2(-1, 0));
+	EXPECT_EQ(shape.GetNormal(3), Vec2(0, -1));
 }
 
 TEST(PolygonShape, SetAsBox)
@@ -92,8 +126,7 @@ TEST(PolygonShape, SetAsBox)
 	PolygonShape shape;
 	shape.SetAsBox(hx, hy);
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
-	EXPECT_EQ(shape.GetCentroid().x, float_t(0));
-	EXPECT_EQ(shape.GetCentroid().y, float_t(0));
+	EXPECT_EQ(shape.GetCentroid(), Vec2(0, 0));
 	EXPECT_EQ(GetChildCount(shape), child_count_t(1));
 	EXPECT_EQ(GetRadius(shape), PolygonRadius);
 	
@@ -101,23 +134,15 @@ TEST(PolygonShape, SetAsBox)
 	
 	// vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
 	
-	EXPECT_EQ(shape.GetVertex(0).x, hx); // right
-	EXPECT_EQ(shape.GetVertex(0).y, -hy); // bottom
-	EXPECT_EQ(shape.GetVertex(1).x, hx); // right
-	EXPECT_EQ(shape.GetVertex(1).y, hy); // top
-	EXPECT_EQ(shape.GetVertex(2).x, -hx); // left
-	EXPECT_EQ(shape.GetVertex(2).y, hy); // top
-	EXPECT_EQ(shape.GetVertex(3).x, -hx); // left
-	EXPECT_EQ(shape.GetVertex(3).y, -hy); // bottom
+	EXPECT_EQ(shape.GetVertex(0), Vec2(hx, -hy)); // bottom right
+	EXPECT_EQ(shape.GetVertex(1), Vec2(hx, hy)); // top right
+	EXPECT_EQ(shape.GetVertex(2), Vec2(-hx, hy)); // top left
+	EXPECT_EQ(shape.GetVertex(3), Vec2(-hx, -hy)); // bottom left
 	
-	EXPECT_EQ(shape.GetNormal(0).x, +1);
-	EXPECT_EQ(shape.GetNormal(0).y, 0);
-	EXPECT_EQ(shape.GetNormal(1).x, 0);
-	EXPECT_EQ(shape.GetNormal(1).y, +1);
-	EXPECT_EQ(shape.GetNormal(2).x, -1);
-	EXPECT_EQ(shape.GetNormal(2).y, 0);
-	EXPECT_EQ(shape.GetNormal(3).x, 0);
-	EXPECT_EQ(shape.GetNormal(3).y, -1);
+	EXPECT_EQ(shape.GetNormal(0), Vec2(+1, 0));
+	EXPECT_EQ(shape.GetNormal(1), Vec2(0, +1));
+	EXPECT_EQ(shape.GetNormal(2), Vec2(-1, 0));
+	EXPECT_EQ(shape.GetNormal(3), Vec2(0, -1));
 }
 
 TEST(PolygonShape, SetAsZeroCenteredRotatedBox)
@@ -127,8 +152,7 @@ TEST(PolygonShape, SetAsZeroCenteredRotatedBox)
 	PolygonShape shape;
 	shape.SetAsBox(hx, hy, Vec2_zero, 0);
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
-	EXPECT_EQ(shape.GetCentroid().x, float_t(0));
-	EXPECT_EQ(shape.GetCentroid().y, float_t(0));
+	EXPECT_EQ(shape.GetCentroid(), Vec2(0, 0));
 	EXPECT_EQ(GetChildCount(shape), child_count_t(1));
 	EXPECT_EQ(GetRadius(shape), PolygonRadius);
 	
@@ -136,23 +160,15 @@ TEST(PolygonShape, SetAsZeroCenteredRotatedBox)
 	
 	// vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
 	
-	EXPECT_EQ(shape.GetVertex(0).x, hx); // right
-	EXPECT_EQ(shape.GetVertex(0).y, -hy); // bottom
-	EXPECT_EQ(shape.GetVertex(1).x, hx); // right
-	EXPECT_EQ(shape.GetVertex(1).y, hy); // top
-	EXPECT_EQ(shape.GetVertex(2).x, -hx); // left
-	EXPECT_EQ(shape.GetVertex(2).y, hy); // top
-	EXPECT_EQ(shape.GetVertex(3).x, -hx); // left
-	EXPECT_EQ(shape.GetVertex(3).y, -hy); // bottom
+	EXPECT_EQ(shape.GetVertex(0), Vec2(hx, -hy)); // bottom right
+	EXPECT_EQ(shape.GetVertex(1), Vec2(hx, hy)); // top right
+	EXPECT_EQ(shape.GetVertex(2), Vec2(-hx, hy)); // top left
+	EXPECT_EQ(shape.GetVertex(3), Vec2(-hx, -hy)); // bottom left
 	
-	EXPECT_EQ(shape.GetNormal(0).x, +1);
-	EXPECT_EQ(shape.GetNormal(0).y, 0);
-	EXPECT_EQ(shape.GetNormal(1).x, 0);
-	EXPECT_EQ(shape.GetNormal(1).y, +1);
-	EXPECT_EQ(shape.GetNormal(2).x, -1);
-	EXPECT_EQ(shape.GetNormal(2).y, 0);
-	EXPECT_EQ(shape.GetNormal(3).x, 0);
-	EXPECT_EQ(shape.GetNormal(3).y, -1);
+	EXPECT_EQ(shape.GetNormal(0), Vec2(+1, 0));
+	EXPECT_EQ(shape.GetNormal(1), Vec2(0, +1));
+	EXPECT_EQ(shape.GetNormal(2), Vec2(-1, 0));
+	EXPECT_EQ(shape.GetNormal(3), Vec2(0, -1));
 }
 
 TEST(PolygonShape, SetAsCenteredBox)
@@ -164,8 +180,7 @@ TEST(PolygonShape, SetAsCenteredBox)
 	const auto y_off = float_t(-5);
 	shape.SetAsBox(hx, hy, Vec2(x_off, y_off), 0);
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
-	EXPECT_EQ(shape.GetCentroid().x, x_off);
-	EXPECT_EQ(shape.GetCentroid().y, y_off);
+	EXPECT_EQ(shape.GetCentroid(), Vec2(x_off, y_off));
 	EXPECT_EQ(GetChildCount(shape), child_count_t(1));
 	EXPECT_EQ(GetRadius(shape), PolygonRadius);
 	
@@ -173,23 +188,15 @@ TEST(PolygonShape, SetAsCenteredBox)
 	
 	// vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
 	
-	EXPECT_EQ(shape.GetVertex(0).x, hx + x_off); // right
-	EXPECT_EQ(shape.GetVertex(0).y, -hy + y_off); // bottom
-	EXPECT_EQ(shape.GetVertex(1).x, hx + x_off); // right
-	EXPECT_EQ(shape.GetVertex(1).y, hy + y_off); // top
-	EXPECT_EQ(shape.GetVertex(2).x, -hx + x_off); // left
-	EXPECT_EQ(shape.GetVertex(2).y, hy + y_off); // top
-	EXPECT_EQ(shape.GetVertex(3).x, -hx + x_off); // left
-	EXPECT_EQ(shape.GetVertex(3).y, -hy + y_off); // bottom
+	EXPECT_EQ(shape.GetVertex(0), Vec2(hx + x_off, -hy + y_off)); // bottom right
+	EXPECT_EQ(shape.GetVertex(1), Vec2(hx + x_off, hy + y_off)); // top right
+	EXPECT_EQ(shape.GetVertex(2), Vec2(-hx + x_off, hy + y_off)); // top left
+	EXPECT_EQ(shape.GetVertex(3), Vec2(-hx + x_off, -hy + y_off)); // bottom left
 	
-	EXPECT_EQ(shape.GetNormal(0).x, +1);
-	EXPECT_EQ(shape.GetNormal(0).y, 0);
-	EXPECT_EQ(shape.GetNormal(1).x, 0);
-	EXPECT_EQ(shape.GetNormal(1).y, +1);
-	EXPECT_EQ(shape.GetNormal(2).x, -1);
-	EXPECT_EQ(shape.GetNormal(2).y, 0);
-	EXPECT_EQ(shape.GetNormal(3).x, 0);
-	EXPECT_EQ(shape.GetNormal(3).y, -1);
+	EXPECT_EQ(shape.GetNormal(0), Vec2(+1, 0));
+	EXPECT_EQ(shape.GetNormal(1), Vec2(0, +1));
+	EXPECT_EQ(shape.GetNormal(2), Vec2(-1, 0));
+	EXPECT_EQ(shape.GetNormal(3), Vec2(0, -1));
 }
 
 TEST(PolygonShape, SetAsBoxAngledDegrees90)
@@ -249,14 +256,9 @@ TEST(PolygonShape, SetPoints)
 
 	// vertices go counter-clockwise from lowest right-most...
 
-	EXPECT_EQ(shape.GetVertex(0).x, points[1].x);
-	EXPECT_EQ(shape.GetVertex(0).y, points[1].y);
-	EXPECT_EQ(shape.GetVertex(1).x, points[0].x);
-	EXPECT_EQ(shape.GetVertex(1).y, points[0].y);
-	EXPECT_EQ(shape.GetVertex(2).x, points[4].x);
-	EXPECT_EQ(shape.GetVertex(2).y, points[4].y);
-	EXPECT_EQ(shape.GetVertex(3).x, points[3].x);
-	EXPECT_EQ(shape.GetVertex(3).y, points[3].y);
-	EXPECT_EQ(shape.GetVertex(4).x, points[2].x);
-	EXPECT_EQ(shape.GetVertex(4).y, points[2].y);
+	EXPECT_EQ(shape.GetVertex(0), points[1]);
+	EXPECT_EQ(shape.GetVertex(1), points[0]);
+	EXPECT_EQ(shape.GetVertex(2), points[4]);
+	EXPECT_EQ(shape.GetVertex(3), points[3]);
+	EXPECT_EQ(shape.GetVertex(4), points[2]);
 }

@@ -64,32 +64,31 @@ void PolygonShape::SetAsBox(float_t hx, float_t hy) noexcept
 void PolygonShape::SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t angle)
 {
 	SetAsBox(hx, hy);
+	Transform(Transformation{center, Rot{angle}});
+}
+
+void PolygonShape::Transform(box2d::Transformation xf)
+{
+	Vec2 vertices[MaxPolygonVertices];
+	Vec2 normals[MaxPolygonVertices];
 	
-	if ((center != Vec2{0, 0}) || (angle != 0))
+	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
-		const auto xf = Transformation{center, Rot{angle}};
-		
-		Vec2 vertices[MaxPolygonVertices];
-		Vec2 normals[MaxPolygonVertices];
-		
+		vertices[i] = box2d::Transform(m_vertices[i], xf);
+		normals[i] = Rotate(m_normals[i], xf.q);
+	}
+	
+	{
+		auto src_index = static_cast<decltype(m_count)>(FindLowestRightMostVertex(Span<const Vec2>(vertices, m_count)));
 		for (auto i = decltype(m_count){0}; i < m_count; ++i)
 		{
-			vertices[i] = Transform(m_vertices[i], xf);
-			normals[i] = Rotate(m_normals[i], xf.q);
+			m_vertices[i] = vertices[src_index];
+			m_normals[i] = normals[src_index];
+			src_index = static_cast<decltype(m_count)>((src_index + 1) % m_count);
 		}
-		
-		{
-			auto src_index = static_cast<decltype(m_count)>(FindLowestRightMostVertex(Span<const Vec2>(vertices, m_count)));
-			for (auto i = decltype(m_count){0}; i < m_count; ++i)
-			{
-				m_vertices[i] = vertices[src_index];
-				m_normals[i] = normals[src_index];
-				src_index = static_cast<decltype(m_count)>((src_index + 1) % m_count);
-			}
-		}
-		
-		m_centroid = xf.p;
 	}
+	
+	m_centroid = box2d::Transform(m_centroid, xf);
 }
 
 void PolygonShape::Set(Span<const Vec2> points) noexcept

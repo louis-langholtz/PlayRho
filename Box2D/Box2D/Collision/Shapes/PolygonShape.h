@@ -70,6 +70,8 @@ public:
 	/// @param center the center of the box in local coordinates.
 	/// @param angle the rotation of the box in local coordinates.
 	void SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t angle);
+	
+	void Transform(Transformation xfm);
 
 	/// Gets the vertex count.
 	/// @return value between 0 and MaxPolygonVertices inclusive.
