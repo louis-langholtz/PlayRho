@@ -99,30 +99,45 @@ template <typename T>
 class Span
 {
 public:
-	using pointer = T*;
-	using const_pointer = const T *;
+	using data_type = T;
+	using pointer = data_type*;
+	using const_pointer = const data_type *;
 	using size_type = size_t;
 
 	Span() = default;
 	
 	Span(const Span& copy) = default;
 
-	Span(Span&& span) noexcept: m_array{std::move(span.begin())}, m_size{std::move(span.size())}
+	constexpr Span(pointer array, size_type size) noexcept:
+		m_array{array}, m_size{size}
 	{
-		span.m_array = nullptr;
-		span.m_size = 0;
 	}
 
-	constexpr Span(pointer array, size_type size) noexcept: m_array{array}, m_size{size} {}
+	constexpr Span(pointer first, pointer last) noexcept:
+		m_array{first}, m_size{static_cast<size_type>(std::distance(first, last))}
+	{
+		assert(first <= last);
+	}
 
-	template <typename U>
-	constexpr Span(const Span<U>& span) noexcept: m_array{span.begin()}, m_size{span.size()} {}
+	template <std::size_t SIZE>
+	constexpr Span(data_type (&array)[SIZE]) noexcept: m_array{&array[0]}, m_size{SIZE} {}
+
+	template <typename U, typename = std::enable_if_t< !std::is_array<U>::value > >
+	constexpr Span(U& value) noexcept: m_array{value.begin()}, m_size{value.size()} {}
+	
+	template <typename U, typename = std::enable_if_t< !std::is_array<U>::value > >
+	constexpr Span(const U& value) noexcept: m_array{value.begin()}, m_size{value.size()} {}
 
 	template <typename U>
 	constexpr Span(std::initializer_list<U> list) noexcept: m_array{list.begin()}, m_size{list.size()} {}
 
+#if 0
+	template <typename U>
+	constexpr Span(const Span<U>& span) noexcept: m_array{span.begin()}, m_size{span.size()} {}
+	
 	template <class U, std::size_t S>
 	constexpr Span(const std::array<U, S>& value) noexcept: m_array{value.begin()}, m_size{value.size()} {}
+#endif
 	
 	pointer begin() const noexcept { return m_array; }
 	const_pointer cbegin() const noexcept { return m_array; }
@@ -130,13 +145,13 @@ public:
 	pointer end() const noexcept { return m_array + m_size; }
 	const_pointer cend() const noexcept { return m_array + m_size; }
 	
-	T& operator[](size_type index) noexcept
+	data_type& operator[](size_type index) noexcept
 	{
 		assert(index < m_size);
 		return m_array[index];
 	}
 
-	const T& operator[](size_type index) const noexcept
+	const data_type& operator[](size_type index) const noexcept
 	{
 		assert(index < m_size);
 		return m_array[index];

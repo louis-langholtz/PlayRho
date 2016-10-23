@@ -33,6 +33,20 @@ static inline bool ten_epsilon_equal(float_t x, float_t y)
 TEST(Epsilon, AlmostEqual)
 {
 	{
+		EXPECT_TRUE(almost_equal(0, 0));
+		EXPECT_TRUE(almost_equal(1, 1));
+		EXPECT_TRUE(almost_equal(-1, -1));
+		EXPECT_TRUE(almost_equal(std::numeric_limits<float>::min(), std::numeric_limits<float>::min()));
+		EXPECT_TRUE(almost_equal(std::numeric_limits<float>::min(), std::numeric_limits<float>::min(), 0));
+		EXPECT_TRUE(almost_equal(std::numeric_limits<float>::min(), std::numeric_limits<float>::min(), 1));
+		EXPECT_TRUE(almost_equal(std::numeric_limits<float>::min(), std::numeric_limits<float>::min(), 2));
+		EXPECT_TRUE(almost_equal(std::numeric_limits<float>::min(), std::numeric_limits<float>::min(), 20));
+		EXPECT_FALSE(almost_equal(std::numeric_limits<float>::min(), float(0), 0));
+		EXPECT_FALSE(almost_equal(std::numeric_limits<float>::min(), float(0), 1));
+		EXPECT_FALSE(almost_equal(std::numeric_limits<float>::min(), float(0), 2));
+		EXPECT_FALSE(almost_equal(std::numeric_limits<float>::min(), -std::numeric_limits<float>::min()));
+	}
+	{
 		const auto a = float_t(0);
 		const auto b = float_t(0);
 		EXPECT_FLOAT_EQ(a, b);
@@ -51,6 +65,12 @@ TEST(Epsilon, AlmostEqual)
 		const auto a = float_t(0.000001);
 		const auto b = float_t(0.000001 * 2);
 		EXPECT_EQ(almost_equal(a, b), false);
+	}
+	{
+		EXPECT_FALSE(almost_equal(float(1) + Epsilon, float_t(1), 0));
+		EXPECT_TRUE(almost_equal(float(1) + Epsilon, float_t(1), 1));
+		EXPECT_TRUE(almost_equal(float(1) + Epsilon, float_t(1), 2));
+		EXPECT_TRUE(almost_equal(float(1) + Epsilon, float_t(1), 3));
 	}
 }
 

@@ -21,6 +21,122 @@
 
 using namespace box2d;
 
+TEST(Math, Sqrt)
+{
+	EXPECT_EQ(Sqrt(0.0), 0.0);
+	EXPECT_NE(Sqrt(std::numeric_limits<float>::min()), float(0));
+	EXPECT_NE(Sqrt(std::numeric_limits<double>::min()), double(0));
+	EXPECT_EQ(Square(Sqrt(std::numeric_limits<double>::min())), std::numeric_limits<double>::min());
+}
+
+TEST(Math, Square)
+{
+	ASSERT_NE(std::numeric_limits<float>::min() * 2, std::numeric_limits<float>::min());
+
+	EXPECT_EQ(Square(std::numeric_limits<float>::min()), float(0));
+	EXPECT_EQ(Square(std::numeric_limits<float>::min() * float(2251799947902976)), float(0));
+	EXPECT_NE(Square(std::numeric_limits<float>::min() * float(2251799947902977)), float(0));
+
+	auto low = float(0);
+	auto high = float(0);
+	auto value = float(0);
+
+	low = std::numeric_limits<float>::min() * float(2251799947902976);
+	high = std::numeric_limits<float>::min() * float(2251799947902977);
+	do
+	{
+		value = (low + high) / float(2);
+		if ((value == low) || (value == high))
+		{
+			break;
+		}
+		if (Square(value) != float(0))
+		{
+			high = value;
+		}
+		else
+		{
+			low = value;
+		}
+	}
+	while (low < high);
+	
+	std::cout << "Min float is: ";
+	std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
+	std::cout << std::numeric_limits<float>::min();
+	std::cout << " aka ";
+	std::cout << std::hexfloat;
+	std::cout << std::numeric_limits<float>::min();
+	std::cout << std::defaultfloat;
+	std::cout << std::endl;
+
+	std::cout << "Least float that squared isn't zero: ";
+	std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
+	std::cout << high;
+	std::cout << " aka ";
+	std::cout << std::hexfloat;
+	std::cout << high;
+	std::cout << std::defaultfloat;
+	std::cout << std::endl;
+
+	EXPECT_EQ(high, float(2.646978275714050648e-23));
+
+	ASSERT_NE(Square(high), float(0));
+	ASSERT_EQ(Sqrt(Square(float(1))), float(1));
+
+	std::cout << "Sqrt(min) is: ";
+	std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
+	std::cout << Sqrt(std::numeric_limits<float>::min());
+	std::cout << " aka ";
+	std::cout << std::hexfloat;
+	std::cout << Sqrt(std::numeric_limits<float>::min());
+	std::cout << std::endl;
+	EXPECT_EQ(Sqrt(std::numeric_limits<float>::min()), float(0x1p-63)); // float(1.084202172485504434e-19)
+	
+	// What is the smallest float a for which:
+	// almost_equal(sqrt(square(a)), a) and almost_equal(square(sqrt(a)), a)
+	// hold true?
+	
+	const auto a = Sqrt(std::numeric_limits<float>::min());
+	EXPECT_TRUE(almost_equal(Square(Sqrt(a)), a));
+	EXPECT_TRUE(almost_equal(Sqrt(Square(a)), a));
+}
+
+TEST(Math, Atan2)
+{
+	EXPECT_EQ(Atan2(0, 0), 0);
+	EXPECT_EQ(Atan2(0.0, 0.0), 0.0);
+}
+
+TEST(Math, Span)
+{
+	{
+		const auto foo = Span<const int>{1, 2, 4};
+		EXPECT_EQ(foo.size(), size_t(3));
+		EXPECT_EQ(foo[0], 1);
+		EXPECT_EQ(foo[1], 2);
+		EXPECT_EQ(foo[2], 4);
+	}
+	{
+		int array[6] = {1, 2, 4, 10, -1, -33};
+		const auto foo = Span<int>(array);
+		EXPECT_EQ(foo.size(), size_t(6));
+		EXPECT_EQ(foo[0], 1);
+		EXPECT_EQ(foo[1], 2);
+		EXPECT_EQ(foo[2], 4);
+		EXPECT_EQ(foo[3], 10);
+		EXPECT_EQ(foo[4], -1);
+		EXPECT_EQ(foo[5], -33);
+	}
+	{
+		float array[15];
+		EXPECT_EQ(Span<float>(array).size(), size_t(15));
+		EXPECT_EQ(Span<float>(array, 2).size(), size_t(2));		
+		EXPECT_EQ(Span<float>(array, array + 4).size(), size_t(4));
+		EXPECT_EQ(Span<float>(array + 1, array + 3).size(), size_t(2));
+	}
+}
+
 TEST(Math, Average)
 {
 	EXPECT_EQ(Average<int>({}), 0);

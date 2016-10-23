@@ -27,6 +27,9 @@
 		4726DD2D1D31B4090012A882 /* AABB.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD291D31B4090012A882 /* AABB.hpp */; };
 		4726DD381D387D630012A882 /* Manifold.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD351D387D630012A882 /* Manifold.hpp */; };
 		4726DD391D387D630012A882 /* Manifold.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD351D387D630012A882 /* Manifold.hpp */; };
+		472E301B1DBA925500DA821D /* VertexSet.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472E30181DBA925500DA821D /* VertexSet.hpp */; };
+		472E301C1DBA925500DA821D /* VertexSet.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472E30181DBA925500DA821D /* VertexSet.hpp */; };
+		472E301E1DBA98BC00DA821D /* VertexSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472E301D1DBA98BC00DA821D /* VertexSet.cpp */; };
 		4736DE891DB7DB3B003993CB /* Vec3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4736DE881DB7DB3B003993CB /* Vec3.cpp */; };
 		4736DE8C1DB806AE003993CB /* CollideShapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4736DE8A1DB806AE003993CB /* CollideShapes.cpp */; };
 		4736DE8D1DB806AE003993CB /* CollideShapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4736DE8A1DB806AE003993CB /* CollideShapes.cpp */; };
@@ -419,6 +422,8 @@
 		4726DD281D31B4090012A882 /* AABB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AABB.cpp; sourceTree = "<group>"; };
 		4726DD291D31B4090012A882 /* AABB.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AABB.hpp; sourceTree = "<group>"; };
 		4726DD351D387D630012A882 /* Manifold.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Manifold.hpp; sourceTree = "<group>"; };
+		472E30181DBA925500DA821D /* VertexSet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VertexSet.hpp; sourceTree = "<group>"; };
+		472E301D1DBA98BC00DA821D /* VertexSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexSet.cpp; sourceTree = "<group>"; };
 		4736DE881DB7DB3B003993CB /* Vec3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vec3.cpp; sourceTree = "<group>"; };
 		4736DE8A1DB806AE003993CB /* CollideShapes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollideShapes.cpp; sourceTree = "<group>"; };
 		4736DE8B1DB806AE003993CB /* CollideShapes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CollideShapes.hpp; sourceTree = "<group>"; };
@@ -786,6 +791,7 @@
 				474BC4051D41278800447DCD /* Vec2.cpp */,
 				4736DE881DB7DB3B003993CB /* Vec3.cpp */,
 				47FFD0FA1DAC3EFC000D6D0E /* VelocityConstraint.cpp */,
+				472E301D1DBA98BC00DA821D /* VertexSet.cpp */,
 				474BC4061D41278800447DCD /* World.cpp */,
 				47E8416F1DB3FDC400E5F311 /* WorldManifold.cpp */,
 			);
@@ -901,6 +907,7 @@
 				47F932A31D11C283006A193C /* AllocatedArray.cpp */,
 				47F932A41D11C283006A193C /* AllocatedArray.hpp */,
 				475A94631D99C264000CA9A8 /* List.hpp */,
+				472E30181DBA925500DA821D /* VertexSet.hpp */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1220,6 +1227,7 @@
 				47AA5DEE1C4C5FBE008AF2BA /* FrictionJoint.h in Headers */,
 				47AA5DEF1C4C5FBE008AF2BA /* GearJoint.h in Headers */,
 				47AA5DF01C4C5FBE008AF2BA /* Joint.h in Headers */,
+				472E301C1DBA925500DA821D /* VertexSet.hpp in Headers */,
 				47578BE21D8869110078CD40 /* WorldManifold.hpp in Headers */,
 				47AA5DF11C4C5FBE008AF2BA /* MouseJoint.h in Headers */,
 				47AA5DF21C4C5FBE008AF2BA /* PrismaticJoint.h in Headers */,
@@ -1333,6 +1341,7 @@
 				47578BEA1D8896670078CD40 /* SolverData.hpp in Headers */,
 				475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */,
 				80620F90168B934600D46C8D /* MotorJoint.h in Headers */,
+				472E301B1DBA925500DA821D /* VertexSet.hpp in Headers */,
 				47F932A61D11C283006A193C /* AllocatedArray.hpp in Headers */,
 				47AA63AD1D1078D000726CA2 /* ConstContactIterator.hpp in Headers */,
 				4736DE8E1DB806AE003993CB /* CollideShapes.hpp in Headers */,
@@ -1513,6 +1522,7 @@
 				474BC4391D413DC200447DCD /* Sweep.cpp in Sources */,
 				474BC43A1D413DC200447DCD /* TimeOfImpact.cpp in Sources */,
 				473971A61D99DFFF00F7137F /* List.cpp in Sources */,
+				472E301E1DBA98BC00DA821D /* VertexSet.cpp in Sources */,
 				474BC43B1D413DC200447DCD /* Transformation.cpp in Sources */,
 				474BC43C1D413DC200447DCD /* Vec2.cpp in Sources */,
 				47AB01BA1D6FA40C0084D721 /* Dump.cpp in Sources */,

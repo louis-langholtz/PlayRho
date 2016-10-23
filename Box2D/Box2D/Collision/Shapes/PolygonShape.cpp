@@ -18,6 +18,7 @@
  */
 
 #include <Box2D/Collision/Shapes/PolygonShape.h>
+#include <Box2D/Common/VertexSet.hpp>
 #include <new>
 
 using namespace box2d;
@@ -64,27 +65,30 @@ void PolygonShape::SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t 
 {
 	SetAsBox(hx, hy);
 	
-	Vec2 vertices[MaxPolygonVertices];
-	Vec2 normals[MaxPolygonVertices];
+	if ((center != Vec2{0, 0}) || (angle != 0))
+	{
+		Vec2 vertices[MaxPolygonVertices];
+		Vec2 normals[MaxPolygonVertices];
 
-	const auto xf = Transformation{center, Rot{angle}};
-	for (auto i = decltype(m_count){0}; i < m_count; ++i)
-	{
-		vertices[i] = Transform(m_vertices[i], xf);
-		normals[i] = Rotate(m_normals[i], xf.q);
-	}
-	
-	{
-		auto src_index = static_cast<decltype(m_count)>(FindLowestRightMostVertex(vertices, m_count));
+		const auto xf = Transformation{center, Rot{angle}};
 		for (auto i = decltype(m_count){0}; i < m_count; ++i)
 		{
-			m_vertices[i] = vertices[src_index];
-			m_normals[i] = normals[src_index];
-			src_index = static_cast<decltype(m_count)>((src_index + 1) % m_count);
+			vertices[i] = Transform(m_vertices[i], xf);
+			normals[i] = Rotate(m_normals[i], xf.q);
 		}
+		
+		{
+			auto src_index = static_cast<decltype(m_count)>(FindLowestRightMostVertex(Span<const Vec2>(vertices, m_count)));
+			for (auto i = decltype(m_count){0}; i < m_count; ++i)
+			{
+				m_vertices[i] = vertices[src_index];
+				m_normals[i] = normals[src_index];
+				src_index = static_cast<decltype(m_count)>((src_index + 1) % m_count);
+			}
+		}
+		
+		m_centroid = xf.p;
 	}
-	
-	m_centroid = xf.p;
 }
 
 void PolygonShape::Set(Span<const Vec2> points) noexcept
@@ -97,33 +101,15 @@ void PolygonShape::Set(Span<const Vec2> points) noexcept
 	}
 	
 	// Perform welding and copy vertices into local buffer.
-	Vec2 ps[MaxPolygonVertices];
-	const auto n = [&]()
+	auto point_set = VertexSet<MaxPolygonVertices>(Square(LinearSlop / 2));
 	{
 		const auto clampedCount = static_cast<vertex_count_t>(Min(points.size(), size_t{MaxPolygonVertices}));
-		auto uniqueCount = decltype(clampedCount){0};
 		for (auto i = decltype(clampedCount){0}; i < clampedCount; ++i)
 		{
-			const auto v = points[i];
-
-			auto unique = true;
-			for (auto j = decltype(uniqueCount){0}; j < uniqueCount; ++j)
-			{
-				if (LengthSquared(v - ps[j]) < Square(LinearSlop / 2))
-				{
-					unique = false;
-					break;
-				}
-			}
-
-			if (unique)
-			{
-				ps[uniqueCount] = v;
-				++uniqueCount;
-			}
+			point_set.add(points[i]);
 		}
-		return uniqueCount;
-	}();
+	}
+	const auto n = static_cast<vertex_count_t>(point_set.size());
 
 	assert(n >= 3);
 	if (n < 3)
@@ -136,7 +122,7 @@ void PolygonShape::Set(Span<const Vec2> points) noexcept
 	// Create the convex hull using the Gift wrapping algorithm
 	// http://en.wikipedia.org/wiki/Gift_wrapping_algorithm
 
-	const auto index0 = static_cast<decltype(n)>(FindLowestRightMostVertex(ps, n));
+	const auto index0 = static_cast<decltype(n)>(FindLowestRightMostVertex(point_set));
 
 	vertex_count_t hull[MaxPolygonVertices];
 	auto m = decltype(m_count){0};
@@ -155,8 +141,8 @@ void PolygonShape::Set(Span<const Vec2> points) noexcept
 				continue;
 			}
 
-			const auto r = ps[ie] - ps[hull[m]];
-			const auto v = ps[j] - ps[hull[m]];
+			const auto r = point_set[ie] - point_set[hull[m]];
+			const auto v = point_set[j] - point_set[hull[m]];
 			const auto c = Cross(r, v);
 			if (c < float_t{0})
 			{
@@ -192,7 +178,7 @@ void PolygonShape::Set(Span<const Vec2> points) noexcept
 	// Copy vertices.
 	for (auto i = decltype(m){0}; i < m; ++i)
 	{
-		m_vertices[i] = ps[hull[i]];
+		m_vertices[i] = point_set[hull[i]];
 	}
 
 	// Compute normals. Ensure the edges have non-zero length.
@@ -205,12 +191,12 @@ void PolygonShape::Set(Span<const Vec2> points) noexcept
 	m_centroid = ComputeCentroid(Span<const Vec2>(m_vertices, m));
 }
 
-size_t box2d::FindLowestRightMostVertex(const Vec2 *vertices, size_t count)
+size_t box2d::FindLowestRightMostVertex(Span<const Vec2> vertices)
 {
-	assert(count > 0);
-	auto i0 = decltype(count){0};
+	assert(vertices.size() > 0);
+	auto i0 = decltype(vertices.size()){0};
 	auto max_x = vertices[0].x;
-	for (auto i = decltype(count){1}; i < count; ++i)
+	for (auto i = decltype(vertices.size()){1}; i < vertices.size(); ++i)
 	{
 		const auto x = vertices[i].x;
 		if ((max_x < x) || ((max_x == x) && (vertices[i].y < vertices[i0].y)))

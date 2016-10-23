@@ -37,6 +37,20 @@ TEST(PolygonShape, DefaultConstruction)
 	EXPECT_EQ(GetRadius(shape), PolygonRadius);
 }
 
+TEST(PolygonShape, FindLowestRightMostVertex)
+{
+	Vec2 vertices[4];
+	
+	vertices[0] = Vec2{0, +1};
+	vertices[1] = Vec2{-1, -2};
+	vertices[2] = Vec2{+3, -4};
+	vertices[3] = Vec2{+2, +2};
+
+	const auto index = FindLowestRightMostVertex(vertices);
+	
+	EXPECT_EQ(index, size_t(2));
+}
+
 TEST(PolygonShape, BoxConstruction)
 {
 	const auto hx = float_t(2.3);

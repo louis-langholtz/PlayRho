@@ -165,7 +165,7 @@ MassData ComputeMass(const PolygonShape& shape, float_t density);
 /// @returns true if valid
 bool Validate(const PolygonShape& shape);
 
-size_t FindLowestRightMostVertex(const Vec2 *vertices, size_t count);
+size_t FindLowestRightMostVertex(Span<const Vec2> vertices);
 	
 } // namespace box2d
 #endif
