@@ -60,7 +60,7 @@ public:
 			m_platform = m_world->CreateBody(bd);
 
 			PolygonShape shape;
-			shape.SetAsBox(0.5f, 4.0f, Vec2(4.0f, 0.0f), 0.5f * Pi);
+			SetAsBox(shape, 0.5f, 4.0f, Vec2(4.0f, 0.0f), 0.5f * Pi);
 
 			FixtureDef fd;
 			fd.shape = &shape;

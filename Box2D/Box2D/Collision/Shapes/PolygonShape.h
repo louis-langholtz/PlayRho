@@ -63,15 +63,8 @@ public:
 	/// @param hx the half-width.
 	/// @param hy the half-height.
 	void SetAsBox(float_t hx, float_t hy) noexcept;
-
-	/// Build vertices to represent an oriented box.
-	/// @param hx the half-width.
-	/// @param hy the half-height.
-	/// @param center the center of the box in local coordinates.
-	/// @param angle the rotation of the box in local coordinates.
-	void SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t angle);
 	
-	void Transform(Transformation xfm);
+	void Transform(Transformation xfm) noexcept;
 
 	/// Gets the vertex count.
 	/// @return value between 0 and MaxPolygonVertices inclusive.
@@ -170,6 +163,13 @@ MassData ComputeMass(const PolygonShape& shape, float_t density);
 /// @returns true if valid
 bool Validate(const PolygonShape& shape);
 
+/// Build vertices to represent an oriented box.
+/// @param hx the half-width.
+/// @param hy the half-height.
+/// @param center the center of the box in local coordinates.
+/// @param angle the rotation of the box in local coordinates.
+void SetAsBox(PolygonShape& shape, float_t hx, float_t hy, const Vec2& center, float_t angle) noexcept;
+	
 size_t FindLowestRightMostVertex(Span<const Vec2> vertices);
 	
 } // namespace box2d

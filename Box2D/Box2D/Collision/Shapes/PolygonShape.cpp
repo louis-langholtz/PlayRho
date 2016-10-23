@@ -61,13 +61,13 @@ void PolygonShape::SetAsBox(float_t hx, float_t hy) noexcept
 	m_normals[3] = btm_norm;
 }
 
-void PolygonShape::SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t angle)
+void box2d::SetAsBox(PolygonShape& shape, float_t hx, float_t hy, const Vec2& center, float_t angle) noexcept
 {
-	SetAsBox(hx, hy);
-	Transform(Transformation{center, Rot{angle}});
+	shape.SetAsBox(hx, hy);
+	shape.Transform(Transformation{center, Rot{angle}});
 }
 
-void PolygonShape::Transform(box2d::Transformation xf)
+void PolygonShape::Transform(box2d::Transformation xf) noexcept
 {
 	Vec2 vertices[MaxPolygonVertices];
 	Vec2 normals[MaxPolygonVertices];

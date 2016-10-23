@@ -67,7 +67,7 @@ public:
 
 		{
 			PolygonShape shape;
-			shape.SetAsBox(7.0f, 0.25f, Vec2_zero, 0.3f);
+			SetAsBox(shape, 7.0f, 0.25f, Vec2_zero, 0.3f);
 
 			BodyDef bd;
 			bd.position = Vec2(1.0f, 6.0f);
@@ -127,13 +127,13 @@ public:
 			fd.density = 10.0f;
 			fd.friction = 0.1f;
 
-			shape.SetAsBox(1.0f, 0.1f, Vec2(0.0f, -0.9f), 0.0f);
+			SetAsBox(shape, 1.0f, 0.1f, Vec2(0.0f, -0.9f), 0.0f);
 			b5->CreateFixture(fd);
 
-			shape.SetAsBox(0.1f, 1.0f, Vec2(-0.9f, 0.0f), 0.0f);
+			SetAsBox(shape, 0.1f, 1.0f, Vec2(-0.9f, 0.0f), 0.0f);
 			b5->CreateFixture(fd);
 
-			shape.SetAsBox(0.1f, 1.0f, Vec2(0.9f, 0.0f), 0.0f);
+			SetAsBox(shape, 0.1f, 1.0f, Vec2(0.9f, 0.0f), 0.0f);
 			b5->CreateFixture(fd);
 		}
 

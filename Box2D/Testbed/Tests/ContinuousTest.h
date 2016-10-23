@@ -39,7 +39,7 @@ public:
 			body->CreateFixture(FixtureDef{&edge, 0.0f});
 
 			PolygonShape shape;
-			shape.SetAsBox(0.2f, 1.0f, Vec2(0.5f, 1.0f), 0.0f);
+			SetAsBox(shape, 0.2f, 1.0f, Vec2(0.5f, 1.0f), 0.0f);
 			body->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 

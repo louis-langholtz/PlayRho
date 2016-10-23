@@ -150,7 +150,7 @@ TEST(PolygonShape, SetAsZeroCenteredRotatedBox)
 	const auto hx = float_t(2.3);
 	const auto hy = float_t(54.1);
 	PolygonShape shape;
-	shape.SetAsBox(hx, hy, Vec2_zero, 0);
+	SetAsBox(shape, hx, hy, Vec2_zero, 0);
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(shape.GetCentroid(), Vec2(0, 0));
 	EXPECT_EQ(GetChildCount(shape), child_count_t(1));
@@ -178,7 +178,7 @@ TEST(PolygonShape, SetAsCenteredBox)
 	PolygonShape shape;
 	const auto x_off = float_t(10.2);
 	const auto y_off = float_t(-5);
-	shape.SetAsBox(hx, hy, Vec2(x_off, y_off), 0);
+	SetAsBox(shape, hx, hy, Vec2(x_off, y_off), 0);
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(shape.GetCentroid(), Vec2(x_off, y_off));
 	EXPECT_EQ(GetChildCount(shape), child_count_t(1));
@@ -205,7 +205,7 @@ TEST(PolygonShape, SetAsBoxAngledDegrees90)
 	const auto hy = float_t(54.1);
 	PolygonShape shape;
 	const auto angle = DegreesToRadians(90);
-	shape.SetAsBox(hx, hy, Vec2_zero, angle);
+	SetAsBox(shape, hx, hy, Vec2_zero, angle);
 
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(shape.GetCentroid().x, float_t(0));

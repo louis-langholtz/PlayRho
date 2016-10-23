@@ -76,7 +76,7 @@ public:
 			return body;
 		}
 
-		shape.SetAsBox(offset, 0.25f * a, Vec2(0, -a), 0.0f);
+		SetAsBox(shape, offset, 0.25f * a, Vec2(0, -a), 0.0f);
 		body->CreateFixture(FixtureDef{&shape, density});
 
 		Vec2 a1 = Vec2(offset, -a);

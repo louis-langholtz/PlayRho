@@ -80,11 +80,11 @@ public:
 			Body* ground = m_world->CreateBody(bd);
 
 			PolygonShape shape;
-			shape.SetAsBox(1.0f, 1.0f, Vec2(4.0f, 3.0f), 0.0f);
+			SetAsBox(shape, 1.0f, 1.0f, Vec2(4.0f, 3.0f), 0.0f);
 			ground->CreateFixture(FixtureDef{&shape, 0.0f});
-			shape.SetAsBox(1.0f, 1.0f, Vec2(6.0f, 3.0f), 0.0f);
+			SetAsBox(shape, 1.0f, 1.0f, Vec2(6.0f, 3.0f), 0.0f);
 			ground->CreateFixture(FixtureDef{&shape, 0.0f});
-			shape.SetAsBox(1.0f, 1.0f, Vec2(8.0f, 3.0f), 0.0f);
+			SetAsBox(shape, 1.0f, 1.0f, Vec2(8.0f, 3.0f), 0.0f);
 			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 

@@ -85,7 +85,7 @@ public:
 			m_ball->CreateFixture(fd);
 
 			PolygonShape polygon_shape;
-			polygon_shape.SetAsBox(10.0f, 0.2f, Vec2 (-10.0f, 0.0f), 0.0f);
+			SetAsBox(polygon_shape, 10.0f, 0.2f, Vec2 (-10.0f, 0.0f), 0.0f);
 
 			BodyDef polygon_bd;
 			polygon_bd.position = Vec2(20.0f, 10.0f);

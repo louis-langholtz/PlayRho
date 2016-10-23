@@ -47,13 +47,13 @@ public:
 			Body* body = m_world->CreateBody(bd);
 
 			PolygonShape shape;
-			shape.SetAsBox(0.5f, 10.0f, Vec2( 10.0f, 0.0f), 0.0);
+			SetAsBox(shape, 0.5f, 10.0f, Vec2( 10.0f, 0.0f), 0.0);
 			body->CreateFixture(FixtureDef{&shape, 5.0f});
-			shape.SetAsBox(0.5f, 10.0f, Vec2(-10.0f, 0.0f), 0.0);
+			SetAsBox(shape, 0.5f, 10.0f, Vec2(-10.0f, 0.0f), 0.0);
 			body->CreateFixture(FixtureDef{&shape, 5.0f});
-			shape.SetAsBox(10.0f, 0.5f, Vec2(0.0f, 10.0f), 0.0);
+			SetAsBox(shape, 10.0f, 0.5f, Vec2(0.0f, 10.0f), 0.0);
 			body->CreateFixture(FixtureDef{&shape, 5.0f});
-			shape.SetAsBox(10.0f, 0.5f, Vec2(0.0f, -10.0f), 0.0);
+			SetAsBox(shape, 10.0f, 0.5f, Vec2(0.0f, -10.0f), 0.0);
 			body->CreateFixture(FixtureDef{&shape, 5.0f});
 
 			RevoluteJointDef jd;

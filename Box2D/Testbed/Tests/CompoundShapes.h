@@ -61,7 +61,7 @@ public:
 			const auto polygon1 = PolygonShape(0.25f, 0.5f);
 
 			PolygonShape polygon2;
-			polygon2.SetAsBox(0.25f, 0.5f, Vec2(0.0f, -0.5f), 0.5f * Pi);
+			SetAsBox(polygon2, 0.25f, 0.5f, Vec2(0.0f, -0.5f), 0.5f * Pi);
 
 			for (int i = 0; i < 10; ++i)
 			{
@@ -114,10 +114,10 @@ public:
 			const auto bottom = PolygonShape( 1.5f, 0.15f );
 
 			PolygonShape left;
-			left.SetAsBox(0.15f, 2.7f, Vec2(-1.45f, 2.35f), 0.2f);
+			SetAsBox(left, 0.15f, 2.7f, Vec2(-1.45f, 2.35f), 0.2f);
 
 			PolygonShape right;
-			right.SetAsBox(0.15f, 2.7f, Vec2(1.45f, 2.35f), -0.2f);
+			SetAsBox(right, 0.15f, 2.7f, Vec2(1.45f, 2.35f), -0.2f);
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;

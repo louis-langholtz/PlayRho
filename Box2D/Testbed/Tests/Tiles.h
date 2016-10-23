@@ -54,7 +54,7 @@ public:
 				for (int32 i = 0; i < N; ++i)
 				{
 					PolygonShape shape;
-					shape.SetAsBox(a, a, position, 0.0f);
+					SetAsBox(shape, a, a, position, 0.0f);
 					ground->CreateFixture(FixtureDef{&shape, 0.0f});
 					++m_fixtureCount;
 					position.x += 2.0f * a;
@@ -72,7 +72,7 @@ public:
 				for (int32 j = 0; j < M; ++j)
 				{
 					PolygonShape shape;
-					shape.SetAsBox(a, a, position, 0.0f);
+					SetAsBox(shape, a, a, position, 0.0f);
 					ground->CreateFixture(FixtureDef{&shape, 0.0f});
 					position.y -= 2.0f * a;
 				}
