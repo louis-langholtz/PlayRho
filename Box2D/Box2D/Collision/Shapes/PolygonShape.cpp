@@ -67,10 +67,11 @@ void PolygonShape::SetAsBox(float_t hx, float_t hy, const Vec2& center, float_t 
 	
 	if ((center != Vec2{0, 0}) || (angle != 0))
 	{
+		const auto xf = Transformation{center, Rot{angle}};
+		
 		Vec2 vertices[MaxPolygonVertices];
 		Vec2 normals[MaxPolygonVertices];
-
-		const auto xf = Transformation{center, Rot{angle}};
+		
 		for (auto i = decltype(m_count){0}; i < m_count; ++i)
 		{
 			vertices[i] = Transform(m_vertices[i], xf);
