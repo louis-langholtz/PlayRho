@@ -559,26 +559,6 @@ static inline EPAxis ComputePolygonSeparation(const PolygonShape& shape, const E
 	return axis;
 }
 
-/// Edge and polygon collider.
-/// This takes into account edge adjacency.
-class EPCollider
-{
-public:
-	EPCollider(const Transformation& xf): m_xf(xf) {}
-	
-	Manifold Collide(const EdgeShape& shapeA, const PolygonShape& shapeB) const;
-	
-private:
-	Manifold Collide(const EdgeInfo& shapeA, const PolygonShape& shapeB) const;
-	
-	const Transformation m_xf;
-};
-
-Manifold EPCollider::Collide(const EdgeShape& shapeA, const PolygonShape& shapeB) const
-{
-	return Collide(EdgeInfo{shapeA, Transform(shapeB.GetCentroid(), m_xf)}, shapeB);
-}
-
 // Algorithm:
 // 1. Classify v1 and v2
 // 2. Classify polygon centroid as front or back
@@ -588,10 +568,10 @@ Manifold EPCollider::Collide(const EdgeShape& shapeA, const PolygonShape& shapeB
 // 6. Visit each separating axes, only accept axes within the range
 // 7. Return if _any_ axis indicates separation
 // 8. Clip
-Manifold EPCollider::Collide(const EdgeInfo& edgeInfo, const PolygonShape& shapeB) const
+static Manifold Collide(const EdgeInfo& edgeInfo, const PolygonShape& shapeB, const Transformation& xf)
 {
 	auto localShapeB = shapeB;
-	localShapeB.Transform(m_xf);
+	localShapeB.Transform(xf);
 	
 	const auto edgeAxis = ComputeEdgeSeparation(localShapeB, edgeInfo);
 	
@@ -692,7 +672,7 @@ polygonAxis: edgeAxis;
 			const auto separation = Dot(rf.normal, clipPoints2[i].v - rf.v1);
 			if (separation <= MaxEPSeparation)
 			{
-				manifold.AddPoint(Manifold::Point{InverseTransform(clipPoints2[i].v, m_xf), clipPoints2[i].cf});
+				manifold.AddPoint(Manifold::Point{InverseTransform(clipPoints2[i].v, xf), clipPoints2[i].cf});
 			}
 		}
 		return manifold;
@@ -715,8 +695,8 @@ polygonAxis: edgeAxis;
 Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,
 							  const PolygonShape& shapeB, const Transformation& xfB)
 {
-	const auto collider = EPCollider{MulT(xfA, xfB)};
-	return collider.Collide(shapeA, shapeB);
+	const auto xf = MulT(xfA, xfB);
+	return Collide(EdgeInfo{shapeA, Transform(shapeB.GetCentroid(), xf)}, shapeB, xf);
 }
 
 struct ShapeSeparation
