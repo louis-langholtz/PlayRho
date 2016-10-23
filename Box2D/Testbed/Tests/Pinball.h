@@ -43,7 +43,7 @@ public:
 			vs[4] = Vec2(-8.0f, 6.0f);
 
 			ChainShape loop;
-			loop.CreateLoop(vs, 5);
+			loop.CreateLoop(Span<const Vec2>(vs, 5));
 			FixtureDef fd;
 			fd.shape = &loop;
 			fd.density = 0.0f;

@@ -68,7 +68,7 @@ public:
 			vs[2] = Vec2(7.0f, 8.0f);
 			vs[3] = Vec2(8.0f, 7.0f);
 			ChainShape shape;
-			shape.CreateChain(vs, 4);
+			shape.CreateChain(Span<const Vec2>(vs, 4));
 			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
@@ -99,7 +99,7 @@ public:
 			vs[2] = Vec2(1.0f, 5.0f);
 			vs[3] = Vec2(-1.0f, 5.0f);
 			ChainShape shape;
-			shape.CreateLoop(vs, 4);
+			shape.CreateLoop(Span<const Vec2>(vs, 4));
 			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
@@ -121,7 +121,7 @@ public:
 			vs[8] = Vec2(-6.0f, 2.0f);
 			vs[9] = Vec2(-6.0f, 0.0f);
 			ChainShape shape;
-			shape.CreateLoop(vs, 10);
+			shape.CreateLoop(Span<const Vec2>(vs, 10));
 			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 

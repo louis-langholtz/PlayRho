@@ -54,21 +54,19 @@ public:
 	/// Create a loop. This automatically adjusts connectivity.
 	/// @note Behavior is undefined if vertices is null or if count of vertices is less than 3.
 	/// @param vertices Non-null array of vertices. These are copied.
-	/// @param count Count of vertices. Must be 3 or more.
-	void CreateLoop(const Vec2* vertices, child_count_t count);
+	void CreateLoop(Span<const Vec2> vertices);
 
 	/// Create a chain with isolated end vertices.
 	/// @param vertices an array of vertices, these are copied
-	/// @param count the vertex count
-	void CreateChain(const Vec2* vertices, child_count_t count);
+	void CreateChain(Span<const Vec2> vertices);
 
 	/// Establish connectivity to a vertex that precedes the first vertex.
 	/// Don't call this for loops.
-	void SetPrevVertex(const Vec2& prevVertex) noexcept;
+	void SetPrevVertex(Vec2 prevVertex) noexcept;
 
 	/// Establish connectivity to a vertex that follows the last vertex.
 	/// Don't call this for loops.
-	void SetNextVertex(const Vec2& nextVertex) noexcept;
+	void SetNextVertex(Vec2 nextVertex) noexcept;
 
 	/// Get a child edge.
 	EdgeShape GetChildEdge(child_count_t index) const;

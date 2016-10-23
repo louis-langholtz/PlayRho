@@ -60,53 +60,53 @@ void ChainShape::Clear()
 	m_count = 0;
 }
 
-void ChainShape::CreateLoop(const Vec2* vertices, child_count_t count)
+void ChainShape::CreateLoop(Span<const Vec2> vertices)
 {
-	assert(vertices != nullptr);
-	assert(count >= 3);
-	assert(IsValid(vertices[count - 1]));
+	assert(vertices.begin() != nullptr);
+	assert(vertices.size() >= 3);
+	assert(IsValid(vertices[vertices.size() - 1]));
 	assert(IsValid(vertices[1]));
 	
 	assert(m_vertices == nullptr && m_count == 0);
 	
-	for (auto i = decltype(count){1}; i < count; ++i)
+	for (auto i = decltype(vertices.size()){1}; i < vertices.size(); ++i)
 	{
 		// If the code crashes here, it means your vertices are too close together.
 		assert(LengthSquared(vertices[i-1] - vertices[i]) > Square(LinearSlop));
 	}
 
-	m_count = count + 1;
+	m_count = static_cast<child_count_t>(vertices.size() + 1);
 	m_vertices = alloc<Vec2>(m_count);
-	memcpy(m_vertices, vertices, count * sizeof(Vec2));
-	m_vertices[count] = m_vertices[0];
+	memcpy(m_vertices, vertices.begin(), vertices.size() * sizeof(Vec2));
+	m_vertices[vertices.size()] = m_vertices[0];
 	m_prevVertex = m_vertices[m_count - 2];
 	m_nextVertex = m_vertices[1];
 }
 
-void ChainShape::CreateChain(const Vec2* vertices, child_count_t count)
+void ChainShape::CreateChain(Span<const Vec2> vertices)
 {
 	assert((m_vertices == nullptr) && (m_count == 0));
-	assert(count >= 2);
-	for (auto i = decltype(count){1}; i < count; ++i)
+	assert(vertices.size() >= 2);
+	for (auto i = decltype(vertices.size()){1}; i < vertices.size(); ++i)
 	{
 		// If the code crashes here, it means your vertices are too close together.
 		assert(LengthSquared(vertices[i-1] - vertices[i]) > Square(LinearSlop));
 	}
 
-	m_count = count;
-	m_vertices = alloc<Vec2>(count);
-	memcpy(m_vertices, vertices, m_count * sizeof(Vec2));
+	m_count = static_cast<child_count_t>(vertices.size());
+	m_vertices = alloc<Vec2>(vertices.size());
+	memcpy(m_vertices, vertices.begin(), m_count * sizeof(Vec2));
 
 	m_prevVertex = GetInvalid<Vec2>();
 	m_nextVertex = GetInvalid<Vec2>();
 }
 
-void ChainShape::SetPrevVertex(const Vec2& prevVertex) noexcept
+void ChainShape::SetPrevVertex(Vec2 prevVertex) noexcept
 {
 	m_prevVertex = prevVertex;
 }
 
-void ChainShape::SetNextVertex(const Vec2& nextVertex) noexcept
+void ChainShape::SetNextVertex(Vec2 nextVertex) noexcept
 {
 	m_nextVertex = nextVertex;
 }
