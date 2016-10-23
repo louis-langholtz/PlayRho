@@ -75,6 +75,51 @@ TEST(PolygonShape, BoxConstruction)
 	EXPECT_EQ(shape.GetNormal(3), Vec2(0, -1));
 }
 
+TEST(PolygonShape, Copy)
+{
+	const auto hx = float_t(2.3);
+	const auto hy = float_t(54.1);
+	
+	auto shape = PolygonShape{hx, hy};
+	ASSERT_EQ(shape.GetType(), Shape::e_polygon);
+	ASSERT_EQ(shape.GetCentroid(), Vec2(0, 0));
+	ASSERT_EQ(GetChildCount(shape), child_count_t(1));
+	ASSERT_EQ(GetRadius(shape), PolygonRadius);
+	ASSERT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));
+	
+	// vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
+	ASSERT_EQ(shape.GetVertex(0), Vec2(hx, -hy)); // bottom right
+	ASSERT_EQ(shape.GetVertex(1), Vec2(hx, hy)); // top right
+	ASSERT_EQ(shape.GetVertex(2), Vec2(-hx, hy)); // top left
+	ASSERT_EQ(shape.GetVertex(3), Vec2(-hx, -hy)); // bottom left
+	
+	ASSERT_EQ(shape.GetNormal(0), Vec2(+1, 0));
+	ASSERT_EQ(shape.GetNormal(1), Vec2(0, +1));
+	ASSERT_EQ(shape.GetNormal(2), Vec2(-1, 0));
+	ASSERT_EQ(shape.GetNormal(3), Vec2(0, -1));
+
+	const auto copy = shape;
+	
+	EXPECT_EQ(copy.GetType(), Shape::e_polygon);
+	EXPECT_EQ(copy.GetCentroid(), Vec2(0, 0));
+	EXPECT_EQ(GetChildCount(copy), child_count_t(1));
+	EXPECT_EQ(GetRadius(copy), PolygonRadius);
+	
+	ASSERT_EQ(copy.GetVertexCount(), PolygonShape::vertex_count_t(4));
+	
+	// vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
+	
+	EXPECT_EQ(copy.GetVertex(0), Vec2(hx, -hy)); // bottom right
+	EXPECT_EQ(copy.GetVertex(1), Vec2(hx, hy)); // top right
+	EXPECT_EQ(copy.GetVertex(2), Vec2(-hx, hy)); // top left
+	EXPECT_EQ(copy.GetVertex(3), Vec2(-hx, -hy)); // bottom left
+	
+	EXPECT_EQ(copy.GetNormal(0), Vec2(+1, 0));
+	EXPECT_EQ(copy.GetNormal(1), Vec2(0, +1));
+	EXPECT_EQ(copy.GetNormal(2), Vec2(-1, 0));
+	EXPECT_EQ(copy.GetNormal(3), Vec2(0, -1));
+}
+
 TEST(PolygonShape, Translate)
 {
 	const auto hx = float_t(2.3);
@@ -215,35 +260,29 @@ TEST(PolygonShape, SetAsBoxAngledDegrees90)
 	
 	ASSERT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));
 	
-	// vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
+	// vertices go counter-clockwise (and normals follow their edges)...
 	
 	const auto precision = 1000u;
 	EXPECT_FLOAT_EQ(round(shape.GetVertex(0).x, precision), hy); // right
-	EXPECT_FLOAT_EQ(round(shape.GetVertex(0).y, precision), -hx); // bottom
-	EXPECT_FLOAT_EQ(round(shape.GetVertex(1).x, precision), hy); // right
+	EXPECT_FLOAT_EQ(round(shape.GetVertex(0).y, precision), hx); // top
+	EXPECT_FLOAT_EQ(round(shape.GetVertex(1).x, precision), -hy); // left
 	EXPECT_FLOAT_EQ(round(shape.GetVertex(1).y, precision), hx); // top
 	EXPECT_FLOAT_EQ(round(shape.GetVertex(2).x, precision), -hy); // left
-	EXPECT_FLOAT_EQ(round(shape.GetVertex(2).y, precision), hx); // top
-	EXPECT_FLOAT_EQ(round(shape.GetVertex(3).x, precision), -hy); // left
+	EXPECT_FLOAT_EQ(round(shape.GetVertex(2).y, precision), -hx); // bottom
+	EXPECT_FLOAT_EQ(round(shape.GetVertex(3).x, precision), hy); // right
 	EXPECT_FLOAT_EQ(round(shape.GetVertex(3).y, precision), -hx); // bottom
 	
-	EXPECT_GE(shape.GetVertex(0).x, shape.GetVertex(3).x);
-	if (shape.GetVertex(0).x == shape.GetVertex(3).x)
-	{
-		EXPECT_LT(shape.GetVertex(0).y, shape.GetVertex(3).y);
-	}
+	EXPECT_FLOAT_EQ(round(shape.GetNormal(0).x), 0);
+	EXPECT_FLOAT_EQ(round(shape.GetNormal(0).y), +1);
 	
-	EXPECT_FLOAT_EQ(round(shape.GetNormal(0).x), +1);
-	EXPECT_FLOAT_EQ(round(shape.GetNormal(0).y), 0);
+	EXPECT_FLOAT_EQ(round(shape.GetNormal(1).x), -1);
+	EXPECT_FLOAT_EQ(round(shape.GetNormal(1).y), 0);
 
-	EXPECT_FLOAT_EQ(round(shape.GetNormal(1).x), 0);
-	EXPECT_FLOAT_EQ(round(shape.GetNormal(1).y), +1);
+	EXPECT_FLOAT_EQ(round(shape.GetNormal(2).x), 0);
+	EXPECT_FLOAT_EQ(round(shape.GetNormal(2).y), -1);
 	
-	EXPECT_FLOAT_EQ(round(shape.GetNormal(2).x), -1);
-	EXPECT_FLOAT_EQ(round(shape.GetNormal(2).y), 0);
-
-	EXPECT_FLOAT_EQ(round(shape.GetNormal(3).x), 0);
-	EXPECT_FLOAT_EQ(round(shape.GetNormal(3).y), -1);	
+	EXPECT_FLOAT_EQ(round(shape.GetNormal(3).x), +1);
+	EXPECT_FLOAT_EQ(round(shape.GetNormal(3).y), 0);
 }
 
 TEST(PolygonShape, SetPoints)

@@ -38,7 +38,7 @@ void PolygonShape::SetAsBox(float_t hx, float_t hy) noexcept
 	m_count = 4;
 	m_centroid = Vec2_zero;
 
-	// vertices must be counter-clockwise starting at the lowest right-most vertex
+	// vertices must be counter-clockwise
 
 	const auto btm_rgt = Vec2{+hx, -hy};
 	const auto top_rgt = Vec2{ hx,  hy};
@@ -69,25 +69,11 @@ void box2d::SetAsBox(PolygonShape& shape, float_t hx, float_t hy, const Vec2& ce
 
 void PolygonShape::Transform(box2d::Transformation xf) noexcept
 {
-	Vec2 vertices[MaxPolygonVertices];
-	Vec2 normals[MaxPolygonVertices];
-	
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
-		vertices[i] = box2d::Transform(m_vertices[i], xf);
-		normals[i] = Rotate(m_normals[i], xf.q);
+		m_vertices[i] = box2d::Transform(m_vertices[i], xf);
+		m_normals[i] = Rotate(m_normals[i], xf.q);
 	}
-	
-	{
-		auto src_index = static_cast<decltype(m_count)>(FindLowestRightMostVertex(Span<const Vec2>(vertices, m_count)));
-		for (auto i = decltype(m_count){0}; i < m_count; ++i)
-		{
-			m_vertices[i] = vertices[src_index];
-			m_normals[i] = normals[src_index];
-			src_index = static_cast<decltype(m_count)>((src_index + 1) % m_count);
-		}
-	}
-	
 	m_centroid = box2d::Transform(m_centroid, xf);
 }
 

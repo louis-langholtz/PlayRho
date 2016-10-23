@@ -534,12 +534,12 @@ inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2& centroid):
 	}
 }
 
-static inline TempPolygon::size_type GetIndexOfMinimum(const TempPolygon& localShapeB, const EdgeInfo& edgeInfo)
+static inline PolygonShape::vertex_count_t GetIndexOfMinimum(const PolygonShape& localShapeB, const EdgeInfo& edgeInfo)
 {
 	TempPolygon::size_type bestIndex = TempPolygon::size_type{0};
 	{
 		auto minValue = Dot(edgeInfo.GetNormal(), localShapeB.GetNormal(0));
-		const auto count = localShapeB.GetCount();
+		const auto count = localShapeB.GetVertexCount();
 		for (auto i = decltype(count){1}; i < count; ++i)
 		{
 			const auto value = Dot(edgeInfo.GetNormal(), localShapeB.GetNormal(i));
@@ -555,11 +555,11 @@ static inline TempPolygon::size_type GetIndexOfMinimum(const TempPolygon& localS
 
 static constexpr float_t MaxEPSeparation = PolygonRadius * 2; ///< Maximum separation.
 
-static inline EPAxis ComputeEdgeSeparation(const TempPolygon& shape, const EdgeInfo& edgeInfo)
+static inline EPAxis ComputeEdgeSeparation(const PolygonShape& shape, const EdgeInfo& edgeInfo)
 {
 	auto minValue = MaxFloat;
 	{
-		const auto count = shape.GetCount();
+		const auto count = shape.GetVertexCount();
 		for (auto i = decltype(count){0}; i < count; ++i)
 		{
 			const auto s = Dot(edgeInfo.GetNormal(), shape.GetVertex(i) - edgeInfo.GetVertex1());
@@ -569,12 +569,12 @@ static inline EPAxis ComputeEdgeSeparation(const TempPolygon& shape, const EdgeI
 	return EPAxis{EPAxis::e_edgeA, static_cast<EPAxis::index_t>(edgeInfo.IsFront()? 0: 1), minValue};
 }
 
-static inline EPAxis ComputePolygonSeparation(const TempPolygon& shape, const EdgeInfo& edgeInfo)
+static inline EPAxis ComputePolygonSeparation(const PolygonShape& shape, const EdgeInfo& edgeInfo)
 {
 	auto axis = EPAxis{EPAxis::e_unknown, EPAxis::InvalidIndex, -MaxFloat};
 	
 	const auto perp = GetRevPerpendicular(edgeInfo.GetNormal());
-	const auto count = shape.GetCount();
+	const auto count = shape.GetVertexCount();
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
 		const auto polygonNormal = -shape.GetNormal(i);
@@ -644,7 +644,8 @@ Manifold EPCollider::Collide(const EdgeShape& shapeA, const PolygonShape& shapeB
 // 8. Clip
 Manifold EPCollider::Collide(const EdgeInfo& edgeInfo, const PolygonShape& shapeB) const
 {
-	const auto localShapeB = TempPolygon{shapeB, m_xf};
+	auto localShapeB = shapeB;
+	localShapeB.Transform(m_xf);
 	
 	const auto edgeAxis = ComputeEdgeSeparation(localShapeB, edgeInfo);
 	
@@ -680,7 +681,7 @@ polygonAxis: edgeAxis;
 		const auto bestIndex = GetIndexOfMinimum(localShapeB, edgeInfo);
 		
 		const auto i1 = bestIndex;
-		const auto i2 = static_cast<decltype(i1)>((i1 + 1) % localShapeB.GetCount());
+		const auto i2 = static_cast<decltype(i1)>((i1 + 1) % localShapeB.GetVertexCount());
 		
 		incidentEdge[0] = ClipVertex{localShapeB.GetVertex(i1), ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_vertex, i1}};
 		incidentEdge[1] = ClipVertex{localShapeB.GetVertex(i2), ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_vertex, i2}};
@@ -708,7 +709,7 @@ polygonAxis: edgeAxis;
 		incidentEdge[1] = ClipVertex{edgeInfo.GetVertex2(), ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_face, primaryAxis.index}};
 		
 		rf.i1 = primaryAxis.index;
-		rf.i2 = static_cast<decltype(rf.i1)>((rf.i1 + 1) % localShapeB.GetCount());
+		rf.i2 = static_cast<decltype(rf.i1)>((rf.i1 + 1) % localShapeB.GetVertexCount());
 		rf.v1 = localShapeB.GetVertex(rf.i1);
 		rf.v2 = localShapeB.GetVertex(rf.i2);
 		rf.normal = localShapeB.GetNormal(rf.i1);

@@ -72,7 +72,7 @@ public:
 	vertex_count_t GetVertexCount() const noexcept { return m_count; }
 
 	/// Gets a vertex by index.
-	/// @detail Vertices go counter-clockwise with lowest right-most vertex at index 0.
+	/// @detail Vertices go counter-clockwise.
 	Vec2 GetVertex(vertex_count_t index) const;
 
 	/// Gets a normal by index.
@@ -84,7 +84,7 @@ public:
 	Vec2 GetNormal(vertex_count_t index) const;
 
 	/// Gets the span of vertices.
-	/// @detail Vertices go counter-clockwise with lowest right-most vertex at index 0.
+	/// @detail Vertices go counter-clockwise.
 	Span<const Vec2> GetVertices() const noexcept { return Span<const Vec2>(m_vertices, m_count); }
 
 	Span<const Vec2> GetNormals() const noexcept { return Span<const Vec2>(m_normals, m_count); }
