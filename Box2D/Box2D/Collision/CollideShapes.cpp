@@ -242,61 +242,6 @@ struct EPAxis
 	float_t separation;
 };
 
-// This holds polygon B expressed in frame A.
-class TempPolygon
-{
-public:
-	using size_type = std::remove_const<decltype(MaxPolygonVertices)>::type;
-	
-	TempPolygon() = default;
-	
-	TempPolygon(const PolygonShape& shape, const Transformation& xf);
-	
-	/// Gets count of appended elements (vertex-normal pairs).
-	/// @return value between 0 and MaxPolygonVertices inclusive.
-	/// @see MaxPolygonVertices.
-	size_type GetCount() const noexcept { return count; }
-	
-	Vec2 GetVertex(size_type index) const
-	{
-		assert(index >= 0);
-		assert(index < MaxPolygonVertices);
-		assert(index < count);
-		return vertices[index];
-	}
-	
-	Vec2 GetNormal(size_type index) const
-	{
-		assert(index >= 0);
-		assert(index < MaxPolygonVertices);
-		assert(index < count);
-		return normals[index];
-	}
-	
-	void Append(const Vec2& vertex, const Vec2& normal)
-	{
-		assert(count < MaxPolygonVertices);
-		vertices[count] = vertex;
-		normals[count] = normal;
-		++count;
-	}
-	
-private:
-	size_type count = 0;
-	Vec2 vertices[MaxPolygonVertices];
-	Vec2 normals[MaxPolygonVertices];
-};
-
-/// Gets a TempPolygon object from a given shape in terms of a given transform.
-inline TempPolygon::TempPolygon(const PolygonShape& shape, const Transformation& xf)
-{
-	const auto num_vertices = shape.GetVertexCount();
-	for (auto i = decltype(num_vertices){0}; i < num_vertices; ++i)
-	{
-		Append(Transform(shape.GetVertex(i), xf), Rotate(shape.GetNormal(i), xf.q));
-	}	
-}
-
 // Reference face used for clipping
 struct ReferenceFace
 {
@@ -534,9 +479,10 @@ inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2& centroid):
 	}
 }
 
-static inline PolygonShape::vertex_count_t GetIndexOfMinimum(const PolygonShape& localShapeB, const EdgeInfo& edgeInfo)
+static inline PolygonShape::vertex_count_t GetIndexOfMinimum(const PolygonShape& localShapeB,
+															 const EdgeInfo& edgeInfo)
 {
-	TempPolygon::size_type bestIndex = TempPolygon::size_type{0};
+	auto bestIndex = PolygonShape::vertex_count_t{0};
 	{
 		auto minValue = Dot(edgeInfo.GetNormal(), localShapeB.GetNormal(0));
 		const auto count = localShapeB.GetVertexCount();
