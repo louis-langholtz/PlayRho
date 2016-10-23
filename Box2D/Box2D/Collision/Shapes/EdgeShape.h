@@ -59,7 +59,8 @@ public:
 
 private:
 	/// These are the edge vertices
-	Vec2 m_vertex1, m_vertex2;
+	Vec2 m_vertex1;
+	Vec2 m_vertex2;
 
 	/// Optional adjacent vertices. These are used for smooth collision.
 	Vec2 m_vertex0 = GetInvalid<Vec2>();

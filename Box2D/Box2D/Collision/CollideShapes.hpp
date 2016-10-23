@@ -72,7 +72,8 @@ namespace box2d
 	/// @param xfA Transformation for shape A.
 	/// @param shapeB Shape B.
 	/// @param xfB Transformation for shape B.
-	/// @return Manifold value with one or more points if the shapes are touching.
+	/// @return An unset-type manifold if the shapes aren't touching,
+	///   a face-A or face-B type manifold with 0 to 2 points otherwise.
 	Manifold CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,
 						   const PolygonShape& shapeB, const Transformation& xfB);
 

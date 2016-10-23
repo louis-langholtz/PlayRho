@@ -33,9 +33,7 @@ public:
 			bd.position = Vec2(0.0f, 0.0f);
 			Body* body = m_world->CreateBody(bd);
 
-			EdgeShape edge;
-
-			edge.Set(Vec2(-10.0f, 0.0f), Vec2(10.0f, 0.0f));
+			const auto edge = EdgeShape(Vec2(-10.0f, 0.0f), Vec2(10.0f, 0.0f));
 			body->CreateFixture(FixtureDef{&edge, 0.0f});
 
 			PolygonShape shape;

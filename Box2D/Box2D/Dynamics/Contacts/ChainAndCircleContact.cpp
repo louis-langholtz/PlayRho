@@ -52,6 +52,6 @@ ChainAndCircleContact::ChainAndCircleContact(Fixture* fixtureA, child_count_t in
 
 Manifold ChainAndCircleContact::Evaluate(const Transformation& xfA, const Transformation& xfB) const
 {
-	const auto edge = static_cast<const ChainShape*>(GetFixtureA()->GetShape())->GetChildEdge(GetChildIndexA());
+	const auto edge = (static_cast<const ChainShape*>(GetFixtureA()->GetShape()))->GetChildEdge(GetChildIndexA());
 	return CollideShapes(edge, xfA, *static_cast<const CircleShape*>(GetFixtureB()->GetShape()), xfB);
 }

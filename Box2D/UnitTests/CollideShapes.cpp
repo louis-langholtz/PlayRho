@@ -22,6 +22,7 @@
 #include <Box2D/Collision/WorldManifold.hpp>
 #include <Box2D/Collision/Shapes/CircleShape.h>
 #include <Box2D/Collision/Shapes/PolygonShape.h>
+#include <Box2D/Collision/Shapes/EdgeShape.h>
 
 using namespace box2d;
 
@@ -419,4 +420,128 @@ TEST(CollideShapes, HorizontalOverlappingRects2)
 	ASSERT_GT(world_manifold.GetPointCount(), Manifold::size_type(1));
 	EXPECT_FLOAT_EQ(world_manifold.GetPoint(1).x, float_t(+0.5));
 	EXPECT_FLOAT_EQ(world_manifold.GetPoint(1).y, float_t(+1.5) + total_radius);
+}
+
+TEST(CollideShapes, EdgeBelowPolygon)
+{
+	const auto p1 = Vec2(-1, 0);
+	const auto p2 = Vec2(+1, 0);
+	const auto edge_shape = EdgeShape(p1, p2);
+	const auto edge_xfm = Transformation{Vec2{0, -1}, Rot(0)};
+
+	const auto hx = float_t(1);
+	const auto hy = float_t(1);
+	const auto polygon_shape = PolygonShape(hx, hy);
+	const auto polygon_xfm = Transformation{Vec2{0, 0}, Rot(0)};
+
+	const auto manifold = CollideShapes(edge_shape, edge_xfm, polygon_shape, polygon_xfm);
+	
+	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
+	
+	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(1, 0));
+	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(0, 1));
+	
+	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
+	
+	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
+	EXPECT_EQ(manifold.GetPoint(0).localPoint, Vec2(-1, -1));
+	EXPECT_EQ(manifold.GetPoint(0).normalImpulse, float_t(0));
+	EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, float_t(0));
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_face);
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexA, 0);
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 3);
+	
+	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
+	EXPECT_EQ(manifold.GetPoint(1).localPoint, Vec2(+1, -1));
+	EXPECT_EQ(manifold.GetPoint(1).normalImpulse, float_t(0));
+	EXPECT_EQ(manifold.GetPoint(1).tangentImpulse, float_t(0));
+	EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeA, ContactFeature::e_face);
+	EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexA, 0);
+	EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeB, ContactFeature::e_vertex);
+	EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexB, 0);
+}
+
+TEST(CollideShapes, EdgeAbovePolygon)
+{
+	const auto p1 = Vec2(-1, 0);
+	const auto p2 = Vec2(+1, 0);
+	const auto edge_shape = EdgeShape(p1, p2);
+	const auto edge_xfm = Transformation{Vec2{0, +1}, Rot(0)};
+	
+	const auto hx = float_t(1);
+	const auto hy = float_t(1);
+	const auto polygon_shape = PolygonShape(hx, hy);
+	const auto polygon_xfm = Transformation{Vec2{0, 0}, Rot(0)};
+	
+	const auto manifold = CollideShapes(edge_shape, edge_xfm, polygon_shape, polygon_xfm);
+	
+	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
+	
+	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(-1, 0));
+	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(0, -1));
+	
+	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
+	
+	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
+	EXPECT_EQ(manifold.GetPoint(0).localPoint, Vec2(+1, +1));
+	EXPECT_EQ(manifold.GetPoint(0).normalImpulse, float_t(0));
+	EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, float_t(0));
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_face);
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexA, 0);
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 1);
+	
+	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
+	EXPECT_EQ(manifold.GetPoint(1).localPoint, Vec2(-1, +1));
+	EXPECT_EQ(manifold.GetPoint(1).normalImpulse, float_t(0));
+	EXPECT_EQ(manifold.GetPoint(1).tangentImpulse, float_t(0));
+	EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeA, ContactFeature::e_face);
+	EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexA, 0);
+	EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeB, ContactFeature::e_vertex);
+	EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexB, 2);
+}
+
+TEST(CollideShapes, EdgeLeftOfPolygon)
+{
+	const auto p1 = Vec2(0, -1);
+	const auto p2 = Vec2(0, +1);
+	const auto edge_shape = EdgeShape(p1, p2);
+	const auto edge_xfm = Transformation{Vec2{-1, 0}, Rot(0)};
+	
+	const auto hx = float_t(1);
+	const auto hy = float_t(1);
+	const auto polygon_shape = PolygonShape(hx, hy);
+	const auto polygon_xfm = Transformation{Vec2{0, 0}, Rot(0)};
+	
+	const auto manifold = CollideShapes(edge_shape, edge_xfm, polygon_shape, polygon_xfm);
+	
+	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
+	
+	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(0, -1));
+	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(+1, 0));
+	
+	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
+}
+
+TEST(CollideShapes, EdgeRightOfPolygon)
+{
+	const auto p1 = Vec2(0, -1);
+	const auto p2 = Vec2(0, +1);
+	const auto edge_shape = EdgeShape(p1, p2);
+	const auto edge_xfm = Transformation{Vec2{+1, 0}, Rot(0)};
+	
+	const auto hx = float_t(1);
+	const auto hy = float_t(1);
+	const auto polygon_shape = PolygonShape(hx, hy);
+	const auto polygon_xfm = Transformation{Vec2{0, 0}, Rot(0)};
+	
+	const auto manifold = CollideShapes(edge_shape, edge_xfm, polygon_shape, polygon_xfm);
+	
+	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
+	
+	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(0, +1));
+	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(-1, 0));
+	
+	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
 }

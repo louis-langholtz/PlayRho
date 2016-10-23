@@ -32,8 +32,7 @@ public:
 			BodyDef bd;
 			ground = m_world->CreateBody(bd);
 
-			EdgeShape shape;
-			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
+			const auto shape = EdgeShape(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
 
 			FixtureDef fd;
 			fd.shape = &shape;
