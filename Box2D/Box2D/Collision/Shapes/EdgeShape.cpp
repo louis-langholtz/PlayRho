@@ -85,16 +85,15 @@ RayCastOutput box2d::RayCast(const EdgeShape& shape, const RayCastInput& input,
 
 	const auto q = p1 + t * d;
 
-	// q = v1 + s * r
-	// s = dot(q - v1, r) / dot(r, r)
-	const auto r = v2 - v1;
-	const auto rr = LengthSquared(r);
-	if (rr == float_t{0})
+	// q = v1 + s * e
+	// s = dot(q - v1, e) / dot(e, e)
+	const auto ee = LengthSquared(e);
+	if (ee == float_t{0})
 	{
 		return RayCastOutput{};
 	}
 
-	const auto s = Dot(q - v1, r) / rr;
+	const auto s = Dot(q - v1, e) / ee;
 	if ((s < float_t{0}) || (float_t{1} < s))
 	{
 		return RayCastOutput{};
