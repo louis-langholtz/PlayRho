@@ -297,7 +297,7 @@ inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2& centroid):
 	m_vertex1(edge.GetVertex1()),
 	m_vertex2(edge.GetVertex2()),
 	m_edge1(GetUnitVector(m_vertex2 - m_vertex1)),
-	m_normal1(m_edge1.y, -m_edge1.x)
+	m_normal1(GetFwdPerpendicular(m_edge1))
 {
 	const auto hasVertex0 = edge.HasVertex0();
 	const auto hasVertex3 = edge.HasVertex3();
@@ -617,9 +617,7 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 		case EPAxis::e_edge:
 		{
 			// Search for the polygon normal that is most anti-parallel to the edge normal.
-			const auto bestIndex = GetIndexOfMinimum(localShapeB, edgeInfo);
-			
-			const auto i1 = bestIndex;
+			const auto i1 = GetIndexOfMinimum(localShapeB, edgeInfo);
 			const auto i2 = static_cast<decltype(i1)>((i1 + 1) % localShapeB.GetVertexCount());
 			
 			incidentEdge.add(ClipVertex{
