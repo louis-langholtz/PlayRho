@@ -422,6 +422,22 @@ TEST(CollideShapes, HorizontalOverlappingRects2)
 	EXPECT_FLOAT_EQ(world_manifold.GetPoint(1).y, float_t(+1.5) + total_radius);
 }
 
+TEST(CollideShapes, EdgeWithDefaultPolygon)
+{
+	const auto p1 = Vec2(-1, 0);
+	const auto p2 = Vec2(+1, 0);
+	const auto edge_shape = EdgeShape(p1, p2);
+	const auto edge_xfm = Transformation{Vec2{0, -1}, Rot(0)};
+	
+	const auto polygon_shape = PolygonShape{}; // vertex count is 0!
+	const auto polygon_xfm = Transformation{Vec2{0, 0}, Rot(0)};
+	
+	const auto manifold = CollideShapes(edge_shape, edge_xfm, polygon_shape, polygon_xfm);
+	
+	EXPECT_EQ(manifold.GetType(), Manifold::e_unset);
+	EXPECT_EQ(manifold.GetPointCount(), 0);
+}
+
 TEST(CollideShapes, EdgeBelowPolygon)
 {
 	const auto p1 = Vec2(-1, 0);
