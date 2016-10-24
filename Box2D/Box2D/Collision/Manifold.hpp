@@ -279,6 +279,12 @@ namespace box2d
 		PointArray points; ///< Points of contact (at least 40-bytes). @sa pointCount.
 	};
 	
+	template <>
+	inline bool IsValid(const Manifold& value)
+	{
+		return value.GetType() != Manifold::e_unset;
+	}
+
 } // namespace box2d
 
 #endif /* Manifold_hpp */
