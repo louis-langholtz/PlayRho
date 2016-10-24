@@ -39,6 +39,12 @@ public:
 	/// Vertex count type.
 	using vertex_count_t = std::remove_const<decltype(MaxPolygonVertices)>::type;
 
+	static constexpr auto InvalidVertex = static_cast<vertex_count_t>(-1);
+
+	/// Default constructor.
+	/// @detail Constructs a polygon shape with a 0,0 centroid and vertex count of 0.
+	/// @note Polygons with a vertex count less than 3 are "degenerate" and should be
+	///   treated as invalid.
 	PolygonShape() noexcept: Shape{e_polygon} {}
 
 	PolygonShape(const PolygonShape&) = default;
@@ -172,5 +178,11 @@ void SetAsBox(PolygonShape& shape, float_t hx, float_t hy, const Vec2& center, f
 	
 size_t FindLowestRightMostVertex(Span<const Vec2> vertices);
 	
+inline PolygonShape Transform(PolygonShape value, Transformation xfm) noexcept
+{
+	value.Transform(xfm);
+	return value;
+}
+
 } // namespace box2d
 #endif
