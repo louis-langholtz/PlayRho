@@ -226,20 +226,25 @@ struct EPAxis
 	
 	enum Type: index_t
 	{
+		/// Unknown type.
+		/// @detail Index and separation are invalid.
 		e_unknown,
-		e_edgeA,
-		e_edgeB
+		
+		/// Edge type.
+		/// @detail Index refers to the edge shape.
+		e_edge,
+
+		/// Polygon type.
+		/// @detail Index refers to the polygon shape.
+		e_polygon
 	};
 	
 	static constexpr index_t InvalidIndex = static_cast<index_t>(-1);
+	static constexpr float_t InvalidSeparation = GetInvalid<float_t>();
 	
-	EPAxis() = default;
-	
-	constexpr EPAxis(Type t, index_t i, float_t s) noexcept: type{t}, index{i}, separation{s} {}
-	
-	Type type;
-	index_t index;
-	float_t separation;
+	Type type = e_unknown;
+	index_t index = InvalidIndex;
+	float_t separation = InvalidSeparation; ///< Separation.
 };
 
 // Reference face used for clipping
@@ -479,16 +484,16 @@ inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2& centroid):
 	}
 }
 
-static inline PolygonShape::vertex_count_t GetIndexOfMinimum(const PolygonShape& localShapeB,
-															 const EdgeInfo& edgeInfo)
+static inline PolygonShape::vertex_count_t GetIndexOfMinimum(const PolygonShape& polygon,
+															 const EdgeInfo& edge)
 {
-	auto bestIndex = PolygonShape::vertex_count_t{0};
+	auto bestIndex = PolygonShape::InvalidVertex;
 	{
-		auto minValue = Dot(edgeInfo.GetNormal(), localShapeB.GetNormal(0));
-		const auto count = localShapeB.GetVertexCount();
-		for (auto i = decltype(count){1}; i < count; ++i)
+		auto minValue = MaxFloat;
+		const auto count = polygon.GetVertexCount();
+		for (auto i = decltype(count){0}; i < count; ++i)
 		{
-			const auto value = Dot(edgeInfo.GetNormal(), localShapeB.GetNormal(i));
+			const auto value = Dot(edge.GetNormal(), polygon.GetNormal(i));
 			if (minValue > value)
 			{
 				minValue = value;
@@ -501,89 +506,95 @@ static inline PolygonShape::vertex_count_t GetIndexOfMinimum(const PolygonShape&
 
 static constexpr float_t MaxEPSeparation = PolygonRadius * 2; ///< Maximum separation.
 
-static inline EPAxis ComputeEdgeSeparation(const PolygonShape& shape, const EdgeInfo& edgeInfo)
+static inline EPAxis ComputeEdgeSeparation(const PolygonShape& polygon, const EdgeInfo& edge)
 {
 	auto minValue = MaxFloat;
 	{
-		const auto count = shape.GetVertexCount();
+		const auto count = polygon.GetVertexCount();
 		for (auto i = decltype(count){0}; i < count; ++i)
 		{
-			const auto s = Dot(edgeInfo.GetNormal(), shape.GetVertex(i) - edgeInfo.GetVertex1());
+			const auto s = Dot(edge.GetNormal(), polygon.GetVertex(i) - edge.GetVertex1());
 			minValue = Min(minValue, s);
 		}
 	}
-	return EPAxis{EPAxis::e_edgeA, static_cast<EPAxis::index_t>(edgeInfo.IsFront()? 0: 1), minValue};
+	return EPAxis{EPAxis::e_edge, static_cast<EPAxis::index_t>(edge.IsFront()? 0: 1), minValue};
 }
 
-static inline EPAxis ComputePolygonSeparation(const PolygonShape& shape, const EdgeInfo& edgeInfo)
+static inline EPAxis ComputePolygonSeparation(const PolygonShape& polygon, const EdgeInfo& edge)
 {
-	auto axis = EPAxis{EPAxis::e_unknown, EPAxis::InvalidIndex, -MaxFloat};
-	
-	const auto perp = GetRevPerpendicular(edgeInfo.GetNormal());
-	const auto count = shape.GetVertexCount();
-	for (auto i = decltype(count){0}; i < count; ++i)
+	auto max_s = -MaxFloat;
+	auto index = EPAxis::InvalidIndex;
 	{
-		const auto polygonNormal = -shape.GetNormal(i);
-		const auto polygonVertex = shape.GetVertex(i);
-		const auto s1 = Dot(polygonNormal, polygonVertex - edgeInfo.GetVertex1());
-		const auto s2 = Dot(polygonNormal, polygonVertex - edgeInfo.GetVertex2());
-		const auto s = Min(s1, s2);
-		
-		if (s > MaxEPSeparation) // No collision
+		const auto perp = GetRevPerpendicular(edge.GetNormal());
+		const auto count = polygon.GetVertexCount();
+		for (auto i = decltype(count){0}; i < count; ++i)
 		{
-			return EPAxis{EPAxis::e_edgeB, i, s};
-		}
-		
-		// Adjacency
-		if (Dot(polygonNormal, perp) >= 0)
-		{
-			if (Dot(polygonNormal - edgeInfo.GetUpperLimit(), edgeInfo.GetNormal()) < -AngularSlop)
+			const auto polygonNormal = -polygon.GetNormal(i);
+			const auto polygonVertex = polygon.GetVertex(i);
+			const auto s = Min(Dot(polygonNormal, polygonVertex - edge.GetVertex1()),
+							   Dot(polygonNormal, polygonVertex - edge.GetVertex2()));
+			
+			if (s > MaxEPSeparation) // No collision
 			{
-				continue;
+				return EPAxis{EPAxis::e_polygon, i, s};
 			}
-		}
-		else
-		{
-			if (Dot(polygonNormal - edgeInfo.GetLowerLimit(), edgeInfo.GetNormal()) < -AngularSlop)
+			
+			// Adjacency
+			if (Dot(polygonNormal, perp) >= 0)
 			{
-				continue;
+				if (Dot(polygonNormal - edge.GetUpperLimit(), edge.GetNormal()) < -AngularSlop)
+				{
+					continue;
+				}
 			}
-		}
-		
-		if (axis.separation < s)
-		{
-			axis = EPAxis{EPAxis::e_edgeB, i, s};
+			else
+			{
+				if (Dot(polygonNormal - edge.GetLowerLimit(), edge.GetNormal()) < -AngularSlop)
+				{
+					continue;
+				}
+			}
+			
+			if (max_s < s)
+			{
+				max_s = s;
+				index = i;
+			}
 		}
 	}
-	
-	return axis;
+	return EPAxis{EPAxis::e_polygon, index, max_s};
 }
 
-// Algorithm:
-// 1. Classify v1 and v2
-// 2. Classify polygon centroid as front or back
-// 3. Flip normal if necessary
-// 4. Initialize normal range to [-pi, pi] about face normal
-// 5. Adjust normal range according to adjacent edges
-// 6. Visit each separating axes, only accept axes within the range
-// 7. Return if _any_ axis indicates separation
-// 8. Clip
-static Manifold Collide(const EdgeInfo& edgeInfo, const PolygonShape& shapeB, const Transformation& xf)
+Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,
+							  const PolygonShape& shapeB, const Transformation& xfB)
 {
-	auto localShapeB = shapeB;
-	localShapeB.Transform(xf);
+	// Algorithm:
+	// 1. Classify v1 and v2
+	// 2. Classify polygon centroid as front or back
+	// 3. Flip normal if necessary
+	// 4. Initialize normal range to [-pi, pi] about face normal
+	// 5. Adjust normal range according to adjacent edges
+	// 6. Visit each separating axes, only accept axes within the range
+	// 7. Return if _any_ axis indicates separation
+	// 8. Clip
+
+	const auto xf = MulT(xfA, xfB);
+	const auto localShapeB = Transform(shapeB, xf);
+	const auto edgeInfo = EdgeInfo{shapeA, localShapeB.GetCentroid()};
 	
 	const auto edgeAxis = ComputeEdgeSeparation(localShapeB, edgeInfo);
+	assert(edgeAxis.type == EPAxis::e_edge);
 	
 	// If no valid normal can be found then this edge should not collide.
-	assert(edgeAxis.type != EPAxis::e_unknown);
-	if ((edgeAxis.type == EPAxis::e_unknown) || (edgeAxis.separation > MaxEPSeparation))
+	if (edgeAxis.separation > MaxEPSeparation)
 	{
 		return Manifold{};
 	}
 	
 	const auto polygonAxis = ComputePolygonSeparation(localShapeB, edgeInfo);
-	if ((polygonAxis.type != EPAxis::e_unknown) && (polygonAxis.separation > MaxEPSeparation))
+	assert(polygonAxis.type == EPAxis::e_polygon);
+
+	if (polygonAxis.separation > MaxEPSeparation)
 	{
 		return Manifold{};
 	}
@@ -595,50 +606,69 @@ static Manifold Collide(const EdgeInfo& edgeInfo, const PolygonShape& shapeB, co
 	// Now:
 	//   (edgeAxis.separation <= MaxSeparation) AND
 	//   (polygonAxis.type == EPAxis::e_unknown OR polygonAxis.separation <= MaxSeparation)
-	const auto primaryAxis = (polygonAxis.type == EPAxis::e_unknown)?
-edgeAxis: (polygonAxis.separation > ((k_relativeTol * edgeAxis.separation) + k_absoluteTol))?
-polygonAxis: edgeAxis;
+	const auto primaryAxis = (polygonAxis.index == EPAxis::InvalidIndex)?
+		edgeAxis: (polygonAxis.separation > ((k_relativeTol * edgeAxis.separation) + k_absoluteTol))?
+			polygonAxis: edgeAxis;
 	
-	ClipArray incidentEdge;
+	ClipList incidentEdge;
 	ReferenceFace rf;
-	if (primaryAxis.type == EPAxis::e_edgeA)
+	switch (primaryAxis.type)
 	{
-		// Search for the polygon normal that is most anti-parallel to the edge normal.
-		const auto bestIndex = GetIndexOfMinimum(localShapeB, edgeInfo);
-		
-		const auto i1 = bestIndex;
-		const auto i2 = static_cast<decltype(i1)>((i1 + 1) % localShapeB.GetVertexCount());
-		
-		incidentEdge[0] = ClipVertex{localShapeB.GetVertex(i1), ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_vertex, i1}};
-		incidentEdge[1] = ClipVertex{localShapeB.GetVertex(i2), ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_vertex, i2}};
-		
-		if (edgeInfo.IsFront())
+		case EPAxis::e_edge:
 		{
-			rf.i1 = 0;
-			rf.i2 = 1;
-			rf.v1 = edgeInfo.GetVertex1();
-			rf.v2 = edgeInfo.GetVertex2();
-			rf.normal = edgeInfo.GetNormal1();
+			// Search for the polygon normal that is most anti-parallel to the edge normal.
+			const auto bestIndex = GetIndexOfMinimum(localShapeB, edgeInfo);
+			
+			const auto i1 = bestIndex;
+			const auto i2 = static_cast<decltype(i1)>((i1 + 1) % localShapeB.GetVertexCount());
+			
+			incidentEdge.add(ClipVertex{
+				localShapeB.GetVertex(i1),
+				ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_vertex, i1}
+			});
+			incidentEdge.add(ClipVertex{
+				localShapeB.GetVertex(i2),
+				ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_vertex, i2}
+			});
+			
+			if (edgeInfo.IsFront())
+			{
+				rf.i1 = 0;
+				rf.i2 = 1;
+				rf.v1 = edgeInfo.GetVertex1();
+				rf.v2 = edgeInfo.GetVertex2();
+				rf.normal = edgeInfo.GetNormal1();
+			}
+			else
+			{
+				rf.i1 = 1;
+				rf.i2 = 0;
+				rf.v1 = edgeInfo.GetVertex2();
+				rf.v2 = edgeInfo.GetVertex1();
+				rf.normal = -edgeInfo.GetNormal1();
+			}
+			break;
 		}
-		else
+		case EPAxis::e_polygon:
 		{
-			rf.i1 = 1;
-			rf.i2 = 0;
-			rf.v1 = edgeInfo.GetVertex2();
-			rf.v2 = edgeInfo.GetVertex1();
-			rf.normal = -edgeInfo.GetNormal1();
-		}		
-	}
-	else
-	{
-		incidentEdge[0] = ClipVertex{edgeInfo.GetVertex1(), ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_face, primaryAxis.index}};
-		incidentEdge[1] = ClipVertex{edgeInfo.GetVertex2(), ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_face, primaryAxis.index}};
-		
-		rf.i1 = primaryAxis.index;
-		rf.i2 = static_cast<decltype(rf.i1)>((rf.i1 + 1) % localShapeB.GetVertexCount());
-		rf.v1 = localShapeB.GetVertex(rf.i1);
-		rf.v2 = localShapeB.GetVertex(rf.i2);
-		rf.normal = localShapeB.GetNormal(rf.i1);
+			incidentEdge.add(ClipVertex{
+				edgeInfo.GetVertex1(),
+				ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_face, primaryAxis.index}
+			});
+			incidentEdge.add(ClipVertex{
+				edgeInfo.GetVertex2(),
+				ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_face, primaryAxis.index}
+			});
+			
+			rf.i1 = primaryAxis.index;
+			rf.i2 = static_cast<decltype(rf.i1)>((rf.i1 + 1) % localShapeB.GetVertexCount());
+			rf.v1 = localShapeB.GetVertex(rf.i1);
+			rf.v2 = localShapeB.GetVertex(rf.i2);
+			rf.normal = localShapeB.GetNormal(rf.i1);
+			break;
+		}
+		default: // never reached
+			break;
 	}
 	
 	rf.sideNormal1 = GetFwdPerpendicular(rf.normal);
@@ -647,56 +677,47 @@ polygonAxis: edgeAxis;
 	rf.sideOffset2 = Dot(rf.sideNormal2, rf.v2);
 	
 	// Clip incident edge against extruded edge1 side edges.
-	
-	// Clip to box side 1
-	ClipArray clipPoints1;
-	if (ClipSegmentToLine(clipPoints1, incidentEdge, rf.sideNormal1, rf.sideOffset1, rf.i1) < clipPoints1.size())
-	{
-		return Manifold{};
-	}
-	
-	// Clip to negative box side 1
-	ClipArray clipPoints2;
-	if (ClipSegmentToLine(clipPoints2, clipPoints1, rf.sideNormal2, rf.sideOffset2, rf.i2) < clipPoints2.size())
+	const auto clipPoints = ClipSegmentToLine(ClipSegmentToLine(incidentEdge, rf.sideNormal1, rf.sideOffset1, rf.i1),
+											   rf.sideNormal2, rf.sideOffset2, rf.i2);
+	if (clipPoints.size() != 2)
 	{
 		return Manifold{};
 	}
 	
 	// Now clipPoints2 contains the clipped points.	
 	
-	if (primaryAxis.type == EPAxis::e_edgeA)
+	switch (primaryAxis.type)
 	{
-		auto manifold = Manifold::GetForFaceA(rf.normal, rf.v1);
-		for (auto i = decltype(clipPoints2.size()){0}; i < clipPoints2.size(); ++i)
+		case EPAxis::e_edge:
 		{
-			const auto separation = Dot(rf.normal, clipPoints2[i].v - rf.v1);
-			if (separation <= MaxEPSeparation)
+			auto manifold = Manifold::GetForFaceA(rf.normal, rf.v1);
+			for (auto i = decltype(clipPoints.size()){0}; i < clipPoints.size(); ++i)
 			{
-				manifold.AddPoint(Manifold::Point{InverseTransform(clipPoints2[i].v, xf), clipPoints2[i].cf});
+				const auto separation = Dot(rf.normal, clipPoints[i].v - rf.v1);
+				if (separation <= MaxEPSeparation)
+				{
+					manifold.AddPoint(Manifold::Point{InverseTransform(clipPoints[i].v, xf), clipPoints[i].cf});
+				}
 			}
+			return manifold;
 		}
-		return manifold;
-	}
-	else
-	{
-		auto manifold = Manifold::GetForFaceB(shapeB.GetNormal(rf.i1), shapeB.GetVertex(rf.i1));
-		for (auto i = decltype(clipPoints2.size()){0}; i < clipPoints2.size(); ++i)
+		case EPAxis::e_polygon:
 		{
-			const auto separation = Dot(rf.normal, clipPoints2[i].v - rf.v1);
-			if (separation <= MaxEPSeparation)
+			auto manifold = Manifold::GetForFaceB(shapeB.GetNormal(rf.i1), shapeB.GetVertex(rf.i1));
+			for (auto i = decltype(clipPoints.size()){0}; i < clipPoints.size(); ++i)
 			{
-				manifold.AddPoint(Manifold::Point{clipPoints2[i].v, Flip(clipPoints2[i].cf)});
+				const auto separation = Dot(rf.normal, clipPoints[i].v - rf.v1);
+				if (separation <= MaxEPSeparation)
+				{
+					manifold.AddPoint(Manifold::Point{clipPoints[i].v, Flip(clipPoints[i].cf)});
+				}
 			}
+			return manifold;
 		}
-		return manifold;
+		default: // never reached
+			break;
 	}
-}
-
-Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,
-							  const PolygonShape& shapeB, const Transformation& xfB)
-{
-	const auto xf = MulT(xfA, xfB);
-	return Collide(EdgeInfo{shapeA, Transform(shapeB.GetCentroid(), xf)}, shapeB, xf);
+	return Manifold{};
 }
 
 struct ShapeSeparation
@@ -742,41 +763,49 @@ static ShapeSeparation FindMaxSeparation(const PolygonShape& shape1, const Trans
 	return ShapeSeparation{index_of_max, maxSeparation};
 }
 
-static inline ClipArray FindIncidentEdge(PolygonShape::vertex_count_t index1,
-									  const PolygonShape& shape1, const Transformation& xf1,
-									  const PolygonShape& shape2, const Transformation& xf2)
+static inline ClipList FindIncidentEdge(PolygonShape::vertex_count_t index1,
+										const PolygonShape& shape1, const Transformation& xf1,
+										const PolygonShape& shape2, const Transformation& xf2)
 {
-	assert(index1 >= 0);
-	assert(index1 < shape1.GetVertexCount());
-	
+	ClipList list;
+
+	const auto count1 = shape1.GetVertexCount();
 	const auto count2 = shape2.GetVertexCount();
-	
-	// Find the incident edge on shape2.
-	auto index_of_min_dot = decltype(count2){0};
+	if ((index1 < count1) && (count2 > 1))
 	{
-		// Get the normal of the reference edge in shape2's frame.
-		const auto normal1 = InverseRotate(Rotate(shape1.GetNormal(index1), xf1.q), xf2.q);
-		
-		auto minDot = MaxFloat;
-		for (auto i = decltype(count2){0}; i < count2; ++i)
+		// Find the incident edge on shape2.
+		auto index_of_min_dot = PolygonShape::InvalidVertex;
 		{
-			const auto dot = Dot(normal1, shape2.GetNormal(i));
-			if (minDot > dot)
+			// Get the normal of the reference edge in shape2's frame.
+			const auto normal1 = InverseRotate(Rotate(shape1.GetNormal(index1), xf1.q), xf2.q);
+			
+			auto minDot = MaxFloat;
+			for (auto i = decltype(count2){0}; i < count2; ++i)
 			{
-				minDot = dot;
-				index_of_min_dot = i;
+				const auto dot = Dot(normal1, shape2.GetNormal(i));
+				if (minDot > dot)
+				{
+					minDot = dot;
+					index_of_min_dot = i;
+				}
 			}
 		}
+		
+		// Build the clip vertices for the incident edge.
+		const auto i1 = index_of_min_dot;
+		const auto i2 = static_cast<decltype(i1)>((i1 + 1) % count2);
+		
+		list.add(ClipVertex{
+			Transform(shape2.GetVertex(i1), xf2),
+			ContactFeature{ContactFeature::e_face, index1, ContactFeature::e_vertex, i1}
+		});
+		list.add(ClipVertex{
+			Transform(shape2.GetVertex(i2), xf2),
+			ContactFeature{ContactFeature::e_face, index1, ContactFeature::e_vertex, i2}
+		});
 	}
-	
-	// Build the clip vertices for the incident edge.
-	const auto i1 = index_of_min_dot;
-	const auto i2 = static_cast<decltype(i1)>((i1 + 1) % count2);
-	
-	return ClipArray{{
-		{Transform(shape2.GetVertex(i1), xf2), ContactFeature{ContactFeature::e_face, index1, ContactFeature::e_vertex, i1}},
-		{Transform(shape2.GetVertex(i2), xf2), ContactFeature{ContactFeature::e_face, index1, ContactFeature::e_vertex, i2}}
-	}};
+
+	return list;
 }
 
 // Find edge normal of max separation on A - return if separating axis is found
@@ -851,36 +880,22 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	v12 = Transform(v12, xf1);
 	
 	// Clip incident edge against extruded edge1 side edges.
-	
-	ClipArray clipPoints2;
+
+	// Side offsets, extended by polytope skin thickness.
+	const auto clipPoints = ClipSegmentToLine(ClipSegmentToLine(incidentEdge, -tangent, -Dot(tangent, v11) + totalRadius, iv1),
+											  tangent, Dot(tangent, v12) + totalRadius, iv2);
+	if (clipPoints.size() != 2)
 	{
-		// Side offsets, extended by polytope skin thickness.
-		const auto sideOffset1 = -Dot(tangent, v11) + totalRadius;
-		
-		// Clip to box side 1
-		ClipArray clipPoints1;
-		if (ClipSegmentToLine(clipPoints1, incidentEdge, -tangent, sideOffset1, iv1) < clipPoints1.size())
-		{
-			return Manifold{};
-		}
-		
-		const auto sideOffset2 = Dot(tangent, v12) + totalRadius;
-		
-		// Clip to negative box side 1
-		if (ClipSegmentToLine(clipPoints2, clipPoints1,  tangent, sideOffset2, iv2) < clipPoints2.size())
-		{
-			return Manifold{};
-		}
+		return Manifold{};
 	}
-	// Now clipPoints2 contains the clipped points.
-	
+
 	const auto frontOffset = Dot(normal, v11); ///< Face offset.
 	
 	auto manifold = (manifoldType == Manifold::e_faceA)?
 	Manifold::GetForFaceA(localNormal, planePoint): Manifold::GetForFaceB(localNormal, planePoint);
 	if (flip)
 	{
-		for (auto&& cp: clipPoints2)
+		for (auto&& cp: clipPoints)
 		{
 			if ((Dot(normal, cp.v) - frontOffset) <= totalRadius)
 			{
@@ -891,7 +906,7 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	}
 	else
 	{
-		for (auto&& cp: clipPoints2)
+		for (auto&& cp: clipPoints)
 		{
 			if ((Dot(normal, cp.v) - frontOffset) <= totalRadius)
 			{

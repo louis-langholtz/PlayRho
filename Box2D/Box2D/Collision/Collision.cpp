@@ -66,36 +66,43 @@ void GetPointStates(PointStateArray& state1, PointStateArray& state2,
 	}
 }
 
-ClipArray::size_type ClipSegmentToLine(ClipArray& vOut, const ClipArray& vIn,
-									   const Vec2& normal, float_t offset, ContactFeature::index_t indexA)
+ClipList ClipSegmentToLine(const ClipList& vIn, const Vec2& normal, float_t offset,
+						   ContactFeature::index_t indexA)
 {
-	// Use Sutherland-Hodgman clipping (https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm ).
-	
-	// Start with no output points
-	auto numOut = ClipArray::size_type{0};
+	ClipList vOut;
 
-	// Calculate the distance of end points to the line
-	const auto distance0 = Dot(normal, vIn[0].v) - offset; ///< Distance of point at vIn[0].v from line defined by normal and offset.
-	const auto distance1 = Dot(normal, vIn[1].v) - offset; ///< Distance of point at vIn[1].v from line defined by normal and offset.
-
-	// If the points are behind the plane
-	if (distance0 <= float_t{0}) vOut[numOut++] = vIn[0];
-	if (distance1 <= float_t{0}) vOut[numOut++] = vIn[1];
-
-	// If the points are on different sides of the plane
-	if ((distance0 * distance1) < float_t{0})
+	if (vIn.size() == 2) // must have two points (for a segment)
 	{
-		// Find intersection point of edge and plane
-		// Vertex A is hitting edge B.
-		const auto interp = distance0 / (distance0 - distance1);
-		vOut[numOut] = ClipVertex{
-			vIn[0].v + (vIn[1].v - vIn[0].v) * interp,
-			ContactFeature{ContactFeature::e_vertex, indexA, ContactFeature::e_face, vIn[0].cf.indexB}
-		};
-		++numOut;
+		// Use Sutherland-Hodgman clipping (https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm ).
+		
+		// Calculate the distance of end points to the line
+		const auto distance0 = Dot(normal, vIn[0].v) - offset; ///< Distance of point at vIn[0].v from line defined by normal and offset.
+		const auto distance1 = Dot(normal, vIn[1].v) - offset; ///< Distance of point at vIn[1].v from line defined by normal and offset.
+
+		// If the points are behind the plane
+		if (distance0 <= float_t{0})
+		{
+			vOut.add(vIn[0]);
+		}
+		if (distance1 <= float_t{0})
+		{
+			vOut.add(vIn[1]);
+		}
+
+		// If the points are on different sides of the plane
+		if ((distance0 * distance1) < float_t{0})
+		{
+			// Find intersection point of edge and plane
+			// Vertex A is hitting edge B.
+			const auto interp = distance0 / (distance0 - distance1);
+			vOut.add(ClipVertex{
+				vIn[0].v + (vIn[1].v - vIn[0].v) * interp,
+				ContactFeature{ContactFeature::e_vertex, indexA, ContactFeature::e_face, vIn[0].cf.indexB}
+			});
+		}
 	}
 
-	return numOut;
+	return vOut;
 }
 
 } // namespace box2d

@@ -61,17 +61,60 @@ struct ClipVertex
 /// @see ClipSegmentToLine.
 using ClipArray = std::array<ClipVertex, MaxManifoldPoints>;
 
+class ClipList
+{
+public:
+	using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
+	using data_type = ClipVertex;
+	using pointer = data_type*;
+	using const_pointer = const data_type*;
+
+	bool add(data_type value)
+	{
+		if (m_size < MaxManifoldPoints)
+		{
+			m_clips[m_size] = value;
+			++m_size;
+			return true;
+		}
+		return false;
+	}
+	
+	data_type& operator[](size_t index)
+	{
+		assert(index < MaxManifoldPoints);
+		return m_clips[index];
+	}
+
+	data_type operator[](size_t index) const
+	{
+		assert(index < MaxManifoldPoints);
+		return m_clips[index];
+	}
+
+	size_type size() const noexcept { return m_size; }
+	
+	pointer begin() noexcept { return &m_clips[0]; }
+	pointer end() noexcept { return &m_clips[0] + m_size; }
+
+	const_pointer begin() const noexcept { return &m_clips[0]; }
+	const_pointer end() const noexcept { return &m_clips[0] + m_size; }
+
+private:
+	ClipArray m_clips;
+	size_type m_size = size_type{0};
+};
+	
 /// Clipping for contact manifolds.
 /// @detail This returns an array of points from the given line that are inside of the plane as
 ///   defined by a given normal and offset.
-/// @param vOut Output clip array returning the positions and contact features of points within the plane.
-/// @param vIn Input clip array of points defining the line.
+/// @param vIn Clip list of two points defining the line.
 /// @param normal Normal of the plane with which to determine intersection.
 /// @param offset Offset of the plane with which to determine intersection.
 /// @param indexA Index of vertex A.
-/// @return Number of valid elements of the output array being returned (# of points of the line found within the plane).
-ClipArray::size_type ClipSegmentToLine(ClipArray& vOut, const ClipArray& vIn,
-										   const Vec2& normal, float_t offset, ContactFeature::index_t indexA);
+/// @return List of zero one or two clip points.
+ClipList ClipSegmentToLine(const ClipList& vIn, const Vec2& normal, float_t offset,
+						   ContactFeature::index_t indexA);
 
 // ---------------- Inline Functions ------------------------------------------
 
