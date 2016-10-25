@@ -271,7 +271,49 @@ static inline PolygonShape::vertex_count_t GetIndexOfMinimum(const PolygonShape&
 	return bestIndex;
 }
 
-static inline ShapeSeparation ComputeEdgeSeparation(const PolygonShape& polygon, const EdgeInfo& edge)
+static inline ReferenceFace GetReferenceFace(const EdgeInfo& edgeInfo)
+{
+	ReferenceFace rf;
+	if (edgeInfo.IsFront())
+	{
+		rf.i1 = 0;
+		rf.i2 = 1;
+		rf.v1 = edgeInfo.GetVertex1();
+		rf.v2 = edgeInfo.GetVertex2();
+		rf.normal = edgeInfo.GetNormal1();
+	}
+	else
+	{
+		rf.i1 = 1;
+		rf.i2 = 0;
+		rf.v1 = edgeInfo.GetVertex2();
+		rf.v2 = edgeInfo.GetVertex1();
+		rf.normal = -edgeInfo.GetNormal1();
+	}
+	rf.sideNormal1 = GetFwdPerpendicular(rf.normal);
+	rf.sideNormal2 = -rf.sideNormal1;
+	rf.sideOffset1 = Dot(rf.sideNormal1, rf.v1);
+	rf.sideOffset2 = Dot(rf.sideNormal2, rf.v2);
+	return rf;
+}
+
+static inline ReferenceFace GetReferenceFace(const PolygonShape& localShapeB,
+											 const PolygonShape::vertex_count_t index)
+{
+	ReferenceFace rf;
+	rf.i1 = index;
+	rf.i2 = static_cast<decltype(rf.i1)>((rf.i1 + 1) % localShapeB.GetVertexCount());
+	rf.v1 = localShapeB.GetVertex(rf.i1);
+	rf.v2 = localShapeB.GetVertex(rf.i2);
+	rf.normal = localShapeB.GetNormal(rf.i1);
+	rf.sideNormal1 = GetFwdPerpendicular(rf.normal);
+	rf.sideNormal2 = -rf.sideNormal1;
+	rf.sideOffset1 = Dot(rf.sideNormal1, rf.v1);
+	rf.sideOffset2 = Dot(rf.sideNormal2, rf.v2);
+	return rf;
+}
+
+static inline ShapeSeparation FindEdgeSeparation(const PolygonShape& polygon, const EdgeInfo& edge)
 {
 	auto minValue = MaxFloat;
 	{
@@ -285,7 +327,7 @@ static inline ShapeSeparation ComputeEdgeSeparation(const PolygonShape& polygon,
 	return ShapeSeparation{static_cast<ShapeSeparation::index_type>(edge.IsFront()? 0: 1), minValue};
 }
 
-static inline ShapeSeparation ComputePolygonSeparation(const PolygonShape& polygon, const EdgeInfo& edge)
+static inline ShapeSeparation FindPolygonSeparation(const PolygonShape& polygon, const EdgeInfo& edge)
 {
 	auto max_s = -MaxFloat;
 	auto index = ShapeSeparation::InvalidIndex;
@@ -329,140 +371,6 @@ static inline ShapeSeparation ComputePolygonSeparation(const PolygonShape& polyg
 		}
 	}
 	return ShapeSeparation{index, max_s};
-}
-
-static inline ReferenceFace GetReferenceFace(const EdgeInfo& edgeInfo)
-{
-	ReferenceFace rf;
-	if (edgeInfo.IsFront())
-	{
-		rf.i1 = 0;
-		rf.i2 = 1;
-		rf.v1 = edgeInfo.GetVertex1();
-		rf.v2 = edgeInfo.GetVertex2();
-		rf.normal = edgeInfo.GetNormal1();
-	}
-	else
-	{
-		rf.i1 = 1;
-		rf.i2 = 0;
-		rf.v1 = edgeInfo.GetVertex2();
-		rf.v2 = edgeInfo.GetVertex1();
-		rf.normal = -edgeInfo.GetNormal1();
-	}
-	rf.sideNormal1 = GetFwdPerpendicular(rf.normal);
-	rf.sideNormal2 = -rf.sideNormal1;
-	rf.sideOffset1 = Dot(rf.sideNormal1, rf.v1);
-	rf.sideOffset2 = Dot(rf.sideNormal2, rf.v2);
-	return rf;
-}
-
-static inline ReferenceFace GetReferenceFace(const PolygonShape& localShapeB,
-											 const PolygonShape::vertex_count_t index)
-{
-	ReferenceFace rf;
-	rf.i1 = index;
-	rf.i2 = static_cast<decltype(rf.i1)>((rf.i1 + 1) % localShapeB.GetVertexCount());
-	rf.v1 = localShapeB.GetVertex(rf.i1);
-	rf.v2 = localShapeB.GetVertex(rf.i2);
-	rf.normal = localShapeB.GetNormal(rf.i1);
-	rf.sideNormal1 = GetFwdPerpendicular(rf.normal);
-	rf.sideNormal2 = -rf.sideNormal1;
-	rf.sideOffset1 = Dot(rf.sideNormal1, rf.v1);
-	rf.sideOffset2 = Dot(rf.sideNormal2, rf.v2);
-	return rf;
-}
-
-static Manifold GetManifoldFaceA(const EdgeInfo& edgeInfo,
-								 const PolygonShape& localShapeB,
-								 const Transformation& xf)
-{
-	const auto incidentEdge = [&]()
-	{
-		ClipList list;
-
-		// Search for the polygon normal that is most anti-parallel to the edge normal.
-		const auto i1 = GetIndexOfMinimum(localShapeB, edgeInfo);
-		const auto i2 = static_cast<decltype(i1)>((i1 + 1) % localShapeB.GetVertexCount());
-		
-		list.add(ClipVertex{
-			localShapeB.GetVertex(i1),
-			ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_vertex, i1}
-		});
-		list.add(ClipVertex{
-			localShapeB.GetVertex(i2),
-			ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_vertex, i2}
-		});
-		return list;
-	}();
-	
-	const auto ref_face = GetReferenceFace(edgeInfo);
-
-	// Clip incident edge against extruded edge1 side edges.
-	const auto clipPoints = [&]() {
-		const auto points = ClipSegmentToLine(incidentEdge, ref_face.sideNormal1, ref_face.sideOffset1, ref_face.i1);
-		return ClipSegmentToLine(points, ref_face.sideNormal2, ref_face.sideOffset2, ref_face.i2);
-	}();
-	if (clipPoints.size() != 2)
-	{
-		return Manifold{};
-	}
-
-	auto manifold = Manifold::GetForFaceA(ref_face.normal, ref_face.v1);
-	const auto totalRadius = edgeInfo.GetRadius() + GetRadius(localShapeB);
-	for (auto i = decltype(clipPoints.size()){0}; i < clipPoints.size(); ++i)
-	{
-		const auto separation = Dot(ref_face.normal, clipPoints[i].v - ref_face.v1);
-		if (separation <= totalRadius)
-		{
-			manifold.AddPoint(Manifold::Point{InverseTransform(clipPoints[i].v, xf), clipPoints[i].cf});
-		}
-	}
-	return manifold;
-}
-
-static Manifold GetManifoldFaceB(const EdgeInfo& edgeInfo,
-								 const PolygonShape& shapeB,
-								 const PolygonShape& localShapeB,
-								 PolygonShape::vertex_count_t index)
-{
-	const auto incidentEdge = [&]()
-	{
-		ClipList list;
-		list.add(ClipVertex{
-			edgeInfo.GetVertex1(),
-			ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_face, index}
-		});
-		list.add(ClipVertex{
-			edgeInfo.GetVertex2(),
-			ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_face, index}
-		});
-		return list;
-	}();
-	
-	const auto ref_face = GetReferenceFace(localShapeB, index);
-
-	// Clip incident edge against extruded edge1 side edges.
-	const auto clipPoints = [&]() {
-		const auto points = ClipSegmentToLine(incidentEdge, ref_face.sideNormal1, ref_face.sideOffset1, ref_face.i1);
-		return ClipSegmentToLine(points, ref_face.sideNormal2, ref_face.sideOffset2, ref_face.i2);
-	}();
-	if (clipPoints.size() != 2)
-	{
-		return Manifold{};
-	}
-	
-	auto manifold = Manifold::GetForFaceB(shapeB.GetNormal(ref_face.i1), shapeB.GetVertex(ref_face.i1));
-	const auto totalRadius = edgeInfo.GetRadius() + GetRadius(shapeB);
-	for (auto i = decltype(clipPoints.size()){0}; i < clipPoints.size(); ++i)
-	{
-		const auto separation = Dot(ref_face.normal, clipPoints[i].v - ref_face.v1);
-		if (separation <= totalRadius)
-		{
-			manifold.AddPoint(Manifold::Point{clipPoints[i].v, Flip(clipPoints[i].cf)});
-		}
-	}
-	return manifold;
 }
 
 // Find the max separation between shape1 and shape2 using edge normals from shape1.
@@ -545,14 +453,107 @@ static ClipList FindIncidentEdge(const PolygonShape::vertex_count_t index1,
 	return list;
 }
 
+static Manifold GetManifoldFaceA(const EdgeInfo& edgeInfo,
+								 const PolygonShape& localShapeB,
+								 const Transformation& xf)
+{
+	const auto incidentEdge = [&]()
+	{
+		ClipList list;
+
+		// Search for the polygon normal that is most anti-parallel to the edge normal.
+		const auto i1 = GetIndexOfMinimum(localShapeB, edgeInfo);
+		const auto i2 = static_cast<decltype(i1)>((i1 + 1) % localShapeB.GetVertexCount());
+		
+		list.add(ClipVertex{
+			localShapeB.GetVertex(i1),
+			ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_vertex, i1}
+		});
+		list.add(ClipVertex{
+			localShapeB.GetVertex(i2),
+			ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_vertex, i2}
+		});
+		return list;
+	}();
+	
+	const auto ref_face = GetReferenceFace(edgeInfo);
+
+	// Clip incident edge against extruded edge1 side edges.
+	const auto clipPoints = [&]()
+	{
+		const auto points = ClipSegmentToLine(incidentEdge, ref_face.sideNormal1, ref_face.sideOffset1, ref_face.i1);
+		return ClipSegmentToLine(points, ref_face.sideNormal2, ref_face.sideOffset2, ref_face.i2);
+	}();
+	if (clipPoints.size() != 2)
+	{
+		return Manifold{};
+	}
+
+	auto manifold = Manifold::GetForFaceA(ref_face.normal, ref_face.v1);
+	const auto totalRadius = edgeInfo.GetRadius() + GetRadius(localShapeB);
+	for (auto i = decltype(clipPoints.size()){0}; i < clipPoints.size(); ++i)
+	{
+		const auto separation = Dot(ref_face.normal, clipPoints[i].v - ref_face.v1);
+		if (separation <= totalRadius)
+		{
+			manifold.AddPoint(Manifold::Point{InverseTransform(clipPoints[i].v, xf), clipPoints[i].cf});
+		}
+	}
+	return manifold;
+}
+
+static Manifold GetManifoldFaceB(const EdgeInfo& edgeInfo,
+								 const PolygonShape& shapeB,
+								 const PolygonShape& localShapeB,
+								 PolygonShape::vertex_count_t index)
+{
+	const auto incidentEdge = [&]()
+	{
+		ClipList list;
+		list.add(ClipVertex{
+			edgeInfo.GetVertex1(),
+			ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_face, index}
+		});
+		list.add(ClipVertex{
+			edgeInfo.GetVertex2(),
+			ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_face, index}
+		});
+		return list;
+	}();
+	
+	const auto ref_face = GetReferenceFace(localShapeB, index);
+
+	// Clip incident edge against extruded edge1 side edges.
+	const auto clipPoints = [&]()
+	{
+		const auto points = ClipSegmentToLine(incidentEdge, ref_face.sideNormal1, ref_face.sideOffset1, ref_face.i1);
+		return ClipSegmentToLine(points, ref_face.sideNormal2, ref_face.sideOffset2, ref_face.i2);
+	}();
+	if (clipPoints.size() != 2)
+	{
+		return Manifold{};
+	}
+	
+	auto manifold = Manifold::GetForFaceB(shapeB.GetNormal(ref_face.i1), shapeB.GetVertex(ref_face.i1));
+	const auto totalRadius = edgeInfo.GetRadius() + GetRadius(shapeB);
+	for (auto i = decltype(clipPoints.size()){0}; i < clipPoints.size(); ++i)
+	{
+		const auto separation = Dot(ref_face.normal, clipPoints[i].v - ref_face.v1);
+		if (separation <= totalRadius)
+		{
+			manifold.AddPoint(Manifold::Point{clipPoints[i].v, Flip(clipPoints[i].cf)});
+		}
+	}
+	return manifold;
+}
+
 static inline Manifold GetManifoldFaceA(const PolygonShape& shape1, const Transformation& xf1,
 										const PolygonShape& shape2, const Transformation& xf2,
-										const PolygonShape::vertex_count_t edgeIndex)
+										const PolygonShape::vertex_count_t iv1)
 {
 	const auto totalRadius = GetRadius(shape1) + GetRadius(shape2);
 	
-	const auto iv1 = edgeIndex;
-	const auto iv2 = static_cast<decltype(iv1)>((edgeIndex + 1) % (shape1.GetVertexCount()));
+	const auto iv2 = static_cast<decltype(iv1)>((iv1 + 1) % (shape1.GetVertexCount()));
 	
 	const auto shape1_rel_vertex_iv1 = shape1.GetVertex(iv1);
 	const auto shape1_rel_vertex_iv2 = shape1.GetVertex(iv2);
@@ -564,10 +565,13 @@ static inline Manifold GetManifoldFaceA(const PolygonShape& shape1, const Transf
 	
 	// Clip incident edge against extruded edge1 side edges.
 	// Side offsets, extended by polytope skin thickness.
-	const auto clipPoints = [&]() {
-		const auto incidentEdge = FindIncidentEdge(edgeIndex, shape1, xf1, shape2, xf2);
-		const auto points = ClipSegmentToLine(incidentEdge, -tangent, -Dot(tangent, shape1_abs_vertex_iv1) + totalRadius, iv1);
-		return ClipSegmentToLine(points, tangent, Dot(tangent, shape1_abs_vertex_iv2) + totalRadius, iv2);
+	const auto clipPoints = [&]()
+	{
+		const auto incidentEdge = FindIncidentEdge(iv1, shape1, xf1, shape2, xf2);
+		const auto sideOffset1 = -Dot(tangent, shape1_abs_vertex_iv1) + totalRadius;
+		const auto sideOffset2 = Dot(tangent, shape1_abs_vertex_iv2) + totalRadius;
+		const auto points = ClipSegmentToLine(incidentEdge, -tangent, sideOffset1, iv1);
+		return ClipSegmentToLine(points, tangent, sideOffset2, iv2);
 	}();
 	if (clipPoints.size() == 2)
 	{
@@ -592,12 +596,11 @@ static inline Manifold GetManifoldFaceA(const PolygonShape& shape1, const Transf
 
 static inline Manifold GetManifoldFaceB(const PolygonShape& shape1, const Transformation& xf1,
 										const PolygonShape& shape2, const Transformation& xf2,
-										const PolygonShape::vertex_count_t edgeIndex)
+										const PolygonShape::vertex_count_t iv1)
 {
 	const auto totalRadius = GetRadius(shape1) + GetRadius(shape2);
 	
-	const auto iv1 = edgeIndex;
-	const auto iv2 = static_cast<decltype(iv1)>((edgeIndex + 1) % (shape1.GetVertexCount()));
+	const auto iv2 = static_cast<decltype(iv1)>((iv1 + 1) % (shape1.GetVertexCount()));
 	
 	const auto shape1_rel_vertex_iv1 = shape1.GetVertex(iv1);
 	const auto shape1_rel_vertex_iv2 = shape1.GetVertex(iv2);
@@ -609,10 +612,13 @@ static inline Manifold GetManifoldFaceB(const PolygonShape& shape1, const Transf
 	
 	// Clip incident edge against extruded edge1 side edges.
 	// Side offsets, extended by polytope skin thickness.
-	const auto clipPoints = [&]() {
-		const auto incidentEdge = FindIncidentEdge(edgeIndex, shape1, xf1, shape2, xf2);
-		const auto points = ClipSegmentToLine(incidentEdge, -tangent, -Dot(tangent, shape1_abs_vertex_iv1) + totalRadius, iv1);
-		return ClipSegmentToLine(points, tangent, Dot(tangent, shape1_abs_vertex_iv2) + totalRadius, iv2);
+	const auto clipPoints = [&]()
+	{
+		const auto incidentEdge = FindIncidentEdge(iv1, shape1, xf1, shape2, xf2);
+		const auto sideOffset1 = -Dot(tangent, shape1_abs_vertex_iv1) + totalRadius;
+		const auto sideOffset2 = Dot(tangent, shape1_abs_vertex_iv2) + totalRadius;
+		const auto points = ClipSegmentToLine(incidentEdge, -tangent, sideOffset1, iv1);
+		return ClipSegmentToLine(points, tangent, sideOffset2, iv2);
 	}();
 	if (clipPoints.size() == 2)
 	{
@@ -634,6 +640,11 @@ static inline Manifold GetManifoldFaceB(const PolygonShape& shape1, const Transf
 	}
 	return Manifold{};
 }
+
+/*
+ * Definition of CollideShapes functions.
+ * All CollideShapes functions return a Manifold object.
+ */
 
 Manifold box2d::CollideShapes(const CircleShape& shapeA, const Transformation& xfA,
 							  const CircleShape& shapeB, const Transformation& xfB)
@@ -842,13 +853,13 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	const auto totalRadius = GetRadius(shapeA) + GetRadius(shapeB);
 
 	// If no valid normal can be found then this edge should not collide.
-	const auto edgeAxis = ComputeEdgeSeparation(localShapeB, edgeInfo);
+	const auto edgeAxis = FindEdgeSeparation(localShapeB, edgeInfo);
 	if (edgeAxis.separation > totalRadius)
 	{
 		return Manifold{};
 	}
 	
-	const auto polygonAxis = ComputePolygonSeparation(localShapeB, edgeInfo);
+	const auto polygonAxis = FindPolygonSeparation(localShapeB, edgeInfo);
 	if (polygonAxis.separation > totalRadius)
 	{
 		return Manifold{};
@@ -894,9 +905,7 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	}
 	
 	constexpr auto k_tol = BOX2D_MAGIC(LinearSlop / 10);
-	if (edgeSepB.separation > (edgeSepA.separation + k_tol))
-	{
-		return GetManifoldFaceB(shapeB, xfB, shapeA, xfA, static_cast<PolygonShape::vertex_count_t>(edgeSepB.index));
-	}
-	return GetManifoldFaceA(shapeA, xfA, shapeB, xfB, static_cast<PolygonShape::vertex_count_t>(edgeSepA.index));
+	return (edgeSepB.separation > (edgeSepA.separation + k_tol))?
+		GetManifoldFaceB(shapeB, xfB, shapeA, xfA, static_cast<PolygonShape::vertex_count_t>(edgeSepB.index)):
+		GetManifoldFaceA(shapeA, xfA, shapeB, xfB, static_cast<PolygonShape::vertex_count_t>(edgeSepA.index));
 }
