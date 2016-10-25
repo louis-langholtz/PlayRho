@@ -26,6 +26,7 @@
 #include <cmath>
 #include <limits>
 #include <cstdint>
+#include <algorithm>
 
 #define BOX2D_NOT_USED(x) ((void)(x))
 #define BOX2D_MAGIC(x) (x)
@@ -84,7 +85,7 @@ constexpr auto MaxManifoldPoints = uint8{2};
 constexpr auto MaxPolygonVertices = uint8{16}; // 8
 
 /// Maximum number of vertices for any shape type.
-constexpr auto MaxShapeVertices = MaxPolygonVertices;
+constexpr auto MaxShapeVertices = std::max(uint8{2} /* edge vertices */, MaxPolygonVertices);
 
 /// This is used to fatten AABBs in the dynamic tree. This is used to predict
 /// the future position based on the current displacement.
