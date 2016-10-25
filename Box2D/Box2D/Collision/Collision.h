@@ -59,12 +59,12 @@ struct ClipVertex
 
 /// Clip array for ClipSegmentToLine.
 /// @see ClipSegmentToLine.
-using ClipArray = std::array<ClipVertex, MaxManifoldPoints>;
-
 class ClipList
 {
 public:
-	using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
+	static constexpr auto MaxElements = MaxManifoldPoints;
+
+	using size_type = std::remove_const<decltype(MaxElements)>::type;
 	using data_type = ClipVertex;
 	using pointer = data_type*;
 	using const_pointer = const data_type*;
@@ -73,7 +73,7 @@ public:
 	{
 		if (m_size < MaxManifoldPoints)
 		{
-			m_clips[m_size] = value;
+			m_elements[m_size] = value;
 			++m_size;
 			return true;
 		}
@@ -82,26 +82,26 @@ public:
 	
 	data_type& operator[](size_t index)
 	{
-		assert(index < MaxManifoldPoints);
-		return m_clips[index];
+		assert(index < MaxElements);
+		return m_elements[index];
 	}
 
 	data_type operator[](size_t index) const
 	{
-		assert(index < MaxManifoldPoints);
-		return m_clips[index];
+		assert(index < MaxElements);
+		return m_elements[index];
 	}
 
 	size_type size() const noexcept { return m_size; }
 	
-	pointer begin() noexcept { return &m_clips[0]; }
-	pointer end() noexcept { return &m_clips[0] + m_size; }
+	pointer begin() noexcept { return &m_elements[0]; }
+	pointer end() noexcept { return &m_elements[0] + m_size; }
 
-	const_pointer begin() const noexcept { return &m_clips[0]; }
-	const_pointer end() const noexcept { return &m_clips[0] + m_size; }
+	const_pointer begin() const noexcept { return &m_elements[0]; }
+	const_pointer end() const noexcept { return &m_elements[0] + m_size; }
 
 private:
-	ClipArray m_clips;
+	data_type m_elements[MaxElements];
 	size_type m_size = size_type{0};
 };
 	
