@@ -99,7 +99,7 @@ constexpr inline bool almost_equal(float_t x, float_t y, int ulp = 2)
 	// and multiplied by the desired precision in ULPs (units in the last place)
 	// unless the result is subnormal".
 	//
-	// Where "subnormal" means: almost zero.
+	// Where "subnormal" means almost zero.
 	//
 	return (Abs(x - y) < (std::numeric_limits<float_t>::epsilon() * Abs(x + y) * ulp)) || almost_zero(x - y);
 }
