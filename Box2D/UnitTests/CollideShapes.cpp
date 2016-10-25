@@ -86,6 +86,59 @@ TEST(CollideShapes, CircleCircleOrientedVertically)
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 0);
 }
 
+TEST(CollideShapes, CircleOverTriangle)
+{
+	const auto circleRadius = float_t(1);
+	const auto circle = CircleShape(circleRadius);
+	const auto triangle = PolygonShape({Vec2{-1, -1}, Vec2{+1, -1}, Vec2{0, +1}});
+	const auto circleXfm = Transformation{Vec2{0, 2}, Rot{0}};
+	const auto triangleXfm = Transformation{Vec2{0, 0}, Rot{0}};
+	
+	const auto manifold = CollideShapes(triangle, triangleXfm, circle, circleXfm);
+	
+	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
+	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(0, 1));
+	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(0, 1));
+
+	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
+	
+	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
+	EXPECT_EQ(manifold.GetPoint(0).localPoint, Vec2(0, 0));
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_vertex);
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexA, 0);
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 0);
+	
+	EXPECT_EQ(triangle.GetVertex(0), Vec2(+1, -1));
+}
+
+TEST(CollideShapes, CircleOverRightOfTriangle)
+{
+	const auto circleRadius = float_t(1);
+	const auto circle = CircleShape(circleRadius);
+	const auto triangle = PolygonShape({Vec2{-1, -1}, Vec2{+1, -1}, Vec2{0, +1}});
+	const auto circleXfm = Transformation{Vec2{1, 1}, Rot{0}};
+	const auto triangleXfm = Transformation{Vec2{0, 0}, Rot{0}};
+	
+	const auto manifold = CollideShapes(triangle, triangleXfm, circle, circleXfm);
+	
+	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
+	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(0.5, 0));
+	EXPECT_FLOAT_EQ(manifold.GetLocalNormal().x, float_t(0.894427));
+	EXPECT_FLOAT_EQ(manifold.GetLocalNormal().y, float_t(0.44721359));
+	
+	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
+	
+	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
+	EXPECT_EQ(manifold.GetPoint(0).localPoint, Vec2(0, 0));
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_vertex);
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexA, 0);
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 0);
+	
+	EXPECT_EQ(triangle.GetVertex(0), Vec2(+1, -1));
+}
+
 TEST(CollideShapes, TallRectangleLeftCircleRight)
 {
 	const auto r2 = float_t(1);

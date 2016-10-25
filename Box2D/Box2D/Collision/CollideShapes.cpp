@@ -713,7 +713,7 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	
 	// Compute barycentric coordinates
 	
-	if (Dot(cLocal - v1, v2 - v1) <= float_t{0})
+	if (Dot(cLocal - v1, v2 - v1) <= 0)
 	{
 		if (LengthSquared(cLocal - v1) > Square(totalRadius))
 		{
@@ -722,7 +722,7 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 		return Manifold::GetForFaceA(GetUnitVector(cLocal - v1), v1, Manifold::Point{shapeB.GetPosition()});
 	}
 	
-	if (Dot(cLocal - v2, v1 - v2) <= float_t{0})
+	if (Dot(cLocal - v2, v1 - v2) <= 0)
 	{
 		if (LengthSquared(cLocal - v2) > Square(totalRadius))
 		{

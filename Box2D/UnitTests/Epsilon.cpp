@@ -72,6 +72,21 @@ TEST(Epsilon, AlmostEqual)
 		EXPECT_TRUE(almost_equal(float(1) + Epsilon, float_t(1), 1));
 		EXPECT_TRUE(almost_equal(float(1) + Epsilon, float_t(1), 2));
 		EXPECT_TRUE(almost_equal(float(1) + Epsilon, float_t(1), 3));
+		const auto a = std::numeric_limits<float>::min() * std::numeric_limits<float>::epsilon();
+		EXPECT_LT(a, std::numeric_limits<float>::min());
+		EXPECT_LT(a, std::numeric_limits<float>::epsilon());
+		EXPECT_TRUE(almost_zero(a));
+		EXPECT_TRUE(almost_equal(std::numeric_limits<float>::min() * std::numeric_limits<float>::epsilon() * 2, 0));
+		EXPECT_TRUE(almost_zero(std::numeric_limits<float>::min() * std::numeric_limits<float>::epsilon() * 2));
+		EXPECT_FALSE(almost_zero(std::numeric_limits<float>::min()));
+
+		EXPECT_FALSE(almost_equal(std::numeric_limits<float>::min() * 2, std::numeric_limits<float>::min()));
+		EXPECT_FALSE(almost_equal(std::numeric_limits<float>::min(), 0));
+		EXPECT_FALSE(almost_equal(std::numeric_limits<float>::min() * float(1.001), 0));
+		EXPECT_TRUE(almost_equal(std::numeric_limits<float>::min() * 0.5, std::numeric_limits<float>::min()));
+		EXPECT_TRUE(almost_equal(std::numeric_limits<float>::min() * 0.5, 0));
+		EXPECT_TRUE(almost_zero(std::numeric_limits<float>::min() * 0.5));
+		// (Abs(x - y) < (std::numeric_limits<float_t>::epsilon() * Abs(x + y) * ulp))
 	}
 }
 
