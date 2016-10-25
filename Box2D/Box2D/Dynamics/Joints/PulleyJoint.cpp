@@ -40,6 +40,8 @@ void PulleyJointDef::Initialize(Body* bA, Body* bB,
 				const Vec2& anchorA, const Vec2& anchorB,
 				float_t r)
 {
+	assert((r > 0) && !almost_zero(r));
+	
 	bodyA = bA;
 	bodyB = bB;
 	groundAnchorA = groundA;
@@ -49,25 +51,21 @@ void PulleyJointDef::Initialize(Body* bA, Body* bB,
 	lengthA = Length(anchorA - groundA);
 	lengthB = Length(anchorB - groundB);
 	ratio = r;
-	assert((ratio > 0) && !almost_equal(ratio, 0));
 }
 
 PulleyJoint::PulleyJoint(const PulleyJointDef& def)
 : Joint(def)
 {
+	assert(!almost_zero(def.ratio));
+
 	m_groundAnchorA = def.groundAnchorA;
 	m_groundAnchorB = def.groundAnchorB;
 	m_localAnchorA = def.localAnchorA;
 	m_localAnchorB = def.localAnchorB;
-
 	m_lengthA = def.lengthA;
 	m_lengthB = def.lengthB;
-
-	assert(def.ratio != float_t{0});
 	m_ratio = def.ratio;
-
 	m_constant = def.lengthA + m_ratio * def.lengthB;
-
 	m_impulse = float_t{0};
 }
 

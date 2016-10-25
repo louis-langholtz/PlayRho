@@ -158,7 +158,7 @@ public:
 			Vec2 position = body->GetPosition();
 
 			Vec2 d = center - position;
-			if (LengthSquared(d) < Square(FLT_EPSILON))
+			if (almost_zero(LengthSquared(d)))
 			{
 				continue;
 			}

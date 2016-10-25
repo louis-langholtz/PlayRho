@@ -64,7 +64,7 @@ public:
 		const auto rB = proxyB.GetRadius();
 		const auto totalRadius = rA + rB;
 		
-		if ((distance > totalRadius) && !almost_equal(distance, 0))
+		if ((distance > totalRadius) && !almost_zero(distance))
 		{
 			// Shapes are still not overlapped.
 			// Move the witness points to the outer surface.

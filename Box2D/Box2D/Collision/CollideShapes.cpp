@@ -706,7 +706,7 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	const auto v2 = shapeA.GetVertex(vertIndex2);
 	
 	// If the center is inside the polygon ...
-	if ((maxSeparation < 0) || almost_equal(maxSeparation, 0))
+	if ((maxSeparation < 0) || almost_zero(maxSeparation))
 	{
 		return Manifold::GetForFaceA(shapeA.GetNormal(normalIndex), (v1 + v2) / 2, Manifold::Point{shapeB.GetPosition()});
 	}
@@ -778,8 +778,7 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	const auto v = Dot(e, Q - A);
 	if (v <= 0)
 	{
-		const auto P = A; ///< Point of relavance (is A).
-		if (LengthSquared(Q - P) > Square(totalRadius))
+		if (LengthSquared(Q - A) > Square(totalRadius))
 		{
 			return Manifold{};
 		}
@@ -787,28 +786,23 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 		// Is there an edge connected to A?
 		if (shapeA.HasVertex0())
 		{
-			const auto A1 = shapeA.GetVertex0();
-			const auto B1 = A;
-			const auto e1 = B1 - A1;
-			const auto u1 = Dot(e1, B1 - Q);
-			
 			// Is the circle in Region AB of the previous edge?
-			if (u1 > 0)
+			if (Dot(A - shapeA.GetVertex0(), A - Q) > 0)
 			{
 				return Manifold{};
 			}
 		}
-		
-		const auto cf = ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 0};
-		return Manifold::GetForCircles(P, Manifold::Point{shapeB.GetPosition(), cf});
+		return Manifold::GetForCircles(A, Manifold::Point{
+			shapeB.GetPosition(),
+			ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 0}
+		});
 	}
 	
 	// Check if circle's center is relatively right of second vertex of edge - this is "Region B"
 	const auto u = Dot(e, B - Q);
 	if (u <= 0)
 	{
-		const auto P = B; ///< Point of relavance (is B).
-		if (LengthSquared(Q - P) > Square(totalRadius))
+		if (LengthSquared(Q - B) > Square(totalRadius))
 		{
 			return Manifold{};
 		}
@@ -816,29 +810,23 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 		// Is there an edge connected to B?
 		if (shapeA.HasVertex3())
 		{
-			const auto B2 = shapeA.GetVertex3();
-			const auto A2 = B;
-			const auto e2 = B2 - A2;
-			const auto v2 = Dot(e2, Q - A2);
-			
 			// Is the circle in Region AB of the next edge?
-			if (v2 > 0)
+			if (Dot(shapeA.GetVertex3() - B, Q - B) > 0)
 			{
 				return Manifold{};
 			}
 		}
-		
-		const auto cf = ContactFeature{ContactFeature::e_vertex, 1, ContactFeature::e_vertex, 0};
-		return Manifold::GetForCircles(P, Manifold::Point{shapeB.GetPosition(), cf});
+		return Manifold::GetForCircles(B, Manifold::Point{
+			shapeB.GetPosition(),
+			ContactFeature{ContactFeature::e_vertex, 1, ContactFeature::e_vertex, 0}
+		});
 	}
 	
 	// Region AB
 	const auto eLenSquared = LengthSquared(e);
 	assert(eLenSquared > 0);
-	const auto P = (u * A + v * B) * (float_t{1} / eLenSquared);
-	const auto d = Q - P;
 	
-	if (LengthSquared(d) > Square(totalRadius))
+	if (LengthSquared(Q - (u * A + v * B) * (float_t{1} / eLenSquared)) > Square(totalRadius))
 	{
 		return Manifold{};
 	}
@@ -848,8 +836,10 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 		return (Dot(e_perp, Q - A) < 0)? -e_perp: e_perp;
 	}());
 	
-	const auto cf = ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_vertex, 0};
-	return Manifold::GetForFaceA(ln, A, Manifold::Point{shapeB.GetPosition(), cf});
+	return Manifold::GetForFaceA(ln, A, Manifold::Point{
+		shapeB.GetPosition(),
+		ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_vertex, 0}
+	});
 }
 
 Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,

@@ -306,10 +306,6 @@ RayCastOutput box2d::RayCast(const PolygonShape& shape, const RayCastInput& inpu
 			}
 		}
 
-		// The use of epsilon here causes the assert on lower to trip
-		// in some cases. Apparently the use of epsilon was to make edge
-		// shapes work, but now those are handled separately.
-		//if (upper < lower - Epsilon)
 		if (upper < lower)
 		{
 			return RayCastOutput{};
@@ -413,7 +409,7 @@ MassData box2d::ComputeMass(const PolygonShape& shape, float_t density)
 	const auto mass = density * area;
 
 	// Center of mass
-	assert((area > 0) && !almost_equal(area, 0));
+	assert((area > 0) && !almost_zero(area));
 	center *= float_t{1} / area;
 	const auto massDataCenter = center + s;
 

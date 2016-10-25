@@ -50,7 +50,7 @@ Vec2 box2d::ComputeCentroid(const Span<const Vec2>& vertices)
 	}
 	
 	// Centroid
-	assert((area > 0) && !almost_equal(area, 0));
+	assert((area > 0) && !almost_zero(area));
 	return c / area;
 }
 

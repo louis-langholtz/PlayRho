@@ -88,7 +88,7 @@ void MouseJoint::InitVelocityConstraints(const SolverData& data)
 	const auto h = data.step.get_dt();
 	const auto tmp = d + h * k;
 	assert(IsValid(tmp));
-	assert((tmp > 0) && !almost_equal(tmp, 0));
+	assert((tmp > 0) && !almost_zero(tmp));
 	m_gamma = h * tmp;
 	assert(IsValid(m_gamma));
 	if (m_gamma != float_t{0})

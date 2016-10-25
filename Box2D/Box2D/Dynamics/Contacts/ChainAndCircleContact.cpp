@@ -30,8 +30,8 @@
 using namespace box2d;
 
 Contact* ChainAndCircleContact::Create(Fixture* fixtureA, child_count_t indexA,
-										   Fixture* fixtureB, child_count_t indexB,
-										   BlockAllocator* allocator)
+									   Fixture* fixtureB, child_count_t indexB,
+									   BlockAllocator* allocator)
 {
 	void* mem = allocator->Allocate(sizeof(ChainAndCircleContact));
 	return new (mem) ChainAndCircleContact(fixtureA, indexA, fixtureB, indexB);

@@ -933,7 +933,7 @@ void World::SolveTOI(const TimeStep& step)
 		// Find the first TOI - the soonest one.
 		const auto minContactToi = UpdateContactTOIs();
 
-		if ((!minContactToi.contact) || (almost_equal(minContactToi.toi, float_t{1})))
+		if ((!minContactToi.contact) || almost_equal(minContactToi.toi, 1))
 		{
 			// No more TOI events. Done!
 			SetStepComplete(true);

@@ -64,8 +64,6 @@ using island_count_t = size_t;
 
 constexpr auto MaxFloat = std::numeric_limits<float_t>::max(); // FLT_MAX
 
-constexpr auto Epsilon = std::numeric_limits<float_t>::epsilon(); // FLT_EPSILON;
-
 constexpr auto Pi = static_cast<float_t>(M_PI); ///< Pi as the "float_t" float-type (any narrowing is intentional).
 
 /// @file

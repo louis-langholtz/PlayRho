@@ -37,7 +37,7 @@ namespace box2d {
 				const auto pointA = Transform(manifold.GetLocalPoint(), xfA);
 				const auto pointB = Transform(manifold.GetPoint(0).localPoint, xfB);
 				const auto delta = pointB - pointA;
-				const auto normal = (almost_equal(LengthSquared(delta), 0))? Vec2{float_t{1}, float_t{0}}: GetUnitVector(delta);
+				const auto normal = almost_zero(LengthSquared(delta))? Vec2{float_t{1}, float_t{0}}: GetUnitVector(delta);
 				const auto cA = pointA + (radiusA * normal);
 				const auto cB = pointB - (radiusB * normal);
 				const auto p0 = (cA + cB) / float_t{2};

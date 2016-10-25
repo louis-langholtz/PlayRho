@@ -432,7 +432,7 @@ bool TestOverlap(const Shape& shapeA, child_count_t indexA,
 	const auto distanceSquared = LengthSquared(distanceInfo.witnessPoints.a - distanceInfo.witnessPoints.b);
 	const auto totalRadiusSquared = Square(proxyA.GetRadius() + proxyB.GetRadius());
 	const auto separation_amount = distanceSquared - totalRadiusSquared;
-	return (separation_amount < 0) || almost_equal(separation_amount, 0);
+	return (separation_amount < 0) || almost_zero(separation_amount);
 }
 
 } // namespace box2d

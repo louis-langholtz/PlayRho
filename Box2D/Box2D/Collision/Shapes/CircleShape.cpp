@@ -59,7 +59,7 @@ RayCastOutput box2d::RayCast(const CircleShape& shape, const RayCastInput& input
 	const auto sigma = Square(c) - rr * b;
 
 	// Check for negative discriminant and short segment.
-	if ((sigma < float_t{0}) || almost_equal(rr, 0))
+	if ((sigma < float_t{0}) || almost_zero(rr))
 	{
 		return RayCastOutput{};
 	}

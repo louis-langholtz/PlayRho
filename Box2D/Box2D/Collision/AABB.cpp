@@ -35,7 +35,7 @@ namespace box2d
 		
 		for (auto i = decltype(normal.max_size()){0}; i < normal.max_size(); ++i)
 		{
-			if (almost_equal(d[i], 0))
+			if (almost_zero(d[i]))
 			{
 				// Parallel.
 				if ((p[i] < aabb.GetLowerBound()[i]) || (aabb.GetUpperBound()[i] < p[i]))

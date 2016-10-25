@@ -86,13 +86,22 @@ inline float_t round(float_t value, unsigned precision)
 	return std::round(value * precision) / precision;
 }
 
+constexpr inline bool almost_zero(float_t value)
+{
+	return Abs(value) < std::numeric_limits<decltype(value)>::min();
+}
+
 constexpr inline bool almost_equal(float_t x, float_t y, int ulp = 2)
 {
 	// From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
+	//
 	// "the machine epsilon has to be scaled to the magnitude of the values used
 	// and multiplied by the desired precision in ULPs (units in the last place)
 	// unless the result is subnormal".
-	return (Abs(x - y) < (Epsilon * Abs(x + y) * ulp)) || (Abs(x - y) < std::numeric_limits<float_t>::min());
+	//
+	// Where "subnormal" means: almost zero.
+	//
+	return (Abs(x - y) < (std::numeric_limits<float_t>::epsilon() * Abs(x + y) * ulp)) || almost_zero(x - y);
 }
 
 template <typename T>
@@ -470,7 +479,7 @@ public:
 		// assert(sine <= +1);
 		// assert(cosine >= -1);
 		// assert(cosine <= +1);
-		assert(almost_equal(Square(sine) + Square(cosine), float_t(1)));
+		assert(almost_equal(Square(sine) + Square(cosine), 1));
 	}
 
 	/// Initialize from an angle.
@@ -800,12 +809,14 @@ constexpr Vec2 operator/ (const Vec2 a, const Vec2::data_type s) noexcept
 /// @sa almost_equal.
 inline Vec2 GetUnitVector(const Vec2 value)
 {
-	// implementation similar to that of Normalize(Vec2&)
-	const auto length = Sqrt(LengthSquared(value));
-	if (almost_equal(length, 0))
+	const auto length_squared = LengthSquared(value);
+	if (almost_zero(length_squared))
 	{
 		return value;
 	}
+	
+	// implementation similar to that of Normalize(Vec2&)
+	const auto length = Sqrt(length_squared);
 	const auto invLength = float_t{1} / length;
 	return value * invLength;
 }
@@ -1257,7 +1268,7 @@ inline Sweep GetAnglesNormalized(Sweep sweep)
 inline float_t Normalize(Vec2& vector)
 {
 	const auto length = Length(vector);
-	if (almost_equal(length, 0))
+	if (almost_zero(length))
 	{
 		return float_t{0};
 	}

@@ -27,7 +27,7 @@ static inline bool ten_epsilon_equal(float_t x, float_t y)
 	// Pros: Probably faster and fine with larger LinearSlop settings.
 	// Cons: Doesn't scale to magnitude of values used which becomes more problematic with smaller
 	//   LinearSlop settings.
-	return std::abs(x - y) < (Epsilon * 10);
+	return std::abs(x - y) < (std::numeric_limits<float_t>::epsilon() * 10);
 }
 
 TEST(Epsilon, AlmostEqual)
@@ -67,6 +67,7 @@ TEST(Epsilon, AlmostEqual)
 		EXPECT_EQ(almost_equal(a, b), false);
 	}
 	{
+		const auto Epsilon = std::numeric_limits<float_t>::epsilon();
 		EXPECT_FALSE(almost_equal(float(1) + Epsilon, float_t(1), 0));
 		EXPECT_TRUE(almost_equal(float(1) + Epsilon, float_t(1), 1));
 		EXPECT_TRUE(almost_equal(float(1) + Epsilon, float_t(1), 2));
