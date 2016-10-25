@@ -26,31 +26,16 @@
 using namespace box2d;
 
 // This structure is used to keep track of the best separating axis.
-struct EPAxis
+struct ShapeSeparation
 {
-	using index_t = PolygonShape::vertex_count_t;
-	
-	enum Type: index_t
-	{
-		/// Unknown type.
-		/// @detail Index and separation are invalid.
-		e_unknown,
-		
-		/// Edge type.
-		/// @detail Index refers to the edge shape.
-		e_edge,
+	using index_type = std::remove_const<decltype(MaxShapeVertices)>::type;
+	using distance_type = float_t;
 
-		/// Polygon type.
-		/// @detail Index refers to the polygon shape.
-		e_polygon
-	};
-	
-	static constexpr index_t InvalidIndex = static_cast<index_t>(-1);
-	static constexpr float_t InvalidSeparation = GetInvalid<float_t>();
-	
-	Type type = e_unknown;
-	index_t index = InvalidIndex;
-	float_t separation = InvalidSeparation; ///< Separation.
+	static constexpr index_type InvalidIndex = static_cast<index_type>(-1);
+	static constexpr distance_type InvalidDistance = GetInvalid<distance_type>();
+
+	index_type index = InvalidIndex;
+	distance_type separation = InvalidDistance;
 };
 
 // Reference face used for clipping
@@ -286,7 +271,7 @@ static inline PolygonShape::vertex_count_t GetIndexOfMinimum(const PolygonShape&
 	return bestIndex;
 }
 
-static inline EPAxis ComputeEdgeSeparation(const PolygonShape& polygon, const EdgeInfo& edge)
+static inline ShapeSeparation ComputeEdgeSeparation(const PolygonShape& polygon, const EdgeInfo& edge)
 {
 	auto minValue = MaxFloat;
 	{
@@ -297,13 +282,13 @@ static inline EPAxis ComputeEdgeSeparation(const PolygonShape& polygon, const Ed
 			minValue = Min(minValue, s);
 		}
 	}
-	return EPAxis{EPAxis::e_edge, static_cast<EPAxis::index_t>(edge.IsFront()? 0: 1), minValue};
+	return ShapeSeparation{static_cast<ShapeSeparation::index_type>(edge.IsFront()? 0: 1), minValue};
 }
 
-static inline EPAxis ComputePolygonSeparation(const PolygonShape& polygon, const EdgeInfo& edge)
+static inline ShapeSeparation ComputePolygonSeparation(const PolygonShape& polygon, const EdgeInfo& edge)
 {
 	auto max_s = -MaxFloat;
-	auto index = EPAxis::InvalidIndex;
+	auto index = ShapeSeparation::InvalidIndex;
 	{
 		const auto totalRadius = GetRadius(polygon) + edge.GetRadius();
 		const auto perp = GetRevPerpendicular(edge.GetNormal());
@@ -317,7 +302,7 @@ static inline EPAxis ComputePolygonSeparation(const PolygonShape& polygon, const
 			
 			if (s > totalRadius) // No collision
 			{
-				return EPAxis{EPAxis::e_polygon, i, s};
+				return ShapeSeparation{i, s};
 			}
 			
 			// Adjacency
@@ -343,7 +328,7 @@ static inline EPAxis ComputePolygonSeparation(const PolygonShape& polygon, const
 			}
 		}
 	}
-	return EPAxis{EPAxis::e_polygon, index, max_s};
+	return ShapeSeparation{index, max_s};
 }
 
 static inline ReferenceFace GetReferenceFace(const EdgeInfo& edgeInfo)
@@ -479,14 +464,6 @@ static Manifold GetManifoldFaceB(const EdgeInfo& edgeInfo,
 	}
 	return manifold;
 }
-
-struct ShapeSeparation
-{
-	using index_t = std::remove_const<decltype(MaxShapeVertices)>::type;
-	
-	index_t index;
-	float_t separation;
-};
 
 // Find the max separation between shape1 and shape2 using edge normals from shape1.
 static ShapeSeparation FindMaxSeparation(const PolygonShape& shape1, const Transformation& xf1,
@@ -678,43 +655,45 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	// Computes the center of the circle in the frame of the polygon.
 	const auto cLocal = InverseTransform(Transform(shapeB.GetPosition(), xfB), xfA); ///< Center of the circle in the frame of the polygon.
 	
-	// Find the min separating edge.
 	const auto totalRadius = GetRadius(shapeA) + GetRadius(shapeB);
 	const auto vertexCount = shapeA.GetVertexCount();
-	auto normalIndex = decltype(vertexCount){0};
+	auto indexOfMax = decltype(vertexCount){0};
 	auto maxSeparation = -MaxFloat;
 	
+	// Find edge that circle is closest to.
 	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 	{
+		// Get circle's distance from vertex[i] in direction of normal[i].
 		const auto s = Dot(shapeA.GetNormal(i), cLocal - shapeA.GetVertex(i));
 		if (s > totalRadius)
 		{
-			// Early out.
+			// Early out - no contact.
 			return Manifold{};
 		}
 		if (maxSeparation < s)
 		{
 			maxSeparation = s;
-			normalIndex = i;
+			indexOfMax = i;
 		}
 	}
+	assert(maxSeparation <= totalRadius);
 	
 	// Vertices that subtend the incident face.
-	const auto vertIndex1 = normalIndex;
-	const auto vertIndex2 = static_cast<decltype(vertIndex1)>((vertIndex1 + 1) % vertexCount);
-	const auto v1 = shapeA.GetVertex(vertIndex1);
-	const auto v2 = shapeA.GetVertex(vertIndex2);
+	const auto v1 = shapeA.GetVertex(indexOfMax);
+	const auto v2 = shapeA.GetVertex(static_cast<decltype(indexOfMax)>((indexOfMax + 1) % vertexCount));
 	
-	// If the center is inside the polygon ...
 	if ((maxSeparation < 0) || almost_zero(maxSeparation))
 	{
-		return Manifold::GetForFaceA(shapeA.GetNormal(normalIndex), (v1 + v2) / 2, Manifold::Point{shapeB.GetPosition()});
+		// Circle's center is inside the polygon and closest to edge[indexOfMax].
+		return Manifold::GetForFaceA(shapeA.GetNormal(indexOfMax), (v1 + v2) / 2, Manifold::Point{shapeB.GetPosition()});
 	}
 	
-	// Compute barycentric coordinates
+	// Circle's center is outside polygon and closest to edge[indexOfMax].
+	// Compute barycentric coordinates.
 	
 	if (Dot(cLocal - v1, v2 - v1) <= 0)
 	{
+		// Circle's center closest to v1 but not between v1 and v2.
 		if (LengthSquared(cLocal - v1) > Square(totalRadius))
 		{
 			return Manifold{};
@@ -724,6 +703,7 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	
 	if (Dot(cLocal - v2, v1 - v2) <= 0)
 	{
+		// Circle's center closest to v2 but not between v1 and v2.
 		if (LengthSquared(cLocal - v2) > Square(totalRadius))
 		{
 			return Manifold{};
@@ -731,12 +711,13 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 		return Manifold::GetForFaceA(GetUnitVector(cLocal - v2), v2, Manifold::Point{shapeB.GetPosition()});
 	}
 	
+	// Circle's center is between v1 and v2.
 	const auto faceCenter = (v1 + v2) / 2;
-	if (Dot(cLocal - faceCenter, shapeA.GetNormal(vertIndex1)) > totalRadius)
+	if (Dot(cLocal - faceCenter, shapeA.GetNormal(indexOfMax)) > totalRadius)
 	{
 		return Manifold{};
 	}
-	return Manifold::GetForFaceA(shapeA.GetNormal(vertIndex1), faceCenter, Manifold::Point{shapeB.GetPosition()});
+	return Manifold::GetForFaceA(shapeA.GetNormal(indexOfMax), faceCenter, Manifold::Point{shapeB.GetPosition()});
 }
 
 Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,
@@ -860,18 +841,14 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	const auto edgeInfo = EdgeInfo{shapeA, localShapeB.GetCentroid()};
 	const auto totalRadius = GetRadius(shapeA) + GetRadius(shapeB);
 
-	const auto edgeAxis = ComputeEdgeSeparation(localShapeB, edgeInfo);
-	assert(edgeAxis.type == EPAxis::e_edge);
-	
 	// If no valid normal can be found then this edge should not collide.
+	const auto edgeAxis = ComputeEdgeSeparation(localShapeB, edgeInfo);
 	if (edgeAxis.separation > totalRadius)
 	{
 		return Manifold{};
 	}
 	
 	const auto polygonAxis = ComputePolygonSeparation(localShapeB, edgeInfo);
-	assert(polygonAxis.type == EPAxis::e_polygon);
-
 	if (polygonAxis.separation > totalRadius)
 	{
 		return Manifold{};
@@ -885,7 +862,8 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	//   (edgeAxis.separation <= MaxSeparation) AND
 	//   (polygonAxis.index == EPAxis::InvalidIndex OR polygonAxis.separation <= MaxEPSeparation)
 	
-	if ((polygonAxis.index != EPAxis::InvalidIndex) && (polygonAxis.separation > ((k_relativeTol * edgeAxis.separation) + k_absoluteTol)))
+	if ((polygonAxis.index != ShapeSeparation::InvalidIndex) &&
+		(polygonAxis.separation > ((k_relativeTol * edgeAxis.separation) + k_absoluteTol)))
 	{
 		return GetManifoldFaceB(edgeInfo, shapeB, localShapeB, polygonAxis.index);
 	}
