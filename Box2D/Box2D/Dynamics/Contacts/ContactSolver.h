@@ -26,18 +26,6 @@ namespace box2d {
 
 	class VelocityConstraint;
 	class PositionConstraint;
-
-	/// Contact Solver.
-	/// @note This data structure is at least 36-bytes large.
-	class ContactSolver
-	{
-	public:
-		/// Minimum separation for position constraints.
-		static constexpr auto MinSeparationThreshold = BOX2D_MAGIC(-LinearSlop * 3);
-		
-		/// Minimum time of impact separation for TOI position constraints.
-		static constexpr auto MinToiSeparation = BOX2D_MAGIC(-LinearSlop * float_t{3} / float_t{2}); // aka -LinearSlop * 1.5
-	};
 	
 	struct PositionSolution
 	{
