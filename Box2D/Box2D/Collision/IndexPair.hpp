@@ -23,7 +23,10 @@
 #include <Box2D/Common/Settings.h>
 
 namespace box2d
-{	
+{
+	
+	/// Index pair.
+	/// @note This data structure is at least 2-bytes large.
 	struct IndexPair
 	{
 		/// Size type.
@@ -32,8 +35,8 @@ namespace box2d
 		
 		static constexpr size_type InvalidIndex = static_cast<size_type>(-1);
 		
-		size_type a;
-		size_type b;
+		size_type a; ///< Index of vertex from shape A.
+		size_type b; ///< Index of vertex from shape B.
 	};
 	
 	constexpr inline bool operator == (IndexPair lhs, IndexPair rhs)
