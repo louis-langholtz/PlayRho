@@ -21,6 +21,7 @@
 #define B2_COLLISION_H
 
 #include <Box2D/Common/Math.h>
+#include <Box2D/Common/ArrayList.hpp>
 #include <Box2D/Collision/ContactFeature.hpp>
 
 #include <array>
@@ -57,54 +58,10 @@ struct ClipVertex
 	ContactFeature cf; ///< Contact feature information.
 };
 
-/// Clip array for ClipSegmentToLine.
-/// @see ClipSegmentToLine.
-class ClipList
-{
-public:
-	static constexpr auto MaxElements = MaxManifoldPoints;
+/// Clip list for ClipSegmentToLine.
+/// @sa ClipSegmentToLine.
+using ClipList = ArrayList<ClipVertex, MaxManifoldPoints>;
 
-	using size_type = std::remove_const<decltype(MaxElements)>::type;
-	using data_type = ClipVertex;
-	using pointer = data_type*;
-	using const_pointer = const data_type*;
-
-	bool add(data_type value)
-	{
-		if (m_size < MaxManifoldPoints)
-		{
-			m_elements[m_size] = value;
-			++m_size;
-			return true;
-		}
-		return false;
-	}
-	
-	data_type& operator[](size_t index)
-	{
-		assert(index < MaxElements);
-		return m_elements[index];
-	}
-
-	data_type operator[](size_t index) const
-	{
-		assert(index < MaxElements);
-		return m_elements[index];
-	}
-
-	size_type size() const noexcept { return m_size; }
-	
-	pointer begin() noexcept { return &m_elements[0]; }
-	pointer end() noexcept { return &m_elements[0] + m_size; }
-
-	const_pointer begin() const noexcept { return &m_elements[0]; }
-	const_pointer end() const noexcept { return &m_elements[0] + m_size; }
-
-private:
-	data_type m_elements[MaxElements];
-	size_type m_size = size_type{0};
-};
-	
 /// Clipping for contact manifolds.
 /// @detail This returns an array of points from the given line that are inside of the plane as
 ///   defined by a given normal and offset.

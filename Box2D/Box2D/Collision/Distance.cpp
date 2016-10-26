@@ -17,6 +17,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+#include <Box2D/Common/ArrayList.hpp>
 #include <Box2D/Collision/Distance.h>
 #include <Box2D/Collision/DistanceProxy.hpp>
 #include <Box2D/Collision/SimplexCache.hpp>
@@ -32,14 +33,13 @@ namespace {
 /// Maximum number of supportable vertices.
 constexpr auto MaxSimplexVertices = unsigned{3};
 
-using IndexPairArray = std::array<IndexPair, MaxSimplexVertices>;
+using IndexPairList = ArrayList<IndexPair, MaxSimplexVertices>;
 
-inline bool Find(const IndexPairArray& array, IndexPair key, std::size_t count)
+inline bool Find(Span<const IndexPair> pairs, IndexPair key)
 {
-	assert(count <= array.size());
-	for (std::size_t i = std::size_t{0}; i < count; ++i)
+	for (auto&& elem: pairs)
 	{
-		if (array[i] == key)
+		if (elem == key)
 		{
 			return true;
 		}
@@ -69,9 +69,6 @@ inline DistanceProxy GetDistanceProxy(const EdgeShape& shape, child_count_t inde
 	
 }
 
-class Simplex;
-static float_t GetMetric(const Simplex& simplex);
-
 DistanceProxy GetDistanceProxy(const Shape& shape, child_count_t index)
 {
 	switch (shape.GetType())
@@ -96,13 +93,21 @@ public:
 	constexpr SimplexVertex(const SimplexVertex& copy) noexcept = default;
 
 	constexpr SimplexVertex(Vec2 sA, size_type iA, Vec2 sB, size_type iB, float_t a_) noexcept:
-		wA{sA}, wB{sB}, indexPair{iA,iB}, a{a_}
+		wA{sA}, wB{sB},
+#ifndef DONT_CACHE
+		e{wB - wA},
+#endif	
+		indexPair{iA,iB}, a{a_}
 	{
 		assert(a_ >= 0 && a_ <= 1);
 	}
 
 	constexpr SimplexVertex(const SimplexVertex& copy, float_t newA) noexcept:
-		wA{copy.wA}, wB{copy.wB}, indexPair{copy.indexPair}, a{newA}
+		wA{copy.wA}, wB{copy.wB},
+#ifndef DONT_CACHE
+		e{copy.e},
+#endif	
+		indexPair{copy.indexPair}, a{newA}
 	{
 		assert(newA >= 0 && newA <= 1);
 	}
@@ -110,6 +115,15 @@ public:
 	constexpr Vec2 get_wA() const noexcept { return wA; }
 	
 	constexpr Vec2 get_wB() const noexcept { return wB; }
+
+	constexpr Vec2 get_edge() const noexcept
+	{
+#ifndef DONT_CACHE
+		return e;
+#else
+		return wB - wA;
+#endif			
+	}
 
 	/// Gets "A".
 	/// @detail This is the "Barycentric coordinate for closest point".
@@ -130,6 +144,9 @@ public:
 private:
 	Vec2 wA; ///< Support point in proxy A.
 	Vec2 wB; ///< Support point in proxy B.
+#ifndef DONT_CACHE
+	Vec2 e;
+#endif
 	float_t a; ///< Barycentric coordinate for closest point
 };
 
@@ -137,7 +154,7 @@ private:
 /// @return 2D vector value of wB minus wA.
 static constexpr inline Vec2 GetW(const SimplexVertex sv)
 {
-	return sv.get_wB() - sv.get_wA();
+	return sv.get_edge();
 }
 	
 static inline Vec2 GetScaledPointA(const SimplexVertex sv)
@@ -166,56 +183,10 @@ static inline Vec2 GetScaledDelta(const SimplexVertex sv)
 /// Used in doing GJK collision detection.
 /// @sa https://en.wikipedia.org/wiki/Simplex
 /// @sa https://en.wikipedia.org/wiki/Gilbert%2DJohnson%2DKeerthi_distance_algorithm
-class Simplex
-{
-public:
-	using size_type = std::remove_const<decltype(MaxSimplexVertices)>::type;
+using Simplex = ArrayList<SimplexVertex, MaxSimplexVertices>;
 
-	Simplex() = default;
+// static float_t GetMetric(const Simplex& simplex);
 	
-	Simplex(const SimplexVertex& sv1) noexcept:
-		m_count{1}, m_vertices{sv1}
-	{}
-
-	Simplex(const SimplexVertex& sv1, const SimplexVertex& sv2) noexcept:
-		m_count{2}, m_vertices{sv1, sv2}
-	{}
-	
-	Simplex(const SimplexVertex& sv1, const SimplexVertex& sv2, const SimplexVertex& sv3) noexcept:
-		m_count{3}, m_vertices{sv1, sv2, sv3}
-	{}
-
-	/// Gets count of valid vertices.
- 	/// @return Value between 0 and MaxSimplexVertices.
-	/// @see MaxSimplexVertices
-	size_type size() const noexcept
-	{
-		return m_count;
-	}
-
-	const SimplexVertex& operator[](size_type index) const noexcept
-	{
-		assert(index < m_count);
-		return m_vertices[index];
-	}
-
-	void clear() noexcept
-	{
-		m_count = 0;
-	}
-
-	void push_back(const SimplexVertex& vertex) noexcept
-	{
-		assert(m_count < MaxSimplexVertices);
-		m_vertices[m_count] = vertex;
-		++m_count;
-	}
-
-private:
-	size_type m_count = 0; ///< Count of valid vertex entries in m_vertices. Value between 0 and MaxVertices. @see m_vertices.
-	SimplexVertex m_vertices[MaxSimplexVertices]; ///< Vertices. Only elements < m_count are valid. @see m_count.
-};
-
 /// Gets the "search direction" for the given simplex.
 /// @param simplex A one or two vertex simplex.
 /// @warning Behavior is undefined if the given simplex has zero vertices.
@@ -519,14 +490,17 @@ static inline Simplex Solve(const Simplex& simplex) noexcept
 	return simplex;
 }
 
-static inline auto CopyIndexPairs(IndexPairArray& dst, const Simplex& src) noexcept
+static inline auto GetIndexPairs(const Simplex& src) noexcept
 {
+	IndexPairList list;
+
 	const auto count = src.size();
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
-		dst[i] = src[i].indexPair;
+		list.add(src[i].indexPair);
 	}
-	return count;
+	
+	return list;
 }
 
 DistanceOutput Distance(SimplexCache& cache,
@@ -558,11 +532,6 @@ DistanceOutput Distance(SimplexCache& cache,
 		simplex.push_back(GetSimplexVertex(IndexPair{0, 0}, proxyA, transformA, proxyB, transformB));
 	}
 
-	// Get simplex vertices as an array.
-	// These store the vertices of the last simplex so that we
-	// can check for duplicates and prevent cycling.
-	IndexPairArray savedIndices;
-
 #if defined(DO_COMPUTE_CLOSEST_POINT)
 	auto distanceSqr1 = MaxFloat;
 #endif
@@ -573,8 +542,8 @@ DistanceOutput Distance(SimplexCache& cache,
 	{
 		++iter;
 	
-		// Copy simplex so we can identify duplicates.
-		const auto savedCount = CopyIndexPairs(savedIndices, simplex);
+		// Copy simplex so we can identify duplicates and prevent cycling.
+		const auto savedIndices = GetIndexPairs(simplex);
 
 		simplex = Solve(simplex);
 
@@ -618,7 +587,7 @@ DistanceOutput Distance(SimplexCache& cache,
 
 		// Check for duplicate support points. This is the main termination criteria.
 		// If there's a duplicate support point, code must exit loop to avoid cycling.
-		if (Find(savedIndices, IndexPair{indexA, indexB}, savedCount))
+		if (Find(savedIndices, IndexPair{indexA, indexB}))
 		{
 			break;
 		}

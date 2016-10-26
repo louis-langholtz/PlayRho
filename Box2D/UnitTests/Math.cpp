@@ -111,15 +111,25 @@ TEST(Math, Atan2)
 TEST(Math, Span)
 {
 	{
-		const auto foo = Span<const int>{1, 2, 4};
+		// check aggragate initialization
+		const Span<const int> foo = {1, 2, 4};
 		EXPECT_EQ(foo.size(), size_t(3));
 		EXPECT_EQ(foo[0], 1);
 		EXPECT_EQ(foo[1], 2);
 		EXPECT_EQ(foo[2], 4);
 	}
 	{
+		// check initialization from explicit initializer list
+		const auto foo = Span<const int>(std::initializer_list<int>{1, 2, 4});
+		EXPECT_EQ(foo.size(), size_t(3));
+		EXPECT_EQ(foo[0], 1);
+		EXPECT_EQ(foo[1], 2);
+		EXPECT_EQ(foo[2], 4);
+	}
+	{
+		// check initialization from non-const array
 		int array[6] = {1, 2, 4, 10, -1, -33};
-		const auto foo = Span<int>(array);
+		auto foo = Span<int>(array);
 		EXPECT_EQ(foo.size(), size_t(6));
 		EXPECT_EQ(foo[0], 1);
 		EXPECT_EQ(foo[1], 2);
@@ -127,6 +137,8 @@ TEST(Math, Span)
 		EXPECT_EQ(foo[3], 10);
 		EXPECT_EQ(foo[4], -1);
 		EXPECT_EQ(foo[5], -33);
+		foo[3] = 22;
+		EXPECT_EQ(foo[3], 22);
 	}
 	{
 		float array[15];
