@@ -60,15 +60,7 @@ namespace box2d
 		constexpr Span(const U& value) noexcept: m_array{value.begin()}, m_size{value.size()} {}
 		
 		constexpr Span(std::initializer_list<T> list) noexcept: m_array{list.begin()}, m_size{list.size()} {}
-		
-#if 0
-		template <typename U>
-		constexpr Span(const Span<U>& span) noexcept: m_array{span.begin()}, m_size{span.size()} {}
-		
-		template <class U, std::size_t S>
-		constexpr Span(const std::array<U, S>& value) noexcept: m_array{value.begin()}, m_size{value.size()} {}
-#endif
-		
+				
 		pointer begin() const noexcept { return m_array; }
 		const_pointer cbegin() const noexcept { return m_array; }
 		
