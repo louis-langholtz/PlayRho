@@ -22,20 +22,25 @@
 
 using namespace box2d;
 
+TEST(SimplexCache, ByteSizeIs16)
+{
+	EXPECT_EQ(sizeof(SimplexCache), size_t(16));
+}
+
 TEST(SimplexCache, Init)
 {
 	SimplexCache foo;
 	EXPECT_EQ(decltype(foo.GetCount()){0}, foo.GetCount());
-	EXPECT_EQ(false, foo.IsMetricSet());
+	EXPECT_FALSE(foo.IsMetricSet());
 }
 
 TEST(SimplexCache, SetGetMetric)
 {
 	SimplexCache foo;
-	EXPECT_EQ(false, foo.IsMetricSet());
+	EXPECT_FALSE(foo.IsMetricSet());
 	const auto metric = float_t(6.12);
 	foo.SetMetric(metric);
-	EXPECT_EQ(true, foo.IsMetricSet());
+	EXPECT_TRUE(foo.IsMetricSet());
 	EXPECT_EQ(metric, foo.GetMetric());
 }
 

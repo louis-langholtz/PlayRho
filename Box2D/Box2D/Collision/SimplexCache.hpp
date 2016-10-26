@@ -25,11 +25,15 @@
 
 namespace box2d
 {
-	
+	/// Simplex cache.
+	///
+	/// @detail
 	/// Used to warm start Distance.
+	///
 	class SimplexCache
 	{
 	public:
+
 		/// Maximum count of times this object's add-index method may be called.
 		/// @sa AddIndex.
 		static constexpr auto MaxCount = unsigned{3};
@@ -44,7 +48,7 @@ namespace box2d
 		/// @return Value previously set.
 		auto GetMetric() const noexcept
 		{
-			assert(metric_set);
+			assert(IsValid(metric));
 			return metric;
 		}
 		
@@ -77,12 +81,11 @@ namespace box2d
 		
 		void ClearIndices() noexcept { count = 0; }
 		
-		auto IsMetricSet() const noexcept { return metric_set; }
+		auto IsMetricSet() const noexcept { return IsValid(metric); }
 		
 		void SetMetric(float_t m) noexcept
 		{
 			metric = m;
-			metric_set = true;
 		}
 		
 		void AddIndex(IndexPair ip)
@@ -93,8 +96,7 @@ namespace box2d
 		}
 		
 	private:
-		bool metric_set = false; ///< Whether the metric has been set or not.
-		float_t metric; ///< length or area
+		float_t metric = GetInvalid<float_t>(); ///< length or area
 		size_type count = 0;
 		IndexPair indexPair[MaxCount]; ///< Vertices on shape A and B.
 	};
