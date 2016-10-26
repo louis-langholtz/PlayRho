@@ -1,6 +1,7 @@
 ##About
-This is a fork by Louis Langholtz of Box2D. Influences on this fork are:
-- C++14;
+This is a fork by Louis Langholtz of Box2D. Particular influences on this fork are:
+- [Unit testing](https://en.wikipedia.org/wiki/Unit_testing);
+- [C++11](https://en.wikipedia.org/wiki/C%2B%2B11) & [C++14](https://en.wikipedia.org/wiki/C%2B%2B14);
 - [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md);
 - Effective Modern C++ by Scott Meyers; and
 - Hardware capabilities of popular CPU architectures like the
