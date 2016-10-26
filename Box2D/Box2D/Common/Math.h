@@ -21,6 +21,7 @@
 #define BOX2D_MATH_H
 
 #include <Box2D/Common/Settings.h>
+#include <Box2D/Common/Span.hpp>
 #include <cmath>
 #include <iostream>
 
@@ -103,74 +104,6 @@ constexpr inline bool almost_equal(float_t x, float_t y, int ulp = 2)
 	//
 	return (Abs(x - y) < (std::numeric_limits<float_t>::epsilon() * Abs(x + y) * ulp)) || almost_zero(x - y);
 }
-
-template <typename T>
-class Span
-{
-public:
-	using data_type = T;
-	using pointer = data_type*;
-	using const_pointer = const data_type *;
-	using size_type = size_t;
-
-	Span() = default;
-	
-	Span(const Span& copy) = default;
-
-	constexpr Span(pointer array, size_type size) noexcept:
-		m_array{array}, m_size{size}
-	{
-	}
-
-	constexpr Span(pointer first, pointer last) noexcept:
-		m_array{first}, m_size{static_cast<size_type>(std::distance(first, last))}
-	{
-		assert(first <= last);
-	}
-
-	template <std::size_t SIZE>
-	constexpr Span(data_type (&array)[SIZE]) noexcept: m_array{&array[0]}, m_size{SIZE} {}
-
-	template <typename U, typename = std::enable_if_t< !std::is_array<U>::value > >
-	constexpr Span(U& value) noexcept: m_array{value.begin()}, m_size{value.size()} {}
-	
-	template <typename U, typename = std::enable_if_t< !std::is_array<U>::value > >
-	constexpr Span(const U& value) noexcept: m_array{value.begin()}, m_size{value.size()} {}
-
-	constexpr Span(std::initializer_list<T> list) noexcept: m_array{list.begin()}, m_size{list.size()} {}
-
-#if 0
-	template <typename U>
-	constexpr Span(const Span<U>& span) noexcept: m_array{span.begin()}, m_size{span.size()} {}
-	
-	template <class U, std::size_t S>
-	constexpr Span(const std::array<U, S>& value) noexcept: m_array{value.begin()}, m_size{value.size()} {}
-#endif
-	
-	pointer begin() const noexcept { return m_array; }
-	const_pointer cbegin() const noexcept { return m_array; }
-
-	pointer end() const noexcept { return m_array + m_size; }
-	const_pointer cend() const noexcept { return m_array + m_size; }
-	
-	data_type& operator[](size_type index) noexcept
-	{
-		assert(index < m_size);
-		return m_array[index];
-	}
-
-	const data_type& operator[](size_type index) const noexcept
-	{
-		assert(index < m_size);
-		return m_array[index];
-	}
-
-	size_type size() const noexcept { return m_size; }
-
-private:
-	pointer m_array = nullptr;
-	size_type m_size = 0;
-};
 
 template <typename T>
 inline T Average(Span<const T> span)

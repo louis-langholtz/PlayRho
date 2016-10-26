@@ -33,6 +33,8 @@
 		4734B2191DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21A1DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21C1DC1121900F15E29 /* ArrayList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4734B21B1DC1121900F15E29 /* ArrayList.cpp */; };
+		4734B2211DC1340500F15E29 /* Span.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B21E1DC1340500F15E29 /* Span.hpp */; };
+		4734B2221DC1340500F15E29 /* Span.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B21E1DC1340500F15E29 /* Span.hpp */; };
 		4736DE891DB7DB3B003993CB /* Vec3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4736DE881DB7DB3B003993CB /* Vec3.cpp */; };
 		4736DE8C1DB806AE003993CB /* CollideShapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4736DE8A1DB806AE003993CB /* CollideShapes.cpp */; };
 		4736DE8D1DB806AE003993CB /* CollideShapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4736DE8A1DB806AE003993CB /* CollideShapes.cpp */; };
@@ -429,6 +431,7 @@
 		472E301D1DBA98BC00DA821D /* VertexSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexSet.cpp; sourceTree = "<group>"; };
 		4734B2161DC00AFD00F15E29 /* ArrayList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ArrayList.hpp; sourceTree = "<group>"; };
 		4734B21B1DC1121900F15E29 /* ArrayList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArrayList.cpp; sourceTree = "<group>"; };
+		4734B21E1DC1340500F15E29 /* Span.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Span.hpp; sourceTree = "<group>"; };
 		4736DE881DB7DB3B003993CB /* Vec3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vec3.cpp; sourceTree = "<group>"; };
 		4736DE8A1DB806AE003993CB /* CollideShapes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollideShapes.cpp; sourceTree = "<group>"; };
 		4736DE8B1DB806AE003993CB /* CollideShapes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CollideShapes.hpp; sourceTree = "<group>"; };
@@ -915,6 +918,7 @@
 				475A94631D99C264000CA9A8 /* List.hpp */,
 				472E30181DBA925500DA821D /* VertexSet.hpp */,
 				4734B2161DC00AFD00F15E29 /* ArrayList.hpp */,
+				4734B21E1DC1340500F15E29 /* Span.hpp */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1201,6 +1205,7 @@
 				47AA5DD61C4C5FBE008AF2BA /* BlockAllocator.h in Headers */,
 				47AA5DD81C4C5FBE008AF2BA /* GrowableStack.h in Headers */,
 				4734B21A1DC00AFD00F15E29 /* ArrayList.hpp in Headers */,
+				4734B2221DC1340500F15E29 /* Span.hpp in Headers */,
 				47AA5DD91C4C5FBE008AF2BA /* Math.h in Headers */,
 				4788690B1D78BE2B00AEC7F1 /* PositionConstraint.hpp in Headers */,
 				47AA5DDA1C4C5FBE008AF2BA /* Settings.h in Headers */,
@@ -1278,6 +1283,7 @@
 				80BB8992141C3E5900F1753A /* DynamicTree.h in Headers */,
 				80BB8994141C3E5900F1753A /* TimeOfImpact.h in Headers */,
 				80BB8996141C3E5900F1753A /* ChainShape.h in Headers */,
+				4734B2211DC1340500F15E29 /* Span.hpp in Headers */,
 				80BB8998141C3E5900F1753A /* CircleShape.h in Headers */,
 				80BB899A141C3E5900F1753A /* EdgeShape.h in Headers */,
 				80BB899C141C3E5900F1753A /* PolygonShape.h in Headers */,
