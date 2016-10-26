@@ -27,19 +27,19 @@
 
 namespace box2d
 {
-	template <typename TYPE, std::size_t MAXSIZE>
+	template <typename VALUE_TYPE, std::size_t MAXSIZE, typename SIZE_TYPE = std::size_t>
 	class ArrayList
 	{
 	public:
-		using size_type = typename std::remove_const<decltype(MAXSIZE)>::type;
-		using value_type = TYPE;
+		using size_type = SIZE_TYPE;
+		using value_type = VALUE_TYPE;
 		using pointer = value_type*;
 		using const_pointer = const value_type*;
 		
 		ArrayList() = default;
 
 		template <std::size_t SIZE, typename = std::enable_if_t< SIZE <= MAXSIZE >>
-		ArrayList(const ArrayList<TYPE, SIZE>& copy)
+		ArrayList(const ArrayList<VALUE_TYPE, SIZE, SIZE_TYPE>& copy)
 		{
 			for (auto&& elem: copy)
 			{
@@ -112,8 +112,8 @@ namespace box2d
 		const_pointer end() const noexcept { return &m_elements[0] + m_size; }
 		
 	private:
-		std::array<value_type, MAXSIZE> m_elements;
 		size_type m_size = size_type{0};
+		value_type m_elements[MAXSIZE];
 	};
 	
 	template <typename T, std::size_t S>
