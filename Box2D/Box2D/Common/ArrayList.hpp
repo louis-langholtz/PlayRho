@@ -21,6 +21,9 @@
 #define ArrayList_hpp
 
 #include <type_traits>
+#include <initializer_list>
+#include <cassert>
+#include <array>
 
 namespace box2d
 {
@@ -29,11 +32,53 @@ namespace box2d
 	{
 	public:
 		using size_type = typename std::remove_const<decltype(MAXSIZE)>::type;
-		using data_type = TYPE;
-		using pointer = data_type*;
-		using const_pointer = const data_type*;
+		using value_type = TYPE;
+		using pointer = value_type*;
+		using const_pointer = const value_type*;
 		
-		bool add(data_type value)
+		ArrayList() = default;
+
+		template <std::size_t SIZE, typename = std::enable_if_t< SIZE <= MAXSIZE >>
+		ArrayList(const ArrayList<TYPE, SIZE>& copy)
+		{
+			for (auto&& elem: copy)
+			{
+				add(elem);
+			}
+		}
+
+		template <std::size_t SIZE, typename = std::enable_if_t< SIZE <= MAXSIZE >>
+		ArrayList(value_type (&array)[SIZE]) noexcept
+		{
+			for (auto&& elem: array)
+			{
+				push_back(elem);
+			}
+		}
+
+		ArrayList(std::initializer_list<value_type> list)
+		{
+			for (auto&& elem: list)
+			{
+				push_back(elem);
+			}
+		}
+		
+		void push_back(const value_type& value)
+		{
+			assert(m_size < MAXSIZE);
+			m_elements[m_size] = value;
+			++m_size;
+		}
+		
+		void clear() noexcept
+		{
+			m_size = 0;
+		}
+		
+		bool empty() const noexcept { return m_size == 0; }
+
+		bool add(value_type value) noexcept
 		{
 			if (m_size < MAXSIZE)
 			{
@@ -43,19 +88,19 @@ namespace box2d
 			}
 			return false;
 		}
-		
-		data_type& operator[](size_type index)
+
+		value_type& operator[](size_type index) noexcept
 		{
 			assert(index < MAXSIZE);
 			return m_elements[index];
 		}
 		
-		data_type operator[](size_type index) const
+		value_type operator[](size_type index) const noexcept
 		{
 			assert(index < MAXSIZE);
 			return m_elements[index];
 		}
-		
+
 		size_type size() const noexcept { return m_size; }
 		
 		size_type max_size() const noexcept { return MAXSIZE; }
@@ -67,10 +112,24 @@ namespace box2d
 		const_pointer end() const noexcept { return &m_elements[0] + m_size; }
 		
 	private:
-		data_type m_elements[MAXSIZE];
+		std::array<value_type, MAXSIZE> m_elements;
 		size_type m_size = size_type{0};
 	};
 	
+	template <typename T, std::size_t S>
+	ArrayList<T, S>& operator+= (ArrayList<T, S>& lhs, const typename ArrayList<T, S>::data_type& rhs)
+	{
+		lhs.push_back(rhs);
+		return lhs;
+	}
+
+	template <typename T, std::size_t S>
+	ArrayList<T, S> operator+ (ArrayList<T, S> lhs, const typename ArrayList<T, S>::data_type& rhs)
+	{
+		lhs.push_back(rhs);
+		return lhs;
+	}
+
 } /* namespace box2d */
 
 #endif /* ArrayList_hpp */
