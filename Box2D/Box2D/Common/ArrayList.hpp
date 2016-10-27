@@ -27,6 +27,7 @@
 
 namespace box2d
 {
+	/// Array list.
 	template <typename VALUE_TYPE, std::size_t MAXSIZE, typename SIZE_TYPE = std::size_t>
 	class ArrayList
 	{
@@ -38,13 +39,19 @@ namespace box2d
 		
 		ArrayList() = default;
 
-		template <std::size_t SIZE, typename = std::enable_if_t< SIZE <= MAXSIZE >>
-		ArrayList(const ArrayList<VALUE_TYPE, SIZE, SIZE_TYPE>& copy)
+		template <std::size_t COPY_MAXSIZE, typename COPY_SIZE_TYPE, typename = std::enable_if_t< COPY_MAXSIZE <= MAXSIZE >>
+		constexpr ArrayList(const ArrayList<VALUE_TYPE, COPY_MAXSIZE, SIZE_TYPE>& copy):
+			m_size{copy.size()},
+			m_elements{copy.data()}
 		{
-			for (auto&& elem: copy)
-			{
-				add(elem);
-			}
+		}
+
+		template <std::size_t COPY_MAXSIZE, typename COPY_SIZE_TYPE, typename = std::enable_if_t< COPY_MAXSIZE <= MAXSIZE >>
+		ArrayList& operator= (const ArrayList<VALUE_TYPE, COPY_MAXSIZE, COPY_SIZE_TYPE>& copy)
+		{
+			m_size = static_cast<SIZE_TYPE>(copy.size());
+			m_elements = copy.data();
+			return *this;
 		}
 
 		template <std::size_t SIZE, typename = std::enable_if_t< SIZE <= MAXSIZE >>
@@ -88,7 +95,7 @@ namespace box2d
 			}
 			return false;
 		}
-
+		
 		value_type& operator[](size_type index) noexcept
 		{
 			assert(index < MAXSIZE);
@@ -101,9 +108,15 @@ namespace box2d
 			return m_elements[index];
 		}
 
+		/// Gets the size of this collection.
+		/// @detail This is the number of elements that have been added to this collection.
+		/// @return Value between 0 and the maximum size for this collection.
+		/// @sa max_size().
 		size_type size() const noexcept { return m_size; }
 		
-		size_type max_size() const noexcept { return MAXSIZE; }
+		/// Gets the maximum size that this collection can be.
+		/// @detail This is the maximum number of elements that can be contained in this collection.
+		constexpr size_type max_size() const noexcept { return MAXSIZE; }
 		
 		pointer begin() noexcept { return &m_elements[0]; }
 		pointer end() noexcept { return &m_elements[0] + m_size; }
@@ -111,9 +124,11 @@ namespace box2d
 		const_pointer begin() const noexcept { return &m_elements[0]; }
 		const_pointer end() const noexcept { return &m_elements[0] + m_size; }
 		
+		auto data() const noexcept { return m_elements; }
+
 	private:
 		size_type m_size = size_type{0};
-		value_type m_elements[MAXSIZE];
+		std::array<value_type,MAXSIZE> m_elements;
 	};
 	
 	template <typename T, std::size_t S>
@@ -131,5 +146,15 @@ namespace box2d
 	}
 
 } /* namespace box2d */
+
+namespace std
+{
+	/// Tuple size specialization for ArrayList classes.
+	template< class T, size_t N >
+	class tuple_size< box2d::ArrayList<T, N> >:	public integral_constant<size_t, N>
+	{
+		// Intentionally empty.
+	};
+}
 
 #endif /* ArrayList_hpp */

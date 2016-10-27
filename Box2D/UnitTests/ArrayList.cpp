@@ -76,3 +76,30 @@ TEST(ArrayList, add)
 		EXPECT_EQ(*list.begin(), value);
 	}
 }
+
+TEST(ArrayList, clear)
+{
+	{
+		constexpr unsigned max_size = 4;
+		ArrayList<int, max_size> list;
+		ASSERT_EQ(list.size(), decltype(list.size()){0});
+		ASSERT_EQ(list.max_size(), decltype(list.size()){max_size});
+		ASSERT_TRUE(list.empty());
+		ASSERT_EQ(list.begin(), list.end());
+		
+		const auto value = 5;
+		ASSERT_TRUE(list.add(value));
+		ASSERT_EQ(list.size(), decltype(list.size()){1});
+		ASSERT_EQ(list.max_size(), decltype(list.size()){max_size});
+		ASSERT_FALSE(list.empty());
+		ASSERT_EQ(std::distance(list.begin(), list.end()), 1);
+		ASSERT_EQ(*list.begin(), value);
+		
+		list.clear();
+		
+		EXPECT_EQ(list.size(), decltype(list.size()){0});
+		EXPECT_EQ(list.max_size(), decltype(list.size()){max_size});
+		EXPECT_TRUE(list.empty());
+		EXPECT_EQ(list.begin(), list.end());
+	}
+}

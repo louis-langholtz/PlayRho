@@ -31,6 +31,7 @@ namespace box2d
 	/// @detail
 	/// A distance proxy is used by the GJK algorithm.
 	/// It encapsulates any shape.
+	/// @note This data structure is 32-bytes.
 	/// @sa https://en.wikipedia.org/wiki/Gilbert%2DJohnson%2DKeerthi_distance_algorithm
 	class DistanceProxy
 	{
