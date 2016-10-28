@@ -22,64 +22,72 @@
 
 using namespace box2d;
 
-TEST(SimplexCache, ByteSizeIs16)
+TEST(SimplexCache, ByteSizeIs12)
 {
-	EXPECT_EQ(sizeof(SimplexCache), size_t(16));
+	EXPECT_EQ(sizeof(SimplexCache), size_t(12));
 }
 
-TEST(SimplexCache, Init)
+TEST(SimplexCache, IndexPairListByteSizeIs7)
+{
+	EXPECT_EQ(sizeof(IndexPairList), size_t(7));
+}
+
+TEST(SimplexCache, DefaultInit)
 {
 	SimplexCache foo;
-	EXPECT_EQ(decltype(foo.GetCount()){0}, foo.GetCount());
+	EXPECT_EQ(decltype(foo.GetNumIndices()){0}, foo.GetNumIndices());
 	EXPECT_FALSE(foo.IsMetricSet());
 }
 
-TEST(SimplexCache, SetGetMetric)
+TEST(SimplexCache, InitializingConstructor)
 {
-	SimplexCache foo;
-	EXPECT_FALSE(foo.IsMetricSet());
-	const auto metric = float_t(6.12);
-	foo.SetMetric(metric);
+	{
+		const auto metric = float_t(.3);
+		const auto indices = IndexPairList{};
+		SimplexCache foo{metric, indices};
+		
+		EXPECT_EQ(foo.GetNumIndices(), decltype(foo.GetNumIndices()){0});
+		EXPECT_TRUE(foo.IsMetricSet());
+		EXPECT_EQ(foo.GetMetric(), metric);
+	}
+	{
+		const auto ip0 = IndexPair{0, 0};
+		const auto ip1 = IndexPair{1, 0};
+		const auto ip2 = IndexPair{4, 3};
+		const auto metric = float_t(-1.4);
+		SimplexCache foo{metric, IndexPairList{ip0, ip1, ip2}};
+		
+		EXPECT_EQ(foo.GetNumIndices(), decltype(foo.GetNumIndices()){3});
+		EXPECT_EQ(foo.GetIndexPair(0), ip0);
+		EXPECT_EQ(foo.GetIndexPair(1), ip1);
+		EXPECT_EQ(foo.GetIndexPair(2), ip2);
+		EXPECT_TRUE(foo.IsMetricSet());
+		EXPECT_EQ(foo.GetMetric(), metric);
+	}
+}
+
+TEST(SimplexCache, Assignment)
+{
+	const auto metric = float_t(.3);
+	const auto indices = IndexPairList{};
+	SimplexCache foo{metric, indices};
+	
+	ASSERT_EQ(foo.GetNumIndices(), decltype(foo.GetNumIndices()){0});
+	ASSERT_TRUE(foo.IsMetricSet());
+	ASSERT_EQ(foo.GetMetric(), metric);
+	
+	const auto ip0 = IndexPair{0, 0};
+	const auto ip1 = IndexPair{1, 0};
+	const auto ip2 = IndexPair{4, 3};
+	const auto roo_metric = float_t(-1.4);
+	SimplexCache roo{roo_metric, IndexPairList{ip0, ip1, ip2}};
+
+	foo = roo;
+	
+	EXPECT_EQ(foo.GetNumIndices(), decltype(foo.GetNumIndices()){3});
+	EXPECT_EQ(foo.GetIndexPair(0), ip0);
+	EXPECT_EQ(foo.GetIndexPair(1), ip1);
+	EXPECT_EQ(foo.GetIndexPair(2), ip2);
 	EXPECT_TRUE(foo.IsMetricSet());
-	EXPECT_EQ(metric, foo.GetMetric());
-}
-
-TEST(SimplexCache, AddIndex)
-{
-	SimplexCache foo;
-	EXPECT_EQ(decltype(foo.GetCount()){0}, foo.GetCount());
-
-	const IndexPair ip0{3, 1};
-	foo.AddIndex(ip0);
-	EXPECT_EQ(decltype(foo.GetCount()){1}, foo.GetCount());
-	EXPECT_EQ(ip0, foo.GetIndexPair(0));
-	
-	const IndexPair ip1{IndexPair::InvalidIndex, IndexPair::InvalidIndex};
-	foo.AddIndex(ip1);
-	EXPECT_EQ(decltype(foo.GetCount()){2}, foo.GetCount());
-	EXPECT_EQ(ip0, foo.GetIndexPair(0));
-	EXPECT_EQ(ip1, foo.GetIndexPair(1));
-
-	const auto invalid_index = IndexPair::InvalidIndex;
-	const IndexPair ip2{2, invalid_index};
-	EXPECT_EQ(invalid_index, ip2.b);
-	foo.AddIndex(ip2);
-	EXPECT_EQ(decltype(foo.GetCount()){3}, foo.GetCount());
-	EXPECT_EQ(ip0, foo.GetIndexPair(0));
-	EXPECT_EQ(ip1, foo.GetIndexPair(1));
-	EXPECT_EQ(ip2, foo.GetIndexPair(2));
-}
-
-TEST(SimplexCache, ClearIndices)
-{
-	SimplexCache foo;
-	EXPECT_EQ(decltype(foo.GetCount()){0}, foo.GetCount());
-	
-	const IndexPair ip0{3, 1};
-	foo.AddIndex(ip0);
-	EXPECT_EQ(decltype(foo.GetCount()){1}, foo.GetCount());
-	EXPECT_EQ(ip0, foo.GetIndexPair(0));
-
-	foo.ClearIndices();
-	EXPECT_EQ(decltype(foo.GetCount()){0}, foo.GetCount());
+	EXPECT_EQ(foo.GetMetric(), roo_metric);
 }

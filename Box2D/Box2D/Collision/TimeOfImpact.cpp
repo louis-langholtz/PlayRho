@@ -38,6 +38,7 @@ struct Separation
 	float_t distance; ///< Distance of separation (in meters) between vertices indexed by the index-pair.
 };
 
+/// Separation function.
 class SeparationFunction
 {
 public:
@@ -53,10 +54,10 @@ public:
 		const DistanceProxy& proxyB, const Sweep& sweepB,
 		float_t t1):
 		m_proxyA{proxyA}, m_proxyB{proxyB}, m_sweepA{sweepA}, m_sweepB{sweepB},
-		m_type{(cache.GetCount() != 1)? ((cache.GetIndexA(0) == cache.GetIndexA(1))? e_faceB: e_faceA): e_points}
+		m_type{(cache.GetNumIndices() == 1)? e_points: ((cache.GetIndexPair(0).a == cache.GetIndexPair(1).a)? e_faceB: e_faceA)}
 	{
-		assert(cache.GetCount() > 0);
-		assert(cache.GetCount() <= 3); // < 3 or <= 3?
+		assert(cache.GetIndices().size() > 0);
+		assert(cache.GetIndices().size() <= 3); // < 3 or <= 3?
 		assert(proxyA.GetVertexCount() > 0);
 		assert(proxyB.GetVertexCount() > 0);
 		
@@ -67,8 +68,9 @@ public:
 		{
 		case e_points:
 		{
-			const auto localPointA = proxyA.GetVertex(cache.GetIndexA(0));
-			const auto localPointB = proxyB.GetVertex(cache.GetIndexB(0));
+			const auto ip0 = cache.GetIndexPair(0);
+			const auto localPointA = proxyA.GetVertex(ip0.a);
+			const auto localPointB = proxyB.GetVertex(ip0.b);
 			const auto pointA = Transform(localPointA, xfA);
 			const auto pointB = Transform(localPointB, xfB);
 			m_axis = GetUnitVector(pointB - pointA);
@@ -76,9 +78,12 @@ public:
 		}
 		case e_faceB:
 		{
+			const auto ip0 = cache.GetIndexPair(0);
+			const auto ip1 = cache.GetIndexPair(1);
+
 			// Two points on B and one on A.
-			const auto localPointB1 = proxyB.GetVertex(cache.GetIndexB(0));
-			const auto localPointB2 = proxyB.GetVertex(cache.GetIndexB(1));
+			const auto localPointB1 = proxyB.GetVertex(ip0.b);
+			const auto localPointB2 = proxyB.GetVertex(ip1.b);
 
 			m_axis = GetUnitVector(GetFwdPerpendicular(localPointB2 - localPointB1));
 			const auto normal = Rotate(m_axis, xfB.q);
@@ -86,7 +91,7 @@ public:
 			m_localPoint = (localPointB1 + localPointB2) / float_t(2);
 			const auto pointB = Transform(m_localPoint, xfB);
 
-			const auto localPointA = proxyA.GetVertex(cache.GetIndexA(0));
+			const auto localPointA = proxyA.GetVertex(ip0.a);
 			const auto pointA = Transform(localPointA, xfA);
 
 			auto s = Dot(pointA - pointB, normal);
@@ -98,9 +103,12 @@ public:
 		}
 		case e_faceA:
 		{
+			const auto ip0 = cache.GetIndexPair(0);
+			const auto ip1 = cache.GetIndexPair(1);
+
 			// Two points on A and one or two points on B.
-			const auto localPointA1 = proxyA.GetVertex(cache.GetIndexA(0));
-			const auto localPointA2 = proxyA.GetVertex(cache.GetIndexA(1));
+			const auto localPointA1 = proxyA.GetVertex(ip0.a);
+			const auto localPointA2 = proxyA.GetVertex(ip1.a);
 			
 			m_axis = GetUnitVector(GetFwdPerpendicular(localPointA2 - localPointA1));
 			const auto normal = Rotate(m_axis, xfA.q);
@@ -108,7 +116,7 @@ public:
 			m_localPoint = (localPointA1 + localPointA2) / float_t(2);
 			const auto pointA = Transform(m_localPoint, xfA);
 
-			const auto localPointB = proxyB.GetVertex(cache.GetIndexB(0));
+			const auto localPointB = proxyB.GetVertex(ip0.b);
 			const auto pointB = Transform(localPointB, xfB);
 
 			auto s = Dot(pointB - pointA, normal);
@@ -225,7 +233,7 @@ private:
 
 TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 					   const DistanceProxy& proxyB, Sweep sweepB,
-					   float_t tMax)
+					   const float_t tMax)
 {
 	// CCD via the local separating axis method. This seeks progression
 	// by computing the largest time at which separation is maintained.
@@ -269,7 +277,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 			stats.sum_dist_iters += distanceInfo.iterations;
 			stats.max_dist_iters = Max(stats.max_dist_iters, distanceInfo.iterations);
 			const auto distanceSquared = LengthSquared(distanceInfo.witnessPoints.a - distanceInfo.witnessPoints.b);
-
+			
 			// If the shapes aren't separated, give up on continuous collision.
 			if (distanceSquared <= float_t{0}) // Failure!
 			{
@@ -286,31 +294,6 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 
 		// Initialize the separating axis.
 		SeparationFunction fcn(cache, proxyA, sweepA, proxyB, sweepB, t1);
-#if 0
-		// Dump the curve seen by the root finder
-		{
-			const int32 N = 100;
-			float_t dx = float_t{1} / N;
-			float_t xs[N+1];
-			float_t fs[N+1];
-
-			float_t x = float_t{0};
-
-			for (auto i = decltype(N){0}; i <= N; ++i)
-			{
-				const auto xfA = GetTransformation(sweepA, x);
-				const auto xfB = GetTransformation(sweepB, x);
-				float_t f = fcn.Evaluate(xfA, xfB) - target;
-
-				printf("%g %g\n", x, f);
-
-				xs[i] = x;
-				fs[i] = f;
-
-				x += dx;
-			}
-		}
-#endif
 
 		// Compute the TOI on the separating axis. We do this by successively
 		// resolving the deepest point. This loop is bounded by the number of vertices.

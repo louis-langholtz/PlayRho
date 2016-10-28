@@ -123,7 +123,7 @@ namespace box2d {
 	/// @return Time of impact output data.
 	TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 						   const DistanceProxy& proxyB, Sweep sweepB,
-						   float_t tMax = float_t(1));
+						   const float_t tMax = float_t(1));
 
 } // namespace box2d
 

@@ -35,6 +35,12 @@
 		4734B21C1DC1121900F15E29 /* ArrayList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4734B21B1DC1121900F15E29 /* ArrayList.cpp */; };
 		4734B2211DC1340500F15E29 /* Span.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B21E1DC1340500F15E29 /* Span.hpp */; };
 		4734B2221DC1340500F15E29 /* Span.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B21E1DC1340500F15E29 /* Span.hpp */; };
+		4734B2271DC29F7C00F15E29 /* SimplexVertex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2241DC29F7C00F15E29 /* SimplexVertex.hpp */; };
+		4734B2281DC29F7C00F15E29 /* SimplexVertex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2241DC29F7C00F15E29 /* SimplexVertex.hpp */; };
+		4734B22D1DC2B11D00F15E29 /* Simplex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B22A1DC2B11D00F15E29 /* Simplex.hpp */; };
+		4734B22E1DC2B11D00F15E29 /* Simplex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B22A1DC2B11D00F15E29 /* Simplex.hpp */; };
+		4734B2331DC2CF9500F15E29 /* IndexPairList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2301DC2CF9500F15E29 /* IndexPairList.hpp */; };
+		4734B2341DC2CF9500F15E29 /* IndexPairList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2301DC2CF9500F15E29 /* IndexPairList.hpp */; };
 		4736DE891DB7DB3B003993CB /* Vec3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4736DE881DB7DB3B003993CB /* Vec3.cpp */; };
 		4736DE8C1DB806AE003993CB /* CollideShapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4736DE8A1DB806AE003993CB /* CollideShapes.cpp */; };
 		4736DE8D1DB806AE003993CB /* CollideShapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4736DE8A1DB806AE003993CB /* CollideShapes.cpp */; };
@@ -432,6 +438,9 @@
 		4734B2161DC00AFD00F15E29 /* ArrayList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ArrayList.hpp; sourceTree = "<group>"; };
 		4734B21B1DC1121900F15E29 /* ArrayList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArrayList.cpp; sourceTree = "<group>"; };
 		4734B21E1DC1340500F15E29 /* Span.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Span.hpp; sourceTree = "<group>"; };
+		4734B2241DC29F7C00F15E29 /* SimplexVertex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SimplexVertex.hpp; sourceTree = "<group>"; };
+		4734B22A1DC2B11D00F15E29 /* Simplex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Simplex.hpp; sourceTree = "<group>"; };
+		4734B2301DC2CF9500F15E29 /* IndexPairList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IndexPairList.hpp; sourceTree = "<group>"; };
 		4736DE881DB7DB3B003993CB /* Vec3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vec3.cpp; sourceTree = "<group>"; };
 		4736DE8A1DB806AE003993CB /* CollideShapes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollideShapes.cpp; sourceTree = "<group>"; };
 		4736DE8B1DB806AE003993CB /* CollideShapes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CollideShapes.hpp; sourceTree = "<group>"; };
@@ -868,8 +877,11 @@
 				4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */,
 				80BB892E141C3E5900F1753A /* Distance.cpp */,
 				80BB892F141C3E5900F1753A /* Distance.h */,
+				4734B22A1DC2B11D00F15E29 /* Simplex.hpp */,
 				4726DD161D30230A0012A882 /* SimplexCache.hpp */,
+				4734B2241DC29F7C00F15E29 /* SimplexVertex.hpp */,
 				4726DD0C1D3014990012A882 /* IndexPair.hpp */,
+				4734B2301DC2CF9500F15E29 /* IndexPairList.hpp */,
 				4750398F1D2180D600D32047 /* DistanceProxy.cpp */,
 				475039901D2180D600D32047 /* DistanceProxy.hpp */,
 				80BB8930141C3E5900F1753A /* DynamicTree.cpp */,
@@ -1221,6 +1233,7 @@
 				4736DE8F1DB806AE003993CB /* CollideShapes.hpp in Headers */,
 				47CB34411D6F3A8500828126 /* MassData.hpp in Headers */,
 				47AA5DE21C4C5FBE008AF2BA /* World.h in Headers */,
+				4734B2281DC29F7C00F15E29 /* SimplexVertex.hpp in Headers */,
 				4726DD2D1D31B4090012A882 /* AABB.hpp in Headers */,
 				47AA5DE31C4C5FBE008AF2BA /* WorldCallbacks.h in Headers */,
 				47AA5DE41C4C5FBE008AF2BA /* ChainAndCircleContact.h in Headers */,
@@ -1231,6 +1244,7 @@
 				4726DD201D305E5D0012A882 /* ContactFeature.hpp in Headers */,
 				47578BEB1D8896670078CD40 /* SolverData.hpp in Headers */,
 				47AA5DE71C4C5FBE008AF2BA /* Contact.h in Headers */,
+				4734B22E1DC2B11D00F15E29 /* Simplex.hpp in Headers */,
 				47AA5DE81C4C5FBE008AF2BA /* ContactSolver.h in Headers */,
 				47AA5DE91C4C5FBE008AF2BA /* EdgeAndCircleContact.h in Headers */,
 				47AA5DEA1C4C5FBE008AF2BA /* EdgeAndPolygonContact.h in Headers */,
@@ -1240,6 +1254,7 @@
 				47AA5DEE1C4C5FBE008AF2BA /* FrictionJoint.h in Headers */,
 				47AA5DEF1C4C5FBE008AF2BA /* GearJoint.h in Headers */,
 				47AA5DF01C4C5FBE008AF2BA /* Joint.h in Headers */,
+				4734B2341DC2CF9500F15E29 /* IndexPairList.hpp in Headers */,
 				472E301C1DBA925500DA821D /* VertexSet.hpp in Headers */,
 				47578BE21D8869110078CD40 /* WorldManifold.hpp in Headers */,
 				47AA5DF11C4C5FBE008AF2BA /* MouseJoint.h in Headers */,
@@ -1280,6 +1295,7 @@
 				80BB898E141C3E5900F1753A /* Collision.h in Headers */,
 				80BB8990141C3E5900F1753A /* Distance.h in Headers */,
 				47CB34401D6F3A8500828126 /* MassData.hpp in Headers */,
+				4734B2271DC29F7C00F15E29 /* SimplexVertex.hpp in Headers */,
 				80BB8992141C3E5900F1753A /* DynamicTree.h in Headers */,
 				80BB8994141C3E5900F1753A /* TimeOfImpact.h in Headers */,
 				80BB8996141C3E5900F1753A /* ChainShape.h in Headers */,
@@ -1290,6 +1306,7 @@
 				4788690A1D78BE2B00AEC7F1 /* PositionConstraint.hpp in Headers */,
 				80BB899D141C3E5900F1753A /* Shape.h in Headers */,
 				4751EE2F1CEDD7A300D459CB /* MobileBalanced.h in Headers */,
+				4734B22D1DC2B11D00F15E29 /* Simplex.hpp in Headers */,
 				80BB899F141C3E5900F1753A /* BlockAllocator.h in Headers */,
 				4726DD381D387D630012A882 /* Manifold.hpp in Headers */,
 				47AA63A11D0F7FDA00726CA2 /* ConstBodyIterator.hpp in Headers */,
@@ -1326,6 +1343,7 @@
 				80BB89BF141C3E5900F1753A /* Contact.h in Headers */,
 				80BB89C1141C3E5900F1753A /* ContactSolver.h in Headers */,
 				80BB89C3141C3E5900F1753A /* EdgeAndCircleContact.h in Headers */,
+				4734B2331DC2CF9500F15E29 /* IndexPairList.hpp in Headers */,
 				80BB89C5141C3E5900F1753A /* EdgeAndPolygonContact.h in Headers */,
 				80BB89C7141C3E5900F1753A /* PolygonAndCircleContact.h in Headers */,
 				80BB89C9141C3E5900F1753A /* PolygonContact.h in Headers */,

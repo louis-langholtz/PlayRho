@@ -21,6 +21,8 @@
 #include <Box2D/Collision/Distance.h>
 #include <Box2D/Collision/DistanceProxy.hpp>
 #include <Box2D/Collision/SimplexCache.hpp>
+#include <Box2D/Collision/Simplex.hpp>
+#include <Box2D/Collision/IndexPairList.hpp>
 #include <Box2D/Collision/Shapes/CircleShape.h>
 #include <Box2D/Collision/Shapes/EdgeShape.h>
 #include <Box2D/Collision/Shapes/ChainShape.h>
@@ -29,11 +31,6 @@
 namespace box2d {
 
 namespace {
-
-/// Maximum number of supportable vertices.
-constexpr auto MaxSimplexVertices = unsigned{3};
-
-using IndexPairList = ArrayList<IndexPair, MaxSimplexVertices>;
 
 inline bool Find(Span<const IndexPair> pairs, IndexPair key)
 {
@@ -83,169 +80,6 @@ DistanceProxy GetDistanceProxy(const Shape& shape, child_count_t index)
 	return DistanceProxy{0, Span<const Vec2>({})};
 }
 
-class SimplexVertex
-{
-public:
-	using size_type = IndexPair::size_type;
-
-	SimplexVertex() = default;
-
-	constexpr SimplexVertex(const SimplexVertex& copy) noexcept = default;
-
-	constexpr SimplexVertex(Vec2 sA, size_type iA, Vec2 sB, size_type iB, float_t a_) noexcept:
-		wA{sA}, wB{sB},
-#ifndef DONT_CACHE
-		e{wB - wA},
-#endif	
-		indexPair{iA,iB}, a{a_}
-	{
-		assert(a_ >= 0 && a_ <= 1);
-	}
-
-	constexpr SimplexVertex(const SimplexVertex& copy, float_t newA) noexcept:
-		wA{copy.wA}, wB{copy.wB},
-#ifndef DONT_CACHE
-		e{copy.e},
-#endif	
-		indexPair{copy.indexPair}, a{newA}
-	{
-		assert(newA >= 0 && newA <= 1);
-	}
-
-	constexpr Vec2 get_wA() const noexcept { return wA; }
-	
-	constexpr Vec2 get_wB() const noexcept { return wB; }
-
-	constexpr Vec2 get_edge() const noexcept
-	{
-#ifndef DONT_CACHE
-		return e;
-#else
-		return wB - wA;
-#endif			
-	}
-
-	/// Gets "A".
-	/// @detail This is the "Barycentric coordinate for closest point".
-	/// @return Scalar value between 0 and 1 inclusive.
-	float_t get_a() const noexcept { return a; }
-
-	/// Sets "A" to the given value.
-	/// @note The given value must be between 0 and 1 inclusively. Behavior is undefined otherwise.
-	/// @param value Value between 0 and 1 to set "A" to.
-	void set_a(float_t value) noexcept
-	{
-		assert(value >= 0 && value <= 1);
-		a = value;
-	}
-
-	IndexPair indexPair; ///< Indexes of wA and wB.
-	
-private:
-	Vec2 wA; ///< Support point in proxy A.
-	Vec2 wB; ///< Support point in proxy B.
-#ifndef DONT_CACHE
-	Vec2 e;
-#endif
-	float_t a; ///< Barycentric coordinate for closest point
-};
-
-/// Gets "w".
-/// @return 2D vector value of wB minus wA.
-static constexpr inline Vec2 GetW(const SimplexVertex sv)
-{
-	return sv.get_edge();
-}
-	
-static inline Vec2 GetScaledPointA(const SimplexVertex sv)
-{
-	return sv.get_wA() * sv.get_a();
-}
-
-static inline Vec2 GetScaledPointB(const SimplexVertex sv)
-{
-	return sv.get_wB() * sv.get_a();
-}
-
-#if defined(DO_COMPUTE_CLOSEST_POINT)
-
-static inline Vec2 GetScaledDelta(const SimplexVertex sv)
-{
-	return GetW(sv) * sv.get_a();
-}
-
-#endif
-
-/// Simplex.
-/// @detail
-/// An encapsulation of a point, line segment, or triangle.
-/// These are defined respectively as: a 0-simplex, a 1-simplex, and a 2-simplex.
-/// Used in doing GJK collision detection.
-/// @sa https://en.wikipedia.org/wiki/Simplex
-/// @sa https://en.wikipedia.org/wiki/Gilbert%2DJohnson%2DKeerthi_distance_algorithm
-using Simplex = ArrayList<SimplexVertex, MaxSimplexVertices>;
-
-// static float_t GetMetric(const Simplex& simplex);
-	
-/// Gets the "search direction" for the given simplex.
-/// @param simplex A one or two vertex simplex.
-/// @warning Behavior is undefined if the given simplex has zero vertices.
-/// @return "search direction" vector.
-static inline Vec2 GetSearchDirection(const Simplex& simplex) noexcept
-{
-	const auto count = simplex.size();
-	assert((count == 1) || (count == 2));
-	switch (count)
-	{
-		case 1:
-			return -GetW(simplex[0]);
-			
-		case 2:
-		{
-			const auto e12 = GetW(simplex[1]) - GetW(simplex[0]);
-			const auto sgn = Cross(e12, -GetW(simplex[0]));
-			// If sgn > 0, then origin is left of e12, else origin is right of e12.
-			return (sgn > float_t{0})? GetRevPerpendicular(e12): GetFwdPerpendicular(e12);
-		}
-			
-		default:
-			return Vec2_zero;
-	}
-}
-
-#if defined(DO_COMPUTE_CLOSEST_POINT)
-
-/// Gets the "closest point".
-/// @note This uses the vertices "a" values when count is 2.
-static inline Vec2 GetClosestPoint(const Simplex& simplex)
-{
-	const auto count = simplex.size();
-	assert(count < 4);
-	switch (count)
-	{
-		case 1: return GetW(simplex[0]);
-		case 2: return GetScaledDelta(simplex[0]) + GetScaledDelta(simplex[1]);
-		case 3: return Vec2_zero;
-		default: return Vec2_zero;
-	}
-}
-
-#endif
-				
-static float_t GetMetric(const Simplex& simplex)
-{
-	assert(simplex.size() < 4);
-	switch (simplex.size())
-	{
-		case 0: return float_t{0};
-		case 1: return float_t{0};
-		case 2:	return Sqrt(LengthSquared(GetW(simplex[0]) - GetW(simplex[1])));
-		case 3:	return Cross(GetW(simplex[1]) - GetW(simplex[0]), GetW(simplex[2]) - GetW(simplex[0]));
-		default: break; // should not be reached
-	}
-	return float_t{0};
-}
-
 static inline WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept
 {
 	const auto count = simplex.size();
@@ -278,9 +112,9 @@ static inline WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept
 	return WitnessPoints{};
 }
 
-static SimplexVertex GetSimplexVertex(IndexPair indexPair,
-									  const DistanceProxy& proxyA, const Transformation& xfA,
-									  const DistanceProxy& proxyB, const Transformation& xfB)
+static inline SimplexVertex GetSimplexVertex(IndexPair indexPair,
+											 const DistanceProxy& proxyA, const Transformation& xfA,
+											 const DistanceProxy& proxyB, const Transformation& xfB)
 {
 	const auto wA = Transform(proxyA.GetVertex(indexPair.a), xfA);
 	const auto wB = Transform(proxyB.GetVertex(indexPair.b), xfB);
@@ -288,15 +122,13 @@ static SimplexVertex GetSimplexVertex(IndexPair indexPair,
 }
 
 static inline Simplex GetSimplex(const SimplexCache& cache,
-						  const DistanceProxy& proxyA, const Transformation& xfA,
-						  const DistanceProxy& proxyB, const Transformation& xfB)
+								 const DistanceProxy& proxyA, const Transformation& xfA,
+								 const DistanceProxy& proxyB, const Transformation& xfB)
 {
 	Simplex simplex;
-	const auto count = cache.GetCount();
-	assert(count <= MaxSimplexVertices);
-	for (auto i = decltype(count){0}; i < count; ++i)
+	for (auto&& indexpair: cache.GetIndices())
 	{
-		simplex.push_back(GetSimplexVertex(cache.GetIndexPair(i), proxyA, xfA, proxyB, xfB));
+		simplex.push_back(GetSimplexVertex(indexpair, proxyA, xfA, proxyB, xfB));
 	}
 	return simplex;
 }
@@ -490,19 +322,11 @@ static inline Simplex Solve(const Simplex& simplex) noexcept
 	return simplex;
 }
 
-static inline auto GetIndexPairs(const Simplex& src) noexcept
+inline auto GetSimplexCache(const Simplex& simplex)
 {
-	IndexPairList list;
-
-	const auto count = src.size();
-	for (auto i = decltype(count){0}; i < count; ++i)
-	{
-		list.add(src[i].indexPair);
-	}
-	
-	return list;
+	return SimplexCache(GetMetric(simplex), GetIndexPairList(simplex));
 }
-
+	
 DistanceOutput Distance(SimplexCache& cache,
 						const DistanceProxy& proxyA, const Transformation& transformA,
 						const DistanceProxy& proxyB, const Transformation& transformB)
@@ -543,7 +367,7 @@ DistanceOutput Distance(SimplexCache& cache,
 		++iter;
 	
 		// Copy simplex so we can identify duplicates and prevent cycling.
-		const auto savedIndices = GetIndexPairs(simplex);
+		const auto savedIndices = GetIndexPairList(simplex);
 
 		simplex = Solve(simplex);
 
@@ -599,12 +423,7 @@ DistanceOutput Distance(SimplexCache& cache,
 	}
 
 	// Cache the simplex.
-	cache.SetMetric(GetMetric(simplex));
-	cache.ClearIndices();
-	for (auto i = decltype(simplex.size()){0}; i < simplex.size(); ++i)
-	{
-		cache.AddIndex(simplex[i].indexPair);
-	}
+	cache = GetSimplexCache(simplex);
 
 	return DistanceOutput{GetWitnessPoints(simplex), iter};
 }

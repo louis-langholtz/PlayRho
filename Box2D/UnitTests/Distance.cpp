@@ -39,7 +39,7 @@ TEST(Distance, MatchingCircles)
 	EXPECT_EQ(output.witnessPoints.b, pos1);
 	EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
 	
-	EXPECT_EQ(cache.GetCount(), decltype(cache.GetCount()){1});
+	EXPECT_EQ(cache.GetNumIndices(), decltype(cache.GetNumIndices()){1});
 	
 	const auto ip = cache.GetIndexPair(0);
 	EXPECT_EQ(ip.a, IndexPair::size_type{0});
@@ -69,7 +69,7 @@ TEST(Distance, OpposingCircles)
 
 	EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
 	
-	EXPECT_EQ(cache.GetCount(), decltype(cache.GetCount()){1});
+	EXPECT_EQ(cache.GetNumIndices(), decltype(cache.GetNumIndices()){1});
 	
 	const auto ip = cache.GetIndexPair(0);
 	EXPECT_EQ(ip.a, IndexPair::size_type{0});
@@ -102,7 +102,7 @@ TEST(Distance, HorTouchingCircles)
 	
 	EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
 	
-	EXPECT_EQ(cache.GetCount(), decltype(cache.GetCount()){1});
+	EXPECT_EQ(cache.GetNumIndices(), decltype(cache.GetNumIndices()){1});
 	
 	const auto ip = cache.GetIndexPair(0);
 	EXPECT_EQ(ip.a, IndexPair::size_type{0});
@@ -132,7 +132,7 @@ TEST(Distance, OverlappingCirclesPN)
 	
 	EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
 	
-	EXPECT_EQ(cache.GetCount(), decltype(cache.GetCount()){1});
+	EXPECT_EQ(cache.GetNumIndices(), decltype(cache.GetNumIndices()){1});
 	
 	const auto ip = cache.GetIndexPair(0);
 	EXPECT_EQ(ip.a, IndexPair::size_type{0});
@@ -162,7 +162,7 @@ TEST(Distance, OverlappingCirclesNP)
 	
 	EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
 	
-	EXPECT_EQ(cache.GetCount(), decltype(cache.GetCount()){1});
+	EXPECT_EQ(cache.GetNumIndices(), decltype(cache.GetNumIndices()){1});
 	
 	const auto ip = cache.GetIndexPair(0);
 	EXPECT_EQ(ip.a, IndexPair::size_type{0});
@@ -193,7 +193,7 @@ TEST(Distance, SeparatedCircles)
 	
 	EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
 	
-	EXPECT_EQ(cache.GetCount(), decltype(cache.GetCount()){1});
+	EXPECT_EQ(cache.GetNumIndices(), decltype(cache.GetNumIndices()){1});
 	
 	const auto ip = cache.GetIndexPair(0);
 	EXPECT_EQ(ip.a, IndexPair::size_type{0});
@@ -224,7 +224,7 @@ TEST(Distance, EdgeCircleOverlapping)
 	
 	EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
 	
-	EXPECT_EQ(cache.GetCount(), decltype(cache.GetCount()){2});
+	EXPECT_EQ(cache.GetNumIndices(), decltype(cache.GetNumIndices()){2});
 	
 	const auto ip0 = cache.GetIndexPair(0);
 	EXPECT_EQ(ip0.a, IndexPair::size_type{0});
@@ -259,7 +259,7 @@ TEST(Distance, EdgeCircleOverlapping2)
 	
 	EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
 	
-	EXPECT_EQ(cache.GetCount(), decltype(cache.GetCount()){2});
+	EXPECT_EQ(cache.GetNumIndices(), decltype(cache.GetNumIndices()){2});
 	
 	const auto ip0 = cache.GetIndexPair(0);
 	EXPECT_EQ(ip0.a, IndexPair::size_type{0});
@@ -294,7 +294,7 @@ TEST(Distance, EdgeCircleTouching)
 	
 	EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
 	
-	EXPECT_EQ(cache.GetCount(), decltype(cache.GetCount()){2});
+	EXPECT_EQ(cache.GetNumIndices(), decltype(cache.GetNumIndices()){2});
 	
 	const auto ip0 = cache.GetIndexPair(0);
 	EXPECT_EQ(ip0.a, IndexPair::size_type{0});
@@ -335,7 +335,7 @@ TEST(Distance, HorEdgeSquareTouching)
 	
 	EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
 	
-	EXPECT_EQ(cache.GetCount(), decltype(cache.GetCount()){2});
+	EXPECT_EQ(cache.GetNumIndices(), decltype(cache.GetNumIndices()){2});
 	
 	const auto ip0 = cache.GetIndexPair(0);
 	EXPECT_EQ(ip0.a, IndexPair::size_type{0});
@@ -377,7 +377,7 @@ TEST(Distance, VerEdgeSquareTouching)
 	
 	EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
 	
-	EXPECT_EQ(cache.GetCount(), decltype(cache.GetCount()){2});
+	EXPECT_EQ(cache.GetNumIndices(), decltype(cache.GetNumIndices()){2});
 	
 	const auto ip0 = cache.GetIndexPair(0);
 	EXPECT_EQ(ip0.a, IndexPair::size_type{2});
@@ -413,7 +413,7 @@ TEST(Distance, SquareTwice)
 
 	EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
 	
-	EXPECT_EQ(cache.GetCount(), decltype(cache.GetCount()){1});
+	EXPECT_EQ(cache.GetNumIndices(), decltype(cache.GetNumIndices()){1});
 	
 	const auto ip = cache.GetIndexPair(0);
 	EXPECT_EQ(ip.a, IndexPair::size_type{0});
@@ -453,7 +453,7 @@ TEST(Distance, SquareSquareTouchingVertically)
 	
 	EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
 	
-	EXPECT_EQ(cache.GetCount(), decltype(cache.GetCount()){2});
+	EXPECT_EQ(cache.GetNumIndices(), decltype(cache.GetNumIndices()){2});
 	
 	const auto ip = cache.GetIndexPair(0);
 	EXPECT_EQ(ip.a, IndexPair::size_type{3});
@@ -492,7 +492,7 @@ TEST(Distance, SquareSquareDiagonally)
 	
 	EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
 	
-	EXPECT_EQ(cache.GetCount(), decltype(cache.GetCount()){1});
+	EXPECT_EQ(cache.GetNumIndices(), decltype(cache.GetNumIndices()){1});
 	
 	const auto ip = cache.GetIndexPair(0);
 	EXPECT_EQ(ip.a, IndexPair::size_type{2});
@@ -555,7 +555,7 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
 	
 	EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
 	
-	EXPECT_EQ(cache.GetCount(), decltype(cache.GetCount()){3});
+	EXPECT_EQ(cache.GetNumIndices(), decltype(cache.GetNumIndices()){3});
 	
 	const auto ip = cache.GetIndexPair(0);
 	EXPECT_EQ(ip.a, IndexPair::size_type{0});

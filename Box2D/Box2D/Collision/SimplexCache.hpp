@@ -21,25 +21,39 @@
 #define SimplexCache_hpp
 
 #include <Box2D/Common/Math.h>
-#include <Box2D/Collision/IndexPair.hpp>
+#include <Box2D/Common/ArrayList.hpp>
+#include <Box2D/Collision/IndexPairList.hpp>
 
 namespace box2d
 {
 	/// Simplex cache.
 	///
-	/// @detail
-	/// Used to warm start Distance.
+	/// @detail Used to warm start Distance.
+	/// Caches particular information from a simplex - a related metric and up-to 3 index pairs.
+	///
+	/// @invariant As the metric and list of index pairs should be values from a snapshot of a
+	///   simplex, the mertic and list of index pairs must not vary independent of each other.
+	///   As such, this data structure only allows these values to be changed in unision via object
+	///   construction or object assignment.
+	///
+	/// @note This data structure is 12-bytes large.
 	///
 	class SimplexCache
 	{
 	public:
 
-		/// Maximum count of times this object's add-index method may be called.
-		/// @sa AddIndex.
-		static constexpr auto MaxCount = unsigned{3};
+		using size_type = IndexPairList::size_type;
+
+		SimplexCache() = default;
+
+		SimplexCache(const SimplexCache& copy) = default;
 		
-		using size_type = std::remove_const<decltype(MaxCount)>::type;
-		
+		constexpr SimplexCache(float_t metric, IndexPairList indices) noexcept:
+			m_metric{metric}, m_indices{indices}
+		{
+			// Intentionally empty
+		}
+
 		/// Gets the metric that was set.
 		/// @note Behavior is undefined if metric was not previously set.
 		///   The IsMetricSet() method can be used to check dynamically if unsure.
@@ -48,57 +62,25 @@ namespace box2d
 		/// @return Value previously set.
 		auto GetMetric() const noexcept
 		{
-			assert(IsValid(metric));
-			return metric;
+			assert(IsValid(m_metric));
+			return m_metric;
 		}
+				
+		auto IsMetricSet() const noexcept { return IsValid(m_metric); }
 		
-		/// Gets the count.
-	 	/// @detail This is the count of times this object's add-index method has been called
-		///   since the last clearing of the indexes was done.
-		/// @return Value between 0 and MaxCount.
-		/// @sa MaxCount.
-		/// @sa AddIndex.
-		/// @sa ClearIndices.
-		auto GetCount() const noexcept { return count; }
-		
-		auto GetIndexPair(size_type index) const noexcept
-		{
-			assert(index < count);
-			return indexPair[index];
-		}
-		
-		auto GetIndexA(size_type index) const
-		{
-			assert(index < count);
-			return indexPair[index].a;
-		}
-		
-		auto GetIndexB(size_type index) const
-		{
-			assert(index < count);
-			return indexPair[index].b;
-		}
-		
-		void ClearIndices() noexcept { count = 0; }
-		
-		auto IsMetricSet() const noexcept { return IsValid(metric); }
-		
-		void SetMetric(float_t m) noexcept
-		{
-			metric = m;
-		}
-		
-		void AddIndex(IndexPair ip)
-		{
-			assert(count < MaxCount);
-			indexPair[count] = ip;
-			++count;
-		}
-		
+		auto GetIndices() const noexcept { return m_indices; }
+
+		auto GetNumIndices() const noexcept { return m_indices.size(); }
+
+		auto GetIndexPair(size_type index) const noexcept { return m_indices[index]; }
+
 	private:
-		float_t metric = GetInvalid<float_t>(); ///< length or area
-		size_type count = 0;
-		IndexPair indexPair[MaxCount]; ///< Vertices on shape A and B.
+		float_t m_metric = GetInvalid<float_t>(); ///< length or area
+
+		/// Indices.
+		/// @detail
+		/// Collection of index-pairs.
+		IndexPairList m_indices;
 	};
 
 }; // namespace box2d
