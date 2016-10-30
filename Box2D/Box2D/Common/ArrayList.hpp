@@ -102,7 +102,7 @@ namespace box2d
 			return m_elements[index];
 		}
 		
-		value_type operator[](size_type index) const noexcept
+		const value_type& operator[](size_type index) const noexcept
 		{
 			assert(index < MAXSIZE);
 			return m_elements[index];
