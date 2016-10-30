@@ -99,3 +99,18 @@ TEST(Vec2, Rotate)
 	EXPECT_EQ(round(Vec2{22, 30}, 1000), round(Rotate(Vec2{22, 30}, Rot(DegreesToRadians(360))), 1000));
 	EXPECT_EQ(round(-Vec2{22, 30}, 1000), round(Rotate(Vec2{22, 30}, Rot(DegreesToRadians(180))), 1000));
 }
+
+TEST(Vec2, IncrementOperator)
+{
+	auto a = Vec2{0, 0};
+	ASSERT_EQ(a, Vec2(0, 0));
+	const auto inc = Vec2{1, 1};
+	
+	a += inc;
+	
+	EXPECT_EQ(a, inc);
+	
+	a += inc;
+	
+	EXPECT_EQ(a, inc * 2);
+}
