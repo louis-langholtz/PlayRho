@@ -26,3 +26,18 @@ TEST(SimplexVertex, ByteSizeIs28)
 	EXPECT_EQ(sizeof(SimplexVertex), size_t(28));
 }
 
+TEST(SimplexVertex, InitializingConstructor)
+{
+	const auto iA = SimplexVertex::size_type{1};
+	const auto iB = SimplexVertex::size_type{2};
+	const auto pA = Vec2{float_t(2.2), float_t(-3.1)};
+	const auto pB = Vec2{float_t(-9.2), float_t(0.003)};
+
+	const auto sv = SimplexVertex(pA, iA, pB, iB);
+	
+	EXPECT_EQ(sv.GetPointA(), pA);
+	EXPECT_EQ(sv.GetPointB(), pB);
+	EXPECT_EQ(sv.indexPair.a, iA);
+	EXPECT_EQ(sv.indexPair.b, iB);
+	EXPECT_EQ(sv.GetPointDelta(), pB - pA);
+}

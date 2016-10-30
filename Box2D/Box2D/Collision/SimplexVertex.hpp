@@ -27,103 +27,74 @@ namespace box2d
 {
 	/// Simplex vertex.
 	///
-	/// @note This data structure may be 30-bytes large.
+	/// @detail This is the locations (in world coordinates) and indices of a pair of vertices
+	/// from two shapes (shape A and shape B).
+	///
+	/// @note This data structure may be 28-bytes large.
 	///
 	class SimplexVertex
 	{
 	public:
 		using size_type = IndexPair::size_type;
 		
+		/// Default constructor.
 		SimplexVertex() = default;
 		
 		constexpr SimplexVertex(const SimplexVertex& copy) noexcept = default;
 		
-		constexpr SimplexVertex(Vec2 sA, size_type iA, Vec2 sB, size_type iB, float_t a_) noexcept;
+		/// Initializing constructor.
+		/// @param pA Point A in world coordinates.
+		/// @param iA Index of point A within the shape that it comes from.
+		/// @param pB Point B in world coordinates.
+		/// @param iB Index of point B within the shape that it comes from.
+		constexpr SimplexVertex(Vec2 pA, size_type iA, Vec2 pB, size_type iB) noexcept;
 		
-		constexpr SimplexVertex(const SimplexVertex& copy, float_t newA) noexcept;
+		/// Gets point A (in world coordinates).
+		constexpr Vec2 GetPointA() const noexcept { return m_wA; }
 		
-		constexpr Vec2 get_wA() const noexcept { return wA; }
+		/// Gets point B (in world coordinates).
+		constexpr Vec2 GetPointB() const noexcept { return m_wB; }
 		
-		constexpr Vec2 get_wB() const noexcept { return wB; }
-		
-		constexpr Vec2 get_edge() const noexcept;
-		
-		/// Gets "A".
-		/// @detail This is the "Barycentric coordinate for closest point".
-		/// @return Scalar value between 0 and 1 inclusive.
-		constexpr float_t get_a() const noexcept { return a; }
-		
-		/// Sets "A" to the given value.
-		/// @note The given value must be between 0 and 1 inclusively. Behavior is undefined otherwise.
-		/// @param value Value between 0 and 1 to set "A" to.
-		void set_a(float_t value) noexcept
-		{
-			assert(value >= 0 && value <= 1);
-			a = value;
-		}
-		
-		IndexPair indexPair; ///< Indexes of wA and wB. 2-bytes.
+		/// Gets the point delta.
+		/// @detail This is the difference between points A and B.
+		/// @return Point B minus point A.
+		constexpr Vec2 GetPointDelta() const noexcept;
+				
+		IndexPair indexPair; ///< Index pair. @detail Indices of points A and B. 2-bytes.
 		
 	private:
-		Vec2 wA; ///< Support point in proxy A. 8-bytes.
-		Vec2 wB; ///< Support point in proxy B. 8-bytes.
+		Vec2 m_wA; ///< Point A in world coordinates. This is the support point in proxy A. 8-bytes.
+		Vec2 m_wB; ///< Point B in world coordinates. This is the support point in proxy B. 8-bytes.
 #ifndef DONT_CACHE
-		Vec2 e; ///< Edge defined wB - wA. 8-bytes.
+		Vec2 m_delta; ///< Edge defined wB - wA. 8-bytes.
 #endif
-		float_t a; ///< Barycentric coordinate for closest point. 4-bytes.
 	};
 	
-	constexpr inline SimplexVertex::SimplexVertex(Vec2 sA, size_type iA, Vec2 sB, size_type iB, float_t a_) noexcept:
-		wA{sA}, wB{sB},
+	constexpr inline SimplexVertex::SimplexVertex(Vec2 pA, size_type iA, Vec2 pB, size_type iB) noexcept:
+		m_wA{pA}, m_wB{pB},
 #ifndef DONT_CACHE
-		e{wB - wA},
+		m_delta{pB - pA},
 #endif	
-		indexPair{iA,iB}, a{a_}
+		indexPair{iA,iB}
 	{
-		assert(a_ >= 0 && a_ <= 1);
 	}
 
-	constexpr inline SimplexVertex::SimplexVertex(const SimplexVertex& copy, float_t newA) noexcept:
-		wA{copy.wA}, wB{copy.wB},
-#ifndef DONT_CACHE
-		e{copy.e},
-#endif	
-		indexPair{copy.indexPair}, a{newA}
-	{
-		assert(newA >= 0 && newA <= 1);
-	}
-
-	constexpr inline Vec2 SimplexVertex::get_edge() const noexcept
+	constexpr inline Vec2 SimplexVertex::GetPointDelta() const noexcept
 	{
 #ifndef DONT_CACHE
-		return e;
+		return m_delta;
 #else
-		return wB - wA;
+		return m_wB - m_wA;
 #endif			
 	}
 
 	/// Gets "w".
 	/// @return 2D vector value of wB minus wA.
-	constexpr inline Vec2 GetW(const SimplexVertex& sv)
+	constexpr inline Vec2 GetPointDelta(const SimplexVertex& sv)
 	{
-		return sv.get_edge();
+		return sv.GetPointDelta();
 	}
-	
-	constexpr inline Vec2 GetScaledPointA(const SimplexVertex& sv)
-	{
-		return sv.get_wA() * sv.get_a();
-	}
-	
-	constexpr inline Vec2 GetScaledPointB(const SimplexVertex& sv)
-	{
-		return sv.get_wB() * sv.get_a();
-	}
-	
-	constexpr inline Vec2 GetScaledDelta(const SimplexVertex& sv)
-	{
-		return GetW(sv) * sv.get_a();
-	}
-	
+		
 }
 
 #endif /* SimplexVertex_hpp */
