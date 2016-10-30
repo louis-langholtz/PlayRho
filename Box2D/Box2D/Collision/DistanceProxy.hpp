@@ -94,10 +94,18 @@ namespace box2d
 		/// @detail This is the count of valid vertex elements that this object provides.
 		inline auto GetVertexCount() const noexcept { return m_count; }
 		
-		/// Get a vertex by index. Used by Distance.
-		/// @param index A valid index value (must not be InvalidIndex).
+		/// Gets a vertex by index.
+		///
+		/// @param index Index value less than the count of vertices represented by this proxy.
+		///
+		/// @note Behavior is undefined if the index given is not less than the count of vertices
+		///   represented by this proxy.
 		/// @note Behavior is undefined if InvalidIndex is given as the index value.
+		///
 		/// @return 2D vector position (relative to the shape's origin) at the given index.
+		///
+		/// @sa Distance.
+		///
 		auto GetVertex(size_type index) const noexcept
 		{
 			assert(index != InvalidIndex);
