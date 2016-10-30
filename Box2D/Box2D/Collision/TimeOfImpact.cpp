@@ -231,8 +231,8 @@ private:
 	Vec2 m_localPoint; // used if type is e_faceA or e_faceB
 };
 
-TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
-					   const DistanceProxy& proxyB, Sweep sweepB,
+TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
+					   const DistanceProxy& proxyB, const Sweep& sweepB,
 					   const float_t tMax)
 {
 	// CCD via the local separating axis method. This seeks progression
@@ -244,10 +244,6 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 	
 	auto stats = TOIOutput::Stats{0, 0, 0, 0, 0};
 	auto output = TOIOutput{TOIOutput::e_unknown, tMax, stats};
-
-	// Large rotations can make the root finder fail, so we normalize the  sweep angles.
-	sweepA = GetAnglesNormalized(sweepA);
-	sweepB = GetAnglesNormalized(sweepB);
 
 	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius(); // 2 polygons = 2 * PolygonRadius = 4 * LinearSlop
 	const auto target = Max(LinearSlop, totalRadius - BOX2D_MAGIC(LinearSlop * float_t{3}));
@@ -267,12 +263,11 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
 	for(;;)
 	{
 		{
-			const auto transformA = GetTransformation(sweepA, t1);
-			const auto transformB = GetTransformation(sweepB, t1);
-
 			// Get the distance between shapes. We can also use the results
 			// to get a separating axis.
-			const auto distanceInfo = Distance(cache, proxyA, transformA, proxyB, transformB);
+			const auto distanceInfo = Distance(cache,
+											   proxyA, GetTransformation(sweepA, t1),
+											   proxyB, GetTransformation(sweepB, t1));
 			++stats.toi_iters;
 			stats.sum_dist_iters += distanceInfo.iterations;
 			stats.max_dist_iters = Max(stats.max_dist_iters, distanceInfo.iterations);

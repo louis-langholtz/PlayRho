@@ -265,8 +265,9 @@ bool Contact::UpdateTOI()
 	bB->m_sweep.Advance0(alpha0);
 	
 	// Computes the time of impact in interval [0, 1]
-	const auto output = TimeOfImpact(GetDistanceProxy(*fA->GetShape(), GetChildIndexA()), bA->m_sweep,
-									 GetDistanceProxy(*fB->GetShape(), GetChildIndexB()), bB->m_sweep);
+	// Large rotations can make the root finder of TimeOfImpact fail, so normalize the sweep angles.
+	const auto output = TimeOfImpact(GetDistanceProxy(*fA->GetShape(), GetChildIndexA()), GetAnglesNormalized(bA->m_sweep),
+									 GetDistanceProxy(*fB->GetShape(), GetChildIndexB()), GetAnglesNormalized(bB->m_sweep));
 	++m_toiCalls;
 	
 	m_toiItersTotal += output.get_toi_iters();

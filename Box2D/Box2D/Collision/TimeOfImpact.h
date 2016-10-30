@@ -121,8 +121,8 @@ namespace box2d {
 	/// @param sweepB Sweep B. Sweep of motion for shape represented by proxy B.
 	/// @param tMax Maximum time fraction.
 	/// @return Time of impact output data.
-	TOIOutput TimeOfImpact(const DistanceProxy& proxyA, Sweep sweepA,
-						   const DistanceProxy& proxyB, Sweep sweepB,
+	TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
+						   const DistanceProxy& proxyB, const Sweep& sweepB,
 						   const float_t tMax = float_t(1));
 
 } // namespace box2d
