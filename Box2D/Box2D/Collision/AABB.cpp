@@ -78,7 +78,7 @@ namespace box2d
 		
 		// Does the ray start inside the box?
 		// Does the ray intersect beyond the max fraction?
-		if ((tmin < float_t{0}) || (tmin > input.maxFraction))
+		if ((tmin < 0) || (tmin > input.maxFraction))
 		{
 			return RayCastOutput{};
 		}
