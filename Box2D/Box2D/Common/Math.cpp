@@ -56,5 +56,5 @@ Vec2 box2d::ComputeCentroid(const Span<const Vec2>& vertices)
 
 ::std::ostream& box2d::operator<<(::std::ostream& os, const Vec2& value)
 {
-	return os << "{" << value.x << "," << value.y << "}";
+	return os << "Vec2(" << value.x << "," << value.y << ")";
 }
