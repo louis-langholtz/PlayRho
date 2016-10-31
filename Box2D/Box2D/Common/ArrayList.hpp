@@ -150,8 +150,8 @@ namespace box2d
 namespace std
 {
 	/// Tuple size specialization for ArrayList classes.
-	template< class T, size_t N >
-	class tuple_size< box2d::ArrayList<T, N> >:	public integral_constant<size_t, N>
+	template< class T, size_t N, typename SIZE_TYPE >
+	class tuple_size< box2d::ArrayList<T, N, SIZE_TYPE> >:	public integral_constant<size_t, N>
 	{
 		// Intentionally empty.
 	};
