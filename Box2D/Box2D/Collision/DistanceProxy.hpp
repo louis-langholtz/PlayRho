@@ -75,7 +75,11 @@ namespace box2d
 		/// Initializing constructor.
 		/// @detail Constructs a distance proxy for n-point shape (like a polygon).
 		/// @param radius Radius.
-		/// @param vertices Vertices of the shape (relative to the shape's origin).
+		/// @param vertices Collection of vertices of the shape (relative to the shape's origin).
+		/// @note The vertices collection must have more than zero elements and no more than
+		///    <code>MaxShapeVertices</code> elements.
+		/// @warning Behavior is undefined if the vertices collection has less than one element or
+		///   more than <code>MaxShapeVertices</code> elements.
 		constexpr DistanceProxy(float_t radius, const Span<const Vec2>& vertices) noexcept:
 			m_radius{radius},
 			m_buffer{},
@@ -83,6 +87,7 @@ namespace box2d
 			m_count{static_cast<size_type>(vertices.size())}
 		{
 			assert(radius >= 0);
+			assert(vertices.size() > 0);
 			assert(vertices.size() <= MaxShapeVertices);
 		}
 		
@@ -90,8 +95,10 @@ namespace box2d
 		/// @return Non-negative distance.
 		auto GetRadius() const noexcept { return m_radius; }
 		
-		/// Get the vertex count.
+		/// Gets the vertex count.
 		/// @detail This is the count of valid vertex elements that this object provides.
+		/// @return Value between 0 and <code>MaxShapeVertices</code>.
+		/// @note This only returns 0 if this proxy was default constructed.
 		inline auto GetVertexCount() const noexcept { return m_count; }
 		
 		/// Gets a vertex by index.

@@ -650,14 +650,24 @@ constexpr inline float_t Dot(const Vec2 a, const Vec2 b) noexcept
 	return (a.x * b.x) + (a.y * b.y);
 }
 
-/// Performs the cross product on two vectors.
+/// Performs the 2D analog of the cross product of two vectors.
 ///
 /// @detail
 /// This is defined as the result of: <code>(a.x * b.y) - (a.y * b.x)</code>.
 ///
 /// @note This operation is anti-commutative.
-/// @note In 2D this produces a scalar.
-/// @note The result will be 0 if either vectors (A or B) have a length of zero.
+/// @note The result will be 0 if any of the following are true:
+///   vector A or vector B has a length of zero;
+///   vectors A and B point in the same direction; or
+///   vectors A and B point in exactly opposite direction of each other.
+/// @note The result will be positive if:
+///   neither vector A nor B has a length of zero; and
+///   vector B is at an angle from vector A of greater than 0 and less than 180 degrees
+///   (counter-clockwise from A being a positive angle).
+/// @note Result will be negative if:
+///   neither vector A nor B has a length of zero; and
+///   vector B is at an angle from vector A of less than 0 and greater than -180 degrees
+///   (clockwise from A being a negative angle).
 ///
 /// @sa https://en.wikipedia.org/wiki/Cross_product
 ///
@@ -668,6 +678,16 @@ constexpr inline float_t Dot(const Vec2 a, const Vec2 b) noexcept
 ///
 constexpr inline float_t Cross(const Vec2 a, const Vec2 b) noexcept
 {
+	// Both vectors of same direction...
+	// If a = Vec2{1, 2} and b = Vec2{1, 2} then: a x b = 1 * 2 - 2 * 1 = 0.
+	// If a = Vec2{1, 2} and b = Vec2{2, 4} then: a x b = 1 * 4 - 2 * 2 = 0.
+	//
+	// Vectors at +/- 90 degrees of each other...
+	// If a = Vec2{1, 2} and b = Vec2{-2, 1} then: a x b = 1 * 1 - 2 * (-2) = 1 + 4 = 5.
+	// If a = Vec2{1, 2} and b = Vec2{2, -1} then: a x b = 1 * (-1) - 2 * 2 = -1 - 4 = -5.
+	//
+	// Vectors between 0 and 180 degrees of each other excluding 90 degrees...
+	// If a = Vec2{1, 2} and b = Vec2{-1, 2} then: a x b = 1 * 2 - 2 * (-1) = 2 + 2 = 4.
 	return (a.x * b.y) - (a.y * b.x);
 }
 
