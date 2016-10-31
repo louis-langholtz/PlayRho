@@ -94,7 +94,18 @@ namespace box2d
 	{
 		return sv.GetPointDelta();
 	}
-		
+	
+	constexpr inline bool operator == (const SimplexVertex& lhs, const SimplexVertex& rhs)
+	{
+		return (lhs.GetPointA() == rhs.GetPointA())
+			&& (lhs.GetPointB() == rhs.GetPointB())
+			&& (lhs.indexPair == rhs.indexPair);
+	}
+	
+	constexpr inline bool operator != (const SimplexVertex& lhs, const SimplexVertex& rhs)
+	{
+		return !(lhs == rhs);
+	}
 }
 
 #endif /* SimplexVertex_hpp */
