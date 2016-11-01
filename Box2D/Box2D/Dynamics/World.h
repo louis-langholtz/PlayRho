@@ -374,10 +374,7 @@ private:
 
 	BlockAllocator m_blockAllocator; ///< Block allocator.
 
-	/// Stack allocator.
-	/// @note This variable is orders of magnitude larger than all other World data combined. So its
-	///   actual memory is allocated separately (from the world object) via <code>alloc()</code>.
-	StackAllocator& m_stackAllocator;
+	StackAllocator m_stackAllocator; ///< Stack allocator.
 	
 	ContactFilter m_defaultFilter;
 	

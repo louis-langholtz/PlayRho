@@ -22,12 +22,17 @@
 
 using namespace box2d;
 
-StackAllocator::StackAllocator() noexcept = default;
+StackAllocator::StackAllocator() noexcept:
+	m_data{static_cast<decltype(m_data)>(alloc(StackSize))}
+{
+	// Intentionally empty.
+}
 
 StackAllocator::~StackAllocator() noexcept
 {
 	assert(m_index == 0);
 	assert(m_entryCount == 0);
+	free(m_data);
 }
 
 void* StackAllocator::Allocate(size_type size) noexcept

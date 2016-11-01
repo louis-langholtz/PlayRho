@@ -77,8 +77,7 @@ private:
 };
 
 World::World(const Vec2 gravity):
-	m_gravity{gravity},
-	m_stackAllocator{*(new (alloc(sizeof(StackAllocator))) StackAllocator{})}
+	m_gravity{gravity}
 {
 	memset(&m_profile, 0, sizeof(Profile));
 }
@@ -91,8 +90,6 @@ World::~World()
 		auto&& b = m_bodies.front();
 		Destroy(&b);
 	}
-	m_stackAllocator.~StackAllocator();
-	free(&m_stackAllocator);
 }
 
 void World::SetDestructionListener(DestructionListener* listener) noexcept

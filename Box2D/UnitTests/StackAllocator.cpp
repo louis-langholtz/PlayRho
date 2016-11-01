@@ -21,7 +21,7 @@
 
 using namespace box2d;
 
-TEST(StackAllocator, ByteSizeIs103200)
+TEST(StackAllocator, ByteSizeIs808)
 {
-	EXPECT_EQ(sizeof(StackAllocator), size_t(103200));
+	EXPECT_EQ(sizeof(StackAllocator), size_t(808));
 }

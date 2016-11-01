@@ -30,7 +30,7 @@ namespace box2d {
 /// You must nest allocate/free pairs. The code will assert
 /// if you try to interleave multiple allocate/free pairs.
 /// @note This class satisfies the C++11 std::unique_ptr() Deleter concept.
-/// @note This data structure is 103200-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 808-bytes large (on at least one 64-bit platform).
 class StackAllocator
 {
 public:
@@ -41,6 +41,8 @@ public:
 	
 	StackAllocator() noexcept;
 	~StackAllocator() noexcept;
+
+	StackAllocator(const StackAllocator& copy) = delete;
 
 	void* Allocate(size_type size) noexcept;
 	void Free(void* p) noexcept;
@@ -92,7 +94,7 @@ private:
 		bool usedMalloc;
 	};
 	
-	char m_data[StackSize];
+	char *m_data;
 	size_type m_index = 0;
 
 	size_type m_allocation = 0;
