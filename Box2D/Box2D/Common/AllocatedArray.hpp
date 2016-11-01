@@ -111,10 +111,10 @@ public:
 private:
 	static void noop_deleter(void*) {}
 
-	size_type m_max_size = 0;
-	size_type m_size = 0;
-	pointer m_data = nullptr;
-	deleter_type m_deleter;
+	size_type m_max_size = 0; ///< Max size. 8-bytes.
+	size_type m_size = 0; ///< Current size. 8-bytes.
+	pointer m_data = nullptr; ///< Pointer to allocated data space. 8-bytes.
+	deleter_type m_deleter; ///< Deleter. 8-bytes (with default Deleter).
 };
 
 }; // namespace box2d

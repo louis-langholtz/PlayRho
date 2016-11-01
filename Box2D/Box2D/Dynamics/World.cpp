@@ -458,7 +458,7 @@ Island World::BuildIsland(Body& seed,
 		remNumJoints -= island.m_joints.size() - numJoints;
 	}
 	
-	return std::move(island);
+	return island;
 }
 	
 void World::Solve(const TimeStep& step)
@@ -989,12 +989,10 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 	// Build the island
 	Island island(m_bodies.size(), m_contactMgr.GetContacts().size(), 0, m_stackAllocator);
 
-	const auto indexA = AddToIsland(island, *bA);
-	assert(indexA == 0);
+	AddToIsland(island, *bA);
 	bA->SetInIsland();
 
-	const auto indexB = AddToIsland(island, *bB);
-	assert(indexB == 1);
+	AddToIsland(island, *bB);
 	bB->SetInIsland();
 
 	island.m_contacts.push_back(&contact);

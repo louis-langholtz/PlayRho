@@ -46,7 +46,7 @@ public:
 
 	Island(const Island& copy) = delete;
 
-	Island(Island&& other):
+	Island(Island&& other) noexcept:
 		m_bodies{std::move(other.m_bodies)},
 		m_contacts{std::move(other.m_contacts)},
 		m_joints{std::move(other.m_joints)}

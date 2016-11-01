@@ -59,9 +59,26 @@ public:
 		Free(p);
 	}
 
-	size_type GetMaxAllocation() const noexcept
+	auto GetMaxAllocation() const noexcept
 	{
 		return m_maxAllocation;
+	}
+
+	/// Gets the entry count.
+	/// @return Value between 0 and <code>MaxStackEntries</code>.
+	auto GetEntryCount() const noexcept
+	{
+		return m_entryCount;
+	}
+
+	/// Gets the current index location.
+	/// @detail This represents the number of bytes used (of the storage allocated at construction
+    ///    time by this object). Storage remaining is calculated by subtracting this value from
+	///    <code>StackSize</code>.
+	/// @return Value between 0 and <code>StackSize</code>.
+	auto GetIndex() const noexcept
+	{
+		return m_index;
 	}
 
 private:
