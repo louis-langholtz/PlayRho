@@ -18,10 +18,99 @@
 
 #include "gtest/gtest.h"
 #include <Box2D/Common/StackAllocator.h>
+#include <chrono>
 
 using namespace box2d;
 
 TEST(StackAllocator, ByteSizeIs808)
 {
 	EXPECT_EQ(sizeof(StackAllocator), size_t(808));
+}
+
+TEST(StackAllocator, faster_than_allocfree)
+{
+	const auto ptr_val = reinterpret_cast<Body*>(0x768ea);
+	constexpr auto iterations = unsigned(10000000);
+	constexpr auto num_body_ptrs = size_t(100);
+	constexpr auto elem_to_poke = num_body_ptrs / 2;
+	
+	std::chrono::duration<double> elapsed_secs_custom;
+	std::chrono::duration<double> elapsed_secs_malloc;
+
+	{
+		StackAllocator foo;
+		
+		std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
+		start = std::chrono::high_resolution_clock::now();
+		{
+			for (auto i = decltype(iterations){0}; i < iterations; ++i)
+			{
+				auto buf = static_cast<Body**>(foo.Allocate(num_body_ptrs * sizeof(Body*)));
+				buf[elem_to_poke] = ptr_val;
+				ASSERT_EQ(buf[elem_to_poke], ptr_val);
+				foo.Free(buf);
+			}
+		}
+		end = std::chrono::high_resolution_clock::now();
+		elapsed_secs_custom = end - start;
+	}
+	
+	{
+		std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
+		start = std::chrono::high_resolution_clock::now();
+		for (auto i = decltype(iterations){0}; i < iterations; ++i)
+		{
+			auto buf = static_cast<Body**>(std::malloc(num_body_ptrs * sizeof(Body*)));
+			buf[elem_to_poke] = ptr_val;
+			ASSERT_EQ(buf[elem_to_poke], ptr_val);
+			std::free(buf);
+		}
+		end = std::chrono::high_resolution_clock::now();
+		elapsed_secs_malloc = end - start;
+	}
+	
+	EXPECT_LT(elapsed_secs_custom.count(), elapsed_secs_malloc.count());
+}
+
+static inline bool is_aligned(void* ptr, std::size_t siz)
+{
+	return reinterpret_cast<std::uintptr_t>(static_cast<void*>(ptr)) % siz == 0;
+}
+
+TEST(StackAllocator, aligns_data)
+{
+	StackAllocator foo;
+
+	const auto p_char1 = static_cast<char*>(foo.Allocate(sizeof(char)));
+	
+	EXPECT_EQ(foo.GetEntryCount(), decltype(foo.GetEntryCount()){1});
+	EXPECT_EQ(foo.GetIndex(), sizeof(char));
+	EXPECT_EQ(foo.GetAllocation(), sizeof(char));
+
+	const auto p_char2 = static_cast<char*>(foo.Allocate(sizeof(char)));
+
+	EXPECT_EQ(foo.GetEntryCount(), decltype(foo.GetEntryCount()){2});
+	EXPECT_EQ(foo.GetIndex(), sizeof(char) + sizeof(char));
+	EXPECT_EQ(foo.GetAllocation(), sizeof(char) + sizeof(char));
+
+	const auto p_int = static_cast<int*>(foo.Allocate(sizeof(int)));
+
+	EXPECT_EQ(foo.GetEntryCount(), decltype(foo.GetEntryCount()){3});
+	EXPECT_EQ(foo.GetIndex(), foo.GetAllocation());
+	EXPECT_EQ(foo.GetIndex(), sizeof(int) + sizeof(int));
+	EXPECT_EQ(foo.GetAllocation(), sizeof(int) + sizeof(int));
+
+	EXPECT_TRUE(is_aligned(p_char1, alignof(char)));
+	EXPECT_TRUE(is_aligned(p_char2, alignof(char)));
+	EXPECT_TRUE(is_aligned(p_int, alignof(int)));
+
+	*p_char1 = 'W';
+	*p_int = 5;
+	
+	EXPECT_EQ(*p_char1, 'W');
+	EXPECT_EQ(*p_int, 5);
+	
+	foo.Free(p_int);
+	foo.Free(p_char2);
+	foo.Free(p_char1);
 }

@@ -35,13 +35,17 @@ StackAllocator::~StackAllocator() noexcept
 	free(m_data);
 }
 
+static inline size_t alignment_size(size_t size)
+{
+	return size < 1? 1: (size < sizeof(std::max_align_t))? NextPowerOfTwo(size - 1): alignof(std::max_align_t);
+};
+
 void* StackAllocator::Allocate(size_type size) noexcept
 {
 	assert(m_entryCount < MaxStackEntries);
 	assert(m_index <= StackSize);
 
 	auto entry = m_entries + m_entryCount;
-	entry->size = size;
 	
 	const auto available = StackSize - m_index;
 	if (size > available)
@@ -51,11 +55,15 @@ void* StackAllocator::Allocate(size_type size) noexcept
 	}
 	else
 	{
-		entry->data = m_data + m_index;
+		auto ptr = static_cast<void*>(m_data + m_index);
+		auto space = available;
+		entry->data = std::align(alignment_size(size), size, ptr, space);
 		entry->usedMalloc = false;
+		size += (available - space);
 		m_index += size;
 	}
 
+	entry->size = size;
 	m_allocation += size;
 	m_maxAllocation = Max(m_maxAllocation, m_allocation);
 	++m_entryCount;

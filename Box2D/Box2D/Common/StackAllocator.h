@@ -83,6 +83,12 @@ public:
 		return m_index;
 	}
 
+	/// Gets the total number of bytes that this object has currently allocated.
+	auto GetAllocation() const noexcept
+	{
+		return m_allocation;
+	}
+	
 private:
 
 	struct StackEntry
@@ -103,7 +109,7 @@ private:
 	StackEntry m_entries[MaxStackEntries];
 	std::remove_const<decltype(MaxStackEntries)>::type m_entryCount = 0;
 };
-
+	
 } // namespace box2d
 
 #endif
