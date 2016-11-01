@@ -421,6 +421,24 @@ TEST(Math, GetContactRelVelocity)
 
 TEST(Math, NextPowerOfTwo)
 {
+	EXPECT_EQ(NextPowerOfTwo(0u), 1u);
+	EXPECT_EQ(NextPowerOfTwo(1u), 2u);
+	EXPECT_EQ(NextPowerOfTwo(2u), 4u);
+	EXPECT_EQ(NextPowerOfTwo(3u), 4u);
+	EXPECT_EQ(NextPowerOfTwo(4u), 8u);
+	EXPECT_EQ(NextPowerOfTwo(5u), 8u);
+	EXPECT_EQ(NextPowerOfTwo(6u), 8u);
+	EXPECT_EQ(NextPowerOfTwo(7u), 8u);
+	EXPECT_EQ(NextPowerOfTwo(8u), 16u);
+	EXPECT_EQ(NextPowerOfTwo(9u), 16u);
+	EXPECT_EQ(NextPowerOfTwo(10u), 16u);
+	EXPECT_EQ(NextPowerOfTwo(11u), 16u);
+	EXPECT_EQ(NextPowerOfTwo(12u), 16u);
+	EXPECT_EQ(NextPowerOfTwo(13u), 16u);
+	EXPECT_EQ(NextPowerOfTwo(14u), 16u);
+	EXPECT_EQ(NextPowerOfTwo(15u), 16u);
+	EXPECT_EQ(NextPowerOfTwo(16u), 32u);
+
 	constexpr auto max = std::numeric_limits<uint32>::max() / 512;
 	for (auto i = decltype(max){0}; i < max; ++i)
 	{
