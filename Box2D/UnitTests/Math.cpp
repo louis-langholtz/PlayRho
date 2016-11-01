@@ -418,3 +418,13 @@ TEST(Math, GetContactRelVelocity)
 	
 	EXPECT_EQ(result, velB.v - velA.v);
 }
+
+TEST(Math, NextPowerOfTwo)
+{
+	constexpr auto max = std::numeric_limits<uint32>::max() / 512;
+	for (auto i = decltype(max){0}; i < max; ++i)
+	{
+		const auto next = std::pow(2, std::ceil(std::log(i + 1)/std::log(2)));
+		EXPECT_EQ(NextPowerOfTwo(i), next);
+	}
+}
