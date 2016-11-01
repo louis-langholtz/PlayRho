@@ -634,7 +634,7 @@ constexpr inline Vec2 GetFwdPerpendicular(const Vec2 vector) noexcept
 ///   The middle value of 0 indicates that two vectors are at an angle of +/- 90 degrees
 ///   to each other.
 ///
-/// @note This operation is commutative.
+/// @note This operation is commutative. I.e. Dot(a, b) == Dot(b, a).
 /// @note If A and B are the same vectors, LengthSquared(Vec2) returns the same value
 ///   using effectively one less input parameter.
 ///
@@ -655,7 +655,7 @@ constexpr inline float_t Dot(const Vec2 a, const Vec2 b) noexcept
 /// @detail
 /// This is defined as the result of: <code>(a.x * b.y) - (a.y * b.x)</code>.
 ///
-/// @note This operation is anti-commutative.
+/// @note This operation is anti-commutative. I.e. Cross(a, b) == -Cross(b, a).
 /// @note The result will be 0 if any of the following are true:
 ///   vector A or vector B has a length of zero;
 ///   vectors A and B point in the same direction; or
