@@ -31,8 +31,8 @@ class PolygonAndCircleContact : public Contact
 public:
 	static Contact* Create(Fixture* fixtureA, child_count_t indexA,
 							 Fixture* fixtureB, child_count_t indexB,
-							 BlockAllocator* allocator);
-	static void Destroy(Contact* contact, BlockAllocator* allocator);
+							 BlockAllocator& allocator);
+	static void Destroy(Contact* contact, BlockAllocator& allocator);
 
 	PolygonAndCircleContact(Fixture* fixtureA, Fixture* fixtureB);
 	~PolygonAndCircleContact() {}

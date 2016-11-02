@@ -31,8 +31,8 @@ class EdgeAndCircleContact : public Contact
 public:
 	static Contact* Create(Fixture* fixtureA, child_count_t indexA,
 							 Fixture* fixtureB, child_count_t indexB,
-							 BlockAllocator* allocator);
-	static void Destroy(Contact* contact, BlockAllocator* allocator);
+							 BlockAllocator& allocator);
+	static void Destroy(Contact* contact, BlockAllocator& allocator);
 
 	EdgeAndCircleContact(Fixture* fixtureA, Fixture* fixtureB);
 	~EdgeAndCircleContact() {}

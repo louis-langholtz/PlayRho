@@ -30,15 +30,15 @@ using namespace box2d;
 
 Contact* PolygonContact::Create(Fixture* fixtureA, child_count_t,
 									Fixture* fixtureB, child_count_t,
-									BlockAllocator* allocator)
+									BlockAllocator& allocator)
 {
-	void* mem = allocator->Allocate(sizeof(PolygonContact));
+	void* mem = allocator.Allocate(sizeof(PolygonContact));
 	return new (mem) PolygonContact(fixtureA, fixtureB);
 }
 
-void PolygonContact::Destroy(Contact* contact, BlockAllocator* allocator)
+void PolygonContact::Destroy(Contact* contact, BlockAllocator& allocator)
 {
-	Delete(static_cast<PolygonContact*>(contact), *allocator);
+	Delete(static_cast<PolygonContact*>(contact), allocator);
 }
 
 PolygonContact::PolygonContact(Fixture* fixtureA, Fixture* fixtureB)

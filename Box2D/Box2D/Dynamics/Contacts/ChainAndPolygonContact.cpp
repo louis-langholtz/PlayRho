@@ -31,15 +31,15 @@ using namespace box2d;
 
 Contact* ChainAndPolygonContact::Create(Fixture* fixtureA, child_count_t indexA,
 										Fixture* fixtureB, child_count_t indexB,
-										BlockAllocator* allocator)
+										BlockAllocator& allocator)
 {
-	void* mem = allocator->Allocate(sizeof(ChainAndPolygonContact));
+	void* mem = allocator.Allocate(sizeof(ChainAndPolygonContact));
 	return new (mem) ChainAndPolygonContact(fixtureA, indexA, fixtureB, indexB);
 }
 
-void ChainAndPolygonContact::Destroy(Contact* contact, BlockAllocator* allocator)
+void ChainAndPolygonContact::Destroy(Contact* contact, BlockAllocator& allocator)
 {
-	Delete(static_cast<ChainAndPolygonContact*>(contact), *allocator);
+	Delete(static_cast<ChainAndPolygonContact*>(contact), allocator);
 }
 
 ChainAndPolygonContact::ChainAndPolygonContact(Fixture* fixtureA, child_count_t indexA,
