@@ -212,11 +212,11 @@ protected:
 	bool NeedsFiltering() const noexcept;
 
 	static Contact* Create(Fixture& fixtureA, child_count_t indexA, Fixture& fixtureB, child_count_t indexB,
-						   BlockAllocator* allocator);
+						   BlockAllocator& allocator);
 
-	static void Destroy(Contact* contact, Shape::Type typeA, Shape::Type typeB, BlockAllocator* allocator);
+	static void Destroy(Contact* contact, Shape::Type typeA, Shape::Type typeB, BlockAllocator& allocator);
 	
-	static void Destroy(Contact* contact, BlockAllocator* allocator);
+	static void Destroy(Contact* contact, BlockAllocator& allocator);
 
 	Contact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB);
 	virtual ~Contact() = default;

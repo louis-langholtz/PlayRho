@@ -83,7 +83,7 @@ static constexpr ContactRegister s_registers[Shape::e_typeCount][Shape::e_typeCo
 };
 
 Contact* Contact::Create(Fixture& fixtureA, child_count_t indexA, Fixture& fixtureB, child_count_t indexB,
-						 BlockAllocator* allocator)
+						 BlockAllocator& allocator)
 {
 	const auto type1 = GetType(fixtureA);
 	const auto type2 = GetType(fixtureB);
@@ -95,13 +95,13 @@ Contact* Contact::Create(Fixture& fixtureA, child_count_t indexA, Fixture& fixtu
 	if (createFcn)
 	{
 		return (s_registers[type1][type2].primary)?
-			createFcn(&fixtureA, indexA, &fixtureB, indexB, allocator):
-			createFcn(&fixtureB, indexB, &fixtureA, indexA, allocator);
+			createFcn(&fixtureA, indexA, &fixtureB, indexB, &allocator):
+			createFcn(&fixtureB, indexB, &fixtureA, indexA, &allocator);
 	}
 	return nullptr;
 }
 
-void Contact::Destroy(Contact* contact, BlockAllocator* allocator)
+void Contact::Destroy(Contact* contact, BlockAllocator& allocator)
 {
 	const auto fixtureA = contact->GetFixtureA();
 	const auto fixtureB = contact->GetFixtureB();
@@ -120,7 +120,7 @@ void Contact::Destroy(Contact* contact, BlockAllocator* allocator)
 	assert(0 <= typeA && typeB < Shape::e_typeCount);
 
 	const auto destroyFcn = s_registers[typeA][typeB].destroyFcn;
-	destroyFcn(contact, allocator);
+	destroyFcn(contact, &allocator);
 }
 
 Contact::Contact(Fixture* fA, child_count_t indexA, Fixture* fB, child_count_t indexB):

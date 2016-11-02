@@ -82,7 +82,7 @@ void ContactManager::Destroy(Contact* c)
 	Remove(c);
 
 	// Call the factory destroy method.
-	Contact::Destroy(c, &m_allocator);
+	Contact::Destroy(c, m_allocator);
 }
 
 void ContactManager::Collide()
@@ -220,7 +220,7 @@ void ContactManager::Add(FixtureProxy& proxyA, FixtureProxy& proxyB)
 	assert(GetContacts().size() < MaxContacts);
 
 	// Call the contact factory create method.
-	const auto c = Contact::Create(*fixtureA, indexA, *fixtureB, indexB, &m_allocator);
+	const auto c = Contact::Create(*fixtureA, indexA, *fixtureB, indexB, m_allocator);
 	assert(c);
 	if (!c)
 	{
