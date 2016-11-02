@@ -159,7 +159,7 @@ void Contact::Update(ContactListener* listener)
 		const auto shapeA = GetFixtureA()->GetShape();
 		const auto shapeB = GetFixtureB()->GetShape();
 
-		touching = TestOverlap(*shapeA, m_indexA, *shapeB, m_indexB, xfA, xfB);
+		touching = TestOverlap(*shapeA, m_indexA, xfA, *shapeB, m_indexB, xfB);
 
 		// Sensors don't generate manifolds.
 		m_manifold = Manifold{};

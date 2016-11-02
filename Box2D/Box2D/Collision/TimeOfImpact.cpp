@@ -398,9 +398,8 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 	return output;
 }
 
-bool TestOverlap(const Shape& shapeA, child_count_t indexA,
-				 const Shape& shapeB, child_count_t indexB,
-				 const Transformation& xfA, const Transformation& xfB)
+bool TestOverlap(const Shape& shapeA, child_count_t indexA, const Transformation& xfA,
+				 const Shape& shapeB, child_count_t indexB, const Transformation& xfB)
 {
 	const auto proxyA = GetDistanceProxy(shapeA, indexA);
 	const auto proxyB = GetDistanceProxy(shapeB, indexB);

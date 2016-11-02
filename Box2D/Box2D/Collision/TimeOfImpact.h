@@ -27,9 +27,8 @@ namespace box2d {
 	class Shape;
 	
 	/// Determine if two generic shapes overlap.
-	bool TestOverlap(const Shape& shapeA, child_count_t indexA,
-					 const Shape& shapeB, child_count_t indexB,
-					 const Transformation& xfA, const Transformation& xfB);
+	bool TestOverlap(const Shape& shapeA, child_count_t indexA, const Transformation& xfA,
+					 const Shape& shapeB, child_count_t indexB, const Transformation& xfB);
 
 	/// TimeOfImpact Output data.
 	class TOIOutput
