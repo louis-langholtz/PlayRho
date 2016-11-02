@@ -21,7 +21,7 @@
 
 using namespace box2d;
 
-DistanceProxy::size_type box2d::GetSupportIndex(const DistanceProxy& proxy, const Vec2& d) noexcept
+DistanceProxy::size_type box2d::GetSupportIndex(const DistanceProxy& proxy, const Vec2 d) noexcept
 {
 	auto index = DistanceProxy::InvalidIndex; ///< Index of vertex that when dotted with d has the max value.
 	auto maxValue = -MaxFloat; ///< Max dot value.

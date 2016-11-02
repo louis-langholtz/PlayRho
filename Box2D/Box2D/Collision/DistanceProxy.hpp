@@ -145,7 +145,7 @@ namespace box2d
 	/// @param d Direction vector to find index for.
 	/// @return InvalidIndex if d is invalid or the count of vertices is zero, otherwise a value from 0 to one less than count.
 	/// @sa GetVertexCount().
-	DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, const Vec2& d) noexcept;
+	DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, const Vec2 d) noexcept;
 	
 }; // namespace box2d
 
