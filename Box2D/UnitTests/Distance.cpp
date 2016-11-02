@@ -34,7 +34,8 @@ TEST(Distance, MatchingCircles)
 	DistanceProxy dp2{1, pos2};
 
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
-	
+	cache = output.cache;
+
 	EXPECT_EQ(output.witnessPoints.a, pos1);
 	EXPECT_EQ(output.witnessPoints.b, pos1);
 	EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
@@ -60,7 +61,8 @@ TEST(Distance, OpposingCircles)
 	DistanceProxy dp2{2, pos2};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
-	
+	cache = output.cache;
+
 	EXPECT_EQ(output.witnessPoints.a.x, pos1.x);
 	EXPECT_EQ(output.witnessPoints.a.y, pos1.y);
 
@@ -93,6 +95,7 @@ TEST(Distance, HorTouchingCircles)
 		DistanceProxy dp2{2, pos2};
 		return Distance(dp1, xf1, dp2, xf2, cache);
 	}();
+	cache = output.cache;
 	
 	EXPECT_EQ(output.witnessPoints.a.x, pos1.x);
 	EXPECT_EQ(output.witnessPoints.a.y, pos1.y);
@@ -123,7 +126,8 @@ TEST(Distance, OverlappingCirclesPN)
 	DistanceProxy dp2{2, pos2};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
-	
+	cache = output.cache;
+
 	EXPECT_EQ(output.witnessPoints.a.x, pos1.x);
 	EXPECT_EQ(output.witnessPoints.a.y, pos1.y);
 	
@@ -153,7 +157,8 @@ TEST(Distance, OverlappingCirclesNP)
 	DistanceProxy dp2{2, pos2};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
-	
+	cache = output.cache;
+
 	EXPECT_EQ(output.witnessPoints.a.x, pos1.x);
 	EXPECT_EQ(output.witnessPoints.a.y, pos1.y);
 	
@@ -184,7 +189,8 @@ TEST(Distance, SeparatedCircles)
 	DistanceProxy dp2{1, pos2};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
-	
+	cache = output.cache;
+
 	EXPECT_EQ(output.witnessPoints.a.x, pos1.x);
 	EXPECT_EQ(output.witnessPoints.a.y, pos1.y);
 	
@@ -215,7 +221,8 @@ TEST(Distance, EdgeCircleOverlapping)
 	DistanceProxy dp2{1, pos3};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
-	
+	cache = output.cache;
+
 	EXPECT_EQ(output.witnessPoints.a.x, pos3.x);
 	EXPECT_EQ(output.witnessPoints.a.y, pos3.y);
 
@@ -250,6 +257,7 @@ TEST(Distance, EdgeCircleOverlapping2)
 	DistanceProxy dp2{1, pos3};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
+	cache = output.cache;
 	
 	EXPECT_EQ(output.witnessPoints.a.x, pos3.x);
 	EXPECT_EQ(output.witnessPoints.a.y, pos3.y);
@@ -285,7 +293,8 @@ TEST(Distance, EdgeCircleTouching)
 	DistanceProxy dp2{1, pos3};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
-	
+	cache = output.cache;
+
 	EXPECT_EQ(output.witnessPoints.a.x, float_t{2});
 	EXPECT_EQ(output.witnessPoints.a.y, float_t{3});
 	
@@ -326,7 +335,8 @@ TEST(Distance, HorEdgeSquareTouching)
 	Transformation xf2 = Transform_identity;
 
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
-	
+	cache = output.cache;
+
 	EXPECT_EQ(output.witnessPoints.a.x, float_t{1});
 	EXPECT_EQ(output.witnessPoints.a.y, float_t{1});
 	
@@ -367,7 +377,8 @@ TEST(Distance, VerEdgeSquareTouching)
 	Transformation xf2 = Transform_identity;
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
-	
+	cache = output.cache;
+
 	EXPECT_EQ(Sqrt(LengthSquared(output.witnessPoints.a - output.witnessPoints.b)), float_t(1));
 	EXPECT_EQ(output.witnessPoints.a.x, float_t{3});
 	EXPECT_EQ(output.witnessPoints.a.y, float_t{2});
@@ -404,6 +415,7 @@ TEST(Distance, SquareTwice)
 	Transformation xfm = Transform_identity;
 	
 	const auto output = Distance(dp1, xfm, dp1, xfm, cache);
+	cache = output.cache;
 
 	EXPECT_EQ(output.witnessPoints.a.x, 2);
 	EXPECT_EQ(output.witnessPoints.a.y, 2);
@@ -444,7 +456,8 @@ TEST(Distance, SquareSquareTouchingVertically)
 	Transformation xfm = Transform_identity;
 	
 	const auto output = Distance(dp1, xfm, dp2, xfm, cache);
-	
+	cache = output.cache;
+
 	EXPECT_EQ(output.witnessPoints.a.x, 4);
 	EXPECT_EQ(output.witnessPoints.a.y, 3);
 	
@@ -483,7 +496,8 @@ TEST(Distance, SquareSquareDiagonally)
 	Transformation xfm = Transform_identity;
 	
 	const auto output = Distance(dp1, xfm, dp2, xfm, cache);
-	
+	cache = output.cache;
+
 	EXPECT_EQ(output.witnessPoints.a.x, -1);
 	EXPECT_EQ(output.witnessPoints.a.y, -1);
 	
@@ -546,7 +560,8 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
 	Transformation xfm = Transform_identity;
 	
 	const auto output = Distance(dp1, xfm, dp2, xfm, cache);
-	
+	cache = output.cache;
+
 	EXPECT_EQ(output.witnessPoints.a.x, 0);
 	EXPECT_EQ(output.witnessPoints.a.y, 0.5);
 	

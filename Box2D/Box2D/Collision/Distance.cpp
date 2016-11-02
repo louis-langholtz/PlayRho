@@ -135,7 +135,7 @@ inline auto GetSimplexCache(const SimplexVertices& simplex)
 	
 DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
 						const DistanceProxy& proxyB, const Transformation& transformB,
-						SimplexCache& cache)
+						const SimplexCache& cache)
 {
 	assert(proxyA.GetVertexCount() > 0);
 	assert(IsValid(transformA.p));
@@ -229,10 +229,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 		simplexVertices.push_back(GetSimplexVertex(proxyA, transformA, indexA, proxyB, transformB, indexB));
 	}
 
-	// Cache the simplex.
-	cache = GetSimplexCache(simplexVertices);
-
-	return DistanceOutput{GetWitnessPoints(simplex), iter};
+	return DistanceOutput{GetWitnessPoints(simplex), iter, GetSimplexCache(simplexVertices)};
 }
 	
 } // namespace box2d

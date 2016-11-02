@@ -21,11 +21,11 @@
 #define B2_DISTANCE_H
 
 #include <Box2D/Common/Math.h>
+#include <Box2D/Collision/SimplexCache.hpp>
 
 namespace box2d
 {
 	class DistanceProxy;
-	class SimplexCache;
 	
 	/// Witness Points.
 	struct WitnessPoints
@@ -48,13 +48,15 @@ namespace box2d
 		/// @param wp Witness points (closest points on shapeA and shapeB).
 		/// @param it Iterations it took to determine the witness points (0 to
 		///   <code>MaxDistanceIterations</code>).
-		constexpr DistanceOutput(const WitnessPoints& wp, iteration_type it) noexcept: witnessPoints{wp}, iterations{it}
+		constexpr DistanceOutput(const WitnessPoints& wp, iteration_type it, const SimplexCache& c) noexcept:
+			witnessPoints{wp}, iterations{it}, cache{c}
 		{
 			assert(it <= MaxDistanceIterations);
 		}
 
 		WitnessPoints witnessPoints; ///< Closest points on shapeA and shapeB.
 		iteration_type iterations; ///< Count of iterations performed to return result.
+		SimplexCache cache;
 	};
 
 	/// Determines the closest points between two shapes.
@@ -72,7 +74,7 @@ namespace box2d
 	///   <code>MaxDistanceIterations</code> is zero.
 	DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
 							const DistanceProxy& proxyB, const Transformation& transformB,
-							SimplexCache& cache);
+							const SimplexCache& cache);
 
 } /* namespace box2d */
 

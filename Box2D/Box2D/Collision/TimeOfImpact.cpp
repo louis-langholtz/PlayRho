@@ -268,6 +268,8 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 			const auto distanceInfo = Distance(proxyA, GetTransformation(sweepA, t1),
 											   proxyB, GetTransformation(sweepB, t1),
 											   cache);
+			cache = distanceInfo.cache;
+
 			++stats.toi_iters;
 			stats.sum_dist_iters += distanceInfo.iterations;
 			stats.max_dist_iters = Max(stats.max_dist_iters, distanceInfo.iterations);
