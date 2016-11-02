@@ -74,7 +74,7 @@ namespace box2d
 	///   <code>MaxDistanceIterations</code> is zero.
 	DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
 							const DistanceProxy& proxyB, const Transformation& transformB,
-							const SimplexCache& cache);
+							const SimplexCache& cache = SimplexCache{});
 
 } /* namespace box2d */
 

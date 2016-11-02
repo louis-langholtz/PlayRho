@@ -406,8 +406,7 @@ bool TestOverlap(const Shape& shapeA, child_count_t indexA, const Transformation
 	const auto proxyA = GetDistanceProxy(shapeA, indexA);
 	const auto proxyB = GetDistanceProxy(shapeB, indexB);
 	
-	SimplexCache cache;
-	const auto distanceInfo = Distance(proxyA, xfA, proxyB, xfB, cache);
+	const auto distanceInfo = Distance(proxyA, xfA, proxyB, xfB);
 	const auto distanceSquared = LengthSquared(distanceInfo.witnessPoints.a - distanceInfo.witnessPoints.b);
 	const auto totalRadiusSquared = Square(proxyA.GetRadius() + proxyB.GetRadius());
 	const auto separation_amount = distanceSquared - totalRadiusSquared;
