@@ -62,17 +62,17 @@ namespace box2d
 	/// Supports any combination of:
 	/// CircleShape, PolygonShape, EdgeShape. The simplex cache is input/output.
 	/// @note On the first call, the SimplexCache.count should be set to zero.
-	/// @param cache Simplex cache for assisting the determination.
 	/// @param proxyA Proxy A.
 	/// @param transformA Transoform of A.
 	/// @param proxyB Proxy B.
 	/// @param transformB Transoform of B.
+	/// @param cache Simplex cache for assisting the determination.
 	/// @return Closest points between the two shapes and the count of iterations it took to
 	///   determine them. The iteration count will always be greater than zero unless
 	///   <code>MaxDistanceIterations</code> is zero.
-	DistanceOutput Distance(SimplexCache& cache,
-							const DistanceProxy& proxyA, const Transformation& transformA,
-							const DistanceProxy& proxyB, const Transformation& transformB);
+	DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
+							const DistanceProxy& proxyB, const Transformation& transformB,
+							SimplexCache& cache);
 
 } /* namespace box2d */
 

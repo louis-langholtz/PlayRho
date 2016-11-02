@@ -94,6 +94,15 @@ static inline WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept
 		pointA += v.GetPointA() * a;
 		pointB += v.GetPointB() * a;
 	}
+#if 0
+	// In the 3-simplex case, pointA and pointB are usually equal.
+	// XXX: Sometimes in the 3-simplex case, pointA is slightly different than pointB. Why??
+	if (size == 3 && pointA != pointB)
+	{
+		std::cout << "odd: " << pointA << " != " << pointB;
+		std::cout << std::endl;
+	}
+#endif
 	return WitnessPoints{pointA, pointB};
 }
 
@@ -124,9 +133,9 @@ inline auto GetSimplexCache(const SimplexVertices& simplex)
 	return SimplexCache(CalcMetric(simplex), GetIndexPairList(simplex));
 }
 	
-DistanceOutput Distance(SimplexCache& cache,
-						const DistanceProxy& proxyA, const Transformation& transformA,
-						const DistanceProxy& proxyB, const Transformation& transformB)
+DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
+						const DistanceProxy& proxyB, const Transformation& transformB,
+						SimplexCache& cache)
 {
 	assert(proxyA.GetVertexCount() > 0);
 	assert(IsValid(transformA.p));

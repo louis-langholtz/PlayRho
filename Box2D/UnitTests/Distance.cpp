@@ -33,7 +33,7 @@ TEST(Distance, MatchingCircles)
 	DistanceProxy dp1{1, pos1};
 	DistanceProxy dp2{1, pos2};
 
-	const auto output = Distance(cache, dp1, xf1, dp2, xf2);
+	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
 	
 	EXPECT_EQ(output.witnessPoints.a, pos1);
 	EXPECT_EQ(output.witnessPoints.b, pos1);
@@ -59,7 +59,7 @@ TEST(Distance, OpposingCircles)
 	DistanceProxy dp1{2, pos1};
 	DistanceProxy dp2{2, pos2};
 	
-	const auto output = Distance(cache, dp1, xf1, dp2, xf2);
+	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
 	
 	EXPECT_EQ(output.witnessPoints.a.x, pos1.x);
 	EXPECT_EQ(output.witnessPoints.a.y, pos1.y);
@@ -91,7 +91,7 @@ TEST(Distance, HorTouchingCircles)
 		Transformation xf2 = Transform_identity;
 		DistanceProxy dp1{2, pos1};
 		DistanceProxy dp2{2, pos2};
-		return Distance(cache, dp1, xf1, dp2, xf2);
+		return Distance(dp1, xf1, dp2, xf2, cache);
 	}();
 	
 	EXPECT_EQ(output.witnessPoints.a.x, pos1.x);
@@ -122,7 +122,7 @@ TEST(Distance, OverlappingCirclesPN)
 	DistanceProxy dp1{2, pos1};
 	DistanceProxy dp2{2, pos2};
 	
-	const auto output = Distance(cache, dp1, xf1, dp2, xf2);
+	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
 	
 	EXPECT_EQ(output.witnessPoints.a.x, pos1.x);
 	EXPECT_EQ(output.witnessPoints.a.y, pos1.y);
@@ -152,7 +152,7 @@ TEST(Distance, OverlappingCirclesNP)
 	DistanceProxy dp1{2, pos1};
 	DistanceProxy dp2{2, pos2};
 	
-	const auto output = Distance(cache, dp1, xf1, dp2, xf2);
+	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
 	
 	EXPECT_EQ(output.witnessPoints.a.x, pos1.x);
 	EXPECT_EQ(output.witnessPoints.a.y, pos1.y);
@@ -183,7 +183,7 @@ TEST(Distance, SeparatedCircles)
 	DistanceProxy dp1{1, pos1};
 	DistanceProxy dp2{1, pos2};
 	
-	const auto output = Distance(cache, dp1, xf1, dp2, xf2);
+	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
 	
 	EXPECT_EQ(output.witnessPoints.a.x, pos1.x);
 	EXPECT_EQ(output.witnessPoints.a.y, pos1.y);
@@ -214,7 +214,7 @@ TEST(Distance, EdgeCircleOverlapping)
 	DistanceProxy dp1{float_t(0.1), pos1, pos2};
 	DistanceProxy dp2{1, pos3};
 	
-	const auto output = Distance(cache, dp1, xf1, dp2, xf2);
+	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
 	
 	EXPECT_EQ(output.witnessPoints.a.x, pos3.x);
 	EXPECT_EQ(output.witnessPoints.a.y, pos3.y);
@@ -249,7 +249,7 @@ TEST(Distance, EdgeCircleOverlapping2)
 	DistanceProxy dp1{float_t(0.1), pos1, pos2};
 	DistanceProxy dp2{1, pos3};
 	
-	const auto output = Distance(cache, dp1, xf1, dp2, xf2);
+	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
 	
 	EXPECT_EQ(output.witnessPoints.a.x, pos3.x);
 	EXPECT_EQ(output.witnessPoints.a.y, pos3.y);
@@ -284,7 +284,7 @@ TEST(Distance, EdgeCircleTouching)
 	DistanceProxy dp1{float_t(1), pos1, pos2};
 	DistanceProxy dp2{1, pos3};
 	
-	const auto output = Distance(cache, dp1, xf1, dp2, xf2);
+	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
 	
 	EXPECT_EQ(output.witnessPoints.a.x, float_t{2});
 	EXPECT_EQ(output.witnessPoints.a.y, float_t{3});
@@ -325,7 +325,7 @@ TEST(Distance, HorEdgeSquareTouching)
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
 
-	const auto output = Distance(cache, dp1, xf1, dp2, xf2);
+	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
 	
 	EXPECT_EQ(output.witnessPoints.a.x, float_t{1});
 	EXPECT_EQ(output.witnessPoints.a.y, float_t{1});
@@ -366,7 +366,7 @@ TEST(Distance, VerEdgeSquareTouching)
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
 	
-	const auto output = Distance(cache, dp1, xf1, dp2, xf2);
+	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
 	
 	EXPECT_EQ(Sqrt(LengthSquared(output.witnessPoints.a - output.witnessPoints.b)), float_t(1));
 	EXPECT_EQ(output.witnessPoints.a.x, float_t{3});
@@ -403,7 +403,7 @@ TEST(Distance, SquareTwice)
 	SimplexCache cache;
 	Transformation xfm = Transform_identity;
 	
-	const auto output = Distance(cache, dp1, xfm, dp1, xfm);
+	const auto output = Distance(dp1, xfm, dp1, xfm, cache);
 
 	EXPECT_EQ(output.witnessPoints.a.x, 2);
 	EXPECT_EQ(output.witnessPoints.a.y, 2);
@@ -443,7 +443,7 @@ TEST(Distance, SquareSquareTouchingVertically)
 	SimplexCache cache;
 	Transformation xfm = Transform_identity;
 	
-	const auto output = Distance(cache, dp1, xfm, dp2, xfm);
+	const auto output = Distance(dp1, xfm, dp2, xfm, cache);
 	
 	EXPECT_EQ(output.witnessPoints.a.x, 4);
 	EXPECT_EQ(output.witnessPoints.a.y, 3);
@@ -482,7 +482,7 @@ TEST(Distance, SquareSquareDiagonally)
 	SimplexCache cache;
 	Transformation xfm = Transform_identity;
 	
-	const auto output = Distance(cache, dp1, xfm, dp2, xfm);
+	const auto output = Distance(dp1, xfm, dp2, xfm, cache);
 	
 	EXPECT_EQ(output.witnessPoints.a.x, -1);
 	EXPECT_EQ(output.witnessPoints.a.y, -1);
@@ -545,7 +545,7 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
 	SimplexCache cache;
 	Transformation xfm = Transform_identity;
 	
-	const auto output = Distance(cache, dp1, xfm, dp2, xfm);
+	const auto output = Distance(dp1, xfm, dp2, xfm, cache);
 	
 	EXPECT_EQ(output.witnessPoints.a.x, 0);
 	EXPECT_EQ(output.witnessPoints.a.y, 0.5);

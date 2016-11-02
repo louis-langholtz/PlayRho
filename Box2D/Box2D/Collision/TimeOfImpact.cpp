@@ -265,9 +265,9 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 		{
 			// Get the distance between shapes. We can also use the results
 			// to get a separating axis.
-			const auto distanceInfo = Distance(cache,
-											   proxyA, GetTransformation(sweepA, t1),
-											   proxyB, GetTransformation(sweepB, t1));
+			const auto distanceInfo = Distance(proxyA, GetTransformation(sweepA, t1),
+											   proxyB, GetTransformation(sweepB, t1),
+											   cache);
 			++stats.toi_iters;
 			stats.sum_dist_iters += distanceInfo.iterations;
 			stats.max_dist_iters = Max(stats.max_dist_iters, distanceInfo.iterations);
@@ -405,7 +405,7 @@ bool TestOverlap(const Shape& shapeA, child_count_t indexA, const Transformation
 	const auto proxyB = GetDistanceProxy(shapeB, indexB);
 	
 	SimplexCache cache;
-	const auto distanceInfo = Distance(cache, proxyA, xfA, proxyB, xfB);
+	const auto distanceInfo = Distance(proxyA, xfA, proxyB, xfB, cache);
 	const auto distanceSquared = LengthSquared(distanceInfo.witnessPoints.a - distanceInfo.witnessPoints.b);
 	const auto totalRadiusSquared = Square(proxyA.GetRadius() + proxyB.GetRadius());
 	const auto separation_amount = distanceSquared - totalRadiusSquared;
