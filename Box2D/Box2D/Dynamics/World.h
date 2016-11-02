@@ -386,7 +386,7 @@ private:
 	void SetNewFixtures() noexcept { m_flags |= World::e_newFixture; }
 	void UnsetNewFixtures() noexcept { m_flags &= ~e_newFixture; }
 
-	ContactManager m_contactMgr{&m_blockAllocator, &m_defaultFilter, &m_defaultListener};
+	ContactManager m_contactMgr{m_blockAllocator, &m_defaultFilter, &m_defaultListener};
 
 	BodyList m_bodies; ///< Body collection.
 	JointList m_joints; ///< Joint collection.

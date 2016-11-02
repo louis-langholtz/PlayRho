@@ -38,7 +38,7 @@ struct FixtureProxy;
 class ContactManager
 {
 public:
-	ContactManager(BlockAllocator* allocator, ContactFilter* filter, ContactListener* listener):
+	ContactManager(BlockAllocator& allocator, ContactFilter* filter, ContactListener* listener):
 		m_allocator{allocator}, m_contactFilter{filter}, m_contactListener{listener} {}
 	
 	// Broad-phase callback.
@@ -99,7 +99,7 @@ private:
 	void Remove(Contact* contact);
 	
 	ContactList m_contacts; ///< Container of contacts managed by this manager.
-	BlockAllocator* const m_allocator;
+	BlockAllocator& m_allocator;
 };
 
 } // namespace box2d
