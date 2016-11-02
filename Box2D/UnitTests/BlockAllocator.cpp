@@ -45,3 +45,21 @@ TEST(BlockAllocator, NotEquals)
 	EXPECT_FALSE(b != b);
 	EXPECT_TRUE(a != b);
 }
+
+TEST(BlockAllocator, Allocate_and_Clear)
+{
+	BlockAllocator allocator;
+	ASSERT_EQ(allocator.GetChunkCount(), decltype(allocator.GetChunkCount()){0});
+
+	auto ptr = allocator.Allocate(1);
+	EXPECT_EQ(allocator.GetChunkCount(), decltype(allocator.GetChunkCount()){1});
+	EXPECT_NE(ptr, nullptr);
+	
+	*static_cast<char*>(ptr) = 'B';
+	
+	EXPECT_EQ(*static_cast<char*>(ptr), 'B');
+	
+	allocator.Clear();
+	
+	EXPECT_EQ(allocator.GetChunkCount(), decltype(allocator.GetChunkCount()){0});
+}

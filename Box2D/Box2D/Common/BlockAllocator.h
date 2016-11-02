@@ -58,8 +58,15 @@ namespace box2d {
 		/// @detail This will use free if the size is larger than <code>MaxBlockSize</code>.
 		void Free(void* p, size_type n);
 		
+		/// Clears this allocator.
+		/// @note This resets the chunk-count back to zero.
 		void Clear();
 		
+		auto GetChunkCount() const noexcept
+		{
+			return m_chunkCount;
+		}
+
 	private:
 		struct Chunk;
 		struct Block;
