@@ -74,28 +74,28 @@ TEST(Rot, Add)
 	EXPECT_EQ(rot0, rot0 + rot0);	
 	EXPECT_EQ(rot90, rot0 + rot90);
 	EXPECT_EQ(rot180, rot90 + rot90);
-	EXPECT_EQ(round(GetAngle(rot270)), round(GetAngle(rot180 + rot90)));
-	EXPECT_EQ(round(GetAngle(Rot(DegreesToRadians(20)))), round(GetAngle(Rot(DegreesToRadians(30)) + Rot(DegreesToRadians(-10)))));
-	EXPECT_EQ(round(GetAngle(Rot(DegreesToRadians(20)))), round(GetAngle(Rot(DegreesToRadians(-10)) + Rot(DegreesToRadians(30)))));
-	EXPECT_EQ(round(GetAngle(Rot(DegreesToRadians(20)))), round(GetAngle(-Rot(DegreesToRadians(10)) + Rot(DegreesToRadians(30)))));
-	EXPECT_EQ(round(GetAngle(Rot(DegreesToRadians(20)))), round(GetAngle(Rot(DegreesToRadians(30)) + -Rot(DegreesToRadians(10)))));
-	EXPECT_EQ(round(GetAngle(Rot(DegreesToRadians(105)))), round(GetAngle(Rot(DegreesToRadians(45)) + Rot(DegreesToRadians(60)))));
-	EXPECT_EQ(round(GetAngle(Rot(DegreesToRadians(290)))), round(GetAngle(Rot(DegreesToRadians(145)) + Rot(DegreesToRadians(145)))));
-	EXPECT_EQ(round(GetAngle(Rot(DegreesToRadians(64)))), round(GetAngle(Rot(DegreesToRadians(30)) + Rot(DegreesToRadians(34)))));
+	EXPECT_EQ(round(ToRadians(rot270)), round(ToRadians(rot180 + rot90)));
+	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(20)))), round(ToRadians(Rot(DegreesToRadians(30)) + Rot(DegreesToRadians(-10)))));
+	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(20)))), round(ToRadians(Rot(DegreesToRadians(-10)) + Rot(DegreesToRadians(30)))));
+	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(20)))), round(ToRadians(-Rot(DegreesToRadians(10)) + Rot(DegreesToRadians(30)))));
+	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(20)))), round(ToRadians(Rot(DegreesToRadians(30)) + -Rot(DegreesToRadians(10)))));
+	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(105)))), round(ToRadians(Rot(DegreesToRadians(45)) + Rot(DegreesToRadians(60)))));
+	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(290)))), round(ToRadians(Rot(DegreesToRadians(145)) + Rot(DegreesToRadians(145)))));
+	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(64)))), round(ToRadians(Rot(DegreesToRadians(30)) + Rot(DegreesToRadians(34)))));
 }
 
 TEST(Rot, Negate)
 {
-	EXPECT_EQ(round(DegreesToRadians(0)), round(GetAngle(-Rot(DegreesToRadians(0)))));
-	EXPECT_EQ(round(GetAngle(Rot(DegreesToRadians(360)))), round(GetAngle(-Rot(DegreesToRadians(0)))));
-	EXPECT_EQ(-round(DegreesToRadians(45)), round(GetAngle(-Rot(DegreesToRadians(45)))));
-	EXPECT_EQ(-round(DegreesToRadians(10)), round(GetAngle(-Rot(DegreesToRadians(10)))));
-	EXPECT_EQ(round(GetAngle(Rot(DegreesToRadians(315)))), round(GetAngle(-Rot(DegreesToRadians(45)))));
-	EXPECT_EQ(round(GetAngle(Rot(DegreesToRadians(270)))), round(GetAngle(-Rot(DegreesToRadians(90)))));
-	EXPECT_EQ(round(GetAngle(Rot(DegreesToRadians(260)))), round(GetAngle(-Rot(DegreesToRadians(100)))));
-	EXPECT_EQ(-round(GetAngle(Rot(DegreesToRadians(180)))), round(GetAngle(-Rot(DegreesToRadians(180)))));
-	EXPECT_EQ(round(GetAngle(Rot(DegreesToRadians(64)))), round(GetAngle(-Rot(DegreesToRadians(30)) + Rot(DegreesToRadians(94)))));
-	EXPECT_EQ(round(GetAngle(Rot(DegreesToRadians(-64)))), round(GetAngle(Rot(DegreesToRadians(30)) + -Rot(DegreesToRadians(94)))));	
+	EXPECT_EQ(round(DegreesToRadians(0)), round(ToRadians(-Rot(DegreesToRadians(0)))));
+	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(360)))), round(ToRadians(-Rot(DegreesToRadians(0)))));
+	EXPECT_EQ(-round(DegreesToRadians(45)), round(ToRadians(-Rot(DegreesToRadians(45)))));
+	EXPECT_EQ(-round(DegreesToRadians(10)), round(ToRadians(-Rot(DegreesToRadians(10)))));
+	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(315)))), round(ToRadians(-Rot(DegreesToRadians(45)))));
+	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(270)))), round(ToRadians(-Rot(DegreesToRadians(90)))));
+	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(260)))), round(ToRadians(-Rot(DegreesToRadians(100)))));
+	EXPECT_EQ(-round(ToRadians(Rot(DegreesToRadians(180)))), round(ToRadians(-Rot(DegreesToRadians(180)))));
+	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(64)))), round(ToRadians(-Rot(DegreesToRadians(30)) + Rot(DegreesToRadians(94)))));
+	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(-64)))), round(ToRadians(Rot(DegreesToRadians(30)) + -Rot(DegreesToRadians(94)))));	
 }
 
 TEST(Rot, Subtract)
@@ -106,14 +106,14 @@ TEST(Rot, Subtract)
 	Rot rot270(3 * Pi / 2);
 	Rot rot360(2 * Pi);
 
-	EXPECT_EQ(round(GetAngle(rot0)), round(GetAngle(rot0 - rot0)));
-	EXPECT_EQ(round(GetAngle(rot90)), round(GetAngle(rot90 - rot0)));
-	EXPECT_EQ(round(GetAngle(rot180)), round(GetAngle(rot180 - rot0)));
-	EXPECT_EQ(round(GetAngle(rot270)), round(GetAngle(rot270 - rot0)));
+	EXPECT_EQ(round(ToRadians(rot0)), round(ToRadians(rot0 - rot0)));
+	EXPECT_EQ(round(ToRadians(rot90)), round(ToRadians(rot90 - rot0)));
+	EXPECT_EQ(round(ToRadians(rot180)), round(ToRadians(rot180 - rot0)));
+	EXPECT_EQ(round(ToRadians(rot270)), round(ToRadians(rot270 - rot0)));
 	
-	EXPECT_NE(round(GetAngle(rot90)), round(GetAngle(rot0 - rot90)));
-	EXPECT_EQ(round(GetAngle(rot270)), round(GetAngle(rot0 - rot90)));
-	EXPECT_EQ(round(GetAngle(Rot(DegreesToRadians(-90)))), round(GetAngle(rot0 - rot90)));
-	EXPECT_EQ(round(GetAngle(Rot(DegreesToRadians(64)))), round(GetAngle(Rot(DegreesToRadians(34)) - Rot(DegreesToRadians(-30)))));
-	EXPECT_EQ(round(GetAngle(Rot(DegreesToRadians(64)))), round(GetAngle(Rot(DegreesToRadians(94)) - Rot(DegreesToRadians(30)))));
+	EXPECT_NE(round(ToRadians(rot90)), round(ToRadians(rot0 - rot90)));
+	EXPECT_EQ(round(ToRadians(rot270)), round(ToRadians(rot0 - rot90)));
+	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(-90)))), round(ToRadians(rot0 - rot90)));
+	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(64)))), round(ToRadians(Rot(DegreesToRadians(34)) - Rot(DegreesToRadians(-30)))));
+	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(64)))), round(ToRadians(Rot(DegreesToRadians(94)) - Rot(DegreesToRadians(30)))));
 }

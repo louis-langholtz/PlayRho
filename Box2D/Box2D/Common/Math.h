@@ -454,7 +454,7 @@ constexpr inline bool operator != (Rot lhs, Rot rhs)
 }
 
 /// Get the angle in radians
-inline float_t GetAngle(Rot rot)
+inline float_t ToRadians(Rot rot)
 {
 	return Atan2(rot.sin(), rot.cos());
 }
