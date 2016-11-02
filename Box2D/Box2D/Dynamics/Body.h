@@ -123,7 +123,8 @@ struct BodyDef
 	void* userData = nullptr;
 };
 
-/// A rigid body. These are created via World::Create.
+/// Body.
+/// @detail A rigid body. These are created via World::Create.
 /// @note On a 64-bit architecture this data structure is at least 156-bytes large.
 class Body
 {

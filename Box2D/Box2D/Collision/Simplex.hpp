@@ -87,6 +87,9 @@ namespace box2d
 	///
 	/// @note This data structure is 104-bytes large.
 	///
+	/// @invariant Vertex's for the same index must have the same point locations.
+	/// @invariant There may not be more than one entry for the same index pair.
+	///
 	/// @sa https://en.wikipedia.org/wiki/Simplex
 	/// @sa https://en.wikipedia.org/wiki/Gilbert%2DJohnson%2DKeerthi_distance_algorithm
 	///
@@ -199,11 +202,11 @@ namespace box2d
 	/// Define
 	/// d12_1 =  dot(w2, e12)
 	/// d12_2 = -dot(w1, e12)
-	/// d12 = d12_1 + d12_2
+	/// d12_sum = d12_1 + d12_2
 	///
 	/// Solution
-	/// a1 = d12_1 / d12
-	/// a2 = d12_2 / d12
+	/// a1 = d12_1 / d12_sum
+	/// a2 = d12_2 / d12_sum
 	///
 	/// @param s0 Simplex vertex 0.
 	/// @param s1 Simplex vertex 1.

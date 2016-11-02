@@ -44,6 +44,7 @@ namespace box2d
 			m_size{copy.size()},
 			m_elements{copy.data()}
 		{
+			// Intentionally empty
 		}
 
 		template <std::size_t COPY_MAXSIZE, typename COPY_SIZE_TYPE, typename = std::enable_if_t< COPY_MAXSIZE <= MAXSIZE >>
