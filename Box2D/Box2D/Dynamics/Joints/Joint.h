@@ -168,8 +168,8 @@ private:
 	friend class ConstJointIterator;
 	friend class JointList;
 
-	static Joint* Create(const JointDef& def, BlockAllocator* allocator);
-	static void Destroy(Joint* joint, BlockAllocator* allocator);
+	static Joint* Create(const JointDef& def, BlockAllocator& allocator);
+	static void Destroy(Joint* joint, BlockAllocator& allocator);
 
 	/// Initializes velocity constraint data based on the given solver data.
 	/// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.

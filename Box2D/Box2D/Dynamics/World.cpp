@@ -201,7 +201,7 @@ Joint* World::CreateJoint(const JointDef& def)
 	}
 
 	// Note: creating a joint doesn't wake the bodies.
-	auto j = Joint::Create(def, &m_blockAllocator);
+	auto j = Joint::Create(def, m_blockAllocator);
 
 	// Connect to the bodies' doubly linked lists.
 	j->m_edgeA.joint = j;
@@ -319,7 +319,7 @@ void World::Destroy(Joint* j)
 	j->m_edgeB.prev = nullptr;
 	j->m_edgeB.next = nullptr;
 
-	Joint::Destroy(j, &m_blockAllocator);
+	Joint::Destroy(j, m_blockAllocator);
 
 	// If the joint prevents collisions, then flag any contacts for filtering.
 	if (!collideConnected)
