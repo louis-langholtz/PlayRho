@@ -397,6 +397,7 @@ constexpr inline Mat33 GetSymInverse33(const Mat33& value) noexcept
 
 /// Rotational transformation.
 /// @detail An angle expressed in terms of its sine and cosine values.
+/// @note This data structure is 8-bytes large.
 class Rot
 {
 public:
@@ -1150,7 +1151,7 @@ constexpr inline Velocity operator* (const float_t lhs, const Velocity& rhs)
 	return Velocity{rhs.v * lhs, rhs.w * lhs};
 }
 
-constexpr inline Transformation GetTransformation(const Vec2 ctr, const Rot& rot, const Vec2 local_ctr) noexcept
+constexpr inline Transformation GetTransformation(const Vec2 ctr, const Rot rot, const Vec2 local_ctr) noexcept
 {
 	return Transformation{ctr - Rotate(local_ctr, rot), rot};
 }

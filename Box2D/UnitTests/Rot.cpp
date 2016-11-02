@@ -21,6 +21,11 @@
 
 using namespace box2d;
 
+TEST(Rot, ByteSizeIs8)
+{
+	EXPECT_EQ(sizeof(Rot), size_t(8));
+}
+
 TEST(Rot, sin)
 {
 	Rot rot0(0);
