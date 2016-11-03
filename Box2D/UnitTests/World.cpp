@@ -649,6 +649,7 @@ TEST(World, PartiallyOverlappedCirclesSeparate)
 		ASSERT_NE(new_distance, distance);
 		distance = new_distance;
 
+		// angle of the delta of their positions should stay the same as they move away
 		const auto new_angle = GetAngle(new_pos_diff);
 		EXPECT_EQ(angle, new_angle);
 	}
