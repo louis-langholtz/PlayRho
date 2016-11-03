@@ -32,6 +32,7 @@ void VelocityConstraint::Update(const WorldManifold& worldManifold,
 	assert(GetPointCount() == worldManifold.GetPointCount());
 	
 	const auto normal = worldManifold.GetNormal();
+	assert(IsValid(normal));
 	
 	SetNormal(normal);
 	

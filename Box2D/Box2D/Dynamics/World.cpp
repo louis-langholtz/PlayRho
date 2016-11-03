@@ -733,6 +733,7 @@ void World::Solve(const TimeStep& step)
 									   const PositionConstraint* positionConstraints,
 									   const Position* const positions)
 		{
+			assert(count == 0 || (positionConstraints && positions && velocityConstraints));
 			for (auto i = decltype(count){0}; i < count; ++i)
 			{
 				const auto& pc = positionConstraints[i];
@@ -750,6 +751,7 @@ void World::Solve(const TimeStep& step)
 									  VelocityConstraint* velocityConstraints,
 									  Velocity* velocities)
 		{
+			assert(count == 0 || (velocityConstraints && velocities));
 			for (auto j = decltype(count){0}; j < count; ++j)
 			{
 				auto& vc = velocityConstraints[j];

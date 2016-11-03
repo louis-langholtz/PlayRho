@@ -58,6 +58,7 @@ static inline void SolveTangentConstraint(VelocityConstraint& vc, Velocity& velA
 	const auto count = vc.GetPointCount();
 	assert((count == 1) || (count == 2));
 
+	assert(IsValid(tangent));
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
 		const auto rA = GetPointRelPosA(vc, i);
@@ -341,6 +342,8 @@ static inline void SolveNormalConstraint(VelocityConstraint& vc, Velocity& velA,
 	const auto count = vc.GetPointCount();
 	assert((count == 1) || (count == 2));
 	
+	assert(IsValid(GetNormal(vc)));
+	
 	if ((count == 1) || (!IsValid(vc.GetK())))
 	{
 		SeqSolveNormalConstraint(vc, velA, velB);
@@ -364,6 +367,12 @@ void box2d::SolveVelocityConstraint(VelocityConstraint& vc, Velocity& velA, Velo
 PositionSolution box2d::Solve(const PositionConstraint& pc, Position posA, Position posB,
 							  float_t resolution_rate, float_t max_separation, float_t max_correction)
 {
+	assert(IsValid(posA));
+	assert(IsValid(posB));
+	assert(IsValid(resolution_rate));
+	assert(IsValid(max_separation));
+	assert(IsValid(max_correction));
+	
 	auto minSeparation = MaxFloat;
 	const auto invMassA = pc.bodyA.invMass;
 	const auto invInertiaA = pc.bodyA.invI;
@@ -387,7 +396,7 @@ PositionSolution box2d::Solve(const PositionConstraint& pc, Position posA, Posit
 		
 		// Track max constraint error.
 		
-		if (invMassTotal > float_t{0})
+		if ((invMassTotal > float_t{0}) && IsValid(psm.m_normal))
 		{
 			const auto rA = psm.m_point - pos_a.c;
 			const auto rB = psm.m_point - pos_b.c;
@@ -460,6 +469,8 @@ PositionSolution box2d::Solve(const PositionConstraint& pc, Position posA, Posit
 bool box2d::SolvePositionConstraints(const PositionConstraint* positionConstraints, size_t count,
 									 Position* positions)
 {
+	assert(count == 0 || (positionConstraints && positions));
+
 	auto minSeparation = MaxFloat;
 	
 	for (auto i = decltype(count){0}; i < count; ++i)
