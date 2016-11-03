@@ -32,12 +32,6 @@ namespace box2d
 	/// This is a normal-point-separation composition of data.
 	struct PositionSolverManifold
 	{
-		PositionSolverManifold() noexcept = default;
-		PositionSolverManifold(const PositionSolverManifold& copy) noexcept = default;
-		
-		constexpr PositionSolverManifold(Vec2 normal, Vec2 point, float_t separation) noexcept:
-			m_normal{normal}, m_point{point}, m_separation{separation} {}
-		
 		Vec2 m_normal; ///< Normal.
 		Vec2 m_point; ///< Point.
 		float_t m_separation; ///< "separation" between two points (of a contact position constraint).

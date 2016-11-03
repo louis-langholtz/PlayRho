@@ -227,12 +227,9 @@ inline void DynamicTree::RayCast(T* callback, const RayCastInput& input) const
 {
 	const auto p1 = input.p1;
 	const auto p2 = input.p2;
-	const auto dp = p2 - p1;
-	assert(LengthSquared(dp) > float_t{0});
-	const auto r = GetUnitVector(dp);
 
 	// v is perpendicular to the segment.
-	const auto v = GetRevPerpendicular(r);
+	const auto v = GetRevPerpendicular(GetUnitVector(p2 - p1));
 	const auto abs_v = Abs(v);
 
 	// Separating axis for segment (Gino, p80).
