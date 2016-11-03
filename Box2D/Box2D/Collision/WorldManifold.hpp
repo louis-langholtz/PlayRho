@@ -48,20 +48,33 @@ namespace box2d
 			float_t s; ///< Separation.
 		};
 		
+		/// Default constructor.
+		/// @detail
+		/// A default constructed world manifold will gave a point count of zero, an invalid
+		/// normal, invalid points, and invalid separations.
 		WorldManifold() noexcept = default;
 		
-		constexpr explicit WorldManifold(Vec2 n) noexcept:
-			normal{n}, count{0},
-			points{GetInvalid<Vec2>(), GetInvalid<Vec2>()},
-			separations{GetInvalid<float_t>(), GetInvalid<float_t>()} {}
+		constexpr explicit WorldManifold(Vec2 normal) noexcept:
+			m_normal{normal}, m_count{0},
+			m_points{GetInvalid<Vec2>(), GetInvalid<Vec2>()},
+			m_separations{GetInvalid<float_t>(), GetInvalid<float_t>()}
+		{
+			// Intentionally empty.
+		}
 		
-		constexpr explicit WorldManifold(Vec2 n, PointSeparation ps0) noexcept:
-			normal{n}, count{1},
-			points{ps0.p, GetInvalid<Vec2>()},
-			separations{ps0.s, GetInvalid<float_t>()} {}
+		constexpr explicit WorldManifold(Vec2 normal, PointSeparation ps0) noexcept:
+			m_normal{normal}, m_count{1},
+			m_points{ps0.p, GetInvalid<Vec2>()},
+			m_separations{ps0.s, GetInvalid<float_t>()}
+		{
+			// Intentionally empty.
+		}
 		
-		constexpr explicit WorldManifold(Vec2 n, PointSeparation ps0, PointSeparation ps1) noexcept:
-			normal{n}, count{2}, points{ps0.p, ps1.p}, separations{ps0.s, ps1.s} {}
+		constexpr explicit WorldManifold(Vec2 normal, PointSeparation ps0, PointSeparation ps1) noexcept:
+			m_normal{normal}, m_count{2}, m_points{ps0.p, ps1.p}, m_separations{ps0.s, ps1.s}
+		{
+			// Intentionally empty.
+		}
 		
 		/// Gets the point count.
 		///
@@ -70,11 +83,12 @@ namespace box2d
 		///
 		/// @return Value between 0 and 2.
 		///
-		size_type GetPointCount() const noexcept { return count; }
+		size_type GetPointCount() const noexcept { return m_count; }
 		
 		/// Gets the normal of the contact.
 		/// @detail This is a directional unit-vector.
-		Vec2 GetNormal() const { return normal; }
+		/// @return Normal of the contact or an invalid value.
+		Vec2 GetNormal() const noexcept { return m_normal; }
 		
 		/// Gets the indexed point's location in world coordinates.
 		///
@@ -86,10 +100,10 @@ namespace box2d
 		///
 		/// @return Point or an invalid value if the given index was invalid.
 		///
-		Vec2 GetPoint(size_type index) const
+		Vec2 GetPoint(size_type index) const noexcept
 		{
 			assert(index < MaxManifoldPoints);
-			return points[index];
+			return m_points[index];
 		}
 		
 		/// Gets the amount of separation at the given indexed point.
@@ -102,24 +116,24 @@ namespace box2d
 		/// @return Separation amount (a negative value), or an invalid value if the given index
 		///   was invalid.
 		///
-		float_t GetSeparation(size_type index) const
+		float_t GetSeparation(size_type index) const noexcept
 		{
 			assert(index < MaxManifoldPoints);
-			return separations[index];
+			return m_separations[index];
 		}
 		
 	private:	
-		Vec2 normal; ///< world vector pointing from A to B
+		Vec2 m_normal = GetInvalid<Vec2>(); ///< world vector pointing from A to B
 		
-		size_type count = 0;
+		size_type m_count = 0;
 
 		/// Points.
 		/// @detail Manifold's contact points in world coordinates (mid-point of intersection)
-		Vec2 points[MaxManifoldPoints] = {GetInvalid<Vec2>(), GetInvalid<Vec2>()};
+		Vec2 m_points[MaxManifoldPoints] = {GetInvalid<Vec2>(), GetInvalid<Vec2>()};
 		
 		/// Separations (in meters).
 		/// @detail A negative value indicates overlap.
-		float_t separations[MaxManifoldPoints];
+		float_t m_separations[MaxManifoldPoints] = {GetInvalid<float_t>(), GetInvalid<float_t>()};
 	};
 	
 	/// Gets the world manifold for the given data.
