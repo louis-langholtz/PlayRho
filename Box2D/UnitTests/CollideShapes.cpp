@@ -34,8 +34,8 @@ TEST(CollideShapes, CircleCircleOrientedHorizontally)
 	const auto s2 = CircleShape{r2};
 	const auto p1 = Vec2{11, -4};
 	const auto p2 = Vec2{13, -4};
-	const auto t1 = Transformation{p1, Rot_identity};
-	const auto t2 = Transformation{p2, Rot_identity};
+	const auto t1 = Transformation{p1, Rot::GetIdentity()};
+	const auto t2 = Transformation{p2, Rot::GetIdentity()};
 	
 	// put shape 1 to left of shape 2
 	const auto manifold = CollideShapes(s1, t1, s2, t2);

@@ -406,21 +406,16 @@ class Rot
 public:
 	Rot() = default;
 	
-	constexpr Rot(const Rot& copy) noexcept = default;
-
-	/// Initialize from sine and cosine values.
-	constexpr Rot(float_t sine, float_t cosine) noexcept: s{sine}, c{cosine}
+	static constexpr Rot GetIdentity() noexcept
 	{
-		// assert(sine >= -1);
-		// assert(sine <= +1);
-		// assert(cosine >= -1);
-		// assert(cosine <= +1);
-		assert(almost_equal(Square(sine) + Square(cosine), 1));
+		return Rot{1, 0};
 	}
+
+	constexpr Rot(const Rot& copy) noexcept = default;
 
 	/// Initialize from an angle.
 	/// @param angle Angle in radians (counter-clockwise from the normal of Vec2(1, 0)).
-	explicit Rot(float_t angle): Rot{std::sin(angle), std::cos(angle)}
+	explicit Rot(float_t angle): Rot{std::cos(angle), std::sin(angle)}
 	{
 		// TODO_ERIN optimize
 	}
@@ -433,12 +428,33 @@ public:
 	/// @return Value approximately between -1 and +1 (inclusive).
 	constexpr auto cos() const noexcept { return c; }
 
-private:
-	float_t s; ///< Sine value.
-	float_t c; ///< Cosine value.
-};
+	constexpr inline Rot FlipY() const noexcept
+	{
+		return Rot{cos(), -sin()};
+	}
 
-constexpr auto Rot_identity = Rot(0, 1);
+	constexpr inline Rot Rotate(Rot amount) const noexcept
+	{
+		return Rot{
+			cos() * amount.cos() - sin() * amount.sin(),
+			sin() * amount.cos() + cos() * amount.sin()
+		};
+	}
+	
+private:
+	/// Initialize from sine and cosine values.
+	constexpr Rot(float_t cosine, float_t sine) noexcept: c{cosine}, s{sine}
+	{
+		// assert(sine >= -1);
+		// assert(sine <= +1);
+		// assert(cosine >= -1);
+		// assert(cosine <= +1);
+		assert(almost_equal(Square(cosine) + Square(sine), 1));
+	}
+
+	float_t c; ///< Cosine value.
+	float_t s; ///< Sine value.
+};
 
 template <>
 inline bool IsValid(const Rot& value) noexcept
@@ -493,7 +509,7 @@ struct Transformation
 	Rot q; ///< Rotational portion of the transformation. 8-bytes.
 };
 
-constexpr auto Transform_identity = Transformation{Vec2_zero, Rot_identity};
+constexpr auto Transform_identity = Transformation{Vec2_zero, Rot::GetIdentity()};
 
 template <>
 inline bool IsValid(const Transformation& value) noexcept
@@ -815,6 +831,29 @@ public:
 		return Vec2{GetX(), GetY()};
 	}
 
+	constexpr inline UnitVec2 FlipXY() const noexcept
+	{
+		return UnitVec2{-GetX(), -GetY()};
+	}
+
+	constexpr inline UnitVec2 FlipX() const noexcept
+	{
+		return UnitVec2{-GetX(), GetY()};
+	}
+
+	constexpr inline UnitVec2 FlipY() const noexcept
+	{
+		return UnitVec2{GetX(), -GetY()};
+	}
+
+	constexpr inline UnitVec2 Rotate(UnitVec2 amount) const noexcept
+	{
+		return UnitVec2{
+			GetX() * amount.GetX() - GetY() * amount.GetY(),
+			GetY() * amount.GetX() + GetX() * amount.GetY()
+		};
+	}
+
 private:
 	constexpr UnitVec2(data_type x, data_type y) noexcept:
 		m_x{x}, m_y{y}
@@ -961,6 +1000,7 @@ constexpr inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
 	return Vec2{A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y};
 }
 
+#if 0
 /// Adds two rotations.
 /// @detail In terms of angles, this is simply the addition of the two angles.
 constexpr inline Rot operator+ (const Rot lhs, const Rot rhs) noexcept
@@ -971,11 +1011,6 @@ constexpr inline Rot operator+ (const Rot lhs, const Rot rhs) noexcept
 	// s = qs * rc + qc * rs
 	// c = qc * rc - qs * rs
 	return Rot(lhs.sin() * rhs.cos() + lhs.cos() * rhs.sin(), lhs.cos() * rhs.cos() - lhs.sin() * rhs.sin());
-}
-
-constexpr inline Rot operator- (Rot value)
-{
-	return Rot{-value.sin(), value.cos()};
 }
 
 /// Subtracts rhs from lhs.
@@ -989,6 +1024,7 @@ constexpr inline Rot operator- (const Rot& lhs, const Rot& rhs) noexcept
 	// c = qc * rc + qs * rs
 	return Rot{rhs.cos() * lhs.sin() - rhs.sin() * lhs.cos(), rhs.cos() * lhs.cos() + rhs.sin() * lhs.sin()};
 }
+#endif
 
 /// Rotates a vector by a given angle.
 constexpr inline Vec2 Rotate(const Vec2 vector, const Rot& angle) noexcept
@@ -1037,14 +1073,14 @@ constexpr inline Vec2 InverseTransform(const Vec2 v, const Transformation T) noe
 //    = (A.q * B.q).Rot(v1) + A.q.Rot(B.p) + A.p
 constexpr inline Transformation Mul(const Transformation& A, const Transformation& B) noexcept
 {
-	return Transformation{A.p + Rotate(B.p, A.q), A.q + B.q};
+	return Transformation{A.p + Rotate(B.p, A.q), A.q.Rotate(B.q)};
 }
 
 // v2 = A.q' * (B.q * v1 + B.p - A.p)
 //    = A.q' * B.q * v1 + A.q' * (B.p - A.p)
 constexpr inline Transformation MulT(const Transformation& A, const Transformation& B) noexcept
 {
-	return Transformation{InverseRotate(B.p - A.p, A.q), B.q - A.q};
+	return Transformation{InverseRotate(B.p - A.p, A.q), B.q.Rotate(A.q.FlipY())};
 }
 
 template <>
