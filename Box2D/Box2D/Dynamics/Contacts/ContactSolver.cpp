@@ -54,63 +54,70 @@ static inline void SolveTangentConstraint(VelocityConstraint& vc, Velocity& velA
 	assert(IsValid(velB));
 
 	const auto tangent = GetTangent(vc);
-	
-	const auto count = vc.GetPointCount();
-	assert((count == 1) || (count == 2));
-
-	assert(IsValid(tangent));
-	for (auto i = decltype(count){0}; i < count; ++i)
+	if (IsValid(tangent))
 	{
-		const auto rA = GetPointRelPosA(vc, i);
-		const auto rB = GetPointRelPosB(vc, i);
+		const auto count = vc.GetPointCount();
+		assert((count == 1) || (count == 2));
+		
+		for (auto i = decltype(count){0}; i < count; ++i)
+		{
+			const auto rA = GetPointRelPosA(vc, i);
+			const auto rB = GetPointRelPosB(vc, i);
 
-		// Compute tangent force
-		const auto lambda = GetTangentMassAtPoint(vc, i) * (vc.GetTangentSpeed() - Dot(GetContactRelVelocity(velA, rA, velB, rB), tangent));
-		
-		// Clamp the accumulated force
-		const auto maxImpulse = vc.GetFriction() * GetNormalImpulseAtPoint(vc, i);
-		const auto oldImpulse = GetTangentImpulseAtPoint(vc, i);
-		const auto newImpulse = Clamp(GetTangentImpulseAtPoint(vc, i) + lambda, -maxImpulse, maxImpulse);
-		const auto incImpulse = newImpulse - oldImpulse;
-		
-		// Save new impulse
-		SetTangentImpulseAtPoint(vc, i, newImpulse);
-		
-		// Apply contact impulse
-		const auto P = incImpulse * tangent;
-		velA -= Velocity{vc.bodyA.GetInvMass() * P, vc.bodyA.GetInvRotI() * Cross(rA, P)};
-		velB += Velocity{vc.bodyB.GetInvMass() * P, vc.bodyB.GetInvRotI() * Cross(rB, P)};
+			// Compute tangent force
+			const auto lambda = GetTangentMassAtPoint(vc, i) * (vc.GetTangentSpeed() - Dot(GetContactRelVelocity(velA, rA, velB, rB), tangent));
+			
+			// Clamp the accumulated force
+			const auto maxImpulse = vc.GetFriction() * GetNormalImpulseAtPoint(vc, i);
+			const auto oldImpulse = GetTangentImpulseAtPoint(vc, i);
+			const auto newImpulse = Clamp(GetTangentImpulseAtPoint(vc, i) + lambda, -maxImpulse, maxImpulse);
+			const auto incImpulse = newImpulse - oldImpulse;
+			
+			// Save new impulse
+			SetTangentImpulseAtPoint(vc, i, newImpulse);
+			
+			// Apply contact impulse
+			const auto P = incImpulse * tangent;
+			velA -= Velocity{vc.bodyA.GetInvMass() * P, vc.bodyA.GetInvRotI() * Cross(rA, P)};
+			velB += Velocity{vc.bodyB.GetInvMass() * P, vc.bodyB.GetInvRotI() * Cross(rB, P)};
+		}
 	}
 }
 
 static inline void SeqSolveNormalConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
 {
+	assert(IsValid(velA));
+	assert(IsValid(velB));
+	
 	const auto normal = GetNormal(vc);
-	const auto count = vc.GetPointCount();
-	for (auto i = decltype(count){0}; i < count; ++i)
+	if (IsValid(normal))
 	{
-		const auto rA = GetPointRelPosA(vc, i);
-		const auto rB = GetPointRelPosB(vc, i);
-		
-		// Compute normal impulse
-		const auto lambda = [&](){
-			const auto dv = GetContactRelVelocity(velA, rA, velB, rB);
-			const auto vn = Dot(dv, normal);
-			return GetNormalMassAtPoint(vc, i) * (vn - GetVelocityBiasAtPoint(vc, i));
-		}();
-		
-		// Clamp the accumulated impulse
-		const auto oldImpulse = GetNormalImpulseAtPoint(vc, i);
-		const auto newImpulse = Max(oldImpulse - lambda, float_t{0});
-		const auto incImpulse = newImpulse - oldImpulse;
-		
-		// Save new impulse
-		SetNormalImpulseAtPoint(vc, i, newImpulse);
-		
-		// Apply contact impulse
-		const auto P = incImpulse * normal;
-		velA -= Velocity{vc.bodyA.GetInvMass() * P, vc.bodyA.GetInvRotI() * Cross(rA, P)};
-		velB += Velocity{vc.bodyB.GetInvMass() * P, vc.bodyB.GetInvRotI() * Cross(rB, P)};
+		const auto count = vc.GetPointCount();	
+		for (auto i = decltype(count){0}; i < count; ++i)
+		{
+			const auto rA = GetPointRelPosA(vc, i);
+			const auto rB = GetPointRelPosB(vc, i);
+			
+			// Compute normal impulse
+			const auto lambda = [&](){
+				const auto dv = GetContactRelVelocity(velA, rA, velB, rB);
+				const auto vn = Dot(dv, normal);
+				return GetNormalMassAtPoint(vc, i) * (vn - GetVelocityBiasAtPoint(vc, i));
+			}();
+			
+			// Clamp the accumulated impulse
+			const auto oldImpulse = GetNormalImpulseAtPoint(vc, i);
+			const auto newImpulse = Max(oldImpulse - lambda, float_t{0});
+			const auto incImpulse = newImpulse - oldImpulse;
+			
+			// Save new impulse
+			SetNormalImpulseAtPoint(vc, i, newImpulse);
+			
+			// Apply contact impulse
+			const auto P = incImpulse * normal;
+			velA -= Velocity{vc.bodyA.GetInvMass() * P, vc.bodyA.GetInvRotI() * Cross(rA, P)};
+			velB += Velocity{vc.bodyB.GetInvMass() * P, vc.bodyB.GetInvRotI() * Cross(rB, P)};
+		}
 	}
 }
 
@@ -132,6 +139,9 @@ static inline VelocityPair ApplyImpulses(const VelocityConstraint& vc, const Vec
 static inline void BlockSolveUpdate(VelocityConstraint& vc, Velocity& velA, Velocity& velB,
 									const Vec2 newImpulses)
 {
+	assert(IsValid(velA));
+	assert(IsValid(velB));
+	
 	const auto delta_v = ApplyImpulses(vc, newImpulses - GetNormalImpulses(vc));
 	velA += delta_v.vel_a;
 	velB += delta_v.vel_b;
@@ -274,6 +284,12 @@ static inline void BlockSolveNormalConstraint(VelocityConstraint& vc, Velocity& 
 	const auto K = vc.GetK();
 	assert(IsValid(K));
 	
+	const auto normal = GetNormal(vc);
+	if (!IsValid(normal))
+	{
+		return;
+	}
+	
 	// Block solver developed in collaboration with Dirk Gregorius (back in 01/07 on Box2D_Lite).
 	// Build the mini LCP for this contact patch
 	//
@@ -309,7 +325,6 @@ static inline void BlockSolveNormalConstraint(VelocityConstraint& vc, Velocity& 
 
 	const auto b_prime = [=]{
 		// Compute normal velocity
-		const auto normal = GetNormal(vc);
 		const auto vn1 = Dot(GetContactRelVelocity(velA, GetPointRelPosA(vc, 0), velB, GetPointRelPosB(vc, 0)), normal);
 		const auto vn2 = Dot(GetContactRelVelocity(velA, GetPointRelPosA(vc, 1), velB, GetPointRelPosB(vc, 1)), normal);
 		
@@ -336,13 +351,8 @@ static inline void BlockSolveNormalConstraint(VelocityConstraint& vc, Velocity& 
 /// Solves the normal portion of the velocity constraint.	
 static inline void SolveNormalConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
 {
-	assert(IsValid(velA));
-	assert(IsValid(velB));
-	
 	const auto count = vc.GetPointCount();
 	assert((count == 1) || (count == 2));
-	
-	assert(IsValid(GetNormal(vc)));
 	
 	if ((count == 1) || (!IsValid(vc.GetK())))
 	{
@@ -356,9 +366,6 @@ static inline void SolveNormalConstraint(VelocityConstraint& vc, Velocity& velA,
 	
 void box2d::SolveVelocityConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
 {
-	assert(IsValid(velA));
-	assert(IsValid(velB));
-
 	// Solve tangent constraints first (before normal constraints) because non-penetration is more important than friction.
 	SolveTangentConstraint(vc, velA, velB);
 	SolveNormalConstraint(vc, velA, velB);

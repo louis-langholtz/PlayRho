@@ -54,6 +54,26 @@ Vec2 box2d::ComputeCentroid(const Span<const Vec2>& vertices)
 	return c / area;
 }
 
+UnitVec2::UnitVec2(Vec2 value, UnitVec2 fallback) noexcept
+{
+	if (IsValid(value))
+	{
+		const auto lengthSquared = LengthSquared(value);
+		if (lengthSquared >= std::numeric_limits<decltype(lengthSquared)>::min())
+		{
+			const auto unitized = value / Sqrt(lengthSquared);
+			m_x = unitized.x;
+			m_y = unitized.y;
+			return;
+		}
+		m_x = fallback.GetX();
+		m_y = fallback.GetY();
+		return;
+	}
+	m_x = GetInvalid<data_type>();
+	m_y = GetInvalid<data_type>();
+}
+
 ::std::ostream& box2d::operator<<(::std::ostream& os, const Vec2& value)
 {
 	return os << "Vec2(" << value.x << "," << value.y << ")";

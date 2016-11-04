@@ -697,14 +697,16 @@ void World::Solve(const TimeStep& step)
 			
 			const auto normal = GetNormal(vc);
 			const auto tangent = GetTangent(vc);
-			const auto pointCount = vc.GetPointCount();	
-			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
+			if (IsValid(normal) && IsValid(tangent))
 			{
-				const auto P = GetNormalImpulseAtPoint(vc, j) * normal + GetTangentImpulseAtPoint(vc, j) * tangent;
-				vp.a -= Velocity{vc.bodyA.GetInvMass() * P, vc.bodyA.GetInvRotI() * Cross(GetPointRelPosA(vc, j), P)};
-				vp.b += Velocity{vc.bodyB.GetInvMass() * P, vc.bodyB.GetInvRotI() * Cross(GetPointRelPosB(vc, j), P)};
+				const auto pointCount = vc.GetPointCount();	
+				for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
+				{
+					const auto P = GetNormalImpulseAtPoint(vc, j) * normal + GetTangentImpulseAtPoint(vc, j) * tangent;
+					vp.a -= Velocity{vc.bodyA.GetInvMass() * P, vc.bodyA.GetInvRotI() * Cross(GetPointRelPosA(vc, j), P)};
+					vp.b += Velocity{vc.bodyB.GetInvMass() * P, vc.bodyB.GetInvRotI() * Cross(GetPointRelPosB(vc, j), P)};
+				}
 			}
-			
 			return vp;
 		}
 		

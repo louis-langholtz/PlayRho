@@ -32,7 +32,6 @@ void VelocityConstraint::Update(const WorldManifold& worldManifold,
 	assert(GetPointCount() == worldManifold.GetPointCount());
 	
 	const auto normal = worldManifold.GetNormal();
-	assert(IsValid(normal));
 	
 	SetNormal(normal);
 	
@@ -49,6 +48,10 @@ void VelocityConstraint::Update(const WorldManifold& worldManifold,
 			const auto vcp_rB = worldPoint - posB;
 			SetPointRelPositions(j, vcp_rA, vcp_rB);
 			SetVelocityBiasAtPoint(j, [&]() {
+				if (!IsValid(normal))
+				{
+					return float_t{0};
+				}
 				const auto vn = Dot(GetContactRelVelocity(velA, vcp_rA, velB, vcp_rB), normal);
 				return (vn < -VelocityThreshold)? -GetRestitution() * vn: float_t{0};
 			}());

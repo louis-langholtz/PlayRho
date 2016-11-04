@@ -36,12 +36,11 @@ namespace box2d {
 			{
 				const auto pointA = Transform(manifold.GetLocalPoint(), xfA);
 				const auto pointB = Transform(manifold.GetPoint(0).localPoint, xfB);
-				const auto delta = pointB - pointA;
-				const auto normal = almost_zero(LengthSquared(delta))? Vec2{float_t{1}, float_t{0}}: GetUnitVector(delta);
+				const auto normal = GetUnitVector(pointB - pointA, UnitVec2::GetRight());
 				const auto cA = pointA + (radiusA * normal);
 				const auto cB = pointB - (radiusB * normal);
 				const auto p0 = (cA + cB) / float_t{2};
-				const auto s0 = Dot(cB - cA, normal);
+				const auto s0 = IsValid(normal)? Dot(cB - cA, normal): -(radiusA + radiusB);
 				return WorldManifold{normal, WorldManifold::PointSeparation{p0, s0}};
 			}
 			default: break;

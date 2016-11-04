@@ -112,7 +112,7 @@ namespace box2d
 		
 		/// Gets a circle-typed manifold.
 		/// @param lp Local center of "circle" A.
-		/// @param mp1 Manifold point 1 whose local point is the center of circle B.
+		/// @param mp1 Manifold point 1 whose local point is the local center of circle B.
 		static constexpr Manifold GetForCircles(Vec2 lp, const Point& mp1) noexcept
 		{
 			return Manifold{e_circles, GetInvalid<Vec2>(), lp, 1, {{mp1}}};
@@ -280,7 +280,7 @@ namespace box2d
 	};
 	
 	template <>
-	inline bool IsValid(const Manifold& value)
+	inline bool IsValid(const Manifold& value) noexcept
 	{
 		return value.GetType() != Manifold::e_unset;
 	}

@@ -39,11 +39,8 @@ template <typename T>
 constexpr inline T GetInvalid() noexcept;
 
 template <typename T>
-inline bool IsValid(const T& value)
-{
-	return value != GetInvalid<T>();
-}
-
+bool IsValid(const T& value) noexcept;
+	
 template <>
 constexpr float_t GetInvalid() noexcept
 {
@@ -52,15 +49,21 @@ constexpr float_t GetInvalid() noexcept
 
 /// This function is used to ensure that a floating point number is not a NaN or infinity.
 template <>
-inline bool IsValid(const float_t& x)
+inline bool IsValid(const float_t& x) noexcept
 {
-	return !std::isnan(x) && !std::isinf(x);
+	return !std::isnan(x); // && !std::isinf(x);
 }
 
 template <>
 constexpr size_t GetInvalid() noexcept
 {
 	return static_cast<size_t>(-1);
+}
+
+template <>
+inline bool IsValid(const size_t& x) noexcept
+{
+	return x != GetInvalid<size_t>();
 }
 
 template<class T>
@@ -247,14 +250,14 @@ inline float_t Length(T value)
 
 /// Does this vector contain finite coordinates?
 template <>
-inline bool IsValid(const Vec2& value)
+inline bool IsValid(const Vec2& value) noexcept
 {
 	return IsValid(value.x) && IsValid(value.y);
 }
 
 /// Does this vector contain finite coordinates?
 template <>
-inline bool IsValid(const Vec3& value)
+inline bool IsValid(const Vec3& value) noexcept
 {
 	return IsValid(value.x) && IsValid(value.y) && IsValid(value.z);
 }
@@ -277,7 +280,7 @@ struct Mat22
 };
 
 template <>
-inline bool IsValid(const Mat22& value)
+inline bool IsValid(const Mat22& value) noexcept
 {
 	return IsValid(value.ex) && IsValid(value.ey);
 }
@@ -396,7 +399,7 @@ constexpr inline Mat33 GetSymInverse33(const Mat33& value) noexcept
 }
 
 /// Rotational transformation.
-/// @detail An angle expressed in terms of its sine and cosine values.
+/// @detail An angle in terms of its sine and cosine values.
 /// @note This data structure is 8-bytes large.
 class Rot
 {
@@ -438,7 +441,7 @@ private:
 constexpr auto Rot_identity = Rot(0, 1);
 
 template <>
-inline bool IsValid(const Rot& value)
+inline bool IsValid(const Rot& value) noexcept
 {
 	return IsValid(value.sin()) && IsValid(value.cos());
 }
@@ -493,7 +496,7 @@ struct Transformation
 constexpr auto Transform_identity = Transformation{Vec2_zero, Rot_identity};
 
 template <>
-inline bool IsValid(const Transformation& value)
+inline bool IsValid(const Transformation& value) noexcept
 {
 	return IsValid(value.p) && IsValid(value.q);
 }
@@ -516,7 +519,7 @@ struct Position
 };
 
 template <>
-inline bool IsValid(const Position& value)
+inline bool IsValid(const Position& value) noexcept
 {
 	return IsValid(value.c) && IsValid(value.a);
 }
@@ -542,7 +545,7 @@ struct Velocity
 };
 
 template <>
-inline bool IsValid(const Velocity& value)
+inline bool IsValid(const Velocity& value) noexcept
 {
 	return IsValid(value.v) && IsValid(value.w);
 }
@@ -756,22 +759,92 @@ constexpr Vec2 operator/ (const Vec2 a, const Vec2::data_type s) noexcept
 	return Vec2{a.x / s, a.y / s};
 }
 
-/// Gets the unit vector for the given value.
-/// @param value Value to get the unit vector for.
-/// @return value divided by its length if length not almost zero otherwise value.
-/// @sa almost_equal.
-inline Vec2 GetUnitVector(const Vec2 value)
+class UnitVec2
 {
-	const auto length_squared = LengthSquared(value);
-	if (almost_zero(length_squared))
+public:
+	using data_type = float_t;
+
+	static constexpr UnitVec2 GetRight() noexcept
 	{
-		return value;
+		return UnitVec2{1, 0};
 	}
 	
-	// implementation similar to that of Normalize(Vec2&)
-	const auto length = Sqrt(length_squared);
-	const auto invLength = float_t{1} / length;
-	return value * invLength;
+	static constexpr UnitVec2 GetLeft() noexcept
+	{
+		return UnitVec2{-1, 0};
+	}
+
+	static constexpr UnitVec2 GetTop() noexcept
+	{
+		return UnitVec2{0, 1};
+	}
+	
+	static constexpr UnitVec2 GetBottom() noexcept
+	{
+		return UnitVec2{0, -1};
+	}
+
+	static constexpr UnitVec2 GetDefaultFallback() noexcept
+	{
+		return UnitVec2{};
+	}
+
+	constexpr UnitVec2() noexcept
+	{
+	}
+
+	UnitVec2(Vec2 value, UnitVec2 fallback = GetDefaultFallback()) noexcept;
+
+	constexpr UnitVec2(Rot rot) noexcept:
+		m_x{rot.cos()}, m_y{rot.sin()}
+	{
+	}
+
+	constexpr auto GetX() const noexcept
+	{
+		return m_x;
+	}
+	
+	constexpr auto GetY() const noexcept
+	{
+		return m_y;
+	}
+
+	constexpr operator Vec2() const
+	{
+		return Vec2{GetX(), GetY()};
+	}
+
+private:
+	constexpr UnitVec2(data_type x, data_type y) noexcept:
+		m_x{x}, m_y{y}
+	{
+		assert(almost_equal(Square(x) + Square(y), 1));
+	}
+	
+	data_type m_x = GetInvalid<data_type>();
+	data_type m_y = GetInvalid<data_type>();
+};
+
+template <>
+constexpr UnitVec2 GetInvalid() noexcept
+{
+	return UnitVec2{};
+}
+
+template <>
+inline bool IsValid(const UnitVec2& value) noexcept
+{
+	return IsValid(Vec2{value});
+}
+
+/// Gets the unit vector for the given value.
+/// @param value Value to get the unit vector for.
+/// @return value divided by its length if length not almost zero otherwise invalid value.
+/// @sa almost_equal.
+inline UnitVec2 GetUnitVector(const Vec2 value, UnitVec2 fallback = UnitVec2::GetDefaultFallback())
+{
+	return UnitVec2{value, fallback};
 }
 
 constexpr inline bool operator == (const Vec2 a, const Vec2 b) noexcept
