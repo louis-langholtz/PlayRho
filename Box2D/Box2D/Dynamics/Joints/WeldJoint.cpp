@@ -19,7 +19,7 @@
 
 #include <Box2D/Dynamics/Joints/WeldJoint.h>
 #include <Box2D/Dynamics/Body.h>
-#include <Box2D/Dynamics/SolverData.hpp>
+#include <Box2D/Dynamics/TimeStep.h>
 
 using namespace box2d;
 
@@ -58,7 +58,7 @@ WeldJoint::WeldJoint(const WeldJointDef& def)
 	m_impulse = Vec3_zero;
 }
 
-void WeldJoint::InitVelocityConstraints(const SolverData& data)
+void WeldJoint::InitVelocityConstraints(Velocity* velocities, const Position* positions, const TimeStep& step)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -69,13 +69,13 @@ void WeldJoint::InitVelocityConstraints(const SolverData& data)
 	m_invIA = GetBodyA()->GetInverseInertia();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto aA = data.positions[m_indexA].a;
-	auto vA = data.velocities[m_indexA].v;
-	auto wA = data.velocities[m_indexA].w;
+	const auto aA = positions[m_indexA].a;
+	auto vA = velocities[m_indexA].v;
+	auto wA = velocities[m_indexA].w;
 
-	const auto aB = data.positions[m_indexB].a;
-	auto vB = data.velocities[m_indexB].v;
-	auto wB = data.velocities[m_indexB].w;
+	const auto aB = positions[m_indexB].a;
+	auto vB = velocities[m_indexB].v;
+	auto wB = velocities[m_indexB].w;
 
 	const UnitVec2 qA(aA), qB(aB);
 
@@ -124,7 +124,7 @@ void WeldJoint::InitVelocityConstraints(const SolverData& data)
 		const auto k = m * omega * omega;
 
 		// magic formulas
-		const auto h = data.step.get_dt();
+		const auto h = step.get_dt();
 		m_gamma = h * (d + h * k);
 		m_gamma = (m_gamma != float_t{0}) ? float_t{1} / m_gamma : float_t{0};
 		m_bias = C.ToRadians() * h * k * m_gamma;
@@ -145,10 +145,10 @@ void WeldJoint::InitVelocityConstraints(const SolverData& data)
 		m_bias = float_t{0};
 	}
 
-	if (data.step.warmStarting)
+	if (step.warmStarting)
 	{
 		// Scale impulses to support a variable time step.
-		m_impulse *= data.step.dtRatio;
+		m_impulse *= step.dtRatio;
 
 		const auto P = Vec2{m_impulse.x, m_impulse.y};
 
@@ -163,18 +163,18 @@ void WeldJoint::InitVelocityConstraints(const SolverData& data)
 		m_impulse = Vec3_zero;
 	}
 
-	data.velocities[m_indexA].v = vA;
-	data.velocities[m_indexA].w = wA;
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
+	velocities[m_indexA].v = vA;
+	velocities[m_indexA].w = wA;
+	velocities[m_indexB].v = vB;
+	velocities[m_indexB].w = wB;
 }
 
-void WeldJoint::SolveVelocityConstraints(const SolverData& data)
+void WeldJoint::SolveVelocityConstraints(Velocity* velocities, const TimeStep& step)
 {
-	auto vA = data.velocities[m_indexA].v;
-	auto wA = data.velocities[m_indexA].w;
-	auto vB = data.velocities[m_indexB].v;
-	auto wB = data.velocities[m_indexB].w;
+	auto vA = velocities[m_indexA].v;
+	auto wA = velocities[m_indexA].w;
+	auto vB = velocities[m_indexB].v;
+	auto wB = velocities[m_indexB].w;
 
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
@@ -221,18 +221,18 @@ void WeldJoint::SolveVelocityConstraints(const SolverData& data)
 		wB += 1_rad * iB * (Cross(m_rB, P) + impulse.z);
 	}
 
-	data.velocities[m_indexA].v = vA;
-	data.velocities[m_indexA].w = wA;
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
+	velocities[m_indexA].v = vA;
+	velocities[m_indexA].w = wA;
+	velocities[m_indexB].v = vB;
+	velocities[m_indexB].w = wB;
 }
 
-bool WeldJoint::SolvePositionConstraints(const SolverData& data)
+bool WeldJoint::SolvePositionConstraints(Position* positions)
 {
-	auto cA = data.positions[m_indexA].c;
-	auto aA = data.positions[m_indexA].a;
-	auto cB = data.positions[m_indexB].c;
-	auto aB = data.positions[m_indexB].a;
+	auto cA = positions[m_indexA].c;
+	auto aA = positions[m_indexA].a;
+	auto cB = positions[m_indexB].c;
+	auto aB = positions[m_indexB].a;
 
 	const auto qA = UnitVec2{aA};
 	const auto qB = UnitVec2{aB};
@@ -301,10 +301,10 @@ bool WeldJoint::SolvePositionConstraints(const SolverData& data)
 		aB += 1_rad * iB * (Cross(rB, P) + impulse.z);
 	}
 
-	data.positions[m_indexA].c = cA;
-	data.positions[m_indexA].a = aA;
-	data.positions[m_indexB].c = cB;
-	data.positions[m_indexB].a = aB;
+	positions[m_indexA].c = cA;
+	positions[m_indexA].a = aA;
+	positions[m_indexB].c = cB;
+	positions[m_indexB].a = aB;
 
 	return (positionError <= LinearSlop) && (angularError <= AngularSlop);
 }

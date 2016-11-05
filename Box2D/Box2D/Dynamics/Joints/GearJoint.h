@@ -79,9 +79,9 @@ public:
 
 private:
 
-	void InitVelocityConstraints(const SolverData& data) override;
-	void SolveVelocityConstraints(const SolverData& data) override;
-	bool SolvePositionConstraints(const SolverData& data) override;
+	void InitVelocityConstraints(Velocity* velocities, const Position* positions, const TimeStep& step) override;
+	void SolveVelocityConstraints(Velocity* velocities, const TimeStep& step) override;
+	bool SolvePositionConstraints(Position* positions) override;
 
 	Joint* m_joint1;
 	Joint* m_joint2;

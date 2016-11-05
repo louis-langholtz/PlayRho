@@ -85,8 +85,6 @@
 		47578BE21D8869110078CD40 /* WorldManifold.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47578BDE1D8869110078CD40 /* WorldManifold.hpp */; };
 		47578BE41D886FED0078CD40 /* WorldManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47578BE31D886FED0078CD40 /* WorldManifold.cpp */; };
 		47578BE51D886FED0078CD40 /* WorldManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47578BE31D886FED0078CD40 /* WorldManifold.cpp */; };
-		47578BEA1D8896670078CD40 /* SolverData.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47578BE71D8896670078CD40 /* SolverData.hpp */; };
-		47578BEB1D8896670078CD40 /* SolverData.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47578BE71D8896670078CD40 /* SolverData.hpp */; };
 		47578BF01D8899710078CD40 /* Profile.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47578BED1D8899710078CD40 /* Profile.hpp */; };
 		47578BF11D8899710078CD40 /* Profile.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47578BED1D8899710078CD40 /* Profile.hpp */; };
 		475A94541D930503000CA9A8 /* BlockAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94531D930503000CA9A8 /* BlockAllocator.cpp */; };
@@ -486,7 +484,6 @@
 		4751EE2D1CEDD7A300D459CB /* MobileBalanced.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobileBalanced.h; sourceTree = "<group>"; };
 		47578BDE1D8869110078CD40 /* WorldManifold.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldManifold.hpp; sourceTree = "<group>"; };
 		47578BE31D886FED0078CD40 /* WorldManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldManifold.cpp; sourceTree = "<group>"; };
-		47578BE71D8896670078CD40 /* SolverData.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SolverData.hpp; sourceTree = "<group>"; };
 		47578BED1D8899710078CD40 /* Profile.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Profile.hpp; sourceTree = "<group>"; };
 		475A94531D930503000CA9A8 /* BlockAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlockAllocator.cpp; sourceTree = "<group>"; };
 		475A94551D930E6C000CA9A8 /* Fixture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fixture.cpp; sourceTree = "<group>"; };
@@ -961,7 +958,6 @@
 				80BB8954141C3E5900F1753A /* Island.h */,
 				80BB8955141C3E5900F1753A /* TimeStep.h */,
 				47578BED1D8899710078CD40 /* Profile.hpp */,
-				47578BE71D8896670078CD40 /* SolverData.hpp */,
 				80BB8956141C3E5900F1753A /* World.cpp */,
 				80BB8957141C3E5900F1753A /* World.h */,
 				80BB8958141C3E5900F1753A /* WorldCallbacks.cpp */,
@@ -1256,7 +1252,6 @@
 				4726DD101D3014990012A882 /* IndexPair.hpp in Headers */,
 				47AA5DE61C4C5FBE008AF2BA /* CircleContact.h in Headers */,
 				4726DD201D305E5D0012A882 /* ContactFeature.hpp in Headers */,
-				47578BEB1D8896670078CD40 /* SolverData.hpp in Headers */,
 				47AA5DE71C4C5FBE008AF2BA /* Contact.h in Headers */,
 				4734B22E1DC2B11D00F15E29 /* Simplex.hpp in Headers */,
 				47AA5DE81C4C5FBE008AF2BA /* ContactSolver.h in Headers */,
@@ -1386,7 +1381,6 @@
 				80BB89E1141C3E5900F1753A /* Rope.h in Headers */,
 				47578BE11D8869110078CD40 /* WorldManifold.hpp in Headers */,
 				477DB2991D14BB2000846ED6 /* ContactEdgeIterator.hpp in Headers */,
-				47578BEA1D8896670078CD40 /* SolverData.hpp in Headers */,
 				475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */,
 				80620F90168B934600D46C8D /* MotorJoint.h in Headers */,
 				472E301B1DBA925500DA821D /* VertexSet.hpp in Headers */,

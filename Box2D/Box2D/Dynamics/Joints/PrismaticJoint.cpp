@@ -19,7 +19,7 @@
 
 #include <Box2D/Dynamics/Joints/PrismaticJoint.h>
 #include <Box2D/Dynamics/Body.h>
-#include <Box2D/Dynamics/SolverData.hpp>
+#include <Box2D/Dynamics/TimeStep.h>
 
 using namespace box2d;
 
@@ -125,7 +125,7 @@ PrismaticJoint::PrismaticJoint(const PrismaticJointDef& def)
 	m_perp = Vec2_zero;
 }
 
-void PrismaticJoint::InitVelocityConstraints(const SolverData& data)
+void PrismaticJoint::InitVelocityConstraints(Velocity* velocities, const Position* positions, const TimeStep& step)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -136,15 +136,15 @@ void PrismaticJoint::InitVelocityConstraints(const SolverData& data)
 	m_invIA = GetBodyA()->GetInverseInertia();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto cA = data.positions[m_indexA].c;
-	const auto aA = data.positions[m_indexA].a;
-	auto vA = data.velocities[m_indexA].v;
-	auto wA = data.velocities[m_indexA].w;
+	const auto cA = positions[m_indexA].c;
+	const auto aA = positions[m_indexA].a;
+	auto vA = velocities[m_indexA].v;
+	auto wA = velocities[m_indexA].w;
 
-	const auto cB = data.positions[m_indexB].c;
-	const auto aB = data.positions[m_indexB].a;
-	auto vB = data.velocities[m_indexB].v;
-	auto wB = data.velocities[m_indexB].w;
+	const auto cB = positions[m_indexB].c;
+	const auto aB = positions[m_indexB].a;
+	auto vB = velocities[m_indexB].v;
+	auto wB = velocities[m_indexB].w;
 
 	const auto qA = UnitVec2(aA);
 	const auto qB = UnitVec2(aB);
@@ -235,11 +235,11 @@ void PrismaticJoint::InitVelocityConstraints(const SolverData& data)
 		m_motorImpulse = float_t{0};
 	}
 
-	if (data.step.warmStarting)
+	if (step.warmStarting)
 	{
 		// Account for variable time step.
-		m_impulse *= data.step.dtRatio;
-		m_motorImpulse *= data.step.dtRatio;
+		m_impulse *= step.dtRatio;
+		m_motorImpulse *= step.dtRatio;
 
 		const auto P = m_impulse.x * m_perp + (m_motorImpulse + m_impulse.z) * m_axis;
 		const auto LA = m_impulse.x * m_s1 + m_impulse.y + (m_motorImpulse + m_impulse.z) * m_a1;
@@ -257,18 +257,18 @@ void PrismaticJoint::InitVelocityConstraints(const SolverData& data)
 		m_motorImpulse = float_t{0};
 	}
 
-	data.velocities[m_indexA].v = vA;
-	data.velocities[m_indexA].w = wA;
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
+	velocities[m_indexA].v = vA;
+	velocities[m_indexA].w = wA;
+	velocities[m_indexB].v = vB;
+	velocities[m_indexB].w = wB;
 }
 
-void PrismaticJoint::SolveVelocityConstraints(const SolverData& data)
+void PrismaticJoint::SolveVelocityConstraints(Velocity* velocities, const TimeStep& step)
 {
-	auto vA = data.velocities[m_indexA].v;
-	auto wA = data.velocities[m_indexA].w;
-	auto vB = data.velocities[m_indexB].v;
-	auto wB = data.velocities[m_indexB].w;
+	auto vA = velocities[m_indexA].v;
+	auto wA = velocities[m_indexA].w;
+	auto vB = velocities[m_indexB].v;
+	auto wB = velocities[m_indexB].w;
 
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
@@ -279,7 +279,7 @@ void PrismaticJoint::SolveVelocityConstraints(const SolverData& data)
 		const auto Cdot = Dot(m_axis, vB - vA) + m_a2 * wB.ToRadians() - m_a1 * wA.ToRadians();
 		auto impulse = m_motorMass * (m_motorSpeed - Cdot);
 		const auto oldImpulse = m_motorImpulse;
-		const auto maxImpulse = data.step.get_dt() * m_maxMotorForce;
+		const auto maxImpulse = step.get_dt() * m_maxMotorForce;
 		m_motorImpulse = Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
 		impulse = m_motorImpulse - oldImpulse;
 
@@ -350,10 +350,10 @@ void PrismaticJoint::SolveVelocityConstraints(const SolverData& data)
 		wB += 1_rad * iB * LB;
 	}
 
-	data.velocities[m_indexA].v = vA;
-	data.velocities[m_indexA].w = wA;
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
+	velocities[m_indexA].v = vA;
+	velocities[m_indexA].w = wA;
+	velocities[m_indexB].v = vB;
+	velocities[m_indexB].w = wB;
 }
 
 // A velocity based solver computes reaction forces(impulses) using the velocity constraint solver.Under this context,
@@ -363,12 +363,12 @@ void PrismaticJoint::SolveVelocityConstraints(const SolverData& data)
 //
 // We could take the active state from the velocity solver.However, the joint might push past the limit when the velocity
 // solver indicates the limit is inactive.
-bool PrismaticJoint::SolvePositionConstraints(const SolverData& data)
+bool PrismaticJoint::SolvePositionConstraints(Position* positions)
 {
-	auto cA = data.positions[m_indexA].c;
-	auto aA = data.positions[m_indexA].a;
-	auto cB = data.positions[m_indexB].c;
-	auto aB = data.positions[m_indexB].a;
+	auto cA = positions[m_indexA].c;
+	auto aA = positions[m_indexA].a;
+	auto cB = positions[m_indexB].c;
+	auto aB = positions[m_indexB].a;
 
 	const auto qA = UnitVec2{aA};
 	const auto qB = UnitVec2{aB};
@@ -470,10 +470,10 @@ bool PrismaticJoint::SolvePositionConstraints(const SolverData& data)
 	cB += mB * P;
 	aB += 1_rad * iB * LB;
 
-	data.positions[m_indexA].c = cA;
-	data.positions[m_indexA].a = aA;
-	data.positions[m_indexB].c = cB;
-	data.positions[m_indexB].a = aB;
+	positions[m_indexA].c = cA;
+	positions[m_indexA].a = aA;
+	positions[m_indexB].c = cB;
+	positions[m_indexB].a = aB;
 
 	return (linearError <= LinearSlop) && (angularError <= AngularSlop);
 }

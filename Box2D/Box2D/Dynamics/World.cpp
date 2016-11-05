@@ -18,8 +18,8 @@
  */
 
 #include <Box2D/Dynamics/World.h>
-#include <Box2D/Dynamics/SolverData.hpp>
 #include <Box2D/Dynamics/Body.h>
+#include <Box2D/Dynamics/TimeStep.h>
 #include <Box2D/Dynamics/Fixture.h>
 #include <Box2D/Dynamics/Island.h>
 #include <Box2D/Dynamics/Joints/PulleyJoint.h>
@@ -650,12 +650,13 @@ void World::Solve(const TimeStep& step)
 			}
 		}
 		
-		inline void InitVelConstraints(VelocityConstraint* constraints,
+		inline void InitVelConstraints(VelocityConstraint* velocityConstraints,
 									   contact_count_t count, Contact** contacts, float_t dtRatio)
 		{
+			assert(count == 0 || (velocityConstraints && contacts));
 			for (auto i = decltype(count){0}; i < count; ++i)
 			{
-				constraints[i] = GetVelocityConstraint(*contacts[i], i, dtRatio);
+				velocityConstraints[i] = GetVelocityConstraint(*contacts[i], i, dtRatio);
 			}
 		}
 		
@@ -677,6 +678,7 @@ void World::Solve(const TimeStep& step)
 		///   associated contacts' manifold points.
 		inline void StoreImpulses(size_t count, const VelocityConstraint* velocityConstraints, Contact** contacts)
 		{
+			assert(count == 0 || (velocityConstraints && contacts));
 			for (auto i = decltype(count){0}; i < count; ++i)
 			{
 				const auto& vc = velocityConstraints[i];
@@ -712,6 +714,7 @@ void World::Solve(const TimeStep& step)
 		
 		inline void WarmStartVelocities(contact_count_t count, const VelocityConstraint* velocityConstraints, Velocity* const velocities)
 		{
+			assert(count == 0 || (velocityConstraints && velocities));
 			for (auto i = decltype(count){0}; i < count; ++i)
 			{
 				const auto& vc = velocityConstraints[i];
@@ -809,18 +812,16 @@ bool World::Solve(const TimeStep& step, Island& island)
 		WarmStartVelocities(contacts_count, velocityConstraints.data(), velocities.data());
 	}
 
-	const auto solverData = SolverData{step, positions.data(), velocities.data()};
-
 	for (auto&& joint: island.m_joints)
 	{
-		joint->InitVelocityConstraints(solverData);
+		joint->InitVelocityConstraints(velocities.data(), positions.data(), step);
 	}
 	
 	for (auto i = decltype(step.velocityIterations){0}; i < step.velocityIterations; ++i)
 	{
 		for (auto&& joint: island.m_joints)
 		{
-			joint->SolveVelocityConstraints(solverData);
+			joint->SolveVelocityConstraints(velocities.data(), step);
 		}
 
 		SolveVelocityConstraints(contacts_count, velocityConstraints.data(), velocities.data());
@@ -839,7 +840,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 			auto allOkay = true;
 			for (auto&& joint: island.m_joints)
 			{
-				if (!joint->SolvePositionConstraints(solverData))
+				if (!joint->SolvePositionConstraints(positions.data()))
 				{
 					allOkay = false;
 				}

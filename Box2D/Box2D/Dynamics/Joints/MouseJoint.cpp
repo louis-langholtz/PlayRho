@@ -19,7 +19,7 @@
 
 #include <Box2D/Dynamics/Joints/MouseJoint.h>
 #include <Box2D/Dynamics/Body.h>
-#include <Box2D/Dynamics/SolverData.hpp>
+#include <Box2D/Dynamics/TimeStep.h>
 
 using namespace box2d;
 
@@ -52,19 +52,19 @@ void MouseJoint::SetTarget(const Vec2& target)
 	m_targetA = target;
 }
 
-void MouseJoint::InitVelocityConstraints(const SolverData& data)
+void MouseJoint::InitVelocityConstraints(Velocity* velocities, const Position* positions, const TimeStep& step)
 {
 	m_indexB = GetBodyB()->GetIslandIndex();
 	m_localCenterB = GetBodyB()->GetLocalCenter();
 	m_invMassB = GetBodyB()->GetInverseMass();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto positionB = data.positions[m_indexB];
+	const auto positionB = positions[m_indexB];
 	assert(IsValid(positionB));
 	const auto cB = positionB.c;
 	const auto aB = positionB.a;
 
-	const auto velocityB = data.velocities[m_indexB];
+	const auto velocityB = velocities[m_indexB];
 	assert(IsValid(velocityB));
 	auto vB = velocityB.v;
 	auto wB = velocityB.w;
@@ -85,7 +85,7 @@ void MouseJoint::InitVelocityConstraints(const SolverData& data)
 	// magic formulas
 	// gamma has units of inverse mass.
 	// beta has units of inverse time.
-	const auto h = data.step.get_dt();
+	const auto h = step.get_dt();
 	const auto tmp = d + h * k;
 	assert(IsValid(tmp));
 	assert((tmp > 0) && !almost_zero(tmp));
@@ -117,9 +117,9 @@ void MouseJoint::InitVelocityConstraints(const SolverData& data)
 	// Cheat with some damping
 	wB *= float_t(0.98);
 
-	if (data.step.warmStarting)
+	if (step.warmStarting)
 	{
-		m_impulse *= data.step.dtRatio;
+		m_impulse *= step.dtRatio;
 		vB += m_invMassB * m_impulse;
 		wB += 1_rad * m_invIB * Cross(m_rB, m_impulse);
 	}
@@ -128,13 +128,13 @@ void MouseJoint::InitVelocityConstraints(const SolverData& data)
 		m_impulse = Vec2_zero;
 	}
 
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
+	velocities[m_indexB].v = vB;
+	velocities[m_indexB].w = wB;
 }
 
-void MouseJoint::SolveVelocityConstraints(const SolverData& data)
+void MouseJoint::SolveVelocityConstraints(Velocity* velocities, const TimeStep& step)
 {
-	const auto velocityB = data.velocities[m_indexB];
+	const auto velocityB = velocities[m_indexB];
 	assert(IsValid(velocityB));
 	auto vB = velocityB.v;
 	auto wB = velocityB.w;
@@ -145,7 +145,7 @@ void MouseJoint::SolveVelocityConstraints(const SolverData& data)
 	const auto addImpulse = Transform(-(Cdot + m_C + m_gamma * m_impulse), m_mass);
 	assert(IsValid(addImpulse));
 	m_impulse += addImpulse;
-	const auto maxImpulse = data.step.get_dt() * m_maxForce;
+	const auto maxImpulse = step.get_dt() * m_maxForce;
 	if (LengthSquared(m_impulse) > Square(maxImpulse))
 	{
 		m_impulse *= maxImpulse / Length(m_impulse);
@@ -156,13 +156,13 @@ void MouseJoint::SolveVelocityConstraints(const SolverData& data)
 	vB += m_invMassB * deltaImpulse;
 	wB += 1_rad * m_invIB * Cross(m_rB, deltaImpulse);
 
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
+	velocities[m_indexB].v = vB;
+	velocities[m_indexB].w = wB;
 }
 
-bool MouseJoint::SolvePositionConstraints(const SolverData& data)
+bool MouseJoint::SolvePositionConstraints(Position* positions)
 {
-	BOX2D_NOT_USED(data);
+	BOX2D_NOT_USED(positions);
 	return true;
 }
 

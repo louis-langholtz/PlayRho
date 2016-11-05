@@ -19,7 +19,7 @@
 
 #include <Box2D/Dynamics/Joints/WheelJoint.h>
 #include <Box2D/Dynamics/Body.h>
-#include <Box2D/Dynamics/SolverData.hpp>
+#include <Box2D/Dynamics/TimeStep.h>
 
 using namespace box2d;
 
@@ -77,7 +77,7 @@ WheelJoint::WheelJoint(const WheelJointDef& def)
 	m_ay = Vec2_zero;
 }
 
-void WheelJoint::InitVelocityConstraints(const SolverData& data)
+void WheelJoint::InitVelocityConstraints(Velocity* velocities, const Position* positions, const TimeStep& step)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -91,15 +91,15 @@ void WheelJoint::InitVelocityConstraints(const SolverData& data)
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
 
-	const auto cA = data.positions[m_indexA].c;
-	const auto aA = data.positions[m_indexA].a;
-	auto vA = data.velocities[m_indexA].v;
-	auto wA = data.velocities[m_indexA].w;
+	const auto cA = positions[m_indexA].c;
+	const auto aA = positions[m_indexA].a;
+	auto vA = velocities[m_indexA].v;
+	auto wA = velocities[m_indexA].w;
 
-	const auto cB = data.positions[m_indexB].c;
-	const auto aB = data.positions[m_indexB].a;
-	auto vB = data.velocities[m_indexB].v;
-	auto wB = data.velocities[m_indexB].w;
+	const auto cB = positions[m_indexB].c;
+	const auto aB = positions[m_indexB].a;
+	auto vB = velocities[m_indexB].v;
+	auto wB = velocities[m_indexB].w;
 
 	const UnitVec2 qA(aA), qB(aB);
 
@@ -150,7 +150,7 @@ void WheelJoint::InitVelocityConstraints(const SolverData& data)
 			const auto k = m_springMass * omega * omega;
 
 			// magic formulas
-			const auto h = data.step.get_dt();
+			const auto h = step.get_dt();
 			m_gamma = h * (d + h * k);
 			if (m_gamma > float_t{0})
 			{
@@ -186,12 +186,12 @@ void WheelJoint::InitVelocityConstraints(const SolverData& data)
 		m_motorImpulse = float_t{0};
 	}
 
-	if (data.step.warmStarting)
+	if (step.warmStarting)
 	{
 		// Account for variable time step.
-		m_impulse *= data.step.dtRatio;
-		m_springImpulse *= data.step.dtRatio;
-		m_motorImpulse *= data.step.dtRatio;
+		m_impulse *= step.dtRatio;
+		m_springImpulse *= step.dtRatio;
+		m_motorImpulse *= step.dtRatio;
 
 		const auto P = m_impulse * m_ay + m_springImpulse * m_ax;
 		const auto LA = m_impulse * m_sAy + m_springImpulse * m_sAx + m_motorImpulse;
@@ -210,21 +210,21 @@ void WheelJoint::InitVelocityConstraints(const SolverData& data)
 		m_motorImpulse = float_t{0};
 	}
 
-	data.velocities[m_indexA].v = vA;
-	data.velocities[m_indexA].w = wA;
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
+	velocities[m_indexA].v = vA;
+	velocities[m_indexA].w = wA;
+	velocities[m_indexB].v = vB;
+	velocities[m_indexB].w = wB;
 }
 
-void WheelJoint::SolveVelocityConstraints(const SolverData& data)
+void WheelJoint::SolveVelocityConstraints(Velocity* velocities, const TimeStep& step)
 {
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
 
-	auto vA = data.velocities[m_indexA].v;
-	auto wA = data.velocities[m_indexA].w;
-	auto vB = data.velocities[m_indexB].v;
-	auto wB = data.velocities[m_indexB].w;
+	auto vA = velocities[m_indexA].v;
+	auto wA = velocities[m_indexA].w;
+	auto vB = velocities[m_indexB].v;
+	auto wB = velocities[m_indexB].w;
 
 	// Solve spring constraint
 	{
@@ -249,7 +249,7 @@ void WheelJoint::SolveVelocityConstraints(const SolverData& data)
 		auto impulse = -m_motorMass * Cdot.ToRadians();
 
 		const auto oldImpulse = m_motorImpulse;
-		const auto maxImpulse = data.step.get_dt() * m_maxMotorTorque;
+		const auto maxImpulse = step.get_dt() * m_maxMotorTorque;
 		m_motorImpulse = Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
 		impulse = m_motorImpulse - oldImpulse;
 
@@ -274,18 +274,18 @@ void WheelJoint::SolveVelocityConstraints(const SolverData& data)
 		wB += 1_rad * iB * LB;
 	}
 
-	data.velocities[m_indexA].v = vA;
-	data.velocities[m_indexA].w = wA;
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
+	velocities[m_indexA].v = vA;
+	velocities[m_indexA].w = wA;
+	velocities[m_indexB].v = vB;
+	velocities[m_indexB].w = wB;
 }
 
-bool WheelJoint::SolvePositionConstraints(const SolverData& data)
+bool WheelJoint::SolvePositionConstraints(Position* positions)
 {
-	auto cA = data.positions[m_indexA].c;
-	auto aA = data.positions[m_indexA].a;
-	auto cB = data.positions[m_indexB].c;
-	auto aB = data.positions[m_indexB].a;
+	auto cA = positions[m_indexA].c;
+	auto aA = positions[m_indexA].a;
+	auto cB = positions[m_indexB].c;
+	auto aB = positions[m_indexB].a;
 
 	const auto qA = UnitVec2{aA};
 	const auto qB = UnitVec2{aB};
@@ -314,10 +314,10 @@ bool WheelJoint::SolvePositionConstraints(const SolverData& data)
 	cB += m_invMassB * P;
 	aB += 1_rad * m_invIB * LB;
 
-	data.positions[m_indexA].c = cA;
-	data.positions[m_indexA].a = aA;
-	data.positions[m_indexB].c = cB;
-	data.positions[m_indexB].a = aB;
+	positions[m_indexA].c = cA;
+	positions[m_indexA].a = aA;
+	positions[m_indexB].c = cB;
+	positions[m_indexB].a = aB;
 
 	return Abs(C) <= LinearSlop;
 }

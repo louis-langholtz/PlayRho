@@ -26,9 +26,10 @@ namespace box2d {
 
 class Body;
 class Joint;
-struct SolverData;
 class BlockAllocator;
-
+class TimeStep;
+struct Velocity;
+	
 enum class JointType
 {
 	Unknown,
@@ -174,15 +175,15 @@ private:
 	/// Initializes velocity constraint data based on the given solver data.
 	/// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.
 	/// @sa SolveVelocityConstraints.
-	virtual void InitVelocityConstraints(const SolverData& data) = 0;
+	virtual void InitVelocityConstraints(Velocity* velocities, const Position* positions, const TimeStep& step) = 0;
 
 	/// Solves velocity constraints for the given solver data.
 	/// @pre <code>InitVelocityConstraints</code> has been called.
 	/// @sa InitVelocityConstraints.
-	virtual void SolveVelocityConstraints(const SolverData& data) = 0;
+	virtual void SolveVelocityConstraints(Velocity* velocities, const TimeStep& step) = 0;
 
 	// This returns true if the position errors are within tolerance.
-	virtual bool SolvePositionConstraints(const SolverData& data) = 0;
+	virtual bool SolvePositionConstraints(Position* positions) = 0;
 	
 	bool IsInIsland() const noexcept;
 	void SetInIsland(bool value) noexcept;

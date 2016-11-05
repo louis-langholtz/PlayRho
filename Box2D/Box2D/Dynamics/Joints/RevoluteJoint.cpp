@@ -19,7 +19,7 @@
 
 #include <Box2D/Dynamics/Joints/RevoluteJoint.h>
 #include <Box2D/Dynamics/Body.h>
-#include <Box2D/Dynamics/SolverData.hpp>
+#include <Box2D/Dynamics/TimeStep.h>
 
 using namespace box2d;
 
@@ -63,7 +63,7 @@ RevoluteJoint::RevoluteJoint(const RevoluteJointDef& def)
 	m_limitState = e_inactiveLimit;
 }
 
-void RevoluteJoint::InitVelocityConstraints(const SolverData& data)
+void RevoluteJoint::InitVelocityConstraints(Velocity* velocities, const Position* positions, const TimeStep& step)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -74,13 +74,13 @@ void RevoluteJoint::InitVelocityConstraints(const SolverData& data)
 	m_invIA = GetBodyA()->GetInverseInertia();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto aA = data.positions[m_indexA].a;
-	auto vA = data.velocities[m_indexA].v;
-	auto wA = data.velocities[m_indexA].w;
+	const auto aA = positions[m_indexA].a;
+	auto vA = velocities[m_indexA].v;
+	auto wA = velocities[m_indexA].w;
 
-	const auto aB = data.positions[m_indexB].a;
-	auto vB = data.velocities[m_indexB].v;
-	auto wB = data.velocities[m_indexB].w;
+	const auto aB = positions[m_indexB].a;
+	auto vB = velocities[m_indexB].v;
+	auto wB = velocities[m_indexB].w;
 
 	const UnitVec2 qA(aA), qB(aB);
 
@@ -156,11 +156,11 @@ void RevoluteJoint::InitVelocityConstraints(const SolverData& data)
 		m_limitState = e_inactiveLimit;
 	}
 
-	if (data.step.warmStarting)
+	if (step.warmStarting)
 	{
 		// Scale impulses to support a variable time step.
-		m_impulse *= data.step.dtRatio;
-		m_motorImpulse *= data.step.dtRatio;
+		m_impulse *= step.dtRatio;
+		m_motorImpulse *= step.dtRatio;
 
 		const auto P = Vec2{m_impulse.x, m_impulse.y};
 
@@ -176,18 +176,18 @@ void RevoluteJoint::InitVelocityConstraints(const SolverData& data)
 		m_motorImpulse = float_t{0};
 	}
 
-	data.velocities[m_indexA].v = vA;
-	data.velocities[m_indexA].w = wA;
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
+	velocities[m_indexA].v = vA;
+	velocities[m_indexA].w = wA;
+	velocities[m_indexB].v = vB;
+	velocities[m_indexB].w = wB;
 }
 
-void RevoluteJoint::SolveVelocityConstraints(const SolverData& data)
+void RevoluteJoint::SolveVelocityConstraints(Velocity* velocities, const TimeStep& step)
 {
-	auto vA = data.velocities[m_indexA].v;
-	auto wA = data.velocities[m_indexA].w;
-	auto vB = data.velocities[m_indexB].v;
-	auto wB = data.velocities[m_indexB].w;
+	auto vA = velocities[m_indexA].v;
+	auto wA = velocities[m_indexA].w;
+	auto vB = velocities[m_indexB].v;
+	auto wB = velocities[m_indexB].w;
 
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
@@ -200,7 +200,7 @@ void RevoluteJoint::SolveVelocityConstraints(const SolverData& data)
 		const auto Cdot = (wB - wA).ToRadians() - m_motorSpeed;
 		auto impulse = -m_motorMass * Cdot;
 		const auto oldImpulse = m_motorImpulse;
-		const auto maxImpulse = data.step.get_dt() * m_maxMotorTorque;
+		const auto maxImpulse = step.get_dt() * m_maxMotorTorque;
 		m_motorImpulse = Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
 		impulse = m_motorImpulse - oldImpulse;
 
@@ -284,18 +284,18 @@ void RevoluteJoint::SolveVelocityConstraints(const SolverData& data)
 		wB += 1_rad * iB * Cross(m_rB, impulse);
 	}
 
-	data.velocities[m_indexA].v = vA;
-	data.velocities[m_indexA].w = wA;
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
+	velocities[m_indexA].v = vA;
+	velocities[m_indexA].w = wA;
+	velocities[m_indexB].v = vB;
+	velocities[m_indexB].w = wB;
 }
 
-bool RevoluteJoint::SolvePositionConstraints(const SolverData& data)
+bool RevoluteJoint::SolvePositionConstraints(Position* positions)
 {
-	auto cA = data.positions[m_indexA].c;
-	auto aA = data.positions[m_indexA].a;
-	auto cB = data.positions[m_indexB].c;
-	auto aB = data.positions[m_indexB].a;
+	auto cA = positions[m_indexA].c;
+	auto aA = positions[m_indexA].a;
+	auto cB = positions[m_indexB].c;
+	auto aB = positions[m_indexB].a;
 
 	auto qA = UnitVec2(aA);
 	auto qB = UnitVec2(aB);
@@ -369,10 +369,10 @@ bool RevoluteJoint::SolvePositionConstraints(const SolverData& data)
 		aB += 1_rad * iB * Cross(rB, impulse);
 	}
 
-	data.positions[m_indexA].c = cA;
-	data.positions[m_indexA].a = aA;
-	data.positions[m_indexB].c = cB;
-	data.positions[m_indexB].a = aB;
+	positions[m_indexA].c = cA;
+	positions[m_indexA].a = aA;
+	positions[m_indexB].c = cB;
+	positions[m_indexB].a = aB;
 	
 	return (positionError <= LinearSlop) && (angularError <= AngularSlop);
 }

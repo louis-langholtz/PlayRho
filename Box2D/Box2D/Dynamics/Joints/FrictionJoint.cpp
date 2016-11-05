@@ -19,7 +19,7 @@
 
 #include <Box2D/Dynamics/Joints/FrictionJoint.h>
 #include <Box2D/Dynamics/Body.h>
-#include <Box2D/Dynamics/SolverData.hpp>
+#include <Box2D/Dynamics/TimeStep.h>
 
 using namespace box2d;
 
@@ -52,7 +52,7 @@ FrictionJoint::FrictionJoint(const FrictionJointDef& def)
 	m_maxTorque = def.maxTorque;
 }
 
-void FrictionJoint::InitVelocityConstraints(const SolverData& data)
+void FrictionJoint::InitVelocityConstraints(Velocity* velocities, const Position* positions, const TimeStep& step)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -63,20 +63,17 @@ void FrictionJoint::InitVelocityConstraints(const SolverData& data)
 	m_invIA = GetBodyA()->GetInverseInertia();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto aA = data.positions[m_indexA].a;
-	auto vA = data.velocities[m_indexA].v;
-	auto wA = data.velocities[m_indexA].w;
+	const auto aA = positions[m_indexA].a;
+	auto vA = velocities[m_indexA].v;
+	auto wA = velocities[m_indexA].w;
 
-	const auto aB = data.positions[m_indexB].a;
-	auto vB = data.velocities[m_indexB].v;
-	auto wB = data.velocities[m_indexB].w;
-
-	const auto qA = UnitVec2(aA);
-	const auto qB = UnitVec2(aB);
+	const auto aB = positions[m_indexB].a;
+	auto vB = velocities[m_indexB].v;
+	auto wB = velocities[m_indexB].w;
 
 	// Compute the effective mass matrix.
-	m_rA = Rotate(m_localAnchorA - m_localCenterA, qA);
-	m_rB = Rotate(m_localAnchorB - m_localCenterB, qB);
+	m_rA = Rotate(m_localAnchorA - m_localCenterA, aA);
+	m_rB = Rotate(m_localAnchorB - m_localCenterB, aB);
 
 	// J = [-I -r1_skew I r2_skew]
 	//     [ 0       -1 0       1]
@@ -104,11 +101,11 @@ void FrictionJoint::InitVelocityConstraints(const SolverData& data)
 		m_angularMass = float_t{1} / m_angularMass;
 	}
 
-	if (data.step.warmStarting)
+	if (step.warmStarting)
 	{
 		// Scale impulses to support a variable time step.
-		m_linearImpulse *= data.step.dtRatio;
-		m_angularImpulse *= data.step.dtRatio;
+		m_linearImpulse *= step.dtRatio;
+		m_angularImpulse *= step.dtRatio;
 
 		const auto P = Vec2{m_linearImpulse.x, m_linearImpulse.y};
 		vA -= mA * P;
@@ -122,23 +119,23 @@ void FrictionJoint::InitVelocityConstraints(const SolverData& data)
 		m_angularImpulse = float_t{0};
 	}
 
-	data.velocities[m_indexA].v = vA;
-	data.velocities[m_indexA].w = wA;
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
+	velocities[m_indexA].v = vA;
+	velocities[m_indexA].w = wA;
+	velocities[m_indexB].v = vB;
+	velocities[m_indexB].w = wB;
 }
 
-void FrictionJoint::SolveVelocityConstraints(const SolverData& data)
+void FrictionJoint::SolveVelocityConstraints(Velocity* velocities, const TimeStep& step)
 {
-	auto vA = data.velocities[m_indexA].v;
-	auto wA = data.velocities[m_indexA].w;
-	auto vB = data.velocities[m_indexB].v;
-	auto wB = data.velocities[m_indexB].w;
+	auto vA = velocities[m_indexA].v;
+	auto wA = velocities[m_indexA].w;
+	auto vB = velocities[m_indexB].v;
+	auto wB = velocities[m_indexB].w;
 
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
 
-	const auto h = data.step.get_dt();
+	const auto h = step.get_dt();
 
 	// Solve angular friction
 	{
@@ -178,15 +175,15 @@ void FrictionJoint::SolveVelocityConstraints(const SolverData& data)
 		wB += 1_rad * iB * Cross(m_rB, impulse);
 	}
 
-	data.velocities[m_indexA].v = vA;
-	data.velocities[m_indexA].w = wA;
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
+	velocities[m_indexA].v = vA;
+	velocities[m_indexA].w = wA;
+	velocities[m_indexB].v = vB;
+	velocities[m_indexB].w = wB;
 }
 
-bool FrictionJoint::SolvePositionConstraints(const SolverData& data)
+bool FrictionJoint::SolvePositionConstraints(Position* positions)
 {
-	BOX2D_NOT_USED(data);
+	BOX2D_NOT_USED(positions);
 
 	return true;
 }

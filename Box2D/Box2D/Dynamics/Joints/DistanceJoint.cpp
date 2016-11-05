@@ -19,7 +19,7 @@
 
 #include <Box2D/Dynamics/Joints/DistanceJoint.h>
 #include <Box2D/Dynamics/Body.h>
-#include <Box2D/Dynamics/SolverData.hpp>
+#include <Box2D/Dynamics/TimeStep.h>
 
 using namespace box2d;
 
@@ -56,7 +56,7 @@ DistanceJoint::DistanceJoint(const DistanceJointDef& def)
 	m_dampingRatio = def.dampingRatio;
 }
 
-void DistanceJoint::InitVelocityConstraints(const SolverData& data)
+void DistanceJoint::InitVelocityConstraints(Velocity* velocities, const Position* positions, const TimeStep& step)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -67,15 +67,15 @@ void DistanceJoint::InitVelocityConstraints(const SolverData& data)
 	m_invIA = GetBodyA()->GetInverseInertia();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto cA = data.positions[m_indexA].c;
-	const auto aA = data.positions[m_indexA].a;
-	auto vA = data.velocities[m_indexA].v;
-	auto wA = data.velocities[m_indexA].w;
+	const auto cA = positions[m_indexA].c;
+	const auto aA = positions[m_indexA].a;
+	auto vA = velocities[m_indexA].v;
+	auto wA = velocities[m_indexA].w;
 
-	const auto cB = data.positions[m_indexB].c;
-	const auto aB = data.positions[m_indexB].a;
-	auto vB = data.velocities[m_indexB].v;
-	auto wB = data.velocities[m_indexB].w;
+	const auto cB = positions[m_indexB].c;
+	const auto aB = positions[m_indexB].a;
+	auto vB = velocities[m_indexB].v;
+	auto wB = velocities[m_indexB].w;
 
 	const UnitVec2 qA(aA), qB(aB);
 
@@ -115,7 +115,7 @@ void DistanceJoint::InitVelocityConstraints(const SolverData& data)
 		const auto k = m_mass * Square(omega);
 
 		// magic formulas
-		const auto h = data.step.get_dt();
+		const auto h = step.get_dt();
 		m_gamma = h * (d + h * k);
 		m_gamma = (m_gamma != float_t{0}) ? float_t{1} / m_gamma : float_t{0};
 		m_bias = C * h * k * m_gamma;
@@ -129,10 +129,10 @@ void DistanceJoint::InitVelocityConstraints(const SolverData& data)
 		m_bias = float_t{0};
 	}
 
-	if (data.step.warmStarting)
+	if (step.warmStarting)
 	{
 		// Scale the impulse to support a variable time step.
-		m_impulse *= data.step.dtRatio;
+		m_impulse *= step.dtRatio;
 
 		const auto P = m_impulse * m_u;
 		vA -= m_invMassA * P;
@@ -145,18 +145,18 @@ void DistanceJoint::InitVelocityConstraints(const SolverData& data)
 		m_impulse = float_t{0};
 	}
 
-	data.velocities[m_indexA].v = vA;
-	data.velocities[m_indexA].w = wA;
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
+	velocities[m_indexA].v = vA;
+	velocities[m_indexA].w = wA;
+	velocities[m_indexB].v = vB;
+	velocities[m_indexB].w = wB;
 }
 
-void DistanceJoint::SolveVelocityConstraints(const SolverData& data)
+void DistanceJoint::SolveVelocityConstraints(Velocity* velocities, const TimeStep& step)
 {
-	auto vA = data.velocities[m_indexA].v;
-	auto wA = data.velocities[m_indexA].w;
-	auto vB = data.velocities[m_indexB].v;
-	auto wB = data.velocities[m_indexB].w;
+	auto vA = velocities[m_indexA].v;
+	auto wA = velocities[m_indexA].w;
+	auto vB = velocities[m_indexB].v;
+	auto wB = velocities[m_indexB].w;
 
 	// Cdot = dot(u, v + cross(w, r))
 	const auto vpA = vA + GetRevPerpendicular(m_rA) * wA.ToRadians();
@@ -172,13 +172,13 @@ void DistanceJoint::SolveVelocityConstraints(const SolverData& data)
 	vB += m_invMassB * P;
 	wB += 1_rad * m_invIB * Cross(m_rB, P);
 
-	data.velocities[m_indexA].v = vA;
-	data.velocities[m_indexA].w = wA;
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
+	velocities[m_indexA].v = vA;
+	velocities[m_indexA].w = wA;
+	velocities[m_indexB].v = vB;
+	velocities[m_indexB].w = wB;
 }
 
-bool DistanceJoint::SolvePositionConstraints(const SolverData& data)
+bool DistanceJoint::SolvePositionConstraints(Position* positions)
 {
 	if (m_frequencyHz > float_t{0})
 	{
@@ -186,10 +186,10 @@ bool DistanceJoint::SolvePositionConstraints(const SolverData& data)
 		return true;
 	}
 
-	auto cA = data.positions[m_indexA].c;
-	auto aA = data.positions[m_indexA].a;
-	auto cB = data.positions[m_indexB].c;
-	auto aB = data.positions[m_indexB].a;
+	auto cA = positions[m_indexA].c;
+	auto aA = positions[m_indexA].a;
+	auto cB = positions[m_indexB].c;
+	auto aB = positions[m_indexB].a;
 
 	const auto qA = UnitVec2(aA);
 	const auto qB = UnitVec2(aB);
@@ -210,10 +210,10 @@ bool DistanceJoint::SolvePositionConstraints(const SolverData& data)
 	cB += m_invMassB * P;
 	aB += 1_rad * m_invIB * Cross(rB, P);
 
-	data.positions[m_indexA].c = cA;
-	data.positions[m_indexA].a = aA;
-	data.positions[m_indexB].c = cB;
-	data.positions[m_indexB].a = aB;
+	positions[m_indexA].c = cA;
+	positions[m_indexA].a = aA;
+	positions[m_indexB].c = cB;
+	positions[m_indexB].a = aB;
 
 	return Abs(C) < LinearSlop;
 }

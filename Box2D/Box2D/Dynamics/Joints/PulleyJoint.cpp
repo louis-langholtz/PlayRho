@@ -19,7 +19,7 @@
 
 #include <Box2D/Dynamics/Joints/PulleyJoint.h>
 #include <Box2D/Dynamics/Body.h>
-#include <Box2D/Dynamics/SolverData.hpp>
+#include <Box2D/Dynamics/TimeStep.h>
 
 using namespace box2d;
 
@@ -69,7 +69,7 @@ PulleyJoint::PulleyJoint(const PulleyJointDef& def)
 	m_impulse = float_t{0};
 }
 
-void PulleyJoint::InitVelocityConstraints(const SolverData& data)
+void PulleyJoint::InitVelocityConstraints(Velocity* velocities, const Position* positions, const TimeStep& step)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -80,15 +80,15 @@ void PulleyJoint::InitVelocityConstraints(const SolverData& data)
 	m_invIA = GetBodyA()->GetInverseInertia();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto cA = data.positions[m_indexA].c;
-	const auto aA = data.positions[m_indexA].a;
-	auto vA = data.velocities[m_indexA].v;
-	auto wA = data.velocities[m_indexA].w;
+	const auto cA = positions[m_indexA].c;
+	const auto aA = positions[m_indexA].a;
+	auto vA = velocities[m_indexA].v;
+	auto wA = velocities[m_indexA].w;
 
-	const auto cB = data.positions[m_indexB].c;
-	const auto aB = data.positions[m_indexB].a;
-	auto vB = data.velocities[m_indexB].v;
-	auto wB = data.velocities[m_indexB].w;
+	const auto cB = positions[m_indexB].c;
+	const auto aB = positions[m_indexB].a;
+	auto vB = velocities[m_indexB].v;
+	auto wB = velocities[m_indexB].w;
 
 	const UnitVec2 qA(aA), qB(aB);
 
@@ -134,10 +134,10 @@ void PulleyJoint::InitVelocityConstraints(const SolverData& data)
 		m_mass = float_t{1} / m_mass;
 	}
 
-	if (data.step.warmStarting)
+	if (step.warmStarting)
 	{
 		// Scale impulses to support variable time steps.
-		m_impulse *= data.step.dtRatio;
+		m_impulse *= step.dtRatio;
 
 		// Warm starting.
 		const auto PA = -(m_impulse) * m_uA;
@@ -153,18 +153,18 @@ void PulleyJoint::InitVelocityConstraints(const SolverData& data)
 		m_impulse = float_t{0};
 	}
 
-	data.velocities[m_indexA].v = vA;
-	data.velocities[m_indexA].w = wA;
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
+	velocities[m_indexA].v = vA;
+	velocities[m_indexA].w = wA;
+	velocities[m_indexB].v = vB;
+	velocities[m_indexB].w = wB;
 }
 
-void PulleyJoint::SolveVelocityConstraints(const SolverData& data)
+void PulleyJoint::SolveVelocityConstraints(Velocity* velocities, const TimeStep& step)
 {
-	auto vA = data.velocities[m_indexA].v;
-	auto wA = data.velocities[m_indexA].w;
-	auto vB = data.velocities[m_indexB].v;
-	auto wB = data.velocities[m_indexB].w;
+	auto vA = velocities[m_indexA].v;
+	auto wA = velocities[m_indexA].w;
+	auto vB = velocities[m_indexB].v;
+	auto wB = velocities[m_indexB].w;
 
 	const auto vpA = vA + GetRevPerpendicular(m_rA) * wA.ToRadians();
 	const auto vpB = vB + GetRevPerpendicular(m_rB) * wB.ToRadians();
@@ -180,18 +180,18 @@ void PulleyJoint::SolveVelocityConstraints(const SolverData& data)
 	vB += m_invMassB * PB;
 	wB += 1_rad * m_invIB * Cross(m_rB, PB);
 
-	data.velocities[m_indexA].v = vA;
-	data.velocities[m_indexA].w = wA;
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
+	velocities[m_indexA].v = vA;
+	velocities[m_indexA].w = wA;
+	velocities[m_indexB].v = vB;
+	velocities[m_indexB].w = wB;
 }
 
-bool PulleyJoint::SolvePositionConstraints(const SolverData& data)
+bool PulleyJoint::SolvePositionConstraints(Position* positions)
 {
-	auto cA = data.positions[m_indexA].c;
-	auto aA = data.positions[m_indexA].a;
-	auto cB = data.positions[m_indexB].c;
-	auto aB = data.positions[m_indexB].a;
+	auto cA = positions[m_indexA].c;
+	auto aA = positions[m_indexA].a;
+	auto cB = positions[m_indexB].c;
+	auto aB = positions[m_indexB].a;
 
 	const UnitVec2 qA(aA), qB(aB);
 
@@ -250,10 +250,10 @@ bool PulleyJoint::SolvePositionConstraints(const SolverData& data)
 	cB += m_invMassB * PB;
 	aB += 1_rad * m_invIB * Cross(rB, PB);
 
-	data.positions[m_indexA].c = cA;
-	data.positions[m_indexA].a = aA;
-	data.positions[m_indexB].c = cB;
-	data.positions[m_indexB].a = aB;
+	positions[m_indexA].c = cA;
+	positions[m_indexA].a = aA;
+	positions[m_indexB].c = cB;
+	positions[m_indexB].a = aB;
 
 	return linearError < LinearSlop;
 }

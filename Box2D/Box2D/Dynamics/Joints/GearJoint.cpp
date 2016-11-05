@@ -21,7 +21,7 @@
 #include <Box2D/Dynamics/Joints/RevoluteJoint.h>
 #include <Box2D/Dynamics/Joints/PrismaticJoint.h>
 #include <Box2D/Dynamics/Body.h>
-#include <Box2D/Dynamics/SolverData.hpp>
+#include <Box2D/Dynamics/TimeStep.h>
 
 using namespace box2d;
 
@@ -131,7 +131,7 @@ GearJoint::GearJoint(const GearJointDef& def)
 	m_impulse = float_t{0};
 }
 
-void GearJoint::InitVelocityConstraints(const SolverData& data)
+void GearJoint::InitVelocityConstraints(Velocity* velocities, const Position* positions, const TimeStep& step)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -150,21 +150,21 @@ void GearJoint::InitVelocityConstraints(const SolverData& data)
 	m_iC = m_bodyC->GetInverseInertia();
 	m_iD = m_bodyD->GetInverseInertia();
 
-	const auto aA = data.positions[m_indexA].a;
-	auto vA = data.velocities[m_indexA].v;
-	auto wA = data.velocities[m_indexA].w;
+	const auto aA = positions[m_indexA].a;
+	auto vA = velocities[m_indexA].v;
+	auto wA = velocities[m_indexA].w;
 
-	const auto aB = data.positions[m_indexB].a;
-	auto vB = data.velocities[m_indexB].v;
-	auto wB = data.velocities[m_indexB].w;
+	const auto aB = positions[m_indexB].a;
+	auto vB = velocities[m_indexB].v;
+	auto wB = velocities[m_indexB].w;
 
-	const auto aC = data.positions[m_indexC].a;
-	auto vC = data.velocities[m_indexC].v;
-	auto wC = data.velocities[m_indexC].w;
+	const auto aC = positions[m_indexC].a;
+	auto vC = velocities[m_indexC].v;
+	auto wC = velocities[m_indexC].w;
 
-	const auto aD = data.positions[m_indexD].a;
-	auto vD = data.velocities[m_indexD].v;
-	auto wD = data.velocities[m_indexD].w;
+	const auto aD = positions[m_indexD].a;
+	auto vD = velocities[m_indexD].v;
+	auto wD = velocities[m_indexD].w;
 
 	const auto qA = UnitVec2(aA);
 	const auto qB = UnitVec2(aB);
@@ -212,7 +212,7 @@ void GearJoint::InitVelocityConstraints(const SolverData& data)
 	// Compute effective mass.
 	m_mass = (m_mass > float_t{0}) ? float_t{1} / m_mass : float_t{0};
 
-	if (data.step.warmStarting)
+	if (step.warmStarting)
 	{
 		vA += (m_mA * m_impulse) * m_JvAC;
 		wA += 1_rad * m_iA * m_impulse * m_JwA;
@@ -228,26 +228,26 @@ void GearJoint::InitVelocityConstraints(const SolverData& data)
 		m_impulse = float_t{0};
 	}
 
-	data.velocities[m_indexA].v = vA;
-	data.velocities[m_indexA].w = wA;
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
-	data.velocities[m_indexC].v = vC;
-	data.velocities[m_indexC].w = wC;
-	data.velocities[m_indexD].v = vD;
-	data.velocities[m_indexD].w = wD;
+	velocities[m_indexA].v = vA;
+	velocities[m_indexA].w = wA;
+	velocities[m_indexB].v = vB;
+	velocities[m_indexB].w = wB;
+	velocities[m_indexC].v = vC;
+	velocities[m_indexC].w = wC;
+	velocities[m_indexD].v = vD;
+	velocities[m_indexD].w = wD;
 }
 
-void GearJoint::SolveVelocityConstraints(const SolverData& data)
+void GearJoint::SolveVelocityConstraints(Velocity* velocities, const TimeStep& step)
 {
-	auto vA = data.velocities[m_indexA].v;
-	auto wA = data.velocities[m_indexA].w;
-	auto vB = data.velocities[m_indexB].v;
-	auto wB = data.velocities[m_indexB].w;
-	auto vC = data.velocities[m_indexC].v;
-	auto wC = data.velocities[m_indexC].w;
-	auto vD = data.velocities[m_indexD].v;
-	auto wD = data.velocities[m_indexD].w;
+	auto vA = velocities[m_indexA].v;
+	auto wA = velocities[m_indexA].w;
+	auto vB = velocities[m_indexB].v;
+	auto wB = velocities[m_indexB].w;
+	auto vC = velocities[m_indexC].v;
+	auto wC = velocities[m_indexC].w;
+	auto vD = velocities[m_indexD].v;
+	auto wD = velocities[m_indexD].w;
 
 	auto Cdot = Dot(m_JvAC, vA - vC) + Dot(m_JvBD, vB - vD);
 	Cdot += (m_JwA * wA.ToRadians() - m_JwC * wC.ToRadians()) + (m_JwB * wB.ToRadians() - m_JwD * wD.ToRadians());
@@ -264,26 +264,26 @@ void GearJoint::SolveVelocityConstraints(const SolverData& data)
 	vD -= (m_mD * impulse) * m_JvBD;
 	wD -= 1_rad * m_iD * impulse * m_JwD;
 
-	data.velocities[m_indexA].v = vA;
-	data.velocities[m_indexA].w = wA;
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
-	data.velocities[m_indexC].v = vC;
-	data.velocities[m_indexC].w = wC;
-	data.velocities[m_indexD].v = vD;
-	data.velocities[m_indexD].w = wD;
+	velocities[m_indexA].v = vA;
+	velocities[m_indexA].w = wA;
+	velocities[m_indexB].v = vB;
+	velocities[m_indexB].w = wB;
+	velocities[m_indexC].v = vC;
+	velocities[m_indexC].w = wC;
+	velocities[m_indexD].v = vD;
+	velocities[m_indexD].w = wD;
 }
 
-bool GearJoint::SolvePositionConstraints(const SolverData& data)
+bool GearJoint::SolvePositionConstraints(Position* positions)
 {
-	auto cA = data.positions[m_indexA].c;
-	auto aA = data.positions[m_indexA].a;
-	auto cB = data.positions[m_indexB].c;
-	auto aB = data.positions[m_indexB].a;
-	auto cC = data.positions[m_indexC].c;
-	auto aC = data.positions[m_indexC].a;
-	auto cD = data.positions[m_indexD].c;
-	auto aD = data.positions[m_indexD].a;
+	auto cA = positions[m_indexA].c;
+	auto aA = positions[m_indexA].a;
+	auto cB = positions[m_indexB].c;
+	auto aB = positions[m_indexB].a;
+	auto cC = positions[m_indexC].c;
+	auto aC = positions[m_indexC].a;
+	auto cD = positions[m_indexD].c;
+	auto aD = positions[m_indexD].a;
 
 	const UnitVec2 qA(aA), qB(aB), qC(aC), qD(aD);
 
@@ -360,14 +360,14 @@ bool GearJoint::SolvePositionConstraints(const SolverData& data)
 	cD -= m_mD * impulse * JvBD;
 	aD -= 1_rad * m_iD * impulse * JwD;
 
-	data.positions[m_indexA].c = cA;
-	data.positions[m_indexA].a = aA;
-	data.positions[m_indexB].c = cB;
-	data.positions[m_indexB].a = aB;
-	data.positions[m_indexC].c = cC;
-	data.positions[m_indexC].a = aC;
-	data.positions[m_indexD].c = cD;
-	data.positions[m_indexD].a = aD;
+	positions[m_indexA].c = cA;
+	positions[m_indexA].a = aA;
+	positions[m_indexB].c = cB;
+	positions[m_indexB].a = aB;
+	positions[m_indexC].c = cC;
+	positions[m_indexC].a = aC;
+	positions[m_indexD].c = cD;
+	positions[m_indexD].a = aD;
 
 	// TODO_ERIN not implemented
 	return linearError < LinearSlop;

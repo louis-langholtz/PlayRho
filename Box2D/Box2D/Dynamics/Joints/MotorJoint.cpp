@@ -19,7 +19,7 @@
 
 #include <Box2D/Dynamics/Joints/MotorJoint.h>
 #include <Box2D/Dynamics/Body.h>
-#include <Box2D/Dynamics/SolverData.hpp>
+#include <Box2D/Dynamics/TimeStep.h>
 
 using namespace box2d;
 
@@ -57,7 +57,7 @@ MotorJoint::MotorJoint(const MotorJointDef& def)
 	m_correctionFactor = def.correctionFactor;
 }
 
-void MotorJoint::InitVelocityConstraints(const SolverData& data)
+void MotorJoint::InitVelocityConstraints(Velocity* velocities, const Position* positions, const TimeStep& step)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_localCenterA = GetBodyA()->GetLocalCenter();
@@ -69,15 +69,15 @@ void MotorJoint::InitVelocityConstraints(const SolverData& data)
 	m_invMassB = GetBodyB()->GetInverseMass();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto cA = data.positions[m_indexA].c;
-	const auto aA = data.positions[m_indexA].a;
-	auto vA = data.velocities[m_indexA].v;
-	auto wA = data.velocities[m_indexA].w;
+	const auto cA = positions[m_indexA].c;
+	const auto aA = positions[m_indexA].a;
+	auto vA = velocities[m_indexA].v;
+	auto wA = velocities[m_indexA].w;
 
-	const auto cB = data.positions[m_indexB].c;
-	const auto aB = data.positions[m_indexB].a;
-	auto vB = data.velocities[m_indexB].v;
-	auto wB = data.velocities[m_indexB].w;
+	const auto cB = positions[m_indexB].c;
+	const auto aB = positions[m_indexB].a;
+	auto vB = velocities[m_indexB].v;
+	auto wB = velocities[m_indexB].w;
 
 	const auto qA = UnitVec2(aA);
 	const auto qB = UnitVec2(aB);
@@ -115,11 +115,11 @@ void MotorJoint::InitVelocityConstraints(const SolverData& data)
 	m_linearError = cB + m_rB - cA - m_rA - Rotate(m_linearOffset, qA);
 	m_angularError = aB - aA - m_angularOffset;
 
-	if (data.step.warmStarting)
+	if (step.warmStarting)
 	{
 		// Scale impulses to support a variable time step.
-		m_linearImpulse *= data.step.dtRatio;
-		m_angularImpulse *= data.step.dtRatio;
+		m_linearImpulse *= step.dtRatio;
+		m_angularImpulse *= step.dtRatio;
 
 		const auto P = Vec2{m_linearImpulse.x, m_linearImpulse.y};
 		vA -= mA * P;
@@ -133,24 +133,24 @@ void MotorJoint::InitVelocityConstraints(const SolverData& data)
 		m_angularImpulse = float_t{0};
 	}
 
-	data.velocities[m_indexA].v = vA;
-	data.velocities[m_indexA].w = wA;
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
+	velocities[m_indexA].v = vA;
+	velocities[m_indexA].w = wA;
+	velocities[m_indexB].v = vB;
+	velocities[m_indexB].w = wB;
 }
 
-void MotorJoint::SolveVelocityConstraints(const SolverData& data)
+void MotorJoint::SolveVelocityConstraints(Velocity* velocities, const TimeStep& step)
 {
-	auto vA = data.velocities[m_indexA].v;
-	auto wA = data.velocities[m_indexA].w;
-	auto vB = data.velocities[m_indexB].v;
-	auto wB = data.velocities[m_indexB].w;
+	auto vA = velocities[m_indexA].v;
+	auto wA = velocities[m_indexA].w;
+	auto vB = velocities[m_indexB].v;
+	auto wB = velocities[m_indexB].w;
 
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
 
-	const auto h = data.step.get_dt();
-	const auto inv_h = data.step.get_inv_dt();
+	const auto h = step.get_dt();
+	const auto inv_h = step.get_inv_dt();
 
 	// Solve angular friction
 	{
@@ -190,15 +190,15 @@ void MotorJoint::SolveVelocityConstraints(const SolverData& data)
 		wB += 1_rad * iB * Cross(m_rB, impulse);
 	}
 
-	data.velocities[m_indexA].v = vA;
-	data.velocities[m_indexA].w = wA;
-	data.velocities[m_indexB].v = vB;
-	data.velocities[m_indexB].w = wB;
+	velocities[m_indexA].v = vA;
+	velocities[m_indexA].w = wA;
+	velocities[m_indexB].v = vB;
+	velocities[m_indexB].w = wB;
 }
 
-bool MotorJoint::SolvePositionConstraints(const SolverData& data)
+bool MotorJoint::SolvePositionConstraints(Position* positions)
 {
-	BOX2D_NOT_USED(data);
+	BOX2D_NOT_USED(positions);
 
 	return true;
 }
