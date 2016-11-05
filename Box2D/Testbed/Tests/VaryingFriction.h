@@ -42,7 +42,7 @@ public:
 
 			BodyDef bd;
 			bd.position = Vec2(-4.0f, 22.0f);
-			bd.angle = -0.25f;
+			bd.angle = -0.25_rad;
 
 			Body* ground = m_world->CreateBody(bd);
 			ground->CreateFixture(FixtureDef{&shape, 0.0f});
@@ -63,7 +63,7 @@ public:
 
 			BodyDef bd;
 			bd.position = Vec2(4.0f, 14.0f);
-			bd.angle = 0.25f;
+			bd.angle = 0.25_rad;
 
 			Body* ground = m_world->CreateBody(bd);
 			ground->CreateFixture(FixtureDef{&shape, 0.0f});
@@ -84,7 +84,7 @@ public:
 
 			BodyDef bd;
 			bd.position = Vec2(-4.0f, 6.0f);
-			bd.angle = -0.25f;
+			bd.angle = -0.25_rad;
 
 			Body* ground = m_world->CreateBody(bd);
 			ground->CreateFixture(FixtureDef{&shape, 0.0f});

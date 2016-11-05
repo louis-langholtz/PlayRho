@@ -127,7 +127,7 @@ void WeldJoint::InitVelocityConstraints(const SolverData& data)
 		const auto h = data.step.get_dt();
 		m_gamma = h * (d + h * k);
 		m_gamma = (m_gamma != float_t{0}) ? float_t{1} / m_gamma : float_t{0};
-		m_bias = C * h * k * m_gamma;
+		m_bias = C.ToRadians() * h * k * m_gamma;
 
 		invM += m_gamma;
 		m_mass.ez.z = (invM != float_t{0}) ? float_t{1} / invM : float_t{0};
@@ -153,10 +153,10 @@ void WeldJoint::InitVelocityConstraints(const SolverData& data)
 		const auto P = Vec2{m_impulse.x, m_impulse.y};
 
 		vA -= mA * P;
-		wA -= iA * (Cross(m_rA, P) + m_impulse.z);
+		wA -= 1_rad * iA * (Cross(m_rA, P) + m_impulse.z);
 
 		vB += mB * P;
-		wB += iB * (Cross(m_rB, P) + m_impulse.z);
+		wB += 1_rad * iB * (Cross(m_rB, P) + m_impulse.z);
 	}
 	else
 	{
@@ -181,15 +181,15 @@ void WeldJoint::SolveVelocityConstraints(const SolverData& data)
 
 	if (m_frequencyHz > float_t{0})
 	{
-		const auto Cdot2 = wB - wA;
+		const auto Cdot2 = (wB - wA).ToRadians();
 
 		const auto impulse2 = -m_mass.ez.z * (Cdot2 + m_bias + m_gamma * m_impulse.z);
 		m_impulse.z += impulse2;
 
-		wA -= iA * impulse2;
-		wB += iB * impulse2;
+		wA -= 1_rad * iA * impulse2;
+		wB += 1_rad * iB * impulse2;
 
-		const auto Cdot1 = vB + (GetRevPerpendicular(m_rB) * wB) - vA - (GetRevPerpendicular(m_rA) * wA);
+		const auto Cdot1 = vB + (GetRevPerpendicular(m_rB) * wB.ToRadians()) - vA - (GetRevPerpendicular(m_rA) * wA.ToRadians());
 
 		const auto impulse1 = -Transform(Cdot1, m_mass);
 		m_impulse.x += impulse1.x;
@@ -198,15 +198,15 @@ void WeldJoint::SolveVelocityConstraints(const SolverData& data)
 		const auto P = impulse1;
 
 		vA -= mA * P;
-		wA -= iA * Cross(m_rA, P);
+		wA -= 1_rad * iA * Cross(m_rA, P);
 
 		vB += mB * P;
-		wB += iB * Cross(m_rB, P);
+		wB += 1_rad * iB * Cross(m_rB, P);
 	}
 	else
 	{
-		const auto Cdot1 = vB + (GetRevPerpendicular(m_rB) * wB) - vA - (GetRevPerpendicular(m_rA) * wA);
-		const auto Cdot2 = wB - wA;
+		const auto Cdot1 = vB + (GetRevPerpendicular(m_rB) * wB.ToRadians()) - vA - (GetRevPerpendicular(m_rA) * wA.ToRadians());
+		const auto Cdot2 = (wB - wA).ToRadians();
 		const auto Cdot = Vec3(Cdot1.x, Cdot1.y, Cdot2);
 
 		const auto impulse = -Transform(Cdot, m_mass);
@@ -215,10 +215,10 @@ void WeldJoint::SolveVelocityConstraints(const SolverData& data)
 		const auto P = Vec2{impulse.x, impulse.y};
 
 		vA -= mA * P;
-		wA -= iA * (Cross(m_rA, P) + impulse.z);
+		wA -= 1_rad * iA * (Cross(m_rA, P) + impulse.z);
 
 		vB += mB * P;
-		wB += iB * (Cross(m_rB, P) + impulse.z);
+		wB += 1_rad * iB * (Cross(m_rB, P) + impulse.z);
 	}
 
 	data.velocities[m_indexA].v = vA;
@@ -266,15 +266,15 @@ bool WeldJoint::SolvePositionConstraints(const SolverData& data)
 		const auto P = -K.Solve22(C1);
 
 		cA -= mA * P;
-		aA -= iA * Cross(rA, P);
+		aA -= 1_rad * iA * Cross(rA, P);
 
 		cB += mB * P;
-		aB += iB * Cross(rB, P);
+		aB += 1_rad * iB * Cross(rB, P);
 	}
 	else
 	{
-		const auto C1 =  cB + rB - cA - rA;
-		const auto C2 = aB - aA - m_referenceAngle;
+		const auto C1 = cB + rB - cA - rA;
+		const auto C2 = (aB - aA - m_referenceAngle).ToRadians();
 
 		positionError = Length(C1);
 		angularError = Abs(C2);
@@ -295,10 +295,10 @@ bool WeldJoint::SolvePositionConstraints(const SolverData& data)
 		const auto P = Vec2{impulse.x, impulse.y};
 
 		cA -= mA * P;
-		aA -= iA * (Cross(rA, P) + impulse.z);
+		aA -= 1_rad * iA * (Cross(rA, P) + impulse.z);
 
 		cB += mB * P;
-		aB += iB * (Cross(rB, P) + impulse.z);
+		aB += 1_rad * iB * (Cross(rB, P) + impulse.z);
 	}
 
 	data.positions[m_indexA].c = cA;

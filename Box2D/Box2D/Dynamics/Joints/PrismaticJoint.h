@@ -48,7 +48,7 @@ struct PrismaticJointDef : public JointDef
 	Vec2 localAxisA = Vec2{float_t{1}, float_t{0}};
 
 	/// The constrained angle between the bodies: bodyB_angle - bodyA_angle.
-	float_t referenceAngle = float_t{0};
+	Angle referenceAngle = 0_rad;
 
 	/// Enable/disable the joint limit.
 	bool enableLimit = false;
@@ -94,7 +94,7 @@ public:
 	Vec2 GetLocalAxisA() const { return m_localXAxisA; }
 
 	/// Get the reference angle.
-	float_t GetReferenceAngle() const { return m_referenceAngle; }
+	Angle GetReferenceAngle() const { return m_referenceAngle; }
 
 	/// Get the current joint translation, usually in meters.
 	float_t GetJointTranslation() const;
@@ -148,7 +148,7 @@ private:
 	Vec2 m_localAnchorB;
 	Vec2 m_localXAxisA;
 	Vec2 m_localYAxisA;
-	float_t m_referenceAngle;
+	Angle m_referenceAngle;
 	Vec3 m_impulse;
 	float_t m_motorImpulse;
 	float_t m_lowerTranslation;

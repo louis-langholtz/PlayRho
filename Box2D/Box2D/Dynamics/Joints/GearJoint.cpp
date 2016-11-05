@@ -56,7 +56,7 @@ GearJoint::GearJoint(const GearJointDef& def)
 	assert(m_typeA == JointType::Revolute || m_typeA == JointType::Prismatic);
 	assert(m_typeB == JointType::Revolute || m_typeB == JointType::Prismatic);
 
-	float_t coordinateA, coordinateB;
+	Angle coordinateA, coordinateB;
 
 	// TODO_ERIN there might be some problem with the joint edges in Joint.
 
@@ -89,7 +89,7 @@ GearJoint::GearJoint(const GearJointDef& def)
 
 		const auto pC = m_localAnchorC;
 		const auto pA = InverseRotate(Rotate(m_localAnchorA, xfA.q) + (xfA.p - xfC.p), xfC.q);
-		coordinateA = Dot(pA - pC, m_localAxisC);
+		coordinateA = Dot(pA - pC, m_localAxisC) * 1_rad;
 	}
 
 	m_bodyD = m_joint2->GetBodyA();
@@ -121,7 +121,7 @@ GearJoint::GearJoint(const GearJointDef& def)
 
 		const auto pD = m_localAnchorD;
 		const auto pB = InverseRotate(Rotate(m_localAnchorB, xfB.q) + (xfB.p - xfD.p), xfD.q);
-		coordinateB = Dot(pB - pD, m_localAxisD);
+		coordinateB = Dot(pB - pD, m_localAxisD) * 1_rad;
 	}
 
 	m_ratio = def.ratio;
@@ -215,13 +215,13 @@ void GearJoint::InitVelocityConstraints(const SolverData& data)
 	if (data.step.warmStarting)
 	{
 		vA += (m_mA * m_impulse) * m_JvAC;
-		wA += m_iA * m_impulse * m_JwA;
+		wA += 1_rad * m_iA * m_impulse * m_JwA;
 		vB += (m_mB * m_impulse) * m_JvBD;
-		wB += m_iB * m_impulse * m_JwB;
+		wB += 1_rad * m_iB * m_impulse * m_JwB;
 		vC -= (m_mC * m_impulse) * m_JvAC;
-		wC -= m_iC * m_impulse * m_JwC;
+		wC -= 1_rad * m_iC * m_impulse * m_JwC;
 		vD -= (m_mD * m_impulse) * m_JvBD;
-		wD -= m_iD * m_impulse * m_JwD;
+		wD -= 1_rad * m_iD * m_impulse * m_JwD;
 	}
 	else
 	{
@@ -250,19 +250,19 @@ void GearJoint::SolveVelocityConstraints(const SolverData& data)
 	auto wD = data.velocities[m_indexD].w;
 
 	auto Cdot = Dot(m_JvAC, vA - vC) + Dot(m_JvBD, vB - vD);
-	Cdot += (m_JwA * wA - m_JwC * wC) + (m_JwB * wB - m_JwD * wD);
+	Cdot += (m_JwA * wA.ToRadians() - m_JwC * wC.ToRadians()) + (m_JwB * wB.ToRadians() - m_JwD * wD.ToRadians());
 
 	const auto impulse = -m_mass * Cdot;
 	m_impulse += impulse;
 
 	vA += (m_mA * impulse) * m_JvAC;
-	wA += m_iA * impulse * m_JwA;
+	wA += 1_rad * m_iA * impulse * m_JwA;
 	vB += (m_mB * impulse) * m_JvBD;
-	wB += m_iB * impulse * m_JwB;
+	wB += 1_rad * m_iB * impulse * m_JwB;
 	vC -= (m_mC * impulse) * m_JvAC;
-	wC -= m_iC * impulse * m_JwC;
+	wC -= 1_rad * m_iC * impulse * m_JwC;
 	vD -= (m_mD * impulse) * m_JvBD;
-	wD -= m_iD * impulse * m_JwD;
+	wD -= 1_rad * m_iD * impulse * m_JwD;
 
 	data.velocities[m_indexA].v = vA;
 	data.velocities[m_indexA].w = wA;
@@ -289,7 +289,7 @@ bool GearJoint::SolvePositionConstraints(const SolverData& data)
 
 	const auto linearError = float_t{0};
 
-	float_t coordinateA, coordinateB;
+	Angle coordinateA, coordinateB;
 
 	Vec2 JvAC, JvBD;
 	float_t JwA, JwB, JwC, JwD;
@@ -316,7 +316,7 @@ bool GearJoint::SolvePositionConstraints(const SolverData& data)
 
 		const auto pC = m_localAnchorC - m_lcC;
 		const auto pA = InverseRotate(rA + (cA - cC), qC);
-		coordinateA = Dot(pA - pC, m_localAxisC);
+		coordinateA = 1_rad * Dot(pA - pC, m_localAxisC);
 	}
 
 	if (m_typeB == JointType::Revolute)
@@ -340,7 +340,7 @@ bool GearJoint::SolvePositionConstraints(const SolverData& data)
 
 		const auto pD = m_localAnchorD - m_lcD;
 		const auto pB = InverseRotate(rB + (cB - cD), qD);
-		coordinateB = Dot(pB - pD, m_localAxisD);
+		coordinateB = 1_rad * Dot(pB - pD, m_localAxisD);
 	}
 
 	const auto C = (coordinateA + m_ratio * coordinateB) - m_constant;
@@ -348,17 +348,17 @@ bool GearJoint::SolvePositionConstraints(const SolverData& data)
 	auto impulse = float_t{0};
 	if (mass > float_t{0})
 	{
-		impulse = -C / mass;
+		impulse = -C.ToRadians() / mass;
 	}
 
 	cA += m_mA * impulse * JvAC;
-	aA += m_iA * impulse * JwA;
+	aA += 1_rad * m_iA * impulse * JwA;
 	cB += m_mB * impulse * JvBD;
-	aB += m_iB * impulse * JwB;
+	aB += 1_rad * m_iB * impulse * JwB;
 	cC -= m_mC * impulse * JvAC;
-	aC -= m_iC * impulse * JwC;
+	aC -= 1_rad * m_iC * impulse * JwC;
 	cD -= m_mD * impulse * JvBD;
-	aD -= m_iD * impulse * JwD;
+	aD -= 1_rad * m_iD * impulse * JwD;
 
 	data.positions[m_indexA].c = cA;
 	data.positions[m_indexA].a = aA;

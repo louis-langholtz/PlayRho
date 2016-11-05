@@ -40,8 +40,8 @@ public:
 	{
 		Test::Step(settings, drawer);
 
-		const auto sweepA = Sweep{Position{Vec2(24.0f, -60.0f), 2.95f}};
-		const auto sweepB = Sweep{Position{Vec2(53.474274f, -50.252514f), 513.36676f}, Position{Vec2(54.595478f, -51.083473f), 513.62781f}};
+		const auto sweepA = Sweep{Position{Vec2(24.0f, -60.0f), 2.95_rad}};
+		const auto sweepB = Sweep{Position{Vec2(53.474274f, -50.252514f), 513.36676_rad}, Position{Vec2(54.595478f, -51.083473f), 513.62781_rad}};
 
 		const auto output = TimeOfImpact(GetDistanceProxy(m_shapeA, 0), sweepA, GetDistanceProxy(m_shapeB, 0), sweepB);
 

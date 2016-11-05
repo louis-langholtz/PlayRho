@@ -48,13 +48,13 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(0.0f, 40.0f);
-			bd.angle = 0.25f * Pi;
+			bd.angle = 0.25_rad * Pi;
 			m_body1 = m_world->CreateBody(bd);
 
-			SetAsBox(m_shape1, 0.5f, 0.5f, Vec2(-0.5f, 0.0f), 0.0f);
+			SetAsBox(m_shape1, 0.5f, 0.5f, Vec2(-0.5f, 0.0f), 0.0_rad);
 			m_piece1 = m_body1->CreateFixture(FixtureDef{&m_shape1, 1.0f});
 
-			SetAsBox(m_shape2, 0.5f, 0.5f, Vec2(0.5f, 0.0f), 0.0f);
+			SetAsBox(m_shape2, 0.5f, 0.5f, Vec2(0.5f, 0.0f), 0.0_rad);
 			m_piece2 = m_body1->CreateFixture(FixtureDef{&m_shape2, 1.0f});
 		}
 
@@ -109,8 +109,8 @@ public:
 		Vec2 center1 = body1->GetWorldCenter();
 		Vec2 center2 = body2->GetWorldCenter();
 		
-		Vec2 velocity1 = m_velocity + GetRevPerpendicular(center1 - center) * m_angularVelocity;
-		Vec2 velocity2 = m_velocity + GetRevPerpendicular(center2 - center) * m_angularVelocity;
+		Vec2 velocity1 = m_velocity + GetRevPerpendicular(center1 - center) * m_angularVelocity.ToRadians();
+		Vec2 velocity2 = m_velocity + GetRevPerpendicular(center2 - center) * m_angularVelocity.ToRadians();
 
 		body1->SetVelocity(Velocity{velocity1, m_angularVelocity});
 		body2->SetVelocity(Velocity{velocity2, m_angularVelocity});
@@ -143,7 +143,7 @@ public:
 
 	Body* m_body1;
 	Vec2 m_velocity;
-	float_t m_angularVelocity;
+	Angle m_angularVelocity;
 	PolygonShape m_shape1;
 	PolygonShape m_shape2;
 	Fixture* m_piece1;

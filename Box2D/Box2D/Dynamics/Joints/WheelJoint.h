@@ -54,7 +54,7 @@ struct WheelJointDef : public JointDef
 	float_t maxMotorTorque = float_t{0};
 
 	/// The desired motor speed in radians per second.
-	float_t motorSpeed = float_t{0};
+	Angle motorSpeed = 0_rad;
 
 	/// Suspension frequency, zero indicates no suspension
 	float_t frequencyHz = float_t(2);
@@ -90,8 +90,8 @@ public:
 	/// Get the current joint translation, usually in meters.
 	float_t GetJointTranslation() const;
 
-	/// Get the current joint translation speed, usually in meters per second.
-	float_t GetJointSpeed() const;
+	/// Get the current joint translation speed, in Angle per second.
+	Angle GetJointSpeed() const;
 
 	/// Is the joint motor enabled?
 	bool IsMotorEnabled() const noexcept { return m_enableMotor; }
@@ -100,10 +100,10 @@ public:
 	void EnableMotor(bool flag);
 
 	/// Set the motor speed, usually in radians per second.
-	void SetMotorSpeed(float_t speed);
+	void SetMotorSpeed(Angle speed);
 
 	/// Get the motor speed, usually in radians per second.
-	float_t GetMotorSpeed() const;
+	Angle GetMotorSpeed() const;
 
 	/// Set/Get the maximum motor force, usually in N-m.
 	void SetMaxMotorTorque(float_t torque);
@@ -140,7 +140,7 @@ private:
 	float_t m_springImpulse;
 
 	float_t m_maxMotorTorque;
-	float_t m_motorSpeed;
+	Angle m_motorSpeed;
 	bool m_enableMotor;
 
 	// Solver temp
@@ -165,7 +165,7 @@ private:
 	float_t m_gamma;
 };
 
-inline float_t WheelJoint::GetMotorSpeed() const
+inline Angle WheelJoint::GetMotorSpeed() const
 {
 	return m_motorSpeed;
 }

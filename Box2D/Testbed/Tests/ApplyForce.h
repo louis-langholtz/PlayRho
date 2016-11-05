@@ -63,7 +63,7 @@ public:
 
 		{
 			Transformation xf1;
-			xf1.q = Rot(0.3524f * Pi);
+			xf1.q = Rot(0.3524_rad * Pi);
 			xf1.p = GetXAxis(xf1.q);
 
 			Vec2 vertices[3];
@@ -78,7 +78,7 @@ public:
 			sd1.density = 4.0f;
 
 			Transformation xf2;
-			xf2.q = Rot(-0.3524f * Pi);
+			xf2.q = Rot(-0.3524_rad * Pi);
 			xf2.p = -GetXAxis(xf2.q);
 
 			vertices[0] = Transform(Vec2(-1.0f, float_t{0}), xf2);
@@ -97,7 +97,7 @@ public:
 			bd.linearDamping = 0.5f;
 
 			bd.position = Vec2(float_t{0}, 2.0);
-			bd.angle = Pi;
+			bd.angle = Pi * 1_rad;
 			bd.allowSleep = false;
 			m_body = m_world->CreateBody(bd);
 			m_body->CreateFixture(sd1);

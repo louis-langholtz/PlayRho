@@ -244,7 +244,7 @@ public:
 		float_t x = RandomFloat(-10.0f, 10.0f);
 		float_t y = RandomFloat(0.0f, 20.0f);
 		bd.position = Vec2(x, y);
-		bd.angle = RandomFloat(-Pi, Pi);
+		bd.angle = 1_rad * RandomFloat(-Pi, Pi);
 
 		m_userData[m_bodyIndex] = index;
 		bd.userData = m_userData + m_bodyIndex;

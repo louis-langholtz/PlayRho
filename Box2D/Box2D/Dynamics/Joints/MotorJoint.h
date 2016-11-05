@@ -36,7 +36,7 @@ struct MotorJointDef : public JointDef
 	Vec2 linearOffset = Vec2_zero;
 
 	/// The bodyB angle minus bodyA angle in radians.
-	float_t angularOffset = float_t{0};
+	Angle angularOffset = 0_rad;
 	
 	/// The maximum motor force in N.
 	float_t maxForce = float_t{1};
@@ -67,8 +67,8 @@ public:
 	const Vec2& GetLinearOffset() const;
 
 	/// Set/get the target angular offset, in radians.
-	void SetAngularOffset(float_t angularOffset);
-	float_t GetAngularOffset() const;
+	void SetAngularOffset(Angle angularOffset);
+	Angle GetAngularOffset() const;
 
 	/// Set the maximum friction force in N.
 	void SetMaxForce(float_t force);
@@ -96,7 +96,7 @@ private:
 
 	// Solver shared
 	Vec2 m_linearOffset;
-	float_t m_angularOffset;
+	Angle m_angularOffset;
 	Vec2 m_linearImpulse;
 	float_t m_angularImpulse;
 	float_t m_maxForce;
@@ -111,7 +111,7 @@ private:
 	Vec2 m_localCenterA;
 	Vec2 m_localCenterB;
 	Vec2 m_linearError;
-	float_t m_angularError;
+	Angle m_angularError;
 	float_t m_invMassA;
 	float_t m_invMassB;
 	float_t m_invIA;

@@ -125,7 +125,7 @@ void RevoluteJoint::InitVelocityConstraints(const SolverData& data)
 	if (m_enableLimit && fixedRotation == false)
 	{
 		const auto jointAngle = aB - aA - m_referenceAngle;
-		if (Abs(m_upperAngle - m_lowerAngle) < (float_t{2} * AngularSlop))
+		if (Abs(m_upperAngle - m_lowerAngle) < (2_rad * AngularSlop))
 		{
 			m_limitState = e_equalLimits;
 		}
@@ -165,10 +165,10 @@ void RevoluteJoint::InitVelocityConstraints(const SolverData& data)
 		const auto P = Vec2{m_impulse.x, m_impulse.y};
 
 		vA -= mA * P;
-		wA -= iA * (Cross(m_rA, P) + m_motorImpulse + m_impulse.z);
+		wA -= 1_rad * iA * (Cross(m_rA, P) + m_motorImpulse + m_impulse.z);
 
 		vB += mB * P;
-		wB += iB * (Cross(m_rB, P) + m_motorImpulse + m_impulse.z);
+		wB += 1_rad * iB * (Cross(m_rB, P) + m_motorImpulse + m_impulse.z);
 	}
 	else
 	{
@@ -197,22 +197,22 @@ void RevoluteJoint::SolveVelocityConstraints(const SolverData& data)
 	// Solve motor constraint.
 	if (m_enableMotor && (m_limitState != e_equalLimits) && !fixedRotation)
 	{
-		const auto Cdot = wB - wA - m_motorSpeed;
+		const auto Cdot = (wB - wA).ToRadians() - m_motorSpeed;
 		auto impulse = -m_motorMass * Cdot;
 		const auto oldImpulse = m_motorImpulse;
 		const auto maxImpulse = data.step.get_dt() * m_maxMotorTorque;
 		m_motorImpulse = Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
 		impulse = m_motorImpulse - oldImpulse;
 
-		wA -= iA * impulse;
-		wB += iB * impulse;
+		wA -= 1_rad * iA * impulse;
+		wB += 1_rad * iB * impulse;
 	}
 
 	// Solve limit constraint.
 	if (m_enableLimit && (m_limitState != e_inactiveLimit) && !fixedRotation)
 	{
-		const auto Cdot1 = vB + (GetRevPerpendicular(m_rB) * wB) - vA - (GetRevPerpendicular(m_rA) * wA);
-		const auto Cdot2 = wB - wA;
+		const auto Cdot1 = vB + (GetRevPerpendicular(m_rB) * wB.ToRadians()) - vA - (GetRevPerpendicular(m_rA) * wA.ToRadians());
+		const auto Cdot2 = (wB - wA).ToRadians();
 		const auto Cdot = Vec3(Cdot1.x, Cdot1.y, Cdot2);
 
 		auto impulse = -m_mass.Solve33(Cdot);
@@ -263,25 +263,25 @@ void RevoluteJoint::SolveVelocityConstraints(const SolverData& data)
 		const auto P = Vec2{impulse.x, impulse.y};
 
 		vA -= mA * P;
-		wA -= iA * (Cross(m_rA, P) + impulse.z);
+		wA -= 1_rad * iA * (Cross(m_rA, P) + impulse.z);
 
 		vB += mB * P;
-		wB += iB * (Cross(m_rB, P) + impulse.z);
+		wB += 1_rad * iB * (Cross(m_rB, P) + impulse.z);
 	}
 	else
 	{
 		// Solve point-to-point constraint
-		const auto Cdot = vB + (GetRevPerpendicular(m_rB) * wB) - vA - (GetRevPerpendicular(m_rA) * wA);
+		const auto Cdot = vB + (GetRevPerpendicular(m_rB) * wB.ToRadians()) - vA - (GetRevPerpendicular(m_rA) * wA.ToRadians());
 		const auto impulse = m_mass.Solve22(-Cdot);
 
 		m_impulse.x += impulse.x;
 		m_impulse.y += impulse.y;
 
 		vA -= mA * impulse;
-		wA -= iA * Cross(m_rA, impulse);
+		wA -= 1_rad * iA * Cross(m_rA, impulse);
 
 		vB += mB * impulse;
-		wB += iB * Cross(m_rB, impulse);
+		wB += 1_rad * iB * Cross(m_rB, impulse);
 	}
 
 	data.velocities[m_indexA].v = vA;
@@ -314,13 +314,13 @@ bool RevoluteJoint::SolvePositionConstraints(const SolverData& data)
 		if (m_limitState == e_equalLimits)
 		{
 			// Prevent large angular corrections
-			const auto C = Clamp(angle - m_lowerAngle, -MaxAngularCorrection, MaxAngularCorrection);
+			const auto C = Clamp((angle - m_lowerAngle).ToRadians(), -MaxAngularCorrection, MaxAngularCorrection);
 			limitImpulse = -m_motorMass * C;
 			angularError = Abs(C);
 		}
 		else if (m_limitState == e_atLowerLimit)
 		{
-			auto C = angle - m_lowerAngle;
+			auto C = (angle - m_lowerAngle).ToRadians();
 			angularError = -C;
 
 			// Prevent large angular corrections and allow some slop.
@@ -329,7 +329,7 @@ bool RevoluteJoint::SolvePositionConstraints(const SolverData& data)
 		}
 		else if (m_limitState == e_atUpperLimit)
 		{
-			auto C = angle - m_upperAngle;
+			auto C = (angle - m_upperAngle).ToRadians();
 			angularError = C;
 
 			// Prevent large angular corrections and allow some slop.
@@ -337,8 +337,8 @@ bool RevoluteJoint::SolvePositionConstraints(const SolverData& data)
 			limitImpulse = -m_motorMass * C;
 		}
 
-		aA -= m_invIA * limitImpulse;
-		aB += m_invIB * limitImpulse;
+		aA -= 1_rad * m_invIA * limitImpulse;
+		aB += 1_rad * m_invIB * limitImpulse;
 	}
 
 	// Solve point-to-point constraint.
@@ -363,10 +363,10 @@ bool RevoluteJoint::SolvePositionConstraints(const SolverData& data)
 		const auto impulse = -Solve(K, C);
 
 		cA -= mA * impulse;
-		aA -= iA * Cross(rA, impulse);
+		aA -= 1_rad * iA * Cross(rA, impulse);
 
 		cB += mB * impulse;
-		aB += iB * Cross(rB, impulse);
+		aB += 1_rad * iB * Cross(rB, impulse);
 	}
 
 	data.positions[m_indexA].c = cA;
@@ -397,12 +397,12 @@ float_t RevoluteJoint::GetReactionTorque(float_t inv_dt) const
 	return inv_dt * m_impulse.z;
 }
 
-float_t RevoluteJoint::GetJointAngle() const
+Angle RevoluteJoint::GetJointAngle() const
 {
 	return GetBodyB()->GetAngle() - GetBodyA()->GetAngle() - m_referenceAngle;
 }
 
-float_t RevoluteJoint::GetJointSpeed() const
+Angle RevoluteJoint::GetJointSpeed() const
 {
 	return GetBodyB()->GetVelocity().w - GetBodyA()->GetVelocity().w;
 }
@@ -454,17 +454,17 @@ void RevoluteJoint::EnableLimit(bool flag)
 	}
 }
 
-float_t RevoluteJoint::GetLowerLimit() const
+Angle RevoluteJoint::GetLowerLimit() const
 {
 	return m_lowerAngle;
 }
 
-float_t RevoluteJoint::GetUpperLimit() const
+Angle RevoluteJoint::GetUpperLimit() const
 {
 	return m_upperAngle;
 }
 
-void RevoluteJoint::SetLimits(float_t lower, float_t upper)
+void RevoluteJoint::SetLimits(Angle lower, Angle upper)
 {
 	assert(lower <= upper);
 	

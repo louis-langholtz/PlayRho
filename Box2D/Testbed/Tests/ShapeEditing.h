@@ -43,7 +43,7 @@ public:
 		m_body = m_world->CreateBody(bd);
 
 		PolygonShape shape;
-		SetAsBox(shape, 4.0f, 4.0f, Vec2(0.0f, 0.0f), 0.0f);
+		SetAsBox(shape, 4.0f, 4.0f, Vec2(0.0f, 0.0f), 0_rad);
 		m_fixture1 = m_body->CreateFixture(FixtureDef{&shape, 10.0f});
 
 		m_fixture2 = nullptr;

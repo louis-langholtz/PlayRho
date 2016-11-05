@@ -28,11 +28,11 @@ TEST(Rot, ByteSizeIs8)
 
 TEST(Rot, sin)
 {
-	Rot rot0(0);
-	Rot rot90(Pi / 2);
-	Rot rot180(Pi);
-	Rot rot270(3 * Pi / 2);
-	Rot rot360(2 * Pi);
+	Rot rot0(0_deg);
+	Rot rot90(1_rad * Pi / 2);
+	Rot rot180(1_rad * Pi);
+	Rot rot270(1_rad * 3 * Pi / 2);
+	Rot rot360(1_rad * 2 * Pi);
 	
 	EXPECT_EQ(float_t{0}, round(rot0.sin()));
 	EXPECT_EQ(float_t{1}, round(rot90.sin()));
@@ -45,10 +45,10 @@ TEST(Rot, sin)
 
 TEST(Rot, cos)
 {
-	Rot rot0(0);
-	Rot rot90(Pi / 2);
-	Rot rot180(1 * Pi);
-	Rot rot360(2 * Pi);
+	Rot rot0(0_deg);
+	Rot rot90(1_rad * Pi / 2);
+	Rot rot180(1_rad * 1 * Pi);
+	Rot rot360(1_rad * 2 * Pi);
 	EXPECT_EQ(round(rot0.cos()), round(rot360.cos()));
 	EXPECT_EQ(float_t{1}, round(rot0.cos()));
 	EXPECT_EQ(float_t{-1}, round(rot180.cos()));
@@ -59,11 +59,11 @@ TEST(Rot, cos)
 
 TEST(Rot, Add)
 {
-	Rot rot0(0);
-	Rot rot90(Pi / 2);
-	Rot rot180(Pi);
-	Rot rot270(3 * Pi / 2);
-	Rot rot360(2 * Pi);
+	Rot rot0(0_deg);
+	Rot rot90(1_rad * Pi / 2);
+	Rot rot180(1_rad * Pi);
+	Rot rot270(1_rad * 3 * Pi / 2);
+	Rot rot360(1_rad * 2 * Pi);
 
 	EXPECT_EQ(round(float_t(0)), round(DegreesToRadians(0)));
 	EXPECT_EQ(round(Pi/2), round(DegreesToRadians(90)));
@@ -75,36 +75,36 @@ TEST(Rot, Add)
 	EXPECT_EQ(rot90, rot0.Rotate(rot90));
 	EXPECT_EQ(rot180, rot90.Rotate(rot90));
 	EXPECT_EQ(round(ToRadians(rot270)), round(ToRadians(rot180.Rotate(rot90))));
-	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(20)))), round(ToRadians(Rot(DegreesToRadians(30)).Rotate(Rot(DegreesToRadians(-10))))));
-	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(20)))), round(ToRadians(Rot(DegreesToRadians(-10)).Rotate(Rot(DegreesToRadians(30))))));
-	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(20)))), round(ToRadians(Rot(DegreesToRadians(10)).FlipY().Rotate(Rot(DegreesToRadians(30))))));
-	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(20)))), round(ToRadians(Rot(DegreesToRadians(30)).Rotate(Rot(DegreesToRadians(10)).FlipY()))));
-	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(105)))), round(ToRadians(Rot(DegreesToRadians(45)).Rotate(Rot(DegreesToRadians(60))))));
-	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(290)))), round(ToRadians(Rot(DegreesToRadians(145)).Rotate(Rot(DegreesToRadians(145))))));
-	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(64)))), round(ToRadians(Rot(DegreesToRadians(30)).Rotate(Rot(DegreesToRadians(34))))));
+	EXPECT_EQ(round(ToRadians(Rot(20_deg))), round(ToRadians(Rot(30_deg).Rotate(Rot(-10_deg)))));
+	EXPECT_EQ(round(ToRadians(Rot(20_deg))), round(ToRadians(Rot(-10_deg).Rotate(Rot(30_deg)))));
+	EXPECT_EQ(round(ToRadians(Rot(20_deg))), round(ToRadians(Rot(10_deg).FlipY().Rotate(Rot(30_deg)))));
+	EXPECT_EQ(round(ToRadians(Rot(20_deg))), round(ToRadians(Rot(30_deg).Rotate(Rot(10_deg).FlipY()))));
+	EXPECT_EQ(round(ToRadians(Rot(105_deg))), round(ToRadians(Rot(45_deg).Rotate(Rot(60_deg)))));
+	EXPECT_EQ(round(ToRadians(Rot(290_deg))), round(ToRadians(Rot(145_deg).Rotate(Rot(145_deg)))));
+	EXPECT_EQ(round(ToRadians(Rot(64_deg))), round(ToRadians(Rot(30_deg).Rotate(Rot(34_deg)))));
 }
 
 TEST(Rot, Negate)
 {
-	EXPECT_EQ(round(DegreesToRadians(0)), round(ToRadians(Rot(DegreesToRadians(0)).FlipY())));
-	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(360)))), round(ToRadians(Rot(DegreesToRadians(0)).FlipY())));
-	EXPECT_EQ(-round(DegreesToRadians(45)), round(ToRadians(Rot(DegreesToRadians(45)).FlipY())));
-	EXPECT_EQ(-round(DegreesToRadians(10)), round(ToRadians(Rot(DegreesToRadians(10)).FlipY())));
-	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(315)))), round(ToRadians(Rot(DegreesToRadians(45)).FlipY())));
-	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(270)))), round(ToRadians(Rot(DegreesToRadians(90)).FlipY())));
-	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(260)))), round(ToRadians(Rot(DegreesToRadians(100)).FlipY())));
-	EXPECT_EQ(-round(ToRadians(Rot(DegreesToRadians(180)))), round(ToRadians(Rot(DegreesToRadians(180)).FlipY())));
-	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(64)))), round(ToRadians((Rot(DegreesToRadians(30)).FlipY()).Rotate(Rot(DegreesToRadians(94))))));
-	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(-64)))), round(ToRadians(Rot(DegreesToRadians(30)).Rotate(Rot(DegreesToRadians(94)).FlipY()))));	
+	EXPECT_EQ(round(DegreesToRadians(0)), round(ToRadians(Rot(0_deg).FlipY())));
+	EXPECT_EQ(round(ToRadians(Rot(360_deg))), round(ToRadians(Rot(0_deg).FlipY())));
+	EXPECT_EQ(-round(DegreesToRadians(45)), round(ToRadians(Rot(45_deg).FlipY())));
+	EXPECT_EQ(-round(DegreesToRadians(10)), round(ToRadians(Rot(10_deg).FlipY())));
+	EXPECT_EQ(round(ToRadians(Rot(315_deg))), round(ToRadians(Rot(45_deg).FlipY())));
+	EXPECT_EQ(round(ToRadians(Rot(270_deg))), round(ToRadians(Rot(90_deg).FlipY())));
+	EXPECT_EQ(round(ToRadians(Rot(260_deg))), round(ToRadians(Rot(100_deg).FlipY())));
+	EXPECT_EQ(-round(ToRadians(Rot(180_deg))), round(ToRadians(Rot(180_deg).FlipY())));
+	EXPECT_EQ(round(ToRadians(Rot(64_deg))), round(ToRadians((Rot(30_deg).FlipY()).Rotate(Rot(94_deg)))));
+	EXPECT_EQ(round(ToRadians(Rot(-64_deg))), round(ToRadians(Rot(30_deg).Rotate(Rot(94_deg).FlipY()))));	
 }
 
 TEST(Rot, Subtract)
 {
-	Rot rot0(0);
-	Rot rot90(Pi / 2);
-	Rot rot180(Pi);
-	Rot rot270(3 * Pi / 2);
-	Rot rot360(2 * Pi);
+	Rot rot0(0_deg);
+	Rot rot90(1_rad * Pi / 2);
+	Rot rot180(1_rad * Pi);
+	Rot rot270(1_rad * 3 * Pi / 2);
+	Rot rot360(1_rad * 2 * Pi);
 
 	EXPECT_EQ(round(ToRadians(rot0)), round(ToRadians(rot0.Rotate(rot0.FlipY()))));
 	EXPECT_EQ(round(ToRadians(rot90)), round(ToRadians(rot90.Rotate(rot0.FlipY()))));
@@ -113,7 +113,7 @@ TEST(Rot, Subtract)
 	
 	EXPECT_NE(round(ToRadians(rot90)), round(ToRadians(rot0.Rotate(rot90.FlipY()))));
 	EXPECT_EQ(round(ToRadians(rot270)), round(ToRadians(rot0.Rotate(rot90.FlipY()))));
-	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(-90)))), round(ToRadians(rot0.Rotate(rot90.FlipY()))));
-	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(64)))), round(ToRadians(Rot(DegreesToRadians(34)).Rotate(Rot(DegreesToRadians(-30)).FlipY()))));
-	EXPECT_EQ(round(ToRadians(Rot(DegreesToRadians(64)))), round(ToRadians(Rot(DegreesToRadians(94)).Rotate(Rot(DegreesToRadians(30)).FlipY()))));
+	EXPECT_EQ(round(ToRadians(Rot(-90_deg))), round(ToRadians(rot0.Rotate(rot90.FlipY()))));
+	EXPECT_EQ(round(ToRadians(Rot(64_deg))), round(ToRadians(Rot(34_deg).Rotate(Rot(-30_deg).FlipY()))));
+	EXPECT_EQ(round(ToRadians(Rot(64_deg))), round(ToRadians(Rot(94_deg).Rotate(Rot(30_deg).FlipY()))));
 }

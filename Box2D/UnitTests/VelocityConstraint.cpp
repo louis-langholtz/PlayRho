@@ -148,7 +148,7 @@ TEST(VelocityConstraint, Update)
 
 	const auto posA = Vec2{1, 2};
 	const auto posB = Vec2{3, 4};
-	const auto velocities = {Velocity{Vec2{1, 0}, 0}, Velocity{Vec2{-1, 0}, 0}};
+	const auto velocities = {Velocity{Vec2{1, 0}, 0_deg}, Velocity{Vec2{-1, 0}, 0_deg}};
 
 	vc.Update(worldManifold, posA, posB, velocities.begin(), false);
 

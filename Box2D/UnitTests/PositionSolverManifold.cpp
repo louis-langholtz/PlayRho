@@ -66,8 +66,8 @@ TEST(PositionSolverManifold, GetPSM)
 	ASSERT_EQ(shape1.GetVertex(3).x, float_t(-2)); // left
 	ASSERT_EQ(shape1.GetVertex(3).y, float_t(-2)); // bottom
 	
-	const auto xfm0 = Transformation(Vec2{-2, 0}, Rot{0}); // left
-	const auto xfm1 = Transformation(Vec2{+2, 0}, Rot{0}); // right
+	const auto xfm0 = Transformation(Vec2{-2, 0}, Rot{0_deg}); // left
+	const auto xfm1 = Transformation(Vec2{+2, 0}, Rot{0_deg}); // right
 	
 	// put wide rectangle on left, square on right
 	const auto manifold = CollideShapes(shape0, xfm0, shape1, xfm1);

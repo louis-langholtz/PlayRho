@@ -49,9 +49,9 @@ TEST(TimeOfImpact, Overlapped)
 {
 	const auto radius = float_t(1);
 	const auto proxyA = DistanceProxy{radius, Vec2_zero};
-	const auto sweepA = Sweep{Position{{0, 0}, 0}};
+	const auto sweepA = Sweep{Position{{0, 0}, 0_deg}};
 	const auto proxyB = DistanceProxy{radius, Vec2_zero};
-	const auto sweepB = Sweep{Position{{0, 0}, 0}};
+	const auto sweepB = Sweep{Position{{0, 0}, 0_deg}};
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, 1);
 	EXPECT_EQ(output.get_state(), TOIOutput::e_overlapped);
 	EXPECT_EQ(output.get_t(), float_t(0));
@@ -63,10 +63,10 @@ TEST(TimeOfImpact, Touching)
 	const auto radius = float_t(1.1);
 
 	const auto proxyA = DistanceProxy{radius, Vec2_zero};
-	const auto sweepA = Sweep{Position{Vec2{0, 0}, 0}};
+	const auto sweepA = Sweep{Position{Vec2{0, 0}, 0_deg}};
 	
 	const auto proxyB = DistanceProxy{radius, Vec2_zero};
-	const auto sweepB = Sweep{Position{Vec2{2, 0}, 0}};
+	const auto sweepB = Sweep{Position{Vec2{2, 0}, 0_deg}};
 
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, 1);
 	
@@ -80,10 +80,10 @@ TEST(TimeOfImpact, Separated)
 	const auto radius = float_t(1);
 	
 	const auto proxyA = DistanceProxy{radius, Vec2_zero};
-	const auto sweepA = Sweep{Position{Vec2{0, 0}, 0}};
+	const auto sweepA = Sweep{Position{Vec2{0, 0}, 0_deg}};
 	
 	const auto proxyB = DistanceProxy{radius, Vec2_zero};
-	const auto sweepB = Sweep{Position{Vec2{4, 0}, 0}};
+	const auto sweepB = Sweep{Position{Vec2{4, 0}, 0_deg}};
 	
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, 1);
 	
@@ -98,10 +98,10 @@ TEST(TimeOfImpact, CollideHorizontally)
 	const auto x = float_t(3);
 	
 	const auto proxyA = DistanceProxy{radius, Vec2_zero};
-	const auto sweepA = Sweep{Position{Vec2{-x, 0}, 0}, Position{Vec2{0, 0}, 0}};
+	const auto sweepA = Sweep{Position{Vec2{-x, 0}, 0_deg}, Position{Vec2{0, 0}, 0_deg}};
 	
 	const auto proxyB = DistanceProxy{radius, Vec2_zero};
-	const auto sweepB = Sweep{Position{Vec2{+x, 0}, 0}, Position{Vec2{0, 0}, 0}};
+	const auto sweepB = Sweep{Position{Vec2{+x, 0}, 0_deg}, Position{Vec2{0, 0}, 0_deg}};
 	
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, 1);
 	
@@ -116,10 +116,10 @@ TEST(TimeOfImpact, CollideVertically)
 	const auto y = float_t(20);
 
 	const auto proxyA = DistanceProxy{radius, Vec2_zero};
-	const auto sweepA = Sweep{Position{Vec2{0, -y}, 0}, Position{Vec2{0, +y}, 0}};
+	const auto sweepA = Sweep{Position{Vec2{0, -y}, 0_deg}, Position{Vec2{0, +y}, 0_deg}};
 	
 	const auto proxyB = DistanceProxy{radius, Vec2_zero};
-	const auto sweepB = Sweep{Position{Vec2{0, +y}, 0}, Position{Vec2{0, -y}, 0}};
+	const auto sweepB = Sweep{Position{Vec2{0, +y}, 0_deg}, Position{Vec2{0, -y}, 0_deg}};
 	
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, 1);
 	

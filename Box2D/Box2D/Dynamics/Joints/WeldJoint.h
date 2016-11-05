@@ -42,7 +42,7 @@ struct WeldJointDef : public JointDef
 	Vec2 localAnchorB = Vec2_zero;
 
 	/// The bodyB angle minus bodyA angle in the reference state (radians).
-	float_t referenceAngle = float_t{0};
+	Angle referenceAngle = 0_rad;
 	
 	/// The mass-spring-damper frequency in Hertz. Rotation only.
 	/// Disable softness with a value of 0.
@@ -72,7 +72,7 @@ public:
 	const Vec2& GetLocalAnchorB() const  { return m_localAnchorB; }
 
 	/// Get the reference angle.
-	float_t GetReferenceAngle() const { return m_referenceAngle; }
+	Angle GetReferenceAngle() const { return m_referenceAngle; }
 
 	/// Set/get frequency in Hz.
 	void SetFrequency(float_t hz) { m_frequencyHz = hz; }
@@ -95,7 +95,7 @@ private:
 	// Solver shared
 	Vec2 m_localAnchorA;
 	Vec2 m_localAnchorB;
-	float_t m_referenceAngle;
+	Angle m_referenceAngle;
 	float_t m_gamma;
 	Vec3 m_impulse;
 

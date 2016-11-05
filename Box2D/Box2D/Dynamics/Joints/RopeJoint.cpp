@@ -103,9 +103,9 @@ void RopeJoint::InitVelocityConstraints(const SolverData& data)
 
 		const auto P = m_impulse * m_u;
 		vA -= m_invMassA * P;
-		wA -= m_invIA * Cross(m_rA, P);
+		wA -= 1_rad * m_invIA * Cross(m_rA, P);
 		vB += m_invMassB * P;
-		wB += m_invIB * Cross(m_rB, P);
+		wB += 1_rad * m_invIB * Cross(m_rB, P);
 	}
 	else
 	{
@@ -126,8 +126,8 @@ void RopeJoint::SolveVelocityConstraints(const SolverData& data)
 	auto wB = data.velocities[m_indexB].w;
 
 	// Cdot = dot(u, v + cross(w, r))
-	const auto vpA = vA + GetRevPerpendicular(m_rA) * wA;
-	const auto vpB = vB + GetRevPerpendicular(m_rB) * wB;
+	const auto vpA = vA + GetRevPerpendicular(m_rA) * wA.ToRadians();
+	const auto vpB = vB + GetRevPerpendicular(m_rB) * wB.ToRadians();
 	const auto C = m_length - m_maxLength;
 	auto Cdot = Dot(m_u, vpB - vpA);
 
@@ -144,9 +144,9 @@ void RopeJoint::SolveVelocityConstraints(const SolverData& data)
 
 	const auto P = impulse * m_u;
 	vA -= m_invMassA * P;
-	wA -= m_invIA * Cross(m_rA, P);
+	wA -= 1_rad * m_invIA * Cross(m_rA, P);
 	vB += m_invMassB * P;
-	wB += m_invIB * Cross(m_rB, P);
+	wB += 1_rad * m_invIB * Cross(m_rB, P);
 
 	data.velocities[m_indexA].v = vA;
 	data.velocities[m_indexA].w = wA;
@@ -176,9 +176,9 @@ bool RopeJoint::SolvePositionConstraints(const SolverData& data)
 	const auto P = impulse * u;
 
 	cA -= m_invMassA * P;
-	aA -= m_invIA * Cross(rA, P);
+	aA -= 1_rad * m_invIA * Cross(rA, P);
 	cB += m_invMassB * P;
-	aB += m_invIB * Cross(rB, P);
+	aB += 1_rad * m_invIB * Cross(rB, P);
 
 	data.positions[m_indexA].c = cA;
 	data.positions[m_indexA].a = aA;

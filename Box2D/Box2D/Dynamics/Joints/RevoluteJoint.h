@@ -50,16 +50,16 @@ struct RevoluteJointDef : public JointDef
 	Vec2 localAnchorB = Vec2_zero;
 
 	/// The bodyB angle minus bodyA angle in the reference state (radians).
-	float_t referenceAngle = float_t{0};
+	Angle referenceAngle = 0_rad;
 
 	/// A flag to enable joint limits.
 	bool enableLimit = false;
 
 	/// The lower angle for the joint limit (radians).
-	float_t lowerAngle = float_t{0};
+	Angle lowerAngle = 0_rad;
 
 	/// The upper angle for the joint limit (radians).
-	float_t upperAngle = float_t{0};
+	Angle upperAngle = 0_rad;
 
 	/// A flag to enable the joint motor.
 	bool enableMotor = false;
@@ -93,13 +93,13 @@ public:
 	const Vec2& GetLocalAnchorB() const noexcept { return m_localAnchorB; }
 
 	/// Get the reference angle.
-	float_t GetReferenceAngle() const noexcept { return m_referenceAngle; }
+	Angle GetReferenceAngle() const noexcept { return m_referenceAngle; }
 
 	/// Get the current joint angle in radians.
-	float_t GetJointAngle() const;
+	Angle GetJointAngle() const;
 
 	/// Get the current joint angle speed in radians per second.
-	float_t GetJointSpeed() const;
+	Angle GetJointSpeed() const;
 
 	/// Is the joint limit enabled?
 	bool IsLimitEnabled() const;
@@ -108,13 +108,13 @@ public:
 	void EnableLimit(bool flag);
 
 	/// Get the lower joint limit in radians.
-	float_t GetLowerLimit() const;
+	Angle GetLowerLimit() const;
 
 	/// Get the upper joint limit in radians.
-	float_t GetUpperLimit() const;
+	Angle GetUpperLimit() const;
 
 	/// Set the joint limits in radians.
-	void SetLimits(float_t lower, float_t upper);
+	void SetLimits(Angle lower, Angle upper);
 
 	/// Is the joint motor enabled?
 	bool IsMotorEnabled() const;
@@ -163,9 +163,9 @@ private:
 	float_t m_motorSpeed;
 
 	bool m_enableLimit;
-	float_t m_referenceAngle;
-	float_t m_lowerAngle;
-	float_t m_upperAngle;
+	Angle m_referenceAngle;
+	Angle m_lowerAngle;
+	Angle m_upperAngle;
 
 	// Solver temp
 	index_t m_indexA;

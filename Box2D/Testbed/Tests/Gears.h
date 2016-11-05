@@ -144,17 +144,19 @@ public:
 	{
 		Test::Step(settings, drawer);
 
-		float_t ratio, value;
-		
-		ratio = m_joint4->GetRatio();
-		value = m_joint1->GetJointAngle() + ratio * m_joint2->GetJointAngle();
-		drawer.DrawString(5, m_textLine, "theta1 + %4.2f * theta2 = %4.2f", (float) ratio, (float) value);
-		m_textLine += DRAW_STRING_NEW_LINE;
+		{
+			const auto ratio = m_joint4->GetRatio();
+			const auto value = m_joint1->GetJointAngle() + ratio * m_joint2->GetJointAngle();
+			drawer.DrawString(5, m_textLine, "theta1 + %4.2f * theta2 = %4.2f", (float) ratio, value.ToRadians());
+			m_textLine += DRAW_STRING_NEW_LINE;
+		}
 
-		ratio = m_joint5->GetRatio();
-		value = m_joint2->GetJointAngle() + ratio * m_joint3->GetJointTranslation();
-		drawer.DrawString(5, m_textLine, "theta2 + %4.2f * delta = %4.2f", (float) ratio, (float) value);
-		m_textLine += DRAW_STRING_NEW_LINE;
+		{
+			const auto ratio = m_joint5->GetRatio();
+			const auto value = ratio * m_joint3->GetJointTranslation();
+			drawer.DrawString(5, m_textLine, "theta2 + %4.2f * delta = %4.2f", (float) ratio, value);
+			m_textLine += DRAW_STRING_NEW_LINE;
+		}
 	}
 
 	static Test* Create()

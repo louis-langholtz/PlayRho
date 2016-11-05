@@ -67,7 +67,7 @@ public:
 
 		{
 			PolygonShape shape;
-			SetAsBox(shape, 7.0f, 0.25f, Vec2_zero, 0.3f);
+			SetAsBox(shape, 7.0f, 0.25f, Vec2_zero, 0.3_rad);
 
 			BodyDef bd;
 			bd.position = Vec2(1.0f, 6.0f);
@@ -92,7 +92,7 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-0.9f, 1.0f);
-			bd.angle = -0.15f;
+			bd.angle = -0.15_rad;
 
 			b3 = m_world->CreateBody(bd);
 			b3->CreateFixture(FixtureDef{&shape, 10.0f});
@@ -127,13 +127,13 @@ public:
 			fd.density = 10.0f;
 			fd.friction = 0.1f;
 
-			SetAsBox(shape, 1.0f, 0.1f, Vec2(0.0f, -0.9f), 0.0f);
+			SetAsBox(shape, 1.0f, 0.1f, Vec2(0.0f, -0.9f), 0.0_rad);
 			b5->CreateFixture(fd);
 
-			SetAsBox(shape, 0.1f, 1.0f, Vec2(-0.9f, 0.0f), 0.0f);
+			SetAsBox(shape, 0.1f, 1.0f, Vec2(-0.9f, 0.0f), 0.0_rad);
 			b5->CreateFixture(fd);
 
-			SetAsBox(shape, 0.1f, 1.0f, Vec2(0.9f, 0.0f), 0.0f);
+			SetAsBox(shape, 0.1f, 1.0f, Vec2(0.9f, 0.0f), 0.0_rad);
 			b5->CreateFixture(fd);
 		}
 

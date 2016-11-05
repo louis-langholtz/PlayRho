@@ -216,7 +216,7 @@ void Body::SetType(BodyType type)
 
 	if (type == BodyType::Static)
 	{
-		m_velocity = Velocity{Vec2_zero, 0};
+		m_velocity = Velocity{Vec2_zero, 0_rad};
 		m_sweep.pos0 = m_sweep.pos1;
 		SynchronizeFixtures();
 	}
@@ -224,7 +224,7 @@ void Body::SetType(BodyType type)
 	SetAwake();
 
 	m_linearAcceleration = Vec2_zero;
-	m_angularAcceleration = float_t{0};
+	m_angularAcceleration = 0_rad;
 	if (IsAccelerable())
 	{
 		m_linearAcceleration += m_world->GetGravity();
@@ -395,7 +395,7 @@ void Body::ResetMassData()
 	m_sweep = Sweep{Position{Transform(localCenter, GetTransformation()), GetAngle()}, localCenter};
 
 	// Update center of mass velocity.
-	m_velocity.v += GetRevPerpendicular(GetWorldCenter() - oldCenter) * m_velocity.w;
+	m_velocity.v += GetRevPerpendicular(GetWorldCenter() - oldCenter) * m_velocity.w.ToRadians();
 	
 	UnsetMassDataDirty();
 }
@@ -433,14 +433,14 @@ void Body::SetMassData(const MassData& massData)
 	m_sweep = Sweep{Position{Transform(massData.center, GetTransformation()), GetAngle()}, massData.center};
 
 	// Update center of mass velocity.
-	m_velocity.v += GetRevPerpendicular(GetWorldCenter() - oldCenter) * m_velocity.w;
+	m_velocity.v += GetRevPerpendicular(GetWorldCenter() - oldCenter) * m_velocity.w.ToRadians();
 	
 	UnsetMassDataDirty();
 }
 
 void Body::SetVelocity(const Velocity& velocity) noexcept
 {
-	if ((velocity.v != Vec2_zero) || (velocity.w != 0))
+	if ((velocity.v != Vec2_zero) || (velocity.w != 0_rad))
 	{
 		if (!IsSpeedable())
 		{
@@ -451,12 +451,12 @@ void Body::SetVelocity(const Velocity& velocity) noexcept
 	m_velocity = velocity;
 }
 
-void Body::SetAcceleration(const Vec2& linear, const float_t angular) noexcept
+void Body::SetAcceleration(const Vec2& linear, const Angle angular) noexcept
 {
 	assert(IsValid(linear));
 	assert(IsValid(angular));
 
-	if ((linear != Vec2_zero) || (angular != 0))
+	if ((linear != Vec2_zero) || (angular != 0_rad))
 	{
 		if (!IsAccelerable())
 		{
@@ -499,7 +499,7 @@ void Body::SynchronizeFixtures(const Transformation& t1, const Transformation& t
 	}
 }
 
-void Body::SetTransform(const Vec2& position, float_t angle)
+void Body::SetTransform(const Vec2& position, Angle angle)
 {
 	assert(IsValid(position));
 	assert(IsValid(angle));
@@ -578,7 +578,7 @@ void Body::SetFixedRotation(bool flag)
 		m_flags &= ~e_fixedRotationFlag;
 	}
 
-	m_velocity.w = float_t{0};
+	m_velocity.w = 0_rad;
 
 	ResetMassData();
 }

@@ -30,7 +30,7 @@ public:
 	{		
 		m_hz = 4.0f;
 		m_zeta = 0.7f;
-		m_speed = 50.0f;
+		m_speed = 50_rad;
 
 		Body* ground = nullptr;
 		{
@@ -100,8 +100,8 @@ public:
 			body->CreateFixture(FixtureDef{&box, 1.0f});
 
 			RevoluteJointDef jd(ground, body, body->GetPosition());
-			jd.lowerAngle = -8.0f * Pi / 180.0f;
-			jd.upperAngle = 8.0f * Pi / 180.0f;
+			jd.lowerAngle = -8.0_deg;
+			jd.upperAngle = 8.0_deg;
 			jd.enableLimit = true;
 			m_world->CreateJoint(jd);
 
@@ -202,7 +202,7 @@ public:
 			Vec2 axis(0.0f, 1.0f);
 
 			jd.Initialize(m_car, m_wheel1, m_wheel1->GetPosition(), axis);
-			jd.motorSpeed = 0.0f;
+			jd.motorSpeed = 0_rad;
 			jd.maxMotorTorque = 20.0f;
 			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
@@ -210,7 +210,7 @@ public:
 			m_spring1 = (WheelJoint*)m_world->CreateJoint(jd);
 
 			jd.Initialize(m_car, m_wheel2, m_wheel2->GetPosition(), axis);
-			jd.motorSpeed = 0.0f;
+			jd.motorSpeed = 0_rad;
 			jd.maxMotorTorque = 10.0f;
 			jd.enableMotor = false;
 			jd.frequencyHz = m_hz;
@@ -228,7 +228,7 @@ public:
 			break;
 
 		case GLFW_KEY_S:
-			m_spring1->SetMotorSpeed(0.0f);
+			m_spring1->SetMotorSpeed(0_rad);
 			break;
 
 		case GLFW_KEY_D:
@@ -271,7 +271,7 @@ public:
 
 	float_t m_hz;
 	float_t m_zeta;
-	float_t m_speed;
+	Angle m_speed;
 	WheelJoint* m_spring1;
 	WheelJoint* m_spring2;
 };

@@ -26,8 +26,8 @@ using namespace box2d;
 
 TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 {
-	const auto old_pA = Position{Vec2{-2, 0}, 0};
-	const auto old_pB = Position{Vec2{+2, 0}, 0};
+	const auto old_pA = Position{Vec2{-2, 0}, 0_deg};
+	const auto old_pB = Position{Vec2{+2, 0}, 0_deg};
 
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
@@ -60,8 +60,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 
 TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
 {
-	const auto old_pA = Position{Vec2{0, -2}, 0};
-	const auto old_pB = Position{Vec2{0, +2}, 0};
+	const auto old_pA = Position{Vec2{0, -2}, 0_deg};
+	const auto old_pB = Position{Vec2{0, +2}, 0_deg};
 	
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
@@ -96,8 +96,8 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
 {
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
-	const auto xfmA = Transformation(Vec2_zero, Rot{0});
-	const auto xfmB = Transformation(Vec2_zero, Rot{0});
+	const auto xfmA = Transformation(Vec2_zero, Rot{0_deg});
+	const auto xfmB = Transformation(Vec2_zero, Rot{0_deg});
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
 	ASSERT_EQ(manifold.GetPointCount(), 2);
@@ -110,8 +110,8 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
 	const auto bB = PositionConstraint::BodyData{indexB, float_t(1), float_t(1), lcB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 
-	const auto old_pA = Position{Vec2{0, 0}, 0};
-	const auto old_pB = Position{Vec2{0, 0}, 0};
+	const auto old_pA = Position{Vec2{0, 0}, 0_deg};
+	const auto old_pB = Position{Vec2{0, 0}, 0_deg};
 	
 	const auto max_correction = std::numeric_limits<float_t>::infinity();
 	const auto solution = Solve(pc, old_pA, old_pB, 0, -LinearSlop, max_correction);
@@ -132,8 +132,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
 	const auto ctr_x = float_t(100);
 	
 	// square A is left of square B
-	const auto old_pA = Position{{ctr_x - 1, 0}, 0};
-	const auto old_pB = Position{{ctr_x + 1, 0}, 0};
+	const auto old_pA = Position{{ctr_x - 1, 0}, 0_deg};
+	const auto old_pB = Position{{ctr_x + 1, 0}, 0_deg};
 	
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
@@ -176,8 +176,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
 	const auto ctr_x = float_t(100);
 	
 	// square A is right of square B
-	const auto old_pA =  Position{{ctr_x + 1, 0}, 0};
-	const auto old_pB = Position{{ctr_x - 1, 0}, 0};
+	const auto old_pA =  Position{{ctr_x + 1, 0}, 0_deg};
+	const auto old_pB = Position{{ctr_x - 1, 0}, 0_deg};
 	
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
@@ -220,8 +220,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
 	const auto ctr_y = float_t(100);
 	
 	// square A is below square B
-	const auto old_pA = Position{{0, ctr_y - 1}, 0};
-	const auto old_pB = Position{{0, ctr_y + 1}, 0};
+	const auto old_pA = Position{{0, ctr_y - 1}, 0_deg};
+	const auto old_pB = Position{{0, ctr_y + 1}, 0_deg};
 	
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
@@ -276,8 +276,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
 	const auto ctr_y = float_t(100);
 
 	// square A is above square B
-	const auto old_pA = Position{{0, ctr_y + 1}, 0};
-	const auto old_pB = Position{{0, ctr_y - 1}, 0};
+	const auto old_pA = Position{{0, ctr_y + 1}, 0_deg};
+	const auto old_pB = Position{{0, ctr_y - 1}, 0_deg};
 	
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
@@ -332,8 +332,8 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
 {
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
-	const auto xfmA = Transformation(Vec2_zero, Rot{0});
-	const auto xfmB = Transformation(Vec2_zero, Rot{0});
+	const auto xfmA = Transformation(Vec2_zero, Rot{0_deg});
+	const auto xfmB = Transformation(Vec2_zero, Rot{0_deg});
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
 	ASSERT_EQ(manifold.GetPointCount(), 2);
@@ -347,8 +347,8 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
 	const auto pc = PositionConstraint{manifold, bA, GetRadius(shape), bB, GetRadius(shape)};
 	const auto max_sep = -LinearSlop;
 
-	const auto old_pA = Position{Vec2{0, 0}, 0};
-	const auto old_pB = Position{Vec2{0, 0}, 0};
+	const auto old_pA = Position{Vec2{0, 0}, 0_deg};
+	const auto old_pB = Position{Vec2{0, 0}, 0_deg};
 
 	const auto solution = Solve(pc, old_pA, old_pB, Baumgarte, max_sep, MaxLinearCorrection);
 	

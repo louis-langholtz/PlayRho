@@ -121,7 +121,7 @@ void MouseJoint::InitVelocityConstraints(const SolverData& data)
 	{
 		m_impulse *= data.step.dtRatio;
 		vB += m_invMassB * m_impulse;
-		wB += m_invIB * Cross(m_rB, m_impulse);
+		wB += 1_rad * m_invIB * Cross(m_rB, m_impulse);
 	}
 	else
 	{
@@ -139,7 +139,7 @@ void MouseJoint::SolveVelocityConstraints(const SolverData& data)
 	auto vB = velocityB.v;
 	auto wB = velocityB.w;
 
-	const auto Cdot = vB + (GetRevPerpendicular(m_rB) * wB);
+	const auto Cdot = vB + (GetRevPerpendicular(m_rB) * wB.ToRadians());
 
 	const auto oldImpulse = m_impulse;
 	const auto addImpulse = Transform(-(Cdot + m_C + m_gamma * m_impulse), m_mass);
@@ -154,7 +154,7 @@ void MouseJoint::SolveVelocityConstraints(const SolverData& data)
 	const auto deltaImpulse = m_impulse - oldImpulse;
 
 	vB += m_invMassB * deltaImpulse;
-	wB += m_invIB * Cross(m_rB, deltaImpulse);
+	wB += 1_rad * m_invIB * Cross(m_rB, deltaImpulse);
 
 	data.velocities[m_indexB].v = vB;
 	data.velocities[m_indexB].w = wB;

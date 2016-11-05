@@ -123,9 +123,9 @@ void MotorJoint::InitVelocityConstraints(const SolverData& data)
 
 		const auto P = Vec2{m_linearImpulse.x, m_linearImpulse.y};
 		vA -= mA * P;
-		wA -= iA * (Cross(m_rA, P) + m_angularImpulse);
+		wA -= 1_rad * iA * (Cross(m_rA, P) + m_angularImpulse);
 		vB += mB * P;
-		wB += iB * (Cross(m_rB, P) + m_angularImpulse);
+		wB += 1_rad * iB * (Cross(m_rB, P) + m_angularImpulse);
 	}
 	else
 	{
@@ -155,20 +155,20 @@ void MotorJoint::SolveVelocityConstraints(const SolverData& data)
 	// Solve angular friction
 	{
 		const auto Cdot = wB - wA + inv_h * m_correctionFactor * m_angularError;
-		auto impulse = -m_angularMass * Cdot;
+		auto impulse = -m_angularMass * Cdot.ToRadians();
 
 		const auto oldImpulse = m_angularImpulse;
 		const auto maxImpulse = h * m_maxTorque;
 		m_angularImpulse = Clamp(m_angularImpulse + impulse, -maxImpulse, maxImpulse);
 		impulse = m_angularImpulse - oldImpulse;
 
-		wA -= iA * impulse;
-		wB += iB * impulse;
+		wA -= 1_rad * iA * impulse;
+		wB += 1_rad * iB * impulse;
 	}
 
 	// Solve linear friction
 	{
-		const auto Cdot = vB + (GetRevPerpendicular(m_rB) * wB) - vA - (GetRevPerpendicular(m_rA) * wA) + inv_h * m_correctionFactor * m_linearError;
+		const auto Cdot = vB + (GetRevPerpendicular(m_rB) * wB.ToRadians()) - vA - (GetRevPerpendicular(m_rA) * wA.ToRadians()) + inv_h * m_correctionFactor * m_linearError;
 
 		auto impulse = -Transform(Cdot, m_linearMass);
 		const auto oldImpulse = m_linearImpulse;
@@ -184,10 +184,10 @@ void MotorJoint::SolveVelocityConstraints(const SolverData& data)
 		impulse = m_linearImpulse - oldImpulse;
 
 		vA -= mA * impulse;
-		wA -= iA * Cross(m_rA, impulse);
+		wA -= 1_rad * iA * Cross(m_rA, impulse);
 
 		vB += mB * impulse;
-		wB += iB * Cross(m_rB, impulse);
+		wB += 1_rad * iB * Cross(m_rB, impulse);
 	}
 
 	data.velocities[m_indexA].v = vA;
@@ -271,7 +271,7 @@ const Vec2& MotorJoint::GetLinearOffset() const
 	return m_linearOffset;
 }
 
-void MotorJoint::SetAngularOffset(float_t angularOffset)
+void MotorJoint::SetAngularOffset(Angle angularOffset)
 {
 	if (angularOffset != m_angularOffset)
 	{
@@ -281,7 +281,7 @@ void MotorJoint::SetAngularOffset(float_t angularOffset)
 	}
 }
 
-float_t MotorJoint::GetAngularOffset() const
+Angle MotorJoint::GetAngularOffset() const
 {
 	return m_angularOffset;
 }

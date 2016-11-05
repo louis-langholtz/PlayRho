@@ -59,7 +59,7 @@ public:
 			m_platform = m_world->CreateBody(bd);
 
 			PolygonShape shape;
-			SetAsBox(shape, 0.5f, 4.0f, Vec2(4.0f, 0.0f), 0.5f * Pi);
+			SetAsBox(shape, 0.5f, 4.0f, Vec2(4.0f, 0.0f), 0.5_rad * Pi);
 
 			FixtureDef fd;
 			fd.shape = &shape;
@@ -118,7 +118,7 @@ public:
 
 		case GLFW_KEY_K:
 			m_platform->SetType(BodyType::Kinematic);
-			m_platform->SetVelocity(Velocity{Vec2(-m_speed, 0.0f), 0});
+			m_platform->SetVelocity(Velocity{Vec2(-m_speed, 0.0f), 0_rad});
 			break;
 		}
 	}

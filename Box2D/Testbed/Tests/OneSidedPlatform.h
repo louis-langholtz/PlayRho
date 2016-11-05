@@ -70,7 +70,7 @@ public:
 			shape.SetRadius(float_t(m_radius));
 			m_character = body->CreateFixture(FixtureDef{&shape, 20.0f});
 
-			body->SetVelocity(Velocity{Vec2(0.0f, -50.0f), 0});
+			body->SetVelocity(Velocity{Vec2(0.0f, -50.0f), 0_rad});
 
 			m_state = e_unknown;
 		}

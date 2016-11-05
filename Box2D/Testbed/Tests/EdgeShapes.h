@@ -119,7 +119,7 @@ public:
 		float_t x = RandomFloat(-10.0f, 10.0f);
 		float_t y = RandomFloat(10.0f, 20.0f);
 		bd.position = Vec2(x, y);
-		bd.angle = RandomFloat(-Pi, Pi);
+		bd.angle = 1_rad * RandomFloat(-Pi, Pi);
 		bd.type = BodyType::Dynamic;
 
 		if (index == 4)

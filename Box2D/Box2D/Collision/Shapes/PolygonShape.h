@@ -174,7 +174,7 @@ bool Validate(const PolygonShape& shape);
 /// @param hy the half-height.
 /// @param center the center of the box in local coordinates.
 /// @param angle the rotation of the box in local coordinates.
-void SetAsBox(PolygonShape& shape, float_t hx, float_t hy, const Vec2& center, float_t angle) noexcept;
+void SetAsBox(PolygonShape& shape, float_t hx, float_t hy, const Vec2& center, Angle angle) noexcept;
 	
 size_t FindLowestRightMostVertex(Span<const Vec2> vertices);
 	

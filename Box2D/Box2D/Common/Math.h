@@ -22,6 +22,7 @@
 
 #include <Box2D/Common/Settings.h>
 #include <Box2D/Common/Span.hpp>
+#include <Box2D/Common/Angle.hpp>
 #include <cmath>
 #include <iostream>
 
@@ -66,6 +67,18 @@ inline bool IsValid(const size_t& x) noexcept
 	return x != GetInvalid<size_t>();
 }
 
+template <>
+constexpr inline Angle GetInvalid() noexcept
+{
+	return Angle::GetFromRadians(GetInvalid<float_t>());
+}
+
+template <>
+inline bool IsValid(const Angle& a) noexcept
+{
+	return IsValid(a.ToRadians());
+}
+
 template<class T>
 constexpr inline auto Square(T t) noexcept { return t * t; }
 
@@ -79,6 +92,12 @@ template <typename T>
 constexpr inline T Abs(T a)
 {
 	return (a >= T(0)) ? a : -a;
+}
+
+template <>
+constexpr inline Angle Abs(Angle a)
+{
+	return (a >= 0_deg) ? a : -a;
 }
 
 template <typename T>
@@ -192,9 +211,9 @@ inline Vec2 round(Vec2 value, unsigned precision)
 }
 
 /// Gets the angle in radians
-inline float_t GetAngle(Vec2 value)
+inline Angle GetAngle(Vec2 value)
 {
-	return Atan2(value.y, value.x);
+	return 1_rad * Atan2(value.y, value.x);
 }
 
 /// A 2D column vector with 3 elements.
@@ -415,7 +434,7 @@ public:
 
 	/// Initialize from an angle.
 	/// @param angle Angle in radians (counter-clockwise from the normal of Vec2(1, 0)).
-	explicit Rot(float_t angle): Rot{std::cos(angle), std::sin(angle)}
+	explicit Rot(Angle angle): Rot{std::cos(angle.ToRadians()), std::sin(angle.ToRadians())}
 	{
 		// TODO_ERIN optimize
 	}
@@ -528,10 +547,10 @@ struct Position
 	/// Initializing constructor.
 	/// @param c_ Linear position.
 	/// @param a_ Angular position.
-	constexpr Position(Vec2 c_, float_t a_) noexcept: c{c_}, a{a_} {}
+	constexpr Position(Vec2 c_, Angle a_) noexcept: c{c_}, a{a_} {}
 	
 	Vec2 c; ///< Linear position (in meters).
-	float_t a; ///< Angular position (in radians).
+	Angle a; ///< Angular position (in radians).
 };
 
 template <>
@@ -547,7 +566,7 @@ struct Velocity
 	
 	constexpr Velocity(const Velocity& copy) = default;
 
-	constexpr Velocity(Vec2 v_, float_t w_) noexcept: v{v_}, w{w_} {}
+	constexpr Velocity(Vec2 v_, Angle w_) noexcept: v{v_}, w{w_} {}
 	
 	Velocity& operator= (const Velocity& rhs) noexcept
 	{
@@ -557,7 +576,7 @@ struct Velocity
 	}
 
 	Vec2 v; ///< Linear velocity (in meters/second).
-	float_t w; ///< Angular velocity (in radians/second).
+	Angle w; ///< Angular velocity (in radians/second).
 };
 
 template <>
@@ -774,7 +793,7 @@ constexpr Vec2 operator/ (const Vec2 a, const Vec2::data_type s) noexcept
 {
 	return Vec2{a.x / s, a.y / s};
 }
-
+	
 class UnitVec2
 {
 public:
@@ -811,9 +830,10 @@ public:
 
 	UnitVec2(Vec2 value, UnitVec2 fallback = GetDefaultFallback()) noexcept;
 
-	constexpr UnitVec2(Rot rot) noexcept:
-		m_x{rot.cos()}, m_y{rot.sin()}
+	explicit UnitVec2(Angle angle) noexcept:
+		m_x{std::cos(angle.ToRadians())}, m_y{std::sin(angle.ToRadians())}
 	{
+		
 	}
 
 	constexpr auto GetX() const noexcept
@@ -1308,11 +1328,6 @@ inline Transformation GetTransform1(const Sweep& sweep)
 	return GetTransformation(sweep.pos1, sweep.GetLocalCenter());
 }
 
-constexpr inline float_t DegreesToRadians(const double value)
-{
-	return static_cast<float_t>(value * M_PI / 180);
-}
-
 inline void Sweep::Advance0(const float_t alpha)
 {
 	assert(IsValid(alpha));
@@ -1336,7 +1351,7 @@ inline void Sweep::ResetAlpha0() noexcept
 inline Sweep GetAnglesNormalized(Sweep sweep)
 {
 	constexpr auto twoPi = float_t{2} * Pi;
-	const auto d = twoPi * std::floor(sweep.pos0.a / twoPi);
+	const auto d = Angle::GetFromRadians(twoPi * std::floor(sweep.pos0.a.ToRadians() / twoPi));
 	sweep.pos0.a -= d;
 	sweep.pos1.a -= d;
 	return sweep;
@@ -1359,7 +1374,7 @@ inline float_t Normalize(Vec2& vector)
 
 inline bool IsSleepable(Velocity velocity)
 {
-	return (Square(velocity.w) <= Square(AngularSleepTolerance))
+	return (Square(velocity.w.ToRadians()) <= Square(AngularSleepTolerance))
 	    && (LengthSquared(velocity.v) <= Square(LinearSleepTolerance));
 }
 
@@ -1368,7 +1383,7 @@ inline bool IsSleepable(Velocity velocity)
 constexpr inline Vec2 GetContactRelVelocity(const Velocity velA, const Vec2 vcp_rA,
 											const Velocity velB, const Vec2 vcp_rB) noexcept
 {
-	return (velB.v + (GetRevPerpendicular(vcp_rB) * velB.w)) - (velA.v + (GetRevPerpendicular(vcp_rA) * velA.w));
+	return (velB.v + (GetRevPerpendicular(vcp_rB) * velB.w.ToRadians())) - (velA.v + (GetRevPerpendicular(vcp_rA) * velA.w.ToRadians()));
 }
 
 template <>

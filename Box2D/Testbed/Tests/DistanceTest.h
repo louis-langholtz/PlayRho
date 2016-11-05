@@ -35,7 +35,7 @@ public:
 
 		{
 			m_positionB = Vec2(12.017401f, 0.13678508f);
-			m_angleB = -0.0109265f;
+			m_angleB = -0.0109265_rad;
 			m_transformB = Transformation{m_positionB, Rot(m_angleB)};
 
 			m_polygonB.SetAsBox(2.0f, 0.1f);
@@ -142,11 +142,11 @@ public:
 			break;
 
 		case GLFW_KEY_Q:
-			m_angleB += 0.1f * Pi;
+			m_angleB += 0.1_rad * Pi;
 			break;
 
 		case GLFW_KEY_E:
-			m_angleB -= 0.1f * Pi;
+			m_angleB -= 0.1_rad * Pi;
 			break;
 		}
 
@@ -154,7 +154,7 @@ public:
 	}
 
 	Vec2 m_positionB;
-	float_t m_angleB;
+	Angle m_angleB;
 
 	Transformation m_transformA;
 	Transformation m_transformB;

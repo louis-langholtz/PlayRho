@@ -47,13 +47,13 @@ public:
 			Body* body = m_world->CreateBody(bd);
 
 			PolygonShape shape;
-			SetAsBox(shape, 0.5f, 10.0f, Vec2( 10.0f, 0.0f), 0.0);
+			SetAsBox(shape, 0.5f, 10.0f, Vec2( 10.0f, 0.0f), 0_rad);
 			body->CreateFixture(FixtureDef{&shape, 5.0f});
-			SetAsBox(shape, 0.5f, 10.0f, Vec2(-10.0f, 0.0f), 0.0);
+			SetAsBox(shape, 0.5f, 10.0f, Vec2(-10.0f, 0.0f), 0_rad);
 			body->CreateFixture(FixtureDef{&shape, 5.0f});
-			SetAsBox(shape, 10.0f, 0.5f, Vec2(0.0f, 10.0f), 0.0);
+			SetAsBox(shape, 10.0f, 0.5f, Vec2(0.0f, 10.0f), 0_rad);
 			body->CreateFixture(FixtureDef{&shape, 5.0f});
-			SetAsBox(shape, 10.0f, 0.5f, Vec2(0.0f, -10.0f), 0.0);
+			SetAsBox(shape, 10.0f, 0.5f, Vec2(0.0f, -10.0f), 0_rad);
 			body->CreateFixture(FixtureDef{&shape, 5.0f});
 
 			RevoluteJointDef jd;
@@ -61,7 +61,7 @@ public:
 			jd.bodyB = body;
 			jd.localAnchorA = Vec2(0.0f, 10.0f);
 			jd.localAnchorB = Vec2(0.0f, 0.0f);
-			jd.referenceAngle = 0.0f;
+			jd.referenceAngle = 0_rad;
 			jd.motorSpeed = 0.05f * Pi;
 			jd.maxMotorTorque = 1e8f;
 			jd.enableMotor = true;

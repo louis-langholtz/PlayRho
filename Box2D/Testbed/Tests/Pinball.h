@@ -82,15 +82,15 @@ public:
 			jd.motorSpeed = 0.0f;
 			jd.localAnchorA = p1;
 			jd.bodyB = leftFlipper;
-			jd.lowerAngle = -30.0f * Pi / 180.0f;
-			jd.upperAngle = 5.0f * Pi / 180.0f;
+			jd.lowerAngle = -30.0_deg;
+			jd.upperAngle = 5.0_deg;
 			m_leftJoint = (RevoluteJoint*)m_world->CreateJoint(jd);
 
 			jd.motorSpeed = 0.0f;
 			jd.localAnchorA = p2;
 			jd.bodyB = rightFlipper;
-			jd.lowerAngle = -5.0f * Pi / 180.0f;
-			jd.upperAngle = 30.0f * Pi / 180.0f;
+			jd.lowerAngle = -5.0_deg;
+			jd.upperAngle = 30.0_deg;
 			m_rightJoint = (RevoluteJoint*)m_world->CreateJoint(jd);
 		}
 

@@ -198,10 +198,10 @@ void WheelJoint::InitVelocityConstraints(const SolverData& data)
 		const auto LB = m_impulse * m_sBy + m_springImpulse * m_sBx + m_motorImpulse;
 
 		vA -= m_invMassA * P;
-		wA -= m_invIA * LA;
+		wA -= 1_rad * m_invIA * LA;
 
 		vB += m_invMassB * P;
-		wB += m_invIB * LB;
+		wB += 1_rad * m_invIB * LB;
 	}
 	else
 	{
@@ -228,7 +228,7 @@ void WheelJoint::SolveVelocityConstraints(const SolverData& data)
 
 	// Solve spring constraint
 	{
-		const auto Cdot = Dot(m_ax, vB - vA) + m_sBx * wB - m_sAx * wA;
+		const auto Cdot = Dot(m_ax, vB - vA) + m_sBx * wB.ToRadians() - m_sAx * wA.ToRadians();
 		const auto impulse = -m_springMass * (Cdot + m_bias + m_gamma * m_springImpulse);
 		m_springImpulse += impulse;
 
@@ -237,29 +237,29 @@ void WheelJoint::SolveVelocityConstraints(const SolverData& data)
 		const auto LB = impulse * m_sBx;
 
 		vA -= mA * P;
-		wA -= iA * LA;
+		wA -= 1_rad * iA * LA;
 
 		vB += mB * P;
-		wB += iB * LB;
+		wB += 1_rad * iB * LB;
 	}
 
 	// Solve rotational motor constraint
 	{
 		const auto Cdot = wB - wA - m_motorSpeed;
-		auto impulse = -m_motorMass * Cdot;
+		auto impulse = -m_motorMass * Cdot.ToRadians();
 
 		const auto oldImpulse = m_motorImpulse;
 		const auto maxImpulse = data.step.get_dt() * m_maxMotorTorque;
 		m_motorImpulse = Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
 		impulse = m_motorImpulse - oldImpulse;
 
-		wA -= iA * impulse;
-		wB += iB * impulse;
+		wA -= 1_rad * iA * impulse;
+		wB += 1_rad * iB * impulse;
 	}
 
 	// Solve point to line constraint
 	{
-		const auto Cdot = Dot(m_ay, vB - vA) + m_sBy * wB - m_sAy * wA;
+		const auto Cdot = Dot(m_ay, vB - vA) + m_sBy * wB.ToRadians() - m_sAy * wA.ToRadians();
 		const auto impulse = -m_mass * Cdot;
 		m_impulse += impulse;
 
@@ -268,10 +268,10 @@ void WheelJoint::SolveVelocityConstraints(const SolverData& data)
 		const auto LB = impulse * m_sBy;
 
 		vA -= mA * P;
-		wA -= iA * LA;
+		wA -= 1_rad * iA * LA;
 
 		vB += mB * P;
-		wB += iB * LB;
+		wB += 1_rad * iB * LB;
 	}
 
 	data.velocities[m_indexA].v = vA;
@@ -310,9 +310,9 @@ bool WheelJoint::SolvePositionConstraints(const SolverData& data)
 	const auto LB = impulse * sBy;
 
 	cA -= m_invMassA * P;
-	aA -= m_invIA * LA;
+	aA -= 1_rad * m_invIA * LA;
 	cB += m_invMassB * P;
-	aB += m_invIB * LB;
+	aB += 1_rad * m_invIB * LB;
 
 	data.positions[m_indexA].c = cA;
 	data.positions[m_indexA].a = aA;
@@ -351,7 +351,7 @@ float_t WheelJoint::GetJointTranslation() const
 	return Dot(d, axis);
 }
 
-float_t WheelJoint::GetJointSpeed() const
+Angle WheelJoint::GetJointSpeed() const
 {
 	return GetBodyB()->GetVelocity().w - GetBodyA()->GetVelocity().w;
 }
@@ -363,7 +363,7 @@ void WheelJoint::EnableMotor(bool flag)
 	m_enableMotor = flag;
 }
 
-void WheelJoint::SetMotorSpeed(float_t speed)
+void WheelJoint::SetMotorSpeed(Angle speed)
 {
 	GetBodyA()->SetAwake();
 	GetBodyB()->SetAwake();

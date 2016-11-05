@@ -50,7 +50,7 @@ public:
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(x + 5.0f, 1.05f + 2.5f * i);
-				bd.angle = RandomFloat(-Pi, Pi);
+				bd.angle = 1_rad * RandomFloat(-Pi, Pi);
 				Body* body = m_world->CreateBody(bd);
 				body->CreateFixture(FixtureDef{&circle1, 2.0f});
 				body->CreateFixture(FixtureDef{&circle2, 0.0f});
@@ -61,7 +61,7 @@ public:
 			const auto polygon1 = PolygonShape(0.25f, 0.5f);
 
 			PolygonShape polygon2;
-			SetAsBox(polygon2, 0.25f, 0.5f, Vec2(0.0f, -0.5f), 0.5f * Pi);
+			SetAsBox(polygon2, 0.25f, 0.5f, Vec2(0.0f, -0.5f), 0.5_rad * Pi);
 
 			for (int i = 0; i < 10; ++i)
 			{
@@ -69,7 +69,7 @@ public:
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(x - 5.0f, 1.05f + 2.5f * i);
-				bd.angle = RandomFloat(-Pi, Pi);
+				bd.angle = 1_rad * RandomFloat(-Pi, Pi);
 				Body* body = m_world->CreateBody(bd);
 				body->CreateFixture(FixtureDef{&polygon1, 2.0f});
 				body->CreateFixture(FixtureDef{&polygon2, 2.0f});
@@ -78,7 +78,7 @@ public:
 
 		{
 			Transformation xf1;
-			xf1.q = Rot(0.3524f * Pi);
+			xf1.q = Rot(0.3524_rad * Pi);
 			xf1.p = GetXAxis(xf1.q);
 
 			const auto triangle1 = PolygonShape({
@@ -88,7 +88,7 @@ public:
 			});
 
 			Transformation xf2;
-			xf2.q = Rot(-0.3524f * Pi);
+			xf2.q = Rot(-0.3524_rad * Pi);
 			xf2.p = -GetXAxis(xf2.q);
 
 			const auto triangle2 = PolygonShape({
@@ -103,7 +103,7 @@ public:
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(x, 2.05f + 2.5f * i);
-				bd.angle = 0.0f;
+				bd.angle = 0.0_rad;
 				Body* body = m_world->CreateBody(bd);
 				body->CreateFixture(FixtureDef{&triangle1, 2.0f});
 				body->CreateFixture(FixtureDef{&triangle2, 2.0f});
@@ -114,10 +114,10 @@ public:
 			const auto bottom = PolygonShape( 1.5f, 0.15f );
 
 			PolygonShape left;
-			SetAsBox(left, 0.15f, 2.7f, Vec2(-1.45f, 2.35f), 0.2f);
+			SetAsBox(left, 0.15f, 2.7f, Vec2(-1.45f, 2.35f), 0.2_rad);
 
 			PolygonShape right;
-			SetAsBox(right, 0.15f, 2.7f, Vec2(1.45f, 2.35f), -0.2f);
+			SetAsBox(right, 0.15f, 2.7f, Vec2(1.45f, 2.35f), -0.2_rad);
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;

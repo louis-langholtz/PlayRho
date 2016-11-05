@@ -103,10 +103,10 @@ private:
 	Vec2 m_localAxisC;
 	Vec2 m_localAxisD;
 
-	float_t m_referenceAngleA;
-	float_t m_referenceAngleB;
+	Angle m_referenceAngleA;
+	Angle m_referenceAngleB;
 
-	float_t m_constant;
+	Angle m_constant;
 	float_t m_ratio;
 
 	float_t m_impulse;

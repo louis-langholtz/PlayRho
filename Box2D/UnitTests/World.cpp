@@ -27,6 +27,7 @@
 #include <Box2D/Collision/Shapes/EdgeShape.h>
 #include <Box2D/Dynamics/Joints/MouseJoint.h>
 #include <Box2D/Dynamics/Joints/RopeJoint.h>
+#include <Box2D/Common/Angle.hpp>
 
 #include <unistd.h>
 #include <setjmp.h>
@@ -623,12 +624,12 @@ TEST(World, PartiallyOverlappedCirclesSeparate)
 		
 		if (new_distance == distance)
 		{
-			if (cos(angle) != 0)
+			if (cos(angle.ToRadians()) != 0)
 			{
 				EXPECT_NE(body1->GetPosition().x, lastpos1.x);
 				EXPECT_NE(body2->GetPosition().x, lastpos2.x);
 			}
-			if (sin(angle) != 0)
+			if (sin(angle.ToRadians()) != 0)
 			{
 				EXPECT_NE(body1->GetPosition().y, lastpos1.y);
 				EXPECT_NE(body2->GetPosition().y, lastpos2.y);
@@ -757,8 +758,8 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	ASSERT_EQ(body2->GetPosition().x, body2pos.x);
 	ASSERT_EQ(body2->GetPosition().y, body2pos.y);
 
-	ASSERT_EQ(body1->GetAngle(), float_t(0));
-	ASSERT_EQ(body2->GetAngle(), float_t(0));
+	ASSERT_EQ(body1->GetAngle(), 0_deg);
+	ASSERT_EQ(body2->GetAngle(), 0_deg);
 	auto last_angle_1 = body1->GetAngle();
 	auto last_angle_2 = body2->GetAngle();
 
@@ -769,7 +770,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	auto distance = Length(position_diff);
 	
 	auto angle = GetAngle(position_diff);
-	ASSERT_FLOAT_EQ(angle, float_t(0));
+	ASSERT_FLOAT_EQ(angle.ToRadians(), (0_deg).ToRadians());
 	
 	auto lastpos1 = body1->GetPosition();
 	auto lastpos2 = body2->GetPosition();
@@ -805,17 +806,17 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 		ASSERT_EQ(count, decltype(world.GetContacts().size())(1));
 
 		const auto v1 = body1->GetVelocity();
-		EXPECT_EQ(v1.w, float_t(0));
+		EXPECT_EQ(v1.w, 0_deg);
 		EXPECT_EQ(v1.v.x, float_t(0));
 		EXPECT_EQ(v1.v.y, float_t(0));
 
 		const auto v2 = body2->GetVelocity();
-		EXPECT_EQ(v2.w, float_t(0));
+		EXPECT_EQ(v2.w, 0_deg);
 		EXPECT_EQ(v2.v.x, float_t(0));
 		EXPECT_EQ(v2.v.y, float_t(0));
 
-		EXPECT_FLOAT_EQ(body1->GetAngle(), last_angle_1);
-		EXPECT_FLOAT_EQ(body2->GetAngle(), last_angle_2);
+		EXPECT_FLOAT_EQ(body1->GetAngle().ToRadians(), last_angle_1.ToRadians());
+		EXPECT_FLOAT_EQ(body2->GetAngle().ToRadians(), last_angle_2.ToRadians());
 		last_angle_1 = body1->GetAngle();
 		last_angle_2 = body2->GetAngle();
 
@@ -829,12 +830,12 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 		
 		if (new_distance == distance)
 		{
-			if (cos(angle) != 0)
+			if (cos(angle.ToRadians()) != 0)
 			{
 				EXPECT_NE(body1->GetPosition().x, lastpos1.x);
 				EXPECT_NE(body2->GetPosition().x, lastpos2.x);
 			}
-			if (sin(angle) != 0)
+			if (sin(angle.ToRadians()) != 0)
 			{
 				EXPECT_NE(body1->GetPosition().y, lastpos1.y);
 				EXPECT_NE(body2->GetPosition().y, lastpos2.y);
@@ -864,7 +865,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 		distance = new_distance;
 		
 		const auto new_angle = GetAngle(new_pos_diff);
-		EXPECT_FLOAT_EQ(angle, new_angle);
+		EXPECT_FLOAT_EQ(angle.ToRadians(), new_angle.ToRadians());
 		
 		angle = new_angle;
 	}
@@ -1065,7 +1066,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 	ASSERT_NE(ball_fixture, nullptr);
 
 	const auto velocity = Vec2{+1, 0};
-	ball_body->SetVelocity(Velocity{velocity, 0});
+	ball_body->SetVelocity(Velocity{velocity, 0_deg});
 
 	const auto time_inc = float_t(.01);
 	const auto max_velocity = MaxTranslation / time_inc;

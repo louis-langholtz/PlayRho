@@ -39,7 +39,7 @@ public:
 			body->CreateFixture(FixtureDef{&edge, 0.0f});
 
 			PolygonShape shape;
-			SetAsBox(shape, 0.2f, 1.0f, Vec2(0.5f, 1.0f), 0.0f);
+			SetAsBox(shape, 0.2f, 1.0f, Vec2(0.5f, 1.0f), 0.0_rad);
 			body->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
@@ -55,7 +55,7 @@ public:
 			m_body = m_world->CreateBody(bd);
 			m_body->CreateFixture(FixtureDef{&shape, 1.0f});
 
-			m_angularVelocity = RandomFloat(-50.0f, 50.0f);
+			m_angularVelocity = 1_rad * RandomFloat(-50.0f, 50.0f);
 			//m_angularVelocity = 46.661274f;
 			m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f), m_angularVelocity});
 		}
@@ -86,8 +86,8 @@ public:
 
 		gjkCalls = 0; gjkIters = 0; gjkMaxIters = 0;
 
-		m_body->SetTransform(Vec2(0.0f, 20.0f), 0.0f);
-		m_angularVelocity = RandomFloat(-50.0f, 50.0f);
+		m_body->SetTransform(Vec2(0.0f, 20.0f), 0_rad);
+		m_angularVelocity = 1_rad * RandomFloat(-50.0f, 50.0f);
 		m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f), m_angularVelocity});
 	}
 
@@ -132,7 +132,7 @@ public:
 	}
 
 	Body* m_body;
-	float_t m_angularVelocity;
+	Angle m_angularVelocity;
 };
 
 } // namespace box2d

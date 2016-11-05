@@ -78,8 +78,8 @@ static inline void SolveTangentConstraint(VelocityConstraint& vc, Velocity& velA
 			
 			// Apply contact impulse
 			const auto P = incImpulse * tangent;
-			velA -= Velocity{vc.bodyA.GetInvMass() * P, vc.bodyA.GetInvRotI() * Cross(rA, P)};
-			velB += Velocity{vc.bodyB.GetInvMass() * P, vc.bodyB.GetInvRotI() * Cross(rB, P)};
+			velA -= Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(rA, P)};
+			velB += Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(rB, P)};
 		}
 	}
 }
@@ -115,8 +115,8 @@ static inline void SeqSolveNormalConstraint(VelocityConstraint& vc, Velocity& ve
 			
 			// Apply contact impulse
 			const auto P = incImpulse * normal;
-			velA -= Velocity{vc.bodyA.GetInvMass() * P, vc.bodyA.GetInvRotI() * Cross(rA, P)};
-			velB += Velocity{vc.bodyB.GetInvMass() * P, vc.bodyB.GetInvRotI() * Cross(rB, P)};
+			velA -= Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(rA, P)};
+			velB += Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(rB, P)};
 		}
 	}
 }
@@ -131,8 +131,14 @@ static inline VelocityPair ApplyImpulses(const VelocityConstraint& vc, const Vec
 	const auto P1 = impulses[1] * normal;
 	const auto P = P0 + P1;
 	return VelocityPair{
-		-Velocity{vc.bodyA.GetInvMass() * P, vc.bodyA.GetInvRotI() * (Cross(GetPointRelPosA(vc, 0), P0) + Cross(GetPointRelPosA(vc, 1), P1))},
-		+Velocity{vc.bodyB.GetInvMass() * P, vc.bodyB.GetInvRotI() * (Cross(GetPointRelPosB(vc, 0), P0) + Cross(GetPointRelPosB(vc, 1), P1))}
+		-Velocity{
+			vc.bodyA.GetInvMass() * P,
+			1_rad * vc.bodyA.GetInvRotI() * (Cross(GetPointRelPosA(vc, 0), P0) + Cross(GetPointRelPosA(vc, 1), P1))
+		},
+		+Velocity{
+			vc.bodyB.GetInvMass() * P,
+			1_rad * vc.bodyB.GetInvRotI() * (Cross(GetPointRelPosB(vc, 0), P0) + Cross(GetPointRelPosB(vc, 1), P1))
+		}
 	};
 }
 
@@ -423,8 +429,8 @@ PositionSolution box2d::Solve(const PositionConstraint& pc, Position posA, Posit
 			const auto P = psm.m_normal * -C / K;
 			
 			return PositionSolution{
-				-Position{invMassA * P, invInertiaA * Cross(rA, P)},
-				+Position{invMassB * P, invInertiaB * Cross(rB, P)},
+				-Position{invMassA * P, 1_rad * invInertiaA * Cross(rA, P)},
+				+Position{invMassB * P, 1_rad * invInertiaB * Cross(rB, P)},
 				separation
 			};
 		}

@@ -246,10 +246,10 @@ void PrismaticJoint::InitVelocityConstraints(const SolverData& data)
 		const auto LB = m_impulse.x * m_s2 + m_impulse.y + (m_motorImpulse + m_impulse.z) * m_a2;
 
 		vA -= mA * P;
-		wA -= iA * LA;
+		wA -= 1_rad * iA * LA;
 
 		vB += mB * P;
-		wB += iB * LB;
+		wB += 1_rad * iB * LB;
 	}
 	else
 	{
@@ -276,7 +276,7 @@ void PrismaticJoint::SolveVelocityConstraints(const SolverData& data)
 	// Solve linear motor constraint.
 	if (m_enableMotor && m_limitState != e_equalLimits)
 	{
-		const auto Cdot = Dot(m_axis, vB - vA) + m_a2 * wB - m_a1 * wA;
+		const auto Cdot = Dot(m_axis, vB - vA) + m_a2 * wB.ToRadians() - m_a1 * wA.ToRadians();
 		auto impulse = m_motorMass * (m_motorSpeed - Cdot);
 		const auto oldImpulse = m_motorImpulse;
 		const auto maxImpulse = data.step.get_dt() * m_maxMotorForce;
@@ -288,18 +288,18 @@ void PrismaticJoint::SolveVelocityConstraints(const SolverData& data)
 		const auto LB = impulse * m_a2;
 
 		vA -= mA * P;
-		wA -= iA * LA;
+		wA -= 1_rad * iA * LA;
 
 		vB += mB * P;
-		wB += iB * LB;
+		wB += 1_rad * iB * LB;
 	}
 
-	const auto Cdot1 = Vec2{Dot(m_perp, vB - vA) + m_s2 * wB - m_s1 * wA, wB - wA};
+	const auto Cdot1 = Vec2{Dot(m_perp, vB - vA) + m_s2 * wB.ToRadians() - m_s1 * wA.ToRadians(), (wB - wA).ToRadians()};
 
 	if (m_enableLimit && (m_limitState != e_inactiveLimit))
 	{
 		// Solve prismatic and limit constraint in block form.
-		const auto Cdot2 = Dot(m_axis, vB - vA) + m_a2 * wB - m_a1 * wA;
+		const auto Cdot2 = Dot(m_axis, vB - vA) + m_a2 * wB.ToRadians() - m_a1 * wA.ToRadians();
 		const auto Cdot = Vec3{Cdot1.x, Cdot1.y, Cdot2};
 
 		const auto f1 = m_impulse;
@@ -327,10 +327,10 @@ void PrismaticJoint::SolveVelocityConstraints(const SolverData& data)
 		const auto LB = df.x * m_s2 + df.y + df.z * m_a2;
 
 		vA -= mA * P;
-		wA -= iA * LA;
+		wA -= 1_rad * iA * LA;
 
 		vB += mB * P;
-		wB += iB * LB;
+		wB += 1_rad * iB * LB;
 	}
 	else
 	{
@@ -344,10 +344,10 @@ void PrismaticJoint::SolveVelocityConstraints(const SolverData& data)
 		const auto LB = df.x * m_s2 + df.y;
 
 		vA -= mA * P;
-		wA -= iA * LA;
+		wA -= 1_rad * iA * LA;
 
 		vB += mB * P;
-		wB += iB * LB;
+		wB += 1_rad * iB * LB;
 	}
 
 	data.velocities[m_indexA].v = vA;
@@ -389,7 +389,7 @@ bool PrismaticJoint::SolvePositionConstraints(const SolverData& data)
 	const auto s1 = Cross(d + rA, perp);
 	const auto s2 = Cross(rB, perp);
 
-	const auto C1 = Vec2{Dot(perp, d), aB - aA - m_referenceAngle};
+	const auto C1 = Vec2{Dot(perp, d), (aB - aA - m_referenceAngle).ToRadians()};
 
 	auto linearError = Abs(C1.x);
 	const auto angularError = Abs(C1.y);
@@ -466,9 +466,9 @@ bool PrismaticJoint::SolvePositionConstraints(const SolverData& data)
 	const auto LB = impulse.x * s2 + impulse.y + impulse.z * a2;
 
 	cA -= mA * P;
-	aA -= iA * LA;
+	aA -= 1_rad * iA * LA;
 	cB += mB * P;
-	aB += iB * LB;
+	aB += 1_rad * iB * LB;
 
 	data.positions[m_indexA].c = cA;
 	data.positions[m_indexA].a = aA;
@@ -502,10 +502,9 @@ float_t PrismaticJoint::GetJointTranslation() const
 {
 	const auto pA = GetWorldPoint(*GetBodyA(), m_localAnchorA);
 	const auto pB = GetWorldPoint(*GetBodyB(), m_localAnchorB);
-	const auto d = pB - pA;
 	const auto axis = GetWorldVector(*GetBodyA(), m_localXAxisA);
 
-	return Dot(d, axis);
+	return Dot(pB - pA, axis);
 }
 
 float_t PrismaticJoint::GetJointSpeed() const
@@ -525,7 +524,7 @@ float_t PrismaticJoint::GetJointSpeed() const
 	const auto wA = bA->GetVelocity().w;
 	const auto wB = bB->GetVelocity().w;
 
-	return Dot(d, (GetRevPerpendicular(axis) * wA)) + Dot(axis, vB + (GetRevPerpendicular(rB) * wB) - vA - (GetRevPerpendicular(rA) * wA));
+	return Dot(d, (GetRevPerpendicular(axis) * wA.ToRadians())) + Dot(axis, vB + (GetRevPerpendicular(rB) * wB.ToRadians()) - vA - (GetRevPerpendicular(rA) * wA.ToRadians()));
 }
 
 bool PrismaticJoint::IsLimitEnabled() const noexcept

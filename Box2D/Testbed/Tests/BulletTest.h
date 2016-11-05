@@ -37,7 +37,7 @@ public:
 			body->CreateFixture(FixtureDef{&edge, 0.0f});
 
 			PolygonShape shape;
-			SetAsBox(shape, 0.2f, 1.0f, Vec2(0.5f, 1.0f), 0.0f);
+			SetAsBox(shape, 0.2f, 1.0f, Vec2(0.5f, 1.0f), 0.0_rad);
 			body->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
@@ -62,18 +62,18 @@ public:
 			m_bullet = m_world->CreateBody(bd);
 			m_bullet->CreateFixture(FixtureDef{&box, 100.0f});
 
-			m_bullet->SetVelocity(Velocity{Vec2{0.0f, -50.0f}, 0});
+			m_bullet->SetVelocity(Velocity{Vec2{0.0f, -50.0f}, 0_rad});
 		}
 	}
 
 	void Launch()
 	{
-		m_body->SetTransform(Vec2(0.0f, 4.0f), 0.0f);
-		m_body->SetVelocity(Velocity{Vec2_zero, 0});
+		m_body->SetTransform(Vec2(0.0f, 4.0f), 0.0_rad);
+		m_body->SetVelocity(Velocity{Vec2_zero, 0_rad});
 
 		m_x = RandomFloat(-1.0f, 1.0f);
-		m_bullet->SetTransform(Vec2(m_x, 10.0f), 0.0f);
-		m_bullet->SetVelocity(Velocity{Vec2(0.0f, -50.0f), 0});
+		m_bullet->SetTransform(Vec2(m_x, 10.0f), 0.0_rad);
+		m_bullet->SetVelocity(Velocity{Vec2(0.0f, -50.0f), 0_rad});
 
 		uint32 gjkCalls, gjkIters, gjkMaxIters;
 		std::remove_const<decltype(MaxTOIIterations)>::type toiMaxIters;

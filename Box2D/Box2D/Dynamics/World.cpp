@@ -140,7 +140,7 @@ Body* World::CreateBody(const BodyDef& def)
 		}		
 	}
 
-	b->SetAcceleration(m_gravity, 0);
+	b->SetAcceleration(m_gravity, 0_rad);
 	return b;
 }
 
@@ -550,9 +550,9 @@ void World::Solve(const TimeStep& step)
 			}
 			
 			auto rotation = h * velocity.w;
-			if (Abs(rotation) > MaxRotation)
+			if (Abs(rotation) > MaxRotation * 1_rad)
 			{
-				const auto ratio = MaxRotation / Abs(rotation);
+				const auto ratio = (MaxRotation * 1_rad) / Abs(rotation);
 				velocity.w *= ratio;
 				rotation = h * velocity.w;
 			}
@@ -693,7 +693,7 @@ void World::Solve(const TimeStep& step)
 		
 		inline VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc)
 		{
-			VelocityPair vp{Velocity{Vec2_zero, float_t{0}}, Velocity{Vec2_zero, float_t{0}}};
+			VelocityPair vp{Velocity{Vec2_zero, 0_rad}, Velocity{Vec2_zero, 0_rad}};
 			
 			const auto normal = GetNormal(vc);
 			const auto tangent = GetTangent(vc);
@@ -703,8 +703,8 @@ void World::Solve(const TimeStep& step)
 				for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 				{
 					const auto P = GetNormalImpulseAtPoint(vc, j) * normal + GetTangentImpulseAtPoint(vc, j) * tangent;
-					vp.a -= Velocity{vc.bodyA.GetInvMass() * P, vc.bodyA.GetInvRotI() * Cross(GetPointRelPosA(vc, j), P)};
-					vp.b += Velocity{vc.bodyB.GetInvMass() * P, vc.bodyB.GetInvRotI() * Cross(GetPointRelPosB(vc, j), P)};
+					vp.a -= Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(GetPointRelPosA(vc, j), P)};
+					vp.b += Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(GetPointRelPosB(vc, j), P)};
 				}
 			}
 			return vp;
@@ -1208,7 +1208,7 @@ void World::ClearForces() noexcept
 {
 	for (auto&& body: m_bodies)
 	{
-		body.SetAcceleration(m_gravity, 0);
+		body.SetAcceleration(m_gravity, 0_rad);
 	}
 }
 

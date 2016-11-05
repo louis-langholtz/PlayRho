@@ -214,7 +214,7 @@ TEST(Math, TransformIsRotatePlusTranslate)
 {
 	const auto vector = Vec2{float_t(19), float_t(-0.5)};
 	const auto translation = Vec2{float_t(-3), float_t(+5)};
-	const auto rotation = Rot{DegreesToRadians(90)};
+	const auto rotation = Rot{90_deg};
 	const auto transformation = Transformation{translation, rotation};
 	
 	const auto transformed_vector = Transform(vector, transformation);
@@ -228,7 +228,7 @@ TEST(Math, InverseTransformIsUntranslateAndInverseRotate)
 {
 	const auto vector = Vec2{float_t(19), float_t(-0.5)};
 	const auto translation = Vec2{float_t(-3), float_t(+5)};
-	const auto rotation = Rot{DegreesToRadians(90)};
+	const auto rotation = Rot{90_deg};
 	const auto transformation = Transformation{translation, rotation};
 	
 	const auto inv_vector = InverseTransform(vector, transformation);
@@ -242,7 +242,7 @@ TEST(Math, InverseTransformTransformedIsOriginal)
 {
 	const auto vector = Vec2{float_t(19), float_t(-0.5)};
 	const auto translation = Vec2{float_t(-3), float_t(+5)};
-	const auto rotation = Rot{DegreesToRadians(90)};
+	const auto rotation = Rot{90_deg};
 	const auto transformation = Transformation{translation, rotation};
 
 	const auto transformed_vector = Transform(vector, transformation);
@@ -256,7 +256,7 @@ TEST(Math, TransformInverseTransformedIsOriginal)
 {
 	const auto vector = Vec2{float_t(19), float_t(-0.5)};
 	const auto translation = Vec2{float_t(-3), float_t(+5)};
-	const auto rotation = Rot{DegreesToRadians(90)};
+	const auto rotation = Rot{90_deg};
 	const auto transformation = Transformation{translation, rotation};
 
 	const auto inverse_transformed_vector = InverseTransform(vector, transformation);
@@ -410,8 +410,8 @@ TEST(Math, ComputeCentroidOfHexagonalVertices)
 
 TEST(Math, GetContactRelVelocity)
 {
-	const auto velA = Velocity{Vec2(+1, +4), float_t(3.2)};
-	const auto velB = Velocity{Vec2(+3, +1), float_t(0.4)};
+	const auto velA = Velocity{Vec2(+1, +4), 3.2_rad};
+	const auto velB = Velocity{Vec2(+3, +1), 0.4_rad};
 	const auto relA = Vec2(0, 0);
 	const auto relB = Vec2(0, 0);
 	const auto result = GetContactRelVelocity(velA, relA, velB, relB);

@@ -54,7 +54,7 @@ public:
 				for (int32 i = 0; i < N; ++i)
 				{
 					PolygonShape shape;
-					SetAsBox(shape, a, a, position, 0.0f);
+					SetAsBox(shape, a, a, position, 0_rad);
 					ground->CreateFixture(FixtureDef{&shape, 0.0f});
 					++m_fixtureCount;
 					position.x += 2.0f * a;

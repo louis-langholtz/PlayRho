@@ -65,8 +65,8 @@ TEST(CollideShapes, CircleCircleOrientedVertically)
 	const auto p2 = Vec2{7, -1};
 	
 	// Rotations don't matter so long as circle shapes' centers are at (0, 0).
-	const auto t1 = Transformation{p1, Rot(DegreesToRadians(45))};
-	const auto t2 = Transformation{p2, Rot(DegreesToRadians(-21))};
+	const auto t1 = Transformation{p1, Rot(45_deg)};
+	const auto t2 = Transformation{p2, Rot(-21_deg)};
 	
 	// put shape 1 to left of shape 2
 	const auto manifold = CollideShapes(s1, t1, s2, t2);
@@ -91,8 +91,8 @@ TEST(CollideShapes, CircleOverTriangle)
 	const auto circleRadius = float_t(1);
 	const auto circle = CircleShape(circleRadius);
 	const auto triangle = PolygonShape({Vec2{-1, -1}, Vec2{+1, -1}, Vec2{0, +1}});
-	const auto circleXfm = Transformation{Vec2{0, 2}, Rot{0}};
-	const auto triangleXfm = Transformation{Vec2{0, 0}, Rot{0}};
+	const auto circleXfm = Transformation{Vec2{0, 2}, Rot{0_deg}};
+	const auto triangleXfm = Transformation{Vec2{0, 0}, Rot{0_deg}};
 	
 	const auto manifold = CollideShapes(triangle, triangleXfm, circle, circleXfm);
 	
@@ -117,8 +117,8 @@ TEST(CollideShapes, CircleOverRightOfTriangle)
 	const auto circleRadius = float_t(1);
 	const auto circle = CircleShape(circleRadius);
 	const auto triangle = PolygonShape({Vec2{-1, -1}, Vec2{+1, -1}, Vec2{0, +1}});
-	const auto circleXfm = Transformation{Vec2{1, 1}, Rot{0}};
-	const auto triangleXfm = Transformation{Vec2{0, 0}, Rot{0}};
+	const auto circleXfm = Transformation{Vec2{1, 1}, Rot{0_deg}};
+	const auto triangleXfm = Transformation{Vec2{0, 0}, Rot{0_deg}};
 	
 	const auto manifold = CollideShapes(triangle, triangleXfm, circle, circleXfm);
 	
@@ -155,8 +155,8 @@ TEST(CollideShapes, TallRectangleLeftCircleRight)
 	
 	const auto p1 = Vec2{-1, 0};
 	const auto p2 = Vec2{3, 0};
-	const auto t1 = Transformation{p1, Rot{DegreesToRadians(45)}};
-	const auto t2 = Transformation{p2, Rot{0}};
+	const auto t1 = Transformation{p1, Rot{45_deg}};
+	const auto t2 = Transformation{p2, Rot{0_deg}};
 	
 	// rotate rectangle 45 degrees and put it on the left of the circle
 	const auto manifold = CollideShapes(s1, t1, s2, t2);
@@ -185,7 +185,7 @@ TEST(CollideShapes, IdenticalOverlappingSquares)
 	ASSERT_EQ(shape.GetVertex(2), Vec2(-2, +2)); // top left
 	ASSERT_EQ(shape.GetVertex(3), Vec2(-2, -2)); // bottom left
 
-	const auto xfm = Transformation(Vec2_zero, Rot{0});
+	const auto xfm = Transformation(Vec2_zero, Rot{0_deg});
 	const auto manifold = CollideShapes(shape, xfm, shape, xfm);
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
@@ -223,8 +223,8 @@ TEST(CollideShapes, IdenticalVerticalTouchingSquares)
 	ASSERT_EQ(shape.GetVertex(2), Vec2(-2, +2)); // top left
 	ASSERT_EQ(shape.GetVertex(3), Vec2(-2, -2)); // bottom left
 
-	const auto xfm0 = Transformation(Vec2{0, -1}, Rot{0}); // bottom
-	const auto xfm1 = Transformation(Vec2{0, +1}, Rot{0}); // top
+	const auto xfm0 = Transformation(Vec2{0, -1}, Rot{0_deg}); // bottom
+	const auto xfm1 = Transformation(Vec2{0, +1}, Rot{0_deg}); // top
 	const auto manifold = CollideShapes(shape, xfm0, shape, xfm1);
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
@@ -262,8 +262,8 @@ TEST(CollideShapes, IdenticalHorizontalTouchingSquares)
 	ASSERT_EQ(shape.GetVertex(2), Vec2(-2, +2)); // top left
 	ASSERT_EQ(shape.GetVertex(3), Vec2(-2, -2)); // bottom left
 
-	const auto xfm0 = Transformation(Vec2{-2, 0}, Rot{0}); // left
-	const auto xfm1 = Transformation(Vec2{+2, 0}, Rot{0}); // right
+	const auto xfm0 = Transformation(Vec2{-2, 0}, Rot{0_deg}); // left
+	const auto xfm1 = Transformation(Vec2{+2, 0}, Rot{0_deg}); // right
 	const auto manifold = CollideShapes(shape, xfm0, shape, xfm1);
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
@@ -303,8 +303,8 @@ TEST(CollideShapes, SquareCornerUnderSquareFace)
 	ASSERT_EQ(shape.GetVertex(2), Vec2(-2, +2)); // top left
 	ASSERT_EQ(shape.GetVertex(3), Vec2(-2, -2)); // bottom left
 	
-	const auto rot0 = Rot{DegreesToRadians(45)};
-	const auto rot1 = Rot{0};
+	const auto rot0 = Rot{45_deg};
+	const auto rot1 = Rot{0_deg};
 	const auto xfm0 = Transformation(Vec2{0, -2}, rot0); // bottom
 	const auto xfm1 = Transformation(Vec2{0, +2}, rot1); // top
 	
@@ -363,8 +363,8 @@ TEST(CollideShapes, HorizontalOverlappingRects1)
 	ASSERT_EQ(shape1.GetVertex(2), Vec2(float_t(-3.0), float_t(+1.5))); // top left
 	ASSERT_EQ(shape1.GetVertex(3), Vec2(float_t(-3.0), float_t(-1.5))); // bottom left
 
-	const auto xfm0 = Transformation(Vec2{-2, 0}, Rot{0}); // left
-	const auto xfm1 = Transformation(Vec2{+2, 0}, Rot{0}); // right
+	const auto xfm0 = Transformation(Vec2{-2, 0}, Rot{0_deg}); // left
+	const auto xfm1 = Transformation(Vec2{+2, 0}, Rot{0_deg}); // right
 	
 	// put square left, wide rectangle right
 	const auto manifold = CollideShapes(shape0, xfm0, shape1, xfm1);
@@ -425,8 +425,8 @@ TEST(CollideShapes, HorizontalOverlappingRects2)
 	ASSERT_EQ(shape1.GetVertex(2), Vec2(-2,+2)); // top left
 	ASSERT_EQ(shape1.GetVertex(3), Vec2(-2,-2)); // bottom left
 	
-	const auto xfm0 = Transformation(Vec2{-2, 0}, Rot{0}); // left
-	const auto xfm1 = Transformation(Vec2{+2, 0}, Rot{0}); // right
+	const auto xfm0 = Transformation(Vec2{-2, 0}, Rot{0_deg}); // left
+	const auto xfm1 = Transformation(Vec2{+2, 0}, Rot{0_deg}); // right
 
 	// put wide rectangle on left, square on right
 	const auto manifold = CollideShapes(shape0, xfm0, shape1, xfm1);
@@ -480,10 +480,10 @@ TEST(CollideShapes, EdgeWithDefaultPolygon)
 	const auto p1 = Vec2(-1, 0);
 	const auto p2 = Vec2(+1, 0);
 	const auto edge_shape = EdgeShape(p1, p2);
-	const auto edge_xfm = Transformation{Vec2{0, -1}, Rot(0)};
+	const auto edge_xfm = Transformation{Vec2{0, -1}, Rot(0_deg)};
 	
 	const auto polygon_shape = PolygonShape{}; // vertex count is 0!
-	const auto polygon_xfm = Transformation{Vec2{0, 0}, Rot(0)};
+	const auto polygon_xfm = Transformation{Vec2{0, 0}, Rot(0_deg)};
 	
 	const auto manifold = CollideShapes(edge_shape, edge_xfm, polygon_shape, polygon_xfm);
 	
@@ -496,12 +496,12 @@ TEST(CollideShapes, EdgeBelowPolygon)
 	const auto p1 = Vec2(-1, 0);
 	const auto p2 = Vec2(+1, 0);
 	const auto edge_shape = EdgeShape(p1, p2);
-	const auto edge_xfm = Transformation{Vec2{0, -1}, Rot(0)};
+	const auto edge_xfm = Transformation{Vec2{0, -1}, Rot(0_deg)};
 
 	const auto hx = float_t(1);
 	const auto hy = float_t(1);
 	const auto polygon_shape = PolygonShape(hx, hy);
-	const auto polygon_xfm = Transformation{Vec2{0, 0}, Rot(0)};
+	const auto polygon_xfm = Transformation{Vec2{0, 0}, Rot(0_deg)};
 
 	const auto manifold = CollideShapes(edge_shape, edge_xfm, polygon_shape, polygon_xfm);
 	
@@ -536,12 +536,12 @@ TEST(CollideShapes, EdgeAbovePolygon)
 	const auto p1 = Vec2(-1, 0);
 	const auto p2 = Vec2(+1, 0);
 	const auto edge_shape = EdgeShape(p1, p2);
-	const auto edge_xfm = Transformation{Vec2{0, +1}, Rot(0)};
+	const auto edge_xfm = Transformation{Vec2{0, +1}, Rot(0_deg)};
 	
 	const auto hx = float_t(1);
 	const auto hy = float_t(1);
 	const auto polygon_shape = PolygonShape(hx, hy);
-	const auto polygon_xfm = Transformation{Vec2{0, 0}, Rot(0)};
+	const auto polygon_xfm = Transformation{Vec2{0, 0}, Rot(0_deg)};
 	
 	const auto manifold = CollideShapes(edge_shape, edge_xfm, polygon_shape, polygon_xfm);
 	
@@ -576,12 +576,12 @@ TEST(CollideShapes, EdgeLeftOfPolygon)
 	const auto p1 = Vec2(0, -1);
 	const auto p2 = Vec2(0, +1);
 	const auto edge_shape = EdgeShape(p1, p2);
-	const auto edge_xfm = Transformation{Vec2{-1, 0}, Rot(0)};
+	const auto edge_xfm = Transformation{Vec2{-1, 0}, Rot(0_deg)};
 	
 	const auto hx = float_t(1);
 	const auto hy = float_t(1);
 	const auto polygon_shape = PolygonShape(hx, hy);
-	const auto polygon_xfm = Transformation{Vec2{0, 0}, Rot(0)};
+	const auto polygon_xfm = Transformation{Vec2{0, 0}, Rot(0_deg)};
 	
 	const auto manifold = CollideShapes(edge_shape, edge_xfm, polygon_shape, polygon_xfm);
 	
@@ -598,12 +598,12 @@ TEST(CollideShapes, EdgeRightOfPolygon)
 	const auto p1 = Vec2(0, -1);
 	const auto p2 = Vec2(0, +1);
 	const auto edge_shape = EdgeShape(p1, p2);
-	const auto edge_xfm = Transformation{Vec2{+1, 0}, Rot(0)};
+	const auto edge_xfm = Transformation{Vec2{+1, 0}, Rot(0_deg)};
 	
 	const auto hx = float_t(1);
 	const auto hy = float_t(1);
 	const auto polygon_shape = PolygonShape(hx, hy);
-	const auto polygon_xfm = Transformation{Vec2{0, 0}, Rot(0)};
+	const auto polygon_xfm = Transformation{Vec2{0, 0}, Rot(0_deg)};
 	
 	const auto manifold = CollideShapes(edge_shape, edge_xfm, polygon_shape, polygon_xfm);
 	
