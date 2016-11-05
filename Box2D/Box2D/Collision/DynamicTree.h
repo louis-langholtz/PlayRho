@@ -45,7 +45,7 @@ public:
 	DynamicTree();
 
 	/// Destroys the tree, freeing the node pool.
-	~DynamicTree();
+	~DynamicTree() noexcept;
 
 	DynamicTree(const DynamicTree& copy) = delete;
 	DynamicTree& operator=(const DynamicTree&) = delete;

@@ -22,3 +22,7 @@
 
 using namespace box2d;
 
+Drawer::~Drawer() noexcept
+{
+	// Intentionally empty.
+}

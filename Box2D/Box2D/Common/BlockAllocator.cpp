@@ -89,7 +89,7 @@ BlockAllocator::BlockAllocator():
 	std::memset(m_freeLists, 0, sizeof(m_freeLists));
 }
 
-BlockAllocator::~BlockAllocator()
+BlockAllocator::~BlockAllocator() noexcept
 {
 	for (auto i = decltype(m_chunkCount){0}; i < m_chunkCount; ++i)
 	{

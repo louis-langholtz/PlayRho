@@ -36,7 +36,7 @@ public:
 
 	GrowableStack() = default;
 
-	~GrowableStack()
+	~GrowableStack() noexcept
 	{
 		if (m_stack != m_array)
 		{

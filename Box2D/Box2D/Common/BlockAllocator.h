@@ -40,7 +40,7 @@ namespace box2d {
 		static constexpr auto ChunkArrayIncrement = size_type{128};
 		
 		BlockAllocator();
-		~BlockAllocator();
+		~BlockAllocator() noexcept;
 		
 		/// Allocates memory.
 		/// @detail Allocates uninitialized storage.

@@ -66,7 +66,7 @@ public:
 	};
 
 	BroadPhase();
-	~BroadPhase();
+	~BroadPhase() noexcept;
 	
 	BroadPhase(const BroadPhase& copy) = delete;
 	BroadPhase& operator=(const BroadPhase&) = delete;

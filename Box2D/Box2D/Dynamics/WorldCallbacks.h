@@ -36,7 +36,7 @@ struct Manifold;
 class DestructionListener
 {
 public:
-	virtual ~DestructionListener() {}
+	virtual ~DestructionListener() noexcept {}
 
 	/// Called when any joint is about to be destroyed due
 	/// to the destruction of one of its attached bodies.

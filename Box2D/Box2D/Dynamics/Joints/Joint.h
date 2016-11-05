@@ -155,7 +155,7 @@ public:
 
 protected:
 	Joint(const JointDef& def);
-	virtual ~Joint() {}
+	virtual ~Joint() noexcept {}
 	
 	void SetBodyA(Body* value) noexcept;
 	void SetBodyB(Body* value) noexcept;

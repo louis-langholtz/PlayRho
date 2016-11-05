@@ -51,7 +51,7 @@ public:
 		m_flag |= m_value;
 	}
 
-	~FlagGuard()
+	~FlagGuard() noexcept
 	{
 		m_flag &= ~m_value;
 	}

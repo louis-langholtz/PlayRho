@@ -54,7 +54,7 @@ class DebugDraw : public Drawer
 {
 public:
 	DebugDraw(Camera& camera);
-	virtual ~DebugDraw();
+	virtual ~DebugDraw() noexcept;
 	
 	void DrawPolygon(const Vec2* vertices, size_type vertexCount, const Color& color) override;
 

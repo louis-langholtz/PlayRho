@@ -43,7 +43,7 @@ public:
 
 	Drawer() = default;
 
-	virtual ~Drawer() = default;
+	virtual ~Drawer() noexcept = 0;
 
 	/// Draw a closed polygon provided in CCW order.
 	virtual void DrawPolygon(const Vec2* vertices, size_type vertexCount, const Color& color) = 0;

@@ -592,7 +592,7 @@ DebugDraw::DebugDraw(Camera& camera): m_camera(camera)
 }
 
 //
-DebugDraw::~DebugDraw()
+DebugDraw::~DebugDraw() noexcept
 {
 	delete m_triangles;
 	delete m_lines;

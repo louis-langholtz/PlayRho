@@ -37,7 +37,7 @@ DynamicTree::DynamicTree():
 	m_nodes[m_nodeCapacity-1].height = NullNode;
 }
 
-DynamicTree::~DynamicTree()
+DynamicTree::~DynamicTree() noexcept
 {
 	// This frees the entire tree in one shot.
 	free(m_nodes);

@@ -26,7 +26,7 @@ BroadPhase::BroadPhase():
 	m_moveBuffer(alloc<size_type>(m_moveCapacity))
 {}
 
-BroadPhase::~BroadPhase()
+BroadPhase::~BroadPhase() noexcept
 {
 	free(m_moveBuffer);
 	free(m_pairBuffer);
