@@ -144,7 +144,7 @@ TEST(PolygonShape, Translate)
 	ASSERT_EQ(shape.GetNormal(3), Vec2(0, -1));
 	
 	const auto new_ctr = Vec2{-3, 67};
-	shape.Transform(Transformation{new_ctr, Rot(0_deg)});
+	shape.Transform(Transformation{new_ctr, 0_deg});
 	
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(shape.GetCentroid(), new_ctr);

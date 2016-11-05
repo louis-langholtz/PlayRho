@@ -214,7 +214,7 @@ TEST(Math, TransformIsRotatePlusTranslate)
 {
 	const auto vector = Vec2{float_t(19), float_t(-0.5)};
 	const auto translation = Vec2{float_t(-3), float_t(+5)};
-	const auto rotation = Rot{90_deg};
+	const auto rotation = UnitVec2{90_deg};
 	const auto transformation = Transformation{translation, rotation};
 	
 	const auto transformed_vector = Transform(vector, transformation);
@@ -228,7 +228,7 @@ TEST(Math, InverseTransformIsUntranslateAndInverseRotate)
 {
 	const auto vector = Vec2{float_t(19), float_t(-0.5)};
 	const auto translation = Vec2{float_t(-3), float_t(+5)};
-	const auto rotation = Rot{90_deg};
+	const auto rotation = UnitVec2{90_deg};
 	const auto transformation = Transformation{translation, rotation};
 	
 	const auto inv_vector = InverseTransform(vector, transformation);
@@ -242,7 +242,7 @@ TEST(Math, InverseTransformTransformedIsOriginal)
 {
 	const auto vector = Vec2{float_t(19), float_t(-0.5)};
 	const auto translation = Vec2{float_t(-3), float_t(+5)};
-	const auto rotation = Rot{90_deg};
+	const auto rotation = UnitVec2{90_deg};
 	const auto transformation = Transformation{translation, rotation};
 
 	const auto transformed_vector = Transform(vector, transformation);
@@ -256,7 +256,7 @@ TEST(Math, TransformInverseTransformedIsOriginal)
 {
 	const auto vector = Vec2{float_t(19), float_t(-0.5)};
 	const auto translation = Vec2{float_t(-3), float_t(+5)};
-	const auto rotation = Rot{90_deg};
+	const auto rotation = UnitVec2{90_deg};
 	const auto transformation = Transformation{translation, rotation};
 
 	const auto inverse_transformed_vector = InverseTransform(vector, transformation);

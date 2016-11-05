@@ -166,10 +166,10 @@ void GearJoint::InitVelocityConstraints(const SolverData& data)
 	auto vD = data.velocities[m_indexD].v;
 	auto wD = data.velocities[m_indexD].w;
 
-	const auto qA = Rot(aA);
-	const auto qB = Rot(aB);
-	const auto qC = Rot(aC);
-	const auto qD = Rot(aD);
+	const auto qA = UnitVec2(aA);
+	const auto qB = UnitVec2(aB);
+	const auto qC = UnitVec2(aC);
+	const auto qD = UnitVec2(aD);
 
 	m_mass = float_t{0};
 
@@ -285,7 +285,7 @@ bool GearJoint::SolvePositionConstraints(const SolverData& data)
 	auto cD = data.positions[m_indexD].c;
 	auto aD = data.positions[m_indexD].a;
 
-	const Rot qA(aA), qB(aB), qC(aC), qD(aD);
+	const UnitVec2 qA(aA), qB(aB), qC(aC), qD(aD);
 
 	const auto linearError = float_t{0};
 

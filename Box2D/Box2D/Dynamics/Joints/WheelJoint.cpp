@@ -101,7 +101,7 @@ void WheelJoint::InitVelocityConstraints(const SolverData& data)
 	auto vB = data.velocities[m_indexB].v;
 	auto wB = data.velocities[m_indexB].w;
 
-	const Rot qA(aA), qB(aB);
+	const UnitVec2 qA(aA), qB(aB);
 
 	// Compute the effective masses.
 	const auto rA = Rotate(m_localAnchorA - m_localCenterA, qA);
@@ -287,8 +287,8 @@ bool WheelJoint::SolvePositionConstraints(const SolverData& data)
 	auto cB = data.positions[m_indexB].c;
 	auto aB = data.positions[m_indexB].a;
 
-	const auto qA = Rot{aA};
-	const auto qB = Rot{aB};
+	const auto qA = UnitVec2{aA};
+	const auto qB = UnitVec2{aB};
 
 	const auto rA = Rotate(m_localAnchorA - m_localCenterA, qA);
 	const auto rB = Rotate(m_localAnchorB - m_localCenterB, qB);

@@ -120,7 +120,7 @@ uint16 Body::GetFlags(const BodyDef& bd) noexcept
 
 Body::Body(const BodyDef& bd, World* world):
 	m_flags{GetFlags(bd)},
-	m_xf{bd.position, Rot{bd.angle}},
+	m_xf{bd.position, bd.angle},
 	m_world{world},
 	m_sweep{Position{bd.position, bd.angle}},
 	m_velocity{Velocity{bd.linearVelocity, bd.angularVelocity}},
@@ -510,7 +510,7 @@ void Body::SetTransform(const Vec2& position, Angle angle)
 		return;
 	}
 
-	const auto xf = Transformation{position, Rot(angle)};
+	const auto xf = Transformation{position, angle};
 	m_xf = xf;
 	m_sweep = Sweep{Position{Transform(GetLocalCenter(), xf), angle}, GetLocalCenter()};
 	SynchronizeFixtures(xf, xf);

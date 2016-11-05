@@ -64,7 +64,7 @@ void PolygonShape::SetAsBox(float_t hx, float_t hy) noexcept
 void box2d::SetAsBox(PolygonShape& shape, float_t hx, float_t hy, const Vec2& center, Angle angle) noexcept
 {
 	shape.SetAsBox(hx, hy);
-	shape.Transform(Transformation{center, Rot{angle}});
+	shape.Transform(Transformation{center, angle});
 }
 
 void PolygonShape::Transform(box2d::Transformation xf) noexcept

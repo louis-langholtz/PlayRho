@@ -69,7 +69,7 @@ void MouseJoint::InitVelocityConstraints(const SolverData& data)
 	auto vB = velocityB.v;
 	auto wB = velocityB.w;
 
-	const Rot qB(aB);
+	const UnitVec2 qB(aB);
 
 	const auto mass = GetMass(*GetBodyB());
 

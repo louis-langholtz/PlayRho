@@ -78,7 +78,7 @@ public:
 
 		{
 			Transformation xf1;
-			xf1.q = Rot(0.3524_rad * Pi);
+			xf1.q = 0.3524_rad * Pi;
 			xf1.p = GetXAxis(xf1.q);
 
 			const auto triangle1 = PolygonShape({
@@ -88,7 +88,7 @@ public:
 			});
 
 			Transformation xf2;
-			xf2.q = Rot(-0.3524_rad * Pi);
+			xf2.q = -0.3524_rad * Pi;
 			xf2.p = -GetXAxis(xf2.q);
 
 			const auto triangle2 = PolygonShape({

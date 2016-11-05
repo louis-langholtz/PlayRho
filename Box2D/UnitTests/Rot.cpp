@@ -21,6 +21,7 @@
 
 using namespace box2d;
 
+#if 0
 TEST(Rot, ByteSizeIs8)
 {
 	EXPECT_EQ(sizeof(Rot), size_t(8));
@@ -117,3 +118,4 @@ TEST(Rot, Subtract)
 	EXPECT_EQ(round(ToRadians(Rot(64_deg))), round(ToRadians(Rot(34_deg).Rotate(Rot(-30_deg).FlipY()))));
 	EXPECT_EQ(round(ToRadians(Rot(64_deg))), round(ToRadians(Rot(94_deg).Rotate(Rot(30_deg).FlipY()))));
 }
+#endif

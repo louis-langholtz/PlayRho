@@ -146,8 +146,8 @@ void PrismaticJoint::InitVelocityConstraints(const SolverData& data)
 	auto vB = data.velocities[m_indexB].v;
 	auto wB = data.velocities[m_indexB].w;
 
-	const auto qA = Rot(aA);
-	const auto qB = Rot(aB);
+	const auto qA = UnitVec2(aA);
+	const auto qB = UnitVec2(aB);
 
 	// Compute the effective masses.
 	const auto rA = Rotate(m_localAnchorA - m_localCenterA, qA);
@@ -370,8 +370,8 @@ bool PrismaticJoint::SolvePositionConstraints(const SolverData& data)
 	auto cB = data.positions[m_indexB].c;
 	auto aB = data.positions[m_indexB].a;
 
-	const auto qA = Rot{aA};
-	const auto qB = Rot{aB};
+	const auto qA = UnitVec2{aA};
+	const auto qB = UnitVec2{aB};
 
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;

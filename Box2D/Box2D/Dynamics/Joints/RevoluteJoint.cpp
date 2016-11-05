@@ -82,7 +82,7 @@ void RevoluteJoint::InitVelocityConstraints(const SolverData& data)
 	auto vB = data.velocities[m_indexB].v;
 	auto wB = data.velocities[m_indexB].w;
 
-	const Rot qA(aA), qB(aB);
+	const UnitVec2 qA(aA), qB(aB);
 
 	m_rA = Rotate(m_localAnchorA - m_localCenterA, qA);
 	m_rB = Rotate(m_localAnchorB - m_localCenterB, qB);
@@ -297,8 +297,8 @@ bool RevoluteJoint::SolvePositionConstraints(const SolverData& data)
 	auto cB = data.positions[m_indexB].c;
 	auto aB = data.positions[m_indexB].a;
 
-	auto qA = Rot(aA);
-	auto qB = Rot(aB);
+	auto qA = UnitVec2(aA);
+	auto qB = UnitVec2(aB);
 
 	auto angularError = float_t{0};
 	auto positionError = float_t{0};
@@ -343,8 +343,8 @@ bool RevoluteJoint::SolvePositionConstraints(const SolverData& data)
 
 	// Solve point-to-point constraint.
 	{
-		qA = Rot(aA);
-		qB = Rot(aB);
+		qA = UnitVec2(aA);
+		qB = UnitVec2(aB);
 		const auto rA = Rotate(m_localAnchorA - m_localCenterA, qA);
 		const auto rB = Rotate(m_localAnchorB - m_localCenterB, qB);
 

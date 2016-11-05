@@ -29,7 +29,7 @@ TEST(Transformation, ByteSizeIs16)
 TEST(Transformation, Initialize)
 {
 	const Vec2 translation{2, 4};
-	const Rot rotation{1_rad * Pi / 2};
+	const UnitVec2 rotation{1_rad * Pi / 2};
 	const Transformation xfm{translation, rotation};
 	EXPECT_EQ(translation, xfm.p);
 	EXPECT_EQ(rotation, xfm.q);
@@ -38,7 +38,7 @@ TEST(Transformation, Initialize)
 TEST(Transformation, Equality)
 {
 	const Vec2 translation{2, 4};
-	const Rot rotation{1_rad * Pi / 2};
+	const UnitVec2 rotation{1_rad * Pi / 2};
 	const Transformation xfm{translation, rotation};
 	EXPECT_EQ(xfm, xfm);
 }
@@ -46,11 +46,11 @@ TEST(Transformation, Equality)
 TEST(Transformation, Inequality)
 {
 	const Vec2 translation1{2, 4};
-	const Rot rotation1{1_rad * Pi / 2};
+	const UnitVec2 rotation1{1_rad * Pi / 2};
 	const Transformation xfm1{translation1, rotation1};
 
 	const Vec2 translation2{-3, 37};
-	const Rot rotation2{1_rad * Pi * 2};
+	const UnitVec2 rotation2{1_rad * Pi * 2};
 	const Transformation xfm2{translation2, rotation2};
 
 	EXPECT_NE(xfm1, xfm2);
@@ -59,12 +59,12 @@ TEST(Transformation, Inequality)
 TEST(Transformation, Mul)
 {
 	const Vec2 translation1{2, 4};
-	const Rot rotation1{1_rad * Pi / 2};
+	const UnitVec2 rotation1{1_rad * Pi / 2};
 	const Transformation xfm{translation1, rotation1};
 
 	const auto xfm2 = Mul(xfm, xfm);
 	const Vec2 translation2{4, 8};
-	const Rot rotation2{1_rad * Pi};
+	const UnitVec2 rotation2{1_rad * Pi};
 
 	const auto Ap = xfm.p;
 	const auto Bp = xfm.p;

@@ -416,97 +416,165 @@ constexpr inline Mat33 GetSymInverse33(const Mat33& value) noexcept
 		Vec3{ex_z, ey_z, det * (a11 * a22 - a12 * a12)}
 	};
 }
-
-/// Rotational transformation.
-/// @detail An angle in terms of its sine and cosine values.
-/// @note This data structure is 8-bytes large.
-class Rot
+	
+class UnitVec2
 {
 public:
-	Rot() = default;
+	using data_type = float_t;
 	
-	static constexpr Rot GetIdentity() noexcept
+	static constexpr UnitVec2 GetRight() noexcept
 	{
-		return Rot{1, 0};
-	}
-
-	constexpr Rot(const Rot& copy) noexcept = default;
-
-	/// Initialize from an angle.
-	/// @param angle Angle in radians (counter-clockwise from the normal of Vec2(1, 0)).
-	explicit Rot(Angle angle): Rot{std::cos(angle.ToRadians()), std::sin(angle.ToRadians())}
-	{
-		// TODO_ERIN optimize
+		return UnitVec2{1, 0};
 	}
 	
-	/// Sine value.
-	/// @return Value approximately between -1 and +1 (inclusive).
-	constexpr auto sin() const noexcept { return s; }
-
-	/// Cosine value.
-	/// @return Value approximately between -1 and +1 (inclusive).
-	constexpr auto cos() const noexcept { return c; }
-
-	constexpr inline Rot FlipY() const noexcept
+	static constexpr UnitVec2 GetLeft() noexcept
 	{
-		return Rot{cos(), -sin()};
+		return UnitVec2{-1, 0};
 	}
-
-	constexpr inline Rot Rotate(Rot amount) const noexcept
+	
+	static constexpr UnitVec2 GetTop() noexcept
 	{
-		return Rot{
-			cos() * amount.cos() - sin() * amount.sin(),
-			sin() * amount.cos() + cos() * amount.sin()
+		return UnitVec2{0, 1};
+	}
+	
+	static constexpr UnitVec2 GetBottom() noexcept
+	{
+		return UnitVec2{0, -1};
+	}
+	
+	static constexpr UnitVec2 GetDefaultFallback() noexcept
+	{
+		return UnitVec2{};
+	}
+	
+	constexpr UnitVec2() noexcept
+	{
+		// Intentionally empty.
+	}
+	
+	UnitVec2(Vec2 value, UnitVec2 fallback = GetDefaultFallback()) noexcept;
+	
+	UnitVec2(Angle angle) noexcept:
+		m_x{std::cos(angle.ToRadians())}, m_y{std::sin(angle.ToRadians())}
+	{
+		
+	}
+	
+	constexpr auto GetX() const noexcept
+	{
+		return m_x;
+	}
+	
+	constexpr auto GetY() const noexcept
+	{
+		return m_y;
+	}
+	
+	constexpr auto cos() const noexcept
+	{
+		return m_x;
+	}
+	
+	constexpr auto sin() const noexcept
+	{
+		return m_y;
+	}
+	
+	constexpr operator Vec2() const
+	{
+		return Vec2{GetX(), GetY()};
+	}
+	
+	constexpr inline UnitVec2 FlipXY() const noexcept
+	{
+		return UnitVec2{-GetX(), -GetY()};
+	}
+	
+	constexpr inline UnitVec2 FlipX() const noexcept
+	{
+		return UnitVec2{-GetX(), GetY()};
+	}
+	
+	constexpr inline UnitVec2 FlipY() const noexcept
+	{
+		return UnitVec2{GetX(), -GetY()};
+	}
+	
+	constexpr inline UnitVec2 Rotate(UnitVec2 amount) const noexcept
+	{
+		return UnitVec2{
+			GetX() * amount.GetX() - GetY() * amount.GetY(),
+			GetY() * amount.GetX() + GetX() * amount.GetY()
 		};
 	}
 	
-private:
-	/// Initialize from sine and cosine values.
-	constexpr Rot(float_t cosine, float_t sine) noexcept: c{cosine}, s{sine}
+	/// Gets a vector counter-clockwise (reverse-clockwise) perpendicular to this vector.
+	/// @detail This returns the unit vector (-y, x).
+	/// @return A counter-clockwise 90-degree rotation of this vector.
+	/// @sa GetFwdPerpendicular.
+	constexpr inline UnitVec2 GetRevPerpendicular() const noexcept
 	{
-		// assert(sine >= -1);
-		// assert(sine <= +1);
-		// assert(cosine >= -1);
-		// assert(cosine <= +1);
-		assert(almost_equal(Square(cosine) + Square(sine), 1));
+		// See http://mathworld.wolfram.com/PerpendicularVector.html
+		return UnitVec2{-m_y, m_x};
+	}
+	
+	/// Gets a vector clockwise (forward-clockwise) perpendicular to this vector.
+	/// @detail This returns the unit vector (y, -x).
+	/// @return A clockwise 90-degree rotation of this vector.
+	/// @sa GetRevPerpendicular.
+	constexpr inline UnitVec2 GetFwdPerpendicular() noexcept
+	{
+		// See http://mathworld.wolfram.com/PerpendicularVector.html
+		return UnitVec2{m_y, -m_x};
 	}
 
-	float_t c; ///< Cosine value.
-	float_t s; ///< Sine value.
+	constexpr inline UnitVec2 operator- () const noexcept
+	{
+		return UnitVec2{-m_x, -m_y};
+	}
+	
+private:
+	constexpr UnitVec2(data_type x, data_type y) noexcept:
+	m_x{x}, m_y{y}
+	{
+		assert(almost_equal(Square(x) + Square(y), 1));
+	}
+	
+	data_type m_x = GetInvalid<data_type>();
+	data_type m_y = GetInvalid<data_type>();
 };
 
 template <>
-inline bool IsValid(const Rot& value) noexcept
+constexpr UnitVec2 GetInvalid() noexcept
 {
-	return IsValid(value.sin()) && IsValid(value.cos());
+	return UnitVec2{};
 }
 
-constexpr inline bool operator == (Rot lhs, Rot rhs)
+template <>
+inline bool IsValid(const UnitVec2& value) noexcept
 {
-	return (lhs.sin() == rhs.sin()) && (lhs.cos() == rhs.cos());
+	return IsValid(Vec2{value});
 }
 
-constexpr inline bool operator != (Rot lhs, Rot rhs)
+/// Gets the unit vector for the given value.
+/// @param value Value to get the unit vector for.
+/// @return value divided by its length if length not almost zero otherwise invalid value.
+/// @sa almost_equal.
+inline UnitVec2 GetUnitVector(const Vec2 value, UnitVec2 fallback = UnitVec2::GetDefaultFallback())
 {
-	return lhs.sin() != rhs.sin() || lhs.cos() != rhs.cos();
-}
-
-/// Get the angle in radians
-inline float_t ToRadians(Rot rot)
-{
-	return Atan2(rot.sin(), rot.cos());
+	return UnitVec2{value, fallback};
 }
 
 /// Get the x-axis
-constexpr inline Vec2 GetXAxis(Rot rot) noexcept
+constexpr inline UnitVec2 GetXAxis(UnitVec2 rot) noexcept
 {
-	return Vec2{rot.cos(), rot.sin()};
+	return rot;
 }
 
 /// Get the u-axis ("u"??? is that a typo??? Anyway, this is the reverse perpendicular vector of rot as a directional vector)
-constexpr inline Vec2 GetYAxis(Rot rot) noexcept
+constexpr inline UnitVec2 GetYAxis(UnitVec2 rot) noexcept
 {
-	return Vec2{-rot.sin(), rot.cos()};
+	return rot.GetRevPerpendicular();
 }
 
 /// Transformation.
@@ -520,15 +588,15 @@ struct Transformation
 	Transformation() noexcept = default;
 
 	/// Initialize using a translation and a rotation.
-	constexpr Transformation(Vec2 translation, Rot rotation) noexcept: p{translation}, q{rotation} {}
+	constexpr Transformation(Vec2 translation, UnitVec2 rotation) noexcept: p{translation}, q{rotation} {}
 
 	constexpr Transformation(const Transformation& copy) noexcept = default;
 
 	Vec2 p; ///< Translational portion of the transformation. 8-bytes.
-	Rot q; ///< Rotational portion of the transformation. 8-bytes.
+	UnitVec2 q; ///< Rotational portion of the transformation. 8-bytes.
 };
 
-constexpr auto Transform_identity = Transformation{Vec2_zero, Rot::GetIdentity()};
+constexpr auto Transform_identity = Transformation{Vec2_zero, UnitVec2::GetRight()};
 
 template <>
 inline bool IsValid(const Transformation& value) noexcept
@@ -793,118 +861,6 @@ constexpr Vec2 operator/ (const Vec2 a, const Vec2::data_type s) noexcept
 {
 	return Vec2{a.x / s, a.y / s};
 }
-	
-class UnitVec2
-{
-public:
-	using data_type = float_t;
-
-	static constexpr UnitVec2 GetRight() noexcept
-	{
-		return UnitVec2{1, 0};
-	}
-	
-	static constexpr UnitVec2 GetLeft() noexcept
-	{
-		return UnitVec2{-1, 0};
-	}
-
-	static constexpr UnitVec2 GetTop() noexcept
-	{
-		return UnitVec2{0, 1};
-	}
-	
-	static constexpr UnitVec2 GetBottom() noexcept
-	{
-		return UnitVec2{0, -1};
-	}
-
-	static constexpr UnitVec2 GetDefaultFallback() noexcept
-	{
-		return UnitVec2{};
-	}
-
-	constexpr UnitVec2() noexcept
-	{
-	}
-
-	UnitVec2(Vec2 value, UnitVec2 fallback = GetDefaultFallback()) noexcept;
-
-	explicit UnitVec2(Angle angle) noexcept:
-		m_x{std::cos(angle.ToRadians())}, m_y{std::sin(angle.ToRadians())}
-	{
-		
-	}
-
-	constexpr auto GetX() const noexcept
-	{
-		return m_x;
-	}
-	
-	constexpr auto GetY() const noexcept
-	{
-		return m_y;
-	}
-
-	constexpr operator Vec2() const
-	{
-		return Vec2{GetX(), GetY()};
-	}
-
-	constexpr inline UnitVec2 FlipXY() const noexcept
-	{
-		return UnitVec2{-GetX(), -GetY()};
-	}
-
-	constexpr inline UnitVec2 FlipX() const noexcept
-	{
-		return UnitVec2{-GetX(), GetY()};
-	}
-
-	constexpr inline UnitVec2 FlipY() const noexcept
-	{
-		return UnitVec2{GetX(), -GetY()};
-	}
-
-	constexpr inline UnitVec2 Rotate(UnitVec2 amount) const noexcept
-	{
-		return UnitVec2{
-			GetX() * amount.GetX() - GetY() * amount.GetY(),
-			GetY() * amount.GetX() + GetX() * amount.GetY()
-		};
-	}
-
-private:
-	constexpr UnitVec2(data_type x, data_type y) noexcept:
-		m_x{x}, m_y{y}
-	{
-		assert(almost_equal(Square(x) + Square(y), 1));
-	}
-	
-	data_type m_x = GetInvalid<data_type>();
-	data_type m_y = GetInvalid<data_type>();
-};
-
-template <>
-constexpr UnitVec2 GetInvalid() noexcept
-{
-	return UnitVec2{};
-}
-
-template <>
-inline bool IsValid(const UnitVec2& value) noexcept
-{
-	return IsValid(Vec2{value});
-}
-
-/// Gets the unit vector for the given value.
-/// @param value Value to get the unit vector for.
-/// @return value divided by its length if length not almost zero otherwise invalid value.
-/// @sa almost_equal.
-inline UnitVec2 GetUnitVector(const Vec2 value, UnitVec2 fallback = UnitVec2::GetDefaultFallback())
-{
-	return UnitVec2{value, fallback};
-}
 
 constexpr inline bool operator == (const Vec2 a, const Vec2 b) noexcept
 {
@@ -1020,40 +976,14 @@ constexpr inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
 	return Vec2{A.ex.x * v.x + A.ey.x * v.y, A.ex.y * v.x + A.ey.y * v.y};
 }
 
-#if 0
-/// Adds two rotations.
-/// @detail In terms of angles, this is simply the addition of the two angles.
-constexpr inline Rot operator+ (const Rot lhs, const Rot rhs) noexcept
-{
-	// In terms of sines and cosines, what'd be an addition is instead done as a multiplication:
-	// [qc -qs] * [rc -rs] = [qc*rc-qs*rs -qc*rs-qs*rc]
-	// [qs  qc]   [rs  rc]   [qs*rc+qc*rs -qs*rs+qc*rc]
-	// s = qs * rc + qc * rs
-	// c = qc * rc - qs * rs
-	return Rot(lhs.sin() * rhs.cos() + lhs.cos() * rhs.sin(), lhs.cos() * rhs.cos() - lhs.sin() * rhs.sin());
-}
-
-/// Subtracts rhs from lhs.
-constexpr inline Rot operator- (const Rot& lhs, const Rot& rhs) noexcept
-{
-	// Let q be lhs and r be rhs...
-	// Transpose multiply two rotations: qT * r
-	// [ qc qs] * [rc -rs] = [qc*rc+qs*rs -qc*rs+qs*rc]
-	// [-qs qc]   [rs  rc]   [-qs*rc+qc*rs qs*rs+qc*rc]
-	// s = qc * rs - qs * rc
-	// c = qc * rc + qs * rs
-	return Rot{rhs.cos() * lhs.sin() - rhs.sin() * lhs.cos(), rhs.cos() * lhs.cos() + rhs.sin() * lhs.sin()};
-}
-#endif
-
 /// Rotates a vector by a given angle.
-constexpr inline Vec2 Rotate(const Vec2 vector, const Rot& angle) noexcept
+constexpr inline Vec2 Rotate(const Vec2 vector, const UnitVec2& angle) noexcept
 {
 	return Vec2{(angle.cos() * vector.x) - (angle.sin() * vector.y), (angle.sin() * vector.x) + (angle.cos() * vector.y)};
 }
 
 /// Inverse rotate a vector
-constexpr inline Vec2 InverseRotate(const Vec2 vector, const Rot& angle) noexcept
+constexpr inline Vec2 InverseRotate(const Vec2 vector, const UnitVec2& angle) noexcept
 {
 	return Vec2{(angle.cos() * vector.x) + (angle.sin() * vector.y), (angle.cos() * vector.y) - (angle.sin() * vector.x)};
 }
@@ -1280,7 +1210,7 @@ constexpr inline Velocity operator* (const float_t lhs, const Velocity& rhs)
 	return Velocity{rhs.v * lhs, rhs.w * lhs};
 }
 
-constexpr inline Transformation GetTransformation(const Vec2 ctr, const Rot rot, const Vec2 local_ctr) noexcept
+constexpr inline Transformation GetTransformation(const Vec2 ctr, const UnitVec2 rot, const Vec2 local_ctr) noexcept
 {
 	return Transformation{ctr - Rotate(local_ctr, rot), rot};
 }
@@ -1289,7 +1219,7 @@ inline Transformation GetTransformation(const Position pos, const Vec2 local_ctr
 {
 	assert(IsValid(pos));
 	assert(IsValid(local_ctr));
-	return GetTransformation(pos.c, Rot{pos.a}, local_ctr);
+	return GetTransformation(pos.c, pos.a, local_ctr);
 }
 
 inline Position GetPosition(const Position pos0, const Position pos1, const float_t beta)
