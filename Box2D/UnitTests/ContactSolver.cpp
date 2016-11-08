@@ -45,7 +45,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 	const auto bB = PositionConstraint::BodyData{indexB, float_t(1), float_t(1), lcB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 	
-	const auto solution = Solve(pc, old_pA, old_pB, Baumgarte, 0, MaxLinearCorrection);
+	const auto solution = SolvePositionConstraint(pc, old_pA, old_pB, Baumgarte, 0, MaxLinearCorrection);
 	
 	EXPECT_EQ(solution.min_separation, 0);
 	
@@ -79,7 +79,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
 	const auto bB = PositionConstraint::BodyData{indexB, float_t(1), float_t(1), lcB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 	
-	const auto solution = Solve(pc, old_pA, old_pB, Baumgarte, 0, MaxLinearCorrection);
+	const auto solution = SolvePositionConstraint(pc, old_pA, old_pB, Baumgarte, 0, MaxLinearCorrection);
 	
 	EXPECT_EQ(solution.min_separation, 0);
 	
@@ -114,7 +114,7 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
 	const auto old_pB = Position{Vec2{0, 0}, 0_deg};
 	
 	const auto max_correction = std::numeric_limits<float_t>::infinity();
-	const auto solution = Solve(pc, old_pA, old_pB, 0, -LinearSlop, max_correction);
+	const auto solution = SolvePositionConstraint(pc, old_pA, old_pB, 0, -LinearSlop, max_correction);
 
 	EXPECT_EQ(solution.min_separation, -2 * dim);
 	
@@ -156,7 +156,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 	
 	const auto max_correction = std::numeric_limits<float_t>::infinity();
-	const auto solution = Solve(pc, old_pA, old_pB, Baumgarte, 0, max_correction);
+	const auto solution = SolvePositionConstraint(pc, old_pA, old_pB, Baumgarte, 0, max_correction);
 	
 	EXPECT_FLOAT_EQ(solution.min_separation, float_t(-2)); // -2.002398
 		
@@ -200,7 +200,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 	
 	const auto max_correction = std::numeric_limits<float_t>::infinity();
-	const auto solution = Solve(pc, old_pA, old_pB, Baumgarte, 0, max_correction);
+	const auto solution = SolvePositionConstraint(pc, old_pA, old_pB, Baumgarte, 0, max_correction);
 	
 	EXPECT_FLOAT_EQ(solution.min_separation, float_t(-2)); // -2.002398
 	
@@ -244,7 +244,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 	
 	const auto max_correction = std::numeric_limits<float_t>::infinity();
-	const auto solution = Solve(pc, old_pA, old_pB, Baumgarte, 0, max_correction);
+	const auto solution = SolvePositionConstraint(pc, old_pA, old_pB, Baumgarte, 0, max_correction);
 	
 	EXPECT_FLOAT_EQ(solution.min_separation, float_t(-2)); // -2.002398
 	
@@ -301,7 +301,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 
 	const auto max_correction = std::numeric_limits<float_t>::infinity();
-	const auto solution = Solve(pc, old_pA, old_pB, Baumgarte, 0, max_correction);
+	const auto solution = SolvePositionConstraint(pc, old_pA, old_pB, Baumgarte, 0, max_correction);
 	
 	EXPECT_FLOAT_EQ(solution.min_separation, float_t(-2)); // -2.002398
 	
@@ -350,7 +350,7 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
 	const auto old_pA = Position{Vec2{0, 0}, 0_deg};
 	const auto old_pB = Position{Vec2{0, 0}, 0_deg};
 
-	const auto solution = Solve(pc, old_pA, old_pB, Baumgarte, max_sep, MaxLinearCorrection);
+	const auto solution = SolvePositionConstraint(pc, old_pA, old_pB, Baumgarte, max_sep, MaxLinearCorrection);
 	
 	EXPECT_LT(solution.min_separation, max_sep);
 	
