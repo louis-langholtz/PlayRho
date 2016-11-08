@@ -60,7 +60,7 @@ TEST(Manifold, GetForCircles)
 
 TEST(Manifold, GetForFaceA)
 {
-	const auto ln = Vec2{0, 0};
+	const auto ln = UnitVec2::GetZero();
 	const auto lp = Vec2{0, 0};
 	{
 		Manifold foo = Manifold::GetForFaceA(ln, lp);
@@ -112,7 +112,7 @@ TEST(Manifold, GetForFaceA)
 
 TEST(Manifold, GetForFaceB)
 {
-	const auto ln = Vec2{0, 0};
+	const auto ln = UnitVec2::GetZero();
 	const auto lp = Vec2{0, 0};
 	{
 		Manifold foo = Manifold::GetForFaceB(ln, lp);

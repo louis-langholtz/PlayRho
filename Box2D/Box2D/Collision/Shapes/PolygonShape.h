@@ -87,13 +87,13 @@ public:
 	/// by consecutive pairs of vertices starting with vertex 0.
 	/// @param index Index of the normal to get.
 	/// @return Normal for the given index.
-	Vec2 GetNormal(vertex_count_t index) const;
+	UnitVec2 GetNormal(vertex_count_t index) const;
 
 	/// Gets the span of vertices.
 	/// @detail Vertices go counter-clockwise.
 	Span<const Vec2> GetVertices() const noexcept { return Span<const Vec2>(m_vertices, m_count); }
 
-	Span<const Vec2> GetNormals() const noexcept { return Span<const Vec2>(m_normals, m_count); }
+	Span<const UnitVec2> GetNormals() const noexcept { return Span<const UnitVec2>(m_normals, m_count); }
 	
 	Vec2 GetCentroid() const noexcept { return m_centroid; }
 	
@@ -108,7 +108,7 @@ private:
 	/// These are 90-degree clockwise-rotated unit-vectors of the vectors defined by
 	/// consecutive pairs of elements of vertices.
 	/// @note This is some 16 x 8-bytes or 128-bytes large (on at least one platform).
-	Vec2 m_normals[MaxPolygonVertices];
+	UnitVec2 m_normals[MaxPolygonVertices];
 
 	/// Centroid of this shape.
 	Vec2 m_centroid = Vec2_zero;
@@ -123,7 +123,7 @@ inline Vec2 PolygonShape::GetVertex(vertex_count_t index) const
 	return m_vertices[index];
 }
 
-inline Vec2 PolygonShape::GetNormal(vertex_count_t index) const
+inline UnitVec2 PolygonShape::GetNormal(vertex_count_t index) const
 {
 	assert(0 <= index && index < m_count);
 	return m_normals[index];

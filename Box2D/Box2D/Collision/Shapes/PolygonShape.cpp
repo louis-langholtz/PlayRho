@@ -44,27 +44,22 @@ void PolygonShape::SetAsBox(float_t hx, float_t hy) noexcept
 	const auto top_rgt = Vec2{ hx,  hy};
 	const auto top_lft = Vec2{-hx, +hy};
 	const auto btm_lft = Vec2{-hx, -hy};
-
-	const auto btm_norm = Vec2{float_t{0}, float_t{-1}};
-	const auto top_norm = Vec2{float_t{0}, float_t{1}};
-	const auto rgt_norm = Vec2{float_t{1}, float_t{0}};
-	const auto lft_norm = Vec2{float_t{-1}, float_t{0}};
 	
 	m_vertices[0] = btm_rgt;
 	m_vertices[1] = top_rgt;
 	m_vertices[2] = top_lft;
 	m_vertices[3] = btm_lft;
 
-	m_normals[0] = rgt_norm;
-	m_normals[1] = top_norm;
-	m_normals[2] = lft_norm;
-	m_normals[3] = btm_norm;
+	m_normals[0] = UnitVec2::GetRight();
+	m_normals[1] = UnitVec2::GetTop();
+	m_normals[2] = UnitVec2::GetLeft();
+	m_normals[3] = UnitVec2::GetBottom();
 }
 
 void box2d::SetAsBox(PolygonShape& shape, float_t hx, float_t hy, const Vec2& center, Angle angle) noexcept
 {
 	shape.SetAsBox(hx, hy);
-	shape.Transform(Transformation{center, angle});
+	shape.Transform(Transformation{center, UnitVec2{angle}});
 }
 
 void PolygonShape::Transform(box2d::Transformation xf) noexcept
@@ -166,7 +161,7 @@ void PolygonShape::Set(const VertexSet<MaxPolygonVertices>& point_set) noexcept
 		m_vertices[i] = point_set[hull[i]];
 	}
 
-	// Compute normals. Ensure the edges have non-zero length.
+	// Compute normals.
 	for (auto i = decltype(m){0}; i < m; ++i)
 	{
 		m_normals[i] = GetUnitVector(GetFwdPerpendicular(GetEdge(*this, i)));

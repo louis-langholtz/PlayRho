@@ -193,35 +193,17 @@ bool PulleyJoint::SolvePositionConstraints(Position* positions)
 	auto cB = positions[m_indexB].c;
 	auto aB = positions[m_indexB].a;
 
-	const UnitVec2 qA(aA), qB(aB);
-
-	const auto rA = Rotate(m_localAnchorA - m_localCenterA, qA);
-	const auto rB = Rotate(m_localAnchorB - m_localCenterB, qB);
+	const auto rA = Rotate(m_localAnchorA - m_localCenterA, UnitVec2{aA});
+	const auto rB = Rotate(m_localAnchorB - m_localCenterB, UnitVec2{aB});
 
 	// Get the pulley axes.
-	auto uA = cA + rA - m_groundAnchorA;
-	auto uB = cB + rB - m_groundAnchorB;
+	const auto pA = cA + rA - m_groundAnchorA;
+	const auto lengthA = Length(pA);
+	const auto uA = (lengthA > (float_t(10) * LinearSlop))? pA / lengthA: Vec2_zero;
 
-	const auto lengthA = Length(uA);
-	const auto lengthB = Length(uB);
-
-	if (lengthA > (float_t(10) * LinearSlop))
-	{
-		uA *= float_t{1} / lengthA;
-	}
-	else
-	{
-		uA = Vec2_zero;
-	}
-
-	if (lengthB > (float_t(10) * LinearSlop))
-	{
-		uB *= float_t{1} / lengthB;
-	}
-	else
-	{
-		uB = Vec2_zero;
-	}
+	const auto pB = cB + rB - m_groundAnchorB;
+	const auto lengthB = Length(pB);
+	const auto uB = (lengthB > (float_t(10) * LinearSlop))? pB / lengthB: Vec2_zero;
 
 	// Compute effective mass.
 	const auto ruA = Cross(rA, uA);
@@ -231,7 +213,6 @@ bool PulleyJoint::SolvePositionConstraints(Position* positions)
 	const auto mB = m_invMassB + m_invIB * ruB * ruB;
 
 	auto mass = mA + m_ratio * m_ratio * mB;
-
 	if (mass > float_t{0})
 	{
 		mass = float_t{1} / mass;

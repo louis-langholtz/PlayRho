@@ -42,54 +42,46 @@ public:
 			ground = m_world->CreateBody(bodyDef);
 		}
 
-		float a = 0.5f;
-		Vec2 h(0.0f, a);
-
-		Body* root = AddNode(ground, Vec2_zero, 0, 3.0f, a);
+		const auto a = 0.5f;
 
 		RevoluteJointDef jointDef;
 		jointDef.bodyA = ground;
-		jointDef.bodyB = root;
+		jointDef.bodyB = AddNode(ground, Vec2_zero, 0, 3.0f, a);
 		jointDef.localAnchorA = Vec2_zero;
-		jointDef.localAnchorB = h;
+		jointDef.localAnchorB = Vec2(0.0f, a);
 		m_world->CreateJoint(jointDef);
 	}
 
 	Body* AddNode(Body* parent, const Vec2& localAnchor, int32 depth, float offset, float a)
 	{
-		float density = 20.0f;
-		Vec2 h(0.0f, a);
-
-		Vec2 p = parent->GetPosition() + localAnchor - h;
+		const auto h = Vec2(0.0f, a);
 
 		BodyDef bodyDef;
 		bodyDef.type = BodyType::Dynamic;
-		bodyDef.position = p;
-		Body* body = m_world->CreateBody(bodyDef);
+		bodyDef.position = parent->GetPosition() + localAnchor - h;
+		const auto body = m_world->CreateBody(bodyDef);
 
 		const auto shape = PolygonShape(0.25f * a, a);
-		body->CreateFixture(FixtureDef{&shape, density});
+		body->CreateFixture(FixtureDef{&shape, 20.0f});
 
 		if (depth == e_depth)
 		{
 			return body;
 		}
 
-		Vec2 a1 = Vec2(offset, -a);
-		Vec2 a2 = Vec2(-offset, -a);
-		Body* body1 = AddNode(body, a1, depth + 1, 0.5f * offset, a);
-		Body* body2 = AddNode(body, a2, depth + 1, 0.5f * offset, a);
+		const auto a1 = Vec2(offset, -a);
+		const auto a2 = Vec2(-offset, -a);
 
 		RevoluteJointDef jointDef;
 		jointDef.bodyA = body;
 		jointDef.localAnchorB = h;
 
 		jointDef.localAnchorA = a1;
-		jointDef.bodyB = body1;
+		jointDef.bodyB = AddNode(body, a1, depth + 1, 0.5f * offset, a);
 		m_world->CreateJoint(jointDef);
 
 		jointDef.localAnchorA = a2;
-		jointDef.bodyB = body2;
+		jointDef.bodyB = AddNode(body, a2, depth + 1, 0.5f * offset, a);
 		m_world->CreateJoint(jointDef);
 
 		return body;

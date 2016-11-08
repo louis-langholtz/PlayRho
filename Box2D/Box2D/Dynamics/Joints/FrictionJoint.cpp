@@ -72,8 +72,8 @@ void FrictionJoint::InitVelocityConstraints(Velocity* velocities, const Position
 	auto wB = velocities[m_indexB].w;
 
 	// Compute the effective mass matrix.
-	m_rA = Rotate(m_localAnchorA - m_localCenterA, aA);
-	m_rB = Rotate(m_localAnchorB - m_localCenterB, aB);
+	m_rA = Rotate(m_localAnchorA - m_localCenterA, UnitVec2{aA});
+	m_rB = Rotate(m_localAnchorB - m_localCenterB, UnitVec2{aB});
 
 	// J = [-I -r1_skew I r2_skew]
 	//     [ 0       -1 0       1]
@@ -163,7 +163,7 @@ void FrictionJoint::SolveVelocityConstraints(Velocity* velocities, const TimeSte
 
 		if (LengthSquared(m_linearImpulse) > Square(maxImpulse))
 		{
-			m_linearImpulse = GetUnitVector(m_linearImpulse) * maxImpulse;
+			m_linearImpulse = GetUnitVector(m_linearImpulse, UnitVec2::GetZero()) * maxImpulse;
 		}
 
 		impulse = m_linearImpulse - oldImpulse;

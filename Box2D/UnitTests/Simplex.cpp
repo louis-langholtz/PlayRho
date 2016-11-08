@@ -171,8 +171,8 @@ TEST(Simplex, Get2_rot_plus_45)
 	const auto ib0 = SimplexVertex::size_type{7};
 	const auto sv0 = SimplexVertex{va0, ia0, vb0, ib0};
 	
-	const auto va1 = Rotate(va0, 45_deg);
-	const auto vb1 = Rotate(vb0, 45_deg);
+	const auto va1 = Rotate(va0, UnitVec2{45_deg});
+	const auto vb1 = Rotate(vb0, UnitVec2{45_deg});
 	const auto ia1 = SimplexVertex::size_type{4};
 	const auto ib1 = SimplexVertex::size_type{1};
 	const auto sv1 = SimplexVertex{va1, ia1, vb1, ib1};
@@ -211,8 +211,8 @@ TEST(Simplex, Get2_rot45_half)
 	const auto ib0 = SimplexVertex::size_type{7};
 	const auto sv0 = SimplexVertex{va0, ia0, vb0, ib0};
 	
-	const auto va1 = Rotate(va0, 45_deg) / 2; // Vec2{-13.081475, 10.253049}
-	const auto vb1 = Rotate(vb0, 45_deg) / 2; // Vec2{316.4303, 320.67291}
+	const auto va1 = Rotate(va0, UnitVec2{45_deg}) / 2; // Vec2{-13.081475, 10.253049}
+	const auto vb1 = Rotate(vb0, UnitVec2{45_deg}) / 2; // Vec2{316.4303, 320.67291}
 	EXPECT_FLOAT_EQ(va1.x, float_t(-13.081475));
 	EXPECT_FLOAT_EQ(va1.y, float_t(10.253049));
 	EXPECT_FLOAT_EQ(vb1.x, float_t(316.4303));

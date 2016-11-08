@@ -47,7 +47,7 @@ namespace box2d {
 		}
 		
 		// should never be reached
-		return WorldManifold{Vec2{float_t{1}, float_t{0}}};
+		return WorldManifold{};
 	}
 	
 	static inline WorldManifold GetForFaceA(const Manifold& manifold,
@@ -116,11 +116,11 @@ namespace box2d {
 			case Manifold::e_circles: return GetForCircles(manifold, xfA, radiusA, xfB, radiusB);
 			case Manifold::e_faceA: return GetForFaceA(manifold, xfA, radiusA, xfB, radiusB);
 			case Manifold::e_faceB: return GetForFaceB(manifold, xfA, radiusA, xfB, radiusB);
-			case Manifold::e_unset: return WorldManifold{Vec2_zero};
+			case Manifold::e_unset: return WorldManifold{};
 		}
 		
 		// should never be reached
-		return WorldManifold{Vec2_zero};
+		return WorldManifold{};
 	}	
 
 	WorldManifold GetWorldManifold(const Contact& contact)

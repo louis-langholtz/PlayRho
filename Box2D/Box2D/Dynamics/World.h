@@ -300,12 +300,11 @@ private:
 	///
 	/// @param step Time step to solve for.
 	/// @param contact Contact.
-	/// @param toi Time of impact to solve for.
 	///
 	/// @note Precondition 1: there is no contact having a lower TOI in this time step that has not already been solved for.
 	/// @note Precondition 2: there is not a lower TOI in the time step for which collisions have not already been processed.
 	///
-	void SolveTOI(const TimeStep& step, Contact& contact, float_t toi);
+	void SolveTOI(const TimeStep& step, Contact& contact);
 
 	/// Solves the time of impact for bodies 0 and 1 of the given island.
 	///
@@ -360,8 +359,9 @@ private:
 
 	void SetStepComplete(bool value) noexcept { m_stepComplete = value; }
 
-	struct ContactToiPair
+	struct ContactToiData
 	{
+		contact_count_t count;
 		Contact* contact; ///< Contact for which the time of impact is relavant.
 		float_t toi; ///< Time of impact (TOI) as a fractional value between 0 and 1.
 	};
@@ -370,7 +370,7 @@ private:
 	/// @detail While checking contacts and setting their time of impact values this also
 	///   finds the contact with the lowest (soonest) time of impact.
 	/// @return Contact with the least time of impact and its time of impact, or null contact.
-	ContactToiPair UpdateContactTOIs();
+	ContactToiData UpdateContactTOIs();
 
 	BlockAllocator m_blockAllocator; ///< Block allocator.
 

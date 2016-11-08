@@ -31,9 +31,9 @@ namespace box2d
 		const auto p = input.p1;
 		const auto d = input.p2 - input.p1;
 		
-		Vec2 normal;
+		UnitVec2 normal;
 		
-		for (auto i = decltype(normal.max_size()){0}; i < normal.max_size(); ++i)
+		for (auto i = decltype(d.max_size()){0}; i < d.max_size(); ++i)
 		{
 			if (almost_zero(d[i]))
 			{
@@ -50,19 +50,18 @@ namespace box2d
 				auto t2 = (aabb.GetUpperBound()[i] - p[i]) * inv_d;
 				
 				// Sign of the normal vector.
-				auto s = float_t{-1};
+				auto s = -1;
 				
 				if (t1 > t2)
 				{
 					Swap(t1, t2);
-					s = float_t{1};
+					s = 1;
 				}
 				
 				// Push the min up
 				if (tmin < t1)
 				{
-					normal = Vec2_zero;
-					normal[i] = s;
+					normal = (i == 0)? ((s < 0)? UnitVec2::GetLeft(): UnitVec2::GetRight()): ((s < 0)? UnitVec2::GetBottom(): UnitVec2::GetTop());
 					tmin = t1;
 				}
 				

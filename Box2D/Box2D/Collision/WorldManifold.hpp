@@ -54,7 +54,7 @@ namespace box2d
 		/// normal, invalid points, and invalid separations.
 		WorldManifold() noexcept = default;
 		
-		constexpr explicit WorldManifold(Vec2 normal) noexcept:
+		constexpr explicit WorldManifold(UnitVec2 normal) noexcept:
 			m_normal{normal}, m_count{0},
 			m_points{GetInvalid<Vec2>(), GetInvalid<Vec2>()},
 			m_separations{GetInvalid<float_t>(), GetInvalid<float_t>()}
@@ -62,7 +62,7 @@ namespace box2d
 			// Intentionally empty.
 		}
 		
-		constexpr explicit WorldManifold(Vec2 normal, PointSeparation ps0) noexcept:
+		constexpr explicit WorldManifold(UnitVec2 normal, PointSeparation ps0) noexcept:
 			m_normal{normal}, m_count{1},
 			m_points{ps0.p, GetInvalid<Vec2>()},
 			m_separations{ps0.s, GetInvalid<float_t>()}
@@ -70,7 +70,7 @@ namespace box2d
 			// Intentionally empty.
 		}
 		
-		constexpr explicit WorldManifold(Vec2 normal, PointSeparation ps0, PointSeparation ps1) noexcept:
+		constexpr explicit WorldManifold(UnitVec2 normal, PointSeparation ps0, PointSeparation ps1) noexcept:
 			m_normal{normal}, m_count{2}, m_points{ps0.p, ps1.p}, m_separations{ps0.s, ps1.s}
 		{
 			// Intentionally empty.
@@ -88,7 +88,7 @@ namespace box2d
 		/// Gets the normal of the contact.
 		/// @detail This is a directional unit-vector.
 		/// @return Normal of the contact or an invalid value.
-		Vec2 GetNormal() const noexcept { return m_normal; }
+		UnitVec2 GetNormal() const noexcept { return m_normal; }
 		
 		/// Gets the indexed point's location in world coordinates.
 		///
@@ -123,7 +123,7 @@ namespace box2d
 		}
 		
 	private:	
-		Vec2 m_normal = GetInvalid<Vec2>(); ///< world vector pointing from A to B
+		UnitVec2 m_normal = GetInvalid<UnitVec2>(); ///< world vector pointing from A to B
 		
 		size_type m_count = 0;
 

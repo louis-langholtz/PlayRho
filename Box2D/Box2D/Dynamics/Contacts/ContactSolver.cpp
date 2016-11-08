@@ -377,8 +377,11 @@ void box2d::SolveVelocityConstraint(VelocityConstraint& vc, Velocity& velA, Velo
 	SolveNormalConstraint(vc, velA, velB);
 }
 
-PositionSolution box2d::Solve(const PositionConstraint& pc, Position posA, Position posB,
-							  float_t resolution_rate, float_t max_separation, float_t max_correction)
+PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
+												Position posA, Position posB,
+												float_t resolution_rate,
+												float_t max_separation,
+												float_t max_correction)
 {
 	assert(IsValid(posA));
 	assert(IsValid(posB));
@@ -409,7 +412,7 @@ PositionSolution box2d::Solve(const PositionConstraint& pc, Position posA, Posit
 		
 		// Track max constraint error.
 		
-		if ((invMassTotal > float_t{0}) && IsValid(psm.m_normal))
+		if (IsValid(psm.m_normal))
 		{
 			const auto rA = psm.m_point - pos_a.c;
 			const auto rB = psm.m_point - pos_b.c;
@@ -490,8 +493,8 @@ bool box2d::SolvePositionConstraints(const PositionConstraint* positionConstrain
 	{
 		const auto& pc = positionConstraints[i];
 		assert(pc.bodyA.index != pc.bodyB.index);
-		const auto solution = Solve(pc, positions[pc.bodyA.index], positions[pc.bodyB.index],
-									Baumgarte, -LinearSlop, MaxLinearCorrection);
+		const auto solution = SolvePositionConstraint(pc, positions[pc.bodyA.index], positions[pc.bodyB.index],
+													  Baumgarte, -LinearSlop, MaxLinearCorrection);
 		positions[pc.bodyA.index] = solution.pos_a;
 		positions[pc.bodyB.index] = solution.pos_b;
 		minSeparation = Min(minSeparation, solution.min_separation);
@@ -499,7 +502,7 @@ bool box2d::SolvePositionConstraints(const PositionConstraint* positionConstrain
 	
 	// Can't expect minSpeparation >= -LinearSlop because we don't push the separation above -LinearSlop.
 	//return minSeparation >= MinSeparationThreshold;
-	return minSeparation >= -LinearSlop * 2;
+	return minSeparation >= -LinearSlop * 3;
 }
 
 bool box2d::SolveTOIPositionConstraints(const PositionConstraint* positionConstraints, size_t count,
@@ -527,8 +530,8 @@ bool box2d::SolveTOIPositionConstraints(const PositionConstraint* positionConstr
 			pc.bodyB.invI = float_t{0};
 		}
 		
-		const auto solution = Solve(pc, positions[pc.bodyA.index], positions[pc.bodyB.index],
-									ToiBaumgarte, -LinearSlop, MaxLinearCorrection);
+		const auto solution = SolvePositionConstraint(pc, positions[pc.bodyA.index], positions[pc.bodyB.index],
+													  ToiBaumgarte, -LinearSlop, MaxLinearCorrection);
 		positions[pc.bodyA.index] = solution.pos_a;
 		positions[pc.bodyB.index] = solution.pos_b;
 		minSeparation = Min(minSeparation, solution.min_separation);
@@ -536,6 +539,6 @@ bool box2d::SolveTOIPositionConstraints(const PositionConstraint* positionConstr
 	
 	// Can't expect minSpeparation >= -LinearSlop because we don't push the separation above -LinearSlop.
 	//return minSeparation >= MinToiSeparation;
-	return minSeparation >= -LinearSlop * float_t(3) / float_t(2); // 1.5;
+	return minSeparation >= -LinearSlop * float_t(1.5);
 }
 

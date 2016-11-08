@@ -115,7 +115,7 @@ namespace box2d
 		/// @param mp1 Manifold point 1 whose local point is the local center of circle B.
 		static constexpr Manifold GetForCircles(Vec2 lp, const Point& mp1) noexcept
 		{
-			return Manifold{e_circles, GetInvalid<Vec2>(), lp, 1, {{mp1}}};
+			return Manifold{e_circles, GetInvalid<UnitVec2>(), lp, 1, {{mp1}}};
 		}
 		
 		// For Face A type manifolds...
@@ -123,7 +123,7 @@ namespace box2d
 		/// Gets a face A typed manifold.
 		/// @param ln Normal on polygon A.
 		/// @param lp Center of face A.
-		static constexpr Manifold GetForFaceA(Vec2 ln, Vec2 lp) noexcept
+		static constexpr Manifold GetForFaceA(UnitVec2 ln, Vec2 lp) noexcept
 		{
 			return Manifold{e_faceA, ln, lp, 0, {{}}};
 		}
@@ -132,7 +132,7 @@ namespace box2d
 		/// @param ln Normal on polygon A.
 		/// @param lp Center of face A.
 		/// @param mp1 Manifold point 1 (of 1).
-		static constexpr Manifold GetForFaceA(Vec2 ln, Vec2 lp, const Point& mp1) noexcept
+		static constexpr Manifold GetForFaceA(UnitVec2 ln, Vec2 lp, const Point& mp1) noexcept
 		{
 			return Manifold{e_faceA, ln, lp, 1, {{mp1}}};
 		}
@@ -142,7 +142,7 @@ namespace box2d
 		/// @param lp Center of face A.
 		/// @param mp1 Manifold point 1 (of 2).
 		/// @param mp2 Manifold point 2 (of 2).
-		static constexpr Manifold GetForFaceA(Vec2 ln, Vec2 lp, const Point& mp1, const Point& mp2) noexcept
+		static constexpr Manifold GetForFaceA(UnitVec2 ln, Vec2 lp, const Point& mp1, const Point& mp2) noexcept
 		{
 			return Manifold{e_faceA, ln, lp, 2, {{mp1, mp2}}};
 		}
@@ -152,7 +152,7 @@ namespace box2d
 		/// Gets a face B typed manifold.
 		/// @param ln Normal on polygon B.
 		/// @param lp Center of face B.
-		static constexpr Manifold GetForFaceB(Vec2 ln, Vec2 lp) noexcept
+		static constexpr Manifold GetForFaceB(UnitVec2 ln, Vec2 lp) noexcept
 		{
 			return Manifold{e_faceB, ln, lp, 0, {{}}};
 		}
@@ -161,7 +161,7 @@ namespace box2d
 		/// @param ln Normal on polygon B.
 		/// @param lp Center of face B.
 		/// @param mp1 Manifold point 1.
-		static constexpr Manifold GetForFaceB(Vec2 ln, Vec2 lp, const Point& mp1) noexcept
+		static constexpr Manifold GetForFaceB(UnitVec2 ln, Vec2 lp, const Point& mp1) noexcept
 		{
 			return Manifold{e_faceB, ln, lp, 1, {{mp1}}};
 		}
@@ -171,7 +171,7 @@ namespace box2d
 		/// @param lp Center of face B.
 		/// @param mp1 Manifold point 1 (of 2).
 		/// @param mp2 Manifold point 2 (of 2).
-		static constexpr Manifold GetForFaceB(Vec2 ln, Vec2 lp, const Point& mp1, const Point& mp2) noexcept
+		static constexpr Manifold GetForFaceB(UnitVec2 ln, Vec2 lp, const Point& mp1, const Point& mp2) noexcept
 		{
 			return Manifold{e_faceB, ln, lp, 2, {{mp1, mp2}}};
 		}
@@ -186,7 +186,7 @@ namespace box2d
 		Manifold(const Manifold& copy) noexcept = default;
 		
 		/// Gets the type of this manifold.
-		Type GetType() const noexcept { return type; }
+		Type GetType() const noexcept { return m_type; }
 		
 		/// Gets the manifold point count.
 		/// @detail This is the count of contact points for this manifold.
@@ -196,18 +196,18 @@ namespace box2d
 		/// @sa MaxManifoldPoints.
 		/// @sa AddPoint().
 		/// @sa GetPoint().
-		size_type GetPointCount() const noexcept { return pointCount; }
+		size_type GetPointCount() const noexcept { return m_pointCount; }
 		
 		const Point& GetPoint(size_type index) const
 		{
-			assert((0 <= index) && (index < pointCount));
-			return points[index];
+			assert((0 <= index) && (index < m_pointCount));
+			return m_points[index];
 		}
 		
 		Point& GetPoint(size_type index)
 		{
-			assert((0 <= index) && (index < pointCount));
-			return points[index];
+			assert((0 <= index) && (index < m_pointCount));
+			return m_points[index];
 		}
 		
 		/// Adds a new point.
@@ -218,19 +218,19 @@ namespace box2d
 		/// @note Behavior is undefined if this is called more than MaxManifoldPoints times. 
 		void AddPoint(const Point& mp)
 		{
-			assert(type != e_unset);
-			assert(type != e_circles || pointCount == 0);
-			assert(pointCount < MaxManifoldPoints);
-			points[pointCount] = mp;
-			++pointCount;
+			assert(m_type != e_unset);
+			assert(m_type != e_circles || m_pointCount == 0);
+			assert(m_pointCount < MaxManifoldPoints);
+			m_points[m_pointCount] = mp;
+			++m_pointCount;
 		}
 		
 		/// Gets the local normal for a face-type manifold.
 		/// @return Local normal if the manifold type is face A or face B, else invalid value.
 		/// @sa SetLocalNormal.
-		Vec2 GetLocalNormal() const noexcept
+		UnitVec2 GetLocalNormal() const noexcept
 		{
-			return localNormal;
+			return m_localNormal;
 		}
 		
 		/// Gets the local point.
@@ -244,7 +244,7 @@ namespace box2d
 		/// @sa SetLocalPoint.
 		Vec2 GetLocalPoint() const noexcept
 		{
-			return localPoint;
+			return m_localPoint;
 		}
 		
 	private:
@@ -256,27 +256,27 @@ namespace box2d
 		/// @param lp Local point.
 		/// @param n number of points defined in arary.
 		/// @param mpa Manifold point array.
-		constexpr Manifold(Type t, Vec2 ln, Vec2 lp, size_type n, const PointArray& mpa) noexcept:
-			type{t}, localNormal{ln}, localPoint{lp}, pointCount{n}, points{mpa}
+		constexpr Manifold(Type t, UnitVec2 ln, Vec2 lp, size_type n, const PointArray& mpa) noexcept:
+			m_type{t}, m_localNormal{ln}, m_localPoint{lp}, m_pointCount{n}, m_points{mpa}
 		{
 			assert(t != e_unset || n == 0);
 			assert(t != e_circles || (n == 1 && !IsValid(ln)));
 		}
 		
-		Type type = e_unset; ///< Type of collision this manifold is associated with (1-byte).
-		size_type pointCount = 0; ///< Number of defined manifold points (2-bytes).
+		Type m_type = e_unset; ///< Type of collision this manifold is associated with (1-byte).
+		size_type m_pointCount = 0; ///< Number of defined manifold points (2-bytes).
 		
 		/// Local normal.
 		/// @detail Exact usage depends on manifold type (8-bytes).
 		/// @note Invalid for the unset and circle manifold types.
-		Vec2 localNormal = GetInvalid<Vec2>();
+		UnitVec2 m_localNormal = GetInvalid<decltype(m_localNormal)>();
 
 		/// Local point.
 		/// @detail Exact usage depends on manifold type (8-bytes).
 		/// @note Invalid for the unset manifold type.
-		Vec2 localPoint = GetInvalid<Vec2>();
+		Vec2 m_localPoint = GetInvalid<Vec2>();
 		
-		PointArray points; ///< Points of contact (at least 40-bytes). @sa pointCount.
+		PointArray m_points; ///< Points of contact (at least 40-bytes). @sa pointCount.
 	};
 	
 	template <>

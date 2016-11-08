@@ -25,7 +25,7 @@ static inline PositionSolverManifold GetForCircles(Vec2 lp, Vec2 plp,
 	const auto pointA = Transform(lp, xfA);
 	const auto pointB = Transform(plp, xfB);
 	const auto delta = pointB - pointA;
-	const auto normal = GetUnitVector(delta);
+	const auto normal = GetUnitVector(delta, UnitVec2::GetZero());
 	const auto point = (pointA + pointB) / float_t{2};
 	const auto separation = Dot(delta, normal);
 	return PositionSolverManifold{normal, point, separation};
@@ -42,7 +42,7 @@ static inline PositionSolverManifold GetForCircles(Vec2 lp, Vec2 plp,
 ///   the local normal rotated by the rotational component of xfA.
 static inline PositionSolverManifold GetForFaceA(Vec2 lp, Vec2 plp,
 												 const Transformation& xfA, const Transformation& xfB,
-												 Vec2 ln)
+												 UnitVec2 ln)
 {
 	const auto planePoint = Transform(lp, xfA);
 	const auto clipPoint = Transform(plp, xfB);
@@ -59,7 +59,7 @@ static inline PositionSolverManifold GetForFaceA(Vec2 lp, Vec2 plp,
 /// @param ln Local normal.
 static inline PositionSolverManifold GetForFaceB(Vec2 lp, Vec2 plp,
 												 const Transformation& xfA, const Transformation& xfB,
-												 Vec2 ln)
+												 UnitVec2 ln)
 {
 	const auto planePoint = Transform(lp, xfB);
 	const auto clipPoint = Transform(plp, xfA);
@@ -90,7 +90,7 @@ PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type inde
 			break;
 	}
 	// should not be reached
-	return PositionSolverManifold{GetInvalid<Vec2>(), GetInvalid<Vec2>(), GetInvalid<float_t>()};
+	return PositionSolverManifold{GetInvalid<UnitVec2>(), GetInvalid<Vec2>(), GetInvalid<float_t>()};
 }
 
 }; // namespace box2d

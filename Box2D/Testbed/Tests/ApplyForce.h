@@ -63,7 +63,7 @@ public:
 
 		{
 			Transformation xf1;
-			xf1.q = 0.3524_rad * Pi;
+			xf1.q = UnitVec2{0.3524_rad * Pi};
 			xf1.p = GetXAxis(xf1.q);
 
 			Vec2 vertices[3];
@@ -78,7 +78,7 @@ public:
 			sd1.density = 4.0f;
 
 			Transformation xf2;
-			xf2.q = -0.3524_rad * Pi;
+			xf2.q = UnitVec2{-0.3524_rad * Pi};
 			xf2.p = -GetXAxis(xf2.q);
 
 			vertices[0] = Transform(Vec2(-1.0f, float_t{0}), xf2);

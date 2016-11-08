@@ -121,7 +121,7 @@ namespace box2d {
 		/// @note Call the <code>Update</code> method to set this value.
 		/// @return Contact normal (in world coordinates) if previously set, an invalid value
 		///   otherwise.
-		Vec2 GetNormal() const noexcept { return m_normal; }
+		UnitVec2 GetNormal() const noexcept { return m_normal; }
 
 		/// Gets the count of points added to this object.
 		/// @return Value between 0 and MaxManifoldPoints
@@ -242,7 +242,7 @@ namespace box2d {
 		/// Sets the normal.
 		/// @note This value should not be modified without also setting the point relative
 		///   positions for all points, the velocity biases for all points, and the K value.
-		void SetNormal(const Vec2 n) noexcept;
+		void SetNormal(const UnitVec2 n) noexcept;
 		
 		/// Sets this object's K value.
 		/// @param value A position constraint dependent value or the zero matrix (Mat22_zero).
@@ -309,7 +309,7 @@ namespace box2d {
 			return m_points[index];
 		}
 
-		Vec2 m_normal = GetInvalid<Vec2>(); ///< Normal of the world manifold. 8-bytes.
+		UnitVec2 m_normal; ///< Normal of the world manifold. 8-bytes.
 
 		/// Friction coefficient (4-bytes). Usually in the range of [0,1].
 		float_t m_friction = GetInvalid<float_t>();
@@ -353,7 +353,7 @@ namespace box2d {
 		--m_pointCount;
 	}
 
-	inline void VelocityConstraint::SetNormal(const Vec2 n) noexcept
+	inline void VelocityConstraint::SetNormal(const UnitVec2 n) noexcept
 	{
 		m_normal = n;
 	}

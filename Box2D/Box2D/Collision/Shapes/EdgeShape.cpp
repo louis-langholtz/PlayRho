@@ -64,7 +64,7 @@ RayCastOutput box2d::RayCast(const EdgeShape& shape, const RayCastInput& input,
 	const auto v1 = shape.GetVertex1();
 	const auto v2 = shape.GetVertex2();
 	const auto e = v2 - v1;
-	const auto normal = GetUnitVector(GetFwdPerpendicular(e));
+	const auto normal = GetUnitVector(GetFwdPerpendicular(e), UnitVec2::GetZero());
 
 	// q = p1 + t * d
 	// dot(normal, q - v1) = 0
@@ -72,13 +72,13 @@ RayCastOutput box2d::RayCast(const EdgeShape& shape, const RayCastInput& input,
 	const auto numerator = Dot(normal, v1 - p1);
 	const auto denominator = Dot(normal, d);
 
-	if (denominator == float_t{0})
+	if (denominator == 0)
 	{
 		return RayCastOutput{};
 	}
 
 	const auto t = numerator / denominator;
-	if ((t < float_t{0}) || (t > input.maxFraction))
+	if ((t < 0) || (t > input.maxFraction))
 	{
 		return RayCastOutput{};
 	}
@@ -88,18 +88,18 @@ RayCastOutput box2d::RayCast(const EdgeShape& shape, const RayCastInput& input,
 	// q = v1 + s * e
 	// s = dot(q - v1, e) / dot(e, e)
 	const auto ee = LengthSquared(e);
-	if (ee == float_t{0})
+	if (ee == 0)
 	{
 		return RayCastOutput{};
 	}
 
 	const auto s = Dot(q - v1, e) / ee;
-	if ((s < float_t{0}) || (float_t{1} < s))
+	if ((s < 0) || (s > 1))
 	{
 		return RayCastOutput{};
 	}
 
-	const auto n = (numerator > float_t{0})? -Rotate(normal, xf.q): Rotate(normal, xf.q);
+	const auto n = (numerator > 0)? -Rotate(normal, xf.q): Rotate(normal, xf.q);
 	return RayCastOutput{n, t};
 }
 

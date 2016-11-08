@@ -142,7 +142,7 @@ TEST(VelocityConstraint, Update)
 	ASSERT_EQ(vc.GetNormalImpulseAtPoint(0), ni);
 	ASSERT_EQ(vc.GetTangentImpulseAtPoint(0), ti);
 
-	const auto normal = Vec2(1, 0);
+	const auto normal = UnitVec2::GetRight();
 	const auto ps = WorldManifold::PointSeparation{};
 	const auto worldManifold = WorldManifold{normal, ps};
 
@@ -152,8 +152,8 @@ TEST(VelocityConstraint, Update)
 
 	vc.Update(worldManifold, posA, posB, velocities.begin(), false);
 
-	EXPECT_FLOAT_EQ(vc.GetNormal().x, normal.x);
-	EXPECT_FLOAT_EQ(vc.GetNormal().y, normal.y);
+	EXPECT_FLOAT_EQ(vc.GetNormal().GetX(), normal.GetX());
+	EXPECT_FLOAT_EQ(vc.GetNormal().GetY(), normal.GetY());
 
 	EXPECT_FLOAT_EQ(vc.GetNormalImpulseAtPoint(0), ni);
 	EXPECT_FLOAT_EQ(vc.GetTangentImpulseAtPoint(0), ti);

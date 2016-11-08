@@ -73,7 +73,7 @@ public:
 			const auto localPointB = proxyB.GetVertex(ip0.b);
 			const auto pointA = Transform(localPointA, xfA);
 			const auto pointB = Transform(localPointB, xfB);
-			m_axis = GetUnitVector(pointB - pointA);
+			m_axis = GetUnitVector(pointB - pointA, UnitVec2::GetZero());
 			break;
 		}
 		case e_faceB:
@@ -85,7 +85,7 @@ public:
 			const auto localPointB1 = proxyB.GetVertex(ip0.b);
 			const auto localPointB2 = proxyB.GetVertex(ip1.b);
 
-			m_axis = GetUnitVector(GetFwdPerpendicular(localPointB2 - localPointB1));
+			m_axis = GetUnitVector(GetFwdPerpendicular(localPointB2 - localPointB1), UnitVec2::GetZero());
 			const auto normal = Rotate(m_axis, xfB.q);
 
 			m_localPoint = (localPointB1 + localPointB2) / float_t(2);
@@ -110,7 +110,7 @@ public:
 			const auto localPointA1 = proxyA.GetVertex(ip0.a);
 			const auto localPointA2 = proxyA.GetVertex(ip1.a);
 			
-			m_axis = GetUnitVector(GetFwdPerpendicular(localPointA2 - localPointA1));
+			m_axis = GetUnitVector(GetFwdPerpendicular(localPointA2 - localPointA1), UnitVec2::GetZero());
 			const auto normal = Rotate(m_axis, xfA.q);
 
 			m_localPoint = (localPointA1 + localPointA2) / float_t(2);
@@ -248,7 +248,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius(); // 2 polygons = 2 * PolygonRadius = 4 * LinearSlop
 	const auto target = Max(LinearSlop, totalRadius - BOX2D_MAGIC(LinearSlop * float_t{3}));
 	const auto tolerance = BOX2D_MAGIC(LinearSlop / 4);
-	assert(target >= tolerance);
+	//assert(target >= tolerance);
 	const auto maxTarget = target + tolerance;
 	const auto minTarget = target - tolerance;
 	const auto maxTargetSquared = Square(maxTarget);

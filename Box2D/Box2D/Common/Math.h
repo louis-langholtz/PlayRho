@@ -35,6 +35,8 @@ constexpr inline float_t Dot(const Vec2 a, const Vec2 b) noexcept;
 constexpr inline float_t Dot(const Vec3 a, const Vec3 b) noexcept;
 constexpr inline float_t Cross(const Vec2 a, const Vec2 b) noexcept;
 constexpr inline Vec3 Cross(const Vec3 a, const Vec3 b) noexcept;
+constexpr bool operator == (const Vec2 a, const Vec2 b) noexcept;
+constexpr bool operator != (const Vec2 a, const Vec2 b) noexcept;
 
 template <typename T>
 constexpr inline T GetInvalid() noexcept;
@@ -447,14 +449,19 @@ public:
 		return UnitVec2{};
 	}
 	
+	static constexpr UnitVec2 GetZero() noexcept
+	{
+		return UnitVec2{0, 0};
+	}
+	
 	constexpr UnitVec2() noexcept
 	{
 		// Intentionally empty.
 	}
 	
-	UnitVec2(Vec2 value, UnitVec2 fallback = GetDefaultFallback()) noexcept;
+	explicit UnitVec2(Vec2 value, UnitVec2 fallback = GetDefaultFallback()) noexcept;
 	
-	UnitVec2(Angle angle) noexcept:
+	explicit UnitVec2(Angle angle) noexcept:
 		m_x{std::cos(angle.ToRadians())}, m_y{std::sin(angle.ToRadians())}
 	{
 		
@@ -522,7 +529,7 @@ public:
 	/// @detail This returns the unit vector (y, -x).
 	/// @return A clockwise 90-degree rotation of this vector.
 	/// @sa GetRevPerpendicular.
-	constexpr inline UnitVec2 GetFwdPerpendicular() noexcept
+	constexpr inline UnitVec2 GetFwdPerpendicular() const noexcept
 	{
 		// See http://mathworld.wolfram.com/PerpendicularVector.html
 		return UnitVec2{m_y, -m_x};
@@ -533,11 +540,16 @@ public:
 		return UnitVec2{-m_x, -m_y};
 	}
 	
+	constexpr inline UnitVec2 Absolute() const noexcept
+	{
+		return UnitVec2{Abs(m_x), Abs(m_y)};
+	}
+	
 private:
 	constexpr UnitVec2(data_type x, data_type y) noexcept:
-	m_x{x}, m_y{y}
+		m_x{x}, m_y{y}
 	{
-		assert(almost_equal(Square(x) + Square(y), 1));
+		assert((x == 0 && y == 0) || almost_equal(Square(x) + Square(y), 1));
 	}
 	
 	data_type m_x = GetInvalid<data_type>();
@@ -553,7 +565,7 @@ constexpr UnitVec2 GetInvalid() noexcept
 template <>
 inline bool IsValid(const UnitVec2& value) noexcept
 {
-	return IsValid(Vec2{value});
+	return IsValid(Vec2{value}) && (Vec2{value} != Vec2{0, 0});
 }
 
 /// Gets the unit vector for the given value.
@@ -729,6 +741,16 @@ constexpr inline Vec2 GetFwdPerpendicular(const Vec2 vector) noexcept
 {
 	// See http://mathworld.wolfram.com/PerpendicularVector.html
 	return Vec2{vector.y, -vector.x};
+}
+
+constexpr inline UnitVec2 GetRevPerpendicular(const UnitVec2 vector) noexcept
+{
+	return vector.GetRevPerpendicular();
+}
+
+constexpr inline UnitVec2 GetFwdPerpendicular(const UnitVec2 vector) noexcept
+{
+	return vector.GetFwdPerpendicular();
 }
 
 /// Performs the dot product on two vectors (A and B).
@@ -988,6 +1010,18 @@ constexpr inline Vec2 InverseRotate(const Vec2 vector, const UnitVec2& angle) no
 	return Vec2{(angle.cos() * vector.x) + (angle.sin() * vector.y), (angle.cos() * vector.y) - (angle.sin() * vector.x)};
 }
 
+/// Rotates a vector by a given angle.
+constexpr inline UnitVec2 Rotate(const UnitVec2 vector, const UnitVec2& angle) noexcept
+{
+	return vector.Rotate(angle);
+}
+
+/// Inverse rotate a vector
+constexpr inline UnitVec2 InverseRotate(const UnitVec2 vector, const UnitVec2& angle) noexcept
+{
+	return vector.Rotate(angle.FlipY());
+}
+
 /// Transforms the given 2-D vector with the given transformation.
 /// @detail
 /// Rotate and translate the given 2-D linear position according to the rotation and translation
@@ -1037,6 +1071,12 @@ template <>
 inline Vec2 Abs(Vec2 a)
 {
 	return Vec2{Abs(a.x), Abs(a.y)};
+}
+
+template <>
+inline UnitVec2 Abs(UnitVec2 a)
+{
+	return a.Absolute();
 }
 
 inline Mat22 Abs(const Mat22& A)
@@ -1219,7 +1259,7 @@ inline Transformation GetTransformation(const Position pos, const Vec2 local_ctr
 {
 	assert(IsValid(pos));
 	assert(IsValid(local_ctr));
-	return GetTransformation(pos.c, pos.a, local_ctr);
+	return GetTransformation(pos.c, UnitVec2{pos.a}, local_ctr);
 }
 
 inline Position GetPosition(const Position pos0, const Position pos1, const float_t beta)

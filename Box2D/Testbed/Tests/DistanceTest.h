@@ -36,7 +36,7 @@ public:
 		{
 			m_positionB = Vec2(12.017401f, 0.13678508f);
 			m_angleB = -0.0109265_rad;
-			m_transformB = Transformation{m_positionB, m_angleB};
+			m_transformB = Transformation{m_positionB, UnitVec2{m_angleB}};
 
 			m_polygonB.SetAsBox(2.0f, 0.1f);
 		}
@@ -150,7 +150,7 @@ public:
 			break;
 		}
 
-		m_transformB = Transformation{m_positionB, m_angleB};
+		m_transformB = Transformation{m_positionB, UnitVec2{m_angleB}};
 	}
 
 	Vec2 m_positionB;

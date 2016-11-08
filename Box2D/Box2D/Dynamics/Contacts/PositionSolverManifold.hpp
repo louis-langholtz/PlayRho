@@ -29,10 +29,10 @@ namespace box2d
 {
 	/// Position solver manifold.
 	/// @detail
-	/// This is a normal-point-separation composition of data.
+	/// This is a normal-point-separation composition of data for position constraint resolution.
 	struct PositionSolverManifold
 	{
-		Vec2 m_normal; ///< Normal.
+		UnitVec2 m_normal; ///< Normal.
 		Vec2 m_point; ///< Point.
 		float_t m_separation; ///< "separation" between two points (of a contact position constraint).
 	};

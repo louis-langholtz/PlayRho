@@ -70,7 +70,7 @@ using ClipList = ArrayList<ClipVertex, MaxManifoldPoints>;
 /// @param offset Offset of the plane with which to determine intersection.
 /// @param indexA Index of vertex A.
 /// @return List of zero one or two clip points.
-ClipList ClipSegmentToLine(const ClipList& vIn, const Vec2& normal, float_t offset,
+ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, float_t offset,
 						   ContactFeature::index_t indexA);
 
 // ---------------- Inline Functions ------------------------------------------

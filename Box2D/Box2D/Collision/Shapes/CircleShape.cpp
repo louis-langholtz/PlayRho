@@ -71,7 +71,7 @@ RayCastOutput box2d::RayCast(const CircleShape& shape, const RayCastInput& input
 	if ((a >= float_t{0}) && (a <= (input.maxFraction * rr)))
 	{
 		const auto fraction = a / rr;
-		return RayCastOutput{GetUnitVector(s + fraction * r), fraction};
+		return RayCastOutput{GetUnitVector(s + fraction * r, UnitVec2::GetZero()), fraction};
 	}
 
 	return RayCastOutput{};

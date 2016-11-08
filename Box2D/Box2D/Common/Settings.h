@@ -116,8 +116,12 @@ constexpr auto AngularSlop = Pi * float_t{2} / float_t{180};
 /// Making it larger may create artifacts for vertex collision.
 constexpr auto PolygonRadius = LinearSlop * float_t{2};
 
-/// Maximum number of sub-steps per contact in continuous physics simulation.
-constexpr auto MaxSubSteps = BOX2D_MAGIC(uint16{10}); // originally 8, often hit but no apparent help against tunneling
+/// Maximum sub steps.
+/// @detail
+/// This is the maximum number of sub-steps per contact in continuous physics simulation.
+/// In other words, this is the maximum number of times in a world step that a contact will
+/// have continuous collision resolution done for it.
+constexpr auto MaxSubSteps = BOX2D_MAGIC(uint16{48}); // originally 8, often hit but no apparent help against tunneling
 
 /// Maximum number of sub-step position iterations.
 constexpr auto MaxSubStepPositionIterations = BOX2D_MAGIC(unsigned{20});
@@ -132,9 +136,6 @@ constexpr auto MaxTOIRootIterCount = BOX2D_MAGIC(uint8{50});
 constexpr auto MaxDistanceIterations = BOX2D_MAGIC(uint8{20});
 	
 // Dynamics
-
-/// Maximum number of contacts to be handled to solve a TOI impact.
-constexpr auto MaxTOIContacts = unsigned{32};
 
 /// A velocity threshold for elastic collisions. Any collision with a relative linear
 /// velocity below this threshold will be treated as inelastic.

@@ -660,21 +660,19 @@ void DebugDraw::DrawCircle(const Vec2& center, float_t radius, const Color& colo
 //
 void DebugDraw::DrawSolidCircle(const Vec2& center, float_t radius, const Vec2& axis, const Color& color)
 {
-	const float_t k_segments = 16.0f;
-	const float_t k_increment = 2.0f * Pi / k_segments;
-    float_t sinInc = sinf(k_increment);
-    float_t cosInc = cosf(k_increment);
-    Vec2 v0 = center;
-    Vec2 r1(cosInc, sinInc);
-    Vec2 v1 = center + radius * r1;
-	Color fillColor(0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f);
+	const auto k_segments = 32.0f;
+	const auto k_increment = 2.0f * Pi / k_segments;
+    const auto sinInc = sinf(k_increment);
+    const auto cosInc = cosf(k_increment);
+    const auto v0 = center;
+    auto r1 = Vec2(cosInc, sinInc);
+    auto v1 = center + radius * r1;
+	const auto fillColor = Color(0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f);
 	for (int32 i = 0; i < k_segments; ++i)
 	{
         // Perform rotation to avoid additional trigonometry.
-        Vec2 r2;
-        r2.x = cosInc * r1.x - sinInc * r1.y;
-        r2.y = sinInc * r1.x + cosInc * r1.y;
-		Vec2 v2 = center + radius * r2;
+		const auto r2 = Vec2{cosInc * r1.x - sinInc * r1.y, sinInc * r1.x + cosInc * r1.y};
+		const auto v2 = center + radius * r2;
 		m_triangles->Vertex(m_camera, v0, fillColor);
         m_triangles->Vertex(m_camera, v1, fillColor);
         m_triangles->Vertex(m_camera, v2, fillColor);
@@ -686,10 +684,8 @@ void DebugDraw::DrawSolidCircle(const Vec2& center, float_t radius, const Vec2& 
     v1 = center + radius * r1;
 	for (int32 i = 0; i < k_segments; ++i)
 	{
-        Vec2 r2;
-        r2.x = cosInc * r1.x - sinInc * r1.y;
-        r2.y = sinInc * r1.x + cosInc * r1.y;
-		Vec2 v2 = center + radius * r2;
+		const auto r2 = Vec2{cosInc * r1.x - sinInc * r1.y, sinInc * r1.x + cosInc * r1.y};
+		const auto v2 = center + radius * r2;
         m_lines->Vertex(m_camera, v1, color);
         m_lines->Vertex(m_camera, v2, color);
         r1 = r2;
@@ -697,7 +693,7 @@ void DebugDraw::DrawSolidCircle(const Vec2& center, float_t radius, const Vec2& 
 	}
 
     // Draw a line fixed in the circle to animate rotation.
-	Vec2 p = center + radius * axis;
+	const auto p = center + radius * axis;
 	m_lines->Vertex(m_camera, center, color);
 	m_lines->Vertex(m_camera, p, color);
 }

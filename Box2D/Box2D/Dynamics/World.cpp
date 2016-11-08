@@ -771,8 +771,6 @@ void World::Solve(const TimeStep& step)
 	
 bool World::Solve(const TimeStep& step, Island& island)
 {
-	// Would be nice to actually allocate this data on the actual stack but the running thread may not have nearly enough stack space for this.
-	
 	const auto contacts_count = static_cast<contact_count_t>(island.m_contacts.size());
 
 	auto positionConstraints = PositionConstraintsContainer{
@@ -899,11 +897,12 @@ void World::ResetContactsForSolveTOI()
 	}	
 }
 
-World::ContactToiPair World::UpdateContactTOIs()
+World::ContactToiData World::UpdateContactTOIs()
 {
 	auto minContact = static_cast<Contact*>(nullptr);
-	auto minToi = float_t{1};
+	auto minToi = MaxFloat;
 	
+	auto count = contact_count_t{0};
 	for (auto&& c: m_contactMgr.GetContacts())
 	{
 		if (c.IsEnabled() && (c.GetToiCount() < MaxSubSteps) && (c.HasValidToi() || c.UpdateTOI()))
@@ -913,11 +912,36 @@ World::ContactToiPair World::UpdateContactTOIs()
 			{
 				minToi = toi;
 				minContact = &c;
+				count = contact_count_t{1};
+			}
+			else if (minToi == toi)
+			{
+				// Have multiple contacts at the current minimum time of impact.
+				++count;
+
+				// Should the first one found be dealt with first?
+				// Does ordering of these contacts even matter?
+				//
+				//   Presumably if these contacts are independent then ordering won't matter
+				//   since they'd be dealt with in separate islands anyway.
+				//   OTOH, if these contacts are dependent, then the contact returned will be
+				//   first to have its two bodies positions handled for impact before other
+				//   bodies which seems like it will matter.
+				//
+				//   Prioritizing contact with non-accelerable body doesn't prevent
+				//   tunneling of bullet objects through static objects in the multi body
+				//   collision case however.
+#if 0
+				if (!c.GetFixtureB()->GetBody()->IsAccelerable() || !c.GetFixtureB()->GetBody()->IsAccelerable())
+				{
+					minContact = &c;
+				}
+#endif
 			}
 		}
 	}
 
-	return ContactToiPair{minContact, minToi};
+	return ContactToiData{count, minContact, minToi};
 }
 
 // Find TOI contacts and solve them.
@@ -935,14 +959,14 @@ void World::SolveTOI(const TimeStep& step)
 		// Find the first TOI - the soonest one.
 		const auto minContactToi = UpdateContactTOIs();
 
-		if ((!minContactToi.contact) || almost_equal(minContactToi.toi, 1))
+		if ((!minContactToi.contact) || (minContactToi.toi >= 1))
 		{
 			// No more TOI events. Done!
 			SetStepComplete(true);
 			break;
 		}
 
-		SolveTOI(step, *minContactToi.contact, minContactToi.toi);
+		SolveTOI(step, *minContactToi.contact);
 		
 		// Commit fixture proxy movements to the broad-phase so that new contacts are created.
 		// Also, some contacts can be destroyed.
@@ -956,8 +980,9 @@ void World::SolveTOI(const TimeStep& step)
 	}
 }
 
-void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
+void World::SolveTOI(const TimeStep& step, Contact& contact)
 {
+	const auto toi = contact.GetToi();
 	auto bA = contact.GetFixtureA()->GetBody();
 	auto bB = contact.GetFixtureB()->GetBody();
 
@@ -971,7 +996,17 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 	// The TOI contact likely has some new contact points.
 	contact.Update(m_contactMgr.m_contactListener);
 	contact.UnsetToi();
+
 	++contact.m_toiCount;
+	if (contact.m_toiCount >= MaxSubSteps)
+	{
+		// Note: This contact won't be passed again to this method within the current world step
+		// (as the UpdateContactTOIs method won't return it anymore).
+		// What are the pros/cons of this?
+		// Larger MaxSubSteps slows down the simulation.
+		// MaxSubSteps of 44 and higher seems to decrease the occurrance of tunneling of multiple
+		// bullet body collisions with static objects.
+	}
 
 	// Is contact disabled or separated?
 	if (!contact.IsEnabled() || !contact.IsTouching())
@@ -993,10 +1028,8 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 
 	AddToIsland(island, *bA);
 	bA->SetInIsland();
-
 	AddToIsland(island, *bB);
 	bB->SetInIsland();
-
 	island.m_contacts.push_back(&contact);
 	contact.SetInIsland();
 
@@ -1012,13 +1045,15 @@ void World::SolveTOI(const TimeStep& step, Contact& contact, float_t toi)
 		ProcessContactsForTOI(island, *bB, toi, m_contactMgr.m_contactListener);
 	}
 
-	TimeStep subStep;
-	subStep.set_dt((float_t{1} - toi) * step.get_dt());
-	subStep.dtRatio = float_t{1};
-	subStep.positionIterations = step.positionIterations? MaxSubStepPositionIterations: 0;
-	subStep.velocityIterations = step.velocityIterations;
-	subStep.warmStarting = false;
-	SolveTOI(subStep, island);
+	{
+		TimeStep subStep;
+		subStep.set_dt((float_t{1} - toi) * step.get_dt());
+		subStep.dtRatio = float_t{1};
+		subStep.positionIterations = step.positionIterations? MaxSubStepPositionIterations: 0;
+		subStep.velocityIterations = step.velocityIterations;
+		subStep.warmStarting = false;
+		SolveTOI(subStep, island);
+	}
 
 	// Reset island flags and synchronize broad-phase proxies.
 	for (auto&& body: island.m_bodies)

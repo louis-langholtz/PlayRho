@@ -47,12 +47,12 @@ struct ReferenceFace
 	
 	Vec2 v1, v2;
 	
-	Vec2 normal;
+	UnitVec2 normal;
 	
-	Vec2 sideNormal1;
+	UnitVec2 sideNormal1;
 	float_t sideOffset1;
 	
-	Vec2 sideNormal2;
+	UnitVec2 sideNormal2;
 	float_t sideOffset2;
 };
 
@@ -65,11 +65,11 @@ public:
 	
 	Vec2 GetVertex1() const noexcept { return m_vertex1; }
 	Vec2 GetVertex2() const noexcept { return m_vertex2; }
-	Vec2 GetEdge1() const noexcept { return m_edge1; }
-	Vec2 GetNormal1() const noexcept { return m_normal1; }
+	UnitVec2 GetEdge1() const noexcept { return m_edge1; }
+	UnitVec2 GetNormal1() const noexcept { return m_normal1; }
 	
 	bool IsFront() const noexcept { return m_front; }
-	Vec2 GetNormal() const noexcept { return m_normal; }
+	UnitVec2 GetNormal() const noexcept { return m_normal; }
 	Vec2 GetLowerLimit() const noexcept { return m_lowerLimit; }
 	Vec2 GetUpperLimit() const noexcept { return m_upperLimit; }
 	
@@ -78,16 +78,16 @@ public:
 private:
 	Vec2 m_vertex1;
 	Vec2 m_vertex2;
-	Vec2 m_edge1;
-	Vec2 m_normal1;
+	UnitVec2 m_edge1;
+	UnitVec2 m_normal1;
 	
 	bool m_front;
-	Vec2 m_normal;
-	Vec2 m_lowerLimit, m_upperLimit;
+	UnitVec2 m_normal;
+	UnitVec2 m_lowerLimit, m_upperLimit;
 	
 	float_t m_radius;
 
-	void SetNormalLowerUpper(Vec2 normal, Vec2 lower, Vec2 upper) noexcept
+	void SetNormalLowerUpper(UnitVec2 normal, UnitVec2 lower, UnitVec2 upper) noexcept
 	{
 		m_normal = normal;
 		m_lowerLimit = lower;
@@ -98,7 +98,7 @@ private:
 inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2 centroid):
 	m_vertex1(edge.GetVertex1()),
 	m_vertex2(edge.GetVertex2()),
-	m_edge1(GetUnitVector(m_vertex2 - m_vertex1)),
+	m_edge1(GetUnitVector(m_vertex2 - m_vertex1), UnitVec2::GetZero()),
 	m_normal1(GetFwdPerpendicular(m_edge1)),
 	m_radius(box2d::GetRadius(edge))
 {
@@ -111,13 +111,13 @@ inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2 centroid):
 	if (hasVertex0 && hasVertex3)
 	{
 		const auto vertex0 = edge.GetVertex0();
-		const auto edge0 = GetUnitVector(m_vertex1 - vertex0);
+		const auto edge0 = GetUnitVector(m_vertex1 - vertex0, UnitVec2::GetZero());
 		const auto normal0 = GetFwdPerpendicular(edge0);
 		const auto convex1 = Cross(edge0, m_edge1) >= float_t{0};
 		const auto offset0 = Dot(normal0, centroid - vertex0);
 		
 		const auto vertex3 = edge.GetVertex3();
-		const auto edge2 = GetUnitVector(vertex3 - m_vertex2);
+		const auto edge2 = GetUnitVector(vertex3 - m_vertex2, UnitVec2::GetZero());
 		const auto normal2 = GetFwdPerpendicular(edge2);
 		const auto convex2 = Cross(m_edge1, edge2) > float_t{0};
 		const auto offset2 = Dot(normal2, centroid - m_vertex2);
@@ -174,7 +174,7 @@ inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2 centroid):
 	else if (hasVertex0)
 	{
 		const auto vertex0 = edge.GetVertex0();
-		const auto edge0 = GetUnitVector(m_vertex1 - vertex0);
+		const auto edge0 = GetUnitVector(m_vertex1 - vertex0, UnitVec2::GetZero());
 		const auto normal0 = GetFwdPerpendicular(edge0);
 		const auto convex1 = Cross(edge0, m_edge1) >= float_t{0};
 		const auto offset0 = Dot(normal0, centroid - vertex0);
@@ -207,7 +207,7 @@ inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2 centroid):
 	else if (hasVertex3)
 	{
 		const auto vertex3 = edge.GetVertex3();
-		const auto edge2 = GetUnitVector(vertex3 - m_vertex2);
+		const auto edge2 = GetUnitVector(vertex3 - m_vertex2, UnitVec2::GetZero());
 		const auto normal2 = GetFwdPerpendicular(edge2);
 		const auto convex2 = Cross(m_edge1, edge2) > float_t{0};
 		const auto offset2 = Dot(normal2, centroid - m_vertex2);
@@ -560,7 +560,7 @@ static inline Manifold GetManifoldFaceA(const PolygonShape& shape1, const Transf
 	const auto shape1_abs_vertex_iv1 = Transform(shape1_rel_vertex_iv1, xf1);
 	const auto shape1_abs_vertex_iv2 = Transform(shape1_rel_vertex_iv2, xf1);
 	
-	const auto localTangent = GetUnitVector(shape1_rel_vertex_iv2 - shape1_rel_vertex_iv1);
+	const auto localTangent = GetUnitVector(shape1_rel_vertex_iv2 - shape1_rel_vertex_iv1, UnitVec2::GetZero());
 	const auto tangent = Rotate(localTangent, xf1.q);
 	
 	// Clip incident edge against extruded edge1 side edges.
@@ -607,7 +607,7 @@ static inline Manifold GetManifoldFaceB(const PolygonShape& shape1, const Transf
 	const auto shape1_abs_vertex_iv1 = Transform(shape1_rel_vertex_iv1, xf1);
 	const auto shape1_abs_vertex_iv2 = Transform(shape1_rel_vertex_iv2, xf1);
 	
-	const auto localTangent = GetUnitVector(shape1_rel_vertex_iv2 - shape1_rel_vertex_iv1);
+	const auto localTangent = GetUnitVector(shape1_rel_vertex_iv2 - shape1_rel_vertex_iv1, UnitVec2::GetZero());
 	const auto tangent = Rotate(localTangent, xf1.q);
 	
 	// Clip incident edge against extruded edge1 side edges.
@@ -709,7 +709,7 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 		{
 			return Manifold{};
 		}
-		return Manifold::GetForFaceA(GetUnitVector(cLocal - v1), v1, Manifold::Point{shapeB.GetPosition()});
+		return Manifold::GetForFaceA(GetUnitVector(cLocal - v1, UnitVec2::GetZero()), v1, Manifold::Point{shapeB.GetPosition()});
 	}
 	
 	if (Dot(cLocal - v2, v1 - v2) <= 0)
@@ -719,7 +719,7 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 		{
 			return Manifold{};
 		}
-		return Manifold::GetForFaceA(GetUnitVector(cLocal - v2), v2, Manifold::Point{shapeB.GetPosition()});
+		return Manifold::GetForFaceA(GetUnitVector(cLocal - v2, UnitVec2::GetZero()), v2, Manifold::Point{shapeB.GetPosition()});
 	}
 	
 	// Circle's center is between v1 and v2.
@@ -826,7 +826,7 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	const auto ln = GetUnitVector([=]() {
 		const auto e_perp = GetRevPerpendicular(e);
 		return (Dot(e_perp, Q - A) < 0)? -e_perp: e_perp;
-	}());
+	}(), UnitVec2::GetZero());
 	
 	return Manifold::GetForFaceA(ln, A, Manifold::Point{
 		shapeB.GetPosition(),

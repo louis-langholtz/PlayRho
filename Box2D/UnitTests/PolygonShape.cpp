@@ -144,7 +144,7 @@ TEST(PolygonShape, Translate)
 	ASSERT_EQ(shape.GetNormal(3), Vec2(0, -1));
 	
 	const auto new_ctr = Vec2{-3, 67};
-	shape.Transform(Transformation{new_ctr, 0_deg});
+	shape.Transform(Transformation{new_ctr, UnitVec2{0_deg}});
 	
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(shape.GetCentroid(), new_ctr);
@@ -272,17 +272,17 @@ TEST(PolygonShape, SetAsBoxAngledDegrees90)
 	EXPECT_FLOAT_EQ(round(shape.GetVertex(3).x, precision), hy); // right
 	EXPECT_FLOAT_EQ(round(shape.GetVertex(3).y, precision), -hx); // bottom
 	
-	EXPECT_FLOAT_EQ(round(shape.GetNormal(0).x), 0);
-	EXPECT_FLOAT_EQ(round(shape.GetNormal(0).y), +1);
+	EXPECT_FLOAT_EQ(round(shape.GetNormal(0).GetX()), 0);
+	EXPECT_FLOAT_EQ(round(shape.GetNormal(0).GetY()), +1);
 	
-	EXPECT_FLOAT_EQ(round(shape.GetNormal(1).x), -1);
-	EXPECT_FLOAT_EQ(round(shape.GetNormal(1).y), 0);
+	EXPECT_FLOAT_EQ(round(shape.GetNormal(1).GetX()), -1);
+	EXPECT_FLOAT_EQ(round(shape.GetNormal(1).GetY()), 0);
 
-	EXPECT_FLOAT_EQ(round(shape.GetNormal(2).x), 0);
-	EXPECT_FLOAT_EQ(round(shape.GetNormal(2).y), -1);
+	EXPECT_FLOAT_EQ(round(shape.GetNormal(2).GetX()), 0);
+	EXPECT_FLOAT_EQ(round(shape.GetNormal(2).GetY()), -1);
 	
-	EXPECT_FLOAT_EQ(round(shape.GetNormal(3).x), +1);
-	EXPECT_FLOAT_EQ(round(shape.GetNormal(3).y), 0);
+	EXPECT_FLOAT_EQ(round(shape.GetNormal(3).GetX()), +1);
+	EXPECT_FLOAT_EQ(round(shape.GetNormal(3).GetY()), 0);
 }
 
 TEST(PolygonShape, SetPoints)

@@ -57,7 +57,7 @@ namespace box2d {
 	/// @sa http://allenchou.net/2013/12/game-physics-resolution-contact-constraints/
 	/// @return Minimum separation distance of the position constraint's manifold points
 	///   (prior to "solving").
-	PositionSolution Solve(const PositionConstraint& pc, Position positionA, Position positionB,
+	PositionSolution SolvePositionConstraint(const PositionConstraint& pc, Position positionA, Position positionB,
 						   float_t resolution_rate, float_t max_separation, float_t max_correction);
 
 	/// Solves the velocity constraint.
