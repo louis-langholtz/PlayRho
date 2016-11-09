@@ -30,3 +30,18 @@ TEST(Contact, ByteSizeIs216)
 {
 	EXPECT_EQ(sizeof(Contact), size_t(216));
 }
+
+TEST(Contact, IsNotDefaultConstructible)
+{
+	EXPECT_FALSE(std::is_default_constructible<Contact>::value);
+}
+
+TEST(Contact, IsNotCopyConstructible)
+{
+	EXPECT_FALSE(std::is_copy_constructible<Contact>::value);
+}
+
+TEST(Contact, IsNotCopyAssignable)
+{
+	EXPECT_FALSE(std::is_copy_assignable<Contact>::value);	
+}

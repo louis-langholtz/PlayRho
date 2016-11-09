@@ -82,7 +82,8 @@ public:
 	using root_sum_type = std::conditional<sizeof(root_max_type) < sizeof(uint16), uint16, uint32>::type;
 	
 	Contact() = delete;
-
+	Contact(const Contact& copy) = delete;
+	
 	/// Gets the contact manifold.
 	/// @warning Do not modify the manifold unless you understand the internals of Box2D.
 	Manifold& GetManifold() noexcept;
@@ -278,7 +279,7 @@ private:
 
 	float_t m_tangentSpeed = float_t{0};
 
-	Manifold m_manifold; ///< Manifold of the contact. 60-bytes.
+	Manifold m_manifold; ///< Manifold of the contact. 60-bytes. @sa Update.
 
 	substep_type m_toiCount = 0; ///< Count of TOI substeps contact has gone through [0,MaxSubSteps].
 	substep_type m_toiCalls = 0;
