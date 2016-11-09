@@ -63,7 +63,9 @@ namespace box2d
 	/// @param xfA Transformation for shape A.
 	/// @param shapeB Shape B.
 	/// @param xfB Transformation for shape B.
-	/// @return Manifold value with one or more points if the shapes are touching.
+	/// @return A one-point circle-type manifold if the circle shape is by either end of the edge,
+	///   a one-point face-A-type manifold if the circle shape is between the edge's ends, or an
+	///   unset-type manifold if the shapes aren't touching.
 	Manifold CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,
 						   const CircleShape& shapeB, const Transformation& xfB);
 	

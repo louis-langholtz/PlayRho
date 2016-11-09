@@ -111,7 +111,7 @@ TEST(CollideShapes, CircleCircleOrientedVertically)
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 0);
 }
 
-TEST(CollideShapes, CircleOverTriangle)
+TEST(CollideShapes, CircleTouchingTriangleBelow)
 {
 	const auto circleRadius = float_t(1);
 	const auto circle = CircleShape(circleRadius);
@@ -317,7 +317,7 @@ TEST(CollideShapes, IdenticalHorizontalTouchingSquares)
 	EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexB, 3);
 }
 
-TEST(CollideShapes, SquareCornerUnderSquareFace)
+TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)
 {
 	const auto dim = float_t(2);
 
