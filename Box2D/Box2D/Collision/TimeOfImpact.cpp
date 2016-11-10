@@ -233,24 +233,36 @@ private:
 
 TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 					   const DistanceProxy& proxyB, const Sweep& sweepB,
-					   const float_t tMax)
+					   const TOILimits limits)
 {
 	// CCD via the local separating axis method. This seeks progression
 	// by computing the largest time at which separation is maintained.
-	assert(IsValid(sweepA.pos0));
-	assert(IsValid(sweepA.pos1));
-	assert(IsValid(sweepB.pos0));
-	assert(IsValid(sweepB.pos1));
 	
+	const auto tMax = limits.tMax;
 	auto stats = TOIOutput::Stats{0, 0, 0, 0, 0};
 	auto output = TOIOutput{TOIOutput::e_unknown, tMax, stats};
 
+	// Max target distance must be less than or equal to the total radius as the target range
+	// has to be chosen such that the contact manifold will have a greater than zero contact
+	// point count.
+	//
+	// A max target of totalRadius - LinearSlop * x where x is <= 1 is increasingly slower as x
+	// goes below 1.
+	//
+	// Min target distance must be significantly less than the max target distance and
+	// significantly more than 0.
+	//
+	// See also ::SolvePositionConstraints and SolveTOIPositionConstraints.
+
 	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius(); // 2 polygons = 2 * PolygonRadius = 4 * LinearSlop
-	const auto target = Max(LinearSlop, totalRadius - BOX2D_MAGIC(LinearSlop * float_t{3}));
-	const auto tolerance = BOX2D_MAGIC(LinearSlop / 4);
-	//assert(target >= tolerance);
+	const auto target = Max(LinearSlop, totalRadius - limits.targetDepth);
+	const auto tolerance = limits.tolerance;
 	const auto maxTarget = target + tolerance;
+	assert(maxTarget <= totalRadius);
 	const auto minTarget = target - tolerance;
+	assert(minTarget < maxTarget);
+	assert(!almost_equal(minTarget, maxTarget));
+	assert(minTarget > 0 && !almost_zero(minTarget));
 	const auto maxTargetSquared = Square(maxTarget);
 
 	auto t1 = float_t{0}; // Will be set to value of t2

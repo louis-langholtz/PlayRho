@@ -25,10 +25,23 @@
 namespace box2d {
 
 	class Shape;
-	
+	class DistanceProxy;
+
 	/// Determine if two generic shapes overlap.
 	bool TestOverlap(const Shape& shapeA, child_count_t indexA, const Transformation& xfA,
 					 const Shape& shapeB, child_count_t indexB, const Transformation& xfB);
+
+	struct TOILimits
+	{
+		float_t tMax = 1;
+		float_t targetDepth = LinearSlop * 3; ///< Targetted depth of impact.
+		float_t tolerance = LinearSlop / 4; ///< Tolerance.
+	};
+
+	constexpr auto GetDefaultTOILimits()
+	{
+		return TOILimits{};
+	}
 
 	/// TimeOfImpact Output data.
 	class TOIOutput
@@ -104,25 +117,23 @@ namespace box2d {
 		Stats m_stats;
 	};
 
-	class DistanceProxy;
-
 	/// Calculates the time of impact.
 	/// @detail
-	/// Computes the upper bound on time before two shapes penetrate.
+	/// Computes the upper bound on time before two shapes penetrate too much.
 	/// Time is represented as a fraction between [0,tMax].
 	/// This uses a swept separating axis and may miss some intermediate,
 	/// non-tunneling collision.
 	/// If you change the time interval, you should call this function again.
-	/// @note Use Distance to compute the contact point and normal at the time of impact.
+	/// @note Uses Distance to compute the contact point and normal at the time of impact.
 	/// @param proxyA Proxy A. The proxy's vertex count must be 1 or more.
 	/// @param sweepA Sweep A. Sweep of motion for shape represented by proxy A.
 	/// @param proxyB Proxy B. The proxy's vertex count must be 1 or more.
 	/// @param sweepB Sweep B. Sweep of motion for shape represented by proxy B.
-	/// @param tMax Maximum time fraction.
+	/// @param limits Limits on calculation. Like the targetted depth of penetration.
 	/// @return Time of impact output data.
 	TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 						   const DistanceProxy& proxyB, const Sweep& sweepB,
-						   const float_t tMax = float_t(1));
+						   const TOILimits limits = GetDefaultTOILimits());
 
 } // namespace box2d
 

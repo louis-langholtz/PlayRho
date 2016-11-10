@@ -52,7 +52,7 @@ TEST(TimeOfImpact, Overlapped)
 	const auto sweepA = Sweep{Position{{0, 0}, 0_deg}};
 	const auto proxyB = DistanceProxy{radius, Vec2_zero};
 	const auto sweepB = Sweep{Position{{0, 0}, 0_deg}};
-	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, 1);
+	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB);
 	EXPECT_EQ(output.get_state(), TOIOutput::e_overlapped);
 	EXPECT_EQ(output.get_t(), float_t(0));
 	EXPECT_EQ(output.get_toi_iters(), 1);
@@ -68,7 +68,7 @@ TEST(TimeOfImpact, Touching)
 	const auto proxyB = DistanceProxy{radius, Vec2_zero};
 	const auto sweepB = Sweep{Position{Vec2{2, 0}, 0_deg}};
 
-	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, 1);
+	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
 	EXPECT_EQ(output.get_t(), float_t(0));
@@ -85,7 +85,7 @@ TEST(TimeOfImpact, Separated)
 	const auto proxyB = DistanceProxy{radius, Vec2_zero};
 	const auto sweepB = Sweep{Position{Vec2{4, 0}, 0_deg}};
 	
-	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, 1);
+	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_separated);
 	EXPECT_EQ(output.get_t(), float_t(1));
@@ -103,7 +103,7 @@ TEST(TimeOfImpact, CollideHorizontally)
 	const auto proxyB = DistanceProxy{radius, Vec2_zero};
 	const auto sweepB = Sweep{Position{Vec2{+x, 0}, 0_deg}, Position{Vec2{0, 0}, 0_deg}};
 	
-	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, 1);
+	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
 	EXPECT_FLOAT_EQ(output.get_t(), float_t(0.66671669));
@@ -121,7 +121,7 @@ TEST(TimeOfImpact, CollideVertically)
 	const auto proxyB = DistanceProxy{radius, Vec2_zero};
 	const auto sweepB = Sweep{Position{Vec2{0, +y}, 0_deg}, Position{Vec2{0, -y}, 0_deg}};
 	
-	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, 1);
+	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
 	EXPECT_FLOAT_EQ(output.get_t(), float_t(0.47500378));
