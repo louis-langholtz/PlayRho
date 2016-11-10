@@ -650,13 +650,13 @@ void World::Solve(const TimeStep& step)
 			}
 		}
 		
-		inline void InitVelConstraints(VelocityConstraint* velocityConstraints,
+		inline void InitVelConstraints(VelocityConstraint* constraints,
 									   contact_count_t count, Contact** contacts, float_t dtRatio)
 		{
-			assert(count == 0 || (velocityConstraints && contacts));
+			assert(count == 0 || (constraints && contacts));
 			for (auto i = decltype(count){0}; i < count; ++i)
 			{
-				velocityConstraints[i] = GetVelocityConstraint(*contacts[i], i, dtRatio);
+				constraints[i] = GetVelocityConstraint(*contacts[i], i, dtRatio);
 			}
 		}
 		
@@ -1079,7 +1079,7 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 {
 	assert(island.m_bodies.size() >= 2);
 	const auto contacts_count = static_cast<contact_count_t>(island.m_contacts.size());
-
+	
 	auto velocities = VelocityContainer{island.m_bodies.size(), m_stackAllocator.AllocateArray<Velocity>(island.m_bodies.size()), m_stackAllocator};
 	auto positions = PositionContainer{island.m_bodies.size(), m_stackAllocator.AllocateArray<Position>(island.m_bodies.size()), m_stackAllocator};
 	auto positionConstraints = PositionConstraintsContainer{contacts_count, m_stackAllocator.AllocateArray<PositionConstraint>(contacts_count), m_stackAllocator};
@@ -1114,7 +1114,7 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	// starting impulses were applied in the discrete solver.
 	UpdateVelocityConstraints(velocityConstraints.data(), velocities.data(), contacts_count,
 							  positionConstraints.data(), positions.data());
-
+	
 	// Solve velocity constraints.
 	for (auto i = decltype(step.velocityIterations){0}; i < step.velocityIterations; ++i)
 	{
@@ -1126,7 +1126,7 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	IntegratePositions(positions, velocities, step.get_dt());
 	
 	// Update m_bodies[i].m_sweep.pos1 to position[i]
-//		CopyOut(positions.data(), velocities.data(), island.m_bodies);
+	//		CopyOut(positions.data(), velocities.data(), island.m_bodies);
 	// Copy velocity and position array data back out to the bodies
 	{
 		auto i = size_t{0};
