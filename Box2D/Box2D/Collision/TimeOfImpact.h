@@ -31,11 +31,35 @@ namespace box2d {
 	bool TestOverlap(const Shape& shapeA, child_count_t indexA, const Transformation& xfA,
 					 const Shape& shapeB, child_count_t indexB, const Transformation& xfB);
 
+	/// Time of impact limits.
+	///
+	/// @detail These parameters effect time of impact calculations by limiting the definitions
+	///    of time and impact. If total radius is expressed as TR, and target depth as TD, then:
+	///    the max target distance is (TR - TD) + tolerance; and the min target distance is
+	///    (TR - TD) - tolerance.
+	///
+	/// @note Max target distance must be less than or equal to the total radius as the target
+	///   range has to be chosen such that the contact manifold will have a greater than zero
+	///   contact point count.
+	/// @note A max target of totalRadius - LinearSlop * x where x is <= 1 is increasingly slower
+	///   as x goes below 1.
+	/// @note Min target distance needs to be significantly less than the max target distance and
+	///   significantly more than 0.
+	///
+	/// @sa SolvePositionConstraints
+ 	/// @sa SolveTOIPositionConstraints
+	///
 	struct TOILimits
 	{
+		using root_iter_type = std::remove_const<decltype(MaxTOIRootIterCount)>::type;
+		using toi_iter_type = std::remove_const<decltype(MaxTOIIterations)>::type;
+
 		float_t tMax = 1;
 		float_t targetDepth = LinearSlop * 3; ///< Targetted depth of impact.
 		float_t tolerance = LinearSlop / 4; ///< Tolerance.
+		
+		root_iter_type maxRootIters = MaxTOIRootIterCount;
+		toi_iter_type maxToiIters = MaxTOIIterations; ///< Max time of impact iterations.
 	};
 
 	constexpr auto GetDefaultTOILimits()

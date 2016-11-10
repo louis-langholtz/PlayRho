@@ -97,9 +97,8 @@ TEST(TimeOfImpact, Separated)
 	EXPECT_EQ(output.get_toi_iters(), 1);
 }
 
-TEST(TimeOfImpact, CollideHorizontally)
+TEST(TimeOfImpact, CollideCirclesHorizontally)
 {
-	//const auto limits = TOILimits{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
 	const auto limits = TOILimits{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
 
 	// Set up for two bodies moving toward each other at same speeds and each colliding
@@ -121,7 +120,7 @@ TEST(TimeOfImpact, CollideHorizontally)
 	EXPECT_EQ(output.get_toi_iters(), 2);
 }
 
-TEST(TimeOfImpact, CollideVertically)
+TEST(TimeOfImpact, CollideCirclesVertically)
 {
 	const auto limits = TOILimits{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
 	const auto radius = float_t(1);
@@ -138,4 +137,68 @@ TEST(TimeOfImpact, CollideVertically)
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
 	EXPECT_FLOAT_EQ(output.get_t(), float_t(0.47500378));
 	EXPECT_EQ(output.get_toi_iters(), 2);
+}
+
+TEST(TimeOfImpact, CirclesPassingParallelSeparatedPathsDontCollide)
+{
+	const auto limits = TOILimits{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
+	
+	// Set up for two bodies moving toward each other at same speeds and each colliding
+	// with the other after they have moved roughly two-thirds of their sweep.
+	const auto radius = float_t(1);
+	const auto x = float_t(3);
+	const auto y = float_t(1);
+	const auto proxyA = DistanceProxy{radius, Vec2_zero};
+	const auto sweepA = Sweep{Position{Vec2{-x, +y}, 0_deg}, Position{Vec2{+x, +y}, 0_deg}};
+	const auto proxyB = DistanceProxy{radius, Vec2_zero};
+	const auto sweepB = Sweep{Position{Vec2{+x, -y}, 0_deg}, Position{Vec2{-x, -y}, 0_deg}};
+	
+	// Compute the time of impact information now...
+	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
+	
+	EXPECT_EQ(output.get_state(), TOIOutput::e_separated);
+	EXPECT_FLOAT_EQ(output.get_t(), float_t(1.0));
+	EXPECT_EQ(output.get_toi_iters(), 8);
+}
+
+TEST(TimeOfImpact, RodCircleMissAt360)
+{
+	const auto limits = TOILimits{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
+	
+	// Set up for two bodies moving toward each other at same speeds and each colliding
+	// with the other after they have moved roughly two-thirds of their sweep.
+	const auto radius = float_t(1);
+	const auto x = float_t(40);
+	const auto proxyA = DistanceProxy{radius, Vec2{-4, 0}, Vec2{4, 0}};
+	const auto sweepA = Sweep{Position{Vec2{-x, 4}, 0_deg}, Position{Vec2{+x, 4}, 360_deg}};
+	const auto proxyB = DistanceProxy{radius, Vec2_zero};
+	const auto sweepB = Sweep{Position{Vec2{+x, 0}, 0_deg}, Position{Vec2{-x, 0}, 0_deg}};
+	
+	// Compute the time of impact information now...
+	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
+	
+	EXPECT_EQ(output.get_state(), TOIOutput::e_separated);
+	EXPECT_FLOAT_EQ(output.get_t(), float_t(1.0));
+	EXPECT_EQ(output.get_toi_iters(), 4);
+}
+
+TEST(TimeOfImpact, RodCircleHitAt180)
+{
+	const auto limits = TOILimits{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
+	
+	// Set up for two bodies moving toward each other at same speeds and each colliding
+	// with the other after they have moved roughly two-thirds of their sweep.
+	const auto radius = float_t(1);
+	const auto x = float_t(40);
+	const auto proxyA = DistanceProxy{radius, Vec2{-4, 0}, Vec2{4, 0}};
+	const auto sweepA = Sweep{Position{Vec2{-x, 4}, 0_deg}, Position{Vec2{+x, 4}, 180_deg}};
+	const auto proxyB = DistanceProxy{radius, Vec2_zero};
+	const auto sweepB = Sweep{Position{Vec2{+x, 0}, 0_deg}, Position{Vec2{-x, 0}, 0_deg}};
+	
+	// Compute the time of impact information now...
+	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
+	
+	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
+	EXPECT_FLOAT_EQ(output.get_t(), float_t(0.48840469));
+	EXPECT_EQ(output.get_toi_iters(), 3);
 }

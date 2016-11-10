@@ -227,8 +227,8 @@ private:
 		return Dot(pointA - pointB, normal);
 	}
 	
-	Vec2 m_axis; ///< Axis. @detail Normalized vector (a pure directional vector) of the axis of separation.
-	Vec2 m_localPoint; // used if type is e_faceA or e_faceB
+	UnitVec2 m_axis; ///< Axis. @detail Directional vector of the axis of separation.
+	Vec2 m_localPoint; ///< Local point. @note Only used if type is e_faceA or e_faceB.
 };
 
 TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
@@ -241,18 +241,6 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 	const auto tMax = limits.tMax;
 	auto stats = TOIOutput::Stats{0, 0, 0, 0, 0};
 	auto output = TOIOutput{TOIOutput::e_unknown, tMax, stats};
-
-	// Max target distance must be less than or equal to the total radius as the target range
-	// has to be chosen such that the contact manifold will have a greater than zero contact
-	// point count.
-	//
-	// A max target of totalRadius - LinearSlop * x where x is <= 1 is increasingly slower as x
-	// goes below 1.
-	//
-	// Min target distance must be significantly less than the max target distance and
-	// significantly more than 0.
-	//
-	// See also ::SolvePositionConstraints and SolveTOIPositionConstraints.
 
 	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius(); // 2 polygons = 2 * PolygonRadius = 4 * LinearSlop
 	const auto target = Max(LinearSlop, totalRadius - limits.targetDepth);
@@ -357,7 +345,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 			}
 
 			// Compute 1D root of: f(x) - target = 0
-			auto rootIterCount = decltype(MaxTOIRootIterCount){0};
+			auto rootIters = decltype(limits.maxRootIters){0};
 			auto a1 = t1;
 			auto a2 = t2;
 			auto s1 = evaluatedDistance;
@@ -366,10 +354,10 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 			{
 				// Uses secant method to improve convergence (see https://en.wikipedia.org/wiki/Secant_method ).
 				// Uses bisection method to guarantee progress (see https://en.wikipedia.org/wiki/Bisection_method ).
-				const auto t = (rootIterCount & 1)?
+				const auto t = (rootIters & 1)?
 					a1 + (target - s1) * (a2 - a1) / (s2 - s1):
 					(a1 + a2) / float_t{2};
-				++rootIterCount;
+				++rootIters;
 
 				const auto s = fcn.Evaluate(minSeparation.indexPair, t);
 
@@ -391,16 +379,16 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 					s2 = s;
 				}				
 			}
-			while (rootIterCount < MaxTOIRootIterCount);
+			while (rootIters < limits.maxRootIters);
 
-			stats.sum_root_iters += rootIterCount;
-			stats.max_root_iters = Max(stats.max_root_iters, rootIterCount);
+			stats.sum_root_iters += rootIters;
+			stats.max_root_iters = Max(stats.max_root_iters, rootIters);
 		}
 
 		if (done)
 			break;
 
-		if (stats.toi_iters == MaxTOIIterations)
+		if (stats.toi_iters == limits.maxToiIters)
 		{
 			// Root finder got stuck. Semi-victory.
 			output = TOIOutput{TOIOutput::e_failed, t1, stats};
