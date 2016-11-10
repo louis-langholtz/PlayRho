@@ -47,12 +47,14 @@ TEST(TOIOutput, InitConstruction)
 
 TEST(TimeOfImpact, Overlapped)
 {
+	const auto limits = TOILimits{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
+
 	const auto radius = float_t(1);
 	const auto proxyA = DistanceProxy{radius, Vec2_zero};
 	const auto sweepA = Sweep{Position{{0, 0}, 0_deg}};
 	const auto proxyB = DistanceProxy{radius, Vec2_zero};
 	const auto sweepB = Sweep{Position{{0, 0}, 0_deg}};
-	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB);
+	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
 	EXPECT_EQ(output.get_state(), TOIOutput::e_overlapped);
 	EXPECT_EQ(output.get_t(), float_t(0));
 	EXPECT_EQ(output.get_toi_iters(), 1);
@@ -60,6 +62,8 @@ TEST(TimeOfImpact, Overlapped)
 
 TEST(TimeOfImpact, Touching)
 {
+	const auto limits = TOILimits{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
+
 	const auto radius = float_t(1.1);
 
 	const auto proxyA = DistanceProxy{radius, Vec2_zero};
@@ -68,7 +72,7 @@ TEST(TimeOfImpact, Touching)
 	const auto proxyB = DistanceProxy{radius, Vec2_zero};
 	const auto sweepB = Sweep{Position{Vec2{2, 0}, 0_deg}};
 
-	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB);
+	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
 	EXPECT_EQ(output.get_t(), float_t(0));
@@ -77,6 +81,7 @@ TEST(TimeOfImpact, Touching)
 
 TEST(TimeOfImpact, Separated)
 {
+	const auto limits = TOILimits{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
 	const auto radius = float_t(1);
 	
 	const auto proxyA = DistanceProxy{radius, Vec2_zero};
@@ -85,7 +90,7 @@ TEST(TimeOfImpact, Separated)
 	const auto proxyB = DistanceProxy{radius, Vec2_zero};
 	const auto sweepB = Sweep{Position{Vec2{4, 0}, 0_deg}};
 	
-	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB);
+	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_separated);
 	EXPECT_EQ(output.get_t(), float_t(1));
@@ -94,24 +99,31 @@ TEST(TimeOfImpact, Separated)
 
 TEST(TimeOfImpact, CollideHorizontally)
 {
+	//const auto limits = TOILimits{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
+	const auto limits = TOILimits{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
+
+	// Set up for two bodies moving toward each other at same speeds and each colliding
+	// with the other after they have moved roughly two-thirds of their sweep.
 	const auto radius = float_t(1);
 	const auto x = float_t(3);
-	
 	const auto proxyA = DistanceProxy{radius, Vec2_zero};
 	const auto sweepA = Sweep{Position{Vec2{-x, 0}, 0_deg}, Position{Vec2{0, 0}, 0_deg}};
-	
 	const auto proxyB = DistanceProxy{radius, Vec2_zero};
 	const auto sweepB = Sweep{Position{Vec2{+x, 0}, 0_deg}, Position{Vec2{0, 0}, 0_deg}};
 	
-	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB);
+	// Compute the time of impact information now...
+	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
 	
+	const auto approx_time_of_collision = ((x - radius) + limits.targetDepth / 2) / x;
+
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
-	EXPECT_FLOAT_EQ(output.get_t(), float_t(0.66671669));
+	EXPECT_FLOAT_EQ(output.get_t(), approx_time_of_collision); // float_t(0.66671669)
 	EXPECT_EQ(output.get_toi_iters(), 2);
 }
 
 TEST(TimeOfImpact, CollideVertically)
 {
+	const auto limits = TOILimits{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
 	const auto radius = float_t(1);
 	const auto y = float_t(20);
 
@@ -121,7 +133,7 @@ TEST(TimeOfImpact, CollideVertically)
 	const auto proxyB = DistanceProxy{radius, Vec2_zero};
 	const auto sweepB = Sweep{Position{Vec2{0, +y}, 0_deg}, Position{Vec2{0, -y}, 0_deg}};
 	
-	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB);
+	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
 	EXPECT_FLOAT_EQ(output.get_t(), float_t(0.47500378));

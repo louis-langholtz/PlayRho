@@ -260,8 +260,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 	const auto maxTarget = target + tolerance;
 	assert(maxTarget <= totalRadius);
 	const auto minTarget = target - tolerance;
-	assert(minTarget < maxTarget);
-	assert(!almost_equal(minTarget, maxTarget));
+	assert(minTarget <= maxTarget);
 	assert(minTarget > 0 && !almost_zero(minTarget));
 	const auto maxTargetSquared = Square(maxTarget);
 
