@@ -35,9 +35,9 @@
 
 using namespace box2d;
 
-TEST(World, ByteSizeIs1176)
+TEST(World, ByteSizeIs432)
 {
-	EXPECT_EQ(sizeof(World), size_t(1176));
+	EXPECT_EQ(sizeof(World), size_t(432));
 }
 
 TEST(World, DefaultInit)
@@ -1095,7 +1095,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 			}
 
 			const auto last_contact_count = listener.begin_contacts;
-			ASSERT_USECS(world.Step(time_inc), 1000);
+			ASSERT_USECS(world.Step(time_inc), 5000);
 
 			EXPECT_LT(ball_body->GetPosition().x, right_edge_x - (ball_radius/2));
 			EXPECT_GT(ball_body->GetPosition().x, left_edge_x + (ball_radius/2));
@@ -1132,7 +1132,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 			}
 			
 			const auto last_contact_count = listener.begin_contacts;
-			ASSERT_USECS(world.Step(time_inc), 1000);
+			ASSERT_USECS(world.Step(time_inc), 5000);
 			
 			EXPECT_LT(ball_body->GetPosition().x, right_edge_x - (ball_radius/2));
 			EXPECT_GT(ball_body->GetPosition().x, left_edge_x + (ball_radius/2));

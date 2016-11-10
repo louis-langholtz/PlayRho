@@ -48,7 +48,7 @@ constexpr auto EarthlyGravity = Vec2{0, float_t(-9.8)};
 /// The world class manages all physics entities, dynamic simulation,
 /// and asynchronous queries. The world also contains efficient memory
 /// management facilities.
-/// @note This data structure is 376-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 432-bytes large (on at least one 64-bit platform).
 class World
 {
 public:
