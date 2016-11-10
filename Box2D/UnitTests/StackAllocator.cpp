@@ -22,9 +22,19 @@
 
 using namespace box2d;
 
-TEST(StackAllocator, ByteSizeIs808)
+TEST(StackAllocator, ByteSizeIs64)
 {
-	EXPECT_EQ(sizeof(StackAllocator), size_t(808));
+	EXPECT_EQ(sizeof(StackAllocator), size_t(64));
+}
+
+TEST(StackAllocator, DefaultConstruction)
+{
+	const auto config = StackAllocator::GetDefaultConfiguration();
+	StackAllocator foo;
+	EXPECT_EQ(foo.GetPreallocatedSize(), config.preallocation_size);
+	EXPECT_EQ(foo.GetMaxEntries(), config.allocation_records);
+	EXPECT_EQ(foo.GetIndex(), decltype(foo.GetIndex()){0});
+	EXPECT_EQ(foo.GetAllocation(), decltype(foo.GetAllocation()){0});
 }
 
 TEST(StackAllocator, faster_than_allocfree)
@@ -113,4 +123,29 @@ TEST(StackAllocator, aligns_data)
 	foo.Free(p_int);
 	foo.Free(p_char2);
 	foo.Free(p_char1);
+}
+
+TEST(StackAllocator, uses_malloc_when_full)
+{
+	StackAllocator foo;	
+	EXPECT_EQ(foo.GetEntryCount(), decltype(foo.GetEntryCount()){0});
+	
+	const auto preallocated_size = foo.GetPreallocatedSize();
+	const auto p = foo.Allocate(preallocated_size);
+	
+	EXPECT_NE(p, nullptr);
+	EXPECT_EQ(foo.GetEntryCount(), decltype(foo.GetEntryCount()){1});
+	EXPECT_EQ(foo.GetIndex(), preallocated_size);
+	EXPECT_EQ(foo.GetAllocation(), preallocated_size);
+	
+	const auto q = foo.Allocate(sizeof(double));
+	EXPECT_EQ(foo.GetEntryCount(), decltype(foo.GetEntryCount()){2});
+	EXPECT_EQ(foo.GetIndex(), preallocated_size);
+	EXPECT_GT(foo.GetAllocation(), preallocated_size);
+
+	foo.Free(q);
+	EXPECT_EQ(foo.GetEntryCount(), decltype(foo.GetEntryCount()){1});
+
+	foo.Free(p);
+	EXPECT_EQ(foo.GetEntryCount(), decltype(foo.GetEntryCount()){0});
 }

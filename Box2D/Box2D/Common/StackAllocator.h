@@ -30,21 +30,35 @@ namespace box2d {
 /// You must nest allocate/free pairs. The code will assert
 /// if you try to interleave multiple allocate/free pairs.
 /// @note This class satisfies the C++11 std::unique_ptr() Deleter concept.
-/// @note This data structure is 808-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 64-bytes large (on at least one 64-bit platform).
 class StackAllocator
 {
 public:
 	using size_type = size_t;
 
-	static constexpr auto StackSize = unsigned{100 * 1024};	///< Stack size (100k).
-	static constexpr auto MaxStackEntries = unsigned{32};
-	
-	StackAllocator() noexcept;
+	struct Configuration
+	{
+		size_type preallocation_size = 100 * 1024;
+		size_type allocation_records = 32;
+	};
+
+	static constexpr Configuration GetDefaultConfiguration()
+	{
+		return Configuration{};
+	}
+
+	StackAllocator(Configuration config = GetDefaultConfiguration()) noexcept;
+
 	~StackAllocator() noexcept;
 
 	StackAllocator(const StackAllocator& copy) = delete;
 
+	/// Allocates an aligned block of memory of the given size.
+	/// @return Pointer to memory if the allocator has allocation records left,
+	/// <code>nullptr</code> otherwise.
+	/// @sa GetEntryCount.
 	void* Allocate(size_type size) noexcept;
+
 	void Free(void* p) noexcept;
 
 	template <typename T>
@@ -66,8 +80,9 @@ public:
 		return m_maxAllocation;
 	}
 
-	/// Gets the entry count.
-	/// @return Value between 0 and <code>MaxStackEntries</code>.
+	/// Gets the current allocation record entry usage count.
+	/// @return Value between 0 and the maximum number of entries possible for this allocator.
+	/// @sa GetMaxEntries.
 	auto GetEntryCount() const noexcept
 	{
 		return m_entryCount;
@@ -89,25 +104,34 @@ public:
 		return m_allocation;
 	}
 	
+	auto GetPreallocatedSize() const noexcept
+	{
+		return m_size;
+	}
+	
+	auto GetMaxEntries() const noexcept
+	{
+		return m_max_entries;
+	}
+	
 private:
 
-	struct StackEntry
+	struct AllocationRecord
 	{
-		using size_type = size_t;
-		
 		void* data;
 		size_type size;
 		bool usedMalloc;
 	};
 	
-	char *m_data;
+	char* const m_data;
+	AllocationRecord* const m_entries;
+	size_type const m_size;
+	size_type const m_max_entries;
+	
 	size_type m_index = 0;
-
 	size_type m_allocation = 0;
 	size_type m_maxAllocation = 0;
-
-	StackEntry m_entries[MaxStackEntries];
-	std::remove_const<decltype(MaxStackEntries)>::type m_entryCount = 0;
+	size_type m_entryCount = 0;
 };
 	
 } // namespace box2d
