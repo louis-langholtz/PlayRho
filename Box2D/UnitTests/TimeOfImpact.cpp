@@ -105,7 +105,7 @@ TEST(TimeOfImpact, CollideHorizontally)
 	// Set up for two bodies moving toward each other at same speeds and each colliding
 	// with the other after they have moved roughly two-thirds of their sweep.
 	const auto radius = float_t(1);
-	const auto x = float_t(3);
+	const auto x = float_t(2);
 	const auto proxyA = DistanceProxy{radius, Vec2_zero};
 	const auto sweepA = Sweep{Position{Vec2{-x, 0}, 0_deg}, Position{Vec2{0, 0}, 0_deg}};
 	const auto proxyB = DistanceProxy{radius, Vec2_zero};
@@ -117,7 +117,7 @@ TEST(TimeOfImpact, CollideHorizontally)
 	const auto approx_time_of_collision = ((x - radius) + limits.targetDepth / 2) / x;
 
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
-	EXPECT_FLOAT_EQ(output.get_t(), approx_time_of_collision); // float_t(0.66671669)
+	EXPECT_FLOAT_EQ(output.get_t(), approx_time_of_collision);
 	EXPECT_EQ(output.get_toi_iters(), 2);
 }
 
