@@ -389,7 +389,6 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 	assert(IsValid(max_separation));
 	assert(IsValid(max_correction));
 	
-	auto minSeparation = MaxFloat;
 	const auto invMassA = pc.bodyA.invMass;
 	const auto invInertiaA = pc.bodyA.invI;
 	const auto localCenterA = pc.bodyA.localCenter;
@@ -409,43 +408,39 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 		const auto psm = GetPSM(pc.manifold, index, pos_a, localCenterA, pos_b, localCenterB);
 		
 		const auto separation = psm.m_separation - totalRadius;
+		// Positive separation means shapes not overlapping and not touching.
+		// Zero separation means shapes are touching.
+		// Negative separation means shapes are overlapping.
 		
-		// Track max constraint error.
+		const auto rA = psm.m_point - pos_a.c;
+		const auto rB = psm.m_point - pos_b.c;
 		
-		if (IsValid(psm.m_normal))
-		{
-			const auto rA = psm.m_point - pos_a.c;
-			const auto rB = psm.m_point - pos_b.c;
-			
-			// Compute the effective mass.
-			const auto K = [&]() {
-				const auto rnA = Cross(rA, psm.m_normal);
-				const auto rnB = Cross(rB, psm.m_normal);
-				return invMassTotal + (invInertiaA * Square(rnA)) + (invInertiaB * Square(rnB));
-			}();
-			
-			// Prevent large corrections and don't push the separation above max_separation.
-			const auto C = Clamp(resolution_rate * (separation - max_separation),
-								 -max_correction, float_t{0});
-			
-			// Compute normal impulse
-			const auto P = psm.m_normal * -C / K;
-			
-			return PositionSolution{
-				-Position{invMassA * P, 1_rad * invInertiaA * Cross(rA, P)},
-				+Position{invMassB * P, 1_rad * invInertiaB * Cross(rB, P)},
-				separation
-			};
-		}
+		// Compute the effective mass.
+		const auto K = [&]() {
+			const auto rnA = Cross(rA, psm.m_normal);
+			const auto rnB = Cross(rB, psm.m_normal);
+			return invMassTotal + (invInertiaA * Square(rnA)) + (invInertiaB * Square(rnB));
+		}();
 		
-		return PositionSolution{};
+		// Prevent large corrections & don't push separation above max_separation (-LinearSlop).
+		const auto C = Clamp(resolution_rate * (separation - max_separation),
+							 -max_correction, float_t{0});
+		
+		// Compute normal impulse
+		const auto P = psm.m_normal * -C / K;
+		
+		return PositionSolution{
+			-Position{invMassA * P, 1_rad * invInertiaA * Cross(rA, P)},
+			+Position{invMassB * P, 1_rad * invInertiaB * Cross(rB, P)},
+			separation
+		};
 	};
 
 	// Solve normal constraints
 	const auto pointCount = pc.manifold.GetPointCount();
 	if (pointCount == 1)
 	{
-		return PositionSolution{posA, posB, float_t(0)} + idx_fn(0, posA, posB);
+		return PositionSolution{posA, posB, 0} + idx_fn(0, posA, posB);
 	}
 	if (pointCount == 2)
 	{
@@ -470,16 +465,16 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 		}
 		// psm1.separation < psm0.separation
 		{
-			const auto s0 = idx_fn(1, posA, posB);
-			posA += s0.pos_a;
-			posB += s0.pos_b;
-			const auto s1 = idx_fn(0, posA, posB);
+			const auto s1 = idx_fn(1, posA, posB);
 			posA += s1.pos_a;
 			posB += s1.pos_b;
-			return PositionSolution{posA, posB, s0.min_separation};
+			const auto s0 = idx_fn(0, posA, posB);
+			posA += s0.pos_a;
+			posB += s0.pos_b;
+			return PositionSolution{posA, posB, s1.min_separation};
 		}
 	}
-	return PositionSolution{posA, posB, minSeparation};
+	return PositionSolution{posA, posB, MaxFloat};
 }
 
 bool box2d::SolvePositionConstraints(const PositionConstraint* positionConstraints, size_t count,
@@ -506,7 +501,8 @@ bool box2d::SolvePositionConstraints(const PositionConstraint* positionConstrain
 }
 
 bool box2d::SolveTOIPositionConstraints(const PositionConstraint* positionConstraints, size_t count,
-										Position* positions, island_count_t indexA, island_count_t indexB)
+										Position* positions,
+										island_count_t indexA, island_count_t indexB)
 {
 	auto minSeparation = MaxFloat;
 	
