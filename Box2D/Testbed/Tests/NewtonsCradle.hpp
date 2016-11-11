@@ -18,7 +18,7 @@ namespace box2d {
 	class NewtonsCradle : public Test
 	{
 	public:
-		static constexpr auto scale = float_t(.01);
+		static constexpr auto scale = float_t(1);
 		static constexpr auto ball_radius = scale * float_t(2); // 2
 		static constexpr auto frame_width_per_arm = ball_radius * 2;
 		static constexpr auto frame_height = scale * float_t(30); // 30
