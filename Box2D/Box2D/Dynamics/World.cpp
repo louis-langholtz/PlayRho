@@ -588,8 +588,8 @@ void World::Solve(const TimeStep& step)
 		/// @param listener Listener to call.
 		/// @param constraints Array of m_contactCount contact velocity constraint elements.
 		inline void Report(ContactListener& listener,
-						   Island::ContactContainer& contacts,
-						   const VelocityConstraint* constraints,
+						   Span<Contact*> contacts,
+						   Span<const VelocityConstraint> constraints,
 						   TimeStep::iteration_type solved)
 		{
 			const auto size = contacts.size();
@@ -677,12 +677,10 @@ void World::Solve(const TimeStep& step)
 		/// Stores impulses.
 		/// @detail Saves the normal and tangent impulses of all the velocity constraint points back to their
 		///   associated contacts' manifold points.
-		inline void StoreImpulses(size_t count, const VelocityConstraint* velocityConstraints, Contact** contacts)
+		inline void StoreImpulses(Span<const VelocityConstraint> velocityConstraints, Span<Contact*> contacts)
 		{
-			assert(count == 0 || (velocityConstraints && contacts));
-			for (auto i = decltype(count){0}; i < count; ++i)
+			for (auto&& vc: velocityConstraints)
 			{
-				const auto& vc = velocityConstraints[i];
 				auto& manifold = contacts[vc.GetContactIndex()]->GetManifold();
 				AssignImpulses(manifold, vc);
 			}
@@ -713,12 +711,10 @@ void World::Solve(const TimeStep& step)
 			return vp;
 		}
 		
-		inline void WarmStartVelocities(contact_count_t count, const VelocityConstraint* velocityConstraints, Velocity* const velocities)
+		inline void WarmStartVelocities(Span<const VelocityConstraint> velocityConstraints, Span<Velocity> velocities)
 		{
-			assert(count == 0 || (velocityConstraints && velocities));
-			for (auto i = decltype(count){0}; i < count; ++i)
+			for (auto&& vc: velocityConstraints)
 			{
-				const auto& vc = velocityConstraints[i];
 				const auto vp = CalcWarmStartVelocityDeltas(vc);
 				velocities[vc.bodyA.GetIndex()] += vp.a;
 				velocities[vc.bodyB.GetIndex()] += vp.b;
@@ -733,34 +729,30 @@ void World::Solve(const TimeStep& step)
 		/// @post Velocity constraints will have their "normal" field set to the world manifold normal for them.
 		/// @post Velocity constraints will have their constraint points updated.
 		/// @sa SolveVelocityConstraints.
-		inline void UpdateVelocityConstraints(VelocityConstraint* velocityConstraints,
-									   const Velocity* const velocities,
-									   contact_count_t count,
-									   const PositionConstraint* positionConstraints,
-									   const Position* const positions)
+		inline void UpdateVelocityConstraints(Span<VelocityConstraint> velocityConstraints,
+											  Span<const Velocity> velocities,
+											  Span<const PositionConstraint> positionConstraints,
+											  Span<const Position> positions)
 		{
-			assert(count == 0 || (positionConstraints && positions && velocityConstraints));
-			for (auto i = decltype(count){0}; i < count; ++i)
+			auto i = Span<VelocityConstraint>::size_type{0};
+			for (auto&& pc: positionConstraints)
 			{
-				const auto& pc = positionConstraints[i];
 				const auto posA = positions[pc.bodyA.index];
 				const auto posB = positions[pc.bodyB.index];
 				const auto worldManifold = GetWorldManifold(pc, posA, posB);
 				velocityConstraints[i].Update(worldManifold, posA.c, posB.c, velocities, true);
+				++i;
 			}
 		}
 		
 		/// "Solves" the velocity constraints.
 		/// @detail Updates the velocities and velocity constraint points' normal and tangent impulses.
 		/// @pre <code>UpdateVelocityConstraints</code> has been called on the velocity constraints.
-		inline void SolveVelocityConstraints(contact_count_t count,
-									  VelocityConstraint* velocityConstraints,
-									  Velocity* velocities)
+		inline void SolveVelocityConstraints(Span<VelocityConstraint> velocityConstraints,
+											 Span<Velocity> velocities)
 		{
-			assert(count == 0 || (velocityConstraints && velocities));
-			for (auto j = decltype(count){0}; j < count; ++j)
+			for (auto&& vc: velocityConstraints)
 			{
-				auto& vc = velocityConstraints[j];
 				SolveVelocityConstraint(vc,
 										velocities[vc.bodyA.GetIndex()],
 										velocities[vc.bodyB.GetIndex()]);
@@ -801,14 +793,11 @@ bool World::Solve(const TimeStep& step, Island& island)
 		velocities.push_back(new_velocity);
 	}
 	
-	UpdateVelocityConstraints(velocityConstraints.data(),
-							  velocities.data(),
-							  contacts_count,
-							  positionConstraints.data(), positions.data());
+	UpdateVelocityConstraints(velocityConstraints, velocities, positionConstraints, positions);
 	
 	if (step.warmStarting)
 	{
-		WarmStartVelocities(contacts_count, velocityConstraints.data(), velocities.data());
+		WarmStartVelocities(velocityConstraints, velocities);
 	}
 
 	for (auto&& joint: island.m_joints)
@@ -823,7 +812,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 			joint->SolveVelocityConstraints(velocities.data(), step);
 		}
 
-		SolveVelocityConstraints(contacts_count, velocityConstraints.data(), velocities.data());
+		SolveVelocityConstraints(velocityConstraints, velocities);
 	}
 	
 	// updates array of tentative new body positions per the velocities as if there were no obstacles...
@@ -856,10 +845,9 @@ bool World::Solve(const TimeStep& step, Island& island)
 	}
 	
 	// Update normal and tangent impulses of contacts' manifold points
-	StoreImpulses(contacts_count, velocityConstraints.data(), island.m_contacts.data());
+	StoreImpulses(velocityConstraints, island.m_contacts);
 	
 	// Updates m_bodies[i].m_sweep.pos1 to positions[i]
-//	CopyOut(positions.data(), velocities.data(), island.m_bodies);
 	// Copy velocity and position array data back out to the bodies
 	{
 		auto i = size_t{0};
@@ -872,7 +860,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 
 	if (m_contactMgr.m_contactListener)
 	{
-		Report(*m_contactMgr.m_contactListener, island.m_contacts, velocityConstraints.data(), iterationSolved);
+		Report(*m_contactMgr.m_contactListener, island.m_contacts, velocityConstraints, iterationSolved);
 	}
 	
 	return iterationSolved != TimeStep::InvalidIteration;
@@ -1113,13 +1101,12 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	
 	// No warm starting is needed for TOI events because warm
 	// starting impulses were applied in the discrete solver.
-	UpdateVelocityConstraints(velocityConstraints.data(), velocities.data(), contacts_count,
-							  positionConstraints.data(), positions.data());
+	UpdateVelocityConstraints(velocityConstraints, velocities, positionConstraints, positions);
 	
 	// Solve velocity constraints.
 	for (auto i = decltype(step.velocityIterations){0}; i < step.velocityIterations; ++i)
 	{
-		SolveVelocityConstraints(contacts_count, velocityConstraints.data(), velocities.data());
+		SolveVelocityConstraints(velocityConstraints, velocities);
 	}
 	
 	// Don't store TOI contact forces for warm starting because they can be quite large.
@@ -1127,7 +1114,6 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	IntegratePositions(positions, velocities, step.get_dt());
 	
 	// Update m_bodies[i].m_sweep.pos1 to position[i]
-	//		CopyOut(positions.data(), velocities.data(), island.m_bodies);
 	// Copy velocity and position array data back out to the bodies
 	{
 		auto i = size_t{0};
@@ -1140,7 +1126,7 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 
 	if (m_contactMgr.m_contactListener)
 	{
-		Report(*m_contactMgr.m_contactListener, island.m_contacts, velocityConstraints.data(), positionConstraintsSolved);
+		Report(*m_contactMgr.m_contactListener, island.m_contacts, velocityConstraints, positionConstraintsSolved);
 	}
 	
 	return positionConstraintsSolved != TimeStep::InvalidIteration;

@@ -21,6 +21,7 @@
 #define VelocityConstraint_hpp
 
 #include <Box2D/Common/Math.h>
+#include <Box2D/Common/Span.hpp>
 
 // Define <code>BOX2D_CACHE_VC_POINT_MASSES</code> to cache velocity constraint point masses
 // instead of re-computing them every time these values are read. This uses an additional
@@ -228,7 +229,7 @@ namespace box2d {
 		/// @param posB Linear position of body B.
 		void Update(const WorldManifold& worldManifold,
 					const Vec2 posA, const Vec2 posB,
-					const Velocity* velocities,
+					Span<const Velocity> velocities,
 					const bool blockSolve);
 		
 		void SetNormalImpulseAtPoint(size_type index, float_t value);
