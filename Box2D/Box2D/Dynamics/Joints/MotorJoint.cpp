@@ -57,7 +57,7 @@ MotorJoint::MotorJoint(const MotorJointDef& def)
 	m_correctionFactor = def.correctionFactor;
 }
 
-void MotorJoint::InitVelocityConstraints(Velocity* velocities, const Position* positions, const TimeStep& step)
+void MotorJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_localCenterA = GetBodyA()->GetLocalCenter();
@@ -139,7 +139,7 @@ void MotorJoint::InitVelocityConstraints(Velocity* velocities, const Position* p
 	velocities[m_indexB].w = wB;
 }
 
-void MotorJoint::SolveVelocityConstraints(Velocity* velocities, const TimeStep& step)
+void MotorJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step)
 {
 	auto vA = velocities[m_indexA].v;
 	auto wA = velocities[m_indexA].w;
@@ -196,7 +196,7 @@ void MotorJoint::SolveVelocityConstraints(Velocity* velocities, const TimeStep& 
 	velocities[m_indexB].w = wB;
 }
 
-bool MotorJoint::SolvePositionConstraints(Position* positions)
+bool MotorJoint::SolvePositionConstraints(Span<Position> positions)
 {
 	BOX2D_NOT_USED(positions);
 

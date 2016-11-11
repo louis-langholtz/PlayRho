@@ -69,7 +69,7 @@ PulleyJoint::PulleyJoint(const PulleyJointDef& def)
 	m_impulse = float_t{0};
 }
 
-void PulleyJoint::InitVelocityConstraints(Velocity* velocities, const Position* positions, const TimeStep& step)
+void PulleyJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -159,7 +159,7 @@ void PulleyJoint::InitVelocityConstraints(Velocity* velocities, const Position* 
 	velocities[m_indexB].w = wB;
 }
 
-void PulleyJoint::SolveVelocityConstraints(Velocity* velocities, const TimeStep& step)
+void PulleyJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step)
 {
 	auto vA = velocities[m_indexA].v;
 	auto wA = velocities[m_indexA].w;
@@ -186,7 +186,7 @@ void PulleyJoint::SolveVelocityConstraints(Velocity* velocities, const TimeStep&
 	velocities[m_indexB].w = wB;
 }
 
-bool PulleyJoint::SolvePositionConstraints(Position* positions)
+bool PulleyJoint::SolvePositionConstraints(Span<Position> positions)
 {
 	auto cA = positions[m_indexA].c;
 	auto aA = positions[m_indexA].a;

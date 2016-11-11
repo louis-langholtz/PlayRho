@@ -56,7 +56,7 @@ DistanceJoint::DistanceJoint(const DistanceJointDef& def)
 	m_dampingRatio = def.dampingRatio;
 }
 
-void DistanceJoint::InitVelocityConstraints(Velocity* velocities, const Position* positions, const TimeStep& step)
+void DistanceJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -151,7 +151,7 @@ void DistanceJoint::InitVelocityConstraints(Velocity* velocities, const Position
 	velocities[m_indexB].w = wB;
 }
 
-void DistanceJoint::SolveVelocityConstraints(Velocity* velocities, const TimeStep& step)
+void DistanceJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step)
 {
 	auto vA = velocities[m_indexA].v;
 	auto wA = velocities[m_indexA].w;
@@ -178,7 +178,7 @@ void DistanceJoint::SolveVelocityConstraints(Velocity* velocities, const TimeSte
 	velocities[m_indexB].w = wB;
 }
 
-bool DistanceJoint::SolvePositionConstraints(Position* positions)
+bool DistanceJoint::SolvePositionConstraints(Span<Position> positions)
 {
 	if (m_frequencyHz > float_t{0})
 	{

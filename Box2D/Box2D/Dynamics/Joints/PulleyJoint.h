@@ -109,9 +109,9 @@ public:
 
 private:
 
-	void InitVelocityConstraints(Velocity* velocities, const Position* positions, const TimeStep& step) override;
-	void SolveVelocityConstraints(Velocity* velocities, const TimeStep& step) override;
-	bool SolvePositionConstraints(Position* positions) override;
+	void InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step) override;
+	void SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step) override;
+	bool SolvePositionConstraints(Span<Position> positions) override;
 
 	Vec2 m_groundAnchorA;
 	Vec2 m_groundAnchorB;

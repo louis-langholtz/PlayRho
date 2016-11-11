@@ -802,14 +802,14 @@ bool World::Solve(const TimeStep& step, Island& island)
 
 	for (auto&& joint: island.m_joints)
 	{
-		joint->InitVelocityConstraints(velocities.data(), positions.data(), step);
+		joint->InitVelocityConstraints(velocities, positions, step);
 	}
 	
 	for (auto i = decltype(step.velocityIterations){0}; i < step.velocityIterations; ++i)
 	{
 		for (auto&& joint: island.m_joints)
 		{
-			joint->SolveVelocityConstraints(velocities.data(), step);
+			joint->SolveVelocityConstraints(velocities, step);
 		}
 
 		SolveVelocityConstraints(velocityConstraints, velocities);
@@ -828,7 +828,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 			auto allOkay = true;
 			for (auto&& joint: island.m_joints)
 			{
-				if (!joint->SolvePositionConstraints(positions.data()))
+				if (!joint->SolvePositionConstraints(positions))
 				{
 					allOkay = false;
 				}

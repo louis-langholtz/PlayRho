@@ -21,6 +21,7 @@
 #define B2_JOINT_H
 
 #include <Box2D/Common/Math.h>
+#include <Box2D/Common/Span.hpp>
 
 namespace box2d {
 
@@ -175,15 +176,16 @@ private:
 	/// Initializes velocity constraint data based on the given solver data.
 	/// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.
 	/// @sa SolveVelocityConstraints.
-	virtual void InitVelocityConstraints(Velocity* velocities, const Position* positions, const TimeStep& step) = 0;
+	virtual void InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions,
+										 const TimeStep& step) = 0;
 
 	/// Solves velocity constraints for the given solver data.
 	/// @pre <code>InitVelocityConstraints</code> has been called.
 	/// @sa InitVelocityConstraints.
-	virtual void SolveVelocityConstraints(Velocity* velocities, const TimeStep& step) = 0;
+	virtual void SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step) = 0;
 
 	// This returns true if the position errors are within tolerance.
-	virtual bool SolvePositionConstraints(Position* positions) = 0;
+	virtual bool SolvePositionConstraints(Span<Position> positions) = 0;
 	
 	bool IsInIsland() const noexcept;
 	void SetInIsland(bool value) noexcept;

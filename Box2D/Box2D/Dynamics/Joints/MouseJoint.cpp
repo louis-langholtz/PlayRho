@@ -52,7 +52,7 @@ void MouseJoint::SetTarget(const Vec2& target)
 	m_targetA = target;
 }
 
-void MouseJoint::InitVelocityConstraints(Velocity* velocities, const Position* positions, const TimeStep& step)
+void MouseJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step)
 {
 	m_indexB = GetBodyB()->GetIslandIndex();
 	m_localCenterB = GetBodyB()->GetLocalCenter();
@@ -132,7 +132,7 @@ void MouseJoint::InitVelocityConstraints(Velocity* velocities, const Position* p
 	velocities[m_indexB].w = wB;
 }
 
-void MouseJoint::SolveVelocityConstraints(Velocity* velocities, const TimeStep& step)
+void MouseJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step)
 {
 	const auto velocityB = velocities[m_indexB];
 	assert(IsValid(velocityB));
@@ -160,7 +160,7 @@ void MouseJoint::SolveVelocityConstraints(Velocity* velocities, const TimeStep& 
 	velocities[m_indexB].w = wB;
 }
 
-bool MouseJoint::SolvePositionConstraints(Position* positions)
+bool MouseJoint::SolvePositionConstraints(Span<Position> positions)
 {
 	BOX2D_NOT_USED(positions);
 	return true;

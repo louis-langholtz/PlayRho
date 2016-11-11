@@ -77,7 +77,7 @@ WheelJoint::WheelJoint(const WheelJointDef& def)
 	m_ay = Vec2_zero;
 }
 
-void WheelJoint::InitVelocityConstraints(Velocity* velocities, const Position* positions, const TimeStep& step)
+void WheelJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -216,7 +216,7 @@ void WheelJoint::InitVelocityConstraints(Velocity* velocities, const Position* p
 	velocities[m_indexB].w = wB;
 }
 
-void WheelJoint::SolveVelocityConstraints(Velocity* velocities, const TimeStep& step)
+void WheelJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step)
 {
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
@@ -280,7 +280,7 @@ void WheelJoint::SolveVelocityConstraints(Velocity* velocities, const TimeStep& 
 	velocities[m_indexB].w = wB;
 }
 
-bool WheelJoint::SolvePositionConstraints(Position* positions)
+bool WheelJoint::SolvePositionConstraints(Span<Position> positions)
 {
 	auto cA = positions[m_indexA].c;
 	auto aA = positions[m_indexA].a;
