@@ -640,23 +640,24 @@ void World::Solve(const TimeStep& step)
 				GetPositionConstraintBodyData(*(fixtureB.GetBody())), GetRadius(*fixtureB.GetShape())};
 		}
 		
-		inline void InitPosConstraints(PositionConstraint* constraints,
-									   contact_count_t count, Contact** contacts)
+		inline void InitPosConstraints(PositionConstraintsContainer& constraints, const Island::ContactContainer& contacts)
 		{
-			for (auto i = decltype(count){0}; i < count; ++i)
+			for (auto&& contact: contacts)
 			{
-				const auto& contact = *contacts[i];
-				constraints[i] = GetPositionConstraint(contact.GetManifold(), *contact.GetFixtureA(), *contact.GetFixtureB());
+				constraints.push_back(GetPositionConstraint(contact->GetManifold(),
+															*(contact->GetFixtureA()),
+															*(contact->GetFixtureB())));
 			}
 		}
 		
-		inline void InitVelConstraints(VelocityConstraint* constraints,
-									   contact_count_t count, Contact** contacts, float_t dtRatio)
+		inline void InitVelConstraints(VelocityConstraintsContainer& constraints,
+									   const Island::ContactContainer& contacts, float_t dtRatio)
 		{
-			assert(count == 0 || (constraints && contacts));
-			for (auto i = decltype(count){0}; i < count; ++i)
+			auto i = VelocityConstraint::index_type{0};
+			for (auto&& contact: contacts)
 			{
-				constraints[i] = GetVelocityConstraint(*contacts[i], i, dtRatio);
+				constraints.push_back(GetVelocityConstraint(*contact, i, dtRatio));
+				++i;
 			}
 		}
 		
@@ -776,12 +777,12 @@ bool World::Solve(const TimeStep& step, Island& island)
 	auto positionConstraints = PositionConstraintsContainer{
 		contacts_count, m_stackAllocator.AllocateArray<PositionConstraint>(contacts_count), m_stackAllocator
 	};
-	InitPosConstraints(positionConstraints.data(), contacts_count, island.m_contacts.data());
+	InitPosConstraints(positionConstraints, island.m_contacts);
 
 	auto velocityConstraints = VelocityConstraintsContainer{
 		contacts_count, m_stackAllocator.AllocateArray<VelocityConstraint>(contacts_count), m_stackAllocator
 	};
-	InitVelConstraints(velocityConstraints.data(), contacts_count, island.m_contacts.data(),
+	InitVelConstraints(velocityConstraints, island.m_contacts,
 					   step.warmStarting? step.dtRatio: float_t{0});
 	
 	auto velocities = VelocityContainer{island.m_bodies.size(), m_stackAllocator.AllocateArray<Velocity>(island.m_bodies.size()), m_stackAllocator};
@@ -832,7 +833,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 	auto iterationSolved = TimeStep::InvalidIteration;
 	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
 	{
-		const auto contactsOkay = SolvePositionConstraints(positionConstraints.data(), contacts_count, positions.data());
+		const auto contactsOkay = SolvePositionConstraints(positionConstraints, positions);
 		const auto jointsOkay = [&]()
 		{
 			auto allOkay = true;
@@ -1084,8 +1085,8 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	auto positions = PositionContainer{island.m_bodies.size(), m_stackAllocator.AllocateArray<Position>(island.m_bodies.size()), m_stackAllocator};
 	auto positionConstraints = PositionConstraintsContainer{contacts_count, m_stackAllocator.AllocateArray<PositionConstraint>(contacts_count), m_stackAllocator};
 	auto velocityConstraints = VelocityConstraintsContainer{contacts_count, m_stackAllocator.AllocateArray<VelocityConstraint>(contacts_count), m_stackAllocator};
-	InitPosConstraints(positionConstraints.data(), contacts_count, island.m_contacts.data());
-	InitVelConstraints(velocityConstraints.data(), contacts_count, island.m_contacts.data(),
+	InitPosConstraints(positionConstraints, island.m_contacts);
+	InitVelConstraints(velocityConstraints, island.m_contacts,
 					   step.warmStarting? step.dtRatio: float_t{0});
 	
 	// Initialize the body state.
@@ -1099,7 +1100,7 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	auto positionConstraintsSolved = TimeStep::InvalidIteration;
 	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
 	{
-		if (SolveTOIPositionConstraints(positionConstraints.data(), contacts_count, positions.data(), 0, 1))
+		if (SolveTOIPositionConstraints(positionConstraints, positions, 0, 1))
 		{
 			positionConstraintsSolved = i;
 			break;

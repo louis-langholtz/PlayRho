@@ -477,16 +477,13 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 	return PositionSolution{posA, posB, MaxFloat};
 }
 
-bool box2d::SolvePositionConstraints(const PositionConstraint* positionConstraints, size_t count,
-									 Position* positions)
+bool box2d::SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
+									 Span<Position> positions)
 {
-	assert(count == 0 || (positionConstraints && positions));
-
 	auto minSeparation = MaxFloat;
 	
-	for (auto i = decltype(count){0}; i < count; ++i)
+	for (auto&& pc: positionConstraints)
 	{
-		const auto& pc = positionConstraints[i];
 		assert(pc.bodyA.index != pc.bodyB.index);
 		const auto solution = SolvePositionConstraint(pc, positions[pc.bodyA.index], positions[pc.bodyB.index],
 													  Baumgarte, -LinearSlop, MaxLinearCorrection);
@@ -500,15 +497,15 @@ bool box2d::SolvePositionConstraints(const PositionConstraint* positionConstrain
 	return minSeparation >= -LinearSlop * 3;
 }
 
-bool box2d::SolveTOIPositionConstraints(const PositionConstraint* positionConstraints, size_t count,
-										Position* positions,
+bool box2d::SolveTOIPositionConstraints(Span<const PositionConstraint> positionConstraints,
+										Span<Position> positions,
 										island_count_t indexA, island_count_t indexB)
 {
 	auto minSeparation = MaxFloat;
 	
-	for (auto i = decltype(count){0}; i < count; ++i)
+	for (auto&& positionConstraint: positionConstraints)
 	{
-		auto pc = positionConstraints[i];
+		auto pc = positionConstraint;
 		
 		assert(pc.bodyA.index != pc.bodyB.index); // Confirm ContactManager::Add() did its job.
 		

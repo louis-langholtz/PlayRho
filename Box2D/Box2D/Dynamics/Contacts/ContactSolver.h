@@ -21,6 +21,7 @@
 #define B2_CONTACT_SOLVER_H
 
 #include <Box2D/Common/Math.h>
+#include <Box2D/Common/Span.hpp>
 
 namespace box2d {
 
@@ -72,16 +73,16 @@ namespace box2d {
 	/// @return true if the minimum separation is above the minimum separation threshold, false otherwise.
 	/// @sa MinSeparationThreshold.
 	/// @sa Solve.
-	bool SolvePositionConstraints(const PositionConstraint* positionConstraints, size_t count,
-								  Position* positions);
+	bool SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
+								  Span<Position> positions);
 	
 	/// Solves the given position constraints for TOI.
 	/// @detail This updates positions for the bodies identified by the given indexes (and nothing else).
 	/// @param indexA Index within the island of body A.
 	/// @param indexB Index within the island of body B.
 	/// @return true if the minimum separation is above the minimum TOI separation value, false otherwise.
-	bool SolveTOIPositionConstraints(const PositionConstraint* positionConstraints, size_t count,
-									 Position* positions, island_count_t indexA, island_count_t indexB);
+	bool SolveTOIPositionConstraints(Span<const PositionConstraint> positionConstraints,
+									 Span<Position> positions, island_count_t indexA, island_count_t indexB);
 	
 } // namespace box2d
 
