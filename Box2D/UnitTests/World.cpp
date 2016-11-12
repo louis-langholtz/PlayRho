@@ -35,9 +35,9 @@
 
 using namespace box2d;
 
-TEST(World, ByteSizeIs416)
+TEST(World, ByteSizeIs408)
 {
-	EXPECT_EQ(sizeof(World), size_t(416));
+	EXPECT_EQ(sizeof(World), size_t(408));
 }
 
 TEST(World, DefaultInit)

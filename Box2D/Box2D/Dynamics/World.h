@@ -48,7 +48,7 @@ constexpr auto EarthlyGravity = Vec2{0, float_t(-9.8)};
 /// The world class manages all physics entities, dynamic simulation,
 /// and asynchronous queries. The world also contains efficient memory
 /// management facilities.
-/// @note This data structure is 416-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 408-bytes large (on at least one 64-bit platform).
 class World
 {
 public:
@@ -403,10 +403,8 @@ private:
 	
 	ContactFilter m_defaultFilter; ///< Default contact filter. 8-bytes.
 	
-	ContactListener m_defaultListener;
-	
 	ContactManager m_contactMgr{
-		m_blockAllocator, &m_defaultFilter, &m_defaultListener
+		m_blockAllocator, &m_defaultFilter, nullptr
 	}; ///< Contact manager. 112-bytes.
 
 	BodyList m_bodies; ///< Body collection.
