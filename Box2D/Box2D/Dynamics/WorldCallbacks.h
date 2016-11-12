@@ -49,6 +49,7 @@ public:
 
 /// Implement this class to provide collision filtering. In other words, you can implement
 /// this class if you want finer control over contact creation.
+/// @note This data structure is 8-bytes large (on at least one 64-bit platform).
 class ContactFilter
 {
 public:

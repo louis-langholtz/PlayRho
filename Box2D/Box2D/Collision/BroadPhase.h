@@ -53,6 +53,7 @@ constexpr inline bool operator != (ProxyIdPair lhs, ProxyIdPair rhs)
 /// The broad-phase is used for computing pairs and performing volume queries and ray casts.
 /// This broad-phase does not persist pairs. Instead, this reports potentially new pairs.
 /// It is up to the client to consume the new pairs and to track subsequent overlap.
+/// @note This data structure is 72-bytes large (on at least one 64-bit platform).
 class BroadPhase
 {
 public:

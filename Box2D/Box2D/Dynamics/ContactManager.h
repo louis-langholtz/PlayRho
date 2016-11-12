@@ -35,6 +35,7 @@ struct FixtureProxy;
 /// @detail
 /// This is a delegate of World (every World instance has one of these).
 /// Objects of this class manage the contacts for the world they are in.
+/// @note This data structure is 112-bytes large (on at least one 64-bit platform).
 class ContactManager
 {
 public:
@@ -72,9 +73,9 @@ public:
 	/// @return Contact list or <code>nullptr</code> if empty.
 	ContactList& GetContacts() noexcept { return m_contacts; }
 
-	BroadPhase m_broadPhase;
-	ContactFilter* m_contactFilter;
-	ContactListener* m_contactListener;
+	BroadPhase m_broadPhase; ///< Broad phase data. 72-bytes.
+	ContactFilter* m_contactFilter; ///< Contact filter. 8-bytes.
+	ContactListener* m_contactListener; ///< Contact listener. 8-bytes.
 
 private:
 

@@ -233,18 +233,18 @@ private:
 
 TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 					   const DistanceProxy& proxyB, const Sweep& sweepB,
-					   const TOILimits limits)
+					   const ToiConf conf)
 {
 	// CCD via the local separating axis method. This seeks progression
 	// by computing the largest time at which separation is maintained.
 	
-	const auto tMax = limits.tMax;
+	const auto tMax = conf.tMax;
 	auto stats = TOIOutput::Stats{0, 0, 0, 0, 0};
 	auto output = TOIOutput{TOIOutput::e_unknown, tMax, stats};
 
 	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius(); // 2 polygons = 2 * PolygonRadius = 4 * LinearSlop
-	const auto target = Max(LinearSlop, totalRadius - limits.targetDepth);
-	const auto tolerance = limits.tolerance;
+	const auto target = Max(LinearSlop, totalRadius - conf.targetDepth);
+	const auto tolerance = conf.tolerance;
 	const auto maxTarget = target + tolerance;
 	assert(maxTarget <= totalRadius);
 	const auto minTarget = target - tolerance;
@@ -345,7 +345,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 			}
 
 			// Compute 1D root of: f(x) - target = 0
-			auto rootIters = decltype(limits.maxRootIters){0};
+			auto rootIters = decltype(conf.maxRootIters){0};
 			auto a1 = t1;
 			auto a2 = t2;
 			auto s1 = evaluatedDistance;
@@ -379,7 +379,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 					s2 = s;
 				}				
 			}
-			while (rootIters < limits.maxRootIters);
+			while (rootIters < conf.maxRootIters);
 
 			stats.sum_root_iters += rootIters;
 			stats.max_root_iters = Max(stats.max_root_iters, rootIters);
@@ -388,7 +388,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 		if (done)
 			break;
 
-		if (stats.toi_iters == limits.maxToiIters)
+		if (stats.toi_iters == conf.maxToiIters)
 		{
 			// Root finder got stuck. Semi-victory.
 			output = TOIOutput{TOIOutput::e_failed, t1, stats};

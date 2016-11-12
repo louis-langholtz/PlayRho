@@ -48,7 +48,7 @@ constexpr auto EarthlyGravity = Vec2{0, float_t(-9.8)};
 /// The world class manages all physics entities, dynamic simulation,
 /// and asynchronous queries. The world also contains efficient memory
 /// management facilities.
-/// @note This data structure is 432-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 416-bytes large (on at least one 64-bit platform).
 class World
 {
 public:
@@ -89,7 +89,8 @@ public:
 	/// @detail No reference to the definition
 	/// is retained. This may cause the connected bodies to cease colliding.
 	/// @warning This function is locked during callbacks.
-	/// @return <code>nullptr</code> if world has <code>MaxJoints</code>, else pointer to newly created joint.
+	/// @return <code>nullptr</code> if world has <code>MaxJoints</code>,
+	///   else pointer to newly created joint.
 	Joint* CreateJoint(const JointDef& def);
 
 	/// Destroys a joint.
@@ -187,24 +188,24 @@ public:
 	/// Enable/disable sleep.
 	void SetAllowSleeping(bool flag) noexcept;
 	
-	bool GetAllowSleeping() const noexcept { return m_allowSleep; }
+	bool GetAllowSleeping() const noexcept;
 
 	/// Enable/disable warm starting. For testing.
-	void SetWarmStarting(bool flag) noexcept { m_warmStarting = flag; }
+	void SetWarmStarting(bool flag) noexcept;
 
-	bool GetWarmStarting() const noexcept { return m_warmStarting; }
+	bool GetWarmStarting() const noexcept;
 
 	/// Enable/disable continuous physics. For testing.
-	void SetContinuousPhysics(bool flag) noexcept { m_continuousPhysics = flag; }
+	void SetContinuousPhysics(bool flag) noexcept;
 
 	/// Gets whether continuous physics is enabled or not.
-	bool GetContinuousPhysics() const noexcept { return m_continuousPhysics; }
+	bool GetContinuousPhysics() const noexcept;
+
+	bool GetSubStepping() const noexcept;
 
 	/// Enable/disable single stepped continuous physics. For testing.
-	void SetSubStepping(bool flag) noexcept { m_subStepping = flag; }
+	void SetSubStepping(bool flag) noexcept;
 
-	bool GetSubStepping() const noexcept { return m_subStepping; }
-	
 	/// Get the number of broad-phase proxies.
 	size_type GetProxyCount() const noexcept;
 
@@ -248,12 +249,27 @@ public:
 
 private:
 
+	using flags_type = uint32;
+
 	// m_flags
-	enum: uint32
+	enum Flag: flags_type
 	{
 		e_newFixture	= 0x0001,
 		e_locked		= 0x0002,
-		e_clearForces	= 0x0004
+		e_clearForces	= 0x0004,
+
+		// These are for debugging the solver.
+		e_warmStarting  = 0x0008,
+
+		/// Continuous physics.
+		e_contPhysics   = 0x0010,
+		
+		e_substepping   = 0x0020,
+		
+		/// Step complete. @detail Used for sub-stepping. @sa m_subStepping.
+		e_stepComplete  = 0x0040,
+		
+		e_allowSleep    = 0x0080
 	};
 
 	friend class Body;
@@ -355,9 +371,12 @@ private:
 	/// Whether or not "step" is complete.
 	/// @detail The "step" is completed when there are no more TOI events for the current time step.
 	/// @sa <code>SetStepComplete</code>.
-	bool IsStepComplete() const noexcept { return m_stepComplete; }
+	bool IsStepComplete() const noexcept;
 
-	void SetStepComplete(bool value) noexcept { m_stepComplete = value; }
+	void SetStepComplete(bool value) noexcept;
+
+	void SetAllowSleeping() noexcept;
+	void UnsetAllowSleeping() noexcept;
 
 	struct ContactToiData
 	{
@@ -372,40 +391,38 @@ private:
 	/// @return Contact with the least time of impact and its time of impact, or null contact.
 	ContactToiData UpdateContactTOIs();
 
-	BlockAllocator m_blockAllocator; ///< Block allocator.
+	bool HasNewFixtures() const noexcept;
 
-	StackAllocator m_stackAllocator; ///< Stack allocator.
+	void SetNewFixtures() noexcept;
 	
-	ContactFilter m_defaultFilter;
+	void UnsetNewFixtures() noexcept;
+	
+	BlockAllocator m_blockAllocator; ///< Block allocator. 136-bytes.
+
+	StackAllocator m_stackAllocator; ///< Stack allocator. 64-bytes.
+	
+	ContactFilter m_defaultFilter; ///< Default contact filter. 8-bytes.
 	
 	ContactListener m_defaultListener;
-
-	uint32 m_flags = e_clearForces;
 	
-	bool HasNewFixtures() const noexcept { return (m_flags & e_newFixture) != 0; }
-	void SetNewFixtures() noexcept { m_flags |= World::e_newFixture; }
-	void UnsetNewFixtures() noexcept { m_flags &= ~e_newFixture; }
-
-	ContactManager m_contactMgr{m_blockAllocator, &m_defaultFilter, &m_defaultListener};
+	ContactManager m_contactMgr{
+		m_blockAllocator, &m_defaultFilter, &m_defaultListener
+	}; ///< Contact manager. 112-bytes.
 
 	BodyList m_bodies; ///< Body collection.
 	JointList m_joints; ///< Joint collection.
 
-	Vec2 m_gravity;
-	bool m_allowSleep = true;
+	Vec2 m_gravity; ///< Gravity setting. 8-bytes.
 
-	DestructionListener* m_destructionListener = nullptr;
+	DestructionListener* m_destructionListener = nullptr; ///< Destruction listener. 8-bytes.
 
-	/// Inverse delta-t from previous step. Used to compute time step ratio to support a variable time step.
+	/// Inverse delta-t from previous step.
+	/// @detail Used to compute time step ratio to support a variable time step.
+	/// @note 4-bytes large.
 	/// @sa Step.
 	float_t m_inv_dt0 = float_t{0};
 
-	// These are for debugging the solver.
-	bool m_warmStarting = true;
-	bool m_continuousPhysics = true;
-	bool m_subStepping = false;
-
-	bool m_stepComplete = true; ///< Step complete. @detail Used for sub-stepping. @sa m_subStepping.
+	flags_type m_flags = e_clearForces|e_warmStarting|e_contPhysics|e_stepComplete|e_allowSleep;
 
 	Profile m_profile;
 };
@@ -490,6 +507,104 @@ inline World::size_type GetJointCount(const World& world) noexcept
 inline contact_count_t GetContactCount(const World& world) noexcept
 {
 	return world.GetContacts().size();
+}
+
+inline bool World::GetAllowSleeping() const noexcept
+{
+	return m_flags & e_allowSleep;
+}
+
+inline void World::SetAllowSleeping() noexcept
+{
+	m_flags |= e_allowSleep;
+}
+
+inline void World::UnsetAllowSleeping() noexcept
+{
+	m_flags &= ~e_allowSleep;		
+}
+
+inline bool World::GetWarmStarting() const noexcept
+{
+	return m_flags & e_warmStarting;
+}
+
+inline void World::SetWarmStarting(bool flag) noexcept
+{
+	if (flag)
+	{
+		m_flags |= e_warmStarting;
+	}
+	else
+	{
+		m_flags &= ~e_warmStarting;
+	}
+}
+
+inline bool World::GetContinuousPhysics() const noexcept
+{
+	return m_flags & e_contPhysics;
+}
+
+inline void World::SetContinuousPhysics(bool flag) noexcept
+{
+	if (flag)
+	{
+		m_flags |= e_contPhysics;
+	}
+	else
+	{
+		m_flags &= ~e_contPhysics;
+	}
+}
+
+inline bool World::IsStepComplete() const noexcept
+{
+	return m_flags & e_stepComplete;
+}
+
+inline void World::SetStepComplete(bool value) noexcept
+{
+	if (value)
+	{
+		m_flags |= e_stepComplete;
+	}
+	else
+	{
+		m_flags &= ~e_stepComplete;		
+	}
+}
+
+inline bool World::GetSubStepping() const noexcept
+{
+	return m_flags & e_substepping;
+}
+
+inline void World::SetSubStepping(bool flag) noexcept
+{
+	if (flag)
+	{
+		m_flags |= e_substepping;
+	}
+	else
+	{
+		m_flags &= ~e_substepping;
+	}
+}
+
+inline bool World::HasNewFixtures() const noexcept
+{
+	return m_flags & e_newFixture;
+}
+
+inline void World::SetNewFixtures() noexcept
+{
+	m_flags |= World::e_newFixture;
+}
+
+inline void World::UnsetNewFixtures() noexcept
+{
+	m_flags &= ~e_newFixture;
 }
 
 /// Dump the world into the log file.

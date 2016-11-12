@@ -231,7 +231,7 @@ static inline bool IsAllFlagsSet(uint16 value, uint16 flags)
 	return (value & flags) == flags;
 }
 
-bool Contact::UpdateTOI(const TOILimits& limits)
+bool Contact::UpdateTOI(const ToiConf& limits)
 {
 	const auto fA = GetFixtureA();
 	const auto fB = GetFixtureB();

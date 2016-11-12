@@ -340,14 +340,18 @@ void World::Destroy(Joint* j)
 //
 void World::SetAllowSleeping(bool flag) noexcept
 {
-	if (flag == m_allowSleep)
+	if (flag == GetAllowSleeping())
 	{
 		return;
 	}
 
-	m_allowSleep = flag;
-	if (!m_allowSleep)
+	if (flag)
 	{
+		SetAllowSleeping();
+	}
+	else // !flag
+	{
+		UnsetAllowSleeping();
 		for (auto&& b: m_bodies)
 		{
 			b.SetAwake();
@@ -490,7 +494,7 @@ void World::Solve(const TimeStep& step)
 				// Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions
 				const auto constraintsSolved = Solve(step, island);
 				
-				if (m_allowSleep)
+				if (GetAllowSleeping())
 				{
 					const auto minSleepTime = UpdateSleepTimes(island.m_bodies, step.get_dt());
 					if ((minSleepTime >= MinStillTimeToSleep) && constraintsSolved)
@@ -910,11 +914,12 @@ World::ContactToiData World::UpdateContactTOIs()
 	auto minContact = static_cast<Contact*>(nullptr);
 	auto minToi = MaxFloat;
 	
-	TOILimits limits;
+	ToiConf toiConf;
 	auto count = contact_count_t{0};
 	for (auto&& c: m_contactMgr.GetContacts())
 	{
-		if (c.IsEnabled() && (c.GetToiCount() < MaxSubSteps) && (c.HasValidToi() || c.UpdateTOI(limits)))
+		if (c.IsEnabled() && (c.GetToiCount() < MaxSubSteps) &&
+			(c.HasValidToi() || c.UpdateTOI(toiConf)))
 		{
 			const auto toi = c.GetToi();
 			if (minToi > toi)
@@ -941,7 +946,8 @@ World::ContactToiData World::UpdateContactTOIs()
 				//   tunneling of bullet objects through static objects in the multi body
 				//   collision case however.
 #if 0
-				if (!c.GetFixtureB()->GetBody()->IsAccelerable() || !c.GetFixtureB()->GetBody()->IsAccelerable())
+				if (!c.GetFixtureB()->GetBody()->IsAccelerable() ||
+					!c.GetFixtureB()->GetBody()->IsAccelerable())
 				{
 					minContact = &c;
 				}

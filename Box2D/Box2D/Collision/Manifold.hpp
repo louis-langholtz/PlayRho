@@ -44,12 +44,13 @@ namespace box2d
 	/// account for movement, which is critical for continuous physics.
 	/// All contact scenarios must be expressed in one of these types.
 	/// This structure is stored across time steps, so we keep it small.
-	/// @note This data structure is at least 58-bytes large.
+	/// @note This data structure is at least 58-bytes large (60-bytes on one 64-bit platform).
 	class Manifold
 	{
 	public:
 		using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
 		
+		/// Manifold type.
 		enum Type: uint8
 		{
 			/// Unset type.

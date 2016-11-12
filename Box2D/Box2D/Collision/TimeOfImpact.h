@@ -49,7 +49,7 @@ namespace box2d {
 	/// @sa SolvePositionConstraints
  	/// @sa SolveTOIPositionConstraints
 	///
-	struct TOILimits
+	struct ToiConf
 	{
 		using root_iter_type = std::remove_const<decltype(MaxTOIRootIterCount)>::type;
 		using toi_iter_type = std::remove_const<decltype(MaxTOIIterations)>::type;
@@ -62,9 +62,9 @@ namespace box2d {
 		toi_iter_type maxToiIters = MaxTOIIterations; ///< Max time of impact iterations.
 	};
 
-	constexpr auto GetDefaultTOILimits()
+	constexpr auto GetDefaultToiConf()
 	{
-		return TOILimits{};
+		return ToiConf{};
 	}
 
 	/// TimeOfImpact Output data.
@@ -153,11 +153,11 @@ namespace box2d {
 	/// @param sweepA Sweep A. Sweep of motion for shape represented by proxy A.
 	/// @param proxyB Proxy B. The proxy's vertex count must be 1 or more.
 	/// @param sweepB Sweep B. Sweep of motion for shape represented by proxy B.
-	/// @param limits Limits on calculation. Like the targetted depth of penetration.
+	/// @param conf Configuration details for on calculation. Like the targetted depth of penetration.
 	/// @return Time of impact output data.
 	TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 						   const DistanceProxy& proxyB, const Sweep& sweepB,
-						   const TOILimits limits = GetDefaultTOILimits());
+						   const ToiConf conf = GetDefaultToiConf());
 
 } // namespace box2d
 

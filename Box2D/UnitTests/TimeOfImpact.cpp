@@ -47,7 +47,7 @@ TEST(TOIOutput, InitConstruction)
 
 TEST(TimeOfImpact, Overlapped)
 {
-	const auto limits = TOILimits{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
+	const auto limits = ToiConf{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
 
 	const auto radius = float_t(1);
 	const auto proxyA = DistanceProxy{radius, Vec2_zero};
@@ -62,7 +62,7 @@ TEST(TimeOfImpact, Overlapped)
 
 TEST(TimeOfImpact, Touching)
 {
-	const auto limits = TOILimits{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
+	const auto limits = ToiConf{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
 
 	const auto radius = float_t(1.1);
 
@@ -81,7 +81,7 @@ TEST(TimeOfImpact, Touching)
 
 TEST(TimeOfImpact, Separated)
 {
-	const auto limits = TOILimits{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
+	const auto limits = ToiConf{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
 	const auto radius = float_t(1);
 	
 	const auto proxyA = DistanceProxy{radius, Vec2_zero};
@@ -99,7 +99,7 @@ TEST(TimeOfImpact, Separated)
 
 TEST(TimeOfImpact, CollideCirclesHorizontally)
 {
-	const auto limits = TOILimits{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
+	const auto limits = ToiConf{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
 
 	// Set up for two bodies moving toward each other at same speeds and each colliding
 	// with the other after they have moved roughly two-thirds of their sweep.
@@ -122,7 +122,7 @@ TEST(TimeOfImpact, CollideCirclesHorizontally)
 
 TEST(TimeOfImpact, CollideCirclesVertically)
 {
-	const auto limits = TOILimits{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
+	const auto limits = ToiConf{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
 	const auto radius = float_t(1);
 	const auto y = float_t(20);
 
@@ -141,7 +141,7 @@ TEST(TimeOfImpact, CollideCirclesVertically)
 
 TEST(TimeOfImpact, CirclesPassingParallelSeparatedPathsDontCollide)
 {
-	const auto limits = TOILimits{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
+	const auto limits = ToiConf{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
 	
 	// Set up for two bodies moving toward each other at same speeds and each colliding
 	// with the other after they have moved roughly two-thirds of their sweep.
@@ -163,7 +163,7 @@ TEST(TimeOfImpact, CirclesPassingParallelSeparatedPathsDontCollide)
 
 TEST(TimeOfImpact, RodCircleMissAt360)
 {
-	const auto limits = TOILimits{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
+	const auto limits = ToiConf{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
 	
 	// Set up for two bodies moving toward each other at same speeds and each colliding
 	// with the other after they have moved roughly two-thirds of their sweep.
@@ -184,7 +184,7 @@ TEST(TimeOfImpact, RodCircleMissAt360)
 
 TEST(TimeOfImpact, RodCircleHitAt180)
 {
-	const auto limits = TOILimits{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
+	const auto limits = ToiConf{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
 	
 	// Set up for two bodies moving toward each other at same speeds and each colliding
 	// with the other after they have moved roughly two-thirds of their sweep.
