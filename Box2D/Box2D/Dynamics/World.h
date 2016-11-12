@@ -259,7 +259,7 @@ private:
 		e_clearForces	= 0x0004,
 
 		// These are for debugging the solver.
-		e_warmStarting  = 0x0008,
+		e_warmStart     = 0x0008,
 
 		/// Continuous physics.
 		e_contPhysics   = 0x0010,
@@ -422,7 +422,7 @@ private:
 	/// @sa Step.
 	float_t m_inv_dt0 = float_t{0};
 
-	flags_type m_flags = e_clearForces|e_warmStarting|e_contPhysics|e_stepComplete|e_allowSleep;
+	flags_type m_flags = e_clearForces|e_warmStart|e_contPhysics|e_stepComplete|e_allowSleep;
 
 	Profile m_profile;
 };
@@ -526,18 +526,18 @@ inline void World::UnsetAllowSleeping() noexcept
 
 inline bool World::GetWarmStarting() const noexcept
 {
-	return m_flags & e_warmStarting;
+	return m_flags & e_warmStart;
 }
 
 inline void World::SetWarmStarting(bool flag) noexcept
 {
 	if (flag)
 	{
-		m_flags |= e_warmStarting;
+		m_flags |= e_warmStart;
 	}
 	else
 	{
-		m_flags &= ~e_warmStarting;
+		m_flags &= ~e_warmStart;
 	}
 }
 
