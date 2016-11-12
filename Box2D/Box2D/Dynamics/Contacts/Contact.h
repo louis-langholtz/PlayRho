@@ -34,7 +34,8 @@ class Contact;
 class Fixture;
 class BlockAllocator;
 class ContactListener;
-
+struct TOILimits;
+	
 /// Friction mixing law. The idea is to allow either fixture to drive the resulting friction to zero.
 /// For example, anything slides on ice.
 inline float_t MixFriction(float_t friction1, float_t friction2) noexcept(noexcept(Sqrt(friction1 * friction2)))
@@ -243,7 +244,7 @@ protected:
 	///   Ensures both bodies's sweeps are on the max alpha0 of the two (by advancing the sweep of the lesser body).
 	///   Calculates whether there's an impact and if so when.
 	///   Sets the new time of impact or sets it to 1.
-	bool UpdateTOI();
+	bool UpdateTOI(const TOILimits& limits);
 
 	bool IsInIsland() const noexcept;
 	void SetInIsland() noexcept;

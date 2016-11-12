@@ -60,7 +60,7 @@ namespace box2d {
 			assert(rB >= 0);
 		}
 		
-		Manifold manifold; ///< Copy of contact's manifold with 1 or more contact points (at least 59-bytes).
+		Manifold manifold; ///< Copy of contact's manifold with 1 or more contact points (60-bytes).
 		
 		BodyData bodyA; ///< Body A data (at least 18-bytes).
 		

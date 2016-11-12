@@ -31,7 +31,7 @@ namespace box2d {
 	bool TestOverlap(const Shape& shapeA, child_count_t indexA, const Transformation& xfA,
 					 const Shape& shapeB, child_count_t indexB, const Transformation& xfB);
 
-	/// Time of impact limits.
+	/// Time of impact configuration.
 	///
 	/// @detail These parameters effect time of impact calculations by limiting the definitions
 	///    of time and impact. If total radius is expressed as TR, and target depth as TD, then:

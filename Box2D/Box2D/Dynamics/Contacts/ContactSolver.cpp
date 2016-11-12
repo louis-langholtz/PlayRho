@@ -54,7 +54,7 @@ static inline void SolveTangentConstraint(VelocityConstraint& vc, Velocity& velA
 	assert(IsValid(velB));
 
 	const auto tangent = GetTangent(vc);
-	if (IsValid(tangent))
+	assert(IsValid(tangent));
 	{
 		const auto count = vc.GetPointCount();
 		assert((count == 1) || (count == 2));
@@ -90,7 +90,7 @@ static inline void SeqSolveNormalConstraint(VelocityConstraint& vc, Velocity& ve
 	assert(IsValid(velB));
 	
 	const auto normal = GetNormal(vc);
-	if (IsValid(normal))
+	assert(IsValid(normal));
 	{
 		const auto count = vc.GetPointCount();	
 		for (auto i = decltype(count){0}; i < count; ++i)
@@ -331,8 +331,12 @@ static inline void BlockSolveNormalConstraint(VelocityConstraint& vc, Velocity& 
 
 	const auto b_prime = [=]{
 		// Compute normal velocity
-		const auto vn1 = Dot(GetContactRelVelocity(velA, GetPointRelPosA(vc, 0), velB, GetPointRelPosB(vc, 0)), normal);
-		const auto vn2 = Dot(GetContactRelVelocity(velA, GetPointRelPosA(vc, 1), velB, GetPointRelPosB(vc, 1)), normal);
+		const auto vn1 = Dot(GetContactRelVelocity(velA, GetPointRelPosA(vc, 0),
+												   velB, GetPointRelPosB(vc, 0)),
+							 normal);
+		const auto vn2 = Dot(GetContactRelVelocity(velA, GetPointRelPosA(vc, 1),
+												   velB, GetPointRelPosB(vc, 1)),
+							 normal);
 		
 		// Compute b
 		const auto b = Vec2{vn1 - GetVelocityBiasAtPoint(vc, 0), vn2 - GetVelocityBiasAtPoint(vc, 1)};
@@ -372,29 +376,29 @@ static inline void SolveNormalConstraint(VelocityConstraint& vc, Velocity& velA,
 	
 void box2d::SolveVelocityConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
 {
-	// Solve tangent constraints first (before normal constraints) because non-penetration is more important than friction.
+	// Solve tangent constraints first (before normal constraints) because non-penetration
+	// is more important than friction.
 	SolveTangentConstraint(vc, velA, velB);
 	SolveNormalConstraint(vc, velA, velB);
 }
 
 PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
-												Position posA, Position posB,
-												float_t resolution_rate,
-												float_t max_separation,
-												float_t max_correction)
+												Position posA, bool moveA,
+												Position posB, bool moveB,
+												PositionSolverConf conf)
 {
 	assert(IsValid(posA));
 	assert(IsValid(posB));
-	assert(IsValid(resolution_rate));
-	assert(IsValid(max_separation));
-	assert(IsValid(max_correction));
+	assert(IsValid(conf.resolution_rate));
+	assert(IsValid(conf.max_separation));
+	assert(IsValid(conf.max_correction));
 	
-	const auto invMassA = pc.bodyA.invMass;
-	const auto invInertiaA = pc.bodyA.invI;
+	const auto invMassA = pc.bodyA.invMass * moveA;
+	const auto invInertiaA = pc.bodyA.invI * moveA;
 	const auto localCenterA = pc.bodyA.localCenter;
 	
-	const auto invMassB = pc.bodyB.invMass;
-	const auto invInertiaB = pc.bodyB.invI;
+	const auto invMassB = pc.bodyB.invMass * moveB;
+	const auto invInertiaB = pc.bodyB.invI * moveB;
 	const auto localCenterB = pc.bodyB.localCenter;
 	
 	// Compute inverse mass total.
@@ -423,8 +427,8 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 		}();
 		
 		// Prevent large corrections & don't push separation above max_separation (-LinearSlop).
-		const auto C = Clamp(resolution_rate * (separation - max_separation),
-							 -max_correction, float_t{0});
+		const auto C = Clamp(conf.resolution_rate * (separation - conf.max_separation),
+							 -conf.max_correction, float_t{0});
 		
 		// Compute normal impulse
 		const auto P = psm.m_normal * -C / K;
@@ -451,7 +455,11 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 		{
 			const auto s0 = idx_fn(0, posA, posB);
 			const auto s1 = idx_fn(1, posA, posB);
-			return PositionSolution{posA + s0.pos_a + s1.pos_a, posB + s0.pos_b + s1.pos_b, s0.min_separation};
+			return PositionSolution{
+				posA + s0.pos_a + s1.pos_a,
+				posB + s0.pos_b + s1.pos_b,
+				s0.min_separation
+			};
 		}
 		if (psm0.m_separation < psm1.m_separation)
 		{
@@ -477,61 +485,49 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 	return PositionSolution{posA, posB, MaxFloat};
 }
 
-bool box2d::SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
-									 Span<Position> positions)
+float_t box2d::SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
+									 Span<Position> positions, PositionSolverConf conf)
 {
 	auto minSeparation = MaxFloat;
 	
 	for (auto&& pc: positionConstraints)
 	{
-		assert(pc.bodyA.index != pc.bodyB.index);
-		const auto solution = SolvePositionConstraint(pc, positions[pc.bodyA.index], positions[pc.bodyB.index],
-													  Baumgarte, -LinearSlop, MaxLinearCorrection);
-		positions[pc.bodyA.index] = solution.pos_a;
-		positions[pc.bodyB.index] = solution.pos_b;
-		minSeparation = Min(minSeparation, solution.min_separation);
+		assert(pc.bodyA.index != pc.bodyB.index); // Confirms ContactManager::Add() did its job.
+		auto& posA = positions[pc.bodyA.index];
+		auto& posB = positions[pc.bodyB.index];
+		const auto res = SolvePositionConstraint(pc, posA, true, posB, true, conf);
+		minSeparation = Min(minSeparation, res.min_separation);
+		posA = res.pos_a;
+		posB = res.pos_b;
 	}
 	
-	// Can't expect minSpeparation >= -LinearSlop because we don't push the separation above -LinearSlop.
-	//return minSeparation >= MinSeparationThreshold;
-	return minSeparation >= -LinearSlop * 3;
+	return minSeparation;
 }
 
-bool box2d::SolveTOIPositionConstraints(Span<const PositionConstraint> positionConstraints,
+float_t box2d::SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
 										Span<Position> positions,
-										island_count_t indexA, island_count_t indexB)
+										island_count_t indexA, island_count_t indexB,
+										PositionSolverConf conf)
 {
 	auto minSeparation = MaxFloat;
 	
-	for (auto&& positionConstraint: positionConstraints)
+	// Intentionally copy position constraint to local variable in order to
+	// modify the constraint temporarily if related to indexA or indexB.
+	for (auto&& pc: positionConstraints)
 	{
-		auto pc = positionConstraint;
+		assert(pc.bodyA.index != pc.bodyB.index); // Confirms ContactManager::Add() did its job.
 		
-		assert(pc.bodyA.index != pc.bodyB.index); // Confirm ContactManager::Add() did its job.
+		const auto moveA = (pc.bodyA.index == indexA) || (pc.bodyA.index == indexB);
+		const auto moveB = (pc.bodyB.index == indexA) || (pc.bodyB.index == indexB);
 		
-		// Modify local copy of the position constraint to only let position
-		// of bodies identified by either given indexes be changed.
-		
-		if ((pc.bodyA.index != indexA) && (pc.bodyA.index != indexB))
-		{
-			pc.bodyA.invMass = float_t{0};
-			pc.bodyA.invI = float_t{0};
-		}
-		if ((pc.bodyB.index != indexA) && (pc.bodyB.index != indexB))
-		{
-			pc.bodyB.invMass = float_t{0};
-			pc.bodyB.invI = float_t{0};
-		}
-		
-		const auto solution = SolvePositionConstraint(pc, positions[pc.bodyA.index], positions[pc.bodyB.index],
-													  ToiBaumgarte, -LinearSlop, MaxLinearCorrection);
-		positions[pc.bodyA.index] = solution.pos_a;
-		positions[pc.bodyB.index] = solution.pos_b;
-		minSeparation = Min(minSeparation, solution.min_separation);
+		auto& posA = positions[pc.bodyA.index];
+		auto& posB = positions[pc.bodyB.index];
+		const auto res = SolvePositionConstraint(pc, posA, moveA, posB, moveB, conf);
+		minSeparation = Min(minSeparation, res.min_separation);
+		posA = res.pos_a;
+		posB = res.pos_b;		
 	}
 	
-	// Can't expect minSpeparation >= -LinearSlop because we don't push the separation above -LinearSlop.
-	//return minSeparation >= MinToiSeparation;
-	return minSeparation >= -LinearSlop * float_t(1.5);
+	return minSeparation;
 }
 

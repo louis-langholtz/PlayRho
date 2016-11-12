@@ -226,7 +226,12 @@ static inline bool IsValidForTime(TOIOutput::State state)
 	return state == TOIOutput::e_touching;
 }
 
-bool Contact::UpdateTOI()
+static inline bool IsAllFlagsSet(uint16 value, uint16 flags)
+{
+	return (value & flags) == flags;
+}
+
+bool Contact::UpdateTOI(const TOILimits& limits)
 {
 	const auto fA = GetFixtureA();
 	const auto fB = GetFixtureB();
@@ -240,8 +245,8 @@ bool Contact::UpdateTOI()
 	const auto bA = fA->GetBody();
 	const auto bB = fB->GetBody();
 	
-	const bool activeA = (bA->m_flags & (Body::e_awakeFlag|Body::e_velocityFlag)) == (Body::e_awakeFlag|Body::e_velocityFlag);
-	const bool activeB = (bB->m_flags & (Body::e_awakeFlag|Body::e_velocityFlag)) == (Body::e_awakeFlag|Body::e_velocityFlag);
+	const bool activeA = IsAllFlagsSet(bA->m_flags, Body::e_awakeFlag|Body::e_velocityFlag);
+	const bool activeB = IsAllFlagsSet(bB->m_flags, Body::e_awakeFlag|Body::e_velocityFlag);
 	
 	// Is at least one body active (awake and dynamic or kinematic)?
 	if ((!activeA) && (!activeB))
@@ -266,8 +271,11 @@ bool Contact::UpdateTOI()
 	
 	// Computes the time of impact in interval [0, 1]
 	// Large rotations can make the root finder of TimeOfImpact fail, so normalize the sweep angles.
-	const auto output = TimeOfImpact(GetDistanceProxy(*fA->GetShape(), GetChildIndexA()), GetAnglesNormalized(bA->m_sweep),
-									 GetDistanceProxy(*fB->GetShape(), GetChildIndexB()), GetAnglesNormalized(bB->m_sweep));
+	const auto output = TimeOfImpact(GetDistanceProxy(*fA->GetShape(), GetChildIndexA()),
+									 GetAnglesNormalized(bA->m_sweep),
+									 GetDistanceProxy(*fB->GetShape(), GetChildIndexB()),
+									 GetAnglesNormalized(bB->m_sweep),
+									 limits);
 	++m_toiCalls;
 	
 	m_toiItersTotal += output.get_toi_iters();
@@ -278,7 +286,8 @@ bool Contact::UpdateTOI()
 	m_max_dist_iters = Max(m_max_dist_iters, output.get_max_dist_iters());
 	m_max_root_iters = Max(m_max_root_iters, output.get_max_root_iters());
 	
-	// Uses Min function to handle floating point imprecision possibly otherwise calculating a TOI > 1.
+	// Use Min function to handle floating point imprecision which possibly otherwise
+	// could provide a TOI that's greater than 1.
 	const auto toi = IsValidForTime(output.get_state())?
 		Min(alpha0 + (float_t{1} - alpha0) * output.get_t(), float_t{1}): float_t{1};
 	SetToi(toi);

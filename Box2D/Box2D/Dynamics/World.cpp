@@ -26,6 +26,7 @@
 #include <Box2D/Dynamics/Contacts/Contact.h>
 #include <Box2D/Collision/BroadPhase.h>
 #include <Box2D/Collision/WorldManifold.hpp>
+#include <Box2D/Collision/TimeOfImpact.h>
 #include <Box2D/Common/Timer.h>
 #include <Box2D/Common/AllocatedArray.hpp>
 
@@ -704,8 +705,14 @@ void World::Solve(const TimeStep& step)
 				for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 				{
 					const auto P = GetNormalImpulseAtPoint(vc, j) * normal + GetTangentImpulseAtPoint(vc, j) * tangent;
-					vp.a -= Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(GetPointRelPosA(vc, j), P)};
-					vp.b += Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(GetPointRelPosB(vc, j), P)};
+					vp.a -= Velocity{
+						vc.bodyA.GetInvMass() * P,
+						1_rad * vc.bodyA.GetInvRotI() * Cross(GetPointRelPosA(vc, j), P)
+					};
+					vp.b += Velocity{
+						vc.bodyB.GetInvMass() * P,
+						1_rad * vc.bodyB.GetInvRotI() * Cross(GetPointRelPosB(vc, j), P)
+					};
 				}
 			}
 			return vp;
@@ -777,9 +784,17 @@ bool World::Solve(const TimeStep& step, Island& island)
 	InitVelConstraints(velocityConstraints, island.m_contacts,
 					   step.warmStarting? step.dtRatio: float_t{0});
 	
-	auto velocities = VelocityContainer{island.m_bodies.size(), m_stackAllocator.AllocateArray<Velocity>(island.m_bodies.size()), m_stackAllocator};
+	auto velocities = VelocityContainer{
+		island.m_bodies.size(),
+		m_stackAllocator.AllocateArray<Velocity>(island.m_bodies.size()),
+		m_stackAllocator
+	};
 	
-	auto positions = PositionContainer{island.m_bodies.size(), m_stackAllocator.AllocateArray<Position>(island.m_bodies.size()), m_stackAllocator};
+	auto positions = PositionContainer{
+		island.m_bodies.size(),
+		m_stackAllocator.AllocateArray<Position>(island.m_bodies.size()),
+		m_stackAllocator
+	};
 	
 	const auto h = step.get_dt(); ///< Time step (in seconds).
 	
@@ -820,9 +835,12 @@ bool World::Solve(const TimeStep& step, Island& island)
 	
 	// Solve position constraints
 	auto iterationSolved = TimeStep::InvalidIteration;
+	const auto psConf = PositionSolverConf{Baumgarte, -LinearSlop, MaxLinearCorrection};
 	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
 	{
-		const auto contactsOkay = SolvePositionConstraints(positionConstraints, positions);
+		const auto minSep = SolvePositionConstraints(positionConstraints, positions, psConf);
+		const auto contactsOkay = (minSep >= -LinearSlop * 3);
+
 		const auto jointsOkay = [&]()
 		{
 			auto allOkay = true;
@@ -860,7 +878,8 @@ bool World::Solve(const TimeStep& step, Island& island)
 
 	if (m_contactMgr.m_contactListener)
 	{
-		Report(*m_contactMgr.m_contactListener, island.m_contacts, velocityConstraints, iterationSolved);
+		Report(*m_contactMgr.m_contactListener, island.m_contacts, velocityConstraints,
+			   iterationSolved);
 	}
 	
 	return iterationSolved != TimeStep::InvalidIteration;
@@ -891,10 +910,11 @@ World::ContactToiData World::UpdateContactTOIs()
 	auto minContact = static_cast<Contact*>(nullptr);
 	auto minToi = MaxFloat;
 	
+	TOILimits limits;
 	auto count = contact_count_t{0};
 	for (auto&& c: m_contactMgr.GetContacts())
 	{
-		if (c.IsEnabled() && (c.GetToiCount() < MaxSubSteps) && (c.HasValidToi() || c.UpdateTOI()))
+		if (c.IsEnabled() && (c.GetToiCount() < MaxSubSteps) && (c.HasValidToi() || c.UpdateTOI(limits)))
 		{
 			const auto toi = c.GetToi();
 			if (minToi > toi)
@@ -1069,10 +1089,26 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	assert(island.m_bodies.size() >= 2);
 	const auto contacts_count = static_cast<contact_count_t>(island.m_contacts.size());
 	
-	auto velocities = VelocityContainer{island.m_bodies.size(), m_stackAllocator.AllocateArray<Velocity>(island.m_bodies.size()), m_stackAllocator};
-	auto positions = PositionContainer{island.m_bodies.size(), m_stackAllocator.AllocateArray<Position>(island.m_bodies.size()), m_stackAllocator};
-	auto positionConstraints = PositionConstraintsContainer{contacts_count, m_stackAllocator.AllocateArray<PositionConstraint>(contacts_count), m_stackAllocator};
-	auto velocityConstraints = VelocityConstraintsContainer{contacts_count, m_stackAllocator.AllocateArray<VelocityConstraint>(contacts_count), m_stackAllocator};
+	auto velocities = VelocityContainer{
+		island.m_bodies.size(),
+		m_stackAllocator.AllocateArray<Velocity>(island.m_bodies.size()),
+		m_stackAllocator
+	};
+	auto positions = PositionContainer{
+		island.m_bodies.size(),
+		m_stackAllocator.AllocateArray<Position>(island.m_bodies.size()),
+		m_stackAllocator
+	};
+	auto positionConstraints = PositionConstraintsContainer{
+		contacts_count,
+		m_stackAllocator.AllocateArray<PositionConstraint>(contacts_count),
+		m_stackAllocator
+	};
+	auto velocityConstraints = VelocityConstraintsContainer{
+		contacts_count,
+		m_stackAllocator.AllocateArray<VelocityConstraint>(contacts_count),
+		m_stackAllocator
+	};
 	InitPosConstraints(positionConstraints, island.m_contacts);
 	InitVelConstraints(velocityConstraints, island.m_contacts,
 					   step.warmStarting? step.dtRatio: float_t{0});
@@ -1086,9 +1122,12 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	
 	// Solve TOI-based position constraints.
 	auto positionConstraintsSolved = TimeStep::InvalidIteration;
+	const auto psConf = PositionSolverConf{ToiBaumgarte, -LinearSlop, MaxLinearCorrection};
 	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
 	{
-		if (SolveTOIPositionConstraints(positionConstraints, positions, 0, 1))
+		const auto minSeparation = SolvePositionConstraints(positionConstraints, positions,
+															0, 1, psConf);
+		if (minSeparation >= -LinearSlop * float_t(1.5))
 		{
 			positionConstraintsSolved = i;
 			break;
@@ -1126,7 +1165,8 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 
 	if (m_contactMgr.m_contactListener)
 	{
-		Report(*m_contactMgr.m_contactListener, island.m_contacts, velocityConstraints, positionConstraintsSolved);
+		Report(*m_contactMgr.m_contactListener, island.m_contacts, velocityConstraints,
+			   positionConstraintsSolved);
 	}
 	
 	return positionConstraintsSolved != TimeStep::InvalidIteration;

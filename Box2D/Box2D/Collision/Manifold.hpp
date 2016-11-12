@@ -44,7 +44,7 @@ namespace box2d
 	/// account for movement, which is critical for continuous physics.
 	/// All contact scenarios must be expressed in one of these types.
 	/// This structure is stored across time steps, so we keep it small.
-	/// @note This data structure is at least 59-bytes large.
+	/// @note This data structure is at least 58-bytes large.
 	class Manifold
 	{
 	public:
@@ -264,7 +264,7 @@ namespace box2d
 		}
 		
 		Type m_type = e_unset; ///< Type of collision this manifold is associated with (1-byte).
-		size_type m_pointCount = 0; ///< Number of defined manifold points (2-bytes).
+		size_type m_pointCount = 0; ///< Number of defined manifold points (1-byte).
 		
 		/// Local normal.
 		/// @detail Exact usage depends on manifold type (8-bytes).

@@ -45,21 +45,77 @@ namespace box2d {
 		return PositionSolution{lhs.pos_a - rhs.pos_a, lhs.pos_b - rhs.pos_b, lhs.min_separation - rhs.min_separation};
 	}
 
+	/// Position solver configuration data.
+	/// @detail
+	/// Defines how a position constraint solver should resolve a given constraint.
+	/// @sa SolvePositionConstraint.
+	struct PositionSolverConf
+	{
+		/// Resolution rate.
+		/// @detail
+		/// Defines the percentage of the overlap that should get resolved in a single solver call.
+		/// Value greater than zero and less than or equal to one.
+		/// @note Recommended values are: <code>Baumgarte</code> or <code>ToiBaumgarte</code>.
+		float_t resolution_rate = Baumgarte;
+
+		/// Maximum separation to create.
+		/// @note Recommended value: <code>-LinearSlop</code>.
+		float_t max_separation = -LinearSlop;
+		
+		/// Maximum correction.
+		/// @detail
+		/// Maximum amount of overlap to resolve in a single solver call.
+		/// @note Recommended value: <code>MaxLinearCorrection</code>.
+		float_t max_correction = MaxLinearCorrection;
+	};
+
 	/// Solves the given position constraint.
 	/// @detail
 	/// This pushes apart the two given positions for every point in the contact position constraint
 	/// and returns the minimum separation value from the position solver manifold for each point.
-	/// @param resolution_rate Resolution rate. Value greater than zero and less than or equal to one.
-	///   Defines the percentage of the overlap that should get resolved in a single call to this
-	///   function. Recommended values are: <code>Baumgarte</code> or <code>ToiBaumgarte</code>.
-	/// @param max_separation Maximum separation to create. Recommended value: <code>-LinearSlop</code>.
-	/// @param max_correction Maximum correction. Maximum amount of overlap to resolve in a single
-	///   call to this function. Recommended value: <code>MaxLinearCorrection</code>.
 	/// @sa http://allenchou.net/2013/12/game-physics-resolution-contact-constraints/
 	/// @return Minimum separation distance of the position constraint's manifold points
 	///   (prior to "solving").
-	PositionSolution SolvePositionConstraint(const PositionConstraint& pc, Position positionA, Position positionB,
-						   float_t resolution_rate, float_t max_separation, float_t max_correction);
+	PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
+											 Position positionA, bool moveA,
+											 Position positionB, bool moveB,
+											 PositionSolverConf conf);
+	
+	inline PositionSolverConf GetDefaultPositionSolverConf()
+	{
+		return PositionSolverConf{Baumgarte, -LinearSlop, MaxLinearCorrection};
+	}
+	
+	/// Solves the given position constraints.
+	/// @detail This updates positions (and nothing else) by calling the position constraint solving function.
+	/// @note Can't expect the returned minimum separation to be greater than or equal to
+	///  PositionSolverConf.max_separation because code won't push the separation above this
+	///   amount to begin with.
+	/// @return Minimum separation.
+	/// @sa MinSeparationThreshold.
+	/// @sa Solve.
+	float_t SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
+									 Span<Position> positions,
+									 PositionSolverConf conf = GetDefaultPositionSolverConf());
+	
+	inline PositionSolverConf GetDefaultToiPositionSolverConf()
+	{
+		return PositionSolverConf{ToiBaumgarte, -LinearSlop, MaxLinearCorrection};
+	}
+
+	/// Solves the given position constraints.
+	/// @detail This updates positions (and nothing else) for the two bodies identified by the
+	///   given indexes by calling the position constraint solving function.
+	/// @param indexA Index within the island of body A.
+	/// @param indexB Index within the island of body B.
+	/// @note Can't expect the returned minimum separation to be greater than or equal to
+	///  PositionSolverConf.max_separation because code won't push the separation above this
+	///   amount to begin with.
+	/// @return Minimum separation.
+	float_t SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
+									 Span<Position> positions,
+									 island_count_t indexA, island_count_t indexB,
+									 PositionSolverConf conf = GetDefaultToiPositionSolverConf());
 
 	/// Solves the velocity constraint.
 	/// @detail This updates the tangent and normal impulses of the velocity constraint points of the given velocity
@@ -67,22 +123,6 @@ namespace box2d {
 	/// @pre The velocity constraint must have a valid normal, a valid tangent,
 	///   valid point relative positions, and valid velocity biases.
 	void SolveVelocityConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB);
-	
-	/// Solves the given position constraints.
-	/// @detail This updates positions (and nothing else) by calling the position constraint solving function.
-	/// @return true if the minimum separation is above the minimum separation threshold, false otherwise.
-	/// @sa MinSeparationThreshold.
-	/// @sa Solve.
-	bool SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
-								  Span<Position> positions);
-	
-	/// Solves the given position constraints for TOI.
-	/// @detail This updates positions for the bodies identified by the given indexes (and nothing else).
-	/// @param indexA Index within the island of body A.
-	/// @param indexB Index within the island of body B.
-	/// @return true if the minimum separation is above the minimum TOI separation value, false otherwise.
-	bool SolveTOIPositionConstraints(Span<const PositionConstraint> positionConstraints,
-									 Span<Position> positions, island_count_t indexA, island_count_t indexB);
 	
 } // namespace box2d
 
