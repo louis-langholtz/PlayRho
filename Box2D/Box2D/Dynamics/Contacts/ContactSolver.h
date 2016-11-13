@@ -45,11 +45,11 @@ namespace box2d {
 		return PositionSolution{lhs.pos_a - rhs.pos_a, lhs.pos_b - rhs.pos_b, lhs.min_separation - rhs.min_separation};
 	}
 
-	/// Position solver configuration data.
+	/// Constraint solver configuration data.
 	/// @detail
-	/// Defines how a position constraint solver should resolve a given constraint.
+	/// Defines how a constraint solver should resolve a given constraint.
 	/// @sa SolvePositionConstraint.
-	struct PositionSolverConf
+	struct ConstraintSolverConf
 	{
 		/// Resolution rate.
 		/// @detail
@@ -58,15 +58,20 @@ namespace box2d {
 		/// @note Recommended values are: <code>Baumgarte</code> or <code>ToiBaumgarte</code>.
 		float_t resolution_rate = Baumgarte;
 
-		/// Maximum separation to create.
-		/// @note Recommended value: <code>-LinearSlop</code>.
-		float_t max_separation = -LinearSlop;
-		
-		/// Maximum correction.
+		/// Linear slop.
+		/// @note The negative of this amount is the maximum amount of separation to create.
+		/// @note Recommended value: <code>LinearSlop</code>.
+		float_t linearSlop = LinearSlop;
+
+		/// Angular slop.
+		/// @note Recommended value: <code>AngularSlop</code>.
+		float_t angularSlop = AngularSlop;
+
+		/// Maximum linear correction.
 		/// @detail
 		/// Maximum amount of overlap to resolve in a single solver call.
 		/// @note Recommended value: <code>MaxLinearCorrection</code>.
-		float_t max_correction = MaxLinearCorrection;
+		float_t maxLinearCorrection = MaxLinearCorrection;
 	};
 
 	/// Solves the given position constraint.
@@ -79,28 +84,28 @@ namespace box2d {
 	PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
 											 Position positionA, bool moveA,
 											 Position positionB, bool moveB,
-											 PositionSolverConf conf);
+											 ConstraintSolverConf conf);
 	
-	inline PositionSolverConf GetDefaultPositionSolverConf()
+	inline ConstraintSolverConf GetDefaultPositionSolverConf()
 	{
-		return PositionSolverConf{Baumgarte, -LinearSlop, MaxLinearCorrection};
+		return ConstraintSolverConf{Baumgarte, LinearSlop, MaxLinearCorrection};
 	}
 	
 	/// Solves the given position constraints.
 	/// @detail This updates positions (and nothing else) by calling the position constraint solving function.
 	/// @note Can't expect the returned minimum separation to be greater than or equal to
-	///  PositionSolverConf.max_separation because code won't push the separation above this
+	///  ConstraintSolverConf.max_separation because code won't push the separation above this
 	///   amount to begin with.
 	/// @return Minimum separation.
 	/// @sa MinSeparationThreshold.
 	/// @sa Solve.
 	float_t SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
 									 Span<Position> positions,
-									 PositionSolverConf conf = GetDefaultPositionSolverConf());
+									 ConstraintSolverConf conf = GetDefaultPositionSolverConf());
 	
-	inline PositionSolverConf GetDefaultToiPositionSolverConf()
+	inline ConstraintSolverConf GetDefaultToiPositionSolverConf()
 	{
-		return PositionSolverConf{ToiBaumgarte, -LinearSlop, MaxLinearCorrection};
+		return ConstraintSolverConf{ToiBaumgarte, LinearSlop, MaxLinearCorrection};
 	}
 
 	/// Solves the given position constraints.
@@ -109,13 +114,13 @@ namespace box2d {
 	/// @param indexA Index within the island of body A.
 	/// @param indexB Index within the island of body B.
 	/// @note Can't expect the returned minimum separation to be greater than or equal to
-	///  PositionSolverConf.max_separation because code won't push the separation above this
+	///  ConstraintSolverConf.max_separation because code won't push the separation above this
 	///   amount to begin with.
 	/// @return Minimum separation.
 	float_t SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
 									 Span<Position> positions,
 									 island_count_t indexA, island_count_t indexB,
-									 PositionSolverConf conf = GetDefaultToiPositionSolverConf());
+									 ConstraintSolverConf conf = GetDefaultToiPositionSolverConf());
 
 	/// Solves the velocity constraint.
 	/// @detail This updates the tangent and normal impulses of the velocity constraint points of the given velocity

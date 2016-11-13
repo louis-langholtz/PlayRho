@@ -196,9 +196,10 @@ void MotorJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeS
 	velocities[m_indexB].w = wB;
 }
 
-bool MotorJoint::SolvePositionConstraints(Span<Position> positions)
+bool MotorJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
 {
 	BOX2D_NOT_USED(positions);
+	BOX2D_NOT_USED(conf);
 
 	return true;
 }

@@ -143,7 +143,7 @@ constexpr auto VelocityThreshold = float_t{8} / float_t{10}; // float_t{1};
 
 /// Maximum linear position correction used when solving constraints.
 /// This helps to prevent overshoot.
-constexpr auto MaxLinearCorrection = BOX2D_MAGIC(LinearSlop * float_t{40}); // aka 0.002, originally 0.2
+constexpr auto MaxLinearCorrection = BOX2D_MAGIC(LinearSlop * 40); // aka 0.002, originally 0.2
 
 /// Maximum angular position correction used when solving constraints.
 /// This helps to prevent overshoot.

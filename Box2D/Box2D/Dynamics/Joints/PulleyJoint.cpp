@@ -20,6 +20,7 @@
 #include <Box2D/Dynamics/Joints/PulleyJoint.h>
 #include <Box2D/Dynamics/Body.h>
 #include <Box2D/Dynamics/TimeStep.h>
+#include <Box2D/Dynamics/Contacts/ContactSolver.h>
 
 using namespace box2d;
 
@@ -186,7 +187,7 @@ void PulleyJoint::SolveVelocityConstraints(Span<Velocity> velocities, const Time
 	velocities[m_indexB].w = wB;
 }
 
-bool PulleyJoint::SolvePositionConstraints(Span<Position> positions)
+bool PulleyJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
 {
 	auto cA = positions[m_indexA].c;
 	auto aA = positions[m_indexA].a;
@@ -236,7 +237,7 @@ bool PulleyJoint::SolvePositionConstraints(Span<Position> positions)
 	positions[m_indexB].c = cB;
 	positions[m_indexB].a = aB;
 
-	return linearError < LinearSlop;
+	return linearError < conf.linearSlop;
 }
 
 Vec2 PulleyJoint::GetAnchorA() const

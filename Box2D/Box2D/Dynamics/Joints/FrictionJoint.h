@@ -81,7 +81,7 @@ private:
 
 	void InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step) override;
 	void SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step) override;
-	bool SolvePositionConstraints(Span<Position> positions) override;
+	bool SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) override;
 
 	Vec2 m_localAnchorA;
 	Vec2 m_localAnchorB;

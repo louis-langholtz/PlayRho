@@ -30,6 +30,7 @@ class Joint;
 class BlockAllocator;
 class TimeStep;
 struct Velocity;
+struct ConstraintSolverConf;
 	
 enum class JointType
 {
@@ -185,7 +186,7 @@ private:
 	virtual void SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step) = 0;
 
 	// This returns true if the position errors are within tolerance.
-	virtual bool SolvePositionConstraints(Span<Position> positions) = 0;
+	virtual bool SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) = 0;
 	
 	bool IsInIsland() const noexcept;
 	void SetInIsland(bool value) noexcept;

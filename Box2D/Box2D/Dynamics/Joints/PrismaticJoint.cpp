@@ -20,6 +20,7 @@
 #include <Box2D/Dynamics/Joints/PrismaticJoint.h>
 #include <Box2D/Dynamics/Body.h>
 #include <Box2D/Dynamics/TimeStep.h>
+#include <Box2D/Dynamics/Contacts/ContactSolver.h>
 
 using namespace box2d;
 
@@ -363,7 +364,7 @@ void PrismaticJoint::SolveVelocityConstraints(Span<Velocity> velocities, const T
 //
 // We could take the active state from the velocity solver.However, the joint might push past the limit when the velocity
 // solver indicates the limit is inactive.
-bool PrismaticJoint::SolvePositionConstraints(Span<Position> positions)
+bool PrismaticJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
 {
 	auto cA = positions[m_indexA].c;
 	auto aA = positions[m_indexA].a;
@@ -399,24 +400,24 @@ bool PrismaticJoint::SolvePositionConstraints(Span<Position> positions)
 	if (m_enableLimit)
 	{
 		const auto translation = Dot(axis, d);
-		if (Abs(m_upperTranslation - m_lowerTranslation) < (float_t{2} * LinearSlop))
+		if (Abs(m_upperTranslation - m_lowerTranslation) < (float_t{2} * conf.linearSlop))
 		{
 			// Prevent large angular corrections
-			C2 = Clamp(translation, -MaxLinearCorrection, MaxLinearCorrection);
+			C2 = Clamp(translation, -conf.maxLinearCorrection, conf.maxLinearCorrection);
 			linearError = Max(linearError, Abs(translation));
 			active = true;
 		}
 		else if (translation <= m_lowerTranslation)
 		{
 			// Prevent large linear corrections and allow some slop.
-			C2 = Clamp(translation - m_lowerTranslation + LinearSlop, -MaxLinearCorrection, float_t{0});
+			C2 = Clamp(translation - m_lowerTranslation + conf.linearSlop, -conf.maxLinearCorrection, float_t{0});
 			linearError = Max(linearError, m_lowerTranslation - translation);
 			active = true;
 		}
 		else if (translation >= m_upperTranslation)
 		{
 			// Prevent large linear corrections and allow some slop.
-			C2 = Clamp(translation - m_upperTranslation - LinearSlop, float_t{0}, MaxLinearCorrection);
+			C2 = Clamp(translation - m_upperTranslation - conf.linearSlop, float_t{0}, conf.maxLinearCorrection);
 			linearError = Max(linearError, translation - m_upperTranslation);
 			active = true;
 		}
@@ -475,7 +476,7 @@ bool PrismaticJoint::SolvePositionConstraints(Span<Position> positions)
 	positions[m_indexB].c = cB;
 	positions[m_indexB].a = aB;
 
-	return (linearError <= LinearSlop) && (angularError <= AngularSlop);
+	return (linearError <= conf.linearSlop) && (angularError <= conf.angularSlop);
 }
 
 Vec2 PrismaticJoint::GetAnchorA() const

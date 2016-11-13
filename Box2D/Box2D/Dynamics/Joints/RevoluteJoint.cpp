@@ -20,6 +20,7 @@
 #include <Box2D/Dynamics/Joints/RevoluteJoint.h>
 #include <Box2D/Dynamics/Body.h>
 #include <Box2D/Dynamics/TimeStep.h>
+#include <Box2D/Dynamics/Contacts/ContactSolver.h>
 
 using namespace box2d;
 
@@ -290,7 +291,7 @@ void RevoluteJoint::SolveVelocityConstraints(Span<Velocity> velocities, const Ti
 	velocities[m_indexB].w = wB;
 }
 
-bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions)
+bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
 {
 	auto cA = positions[m_indexA].c;
 	auto aA = positions[m_indexA].a;
@@ -314,7 +315,7 @@ bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions)
 		if (m_limitState == e_equalLimits)
 		{
 			// Prevent large angular corrections
-			const auto C = Clamp((angle - m_lowerAngle).ToRadians(), -MaxAngularCorrection, MaxAngularCorrection);
+			const auto C = Clamp((angle - m_lowerAngle).ToRadians(), -conf.maxLinearCorrection, conf.maxLinearCorrection);
 			limitImpulse = -m_motorMass * C;
 			angularError = Abs(C);
 		}
@@ -324,7 +325,7 @@ bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions)
 			angularError = -C;
 
 			// Prevent large angular corrections and allow some slop.
-			C = Clamp(C + AngularSlop, -MaxAngularCorrection, float_t{0});
+			C = Clamp(C + conf.angularSlop, -MaxAngularCorrection, float_t{0});
 			limitImpulse = -m_motorMass * C;
 		}
 		else if (m_limitState == e_atUpperLimit)
@@ -333,7 +334,7 @@ bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions)
 			angularError = C;
 
 			// Prevent large angular corrections and allow some slop.
-			C = Clamp(C - AngularSlop, float_t{0}, MaxAngularCorrection);
+			C = Clamp(C - conf.angularSlop, float_t{0}, MaxAngularCorrection);
 			limitImpulse = -m_motorMass * C;
 		}
 
@@ -374,7 +375,7 @@ bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions)
 	positions[m_indexB].c = cB;
 	positions[m_indexB].a = aB;
 	
-	return (positionError <= LinearSlop) && (angularError <= AngularSlop);
+	return (positionError <= conf.linearSlop) && (angularError <= conf.angularSlop);
 }
 
 Vec2 RevoluteJoint::GetAnchorA() const

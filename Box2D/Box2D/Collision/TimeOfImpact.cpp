@@ -242,7 +242,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 	auto stats = TOIOutput::Stats{0, 0, 0, 0, 0};
 	auto output = TOIOutput{TOIOutput::e_unknown, tMax, stats};
 
-	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius(); // 2 polygons = 2 * PolygonRadius = 4 * LinearSlop
+	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius();
 	const auto target = Max(LinearSlop, totalRadius - conf.targetDepth);
 	const auto tolerance = conf.tolerance;
 	const auto maxTarget = target + tolerance;

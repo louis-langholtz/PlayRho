@@ -20,6 +20,7 @@
 #include <Box2D/Dynamics/Joints/WheelJoint.h>
 #include <Box2D/Dynamics/Body.h>
 #include <Box2D/Dynamics/TimeStep.h>
+#include <Box2D/Dynamics/Contacts/ContactSolver.h>
 
 using namespace box2d;
 
@@ -280,7 +281,7 @@ void WheelJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeS
 	velocities[m_indexB].w = wB;
 }
 
-bool WheelJoint::SolvePositionConstraints(Span<Position> positions)
+bool WheelJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
 {
 	auto cA = positions[m_indexA].c;
 	auto aA = positions[m_indexA].a;
@@ -319,7 +320,7 @@ bool WheelJoint::SolvePositionConstraints(Span<Position> positions)
 	positions[m_indexB].c = cB;
 	positions[m_indexB].a = aB;
 
-	return Abs(C) <= LinearSlop;
+	return Abs(C) <= conf.linearSlop;
 }
 
 Vec2 WheelJoint::GetAnchorA() const

@@ -385,13 +385,13 @@ void box2d::SolveVelocityConstraint(VelocityConstraint& vc, Velocity& velA, Velo
 PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 												Position posA, bool moveA,
 												Position posB, bool moveB,
-												PositionSolverConf conf)
+												ConstraintSolverConf conf)
 {
 	assert(IsValid(posA));
 	assert(IsValid(posB));
 	assert(IsValid(conf.resolution_rate));
-	assert(IsValid(conf.max_separation));
-	assert(IsValid(conf.max_correction));
+	assert(IsValid(conf.linearSlop));
+	assert(IsValid(conf.maxLinearCorrection));
 	
 	const auto invMassA = pc.bodyA.invMass * moveA;
 	const auto invInertiaA = pc.bodyA.invI * moveA;
@@ -426,9 +426,9 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 			return invMassTotal + (invInertiaA * Square(rnA)) + (invInertiaB * Square(rnB));
 		}();
 		
-		// Prevent large corrections & don't push separation above max_separation (-LinearSlop).
-		const auto C = Clamp(conf.resolution_rate * (separation - conf.max_separation),
-							 -conf.max_correction, float_t{0});
+		// Prevent large corrections & don't push separation above -conf.linearSlop.
+		const auto C = Clamp(conf.resolution_rate * (separation + conf.linearSlop),
+							 -conf.maxLinearCorrection, float_t{0});
 		
 		// Compute normal impulse
 		const auto P = psm.m_normal * -C / K;
@@ -486,7 +486,7 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 }
 
 float_t box2d::SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
-									 Span<Position> positions, PositionSolverConf conf)
+									 Span<Position> positions, ConstraintSolverConf conf)
 {
 	auto minSeparation = MaxFloat;
 	
@@ -507,7 +507,7 @@ float_t box2d::SolvePositionConstraints(Span<const PositionConstraint> positionC
 float_t box2d::SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
 										Span<Position> positions,
 										island_count_t indexA, island_count_t indexB,
-										PositionSolverConf conf)
+										ConstraintSolverConf conf)
 {
 	auto minSeparation = MaxFloat;
 	

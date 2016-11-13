@@ -20,6 +20,7 @@
 #include <Box2D/Dynamics/Joints/WeldJoint.h>
 #include <Box2D/Dynamics/Body.h>
 #include <Box2D/Dynamics/TimeStep.h>
+#include <Box2D/Dynamics/Contacts/ContactSolver.h>
 
 using namespace box2d;
 
@@ -227,7 +228,7 @@ void WeldJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeSt
 	velocities[m_indexB].w = wB;
 }
 
-bool WeldJoint::SolvePositionConstraints(Span<Position> positions)
+bool WeldJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
 {
 	auto cA = positions[m_indexA].c;
 	auto aA = positions[m_indexA].a;
@@ -306,7 +307,7 @@ bool WeldJoint::SolvePositionConstraints(Span<Position> positions)
 	positions[m_indexB].c = cB;
 	positions[m_indexB].a = aB;
 
-	return (positionError <= LinearSlop) && (angularError <= AngularSlop);
+	return (positionError <= conf.linearSlop) && (angularError <= conf.angularSlop);
 }
 
 Vec2 WeldJoint::GetAnchorA() const

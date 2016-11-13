@@ -20,6 +20,7 @@
 #include <Box2D/Dynamics/Joints/DistanceJoint.h>
 #include <Box2D/Dynamics/Body.h>
 #include <Box2D/Dynamics/TimeStep.h>
+#include <Box2D/Dynamics/Contacts/ContactSolver.h>
 
 using namespace box2d;
 
@@ -38,7 +39,9 @@ using namespace box2d;
 // K = J * invM * JT
 //   = invMass1 + invI1 * cross(r1, u)^2 + invMass2 + invI2 * cross(r2, u)^2
 
-DistanceJointDef::DistanceJointDef(Body* bA, Body* bB, const Vec2& anchor1, const Vec2& anchor2, float_t freq, float_t damp) noexcept:
+DistanceJointDef::DistanceJointDef(Body* bA, Body* bB,
+								   const Vec2& anchor1, const Vec2& anchor2,
+								   float_t freq, float_t damp) noexcept:
 	JointDef{JointType::Distance, bA, bB},
 	localAnchorA{GetLocalPoint(*bA, anchor1)}, localAnchorB{GetLocalPoint(*bB, anchor2)},
 	length{Length(anchor2 - anchor1)},
@@ -178,7 +181,7 @@ void DistanceJoint::SolveVelocityConstraints(Span<Velocity> velocities, const Ti
 	velocities[m_indexB].w = wB;
 }
 
-bool DistanceJoint::SolvePositionConstraints(Span<Position> positions)
+bool DistanceJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
 {
 	if (m_frequencyHz > float_t{0})
 	{
@@ -200,7 +203,7 @@ bool DistanceJoint::SolvePositionConstraints(Span<Position> positions)
 
 	const auto length = Normalize(u);
 	const auto deltaLength = length - m_length;
-	const auto C = Clamp(deltaLength, -MaxLinearCorrection, MaxLinearCorrection);
+	const auto C = Clamp(deltaLength, -conf.maxLinearCorrection, conf.maxLinearCorrection);
 
 	const auto impulse = -m_mass * C;
 	const auto P = impulse * u;
@@ -215,7 +218,7 @@ bool DistanceJoint::SolvePositionConstraints(Span<Position> positions)
 	positions[m_indexB].c = cB;
 	positions[m_indexB].a = aB;
 
-	return Abs(C) < LinearSlop;
+	return Abs(C) < conf.linearSlop;
 }
 
 Vec2 DistanceJoint::GetAnchorA() const

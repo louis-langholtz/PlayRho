@@ -20,6 +20,7 @@
 #include <Box2D/Dynamics/Joints/RopeJoint.h>
 #include <Box2D/Dynamics/Body.h>
 #include <Box2D/Dynamics/TimeStep.h>
+#include <Box2D/Dynamics/Contacts/ContactSolver.h>
 
 using namespace box2d;
 
@@ -154,7 +155,7 @@ void RopeJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeSt
 	velocities[m_indexB].w = wB;
 }
 
-bool RopeJoint::SolvePositionConstraints(Span<Position> positions)
+bool RopeJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
 {
 	auto cA = positions[m_indexA].c;
 	auto aA = positions[m_indexA].a;
@@ -170,7 +171,7 @@ bool RopeJoint::SolvePositionConstraints(Span<Position> positions)
 	const auto length = Normalize(u);
 	auto C = length - m_maxLength;
 
-	C = Clamp(C, float_t{0}, MaxLinearCorrection);
+	C = Clamp(C, float_t{0}, conf.maxLinearCorrection);
 
 	const auto impulse = -m_mass * C;
 	const auto P = impulse * u;
@@ -185,7 +186,7 @@ bool RopeJoint::SolvePositionConstraints(Span<Position> positions)
 	positions[m_indexB].c = cB;
 	positions[m_indexB].a = aB;
 
-	return (length - m_maxLength) < LinearSlop;
+	return (length - m_maxLength) < conf.linearSlop;
 }
 
 Vec2 RopeJoint::GetAnchorA() const

@@ -22,6 +22,7 @@
 #include <Box2D/Dynamics/Joints/PrismaticJoint.h>
 #include <Box2D/Dynamics/Body.h>
 #include <Box2D/Dynamics/TimeStep.h>
+#include <Box2D/Dynamics/Contacts/ContactSolver.h>
 
 using namespace box2d;
 
@@ -274,7 +275,7 @@ void GearJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeSt
 	velocities[m_indexD].w = wD;
 }
 
-bool GearJoint::SolvePositionConstraints(Span<Position> positions)
+bool GearJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
 {
 	auto cA = positions[m_indexA].c;
 	auto aA = positions[m_indexA].a;
@@ -370,7 +371,7 @@ bool GearJoint::SolvePositionConstraints(Span<Position> positions)
 	positions[m_indexD].a = aD;
 
 	// TODO_ERIN not implemented
-	return linearError < LinearSlop;
+	return linearError < conf.linearSlop;
 }
 
 Vec2 GearJoint::GetAnchorA() const

@@ -181,9 +181,10 @@ void FrictionJoint::SolveVelocityConstraints(Span<Velocity> velocities, const Ti
 	velocities[m_indexB].w = wB;
 }
 
-bool FrictionJoint::SolvePositionConstraints(Span<Position> positions)
+bool FrictionJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
 {
 	BOX2D_NOT_USED(positions);
+	BOX2D_NOT_USED(conf);
 
 	return true;
 }
