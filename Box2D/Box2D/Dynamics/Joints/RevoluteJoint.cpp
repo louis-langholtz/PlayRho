@@ -328,7 +328,7 @@ bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions, const Con
 			angularError = -C;
 
 			// Prevent large angular corrections and allow some slop.
-			C = Clamp(C + conf.angularSlop, -MaxAngularCorrection, float_t{0});
+			C = Clamp(C + conf.angularSlop, -conf.maxAngularCorrection, float_t{0});
 			limitImpulse = -m_motorMass * C;
 		}
 		else if (m_limitState == e_atUpperLimit)
@@ -337,7 +337,7 @@ bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions, const Con
 			angularError = C;
 
 			// Prevent large angular corrections and allow some slop.
-			C = Clamp(C - conf.angularSlop, float_t{0}, MaxAngularCorrection);
+			C = Clamp(C - conf.angularSlop, float_t{0}, conf.maxAngularCorrection);
 			limitImpulse = -m_motorMass * C;
 		}
 

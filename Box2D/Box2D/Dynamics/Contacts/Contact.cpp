@@ -231,7 +231,7 @@ static inline bool IsAllFlagsSet(uint16 value, uint16 flags)
 	return (value & flags) == flags;
 }
 
-bool Contact::UpdateTOI(const ToiConf& limits)
+bool Contact::UpdateTOI(const ToiConf& conf)
 {
 	const auto fA = GetFixtureA();
 	const auto fB = GetFixtureB();
@@ -275,7 +275,7 @@ bool Contact::UpdateTOI(const ToiConf& limits)
 									 GetAnglesNormalized(bA->m_sweep),
 									 GetDistanceProxy(*fB->GetShape(), GetChildIndexB()),
 									 GetAnglesNormalized(bB->m_sweep),
-									 limits);
+									 conf);
 	++m_toiCalls;
 	
 	m_toiItersTotal += output.get_toi_iters();

@@ -42,6 +42,17 @@
 namespace box2d
 {
 
+using VelocityContainer = AllocatedArray<Velocity, StackAllocator&>;
+using PositionContainer = AllocatedArray<Position, StackAllocator&>;
+using PositionConstraintsContainer = AllocatedArray<PositionConstraint, StackAllocator&>;
+using VelocityConstraintsContainer = AllocatedArray<VelocityConstraint, StackAllocator&>;
+
+struct MovementConf
+{
+	float_t maxTranslation = MaxTranslation;
+	Angle maxRotation = MaxRotation * 1_rad;
+};
+
 template <typename T>
 class FlagGuard
 {
@@ -80,7 +91,11 @@ private:
 World::World(const WorldDef def):
 	m_gravity(def.gravity),
 	m_linearSlop(def.linearSlop),
-	m_angularSlop(def.angularSlop)
+	m_angularSlop(def.angularSlop),
+	m_maxLinearCorrection(def.maxLinearCorrection),
+	m_maxAngularCorrection(def.maxAngularCorrection),
+	m_maxTranslation(def.maxTranslation),
+	m_maxRotation(def.maxRotation)
 {
 	memset(&m_profile, 0, sizeof(Profile));
 }
@@ -533,33 +548,29 @@ void World::Solve(const TimeStep& step)
 }
 
 	// ==== begin
-	using VelocityContainer = AllocatedArray<Velocity, StackAllocator&>;
-	using PositionContainer = AllocatedArray<Position, StackAllocator&>;
-	using PositionConstraintsContainer = AllocatedArray<PositionConstraint, StackAllocator&>;
-	using VelocityConstraintsContainer = AllocatedArray<VelocityConstraint, StackAllocator&>;
 	
 	namespace {
 		
 		/// Calculates movement.
 		/// @detail Calculate the positional displacement based on the given velocity
 		///    that's possibly clamped to the maximum translation and rotation.
-		inline Position CalculateMovement(Velocity& velocity, float_t h)
+		inline Position CalculateMovement(Velocity& velocity, float_t h, MovementConf conf)
 		{
 			assert(IsValid(velocity));
 			assert(IsValid(h));
 			
 			auto translation = h * velocity.v;
-			if (LengthSquared(translation) > Square(MaxTranslation))
+			if (LengthSquared(translation) > Square(conf.maxTranslation))
 			{
-				const auto ratio = MaxTranslation / Sqrt(LengthSquared(translation));
+				const auto ratio = conf.maxTranslation / Sqrt(LengthSquared(translation));
 				velocity.v *= ratio;
 				translation = h * velocity.v;
 			}
 			
 			auto rotation = h * velocity.w;
-			if (Abs(rotation) > MaxRotation * 1_rad)
+			if (Abs(rotation) > conf.maxRotation)
 			{
-				const auto ratio = (MaxRotation * 1_rad) / Abs(rotation);
+				const auto ratio = conf.maxRotation / Abs(rotation);
 				velocity.w *= ratio;
 				rotation = h * velocity.w;
 			}
@@ -567,12 +578,13 @@ void World::Solve(const TimeStep& step)
 			return Position{translation, rotation};
 		}
 		
-		inline void IntegratePositions(PositionContainer& positions, VelocityContainer& velocities, float_t h)
+		inline void IntegratePositions(PositionContainer& positions, VelocityContainer& velocities,
+									   float_t h, MovementConf conf)
 		{
 			auto i = size_t{0};
 			for (auto&& velocity: velocities)
 			{
-				positions[i] += CalculateMovement(velocity, h);
+				positions[i] += CalculateMovement(velocity, h, conf);
 				++i;
 			}
 		}
@@ -814,7 +826,9 @@ bool World::Solve(const TimeStep& step, Island& island)
 		velocities.push_back(new_velocity);
 	}
 	
-	const auto psConf = ConstraintSolverConf{Baumgarte, m_linearSlop, m_angularSlop, MaxLinearCorrection};
+	const auto psConf = ConstraintSolverConf{
+		Baumgarte, m_linearSlop, m_angularSlop, m_maxLinearCorrection, m_maxAngularCorrection
+	};
 
 	UpdateVelocityConstraints(velocityConstraints, velocities, positionConstraints, positions);
 	
@@ -839,14 +853,14 @@ bool World::Solve(const TimeStep& step, Island& island)
 	}
 	
 	// updates array of tentative new body positions per the velocities as if there were no obstacles...
-	IntegratePositions(positions, velocities, h);
+	IntegratePositions(positions, velocities, h, MovementConf{m_maxTranslation, m_maxRotation});
 	
 	// Solve position constraints
 	auto iterationSolved = TimeStep::InvalidIteration;
 	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
 	{
 		const auto minSep = SolvePositionConstraints(positionConstraints, positions, psConf);
-		const auto contactsOkay = (minSep >= -m_linearSlop * 3);
+		const auto contactsOkay = (minSep >= -psConf.linearSlop * 3);
 
 		const auto jointsOkay = [&]()
 		{
@@ -917,7 +931,14 @@ World::ContactToiData World::UpdateContactTOIs()
 	auto minContact = static_cast<Contact*>(nullptr);
 	auto minToi = MaxFloat;
 	
-	ToiConf toiConf;
+	const auto toiConf = ToiConf{
+		1,
+		m_linearSlop * 3, // Targetted depth of impact
+		m_linearSlop / 4, // Tolerance.
+		MaxTOIRootIterCount,
+		MaxTOIIterations
+	};
+
 	auto count = contact_count_t{0};
 	for (auto&& c: m_contactMgr.GetContacts())
 	{
@@ -1131,12 +1152,14 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	
 	// Solve TOI-based position constraints.
 	auto positionConstraintsSolved = TimeStep::InvalidIteration;
-	const auto psConf = ConstraintSolverConf{ToiBaumgarte, m_linearSlop, m_angularSlop, MaxLinearCorrection};
+	const auto psConf = ConstraintSolverConf{
+		ToiBaumgarte, m_linearSlop, m_angularSlop, m_maxLinearCorrection, m_maxAngularCorrection
+	};
 	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
 	{
 		const auto minSeparation = SolvePositionConstraints(positionConstraints, positions,
 															0, 1, psConf);
-		if (minSeparation >= -m_linearSlop * float_t(1.5))
+		if (minSeparation >= -psConf.linearSlop * float_t(1.5))
 		{
 			positionConstraintsSolved = i;
 			break;
@@ -1159,7 +1182,7 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	
 	// Don't store TOI contact forces for warm starting because they can be quite large.
 	
-	IntegratePositions(positions, velocities, step.get_dt());
+	IntegratePositions(positions, velocities, step.get_dt(), MovementConf{m_maxTranslation, m_maxRotation});
 	
 	// Update m_bodies[i].m_sweep.pos1 to position[i]
 	// Copy velocity and position array data back out to the bodies

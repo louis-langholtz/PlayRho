@@ -66,6 +66,10 @@ struct WorldDef
 	Vec2 gravity = EarthlyGravity;
 	float_t linearSlop = LinearSlop;
 	float_t angularSlop = AngularSlop;
+	float_t maxLinearCorrection = MaxLinearCorrection;
+	float_t maxAngularCorrection = MaxAngularCorrection;
+	float_t maxTranslation = MaxTranslation;
+	Angle maxRotation = MaxRotation * 1_rad;
 };
 
 constexpr struct WorldDef GetDefaultWorldDef()
@@ -453,6 +457,10 @@ private:
 
 	float_t m_linearSlop = LinearSlop;
 	float_t m_angularSlop = AngularSlop;
+	float_t m_maxLinearCorrection = MaxLinearCorrection;
+	float_t m_maxAngularCorrection = MaxAngularCorrection;
+	float_t m_maxTranslation = MaxTranslation;
+	Angle m_maxRotation = MaxRotation * 1_rad;
 
 	Profile m_profile;
 };

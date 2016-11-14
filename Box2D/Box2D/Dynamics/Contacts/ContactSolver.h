@@ -72,6 +72,9 @@ namespace box2d {
 		/// Maximum amount of overlap to resolve in a single solver call.
 		/// @note Recommended value: <code>MaxLinearCorrection</code>.
 		float_t maxLinearCorrection = MaxLinearCorrection;
+		
+		/// Maximum angular correction.
+		float_t maxAngularCorrection = MaxAngularCorrection;
 	};
 
 	/// Solves the given position constraint.
@@ -94,7 +97,7 @@ namespace box2d {
 	/// Solves the given position constraints.
 	/// @detail This updates positions (and nothing else) by calling the position constraint solving function.
 	/// @note Can't expect the returned minimum separation to be greater than or equal to
-	///  ConstraintSolverConf.max_separation because code won't push the separation above this
+	///  <code>-conf.linearSlop</code> because code won't push the separation above this
 	///   amount to begin with.
 	/// @return Minimum separation.
 	/// @sa MinSeparationThreshold.
