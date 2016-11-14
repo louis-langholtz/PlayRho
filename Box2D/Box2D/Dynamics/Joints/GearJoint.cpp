@@ -132,7 +132,7 @@ GearJoint::GearJoint(const GearJointDef& def)
 	m_impulse = float_t{0};
 }
 
-void GearJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step)
+void GearJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step, const ConstraintSolverConf& conf)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();

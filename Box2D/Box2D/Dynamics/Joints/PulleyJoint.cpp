@@ -70,7 +70,10 @@ PulleyJoint::PulleyJoint(const PulleyJointDef& def)
 	m_impulse = float_t{0};
 }
 
-void PulleyJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step)
+void PulleyJoint::InitVelocityConstraints(Span<Velocity> velocities,
+										  Span<const Position> positions,
+										  const TimeStep& step,
+										  const ConstraintSolverConf& conf)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -103,7 +106,7 @@ void PulleyJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const 
 	const auto lengthA = Length(m_uA);
 	const auto lengthB = Length(m_uB);
 
-	if (lengthA > (float_t(10) * LinearSlop))
+	if (lengthA > (float_t(10) * conf.linearSlop))
 	{
 		m_uA *= float_t{1} / lengthA;
 	}
@@ -112,7 +115,7 @@ void PulleyJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const 
 		m_uA = Vec2_zero;
 	}
 
-	if (lengthB > (float_t(10) * LinearSlop))
+	if (lengthB > (float_t(10) * conf.linearSlop))
 	{
 		m_uB *= float_t{1} / lengthB;
 	}
@@ -200,11 +203,11 @@ bool PulleyJoint::SolvePositionConstraints(Span<Position> positions, const Const
 	// Get the pulley axes.
 	const auto pA = cA + rA - m_groundAnchorA;
 	const auto lengthA = Length(pA);
-	const auto uA = (lengthA > (float_t(10) * LinearSlop))? pA / lengthA: Vec2_zero;
+	const auto uA = (lengthA > (float_t(10) * conf.linearSlop))? pA / lengthA: Vec2_zero;
 
 	const auto pB = cB + rB - m_groundAnchorB;
 	const auto lengthB = Length(pB);
-	const auto uB = (lengthB > (float_t(10) * LinearSlop))? pB / lengthB: Vec2_zero;
+	const auto uB = (lengthB > (float_t(10) * conf.linearSlop))? pB / lengthB: Vec2_zero;
 
 	// Compute effective mass.
 	const auto ruA = Cross(rA, uA);

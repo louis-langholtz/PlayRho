@@ -59,7 +59,7 @@ WeldJoint::WeldJoint(const WeldJointDef& def)
 	m_impulse = Vec3_zero;
 }
 
-void WeldJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step)
+void WeldJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step, const ConstraintSolverConf& conf)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();

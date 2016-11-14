@@ -52,7 +52,7 @@ void MouseJoint::SetTarget(const Vec2& target)
 	m_targetA = target;
 }
 
-void MouseJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step)
+void MouseJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step, const ConstraintSolverConf& conf)
 {
 	m_indexB = GetBodyB()->GetIslandIndex();
 	m_localCenterB = GetBodyB()->GetLocalCenter();

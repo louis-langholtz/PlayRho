@@ -35,7 +35,7 @@ public:
 	///
 	/// @param radius Radius of the circle shape (in meters).
 	/// @param position Position of the center of this shape.
-	constexpr explicit CircleShape(float_t radius = 0, Vec2 position = Vec2_zero) noexcept:
+	constexpr explicit CircleShape(float_t radius = 1, Vec2 position = Vec2_zero) noexcept:
 		Shape{e_circle}, m_radius{radius}, m_p{position}
 	{
 		assert(radius >= 0);

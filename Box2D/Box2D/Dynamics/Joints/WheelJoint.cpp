@@ -78,7 +78,7 @@ WheelJoint::WheelJoint(const WheelJointDef& def)
 	m_ay = Vec2_zero;
 }
 
-void WheelJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step)
+void WheelJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step, const ConstraintSolverConf& conf)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();

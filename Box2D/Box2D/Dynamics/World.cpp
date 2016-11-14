@@ -77,8 +77,10 @@ private:
 	std::function<void(T&)> m_on_destruction;
 };
 
-World::World(const Vec2 gravity):
-	m_gravity{gravity}
+World::World(const WorldDef def):
+	m_gravity(def.gravity),
+	m_linearSlop(def.linearSlop),
+	m_angularSlop(def.angularSlop)
 {
 	memset(&m_profile, 0, sizeof(Profile));
 }
@@ -812,7 +814,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 		velocities.push_back(new_velocity);
 	}
 	
-	const auto psConf = ConstraintSolverConf{Baumgarte, LinearSlop, AngularSlop, MaxLinearCorrection};
+	const auto psConf = ConstraintSolverConf{Baumgarte, m_linearSlop, m_angularSlop, MaxLinearCorrection};
 
 	UpdateVelocityConstraints(velocityConstraints, velocities, positionConstraints, positions);
 	
@@ -823,7 +825,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 
 	for (auto&& joint: island.m_joints)
 	{
-		joint->InitVelocityConstraints(velocities, positions, step);
+		joint->InitVelocityConstraints(velocities, positions, step, psConf);
 	}
 	
 	for (auto i = decltype(step.velocityIterations){0}; i < step.velocityIterations; ++i)
@@ -844,7 +846,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
 	{
 		const auto minSep = SolvePositionConstraints(positionConstraints, positions, psConf);
-		const auto contactsOkay = (minSep >= -LinearSlop * 3);
+		const auto contactsOkay = (minSep >= -m_linearSlop * 3);
 
 		const auto jointsOkay = [&]()
 		{
@@ -1129,12 +1131,12 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	
 	// Solve TOI-based position constraints.
 	auto positionConstraintsSolved = TimeStep::InvalidIteration;
-	const auto psConf = ConstraintSolverConf{ToiBaumgarte, LinearSlop, AngularSlop, MaxLinearCorrection};
+	const auto psConf = ConstraintSolverConf{ToiBaumgarte, m_linearSlop, m_angularSlop, MaxLinearCorrection};
 	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
 	{
 		const auto minSeparation = SolvePositionConstraints(positionConstraints, positions,
 															0, 1, psConf);
-		if (minSeparation >= -LinearSlop * float_t(1.5))
+		if (minSeparation >= -m_linearSlop * float_t(1.5))
 		{
 			positionConstraintsSolved = i;
 			break;

@@ -59,7 +59,10 @@ DistanceJoint::DistanceJoint(const DistanceJointDef& def)
 	m_dampingRatio = def.dampingRatio;
 }
 
-void DistanceJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step)
+void DistanceJoint::InitVelocityConstraints(Span<Velocity> velocities,
+											Span<const Position> positions,
+											const TimeStep& step,
+											const ConstraintSolverConf& conf)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -88,7 +91,7 @@ void DistanceJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<cons
 
 	// Handle singularity.
 	const auto length = Length(m_u);
-	if (length > LinearSlop)
+	if (length > conf.linearSlop)
 	{
 		m_u *= float_t(1) / length;
 	}

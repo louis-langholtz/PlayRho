@@ -126,7 +126,10 @@ PrismaticJoint::PrismaticJoint(const PrismaticJointDef& def)
 	m_perp = Vec2_zero;
 }
 
-void PrismaticJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step)
+void PrismaticJoint::InitVelocityConstraints(Span<Velocity> velocities,
+											 Span<const Position> positions,
+											 const TimeStep& step,
+											 const ConstraintSolverConf& conf)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -199,7 +202,7 @@ void PrismaticJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<con
 	if (m_enableLimit)
 	{
 		const auto jointTranslation = Dot(m_axis, d);
-		if (Abs(m_upperTranslation - m_lowerTranslation) < (LinearSlop * 2))
+		if (Abs(m_upperTranslation - m_lowerTranslation) < (conf.linearSlop * 2))
 		{
 			m_limitState = e_equalLimits;
 		}

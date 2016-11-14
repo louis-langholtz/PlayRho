@@ -43,6 +43,36 @@ class TimeStep;
 
 constexpr auto EarthlyGravity = Vec2{0, float_t(-9.8)};
 
+struct WorldDef
+{
+	WorldDef& UseGravity(Vec2 value) noexcept
+	{
+		gravity = value;
+		return *this;
+	}
+
+	WorldDef& UseLinearSlop(float_t value) noexcept
+	{
+		linearSlop = value;
+		return *this;
+	}
+
+	WorldDef& UseAngularSlop(float_t value) noexcept
+	{
+		angularSlop = value;
+		return *this;
+	}
+
+	Vec2 gravity = EarthlyGravity;
+	float_t linearSlop = LinearSlop;
+	float_t angularSlop = AngularSlop;
+};
+
+constexpr struct WorldDef GetDefaultWorldDef()
+{
+	return WorldDef{};	
+}
+	
 /// World.
 /// @detail
 /// The world class manages all physics entities, dynamic simulation,
@@ -55,8 +85,7 @@ public:
 	using size_type = size_t;
 	
 	/// Construct a world object.
-	/// @param gravity the world gravity vector.
-	World(const Vec2 gravity = EarthlyGravity);
+	World(const WorldDef def = GetDefaultWorldDef());
 
 	/// Destruct the world. All physics entities are destroyed and all heap memory is released.
 	~World();
@@ -414,13 +443,16 @@ private:
 
 	DestructionListener* m_destructionListener = nullptr; ///< Destruction listener. 8-bytes.
 
+	flags_type m_flags = e_clearForces|e_warmStart|e_contPhysics|e_stepComplete|e_allowSleep;
+
 	/// Inverse delta-t from previous step.
 	/// @detail Used to compute time step ratio to support a variable time step.
 	/// @note 4-bytes large.
 	/// @sa Step.
 	float_t m_inv_dt0 = float_t{0};
 
-	flags_type m_flags = e_clearForces|e_warmStart|e_contPhysics|e_stepComplete|e_allowSleep;
+	float_t m_linearSlop = LinearSlop;
+	float_t m_angularSlop = AngularSlop;
 
 	Profile m_profile;
 };

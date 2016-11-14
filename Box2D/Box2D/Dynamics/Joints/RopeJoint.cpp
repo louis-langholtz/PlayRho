@@ -46,7 +46,10 @@ RopeJoint::RopeJoint(const RopeJointDef& def)
 	m_length = float_t{0};
 }
 
-void RopeJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step)
+void RopeJoint::InitVelocityConstraints(Span<Velocity> velocities,
+										Span<const Position> positions,
+										const TimeStep& step,
+										const ConstraintSolverConf& conf)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -78,7 +81,7 @@ void RopeJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Po
 	const auto C = m_length - m_maxLength;
 	m_state = (C > float_t{0})? e_atUpperLimit: e_inactiveLimit;
 
-	if (m_length > LinearSlop)
+	if (m_length > conf.linearSlop)
 	{
 		m_u *= float_t{1} / m_length;
 	}

@@ -177,8 +177,7 @@ private:
 	/// Initializes velocity constraint data based on the given solver data.
 	/// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.
 	/// @sa SolveVelocityConstraints.
-	virtual void InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions,
-										 const TimeStep& step) = 0;
+	virtual void InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step, const ConstraintSolverConf& conf) = 0;
 
 	/// Solves velocity constraints for the given solver data.
 	/// @pre <code>InitVelocityConstraints</code> has been called.

@@ -230,7 +230,7 @@ Test::Test()
 {
 	Vec2 gravity;
 	gravity = Vec2(0.0f, -10.0f);
-	m_world = new World(gravity);
+	m_world = new World(WorldDef{}.UseGravity(gravity));
 	m_bomb = nullptr;
 	m_textLine = 30;
 	m_mouseJoint = nullptr;

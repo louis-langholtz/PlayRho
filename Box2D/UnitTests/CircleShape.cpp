@@ -28,7 +28,7 @@ TEST(CircleShape, ByteSizeIs16)
 
 TEST(CircleShape, DefaultConstruction)
 {
-	CircleShape foo{};
+	CircleShape foo{0};
 	
 	EXPECT_EQ(foo.GetType(), Shape::e_circle);
 	EXPECT_EQ(GetChildCount(foo), child_count_t{1});

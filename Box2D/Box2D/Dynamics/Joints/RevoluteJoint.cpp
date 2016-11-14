@@ -64,7 +64,10 @@ RevoluteJoint::RevoluteJoint(const RevoluteJointDef& def)
 	m_limitState = e_inactiveLimit;
 }
 
-void RevoluteJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step)
+void RevoluteJoint::InitVelocityConstraints(Span<Velocity> velocities,
+											Span<const Position> positions,
+											const TimeStep& step,
+											const ConstraintSolverConf& conf)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -126,7 +129,7 @@ void RevoluteJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<cons
 	if (m_enableLimit && fixedRotation == false)
 	{
 		const auto jointAngle = aB - aA - m_referenceAngle;
-		if (Abs(m_upperAngle - m_lowerAngle) < (2_rad * AngularSlop))
+		if (Abs(m_upperAngle - m_lowerAngle) < (2_rad * conf.angularSlop))
 		{
 			m_limitState = e_equalLimits;
 		}

@@ -77,7 +77,7 @@ TEST(World, DefaultInit)
 TEST(World, Init)
 {
 	const auto gravity = Vec2{float_t(-4.2), float_t(3.4)};
-	World world{gravity};
+	World world{WorldDef{}.UseGravity(gravity)};
 	EXPECT_EQ(world.GetGravity(), gravity);
 	EXPECT_FALSE(world.IsLocked());
 }
@@ -201,7 +201,7 @@ TEST(World, StepZeroTimeDoesNothing)
 {
 	const auto gravity = Vec2{0, float_t(-9.8)};
 	
-	World world{gravity};
+	World world{WorldDef{}.UseGravity(gravity)};
 	
 	BodyDef def;
 	def.position = Vec2{float_t(31.9), float_t(-19.24)};
@@ -248,7 +248,7 @@ TEST(World, GravitationalBodyMovement)
 	const auto gravity = Vec2{0, a};
 	const auto t = float_t(.01);
 	
-	World world{gravity};
+	World world{WorldDef{}.UseGravity(gravity)};
 
 	const auto body = world.CreateBody(body_def);
 	ASSERT_NE(body, nullptr);
@@ -284,7 +284,7 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
 {
 	const auto gravity = Vec2{0, float_t(-9.8)};
 	
-	World world{gravity};
+	World world{WorldDef{}.UseGravity(gravity)};
 	
 	BodyDef def;
 	def.position = Vec2{float_t(31.9), float_t(-19.24)};
@@ -392,7 +392,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 	};
 
 	const Vec2 gravity{0, 0};
-	World world{gravity};
+	World world{WorldDef{}.UseGravity(gravity)};
 	world.SetContactListener(&listener);
 	
 	ASSERT_EQ(listener.begin_contacts, unsigned(0));
@@ -472,7 +472,7 @@ TEST(World, PerfectlyOverlappedIdenticalCirclesStayPut)
 	const CircleShape shape{radius};
 	const Vec2 gravity{0, 0};
 
-	World world{gravity};
+	World world{WorldDef{}.UseGravity(gravity)};
 	
 	auto body_def = BodyDef{};
 	body_def.type = BodyType::Dynamic;
@@ -519,7 +519,7 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 	const CircleShape shape2{radius2};
 	const Vec2 gravity{0, 0};
 	
-	World world{gravity};
+	World world{WorldDef{}.UseGravity(gravity)};
 	
 	auto body_def = BodyDef{};
 	body_def.type = BodyType::Dynamic;
@@ -568,7 +568,7 @@ TEST(World, PartiallyOverlappedCirclesSeparate)
 	const auto radius = float_t(1);
 	
 	const Vec2 gravity{0, 0};
-	World world{gravity};
+	World world{WorldDef{}.UseGravity(gravity)};
 	
 	auto body_def = BodyDef{};
 	body_def.type = BodyType::Dynamic;
@@ -661,7 +661,7 @@ TEST(World, PerfectlyOverlappedIdenticalSquaresSeparate)
 	const auto shape = PolygonShape(1, 1);
 	const Vec2 gravity{0, 0};
 	
-	World world{gravity};
+	World world{WorldDef{}.UseGravity(gravity)};
 	
 	auto body_def = BodyDef{};
 	body_def.type = BodyType::Dynamic;
@@ -725,7 +725,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	 */
 
 	const Vec2 gravity{0, 0};
-	World world{gravity};
+	World world{WorldDef{}.UseGravity(gravity)};
 	
 	auto body_def = BodyDef{};
 	body_def.type = BodyType::Dynamic;
@@ -886,7 +886,7 @@ TEST(World, CollidingDynamicBodies)
 	};
 
 	const auto gravity = Vec2_zero;
-	World world{gravity};
+	World world{WorldDef{}.UseGravity(gravity)};
 	EXPECT_EQ(world.GetGravity(), gravity);
 	world.SetContactListener(&listener);
 	
@@ -1009,7 +1009,7 @@ static void catch_alarm(int sig)
 
 TEST(World, SpeedingBulletBallWontTunnel)
 {
-	World world{Vec2_zero};
+	World world{WorldDef{}.UseGravity(Vec2_zero)};
 
 	MyContactListener listener{
 		[](Contact& contact, const Manifold& oldManifold) {},
@@ -1026,7 +1026,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 	BodyDef body_def;
 	FixtureDef fixtureDef;
 	EdgeShape edge_shape;
-	CircleShape circle_shape;
+	CircleShape circle_shape{0};
 
 	edge_shape.Set(Vec2{0, +10}, Vec2{0, -10});
 	fixtureDef.shape = &edge_shape;
@@ -1165,7 +1165,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 
 TEST(World, MouseJointWontCauseTunnelling)
 {
-	World world{Vec2_zero};
+	World world{WorldDef{}.UseGravity(Vec2_zero)};
 	world.SetContinuousPhysics(true);
 	
 	const auto half_box_width = float_t(0.2);
@@ -1533,7 +1533,7 @@ static void smaller_still_conserves_momentum(bool bullet, float_t multiplier, fl
 	for (;;)
 	{
 		const auto gravity = Vec2_zero;
-		World world{gravity};
+		World world{WorldDef{}.UseGravity(gravity)};
 		ASSERT_EQ(world.GetGravity().x, 0);
 		ASSERT_EQ(world.GetGravity().y, 0);
 
