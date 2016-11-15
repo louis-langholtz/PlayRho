@@ -86,11 +86,11 @@ public:
 		m_bullet = nullptr;
 	}
 
-	void Keyboard(int key) override
+	void Keyboard(Key key) override
 	{
 		switch (key)
 		{
-		case GLFW_KEY_COMMA:
+		case Key_Comma:
 			if (m_bullet != nullptr)
 			{
 				m_world->Destroy(m_bullet);
@@ -118,9 +118,12 @@ public:
 			}
 			break;
                 
-        case GLFW_KEY_B:
+        case Key_B:
             g_blockSolve = !g_blockSolve;
             break;
+				
+		default:
+			break;
 		}
 	}
 

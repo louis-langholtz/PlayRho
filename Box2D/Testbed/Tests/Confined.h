@@ -153,21 +153,23 @@ public:
 		}		
 	}
 
-	void Keyboard(int key) override
+	void Keyboard(Key key) override
 	{
 		switch (key)
 		{
-		case GLFW_KEY_C:
+		case Key_C:
 			CreateCircle();
 			break;
-		case GLFW_KEY_B:
+		case Key_B:
 			CreateBox();
 			break;
-		case GLFW_KEY_I:
+		case Key_I:
 			ImpartRandomImpulses();
 			break;
-		case GLFW_KEY_PERIOD:
+		case Key_Period:
 			ToggleBulletMode();
+			break;
+		default:
 			break;
 		}
 	}

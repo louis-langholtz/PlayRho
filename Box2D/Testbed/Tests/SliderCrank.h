@@ -113,16 +113,16 @@ public:
 		}
 	}
 
-	void Keyboard(int key) override
+	void Keyboard(Key key) override
 	{
 		switch (key)
 		{
-		case GLFW_KEY_F:
+		case Key_F:
 			m_joint2->EnableMotor(!m_joint2->IsMotorEnabled());
 			m_joint2->GetBodyB()->SetAwake();
 			break;
 
-		case GLFW_KEY_M:
+		case Key_M:
 			m_joint1->EnableMotor(!m_joint1->IsMotorEnabled());
 			m_joint1->GetBodyB()->SetAwake();
 			break;

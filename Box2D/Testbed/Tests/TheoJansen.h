@@ -184,23 +184,23 @@ public:
 		Test::Step(settings, drawer);
 	}
 
-	void Keyboard(int key) override
+	void Keyboard(Key key) override
 	{
 		switch (key)
 		{
-		case GLFW_KEY_A:
+		case Key_A:
 			m_motorJoint->SetMotorSpeed(-m_motorSpeed);
 			break;
 
-		case GLFW_KEY_S:
+		case Key_S:
 			m_motorJoint->SetMotorSpeed(0.0f);
 			break;
 
-		case GLFW_KEY_D:
+		case Key_D:
 			m_motorJoint->SetMotorSpeed(m_motorSpeed);
 			break;
 
-		case GLFW_KEY_M:
+		case Key_M:
 			m_motorJoint->EnableMotor(!m_motorJoint->IsMotorEnabled());
 			break;
 		}

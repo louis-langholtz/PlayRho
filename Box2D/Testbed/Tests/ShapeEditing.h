@@ -51,11 +51,11 @@ public:
 		m_sensor = false;
 	}
 
-	void Keyboard(int key) override
+	void Keyboard(Key key) override
 	{
 		switch (key)
 		{
-		case GLFW_KEY_C:
+		case Key_C:
 			if (m_fixture2 == nullptr)
 			{
 				CircleShape shape(3.0, Vec2(0.5f, -4.0f));
@@ -64,7 +64,7 @@ public:
 			}
 			break;
 
-		case GLFW_KEY_D:
+		case Key_D:
 			if (m_fixture2 != nullptr)
 			{
 				m_body->DestroyFixture(m_fixture2);
@@ -73,7 +73,7 @@ public:
 			}
 			break;
 
-		case GLFW_KEY_S:
+		case Key_S:
 			if (m_fixture2 != nullptr)
 			{
 				m_sensor = !m_sensor;

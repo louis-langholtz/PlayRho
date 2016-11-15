@@ -104,21 +104,24 @@ public:
 		}
 	}
 
-	void Keyboard(int key) override
+	void Keyboard(Key key) override
 	{
 		switch (key)
 		{
-		case GLFW_KEY_D:
+		case Key_D:
 			m_platform->SetType(BodyType::Dynamic);
 			break;
 
-		case GLFW_KEY_S:
+		case Key_S:
 			m_platform->SetType(BodyType::Static);
 			break;
 
-		case GLFW_KEY_K:
+		case Key_K:
 			m_platform->SetType(BodyType::Kinematic);
 			m_platform->SetVelocity(Velocity{Vec2(-m_speed, 0.0f), 0_rad});
+			break;
+	
+		default:
 			break;
 		}
 	}

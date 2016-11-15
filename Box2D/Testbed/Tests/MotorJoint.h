@@ -70,12 +70,14 @@ public:
 		m_time = 0.0f;
 	}
 
-	void Keyboard(int key) override
+	void Keyboard(Key key) override
 	{
 		switch (key)
 		{
-		case GLFW_KEY_S:
+		case Key_S:
 			m_go = !m_go;
+			break;
+		default:
 			break;
 		}
 	}

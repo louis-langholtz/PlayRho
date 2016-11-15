@@ -121,32 +121,35 @@ public:
 		drawer.DrawPoint(x2, 4.0f, c2);
 	}
 
-	void Keyboard(int key) override
+	void Keyboard(Key key) override
 	{
 		switch (key)
 		{
-		case GLFW_KEY_A:
+		case Key_A:
 			m_positionB.x -= 0.1f;
 			break;
 
-		case GLFW_KEY_D:
+		case Key_D:
 			m_positionB.x += 0.1f;
 			break;
 
-		case GLFW_KEY_S:
+		case Key_S:
 			m_positionB.y -= 0.1f;
 			break;
 
-		case GLFW_KEY_W:
+		case Key_W:
 			m_positionB.y += 0.1f;
 			break;
 
-		case GLFW_KEY_Q:
+		case Key_Q:
 			m_angleB += 0.1_rad * Pi;
 			break;
 
-		case GLFW_KEY_E:
+		case Key_E:
 			m_angleB -= 0.1_rad * Pi;
+			break;
+				
+		default:
 			break;
 		}
 

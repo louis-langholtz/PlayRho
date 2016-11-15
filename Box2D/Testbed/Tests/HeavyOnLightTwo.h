@@ -73,13 +73,15 @@ public:
         }
     }
     
-	void Keyboard(int key) override
+	void Keyboard(Key key) override
 	{
 		switch (key)
 		{
-        case GLFW_KEY_H:
+        case Key_H:
             ToggleHeavy();
             break;
+		default:
+			break;
 		}
 	}
     

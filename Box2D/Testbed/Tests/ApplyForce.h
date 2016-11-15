@@ -143,11 +143,11 @@ public:
 		}
 	}
 
-	void Keyboard(int key)
+	void Keyboard(Key key)
 	{
 		switch (key)
 		{
-		case GLFW_KEY_W:
+		case Key_W:
 			{
 				Vec2 f = GetWorldVector(*m_body, Vec2(float_t{0}, -200.0f));
 				Vec2 p = GetWorldPoint(*m_body, Vec2(float_t{0}, 2.0f));
@@ -155,16 +155,19 @@ public:
 			}
 			break;
 
-		case GLFW_KEY_A:
+		case Key_A:
 			{
 				ApplyTorque(*m_body, 50.0f);
 			}
 			break;
 
-		case GLFW_KEY_D:
+		case Key_D:
 			{
 				ApplyTorque(*m_body, -50.0f);
 			}
+			break;
+
+		default:
 			break;
 		}
 	}

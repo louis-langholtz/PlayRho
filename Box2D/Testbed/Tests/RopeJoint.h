@@ -97,11 +97,11 @@ public:
 		}
 	}
 
-	void Keyboard(int key) override
+	void Keyboard(Key key) override
 	{
 		switch (key)
 		{
-		case GLFW_KEY_J:
+		case Key_J:
 			if (m_rope)
 			{
 				m_world->Destroy(m_rope);
@@ -111,6 +111,9 @@ public:
 			{
 				m_rope = m_world->CreateJoint(m_ropeDef);
 			}
+			break;
+
+		default:
 			break;
 		}
 	}

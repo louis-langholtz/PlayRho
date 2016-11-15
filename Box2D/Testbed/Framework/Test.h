@@ -25,8 +25,6 @@
 #include "Drawer.h"
 #include <Box2D/Collision/CollideShapes.hpp>
 
-#include <glfw/glfw3.h>
-
 namespace box2d {
 
 class Test;
@@ -116,14 +114,21 @@ struct ContactPoint
 class Test : public ContactListener
 {
 public:
+	enum Key {
+		Key_Comma, Key_Period,
+		Key_0, Key_1, Key_2, Key_3, Key_4, Key_5, Key_6, Key_7, Key_8, Key_9,
+		Key_A, Key_B, Key_C, Key_D, Key_E, Key_F, Key_G, Key_H, Key_I, Key_J, Key_K, Key_L, Key_M,
+		Key_N, Key_O, Key_P, Key_Q, Key_R, Key_S, Key_T, Key_U, Key_V, Key_W, Key_X, Key_Y, Key_Z,
+		Key_Unknown
+	};
 
 	Test();
 	virtual ~Test();
 
 	void DrawTitle(Drawer& drawer, const char *string);
 	virtual void Step(Settings& settings, Drawer& drawer);
-	virtual void Keyboard(int key) { BOX2D_NOT_USED(key); }
-	virtual void KeyboardUp(int key) { BOX2D_NOT_USED(key); }
+	virtual void Keyboard(Key key) { BOX2D_NOT_USED(key); }
+	virtual void KeyboardUp(Key key) { BOX2D_NOT_USED(key); }
 	void ShiftMouseDown(const Vec2& p);
 	virtual void MouseDown(const Vec2& p);
 	virtual void MouseUp(const Vec2& p);

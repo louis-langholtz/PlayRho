@@ -102,6 +102,52 @@ static void sResizeWindow(GLFWwindow*, int width, int height)
 	g_camera.m_height = height;
 }
 
+static Test::Key GlfwKeyToTestKey(int key)
+{
+	switch (key)
+	{
+		case GLFW_KEY_COMMA: return Test::Key_Comma;
+		case GLFW_KEY_PERIOD: return Test::Key_Period;
+		case GLFW_KEY_0: return Test::Key_0;
+		case GLFW_KEY_1: return Test::Key_1;
+		case GLFW_KEY_2: return Test::Key_2;
+		case GLFW_KEY_3: return Test::Key_3;
+		case GLFW_KEY_4: return Test::Key_4;
+		case GLFW_KEY_5: return Test::Key_5;
+		case GLFW_KEY_6: return Test::Key_6;
+		case GLFW_KEY_7: return Test::Key_7;
+		case GLFW_KEY_8: return Test::Key_8;
+		case GLFW_KEY_9: return Test::Key_9;
+		case GLFW_KEY_A: return Test::Key_A;
+		case GLFW_KEY_B: return Test::Key_B;
+		case GLFW_KEY_C: return Test::Key_C;
+		case GLFW_KEY_D: return Test::Key_D;
+		case GLFW_KEY_E: return Test::Key_E;
+		case GLFW_KEY_F: return Test::Key_F;
+		case GLFW_KEY_G: return Test::Key_G;
+		case GLFW_KEY_H: return Test::Key_H;
+		case GLFW_KEY_I: return Test::Key_I;
+		case GLFW_KEY_J: return Test::Key_J;
+		case GLFW_KEY_K: return Test::Key_K;
+		case GLFW_KEY_L: return Test::Key_L;
+		case GLFW_KEY_M: return Test::Key_M;
+		case GLFW_KEY_N: return Test::Key_N;
+		case GLFW_KEY_O: return Test::Key_O;
+		case GLFW_KEY_P: return Test::Key_P;
+		case GLFW_KEY_Q: return Test::Key_Q;
+		case GLFW_KEY_R: return Test::Key_R;
+		case GLFW_KEY_S: return Test::Key_S;
+		case GLFW_KEY_T: return Test::Key_T;
+		case GLFW_KEY_U: return Test::Key_U;
+		case GLFW_KEY_V: return Test::Key_V;
+		case GLFW_KEY_W: return Test::Key_W;
+		case GLFW_KEY_X: return Test::Key_X;
+		case GLFW_KEY_Y: return Test::Key_Y;
+		case GLFW_KEY_Z: return Test::Key_Z;
+	}
+	return Test::Key_Unknown;
+}
+
 //
 static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mods)
 {
@@ -225,13 +271,13 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
 		default:
 			if (test)
 			{
-				test->Keyboard(key);
+				test->Keyboard(GlfwKeyToTestKey(key));
 			}
 		}
 	}
 	else if (action == GLFW_RELEASE)
 	{
-		test->KeyboardUp(key);
+		test->KeyboardUp(GlfwKeyToTestKey(key));
 	}
 	// else GLFW_REPEAT
 }

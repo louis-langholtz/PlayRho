@@ -185,43 +185,45 @@ namespace box2d {
 			}
 		}
 
-		void Keyboard(int key) override
+		void Keyboard(Key key) override
 		{
 			switch (key)
 			{
-				case GLFW_KEY_PERIOD:
+				case Key_Period:
 					ToggleBulletMode();
 					break;
-				case GLFW_KEY_D:
+				case Key_D:
 					ToggleRightSideWall();
 					break;
-				case GLFW_KEY_A:
+				case Key_A:
 					ToggleLeftSideWall();
 					break;
-				case GLFW_KEY_1:
+				case Key_1:
 					DestroyCradle();
 					m_num_arms = 1;
 					CreateCradle();
 					break;
-				case GLFW_KEY_2:
+				case Key_2:
 					DestroyCradle();
 					m_num_arms = 2;
 					CreateCradle();
 					break;
-				case GLFW_KEY_3:
+				case Key_3:
 					DestroyCradle();
 					m_num_arms = 3;
 					CreateCradle();
 					break;
-				case GLFW_KEY_4:
+				case Key_4:
 					DestroyCradle();
 					m_num_arms = 4;
 					CreateCradle();
 					break;
-				case GLFW_KEY_5:
+				case Key_5:
 					DestroyCradle();
 					m_num_arms = 5;
 					CreateCradle();
+					break;
+				default:
 					break;
 			}
 		}

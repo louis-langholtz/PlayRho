@@ -118,16 +118,19 @@ public:
 
 	}
 
-	void Keyboard(int key) override
+	void Keyboard(Key key) override
 	{
 		switch (key)
 		{
-		case GLFW_KEY_L:
+		case Key_L:
 			m_joint->EnableLimit(!m_joint->IsLimitEnabled());
 			break;
 
-		case GLFW_KEY_M:
+		case Key_M:
 			m_joint->EnableMotor(!m_joint->IsMotorEnabled());
+			break;
+				
+		default:
 			break;
 		}
 	}

@@ -61,16 +61,19 @@ public:
 		return new ConvexHull;
 	}
 
-	void Keyboard(int key) override
+	void Keyboard(Key key) override
 	{
 		switch (key)
 		{
-		case GLFW_KEY_A:
+		case Key_A:
 			m_auto = !m_auto;
 			break;
 
-		case GLFW_KEY_G:
+		case Key_G:
 			Generate();
+			break;
+
+		default:
 			break;
 		}
 	}

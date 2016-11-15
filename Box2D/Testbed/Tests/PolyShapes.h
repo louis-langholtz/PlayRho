@@ -224,19 +224,19 @@ public:
 		}
 	}
 
-	void Keyboard(int key) override
+	void Keyboard(Key key) override
 	{
 		switch (key)
 		{
-		case GLFW_KEY_1:
-		case GLFW_KEY_2:
-		case GLFW_KEY_3:
-		case GLFW_KEY_4:
-		case GLFW_KEY_5:
-			Create(key - GLFW_KEY_1);
+		case Key_1:
+		case Key_2:
+		case Key_3:
+		case Key_4:
+		case Key_5:
+			Create(key - Key_1);
 			break;
 
-		case GLFW_KEY_A:
+		case Key_A:
 			for (int32 i = 0; i < e_maxBodies; i += 2)
 			{
 				if (m_bodies[i])
@@ -247,8 +247,11 @@ public:
 			}
 			break;
 
-		case GLFW_KEY_D:
+		case Key_D:
 			Destroy();
+			break;
+				
+		default:
 			break;
 		}
 	}

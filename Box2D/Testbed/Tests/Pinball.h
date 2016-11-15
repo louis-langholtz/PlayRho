@@ -135,22 +135,26 @@ public:
 
 	}
 
-	void Keyboard(int key) override
+	void Keyboard(Key key) override
 	{
 		switch (key)
 		{
-		case GLFW_KEY_A:
+		case Key_A:
 			m_button = true;
+			break;
+		default:
 			break;
 		}
 	}
 
-	void KeyboardUp(int key) override
+	void KeyboardUp(Key key) override
 	{
 		switch (key)
 		{
-		case GLFW_KEY_A:
+		case Key_A:
 			m_button = false;
+			break;
+		default:
 			break;
 		}
 	}

@@ -137,23 +137,23 @@ public:
 		++m_stepCount;
 	}
 
-	void Keyboard(int key) override
+	void Keyboard(Key key) override
 	{
 		switch (key)
 		{
-		case GLFW_KEY_A:
+		case Key_A:
 			m_automated = !m_automated;
 			break;
 
-		case GLFW_KEY_C:
+		case Key_C:
 			CreateProxy();
 			break;
 
-		case GLFW_KEY_D:
+		case Key_D:
 			DestroyProxy();
 			break;
 
-		case GLFW_KEY_M:
+		case Key_M:
 			MoveProxy();
 			break;
 		}

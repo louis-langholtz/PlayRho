@@ -219,32 +219,35 @@ public:
 		}
 	}
 
-	void Keyboard(int key) override
+	void Keyboard(Key key) override
 	{
 		switch (key)
 		{
-		case GLFW_KEY_A:
+		case Key_A:
 			m_spring1->SetMotorSpeed(m_speed);
 			break;
 
-		case GLFW_KEY_S:
+		case Key_S:
 			m_spring1->SetMotorSpeed(0_rad);
 			break;
 
-		case GLFW_KEY_D:
+		case Key_D:
 			m_spring1->SetMotorSpeed(-m_speed);
 			break;
 
-		case GLFW_KEY_Q:
+		case Key_Q:
 			m_hz = Max(0.0f, m_hz - 1.0f);
 			m_spring1->SetSpringFrequencyHz(m_hz);
 			m_spring2->SetSpringFrequencyHz(m_hz);
 			break;
 
-		case GLFW_KEY_E:
+		case Key_E:
 			m_hz += 1.0f;
 			m_spring1->SetSpringFrequencyHz(m_hz);
 			m_spring2->SetSpringFrequencyHz(m_hz);
+			break;
+	
+		default:
 			break;
 		}
 	}

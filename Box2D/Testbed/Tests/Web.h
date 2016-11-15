@@ -148,11 +148,11 @@ public:
 		}
 	}
 
-	void Keyboard(int key) override
+	void Keyboard(Key key) override
 	{
 		switch (key)
 		{
-		case GLFW_KEY_B:
+		case Key_B:
 			for (int32 i = 0; i < 4; ++i)
 			{
 				if (m_bodies[i])
@@ -164,7 +164,7 @@ public:
 			}
 			break;
 
-		case GLFW_KEY_J:
+		case Key_J:
 			for (int32 i = 0; i < 8; ++i)
 			{
 				if (m_joints[i])
@@ -174,6 +174,9 @@ public:
 					break;
 				}
 			}
+			break;
+				
+		default:
 			break;
 		}
 	}

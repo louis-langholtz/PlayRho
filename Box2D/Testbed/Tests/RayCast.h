@@ -296,24 +296,24 @@ public:
 		}
 	}
 
-	void Keyboard(int key) override
+	void Keyboard(Key key) override
 	{
 		switch (key)
 		{
-		case GLFW_KEY_1:
-		case GLFW_KEY_2:
-		case GLFW_KEY_3:
-		case GLFW_KEY_4:
-		case GLFW_KEY_5:
-		case GLFW_KEY_6:
-			Create(key - GLFW_KEY_1);
+		case Key_1:
+		case Key_2:
+		case Key_3:
+		case Key_4:
+		case Key_5:
+		case Key_6:
+			Create(key - Key_1);
 			break;
 
-		case GLFW_KEY_D:
+		case Key_D:
 			Destroy();
 			break;
 
-		case GLFW_KEY_M:
+		case Key_M:
 			if (m_mode == e_closest)
 			{
 				m_mode = e_any;
@@ -326,6 +326,10 @@ public:
 			{
 				m_mode = e_closest;
 			}
+			break;
+
+		default:
+			break;
 		}
 	}
 
