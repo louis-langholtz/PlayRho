@@ -351,7 +351,7 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
 	const auto lcB = Vec2{};
 	const auto bA = PositionConstraint::BodyData{indexA, float_t(1), float_t(1), lcA};
 	const auto bB = PositionConstraint::BodyData{indexB, float_t(1), float_t(1), lcB};
-	const auto pc = PositionConstraint{manifold, bA, GetRadius(shape), bB, GetRadius(shape)};
+	const auto pc = PositionConstraint{manifold, bA, GetVertexRadius(shape), bB, GetVertexRadius(shape)};
 
 	const auto old_pA = Position{Vec2{0, 0}, 0_deg};
 	const auto old_pB = Position{Vec2{0, 0}, 0_deg};

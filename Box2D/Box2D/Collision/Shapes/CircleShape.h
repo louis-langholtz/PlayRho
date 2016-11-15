@@ -70,8 +70,8 @@ private:
 	Vec2 m_p = Vec2_zero;
 };
 
-/// Gets the "radius" of the given shape.
-float_t GetRadius(const CircleShape& shape);
+/// Gets the vertex radius of the given shape.
+float_t GetVertexRadius(const CircleShape& shape);
 
 /// Gets the number of child primitives.
 /// @return Positive non-zero count.

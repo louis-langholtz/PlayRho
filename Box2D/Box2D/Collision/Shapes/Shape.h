@@ -48,7 +48,8 @@ public:
 
 	/// Initializing constructor.
 	/// @param type Type of this shape object.
-	constexpr Shape(Type type) noexcept: m_type{type}
+	constexpr Shape(Type type) noexcept:
+		m_type{type}
 	{
 		assert(type < e_typeCount);
 	}
@@ -65,9 +66,13 @@ private:
 	const Type m_type;
 };
 
-/// Gets the "radius" of the given shape.
-float_t GetRadius(const Shape& shape);
-	
+/// Gets the vertex radius of the given shape (in meters).
+/// @detail Gets the radius (in meters) of every vertex of this shape.
+/// This is used for collision handling.
+/// @note This value should never be less than nor almost equal to zero.
+/// @sa DistanceProxy.
+float_t GetVertexRadius(const Shape& shape);
+
 /// Gets the number of child primitives.
 /// @return Positive non-zero count.
 child_count_t GetChildCount(const Shape& shape);

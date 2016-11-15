@@ -23,7 +23,7 @@
 
 using namespace box2d;
 
-float_t box2d::GetRadius(const CircleShape& shape)
+float_t box2d::GetVertexRadius(const CircleShape& shape)
 {
 	return shape.GetRadius();
 }

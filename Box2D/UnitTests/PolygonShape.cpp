@@ -33,7 +33,7 @@ TEST(PolygonShape, DefaultConstruction)
 	EXPECT_EQ(shape.GetVertexCount(), 0);
 	EXPECT_EQ(shape.GetCentroid(), Vec2(0, 0));
 	EXPECT_EQ(GetChildCount(shape), child_count_t(1));
-	EXPECT_EQ(GetRadius(shape), PolygonRadius);
+	EXPECT_EQ(GetVertexRadius(shape), PolygonRadius);
 }
 
 TEST(PolygonShape, FindLowestRightMostVertex)
@@ -58,7 +58,7 @@ TEST(PolygonShape, BoxConstruction)
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(shape.GetCentroid(), Vec2(0, 0));
 	EXPECT_EQ(GetChildCount(shape), child_count_t(1));
-	EXPECT_EQ(GetRadius(shape), PolygonRadius);
+	EXPECT_EQ(GetVertexRadius(shape), PolygonRadius);
 
 	ASSERT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));
 	
@@ -84,7 +84,7 @@ TEST(PolygonShape, Copy)
 	ASSERT_EQ(shape.GetType(), Shape::e_polygon);
 	ASSERT_EQ(shape.GetCentroid(), Vec2(0, 0));
 	ASSERT_EQ(GetChildCount(shape), child_count_t(1));
-	ASSERT_EQ(GetRadius(shape), PolygonRadius);
+	ASSERT_EQ(GetVertexRadius(shape), PolygonRadius);
 	ASSERT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));
 	
 	// vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
@@ -103,7 +103,7 @@ TEST(PolygonShape, Copy)
 	EXPECT_EQ(copy.GetType(), Shape::e_polygon);
 	EXPECT_EQ(copy.GetCentroid(), Vec2(0, 0));
 	EXPECT_EQ(GetChildCount(copy), child_count_t(1));
-	EXPECT_EQ(GetRadius(copy), PolygonRadius);
+	EXPECT_EQ(GetVertexRadius(copy), PolygonRadius);
 	
 	ASSERT_EQ(copy.GetVertexCount(), PolygonShape::vertex_count_t(4));
 	
@@ -129,7 +129,7 @@ TEST(PolygonShape, Translate)
 	ASSERT_EQ(shape.GetType(), Shape::e_polygon);
 	ASSERT_EQ(shape.GetCentroid(), Vec2(0, 0));
 	ASSERT_EQ(GetChildCount(shape), child_count_t(1));
-	ASSERT_EQ(GetRadius(shape), PolygonRadius);
+	ASSERT_EQ(GetVertexRadius(shape), PolygonRadius);
 	ASSERT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));
 	
 	// vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
@@ -149,7 +149,7 @@ TEST(PolygonShape, Translate)
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(shape.GetCentroid(), new_ctr);
 	EXPECT_EQ(GetChildCount(shape), child_count_t(1));
-	EXPECT_EQ(GetRadius(shape), PolygonRadius);
+	EXPECT_EQ(GetVertexRadius(shape), PolygonRadius);
 
 	ASSERT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));
 
@@ -173,7 +173,7 @@ TEST(PolygonShape, SetAsBox)
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(shape.GetCentroid(), Vec2(0, 0));
 	EXPECT_EQ(GetChildCount(shape), child_count_t(1));
-	EXPECT_EQ(GetRadius(shape), PolygonRadius);
+	EXPECT_EQ(GetVertexRadius(shape), PolygonRadius);
 	
 	ASSERT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));
 	
@@ -199,7 +199,7 @@ TEST(PolygonShape, SetAsZeroCenteredRotatedBox)
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(shape.GetCentroid(), Vec2(0, 0));
 	EXPECT_EQ(GetChildCount(shape), child_count_t(1));
-	EXPECT_EQ(GetRadius(shape), PolygonRadius);
+	EXPECT_EQ(GetVertexRadius(shape), PolygonRadius);
 	
 	ASSERT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));
 	
@@ -227,7 +227,7 @@ TEST(PolygonShape, SetAsCenteredBox)
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(shape.GetCentroid(), Vec2(x_off, y_off));
 	EXPECT_EQ(GetChildCount(shape), child_count_t(1));
-	EXPECT_EQ(GetRadius(shape), PolygonRadius);
+	EXPECT_EQ(GetVertexRadius(shape), PolygonRadius);
 	
 	ASSERT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));
 	
@@ -256,7 +256,7 @@ TEST(PolygonShape, SetAsBoxAngledDegrees90)
 	EXPECT_EQ(shape.GetCentroid().x, float_t(0));
 	EXPECT_EQ(shape.GetCentroid().y, float_t(0));
 	EXPECT_EQ(GetChildCount(shape), child_count_t(1));
-	EXPECT_EQ(GetRadius(shape), PolygonRadius);
+	EXPECT_EQ(GetVertexRadius(shape), PolygonRadius);
 	
 	ASSERT_EQ(shape.GetVertexCount(), PolygonShape::vertex_count_t(4));
 	

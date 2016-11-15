@@ -419,7 +419,9 @@ TEST(CollideShapes, HorizontalOverlappingRects1)
 	EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeB, ContactFeature::e_vertex);
 	EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexB, 3);
 	
-	const auto world_manifold = GetWorldManifold(manifold, xfm0, GetRadius(shape0), xfm1, GetRadius(shape1));
+	const auto world_manifold = GetWorldManifold(manifold,
+												 xfm0, GetVertexRadius(shape0),
+												 xfm1, GetVertexRadius(shape1));
 	EXPECT_EQ(world_manifold.GetPointCount(), Manifold::size_type(2));
 	
 	EXPECT_FLOAT_EQ(world_manifold.GetNormal().GetX(), float_t(1));
@@ -463,7 +465,7 @@ TEST(CollideShapes, HorizontalOverlappingRects2)
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
 	
-	const auto total_radius = GetRadius(shape0) + GetRadius(shape1);
+	const auto total_radius = GetVertexRadius(shape0) + GetVertexRadius(shape1);
 
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
 	EXPECT_FLOAT_EQ(manifold.GetPoint(0).localPoint.x, float_t(-2.0)); // left
@@ -485,7 +487,9 @@ TEST(CollideShapes, HorizontalOverlappingRects2)
 	EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeB, ContactFeature::e_face);
 	EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexB, 2);
 	
-	const auto world_manifold = GetWorldManifold(manifold, xfm0, GetRadius(shape0), xfm1, GetRadius(shape1));
+	const auto world_manifold = GetWorldManifold(manifold,
+												 xfm0, GetVertexRadius(shape0),
+												 xfm1, GetVertexRadius(shape1));
 	EXPECT_EQ(world_manifold.GetPointCount(), Manifold::size_type(2));
 	
 	EXPECT_FLOAT_EQ(world_manifold.GetNormal().GetX(), float_t(1));

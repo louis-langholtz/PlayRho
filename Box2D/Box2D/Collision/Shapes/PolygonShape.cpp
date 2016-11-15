@@ -224,7 +224,7 @@ bool box2d::Validate(const PolygonShape& shape)
 	return true;
 }
 
-float_t box2d::GetRadius(const PolygonShape& shape)
+float_t box2d::GetVertexRadius(const PolygonShape& shape)
 {
 	return PolygonRadius;
 }
@@ -334,7 +334,7 @@ AABB box2d::ComputeAABB(const PolygonShape& shape, const Transformation& xf, chi
 		upper = Max(upper, v);
 	}
 
-	const auto r = Vec2{GetRadius(shape), GetRadius(shape)};
+	const auto r = Vec2{GetVertexRadius(shape), GetVertexRadius(shape)};
 	return AABB{lower - r, upper + r};
 }
 

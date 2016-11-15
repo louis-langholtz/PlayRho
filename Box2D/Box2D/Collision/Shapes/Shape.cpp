@@ -25,15 +25,15 @@
 
 namespace box2d {
 	
-	float_t GetRadius(const Shape& shape)
+	float_t GetVertexRadius(const Shape& shape)
 	{
 		assert(shape.GetType() < Shape::e_typeCount);
 		switch (shape.GetType())
 		{
-			case Shape::e_circle: return GetRadius(static_cast<const CircleShape&>(shape));
-			case Shape::e_edge: return GetRadius(static_cast<const EdgeShape&>(shape));
-			case Shape::e_chain: return GetRadius(static_cast<const ChainShape&>(shape));
-			case Shape::e_polygon: return GetRadius(static_cast<const PolygonShape&>(shape));
+			case Shape::e_circle: return GetVertexRadius(static_cast<const CircleShape&>(shape));
+			case Shape::e_edge: return GetVertexRadius(static_cast<const EdgeShape&>(shape));
+			case Shape::e_chain: return GetVertexRadius(static_cast<const ChainShape&>(shape));
+			case Shape::e_polygon: return GetVertexRadius(static_cast<const PolygonShape&>(shape));
 			case Shape::e_typeCount: return 0;
 		}
 	}

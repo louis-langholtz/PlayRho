@@ -131,8 +131,8 @@ inline UnitVec2 PolygonShape::GetNormal(vertex_count_t index) const
 
 Vec2 GetEdge(const PolygonShape& shape, PolygonShape::vertex_count_t index);
 	
-/// Gets the "radius" of the given shape.
-float_t GetRadius(const PolygonShape& shape);
+/// Gets the vertex radius of the given shape.
+float_t GetVertexRadius(const PolygonShape& shape);
 
 /// Gets the number of child primitives.
 /// @return Positive non-zero count.

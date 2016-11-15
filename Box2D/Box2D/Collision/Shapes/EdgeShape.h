@@ -78,7 +78,7 @@ inline void EdgeShape::SetVertex3(const Vec2& v) noexcept
 }
 	
 /// Gets the "radius" of the given shape.
-float_t GetRadius(const EdgeShape& shape);
+float_t GetVertexRadius(const EdgeShape& shape);
 
 /// Gets the number of child primitives.
 /// @return Positive non-zero count.

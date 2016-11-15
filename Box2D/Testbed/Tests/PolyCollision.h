@@ -77,7 +77,9 @@ public:
 			}
 		}
 
-		const auto worldManifold = GetWorldManifold(manifold, m_transformA, GetRadius(m_polygonA), m_transformB, GetRadius(m_polygonB));
+		const auto worldManifold = GetWorldManifold(manifold,
+													m_transformA, GetVertexRadius(m_polygonA),
+													m_transformB, GetVertexRadius(m_polygonB));
 		for (auto i = decltype(pointCount){0}; i < pointCount; ++i)
 		{
 			drawer.DrawPoint(worldManifold.GetPoint(i), 4.0f, Color(0.9f, 0.3f, 0.3f));

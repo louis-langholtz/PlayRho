@@ -52,8 +52,8 @@ namespace box2d
 		{}
 		
 		/// Initializing constructor.
-		/// @detail Constructs a distance proxy for a single point shape (like a circle).
-		/// @param radius Radius.
+		/// @detail Constructs a distance proxy for a single point shape (a circle).
+		/// @param radius Radius of the given vertex.
 		/// @param v0 Vertex 0 (relative to the shape's origin).
 		constexpr DistanceProxy(float_t radius, Vec2 v0) noexcept:
 			m_radius{radius}, m_buffer{{v0}}, m_count{1}
@@ -62,8 +62,8 @@ namespace box2d
 		}
 		
 		/// Initializing constructor.
-		/// @detail Constructs a distance proxy for dual point shape (like an edge or a chain).
-		/// @param radius Radius.
+		/// @detail Constructs a distance proxy for dual point shape (an edge or a chain).
+		/// @param radius Radius of the given vertices.
 		/// @param v0 Vertex 0 (relative to the shape's origin).
 		/// @param v1 Vertex 1 (relative to the shape's origin).
 		constexpr DistanceProxy(float_t radius, Vec2 v0, Vec2 v1) noexcept:
@@ -74,7 +74,7 @@ namespace box2d
 		
 		/// Initializing constructor.
 		/// @detail Constructs a distance proxy for n-point shape (like a polygon).
-		/// @param radius Radius.
+		/// @param radius Radius of the given vertices.
 		/// @param vertices Collection of vertices of the shape (relative to the shape's origin).
 		/// @note The vertices collection must have more than zero elements and no more than
 		///    <code>MaxShapeVertices</code> elements.
@@ -91,7 +91,7 @@ namespace box2d
 			assert(vertices.size() <= MaxShapeVertices);
 		}
 		
-		/// Gets the "radius" of the associated shape.
+		/// Gets the radius of the vertices of the associated shape.
 		/// @return Non-negative distance.
 		auto GetRadius() const noexcept { return m_radius; }
 		
@@ -130,7 +130,7 @@ namespace box2d
 		const Vec2* m_vertices = &m_buffer[0];
 		
 		size_type m_count = 0; ///< Count of valid elements of m_vertices.
-		float_t m_radius = float_t{0}; ///< "Radius" of the associated shape (in meters).
+		float_t m_radius = float_t{0}; ///< Radius of the vertices of the associated shape (in meters).
 	};
 	
 	/// Initialize the proxy using the given shape.

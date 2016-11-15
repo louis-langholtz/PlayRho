@@ -25,56 +25,64 @@
 
 using namespace box2d;
 
+static void Draw(Drawer& drawer, const CircleShape& shape, const Transformation& xf, const Color& color)
+{
+	const auto center = Transform(shape.GetPosition(), xf);
+	const auto radius = shape.GetRadius();
+	const auto axis = Rotate(Vec2{float_t{1}, float_t{0}}, xf.q);
+	drawer.DrawSolidCircle(center, radius, axis, color);
+}
+
+static void Draw(Drawer& drawer, const EdgeShape& shape, const Transformation& xf, const Color& color)
+{
+	const auto v1 = Transform(shape.GetVertex1(), xf);
+	const auto v2 = Transform(shape.GetVertex2(), xf);
+	drawer.DrawSegment(v1, v2, color);
+}
+
+static void Draw(Drawer& drawer, const ChainShape& shape, const Transformation& xf, const Color& color)
+{
+	const auto count = shape.GetVertexCount();
+	auto v1 = Transform(shape.GetVertex(0), xf);
+	for (auto i = decltype(count){1}; i < count; ++i)
+	{
+		const auto v2 = Transform(shape.GetVertex(i), xf);
+		drawer.DrawSegment(v1, v2, color);
+		drawer.DrawCircle(v1, float_t(0.05), color);
+		v1 = v2;
+	}
+}
+
+static void Draw(Drawer& drawer, const PolygonShape& shape, const Transformation& xf, const Color& color)
+{
+	const auto vertexCount = shape.GetVertexCount();
+	assert(vertexCount <= MaxPolygonVertices);
+	Vec2 vertices[MaxPolygonVertices];
+	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+	{
+		vertices[i] = Transform(shape.GetVertex(i), xf);
+	}
+	drawer.DrawSolidPolygon(vertices, vertexCount, color);
+}
+
 static void Draw(Drawer& drawer, const Fixture& fixture, const Transformation& xf, const Color& color)
 {
 	switch (GetType(fixture))
 	{
 		case Shape::e_circle:
-		{
-			const auto circle = static_cast<const CircleShape*>(fixture.GetShape());
-			const auto center = Transform(circle->GetPosition(), xf);
-			const auto radius = circle->GetRadius();
-			const auto axis = Rotate(Vec2{float_t{1}, float_t{0}}, xf.q);
-			drawer.DrawSolidCircle(center, radius, axis, color);
-		}
+			Draw(drawer, *static_cast<const CircleShape*>(fixture.GetShape()), xf, color);
 			break;
 			
 		case Shape::e_edge:
-		{
-			const auto edge = static_cast<const EdgeShape*>(fixture.GetShape());
-			const auto v1 = Transform(edge->GetVertex1(), xf);
-			const auto v2 = Transform(edge->GetVertex2(), xf);
-			drawer.DrawSegment(v1, v2, color);
-		}
+			Draw(drawer, *static_cast<const EdgeShape*>(fixture.GetShape()), xf, color);
 			break;
 			
 		case Shape::e_chain:
-		{
-			const auto chain = static_cast<const ChainShape*>(fixture.GetShape());
-			const auto count = chain->GetVertexCount();
-			auto v1 = Transform(chain->GetVertex(0), xf);
-			for (auto i = decltype(count){1}; i < count; ++i)
-			{
-				const auto v2 = Transform(chain->GetVertex(i), xf);
-				drawer.DrawSegment(v1, v2, color);
-				drawer.DrawCircle(v1, float_t(0.05), color);
-				v1 = v2;
-			}
-		}
+			Draw(drawer, *static_cast<const ChainShape*>(fixture.GetShape()), xf, color);
 			break;
 			
 		case Shape::e_polygon:
-		{
-			const auto poly = static_cast<const PolygonShape*>(fixture.GetShape());
-			const auto vertexCount = poly->GetVertexCount();
-			assert(vertexCount <= MaxPolygonVertices);
-			Vec2 vertices[MaxPolygonVertices];
-			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-			{
-				vertices[i] = Transform(poly->GetVertex(i), xf);
-			}
-			drawer.DrawSolidPolygon(vertices, vertexCount, color);
-		}
+			Draw(drawer, *static_cast<const PolygonShape*>(fixture.GetShape()), xf, color);
 			break;
 			
 		default:

@@ -46,22 +46,22 @@ inline bool Find(Span<const IndexPair> pairs, IndexPair key)
 
 inline DistanceProxy GetDistanceProxy(const CircleShape& shape, child_count_t index)
 {
-	return DistanceProxy{GetRadius(shape), shape.GetPosition()};
+	return DistanceProxy{GetVertexRadius(shape), shape.GetPosition()};
 }
 
 inline DistanceProxy GetDistanceProxy(const PolygonShape& shape, child_count_t index)
 {
-	return DistanceProxy{GetRadius(shape), shape.GetVertices()};		
+	return DistanceProxy{GetVertexRadius(shape), shape.GetVertices()};		
 }
 
 inline DistanceProxy GetDistanceProxy(const ChainShape& shape, child_count_t index)
 {
-	return DistanceProxy{GetRadius(shape), shape.GetVertex(index), shape.GetVertex(shape.GetNextIndex(index))};
+	return DistanceProxy{GetVertexRadius(shape), shape.GetVertex(index), shape.GetVertex(shape.GetNextIndex(index))};
 }
 
 inline DistanceProxy GetDistanceProxy(const EdgeShape& shape, child_count_t index)
 {
-	return DistanceProxy{GetRadius(shape), shape.GetVertex1(), shape.GetVertex2()};
+	return DistanceProxy{GetVertexRadius(shape), shape.GetVertex1(), shape.GetVertex2()};
 }
 	
 }

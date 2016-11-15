@@ -73,7 +73,7 @@ public:
 	Vec2 GetLowerLimit() const noexcept { return m_lowerLimit; }
 	Vec2 GetUpperLimit() const noexcept { return m_upperLimit; }
 	
-	float_t GetRadius() const noexcept { return m_radius; }
+	float_t GetVertexRadius() const noexcept { return m_vertexRadius; }
 
 private:
 	Vec2 m_vertex1;
@@ -85,7 +85,7 @@ private:
 	UnitVec2 m_normal;
 	UnitVec2 m_lowerLimit, m_upperLimit;
 	
-	float_t m_radius;
+	float_t m_vertexRadius;
 
 	void SetNormalLowerUpper(UnitVec2 normal, UnitVec2 lower, UnitVec2 upper) noexcept
 	{
@@ -100,7 +100,7 @@ inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2 centroid):
 	m_vertex2(edge.GetVertex2()),
 	m_edge1(GetUnitVector(m_vertex2 - m_vertex1), UnitVec2::GetZero()),
 	m_normal1(GetFwdPerpendicular(m_edge1)),
-	m_radius(box2d::GetRadius(edge))
+	m_vertexRadius(box2d::GetVertexRadius(edge))
 {
 	const auto hasVertex0 = edge.HasVertex0();
 	const auto hasVertex3 = edge.HasVertex3();
@@ -332,7 +332,7 @@ static inline ShapeSeparation FindPolygonSeparation(const PolygonShape& polygon,
 	auto max_s = -MaxFloat;
 	auto index = ShapeSeparation::InvalidIndex;
 	{
-		const auto totalRadius = GetRadius(polygon) + edge.GetRadius();
+		const auto totalRadius = GetVertexRadius(polygon) + edge.GetVertexRadius();
 		const auto perp = GetRevPerpendicular(edge.GetNormal());
 		const auto count = polygon.GetVertexCount();
 		for (auto i = decltype(count){0}; i < count; ++i)
@@ -490,7 +490,7 @@ static Manifold GetManifoldFaceA(const EdgeInfo& edgeInfo,
 	}
 
 	auto manifold = Manifold::GetForFaceA(ref_face.normal, ref_face.v1);
-	const auto totalRadius = edgeInfo.GetRadius() + GetRadius(localShapeB);
+	const auto totalRadius = edgeInfo.GetVertexRadius() + GetVertexRadius(localShapeB);
 	for (auto i = decltype(clipPoints.size()){0}; i < clipPoints.size(); ++i)
 	{
 		const auto separation = Dot(ref_face.normal, clipPoints[i].v - ref_face.v1);
@@ -535,7 +535,7 @@ static Manifold GetManifoldFaceB(const EdgeInfo& edgeInfo,
 	}
 	
 	auto manifold = Manifold::GetForFaceB(shapeB.GetNormal(ref_face.i1), shapeB.GetVertex(ref_face.i1));
-	const auto totalRadius = edgeInfo.GetRadius() + GetRadius(shapeB);
+	const auto totalRadius = edgeInfo.GetVertexRadius() + GetVertexRadius(shapeB);
 	for (auto i = decltype(clipPoints.size()){0}; i < clipPoints.size(); ++i)
 	{
 		const auto separation = Dot(ref_face.normal, clipPoints[i].v - ref_face.v1);
@@ -551,7 +551,7 @@ static inline Manifold GetManifoldFaceA(const PolygonShape& shape1, const Transf
 										const PolygonShape& shape2, const Transformation& xf2,
 										const PolygonShape::vertex_count_t iv1)
 {
-	const auto totalRadius = GetRadius(shape1) + GetRadius(shape2);
+	const auto totalRadius = GetVertexRadius(shape1) + GetVertexRadius(shape2);
 	
 	const auto iv2 = static_cast<decltype(iv1)>((iv1 + 1) % (shape1.GetVertexCount()));
 	
@@ -598,7 +598,7 @@ static inline Manifold GetManifoldFaceB(const PolygonShape& shape1, const Transf
 										const PolygonShape& shape2, const Transformation& xf2,
 										const PolygonShape::vertex_count_t iv1)
 {
-	const auto totalRadius = GetRadius(shape1) + GetRadius(shape2);
+	const auto totalRadius = GetVertexRadius(shape1) + GetVertexRadius(shape2);
 	
 	const auto iv2 = static_cast<decltype(iv1)>((iv1 + 1) % (shape1.GetVertexCount()));
 	
@@ -651,7 +651,7 @@ Manifold box2d::CollideShapes(const CircleShape& shapeA, const Transformation& x
 {
 	const auto pA = Transform(shapeA.GetPosition(), xfA);
 	const auto pB = Transform(shapeB.GetPosition(), xfB);
-	const auto totalRadius = shapeA.GetRadius() + shapeB.GetRadius();
+	const auto totalRadius = GetVertexRadius(shapeA) + GetVertexRadius(shapeB);
 	
 	if (LengthSquared(pB - pA) > Square(totalRadius))
 	{
@@ -666,7 +666,7 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	// Computes the center of the circle in the frame of the polygon.
 	const auto cLocal = InverseTransform(Transform(shapeB.GetPosition(), xfB), xfA); ///< Center of the circle in the frame of the polygon.
 	
-	const auto totalRadius = GetRadius(shapeA) + GetRadius(shapeB);
+	const auto totalRadius = GetVertexRadius(shapeA) + GetVertexRadius(shapeB);
 	const auto vertexCount = shapeA.GetVertexCount();
 	auto indexOfMax = decltype(vertexCount){0};
 	auto maxSeparation = -MaxFloat;
@@ -739,7 +739,7 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	 * edge connectivity.
 	 *
 	 * To do this, this code treats the edge like an end-rounded strait-line drawn by an air
-	 * brush having the radius that GetRadius(shapeA) returns. As such, the collision is
+	 * brush having the radius that GetVertexRadius(shapeA) returns. As such, the collision is
 	 * categorized as either a collision with the first end-point, the second end-point, or the
 	 * conceptual rectangle between the end-points.
 	 *
@@ -764,7 +764,7 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	
 	// Barycentric coordinates
 	
-	const auto totalRadius = GetRadius(shapeA) + GetRadius(shapeB);
+	const auto totalRadius = GetVertexRadius(shapeA) + GetVertexRadius(shapeB);
 	
 	// Check if circle's center is relatively left of first vertex of edge - this is "Region A"
 	const auto v = Dot(e, Q - A);
@@ -850,7 +850,7 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	const auto xf = MulT(xfA, xfB);
 	const auto localShapeB = Transform(shapeB, xf);
 	const auto edgeInfo = EdgeInfo{shapeA, localShapeB.GetCentroid()};
-	const auto totalRadius = GetRadius(shapeA) + GetRadius(shapeB);
+	const auto totalRadius = GetVertexRadius(shapeA) + GetVertexRadius(shapeB);
 
 	// If no valid normal can be found then this edge should not collide.
 	const auto edgeAxis = FindEdgeSeparation(localShapeB, edgeInfo);
@@ -890,7 +890,7 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	// Find incident edge
 	// Clip
 
-	const auto totalRadius = GetRadius(shapeA) + GetRadius(shapeB);
+	const auto totalRadius = GetVertexRadius(shapeA) + GetVertexRadius(shapeB);
 	
 	const auto edgeSepA = FindMaxSeparation(shapeA, xfA, shapeB, xfB);
 	if (edgeSepA.separation > totalRadius)

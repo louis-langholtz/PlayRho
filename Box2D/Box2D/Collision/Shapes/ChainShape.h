@@ -107,7 +107,7 @@ inline Vec2 ChainShape::GetVertex(child_count_t index) const
 }
 
 /// Gets the "radius" of the given shape.
-float_t GetRadius(const ChainShape& shape);
+float_t GetVertexRadius(const ChainShape& shape);
 
 /// Gets the number of child primitives.
 /// @return Positive non-zero count.

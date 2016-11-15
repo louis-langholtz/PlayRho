@@ -132,8 +132,8 @@ namespace box2d {
 		const auto shapeA = fA->GetShape();
 		const auto shapeB = fB->GetShape();
 		return GetWorldManifold(contact.GetManifold(),
-								bodyA->GetTransformation(), GetRadius(*shapeA),
-								bodyB->GetTransformation(), GetRadius(*shapeB));
+								bodyA->GetTransformation(), GetVertexRadius(*shapeA),
+								bodyB->GetTransformation(), GetVertexRadius(*shapeB));
 	}
 
 	WorldManifold GetWorldManifold(const PositionConstraint& pc, Position posA, Position posB)

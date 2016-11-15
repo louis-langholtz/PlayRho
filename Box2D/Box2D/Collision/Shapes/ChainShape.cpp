@@ -121,7 +121,7 @@ EdgeShape ChainShape::GetChildEdge(child_count_t index) const
 	return EdgeShape{m_vertices[index + 0], m_vertices[index + 1], v0, v3};
 }
 
-float_t box2d::GetRadius(const ChainShape& shape)
+float_t box2d::GetVertexRadius(const ChainShape& shape)
 {
 	return PolygonRadius;
 }
