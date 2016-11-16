@@ -88,10 +88,12 @@ class World
 public:
 	using size_type = size_t;
 	
-	/// Construct a world object.
+	/// Constructs a world object.
 	World(const WorldDef def = GetDefaultWorldDef());
 
-	/// Destruct the world. All physics entities are destroyed and all heap memory is released.
+	/// Destructor.
+	/// @detail
+	/// All physics entities are destroyed and all dynamically allocated memory is released.
 	~World();
 
 	/// Register a destruction listener. The listener is owned by you and must
@@ -279,6 +281,8 @@ public:
 
 	/// Get the current profile.
 	const Profile& GetProfile() const noexcept;
+
+	float_t GetMinVertexRadius() const noexcept;
 
 private:
 
@@ -643,6 +647,11 @@ inline void World::SetNewFixtures() noexcept
 inline void World::UnsetNewFixtures() noexcept
 {
 	m_flags &= ~e_newFixture;
+}
+
+inline float_t World::GetMinVertexRadius() const noexcept
+{
+	return m_linearSlop * 2;
 }
 
 /// Dump the world into the log file.

@@ -241,6 +241,11 @@ void Body::SetType(BodyType type)
 
 Fixture* Body::CreateFixture(const FixtureDef& def, bool resetMassData)
 {
+	if (def.shape && (GetVertexRadius(*def.shape) < m_world->GetMinVertexRadius()))
+	{
+		return nullptr;
+	}
+	
 	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())
 	{

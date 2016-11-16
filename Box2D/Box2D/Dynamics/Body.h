@@ -138,6 +138,9 @@ public:
 	/// The shape given by the fixture definition will be copied, so it can be on the stack.
 	/// @param def Fixture definition.
 	/// @warning This function is locked during callbacks.
+	/// @return <code>nullptr</code> if the world is locked or the fixture definition's shape
+	///    vertex radius is less than the minimum allowed by the body's world, else pointer to
+	///    created fixture.
 	Fixture* CreateFixture(const FixtureDef& def, bool resetMassData = true);
 
 	/// Destroys a fixture.
