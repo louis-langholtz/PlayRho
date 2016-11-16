@@ -1,21 +1,21 @@
 /*
-* Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2016 Louis Langholtz https://github.com/louis-langholtz/Box2D
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2016 Louis Langholtz https://github.com/louis-langholtz/Box2D
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #ifndef B2_FIXTURE_H
 #define B2_FIXTURE_H
@@ -29,6 +29,7 @@ class BlockAllocator;
 class Body;
 class BroadPhase;
 class Fixture;
+struct FixtureProxy;
 
 /// This holds contact filtering data.
 struct Filter
@@ -83,24 +84,6 @@ struct FixtureDef
 
 	/// Contact filtering data.
 	Filter filter;
-};
-
-/// This proxy is used internally to connect fixtures to the broad-phase.
-struct FixtureProxy
-{
-	using size_type = std::remove_const<decltype(MaxContacts)>::type;
-
-	FixtureProxy() = default;
-	
-	FixtureProxy(const FixtureProxy& copy) = default;
-	
-	FixtureProxy(const AABB& bb, size_type pid, Fixture* f, child_count_t ci):
-		aabb{bb}, fixture{f}, proxyId{pid}, childIndex{ci} {}
-
-	AABB aabb; ///< Axis Aligned Bounding Box.
-	Fixture* fixture; ///< Fixture.
-	size_type proxyId; ///< Proxy ID.
-	child_count_t childIndex; ///< Child index.
 };
 
 /// Fixture.
@@ -325,22 +308,9 @@ inline void Fixture::SetRestitution(float_t restitution) noexcept
 	m_restitution = restitution;
 }
 
-inline const AABB& Fixture::GetAABB(child_count_t childIndex) const
-{
-	assert(childIndex >= 0);
-	assert(childIndex < m_proxyCount);
-	return m_proxies[childIndex].aabb;
-}
-
 inline child_count_t Fixture::GetProxyCount() const
 {
 	return m_proxyCount;
-}
-
-inline const FixtureProxy* Fixture::GetProxy(child_count_t index) const
-{
-	assert(index < m_proxyCount);
-	return (index < m_proxyCount)? m_proxies + index: nullptr;
 }
 
 /// Test a point for containment in a fixture.

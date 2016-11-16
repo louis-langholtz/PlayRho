@@ -18,6 +18,7 @@
 */
 
 #include <Box2D/Dynamics/Fixture.h>
+#include <Box2D/Dynamics/FixtureProxy.hpp>
 #include <Box2D/Dynamics/Contacts/Contact.h>
 #include <Box2D/Dynamics/World.h>
 #include <Box2D/Collision/Shapes/CircleShape.h>
@@ -28,6 +29,18 @@
 #include <Box2D/Common/BlockAllocator.h>
 
 using namespace box2d;
+
+const AABB& Fixture::GetAABB(child_count_t index) const
+{
+	assert(index < m_proxyCount);
+	return m_proxies[index].aabb;
+}
+
+const FixtureProxy* Fixture::GetProxy(child_count_t index) const
+{
+	assert(index < m_proxyCount);
+	return (index < m_proxyCount)? m_proxies + index: nullptr;
+}
 
 void Fixture::CreateProxies(BlockAllocator& allocator, BroadPhase& broadPhase, const Transformation& xf)
 {

@@ -37,6 +37,9 @@
 		4731DE0A1DD7A4E000E7F931 /* ContactFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE091DD7A4E000E7F931 /* ContactFilter.cpp */; };
 		4731DE0C1DD7A65B00E7F931 /* BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE0B1DD7A65B00E7F931 /* BroadPhase.cpp */; };
 		4731DE0E1DD7A74F00E7F931 /* ContactManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE0D1DD7A74F00E7F931 /* ContactManager.cpp */; };
+		4731DE161DDCD00100E7F931 /* FixtureProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE151DDCD00100E7F931 /* FixtureProxy.cpp */; };
+		4731DE1B1DDCD0E100E7F931 /* FixtureProxy.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE181DDCD0E100E7F931 /* FixtureProxy.hpp */; };
+		4731DE1C1DDCD0E100E7F931 /* FixtureProxy.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE181DDCD0E100E7F931 /* FixtureProxy.hpp */; };
 		4734B2191DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21A1DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21C1DC1121900F15E29 /* ArrayList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4734B21B1DC1121900F15E29 /* ArrayList.cpp */; };
@@ -447,6 +450,8 @@
 		4731DE091DD7A4E000E7F931 /* ContactFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactFilter.cpp; sourceTree = "<group>"; };
 		4731DE0B1DD7A65B00E7F931 /* BroadPhase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BroadPhase.cpp; sourceTree = "<group>"; };
 		4731DE0D1DD7A74F00E7F931 /* ContactManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactManager.cpp; sourceTree = "<group>"; };
+		4731DE151DDCD00100E7F931 /* FixtureProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FixtureProxy.cpp; sourceTree = "<group>"; };
+		4731DE181DDCD0E100E7F931 /* FixtureProxy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureProxy.hpp; sourceTree = "<group>"; };
 		4734B2161DC00AFD00F15E29 /* ArrayList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ArrayList.hpp; sourceTree = "<group>"; };
 		4734B21B1DC1121900F15E29 /* ArrayList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArrayList.cpp; sourceTree = "<group>"; };
 		4734B21E1DC1340500F15E29 /* Span.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Span.hpp; sourceTree = "<group>"; };
@@ -803,6 +808,7 @@
 				47AB01B91D6FA40C0084D721 /* Dump.cpp */,
 				474BC3FA1D41278800447DCD /* Epsilon.cpp */,
 				475A94551D930E6C000CA9A8 /* Fixture.cpp */,
+				4731DE151DDCD00100E7F931 /* FixtureProxy.cpp */,
 				474BC3FB1D41278800447DCD /* IndexPair.cpp */,
 				4731DDFB1DC8FBEE00E7F931 /* Island.cpp */,
 				475A945C1D959537000CA9A8 /* Joint.cpp */,
@@ -963,6 +969,7 @@
 				80BB8950141C3E5900F1753A /* ContactManager.h */,
 				80BB8951141C3E5900F1753A /* Fixture.cpp */,
 				80BB8952141C3E5900F1753A /* Fixture.h */,
+				4731DE181DDCD0E100E7F931 /* FixtureProxy.hpp */,
 				80BB8953141C3E5900F1753A /* Island.cpp */,
 				80BB8954141C3E5900F1753A /* Island.h */,
 				80BB8955141C3E5900F1753A /* TimeStep.h */,
@@ -1260,6 +1267,7 @@
 				472134A01C8E4CB5009536F9 /* FixtureList.hpp in Headers */,
 				4726DD101D3014990012A882 /* IndexPair.hpp in Headers */,
 				47AA5DE61C4C5FBE008AF2BA /* CircleContact.h in Headers */,
+				4731DE1C1DDCD0E100E7F931 /* FixtureProxy.hpp in Headers */,
 				4726DD201D305E5D0012A882 /* ContactFeature.hpp in Headers */,
 				47AA5DE71C4C5FBE008AF2BA /* Contact.h in Headers */,
 				4734B22E1DC2B11D00F15E29 /* Simplex.hpp in Headers */,
@@ -1392,6 +1400,7 @@
 				477DB2991D14BB2000846ED6 /* ContactEdgeIterator.hpp in Headers */,
 				475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */,
 				80620F90168B934600D46C8D /* MotorJoint.h in Headers */,
+				4731DE1B1DDCD0E100E7F931 /* FixtureProxy.hpp in Headers */,
 				472E301B1DBA925500DA821D /* VertexSet.hpp in Headers */,
 				47F932A61D11C283006A193C /* AllocatedArray.hpp in Headers */,
 				47AA63AD1D1078D000726CA2 /* ConstContactIterator.hpp in Headers */,
@@ -1588,6 +1597,7 @@
 				47E841701DB3FDC400E5F311 /* WorldManifold.cpp in Sources */,
 				474BC43D1D413DC200447DCD /* World.cpp in Sources */,
 				475A94561D930E6C000CA9A8 /* Fixture.cpp in Sources */,
+				4731DE161DDCD00100E7F931 /* FixtureProxy.cpp in Sources */,
 				479039D11D5BB9ED001A2145 /* Body.cpp in Sources */,
 				47AFC3051DAEBC120023E9D1 /* PositionSolverManifold.cpp in Sources */,
 				473971A81D9D9B4C00F7137F /* Math.cpp in Sources */,
@@ -2131,7 +2141,10 @@
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				EXECUTABLE_PREFIX = lib;
-				GCC_PREPROCESSOR_DEFINITIONS = "DO_GJK_PROFILING=1";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DO_GJK_PROFILING=1",
+					"NDEBUG=1",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USE_HEADERMAP = NO;
 			};

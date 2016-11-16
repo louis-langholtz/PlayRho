@@ -21,6 +21,7 @@
 #include <Box2D/Dynamics/Body.h>
 #include <Box2D/Dynamics/TimeStep.h>
 #include <Box2D/Dynamics/Fixture.h>
+#include <Box2D/Dynamics/FixtureProxy.hpp>
 #include <Box2D/Dynamics/Island.h>
 #include <Box2D/Dynamics/Joints/PulleyJoint.h>
 #include <Box2D/Dynamics/Contacts/Contact.h>

@@ -25,6 +25,7 @@
 namespace box2d
 {
 	/// An axis aligned bounding box.
+	/// @note This data structure is 16-bytes large (on at least one 64-bit platform).
 	class AABB
 	{
 	public:

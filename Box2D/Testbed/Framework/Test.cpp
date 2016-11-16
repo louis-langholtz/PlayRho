@@ -22,6 +22,7 @@
 #include <stdio.h>
 
 #include <Box2D/Rope/Rope.h>
+#include <Box2D/Dynamics/FixtureProxy.hpp>
 
 using namespace box2d;
 

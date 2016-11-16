@@ -21,6 +21,11 @@
 
 using namespace box2d;
 
+TEST(AABB, ByteSizeIs16)
+{
+	EXPECT_EQ(sizeof(AABB), size_t(16));
+}
+
 TEST(AABB, InitializingConstruction)
 {
 	const auto lower_x = float_t(-2);
