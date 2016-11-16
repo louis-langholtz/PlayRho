@@ -82,12 +82,6 @@ public:
 
 	Vec2 GetPrevVertex() const noexcept { return m_prevVertex; }
 	Vec2 GetNextVertex() const noexcept { return m_nextVertex; }
-
-	child_count_t GetNextIndex(child_count_t index) const noexcept
-	{
-		assert(index < m_count);
-		return (index + 1) % m_count;
-	}
 	
 private:
 	/// The vertices. Owned by this class.
@@ -106,6 +100,12 @@ inline Vec2 ChainShape::GetVertex(child_count_t index) const
 	return m_vertices[index];
 }
 
+inline child_count_t GetNextIndex(const ChainShape& shape, child_count_t index) noexcept
+{
+	assert(index < shape.GetVertexCount());
+	return (index + 1) % shape.GetVertexCount();
+}
+	
 /// Gets the "radius" of the given shape.
 float_t GetVertexRadius(const ChainShape& shape);
 
