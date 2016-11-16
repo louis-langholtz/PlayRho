@@ -45,6 +45,7 @@ const FixtureProxy* Fixture::GetProxy(child_count_t index) const
 void Fixture::CreateProxies(BlockAllocator& allocator, BroadPhase& broadPhase, const Transformation& xf)
 {
 	assert(m_proxyCount == 0);
+	assert(m_proxies == nullptr);
 
 	const auto shape = GetShape();
 
