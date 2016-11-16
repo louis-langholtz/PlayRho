@@ -23,63 +23,25 @@
 #include <Box2D/Collision/SimplexCache.hpp>
 #include <Box2D/Collision/Simplex.hpp>
 #include <Box2D/Collision/IndexPairList.hpp>
-#include <Box2D/Collision/Shapes/CircleShape.h>
-#include <Box2D/Collision/Shapes/EdgeShape.h>
-#include <Box2D/Collision/Shapes/ChainShape.h>
-#include <Box2D/Collision/Shapes/PolygonShape.h>
 
 namespace box2d {
 
 namespace {
 
-inline bool Find(Span<const IndexPair> pairs, IndexPair key)
-{
-	for (auto&& elem: pairs)
+	inline bool Find(Span<const IndexPair> pairs, IndexPair key)
 	{
-		if (elem == key)
+		for (auto&& elem: pairs)
 		{
-			return true;
+			if (elem == key)
+			{
+				return true;
+			}
 		}
+		return false;
 	}
-	return false;
-}
-
-inline DistanceProxy GetDistanceProxy(const CircleShape& shape, child_count_t index)
-{
-	return DistanceProxy{GetVertexRadius(shape), shape.GetPosition()};
-}
-
-inline DistanceProxy GetDistanceProxy(const PolygonShape& shape, child_count_t index)
-{
-	return DistanceProxy{GetVertexRadius(shape), shape.GetVertices()};		
-}
-
-inline DistanceProxy GetDistanceProxy(const ChainShape& shape, child_count_t index)
-{
-	return DistanceProxy{GetVertexRadius(shape), shape.GetVertex(index), shape.GetVertex(shape.GetNextIndex(index))};
-}
-
-inline DistanceProxy GetDistanceProxy(const EdgeShape& shape, child_count_t index)
-{
-	return DistanceProxy{GetVertexRadius(shape), shape.GetVertex1(), shape.GetVertex2()};
-}
 	
 }
-
-DistanceProxy GetDistanceProxy(const Shape& shape, child_count_t index)
-{
-	switch (shape.GetType())
-	{
-		case Shape::e_circle: return GetDistanceProxy(*static_cast<const CircleShape*>(&shape), index);
-		case Shape::e_polygon: return GetDistanceProxy(*static_cast<const PolygonShape*>(&shape), index);
-		case Shape::e_chain: return GetDistanceProxy(*static_cast<const ChainShape*>(&shape), index);
-		case Shape::e_edge: return GetDistanceProxy(*static_cast<const EdgeShape*>(&shape), index);
-		case Shape::e_typeCount: break;
-	}
-	assert(false);
-	return DistanceProxy{0, Span<const Vec2>({})};
-}
-
+	
 static inline WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept
 {
 	auto pointA = Vec2{0, 0};
