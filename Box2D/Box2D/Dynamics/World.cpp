@@ -827,16 +827,19 @@ bool World::Solve(const TimeStep& step, Island& island)
 		velocities.push_back(new_velocity);
 	}
 	
-	const auto psConf = ConstraintSolverConf{
-		Baumgarte, GetLinearSlop(), m_angularSlop, m_maxLinearCorrection, m_maxAngularCorrection
-	};
-
 	UpdateVelocityConstraints(velocityConstraints, velocities, positionConstraints, positions);
 	
 	if (step.warmStarting)
 	{
 		WarmStartVelocities(velocityConstraints, velocities);
 	}
+
+	const auto psConf = ConstraintSolverConf{}
+		.UseResolutionRate(Baumgarte)
+		.UseLinearSlop(GetLinearSlop())
+		.UseAngularSlop(GetAngularSlop())
+		.UseMaxLinearCorrection(GetMaxLinearCorrection())
+		.UseMaxAngularCorrection(GetMaxAngularCorrection());
 
 	for (auto&& joint: island.m_joints)
 	{
@@ -1153,9 +1156,13 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	
 	// Solve TOI-based position constraints.
 	auto positionConstraintsSolved = TimeStep::InvalidIteration;
-	const auto psConf = ConstraintSolverConf{
-		ToiBaumgarte, GetLinearSlop(), m_angularSlop, m_maxLinearCorrection, m_maxAngularCorrection
-	};
+	const auto psConf = ConstraintSolverConf{}
+		.UseResolutionRate(ToiBaumgarte)
+		.UseLinearSlop(GetLinearSlop())
+		.UseAngularSlop(GetAngularSlop())
+		.UseMaxLinearCorrection(GetMaxLinearCorrection())
+		.UseMaxAngularCorrection(GetMaxAngularCorrection());
+
 	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
 	{
 		const auto minSeparation = SolvePositionConstraints(positionConstraints, positions,

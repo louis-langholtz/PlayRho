@@ -51,12 +51,25 @@ namespace box2d {
 	/// @sa SolvePositionConstraint.
 	struct ConstraintSolverConf
 	{
+		ConstraintSolverConf& UseResolutionRate(float_t value) noexcept;
+
+		ConstraintSolverConf& UseLinearSlop(float_t value) noexcept;
+		
+		ConstraintSolverConf& UseAngularSlop(float_t value) noexcept;
+
+		ConstraintSolverConf& UseMaxLinearCorrection(float_t value) noexcept;
+
+		ConstraintSolverConf& UseMaxAngularCorrection(float_t value) noexcept;
+
 		/// Resolution rate.
 		/// @detail
 		/// Defines the percentage of the overlap that should get resolved in a single solver call.
 		/// Value greater than zero and less than or equal to one.
-		/// @note Recommended values are: <code>Baumgarte</code> or <code>ToiBaumgarte</code>.
-		float_t resolution_rate = Baumgarte;
+		/// Ideally this would be 1 so that overlap is removed in one time step.
+		/// However using values close to 1 often leads to overshoot.
+		/// @note Recommended values are: <code>0.2</code> for solving regular constraints
+		///   or <code>0.75</code> for solving TOI constraints.
+		float_t resolutionRate = float_t(0.2);
 
 		/// Linear slop.
 		/// @note The negative of this amount is the maximum amount of separation to create.
@@ -69,13 +82,46 @@ namespace box2d {
 
 		/// Maximum linear correction.
 		/// @detail
-		/// Maximum amount of overlap to resolve in a single solver call.
-		/// @note Recommended value: <code>MaxLinearCorrection</code>.
-		float_t maxLinearCorrection = MaxLinearCorrection;
+		/// Maximum amount of overlap to resolve in a single solver call. Helps prevent overshoot.
+		/// @note Recommended value: <code>linearSlop * 40</code>.
+		float_t maxLinearCorrection = linearSlop * 20;
 		
 		/// Maximum angular correction.
-		float_t maxAngularCorrection = MaxAngularCorrection;
+		/// @detail Maximum angular position correction used when solving constraints.
+		/// Helps to prevent overshoot.
+		/// @note Recommended value: <code>angularSlop * 4</code>.
+		float_t maxAngularCorrection = angularSlop * 4;
 	};
+
+	inline ConstraintSolverConf& ConstraintSolverConf::UseResolutionRate(float_t value) noexcept
+	{
+		resolutionRate = value;
+		return *this;
+	}
+
+	inline ConstraintSolverConf& ConstraintSolverConf::UseLinearSlop(float_t value) noexcept
+	{
+		linearSlop = value;
+		return *this;
+	}
+
+	inline ConstraintSolverConf& ConstraintSolverConf::UseAngularSlop(float_t value) noexcept
+	{
+		angularSlop = value;
+		return *this;
+	}
+
+	inline ConstraintSolverConf& ConstraintSolverConf::UseMaxLinearCorrection(float_t value) noexcept
+	{
+		maxLinearCorrection = value;
+		return *this;
+	}
+
+	inline ConstraintSolverConf& ConstraintSolverConf::UseMaxAngularCorrection(float_t value) noexcept
+	{
+		maxAngularCorrection = value;
+		return *this;
+	}
 
 	/// Solves the given position constraint.
 	/// @detail
@@ -91,7 +137,7 @@ namespace box2d {
 	
 	inline ConstraintSolverConf GetDefaultPositionSolverConf()
 	{
-		return ConstraintSolverConf{Baumgarte, LinearSlop, MaxLinearCorrection};
+		return ConstraintSolverConf{}.UseResolutionRate(float_t(0.2));
 	}
 	
 	/// Solves the given position constraints.
@@ -108,7 +154,8 @@ namespace box2d {
 	
 	inline ConstraintSolverConf GetDefaultToiPositionSolverConf()
 	{
-		return ConstraintSolverConf{ToiBaumgarte, LinearSlop, MaxLinearCorrection};
+		// For solving TOI events, use a faster/higher resolution rate than normally used.
+		return ConstraintSolverConf{}.UseResolutionRate(float_t(0.75));
 	}
 
 	/// Solves the given position constraints.

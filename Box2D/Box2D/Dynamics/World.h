@@ -75,11 +75,19 @@ public:
 		}
 		
 		Vec2 gravity = EarthlyGravity;
+		
 		float_t linearSlop = float_t{1} / float_t{10000}; // aka 0.0001, originally 0.005;
+		
 		float_t angularSlop = Pi * float_t{2} / float_t{180};
-		float_t maxLinearCorrection = MaxLinearCorrection;
-		float_t maxAngularCorrection = Pi * float_t{8} / float_t{180};
+
+		/// Maximum linear correction.
+		/// @detail This value should be greater than the linear slop value.
+		float_t maxLinearCorrection = linearSlop * 40; // 40 * linearSlop. aka 0.004
+		
+		float_t maxAngularCorrection = angularSlop * 4;
+		
 		float_t maxTranslation = MaxTranslation;
+		
 		Angle maxRotation = MaxRotation * 1_rad;
 	};
 	
@@ -284,7 +292,13 @@ public:
 
 	float_t GetLinearSlop() const noexcept;
 
+	float_t GetAngularSlop() const noexcept;
+
 	float_t GetMinVertexRadius() const noexcept;
+
+	float_t GetMaxLinearCorrection() const noexcept;
+
+	float_t GetMaxAngularCorrection() const noexcept;
 
 	float_t GetMaxTranslation() const noexcept;
 	
@@ -656,6 +670,21 @@ inline void World::UnsetNewFixtures() noexcept
 inline float_t World::GetLinearSlop() const noexcept
 {
 	return m_linearSlop;
+}
+
+inline float_t World::GetAngularSlop() const noexcept
+{
+	return m_angularSlop;
+}
+
+inline float_t World::GetMaxLinearCorrection() const noexcept
+{
+	return m_maxLinearCorrection;
+}
+
+inline float_t World::GetMaxAngularCorrection() const noexcept
+{
+	return m_maxAngularCorrection;
 }
 
 inline float_t World::GetMaxTranslation() const noexcept

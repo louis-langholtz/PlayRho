@@ -389,7 +389,7 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 {
 	assert(IsValid(posA));
 	assert(IsValid(posB));
-	assert(IsValid(conf.resolution_rate));
+	assert(IsValid(conf.resolutionRate));
 	assert(IsValid(conf.linearSlop));
 	assert(IsValid(conf.maxLinearCorrection));
 	
@@ -427,7 +427,7 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 		}();
 		
 		// Prevent large corrections & don't push separation above -conf.linearSlop.
-		const auto C = Clamp(conf.resolution_rate * (separation + conf.linearSlop),
+		const auto C = Clamp(conf.resolutionRate * (separation + conf.linearSlop),
 							 -conf.maxLinearCorrection, float_t{0});
 		
 		// Compute normal impulse

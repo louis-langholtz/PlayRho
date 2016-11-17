@@ -21,9 +21,9 @@
 
 using namespace box2d;
 
-TEST(PolygonShape, ByteSizeIs272)
+TEST(PolygonShape, ByteSizeIs276)
 {
-	EXPECT_EQ(sizeof(PolygonShape), size_t(272));
+	EXPECT_EQ(sizeof(PolygonShape), size_t(276));
 }
 
 TEST(PolygonShape, DefaultConstruction)

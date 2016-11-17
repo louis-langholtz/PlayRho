@@ -126,14 +126,6 @@ constexpr auto MaxDistanceIterations = BOX2D_MAGIC(uint8{20});
 /// velocity below this threshold will be treated as inelastic.
 constexpr auto VelocityThreshold = float_t{8} / float_t{10}; // float_t{1};
 
-/// Maximum linear position correction used when solving constraints.
-/// This helps to prevent overshoot.
-constexpr auto MaxLinearCorrection = LinearSlop * 40; // aka 0.002, originally 0.2
-
-/// Maximum angular position correction used when solving constraints.
-/// This helps to prevent overshoot.
-constexpr auto MaxAngularCorrection = AngularSlop * 4;
-
 /// Maximum linear velocity of a body.
 /// This limit is very large and is used to prevent numerical problems.
 /// You shouldn't need to adjust this.
