@@ -79,10 +79,10 @@ namespace box2d {
 	};
 	
 	template <typename T>
-	inline void Delete(T* p, BlockAllocator& allocator)
+	inline void Delete(const T* p, BlockAllocator& allocator)
 	{
 		p->~T();
-		allocator.Free(p, sizeof(T));
+		allocator.Free(const_cast<T*>(p), sizeof(T));
 	}
 	
 	struct BlockDeallocator

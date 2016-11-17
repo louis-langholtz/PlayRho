@@ -41,11 +41,20 @@ public:
 
 	static constexpr auto InvalidVertex = static_cast<vertex_count_t>(-1);
 
+	static constexpr float_t GetDefaultVertexRadius() noexcept
+	{
+		return LinearSlop * 2;
+	}
+
 	/// Default constructor.
 	/// @detail Constructs a polygon shape with a 0,0 centroid and vertex count of 0.
 	/// @note Polygons with a vertex count less than 3 are "degenerate" and should be
 	///   treated as invalid.
-	PolygonShape() noexcept: Shape{e_polygon} {}
+	PolygonShape(float_t vertexRadius = GetDefaultVertexRadius()) noexcept:
+		Shape{e_polygon, vertexRadius}
+	{
+		// Intentionally empty.
+	}
 
 	PolygonShape(const PolygonShape&) = default;
 	
@@ -130,9 +139,6 @@ inline UnitVec2 PolygonShape::GetNormal(vertex_count_t index) const
 }
 
 Vec2 GetEdge(const PolygonShape& shape, PolygonShape::vertex_count_t index);
-	
-/// Gets the vertex radius of the given shape.
-float_t GetVertexRadius(const PolygonShape& shape);
 
 /// Gets the number of child primitives.
 /// @return Positive non-zero count.

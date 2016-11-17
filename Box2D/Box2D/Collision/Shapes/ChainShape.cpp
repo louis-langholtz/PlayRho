@@ -26,7 +26,7 @@
 using namespace box2d;
 
 ChainShape::ChainShape(const ChainShape& other):
-	Shape{e_chain}
+	Shape{e_chain, other.GetVertexRadius()}
 {
 	*this = other;
 }
@@ -72,7 +72,7 @@ void ChainShape::CreateLoop(Span<const Vec2> vertices)
 	for (auto i = decltype(vertices.size()){1}; i < vertices.size(); ++i)
 	{
 		// If the code crashes here, it means your vertices are too close together.
-		assert(LengthSquared(vertices[i-1] - vertices[i]) > Square(LinearSlop));
+		assert(LengthSquared(vertices[i-1] - vertices[i]) > LinearSlop);
 	}
 
 	m_count = static_cast<child_count_t>(vertices.size() + 1);
@@ -90,7 +90,7 @@ void ChainShape::CreateChain(Span<const Vec2> vertices)
 	for (auto i = decltype(vertices.size()){1}; i < vertices.size(); ++i)
 	{
 		// If the code crashes here, it means your vertices are too close together.
-		assert(LengthSquared(vertices[i-1] - vertices[i]) > Square(LinearSlop));
+		assert(LengthSquared(vertices[i-1] - vertices[i]) > LinearSlop);
 	}
 
 	m_count = static_cast<child_count_t>(vertices.size());
@@ -119,11 +119,6 @@ EdgeShape ChainShape::GetChildEdge(child_count_t index) const
 	const auto v0 = (index > 0)? m_vertices[index - 1]: m_prevVertex;
 	const auto v3 = (index < (m_count - 2))? m_vertices[index + 2]: m_nextVertex;
 	return EdgeShape{m_vertices[index + 0], m_vertices[index + 1], v0, v3};
-}
-
-float_t box2d::GetVertexRadius(const ChainShape& shape)
-{
-	return PolygonRadius;
 }
 
 child_count_t box2d::GetChildCount(const ChainShape& shape)

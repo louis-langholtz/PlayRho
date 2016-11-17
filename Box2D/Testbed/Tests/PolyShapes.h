@@ -90,8 +90,8 @@ public:
 			return false;
 		}
 
-		Body* body = fixture->GetBody();
-		Shape* shape = fixture->GetShape();
+		const auto body = fixture->GetBody();
+		const auto shape = fixture->GetShape();
 
 		bool overlap = TestOverlap(*shape, 0, body->GetTransformation(), m_circle, 0, m_transform);
 

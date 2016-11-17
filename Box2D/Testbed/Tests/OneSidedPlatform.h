@@ -94,14 +94,14 @@ public:
 		}
 
 #if 1
-		Vec2 position = m_character->GetBody()->GetPosition();
+		const auto position = m_character->GetBody()->GetPosition();
 
-		if (position.y < m_top + m_radius - 3.0f * LinearSlop)
+		if (position.y < m_top + m_radius - 3.0f * m_world->GetLinearSlop())
 		{
 			contact.UnsetEnabled();
 		}
 #else
-        Vec2 v = m_character->GetBody()->GetLinearVelocity();
+        const auto v = m_character->GetBody()->GetLinearVelocity();
         if (v.y > 0.0f)
 		{
             contact.UnsetEnabled();

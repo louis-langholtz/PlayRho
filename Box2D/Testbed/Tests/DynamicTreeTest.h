@@ -38,11 +38,13 @@ public:
 
 		srand(888);
 
+		const auto aabbExtension = GetAabbExtension(*m_world);
+		const auto extension = Vec2{aabbExtension, aabbExtension};
 		for (int32 i = 0; i < e_actorCount; ++i)
 		{
 			Actor* actor = m_actors + i;
 			actor->aabb = GetRandomAABB();
-			actor->proxyId = m_tree.CreateProxy(actor->aabb, actor);
+			actor->proxyId = m_tree.CreateProxy(actor->aabb + extension, actor);
 		}
 
 		m_stepCount = 0;
@@ -156,6 +158,9 @@ public:
 		case Key_M:
 			MoveProxy();
 			break;
+
+		default:
+			break;
 		}
 	}
 
@@ -220,6 +225,8 @@ private:
 
 	void CreateProxy()
 	{
+		const auto aabbExtension = GetAabbExtension(*m_world);
+		const auto extension = Vec2{aabbExtension, aabbExtension};
 		for (int32 i = 0; i < e_actorCount; ++i)
 		{
 			int32 j = rand() % e_actorCount;
@@ -227,7 +234,7 @@ private:
 			if (actor->proxyId == DynamicTree::NullNode)
 			{
 				actor->aabb = GetRandomAABB();
-				actor->proxyId = m_tree.CreateProxy(actor->aabb, actor);
+				actor->proxyId = m_tree.CreateProxy(actor->aabb + extension, actor);
 				return;
 			}
 		}
@@ -250,6 +257,8 @@ private:
 
 	void MoveProxy()
 	{
+		const auto aabbExtension = GetAabbExtension(*m_world);
+		const auto extension = Vec2{aabbExtension, aabbExtension};
 		for (int32 i = 0; i < e_actorCount; ++i)
 		{
 			int32 j = rand() % e_actorCount;
@@ -262,7 +271,7 @@ private:
 			const auto aabb0 = actor->aabb;
 			MoveAABB(&actor->aabb);
 			const auto displacement = actor->aabb.GetCenter() - aabb0.GetCenter();
-			m_tree.MoveProxy(actor->proxyId, actor->aabb, displacement);
+			m_tree.MoveProxy(actor->proxyId, actor->aabb + extension, displacement);
 			return;
 		}
 	}

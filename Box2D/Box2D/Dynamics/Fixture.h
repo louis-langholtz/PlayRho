@@ -129,7 +129,7 @@ public:
 	/// @detail You can modify the child shape, however you should not change the
 	/// number of vertices because this will crash some collision caching mechanisms.
 	/// Manipulating the shape may lead to non-physical behavior.
-	Shape* GetShape() noexcept;
+	const Shape* GetShape() noexcept;
 
 	/// Gets the child shape.
 	/// @detail You can modify the child shape, however you should not change the
@@ -237,7 +237,7 @@ private:
 	// 63-bytes data + 1-byte alignment padding is 64-bytes.
 };
 
-inline Shape* Fixture::GetShape() noexcept
+inline const Shape* Fixture::GetShape() noexcept
 {
 	return m_shape;
 }

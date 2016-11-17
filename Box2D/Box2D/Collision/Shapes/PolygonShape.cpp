@@ -23,12 +23,14 @@
 
 using namespace box2d;
 
-PolygonShape::PolygonShape(float_t hx, float_t hy) noexcept: Shape{e_polygon}
+PolygonShape::PolygonShape(float_t hx, float_t hy) noexcept:
+	Shape{e_polygon, PolygonShape::GetDefaultVertexRadius()}
 {
 	SetAsBox(hx, hy);
 }
 
-PolygonShape::PolygonShape(Span<const Vec2> points) noexcept: Shape{e_polygon}
+PolygonShape::PolygonShape(Span<const Vec2> points) noexcept:
+	Shape{e_polygon, PolygonShape::GetDefaultVertexRadius()}
 {
 	Set(points);
 }
@@ -82,7 +84,7 @@ void PolygonShape::Set(Span<const Vec2> points) noexcept
 	}
 	
 	// Perform welding and copy vertices into local buffer.
-	auto point_set = VertexSet<MaxPolygonVertices>(Square(LinearSlop / 2));
+	auto point_set = VertexSet<MaxPolygonVertices>(LinearSlop);
 	{
 		const auto clampedCount = static_cast<vertex_count_t>(Min(points.size(), size_t{MaxPolygonVertices}));
 		for (auto i = decltype(clampedCount){0}; i < clampedCount; ++i)
@@ -222,11 +224,6 @@ bool box2d::Validate(const PolygonShape& shape)
 	}
 	
 	return true;
-}
-
-float_t box2d::GetVertexRadius(const PolygonShape& shape)
-{
-	return PolygonRadius;
 }
 
 child_count_t box2d::GetChildCount(const PolygonShape& shape)

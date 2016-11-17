@@ -33,12 +33,24 @@ namespace box2d {
 class EdgeShape : public Shape
 {
 public:
-	EdgeShape() noexcept: Shape{e_edge} {}
+	static constexpr float_t GetDefaultVertexRadius() noexcept
+	{
+		return LinearSlop * 2;
+	}
 
-	constexpr EdgeShape(Vec2 v1, Vec2 v2, Vec2 v0 = GetInvalid<Vec2>(), Vec2 v3 = GetInvalid<Vec2>()) noexcept:
-		Shape{e_edge},
+	EdgeShape(float_t vertexRadius = GetDefaultVertexRadius()) noexcept:
+		Shape{e_edge, vertexRadius}
+	{
+		// Intentionally empty.
+	}
+
+	constexpr EdgeShape(Vec2 v1, Vec2 v2,
+						Vec2 v0 = GetInvalid<Vec2>(), Vec2 v3 = GetInvalid<Vec2>(),
+						float_t vertexRadius = GetDefaultVertexRadius()) noexcept:
+		Shape{e_edge, vertexRadius},
 		m_vertex0{v0}, m_vertex1{v1}, m_vertex2{v2}, m_vertex3{v3}
 	{
+		// Intentionally empty.
 	}
 
 	EdgeShape(const EdgeShape&) = default;
@@ -76,9 +88,6 @@ inline void EdgeShape::SetVertex3(const Vec2& v) noexcept
 {
 	m_vertex3 = v;
 }
-	
-/// Gets the "radius" of the given shape.
-float_t GetVertexRadius(const EdgeShape& shape);
 
 /// Gets the number of child primitives.
 /// @return Positive non-zero count.

@@ -28,11 +28,11 @@ TEST(CircleShape, ByteSizeIs16)
 
 TEST(CircleShape, DefaultConstruction)
 {
-	CircleShape foo{0};
+	CircleShape foo{};
 	
 	EXPECT_EQ(foo.GetType(), Shape::e_circle);
 	EXPECT_EQ(GetChildCount(foo), child_count_t{1});
-	EXPECT_EQ(foo.GetRadius(), 0);
+	EXPECT_EQ(foo.GetRadius(), CircleShape::GetDefaultRadius());
 	EXPECT_EQ(foo.GetPosition().x, 0);
 	EXPECT_EQ(foo.GetPosition().y, 0);
 	const auto mass_data = ComputeMass(foo, 1);

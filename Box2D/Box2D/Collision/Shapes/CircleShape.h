@@ -29,16 +29,21 @@ class CircleShape : public Shape
 {
 public:
 	
+	static float_t GetDefaultRadius() noexcept
+	{
+		return 0;
+	}
+
 	/// Initializing constructor.
 	///
 	/// @note Behavior is undefined if a negative radius is given.
 	///
 	/// @param radius Radius of the circle shape (in meters).
 	/// @param position Position of the center of this shape.
-	constexpr explicit CircleShape(float_t radius = 1, Vec2 position = Vec2_zero) noexcept:
-		Shape{e_circle}, m_radius{radius}, m_p{position}
+	constexpr explicit CircleShape(float_t radius = GetDefaultRadius(), Vec2 position = Vec2_zero) noexcept:
+		Shape{e_circle, radius}, m_p{position}
 	{
-		assert(radius >= 0);
+		// Intentionally empty.
 	}
 
 	CircleShape(const CircleShape&) = default;
@@ -47,12 +52,11 @@ public:
 
 	/// Gets the "radius" of the shape.
 	/// @return Non-negative distance.
-	float_t GetRadius() const noexcept { return m_radius; }
+	float_t GetRadius() const noexcept { return GetVertexRadius(); }
 	
 	void SetRadius(float_t radius) noexcept
 	{
-		assert(radius >= 0);
-		m_radius = radius;
+		SetVertexRadius(radius);
 	}
 
 	/// Gets the position of the center of this circle shape.
@@ -64,14 +68,9 @@ public:
 	void SetPosition(const Vec2& value) noexcept { m_p = value; }
 
 private:
-	float_t m_radius;
-	
 	/// Linear position of the shape as initialized on construction or as assigned using the SetPosition method.
 	Vec2 m_p = Vec2_zero;
 };
-
-/// Gets the vertex radius of the given shape.
-float_t GetVertexRadius(const CircleShape& shape);
 
 /// Gets the number of child primitives.
 /// @return Positive non-zero count.

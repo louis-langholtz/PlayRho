@@ -40,6 +40,7 @@
 		4731DE161DDCD00100E7F931 /* FixtureProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE151DDCD00100E7F931 /* FixtureProxy.cpp */; };
 		4731DE1B1DDCD0E100E7F931 /* FixtureProxy.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE181DDCD0E100E7F931 /* FixtureProxy.hpp */; };
 		4731DE1C1DDCD0E100E7F931 /* FixtureProxy.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE181DDCD0E100E7F931 /* FixtureProxy.hpp */; };
+		4731DE1E1DDD0B8700E7F931 /* DynamicTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE1D1DDD0B8700E7F931 /* DynamicTree.cpp */; };
 		4734B2191DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21A1DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21C1DC1121900F15E29 /* ArrayList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4734B21B1DC1121900F15E29 /* ArrayList.cpp */; };
@@ -452,6 +453,7 @@
 		4731DE0D1DD7A74F00E7F931 /* ContactManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactManager.cpp; sourceTree = "<group>"; };
 		4731DE151DDCD00100E7F931 /* FixtureProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FixtureProxy.cpp; sourceTree = "<group>"; };
 		4731DE181DDCD0E100E7F931 /* FixtureProxy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureProxy.hpp; sourceTree = "<group>"; };
+		4731DE1D1DDD0B8700E7F931 /* DynamicTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicTree.cpp; sourceTree = "<group>"; };
 		4734B2161DC00AFD00F15E29 /* ArrayList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ArrayList.hpp; sourceTree = "<group>"; };
 		4734B21B1DC1121900F15E29 /* ArrayList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArrayList.cpp; sourceTree = "<group>"; };
 		4734B21E1DC1340500F15E29 /* Span.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Span.hpp; sourceTree = "<group>"; };
@@ -805,6 +807,7 @@
 				473971A91D9F0E4E00F7137F /* ContactSolver.cpp */,
 				474BC3F81D41278800447DCD /* Distance.cpp */,
 				474BC3F91D41278800447DCD /* DistanceProxy.cpp */,
+				4731DE1D1DDD0B8700E7F931 /* DynamicTree.cpp */,
 				47AB01B91D6FA40C0084D721 /* Dump.cpp */,
 				474BC3FA1D41278800447DCD /* Epsilon.cpp */,
 				475A94551D930E6C000CA9A8 /* Fixture.cpp */,
@@ -1586,6 +1589,7 @@
 				4731DE0E1DD7A74F00E7F931 /* ContactManager.cpp in Sources */,
 				473971A61D99DFFF00F7137F /* List.cpp in Sources */,
 				472E301E1DBA98BC00DA821D /* VertexSet.cpp in Sources */,
+				4731DE1E1DDD0B8700E7F931 /* DynamicTree.cpp in Sources */,
 				474BC43B1D413DC200447DCD /* Transformation.cpp in Sources */,
 				474BC43C1D413DC200447DCD /* Vec2.cpp in Sources */,
 				4731DE0A1DD7A4E000E7F931 /* ContactFilter.cpp in Sources */,

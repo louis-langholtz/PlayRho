@@ -90,31 +90,16 @@ constexpr auto MaxPolygonVertices = uint8{16}; // 8
 /// Maximum number of vertices for any shape type.
 constexpr auto MaxShapeVertices = std::max(uint8{2} /* edge vertices */, MaxPolygonVertices);
 
-/// This is used to fatten AABBs in the dynamic tree. This is used to predict
-/// the future position based on the current displacement.
-/// This is a dimensionless multiplier.
-constexpr auto AabbMultiplier = float_t{2};
-
 /// Length used as a collision and constraint tolerance.
 /// Usually chosen to be numerically significant, but visually insignificant.
 /// Lower or raise to decrease or increase respectively the minimum of space
 /// between bodies at rest.
-/// @note Smaller values increases the time it takes for bodies to come to rest.
+/// @note Smaller values relative to sizes of bodies increases the time it takes for bodies to come to rest.
 constexpr auto LinearSlop = float_t{1} / float_t{10000}; // aka 0.0001, originally 0.005
-
-/// Fattens AABBs in the dynamic tree. This allows proxies
-/// to move by a small amount without triggering a tree adjustment.
-/// This is in meters.
-constexpr auto AabbExtension = LinearSlop * float_t{20}; // aka 0.002, originally 0.1
 
 /// A small angle used as a collision and constraint tolerance. Usually it is
 /// chosen to be numerically significant, but visually insignificant.
 constexpr auto AngularSlop = Pi * float_t{2} / float_t{180};
-
-/// The radius of the polygon/edge shape skin. This should not be modified. Making
-/// this smaller means polygons will have an insufficient buffer for continuous collision.
-/// Making it larger may create artifacts for vertex collision.
-constexpr auto PolygonRadius = LinearSlop * float_t{2};
 
 /// Maximum sub steps.
 /// @detail
@@ -143,11 +128,11 @@ constexpr auto VelocityThreshold = float_t{8} / float_t{10}; // float_t{1};
 
 /// Maximum linear position correction used when solving constraints.
 /// This helps to prevent overshoot.
-constexpr auto MaxLinearCorrection = BOX2D_MAGIC(LinearSlop * 40); // aka 0.002, originally 0.2
+constexpr auto MaxLinearCorrection = LinearSlop * 40; // aka 0.002, originally 0.2
 
 /// Maximum angular position correction used when solving constraints.
 /// This helps to prevent overshoot.
-constexpr auto MaxAngularCorrection = Pi * float_t{8} / float_t{180};
+constexpr auto MaxAngularCorrection = AngularSlop * 4;
 
 /// Maximum linear velocity of a body.
 /// This limit is very large and is used to prevent numerical problems.

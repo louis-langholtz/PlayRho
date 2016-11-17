@@ -237,9 +237,7 @@ void TestDestructionListener::SayGoodbye(Joint& joint)
 
 Test::Test()
 {
-	Vec2 gravity;
-	gravity = Vec2(0.0f, -10.0f);
-	m_world = new World(WorldDef{}.UseGravity(gravity));
+	m_world = new World(World::Def{}.UseGravity(Vec2(0.0f, -10.0f)));
 	m_bomb = nullptr;
 	m_textLine = 30;
 	m_mouseJoint = nullptr;

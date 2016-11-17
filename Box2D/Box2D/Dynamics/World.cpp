@@ -50,8 +50,8 @@ using VelocityConstraintsContainer = AllocatedArray<VelocityConstraint, StackAll
 
 struct MovementConf
 {
-	float_t maxTranslation = MaxTranslation;
-	Angle maxRotation = MaxRotation * 1_rad;
+	float_t maxTranslation;
+	Angle maxRotation;
 };
 
 template <typename T>
@@ -89,7 +89,7 @@ private:
 	std::function<void(T&)> m_on_destruction;
 };
 
-World::World(const WorldDef def):
+World::World(const Def def):
 	m_gravity(def.gravity),
 	m_linearSlop(def.linearSlop),
 	m_angularSlop(def.angularSlop),
@@ -828,7 +828,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 	}
 	
 	const auto psConf = ConstraintSolverConf{
-		Baumgarte, m_linearSlop, m_angularSlop, m_maxLinearCorrection, m_maxAngularCorrection
+		Baumgarte, GetLinearSlop(), m_angularSlop, m_maxLinearCorrection, m_maxAngularCorrection
 	};
 
 	UpdateVelocityConstraints(velocityConstraints, velocities, positionConstraints, positions);
@@ -934,8 +934,8 @@ World::ContactToiData World::UpdateContactTOIs()
 	
 	const auto toiConf = ToiConf{
 		1,
-		m_linearSlop * 3, // Targetted depth of impact
-		m_linearSlop / 4, // Tolerance.
+		GetLinearSlop() * 3, // Targetted depth of impact
+		GetLinearSlop() / 4, // Tolerance.
 		MaxTOIRootIterCount,
 		MaxTOIIterations
 	};
@@ -1154,7 +1154,7 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	// Solve TOI-based position constraints.
 	auto positionConstraintsSolved = TimeStep::InvalidIteration;
 	const auto psConf = ConstraintSolverConf{
-		ToiBaumgarte, m_linearSlop, m_angularSlop, m_maxLinearCorrection, m_maxAngularCorrection
+		ToiBaumgarte, GetLinearSlop(), m_angularSlop, m_maxLinearCorrection, m_maxAngularCorrection
 	};
 	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
 	{

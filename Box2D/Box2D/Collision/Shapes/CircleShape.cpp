@@ -23,11 +23,6 @@
 
 using namespace box2d;
 
-float_t box2d::GetVertexRadius(const CircleShape& shape)
-{
-	return shape.GetRadius();
-}
-
 child_count_t box2d::GetChildCount(const CircleShape& shape)
 {
 	return 1;

@@ -30,11 +30,6 @@ void EdgeShape::Set(const Vec2& v1, const Vec2& v2)
 	m_vertex3 = GetInvalid<Vec2>();
 }
 
-float_t box2d::GetVertexRadius(const EdgeShape& shape)
-{
-	return PolygonRadius;
-}
-
 child_count_t box2d::GetChildCount(const EdgeShape& shape)
 {
 	return 1;

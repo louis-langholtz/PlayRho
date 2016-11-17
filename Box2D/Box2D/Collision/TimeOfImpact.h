@@ -55,10 +55,15 @@ namespace box2d {
 		using toi_iter_type = std::remove_const<decltype(MaxTOIIterations)>::type;
 
 		float_t tMax = 1;
-		float_t targetDepth = LinearSlop * 3; ///< Targetted depth of impact.
+		
+		/// Targetted depth of impact.
+		/// @note Value must be less than twice the minimum vertex radius of any shape.
+		float_t targetDepth = LinearSlop * 3;
+
 		float_t tolerance = LinearSlop / 4; ///< Tolerance.
 		
 		root_iter_type maxRootIters = MaxTOIRootIterCount;
+		
 		toi_iter_type maxToiIters = MaxTOIIterations; ///< Max time of impact iterations.
 	};
 

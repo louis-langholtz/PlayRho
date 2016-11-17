@@ -52,10 +52,12 @@ void Fixture::CreateProxies(BlockAllocator& allocator, BroadPhase& broadPhase, c
 	// Reserve proxy space and create proxies in the broad-phase.
 	const auto childCount = GetChildCount(*shape);
 	const auto proxies = allocator.AllocateArray<FixtureProxy>(childCount);
+	const auto aabbExtension = GetAabbExtension(*(GetBody()->GetWorld()));
+	const auto extension = Vec2{aabbExtension, aabbExtension};
 	for (auto i = decltype(childCount){0}; i < childCount; ++i)
 	{
 		const auto aabb = ComputeAABB(*shape, xf, i);
-		new (proxies + i) FixtureProxy{aabb, broadPhase.CreateProxy(aabb, proxies + i), this, i};
+		new (proxies + i) FixtureProxy{aabb, broadPhase.CreateProxy(aabb + extension, proxies + i), this, i};
 	}
 	m_proxies = proxies;
 	m_proxyCount = childCount;
@@ -90,6 +92,8 @@ void Fixture::Synchronize(BroadPhase& broadPhase, const Transformation& transfor
 	assert(IsValid(transform2));
 
 	const auto shape = GetShape();
+	const auto aabbExtension = GetAabbExtension(*(GetBody()->GetWorld()));
+	const auto extension = Vec2{aabbExtension, aabbExtension};
 
 	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
 	{
@@ -100,7 +104,7 @@ void Fixture::Synchronize(BroadPhase& broadPhase, const Transformation& transfor
 		const auto aabb2 = ComputeAABB(*shape, transform2, proxy.childIndex);
 		proxy.aabb = aabb1 + aabb2;
 
-		broadPhase.MoveProxy(proxy.proxyId, proxy.aabb, transform2.p - transform1.p);
+		broadPhase.MoveProxy(proxy.proxyId, proxy.aabb + extension, transform2.p - transform1.p);
 	}
 }
 

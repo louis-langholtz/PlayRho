@@ -39,7 +39,16 @@ class EdgeShape;
 class ChainShape : public Shape
 {
 public:
-	ChainShape(): Shape{e_chain} {}
+	static constexpr float_t GetDefaultVertexRadius() noexcept
+	{
+		return LinearSlop * 2;
+	}
+	
+	ChainShape(float_t vertexRadius = GetDefaultVertexRadius()):
+		Shape{e_chain, vertexRadius}
+	{
+		// Intentionally empty.
+	}
 
 	ChainShape(const ChainShape& other);
 
@@ -105,9 +114,6 @@ inline child_count_t GetNextIndex(const ChainShape& shape, child_count_t index) 
 	assert(index < shape.GetVertexCount());
 	return (index + 1) % shape.GetVertexCount();
 }
-	
-/// Gets the "radius" of the given shape.
-float_t GetVertexRadius(const ChainShape& shape);
 
 /// Gets the number of child primitives.
 /// @return Positive non-zero count.

@@ -42,40 +42,6 @@ class Island;
 class TimeStep;
 
 constexpr auto EarthlyGravity = Vec2{0, float_t(-9.8)};
-
-struct WorldDef
-{
-	WorldDef& UseGravity(Vec2 value) noexcept
-	{
-		gravity = value;
-		return *this;
-	}
-
-	WorldDef& UseLinearSlop(float_t value) noexcept
-	{
-		linearSlop = value;
-		return *this;
-	}
-
-	WorldDef& UseAngularSlop(float_t value) noexcept
-	{
-		angularSlop = value;
-		return *this;
-	}
-
-	Vec2 gravity = EarthlyGravity;
-	float_t linearSlop = LinearSlop;
-	float_t angularSlop = AngularSlop;
-	float_t maxLinearCorrection = MaxLinearCorrection;
-	float_t maxAngularCorrection = MaxAngularCorrection;
-	float_t maxTranslation = MaxTranslation;
-	Angle maxRotation = MaxRotation * 1_rad;
-};
-
-constexpr struct WorldDef GetDefaultWorldDef()
-{
-	return WorldDef{};	
-}
 	
 /// World.
 /// @detail
@@ -87,9 +53,43 @@ class World
 {
 public:
 	using size_type = size_t;
+
+	struct Def
+	{
+		Def& UseGravity(Vec2 value) noexcept
+		{
+			gravity = value;
+			return *this;
+		}
+		
+		Def& UseLinearSlop(float_t value) noexcept
+		{
+			linearSlop = value;
+			return *this;
+		}
+		
+		Def& UseAngularSlop(float_t value) noexcept
+		{
+			angularSlop = value;
+			return *this;
+		}
+		
+		Vec2 gravity = EarthlyGravity;
+		float_t linearSlop = float_t{1} / float_t{10000}; // aka 0.0001, originally 0.005;
+		float_t angularSlop = Pi * float_t{2} / float_t{180};
+		float_t maxLinearCorrection = MaxLinearCorrection;
+		float_t maxAngularCorrection = Pi * float_t{8} / float_t{180};
+		float_t maxTranslation = MaxTranslation;
+		Angle maxRotation = MaxRotation * 1_rad;
+	};
 	
+	static constexpr struct Def GetDefaultDef()
+	{
+		return Def{};	
+	}
+
 	/// Constructs a world object.
-	World(const WorldDef def = GetDefaultWorldDef());
+	World(const Def def = GetDefaultDef());
 
 	/// Destructor.
 	/// @detail
@@ -282,8 +282,12 @@ public:
 	/// Get the current profile.
 	const Profile& GetProfile() const noexcept;
 
+	float_t GetLinearSlop() const noexcept;
+
 	float_t GetMinVertexRadius() const noexcept;
 
+	float_t GetMaxTranslation() const noexcept;
+	
 private:
 
 	using flags_type = uint32;
@@ -459,12 +463,12 @@ private:
 	/// @sa Step.
 	float_t m_inv_dt0 = float_t{0};
 
-	float_t m_linearSlop = LinearSlop;
-	float_t m_angularSlop = AngularSlop;
-	float_t m_maxLinearCorrection = MaxLinearCorrection;
-	float_t m_maxAngularCorrection = MaxAngularCorrection;
-	float_t m_maxTranslation = MaxTranslation;
-	Angle m_maxRotation = MaxRotation * 1_rad;
+	const float_t m_linearSlop;
+	const float_t m_angularSlop;
+	const float_t m_maxLinearCorrection;
+	const float_t m_maxAngularCorrection;
+	const float_t m_maxTranslation;
+	const Angle m_maxRotation;
 
 	Profile m_profile;
 };
@@ -649,14 +653,40 @@ inline void World::UnsetNewFixtures() noexcept
 	m_flags &= ~e_newFixture;
 }
 
+inline float_t World::GetLinearSlop() const noexcept
+{
+	return m_linearSlop;
+}
+
+inline float_t World::GetMaxTranslation() const noexcept
+{
+	return m_maxTranslation;
+}
+
+/// Gets the minimum vertex radius for the given world.
+/// @detail
+/// The minimum radius of the vertices of any shape in the given world.
 inline float_t World::GetMinVertexRadius() const noexcept
 {
-	return m_linearSlop * 2;
+	// This scaling factor should not be modified.
+	// Making it smaller means some shapes could have insufficient buffer for continuous collision.
+	// Making it larger may create artifacts for vertex collision.
+	return GetLinearSlop() * 2;
 }
 
 /// Dump the world into the log file.
 /// @warning this should be called outside of a time step.
 void Dump(const World& world);
+
+/// Gets the AABB extension for the given world.
+/// @detail
+/// Fattens AABBs in the dynamic tree. This allows proxies
+/// to move by a small amount without triggering a tree adjustment.
+/// This is in meters.
+inline float_t GetAabbExtension(const World& world) noexcept
+{
+	return world.GetLinearSlop() * 20;
+}
 
 } // namespace box2d
 

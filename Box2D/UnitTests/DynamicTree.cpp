@@ -17,11 +17,11 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Collision/Shapes/Shape.h>
+#include <Box2D/Collision/DynamicTree.h>
 
 using namespace box2d;
 
-TEST(Shape, ByteSizeIs8)
+TEST(DynamicTree, ByteSizeIs24)
 {
-	EXPECT_EQ(sizeof(Shape), size_t(8));
+	EXPECT_EQ(sizeof(DynamicTree), size_t(24));
 }

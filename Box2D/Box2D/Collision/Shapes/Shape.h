@@ -31,7 +31,7 @@ namespace box2d {
 /// @detail A shape is used for collision detection. You can create a shape however you like.
 /// Shapes used for simulation in World are created automatically when a Fixture
 /// is created. Shapes may encapsulate one or more child shapes.
-/// @note This data structure is 4-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 8-bytes large (on at least one 64-bit platform).
 class Shape
 {
 public:
@@ -48,30 +48,45 @@ public:
 
 	/// Initializing constructor.
 	/// @param type Type of this shape object.
-	constexpr Shape(Type type) noexcept:
-		m_type{type}
+	constexpr Shape(Type type, float_t vertexRadius) noexcept:
+		m_type{type}, m_vertexRadius{vertexRadius}
 	{
 		assert(type < e_typeCount);
+		assert(vertexRadius >= 0);
 	}
 
 	Shape(const Shape&) = default;
 
 	~Shape() = default;
 
-	/// Get the type of this shape. You can use this to down cast to the concrete shape.
+	/// Gets the type of this shape.
+	/// @note You can use this to down cast to the concrete shape.
 	/// @return the shape type.
 	Type GetType() const noexcept { return m_type; }
 	
+	float_t GetVertexRadius() const noexcept { return m_vertexRadius; }
+
+protected:
+	void SetVertexRadius(float_t vertexRadius)
+	{
+		assert(vertexRadius > std::numeric_limits<float_t>::min());
+		m_vertexRadius = vertexRadius;
+	}
+
 private:
-	const Type m_type;
+	Type m_type;
+	float_t m_vertexRadius;
 };
 
 /// Gets the vertex radius of the given shape (in meters).
 /// @detail Gets the radius (in meters) of every vertex of this shape.
 /// This is used for collision handling.
-/// @note This value should never be less than nor almost equal to zero.
+/// @note This value should never be less than zero.
 /// @sa DistanceProxy.
-float_t GetVertexRadius(const Shape& shape);
+inline float_t GetVertexRadius(const Shape& shape)
+{
+	return shape.GetVertexRadius();
+}
 
 /// Gets the number of child primitives.
 /// @return Positive non-zero count.

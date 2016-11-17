@@ -30,21 +30,21 @@
 using namespace box2d;
 
 template <>
-inline void box2d::Delete(Shape* shape, BlockAllocator& allocator)
+inline void box2d::Delete(const Shape* shape, BlockAllocator& allocator)
 {
 	switch (shape->GetType())
 	{
 		case Shape::e_circle:
-			Delete(static_cast<CircleShape*>(shape), allocator);
+			Delete(static_cast<const CircleShape*>(shape), allocator);
 			break;
 		case Shape::e_edge:
-			Delete(static_cast<EdgeShape*>(shape), allocator);
+			Delete(static_cast<const EdgeShape*>(shape), allocator);
 			break;
 		case Shape::e_polygon:
-			Delete(static_cast<PolygonShape*>(shape), allocator);
+			Delete(static_cast<const PolygonShape*>(shape), allocator);
 			break;
 		case Shape::e_chain:
-			Delete(static_cast<ChainShape*>(shape), allocator);
+			Delete(static_cast<const ChainShape*>(shape), allocator);
 			break;
 		default:
 			assert(false);
