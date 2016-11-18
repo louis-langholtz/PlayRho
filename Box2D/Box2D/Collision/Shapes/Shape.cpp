@@ -22,6 +22,7 @@
 #include <Box2D/Collision/Shapes/ChainShape.h>
 #include <Box2D/Collision/Shapes/CircleShape.h>
 #include <Box2D/Collision/Shapes/PolygonShape.h>
+#include <Box2D/Dynamics/Fixture.h>
 
 namespace box2d {
 	
@@ -49,6 +50,11 @@ namespace box2d {
 			case Shape::e_polygon: return TestPoint(static_cast<const PolygonShape&>(shape), xf, p);
 			case Shape::e_typeCount: return false;
 		}
+	}
+
+	Shape::Type GetType(const Fixture& fixture) noexcept
+	{
+		return fixture.GetShape()->GetType();
 	}
 
 } // namespace box2d

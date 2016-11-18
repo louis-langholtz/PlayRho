@@ -24,6 +24,8 @@
 
 namespace box2d {
 
+class Fixture;
+
 /// Base class for shapes.
 /// @detail A shape is used for collision detection. You can create a shape however you like.
 /// Shapes used for simulation in World are created automatically when a Fixture
@@ -94,6 +96,8 @@ child_count_t GetChildCount(const Shape& shape);
 /// @param p a point in world coordinates.
 /// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
 bool TestPoint(const Shape& shape, const Transformation& xf, const Vec2& p);
+
+Shape::Type GetType(const Fixture& fixture) noexcept;
 	
 } // namespace box2d
 

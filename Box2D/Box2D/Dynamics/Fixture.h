@@ -20,8 +20,7 @@
 #ifndef B2_FIXTURE_H
 #define B2_FIXTURE_H
 
-#include <Box2D/Dynamics/Body.h>
-#include <Box2D/Collision/Shapes/Shape.h>
+#include <Box2D/Common/Math.h>
 
 namespace box2d {
 
@@ -31,6 +30,7 @@ class BroadPhase;
 class Fixture;
 struct FixtureProxy;
 class AABB;
+class Shape;
 
 /// This holds contact filtering data.
 struct Filter
@@ -316,25 +316,10 @@ inline child_count_t Fixture::GetProxyCount() const
 
 /// Test a point for containment in a fixture.
 /// @param f Fixture to use for test.
-/// @param p Point in world coordinates.	
-inline bool TestPoint(const Fixture& f, const Vec2& p)
-{
-	return TestPoint(*f.GetShape(), f.GetBody()->GetTransformation(), p);
-}
+/// @param p Point in world coordinates.
+bool TestPoint(const Fixture& f, const Vec2& p);
 
-inline void SetAwake(Fixture& f) noexcept
-{
-	const auto b = f.GetBody();
-	if (b)
-	{
-		b->SetAwake();
-	}
-}
-
-inline Shape::Type GetType(const Fixture& fixture) noexcept
-{
-	return fixture.GetShape()->GetType();
-}
+void SetAwake(Fixture& f) noexcept;
 
 /// Dump fixture to log file.
 void Dump(const Fixture& fixture, size_t bodyIndex);

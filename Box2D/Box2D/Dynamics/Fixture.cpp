@@ -21,6 +21,7 @@
 #include <Box2D/Dynamics/FixtureProxy.hpp>
 #include <Box2D/Dynamics/Contacts/Contact.h>
 #include <Box2D/Dynamics/World.h>
+#include <Box2D/Dynamics/Body.h>
 #include <Box2D/Collision/Shapes/CircleShape.h>
 #include <Box2D/Collision/Shapes/EdgeShape.h>
 #include <Box2D/Collision/Shapes/PolygonShape.h>
@@ -146,6 +147,20 @@ void Fixture::SetSensor(bool sensor)
 	{
 		m_isSensor = sensor;
 		m_body->SetAwake();
+	}
+}
+
+bool box2d::TestPoint(const Fixture& f, const Vec2& p)
+{
+	return TestPoint(*f.GetShape(), f.GetBody()->GetTransformation(), p);
+}
+
+void box2d::SetAwake(Fixture& f) noexcept
+{
+	const auto b = f.GetBody();
+	if (b)
+	{
+		b->SetAwake();
 	}
 }
 

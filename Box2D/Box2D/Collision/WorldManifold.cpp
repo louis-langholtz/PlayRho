@@ -21,6 +21,7 @@
 #include <Box2D/Collision/Manifold.hpp>
 #include <Box2D/Dynamics/Contacts/Contact.h>
 #include <Box2D/Dynamics/Contacts/PositionConstraint.hpp>
+#include <Box2D/Dynamics/Body.h>
 
 namespace box2d {
 
