@@ -73,7 +73,7 @@ public:
 			p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
 			p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
 			d = p2 - p1;
-			jd.length = Length(d);
+			jd.length = GetLength(d);
 			m_joints[0] = m_world->CreateJoint(jd);
 
 			jd.bodyA = ground;
@@ -83,7 +83,7 @@ public:
 			p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
 			p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
 			d = p2 - p1;
-			jd.length = Length(d);
+			jd.length = GetLength(d);
 			m_joints[1] = m_world->CreateJoint(jd);
 
 			jd.bodyA = ground;
@@ -93,7 +93,7 @@ public:
 			p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
 			p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
 			d = p2 - p1;
-			jd.length = Length(d);
+			jd.length = GetLength(d);
 			m_joints[2] = m_world->CreateJoint(jd);
 
 			jd.bodyA = ground;
@@ -103,7 +103,7 @@ public:
 			p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
 			p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
 			d = p2 - p1;
-			jd.length = Length(d);
+			jd.length = GetLength(d);
 			m_joints[3] = m_world->CreateJoint(jd);
 
 			jd.bodyA = m_bodies[0];
@@ -113,7 +113,7 @@ public:
 			p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
 			p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
 			d = p2 - p1;
-			jd.length = Length(d);
+			jd.length = GetLength(d);
 			m_joints[4] = m_world->CreateJoint(jd);
 
 			jd.bodyA = m_bodies[1];
@@ -123,7 +123,7 @@ public:
 			p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
 			p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
 			d = p2 - p1;
-			jd.length = Length(d);
+			jd.length = GetLength(d);
 			m_joints[5] = m_world->CreateJoint(jd);
 
 			jd.bodyA = m_bodies[2];
@@ -133,7 +133,7 @@ public:
 			p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
 			p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
 			d = p2 - p1;
-			jd.length = Length(d);
+			jd.length = GetLength(d);
 			m_joints[6] = m_world->CreateJoint(jd);
 
 			jd.bodyA = m_bodies[3];
@@ -143,7 +143,7 @@ public:
 			p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
 			p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
 			d = p2 - p1;
-			jd.length = Length(d);
+			jd.length = GetLength(d);
 			m_joints[7] = m_world->CreateJoint(jd);
 		}
 	}

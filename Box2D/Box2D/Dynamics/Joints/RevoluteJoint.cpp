@@ -353,7 +353,7 @@ bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions, const Con
 		const auto rB = Rotate(m_localAnchorB - m_localCenterB, qB);
 
 		const auto C = cB + rB - cA - rA;
-		positionError = Length(C);
+		positionError = GetLength(C);
 
 		const auto mA = m_invMassA, mB = m_invMassB;
 		const auto iA = m_invIA, iB = m_invIB;

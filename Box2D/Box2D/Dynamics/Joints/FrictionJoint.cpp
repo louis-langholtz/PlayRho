@@ -161,7 +161,7 @@ void FrictionJoint::SolveVelocityConstraints(Span<Velocity> velocities, const Ti
 
 		const auto maxImpulse = h * m_maxForce;
 
-		if (LengthSquared(m_linearImpulse) > Square(maxImpulse))
+		if (GetLengthSquared(m_linearImpulse) > Square(maxImpulse))
 		{
 			m_linearImpulse = GetUnitVector(m_linearImpulse, UnitVec2::GetZero()) * maxImpulse;
 		}

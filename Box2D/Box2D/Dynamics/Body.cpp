@@ -387,8 +387,8 @@ void Body::ResetMassData()
 	if ((I > float_t{0}) && (!IsFixedRotation()))
 	{
 		// Center the inertia about the center of mass.
-		assert((I - mass * LengthSquared(localCenter)) > float_t{0});
-		m_invI = float_t{1} / (I - mass * LengthSquared(localCenter));
+		assert((I - mass * GetLengthSquared(localCenter)) > float_t{0});
+		m_invI = float_t{1} / (I - mass * GetLengthSquared(localCenter));
 	}
 	else
 	{
@@ -423,7 +423,7 @@ void Body::SetMassData(const MassData& massData)
 
 	if ((massData.I > float_t{0}) && (!IsFixedRotation()))
 	{
-		const auto I = massData.I - mass * LengthSquared(massData.center);
+		const auto I = massData.I - mass * GetLengthSquared(massData.center);
 		assert(I > float_t{0});
 		m_invI = float_t{1} / I;
 	}

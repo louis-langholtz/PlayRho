@@ -246,27 +246,27 @@ constexpr inline Vec3 GetInvalid() noexcept
 }
 
 /// Gets the square of the length/magnitude of the given value.
-/// For performance, use this instead of Length(T value) (if possible).
+/// For performance, use this instead of GetLength(T value) (if possible).
 /// @return Non-negative value.
 template <typename T>
-constexpr inline float_t LengthSquared(T value) noexcept { return float_t{0}; }
+constexpr inline float_t GetLengthSquared(T value) noexcept { return float_t{0}; }
 
 template <>
-constexpr inline float_t LengthSquared(Vec2 value) noexcept
+constexpr inline float_t GetLengthSquared(Vec2 value) noexcept
 {
 	return Square(value.x) + Square(value.y);		
 }
 
 template <>
-constexpr inline float_t LengthSquared(Vec3 value) noexcept
+constexpr inline float_t GetLengthSquared(Vec3 value) noexcept
 {
 	return Square(value.x) + Square(value.y) + Square(value.z);		
 }
 
 template <typename T>
-inline float_t Length(T value)
+inline float_t GetLength(T value)
 {
-	return Sqrt(LengthSquared(value));
+	return Sqrt(GetLengthSquared(value));
 }
 
 /// Does this vector contain finite coordinates?
@@ -764,7 +764,7 @@ constexpr inline UnitVec2 GetFwdPerpendicular(const UnitVec2 vector) noexcept
 ///   to each other.
 ///
 /// @note This operation is commutative. I.e. Dot(a, b) == Dot(b, a).
-/// @note If A and B are the same vectors, LengthSquared(Vec2) returns the same value
+/// @note If A and B are the same vectors, GetLengthSquared(Vec2) returns the same value
 ///   using effectively one less input parameter.
 ///
 /// @sa https://en.wikipedia.org/wiki/Dot_product
@@ -1330,7 +1330,7 @@ inline Sweep GetAnglesNormalized(Sweep sweep)
 /// Converts the given vector into a unit vector and returns its original length.
 inline float_t Normalize(Vec2& vector)
 {
-	const auto length = Length(vector);
+	const auto length = GetLength(vector);
 	if (almost_zero(length))
 	{
 		return float_t{0};
@@ -1345,7 +1345,7 @@ inline float_t Normalize(Vec2& vector)
 inline bool IsSleepable(Velocity velocity)
 {
 	return (Square(velocity.w.ToRadians()) <= Square(AngularSleepTolerance))
-	    && (LengthSquared(velocity.v) <= Square(LinearSleepTolerance));
+	    && (GetLengthSquared(velocity.v) <= Square(LinearSleepTolerance));
 }
 
 /// Gets the contact relative velocity.

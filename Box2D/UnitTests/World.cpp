@@ -601,7 +601,7 @@ TEST(World, PartiallyOverlappedCirclesSeparate)
 	ASSERT_EQ(body2->GetPosition().y, body_def.position.y);
 	
 	auto position_diff = body2pos - body1pos;
-	auto distance = Length(position_diff);
+	auto distance = GetLength(position_diff);
 
 	const auto angle = GetAngle(position_diff);
 
@@ -616,7 +616,7 @@ TEST(World, PartiallyOverlappedCirclesSeparate)
 		world.Step(time_inc);
 
 		const auto new_pos_diff = body2->GetPosition() - body1->GetPosition();
-		const auto new_distance = Length(new_pos_diff);
+		const auto new_distance = GetLength(new_pos_diff);
 		
 		if (almost_equal(new_distance, full_separation) || new_distance > full_separation)
 		{
@@ -768,7 +768,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	ASSERT_EQ(world.GetContacts().size(), ContactList::size_type(0));
 
 	auto position_diff = body1pos - body2pos;
-	auto distance = Length(position_diff);
+	auto distance = GetLength(position_diff);
 	
 	auto angle = GetAngle(position_diff);
 	ASSERT_FLOAT_EQ(angle.ToRadians(), (0_deg).ToRadians());
@@ -823,7 +823,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 		last_angle_2 = body2->GetAngle();
 
 		const auto new_pos_diff = body1->GetPosition() - body2->GetPosition();
-		const auto new_distance = Length(new_pos_diff);
+		const auto new_distance = GetLength(new_pos_diff);
 		
 		if (almost_equal(new_distance, full_separation) || new_distance > full_separation)
 		{
@@ -1476,7 +1476,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 			max_y = Max(ball_body->GetPosition().y, max_y);
 			min_y = Min(ball_body->GetPosition().y, min_y);
 
-			max_velocity = Max(Length(ball_body->GetVelocity().v), max_velocity);
+			max_velocity = Max(GetLength(ball_body->GetVelocity().v), max_velocity);
 
 			if (loops > 50)
 			{

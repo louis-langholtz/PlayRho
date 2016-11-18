@@ -71,7 +71,7 @@ namespace box2d
 		{
 			case 0: return float_t{0};
 			case 1: return float_t{0};
-			case 2:	return Sqrt(LengthSquared(GetPointDelta(simplex[0]) - GetPointDelta(simplex[1])));
+			case 2:	return Sqrt(GetLengthSquared(GetPointDelta(simplex[0]) - GetPointDelta(simplex[1])));
 			case 3:	return Cross(GetPointDelta(simplex[1]) - GetPointDelta(simplex[0]),
 								 GetPointDelta(simplex[2]) - GetPointDelta(simplex[0]));
 			default: break; // should not be reached

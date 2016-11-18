@@ -379,7 +379,7 @@ TEST(Distance, VerEdgeSquareTouching)
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
 	cache = output.cache;
 
-	EXPECT_EQ(Sqrt(LengthSquared(output.witnessPoints.a - output.witnessPoints.b)), float_t(1));
+	EXPECT_EQ(Sqrt(GetLengthSquared(output.witnessPoints.a - output.witnessPoints.b)), float_t(1));
 	EXPECT_EQ(output.witnessPoints.a.x, float_t{3});
 	EXPECT_EQ(output.witnessPoints.a.y, float_t{2});
 	

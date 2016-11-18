@@ -653,7 +653,7 @@ Manifold box2d::CollideShapes(const CircleShape& shapeA, const Transformation& x
 	const auto pB = Transform(shapeB.GetPosition(), xfB);
 	const auto totalRadius = GetVertexRadius(shapeA) + GetVertexRadius(shapeB);
 	
-	if (LengthSquared(pB - pA) > Square(totalRadius))
+	if (GetLengthSquared(pB - pA) > Square(totalRadius))
 	{
 		return Manifold{};
 	}
@@ -705,7 +705,7 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	if (Dot(cLocal - v1, v2 - v1) <= 0)
 	{
 		// Circle's center closest to v1 but not between v1 and v2.
-		if (LengthSquared(cLocal - v1) > Square(totalRadius))
+		if (GetLengthSquared(cLocal - v1) > Square(totalRadius))
 		{
 			return Manifold{};
 		}
@@ -715,7 +715,7 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	if (Dot(cLocal - v2, v1 - v2) <= 0)
 	{
 		// Circle's center closest to v2 but not between v1 and v2.
-		if (LengthSquared(cLocal - v2) > Square(totalRadius))
+		if (GetLengthSquared(cLocal - v2) > Square(totalRadius))
 		{
 			return Manifold{};
 		}
@@ -770,7 +770,7 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	const auto v = Dot(e, Q - A);
 	if (v <= 0)
 	{
-		if (LengthSquared(Q - A) > Square(totalRadius))
+		if (GetLengthSquared(Q - A) > Square(totalRadius))
 		{
 			return Manifold{};
 		}
@@ -794,7 +794,7 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	const auto u = Dot(e, B - Q);
 	if (u <= 0)
 	{
-		if (LengthSquared(Q - B) > Square(totalRadius))
+		if (GetLengthSquared(Q - B) > Square(totalRadius))
 		{
 			return Manifold{};
 		}
@@ -815,10 +815,10 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	}
 	
 	// Region AB
-	const auto eLenSquared = LengthSquared(e);
+	const auto eLenSquared = GetLengthSquared(e);
 	assert(eLenSquared > 0);
 	
-	if (LengthSquared(Q - (u * A + v * B) * (float_t{1} / eLenSquared)) > Square(totalRadius))
+	if (GetLengthSquared(Q - (u * A + v * B) * (float_t{1} / eLenSquared)) > Square(totalRadius))
 	{
 		return Manifold{};
 	}

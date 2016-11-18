@@ -881,7 +881,7 @@ inline float_t GetInertia(const Body& body) noexcept
 /// @return the rotational inertia, usually in kg-m^2.
 inline float_t GetLocalInertia(const Body& body) noexcept
 {
-	return GetInertia(body) + GetMass(body) * LengthSquared(body.GetLocalCenter());
+	return GetInertia(body) + GetMass(body) * GetLengthSquared(body.GetLocalCenter());
 }
 
 /// Get the mass data of the body.

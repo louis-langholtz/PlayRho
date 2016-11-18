@@ -67,7 +67,7 @@ void Rope::Initialize(const RopeDef* def)
 	{
 		const auto p1 = m_ps[i];
 		const auto p2 = m_ps[i+1];
-		m_Ls[i] = Sqrt(LengthSquared(p1 - p2));
+		m_Ls[i] = Sqrt(GetLengthSquared(p1 - p2));
 	}
 
 	for (auto i = decltype(count3){0}; i < count3; ++i)
@@ -183,8 +183,8 @@ void Rope::SolveC3()
 		const auto d1 = p2 - p1;
 		const auto d2 = p3 - p2;
 
-		const auto L1sqr = LengthSquared(d1);
-		const auto L2sqr = LengthSquared(d2);
+		const auto L1sqr = GetLengthSquared(d1);
+		const auto L2sqr = GetLengthSquared(d2);
 
 		if (L1sqr * L2sqr == float_t{0})
 		{

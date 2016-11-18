@@ -69,7 +69,7 @@ namespace box2d
 			for (auto&& elem: *this)
 			{
 				// length squared must be large enough to have a reasonable enough unit vector.
-				if (LengthSquared(value - elem) <= m_minlen2)
+				if (GetLengthSquared(value - elem) <= m_minlen2)
 				{
 					// found or delta poorly conditioned
 					return &elem;

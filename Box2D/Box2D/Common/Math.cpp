@@ -58,7 +58,7 @@ UnitVec2::UnitVec2(Vec2 value, UnitVec2 fallback) noexcept
 {
 	if (IsValid(value))
 	{
-		const auto lengthSquared = LengthSquared(value);
+		const auto lengthSquared = GetLengthSquared(value);
 		if (lengthSquared >= std::numeric_limits<decltype(lengthSquared)>::min())
 		{
 			const auto unitized = value / Sqrt(lengthSquared);

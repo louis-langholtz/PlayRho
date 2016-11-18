@@ -72,7 +72,7 @@ void ChainShape::CreateLoop(Span<const Vec2> vertices)
 	for (auto i = decltype(vertices.size()){1}; i < vertices.size(); ++i)
 	{
 		// If the code crashes here, it means your vertices are too close together.
-		assert(LengthSquared(vertices[i-1] - vertices[i]) > LinearSlop);
+		assert(GetLengthSquared(vertices[i-1] - vertices[i]) > LinearSlop);
 	}
 
 	m_count = static_cast<child_count_t>(vertices.size() + 1);
@@ -90,7 +90,7 @@ void ChainShape::CreateChain(Span<const Vec2> vertices)
 	for (auto i = decltype(vertices.size()){1}; i < vertices.size(); ++i)
 	{
 		// If the code crashes here, it means your vertices are too close together.
-		assert(LengthSquared(vertices[i-1] - vertices[i]) > LinearSlop);
+		assert(GetLengthSquared(vertices[i-1] - vertices[i]) > LinearSlop);
 	}
 
 	m_count = static_cast<child_count_t>(vertices.size());

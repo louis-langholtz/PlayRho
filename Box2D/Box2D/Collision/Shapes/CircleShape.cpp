@@ -31,7 +31,7 @@ child_count_t box2d::GetChildCount(const CircleShape& shape)
 bool box2d::TestPoint(const CircleShape& shape, const Transformation& transform, const Vec2& p)
 {
 	const auto center = transform.p + Rotate(shape.GetPosition(), transform.q);
-	return LengthSquared(p - center) <= Square(shape.GetRadius());
+	return GetLengthSquared(p - center) <= Square(shape.GetRadius());
 }
 
 // Collision Detection in Interactive 3D Environments by Gino van den Bergen
@@ -45,12 +45,12 @@ RayCastOutput box2d::RayCast(const CircleShape& shape, const RayCastInput& input
 
 	const auto position = transform.p + Rotate(shape.GetPosition(), transform.q);
 	const auto s = input.p1 - position;
-	const auto b = LengthSquared(s) - Square(shape.GetRadius());
+	const auto b = GetLengthSquared(s) - Square(shape.GetRadius());
 
 	// Solve quadratic equation.
 	const auto r = input.p2 - input.p1;
 	const auto c =  Dot(s, r);
-	const auto rr = LengthSquared(r);
+	const auto rr = GetLengthSquared(r);
 	const auto sigma = Square(c) - rr * b;
 
 	// Check for negative discriminant and short segment.
@@ -84,6 +84,6 @@ MassData box2d::ComputeMass(const CircleShape& shape, float_t density)
 {
 	assert(density >= 0);
 	const auto mass = density * Pi * Square(shape.GetRadius());
-	const auto I = mass * ((Square(shape.GetRadius()) / float_t{2}) + LengthSquared(shape.GetPosition()));
+	const auto I = mass * ((Square(shape.GetRadius()) / float_t{2}) + GetLengthSquared(shape.GetPosition()));
 	return MassData{mass, shape.GetPosition(), I};
 }

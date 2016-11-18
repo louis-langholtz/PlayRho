@@ -76,7 +76,7 @@ void RopeJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	m_rB = Rotate(m_localAnchorB - m_localCenterB, qB);
 	m_u = cB + m_rB - cA - m_rA;
 
-	m_length = Length(m_u);
+	m_length = GetLength(m_u);
 
 	const auto C = m_length - m_maxLength;
 	m_state = (C > float_t{0})? e_atUpperLimit: e_inactiveLimit;

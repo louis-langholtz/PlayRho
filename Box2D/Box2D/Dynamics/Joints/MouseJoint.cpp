@@ -146,9 +146,9 @@ void MouseJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeS
 	assert(IsValid(addImpulse));
 	m_impulse += addImpulse;
 	const auto maxImpulse = step.get_dt() * m_maxForce;
-	if (LengthSquared(m_impulse) > Square(maxImpulse))
+	if (GetLengthSquared(m_impulse) > Square(maxImpulse))
 	{
-		m_impulse *= maxImpulse / Length(m_impulse);
+		m_impulse *= maxImpulse / GetLength(m_impulse);
 	}
 
 	const auto deltaImpulse = m_impulse - oldImpulse;

@@ -561,9 +561,9 @@ void World::Solve(const TimeStep& step)
 			assert(IsValid(h));
 			
 			auto translation = h * velocity.v;
-			if (LengthSquared(translation) > Square(conf.maxTranslation))
+			if (GetLengthSquared(translation) > Square(conf.maxTranslation))
 			{
-				const auto ratio = conf.maxTranslation / Sqrt(LengthSquared(translation));
+				const auto ratio = conf.maxTranslation / Sqrt(GetLengthSquared(translation));
 				velocity.v *= ratio;
 				translation = h * velocity.v;
 			}

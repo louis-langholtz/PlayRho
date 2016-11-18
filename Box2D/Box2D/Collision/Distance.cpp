@@ -151,7 +151,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 #if defined(DO_COMPUTE_CLOSEST_POINT)
 		// Compute closest point.
 		const auto p = GetClosestPoint(simplexVertices);
-		const auto distanceSqr2 = LengthSquared(p);
+		const auto distanceSqr2 = GetLengthSquared(p);
 
 		// Ensure progress
 		if (distanceSqr2 >= distanceSqr1)
@@ -165,7 +165,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 		assert(IsValid(d));
 
 		// Ensure the search direction is numerically fit.
-		if (almost_zero(LengthSquared(d)))
+		if (almost_zero(GetLengthSquared(d)))
 		{
 			// The origin is probably contained by a line segment
 			// or triangle. Thus the shapes are overlapped.

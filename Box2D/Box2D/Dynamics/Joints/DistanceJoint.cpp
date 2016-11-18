@@ -44,7 +44,7 @@ DistanceJointDef::DistanceJointDef(Body* bA, Body* bB,
 								   float_t freq, float_t damp) noexcept:
 	JointDef{JointType::Distance, bA, bB},
 	localAnchorA{GetLocalPoint(*bA, anchor1)}, localAnchorB{GetLocalPoint(*bB, anchor2)},
-	length{Length(anchor2 - anchor1)},
+	length{GetLength(anchor2 - anchor1)},
 	frequencyHz{freq}, dampingRatio{damp}
 {
 }
@@ -90,7 +90,7 @@ void DistanceJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	m_u = (cB + m_rB) - (cA + m_rA);
 
 	// Handle singularity.
-	const auto length = Length(m_u);
+	const auto length = box2d::GetLength(m_u);
 	if (length > conf.linearSlop)
 	{
 		m_u *= float_t(1) / length;

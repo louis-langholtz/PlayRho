@@ -132,7 +132,7 @@ void PolygonShape::Set(const VertexSet<MaxPolygonVertices>& point_set) noexcept
 			const auto r = point_set[ie] - point_set[hull[m]];
 			const auto v = point_set[j] - point_set[hull[m]];
 			const auto c = Cross(r, v);
-			if ((c < 0) || ((c == 0) && (LengthSquared(v) > LengthSquared(r))))
+			if ((c < 0) || ((c == 0) && (GetLengthSquared(v) > GetLengthSquared(r))))
 			{
 				ie = j;
 			}
@@ -407,7 +407,7 @@ MassData box2d::ComputeMass(const PolygonShape& shape, float_t density)
 
 	// Inertia tensor relative to the local origin (point s).
 	// Shift to center of mass then to original body origin.
-	const auto massDataI = (density * I) + (mass * (LengthSquared(massDataCenter) - LengthSquared(center)));
+	const auto massDataI = (density * I) + (mass * (GetLengthSquared(massDataCenter) - GetLengthSquared(center)));
 	
 	return MassData{mass, massDataCenter, massDataI};
 }

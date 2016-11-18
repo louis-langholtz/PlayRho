@@ -158,7 +158,7 @@ public:
 			Vec2 position = body->GetPosition();
 
 			Vec2 d = center - position;
-			if (almost_zero(LengthSquared(d)))
+			if (almost_zero(GetLengthSquared(d)))
 			{
 				continue;
 			}

@@ -49,8 +49,8 @@ void PulleyJointDef::Initialize(Body* bA, Body* bB,
 	groundAnchorB = groundB;
 	localAnchorA = GetLocalPoint(*bodyA, anchorA);
 	localAnchorB = GetLocalPoint(*bodyB, anchorB);
-	lengthA = Length(anchorA - groundA);
-	lengthB = Length(anchorB - groundB);
+	lengthA = GetLength(anchorA - groundA);
+	lengthB = GetLength(anchorB - groundB);
 	ratio = r;
 }
 
@@ -103,8 +103,8 @@ void PulleyJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	m_uA = cA + m_rA - m_groundAnchorA;
 	m_uB = cB + m_rB - m_groundAnchorB;
 
-	const auto lengthA = Length(m_uA);
-	const auto lengthB = Length(m_uB);
+	const auto lengthA = GetLength(m_uA);
+	const auto lengthB = GetLength(m_uB);
 
 	if (lengthA > (float_t(10) * conf.linearSlop))
 	{
@@ -202,11 +202,11 @@ bool PulleyJoint::SolvePositionConstraints(Span<Position> positions, const Const
 
 	// Get the pulley axes.
 	const auto pA = cA + rA - m_groundAnchorA;
-	const auto lengthA = Length(pA);
+	const auto lengthA = GetLength(pA);
 	const auto uA = (lengthA > (float_t(10) * conf.linearSlop))? pA / lengthA: Vec2_zero;
 
 	const auto pB = cB + rB - m_groundAnchorB;
-	const auto lengthB = Length(pB);
+	const auto lengthB = GetLength(pB);
 	const auto uB = (lengthB > (float_t(10) * conf.linearSlop))? pB / lengthB: Vec2_zero;
 
 	// Compute effective mass.
@@ -276,12 +276,12 @@ Vec2 PulleyJoint::GetGroundAnchorB() const
 
 float_t PulleyJoint::GetCurrentLengthA() const
 {
-	return Length(GetWorldPoint(*GetBodyA(), m_localAnchorA) - m_groundAnchorA);
+	return GetLength(GetWorldPoint(*GetBodyA(), m_localAnchorA) - m_groundAnchorA);
 }
 
 float_t PulleyJoint::GetCurrentLengthB() const
 {
-	return Length(GetWorldPoint(*GetBodyB(), m_localAnchorB) - m_groundAnchorB);
+	return GetLength(GetWorldPoint(*GetBodyB(), m_localAnchorB) - m_groundAnchorB);
 }
 
 void PulleyJoint::ShiftOrigin(const Vec2& newOrigin)

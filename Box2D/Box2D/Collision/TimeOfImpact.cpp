@@ -273,7 +273,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 			++stats.toi_iters;
 			stats.sum_dist_iters += distanceInfo.iterations;
 			stats.max_dist_iters = Max(stats.max_dist_iters, distanceInfo.iterations);
-			const auto distanceSquared = LengthSquared(distanceInfo.witnessPoints.a - distanceInfo.witnessPoints.b);
+			const auto distanceSquared = GetLengthSquared(distanceInfo.witnessPoints.a - distanceInfo.witnessPoints.b);
 			
 			// If the shapes aren't separated, give up on continuous collision.
 			if (distanceSquared <= float_t{0}) // Failure!
@@ -407,7 +407,7 @@ bool TestOverlap(const Shape& shapeA, child_count_t indexA, const Transformation
 	const auto proxyB = GetDistanceProxy(shapeB, indexB);
 	
 	const auto distanceInfo = Distance(proxyA, xfA, proxyB, xfB);
-	const auto distanceSquared = LengthSquared(distanceInfo.witnessPoints.a - distanceInfo.witnessPoints.b);
+	const auto distanceSquared = GetLengthSquared(distanceInfo.witnessPoints.a - distanceInfo.witnessPoints.b);
 	const auto totalRadiusSquared = Square(proxyA.GetRadius() + proxyB.GetRadius());
 	const auto separation_amount = distanceSquared - totalRadiusSquared;
 	return (separation_amount < 0) || almost_zero(separation_amount);

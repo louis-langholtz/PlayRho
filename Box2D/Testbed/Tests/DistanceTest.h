@@ -58,7 +58,7 @@ public:
 
 		SimplexCache cache;
 		auto output = Distance(proxyA, transformA, proxyB, transformB, cache);
-		auto distance = Sqrt(LengthSquared(output.witnessPoints.a - output.witnessPoints.b));
+		auto distance = Sqrt(GetLengthSquared(output.witnessPoints.a - output.witnessPoints.b));
 		
 		const auto rA = proxyA.GetRadius();
 		const auto rB = proxyB.GetRadius();
