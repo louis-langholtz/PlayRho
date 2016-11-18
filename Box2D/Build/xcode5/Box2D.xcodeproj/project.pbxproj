@@ -47,6 +47,8 @@
 		4731DE2A1DDF84A900E7F931 /* RayCastInput.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE261DDF84A900E7F931 /* RayCastInput.hpp */; };
 		4731DE2C1DDF94A600E7F931 /* AABB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE2B1DDF94A600E7F931 /* AABB.cpp */; };
 		4731DE2D1DDF94A600E7F931 /* AABB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE2B1DDF94A600E7F931 /* AABB.cpp */; };
+		4731DE2F1DDF9B6900E7F931 /* MassData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE2E1DDF9B6900E7F931 /* MassData.cpp */; };
+		4731DE301DDF9B6900E7F931 /* MassData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE2E1DDF9B6900E7F931 /* MassData.cpp */; };
 		4734B2191DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21A1DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21C1DC1121900F15E29 /* ArrayList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4734B21B1DC1121900F15E29 /* ArrayList.cpp */; };
@@ -463,6 +465,7 @@
 		4731DE201DDF83A500E7F931 /* RayCastOutput.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RayCastOutput.hpp; sourceTree = "<group>"; };
 		4731DE261DDF84A900E7F931 /* RayCastInput.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RayCastInput.hpp; sourceTree = "<group>"; };
 		4731DE2B1DDF94A600E7F931 /* AABB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AABB.cpp; sourceTree = "<group>"; };
+		4731DE2E1DDF9B6900E7F931 /* MassData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MassData.cpp; sourceTree = "<group>"; };
 		4734B2161DC00AFD00F15E29 /* ArrayList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ArrayList.hpp; sourceTree = "<group>"; };
 		4734B21B1DC1121900F15E29 /* ArrayList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArrayList.cpp; sourceTree = "<group>"; };
 		4734B21E1DC1340500F15E29 /* Span.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Span.hpp; sourceTree = "<group>"; };
@@ -927,6 +930,7 @@
 				80BB8931141C3E5900F1753A /* DynamicTree.h */,
 				80BB8932141C3E5900F1753A /* TimeOfImpact.cpp */,
 				80BB8933141C3E5900F1753A /* TimeOfImpact.h */,
+				4731DE2E1DDF9B6900E7F931 /* MassData.cpp */,
 				47CB343D1D6F3A8500828126 /* MassData.hpp */,
 				80BB8934141C3E5900F1753A /* Shapes */,
 			);
@@ -1664,6 +1668,7 @@
 				47AA5DBA1C4C5FBE008AF2BA /* PolygonAndCircleContact.cpp in Sources */,
 				47AA5DBB1C4C5FBE008AF2BA /* PolygonContact.cpp in Sources */,
 				47AA5DBC1C4C5FBE008AF2BA /* DistanceJoint.cpp in Sources */,
+				4731DE301DDF9B6900E7F931 /* MassData.cpp in Sources */,
 				47AA5DBD1C4C5FBE008AF2BA /* FrictionJoint.cpp in Sources */,
 				47578BE51D886FED0078CD40 /* WorldManifold.cpp in Sources */,
 				47AA5DBE1C4C5FBE008AF2BA /* GearJoint.cpp in Sources */,
@@ -1733,6 +1738,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				47AA63A81D10786F00726CA2 /* ContactIterator.cpp in Sources */,
+				4731DE2F1DDF9B6900E7F931 /* MassData.cpp in Sources */,
 				47AA63A41D1077E600726CA2 /* ContactList.cpp in Sources */,
 				80BB8988141C3E5900F1753A /* BroadPhase.cpp in Sources */,
 				47AA639B1D0F7FDA00726CA2 /* ConstFixtureIterator.cpp in Sources */,

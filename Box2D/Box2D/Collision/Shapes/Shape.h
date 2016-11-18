@@ -21,8 +21,6 @@
 #define B2_SHAPE_H
 
 #include <Box2D/Common/Math.h>
-#include <Box2D/Collision/MassData.hpp>
-#include <memory>
 
 namespace box2d {
 
@@ -96,13 +94,6 @@ child_count_t GetChildCount(const Shape& shape);
 /// @param p a point in world coordinates.
 /// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
 bool TestPoint(const Shape& shape, const Transformation& xf, const Vec2& p);
-
-/// Computes the mass properties of this shape using its dimensions and density.
-/// The inertia tensor is computed about the local origin.
-/// @note Behavior is undefined if the given density is negative.
-/// @param density Density in kilograms per meter squared (must be non-negative).
-/// @return Mass data for this shape.
-MassData ComputeMass(const Shape& shape, float_t density);
 	
 } // namespace box2d
 

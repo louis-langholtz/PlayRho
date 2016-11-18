@@ -18,8 +18,6 @@
 */
 
 #include <Box2D/Collision/Shapes/CircleShape.h>
-#include <Box2D/Common/BlockAllocator.h>
-#include <new>
 
 using namespace box2d;
 
@@ -32,12 +30,4 @@ bool box2d::TestPoint(const CircleShape& shape, const Transformation& transform,
 {
 	const auto center = transform.p + Rotate(shape.GetLocation(), transform.q);
 	return GetLengthSquared(p - center) <= Square(shape.GetRadius());
-}
-
-MassData box2d::ComputeMass(const CircleShape& shape, float_t density)
-{
-	assert(density >= 0);
-	const auto mass = density * Pi * Square(shape.GetRadius());
-	const auto I = mass * ((Square(shape.GetRadius()) / float_t{2}) + GetLengthSquared(shape.GetLocation()));
-	return MassData{mass, shape.GetLocation(), I};
 }

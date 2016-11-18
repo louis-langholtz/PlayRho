@@ -51,17 +51,4 @@ namespace box2d {
 		}
 	}
 
-	MassData ComputeMass(const Shape& shape, float_t density)
-	{
-		assert(shape.GetType() < Shape::e_typeCount);
-		switch (shape.GetType())
-		{
-			case Shape::e_edge: return ComputeMass(static_cast<const EdgeShape&>(shape), density);
-			case Shape::e_chain: return ComputeMass(static_cast<const ChainShape&>(shape), density);
-			case Shape::e_circle: return ComputeMass(static_cast<const CircleShape&>(shape), density);
-			case Shape::e_polygon: return ComputeMass(static_cast<const PolygonShape&>(shape), density);
-			case Shape::e_typeCount: return MassData{0, GetInvalid<Vec2>(), 0};
-		}		
-	}
-
 } // namespace box2d

@@ -18,7 +18,6 @@
 */
 
 #include <Box2D/Collision/Shapes/EdgeShape.h>
-#include <new>
 
 using namespace box2d;
 
@@ -40,11 +39,4 @@ bool box2d::TestPoint(const EdgeShape& shape, const Transformation& xf, const Ve
 	BOX2D_NOT_USED(xf);
 	BOX2D_NOT_USED(p);
 	return false;
-}
-
-MassData box2d::ComputeMass(const EdgeShape& shape, float_t density)
-{
-	BOX2D_NOT_USED(density);
-
-	return MassData{float_t{0}, (shape.GetVertex1() + shape.GetVertex2()) / float_t(2), float_t{0}};
 }

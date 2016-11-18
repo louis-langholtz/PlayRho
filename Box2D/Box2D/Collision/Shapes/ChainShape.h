@@ -125,13 +125,6 @@ child_count_t GetChildCount(const ChainShape& shape);
 /// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
 bool TestPoint(const ChainShape& shape, const Transformation& xf, const Vec2& p);
 
-/// Computes the mass properties of this shape using its dimensions and density.
-/// The inertia tensor is computed about the local origin.
-/// @note Behavior is undefined if the given density is negative.
-/// @param density Density in kilograms per meter squared (must be non-negative).
-/// @return Mass data for this shape.
-MassData ComputeMass(const ChainShape& shape, float_t density);
-
 } // namespace box2d
 
 #endif

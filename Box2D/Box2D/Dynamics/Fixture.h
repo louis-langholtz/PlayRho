@@ -322,16 +322,6 @@ inline bool TestPoint(const Fixture& f, const Vec2& p)
 	return TestPoint(*f.GetShape(), f.GetBody()->GetTransformation(), p);
 }
 
-/// Computes the mass data for the given fixture.
-/// @detail
-/// The mass data is based on the density and
-/// the shape of the fixture. The rotational inertia is about the shape's origin. This operation
-/// may be expensive.
-inline MassData ComputeMassData(const Fixture& f)
-{
-	return ComputeMass(*f.GetShape(), f.GetDensity());
-}
-
 inline void SetAwake(Fixture& f) noexcept
 {
 	const auto b = f.GetBody();

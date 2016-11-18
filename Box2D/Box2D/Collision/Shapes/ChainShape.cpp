@@ -19,9 +19,6 @@
 
 #include <Box2D/Collision/Shapes/ChainShape.h>
 #include <Box2D/Collision/Shapes/EdgeShape.h>
-#include <Box2D/Common/BlockAllocator.h>
-#include <new>
-#include <string.h>
 
 using namespace box2d;
 
@@ -133,11 +130,4 @@ bool box2d::TestPoint(const ChainShape& shape, const Transformation& xf, const V
 	BOX2D_NOT_USED(xf);
 	BOX2D_NOT_USED(p);
 	return false;
-}
-
-MassData box2d::ComputeMass(const ChainShape& shape, float_t density)
-{
-	BOX2D_NOT_USED(density);
-
-	return MassData{float_t{0}, Vec2_zero, float_t{0}};
 }

@@ -19,7 +19,6 @@
 
 #include <Box2D/Collision/Shapes/PolygonShape.h>
 #include <Box2D/Common/VertexSet.hpp>
-#include <new>
 
 using namespace box2d;
 
@@ -245,81 +244,4 @@ bool box2d::TestPoint(const PolygonShape& shape, const Transformation& xf, const
 	}
 
 	return true;
-}
-
-MassData box2d::ComputeMass(const PolygonShape& shape, float_t density)
-{
-	assert(density >= 0);
-
-	// Polygon mass, centroid, and inertia.
-	// Let rho be the polygon density in mass per unit area.
-	// Then:
-	// mass = rho * int(dA)
-	// centroid.x = (1/mass) * rho * int(x * dA)
-	// centroid.y = (1/mass) * rho * int(y * dA)
-	// I = rho * int((x*x + y*y) * dA)
-	//
-	// We can compute these integrals by summing all the integrals
-	// for each triangle of the polygon. To evaluate the integral
-	// for a single triangle, we make a change of variables to
-	// the (u,v) coordinates of the triangle:
-	// x = x0 + e1x * u + e2x * v
-	// y = y0 + e1y * u + e2y * v
-	// where 0 <= u && 0 <= v && u + v <= 1.
-	//
-	// We integrate u from [0,1-v] and then v from [0,1].
-	// We also need to use the Jacobian of the transformation:
-	// D = cross(e1, e2)
-	//
-	// Simplification: triangle centroid = (1/3) * (p1 + p2 + p3)
-	//
-	// The rest of the derivation is handled by computer algebra.
-
-	const auto count = shape.GetVertexCount();
-	assert(count >= 3);
-
-	auto center = Vec2_zero;
-	auto area = float_t{0};
-	auto I = float_t{0};
-
-	// s is the reference point for forming triangles.
-	// It's location doesn't change the result (except for rounding error).
-	// This code puts the reference point inside the polygon.
-	const auto s = Average(shape.GetVertices());
-
-	constexpr auto k_inv3 = float_t{1} / float_t{3};
-
-	for (auto i = decltype(count){0}; i < count; ++i)
-	{
-		// Triangle vertices.
-		const auto e1 = shape.GetVertex(i) - s;
-		const auto e2 = shape.GetVertex((i + 1) % count) - s;
-
-		const auto D = Cross(e1, e2);
-
-		const auto triangleArea = D / 2;
-		area += triangleArea;
-
-		// Area weighted centroid
-		center += triangleArea * k_inv3 * (e1 + e2);
-
-		const auto intx2 = e1.x * e1.x + e2.x * e1.x + e2.x * e2.x;
-		const auto inty2 = e1.y * e1.y + e2.y * e1.y + e2.y * e2.y;
-
-		I += (D * k_inv3 / 4) * (intx2 + inty2);
-	}
-
-	// Total mass
-	const auto mass = density * area;
-
-	// Center of mass
-	assert((area > 0) && !almost_zero(area));
-	center *= float_t{1} / area;
-	const auto massDataCenter = center + s;
-
-	// Inertia tensor relative to the local origin (point s).
-	// Shift to center of mass then to original body origin.
-	const auto massDataI = (density * I) + (mass * (GetLengthSquared(massDataCenter) - GetLengthSquared(center)));
-	
-	return MassData{mass, massDataCenter, massDataI};
 }
