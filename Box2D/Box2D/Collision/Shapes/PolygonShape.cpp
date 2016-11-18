@@ -247,27 +247,6 @@ bool box2d::TestPoint(const PolygonShape& shape, const Transformation& xf, const
 	return true;
 }
 
-AABB box2d::ComputeAABB(const PolygonShape& shape, const Transformation& xf, child_count_t childIndex)
-{
-	BOX2D_NOT_USED(childIndex);
-	
-	assert(shape.GetVertexCount() > 0);
-
-	auto lower = Transform(shape.GetVertex(0), xf);
-	auto upper = lower;
-
-	const auto count = shape.GetVertexCount();
-	for (auto i = decltype(count){1}; i < count; ++i)
-	{
-		const auto v = Transform(shape.GetVertex(i), xf);
-		lower = Min(lower, v);
-		upper = Max(upper, v);
-	}
-
-	const auto r = Vec2{GetVertexRadius(shape), GetVertexRadius(shape)};
-	return AABB{lower - r, upper + r};
-}
-
 MassData box2d::ComputeMass(const PolygonShape& shape, float_t density)
 {
 	assert(density >= 0);

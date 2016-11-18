@@ -45,6 +45,8 @@
 		4731DE241DDF83A600E7F931 /* RayCastOutput.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE201DDF83A500E7F931 /* RayCastOutput.hpp */; };
 		4731DE291DDF84A900E7F931 /* RayCastInput.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE261DDF84A900E7F931 /* RayCastInput.hpp */; };
 		4731DE2A1DDF84A900E7F931 /* RayCastInput.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE261DDF84A900E7F931 /* RayCastInput.hpp */; };
+		4731DE2C1DDF94A600E7F931 /* AABB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE2B1DDF94A600E7F931 /* AABB.cpp */; };
+		4731DE2D1DDF94A600E7F931 /* AABB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE2B1DDF94A600E7F931 /* AABB.cpp */; };
 		4734B2191DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21A1DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21C1DC1121900F15E29 /* ArrayList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4734B21B1DC1121900F15E29 /* ArrayList.cpp */; };
@@ -460,6 +462,7 @@
 		4731DE1D1DDD0B8700E7F931 /* DynamicTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicTree.cpp; sourceTree = "<group>"; };
 		4731DE201DDF83A500E7F931 /* RayCastOutput.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RayCastOutput.hpp; sourceTree = "<group>"; };
 		4731DE261DDF84A900E7F931 /* RayCastInput.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RayCastInput.hpp; sourceTree = "<group>"; };
+		4731DE2B1DDF94A600E7F931 /* AABB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AABB.cpp; sourceTree = "<group>"; };
 		4734B2161DC00AFD00F15E29 /* ArrayList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ArrayList.hpp; sourceTree = "<group>"; };
 		4734B21B1DC1121900F15E29 /* ArrayList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArrayList.cpp; sourceTree = "<group>"; };
 		4734B21E1DC1340500F15E29 /* Span.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Span.hpp; sourceTree = "<group>"; };
@@ -905,6 +908,7 @@
 				4726DD351D387D630012A882 /* Manifold.hpp */,
 				47578BE31D886FED0078CD40 /* WorldManifold.cpp */,
 				47578BDE1D8869110078CD40 /* WorldManifold.hpp */,
+				4731DE2B1DDF94A600E7F931 /* AABB.cpp */,
 				4726DD291D31B4090012A882 /* AABB.hpp */,
 				4731DE261DDF84A900E7F931 /* RayCastInput.hpp */,
 				4726DD281D31B4090012A882 /* RayCastOutput.cpp */,
@@ -1664,6 +1668,7 @@
 				47578BE51D886FED0078CD40 /* WorldManifold.cpp in Sources */,
 				47AA5DBE1C4C5FBE008AF2BA /* GearJoint.cpp in Sources */,
 				47AA5DBF1C4C5FBE008AF2BA /* Joint.cpp in Sources */,
+				4731DE2D1DDF94A600E7F931 /* AABB.cpp in Sources */,
 				47AA5DC01C4C5FBE008AF2BA /* MouseJoint.cpp in Sources */,
 				47AA5DC11C4C5FBE008AF2BA /* PrismaticJoint.cpp in Sources */,
 				47E841731DB4018D00E5F311 /* VelocityConstraint.cpp in Sources */,
@@ -1742,6 +1747,7 @@
 				4726DD2A1D31B4090012A882 /* RayCastOutput.cpp in Sources */,
 				80BB8997141C3E5900F1753A /* CircleShape.cpp in Sources */,
 				80BB8999141C3E5900F1753A /* EdgeShape.cpp in Sources */,
+				4731DE2C1DDF94A600E7F931 /* AABB.cpp in Sources */,
 				4721349D1C8E4CB5009536F9 /* FixtureList.cpp in Sources */,
 				80BB899B141C3E5900F1753A /* PolygonShape.cpp in Sources */,
 				47AA639D1D0F7FDA00726CA2 /* BodyIterator.cpp in Sources */,

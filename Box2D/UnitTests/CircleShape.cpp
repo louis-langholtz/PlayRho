@@ -18,6 +18,7 @@
 
 #include "gtest/gtest.h"
 #include <Box2D/Collision/Shapes/CircleShape.h>
+#include <Box2D/Collision/AABB.hpp>
 
 using namespace box2d;
 

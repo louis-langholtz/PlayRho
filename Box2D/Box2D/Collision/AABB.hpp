@@ -24,6 +24,12 @@
 
 namespace box2d
 {
+	class Shape;
+	class EdgeShape;
+	class PolygonShape;
+	class ChainShape;
+	class CircleShape;
+	
 	/// An axis aligned bounding box.
 	/// @note This data structure is 16-bytes large (on at least one 64-bit platform).
 	class AABB
@@ -114,7 +120,37 @@ namespace box2d
 
 		return (d1.x <= float_t{0}) && (d1.y <= float_t{0}) && (d2.x <= float_t{0}) && (d2.y <= float_t{0});
 	}
-		
+	
+	/// Given a transform, compute the associated axis aligned bounding box for a child shape.
+	/// @param xf the world transform of the shape.
+	/// @param childIndex the child shape
+	/// @return the axis aligned box.
+	AABB ComputeAABB(const Shape& shape, const Transformation& xf, child_count_t childIndex);
+	
+	/// Given a transform, compute the associated axis aligned bounding box for a child shape.
+	/// @param xf the world transform of the shape.
+	/// @param childIndex the child shape
+	/// @return the axis aligned box.
+	AABB ComputeAABB(const EdgeShape& shape, const Transformation& xf, child_count_t childIndex);
+	
+	/// Given a transform, compute the associated axis aligned bounding box for a child shape.
+	/// @param xf the world transform of the shape.
+	/// @param childIndex the child shape
+	/// @return the axis aligned box.
+	AABB ComputeAABB(const PolygonShape& shape, const Transformation& xf, child_count_t childIndex);
+	
+	/// Given a transform, compute the associated axis aligned bounding box for a child shape.
+	/// @param xf the world transform of the shape.
+	/// @param childIndex the child shape
+	/// @return the axis aligned box.
+	AABB ComputeAABB(const ChainShape& shape, const Transformation& xf, child_count_t childIndex);
+	
+	/// Given a transform, compute the associated axis aligned bounding box for a child shape.
+	/// @param xf the world transform of the shape.
+	/// @param childIndex the child shape
+	/// @return the axis aligned box.
+	AABB ComputeAABB(const CircleShape& shape, const Transformation& xf, child_count_t childIndex);
+	
 } // namespace box2d
 
 #endif /* AABB_hpp */

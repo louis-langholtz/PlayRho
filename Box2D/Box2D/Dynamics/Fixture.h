@@ -30,6 +30,7 @@ class Body;
 class BroadPhase;
 class Fixture;
 struct FixtureProxy;
+class AABB;
 
 /// This holds contact filtering data.
 struct Filter

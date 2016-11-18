@@ -50,20 +50,7 @@ namespace box2d {
 			case Shape::e_typeCount: return false;
 		}
 	}
-		
-	AABB ComputeAABB(const Shape& shape, const Transformation& xf, child_count_t childIndex)
-	{
-		assert(shape.GetType() < Shape::e_typeCount);
-		switch (shape.GetType())
-		{
-			case Shape::e_edge: return ComputeAABB(static_cast<const EdgeShape&>(shape), xf, childIndex);
-			case Shape::e_chain: return ComputeAABB(static_cast<const ChainShape&>(shape), xf, childIndex);
-			case Shape::e_circle: return ComputeAABB(static_cast<const CircleShape&>(shape), xf, childIndex);
-			case Shape::e_polygon: return ComputeAABB(static_cast<const PolygonShape&>(shape), xf, childIndex);
-			case Shape::e_typeCount: return GetInvalid<AABB>();
-		}
-	}
-	
+
 	MassData ComputeMass(const Shape& shape, float_t density)
 	{
 		assert(shape.GetType() < Shape::e_typeCount);

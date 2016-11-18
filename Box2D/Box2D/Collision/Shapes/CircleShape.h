@@ -82,12 +82,6 @@ child_count_t GetChildCount(const CircleShape& shape);
 /// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
 bool TestPoint(const CircleShape& shape, const Transformation& xf, const Vec2& p);
 
-/// Given a transform, compute the associated axis aligned bounding box for a child shape.
-/// @param xf the world transform of the shape.
-/// @param childIndex the child shape
-/// @return the axis aligned box.
-AABB ComputeAABB(const CircleShape& shape, const Transformation& xf, child_count_t childIndex);
-
 /// Computes the mass properties of this shape using its dimensions and density.
 /// The inertia tensor is computed about the local origin.
 /// @note Behavior is undefined if the given density is negative.

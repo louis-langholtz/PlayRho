@@ -34,14 +34,6 @@ bool box2d::TestPoint(const CircleShape& shape, const Transformation& transform,
 	return GetLengthSquared(p - center) <= Square(shape.GetRadius());
 }
 
-AABB box2d::ComputeAABB(const CircleShape& shape, const Transformation& transform, child_count_t childIndex)
-{
-	BOX2D_NOT_USED(childIndex);
-
-	const auto p = transform.p + Rotate(shape.GetLocation(), transform.q);
-	return AABB{p, p} + Vec2{shape.GetRadius(), shape.GetRadius()};
-}
-
 MassData box2d::ComputeMass(const CircleShape& shape, float_t density)
 {
 	assert(density >= 0);

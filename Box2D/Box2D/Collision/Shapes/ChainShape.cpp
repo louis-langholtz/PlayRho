@@ -135,17 +135,6 @@ bool box2d::TestPoint(const ChainShape& shape, const Transformation& xf, const V
 	return false;
 }
 
-AABB box2d::ComputeAABB(const ChainShape& shape, const Transformation& xf, child_count_t childIndex)
-{
-	assert(childIndex < shape.GetVertexCount());
-
-	const auto i1 = childIndex;
-	const auto i2 = GetNextIndex(shape, childIndex);
-	const auto v1 = Transform(shape.GetVertex(i1), xf);
-	const auto v2 = Transform(shape.GetVertex(i2), xf);
-	return AABB{v1, v2};
-}
-
 MassData box2d::ComputeMass(const ChainShape& shape, float_t density)
 {
 	BOX2D_NOT_USED(density);

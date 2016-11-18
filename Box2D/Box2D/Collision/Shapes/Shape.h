@@ -21,7 +21,6 @@
 #define B2_SHAPE_H
 
 #include <Box2D/Common/Math.h>
-#include <Box2D/Collision/AABB.hpp>
 #include <Box2D/Collision/MassData.hpp>
 #include <memory>
 
@@ -97,12 +96,6 @@ child_count_t GetChildCount(const Shape& shape);
 /// @param p a point in world coordinates.
 /// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
 bool TestPoint(const Shape& shape, const Transformation& xf, const Vec2& p);
-
-/// Given a transform, compute the associated axis aligned bounding box for a child shape.
-/// @param xf the world transform of the shape.
-/// @param childIndex the child shape
-/// @return the axis aligned box.
-AABB ComputeAABB(const Shape& shape, const Transformation& xf, child_count_t childIndex);
 
 /// Computes the mass properties of this shape using its dimensions and density.
 /// The inertia tensor is computed about the local origin.

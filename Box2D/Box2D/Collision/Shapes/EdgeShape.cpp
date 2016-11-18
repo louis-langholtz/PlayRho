@@ -42,20 +42,6 @@ bool box2d::TestPoint(const EdgeShape& shape, const Transformation& xf, const Ve
 	return false;
 }
 
-AABB box2d::ComputeAABB(const EdgeShape& shape, const Transformation& xf, child_count_t childIndex)
-{
-	BOX2D_NOT_USED(childIndex);
-
-	const auto v1 = Transform(shape.GetVertex1(), xf);
-	const auto v2 = Transform(shape.GetVertex2(), xf);
-
-	const auto lower = Min(v1, v2);
-	const auto upper = Max(v1, v2);
-
-	const auto r = Vec2{GetVertexRadius(shape), GetVertexRadius(shape)};
-	return AABB{lower - r, upper + r};
-}
-
 MassData box2d::ComputeMass(const EdgeShape& shape, float_t density)
 {
 	BOX2D_NOT_USED(density);
