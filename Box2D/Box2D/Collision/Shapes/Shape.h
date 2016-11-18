@@ -98,13 +98,6 @@ child_count_t GetChildCount(const Shape& shape);
 /// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
 bool TestPoint(const Shape& shape, const Transformation& xf, const Vec2& p);
 
-/// Casts a ray against a child shape.
-/// @param input the ray-cast input parameters.
-/// @param xf Transform to be applied to the shape.
-/// @param childIndex the child shape index
-RayCastOutput RayCast(const Shape& shape, const RayCastInput& input,
-					  const Transformation& xf, child_count_t childIndex);
-
 /// Given a transform, compute the associated axis aligned bounding box for a child shape.
 /// @param xf the world transform of the shape.
 /// @param childIndex the child shape

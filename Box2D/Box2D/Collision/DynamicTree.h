@@ -21,6 +21,7 @@
 #define B2_DYNAMIC_TREE_H
 
 #include <Box2D/Collision/AABB.hpp>
+#include <Box2D/Collision/RayCastInput.hpp>
 #include <Box2D/Common/GrowableStack.h>
 
 namespace box2d {

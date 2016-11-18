@@ -28,6 +28,7 @@
 #include <Box2D/Collision/BroadPhase.h>
 #include <Box2D/Collision/WorldManifold.hpp>
 #include <Box2D/Collision/TimeOfImpact.h>
+#include <Box2D/Collision/RayCastOutput.hpp>
 #include <Box2D/Common/Timer.h>
 #include <Box2D/Common/AllocatedArray.hpp>
 

@@ -34,44 +34,6 @@ bool box2d::TestPoint(const CircleShape& shape, const Transformation& transform,
 	return GetLengthSquared(p - center) <= Square(shape.GetRadius());
 }
 
-// Collision Detection in Interactive 3D Environments by Gino van den Bergen
-// From Section 3.1.2
-// x = s + a * r
-// norm(x) = radius
-RayCastOutput box2d::RayCast(const CircleShape& shape, const RayCastInput& input,
-							 const Transformation& transform, child_count_t childIndex)
-{
-	BOX2D_NOT_USED(childIndex);
-
-	const auto position = transform.p + Rotate(shape.GetLocation(), transform.q);
-	const auto s = input.p1 - position;
-	const auto b = GetLengthSquared(s) - Square(shape.GetRadius());
-
-	// Solve quadratic equation.
-	const auto r = input.p2 - input.p1;
-	const auto c =  Dot(s, r);
-	const auto rr = GetLengthSquared(r);
-	const auto sigma = Square(c) - rr * b;
-
-	// Check for negative discriminant and short segment.
-	if ((sigma < float_t{0}) || almost_zero(rr))
-	{
-		return RayCastOutput{};
-	}
-
-	// Find the point of intersection of the line with the circle.
-	const auto a = -(c + Sqrt(sigma));
-
-	// Is the intersection point on the segment?
-	if ((a >= float_t{0}) && (a <= (input.maxFraction * rr)))
-	{
-		const auto fraction = a / rr;
-		return RayCastOutput{GetUnitVector(s + fraction * r, UnitVec2::GetZero()), fraction};
-	}
-
-	return RayCastOutput{};
-}
-
 AABB box2d::ComputeAABB(const CircleShape& shape, const Transformation& transform, child_count_t childIndex)
 {
 	BOX2D_NOT_USED(childIndex);

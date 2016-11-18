@@ -41,6 +41,10 @@
 		4731DE1B1DDCD0E100E7F931 /* FixtureProxy.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE181DDCD0E100E7F931 /* FixtureProxy.hpp */; };
 		4731DE1C1DDCD0E100E7F931 /* FixtureProxy.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE181DDCD0E100E7F931 /* FixtureProxy.hpp */; };
 		4731DE1E1DDD0B8700E7F931 /* DynamicTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE1D1DDD0B8700E7F931 /* DynamicTree.cpp */; };
+		4731DE231DDF83A600E7F931 /* RayCastOutput.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE201DDF83A500E7F931 /* RayCastOutput.hpp */; };
+		4731DE241DDF83A600E7F931 /* RayCastOutput.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE201DDF83A500E7F931 /* RayCastOutput.hpp */; };
+		4731DE291DDF84A900E7F931 /* RayCastInput.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE261DDF84A900E7F931 /* RayCastInput.hpp */; };
+		4731DE2A1DDF84A900E7F931 /* RayCastInput.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE261DDF84A900E7F931 /* RayCastInput.hpp */; };
 		4734B2191DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21A1DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21C1DC1121900F15E29 /* ArrayList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4734B21B1DC1121900F15E29 /* ArrayList.cpp */; };
@@ -454,6 +458,8 @@
 		4731DE151DDCD00100E7F931 /* FixtureProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FixtureProxy.cpp; sourceTree = "<group>"; };
 		4731DE181DDCD0E100E7F931 /* FixtureProxy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureProxy.hpp; sourceTree = "<group>"; };
 		4731DE1D1DDD0B8700E7F931 /* DynamicTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicTree.cpp; sourceTree = "<group>"; };
+		4731DE201DDF83A500E7F931 /* RayCastOutput.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RayCastOutput.hpp; sourceTree = "<group>"; };
+		4731DE261DDF84A900E7F931 /* RayCastInput.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RayCastInput.hpp; sourceTree = "<group>"; };
 		4734B2161DC00AFD00F15E29 /* ArrayList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ArrayList.hpp; sourceTree = "<group>"; };
 		4734B21B1DC1121900F15E29 /* ArrayList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArrayList.cpp; sourceTree = "<group>"; };
 		4734B21E1DC1340500F15E29 /* Span.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Span.hpp; sourceTree = "<group>"; };
@@ -901,6 +907,8 @@
 				47578BDE1D8869110078CD40 /* WorldManifold.hpp */,
 				4726DD281D31B4090012A882 /* AABB.cpp */,
 				4726DD291D31B4090012A882 /* AABB.hpp */,
+				4731DE261DDF84A900E7F931 /* RayCastInput.hpp */,
+				4731DE201DDF83A500E7F931 /* RayCastOutput.hpp */,
 				4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */,
 				80BB892E141C3E5900F1753A /* Distance.cpp */,
 				80BB892F141C3E5900F1753A /* Distance.h */,
@@ -1236,6 +1244,8 @@
 				47AA5DCF1C4C5FBE008AF2BA /* DynamicTree.h in Headers */,
 				47AA5DD01C4C5FBE008AF2BA /* TimeOfImpact.h in Headers */,
 				47AA5DD11C4C5FBE008AF2BA /* ChainShape.h in Headers */,
+				4731DE2A1DDF84A900E7F931 /* RayCastInput.hpp in Headers */,
+				4731DE241DDF83A600E7F931 /* RayCastOutput.hpp in Headers */,
 				47AA5DD21C4C5FBE008AF2BA /* CircleShape.h in Headers */,
 				47AA5DD31C4C5FBE008AF2BA /* EdgeShape.h in Headers */,
 				4726DD1A1D30230A0012A882 /* SimplexCache.hpp in Headers */,
@@ -1324,6 +1334,7 @@
 				80BB898E141C3E5900F1753A /* Collision.h in Headers */,
 				80BB8990141C3E5900F1753A /* Distance.h in Headers */,
 				47CB34401D6F3A8500828126 /* MassData.hpp in Headers */,
+				4731DE231DDF83A600E7F931 /* RayCastOutput.hpp in Headers */,
 				4734B2271DC29F7C00F15E29 /* SimplexVertex.hpp in Headers */,
 				80BB8992141C3E5900F1753A /* DynamicTree.h in Headers */,
 				80BB8994141C3E5900F1753A /* TimeOfImpact.h in Headers */,
@@ -1365,6 +1376,7 @@
 				477DB2AD1D1C4BE800846ED6 /* PositionSolverManifold.hpp in Headers */,
 				4726DD191D30230A0012A882 /* SimplexCache.hpp in Headers */,
 				47A9833B1D0F51A300AA7D1A /* JointIterator.hpp in Headers */,
+				4731DE291DDF84A900E7F931 /* RayCastInput.hpp in Headers */,
 				80BB89BD141C3E5900F1753A /* CircleContact.h in Headers */,
 				477DB2A91D15F64A00846ED6 /* ConstJointEdgeIterator.hpp in Headers */,
 				47A9833F1D0F7ABA00AA7D1A /* ConstJointIterator.hpp in Headers */,

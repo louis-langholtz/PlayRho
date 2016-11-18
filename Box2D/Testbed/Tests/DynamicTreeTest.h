@@ -20,6 +20,8 @@
 #ifndef DYNAMIC_TREE_TEST_H
 #define DYNAMIC_TREE_TEST_H
 
+#include <Box2D/Collision/RayCastOutput.hpp>
+
 namespace box2d {
 
 class DynamicTreeTest : public Test

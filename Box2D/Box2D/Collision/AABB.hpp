@@ -114,31 +114,7 @@ namespace box2d
 
 		return (d1.x <= float_t{0}) && (d1.y <= float_t{0}) && (d2.x <= float_t{0}) && (d2.y <= float_t{0});
 	}
-	
-	/// Ray-cast input data.
-	/// @detail The ray extends from p1 to p1 + maxFraction * (p2 - p1).
-	struct RayCastInput
-	{
-		Vec2 p1; ///< Point 1.
-		Vec2 p2; ///< Point 2.
-		float_t maxFraction; ///< Max fraction.
-	};
-	
-	/// Ray-cast output data.
-	/// @detail The ray hits at p1 + fraction * (p2 - p1), where p1 and p2 come from RayCastInput.
-	struct RayCastOutput
-	{
-		RayCastOutput() = default;
-
-		constexpr RayCastOutput(UnitVec2 n, float_t f, bool h = true) noexcept: normal{n}, fraction{f}, hit{h} {}
-
-		UnitVec2 normal;
-		float_t fraction = 0;
-		bool hit = false;
-	};
-
-	RayCastOutput RayCast(const AABB& aabb, const RayCastInput& input);
-
+		
 } // namespace box2d
 
 #endif /* AABB_hpp */
