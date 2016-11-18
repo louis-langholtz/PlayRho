@@ -33,8 +33,8 @@ TEST(CircleShape, DefaultConstruction)
 	EXPECT_EQ(foo.GetType(), Shape::e_circle);
 	EXPECT_EQ(GetChildCount(foo), child_count_t{1});
 	EXPECT_EQ(foo.GetRadius(), CircleShape::GetDefaultRadius());
-	EXPECT_EQ(foo.GetPosition().x, 0);
-	EXPECT_EQ(foo.GetPosition().y, 0);
+	EXPECT_EQ(foo.GetLocation().x, 0);
+	EXPECT_EQ(foo.GetLocation().y, 0);
 	const auto mass_data = ComputeMass(foo, 1);
 	EXPECT_EQ(mass_data.mass, 0);
 	EXPECT_EQ(mass_data.I, 0);
@@ -51,8 +51,8 @@ TEST(CircleShape, InitConstruction)
 	EXPECT_EQ(foo.GetType(), Shape::e_circle);
 	EXPECT_EQ(GetChildCount(foo), child_count_t{1});
 	EXPECT_EQ(foo.GetRadius(), radius);
-	EXPECT_EQ(foo.GetPosition().x, position.x);
-	EXPECT_EQ(foo.GetPosition().y, position.y);
+	EXPECT_EQ(foo.GetLocation().x, position.x);
+	EXPECT_EQ(foo.GetLocation().y, position.y);
 	const auto mass_data = ComputeMass(foo, 1);
 	EXPECT_EQ(mass_data.mass, Pi);
 	EXPECT_FLOAT_EQ(mass_data.I, float_t(7.85398));

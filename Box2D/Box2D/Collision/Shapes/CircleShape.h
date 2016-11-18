@@ -39,9 +39,9 @@ public:
 	/// @note Behavior is undefined if a negative radius is given.
 	///
 	/// @param radius Radius of the circle shape (in meters).
-	/// @param position Position of the center of this shape.
-	constexpr explicit CircleShape(float_t radius = GetDefaultRadius(), Vec2 position = Vec2_zero) noexcept:
-		Shape{e_circle, radius}, m_p{position}
+	/// @param location Location of the center of this shape.
+	constexpr explicit CircleShape(float_t radius = GetDefaultRadius(), Vec2 location = Vec2_zero) noexcept:
+		Shape{e_circle, radius}, m_location{location}
 	{
 		// Intentionally empty.
 	}
@@ -59,17 +59,17 @@ public:
 		SetVertexRadius(radius);
 	}
 
-	/// Gets the position of the center of this circle shape.
+	/// Gets the location of the center of this circle shape.
 	/// @return The origin (0, 0) unless explicitly set otherwise on construction or via
-	///   the set position method.
+	///   the set location method.
 	/// @sa SetPosition.
-	Vec2 GetPosition() const noexcept { return m_p; }
+	Vec2 GetLocation() const noexcept { return m_location; }
 	
-	void SetPosition(const Vec2& value) noexcept { m_p = value; }
+	void SetLocation(const Vec2& value) noexcept { m_location = value; }
 
 private:
 	/// Linear position of the shape as initialized on construction or as assigned using the SetPosition method.
-	Vec2 m_p = Vec2_zero;
+	Vec2 m_location = Vec2_zero;
 };
 
 /// Gets the number of child primitives.

@@ -29,7 +29,7 @@ namespace box2d {
 		
 		inline DistanceProxy GetDistanceProxy(const CircleShape& shape, child_count_t index)
 		{
-			return DistanceProxy{GetVertexRadius(shape), shape.GetPosition()};
+			return DistanceProxy{GetVertexRadius(shape), shape.GetLocation()};
 		}
 		
 		inline DistanceProxy GetDistanceProxy(const PolygonShape& shape, child_count_t index)

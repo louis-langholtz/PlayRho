@@ -97,8 +97,8 @@ TEST(Body, CreateAndDestroyFixture)
 	ASSERT_NE(fixture->GetShape(), nullptr);
 	EXPECT_EQ(fixture->GetShape()->GetType(), shape.GetType());
 	EXPECT_EQ(GetVertexRadius(*fixture->GetShape()), GetVertexRadius(shape));
-	EXPECT_EQ(static_cast<const CircleShape*>(fixture->GetShape())->GetPosition().x, shape.GetPosition().x);
-	EXPECT_EQ(static_cast<const CircleShape*>(fixture->GetShape())->GetPosition().y, shape.GetPosition().y);
+	EXPECT_EQ(static_cast<const CircleShape*>(fixture->GetShape())->GetLocation().x, shape.GetLocation().x);
+	EXPECT_EQ(static_cast<const CircleShape*>(fixture->GetShape())->GetLocation().y, shape.GetLocation().y);
 	EXPECT_FALSE(body->GetFixtures().empty());
 	{
 		int i = 0;

@@ -30,7 +30,7 @@ child_count_t box2d::GetChildCount(const CircleShape& shape)
 
 bool box2d::TestPoint(const CircleShape& shape, const Transformation& transform, const Vec2& p)
 {
-	const auto center = transform.p + Rotate(shape.GetPosition(), transform.q);
+	const auto center = transform.p + Rotate(shape.GetLocation(), transform.q);
 	return GetLengthSquared(p - center) <= Square(shape.GetRadius());
 }
 
@@ -43,7 +43,7 @@ RayCastOutput box2d::RayCast(const CircleShape& shape, const RayCastInput& input
 {
 	BOX2D_NOT_USED(childIndex);
 
-	const auto position = transform.p + Rotate(shape.GetPosition(), transform.q);
+	const auto position = transform.p + Rotate(shape.GetLocation(), transform.q);
 	const auto s = input.p1 - position;
 	const auto b = GetLengthSquared(s) - Square(shape.GetRadius());
 
@@ -76,7 +76,7 @@ AABB box2d::ComputeAABB(const CircleShape& shape, const Transformation& transfor
 {
 	BOX2D_NOT_USED(childIndex);
 
-	const auto p = transform.p + Rotate(shape.GetPosition(), transform.q);
+	const auto p = transform.p + Rotate(shape.GetLocation(), transform.q);
 	return AABB{p, p} + Vec2{shape.GetRadius(), shape.GetRadius()};
 }
 
@@ -84,6 +84,6 @@ MassData box2d::ComputeMass(const CircleShape& shape, float_t density)
 {
 	assert(density >= 0);
 	const auto mass = density * Pi * Square(shape.GetRadius());
-	const auto I = mass * ((Square(shape.GetRadius()) / float_t{2}) + GetLengthSquared(shape.GetPosition()));
-	return MassData{mass, shape.GetPosition(), I};
+	const auto I = mass * ((Square(shape.GetRadius()) / float_t{2}) + GetLengthSquared(shape.GetLocation()));
+	return MassData{mass, shape.GetLocation(), I};
 }

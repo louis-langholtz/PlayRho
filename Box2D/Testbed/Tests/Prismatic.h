@@ -84,6 +84,9 @@ public:
 		case Key_S:
 			m_joint->SetMotorSpeed(-m_joint->GetMotorSpeed());
 			break;
+
+		default:
+			break;
 		}
 	}
 

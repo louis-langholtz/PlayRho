@@ -53,7 +53,7 @@ public:
 			{
 				CircleShape* circle = (CircleShape*)fixture->GetShape();
 
-				Vec2 center = Transform(circle->GetPosition(), xf);
+				Vec2 center = Transform(circle->GetLocation(), xf);
 				float_t radius = circle->GetRadius();
 
 				g_debugDraw->DrawCircle(center, radius, color);
@@ -262,7 +262,7 @@ public:
 
 		PolyShapesCallback callback;
 		callback.m_circle.SetRadius(float_t(2.0));
-		callback.m_circle.SetPosition(Vec2(0.0f, 1.1f));
+		callback.m_circle.SetLocation(Vec2(0.0f, 1.1f));
 		callback.m_transform = Transform_identity;
 		callback.g_debugDraw = &drawer;
 
@@ -271,7 +271,7 @@ public:
 		m_world->QueryAABB(&callback, aabb);
 
 		Color color(0.4f, 0.7f, 0.8f);
-		drawer.DrawCircle(callback.m_circle.GetPosition(), callback.m_circle.GetRadius(), color);
+		drawer.DrawCircle(callback.m_circle.GetLocation(), callback.m_circle.GetRadius(), color);
 
 		drawer.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
 		m_textLine += DRAW_STRING_NEW_LINE;

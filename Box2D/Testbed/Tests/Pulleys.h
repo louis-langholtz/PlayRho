@@ -44,7 +44,7 @@ public:
 			CircleShape circle(2.0f, Vec2(-10.0f, y + b + L));
 			ground->CreateFixture(FixtureDef{&circle, 0.0f});
 
-			circle.SetPosition(Vec2(10.0f, y + b + L));
+			circle.SetLocation(Vec2(10.0f, y + b + L));
 			ground->CreateFixture(FixtureDef{&circle, 0.0f});
 		}
 

@@ -167,7 +167,7 @@ void box2d::Dump(const Fixture& fixture, size_t bodyIndex)
 			auto s = static_cast<const CircleShape*>(fixture.GetShape());
 			log("    CircleShape shape;\n");
 			log("    shape.m_radius = %.15lef;\n", s->GetRadius());
-			log("    shape.m_p = Vec2(%.15lef, %.15lef);\n", s->GetPosition().x, s->GetPosition().y);
+			log("    shape.m_p = Vec2(%.15lef, %.15lef);\n", s->GetLocation().x, s->GetLocation().y);
 		}
 		break;
 

@@ -28,7 +28,7 @@ using namespace box2d;
 
 static void Draw(Drawer& drawer, const CircleShape& shape, const Transformation& xf, const Color& color)
 {
-	const auto center = Transform(shape.GetPosition(), xf);
+	const auto center = Transform(shape.GetLocation(), xf);
 	const auto radius = shape.GetRadius();
 	const auto axis = Rotate(Vec2{float_t{1}, float_t{0}}, xf.q);
 	drawer.DrawSolidCircle(center, radius, axis, color);

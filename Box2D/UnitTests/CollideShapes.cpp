@@ -39,12 +39,12 @@ TEST(CollideShapes, IdenticalOverlappingCircles)
 	EXPECT_EQ(manifold.GetType(), Manifold::e_circles);
 	
 	EXPECT_FALSE(IsValid(manifold.GetLocalNormal()));
-	EXPECT_EQ(manifold.GetLocalPoint(), shape.GetPosition());
+	EXPECT_EQ(manifold.GetLocalPoint(), shape.GetLocation());
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
 	
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
-	EXPECT_EQ(manifold.GetPoint(0).localPoint, shape.GetPosition());
+	EXPECT_EQ(manifold.GetPoint(0).localPoint, shape.GetLocation());
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_vertex);
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexA, 0);
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
@@ -68,12 +68,12 @@ TEST(CollideShapes, CircleCircleOrientedHorizontally)
 	EXPECT_EQ(manifold.GetType(), Manifold::e_circles);
 	
 	EXPECT_FALSE(IsValid(manifold.GetLocalNormal()));
-	EXPECT_EQ(manifold.GetLocalPoint(), s1.GetPosition());
+	EXPECT_EQ(manifold.GetLocalPoint(), s1.GetLocation());
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
 
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
-	EXPECT_EQ(manifold.GetPoint(0).localPoint, s2.GetPosition());
+	EXPECT_EQ(manifold.GetPoint(0).localPoint, s2.GetLocation());
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_vertex);
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexA, 0);
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
