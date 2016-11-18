@@ -98,7 +98,7 @@ public:
 
 		BodyDef bd;
 		bd.type = BodyType::Dynamic;
-		bd.position = body1->GetPosition();
+		bd.position = body1->GetLocation();
 		bd.angle = body1->GetAngle();
 
 		Body* body2 = m_world->CreateBody(bd);

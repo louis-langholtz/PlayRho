@@ -164,16 +164,16 @@ public:
 	/// @return the world transform of the body's origin.
 	Transformation GetTransformation() const noexcept;
 
-	/// Gets the world body origin position.
-	/// @detail This is the position of the body's origin relative to its world.
-	/// The position of the body after stepping the world's physics simulations is dependent on a number of factors:
-	///   1. Position at the last time step.
+	/// Gets the world body origin location.
+	/// @detail This is the location of the body's origin relative to its world.
+	/// The location of the body after stepping the world's physics simulations is dependent on a number of factors:
+	///   1. Location at the last time step.
 	///   2. Forces acting on the body (gravity, applied force, applied impulse).
 	///   3. The mass data of the body.
 	///   4. Damping of the body.
 	///   5. Restitution and friction values of the body's fixtures when they experience collisions.
-	/// @return World position of the body's origin.
-	Vec2 GetPosition() const noexcept;
+	/// @return World location of the body's origin.
+	Vec2 GetLocation() const noexcept;
 
 	/// Get the angle in radians.
 	/// @return the current world rotation angle in radians.
@@ -527,7 +527,7 @@ inline Transformation Body::GetTransformation() const noexcept
 	return m_xf;
 }
 
-inline Vec2 Body::GetPosition() const noexcept
+inline Vec2 Body::GetLocation() const noexcept
 {
 	return GetTransformation().p;
 }

@@ -94,7 +94,7 @@ public:
 		}
 
 #if 1
-		const auto position = m_character->GetBody()->GetPosition();
+		const auto position = m_character->GetBody()->GetLocation();
 
 		if (position.y < m_top + m_radius - 3.0f * m_world->GetLinearSlop())
 		{

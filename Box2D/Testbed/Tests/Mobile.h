@@ -58,7 +58,7 @@ public:
 
 		BodyDef bodyDef;
 		bodyDef.type = BodyType::Dynamic;
-		bodyDef.position = parent->GetPosition() + localAnchor - h;
+		bodyDef.position = parent->GetLocation() + localAnchor - h;
 		const auto body = m_world->CreateBody(bodyDef);
 
 		const auto shape = PolygonShape(0.25f * a, a);

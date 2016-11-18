@@ -209,8 +209,8 @@ TEST(World, StepZeroTimeDoesNothing)
 	
 	const auto body = world.CreateBody(def);
 	ASSERT_NE(body, nullptr);
-	EXPECT_EQ(body->GetPosition().x, def.position.x);
-	EXPECT_EQ(body->GetPosition().y, def.position.y);
+	EXPECT_EQ(body->GetLocation().x, def.position.x);
+	EXPECT_EQ(body->GetLocation().y, def.position.y);
 	EXPECT_EQ(GetLinearVelocity(*body).x, float_t(0));
 	EXPECT_EQ(GetLinearVelocity(*body).y, float_t(0));
 	EXPECT_EQ(body->GetLinearAcceleration().x, 0);
@@ -218,7 +218,7 @@ TEST(World, StepZeroTimeDoesNothing)
 	
 	const auto time_inc = float_t(0);
 	
-	auto pos = body->GetPosition();
+	auto pos = body->GetLocation();
 	auto vel = GetLinearVelocity(*body);
 	for (auto i = 0; i < 100; ++i)
 	{
@@ -226,9 +226,9 @@ TEST(World, StepZeroTimeDoesNothing)
 		
 		EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
 		
-		EXPECT_EQ(body->GetPosition().x, def.position.x);
-		EXPECT_EQ(body->GetPosition().y, pos.y);
-		pos = body->GetPosition();
+		EXPECT_EQ(body->GetLocation().x, def.position.x);
+		EXPECT_EQ(body->GetLocation().y, pos.y);
+		pos = body->GetLocation();
 		
 		EXPECT_EQ(GetLinearVelocity(*body).x, float_t(0));
 		EXPECT_FLOAT_EQ(GetLinearVelocity(*body).y, vel.y);
@@ -256,28 +256,28 @@ TEST(World, GravitationalBodyMovement)
 	EXPECT_EQ(body->GetType(), BodyType::Dynamic);
 	EXPECT_EQ(GetLinearVelocity(*body).x, 0);
 	EXPECT_EQ(GetLinearVelocity(*body).y, 0);
-	EXPECT_EQ(body->GetPosition().x, p0.x);
-	EXPECT_EQ(body->GetPosition().y, p0.y);
+	EXPECT_EQ(body->GetLocation().x, p0.x);
+	EXPECT_EQ(body->GetLocation().y, p0.y);
 
 	world.Step(t);
 	EXPECT_EQ(GetLinearVelocity(*body).x, 0);
 	EXPECT_EQ(GetLinearVelocity(*body).y, a * (t * 1));
-	EXPECT_EQ(body->GetPosition().x, p0.x);
-	EXPECT_EQ(body->GetPosition().y, p0.y + (GetLinearVelocity(*body).y * t));
+	EXPECT_EQ(body->GetLocation().x, p0.x);
+	EXPECT_EQ(body->GetLocation().y, p0.y + (GetLinearVelocity(*body).y * t));
 
-	p0 = body->GetPosition();
+	p0 = body->GetLocation();
 	world.Step(t);
 	EXPECT_EQ(GetLinearVelocity(*body).x, 0);
 	EXPECT_EQ(GetLinearVelocity(*body).y, a * (t * 2));
-	EXPECT_EQ(body->GetPosition().x, p0.x);
-	EXPECT_EQ(body->GetPosition().y, p0.y + (GetLinearVelocity(*body).y * t));
+	EXPECT_EQ(body->GetLocation().x, p0.x);
+	EXPECT_EQ(body->GetLocation().y, p0.y + (GetLinearVelocity(*body).y * t));
 	
-	p0 = body->GetPosition();
+	p0 = body->GetLocation();
 	world.Step(t);
 	EXPECT_EQ(GetLinearVelocity(*body).x, 0);
 	EXPECT_EQ(GetLinearVelocity(*body).y, a * (t * 3));
-	EXPECT_EQ(body->GetPosition().x, p0.x);
-	EXPECT_EQ(body->GetPosition().y, p0.y + (GetLinearVelocity(*body).y * t));
+	EXPECT_EQ(body->GetLocation().x, p0.x);
+	EXPECT_EQ(body->GetLocation().y, p0.y + (GetLinearVelocity(*body).y * t));
 }
 
 TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
@@ -292,8 +292,8 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
 	
 	const auto body = world.CreateBody(def);
 	ASSERT_NE(body, nullptr);
-	EXPECT_EQ(body->GetPosition().x, def.position.x);
-	EXPECT_EQ(body->GetPosition().y, def.position.y);
+	EXPECT_EQ(body->GetLocation().x, def.position.x);
+	EXPECT_EQ(body->GetLocation().y, def.position.y);
 	EXPECT_EQ(GetLinearVelocity(*body).x, float_t(0));
 	EXPECT_EQ(GetLinearVelocity(*body).y, float_t(0));
 	EXPECT_EQ(body->GetLinearAcceleration().x, 0);
@@ -301,7 +301,7 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
 	
 	const auto time_inc = float_t(0.01);
 	
-	auto pos = body->GetPosition();
+	auto pos = body->GetLocation();
 	auto vel = GetLinearVelocity(*body);
 	for (auto i = 0; i < 100; ++i)
 	{
@@ -309,10 +309,10 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
 		
 		EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
 		
-		EXPECT_EQ(body->GetPosition().x, def.position.x);
-		EXPECT_LT(body->GetPosition().y, pos.y);
-		EXPECT_EQ(body->GetPosition().y, pos.y + (vel.y + gravity.y * time_inc) * time_inc);
-		pos = body->GetPosition();
+		EXPECT_EQ(body->GetLocation().x, def.position.x);
+		EXPECT_LT(body->GetLocation().y, pos.y);
+		EXPECT_EQ(body->GetLocation().y, pos.y + (vel.y + gravity.y * time_inc) * time_inc);
+		pos = body->GetLocation();
 		
 		EXPECT_EQ(GetLinearVelocity(*body).x, float_t(0));
 		EXPECT_LT(GetLinearVelocity(*body).y, vel.y);
@@ -338,8 +338,8 @@ public:
 		contacting = true;
 		touching = contact.IsTouching();
 		
-		body_a[0] = contact.GetFixtureA()->GetBody()->GetPosition();
-		body_b[0] = contact.GetFixtureB()->GetBody()->GetPosition();
+		body_a[0] = contact.GetFixtureA()->GetBody()->GetLocation();
+		body_b[0] = contact.GetFixtureB()->GetBody()->GetLocation();
 	}
 	
 	void EndContact(Contact& contact) override
@@ -348,8 +348,8 @@ public:
 		contacting = false;
 		touching = contact.IsTouching();
 
-		body_a[1] = contact.GetFixtureA()->GetBody()->GetPosition();
-		body_b[1] = contact.GetFixtureB()->GetBody()->GetPosition();
+		body_a[1] = contact.GetFixtureA()->GetBody()->GetLocation();
+		body_b[1] = contact.GetFixtureB()->GetBody()->GetLocation();
 		
 		ender(contact);
 	}
@@ -435,8 +435,8 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 
 	const auto time_inc = float_t(.01);
 
-	auto pos_a = body_a->GetPosition();
-	auto pos_b = body_b->GetPosition();
+	auto pos_a = body_a->GetLocation();
+	auto pos_b = body_b->GetLocation();
 	ASSERT_LT(pos_a.x, pos_b.x);
 
 	auto steps = unsigned{0};
@@ -445,18 +445,18 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 		world.Step(time_inc, 0, 0);
 		++steps;
 		
-		EXPECT_EQ(body_a->GetPosition().x, pos_a.x + x * time_inc);
-		EXPECT_EQ(body_a->GetPosition().y, 0);
-		EXPECT_EQ(body_b->GetPosition().x, pos_b.x - x * time_inc);
-		EXPECT_EQ(body_b->GetPosition().y, 0);
+		EXPECT_EQ(body_a->GetLocation().x, pos_a.x + x * time_inc);
+		EXPECT_EQ(body_a->GetLocation().y, 0);
+		EXPECT_EQ(body_b->GetLocation().x, pos_b.x - x * time_inc);
+		EXPECT_EQ(body_b->GetLocation().y, 0);
 
 		EXPECT_EQ(GetLinearVelocity(*body_a).x, +x);
 		EXPECT_EQ(GetLinearVelocity(*body_a).y, 0);
 		EXPECT_EQ(GetLinearVelocity(*body_b).x, -x);
 		EXPECT_EQ(GetLinearVelocity(*body_b).y, 0);
 
-		pos_a = body_a->GetPosition();
-		pos_b = body_b->GetPosition();
+		pos_a = body_a->GetLocation();
+		pos_b = body_b->GetLocation();
 	}
 	
 	// d = v * t
@@ -489,25 +489,25 @@ TEST(World, PerfectlyOverlappedIdenticalCirclesStayPut)
 		const auto fixture = body1->CreateFixture(fixtureDef);
 		ASSERT_NE(fixture, nullptr);
 	}
-	ASSERT_EQ(body1->GetPosition().x, body_def.position.x);
-	ASSERT_EQ(body1->GetPosition().y, body_def.position.y);
+	ASSERT_EQ(body1->GetLocation().x, body_def.position.x);
+	ASSERT_EQ(body1->GetLocation().y, body_def.position.y);
 	
 	const auto body2 = world.CreateBody(body_def);
 	{
 		const auto fixture = body2->CreateFixture(fixtureDef);
 		ASSERT_NE(fixture, nullptr);
 	}
-	ASSERT_EQ(body2->GetPosition().x, body_def.position.x);
-	ASSERT_EQ(body2->GetPosition().y, body_def.position.y);
+	ASSERT_EQ(body2->GetLocation().x, body_def.position.x);
+	ASSERT_EQ(body2->GetLocation().y, body_def.position.y);
 	
 	const auto time_inc = float_t(.01);
 	for (auto i = 0; i < 100; ++i)
 	{
 		world.Step(time_inc);
-		EXPECT_EQ(body1->GetPosition().x, body_def.position.x);
-		EXPECT_EQ(body1->GetPosition().y, body_def.position.y);
-		EXPECT_EQ(body2->GetPosition().x, body_def.position.x);
-		EXPECT_EQ(body2->GetPosition().y, body_def.position.y);
+		EXPECT_EQ(body1->GetLocation().x, body_def.position.x);
+		EXPECT_EQ(body1->GetLocation().y, body_def.position.y);
+		EXPECT_EQ(body2->GetLocation().x, body_def.position.x);
+		EXPECT_EQ(body2->GetLocation().y, body_def.position.y);
 	}
 }
 
@@ -541,25 +541,25 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 		const auto fixture = body1->CreateFixture(fixtureDef1);
 		ASSERT_NE(fixture, nullptr);
 	}
-	ASSERT_EQ(body1->GetPosition().x, body_def.position.x);
-	ASSERT_EQ(body1->GetPosition().y, body_def.position.y);
+	ASSERT_EQ(body1->GetLocation().x, body_def.position.x);
+	ASSERT_EQ(body1->GetLocation().y, body_def.position.y);
 	
 	const auto body2 = world.CreateBody(body_def);
 	{
 		const auto fixture = body2->CreateFixture(fixtureDef2);
 		ASSERT_NE(fixture, nullptr);
 	}
-	ASSERT_EQ(body2->GetPosition().x, body_def.position.x);
-	ASSERT_EQ(body2->GetPosition().y, body_def.position.y);
+	ASSERT_EQ(body2->GetLocation().x, body_def.position.x);
+	ASSERT_EQ(body2->GetLocation().y, body_def.position.y);
 	
 	const auto time_inc = float_t(.01);
 	for (auto i = 0; i < 100; ++i)
 	{
 		world.Step(time_inc);
-		EXPECT_EQ(body1->GetPosition().x, body_def.position.x);
-		EXPECT_EQ(body1->GetPosition().y, body_def.position.y);
-		EXPECT_EQ(body2->GetPosition().x, body_def.position.x);
-		EXPECT_EQ(body2->GetPosition().y, body_def.position.y);
+		EXPECT_EQ(body1->GetLocation().x, body_def.position.x);
+		EXPECT_EQ(body1->GetLocation().y, body_def.position.y);
+		EXPECT_EQ(body2->GetLocation().x, body_def.position.x);
+		EXPECT_EQ(body2->GetLocation().y, body_def.position.y);
 	}
 }
 
@@ -587,8 +587,8 @@ TEST(World, PartiallyOverlappedCirclesSeparate)
 		const auto fixture = body1->CreateFixture(fixtureDef);
 		ASSERT_NE(fixture, nullptr);
 	}
-	ASSERT_EQ(body1->GetPosition().x, body_def.position.x);
-	ASSERT_EQ(body1->GetPosition().y, body_def.position.y);
+	ASSERT_EQ(body1->GetLocation().x, body_def.position.x);
+	ASSERT_EQ(body1->GetLocation().y, body_def.position.y);
 	
 	const auto body2pos = Vec2{float_t(radius/4), float_t(0)};
 	body_def.position = body2pos;
@@ -597,16 +597,16 @@ TEST(World, PartiallyOverlappedCirclesSeparate)
 		const auto fixture = body2->CreateFixture(fixtureDef);
 		ASSERT_NE(fixture, nullptr);
 	}
-	ASSERT_EQ(body2->GetPosition().x, body_def.position.x);
-	ASSERT_EQ(body2->GetPosition().y, body_def.position.y);
+	ASSERT_EQ(body2->GetLocation().x, body_def.position.x);
+	ASSERT_EQ(body2->GetLocation().y, body_def.position.y);
 	
 	auto position_diff = body2pos - body1pos;
 	auto distance = GetLength(position_diff);
 
 	const auto angle = GetAngle(position_diff);
 
-	auto lastpos1 = body1->GetPosition();
-	auto lastpos2 = body2->GetPosition();
+	auto lastpos1 = body1->GetLocation();
+	auto lastpos2 = body2->GetLocation();
 
 	const auto time_inc = float_t(.01);
 	// Solver won't separate more than -world.GetLinearSlop().
@@ -615,7 +615,7 @@ TEST(World, PartiallyOverlappedCirclesSeparate)
 	{
 		world.Step(time_inc);
 
-		const auto new_pos_diff = body2->GetPosition() - body1->GetPosition();
+		const auto new_pos_diff = body2->GetLocation() - body1->GetLocation();
 		const auto new_distance = GetLength(new_pos_diff);
 		
 		if (almost_equal(new_distance, full_separation) || new_distance > full_separation)
@@ -627,23 +627,23 @@ TEST(World, PartiallyOverlappedCirclesSeparate)
 		{
 			if (cos(angle.ToRadians()) != 0)
 			{
-				EXPECT_NE(body1->GetPosition().x, lastpos1.x);
-				EXPECT_NE(body2->GetPosition().x, lastpos2.x);
+				EXPECT_NE(body1->GetLocation().x, lastpos1.x);
+				EXPECT_NE(body2->GetLocation().x, lastpos2.x);
 			}
 			if (sin(angle.ToRadians()) != 0)
 			{
-				EXPECT_NE(body1->GetPosition().y, lastpos1.y);
-				EXPECT_NE(body2->GetPosition().y, lastpos2.y);
+				EXPECT_NE(body1->GetLocation().y, lastpos1.y);
+				EXPECT_NE(body2->GetLocation().y, lastpos2.y);
 			}
 			ASSERT_GE(new_distance, float_t(2));
 			break;
 		}
 
-		ASSERT_NE(body1->GetPosition(), lastpos1);
-		ASSERT_NE(body2->GetPosition(), lastpos2);
+		ASSERT_NE(body1->GetLocation(), lastpos1);
+		ASSERT_NE(body2->GetLocation(), lastpos2);
 		
-		lastpos1 = body1->GetPosition();
-		lastpos2 = body2->GetPosition();
+		lastpos1 = body1->GetLocation();
+		lastpos2 = body2->GetLocation();
 
 		ASSERT_NE(new_pos_diff, position_diff);
 		position_diff = new_pos_diff;
@@ -679,19 +679,19 @@ TEST(World, PerfectlyOverlappedIdenticalSquaresSeparate)
 		const auto fixture = body1->CreateFixture(fixtureDef);
 		ASSERT_NE(fixture, nullptr);
 	}
-	ASSERT_EQ(body1->GetPosition().x, body_def.position.x);
-	ASSERT_EQ(body1->GetPosition().y, body_def.position.y);
+	ASSERT_EQ(body1->GetLocation().x, body_def.position.x);
+	ASSERT_EQ(body1->GetLocation().y, body_def.position.y);
 	
 	const auto body2 = world.CreateBody(body_def);
 	{
 		const auto fixture = body2->CreateFixture(fixtureDef);
 		ASSERT_NE(fixture, nullptr);
 	}
-	ASSERT_EQ(body2->GetPosition().x, body_def.position.x);
-	ASSERT_EQ(body2->GetPosition().y, body_def.position.y);
+	ASSERT_EQ(body2->GetLocation().x, body_def.position.x);
+	ASSERT_EQ(body2->GetLocation().y, body_def.position.y);
 	
-	auto lastpos1 = body1->GetPosition();
-	auto lastpos2 = body2->GetPosition();
+	auto lastpos1 = body1->GetLocation();
+	auto lastpos2 = body2->GetLocation();
 
 	const auto time_inc = float_t(.01);
 	for (auto i = 0; i < 100; ++i)
@@ -699,19 +699,19 @@ TEST(World, PerfectlyOverlappedIdenticalSquaresSeparate)
 		world.Step(time_inc);
 		
 		// body1 moves left only
-		EXPECT_LT(body1->GetPosition().x, lastpos1.x);
-		EXPECT_EQ(body1->GetPosition().y, lastpos1.y);
+		EXPECT_LT(body1->GetLocation().x, lastpos1.x);
+		EXPECT_EQ(body1->GetLocation().y, lastpos1.y);
 
 		// body2 moves right only
-		EXPECT_GT(body2->GetPosition().x, lastpos2.x);
-		EXPECT_EQ(body2->GetPosition().y, lastpos2.y);
+		EXPECT_GT(body2->GetLocation().x, lastpos2.x);
+		EXPECT_EQ(body2->GetLocation().y, lastpos2.y);
 		
 		// body1 and body2 move away from each other equally.
-		EXPECT_EQ(body1->GetPosition().x, -body2->GetPosition().x);
-		EXPECT_EQ(body1->GetPosition().y, -body2->GetPosition().y);
+		EXPECT_EQ(body1->GetLocation().x, -body2->GetLocation().x);
+		EXPECT_EQ(body1->GetLocation().y, -body2->GetLocation().y);
 		
-		lastpos1 = body1->GetPosition();
-		lastpos2 = body2->GetPosition();
+		lastpos1 = body1->GetLocation();
+		lastpos2 = body2->GetLocation();
 	}
 }
 
@@ -746,8 +746,8 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 		const auto fixture = body1->CreateFixture(fixtureDef);
 		ASSERT_NE(fixture, nullptr);
 	}
-	ASSERT_EQ(body1->GetPosition().x, body1pos.x);
-	ASSERT_EQ(body1->GetPosition().y, body1pos.y);
+	ASSERT_EQ(body1->GetLocation().x, body1pos.x);
+	ASSERT_EQ(body1->GetLocation().y, body1pos.y);
 	
 	const auto body2pos = Vec2{-float_t(half_dim/2), float_t(0)}; // 0 causes additional y-axis separation
 	body_def.position = body2pos;
@@ -756,8 +756,8 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 		const auto fixture = body2->CreateFixture(fixtureDef);
 		ASSERT_NE(fixture, nullptr);
 	}
-	ASSERT_EQ(body2->GetPosition().x, body2pos.x);
-	ASSERT_EQ(body2->GetPosition().y, body2pos.y);
+	ASSERT_EQ(body2->GetLocation().x, body2pos.x);
+	ASSERT_EQ(body2->GetLocation().y, body2pos.y);
 
 	ASSERT_EQ(body1->GetAngle(), 0_deg);
 	ASSERT_EQ(body2->GetAngle(), 0_deg);
@@ -773,8 +773,8 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	auto angle = GetAngle(position_diff);
 	ASSERT_FLOAT_EQ(angle.ToRadians(), (0_deg).ToRadians());
 	
-	auto lastpos1 = body1->GetPosition();
-	auto lastpos2 = body2->GetPosition();
+	auto lastpos1 = body1->GetLocation();
+	auto lastpos2 = body2->GetLocation();
 	
 	const auto velocity_iters = 10u;
 	const auto position_iters = 10u;
@@ -822,7 +822,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 		last_angle_1 = body1->GetAngle();
 		last_angle_2 = body2->GetAngle();
 
-		const auto new_pos_diff = body1->GetPosition() - body2->GetPosition();
+		const auto new_pos_diff = body1->GetLocation() - body2->GetLocation();
 		const auto new_distance = GetLength(new_pos_diff);
 		
 		if (almost_equal(new_distance, full_separation) || new_distance > full_separation)
@@ -834,31 +834,31 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 		{
 			if (cos(angle.ToRadians()) != 0)
 			{
-				EXPECT_NE(body1->GetPosition().x, lastpos1.x);
-				EXPECT_NE(body2->GetPosition().x, lastpos2.x);
+				EXPECT_NE(body1->GetLocation().x, lastpos1.x);
+				EXPECT_NE(body2->GetLocation().x, lastpos2.x);
 			}
 			if (sin(angle.ToRadians()) != 0)
 			{
-				EXPECT_NE(body1->GetPosition().y, lastpos1.y);
-				EXPECT_NE(body2->GetPosition().y, lastpos2.y);
+				EXPECT_NE(body1->GetLocation().y, lastpos1.y);
+				EXPECT_NE(body2->GetLocation().y, lastpos2.y);
 			}
 			ASSERT_GE(new_distance, float_t(2));
 			break;
 		}
 		
-		ASSERT_NE(body1->GetPosition(), lastpos1);
-		ASSERT_NE(body2->GetPosition(), lastpos2);
+		ASSERT_NE(body1->GetLocation(), lastpos1);
+		ASSERT_NE(body2->GetLocation(), lastpos2);
 		
 		// Body 1 moves right only.
-		EXPECT_GT(body1->GetPosition().x, lastpos1.x);
-		EXPECT_FLOAT_EQ(body1->GetPosition().y, lastpos1.y);
+		EXPECT_GT(body1->GetLocation().x, lastpos1.x);
+		EXPECT_FLOAT_EQ(body1->GetLocation().y, lastpos1.y);
 
 		// Body 2 moves left only.
-		EXPECT_LT(body2->GetPosition().x, lastpos2.x);
-		EXPECT_FLOAT_EQ(body2->GetPosition().y, lastpos2.y);
+		EXPECT_LT(body2->GetLocation().x, lastpos2.x);
+		EXPECT_FLOAT_EQ(body2->GetLocation().y, lastpos2.y);
 
-		lastpos1 = body1->GetPosition();
-		lastpos2 = body2->GetPosition();
+		lastpos1 = body1->GetLocation();
+		lastpos2 = body2->GetLocation();
 		
 		ASSERT_NE(new_pos_diff, position_diff);
 		position_diff = new_pos_diff;
@@ -941,21 +941,21 @@ TEST(World, CollidingDynamicBodies)
 
 	EXPECT_TRUE(listener.touching);
 	EXPECT_FLOAT_EQ(time_contacting, time_collision);
-	EXPECT_EQ(body_a->GetPosition().y, 0);
-	EXPECT_EQ(body_b->GetPosition().y, 0);
+	EXPECT_EQ(body_a->GetLocation().y, 0);
+	EXPECT_EQ(body_b->GetLocation().y, 0);
 
 	const auto tolerance = x / 100;
 	
 	// x position for body1 depends on restitution but it should be around -1
-	EXPECT_GE(body_a->GetPosition().x, float_t(-1) - tolerance);
-	EXPECT_LT(body_a->GetPosition().x, float_t(-1) + tolerance);
+	EXPECT_GE(body_a->GetLocation().x, float_t(-1) - tolerance);
+	EXPECT_LT(body_a->GetLocation().x, float_t(-1) + tolerance);
 
 	// x position for body2 depends on restitution but it should be around +1
-	EXPECT_LE(body_b->GetPosition().x, float_t(+1) + tolerance);
-	EXPECT_GT(body_b->GetPosition().x, float_t(+1) - tolerance);
+	EXPECT_LE(body_b->GetLocation().x, float_t(+1) + tolerance);
+	EXPECT_GT(body_b->GetLocation().x, float_t(+1) - tolerance);
 	
 	// and their deltas from -1 and +1 should be about equal.
-	EXPECT_FLOAT_EQ(body_a->GetPosition().x + 1, 1 - body_b->GetPosition().x);
+	EXPECT_FLOAT_EQ(body_a->GetLocation().x + 1, 1 - body_b->GetLocation().x);
 
 	EXPECT_GE(listener.body_a[0].x, -1);
 	EXPECT_LE(listener.body_b[0].x, +1);
@@ -974,11 +974,11 @@ TEST(World, CollidingDynamicBodies)
 	EXPECT_FLOAT_EQ(elapsed_time, time_contacting + time_inc);
 	
 	// collision should be fully resolved now...
-	EXPECT_LT(body_a->GetPosition().x, float_t(-1));
-	EXPECT_GT(body_b->GetPosition().x, float_t(+1));
+	EXPECT_LT(body_a->GetLocation().x, float_t(-1));
+	EXPECT_GT(body_b->GetLocation().x, float_t(+1));
 	
 	// and their deltas from -1 and +1 should be about equal.
-	EXPECT_FLOAT_EQ(body_a->GetPosition().x + 1, 1 - body_b->GetPosition().x);
+	EXPECT_FLOAT_EQ(body_a->GetLocation().x + 1, 1 - body_b->GetLocation().x);
 
 	EXPECT_LT(listener.body_a[1].x, -1);
 	EXPECT_GT(listener.body_b[1].x, +1);
@@ -1076,7 +1076,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 
 	ASSERT_EQ(listener.begin_contacts, unsigned{0});
 
-	EXPECT_GT(ball_body->GetPosition().x, begin_x);
+	EXPECT_GT(ball_body->GetLocation().x, begin_x);
 
 	EXPECT_EQ(GetLinearVelocity(*ball_body).x, velocity.x);
 	EXPECT_EQ(GetLinearVelocity(*ball_body).y, velocity.y);
@@ -1099,8 +1099,8 @@ TEST(World, SpeedingBulletBallWontTunnel)
 			const auto last_contact_count = listener.begin_contacts;
 			ASSERT_USECS(world.Step(time_inc), 5000);
 
-			EXPECT_LT(ball_body->GetPosition().x, right_edge_x - (ball_radius/2));
-			EXPECT_GT(ball_body->GetPosition().x, left_edge_x + (ball_radius/2));
+			EXPECT_LT(ball_body->GetLocation().x, right_edge_x - (ball_radius/2));
+			EXPECT_GT(ball_body->GetLocation().x, left_edge_x + (ball_radius/2));
 
 			if (ball_body->GetVelocity().v.x >= max_velocity)
 			{
@@ -1136,8 +1136,8 @@ TEST(World, SpeedingBulletBallWontTunnel)
 			const auto last_contact_count = listener.begin_contacts;
 			ASSERT_USECS(world.Step(time_inc), 5000);
 			
-			EXPECT_LT(ball_body->GetPosition().x, right_edge_x - (ball_radius/2));
-			EXPECT_GT(ball_body->GetPosition().x, left_edge_x + (ball_radius/2));
+			EXPECT_LT(ball_body->GetLocation().x, right_edge_x - (ball_radius/2));
+			EXPECT_GT(ball_body->GetLocation().x, left_edge_x + (ball_radius/2));
 
 			if (ball_body->GetVelocity().v.x <= -max_velocity)
 			{
@@ -1237,8 +1237,8 @@ TEST(World, MouseJointWontCauseTunnelling)
 	
 	const auto ball_body = world.CreateBody(body_def);
 	ASSERT_NE(ball_body, nullptr);
-	ASSERT_EQ(ball_body->GetPosition().x, 0);
-	ASSERT_EQ(ball_body->GetPosition().y, 0);
+	ASSERT_EQ(ball_body->GetLocation().x, 0);
+	ASSERT_EQ(ball_body->GetLocation().y, 0);
 	
 	const auto ball_radius = float_t(half_box_width / 4);
 	const auto object_shape = PolygonShape{ball_radius, ball_radius};
@@ -1260,9 +1260,9 @@ TEST(World, MouseJointWontCauseTunnelling)
 		body_def.position = Vec2{x, y};
 		bodies[i] = world.CreateBody(body_def);
 		ASSERT_NE(bodies[i], nullptr);
-		ASSERT_EQ(bodies[i]->GetPosition().x, x);
-		ASSERT_EQ(bodies[i]->GetPosition().y, y);
-		last_opos[i] = bodies[i]->GetPosition();
+		ASSERT_EQ(bodies[i]->GetLocation().x, x);
+		ASSERT_EQ(bodies[i]->GetLocation().y, y);
+		last_opos[i] = bodies[i]->GetLocation();
 		{
 			const auto fixture = bodies[i]->CreateFixture(fixtureDef);
 			ASSERT_NE(fixture, nullptr);
@@ -1276,7 +1276,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 		MouseJointDef mjd;
 		mjd.bodyA = spare_body;
 		mjd.bodyB = ball_body;
-		const auto ball_body_pos = ball_body->GetPosition();
+		const auto ball_body_pos = ball_body->GetLocation();
 		mjd.target = Vec2{ball_body_pos.x - ball_radius / 2, ball_body_pos.y + ball_radius / 2};
 		mjd.maxForce = float_t(1000) * GetMass(*ball_body);
 		return static_cast<MouseJoint*>(world.CreateJoint(mjd));
@@ -1349,15 +1349,15 @@ TEST(World, MouseJointWontCauseTunnelling)
 				{
 					continue;
 				}
-				const auto bpos = body->GetPosition();
+				const auto bpos = body->GetLocation();
 				const auto lt = Vec2{right_edge_x, top_edge_y} - bpos;
 				const auto gt = bpos - Vec2{left_edge_x, btm_edge_y};
 				
-				EXPECT_LT(body->GetPosition().x, right_edge_x);
-				EXPECT_LT(body->GetPosition().y, top_edge_y);
+				EXPECT_LT(body->GetLocation().x, right_edge_x);
+				EXPECT_LT(body->GetLocation().y, top_edge_y);
 
-				EXPECT_GT(body->GetPosition().x, left_edge_x);
-				EXPECT_GT(body->GetPosition().y, btm_edge_y);
+				EXPECT_GT(body->GetLocation().x, left_edge_x);
+				EXPECT_GT(body->GetLocation().y, btm_edge_y);
 				
 				if (lt.x <= 0 || lt.y <= 0 || gt.x <= 0 || gt.y <= 0)
 				{
@@ -1372,7 +1372,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 				std::cout << " targ=(" << distance * std::cos(angle) << "," << distance * std::sin(angle) << ")";
 				std::cout << " maxv=" << max_velocity;
 				std::cout << " rang=(" << min_x << "," << min_y << ")-(" << max_x << "," << max_y << ")";
-				std::cout << " bpos=(" << ball_body->GetPosition().x << "," << ball_body->GetPosition().y << ")";
+				std::cout << " bpos=(" << ball_body->GetLocation().x << "," << ball_body->GetLocation().y << ")";
 				std::cout << std::endl;
 				for (auto i = decltype(impulse.GetCount()){0}; i < impulse.GetCount(); ++i)
 				{
@@ -1380,12 +1380,12 @@ TEST(World, MouseJointWontCauseTunnelling)
 				}
 				std::cout << std::endl;
 
-				std::cout << " bodyA=(" << body_a->GetPosition().x << "," << body_a->GetPosition().y << ")";
+				std::cout << " bodyA=(" << body_a->GetLocation().x << "," << body_a->GetLocation().y << ")";
 				if (body_a == ball_body) std::cout << " ball";
 				if (!body_a->IsSpeedable()) std::cout << " wall";
 				std::cout << " " << body_a;
 				std::cout << std::endl;
-				std::cout << " bodyB=(" << body_b->GetPosition().x << "," << body_b->GetPosition().y << ")";
+				std::cout << " bodyB=(" << body_b->GetLocation().x << "," << body_b->GetLocation().y << ")";
 				if (body_b == ball_body) std::cout << " ball";
 				if (!body_b->IsSpeedable()) std::cout << " wall";
 				std::cout << " " << body_b;
@@ -1408,19 +1408,19 @@ TEST(World, MouseJointWontCauseTunnelling)
 					continue;
 				}
 
-				if (body->GetPosition().x >= right_edge_x)
+				if (body->GetLocation().x >= right_edge_x)
 				{
 					escaped = true;
 				}
-				if (body->GetPosition().y >= top_edge_y)
+				if (body->GetLocation().y >= top_edge_y)
 				{
 					escaped = true;
 				}
-				if (body->GetPosition().x <= left_edge_x)
+				if (body->GetLocation().x <= left_edge_x)
 				{
 					escaped = true;
 				}
-				if (body->GetPosition().y <= btm_edge_y)
+				if (body->GetLocation().y <= btm_edge_y)
 				{
 					escaped = true;					
 				}
@@ -1437,8 +1437,8 @@ TEST(World, MouseJointWontCauseTunnelling)
 				std::cout << " rootSum=" << static_cast<unsigned>(contact.GetRootItersTotal());
 				std::cout << " rootMax=" << static_cast<unsigned>(contact.GetRootItersMax());
 				std::cout << " toiValid=" << contact.HasValidToi();
-				std::cout << " a[" << body_a << "]@(" << body_a->GetPosition().x << "," << body_a->GetPosition().y << ")";
-				std::cout << " b[" << body_b << "]@(" << body_b->GetPosition().x << "," << body_b->GetPosition().y << ")";
+				std::cout << " a[" << body_a << "]@(" << body_a->GetLocation().x << "," << body_a->GetLocation().y << ")";
+				std::cout << " b[" << body_b << "]@(" << body_b->GetLocation().x << "," << body_b->GetLocation().y << ")";
 				std::cout << std::endl;
 				//exit(1);
 			}
@@ -1449,7 +1449,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 
 	for (auto outer = unsigned{0}; outer < 1000; ++outer)
 	{
-		auto last_pos = ball_body->GetPosition();
+		auto last_pos = ball_body->GetLocation();
 		for (auto loops = unsigned{0};; ++loops)
 		{
 			mouse_joint->SetTarget(Vec2{distance * std::cos(angle), distance * std::sin(angle)});
@@ -1458,23 +1458,23 @@ TEST(World, MouseJointWontCauseTunnelling)
 
 			ASSERT_USECS(world.Step(time_inc, 8, 3), 100000);
 			
-			ASSERT_LT(ball_body->GetPosition().x, right_edge_x);
-			ASSERT_LT(ball_body->GetPosition().y, top_edge_y);
-			ASSERT_GT(ball_body->GetPosition().x, left_edge_x);
-			ASSERT_GT(ball_body->GetPosition().y, btm_edge_y);
+			ASSERT_LT(ball_body->GetLocation().x, right_edge_x);
+			ASSERT_LT(ball_body->GetLocation().y, top_edge_y);
+			ASSERT_GT(ball_body->GetLocation().x, left_edge_x);
+			ASSERT_GT(ball_body->GetLocation().y, btm_edge_y);
 			for (auto i = decltype(numBodies){0}; i < numBodies; ++i)
 			{
-				ASSERT_LT(bodies[i]->GetPosition().x, right_edge_x);
-				ASSERT_LT(bodies[i]->GetPosition().y, top_edge_y);			
-				ASSERT_GT(bodies[i]->GetPosition().x, left_edge_x);
-				ASSERT_GT(bodies[i]->GetPosition().y, btm_edge_y);
+				ASSERT_LT(bodies[i]->GetLocation().x, right_edge_x);
+				ASSERT_LT(bodies[i]->GetLocation().y, top_edge_y);			
+				ASSERT_GT(bodies[i]->GetLocation().x, left_edge_x);
+				ASSERT_GT(bodies[i]->GetLocation().y, btm_edge_y);
 			}
 
-			max_x = Max(ball_body->GetPosition().x, max_x);
-			min_x = Min(ball_body->GetPosition().x, min_x);
+			max_x = Max(ball_body->GetLocation().x, max_x);
+			min_x = Min(ball_body->GetLocation().x, min_x);
 
-			max_y = Max(ball_body->GetPosition().y, max_y);
-			min_y = Min(ball_body->GetPosition().y, min_y);
+			max_y = Max(ball_body->GetLocation().y, max_y);
+			min_y = Min(ball_body->GetLocation().y, min_y);
 
 			max_velocity = Max(GetLength(ball_body->GetVelocity().v), max_velocity);
 
@@ -1482,39 +1482,39 @@ TEST(World, MouseJointWontCauseTunnelling)
 			{
 				if (mouse_joint->GetTarget().x < 0)
 				{
-					if (ball_body->GetPosition().x >= last_pos.x)
+					if (ball_body->GetLocation().x >= last_pos.x)
 						break;					
 				}
 				else
 				{
-					if (ball_body->GetPosition().x <= last_pos.x)
+					if (ball_body->GetLocation().x <= last_pos.x)
 						break;
 				}
 				if (mouse_joint->GetTarget().y < 0)
 				{
-					if (ball_body->GetPosition().y >= last_pos.y)
+					if (ball_body->GetLocation().y >= last_pos.y)
 						break;
 				}
 				else
 				{
-					if (ball_body->GetPosition().y <= last_pos.y)
+					if (ball_body->GetLocation().y <= last_pos.y)
 						break;
 				}
 			}
-			last_pos = ball_body->GetPosition();
+			last_pos = ball_body->GetLocation();
 		}
 		anglular_speed *= anglular_accel;
 		distance_speed *= distance_accel;
 
-		ASSERT_NE(ball_body->GetPosition(), Vec2_zero);
+		ASSERT_NE(ball_body->GetLocation(), Vec2_zero);
 #if 0
 		if (outer > 100)
 		{
 			for (auto i = decltype(numBodies){0}; i < numBodies; ++i)
 			{
 				// a sanity check to ensure the other bodies are getting moved
-				EXPECT_NE(last_opos[i], bodies[i]->GetPosition());
-				last_opos[i] = bodies[i]->GetPosition();
+				EXPECT_NE(last_opos[i], bodies[i]->GetLocation());
+				last_opos[i] = bodies[i]->GetLocation();
 			}
 		}
 #endif
@@ -1554,8 +1554,8 @@ static void smaller_still_conserves_momentum(bool bullet, float_t multiplier, fl
 				const auto fB = contact.GetFixtureB();
 				const auto bA = fA->GetBody();
 				const auto bB = fB->GetBody();
-				preB1 = bA->GetPosition();
-				preB2 = bB->GetPosition();
+				preB1 = bA->GetLocation();
+				preB2 = bB->GetLocation();
 			},
 			[&](Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved)
 			{
@@ -1608,8 +1608,8 @@ static void smaller_still_conserves_momentum(bool bullet, float_t multiplier, fl
 		body_def.position = Vec2{+(scale * start_distance), 0};
 		body_def.linearVelocity = Vec2{-start_distance, 0};
 		const auto body_1 = world.CreateBody(body_def);
-		ASSERT_EQ(body_1->GetPosition().x, body_def.position.x);
-		ASSERT_EQ(body_1->GetPosition().y, body_def.position.y);
+		ASSERT_EQ(body_1->GetLocation().x, body_def.position.x);
+		ASSERT_EQ(body_1->GetLocation().y, body_def.position.y);
 		ASSERT_EQ(GetLinearVelocity(*body_1).x, body_def.linearVelocity.x);
 		ASSERT_EQ(GetLinearVelocity(*body_1).y, body_def.linearVelocity.y);
 		body_1->CreateFixture(fixture_def);
@@ -1617,8 +1617,8 @@ static void smaller_still_conserves_momentum(bool bullet, float_t multiplier, fl
 		body_def.position = Vec2{-(scale * start_distance), 0};
 		body_def.linearVelocity = Vec2{+start_distance, 0};
 		const auto body_2 = world.CreateBody(body_def);
-		ASSERT_EQ(body_2->GetPosition().x, body_def.position.x);
-		ASSERT_EQ(body_2->GetPosition().y, body_def.position.y);
+		ASSERT_EQ(body_2->GetLocation().x, body_def.position.x);
+		ASSERT_EQ(body_2->GetLocation().y, body_def.position.y);
 		ASSERT_EQ(GetLinearVelocity(*body_2).x, body_def.linearVelocity.x);
 		ASSERT_EQ(GetLinearVelocity(*body_2).y, body_def.linearVelocity.y);
 		body_2->CreateFixture(fixture_def);
@@ -1645,11 +1645,11 @@ static void smaller_still_conserves_momentum(bool bullet, float_t multiplier, fl
 				std::cout << std::endl;
 				std::cout << " pre1.x=" << preB1.x;
 				std::cout << " pre2.x=" << preB2.x;
-				std::cout << " pos1.x=" << body_1->GetPosition().x;
-				std::cout << " pos2.x=" << body_2->GetPosition().x;
+				std::cout << " pos1.x=" << body_1->GetLocation().x;
+				std::cout << " pos2.x=" << body_2->GetLocation().x;
 				std::cout << " preDel=" << (preB1.x - preB2.x);
-				std::cout << " posDel=" << (body_1->GetPosition().x - body_2->GetPosition().x);
-				std::cout << " travel=" << (body_1->GetPosition().x - preB1.x);
+				std::cout << " posDel=" << (body_1->GetLocation().x - body_2->GetLocation().x);
+				std::cout << " travel=" << (body_1->GetLocation().x - preB1.x);
 				std::cout << std::endl;
 				ASSERT_FALSE(failed);
 			}

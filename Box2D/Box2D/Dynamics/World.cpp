@@ -1115,7 +1115,7 @@ void World::Update(Body& body, const Position pos, const Velocity vel)
 {
 	body.m_velocity = vel; // sets what Body::GetVelocity returns
 	body.m_sweep.pos1 = pos; // sets what Body::GetWorldCenter returns
-	body.m_xf = GetTransformation(body.m_sweep.pos1, body.m_sweep.GetLocalCenter()); // sets what Body::GetPosition returns
+	body.m_xf = GetTransformation(body.m_sweep.pos1, body.m_sweep.GetLocalCenter()); // sets what Body::GetLocation returns
 }
 
 bool World::SolveTOI(const TimeStep& step, Island& island)

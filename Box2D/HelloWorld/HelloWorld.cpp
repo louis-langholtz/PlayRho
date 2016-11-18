@@ -90,7 +90,7 @@ int main(int argc, char** argv)
 		world.Step(timeStep, velocityIterations, positionIterations);
 
 		// Now print the position and angle of the body.
-		Vec2 position = body->GetPosition();
+		Vec2 position = body->GetLocation();
 		float_t angle = body->GetAngle();
 
 		printf("%4.2f %4.2f %4.2f\n", position.x, position.y, angle);

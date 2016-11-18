@@ -369,7 +369,7 @@ void Body::ResetMassData()
 	{
 		m_invMass = float_t{0};
 		m_invI = float_t{0};
-		m_sweep = Sweep{Position{GetPosition(), GetAngle()}};
+		m_sweep = Sweep{Position{GetLocation(), GetAngle()}};
 		UnsetMassDataDirty();
 		return;
 	}
@@ -612,7 +612,7 @@ void box2d::Dump(const Body& body, size_t bodyIndex)
 	log("{\n");
 	log("  BodyDef bd;\n");
 	log("  bd.type = BodyType(%d);\n", body.GetType());
-	log("  bd.position = Vec2(%.15lef, %.15lef);\n", body.GetPosition().x, body.GetPosition().y);
+	log("  bd.position = Vec2(%.15lef, %.15lef);\n", body.GetLocation().x, body.GetLocation().y);
 	log("  bd.angle = %.15lef;\n", body.GetAngle());
 	log("  bd.linearVelocity = Vec2(%.15lef, %.15lef);\n", body.GetVelocity().v.x, body.GetVelocity().v.y);
 	log("  bd.angularVelocity = %.15lef;\n", body.GetVelocity().w);

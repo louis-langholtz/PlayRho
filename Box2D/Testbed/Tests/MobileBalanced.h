@@ -60,7 +60,7 @@ public:
 		float density = 20.0f;
 		Vec2 h(0.0f, a);
 
-		Vec2 p = parent->GetPosition() + localAnchor - h;
+		Vec2 p = parent->GetLocation() + localAnchor - h;
 
 		BodyDef bodyDef;
 		bodyDef.type = BodyType::Dynamic;

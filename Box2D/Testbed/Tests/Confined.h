@@ -142,7 +142,7 @@ public:
 		{
 			if (b.GetType() == BodyType::Dynamic)
 			{
-				const auto position = b.GetPosition();
+				const auto position = b.GetLocation();
 				const auto angle_from_center = Atan2(position.y - wall_length/2, position.x);
 				const auto opposite_angle = angle_from_center + Pi;
 				const auto direction = opposite_angle;
@@ -209,7 +209,7 @@ public:
 				continue;
 			}
 
-			Vec2 p = b.GetPosition();
+			Vec2 p = b.GetLocation();
 			if (p.x <= -wall_length/2 || wall_length/2 <= p.x || p.y <= 0.0f || wall_length <= p.y)
 			{
 				p.x += 0.0f;

@@ -99,7 +99,7 @@ public:
 			const auto box = PolygonShape(10.0f, 0.25f);
 			body->CreateFixture(FixtureDef{&box, 1.0f});
 
-			RevoluteJointDef jd(ground, body, body->GetPosition());
+			RevoluteJointDef jd(ground, body, body->GetLocation());
 			jd.lowerAngle = -8.0_deg;
 			jd.upperAngle = 8.0_deg;
 			jd.enableLimit = true;
@@ -201,7 +201,7 @@ public:
 			WheelJointDef jd;
 			Vec2 axis(0.0f, 1.0f);
 
-			jd.Initialize(m_car, m_wheel1, m_wheel1->GetPosition(), axis);
+			jd.Initialize(m_car, m_wheel1, m_wheel1->GetLocation(), axis);
 			jd.motorSpeed = 0_rad;
 			jd.maxMotorTorque = 20.0f;
 			jd.enableMotor = true;
@@ -209,7 +209,7 @@ public:
 			jd.dampingRatio = m_zeta;
 			m_spring1 = (WheelJoint*)m_world->CreateJoint(jd);
 
-			jd.Initialize(m_car, m_wheel2, m_wheel2->GetPosition(), axis);
+			jd.Initialize(m_car, m_wheel2, m_wheel2->GetLocation(), axis);
 			jd.motorSpeed = 0_rad;
 			jd.maxMotorTorque = 10.0f;
 			jd.enableMotor = false;
@@ -259,7 +259,7 @@ public:
 		drawer.DrawString(5, m_textLine, "frequency = %g hz, damping ratio = %g", m_hz, m_zeta);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		drawer.SetTranslation(Vec2{m_car->GetPosition().x, drawer.GetTranslation().y});
+		drawer.SetTranslation(Vec2{m_car->GetLocation().x, drawer.GetTranslation().y});
 		Test::Step(settings, drawer);
 	}
 

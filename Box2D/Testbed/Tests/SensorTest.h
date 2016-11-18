@@ -155,7 +155,7 @@ public:
 			CircleShape* circle = (CircleShape*)m_sensor->GetShape();
 			Vec2 center = GetWorldPoint(*ground, circle->GetLocation());
 
-			Vec2 position = body->GetPosition();
+			Vec2 position = body->GetLocation();
 
 			Vec2 d = center - position;
 			if (almost_zero(GetLengthSquared(d)))

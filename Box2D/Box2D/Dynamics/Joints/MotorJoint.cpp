@@ -39,7 +39,7 @@ void MotorJointDef::Initialize(Body* bA, Body* bB)
 {
 	bodyA = bA;
 	bodyB = bB;
-	linearOffset = GetLocalPoint(*bodyA, bodyB->GetPosition());
+	linearOffset = GetLocalPoint(*bodyA, bodyB->GetLocation());
 	angularOffset = bodyB->GetAngle() - bodyA->GetAngle();
 }
 
@@ -206,12 +206,12 @@ bool MotorJoint::SolvePositionConstraints(Span<Position> positions, const Constr
 
 Vec2 MotorJoint::GetAnchorA() const
 {
-	return GetBodyA()->GetPosition();
+	return GetBodyA()->GetLocation();
 }
 
 Vec2 MotorJoint::GetAnchorB() const
 {
-	return GetBodyB()->GetPosition();
+	return GetBodyB()->GetLocation();
 }
 
 Vec2 MotorJoint::GetReactionForce(float_t inv_dt) const
