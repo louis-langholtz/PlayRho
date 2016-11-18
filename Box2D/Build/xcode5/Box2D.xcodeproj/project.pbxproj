@@ -21,8 +21,8 @@
 		4726DD1A1D30230A0012A882 /* SimplexCache.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD161D30230A0012A882 /* SimplexCache.hpp */; };
 		4726DD1F1D305E5D0012A882 /* ContactFeature.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */; };
 		4726DD201D305E5D0012A882 /* ContactFeature.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */; };
-		4726DD2A1D31B4090012A882 /* AABB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD281D31B4090012A882 /* AABB.cpp */; };
-		4726DD2B1D31B4090012A882 /* AABB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD281D31B4090012A882 /* AABB.cpp */; };
+		4726DD2A1D31B4090012A882 /* RayCastOutput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD281D31B4090012A882 /* RayCastOutput.cpp */; };
+		4726DD2B1D31B4090012A882 /* RayCastOutput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4726DD281D31B4090012A882 /* RayCastOutput.cpp */; };
 		4726DD2C1D31B4090012A882 /* AABB.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD291D31B4090012A882 /* AABB.hpp */; };
 		4726DD2D1D31B4090012A882 /* AABB.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD291D31B4090012A882 /* AABB.hpp */; };
 		4726DD381D387D630012A882 /* Manifold.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD351D387D630012A882 /* Manifold.hpp */; };
@@ -444,7 +444,7 @@
 		4726DD161D30230A0012A882 /* SimplexCache.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SimplexCache.hpp; sourceTree = "<group>"; };
 		4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactFeature.hpp; sourceTree = "<group>"; };
 		4726DD261D3180980012A882 /* NewtonsCradle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NewtonsCradle.hpp; sourceTree = "<group>"; };
-		4726DD281D31B4090012A882 /* AABB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AABB.cpp; sourceTree = "<group>"; };
+		4726DD281D31B4090012A882 /* RayCastOutput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RayCastOutput.cpp; sourceTree = "<group>"; };
 		4726DD291D31B4090012A882 /* AABB.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AABB.hpp; sourceTree = "<group>"; };
 		4726DD351D387D630012A882 /* Manifold.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Manifold.hpp; sourceTree = "<group>"; };
 		472E30181DBA925500DA821D /* VertexSet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VertexSet.hpp; sourceTree = "<group>"; };
@@ -905,9 +905,9 @@
 				4726DD351D387D630012A882 /* Manifold.hpp */,
 				47578BE31D886FED0078CD40 /* WorldManifold.cpp */,
 				47578BDE1D8869110078CD40 /* WorldManifold.hpp */,
-				4726DD281D31B4090012A882 /* AABB.cpp */,
 				4726DD291D31B4090012A882 /* AABB.hpp */,
 				4731DE261DDF84A900E7F931 /* RayCastInput.hpp */,
+				4726DD281D31B4090012A882 /* RayCastOutput.cpp */,
 				4731DE201DDF83A500E7F931 /* RayCastOutput.hpp */,
 				4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */,
 				80BB892E141C3E5900F1753A /* Distance.cpp */,
@@ -1626,7 +1626,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				47AA5D9B1C4C5FBE008AF2BA /* BroadPhase.cpp in Sources */,
-				4726DD2B1D31B4090012A882 /* AABB.cpp in Sources */,
+				4726DD2B1D31B4090012A882 /* RayCastOutput.cpp in Sources */,
 				47AA5D9F1C4C5FBE008AF2BA /* Collision.cpp in Sources */,
 				47AA5DA01C4C5FBE008AF2BA /* Distance.cpp in Sources */,
 				47AA5DA11C4C5FBE008AF2BA /* DynamicTree.cpp in Sources */,
@@ -1739,7 +1739,7 @@
 				477DB29C1D14BCA700846ED6 /* ConstContactEdgeIterator.cpp in Sources */,
 				80BB8993141C3E5900F1753A /* TimeOfImpact.cpp in Sources */,
 				80BB8995141C3E5900F1753A /* ChainShape.cpp in Sources */,
-				4726DD2A1D31B4090012A882 /* AABB.cpp in Sources */,
+				4726DD2A1D31B4090012A882 /* RayCastOutput.cpp in Sources */,
 				80BB8997141C3E5900F1753A /* CircleShape.cpp in Sources */,
 				80BB8999141C3E5900F1753A /* EdgeShape.cpp in Sources */,
 				4721349D1C8E4CB5009536F9 /* FixtureList.cpp in Sources */,
