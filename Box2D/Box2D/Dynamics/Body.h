@@ -26,7 +26,6 @@
 #include <Box2D/Dynamics/FixtureList.hpp>
 #include <Box2D/Dynamics/Contacts/ContactEdgeList.hpp>
 #include <Box2D/Dynamics/Joints/JointEdgeList.hpp>
-#include <memory>
 
 namespace box2d {
 
