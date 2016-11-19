@@ -294,3 +294,26 @@ bool Contact::UpdateTOI(const ToiConf& conf)
 	
 	return true;
 }
+
+bool box2d::HasSensor(const Contact& contact) noexcept
+{
+	return contact.GetFixtureA()->IsSensor() || contact.GetFixtureB()->IsSensor();
+}
+
+void box2d::SetAwake(Contact& c) noexcept
+{
+	SetAwake(*c.GetFixtureA());
+	SetAwake(*c.GetFixtureB());
+}
+
+/// Resets the friction mixture to the default value.
+void box2d::ResetFriction(Contact& contact)
+{
+	contact.SetFriction(MixFriction(contact.GetFixtureA()->GetFriction(), contact.GetFixtureB()->GetFriction()));
+}
+
+/// Reset the restitution to the default value.
+void box2d::ResetRestitution(Contact& contact) noexcept
+{
+	contact.SetRestitution(MixRestitution(contact.GetFixtureA()->GetRestitution(), contact.GetFixtureB()->GetRestitution()));
+}

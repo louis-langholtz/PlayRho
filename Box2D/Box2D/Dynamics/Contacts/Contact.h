@@ -23,7 +23,6 @@
 #include <Box2D/Common/Math.h>
 #include <Box2D/Collision/Manifold.hpp>
 #include <Box2D/Collision/Shapes/Shape.h>
-#include <Box2D/Dynamics/Fixture.h>
 
 #include <type_traits>
 
@@ -513,28 +512,15 @@ inline Contact::root_max_type Contact::GetRootItersMax() const noexcept
 	return m_max_root_iters;
 }
 
-inline bool HasSensor(const Contact& contact) noexcept
-{
-	return contact.GetFixtureA()->IsSensor() || contact.GetFixtureB()->IsSensor();
-}
+bool HasSensor(const Contact& contact) noexcept;
 
-inline void SetAwake(Contact& c) noexcept
-{
-	SetAwake(*c.GetFixtureA());
-	SetAwake(*c.GetFixtureB());
-}
+void SetAwake(Contact& c) noexcept;
 
 /// Resets the friction mixture to the default value.
-inline void ResetFriction(Contact& contact)
-{
-	contact.SetFriction(MixFriction(contact.GetFixtureA()->GetFriction(), contact.GetFixtureB()->GetFriction()));
-}
+void ResetFriction(Contact& contact);
 
 /// Reset the restitution to the default value.
-inline void ResetRestitution(Contact& contact) noexcept
-{
-	contact.SetRestitution(MixRestitution(contact.GetFixtureA()->GetRestitution(), contact.GetFixtureB()->GetRestitution()));
-}
+void ResetRestitution(Contact& contact) noexcept;
 
 } // namespace box2d
 
