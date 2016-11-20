@@ -466,7 +466,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 	EXPECT_EQ(steps, ((x * 2) / x) / time_inc);
 }
 
-TEST(World, PerfectlyOverlappedIdenticalCirclesStayPut)
+TEST(World, PerfectlyOverlappedSameCirclesStayPut)
 {
 	const auto radius = float_t(1);
 	const CircleShape shape{radius};
@@ -563,7 +563,7 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 	}
 }
 
-TEST(World, PartiallyOverlappedCirclesSeparate)
+TEST(World, PartiallyOverlappedSameCirclesSeparate)
 {
 	const auto radius = float_t(1);
 	
@@ -657,7 +657,7 @@ TEST(World, PartiallyOverlappedCirclesSeparate)
 	}
 }
 
-TEST(World, PerfectlyOverlappedIdenticalSquaresSeparate)
+TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
 {
 	const auto shape = PolygonShape(1, 1);
 	const Vec2 gravity{0, 0};
