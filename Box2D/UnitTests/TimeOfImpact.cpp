@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Collision/TimeOfImpact.h>
+#include <Box2D/Collision/TimeOfImpact.hpp>
 #include <Box2D/Collision/DistanceProxy.hpp>
 
 using namespace box2d;

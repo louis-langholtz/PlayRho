@@ -27,7 +27,7 @@
 #include <Box2D/Dynamics/Contacts/Contact.h>
 #include <Box2D/Collision/BroadPhase.hpp>
 #include <Box2D/Collision/WorldManifold.hpp>
-#include <Box2D/Collision/TimeOfImpact.h>
+#include <Box2D/Collision/TimeOfImpact.hpp>
 #include <Box2D/Collision/RayCastOutput.hpp>
 #include <Box2D/Common/Timer.h>
 #include <Box2D/Common/AllocatedArray.hpp>
