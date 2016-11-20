@@ -21,7 +21,7 @@
 #define B2_BROAD_PHASE_H
 
 #include <Box2D/Common/Settings.h>
-#include <Box2D/Collision/DynamicTree.h>
+#include <Box2D/Collision/DynamicTree.hpp>
 #include <algorithm> // for std::sort
 
 namespace box2d {

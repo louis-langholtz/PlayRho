@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Collision/DynamicTree.h>
+#include <Box2D/Collision/DynamicTree.hpp>
 
 using namespace box2d;
 
