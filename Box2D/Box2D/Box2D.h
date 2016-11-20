@@ -43,7 +43,7 @@ For discussion please visit http://box2d.org/forum
 #include <Box2D/Collision/Collision.hpp>
 #include <Box2D/Collision/Manifold.hpp>
 #include <Box2D/Collision/WorldManifold.hpp>
-#include <Box2D/Collision/Distance.h>
+#include <Box2D/Collision/Distance.hpp>
 #include <Box2D/Collision/DistanceProxy.hpp>
 #include <Box2D/Collision/SimplexCache.hpp>
 #include <Box2D/Collision/DynamicTree.h>

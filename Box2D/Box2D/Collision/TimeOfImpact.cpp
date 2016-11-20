@@ -17,7 +17,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Collision/Distance.h>
+#include <Box2D/Collision/Distance.hpp>
 #include <Box2D/Collision/DistanceProxy.hpp>
 #include <Box2D/Collision/SimplexCache.hpp>
 #include <Box2D/Collision/TimeOfImpact.h>
