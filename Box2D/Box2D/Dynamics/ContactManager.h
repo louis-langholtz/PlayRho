@@ -20,7 +20,7 @@
 #ifndef B2_CONTACT_MANAGER_H
 #define B2_CONTACT_MANAGER_H
 
-#include <Box2D/Collision/BroadPhase.h>
+#include <Box2D/Collision/BroadPhase.hpp>
 #include <Box2D/Dynamics/ContactList.hpp>
 
 namespace box2d {

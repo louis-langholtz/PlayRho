@@ -17,7 +17,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Collision/BroadPhase.h>
+#include <Box2D/Collision/BroadPhase.hpp>
 
 using namespace box2d;
 

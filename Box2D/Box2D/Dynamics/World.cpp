@@ -25,7 +25,7 @@
 #include <Box2D/Dynamics/Island.h>
 #include <Box2D/Dynamics/Joints/PulleyJoint.h>
 #include <Box2D/Dynamics/Contacts/Contact.h>
-#include <Box2D/Collision/BroadPhase.h>
+#include <Box2D/Collision/BroadPhase.hpp>
 #include <Box2D/Collision/WorldManifold.hpp>
 #include <Box2D/Collision/TimeOfImpact.h>
 #include <Box2D/Collision/RayCastOutput.hpp>
