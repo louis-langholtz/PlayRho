@@ -24,7 +24,7 @@
 
 namespace box2d
 {
-	constexpr inline float_t DegreesToRadians(const double value)
+	constexpr inline float_t CvtDegreesToRadians(const long double value)
 	{
 		return static_cast<float_t>(value * M_PI / 180);
 	}
@@ -92,12 +92,12 @@ namespace box2d
 	
 	constexpr Angle operator"" _deg(long double value) noexcept
 	{
-		return Angle::GetFromRadians(DegreesToRadians(static_cast<Angle::data_type>(value)));
+		return Angle::GetFromRadians(CvtDegreesToRadians(static_cast<Angle::data_type>(value)));
 	}
 	
 	constexpr Angle operator"" _deg(unsigned long long int value) noexcept
 	{
-		return Angle::GetFromRadians(DegreesToRadians(value));
+		return Angle::GetFromRadians(CvtDegreesToRadians(value));
 	}
 	
 	constexpr inline bool operator== (Angle lhs, Angle rhs)
