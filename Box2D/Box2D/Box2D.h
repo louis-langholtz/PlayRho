@@ -40,7 +40,7 @@ For discussion please visit http://box2d.org/forum
 #include <Box2D/Collision/Shapes/ChainShape.h>
 #include <Box2D/Collision/Shapes/PolygonShape.h>
 
-#include <Box2D/Collision/Collision.h>
+#include <Box2D/Collision/Collision.hpp>
 #include <Box2D/Collision/Manifold.hpp>
 #include <Box2D/Collision/WorldManifold.hpp>
 #include <Box2D/Collision/Distance.h>

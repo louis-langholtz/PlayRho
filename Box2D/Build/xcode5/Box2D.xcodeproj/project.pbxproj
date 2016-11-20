@@ -55,6 +55,8 @@
 		4731DE3C1DE1412F00E7F931 /* Time.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE381DE1412F00E7F931 /* Time.hpp */; };
 		4731DE411DE14A9D00E7F931 /* LinearSpeed.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE3E1DE14A9D00E7F931 /* LinearSpeed.hpp */; };
 		4731DE421DE14A9D00E7F931 /* LinearSpeed.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE3E1DE14A9D00E7F931 /* LinearSpeed.hpp */; };
+		4731DE441DE2570900E7F931 /* Collision.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE431DE2570900E7F931 /* Collision.hpp */; };
+		4731DE451DE2572E00E7F931 /* Collision.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE431DE2570900E7F931 /* Collision.hpp */; };
 		4734B2191DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21A1DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21C1DC1121900F15E29 /* ArrayList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4734B21B1DC1121900F15E29 /* ArrayList.cpp */; };
@@ -187,7 +189,6 @@
 		47AA5DC81C4C5FBE008AF2BA /* MotorJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80620F8D168B934600D46C8D /* MotorJoint.cpp */; };
 		47AA5DCB1C4C5FBE008AF2BA /* Box2D.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8923141C3E5900F1753A /* Box2D.h */; };
 		47AA5DCC1C4C5FBE008AF2BA /* BroadPhase.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8928141C3E5900F1753A /* BroadPhase.hpp */; };
-		47AA5DCD1C4C5FBE008AF2BA /* Collision.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB892D141C3E5900F1753A /* Collision.h */; };
 		47AA5DCE1C4C5FBE008AF2BA /* Distance.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB892F141C3E5900F1753A /* Distance.h */; };
 		47AA5DCF1C4C5FBE008AF2BA /* DynamicTree.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8931141C3E5900F1753A /* DynamicTree.h */; };
 		47AA5DD01C4C5FBE008AF2BA /* TimeOfImpact.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8933141C3E5900F1753A /* TimeOfImpact.h */; };
@@ -293,7 +294,6 @@
 		80BB8988141C3E5900F1753A /* BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8927141C3E5900F1753A /* BroadPhase.cpp */; };
 		80BB8989141C3E5900F1753A /* BroadPhase.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8928141C3E5900F1753A /* BroadPhase.hpp */; };
 		80BB898D141C3E5900F1753A /* Collision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB892C141C3E5900F1753A /* Collision.cpp */; };
-		80BB898E141C3E5900F1753A /* Collision.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB892D141C3E5900F1753A /* Collision.h */; };
 		80BB898F141C3E5900F1753A /* Distance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB892E141C3E5900F1753A /* Distance.cpp */; };
 		80BB8990141C3E5900F1753A /* Distance.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB892F141C3E5900F1753A /* Distance.h */; };
 		80BB8991141C3E5900F1753A /* DynamicTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8930141C3E5900F1753A /* DynamicTree.cpp */; };
@@ -475,6 +475,7 @@
 		4731DE321DE1405900E7F931 /* Length.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Length.hpp; sourceTree = "<group>"; };
 		4731DE381DE1412F00E7F931 /* Time.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Time.hpp; sourceTree = "<group>"; };
 		4731DE3E1DE14A9D00E7F931 /* LinearSpeed.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LinearSpeed.hpp; sourceTree = "<group>"; };
+		4731DE431DE2570900E7F931 /* Collision.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Collision.hpp; sourceTree = "<group>"; };
 		4734B2161DC00AFD00F15E29 /* ArrayList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ArrayList.hpp; sourceTree = "<group>"; };
 		4734B21B1DC1121900F15E29 /* ArrayList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArrayList.cpp; sourceTree = "<group>"; };
 		4734B21E1DC1340500F15E29 /* Span.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Span.hpp; sourceTree = "<group>"; };
@@ -621,7 +622,6 @@
 		80BB8927141C3E5900F1753A /* BroadPhase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BroadPhase.cpp; sourceTree = "<group>"; };
 		80BB8928141C3E5900F1753A /* BroadPhase.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BroadPhase.hpp; sourceTree = "<group>"; };
 		80BB892C141C3E5900F1753A /* Collision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; path = Collision.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		80BB892D141C3E5900F1753A /* Collision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 2; path = Collision.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		80BB892E141C3E5900F1753A /* Distance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; path = Distance.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		80BB892F141C3E5900F1753A /* Distance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Distance.h; sourceTree = "<group>"; };
 		80BB8930141C3E5900F1753A /* DynamicTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicTree.cpp; sourceTree = "<group>"; };
@@ -915,8 +915,8 @@
 				80BB8928141C3E5900F1753A /* BroadPhase.hpp */,
 				4736DE8A1DB806AE003993CB /* CollideShapes.cpp */,
 				4736DE8B1DB806AE003993CB /* CollideShapes.hpp */,
+				4731DE431DE2570900E7F931 /* Collision.hpp */,
 				80BB892C141C3E5900F1753A /* Collision.cpp */,
-				80BB892D141C3E5900F1753A /* Collision.h */,
 				4726DD351D387D630012A882 /* Manifold.hpp */,
 				47578BE31D886FED0078CD40 /* WorldManifold.cpp */,
 				47578BDE1D8869110078CD40 /* WorldManifold.hpp */,
@@ -1257,9 +1257,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4731DE451DE2572E00E7F931 /* Collision.hpp in Headers */,
 				47AA5DCB1C4C5FBE008AF2BA /* Box2D.h in Headers */,
 				47AA5DCC1C4C5FBE008AF2BA /* BroadPhase.hpp in Headers */,
-				47AA5DCD1C4C5FBE008AF2BA /* Collision.h in Headers */,
 				47AA5DCE1C4C5FBE008AF2BA /* Distance.h in Headers */,
 				47AA5DCF1C4C5FBE008AF2BA /* DynamicTree.h in Headers */,
 				47AA5DD01C4C5FBE008AF2BA /* TimeOfImpact.h in Headers */,
@@ -1354,7 +1354,6 @@
 				80BB8987141C3E5900F1753A /* Box2D.h in Headers */,
 				80BB8989141C3E5900F1753A /* BroadPhase.hpp in Headers */,
 				477DB29D1D14BCA700846ED6 /* ConstContactEdgeIterator.hpp in Headers */,
-				80BB898E141C3E5900F1753A /* Collision.h in Headers */,
 				80BB8990141C3E5900F1753A /* Distance.h in Headers */,
 				47CB34401D6F3A8500828126 /* MassData.hpp in Headers */,
 				4731DE231DDF83A600E7F931 /* RayCastOutput.hpp in Headers */,
@@ -1430,6 +1429,7 @@
 				47AA639F1D0F7FDA00726CA2 /* ConstFixtureIterator.hpp in Headers */,
 				47A983371D0F4EFF00AA7D1A /* JointList.hpp in Headers */,
 				80BB89D7141C3E5900F1753A /* PulleyJoint.h in Headers */,
+				4731DE441DE2570900E7F931 /* Collision.hpp in Headers */,
 				80BB89D9141C3E5900F1753A /* RevoluteJoint.h in Headers */,
 				4731DE411DE14A9D00E7F931 /* LinearSpeed.hpp in Headers */,
 				80BB89DB141C3E5900F1753A /* RopeJoint.h in Headers */,

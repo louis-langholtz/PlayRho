@@ -18,7 +18,7 @@
  */
 
 #include <Box2D/Dynamics/Contacts/ContactSolver.h>
-#include <Box2D/Collision/Collision.h>
+#include <Box2D/Collision/Collision.hpp>
 #include <Box2D/Collision/WorldManifold.hpp>
 #include <Box2D/Dynamics/Contacts/PositionSolverManifold.hpp>
 #include <Box2D/Dynamics/Contacts/VelocityConstraint.hpp>
