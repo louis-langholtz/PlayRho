@@ -46,8 +46,6 @@ For discussion please visit http://box2d.org/forum
 #include <Box2D/Collision/Distance.hpp>
 #include <Box2D/Collision/DistanceProxy.hpp>
 #include <Box2D/Collision/SimplexCache.hpp>
-#include <Box2D/Collision/DynamicTree.hpp>
-#include <Box2D/Collision/TimeOfImpact.h>
 
 #include <Box2D/Dynamics/Body.h>
 #include <Box2D/Dynamics/Fixture.h>

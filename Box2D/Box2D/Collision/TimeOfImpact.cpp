@@ -400,17 +400,4 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 	return output;
 }
 
-bool TestOverlap(const Shape& shapeA, child_count_t indexA, const Transformation& xfA,
-				 const Shape& shapeB, child_count_t indexB, const Transformation& xfB)
-{
-	const auto proxyA = GetDistanceProxy(shapeA, indexA);
-	const auto proxyB = GetDistanceProxy(shapeB, indexB);
-	
-	const auto distanceInfo = Distance(proxyA, xfA, proxyB, xfB);
-	const auto distanceSquared = GetLengthSquared(distanceInfo.witnessPoints.a - distanceInfo.witnessPoints.b);
-	const auto totalRadiusSquared = Square(proxyA.GetRadius() + proxyB.GetRadius());
-	const auto separation_amount = distanceSquared - totalRadiusSquared;
-	return (separation_amount < 0) || almost_zero(separation_amount);
-}
-
 } // namespace box2d

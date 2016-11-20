@@ -22,6 +22,8 @@
 #include <Box2D/Collision/Shapes/ChainShape.h>
 #include <Box2D/Collision/Shapes/CircleShape.h>
 #include <Box2D/Collision/Shapes/PolygonShape.h>
+#include <Box2D/Collision/DistanceProxy.hpp>
+#include <Box2D/Collision/Distance.hpp>
 #include <Box2D/Dynamics/Fixture.h>
 
 namespace box2d {
@@ -50,6 +52,19 @@ namespace box2d {
 			case Shape::e_polygon: return TestPoint(static_cast<const PolygonShape&>(shape), xf, p);
 			case Shape::e_typeCount: return false;
 		}
+	}
+
+	bool TestOverlap(const Shape& shapeA, child_count_t indexA, const Transformation& xfA,
+					 const Shape& shapeB, child_count_t indexB, const Transformation& xfB)
+	{
+		const auto proxyA = GetDistanceProxy(shapeA, indexA);
+		const auto proxyB = GetDistanceProxy(shapeB, indexB);
+		
+		const auto distanceInfo = Distance(proxyA, xfA, proxyB, xfB);
+		const auto distanceSquared = GetLengthSquared(distanceInfo.witnessPoints.a - distanceInfo.witnessPoints.b);
+		const auto totalRadiusSquared = Square(proxyA.GetRadius() + proxyB.GetRadius());
+		const auto separation_amount = distanceSquared - totalRadiusSquared;
+		return (separation_amount < 0) || almost_zero(separation_amount);
 	}
 
 	Shape::Type GetType(const Fixture& fixture) noexcept

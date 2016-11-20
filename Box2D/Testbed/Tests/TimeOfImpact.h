@@ -20,6 +20,8 @@
 #ifndef TIME_OF_IMPACT_H
 #define TIME_OF_IMPACT_H
 
+#include <Box2D/Collision/TimeOfImpact.h>
+
 namespace box2d {
 
 class TimeOfImpactTest : public Test
