@@ -126,6 +126,9 @@ public:
 			m_joint1->EnableMotor(!m_joint1->IsMotorEnabled());
 			m_joint1->GetBodyB()->SetAwake();
 			break;
+		
+		default:
+			break;				
 		}
 	}
 

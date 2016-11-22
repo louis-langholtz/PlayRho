@@ -80,6 +80,9 @@ public:
 				m_fixture2->SetSensor(m_sensor);
 			}
 			break;
+
+		default:
+			break;
 		}
 	}
 

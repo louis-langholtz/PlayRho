@@ -203,6 +203,9 @@ public:
 		case Key_M:
 			m_motorJoint->EnableMotor(!m_motorJoint->IsMotorEnabled());
 			break;
+
+		default:
+			break;				
 		}
 	}
 
