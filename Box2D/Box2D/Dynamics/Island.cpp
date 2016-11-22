@@ -25,7 +25,7 @@
 #include <Box2D/Dynamics/Contacts/Contact.h>
 
 #include <Box2D/Dynamics/Joints/Joint.h>
-#include <Box2D/Common/StackAllocator.h>
+#include <Box2D/Common/StackAllocator.hpp>
 
 /*
 Position Correction Notes

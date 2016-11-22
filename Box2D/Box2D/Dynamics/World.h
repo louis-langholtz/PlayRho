@@ -22,7 +22,7 @@
 
 #include <Box2D/Common/Math.h>
 #include <Box2D/Common/BlockAllocator.hpp>
-#include <Box2D/Common/StackAllocator.h>
+#include <Box2D/Common/StackAllocator.hpp>
 #include <Box2D/Dynamics/ContactManager.h>
 #include <Box2D/Dynamics/WorldCallbacks.h>
 #include <Box2D/Dynamics/BodyList.hpp>

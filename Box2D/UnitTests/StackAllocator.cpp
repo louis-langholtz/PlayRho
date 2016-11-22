@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Common/StackAllocator.h>
+#include <Box2D/Common/StackAllocator.hpp>
 #include <chrono>
 
 using namespace box2d;
