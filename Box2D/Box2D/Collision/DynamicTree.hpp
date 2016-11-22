@@ -22,7 +22,7 @@
 
 #include <Box2D/Collision/AABB.hpp>
 #include <Box2D/Collision/RayCastInput.hpp>
-#include <Box2D/Common/GrowableStack.h>
+#include <Box2D/Common/GrowableStack.hpp>
 
 namespace box2d {
 
