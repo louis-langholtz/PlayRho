@@ -578,7 +578,7 @@
 		47FFD0FC1DAC6235000D6D0E /* PositionConstraint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PositionConstraint.cpp; sourceTree = "<group>"; };
 		80154ACD141DED6B00C8251F /* Tumbler.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Tumbler.hpp; sourceTree = "<group>"; };
 		805900AA184EEE0F00C8ECA3 /* DebugDraw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DebugDraw.cpp; sourceTree = "<group>"; };
-		805900AB184EEE0F00C8ECA3 /* DebugDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugDraw.h; sourceTree = "<group>"; };
+		805900AB184EEE0F00C8ECA3 /* DebugDraw.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DebugDraw.hpp; sourceTree = "<group>"; };
 		805900AC184EEE0F00C8ECA3 /* imgui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui.cpp; sourceTree = "<group>"; };
 		805900AD184EEE0F00C8ECA3 /* imgui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui.h; sourceTree = "<group>"; };
 		805900AE184EEE0F00C8ECA3 /* RenderGL3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderGL3.cpp; sourceTree = "<group>"; };
@@ -1144,7 +1144,7 @@
 			isa = PBXGroup;
 			children = (
 				805900AA184EEE0F00C8ECA3 /* DebugDraw.cpp */,
-				805900AB184EEE0F00C8ECA3 /* DebugDraw.h */,
+				805900AB184EEE0F00C8ECA3 /* DebugDraw.hpp */,
 				473971AC1DA45C4C00F7137F /* Drawer.cpp */,
 				473971AD1DA45C4C00F7137F /* Drawer.hpp */,
 				805900AC184EEE0F00C8ECA3 /* imgui.cpp */,

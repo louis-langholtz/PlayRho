@@ -17,7 +17,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "DebugDraw.h"
+#include "DebugDraw.hpp"
 
 #if defined(__APPLE_CC__)
 #include <OpenGL/gl3.h>
