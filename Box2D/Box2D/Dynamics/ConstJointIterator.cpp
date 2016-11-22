@@ -7,7 +7,7 @@
 //
 
 #include <Box2D/Dynamics/ConstJointIterator.hpp>
-#include <Box2D/Dynamics/Joints/Joint.h>
+#include <Box2D/Dynamics/Joints/Joint.hpp>
 
 using namespace box2d;
 

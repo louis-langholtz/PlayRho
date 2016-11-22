@@ -219,19 +219,19 @@
 		47AA5DEA1C4C5FBE008AF2BA /* EdgeAndPolygonContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8968141C3E5900F1753A /* EdgeAndPolygonContact.hpp */; };
 		47AA5DEB1C4C5FBE008AF2BA /* PolygonAndCircleContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896A141C3E5900F1753A /* PolygonAndCircleContact.hpp */; };
 		47AA5DEC1C4C5FBE008AF2BA /* PolygonContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896C141C3E5900F1753A /* PolygonContact.hpp */; };
-		47AA5DED1C4C5FBE008AF2BA /* DistanceJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896F141C3E5900F1753A /* DistanceJoint.h */; };
-		47AA5DEE1C4C5FBE008AF2BA /* FrictionJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8971141C3E5900F1753A /* FrictionJoint.h */; };
-		47AA5DEF1C4C5FBE008AF2BA /* GearJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8973141C3E5900F1753A /* GearJoint.h */; };
-		47AA5DF01C4C5FBE008AF2BA /* Joint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8975141C3E5900F1753A /* Joint.h */; };
-		47AA5DF11C4C5FBE008AF2BA /* MouseJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8977141C3E5900F1753A /* MouseJoint.h */; };
-		47AA5DF21C4C5FBE008AF2BA /* PrismaticJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8979141C3E5900F1753A /* PrismaticJoint.h */; };
-		47AA5DF31C4C5FBE008AF2BA /* PulleyJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB897B141C3E5900F1753A /* PulleyJoint.h */; };
-		47AA5DF41C4C5FBE008AF2BA /* RevoluteJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB897D141C3E5900F1753A /* RevoluteJoint.h */; };
-		47AA5DF51C4C5FBE008AF2BA /* RopeJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB897F141C3E5900F1753A /* RopeJoint.h */; };
-		47AA5DF61C4C5FBE008AF2BA /* WeldJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8981141C3E5900F1753A /* WeldJoint.h */; };
-		47AA5DF71C4C5FBE008AF2BA /* WheelJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8983141C3E5900F1753A /* WheelJoint.h */; };
+		47AA5DED1C4C5FBE008AF2BA /* DistanceJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896F141C3E5900F1753A /* DistanceJoint.hpp */; };
+		47AA5DEE1C4C5FBE008AF2BA /* FrictionJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8971141C3E5900F1753A /* FrictionJoint.hpp */; };
+		47AA5DEF1C4C5FBE008AF2BA /* GearJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8973141C3E5900F1753A /* GearJoint.hpp */; };
+		47AA5DF01C4C5FBE008AF2BA /* Joint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8975141C3E5900F1753A /* Joint.hpp */; };
+		47AA5DF11C4C5FBE008AF2BA /* MouseJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8977141C3E5900F1753A /* MouseJoint.hpp */; };
+		47AA5DF21C4C5FBE008AF2BA /* PrismaticJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8979141C3E5900F1753A /* PrismaticJoint.hpp */; };
+		47AA5DF31C4C5FBE008AF2BA /* PulleyJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB897B141C3E5900F1753A /* PulleyJoint.hpp */; };
+		47AA5DF41C4C5FBE008AF2BA /* RevoluteJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB897D141C3E5900F1753A /* RevoluteJoint.hpp */; };
+		47AA5DF51C4C5FBE008AF2BA /* RopeJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB897F141C3E5900F1753A /* RopeJoint.hpp */; };
+		47AA5DF61C4C5FBE008AF2BA /* WeldJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8981141C3E5900F1753A /* WeldJoint.hpp */; };
+		47AA5DF71C4C5FBE008AF2BA /* WheelJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8983141C3E5900F1753A /* WheelJoint.hpp */; };
 		47AA5DF81C4C5FBE008AF2BA /* Rope.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8986141C3E5900F1753A /* Rope.h */; };
-		47AA5DF91C4C5FBE008AF2BA /* MotorJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80620F8E168B934600D46C8D /* MotorJoint.h */; };
+		47AA5DF91C4C5FBE008AF2BA /* MotorJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80620F8E168B934600D46C8D /* MotorJoint.hpp */; };
 		47AA639A1D0F7FDA00726CA2 /* ConstBodyIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AA63921D0F7FDA00726CA2 /* ConstBodyIterator.cpp */; };
 		47AA639B1D0F7FDA00726CA2 /* ConstFixtureIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AA63931D0F7FDA00726CA2 /* ConstFixtureIterator.cpp */; };
 		47AA639C1D0F7FDA00726CA2 /* FixtureIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AA63941D0F7FDA00726CA2 /* FixtureIterator.cpp */; };
@@ -262,7 +262,7 @@
 		805900B2184EEE0F00C8ECA3 /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 805900AC184EEE0F00C8ECA3 /* imgui.cpp */; };
 		805900B3184EEE0F00C8ECA3 /* RenderGL3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 805900AE184EEE0F00C8ECA3 /* RenderGL3.cpp */; };
 		80620F8F168B934600D46C8D /* MotorJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80620F8D168B934600D46C8D /* MotorJoint.cpp */; };
-		80620F90168B934600D46C8D /* MotorJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80620F8E168B934600D46C8D /* MotorJoint.h */; };
+		80620F90168B934600D46C8D /* MotorJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80620F8E168B934600D46C8D /* MotorJoint.hpp */; };
 		8069C920184EFC560038E156 /* cocoa_platform.h in Headers */ = {isa = PBXBuildFile; fileRef = 8069C909184EFC560038E156 /* cocoa_platform.h */; };
 		8069C921184EFC560038E156 /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 8069C90A184EFC560038E156 /* config.h */; };
 		8069C922184EFC560038E156 /* glext.h in Headers */ = {isa = PBXBuildFile; fileRef = 8069C90B184EFC560038E156 /* glext.h */; };
@@ -352,27 +352,27 @@
 		80BB89C8141C3E5900F1753A /* PolygonContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB896B141C3E5900F1753A /* PolygonContact.cpp */; };
 		80BB89C9141C3E5900F1753A /* PolygonContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896C141C3E5900F1753A /* PolygonContact.hpp */; };
 		80BB89CA141C3E5900F1753A /* DistanceJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB896E141C3E5900F1753A /* DistanceJoint.cpp */; };
-		80BB89CB141C3E5900F1753A /* DistanceJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896F141C3E5900F1753A /* DistanceJoint.h */; };
+		80BB89CB141C3E5900F1753A /* DistanceJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896F141C3E5900F1753A /* DistanceJoint.hpp */; };
 		80BB89CC141C3E5900F1753A /* FrictionJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8970141C3E5900F1753A /* FrictionJoint.cpp */; };
-		80BB89CD141C3E5900F1753A /* FrictionJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8971141C3E5900F1753A /* FrictionJoint.h */; };
+		80BB89CD141C3E5900F1753A /* FrictionJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8971141C3E5900F1753A /* FrictionJoint.hpp */; };
 		80BB89CE141C3E5900F1753A /* GearJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8972141C3E5900F1753A /* GearJoint.cpp */; };
-		80BB89CF141C3E5900F1753A /* GearJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8973141C3E5900F1753A /* GearJoint.h */; };
+		80BB89CF141C3E5900F1753A /* GearJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8973141C3E5900F1753A /* GearJoint.hpp */; };
 		80BB89D0141C3E5900F1753A /* Joint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8974141C3E5900F1753A /* Joint.cpp */; };
-		80BB89D1141C3E5900F1753A /* Joint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8975141C3E5900F1753A /* Joint.h */; };
+		80BB89D1141C3E5900F1753A /* Joint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8975141C3E5900F1753A /* Joint.hpp */; };
 		80BB89D2141C3E5900F1753A /* MouseJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8976141C3E5900F1753A /* MouseJoint.cpp */; };
-		80BB89D3141C3E5900F1753A /* MouseJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8977141C3E5900F1753A /* MouseJoint.h */; };
+		80BB89D3141C3E5900F1753A /* MouseJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8977141C3E5900F1753A /* MouseJoint.hpp */; };
 		80BB89D4141C3E5900F1753A /* PrismaticJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8978141C3E5900F1753A /* PrismaticJoint.cpp */; };
-		80BB89D5141C3E5900F1753A /* PrismaticJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8979141C3E5900F1753A /* PrismaticJoint.h */; };
+		80BB89D5141C3E5900F1753A /* PrismaticJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8979141C3E5900F1753A /* PrismaticJoint.hpp */; };
 		80BB89D6141C3E5900F1753A /* PulleyJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB897A141C3E5900F1753A /* PulleyJoint.cpp */; };
-		80BB89D7141C3E5900F1753A /* PulleyJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB897B141C3E5900F1753A /* PulleyJoint.h */; };
+		80BB89D7141C3E5900F1753A /* PulleyJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB897B141C3E5900F1753A /* PulleyJoint.hpp */; };
 		80BB89D8141C3E5900F1753A /* RevoluteJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB897C141C3E5900F1753A /* RevoluteJoint.cpp */; };
-		80BB89D9141C3E5900F1753A /* RevoluteJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB897D141C3E5900F1753A /* RevoluteJoint.h */; };
+		80BB89D9141C3E5900F1753A /* RevoluteJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB897D141C3E5900F1753A /* RevoluteJoint.hpp */; };
 		80BB89DA141C3E5900F1753A /* RopeJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB897E141C3E5900F1753A /* RopeJoint.cpp */; };
-		80BB89DB141C3E5900F1753A /* RopeJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB897F141C3E5900F1753A /* RopeJoint.h */; };
+		80BB89DB141C3E5900F1753A /* RopeJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB897F141C3E5900F1753A /* RopeJoint.hpp */; };
 		80BB89DC141C3E5900F1753A /* WeldJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8980141C3E5900F1753A /* WeldJoint.cpp */; };
-		80BB89DD141C3E5900F1753A /* WeldJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8981141C3E5900F1753A /* WeldJoint.h */; };
+		80BB89DD141C3E5900F1753A /* WeldJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8981141C3E5900F1753A /* WeldJoint.hpp */; };
 		80BB89DE141C3E5900F1753A /* WheelJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8982141C3E5900F1753A /* WheelJoint.cpp */; };
-		80BB89DF141C3E5900F1753A /* WheelJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8983141C3E5900F1753A /* WheelJoint.h */; };
+		80BB89DF141C3E5900F1753A /* WheelJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8983141C3E5900F1753A /* WheelJoint.hpp */; };
 		80BB89E0141C3E5900F1753A /* Rope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8985141C3E5900F1753A /* Rope.cpp */; };
 		80BB89E1141C3E5900F1753A /* Rope.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8986141C3E5900F1753A /* Rope.h */; };
 		80BB8A34141C3E7B00F1753A /* HelloWorld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8A33141C3E7B00F1753A /* HelloWorld.cpp */; };
@@ -586,7 +586,7 @@
 		805900B0184EEE0F00C8ECA3 /* stb_truetype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_truetype.h; sourceTree = "<group>"; };
 		805900B8184EEF2E00C8ECA3 /* libGLFW.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGLFW.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		80620F8D168B934600D46C8D /* MotorJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MotorJoint.cpp; sourceTree = "<group>"; };
-		80620F8E168B934600D46C8D /* MotorJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MotorJoint.h; sourceTree = "<group>"; };
+		80620F8E168B934600D46C8D /* MotorJoint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MotorJoint.hpp; sourceTree = "<group>"; };
 		8066C2311890307100985759 /* BasicSliderCrank.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BasicSliderCrank.h; sourceTree = "<group>"; };
 		8069C909184EFC560038E156 /* cocoa_platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cocoa_platform.h; path = ../../glfw/cocoa_platform.h; sourceTree = "<group>"; };
 		8069C90A184EFC560038E156 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = config.h; path = ../../glfw/config.h; sourceTree = "<group>"; };
@@ -680,27 +680,27 @@
 		80BB896B141C3E5900F1753A /* PolygonContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolygonContact.cpp; sourceTree = "<group>"; };
 		80BB896C141C3E5900F1753A /* PolygonContact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PolygonContact.hpp; sourceTree = "<group>"; };
 		80BB896E141C3E5900F1753A /* DistanceJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceJoint.cpp; sourceTree = "<group>"; };
-		80BB896F141C3E5900F1753A /* DistanceJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DistanceJoint.h; sourceTree = "<group>"; };
+		80BB896F141C3E5900F1753A /* DistanceJoint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DistanceJoint.hpp; sourceTree = "<group>"; };
 		80BB8970141C3E5900F1753A /* FrictionJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrictionJoint.cpp; sourceTree = "<group>"; };
-		80BB8971141C3E5900F1753A /* FrictionJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrictionJoint.h; sourceTree = "<group>"; };
+		80BB8971141C3E5900F1753A /* FrictionJoint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FrictionJoint.hpp; sourceTree = "<group>"; };
 		80BB8972141C3E5900F1753A /* GearJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GearJoint.cpp; sourceTree = "<group>"; };
-		80BB8973141C3E5900F1753A /* GearJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GearJoint.h; sourceTree = "<group>"; };
+		80BB8973141C3E5900F1753A /* GearJoint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GearJoint.hpp; sourceTree = "<group>"; };
 		80BB8974141C3E5900F1753A /* Joint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Joint.cpp; sourceTree = "<group>"; };
-		80BB8975141C3E5900F1753A /* Joint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Joint.h; sourceTree = "<group>"; };
+		80BB8975141C3E5900F1753A /* Joint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Joint.hpp; sourceTree = "<group>"; };
 		80BB8976141C3E5900F1753A /* MouseJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MouseJoint.cpp; sourceTree = "<group>"; };
-		80BB8977141C3E5900F1753A /* MouseJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MouseJoint.h; sourceTree = "<group>"; };
+		80BB8977141C3E5900F1753A /* MouseJoint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MouseJoint.hpp; sourceTree = "<group>"; };
 		80BB8978141C3E5900F1753A /* PrismaticJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PrismaticJoint.cpp; sourceTree = "<group>"; };
-		80BB8979141C3E5900F1753A /* PrismaticJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrismaticJoint.h; sourceTree = "<group>"; };
+		80BB8979141C3E5900F1753A /* PrismaticJoint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PrismaticJoint.hpp; sourceTree = "<group>"; };
 		80BB897A141C3E5900F1753A /* PulleyJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PulleyJoint.cpp; sourceTree = "<group>"; };
-		80BB897B141C3E5900F1753A /* PulleyJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulleyJoint.h; sourceTree = "<group>"; };
+		80BB897B141C3E5900F1753A /* PulleyJoint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PulleyJoint.hpp; sourceTree = "<group>"; };
 		80BB897C141C3E5900F1753A /* RevoluteJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RevoluteJoint.cpp; sourceTree = "<group>"; };
-		80BB897D141C3E5900F1753A /* RevoluteJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RevoluteJoint.h; sourceTree = "<group>"; };
+		80BB897D141C3E5900F1753A /* RevoluteJoint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RevoluteJoint.hpp; sourceTree = "<group>"; };
 		80BB897E141C3E5900F1753A /* RopeJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RopeJoint.cpp; sourceTree = "<group>"; };
-		80BB897F141C3E5900F1753A /* RopeJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RopeJoint.h; sourceTree = "<group>"; };
+		80BB897F141C3E5900F1753A /* RopeJoint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RopeJoint.hpp; sourceTree = "<group>"; };
 		80BB8980141C3E5900F1753A /* WeldJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WeldJoint.cpp; sourceTree = "<group>"; };
-		80BB8981141C3E5900F1753A /* WeldJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeldJoint.h; sourceTree = "<group>"; };
+		80BB8981141C3E5900F1753A /* WeldJoint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WeldJoint.hpp; sourceTree = "<group>"; };
 		80BB8982141C3E5900F1753A /* WheelJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WheelJoint.cpp; sourceTree = "<group>"; };
-		80BB8983141C3E5900F1753A /* WheelJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WheelJoint.h; sourceTree = "<group>"; };
+		80BB8983141C3E5900F1753A /* WheelJoint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WheelJoint.hpp; sourceTree = "<group>"; };
 		80BB8985141C3E5900F1753A /* Rope.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Rope.cpp; sourceTree = "<group>"; };
 		80BB8986141C3E5900F1753A /* Rope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rope.h; sourceTree = "<group>"; };
 		80BB8A33141C3E7B00F1753A /* HelloWorld.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HelloWorld.cpp; sourceTree = "<group>"; };
@@ -1079,15 +1079,15 @@
 			isa = PBXGroup;
 			children = (
 				80620F8D168B934600D46C8D /* MotorJoint.cpp */,
-				80620F8E168B934600D46C8D /* MotorJoint.h */,
+				80620F8E168B934600D46C8D /* MotorJoint.hpp */,
 				80BB896E141C3E5900F1753A /* DistanceJoint.cpp */,
-				80BB896F141C3E5900F1753A /* DistanceJoint.h */,
+				80BB896F141C3E5900F1753A /* DistanceJoint.hpp */,
 				80BB8970141C3E5900F1753A /* FrictionJoint.cpp */,
-				80BB8971141C3E5900F1753A /* FrictionJoint.h */,
+				80BB8971141C3E5900F1753A /* FrictionJoint.hpp */,
 				80BB8972141C3E5900F1753A /* GearJoint.cpp */,
-				80BB8973141C3E5900F1753A /* GearJoint.h */,
+				80BB8973141C3E5900F1753A /* GearJoint.hpp */,
 				80BB8974141C3E5900F1753A /* Joint.cpp */,
-				80BB8975141C3E5900F1753A /* Joint.h */,
+				80BB8975141C3E5900F1753A /* Joint.hpp */,
 				477DB29E1D15F5C000846ED6 /* JointEdgeList.cpp */,
 				477DB29F1D15F5C000846ED6 /* JointEdgeList.hpp */,
 				477DB2A21D15F60B00846ED6 /* JointEdgeIterator.cpp */,
@@ -1095,19 +1095,19 @@
 				477DB2A61D15F64A00846ED6 /* ConstJointEdgeIterator.cpp */,
 				477DB2A71D15F64A00846ED6 /* ConstJointEdgeIterator.hpp */,
 				80BB8976141C3E5900F1753A /* MouseJoint.cpp */,
-				80BB8977141C3E5900F1753A /* MouseJoint.h */,
+				80BB8977141C3E5900F1753A /* MouseJoint.hpp */,
 				80BB8978141C3E5900F1753A /* PrismaticJoint.cpp */,
-				80BB8979141C3E5900F1753A /* PrismaticJoint.h */,
+				80BB8979141C3E5900F1753A /* PrismaticJoint.hpp */,
 				80BB897A141C3E5900F1753A /* PulleyJoint.cpp */,
-				80BB897B141C3E5900F1753A /* PulleyJoint.h */,
+				80BB897B141C3E5900F1753A /* PulleyJoint.hpp */,
 				80BB897C141C3E5900F1753A /* RevoluteJoint.cpp */,
-				80BB897D141C3E5900F1753A /* RevoluteJoint.h */,
+				80BB897D141C3E5900F1753A /* RevoluteJoint.hpp */,
 				80BB897E141C3E5900F1753A /* RopeJoint.cpp */,
-				80BB897F141C3E5900F1753A /* RopeJoint.h */,
+				80BB897F141C3E5900F1753A /* RopeJoint.hpp */,
 				80BB8980141C3E5900F1753A /* WeldJoint.cpp */,
-				80BB8981141C3E5900F1753A /* WeldJoint.h */,
+				80BB8981141C3E5900F1753A /* WeldJoint.hpp */,
 				80BB8982141C3E5900F1753A /* WheelJoint.cpp */,
-				80BB8983141C3E5900F1753A /* WheelJoint.h */,
+				80BB8983141C3E5900F1753A /* WheelJoint.hpp */,
 			);
 			path = Joints;
 			sourceTree = "<group>";
@@ -1311,25 +1311,25 @@
 				4731DE3C1DE1412F00E7F931 /* Time.hpp in Headers */,
 				47AA5DEB1C4C5FBE008AF2BA /* PolygonAndCircleContact.hpp in Headers */,
 				47AA5DEC1C4C5FBE008AF2BA /* PolygonContact.hpp in Headers */,
-				47AA5DED1C4C5FBE008AF2BA /* DistanceJoint.h in Headers */,
-				47AA5DEE1C4C5FBE008AF2BA /* FrictionJoint.h in Headers */,
-				47AA5DEF1C4C5FBE008AF2BA /* GearJoint.h in Headers */,
-				47AA5DF01C4C5FBE008AF2BA /* Joint.h in Headers */,
+				47AA5DED1C4C5FBE008AF2BA /* DistanceJoint.hpp in Headers */,
+				47AA5DEE1C4C5FBE008AF2BA /* FrictionJoint.hpp in Headers */,
+				47AA5DEF1C4C5FBE008AF2BA /* GearJoint.hpp in Headers */,
+				47AA5DF01C4C5FBE008AF2BA /* Joint.hpp in Headers */,
 				4734B2341DC2CF9500F15E29 /* IndexPairList.hpp in Headers */,
 				472E301C1DBA925500DA821D /* VertexSet.hpp in Headers */,
 				47578BE21D8869110078CD40 /* WorldManifold.hpp in Headers */,
-				47AA5DF11C4C5FBE008AF2BA /* MouseJoint.h in Headers */,
-				47AA5DF21C4C5FBE008AF2BA /* PrismaticJoint.h in Headers */,
-				47AA5DF31C4C5FBE008AF2BA /* PulleyJoint.h in Headers */,
-				47AA5DF41C4C5FBE008AF2BA /* RevoluteJoint.h in Headers */,
-				47AA5DF51C4C5FBE008AF2BA /* RopeJoint.h in Headers */,
+				47AA5DF11C4C5FBE008AF2BA /* MouseJoint.hpp in Headers */,
+				47AA5DF21C4C5FBE008AF2BA /* PrismaticJoint.hpp in Headers */,
+				47AA5DF31C4C5FBE008AF2BA /* PulleyJoint.hpp in Headers */,
+				47AA5DF41C4C5FBE008AF2BA /* RevoluteJoint.hpp in Headers */,
+				47AA5DF51C4C5FBE008AF2BA /* RopeJoint.hpp in Headers */,
 				478869111D78BF7200AEC7F1 /* VelocityConstraint.hpp in Headers */,
-				47AA5DF61C4C5FBE008AF2BA /* WeldJoint.h in Headers */,
-				47AA5DF71C4C5FBE008AF2BA /* WheelJoint.h in Headers */,
+				47AA5DF61C4C5FBE008AF2BA /* WeldJoint.hpp in Headers */,
+				47AA5DF71C4C5FBE008AF2BA /* WheelJoint.hpp in Headers */,
 				47AA5DF81C4C5FBE008AF2BA /* Rope.h in Headers */,
 				4731DE421DE14A9D00E7F931 /* LinearSpeed.hpp in Headers */,
 				47578BF11D8899710078CD40 /* Profile.hpp in Headers */,
-				47AA5DF91C4C5FBE008AF2BA /* MotorJoint.h in Headers */,
+				47AA5DF91C4C5FBE008AF2BA /* MotorJoint.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1412,35 +1412,35 @@
 				80BB89C5141C3E5900F1753A /* EdgeAndPolygonContact.hpp in Headers */,
 				80BB89C7141C3E5900F1753A /* PolygonAndCircleContact.hpp in Headers */,
 				80BB89C9141C3E5900F1753A /* PolygonContact.hpp in Headers */,
-				80BB89CB141C3E5900F1753A /* DistanceJoint.h in Headers */,
+				80BB89CB141C3E5900F1753A /* DistanceJoint.hpp in Headers */,
 				4726DD2C1D31B4090012A882 /* AABB.hpp in Headers */,
-				80BB89CD141C3E5900F1753A /* FrictionJoint.h in Headers */,
+				80BB89CD141C3E5900F1753A /* FrictionJoint.hpp in Headers */,
 				475A94661D99C264000CA9A8 /* List.hpp in Headers */,
 				477DB2A11D15F5C000846ED6 /* JointEdgeList.hpp in Headers */,
 				477DB2A51D15F60B00846ED6 /* JointEdgeIterator.hpp in Headers */,
 				47AA63A51D1077E600726CA2 /* ContactList.hpp in Headers */,
 				472134861C8CD7CF009536F9 /* BodyList.hpp in Headers */,
-				80BB89CF141C3E5900F1753A /* GearJoint.h in Headers */,
-				80BB89D1141C3E5900F1753A /* Joint.h in Headers */,
+				80BB89CF141C3E5900F1753A /* GearJoint.hpp in Headers */,
+				80BB89D1141C3E5900F1753A /* Joint.hpp in Headers */,
 				4731DE011DCD2F1700E7F931 /* Angle.hpp in Headers */,
-				80BB89D3141C3E5900F1753A /* MouseJoint.h in Headers */,
+				80BB89D3141C3E5900F1753A /* MouseJoint.hpp in Headers */,
 				47578BF01D8899710078CD40 /* Profile.hpp in Headers */,
-				80BB89D5141C3E5900F1753A /* PrismaticJoint.h in Headers */,
+				80BB89D5141C3E5900F1753A /* PrismaticJoint.hpp in Headers */,
 				47AA639F1D0F7FDA00726CA2 /* ConstFixtureIterator.hpp in Headers */,
 				47A983371D0F4EFF00AA7D1A /* JointList.hpp in Headers */,
-				80BB89D7141C3E5900F1753A /* PulleyJoint.h in Headers */,
+				80BB89D7141C3E5900F1753A /* PulleyJoint.hpp in Headers */,
 				4731DE441DE2570900E7F931 /* Collision.hpp in Headers */,
-				80BB89D9141C3E5900F1753A /* RevoluteJoint.h in Headers */,
+				80BB89D9141C3E5900F1753A /* RevoluteJoint.hpp in Headers */,
 				4731DE411DE14A9D00E7F931 /* LinearSpeed.hpp in Headers */,
-				80BB89DB141C3E5900F1753A /* RopeJoint.h in Headers */,
-				80BB89DD141C3E5900F1753A /* WeldJoint.h in Headers */,
-				80BB89DF141C3E5900F1753A /* WheelJoint.h in Headers */,
+				80BB89DB141C3E5900F1753A /* RopeJoint.hpp in Headers */,
+				80BB89DD141C3E5900F1753A /* WeldJoint.hpp in Headers */,
+				80BB89DF141C3E5900F1753A /* WheelJoint.hpp in Headers */,
 				4751EE2E1CEDD7A300D459CB /* MotorJoint.h in Headers */,
 				80BB89E1141C3E5900F1753A /* Rope.h in Headers */,
 				47578BE11D8869110078CD40 /* WorldManifold.hpp in Headers */,
 				477DB2991D14BB2000846ED6 /* ContactEdgeIterator.hpp in Headers */,
 				475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */,
-				80620F90168B934600D46C8D /* MotorJoint.h in Headers */,
+				80620F90168B934600D46C8D /* MotorJoint.hpp in Headers */,
 				4731DE1B1DDCD0E100E7F931 /* FixtureProxy.hpp in Headers */,
 				472E301B1DBA925500DA821D /* VertexSet.hpp in Headers */,
 				47F932A61D11C283006A193C /* AllocatedArray.hpp in Headers */,

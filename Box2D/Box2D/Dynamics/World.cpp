@@ -23,7 +23,7 @@
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/FixtureProxy.hpp>
 #include <Box2D/Dynamics/Island.hpp>
-#include <Box2D/Dynamics/Joints/PulleyJoint.h>
+#include <Box2D/Dynamics/Joints/PulleyJoint.hpp>
 #include <Box2D/Dynamics/Contacts/Contact.hpp>
 #include <Box2D/Collision/BroadPhase.hpp>
 #include <Box2D/Collision/WorldManifold.hpp>

@@ -21,12 +21,12 @@
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/Contacts/Contact.hpp>
-#include <Box2D/Dynamics/Joints/DistanceJoint.h>
+#include <Box2D/Dynamics/Joints/DistanceJoint.hpp>
 #include <Box2D/Collision/Shapes/CircleShape.hpp>
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
 #include <Box2D/Collision/Shapes/EdgeShape.hpp>
-#include <Box2D/Dynamics/Joints/MouseJoint.h>
-#include <Box2D/Dynamics/Joints/RopeJoint.h>
+#include <Box2D/Dynamics/Joints/MouseJoint.hpp>
+#include <Box2D/Dynamics/Joints/RopeJoint.hpp>
 #include <Box2D/Common/Angle.hpp>
 
 #include <unistd.h>

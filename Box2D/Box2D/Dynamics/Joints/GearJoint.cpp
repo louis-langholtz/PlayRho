@@ -17,9 +17,9 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Dynamics/Joints/GearJoint.h>
-#include <Box2D/Dynamics/Joints/RevoluteJoint.h>
-#include <Box2D/Dynamics/Joints/PrismaticJoint.h>
+#include <Box2D/Dynamics/Joints/GearJoint.hpp>
+#include <Box2D/Dynamics/Joints/RevoluteJoint.hpp>
+#include <Box2D/Dynamics/Joints/PrismaticJoint.hpp>
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/TimeStep.hpp>
 #include <Box2D/Dynamics/Contacts/ContactSolver.hpp>

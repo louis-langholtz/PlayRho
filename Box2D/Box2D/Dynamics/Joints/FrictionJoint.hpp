@@ -1,5 +1,5 @@
 /*
-* Original work Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
+* Original work Copyright (c) 2006-2007 Erin Catto http://www.box2d.org
 * Modified work Copyright (c) 2016 Louis Langholtz https://github.com/louis-langholtz/Box2D
 *
 * This software is provided 'as-is', without any express or implied
@@ -17,45 +17,41 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef B2_ROPE_JOINT_H
-#define B2_ROPE_JOINT_H
+#ifndef B2_FRICTION_JOINT_H
+#define B2_FRICTION_JOINT_H
 
-#include <Box2D/Dynamics/Joints/Joint.h>
+#include <Box2D/Dynamics/Joints/Joint.hpp>
 
 namespace box2d {
 
-/// Rope joint definition. This requires two body anchor points and
-/// a maximum lengths.
-/// Note: by default the connected objects will not collide.
-/// see collideConnected in JointDef.
-struct RopeJointDef : public JointDef
+/// Friction joint definition.
+struct FrictionJointDef : public JointDef
 {
-	constexpr RopeJointDef() noexcept: JointDef(JointType::Rope) {}
+	constexpr FrictionJointDef() noexcept: JointDef(JointType::Friction) {}
 
-	constexpr RopeJointDef(Body* bodyA, Body* bodyB) noexcept: JointDef(JointType::Rope, bodyA, bodyB) {}
+	/// Initialize the bodies, anchors, axis, and reference angle using the world
+	/// anchor and world axis.
+	void Initialize(Body* bodyA, Body* bodyB, const Vec2& anchor);
 
 	/// The local anchor point relative to bodyA's origin.
-	Vec2 localAnchorA = Vec2{-float_t{1}, float_t{0}};
+	Vec2 localAnchorA = Vec2_zero;
 
 	/// The local anchor point relative to bodyB's origin.
-	Vec2 localAnchorB = Vec2{float_t{1}, float_t{0}};
+	Vec2 localAnchorB = Vec2_zero;
 
-	/// The maximum length of the rope.
-	float_t maxLength = float_t{0};
+	/// The maximum friction force in N.
+	float_t maxForce = float_t{0};
+
+	/// The maximum friction torque in N-m.
+	float_t maxTorque = float_t{0};
 };
 
-/// A rope joint enforces a maximum distance between two points
-/// on two bodies. It has no other effect.
-/// Warning: if you attempt to change the maximum length during
-/// the simulation you will get some non-physical behavior.
-/// A model that would allow you to dynamically modify the length
-/// would have some sponginess, so I chose not to implement it
-/// that way. See DistanceJoint if you want to dynamically
-/// control length.
-class RopeJoint : public Joint
+/// Friction joint. This is used for top-down friction.
+/// It provides 2D translational friction and angular friction.
+class FrictionJoint : public Joint
 {
 public:
-	RopeJoint(const RopeJointDef& data);
+	FrictionJoint(const FrictionJointDef& def);
 
 	Vec2 GetAnchorA() const override;
 	Vec2 GetAnchorB() const override;
@@ -69,11 +65,17 @@ public:
 	/// The local anchor point relative to bodyB's origin.
 	const Vec2& GetLocalAnchorB() const  { return m_localAnchorB; }
 
-	/// Set/Get the maximum length of the rope.
-	void SetMaxLength(float_t length) { m_maxLength = length; }
-	float_t GetMaxLength() const;
+	/// Set the maximum friction force in N.
+	void SetMaxForce(float_t force);
 
-	LimitState GetLimitState() const;
+	/// Get the maximum friction force in N.
+	float_t GetMaxForce() const;
+
+	/// Set the maximum friction torque in N*m.
+	void SetMaxTorque(float_t torque);
+
+	/// Get the maximum friction torque in N*m.
+	float_t GetMaxTorque() const;
 
 private:
 
@@ -81,17 +83,18 @@ private:
 	void SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step) override;
 	bool SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) override;
 
-	// Solver shared
 	Vec2 m_localAnchorA;
 	Vec2 m_localAnchorB;
-	float_t m_maxLength;
-	float_t m_length;
-	float_t m_impulse;
+
+	// Solver shared
+	Vec2 m_linearImpulse = Vec2_zero; ///< Linear impulse.
+	float_t m_angularImpulse = float_t{0};
+	float_t m_maxForce;
+	float_t m_maxTorque;
 
 	// Solver temp
 	index_t m_indexA;
 	index_t m_indexB;
-	Vec2 m_u;
 	Vec2 m_rA;
 	Vec2 m_rB;
 	Vec2 m_localCenterA;
@@ -100,11 +103,12 @@ private:
 	float_t m_invMassB;
 	float_t m_invIA;
 	float_t m_invIB;
-	float_t m_mass;
-	LimitState m_state;
+	Mat22 m_linearMass;
+	float_t m_angularMass;
 };
 
-void Dump(const RopeJoint& joint, size_t index);
+/// Dump joint to the log file.
+void Dump(const FrictionJoint& joint, size_t index);
 
 } // namespace box2d
 

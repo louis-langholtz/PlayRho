@@ -17,7 +17,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Dynamics/Joints/WheelJoint.h>
+#include <Box2D/Dynamics/Joints/WheelJoint.hpp>
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/TimeStep.hpp>
 #include <Box2D/Dynamics/Contacts/ContactSolver.hpp>

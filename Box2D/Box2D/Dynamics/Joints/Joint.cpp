@@ -17,18 +17,18 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Dynamics/Joints/Joint.h>
-#include <Box2D/Dynamics/Joints/DistanceJoint.h>
-#include <Box2D/Dynamics/Joints/WheelJoint.h>
-#include <Box2D/Dynamics/Joints/MouseJoint.h>
-#include <Box2D/Dynamics/Joints/RevoluteJoint.h>
-#include <Box2D/Dynamics/Joints/PrismaticJoint.h>
-#include <Box2D/Dynamics/Joints/PulleyJoint.h>
-#include <Box2D/Dynamics/Joints/GearJoint.h>
-#include <Box2D/Dynamics/Joints/WeldJoint.h>
-#include <Box2D/Dynamics/Joints/FrictionJoint.h>
-#include <Box2D/Dynamics/Joints/RopeJoint.h>
-#include <Box2D/Dynamics/Joints/MotorJoint.h>
+#include <Box2D/Dynamics/Joints/Joint.hpp>
+#include <Box2D/Dynamics/Joints/DistanceJoint.hpp>
+#include <Box2D/Dynamics/Joints/WheelJoint.hpp>
+#include <Box2D/Dynamics/Joints/MouseJoint.hpp>
+#include <Box2D/Dynamics/Joints/RevoluteJoint.hpp>
+#include <Box2D/Dynamics/Joints/PrismaticJoint.hpp>
+#include <Box2D/Dynamics/Joints/PulleyJoint.hpp>
+#include <Box2D/Dynamics/Joints/GearJoint.hpp>
+#include <Box2D/Dynamics/Joints/WeldJoint.hpp>
+#include <Box2D/Dynamics/Joints/FrictionJoint.hpp>
+#include <Box2D/Dynamics/Joints/RopeJoint.hpp>
+#include <Box2D/Dynamics/Joints/MotorJoint.hpp>
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/World.hpp>
 #include <Box2D/Common/BlockAllocator.hpp>

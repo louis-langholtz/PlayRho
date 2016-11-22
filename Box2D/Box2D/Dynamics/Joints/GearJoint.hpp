@@ -20,7 +20,7 @@
 #ifndef B2_GEAR_JOINT_H
 #define B2_GEAR_JOINT_H
 
-#include <Box2D/Dynamics/Joints/Joint.h>
+#include <Box2D/Dynamics/Joints/Joint.hpp>
 
 namespace box2d {
 

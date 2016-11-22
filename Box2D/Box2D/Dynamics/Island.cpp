@@ -24,7 +24,7 @@
 #include <Box2D/Dynamics/World.hpp>
 #include <Box2D/Dynamics/Contacts/Contact.hpp>
 
-#include <Box2D/Dynamics/Joints/Joint.h>
+#include <Box2D/Dynamics/Joints/Joint.hpp>
 #include <Box2D/Common/StackAllocator.hpp>
 
 /*
