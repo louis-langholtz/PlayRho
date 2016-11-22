@@ -10,7 +10,7 @@
 #define List_hpp
 
 #include <iterator>
-#include <Box2D/Common/Settings.h>
+#include <Box2D/Common/Settings.hpp>
 
 namespace box2d {
 

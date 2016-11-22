@@ -20,7 +20,7 @@
 #ifndef Length_hpp
 #define Length_hpp
 
-#include <Box2D/Common/Settings.h>
+#include <Box2D/Common/Settings.hpp>
 
 namespace box2d
 {

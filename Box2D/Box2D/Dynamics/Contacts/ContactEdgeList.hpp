@@ -9,7 +9,7 @@
 #ifndef ContactEdgeList_hpp
 #define ContactEdgeList_hpp
 
-#include <Box2D/Common/Settings.h>
+#include <Box2D/Common/Settings.hpp>
 #include <Box2D/Dynamics/Contacts/ContactEdgeIterator.hpp>
 #include <Box2D/Dynamics/Contacts/ConstContactEdgeIterator.hpp>
 

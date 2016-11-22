@@ -20,7 +20,7 @@
 #ifndef Angle_hpp
 #define Angle_hpp
 
-#include <Box2D/Common/Settings.h>
+#include <Box2D/Common/Settings.hpp>
 
 namespace box2d
 {

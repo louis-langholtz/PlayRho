@@ -20,7 +20,7 @@
 #ifndef LinearSpeed_hpp
 #define LinearSpeed_hpp
 
-#include <Box2D/Common/Settings.h>
+#include <Box2D/Common/Settings.hpp>
 
 namespace box2d
 {

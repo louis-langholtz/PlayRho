@@ -20,7 +20,7 @@
 #ifndef FixtureProxy_hpp
 #define FixtureProxy_hpp
 
-#include <Box2D/Common/Settings.h>
+#include <Box2D/Common/Settings.hpp>
 #include <Box2D/Collision/AABB.hpp>
 
 namespace box2d

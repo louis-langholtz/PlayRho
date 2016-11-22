@@ -9,7 +9,7 @@
 #ifndef JointList_hpp
 #define JointList_hpp
 
-#include <Box2D/Common/Settings.h>
+#include <Box2D/Common/Settings.hpp>
 #include <Box2D/Dynamics/JointIterator.hpp>
 #include <Box2D/Dynamics/ConstJointIterator.hpp>
 

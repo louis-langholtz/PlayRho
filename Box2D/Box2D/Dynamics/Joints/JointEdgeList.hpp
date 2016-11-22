@@ -9,7 +9,7 @@
 #ifndef JointEdgeList_hpp
 #define JointEdgeList_hpp
 
-#include <Box2D/Common/Settings.h>
+#include <Box2D/Common/Settings.hpp>
 #include <Box2D/Dynamics/Joints/JointEdgeIterator.hpp>
 #include <Box2D/Dynamics/Joints/ConstJointEdgeIterator.hpp>
 

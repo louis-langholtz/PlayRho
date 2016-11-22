@@ -9,7 +9,7 @@
 #ifndef Timespan_hpp
 #define Timespan_hpp
 
-#include <Box2D/Common/Settings.h>
+#include <Box2D/Common/Settings.hpp>
 #include <chrono>
 
 namespace box2d

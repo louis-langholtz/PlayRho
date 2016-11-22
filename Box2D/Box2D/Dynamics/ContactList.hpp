@@ -9,7 +9,7 @@
 #ifndef ContactList_hpp
 #define ContactList_hpp
 
-#include <Box2D/Common/Settings.h>
+#include <Box2D/Common/Settings.hpp>
 #include <Box2D/Dynamics/ContactIterator.hpp>
 #include <Box2D/Dynamics/ConstContactIterator.hpp>
 

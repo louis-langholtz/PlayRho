@@ -20,7 +20,7 @@
 #ifndef BOX2D_MATH_H
 #define BOX2D_MATH_H
 
-#include <Box2D/Common/Settings.h>
+#include <Box2D/Common/Settings.hpp>
 #include <Box2D/Common/Span.hpp>
 #include <Box2D/Common/Angle.hpp>
 #include <cmath>

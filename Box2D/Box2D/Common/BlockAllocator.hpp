@@ -20,7 +20,7 @@
 #ifndef B2_BLOCK_ALLOCATOR_H
 #define B2_BLOCK_ALLOCATOR_H
 
-#include <Box2D/Common/Settings.h>
+#include <Box2D/Common/Settings.hpp>
 
 namespace box2d {
 
