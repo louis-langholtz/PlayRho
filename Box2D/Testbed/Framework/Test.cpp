@@ -18,7 +18,7 @@
 */
 
 #include "Test.hpp"
-#include "Drawer.h"
+#include "Drawer.hpp"
 #include <stdio.h>
 
 #include <Box2D/Rope/Rope.hpp>

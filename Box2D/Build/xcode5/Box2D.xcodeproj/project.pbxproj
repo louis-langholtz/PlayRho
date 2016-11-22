@@ -490,7 +490,7 @@
 		473971A71D9D9B4C00F7137F /* Math.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Math.cpp; sourceTree = "<group>"; };
 		473971A91D9F0E4E00F7137F /* ContactSolver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactSolver.cpp; sourceTree = "<group>"; };
 		473971AC1DA45C4C00F7137F /* Drawer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawer.cpp; sourceTree = "<group>"; };
-		473971AD1DA45C4C00F7137F /* Drawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Drawer.h; sourceTree = "<group>"; };
+		473971AD1DA45C4C00F7137F /* Drawer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Drawer.hpp; sourceTree = "<group>"; };
 		474BC3F41D41278800447DCD /* AABB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AABB.cpp; sourceTree = "<group>"; };
 		474BC3F51D41278800447DCD /* CircleShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CircleShape.cpp; sourceTree = "<group>"; };
 		474BC3F61D41278800447DCD /* CollideShapes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollideShapes.cpp; sourceTree = "<group>"; };
@@ -1146,7 +1146,7 @@
 				805900AA184EEE0F00C8ECA3 /* DebugDraw.cpp */,
 				805900AB184EEE0F00C8ECA3 /* DebugDraw.h */,
 				473971AC1DA45C4C00F7137F /* Drawer.cpp */,
-				473971AD1DA45C4C00F7137F /* Drawer.h */,
+				473971AD1DA45C4C00F7137F /* Drawer.hpp */,
 				805900AC184EEE0F00C8ECA3 /* imgui.cpp */,
 				805900AD184EEE0F00C8ECA3 /* imgui.h */,
 				80BB8A38141C3E8500F1753A /* Main.cpp */,

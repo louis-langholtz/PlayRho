@@ -21,7 +21,7 @@
 #define DEBUGDRAW_H
 
 #include <Box2D/Box2D.h>
-#include "Drawer.h"
+#include "Drawer.hpp"
 
 namespace box2d {
 

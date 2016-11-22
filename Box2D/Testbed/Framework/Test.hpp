@@ -22,7 +22,7 @@
 
 #include <Box2D/Box2D.h>
 #include <cstdlib>
-#include "Drawer.h"
+#include "Drawer.hpp"
 #include <Box2D/Collision/CollideShapes.hpp>
 
 namespace box2d {
