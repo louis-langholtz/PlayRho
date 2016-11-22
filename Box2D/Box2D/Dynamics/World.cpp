@@ -32,7 +32,7 @@
 #include <Box2D/Common/Timer.hpp>
 #include <Box2D/Common/AllocatedArray.hpp>
 
-#include <Box2D/Dynamics/Contacts/ContactSolver.h>
+#include <Box2D/Dynamics/Contacts/ContactSolver.hpp>
 #include <Box2D/Dynamics/Contacts/VelocityConstraint.hpp>
 #include <Box2D/Dynamics/Contacts/PositionConstraint.hpp>
 

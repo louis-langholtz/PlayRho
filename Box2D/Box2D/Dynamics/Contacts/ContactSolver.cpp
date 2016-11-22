@@ -17,7 +17,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Dynamics/Contacts/ContactSolver.h>
+#include <Box2D/Dynamics/Contacts/ContactSolver.hpp>
 #include <Box2D/Collision/Collision.hpp>
 #include <Box2D/Collision/WorldManifold.hpp>
 #include <Box2D/Dynamics/Contacts/PositionSolverManifold.hpp>

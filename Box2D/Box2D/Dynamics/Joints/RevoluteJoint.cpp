@@ -20,7 +20,7 @@
 #include <Box2D/Dynamics/Joints/RevoluteJoint.h>
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/TimeStep.hpp>
-#include <Box2D/Dynamics/Contacts/ContactSolver.h>
+#include <Box2D/Dynamics/Contacts/ContactSolver.hpp>
 
 using namespace box2d;
 

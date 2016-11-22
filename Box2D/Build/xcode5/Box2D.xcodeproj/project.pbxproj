@@ -214,7 +214,7 @@
 		47AA5DE51C4C5FBE008AF2BA /* ChainAndPolygonContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB895E141C3E5900F1753A /* ChainAndPolygonContact.hpp */; };
 		47AA5DE61C4C5FBE008AF2BA /* CircleContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8960141C3E5900F1753A /* CircleContact.hpp */; };
 		47AA5DE71C4C5FBE008AF2BA /* Contact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8962141C3E5900F1753A /* Contact.hpp */; };
-		47AA5DE81C4C5FBE008AF2BA /* ContactSolver.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8964141C3E5900F1753A /* ContactSolver.h */; };
+		47AA5DE81C4C5FBE008AF2BA /* ContactSolver.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8964141C3E5900F1753A /* ContactSolver.hpp */; };
 		47AA5DE91C4C5FBE008AF2BA /* EdgeAndCircleContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8966141C3E5900F1753A /* EdgeAndCircleContact.hpp */; };
 		47AA5DEA1C4C5FBE008AF2BA /* EdgeAndPolygonContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8968141C3E5900F1753A /* EdgeAndPolygonContact.hpp */; };
 		47AA5DEB1C4C5FBE008AF2BA /* PolygonAndCircleContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896A141C3E5900F1753A /* PolygonAndCircleContact.hpp */; };
@@ -342,7 +342,7 @@
 		80BB89BE141C3E5900F1753A /* Contact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8961141C3E5900F1753A /* Contact.cpp */; };
 		80BB89BF141C3E5900F1753A /* Contact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8962141C3E5900F1753A /* Contact.hpp */; };
 		80BB89C0141C3E5900F1753A /* ContactSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8963141C3E5900F1753A /* ContactSolver.cpp */; };
-		80BB89C1141C3E5900F1753A /* ContactSolver.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8964141C3E5900F1753A /* ContactSolver.h */; };
+		80BB89C1141C3E5900F1753A /* ContactSolver.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8964141C3E5900F1753A /* ContactSolver.hpp */; };
 		80BB89C2141C3E5900F1753A /* EdgeAndCircleContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8965141C3E5900F1753A /* EdgeAndCircleContact.cpp */; };
 		80BB89C3141C3E5900F1753A /* EdgeAndCircleContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8966141C3E5900F1753A /* EdgeAndCircleContact.hpp */; };
 		80BB89C4141C3E5900F1753A /* EdgeAndPolygonContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8967141C3E5900F1753A /* EdgeAndPolygonContact.cpp */; };
@@ -670,7 +670,7 @@
 		80BB8961141C3E5900F1753A /* Contact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; path = Contact.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		80BB8962141C3E5900F1753A /* Contact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 2; path = Contact.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		80BB8963141C3E5900F1753A /* ContactSolver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; path = ContactSolver.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		80BB8964141C3E5900F1753A /* ContactSolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactSolver.h; sourceTree = "<group>"; };
+		80BB8964141C3E5900F1753A /* ContactSolver.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactSolver.hpp; sourceTree = "<group>"; };
 		80BB8965141C3E5900F1753A /* EdgeAndCircleContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeAndCircleContact.cpp; sourceTree = "<group>"; };
 		80BB8966141C3E5900F1753A /* EdgeAndCircleContact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EdgeAndCircleContact.hpp; sourceTree = "<group>"; };
 		80BB8967141C3E5900F1753A /* EdgeAndPolygonContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeAndPolygonContact.cpp; sourceTree = "<group>"; };
@@ -1057,7 +1057,7 @@
 				477DB29A1D14BCA700846ED6 /* ConstContactEdgeIterator.cpp */,
 				477DB29B1D14BCA700846ED6 /* ConstContactEdgeIterator.hpp */,
 				80BB8963141C3E5900F1753A /* ContactSolver.cpp */,
-				80BB8964141C3E5900F1753A /* ContactSolver.h */,
+				80BB8964141C3E5900F1753A /* ContactSolver.hpp */,
 				478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */,
 				4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */,
 				47E841711DB4018D00E5F311 /* VelocityConstraint.cpp */,
@@ -1304,7 +1304,7 @@
 				4726DD201D305E5D0012A882 /* ContactFeature.hpp in Headers */,
 				47AA5DE71C4C5FBE008AF2BA /* Contact.hpp in Headers */,
 				4734B22E1DC2B11D00F15E29 /* Simplex.hpp in Headers */,
-				47AA5DE81C4C5FBE008AF2BA /* ContactSolver.h in Headers */,
+				47AA5DE81C4C5FBE008AF2BA /* ContactSolver.hpp in Headers */,
 				47AA5DE91C4C5FBE008AF2BA /* EdgeAndCircleContact.hpp in Headers */,
 				47AA5DEA1C4C5FBE008AF2BA /* EdgeAndPolygonContact.hpp in Headers */,
 				4731DE361DE1405900E7F931 /* Length.hpp in Headers */,
@@ -1406,7 +1406,7 @@
 				47A9833F1D0F7ABA00AA7D1A /* ConstJointIterator.hpp in Headers */,
 				47AA63A91D10786F00726CA2 /* ContactIterator.hpp in Headers */,
 				80BB89BF141C3E5900F1753A /* Contact.hpp in Headers */,
-				80BB89C1141C3E5900F1753A /* ContactSolver.h in Headers */,
+				80BB89C1141C3E5900F1753A /* ContactSolver.hpp in Headers */,
 				80BB89C3141C3E5900F1753A /* EdgeAndCircleContact.hpp in Headers */,
 				4734B2331DC2CF9500F15E29 /* IndexPairList.hpp in Headers */,
 				80BB89C5141C3E5900F1753A /* EdgeAndPolygonContact.hpp in Headers */,
