@@ -19,7 +19,7 @@
 
 #include <Box2D/Dynamics/Joints/PrismaticJoint.h>
 #include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Dynamics/TimeStep.h>
+#include <Box2D/Dynamics/TimeStep.hpp>
 #include <Box2D/Dynamics/Contacts/ContactSolver.h>
 
 using namespace box2d;
