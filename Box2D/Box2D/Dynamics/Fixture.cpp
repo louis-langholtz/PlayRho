@@ -20,7 +20,7 @@
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/FixtureProxy.hpp>
 #include <Box2D/Dynamics/Contacts/Contact.h>
-#include <Box2D/Dynamics/World.h>
+#include <Box2D/Dynamics/World.hpp>
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Collision/Shapes/CircleShape.hpp>
 #include <Box2D/Collision/Shapes/EdgeShape.hpp>
