@@ -230,7 +230,7 @@
 		47AA5DF51C4C5FBE008AF2BA /* RopeJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB897F141C3E5900F1753A /* RopeJoint.hpp */; };
 		47AA5DF61C4C5FBE008AF2BA /* WeldJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8981141C3E5900F1753A /* WeldJoint.hpp */; };
 		47AA5DF71C4C5FBE008AF2BA /* WheelJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8983141C3E5900F1753A /* WheelJoint.hpp */; };
-		47AA5DF81C4C5FBE008AF2BA /* Rope.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8986141C3E5900F1753A /* Rope.h */; };
+		47AA5DF81C4C5FBE008AF2BA /* Rope.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8986141C3E5900F1753A /* Rope.hpp */; };
 		47AA5DF91C4C5FBE008AF2BA /* MotorJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80620F8E168B934600D46C8D /* MotorJoint.hpp */; };
 		47AA639A1D0F7FDA00726CA2 /* ConstBodyIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AA63921D0F7FDA00726CA2 /* ConstBodyIterator.cpp */; };
 		47AA639B1D0F7FDA00726CA2 /* ConstFixtureIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AA63931D0F7FDA00726CA2 /* ConstFixtureIterator.cpp */; };
@@ -374,7 +374,7 @@
 		80BB89DE141C3E5900F1753A /* WheelJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8982141C3E5900F1753A /* WheelJoint.cpp */; };
 		80BB89DF141C3E5900F1753A /* WheelJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8983141C3E5900F1753A /* WheelJoint.hpp */; };
 		80BB89E0141C3E5900F1753A /* Rope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8985141C3E5900F1753A /* Rope.cpp */; };
-		80BB89E1141C3E5900F1753A /* Rope.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8986141C3E5900F1753A /* Rope.h */; };
+		80BB89E1141C3E5900F1753A /* Rope.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8986141C3E5900F1753A /* Rope.hpp */; };
 		80BB8A34141C3E7B00F1753A /* HelloWorld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8A33141C3E7B00F1753A /* HelloWorld.cpp */; };
 		80BB8A6B141C3E8600F1753A /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8A38141C3E8500F1753A /* Main.cpp */; };
 		80BB8A6D141C3E8600F1753A /* Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8A3B141C3E8500F1753A /* Test.cpp */; };
@@ -702,7 +702,7 @@
 		80BB8982141C3E5900F1753A /* WheelJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WheelJoint.cpp; sourceTree = "<group>"; };
 		80BB8983141C3E5900F1753A /* WheelJoint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WheelJoint.hpp; sourceTree = "<group>"; };
 		80BB8985141C3E5900F1753A /* Rope.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Rope.cpp; sourceTree = "<group>"; };
-		80BB8986141C3E5900F1753A /* Rope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rope.h; sourceTree = "<group>"; };
+		80BB8986141C3E5900F1753A /* Rope.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Rope.hpp; sourceTree = "<group>"; };
 		80BB8A33141C3E7B00F1753A /* HelloWorld.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HelloWorld.cpp; sourceTree = "<group>"; };
 		80BB8A38141C3E8500F1753A /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
 		80BB8A3B141C3E8500F1753A /* Test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Test.cpp; sourceTree = "<group>"; };
@@ -1116,7 +1116,7 @@
 			isa = PBXGroup;
 			children = (
 				80BB8985141C3E5900F1753A /* Rope.cpp */,
-				80BB8986141C3E5900F1753A /* Rope.h */,
+				80BB8986141C3E5900F1753A /* Rope.hpp */,
 			);
 			path = Rope;
 			sourceTree = "<group>";
@@ -1326,7 +1326,7 @@
 				478869111D78BF7200AEC7F1 /* VelocityConstraint.hpp in Headers */,
 				47AA5DF61C4C5FBE008AF2BA /* WeldJoint.hpp in Headers */,
 				47AA5DF71C4C5FBE008AF2BA /* WheelJoint.hpp in Headers */,
-				47AA5DF81C4C5FBE008AF2BA /* Rope.h in Headers */,
+				47AA5DF81C4C5FBE008AF2BA /* Rope.hpp in Headers */,
 				4731DE421DE14A9D00E7F931 /* LinearSpeed.hpp in Headers */,
 				47578BF11D8899710078CD40 /* Profile.hpp in Headers */,
 				47AA5DF91C4C5FBE008AF2BA /* MotorJoint.hpp in Headers */,
@@ -1436,7 +1436,7 @@
 				80BB89DD141C3E5900F1753A /* WeldJoint.hpp in Headers */,
 				80BB89DF141C3E5900F1753A /* WheelJoint.hpp in Headers */,
 				4751EE2E1CEDD7A300D459CB /* MotorJoint.h in Headers */,
-				80BB89E1141C3E5900F1753A /* Rope.h in Headers */,
+				80BB89E1141C3E5900F1753A /* Rope.hpp in Headers */,
 				47578BE11D8869110078CD40 /* WorldManifold.hpp in Headers */,
 				477DB2991D14BB2000846ED6 /* ContactEdgeIterator.hpp in Headers */,
 				475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */,

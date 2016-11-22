@@ -20,7 +20,7 @@
 #ifndef ROPE_H
 #define ROPE_H
 
-#include <Box2d/Rope/Rope.h>
+#include <Box2d/Rope/Rope.hpp>
 
 namespace box2d {
 
