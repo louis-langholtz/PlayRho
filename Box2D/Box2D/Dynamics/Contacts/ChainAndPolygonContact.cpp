@@ -19,7 +19,7 @@
 
 #include <Box2D/Dynamics/Contacts/ChainAndPolygonContact.h>
 #include <Box2D/Common/BlockAllocator.hpp>
-#include <Box2D/Dynamics/Fixture.h>
+#include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Collision/CollideShapes.hpp>
 #include <Box2D/Collision/Shapes/ChainShape.hpp>
 #include <Box2D/Collision/Shapes/EdgeShape.hpp>

@@ -20,7 +20,7 @@
 #include <Box2D/Dynamics/World.h>
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/TimeStep.h>
-#include <Box2D/Dynamics/Fixture.h>
+#include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/FixtureProxy.hpp>
 #include <Box2D/Dynamics/Island.h>
 #include <Box2D/Dynamics/Joints/PulleyJoint.h>

@@ -18,7 +18,7 @@
 */
 
 #include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Dynamics/Fixture.h>
+#include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/World.h>
 #include <Box2D/Dynamics/Contacts/Contact.h>
 #include <Box2D/Dynamics/Joints/Joint.h>

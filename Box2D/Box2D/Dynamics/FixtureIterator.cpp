@@ -7,7 +7,7 @@
 //
 
 #include <Box2D/Dynamics/FixtureIterator.hpp>
-#include <Box2D/Dynamics/Fixture.h>
+#include <Box2D/Dynamics/Fixture.hpp>
 
 using namespace box2d;
 

@@ -18,7 +18,7 @@
 */
 
 #include <Box2D/Dynamics/WorldCallbacks.h>
-#include <Box2D/Dynamics/Fixture.h>
+#include <Box2D/Dynamics/Fixture.hpp>
 
 using namespace box2d;
 

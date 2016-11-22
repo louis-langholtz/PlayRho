@@ -48,7 +48,7 @@ For discussion please visit http://box2d.org/forum
 #include <Box2D/Collision/SimplexCache.hpp>
 
 #include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Dynamics/Fixture.h>
+#include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/WorldCallbacks.h>
 #include <Box2D/Dynamics/TimeStep.h>
 #include <Box2D/Dynamics/World.h>

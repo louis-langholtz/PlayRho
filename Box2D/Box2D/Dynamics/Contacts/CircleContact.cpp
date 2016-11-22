@@ -19,7 +19,7 @@
 
 #include <Box2D/Dynamics/Contacts/CircleContact.h>
 #include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Dynamics/Fixture.h>
+#include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Common/BlockAllocator.hpp>
 #include <Box2D/Collision/CollideShapes.hpp>
 #include <Box2D/Collision/Shapes/CircleShape.hpp>
