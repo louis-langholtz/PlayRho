@@ -22,7 +22,7 @@
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/FixtureProxy.hpp>
 #include <Box2D/Dynamics/WorldCallbacks.hpp>
-#include <Box2D/Dynamics/Contacts/Contact.h>
+#include <Box2D/Dynamics/Contacts/Contact.hpp>
 
 using namespace box2d;
 

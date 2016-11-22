@@ -17,14 +17,14 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Dynamics/Contacts/Contact.h>
-#include <Box2D/Dynamics/Contacts/CircleContact.h>
-#include <Box2D/Dynamics/Contacts/PolygonAndCircleContact.h>
-#include <Box2D/Dynamics/Contacts/PolygonContact.h>
-#include <Box2D/Dynamics/Contacts/EdgeAndCircleContact.h>
-#include <Box2D/Dynamics/Contacts/EdgeAndPolygonContact.h>
-#include <Box2D/Dynamics/Contacts/ChainAndCircleContact.h>
-#include <Box2D/Dynamics/Contacts/ChainAndPolygonContact.h>
+#include <Box2D/Dynamics/Contacts/Contact.hpp>
+#include <Box2D/Dynamics/Contacts/CircleContact.hpp>
+#include <Box2D/Dynamics/Contacts/PolygonAndCircleContact.hpp>
+#include <Box2D/Dynamics/Contacts/PolygonContact.hpp>
+#include <Box2D/Dynamics/Contacts/EdgeAndCircleContact.hpp>
+#include <Box2D/Dynamics/Contacts/EdgeAndPolygonContact.hpp>
+#include <Box2D/Dynamics/Contacts/ChainAndCircleContact.hpp>
+#include <Box2D/Dynamics/Contacts/ChainAndPolygonContact.hpp>
 
 #include <Box2D/Collision/Collision.hpp>
 #include <Box2D/Collision/TimeOfImpact.hpp>

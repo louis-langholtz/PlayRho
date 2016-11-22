@@ -20,7 +20,7 @@
 #ifndef B2_CHAIN_AND_POLYGON_CONTACT_H
 #define B2_CHAIN_AND_POLYGON_CONTACT_H
 
-#include <Box2D/Dynamics/Contacts/Contact.h>
+#include <Box2D/Dynamics/Contacts/Contact.hpp>
 
 namespace box2d {
 

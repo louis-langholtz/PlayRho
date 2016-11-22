@@ -7,7 +7,7 @@
 //
 
 #include <Box2D/Dynamics/ConstContactIterator.hpp>
-#include <Box2D/Dynamics/Contacts/Contact.h>
+#include <Box2D/Dynamics/Contacts/Contact.hpp>
 
 using namespace box2d;
 

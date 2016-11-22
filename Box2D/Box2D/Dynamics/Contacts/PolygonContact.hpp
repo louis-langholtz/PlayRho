@@ -17,16 +17,16 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef B2_EDGE_AND_CIRCLE_CONTACT_H
-#define B2_EDGE_AND_CIRCLE_CONTACT_H
+#ifndef B2_POLYGON_CONTACT_H
+#define B2_POLYGON_CONTACT_H
 
-#include <Box2D/Dynamics/Contacts/Contact.h>
+#include <Box2D/Dynamics/Contacts/Contact.hpp>
 
 namespace box2d {
 
 class BlockAllocator;
 
-class EdgeAndCircleContact : public Contact
+class PolygonContact : public Contact
 {
 public:
 	static Contact* Create(Fixture* fixtureA, child_count_t indexA,
@@ -34,8 +34,8 @@ public:
 							 BlockAllocator& allocator);
 	static void Destroy(Contact* contact, BlockAllocator& allocator);
 
-	EdgeAndCircleContact(Fixture* fixtureA, Fixture* fixtureB);
-	~EdgeAndCircleContact() {}
+	PolygonContact(Fixture* fixtureA, Fixture* fixtureB);
+	~PolygonContact() {}
 
 	Manifold Evaluate(const Transformation& xfA, const Transformation& xfB) const override;
 };

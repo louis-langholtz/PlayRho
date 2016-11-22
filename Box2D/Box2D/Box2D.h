@@ -53,7 +53,7 @@ For discussion please visit http://box2d.org/forum
 #include <Box2D/Dynamics/TimeStep.hpp>
 #include <Box2D/Dynamics/World.hpp>
 
-#include <Box2D/Dynamics/Contacts/Contact.h>
+#include <Box2D/Dynamics/Contacts/Contact.hpp>
 
 #include <Box2D/Dynamics/Joints/DistanceJoint.h>
 #include <Box2D/Dynamics/Joints/FrictionJoint.h>

@@ -210,15 +210,15 @@
 		47AA5DE11C4C5FBE008AF2BA /* TimeStep.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8955141C3E5900F1753A /* TimeStep.hpp */; };
 		47AA5DE21C4C5FBE008AF2BA /* World.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8957141C3E5900F1753A /* World.hpp */; };
 		47AA5DE31C4C5FBE008AF2BA /* WorldCallbacks.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8959141C3E5900F1753A /* WorldCallbacks.hpp */; };
-		47AA5DE41C4C5FBE008AF2BA /* ChainAndCircleContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB895C141C3E5900F1753A /* ChainAndCircleContact.h */; };
-		47AA5DE51C4C5FBE008AF2BA /* ChainAndPolygonContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB895E141C3E5900F1753A /* ChainAndPolygonContact.h */; };
-		47AA5DE61C4C5FBE008AF2BA /* CircleContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8960141C3E5900F1753A /* CircleContact.h */; };
-		47AA5DE71C4C5FBE008AF2BA /* Contact.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8962141C3E5900F1753A /* Contact.h */; };
+		47AA5DE41C4C5FBE008AF2BA /* ChainAndCircleContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB895C141C3E5900F1753A /* ChainAndCircleContact.hpp */; };
+		47AA5DE51C4C5FBE008AF2BA /* ChainAndPolygonContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB895E141C3E5900F1753A /* ChainAndPolygonContact.hpp */; };
+		47AA5DE61C4C5FBE008AF2BA /* CircleContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8960141C3E5900F1753A /* CircleContact.hpp */; };
+		47AA5DE71C4C5FBE008AF2BA /* Contact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8962141C3E5900F1753A /* Contact.hpp */; };
 		47AA5DE81C4C5FBE008AF2BA /* ContactSolver.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8964141C3E5900F1753A /* ContactSolver.h */; };
-		47AA5DE91C4C5FBE008AF2BA /* EdgeAndCircleContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8966141C3E5900F1753A /* EdgeAndCircleContact.h */; };
-		47AA5DEA1C4C5FBE008AF2BA /* EdgeAndPolygonContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8968141C3E5900F1753A /* EdgeAndPolygonContact.h */; };
-		47AA5DEB1C4C5FBE008AF2BA /* PolygonAndCircleContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896A141C3E5900F1753A /* PolygonAndCircleContact.h */; };
-		47AA5DEC1C4C5FBE008AF2BA /* PolygonContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896C141C3E5900F1753A /* PolygonContact.h */; };
+		47AA5DE91C4C5FBE008AF2BA /* EdgeAndCircleContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8966141C3E5900F1753A /* EdgeAndCircleContact.hpp */; };
+		47AA5DEA1C4C5FBE008AF2BA /* EdgeAndPolygonContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8968141C3E5900F1753A /* EdgeAndPolygonContact.hpp */; };
+		47AA5DEB1C4C5FBE008AF2BA /* PolygonAndCircleContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896A141C3E5900F1753A /* PolygonAndCircleContact.hpp */; };
+		47AA5DEC1C4C5FBE008AF2BA /* PolygonContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896C141C3E5900F1753A /* PolygonContact.hpp */; };
 		47AA5DED1C4C5FBE008AF2BA /* DistanceJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896F141C3E5900F1753A /* DistanceJoint.h */; };
 		47AA5DEE1C4C5FBE008AF2BA /* FrictionJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8971141C3E5900F1753A /* FrictionJoint.h */; };
 		47AA5DEF1C4C5FBE008AF2BA /* GearJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8973141C3E5900F1753A /* GearJoint.h */; };
@@ -334,23 +334,23 @@
 		80BB89B6141C3E5900F1753A /* WorldCallbacks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8958141C3E5900F1753A /* WorldCallbacks.cpp */; };
 		80BB89B7141C3E5900F1753A /* WorldCallbacks.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8959141C3E5900F1753A /* WorldCallbacks.hpp */; };
 		80BB89B8141C3E5900F1753A /* ChainAndCircleContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB895B141C3E5900F1753A /* ChainAndCircleContact.cpp */; };
-		80BB89B9141C3E5900F1753A /* ChainAndCircleContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB895C141C3E5900F1753A /* ChainAndCircleContact.h */; };
+		80BB89B9141C3E5900F1753A /* ChainAndCircleContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB895C141C3E5900F1753A /* ChainAndCircleContact.hpp */; };
 		80BB89BA141C3E5900F1753A /* ChainAndPolygonContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB895D141C3E5900F1753A /* ChainAndPolygonContact.cpp */; };
-		80BB89BB141C3E5900F1753A /* ChainAndPolygonContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB895E141C3E5900F1753A /* ChainAndPolygonContact.h */; };
+		80BB89BB141C3E5900F1753A /* ChainAndPolygonContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB895E141C3E5900F1753A /* ChainAndPolygonContact.hpp */; };
 		80BB89BC141C3E5900F1753A /* CircleContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB895F141C3E5900F1753A /* CircleContact.cpp */; };
-		80BB89BD141C3E5900F1753A /* CircleContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8960141C3E5900F1753A /* CircleContact.h */; };
+		80BB89BD141C3E5900F1753A /* CircleContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8960141C3E5900F1753A /* CircleContact.hpp */; };
 		80BB89BE141C3E5900F1753A /* Contact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8961141C3E5900F1753A /* Contact.cpp */; };
-		80BB89BF141C3E5900F1753A /* Contact.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8962141C3E5900F1753A /* Contact.h */; };
+		80BB89BF141C3E5900F1753A /* Contact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8962141C3E5900F1753A /* Contact.hpp */; };
 		80BB89C0141C3E5900F1753A /* ContactSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8963141C3E5900F1753A /* ContactSolver.cpp */; };
 		80BB89C1141C3E5900F1753A /* ContactSolver.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8964141C3E5900F1753A /* ContactSolver.h */; };
 		80BB89C2141C3E5900F1753A /* EdgeAndCircleContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8965141C3E5900F1753A /* EdgeAndCircleContact.cpp */; };
-		80BB89C3141C3E5900F1753A /* EdgeAndCircleContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8966141C3E5900F1753A /* EdgeAndCircleContact.h */; };
+		80BB89C3141C3E5900F1753A /* EdgeAndCircleContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8966141C3E5900F1753A /* EdgeAndCircleContact.hpp */; };
 		80BB89C4141C3E5900F1753A /* EdgeAndPolygonContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8967141C3E5900F1753A /* EdgeAndPolygonContact.cpp */; };
-		80BB89C5141C3E5900F1753A /* EdgeAndPolygonContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8968141C3E5900F1753A /* EdgeAndPolygonContact.h */; };
+		80BB89C5141C3E5900F1753A /* EdgeAndPolygonContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8968141C3E5900F1753A /* EdgeAndPolygonContact.hpp */; };
 		80BB89C6141C3E5900F1753A /* PolygonAndCircleContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8969141C3E5900F1753A /* PolygonAndCircleContact.cpp */; };
-		80BB89C7141C3E5900F1753A /* PolygonAndCircleContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896A141C3E5900F1753A /* PolygonAndCircleContact.h */; };
+		80BB89C7141C3E5900F1753A /* PolygonAndCircleContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896A141C3E5900F1753A /* PolygonAndCircleContact.hpp */; };
 		80BB89C8141C3E5900F1753A /* PolygonContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB896B141C3E5900F1753A /* PolygonContact.cpp */; };
-		80BB89C9141C3E5900F1753A /* PolygonContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896C141C3E5900F1753A /* PolygonContact.h */; };
+		80BB89C9141C3E5900F1753A /* PolygonContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896C141C3E5900F1753A /* PolygonContact.hpp */; };
 		80BB89CA141C3E5900F1753A /* DistanceJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB896E141C3E5900F1753A /* DistanceJoint.cpp */; };
 		80BB89CB141C3E5900F1753A /* DistanceJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896F141C3E5900F1753A /* DistanceJoint.h */; };
 		80BB89CC141C3E5900F1753A /* FrictionJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8970141C3E5900F1753A /* FrictionJoint.cpp */; };
@@ -662,23 +662,23 @@
 		80BB8958141C3E5900F1753A /* WorldCallbacks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldCallbacks.cpp; sourceTree = "<group>"; };
 		80BB8959141C3E5900F1753A /* WorldCallbacks.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldCallbacks.hpp; sourceTree = "<group>"; };
 		80BB895B141C3E5900F1753A /* ChainAndCircleContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChainAndCircleContact.cpp; sourceTree = "<group>"; };
-		80BB895C141C3E5900F1753A /* ChainAndCircleContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChainAndCircleContact.h; sourceTree = "<group>"; };
+		80BB895C141C3E5900F1753A /* ChainAndCircleContact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ChainAndCircleContact.hpp; sourceTree = "<group>"; };
 		80BB895D141C3E5900F1753A /* ChainAndPolygonContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChainAndPolygonContact.cpp; sourceTree = "<group>"; };
-		80BB895E141C3E5900F1753A /* ChainAndPolygonContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChainAndPolygonContact.h; sourceTree = "<group>"; };
+		80BB895E141C3E5900F1753A /* ChainAndPolygonContact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ChainAndPolygonContact.hpp; sourceTree = "<group>"; };
 		80BB895F141C3E5900F1753A /* CircleContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CircleContact.cpp; sourceTree = "<group>"; };
-		80BB8960141C3E5900F1753A /* CircleContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleContact.h; sourceTree = "<group>"; };
+		80BB8960141C3E5900F1753A /* CircleContact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CircleContact.hpp; sourceTree = "<group>"; };
 		80BB8961141C3E5900F1753A /* Contact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; path = Contact.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		80BB8962141C3E5900F1753A /* Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 2; path = Contact.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		80BB8962141C3E5900F1753A /* Contact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 2; path = Contact.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		80BB8963141C3E5900F1753A /* ContactSolver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; path = ContactSolver.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		80BB8964141C3E5900F1753A /* ContactSolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactSolver.h; sourceTree = "<group>"; };
 		80BB8965141C3E5900F1753A /* EdgeAndCircleContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeAndCircleContact.cpp; sourceTree = "<group>"; };
-		80BB8966141C3E5900F1753A /* EdgeAndCircleContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdgeAndCircleContact.h; sourceTree = "<group>"; };
+		80BB8966141C3E5900F1753A /* EdgeAndCircleContact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EdgeAndCircleContact.hpp; sourceTree = "<group>"; };
 		80BB8967141C3E5900F1753A /* EdgeAndPolygonContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeAndPolygonContact.cpp; sourceTree = "<group>"; };
-		80BB8968141C3E5900F1753A /* EdgeAndPolygonContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdgeAndPolygonContact.h; sourceTree = "<group>"; };
+		80BB8968141C3E5900F1753A /* EdgeAndPolygonContact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EdgeAndPolygonContact.hpp; sourceTree = "<group>"; };
 		80BB8969141C3E5900F1753A /* PolygonAndCircleContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolygonAndCircleContact.cpp; sourceTree = "<group>"; };
-		80BB896A141C3E5900F1753A /* PolygonAndCircleContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolygonAndCircleContact.h; sourceTree = "<group>"; };
+		80BB896A141C3E5900F1753A /* PolygonAndCircleContact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PolygonAndCircleContact.hpp; sourceTree = "<group>"; };
 		80BB896B141C3E5900F1753A /* PolygonContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolygonContact.cpp; sourceTree = "<group>"; };
-		80BB896C141C3E5900F1753A /* PolygonContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolygonContact.h; sourceTree = "<group>"; };
+		80BB896C141C3E5900F1753A /* PolygonContact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PolygonContact.hpp; sourceTree = "<group>"; };
 		80BB896E141C3E5900F1753A /* DistanceJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceJoint.cpp; sourceTree = "<group>"; };
 		80BB896F141C3E5900F1753A /* DistanceJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DistanceJoint.h; sourceTree = "<group>"; };
 		80BB8970141C3E5900F1753A /* FrictionJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrictionJoint.cpp; sourceTree = "<group>"; };
@@ -1043,13 +1043,13 @@
 			isa = PBXGroup;
 			children = (
 				80BB895B141C3E5900F1753A /* ChainAndCircleContact.cpp */,
-				80BB895C141C3E5900F1753A /* ChainAndCircleContact.h */,
+				80BB895C141C3E5900F1753A /* ChainAndCircleContact.hpp */,
 				80BB895D141C3E5900F1753A /* ChainAndPolygonContact.cpp */,
-				80BB895E141C3E5900F1753A /* ChainAndPolygonContact.h */,
+				80BB895E141C3E5900F1753A /* ChainAndPolygonContact.hpp */,
 				80BB895F141C3E5900F1753A /* CircleContact.cpp */,
-				80BB8960141C3E5900F1753A /* CircleContact.h */,
+				80BB8960141C3E5900F1753A /* CircleContact.hpp */,
 				80BB8961141C3E5900F1753A /* Contact.cpp */,
-				80BB8962141C3E5900F1753A /* Contact.h */,
+				80BB8962141C3E5900F1753A /* Contact.hpp */,
 				477DB2921D14B9D500846ED6 /* ContactEdgeList.cpp */,
 				477DB2931D14B9D500846ED6 /* ContactEdgeList.hpp */,
 				477DB2961D14BB2000846ED6 /* ContactEdgeIterator.cpp */,
@@ -1062,13 +1062,13 @@
 				4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */,
 				47E841711DB4018D00E5F311 /* VelocityConstraint.cpp */,
 				80BB8965141C3E5900F1753A /* EdgeAndCircleContact.cpp */,
-				80BB8966141C3E5900F1753A /* EdgeAndCircleContact.h */,
+				80BB8966141C3E5900F1753A /* EdgeAndCircleContact.hpp */,
 				80BB8967141C3E5900F1753A /* EdgeAndPolygonContact.cpp */,
-				80BB8968141C3E5900F1753A /* EdgeAndPolygonContact.h */,
+				80BB8968141C3E5900F1753A /* EdgeAndPolygonContact.hpp */,
 				80BB8969141C3E5900F1753A /* PolygonAndCircleContact.cpp */,
-				80BB896A141C3E5900F1753A /* PolygonAndCircleContact.h */,
+				80BB896A141C3E5900F1753A /* PolygonAndCircleContact.hpp */,
 				80BB896B141C3E5900F1753A /* PolygonContact.cpp */,
-				80BB896C141C3E5900F1753A /* PolygonContact.h */,
+				80BB896C141C3E5900F1753A /* PolygonContact.hpp */,
 				477DB2AA1D1C4BE800846ED6 /* PositionSolverManifold.cpp */,
 				477DB2AB1D1C4BE800846ED6 /* PositionSolverManifold.hpp */,
 			);
@@ -1295,22 +1295,22 @@
 				4734B2281DC29F7C00F15E29 /* SimplexVertex.hpp in Headers */,
 				4726DD2D1D31B4090012A882 /* AABB.hpp in Headers */,
 				47AA5DE31C4C5FBE008AF2BA /* WorldCallbacks.hpp in Headers */,
-				47AA5DE41C4C5FBE008AF2BA /* ChainAndCircleContact.h in Headers */,
-				47AA5DE51C4C5FBE008AF2BA /* ChainAndPolygonContact.h in Headers */,
+				47AA5DE41C4C5FBE008AF2BA /* ChainAndCircleContact.hpp in Headers */,
+				47AA5DE51C4C5FBE008AF2BA /* ChainAndPolygonContact.hpp in Headers */,
 				472134A01C8E4CB5009536F9 /* FixtureList.hpp in Headers */,
 				4726DD101D3014990012A882 /* IndexPair.hpp in Headers */,
-				47AA5DE61C4C5FBE008AF2BA /* CircleContact.h in Headers */,
+				47AA5DE61C4C5FBE008AF2BA /* CircleContact.hpp in Headers */,
 				4731DE1C1DDCD0E100E7F931 /* FixtureProxy.hpp in Headers */,
 				4726DD201D305E5D0012A882 /* ContactFeature.hpp in Headers */,
-				47AA5DE71C4C5FBE008AF2BA /* Contact.h in Headers */,
+				47AA5DE71C4C5FBE008AF2BA /* Contact.hpp in Headers */,
 				4734B22E1DC2B11D00F15E29 /* Simplex.hpp in Headers */,
 				47AA5DE81C4C5FBE008AF2BA /* ContactSolver.h in Headers */,
-				47AA5DE91C4C5FBE008AF2BA /* EdgeAndCircleContact.h in Headers */,
-				47AA5DEA1C4C5FBE008AF2BA /* EdgeAndPolygonContact.h in Headers */,
+				47AA5DE91C4C5FBE008AF2BA /* EdgeAndCircleContact.hpp in Headers */,
+				47AA5DEA1C4C5FBE008AF2BA /* EdgeAndPolygonContact.hpp in Headers */,
 				4731DE361DE1405900E7F931 /* Length.hpp in Headers */,
 				4731DE3C1DE1412F00E7F931 /* Time.hpp in Headers */,
-				47AA5DEB1C4C5FBE008AF2BA /* PolygonAndCircleContact.h in Headers */,
-				47AA5DEC1C4C5FBE008AF2BA /* PolygonContact.h in Headers */,
+				47AA5DEB1C4C5FBE008AF2BA /* PolygonAndCircleContact.hpp in Headers */,
+				47AA5DEC1C4C5FBE008AF2BA /* PolygonContact.hpp in Headers */,
 				47AA5DED1C4C5FBE008AF2BA /* DistanceJoint.h in Headers */,
 				47AA5DEE1C4C5FBE008AF2BA /* FrictionJoint.h in Headers */,
 				47AA5DEF1C4C5FBE008AF2BA /* GearJoint.h in Headers */,
@@ -1392,26 +1392,26 @@
 				80BB89B5141C3E5900F1753A /* World.hpp in Headers */,
 				478869101D78BF7200AEC7F1 /* VelocityConstraint.hpp in Headers */,
 				80BB89B7141C3E5900F1753A /* WorldCallbacks.hpp in Headers */,
-				80BB89B9141C3E5900F1753A /* ChainAndCircleContact.h in Headers */,
+				80BB89B9141C3E5900F1753A /* ChainAndCircleContact.hpp in Headers */,
 				4751EE291CEDD78F00D459CB /* Mobile.h in Headers */,
-				80BB89BB141C3E5900F1753A /* ChainAndPolygonContact.h in Headers */,
+				80BB89BB141C3E5900F1753A /* ChainAndPolygonContact.hpp in Headers */,
 				4721349F1C8E4CB5009536F9 /* FixtureList.hpp in Headers */,
 				4751EE2B1CEDD79900D459CB /* ConveyorBelt.h in Headers */,
 				477DB2AD1D1C4BE800846ED6 /* PositionSolverManifold.hpp in Headers */,
 				4726DD191D30230A0012A882 /* SimplexCache.hpp in Headers */,
 				47A9833B1D0F51A300AA7D1A /* JointIterator.hpp in Headers */,
 				4731DE291DDF84A900E7F931 /* RayCastInput.hpp in Headers */,
-				80BB89BD141C3E5900F1753A /* CircleContact.h in Headers */,
+				80BB89BD141C3E5900F1753A /* CircleContact.hpp in Headers */,
 				477DB2A91D15F64A00846ED6 /* ConstJointEdgeIterator.hpp in Headers */,
 				47A9833F1D0F7ABA00AA7D1A /* ConstJointIterator.hpp in Headers */,
 				47AA63A91D10786F00726CA2 /* ContactIterator.hpp in Headers */,
-				80BB89BF141C3E5900F1753A /* Contact.h in Headers */,
+				80BB89BF141C3E5900F1753A /* Contact.hpp in Headers */,
 				80BB89C1141C3E5900F1753A /* ContactSolver.h in Headers */,
-				80BB89C3141C3E5900F1753A /* EdgeAndCircleContact.h in Headers */,
+				80BB89C3141C3E5900F1753A /* EdgeAndCircleContact.hpp in Headers */,
 				4734B2331DC2CF9500F15E29 /* IndexPairList.hpp in Headers */,
-				80BB89C5141C3E5900F1753A /* EdgeAndPolygonContact.h in Headers */,
-				80BB89C7141C3E5900F1753A /* PolygonAndCircleContact.h in Headers */,
-				80BB89C9141C3E5900F1753A /* PolygonContact.h in Headers */,
+				80BB89C5141C3E5900F1753A /* EdgeAndPolygonContact.hpp in Headers */,
+				80BB89C7141C3E5900F1753A /* PolygonAndCircleContact.hpp in Headers */,
+				80BB89C9141C3E5900F1753A /* PolygonContact.hpp in Headers */,
 				80BB89CB141C3E5900F1753A /* DistanceJoint.h in Headers */,
 				4726DD2C1D31B4090012A882 /* AABB.hpp in Headers */,
 				80BB89CD141C3E5900F1753A /* FrictionJoint.h in Headers */,

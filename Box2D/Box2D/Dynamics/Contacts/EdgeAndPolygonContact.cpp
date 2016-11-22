@@ -17,7 +17,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Dynamics/Contacts/EdgeAndPolygonContact.h>
+#include <Box2D/Dynamics/Contacts/EdgeAndPolygonContact.hpp>
 #include <Box2D/Common/BlockAllocator.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Collision/CollideShapes.hpp>
