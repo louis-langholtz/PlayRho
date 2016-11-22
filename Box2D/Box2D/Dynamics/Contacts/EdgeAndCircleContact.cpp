@@ -18,7 +18,7 @@
 */
 
 #include <Box2D/Dynamics/Contacts/EdgeAndCircleContact.h>
-#include <Box2D/Common/BlockAllocator.h>
+#include <Box2D/Common/BlockAllocator.hpp>
 #include <Box2D/Dynamics/Fixture.h>
 #include <Box2D/Collision/CollideShapes.hpp>
 #include <Box2D/Collision/Shapes/EdgeShape.hpp>

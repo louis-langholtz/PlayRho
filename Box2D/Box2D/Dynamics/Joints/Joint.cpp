@@ -31,7 +31,7 @@
 #include <Box2D/Dynamics/Joints/MotorJoint.h>
 #include <Box2D/Dynamics/Body.h>
 #include <Box2D/Dynamics/World.h>
-#include <Box2D/Common/BlockAllocator.h>
+#include <Box2D/Common/BlockAllocator.hpp>
 
 #include <new>
 

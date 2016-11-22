@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Common/BlockAllocator.h>
+#include <Box2D/Common/BlockAllocator.hpp>
 
 using namespace box2d;
 

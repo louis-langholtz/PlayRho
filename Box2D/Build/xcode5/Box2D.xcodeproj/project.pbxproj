@@ -197,7 +197,7 @@
 		47AA5DD31C4C5FBE008AF2BA /* EdgeShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB893A141C3E5900F1753A /* EdgeShape.hpp */; };
 		47AA5DD41C4C5FBE008AF2BA /* PolygonShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB893C141C3E5900F1753A /* PolygonShape.hpp */; };
 		47AA5DD51C4C5FBE008AF2BA /* Shape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB893D141C3E5900F1753A /* Shape.hpp */; };
-		47AA5DD61C4C5FBE008AF2BA /* BlockAllocator.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8940141C3E5900F1753A /* BlockAllocator.h */; };
+		47AA5DD61C4C5FBE008AF2BA /* BlockAllocator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8940141C3E5900F1753A /* BlockAllocator.hpp */; };
 		47AA5DD81C4C5FBE008AF2BA /* GrowableStack.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8943141C3E5900F1753A /* GrowableStack.h */; };
 		47AA5DD91C4C5FBE008AF2BA /* Math.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8945141C3E5900F1753A /* Math.h */; };
 		47AA5DDA1C4C5FBE008AF2BA /* Settings.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8947141C3E5900F1753A /* Settings.h */; };
@@ -310,7 +310,7 @@
 		80BB899C141C3E5900F1753A /* PolygonShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB893C141C3E5900F1753A /* PolygonShape.hpp */; };
 		80BB899D141C3E5900F1753A /* Shape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB893D141C3E5900F1753A /* Shape.hpp */; };
 		80BB899E141C3E5900F1753A /* BlockAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB893F141C3E5900F1753A /* BlockAllocator.cpp */; };
-		80BB899F141C3E5900F1753A /* BlockAllocator.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8940141C3E5900F1753A /* BlockAllocator.h */; };
+		80BB899F141C3E5900F1753A /* BlockAllocator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8940141C3E5900F1753A /* BlockAllocator.hpp */; };
 		80BB89A2141C3E5900F1753A /* GrowableStack.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8943141C3E5900F1753A /* GrowableStack.h */; };
 		80BB89A3141C3E5900F1753A /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8944141C3E5900F1753A /* Math.cpp */; };
 		80BB89A4141C3E5900F1753A /* Math.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8945141C3E5900F1753A /* Math.h */; };
@@ -638,7 +638,7 @@
 		80BB893C141C3E5900F1753A /* PolygonShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PolygonShape.hpp; sourceTree = "<group>"; };
 		80BB893D141C3E5900F1753A /* Shape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Shape.hpp; sourceTree = "<group>"; };
 		80BB893F141C3E5900F1753A /* BlockAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlockAllocator.cpp; sourceTree = "<group>"; };
-		80BB8940141C3E5900F1753A /* BlockAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockAllocator.h; sourceTree = "<group>"; };
+		80BB8940141C3E5900F1753A /* BlockAllocator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BlockAllocator.hpp; sourceTree = "<group>"; };
 		80BB8943141C3E5900F1753A /* GrowableStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowableStack.h; sourceTree = "<group>"; };
 		80BB8944141C3E5900F1753A /* Math.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Math.cpp; sourceTree = "<group>"; };
 		80BB8945141C3E5900F1753A /* Math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Math.h; sourceTree = "<group>"; };
@@ -967,7 +967,7 @@
 			isa = PBXGroup;
 			children = (
 				80BB893F141C3E5900F1753A /* BlockAllocator.cpp */,
-				80BB8940141C3E5900F1753A /* BlockAllocator.h */,
+				80BB8940141C3E5900F1753A /* BlockAllocator.hpp */,
 				80BB8943141C3E5900F1753A /* GrowableStack.h */,
 				80BB8944141C3E5900F1753A /* Math.cpp */,
 				80BB8945141C3E5900F1753A /* Math.h */,
@@ -1272,7 +1272,7 @@
 				472134991C8D03D6009536F9 /* BodyList.hpp in Headers */,
 				47AA5DD41C4C5FBE008AF2BA /* PolygonShape.hpp in Headers */,
 				47AA5DD51C4C5FBE008AF2BA /* Shape.hpp in Headers */,
-				47AA5DD61C4C5FBE008AF2BA /* BlockAllocator.h in Headers */,
+				47AA5DD61C4C5FBE008AF2BA /* BlockAllocator.hpp in Headers */,
 				47AA5DD81C4C5FBE008AF2BA /* GrowableStack.h in Headers */,
 				4734B21A1DC00AFD00F15E29 /* ArrayList.hpp in Headers */,
 				4734B2221DC1340500F15E29 /* Span.hpp in Headers */,
@@ -1370,7 +1370,7 @@
 				4751EE2F1CEDD7A300D459CB /* MobileBalanced.h in Headers */,
 				4734B22D1DC2B11D00F15E29 /* Simplex.hpp in Headers */,
 				4731DE3B1DE1412F00E7F931 /* Time.hpp in Headers */,
-				80BB899F141C3E5900F1753A /* BlockAllocator.h in Headers */,
+				80BB899F141C3E5900F1753A /* BlockAllocator.hpp in Headers */,
 				4726DD381D387D630012A882 /* Manifold.hpp in Headers */,
 				47AA63A11D0F7FDA00726CA2 /* ConstBodyIterator.hpp in Headers */,
 				80BB89A2141C3E5900F1753A /* GrowableStack.h in Headers */,
