@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Collision/Shapes/Shape.h>
+#include <Box2D/Collision/Shapes/Shape.hpp>
 
 using namespace box2d;
 

@@ -20,7 +20,7 @@
 #ifndef B2_POLYGON_SHAPE_H
 #define B2_POLYGON_SHAPE_H
 
-#include <Box2D/Collision/Shapes/Shape.h>
+#include <Box2D/Collision/Shapes/Shape.hpp>
 #include <Box2D/Common/VertexSet.hpp>
 #include <type_traits>
 

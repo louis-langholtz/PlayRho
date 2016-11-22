@@ -22,7 +22,7 @@
 
 #include <Box2D/Common/Math.h>
 #include <Box2D/Collision/Manifold.hpp>
-#include <Box2D/Collision/Shapes/Shape.h>
+#include <Box2D/Collision/Shapes/Shape.hpp>
 
 #include <type_traits>
 

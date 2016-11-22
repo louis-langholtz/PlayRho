@@ -29,7 +29,7 @@
 #include <Box2D/Collision/Collision.hpp>
 #include <Box2D/Collision/TimeOfImpact.hpp>
 #include <Box2D/Collision/DistanceProxy.hpp>
-#include <Box2D/Collision/Shapes/Shape.h>
+#include <Box2D/Collision/Shapes/Shape.hpp>
 #include <Box2D/Common/BlockAllocator.h>
 #include <Box2D/Dynamics/Body.h>
 #include <Box2D/Dynamics/Fixture.h>

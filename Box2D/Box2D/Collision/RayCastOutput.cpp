@@ -24,7 +24,7 @@
 #include <Box2D/Collision/Shapes/EdgeShape.h>
 #include <Box2D/Collision/Shapes/PolygonShape.h>
 #include <Box2D/Collision/Shapes/ChainShape.h>
-#include <Box2D/Collision/Shapes/Shape.h>
+#include <Box2D/Collision/Shapes/Shape.hpp>
 #include <Box2D/Dynamics/Fixture.h>
 #include <Box2D/Dynamics/Body.h>
 
