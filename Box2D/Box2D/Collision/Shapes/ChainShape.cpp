@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Collision/Shapes/ChainShape.h>
-#include <Box2D/Collision/Shapes/EdgeShape.h>
+#include <Box2D/Collision/Shapes/ChainShape.hpp>
+#include <Box2D/Collision/Shapes/EdgeShape.hpp>
 
 using namespace box2d;
 

@@ -19,9 +19,9 @@
 
 #include <Box2D/Collision/Collision.hpp>
 #include <Box2D/Collision/CollideShapes.hpp>
-#include <Box2D/Collision/Shapes/CircleShape.h>
-#include <Box2D/Collision/Shapes/PolygonShape.h>
-#include <Box2D/Collision/Shapes/EdgeShape.h>
+#include <Box2D/Collision/Shapes/CircleShape.hpp>
+#include <Box2D/Collision/Shapes/PolygonShape.hpp>
+#include <Box2D/Collision/Shapes/EdgeShape.hpp>
 
 using namespace box2d;
 

@@ -18,7 +18,7 @@
 
 #include "gtest/gtest.h"
 #include <Box2D/Dynamics/Contacts/PositionSolverManifold.hpp>
-#include <Box2D/Collision/Shapes/PolygonShape.h>
+#include <Box2D/Collision/Shapes/PolygonShape.hpp>
 #include <Box2D/Collision/WorldManifold.hpp>
 #include <Box2D/Collision/CollideShapes.hpp>
 

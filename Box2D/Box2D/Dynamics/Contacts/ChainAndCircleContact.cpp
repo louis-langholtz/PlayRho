@@ -21,9 +21,9 @@
 #include <Box2D/Common/BlockAllocator.h>
 #include <Box2D/Dynamics/Fixture.h>
 #include <Box2D/Collision/CollideShapes.hpp>
-#include <Box2D/Collision/Shapes/ChainShape.h>
-#include <Box2D/Collision/Shapes/EdgeShape.h>
-#include <Box2D/Collision/Shapes/CircleShape.h>
+#include <Box2D/Collision/Shapes/ChainShape.hpp>
+#include <Box2D/Collision/Shapes/EdgeShape.hpp>
+#include <Box2D/Collision/Shapes/CircleShape.hpp>
 
 #include <new>
 

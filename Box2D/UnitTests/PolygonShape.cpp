@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Collision/Shapes/PolygonShape.h>
+#include <Box2D/Collision/Shapes/PolygonShape.hpp>
 
 using namespace box2d;
 

@@ -21,7 +21,7 @@
 #include <Box2D/Dynamics/World.h>
 #include <Box2D/Dynamics/Fixture.h>
 #include <Box2D/Dynamics/Joints/Joint.h>
-#include <Box2D/Collision/Shapes/CircleShape.h>
+#include <Box2D/Collision/Shapes/CircleShape.hpp>
 
 #include <chrono>
 

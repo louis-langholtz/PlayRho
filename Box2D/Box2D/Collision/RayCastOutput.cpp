@@ -20,10 +20,10 @@
 #include <Box2D/Collision/RayCastOutput.hpp>
 #include <Box2D/Collision/RayCastInput.hpp>
 #include <Box2D/Collision/AABB.hpp>
-#include <Box2D/Collision/Shapes/CircleShape.h>
-#include <Box2D/Collision/Shapes/EdgeShape.h>
-#include <Box2D/Collision/Shapes/PolygonShape.h>
-#include <Box2D/Collision/Shapes/ChainShape.h>
+#include <Box2D/Collision/Shapes/CircleShape.hpp>
+#include <Box2D/Collision/Shapes/EdgeShape.hpp>
+#include <Box2D/Collision/Shapes/PolygonShape.hpp>
+#include <Box2D/Collision/Shapes/ChainShape.hpp>
 #include <Box2D/Collision/Shapes/Shape.hpp>
 #include <Box2D/Dynamics/Fixture.h>
 #include <Box2D/Dynamics/Body.h>

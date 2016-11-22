@@ -22,7 +22,7 @@
 #include <Box2D/Dynamics/Body.h>
 #include <Box2D/Dynamics/Fixture.h>
 #include <Box2D/Collision/CollideShapes.hpp>
-#include <Box2D/Collision/Shapes/PolygonShape.h>
+#include <Box2D/Collision/Shapes/PolygonShape.hpp>
 
 #include <new>
 

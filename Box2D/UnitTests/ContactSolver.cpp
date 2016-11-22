@@ -19,7 +19,7 @@
 #include "gtest/gtest.h"
 #include <Box2D/Dynamics/Contacts/ContactSolver.h>
 #include <Box2D/Dynamics/Contacts/PositionConstraint.hpp>
-#include <Box2D/Collision/Shapes/PolygonShape.h>
+#include <Box2D/Collision/Shapes/PolygonShape.hpp>
 #include <Box2D/Collision/CollideShapes.hpp>
 
 using namespace box2d;
