@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Box2D.h>
+#include <Box2D/Box2D.hpp>
 
 #include <unistd.h>
 
