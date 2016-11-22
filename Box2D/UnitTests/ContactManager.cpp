@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Dynamics/ContactManager.h>
+#include <Box2D/Dynamics/ContactManager.hpp>
 
 using namespace box2d;
 

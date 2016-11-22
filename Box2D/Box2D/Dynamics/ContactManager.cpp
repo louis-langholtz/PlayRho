@@ -17,7 +17,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <Box2D/Dynamics/ContactManager.h>
+#include <Box2D/Dynamics/ContactManager.hpp>
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/Fixture.h>
 #include <Box2D/Dynamics/FixtureProxy.hpp>

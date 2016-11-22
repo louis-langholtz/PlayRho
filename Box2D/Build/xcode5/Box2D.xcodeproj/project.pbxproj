@@ -204,7 +204,7 @@
 		47AA5DDB1C4C5FBE008AF2BA /* StackAllocator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8949141C3E5900F1753A /* StackAllocator.hpp */; };
 		47AA5DDC1C4C5FBE008AF2BA /* Timer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB894B141C3E5900F1753A /* Timer.hpp */; };
 		47AA5DDD1C4C5FBE008AF2BA /* Body.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB894E141C3E5900F1753A /* Body.hpp */; };
-		47AA5DDE1C4C5FBE008AF2BA /* ContactManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8950141C3E5900F1753A /* ContactManager.h */; };
+		47AA5DDE1C4C5FBE008AF2BA /* ContactManager.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8950141C3E5900F1753A /* ContactManager.hpp */; };
 		47AA5DDF1C4C5FBE008AF2BA /* Fixture.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8952141C3E5900F1753A /* Fixture.h */; };
 		47AA5DE01C4C5FBE008AF2BA /* Island.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8954141C3E5900F1753A /* Island.h */; };
 		47AA5DE11C4C5FBE008AF2BA /* TimeStep.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8955141C3E5900F1753A /* TimeStep.h */; };
@@ -323,7 +323,7 @@
 		80BB89AB141C3E5900F1753A /* Body.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB894D141C3E5900F1753A /* Body.cpp */; };
 		80BB89AC141C3E5900F1753A /* Body.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB894E141C3E5900F1753A /* Body.hpp */; };
 		80BB89AD141C3E5900F1753A /* ContactManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB894F141C3E5900F1753A /* ContactManager.cpp */; };
-		80BB89AE141C3E5900F1753A /* ContactManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8950141C3E5900F1753A /* ContactManager.h */; };
+		80BB89AE141C3E5900F1753A /* ContactManager.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8950141C3E5900F1753A /* ContactManager.hpp */; };
 		80BB89AF141C3E5900F1753A /* Fixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8951141C3E5900F1753A /* Fixture.cpp */; };
 		80BB89B0141C3E5900F1753A /* Fixture.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8952141C3E5900F1753A /* Fixture.h */; };
 		80BB89B1141C3E5900F1753A /* Island.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8953141C3E5900F1753A /* Island.cpp */; };
@@ -651,7 +651,7 @@
 		80BB894D141C3E5900F1753A /* Body.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; path = Body.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		80BB894E141C3E5900F1753A /* Body.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 2; path = Body.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		80BB894F141C3E5900F1753A /* ContactManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactManager.cpp; sourceTree = "<group>"; };
-		80BB8950141C3E5900F1753A /* ContactManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactManager.h; sourceTree = "<group>"; };
+		80BB8950141C3E5900F1753A /* ContactManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactManager.hpp; sourceTree = "<group>"; };
 		80BB8951141C3E5900F1753A /* Fixture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fixture.cpp; sourceTree = "<group>"; };
 		80BB8952141C3E5900F1753A /* Fixture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fixture.h; sourceTree = "<group>"; };
 		80BB8953141C3E5900F1753A /* Island.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Island.cpp; sourceTree = "<group>"; };
@@ -997,7 +997,7 @@
 				80BB894D141C3E5900F1753A /* Body.cpp */,
 				80BB894E141C3E5900F1753A /* Body.hpp */,
 				80BB894F141C3E5900F1753A /* ContactManager.cpp */,
-				80BB8950141C3E5900F1753A /* ContactManager.h */,
+				80BB8950141C3E5900F1753A /* ContactManager.hpp */,
 				80BB8951141C3E5900F1753A /* Fixture.cpp */,
 				80BB8952141C3E5900F1753A /* Fixture.h */,
 				4731DE181DDCD0E100E7F931 /* FixtureProxy.hpp */,
@@ -1284,7 +1284,7 @@
 				47AA5DDC1C4C5FBE008AF2BA /* Timer.hpp in Headers */,
 				4726DD391D387D630012A882 /* Manifold.hpp in Headers */,
 				47AA5DDD1C4C5FBE008AF2BA /* Body.hpp in Headers */,
-				47AA5DDE1C4C5FBE008AF2BA /* ContactManager.h in Headers */,
+				47AA5DDE1C4C5FBE008AF2BA /* ContactManager.hpp in Headers */,
 				4731DE021DCD2F1700E7F931 /* Angle.hpp in Headers */,
 				47AA5DDF1C4C5FBE008AF2BA /* Fixture.h in Headers */,
 				47AA5DE01C4C5FBE008AF2BA /* Island.h in Headers */,
@@ -1382,7 +1382,7 @@
 				80BB89AA141C3E5900F1753A /* Timer.hpp in Headers */,
 				80BB89AC141C3E5900F1753A /* Body.hpp in Headers */,
 				477DB2951D14B9D500846ED6 /* ContactEdgeList.hpp in Headers */,
-				80BB89AE141C3E5900F1753A /* ContactManager.h in Headers */,
+				80BB89AE141C3E5900F1753A /* ContactManager.hpp in Headers */,
 				80BB89B0141C3E5900F1753A /* Fixture.h in Headers */,
 				4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */,
 				80BB89B2141C3E5900F1753A /* Island.h in Headers */,
