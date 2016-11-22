@@ -26,7 +26,7 @@
 #include <Box2D/Collision/Shapes/ChainShape.hpp>
 #include <Box2D/Collision/Shapes/Shape.hpp>
 #include <Box2D/Dynamics/Fixture.h>
-#include <Box2D/Dynamics/Body.h>
+#include <Box2D/Dynamics/Body.hpp>
 
 using namespace box2d;
 	

@@ -18,7 +18,7 @@
 */
 
 #include <Box2D/Dynamics/Joints/FrictionJoint.h>
-#include <Box2D/Dynamics/Body.h>
+#include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/TimeStep.h>
 
 using namespace box2d;

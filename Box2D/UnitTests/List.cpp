@@ -19,7 +19,7 @@
 #include "gtest/gtest.h"
 #include <type_traits>
 #include <Box2D/Common/List.hpp>
-#include <Box2D/Dynamics/Body.h>
+#include <Box2D/Dynamics/Body.hpp>
 
 using namespace box2d;
 

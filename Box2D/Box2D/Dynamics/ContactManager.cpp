@@ -18,7 +18,7 @@
 */
 
 #include <Box2D/Dynamics/ContactManager.h>
-#include <Box2D/Dynamics/Body.h>
+#include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/Fixture.h>
 #include <Box2D/Dynamics/FixtureProxy.hpp>
 #include <Box2D/Dynamics/WorldCallbacks.h>

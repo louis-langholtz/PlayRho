@@ -7,7 +7,7 @@
 //
 
 #include <Box2D/Dynamics/BodyList.hpp>
-#include <Box2D/Dynamics/Body.h>
+#include <Box2D/Dynamics/Body.hpp>
 
 using namespace box2d;
 

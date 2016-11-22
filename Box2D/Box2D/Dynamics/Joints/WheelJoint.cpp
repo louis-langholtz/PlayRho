@@ -18,7 +18,7 @@
 */
 
 #include <Box2D/Dynamics/Joints/WheelJoint.h>
-#include <Box2D/Dynamics/Body.h>
+#include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/TimeStep.h>
 #include <Box2D/Dynamics/Contacts/ContactSolver.h>
 
