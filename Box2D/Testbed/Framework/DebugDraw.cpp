@@ -98,7 +98,7 @@ ProjectionMatrix GetProjectionMatrix(const Camera& camera, float_t zBias)
 		-(upper.y + lower.y) / (upper.y - lower.y), // 13
 		zBias, // 14
 		1.0f
-}};
+	}};
 }
 
 //
@@ -584,7 +584,10 @@ struct GLRenderTriangles
 };
 
 //
-DebugDraw::DebugDraw(Camera& camera): m_camera(camera)
+DebugDraw::DebugDraw(Camera& camera):
+	m_camera(camera),
+	m_cosInc{cosf((2 * Pi) / m_circleParts)},
+	m_sinInc{sinf((2 * Pi) / m_circleParts)}
 {
 	m_points = new GLRenderPoints;
 	m_lines = new GLRenderLines;
@@ -602,10 +605,10 @@ DebugDraw::~DebugDraw() noexcept
 //
 void DebugDraw::DrawPolygon(const Vec2* vertices, size_type vertexCount, const Color& color)
 {
-    Vec2 p1 = vertices[vertexCount - 1];
+    auto p1 = vertices[vertexCount - 1];
 	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 	{
-        Vec2 p2 = vertices[i];
+        const auto p2 = vertices[i];
 		m_lines->Vertex(m_camera, p1, color);
 		m_lines->Vertex(m_camera, p2, color);
         p1 = p2;
@@ -615,87 +618,47 @@ void DebugDraw::DrawPolygon(const Vec2* vertices, size_type vertexCount, const C
 //
 void DebugDraw::DrawSolidPolygon(const Vec2* vertices, size_type vertexCount, const Color& color)
 {
-	Color fillColor(0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f);
-
-    for (auto i = decltype(vertexCount){1}; i < vertexCount - 1; ++i)
+	for (auto i = decltype(vertexCount){1}; i < vertexCount - 1; ++i)
     {
-        m_triangles->Vertex(m_camera, vertices[0], fillColor);
-        m_triangles->Vertex(m_camera, vertices[i], fillColor);
-        m_triangles->Vertex(m_camera, vertices[i+1], fillColor);
+        m_triangles->Vertex(m_camera, vertices[0], color);
+        m_triangles->Vertex(m_camera, vertices[i], color);
+        m_triangles->Vertex(m_camera, vertices[i+1], color);
     }
-
-    Vec2 p1 = vertices[vertexCount - 1];
-	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-	{
-        Vec2 p2 = vertices[i];
-		m_lines->Vertex(m_camera, p1, color);
-		m_lines->Vertex(m_camera, p2, color);
-        p1 = p2;
-	}
 }
 
 //
 void DebugDraw::DrawCircle(const Vec2& center, float_t radius, const Color& color)
 {
-	const float_t k_segments = 16.0f;
-	const float_t k_increment = 2.0f * Pi / k_segments;
-    float_t sinInc = sinf(k_increment);
-    float_t cosInc = cosf(k_increment);
-    Vec2 r1(1.0f, 0.0f);
-    Vec2 v1 = center + radius * r1;
-	for (int32 i = 0; i < k_segments; ++i)
+	auto r1 = Vec2(1, 0);
+	auto v1 = center + radius * r1;
+	for (auto i = decltype(m_circleParts){0}; i < m_circleParts; ++i)
 	{
-        // Perform rotation to avoid additional trigonometry.
-        Vec2 r2;
-        r2.x = cosInc * r1.x - sinInc * r1.y;
-        r2.y = sinInc * r1.x + cosInc * r1.y;
-		Vec2 v2 = center + radius * r2;
-        m_lines->Vertex(m_camera, v1, color);
-        m_lines->Vertex(m_camera, v2, color);
-        r1 = r2;
-        v1 = v2;
+		const auto r2 = Vec2{m_cosInc * r1.x - m_sinInc * r1.y, m_sinInc * r1.x + m_cosInc * r1.y};
+		const auto v2 = center + radius * r2;
+		m_lines->Vertex(m_camera, v1, color);
+		m_lines->Vertex(m_camera, v2, color);
+		r1 = r2;
+		v1 = v2;
 	}
 }
-
+	
 //
-void DebugDraw::DrawSolidCircle(const Vec2& center, float_t radius, const Vec2& axis, const Color& color)
+void DebugDraw::DrawSolidCircle(const Vec2& center, float_t radius, const Color& color)
 {
-	const auto k_segments = 32.0f;
-	const auto k_increment = 2.0f * Pi / k_segments;
-    const auto sinInc = sinf(k_increment);
-    const auto cosInc = cosf(k_increment);
-    const auto v0 = center;
-    auto r1 = Vec2(cosInc, sinInc);
-    auto v1 = center + radius * r1;
-	const auto fillColor = Color(0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f);
-	for (int32 i = 0; i < k_segments; ++i)
+	const auto v0 = center;
+	auto r1 = Vec2(m_cosInc, m_sinInc);
+	auto v1 = center + radius * r1;
+	for (auto i = decltype(m_circleParts){0}; i < m_circleParts; ++i)
 	{
-        // Perform rotation to avoid additional trigonometry.
-		const auto r2 = Vec2{cosInc * r1.x - sinInc * r1.y, sinInc * r1.x + cosInc * r1.y};
+		// Perform rotation to avoid additional trigonometry.
+		const auto r2 = Vec2{m_cosInc * r1.x - m_sinInc * r1.y, m_sinInc * r1.x + m_cosInc * r1.y};
 		const auto v2 = center + radius * r2;
-		m_triangles->Vertex(m_camera, v0, fillColor);
-        m_triangles->Vertex(m_camera, v1, fillColor);
-        m_triangles->Vertex(m_camera, v2, fillColor);
-        r1 = r2;
-        v1 = v2;
+		m_triangles->Vertex(m_camera, v0, color);
+		m_triangles->Vertex(m_camera, v1, color);
+		m_triangles->Vertex(m_camera, v2, color);
+		r1 = r2;
+		v1 = v2;
 	}
-
-    r1 = Vec2(1.0f, 0.0f);
-    v1 = center + radius * r1;
-	for (int32 i = 0; i < k_segments; ++i)
-	{
-		const auto r2 = Vec2{cosInc * r1.x - sinInc * r1.y, sinInc * r1.x + cosInc * r1.y};
-		const auto v2 = center + radius * r2;
-        m_lines->Vertex(m_camera, v1, color);
-        m_lines->Vertex(m_camera, v2, color);
-        r1 = r2;
-        v1 = v2;
-	}
-
-    // Draw a line fixed in the circle to animate rotation.
-	const auto p = center + radius * axis;
-	m_lines->Vertex(m_camera, center, color);
-	m_lines->Vertex(m_camera, p, color);
 }
 
 //
@@ -705,23 +668,6 @@ void DebugDraw::DrawSegment(const Vec2& p1, const Vec2& p2, const Color& color)
 	m_lines->Vertex(m_camera, p2, color);
 }
 
-//
-void DebugDraw::DrawTransform(const Transformation& xf)
-{
-	const float_t k_axisScale = 0.4f;
-    Color red(1.0f, 0.0f, 0.0f);
-    Color green(0.0f, 1.0f, 0.0f);
-	Vec2 p1 = xf.p, p2;
-
-	m_lines->Vertex(m_camera, p1, red);
-	p2 = p1 + k_axisScale * GetXAxis(xf.q);
-	m_lines->Vertex(m_camera, p2, red);
-
-	m_lines->Vertex(m_camera, p1, green);
-	p2 = p1 + k_axisScale * GetYAxis(xf.q);
-	m_lines->Vertex(m_camera, p2, green);
-}
-
 void DebugDraw::DrawPoint(const Vec2& p, float_t size, const Color& color)
 {
     m_points->Vertex(m_camera, p, color, size);
@@ -729,7 +675,7 @@ void DebugDraw::DrawPoint(const Vec2& p, float_t size, const Color& color)
 
 void DebugDraw::DrawString(int x, int y, const char *string, ...)
 {
-	float_t h = float_t(m_camera.m_height);
+	const auto h = float_t(m_camera.m_height);
 
 	char buffer[128];
 
@@ -743,8 +689,8 @@ void DebugDraw::DrawString(int x, int y, const char *string, ...)
 
 void DebugDraw::DrawString(const Vec2& pw, const char *string, ...)
 {
-	Vec2 ps = ConvertWorldToScreen(m_camera, pw);
-	float_t h = float_t(m_camera.m_height);
+	const auto ps = ConvertWorldToScreen(m_camera, pw);
+	const auto h = float_t(m_camera.m_height);
 
 	char buffer[128];
 
@@ -754,26 +700,6 @@ void DebugDraw::DrawString(const Vec2& pw, const char *string, ...)
 	va_end(arg);
 
 	AddGfxCmdText(ps.x, h - ps.y, TEXT_ALIGN_LEFT, buffer, SetRGBA(230, 153, 153, 255));
-}
-
-void DebugDraw::DrawAABB(AABB* aabb, const Color& c)
-{
-    Vec2 p1 = aabb->GetLowerBound();
-    Vec2 p2 = Vec2(aabb->GetUpperBound().x, aabb->GetLowerBound().y);
-    Vec2 p3 = aabb->GetUpperBound();
-    Vec2 p4 = Vec2(aabb->GetLowerBound().x, aabb->GetUpperBound().y);
-    
-    m_lines->Vertex(m_camera, p1, c);
-    m_lines->Vertex(m_camera, p2, c);
-
-    m_lines->Vertex(m_camera, p2, c);
-    m_lines->Vertex(m_camera, p3, c);
-
-    m_lines->Vertex(m_camera, p3, c);
-    m_lines->Vertex(m_camera, p4, c);
-
-    m_lines->Vertex(m_camera, p4, c);
-    m_lines->Vertex(m_camera, p1, c);
 }
 
 //

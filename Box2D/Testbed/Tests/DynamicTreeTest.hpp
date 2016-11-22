@@ -112,11 +112,31 @@ public:
 				c.Set(0.6f, 0.6f, 0.9f);
 			}
 
-			drawer.DrawAABB(&actor->aabb, c);
+			const auto p1 = actor->aabb.GetLowerBound();
+			const auto p2 = Vec2(actor->aabb.GetUpperBound().x, actor->aabb.GetLowerBound().y);
+			const auto p3 = actor->aabb.GetUpperBound();
+			const auto p4 = Vec2(actor->aabb.GetLowerBound().x, actor->aabb.GetUpperBound().y);
+			
+			drawer.DrawSegment(p1, p2, c);
+			drawer.DrawSegment(p2, p3, c);
+			drawer.DrawSegment(p3, p4, c);
+			drawer.DrawSegment(p4, p1, c);
 		}
 
 		Color c(0.7f, 0.7f, 0.7f);
-		drawer.DrawAABB(&m_queryAABB, c);
+		{
+			// Draw the AABB.
+
+			const auto p1 = m_queryAABB.GetLowerBound();
+			const auto p2 = Vec2(m_queryAABB.GetUpperBound().x, m_queryAABB.GetLowerBound().y);
+			const auto p3 = m_queryAABB.GetUpperBound();
+			const auto p4 = Vec2(m_queryAABB.GetLowerBound().x, m_queryAABB.GetUpperBound().y);
+			
+			drawer.DrawSegment(p1, p2, c);
+			drawer.DrawSegment(p2, p3, c);
+			drawer.DrawSegment(p3, p4, c);
+			drawer.DrawSegment(p4, p1, c);
+		}
 
 		drawer.DrawSegment(m_rayCastInput.p1, m_rayCastInput.p2, c);
 

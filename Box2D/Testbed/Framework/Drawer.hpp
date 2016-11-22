@@ -25,7 +25,7 @@
 
 namespace box2d {
 
-/// Color for debug drawing. Each value has the range [0,1].
+/// Color for drawing. Each value has the range [0,1].
 struct Color
 {
 	Color() = default;
@@ -33,8 +33,6 @@ struct Color
 	constexpr void Set(float_t ri, float_t gi, float_t bi, float_t ai = float_t{1}) { r = ri; g = gi; b = bi; a = ai; }
 	float_t r, g, b, a;
 };
-
-class AABB;
 
 class Drawer
 {
@@ -55,26 +53,23 @@ public:
 	virtual void DrawCircle(const Vec2& center, float_t radius, const Color& color) = 0;
 	
 	/// Draw a solid circle.
-	virtual void DrawSolidCircle(const Vec2& center, float_t radius, const Vec2& axis, const Color& color) = 0;
+	virtual void DrawSolidCircle(const Vec2& center, float_t radius, const Color& color) = 0;
 	
 	/// Draw a line segment.
 	virtual void DrawSegment(const Vec2& p1, const Vec2& p2, const Color& color) = 0;
 
-	/// Draw a transform. Choose your own length scale.
-	/// @param xf a transform.
-	virtual void DrawTransform(const Transformation& xf) = 0;
-
 	virtual void DrawPoint(const Vec2& p, float_t size, const Color& color) = 0;
 	
+	/// Draws a string at the given screen coordinates.
 	virtual void DrawString(int x, int y, const char* string, ...) = 0; 
 	
+	/// Draws a string at the given world coordinates.
 	virtual void DrawString(const Vec2& p, const char* string, ...) = 0;
-	
-	virtual void DrawAABB(AABB* aabb, const Color& color) = 0;
-	
+		
 	virtual void Flush() = 0;
 	
 	virtual void SetTranslation(Vec2 value) = 0;
+
 	virtual Vec2 GetTranslation() const = 0;
 };
 

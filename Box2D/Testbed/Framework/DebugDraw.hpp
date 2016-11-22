@@ -54,6 +54,7 @@ class DebugDraw : public Drawer
 {
 public:
 	DebugDraw(Camera& camera);
+
 	virtual ~DebugDraw() noexcept;
 	
 	void DrawPolygon(const Vec2* vertices, size_type vertexCount, const Color& color) override;
@@ -62,11 +63,9 @@ public:
 
 	void DrawCircle(const Vec2& center, float_t radius, const Color& color) override;
 
-	void DrawSolidCircle(const Vec2& center, float_t radius, const Vec2& axis, const Color& color) override;
+	void DrawSolidCircle(const Vec2& center, float_t radius, const Color& color) override;
 
 	void DrawSegment(const Vec2& p1, const Vec2& p2, const Color& color) override;
-
-	void DrawTransform(const Transformation& xf) override;
 
     void DrawPoint(const Vec2& p, float_t size, const Color& color) override;
 
@@ -74,11 +73,10 @@ public:
 
     void DrawString(const Vec2& p, const char* string, ...) override;
 
-    void DrawAABB(AABB* aabb, const Color& color) override;
-
     void Flush() override;
 	
 	Vec2 GetTranslation() const override;
+
 	void SetTranslation(Vec2 value) override;
 
 private:
@@ -86,6 +84,9 @@ private:
 	GLRenderPoints* m_points;
     GLRenderLines* m_lines;
     GLRenderTriangles* m_triangles;
+	int m_circleParts = 16;
+	float_t m_cosInc;
+	float_t m_sinInc;
 };
 
 } // namespace box2d

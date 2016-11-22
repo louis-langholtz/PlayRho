@@ -30,8 +30,13 @@ static void Draw(Drawer& drawer, const CircleShape& shape, const Transformation&
 {
 	const auto center = Transform(shape.GetLocation(), xf);
 	const auto radius = shape.GetRadius();
+	const auto fillColor = Color(0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f);
+	drawer.DrawSolidCircle(center, radius, fillColor);
+	drawer.DrawCircle(center, radius, color);
+
+	// Draw a line fixed in the circle to animate rotation.
 	const auto axis = Rotate(Vec2{float_t{1}, float_t{0}}, xf.q);
-	drawer.DrawSolidCircle(center, radius, axis, color);
+	drawer.DrawSegment(center, center + radius * axis, color);
 }
 
 static void Draw(Drawer& drawer, const EdgeShape& shape, const Transformation& xf, const Color& color)
@@ -63,7 +68,9 @@ static void Draw(Drawer& drawer, const PolygonShape& shape, const Transformation
 	{
 		vertices[i] = Transform(shape.GetVertex(i), xf);
 	}
-	drawer.DrawSolidPolygon(vertices, vertexCount, color);
+	const auto fillColor = Color(0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f);
+	drawer.DrawSolidPolygon(vertices, vertexCount, fillColor);
+	drawer.DrawPolygon(vertices, vertexCount, color);
 }
 
 static void Draw(Drawer& drawer, const Fixture& fixture, const Transformation& xf, const Color& color)
@@ -214,11 +221,16 @@ static void Draw(Drawer& drawer, const World& world, const Settings& settings)
 	
 	if (settings.drawCOMs)
 	{
+		const auto k_axisScale = float_t(0.4);
+		const auto red = Color(1.0f, 0.0f, 0.0f);
+		const auto green = Color(0.0f, 1.0f, 0.0f);
 		for (auto&& b: world.GetBodies())
 		{
 			auto xf = b.GetTransformation();
 			xf.p = b.GetWorldCenter();
-			drawer.DrawTransform(xf);
+			const auto p1 = xf.p;
+			drawer.DrawSegment(p1, p1 + k_axisScale * GetXAxis(xf.q), red);
+			drawer.DrawSegment(p1, p1 + k_axisScale * GetYAxis(xf.q), green);			
 		}
 	}
 }
