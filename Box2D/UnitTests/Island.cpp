@@ -18,7 +18,7 @@
 
 #include "gtest/gtest.h"
 #include <Box2D/Common/StackAllocator.hpp>
-#include <Box2D/Dynamics/Island.h>
+#include <Box2D/Dynamics/Island.hpp>
 #include <type_traits>
 
 using namespace box2d;
