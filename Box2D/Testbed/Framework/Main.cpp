@@ -20,7 +20,7 @@
 #include "imgui.h"
 #include "RenderGL3.h"
 #include "DebugDraw.h"
-#include "Test.h"
+#include "Test.hpp"
 
 #if defined(__APPLE__)
 #include <OpenGL/gl3.h>

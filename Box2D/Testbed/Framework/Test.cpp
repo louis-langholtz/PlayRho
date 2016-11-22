@@ -17,7 +17,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "Test.h"
+#include "Test.hpp"
 #include "Drawer.h"
 #include <stdio.h>
 

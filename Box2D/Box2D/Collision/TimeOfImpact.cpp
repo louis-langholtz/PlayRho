@@ -23,8 +23,6 @@
 #include <Box2D/Collision/TimeOfImpact.hpp>
 #include <Box2D/Common/Timer.hpp>
 
-#include <stdio.h>
-
 namespace box2d {
 
 struct Separation
