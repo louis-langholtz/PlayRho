@@ -20,7 +20,7 @@
 #ifndef B2_TIME_OF_IMPACT_H
 #define B2_TIME_OF_IMPACT_H
 
-#include <Box2D/Common/Math.h>
+#include <Box2D/Common/Math.hpp>
 
 namespace box2d {
 

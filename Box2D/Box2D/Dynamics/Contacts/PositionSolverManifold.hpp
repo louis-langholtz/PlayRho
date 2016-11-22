@@ -21,7 +21,7 @@
 #define PositionSolverManifold_hpp
 
 #include <Box2D/Common/Settings.hpp>
-#include <Box2D/Common/Math.h>
+#include <Box2D/Common/Math.hpp>
 
 #include <Box2D/Collision/Manifold.hpp>
 

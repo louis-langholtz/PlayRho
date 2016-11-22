@@ -20,7 +20,7 @@
 #ifndef VertexSet_hpp
 #define VertexSet_hpp
 
-#include <Box2D/Common/Math.h>
+#include <Box2D/Common/Math.hpp>
 
 namespace box2d
 {

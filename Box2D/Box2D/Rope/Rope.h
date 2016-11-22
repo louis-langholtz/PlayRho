@@ -20,7 +20,7 @@
 #ifndef B2_ROPE_H
 #define B2_ROPE_H
 
-#include <Box2D/Common/Math.h>
+#include <Box2D/Common/Math.hpp>
 
 namespace box2d {
 

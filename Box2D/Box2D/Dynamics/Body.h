@@ -20,7 +20,7 @@
 #ifndef B2_BODY_H
 #define B2_BODY_H
 
-#include <Box2D/Common/Math.h>
+#include <Box2D/Common/Math.hpp>
 #include <Box2D/Collision/MassData.hpp>
 #include <Box2D/Dynamics/BodyList.hpp>
 #include <Box2D/Dynamics/FixtureList.hpp>

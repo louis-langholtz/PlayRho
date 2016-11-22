@@ -20,7 +20,7 @@
 #ifndef B2_ISLAND_H
 #define B2_ISLAND_H
 
-#include <Box2D/Common/Math.h>
+#include <Box2D/Common/Math.hpp>
 #include <Box2D/Common/AllocatedArray.hpp>
 
 namespace box2d {

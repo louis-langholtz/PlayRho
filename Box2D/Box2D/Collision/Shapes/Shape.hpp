@@ -20,7 +20,7 @@
 #ifndef B2_SHAPE_H
 #define B2_SHAPE_H
 
-#include <Box2D/Common/Math.h>
+#include <Box2D/Common/Math.hpp>
 
 namespace box2d {
 

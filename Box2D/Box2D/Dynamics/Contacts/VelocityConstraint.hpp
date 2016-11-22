@@ -20,7 +20,7 @@
 #ifndef VelocityConstraint_hpp
 #define VelocityConstraint_hpp
 
-#include <Box2D/Common/Math.h>
+#include <Box2D/Common/Math.hpp>
 #include <Box2D/Common/Span.hpp>
 
 // Define <code>BOX2D_CACHE_VC_POINT_MASSES</code> to cache velocity constraint point masses

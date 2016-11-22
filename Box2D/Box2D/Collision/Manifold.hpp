@@ -20,7 +20,7 @@
 #ifndef Manifold_hpp
 #define Manifold_hpp
 
-#include <Box2D/Common/Math.h>
+#include <Box2D/Common/Math.hpp>
 #include <Box2D/Collision/ContactFeature.hpp>
 
 #include <array>

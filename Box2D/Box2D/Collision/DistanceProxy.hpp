@@ -20,7 +20,7 @@
 #ifndef DistanceProxy_hpp
 #define DistanceProxy_hpp
 
-#include <Box2D/Common/Math.h>
+#include <Box2D/Common/Math.hpp>
 #include <array>
 
 namespace box2d

@@ -20,7 +20,7 @@
 #ifndef B2_DISTANCE_H
 #define B2_DISTANCE_H
 
-#include <Box2D/Common/Math.h>
+#include <Box2D/Common/Math.hpp>
 #include <Box2D/Collision/SimplexCache.hpp>
 
 namespace box2d

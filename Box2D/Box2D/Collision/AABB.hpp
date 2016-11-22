@@ -20,7 +20,7 @@
 #ifndef AABB_hpp
 #define AABB_hpp
 
-#include <Box2D/Common/Math.h>
+#include <Box2D/Common/Math.hpp>
 
 namespace box2d
 {

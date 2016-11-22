@@ -20,7 +20,7 @@
 #ifndef WorldManifold_hpp
 #define WorldManifold_hpp
 
-#include <Box2D/Common/Math.h>
+#include <Box2D/Common/Math.hpp>
 
 namespace box2d
 {

@@ -20,7 +20,7 @@
 #ifndef SimplexCache_hpp
 #define SimplexCache_hpp
 
-#include <Box2D/Common/Math.h>
+#include <Box2D/Common/Math.hpp>
 #include <Box2D/Common/ArrayList.hpp>
 #include <Box2D/Collision/IndexPairList.hpp>
 

@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Common/Math.h>
+#include <Box2D/Common/Math.hpp>
 #include <sstream>
 
 using namespace box2d;

@@ -20,7 +20,7 @@
 #ifndef B2_MASS_DATA_HPP
 #define B2_MASS_DATA_HPP
 
-#include <Box2D/Common/Math.h>
+#include <Box2D/Common/Math.hpp>
 
 namespace box2d {
 	
