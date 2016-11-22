@@ -209,7 +209,7 @@
 		47AA5DE01C4C5FBE008AF2BA /* Island.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8954141C3E5900F1753A /* Island.hpp */; };
 		47AA5DE11C4C5FBE008AF2BA /* TimeStep.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8955141C3E5900F1753A /* TimeStep.h */; };
 		47AA5DE21C4C5FBE008AF2BA /* World.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8957141C3E5900F1753A /* World.hpp */; };
-		47AA5DE31C4C5FBE008AF2BA /* WorldCallbacks.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8959141C3E5900F1753A /* WorldCallbacks.h */; };
+		47AA5DE31C4C5FBE008AF2BA /* WorldCallbacks.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8959141C3E5900F1753A /* WorldCallbacks.hpp */; };
 		47AA5DE41C4C5FBE008AF2BA /* ChainAndCircleContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB895C141C3E5900F1753A /* ChainAndCircleContact.h */; };
 		47AA5DE51C4C5FBE008AF2BA /* ChainAndPolygonContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB895E141C3E5900F1753A /* ChainAndPolygonContact.h */; };
 		47AA5DE61C4C5FBE008AF2BA /* CircleContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8960141C3E5900F1753A /* CircleContact.h */; };
@@ -332,7 +332,7 @@
 		80BB89B4141C3E5900F1753A /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8956141C3E5900F1753A /* World.cpp */; };
 		80BB89B5141C3E5900F1753A /* World.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8957141C3E5900F1753A /* World.hpp */; };
 		80BB89B6141C3E5900F1753A /* WorldCallbacks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8958141C3E5900F1753A /* WorldCallbacks.cpp */; };
-		80BB89B7141C3E5900F1753A /* WorldCallbacks.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8959141C3E5900F1753A /* WorldCallbacks.h */; };
+		80BB89B7141C3E5900F1753A /* WorldCallbacks.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8959141C3E5900F1753A /* WorldCallbacks.hpp */; };
 		80BB89B8141C3E5900F1753A /* ChainAndCircleContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB895B141C3E5900F1753A /* ChainAndCircleContact.cpp */; };
 		80BB89B9141C3E5900F1753A /* ChainAndCircleContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 80BB895C141C3E5900F1753A /* ChainAndCircleContact.h */; };
 		80BB89BA141C3E5900F1753A /* ChainAndPolygonContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB895D141C3E5900F1753A /* ChainAndPolygonContact.cpp */; };
@@ -660,7 +660,7 @@
 		80BB8956141C3E5900F1753A /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
 		80BB8957141C3E5900F1753A /* World.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = World.hpp; sourceTree = "<group>"; };
 		80BB8958141C3E5900F1753A /* WorldCallbacks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldCallbacks.cpp; sourceTree = "<group>"; };
-		80BB8959141C3E5900F1753A /* WorldCallbacks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorldCallbacks.h; sourceTree = "<group>"; };
+		80BB8959141C3E5900F1753A /* WorldCallbacks.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldCallbacks.hpp; sourceTree = "<group>"; };
 		80BB895B141C3E5900F1753A /* ChainAndCircleContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChainAndCircleContact.cpp; sourceTree = "<group>"; };
 		80BB895C141C3E5900F1753A /* ChainAndCircleContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChainAndCircleContact.h; sourceTree = "<group>"; };
 		80BB895D141C3E5900F1753A /* ChainAndPolygonContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChainAndPolygonContact.cpp; sourceTree = "<group>"; };
@@ -1008,7 +1008,7 @@
 				80BB8956141C3E5900F1753A /* World.cpp */,
 				80BB8957141C3E5900F1753A /* World.hpp */,
 				80BB8958141C3E5900F1753A /* WorldCallbacks.cpp */,
-				80BB8959141C3E5900F1753A /* WorldCallbacks.h */,
+				80BB8959141C3E5900F1753A /* WorldCallbacks.hpp */,
 				472134831C8CD7CF009536F9 /* BodyList.cpp */,
 				472134841C8CD7CF009536F9 /* BodyList.hpp */,
 				47AA63951D0F7FDA00726CA2 /* BodyIterator.cpp */,
@@ -1294,7 +1294,7 @@
 				47AA5DE21C4C5FBE008AF2BA /* World.hpp in Headers */,
 				4734B2281DC29F7C00F15E29 /* SimplexVertex.hpp in Headers */,
 				4726DD2D1D31B4090012A882 /* AABB.hpp in Headers */,
-				47AA5DE31C4C5FBE008AF2BA /* WorldCallbacks.h in Headers */,
+				47AA5DE31C4C5FBE008AF2BA /* WorldCallbacks.hpp in Headers */,
 				47AA5DE41C4C5FBE008AF2BA /* ChainAndCircleContact.h in Headers */,
 				47AA5DE51C4C5FBE008AF2BA /* ChainAndPolygonContact.h in Headers */,
 				472134A01C8E4CB5009536F9 /* FixtureList.hpp in Headers */,
@@ -1391,7 +1391,7 @@
 				47AA63A01D0F7FDA00726CA2 /* FixtureIterator.hpp in Headers */,
 				80BB89B5141C3E5900F1753A /* World.hpp in Headers */,
 				478869101D78BF7200AEC7F1 /* VelocityConstraint.hpp in Headers */,
-				80BB89B7141C3E5900F1753A /* WorldCallbacks.h in Headers */,
+				80BB89B7141C3E5900F1753A /* WorldCallbacks.hpp in Headers */,
 				80BB89B9141C3E5900F1753A /* ChainAndCircleContact.h in Headers */,
 				4751EE291CEDD78F00D459CB /* Mobile.h in Headers */,
 				80BB89BB141C3E5900F1753A /* ChainAndPolygonContact.h in Headers */,

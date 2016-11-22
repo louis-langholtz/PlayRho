@@ -24,7 +24,7 @@
 #include <Box2D/Common/BlockAllocator.hpp>
 #include <Box2D/Common/StackAllocator.hpp>
 #include <Box2D/Dynamics/ContactManager.hpp>
-#include <Box2D/Dynamics/WorldCallbacks.h>
+#include <Box2D/Dynamics/WorldCallbacks.hpp>
 #include <Box2D/Dynamics/BodyList.hpp>
 #include <Box2D/Dynamics/JointList.hpp>
 #include <Box2D/Dynamics/ContactList.hpp>
