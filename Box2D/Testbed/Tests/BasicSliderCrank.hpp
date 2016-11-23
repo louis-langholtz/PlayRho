@@ -28,15 +28,15 @@ class BasicSliderCrank : public Test
 public:
 	BasicSliderCrank()
 	{
-		Body* ground = nullptr;
+		const auto ground = [&]()
 		{
 			BodyDef bd;
             bd.position = Vec2(0.0f, 17.0f);
-			ground = m_world->CreateBody(bd);
-		}
+			return m_world->CreateBody(bd);
+		}();
         
 		{
-			Body* prevBody = ground;
+			auto prevBody = ground;
             
 			// Define crank.
 			{
@@ -45,7 +45,7 @@ public:
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-8.0f, 20.0f);
-				Body* body = m_world->CreateBody(bd);
+				const auto body = m_world->CreateBody(bd);
 				body->CreateFixture(FixtureDef{&shape, 2.0f});
                 
 				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-12.0f, 20.0f)});
@@ -60,7 +60,7 @@ public:
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(4.0f, 20.0f);
-				Body* body = m_world->CreateBody(bd);
+				const auto body = m_world->CreateBody(bd);
 				body->CreateFixture(FixtureDef{&shape, 2.0f});
                 
 				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-4.0f, 20.0f)});
@@ -76,13 +76,12 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.fixedRotation = true;
 				bd.position = Vec2(12.0f, 20.0f);
-				Body* body = m_world->CreateBody(bd);
+				const auto body = m_world->CreateBody(bd);
 				body->CreateFixture(FixtureDef{&shape, 2.0f});
                 
 				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(12.0f, 20.0f)});
                 
-				PrismaticJointDef pjd;
-				pjd.Initialize(ground, body, Vec2(12.0f, 17.0f), Vec2(1.0f, 0.0f));
+				const PrismaticJointDef pjd{ground, body, Vec2(12.0f, 17.0f), Vec2(1.0f, 0.0f)};
 				m_world->CreateJoint(pjd);
 			}
   		}

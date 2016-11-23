@@ -27,13 +27,9 @@ class Revolute : public Test
 public:
 	Revolute()
 	{
-		Body* ground = nullptr;
+		const auto ground = m_world->CreateBody(BodyDef{});
 		{
-			BodyDef bd;
-			ground = m_world->CreateBody(bd);
-
-			EdgeShape shape;
-			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
+			const auto shape = EdgeShape(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 
 			FixtureDef fd;
 			fd.shape = &shape;
@@ -43,17 +39,16 @@ public:
 		}
 
 		{
-			CircleShape shape;
-			shape.SetRadius(0.5);
+			const auto shape = CircleShape(0.5);
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 
 			bd.position = Vec2(-10.0f, 20.0f);
-			Body* body = m_world->CreateBody(bd);
+			const auto body = m_world->CreateBody(bd);
 			body->CreateFixture(FixtureDef{&shape, 5.0f});
 
-			float_t w = 100.0f;
+			const auto w = 100.0f;
 			body->SetVelocity(Velocity{Vec2(-8.0f * w, 0.0f), 1_rad * w});
 			
 			RevoluteJointDef rjd(ground, body, Vec2(-10.0f, 12.0f));
@@ -69,8 +64,7 @@ public:
 		}
 
 		{
-			CircleShape circle_shape;
-			circle_shape.SetRadius(3.0);
+			const auto circle_shape = CircleShape(3.0);
 
 			BodyDef circle_bd;
 			circle_bd.type = BodyType::Dynamic;
@@ -91,7 +85,7 @@ public:
 			polygon_bd.position = Vec2(20.0f, 10.0f);
 			polygon_bd.type = BodyType::Dynamic;
 			polygon_bd.bullet = true;
-			Body* polygon_body = m_world->CreateBody(polygon_bd);
+			const auto polygon_body = m_world->CreateBody(polygon_bd);
 			polygon_body->CreateFixture(FixtureDef{&polygon_shape, 2.0f});
 
 			RevoluteJointDef rjd(ground, polygon_body, Vec2(20.0f, 10.0f));
@@ -105,7 +99,7 @@ public:
 		{
 			BodyDef bodyDef;
 			bodyDef.type = BodyType::Dynamic;
-			Body* body = m_world->CreateBody(bodyDef);
+			const auto body = m_world->CreateBody(bodyDef);
 		
 			const auto polyShape = PolygonShape({Vec2(17.63f, 36.31f), Vec2(17.52f, 36.69f), Vec2(17.19f, 36.36f)});
 		
@@ -135,9 +129,8 @@ public:
 		}
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings, drawer);
 		drawer.DrawString(5, m_textLine, "Keys: (l) limits, (m) motor");
 		m_textLine += DRAW_STRING_NEW_LINE;
 

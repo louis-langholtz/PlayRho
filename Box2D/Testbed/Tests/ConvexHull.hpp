@@ -78,10 +78,8 @@ public:
 		}
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings, drawer);
-
 		const auto shape = PolygonShape(Span<const Vec2>{m_points, m_count});
 
 		drawer.DrawString(5, m_textLine, "Press g to generate a new random convex hull");

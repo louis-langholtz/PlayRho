@@ -174,9 +174,9 @@ public:
 		}
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PreStep(const Settings& settings, Drawer& drawer) override
 	{
-		bool sleeping = true;
+		auto sleeping = true;
 		for (auto& b: m_world->GetBodies())
 		{
 			if (b.GetType() != BodyType::Dynamic)
@@ -199,23 +199,24 @@ public:
 		//{
 		//	CreateCircle();
 		//}
+	}
 
-		Test::Step(settings, drawer);
-
+	void PostStep(const Settings& settings, Drawer& drawer) override
+	{
 		for (auto& b: m_world->GetBodies())
 		{
 			if (b.GetType() != BodyType::Dynamic)
 			{
 				continue;
 			}
-
+			
 			Vec2 p = b.GetLocation();
 			if (p.x <= -wall_length/2 || wall_length/2 <= p.x || p.y <= 0.0f || wall_length <= p.y)
 			{
 				p.x += 0.0f;
 			}
 		}
-
+		
 		drawer.DrawString(5, m_textLine, "Press 'c' to create a circle.");
 		m_textLine += DRAW_STRING_NEW_LINE;
 		drawer.DrawString(5, m_textLine, "Press 'b' to create a box.");
@@ -225,7 +226,7 @@ public:
 		drawer.DrawString(5, m_textLine, "Press 'i' to impart impulses.");
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
-
+	
 	static Test* Create()
 	{
 		return new Confined;

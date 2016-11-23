@@ -49,11 +49,10 @@ public:
 			Body* body = m_world->CreateBody(bd);
 			body->CreateFixture(FixtureDef{&shape, 5.0f});
 
-			PrismaticJointDef pjd;
 
 			// Bouncy limit
 			const auto axis = GetUnitVector(Vec2(2.0f, 1.0f));
-			pjd.Initialize(ground, body, Vec2(0.0f, 0.0f), axis);
+			PrismaticJointDef pjd(ground, body, Vec2(0.0f, 0.0f), axis);
 
 			// Non-bouncy limit
 			//pjd.Initialize(ground, body, Vec2(-10.0f, 10.0f), Vec2(1.0f, 0.0f));
@@ -90,12 +89,11 @@ public:
 		}
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings, drawer);
 		drawer.DrawString(5, m_textLine, "Keys: (l) limits, (m) motors, (s) speed");
 		m_textLine += DRAW_STRING_NEW_LINE;
-		float_t force = m_joint->GetMotorForce(settings.hz);
+		const auto force = m_joint->GetMotorForce(settings.hz);
 		drawer.DrawString(5, m_textLine, "Motor Force = %4.0f", (float) force);
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}

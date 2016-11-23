@@ -127,9 +127,8 @@ public:
 		}
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings, drawer);
 		drawer.DrawString(5, m_textLine, "Press: (,) to launch a bullet.");
 		m_textLine += DRAW_STRING_NEW_LINE;
 		drawer.DrawString(5, m_textLine, "Blocksolve = %d", g_blockSolve);

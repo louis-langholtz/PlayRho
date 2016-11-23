@@ -333,11 +333,8 @@ public:
 		}
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
-		bool advanceRay = !settings.pause || settings.singleStep;
-
-		Test::Step(settings, drawer);
 		drawer.DrawString(5, m_textLine, "Press 1-6 to drop stuff, m to change the mode");
 		m_textLine += DRAW_STRING_NEW_LINE;
 		switch (m_mode)
@@ -357,10 +354,10 @@ public:
 
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		float_t L = 11.0f;
-		Vec2 point1(0.0f, 10.0f);
-		Vec2 d(L * cosf(m_angle), L * sinf(m_angle));
-		Vec2 point2 = point1 + d;
+		const auto L = 11.0f;
+		const auto point1 = Vec2(0.0f, 10.0f);
+		const auto d = Vec2(L * cosf(m_angle), L * sinf(m_angle));
+		const auto point2 = point1 + d;
 
 		if (m_mode == e_closest)
 		{
@@ -413,6 +410,7 @@ public:
 			}
 		}
 
+		const auto advanceRay = !settings.pause || settings.singleStep;
 		if (advanceRay)
 		{
 			m_angle += 0.25f * Pi / 180.0f;

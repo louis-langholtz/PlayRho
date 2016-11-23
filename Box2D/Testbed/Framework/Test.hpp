@@ -27,36 +27,11 @@
 
 namespace box2d {
 
-class Test;
-struct Settings;
-
-typedef Test* TestCreateFcn();
-
-#define	RAND_LIMIT	32767
-#define DRAW_STRING_NEW_LINE 16
-
-/// Random number in range [-1,1]
-inline float_t RandomFloat()
-{
-	auto r = static_cast<float_t>(std::rand() & (RAND_LIMIT));
-	r /= RAND_LIMIT;
-	r = 2.0f * r - 1.0f;
-	return r;
-}
-
-/// Random floating point number in range [lo, hi]
-inline float_t RandomFloat(float_t lo, float_t hi)
-{
-	auto r = static_cast<float_t>(std::rand() & (RAND_LIMIT));
-	r /= RAND_LIMIT;
-	r = (hi - lo) * r + lo;
-	return r;
-}
-
 /// Test settings. Some can be controlled in the GUI.
 struct Settings
 {
 	float_t hz = float_t(60);
+	float_t dt = float_t(1) / hz;
 	int32 velocityIterations = 8;
 	int32 positionIterations = 3;
 	bool drawShapes = true;
@@ -77,40 +52,6 @@ struct Settings
 	bool singleStep = false;
 };
 
-struct TestEntry
-{
-	const char *name;
-	TestCreateFcn *createFcn;
-};
-
-extern const TestEntry g_testEntries[];
-
-// This is called when a joint in the world is implicitly destroyed
-// because an attached body is destroyed. This gives us a chance to
-// nullify the mouse joint.
-class TestDestructionListener : public DestructionListener
-{
-public:
-	void SayGoodbye(Fixture& fixture) { BOX2D_NOT_USED(fixture); }
-	void SayGoodbye(Joint& joint);
-
-	Test* test;
-};
-
-const int32 k_maxContactPoints = 2048;
-
-struct ContactPoint
-{
-	Fixture* fixtureA;
-	Fixture* fixtureB;
-	Vec2 normal;
-	Vec2 position;
-	PointState state;
-	float_t normalImpulse;
-	float_t tangentImpulse;
-	float_t separation;
-};
-
 class Test : public ContactListener
 {
 public:
@@ -121,24 +62,25 @@ public:
 		Key_N, Key_O, Key_P, Key_Q, Key_R, Key_S, Key_T, Key_U, Key_V, Key_W, Key_X, Key_Y, Key_Z,
 		Key_Unknown
 	};
-
+	
 	Test();
 	virtual ~Test();
 
 	void DrawTitle(Drawer& drawer, const char *string);
-	virtual void Step(Settings& settings, Drawer& drawer);
-	virtual void Keyboard(Key key) { BOX2D_NOT_USED(key); }
-	virtual void KeyboardUp(Key key) { BOX2D_NOT_USED(key); }
+	void Step(const Settings& settings, Drawer& drawer);
 	void ShiftMouseDown(const Vec2& p);
-	virtual void MouseDown(const Vec2& p);
-	virtual void MouseUp(const Vec2& p);
 	void MouseMove(const Vec2& p);
 	void LaunchBomb();
 	void LaunchBomb(const Vec2& position, const Vec2& velocity);
-	
 	void SpawnBomb(const Vec2& worldPt);
 	void CompleteBombSpawn(const Vec2& p);
-
+	void ShiftOrigin(const Vec2& newOrigin);
+	
+	virtual void Keyboard(Key key) { BOX2D_NOT_USED(key); }
+	virtual void KeyboardUp(Key key) { BOX2D_NOT_USED(key); }
+	virtual void MouseDown(const Vec2& p);
+	virtual void MouseUp(const Vec2& p);
+	
 	// Let derived tests know that a joint was destroyed.
 	virtual void JointDestroyed(Joint* joint) { BOX2D_NOT_USED(joint); }
 
@@ -153,30 +95,85 @@ public:
 		BOX2D_NOT_USED(solved);
 	}
 
-	void ShiftOrigin(const Vec2& newOrigin);
-
 protected:
 	friend class TestDestructionListener;
 	friend class BoundaryListener;
 	friend class ContactListener;
 
+	struct ContactPoint
+	{
+		Fixture* fixtureA;
+		Fixture* fixtureB;
+		Vec2 normal;
+		Vec2 position;
+		PointState state;
+		float_t normalImpulse;
+		float_t tangentImpulse;
+		float_t separation;
+	};
+	
+	// This is called when a joint in the world is implicitly destroyed
+	// because an attached body is destroyed. This gives us a chance to
+	// nullify the mouse joint.
+	class DestructionListenerImpl : public DestructionListener
+	{
+	public:
+		void SayGoodbye(Fixture& fixture) { BOX2D_NOT_USED(fixture); }
+		void SayGoodbye(Joint& joint);
+		
+		Test* test;
+	};
+	
+	using PointCount = int32;
+	using TextLinePos = int32;
+	static constexpr auto k_maxContactPoints = PointCount{2048};
+	static constexpr auto DRAW_STRING_NEW_LINE = TextLinePos{16};
+
+	virtual void PreStep(const Settings& settings, Drawer& drawer)
+	{
+		BOX2D_NOT_USED(settings);
+		BOX2D_NOT_USED(drawer);
+	}
+
+	virtual void PostStep(const Settings& settings, Drawer& drawer)
+	{
+		BOX2D_NOT_USED(settings);
+		BOX2D_NOT_USED(drawer);		
+	}
+	
 	Body* m_groundBody;
 	AABB m_worldAABB;
 	ContactPoint m_points[k_maxContactPoints];
-	int32 m_pointCount;
-	TestDestructionListener m_destructionListener;
-	int32 m_textLine;
+	PointCount m_pointCount = 0;
+	DestructionListenerImpl m_destructionListener;
+	TextLinePos m_textLine = TextLinePos{30};
 	World* m_world;
-	Body* m_bomb;
-	MouseJoint* m_mouseJoint;
+	Body* m_bomb = nullptr;
+	MouseJoint* m_mouseJoint = nullptr;
 	Vec2 m_bombSpawnPoint;
-	bool m_bombSpawning;
+	bool m_bombSpawning = false;
 	Vec2 m_mouseWorld;
-	int32 m_stepCount;
+	int32 m_stepCount = 0;
 
 	Profile m_maxProfile;
 	Profile m_totalProfile;
 };
+
+typedef Test* TestCreateFcn();
+
+struct TestEntry
+{
+	const char *name;
+	TestCreateFcn *createFcn;
+};
+
+extern const TestEntry g_testEntries[];
+
+/// Random number in range [-1,1]
+float_t RandomFloat();
+
+/// Random floating point number in range [lo, hi]
+float_t RandomFloat(float_t lo, float_t hi);
 
 } // namespace box2d
 

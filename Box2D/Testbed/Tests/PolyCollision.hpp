@@ -45,7 +45,7 @@ public:
 		return new PolyCollision;
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
 		BOX2D_NOT_USED(settings);
 

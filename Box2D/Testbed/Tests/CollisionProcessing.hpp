@@ -122,10 +122,8 @@ public:
 		body6->CreateFixture(circleShapeDef);
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings, drawer);
-
 		// We are going to destroy some bodies according to contact
 		// points. We must buffer the bodies that should be destroyed
 		// because they may belong to multiple contact points.
@@ -135,12 +133,12 @@ public:
 
 		// Traverse the contact results. Destroy bodies that
 		// are touching heavier bodies.
-		for (int32 i = 0; i < m_pointCount; ++i)
+		for (auto i = decltype(m_pointCount){0}; i < m_pointCount; ++i)
 		{
-			ContactPoint* point = m_points + i;
+			auto point = m_points + i;
 
-			Body* body1 = point->fixtureA->GetBody();
-			Body* body2 = point->fixtureB->GetBody();
+			const auto body1 = point->fixtureA->GetBody();
+			const auto body2 = point->fixtureB->GetBody();
 			const auto mass1 = GetMass(*body1);
 			const auto mass2 = GetMass(*body2);
 

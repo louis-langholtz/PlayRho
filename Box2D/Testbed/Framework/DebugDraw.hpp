@@ -80,6 +80,8 @@ public:
 	void SetTranslation(Vec2 value) override;
 
 private:
+	void DrawTriangle(const Vec2& p1, const Vec2& p2, const Vec2& p3, const Color& color);
+
 	Camera& m_camera;
 	GLRenderPoints* m_points;
     GLRenderLines* m_lines;

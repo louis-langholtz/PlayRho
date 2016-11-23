@@ -30,11 +30,8 @@ public:
 	Pinball()
 	{
 		// Ground body
-		Body* ground = nullptr;
+		const auto ground = m_world->CreateBody(BodyDef{});
 		{
-			BodyDef bd;
-			ground = m_world->CreateBody(bd);
-
 			Vec2 vs[5];
 			vs[0] = Vec2(0.0f, -2.0f);
 			vs[1] = Vec2(8.0f, 6.0f);
@@ -111,11 +108,9 @@ public:
 			fd.density = 1.0f;
 			m_ball->CreateFixture(fd);
 		}
-
-		m_button = false;
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PreStep(const Settings& settings, Drawer& drawer) override
 	{
 		if (m_button)
 		{
@@ -127,14 +122,14 @@ public:
 			m_leftJoint->SetMotorSpeed(-10.0f);
 			m_rightJoint->SetMotorSpeed(10.0f);
 		}
-
-		Test::Step(settings, drawer);
-
-		drawer.DrawString(5, m_textLine, "Press 'a' to control the flippers");
-		m_textLine += DRAW_STRING_NEW_LINE;
-
 	}
 
+	void PostStep(const Settings& settings, Drawer& drawer) override
+	{
+		drawer.DrawString(5, m_textLine, "Press 'a' to control the flippers");
+		m_textLine += DRAW_STRING_NEW_LINE;
+	}
+	
 	void Keyboard(Key key) override
 	{
 		switch (key)
@@ -167,7 +162,7 @@ public:
 	RevoluteJoint* m_leftJoint;
 	RevoluteJoint* m_rightJoint;
 	Body* m_ball;
-	bool m_button;
+	bool m_button = false;
 };
 
 } // namespace box2d

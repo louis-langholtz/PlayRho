@@ -176,12 +176,10 @@ public:
 		CreateLeg(1.0f, wheelAnchor);
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
 		drawer.DrawString(5, m_textLine, "Keys: left = a, brake = s, right = d, toggle motor = m");
 		m_textLine += DRAW_STRING_NEW_LINE;
-
-		Test::Step(settings, drawer);
 	}
 
 	void Keyboard(Key key) override

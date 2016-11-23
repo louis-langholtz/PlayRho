@@ -252,17 +252,19 @@ public:
 		}
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PreStep(const Settings& settings, Drawer& drawer) override
+	{
+		drawer.SetTranslation(Vec2{m_car->GetLocation().x, drawer.GetTranslation().y});
+	}
+
+	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
 		drawer.DrawString(5, m_textLine, "Keys: left = a, brake = s, right = d, hz down = q, hz up = e");
 		m_textLine += DRAW_STRING_NEW_LINE;
 		drawer.DrawString(5, m_textLine, "frequency = %g hz, damping ratio = %g", m_hz, m_zeta);
 		m_textLine += DRAW_STRING_NEW_LINE;
-
-		drawer.SetTranslation(Vec2{m_car->GetLocation().x, drawer.GetTranslation().y});
-		Test::Step(settings, drawer);
 	}
-
+	
 	static Test* Create()
 	{
 		return new Car;

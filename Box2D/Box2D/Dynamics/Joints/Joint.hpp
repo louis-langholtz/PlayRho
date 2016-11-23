@@ -77,12 +77,17 @@ struct JointDef
 	/// Deleted default constructor for abstract base class.
 	JointDef() = delete; // deleted to prevent direct instantiation.
 
-	JointDef(const JointDef& copy) = delete;
-
-	constexpr JointDef(JointType t) noexcept: type(t) {}
+	constexpr JointDef(JointType t) noexcept:
+		type{t}
+	{
+		// Intentionally empty.		
+	}
 
 	constexpr JointDef(JointType t, Body* bA, Body* bB, bool cc = false, void* u = nullptr) noexcept:
-		type{t}, bodyA{bA}, bodyB{bB}, collideConnected{cc}, userData{u} {}
+		type{t}, bodyA{bA}, bodyB{bB}, collideConnected{cc}, userData{u}
+	{
+		// Intentionally empty.
+	}
 
 	/// The joint type is set automatically for concrete joint types.
 	const JointType type;

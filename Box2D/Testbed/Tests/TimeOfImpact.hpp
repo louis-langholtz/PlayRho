@@ -38,10 +38,8 @@ public:
 		return new TimeOfImpactTest;
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings, drawer);
-
 		const auto sweepA = Sweep{Position{Vec2(24.0f, -60.0f), 2.95_rad}};
 		const auto sweepB = Sweep{Position{Vec2(53.474274f, -50.252514f), 513.36676_rad}, Position{Vec2(54.595478f, -51.083473f), 513.62781_rad}};
 

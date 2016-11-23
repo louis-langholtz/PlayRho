@@ -235,7 +235,7 @@ static void Draw(Drawer& drawer, const World& world, const Settings& settings)
 	}
 }
 
-void TestDestructionListener::SayGoodbye(Joint& joint)
+void Test::DestructionListenerImpl::SayGoodbye(Joint& joint)
 {
 	if (test->m_mouseJoint == &joint)
 	{
@@ -250,21 +250,12 @@ void TestDestructionListener::SayGoodbye(Joint& joint)
 Test::Test()
 {
 	m_world = new World(World::Def{}.UseGravity(Vec2(0.0f, -10.0f)));
-	m_bomb = nullptr;
-	m_textLine = 30;
-	m_mouseJoint = nullptr;
-	m_pointCount = 0;
 
 	m_destructionListener.test = this;
 	m_world->SetDestructionListener(&m_destructionListener);
 	m_world->SetContactListener(this);
 	
-	m_bombSpawning = false;
-
-	m_stepCount = 0;
-
-	BodyDef bodyDef;
-	m_groundBody = m_world->CreateBody(bodyDef);
+	m_groundBody = m_world->CreateBody(BodyDef{});
 
 	memset(&m_maxProfile, 0, sizeof(Profile));
 	memset(&m_totalProfile, 0, sizeof(Profile));
@@ -274,7 +265,6 @@ Test::~Test()
 {
 	// By deleting the world, we delete the bomb, mouse joint, etc.
 	delete m_world;
-	m_world = nullptr;
 }
 
 void Test::PreSolve(Contact& contact, const Manifold& oldManifold)
@@ -466,21 +456,12 @@ void Test::LaunchBomb(const Vec2& position, const Vec2& linearVelocity)
 	m_bomb->CreateFixture(fd);
 }
 
-void Test::Step(Settings& settings, Drawer& drawer)
+void Test::Step(const Settings& settings, Drawer& drawer)
 {
-	float_t timeStep = settings.hz > 0.0f ? 1.0f / settings.hz : float_t(0.0f);
+	PreStep(settings, drawer);
 
 	if (settings.pause)
 	{
-		if (settings.singleStep)
-		{
-			settings.singleStep = false;
-		}
-		else
-		{
-			timeStep = 0.0f;
-		}
-
 		drawer.DrawString(5, m_textLine, "****PAUSED****");
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
@@ -492,13 +473,15 @@ void Test::Step(Settings& settings, Drawer& drawer)
 
 	m_pointCount = 0;
 
-	m_world->Step(timeStep, static_cast<unsigned>(settings.velocityIterations), static_cast<unsigned>(settings.positionIterations));
+	m_world->Step(settings.dt,
+				  static_cast<unsigned>(settings.velocityIterations),
+				  static_cast<unsigned>(settings.positionIterations));
 
 	Draw(drawer, *m_world, settings);
 
 	drawer.Flush();
 
-	if (timeStep > 0.0f)
+	if (settings.dt > 0)
 	{
 		++m_stepCount;
 	}
@@ -525,14 +508,14 @@ void Test::Step(Settings& settings, Drawer& drawer)
 		const auto proxyCount = m_world->GetProxyCount();
 		const auto height = m_world->GetTreeHeight();
 		const auto balance = m_world->GetTreeBalance();
-		float_t quality = m_world->GetTreeQuality();
+		const auto quality = m_world->GetTreeQuality();
 		drawer.DrawString(5, m_textLine, "proxies/height/balance/quality = %d/%d/%d/%g", proxyCount, height, balance, quality);
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 
 	// Track maximum profile times
 	{
-		const Profile& p = m_world->GetProfile();
+		const auto& p = m_world->GetProfile();
 		m_maxProfile.step = Max(m_maxProfile.step, p.step);
 		m_maxProfile.collide = Max(m_maxProfile.collide, p.collide);
 		m_maxProfile.solve = Max(m_maxProfile.solve, p.solve);
@@ -591,8 +574,8 @@ void Test::Step(Settings& settings, Drawer& drawer)
 
 	if (m_mouseJoint)
 	{
-		Vec2 p1 = m_mouseJoint->GetAnchorB();
-		Vec2 p2 = m_mouseJoint->GetTarget();
+		const auto p1 = m_mouseJoint->GetAnchorB();
+		const auto p2 = m_mouseJoint->GetTarget();
 
 		Color c;
 		c.Set(0.0f, 1.0f, 0.0f);
@@ -605,22 +588,18 @@ void Test::Step(Settings& settings, Drawer& drawer)
 	
 	if (m_bombSpawning)
 	{
-		Color c;
-		c.Set(0.0f, 0.0f, 1.0f);
-		drawer.DrawPoint(m_bombSpawnPoint, 4.0f, c);
-
-		c.Set(0.8f, 0.8f, 0.8f);
-		drawer.DrawSegment(m_mouseWorld, m_bombSpawnPoint, c);
+		drawer.DrawPoint(m_bombSpawnPoint, 4.0f, Color(0.0f, 0.0f, 1.0f));
+		drawer.DrawSegment(m_mouseWorld, m_bombSpawnPoint, Color(0.8f, 0.8f, 0.8f));
 	}
 
 	if (settings.drawContactPoints)
 	{
-		const float_t k_impulseScale = 0.1f;
-		const float_t k_axisScale = 0.3f;
+		const auto k_impulseScale = float_t(0.1);
+		const auto k_axisScale = float_t(0.3);
 
-		for (int32 i = 0; i < m_pointCount; ++i)
+		for (auto i = decltype(m_pointCount){0}; i < m_pointCount; ++i)
 		{
-			ContactPoint* point = m_points + i;
+			const auto point = m_points + i;
 
 			if (point->state == PointState::AddState)
 			{
@@ -635,26 +614,28 @@ void Test::Step(Settings& settings, Drawer& drawer)
 
 			if (settings.drawContactNormals == 1)
 			{
-				Vec2 p1 = point->position;
-				Vec2 p2 = p1 + k_axisScale * point->normal;
+				const auto p1 = point->position;
+				const auto p2 = p1 + k_axisScale * point->normal;
 				drawer.DrawSegment(p1, p2, Color(0.9f, 0.9f, 0.9f));
 			}
 			else if (settings.drawContactImpulse == 1)
 			{
-				Vec2 p1 = point->position;
-				Vec2 p2 = p1 + k_impulseScale * point->normalImpulse * point->normal;
+				const auto p1 = point->position;
+				const auto p2 = p1 + k_impulseScale * point->normalImpulse * point->normal;
 				drawer.DrawSegment(p1, p2, Color(0.9f, 0.9f, 0.3f));
 			}
 
 			if (settings.drawFrictionImpulse == 1)
 			{
-				Vec2 tangent = GetFwdPerpendicular(point->normal);
-				Vec2 p1 = point->position;
-				Vec2 p2 = p1 + k_impulseScale * point->tangentImpulse * tangent;
+				const auto tangent = GetFwdPerpendicular(point->normal);
+				const auto p1 = point->position;
+				const auto p2 = p1 + k_impulseScale * point->tangentImpulse * tangent;
 				drawer.DrawSegment(p1, p2, Color(0.9f, 0.9f, 0.3f));
 			}
 		}
 	}
+	
+	PostStep(settings, drawer);
 }
 
 void Test::ShiftOrigin(const Vec2& newOrigin)
@@ -662,3 +643,20 @@ void Test::ShiftOrigin(const Vec2& newOrigin)
 	m_world->ShiftOrigin(newOrigin);
 }
 
+constexpr auto RAND_LIMIT = 32767;
+
+float_t box2d::RandomFloat()
+{
+	auto r = static_cast<float_t>(std::rand() & (RAND_LIMIT));
+	r /= RAND_LIMIT;
+	r = 2.0f * r - 1.0f;
+	return r;
+}
+
+float_t box2d::RandomFloat(float_t lo, float_t hi)
+{
+	auto r = static_cast<float_t>(std::rand() & (RAND_LIMIT));
+	r /= RAND_LIMIT;
+	r = (hi - lo) * r + lo;
+	return r;
+}

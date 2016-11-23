@@ -33,11 +33,9 @@ public:
 
 	Bridge()
 	{
-		Body* ground = nullptr;
-		{
-			BodyDef bd;
-			ground = m_world->CreateBody(bd);
+		const auto ground = m_world->CreateBody(BodyDef{});
 
+		{
 			const auto shape = EdgeShape(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
@@ -50,13 +48,13 @@ public:
 			fd.density = 20.0f;
 			fd.friction = 0.2f;
 
-			Body* prevBody = ground;
-			for (int32 i = 0; i < e_count; ++i)
+			auto prevBody = ground;
+			for (auto i = 0; i < e_count; ++i)
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-14.5f + 1.0f * i, 5.0f);
-				Body* body = m_world->CreateBody(bd);
+				const auto body = m_world->CreateBody(bd);
 				body->CreateFixture(fd);
 
 				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-15.0f + 1.0f * i, 5.0f)});
@@ -71,7 +69,7 @@ public:
 			m_world->CreateJoint(RevoluteJointDef{prevBody, ground, Vec2(-15.0f + 1.0f * e_count, 5.0f)});
 		}
 
-		for (int32 i = 0; i < 2; ++i)
+		for (auto i = 0; i < 2; ++i)
 		{
 			const auto shape = PolygonShape({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
 
@@ -82,14 +80,13 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-8.0f + 8.0f * i, 12.0f);
-			Body* body = m_world->CreateBody(bd);
+			const auto body = m_world->CreateBody(bd);
 			body->CreateFixture(fd);
 		}
 
-		for (int32 i = 0; i < 3; ++i)
+		for (auto i = 0; i < 3; ++i)
 		{
-			CircleShape shape;
-			shape.SetRadius(float_t(0.5));
+			const auto shape = CircleShape{float_t(0.5)};
 
 			FixtureDef fd;
 			fd.shape = &shape;
@@ -98,7 +95,7 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-6.0f + 6.0f * i, 10.0f);
-			Body* body = m_world->CreateBody(bd);
+			const auto body = m_world->CreateBody(bd);
 			body->CreateFixture(fd);
 		}
 	}

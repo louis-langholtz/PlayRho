@@ -83,11 +83,6 @@ public:
 		}
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
-	{
-		Test::Step(settings, drawer);
-	}
-
 	static Test* Create()
 	{
 		return new ConveyorBelt;

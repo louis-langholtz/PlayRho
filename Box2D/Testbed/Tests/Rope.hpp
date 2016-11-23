@@ -73,14 +73,9 @@ public:
 		}
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void Step(const Settings& settings, Drawer& drawer) override
 	{
-		float_t dt = settings.hz > 0.0f ? 1.0f / settings.hz : 0.0f;
-
-		if (settings.pause && !settings.singleStep)
-		{
-			dt = 0.0f;
-		}
+		const auto dt = (settings.pause && !settings.singleStep)? 0.0f: settings.dt;
 
 		m_rope.Step(dt, 1);
 

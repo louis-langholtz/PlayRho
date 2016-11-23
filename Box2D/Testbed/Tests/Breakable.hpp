@@ -37,7 +37,7 @@ public:
 		// Ground body
 		{
 			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
+			const auto ground = m_world->CreateBody(bd);
 
 			const auto shape = EdgeShape(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			ground->CreateFixture(FixtureDef{&shape, 0.0f});
@@ -90,8 +90,8 @@ public:
 	void Break()
 	{
 		// Create two bodies from one.
-		Body* body1 = m_piece1->GetBody();
-		Vec2 center = body1->GetWorldCenter();
+		const auto body1 = m_piece1->GetBody();
+		const auto center = body1->GetWorldCenter();
 
 		body1->DestroyFixture(m_piece2);
 		m_piece2 = nullptr;
@@ -101,22 +101,22 @@ public:
 		bd.position = body1->GetLocation();
 		bd.angle = body1->GetAngle();
 
-		Body* body2 = m_world->CreateBody(bd);
+		const auto body2 = m_world->CreateBody(bd);
 		m_piece2 = body2->CreateFixture(FixtureDef{&m_shape2, 1.0f});
 
 		// Compute consistent velocities for new bodies based on
 		// cached velocity.
-		Vec2 center1 = body1->GetWorldCenter();
-		Vec2 center2 = body2->GetWorldCenter();
+		const auto center1 = body1->GetWorldCenter();
+		const auto center2 = body2->GetWorldCenter();
 		
-		Vec2 velocity1 = m_velocity + GetRevPerpendicular(center1 - center) * m_angularVelocity.ToRadians();
-		Vec2 velocity2 = m_velocity + GetRevPerpendicular(center2 - center) * m_angularVelocity.ToRadians();
+		const auto velocity1 = m_velocity + GetRevPerpendicular(center1 - center) * m_angularVelocity.ToRadians();
+		const auto velocity2 = m_velocity + GetRevPerpendicular(center2 - center) * m_angularVelocity.ToRadians();
 
 		body1->SetVelocity(Velocity{velocity1, m_angularVelocity});
 		body2->SetVelocity(Velocity{velocity2, m_angularVelocity});
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PreStep(const Settings& settings, Drawer& drawer) override
 	{
 		if (m_break)
 		{
@@ -132,8 +132,6 @@ public:
 			m_velocity = velocity.v;
 			m_angularVelocity = velocity.w;
 		}
-
-		Test::Step(settings, drawer);
 	}
 
 	static Test* Create()

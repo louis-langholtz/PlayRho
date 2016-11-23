@@ -61,10 +61,8 @@ public:
 		}
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings, drawer);
-
 		//for (int32 i = 0; i < e_count; ++i)
 		//{
 		//	printf("%g ", m_bodies[i]->GetWorldCenter().y);

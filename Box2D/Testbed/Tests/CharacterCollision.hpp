@@ -225,13 +225,15 @@ public:
 		}
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PreStep(const Settings& settings, Drawer& drawer) override
 	{
 		auto velocity = m_character->GetVelocity();
 		velocity.v.x = -5.0f;
 		m_character->SetVelocity(velocity);
+	}
 
-		Test::Step(settings, drawer);
+	void PostStep(const Settings& settings, Drawer& drawer) override
+	{
 		drawer.DrawString(5, m_textLine, "This tests various character collision shapes.");
 		m_textLine += DRAW_STRING_NEW_LINE;
 		drawer.DrawString(5, m_textLine, "Limitation: square and hexagon can snag on aligned boxes.");
@@ -239,7 +241,7 @@ public:
 		drawer.DrawString(5, m_textLine, "Feature: edge chains have smooth collision inside and out.");
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
-
+	
 	static Test* Create()
 	{
 		return new CharacterCollision;

@@ -122,7 +122,7 @@ public:
 		m_createTime = timer.GetMilliseconds();
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
 		const ContactManager& cm = m_world->GetContactManager();
 		const auto height = cm.m_broadPhase.GetTreeHeight();
@@ -132,8 +132,6 @@ public:
 		const auto minimumHeight = ceilf(logf(float_t(minimumNodeCount)) / logf(2.0f));
 		drawer.DrawString(5, m_textLine, "dynamic tree height = %d, min = %d", height, int32(minimumHeight));
 		m_textLine += DRAW_STRING_NEW_LINE;
-
-		Test::Step(settings, drawer);
 
 		drawer.DrawString(5, m_textLine, "create time = %6.2f ms, fixture count = %d",
 			m_createTime, m_fixtureCount);

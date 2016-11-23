@@ -123,8 +123,7 @@ public:
 	{
 		// Ground body
 		{
-			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
+			const auto ground = m_world->CreateBody(BodyDef{});
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
@@ -140,9 +139,9 @@ public:
 		}
 
 		{
-			float_t w = 1.0f;
-			float_t b = w / (2.0f + Sqrt(2.0f));
-			float_t s = Sqrt(2.0f) * b;
+			const auto w = float_t(1);
+			const auto b = w / (2.0f + Sqrt(2.0f));
+			const auto s = Sqrt(2.0f) * b;
 
 			m_polygons[2].Set({
 				Vec2(0.5f * s, 0.0f),
@@ -179,7 +178,7 @@ public:
 		BodyDef bd;
 		bd.type = BodyType::Dynamic;
 
-		float_t x = RandomFloat(-2.0f, 2.0f);
+		const auto x = RandomFloat(-2.0f, 2.0f);
 		bd.position = Vec2(x, 10.0f);
 		bd.angle = 1_rad * RandomFloat(-Pi, Pi);
 
@@ -256,21 +255,19 @@ public:
 		}
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings, drawer);
-
 		PolyShapesCallback callback;
 		callback.m_circle.SetRadius(float_t(2.0));
 		callback.m_circle.SetLocation(Vec2(0.0f, 1.1f));
 		callback.m_transform = Transform_identity;
 		callback.g_debugDraw = &drawer;
 
-		AABB aabb = ComputeAABB(callback.m_circle, callback.m_transform, 0);
+		const auto aabb = ComputeAABB(callback.m_circle, callback.m_transform, 0);
 
 		m_world->QueryAABB(&callback, aabb);
 
-		Color color(0.4f, 0.7f, 0.8f);
+		const auto color = Color(0.4f, 0.7f, 0.8f);
 		drawer.DrawCircle(callback.m_circle.GetLocation(), callback.m_circle.GetRadius(), color);
 
 		drawer.DrawString(5, m_textLine, "Press 1-5 to drop stuff");

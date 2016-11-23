@@ -228,9 +228,8 @@ namespace box2d {
 			}
 		}
 		
-		void Step(Settings& settings, Drawer& drawer) override
+		void PostStep(const Settings& settings, Drawer& drawer) override
 		{
-			Test::Step(settings, drawer);
 			drawer.DrawString(5, m_textLine, "Drag a circle with mouse, then let go to see how the physics is simulated");
 			m_textLine += DRAW_STRING_NEW_LINE;
 			drawer.DrawString(5, m_textLine, "Press '.' to toggle bullet mode (currently %s).", m_bullet_mode? "on": "off");

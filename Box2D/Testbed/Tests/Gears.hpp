@@ -114,8 +114,7 @@ public:
 			Body* body3 = m_world->CreateBody(bd3);
 			body3->CreateFixture(FixtureDef{&box, 5.0f});
 
-			PrismaticJointDef jd3;
-			jd3.Initialize(ground, body3, bd3.position, Vec2(0.0f, 1.0f));
+			PrismaticJointDef jd3(ground, body3, bd3.position, Vec2(0.0f, 1.0f));
 			jd3.lowerTranslation = -5.0f;
 			jd3.upperTranslation = 5.0f;
 			jd3.enableLimit = true;
@@ -140,10 +139,8 @@ public:
 		}
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings, drawer);
-
 		{
 			const auto ratio = m_joint4->GetRatio();
 			const auto value = m_joint1->GetJointAngle() + ratio * m_joint2->GetJointAngle();

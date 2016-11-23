@@ -602,63 +602,11 @@ DebugDraw::~DebugDraw() noexcept
 	delete m_points;
 }
 
-//
-void DebugDraw::DrawPolygon(const Vec2* vertices, size_type vertexCount, const Color& color)
+void DebugDraw::DrawTriangle(const Vec2& p1, const Vec2& p2, const Vec2& p3, const Color& color)
 {
-    auto p1 = vertices[vertexCount - 1];
-	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-	{
-        const auto p2 = vertices[i];
-		m_lines->Vertex(m_camera, p1, color);
-		m_lines->Vertex(m_camera, p2, color);
-        p1 = p2;
-	}
-}
-
-//
-void DebugDraw::DrawSolidPolygon(const Vec2* vertices, size_type vertexCount, const Color& color)
-{
-	for (auto i = decltype(vertexCount){1}; i < vertexCount - 1; ++i)
-    {
-        m_triangles->Vertex(m_camera, vertices[0], color);
-        m_triangles->Vertex(m_camera, vertices[i], color);
-        m_triangles->Vertex(m_camera, vertices[i+1], color);
-    }
-}
-
-//
-void DebugDraw::DrawCircle(const Vec2& center, float_t radius, const Color& color)
-{
-	auto r1 = Vec2(1, 0);
-	auto v1 = center + radius * r1;
-	for (auto i = decltype(m_circleParts){0}; i < m_circleParts; ++i)
-	{
-		const auto r2 = Vec2{m_cosInc * r1.x - m_sinInc * r1.y, m_sinInc * r1.x + m_cosInc * r1.y};
-		const auto v2 = center + radius * r2;
-		m_lines->Vertex(m_camera, v1, color);
-		m_lines->Vertex(m_camera, v2, color);
-		r1 = r2;
-		v1 = v2;
-	}
-}
-	
-//
-void DebugDraw::DrawSolidCircle(const Vec2& center, float_t radius, const Color& color)
-{
-	const auto v0 = center;
-	auto r1 = Vec2(m_cosInc, m_sinInc);
-	auto v1 = center + radius * r1;
-	for (auto i = decltype(m_circleParts){0}; i < m_circleParts; ++i)
-	{
-		// Perform rotation to avoid additional trigonometry.
-		const auto r2 = Vec2{m_cosInc * r1.x - m_sinInc * r1.y, m_sinInc * r1.x + m_cosInc * r1.y};
-		const auto v2 = center + radius * r2;
-		m_triangles->Vertex(m_camera, v0, color);
-		m_triangles->Vertex(m_camera, v1, color);
-		m_triangles->Vertex(m_camera, v2, color);
-		r1 = r2;
-		v1 = v2;
-	}
+	m_triangles->Vertex(m_camera, p1, color);
+	m_triangles->Vertex(m_camera, p2, color);
+	m_triangles->Vertex(m_camera, p3, color);	
 }
 
 //
@@ -670,7 +618,68 @@ void DebugDraw::DrawSegment(const Vec2& p1, const Vec2& p2, const Color& color)
 
 void DebugDraw::DrawPoint(const Vec2& p, float_t size, const Color& color)
 {
-    m_points->Vertex(m_camera, p, color, size);
+	m_points->Vertex(m_camera, p, color, size);
+}
+
+//
+void DebugDraw::Flush()
+{
+	m_triangles->Flush(m_camera);
+	m_lines->Flush(m_camera);
+	m_points->Flush(m_camera);
+}
+
+//
+void DebugDraw::DrawPolygon(const Vec2* vertices, size_type vertexCount, const Color& color)
+{
+    auto p1 = vertices[vertexCount - 1];
+	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+	{
+        const auto p2 = vertices[i];
+		DrawSegment(p1, p2, color);
+        p1 = p2;
+	}
+}
+
+//
+void DebugDraw::DrawCircle(const Vec2& center, float_t radius, const Color& color)
+{
+	auto r1 = Vec2(1, 0);
+	auto v1 = center + radius * r1;
+	for (auto i = decltype(m_circleParts){0}; i < m_circleParts; ++i)
+	{
+		const auto r2 = Vec2{m_cosInc * r1.x - m_sinInc * r1.y, m_sinInc * r1.x + m_cosInc * r1.y};
+		const auto v2 = center + radius * r2;
+		DrawSegment(v1, v2, color);
+		r1 = r2;
+		v1 = v2;
+	}
+}
+
+//
+void DebugDraw::DrawSolidPolygon(const Vec2* vertices, size_type vertexCount, const Color& color)
+{
+	for (auto i = decltype(vertexCount){1}; i < vertexCount - 1; ++i)
+	{
+		DrawTriangle(vertices[0], vertices[i], vertices[i+1], color);
+	}
+}
+
+//
+void DebugDraw::DrawSolidCircle(const Vec2& center, float_t radius, const Color& color)
+{
+	const auto v0 = center;
+	auto r1 = Vec2(m_cosInc, m_sinInc);
+	auto v1 = center + radius * r1;
+	for (auto i = decltype(m_circleParts){0}; i < m_circleParts; ++i)
+	{
+		// Perform rotation to avoid additional trigonometry.
+		const auto r2 = Vec2{m_cosInc * r1.x - m_sinInc * r1.y, m_sinInc * r1.x + m_cosInc * r1.y};
+		const auto v2 = center + radius * r2;
+		DrawTriangle(v0, v1, v2, color);
+		r1 = r2;
+		v1 = v2;
+	}
 }
 
 void DebugDraw::DrawString(int x, int y, const char *string, ...)
@@ -700,14 +709,6 @@ void DebugDraw::DrawString(const Vec2& pw, const char *string, ...)
 	va_end(arg);
 
 	AddGfxCmdText(ps.x, h - ps.y, TEXT_ALIGN_LEFT, buffer, SetRGBA(230, 153, 153, 255));
-}
-
-//
-void DebugDraw::Flush()
-{
-    m_triangles->Flush(m_camera);
-    m_lines->Flush(m_camera);
-    m_points->Flush(m_camera);
 }
 
 Vec2 DebugDraw::GetTranslation() const

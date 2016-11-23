@@ -47,10 +47,8 @@ public:
 		return new DistanceTest;
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings, drawer);
-
 		const auto proxyA = GetDistanceProxy(m_polygonA, 0);
 		const auto proxyB = GetDistanceProxy(m_polygonB, 0);
 		const auto transformA = m_transformA;

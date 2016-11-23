@@ -29,7 +29,7 @@ public:
 	{
 		m_world->SetGravity(Vec2(float_t{0}, float_t{0}));
 
-		const float_t k_restitution = 0.4f;
+		const auto k_restitution = float_t(0.4);
 
 		Body* ground;
 		{
@@ -112,22 +112,22 @@ public:
 			fd.density = 1.0f;
 			fd.friction = 0.3f;
 
-			for (int i = 0; i < 10; ++i)
+			const auto gravity = 10.0f;
+			
+			for (auto i = 0; i < 10; ++i)
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
-
 				bd.position = Vec2(float_t{0}, 5.0f + 1.54f * i);
-				Body* body = m_world->CreateBody(bd);
+				const auto body = m_world->CreateBody(bd);
 
 				body->CreateFixture(fd);
 
-				float_t gravity = 10.0f;
-				float_t I = GetLocalInertia(*body);
-				float_t mass = GetMass(*body);
+				const auto I = GetLocalInertia(*body);
+				const auto mass = GetMass(*body);
 
 				// For a circle: I = 0.5 * m * r * r ==> r = sqrt(2 * I / m)
-				float_t radius = Sqrt(2.0f * I / mass);
+				const auto radius = Sqrt(2.0f * I / mass);
 
 				FrictionJointDef jd;
 				jd.localAnchorA = Vec2_zero;
@@ -149,8 +149,8 @@ public:
 		{
 		case Key_W:
 			{
-				Vec2 f = GetWorldVector(*m_body, Vec2(float_t{0}, -200.0f));
-				Vec2 p = GetWorldPoint(*m_body, Vec2(float_t{0}, 2.0f));
+				const auto f = GetWorldVector(*m_body, Vec2(float_t{0}, -200.0f));
+				const auto p = GetWorldPoint(*m_body, Vec2(float_t{0}, 2.0f));
 				box2d::ApplyForce(*m_body, f, p);
 			}
 			break;

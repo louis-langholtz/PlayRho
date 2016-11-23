@@ -91,14 +91,14 @@ using namespace box2d;
 // Now compute impulse to be applied:
 // df = f2 - f1
 
-void PrismaticJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor, const Vec2& axis)
+PrismaticJointDef::PrismaticJointDef(Body* bA, Body* bB, const Vec2& anchor, const Vec2& axis) noexcept:
+	JointDef{JointType::Prismatic, bA, bB},
+	localAnchorA{GetLocalPoint(*bA, anchor)},
+	localAnchorB{GetLocalPoint(*bB, anchor)},
+	localAxisA{GetLocalVector(*bA, axis)},
+	referenceAngle{bB->GetAngle() - bA->GetAngle()}	
 {
-	bodyA = bA;
-	bodyB = bB;
-	localAnchorA = GetLocalPoint(*bodyA, anchor);
-	localAnchorB = GetLocalPoint(*bodyB, anchor);
-	localAxisA = GetLocalVector(*bodyA, axis);
-	referenceAngle = bodyB->GetAngle() - bodyA->GetAngle();
+	// Intentionally empty.
 }
 
 PrismaticJoint::PrismaticJoint(const PrismaticJointDef& def)

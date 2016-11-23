@@ -29,8 +29,7 @@ public:
 	{
 		Body* ground = nullptr;
 		{
-			BodyDef bd;
-			ground = m_world->CreateBody(bd);
+			ground = m_world->CreateBody(BodyDef{});
 
 			const auto shape = EdgeShape(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
 
@@ -72,15 +71,12 @@ public:
 			rjd.enableMotor = true;
 			m_world->CreateJoint(rjd);
 
-			PrismaticJointDef pjd;
-			pjd.Initialize(ground, m_platform, Vec2(0.0f, 5.0f), Vec2(1.0f, 0.0f));
-
+			PrismaticJointDef pjd(ground, m_platform, Vec2(0.0f, 5.0f), Vec2(1.0f, 0.0f));
 			pjd.maxMotorForce = 1000.0f;
 			pjd.enableMotor = true;
 			pjd.lowerTranslation = -10.0f;
 			pjd.upperTranslation = 10.0f;
 			pjd.enableLimit = true;
-
 			m_world->CreateJoint(pjd);
 
 			m_speed = 3.0f;
@@ -126,12 +122,12 @@ public:
 		}
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PreStep(const Settings& settings, Drawer& drawer) override
 	{
 		// Drive the kinematic body.
 		if (m_platform->GetType() == BodyType::Kinematic)
 		{
-			Vec2 p = m_platform->GetLocation();
+			const auto p = m_platform->GetLocation();
 			const auto velocity = m_platform->GetVelocity();
 
 			if ((p.x < -10.0f && velocity.v.x < 0.0f) ||
@@ -140,12 +136,14 @@ public:
 				m_platform->SetVelocity(Velocity{Vec2{-velocity.v.x, velocity.v.y}, velocity.w});
 			}
 		}
+	}
 
-		Test::Step(settings, drawer);
+	void PostStep(const Settings& settings, Drawer& drawer) override
+	{
 		drawer.DrawString(5, m_textLine, "Keys: (d) dynamic, (s) static, (k) kinematic");
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
-
+	
 	static Test* Create()
 	{
 		return new BodyTypes;

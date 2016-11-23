@@ -34,9 +34,11 @@ struct PrismaticJointDef : public JointDef
 {
 	constexpr PrismaticJointDef() noexcept: JointDef(JointType::Prismatic) {}
 
+	PrismaticJointDef(const PrismaticJointDef& copy) = default;
+	
 	/// Initialize the bodies, anchors, axis, and reference angle using the world
 	/// anchor and unit world axis.
-	void Initialize(Body* bodyA, Body* bodyB, const Vec2& anchor, const Vec2& axis);
+	PrismaticJointDef(Body* bodyA, Body* bodyB, const Vec2& anchor, const Vec2& axis) noexcept;
 
 	/// The local anchor point relative to bodyA's origin.
 	Vec2 localAnchorA = Vec2_zero;

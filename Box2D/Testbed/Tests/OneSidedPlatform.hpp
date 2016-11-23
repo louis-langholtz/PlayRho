@@ -37,11 +37,8 @@ public:
 	{
 		// Ground
 		{
-			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
-
-			EdgeShape shape;
-			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
+			const auto ground = m_world->CreateBody(BodyDef{});
+			const auto shape = EdgeShape(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
 			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
 
@@ -49,7 +46,7 @@ public:
 		{
 			BodyDef bd;
 			bd.position = Vec2(0.0f, 10.0f);
-			Body* body = m_world->CreateBody(bd);
+			const auto body = m_world->CreateBody(bd);
 
 			const auto shape = PolygonShape(3.0f, 0.5f);
 			m_platform = body->CreateFixture(FixtureDef{&shape, 0.0f});
@@ -63,16 +60,12 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(0.0f, 12.0f);
-			Body* body = m_world->CreateBody(bd);
+			const auto body = m_world->CreateBody(bd);
 
-			m_radius = 0.5f;
-			CircleShape shape;
-			shape.SetRadius(float_t(m_radius));
+			const auto shape = CircleShape(m_radius);
 			m_character = body->CreateFixture(FixtureDef{&shape, 20.0f});
 
 			body->SetVelocity(Velocity{Vec2(0.0f, -50.0f), 0_rad});
-
-			m_state = e_unknown;
 		}
 	}
 
@@ -80,8 +73,8 @@ public:
 	{
 		Test::PreSolve(contact, oldManifold);
 
-		Fixture* fixtureA = contact.GetFixtureA();
-		Fixture* fixtureB = contact.GetFixtureB();
+		const auto fixtureA = contact.GetFixtureA();
+		const auto fixtureB = contact.GetFixtureB();
 
 		if (fixtureA != m_platform && fixtureA != m_character)
 		{
@@ -109,13 +102,12 @@ public:
 #endif
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings, drawer);
 		drawer.DrawString(5, m_textLine, "Press: (c) create a shape, (d) destroy a shape.");
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-        Vec2 v = GetLinearVelocity(*(m_character->GetBody()));
+        const auto v = GetLinearVelocity(*(m_character->GetBody()));
         drawer.DrawString(5, m_textLine, "Character Linear Velocity: %f", v.y);
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
@@ -125,8 +117,10 @@ public:
 		return new OneSidedPlatform;
 	}
 
-	float_t m_radius, m_top, m_bottom;
-	State m_state;
+	float_t m_radius = 0.5f;
+	float_t m_top;
+	float_t m_bottom;
+	State m_state = e_unknown;
 	Fixture* m_platform;
 	Fixture* m_character;
 };

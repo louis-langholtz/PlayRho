@@ -68,7 +68,7 @@ public:
 		return new DynamicTreeTest;
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
 		BOX2D_NOT_USED(settings);
 
@@ -81,9 +81,8 @@ public:
 
 		if (m_automated == true)
 		{
-			int32 actionCount = Max(1, e_actorCount >> 2);
-
-			for (int32 i = 0; i < actionCount; ++i)
+			const auto actionCount = Max(1, e_actorCount >> 2);
+			for (auto i = decltype(actionCount){0}; i < actionCount; ++i)
 			{
 				Action();
 			}
@@ -94,7 +93,7 @@ public:
 
 		for (int32 i = 0; i < e_actorCount; ++i)
 		{
-			Actor* actor = m_actors + i;
+			const auto actor = m_actors + i;
 			if (actor->proxyId == DynamicTree::NullNode)
 				continue;
 

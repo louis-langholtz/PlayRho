@@ -375,6 +375,20 @@ static void sRestart()
 static void sSimulate(Drawer& drawer)
 {
 	glEnable(GL_DEPTH_TEST);
+	
+	settings.dt = (settings.hz > 0)? 1.0f / settings.hz : float_t(0.0f);
+	if (settings.pause)
+	{
+		if (settings.singleStep)
+		{
+			settings.singleStep = false;
+		}
+		else
+		{
+			settings.dt = 0.0f;
+		}
+	}
+	
 	test->Step(settings, drawer);
 
 	test->DrawTitle(drawer, entry->name);

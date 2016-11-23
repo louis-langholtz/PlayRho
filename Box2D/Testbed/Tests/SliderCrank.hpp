@@ -91,8 +91,7 @@ public:
 
 				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(0.0f, 17.0f)});
 
-				PrismaticJointDef pjd;
-				pjd.Initialize(ground, body, Vec2(0.0f, 17.0f), Vec2(0.0f, 1.0f));
+				PrismaticJointDef pjd(ground, body, Vec2(0.0f, 17.0f), Vec2(0.0f, 1.0f));
 
 				pjd.maxMotorForce = 1000.0f;
 				pjd.enableMotor = true;
@@ -132,12 +131,11 @@ public:
 		}
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
-		Test::Step(settings, drawer);
 		drawer.DrawString(5, m_textLine, "Keys: (f) toggle friction, (m) toggle motor");
 		m_textLine += DRAW_STRING_NEW_LINE;
-		float_t torque = m_joint1->GetMotorTorque(settings.hz);
+		const auto torque = m_joint1->GetMotorTorque(settings.hz);
 		drawer.DrawString(5, m_textLine, "Motor Torque = %5.0f", (float) torque);
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}

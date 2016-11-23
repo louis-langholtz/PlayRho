@@ -30,17 +30,12 @@ class MotorJointTest : public Test
 public:
 	MotorJointTest()
 	{
-		Body* ground = NULL;
+		const auto ground = m_world->CreateBody(BodyDef{});
 		{
-			BodyDef bd;
-			ground = m_world->CreateBody(bd);
-
-			EdgeShape shape;
-			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
+			const auto shape = EdgeShape(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
 
 			FixtureDef fd;
 			fd.shape = &shape;
-
 			ground->CreateFixture(fd);
 		}
 
@@ -49,7 +44,7 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(0.0f, 8.0f);
-			Body* body = m_world->CreateBody(bd);
+			const auto body = m_world->CreateBody(bd);
 
 			const auto shape = PolygonShape(2.0f, 0.5f);
 
@@ -65,9 +60,6 @@ public:
 			mjd.maxTorque = 1000.0f;
 			m_joint = (MotorJoint*)m_world->CreateJoint(mjd);
 		}
-
-		m_go = false;
-		m_time = 0.0f;
 	}
 
 	void Keyboard(Key key) override
@@ -82,37 +74,35 @@ public:
 		}
 	}
 
-	void Step(Settings& settings, Drawer& drawer) override
+	void PreStep(const Settings& settings, Drawer& drawer) override
 	{
-		if (m_go && settings.hz > 0.0f)
+		if (m_go && settings.dt > 0)
 		{
-			m_time += 1.0f / settings.hz;
+			m_time += settings.dt;
 		}
 
-		Vec2 linearOffset;
-		linearOffset.x = 6.0f * sinf(2.0f * m_time);
-		linearOffset.y = 8.0f + 4.0f * sinf(1.0f * m_time);
-		
-		const auto angularOffset = 4_rad * m_time;
+		const auto linearOffset = Vec2{6.0f * sinf(2.0f * m_time), 8.0f + 4.0f * sinf(1.0f * m_time)};
 
 		m_joint->SetLinearOffset(linearOffset);
-		m_joint->SetAngularOffset(angularOffset);
+		m_joint->SetAngularOffset(4_rad * m_time);
 
 		drawer.DrawPoint(linearOffset, 4.0f, Color(0.9f, 0.9f, 0.9f));
+	}
 
-		Test::Step(settings, drawer);
+	void PostStep(const Settings& settings, Drawer& drawer) override
+	{
 		drawer.DrawString(5, m_textLine, "Keys: (s) pause");
 		m_textLine += 15;
 	}
-
+	
 	static Test* Create()
 	{
 		return new MotorJointTest;
 	}
 
 	MotorJoint* m_joint;
-	float m_time;
-	bool m_go;
+	float m_time = 0;
+	bool m_go = false;
 };
 
 } // namespace box2d

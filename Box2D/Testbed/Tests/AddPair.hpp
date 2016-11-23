@@ -30,7 +30,7 @@ public:
 	{
 		m_world->SetGravity(Vec2(float_t{0}, float_t{0}));
 		{
-			CircleShape shape{float_t(0.1), Vec2_zero};
+			const auto shape = CircleShape{float_t(0.1)};
 
 			float minX = -6.0f;
 			float maxX = 0.0f;
@@ -42,7 +42,7 @@ public:
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(RandomFloat(minX,maxX),RandomFloat(minY,maxY));
-				Body* body = m_world->CreateBody(bd);
+				const auto body = m_world->CreateBody(bd);
 				body->CreateFixture(FixtureDef{&shape, 0.01f});
 			}
 		}
@@ -53,7 +53,7 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-40.0f,5.0f);
 			bd.bullet = true;
-			Body* body = m_world->CreateBody(bd);
+			const auto body = m_world->CreateBody(bd);
 			body->CreateFixture(FixtureDef{&shape, 1.0f});
 			body->SetVelocity(Velocity{Vec2(150.0f, 0.0f), 0_rad});
 		}
