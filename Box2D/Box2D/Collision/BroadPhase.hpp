@@ -27,6 +27,7 @@
 namespace box2d {
 
 /// Proxy ID pair.
+/// @note This data structure is 8-bytes large (on at least one 64-bit platform).
 struct ProxyIdPair
 {
 	using size_type = std::remove_const<decltype(MaxContacts)>::type;
