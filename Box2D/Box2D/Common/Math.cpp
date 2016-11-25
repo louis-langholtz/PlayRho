@@ -78,3 +78,8 @@ UnitVec2::UnitVec2(Vec2 value, UnitVec2 fallback) noexcept
 {
 	return os << "Vec2(" << value.x << "," << value.y << ")";
 }
+
+::std::ostream& box2d::operator<<(::std::ostream& os, const UnitVec2& value)
+{
+	return os << "UnitVec2(" << value.GetX() << "," << value.GetY() << ")";
+}

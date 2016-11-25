@@ -1374,6 +1374,8 @@ inline Vec2 Average(Span<const Vec2> span)
 Vec2 ComputeCentroid(const Span<const Vec2>& vertices);
 
 ::std::ostream& operator<<(::std::ostream& os, const Vec2& value);
+
+::std::ostream& operator<<(::std::ostream& os, const UnitVec2& value);
 	
 }
 #endif
