@@ -174,7 +174,7 @@ static inline bool IsFor(const Contact& contact,
 		((fA == fixtureB) && (fB == fixtureA) && (iA == indexB) && (iB == indexA));
 }
 
-void ContactManager::Add(FixtureProxy& proxyA, FixtureProxy& proxyB)
+void ContactManager::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 {
 	const auto fixtureA = proxyA.fixture; ///< Fixture of proxyA (but may get switched with fixtureB).
 	const auto fixtureB = proxyB.fixture; ///< Fixture of proxyB (but may get switched with fixtureA).

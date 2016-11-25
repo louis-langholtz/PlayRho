@@ -90,7 +90,7 @@ private:
 	/// @param proxyA Proxy A.
 	/// @param proxyB Proxy B.
 	/// @sa bool Body::ShouldCollide(const Body* other) const
-	void Add(FixtureProxy& proxyA, FixtureProxy& proxyB);
+	void Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB);
 	
 	void Add(Contact* contact);
 
