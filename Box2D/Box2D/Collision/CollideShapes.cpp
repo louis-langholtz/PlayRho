@@ -318,9 +318,10 @@ static inline ShapeSeparation FindEdgeSeparation(const PolygonShape& polygon, co
 	auto minValue = MaxFloat;
 	{
 		const auto count = polygon.GetVertexCount();
+		const auto edgeVertex1 = edge.GetVertex1();
 		for (auto i = decltype(count){0}; i < count; ++i)
 		{
-			const auto s = Dot(edge.GetNormal(), polygon.GetVertex(i) - edge.GetVertex1());
+			const auto s = Dot(edge.GetNormal(), polygon.GetVertex(i) - edgeVertex1);
 			minValue = Min(minValue, s);
 		}
 	}
@@ -335,12 +336,14 @@ static inline ShapeSeparation FindPolygonSeparation(const PolygonShape& polygon,
 		const auto totalRadius = GetVertexRadius(polygon) + edge.GetVertexRadius();
 		const auto perp = GetRevPerpendicular(edge.GetNormal());
 		const auto count = polygon.GetVertexCount();
+		const auto edgeVertex1 = edge.GetVertex1();
+		const auto edgeVertex2 = edge.GetVertex2();
 		for (auto i = decltype(count){0}; i < count; ++i)
 		{
 			const auto polygonNormal = -polygon.GetNormal(i);
 			const auto polygonVertex = polygon.GetVertex(i);
-			const auto s = Min(Dot(polygonNormal, polygonVertex - edge.GetVertex1()),
-							   Dot(polygonNormal, polygonVertex - edge.GetVertex2()));
+			const auto s = Min(Dot(polygonNormal, polygonVertex - edgeVertex1),
+							   Dot(polygonNormal, polygonVertex - edgeVertex2));
 			
 			if (s > totalRadius) // No collision
 			{
@@ -667,11 +670,13 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	const auto cLocal = InverseTransform(Transform(shapeB.GetLocation(), xfB), xfA); ///< Center of the circle in the frame of the polygon.
 	
 	const auto totalRadius = GetVertexRadius(shapeA) + GetVertexRadius(shapeB);
+	const auto totalRadiusSquared = Square(totalRadius);
 	const auto vertexCount = shapeA.GetVertexCount();
 	auto indexOfMax = decltype(vertexCount){0};
 	auto maxSeparation = -MaxFloat;
 	
 	// Find edge that circle is closest to.
+	auto s0 = Dot(shapeA.GetNormal(vertexCount - 1), cLocal - shapeA.GetVertex(vertexCount - 1));
 	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 	{
 		// Get circle's distance from vertex[i] in direction of normal[i].
@@ -681,6 +686,14 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 			// Early out - no contact.
 			return Manifold{};
 		}
+		if ((s > 0) && (s0 > 0) && (s0 <= totalRadius))
+		{
+			if (GetLengthSquared(cLocal - shapeA.GetVertex(i)) <= totalRadiusSquared)
+			{
+				return Manifold::GetForCircles(shapeA.GetVertex(i), Manifold::Point{shapeB.GetLocation()});
+			}
+		}
+		s0 = s;
 		if (maxSeparation < s)
 		{
 			maxSeparation = s;
