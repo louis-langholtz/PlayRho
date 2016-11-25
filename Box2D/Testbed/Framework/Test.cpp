@@ -288,15 +288,15 @@ void Test::PreSolve(Contact& contact, const Manifold& oldManifold)
 
 	for (auto i = decltype(manifoldPointCount){0}; (i < manifoldPointCount) && (m_pointCount < k_maxContactPoints); ++i)
 	{
-		auto cp = m_points + m_pointCount;
-		cp->fixtureA = fixtureA;
-		cp->fixtureB = fixtureB;
-		cp->position = worldManifold.GetPoint(i);
-		cp->normal = worldManifold.GetNormal();
-		cp->state = state2[i];
-		cp->normalImpulse = manifold.GetPoint(i).normalImpulse;
-		cp->tangentImpulse = manifold.GetPoint(i).tangentImpulse;
-		cp->separation = worldManifold.GetSeparation(i);
+		auto& cp = m_points[m_pointCount];
+		cp.fixtureA = fixtureA;
+		cp.fixtureB = fixtureB;
+		cp.position = worldManifold.GetPoint(i);
+		cp.normal = worldManifold.GetNormal();
+		cp.state = state2[i];
+		cp.normalImpulse = manifold.GetPoint(i).normalImpulse;
+		cp.tangentImpulse = manifold.GetPoint(i).tangentImpulse;
+		cp.separation = worldManifold.GetSeparation(i);
 		++m_pointCount;
 	}
 }
@@ -612,20 +612,20 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 				drawer.DrawPoint(point->position, 5.0f, Color(0.3f, 0.3f, 0.95f));
 			}
 
-			if (settings.drawContactNormals == 1)
+			if (settings.drawContactNormals)
 			{
 				const auto p1 = point->position;
 				const auto p2 = p1 + k_axisScale * point->normal;
 				drawer.DrawSegment(p1, p2, Color(0.9f, 0.9f, 0.9f));
 			}
-			else if (settings.drawContactImpulse == 1)
+			else if (settings.drawContactImpulse)
 			{
 				const auto p1 = point->position;
 				const auto p2 = p1 + k_impulseScale * point->normalImpulse * point->normal;
 				drawer.DrawSegment(p1, p2, Color(0.9f, 0.9f, 0.3f));
 			}
 
-			if (settings.drawFrictionImpulse == 1)
+			if (settings.drawFrictionImpulse)
 			{
 				const auto tangent = GetFwdPerpendicular(point->normal);
 				const auto p1 = point->position;
