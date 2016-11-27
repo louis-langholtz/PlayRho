@@ -31,11 +31,6 @@ namespace box2d {
 struct ProxyIdPair
 {
 	using size_type = std::remove_const<decltype(MaxContacts)>::type;
-	
-	ProxyIdPair() = default;
-	ProxyIdPair(const ProxyIdPair& copy) = default;
-	
-	constexpr ProxyIdPair(size_type idA, size_type idB) noexcept: proxyIdA{idA}, proxyIdB{idB} {}
 
 	size_type proxyIdA;
 	size_type proxyIdB;
@@ -164,22 +159,6 @@ private:
 	size_type m_queryProxyId;
 };
 
-/// This is used to sort pairs.
-inline bool PairLessThan(const ProxyIdPair& pair1, const ProxyIdPair& pair2) noexcept
-{
-	if (pair1.proxyIdA < pair2.proxyIdA)
-	{
-		return true;
-	}
-
-	if (pair1.proxyIdA == pair2.proxyIdA)
-	{
-		return pair1.proxyIdB < pair2.proxyIdB;
-	}
-
-	return false;
-}
-
 inline void* BroadPhase::GetUserData(size_type proxyId) const
 {
 	return m_tree.GetUserData(proxyId);
@@ -237,7 +216,9 @@ void BroadPhase::UpdatePairs(T* callback)
 	m_moveCount = 0;
 
 	// Sort the pair buffer to expose duplicates.
-	std::sort(m_pairBuffer, m_pairBuffer + m_pairCount, PairLessThan);
+	std::sort(m_pairBuffer, m_pairBuffer + m_pairCount, [](ProxyIdPair p1, ProxyIdPair p2) {
+		return (p1.proxyIdA < p2.proxyIdA) || ((p1.proxyIdA == p2.proxyIdA) && (p1.proxyIdB < p2.proxyIdB));
+	});
 
 	// Send the pairs back to the client.
 	for (auto i = decltype(m_pairCount){0}; i < m_pairCount; )
