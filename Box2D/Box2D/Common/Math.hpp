@@ -797,6 +797,8 @@ constexpr inline float_t Dot(const Vec2 a, const Vec2 b) noexcept
 ///   neither vector A nor B has a length of zero; and
 ///   vector B is at an angle from vector A of less than 0 and greater than -180 degrees
 ///   (clockwise from A being a negative angle).
+/// @note The absolute value of the result is the area of the parallelogram formed by
+///   the vectors A and B.
 ///
 /// @sa https://en.wikipedia.org/wiki/Cross_product
 ///
