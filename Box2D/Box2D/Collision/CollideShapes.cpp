@@ -268,30 +268,6 @@ inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2 centroid):
 	}
 }
 
-/// Gets the shape separation information for the most opposite vector.
-/// @param vectors Collection of 0 or more vectors to find the most anti-parallel vector from and
-///    its magnitude from the reference vector.
-/// @param refvec Reference vector.
-template <typename T>
-static inline ShapeSeparation GetMostOppositeSeparation(Span<const T> vectors, const T refvec, const T offset)
-{
-	auto bestIndex = ShapeSeparation::InvalidIndex;
-	auto minValue = MaxFloat;
-	const auto count = vectors.size();
-	for (auto i = decltype(count){0}; i < count; ++i)
-	{
-		// Get cosine of angle between refvec and vectors[i] multiplied by their
-		// magnitudes (which will essentially be 1 for any two unit vectors).
-		const auto s = Dot(refvec, vectors[i] - offset);
-		if (minValue > s)
-		{
-			minValue = s;
-			bestIndex = static_cast<ShapeSeparation::index_type>(i);
-		}
-	}
-	return ShapeSeparation{bestIndex, minValue};
-}
-
 static inline ReferenceFace GetReferenceFace(const EdgeInfo& edgeInfo)
 {
 	ReferenceFace rf;
@@ -332,6 +308,30 @@ static inline ReferenceFace GetReferenceFace(const PolygonShape& localShapeB,
 	rf.sideOffset1 = Dot(rf.sideNormal1, rf.v1);
 	rf.sideOffset2 = Dot(rf.sideNormal2, rf.v2);
 	return rf;
+}
+
+/// Gets the shape separation information for the most opposite vector.
+/// @param vectors Collection of 0 or more vectors to find the most anti-parallel vector from and
+///    its magnitude from the reference vector.
+/// @param refvec Reference vector.
+template <typename T>
+static inline ShapeSeparation GetMostOppositeSeparation(Span<const T> vectors, const T refvec, const T offset)
+{
+	auto bestIndex = ShapeSeparation::InvalidIndex;
+	auto minValue = MaxFloat;
+	const auto count = vectors.size();
+	for (auto i = decltype(count){0}; i < count; ++i)
+	{
+		// Get cosine of angle between refvec and vectors[i] multiplied by their
+		// magnitudes (which will essentially be 1 for any two unit vectors).
+		const auto s = Dot(refvec, vectors[i] - offset);
+		if (minValue > s)
+		{
+			minValue = s;
+			bestIndex = static_cast<ShapeSeparation::index_type>(i);
+		}
+	}
+	return ShapeSeparation{bestIndex, minValue};
 }
 
 static inline ShapeSeparation GetPolygonSeparation(const PolygonShape& polygon, const EdgeInfo& edge)
@@ -395,7 +395,7 @@ static ShapeSeparation GetMaxSeparation(const PolygonShape& shape1, const Transf
 		
 		for (auto i = decltype(count1){0}; i < count1; ++i)
 		{
-			// Get shape1 normal in frame2.
+			// Get shape1 normal and vertex relative to shape2.
 			const auto shape1_ni = Rotate(shape1.GetNormal(i), xf.q);
 			const auto shape1_vi = Transform(shape1.GetVertex(i), xf);
 			
