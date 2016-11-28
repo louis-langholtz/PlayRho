@@ -46,7 +46,7 @@ TEST(WorldManifold, GetWorldManifoldForCirclesTouchingManifold)
 	
 	EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){1});
 	EXPECT_TRUE(IsValid(wm.GetNormal()));
-	EXPECT_EQ(wm.GetNormal(), Vec2(1, 0));
+	EXPECT_EQ(wm.GetNormal() * 1, Vec2(1, 0));
 	EXPECT_EQ(wm.GetSeparation(0), decltype(wm.GetSeparation(0)){0});
 	EXPECT_EQ(wm.GetPoint(0), Vec2(4, 0));
 }
@@ -62,7 +62,7 @@ TEST(WorldManifold, GetWorldManifoldForCirclesHalfOverlappingManifold)
 	
 	EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){1});
 	EXPECT_TRUE(IsValid(wm.GetNormal()));
-	EXPECT_EQ(wm.GetNormal(), Vec2(1, 0));
+	EXPECT_EQ(wm.GetNormal() * 1, Vec2(1, 0));
 	EXPECT_EQ(wm.GetSeparation(0), decltype(wm.GetSeparation(0)){-1});
 	EXPECT_EQ(wm.GetPoint(0), Vec2(7, 0));
 }

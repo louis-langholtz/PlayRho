@@ -31,7 +31,7 @@ public:
 	}
 
 	float_t ReportFixture(Fixture* fixture, const Vec2& point,
-						  const Vec2& normal, float_t fraction)
+						  const UnitVec2& normal, float_t fraction) override
 	{
 		m_fixture = fixture;
 		m_point = point;
@@ -42,7 +42,7 @@ public:
 
 	Fixture* m_fixture;
 	Vec2 m_point;
-	Vec2 m_normal;
+	UnitVec2 m_normal;
 };
 
 class EdgeShapes : public Test

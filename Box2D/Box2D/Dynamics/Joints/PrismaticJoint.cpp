@@ -122,8 +122,8 @@ PrismaticJoint::PrismaticJoint(const PrismaticJointDef& def)
 	m_enableMotor = def.enableMotor;
 	m_limitState = e_inactiveLimit;
 
-	m_axis = Vec2_zero;
-	m_perp = Vec2_zero;
+	m_axis = UnitVec2::GetZero();
+	m_perp = UnitVec2::GetZero();
 }
 
 void PrismaticJoint::InitVelocityConstraints(Span<Velocity> velocities,
@@ -506,9 +506,7 @@ float_t PrismaticJoint::GetJointTranslation() const
 {
 	const auto pA = GetWorldPoint(*GetBodyA(), m_localAnchorA);
 	const auto pB = GetWorldPoint(*GetBodyB(), m_localAnchorB);
-	const auto axis = GetWorldVector(*GetBodyA(), m_localXAxisA);
-
-	return Dot(pB - pA, axis);
+	return Dot(pB - pA, GetWorldVector(*GetBodyA(), Vec2{m_localXAxisA}));
 }
 
 float_t PrismaticJoint::GetJointSpeed() const
@@ -609,7 +607,7 @@ void box2d::Dump(const PrismaticJoint& joint, size_t index)
 	log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
 	log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorA().x, joint.GetLocalAnchorA().y);
 	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorB().x, joint.GetLocalAnchorB().y);
-	log("  jd.localAxisA = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAxisA().x, joint.GetLocalAxisA().y);
+	log("  jd.localAxisA = Vec2(%.15lef, %.15lef);\n", GetX(joint.GetLocalAxisA()), GetY(joint.GetLocalAxisA()));
 	log("  jd.referenceAngle = %.15lef;\n", joint.GetReferenceAngle());
 	log("  jd.enableLimit = bool(%d);\n", joint.IsLimitEnabled());
 	log("  jd.lowerTranslation = %.15lef;\n", joint.GetLowerLimit());

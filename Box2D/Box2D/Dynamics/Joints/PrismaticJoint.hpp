@@ -93,7 +93,7 @@ public:
 	Vec2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
 	/// The local joint axis relative to bodyA.
-	Vec2 GetLocalAxisA() const { return m_localXAxisA; }
+	UnitVec2 GetLocalAxisA() const { return m_localXAxisA; }
 
 	/// Get the reference angle.
 	Angle GetReferenceAngle() const { return m_referenceAngle; }
@@ -148,8 +148,8 @@ private:
 	// Solver shared
 	Vec2 m_localAnchorA;
 	Vec2 m_localAnchorB;
-	Vec2 m_localXAxisA;
-	Vec2 m_localYAxisA;
+	UnitVec2 m_localXAxisA;
+	UnitVec2 m_localYAxisA;
 	Angle m_referenceAngle;
 	Vec3 m_impulse;
 	float_t m_motorImpulse;
@@ -170,7 +170,8 @@ private:
 	float_t m_invMassB;
 	float_t m_invIA;
 	float_t m_invIB;
-	Vec2 m_axis, m_perp;
+	UnitVec2 m_axis;
+	UnitVec2 m_perp;
 	float_t m_s1, m_s2;
 	float_t m_a1, m_a2;
 	Mat33 m_K;

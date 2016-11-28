@@ -76,7 +76,7 @@ GearJoint::GearJoint(const GearJointDef& def)
 		m_localAnchorC = revolute->GetLocalAnchorA();
 		m_localAnchorA = revolute->GetLocalAnchorB();
 		m_referenceAngleA = revolute->GetReferenceAngle();
-		m_localAxisC = Vec2_zero;
+		m_localAxisC = UnitVec2::GetZero();
 
 		coordinateA = aA - aC - m_referenceAngleA;
 	}
@@ -108,7 +108,7 @@ GearJoint::GearJoint(const GearJointDef& def)
 		m_localAnchorD = revolute->GetLocalAnchorA();
 		m_localAnchorB = revolute->GetLocalAnchorB();
 		m_referenceAngleB = revolute->GetReferenceAngle();
-		m_localAxisD = Vec2_zero;
+		m_localAxisD = UnitVec2::GetZero();
 
 		coordinateB = aB - aD - m_referenceAngleB;
 	}
@@ -186,7 +186,7 @@ void GearJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Po
 		const auto u = Rotate(m_localAxisC, qC);
 		const auto rC = Rotate(m_localAnchorC - m_lcC, qC);
 		const auto rA = Rotate(m_localAnchorA - m_lcA, qA);
-		m_JvAC = u;
+		m_JvAC = u * 1;
 		m_JwC = Cross(rC, u);
 		m_JwA = Cross(rA, u);
 		m_mass += m_mC + m_mA + m_iC * Square(m_JwC) + m_iA * Square(m_JwA);
@@ -201,9 +201,9 @@ void GearJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Po
 	}
 	else
 	{
-		Vec2 u = Rotate(m_localAxisD, qD);
-		Vec2 rD = Rotate(m_localAnchorD - m_lcD, qD);
-		Vec2 rB = Rotate(m_localAnchorB - m_lcB, qB);
+		const auto u = Rotate(m_localAxisD, qD);
+		const auto rD = Rotate(m_localAnchorD - m_lcD, qD);
+		const auto rB = Rotate(m_localAnchorB - m_lcB, qB);
 		m_JvBD = m_ratio * u;
 		m_JwD = m_ratio * Cross(rD, u);
 		m_JwB = m_ratio * Cross(rB, u);
@@ -310,7 +310,7 @@ bool GearJoint::SolvePositionConstraints(Span<Position> positions, const Constra
 		const auto u = Rotate(m_localAxisC, qC);
 		const auto rC = Rotate(m_localAnchorC - m_lcC, qC);
 		const auto rA = Rotate(m_localAnchorA - m_lcA, qA);
-		JvAC = u;
+		JvAC = u * 1;
 		JwC = Cross(rC, u);
 		JwA = Cross(rA, u);
 		mass += m_mC + m_mA + m_iC * Square(JwC) + m_iA * Square(JwA);

@@ -79,7 +79,7 @@ public:
 		{
 			Transformation xf1;
 			xf1.q = UnitVec2{0.3524_rad * Pi};
-			xf1.p = GetXAxis(xf1.q);
+			xf1.p = GetXAxis(xf1.q) * 1;
 
 			const auto triangle1 = PolygonShape({
 				Transform(Vec2(-1.0f, 0.0f), xf1),
@@ -89,7 +89,7 @@ public:
 
 			Transformation xf2;
 			xf2.q = UnitVec2{-0.3524_rad * Pi};
-			xf2.p = -GetXAxis(xf2.q);
+			xf2.p = -GetXAxis(xf2.q) * 1;
 
 			const auto triangle2 = PolygonShape({
 				Transform(Vec2(-1.0f, 0.0f), xf2),

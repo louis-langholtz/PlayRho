@@ -351,7 +351,7 @@ MassData Body::ComputeMassData() const noexcept
 	{
 		if (fixture.GetDensity() != float_t{0})
 		{
-			const auto massData = box2d::ComputeMassData(fixture);
+			const auto massData = GetMassData(fixture);
 			mass += massData.mass;
 			center += massData.mass * massData.center;
 			I += massData.I;

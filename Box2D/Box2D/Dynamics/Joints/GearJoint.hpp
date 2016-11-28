@@ -100,8 +100,8 @@ private:
 	Vec2 m_localAnchorC;
 	Vec2 m_localAnchorD;
 
-	Vec2 m_localAxisC;
-	Vec2 m_localAxisD;
+	UnitVec2 m_localAxisC;
+	UnitVec2 m_localAxisD;
 
 	Angle m_referenceAngleA;
 	Angle m_referenceAngleB;
@@ -116,7 +116,8 @@ private:
 	Vec2 m_lcA, m_lcB, m_lcC, m_lcD;
 	float_t m_mA, m_mB, m_mC, m_mD;
 	float_t m_iA, m_iB, m_iC, m_iD;
-	Vec2 m_JvAC, m_JvBD;
+	Vec2 m_JvAC;
+	Vec2 m_JvBD;
 	float_t m_JwA, m_JwB, m_JwC, m_JwD;
 	float_t m_mass;
 };

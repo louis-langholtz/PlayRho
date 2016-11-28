@@ -129,6 +129,39 @@ TEST(World, CreateAndDestroyBody)
 	EXPECT_EQ(world.GetBodies().begin(), world.GetBodies().end());
 }
 
+TEST(World, DynamicEdgeBodyHasCorrectMass)
+{
+	World world;
+	
+	auto bodyDef = BodyDef{};
+	bodyDef.type = BodyType::Dynamic;
+	const auto body = world.CreateBody(bodyDef);
+	ASSERT_EQ(body->GetType(), BodyType::Dynamic);
+	
+	const auto v1 = Vec2{-1, 0};
+	const auto v2 = Vec2{+1, 0};
+	const auto shape = EdgeShape{v1, v2, GetInvalid<Vec2>(), GetInvalid<Vec2>(), 1};
+	ASSERT_EQ(shape.GetVertexRadius(), float_t(1));
+	ASSERT_EQ(shape.GetType(), Shape::e_edge);
+
+	FixtureDef fixtureDef;
+	fixtureDef.shape = &shape;
+	fixtureDef.density = 1;
+	const auto fixture = body->CreateFixture(fixtureDef);
+	ASSERT_NE(fixture, nullptr);
+	ASSERT_EQ(fixture->GetDensity(), float_t(1));
+
+	const auto circleMass = fixture->GetDensity() * Pi * Square(shape.GetVertexRadius());
+	const auto rectMass = fixture->GetDensity() * shape.GetVertexRadius() * 2 * GetLength(v2 - v1);
+	const auto totalMass = circleMass + rectMass;
+	
+	EXPECT_EQ(body->GetType(), BodyType::Dynamic);
+	EXPECT_EQ(body->GetInverseMass(), float_t(1) / totalMass);
+
+	ASSERT_NE(fixture->GetShape(), nullptr);
+	EXPECT_EQ(fixture->GetShape()->GetType(), shape.GetType());
+}
+
 TEST(World, CreateAndDestroyJoint)
 {
 	World world;

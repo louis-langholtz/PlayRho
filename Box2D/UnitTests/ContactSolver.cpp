@@ -144,7 +144,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
 	const auto xfmB = Transformation(old_pB.c, UnitVec2{old_pB.a});
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
-	ASSERT_EQ(manifold.GetLocalNormal(), Vec2(+1, 0));
+	ASSERT_EQ(Vec2{manifold.GetLocalNormal()}, Vec2(+1, 0));
 	ASSERT_EQ(manifold.GetLocalPoint(), Vec2(+2, 0));
 	ASSERT_EQ(manifold.GetPointCount(), 2);
 	ASSERT_EQ(manifold.GetPoint(0).localPoint, Vec2(-2, +2));
@@ -189,7 +189,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
 	const auto xfmB = Transformation(old_pB.c, UnitVec2{old_pB.a});
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
-	ASSERT_EQ(manifold.GetLocalNormal(), Vec2(-1, 0));
+	ASSERT_EQ(Vec2{manifold.GetLocalNormal()}, Vec2(-1, 0));
 	ASSERT_EQ(manifold.GetLocalPoint(), Vec2(-2, 0));
 	ASSERT_EQ(manifold.GetPointCount(), 2);
 	ASSERT_EQ(manifold.GetPoint(0).localPoint, Vec2(+2, -2));
@@ -234,7 +234,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
 	const auto xfmB = Transformation(old_pB.c, UnitVec2{old_pB.a});
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
-	ASSERT_EQ(manifold.GetLocalNormal(), Vec2(0, 1));
+	ASSERT_EQ(Vec2{manifold.GetLocalNormal()}, Vec2(0, 1));
 	ASSERT_EQ(manifold.GetLocalPoint(), Vec2(0, 2));
 	ASSERT_EQ(manifold.GetPointCount(), 2);
 	ASSERT_EQ(manifold.GetPoint(0).localPoint, Vec2(-2, -2));
@@ -292,7 +292,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
 	
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
-	ASSERT_EQ(manifold.GetLocalNormal(), Vec2(0, -1));
+	ASSERT_EQ(Vec2{manifold.GetLocalNormal()}, Vec2(0, -1));
 	ASSERT_EQ(manifold.GetLocalPoint(), Vec2(0, -2));
 	ASSERT_EQ(manifold.GetPointCount(), 2);
 	ASSERT_EQ(manifold.GetPoint(0).localPoint, Vec2(+2, +2));

@@ -186,7 +186,26 @@ TEST(CollideShapes, CircleTouchingTrianglePointRight)
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 0);
 }
 
-TEST(CollideShapes, CircleOverRightOfTriangle)
+TEST(CollideShapes, CircleJustPastTrianglePointRightDoesntCollide)
+{
+	const auto circleRadius = float_t(1);
+	const auto circle = CircleShape(circleRadius);
+	const auto triangleTopPt = Vec2{0, +1};
+	const auto triangleLeftPt = Vec2{-1, -1};
+	const auto triangleRightPt = Vec2{+1, -1};
+	const auto triangle = PolygonShape({triangleLeftPt, triangleRightPt, triangleTopPt});
+	const auto circleXfm = Transformation{triangleRightPt + UnitVec2{-45_deg} * circleRadius * float_t(1.001), UnitVec2{0_deg}};
+	const auto triangleXfm = Transformation{Vec2{0, 0}, UnitVec2{0_deg}};
+	
+	const auto manifold = CollideShapes(triangle, triangleXfm, circle, circleXfm);
+	
+	EXPECT_EQ(manifold.GetType(), Manifold::e_unset);
+	EXPECT_FALSE(IsValid(manifold.GetLocalPoint()));
+	EXPECT_FALSE(IsValid(manifold.GetLocalNormal()));
+	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(0));
+}
+
+TEST(CollideShapes, CircleOverRightFaceOfTriangle)
 {
 	const auto circleRadius = float_t(1);
 	const auto circle = CircleShape(circleRadius);
@@ -237,7 +256,7 @@ TEST(CollideShapes, TallRectangleLeftCircleRight)
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	
-	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(1, 0));
+	EXPECT_EQ(Vec2{manifold.GetLocalNormal()}, Vec2(1, 0));
 	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(hx, 0));
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
@@ -264,7 +283,7 @@ TEST(CollideShapes, IdenticalOverlappingSquares)
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 
-	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(+1, 0));
+	EXPECT_EQ(Vec2{manifold.GetLocalNormal()}, Vec2(+1, 0));
 	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(+2, 0));
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
@@ -304,7 +323,7 @@ TEST(CollideShapes, IdenticalVerticalTouchingSquares)
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	
 	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(0,+2));	
-	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(0,+1));
+	EXPECT_EQ(Vec2{manifold.GetLocalNormal()}, Vec2(0,+1));
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
 	
@@ -343,7 +362,7 @@ TEST(CollideShapes, IdenticalHorizontalTouchingSquares)
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	
 	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(+2, 0));	
-	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(+1, 0));
+	EXPECT_EQ(Vec2{manifold.GetLocalNormal()}, Vec2(+1, 0));
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
 	
@@ -387,7 +406,7 @@ TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceB);
 	
-	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(0, -1));
+	EXPECT_EQ(Vec2{manifold.GetLocalNormal()}, Vec2(0, -1));
 	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(0, -2));
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
@@ -409,7 +428,7 @@ TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)
 	const auto world_manifold = GetWorldManifold(manifold, xfm0, float_t(0), xfm1, float_t(0));
 	EXPECT_EQ(world_manifold.GetPointCount(), manifold.GetPointCount());
 	
-	EXPECT_EQ(world_manifold.GetNormal(), Vec2(0, +1));
+	EXPECT_EQ(Vec2{world_manifold.GetNormal()}, Vec2(0, +1));
 	
 	const auto corner_point = Rotate(Vec2{dim, dim}, UnitVec2{rot0}) + xfm0.p;
 	EXPECT_FLOAT_EQ(corner_point.x, float_t(0));
@@ -446,7 +465,7 @@ TEST(CollideShapes, HorizontalOverlappingRects1)
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	
 	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(float_t(+2), float_t(0)));
-	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(float_t(+1), float_t(0)));
+	EXPECT_EQ(Vec2{manifold.GetLocalNormal()}, Vec2(float_t(+1), float_t(0)));
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
 	
@@ -510,7 +529,7 @@ TEST(CollideShapes, HorizontalOverlappingRects2)
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	
 	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(float_t(+3), float_t(0)));
-	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(float_t(+1), float_t(0)));
+	EXPECT_EQ(Vec2{manifold.GetLocalNormal()}, Vec2(float_t(+1), float_t(0)));
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
 	
@@ -586,7 +605,7 @@ TEST(CollideShapes, EdgeBelowPolygon)
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	
 	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(1, 0));
-	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(0, 1));
+	EXPECT_EQ(Vec2{manifold.GetLocalNormal()}, Vec2(0, 1));
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
 	
@@ -626,7 +645,7 @@ TEST(CollideShapes, EdgeAbovePolygon)
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	
 	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(-1, 0));
-	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(0, -1));
+	EXPECT_EQ(Vec2{manifold.GetLocalNormal()}, Vec2(0, -1));
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
 	
@@ -666,7 +685,7 @@ TEST(CollideShapes, EdgeLeftOfPolygon)
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	
 	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(0, -1));
-	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(+1, 0));
+	EXPECT_EQ(Vec2{manifold.GetLocalNormal()}, Vec2(+1, 0));
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
 }
@@ -688,7 +707,7 @@ TEST(CollideShapes, EdgeRightOfPolygon)
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	
 	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(0, +1));
-	EXPECT_EQ(manifold.GetLocalNormal(), Vec2(-1, 0));
+	EXPECT_EQ(Vec2{manifold.GetLocalNormal()}, Vec2(-1, 0));
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
 }

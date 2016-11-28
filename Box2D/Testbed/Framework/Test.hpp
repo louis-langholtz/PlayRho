@@ -104,7 +104,7 @@ protected:
 	{
 		Fixture* fixtureA;
 		Fixture* fixtureB;
-		Vec2 normal;
+		UnitVec2 normal;
 		Vec2 position;
 		PointState state;
 		float_t normalImpulse;

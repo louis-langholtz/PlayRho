@@ -37,13 +37,10 @@ public:
 
 	Cantilever()
 	{
-		Body* ground = nullptr;
+		const auto ground = m_world->CreateBody(BodyDef{});
 
 		// Creates bottom ground
 		{
-			BodyDef bd;
-			ground = m_world->CreateBody(bd);
-
 			const auto shape = EdgeShape(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 			ground->CreateFixture(FixtureDef{&shape, 0.0f});
 		}
@@ -58,17 +55,16 @@ public:
 
 			WeldJointDef jd;
 
-			Body* prevBody = ground;
+			auto prevBody = ground;
 			for (int32 i = 0; i < e_count; ++i)
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-14.5f + 1.0f * i, 5.0f);
-				Body* body = m_world->CreateBody(bd);
+				const auto body = m_world->CreateBody(bd);
 				body->CreateFixture(fd);
 
-				Vec2 anchor(-15.0f + 1.0f * i, 5.0f);
-				jd.Initialize(prevBody, body, anchor);
+				jd.Initialize(prevBody, body, Vec2(-15.0f + 1.0f * i, 5.0f));
 				m_world->CreateJoint(jd);
 
 				prevBody = body;
@@ -87,17 +83,16 @@ public:
 			jd.frequencyHz = 5.0f;
 			jd.dampingRatio = 0.7f;
 
-			Body* prevBody = ground;
+			auto prevBody = ground;
 			for (int32 i = 0; i < 3; ++i)
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-14.0f + 2.0f * i, 15.0f);
-				Body* body = m_world->CreateBody(bd);
+				const auto body = m_world->CreateBody(bd);
 				body->CreateFixture(fd);
 
-				Vec2 anchor(-15.0f + 2.0f * i, 15.0f);
-				jd.Initialize(prevBody, body, anchor);
+				jd.Initialize(prevBody, body, Vec2(-15.0f + 2.0f * i, 15.0f));
 				m_world->CreateJoint(jd);
 
 				prevBody = body;
@@ -114,19 +109,18 @@ public:
 
 			WeldJointDef jd;
 
-			Body* prevBody = ground;
+			auto prevBody = ground;
 			for (int32 i = 0; i < e_count; ++i)
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-4.5f + 1.0f * i, 5.0f);
-				Body* body = m_world->CreateBody(bd);
+				const auto body = m_world->CreateBody(bd);
 				body->CreateFixture(fd);
 
 				if (i > 0)
 				{
-					Vec2 anchor(-5.0f + 1.0f * i, 5.0f);
-					jd.Initialize(prevBody, body, anchor);
+					jd.Initialize(prevBody, body, Vec2(-5.0f + 1.0f * i, 5.0f));
 					m_world->CreateJoint(jd);
 				}
 
@@ -146,19 +140,18 @@ public:
 			jd.frequencyHz = 8.0f;
 			jd.dampingRatio = 0.7f;
 
-			Body* prevBody = ground;
+			auto prevBody = ground;
 			for (int32 i = 0; i < e_count; ++i)
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(5.5f + 1.0f * i, 10.0f);
-				Body* body = m_world->CreateBody(bd);
+				const auto body = m_world->CreateBody(bd);
 				body->CreateFixture(fd);
 
 				if (i > 0)
 				{
-					Vec2 anchor(5.0f + 1.0f * i, 10.0f);
-					jd.Initialize(prevBody, body, anchor);
+					jd.Initialize(prevBody, body, Vec2(5.0f + 1.0f * i, 10.0f));
 					m_world->CreateJoint(jd);
 				}
 
@@ -178,15 +171,14 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-8.0f + 8.0f * i, 12.0f);
-			Body* body = m_world->CreateBody(bd);
+			const auto body = m_world->CreateBody(bd);
 			body->CreateFixture(fd);
 		}
 
 		// Creates circles
 		for (int32 i = 0; i < 2; ++i)
 		{
-			CircleShape shape;
-			shape.SetRadius(float_t(0.5));
+			const auto shape = CircleShape(float_t(0.5));
 
 			FixtureDef fd;
 			fd.shape = &shape;
@@ -195,7 +187,7 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-6.0f + 6.0f * i, 10.0f);
-			Body* body = m_world->CreateBody(bd);
+			const auto body = m_world->CreateBody(bd);
 			body->CreateFixture(fd);
 		}
 	}

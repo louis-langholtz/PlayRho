@@ -69,6 +69,9 @@ namespace box2d
 	Manifold CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,
 						   const CircleShape& shapeB, const Transformation& xfB);
 	
+	Manifold CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,
+						   const EdgeShape& shapeB, const Transformation& xfB);
+
 	/// Computes the collision manifold between an edge and a circle.
 	/// @param shapeA Shape A.
 	/// @param xfA Transformation for shape A.

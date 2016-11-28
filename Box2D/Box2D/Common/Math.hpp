@@ -23,6 +23,7 @@
 #include <Box2D/Common/Settings.hpp>
 #include <Box2D/Common/Span.hpp>
 #include <Box2D/Common/Angle.hpp>
+#include <Box2D/Common/UnitVec2.hpp>
 #include <cmath>
 #include <iostream>
 
@@ -158,6 +159,8 @@ struct Vec2
 	/// Construct using coordinates.
 	constexpr Vec2(data_type x_, data_type y_) noexcept : x{x_}, y{y_} {}
 	
+	constexpr explicit Vec2(const UnitVec2 unitvector) noexcept: x{unitvector.GetX()}, y{unitvector.GetY()} {}
+
 	/// Negate this vector.
 	constexpr auto operator- () const noexcept { return Vec2{-x, -y}; }
 	
@@ -195,6 +198,16 @@ struct Vec2
 
 	data_type x, y;
 };
+
+constexpr inline Vec2::data_type GetX(const Vec2 value)
+{
+	return value.x;
+}
+
+constexpr inline Vec2::data_type GetY(const Vec2 value)
+{
+	return value.y;
+}
 
 /// An all zero Vec2 value.
 /// @see Vec2.
@@ -418,143 +431,6 @@ constexpr inline Mat33 GetSymInverse33(const Mat33& value) noexcept
 		Vec3{ex_z, ey_z, det * (a11 * a22 - a12 * a12)}
 	};
 }
-	
-class UnitVec2
-{
-public:
-	using data_type = float_t;
-	
-	static constexpr UnitVec2 GetRight() noexcept
-	{
-		return UnitVec2{1, 0};
-	}
-	
-	static constexpr UnitVec2 GetLeft() noexcept
-	{
-		return UnitVec2{-1, 0};
-	}
-	
-	static constexpr UnitVec2 GetTop() noexcept
-	{
-		return UnitVec2{0, 1};
-	}
-	
-	static constexpr UnitVec2 GetBottom() noexcept
-	{
-		return UnitVec2{0, -1};
-	}
-	
-	static constexpr UnitVec2 GetDefaultFallback() noexcept
-	{
-		return UnitVec2{};
-	}
-	
-	static constexpr UnitVec2 GetZero() noexcept
-	{
-		return UnitVec2{0, 0};
-	}
-	
-	constexpr UnitVec2() noexcept
-	{
-		// Intentionally empty.
-	}
-	
-	explicit UnitVec2(Vec2 value, UnitVec2 fallback = GetDefaultFallback()) noexcept;
-	
-	explicit UnitVec2(Angle angle) noexcept:
-		m_x{std::cos(angle.ToRadians())}, m_y{std::sin(angle.ToRadians())}
-	{
-		
-	}
-	
-	constexpr auto GetX() const noexcept
-	{
-		return m_x;
-	}
-	
-	constexpr auto GetY() const noexcept
-	{
-		return m_y;
-	}
-	
-	constexpr auto cos() const noexcept
-	{
-		return m_x;
-	}
-	
-	constexpr auto sin() const noexcept
-	{
-		return m_y;
-	}
-	
-	constexpr operator Vec2() const
-	{
-		return Vec2{GetX(), GetY()};
-	}
-	
-	constexpr inline UnitVec2 FlipXY() const noexcept
-	{
-		return UnitVec2{-GetX(), -GetY()};
-	}
-	
-	constexpr inline UnitVec2 FlipX() const noexcept
-	{
-		return UnitVec2{-GetX(), GetY()};
-	}
-	
-	constexpr inline UnitVec2 FlipY() const noexcept
-	{
-		return UnitVec2{GetX(), -GetY()};
-	}
-	
-	constexpr inline UnitVec2 Rotate(UnitVec2 amount) const noexcept
-	{
-		return UnitVec2{
-			GetX() * amount.GetX() - GetY() * amount.GetY(),
-			GetY() * amount.GetX() + GetX() * amount.GetY()
-		};
-	}
-	
-	/// Gets a vector counter-clockwise (reverse-clockwise) perpendicular to this vector.
-	/// @detail This returns the unit vector (-y, x).
-	/// @return A counter-clockwise 90-degree rotation of this vector.
-	/// @sa GetFwdPerpendicular.
-	constexpr inline UnitVec2 GetRevPerpendicular() const noexcept
-	{
-		// See http://mathworld.wolfram.com/PerpendicularVector.html
-		return UnitVec2{-m_y, m_x};
-	}
-	
-	/// Gets a vector clockwise (forward-clockwise) perpendicular to this vector.
-	/// @detail This returns the unit vector (y, -x).
-	/// @return A clockwise 90-degree rotation of this vector.
-	/// @sa GetRevPerpendicular.
-	constexpr inline UnitVec2 GetFwdPerpendicular() const noexcept
-	{
-		// See http://mathworld.wolfram.com/PerpendicularVector.html
-		return UnitVec2{m_y, -m_x};
-	}
-
-	constexpr inline UnitVec2 operator- () const noexcept
-	{
-		return UnitVec2{-m_x, -m_y};
-	}
-	
-	constexpr inline UnitVec2 Absolute() const noexcept
-	{
-		return UnitVec2{Abs(m_x), Abs(m_y)};
-	}
-	
-private:
-	constexpr UnitVec2(data_type x, data_type y) noexcept:
-		m_x{x}, m_y{y}
-	{
-		assert((x == 0 && y == 0) || almost_equal(Square(x) + Square(y), 1));
-	}
-	
-	data_type m_x = GetInvalid<data_type>();
-	data_type m_y = GetInvalid<data_type>();
-};
 
 template <>
 constexpr UnitVec2 GetInvalid() noexcept
@@ -565,28 +441,7 @@ constexpr UnitVec2 GetInvalid() noexcept
 template <>
 inline bool IsValid(const UnitVec2& value) noexcept
 {
-	return IsValid(Vec2{value}) && (Vec2{value} != Vec2{0, 0});
-}
-
-/// Gets the unit vector for the given value.
-/// @param value Value to get the unit vector for.
-/// @return value divided by its length if length not almost zero otherwise invalid value.
-/// @sa almost_equal.
-inline UnitVec2 GetUnitVector(const Vec2 value, UnitVec2 fallback = UnitVec2::GetDefaultFallback())
-{
-	return UnitVec2{value, fallback};
-}
-
-/// Get the x-axis
-constexpr inline UnitVec2 GetXAxis(UnitVec2 rot) noexcept
-{
-	return rot;
-}
-
-/// Get the u-axis ("u"??? is that a typo??? Anyway, this is the reverse perpendicular vector of rot as a directional vector)
-constexpr inline UnitVec2 GetYAxis(UnitVec2 rot) noexcept
-{
-	return rot.GetRevPerpendicular();
+	return IsValid(value.GetX()) && IsValid(value.GetY()) && (value != UnitVec2::GetZero());
 }
 
 /// Transformation.
@@ -743,16 +598,6 @@ constexpr inline Vec2 GetFwdPerpendicular(const Vec2 vector) noexcept
 	return Vec2{vector.y, -vector.x};
 }
 
-constexpr inline UnitVec2 GetRevPerpendicular(const UnitVec2 vector) noexcept
-{
-	return vector.GetRevPerpendicular();
-}
-
-constexpr inline UnitVec2 GetFwdPerpendicular(const UnitVec2 vector) noexcept
-{
-	return vector.GetFwdPerpendicular();
-}
-
 /// Performs the dot product on two vectors (A and B).
 ///
 /// @detail The dot product of two vectors is defined as:
@@ -760,8 +605,9 @@ constexpr inline UnitVec2 GetFwdPerpendicular(const UnitVec2 vector) noexcept
 ///   multiplied by, the cosine of the angle between the two vectors (A and B).
 ///   Thus the dot product of two vectors is a value ranging between plus and minus the
 ///   magnitudes of each vector times each other.
-///   The middle value of 0 indicates that two vectors are at an angle of +/- 90 degrees
-///   to each other.
+///   The middle value of 0 indicates that two vectors are perpendicular to each other
+///   (at an angle of +/- 90 degrees from each other).
+///   
 ///
 /// @note This operation is commutative. I.e. Dot(a, b) == Dot(b, a).
 /// @note If A and B are the same vectors, GetLengthSquared(Vec2) returns the same value
@@ -776,7 +622,7 @@ constexpr inline UnitVec2 GetFwdPerpendicular(const UnitVec2 vector) noexcept
 ///
 constexpr inline float_t Dot(const Vec2 a, const Vec2 b) noexcept
 {
-	return (a.x * b.x) + (a.y * b.y);
+	return (GetX(a) * GetX(b)) + (GetY(a) * GetY(b));
 }
 
 /// Performs the 2D analog of the cross product of two vectors.
@@ -819,7 +665,7 @@ constexpr inline float_t Cross(const Vec2 a, const Vec2 b) noexcept
 	//
 	// Vectors between 0 and 180 degrees of each other excluding 90 degrees...
 	// If a = Vec2{1, 2} and b = Vec2{-1, 2} then: a x b = 1 * 2 - 2 * (-1) = 2 + 2 = 4.
-	return (a.x * b.y) - (a.y * b.x);
+	return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
 }
 
 /// Multiply a matrix times a vector. If a rotation matrix is provided,
@@ -894,6 +740,61 @@ constexpr inline bool operator == (const Vec2 a, const Vec2 b) noexcept
 constexpr inline bool operator != (const Vec2 a, const Vec2 b) noexcept
 {
 	return (a.x != b.x) || (a.y != b.y);
+}
+
+constexpr inline float_t Dot(const UnitVec2 a, const UnitVec2 b) noexcept
+{
+	return (GetX(a) * GetX(b)) + (GetY(a) * GetY(b));
+}
+
+constexpr inline float_t Dot(const Vec2 a, const UnitVec2 b) noexcept
+{
+	return (GetX(a) * GetX(b)) + (GetY(a) * GetY(b));
+}
+
+constexpr inline float_t Dot(const UnitVec2 a, const Vec2 b) noexcept
+{
+	return (GetX(a) * GetX(b)) + (GetY(a) * GetY(b));
+}
+
+constexpr inline float_t Cross(const UnitVec2 a, const UnitVec2 b) noexcept
+{
+	return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
+}
+
+constexpr inline float_t Cross(const UnitVec2 a, const Vec2 b) noexcept
+{
+	return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
+}
+
+constexpr inline float_t Cross(const Vec2 a, const UnitVec2 b) noexcept
+{
+	return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
+}
+
+constexpr inline Vec2 operator+ (const UnitVec2 lhs, const UnitVec2 rhs) noexcept
+{
+	return Vec2{lhs.GetX() + rhs.GetX(), lhs.GetY() + rhs.GetY()};
+}
+
+constexpr inline Vec2 operator- (const UnitVec2 lhs, const UnitVec2 rhs) noexcept
+{
+	return Vec2{lhs.GetX() - rhs.GetX(), lhs.GetY() - rhs.GetY()};
+}
+
+constexpr inline Vec2 operator* (const UnitVec2::data_type s, const UnitVec2 u) noexcept
+{
+	return Vec2{u.GetX() * s, u.GetY() * s};
+}
+
+constexpr inline Vec2 operator* (const UnitVec2 u, const UnitVec2::data_type s) noexcept
+{
+	return Vec2{u.GetX() * s, u.GetY() * s};
+}
+
+constexpr inline Vec2 operator/ (const UnitVec2 u, const UnitVec2::data_type s) noexcept
+{
+	return Vec2{u.GetX() / s, u.GetY() / s};
 }
 
 constexpr inline bool operator == (const Vec3 lhs, const Vec3 rhs) noexcept
@@ -1010,18 +911,6 @@ constexpr inline Vec2 Rotate(const Vec2 vector, const UnitVec2& angle) noexcept
 constexpr inline Vec2 InverseRotate(const Vec2 vector, const UnitVec2& angle) noexcept
 {
 	return Vec2{(angle.cos() * vector.x) + (angle.sin() * vector.y), (angle.cos() * vector.y) - (angle.sin() * vector.x)};
-}
-
-/// Rotates a vector by a given angle.
-constexpr inline UnitVec2 Rotate(const UnitVec2 vector, const UnitVec2& angle) noexcept
-{
-	return vector.Rotate(angle);
-}
-
-/// Inverse rotate a vector
-constexpr inline UnitVec2 InverseRotate(const UnitVec2 vector, const UnitVec2& angle) noexcept
-{
-	return vector.Rotate(angle.FlipY());
 }
 
 /// Transforms the given 2-D vector with the given transformation.

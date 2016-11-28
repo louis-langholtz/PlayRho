@@ -29,8 +29,7 @@ public:
 	EdgeTest()
 	{
 		{
-			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
+			const auto ground = m_world->CreateBody(BodyDef{});
 
 			Vec2 v1(-10.0f, 0.0f), v2(-7.0f, -2.0f), v3(-4.0f, 0.0f);
 			Vec2 v4(0.0f, 0.0f), v5(4.0f, 0.0f), v6(7.0f, 2.0f), v7(10.0f, 0.0f);
@@ -71,11 +70,9 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-0.5f, 0.6f);
 			bd.allowSleep = false;
-			Body* body = m_world->CreateBody(bd);
+			const auto body = m_world->CreateBody(bd);
 
-			CircleShape shape;
-			shape.SetRadius(float_t(0.5));
-
+			const auto shape = CircleShape(float_t(0.5));
 			body->CreateFixture(FixtureDef{&shape, 1.0f});
 		}
 
@@ -86,8 +83,8 @@ public:
 			bd.allowSleep = false;
 			Body* body = m_world->CreateBody(bd);
 
-			const auto shape = PolygonShape(0.5f, 0.5f);
-
+			auto shape = PolygonShape(1);
+			shape.SetAsBox(0.5f, 0.5f);
 			body->CreateFixture(FixtureDef{&shape, 1.0f});
 		}
 	}

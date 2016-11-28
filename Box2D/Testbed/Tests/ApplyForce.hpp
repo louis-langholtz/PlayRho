@@ -64,7 +64,7 @@ public:
 		{
 			Transformation xf1;
 			xf1.q = UnitVec2{0.3524_rad * Pi};
-			xf1.p = GetXAxis(xf1.q);
+			xf1.p = Vec2{GetXAxis(xf1.q)};
 
 			Vec2 vertices[3];
 			vertices[0] = Transform(Vec2(-1.0f, float_t{0}), xf1);
@@ -79,7 +79,7 @@ public:
 
 			Transformation xf2;
 			xf2.q = UnitVec2{-0.3524_rad * Pi};
-			xf2.p = -GetXAxis(xf2.q);
+			xf2.p = Vec2{-GetXAxis(xf2.q)};
 
 			vertices[0] = Transform(Vec2(-1.0f, float_t{0}), xf2);
 			vertices[1] = Transform(Vec2(1.0f, float_t{0}), xf2);

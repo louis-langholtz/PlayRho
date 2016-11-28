@@ -69,21 +69,38 @@ public:
 	UnitVec2 GetNormal1() const noexcept { return m_normal1; }
 	
 	bool IsFront() const noexcept { return m_front; }
-	UnitVec2 GetNormal() const noexcept { return m_normal; }
-	Vec2 GetLowerLimit() const noexcept { return m_lowerLimit; }
-	Vec2 GetUpperLimit() const noexcept { return m_upperLimit; }
+
+	/// Gets the normal.
+	/// @return Value of normal 1 or the negative of it depending on whether
+	///   is-front is true or not (respectively).
+	UnitVec2 GetNormal() const noexcept
+	{
+		// Alternatively:
+		//   return m_front? m_normal1: -m_normal1;
+		return m_normal;
+	}
+	
+	UnitVec2 GetLowerLimit() const noexcept { return m_lowerLimit; }
+	
+	UnitVec2 GetUpperLimit() const noexcept { return m_upperLimit; }
 	
 	float_t GetVertexRadius() const noexcept { return m_vertexRadius; }
 
 private:
 	Vec2 m_vertex1;
 	Vec2 m_vertex2;
-	UnitVec2 m_edge1;
-	UnitVec2 m_normal1;
+	UnitVec2 m_edge1; ///< Edge 1. @detail A unit vector of edge shape's vertex 2 - vertex 1.
+	UnitVec2 m_normal1; ///< Normal 1. @detail Forward perpendicular of edge 1.
 	
 	bool m_front;
+
+	/// Normal.
+	/// @detail This is the cached value of <code>m_normal1</code> or the negative of it depending
+	///   on whether <code>m_front</code> is true or not (respectively).
 	UnitVec2 m_normal;
-	UnitVec2 m_lowerLimit, m_upperLimit;
+	
+	UnitVec2 m_lowerLimit;
+	UnitVec2 m_upperLimit;
 	
 	float_t m_vertexRadius;
 
@@ -98,7 +115,7 @@ private:
 inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2 centroid):
 	m_vertex1(edge.GetVertex1()),
 	m_vertex2(edge.GetVertex2()),
-	m_edge1(GetUnitVector(m_vertex2 - m_vertex1), UnitVec2::GetZero()),
+	m_edge1(GetUnitVector(edge.GetVertex2() - edge.GetVertex1(), UnitVec2::GetZero())),
 	m_normal1(GetFwdPerpendicular(m_edge1)),
 	m_vertexRadius(box2d::GetVertexRadius(edge))
 {
@@ -251,24 +268,28 @@ inline EdgeInfo::EdgeInfo(const EdgeShape& edge, const Vec2 centroid):
 	}
 }
 
-static inline PolygonShape::vertex_count_t GetIndexOfMinimum(const PolygonShape& polygon,
-															 const EdgeInfo& edge)
+/// Gets the shape separation information for the most opposite vector.
+/// @param vectors Collection of 0 or more vectors to find the most anti-parallel vector from and
+///    its magnitude from the reference vector.
+/// @param refvec Reference vector.
+template <typename T>
+static inline ShapeSeparation GetMostOppositeSeparation(Span<const T> vectors, const T refvec, const T offset)
 {
-	auto bestIndex = PolygonShape::InvalidVertex;
+	auto bestIndex = ShapeSeparation::InvalidIndex;
+	auto minValue = MaxFloat;
+	const auto count = vectors.size();
+	for (auto i = decltype(count){0}; i < count; ++i)
 	{
-		auto minValue = MaxFloat;
-		const auto count = polygon.GetVertexCount();
-		for (auto i = decltype(count){0}; i < count; ++i)
+		// Get cosine of angle between refvec and vectors[i] multiplied by their
+		// magnitudes (which will essentially be 1 for any two unit vectors).
+		const auto s = Dot(refvec, vectors[i] - offset);
+		if (minValue > s)
 		{
-			const auto value = Dot(edge.GetNormal(), polygon.GetNormal(i));
-			if (minValue > value)
-			{
-				minValue = value;
-				bestIndex = i;
-			}
+			minValue = s;
+			bestIndex = static_cast<ShapeSeparation::index_type>(i);
 		}
 	}
-	return bestIndex;
+	return ShapeSeparation{bestIndex, minValue};
 }
 
 static inline ReferenceFace GetReferenceFace(const EdgeInfo& edgeInfo)
@@ -313,22 +334,7 @@ static inline ReferenceFace GetReferenceFace(const PolygonShape& localShapeB,
 	return rf;
 }
 
-static inline ShapeSeparation FindEdgeSeparation(const PolygonShape& polygon, const EdgeInfo& edge)
-{
-	auto minValue = MaxFloat;
-	{
-		const auto count = polygon.GetVertexCount();
-		const auto edgeVertex1 = edge.GetVertex1();
-		for (auto i = decltype(count){0}; i < count; ++i)
-		{
-			const auto s = Dot(edge.GetNormal(), polygon.GetVertex(i) - edgeVertex1);
-			minValue = Min(minValue, s);
-		}
-	}
-	return ShapeSeparation{static_cast<ShapeSeparation::index_type>(edge.IsFront()? 0: 1), minValue};
-}
-
-static inline ShapeSeparation FindPolygonSeparation(const PolygonShape& polygon, const EdgeInfo& edge)
+static inline ShapeSeparation GetPolygonSeparation(const PolygonShape& polygon, const EdgeInfo& edge)
 {
 	auto max_s = -MaxFloat;
 	auto index = ShapeSeparation::InvalidIndex;
@@ -376,10 +382,10 @@ static inline ShapeSeparation FindPolygonSeparation(const PolygonShape& polygon,
 	return ShapeSeparation{index, max_s};
 }
 
-// Find the max separation between shape1 and shape2 using edge normals from shape1.
-static ShapeSeparation FindMaxSeparation(const PolygonShape& shape1, const Transformation& xf1,
-										 const PolygonShape& shape2, const Transformation& xf2)
+static ShapeSeparation GetMaxSeparation(const PolygonShape& shape1, const Transformation& xf1,
+										const PolygonShape& shape2, const Transformation& xf2)
 {
+	// Find the max separation between shape1 and shape2 using edge normals from shape1.
 	auto maxSeparation = -MaxFloat;
 	auto index_of_max = PolygonShape::vertex_count_t{0};
 	{
@@ -390,14 +396,14 @@ static ShapeSeparation FindMaxSeparation(const PolygonShape& shape1, const Trans
 		for (auto i = decltype(count1){0}; i < count1; ++i)
 		{
 			// Get shape1 normal in frame2.
-			const auto n = Rotate(shape1.GetNormal(i), xf.q);
-			const auto v1 = Transform(shape1.GetVertex(i), xf);
+			const auto shape1_ni = Rotate(shape1.GetNormal(i), xf.q);
+			const auto shape1_vi = Transform(shape1.GetVertex(i), xf);
 			
 			// Find deepest point for normal i.
 			auto min_sij = MaxFloat;
 			for (auto j = decltype(count2){0}; j < count2; ++j)
 			{
-				const auto sij = Dot(n, shape2.GetVertex(j) - v1);
+				const auto sij = Dot(shape1_ni, shape2.GetVertex(j) - shape1_vi);
 				min_sij = Min(min_sij, sij);
 			}
 			
@@ -422,25 +428,25 @@ static ClipList FindIncidentEdge(const PolygonShape::vertex_count_t index1,
 	if ((index1 < count1) && (count2 > 1))
 	{
 		// Find the incident edge on shape2.
-		auto index_of_min_dot = PolygonShape::InvalidVertex;
+		auto index_of_min = PolygonShape::InvalidVertex;
 		{
 			// Get the normal of the reference edge in shape2's frame.
 			const auto normal1 = InverseRotate(Rotate(shape1.GetNormal(index1), xf1.q), xf2.q);
 			
-			auto minDot = MaxFloat;
+			auto min_s = MaxFloat;
 			for (auto i = decltype(count2){0}; i < count2; ++i)
 			{
-				const auto dot = Dot(normal1, shape2.GetNormal(i));
-				if (minDot > dot)
+				const auto s = Dot(normal1, shape2.GetNormal(i));
+				if (min_s > s)
 				{
-					minDot = dot;
-					index_of_min_dot = i;
+					min_s = s;
+					index_of_min = i;
 				}
 			}
 		}
 		
 		// Build the clip vertices for the incident edge.
-		const auto i1 = index_of_min_dot;
+		const auto i1 = index_of_min;
 		const auto i2 = static_cast<decltype(i1)>((i1 + 1) % count2);
 		
 		list.add(ClipVertex{
@@ -465,7 +471,10 @@ static Manifold GetManifoldFaceA(const EdgeInfo& edgeInfo,
 		ClipList list;
 
 		// Search for the polygon normal that is most anti-parallel to the edge normal.
-		const auto i1 = GetIndexOfMinimum(localShapeB, edgeInfo);
+		// See: https://en.wikipedia.org/wiki/Antiparallel_(mathematics)#Antiparallel_vectors
+		const auto separation = GetMostOppositeSeparation(localShapeB.GetNormals(),
+														  edgeInfo.GetNormal(), UnitVec2::GetZero());
+		const auto i1 = separation.index;
 		const auto i2 = static_cast<decltype(i1)>((i1 + 1) % localShapeB.GetVertexCount());
 		
 		list.add(ClipVertex{
@@ -672,32 +681,34 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	const auto totalRadius = GetVertexRadius(shapeA) + GetVertexRadius(shapeB);
 	const auto totalRadiusSquared = Square(totalRadius);
 	const auto vertexCount = shapeA.GetVertexCount();
-	auto indexOfMax = decltype(vertexCount){0};
-	auto maxSeparation = -MaxFloat;
 	
 	// Find edge that circle is closest to.
-	auto s0 = Dot(shapeA.GetNormal(vertexCount - 1), cLocal - shapeA.GetVertex(vertexCount - 1));
-	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+	auto indexOfMax = decltype(vertexCount){0};
+	auto maxSeparation = -MaxFloat;
 	{
-		// Get circle's distance from vertex[i] in direction of normal[i].
-		const auto s = Dot(shapeA.GetNormal(i), cLocal - shapeA.GetVertex(i));
-		if (s > totalRadius)
+		auto s0 = Dot(shapeA.GetNormal(vertexCount - 1), cLocal - shapeA.GetVertex(vertexCount - 1));
+		for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 		{
-			// Early out - no contact.
-			return Manifold{};
-		}
-		if ((s > 0) && (s0 > 0) && (s0 <= totalRadius))
-		{
-			if (GetLengthSquared(cLocal - shapeA.GetVertex(i)) <= totalRadiusSquared)
+			// Get circle's distance from vertex[i] in direction of normal[i].
+			const auto s = Dot(shapeA.GetNormal(i), cLocal - shapeA.GetVertex(i));
+			if (s > totalRadius)
 			{
-				return Manifold::GetForCircles(shapeA.GetVertex(i), Manifold::Point{shapeB.GetLocation()});
+				// Early out - no contact.
+				return Manifold{};
 			}
-		}
-		s0 = s;
-		if (maxSeparation < s)
-		{
-			maxSeparation = s;
-			indexOfMax = i;
+			if ((s > 0) && (s0 > 0) && (s0 <= totalRadius))
+			{
+				if (GetLengthSquared(cLocal - shapeA.GetVertex(i)) <= totalRadiusSquared)
+				{
+					return Manifold::GetForCircles(shapeA.GetVertex(i), Manifold::Point{shapeB.GetLocation()});
+				}
+			}
+			s0 = s;
+			if (maxSeparation < s)
+			{
+				maxSeparation = s;
+				indexOfMax = i;
+			}
 		}
 	}
 	assert(maxSeparation <= totalRadius);
@@ -848,6 +859,93 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 }
 
 Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,
+							  const EdgeShape& shapeB, const Transformation& xfB)
+{
+	// Edge-to-edge collisions can result in these types of collision manifolds:
+	//   Manifold::e_unset - for non-contacting events.
+	//   Manifold::e_circles - for end to end contacts or for end to face contacts.
+	//   Manifold::e_faceA - for face A to face contacts.
+	//   Manifold::e_faceB - for face B to face contacts.
+	
+	const auto shapeA_v1 = shapeA.GetVertex1();
+	const auto shapeA_v2 = shapeA.GetVertex2();
+	const auto shapeA_edge = (shapeA_v2 - shapeA_v1);
+	const auto shapeB_v1 = InverseTransform(Transform(shapeB.GetVertex1(), xfB), xfA);
+	const auto shapeB_v2 = InverseTransform(Transform(shapeB.GetVertex2(), xfB), xfA);
+	const auto shapeB_edge = (shapeB_v2 - shapeB_v1);
+
+	const auto totalRadius = GetVertexRadius(shapeA) + GetVertexRadius(shapeB);
+
+	// Is shape B vertex 1 left of shape A vertex 1?
+	const auto a = Dot(shapeA_edge, shapeB_v1 - shapeA_v1);
+
+	// Is shape B vertex 1 right of shape A vertex 2?
+	const auto b = Dot(shapeA_edge, shapeA_v2 - shapeB_v1);
+	
+	// Is shape B vertex 2 left of shape A vertex 1?
+	const auto c = Dot(shapeA_edge, shapeB_v2 - shapeA_v1);
+	
+	// Is shape B vertex 2 right of shape A vertex 2?
+	const auto d = Dot(shapeA_edge, shapeA_v2 - shapeB_v2);
+
+	if (a < 0 && c < 0)
+	{
+		// shape B vertex 1 and 2 are both left of shape A's vertex 1
+		if (a > c)
+		{
+			// shape B vertex 1 is closest to shape A's vertex 1
+			if (GetLengthSquared(shapeB_v1 - shapeA_v1) > Square(totalRadius))
+			{
+				// no contact
+				return Manifold{};
+			}
+			// circle contact with shape A vertex 1
+			return Manifold::GetForCircles(shapeA_v1, Manifold::Point{
+				shapeB_v1,
+				ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 0}
+			});
+		}
+		else // a <= c
+		{
+			// shape B vertex 2 is closest to shape A's vertex 1
+			if (GetLengthSquared(shapeB_v2 - shapeA_v1) > Square(totalRadius))
+			{
+				// no contact
+				return Manifold{};
+			}
+			// circle contact with shape A vertex 1
+			return Manifold::GetForCircles(shapeA_v1, Manifold::Point{
+				shapeB_v2,
+				ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 1}
+			});
+		}
+	}
+	if (b < 0 && d < 0)
+	{
+		// shape B vertex 1 and 2 are both right of shape A's vertex 2
+		if (b > d)
+		{
+			// shape B vertex 1 is closest to shape A's vertex 2
+			if (GetLengthSquared(shapeB_v1 - shapeA_v2) > Square(totalRadius))
+			{
+				// no contact
+				return Manifold{};
+			}
+			// circle contact with shape A vertex 2
+			return Manifold::GetForCircles(shapeA_v1, Manifold::Point{
+				shapeB_v1,
+				ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 0}
+			});
+		}
+		else // b <= d
+		{
+			// shape B vertex 2 is closest to shape A's vertex 2			
+		}
+	}
+	return Manifold{};
+}
+
+Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,
 							  const PolygonShape& shapeB, const Transformation& xfB)
 {
 	// Algorithm:
@@ -866,13 +964,14 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	const auto totalRadius = GetVertexRadius(shapeA) + GetVertexRadius(shapeB);
 
 	// If no valid normal can be found then this edge should not collide.
-	const auto edgeAxis = FindEdgeSeparation(localShapeB, edgeInfo);
+	const auto edgeAxis = GetMostOppositeSeparation(localShapeB.GetVertices(),
+													Vec2{edgeInfo.GetNormal()}, edgeInfo.GetVertex1());
 	if (edgeAxis.separation > totalRadius)
 	{
 		return Manifold{};
 	}
 	
-	const auto polygonAxis = FindPolygonSeparation(localShapeB, edgeInfo);
+	const auto polygonAxis = GetPolygonSeparation(localShapeB, edgeInfo);
 	if (polygonAxis.separation > totalRadius)
 	{
 		return Manifold{};
@@ -905,13 +1004,13 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 
 	const auto totalRadius = GetVertexRadius(shapeA) + GetVertexRadius(shapeB);
 	
-	const auto edgeSepA = FindMaxSeparation(shapeA, xfA, shapeB, xfB);
+	const auto edgeSepA = GetMaxSeparation(shapeA, xfA, shapeB, xfB);
 	if (edgeSepA.separation > totalRadius)
 	{
 		return Manifold{};
 	}
 	
-	const auto edgeSepB = FindMaxSeparation(shapeB, xfB, shapeA, xfA);
+	const auto edgeSepB = GetMaxSeparation(shapeB, xfB, shapeA, xfA);
 	if (edgeSepB.separation > totalRadius)
 	{
 		return Manifold{};

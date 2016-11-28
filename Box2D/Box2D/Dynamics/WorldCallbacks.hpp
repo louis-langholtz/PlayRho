@@ -25,6 +25,7 @@
 namespace box2d {
 
 struct Vec2;
+class UnitVec2;
 class Fixture;
 class Joint;
 class Contact;
@@ -186,7 +187,7 @@ public:
 	/// @return -1 to filter, 0 to terminate, fraction to clip the ray for
 	/// closest hit, 1 to continue
 	virtual float_t ReportFixture(Fixture* fixture, const Vec2& point,
-								  const Vec2& normal, float_t fraction) = 0;
+								  const UnitVec2& normal, float_t fraction) = 0;
 };
 
 } // namespace box2d

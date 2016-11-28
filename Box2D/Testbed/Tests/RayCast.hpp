@@ -35,7 +35,7 @@ public:
 		m_hit = false;
 	}
 
-	float_t ReportFixture(Fixture* fixture, const Vec2& point, const Vec2& normal, float_t fraction)
+	float_t ReportFixture(Fixture* fixture, const Vec2& point, const UnitVec2& normal, float_t fraction) override
 	{
 		Body* body = fixture->GetBody();
 		void* userData = body->GetUserData();
@@ -62,7 +62,7 @@ public:
 	
 	bool m_hit;
 	Vec2 m_point;
-	Vec2 m_normal;
+	UnitVec2 m_normal;
 };
 
 // This callback finds any hit. Polygon 0 is filtered. For this type of query we are usually
@@ -75,7 +75,7 @@ public:
 		m_hit = false;
 	}
 
-	float_t ReportFixture(Fixture* fixture, const Vec2& point, const Vec2& normal, float_t fraction)
+	float_t ReportFixture(Fixture* fixture, const Vec2& point, const UnitVec2& normal, float_t fraction) override
 	{
 		Body* body = fixture->GetBody();
 		void* userData = body->GetUserData();
@@ -101,7 +101,7 @@ public:
 
 	bool m_hit;
 	Vec2 m_point;
-	Vec2 m_normal;
+	UnitVec2 m_normal;
 };
 
 // This ray cast collects multiple hits along the ray. Polygon 0 is filtered.
@@ -120,7 +120,7 @@ public:
 		m_count = 0;
 	}
 
-	float_t ReportFixture(Fixture* fixture, const Vec2& point, const Vec2& normal, float_t fraction)
+	float_t ReportFixture(Fixture* fixture, const Vec2& point, const UnitVec2& normal, float_t fraction) override
 	{
 		Body* body = fixture->GetBody();
 		void* userData = body->GetUserData();
@@ -153,7 +153,7 @@ public:
 	}
 
 	Vec2 m_points[e_maxCount];
-	Vec2 m_normals[e_maxCount];
+	UnitVec2 m_normals[e_maxCount];
 	int32 m_count;
 };
 
@@ -401,8 +401,8 @@ public:
 
 			for (int32 i = 0; i < callback.m_count; ++i)
 			{
-				Vec2 p = callback.m_points[i];
-				Vec2 n = callback.m_normals[i];
+				const auto p = callback.m_points[i];
+				const auto n = callback.m_normals[i];
 				drawer.DrawPoint(p, 5.0f, Color(0.4f, 0.9f, 0.4f));
 				drawer.DrawSegment(point1, p, Color(0.8f, 0.8f, 0.8f));
 				Vec2 head = p + 0.5f * n;

@@ -28,14 +28,56 @@
 
 using namespace box2d;
 
-MassData box2d::ComputeMass(const EdgeShape& shape, float_t density)
+float_t box2d::GetAreaOfCircle(float_t radius)
 {
-	BOX2D_NOT_USED(density);
-	
-	return MassData{float_t{0}, (shape.GetVertex1() + shape.GetVertex2()) / float_t(2), float_t{0}};
+	return Pi * Square(radius);
 }
 
-MassData box2d::ComputeMass(const PolygonShape& shape, float_t density)
+float_t box2d::GetAreaOfPolygon(Span<const Vec2> vertices)
+{
+	// Uses the "Shoelace formula".
+	// See: https://en.wikipedia.org/wiki/Shoelace_formula
+	auto sum = float_t(0);
+	const auto count = vertices.size();
+	for (auto i = decltype(count){0}; i < count; ++i)
+	{
+		const auto last_v = vertices[(i - 1) % count];
+		const auto this_v = vertices[i];
+		const auto next_v = vertices[(i + 1) % count];
+		sum += this_v.x * (next_v.y - last_v.y);
+	}
+	return sum / 2;
+}
+
+float_t box2d::GetPolarMomentOfPolygon(Span<const Vec2> vertices)
+{
+	// Use formulas Ix and Iy for second moment of area of any simple polygon and apply
+	// the perpendicular axis theorem on these to get the desired answer.
+	//
+	// See:
+	// https://en.wikipedia.org/wiki/Second_moment_of_area#Any_polygon
+	// https://en.wikipedia.org/wiki/Second_moment_of_area#Perpendicular_axis_theorem
+	auto sum_x = float_t(0);
+	auto sum_y = float_t(0);
+	const auto count = vertices.size();
+	for (auto i = decltype(count){0}; i < count; ++i)
+	{
+		const auto this_v = vertices[i];
+		const auto next_v = vertices[(i + 1) % count];
+		const auto fact_b = this_v.x * next_v.y - next_v.x * this_v.y;
+		sum_x += [&]() {
+			const auto fact_a = Square(this_v.y) + this_v.y * next_v.y + Square(next_v.y);
+			return fact_a * fact_b;
+		}();
+		sum_y += [&]() {
+			const auto fact_a = Square(this_v.x) + this_v.x * next_v.x + Square(next_v.x);
+			return fact_a * fact_b;
+		}();
+	}
+	return (sum_x + sum_y) / 12;
+}
+
+MassData box2d::GetMassData(const PolygonShape& shape, float_t density)
 {
 	assert(density >= 0);
 	
@@ -112,35 +154,88 @@ MassData box2d::ComputeMass(const PolygonShape& shape, float_t density)
 	return MassData{mass, massDataCenter, massDataI};
 }
 
-MassData box2d::ComputeMass(const CircleShape& shape, float_t density)
+MassData box2d::GetMassData(const CircleShape& shape, float_t density)
 {
+	// Uses parallel axis theorem, perpendicular axis theorem, and the second moment of area.
+	// See: https://en.wikipedia.org/wiki/Second_moment_of_area
+	//
+	// Ixp = Ix + A * dx^2
+	// Iyp = Iy + A * dy^2
+	// Iz = Ixp + Iyp = Ix + A * dx^2 + Iy + A * dy^2
+	// Ix = Pi * r^4 / 4
+	// Iy = Pi * r^4 / 4
+	// Iz = (Pi * r^4 / 4) + (Pi * r^4 / 4) + (A * dx^2) + (A * dy^2)
+	//    = (Pi * r^4 / 2) + (A * (dx^2 + dy^2))
+	// A = Pi * r^2
+	// Iz = (Pi * r^4 / 2) + (2 * (Pi * r^2) * (dx^2 + dy^2))
+	// Iz = Pi * r^2 * ((r^2 / 2) + (dx^2 + dy^2))
 	assert(density >= 0);
-	const auto mass = density * Pi * Square(shape.GetRadius());
-	const auto I = mass * ((Square(shape.GetRadius()) / float_t{2}) + GetLengthSquared(shape.GetLocation()));
-	return MassData{mass, shape.GetLocation(), I};
+	const auto r = shape.GetRadius();
+	const auto r_squared = Square(r);
+	const auto area = Pi * r_squared;
+	const auto mass = density * area;
+	const auto Iz = area * ((r_squared / 2) + GetLengthSquared(shape.GetLocation()));
+	return MassData{mass, shape.GetLocation(), Iz * density};
 }
 
-MassData box2d::ComputeMass(const ChainShape& shape, float_t density)
+MassData box2d::GetMassData(const EdgeShape& shape, float_t density)
+{
+	assert(density >= 0);
+	assert(!shape.HasVertex0());
+	assert(!shape.HasVertex3());
+
+	const auto r = shape.GetVertexRadius();
+	const auto r_squared = Square(r);
+	const auto circle_area = Pi * r_squared;
+	const auto circle_mass = density * circle_area;
+	const auto d = shape.GetVertex2() - shape.GetVertex1();
+	const auto offset = GetRevPerpendicular(GetUnitVector(d, UnitVec2::GetZero())) * r;
+	const auto b = GetLength(d);
+	const auto h = r * 2;
+	const auto rect_mass = density * b * h;
+	const auto totalMass = circle_mass + rect_mass;
+
+	/// Use the fixture's areal mass density times the shape's second moment of area to derive I.
+	/// @sa https://en.wikipedia.org/wiki/Second_moment_of_area
+	const auto I0 = (circle_area / 2) * ((r_squared / 2) + GetLengthSquared(shape.GetVertex1()));
+	const auto I1 = (circle_area / 2) * ((r_squared / 2) + GetLengthSquared(shape.GetVertex2()));
+
+	const auto vertices = Span<const Vec2>{
+		Vec2{shape.GetVertex1() + offset},
+		Vec2{shape.GetVertex1() - offset},
+		Vec2{shape.GetVertex2() - offset},
+		Vec2{shape.GetVertex2() + offset}
+	};
+	const auto I_z = GetPolarMomentOfPolygon(vertices);
+	
+	return MassData{
+		totalMass,
+		(shape.GetVertex1() + shape.GetVertex2()) / float_t(2),
+		(I0 + I1 + I_z) * density
+	};
+}
+
+MassData box2d::GetMassData(const ChainShape& shape, float_t density)
 {
 	BOX2D_NOT_USED(density);
 	
 	return MassData{float_t{0}, Vec2_zero, float_t{0}};
 }
 
-MassData box2d::ComputeMass(const Shape& shape, float_t density)
+MassData box2d::GetMassData(const Shape& shape, float_t density)
 {
 	assert(shape.GetType() < Shape::e_typeCount);
 	switch (shape.GetType())
 	{
-		case Shape::e_edge: return ComputeMass(static_cast<const EdgeShape&>(shape), density);
-		case Shape::e_chain: return ComputeMass(static_cast<const ChainShape&>(shape), density);
-		case Shape::e_circle: return ComputeMass(static_cast<const CircleShape&>(shape), density);
-		case Shape::e_polygon: return ComputeMass(static_cast<const PolygonShape&>(shape), density);
+		case Shape::e_edge: return GetMassData(static_cast<const EdgeShape&>(shape), density);
+		case Shape::e_chain: return GetMassData(static_cast<const ChainShape&>(shape), density);
+		case Shape::e_circle: return GetMassData(static_cast<const CircleShape&>(shape), density);
+		case Shape::e_polygon: return GetMassData(static_cast<const PolygonShape&>(shape), density);
 		case Shape::e_typeCount: return MassData{0, GetInvalid<Vec2>(), 0};
 	}
 }
 
-MassData box2d::ComputeMassData(const Fixture& f)
+MassData box2d::GetMassData(const Fixture& f)
 {
-	return ComputeMass(*f.GetShape(), f.GetDensity());
+	return GetMassData(*f.GetShape(), f.GetDensity());
 }

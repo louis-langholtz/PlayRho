@@ -385,12 +385,12 @@ namespace box2d {
 	/// @note This value is set via the velocity constraint's <code>SetNormal</code> method.
 	/// @return Contact normal (in world coordinates) if previously set, an invalid value
 	///   otherwise.
-	inline Vec2 GetNormal(const VelocityConstraint& vc) noexcept
+	inline UnitVec2 GetNormal(const VelocityConstraint& vc) noexcept
 	{
 		return vc.GetNormal();
 	}
 
-	inline Vec2 GetTangent(const VelocityConstraint& vc) noexcept
+	inline UnitVec2 GetTangent(const VelocityConstraint& vc) noexcept
 	{
 		return GetFwdPerpendicular(vc.GetNormal());
 	}
