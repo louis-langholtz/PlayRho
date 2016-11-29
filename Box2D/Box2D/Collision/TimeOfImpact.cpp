@@ -48,6 +48,8 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 	const auto maxTargetSquared = Square(maxTarget);
 
 	auto t1 = float_t{0}; // Will be set to value of t2
+	auto t1xfA = GetTransformation(sweepA, t1);
+	auto t1xfB = GetTransformation(sweepB, t1);
 
 	// Prepare input for distance query.
 	SimplexCache cache;
@@ -59,9 +61,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 		{
 			// Get the distance between shapes. We can also use the results
 			// to get a separating axis.
-			const auto distanceInfo = Distance(proxyA, GetTransformation(sweepA, t1),
-											   proxyB, GetTransformation(sweepB, t1),
-											   cache);
+			const auto distanceInfo = Distance(proxyA, t1xfA, proxyB, t1xfB, cache);
 			cache = distanceInfo.cache;
 
 			++stats.toi_iters;
@@ -84,19 +84,18 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 		}
 
 		// Initialize the separating axis.
-		const auto fcn = SeparationFinder::Get(cache.GetIndices(),
-											   proxyA, GetTransformation(sweepA, t1),
-											   proxyB, GetTransformation(sweepB, t1));
+		const auto fcn = SeparationFinder::Get(cache.GetIndices(), proxyA, t1xfA, proxyB, t1xfB);
 
 		// Compute the TOI on the separating axis. We do this by successively
 		// resolving the deepest point. This loop is bounded by the number of vertices.
 		auto done = false;
 		auto t2 = tMax; // Will be set to the value of t
+		auto t2xfA = GetTransformation(sweepA, t2);
+		auto t2xfB = GetTransformation(sweepB, t2);
 		for (auto pushBackIter = decltype(MaxShapeVertices){0}; pushBackIter < MaxShapeVertices; ++pushBackIter)
 		{
 			// Find the deepest point at t2. Store the witness point indices.
-			const auto minSeparation = fcn.FindMinSeparation(GetTransformation(sweepA, t2),
-															 GetTransformation(sweepB, t2));
+			const auto minSeparation = fcn.FindMinSeparation(t2xfA, t2xfB);
 
 			// Is the final configuration separated?
 			if (minSeparation.distance > maxTarget)
@@ -117,13 +116,13 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 			{
 				// Advance the sweeps
 				t1 = t2;
+				t1xfA = GetTransformation(sweepA, t1);
+				t1xfB = GetTransformation(sweepB, t1);
 				break;
 			}
 
 			// Compute the initial separation of the witness points.
-			const auto evaluatedDistance = fcn.Evaluate(minSeparation.indexPair,
-														GetTransformation(sweepA, t1),
-														GetTransformation(sweepB, t1));
+			const auto evaluatedDistance = fcn.Evaluate(minSeparation.indexPair, t1xfA, t1xfB);
 
 			// Check for initial overlap. This might happen if the root finder
 			// runs out of iterations.
@@ -166,6 +165,8 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 				if (Abs(s - target) < tolerance)
 				{
 					t2 = t; // t2 holds a tentative value for t1
+					t2xfA = GetTransformation(sweepA, t2);
+					t2xfB = GetTransformation(sweepB, t2);
 					break;
 				}
 
