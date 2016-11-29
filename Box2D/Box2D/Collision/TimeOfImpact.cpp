@@ -25,19 +25,8 @@
 
 namespace box2d {
 
-struct Separation
-{
-	Separation() noexcept = default;
-	Separation(const Separation& copy) noexcept = default;
-	
-	constexpr Separation(IndexPair ip, float_t d) noexcept: indexPair{ip}, distance{d} {}
-
-	IndexPair indexPair; ///< Pair of indices of vertices for which distance is being returned for.
-	float_t distance; ///< Distance of separation (in meters) between vertices indexed by the index-pair.
-};
-
-/// Separation function.
-class SeparationFunction
+/// Separation finder.
+class SeparationFinder
 {
 public:
 	enum Type
@@ -47,94 +36,83 @@ public:
 		e_faceB
 	};
 
-	SeparationFunction(const SimplexCache& cache,
-		const DistanceProxy& proxyA, const Sweep& sweepA,
-		const DistanceProxy& proxyB, const Sweep& sweepB,
-		float_t t1):
-		m_proxyA{proxyA}, m_proxyB{proxyB}, m_sweepA{sweepA}, m_sweepB{sweepB},
-		m_type{(cache.GetNumIndices() == 1)? e_points: ((cache.GetIndexPair(0).a == cache.GetIndexPair(1).a)? e_faceB: e_faceA)}
+	struct Data
 	{
-		assert(cache.GetIndices().size() > 0);
-		assert(cache.GetIndices().size() <= 3); // < 3 or <= 3?
+		IndexPair indexPair; ///< Pair of indices of vertices for which distance is being returned for.
+		float_t distance; ///< Distance of separation (in meters) between vertices indexed by the index-pair.
+	};
+
+	static SeparationFinder Get(const IndexPairList& indexPairs,
+								const DistanceProxy& proxyA, const Transformation& xfA,
+								const DistanceProxy& proxyB, const Transformation& xfB)
+	{
+		assert(indexPairs.size() > 0);
+		assert(indexPairs.size() <= 3); // < 3 or <= 3?
 		assert(proxyA.GetVertexCount() > 0);
 		assert(proxyB.GetVertexCount() > 0);
-		
-		const auto xfA = GetTransformation(m_sweepA, t1);
-		const auto xfB = GetTransformation(m_sweepB, t1);
 
-		switch (m_type)
+		const auto type = (indexPairs.size() == 1)?
+			e_points: ((indexPairs[0].a == indexPairs[1].a)? e_faceB: e_faceA);
+
+		switch (type)
 		{
 		case e_points:
 		{
-			const auto ip0 = cache.GetIndexPair(0);
+			const auto ip0 = indexPairs[0];
 			const auto localPointA = proxyA.GetVertex(ip0.a);
 			const auto localPointB = proxyB.GetVertex(ip0.b);
 			const auto pointA = Transform(localPointA, xfA);
 			const auto pointB = Transform(localPointB, xfB);
-			m_axis = GetUnitVector(pointB - pointA, UnitVec2::GetZero());
-			break;
+			const auto axis = GetUnitVector(pointB - pointA, UnitVec2::GetZero());
+			return SeparationFinder{proxyA, proxyB, axis, GetInvalid<Vec2>(), type};
 		}
 		case e_faceB:
 		{
-			const auto ip0 = cache.GetIndexPair(0);
-			const auto ip1 = cache.GetIndexPair(1);
+			const auto ip0 = indexPairs[0];
+			const auto ip1 = indexPairs[1];
 
 			// Two points on B and one on A.
 			const auto localPointB1 = proxyB.GetVertex(ip0.b);
 			const auto localPointB2 = proxyB.GetVertex(ip1.b);
 
-			m_axis = GetUnitVector(GetFwdPerpendicular(localPointB2 - localPointB1), UnitVec2::GetZero());
-			const auto normal = Rotate(m_axis, xfB.q);
+			const auto axis = GetUnitVector(GetFwdPerpendicular(localPointB2 - localPointB1), UnitVec2::GetZero());
+			const auto normal = Rotate(axis, xfB.q);
 
-			m_localPoint = (localPointB1 + localPointB2) / float_t(2);
-			const auto pointB = Transform(m_localPoint, xfB);
+			const auto localPoint = (localPointB1 + localPointB2) / float_t(2);
+			const auto pointB = Transform(localPoint, xfB);
 
 			const auto localPointA = proxyA.GetVertex(ip0.a);
 			const auto pointA = Transform(localPointA, xfA);
 
-			auto s = Dot(pointA - pointB, normal);
-			if (s < float_t{0})
-			{
-				m_axis = -m_axis;
-			}
-			break;
+			return SeparationFinder{proxyA, proxyB, (Dot(pointA - pointB, normal) < 0)? -axis: axis, localPoint, type};
 		}
 		case e_faceA:
 		{
-			const auto ip0 = cache.GetIndexPair(0);
-			const auto ip1 = cache.GetIndexPair(1);
+			const auto ip0 = indexPairs[0];
+			const auto ip1 = indexPairs[1];
 
 			// Two points on A and one or two points on B.
 			const auto localPointA1 = proxyA.GetVertex(ip0.a);
 			const auto localPointA2 = proxyA.GetVertex(ip1.a);
 			
-			m_axis = GetUnitVector(GetFwdPerpendicular(localPointA2 - localPointA1), UnitVec2::GetZero());
-			const auto normal = Rotate(m_axis, xfA.q);
+			const auto axis = GetUnitVector(GetFwdPerpendicular(localPointA2 - localPointA1), UnitVec2::GetZero());
+			const auto normal = Rotate(axis, xfA.q);
 
-			m_localPoint = (localPointA1 + localPointA2) / float_t(2);
-			const auto pointA = Transform(m_localPoint, xfA);
+			const auto localPoint = (localPointA1 + localPointA2) / float_t(2);
+			const auto pointA = Transform(localPoint, xfA);
 
 			const auto localPointB = proxyB.GetVertex(ip0.b);
 			const auto pointB = Transform(localPointB, xfB);
 
-			auto s = Dot(pointB - pointA, normal);
-			if (s < float_t{0})
-			{
-				m_axis = -m_axis;
-			}
-			break;
+			return SeparationFinder{proxyA, proxyB, (Dot(pointB - pointA, normal) < 0)? -axis: axis, localPoint, type};
 		}
 		}
 	}
 
 	/// Finds the minimum separation.
-	/// @param t Time factor in [0, 1] for which the calculation should be performed.
 	/// @return indexes of proxy A's and proxy B's vertices that have the minimum distance between them and what that distance is.
-	Separation FindMinSeparation(float_t t) const
+	Data FindMinSeparation(const Transformation& xfA, const Transformation& xfB) const
 	{
-		const auto xfA = GetTransformation(m_sweepA, t);
-		const auto xfB = GetTransformation(m_sweepB, t);
-
 		switch (m_type)
 		{
 			case e_points: return FindMinSeparationForPoints(xfA, xfB);
@@ -144,18 +122,14 @@ public:
 
 		// Should never be reached
 		assert(false);
-		return Separation{IndexPair{IndexPair::InvalidIndex, IndexPair::InvalidIndex}, 0};
+		return Data{IndexPair{IndexPair::InvalidIndex, IndexPair::InvalidIndex}, 0};
 	}
 	
 	/// Evaluates the separation of the identified proxy vertices at the given time factor.
 	/// @param indexPair Indexes of the proxy A and proxy B vertexes.
-	/// @param t Time factor in range of [0,1] into the future, where 0 indicates alpha0.
 	/// @return Separation distance.
-	float_t Evaluate(IndexPair indexPair, float_t t) const
+	float_t Evaluate(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
 	{
-		const auto xfA = GetTransformation(m_sweepA, t);
-		const auto xfB = GetTransformation(m_sweepB, t);
-
 		switch (m_type)
 		{
 			case e_points: return EvaluateForPoints(indexPair, xfA, xfB);
@@ -167,39 +141,41 @@ public:
 		return float_t{0};
 	}
 
-	const DistanceProxy& m_proxyA;
-	const DistanceProxy& m_proxyB;
-	const Sweep m_sweepA, m_sweepB;
-	const Type m_type;
-	
 private:
-	Separation FindMinSeparationForPoints(const Transformation& xfA, const Transformation& xfB) const
+	SeparationFinder(const DistanceProxy& dpA, const DistanceProxy& dpB,
+					 const UnitVec2 axis, const Vec2 lp, const Type type):
+		m_proxyA{dpA}, m_proxyB{dpB}, m_axis{axis}, m_localPoint{lp}, m_type{type}
+	{
+		// Intentionally empty.
+	}
+
+	Data FindMinSeparationForPoints(const Transformation& xfA, const Transformation& xfB) const
 	{
 		const auto indexA = GetSupportIndex(m_proxyA, Vec2{InverseRotate(m_axis, xfA.q)});
 		const auto indexB = GetSupportIndex(m_proxyB, Vec2{InverseRotate(-m_axis, xfB.q)});
 		const auto pointA = Transform(m_proxyA.GetVertex(indexA), xfA);
 		const auto pointB = Transform(m_proxyB.GetVertex(indexB), xfB);
-		return Separation{IndexPair{indexA, indexB}, Dot(pointB - pointA, m_axis)};
+		return Data{IndexPair{indexA, indexB}, Dot(pointB - pointA, m_axis)};
 	}
 	
-	Separation FindMinSeparationForFaceA(const Transformation& xfA, const Transformation& xfB) const
+	Data FindMinSeparationForFaceA(const Transformation& xfA, const Transformation& xfB) const
 	{
 		const auto normal = Rotate(m_axis, xfA.q);
 		const auto indexA = IndexPair::InvalidIndex;
 		const auto pointA = Transform(m_localPoint, xfA);
 		const auto indexB = GetSupportIndex(m_proxyB, Vec2{InverseRotate(-normal, xfB.q)});
 		const auto pointB = Transform(m_proxyB.GetVertex(indexB), xfB);
-		return Separation{IndexPair{indexA, indexB}, Dot(pointB - pointA, normal)};
+		return Data{IndexPair{indexA, indexB}, Dot(pointB - pointA, normal)};
 	}
 	
-	Separation FindMinSeparationForFaceB(const Transformation& xfA, const Transformation& xfB) const
+	Data FindMinSeparationForFaceB(const Transformation& xfA, const Transformation& xfB) const
 	{
 		const auto normal = Rotate(m_axis, xfB.q);
 		const auto indexA = GetSupportIndex(m_proxyA, Vec2{InverseRotate(-normal, xfA.q)});
 		const auto pointA = Transform(m_proxyA.GetVertex(indexA), xfA);
 		const auto indexB = IndexPair::InvalidIndex;
 		const auto pointB = Transform(m_localPoint, xfB);
-		return Separation{IndexPair{indexA, indexB}, Dot(pointA - pointB, normal)};
+		return Data{IndexPair{indexA, indexB}, Dot(pointA - pointB, normal)};
 	}
 	
 	float_t EvaluateForPoints(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
@@ -225,8 +201,11 @@ private:
 		return Dot(pointA - pointB, normal);
 	}
 	
-	UnitVec2 m_axis; ///< Axis. @detail Directional vector of the axis of separation.
-	Vec2 m_localPoint; ///< Local point. @note Only used if type is e_faceA or e_faceB.
+	const DistanceProxy& m_proxyA;
+	const DistanceProxy& m_proxyB;
+	const UnitVec2 m_axis; ///< Axis. @detail Directional vector of the axis of separation.
+	const Vec2 m_localPoint; ///< Local point. @note Only used if type is e_faceA or e_faceB.
+	const Type m_type;
 };
 
 TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
@@ -288,7 +267,9 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 		}
 
 		// Initialize the separating axis.
-		SeparationFunction fcn(cache, proxyA, sweepA, proxyB, sweepB, t1);
+		const auto fcn = SeparationFinder::Get(cache.GetIndices(),
+											   proxyA, GetTransformation(sweepA, t1),
+											   proxyB, GetTransformation(sweepB, t1));
 
 		// Compute the TOI on the separating axis. We do this by successively
 		// resolving the deepest point. This loop is bounded by the number of vertices.
@@ -297,7 +278,8 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 		for (auto pushBackIter = decltype(MaxShapeVertices){0}; pushBackIter < MaxShapeVertices; ++pushBackIter)
 		{
 			// Find the deepest point at t2. Store the witness point indices.
-			const auto minSeparation = fcn.FindMinSeparation(t2);
+			const auto minSeparation = fcn.FindMinSeparation(GetTransformation(sweepA, t2),
+															 GetTransformation(sweepB, t2));
 
 			// Is the final configuration separated?
 			if (minSeparation.distance > maxTarget)
@@ -322,7 +304,9 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 			}
 
 			// Compute the initial separation of the witness points.
-			const auto evaluatedDistance = fcn.Evaluate(minSeparation.indexPair, t1);
+			const auto evaluatedDistance = fcn.Evaluate(minSeparation.indexPair,
+														GetTransformation(sweepA, t1),
+														GetTransformation(sweepB, t1));
 
 			// Check for initial overlap. This might happen if the root finder
 			// runs out of iterations.
@@ -358,7 +342,9 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 					(a1 + a2) / float_t{2};
 				++rootIters;
 
-				const auto s = fcn.Evaluate(minSeparation.indexPair, t);
+				const auto s = fcn.Evaluate(minSeparation.indexPair,
+											GetTransformation(sweepA, t),
+											GetTransformation(sweepB, t));
 
 				if (Abs(s - target) < tolerance)
 				{

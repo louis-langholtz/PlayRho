@@ -711,3 +711,104 @@ TEST(CollideShapes, EdgeRightOfPolygon)
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
 }
+
+TEST(CollideShapes, EdgeOverlapsItself)
+{
+	const auto p1 = Vec2(0, -1);
+	const auto p2 = Vec2(0, +1);
+	const auto edge_shape = EdgeShape(p1, p2);
+	const auto edge_xfm = Transformation{Vec2{+1, 0}, UnitVec2{0_deg}};
+
+	const auto manifold = CollideShapes(edge_shape, edge_xfm, edge_shape, edge_xfm);
+	
+	ASSERT_NE(manifold.GetType(), Manifold::e_unset);
+	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
+}
+
+TEST(CollideShapes, R0EdgeCollinearAndTouchingR0Edge)
+{
+	const auto p1 = Vec2(-1, 0);
+	const auto p2 = Vec2(+1, 0);
+	auto edge_shape = EdgeShape(0);
+	edge_shape.Set(p1, p2);
+	const auto xfm1 = Transformation{Vec2{+1, 0}, UnitVec2{0_deg}};
+	const auto xfm2 = Transformation{Vec2{+3, 0}, UnitVec2{0_deg}};
+	
+	const auto manifold = CollideShapes(edge_shape, xfm1, edge_shape, xfm2);
+	
+	EXPECT_EQ(manifold.GetType(), Manifold::e_circles);
+	EXPECT_FALSE(IsValid(manifold.GetLocalNormal()));
+	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(1, 0));
+}
+
+TEST(CollideShapes, R1EdgeCollinearAndTouchingR1Edge)
+{
+	const auto p1 = Vec2(-1, 0);
+	const auto p2 = Vec2(+1, 0);
+	auto edge_shape = EdgeShape(1);
+	edge_shape.Set(p1, p2);
+	const auto xfm1 = Transformation{Vec2{+1, 0}, UnitVec2{0_deg}};
+	const auto xfm2 = Transformation{Vec2{+5, 0}, UnitVec2{0_deg}};
+	
+	const auto manifold = CollideShapes(edge_shape, xfm1, edge_shape, xfm2);
+
+	ASSERT_NE(manifold.GetType(), Manifold::e_unset);
+
+	EXPECT_EQ(manifold.GetType(), Manifold::e_circles);
+	EXPECT_FALSE(IsValid(manifold.GetLocalNormal()));
+	EXPECT_EQ(manifold.GetLocalPoint(), p2);
+}
+
+TEST(CollideShapes, R0EdgeCollinearAndSeparateFromR0Edge)
+{
+	const auto p1 = Vec2(-1, 0);
+	const auto p2 = Vec2(+1, 0);
+	auto edge_shape = EdgeShape(0);
+	edge_shape.Set(p1, p2);
+	const auto xfm1 = Transformation{Vec2{+1, 0}, UnitVec2{0_deg}};
+	const auto xfm2 = Transformation{Vec2{+4, 0}, UnitVec2{0_deg}};
+	
+	const auto manifold = CollideShapes(edge_shape, xfm1, edge_shape, xfm2);
+	
+	EXPECT_EQ(manifold.GetType(), Manifold::e_unset);
+	EXPECT_FALSE(IsValid(manifold.GetLocalNormal()));
+	EXPECT_FALSE(IsValid(manifold.GetLocalPoint()));
+}
+
+TEST(CollideShapes, R0EdgeParallelAndSeparateFromR0Edge)
+{
+	const auto p1 = Vec2(-1, 0);
+	const auto p2 = Vec2(+1, 0);
+	auto edge_shape = EdgeShape(0);
+	edge_shape.Set(p1, p2);
+	const auto xfm1 = Transformation{Vec2{-4, 1}, UnitVec2{0_deg}};
+	const auto xfm2 = Transformation{Vec2{-4, 0}, UnitVec2{0_deg}};
+	
+	const auto manifold = CollideShapes(edge_shape, xfm1, edge_shape, xfm2);
+	
+	EXPECT_EQ(manifold.GetType(), Manifold::e_unset);
+	EXPECT_FALSE(IsValid(manifold.GetLocalNormal()));
+	EXPECT_FALSE(IsValid(manifold.GetLocalPoint()));
+}
+
+TEST(CollideShapes, R0EdgePerpendicularCrossingFromR0Edge)
+{
+	const auto p1 = Vec2(-1, 0);
+	const auto p2 = Vec2(+1, 0);
+	auto edge_shape = EdgeShape(0);
+	edge_shape.Set(p1, p2);
+	const auto xfm1 = Transformation{Vec2{0, 0}, UnitVec2{0_deg}};
+	const auto xfm2 = Transformation{Vec2{0, 0}, UnitVec2{90_deg}};
+	
+	const auto manifold = CollideShapes(edge_shape, xfm1, edge_shape, xfm2);
+	
+	ASSERT_NE(manifold.GetType(), Manifold::e_unset);
+	ASSERT_TRUE(IsValid(manifold.GetLocalNormal()));
+	ASSERT_TRUE(IsValid(manifold.GetLocalPoint()));
+	
+	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
+	EXPECT_EQ(Vec2(manifold.GetLocalNormal()), Vec2(0, 1));
+	EXPECT_FLOAT_EQ(round(manifold.GetLocalPoint().x), 0);
+	EXPECT_FLOAT_EQ(round(manifold.GetLocalPoint().y), 0);
+	EXPECT_EQ(manifold.GetPointCount(), decltype(manifold.GetPointCount()){1});
+}

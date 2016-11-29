@@ -22,6 +22,7 @@
 #include <Box2D/Collision/Shapes/CircleShape.hpp>
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
 #include <Box2D/Collision/Shapes/EdgeShape.hpp>
+#include <array>
 
 using namespace box2d;
 
@@ -310,30 +311,6 @@ static inline ReferenceFace GetReferenceFace(const PolygonShape& localShapeB,
 	return rf;
 }
 
-/// Gets the shape separation information for the most opposite vector.
-/// @param vectors Collection of 0 or more vectors to find the most anti-parallel vector from and
-///    its magnitude from the reference vector.
-/// @param refvec Reference vector.
-template <typename T>
-static inline ShapeSeparation GetMostOppositeSeparation(Span<const T> vectors, const T refvec, const T offset)
-{
-	auto bestIndex = ShapeSeparation::InvalidIndex;
-	auto minValue = MaxFloat;
-	const auto count = vectors.size();
-	for (auto i = decltype(count){0}; i < count; ++i)
-	{
-		// Get cosine of angle between refvec and vectors[i] multiplied by their
-		// magnitudes (which will essentially be 1 for any two unit vectors).
-		const auto s = Dot(refvec, vectors[i] - offset);
-		if (minValue > s)
-		{
-			minValue = s;
-			bestIndex = static_cast<ShapeSeparation::index_type>(i);
-		}
-	}
-	return ShapeSeparation{bestIndex, minValue};
-}
-
 static inline ShapeSeparation GetPolygonSeparation(const PolygonShape& polygon, const EdgeInfo& edge)
 {
 	auto max_s = -MaxFloat;
@@ -382,39 +359,64 @@ static inline ShapeSeparation GetPolygonSeparation(const PolygonShape& polygon, 
 	return ShapeSeparation{index, max_s};
 }
 
-static ShapeSeparation GetMaxSeparation(const PolygonShape& shape1, const Transformation& xf1,
-										const PolygonShape& shape2, const Transformation& xf2)
+/// Gets the shape separation information for the most opposite vector.
+/// @param vectors Collection of 0 or more vectors to find the most anti-parallel vector from and
+///    its magnitude from the reference vector.
+/// @param refvec Reference vector.
+template <typename T>
+static inline ShapeSeparation GetMostOppositeSeparation(Span<const T> vectors, const T refvec, const T offset)
 {
+	auto bestIndex = ShapeSeparation::InvalidIndex;
+	auto minValue = MaxFloat;
+	const auto count = vectors.size();
+	for (auto i = decltype(count){0}; i < count; ++i)
+	{
+		// Get cosine of angle between refvec and vectors[i] multiplied by their
+		// magnitudes (which will essentially be 1 for any two unit vectors).
+		// Get distance from offset to vectors[i] in direction of refvec.
+		const auto s = Dot(refvec, vectors[i] - offset);
+		if (minValue > s)
+		{
+			minValue = s;
+			bestIndex = static_cast<ShapeSeparation::index_type>(i);
+		}
+	}
+	return ShapeSeparation{bestIndex, minValue};
+}
+
+static ShapeSeparation GetMaxSeparation(Span<const Vec2> shape1_vertices, Span<const UnitVec2> shape1_normals, const Transformation& xf1,
+										Span<const Vec2> shape2_vertices, const Transformation& xf2)
+{
+	assert(shape1_vertices.size() == shape1_normals.size());
+
 	// Find the max separation between shape1 and shape2 using edge normals from shape1.
 	auto maxSeparation = -MaxFloat;
-	auto index_of_max = PolygonShape::vertex_count_t{0};
+	auto index_of_max = ShapeSeparation::index_type{0};
+	
+	const auto count1 = shape1_vertices.size();
+	const auto xf = MulT(xf2, xf1);
+	
+	for (auto i = decltype(count1){0}; i < count1; ++i)
 	{
-		const auto count1 = shape1.GetVertexCount();
-		const auto count2 = shape2.GetVertexCount();
-		const auto xf = MulT(xf2, xf1);
+		// Get shape1 normal and vertex relative to shape2.
+		const auto shape1_ni = Rotate(shape1_normals[i], xf.q);
+		const auto shape1_vi = Transform(shape1_vertices[i], xf);
 		
-		for (auto i = decltype(count1){0}; i < count1; ++i)
+		const auto most_opposite = GetMostOppositeSeparation(shape2_vertices, Vec2{shape1_ni}, shape1_vi);
+		
+		if (maxSeparation < most_opposite.separation)
 		{
-			// Get shape1 normal and vertex relative to shape2.
-			const auto shape1_ni = Rotate(shape1.GetNormal(i), xf.q);
-			const auto shape1_vi = Transform(shape1.GetVertex(i), xf);
-			
-			// Find deepest point for normal i.
-			auto min_sij = MaxFloat;
-			for (auto j = decltype(count2){0}; j < count2; ++j)
-			{
-				const auto sij = Dot(shape1_ni, shape2.GetVertex(j) - shape1_vi);
-				min_sij = Min(min_sij, sij);
-			}
-			
-			if (maxSeparation < min_sij)
-			{
-				maxSeparation = min_sij;
-				index_of_max = i;
-			}
+			maxSeparation = most_opposite.separation;
+			index_of_max = static_cast<ShapeSeparation::index_type>(i);
 		}
 	}
 	return ShapeSeparation{index_of_max, maxSeparation};
+}
+
+static inline ShapeSeparation GetMaxSeparation(const PolygonShape& shape1, const Transformation& xf1,
+											   const PolygonShape& shape2, const Transformation& xf2)
+{
+	return GetMaxSeparation(shape1.GetVertices(), shape1.GetNormals(), xf1, shape2.GetVertices(), xf2);
 }
 
 static ClipList FindIncidentEdge(const PolygonShape::vertex_count_t index1,
@@ -861,85 +863,114 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,
 							  const EdgeShape& shapeB, const Transformation& xfB)
 {
-	// Edge-to-edge collisions can result in these types of collision manifolds:
-	//   Manifold::e_unset - for non-contacting events.
-	//   Manifold::e_circles - for end to end contacts or for end to face contacts.
-	//   Manifold::e_faceA - for face A to face contacts.
-	//   Manifold::e_faceB - for face B to face contacts.
-	
-	const auto shapeA_v1 = shapeA.GetVertex1();
+	const auto shapeA_v1 = shapeA.GetVertex1(); // p
 	const auto shapeA_v2 = shapeA.GetVertex2();
-	const auto shapeA_edge = (shapeA_v2 - shapeA_v1);
-	const auto shapeB_v1 = InverseTransform(Transform(shapeB.GetVertex1(), xfB), xfA);
+	const auto shapeB_v1 = InverseTransform(Transform(shapeB.GetVertex1(), xfB), xfA); // q
 	const auto shapeB_v2 = InverseTransform(Transform(shapeB.GetVertex2(), xfB), xfA);
-	const auto shapeB_edge = (shapeB_v2 - shapeB_v1);
-
+	const auto shapeA_edge = (shapeA_v2 - shapeA_v1); // r
+	const auto shapeB_edge = (shapeB_v2 - shapeB_v1); // s
+	const auto shapeA_normal = GetRevPerpendicular(GetUnitVector(shapeA_edge));
+	const auto shapeA_len_squared = GetLengthSquared(shapeA_edge); // r . r
+	const auto shapeB_len_squared = GetLengthSquared(shapeB_edge); // s . s
+	const auto shapeA_extent = GetVertexRadius(shapeA) / Sqrt(shapeA_len_squared);
+	const auto shapeB_extent = GetVertexRadius(shapeB) / Sqrt(shapeB_len_squared);
 	const auto totalRadius = GetVertexRadius(shapeA) + GetVertexRadius(shapeB);
 
-	// Is shape B vertex 1 left of shape A vertex 1?
-	const auto a = Dot(shapeA_edge, shapeB_v1 - shapeA_v1);
+	// Now solve for:
+	// shapeA_v1 + shapeA_c * shapeA_edge == shapeB_v1 + shapeB_c * shapeB_edge
 
-	// Is shape B vertex 1 right of shape A vertex 2?
-	const auto b = Dot(shapeA_edge, shapeA_v2 - shapeB_v1);
-	
-	// Is shape B vertex 2 left of shape A vertex 1?
-	const auto c = Dot(shapeA_edge, shapeB_v2 - shapeA_v1);
-	
-	// Is shape B vertex 2 right of shape A vertex 2?
-	const auto d = Dot(shapeA_edge, shapeA_v2 - shapeB_v2);
-
-	if (a < 0 && c < 0)
+	const auto shapeB_v1_sub_shapeA_v1 = shapeB_v1 - shapeA_v1; // q - p
+	const auto cross_edge_A_B = Cross(shapeA_edge, shapeB_edge); // (r × s)
+	const auto shapeA_n = Cross(shapeB_v1_sub_shapeA_v1, shapeB_edge); // (q − p) × s
+	const auto shapeB_n = Cross(shapeB_v1_sub_shapeA_v1, shapeA_edge); // (q − p) × r
+	if (almost_zero(cross_edge_A_B))
 	{
-		// shape B vertex 1 and 2 are both left of shape A's vertex 1
-		if (a > c)
+		// The two lines are parallel.
+		if (almost_zero(shapeB_n))
 		{
-			// shape B vertex 1 is closest to shape A's vertex 1
-			if (GetLengthSquared(shapeB_v1 - shapeA_v1) > Square(totalRadius))
+			// The two lines are collinear (and parallel).
+			const auto shapeA_v1_p = shapeA_v1 - (shapeA_extent * shapeA_edge);
+			const auto shapeA_v2_p = shapeA_v2 + (shapeA_extent * shapeA_edge);
+			const auto shapeA_edge_p = shapeA_v2_p - shapeA_v1_p;
+			const auto shapeA_len_squared_p = GetLengthSquared(shapeA_edge_p);
+			const auto shapeB_v1_p = shapeB_v1 - (shapeB_extent * shapeB_edge);
+			const auto shapeB_v2_p = shapeB_v2 + (shapeB_extent * shapeB_edge);
+			const auto shapeB_edge_p = shapeB_v2_p - shapeB_v1_p;
+			const auto shapeB_v1_sub_shapeA_v1_p = shapeB_v1_p - shapeA_v1_p;
+			const auto dot_edge_B_A = Dot(shapeB_edge_p, shapeA_edge_p);
+			const auto shapeA_c0 = Dot(shapeB_v1_sub_shapeA_v1_p, shapeA_edge_p) / shapeA_len_squared_p; // t0
+			const auto shapeA_c1 = shapeA_c0 + (dot_edge_B_A / shapeA_len_squared_p); // t1
+			const auto interval = (dot_edge_B_A < 0)?
+				std::array<float_t, 2>{{shapeA_c1, shapeA_c0}}:
+				std::array<float_t, 2>{{shapeA_c0, shapeA_c1}};
+			if ((interval[1] >= 0) && (interval[0] <= 1))
 			{
-				// no contact
-				return Manifold{};
+				// The line segments are overlapping (and collinear).
+				const auto contact_pt = shapeA_v1_p + interval[0] * shapeA_edge_p;
+				const auto len_squared_from_shapeA_v1 = GetLengthSquared(shapeA_v1 - contact_pt);
+				const auto len_squared_from_shapeA_v2 = GetLengthSquared(shapeA_v2 - contact_pt);
+				if (len_squared_from_shapeA_v1 < len_squared_from_shapeA_v2)
+				{
+					if (len_squared_from_shapeA_v1 >= 0)
+					{
+						const auto mp = Manifold::Point{
+							shapeB_v1,
+							ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 0}
+						};
+						return Manifold::GetForCircles(shapeA_v1, mp);						
+					}
+				}
+				else
+				{
+					if (len_squared_from_shapeA_v2 >= 0)
+					{
+						const auto mp = Manifold::Point{
+							shapeB_v1,
+							ContactFeature{ContactFeature::e_vertex, 1, ContactFeature::e_vertex, 0}
+						};
+						return Manifold::GetForCircles(shapeA_v2, mp);
+					}
+				}
+				const auto ln = GetRevPerpendicular(GetUnitVector(shapeA_edge));
+				return Manifold::GetForFaceA(ln, contact_pt, Manifold::Point{
+					shapeB_v1,
+					ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, 0}
+				});
 			}
-			// circle contact with shape A vertex 1
-			return Manifold::GetForCircles(shapeA_v1, Manifold::Point{
-				shapeB_v1,
-				ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 0}
-			});
+			// The line segments are disjoint (and collinear).
+			return Manifold{};
 		}
-		else // a <= c
+		// The two lines are not collinear (but they are parallel).
+		const auto s = Dot(shapeA_normal, shapeB_v1);
+		if (Abs(s) > totalRadius)
 		{
-			// shape B vertex 2 is closest to shape A's vertex 1
-			if (GetLengthSquared(shapeB_v2 - shapeA_v1) > Square(totalRadius))
-			{
-				// no contact
-				return Manifold{};
-			}
-			// circle contact with shape A vertex 1
-			return Manifold::GetForCircles(shapeA_v1, Manifold::Point{
-				shapeB_v2,
-				ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 1}
-			});
+			return Manifold{};
 		}
+		GetLengthSquared(shapeA_v1 - shapeB_v1);
+		GetLengthSquared(shapeA_v1 - shapeB_v2);
+		GetLengthSquared(shapeA_v2 - shapeB_v1);
+		GetLengthSquared(shapeA_v2 - shapeB_v2);
 	}
-	if (b < 0 && d < 0)
+	else
 	{
-		// shape B vertex 1 and 2 are both right of shape A's vertex 2
-		if (b > d)
+		// The two lines are NOT parallel.
+		const auto shapeA_c = shapeA_n / cross_edge_A_B; // t = (q − p) × s / (r × s)
+		const auto shapeB_c = shapeB_n / cross_edge_A_B; // u = (q − p) × r / (r × s)
+		const auto shapeA_c_valid = ((shapeA_c >= 0) && (shapeA_c <= 1));
+		const auto shapeB_c_valid = ((shapeB_c >= 0) && (shapeB_c <= 1));
+		if (shapeA_c_valid && shapeB_c_valid)
 		{
-			// shape B vertex 1 is closest to shape A's vertex 2
-			if (GetLengthSquared(shapeB_v1 - shapeA_v2) > Square(totalRadius))
-			{
-				// no contact
-				return Manifold{};
-			}
-			// circle contact with shape A vertex 2
-			return Manifold::GetForCircles(shapeA_v1, Manifold::Point{
+			// The two line segments meet at the point shapeA_v1 + shapeA_c * shapeA_edge
+			const auto lp = shapeA_v1 + shapeA_c * shapeA_edge;
+			const auto mp = Manifold::Point{
 				shapeB_v1,
 				ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 0}
-			});
+			};
+			return Manifold::GetForFaceA(shapeA_normal, lp, mp);
 		}
-		else // b <= d
+		else
 		{
-			// shape B vertex 2 is closest to shape A's vertex 2			
+			// The two line segments are not parallel but do not intersect.
 		}
 	}
 	return Manifold{};
