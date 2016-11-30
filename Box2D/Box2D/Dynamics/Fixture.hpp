@@ -127,15 +127,11 @@ public:
 	const Body* GetBody() const noexcept;
 
 	/// Gets the child shape.
-	/// @detail You can modify the child shape, however you should not change the
-	/// number of vertices because this will crash some collision caching mechanisms.
-	/// Manipulating the shape may lead to non-physical behavior.
+	/// @detail The shape is not modifiable. Use a new fixture instead.
 	const Shape* GetShape() noexcept;
 
 	/// Gets the child shape.
-	/// @detail You can modify the child shape, however you should not change the
-	/// number of vertices because this will crash some collision caching mechanisms.
-	/// Manipulating the shape may lead to non-physical behavior.
+	/// @detail The shape is not modifiable. Use a new fixture instead.
 	const Shape* GetShape() const noexcept;
 
 	/// Set if this fixture is a sensor.
