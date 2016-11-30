@@ -100,15 +100,15 @@ public:
 			Color c(0.9f, 0.9f, 0.9f);
 			if (actor == m_rayActor && actor->overlap)
 			{
-				c.Set(0.9f, 0.6f, 0.6f);
+				c = Color(0.9f, 0.6f, 0.6f);
 			}
 			else if (actor == m_rayActor)
 			{
-				c.Set(0.6f, 0.9f, 0.6f);
+				c = Color(0.6f, 0.9f, 0.6f);
 			}
 			else if (actor->overlap)
 			{
-				c.Set(0.6f, 0.6f, 0.9f);
+				c = Color(0.6f, 0.6f, 0.9f);
 			}
 
 			const auto p1 = actor->aabb.GetLowerBound();
