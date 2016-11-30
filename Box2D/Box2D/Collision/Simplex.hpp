@@ -33,7 +33,7 @@ namespace box2d
 		std::remove_const<decltype(MaxSimplexEdges)>::type>;
 	
 	/// Calculates the "search direction" for the given simplex.
-	/// @param simplexEdges A one or two vertex simplex.
+	/// @param simplexEdges A one or two edge simplex.
 	/// @warning Behavior is undefined if the given simplex has zero vertices.
 	/// @return "search direction" vector.
 	constexpr inline Vec2 CalcSearchDirection(const SimplexEdgeList& simplexEdges) noexcept
@@ -71,7 +71,7 @@ namespace box2d
 		{
 			case 0: return float_t{0};
 			case 1: return float_t{0};
-			case 2:	return Sqrt(GetLengthSquared(GetPointDelta(simplexEdges[0]) - GetPointDelta(simplexEdges[1])));
+			case 2:	return Sqrt(GetLengthSquared(GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0])));
 			case 3:	return Cross(GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]),
 								 GetPointDelta(simplexEdges[2]) - GetPointDelta(simplexEdges[0]));
 			default: break; // should not be reached
@@ -158,7 +158,7 @@ namespace box2d
 	/// Gets the simplex for the given collection of vertices.
 	/// @param vertices Collection of zero, one, two, or three simplex vertexes.
 	/// @warning Behavior is undefined if the given collection has more than 3 vertices.
-	/// @return Zero, one, two, or three vertex simplex.
+	/// @return Zero, one, two, or three edge simplex.
 	inline Simplex Simplex::Get(const SimplexEdgeList& vertices) noexcept
 	{
 		const auto count = vertices.size();
@@ -182,8 +182,8 @@ namespace box2d
 	/// Solves the given line segment simplex using barycentric coordinates.
 	///
 	/// @note The given simplex vertices must have different index pairs or be of the same values.
-	/// @warning Behavior is undefined if the given simplex vertices index pairs are the same
-	///    and the whole vertex values are not also the same.
+	/// @warning Behavior is undefined if the given simplex edges index pairs are the same
+	///    and the whole edges values are not also the same.
 	///
 	/// @detail
 	/// p = a1 * w1 + a2 * w2
@@ -208,10 +208,10 @@ namespace box2d
 	/// a1 = d12_1 / d12_sum
 	/// a2 = d12_2 / d12_sum
 	///
-	/// @param s0 Simplex vertex 0.
-	/// @param s1 Simplex vertex 1.
+	/// @param s0 Simplex edge 0.
+	/// @param s1 Simplex edge 1.
 	///
-	/// @result One or two vertex "solution".
+	/// @result One or two edge "solution".
 	inline Simplex Simplex::Get(const SimplexEdge& s0, const SimplexEdge& s1) noexcept
 	{
 		assert(s0.GetIndexPair() != s1.GetIndexPair() || s0 == s1);
@@ -241,7 +241,7 @@ namespace box2d
 		return Simplex{{s0, s1}, {d12_1 / d12_sum, d12_2 / d12_sum}};
 	}
 
-	/// Solves the given 3-vertex simplex.
+	/// Solves the given 3-edge simplex.
 	///
 	/// @detail
 	/// Possible regions:
@@ -250,7 +250,7 @@ namespace box2d
 	/// - edge points[1]-points[2]
 	/// - inside the triangle
 	///
-	/// @result One, two, or three vertex "solution".
+	/// @result One, two, or three edge "solution".
 	inline Simplex Simplex::Get(const SimplexEdge& s0, const SimplexEdge& s1, const SimplexEdge& s2) noexcept
 	{
 		const auto w1 = GetPointDelta(s0);

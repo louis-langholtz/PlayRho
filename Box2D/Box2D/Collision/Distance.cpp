@@ -176,7 +176,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 			break;
 		}
 
-		// Compute a tentative new simplex vertex using support points.
+		// Compute a tentative new simplex edge using support points.
 		const auto indexA = GetSupportIndex(proxyA, InverseRotate(-d, transformA.q));
 		const auto indexB = GetSupportIndex(proxyB, InverseRotate(d, transformB.q));
 
@@ -187,7 +187,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 			break;
 		}
 
-		// New vertex is ok and needed.
+		// New edge is ok and needed.
 		simplexEdges.push_back(GetSimplexEdge(proxyA, transformA, indexA, proxyB, transformB, indexB));
 	}
 
