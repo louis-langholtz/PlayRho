@@ -50,7 +50,7 @@ TEST(Simplex, Get1)
 	EXPECT_EQ(simplex.GetSize(), decltype(simplex.GetSize()){1});
 
 	ASSERT_GT(simplex.GetSize(), decltype(simplex.GetSize()){0});
-	const auto sv_new = simplex.GetSimplexVertex(0);
+	const auto sv_new = simplex.GetSimplexEdge(0);
 	EXPECT_EQ(sv.GetPointA(), sv_new.GetPointA());
 	EXPECT_EQ(sv.indexPair.a, sv_new.indexPair.a);
 	EXPECT_EQ(sv.GetPointB(), sv_new.GetPointB());
@@ -73,7 +73,7 @@ TEST(Simplex, Get2_of_same)
 	
 	ASSERT_GT(simplex.GetSize(), decltype(simplex.GetSize()){0});
 
-	const auto sv_new = simplex.GetSimplexVertex(0);
+	const auto sv_new = simplex.GetSimplexEdge(0);
 	EXPECT_EQ(sv_new.GetPointA(), va);
 	EXPECT_EQ(sv_new.indexPair.a, ia);
 	EXPECT_EQ(sv_new.GetPointB(), vb);
@@ -102,7 +102,7 @@ TEST(Simplex, Get2_fwd_perp)
 	
 	ASSERT_GT(simplex.GetSize(), decltype(simplex.GetSize()){0});
 
-	const auto sv_new_0 = simplex.GetSimplexVertex(0);
+	const auto sv_new_0 = simplex.GetSimplexEdge(0);
 	EXPECT_EQ(sv_new_0.GetPointA(), va0);
 	EXPECT_EQ(sv_new_0.indexPair.a, ia0);
 	EXPECT_EQ(sv_new_0.GetPointB(), vb0);
@@ -113,7 +113,7 @@ TEST(Simplex, Get2_fwd_perp)
 	
 	ASSERT_GT(simplex.GetSize(), decltype(simplex.GetSize()){1});
 	
-	const auto sv_new_1 = simplex.GetSimplexVertex(1);
+	const auto sv_new_1 = simplex.GetSimplexEdge(1);
 	EXPECT_EQ(sv_new_1.GetPointA(), va1);
 	EXPECT_EQ(sv_new_1.indexPair.a, ia1);
 	EXPECT_EQ(sv_new_1.GetPointB(), vb1);
@@ -142,7 +142,7 @@ TEST(Simplex, Get2_rev_perp)
 	
 	ASSERT_GT(simplex.GetSize(), decltype(simplex.GetSize()){0});
 	
-	const auto sv_new_0 = simplex.GetSimplexVertex(0);
+	const auto sv_new_0 = simplex.GetSimplexEdge(0);
 	EXPECT_EQ(sv_new_0.GetPointA(), va0);
 	EXPECT_EQ(sv_new_0.indexPair.a, ia0);
 	EXPECT_EQ(sv_new_0.GetPointB(), vb0);
@@ -153,7 +153,7 @@ TEST(Simplex, Get2_rev_perp)
 	
 	ASSERT_GT(simplex.GetSize(), decltype(simplex.GetSize()){1});
 	
-	const auto sv_new_1 = simplex.GetSimplexVertex(1);
+	const auto sv_new_1 = simplex.GetSimplexEdge(1);
 	EXPECT_EQ(sv_new_1.GetPointA(), va1);
 	EXPECT_EQ(sv_new_1.indexPair.a, ia1);
 	EXPECT_EQ(sv_new_1.GetPointB(), vb1);
@@ -182,7 +182,7 @@ TEST(Simplex, Get2_rot_plus_45)
 	
 	ASSERT_GT(simplex.GetSize(), decltype(simplex.GetSize()){0});
 	
-	const auto sv_new_0 = simplex.GetSimplexVertex(0);
+	const auto sv_new_0 = simplex.GetSimplexEdge(0);
 	EXPECT_EQ(sv_new_0.GetPointA(), va0);
 	EXPECT_EQ(sv_new_0.indexPair.a, ia0);
 	EXPECT_EQ(sv_new_0.GetPointB(), vb0);
@@ -193,7 +193,7 @@ TEST(Simplex, Get2_rot_plus_45)
 	
 	ASSERT_GT(simplex.GetSize(), decltype(simplex.GetSize()){1});
 	
-	const auto sv_new_1 = simplex.GetSimplexVertex(1);
+	const auto sv_new_1 = simplex.GetSimplexEdge(1);
 	EXPECT_EQ(sv_new_1.GetPointA(), va1);
 	EXPECT_EQ(sv_new_1.indexPair.a, ia1);
 	EXPECT_EQ(sv_new_1.GetPointB(), vb1);
@@ -244,7 +244,7 @@ TEST(Simplex, Get2_rot45_half)
 	
 	ASSERT_GT(simplex.GetSize(), decltype(simplex.GetSize()){0});
 	
-	const auto sv_new_0 = simplex.GetSimplexVertex(0);
+	const auto sv_new_0 = simplex.GetSimplexEdge(0);
 	EXPECT_EQ(sv_new_0.GetPointA(), va1);
 	EXPECT_EQ(sv_new_0.indexPair.a, ia1);
 	EXPECT_EQ(sv_new_0.GetPointB(), vb1);

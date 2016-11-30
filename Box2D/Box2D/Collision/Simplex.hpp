@@ -112,11 +112,11 @@ namespace box2d
 
 		Simplex() = default;
 
-		SimplexEdgeList GetSimplexVertices() const noexcept { return m_simplexVertices; }
+		SimplexEdgeList GetSimplexVertices() const noexcept { return m_simplexEdges; }
 
-		const SimplexEdge& GetSimplexVertex(SimplexEdgeList::size_type index) const noexcept
+		const SimplexEdge& GetSimplexEdge(SimplexEdgeList::size_type index) const noexcept
 		{
-			return m_simplexVertices[index];
+			return m_simplexEdges[index];
 		}
 
 		float_t GetCoefficient(SimplexEdgeList::size_type index) const noexcept
@@ -124,13 +124,13 @@ namespace box2d
 			return m_normalizedWeights[index];
 		}
 
-		SimplexEdgeList::size_type GetSize() const noexcept { return m_simplexVertices.size(); }
+		SimplexEdgeList::size_type GetSize() const noexcept { return m_simplexEdges.size(); }
 
 	private:
-		Simplex(const SimplexEdgeList& simplexVertices, const Coefficients& normalizedWeights):
-			m_simplexVertices{simplexVertices}, m_normalizedWeights{normalizedWeights}
+		Simplex(const SimplexEdgeList& simplexEdges, const Coefficients& normalizedWeights):
+			m_simplexEdges{simplexEdges}, m_normalizedWeights{normalizedWeights}
 		{
-			assert(simplexVertices.size() == normalizedWeights.size());
+			assert(simplexEdges.size() == normalizedWeights.size());
 			assert(almost_equal(1, [&]()
 			{
 				auto sum = float_t(0);
@@ -143,7 +143,7 @@ namespace box2d
 			}()));
 		}
 
-		SimplexEdgeList m_simplexVertices; ///< Collection of valid simplex vertices. 88-bytes.
+		SimplexEdgeList m_simplexEdges; ///< Collection of valid simplex edges. 88-bytes.
 
 		/// Normalized weights.
 		///
@@ -333,7 +333,7 @@ namespace box2d
 
 	inline Vec2 GetScaledDelta(const Simplex& simplex, SimplexEdgeList::size_type index)
 	{
-		return simplex.GetSimplexVertex(index).GetPointDelta() * simplex.GetCoefficient(index);
+		return simplex.GetSimplexEdge(index).GetPointDelta() * simplex.GetCoefficient(index);
 	}
 
 	/// Gets the "closest point".

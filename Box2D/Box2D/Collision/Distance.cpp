@@ -50,7 +50,7 @@ static inline WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept
 	const auto size = simplex.GetSize();
 	for (auto i = decltype(size){0}; i < size; ++i)
 	{
-		const auto v = simplex.GetSimplexVertex(i);
+		const auto v = simplex.GetSimplexEdge(i);
 		const auto a = simplex.GetCoefficient(i);
 		
 		pointA += v.GetPointA() * a;
@@ -69,7 +69,7 @@ static inline WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept
 }
 
 static inline
-SimplexEdge GetSimplexVertex(const DistanceProxy& proxyA, const Transformation& xfA, DistanceProxy::size_type idxA,
+SimplexEdge GetSimplexEdge(const DistanceProxy& proxyA, const Transformation& xfA, DistanceProxy::size_type idxA,
 							   const DistanceProxy& proxyB, const Transformation& xfB, DistanceProxy::size_type idxB)
 {
 	const auto wA = Transform(proxyA.GetVertex(idxA), xfA);
@@ -85,7 +85,7 @@ SimplexEdgeList GetSimplexVertices(const IndexPairList& indexPairs,
 	SimplexEdgeList simplex;
 	for (auto&& indexpair: indexPairs)
 	{
-		simplex.push_back(GetSimplexVertex(proxyA, xfA, indexpair.a, proxyB, xfB, indexpair.b));
+		simplex.push_back(GetSimplexEdge(proxyA, xfA, indexpair.a, proxyB, xfB, indexpair.b));
 	}
 	return simplex;
 }
@@ -105,23 +105,23 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 	assert(IsValid(transformB.p));
 	
 	// Initialize the simplex.
-	auto simplexVertices = GetSimplexVertices(cache.GetIndices(), proxyA, transformA, proxyB, transformB);
+	auto simplexEdges = GetSimplexVertices(cache.GetIndices(), proxyA, transformA, proxyB, transformB);
 
 	// Compute the new simplex metric, if it is substantially different than
 	// old metric then flush the simplex.
-	if (simplexVertices.size() > 1)
+	if (simplexEdges.size() > 1)
 	{
 		const auto metric1 = cache.GetMetric();
-		const auto metric2 = CalcMetric(simplexVertices);
+		const auto metric2 = CalcMetric(simplexEdges);
 		if ((metric2 < (metric1 / 2)) || (metric2 > (metric1 * 2)) || (metric2 < 0) || almost_zero(metric2))
 		{
-			simplexVertices.clear();
+			simplexEdges.clear();
 		}
 	}
 	
-	if (simplexVertices.size() == 0)
+	if (simplexEdges.size() == 0)
 	{
-		simplexVertices.push_back(GetSimplexVertex(proxyA, transformA, 0, proxyB, transformB, 0));
+		simplexEdges.push_back(GetSimplexEdge(proxyA, transformA, 0, proxyB, transformB, 0));
 	}
 
 	auto simplex = Simplex{};
@@ -137,20 +137,20 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 		++iter;
 	
 		// Copy simplex so we can identify duplicates and prevent cycling.
-		const auto savedIndices = GetIndexPairList(simplexVertices);
+		const auto savedIndices = GetIndexPairList(simplexEdges);
 
-		simplex = Simplex::Get(simplexVertices);
-		simplexVertices = simplex.GetSimplexVertices();
+		simplex = Simplex::Get(simplexEdges);
+		simplexEdges = simplex.GetSimplexVertices();
 
 		// If we have max points (3), then the origin is in the corresponding triangle.
-		if (simplexVertices.size() == MaxSimplexEdges)
+		if (simplexEdges.size() == MaxSimplexEdges)
 		{
 			break;
 		}
 
 #if defined(DO_COMPUTE_CLOSEST_POINT)
 		// Compute closest point.
-		const auto p = GetClosestPoint(simplexVertices);
+		const auto p = GetClosestPoint(simplexEdges);
 		const auto distanceSqr2 = GetLengthSquared(p);
 
 		// Ensure progress
@@ -161,7 +161,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 		distanceSqr1 = distanceSqr2;
 #endif
 		// Get search direction.
-		const auto d = CalcSearchDirection(simplexVertices);
+		const auto d = CalcSearchDirection(simplexEdges);
 		assert(IsValid(d));
 
 		// Ensure the search direction is numerically fit.
@@ -188,10 +188,10 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 		}
 
 		// New vertex is ok and needed.
-		simplexVertices.push_back(GetSimplexVertex(proxyA, transformA, indexA, proxyB, transformB, indexB));
+		simplexEdges.push_back(GetSimplexEdge(proxyA, transformA, indexA, proxyB, transformB, indexB));
 	}
 
-	return DistanceOutput{GetWitnessPoints(simplex), iter, GetSimplexCache(simplexVertices)};
+	return DistanceOutput{GetWitnessPoints(simplex), iter, GetSimplexCache(simplexEdges)};
 }
 	
 } // namespace box2d
