@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef SimplexVertex_hpp
-#define SimplexVertex_hpp
+#ifndef SimplexEdge_hpp
+#define SimplexEdge_hpp
 
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Collision/IndexPair.hpp>
@@ -113,4 +113,4 @@ namespace box2d
 	}
 }
 
-#endif /* SimplexVertex_hpp */
+#endif /* SimplexEdge_hpp */
