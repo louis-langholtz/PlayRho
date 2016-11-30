@@ -35,7 +35,7 @@ namespace box2d
 		
 		for (auto&& element: collection)
 		{
-			list.push_back(element.indexPair);
+			list.push_back(element.GetIndexPair());
 		}
 		
 		return list;

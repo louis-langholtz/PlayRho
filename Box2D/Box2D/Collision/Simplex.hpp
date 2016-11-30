@@ -214,7 +214,7 @@ namespace box2d
 	/// @result One or two vertex "solution".
 	inline Simplex Simplex::Get(const SimplexEdge& s0, const SimplexEdge& s1) noexcept
 	{
-		assert(s0.indexPair != s1.indexPair || s0 == s1);
+		assert(s0.GetIndexPair() != s1.GetIndexPair() || s0 == s1);
 
 		const auto w1 = GetPointDelta(s0);
 		const auto w2 = GetPointDelta(s1);

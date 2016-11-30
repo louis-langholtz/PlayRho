@@ -52,9 +52,9 @@ TEST(Simplex, Get1)
 	ASSERT_GT(simplex.GetSize(), decltype(simplex.GetSize()){0});
 	const auto sv_new = simplex.GetSimplexEdge(0);
 	EXPECT_EQ(sv.GetPointA(), sv_new.GetPointA());
-	EXPECT_EQ(sv.indexPair.a, sv_new.indexPair.a);
+	EXPECT_EQ(sv.GetIndexA(), sv_new.GetIndexA());
 	EXPECT_EQ(sv.GetPointB(), sv_new.GetPointB());
-	EXPECT_EQ(sv.indexPair.b, sv_new.indexPair.b);
+	EXPECT_EQ(sv.GetIndexB(), sv_new.GetIndexB());
 	
 	const auto ce_new = simplex.GetCoefficient(0);
 	EXPECT_EQ(ce_new, float_t(1));
@@ -75,9 +75,9 @@ TEST(Simplex, Get2_of_same)
 
 	const auto sv_new = simplex.GetSimplexEdge(0);
 	EXPECT_EQ(sv_new.GetPointA(), va);
-	EXPECT_EQ(sv_new.indexPair.a, ia);
+	EXPECT_EQ(sv_new.GetIndexA(), ia);
 	EXPECT_EQ(sv_new.GetPointB(), vb);
-	EXPECT_EQ(sv_new.indexPair.b, ib);
+	EXPECT_EQ(sv_new.GetIndexB(), ib);
 	
 	const auto ce_new = simplex.GetCoefficient(0);
 	EXPECT_EQ(ce_new, float_t(1));
@@ -104,9 +104,9 @@ TEST(Simplex, Get2_fwd_perp)
 
 	const auto sv_new_0 = simplex.GetSimplexEdge(0);
 	EXPECT_EQ(sv_new_0.GetPointA(), va0);
-	EXPECT_EQ(sv_new_0.indexPair.a, ia0);
+	EXPECT_EQ(sv_new_0.GetIndexA(), ia0);
 	EXPECT_EQ(sv_new_0.GetPointB(), vb0);
-	EXPECT_EQ(sv_new_0.indexPair.b, ib0);
+	EXPECT_EQ(sv_new_0.GetIndexB(), ib0);
 	
 	const auto ce_new_0 = simplex.GetCoefficient(0);
 	EXPECT_FLOAT_EQ(ce_new_0, float_t(0.5));
@@ -115,9 +115,9 @@ TEST(Simplex, Get2_fwd_perp)
 	
 	const auto sv_new_1 = simplex.GetSimplexEdge(1);
 	EXPECT_EQ(sv_new_1.GetPointA(), va1);
-	EXPECT_EQ(sv_new_1.indexPair.a, ia1);
+	EXPECT_EQ(sv_new_1.GetIndexA(), ia1);
 	EXPECT_EQ(sv_new_1.GetPointB(), vb1);
-	EXPECT_EQ(sv_new_1.indexPair.b, ib1);
+	EXPECT_EQ(sv_new_1.GetIndexB(), ib1);
 	
 	const auto ce_new_1 = simplex.GetCoefficient(1);
 	EXPECT_FLOAT_EQ(ce_new_1, float_t(0.5));
@@ -144,9 +144,9 @@ TEST(Simplex, Get2_rev_perp)
 	
 	const auto sv_new_0 = simplex.GetSimplexEdge(0);
 	EXPECT_EQ(sv_new_0.GetPointA(), va0);
-	EXPECT_EQ(sv_new_0.indexPair.a, ia0);
+	EXPECT_EQ(sv_new_0.GetIndexA(), ia0);
 	EXPECT_EQ(sv_new_0.GetPointB(), vb0);
-	EXPECT_EQ(sv_new_0.indexPair.b, ib0);
+	EXPECT_EQ(sv_new_0.GetIndexB(), ib0);
 	
 	const auto ce_new_0 = simplex.GetCoefficient(0);
 	EXPECT_FLOAT_EQ(ce_new_0, float_t(0.5));
@@ -155,9 +155,9 @@ TEST(Simplex, Get2_rev_perp)
 	
 	const auto sv_new_1 = simplex.GetSimplexEdge(1);
 	EXPECT_EQ(sv_new_1.GetPointA(), va1);
-	EXPECT_EQ(sv_new_1.indexPair.a, ia1);
+	EXPECT_EQ(sv_new_1.GetIndexA(), ia1);
 	EXPECT_EQ(sv_new_1.GetPointB(), vb1);
-	EXPECT_EQ(sv_new_1.indexPair.b, ib1);
+	EXPECT_EQ(sv_new_1.GetIndexB(), ib1);
 	
 	const auto ce_new_1 = simplex.GetCoefficient(1);
 	EXPECT_FLOAT_EQ(ce_new_1, float_t(0.5));
@@ -184,9 +184,9 @@ TEST(Simplex, Get2_rot_plus_45)
 	
 	const auto sv_new_0 = simplex.GetSimplexEdge(0);
 	EXPECT_EQ(sv_new_0.GetPointA(), va0);
-	EXPECT_EQ(sv_new_0.indexPair.a, ia0);
+	EXPECT_EQ(sv_new_0.GetIndexA(), ia0);
 	EXPECT_EQ(sv_new_0.GetPointB(), vb0);
-	EXPECT_EQ(sv_new_0.indexPair.b, ib0);
+	EXPECT_EQ(sv_new_0.GetIndexB(), ib0);
 	
 	const auto ce_new_0 = simplex.GetCoefficient(0);
 	EXPECT_FLOAT_EQ(ce_new_0, float_t(0.5));
@@ -195,9 +195,9 @@ TEST(Simplex, Get2_rot_plus_45)
 	
 	const auto sv_new_1 = simplex.GetSimplexEdge(1);
 	EXPECT_EQ(sv_new_1.GetPointA(), va1);
-	EXPECT_EQ(sv_new_1.indexPair.a, ia1);
+	EXPECT_EQ(sv_new_1.GetIndexA(), ia1);
 	EXPECT_EQ(sv_new_1.GetPointB(), vb1);
-	EXPECT_EQ(sv_new_1.indexPair.b, ib1);
+	EXPECT_EQ(sv_new_1.GetIndexB(), ib1);
 	
 	const auto ce_new_1 = simplex.GetCoefficient(1);
 	EXPECT_FLOAT_EQ(ce_new_1, float_t(0.5));
@@ -246,9 +246,9 @@ TEST(Simplex, Get2_rot45_half)
 	
 	const auto sv_new_0 = simplex.GetSimplexEdge(0);
 	EXPECT_EQ(sv_new_0.GetPointA(), va1);
-	EXPECT_EQ(sv_new_0.indexPair.a, ia1);
+	EXPECT_EQ(sv_new_0.GetIndexA(), ia1);
 	EXPECT_EQ(sv_new_0.GetPointB(), vb1);
-	EXPECT_EQ(sv_new_0.indexPair.b, ib1);
+	EXPECT_EQ(sv_new_0.GetIndexB(), ib1);
 	
 	const auto ce_new_0 = simplex.GetCoefficient(0);
 	EXPECT_FLOAT_EQ(ce_new_0, float_t(1));

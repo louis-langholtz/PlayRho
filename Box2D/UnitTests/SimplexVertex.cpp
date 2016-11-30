@@ -37,7 +37,7 @@ TEST(SimplexEdge, InitializingConstructor)
 	
 	EXPECT_EQ(sv.GetPointA(), pA);
 	EXPECT_EQ(sv.GetPointB(), pB);
-	EXPECT_EQ(sv.indexPair.a, iA);
-	EXPECT_EQ(sv.indexPair.b, iB);
+	EXPECT_EQ(sv.GetIndexA(), iA);
+	EXPECT_EQ(sv.GetIndexB(), iB);
 	EXPECT_EQ(sv.GetPointDelta(), pB - pA);
 }

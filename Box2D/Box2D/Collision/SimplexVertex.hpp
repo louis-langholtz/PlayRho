@@ -59,15 +59,20 @@ namespace box2d
 		/// @detail This is the difference between points A and B.
 		/// @return Point B minus point A.
 		constexpr Vec2 GetPointDelta() const noexcept;
-				
-		IndexPair indexPair; ///< Index pair. @detail Indices of points A and B. 2-bytes.
+
+		constexpr auto GetIndexA() const noexcept { return m_indexPair.a; }
 		
+		constexpr auto GetIndexB() const noexcept { return m_indexPair.b; }
+
+		constexpr auto GetIndexPair() const noexcept { return m_indexPair; }
+
 	private:
 		Vec2 m_wA; ///< Point A in world coordinates. This is the support point in proxy A. 8-bytes.
 		Vec2 m_wB; ///< Point B in world coordinates. This is the support point in proxy B. 8-bytes.
 #ifndef DONT_CACHE
 		Vec2 m_delta; ///< Edge defined wB - wA. 8-bytes.
 #endif
+		IndexPair m_indexPair; ///< Index pair. @detail Indices of points A and B. 2-bytes.
 	};
 	
 	constexpr inline SimplexEdge::SimplexEdge(Vec2 pA, index_type iA, Vec2 pB, index_type iB) noexcept:
@@ -75,7 +80,7 @@ namespace box2d
 #ifndef DONT_CACHE
 		m_delta{pB - pA},
 #endif	
-		indexPair{iA,iB}
+		m_indexPair{iA,iB}
 	{
 	}
 
@@ -99,7 +104,7 @@ namespace box2d
 	{
 		return (lhs.GetPointA() == rhs.GetPointA())
 			&& (lhs.GetPointB() == rhs.GetPointB())
-			&& (lhs.indexPair == rhs.indexPair);
+			&& (lhs.GetIndexPair() == rhs.GetIndexPair());
 	}
 	
 	constexpr inline bool operator != (const SimplexEdge& lhs, const SimplexEdge& rhs)
