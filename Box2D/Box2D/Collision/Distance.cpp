@@ -69,12 +69,12 @@ static inline WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept
 }
 
 static inline
-SimplexVertex GetSimplexVertex(const DistanceProxy& proxyA, const Transformation& xfA, DistanceProxy::size_type idxA,
+SimplexEdge GetSimplexVertex(const DistanceProxy& proxyA, const Transformation& xfA, DistanceProxy::size_type idxA,
 							   const DistanceProxy& proxyB, const Transformation& xfB, DistanceProxy::size_type idxB)
 {
 	const auto wA = Transform(proxyA.GetVertex(idxA), xfA);
 	const auto wB = Transform(proxyB.GetVertex(idxB), xfB);
-	return SimplexVertex{wA, idxA, wB, idxB};	
+	return SimplexEdge{wA, idxA, wB, idxB};	
 }
 
 static inline

@@ -21,19 +21,19 @@
 
 using namespace box2d;
 
-TEST(SimplexVertex, ByteSizeIs28)
+TEST(SimplexEdge, ByteSizeIs28)
 {
-	EXPECT_EQ(sizeof(SimplexVertex), size_t(28));
+	EXPECT_EQ(sizeof(SimplexEdge), size_t(28));
 }
 
-TEST(SimplexVertex, InitializingConstructor)
+TEST(SimplexEdge, InitializingConstructor)
 {
-	const auto iA = SimplexVertex::size_type{1};
-	const auto iB = SimplexVertex::size_type{2};
+	const auto iA = SimplexEdge::index_type{1};
+	const auto iB = SimplexEdge::index_type{2};
 	const auto pA = Vec2{float_t(2.2), float_t(-3.1)};
 	const auto pB = Vec2{float_t(-9.2), float_t(0.003)};
 
-	const auto sv = SimplexVertex(pA, iA, pB, iB);
+	const auto sv = SimplexEdge(pA, iA, pB, iB);
 	
 	EXPECT_EQ(sv.GetPointA(), pA);
 	EXPECT_EQ(sv.GetPointB(), pB);

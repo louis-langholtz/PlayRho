@@ -42,9 +42,9 @@ TEST(Simplex, Get1)
 {
 	const auto va = Vec2{-4, 33};
 	const auto vb = Vec2{float_t(901.5), float_t(0.06)};
-	const auto ia = SimplexVertex::size_type{2};
-	const auto ib = SimplexVertex::size_type{7};
-	const auto sv = SimplexVertex{va, ia, vb, ib};
+	const auto ia = SimplexEdge::index_type{2};
+	const auto ib = SimplexEdge::index_type{7};
+	const auto sv = SimplexEdge{va, ia, vb, ib};
 	
 	const auto simplex = Simplex::Get(sv);
 	EXPECT_EQ(simplex.GetSize(), decltype(simplex.GetSize()){1});
@@ -64,9 +64,9 @@ TEST(Simplex, Get2_of_same)
 {
 	const auto va = Vec2{-4, 33};
 	const auto vb = Vec2{float_t(901.5), float_t(0.06)};
-	const auto ia = SimplexVertex::size_type{2};
-	const auto ib = SimplexVertex::size_type{7};
-	const auto sv = SimplexVertex{va, ia, vb, ib};
+	const auto ia = SimplexEdge::index_type{2};
+	const auto ib = SimplexEdge::index_type{7};
+	const auto sv = SimplexEdge{va, ia, vb, ib};
 	
 	const auto simplex = Simplex::Get(sv, sv);
 	EXPECT_EQ(simplex.GetSize(), decltype(simplex.GetSize()){1});
@@ -87,15 +87,15 @@ TEST(Simplex, Get2_fwd_perp)
 {
 	const auto va0 = Vec2{-4, 33};
 	const auto vb0 = Vec2{float_t(901.5), float_t(0.06)};
-	const auto ia0 = SimplexVertex::size_type{2};
-	const auto ib0 = SimplexVertex::size_type{7};
-	const auto sv0 = SimplexVertex{va0, ia0, vb0, ib0};
+	const auto ia0 = SimplexEdge::index_type{2};
+	const auto ib0 = SimplexEdge::index_type{7};
+	const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
 
 	const auto va1 = GetFwdPerpendicular(va0);
 	const auto vb1 = GetFwdPerpendicular(vb0);
-	const auto ia1 = SimplexVertex::size_type{4};
-	const auto ib1 = SimplexVertex::size_type{1};
-	const auto sv1 = SimplexVertex{va1, ia1, vb1, ib1};
+	const auto ia1 = SimplexEdge::index_type{4};
+	const auto ib1 = SimplexEdge::index_type{1};
+	const auto sv1 = SimplexEdge{va1, ia1, vb1, ib1};
 	
 	const auto simplex = Simplex::Get(sv0, sv1);
 	EXPECT_EQ(simplex.GetSize(), decltype(simplex.GetSize()){2});
@@ -127,15 +127,15 @@ TEST(Simplex, Get2_rev_perp)
 {
 	const auto va0 = Vec2{-4, 33};
 	const auto vb0 = Vec2{float_t(901.5), float_t(0.06)};
-	const auto ia0 = SimplexVertex::size_type{2};
-	const auto ib0 = SimplexVertex::size_type{7};
-	const auto sv0 = SimplexVertex{va0, ia0, vb0, ib0};
+	const auto ia0 = SimplexEdge::index_type{2};
+	const auto ib0 = SimplexEdge::index_type{7};
+	const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
 	
 	const auto va1 = GetRevPerpendicular(va0);
 	const auto vb1 = GetRevPerpendicular(vb0);
-	const auto ia1 = SimplexVertex::size_type{4};
-	const auto ib1 = SimplexVertex::size_type{1};
-	const auto sv1 = SimplexVertex{va1, ia1, vb1, ib1};
+	const auto ia1 = SimplexEdge::index_type{4};
+	const auto ib1 = SimplexEdge::index_type{1};
+	const auto sv1 = SimplexEdge{va1, ia1, vb1, ib1};
 	
 	const auto simplex = Simplex::Get(sv0, sv1);
 	EXPECT_EQ(simplex.GetSize(), decltype(simplex.GetSize()){2});
@@ -167,15 +167,15 @@ TEST(Simplex, Get2_rot_plus_45)
 {
 	const auto va0 = Vec2{-4, 33};
 	const auto vb0 = Vec2{float_t(901.5), float_t(0.06)};
-	const auto ia0 = SimplexVertex::size_type{2};
-	const auto ib0 = SimplexVertex::size_type{7};
-	const auto sv0 = SimplexVertex{va0, ia0, vb0, ib0};
+	const auto ia0 = SimplexEdge::index_type{2};
+	const auto ib0 = SimplexEdge::index_type{7};
+	const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
 	
 	const auto va1 = Rotate(va0, UnitVec2{45_deg});
 	const auto vb1 = Rotate(vb0, UnitVec2{45_deg});
-	const auto ia1 = SimplexVertex::size_type{4};
-	const auto ib1 = SimplexVertex::size_type{1};
-	const auto sv1 = SimplexVertex{va1, ia1, vb1, ib1};
+	const auto ia1 = SimplexEdge::index_type{4};
+	const auto ib1 = SimplexEdge::index_type{1};
+	const auto sv1 = SimplexEdge{va1, ia1, vb1, ib1};
 	
 	const auto simplex = Simplex::Get(sv0, sv1);
 	EXPECT_EQ(simplex.GetSize(), decltype(simplex.GetSize()){2});
@@ -207,9 +207,9 @@ TEST(Simplex, Get2_rot45_half)
 {
 	const auto va0 = Vec2{-4, 33}; // upper left
 	const auto vb0 = Vec2{901, 6}; // lower right
-	const auto ia0 = SimplexVertex::size_type{2};
-	const auto ib0 = SimplexVertex::size_type{7};
-	const auto sv0 = SimplexVertex{va0, ia0, vb0, ib0};
+	const auto ia0 = SimplexEdge::index_type{2};
+	const auto ib0 = SimplexEdge::index_type{7};
+	const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
 	
 	const auto va1 = Rotate(va0, UnitVec2{45_deg}) / 2; // Vec2{-13.081475, 10.253049}
 	const auto vb1 = Rotate(vb0, UnitVec2{45_deg}) / 2; // Vec2{316.4303, 320.67291}
@@ -217,9 +217,9 @@ TEST(Simplex, Get2_rot45_half)
 	EXPECT_FLOAT_EQ(va1.y, float_t(10.253049));
 	EXPECT_FLOAT_EQ(vb1.x, float_t(316.4303));
 	EXPECT_FLOAT_EQ(vb1.y, float_t(320.67291));
-	const auto ia1 = SimplexVertex::size_type{4};
-	const auto ib1 = SimplexVertex::size_type{1};
-	const auto sv1 = SimplexVertex{va1, ia1, vb1, ib1};
+	const auto ia1 = SimplexEdge::index_type{4};
+	const auto ib1 = SimplexEdge::index_type{1};
+	const auto sv1 = SimplexEdge{va1, ia1, vb1, ib1};
 
 	const auto w1 = vb0 - va0; // Vec2{901, 6} - Vec2{-4, 33} = Vec2{905, -27}
 	EXPECT_FLOAT_EQ(w1.x, float_t(905));

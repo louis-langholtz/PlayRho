@@ -29,7 +29,7 @@ namespace box2d
 	///
 	/// @note This data structure may be 28 * 3 + 4 = 88-bytes large.
 	///
-	using SimplexVertices = ArrayList<SimplexVertex, MaxSimplexVertices,
+	using SimplexVertices = ArrayList<SimplexEdge, MaxSimplexVertices,
 		std::remove_const<decltype(MaxSimplexVertices)>::type>;
 	
 	/// Calculates the "search direction" for the given simplex.
@@ -105,16 +105,16 @@ namespace box2d
 		using Coefficients = ArrayList<float_t, MaxSimplexVertices,
 			std::remove_const<decltype(MaxSimplexVertices)>::type>;
 
-		static Simplex Get(const SimplexVertex& s0) noexcept;
-		static Simplex Get(const SimplexVertex& s0, const SimplexVertex& s1) noexcept;
-		static Simplex Get(const SimplexVertex& s0, const SimplexVertex& s1, const SimplexVertex& s2) noexcept;
+		static Simplex Get(const SimplexEdge& s0) noexcept;
+		static Simplex Get(const SimplexEdge& s0, const SimplexEdge& s1) noexcept;
+		static Simplex Get(const SimplexEdge& s0, const SimplexEdge& s1, const SimplexEdge& s2) noexcept;
 		static Simplex Get(const SimplexVertices& vertices) noexcept;
 
 		Simplex() = default;
 
 		SimplexVertices GetSimplexVertices() const noexcept { return m_simplexVertices; }
 
-		const SimplexVertex& GetSimplexVertex(SimplexVertices::size_type index) const noexcept
+		const SimplexEdge& GetSimplexVertex(SimplexVertices::size_type index) const noexcept
 		{
 			return m_simplexVertices[index];
 		}
@@ -174,7 +174,7 @@ namespace box2d
 		return Simplex{};
 	}
 
-	inline Simplex Simplex::Get(const SimplexVertex& s0) noexcept
+	inline Simplex Simplex::Get(const SimplexEdge& s0) noexcept
 	{
 		return Simplex{{s0}, {1}};
 	}
@@ -212,7 +212,7 @@ namespace box2d
 	/// @param s1 Simplex vertex 1.
 	///
 	/// @result One or two vertex "solution".
-	inline Simplex Simplex::Get(const SimplexVertex& s0, const SimplexVertex& s1) noexcept
+	inline Simplex Simplex::Get(const SimplexEdge& s0, const SimplexEdge& s1) noexcept
 	{
 		assert(s0.indexPair != s1.indexPair || s0 == s1);
 
@@ -251,7 +251,7 @@ namespace box2d
 	/// - inside the triangle
 	///
 	/// @result One, two, or three vertex "solution".
-	inline Simplex Simplex::Get(const SimplexVertex& s0, const SimplexVertex& s1, const SimplexVertex& s2) noexcept
+	inline Simplex Simplex::Get(const SimplexEdge& s0, const SimplexEdge& s1, const SimplexEdge& s2) noexcept
 	{
 		const auto w1 = GetPointDelta(s0);
 		const auto w2 = GetPointDelta(s1);

@@ -32,22 +32,22 @@ namespace box2d
 	///
 	/// @note This data structure may be 28-bytes large.
 	///
-	class SimplexVertex
+	class SimplexEdge
 	{
 	public:
-		using size_type = IndexPair::size_type;
+		using index_type = IndexPair::size_type;
 		
 		/// Default constructor.
-		SimplexVertex() = default;
+		SimplexEdge() = default;
 		
-		constexpr SimplexVertex(const SimplexVertex& copy) noexcept = default;
+		constexpr SimplexEdge(const SimplexEdge& copy) noexcept = default;
 		
 		/// Initializing constructor.
 		/// @param pA Point A in world coordinates.
 		/// @param iA Index of point A within the shape that it comes from.
 		/// @param pB Point B in world coordinates.
 		/// @param iB Index of point B within the shape that it comes from.
-		constexpr SimplexVertex(Vec2 pA, size_type iA, Vec2 pB, size_type iB) noexcept;
+		constexpr SimplexEdge(Vec2 pA, index_type iA, Vec2 pB, index_type iB) noexcept;
 		
 		/// Gets point A (in world coordinates).
 		constexpr Vec2 GetPointA() const noexcept { return m_wA; }
@@ -70,7 +70,7 @@ namespace box2d
 #endif
 	};
 	
-	constexpr inline SimplexVertex::SimplexVertex(Vec2 pA, size_type iA, Vec2 pB, size_type iB) noexcept:
+	constexpr inline SimplexEdge::SimplexEdge(Vec2 pA, index_type iA, Vec2 pB, index_type iB) noexcept:
 		m_wA{pA}, m_wB{pB},
 #ifndef DONT_CACHE
 		m_delta{pB - pA},
@@ -79,7 +79,7 @@ namespace box2d
 	{
 	}
 
-	constexpr inline Vec2 SimplexVertex::GetPointDelta() const noexcept
+	constexpr inline Vec2 SimplexEdge::GetPointDelta() const noexcept
 	{
 #ifndef DONT_CACHE
 		return m_delta;
@@ -90,19 +90,19 @@ namespace box2d
 
 	/// Gets "w".
 	/// @return 2D vector value of wB minus wA.
-	constexpr inline Vec2 GetPointDelta(const SimplexVertex& sv)
+	constexpr inline Vec2 GetPointDelta(const SimplexEdge& sv)
 	{
 		return sv.GetPointDelta();
 	}
 	
-	constexpr inline bool operator == (const SimplexVertex& lhs, const SimplexVertex& rhs)
+	constexpr inline bool operator == (const SimplexEdge& lhs, const SimplexEdge& rhs)
 	{
 		return (lhs.GetPointA() == rhs.GetPointA())
 			&& (lhs.GetPointB() == rhs.GetPointB())
 			&& (lhs.indexPair == rhs.indexPair);
 	}
 	
-	constexpr inline bool operator != (const SimplexVertex& lhs, const SimplexVertex& rhs)
+	constexpr inline bool operator != (const SimplexEdge& lhs, const SimplexEdge& rhs)
 	{
 		return !(lhs == rhs);
 	}
