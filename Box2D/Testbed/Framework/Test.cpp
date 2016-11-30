@@ -30,7 +30,7 @@ static void Draw(Drawer& drawer, const CircleShape& shape, const Transformation&
 {
 	const auto center = Transform(shape.GetLocation(), xf);
 	const auto radius = shape.GetRadius();
-	const auto fillColor = Color(0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f);
+	const auto fillColor = Color{0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f};
 	drawer.DrawSolidCircle(center, radius, fillColor);
 	drawer.DrawCircle(center, radius, color);
 
@@ -68,7 +68,7 @@ static void Draw(Drawer& drawer, const PolygonShape& shape, const Transformation
 	{
 		vertices[i] = Transform(shape.GetVertex(i), xf);
 	}
-	const auto fillColor = Color(0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f);
+	const auto fillColor = Color{0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f};
 	drawer.DrawSolidPolygon(vertices, vertexCount, fillColor);
 	drawer.DrawPolygon(vertices, vertexCount, color);
 }
@@ -102,21 +102,21 @@ static Color GetColor(const Body& body)
 {
 	if (!body.IsActive())
 	{
-		return Color(0.5f, 0.5f, 0.3f);
+		return Color{0.5f, 0.5f, 0.3f};
 	}
 	if (body.GetType() == BodyType::Static)
 	{
-		return Color(0.5f, 0.9f, 0.5f);
+		return Color{0.5f, 0.9f, 0.5f};
 	}
 	if (body.GetType() == BodyType::Kinematic)
 	{
-		return Color(0.5f, 0.5f, 0.9f);
+		return Color{0.5f, 0.5f, 0.9f};
 	}
 	if (!body.IsAwake())
 	{
-		return Color(0.6f, 0.6f, 0.6f);
+		return Color{0.6f, 0.6f, 0.6f};
 	}
-	return Color(0.9f, 0.7f, 0.7f);
+	return Color{0.9f, 0.7f, 0.7f};
 }
 
 static void Draw(Drawer& drawer, const Body& body)
@@ -140,7 +140,7 @@ static void Draw(Drawer& drawer, const Joint& joint)
 	const auto p1 = joint.GetAnchorA();
 	const auto p2 = joint.GetAnchorB();
 	
-	const Color color(float_t(0.5), float_t(0.8), float_t(0.8));
+	const Color color{float_t(0.5), float_t(0.8), float_t(0.8)};
 	
 	switch (joint.GetType())
 	{
@@ -190,7 +190,7 @@ static void Draw(Drawer& drawer, const World& world, const Settings& settings)
 	
 	if (settings.drawAABBs)
 	{
-		const Color color(0.9f, 0.3f, 0.9f);
+		const Color color{0.9f, 0.3f, 0.9f};
 		const auto bp = &world.GetContactManager().m_broadPhase;
 		
 		for (auto&& b: world.GetBodies())
@@ -222,8 +222,8 @@ static void Draw(Drawer& drawer, const World& world, const Settings& settings)
 	if (settings.drawCOMs)
 	{
 		const auto k_axisScale = float_t(0.4);
-		const auto red = Color(1.0f, 0.0f, 0.0f);
-		const auto green = Color(0.0f, 1.0f, 0.0f);
+		const auto red = Color{1.0f, 0.0f, 0.0f};
+		const auto green = Color{0.0f, 1.0f, 0.0f};
 		for (auto&& b: world.GetBodies())
 		{
 			auto xf = b.GetTransformation();
@@ -577,19 +577,16 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 		const auto p1 = m_mouseJoint->GetAnchorB();
 		const auto p2 = m_mouseJoint->GetTarget();
 
-		Color c;
-		c.Set(0.0f, 1.0f, 0.0f);
-		drawer.DrawPoint(p1, 4.0f, c);
-		drawer.DrawPoint(p2, 4.0f, c);
+		drawer.DrawPoint(p1, 4.0f, Color{0.0f, 1.0f, 0.0f});
+		drawer.DrawPoint(p2, 4.0f, Color{0.0f, 1.0f, 0.0f});
 
-		c.Set(0.8f, 0.8f, 0.8f);
-		drawer.DrawSegment(p1, p2, c);
+		drawer.DrawSegment(p1, p2, Color{0.8f, 0.8f, 0.8f});
 	}
 	
 	if (m_bombSpawning)
 	{
-		drawer.DrawPoint(m_bombSpawnPoint, 4.0f, Color(0.0f, 0.0f, 1.0f));
-		drawer.DrawSegment(m_mouseWorld, m_bombSpawnPoint, Color(0.8f, 0.8f, 0.8f));
+		drawer.DrawPoint(m_bombSpawnPoint, 4.0f, Color{0.0f, 0.0f, 1.0f});
+		drawer.DrawSegment(m_mouseWorld, m_bombSpawnPoint, Color{0.8f, 0.8f, 0.8f});
 	}
 
 	if (settings.drawContactPoints)
@@ -604,25 +601,25 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 			if (point->state == PointState::AddState)
 			{
 				// Add
-				drawer.DrawPoint(point->position, 10.0f, Color(0.3f, 0.95f, 0.3f));
+				drawer.DrawPoint(point->position, 10.0f, Color{0.3f, 0.95f, 0.3f});
 			}
 			else if (point->state == PointState::PersistState)
 			{
 				// Persist
-				drawer.DrawPoint(point->position, 5.0f, Color(0.3f, 0.3f, 0.95f));
+				drawer.DrawPoint(point->position, 5.0f, Color{0.3f, 0.3f, 0.95f});
 			}
 
 			if (settings.drawContactNormals)
 			{
 				const auto p1 = point->position;
 				const auto p2 = p1 + k_axisScale * point->normal;
-				drawer.DrawSegment(p1, p2, Color(0.9f, 0.9f, 0.9f));
+				drawer.DrawSegment(p1, p2, Color{0.9f, 0.9f, 0.9f});
 			}
 			else if (settings.drawContactImpulse)
 			{
 				const auto p1 = point->position;
 				const auto p2 = p1 + k_impulseScale * point->normalImpulse * point->normal;
-				drawer.DrawSegment(p1, p2, Color(0.9f, 0.9f, 0.3f));
+				drawer.DrawSegment(p1, p2, Color{0.9f, 0.9f, 0.3f});
 			}
 
 			if (settings.drawFrictionImpulse)
@@ -630,7 +627,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 				const auto tangent = GetFwdPerpendicular(point->normal);
 				const auto p1 = point->position;
 				const auto p2 = p1 + k_impulseScale * point->tangentImpulse * tangent;
-				drawer.DrawSegment(p1, p2, Color(0.9f, 0.9f, 0.3f));
+				drawer.DrawSegment(p1, p2, Color{0.9f, 0.9f, 0.3f});
 			}
 		}
 	}
