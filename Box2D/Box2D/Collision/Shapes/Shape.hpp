@@ -65,7 +65,6 @@ public:
 	
 	float_t GetVertexRadius() const noexcept { return m_vertexRadius; }
 
-protected:
 	void SetVertexRadius(float_t vertexRadius)
 	{
 		assert(vertexRadius > std::numeric_limits<float_t>::min());
