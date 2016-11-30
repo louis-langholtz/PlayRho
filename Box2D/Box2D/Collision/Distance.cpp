@@ -78,11 +78,11 @@ SimplexEdge GetSimplexEdge(const DistanceProxy& proxyA, const Transformation& xf
 }
 
 static inline
-SimplexEdgeList GetSimplexEdges(const IndexPairList& indexPairs,
+Simplex::Edges GetSimplexEdges(const IndexPairList& indexPairs,
 				   const DistanceProxy& proxyA, const Transformation& xfA,
 				   const DistanceProxy& proxyB, const Transformation& xfB)
 {
-	SimplexEdgeList simplexEdges;
+	Simplex::Edges simplexEdges;
 	for (auto&& indexpair: indexPairs)
 	{
 		simplexEdges.push_back(GetSimplexEdge(proxyA, xfA, indexpair.a, proxyB, xfB, indexpair.b));
@@ -90,9 +90,9 @@ SimplexEdgeList GetSimplexEdges(const IndexPairList& indexPairs,
 	return simplexEdges;
 }
 	
-inline auto GetSimplexCache(const SimplexEdgeList& simplexEdges)
+inline auto GetSimplexCache(const Simplex::Edges& simplexEdges)
 {
-	return SimplexCache(CalcMetric(simplexEdges), GetIndexPairList(simplexEdges));
+	return SimplexCache(Simplex::CalcMetric(simplexEdges), GetIndexPairList(simplexEdges));
 }
 	
 DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
@@ -112,7 +112,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 	if (simplexEdges.size() > 1)
 	{
 		const auto metric1 = cache.GetMetric();
-		const auto metric2 = CalcMetric(simplexEdges);
+		const auto metric2 = Simplex::CalcMetric(simplexEdges);
 		if ((metric2 < (metric1 / 2)) || (metric2 > (metric1 * 2)) || (metric2 < 0) || almost_zero(metric2))
 		{
 			simplexEdges.clear();
@@ -140,7 +140,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 		const auto savedIndices = GetIndexPairList(simplexEdges);
 
 		simplex = Simplex::Get(simplexEdges);
-		simplexEdges = simplex.GetSimplexEdges();
+		simplexEdges = simplex.GetEdges();
 
 		// If we have max points (3), then the origin is in the corresponding triangle.
 		if (simplexEdges.size() == MaxSimplexEdges)
@@ -161,7 +161,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 		distanceSqr1 = distanceSqr2;
 #endif
 		// Get search direction.
-		const auto d = CalcSearchDirection(simplexEdges);
+		const auto d = Simplex::CalcSearchDirection(simplexEdges);
 		assert(IsValid(d));
 
 		// Ensure the search direction is numerically fit.

@@ -25,59 +25,6 @@
 
 namespace box2d
 {
-	/// Simplex edge collection.
-	///
-	/// @note This data structure may be 28 * 3 + 4 = 88-bytes large.
-	///
-	using SimplexEdgeList = ArrayList<SimplexEdge, MaxSimplexEdges,
-		std::remove_const<decltype(MaxSimplexEdges)>::type>;
-	
-	/// Calculates the "search direction" for the given simplex.
-	/// @param simplexEdges A one or two edge simplex.
-	/// @warning Behavior is undefined if the given simplex has zero vertices.
-	/// @return "search direction" vector.
-	constexpr inline Vec2 CalcSearchDirection(const SimplexEdgeList& simplexEdges) noexcept
-	{
-		static_assert(std::tuple_size<SimplexEdgeList>::value == 3,
-					  "Invalid maximum # of elements of Simplex");
-
-		assert((simplexEdges.size() == 1) || (simplexEdges.size() == 2));
-		switch (simplexEdges.size())
-		{
-			case 1:
-				return -GetPointDelta(simplexEdges[0]);
-				
-			case 2:
-			{
-				const auto e12 = GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]);
-				const auto sgn = Cross(e12, -GetPointDelta(simplexEdges[0]));
-				// If sgn > 0, then origin is left of e12, else origin is right of e12.
-				return (sgn > float_t{0})? GetRevPerpendicular(e12): GetFwdPerpendicular(e12);
-			}
-				
-			default:
-				return Vec2_zero;
-		}
-	}
-	
-	/// Gets the given simplex's "metric".
-	inline float_t CalcMetric(const SimplexEdgeList& simplexEdges)
-	{
-		static_assert(std::tuple_size<SimplexEdgeList>::value == 3,
-					  "Invalid maximum # of elements of Simplex");
-
-		assert(simplexEdges.size() < 4);
-		switch (simplexEdges.size())
-		{
-			case 0: return float_t{0};
-			case 1: return float_t{0};
-			case 2:	return Sqrt(GetLengthSquared(GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0])));
-			case 3:	return Cross(GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]),
-								 GetPointDelta(simplexEdges[2]) - GetPointDelta(simplexEdges[0]));
-			default: break; // should not be reached
-		}
-		return float_t{0};
-	}
 
 	/// Simplex.
 	///
@@ -96,7 +43,13 @@ namespace box2d
 	class Simplex
 	{
 	public:
-		using size_type = SimplexEdgeList::size_type;
+		/// Simplex edge collection.
+		///
+		/// @note This data structure may be 28 * 3 + 4 = 88-bytes large.
+		///
+		using Edges = ArrayList<SimplexEdge, MaxSimplexEdges, std::remove_const<decltype(MaxSimplexEdges)>::type>;
+
+		using size_type = Edges::size_type;
 
 		/// Coefficients.
 		///
@@ -104,8 +57,16 @@ namespace box2d
 		///
 		/// @note This data structure is 4 * 3 + 4 = 16-bytes large.
 		///
-		using Coefficients = ArrayList<float_t, MaxSimplexEdges,
-			std::remove_const<decltype(MaxSimplexEdges)>::type>;
+		using Coefficients = ArrayList<float_t, MaxSimplexEdges, std::remove_const<decltype(MaxSimplexEdges)>::type>;
+
+		/// Calculates the "search direction" for the given simplex edge list.
+		/// @param simplexEdges A one or two edge list.
+		/// @warning Behavior is undefined if the given edge list has zero edges.
+		/// @return "search direction" vector.
+		static constexpr Vec2 CalcSearchDirection(const Edges& simplexEdges) noexcept;
+		
+		/// Gets the given simplex's "metric".
+		static inline float_t CalcMetric(const Edges& simplexEdges);
 
 		static Simplex Get(const SimplexEdge& s0) noexcept;
 
@@ -132,11 +93,11 @@ namespace box2d
 		/// @param edges Collection of zero, one, two, or three simplex edges.
 		/// @warning Behavior is undefined if the given collection has more than 3 edges.
 		/// @return Zero, one, two, or three edge simplex.
-		static Simplex Get(const SimplexEdgeList& edges) noexcept;
+		static Simplex Get(const Edges& edges) noexcept;
 
 		Simplex() = default;
 
-		SimplexEdgeList GetSimplexEdges() const noexcept { return m_simplexEdges; }
+		Edges GetEdges() const noexcept { return m_simplexEdges; }
 
 		const SimplexEdge& GetSimplexEdge(size_type index) const noexcept
 		{
@@ -151,7 +112,7 @@ namespace box2d
 		size_type GetSize() const noexcept { return m_simplexEdges.size(); }
 
 	private:
-		Simplex(const SimplexEdgeList& simplexEdges, const Coefficients& normalizedWeights):
+		Simplex(const Edges& simplexEdges, const Coefficients& normalizedWeights):
 			m_simplexEdges{simplexEdges}, m_normalizedWeights{normalizedWeights}
 		{
 			assert(simplexEdges.size() == normalizedWeights.size());
@@ -167,7 +128,7 @@ namespace box2d
 			}()));
 		}
 
-		SimplexEdgeList m_simplexEdges; ///< Collection of valid simplex edges. 88-bytes.
+		Edges m_simplexEdges; ///< Collection of valid simplex edges. 88-bytes.
 
 		/// Normalized weights.
 		///
@@ -178,7 +139,43 @@ namespace box2d
 		///
 		Coefficients m_normalizedWeights;
 	};
-	
+
+	constexpr inline Vec2 Simplex::CalcSearchDirection(const Edges& simplexEdges) noexcept
+	{
+		assert((simplexEdges.size() == 1) || (simplexEdges.size() == 2));
+		switch (simplexEdges.size())
+		{
+			case 1:
+				return -GetPointDelta(simplexEdges[0]);
+				
+			case 2:
+			{
+				const auto e12 = GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]);
+				const auto sgn = Cross(e12, -GetPointDelta(simplexEdges[0]));
+				// If sgn > 0, then origin is left of e12, else origin is right of e12.
+				return (sgn > float_t{0})? GetRevPerpendicular(e12): GetFwdPerpendicular(e12);
+			}
+				
+			default:
+				return Vec2_zero;
+		}
+	}
+
+	inline float_t Simplex::CalcMetric(const Edges& simplexEdges)
+	{
+		assert(simplexEdges.size() < 4);
+		switch (simplexEdges.size())
+		{
+			case 0: return float_t{0};
+			case 1: return float_t{0};
+			case 2:	return Sqrt(GetLengthSquared(GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0])));
+			case 3:	return Cross(GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]),
+								 GetPointDelta(simplexEdges[2]) - GetPointDelta(simplexEdges[0]));
+			default: break; // should not be reached
+		}
+		return float_t{0};
+	}
+
 	inline Vec2 GetScaledDelta(const Simplex& simplex, Simplex::size_type index)
 	{
 		return simplex.GetSimplexEdge(index).GetPointDelta() * simplex.GetCoefficient(index);

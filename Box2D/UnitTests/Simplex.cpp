@@ -23,7 +23,7 @@ using namespace box2d;
 
 TEST(SimplexEdgeList, ByteSizeIs88)
 {
-	EXPECT_EQ(sizeof(SimplexEdgeList), size_t(88));
+	EXPECT_EQ(sizeof(Simplex::Edges), size_t(88));
 }
 
 TEST(Simplex, ByteSizeIs104)
@@ -258,7 +258,7 @@ TEST(Simplex, GetOfSimplexVertices)
 {
 	Simplex foo;
 
-	const auto roo = Simplex::Get(foo.GetSimplexEdges());
+	const auto roo = Simplex::Get(foo.GetEdges());
 	
 	EXPECT_EQ(foo.GetSize(), roo.GetSize());
 }

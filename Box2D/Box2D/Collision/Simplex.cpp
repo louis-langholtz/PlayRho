@@ -167,16 +167,16 @@ Simplex Simplex::Get(const SimplexEdge& s0, const SimplexEdge& s1, const Simplex
 	return Simplex{{s0, s1, s2}, {d123_1 / d123_sum, d123_2 / d123_sum, d123_3 / d123_sum}};
 }
 
-Simplex Simplex::Get(const SimplexEdgeList& vertices) noexcept
+Simplex Simplex::Get(const Simplex::Edges& edges) noexcept
 {
-	const auto count = vertices.size();
+	const auto count = edges.size();
 	assert(count < 4);
 	switch (count)
 	{
 		case 0: return Simplex{};
-		case 1: return Get(vertices[0]);
-		case 2: return Get(vertices[0], vertices[1]);
-		case 3: return Get(vertices[0], vertices[1], vertices[2]);
+		case 1: return Get(edges[0]);
+		case 2: return Get(edges[0], edges[1]);
+		case 3: return Get(edges[0], edges[1], edges[2]);
 		default: break;
 	}
 	return Simplex{};
