@@ -69,6 +69,8 @@
 		4731DE591DEC908600E7F931 /* UnitVec2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE551DEC908600E7F931 /* UnitVec2.hpp */; };
 		4731DE5E1DEE3F0600E7F931 /* SeparationFinder.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE5B1DEE3F0600E7F931 /* SeparationFinder.hpp */; };
 		4731DE5F1DEE3F0600E7F931 /* SeparationFinder.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE5B1DEE3F0600E7F931 /* SeparationFinder.hpp */; };
+		4731DE611DEF7B5100E7F931 /* Simplex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE601DEF7B5100E7F931 /* Simplex.cpp */; };
+		4731DE621DEF7B5100E7F931 /* Simplex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE601DEF7B5100E7F931 /* Simplex.cpp */; };
 		4734B2191DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21A1DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21C1DC1121900F15E29 /* ArrayList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4734B21B1DC1121900F15E29 /* ArrayList.cpp */; };
@@ -495,6 +497,7 @@
 		4731DE541DEC908600E7F931 /* UnitVec2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitVec2.cpp; sourceTree = "<group>"; };
 		4731DE551DEC908600E7F931 /* UnitVec2.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = UnitVec2.hpp; sourceTree = "<group>"; };
 		4731DE5B1DEE3F0600E7F931 /* SeparationFinder.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SeparationFinder.hpp; sourceTree = "<group>"; };
+		4731DE601DEF7B5100E7F931 /* Simplex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Simplex.cpp; sourceTree = "<group>"; };
 		4734B2161DC00AFD00F15E29 /* ArrayList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ArrayList.hpp; sourceTree = "<group>"; };
 		4734B21B1DC1121900F15E29 /* ArrayList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArrayList.cpp; sourceTree = "<group>"; };
 		4734B21E1DC1340500F15E29 /* Span.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Span.hpp; sourceTree = "<group>"; };
@@ -949,6 +952,7 @@
 				4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */,
 				80BB892E141C3E5900F1753A /* Distance.cpp */,
 				80BB892F141C3E5900F1753A /* Distance.hpp */,
+				4731DE601DEF7B5100E7F931 /* Simplex.cpp */,
 				4734B22A1DC2B11D00F15E29 /* Simplex.hpp */,
 				4726DD161D30230A0012A882 /* SimplexCache.hpp */,
 				4734B2241DC29F7C00F15E29 /* SimplexEdge.hpp */,
@@ -1707,6 +1711,7 @@
 				47AA5DAE1C4C5FBE008AF2BA /* ContactManager.cpp in Sources */,
 				47AA5DAF1C4C5FBE008AF2BA /* Fixture.cpp in Sources */,
 				4721349A1C8D03D9009536F9 /* BodyList.cpp in Sources */,
+				4731DE621DEF7B5100E7F931 /* Simplex.cpp in Sources */,
 				47AA5DB01C4C5FBE008AF2BA /* Island.cpp in Sources */,
 				47AA5DB11C4C5FBE008AF2BA /* World.cpp in Sources */,
 				475A94591D9453A1000CA9A8 /* Shape.cpp in Sources */,
@@ -1799,6 +1804,7 @@
 				477DB2981D14BB2000846ED6 /* ContactEdgeIterator.cpp in Sources */,
 				80BB898D141C3E5900F1753A /* Collision.cpp in Sources */,
 				477DB2A41D15F60B00846ED6 /* JointEdgeIterator.cpp in Sources */,
+				4731DE611DEF7B5100E7F931 /* Simplex.cpp in Sources */,
 				80BB898F141C3E5900F1753A /* Distance.cpp in Sources */,
 				80BB8991141C3E5900F1753A /* DynamicTree.cpp in Sources */,
 				477DB29C1D14BCA700846ED6 /* ConstContactEdgeIterator.cpp in Sources */,
