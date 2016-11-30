@@ -80,7 +80,7 @@
 		4734B22E1DC2B11D00F15E29 /* Simplex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B22A1DC2B11D00F15E29 /* Simplex.hpp */; };
 		4734B2331DC2CF9500F15E29 /* IndexPairList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2301DC2CF9500F15E29 /* IndexPairList.hpp */; };
 		4734B2341DC2CF9500F15E29 /* IndexPairList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2301DC2CF9500F15E29 /* IndexPairList.hpp */; };
-		4734B2361DC39F3E00F15E29 /* SimplexVertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4734B2351DC39F3E00F15E29 /* SimplexVertex.cpp */; };
+		4734B2361DC39F3E00F15E29 /* SimplexEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4734B2351DC39F3E00F15E29 /* SimplexEdge.cpp */; };
 		4736DE891DB7DB3B003993CB /* Vec3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4736DE881DB7DB3B003993CB /* Vec3.cpp */; };
 		4736DE8C1DB806AE003993CB /* CollideShapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4736DE8A1DB806AE003993CB /* CollideShapes.cpp */; };
 		4736DE8D1DB806AE003993CB /* CollideShapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4736DE8A1DB806AE003993CB /* CollideShapes.cpp */; };
@@ -501,7 +501,7 @@
 		4734B2241DC29F7C00F15E29 /* SimplexEdge.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SimplexEdge.hpp; sourceTree = "<group>"; };
 		4734B22A1DC2B11D00F15E29 /* Simplex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Simplex.hpp; sourceTree = "<group>"; };
 		4734B2301DC2CF9500F15E29 /* IndexPairList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IndexPairList.hpp; sourceTree = "<group>"; };
-		4734B2351DC39F3E00F15E29 /* SimplexVertex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimplexVertex.cpp; sourceTree = "<group>"; };
+		4734B2351DC39F3E00F15E29 /* SimplexEdge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimplexEdge.cpp; sourceTree = "<group>"; };
 		4736DE881DB7DB3B003993CB /* Vec3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vec3.cpp; sourceTree = "<group>"; };
 		4736DE8A1DB806AE003993CB /* CollideShapes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollideShapes.cpp; sourceTree = "<group>"; };
 		4736DE8B1DB806AE003993CB /* CollideShapes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CollideShapes.hpp; sourceTree = "<group>"; };
@@ -870,7 +870,7 @@
 				475A945A1D9593A4000CA9A8 /* Shape.cpp */,
 				4731DDF91DC7C9B000E7F931 /* Simplex.cpp */,
 				474BC4011D41278800447DCD /* SimplexCache.cpp */,
-				4734B2351DC39F3E00F15E29 /* SimplexVertex.cpp */,
+				4734B2351DC39F3E00F15E29 /* SimplexEdge.cpp */,
 				475A945E1D95A15A000CA9A8 /* StackAllocator.cpp */,
 				474BC4021D41278800447DCD /* Sweep.cpp */,
 				474BC4031D41278800447DCD /* TimeOfImpact.cpp */,
@@ -1665,7 +1665,7 @@
 				474BC43B1D413DC200447DCD /* Transformation.cpp in Sources */,
 				474BC43C1D413DC200447DCD /* Vec2.cpp in Sources */,
 				4731DE0A1DD7A4E000E7F931 /* ContactFilter.cpp in Sources */,
-				4734B2361DC39F3E00F15E29 /* SimplexVertex.cpp in Sources */,
+				4734B2361DC39F3E00F15E29 /* SimplexEdge.cpp in Sources */,
 				4731DDFA1DC7C9B000E7F931 /* Simplex.cpp in Sources */,
 				47AB01BA1D6FA40C0084D721 /* Dump.cpp in Sources */,
 				47FFD0FB1DAC3EFC000D6D0E /* VelocityConstraint.cpp in Sources */,
