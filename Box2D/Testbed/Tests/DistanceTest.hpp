@@ -37,7 +37,6 @@ public:
 			m_positionB = Vec2(12.017401f, 0.13678508f);
 			m_angleB = -0.0109265_rad;
 			m_transformB = Transformation{m_positionB, UnitVec2{m_angleB}};
-
 			m_polygonB.SetAsBox(2.0f, 0.1f);
 		}
 	}
@@ -55,40 +54,53 @@ public:
 		const auto transformB = m_transformB;
 
 		SimplexCache cache;
-		auto output = Distance(proxyA, transformA, proxyB, transformB, cache);
-		auto distance = Sqrt(GetLengthSquared(output.witnessPoints.a - output.witnessPoints.b));
+		const auto output = Distance(proxyA, transformA, proxyB, transformB, cache);
+		const auto outputDistance = Sqrt(GetLengthSquared(output.witnessPoints.a - output.witnessPoints.b));
 		
 		const auto rA = proxyA.GetRadius();
 		const auto rB = proxyB.GetRadius();
 		const auto totalRadius = rA + rB;
 		
-		if ((distance > totalRadius) && !almost_zero(distance))
+		auto adjustedWitnessPoints = output.witnessPoints;
+		auto adjustedDistance = outputDistance;
+		if ((outputDistance > totalRadius) && !almost_zero(outputDistance))
 		{
 			// Shapes are still not overlapped.
 			// Move the witness points to the outer surface.
-			distance -= totalRadius;
+			adjustedDistance -= totalRadius;
 			const auto normal = GetUnitVector(output.witnessPoints.b - output.witnessPoints.a);
-			output.witnessPoints.a += rA * normal;
-			output.witnessPoints.b -= rB * normal;
+			adjustedWitnessPoints.a += rA * normal;
+			adjustedWitnessPoints.b -= rB * normal;
 		}
 		else
 		{
 			// Shapes are overlapped when radii are considered.
 			// Move the witness points to the middle.
 			const auto p = (output.witnessPoints.a + output.witnessPoints.b) / float_t{2};
-			output.witnessPoints.a = p;
-			output.witnessPoints.b = p;
-			distance = float_t{0};
+			adjustedWitnessPoints.a = p;
+			adjustedWitnessPoints.b = p;
+			adjustedDistance = float_t{0};
 		}
 		
-		drawer.DrawString(5, m_textLine, "distance = %g", distance);
+		drawer.DrawString(5, m_textLine, "Press 'A', 'D', 'W', or 'S' to move left, right, up, or down respectively.");
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		drawer.DrawString(5, m_textLine, "iterations = %d", output.iterations);
+		drawer.DrawString(5, m_textLine, "Press 'Q', or 'E' to rotate counter-clockwise or clockwise respectively.");
 		m_textLine += DRAW_STRING_NEW_LINE;
 
+		drawer.DrawString(5, m_textLine, "Press numberpad '+', or '-' to increase or decrease vertex radiuses respectively.");
+		m_textLine += DRAW_STRING_NEW_LINE;
+
+		drawer.DrawString(5, m_textLine, "distance = %g (from %g), iterations = %d",
+						  adjustedDistance, outputDistance, output.iterations);
+		m_textLine += DRAW_STRING_NEW_LINE;
+
+		drawer.DrawString(5, m_textLine, "radiusA = %g, radiusB = %g",
+						  m_polygonA.GetVertexRadius(), m_polygonB.GetVertexRadius());
+		m_textLine += DRAW_STRING_NEW_LINE;
+		
 		{
-			Color color(0.9f, 0.9f, 0.9f);
+			const auto color = Color(0.9f, 0.9f, 0.9f);
 			Vec2 v[MaxPolygonVertices];
 			{
 				const auto vertexCount = m_polygonA.GetVertexCount();
@@ -109,14 +121,11 @@ public:
 			}
 		}
 
-		Vec2 x1 = output.witnessPoints.a;
-		Vec2 x2 = output.witnessPoints.b;
+		drawer.DrawPoint(adjustedWitnessPoints.a, 4.0f, Color(1.0f, 0.0f, 0.0f));
+		drawer.DrawPoint(adjustedWitnessPoints.b, 4.0f, Color(1.0f, 1.0f, 0.0f));
 
-		Color c1(1.0f, 0.0f, 0.0f);
-		drawer.DrawPoint(x1, 4.0f, c1);
-
-		Color c2(1.0f, 1.0f, 0.0f);
-		drawer.DrawPoint(x2, 4.0f, c2);
+		drawer.DrawPoint(output.witnessPoints.a, 4.0f, Color(1.0f, 0.0f, 0.0f, 0.5));
+		drawer.DrawPoint(output.witnessPoints.b, 4.0f, Color(1.0f, 1.0f, 0.0f, 0.5));
 	}
 
 	void Keyboard(Key key) override
@@ -146,13 +155,26 @@ public:
 		case Key_E:
 			m_angleB -= 0.1_rad * Pi;
 			break;
-				
+
+		case Key_Add:
+			m_polygonA.SetVertexRadius(m_polygonA.GetVertexRadius() + RadiusIncrement);
+			m_polygonB.SetVertexRadius(m_polygonB.GetVertexRadius() + RadiusIncrement);
+			break;
+
+		case Key_Subtract:
+			m_polygonA.SetVertexRadius(m_polygonA.GetVertexRadius() - RadiusIncrement);
+			m_polygonB.SetVertexRadius(m_polygonB.GetVertexRadius() - RadiusIncrement);
+			break;
+
 		default:
 			break;
 		}
 
 		m_transformB = Transformation{m_positionB, UnitVec2{m_angleB}};
 	}
+
+private:
+	static constexpr auto RadiusIncrement = LinearSlop * 100;
 
 	Vec2 m_positionB;
 	Angle m_angleB;
