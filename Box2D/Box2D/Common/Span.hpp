@@ -20,6 +20,7 @@
 #define Span_hpp
 
 #include <cstddef>
+#include <cassert>
 #include <type_traits>
 #include <iterator>
 
