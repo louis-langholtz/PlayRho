@@ -96,6 +96,8 @@ namespace box2d
 	class Simplex
 	{
 	public:
+		using size_type = SimplexEdgeList::size_type;
+
 		/// Coefficients.
 		///
 		/// @detail Collection of coefficient values.
@@ -114,17 +116,17 @@ namespace box2d
 
 		SimplexEdgeList GetSimplexEdges() const noexcept { return m_simplexEdges; }
 
-		const SimplexEdge& GetSimplexEdge(SimplexEdgeList::size_type index) const noexcept
+		const SimplexEdge& GetSimplexEdge(size_type index) const noexcept
 		{
 			return m_simplexEdges[index];
 		}
 
-		float_t GetCoefficient(SimplexEdgeList::size_type index) const noexcept
+		float_t GetCoefficient(size_type index) const noexcept
 		{
 			return m_normalizedWeights[index];
 		}
 
-		SimplexEdgeList::size_type GetSize() const noexcept { return m_simplexEdges.size(); }
+		size_type GetSize() const noexcept { return m_simplexEdges.size(); }
 
 	private:
 		Simplex(const SimplexEdgeList& simplexEdges, const Coefficients& normalizedWeights):

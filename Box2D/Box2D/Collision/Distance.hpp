@@ -26,6 +26,7 @@
 namespace box2d
 {
 	class DistanceProxy;
+	class Simplex;
 	
 	/// Witness Points.
 	struct WitnessPoints
@@ -33,7 +34,9 @@ namespace box2d
 		Vec2 a;
 		Vec2 b;
 	};
-		
+	
+	WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept;
+	
 	/// Distance Output.
 	struct DistanceOutput
 	{

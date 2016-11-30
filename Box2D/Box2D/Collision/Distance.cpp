@@ -42,7 +42,7 @@ namespace {
 	
 }
 	
-static inline WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept
+WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept
 {
 	auto pointA = Vec2{0, 0};
 	auto pointB = Vec2{0, 0};
@@ -191,6 +191,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 		simplexEdges.push_back(GetSimplexEdge(proxyA, transformA, indexA, proxyB, transformB, indexB));
 	}
 
+	// Note: simplexEdges is same here as simplex.GetSimplexEdges().
 	return DistanceOutput{GetWitnessPoints(simplex), iter, GetSimplexCache(simplexEdges)};
 }
 	
