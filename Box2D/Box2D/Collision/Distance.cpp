@@ -82,17 +82,17 @@ SimplexEdgeList GetSimplexEdges(const IndexPairList& indexPairs,
 				   const DistanceProxy& proxyA, const Transformation& xfA,
 				   const DistanceProxy& proxyB, const Transformation& xfB)
 {
-	SimplexEdgeList simplex;
+	SimplexEdgeList simplexEdges;
 	for (auto&& indexpair: indexPairs)
 	{
-		simplex.push_back(GetSimplexEdge(proxyA, xfA, indexpair.a, proxyB, xfB, indexpair.b));
+		simplexEdges.push_back(GetSimplexEdge(proxyA, xfA, indexpair.a, proxyB, xfB, indexpair.b));
 	}
-	return simplex;
+	return simplexEdges;
 }
 	
-inline auto GetSimplexCache(const SimplexEdgeList& simplex)
+inline auto GetSimplexCache(const SimplexEdgeList& simplexEdges)
 {
-	return SimplexCache(CalcMetric(simplex), GetIndexPairList(simplex));
+	return SimplexCache(CalcMetric(simplexEdges), GetIndexPairList(simplexEdges));
 }
 	
 DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,

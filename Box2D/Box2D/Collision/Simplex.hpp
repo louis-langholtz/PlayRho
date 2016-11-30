@@ -33,24 +33,24 @@ namespace box2d
 		std::remove_const<decltype(MaxSimplexEdges)>::type>;
 	
 	/// Calculates the "search direction" for the given simplex.
-	/// @param simplex A one or two vertex simplex.
+	/// @param simplexEdges A one or two vertex simplex.
 	/// @warning Behavior is undefined if the given simplex has zero vertices.
 	/// @return "search direction" vector.
-	constexpr inline Vec2 CalcSearchDirection(const SimplexEdgeList& simplex) noexcept
+	constexpr inline Vec2 CalcSearchDirection(const SimplexEdgeList& simplexEdges) noexcept
 	{
 		static_assert(std::tuple_size<SimplexEdgeList>::value == 3,
 					  "Invalid maximum # of elements of Simplex");
 
-		assert((simplex.size() == 1) || (simplex.size() == 2));
-		switch (simplex.size())
+		assert((simplexEdges.size() == 1) || (simplexEdges.size() == 2));
+		switch (simplexEdges.size())
 		{
 			case 1:
-				return -GetPointDelta(simplex[0]);
+				return -GetPointDelta(simplexEdges[0]);
 				
 			case 2:
 			{
-				const auto e12 = GetPointDelta(simplex[1]) - GetPointDelta(simplex[0]);
-				const auto sgn = Cross(e12, -GetPointDelta(simplex[0]));
+				const auto e12 = GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]);
+				const auto sgn = Cross(e12, -GetPointDelta(simplexEdges[0]));
 				// If sgn > 0, then origin is left of e12, else origin is right of e12.
 				return (sgn > float_t{0})? GetRevPerpendicular(e12): GetFwdPerpendicular(e12);
 			}
@@ -61,19 +61,19 @@ namespace box2d
 	}
 	
 	/// Gets the given simplex's "metric".
-	inline float_t CalcMetric(const SimplexEdgeList& simplex)
+	inline float_t CalcMetric(const SimplexEdgeList& simplexEdges)
 	{
 		static_assert(std::tuple_size<SimplexEdgeList>::value == 3,
 					  "Invalid maximum # of elements of Simplex");
 
-		assert(simplex.size() < 4);
-		switch (simplex.size())
+		assert(simplexEdges.size() < 4);
+		switch (simplexEdges.size())
 		{
 			case 0: return float_t{0};
 			case 1: return float_t{0};
-			case 2:	return Sqrt(GetLengthSquared(GetPointDelta(simplex[0]) - GetPointDelta(simplex[1])));
-			case 3:	return Cross(GetPointDelta(simplex[1]) - GetPointDelta(simplex[0]),
-								 GetPointDelta(simplex[2]) - GetPointDelta(simplex[0]));
+			case 2:	return Sqrt(GetLengthSquared(GetPointDelta(simplexEdges[0]) - GetPointDelta(simplexEdges[1])));
+			case 3:	return Cross(GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]),
+								 GetPointDelta(simplexEdges[2]) - GetPointDelta(simplexEdges[0]));
 			default: break; // should not be reached
 		}
 		return float_t{0};
