@@ -17,7 +17,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Collision/SimplexVertex.hpp>
+#include <Box2D/Collision/SimplexEdge.hpp>
 
 using namespace box2d;
 

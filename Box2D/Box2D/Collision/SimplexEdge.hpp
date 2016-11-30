@@ -25,12 +25,12 @@
 
 namespace box2d
 {
-	/// Simplex vertex.
+	/// Simplex edge.
 	///
 	/// @detail This is the locations (in world coordinates) and indices of a pair of vertices
 	/// from two shapes (shape A and shape B).
 	///
-	/// @note This data structure may be 28-bytes large.
+	/// @note This data structure is 28-bytes large (on at least one 64-bit platform).
 	///
 	class SimplexEdge
 	{

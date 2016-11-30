@@ -21,7 +21,7 @@
 #define Simplex_hpp
 
 #include <Box2D/Common/ArrayList.hpp>
-#include <Box2D/Collision/SimplexVertex.hpp>
+#include <Box2D/Collision/SimplexEdge.hpp>
 
 namespace box2d
 {
