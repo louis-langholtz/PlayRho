@@ -25,8 +25,8 @@
 
 namespace box2d
 {
-	using IndexPairList = ArrayList<IndexPair, MaxSimplexVertices,
-		std::remove_const<decltype(MaxSimplexVertices)>::type>;
+	using IndexPairList = ArrayList<IndexPair, MaxSimplexEdges,
+		std::remove_const<decltype(MaxSimplexEdges)>::type>;
 	
 	template <class Collection>
 	inline auto GetIndexPairList(const Collection& collection) noexcept

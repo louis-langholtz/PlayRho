@@ -25,20 +25,20 @@
 
 namespace box2d
 {
-	/// Simplex vertices collection.
+	/// Simplex edge collection.
 	///
 	/// @note This data structure may be 28 * 3 + 4 = 88-bytes large.
 	///
-	using SimplexVertices = ArrayList<SimplexEdge, MaxSimplexVertices,
-		std::remove_const<decltype(MaxSimplexVertices)>::type>;
+	using SimplexEdgeList = ArrayList<SimplexEdge, MaxSimplexEdges,
+		std::remove_const<decltype(MaxSimplexEdges)>::type>;
 	
 	/// Calculates the "search direction" for the given simplex.
 	/// @param simplex A one or two vertex simplex.
 	/// @warning Behavior is undefined if the given simplex has zero vertices.
 	/// @return "search direction" vector.
-	constexpr inline Vec2 CalcSearchDirection(const SimplexVertices& simplex) noexcept
+	constexpr inline Vec2 CalcSearchDirection(const SimplexEdgeList& simplex) noexcept
 	{
-		static_assert(std::tuple_size<SimplexVertices>::value == 3,
+		static_assert(std::tuple_size<SimplexEdgeList>::value == 3,
 					  "Invalid maximum # of elements of Simplex");
 
 		assert((simplex.size() == 1) || (simplex.size() == 2));
@@ -61,9 +61,9 @@ namespace box2d
 	}
 	
 	/// Gets the given simplex's "metric".
-	inline float_t CalcMetric(const SimplexVertices& simplex)
+	inline float_t CalcMetric(const SimplexEdgeList& simplex)
 	{
-		static_assert(std::tuple_size<SimplexVertices>::value == 3,
+		static_assert(std::tuple_size<SimplexEdgeList>::value == 3,
 					  "Invalid maximum # of elements of Simplex");
 
 		assert(simplex.size() < 4);
@@ -102,32 +102,32 @@ namespace box2d
 		///
 		/// @note This data structure is 4 * 3 + 4 = 16-bytes large.
 		///
-		using Coefficients = ArrayList<float_t, MaxSimplexVertices,
-			std::remove_const<decltype(MaxSimplexVertices)>::type>;
+		using Coefficients = ArrayList<float_t, MaxSimplexEdges,
+			std::remove_const<decltype(MaxSimplexEdges)>::type>;
 
 		static Simplex Get(const SimplexEdge& s0) noexcept;
 		static Simplex Get(const SimplexEdge& s0, const SimplexEdge& s1) noexcept;
 		static Simplex Get(const SimplexEdge& s0, const SimplexEdge& s1, const SimplexEdge& s2) noexcept;
-		static Simplex Get(const SimplexVertices& vertices) noexcept;
+		static Simplex Get(const SimplexEdgeList& vertices) noexcept;
 
 		Simplex() = default;
 
-		SimplexVertices GetSimplexVertices() const noexcept { return m_simplexVertices; }
+		SimplexEdgeList GetSimplexVertices() const noexcept { return m_simplexVertices; }
 
-		const SimplexEdge& GetSimplexVertex(SimplexVertices::size_type index) const noexcept
+		const SimplexEdge& GetSimplexVertex(SimplexEdgeList::size_type index) const noexcept
 		{
 			return m_simplexVertices[index];
 		}
 
-		float_t GetCoefficient(SimplexVertices::size_type index) const noexcept
+		float_t GetCoefficient(SimplexEdgeList::size_type index) const noexcept
 		{
 			return m_normalizedWeights[index];
 		}
 
-		SimplexVertices::size_type GetSize() const noexcept { return m_simplexVertices.size(); }
+		SimplexEdgeList::size_type GetSize() const noexcept { return m_simplexVertices.size(); }
 
 	private:
-		Simplex(const SimplexVertices& simplexVertices, const Coefficients& normalizedWeights):
+		Simplex(const SimplexEdgeList& simplexVertices, const Coefficients& normalizedWeights):
 			m_simplexVertices{simplexVertices}, m_normalizedWeights{normalizedWeights}
 		{
 			assert(simplexVertices.size() == normalizedWeights.size());
@@ -143,7 +143,7 @@ namespace box2d
 			}()));
 		}
 
-		SimplexVertices m_simplexVertices; ///< Collection of valid simplex vertices. 88-bytes.
+		SimplexEdgeList m_simplexVertices; ///< Collection of valid simplex vertices. 88-bytes.
 
 		/// Normalized weights.
 		///
@@ -159,7 +159,7 @@ namespace box2d
 	/// @param vertices Collection of zero, one, two, or three simplex vertexes.
 	/// @warning Behavior is undefined if the given collection has more than 3 vertices.
 	/// @return Zero, one, two, or three vertex simplex.
-	inline Simplex Simplex::Get(const SimplexVertices& vertices) noexcept
+	inline Simplex Simplex::Get(const SimplexEdgeList& vertices) noexcept
 	{
 		const auto count = vertices.size();
 		assert(count < 4);
@@ -331,7 +331,7 @@ namespace box2d
 		return Simplex{{s0, s1, s2}, {d123_1 / d123_sum, d123_2 / d123_sum, d123_3 / d123_sum}};
 	}
 
-	inline Vec2 GetScaledDelta(const Simplex& simplex, SimplexVertices::size_type index)
+	inline Vec2 GetScaledDelta(const Simplex& simplex, SimplexEdgeList::size_type index)
 	{
 		return simplex.GetSimplexVertex(index).GetPointDelta() * simplex.GetCoefficient(index);
 	}

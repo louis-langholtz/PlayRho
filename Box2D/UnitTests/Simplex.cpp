@@ -21,9 +21,9 @@
 
 using namespace box2d;
 
-TEST(SimplexVertices, ByteSizeIs88)
+TEST(SimplexEdgeList, ByteSizeIs88)
 {
-	EXPECT_EQ(sizeof(SimplexVertices), size_t(88));
+	EXPECT_EQ(sizeof(SimplexEdgeList), size_t(88));
 }
 
 TEST(Simplex, ByteSizeIs104)

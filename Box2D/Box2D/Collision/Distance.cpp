@@ -78,11 +78,11 @@ SimplexEdge GetSimplexVertex(const DistanceProxy& proxyA, const Transformation& 
 }
 
 static inline
-SimplexVertices GetSimplexVertices(const IndexPairList& indexPairs,
+SimplexEdgeList GetSimplexVertices(const IndexPairList& indexPairs,
 				   const DistanceProxy& proxyA, const Transformation& xfA,
 				   const DistanceProxy& proxyB, const Transformation& xfB)
 {
-	SimplexVertices simplex;
+	SimplexEdgeList simplex;
 	for (auto&& indexpair: indexPairs)
 	{
 		simplex.push_back(GetSimplexVertex(proxyA, xfA, indexpair.a, proxyB, xfB, indexpair.b));
@@ -90,7 +90,7 @@ SimplexVertices GetSimplexVertices(const IndexPairList& indexPairs,
 	return simplex;
 }
 	
-inline auto GetSimplexCache(const SimplexVertices& simplex)
+inline auto GetSimplexCache(const SimplexEdgeList& simplex)
 {
 	return SimplexCache(CalcMetric(simplex), GetIndexPairList(simplex));
 }
@@ -143,7 +143,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 		simplexVertices = simplex.GetSimplexVertices();
 
 		// If we have max points (3), then the origin is in the corresponding triangle.
-		if (simplexVertices.size() == MaxSimplexVertices)
+		if (simplexVertices.size() == MaxSimplexEdges)
 		{
 			break;
 		}
