@@ -78,7 +78,7 @@ SimplexEdge GetSimplexEdge(const DistanceProxy& proxyA, const Transformation& xf
 }
 
 static inline
-SimplexEdgeList GetSimplexVertices(const IndexPairList& indexPairs,
+SimplexEdgeList GetSimplexEdges(const IndexPairList& indexPairs,
 				   const DistanceProxy& proxyA, const Transformation& xfA,
 				   const DistanceProxy& proxyB, const Transformation& xfB)
 {
@@ -105,7 +105,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 	assert(IsValid(transformB.p));
 	
 	// Initialize the simplex.
-	auto simplexEdges = GetSimplexVertices(cache.GetIndices(), proxyA, transformA, proxyB, transformB);
+	auto simplexEdges = GetSimplexEdges(cache.GetIndices(), proxyA, transformA, proxyB, transformB);
 
 	// Compute the new simplex metric, if it is substantially different than
 	// old metric then flush the simplex.
@@ -140,7 +140,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 		const auto savedIndices = GetIndexPairList(simplexEdges);
 
 		simplex = Simplex::Get(simplexEdges);
-		simplexEdges = simplex.GetSimplexVertices();
+		simplexEdges = simplex.GetSimplexEdges();
 
 		// If we have max points (3), then the origin is in the corresponding triangle.
 		if (simplexEdges.size() == MaxSimplexEdges)

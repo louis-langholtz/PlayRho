@@ -258,7 +258,7 @@ TEST(Simplex, GetOfSimplexVertices)
 {
 	Simplex foo;
 
-	const auto roo = Simplex::Get(foo.GetSimplexVertices());
+	const auto roo = Simplex::Get(foo.GetSimplexEdges());
 	
 	EXPECT_EQ(foo.GetSize(), roo.GetSize());
 }

@@ -112,7 +112,7 @@ namespace box2d
 
 		Simplex() = default;
 
-		SimplexEdgeList GetSimplexVertices() const noexcept { return m_simplexEdges; }
+		SimplexEdgeList GetSimplexEdges() const noexcept { return m_simplexEdges; }
 
 		const SimplexEdge& GetSimplexEdge(SimplexEdgeList::size_type index) const noexcept
 		{
