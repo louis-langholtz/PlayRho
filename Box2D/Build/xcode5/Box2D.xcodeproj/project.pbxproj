@@ -74,8 +74,8 @@
 		4734B21C1DC1121900F15E29 /* ArrayList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4734B21B1DC1121900F15E29 /* ArrayList.cpp */; };
 		4734B2211DC1340500F15E29 /* Span.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B21E1DC1340500F15E29 /* Span.hpp */; };
 		4734B2221DC1340500F15E29 /* Span.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B21E1DC1340500F15E29 /* Span.hpp */; };
-		4734B2271DC29F7C00F15E29 /* SimplexVertex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2241DC29F7C00F15E29 /* SimplexVertex.hpp */; };
-		4734B2281DC29F7C00F15E29 /* SimplexVertex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2241DC29F7C00F15E29 /* SimplexVertex.hpp */; };
+		4734B2271DC29F7C00F15E29 /* SimplexEdge.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2241DC29F7C00F15E29 /* SimplexEdge.hpp */; };
+		4734B2281DC29F7C00F15E29 /* SimplexEdge.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2241DC29F7C00F15E29 /* SimplexEdge.hpp */; };
 		4734B22D1DC2B11D00F15E29 /* Simplex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B22A1DC2B11D00F15E29 /* Simplex.hpp */; };
 		4734B22E1DC2B11D00F15E29 /* Simplex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B22A1DC2B11D00F15E29 /* Simplex.hpp */; };
 		4734B2331DC2CF9500F15E29 /* IndexPairList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2301DC2CF9500F15E29 /* IndexPairList.hpp */; };
@@ -498,7 +498,7 @@
 		4734B2161DC00AFD00F15E29 /* ArrayList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ArrayList.hpp; sourceTree = "<group>"; };
 		4734B21B1DC1121900F15E29 /* ArrayList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArrayList.cpp; sourceTree = "<group>"; };
 		4734B21E1DC1340500F15E29 /* Span.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Span.hpp; sourceTree = "<group>"; };
-		4734B2241DC29F7C00F15E29 /* SimplexVertex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SimplexVertex.hpp; sourceTree = "<group>"; };
+		4734B2241DC29F7C00F15E29 /* SimplexEdge.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SimplexEdge.hpp; sourceTree = "<group>"; };
 		4734B22A1DC2B11D00F15E29 /* Simplex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Simplex.hpp; sourceTree = "<group>"; };
 		4734B2301DC2CF9500F15E29 /* IndexPairList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IndexPairList.hpp; sourceTree = "<group>"; };
 		4734B2351DC39F3E00F15E29 /* SimplexVertex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimplexVertex.cpp; sourceTree = "<group>"; };
@@ -951,7 +951,7 @@
 				80BB892F141C3E5900F1753A /* Distance.hpp */,
 				4734B22A1DC2B11D00F15E29 /* Simplex.hpp */,
 				4726DD161D30230A0012A882 /* SimplexCache.hpp */,
-				4734B2241DC29F7C00F15E29 /* SimplexVertex.hpp */,
+				4734B2241DC29F7C00F15E29 /* SimplexEdge.hpp */,
 				4726DD0C1D3014990012A882 /* IndexPair.hpp */,
 				4734B2301DC2CF9500F15E29 /* IndexPairList.hpp */,
 				4750398F1D2180D600D32047 /* DistanceProxy.cpp */,
@@ -1320,7 +1320,7 @@
 				4736DE8F1DB806AE003993CB /* CollideShapes.hpp in Headers */,
 				47CB34411D6F3A8500828126 /* MassData.hpp in Headers */,
 				47AA5DE21C4C5FBE008AF2BA /* World.hpp in Headers */,
-				4734B2281DC29F7C00F15E29 /* SimplexVertex.hpp in Headers */,
+				4734B2281DC29F7C00F15E29 /* SimplexEdge.hpp in Headers */,
 				4726DD2D1D31B4090012A882 /* AABB.hpp in Headers */,
 				47AA5DE31C4C5FBE008AF2BA /* WorldCallbacks.hpp in Headers */,
 				47AA5DE41C4C5FBE008AF2BA /* ChainAndCircleContact.hpp in Headers */,
@@ -1388,7 +1388,7 @@
 				80BB8990141C3E5900F1753A /* Distance.hpp in Headers */,
 				47CB34401D6F3A8500828126 /* MassData.hpp in Headers */,
 				4731DE231DDF83A600E7F931 /* RayCastOutput.hpp in Headers */,
-				4734B2271DC29F7C00F15E29 /* SimplexVertex.hpp in Headers */,
+				4734B2271DC29F7C00F15E29 /* SimplexEdge.hpp in Headers */,
 				80BB8992141C3E5900F1753A /* DynamicTree.hpp in Headers */,
 				80BB8994141C3E5900F1753A /* TimeOfImpact.hpp in Headers */,
 				80BB8996141C3E5900F1753A /* ChainShape.hpp in Headers */,
