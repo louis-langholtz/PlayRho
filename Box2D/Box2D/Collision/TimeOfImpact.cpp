@@ -20,7 +20,6 @@
 #include <Box2D/Collision/TimeOfImpact.hpp>
 #include <Box2D/Collision/Distance.hpp>
 #include <Box2D/Collision/DistanceProxy.hpp>
-#include <Box2D/Collision/SimplexCache.hpp>
 #include <Box2D/Collision/SeparationFinder.hpp>
 
 namespace box2d {
@@ -52,7 +51,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 	auto t1xfB = GetTransformation(sweepB, t1);
 
 	// Prepare input for distance query.
-	SimplexCache cache;
+	Simplex::Cache cache;
 
 	// The outer loop progressively attempts to compute new separating axes.
 	// This loop terminates when an axis is repeated (no progress is made).

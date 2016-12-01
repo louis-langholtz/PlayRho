@@ -43,12 +43,18 @@ namespace box2d
 	class Simplex
 	{
 	public:
+		/// Maximum number of supportable edges in a simplex.
+		static constexpr auto MaxEdges = uint8{3};
+
 		/// Simplex edge collection.
 		///
-		/// @note This data structure may be 28 * 3 + 4 = 88-bytes large.
+		/// @note This data is 28 * 3 + 4 = 88-bytes large (on at least one 64-bit platform).
 		///
-		using Edges = ArrayList<SimplexEdge, MaxSimplexEdges, std::remove_const<decltype(MaxSimplexEdges)>::type>;
+		using Edges = ArrayList<SimplexEdge, MaxEdges, std::remove_const<decltype(MaxEdges)>::type>;
 
+		/// Size type.
+		///
+		/// @note This data type is explicitly set to 1-byte large.
 		using size_type = Edges::size_type;
 
 		/// Coefficients.
@@ -57,7 +63,60 @@ namespace box2d
 		///
 		/// @note This data structure is 4 * 3 + 4 = 16-bytes large.
 		///
-		using Coefficients = ArrayList<float_t, MaxSimplexEdges, std::remove_const<decltype(MaxSimplexEdges)>::type>;
+		using Coefficients = ArrayList<float_t, MaxEdges, std::remove_const<decltype(MaxEdges)>::type>;
+
+		/// Index pairs.
+		///
+		/// @note This data type is 7-bytes large (on at least one 64-bit platform).
+		using IndexPairs = ArrayList<IndexPair, MaxEdges, std::remove_const<decltype(MaxEdges)>::type>;
+		
+		/// Simplex cache.
+		///
+		/// @detail Used to warm start Distance.
+		/// Caches particular information from a simplex - a related metric and up-to 3 index pairs.
+		///
+		/// @invariant As the metric and list of index pairs should be values from a snapshot of a
+		///   simplex, the mertic and list of index pairs must not vary independent of each other.
+		///   As such, this data structure only allows these values to be changed in unision via object
+		///   construction or object assignment.
+		///
+		/// @note This data structure is 12-bytes large.
+		///
+		class Cache
+		{
+		public:
+			Cache() = default;
+			
+			Cache(const Cache& copy) = default;
+			
+			constexpr Cache(float_t metric, IndexPairs indices) noexcept;
+			
+			/// Gets the metric that was set.
+			/// @note Behavior is undefined if metric was not previously set.
+			///   The IsMetricSet() method can be used to check dynamically if unsure.
+			/// @sa SetMetric.
+			/// @sa IsMetricSet.
+			/// @return Value previously set.
+			float_t GetMetric() const noexcept;
+			
+			bool IsMetricSet() const noexcept;
+			
+			constexpr IndexPairs GetIndices() const noexcept;
+			
+			constexpr size_type GetNumIndices() const noexcept;
+			
+			constexpr IndexPair GetIndexPair(size_type index) const noexcept;
+			
+		private:
+			float_t m_metric = GetInvalid<float_t>(); ///< Metric. @detail This is a length or area value.			
+			IndexPairs m_indices; ///< Indices. @detail Collection of index-pairs.
+		};
+
+		static Cache GetCache(const Simplex::Edges& edges) noexcept;
+		
+		/// Gets index pairs for the given edges collection.
+		///
+		static IndexPairs GetIndexPairs(const Edges& collection) noexcept;
 
 		/// Calculates the "search direction" for the given simplex edge list.
 		/// @param simplexEdges A one or two edge list.
@@ -97,38 +156,22 @@ namespace box2d
 
 		Simplex() = default;
 
-		Edges GetEdges() const noexcept { return m_simplexEdges; }
+		constexpr Edges GetEdges() const noexcept;
 
-		const SimplexEdge& GetSimplexEdge(size_type index) const noexcept
-		{
-			return m_simplexEdges[index];
-		}
+		const SimplexEdge& GetSimplexEdge(size_type index) const noexcept;
 
-		float_t GetCoefficient(size_type index) const noexcept
-		{
-			return m_normalizedWeights[index];
-		}
+		constexpr float_t GetCoefficient(size_type index) const noexcept;
 
-		size_type GetSize() const noexcept { return m_simplexEdges.size(); }
+		constexpr size_type GetSize() const noexcept;
 
 	private:
-		Simplex(const Edges& simplexEdges, const Coefficients& normalizedWeights):
-			m_simplexEdges{simplexEdges}, m_normalizedWeights{normalizedWeights}
-		{
-			assert(simplexEdges.size() == normalizedWeights.size());
-			assert(almost_equal(1, [&]()
-			{
-				auto sum = float_t(0);
-				for (auto&& elem: normalizedWeights)
-				{
-					assert(elem > 0);
-					sum += elem;
-				}
-				return sum;
-			}()));
-		}
+		constexpr Simplex(const Edges& simplexEdges, const Coefficients& normalizedWeights) noexcept;
 
-		Edges m_simplexEdges; ///< Collection of valid simplex edges. 88-bytes.
+		/// Collection of valid simplex edges.
+		///
+		/// @note This member variable is 88-bytes.
+		///
+		Edges m_simplexEdges;
 
 		/// Normalized weights.
 		///
@@ -139,6 +182,53 @@ namespace box2d
 		///
 		Coefficients m_normalizedWeights;
 	};
+
+	constexpr inline Simplex::Cache::Cache(float_t metric, IndexPairs indices) noexcept:
+		m_metric{metric}, m_indices{indices}
+	{
+		// Intentionally empty
+	}
+
+	inline float_t Simplex::Cache::GetMetric() const noexcept
+	{
+		assert(IsValid(m_metric));
+		return m_metric;
+	}
+	
+	inline bool Simplex::Cache::IsMetricSet() const noexcept
+	{
+		return IsValid(m_metric);
+	}
+	
+	constexpr Simplex::IndexPairs Simplex::Cache::GetIndices() const noexcept
+	{
+		return m_indices;
+	}
+	
+	constexpr Simplex::size_type Simplex::Cache::GetNumIndices() const noexcept
+	{
+		return m_indices.size();
+	}
+	
+	constexpr IndexPair Simplex::Cache::GetIndexPair(size_type index) const noexcept
+	{
+		return m_indices[index];
+	}
+
+	inline Simplex::Cache Simplex::GetCache(const Simplex::Edges& edges) noexcept
+	{
+		return Simplex::Cache{Simplex::CalcMetric(edges), Simplex::GetIndexPairs(edges)};
+	}
+
+	inline Simplex::IndexPairs Simplex::GetIndexPairs(const Edges& collection) noexcept
+	{
+		IndexPairs list;
+		for (auto&& element: collection)
+		{
+			list.push_back(element.GetIndexPair());
+		}
+		return list;
+	}
 
 	constexpr inline Vec2 Simplex::CalcSearchDirection(const Edges& simplexEdges) noexcept
 	{
@@ -174,6 +264,41 @@ namespace box2d
 			default: break; // should not be reached
 		}
 		return float_t{0};
+	}
+
+	constexpr inline Simplex::Simplex(const Edges& simplexEdges, const Coefficients& normalizedWeights) noexcept:
+		m_simplexEdges{simplexEdges}, m_normalizedWeights{normalizedWeights}
+	{
+		assert(simplexEdges.size() == normalizedWeights.size());
+		assert(almost_equal(1, [&]() {
+			auto sum = float_t(0);
+			for (auto&& elem: normalizedWeights)
+			{
+				assert(elem > 0);
+				sum += elem;
+			}
+			return sum;
+		}()));
+	}
+
+	constexpr inline Simplex::Edges Simplex::GetEdges() const noexcept
+	{
+		return m_simplexEdges;
+	}
+	
+	const inline SimplexEdge& Simplex::GetSimplexEdge(size_type index) const noexcept
+	{
+		return m_simplexEdges[index];
+	}
+	
+	constexpr inline float_t Simplex::GetCoefficient(size_type index) const noexcept
+	{
+		return m_normalizedWeights[index];
+	}
+	
+	constexpr inline Simplex::size_type Simplex::GetSize() const noexcept
+	{
+		return m_simplexEdges.size();
 	}
 
 	inline Vec2 GetScaledDelta(const Simplex& simplex, Simplex::size_type index)

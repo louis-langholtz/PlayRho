@@ -79,9 +79,6 @@ constexpr auto Pi = static_cast<float_t>(M_PI); ///< Pi as the "float_t" float-t
 /// @note For memory efficiency, uses the smallest integral type that can hold the value. 
 constexpr auto MaxManifoldPoints = uint8{2};
 
-/// Maximum number of supportable edges in a simplex.
-constexpr auto MaxSimplexEdges = uint8{3};
-
 /// Maximum number of vertices on a convex polygon.
 /// You cannot increase this too much because BlockAllocator has a maximum object size.
 /// @note For memory efficiency, uses the smallest integral type that can hold the value. 

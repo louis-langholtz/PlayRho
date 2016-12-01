@@ -20,9 +20,7 @@
 #include <Box2D/Common/ArrayList.hpp>
 #include <Box2D/Collision/Distance.hpp>
 #include <Box2D/Collision/DistanceProxy.hpp>
-#include <Box2D/Collision/SimplexCache.hpp>
 #include <Box2D/Collision/Simplex.hpp>
-#include <Box2D/Collision/IndexPairList.hpp>
 
 namespace box2d {
 
@@ -78,7 +76,7 @@ SimplexEdge GetSimplexEdge(const DistanceProxy& proxyA, const Transformation& xf
 }
 
 static inline
-Simplex::Edges GetSimplexEdges(const IndexPairList& indexPairs,
+Simplex::Edges GetSimplexEdges(const Simplex::IndexPairs& indexPairs,
 				   const DistanceProxy& proxyA, const Transformation& xfA,
 				   const DistanceProxy& proxyB, const Transformation& xfB)
 {
@@ -89,15 +87,10 @@ Simplex::Edges GetSimplexEdges(const IndexPairList& indexPairs,
 	}
 	return simplexEdges;
 }
-	
-inline auto GetSimplexCache(const Simplex::Edges& simplexEdges)
-{
-	return SimplexCache(Simplex::CalcMetric(simplexEdges), GetIndexPairList(simplexEdges));
-}
-	
+
 DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
 						const DistanceProxy& proxyB, const Transformation& transformB,
-						const SimplexCache& cache)
+						const Simplex::Cache& cache)
 {
 	assert(proxyA.GetVertexCount() > 0);
 	assert(IsValid(transformA.p));
@@ -137,13 +130,13 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 		++iter;
 	
 		// Copy simplex so we can identify duplicates and prevent cycling.
-		const auto savedIndices = GetIndexPairList(simplexEdges);
+		const auto savedIndices = Simplex::GetIndexPairs(simplexEdges);
 
 		simplex = Simplex::Get(simplexEdges);
 		simplexEdges = simplex.GetEdges();
 
 		// If we have max points (3), then the origin is in the corresponding triangle.
-		if (simplexEdges.size() == MaxSimplexEdges)
+		if (simplexEdges.size() == simplexEdges.max_size())
 		{
 			break;
 		}
@@ -192,7 +185,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 	}
 
 	// Note: simplexEdges is same here as simplex.GetSimplexEdges().
-	return DistanceOutput{GetWitnessPoints(simplex), iter, GetSimplexCache(simplexEdges)};
+	return DistanceOutput{GetWitnessPoints(simplex), iter, Simplex::GetCache(simplexEdges)};
 }
 	
 } // namespace box2d

@@ -21,6 +21,76 @@
 
 using namespace box2d;
 
+TEST(SimplexCache, ByteSizeIs12)
+{
+	EXPECT_EQ(sizeof(Simplex::Cache), size_t(12));
+}
+
+TEST(SimplexCache, IndexPairListByteSizeIs7)
+{
+	EXPECT_EQ(sizeof(Simplex::IndexPairs), size_t(7));
+}
+
+TEST(SimplexCache, DefaultInit)
+{
+	Simplex::Cache foo;
+	EXPECT_EQ(decltype(foo.GetNumIndices()){0}, foo.GetNumIndices());
+	EXPECT_FALSE(foo.IsMetricSet());
+}
+
+TEST(SimplexCache, InitializingConstructor)
+{
+	{
+		const auto metric = float_t(.3);
+		const auto indices = Simplex::IndexPairs{};
+		Simplex::Cache foo{metric, indices};
+		
+		EXPECT_EQ(foo.GetNumIndices(), decltype(foo.GetNumIndices()){0});
+		EXPECT_TRUE(foo.IsMetricSet());
+		EXPECT_EQ(foo.GetMetric(), metric);
+	}
+	{
+		const auto ip0 = IndexPair{0, 0};
+		const auto ip1 = IndexPair{1, 0};
+		const auto ip2 = IndexPair{4, 3};
+		const auto metric = float_t(-1.4);
+		Simplex::Cache foo{metric, Simplex::IndexPairs{ip0, ip1, ip2}};
+		
+		EXPECT_EQ(foo.GetNumIndices(), decltype(foo.GetNumIndices()){3});
+		EXPECT_EQ(foo.GetIndexPair(0), ip0);
+		EXPECT_EQ(foo.GetIndexPair(1), ip1);
+		EXPECT_EQ(foo.GetIndexPair(2), ip2);
+		EXPECT_TRUE(foo.IsMetricSet());
+		EXPECT_EQ(foo.GetMetric(), metric);
+	}
+}
+
+TEST(SimplexCache, Assignment)
+{
+	const auto metric = float_t(.3);
+	const auto indices = Simplex::IndexPairs{};
+	Simplex::Cache foo{metric, indices};
+	
+	ASSERT_EQ(foo.GetNumIndices(), decltype(foo.GetNumIndices()){0});
+	ASSERT_TRUE(foo.IsMetricSet());
+	ASSERT_EQ(foo.GetMetric(), metric);
+	
+	const auto ip0 = IndexPair{0, 0};
+	const auto ip1 = IndexPair{1, 0};
+	const auto ip2 = IndexPair{4, 3};
+	const auto roo_metric = float_t(-1.4);
+	Simplex::Cache roo{roo_metric, Simplex::IndexPairs{ip0, ip1, ip2}};
+	
+	foo = roo;
+	
+	EXPECT_EQ(foo.GetNumIndices(), decltype(foo.GetNumIndices()){3});
+	EXPECT_EQ(foo.GetIndexPair(0), ip0);
+	EXPECT_EQ(foo.GetIndexPair(1), ip1);
+	EXPECT_EQ(foo.GetIndexPair(2), ip2);
+	EXPECT_TRUE(foo.IsMetricSet());
+	EXPECT_EQ(foo.GetMetric(), roo_metric);
+}
+
 TEST(SimplexEdgeList, ByteSizeIs88)
 {
 	EXPECT_EQ(sizeof(Simplex::Edges), size_t(88));

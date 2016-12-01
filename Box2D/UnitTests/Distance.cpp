@@ -18,14 +18,13 @@
 
 #include "gtest/gtest.h"
 #include <Box2D/Collision/Distance.hpp>
-#include <Box2D/Collision/SimplexCache.hpp>
 #include <Box2D/Collision/DistanceProxy.hpp>
 
 using namespace box2d;
 
 TEST(Distance, MatchingCircles)
 {
-	SimplexCache cache;
+	Simplex::Cache cache;
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
 	const auto pos1 = Vec2{2, 2};
@@ -52,7 +51,7 @@ TEST(Distance, MatchingCircles)
 
 TEST(Distance, OpposingCircles)
 {
-	SimplexCache cache;
+	Simplex::Cache cache;
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
 	const auto pos1 = Vec2{2, 2};
@@ -83,7 +82,7 @@ TEST(Distance, OpposingCircles)
 
 TEST(Distance, HorTouchingCircles)
 {
-	SimplexCache cache;
+	Simplex::Cache cache;
 	
 	const auto pos1 = Vec2{-2, 2};
 	const auto pos2 = Vec2{+2, 2};
@@ -117,7 +116,7 @@ TEST(Distance, HorTouchingCircles)
 
 TEST(Distance, OverlappingCirclesPN)
 {
-	SimplexCache cache;
+	Simplex::Cache cache;
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
 	const auto pos1 = Vec2{1, 1};
@@ -148,7 +147,7 @@ TEST(Distance, OverlappingCirclesPN)
 
 TEST(Distance, OverlappingCirclesNP)
 {
-	SimplexCache cache;
+	Simplex::Cache cache;
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
 	const auto pos1 = Vec2{-1, -1};
@@ -180,7 +179,7 @@ TEST(Distance, OverlappingCirclesNP)
 
 TEST(Distance, SeparatedCircles)
 {
-	SimplexCache cache;
+	Simplex::Cache cache;
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
 	const auto pos1 = Vec2{2, 2};
@@ -211,7 +210,7 @@ TEST(Distance, SeparatedCircles)
 
 TEST(Distance, EdgeCircleOverlapping)
 {
-	SimplexCache cache;
+	Simplex::Cache cache;
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
 	const auto pos1 = Vec2{0, 2};
@@ -247,7 +246,7 @@ TEST(Distance, EdgeCircleOverlapping)
 
 TEST(Distance, EdgeCircleOverlapping2)
 {
-	SimplexCache cache;
+	Simplex::Cache cache;
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
 	const auto pos1 = Vec2{-3, 2};
@@ -283,7 +282,7 @@ TEST(Distance, EdgeCircleOverlapping2)
 
 TEST(Distance, EdgeCircleTouching)
 {
-	SimplexCache cache;
+	Simplex::Cache cache;
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
 	const auto pos1 = Vec2{0, 3};
@@ -330,7 +329,7 @@ TEST(Distance, HorEdgeSquareTouching)
 	const auto pos6 = Vec2{6, 0};
 	DistanceProxy dp2{float_t(0.5), pos5, pos6};
 	
-	SimplexCache cache;
+	Simplex::Cache cache;
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
 
@@ -372,7 +371,7 @@ TEST(Distance, VerEdgeSquareTouching)
 	const auto pos6 = Vec2{4, 6};
 	DistanceProxy dp2{float_t(0.5), pos5, pos6};
 	
-	SimplexCache cache;
+	Simplex::Cache cache;
 	Transformation xf1 = Transform_identity;
 	Transformation xf2 = Transform_identity;
 	
@@ -411,7 +410,7 @@ TEST(Distance, SquareTwice)
 	const auto square = {pos1, pos2, pos3, pos4};
 	DistanceProxy dp1{float_t(0.05), square};
 
-	SimplexCache cache;
+	Simplex::Cache cache;
 	Transformation xfm = Transform_identity;
 	
 	const auto output = Distance(dp1, xfm, dp1, xfm, cache);
@@ -452,7 +451,7 @@ TEST(Distance, SquareSquareTouchingVertically)
 	const auto square2 = {pos5, pos6, pos7, pos8};
 	DistanceProxy dp2{float_t(0.05), square2};
 
-	SimplexCache cache;
+	Simplex::Cache cache;
 	Transformation xfm = Transform_identity;
 	
 	const auto output = Distance(dp1, xfm, dp2, xfm, cache);
@@ -492,7 +491,7 @@ TEST(Distance, SquareSquareDiagonally)
 	const auto square2 = {pos5, pos6, pos7, pos8};
 	DistanceProxy dp2{float_t(0.05), square2};
 	
-	SimplexCache cache;
+	Simplex::Cache cache;
 	Transformation xfm = Transform_identity;
 	
 	const auto output = Distance(dp1, xfm, dp2, xfm, cache);
@@ -556,7 +555,7 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
 	const auto square2 = {pos5, pos6, pos7, pos8};
 	DistanceProxy dp2{0, square2};
 	
-	SimplexCache cache;
+	Simplex::Cache cache;
 	Transformation xfm = Transform_identity;
 	
 	const auto output = Distance(dp1, xfm, dp2, xfm, cache);

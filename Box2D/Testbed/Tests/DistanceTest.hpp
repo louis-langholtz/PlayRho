@@ -53,7 +53,7 @@ public:
 		const auto transformA = m_transformA;
 		const auto transformB = m_transformB;
 
-		SimplexCache cache;
+		Simplex::Cache cache;
 		const auto output = Distance(proxyA, transformA, proxyB, transformB, cache);
 		const auto outputDistance = Sqrt(GetLengthSquared(output.witnessPoints.a - output.witnessPoints.b));
 		

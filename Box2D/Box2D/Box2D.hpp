@@ -45,7 +45,6 @@ For discussion please visit http://box2d.org/forum
 #include <Box2D/Collision/WorldManifold.hpp>
 #include <Box2D/Collision/Distance.hpp>
 #include <Box2D/Collision/DistanceProxy.hpp>
-#include <Box2D/Collision/SimplexCache.hpp>
 
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>

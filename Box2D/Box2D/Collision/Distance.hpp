@@ -21,7 +21,7 @@
 #define B2_DISTANCE_H
 
 #include <Box2D/Common/Math.hpp>
-#include <Box2D/Collision/SimplexCache.hpp>
+#include <Box2D/Collision/Simplex.hpp>
 
 namespace box2d
 {
@@ -51,7 +51,7 @@ namespace box2d
 		/// @param wp Witness points (closest points on shapeA and shapeB).
 		/// @param it Iterations it took to determine the witness points (0 to
 		///   <code>MaxDistanceIterations</code>).
-		constexpr DistanceOutput(const WitnessPoints& wp, iteration_type it, const SimplexCache& c) noexcept:
+		constexpr DistanceOutput(const WitnessPoints& wp, iteration_type it, const Simplex::Cache& c) noexcept:
 			witnessPoints{wp}, iterations{it}, cache{c}
 		{
 			assert(it <= MaxDistanceIterations);
@@ -59,14 +59,14 @@ namespace box2d
 
 		WitnessPoints witnessPoints; ///< Closest points on shapeA and shapeB.
 		iteration_type iterations; ///< Count of iterations performed to return result.
-		SimplexCache cache;
+		Simplex::Cache cache;
 	};
 
 	/// Determines the closest points between two shapes.
 	/// @detail
 	/// Supports any combination of:
 	/// CircleShape, PolygonShape, EdgeShape. The simplex cache is input/output.
-	/// @note On the first call, the SimplexCache.count should be set to zero.
+	/// @note On the first call, the Simplex::Cache.count should be set to zero.
 	/// @param proxyA Proxy A.
 	/// @param transformA Transoform of A.
 	/// @param proxyB Proxy B.
@@ -77,7 +77,7 @@ namespace box2d
 	///   <code>MaxDistanceIterations</code> is zero.
 	DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
 							const DistanceProxy& proxyB, const Transformation& transformB,
-							const SimplexCache& cache = SimplexCache{});
+							const Simplex::Cache& cache = Simplex::Cache{});
 
 } /* namespace box2d */
 
