@@ -113,7 +113,7 @@ namespace box2d
 		/// @detail This is the number of elements that have been added to this collection.
 		/// @return Value between 0 and the maximum size for this collection.
 		/// @sa max_size().
-		size_type size() const noexcept { return m_size; }
+		constexpr size_type size() const noexcept { return m_size; }
 		
 		/// Gets the maximum size that this collection can be.
 		/// @detail This is the maximum number of elements that can be contained in this collection.
