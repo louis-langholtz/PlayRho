@@ -52,14 +52,16 @@ void GetPointStates(PointStateArray& state1, PointStateArray& state2,
 					  const Manifold& manifold1, const Manifold& manifold2);
 
 /// Used for computing contact manifolds.
+/// @note This data structure is 12-bytes large (on at least one 64-bit platform).
 struct ClipVertex
 {
-	Vec2 v; ///< Vertex of edge or polygon.
-	ContactFeature cf; ///< Contact feature information.
+	Vec2 v; ///< Vertex of edge or polygon. 8-bytes.
+	ContactFeature cf; ///< Contact feature information. 4-bytes.
 };
 
 /// Clip list for ClipSegmentToLine.
 /// @sa ClipSegmentToLine.
+/// @note This data structure is at least 24-bytes large.
 using ClipList = ArrayList<ClipVertex, MaxManifoldPoints>;
 
 /// Clipping for contact manifolds.

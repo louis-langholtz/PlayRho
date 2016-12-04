@@ -95,10 +95,8 @@ ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, float_t 
 			// Find intersection point of edge and plane
 			// Vertex A is hitting edge B.
 			const auto interp = distance0 / (distance0 - distance1);
-			vOut.add(ClipVertex{
-				vIn[0].v + (vIn[1].v - vIn[0].v) * interp,
-				GetVertexFaceContactFeature(indexA, vIn[0].cf.indexB)
-			});
+			const auto vertex = vIn[0].v + (vIn[1].v - vIn[0].v) * interp;
+			vOut.add(ClipVertex{vertex, GetVertexFaceContactFeature(indexA, vIn[0].cf.indexB)});
 		}
 	}
 
