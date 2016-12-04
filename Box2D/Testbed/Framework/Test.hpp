@@ -176,6 +176,8 @@ float_t RandomFloat();
 /// Random floating point number in range [lo, hi]
 float_t RandomFloat(float_t lo, float_t hi);
 
+::std::ostream& operator<<(::std::ostream& os, const ContactFeature& value);
+
 } // namespace box2d
 
 #endif

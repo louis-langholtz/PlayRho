@@ -657,3 +657,27 @@ float_t box2d::RandomFloat(float_t lo, float_t hi)
 	r = (hi - lo) * r + lo;
 	return r;
 }
+
+static const char* GetName(ContactFeature::Type type)
+{
+	switch (type)
+	{
+		case ContactFeature::e_face: return "face";
+		case ContactFeature::e_vertex: return "vertex";
+	}
+	return "unknown";
+}
+
+::std::ostream& box2d::operator<<(::std::ostream& os, const ContactFeature& value)
+{
+	os << "{";
+	os << ::GetName(value.typeA);
+	os << ",";
+	os << unsigned(value.indexA);
+	os << ",";
+	os << ::GetName(value.typeB);
+	os << ",";
+	os << unsigned(value.indexB);
+	os << "}";
+	return os;
+}
