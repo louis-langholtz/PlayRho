@@ -26,7 +26,10 @@
 #include <array>
 
 namespace box2d
-{	
+{
+	class DistanceProxy;
+	struct Transformation;
+
 	/// Manifold for two touching convex shapes.
 	/// @detail
 	/// Multiple types of contact are supported:
@@ -80,7 +83,7 @@ namespace box2d
 		/// @detail A manifold point is a contact point belonging to a contact
 		/// manifold. It holds details related to the geometry and dynamics
 		/// of the contact points.
-		/// This structure is stored across time steps, so we keep it small.
+		/// This structure is stored across time steps, so the smaller the better.
 		/// @note The impulses are used for internal caching and may not
 		///   provide reliable contact forces especially for high speed collisions.
 		/// @note This structure is at least 20-bytes large.
@@ -213,18 +216,11 @@ namespace box2d
 		
 		/// Adds a new point.
 		/// @detail This can be called once for circle type manifolds,
-		///   and up to MaxManifoldPoints times for face-A or face-B type manifolds.
+		///   and up to twice for face-A or face-B type manifolds.
 		/// GetPointCount() can be called to find out how many points have already been added.
 		/// @note Behavior is undefined if this object's type is e_unset.
 		/// @note Behavior is undefined if this is called more than MaxManifoldPoints times. 
-		void AddPoint(const Point& mp)
-		{
-			assert(m_type != e_unset);
-			assert(m_type != e_circles || m_pointCount == 0);
-			assert(m_pointCount < MaxManifoldPoints);
-			m_points[m_pointCount] = mp;
-			++m_pointCount;
-		}
+		void AddPoint(const Point& mp) noexcept;
 		
 		/// Gets the local normal for a face-type manifold.
 		/// @return Local normal if the manifold type is face A or face B, else invalid value.
@@ -280,12 +276,40 @@ namespace box2d
 		PointArray m_points; ///< Points of contact (at least 40-bytes). @sa pointCount.
 	};
 	
+	bool operator==(const Manifold::Point& lhs, const Manifold::Point& rhs);
+	
+	bool operator!=(const Manifold::Point& lhs, const Manifold::Point& rhs);
+	
+	/// Equality operator.
+	/// @note In-so-far as manifold points are concerned, order doesn't matter;
+	///    only whether the two manifolds have the same point set.
+	bool operator==(const Manifold& lhs, const Manifold& rhs);
+	
+	bool operator!=(const Manifold& lhs, const Manifold& rhs);
+
+	inline void Manifold::AddPoint(const Point& mp) noexcept
+	{
+		assert(m_type != e_unset);
+		assert(m_type != e_circles || m_pointCount == 0);
+		assert(m_pointCount < MaxManifoldPoints);
+		assert(m_pointCount == 0 || mp.contactFeature != m_points[0].contactFeature);
+		m_points[m_pointCount] = mp;
+		++m_pointCount;
+	}
+
 	template <>
 	inline bool IsValid(const Manifold& value) noexcept
 	{
 		return value.GetType() != Manifold::e_unset;
 	}
 
+	Manifold GetManifold(const DistanceProxy& proxyA, const Transformation& transformA,
+						 const DistanceProxy& proxyB, const Transformation& transformB);
+
+	Vec2 GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type, ContactFeature::index_t index);
+
+	const char* GetName(Manifold::Type) noexcept;
+	
 } // namespace box2d
 
 #endif /* Manifold_hpp */

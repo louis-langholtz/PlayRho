@@ -61,12 +61,13 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 			// Get the distance between shapes. We can also use the results
 			// to get a separating axis.
 			const auto distanceInfo = Distance(proxyA, t1xfA, proxyB, t1xfB, cache);
-			cache = distanceInfo.cache;
+			cache = Simplex::GetCache(distanceInfo.simplex.GetEdges());
+			const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
 
 			++stats.toi_iters;
 			stats.sum_dist_iters += distanceInfo.iterations;
 			stats.max_dist_iters = Max(stats.max_dist_iters, distanceInfo.iterations);
-			const auto distanceSquared = GetLengthSquared(distanceInfo.witnessPoints.a - distanceInfo.witnessPoints.b);
+			const auto distanceSquared = GetLengthSquared(witnessPoints.a - witnessPoints.b);
 			
 			// If the shapes aren't separated, give up on continuous collision.
 			if (distanceSquared <= float_t{0}) // Failure!

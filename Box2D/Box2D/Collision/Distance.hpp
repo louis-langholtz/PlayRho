@@ -48,18 +48,17 @@ namespace box2d
 		/// Initializing constructor.
 		/// @note Behavior is undefined if the given iterations value is greater than
 		///   <code>MaxDistanceIterations</code>.
-		/// @param wp Witness points (closest points on shapeA and shapeB).
+		/// @param s Simplex.
 		/// @param it Iterations it took to determine the witness points (0 to
 		///   <code>MaxDistanceIterations</code>).
-		constexpr DistanceOutput(const WitnessPoints& wp, iteration_type it, const Simplex::Cache& c) noexcept:
-			witnessPoints{wp}, iterations{it}, cache{c}
+		constexpr DistanceOutput(const Simplex& s, iteration_type it) noexcept:
+			simplex{s}, iterations{it}
 		{
 			assert(it <= MaxDistanceIterations);
 		}
 
-		WitnessPoints witnessPoints; ///< Closest points on shapeA and shapeB.
+		Simplex simplex;
 		iteration_type iterations; ///< Count of iterations performed to return result.
-		Simplex::Cache cache;
 	};
 
 	/// Determines the closest points between two shapes.

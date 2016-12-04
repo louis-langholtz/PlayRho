@@ -20,6 +20,8 @@
 #ifndef DISTANCE_TEST_H
 #define DISTANCE_TEST_H
 
+#include <sstream>
+
 namespace box2d {
 
 class DistanceTest : public Test
@@ -29,21 +31,46 @@ public:
 	{
 		{
 			m_transformA = Transform_identity;
-			m_transformA.p = Vec2(0.0f, -0.2f);
-			m_polygonA.SetAsBox(10.0f, 0.2f);
+			m_transformA.p = Vec2(-7.0f, 20.2f); // Vec2(0.0f, -0.2f);
+			m_polygonA.SetAsBox(3.0f, 2.0f);
 		}
 
 		{
-			m_positionB = Vec2(12.017401f, 0.13678508f);
-			m_angleB = -0.0109265_rad;
+			m_positionB = m_transformA.p + Vec2(8.017401f, 0.13678508f);
+			m_angleB = 0_deg; // -0.0109265_rad;
 			m_transformB = Transformation{m_positionB, UnitVec2{m_angleB}};
-			m_polygonB.SetAsBox(2.0f, 0.1f);
+			m_polygonB.SetAsBox(2.2f, 0.1f);
 		}
 	}
 
 	static Test* Create()
 	{
 		return new DistanceTest;
+	}
+
+	void ShowManifold(Drawer& drawer, const Manifold& manifold, const char* name)
+	{
+		std::ostringstream strbuf;
+		const auto count = manifold.GetPointCount();
+		for (auto i = decltype(count){0}; i < count; ++i)
+		{
+			strbuf << ", ";
+			strbuf << "mp={";
+			const auto p = manifold.GetPoint(i);
+			strbuf << "lp={" << p.localPoint.x << "," << p.localPoint.y << "}";
+			strbuf << ", ";
+			strbuf << "cf=" << p.contactFeature;
+			strbuf << "}";
+		}
+		drawer.DrawString(5, m_textLine, "%s %s: lp={%g,%g}, ln={%g,%g}, #=%d%s",
+						  GetName(manifold.GetType()),
+						  name,
+						  GetX(manifold.GetLocalPoint()),
+						  GetY(manifold.GetLocalPoint()),
+						  GetX(manifold.GetLocalNormal()),
+						  GetY(manifold.GetLocalNormal()),
+						  count, strbuf.str().c_str());
+		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 
 	void PostStep(const Settings& settings, Drawer& drawer) override
@@ -53,22 +80,27 @@ public:
 		const auto transformA = m_transformA;
 		const auto transformB = m_transformB;
 
+		const auto manifold = CollideShapes(m_polygonA, m_transformA, m_polygonB, m_transformB);
+		const auto panifold = GetManifold(proxyA, transformA, proxyB, transformB);
+
 		Simplex::Cache cache;
 		const auto output = Distance(proxyA, transformA, proxyB, transformB, cache);
-		const auto outputDistance = Sqrt(GetLengthSquared(output.witnessPoints.a - output.witnessPoints.b));
+		cache = Simplex::GetCache(output.simplex.GetEdges());
+		const auto witnessPoints = GetWitnessPoints(output.simplex);
+		const auto outputDistance = Sqrt(GetLengthSquared(witnessPoints.a - witnessPoints.b));
 		
 		const auto rA = proxyA.GetRadius();
 		const auto rB = proxyB.GetRadius();
 		const auto totalRadius = rA + rB;
 		
-		auto adjustedWitnessPoints = output.witnessPoints;
+		auto adjustedWitnessPoints = witnessPoints;
 		auto adjustedDistance = outputDistance;
 		if ((outputDistance > totalRadius) && !almost_zero(outputDistance))
 		{
 			// Shapes are still not overlapped.
 			// Move the witness points to the outer surface.
 			adjustedDistance -= totalRadius;
-			const auto normal = GetUnitVector(output.witnessPoints.b - output.witnessPoints.a);
+			const auto normal = GetUnitVector(witnessPoints.b - witnessPoints.a);
 			adjustedWitnessPoints.a += rA * normal;
 			adjustedWitnessPoints.b -= rB * normal;
 		}
@@ -76,27 +108,27 @@ public:
 		{
 			// Shapes are overlapped when radii are considered.
 			// Move the witness points to the middle.
-			const auto p = (output.witnessPoints.a + output.witnessPoints.b) / float_t{2};
+			const auto p = (witnessPoints.a + witnessPoints.b) / float_t{2};
 			adjustedWitnessPoints.a = p;
 			adjustedWitnessPoints.b = p;
-			adjustedDistance = float_t{0};
+			adjustedDistance = 0;
 		}
 		
+		drawer.DrawString(transformA.p, "Shape A");
+		drawer.DrawString(transformB.p, "Shape B");
+
 		drawer.DrawString(5, m_textLine, "Press 'A', 'D', 'W', or 'S' to move left, right, up, or down respectively.");
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		drawer.DrawString(5, m_textLine, "Press 'Q', or 'E' to rotate counter-clockwise or clockwise respectively.");
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		drawer.DrawString(5, m_textLine, "Press numberpad '+', or '-' to increase or decrease vertex radiuses respectively.");
+		drawer.DrawString(5, m_textLine, "Press num-pad '+'/'-' to increase/decrease vertex radiuses (%g & %g).",
+						  rA, rB);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		drawer.DrawString(5, m_textLine, "distance = %g (from %g), iterations = %d",
 						  adjustedDistance, outputDistance, output.iterations);
-		m_textLine += DRAW_STRING_NEW_LINE;
-
-		drawer.DrawString(5, m_textLine, "radiusA = %g, radiusB = %g",
-						  m_polygonA.GetVertexRadius(), m_polygonB.GetVertexRadius());
 		m_textLine += DRAW_STRING_NEW_LINE;
 		
 		{
@@ -110,7 +142,7 @@ public:
 				}
 				drawer.DrawPolygon(v, vertexCount, color);
 			}
-
+			
 			{
 				const auto vertexCount = m_polygonB.GetVertexCount();
 				for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
@@ -121,11 +153,48 @@ public:
 			}
 		}
 
+		{
+			const auto size = output.simplex.GetSize();
+			drawer.DrawString(5, m_textLine, "Simplex: size=%d, wpt-a={%g,%g}, wpt-b={%g,%g})",
+							  size,
+							  witnessPoints.a.x, witnessPoints.a.y,
+							  witnessPoints.b.x, witnessPoints.b.y);
+			m_textLine += DRAW_STRING_NEW_LINE;
+			for (auto i = decltype(size){0}; i < size; ++i)
+			{
+				const auto& edge = output.simplex.GetSimplexEdge(i);
+				const auto coef = output.simplex.GetCoefficient(i);
+				
+				drawer.DrawString(5, m_textLine, "a[%d]={%g,%g} b[%d]={%g,%g} coef=%g",
+								  edge.GetIndexA(),
+								  edge.GetPointA().x,
+								  edge.GetPointA().y,
+								  edge.GetIndexB(),
+								  edge.GetPointB().x,
+								  edge.GetPointB().y,
+								  coef);
+				m_textLine += DRAW_STRING_NEW_LINE;
+				
+				drawer.DrawSegment(edge.GetPointA(), edge.GetPointB(), Color(0.0f, 1.0f, 1.0f, 0.1f));
+			}
+		}
+
+		ShowManifold(drawer, manifold, "manifold");
+		ShowManifold(drawer, panifold, "wanifold");
+
 		drawer.DrawPoint(adjustedWitnessPoints.a, 4.0f, Color(1.0f, 0.0f, 0.0f));
 		drawer.DrawPoint(adjustedWitnessPoints.b, 4.0f, Color(1.0f, 1.0f, 0.0f));
 
-		drawer.DrawPoint(output.witnessPoints.a, 4.0f, Color(1.0f, 0.0f, 0.0f, 0.5));
-		drawer.DrawPoint(output.witnessPoints.b, 4.0f, Color(1.0f, 1.0f, 0.0f, 0.5));
+		drawer.DrawPoint(witnessPoints.a, 4.0f, Color(1.0f, 0.0f, 0.0f, 0.5));
+		drawer.DrawPoint(witnessPoints.b, 4.0f, Color(1.0f, 1.0f, 0.0f, 0.5));
+		
+		for (auto&& edge: output.simplex.GetEdges())
+		{
+			drawer.DrawPoint(edge.GetPointA(), 6.0f, Color(0.0f, 1.0f, 1.0f, 0.6f));
+			drawer.DrawPoint(edge.GetPointB(), 6.0f, Color(0.0f, 1.0f, 1.0f, 0.6f));
+			drawer.DrawString(edge.GetPointA(), "%d", edge.GetIndexA());
+			drawer.DrawString(edge.GetPointB(), "%d", edge.GetIndexB());
+		}
 	}
 
 	void Keyboard(Key key) override
@@ -149,11 +218,11 @@ public:
 			break;
 
 		case Key_Q:
-			m_angleB += 0.1_rad * Pi;
+			m_angleB += 5_deg;
 			break;
 
 		case Key_E:
-			m_angleB -= 0.1_rad * Pi;
+			m_angleB -= 5_deg;
 			break;
 
 		case Key_Add:

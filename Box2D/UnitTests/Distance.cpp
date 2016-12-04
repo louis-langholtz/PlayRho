@@ -33,10 +33,11 @@ TEST(Distance, MatchingCircles)
 	DistanceProxy dp2{1, pos2};
 
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
-	cache = output.cache;
+	cache = Simplex::GetCache(output.simplex.GetEdges());
+	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(output.witnessPoints.a, pos1);
-	EXPECT_EQ(output.witnessPoints.b, pos1);
+	EXPECT_EQ(witnessPoints.a, pos1);
+	EXPECT_EQ(witnessPoints.b, pos1);
 	EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
 	
 	EXPECT_EQ(cache.GetNumIndices(), decltype(cache.GetNumIndices()){1});
@@ -60,13 +61,14 @@ TEST(Distance, OpposingCircles)
 	DistanceProxy dp2{2, pos2};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
-	cache = output.cache;
+	cache = Simplex::GetCache(output.simplex.GetEdges());
+	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(output.witnessPoints.a.x, pos1.x);
-	EXPECT_EQ(output.witnessPoints.a.y, pos1.y);
+	EXPECT_EQ(witnessPoints.a.x, pos1.x);
+	EXPECT_EQ(witnessPoints.a.y, pos1.y);
 
-	EXPECT_EQ(output.witnessPoints.b.x, pos2.x);
-	EXPECT_EQ(output.witnessPoints.b.y, pos2.y);
+	EXPECT_EQ(witnessPoints.b.x, pos2.x);
+	EXPECT_EQ(witnessPoints.b.y, pos2.y);
 
 	EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
 	
@@ -94,13 +96,14 @@ TEST(Distance, HorTouchingCircles)
 		DistanceProxy dp2{2, pos2};
 		return Distance(dp1, xf1, dp2, xf2, cache);
 	}();
-	cache = output.cache;
+	cache = Simplex::GetCache(output.simplex.GetEdges());
+	const auto witnessPoints = GetWitnessPoints(output.simplex);
+
+	EXPECT_EQ(witnessPoints.a.x, pos1.x);
+	EXPECT_EQ(witnessPoints.a.y, pos1.y);
 	
-	EXPECT_EQ(output.witnessPoints.a.x, pos1.x);
-	EXPECT_EQ(output.witnessPoints.a.y, pos1.y);
-	
-	EXPECT_EQ(output.witnessPoints.b.x, pos2.x);
-	EXPECT_EQ(output.witnessPoints.b.y, pos2.y);
+	EXPECT_EQ(witnessPoints.b.x, pos2.x);
+	EXPECT_EQ(witnessPoints.b.y, pos2.y);
 	
 	EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
 	
@@ -125,13 +128,14 @@ TEST(Distance, OverlappingCirclesPN)
 	DistanceProxy dp2{2, pos2};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
-	cache = output.cache;
+	cache = Simplex::GetCache(output.simplex.GetEdges());
+	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(output.witnessPoints.a.x, pos1.x);
-	EXPECT_EQ(output.witnessPoints.a.y, pos1.y);
+	EXPECT_EQ(witnessPoints.a.x, pos1.x);
+	EXPECT_EQ(witnessPoints.a.y, pos1.y);
 	
-	EXPECT_EQ(output.witnessPoints.b.x, pos2.x);
-	EXPECT_EQ(output.witnessPoints.b.y, pos2.y);
+	EXPECT_EQ(witnessPoints.b.x, pos2.x);
+	EXPECT_EQ(witnessPoints.b.y, pos2.y);
 	
 	EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
 	
@@ -156,13 +160,14 @@ TEST(Distance, OverlappingCirclesNP)
 	DistanceProxy dp2{2, pos2};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
-	cache = output.cache;
+	cache = Simplex::GetCache(output.simplex.GetEdges());
+	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(output.witnessPoints.a.x, pos1.x);
-	EXPECT_EQ(output.witnessPoints.a.y, pos1.y);
+	EXPECT_EQ(witnessPoints.a.x, pos1.x);
+	EXPECT_EQ(witnessPoints.a.y, pos1.y);
 	
-	EXPECT_EQ(output.witnessPoints.b.x, pos2.x);
-	EXPECT_EQ(output.witnessPoints.b.y, pos2.y);
+	EXPECT_EQ(witnessPoints.b.x, pos2.x);
+	EXPECT_EQ(witnessPoints.b.y, pos2.y);
 	
 	EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
 	
@@ -188,13 +193,14 @@ TEST(Distance, SeparatedCircles)
 	DistanceProxy dp2{1, pos2};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
-	cache = output.cache;
+	cache = Simplex::GetCache(output.simplex.GetEdges());
+	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(output.witnessPoints.a.x, pos1.x);
-	EXPECT_EQ(output.witnessPoints.a.y, pos1.y);
+	EXPECT_EQ(witnessPoints.a.x, pos1.x);
+	EXPECT_EQ(witnessPoints.a.y, pos1.y);
 	
-	EXPECT_EQ(output.witnessPoints.b.x, pos2.x);
-	EXPECT_EQ(output.witnessPoints.b.y, pos2.y);
+	EXPECT_EQ(witnessPoints.b.x, pos2.x);
+	EXPECT_EQ(witnessPoints.b.y, pos2.y);
 	
 	EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
 	
@@ -220,13 +226,14 @@ TEST(Distance, EdgeCircleOverlapping)
 	DistanceProxy dp2{1, pos3};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
-	cache = output.cache;
+	cache = Simplex::GetCache(output.simplex.GetEdges());
+	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(output.witnessPoints.a.x, pos3.x);
-	EXPECT_EQ(output.witnessPoints.a.y, pos3.y);
+	EXPECT_EQ(witnessPoints.a.x, pos3.x);
+	EXPECT_EQ(witnessPoints.a.y, pos3.y);
 
-	EXPECT_EQ(output.witnessPoints.b.x, pos3.x);
-	EXPECT_EQ(output.witnessPoints.b.y, pos3.y);
+	EXPECT_EQ(witnessPoints.b.x, pos3.x);
+	EXPECT_EQ(witnessPoints.b.y, pos3.y);
 	
 	EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
 	
@@ -256,13 +263,14 @@ TEST(Distance, EdgeCircleOverlapping2)
 	DistanceProxy dp2{1, pos3};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
-	cache = output.cache;
+	cache = Simplex::GetCache(output.simplex.GetEdges());
+	const auto witnessPoints = GetWitnessPoints(output.simplex);
+
+	EXPECT_EQ(witnessPoints.a.x, pos3.x);
+	EXPECT_EQ(witnessPoints.a.y, pos3.y);
 	
-	EXPECT_EQ(output.witnessPoints.a.x, pos3.x);
-	EXPECT_EQ(output.witnessPoints.a.y, pos3.y);
-	
-	EXPECT_EQ(output.witnessPoints.b.x, pos3.x);
-	EXPECT_EQ(output.witnessPoints.b.y, pos3.y);
+	EXPECT_EQ(witnessPoints.b.x, pos3.x);
+	EXPECT_EQ(witnessPoints.b.y, pos3.y);
 	
 	EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
 	
@@ -292,13 +300,14 @@ TEST(Distance, EdgeCircleTouching)
 	DistanceProxy dp2{1, pos3};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
-	cache = output.cache;
+	cache = Simplex::GetCache(output.simplex.GetEdges());
+	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(output.witnessPoints.a.x, float_t{2});
-	EXPECT_EQ(output.witnessPoints.a.y, float_t{3});
+	EXPECT_EQ(witnessPoints.a.x, float_t{2});
+	EXPECT_EQ(witnessPoints.a.y, float_t{3});
 	
-	EXPECT_EQ(output.witnessPoints.b.x, float_t{2});
-	EXPECT_EQ(output.witnessPoints.b.y, float_t{1});
+	EXPECT_EQ(witnessPoints.b.x, float_t{2});
+	EXPECT_EQ(witnessPoints.b.y, float_t{1});
 	
 	EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
 	
@@ -334,13 +343,14 @@ TEST(Distance, HorEdgeSquareTouching)
 	Transformation xf2 = Transform_identity;
 
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
-	cache = output.cache;
+	cache = Simplex::GetCache(output.simplex.GetEdges());
+	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(output.witnessPoints.a.x, float_t{1});
-	EXPECT_EQ(output.witnessPoints.a.y, float_t{1});
+	EXPECT_EQ(witnessPoints.a.x, float_t{1});
+	EXPECT_EQ(witnessPoints.a.y, float_t{1});
 	
-	EXPECT_EQ(output.witnessPoints.b.x, float_t{1});
-	EXPECT_EQ(output.witnessPoints.b.y, float_t{0});
+	EXPECT_EQ(witnessPoints.b.x, float_t{1});
+	EXPECT_EQ(witnessPoints.b.y, float_t{0});
 	
 	EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
 	
@@ -376,14 +386,15 @@ TEST(Distance, VerEdgeSquareTouching)
 	Transformation xf2 = Transform_identity;
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
-	cache = output.cache;
+	cache = Simplex::GetCache(output.simplex.GetEdges());
+	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(Sqrt(GetLengthSquared(output.witnessPoints.a - output.witnessPoints.b)), float_t(1));
-	EXPECT_EQ(output.witnessPoints.a.x, float_t{3});
-	EXPECT_EQ(output.witnessPoints.a.y, float_t{2});
+	EXPECT_EQ(Sqrt(GetLengthSquared(witnessPoints.a - witnessPoints.b)), float_t(1));
+	EXPECT_EQ(witnessPoints.a.x, float_t{3});
+	EXPECT_EQ(witnessPoints.a.y, float_t{2});
 	
-	EXPECT_EQ(output.witnessPoints.b.x, float_t{4});
-	EXPECT_EQ(output.witnessPoints.b.y, float_t{2});
+	EXPECT_EQ(witnessPoints.b.x, float_t{4});
+	EXPECT_EQ(witnessPoints.b.y, float_t{2});
 	
 	EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
 	
@@ -414,13 +425,14 @@ TEST(Distance, SquareTwice)
 	Transformation xfm = Transform_identity;
 	
 	const auto output = Distance(dp1, xfm, dp1, xfm, cache);
-	cache = output.cache;
+	cache = Simplex::GetCache(output.simplex.GetEdges());
+	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(output.witnessPoints.a.x, 2);
-	EXPECT_EQ(output.witnessPoints.a.y, 2);
+	EXPECT_EQ(witnessPoints.a.x, 2);
+	EXPECT_EQ(witnessPoints.a.y, 2);
 
-	EXPECT_EQ(output.witnessPoints.b.x, 2);
-	EXPECT_EQ(output.witnessPoints.b.y, 2);
+	EXPECT_EQ(witnessPoints.b.x, 2);
+	EXPECT_EQ(witnessPoints.b.y, 2);
 
 	EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
 	
@@ -455,13 +467,14 @@ TEST(Distance, SquareSquareTouchingVertically)
 	Transformation xfm = Transform_identity;
 	
 	const auto output = Distance(dp1, xfm, dp2, xfm, cache);
-	cache = output.cache;
+	cache = Simplex::GetCache(output.simplex.GetEdges());
+	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(output.witnessPoints.a.x, 4);
-	EXPECT_EQ(output.witnessPoints.a.y, 3);
+	EXPECT_EQ(witnessPoints.a.x, 4);
+	EXPECT_EQ(witnessPoints.a.y, 3);
 	
-	EXPECT_EQ(output.witnessPoints.b.x, 4);
-	EXPECT_EQ(output.witnessPoints.b.y, 3);
+	EXPECT_EQ(witnessPoints.b.x, 4);
+	EXPECT_EQ(witnessPoints.b.y, 3);
 	
 	EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
 	
@@ -495,13 +508,14 @@ TEST(Distance, SquareSquareDiagonally)
 	Transformation xfm = Transform_identity;
 	
 	const auto output = Distance(dp1, xfm, dp2, xfm, cache);
-	cache = output.cache;
+	cache = Simplex::GetCache(output.simplex.GetEdges());
+	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(output.witnessPoints.a.x, -1);
-	EXPECT_EQ(output.witnessPoints.a.y, -1);
+	EXPECT_EQ(witnessPoints.a.x, -1);
+	EXPECT_EQ(witnessPoints.a.y, -1);
 	
-	EXPECT_EQ(output.witnessPoints.b.x, 1);
-	EXPECT_EQ(output.witnessPoints.b.y, 1);
+	EXPECT_EQ(witnessPoints.b.x, 1);
+	EXPECT_EQ(witnessPoints.b.y, 1);
 	
 	EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
 	
@@ -559,13 +573,14 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
 	Transformation xfm = Transform_identity;
 	
 	const auto output = Distance(dp1, xfm, dp2, xfm, cache);
-	cache = output.cache;
+	cache = Simplex::GetCache(output.simplex.GetEdges());
+	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(output.witnessPoints.a.x, 0);
-	EXPECT_EQ(output.witnessPoints.a.y, 0.5);
+	EXPECT_EQ(witnessPoints.a.x, 0);
+	EXPECT_EQ(witnessPoints.a.y, 0.5);
 	
-	EXPECT_EQ(output.witnessPoints.b.x, 0);
-	EXPECT_EQ(output.witnessPoints.b.y, 0.5);
+	EXPECT_EQ(witnessPoints.b.x, 0);
+	EXPECT_EQ(witnessPoints.b.y, 0.5);
 	
 	EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
 	

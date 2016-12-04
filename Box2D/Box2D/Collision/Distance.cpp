@@ -48,11 +48,11 @@ WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept
 	const auto size = simplex.GetSize();
 	for (auto i = decltype(size){0}; i < size; ++i)
 	{
-		const auto v = simplex.GetSimplexEdge(i);
-		const auto a = simplex.GetCoefficient(i);
+		const auto e = simplex.GetSimplexEdge(i);
+		const auto c = simplex.GetCoefficient(i);
 		
-		pointA += v.GetPointA() * a;
-		pointB += v.GetPointB() * a;
+		pointA += e.GetPointA() * c;
+		pointB += e.GetPointB() * c;
 	}
 #if 0
 	// In the 3-simplex case, pointA and pointB are usually equal.
@@ -185,7 +185,8 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 	}
 
 	// Note: simplexEdges is same here as simplex.GetSimplexEdges().
-	return DistanceOutput{GetWitnessPoints(simplex), iter, Simplex::GetCache(simplexEdges)};
+	// GetWitnessPoints(simplex), iter, Simplex::GetCache(simplexEdges)
+	return DistanceOutput{simplex, iter};
 }
 	
 } // namespace box2d

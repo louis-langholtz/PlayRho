@@ -70,6 +70,8 @@
 		4731DE611DEF7B5100E7F931 /* Simplex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE601DEF7B5100E7F931 /* Simplex.cpp */; };
 		4731DE621DEF7B5100E7F931 /* Simplex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE601DEF7B5100E7F931 /* Simplex.cpp */; };
 		4731DE641DEF841600E7F931 /* SeparationFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE631DEF841600E7F931 /* SeparationFinder.cpp */; };
+		4731DE671DF0A73000E7F931 /* Manifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE661DF0A73000E7F931 /* Manifold.cpp */; };
+		4731DE681DF0A73000E7F931 /* Manifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE661DF0A73000E7F931 /* Manifold.cpp */; };
 		4734B2191DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21A1DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21C1DC1121900F15E29 /* ArrayList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4734B21B1DC1121900F15E29 /* ArrayList.cpp */; };
@@ -494,6 +496,7 @@
 		4731DE5B1DEE3F0600E7F931 /* SeparationFinder.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SeparationFinder.hpp; sourceTree = "<group>"; };
 		4731DE601DEF7B5100E7F931 /* Simplex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Simplex.cpp; sourceTree = "<group>"; };
 		4731DE631DEF841600E7F931 /* SeparationFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SeparationFinder.cpp; sourceTree = "<group>"; };
+		4731DE661DF0A73000E7F931 /* Manifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Manifold.cpp; sourceTree = "<group>"; };
 		4734B2161DC00AFD00F15E29 /* ArrayList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ArrayList.hpp; sourceTree = "<group>"; };
 		4734B21B1DC1121900F15E29 /* ArrayList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArrayList.cpp; sourceTree = "<group>"; };
 		4734B21E1DC1340500F15E29 /* Span.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Span.hpp; sourceTree = "<group>"; };
@@ -935,6 +938,7 @@
 				4731DE431DE2570900E7F931 /* Collision.hpp */,
 				80BB892C141C3E5900F1753A /* Collision.cpp */,
 				4726DD351D387D630012A882 /* Manifold.hpp */,
+				4731DE661DF0A73000E7F931 /* Manifold.cpp */,
 				47578BE31D886FED0078CD40 /* WorldManifold.cpp */,
 				47578BDE1D8869110078CD40 /* WorldManifold.hpp */,
 				4731DE2B1DDF94A600E7F931 /* AABB.cpp */,
@@ -1698,6 +1702,7 @@
 				47AA5DAE1C4C5FBE008AF2BA /* ContactManager.cpp in Sources */,
 				47AA5DAF1C4C5FBE008AF2BA /* Fixture.cpp in Sources */,
 				4721349A1C8D03D9009536F9 /* BodyList.cpp in Sources */,
+				4731DE681DF0A73000E7F931 /* Manifold.cpp in Sources */,
 				4731DE621DEF7B5100E7F931 /* Simplex.cpp in Sources */,
 				47AA5DB01C4C5FBE008AF2BA /* Island.cpp in Sources */,
 				47AA5DB11C4C5FBE008AF2BA /* World.cpp in Sources */,
@@ -1820,6 +1825,7 @@
 				47A9833A1D0F51A300AA7D1A /* JointIterator.cpp in Sources */,
 				80BB89AF141C3E5900F1753A /* Fixture.cpp in Sources */,
 				47F932A51D11C283006A193C /* AllocatedArray.cpp in Sources */,
+				4731DE671DF0A73000E7F931 /* Manifold.cpp in Sources */,
 				477DB2A01D15F5C000846ED6 /* JointEdgeList.cpp in Sources */,
 				47E841721DB4018D00E5F311 /* VelocityConstraint.cpp in Sources */,
 				4731DE641DEF841600E7F931 /* SeparationFinder.cpp in Sources */,
