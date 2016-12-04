@@ -36,23 +36,34 @@ namespace box2d
 			e_vertex = 0,
 			e_face = 1
 		};
-		
-		ContactFeature() noexcept = default;
-		ContactFeature(const ContactFeature& copy) noexcept = default;
-		
-		constexpr ContactFeature(Type ta, index_t ia, Type tb, index_t ib) noexcept:
-			typeA{ta}, indexA{ia}, typeB{tb}, indexB{ib}
-		{
-			static_assert(sizeof(struct ContactFeature) == 4, "bad size");
-		}
-		
+				
 		// Fit data into 4-byte large structure...
 		
 		Type typeA; ///< The feature type on shape A
-		Type typeB; ///< The feature type on shape B
 		index_t indexA; ///< Feature index on shape A
+		Type typeB; ///< The feature type on shape B
 		index_t indexB; ///< Feature index on shape B
 	};
+	
+	inline ContactFeature GetVertexVertexContactFeature(ContactFeature::index_t a, ContactFeature::index_t b)
+	{
+		return ContactFeature{ContactFeature::e_vertex, a, ContactFeature::e_vertex, b};
+	}
+
+	inline ContactFeature GetVertexFaceContactFeature(ContactFeature::index_t a, ContactFeature::index_t b)
+	{
+		return ContactFeature{ContactFeature::e_vertex, a, ContactFeature::e_face, b};
+	}
+	
+	inline ContactFeature GetFaceVertexContactFeature(ContactFeature::index_t a, ContactFeature::index_t b)
+	{
+		return ContactFeature{ContactFeature::e_face, a, ContactFeature::e_vertex, b};
+	}
+	
+	inline ContactFeature GetFaceFaceContactFeature(ContactFeature::index_t a, ContactFeature::index_t b)
+	{
+		return ContactFeature{ContactFeature::e_face, a, ContactFeature::e_face, b};
+	}
 	
 	/// Default contact feature value.
 	constexpr auto DefaultContactFeature = ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 0};
@@ -72,6 +83,7 @@ namespace box2d
 	{
 		return (lhs.typeA != rhs.typeA) || (lhs.typeB != rhs.typeB) || (lhs.indexA != rhs.indexA) || (lhs.indexB != rhs.indexB);
 	}
+	
 }; // namespace box2d
 
 #endif /* ContactFeature_hpp */
