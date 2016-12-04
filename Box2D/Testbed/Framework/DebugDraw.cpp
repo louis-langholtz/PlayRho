@@ -686,11 +686,11 @@ void DebugDraw::DrawString(int x, int y, const char *string, ...)
 {
 	const auto h = float_t(m_camera.m_height);
 
-	char buffer[128];
+	char buffer[256];
 
 	va_list arg;
 	va_start(arg, string);
-	vsprintf(buffer, string, arg);
+	vsnprintf(buffer, sizeof(buffer), string, arg);
 	va_end(arg);
 
 	AddGfxCmdText(float(x), h - float(y), TEXT_ALIGN_LEFT, buffer, SetRGBA(230, 153, 153, 255));
