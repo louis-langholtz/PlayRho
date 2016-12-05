@@ -80,17 +80,17 @@ ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, float_t 
 		const auto distance1 = Dot(normal, vIn[1].v) - offset; ///< Distance of point at vIn[1].v from line defined by normal and offset.
 
 		// If the points are behind the plane
-		if (distance0 <= float_t{0})
+		if (distance0 <= 0)
 		{
 			vOut.add(vIn[0]);
 		}
-		if (distance1 <= float_t{0})
+		if (distance1 <= 0)
 		{
 			vOut.add(vIn[1]);
 		}
 
 		// If the points are on different sides of the plane
-		if ((distance0 * distance1) < float_t{0})
+		if ((distance0 * distance1) < 0)
 		{
 			// Find intersection point of edge and plane
 			// Vertex A is hitting edge B.
