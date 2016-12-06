@@ -63,15 +63,25 @@ public:
 	/// @param hy the half-height.
 	explicit PolygonShape(float_t hx, float_t hy) noexcept;
 	
+	/// Creates a convex hull from the given array of local points.
+	/// The size of the span must be in the range [3, MaxPolygonVertices].
+	/// @warning the points may be re-ordered, even if they form a convex polygon
+	/// @warning collinear points are handled but not removed. Collinear points
+	/// may lead to poor stacking behavior.
 	PolygonShape(Span<const Vec2> points) noexcept;
 	
-	/// Create a convex hull from the given array of local points.
+	/// Creates a convex hull from the given array of local points.
 	/// The size of the span must be in the range [3, MaxPolygonVertices].
 	/// @warning the points may be re-ordered, even if they form a convex polygon
 	/// @warning collinear points are handled but not removed. Collinear points
 	/// may lead to poor stacking behavior.
 	void Set(Span<const Vec2> points) noexcept;
 
+	/// Creates a convex hull from the given set of local points.
+	/// The size of the set must be in the range [3, MaxPolygonVertices].
+	/// @warning the points may be re-ordered, even if they form a convex polygon
+	/// @warning collinear points are handled but not removed. Collinear points
+	/// may lead to poor stacking behavior.
 	void Set(const VertexSet<MaxPolygonVertices>& points) noexcept;
 	
 	/// Build vertices to represent an axis-aligned box centered on the local origin.
