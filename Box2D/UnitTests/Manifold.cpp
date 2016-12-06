@@ -40,10 +40,11 @@ TEST(Manifold, PointInitializingConstructor)
 	const auto lp = Vec2{3, 4};
 	const auto ni = float_t(1.2);
 	const auto ti = float_t(2.4);
-	const auto foo = Manifold::Point{lp, DefaultContactFeature, ni, ti};
+	const auto cf = ContactFeature{};
+	const auto foo = Manifold::Point{lp, cf, ni, ti};
 	EXPECT_EQ(foo.localPoint.x, lp.x);
 	EXPECT_EQ(foo.localPoint.y, lp.y);
-	EXPECT_EQ(foo.contactFeature, DefaultContactFeature);
+	EXPECT_EQ(foo.contactFeature, cf);
 	EXPECT_EQ(foo.normalImpulse, ni);
 	EXPECT_EQ(foo.tangentImpulse, ti);
 }
@@ -60,7 +61,7 @@ TEST(Manifold, GetForCircles)
 
 TEST(Manifold, GetForFaceA)
 {
-	const auto ln = UnitVec2::GetZero();
+	const auto ln = UnitVec2::GetLeft();
 	const auto lp = Vec2{0, 0};
 	{
 		Manifold foo = Manifold::GetForFaceA(ln, lp);
@@ -71,7 +72,7 @@ TEST(Manifold, GetForFaceA)
 	}
 	{
 		const auto pl = Vec2{float_t(-0.12), float_t(0.34)};
-		const auto cf = DefaultContactFeature;
+		const auto cf = GetFaceFaceContactFeature(0, 0);
 		const auto ni = float_t(2.9);
 		const auto ti = float_t(.7);
 		const auto foo = Manifold::GetForFaceA(ln, lp, Manifold::Point{pl, cf, ni, ti});
@@ -88,7 +89,7 @@ TEST(Manifold, GetForFaceA)
 	}
 	{
 		const auto pl = Vec2{float_t(-0.12), float_t(0.34)};
-		const auto cf = DefaultContactFeature;
+		const auto cf = GetFaceFaceContactFeature(0, 1);
 		const auto ni = float_t(2.9);
 		const auto ti = float_t(.7);
 		const auto foo = Manifold::GetForFaceA(ln, lp, Manifold::Point{pl, cf, ni, ti}, Manifold::Point{-pl, Flip(cf), -ni, -ti});
@@ -112,7 +113,7 @@ TEST(Manifold, GetForFaceA)
 
 TEST(Manifold, GetForFaceB)
 {
-	const auto ln = UnitVec2::GetZero();
+	const auto ln = UnitVec2::GetLeft();
 	const auto lp = Vec2{0, 0};
 	{
 		Manifold foo = Manifold::GetForFaceB(ln, lp);
@@ -123,7 +124,7 @@ TEST(Manifold, GetForFaceB)
 	}
 	{
 		const auto pl = Vec2{float_t(-0.12), float_t(0.34)};
-		const auto cf = DefaultContactFeature;
+		const auto cf = GetFaceFaceContactFeature(0, 0);
 		const auto ni = float_t(2.9);
 		const auto ti = float_t(.7);
 		Manifold foo = Manifold::GetForFaceB(ln, lp, Manifold::Point{pl, cf, ni, ti});
@@ -140,7 +141,7 @@ TEST(Manifold, GetForFaceB)
 	}
 	{
 		const auto pl = Vec2{float_t(-0.12), float_t(0.34)};
-		const auto cf = DefaultContactFeature;
+		const auto cf = GetFaceFaceContactFeature(0, 1);
 		const auto ni = float_t(2.9);
 		const auto ti = float_t(.7);
 		Manifold foo = Manifold::GetForFaceB(ln, lp, Manifold::Point{pl, cf, ni, ti}, Manifold::Point{-pl, Flip(cf), -ni, -ti});
