@@ -33,8 +33,8 @@ namespace box2d
 	/// @param xfA Transformation for shape A.
 	/// @param shapeB Shape B.
 	/// @param xfB Transformation for shape B.
-	/// @return An unset-type manifold if the shapes aren't touching,
-	///   a circles-type manifold with one point otherwise.
+	/// @return An unset-type manifold if the shapes aren't touching, a circles-type manifold
+	///   with one <code>ContactFeature{e_vertex, 0, e_vertex, 0}</code> point otherwise.
 	Manifold CollideShapes(const CircleShape& shapeA, const Transformation& xfA,
 						   const CircleShape& shapeB, const Transformation& xfB);
 	
@@ -44,7 +44,7 @@ namespace box2d
 	/// @param shapeB Shape B.
 	/// @param xfB Transformation for shape B.
 	/// @return An unset-type manifold if the shapes aren't touching,
-	///   a face-A-type manifold with one point otherwise.
+	///   a circles-type or face-A-type manifold with one point otherwise.
 	Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA,
 						   const CircleShape& shapeB, const Transformation& xfB);
 	
