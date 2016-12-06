@@ -40,14 +40,6 @@ TEST(ContactFeature, Init)
 	EXPECT_EQ(foo.indexB, indexB);
 }
 
-TEST(ContactFeature, DefaultContactFeature)
-{
-	EXPECT_EQ(DefaultContactFeature.typeA, ContactFeature::e_vertex);
-	EXPECT_EQ(DefaultContactFeature.typeB, ContactFeature::e_vertex);
-	EXPECT_EQ(DefaultContactFeature.indexA, ContactFeature::index_t{0});
-	EXPECT_EQ(DefaultContactFeature.indexB, ContactFeature::index_t{0});
-}
-
 TEST(ContactFeature, Flip)
 {
 	const auto typeA = ContactFeature::e_vertex;
