@@ -261,14 +261,14 @@ namespace box2d {
 			
 #if defined(BOX2D_CACHE_VC_POINT_MASSES)
 			constexpr Point(Vec2 a, Vec2 b, float_t ni, float_t ti, float_t nm, float_t tm, float_t vb) noexcept:
-			rA{a}, rB{b}, normalImpulse{ni}, tangentImpulse{ti}, normalMass{nm}, tangentMass{tm}, velocityBias{vb}
+				rA{a}, rB{b}, normalImpulse{ni}, tangentImpulse{ti}, normalMass{nm}, tangentMass{tm}, velocityBias{vb}
 			{
 				assert(nm >= 0);
 				assert(tm >= 0);
 			}
 #else
 			constexpr Point(Vec2 a, Vec2 b, float_t ni, float_t ti, float_t vb) noexcept:
-			rA{a}, rB{b}, normalImpulse{ni}, tangentImpulse{ti}, velocityBias{vb}
+				rA{a}, rB{b}, normalImpulse{ni}, tangentImpulse{ti}, velocityBias{vb}
 			{
 			}
 #endif

@@ -49,7 +49,7 @@ enum class PointState
 /// to manifold2. So state1 is either persist or remove while state2 is either add or persist.
 using PointStateArray = std::array<PointState,MaxManifoldPoints>;
 void GetPointStates(PointStateArray& state1, PointStateArray& state2,
-					  const Manifold& manifold1, const Manifold& manifold2);
+					const Manifold& manifold1, const Manifold& manifold2);
 
 /// Used for computing contact manifolds.
 /// @note This data structure is 12-bytes large (on at least one 64-bit platform).
