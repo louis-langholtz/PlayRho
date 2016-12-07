@@ -30,24 +30,20 @@ namespace box2d
 	class DistanceProxy;
 	struct Transformation;
 
-	/// Manifold for two touching convex shapes.
+	/// Manifold for two convex shapes.
+	///
 	/// @detail
-	/// Multiple types of contact are supported:
-	/// - clip point versus plane with radius
-	/// - point versus point with radius (circles)
-	/// The local point usage depends on the manifold type:
-	/// -e_circles: the local center of circleA
-	/// -e_faceA: the center of faceA
-	/// -e_faceB: the center of faceB
-	/// Similarly the local normal usage:
-	/// -e_circles: not used
-	/// -e_faceA: the normal on polygonA
-	/// -e_faceB: the normal on polygonB
-	/// We store contacts in this way so that position correction can
-	/// account for movement, which is critical for continuous physics.
-	/// All contact scenarios must be expressed in one of these types.
-	/// This structure is stored across time steps, so we keep it small.
+	/// Multiple types of contact are supported: clip point versus plane with radius, point versus
+	/// point with radius (circles). Contacts are stored in this way so that position correction can
+	/// account for movement, which is critical for continuous physics. All contact scenarios must
+	/// be expressed in one of these types.
+	///
+	/// @note The local point and local normal usage depends on the manifold type. For details, see
+	///   the documentation associated with the different manifold types.
+	/// @note Every point adds computational overhead to the collision response calculation - so
+	///   express collision manifolds with one point if possible instead of two.
 	/// @note This data structure is at least 58-bytes large (60-bytes on one 64-bit platform).
+	///
 	class Manifold
 	{
 	public:
@@ -66,7 +62,7 @@ namespace box2d
 			/// For manifolds of this type:
 			///   the local point is local center of "circle-A" (where shape A wasn't necessarily
 			///     a circle but treating it as such is useful),
-			///   the local normal is invalid, and
+			///   the local normal is invalid (and unused), and
 			///   the point count will be zero or one where the contact feature will be
 			///     <code>ContactFeature{e_vertex, i, e_vertex, j}</code> where i and j are indexes
 			///     of the vertexes of shapes A and B respectively.
@@ -90,23 +86,17 @@ namespace box2d
 		};
 		
 		/// Point data for a manifold.
+		///
 		/// @detail This is a contact point belonging to a contact manifold. It holds details
-		/// related to the geometry and dynamics of the contact points. This structure is
-		/// stored across time steps, so the smaller the better.
-		/// @note The impulses are used for internal caching and may not
-		///   provide reliable contact forces especially for high speed collisions.
+		/// related to the geometry and dynamics of the contact points.
+		///
+		/// @note The impulses are used for internal caching and may not provide reliable contact
+		///    forces especially for high speed collisions.
+		///
 		/// @note This structure is at least 20-bytes large.
+		///
 		struct Point
 		{
-			Point() noexcept = default;
-			Point(const Point& copy) = default;
-			
-			constexpr explicit Point(Vec2 lp, ContactFeature cf, float_t ni = 0, float_t ti = 0) noexcept:
-				localPoint{lp}, contactFeature{cf}, normalImpulse{ni}, tangentImpulse{ti}
-			{
-				// Intentionally empty.
-			}
-			
 			/// Local point.
 			/// @detail Usage depends on manifold type.
 			/// For circles type manifolds, this is the local center of circle B.
@@ -121,9 +111,9 @@ namespace box2d
 			/// @sa GetPointStates.
 			ContactFeature contactFeature;
 			
-			float_t normalImpulse; ///< Normal impulse. This is the non-penetration impulse (4-bytes).
+			float_t normalImpulse = 0; ///< Normal impulse. This is the non-penetration impulse (4-bytes).
 			
-			float_t tangentImpulse; ///< Tangent impulse. This is the friction impulse (4-bytes).
+			float_t tangentImpulse = 0; ///< Tangent impulse. This is the friction impulse (4-bytes).
 		};
 		
 		// For Circles type manifolds...
