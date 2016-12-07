@@ -117,29 +117,29 @@ static inline ShapeSeparation GetMostOppositeSeparation(Span<const T> vectors, c
 }
 
 /// Gets the max separation information.
-/// @return The index of the vertex and normal from shape1_vertices and shape1_normals
-///   that had the maximum separation distance from any vertex in shape2_vertices in the
+/// @return The index of the vertex and normal from vertices1 and normals1
+///   that had the maximum separation distance from any vertex in vertices2 in the
 ///   direction of that normal and that maximal distance.
 static ShapeSeparation
-GetMaxSeparation(Span<const Vec2> shape1_vertices, Span<const UnitVec2> shape1_normals, const Transformation& xf1,
-				 Span<const Vec2> shape2_vertices, const Transformation& xf2)
+GetMaxSeparation(Span<const Vec2> vertices1, Span<const UnitVec2> normals1, const Transformation& xf1,
+				 Span<const Vec2> vertices2, const Transformation& xf2)
 {
-	assert(shape1_vertices.size() == shape1_normals.size());
+	assert(vertices1.size() == normals1.size());
 
 	// Find the max separation between shape1 and shape2 using edge normals from shape1.
 	auto maxSeparation = -MaxFloat;
 	auto index_of_max = ShapeSeparation::index_type{0};
 	
-	const auto count1 = shape1_vertices.size();
+	const auto count1 = vertices1.size();
 	const auto xf = MulT(xf2, xf1);
 	
 	for (auto i = decltype(count1){0}; i < count1; ++i)
 	{
 		// Get shape1 normal and vertex relative to shape2.
-		const auto shape1_ni = Rotate(shape1_normals[i], xf.q);
-		const auto shape1_vi = Transform(shape1_vertices[i], xf);
+		const auto shape1_ni = Rotate(normals1[i], xf.q);
+		const auto shape1_vi = Transform(vertices1[i], xf);
 		
-		const auto s = GetMostOppositeSeparation(shape2_vertices, Vec2{shape1_ni}, shape1_vi).separation;
+		const auto s = GetMostOppositeSeparation(vertices2, Vec2{shape1_ni}, shape1_vi).separation;
 		if (maxSeparation < s)
 		{
 			maxSeparation = s;
