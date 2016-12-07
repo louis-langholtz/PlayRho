@@ -11,7 +11,7 @@
 namespace box2d
 {
 
-/// Gets the position solver manifold for a circles-type manifold.
+/// Gets the position solver manifold in world coordinates for a circles-type manifold.
 /// @param lp Local point.
 /// @param plp Point's local point.
 /// @param xfA Transformation for body A.
@@ -26,12 +26,12 @@ static inline PositionSolverManifold GetForCircles(Vec2 lp, Vec2 plp,
 	const auto pointB = Transform(plp, xfB);
 	const auto delta = pointB - pointA;
 	const auto normal = GetUnitVector(delta, UnitVec2::GetZero());
-	const auto point = (pointA + pointB) / float_t{2};
+	const auto midpoint = (pointA + pointB) / float_t{2};
 	const auto separation = Dot(delta, normal);
-	return PositionSolverManifold{normal, point, separation};
+	return PositionSolverManifold{normal, midpoint, separation};
 }
 
-/// Gets the position solver manifold for a face-a-type manifold.
+/// Gets the position solver manifold in world coordinates for a face-a-type manifold.
 /// @param lp Local point.
 /// @param plp Point's local point.
 /// @param xfA Transformation for body A.
@@ -51,7 +51,7 @@ static inline PositionSolverManifold GetForFaceA(Vec2 lp, Vec2 plp,
 	return PositionSolverManifold{normal, clipPoint, separation};
 }
 
-/// Gets the position solver manifold for a face-b-type manifold.
+/// Gets the position solver manifold in world coordinates for a face-b-type manifold.
 /// @param lp Local point.
 /// @param plp Point's local point.
 /// @param xfA Transformation for body A.

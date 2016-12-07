@@ -131,7 +131,7 @@ namespace box2d {
 		size_type GetPointCount() const noexcept { return m_pointCount; }
 		
 		/// Adds the given point to this contact velocity constraint object.
-		/// @detail Adds up to MaxManifoldPoints points. To find out how many points have already
+		/// @detail Adds up to <code>MaxManifoldPoints</code> points. To find out how many points have already
 		///   been added, call GetPointCount().
 		/// @note Behavior is undefined if an attempt is made to add more than MaxManifoldPoints points.
 		/// @sa GetPointCount().

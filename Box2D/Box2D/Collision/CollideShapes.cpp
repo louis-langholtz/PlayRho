@@ -367,7 +367,7 @@ Manifold box2d::CollideShapes(const CircleShape& shapeA, const Transformation& x
 	{
 		return Manifold{};
 	}
-	return Manifold::GetForCircles(shapeA.GetLocation(), Manifold::Point{shapeB.GetLocation(), GetVertexVertexContactFeature(0, 0)});
+	return Manifold::GetForCircles(shapeA.GetLocation(), 0, shapeB.GetLocation(), 0);
 }
 
 Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& xfA,
@@ -422,7 +422,7 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 		{
 			return Manifold{};
 		}
-		return Manifold::GetForCircles(v1, Manifold::Point{shapeB.GetLocation(), GetVertexVertexContactFeature(indexOfMax, 0)});
+		return Manifold::GetForCircles(v1, indexOfMax, shapeB.GetLocation(), 0);
 	}
 	
 	if (Dot(cLocal - v2, v1 - v2) <= 0)
@@ -432,7 +432,7 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 		{
 			return Manifold{};
 		}
-		return Manifold::GetForCircles(v2, Manifold::Point{shapeB.GetLocation(), GetVertexVertexContactFeature(indexOfMax2, 0)});
+		return Manifold::GetForCircles(v2, indexOfMax2, shapeB.GetLocation(), 0);
 	}
 	
 	// Circle's center is between v1 and v2.
@@ -497,7 +497,7 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 				return Manifold{};
 			}
 		}
-		return Manifold::GetForCircles(A, Manifold::Point{shapeB.GetLocation(), GetVertexVertexContactFeature(0, 0)});
+		return Manifold::GetForCircles(A, 0, shapeB.GetLocation(), 0);
 	}
 	
 	// Check if circle's center is relatively right of second vertex of edge - this is "Region B"
@@ -518,7 +518,7 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 				return Manifold{};
 			}
 		}
-		return Manifold::GetForCircles(B, Manifold::Point{shapeB.GetLocation(), GetVertexVertexContactFeature(1, 0)});
+		return Manifold::GetForCircles(B, 1, shapeB.GetLocation(), 0);
 	}
 	
 	// Region AB
@@ -591,16 +591,14 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 				{
 					if (len_squared_from_shapeA_v1 >= 0)
 					{
-						const auto mp = Manifold::Point{shapeB_v1, GetVertexVertexContactFeature(0, 0)};
-						return Manifold::GetForCircles(shapeA_v1, mp);						
+						return Manifold::GetForCircles(shapeA_v1, 0, shapeB_v1, 0);						
 					}
 				}
 				else
 				{
 					if (len_squared_from_shapeA_v2 >= 0)
 					{
-						const auto mp = Manifold::Point{shapeB_v1, GetVertexVertexContactFeature(1, 0)};
-						return Manifold::GetForCircles(shapeA_v2, mp);
+						return Manifold::GetForCircles(shapeA_v2, 1, shapeB_v1, 0);						
 					}
 				}
 				const auto ln = GetRevPerpendicular(GetUnitVector(shapeA_edge));

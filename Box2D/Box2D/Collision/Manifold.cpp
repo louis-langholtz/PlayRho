@@ -210,12 +210,8 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
 		{
 			case 1:
 			{
-				const auto lp = proxyA.GetVertex(a_indices_array[0]);
-				const auto mp1 = Manifold::Point{
-					proxyB.GetVertex(b_indices_array[0]),
-					GetVertexVertexContactFeature(a_indices_array[0], b_indices_array[0])
-				};
-				return Manifold::GetForCircles(lp, mp1);
+				return Manifold::GetForCircles(proxyA.GetVertex(a_indices_array[0]), a_indices_array[0],
+											   proxyB.GetVertex(b_indices_array[0]), b_indices_array[0]);
 			}
 			case 2:
 			{

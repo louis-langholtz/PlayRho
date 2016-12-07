@@ -52,24 +52,27 @@ namespace box2d
 	{
 	public:
 		using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
+
+		/// Shape index type.
+		using sidx_t = std::remove_const<decltype(MaxShapeVertices)>::type;
 		
 		/// Manifold type.
+		/// @note This is by design a 1-byte sized type.
 		enum Type: uint8
 		{
 			/// Unset type.
-			/// @detail Manifold is unset.
-			/// Point count is zero, point data is undefined, and all other properties are invalid.
+			/// @detail Manifold is unset. For manifolds of this type: the point count is zero,
+			///   point data is undefined, and all other properties are invalid.
 			e_unset,
 			
 			/// Circles type.
 			/// @detail Manifold is for circle-to-circle like collisions.
-			/// For manifolds of this type:
-			///   the local point is local center of "circle-A" (where shape A wasn't necessarily
-			///     a circle but treating it as such is useful),
-			///   the local normal is invalid (and unused), and
-			///   the point count will be zero or one where the contact feature will be
-			///     <code>ContactFeature{e_vertex, i, e_vertex, j}</code> where i and j are indexes
-			///     of the vertexes of shapes A and B respectively.
+			/// @note For manifolds of this type: the local point is local center of "circle-A"
+			///     (where shape A wasn't necessarily a circle but treating it as such is useful),
+			///     the local normal is invalid (and unused) and, the point count will be zero or
+			///     one where the contact feature will be
+			///               <code>ContactFeature{e_vertex, i, e_vertex, j}</code>
+			///     where i and j are indexes of the vertexes of shapes A and B respectively.
 			e_circles,
 
 			/// Face-A type.
@@ -123,13 +126,15 @@ namespace box2d
 		// For Circles type manifolds...
 		
 		/// Gets a circles-typed manifold with one point.
-		/// @param lp Local center of "circle" A.
-		/// @param mp1 Manifold point 1 whose local point is the local center of circle B.
-		static constexpr Manifold GetForCircles(Vec2 lp, const Point& mp1) noexcept
+		/// @param vA Local center of "circle" A.
+		/// @param iA Index of vertex from shape A representing the local center of "circle" A.
+		/// @param vB Local center of "circle" B.
+		/// @param iB Index of vertex from shape B representing the local center of "circle" B.
+		static constexpr Manifold GetForCircles(Vec2 vA, sidx_t iA, Vec2 vB, sidx_t iB) noexcept
 		{
-			return Manifold{e_circles, GetInvalid<UnitVec2>(), lp, 1, {{mp1}}};
+			return Manifold{e_circles, GetInvalid<UnitVec2>(), vA, 1, {{Point{vB, GetVertexVertexContactFeature(iA, iB)}}}};
 		}
-		
+
 		// For Face A type manifolds...
 		
 		/// Gets a face A typed manifold.

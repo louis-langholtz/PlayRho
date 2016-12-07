@@ -30,14 +30,26 @@ namespace box2d
 	/// Position solver manifold.
 	/// @detail
 	/// This is a normal-point-separation composition of data for position constraint resolution.
+	/// @note This data structure is 20-bytes large.
 	struct PositionSolverManifold
 	{
-		UnitVec2 m_normal; ///< Normal.
-		Vec2 m_point; ///< Point.
-		float_t m_separation; ///< "separation" between two points (of a contact position constraint).
+		/// Normal.
+		/// @detail Normal of the contact between two points.
+		/// @note This field is 8-bytes large.
+		UnitVec2 m_normal;
+
+		/// Point.
+		/// @detail Point at which position resolution should be applied.
+		/// @note This field is 8-bytes large.
+		Vec2 m_point;
+		
+		/// Separation.
+		/// @detail Separation between two points (i.e. penetration if negative).
+		/// @note This field is 4-bytes large.
+		float_t m_separation;
 	};
 
-	/// Gets the normal-point-separation data for the given inputs.
+	/// Gets the normal-point-separation data in world coordinates for the given inputs.
 	PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
 								  const Transformation& xfA, const Transformation& xfB);
 	
