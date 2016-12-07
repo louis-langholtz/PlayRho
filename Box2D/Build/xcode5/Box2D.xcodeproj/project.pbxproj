@@ -72,6 +72,14 @@
 		4731DE641DEF841600E7F931 /* SeparationFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE631DEF841600E7F931 /* SeparationFinder.cpp */; };
 		4731DE671DF0A73000E7F931 /* Manifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE661DF0A73000E7F931 /* Manifold.cpp */; };
 		4731DE681DF0A73000E7F931 /* Manifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE661DF0A73000E7F931 /* Manifold.cpp */; };
+		4731DE6B1DF7E88500E7F931 /* ReferenceFace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE691DF7E88500E7F931 /* ReferenceFace.cpp */; };
+		4731DE6C1DF7E88500E7F931 /* ReferenceFace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE691DF7E88500E7F931 /* ReferenceFace.cpp */; };
+		4731DE6D1DF7E88500E7F931 /* ReferenceFace.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE6A1DF7E88500E7F931 /* ReferenceFace.hpp */; };
+		4731DE6E1DF7E88500E7F931 /* ReferenceFace.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE6A1DF7E88500E7F931 /* ReferenceFace.hpp */; };
+		4731DE711DF7EB2200E7F931 /* EdgeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE6F1DF7EB2200E7F931 /* EdgeInfo.cpp */; };
+		4731DE721DF7EB2200E7F931 /* EdgeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE6F1DF7EB2200E7F931 /* EdgeInfo.cpp */; };
+		4731DE731DF7EB2200E7F931 /* EdgeInfo.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE701DF7EB2200E7F931 /* EdgeInfo.hpp */; };
+		4731DE741DF7EB2200E7F931 /* EdgeInfo.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE701DF7EB2200E7F931 /* EdgeInfo.hpp */; };
 		4734B2191DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21A1DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
 		4734B21C1DC1121900F15E29 /* ArrayList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4734B21B1DC1121900F15E29 /* ArrayList.cpp */; };
@@ -497,6 +505,10 @@
 		4731DE601DEF7B5100E7F931 /* Simplex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Simplex.cpp; sourceTree = "<group>"; };
 		4731DE631DEF841600E7F931 /* SeparationFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SeparationFinder.cpp; sourceTree = "<group>"; };
 		4731DE661DF0A73000E7F931 /* Manifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Manifold.cpp; sourceTree = "<group>"; };
+		4731DE691DF7E88500E7F931 /* ReferenceFace.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReferenceFace.cpp; sourceTree = "<group>"; };
+		4731DE6A1DF7E88500E7F931 /* ReferenceFace.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ReferenceFace.hpp; sourceTree = "<group>"; };
+		4731DE6F1DF7EB2200E7F931 /* EdgeInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeInfo.cpp; sourceTree = "<group>"; };
+		4731DE701DF7EB2200E7F931 /* EdgeInfo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EdgeInfo.hpp; sourceTree = "<group>"; };
 		4734B2161DC00AFD00F15E29 /* ArrayList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ArrayList.hpp; sourceTree = "<group>"; };
 		4734B21B1DC1121900F15E29 /* ArrayList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArrayList.cpp; sourceTree = "<group>"; };
 		4734B21E1DC1340500F15E29 /* Span.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Span.hpp; sourceTree = "<group>"; };
@@ -937,6 +949,8 @@
 				4736DE8B1DB806AE003993CB /* CollideShapes.hpp */,
 				4731DE431DE2570900E7F931 /* Collision.hpp */,
 				80BB892C141C3E5900F1753A /* Collision.cpp */,
+				4731DE6F1DF7EB2200E7F931 /* EdgeInfo.cpp */,
+				4731DE701DF7EB2200E7F931 /* EdgeInfo.hpp */,
 				4726DD351D387D630012A882 /* Manifold.hpp */,
 				4731DE661DF0A73000E7F931 /* Manifold.cpp */,
 				47578BE31D886FED0078CD40 /* WorldManifold.cpp */,
@@ -957,6 +971,8 @@
 				475039901D2180D600D32047 /* DistanceProxy.hpp */,
 				80BB8930141C3E5900F1753A /* DynamicTree.cpp */,
 				80BB8931141C3E5900F1753A /* DynamicTree.hpp */,
+				4731DE691DF7E88500E7F931 /* ReferenceFace.cpp */,
+				4731DE6A1DF7E88500E7F931 /* ReferenceFace.hpp */,
 				4731DE631DEF841600E7F931 /* SeparationFinder.cpp */,
 				4731DE5B1DEE3F0600E7F931 /* SeparationFinder.hpp */,
 				80BB8932141C3E5900F1753A /* TimeOfImpact.cpp */,
@@ -1298,6 +1314,7 @@
 				4731DE531DEB760400E7F931 /* EdgeAndEdgeContact.hpp in Headers */,
 				472134991C8D03D6009536F9 /* BodyList.hpp in Headers */,
 				47AA5DD41C4C5FBE008AF2BA /* PolygonShape.hpp in Headers */,
+				4731DE741DF7EB2200E7F931 /* EdgeInfo.hpp in Headers */,
 				47AA5DD51C4C5FBE008AF2BA /* Shape.hpp in Headers */,
 				47AA5DD61C4C5FBE008AF2BA /* BlockAllocator.hpp in Headers */,
 				47AA5DD81C4C5FBE008AF2BA /* GrowableStack.hpp in Headers */,
@@ -1321,6 +1338,7 @@
 				47AA5DE21C4C5FBE008AF2BA /* World.hpp in Headers */,
 				4734B2281DC29F7C00F15E29 /* SimplexEdge.hpp in Headers */,
 				4726DD2D1D31B4090012A882 /* AABB.hpp in Headers */,
+				4731DE6E1DF7E88500E7F931 /* ReferenceFace.hpp in Headers */,
 				47AA5DE31C4C5FBE008AF2BA /* WorldCallbacks.hpp in Headers */,
 				47AA5DE41C4C5FBE008AF2BA /* ChainAndCircleContact.hpp in Headers */,
 				47AA5DE51C4C5FBE008AF2BA /* ChainAndPolygonContact.hpp in Headers */,
@@ -1415,6 +1433,7 @@
 				80BB89AE141C3E5900F1753A /* ContactManager.hpp in Headers */,
 				80BB89B0141C3E5900F1753A /* Fixture.hpp in Headers */,
 				4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */,
+				4731DE731DF7EB2200E7F931 /* EdgeInfo.hpp in Headers */,
 				80BB89B2141C3E5900F1753A /* Island.hpp in Headers */,
 				80BB89B3141C3E5900F1753A /* TimeStep.hpp in Headers */,
 				4734B2191DC00AFD00F15E29 /* ArrayList.hpp in Headers */,
@@ -1448,6 +1467,7 @@
 				477DB2A51D15F60B00846ED6 /* JointEdgeIterator.hpp in Headers */,
 				47AA63A51D1077E600726CA2 /* ContactList.hpp in Headers */,
 				472134861C8CD7CF009536F9 /* BodyList.hpp in Headers */,
+				4731DE6D1DF7E88500E7F931 /* ReferenceFace.hpp in Headers */,
 				80BB89CF141C3E5900F1753A /* GearJoint.hpp in Headers */,
 				80BB89D1141C3E5900F1753A /* Joint.hpp in Headers */,
 				4731DE011DCD2F1700E7F931 /* Angle.hpp in Headers */,
@@ -1699,6 +1719,7 @@
 				4736DE8D1DB806AE003993CB /* CollideShapes.cpp in Sources */,
 				47AA5DAC1C4C5FBE008AF2BA /* Timer.cpp in Sources */,
 				47AA5DAD1C4C5FBE008AF2BA /* Body.cpp in Sources */,
+				4731DE721DF7EB2200E7F931 /* EdgeInfo.cpp in Sources */,
 				47AA5DAE1C4C5FBE008AF2BA /* ContactManager.cpp in Sources */,
 				47AA5DAF1C4C5FBE008AF2BA /* Fixture.cpp in Sources */,
 				4721349A1C8D03D9009536F9 /* BodyList.cpp in Sources */,
@@ -1728,6 +1749,7 @@
 				47AA5DC11C4C5FBE008AF2BA /* PrismaticJoint.cpp in Sources */,
 				47E841731DB4018D00E5F311 /* VelocityConstraint.cpp in Sources */,
 				47AA5DC21C4C5FBE008AF2BA /* PulleyJoint.cpp in Sources */,
+				4731DE6C1DF7E88500E7F931 /* ReferenceFace.cpp in Sources */,
 				47AA5DC31C4C5FBE008AF2BA /* RevoluteJoint.cpp in Sources */,
 				47AA5DC41C4C5FBE008AF2BA /* RopeJoint.cpp in Sources */,
 				47AA5DC51C4C5FBE008AF2BA /* WeldJoint.cpp in Sources */,
@@ -1808,6 +1830,7 @@
 				4731DE2C1DDF94A600E7F931 /* AABB.cpp in Sources */,
 				4721349D1C8E4CB5009536F9 /* FixtureList.cpp in Sources */,
 				80BB899B141C3E5900F1753A /* PolygonShape.cpp in Sources */,
+				4731DE6B1DF7E88500E7F931 /* ReferenceFace.cpp in Sources */,
 				47AA639D1D0F7FDA00726CA2 /* BodyIterator.cpp in Sources */,
 				477DB2941D14B9D500846ED6 /* ContactEdgeList.cpp in Sources */,
 				472134851C8CD7CF009536F9 /* BodyList.cpp in Sources */,
@@ -1843,6 +1866,7 @@
 				4736DE8C1DB806AE003993CB /* CollideShapes.cpp in Sources */,
 				80BB89C2141C3E5900F1753A /* EdgeAndCircleContact.cpp in Sources */,
 				80BB89C4141C3E5900F1753A /* EdgeAndPolygonContact.cpp in Sources */,
+				4731DE711DF7EB2200E7F931 /* EdgeInfo.cpp in Sources */,
 				80BB89C6141C3E5900F1753A /* PolygonAndCircleContact.cpp in Sources */,
 				80BB89C8141C3E5900F1753A /* PolygonContact.cpp in Sources */,
 				80BB89CA141C3E5900F1753A /* DistanceJoint.cpp in Sources */,
