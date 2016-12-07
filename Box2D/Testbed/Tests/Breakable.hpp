@@ -62,7 +62,7 @@ public:
 		m_broke = false;
 	}
 
-	void PostSolve(Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) override
+	void PostSolve(Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved) override
 	{
 		if (m_broke)
 		{

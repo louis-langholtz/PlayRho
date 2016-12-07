@@ -591,9 +591,9 @@ void World::Solve(const TimeStep& step)
 			}
 		}
 		
-		inline ContactImpulse GetContactImpulse(const VelocityConstraint& vc)
+		inline ContactImpulsesList GetContactImpulses(const VelocityConstraint& vc)
 		{
-			ContactImpulse impulse;
+			ContactImpulsesList impulse;
 			const auto count = vc.GetPointCount();
 			for (auto j = decltype(count){0}; j < count; ++j)
 			{
@@ -616,7 +616,7 @@ void World::Solve(const TimeStep& step)
 			const auto size = contacts.size();
 			for (auto i = decltype(size){0}; i < size; ++i)
 			{
-				listener.PostSolve(*contacts[i], GetContactImpulse(constraints[i]), solved);
+				listener.PostSolve(*contacts[i], GetContactImpulses(constraints[i]), solved);
 			}
 		}
 		

@@ -358,7 +358,7 @@ class MyContactListener: public ContactListener
 {
 public:
 	using PreSolver = std::function<void(Contact&, const Manifold&)>;
-	using PostSolver = std::function<void(Contact&, const ContactImpulse&, ContactListener::iteration_type)>;
+	using PostSolver = std::function<void(Contact&, const ContactImpulsesList&, ContactListener::iteration_type)>;
 	using Ender = std::function<void(Contact&)>;
 
 	MyContactListener(PreSolver&& pre, PostSolver&& post, Ender&& end): presolver(pre), postsolver(post), ender(end) {}
@@ -393,7 +393,7 @@ public:
 		presolver(contact, oldManifold);
 	}
 	
-	void PostSolve(Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) override
+	void PostSolve(Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved) override
 	{
 		++post_solves;
 		postsolver(contact, impulse, solved);
@@ -420,7 +420,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 	auto postsolved = unsigned{0};
 	MyContactListener listener{
 		[&](Contact& contact, const Manifold& oldManifold) { ++presolved; },
-		[&](Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) { ++postsolved; },
+		[&](Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved) { ++postsolved; },
 		[&](Contact& contact) {},
 	};
 
@@ -916,7 +916,7 @@ TEST(World, CollidingDynamicBodies)
 	
 	MyContactListener listener{
 		[](Contact& contact, const Manifold& oldManifold) {},
-		[](Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) {},
+		[](Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved) {},
 		[&](Contact& contact) {},
 	};
 
@@ -1048,7 +1048,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 
 	MyContactListener listener{
 		[](Contact& contact, const Manifold& oldManifold) {},
-		[](Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved) {},
+		[](Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved) {},
 		[&](Contact& contact) {},
 	};
 	world.SetContactListener(&listener);
@@ -1361,7 +1361,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 			}
 #endif
 		},
-		[&](Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved)
+		[&](Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved)
 		{
 			const auto fA = contact.GetFixtureA();
 			const auto fB = contact.GetFixtureB();
@@ -1590,7 +1590,7 @@ static void smaller_still_conserves_momentum(bool bullet, float_t multiplier, fl
 				preB1 = bA->GetLocation();
 				preB2 = bB->GetLocation();
 			},
-			[&](Contact& contact, const ContactImpulse& impulse, ContactListener::iteration_type solved)
+			[&](Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved)
 			{
 				{
 					const auto count = impulse.GetCount();

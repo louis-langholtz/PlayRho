@@ -66,7 +66,7 @@ public:
 /// Used for reporting. Impulses are used instead of forces because
 /// sub-step forces may approach infinity for rigid body collisions. These
 /// match up one-to-one with the contact points in Manifold.
-class ContactImpulse
+class ContactImpulsesList
 {
 public:
 	using count_t = std::remove_const<decltype(MaxManifoldPoints)>::type;
@@ -148,7 +148,7 @@ public:
 	/// arbitrarily large if the sub-step is small. Hence the impulse is provided explicitly
 	/// in a separate data structure.
 	/// @note This is only called for contacts that are touching, solid, and awake.
-	virtual void PostSolve(Contact& contact, const ContactImpulse& impulse, iteration_type solved)
+	virtual void PostSolve(Contact& contact, const ContactImpulsesList& impulse, iteration_type solved)
 	{
 		BOX2D_NOT_USED(contact);
 		BOX2D_NOT_USED(impulse);
