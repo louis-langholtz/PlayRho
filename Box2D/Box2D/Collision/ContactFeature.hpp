@@ -65,10 +65,7 @@ namespace box2d
 	{
 		return ContactFeature{ContactFeature::e_face, a, ContactFeature::e_face, b};
 	}
-	
-	/// Default contact feature value.
-	constexpr auto DefaultContactFeature = ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 0};
-	
+		
 	/// Flips contact features information.
 	constexpr ContactFeature Flip(ContactFeature val) noexcept
 	{

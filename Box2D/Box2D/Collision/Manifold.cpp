@@ -25,6 +25,21 @@
 
 using namespace box2d;
 
+using index_type = IndexPair::size_type;
+
+static inline index_type GetEdgeIndex(index_type i1, index_type i2, index_type count)
+{
+	if (((i1 + 1) % count) == i2)
+	{
+		return i1;
+	}
+	if (((i2 + 1) % count) == i1)
+	{
+		return i2;
+	}
+	return IndexPair::InvalidIndex;
+}
+
 Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& transformA,
 							const DistanceProxy& proxyB, const Transformation& transformB)
 {
@@ -39,7 +54,8 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
 		return Manifold{};
 	}
 
-	using index_type = IndexPair::size_type;
+	const auto a_count = proxyA.GetVertexCount();
+	const auto b_count = proxyB.GetVertexCount();
 
 	index_type a_indices_array[Simplex::MaxEdges];
 	index_type b_indices_array[Simplex::MaxEdges];
@@ -72,25 +88,31 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
 	std::sort(a_indices_array, a_indices_array + uniqA);
 	std::sort(b_indices_array, b_indices_array + uniqB);
 
-	if (uniqA <= uniqB)
+	if (uniqA < uniqB)
 	{
 		switch (uniqA)
 		{
-			case 1:
+			case 1: // uniqB must be 2 or 3
 			{
-				const auto lp = proxyA.GetVertex(a_indices_array[0]);
+				const auto b_idx0 = GetEdgeIndex(b_indices_array[0], b_indices_array[1], b_count);
+				assert(b_idx0 != IndexPair::InvalidIndex);
+				const auto b_idx1 = static_cast<decltype(b_idx0)>((b_idx0 + 1) % a_count);
+				const auto b_v0 = proxyB.GetVertex(b_idx0);
+				const auto b_v1 = proxyB.GetVertex(b_idx1);
+				const auto lp = (b_v0 + b_v1) / 2;
+				const auto ln = GetFwdPerpendicular(GetUnitVector(b_v1 - b_v0));
 				const auto mp0 = Manifold::Point{
-					proxyB.GetVertex(b_indices_array[0]),
+					proxyA.GetVertex(a_indices_array[0]),
 					ContactFeature{
 						ContactFeature::e_vertex,
 						a_indices_array[0],
-						(uniqB < 2)? ContactFeature::e_vertex: ContactFeature::e_face,
-						b_indices_array[0]
+						ContactFeature::e_face,
+						b_idx0,
 					}
 				};
-				return Manifold::GetForCircles(lp, mp0);
+				return Manifold::GetForFaceB(ln, lp, mp0);
 			}
-			case 2:
+			case 2: // uniqB must be 3
 			{
 				auto mp0 = Manifold::Point{};
 				auto mp1 = Manifold::Point{};
@@ -120,37 +142,35 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
 				}
 				return Manifold{};
 			}
-			case 3:
-			{
-				const auto ln = UnitVec2{};
-				const auto lp = Vec2{};
-				return Manifold::GetForFaceA(ln, lp);
-			}
 			default:
 				break;
 		}
 	}
-	else // uniqB < uniqA
+	else if (uniqB < uniqA)
 	{
 		switch (uniqB)
 		{
-			case 1:
+			case 1: // uniqA must be 2 or 3
 			{
-				const auto lp = (uniqA < 2)?
-					proxyA.GetVertex(a_indices_array[0]):
-					(proxyA.GetVertex(a_indices_array[1]) + proxyA.GetVertex(a_indices_array[0])) / 2;
+				const auto a_idx0 = GetEdgeIndex(a_indices_array[0],a_indices_array[1], a_count);
+				assert(a_idx0 != IndexPair::InvalidIndex);
+				const auto a_idx1 = static_cast<decltype(a_idx0)>((a_idx0 + 1) % a_count);
+				const auto a_v0 = proxyA.GetVertex(a_idx0);
+				const auto a_v1 = proxyA.GetVertex(a_idx1);
+				const auto lp = (a_v0 + a_v1) / 2;
+				const auto ln = GetFwdPerpendicular(GetUnitVector(a_v1 - a_v0));
 				const auto mp0 = Manifold::Point{
 					proxyB.GetVertex(b_indices_array[0]),
 					ContactFeature{
-						(uniqA < 2)? ContactFeature::e_vertex: ContactFeature::e_face,
-						a_indices_array[0],
+						ContactFeature::e_face,
+						a_idx0,
 						ContactFeature::e_vertex,
 						b_indices_array[0]
 					}
 				};
-				return Manifold::GetForCircles(lp, mp0);
+				return Manifold::GetForFaceA(ln, lp, mp0);
 			}
-			case 2:
+			case 2: // uniqA must be 3
 			{
 				auto mp0 = Manifold::Point{};
 				auto mp1 = Manifold::Point{};
@@ -180,11 +200,63 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
 				}
 				return Manifold{};
 			}
+			default:
+				break;
+		}
+	}
+	else // uniqA == uniqB
+	{
+		switch (uniqA)
+		{
+			case 1:
+			{
+				const auto lp = proxyA.GetVertex(a_indices_array[0]);
+				const auto mp1 = Manifold::Point{
+					proxyB.GetVertex(b_indices_array[0]),
+					GetVertexVertexContactFeature(a_indices_array[0], b_indices_array[0])
+				};
+				return Manifold::GetForCircles(lp, mp1);
+			}
+			case 2:
+			{
+				const auto v0 = proxyA.GetVertex(a_indices_array[0]);
+				const auto v1 = proxyA.GetVertex(a_indices_array[1]);
+				const auto lp = (v0 + v1) / 2;
+				const auto count = proxyA.GetVertexCount();
+				auto mp0 = Manifold::Point{};
+				auto mp1 = Manifold::Point{};
+				mp0.contactFeature.typeB = ContactFeature::e_vertex;
+				mp0.contactFeature.indexB = b_indices_array[0];
+				mp0.localPoint = proxyB.GetVertex(mp0.contactFeature.indexB);
+				mp1.contactFeature.typeB = ContactFeature::e_vertex;
+				mp1.contactFeature.indexB = b_indices_array[1];
+				mp1.localPoint = proxyB.GetVertex(mp1.contactFeature.indexB);
+				if ((a_indices_array[1] - a_indices_array[0]) == 1)
+				{
+					mp0.contactFeature.typeA = ContactFeature::e_face;
+					mp0.contactFeature.indexA = a_indices_array[0];
+					mp1.contactFeature.typeA = ContactFeature::e_face;
+					mp1.contactFeature.indexA = a_indices_array[0];
+					const auto ln = GetFwdPerpendicular(GetUnitVector(v1 - v0));
+					return Manifold::GetForFaceA(ln, lp, mp0, mp1);
+				}
+				if ((a_indices_array[1] + 1) % count == a_indices_array[0])
+				{
+					mp0.contactFeature.typeA = ContactFeature::e_face;
+					mp0.contactFeature.indexA = a_indices_array[1];
+					mp1.contactFeature.typeA = ContactFeature::e_face;
+					mp1.contactFeature.indexA = a_indices_array[1];
+					const auto ln = GetFwdPerpendicular(GetUnitVector(v0 - v1));
+					return Manifold::GetForFaceA(ln, lp, mp0, mp1);					
+				}
+				assert(false);
+				break;
+			}
 			case 3:
 			{
-				const auto ln = UnitVec2{};
+				const auto ln = UnitVec2::GetLeft();
 				const auto lp = Vec2{};
-				return Manifold::GetForFaceB(ln, lp);
+				return Manifold::GetForFaceA(ln, lp);
 			}
 			default:
 				break;

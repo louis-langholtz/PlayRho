@@ -76,8 +76,8 @@ ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, float_t 
 		// Use Sutherland-Hodgman clipping (https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm ).
 		
 		// Calculate the distance of end points to the line
-		const auto distance0 = Dot(normal, vIn[0].v) - offset; ///< Distance of point at vIn[0].v from line defined by normal and offset.
-		const auto distance1 = Dot(normal, vIn[1].v) - offset; ///< Distance of point at vIn[1].v from line defined by normal and offset.
+		const auto distance0 = Dot(normal, vIn[0].v) - offset; ///< Magnitude of vIn[0].v in direction of normal minus offset.
+		const auto distance1 = Dot(normal, vIn[1].v) - offset; ///< Magnitude of vIn[1].v in direction of normal minus offset.
 
 		// If the points are behind the plane
 		if (distance0 <= 0)
@@ -92,11 +92,15 @@ ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, float_t 
 		// If the points are on different sides of the plane
 		if ((distance0 * distance1) < 0)
 		{
+			// Neither distance0 nor distance1 is 0 and either distance0 or distance1 is negative (but not both).
 			// Find intersection point of edge and plane
 			// Vertex A is hitting edge B.
 			const auto interp = distance0 / (distance0 - distance1);
 			const auto vertex = vIn[0].v + (vIn[1].v - vIn[0].v) * interp;
 			vOut.add(ClipVertex{vertex, GetVertexFaceContactFeature(indexA, vIn[0].cf.indexB)});
+			// XXX: Maybe one of the alternatives would be more appropriate??
+			//vOut.add(ClipVertex{vertex, GetFaceFaceContactFeature(indexA, vIn[0].cf.indexB)});
+			//vOut.add(ClipVertex{vertex, ContactFeature{ContactFeature::e_face, indexA, vIn[0].cf.typeB, vIn[0].cf.indexB}});
 		}
 	}
 
