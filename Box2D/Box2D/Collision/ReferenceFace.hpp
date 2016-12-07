@@ -21,7 +21,6 @@
 #define ReferenceFace_hpp
 
 #include <Box2D/Common/Math.hpp>
-#include <Box2D/Collision/IndexPair.hpp>
 
 namespace box2d
 {
@@ -32,7 +31,7 @@ namespace box2d
 	class ReferenceFace
 	{
 	public:
-		using index_type = IndexPair::size_type;
+		using index_type = std::remove_const<decltype(MaxShapeVertices)>::type;
 		
 		ReferenceFace(index_type i1, Vec2 v1, index_type i2, Vec2 v2, UnitVec2 normal) noexcept;
 		
