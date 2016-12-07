@@ -44,6 +44,10 @@ namespace box2d
 	///   express collision manifolds with one point if possible instead of two.
 	/// @note This data structure is at least 58-bytes large (60-bytes on one 64-bit platform).
 	///
+	/// @sa Contact.
+	/// @sa PositionConstraint.
+	/// @sa VelocityConstraint.
+	///
 	class Manifold
 	{
 	public:
@@ -220,10 +224,11 @@ namespace box2d
 			return m_points[index];
 		}
 		
-		Point& GetPoint(size_type index)
+		void SetPointImpulses(size_type index, float_t n, float_t t)
 		{
 			assert((0 <= index) && (index < m_pointCount));
-			return m_points[index];
+			m_points[index].normalImpulse = n;
+			m_points[index].tangentImpulse = t;
 		}
 		
 		/// Adds a new point.

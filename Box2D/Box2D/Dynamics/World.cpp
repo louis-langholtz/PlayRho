@@ -689,9 +689,7 @@ void World::Solve(const TimeStep& step)
 			const auto count = vc.GetPointCount();
 			for (auto i = decltype(count){0}; i < count; ++i)
 			{
-				auto&& mp = var.GetPoint(i);
-				mp.normalImpulse = GetNormalImpulseAtPoint(vc, i);
-				mp.tangentImpulse = GetTangentImpulseAtPoint(vc, i);
+				var.SetPointImpulses(i, GetNormalImpulseAtPoint(vc, i), GetTangentImpulseAtPoint(vc, i));
 			}
 		}
 		
