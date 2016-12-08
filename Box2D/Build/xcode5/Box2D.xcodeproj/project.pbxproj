@@ -270,6 +270,10 @@
 		47AFC3051DAEBC120023E9D1 /* PositionSolverManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */; };
 		47CB34401D6F3A8500828126 /* MassData.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47CB343D1D6F3A8500828126 /* MassData.hpp */; };
 		47CB34411D6F3A8500828126 /* MassData.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47CB343D1D6F3A8500828126 /* MassData.hpp */; };
+		47CF984B1DF9C4A30077F5F2 /* ShapeSeparation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47CF98491DF9C4A30077F5F2 /* ShapeSeparation.cpp */; };
+		47CF984C1DF9C4A30077F5F2 /* ShapeSeparation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47CF98491DF9C4A30077F5F2 /* ShapeSeparation.cpp */; };
+		47CF984D1DF9C4A30077F5F2 /* ShapeSeparation.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47CF984A1DF9C4A30077F5F2 /* ShapeSeparation.hpp */; };
+		47CF984E1DF9C4A30077F5F2 /* ShapeSeparation.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47CF984A1DF9C4A30077F5F2 /* ShapeSeparation.hpp */; };
 		47E841701DB3FDC400E5F311 /* WorldManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47E8416F1DB3FDC400E5F311 /* WorldManifold.cpp */; };
 		47E841721DB4018D00E5F311 /* VelocityConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47E841711DB4018D00E5F311 /* VelocityConstraint.cpp */; };
 		47E841731DB4018D00E5F311 /* VelocityConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47E841711DB4018D00E5F311 /* VelocityConstraint.cpp */; };
@@ -600,6 +604,8 @@
 		47AB01B91D6FA40C0084D721 /* Dump.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dump.cpp; sourceTree = "<group>"; };
 		47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PositionSolverManifold.cpp; sourceTree = "<group>"; };
 		47CB343D1D6F3A8500828126 /* MassData.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MassData.hpp; sourceTree = "<group>"; };
+		47CF98491DF9C4A30077F5F2 /* ShapeSeparation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShapeSeparation.cpp; sourceTree = "<group>"; };
+		47CF984A1DF9C4A30077F5F2 /* ShapeSeparation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShapeSeparation.hpp; sourceTree = "<group>"; };
 		47E8416F1DB3FDC400E5F311 /* WorldManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldManifold.cpp; sourceTree = "<group>"; };
 		47E841711DB4018D00E5F311 /* VelocityConstraint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VelocityConstraint.cpp; sourceTree = "<group>"; };
 		47F932A31D11C283006A193C /* AllocatedArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AllocatedArray.cpp; sourceTree = "<group>"; };
@@ -975,6 +981,8 @@
 				4731DE6A1DF7E88500E7F931 /* ReferenceFace.hpp */,
 				4731DE631DEF841600E7F931 /* SeparationFinder.cpp */,
 				4731DE5B1DEE3F0600E7F931 /* SeparationFinder.hpp */,
+				47CF98491DF9C4A30077F5F2 /* ShapeSeparation.cpp */,
+				47CF984A1DF9C4A30077F5F2 /* ShapeSeparation.hpp */,
 				80BB8932141C3E5900F1753A /* TimeOfImpact.cpp */,
 				80BB8933141C3E5900F1753A /* TimeOfImpact.hpp */,
 				4731DE2E1DDF9B6900E7F931 /* MassData.cpp */,
@@ -1351,6 +1359,7 @@
 				4734B22E1DC2B11D00F15E29 /* Simplex.hpp in Headers */,
 				47AA5DE81C4C5FBE008AF2BA /* ContactSolver.hpp in Headers */,
 				47AA5DE91C4C5FBE008AF2BA /* EdgeAndCircleContact.hpp in Headers */,
+				47CF984E1DF9C4A30077F5F2 /* ShapeSeparation.hpp in Headers */,
 				47AA5DEA1C4C5FBE008AF2BA /* EdgeAndPolygonContact.hpp in Headers */,
 				4731DE361DE1405900E7F931 /* Length.hpp in Headers */,
 				4731DE3C1DE1412F00E7F931 /* Time.hpp in Headers */,
@@ -1455,6 +1464,7 @@
 				47AA63A91D10786F00726CA2 /* ContactIterator.hpp in Headers */,
 				80BB89BF141C3E5900F1753A /* Contact.hpp in Headers */,
 				80BB89C1141C3E5900F1753A /* ContactSolver.hpp in Headers */,
+				47CF984D1DF9C4A30077F5F2 /* ShapeSeparation.hpp in Headers */,
 				80BB89C3141C3E5900F1753A /* EdgeAndCircleContact.hpp in Headers */,
 				80BB89C5141C3E5900F1753A /* EdgeAndPolygonContact.hpp in Headers */,
 				80BB89C7141C3E5900F1753A /* PolygonAndCircleContact.hpp in Headers */,
@@ -1715,6 +1725,7 @@
 				47AA5DA71C4C5FBE008AF2BA /* BlockAllocator.cpp in Sources */,
 				47AA5DA91C4C5FBE008AF2BA /* Math.cpp in Sources */,
 				47AA5DAA1C4C5FBE008AF2BA /* Settings.cpp in Sources */,
+				47CF984C1DF9C4A30077F5F2 /* ShapeSeparation.cpp in Sources */,
 				47AA5DAB1C4C5FBE008AF2BA /* StackAllocator.cpp in Sources */,
 				4736DE8D1DB806AE003993CB /* CollideShapes.cpp in Sources */,
 				47AA5DAC1C4C5FBE008AF2BA /* Timer.cpp in Sources */,
@@ -1885,6 +1896,7 @@
 				80BB89DC141C3E5900F1753A /* WeldJoint.cpp in Sources */,
 				80BB89DE141C3E5900F1753A /* WheelJoint.cpp in Sources */,
 				80BB89E0141C3E5900F1753A /* Rope.cpp in Sources */,
+				47CF984B1DF9C4A30077F5F2 /* ShapeSeparation.cpp in Sources */,
 				47A9833E1D0F7ABA00AA7D1A /* ConstJointIterator.cpp in Sources */,
 				80620F8F168B934600D46C8D /* MotorJoint.cpp in Sources */,
 			);

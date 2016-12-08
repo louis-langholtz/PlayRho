@@ -18,6 +18,7 @@
  */
 
 #include <Box2D/Collision/Collision.hpp>
+#include <Box2D/Collision/ShapeSeparation.hpp>
 #include <Box2D/Collision/ReferenceFace.hpp>
 #include <Box2D/Collision/EdgeInfo.hpp>
 #include <Box2D/Collision/CollideShapes.hpp>
@@ -27,19 +28,6 @@
 #include <array>
 
 using namespace box2d;
-
-// This structure is used to keep track of the best separating axis.
-struct ShapeSeparation
-{
-	using index_type = std::remove_const<decltype(MaxShapeVertices)>::type;
-	using distance_type = float_t;
-
-	static constexpr index_type InvalidIndex = static_cast<index_type>(-1);
-	static constexpr distance_type InvalidDistance = GetInvalid<distance_type>();
-
-	index_type index = InvalidIndex;
-	distance_type separation = InvalidDistance;
-};
 
 static inline ShapeSeparation GetPolygonSeparation(const PolygonShape& polygon, const EdgeInfo& edge)
 {
@@ -87,66 +75,6 @@ static inline ShapeSeparation GetPolygonSeparation(const PolygonShape& polygon, 
 		}
 	}
 	return ShapeSeparation{index, max_s};
-}
-
-/// Gets the shape separation information for the most opposite vector.
-/// @param vectors Collection of 0 or more vectors to find the most anti-parallel vector from and
-///    its magnitude from the reference vector.
-/// @param refvec Reference vector.
-template <typename T>
-static inline ShapeSeparation GetMostOppositeSeparation(Span<const T> vectors, const T refvec, const T offset)
-{
-	// Search for the vector that is most anti-parallel to the reference vector.
-	// See: https://en.wikipedia.org/wiki/Antiparallel_(mathematics)#Antiparallel_vectors
-	auto bestIndex = ShapeSeparation::InvalidIndex;
-	auto minValue = MaxFloat;
-	const auto count = vectors.size();
-	for (auto i = decltype(count){0}; i < count; ++i)
-	{
-		// Get cosine of angle between refvec and vectors[i] multiplied by their
-		// magnitudes (which will essentially be 1 for any two unit vectors).
-		// Get distance from offset to vectors[i] in direction of refvec.
-		const auto s = Dot(refvec, vectors[i] - offset);
-		if (minValue > s)
-		{
-			minValue = s;
-			bestIndex = static_cast<ShapeSeparation::index_type>(i);
-		}
-	}
-	return ShapeSeparation{bestIndex, minValue};
-}
-
-/// Gets the max separation information.
-/// @return The index of the vertex and normal from vertices1 and normals1
-///   that had the maximum separation distance from any vertex in vertices2 in the
-///   direction of that normal and that maximal distance.
-static ShapeSeparation
-GetMaxSeparation(Span<const Vec2> vertices1, Span<const UnitVec2> normals1, const Transformation& xf1,
-				 Span<const Vec2> vertices2, const Transformation& xf2)
-{
-	assert(vertices1.size() == normals1.size());
-
-	// Find the max separation between shape1 and shape2 using edge normals from shape1.
-	auto maxSeparation = -MaxFloat;
-	auto index_of_max = ShapeSeparation::index_type{0};
-	
-	const auto count1 = vertices1.size();
-	const auto xf = MulT(xf2, xf1);
-	
-	for (auto i = decltype(count1){0}; i < count1; ++i)
-	{
-		// Get shape1 normal and vertex relative to shape2.
-		const auto shape1_ni = Rotate(normals1[i], xf.q);
-		const auto shape1_vi = Transform(vertices1[i], xf);
-		
-		const auto s = GetMostOppositeSeparation(vertices2, Vec2{shape1_ni}, shape1_vi).separation;
-		if (maxSeparation < s)
-		{
-			maxSeparation = s;
-			index_of_max = static_cast<ShapeSeparation::index_type>(i);
-		}
-	}
-	return ShapeSeparation{index_of_max, maxSeparation};
 }
 
 static inline ShapeSeparation GetMaxSeparation(const PolygonShape& shape1, const Transformation& xf1,
@@ -703,13 +631,13 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 
 	const auto totalRadius = GetVertexRadius(shapeA) + GetVertexRadius(shapeB);
 	
-	const auto edgeSepA = GetMaxSeparation(shapeA, xfA, shapeB, xfB);
+	const auto edgeSepA = ::GetMaxSeparation(shapeA, xfA, shapeB, xfB);
 	if (edgeSepA.separation > totalRadius)
 	{
 		return Manifold{};
 	}
 	
-	const auto edgeSepB = GetMaxSeparation(shapeB, xfB, shapeA, xfA);
+	const auto edgeSepB = ::GetMaxSeparation(shapeB, xfB, shapeA, xfA);
 	if (edgeSepB.separation > totalRadius)
 	{
 		return Manifold{};
