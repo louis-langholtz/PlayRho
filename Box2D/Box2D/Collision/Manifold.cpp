@@ -134,7 +134,7 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
 					mp0.contactFeature.indexA = a_indices_array[1];
 					mp1.contactFeature.indexA = a_indices_array[1];
 					const auto ln = GetFwdPerpendicular(GetUnitVector(v0 - v1));
-					return Manifold::GetForFaceA(ln, lp, mp0, mp1);					
+					return Manifold::GetForFaceA(ln, lp, mp0, mp1);
 				}
 				else
 				{
@@ -243,7 +243,7 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
 					mp1.contactFeature.typeA = ContactFeature::e_face;
 					mp1.contactFeature.indexA = a_indices_array[1];
 					const auto ln = GetFwdPerpendicular(GetUnitVector(v0 - v1));
-					return Manifold::GetForFaceA(ln, lp, mp0, mp1);					
+					return Manifold::GetForFaceA(ln, lp, mp0, mp1);
 				}
 				assert(false);
 				break;
