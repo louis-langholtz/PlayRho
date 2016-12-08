@@ -34,13 +34,13 @@ void GetPointStates(PointStateArray& state1, PointStateArray& state2,
 	// Detect persists and removes.
 	for (auto i = decltype(manifold1.GetPointCount()){0}; i < manifold1.GetPointCount(); ++i)
 	{
-		const auto cf = manifold1.GetPoint(i).contactFeature;
+		const auto cf = manifold1.GetContactFeature(i);
 
 		state1[i] = PointState::RemoveState;
 
 		for (auto j = decltype(manifold2.GetPointCount()){0}; j < manifold2.GetPointCount(); ++j)
 		{
-			if (manifold2.GetPoint(j).contactFeature == cf)
+			if (manifold2.GetContactFeature(j) == cf)
 			{
 				state1[i] = PointState::PersistState;
 				break;
@@ -51,13 +51,13 @@ void GetPointStates(PointStateArray& state1, PointStateArray& state2,
 	// Detect persists and adds.
 	for (auto i = decltype(manifold2.GetPointCount()){0}; i < manifold2.GetPointCount(); ++i)
 	{
-		const auto cf = manifold2.GetPoint(i).contactFeature;
+		const auto cf = manifold2.GetContactFeature(i);
 
 		state2[i] = PointState::AddState;
 
 		for (auto j = decltype(manifold1.GetPointCount()){0}; j < manifold1.GetPointCount(); ++j)
 		{
-			if (manifold1.GetPoint(j).contactFeature == cf)
+			if (manifold1.GetContactFeature(j) == cf)
 			{
 				state2[i] = PointState::PersistState;
 				break;

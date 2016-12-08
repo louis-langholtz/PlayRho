@@ -177,15 +177,12 @@ void Contact::Update(ContactListener* listener)
 		// stored impulses to warm start the solver.
 		for (auto i = decltype(new_point_count){0}; i < new_point_count; ++i)
 		{
-			const auto& new_mp = m_manifold.GetPoint(i);
-			assert(new_mp.normalImpulse == 0);
-			assert(new_mp.tangentImpulse == 0);
+			const auto new_cf = m_manifold.GetContactFeature(i);
 			for (auto j = decltype(old_point_count){0}; j < old_point_count; ++j)
 			{
-				const auto& old_mp = oldManifold.GetPoint(j);
-				if (new_mp.contactFeature == old_mp.contactFeature)
+				if (new_cf == oldManifold.GetContactFeature(j))
 				{
-					m_manifold.SetPointImpulses(i, old_mp.normalImpulse, old_mp.tangentImpulse);
+					m_manifold.SetContactImpulses(i, oldManifold.GetContactImpulses(j));
 					break;
 				}
 			}

@@ -227,14 +227,14 @@ static Manifold GetManifoldFaceA(const EdgeInfo& edgeInfo,
 		return Manifold{};
 	}
 
-	auto manifold = Manifold::GetForFaceA(ref_face.GetNormal(), ref_face.GetVertex1());
+	auto manifold = Manifold::GetForFaceA(ref_face.GetNormal(), 0, ref_face.GetVertex1());
 	const auto totalRadius = edgeInfo.GetVertexRadius() + GetVertexRadius(localShapeB);
 	for (auto i = decltype(clipPoints.size()){0}; i < clipPoints.size(); ++i)
 	{
 		const auto separation = Dot(ref_face.GetNormal(), clipPoints[i].v - ref_face.GetVertex1());
 		if (separation <= totalRadius)
 		{
-			manifold.AddPoint(Manifold::Point{InverseTransform(clipPoints[i].v, xf), clipPoints[i].cf});
+			manifold.AddPoint(clipPoints[i].cf.typeB, clipPoints[i].cf.indexB, InverseTransform(clipPoints[i].v, xf));
 		}
 	}
 	return manifold;
@@ -247,8 +247,8 @@ static Manifold GetManifoldFaceB(const EdgeInfo& edgeInfo,
 {
 #if 1
 	const auto incidentEdge = ClipList{
-		ClipVertex{edgeInfo.GetVertex1(), GetVertexFaceContactFeature(0, index)},
-		ClipVertex{edgeInfo.GetVertex2(), GetVertexFaceContactFeature(0, index)}
+		ClipVertex{edgeInfo.GetVertex1(), GetVertexFaceContactFeature(0, index)}, // 0, index originally
+		ClipVertex{edgeInfo.GetVertex2(), GetVertexFaceContactFeature(1, index)} // also 0, index originally
 	};
 #else
 	const auto incidentEdge = ClipList{
@@ -268,14 +268,16 @@ static Manifold GetManifoldFaceB(const EdgeInfo& edgeInfo,
 		return Manifold{};
 	}
 	
-	auto manifold = Manifold::GetForFaceB(shapeB.GetNormal(ref_face.GetIndex1()), shapeB.GetVertex(ref_face.GetIndex1()));
+	//auto manifold = Manifold::GetForFaceB(shapeB.GetNormal(ref_face.GetIndex1()), shapeB.GetVertex(ref_face.GetIndex1()));
+	auto manifold = Manifold::GetForFaceB(shapeB.GetNormal(ref_face.GetIndex1()), ref_face.GetIndex1(), shapeB.GetVertex(ref_face.GetIndex1()));
 	const auto totalRadius = edgeInfo.GetVertexRadius() + GetVertexRadius(shapeB);
 	for (auto i = decltype(clipPoints.size()){0}; i < clipPoints.size(); ++i)
 	{
 		const auto separation = Dot(ref_face.GetNormal(), clipPoints[i].v - ref_face.GetVertex1());
 		if (separation <= totalRadius)
 		{
-			manifold.AddPoint(Manifold::Point{clipPoints[i].v, Flip(clipPoints[i].cf)});
+			manifold.AddPoint(clipPoints[i].cf.typeA, clipPoints[i].cf.indexA, clipPoints[i].v);
+			//manifold.AddPoint(Manifold::Point{clipPoints[i].v, Flip(clipPoints[i].cf)});
 		}
 	}
 	return manifold;
@@ -409,7 +411,8 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	if ((maxSeparation < 0) || almost_zero(maxSeparation))
 	{
 		// Circle's center is inside the polygon and closest to edge[indexOfMax].
-		return Manifold::GetForFaceA(shapeA.GetNormal(indexOfMax), (v1 + v2) / 2, Manifold::Point{shapeB.GetLocation(), GetFaceVertexContactFeature(indexOfMax, 0)});
+		return Manifold::GetForFaceA(shapeA.GetNormal(indexOfMax), indexOfMax, (v1 + v2) / 2,
+									 ContactFeature::e_vertex, 0, shapeB.GetLocation());
 	}
 	
 	// Circle's center is outside polygon and closest to edge[indexOfMax].
@@ -441,7 +444,8 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	{
 		return Manifold{};
 	}
-	return Manifold::GetForFaceA(shapeA.GetNormal(indexOfMax), faceCenter, Manifold::Point{shapeB.GetLocation(), GetFaceVertexContactFeature(indexOfMax, 0)});
+	return Manifold::GetForFaceA(shapeA.GetNormal(indexOfMax), indexOfMax, faceCenter,
+								 ContactFeature::e_vertex, 0, shapeB.GetLocation());
 }
 
 Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,
@@ -535,7 +539,7 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 		return (Dot(e_perp, Q - A) < 0)? -e_perp: e_perp;
 	}(), UnitVec2::GetZero());
 	
-	return Manifold::GetForFaceA(ln, A, Manifold::Point{shapeB.GetLocation(), GetFaceVertexContactFeature(0, 0)});
+	return Manifold::GetForFaceA(ln, 0, A, ContactFeature::e_vertex, 0, shapeB.GetLocation());
 }
 
 Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,
@@ -602,7 +606,7 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 					}
 				}
 				const auto ln = GetRevPerpendicular(GetUnitVector(shapeA_edge));
-				return Manifold::GetForFaceA(ln, contact_pt, Manifold::Point{shapeB_v1, GetFaceFaceContactFeature(0, 0)});
+				return Manifold::GetForFaceA(ln, 0, contact_pt, ContactFeature::e_face, 0, shapeB_v1);
 			}
 			// The line segments are disjoint (and collinear).
 			return Manifold{};
@@ -629,8 +633,8 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 		{
 			// The two line segments meet at the point shapeA_v1 + shapeA_c * shapeA_edge
 			const auto lp = shapeA_v1 + shapeA_c * shapeA_edge;
-			const auto mp = Manifold::Point{shapeB_v1, GetFaceFaceContactFeature(0, 0)};
-			return Manifold::GetForFaceA(shapeA_normal, lp, mp);
+			return Manifold::GetForFaceA(shapeA_normal, 0, (shapeA_v1 + shapeA_v2) / 2,
+										 ContactFeature::e_face, 0, lp);
 		}
 		else
 		{

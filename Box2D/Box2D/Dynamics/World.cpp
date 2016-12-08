@@ -647,8 +647,8 @@ void World::Solve(const TimeStep& step)
 			assert(pointCount > 0);
 			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 			{
-				const auto& mp = manifold.GetPoint(j);
-				constraint.AddPoint(dtRatio * mp.normalImpulse, dtRatio * mp.tangentImpulse);
+				const auto ci = manifold.GetContactImpulses(j);
+				constraint.AddPoint(dtRatio * ci.m_normal, dtRatio * ci.m_tangent);
 			}
 			
 			return constraint;
