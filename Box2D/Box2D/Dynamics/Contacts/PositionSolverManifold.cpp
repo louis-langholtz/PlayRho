@@ -12,34 +12,33 @@ namespace box2d
 {
 
 /// Gets the position solver manifold in world coordinates for a circles-type manifold.
-/// @param lp Local point.
-/// @param plp Point's local point.
+/// @param lp Local point. Location of shape A in local coordinates.
+/// @param plp Point's local point. Location of shape B in local coordinates.
 /// @param xfA Transformation for body A.
 /// @param xfB Transformation for body B.
-/// @return Separation is the dot-product of:
-///   the positional difference of the two bodies, and
-///   the unit vector of that positional difference.
+/// @note The returned separation is the magnitude of the positional difference of the two points.
+///   This is always a non-negative amount.
 static inline PositionSolverManifold GetForCircles(Vec2 lp, Vec2 plp,
 												   const Transformation& xfA, const Transformation& xfB)
 {
 	const auto pointA = Transform(lp, xfA);
 	const auto pointB = Transform(plp, xfB);
-	const auto delta = pointB - pointA;
-	const auto normal = GetUnitVector(delta, UnitVec2::GetZero());
-	const auto midpoint = (pointA + pointB) / float_t{2};
-	const auto separation = Dot(delta, normal);
+	const auto delta = pointB - pointA; // The edge from pointA to pointB
+	const auto normal = GetUnitVector(delta, UnitVec2::GetZero()); // The direction of the edge.
+	const auto midpoint = (pointA + pointB) / 2;
+	const auto separation = Dot(delta, normal); // The length of edge without doing sqrt again.
 	return PositionSolverManifold{normal, midpoint, separation};
 }
 
 /// Gets the position solver manifold in world coordinates for a face-a-type manifold.
-/// @param lp Local point.
-/// @param plp Point's local point.
-/// @param xfA Transformation for body A.
-/// @param xfB Transformation for body B.
-/// @param ln Local normal.
-/// @return Separation is the dot-product of:
-///   the positional difference between the two bodies, and
-///   the local normal rotated by the rotational component of xfA.
+/// @param lp Local point. Location for shape A in local coordinates.
+/// @param plp Point's local point. Location for shape B in local coordinates.
+/// @param xfA Transformation for shape A.
+/// @param xfB Transformation for shape B.
+/// @param ln Local normal for shape A to be transformed into a world normal based on the
+///   transformation for shape A.
+/// @return Separation is the dot-product of the positional difference between the two points in
+///   the direction of the world normal.
 static inline PositionSolverManifold GetForFaceA(Vec2 lp, Vec2 plp,
 												 const Transformation& xfA, const Transformation& xfB,
 												 UnitVec2 ln)
@@ -56,7 +55,8 @@ static inline PositionSolverManifold GetForFaceA(Vec2 lp, Vec2 plp,
 /// @param plp Point's local point.
 /// @param xfA Transformation for body A.
 /// @param xfB Transformation for body B.
-/// @param ln Local normal.
+/// @param ln Local normal for shape B to be transformed into a world normal based on the
+///   transformation for shape B.
 static inline PositionSolverManifold GetForFaceB(Vec2 lp, Vec2 plp,
 												 const Transformation& xfA, const Transformation& xfB,
 												 UnitVec2 ln)

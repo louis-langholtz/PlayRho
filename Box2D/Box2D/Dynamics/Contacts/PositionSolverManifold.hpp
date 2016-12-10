@@ -34,7 +34,8 @@ namespace box2d
 	struct PositionSolverManifold
 	{
 		/// Normal.
-		/// @detail Normal of the contact between two points.
+		/// @detail Normal of the contact between two points. This is the axis upon which impulses
+		///    should be applied to resolve the negative separations of overlapping shapes.
 		/// @note This field is 8-bytes large.
 		UnitVec2 m_normal;
 
@@ -50,9 +51,18 @@ namespace box2d
 	};
 
 	/// Gets the normal-point-separation data in world coordinates for the given inputs.
+	/// @note The returned normal is in the direction of shape A to shape B.
+	/// @note The returned separation distance does not account for vertex radiuses. It's simply
+	///   the separation between the points of the manifold. To account for the vertex radiuses,
+	///   the total vertex radius must be subtracted from this separation distance.
 	PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
 								  const Transformation& xfA, const Transformation& xfB);
 	
+	/// Gets the normal-point-separation data in world coordinates for the given inputs.
+	/// @note The returned normal is in the direction of shape A to shape B.
+	/// @note The returned separation distance does not account for vertex radiuses. It's simply
+	///   the separation between the points of the manifold. To account for the vertex radiuses,
+	///   the total vertex radius must be subtracted from this separation distance.
 	inline PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
 										 Position pos_a, Vec2 lc_ctr_a,
 										 Position pos_b, Vec2 lc_ctr_b)
