@@ -87,8 +87,6 @@ TEST(PositionSolverManifold, GetPSM)
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
 	ASSERT_FLOAT_EQ(manifold.GetPoint(0).localPoint.x, float_t(-2.0)); // left
 	ASSERT_FLOAT_EQ(manifold.GetPoint(0).localPoint.y, float_t(-1.5) - total_radius); // top
-	ASSERT_FLOAT_EQ(manifold.GetPoint(0).normalImpulse, float_t(0));
-	ASSERT_FLOAT_EQ(manifold.GetPoint(0).tangentImpulse, float_t(0));
 	ASSERT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_vertex);
 	ASSERT_EQ(manifold.GetPoint(0).contactFeature.indexA, 0);
 	ASSERT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_face);
@@ -97,8 +95,6 @@ TEST(PositionSolverManifold, GetPSM)
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
 	ASSERT_FLOAT_EQ(manifold.GetPoint(1).localPoint.x, float_t(-2.0)); // left
 	ASSERT_FLOAT_EQ(manifold.GetPoint(1).localPoint.y, float_t(+1.5) + total_radius); // bottom
-	ASSERT_FLOAT_EQ(manifold.GetPoint(1).normalImpulse, float_t(0));
-	ASSERT_FLOAT_EQ(manifold.GetPoint(1).tangentImpulse, float_t(0));
 	ASSERT_EQ(manifold.GetPoint(1).contactFeature.typeA, ContactFeature::e_vertex);
 	ASSERT_EQ(manifold.GetPoint(1).contactFeature.indexA, 1);
 	ASSERT_EQ(manifold.GetPoint(1).contactFeature.typeB, ContactFeature::e_face);
