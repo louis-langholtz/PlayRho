@@ -39,6 +39,11 @@ namespace box2d
 	/// Manifold for two convex shapes.
 	///
 	/// @detail
+	/// This describes zero, one, or two points of contact for which impulses should be applied to
+	/// most naturally resolve those contacts. Ideally the manifold is calculated at the earliest
+	/// point in time of contact occuring. The further past that time, the less natural contact
+	/// resolution of solid bodies will be - eventually resulting in oddities like tunneling.
+	///
 	/// Multiple types of contact are supported: clip point versus plane with radius, point versus
 	/// point with radius (circles). Contacts are stored in this way so that position correction can
 	/// account for movement, which is critical for continuous physics. All contact scenarios must
@@ -227,7 +232,7 @@ namespace box2d
 		
 		static constexpr Manifold GetForFaceB(UnitVec2 nb, sidx_t ib, Vec2 pb) noexcept
 		{
-			return Manifold{e_faceA, nb, pb, 0, {{
+			return Manifold{e_faceB, nb, pb, 0, {{
 				Point{GetInvalid<Vec2>(), ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, ib}},
 				Point{GetInvalid<Vec2>(), ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, ib}}
 			}}};
@@ -245,7 +250,7 @@ namespace box2d
 		static constexpr Manifold GetForFaceB(UnitVec2 nb, sidx_t ib, Vec2 pb,
 											  cf_t ta0, sidx_t ia0, Vec2 pa0) noexcept
 		{
-			return Manifold{e_faceA, nb, pb, 1, {{
+			return Manifold{e_faceB, nb, pb, 1, {{
 				Point{pa0, ContactFeature{ta0, ia0, ContactFeature::e_face, ib}},
 				Point{pa0, ContactFeature{ta0, ia0, ContactFeature::e_face, ib}}
 			}}};
@@ -265,7 +270,7 @@ namespace box2d
 											  cf_t ta0, sidx_t ia0, Vec2 pa0,
 											  cf_t ta1, sidx_t ia1, Vec2 pa1) noexcept
 		{
-			return Manifold{e_faceA, nb, pb, 2, {{
+			return Manifold{e_faceB, nb, pb, 2, {{
 				Point{pa0, ContactFeature{ta0, ia0, ContactFeature::e_face, ib}},
 				Point{pa1, ContactFeature{ta1, ia1, ContactFeature::e_face, ib}}
 			}}};
@@ -356,6 +361,12 @@ namespace box2d
 			return m_localPoint;
 		}
 		
+		Vec2 GetOpposingPoint(size_type index) const noexcept
+		{
+			assert((0 <= index) && (index < m_pointCount));
+			return m_points[index].localPoint;
+		}
+
 	private:
 		using PointArray = std::array<Point, MaxManifoldPoints>;
 		
