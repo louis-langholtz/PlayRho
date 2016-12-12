@@ -21,30 +21,58 @@
 
 using namespace box2d;
 
-ShapeSeparation box2d::GetMaxSeparation(Span<const Vec2> vertices1, Span<const UnitVec2> normals1, const Transformation& xf1,
-										Span<const Vec2> vertices2, const Transformation& xf2)
+IndexSeparation box2d::GetMaxSeparation(Span<const Vec2> verts1, Span<const UnitVec2> norms1, const Transformation& xf1,
+										Span<const Vec2> verts2, const Transformation& xf2,
+										float_t stop)
 {
-	assert(vertices1.size() == normals1.size());
+	assert(verts1.size() == norms1.size());
 	
 	// Find the max separation between shape1 and shape2 using edge normals from shape1.
 	auto maxSeparation = -MaxFloat;
-	auto index_of_max = ShapeSeparation::index_type{0};
+	auto index_of_max = IndexSeparation::index_type{0};
 	
-	const auto count1 = vertices1.size();
 	const auto xf = MulT(xf2, xf1);
-	
+	const auto count1 = verts1.size();
 	for (auto i = decltype(count1){0}; i < count1; ++i)
 	{
 		// Get shape1 normal and vertex relative to shape2.
-		const auto shape1_ni = Rotate(normals1[i], xf.q);
-		const auto shape1_vi = Transform(vertices1[i], xf);
-		
-		const auto s = GetMostOppositeSeparation(vertices2, Vec2{shape1_ni}, shape1_vi).separation;
+		const auto s = GetMostAntiParallelSeparation(verts2, Vec2{Rotate(norms1[i], xf.q)}, Transform(verts1[i], xf)).separation;
+		if (s > stop)
+		{
+			return IndexSeparation{static_cast<IndexSeparation::index_type>(i), s};
+		}
 		if (maxSeparation < s)
 		{
 			maxSeparation = s;
-			index_of_max = static_cast<ShapeSeparation::index_type>(i);
+			index_of_max = static_cast<IndexSeparation::index_type>(i);
 		}
 	}
-	return ShapeSeparation{index_of_max, maxSeparation};
+	return IndexSeparation{index_of_max, maxSeparation};
+}
+
+IndexSeparation box2d::GetMaxSeparation(Span<const Vec2> verts1, Span<const UnitVec2> norms1,
+										Span<const Vec2> verts2,
+										float_t stop)
+{
+	assert(verts1.size() == norms1.size());
+	
+	// Find the max separation between shape1 and shape2 using edge normals from shape1.
+	auto maxSeparation = -MaxFloat;
+	auto index_of_max = IndexSeparation::index_type{0};
+	
+	const auto count1 = verts1.size();
+	for (auto i = decltype(count1){0}; i < count1; ++i)
+	{
+		const auto s = GetMostAntiParallelSeparation(verts2, Vec2{norms1[i]}, verts1[i]).separation;
+		if (s > stop)
+		{
+			return IndexSeparation{static_cast<IndexSeparation::index_type>(i), s};
+		}
+		if (maxSeparation < s)
+		{
+			maxSeparation = s;
+			index_of_max = static_cast<IndexSeparation::index_type>(i);
+		}
+	}
+	return IndexSeparation{index_of_max, maxSeparation};
 }
