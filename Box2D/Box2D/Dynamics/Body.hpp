@@ -69,6 +69,30 @@ enum class BodyType
 /// You can safely re-use body definitions. Shapes are added to a body after construction.
 struct BodyDef
 {
+	constexpr BodyDef& UseType(BodyType t) noexcept
+	{
+		type = t;
+		return *this;
+	}
+
+	constexpr BodyDef& UseLocation(Vec2 l) noexcept
+	{
+		position = l;
+		return *this;
+	}
+
+	constexpr BodyDef& UseLinearDamping(float_t v) noexcept
+	{
+		linearDamping = v;
+		return *this;
+	}
+	
+	constexpr BodyDef& UseAngularDamping(float_t v) noexcept
+	{
+		angularDamping = v;
+		return *this;
+	}
+
 	/// This constructor sets the body definition default values.
 	constexpr BodyDef() = default;
 
