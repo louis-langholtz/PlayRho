@@ -40,7 +40,7 @@ namespace box2d
 		UnitVec2 m_normal;
 
 		/// Point.
-		/// @detail Point at which position resolution should be applied.
+		/// @detail Point at which position resolution should be relatively applied.
 		/// @note This field is 8-bytes large.
 		Vec2 m_point;
 		

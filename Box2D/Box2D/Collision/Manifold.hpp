@@ -119,9 +119,13 @@ namespace box2d
 		{
 			/// Local point.
 			/// @detail Usage depends on manifold type.
-			/// For circles type manifolds, this is the local center of circle B.
-			/// For face-A type manifolds, this is the local center of "cirlce" B or a clip point of polygon B.
-			/// For face-B type manifolds, this is the local center of "circle" A or a clip point of polygon A.
+			/// @note For circles type manifolds, this is the local center of circle B.
+			/// @note For face-A type manifolds, this is the local center of "cirlce" B or a clip
+			/// point of shape B. It is also the point at which impulse forces should be relatively
+			/// applied for position resolution.
+			/// @note For face-B type manifolds, this is the local center of "circle" A or a clip
+			/// point of shape A. It is also the point at which impulse forces should be relatively
+			/// applied for position resolution.
 			/// @note 8-bytes.
 			Vec2 localPoint;
 
@@ -131,9 +135,17 @@ namespace box2d
 			/// @sa GetPointStates.
 			ContactFeature contactFeature;
 			
-			float_t normalImpulse = 0; ///< Normal impulse. This is the non-penetration impulse (4-bytes).
+			/// Normal impulse.
+			/// @detail This is the non-penetration impulse.
+			/// @note This is only used for velocity constraint resolution.
+			/// @note 4-bytes.
+			float_t normalImpulse = 0;
 			
-			float_t tangentImpulse = 0; ///< Tangent impulse. This is the friction impulse (4-bytes).
+			/// Tangent impulse.
+			/// @detail This is the friction impulse.
+			/// @note This is only used for velocity constraint resolution.
+			/// @note 4-bytes.
+			float_t tangentImpulse = 0;
 		};
 		
 		// For Circles type manifolds...
