@@ -31,15 +31,15 @@ public:
 	{
 		{
 			m_transformA = Transform_identity;
-			m_transformA.p = Vec2(-7.0f, 20.2f); // Vec2(0.0f, -0.2f);
-			m_polygonA.SetAsBox(3.0f, 2.0f);
+			m_transformA.p = Vec2(-10.0f, 20.2f); // Vec2(0.0f, -0.2f);
+			m_polygonA.SetAsBox(8.0f, 6.0f);
 		}
 
 		{
-			m_positionB = m_transformA.p + Vec2(8.017401f, 0.13678508f);
+			m_positionB = m_transformA.p + Vec2(19.017401f, 0.13678508f);
 			m_angleB = 0_deg; // -0.0109265_rad;
 			m_transformB = Transformation{m_positionB, UnitVec2{m_angleB}};
-			m_polygonB.SetAsBox(2.2f, 0.1f);
+			m_polygonB.SetAsBox(7.2f, 0.8f);
 		}
 	}
 
@@ -71,6 +71,71 @@ public:
 						  GetY(manifold.GetLocalNormal()),
 						  count, strbuf.str().c_str());
 		m_textLine += DRAW_STRING_NEW_LINE;
+	}
+
+	void Draw(Drawer& drawer, const PolygonShape& shape, const Transformation& xfm)
+	{
+		const auto color = Color(0.9f, 0.9f, 0.9f);
+		const auto skinColor = Color(color, 0.1f);
+		const auto r = shape.GetVertexRadius();
+		Vec2 v[MaxPolygonVertices];
+		const auto vertexCount = shape.GetVertexCount();
+		for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+		{
+			v[i] = Transform(shape.GetVertex(i), xfm);
+		}
+		drawer.DrawPolygon(v, vertexCount, color);
+		for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+		{
+			if (i > 0)
+			{
+				const auto normal0 = shape.GetNormal(i - 1);
+				const auto worldNormal0 = Rotate(normal0, xfm.q);
+				const auto p0 = v[i-1] + worldNormal0 * r;
+				const auto p1 = v[i] + worldNormal0 * r;
+				drawer.DrawSegment(p0, p1, skinColor);
+				const auto normal1 = shape.GetNormal(i);
+				const auto worldNormal1 = Rotate(normal1, xfm.q);
+				const auto angle0 = GetAngle(worldNormal0);
+				const auto angle1 = GetAngle(worldNormal1);
+				const auto angleDiff = GetRevRotationalAngle(angle0, angle1);
+				auto lastAngle = 0_deg;
+				for (auto angle = 5_deg; angle < angleDiff; angle += 5_deg)
+				{
+					const auto c0 = v[i] + r * UnitVec2(angle0 + lastAngle);
+					const auto c1 = v[i] + r * UnitVec2(angle0 + angle);
+					drawer.DrawSegment(c0, c1, skinColor);
+					lastAngle = angle;
+				}
+				{
+					const auto c0 = v[i] + r * UnitVec2(angle0 + lastAngle);
+					const auto c1 = v[i] + r * UnitVec2(angle1);
+					drawer.DrawSegment(c0, c1, skinColor);
+				}
+			}
+		}
+		if (vertexCount > 0)
+		{
+			const auto worldNormal0 = Rotate(shape.GetNormal(vertexCount - 1), xfm.q);
+			drawer.DrawSegment(v[vertexCount - 1] + worldNormal0 * r, v[0] + worldNormal0 * r, skinColor);
+			const auto worldNormal1 = Rotate(shape.GetNormal(0), xfm.q);
+			const auto angle0 = GetAngle(worldNormal0);
+			const auto angle1 = GetAngle(worldNormal1);
+			const auto angleDiff = GetRevRotationalAngle(angle0, angle1);
+			auto lastAngle = 0_deg;
+			for (auto angle = 5_deg; angle < angleDiff; angle += 5_deg)
+			{
+				const auto c0 = v[0] + r * UnitVec2(angle0 + lastAngle);
+				const auto c1 = v[0] + r * UnitVec2(angle0 + angle);
+				drawer.DrawSegment(c0, c1, skinColor);
+				lastAngle = angle;
+			}
+			{
+				const auto c0 = v[0] + r * UnitVec2(angle0 + lastAngle);
+				const auto c1 = v[0] + r * UnitVec2(angle1);
+				drawer.DrawSegment(c0, c1, skinColor);
+			}
+		}
 	}
 
 	void PostStep(const Settings& settings, Drawer& drawer) override
@@ -131,27 +196,8 @@ public:
 						  adjustedDistance, outputDistance, output.iterations);
 		m_textLine += DRAW_STRING_NEW_LINE;
 		
-		{
-			const auto color = Color(0.9f, 0.9f, 0.9f);
-			Vec2 v[MaxPolygonVertices];
-			{
-				const auto vertexCount = m_polygonA.GetVertexCount();
-				for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-				{
-					v[i] = Transform(m_polygonA.GetVertex(i), m_transformA);
-				}
-				drawer.DrawPolygon(v, vertexCount, color);
-			}
-			
-			{
-				const auto vertexCount = m_polygonB.GetVertexCount();
-				for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-				{
-					v[i] = Transform(m_polygonB.GetVertex(i), m_transformB);
-				}
-				drawer.DrawPolygon(v, m_polygonB.GetVertexCount(), color);
-			}
-		}
+		Draw(drawer, m_polygonA, m_transformA);
+		Draw(drawer, m_polygonB, m_transformB);
 
 		{
 			const auto size = output.simplex.GetSize();
@@ -250,8 +296,8 @@ private:
 
 	Transformation m_transformA;
 	Transformation m_transformB;
-	PolygonShape m_polygonA;
-	PolygonShape m_polygonB;
+	PolygonShape m_polygonA{RadiusIncrement * 40};
+	PolygonShape m_polygonB{RadiusIncrement * 40};
 };
 	
 } // namespace box2d
