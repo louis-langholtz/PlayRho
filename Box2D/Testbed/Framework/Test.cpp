@@ -59,7 +59,7 @@ static void Draw(Drawer& drawer, const ChainShape& shape, const Transformation& 
 	}
 }
 
-static void Draw(Drawer& drawer, const PolygonShape& shape, const Transformation& xf, const Color& color)
+static void Draw(Drawer& drawer, const PolygonShape& shape, const Transformation& xf, const Color& color, bool skins)
 {
 	const auto vertexCount = shape.GetVertexCount();
 	assert(vertexCount <= MaxPolygonVertices);
@@ -71,9 +71,69 @@ static void Draw(Drawer& drawer, const PolygonShape& shape, const Transformation
 	const auto fillColor = Color{0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f};
 	drawer.DrawSolidPolygon(vertices, vertexCount, fillColor);
 	drawer.DrawPolygon(vertices, vertexCount, color);
+	
+	if (!skins)
+	{
+		return;
+	}
+
+	const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
+	const auto r = shape.GetVertexRadius();
+	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+	{
+		if (i > 0)
+		{
+			const auto normal0 = shape.GetNormal(i - 1);
+			const auto worldNormal0 = Rotate(normal0, xf.q);
+			const auto p0 = vertices[i-1] + worldNormal0 * r;
+			const auto p1 = vertices[i] + worldNormal0 * r;
+			drawer.DrawSegment(p0, p1, skinColor);
+			const auto normal1 = shape.GetNormal(i);
+			const auto worldNormal1 = Rotate(normal1, xf.q);
+			const auto angle0 = GetAngle(worldNormal0);
+			const auto angle1 = GetAngle(worldNormal1);
+			const auto angleDiff = GetRevRotationalAngle(angle0, angle1);
+			auto lastAngle = 0_deg;
+			for (auto angle = 5_deg; angle < angleDiff; angle += 5_deg)
+			{
+				const auto c0 = vertices[i] + r * UnitVec2(angle0 + lastAngle);
+				const auto c1 = vertices[i] + r * UnitVec2(angle0 + angle);
+				drawer.DrawSegment(c0, c1, skinColor);
+				lastAngle = angle;
+			}
+			{
+				const auto c0 = vertices[i] + r * UnitVec2(angle0 + lastAngle);
+				const auto c1 = vertices[i] + r * UnitVec2(angle1);
+				drawer.DrawSegment(c0, c1, skinColor);
+			}
+		}
+	}
+	if (vertexCount > 0)
+	{
+		const auto worldNormal0 = Rotate(shape.GetNormal(vertexCount - 1), xf.q);
+		drawer.DrawSegment(vertices[vertexCount - 1] + worldNormal0 * r, vertices[0] + worldNormal0 * r, skinColor);
+		const auto worldNormal1 = Rotate(shape.GetNormal(0), xf.q);
+		const auto angle0 = GetAngle(worldNormal0);
+		const auto angle1 = GetAngle(worldNormal1);
+		const auto angleDiff = GetRevRotationalAngle(angle0, angle1);
+		auto lastAngle = 0_deg;
+		for (auto angle = 5_deg; angle < angleDiff; angle += 5_deg)
+		{
+			const auto c0 = vertices[0] + r * UnitVec2(angle0 + lastAngle);
+			const auto c1 = vertices[0] + r * UnitVec2(angle0 + angle);
+			drawer.DrawSegment(c0, c1, skinColor);
+			lastAngle = angle;
+		}
+		{
+			const auto c0 = vertices[0] + r * UnitVec2(angle0 + lastAngle);
+			const auto c1 = vertices[0] + r * UnitVec2(angle1);
+			drawer.DrawSegment(c0, c1, skinColor);
+		}
+	}
+
 }
 
-static void Draw(Drawer& drawer, const Fixture& fixture, const Transformation& xf, const Color& color)
+static void Draw(Drawer& drawer, const Fixture& fixture, const Transformation& xf, const Color& color, bool skins)
 {
 	switch (GetType(fixture))
 	{
@@ -90,7 +150,7 @@ static void Draw(Drawer& drawer, const Fixture& fixture, const Transformation& x
 			break;
 			
 		case Shape::e_polygon:
-			Draw(drawer, *static_cast<const PolygonShape*>(fixture.GetShape()), xf, color);
+			Draw(drawer, *static_cast<const PolygonShape*>(fixture.GetShape()), xf, color, skins);
 			break;
 			
 		default:
@@ -119,13 +179,13 @@ static Color GetColor(const Body& body)
 	return Color{0.9f, 0.7f, 0.7f};
 }
 
-static void Draw(Drawer& drawer, const Body& body)
+static void Draw(Drawer& drawer, const Body& body, bool skins)
 {
 	const auto xf = body.GetTransformation();
 	const auto color = GetColor(body);
 	for (auto&& f: body.GetFixtures())
 	{
-		Draw(drawer, f, xf, color);
+		Draw(drawer, f, xf, color, skins);
 	}
 }
 
@@ -176,7 +236,7 @@ static void Draw(Drawer& drawer, const World& world, const Settings& settings)
 	{
 		for (auto&& b: world.GetBodies())
 		{
-			Draw(drawer, b);
+			Draw(drawer, b, settings.drawSkins);
 		}
 	}
 	

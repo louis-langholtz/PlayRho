@@ -29,18 +29,16 @@ class DistanceTest : public Test
 public:
 	DistanceTest()
 	{
-		{
-			m_transformA = Transform_identity;
-			m_transformA.p = Vec2(-10.0f, 20.2f); // Vec2(0.0f, -0.2f);
-			m_polygonA.SetAsBox(8.0f, 6.0f);
-		}
+		m_world->SetGravity(Vec2{0, 0});
 
-		{
-			m_positionB = m_transformA.p + Vec2(19.017401f, 0.13678508f);
-			m_angleB = 0_deg; // -0.0109265_rad;
-			m_transformB = Transformation{m_positionB, UnitVec2{m_angleB}};
-			m_polygonB.SetAsBox(7.2f, 0.8f);
-		}
+		const auto def = BodyDef{}.UseType(BodyType::Dynamic).UseLinearDamping(float_t(0.5)).UseAngularDamping(float_t(0.5));
+		m_bodyA = m_world->CreateBody(def);
+		m_bodyB = m_world->CreateBody(def);
+
+		m_bodyA->SetTransform(Vec2(-10.0f, 20.2f), 0_deg);
+		m_bodyB->SetTransform(m_bodyA->GetLocation() + Vec2(19.017401f, 0.13678508f), 0_deg);
+		
+		CreateFixtures();
 	}
 
 	static Test* Create()
@@ -48,6 +46,23 @@ public:
 		return new DistanceTest;
 	}
 
+	void CreateFixtures()
+	{
+		PolygonShape polygonA{m_radius};
+		polygonA.SetAsBox(8.0f, 6.0f);
+		m_fixtureA = m_bodyA->CreateFixture(FixtureDef{&polygonA, 1});
+		
+		PolygonShape polygonB{m_radius};
+		polygonB.SetAsBox(7.2f, 0.8f);
+		m_fixtureB = m_bodyB->CreateFixture(FixtureDef{&polygonB, 1});
+	}
+
+	void DestroyFixtures()
+	{
+		m_bodyA->DestroyFixture(m_fixtureA);
+		m_bodyB->DestroyFixture(m_fixtureB);
+	}
+	
 	void ShowManifold(Drawer& drawer, const Manifold& manifold, const char* name)
 	{
 		std::ostringstream strbuf;
@@ -73,79 +88,17 @@ public:
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 
-	void Draw(Drawer& drawer, const PolygonShape& shape, const Transformation& xfm)
-	{
-		const auto color = Color(0.9f, 0.9f, 0.9f);
-		const auto skinColor = Color(color, 0.1f);
-		const auto r = shape.GetVertexRadius();
-		Vec2 v[MaxPolygonVertices];
-		const auto vertexCount = shape.GetVertexCount();
-		for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-		{
-			v[i] = Transform(shape.GetVertex(i), xfm);
-		}
-		drawer.DrawPolygon(v, vertexCount, color);
-		for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-		{
-			if (i > 0)
-			{
-				const auto normal0 = shape.GetNormal(i - 1);
-				const auto worldNormal0 = Rotate(normal0, xfm.q);
-				const auto p0 = v[i-1] + worldNormal0 * r;
-				const auto p1 = v[i] + worldNormal0 * r;
-				drawer.DrawSegment(p0, p1, skinColor);
-				const auto normal1 = shape.GetNormal(i);
-				const auto worldNormal1 = Rotate(normal1, xfm.q);
-				const auto angle0 = GetAngle(worldNormal0);
-				const auto angle1 = GetAngle(worldNormal1);
-				const auto angleDiff = GetRevRotationalAngle(angle0, angle1);
-				auto lastAngle = 0_deg;
-				for (auto angle = 5_deg; angle < angleDiff; angle += 5_deg)
-				{
-					const auto c0 = v[i] + r * UnitVec2(angle0 + lastAngle);
-					const auto c1 = v[i] + r * UnitVec2(angle0 + angle);
-					drawer.DrawSegment(c0, c1, skinColor);
-					lastAngle = angle;
-				}
-				{
-					const auto c0 = v[i] + r * UnitVec2(angle0 + lastAngle);
-					const auto c1 = v[i] + r * UnitVec2(angle1);
-					drawer.DrawSegment(c0, c1, skinColor);
-				}
-			}
-		}
-		if (vertexCount > 0)
-		{
-			const auto worldNormal0 = Rotate(shape.GetNormal(vertexCount - 1), xfm.q);
-			drawer.DrawSegment(v[vertexCount - 1] + worldNormal0 * r, v[0] + worldNormal0 * r, skinColor);
-			const auto worldNormal1 = Rotate(shape.GetNormal(0), xfm.q);
-			const auto angle0 = GetAngle(worldNormal0);
-			const auto angle1 = GetAngle(worldNormal1);
-			const auto angleDiff = GetRevRotationalAngle(angle0, angle1);
-			auto lastAngle = 0_deg;
-			for (auto angle = 5_deg; angle < angleDiff; angle += 5_deg)
-			{
-				const auto c0 = v[0] + r * UnitVec2(angle0 + lastAngle);
-				const auto c1 = v[0] + r * UnitVec2(angle0 + angle);
-				drawer.DrawSegment(c0, c1, skinColor);
-				lastAngle = angle;
-			}
-			{
-				const auto c0 = v[0] + r * UnitVec2(angle0 + lastAngle);
-				const auto c1 = v[0] + r * UnitVec2(angle1);
-				drawer.DrawSegment(c0, c1, skinColor);
-			}
-		}
-	}
-
 	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
-		const auto proxyA = GetDistanceProxy(m_polygonA, 0);
-		const auto proxyB = GetDistanceProxy(m_polygonB, 0);
-		const auto transformA = m_transformA;
-		const auto transformB = m_transformB;
+		const auto polygonA = static_cast<const PolygonShape*>(m_fixtureA->GetShape());
+		const auto polygonB = static_cast<const PolygonShape*>(m_fixtureB->GetShape());
 
-		const auto manifold = CollideShapes(m_polygonA, m_transformA, m_polygonB, m_transformB);
+		const auto proxyA = GetDistanceProxy(*polygonA, 0);
+		const auto proxyB = GetDistanceProxy(*polygonB, 0);
+		const auto transformA = m_bodyA->GetTransformation();
+		const auto transformB = m_bodyB->GetTransformation();
+
+		const auto manifold = CollideShapes(*polygonA, transformA, *polygonB, transformB);
 		const auto panifold = GetManifold(proxyA, transformA, proxyB, transformB);
 
 		Simplex::Cache cache;
@@ -196,9 +149,6 @@ public:
 						  adjustedDistance, outputDistance, output.iterations);
 		m_textLine += DRAW_STRING_NEW_LINE;
 		
-		Draw(drawer, m_polygonA, m_transformA);
-		Draw(drawer, m_polygonB, m_transformB);
-
 		{
 			const auto size = output.simplex.GetSize();
 			drawer.DrawString(5, m_textLine, "Simplex: size=%d, wpt-a={%g,%g}, wpt-b={%g,%g})",
@@ -221,7 +171,7 @@ public:
 								  coef);
 				m_textLine += DRAW_STRING_NEW_LINE;
 				
-				drawer.DrawSegment(edge.GetPointA(), edge.GetPointB(), Color(0.0f, 1.0f, 1.0f, 0.1f));
+				drawer.DrawSegment(edge.GetPointA(), edge.GetPointB(), Color{0.0f, 0.5f, 0.5f});
 			}
 		}
 
@@ -248,56 +198,60 @@ public:
 		switch (key)
 		{
 		case Key_A:
-			m_positionB.x -= 0.1f;
+			m_bodyB->SetTransform(m_bodyB->GetLocation() - Vec2{float_t(0.1), 0}, m_bodyB->GetAngle());
+			m_bodyB->SetAwake();
 			break;
 
 		case Key_D:
-			m_positionB.x += 0.1f;
+			m_bodyB->SetTransform(m_bodyB->GetLocation() + Vec2{float_t(0.1), 0}, m_bodyB->GetAngle());
+			m_bodyB->SetAwake();
 			break;
 
 		case Key_S:
-			m_positionB.y -= 0.1f;
+			m_bodyB->SetTransform(m_bodyB->GetLocation() - Vec2{0, float_t(0.1)}, m_bodyB->GetAngle());
+			m_bodyB->SetAwake();
 			break;
 
 		case Key_W:
-			m_positionB.y += 0.1f;
+			m_bodyB->SetTransform(m_bodyB->GetLocation() + Vec2{0, float_t(0.1)}, m_bodyB->GetAngle());
+			m_bodyB->SetAwake();
 			break;
 
 		case Key_Q:
-			m_angleB += 5_deg;
+			m_bodyB->SetTransform(m_bodyB->GetLocation(), m_bodyB->GetAngle() + 5_deg);
+			m_bodyB->SetAwake();
 			break;
 
 		case Key_E:
-			m_angleB -= 5_deg;
+			m_bodyB->SetTransform(m_bodyB->GetLocation(), m_bodyB->GetAngle() - 5_deg);
+			m_bodyB->SetAwake();
 			break;
 
 		case Key_Add:
-			m_polygonA.SetVertexRadius(m_polygonA.GetVertexRadius() + RadiusIncrement);
-			m_polygonB.SetVertexRadius(m_polygonB.GetVertexRadius() + RadiusIncrement);
+			DestroyFixtures();
+			m_radius += RadiusIncrement;
+			CreateFixtures();
 			break;
 
 		case Key_Subtract:
-			m_polygonA.SetVertexRadius(m_polygonA.GetVertexRadius() - RadiusIncrement);
-			m_polygonB.SetVertexRadius(m_polygonB.GetVertexRadius() - RadiusIncrement);
+			DestroyFixtures();
+			m_radius -= RadiusIncrement;
+			CreateFixtures();
 			break;
 
 		default:
 			break;
 		}
-
-		m_transformB = Transformation{m_positionB, UnitVec2{m_angleB}};
 	}
 
 private:
-	static constexpr auto RadiusIncrement = LinearSlop * 100;
+	static constexpr auto RadiusIncrement = LinearSlop * 200;
 
-	Vec2 m_positionB;
-	Angle m_angleB;
-
-	Transformation m_transformA;
-	Transformation m_transformB;
-	PolygonShape m_polygonA{RadiusIncrement * 40};
-	PolygonShape m_polygonB{RadiusIncrement * 40};
+	float_t m_radius = RadiusIncrement * 40;
+	Body* m_bodyA;
+	Body* m_bodyB;
+	Fixture* m_fixtureA;
+	Fixture* m_fixtureB;
 };
 	
 } // namespace box2d

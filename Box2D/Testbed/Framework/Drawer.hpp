@@ -31,7 +31,7 @@ struct Color
 {
 	Color() = default;
 	
-	constexpr Color(float_t ri, float_t gi, float_t bi, float_t ai = float_t{1}):
+	constexpr Color(float ri, float gi, float bi, float ai = float_t{1}):
 		r(ri), g(gi), b(bi), a(ai)
 	{
 		// Intentionally empty.
@@ -43,10 +43,10 @@ struct Color
 		// Intentionally empty.
 	}
 
-	float_t r;
-	float_t g;
-	float_t b;
-	float_t a = 1; ///< Alpha value. @detail 0 for fully transparent to 1 for fully opaque.
+	float r;
+	float g;
+	float b;
+	float a = 1; ///< Alpha value. @detail 0 for fully transparent to 1 for fully opaque.
 };
 
 class Drawer

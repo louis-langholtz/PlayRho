@@ -446,6 +446,8 @@ static void sInterface()
 
 		if (imguiCheck("Shapes", settings.drawShapes, true))
 			settings.drawShapes = !settings.drawShapes;
+		if (imguiCheck("Skins", settings.drawSkins, true))
+			settings.drawSkins = !settings.drawSkins;
 		if (imguiCheck("Joints", settings.drawJoints, true))
 			settings.drawJoints = !settings.drawJoints;
 		if (imguiCheck("AABBs", settings.drawAABBs, true))
@@ -514,7 +516,7 @@ int main(int argc, char** argv)
 #endif
 
     g_camera.m_width = 1024;
-    g_camera.m_height = 640;
+    g_camera.m_height = 680;
     
 	if (glfwInit() == 0)
 	{

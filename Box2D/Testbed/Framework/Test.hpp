@@ -35,6 +35,7 @@ struct Settings
 	int32 velocityIterations = 8;
 	int32 positionIterations = 3;
 	bool drawShapes = true;
+	bool drawSkins = false;
 	bool drawJoints = true;
 	bool drawAABBs = false;
 	bool drawContactPoints = false;
