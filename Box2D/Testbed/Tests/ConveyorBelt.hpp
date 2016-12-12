@@ -30,8 +30,7 @@ public:
 	{
 		// Ground
 		{
-			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
+			Body* ground = m_world->CreateBody(BodyDef{});
 
 			EdgeShape shape;
 			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
