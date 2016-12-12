@@ -37,6 +37,12 @@ struct Color
 		// Intentionally empty.
 	}
 
+	constexpr Color(Color copy, float_t new_a):
+		r(copy.r), g(copy.g), b(copy.b), a(new_a)
+	{
+		// Intentionally empty.
+	}
+
 	float_t r;
 	float_t g;
 	float_t b;
