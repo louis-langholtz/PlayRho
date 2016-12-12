@@ -225,10 +225,16 @@ inline Vec2 round(Vec2 value, unsigned precision)
 	return Vec2{std::round(value.x * precision) / precision, std::round(value.y * precision) / precision};
 }
 
-/// Gets the angle in radians
+/// Gets the angle.
+/// @return Anglular value in the range of -Pi to +Pi radians.
 inline Angle GetAngle(Vec2 value)
 {
-	return 1_rad * Atan2(value.y, value.x);
+	return 1_rad * Atan2(GetY(value), GetX(value));
+}
+
+inline Angle GetAngle(UnitVec2 value)
+{
+	return 1_rad * Atan2(GetY(value), GetX(value));
 }
 
 /// A 2D column vector with 3 elements.
@@ -1263,6 +1269,21 @@ inline Vec2 Average(Span<const Vec2> span)
 /// @note Behavior is undefined if there are less than 3 vertices or the vertices don't
 ///   go counter-clockwise.
 Vec2 ComputeCentroid(const Span<const Vec2>& vertices);
+
+/// Gets the reverse (counter) clockwise rotational angle to go from angle 1 to angle 2.
+/// @note The given angles must be normalized between -Pi to Pi radians.
+/// @return Angular rotation in the counter clockwise direction to go from angle 1 to angle 2.
+inline Angle GetRevRotationalAngle(Angle a1, Angle a2)
+{
+	// If a1=90_deg and a2=45_deg then, 360_deg - (90_deg - 45) = 315_deg
+	// If a1=90_deg and a2=-90_deg then, 360_deg - (90_deg - -90_deg) = 180_deg
+	// If a1=45_deg and a2=90_deg then, 90_deg - 45_deg = 45_deg
+	// If a1=90_deg and a2=45_deg then, 360_deg - 45_deg - 90_deg = 235_deg
+	// If a1=-45_deg and a2=0_deg then, 45_deg
+	// If a1=-90_deg and a2=-100_deg then, 360_deg - (-90_deg - -100_deg) = 350_deg
+	// If a1=-100_deg and a2=-90_deg then, -90_deg - -100_deg = 10_deg
+	return (a1 > a2) * (360_deg - (a1 - a2)) + (a2 > a1) * (a2 - a1);
+}
 
 ::std::ostream& operator<<(::std::ostream& os, const Vec2& value);
 
