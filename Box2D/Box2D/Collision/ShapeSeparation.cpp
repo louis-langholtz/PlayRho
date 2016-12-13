@@ -21,58 +21,54 @@
 
 using namespace box2d;
 
-IndexSeparation box2d::GetMaxSeparation(Span<const Vec2> verts1, Span<const UnitVec2> norms1, const Transformation& xf1,
+IndexPairSeparation box2d::GetMaxSeparation(Span<const Vec2> verts1, Span<const UnitVec2> norms1, const Transformation& xf1,
 										Span<const Vec2> verts2, const Transformation& xf2,
 										float_t stop)
 {
 	assert(verts1.size() == norms1.size());
 	
 	// Find the max separation between shape1 and shape2 using edge normals from shape1.
-	auto maxSeparation = -MaxFloat;
-	auto index_of_max = IndexSeparation::index_type{0};
-	
+
+	auto indexPairSep = IndexPairSeparation{-MaxFloat, IndexPairSeparation::InvalidIndex, IndexPairSeparation::InvalidIndex};
 	const auto xf = MulT(xf2, xf1);
 	const auto count1 = verts1.size();
 	for (auto i = decltype(count1){0}; i < count1; ++i)
 	{
 		// Get shape1 normal and vertex relative to shape2.
-		const auto s = GetMostAntiParallelSeparation(verts2, Vec2{Rotate(norms1[i], xf.q)}, Transform(verts1[i], xf)).separation;
-		if (s > stop)
+		const auto s = GetMostAntiParallelSeparation(verts2, Vec2{Rotate(norms1[i], xf.q)}, Transform(verts1[i], xf));
+		if (s.separation > stop)
 		{
-			return IndexSeparation{static_cast<IndexSeparation::index_type>(i), s};
+			return IndexPairSeparation{s.separation, static_cast<IndexSeparation::index_type>(i), s.index};
 		}
-		if (maxSeparation < s)
+		if (indexPairSep.separation < s.separation)
 		{
-			maxSeparation = s;
-			index_of_max = static_cast<IndexSeparation::index_type>(i);
+			indexPairSep = IndexPairSeparation{s.separation, static_cast<IndexSeparation::index_type>(i), s.index};
 		}
 	}
-	return IndexSeparation{index_of_max, maxSeparation};
+	return indexPairSep;
 }
 
-IndexSeparation box2d::GetMaxSeparation(Span<const Vec2> verts1, Span<const UnitVec2> norms1,
+IndexPairSeparation box2d::GetMaxSeparation(Span<const Vec2> verts1, Span<const UnitVec2> norms1,
 										Span<const Vec2> verts2,
 										float_t stop)
 {
 	assert(verts1.size() == norms1.size());
 	
 	// Find the max separation between shape1 and shape2 using edge normals from shape1.
-	auto maxSeparation = -MaxFloat;
-	auto index_of_max = IndexSeparation::index_type{0};
 	
+	auto indexPairSep = IndexPairSeparation{-MaxFloat, IndexPairSeparation::InvalidIndex, IndexPairSeparation::InvalidIndex};
 	const auto count1 = verts1.size();
 	for (auto i = decltype(count1){0}; i < count1; ++i)
 	{
-		const auto s = GetMostAntiParallelSeparation(verts2, Vec2{norms1[i]}, verts1[i]).separation;
-		if (s > stop)
+		const auto s = GetMostAntiParallelSeparation(verts2, Vec2{norms1[i]}, verts1[i]);
+		if (s.separation > stop)
 		{
-			return IndexSeparation{static_cast<IndexSeparation::index_type>(i), s};
+			return IndexPairSeparation{s.separation, static_cast<IndexSeparation::index_type>(i), s.index};
 		}
-		if (maxSeparation < s)
+		if (indexPairSep.separation < s.separation)
 		{
-			maxSeparation = s;
-			index_of_max = static_cast<IndexSeparation::index_type>(i);
+			indexPairSep = IndexPairSeparation{s.separation, static_cast<IndexSeparation::index_type>(i), s.index};
 		}
 	}
-	return IndexSeparation{index_of_max, maxSeparation};
+	return indexPairSep;
 }

@@ -21,6 +21,7 @@
 #define DISTANCE_TEST_H
 
 #include <sstream>
+#include <Box2D/Collision/ShapeSeparation.hpp>
 
 namespace box2d {
 
@@ -90,15 +91,20 @@ public:
 
 	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
-		const auto polygonA = static_cast<const PolygonShape*>(m_fixtureA->GetShape());
-		const auto polygonB = static_cast<const PolygonShape*>(m_fixtureB->GetShape());
+		const auto shapeA = static_cast<const PolygonShape*>(m_fixtureA->GetShape());
+		const auto shapeB = static_cast<const PolygonShape*>(m_fixtureB->GetShape());
 
-		const auto proxyA = GetDistanceProxy(*polygonA, 0);
-		const auto proxyB = GetDistanceProxy(*polygonB, 0);
+		const auto proxyA = GetDistanceProxy(*shapeA, 0);
+		const auto proxyB = GetDistanceProxy(*shapeB, 0);
 		const auto transformA = m_bodyA->GetTransformation();
 		const auto transformB = m_bodyB->GetTransformation();
 
-		const auto manifold = CollideShapes(*polygonA, transformA, *polygonB, transformB);
+		const auto maxIndicesAB = GetMaxSeparation(shapeA->GetVertices(), shapeA->GetNormals(), transformA,
+												   shapeB->GetVertices(), transformB);
+		const auto maxIndicesBA = GetMaxSeparation(shapeB->GetVertices(), shapeB->GetNormals(), transformB,
+												   shapeA->GetVertices(), transformA);
+
+		const auto manifold = CollideShapes(*shapeA, transformA, *shapeB, transformB);
 		const auto panifold = GetManifold(proxyA, transformA, proxyB, transformB);
 
 		Simplex::Cache cache;
@@ -143,6 +149,13 @@ public:
 
 		drawer.DrawString(5, m_textLine, "Press num-pad '+'/'-' to increase/decrease vertex radiuses (%g & %g).",
 						  rA, rB);
+		m_textLine += DRAW_STRING_NEW_LINE;
+
+		drawer.DrawString(5, m_textLine, "Max distance %g for a[%i] b[%i]",
+						  maxIndicesAB.separation, maxIndicesAB.index1, maxIndicesAB.index2);
+		m_textLine += DRAW_STRING_NEW_LINE;
+		drawer.DrawString(5, m_textLine, "Max distance %g for b[%i] a[%i]",
+						  maxIndicesBA.separation, maxIndicesBA.index1, maxIndicesBA.index2);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		drawer.DrawString(5, m_textLine, "distance = %g (from %g), iterations = %d",

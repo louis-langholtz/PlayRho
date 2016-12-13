@@ -48,7 +48,7 @@ static inline IndexSeparation GetPolygonSeparation(const PolygonShape& polygon, 
 			
 			if (s > totalRadius) // No collision
 			{
-				return IndexSeparation{i, s};
+				return IndexSeparation{s, i};
 			}
 			
 			// Adjacency
@@ -74,12 +74,12 @@ static inline IndexSeparation GetPolygonSeparation(const PolygonShape& polygon, 
 			}
 		}
 	}
-	return IndexSeparation{index, max_s};
+	return IndexSeparation{max_s, index};
 }
 
-static inline IndexSeparation GetMaxSeparation(const PolygonShape& shape1, const Transformation& xf1,
-											   const PolygonShape& shape2, const Transformation& xf2,
-											   float_t stop = MaxFloat)
+static inline IndexPairSeparation GetMaxSeparation(const PolygonShape& shape1, const Transformation& xf1,
+												   const PolygonShape& shape2, const Transformation& xf2,
+												   float_t stop = MaxFloat)
 {
 	return GetMaxSeparation(shape1.GetVertices(), shape1.GetNormals(), xf1, shape2.GetVertices(), xf2, stop);
 }
@@ -222,16 +222,17 @@ static Manifold GetManifoldFaceB(const EdgeInfo& edgeInfo,
 /// @param idx1 Index 1. This should be the index of the vertex and normal of shape1 that had the maximal
 ///    separation distance from any vertex in shape2.
 static inline Manifold GetFaceManifold(const PolygonShape& shape1, const Transformation& xf1,
-									   const PolygonShape& shape2, const Transformation& xf2,
 									   const IndexSeparation::index_type idx1,
+									   const PolygonShape& shape2, const Transformation& xf2,
+									   const IndexSeparation::index_type idx2,
 									   const Manifold::Type type)
 {
 	const auto totalRadius = GetVertexRadius(shape1) + GetVertexRadius(shape2);
 	
-	const auto idx2 = static_cast<decltype(idx1)>((idx1 + 1) % (shape1.GetVertexCount()));
+	const auto idx1Next = static_cast<decltype(idx1)>((idx1 + 1) % (shape1.GetVertexCount()));
 	
 	const auto shape1_rel_vertex1 = shape1.GetVertex(idx1);
-	const auto shape1_rel_vertex2 = shape1.GetVertex(idx2);
+	const auto shape1_rel_vertex2 = shape1.GetVertex(idx1Next);
 	const auto shape1_abs_vertex1 = Transform(shape1_rel_vertex1, xf1);
 	const auto shape1_abs_vertex2 = Transform(shape1_rel_vertex2, xf1);
 	
@@ -245,9 +246,10 @@ static inline Manifold GetFaceManifold(const PolygonShape& shape1, const Transfo
 	{
 		// Note: ClipVertex instances returned from GetIncidentEdgeClipList assume shape-A shape-B order.
 		const auto incidentEdge = GetIncidentEdgeClipList(idx1, shape1.GetNormal(idx1), xf1, shape2, xf2);
+		assert(incidentEdge[0].cf.indexB == idx2 || incidentEdge[1].cf.indexB == idx2);
 		const auto sideOffset1 = -Dot(abs_tangent, shape1_abs_vertex1) + totalRadius;
 		const auto sideOffset2 = Dot(abs_tangent, shape1_abs_vertex2) + totalRadius;
-		return GetClipPoints(idx1, sideOffset1, -abs_tangent, idx2, sideOffset2, abs_tangent, incidentEdge);
+		return GetClipPoints(idx1, sideOffset1, -abs_tangent, idx1Next, sideOffset2, abs_tangent, incidentEdge);
 	}();
 	if (clipPoints.size() == 2)
 	{
@@ -654,6 +656,6 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	
 	constexpr auto k_tol = BOX2D_MAGIC(LinearSlop / 10);
 	return (edgeSepB.separation > (edgeSepA.separation + k_tol))?
-		GetFaceManifold(shapeB, xfB, shapeA, xfA, edgeSepB.index, Manifold::e_faceB):
-		GetFaceManifold(shapeA, xfA, shapeB, xfB, edgeSepA.index, Manifold::e_faceA);
+		GetFaceManifold(shapeB, xfB, edgeSepB.index1, shapeA, xfA, edgeSepB.index2, Manifold::e_faceB):
+		GetFaceManifold(shapeA, xfA, edgeSepA.index1, shapeB, xfB, edgeSepA.index2, Manifold::e_faceA);
 }

@@ -25,19 +25,35 @@
 
 namespace box2d
 {
-	// This structure is used to keep track of the best separating axis.
+	/// Index separation.
+	/// @detail This structure is used to keep track of the best separating axis.
 	struct IndexSeparation
 	{
-		using index_type = std::remove_const<decltype(MaxShapeVertices)>::type;
 		using distance_type = float_t;
+		using index_type = std::remove_const<decltype(MaxShapeVertices)>::type;
 		
+		static constexpr distance_type InvalidDistance = MaxFloat;
 		static constexpr index_type InvalidIndex = static_cast<index_type>(-1);
-		static constexpr distance_type InvalidDistance = GetInvalid<distance_type>();
 		
-		index_type index = InvalidIndex;
 		distance_type separation = InvalidDistance;
+		index_type index = InvalidIndex;
 	};
 	
+	/// Index pair separation.
+	/// @detail This structure is used to keep track of the best separating axis.
+	struct IndexPairSeparation
+	{
+		using distance_type = float_t;
+		using index_type = std::remove_const<decltype(MaxShapeVertices)>::type;
+		
+		static constexpr distance_type InvalidDistance = GetInvalid<distance_type>();
+		static constexpr index_type InvalidIndex = static_cast<index_type>(-1);
+		
+		distance_type separation = InvalidDistance;
+		index_type index1 = InvalidIndex;
+		index_type index2 = InvalidIndex;
+	};
+
 	/// Gets the shape separation information for the most anti-parallel vector.
 	/// @param points Collection of 0 or more points to find the most anti-parallel vector from and
 	///    its magnitude from the reference vector.
@@ -48,7 +64,7 @@ namespace box2d
 		// Search for the vector that is most anti-parallel to the reference vector.
 		// See: https://en.wikipedia.org/wiki/Antiparallel_(mathematics)#Antiparallel_vectors
 		auto index = IndexSeparation::InvalidIndex;
-		auto distance = MaxFloat;
+		auto distance = IndexSeparation::InvalidDistance;
 		const auto count = points.size();
 		for (auto i = decltype(count){0}; i < count; ++i)
 		{
@@ -62,22 +78,22 @@ namespace box2d
 				index = static_cast<IndexSeparation::index_type>(i);
 			}
 		}
-		return IndexSeparation{index, distance};
+		return IndexSeparation{distance, index};
 	}
 
 	/// Gets the max separation information.
-	/// @return The index of the vertex and normal from vertices1 and normals1
-	///   that had the maximum separation distance from any vertex in vertices2 in the
-	///   direction of that normal and that maximal distance.
-	IndexSeparation	GetMaxSeparation(Span<const Vec2> verts1, Span<const UnitVec2> norms1,
+	/// @return The index of the vertex and normal from <code>verts1</code> and <code>norms1</code>,
+	///   the index of the vertex from <code>verts2</code> (that had the maximum separation
+	///   distance from each other in the direction of that normal), and the maximal distance.
+	IndexPairSeparation	GetMaxSeparation(Span<const Vec2> verts1, Span<const UnitVec2> norms1,
 									 Span<const Vec2> verts2,
 									 float_t stop = MaxFloat);
 
 	/// Gets the max separation information.
-	/// @return The index of the vertex and normal from vertices1 and normals1
-	///   that had the maximum separation distance from any vertex in vertices2 in the
-	///   direction of that normal and that maximal distance.
-	IndexSeparation	GetMaxSeparation(Span<const Vec2> verts1, Span<const UnitVec2> norms1, const Transformation& xf1,
+	/// @return The index of the vertex and normal from <code>verts1</code> and <code>norms1</code>,
+	///   the index of the vertex from <code>verts2</code> (that had the maximum separation
+	///   distance from each other in the direction of that normal), and the maximal distance.
+	IndexPairSeparation	GetMaxSeparation(Span<const Vec2> verts1, Span<const UnitVec2> norms1, const Transformation& xf1,
 									 Span<const Vec2> verts2, const Transformation& xf2,
 									 float_t stop = MaxFloat);
 
