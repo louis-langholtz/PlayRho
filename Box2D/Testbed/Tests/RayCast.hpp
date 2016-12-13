@@ -280,7 +280,7 @@ public:
 			m_bodies[m_bodyIndex]->CreateFixture(fd);
 		}
 
-		m_bodyIndex = (m_bodyIndex + 1) % e_maxBodies;
+		m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));
 	}
 
 	void Destroy()

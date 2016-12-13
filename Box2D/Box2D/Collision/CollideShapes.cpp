@@ -106,7 +106,7 @@ static ClipList GetIncidentEdgeClipList(ContactFeature::index_t indexA, UnitVec2
 		
 		// Build the clip list for the incident edge.
 		const auto i1 = separation.index;
-		const auto i2 = static_cast<decltype(i1)>((i1 + 1) % count2);
+		const auto i2 = GetModuloNext(i1, count2);
 		return ClipList{
 			ClipVertex{Transform(shapeB.GetVertex(i1), xf2), GetFaceVertexContactFeature(indexA, i1)},
 			ClipVertex{Transform(shapeB.GetVertex(i2), xf2), GetFaceVertexContactFeature(indexA, i2)}
@@ -121,7 +121,7 @@ static ClipList GetIncidentEdgeClipList(ContactFeature::index_t index1, const Un
 {
 	const auto separation = GetMostAntiParallelSeparation(shape2.GetNormals(), normal1, UnitVec2::GetZero());
 	const auto i1 = separation.index;
-	const auto i2 = static_cast<decltype(i1)>((i1 + 1) % shape2.GetVertexCount());
+	const auto i2 = GetModuloNext(i1, shape2.GetVertexCount());
 #if 1
 	return ClipList{
 		ClipVertex{shape2.GetVertex(i1), GetFaceVertexContactFeature(0, i1)},
@@ -229,7 +229,7 @@ static inline Manifold GetFaceManifold(const PolygonShape& shape1, const Transfo
 {
 	const auto totalRadius = GetVertexRadius(shape1) + GetVertexRadius(shape2);
 	
-	const auto idx1Next = static_cast<decltype(idx1)>((idx1 + 1) % (shape1.GetVertexCount()));
+	const auto idx1Next = GetModuloNext(idx1, shape1.GetVertexCount());
 	
 	const auto shape1_rel_vertex1 = shape1.GetVertex(idx1);
 	const auto shape1_rel_vertex2 = shape1.GetVertex(idx1Next);
@@ -340,7 +340,7 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 			}
 		}
 	}
-	const auto indexOfMax2 = static_cast<decltype(indexOfMax)>((indexOfMax + 1) % vertexCount);
+	const auto indexOfMax2 = GetModuloNext(indexOfMax, vertexCount);
 	assert(maxSeparation <= totalRadius);
 	
 	// Vertices that subtend the incident face.

@@ -192,7 +192,7 @@ size_t box2d::FindLowestRightMostVertex(Span<const Vec2> vertices)
 Vec2 box2d::GetEdge(const PolygonShape& shape, PolygonShape::vertex_count_t index)
 {
 	const auto i0 = index;
-	const auto i1 = static_cast<PolygonShape::vertex_count_t>((index + 1) % shape.GetVertexCount());
+	const auto i1 = GetModuloNext(index, shape.GetVertexCount());
 	return shape.GetVertex(i1) - shape.GetVertex(i0);
 }
 
@@ -202,7 +202,7 @@ bool box2d::Validate(const PolygonShape& shape)
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
 		const auto i1 = i;
-		const auto i2 = static_cast<decltype(count)>((i1 + 1) % count);
+		const auto i2 = GetModuloNext(i1, count);
 		const auto p = shape.GetVertex(i1);
 		const auto e = shape.GetVertex(i2) - p;
 		

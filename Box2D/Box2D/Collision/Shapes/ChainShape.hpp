@@ -111,8 +111,7 @@ inline Vec2 ChainShape::GetVertex(child_count_t index) const
 
 inline child_count_t GetNextIndex(const ChainShape& shape, child_count_t index) noexcept
 {
-	assert(index < shape.GetVertexCount());
-	return (index + 1) % shape.GetVertexCount();
+	return GetModuloNext(index, shape.GetVertexCount());
 }
 
 /// Gets the number of child primitives.

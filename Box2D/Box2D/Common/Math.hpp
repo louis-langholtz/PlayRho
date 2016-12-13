@@ -1270,6 +1270,20 @@ inline Vec2 Average(Span<const Vec2> span)
 ///   go counter-clockwise.
 Vec2 ComputeCentroid(const Span<const Vec2>& vertices);
 
+template <typename T>
+constexpr inline T GetModuloNext(T value, T count) noexcept
+{
+	assert(value < count);
+	return (value + 1) % count;
+}
+
+template <typename T>
+constexpr inline T GetModuloPrev(T value, T count) noexcept
+{
+	assert(value < count);
+	return (value? value: count) - 1;
+}
+
 ::std::ostream& operator<<(::std::ostream& os, const Vec2& value);
 
 ::std::ostream& operator<<(::std::ostream& os, const UnitVec2& value);

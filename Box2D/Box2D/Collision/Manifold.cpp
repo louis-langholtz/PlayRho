@@ -29,11 +29,11 @@ using index_type = IndexPair::size_type;
 
 static inline index_type GetEdgeIndex(index_type i1, index_type i2, index_type count)
 {
-	if (((i1 + 1) % count) == i2)
+	if (GetModuloNext(i1, count) == i2)
 	{
 		return i1;
 	}
-	if (((i2 + 1) % count) == i1)
+	if (GetModuloNext(i2, count) == i1)
 	{
 		return i2;
 	}
@@ -96,7 +96,7 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
 			{
 				const auto b_idx0 = GetEdgeIndex(b_indices_array[0], b_indices_array[1], b_count);
 				assert(b_idx0 != IndexPair::InvalidIndex);
-				const auto b_idx1 = static_cast<decltype(b_idx0)>((b_idx0 + 1) % a_count);
+				const auto b_idx1 = GetModuloNext(b_idx0, a_count);
 				const auto b_v0 = proxyB.GetVertex(b_idx0);
 				const auto b_v1 = proxyB.GetVertex(b_idx1);
 				const auto lp = (b_v0 + b_v1) / 2;
@@ -129,7 +129,7 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
 					const auto ln = GetFwdPerpendicular(GetUnitVector(v1 - v0));
 					return Manifold::GetForFaceA(ln, lp, mp0, mp1);
 				}
-				else if ((a_indices_array[1] + 1) % count == a_indices_array[0])
+				else if (GetModuloNext(a_indices_array[1], count) == a_indices_array[0])
 				{
 					mp0.contactFeature.indexA = a_indices_array[1];
 					mp1.contactFeature.indexA = a_indices_array[1];
@@ -154,7 +154,7 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
 			{
 				const auto a_idx0 = GetEdgeIndex(a_indices_array[0],a_indices_array[1], a_count);
 				assert(a_idx0 != IndexPair::InvalidIndex);
-				const auto a_idx1 = static_cast<decltype(a_idx0)>((a_idx0 + 1) % a_count);
+				const auto a_idx1 = GetModuloNext(a_idx0, a_count);
 				const auto a_v0 = proxyA.GetVertex(a_idx0);
 				const auto a_v1 = proxyA.GetVertex(a_idx1);
 				const auto lp = (a_v0 + a_v1) / 2;
@@ -187,7 +187,7 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
 					const auto ln = GetFwdPerpendicular(GetUnitVector(v1 - v0));
 					return Manifold::GetForFaceB(ln, lp, mp0, mp1);
 				}
-				else if ((b_indices_array[1] + 1) % count == b_indices_array[0])
+				else if (GetModuloNext(b_indices_array[1], count) == b_indices_array[0])
 				{
 					mp0.contactFeature.indexB = b_indices_array[1];
 					mp1.contactFeature.indexB = b_indices_array[1];
@@ -236,7 +236,7 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
 					const auto ln = GetFwdPerpendicular(GetUnitVector(v1 - v0));
 					return Manifold::GetForFaceA(ln, lp, mp0, mp1);
 				}
-				if ((a_indices_array[1] + 1) % count == a_indices_array[0])
+				if (GetModuloNext(a_indices_array[1], count) == a_indices_array[0])
 				{
 					mp0.contactFeature.typeA = ContactFeature::e_face;
 					mp0.contactFeature.indexA = a_indices_array[1];

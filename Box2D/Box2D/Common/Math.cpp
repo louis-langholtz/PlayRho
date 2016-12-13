@@ -37,7 +37,7 @@ Vec2 box2d::ComputeCentroid(const Span<const Vec2>& vertices)
 		// Triangle vertices.
 		const auto p1 = pRef;
 		const auto p2 = vertices[i];
-		const auto p3 = vertices[(i + 1) % vertices.size()];
+		const auto p3 = vertices[GetModuloNext(i, vertices.size())];
 		
 		const auto e1 = p2 - p1;
 		const auto e2 = p3 - p1;

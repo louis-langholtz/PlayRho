@@ -33,6 +33,6 @@ ReferenceFace box2d::GetReferenceFace(const EdgeInfo& edgeInfo)
 ReferenceFace box2d::GetReferenceFace(const PolygonShape& localShapeB, const ReferenceFace::index_type index)
 {
 	const auto i1 = index;
-	const auto i2 = static_cast<decltype(index)>((index + 1) % localShapeB.GetVertexCount());
+	const auto i2 = GetModuloNext(index, localShapeB.GetVertexCount());
 	return ReferenceFace{i1, localShapeB.GetVertex(i1), i2, localShapeB.GetVertex(i2), localShapeB.GetNormal(i1)};
 }

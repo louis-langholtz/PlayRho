@@ -41,9 +41,9 @@ float_t box2d::GetAreaOfPolygon(Span<const Vec2> vertices)
 	const auto count = vertices.size();
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
-		const auto last_v = vertices[(i - 1) % count];
+		const auto last_v = vertices[GetModuloPrev(i, count)];
 		const auto this_v = vertices[i];
-		const auto next_v = vertices[(i + 1) % count];
+		const auto next_v = vertices[GetModuloNext(i, count)];
 		sum += this_v.x * (next_v.y - last_v.y);
 	}
 	return sum / 2;
@@ -63,7 +63,7 @@ float_t box2d::GetPolarMomentOfPolygon(Span<const Vec2> vertices)
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
 		const auto this_v = vertices[i];
-		const auto next_v = vertices[(i + 1) % count];
+		const auto next_v = vertices[GetModuloNext(i, count)];
 		const auto fact_b = this_v.x * next_v.y - next_v.x * this_v.y;
 		sum_x += [&]() {
 			const auto fact_a = Square(this_v.y) + this_v.y * next_v.y + Square(next_v.y);
@@ -123,7 +123,7 @@ MassData box2d::GetMassData(const PolygonShape& shape, float_t density)
 	{
 		// Triangle vertices.
 		const auto e1 = shape.GetVertex(i) - s;
-		const auto e2 = shape.GetVertex((i + 1) % count) - s;
+		const auto e2 = shape.GetVertex(GetModuloNext(i, count)) - s;
 		
 		const auto D = Cross(e1, e2);
 		
