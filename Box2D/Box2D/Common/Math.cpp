@@ -63,3 +63,8 @@ Vec2 box2d::ComputeCentroid(const Span<const Vec2>& vertices)
 {
 	return os << "UnitVec2(" << value.GetX() << "," << value.GetY() << ")";
 }
+
+::std::ostream& box2d::operator<<(::std::ostream& os, const Angle& value)
+{
+	return os << (value / 1_deg) << "_deg";
+}
