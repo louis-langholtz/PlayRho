@@ -168,8 +168,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
 			// Pan left
 			if (mods == GLFW_MOD_CONTROL)
 			{
-				Vec2 newOrigin(2.0f, 0.0f);
-				test->ShiftOrigin(newOrigin);
+				test->ShiftOrigin(Vec2(2.0f, 0.0f));
 			}
 			else
 			{
@@ -181,8 +180,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
 			// Pan right
 			if (mods == GLFW_MOD_CONTROL)
 			{
-				Vec2 newOrigin(-2.0f, 0.0f);
-				test->ShiftOrigin(newOrigin);
+				test->ShiftOrigin(Vec2(-2.0f, 0.0f));
 			}
 			else
 			{
@@ -194,8 +192,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
 			// Pan down
 			if (mods == GLFW_MOD_CONTROL)
 			{
-				Vec2 newOrigin(0.0f, 2.0f);
-				test->ShiftOrigin(newOrigin);
+				test->ShiftOrigin(Vec2(0.0f, 2.0f));
 			}
 			else
 			{
@@ -207,8 +204,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
 			// Pan up
 			if (mods == GLFW_MOD_CONTROL)
 			{
-				Vec2 newOrigin(0.0f, -2.0f);
-				test->ShiftOrigin(newOrigin);
+				test->ShiftOrigin(Vec2(0.0f, -2.0f));
 			}
 			else
 			{
