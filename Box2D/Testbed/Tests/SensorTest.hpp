@@ -142,7 +142,7 @@ public:
 		// that overlap the sensor.
 		for (int32 i = 0; i < e_count; ++i)
 		{
-			if (m_touching[i] == false)
+			if (!m_touching[i])
 			{
 				continue;
 			}

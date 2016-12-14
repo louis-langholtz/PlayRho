@@ -87,7 +87,7 @@ static void sCreateUI()
 	// Init UI
     const char* fontPath = "../Data/DroidSans.ttf";
     
-	if (RenderGLInit(fontPath) == false)
+	if (!RenderGLInit(fontPath))
 	{
 		fprintf(stderr, "Could not init GUI renderer.\n");
 		assert(false);
@@ -333,16 +333,14 @@ static void sMouseButton(GLFWwindow*, int32 button, int32 action, int32 mods)
 //
 static void sMouseMotion(GLFWwindow*, double xd, double yd)
 {
-	Vec2 ps((float)xd, (float)yd);
+	const auto ps = Vec2{float_t(xd), float_t(yd)};
+	const auto pw = ConvertScreenToWorld(g_camera, ps);
 
-	Vec2 pw = ConvertScreenToWorld(g_camera, ps);
 	test->MouseMove(pw);
 	
 	if (rightMouseDown)
 	{
-		Vec2 diff = pw - lastp;
-		g_camera.m_center.x -= diff.x;
-		g_camera.m_center.y -= diff.y;
+		g_camera.m_center -= pw - lastp;
 		lastp = ConvertScreenToWorld(g_camera, ps);
 	}
 }

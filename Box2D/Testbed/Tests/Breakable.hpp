@@ -126,7 +126,7 @@ public:
 		}
 
 		// Cache velocities to improve movement on breakage.
-		if (m_broke == false)
+		if (!m_broke)
 		{
 			const auto velocity = m_body1->GetVelocity();
 			m_velocity = velocity.v;

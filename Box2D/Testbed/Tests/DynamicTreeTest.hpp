@@ -79,7 +79,7 @@ public:
 			m_actors[i].overlap = false;
 		}
 
-		if (m_automated == true)
+		if (m_automated)
 		{
 			const auto actionCount = Max(1, e_actorCount >> 2);
 			for (auto i = decltype(actionCount){0}; i < actionCount; ++i)

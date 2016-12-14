@@ -121,12 +121,12 @@ void RevoluteJoint::InitVelocityConstraints(Span<Velocity> velocities,
 		m_motorMass = float_t{1} / m_motorMass;
 	}
 
-	if (m_enableMotor == false || fixedRotation)
+	if (!m_enableMotor || fixedRotation)
 	{
 		m_motorImpulse = float_t{0};
 	}
 
-	if (m_enableLimit && fixedRotation == false)
+	if (m_enableLimit && !fixedRotation)
 	{
 		const auto jointAngle = aB - aA - m_referenceAngle;
 		if (Abs(m_upperAngle - m_lowerAngle) < (2_rad * conf.angularSlop))
@@ -310,7 +310,7 @@ bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions, const Con
 	const auto fixedRotation = ((m_invIA + m_invIB) == float_t{0});
 
 	// Solve angular limit constraint.
-	if (m_enableLimit && m_limitState != e_inactiveLimit && fixedRotation == false)
+	if (m_enableLimit && m_limitState != e_inactiveLimit && !fixedRotation)
 	{
 		const auto angle = aB - aA - m_referenceAngle;
 		auto limitImpulse = float_t{0};

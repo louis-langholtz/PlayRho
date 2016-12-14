@@ -437,14 +437,12 @@ void Test::SpawnBomb(const Vec2& worldPt)
     
 void Test::CompleteBombSpawn(const Vec2& p)
 {
-	if (m_bombSpawning == false)
+	if (!m_bombSpawning)
 	{
 		return;
 	}
 
-	const float multiplier = 30.0f;
-	Vec2 vel = m_bombSpawnPoint - p;
-	vel *= multiplier;
+	const auto vel = (m_bombSpawnPoint - p) * 30.0f;
 	LaunchBomb(m_bombSpawnPoint,vel);
 	m_bombSpawning = false;
 }
@@ -487,8 +485,8 @@ void Test::MouseMove(const Vec2& p)
 
 void Test::LaunchBomb()
 {
-	Vec2 p(RandomFloat(-15.0f, 15.0f), 30.0f);
-	Vec2 v = -5.0f * p;
+	const auto p = Vec2(RandomFloat(-15.0f, 15.0f), 30.0f);
+	const auto v = -5.0f * p;
 	LaunchBomb(p, v);
 }
 
@@ -500,11 +498,7 @@ void Test::LaunchBomb(const Vec2& position, const Vec2& linearVelocity)
 		m_bomb = nullptr;
 	}
 
-	BodyDef bd;
-	bd.type = BodyType::Dynamic;
-	bd.position = position;
-	bd.bullet = true;
-	m_bomb = m_world->CreateBody(bd);
+	m_bomb = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(position).UseBullet(true));
 	m_bomb->SetVelocity(Velocity{linearVelocity, 0_rad});
 	
 	CircleShape circle(0.3f);
