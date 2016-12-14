@@ -42,7 +42,7 @@ MouseJoint::MouseJoint(const MouseJointDef& def):
 	assert(IsValid(def.dampingRatio) && (def.dampingRatio >= float_t{0}));
 }
 
-void MouseJoint::SetTarget(const Vec2& target)
+void MouseJoint::SetTarget(const Vec2& target) noexcept
 {
 	assert(IsValid(target));
 	if (!GetBodyB()->IsAwake())
@@ -189,7 +189,7 @@ void MouseJoint::ShiftOrigin(const Vec2& newOrigin)
 
 void box2d::Dump(const MouseJoint& joint, size_t index)
 {
-	log("  MouseJoint jd;\n");
+	log("  MouseJointDef jd;\n");
 	log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
 	log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
 	log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());

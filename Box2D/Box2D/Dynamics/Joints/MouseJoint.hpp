@@ -80,20 +80,20 @@ public:
 	Vec2 GetLocalAnchorB() const noexcept;
 
 	/// Use this to update the target point.
-	void SetTarget(const Vec2& target);
-	Vec2 GetTarget() const;
+	void SetTarget(const Vec2& target) noexcept;
+	Vec2 GetTarget() const noexcept;
 
 	/// Set/get the maximum force in Newtons.
-	void SetMaxForce(float_t force);
-	float_t GetMaxForce() const;
+	void SetMaxForce(float_t force) noexcept;
+	float_t GetMaxForce() const noexcept;
 
 	/// Set/get the frequency in Hertz.
-	void SetFrequency(float_t hz);
-	float_t GetFrequency() const;
+	void SetFrequency(float_t hz) noexcept;
+	float_t GetFrequency() const noexcept;
 
 	/// Set/get the damping ratio (dimensionless).
-	void SetDampingRatio(float_t ratio);
-	float_t GetDampingRatio() const;
+	void SetDampingRatio(float_t ratio) noexcept;
+	float_t GetDampingRatio() const noexcept;
 
 	/// Implement Joint::ShiftOrigin
 	void ShiftOrigin(const Vec2& newOrigin) override;
@@ -133,37 +133,37 @@ inline Vec2 MouseJoint::GetAnchorA() const
 	return m_targetA;
 }
 
-inline Vec2 MouseJoint::GetTarget() const
+inline Vec2 MouseJoint::GetTarget() const noexcept
 {
 	return m_targetA;
 }
 
-inline void MouseJoint::SetMaxForce(float_t force)
+inline void MouseJoint::SetMaxForce(float_t force) noexcept
 {
 	m_maxForce = force;
 }
 
-inline float_t MouseJoint::GetMaxForce() const
+inline float_t MouseJoint::GetMaxForce() const noexcept
 {
 	return m_maxForce;
 }
 
-inline void MouseJoint::SetFrequency(float_t hz)
+inline void MouseJoint::SetFrequency(float_t hz) noexcept
 {
 	m_frequencyHz = hz;
 }
 
-inline float_t MouseJoint::GetFrequency() const
+inline float_t MouseJoint::GetFrequency() const noexcept
 {
 	return m_frequencyHz;
 }
 
-inline void MouseJoint::SetDampingRatio(float_t ratio)
+inline void MouseJoint::SetDampingRatio(float_t ratio) noexcept
 {
 	m_dampingRatio = ratio;
 }
 
-inline float_t MouseJoint::GetDampingRatio() const
+inline float_t MouseJoint::GetDampingRatio() const noexcept
 {
 	return m_dampingRatio;
 }
