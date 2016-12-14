@@ -189,11 +189,21 @@ namespace box2d
 		return (a.GetX() != b.GetX()) || (a.GetY() != b.GetY());
 	}
 
+	/// Gets a vector counter-clockwise (reverse-clockwise) perpendicular to the given vector.
+	/// @detail This takes a vector of form (x, y) and returns the vector (-y, x).
+	/// @param vector Vector to return a counter-clockwise perpendicular equivalent for.
+	/// @return A counter-clockwise 90-degree rotation of the given vector.
+	/// @sa GetFwdPerpendicular.
 	constexpr inline UnitVec2 GetRevPerpendicular(const UnitVec2 vector) noexcept
 	{
 		return vector.GetRevPerpendicular();
 	}
 	
+	/// Gets a vector clockwise (forward-clockwise) perpendicular to the given vector.
+	/// @detail This takes a vector of form (x, y) and returns the vector (y, -x).
+	/// @param vector Vector to return a clockwise perpendicular equivalent for.
+	/// @return A clockwise 90-degree rotation of the given vector.
+	/// @sa GetRevPerpendicular.
 	constexpr inline UnitVec2 GetFwdPerpendicular(const UnitVec2 vector) noexcept
 	{
 		return vector.GetFwdPerpendicular();
