@@ -518,6 +518,15 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	{
 		drawer.DrawString(5, m_textLine, "****PAUSED****");
 		m_textLine += DRAW_STRING_NEW_LINE;
+		
+		if ((settings.dt == 0) && m_mouseJoint)
+		{
+			const auto bodyB = m_mouseJoint->GetBodyB();
+			const auto anchorB = m_mouseJoint->GetAnchorB();
+			const auto centerB = bodyB->GetLocation();
+			const auto destB = m_mouseJoint->GetTarget();
+			bodyB->SetTransform(destB - (anchorB - centerB), bodyB->GetAngle());
+		}
 	}
 
 	m_world->SetAllowSleeping(settings.enableSleep);
