@@ -69,33 +69,15 @@ enum class BodyType
 /// You can safely re-use body definitions. Shapes are added to a body after construction.
 struct BodyDef
 {
-	constexpr BodyDef& UseType(BodyType t) noexcept
-	{
-		type = t;
-		return *this;
-	}
-
-	constexpr BodyDef& UseLocation(Vec2 l) noexcept
-	{
-		position = l;
-		return *this;
-	}
-
-	constexpr BodyDef& UseLinearDamping(float_t v) noexcept
-	{
-		linearDamping = v;
-		return *this;
-	}
-	
-	constexpr BodyDef& UseAngularDamping(float_t v) noexcept
-	{
-		angularDamping = v;
-		return *this;
-	}
-
 	/// This constructor sets the body definition default values.
 	constexpr BodyDef() = default;
 
+	constexpr BodyDef& UseType(BodyType t) noexcept;
+	constexpr BodyDef& UseLocation(Vec2 l) noexcept;
+	constexpr BodyDef& UseLinearDamping(float_t v) noexcept;
+	constexpr BodyDef& UseAngularDamping(float_t v) noexcept;
+	constexpr BodyDef& UseBullet(bool value) noexcept;
+	
 	/// The body type: static, kinematic, or dynamic.
 	/// Note: if a dynamic body would have zero mass, the mass is set to one.
 	BodyType type = BodyType::Static;
@@ -145,6 +127,36 @@ struct BodyDef
 	/// Use this to store application specific body data.
 	void* userData = nullptr;
 };
+
+constexpr inline BodyDef& BodyDef::UseType(BodyType t) noexcept
+{
+	type = t;
+	return *this;
+}
+
+constexpr inline BodyDef& BodyDef::UseLocation(Vec2 l) noexcept
+{
+	position = l;
+	return *this;
+}
+
+constexpr inline BodyDef& BodyDef::UseLinearDamping(float_t v) noexcept
+{
+	linearDamping = v;
+	return *this;
+}
+
+constexpr inline BodyDef& BodyDef::UseAngularDamping(float_t v) noexcept
+{
+	angularDamping = v;
+	return *this;
+}
+
+constexpr inline BodyDef& BodyDef::UseBullet(bool value) noexcept
+{
+	bullet = value;
+	return *this;
+}
 
 /// Body.
 /// @detail A rigid body. These are created via World::Create.
