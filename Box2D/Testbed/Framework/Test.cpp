@@ -250,7 +250,7 @@ static void Draw(Drawer& drawer, const World& world, const Settings& settings)
 	
 	if (settings.drawAABBs)
 	{
-		const Color color{0.9f, 0.3f, 0.9f};
+		const auto color = Color{0.9f, 0.3f, 0.9f};
 		const auto bp = &world.GetContactManager().m_broadPhase;
 		
 		for (auto&& b: world.GetBodies())
@@ -379,11 +379,10 @@ public:
 
 	bool ReportFixture(Fixture* fixture)
 	{
-		Body* body = fixture->GetBody();
+		const auto body = fixture->GetBody();
 		if (body->GetType() == BodyType::Dynamic)
 		{
-			bool inside = TestPoint(*fixture, m_point);
-			if (inside)
+			if (TestPoint(*fixture, m_point))
 			{
 				m_fixture = fixture;
 
@@ -404,7 +403,7 @@ void Test::MouseDown(const Vec2& p)
 {
 	m_mouseWorld = p;
 	
-	if (m_mouseJoint != nullptr)
+	if (m_mouseJoint)
 	{
 		return;
 	}
@@ -418,13 +417,13 @@ void Test::MouseDown(const Vec2& p)
 
 	if (callback.m_fixture)
 	{
-		Body* body = callback.m_fixture->GetBody();
+		const auto body = callback.m_fixture->GetBody();
 		MouseJointDef md;
 		md.bodyA = m_groundBody;
 		md.bodyB = body;
 		md.target = p;
 		md.maxForce = 1000.0f * GetMass(*body);
-		m_mouseJoint = (MouseJoint*)m_world->CreateJoint(md);
+		m_mouseJoint = static_cast<MouseJoint*>(m_world->CreateJoint(md));
 		body->SetAwake();
 	}
 }
@@ -451,7 +450,7 @@ void Test::ShiftMouseDown(const Vec2& p)
 {
 	m_mouseWorld = p;
 	
-	if (m_mouseJoint != nullptr)
+	if (m_mouseJoint)
 	{
 		return;
 	}
