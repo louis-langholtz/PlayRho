@@ -91,7 +91,7 @@ public:
 		switch (key)
 		{
 		case Key_Comma:
-			if (m_bullet != nullptr)
+			if (m_bullet)
 			{
 				m_world->Destroy(m_bullet);
 				m_bullet = nullptr;
@@ -134,7 +134,7 @@ public:
 		drawer.DrawString(5, m_textLine, "Blocksolve = %d", g_blockSolve);
 		//if (m_stepCount == 300)
 		//{
-		//	if (m_bullet != nullptr)
+		//	if (m_bullet)
 		//	{
 		//		m_world->Destroy(m_bullet);
 		//		m_bullet = nullptr;

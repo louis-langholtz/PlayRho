@@ -111,8 +111,8 @@ public:
 		m_isSensor{def.isSensor},
 		m_userData{def.userData}
 	{
-		assert(body != nullptr);
-		assert(shape != nullptr);
+		assert(body);
+		assert(shape);
 		assert(def.density >= 0);
 	}
 

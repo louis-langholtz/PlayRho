@@ -35,7 +35,7 @@ public:
 	constexpr AllocatedArray(size_type max_size, pointer data, deleter_type deleter = noop_deleter):
 		m_max_size{max_size}, m_data{data}, m_deleter{deleter}
 	{
-		assert(data != nullptr);
+		assert(data);
 	}
 	
 	~AllocatedArray() noexcept

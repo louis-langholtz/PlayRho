@@ -108,7 +108,7 @@ public:
 
 	void Create(int32 index)
 	{
-		if (m_bodies[m_bodyIndex] != nullptr)
+		if (m_bodies[m_bodyIndex])
 		{
 			m_world->Destroy(m_bodies[m_bodyIndex]);
 			m_bodies[m_bodyIndex] = nullptr;
@@ -153,7 +153,7 @@ public:
 	{
 		for (int32 i = 0; i < e_maxBodies; ++i)
 		{
-			if (m_bodies[i] != nullptr)
+			if (m_bodies[i])
 			{
 				m_world->Destroy(m_bodies[i]);
 				m_bodies[i] = nullptr;

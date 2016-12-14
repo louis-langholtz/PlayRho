@@ -56,7 +56,7 @@ public:
 		switch (key)
 		{
 		case Key_C:
-			if (m_fixture2 == nullptr)
+			if (!m_fixture2)
 			{
 				CircleShape shape(3.0, Vec2(0.5f, -4.0f));
 				m_fixture2 = m_body->CreateFixture(FixtureDef{&shape, 10.0f});
@@ -65,7 +65,7 @@ public:
 			break;
 
 		case Key_D:
-			if (m_fixture2 != nullptr)
+			if (m_fixture2)
 			{
 				m_body->DestroyFixture(m_fixture2);
 				m_fixture2 = nullptr;
@@ -74,7 +74,7 @@ public:
 			break;
 
 		case Key_S:
-			if (m_fixture2 != nullptr)
+			if (m_fixture2)
 			{
 				m_sensor = !m_sensor;
 				m_fixture2->SetSensor(m_sensor);

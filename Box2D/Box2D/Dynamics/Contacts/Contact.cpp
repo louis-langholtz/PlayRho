@@ -128,8 +128,8 @@ Contact::Contact(Fixture* fA, child_count_t indexA, Fixture* fB, child_count_t i
 	m_friction{MixFriction(fA->GetFriction(), fB->GetFriction())},
 	m_restitution{MixRestitution(fA->GetRestitution(), fB->GetRestitution())}
 {
-	assert(fA->GetShape() != nullptr);
-	assert(fB->GetShape() != nullptr);
+	assert(fA->GetShape());
+	assert(fB->GetShape());
 }
 
 void Contact::Update(ContactListener* listener)
@@ -146,8 +146,8 @@ void Contact::Update(ContactListener* listener)
 	const auto bodyA = GetFixtureA()->GetBody();
 	const auto bodyB = GetFixtureB()->GetBody();
 	
-	assert(bodyA != nullptr);
-	assert(bodyB != nullptr);
+	assert(bodyA);
+	assert(bodyB);
 
 	const auto xfA = bodyA->GetTransformation();
 	const auto xfB = bodyB->GetTransformation();

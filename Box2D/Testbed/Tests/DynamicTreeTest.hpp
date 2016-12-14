@@ -361,7 +361,7 @@ private:
 			}
 		}
 
-		if (bruteActor != nullptr)
+		if (bruteActor)
 		{
 			assert(bruteOutput.fraction == m_rayCastOutput.fraction);
 		}

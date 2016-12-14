@@ -28,7 +28,7 @@ using namespace box2d;
 
 void ContactManager::Remove(Contact* c)
 {
-	assert(c != nullptr);
+	assert(c);
 
 	// Remove from the world.
 	assert(!m_contacts.empty());
