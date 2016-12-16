@@ -39,11 +39,44 @@ static void Draw(Drawer& drawer, const CircleShape& shape, const Transformation&
 	drawer.DrawSegment(center, center + radius * axis, color);
 }
 
-static void Draw(Drawer& drawer, const EdgeShape& shape, const Transformation& xf, const Color& color)
+static void DrawCorner(Drawer& drawer, Vec2 p, float_t r, Angle a0, Angle a1, Color color)
+{
+	const auto angleDiff = GetRevRotationalAngle(a0, a1);
+	auto lastAngle = 0_deg;
+	for (auto angle = 5_deg; angle < angleDiff; angle += 5_deg)
+	{
+		const auto c0 = p + r * UnitVec2(a0 + lastAngle);
+		const auto c1 = p + r * UnitVec2(a0 + angle);
+		drawer.DrawSegment(c0, c1, color);
+		lastAngle = angle;
+	}
+	{
+		const auto c0 = p + r * UnitVec2(a0 + lastAngle);
+		const auto c1 = p + r * UnitVec2(a1);
+		drawer.DrawSegment(c0, c1, color);
+	}
+}
+
+static void Draw(Drawer& drawer, const EdgeShape& shape, const Transformation& xf, const Color& color, bool skins)
 {
 	const auto v1 = Transform(shape.GetVertex1(), xf);
 	const auto v2 = Transform(shape.GetVertex2(), xf);
 	drawer.DrawSegment(v1, v2, color);
+	
+	if (skins)
+	{
+		const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
+		const auto r = shape.GetVertexRadius();
+		const auto worldNormal0 = GetFwdPerpendicular(GetUnitVector(v2 - v1));
+		const auto offset = worldNormal0 * r;
+		drawer.DrawSegment(v1 + offset, v2 + offset, skinColor);
+		drawer.DrawSegment(v1 - offset, v2 - offset, skinColor);
+		
+		const auto angle0 = GetAngle(worldNormal0);
+		const auto angle1 = GetAngle(-worldNormal0);
+		DrawCorner(drawer, v2, r, angle0, angle1, skinColor);
+		DrawCorner(drawer, v1, r, angle1, angle0, skinColor);
+	}
 }
 
 static void Draw(Drawer& drawer, const ChainShape& shape, const Transformation& xf, const Color& color)
@@ -83,8 +116,7 @@ static void Draw(Drawer& drawer, const PolygonShape& shape, const Transformation
 	{
 		if (i > 0)
 		{
-			const auto normal0 = shape.GetNormal(i - 1);
-			const auto worldNormal0 = Rotate(normal0, xf.q);
+			const auto worldNormal0 = Rotate(shape.GetNormal(i - 1), xf.q);
 			const auto p0 = vertices[i-1] + worldNormal0 * r;
 			const auto p1 = vertices[i] + worldNormal0 * r;
 			drawer.DrawSegment(p0, p1, skinColor);
@@ -92,20 +124,7 @@ static void Draw(Drawer& drawer, const PolygonShape& shape, const Transformation
 			const auto worldNormal1 = Rotate(normal1, xf.q);
 			const auto angle0 = GetAngle(worldNormal0);
 			const auto angle1 = GetAngle(worldNormal1);
-			const auto angleDiff = GetRevRotationalAngle(angle0, angle1);
-			auto lastAngle = 0_deg;
-			for (auto angle = 5_deg; angle < angleDiff; angle += 5_deg)
-			{
-				const auto c0 = vertices[i] + r * UnitVec2(angle0 + lastAngle);
-				const auto c1 = vertices[i] + r * UnitVec2(angle0 + angle);
-				drawer.DrawSegment(c0, c1, skinColor);
-				lastAngle = angle;
-			}
-			{
-				const auto c0 = vertices[i] + r * UnitVec2(angle0 + lastAngle);
-				const auto c1 = vertices[i] + r * UnitVec2(angle1);
-				drawer.DrawSegment(c0, c1, skinColor);
-			}
+			DrawCorner(drawer, vertices[i], r, angle0, angle1, skinColor);
 		}
 	}
 	if (vertexCount > 0)
@@ -115,20 +134,7 @@ static void Draw(Drawer& drawer, const PolygonShape& shape, const Transformation
 		const auto worldNormal1 = Rotate(shape.GetNormal(0), xf.q);
 		const auto angle0 = GetAngle(worldNormal0);
 		const auto angle1 = GetAngle(worldNormal1);
-		const auto angleDiff = GetRevRotationalAngle(angle0, angle1);
-		auto lastAngle = 0_deg;
-		for (auto angle = 5_deg; angle < angleDiff; angle += 5_deg)
-		{
-			const auto c0 = vertices[0] + r * UnitVec2(angle0 + lastAngle);
-			const auto c1 = vertices[0] + r * UnitVec2(angle0 + angle);
-			drawer.DrawSegment(c0, c1, skinColor);
-			lastAngle = angle;
-		}
-		{
-			const auto c0 = vertices[0] + r * UnitVec2(angle0 + lastAngle);
-			const auto c1 = vertices[0] + r * UnitVec2(angle1);
-			drawer.DrawSegment(c0, c1, skinColor);
-		}
+		DrawCorner(drawer, vertices[0], r, angle0, angle1, skinColor);
 	}
 
 }
@@ -142,7 +148,7 @@ static void Draw(Drawer& drawer, const Fixture& fixture, const Transformation& x
 			break;
 			
 		case Shape::e_edge:
-			Draw(drawer, *static_cast<const EdgeShape*>(fixture.GetShape()), xf, color);
+			Draw(drawer, *static_cast<const EdgeShape*>(fixture.GetShape()), xf, color, skins);
 			break;
 			
 		case Shape::e_chain:
