@@ -25,7 +25,7 @@ using namespace box2d;
 void VelocityConstraint::Update(const WorldManifold& worldManifold,
 								const Vec2 posA, const Vec2 posB,
 								Span<const Velocity> velocities,
-								const bool blockSolve)
+								const UpdateConf conf)
 {
 	assert(IsValid(bodyA.GetIndex()));
 	assert(IsValid(bodyB.GetIndex()));
@@ -53,7 +53,7 @@ void VelocityConstraint::Update(const WorldManifold& worldManifold,
 					return float_t{0};
 				}
 				const auto vn = Dot(GetContactRelVelocity(velA, vcp_rA, velB, vcp_rB), normal);
-				return (vn < -VelocityThreshold)? -GetRestitution() * vn: float_t{0};
+				return (vn < -conf.velocityThreshold)? -GetRestitution() * vn: float_t{0};
 			}());
 		}
 	}
@@ -61,7 +61,7 @@ void VelocityConstraint::Update(const WorldManifold& worldManifold,
 	SetK(GetInvalid<Mat22>());
 	
 	// If we have two points, then prepare the block solver.
-	if ((pointCount == 2) && blockSolve)
+	if ((pointCount == 2) && conf.blockSolve)
 	{
 		const auto rn1A = Cross(GetPointRelPosA(0), normal);
 		const auto rn1B = Cross(GetPointRelPosB(0), normal);

@@ -26,7 +26,7 @@ namespace box2d {
 
 /// Time step.
 /// @detail This is an internal structure.
-/// @note This data structure is 20-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 32-bytes large (on at least one 64-bit platform).
 class TimeStep
 {
 public:
@@ -62,6 +62,14 @@ public:
 
 	/// The time that a body must be still before it will go to sleep.
 	float_t minStillTimeToSleep = float_t{1} / float_t{2}; // aka 0.5
+
+	/// This scale factor controls how fast overlap is resolved. Ideally this would be 1 so
+	/// that overlap is removed in one time step. However using values close to 1 often lead
+	/// to overshoot.
+	float_t regResolutionRate = float_t{2} / float_t{10}; // aka 0.2.
+	
+	/// Time of impact resolution rate.
+	float_t toiResolutionRate = float_t{75} / float_t{100}; // aka .75
 
 	iteration_type velocityIterations; ///< Velocity iterations.
 	iteration_type positionIterations; ///< Position iterations.

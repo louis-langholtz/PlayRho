@@ -150,7 +150,8 @@ TEST(VelocityConstraint, Update)
 	const auto posB = Vec2{3, 4};
 	const auto velocities = {Velocity{Vec2{1, 0}, 0_deg}, Velocity{Vec2{-1, 0}, 0_deg}};
 
-	vc.Update(worldManifold, posA, posB, velocities, false);
+	vc.Update(worldManifold, posA, posB, velocities,
+			  VelocityConstraint::UpdateConf{VelocityThreshold, false});
 
 	EXPECT_FLOAT_EQ(vc.GetNormal().GetX(), normal.GetX());
 	EXPECT_FLOAT_EQ(vc.GetNormal().GetY(), normal.GetY());

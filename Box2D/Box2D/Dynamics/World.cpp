@@ -99,9 +99,7 @@ World::World(const Def& def):
 	m_maxTranslation(def.maxTranslation),
 	m_maxRotation(def.maxRotation),
 	m_maxSubSteps(def.maxSubSteps),
-	m_maxSubStepPositionIters(def.maxSubStepPositionIters),
-	m_regResolutionRate(def.regResolutionRate),
-	m_toiResolutionRate(def.toiResolutionRate)
+	m_maxSubStepPositionIters(def.maxSubStepPositionIters)
 {
 	memset(&m_profile, 0, sizeof(Profile));
 }
@@ -761,7 +759,8 @@ void World::Solve(const TimeStep& step)
 		inline void UpdateVelocityConstraints(Span<VelocityConstraint> velocityConstraints,
 											  Span<const Velocity> velocities,
 											  Span<const PositionConstraint> positionConstraints,
-											  Span<const Position> positions)
+											  Span<const Position> positions,
+											  const VelocityConstraint::UpdateConf& conf)
 		{
 			auto i = Span<VelocityConstraint>::size_type{0};
 			for (auto&& pc: positionConstraints)
@@ -769,7 +768,7 @@ void World::Solve(const TimeStep& step)
 				const auto posA = positions[pc.bodyA.index];
 				const auto posB = positions[pc.bodyB.index];
 				const auto worldManifold = GetWorldManifold(pc, posA, posB);
-				velocityConstraints[i].Update(worldManifold, posA.c, posB.c, velocities, true);
+				velocityConstraints[i].Update(worldManifold, posA.c, posB.c, velocities, conf);
 				++i;
 			}
 		}
@@ -830,7 +829,8 @@ bool World::Solve(const TimeStep& step, Island& island)
 		velocities.push_back(new_velocity);
 	}
 	
-	UpdateVelocityConstraints(velocityConstraints, velocities, positionConstraints, positions);
+	UpdateVelocityConstraints(velocityConstraints, velocities, positionConstraints, positions,
+							  VelocityConstraint::UpdateConf{VelocityThreshold, true});
 	
 	if (step.warmStarting)
 	{
@@ -838,7 +838,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 	}
 
 	const auto psConf = ConstraintSolverConf{}
-		.UseResolutionRate(GetRegResolutionRate())
+		.UseResolutionRate(step.regResolutionRate)
 		.UseLinearSlop(GetLinearSlop())
 		.UseAngularSlop(GetAngularSlop())
 		.UseMaxLinearCorrection(GetMaxLinearCorrection())
@@ -1160,7 +1160,7 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	// Solve TOI-based position constraints.
 	auto positionConstraintsSolved = TimeStep::InvalidIteration;
 	const auto psConf = ConstraintSolverConf{}
-		.UseResolutionRate(GetToiResolutionRate())
+		.UseResolutionRate(step.toiResolutionRate)
 		.UseLinearSlop(GetLinearSlop())
 		.UseAngularSlop(GetAngularSlop())
 		.UseMaxLinearCorrection(GetMaxLinearCorrection())
@@ -1183,7 +1183,8 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	
 	// No warm starting is needed for TOI events because warm
 	// starting impulses were applied in the discrete solver.
-	UpdateVelocityConstraints(velocityConstraints, velocities, positionConstraints, positions);
+	UpdateVelocityConstraints(velocityConstraints, velocities, positionConstraints, positions,
+							  VelocityConstraint::UpdateConf{VelocityThreshold, true});
 	
 	// Solve velocity constraints.
 	for (auto i = decltype(step.velocityIterations){0}; i < step.velocityIterations; ++i)

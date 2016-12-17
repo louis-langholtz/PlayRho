@@ -214,6 +214,12 @@ namespace box2d {
 		/// @return Previously set value or an invalid value.
 		Vec2 GetPointRelPosB(size_type index) const noexcept;
 
+		struct UpdateConf
+		{
+			float_t velocityThreshold;
+			bool blockSolve;
+		};
+
 		/// Updates with the given data.
 		/// @detail Specifically this:
 		///   1. Sets the normal to the world manifold normal.
@@ -230,7 +236,7 @@ namespace box2d {
 		void Update(const WorldManifold& worldManifold,
 					const Vec2 posA, const Vec2 posB,
 					Span<const Velocity> velocities,
-					const bool blockSolve);
+					const UpdateConf conf);
 		
 		void SetNormalImpulseAtPoint(size_type index, float_t value);
 		
