@@ -127,15 +127,6 @@ constexpr auto MaxTranslation = float_t{4}; // originally 2
 /// You shouldn't need to adjust this.
 constexpr auto MaxRotation = Pi / float_t{2};
 
-/// This scale factor controls how fast overlap is resolved. Ideally this would be 1 so
-/// that overlap is removed in one time step. However using values close to 1 often lead
-/// to overshoot.
-constexpr auto Baumgarte = float_t{2} / float_t{10}; // aka 0.2.
-
-/// Time of impact Baumgarte factor.
-/// @sa Baumgarte.
-constexpr auto ToiBaumgarte = float_t{75} / float_t{100}; // aka .75
-
 /// Maximum number of bodies in a world (65534 based off uint16 and eliminating one value for invalid).
 constexpr auto MaxBodies = uint16{std::numeric_limits<uint16>::max() - uint16{1}};
 
@@ -157,9 +148,6 @@ using joint_count_t = std::conditional<sizeof(body_count_t) < sizeof(uint32), ui
 constexpr auto MaxJoints = uint16{std::numeric_limits<uint16>::max() - uint16{1}};
 
 // Sleep
-
-/// The time that a body must be still before it will go to sleep.
-constexpr auto MinStillTimeToSleep = float_t{1} / float_t{2}; // aka 0.5
 
 /// A body cannot sleep if its linear velocity is above this tolerance.
 constexpr auto LinearSleepTolerance = float_t{1} / float_t{100}; // aka 0.01

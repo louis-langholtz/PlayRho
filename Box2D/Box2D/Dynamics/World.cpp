@@ -90,7 +90,7 @@ private:
 	std::function<void(T&)> m_on_destruction;
 };
 
-World::World(const Def def):
+World::World(const Def& def):
 	m_gravity(def.gravity),
 	m_linearSlop(def.linearSlop),
 	m_angularSlop(def.angularSlop),
@@ -99,7 +99,9 @@ World::World(const Def def):
 	m_maxTranslation(def.maxTranslation),
 	m_maxRotation(def.maxRotation),
 	m_maxSubSteps(def.maxSubSteps),
-	m_maxSubStepPositionIters(def.maxSubStepPositionIters)
+	m_maxSubStepPositionIters(def.maxSubStepPositionIters),
+	m_regResolutionRate(def.regResolutionRate),
+	m_toiResolutionRate(def.toiResolutionRate)
 {
 	memset(&m_profile, 0, sizeof(Profile));
 }
@@ -518,7 +520,7 @@ void World::Solve(const TimeStep& step)
 				if (GetAllowSleeping())
 				{
 					const auto minSleepTime = UpdateSleepTimes(island.m_bodies, step.get_dt());
-					if ((minSleepTime >= MinStillTimeToSleep) && constraintsSolved)
+					if ((minSleepTime >= step.minStillTimeToSleep) && constraintsSolved)
 					{
 						Sleepem(island.m_bodies);
 					}
@@ -836,7 +838,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 	}
 
 	const auto psConf = ConstraintSolverConf{}
-		.UseResolutionRate(Baumgarte)
+		.UseResolutionRate(GetRegResolutionRate())
 		.UseLinearSlop(GetLinearSlop())
 		.UseAngularSlop(GetAngularSlop())
 		.UseMaxLinearCorrection(GetMaxLinearCorrection())
@@ -1158,7 +1160,7 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	// Solve TOI-based position constraints.
 	auto positionConstraintsSolved = TimeStep::InvalidIteration;
 	const auto psConf = ConstraintSolverConf{}
-		.UseResolutionRate(ToiBaumgarte)
+		.UseResolutionRate(GetToiResolutionRate())
 		.UseLinearSlop(GetLinearSlop())
 		.UseAngularSlop(GetAngularSlop())
 		.UseMaxLinearCorrection(GetMaxLinearCorrection())

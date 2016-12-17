@@ -60,6 +60,9 @@ public:
 	///   Value of 1 indicates that the time step has not varied.
 	float_t dtRatio;
 
+	/// The time that a body must be still before it will go to sleep.
+	float_t minStillTimeToSleep = float_t{1} / float_t{2}; // aka 0.5
+
 	iteration_type velocityIterations; ///< Velocity iterations.
 	iteration_type positionIterations; ///< Position iterations.
 	

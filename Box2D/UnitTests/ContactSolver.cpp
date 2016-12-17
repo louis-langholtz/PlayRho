@@ -24,6 +24,8 @@
 
 using namespace box2d;
 
+static constexpr auto Baumgarte = float_t{2} / float_t{10};
+
 TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 {
 	const auto old_pA = Position{Vec2{-2, 0}, 0_deg};

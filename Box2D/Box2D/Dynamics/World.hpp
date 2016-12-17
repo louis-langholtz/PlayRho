@@ -75,6 +75,14 @@ public:
 		
 		float_t maxTranslation = MaxTranslation;
 		
+		/// This scale factor controls how fast overlap is resolved. Ideally this would be 1 so
+		/// that overlap is removed in one time step. However using values close to 1 often lead
+		/// to overshoot.
+		float_t regResolutionRate = float_t{2} / float_t{10}; // aka 0.2.
+
+		/// Time of impact resolution rate.
+		float_t toiResolutionRate = float_t{75} / float_t{100}; // aka .75
+
 		Angle maxRotation = MaxRotation * 1_rad;
 		
 		/// Maximum sub steps.
@@ -84,6 +92,7 @@ public:
 		/// have continuous collision resolution done for it.
 		ts_iters_type maxSubSteps = 48;
 		
+		/// Maximum substep position iterations.
 		ts_iters_type maxSubStepPositionIters = 20;
 	};
 	
@@ -93,7 +102,7 @@ public:
 	}
 
 	/// Constructs a world object.
-	World(const Def def = GetDefaultDef());
+	World(const Def& def = GetDefaultDef());
 
 	/// Destructor.
 	/// @detail
@@ -298,6 +307,9 @@ public:
 
 	float_t GetMaxTranslation() const noexcept;
 	
+	float_t GetRegResolutionRate() const noexcept;
+	float_t GetToiResolutionRate() const noexcept;
+
 private:
 
 	using flags_type = uint32;
@@ -478,6 +490,14 @@ private:
 	const float_t m_maxLinearCorrection;
 	const float_t m_maxAngularCorrection;
 	const float_t m_maxTranslation;
+
+	/// This scale factor controls how fast overlap is resolved. Ideally this would be 1 so
+	/// that overlap is removed in one time step. However using values close to 1 often lead
+	/// to overshoot.
+	const float_t m_regResolutionRate;
+
+	const float_t m_toiResolutionRate;
+	
 	const Angle m_maxRotation;
 
 	Profile m_profile;
@@ -724,6 +744,16 @@ inline float_t World::GetMinVertexRadius() const noexcept
 	// Making it smaller means some shapes could have insufficient buffer for continuous collision.
 	// Making it larger may create artifacts for vertex collision.
 	return GetLinearSlop() * 2;
+}
+
+inline float_t World::GetRegResolutionRate() const noexcept
+{
+	return m_regResolutionRate;
+}
+
+inline float_t World::GetToiResolutionRate() const noexcept
+{
+	return m_toiResolutionRate;
 }
 
 /// Dump the world into the log file.
