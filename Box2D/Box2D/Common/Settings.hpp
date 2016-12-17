@@ -117,16 +117,6 @@ constexpr auto MaxDistanceIterations = BOX2D_MAGIC(uint8{20});
 /// velocity below this threshold will be treated as inelastic.
 constexpr auto VelocityThreshold = float_t{8} / float_t{10}; // float_t{1};
 
-/// Maximum linear velocity of a body.
-/// This limit is very large and is used to prevent numerical problems.
-/// You shouldn't need to adjust this.
-constexpr auto MaxTranslation = float_t{4}; // originally 2
-
-/// Maximum angular velocity of a body.
-/// This limit is very large and is used to prevent numerical problems.
-/// You shouldn't need to adjust this.
-constexpr auto MaxRotation = Pi / float_t{2};
-
 /// Maximum number of bodies in a world (65534 based off uint16 and eliminating one value for invalid).
 constexpr auto MaxBodies = uint16{std::numeric_limits<uint16>::max() - uint16{1}};
 

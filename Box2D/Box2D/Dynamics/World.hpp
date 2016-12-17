@@ -73,9 +73,15 @@ public:
 		
 		float_t maxAngularCorrection = angularSlop * 4;
 		
-		float_t maxTranslation = MaxTranslation;
+		/// Maximum linear velocity of a body.
+		/// This limit is very large and is used to prevent numerical problems.
+		/// You shouldn't need to adjust this.
+		float_t maxTranslation = 4; // originally 2
 		
-		Angle maxRotation = MaxRotation * 1_rad;
+		/// Maximum angular velocity of a body.
+		/// This limit is very large and is used to prevent numerical problems.
+		/// You shouldn't need to adjust this.
+		Angle maxRotation = 1_rad * Pi / 2;
 		
 		/// Maximum sub steps.
 		/// @detail
