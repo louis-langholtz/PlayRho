@@ -53,27 +53,14 @@ class World
 {
 public:
 	using size_type = size_t;
+	using ts_iters_type = ts_iters_t;
 
 	struct Def
 	{
-		Def& UseGravity(Vec2 value) noexcept
-		{
-			gravity = value;
-			return *this;
-		}
-		
-		Def& UseLinearSlop(float_t value) noexcept
-		{
-			linearSlop = value;
-			return *this;
-		}
-		
-		Def& UseAngularSlop(float_t value) noexcept
-		{
-			angularSlop = value;
-			return *this;
-		}
-		
+		constexpr Def& UseGravity(Vec2 value) noexcept;
+		constexpr Def& UseLinearSlop(float_t value) noexcept;
+		constexpr Def& UseAngularSlop(float_t value) noexcept;
+
 		Vec2 gravity = EarthlyGravity;
 		
 		float_t linearSlop = float_t{1} / float_t{10000}; // aka 0.0001, originally 0.005;
@@ -89,6 +76,15 @@ public:
 		float_t maxTranslation = MaxTranslation;
 		
 		Angle maxRotation = MaxRotation * 1_rad;
+		
+		/// Maximum sub steps.
+		/// @detail
+		/// This is the maximum number of sub-steps per contact in continuous physics simulation.
+		/// In other words, this is the maximum number of times in a world step that a contact will
+		/// have continuous collision resolution done for it.
+		ts_iters_type maxSubSteps = 48;
+		
+		ts_iters_type maxSubStepPositionIters = 20;
 	};
 	
 	static constexpr struct Def GetDefaultDef()
@@ -174,7 +170,7 @@ public:
 	/// @param velocityIterations Number of iterations for the velocity constraint solver.
 	/// @param positionIterations Number of iterations for the position constraint solver.
 	///   The position constraint solver resolves the positions of bodies that overlap.
-	void Step(float_t timeStep, unsigned velocityIterations = 8, unsigned positionIterations = 3);
+	void Step(float_t timeStep, ts_iters_type velocityIterations = 8, ts_iters_type positionIterations = 3);
 
 	/// Clears forces.
 	/// @detail
@@ -485,7 +481,34 @@ private:
 	const Angle m_maxRotation;
 
 	Profile m_profile;
+	
+	/// Maximum sub steps.
+	/// @detail
+	/// This is the maximum number of sub-steps per contact in continuous physics simulation.
+	/// In other words, this is the maximum number of times in a world step that a contact will
+	/// have continuous collision resolution done for it.
+	ts_iters_type m_maxSubSteps;
+
+	ts_iters_type m_maxSubStepPositionIters;
 };
+
+constexpr inline World::Def& World::Def::UseGravity(Vec2 value) noexcept
+{
+	gravity = value;
+	return *this;
+}
+
+constexpr inline World::Def& World::Def::UseLinearSlop(float_t value) noexcept
+{
+	linearSlop = value;
+	return *this;
+}
+
+constexpr inline World::Def& World::Def::UseAngularSlop(float_t value) noexcept
+{
+	angularSlop = value;
+	return *this;
+}
 
 inline BodyList& World::GetBodies() noexcept
 {

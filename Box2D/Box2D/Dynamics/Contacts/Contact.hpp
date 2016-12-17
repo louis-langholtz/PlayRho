@@ -71,7 +71,7 @@ struct ContactEdge
 class Contact
 {
 public:
-	using substep_type = std::remove_const<decltype(MaxSubSteps)>::type;
+	using substep_type = ts_iters_t;
 
 	using toi_max_type = std::remove_const<decltype(MaxTOIIterations)>::type;
 	using dist_max_type = std::remove_const<decltype(MaxDistanceIterations)>::type;
@@ -281,7 +281,7 @@ private:
 
 	Manifold m_manifold; ///< Manifold of the contact. 60-bytes. @sa Update.
 
-	substep_type m_toiCount = 0; ///< Count of TOI substeps contact has gone through [0,MaxSubSteps].
+	substep_type m_toiCount = 0; ///< Count of TOI substeps contact has gone through.
 	substep_type m_toiCalls = 0;
 
 	toi_sum_type m_toiItersTotal = 0;

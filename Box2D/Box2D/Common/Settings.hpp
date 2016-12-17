@@ -63,6 +63,10 @@ using size_t = std::size_t;
 /// Island count type. @detail Relating to items in a Island.
 using island_count_t = size_t;
 
+/// Time step iterations type.
+/// @detail A type for countining iterations per time-step.
+using ts_iters_t = uint16;
+
 constexpr auto MaxFloat = std::numeric_limits<float_t>::max(); // FLT_MAX
 
 constexpr auto Pi = static_cast<float_t>(M_PI); ///< Pi as the "float_t" float-type (any narrowing is intentional).
@@ -97,16 +101,6 @@ constexpr auto LinearSlop = float_t{1} / float_t{10000}; // aka 0.0001, original
 /// A small angle used as a collision and constraint tolerance. Usually it is
 /// chosen to be numerically significant, but visually insignificant.
 constexpr auto AngularSlop = Pi * float_t{2} / float_t{180};
-
-/// Maximum sub steps.
-/// @detail
-/// This is the maximum number of sub-steps per contact in continuous physics simulation.
-/// In other words, this is the maximum number of times in a world step that a contact will
-/// have continuous collision resolution done for it.
-constexpr auto MaxSubSteps = BOX2D_MAGIC(uint16{48}); // originally 8, often hit but no apparent help against tunneling
-
-/// Maximum number of sub-step position iterations.
-constexpr auto MaxSubStepPositionIterations = BOX2D_MAGIC(unsigned{20});
 
 /// Maximum time of impact iterations.
 constexpr auto MaxTOIIterations = BOX2D_MAGIC(uint8{20});

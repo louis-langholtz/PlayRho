@@ -97,7 +97,9 @@ World::World(const Def def):
 	m_maxLinearCorrection(def.maxLinearCorrection),
 	m_maxAngularCorrection(def.maxAngularCorrection),
 	m_maxTranslation(def.maxTranslation),
-	m_maxRotation(def.maxRotation)
+	m_maxRotation(def.maxRotation),
+	m_maxSubSteps(def.maxSubSteps),
+	m_maxSubStepPositionIters(def.maxSubStepPositionIters)
 {
 	memset(&m_profile, 0, sizeof(Profile));
 }
@@ -945,7 +947,7 @@ World::ContactToiData World::UpdateContactTOIs()
 	auto count = contact_count_t{0};
 	for (auto&& c: m_contactMgr.GetContacts())
 	{
-		if (c.IsEnabled() && (c.GetToiCount() < MaxSubSteps) &&
+		if (c.IsEnabled() && (c.GetToiCount() < m_maxSubSteps) &&
 			(c.HasValidToi() || c.UpdateTOI(toiConf)))
 		{
 			const auto toi = c.GetToi();
@@ -1040,13 +1042,13 @@ void World::SolveTOI(const TimeStep& step, Contact& contact)
 	contact.UnsetToi();
 
 	++contact.m_toiCount;
-	if (contact.m_toiCount >= MaxSubSteps)
+	if (contact.m_toiCount >= m_maxSubSteps)
 	{
 		// Note: This contact won't be passed again to this method within the current world step
 		// (as the UpdateContactTOIs method won't return it anymore).
 		// What are the pros/cons of this?
-		// Larger MaxSubSteps slows down the simulation.
-		// MaxSubSteps of 44 and higher seems to decrease the occurrance of tunneling of multiple
+		// Larger m_maxSubSteps slows down the simulation.
+		// m_maxSubSteps of 44 and higher seems to decrease the occurrance of tunneling of multiple
 		// bullet body collisions with static objects.
 	}
 
@@ -1091,7 +1093,7 @@ void World::SolveTOI(const TimeStep& step, Contact& contact)
 		TimeStep subStep;
 		subStep.set_dt((float_t{1} - toi) * step.get_dt());
 		subStep.dtRatio = float_t{1};
-		subStep.positionIterations = step.positionIterations? MaxSubStepPositionIterations: 0;
+		subStep.positionIterations = step.positionIterations? m_maxSubStepPositionIters: 0;
 		subStep.velocityIterations = step.velocityIterations;
 		subStep.warmStarting = false;
 		SolveTOI(subStep, island);
@@ -1266,7 +1268,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi, Conta
 	}
 }
 
-void World::Step(float_t dt, unsigned velocityIterations, unsigned positionIterations)
+void World::Step(float_t dt, ts_iters_type velocityIterations, ts_iters_type positionIterations)
 {
 	if (HasNewFixtures())
 	{

@@ -20,15 +20,17 @@
 #ifndef B2_TIME_STEP_H
 #define B2_TIME_STEP_H
 
-#include <Box2D/Common/Math.hpp>
+#include <Box2D/Common/Settings.hpp>
 
 namespace box2d {
 
-/// This is an internal structure.
+/// Time step.
+/// @detail This is an internal structure.
+/// @note This data structure is 20-bytes large (on at least one 64-bit platform).
 class TimeStep
 {
 public:
-	using iteration_type = unsigned;
+	using iteration_type = ts_iters_t;
 
 	static constexpr auto InvalidIteration = static_cast<iteration_type>(-1);
 
