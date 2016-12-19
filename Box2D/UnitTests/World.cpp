@@ -1220,6 +1220,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 	fixtureDef.restitution = float_t(0.94); // changes where bodies will be after collision
 	body_def.type = BodyType::Static;
 	
+	// Setup vertical bounderies
 	edge_shape.Set(Vec2{0, +half_box_height * 2}, Vec2{0, -half_box_height * 2});
 
 	body_def.position = Vec2{left_edge_x, 0};
@@ -1242,6 +1243,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 		}
 	}
 
+	// Setup horizontal bounderies
 	edge_shape.Set(Vec2{-half_box_width * 2, 0}, Vec2{+half_box_width * 2, 0});
 	
 	body_def.position = Vec2{0, btm_edge_y};
@@ -1480,7 +1482,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 	world.SetContactListener(&listener);
 	ASSERT_EQ(listener.begin_contacts, unsigned{0});
 
-	for (auto outer = unsigned{0}; outer < 1000; ++outer)
+	for (auto outer = unsigned{0}; outer < 2000; ++outer)
 	{
 		auto last_pos = ball_body->GetLocation();
 		for (auto loops = unsigned{0};; ++loops)
