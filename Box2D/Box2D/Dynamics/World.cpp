@@ -830,7 +830,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 	}
 	
 	UpdateVelocityConstraints(velocityConstraints, velocities, positionConstraints, positions,
-							  VelocityConstraint::UpdateConf{VelocityThreshold, true});
+							  VelocityConstraint::UpdateConf{step.velocityThreshold, true});
 	
 	if (step.warmStarting)
 	{
@@ -933,7 +933,7 @@ void World::ResetContactsForSolveTOI()
 	}	
 }
 
-World::ContactToiData World::UpdateContactTOIs()
+World::ContactToiData World::UpdateContactTOIs(const TimeStep& step)
 {
 	auto minContact = static_cast<Contact*>(nullptr);
 	auto minToi = MaxFloat;
@@ -942,8 +942,8 @@ World::ContactToiData World::UpdateContactTOIs()
 		1,
 		GetLinearSlop() * 3, // Targetted depth of impact
 		GetLinearSlop() / 4, // Tolerance.
-		MaxTOIRootIterCount,
-		MaxTOIIterations
+		step.maxTOIRootIterCount,
+		step.maxTOIIterations
 	};
 
 	auto count = contact_count_t{0};
@@ -1003,7 +1003,7 @@ void World::SolveTOI(const TimeStep& step)
 	for (;;)
 	{
 		// Find the first TOI - the soonest one.
-		const auto minContactToi = UpdateContactTOIs();
+		const auto minContactToi = UpdateContactTOIs(step);
 
 		if ((!minContactToi.contact) || (minContactToi.toi >= 1))
 		{
@@ -1094,7 +1094,6 @@ void World::SolveTOI(const TimeStep& step, Contact& contact)
 	{
 		TimeStep subStep;
 		subStep.set_dt((float_t{1} - toi) * step.get_dt());
-		subStep.dtRatio = float_t{1};
 		subStep.positionIterations = step.positionIterations? m_maxSubStepPositionIters: 0;
 		subStep.velocityIterations = step.velocityIterations;
 		subStep.warmStarting = false;
@@ -1184,7 +1183,7 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	// No warm starting is needed for TOI events because warm
 	// starting impulses were applied in the discrete solver.
 	UpdateVelocityConstraints(velocityConstraints, velocities, positionConstraints, positions,
-							  VelocityConstraint::UpdateConf{VelocityThreshold, true});
+							  VelocityConstraint::UpdateConf{step.velocityThreshold, true});
 	
 	// Solve velocity constraints.
 	for (auto i = decltype(step.velocityIterations){0}; i < step.velocityIterations; ++i)
@@ -1273,6 +1272,17 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi, Conta
 
 void World::Step(float_t dt, ts_iters_type velocityIterations, ts_iters_type positionIterations)
 {
+	TimeStep step;
+	step.set_dt(dt);
+	step.velocityIterations	= velocityIterations;
+	step.positionIterations = positionIterations;
+	step.dtRatio = dt * m_inv_dt0;
+	step.warmStarting = GetWarmStarting();
+	Step(step);
+}
+	
+void World::Step(const TimeStep& conf)
+{
 	if (HasNewFixtures())
 	{
 		UnsetNewFixtures();
@@ -1287,26 +1297,20 @@ void World::Step(float_t dt, ts_iters_type velocityIterations, ts_iters_type pos
 	// Update and destroy contacts. No new contacts are created though.
 	m_contactMgr.Collide();
 
-	if (dt > 0)
+	if (conf.get_dt() > 0)
 	{
-		TimeStep step;
-		step.set_dt(dt);
-		step.velocityIterations	= velocityIterations;
-		step.positionIterations = positionIterations;
-		step.dtRatio = dt * m_inv_dt0;
-		step.warmStarting = GetWarmStarting();
-		m_inv_dt0 = step.get_inv_dt();
+		m_inv_dt0 = conf.get_inv_dt();
 
 		// Integrate velocities, solve velocity constraints, and integrate positions.
 		if (IsStepComplete())
 		{
-			Solve(step);
+			Solve(conf);
 		}
 
 		// Handle TOI events.
 		if (GetContinuousPhysics())
 		{
-			SolveTOI(step);
+			SolveTOI(conf);
 		}
 	}
 }

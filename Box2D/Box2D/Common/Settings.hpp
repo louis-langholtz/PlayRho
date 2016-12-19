@@ -65,7 +65,7 @@ using island_count_t = size_t;
 
 /// Time step iterations type.
 /// @detail A type for countining iterations per time-step.
-using ts_iters_t = uint16;
+using ts_iters_t = uint8;
 
 constexpr auto MaxFloat = std::numeric_limits<float_t>::max(); // FLT_MAX
 
@@ -112,10 +112,6 @@ constexpr auto MaxTOIRootIterCount = BOX2D_MAGIC(uint8{50});
 constexpr auto MaxDistanceIterations = BOX2D_MAGIC(uint8{20});
 	
 // Dynamics
-
-/// A velocity threshold for elastic collisions. Any collision with a relative linear
-/// velocity below this threshold will be treated as inelastic.
-constexpr auto VelocityThreshold = float_t{8} / float_t{10}; // float_t{1};
 
 /// Maximum number of bodies in a world (65534 based off uint16 and eliminating one value for invalid).
 constexpr auto MaxBodies = uint16{std::numeric_limits<uint16>::max() - uint16{1}};

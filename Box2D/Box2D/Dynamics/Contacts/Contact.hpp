@@ -67,7 +67,7 @@ struct ContactEdge
 /// The class manages contact between two shapes. A contact exists for each overlapping
 /// AABB in the broad-phase (except if filtered). Therefore a contact object may exist
 /// that has no contact points.
-/// @note This data structure is 216-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 208-bytes large (on at least one 64-bit platform).
 class Contact
 {
 public:

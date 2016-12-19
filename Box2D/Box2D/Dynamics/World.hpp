@@ -179,6 +179,8 @@ public:
 	///   The position constraint solver resolves the positions of bodies that overlap.
 	void Step(float_t timeStep, ts_iters_type velocityIterations = 8, ts_iters_type positionIterations = 3);
 
+	void Step(const TimeStep& conf);
+
 	/// Clears forces.
 	/// @detail
 	/// Manually clear the force buffer on all bodies. By default, forces are cleared automatically
@@ -447,7 +449,7 @@ private:
 	/// @detail While checking contacts and setting their time of impact values this also
 	///   finds the contact with the lowest (soonest) time of impact.
 	/// @return Contact with the least time of impact and its time of impact, or null contact.
-	ContactToiData UpdateContactTOIs();
+	ContactToiData UpdateContactTOIs(const TimeStep& step);
 
 	bool HasNewFixtures() const noexcept;
 

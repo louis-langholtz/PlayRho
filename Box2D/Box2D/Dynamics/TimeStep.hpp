@@ -25,8 +25,8 @@
 namespace box2d {
 
 /// Time step.
-/// @detail This is an internal structure.
-/// @note This data structure is 32-bytes large (on at least one 64-bit platform).
+/// @detail Step configuration data.
+/// @note This data structure is 36-bytes large (on at least one 64-bit platform).
 class TimeStep
 {
 public:
@@ -58,21 +58,27 @@ public:
 	/// Delta t ratio.
 	/// @detail This is the delta-t times the inverse delta t from the previous world step.
 	///   Value of 1 indicates that the time step has not varied.
-	float_t dtRatio;
+	float_t dtRatio = 1;
 
 	/// The time that a body must be still before it will go to sleep.
-	float_t minStillTimeToSleep = float_t{1} / float_t{2}; // aka 0.5
+	float_t minStillTimeToSleep = float_t{1} / 2; // aka 0.5
 
 	/// This scale factor controls how fast overlap is resolved. Ideally this would be 1 so
 	/// that overlap is removed in one time step. However using values close to 1 often lead
 	/// to overshoot.
-	float_t regResolutionRate = float_t{2} / float_t{10}; // aka 0.2.
+	float_t regResolutionRate = float_t{2} / 10; // aka 0.2.
 	
 	/// Time of impact resolution rate.
-	float_t toiResolutionRate = float_t{75} / float_t{100}; // aka .75
+	float_t toiResolutionRate = float_t{75} / 100; // aka .75
 
-	iteration_type velocityIterations; ///< Velocity iterations.
-	iteration_type positionIterations; ///< Position iterations.
+	/// A velocity threshold for elastic collisions. Any collision with a relative linear
+	/// velocity below this threshold will be treated as inelastic.
+	float_t velocityThreshold = float_t{8} / 10; // float_t{1};
+
+	iteration_type velocityIterations = 8; ///< Velocity iterations.
+	iteration_type positionIterations = 3; ///< Position iterations.
+	iteration_type maxTOIRootIterCount = MaxTOIRootIterCount;
+	iteration_type maxTOIIterations = MaxTOIIterations;
 	
 	bool warmStarting; ///< Whether or not to perform warm starting.
 

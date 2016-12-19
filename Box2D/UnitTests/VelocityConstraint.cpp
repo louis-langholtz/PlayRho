@@ -22,6 +22,8 @@
 
 using namespace box2d;
 
+constexpr auto VelocityThreshold = float_t{8} / float_t{10}; // float_t{1};
+
 TEST(VelocityConstraint, ByteSizeIs176or160)
 {
 #if defined(BOX2D_CACHE_VC_POINT_MASSES)
