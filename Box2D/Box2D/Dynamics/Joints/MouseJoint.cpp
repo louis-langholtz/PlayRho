@@ -117,7 +117,7 @@ void MouseJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 	// Cheat with some damping
 	wB *= float_t(0.98);
 
-	if (step.warmStarting)
+	if (step.doWarmStart)
 	{
 		m_impulse *= step.dtRatio;
 		vB += m_invMassB * m_impulse;

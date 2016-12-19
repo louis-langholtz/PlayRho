@@ -146,7 +146,7 @@ void WeldJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Po
 		m_bias = float_t{0};
 	}
 
-	if (step.warmStarting)
+	if (step.doWarmStart)
 	{
 		// Scale impulses to support a variable time step.
 		m_impulse *= step.dtRatio;

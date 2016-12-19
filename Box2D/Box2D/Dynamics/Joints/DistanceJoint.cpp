@@ -135,7 +135,7 @@ void DistanceJoint::InitVelocityConstraints(Span<Velocity> velocities,
 		m_bias = float_t{0};
 	}
 
-	if (step.warmStarting)
+	if (step.doWarmStart)
 	{
 		// Scale the impulse to support a variable time step.
 		m_impulse *= step.dtRatio;

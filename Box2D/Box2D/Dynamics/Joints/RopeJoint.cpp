@@ -100,7 +100,7 @@ void RopeJoint::InitVelocityConstraints(Span<Velocity> velocities,
 
 	m_mass = (invMass != float_t{0}) ? float_t{1} / invMass : float_t{0};
 
-	if (step.warmStarting)
+	if (step.doWarmStart)
 	{
 		// Scale the impulse to support a variable time step.
 		m_impulse *= step.dtRatio;

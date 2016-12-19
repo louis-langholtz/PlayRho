@@ -239,7 +239,7 @@ void PrismaticJoint::InitVelocityConstraints(Span<Velocity> velocities,
 		m_motorImpulse = float_t{0};
 	}
 
-	if (step.warmStarting)
+	if (step.doWarmStart)
 	{
 		// Account for variable time step.
 		m_impulse *= step.dtRatio;

@@ -802,8 +802,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 	auto velocityConstraints = VelocityConstraintsContainer{
 		contacts_count, m_stackAllocator.AllocateArray<VelocityConstraint>(contacts_count), m_stackAllocator
 	};
-	InitVelConstraints(velocityConstraints, island.m_contacts,
-					   step.warmStarting? step.dtRatio: float_t{0});
+	InitVelConstraints(velocityConstraints, island.m_contacts, step.doWarmStart? step.dtRatio: 0);
 	
 	auto velocities = VelocityContainer{
 		island.m_bodies.size(),
@@ -832,7 +831,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 	UpdateVelocityConstraints(velocityConstraints, velocities, positionConstraints, positions,
 							  VelocityConstraint::UpdateConf{step.velocityThreshold, true});
 	
-	if (step.warmStarting)
+	if (step.doWarmStart)
 	{
 		WarmStartVelocities(velocityConstraints, velocities);
 	}
@@ -849,7 +848,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 		joint->InitVelocityConstraints(velocities, positions, step, psConf);
 	}
 	
-	for (auto i = decltype(step.velocityIterations){0}; i < step.velocityIterations; ++i)
+	for (auto i = decltype(step.regVelocityIterations){0}; i < step.regVelocityIterations; ++i)
 	{
 		for (auto&& joint: island.m_joints)
 		{
@@ -864,7 +863,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 	
 	// Solve position constraints
 	auto iterationSolved = TimeStep::InvalidIteration;
-	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
+	for (auto i = decltype(step.regPositionIterations){0}; i < step.regPositionIterations; ++i)
 	{
 		const auto minSep = SolvePositionConstraints(positionConstraints, positions, psConf);
 		const auto contactsOkay = (minSep >= -psConf.linearSlop * 3);
@@ -976,7 +975,7 @@ World::ContactToiData World::UpdateContactTOIs(const TimeStep& step)
 				//   Prioritizing contact with non-accelerable body doesn't prevent
 				//   tunneling of bullet objects through static objects in the multi body
 				//   collision case however.
-#if 0
+#if 1
 				if (!c.GetFixtureB()->GetBody()->IsAccelerable() ||
 					!c.GetFixtureB()->GetBody()->IsAccelerable())
 				{
@@ -1094,9 +1093,8 @@ void World::SolveTOI(const TimeStep& step, Contact& contact)
 	{
 		TimeStep subStep;
 		subStep.set_dt((float_t{1} - toi) * step.get_dt());
-		subStep.positionIterations = step.positionIterations? m_maxSubStepPositionIters: 0;
-		subStep.velocityIterations = step.velocityIterations;
-		subStep.warmStarting = false;
+		subStep.toiPositionIterations = step.toiPositionIterations;
+		subStep.toiVelocityIterations = step.toiVelocityIterations;
 		SolveTOI(subStep, island);
 	}
 
@@ -1146,8 +1144,7 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 		m_stackAllocator
 	};
 	InitPosConstraints(positionConstraints, island.m_contacts);
-	InitVelConstraints(velocityConstraints, island.m_contacts,
-					   step.warmStarting? step.dtRatio: float_t{0});
+	InitVelConstraints(velocityConstraints, island.m_contacts, 0);
 	
 	// Initialize the body state.
 	for (auto&& body: island.m_bodies)
@@ -1165,7 +1162,7 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 		.UseMaxLinearCorrection(GetMaxLinearCorrection())
 		.UseMaxAngularCorrection(GetMaxAngularCorrection());
 
-	for (auto i = decltype(step.positionIterations){0}; i < step.positionIterations; ++i)
+	for (auto i = decltype(step.toiPositionIterations){0}; i < step.toiPositionIterations; ++i)
 	{
 		const auto minSeparation = SolvePositionConstraints(positionConstraints, positions,
 															0, 1, psConf);
@@ -1186,7 +1183,7 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 							  VelocityConstraint::UpdateConf{step.velocityThreshold, true});
 	
 	// Solve velocity constraints.
-	for (auto i = decltype(step.velocityIterations){0}; i < step.velocityIterations; ++i)
+	for (auto i = decltype(step.toiVelocityIterations){0}; i < step.toiVelocityIterations; ++i)
 	{
 		SolveVelocityConstraints(velocityConstraints, velocities);
 	}
@@ -1274,10 +1271,13 @@ void World::Step(float_t dt, ts_iters_type velocityIterations, ts_iters_type pos
 {
 	TimeStep step;
 	step.set_dt(dt);
-	step.velocityIterations	= velocityIterations;
-	step.positionIterations = positionIterations;
+	step.regVelocityIterations = velocityIterations;
+	step.regPositionIterations = positionIterations;
+	step.toiVelocityIterations = velocityIterations;
+	step.toiPositionIterations = positionIterations? m_maxSubStepPositionIters: 0;
 	step.dtRatio = dt * m_inv_dt0;
-	step.warmStarting = GetWarmStarting();
+	step.doWarmStart = GetWarmStarting();
+	step.doToi = GetContinuousPhysics();
 	Step(step);
 }
 	
@@ -1308,7 +1308,7 @@ void World::Step(const TimeStep& conf)
 		}
 
 		// Handle TOI events.
-		if (GetContinuousPhysics())
+		if (conf.doToi)
 		{
 			SolveTOI(conf);
 		}

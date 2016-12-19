@@ -75,12 +75,15 @@ public:
 	/// velocity below this threshold will be treated as inelastic.
 	float_t velocityThreshold = float_t{8} / 10; // float_t{1};
 
-	iteration_type velocityIterations = 8; ///< Velocity iterations.
-	iteration_type positionIterations = 3; ///< Position iterations.
+	iteration_type regVelocityIterations = 8; ///< Velocity iterations.
+	iteration_type regPositionIterations = 3; ///< Position iterations.
+	iteration_type toiVelocityIterations = 8; ///< Velocity iterations.
+	iteration_type toiPositionIterations = 20; ///< Position iterations.
 	iteration_type maxTOIRootIterCount = MaxTOIRootIterCount;
 	iteration_type maxTOIIterations = MaxTOIIterations;
 	
-	bool warmStarting; ///< Whether or not to perform warm starting.
+	bool doWarmStart = true; ///< Whether or not to perform warm starting (in the regular phase).
+	bool doToi = true; ///< Whether or not to perform continuous collision detection.
 
 private:
 	float_t dt; ///< Delta time. This is the time step in seconds.

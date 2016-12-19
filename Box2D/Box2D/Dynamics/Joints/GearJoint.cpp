@@ -213,7 +213,7 @@ void GearJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Po
 	// Compute effective mass.
 	m_mass = (m_mass > float_t{0}) ? float_t{1} / m_mass : float_t{0};
 
-	if (step.warmStarting)
+	if (step.doWarmStart)
 	{
 		vA += (m_mA * m_impulse) * m_JvAC;
 		wA += 1_rad * m_iA * m_impulse * m_JwA;

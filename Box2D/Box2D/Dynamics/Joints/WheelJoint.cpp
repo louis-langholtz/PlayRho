@@ -187,7 +187,7 @@ void WheelJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 		m_motorImpulse = float_t{0};
 	}
 
-	if (step.warmStarting)
+	if (step.doWarmStart)
 	{
 		// Account for variable time step.
 		m_impulse *= step.dtRatio;

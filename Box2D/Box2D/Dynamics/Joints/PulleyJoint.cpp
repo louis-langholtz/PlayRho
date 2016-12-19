@@ -138,7 +138,7 @@ void PulleyJoint::InitVelocityConstraints(Span<Velocity> velocities,
 		m_mass = float_t{1} / m_mass;
 	}
 
-	if (step.warmStarting)
+	if (step.doWarmStart)
 	{
 		// Scale impulses to support variable time steps.
 		m_impulse *= step.dtRatio;

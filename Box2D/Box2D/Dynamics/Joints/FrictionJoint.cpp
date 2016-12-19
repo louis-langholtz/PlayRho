@@ -101,7 +101,7 @@ void FrictionJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<cons
 		m_angularMass = float_t{1} / m_angularMass;
 	}
 
-	if (step.warmStarting)
+	if (step.doWarmStart)
 	{
 		// Scale impulses to support a variable time step.
 		m_linearImpulse *= step.dtRatio;

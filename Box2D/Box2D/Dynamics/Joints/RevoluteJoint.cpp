@@ -160,7 +160,7 @@ void RevoluteJoint::InitVelocityConstraints(Span<Velocity> velocities,
 		m_limitState = e_inactiveLimit;
 	}
 
-	if (step.warmStarting)
+	if (step.doWarmStart)
 	{
 		// Scale impulses to support a variable time step.
 		m_impulse *= step.dtRatio;

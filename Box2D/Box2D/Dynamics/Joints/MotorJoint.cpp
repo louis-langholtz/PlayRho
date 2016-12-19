@@ -115,7 +115,7 @@ void MotorJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 	m_linearError = cB + m_rB - cA - m_rA - Rotate(m_linearOffset, qA);
 	m_angularError = aB - aA - m_angularOffset;
 
-	if (step.warmStarting)
+	if (step.doWarmStart)
 	{
 		// Scale impulses to support a variable time step.
 		m_linearImpulse *= step.dtRatio;
