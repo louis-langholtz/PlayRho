@@ -1214,12 +1214,13 @@ inline void Sweep::ResetAlpha0() noexcept
 
 /// Gets a sweep with the given sweep's angles normalized.
 /// @param sweep Sweep to return with its angles normalized.
-/// @return Sweep with its angles in radians to be between -pi and pi
+/// @return Sweep with its pos0 angle in radians to be between -2 pi and 2 pi
+///    and its pos1 angle reduced by the amount pos0's angle was reduced by.
 inline Sweep GetAnglesNormalized(Sweep sweep)
 {
-	constexpr auto twoPi = float_t{2} * Pi;
-	const auto d = Angle::GetFromRadians(twoPi * std::floor(sweep.pos0.a.ToRadians() / twoPi));
-	sweep.pos0.a -= d;
+	const auto pos0a = GetNormalized(sweep.pos0.a);
+	const auto d = sweep.pos0.a - pos0a;
+	sweep.pos0.a = pos0a;
 	sweep.pos1.a -= d;
 	return sweep;
 }

@@ -174,6 +174,10 @@ namespace box2d
 		return (a1 > a2) * (360_deg - (a1 - a2)) + (a2 > a1) * (a2 - a1);
 	}
 
+	inline Angle GetNormalized(Angle value) noexcept
+	{
+		return Angle::GetFromRadians(std::fmod(value.ToRadians(), Pi * 2));
+	}
 }
 
 #endif /* Angle_hpp */

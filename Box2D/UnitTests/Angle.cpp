@@ -44,3 +44,18 @@ TEST(Angle, GetRevRotationalAngle)
 	EXPECT_EQ(GetRevRotationalAngle(-10_deg, 0_deg), 10_deg);
 	EXPECT_EQ(GetRevRotationalAngle(90_deg, -90_deg), 180_deg);
 }
+
+TEST(Angle, GetNormalized)
+{
+	EXPECT_FLOAT_EQ(GetNormalized(0_deg).ToRadians(), (0_deg).ToRadians());
+	EXPECT_FLOAT_EQ(GetNormalized(90_deg).ToRadians(), (90_deg).ToRadians());
+	EXPECT_FLOAT_EQ(GetNormalized(180_deg).ToRadians(), (180_deg).ToRadians());
+	EXPECT_FLOAT_EQ(GetNormalized(270_deg).ToRadians(), (270_deg).ToRadians());
+	EXPECT_FLOAT_EQ(GetNormalized(360_deg).ToRadians(), (0_deg).ToRadians());
+	EXPECT_FLOAT_EQ(GetNormalized(395_deg).ToRadians(), (35_deg).ToRadians());
+	EXPECT_FLOAT_EQ(GetNormalized(720_deg).ToRadians(), (0_deg).ToRadians());
+	EXPECT_FLOAT_EQ(std::roundf(GetNormalized(733_deg).ToRadians() * 1000)/1000, std::roundf((13_deg).ToRadians() * 1000)/1000);
+	EXPECT_FLOAT_EQ(GetNormalized(-45_deg).ToRadians(), (-45_deg).ToRadians());
+	EXPECT_FLOAT_EQ(GetNormalized(-90_deg).ToRadians(), (-90_deg).ToRadians());
+	EXPECT_FLOAT_EQ(std::roundf(GetNormalized(-3610_deg).ToRadians() * 1000)/1000, std::roundf((-10_deg).ToRadians() * 1000)/1000);
+}
