@@ -888,16 +888,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 	// Update normal and tangent impulses of contacts' manifold points
 	StoreImpulses(velocityConstraints, island.m_contacts);
 	
-	// Updates m_bodies[i].m_sweep.pos1 to positions[i]
-	// Copy velocity and position array data back out to the bodies
-	{
-		auto i = size_t{0};
-		for (auto&& b: island.m_bodies)
-		{
-			Update(*b, positions[i], velocities[i]);
-			++i;
-		}
-	}
+	UpdateBodies(island.m_bodies, positions, velocities);
 
 	if (m_contactMgr.m_contactListener)
 	{
@@ -1107,11 +1098,17 @@ void World::SolveTOI(const TimeStep& step, Contact& contact)
 	}
 }
 
-void World::Update(Body& body, const Position pos, const Velocity vel)
+void World::UpdateBodies(Span<Body*> bodies,
+						 Span<const Position> positions, Span<const Velocity> velocities)
 {
-	body.m_velocity = vel; // sets what Body::GetVelocity returns
-	body.m_sweep.pos1 = pos; // sets what Body::GetWorldCenter returns
-	body.m_xf = GetTransformation(body.m_sweep.pos1, body.m_sweep.GetLocalCenter()); // sets what Body::GetLocation returns
+	auto i = size_t{0};
+	for (auto&& b: bodies)
+	{
+		b->m_velocity = velocities[i]; // sets what Body::GetVelocity returns
+		b->m_sweep.pos1 = positions[i]; // sets what Body::GetWorldCenter returns
+		b->m_xf = GetTransformation(b->m_sweep.pos1, b->m_sweep.GetLocalCenter()); // sets what Body::GetLocation returns
+		++i;
+	}
 }
 
 bool World::SolveTOI(const TimeStep& step, Island& island)
@@ -1188,16 +1185,7 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	
 	IntegratePositions(positions, velocities, step.get_dt(), MovementConf{m_maxTranslation, m_maxRotation});
 	
-	// Update m_bodies[i].m_sweep.pos1 to position[i]
-	// Copy velocity and position array data back out to the bodies
-	{
-		auto i = size_t{0};
-		for (auto&& b: island.m_bodies)
-		{
-			Update(*b, positions[i], velocities[i]);
-			++i;
-		}
-	}
+	UpdateBodies(island.m_bodies, positions, velocities);
 
 	if (m_contactMgr.m_contactListener)
 	{

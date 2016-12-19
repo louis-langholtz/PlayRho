@@ -400,7 +400,12 @@ private:
 	///
 	bool SolveTOI(const TimeStep& step, Island& island);
 
-	static void Update(Body& body, const Position pos, const Velocity vel);
+	/// Updates bodies.
+	/// @detail
+	/// Updates bodies[i]->m_sweep.pos1 to position[i]
+	/// Copies velocity and position array data back out to the bodies
+	static void UpdateBodies(Span<Body*> bodies,
+							 Span<const Position> positions, Span<const Velocity> velocities);
 
 	void ResetBodiesForSolveTOI();
 	void ResetContactsForSolveTOI();
