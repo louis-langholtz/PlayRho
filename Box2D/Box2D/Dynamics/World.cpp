@@ -90,6 +90,263 @@ private:
 	std::function<void(T&)> m_on_destruction;
 };
 
+namespace {
+	
+	/// Calculates movement.
+	/// @detail Calculate the positional displacement based on the given velocity
+	///    that's possibly clamped to the maximum translation and rotation.
+	inline Position CalculateMovement(Velocity& velocity, float_t h, MovementConf conf)
+	{
+		assert(IsValid(velocity));
+		assert(IsValid(h));
+		
+		auto translation = h * velocity.v;
+		if (GetLengthSquared(translation) > Square(conf.maxTranslation))
+		{
+			const auto ratio = conf.maxTranslation / Sqrt(GetLengthSquared(translation));
+			velocity.v *= ratio;
+			translation = h * velocity.v;
+		}
+		
+		auto rotation = h * velocity.w;
+		if (Abs(rotation) > conf.maxRotation)
+		{
+			const auto ratio = conf.maxRotation / Abs(rotation);
+			velocity.w *= ratio;
+			rotation = h * velocity.w;
+		}
+		
+		return Position{translation, rotation};
+	}
+	
+	inline void IntegratePositions(PositionContainer& positions, VelocityContainer& velocities,
+								   float_t h, MovementConf conf)
+	{
+		auto i = size_t{0};
+		for (auto&& velocity: velocities)
+		{
+			positions[i] += CalculateMovement(velocity, h, conf);
+			++i;
+		}
+	}
+	
+	inline ContactImpulsesList GetContactImpulses(const VelocityConstraint& vc)
+	{
+		ContactImpulsesList impulse;
+		const auto count = vc.GetPointCount();
+		for (auto j = decltype(count){0}; j < count; ++j)
+		{
+			impulse.AddEntry(GetNormalImpulseAtPoint(vc, j), GetTangentImpulseAtPoint(vc, j));
+		}
+		return impulse;
+	}
+	
+	/// Reports the given constraints to the listener.
+	/// @detail
+	/// This calls the listener's PostSolve method for all contacts.size() elements of
+	/// the given array of constraints.
+	/// @param listener Listener to call.
+	/// @param constraints Array of m_contactCount contact velocity constraint elements.
+	inline void Report(ContactListener& listener,
+					   Span<Contact*> contacts,
+					   Span<const VelocityConstraint> constraints,
+					   TimeStep::iteration_type solved)
+	{
+		const auto size = contacts.size();
+		for (auto i = decltype(size){0}; i < size; ++i)
+		{
+			listener.PostSolve(*contacts[i], GetContactImpulses(constraints[i]), solved);
+		}
+	}
+	
+	inline VelocityConstraint::BodyData GetVelocityConstraintBodyData(const Body& val)
+	{
+		assert(IsValidIslandIndex(val));
+		return VelocityConstraint::BodyData{val.GetIslandIndex(), val.GetInverseMass(), val.GetInverseInertia()};
+	}
+	
+	inline PositionConstraint::BodyData GetPositionConstraintBodyData(const Body& val)
+	{
+		assert(IsValidIslandIndex(val));
+		return PositionConstraint::BodyData{val.GetIslandIndex(), val.GetInverseMass(), val.GetInverseInertia(), val.GetLocalCenter()};
+	}
+	
+	/// Gets the position-independent velocity constraint for the given contact, index, and time slot values.
+	inline VelocityConstraint GetVelocityConstraint(const Contact& contact, VelocityConstraint::index_type index, float_t dtRatio)
+	{
+		VelocityConstraint constraint(index,
+									  contact.GetFriction(),
+									  contact.GetRestitution(),
+									  contact.GetTangentSpeed(),
+									  GetVelocityConstraintBodyData(*(contact.GetFixtureA()->GetBody())),
+									  GetVelocityConstraintBodyData(*(contact.GetFixtureB()->GetBody())));
+		
+		const auto& manifold = contact.GetManifold();
+		const auto pointCount = manifold.GetPointCount();
+		assert(pointCount > 0);
+		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
+		{
+			const auto ci = manifold.GetContactImpulses(j);
+			constraint.AddPoint(dtRatio * ci.m_normal, dtRatio * ci.m_tangent);
+		}
+		
+		return constraint;
+	}
+	
+	inline PositionConstraint GetPositionConstraint(const Manifold& manifold, const Fixture& fixtureA, const Fixture& fixtureB)
+	{
+		return PositionConstraint{manifold,
+			GetPositionConstraintBodyData(*(fixtureA.GetBody())), GetVertexRadius(*fixtureA.GetShape()),
+			GetPositionConstraintBodyData(*(fixtureB.GetBody())), GetVertexRadius(*fixtureB.GetShape())};
+	}
+	
+	inline void InitPosConstraints(PositionConstraintsContainer& constraints, const Island::ContactContainer& contacts)
+	{
+		for (auto&& contact: contacts)
+		{
+			constraints.push_back(GetPositionConstraint(contact->GetManifold(),
+														*(contact->GetFixtureA()),
+														*(contact->GetFixtureB())));
+		}
+	}
+	
+	inline void InitVelConstraints(VelocityConstraintsContainer& constraints,
+								   const Island::ContactContainer& contacts, float_t dtRatio)
+	{
+		auto i = VelocityConstraint::index_type{0};
+		for (auto&& contact: contacts)
+		{
+			constraints.push_back(GetVelocityConstraint(*contact, i, dtRatio));
+			++i;
+		}
+	}
+	
+	inline void AssignImpulses(Manifold& var, const VelocityConstraint& vc)
+	{
+		assert(var.GetPointCount() >= vc.GetPointCount());
+		
+		const auto count = vc.GetPointCount();
+		for (auto i = decltype(count){0}; i < count; ++i)
+		{
+			var.SetPointImpulses(i, GetNormalImpulseAtPoint(vc, i), GetTangentImpulseAtPoint(vc, i));
+		}
+	}
+	
+	/// Stores impulses.
+	/// @detail Saves the normal and tangent impulses of all the velocity constraint points back to their
+	///   associated contacts' manifold points.
+	inline void StoreImpulses(Span<const VelocityConstraint> velocityConstraints, Span<Contact*> contacts)
+	{
+		for (auto&& vc: velocityConstraints)
+		{
+			auto& manifold = contacts[vc.GetContactIndex()]->GetManifold();
+			AssignImpulses(manifold, vc);
+		}
+	}
+	
+	struct VelocityPair
+	{
+		Velocity a;
+		Velocity b;
+	};
+	
+	inline VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc)
+	{
+		VelocityPair vp{Velocity{Vec2_zero, 0_rad}, Velocity{Vec2_zero, 0_rad}};
+		
+		const auto normal = GetNormal(vc);
+		const auto tangent = GetTangent(vc);
+		if (IsValid(normal) && IsValid(tangent))
+		{
+			const auto pointCount = vc.GetPointCount();
+			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
+			{
+				const auto P = GetNormalImpulseAtPoint(vc, j) * normal + GetTangentImpulseAtPoint(vc, j) * tangent;
+				vp.a -= Velocity{
+					vc.bodyA.GetInvMass() * P,
+					1_rad * vc.bodyA.GetInvRotI() * Cross(GetPointRelPosA(vc, j), P)
+				};
+				vp.b += Velocity{
+					vc.bodyB.GetInvMass() * P,
+					1_rad * vc.bodyB.GetInvRotI() * Cross(GetPointRelPosB(vc, j), P)
+				};
+			}
+		}
+		return vp;
+	}
+	
+	inline void WarmStartVelocities(Span<const VelocityConstraint> velocityConstraints, Span<Velocity> velocities)
+	{
+		for (auto&& vc: velocityConstraints)
+		{
+			const auto vp = CalcWarmStartVelocityDeltas(vc);
+			velocities[vc.bodyA.GetIndex()] += vp.a;
+			velocities[vc.bodyB.GetIndex()] += vp.b;
+		}
+	}
+	
+	/// Updates the given velocity constraints.
+	/// @detail
+	/// Updates the position dependent portions of the velocity constraints with the
+	/// information from the current position constraints.
+	/// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.
+	/// @post Velocity constraints will have their "normal" field set to the world manifold normal for them.
+	/// @post Velocity constraints will have their constraint points updated.
+	/// @sa SolveVelocityConstraints.
+	inline void UpdateVelocityConstraints(Span<VelocityConstraint> velocityConstraints,
+										  Span<const Velocity> velocities,
+										  Span<const PositionConstraint> positionConstraints,
+										  Span<const Position> positions,
+										  const VelocityConstraint::UpdateConf& conf)
+	{
+		auto i = Span<VelocityConstraint>::size_type{0};
+		for (auto&& pc: positionConstraints)
+		{
+			const auto posA = positions[pc.bodyA.index];
+			const auto posB = positions[pc.bodyB.index];
+			const auto worldManifold = GetWorldManifold(pc, posA, posB);
+			velocityConstraints[i].Update(worldManifold, posA.c, posB.c, velocities, conf);
+			++i;
+		}
+	}
+	
+	/// "Solves" the velocity constraints.
+	/// @detail Updates the velocities and velocity constraint points' normal and tangent impulses.
+	/// @pre <code>UpdateVelocityConstraints</code> has been called on the velocity constraints.
+	inline void SolveVelocityConstraints(Span<VelocityConstraint> velocityConstraints,
+										 Span<Velocity> velocities)
+	{
+		for (auto&& vc: velocityConstraints)
+		{
+			SolveVelocityConstraint(vc,
+									velocities[vc.bodyA.GetIndex()],
+									velocities[vc.bodyB.GetIndex()]);
+		}
+	}
+
+	inline float_t UpdateSleepTimes(Island::BodyContainer& bodies, float_t h)
+	{
+		auto minSleepTime = MaxFloat;
+		for (auto&& b: bodies)
+		{
+			if (b->IsSpeedable())
+			{
+				minSleepTime = Min(minSleepTime, b->UpdateSleepTime(h));
+			}
+		}
+		return minSleepTime;
+	}
+	
+	inline void Sleepem(Island::BodyContainer& bodies)
+	{
+		for (auto&& b: bodies)
+		{
+			b->UnsetAwake();
+		}
+	}
+	
+} // anonymous namespace
+
 World::World(const Def& def):
 	m_gravity(def.gravity),
 	m_linearSlop(def.linearSlop),
@@ -358,7 +615,6 @@ void World::Destroy(Joint* j)
 	}
 }
 
-//
 void World::SetAllowSleeping(bool flag) noexcept
 {
 	if (flag == GetAllowSleeping())
@@ -380,27 +636,6 @@ void World::SetAllowSleeping(bool flag) noexcept
 	}
 }
 
-static inline float_t UpdateSleepTimes(Island::BodyContainer& bodies, float_t h)
-{
-	auto minSleepTime = MaxFloat;
-	for (auto&& b: bodies)
-	{
-		if (b->IsSpeedable())
-		{
-			minSleepTime = Min(minSleepTime, b->UpdateSleepTime(h));
-		}
-	}
-	return minSleepTime;
-}
-
-static inline void Sleepem(Island::BodyContainer& bodies)
-{
-	for (auto&& b: bodies)
-	{
-		b->UnsetAwake();
-	}
-}
-	
 body_count_t World::AddToIsland(Island& island, Body& body)
 {
 	const auto index = static_cast<body_count_t>(island.m_bodies.size());
@@ -550,245 +785,6 @@ void World::Solve(const TimeStep& step)
 	// Look for new contacts.
 	m_contactMgr.FindNewContacts();
 }
-
-	// ==== begin
-	
-	namespace {
-		
-		/// Calculates movement.
-		/// @detail Calculate the positional displacement based on the given velocity
-		///    that's possibly clamped to the maximum translation and rotation.
-		inline Position CalculateMovement(Velocity& velocity, float_t h, MovementConf conf)
-		{
-			assert(IsValid(velocity));
-			assert(IsValid(h));
-			
-			auto translation = h * velocity.v;
-			if (GetLengthSquared(translation) > Square(conf.maxTranslation))
-			{
-				const auto ratio = conf.maxTranslation / Sqrt(GetLengthSquared(translation));
-				velocity.v *= ratio;
-				translation = h * velocity.v;
-			}
-			
-			auto rotation = h * velocity.w;
-			if (Abs(rotation) > conf.maxRotation)
-			{
-				const auto ratio = conf.maxRotation / Abs(rotation);
-				velocity.w *= ratio;
-				rotation = h * velocity.w;
-			}
-			
-			return Position{translation, rotation};
-		}
-		
-		inline void IntegratePositions(PositionContainer& positions, VelocityContainer& velocities,
-									   float_t h, MovementConf conf)
-		{
-			auto i = size_t{0};
-			for (auto&& velocity: velocities)
-			{
-				positions[i] += CalculateMovement(velocity, h, conf);
-				++i;
-			}
-		}
-		
-		inline ContactImpulsesList GetContactImpulses(const VelocityConstraint& vc)
-		{
-			ContactImpulsesList impulse;
-			const auto count = vc.GetPointCount();
-			for (auto j = decltype(count){0}; j < count; ++j)
-			{
-				impulse.AddEntry(GetNormalImpulseAtPoint(vc, j), GetTangentImpulseAtPoint(vc, j));
-			}
-			return impulse;
-		}
-		
-		/// Reports the given constraints to the listener.
-		/// @detail
-		/// This calls the listener's PostSolve method for all contacts.size() elements of
-		/// the given array of constraints.
-		/// @param listener Listener to call.
-		/// @param constraints Array of m_contactCount contact velocity constraint elements.
-		inline void Report(ContactListener& listener,
-						   Span<Contact*> contacts,
-						   Span<const VelocityConstraint> constraints,
-						   TimeStep::iteration_type solved)
-		{
-			const auto size = contacts.size();
-			for (auto i = decltype(size){0}; i < size; ++i)
-			{
-				listener.PostSolve(*contacts[i], GetContactImpulses(constraints[i]), solved);
-			}
-		}
-		
-		inline VelocityConstraint::BodyData GetVelocityConstraintBodyData(const Body& val)
-		{
-			assert(IsValidIslandIndex(val));
-			return VelocityConstraint::BodyData{val.GetIslandIndex(), val.GetInverseMass(), val.GetInverseInertia()};
-		}
-		
-		inline PositionConstraint::BodyData GetPositionConstraintBodyData(const Body& val)
-		{
-			assert(IsValidIslandIndex(val));
-			return PositionConstraint::BodyData{val.GetIslandIndex(), val.GetInverseMass(), val.GetInverseInertia(), val.GetLocalCenter()};
-		}
-		
-		/// Gets the position-independent velocity constraint for the given contact, index, and time slot values.
-		inline VelocityConstraint GetVelocityConstraint(const Contact& contact, VelocityConstraint::index_type index, float_t dtRatio)
-		{
-			VelocityConstraint constraint(index,
-										  contact.GetFriction(),
-										  contact.GetRestitution(),
-										  contact.GetTangentSpeed(),
-										  GetVelocityConstraintBodyData(*(contact.GetFixtureA()->GetBody())),
-										  GetVelocityConstraintBodyData(*(contact.GetFixtureB()->GetBody())));
-		
-			const auto& manifold = contact.GetManifold();
-			const auto pointCount = manifold.GetPointCount();
-			assert(pointCount > 0);
-			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
-			{
-				const auto ci = manifold.GetContactImpulses(j);
-				constraint.AddPoint(dtRatio * ci.m_normal, dtRatio * ci.m_tangent);
-			}
-			
-			return constraint;
-		}
-		
-		inline PositionConstraint GetPositionConstraint(const Manifold& manifold, const Fixture& fixtureA, const Fixture& fixtureB)
-		{
-			return PositionConstraint{manifold,
-				GetPositionConstraintBodyData(*(fixtureA.GetBody())), GetVertexRadius(*fixtureA.GetShape()),
-				GetPositionConstraintBodyData(*(fixtureB.GetBody())), GetVertexRadius(*fixtureB.GetShape())};
-		}
-		
-		inline void InitPosConstraints(PositionConstraintsContainer& constraints, const Island::ContactContainer& contacts)
-		{
-			for (auto&& contact: contacts)
-			{
-				constraints.push_back(GetPositionConstraint(contact->GetManifold(),
-															*(contact->GetFixtureA()),
-															*(contact->GetFixtureB())));
-			}
-		}
-		
-		inline void InitVelConstraints(VelocityConstraintsContainer& constraints,
-									   const Island::ContactContainer& contacts, float_t dtRatio)
-		{
-			auto i = VelocityConstraint::index_type{0};
-			for (auto&& contact: contacts)
-			{
-				constraints.push_back(GetVelocityConstraint(*contact, i, dtRatio));
-				++i;
-			}
-		}
-		
-		inline void AssignImpulses(Manifold& var, const VelocityConstraint& vc)
-		{
-			assert(var.GetPointCount() >= vc.GetPointCount());
-
-			const auto count = vc.GetPointCount();
-			for (auto i = decltype(count){0}; i < count; ++i)
-			{
-				var.SetPointImpulses(i, GetNormalImpulseAtPoint(vc, i), GetTangentImpulseAtPoint(vc, i));
-			}
-		}
-		
-		/// Stores impulses.
-		/// @detail Saves the normal and tangent impulses of all the velocity constraint points back to their
-		///   associated contacts' manifold points.
-		inline void StoreImpulses(Span<const VelocityConstraint> velocityConstraints, Span<Contact*> contacts)
-		{
-			for (auto&& vc: velocityConstraints)
-			{
-				auto& manifold = contacts[vc.GetContactIndex()]->GetManifold();
-				AssignImpulses(manifold, vc);
-			}
-		}
-		
-		struct VelocityPair
-		{
-			Velocity a;
-			Velocity b;
-		};
-		
-		inline VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc)
-		{
-			VelocityPair vp{Velocity{Vec2_zero, 0_rad}, Velocity{Vec2_zero, 0_rad}};
-			
-			const auto normal = GetNormal(vc);
-			const auto tangent = GetTangent(vc);
-			if (IsValid(normal) && IsValid(tangent))
-			{
-				const auto pointCount = vc.GetPointCount();	
-				for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
-				{
-					const auto P = GetNormalImpulseAtPoint(vc, j) * normal + GetTangentImpulseAtPoint(vc, j) * tangent;
-					vp.a -= Velocity{
-						vc.bodyA.GetInvMass() * P,
-						1_rad * vc.bodyA.GetInvRotI() * Cross(GetPointRelPosA(vc, j), P)
-					};
-					vp.b += Velocity{
-						vc.bodyB.GetInvMass() * P,
-						1_rad * vc.bodyB.GetInvRotI() * Cross(GetPointRelPosB(vc, j), P)
-					};
-				}
-			}
-			return vp;
-		}
-		
-		inline void WarmStartVelocities(Span<const VelocityConstraint> velocityConstraints, Span<Velocity> velocities)
-		{
-			for (auto&& vc: velocityConstraints)
-			{
-				const auto vp = CalcWarmStartVelocityDeltas(vc);
-				velocities[vc.bodyA.GetIndex()] += vp.a;
-				velocities[vc.bodyB.GetIndex()] += vp.b;
-			}		
-		}
-		
-		/// Updates the given velocity constraints.
-		/// @detail
-		/// Updates the position dependent portions of the velocity constraints with the
-		/// information from the current position constraints.
-		/// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.
-		/// @post Velocity constraints will have their "normal" field set to the world manifold normal for them.
-		/// @post Velocity constraints will have their constraint points updated.
-		/// @sa SolveVelocityConstraints.
-		inline void UpdateVelocityConstraints(Span<VelocityConstraint> velocityConstraints,
-											  Span<const Velocity> velocities,
-											  Span<const PositionConstraint> positionConstraints,
-											  Span<const Position> positions,
-											  const VelocityConstraint::UpdateConf& conf)
-		{
-			auto i = Span<VelocityConstraint>::size_type{0};
-			for (auto&& pc: positionConstraints)
-			{
-				const auto posA = positions[pc.bodyA.index];
-				const auto posB = positions[pc.bodyB.index];
-				const auto worldManifold = GetWorldManifold(pc, posA, posB);
-				velocityConstraints[i].Update(worldManifold, posA.c, posB.c, velocities, conf);
-				++i;
-			}
-		}
-		
-		/// "Solves" the velocity constraints.
-		/// @detail Updates the velocities and velocity constraint points' normal and tangent impulses.
-		/// @pre <code>UpdateVelocityConstraints</code> has been called on the velocity constraints.
-		inline void SolveVelocityConstraints(Span<VelocityConstraint> velocityConstraints,
-											 Span<Velocity> velocities)
-		{
-			for (auto&& vc: velocityConstraints)
-			{
-				SolveVelocityConstraint(vc,
-										velocities[vc.bodyA.GetIndex()],
-										velocities[vc.bodyB.GetIndex()]);
-			}
-		}
-	};
-	
-	// ==== end
 	
 bool World::Solve(const TimeStep& step, Island& island)
 {
@@ -938,7 +934,7 @@ World::ContactToiData World::UpdateContactTOIs(const TimeStep& step)
 	auto minToi = MaxFloat;
 	
 	const auto toiConf = ToiConf{
-		1,
+		1, // tMax
 		GetLinearSlop() * 3, // Targetted depth of impact
 		GetLinearSlop() / 4, // Tolerance.
 		step.maxTOIRootIterCount,
