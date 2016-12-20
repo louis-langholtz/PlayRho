@@ -1,21 +1,21 @@
 /*
-* Original work Copyright (c) 2009 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2016 Louis Langholtz https://github.com/louis-langholtz/Box2D
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2009 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2016 Louis Langholtz https://github.com/louis-langholtz/Box2D
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #ifndef CONFINED_H
 #define CONFINED_H
@@ -26,6 +26,7 @@ class Confined : public Test
 {
 public:
 	static constexpr auto wall_length = float_t(0.05); // 20
+	static constexpr auto vertexRadiusIncrement = wall_length / 80;
 	
 	enum
 	{
@@ -33,34 +34,9 @@ public:
 		e_rowCount = 0
 	};
 
-	Confined()
+	Confined(): Test{World::Def{}.UseLinearSlop(0)}
 	{
-		{
-			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
-
-			EdgeShape shape;
-
-			FixtureDef fd;
-			fd.shape = &shape;
-			fd.restitution = float_t(0); // originally 0.9
-
-			// Floor
-			shape.Set(Vec2(-wall_length/2, 0.0f), Vec2(wall_length/2, 0.0f));
-			ground->CreateFixture(fd);
-
-			// Left wall
-			shape.Set(Vec2(-wall_length/2, 0.0f), Vec2(-wall_length/2, wall_length));
-			ground->CreateFixture(fd);
-
-			// Right wall
-			shape.Set(Vec2(wall_length/2, 0.0f), Vec2(wall_length/2, wall_length));
-			ground->CreateFixture(fd);
-
-			// Roof
-			shape.Set(Vec2(-wall_length/2, wall_length), Vec2(wall_length/2, wall_length));
-			ground->CreateFixture(fd);
-		}
+		m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
 
 		float_t radius = 0.5f;
 		CircleShape shape(radius, Vec2_zero);
@@ -86,10 +62,50 @@ public:
 		m_world->SetGravity(Vec2(0.0f, 0.0f));
 	}
 
+	Body* CreateEnclosure(float_t vertexRadius, float_t wallLength)
+	{
+		BodyDef bd;
+		const auto ground = m_world->CreateBody(bd);
+		
+		auto shape = EdgeShape{vertexRadius};
+		//PolygonShape shape;
+		
+		FixtureDef fd;
+		fd.shape = &shape;
+		fd.restitution = float_t(0); // originally 0.9
+		
+		const auto btmLeft = Vec2(-wallLength/2, 0.0f);
+		const auto btmRight = Vec2(wallLength/2, 0.0f);
+		const auto topLeft = Vec2(-wallLength/2, wallLength);
+		const auto topRight = Vec2(wallLength/2, wallLength);
+		
+		// Floor
+		shape.Set(btmLeft, btmRight);
+		//shape.Set(Span<const Vec2>{btmLeft, btmRight});
+		ground->CreateFixture(fd);
+		
+		// Left wall
+		shape.Set(btmLeft, topLeft);
+		//shape.Set(Span<const Vec2>{btmLeft, topLeft});
+		ground->CreateFixture(fd);
+		
+		// Right wall
+		shape.Set(btmRight, topRight);
+		//shape.Set(Span<const Vec2>{btmRight, topRight});
+		ground->CreateFixture(fd);
+		
+		// Roof
+		shape.Set(topLeft, topRight);
+		//shape.Set(Span<const Vec2>{topLeft, topRight});
+		ground->CreateFixture(fd);
+		
+		return ground;
+	}
+	
 	void CreateCircle()
 	{
 		constexpr auto radius = float_t(wall_length/10); // 2
-		CircleShape shape(radius, Vec2_zero);
+		const auto shape = CircleShape(radius, Vec2_zero);
 
 		FixtureDef fd;
 		fd.shape = &shape;
@@ -169,6 +185,20 @@ public:
 		case Key_Period:
 			ToggleBulletMode();
 			break;
+		case Key_Add:
+			m_world->Destroy(m_enclosure);
+			m_enclosureVertexRadius += vertexRadiusIncrement;
+			m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
+			break;
+		case Key_Subtract:
+			m_world->Destroy(m_enclosure);
+			m_enclosureVertexRadius -= vertexRadiusIncrement;
+			if (m_enclosureVertexRadius < 0)
+			{
+				m_enclosureVertexRadius = 0;
+			}
+			m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
+			break;
 		default:
 			break;
 		}
@@ -203,18 +233,17 @@ public:
 
 	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
+		auto i = 0;
 		for (auto& b: m_world->GetBodies())
 		{
+			++i;
 			if (b.GetType() != BodyType::Dynamic)
 			{
 				continue;
 			}
 			
-			Vec2 p = b.GetLocation();
-			if (p.x <= -wall_length/2 || wall_length/2 <= p.x || p.y <= 0.0f || wall_length <= p.y)
-			{
-				p.x += 0.0f;
-			}
+			const auto location = b.GetLocation();
+			drawer.DrawString(location, "B%d", i);
 		}
 		
 		drawer.DrawString(5, m_textLine, "Press 'c' to create a circle.");
@@ -233,6 +262,8 @@ public:
 	}
 	
 	bool m_bullet_mode = false;
+	float_t m_enclosureVertexRadius = vertexRadiusIncrement;
+	Body* m_enclosure = nullptr;
 };
 
 } // namespace box2d

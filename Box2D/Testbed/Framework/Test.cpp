@@ -65,17 +65,20 @@ static void Draw(Drawer& drawer, const EdgeShape& shape, const Transformation& x
 	
 	if (skins)
 	{
-		const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
 		const auto r = shape.GetVertexRadius();
-		const auto worldNormal0 = GetFwdPerpendicular(GetUnitVector(v2 - v1));
-		const auto offset = worldNormal0 * r;
-		drawer.DrawSegment(v1 + offset, v2 + offset, skinColor);
-		drawer.DrawSegment(v1 - offset, v2 - offset, skinColor);
-		
-		const auto angle0 = GetAngle(worldNormal0);
-		const auto angle1 = GetAngle(-worldNormal0);
-		DrawCorner(drawer, v2, r, angle0, angle1, skinColor);
-		DrawCorner(drawer, v1, r, angle1, angle0, skinColor);
+		if (r > 0)
+		{
+			const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
+			const auto worldNormal0 = GetFwdPerpendicular(GetUnitVector(v2 - v1));
+			const auto offset = worldNormal0 * r;
+			drawer.DrawSegment(v1 + offset, v2 + offset, skinColor);
+			drawer.DrawSegment(v1 - offset, v2 - offset, skinColor);
+			
+			const auto angle0 = GetAngle(worldNormal0);
+			const auto angle1 = GetAngle(-worldNormal0);
+			DrawCorner(drawer, v2, r, angle0, angle1, skinColor);
+			DrawCorner(drawer, v1, r, angle1, angle0, skinColor);
+		}
 	}
 }
 
@@ -313,10 +316,9 @@ void Test::DestructionListenerImpl::SayGoodbye(Joint& joint)
 	}
 }
 
-Test::Test()
+Test::Test(const World::Def& conf):
+	m_world{new World(conf)}
 {
-	m_world = new World(World::Def{}.UseGravity(Vec2(0.0f, -10.0f)));
-
 	m_destructionListener.test = this;
 	m_world->SetDestructionListener(&m_destructionListener);
 	m_world->SetContactListener(this);
@@ -542,9 +544,14 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 
 	m_pointCount = 0;
 
-	m_world->Step(settings.dt,
-				  static_cast<unsigned>(settings.velocityIterations),
-				  static_cast<unsigned>(settings.positionIterations));
+	TimeStep stepConf;
+	stepConf.set_dt(settings.dt);
+	stepConf.regVelocityIterations = static_cast<TimeStep::iteration_type>(settings.regVelocityIterations);
+	stepConf.regPositionIterations = static_cast<TimeStep::iteration_type>(settings.regPositionIterations);
+	stepConf.toiVelocityIterations = static_cast<TimeStep::iteration_type>(settings.toiVelocityIterations);
+	stepConf.toiPositionIterations = static_cast<TimeStep::iteration_type>(settings.toiPositionIterations);
+
+	m_world->Step(stepConf);
 
 	Draw(drawer, *m_world, settings);
 

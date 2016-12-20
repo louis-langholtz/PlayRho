@@ -423,8 +423,10 @@ static void sInterface()
 
 		imguiSeparatorLine();
 
-		imguiSlider("Vel Iters", &settings.velocityIterations, 0, 50, 1, true);
-		imguiSlider("Pos Iters", &settings.positionIterations, 0, 50, 1, true);
+		imguiSlider("Reg Vel Iters", &settings.regVelocityIterations, 0, 50, 1, true);
+		imguiSlider("Reg Pos Iters", &settings.regPositionIterations, 0, 50, 1, true);
+		imguiSlider("TOI Vel Iters", &settings.toiVelocityIterations, 0, 50, 1, true);
+		imguiSlider("TOI Pos Iters", &settings.toiPositionIterations, 0, 50, 1, true);
 		imguiSlider("Hertz", &settings.hz, 5.0f, 120.0f, 5.0f, true);
 
 		if (imguiCheck("Sleep", settings.enableSleep, true))
@@ -510,7 +512,7 @@ int main(int argc, char** argv)
 #endif
 
     g_camera.m_width = 1024;
-    g_camera.m_height = 680;
+    g_camera.m_height = 720;
     
 	if (glfwInit() == 0)
 	{

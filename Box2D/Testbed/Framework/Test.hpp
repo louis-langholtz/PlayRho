@@ -32,8 +32,10 @@ struct Settings
 {
 	float_t hz = float_t(60);
 	float_t dt = float_t(1) / hz;
-	int32 velocityIterations = 8;
-	int32 positionIterations = 3;
+	int32 regVelocityIterations = 8;
+	int32 regPositionIterations = 3;
+	int32 toiVelocityIterations = 8;
+	int32 toiPositionIterations = 20;
 	bool drawShapes = true;
 	bool drawSkins = false;
 	bool drawJoints = true;
@@ -65,7 +67,7 @@ public:
 		Key_Unknown
 	};
 	
-	Test();
+	Test(const World::Def& config = World::Def{}.UseGravity(Vec2(0.0f, -10.0f)));
 	virtual ~Test();
 
 	void DrawTitle(Drawer& drawer, const char *string);
