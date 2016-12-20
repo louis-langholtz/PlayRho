@@ -596,6 +596,83 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 	}
 }
 
+TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
+{
+	World world{World::Def{}.UseGravity(Vec2(0, 0))};
+	MyContactListener listener{
+		[&](Contact& contact, const Manifold& oldManifold) {},
+		[&](Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved) {},
+		[&](Contact& contact) {},
+	};
+	world.SetContactListener(&listener);
+
+	auto body_def = BodyDef{};
+	body_def.type = BodyType::Dynamic;
+	body_def.position = Vec2{float_t(0), float_t(0)};
+	auto shape = CircleShape{1};
+	FixtureDef fixtureDef;
+	fixtureDef.shape = &shape;
+	fixtureDef.density = 1;
+	fixtureDef.restitution = 1;
+	for (auto i = 0; i < 2; ++i)
+	{
+		const auto body = world.CreateBody(body_def);
+		ASSERT_NE(body, nullptr);
+		ASSERT_NE(body->CreateFixture(fixtureDef), nullptr);
+	}
+
+	ASSERT_EQ(listener.begin_contacts, 0u);
+	ASSERT_EQ(listener.end_contacts, 0u);
+	ASSERT_EQ(listener.pre_solves, 0u);
+	ASSERT_EQ(listener.post_solves, 0u);
+
+	world.Step(1);
+
+	EXPECT_NE(listener.begin_contacts, 0u);
+	EXPECT_EQ(listener.end_contacts, 0u);
+	EXPECT_NE(listener.pre_solves, 0u);
+	EXPECT_NE(listener.post_solves, 0u);
+}
+
+TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
+{
+	World world{World::Def{}.UseGravity(Vec2(0, 0))};
+	MyContactListener listener{
+		[&](Contact& contact, const Manifold& oldManifold) {},
+		[&](Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved) {},
+		[&](Contact& contact) {},
+	};
+	world.SetContactListener(&listener);
+	
+	auto body_def = BodyDef{};
+	body_def.type = BodyType::Dynamic;
+	body_def.position = Vec2{float_t(0), float_t(0)};
+	auto shape = PolygonShape{1};
+	shape.SetAsBox(2, 2);
+	FixtureDef fixtureDef;
+	fixtureDef.shape = &shape;
+	fixtureDef.density = 1;
+	fixtureDef.restitution = 1;
+	for (auto i = 0; i < 2; ++i)
+	{
+		const auto body = world.CreateBody(body_def);
+		ASSERT_NE(body, nullptr);
+		ASSERT_NE(body->CreateFixture(fixtureDef), nullptr);
+	}
+	
+	ASSERT_EQ(listener.begin_contacts, 0u);
+	ASSERT_EQ(listener.end_contacts, 0u);
+	ASSERT_EQ(listener.pre_solves, 0u);
+	ASSERT_EQ(listener.post_solves, 0u);
+	
+	world.Step(1);
+	
+	EXPECT_NE(listener.begin_contacts, 0u);
+	EXPECT_EQ(listener.end_contacts, 0u);
+	EXPECT_NE(listener.pre_solves, 0u);
+	EXPECT_NE(listener.post_solves, 0u);
+}
+
 TEST(World, PartiallyOverlappedSameCirclesSeparate)
 {
 	const auto radius = float_t(1);
