@@ -53,7 +53,7 @@ public:
 			FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 20.0f;
-			fd.friction = 0.1f;
+			fd.friction = 0.05f;
 
 			for (int i = 0; i < 10; ++i)
 			{
