@@ -855,7 +855,7 @@ inline void ApplyLinearAcceleration(Body& body, const Vec2 amount)
 /// affect the angular velocity. Non-zero forces wakes up the body.
 /// @param force the world force vector, usually in Newtons (N).
 /// @param point the world position of the point of application.
-inline void ApplyForce(Body& body, const Vec2& force, const Vec2& point) noexcept
+inline void ApplyForce(Body& body, const Vec2 force, const Vec2 point) noexcept
 {
 	const auto linAccel = body.GetLinearAcceleration() + force * body.GetInverseMass();
 	const auto angAccel = body.GetAngularAcceleration() + 1_rad * Cross(point - body.GetWorldCenter(), force) * body.GetInverseInertia();
@@ -864,7 +864,7 @@ inline void ApplyForce(Body& body, const Vec2& force, const Vec2& point) noexcep
 
 /// Apply a force to the center of mass. Non-zero forces wakes up the body.
 /// @param force the world force vector, usually in Newtons (N).
-inline void ApplyForceToCenter(Body& body, const Vec2& force) noexcept
+inline void ApplyForceToCenter(Body& body, const Vec2 force) noexcept
 {
 	const auto linAccel = body.GetLinearAcceleration() + force * body.GetInverseMass();
 	const auto angAccel = body.GetAngularAcceleration();
@@ -875,7 +875,7 @@ inline void ApplyForceToCenter(Body& body, const Vec2& force) noexcept
 /// without affecting the linear velocity of the center of mass.
 /// Non-zero forces wakes up the body.
 /// @param torque about the z-axis (out of the screen), usually in N-m.
-inline void ApplyTorque(Body& body, float_t torque) noexcept
+inline void ApplyTorque(Body& body, const float_t torque) noexcept
 {
 	const auto linAccel = body.GetLinearAcceleration();
 	const auto angAccel = body.GetAngularAcceleration() + 1_rad * torque * body.GetInverseInertia();
@@ -887,7 +887,7 @@ inline void ApplyTorque(Body& body, float_t torque) noexcept
 /// is not at the center of mass. Non-zero impulses wakes up the body.
 /// @param impulse the world impulse vector, usually in N-seconds or kg-m/s.
 /// @param point the world position of the point of application.
-inline void ApplyLinearImpulse(Body& body, const Vec2& impulse, const Vec2& point) noexcept
+inline void ApplyLinearImpulse(Body& body, const Vec2 impulse, const Vec2 point) noexcept
 {
 	auto velocity = body.GetVelocity();
 	velocity.v += body.GetInverseMass() * impulse;
