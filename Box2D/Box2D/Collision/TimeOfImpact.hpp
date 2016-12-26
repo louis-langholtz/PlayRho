@@ -50,6 +50,12 @@ namespace box2d {
 		using root_iter_type = std::remove_const<decltype(MaxTOIRootIterCount)>::type;
 		using toi_iter_type = std::remove_const<decltype(MaxTOIIterations)>::type;
 
+		constexpr ToiConf& UseTimeMax(float_t value) noexcept;
+		constexpr ToiConf& UseTargetDepth(float_t value) noexcept;
+		constexpr ToiConf& UseTolerance(float_t value) noexcept;
+		constexpr ToiConf& UseMaxRootIters(root_iter_type value) noexcept;
+		constexpr ToiConf& UseMaxToiIters(toi_iter_type value) noexcept;
+
 		float_t tMax = 1;
 		
 		/// Targetted depth of impact.
@@ -58,6 +64,13 @@ namespace box2d {
 
 		float_t tolerance = LinearSlop / 4; ///< Tolerance.
 		
+		/// Maximum number of root finder iterations.
+		/// @detail This is the maximum number of iterations for calculating the 1D root of
+		///    <code>f(t) - (totalRadius - targetDepth) < tolerance</code>
+		/// where <code>f(t)</code> is the distance between the shapes at time <code>t</code>,
+		/// and <code>totalRadius</code> is the sum of the vertex radiuses of 2 distance proxies.
+		/// @note This value never needs to be more than the number of iterations needed to
+		/// achieve full machine precision. Any more than that are just wasted CPU cycles.
 		root_iter_type maxRootIters = MaxTOIRootIterCount;
 		
 		toi_iter_type maxToiIters = MaxTOIIterations; ///< Max time of impact iterations.
@@ -66,6 +79,36 @@ namespace box2d {
 	constexpr auto GetDefaultToiConf()
 	{
 		return ToiConf{};
+	}
+
+	constexpr ToiConf& ToiConf::UseTimeMax(float_t value) noexcept
+	{
+		tMax = value;
+		return *this;
+	}
+
+	constexpr ToiConf& ToiConf::UseTargetDepth(float_t value) noexcept
+	{
+		targetDepth = value;
+		return *this;
+	}
+
+	constexpr ToiConf& ToiConf::UseTolerance(float_t value) noexcept
+	{
+		tolerance = value;
+		return *this;
+	}
+
+	constexpr ToiConf& ToiConf::UseMaxRootIters(root_iter_type value) noexcept
+	{
+		maxRootIters = value;
+		return *this;
+	}
+	
+	constexpr ToiConf& ToiConf::UseMaxToiIters(toi_iter_type value) noexcept
+	{
+		maxToiIters = value;
+		return *this;
 	}
 
 	/// TimeOfImpact Output data.
