@@ -307,7 +307,6 @@ namespace box2d
 	}
 
 	/// Gets the "closest point".
-	/// @note This uses the vertices "a" values when count is 2.
 	constexpr inline Vec2 GetClosestPoint(const Simplex& simplex)
 	{
 		switch (simplex.GetSize())
