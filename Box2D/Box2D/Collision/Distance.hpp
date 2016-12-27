@@ -35,6 +35,7 @@ namespace box2d
 		Vec2 b;
 	};
 	
+	/// Gets the witness points of the given simplex.
 	WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept;
 	
 	/// Distance Output.

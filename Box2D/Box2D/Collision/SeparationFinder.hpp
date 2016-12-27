@@ -32,6 +32,8 @@ namespace box2d {
 	class SeparationFinder
 	{
 	public:
+		
+		/// Separation finder type.
 		enum Type
 		{
 			e_points,
@@ -39,10 +41,20 @@ namespace box2d {
 			e_faceB
 		};
 		
+		/// Separation finder data.
 		struct Data
 		{
-			IndexPair indexPair; ///< Pair of indices of vertices for which distance is being returned for.
-			float_t distance; ///< Distance of separation (in meters) between vertices indexed by the index-pair.
+			/// Index pair.
+			/// @detail Pair of indices of vertices for which distance is being returned for.
+			/// @note The <code>a</code> index in this pair will be <code>InvalidIndex</code> for
+			///   face-A type separarion finders.
+			/// @note The <code>b</code> index in this pair will be <code>InvalidIndex</code> for
+			///   face-B type separarion finders.
+			IndexPair indexPair;
+
+			/// Distance.
+			/// @detail Distance of separation (in meters) between vertices indexed by the index-pair.
+			float_t distance;
 		};
 		
 		/// Gets a separation finder for the given inputs.
@@ -72,7 +84,8 @@ namespace box2d {
 		
 		/// Evaluates the separation of the identified proxy vertices at the given time factor.
 		/// @param indexPair Indexes of the proxy A and proxy B vertexes.
-		/// @return Separation distance.
+		/// @return Separation distance which will be negative when the given transforms put the
+		///    vertices on the opposite sides of the separating axis.
 		float_t Evaluate(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
 		{
 			switch (m_type)
@@ -87,6 +100,8 @@ namespace box2d {
 		}
 		
 		constexpr Type GetType() const noexcept;
+		constexpr UnitVec2 GetAxis() const noexcept;
+		constexpr Vec2 GetLocalPoint() const noexcept;
 
 	private:
 		SeparationFinder(const DistanceProxy& dpA, const DistanceProxy& dpB,
@@ -120,6 +135,16 @@ namespace box2d {
 		return m_type;
 	}
 	
+	constexpr UnitVec2 SeparationFinder::GetAxis() const noexcept
+	{
+		return m_axis;
+	}
+	
+	constexpr Vec2 SeparationFinder::GetLocalPoint() const noexcept
+	{
+		return m_localPoint;
+	}
+
 }
 
 #endif /* SeparationFinder_hpp */

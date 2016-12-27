@@ -18,10 +18,76 @@
 
 #include "gtest/gtest.h"
 #include <Box2D/Collision/SeparationFinder.hpp>
+#include <Box2D/Collision/Simplex.hpp>
+#include <Box2D/Collision/TimeOfImpact.hpp>
+#include <Box2D/Collision/DistanceProxy.hpp>
+#include <Box2D/Collision/Distance.hpp>
+#include <Box2D/Collision/Shapes/PolygonShape.hpp>
 
 using namespace box2d;
 
 TEST(SeparationFinder, ByteSizeIs40)
 {
 	EXPECT_EQ(sizeof(SeparationFinder), size_t(40));
+}
+
+TEST(SeparationFinder, BehavesAsExpected)
+{
+	const auto shape = PolygonShape{0.5f, 0.5f};
+	const auto distproxy = GetDistanceProxy(shape, 0);
+
+	const auto x = float_t(100);
+	const auto sweepA = Sweep{Position{Vec2{-x, 0}, 0_deg}, Position{Vec2{+x, 0}, 0_deg}};
+	const auto sweepB = Sweep{Position{Vec2{+x, 0}, 0_deg}, Position{Vec2{-x, 0}, 0_deg}};
+	
+	auto t = float_t{0}; // Will be set to value of t2
+	auto last_s = MaxFloat;
+	auto last_distance = MaxFloat;
+	auto xfA = GetTransformation(sweepA, t);
+	auto xfB = GetTransformation(sweepB, t);
+	Simplex::Cache cache;
+	auto distanceInfo = Distance(distproxy, xfA, distproxy, xfB, cache);
+	cache = Simplex::GetCache(distanceInfo.simplex.GetEdges());
+	const auto fcn = SeparationFinder::Get(cache.GetIndices(), distproxy, xfA, distproxy, xfB);
+	EXPECT_EQ(fcn.GetType(), SeparationFinder::e_faceA);
+	EXPECT_EQ(Vec2(fcn.GetAxis()), Vec2(1, 0));
+	EXPECT_EQ(fcn.GetLocalPoint(), Vec2(0.5, 0));
+
+	for (auto i = 0u; i < 1000; ++i)
+	{
+		// Prepare input for distance query.
+		const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
+		const auto distance = Sqrt(GetLengthSquared(witnessPoints.a - witnessPoints.b));
+
+		const auto minSeparation = fcn.FindMinSeparation(xfA, xfB);
+
+		EXPECT_EQ(minSeparation.indexPair, (IndexPair{IndexPair::InvalidIndex, 2}));
+		EXPECT_LT(minSeparation.distance, last_s);
+		if (minSeparation.distance > 0)
+		{
+			EXPECT_LT(distance, last_distance);
+			EXPECT_EQ(minSeparation.distance, distance);
+		}
+		else if (minSeparation.distance < 0)
+		{
+			if (distance != 0)
+			{
+				EXPECT_GT(distance, last_distance);
+			}
+		}
+		
+		const auto s = fcn.Evaluate(minSeparation.indexPair, xfA, xfB);
+		EXPECT_EQ(s, minSeparation.distance);
+		EXPECT_LE(s, distance);
+		EXPECT_LT(s, last_s);
+		
+		//t = std::nextafter(t, 1.0f);
+		t += float_t(.001);
+		last_distance = distance;
+		last_s = s;
+		xfA = GetTransformation(sweepA, t);
+		xfB = GetTransformation(sweepB, t);
+		distanceInfo = Distance(distproxy, xfA, distproxy, xfB, cache);
+		cache = Simplex::GetCache(distanceInfo.simplex.GetEdges());
+	}
 }

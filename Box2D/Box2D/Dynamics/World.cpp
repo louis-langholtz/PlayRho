@@ -993,7 +993,7 @@ void World::SolveTOI(const TimeStep& step)
 
 		if ((!minContactToi.contact) || (minContactToi.toi >= 1))
 		{
-			// No more TOI events. Done!
+			// No more TOI events to handle within the current time step. Done!
 			SetStepComplete(true);
 			break;
 		}
