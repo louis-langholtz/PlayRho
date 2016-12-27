@@ -34,7 +34,7 @@ public:
 		e_rowCount = 0
 	};
 
-	Confined(): Test{World::Def{}.UseLinearSlop(0)}
+	Confined()
 	{
 		m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
 
