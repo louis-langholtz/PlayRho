@@ -508,7 +508,7 @@ void Test::LaunchBomb(const Vec2& position, const Vec2& linearVelocity)
 	m_bomb = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(position).UseBullet(true));
 	m_bomb->SetVelocity(Velocity{linearVelocity, 0_rad});
 	
-	CircleShape circle(0.3f);
+	const auto circle = CircleShape(0.3f);
 
 	FixtureDef fd;
 	fd.shape = &circle;

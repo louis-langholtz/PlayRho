@@ -287,13 +287,13 @@ static void sMouseButton(GLFWwindow*, int32 button, int32 action, int32 mods)
 {
 	double xd, yd;
 	glfwGetCursorPos(mainWindow, &xd, &yd);
-	Vec2 ps((float_t)xd, (float_t)yd);
+	const auto ps = Vec2((float_t)xd, (float_t)yd);
 
 	// Use the mouse to move things around.
 	if (button == GLFW_MOUSE_BUTTON_1)
 	{
         //ps = Vec2(0, 0);
-		Vec2 pw = ConvertScreenToWorld(g_camera, ps);
+		const auto pw = ConvertScreenToWorld(g_camera, ps);
 		if (action == GLFW_PRESS)
 		{
 			if (mods == GLFW_MOD_SHIFT)
