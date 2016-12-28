@@ -21,12 +21,13 @@
 #define B2_TIME_STEP_H
 
 #include <Box2D/Common/Settings.hpp>
+#include <Box2D/Common/Angle.hpp>
 
 namespace box2d {
 
 /// Time step.
 /// @detail Step configuration data.
-/// @note This data structure is 36-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 48-bytes large (on at least one 64-bit platform).
 class TimeStep
 {
 public:
@@ -75,12 +76,33 @@ public:
 	/// velocity below this threshold will be treated as inelastic.
 	float_t velocityThreshold = float_t{8} / 10; // float_t{1};
 
+	/// Maximum linear velocity of a body.
+	/// This limit is very large and is used to prevent numerical problems.
+	/// You shouldn't need to adjust this.
+	float_t maxTranslation = 4; // originally 2
+	
+	/// Maximum angular velocity of a body.
+	/// This limit is very large and is used to prevent numerical problems.
+	/// You shouldn't need to adjust this.
+	Angle maxRotation = 1_rad * Pi / 2;
+
 	iteration_type regVelocityIterations = 8; ///< Velocity iterations.
 	iteration_type regPositionIterations = 3; ///< Position iterations.
 	iteration_type toiVelocityIterations = 8; ///< Velocity iterations.
+
+	/// Maximum TOI stage position iterations.
 	iteration_type toiPositionIterations = 20; ///< Position iterations.
+	
 	iteration_type maxTOIRootIterCount = MaxTOIRootIterCount;
+	
 	iteration_type maxTOIIterations = MaxTOIIterations;
+	
+	/// Maximum sub steps.
+	/// @detail
+	/// This is the maximum number of sub-steps per contact in continuous physics simulation.
+	/// In other words, this is the maximum number of times in a world step that a contact will
+	/// have continuous collision resolution done for it.
+	iteration_type maxSubSteps = 48;
 	
 	bool doWarmStart = true; ///< Whether or not to perform warm starting (in the regular phase).
 	bool doToi = true; ///< Whether or not to perform continuous collision detection.

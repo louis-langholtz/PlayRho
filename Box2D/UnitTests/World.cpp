@@ -18,6 +18,7 @@
 
 #include "gtest/gtest.h"
 #include <Box2D/Dynamics/World.hpp>
+#include <Box2D/Dynamics/TimeStep.hpp>
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/Contacts/Contact.hpp>
@@ -35,9 +36,19 @@
 
 using namespace box2d;
 
-TEST(World, ByteSizeIs432)
+TEST(World, ByteSizeIs424)
 {
-	EXPECT_EQ(sizeof(World), size_t(432));
+	EXPECT_EQ(sizeof(World), size_t(424));
+}
+
+TEST(World, Def)
+{
+	const auto defaultDef = World::GetDefaultDef();
+	const auto stepConf = TimeStep{};
+
+	// make sure max values are still substantially different when incremented by their respective slop values
+	EXPECT_FALSE(almost_equal(stepConf.maxTranslation * 2 + defaultDef.linearSlop / 64, stepConf.maxTranslation * 2));
+	EXPECT_FALSE(almost_equal(stepConf.maxRotation.ToRadians() + defaultDef.angularSlop / 64, stepConf.maxRotation.ToRadians()));
 }
 
 TEST(World, DefaultInit)
@@ -1181,7 +1192,9 @@ TEST(World, SpeedingBulletBallWontTunnel)
 	ball_body->SetVelocity(Velocity{velocity, 0_deg});
 
 	const auto time_inc = float_t(.01);
-	const auto max_velocity = world.GetMaxTranslation() / time_inc;
+	auto stepConf = TimeStep{};
+	stepConf.set_dt(time_inc);
+	const auto max_velocity = stepConf.maxTranslation / time_inc;
 	world.Step(time_inc);
 
 	ASSERT_EQ(listener.begin_contacts, unsigned{0});

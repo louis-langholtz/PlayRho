@@ -48,7 +48,7 @@ constexpr auto EarthlyGravity = Vec2{0, float_t(-9.8)};
 /// The world class manages all physics entities, dynamic simulation,
 /// and asynchronous queries. The world also contains efficient memory
 /// management facilities.
-/// @note This data structure is 432-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 424-bytes large (on at least one 64-bit platform).
 class World
 {
 public:
@@ -71,27 +71,7 @@ public:
 		/// @detail This value should be greater than the linear slop value.
 		float_t maxLinearCorrection = linearSlop * 40; // 40 * linearSlop. aka 0.004
 		
-		float_t maxAngularCorrection = angularSlop * 4;
-		
-		/// Maximum linear velocity of a body.
-		/// This limit is very large and is used to prevent numerical problems.
-		/// You shouldn't need to adjust this.
-		float_t maxTranslation = 4; // originally 2
-		
-		/// Maximum angular velocity of a body.
-		/// This limit is very large and is used to prevent numerical problems.
-		/// You shouldn't need to adjust this.
-		Angle maxRotation = 1_rad * Pi / 2;
-		
-		/// Maximum sub steps.
-		/// @detail
-		/// This is the maximum number of sub-steps per contact in continuous physics simulation.
-		/// In other words, this is the maximum number of times in a world step that a contact will
-		/// have continuous collision resolution done for it.
-		ts_iters_type maxSubSteps = 48;
-		
-		/// Maximum substep position iterations.
-		ts_iters_type maxSubStepPositionIters = 20;
+		float_t maxAngularCorrection = angularSlop * 4;				
 	};
 	
 	static constexpr struct Def GetDefaultDef()
@@ -304,8 +284,6 @@ public:
 	float_t GetMaxLinearCorrection() const noexcept;
 
 	float_t GetMaxAngularCorrection() const noexcept;
-
-	float_t GetMaxTranslation() const noexcept;
 	
 private:
 
@@ -491,20 +469,8 @@ private:
 	const float_t m_angularSlop;
 	const float_t m_maxLinearCorrection;
 	const float_t m_maxAngularCorrection;
-	const float_t m_maxTranslation;
 	
-	const Angle m_maxRotation;
-
-	Profile m_profile;
-	
-	/// Maximum sub steps.
-	/// @detail
-	/// This is the maximum number of sub-steps per contact in continuous physics simulation.
-	/// In other words, this is the maximum number of times in a world step that a contact will
-	/// have continuous collision resolution done for it.
-	ts_iters_type m_maxSubSteps;
-
-	ts_iters_type m_maxSubStepPositionIters;
+	Profile m_profile;	
 };
 
 constexpr inline World::Def& World::Def::UseGravity(Vec2 value) noexcept
@@ -723,11 +689,6 @@ inline float_t World::GetMaxLinearCorrection() const noexcept
 inline float_t World::GetMaxAngularCorrection() const noexcept
 {
 	return m_maxAngularCorrection;
-}
-
-inline float_t World::GetMaxTranslation() const noexcept
-{
-	return m_maxTranslation;
 }
 
 /// Gets the minimum vertex radius for the given world.

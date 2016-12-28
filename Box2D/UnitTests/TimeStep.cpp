@@ -21,7 +21,7 @@
 
 using namespace box2d;
 
-TEST(TimeStep, ByteSizeIs36)
+TEST(TimeStep, ByteSizeIs48)
 {
-	EXPECT_EQ(sizeof(TimeStep), size_t(36));
+	EXPECT_EQ(sizeof(TimeStep), size_t(48));
 }

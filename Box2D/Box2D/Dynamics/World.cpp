@@ -352,11 +352,7 @@ World::World(const Def& def):
 	m_linearSlop(def.linearSlop),
 	m_angularSlop(def.angularSlop),
 	m_maxLinearCorrection(def.maxLinearCorrection),
-	m_maxAngularCorrection(def.maxAngularCorrection),
-	m_maxTranslation(def.maxTranslation),
-	m_maxRotation(def.maxRotation),
-	m_maxSubSteps(def.maxSubSteps),
-	m_maxSubStepPositionIters(def.maxSubStepPositionIters)
+	m_maxAngularCorrection(def.maxAngularCorrection)
 {
 	memset(&m_profile, 0, sizeof(Profile));
 }
@@ -855,7 +851,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 	}
 	
 	// updates array of tentative new body positions per the velocities as if there were no obstacles...
-	IntegratePositions(positions, velocities, h, MovementConf{m_maxTranslation, m_maxRotation});
+	IntegratePositions(positions, velocities, h, MovementConf{step.maxTranslation, step.maxRotation});
 	
 	// Solve position constraints
 	auto iterationSolved = TimeStep::InvalidIteration;
@@ -935,7 +931,7 @@ World::ContactToiData World::UpdateContactTOIs(const TimeStep& step)
 	auto count = contact_count_t{0};
 	for (auto&& c: m_contactMgr.GetContacts())
 	{
-		if (c.IsEnabled() && (c.GetToiCount() < m_maxSubSteps) &&
+		if (c.IsEnabled() && (c.GetToiCount() < step.maxSubSteps) &&
 			(c.HasValidToi() || c.UpdateTOI(toiConf)))
 		{
 			const auto toi = c.GetToi();
@@ -1030,7 +1026,7 @@ void World::SolveTOI(const TimeStep& step, Contact& contact)
 	contact.UnsetToi();
 
 	++contact.m_toiCount;
-	if (contact.m_toiCount >= m_maxSubSteps)
+	if (contact.m_toiCount >= step.maxSubSteps)
 	{
 		// Note: This contact won't be passed again to this method within the current world step
 		// (as the UpdateContactTOIs method won't return it anymore).
@@ -1183,7 +1179,7 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	
 	// Don't store TOI contact forces for warm starting because they can be quite large.
 	
-	IntegratePositions(positions, velocities, step.get_dt(), MovementConf{m_maxTranslation, m_maxRotation});
+	IntegratePositions(positions, velocities, step.get_dt(), MovementConf{step.maxTranslation, step.maxRotation});
 	
 	UpdateBodies(island.m_bodies, positions, velocities);
 
@@ -1258,7 +1254,10 @@ void World::Step(float_t dt, ts_iters_type velocityIterations, ts_iters_type pos
 	step.regVelocityIterations = velocityIterations;
 	step.regPositionIterations = positionIterations;
 	step.toiVelocityIterations = velocityIterations;
-	step.toiPositionIterations = positionIterations? m_maxSubStepPositionIters: 0;
+	if (positionIterations == 0)
+	{
+		step.toiPositionIterations = 0;
+	}
 	step.dtRatio = dt * m_inv_dt0;
 	step.doWarmStart = GetWarmStarting();
 	step.doToi = GetContinuousPhysics();
