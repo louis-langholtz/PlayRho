@@ -40,7 +40,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 	ASSERT_EQ(manifold.GetPointCount(), 2);
 
 	const auto indexA = PositionConstraint::BodyData::index_type{0};
-	const auto indexB = PositionConstraint::BodyData::index_type{0};
+	const auto indexB = PositionConstraint::BodyData::index_type{1};
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
 	const auto bA = PositionConstraint::BodyData{indexA, float_t(1), float_t(1), lcA};
@@ -75,7 +75,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
 	ASSERT_EQ(manifold.GetPointCount(), 2);
 	
 	const auto indexA = PositionConstraint::BodyData::index_type{0};
-	const auto indexB = PositionConstraint::BodyData::index_type{0};
+	const auto indexB = PositionConstraint::BodyData::index_type{1};
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
 	const auto bA = PositionConstraint::BodyData{indexA, float_t(1), float_t(1), lcA};
@@ -107,7 +107,7 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
 	ASSERT_EQ(manifold.GetPointCount(), 2);
 	
 	const auto indexA = PositionConstraint::BodyData::index_type{0};
-	const auto indexB = PositionConstraint::BodyData::index_type{0};
+	const auto indexB = PositionConstraint::BodyData::index_type{1};
 	const auto lcA = Vec2{};
 	const auto lcB = Vec2{};
 	const auto bA = PositionConstraint::BodyData{indexA, float_t(1), float_t(1), lcA};
@@ -153,7 +153,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
 	ASSERT_EQ(manifold.GetPoint(1).localPoint, Vec2(-2, -2));
 	
 	const auto indexA = PositionConstraint::BodyData::index_type{0};
-	const auto indexB = PositionConstraint::BodyData::index_type{0};
+	const auto indexB = PositionConstraint::BodyData::index_type{1};
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
 	const auto bA = PositionConstraint::BodyData{indexA, float_t(1), float_t(1), lcA};
@@ -198,7 +198,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
 	ASSERT_EQ(manifold.GetPoint(1).localPoint, Vec2(+2, +2));
 	
 	const auto indexA = PositionConstraint::BodyData::index_type{0};
-	const auto indexB = PositionConstraint::BodyData::index_type{0};
+	const auto indexB = PositionConstraint::BodyData::index_type{1};
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
 	const auto bA = PositionConstraint::BodyData{indexA, float_t(1), float_t(1), lcA};
@@ -243,7 +243,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
 	ASSERT_EQ(manifold.GetPoint(1).localPoint, Vec2(+2, -2));
 	
 	const auto indexA = PositionConstraint::BodyData::index_type{0};
-	const auto indexB = PositionConstraint::BodyData::index_type{0};
+	const auto indexB = PositionConstraint::BodyData::index_type{1};
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
 	const auto bA = PositionConstraint::BodyData{indexA, float_t(1), float_t(1), lcA};
@@ -301,7 +301,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
 	ASSERT_EQ(manifold.GetPoint(1).localPoint, Vec2(-2, +2));
 	
 	const auto indexA = PositionConstraint::BodyData::index_type{0};
-	const auto indexB = PositionConstraint::BodyData::index_type{0};
+	const auto indexB = PositionConstraint::BodyData::index_type{1};
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
 	const auto bA = PositionConstraint::BodyData{indexA, float_t(1), float_t(1), lcA};
@@ -348,7 +348,7 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
 	ASSERT_EQ(manifold.GetPointCount(), 2);
 
 	const auto indexA = PositionConstraint::BodyData::index_type{0};
-	const auto indexB = PositionConstraint::BodyData::index_type{0};
+	const auto indexB = PositionConstraint::BodyData::index_type{1};
 	const auto lcA = Vec2{};
 	const auto lcB = Vec2{};
 	const auto bA = PositionConstraint::BodyData{indexA, float_t(1), float_t(1), lcA};

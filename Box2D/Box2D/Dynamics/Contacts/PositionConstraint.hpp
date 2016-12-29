@@ -38,7 +38,7 @@ namespace box2d {
 			BodyData() noexcept = default;
 			
 			constexpr BodyData(index_type i, float_t iM, float_t iI, Vec2 lc) noexcept:
-			index{i}, invMass{iM}, invI{iI}, localCenter{lc}
+				index{i}, invMass{iM}, invI{iI}, localCenter{lc}
 			{
 				assert(iM >= 0);
 				assert(iI >= 0);
@@ -56,6 +56,7 @@ namespace box2d {
 			manifold{m}, bodyA{bA}, radiusA{rA}, bodyB{bB}, radiusB{rB}
 		{
 			assert(m.GetPointCount() > 0);
+			assert(bA.index != bB.index);
 			assert(rA >= 0);
 			assert(rB >= 0);
 		}
