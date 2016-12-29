@@ -71,7 +71,7 @@ TEST(CircleShape, ComputeAABB)
 	const auto radius = float_t(2.4);
 	const auto position = Vec2{2, 1};
 	CircleShape foo{radius, position};
-	const auto aabb = ComputeAABB(foo, Transform_identity, 0);
+	const auto aabb = ComputeAABB(foo, Transform_identity);
 	EXPECT_EQ(aabb.GetLowerBound().x, position.x - radius);
 	EXPECT_EQ(aabb.GetLowerBound().y, position.y - radius);
 	EXPECT_EQ(aabb.GetUpperBound().x, position.x + radius);

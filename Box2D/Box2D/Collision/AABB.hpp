@@ -29,16 +29,26 @@ namespace box2d
 	class PolygonShape;
 	class ChainShape;
 	class CircleShape;
+	class Fixture;
+	class Body;
 	
 	/// An axis aligned bounding box.
 	/// @note This data structure is 16-bytes large (on at least one 64-bit platform).
 	class AABB
 	{
 	public:
+		
+		/// Default constructor.
+		/// @detail Constructs an empty AABB. If an empty AABB is added to another AABB, the
+		///   result will always be the other AABB.
 		AABB() = default;
 		
 		constexpr AABB(Vec2 a, Vec2 b) noexcept:
-			lowerBound{Vec2{Min(a.x, b.x), Min(a.y, b.y)}}, upperBound{Vec2{Max(a.x, b.x), Max(a.y, b.y)}} {}
+			lowerBound{Vec2{Min(a.x, b.x), Min(a.y, b.y)}},
+			upperBound{Vec2{Max(a.x, b.x), Max(a.y, b.y)}}
+		{
+			// Intentionally empty.
+		}
 		
 		/// Get the center of the AABB.
 		constexpr Vec2 GetCenter() const noexcept
@@ -73,8 +83,8 @@ namespace box2d
 		constexpr bool Contains(const AABB& aabb) const noexcept
 		{
 			return
-			(lowerBound.x <= aabb.lowerBound.x) && (lowerBound.y <= aabb.lowerBound.y) &&
-			(aabb.upperBound.x <= upperBound.x) && (aabb.upperBound.y <= upperBound.y);
+				(lowerBound.x <= aabb.lowerBound.x) && (lowerBound.y <= aabb.lowerBound.y) &&
+				(aabb.upperBound.x <= upperBound.x) && (aabb.upperBound.y <= upperBound.y);
 		}
 				
 		Vec2 GetLowerBound() const noexcept { return lowerBound; }
@@ -88,8 +98,8 @@ namespace box2d
 		}
 		
 	private:
-		Vec2 lowerBound;	///< the lower vertex
-		Vec2 upperBound;	///< the upper vertex
+		Vec2 lowerBound = Vec2{MaxFloat, MaxFloat}; ///< the lower vertex
+		Vec2 upperBound = Vec2{-MaxFloat, -MaxFloat}; ///< the upper vertex
 	};
 	
 	template <>
@@ -118,14 +128,8 @@ namespace box2d
 		const auto d1 = b.GetLowerBound() - a.GetUpperBound();
 		const auto d2 = a.GetLowerBound() - b.GetUpperBound();
 
-		return (d1.x <= float_t{0}) && (d1.y <= float_t{0}) && (d2.x <= float_t{0}) && (d2.y <= float_t{0});
+		return (d1.x <= 0) && (d1.y <= 0) && (d2.x <= 0) && (d2.y <= 0);
 	}
-	
-	/// Given a transform, compute the associated axis aligned bounding box for a child shape.
-	/// @param xf the world transform of the shape.
-	/// @param childIndex the child shape
-	/// @return the axis aligned box.
-	AABB ComputeAABB(const Shape& shape, const Transformation& xf, child_count_t childIndex);
 	
 	/// Given a transform, compute the associated axis aligned bounding box for a child shape.
 	/// @param xf the world transform of the shape.
@@ -151,6 +155,18 @@ namespace box2d
 	/// @return the axis aligned box.
 	AABB ComputeAABB(const CircleShape& shape, const Transformation& xf, child_count_t childIndex);
 	
+	/// Given a transform, compute the associated axis aligned bounding box for a child shape.
+	/// @param xf the world transform of the shape.
+	/// @param childIndex the child shape
+	/// @return the axis aligned box.
+	AABB ComputeAABB(const Shape& shape, const Transformation& xf, child_count_t childIndex);
+
+	AABB ComputeAABB(const Shape& shape, const Transformation& xf);
+
+	AABB ComputeAABB(const Fixture& fixture, const Transformation& xf);
+
+	AABB ComputeAABB(const Body& body);
+
 } // namespace box2d
 
 #endif /* AABB_hpp */

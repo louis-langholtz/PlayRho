@@ -26,6 +26,56 @@ TEST(AABB, ByteSizeIs16)
 	EXPECT_EQ(sizeof(AABB), size_t(16));
 }
 
+TEST(AABB, DefaultConstruction)
+{
+	const auto lb = Vec2{MaxFloat, MaxFloat};
+	const auto ub = Vec2{-MaxFloat, -MaxFloat};
+	const auto aabb = AABB{};
+	EXPECT_EQ(aabb.GetLowerBound(), lb);
+	EXPECT_EQ(aabb.GetUpperBound(), ub);
+}
+
+TEST(AABB, DefaultAabbAddsToOther)
+{
+	const auto default_aabb = AABB{};
+	{
+		const auto other_aabb = AABB{Vec2_zero, Vec2_zero};
+		const auto sum_aabb = default_aabb + other_aabb;
+		EXPECT_EQ(sum_aabb.GetLowerBound(), other_aabb.GetLowerBound());
+		EXPECT_EQ(sum_aabb.GetUpperBound(), other_aabb.GetUpperBound());
+	}
+	{
+		const auto other_aabb = AABB{Vec2_zero, Vec2_zero};
+		const auto sum_aabb = other_aabb + default_aabb;
+		EXPECT_EQ(sum_aabb.GetLowerBound(), other_aabb.GetLowerBound());
+		EXPECT_EQ(sum_aabb.GetUpperBound(), other_aabb.GetUpperBound());
+	}
+	{
+		const auto other_aabb = AABB{Vec2{-1, -2}, Vec2{+99, +3}};
+		const auto sum_aabb = other_aabb + default_aabb;
+		EXPECT_EQ(sum_aabb.GetLowerBound(), other_aabb.GetLowerBound());
+		EXPECT_EQ(sum_aabb.GetUpperBound(), other_aabb.GetUpperBound());
+	}
+}
+
+TEST(AABB, DefaultAabbIncrementsToOther)
+{
+	{
+		auto default_aabb = AABB{};
+		const auto other_aabb = AABB{Vec2_zero, Vec2_zero};
+		default_aabb += other_aabb;
+		EXPECT_EQ(default_aabb.GetLowerBound(), other_aabb.GetLowerBound());
+		EXPECT_EQ(default_aabb.GetUpperBound(), other_aabb.GetUpperBound());
+	}
+	{
+		auto default_aabb = AABB{};
+		const auto other_aabb = AABB{Vec2{-1, -2}, Vec2{+99, +3}};
+		default_aabb += other_aabb;
+		EXPECT_EQ(default_aabb.GetLowerBound(), other_aabb.GetLowerBound());
+		EXPECT_EQ(default_aabb.GetUpperBound(), other_aabb.GetUpperBound());
+	}
+}
+
 TEST(AABB, InitializingConstruction)
 {
 	const auto lower_x = float_t(-2);

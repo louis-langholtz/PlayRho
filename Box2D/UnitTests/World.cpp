@@ -1300,7 +1300,9 @@ TEST(World, MouseJointWontCauseTunnelling)
 	const auto half_box_height = float_t(0.2);
 	const auto btm_edge_y = -half_box_height;
 	const auto top_edge_y = +half_box_height;
-	
+
+	AABB container_aabb;
+
 	BodyDef body_def;
 	EdgeShape edge_shape;
 	FixtureDef fixtureDef;
@@ -1321,6 +1323,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 			const auto wall_fixture = left_wall_body->CreateFixture(fixtureDef);
 			ASSERT_NE(wall_fixture, nullptr);
 		}
+		container_aabb += ComputeAABB(*left_wall_body);
 	}
 	
 	body_def.position = Vec2{right_edge_x, 0};
@@ -1331,6 +1334,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 			const auto wall_fixture = right_wall_body->CreateFixture(fixtureDef);
 			ASSERT_NE(wall_fixture, nullptr);
 		}
+		container_aabb += ComputeAABB(*right_wall_body);
 	}
 
 	// Setup horizontal bounderies
@@ -1344,6 +1348,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 			const auto wall_fixture = btm_wall_body->CreateFixture(fixtureDef);
 			ASSERT_NE(wall_fixture, nullptr);
 		}
+		container_aabb += ComputeAABB(*btm_wall_body);
 	}
 	
 	body_def.position = Vec2{0, top_edge_y};
@@ -1354,6 +1359,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 			const auto wall_fixture = top_wall_body->CreateFixture(fixtureDef);
 			ASSERT_NE(wall_fixture, nullptr);
 		}
+		container_aabb += ComputeAABB(*top_wall_body);
 	}
 
 	body_def.type = BodyType::Dynamic;
@@ -1478,22 +1484,24 @@ TEST(World, MouseJointWontCauseTunnelling)
 				const auto lt = Vec2{right_edge_x, top_edge_y} - bpos;
 				const auto gt = bpos - Vec2{left_edge_x, btm_edge_y};
 				
-				EXPECT_LT(body->GetLocation().x, right_edge_x);
-				EXPECT_LT(body->GetLocation().y, top_edge_y);
-
-				EXPECT_GT(body->GetLocation().x, left_edge_x);
-				EXPECT_GT(body->GetLocation().y, btm_edge_y);
-				
 				if (lt.x <= 0 || lt.y <= 0 || gt.x <= 0 || gt.y <= 0)
 				{
-					++fail_count;
+					if (!TestOverlap(container_aabb, ComputeAABB(*body)))
+					{
+						// Body out of bounds and no longer even overlapping container!
+						EXPECT_LT(body->GetLocation().x, right_edge_x);
+						EXPECT_LT(body->GetLocation().y, top_edge_y);
+						EXPECT_GT(body->GetLocation().x, left_edge_x);
+						EXPECT_GT(body->GetLocation().y, btm_edge_y);
+						++fail_count;
+					}
 				}
 			}
 			if (fail_count > 0)
 			{
 				std::cout << " angl=" << angle;
-				std::cout << " ctoi=" << contact.GetToiCount();
-				std::cout << " solv=" << solved;
+				std::cout << " ctoi=" << 0 + contact.GetToiCount();
+				std::cout << " solv=" << 0 + solved;
 				std::cout << " targ=(" << distance * std::cos(angle) << "," << distance * std::sin(angle) << ")";
 				std::cout << " maxv=" << max_velocity;
 				std::cout << " rang=(" << min_x << "," << min_y << ")-(" << max_x << "," << max_y << ")";

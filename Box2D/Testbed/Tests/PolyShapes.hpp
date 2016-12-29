@@ -263,7 +263,7 @@ public:
 		callback.m_transform = Transform_identity;
 		callback.g_debugDraw = &drawer;
 
-		const auto aabb = ComputeAABB(callback.m_circle, callback.m_transform, 0);
+		const auto aabb = ComputeAABB(callback.m_circle, callback.m_transform);
 
 		m_world->QueryAABB(&callback, aabb);
 
