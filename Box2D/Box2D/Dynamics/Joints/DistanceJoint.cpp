@@ -105,9 +105,9 @@ void DistanceJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	auto invMass = m_invMassA + m_invIA * Square(crAu) + m_invMassB + m_invIB * Square(crBu);
 
 	// Compute the effective mass matrix.
-	m_mass = (invMass != float_t{0}) ? float_t{1} / invMass : float_t{0};
+	m_mass = (invMass != 0) ? float_t{1} / invMass : float_t{0};
 
-	if (m_frequencyHz > float_t{0})
+	if (m_frequencyHz > 0)
 	{
 		const auto C = length - m_length;
 
@@ -123,11 +123,11 @@ void DistanceJoint::InitVelocityConstraints(Span<Velocity> velocities,
 		// magic formulas
 		const auto h = step.get_dt();
 		m_gamma = h * (d + h * k);
-		m_gamma = (m_gamma != float_t{0}) ? float_t{1} / m_gamma : float_t{0};
+		m_gamma = (m_gamma != 0) ? float_t{1} / m_gamma : float_t{0};
 		m_bias = C * h * k * m_gamma;
 
 		invMass += m_gamma;
-		m_mass = (invMass != float_t{0}) ? float_t{1} / invMass : float_t{0};
+		m_mass = (invMass != 0) ? float_t{1} / invMass : float_t{0};
 	}
 	else
 	{
@@ -242,7 +242,7 @@ Vec2 DistanceJoint::GetReactionForce(float_t inv_dt) const
 float_t DistanceJoint::GetReactionTorque(float_t inv_dt) const
 {
 	BOX2D_NOT_USED(inv_dt);
-	return float_t{0};
+	return 0;
 }
 
 void box2d::Dump(const DistanceJoint& joint, size_t index)

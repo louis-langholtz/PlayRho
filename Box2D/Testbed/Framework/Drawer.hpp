@@ -31,7 +31,7 @@ struct Color
 {
 	Color() = default;
 	
-	constexpr Color(float ri, float gi, float bi, float ai = float_t{1}):
+	constexpr Color(float ri, float gi, float bi, float ai = 1):
 		r(ri), g(gi), b(bi), a(ai)
 	{
 		// Intentionally empty.

@@ -38,7 +38,7 @@ struct DistanceJointDef : public JointDef
 	/// Initialize the bodies, anchors, and length using the world anchors.
 	DistanceJointDef(Body* bodyA, Body* bodyB,
 					 const Vec2& anchorA = Vec2_zero, const Vec2& anchorB = Vec2_zero,
-					 float_t freq = float_t{0}, float_t damp = float_t{0}) noexcept;
+					 float_t freq = 0, float_t damp = 0) noexcept;
 
 	/// The local anchor point relative to bodyA's origin.
 	Vec2 localAnchorA = Vec2_zero;
@@ -47,14 +47,14 @@ struct DistanceJointDef : public JointDef
 	Vec2 localAnchorB = Vec2_zero;
 
 	/// The natural length between the anchor points.
-	float_t length = float_t{1};
+	float_t length = 1;
 
 	/// The mass-spring-damper frequency in Hertz. A value of 0
 	/// disables softness.
-	float_t frequencyHz = float_t{0};
+	float_t frequencyHz = 0;
 
 	/// The damping ratio. 0 = no damping, 1 = critical damping.
-	float_t dampingRatio = float_t{0};
+	float_t dampingRatio = 0;
 };
 
 /// A distance joint constrains two points on two bodies
@@ -103,13 +103,13 @@ private:
 
 	float_t m_frequencyHz;
 	float_t m_dampingRatio;
-	float_t m_bias = float_t{0};
+	float_t m_bias = 0;
 
 	// Solver shared
 	Vec2 m_localAnchorA;
 	Vec2 m_localAnchorB;
-	float_t m_gamma = float_t{0};
-	float_t m_impulse = float_t{0};
+	float_t m_gamma = 0;
+	float_t m_impulse = 0;
 	float_t m_length;
 
 	// Solver temp
