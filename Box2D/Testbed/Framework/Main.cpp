@@ -428,7 +428,9 @@ static void sInterface()
 		imguiSlider("TOI Vel Iters", &settings.toiVelocityIterations, 0, 50, 1, true);
 		imguiSlider("TOI Pos Iters", &settings.toiPositionIterations, 0, 50, 1, true);
 		imguiSlider("Hertz", &settings.hz, 5.0f, 120.0f, 5.0f, true);
-
+		imguiSlider("Max Translation", &settings.maxTranslation, 0.0f, 8.0f, 0.05f, true);
+		imguiSlider("Max Rotation", &settings.maxRotation, 0.0f, 360.0f, 1.0f, true);
+		
 		if (imguiCheck("Sleep", settings.enableSleep, true))
 			settings.enableSleep = !settings.enableSleep;
 		if (imguiCheck("Warm Starting", settings.enableWarmStarting, true))
@@ -512,7 +514,7 @@ int main(int argc, char** argv)
 #endif
 
     g_camera.m_width = 1024;
-    g_camera.m_height = 720;
+    g_camera.m_height = 760;
     
 	if (glfwInit() == 0)
 	{

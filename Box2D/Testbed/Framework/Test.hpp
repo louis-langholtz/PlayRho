@@ -30,12 +30,14 @@ namespace box2d {
 /// Test settings. Some can be controlled in the GUI.
 struct Settings
 {
-	float_t hz = float_t(60);
-	float_t dt = float_t(1) / hz;
-	int32 regVelocityIterations = 8;
-	int32 regPositionIterations = 3;
-	int32 toiVelocityIterations = 8;
-	int32 toiPositionIterations = 20;
+	float maxTranslation = 4;
+	float maxRotation = 90; // in degrees
+	float hz = 60;
+	float dt = 1 / hz;
+	int regVelocityIterations = 8;
+	int regPositionIterations = 3;
+	int toiVelocityIterations = 8;
+	int toiPositionIterations = 20;
 	bool drawShapes = true;
 	bool drawSkins = false;
 	bool drawJoints = true;
