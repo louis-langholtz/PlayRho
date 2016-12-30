@@ -56,6 +56,12 @@ public:
 		inv_dt = (value != 0)? float_t{1} / value: float_t{0};
 	}
 
+	constexpr TimeStep& use_dt(float_t value) noexcept
+	{
+		set_dt(value);
+		return *this;
+	}
+
 	/// Delta t ratio.
 	/// @detail This is the delta-t times the inverse delta t from the previous world step.
 	///   Value of 1 indicates that the time step has not varied.

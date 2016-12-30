@@ -259,7 +259,10 @@ bool Contact::UpdateTOI(const ToiConf& conf)
 	// Compute the TOI for this contact (one or both bodies are impenetrable).
 
 	// Put the sweeps onto the same time interval.
-	const auto alpha0 = BOX2D_MAGIC(Max(bA->m_sweep.GetAlpha0(), bB->m_sweep.GetAlpha0())); // why Max? why not Min?
+	// Presumably no unresolved collisions happen before the maximum of the bodies' alpha-0 times.
+	// So long as the least TOI of the contacts is always the first collision that gets dealt with,
+	// this presumption is safe.
+	const auto alpha0 = Max(bA->m_sweep.GetAlpha0(), bB->m_sweep.GetAlpha0());
 	assert(alpha0 >= 0 && alpha0 < 1);
 	bA->m_sweep.Advance0(alpha0);
 	bB->m_sweep.Advance0(alpha0);
@@ -285,6 +288,7 @@ bool Contact::UpdateTOI(const ToiConf& conf)
 	// could provide a TOI that's greater than 1.
 	const auto toi = IsValidForTime(output.get_state())?
 		Min(alpha0 + (float_t{1} - alpha0) * output.get_t(), float_t{1}): float_t{1};
+	assert(toi >= alpha0);
 	SetToi(toi);
 	
 	return true;

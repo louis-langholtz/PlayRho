@@ -19,8 +19,18 @@
 #include "gtest/gtest.h"
 #include <Box2D/Collision/TimeOfImpact.hpp>
 #include <Box2D/Collision/DistanceProxy.hpp>
+#include <Box2D/Collision/Shapes/PolygonShape.hpp>
 
 using namespace box2d;
+
+TEST(TOIConf, DefaultConstruction)
+{
+	EXPECT_EQ(ToiConf{}.tMax, float_t(1));
+	EXPECT_EQ(ToiConf{}.maxRootIters, MaxTOIRootIterCount);
+	EXPECT_EQ(ToiConf{}.maxToiIters, MaxTOIIterations);
+	EXPECT_EQ(ToiConf{}.targetDepth, LinearSlop * 3);
+	EXPECT_EQ(ToiConf{}.tolerance, LinearSlop / 4);
+}
 
 TEST(TOIOutput, DefaultConstruction)
 {
@@ -201,4 +211,180 @@ TEST(TimeOfImpact, RodCircleHitAt180)
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
 	EXPECT_FLOAT_EQ(output.get_t(), float_t(0.48840469));
 	EXPECT_EQ(output.get_toi_iters(), 3);
+}
+
+TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_1)
+{
+	const auto radius = float_t(1);
+	const auto x = float_t(200);
+	const auto proxyA = DistanceProxy{radius, Vec2{0, 0}};
+	const auto sweepA = Sweep{Position{Vec2{-x, 0}, 0_deg}, Position{Vec2{+x, 0}, 0_deg}};
+	const auto proxyB = DistanceProxy{radius, Vec2{0, 0}};
+	const auto sweepB = Sweep{Position{Vec2{+x, 0}, 0_deg}, Position{Vec2{-x, 0}, 0_deg}};
+	
+	const auto conf = ToiConf{}.UseMaxToiIters(200).UseMaxRootIters(200);
+	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
+	
+	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
+	EXPECT_FLOAT_EQ(output.get_t(), float_t(0.49750039));
+	EXPECT_EQ(output.get_toi_iters(), 2);
+	EXPECT_EQ(output.get_max_dist_iters(), 1);
+	EXPECT_EQ(output.get_max_root_iters(), 2);
+	EXPECT_EQ(output.get_sum_dist_iters(), 2);
+	EXPECT_EQ(output.get_sum_root_iters(), 2);
+}
+
+TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
+{
+	const auto radius = float_t(1);
+	const auto x = float_t(400);
+	const auto proxyA = DistanceProxy{radius, Vec2{0, 0}};
+	const auto sweepA = Sweep{Position{Vec2{-x, 0}, 0_deg}, Position{Vec2{0, 0}, 0_deg}};
+	const auto proxyB = DistanceProxy{radius, Vec2{0, 0}};
+	const auto sweepB = Sweep{Position{Vec2{+x, 0}, 0_deg}, Position{Vec2{0, 0}, 0_deg}};
+	
+	const auto conf = ToiConf{}.UseMaxToiIters(200).UseMaxRootIters(200);
+	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
+	
+	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
+	EXPECT_EQ(output.get_t(), float_t(0.99750036));
+	EXPECT_EQ(output.get_toi_iters(), 2);
+	EXPECT_EQ(output.get_max_dist_iters(), 1);
+	EXPECT_EQ(output.get_max_root_iters(), 6);
+	EXPECT_EQ(output.get_sum_dist_iters(), 2);
+	EXPECT_EQ(output.get_sum_root_iters(), 6);
+
+#if 0
+	ASSERT_EQ(output.get_state(), TOIOutput::e_touching);
+
+	auto touching = true;
+	auto iterations = 0u;
+	for (auto t = output.get_t(); t > 0; t = std::nextafter(t, 0.0f))
+	{
+		const auto conf2 = ToiConf{}.UseMaxToiIters(200).UseMaxRootIters(200).UseTimeMax(t);
+		const auto output2 = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf2);
+		
+		EXPECT_LE(output2.get_t(), t);
+		if (touching)
+		{
+			if (output2.get_state() != TOIOutput::e_touching)
+			{
+				std::cout << "lost touch after " << iterations << " iterations at t=" << t << std::endl;
+				touching = false;
+			}
+		}
+		else // !touching
+		{
+			if (output2.get_state() == TOIOutput::e_touching)
+			{
+				std::cout << "found additional root at t=" << t << std::endl;
+				touching = true;
+			}
+		}
+		++iterations;
+	}
+#endif
+}
+
+TEST(TimeOfImpact, FailsWithClosingSpeedOf1600)
+{
+	const auto radius = float_t(1);
+	const auto x = float_t(400);
+	const auto proxyA = DistanceProxy{radius, Vec2{0, 0}};
+	const auto sweepA = Sweep{Position{Vec2{-x, 0}, 0_deg}, Position{Vec2{+x, 0}, 0_deg}};
+	const auto proxyB = DistanceProxy{radius, Vec2{0, 0}};
+	const auto sweepB = Sweep{Position{Vec2{+x, 0}, 0_deg}, Position{Vec2{-x, 0}, 0_deg}};
+	
+	const auto conf = ToiConf{}.UseMaxToiIters(200).UseMaxRootIters(200);
+	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
+	
+	EXPECT_EQ(output.get_state(), TOIOutput::e_failed);
+	EXPECT_FLOAT_EQ(output.get_t(), float_t(0.49875015));
+	EXPECT_EQ(output.get_toi_iters(), 1);
+	EXPECT_EQ(output.get_max_dist_iters(), 1);
+	EXPECT_EQ(output.get_max_root_iters(), 4);
+	EXPECT_EQ(output.get_sum_dist_iters(), 1);
+	EXPECT_EQ(output.get_sum_root_iters(), 4);
+}
+
+TEST(TimeOfImpact, ForNonCollidingShapesFailsIn27)
+{
+	// The data for shapes and sweeps comes from Box2D/Testbed/Tests/TimeOfImpact.hpp
+
+	auto shapeA = PolygonShape{};
+	shapeA.SetAsBox(25.0f, 5.0f);
+	auto shapeB = PolygonShape{};
+	shapeB.SetAsBox(2.5f, 2.5f);
+
+	const auto dpA = GetDistanceProxy(shapeA, 0);
+	const auto dpB = GetDistanceProxy(shapeB, 0);
+
+	const auto sweepA = Sweep{
+		Position{Vec2{-11, 10}, 2.95000005_rad},
+		Position{Vec2{-11, 10}, 2.95000005_rad}
+	};
+	const auto sweepB = Sweep{
+		Position{Vec2{18.4742737f, 19.7474861f}, 513.36676_rad},
+		Position{Vec2{19.5954781f, 18.9165268f}, 513.627808_rad}
+	};
+	
+	const auto conf = ToiConf{}
+		.UseMaxToiIters(20)
+		.UseMaxRootIters(32)
+		.UseTimeMax(1)
+		.UseTargetDepth(3.0f / 10000)
+		.UseTolerance(1.0f / 40000);
+	const auto output = TimeOfImpact(dpA, sweepA, dpB, sweepB, conf);
+	
+	EXPECT_EQ(output.get_state(), TOIOutput::e_failed);
+	EXPECT_FLOAT_EQ(output.get_t(), 0.863826394f);
+	EXPECT_EQ(output.get_toi_iters(), 1);
+	EXPECT_EQ(output.get_max_dist_iters(), 4);
+	EXPECT_EQ(output.get_max_root_iters(), 27);
+	EXPECT_EQ(output.get_sum_dist_iters(), 4);
+	EXPECT_EQ(output.get_sum_root_iters(), 27);
+}
+
+TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
+{
+	// This setup causes the TimeOfImpact function to get into the state where
+	// separation has reached tolerance but t2 already equals t1.
+
+	const auto sweepA = Sweep{
+		Position{Vec2{0.0f, -0.5f}, 0_rad}, Position{Vec2{0.0f, -0.5f}, 0_rad}
+	};
+	const auto sweepB = Sweep{
+		Position{Vec2{14.3689661f, 0.500306308f}, 0.0000139930862_rad},
+		Position{Vec2{14.3689451f, 0.500254989f},  0.000260060915_rad}
+	};
+	
+	const auto dpA = DistanceProxy{
+		0.000199999995f,
+		Span<const Vec2>{
+			Vec2{14.5f, -0.5f},
+			Vec2{14.5f, +0.5f},
+			Vec2{13.5f, +0.5f},
+			Vec2{13.5f, -0.5f}
+		}
+	};
+	
+	auto shapeB = PolygonShape{0.5f, 0.5f};
+	const auto dpB = GetDistanceProxy(shapeB, 0);
+	
+	const auto conf = ToiConf{}
+		.UseMaxToiIters(200)
+		.UseMaxRootIters(30)
+		.UseTimeMax(1)
+		.UseTargetDepth(3.0f / 10000)
+		.UseTolerance(1.0f / 40000);
+
+	const auto output = TimeOfImpact(dpA, sweepA, dpB, sweepB, conf);
+	
+	EXPECT_EQ(output.get_state(), TOIOutput::e_failed);
+	EXPECT_FLOAT_EQ(output.get_t(), 1.0f);
+	EXPECT_EQ(output.get_toi_iters(), 2);
+	EXPECT_EQ(output.get_max_dist_iters(), 4);
+	EXPECT_EQ(output.get_max_root_iters(), 0);
+	EXPECT_EQ(output.get_sum_dist_iters(), 5);
+	EXPECT_EQ(output.get_sum_root_iters(), 0);
 }

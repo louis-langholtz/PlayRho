@@ -784,28 +784,25 @@ void World::Solve(const TimeStep& step)
 	
 bool World::Solve(const TimeStep& step, Island& island)
 {
-	const auto contacts_count = static_cast<contact_count_t>(island.m_contacts.size());
+	const auto ncontacts = static_cast<contact_count_t>(island.m_contacts.size());
+	const auto nbodies = island.m_bodies.size();
 
 	auto positionConstraints = PositionConstraintsContainer{
-		contacts_count, m_stackAllocator.AllocateArray<PositionConstraint>(contacts_count), m_stackAllocator
+		ncontacts, m_stackAllocator.AllocateArray<PositionConstraint>(ncontacts), m_stackAllocator
 	};
 	InitPosConstraints(positionConstraints, island.m_contacts);
 
 	auto velocityConstraints = VelocityConstraintsContainer{
-		contacts_count, m_stackAllocator.AllocateArray<VelocityConstraint>(contacts_count), m_stackAllocator
+		ncontacts, m_stackAllocator.AllocateArray<VelocityConstraint>(ncontacts), m_stackAllocator
 	};
 	InitVelConstraints(velocityConstraints, island.m_contacts, step.doWarmStart? step.dtRatio: 0);
 	
 	auto velocities = VelocityContainer{
-		island.m_bodies.size(),
-		m_stackAllocator.AllocateArray<Velocity>(island.m_bodies.size()),
-		m_stackAllocator
+		nbodies, m_stackAllocator.AllocateArray<Velocity>(nbodies), m_stackAllocator
 	};
 	
 	auto positions = PositionContainer{
-		island.m_bodies.size(),
-		m_stackAllocator.AllocateArray<Position>(island.m_bodies.size()),
-		m_stackAllocator
+		nbodies, m_stackAllocator.AllocateArray<Position>(nbodies), m_stackAllocator
 	};
 	
 	const auto h = step.get_dt(); ///< Time step (in seconds).
@@ -1073,13 +1070,8 @@ void World::SolveTOI(const TimeStep& step, Contact& contact)
 		ProcessContactsForTOI(island, *bB, toi, m_contactMgr.m_contactListener);
 	}
 
-	{
-		TimeStep subStep;
-		subStep.set_dt((float_t{1} - toi) * step.get_dt());
-		subStep.toiPositionIterations = step.toiPositionIterations;
-		subStep.toiVelocityIterations = step.toiVelocityIterations;
-		SolveTOI(subStep, island);
-	}
+	// Now solve for remainder of time step
+	SolveTOI(TimeStep{step}.use_dt((1 - toi) * step.get_dt()), island);
 
 	// Reset island flags and synchronize broad-phase proxies.
 	for (auto&& body: island.m_bodies)
@@ -1109,28 +1101,23 @@ void World::UpdateBodies(Span<Body*> bodies,
 
 bool World::SolveTOI(const TimeStep& step, Island& island)
 {
-	assert(island.m_bodies.size() >= 2);
-	const auto contacts_count = static_cast<contact_count_t>(island.m_contacts.size());
-	
+	const auto ncontacts = static_cast<contact_count_t>(island.m_contacts.size());
+	const auto nbodies = island.m_bodies.size();
+
+	assert(nbodies >= 2);
+	assert(ncontacts >= 1);
+
 	auto velocities = VelocityContainer{
-		island.m_bodies.size(),
-		m_stackAllocator.AllocateArray<Velocity>(island.m_bodies.size()),
-		m_stackAllocator
+		nbodies, m_stackAllocator.AllocateArray<Velocity>(nbodies), m_stackAllocator
 	};
 	auto positions = PositionContainer{
-		island.m_bodies.size(),
-		m_stackAllocator.AllocateArray<Position>(island.m_bodies.size()),
-		m_stackAllocator
+		nbodies, m_stackAllocator.AllocateArray<Position>(nbodies), m_stackAllocator
 	};
 	auto positionConstraints = PositionConstraintsContainer{
-		contacts_count,
-		m_stackAllocator.AllocateArray<PositionConstraint>(contacts_count),
-		m_stackAllocator
+		ncontacts, m_stackAllocator.AllocateArray<PositionConstraint>(ncontacts), m_stackAllocator
 	};
 	auto velocityConstraints = VelocityConstraintsContainer{
-		contacts_count,
-		m_stackAllocator.AllocateArray<VelocityConstraint>(contacts_count),
-		m_stackAllocator
+		ncontacts, m_stackAllocator.AllocateArray<VelocityConstraint>(ncontacts), m_stackAllocator
 	};
 	InitPosConstraints(positionConstraints, island.m_contacts);
 	InitVelConstraints(velocityConstraints, island.m_contacts, 0);
@@ -1153,8 +1140,17 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 
 	for (auto i = decltype(step.toiPositionIterations){0}; i < step.toiPositionIterations; ++i)
 	{
-		const auto minSeparation = SolvePositionConstraints(positionConstraints, positions,
-															0, 1, psConf);
+		//
+		// Note: There are two flavors of the SolvePositionConstraints function.
+		//   One takes an extra two arguments that are the indexes of two bodies that are okay to
+		//   move. The other one does not.
+		//   Calling the selective solver (that takes the two additional arguments) appears to
+		//   result in phsyics simulations that are more prone to tunneling. Meanwhile, using the
+		//   non-selective solver would presumably be slower (since it appears to have more that
+		//   it will do). Assuming that slower is preferable to tunnelling, then the non-selective
+		//   is the one to be calling here.
+		//
+		const auto minSeparation = SolvePositionConstraints(positionConstraints, positions, psConf);
 		if (minSeparation >= -psConf.linearSlop * float_t(1.5))
 		{
 			positionConstraintsSolved = i;
