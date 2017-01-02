@@ -233,15 +233,38 @@ child_count_t box2d::GetChildCount(const PolygonShape& shape)
 bool box2d::TestPoint(const PolygonShape& shape, const Transformation& xf, const Vec2& p)
 {
 	const auto pLocal = InverseRotate(p - xf.p, xf.q);
+	const auto vr = shape.GetVertexRadius();
 	const auto count = shape.GetVertexCount();
+	auto maxDot = -MaxFloat;
+	auto maxIdx = PolygonShape::InvalidVertex;
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
 		const auto dot = Dot(shape.GetNormal(i), pLocal - shape.GetVertex(i));
-		if (dot > float_t{0})
+		if (dot > vr)
 		{
 			return false;
 		}
+		if (maxDot < dot)
+		{
+			maxDot = dot;
+			maxIdx = i;
+		}
 	}
 
+	const auto v0 = shape.GetVertex(maxIdx);
+	const auto v1 = shape.GetVertex(GetModuloNext(maxIdx, count));
+	const auto edge = v1 - v0;
+	const auto d0 = Dot(edge, v0 - pLocal);
+	if (d0 >= 0)
+	{
+		// point is nearest v0 and not within edge
+		return GetLengthSquared(v0 - pLocal) <= Square(vr);
+	}
+	const auto d1 = Dot(edge, pLocal - v1);
+	if (d1 >= 0)
+	{
+		// point is nearest v1 and not within edge
+		return GetLengthSquared(pLocal - v1) <= Square(vr);
+	}
 	return true;
 }
