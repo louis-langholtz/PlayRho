@@ -34,11 +34,14 @@ struct Color
 	constexpr Color(float ri, float gi, float bi, float ai = 1):
 		r(ri), g(gi), b(bi), a(ai)
 	{
-		// Intentionally empty.
+		assert(ri >= 0 && ri <= 1);
+		assert(gi >= 0 && gi <= 1);
+		assert(bi >= 0 && bi <= 1);
+		assert(ai >= 0 && ai <= 1);
 	}
 
 	constexpr Color(Color copy, float_t new_a):
-		r(copy.r), g(copy.g), b(copy.b), a(new_a)
+		Color{copy.r, copy.g, copy.b, new_a}
 	{
 		// Intentionally empty.
 	}
