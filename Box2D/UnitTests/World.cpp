@@ -49,6 +49,22 @@ TEST(World, Def)
 	// make sure max values are still substantially different when incremented by their respective slop values
 	EXPECT_FALSE(almost_equal(stepConf.maxTranslation * 2 + defaultDef.linearSlop / 64, stepConf.maxTranslation * 2));
 	EXPECT_FALSE(almost_equal(stepConf.maxRotation.ToRadians() + defaultDef.angularSlop / 64, stepConf.maxRotation.ToRadians()));
+	
+	const auto v = float_t(1);
+	const auto n = std::nextafter(v, float_t(0));
+	const auto time_inc = v - n;
+	ASSERT_GT(time_inc, float_t(0));
+	ASSERT_LT(time_inc, float_t(1));
+	const auto max_inc = time_inc * stepConf.maxTranslation;
+	EXPECT_GT(max_inc, float_t(0));
+	EXPECT_LT(max_inc, defaultDef.linearSlop / 4);
+#if 1
+	std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
+	std::cout << " time_inc=" << time_inc;
+	std::cout << " max_inc=" << max_inc;
+	std::cout << " tolerance=" << defaultDef.linearSlop / 4;
+	std::cout << std::endl;
+#endif
 }
 
 TEST(World, DefaultInit)

@@ -49,19 +49,27 @@ public:
 
 	void CreateFixtures()
 	{
-		PolygonShape polygonA{m_radius};
+		const auto radius = RadiusIncrement * 40;
+
+		PolygonShape polygonA{radius};
 		polygonA.SetAsBox(8.0f, 6.0f);
-		m_fixtureA = m_bodyA->CreateFixture(FixtureDef{&polygonA, 1});
+		m_bodyA->CreateFixture(FixtureDef{&polygonA, 1});
 		
-		PolygonShape polygonB{m_radius};
+		PolygonShape polygonB{radius};
 		polygonB.SetAsBox(7.2f, 0.8f);
-		m_fixtureB = m_bodyB->CreateFixture(FixtureDef{&polygonB, 1});
+		m_bodyB->CreateFixture(FixtureDef{&polygonB, 1});
+	}
+
+	static Fixture* GetFixture(Body* body)
+	{
+		return (body->GetFixtures().begin() != body->GetFixtures().end())?
+			&(body->GetFixtures().front()): nullptr;
 	}
 
 	void DestroyFixtures()
 	{
-		m_bodyA->DestroyFixture(m_fixtureA);
-		m_bodyB->DestroyFixture(m_fixtureB);
+		m_bodyA->DestroyFixtures();
+		m_bodyB->DestroyFixtures();
 	}
 	
 	void ShowManifold(Drawer& drawer, const Manifold& manifold, const char* name)
@@ -91,24 +99,24 @@ public:
 
 	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
-		const auto shapeA = static_cast<const PolygonShape*>(m_fixtureA->GetShape());
-		const auto shapeB = static_cast<const PolygonShape*>(m_fixtureB->GetShape());
+		const auto shapeA = static_cast<const PolygonShape*>(GetFixture(m_bodyA)->GetShape());
+		const auto shapeB = static_cast<const PolygonShape*>(GetFixture(m_bodyB)->GetShape());
 
 		const auto proxyA = GetDistanceProxy(*shapeA, 0);
 		const auto proxyB = GetDistanceProxy(*shapeB, 0);
-		const auto transformA = m_bodyA->GetTransformation();
-		const auto transformB = m_bodyB->GetTransformation();
+		const auto xfmA = m_bodyA->GetTransformation();
+		const auto xfmB = m_bodyB->GetTransformation();
 
-		const auto maxIndicesAB = GetMaxSeparation(shapeA->GetVertices(), shapeA->GetNormals(), transformA,
-												   shapeB->GetVertices(), transformB);
-		const auto maxIndicesBA = GetMaxSeparation(shapeB->GetVertices(), shapeB->GetNormals(), transformB,
-												   shapeA->GetVertices(), transformA);
+		const auto maxIndicesAB = GetMaxSeparation(shapeA->GetVertices(), shapeA->GetNormals(), xfmA,
+												   shapeB->GetVertices(), xfmB);
+		const auto maxIndicesBA = GetMaxSeparation(shapeB->GetVertices(), shapeB->GetNormals(), xfmB,
+												   shapeA->GetVertices(), xfmA);
 
-		const auto manifold = CollideShapes(*shapeA, transformA, *shapeB, transformB);
-		const auto panifold = GetManifold(proxyA, transformA, proxyB, transformB);
+		const auto manifold = CollideShapes(*shapeA, xfmA, *shapeB, xfmB);
+		const auto panifold = GetManifold(proxyA, xfmA, proxyB, xfmB);
 
 		Simplex::Cache cache;
-		const auto output = Distance(proxyA, transformA, proxyB, transformB, cache);
+		const auto output = Distance(proxyA, xfmA, proxyB, xfmB, cache);
 		cache = Simplex::GetCache(output.simplex.GetEdges());
 		const auto witnessPoints = GetWitnessPoints(output.simplex);
 		const auto outputDistance = Sqrt(GetLengthSquared(witnessPoints.a - witnessPoints.b));
@@ -138,25 +146,61 @@ public:
 			adjustedDistance = 0;
 		}
 		
-		drawer.DrawString(transformA.p, "Shape A");
-		drawer.DrawString(transformB.p, "Shape B");
+		drawer.DrawString(xfmA.p, "Shape A");
+		drawer.DrawString(xfmB.p, "Shape B");
 
-		drawer.DrawString(5, m_textLine, "Press 'A', 'D', 'W', or 'S' to move left, right, up, or down respectively.");
+		drawer.DrawString(5, m_textLine,
+						  "Press 'A', 'D', 'W', 'S', 'Q', 'E' to move selected shape left, right, up, down, counter-clockwise, or clockwise.");
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		drawer.DrawString(5, m_textLine, "Press 'Q', or 'E' to rotate counter-clockwise or clockwise respectively.");
-		m_textLine += DRAW_STRING_NEW_LINE;
-
-		drawer.DrawString(5, m_textLine, "Press num-pad '+'/'-' to increase/decrease vertex radiuses (%g & %g).",
+		drawer.DrawString(5, m_textLine, "Press num-pad '+'/'-' to increase/decrease vertex radius of selected shape (%g & %g).",
 						  rA, rB);
 		m_textLine += DRAW_STRING_NEW_LINE;
-
-		drawer.DrawString(5, m_textLine, "Max distance %g for a[%i] b[%i]",
-						  maxIndicesAB.separation, maxIndicesAB.index1, maxIndicesAB.index2);
+		
+		drawer.DrawString(5, m_textLine,
+						  "Press '=', or '-' to toggle drawing simplex, or manifold info (%s, %s).",
+						  m_drawSimplexInfo? "on": "off",
+						  m_drawManifoldInfo? "on": "off");
 		m_textLine += DRAW_STRING_NEW_LINE;
-		drawer.DrawString(5, m_textLine, "Max distance %g for b[%i] a[%i]",
+
+		drawer.DrawString(5, m_textLine,
+						  "Max separation: %g for a-face[%i] b-vert[%i]; %g for b-face[%i] a-vert[%i]",
+						  maxIndicesAB.separation, maxIndicesAB.index1, maxIndicesAB.index2,
 						  maxIndicesBA.separation, maxIndicesBA.index1, maxIndicesBA.index2);
 		m_textLine += DRAW_STRING_NEW_LINE;
+
+		if (almost_equal(maxIndicesAB.separation, maxIndicesBA.separation))
+		{
+			//assert(maxIndicesAB.index1 == maxIndicesBA.index2);
+			//assert(maxIndicesAB.index2 == maxIndicesBA.index1);
+			const auto ifaceA = maxIndicesAB.index1;
+			const auto nA = InverseRotate(Rotate(shapeA->GetNormal(ifaceA), xfmA.q), xfmB.q);
+			// shapeA face maxIndicesAB.index1 is coplanar to an edge intersecting shapeB vertex maxIndicesAB.index2
+			const auto i1 = maxIndicesAB.index2;
+			const auto i0 = GetModuloPrev(i1, shapeB->GetVertexCount());
+			const auto n0 = shapeB->GetNormal(i0);
+			const auto n1 = shapeB->GetNormal(i1);
+			const auto s0 = Dot(nA, n0);
+			const auto s1 = Dot(nA, n1);
+			assert(s0 != s1);
+			const auto ifaceB = (s0 < s1)?
+				// shapeA face maxIndicesAB.index1 is coplanar to shapeB face i0, and
+				// nearest shapeB vertex maxIndicesAB.index2
+				i0:
+				// shapeA face maxIndicesAB.index1 is coplanar to shapeB face i1, and
+				// nearest shapeB vertex maxIndicesAB.index2
+				i1;
+		}
+		else if (maxIndicesAB.separation > maxIndicesBA.separation)
+		{
+			// shape A face maxIndicesAB.index1 is least separated from shape B vertex maxIndicesAB.index2
+			// Circles or Face-A manifold type.
+		}
+		else // maxIndicesAB.separation < maxIndicesBA.separation
+		{
+			// shape B face maxIndicesBA.index1 is least separated from shape A vertex maxIndicesBA.index2
+			// Circles or Face-B manifold type.
+		}
 
 		drawer.DrawString(5, m_textLine, "distance = %g (from %g), iterations = %d",
 						  adjustedDistance, outputDistance, output.iterations);
@@ -164,7 +208,7 @@ public:
 		
 		{
 			const auto size = output.simplex.GetSize();
-			drawer.DrawString(5, m_textLine, "Simplex: size=%d, wpt-a={%g,%g}, wpt-b={%g,%g})",
+			drawer.DrawString(5, m_textLine, "Simplex info: size=%d, wpt-a={%g,%g}, wpt-b={%g,%g})",
 							  size,
 							  witnessPoints.a.x, witnessPoints.a.y,
 							  witnessPoints.b.x, witnessPoints.b.y);
@@ -174,7 +218,7 @@ public:
 				const auto& edge = output.simplex.GetSimplexEdge(i);
 				const auto coef = output.simplex.GetCoefficient(i);
 				
-				drawer.DrawString(5, m_textLine, "a[%d]={%g,%g} b[%d]={%g,%g} coef=%g",
+				drawer.DrawString(5, m_textLine, "  a[%d]={%g,%g} b[%d]={%g,%g} coef=%g",
 								  edge.GetIndexA(),
 								  edge.GetPointA().x,
 								  edge.GetPointA().y,
@@ -183,73 +227,168 @@ public:
 								  edge.GetPointB().y,
 								  coef);
 				m_textLine += DRAW_STRING_NEW_LINE;
-				
-				drawer.DrawSegment(edge.GetPointA(), edge.GetPointB(), Color{0.0f, 0.5f, 0.5f});
 			}
 		}
 
 		ShowManifold(drawer, manifold, "manifold");
 		ShowManifold(drawer, panifold, "wanifold");
 
-		drawer.DrawPoint(adjustedWitnessPoints.a, 4.0f, Color(1.0f, 0.0f, 0.0f));
-		drawer.DrawPoint(adjustedWitnessPoints.b, 4.0f, Color(1.0f, 1.0f, 0.0f));
-
-		drawer.DrawPoint(witnessPoints.a, 4.0f, Color(1.0f, 0.0f, 0.0f, 0.5));
-		drawer.DrawPoint(witnessPoints.b, 4.0f, Color(1.0f, 1.0f, 0.0f, 0.5));
-		
-		for (auto&& edge: output.simplex.GetEdges())
+		if (m_drawManifoldInfo)
 		{
-			drawer.DrawPoint(edge.GetPointA(), 6.0f, Color(0.0f, 1.0f, 1.0f, 0.6f));
-			drawer.DrawPoint(edge.GetPointB(), 6.0f, Color(0.0f, 1.0f, 1.0f, 0.6f));
-			drawer.DrawString(edge.GetPointA(), "%d", edge.GetIndexA());
-			drawer.DrawString(edge.GetPointB(), "%d", edge.GetIndexB());
+			const auto pointCount = manifold.GetPointCount();
+
+			switch (manifold.GetType())
+			{
+				case Manifold::e_unset:
+					break;
+				case Manifold::e_circles:
+				{
+					const auto pA = Transform(manifold.GetLocalPoint(), xfmA);
+					const auto pB = Transform(manifold.GetPoint(0).localPoint, xfmB);
+					drawer.DrawCircle(pA, rA / 2, Color(1, 1, 1));
+					drawer.DrawCircle(pB, rB / 2, Color(1, 1, 1));
+					break;
+				}
+				case Manifold::e_faceA:
+				{
+					const auto pA = Transform(manifold.GetLocalPoint(), xfmA);
+					drawer.DrawCircle(pA, rA / 2, Color(1, 1, 1));
+					for (auto i = decltype(pointCount){0}; i < pointCount; ++i)
+					{
+						const auto pB = Transform(manifold.GetOpposingPoint(i), xfmB);
+						drawer.DrawCircle(pB, rB / 2, Color(1, 1, 1));
+					}
+					break;
+				}
+				case Manifold::e_faceB:
+				{
+					const auto pB = Transform(manifold.GetLocalPoint(), xfmB);
+					drawer.DrawCircle(pB, rB / 2, Color(1, 1, 1));
+					for (auto i = decltype(pointCount){0}; i < pointCount; ++i)
+					{
+						const auto pA = Transform(manifold.GetOpposingPoint(i), xfmA);
+						drawer.DrawCircle(pA, rA / 2, Color(1, 1, 1));
+					}
+					break;
+				}
+			}
+		}
+
+		if (m_drawSimplexInfo)
+		{
+			const auto size = output.simplex.GetSize();
+			for (auto i = decltype(size){0}; i < size; ++i)
+			{
+				const auto& edge = output.simplex.GetSimplexEdge(i);
+				drawer.DrawSegment(edge.GetPointA(), edge.GetPointB(), simplexSegmentColor);
+			}
+
+			if (adjustedWitnessPoints.a != adjustedWitnessPoints.b)
+			{
+				drawer.DrawPoint(adjustedWitnessPoints.a, 4.0f, adjustedPointColor);
+				drawer.DrawPoint(adjustedWitnessPoints.b, 4.0f, adjustedPointColor);
+			}
+			else
+			{
+				drawer.DrawPoint(adjustedWitnessPoints.a, 4.0f, matchingPointColor);
+			}
+
+			drawer.DrawPoint(witnessPoints.a, 4.0f, witnessPointColor);
+			drawer.DrawPoint(witnessPoints.b, 4.0f, witnessPointColor);
+			
+			for (auto&& edge: output.simplex.GetEdges())
+			{
+				drawer.DrawPoint(edge.GetPointA(), 6.0f, simplexPointColor);
+				drawer.DrawPoint(edge.GetPointB(), 6.0f, simplexPointColor);
+				drawer.DrawString(edge.GetPointA(), "%d", edge.GetIndexA());
+				drawer.DrawString(edge.GetPointB(), "%d", edge.GetIndexB());
+			}
 		}
 	}
 
 	void Keyboard(Key key) override
 	{
+		const auto fixture = GetSelectedFixture();
+		const auto body = fixture? fixture->GetBody(): nullptr;
+
 		switch (key)
 		{
 		case Key_A:
-			m_bodyB->SetTransform(m_bodyB->GetLocation() - Vec2{float_t(0.1), 0}, m_bodyB->GetAngle());
-			m_bodyB->SetAwake();
+			if (body)
+			{
+				body->SetTransform(body->GetLocation() - Vec2{float_t(0.1), 0}, body->GetAngle());
+				body->SetAwake();
+			}
 			break;
 
 		case Key_D:
-			m_bodyB->SetTransform(m_bodyB->GetLocation() + Vec2{float_t(0.1), 0}, m_bodyB->GetAngle());
-			m_bodyB->SetAwake();
+			if (body)
+			{
+				body->SetTransform(body->GetLocation() + Vec2{float_t(0.1), 0}, body->GetAngle());
+				body->SetAwake();
+			}
 			break;
 
 		case Key_S:
-			m_bodyB->SetTransform(m_bodyB->GetLocation() - Vec2{0, float_t(0.1)}, m_bodyB->GetAngle());
-			m_bodyB->SetAwake();
+			if (body)
+			{
+				body->SetTransform(body->GetLocation() - Vec2{0, float_t(0.1)}, body->GetAngle());
+				body->SetAwake();
+			}
 			break;
 
 		case Key_W:
-			m_bodyB->SetTransform(m_bodyB->GetLocation() + Vec2{0, float_t(0.1)}, m_bodyB->GetAngle());
-			m_bodyB->SetAwake();
+			if (body)
+			{
+				body->SetTransform(body->GetLocation() + Vec2{0, float_t(0.1)}, body->GetAngle());
+				body->SetAwake();
+			}
 			break;
 
 		case Key_Q:
-			m_bodyB->SetTransform(m_bodyB->GetLocation(), m_bodyB->GetAngle() + 5_deg);
-			m_bodyB->SetAwake();
+			if (body)
+			{
+				body->SetTransform(body->GetLocation(), body->GetAngle() + 5_deg);
+				body->SetAwake();
+			}
 			break;
 
 		case Key_E:
-			m_bodyB->SetTransform(m_bodyB->GetLocation(), m_bodyB->GetAngle() - 5_deg);
-			m_bodyB->SetAwake();
+			if (body)
+			{
+				body->SetTransform(body->GetLocation(), body->GetAngle() - 5_deg);
+				body->SetAwake();
+			}
 			break;
 
 		case Key_Add:
-			DestroyFixtures();
-			m_radius += RadiusIncrement;
-			CreateFixtures();
+			if (body && fixture)
+			{
+				const auto shape = fixture->GetShape();
+				auto polygon = *static_cast<const PolygonShape*>(shape);
+				polygon.SetVertexRadius(shape->GetVertexRadius() + RadiusIncrement);
+				SetSelectedFixture(body->CreateFixture(FixtureDef{&polygon, 1}));
+				body->DestroyFixture(fixture);
+			}
 			break;
 
 		case Key_Subtract:
-			DestroyFixtures();
-			m_radius -= RadiusIncrement;
-			CreateFixtures();
+			if (body && fixture)
+			{
+				const auto shape = fixture->GetShape();
+				PolygonShape polygon{*static_cast<const PolygonShape*>(shape)};
+				polygon.SetVertexRadius(shape->GetVertexRadius() - RadiusIncrement);
+				SetSelectedFixture(body->CreateFixture(FixtureDef{&polygon, 1}));
+				body->DestroyFixture(fixture);
+			}
+			break;
+
+		case Key_Equal:
+			m_drawSimplexInfo = !m_drawSimplexInfo;
+			break;
+
+		case Key_Minus:
+			m_drawManifoldInfo = !m_drawManifoldInfo;
 			break;
 
 		default:
@@ -259,12 +398,16 @@ public:
 
 private:
 	static constexpr auto RadiusIncrement = LinearSlop * 200;
+	const Color simplexSegmentColor = Color{0.0f, 0.5f, 0.5f}; // dark cyan
+	const Color simplexPointColor = Color{0, 1, 1, 0.6f}; // semi-transparent cyan
+	const Color witnessPointColor = Color{1, 1, 0, 0.5}; // semi-transparent yellow
+	const Color adjustedPointColor = Color{1, 0.5f, 0, 0.5f}; // semi-transparent light brown
+	const Color matchingPointColor = Color{1, 0, 0}; // red
 
-	float_t m_radius = RadiusIncrement * 40;
 	Body* m_bodyA;
 	Body* m_bodyB;
-	Fixture* m_fixtureA;
-	Fixture* m_fixtureB;
+	bool m_drawSimplexInfo = true;
+	bool m_drawManifoldInfo = true;
 };
 	
 } // namespace box2d

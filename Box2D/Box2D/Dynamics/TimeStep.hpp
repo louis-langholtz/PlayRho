@@ -92,6 +92,12 @@ public:
 	/// You shouldn't need to adjust this.
 	Angle maxRotation = 1_rad * Pi / 2;
 
+	/// Maximum linear correction.
+	/// @detail This value should be greater than the linear slop value.
+	float_t maxLinearCorrection = LinearSlop * 40; // 40 * linearSlop. aka 0.004
+	
+	float_t maxAngularCorrection = AngularSlop * 4;
+
 	iteration_type regVelocityIterations = 8; ///< Velocity iterations.
 	iteration_type regPositionIterations = 3; ///< Position iterations.
 	iteration_type toiVelocityIterations = 8; ///< Velocity iterations.

@@ -34,6 +34,8 @@ struct Settings
 	float maxRotation = 90; // in degrees
 	float hz = 60;
 	float dt = 1 / hz;
+	float maxLinearCorrection = 0.5; // in meters
+	float maxAngularCorrection = 45; // in degrees
 	int regVelocityIterations = 8;
 	int regPositionIterations = 3;
 	int toiVelocityIterations = 8;
@@ -101,6 +103,13 @@ public:
 		BOX2D_NOT_USED(solved);
 	}
 
+	Fixture* GetSelectedFixture() const noexcept { return m_selectedFixture; }
+
+	void SetSelectedFixture(Fixture* value) noexcept
+	{
+		m_selectedFixture = value;
+	}
+
 protected:
 	friend class TestDestructionListener;
 	friend class BoundaryListener;
@@ -148,6 +157,7 @@ protected:
 	}
 	
 	Body* m_groundBody;
+	Fixture* m_selectedFixture = nullptr;
 	AABB m_worldAABB;
 	ContactPoint m_points[k_maxContactPoints];
 	PointCount m_pointCount = 0;

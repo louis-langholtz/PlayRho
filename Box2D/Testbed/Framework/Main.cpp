@@ -430,6 +430,8 @@ static void sInterface()
 		imguiSlider("Hertz", &settings.hz, 5.0f, 120.0f, 5.0f, true);
 		imguiSlider("Max Translation", &settings.maxTranslation, 0.0f, 8.0f, 0.05f, true);
 		imguiSlider("Max Rotation", &settings.maxRotation, 0.0f, 360.0f, 1.0f, true);
+		imguiSlider("Max Linear Correction", &settings.maxLinearCorrection, 0.0f, 1.0f, 0.01f, true);
+		imguiSlider("Max Angular Correction", &settings.maxAngularCorrection, 0.0f, 90.0f, 1.0f, true);
 		
 		if (imguiCheck("Sleep", settings.enableSleep, true))
 			settings.enableSleep = !settings.enableSleep;
@@ -467,13 +469,10 @@ static void sInterface()
 
 		if (imguiButton("Pause", true))
 			settings.pause = !settings.pause;
-
 		if (imguiButton("Single Step", true))
 			settings.singleStep = !settings.singleStep;
-
 		if (imguiButton("Restart", true))
 			sRestart();
-
 		if (imguiButton("Quit", true))
 			glfwSetWindowShouldClose(mainWindow, GL_TRUE);
 

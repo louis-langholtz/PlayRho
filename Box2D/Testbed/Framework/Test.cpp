@@ -423,6 +423,8 @@ void Test::MouseDown(const Vec2& p)
 	QueryCallback callback(p);
 	m_world->QueryAABB(&callback, aabb);
 
+	SetSelectedFixture(callback.m_fixture);
+
 	if (callback.m_fixture)
 	{
 		const auto body = callback.m_fixture->GetBody();
@@ -552,6 +554,8 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	stepConf.toiPositionIterations = static_cast<TimeStep::iteration_type>(settings.toiPositionIterations);
 	stepConf.maxTranslation = static_cast<decltype(stepConf.maxTranslation)>(settings.maxTranslation);
 	stepConf.maxRotation = settings.maxRotation * 1_deg;
+	stepConf.maxLinearCorrection = settings.maxLinearCorrection;
+	stepConf.maxAngularCorrection = (settings.maxAngularCorrection * 1_deg) / 1_rad;
 
 	m_world->Step(stepConf);
 

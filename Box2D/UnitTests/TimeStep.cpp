@@ -25,3 +25,41 @@ TEST(TimeStep, ByteSizeIs48)
 {
 	EXPECT_EQ(sizeof(TimeStep), size_t(48));
 }
+
+TEST(TimeStep, maxTranslation)
+{
+	const auto v = float_t(1);
+	const auto n = std::nextafter(v, float_t(0));
+	const auto inc = v - n;
+	ASSERT_GT(inc, float_t(0));
+	ASSERT_LT(inc, float_t(1));
+	const auto max_inc = inc * TimeStep{}.maxTranslation;
+	EXPECT_GT(max_inc, float_t(0));
+	EXPECT_LT(max_inc, LinearSlop / 2);
+#if 0
+	std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
+	std::cout << " inc=" << inc;
+	std::cout << " max_inc=" << max_inc;
+	std::cout << " slop=" << LinearSlop;
+	std::cout << std::endl;
+#endif
+}
+
+TEST(TimeStep, maxRotation)
+{
+	const auto v = float_t(1);
+	const auto n = std::nextafter(v, float_t(0));
+	const auto inc = v - n;
+	ASSERT_GT(inc, float_t(0));
+	ASSERT_LT(inc, float_t(1));
+	const auto max_inc = inc * TimeStep{}.maxRotation / 1_rad;
+	EXPECT_GT(max_inc, float_t(0));
+	EXPECT_LT(max_inc, AngularSlop / 2);
+#if 0
+	std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
+	std::cout << " inc=" << inc;
+	std::cout << " max_inc=" << max_inc;
+	std::cout << " slop=" << AngularSlop;
+	std::cout << std::endl;
+#endif
+}

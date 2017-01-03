@@ -66,12 +66,6 @@ public:
 		float_t linearSlop = float_t{1} / float_t{10000}; // aka 0.0001, originally 0.005;
 		
 		float_t angularSlop = Pi * float_t{2} / float_t{180};
-
-		/// Maximum linear correction.
-		/// @detail This value should be greater than the linear slop value.
-		float_t maxLinearCorrection = linearSlop * 40; // 40 * linearSlop. aka 0.004
-		
-		float_t maxAngularCorrection = angularSlop * 4;				
 	};
 	
 	static constexpr struct Def GetDefaultDef()
@@ -423,9 +417,9 @@ private:
 
 	struct ContactToiData
 	{
-		contact_count_t count;
-		Contact* contact; ///< Contact for which the time of impact is relavant.
-		float_t toi; ///< Time of impact (TOI) as a fractional value between 0 and 1.
+		contact_count_t count = 0;
+		Contact* contact = nullptr; ///< Contact for which the time of impact is relavant.
+		float_t toi = MaxFloat; ///< Time of impact (TOI) as a fractional value between 0 and 1.
 	};
 
 	/// Updates the contact times of impact.
@@ -467,8 +461,6 @@ private:
 
 	const float_t m_linearSlop;
 	const float_t m_angularSlop;
-	const float_t m_maxLinearCorrection;
-	const float_t m_maxAngularCorrection;
 	
 	Profile m_profile;	
 };
@@ -681,16 +673,6 @@ inline float_t World::GetAngularSlop() const noexcept
 	return m_angularSlop;
 }
 
-inline float_t World::GetMaxLinearCorrection() const noexcept
-{
-	return m_maxLinearCorrection;
-}
-
-inline float_t World::GetMaxAngularCorrection() const noexcept
-{
-	return m_maxAngularCorrection;
-}
-
 /// Gets the minimum vertex radius for the given world.
 /// @detail
 /// The minimum radius of the vertices of any shape in the given world.
@@ -701,7 +683,7 @@ inline float_t World::GetMinVertexRadius() const noexcept
 	// Making it larger may create artifacts for vertex collision.
 	return GetLinearSlop() * 2;
 }
-
+	
 /// Dump the world into the log file.
 /// @warning this should be called outside of a time step.
 void Dump(const World& world);

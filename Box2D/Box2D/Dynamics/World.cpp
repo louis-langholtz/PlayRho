@@ -350,9 +350,7 @@ namespace {
 World::World(const Def& def):
 	m_gravity(def.gravity),
 	m_linearSlop(def.linearSlop),
-	m_angularSlop(def.angularSlop),
-	m_maxLinearCorrection(def.maxLinearCorrection),
-	m_maxAngularCorrection(def.maxAngularCorrection)
+	m_angularSlop(def.angularSlop)
 {
 	memset(&m_profile, 0, sizeof(Profile));
 }
@@ -829,8 +827,8 @@ bool World::Solve(const TimeStep& step, Island& island)
 		.UseResolutionRate(step.regResolutionRate)
 		.UseLinearSlop(GetLinearSlop())
 		.UseAngularSlop(GetAngularSlop())
-		.UseMaxLinearCorrection(GetMaxLinearCorrection())
-		.UseMaxAngularCorrection(GetMaxAngularCorrection());
+		.UseMaxLinearCorrection(step.maxLinearCorrection)
+		.UseMaxAngularCorrection(step.maxAngularCorrection);
 
 	for (auto&& joint: island.m_joints)
 	{
@@ -982,16 +980,16 @@ void World::SolveTOI(const TimeStep& step)
 	for (;;)
 	{
 		// Find the first TOI - the soonest one.
-		const auto minContactToi = UpdateContactTOIs(step);
+		const auto next = UpdateContactTOIs(step);
 
-		if ((!minContactToi.contact) || (minContactToi.toi >= 1))
+		if ((!next.contact) || (next.toi >= 1))
 		{
 			// No more TOI events to handle within the current time step. Done!
 			SetStepComplete(true);
 			break;
 		}
 
-		SolveTOI(step, *minContactToi.contact);
+		SolveTOI(step, *next.contact);
 		
 		// Commit fixture proxy movements to the broad-phase so that new contacts are created.
 		// Also, some contacts can be destroyed.
@@ -1135,8 +1133,8 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 		.UseResolutionRate(step.toiResolutionRate)
 		.UseLinearSlop(GetLinearSlop())
 		.UseAngularSlop(GetAngularSlop())
-		.UseMaxLinearCorrection(GetMaxLinearCorrection())
-		.UseMaxAngularCorrection(GetMaxAngularCorrection());
+		.UseMaxLinearCorrection(step.maxLinearCorrection)
+		.UseMaxAngularCorrection(step.maxAngularCorrection);
 
 	for (auto i = decltype(step.toiPositionIterations){0}; i < step.toiPositionIterations; ++i)
 	{
@@ -1148,7 +1146,7 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 		//   result in phsyics simulations that are more prone to tunneling. Meanwhile, using the
 		//   non-selective solver would presumably be slower (since it appears to have more that
 		//   it will do). Assuming that slower is preferable to tunnelling, then the non-selective
-		//   is the one to be calling here.
+		//   function is the one to be calling here.
 		//
 		const auto minSeparation = SolvePositionConstraints(positionConstraints, positions, psConf);
 		if (minSeparation >= -psConf.linearSlop * float_t(1.5))
@@ -1158,9 +1156,18 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 		}
 	}
 	
-	// Leap of faith to new safe state.
-	island.m_bodies[0]->m_sweep.pos0 = positions[0];
-	island.m_bodies[1]->m_sweep.pos0 = positions[1];	
+	{
+		// Leap of faith to new safe state.
+		// Not doing this results in slower simulations.
+		// Originally this update was only done to island.m_bodies 0 and 1.
+		// Unclear whether rest of bodies should also be updated. No difference noticed.
+		auto i = size_t{0};
+		for (auto&& body: island.m_bodies)
+		{
+			body->m_sweep.pos0 = positions[i];
+			++i;
+		}
+	}
 	
 	// No warm starting is needed for TOI events because warm
 	// starting impulses were applied in the discrete solver.
