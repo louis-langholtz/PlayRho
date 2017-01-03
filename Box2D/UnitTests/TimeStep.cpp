@@ -21,9 +21,9 @@
 
 using namespace box2d;
 
-TEST(TimeStep, ByteSizeIs48)
+TEST(TimeStep, ByteSizeIs56)
 {
-	EXPECT_EQ(sizeof(TimeStep), size_t(48));
+	EXPECT_EQ(sizeof(TimeStep), size_t(56));
 }
 
 TEST(TimeStep, maxTranslation)

@@ -27,7 +27,7 @@ namespace box2d {
 
 /// Time step.
 /// @detail Step configuration data.
-/// @note This data structure is 48-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 56-bytes large (on at least one 64-bit platform).
 class TimeStep
 {
 public:
