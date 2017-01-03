@@ -38,19 +38,36 @@ public:
 		return new TimeOfImpactTest;
 	}
 
+	static const char *GetName(TOIOutput::State state)
+	{
+		switch (state)
+		{
+			case TOIOutput::e_failed: return "failed";
+			case TOIOutput::e_unknown: return "unknown";
+			case TOIOutput::e_touching: return "touching";
+			case TOIOutput::e_separated: return "separated";
+			case TOIOutput::e_overlapped: return "overlapped";
+		}
+	}
+
 	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
-		const auto sweepA = Sweep{Position{Vec2(24.0f, -60.0f), 2.95_rad}};
-		const auto sweepB = Sweep{Position{Vec2(53.474274f, -50.252514f), 513.36676_rad}, Position{Vec2(54.595478f, -51.083473f), 513.62781_rad}};
+		const auto offset = Vec2{float_t(-35), float_t(70)};
+		const auto sweepA = Sweep{
+			Position{Vec2(24.0f, -60.0f) + offset, 2.95_rad}
+		};
+		const auto sweepB = Sweep{
+			Position{Vec2(53.474274f, -50.252514f) + offset, 513.36676_rad},
+			Position{Vec2(54.595478f, -51.083473f) + offset, 513.62781_rad}
+		};
 
 		const auto output = TimeOfImpact(GetDistanceProxy(m_shapeA, 0), sweepA, GetDistanceProxy(m_shapeB, 0), sweepB);
 
-		drawer.DrawString(5, m_textLine, "toi = %g", output.get_t());
+		drawer.DrawString(5, m_textLine, "at toi=%g, state=%s", output.get_t(), GetName(output.get_state()));
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		std::remove_const<decltype(MaxTOIIterations)>::type toiMaxIters = 0;
-		int32 toiMaxRootIters = 0;
-		drawer.DrawString(5, m_textLine, "max toi iters = %d, max root iters = %d", toiMaxIters, toiMaxRootIters);
+		drawer.DrawString(5, m_textLine, "TOI iters = %d, max root iters = %d",
+						  output.get_toi_iters(), output.get_max_root_iters());
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		Vec2 vertices[MaxPolygonVertices];
@@ -95,15 +112,16 @@ public:
 			drawer.DrawPolygon(vertices, vertexCount, Color(0.9f, 0.5f, 0.5f));
 		}
 
-#if 0
-		for (float_t t = 0.0f; t < 1.0f; t += 0.1f)
+#if 1
+		for (auto t = 0.0f; t < 1.0f; t += 0.1f)
 		{
-			transformB = sweepB.GetTransformation(t);
-			for (int32 i = 0; i < m_shapeB.GetVertexCount(); ++i)
+			const auto transformB = GetTransformation(sweepB, t);
+			const auto vertexCount = m_shapeB.GetVertexCount();
+			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
 				vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
 			}
-			drawer.DrawPolygon(vertices, m_shapeB.GetVertexCount(), Color(0.9f, 0.5f, 0.5f));
+			drawer.DrawPolygon(vertices, vertexCount, Color(0.9f, 0.5f, 0.5f));
 		}
 #endif
 	}

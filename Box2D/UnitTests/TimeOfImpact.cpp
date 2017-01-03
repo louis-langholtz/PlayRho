@@ -29,7 +29,7 @@ TEST(TOIConf, DefaultConstruction)
 	EXPECT_EQ(ToiConf{}.maxRootIters, MaxTOIRootIterCount);
 	EXPECT_EQ(ToiConf{}.maxToiIters, MaxTOIIterations);
 	EXPECT_EQ(ToiConf{}.targetDepth, LinearSlop * 3);
-	EXPECT_EQ(ToiConf{}.tolerance, LinearSlop / 4);
+	EXPECT_EQ(ToiConf{}.tolerance, LinearSlop / 4);	
 }
 
 TEST(TOIOutput, DefaultConstruction)
@@ -351,11 +351,12 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
 	// separation has reached tolerance but t2 already equals t1.
 
 	const auto sweepA = Sweep{
-		Position{Vec2{0.0f, -0.5f}, 0_rad}, Position{Vec2{0.0f, -0.5f}, 0_rad}
+		Position{Vec2{0.0f, -0.5f}, 0_rad},
+		Position{Vec2{0.0f, -0.5f}, 0_rad}
 	};
 	const auto sweepB = Sweep{
 		Position{Vec2{14.3689661f, 0.500306308f}, 0.0000139930862_rad},
-		Position{Vec2{14.3689451f, 0.500254989f},  0.000260060915_rad}
+		Position{Vec2{14.3689451f, 0.500254989f}, 0.000260060915_rad}
 	};
 	
 	const auto dpA = DistanceProxy{
@@ -380,7 +381,7 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
 
 	const auto output = TimeOfImpact(dpA, sweepA, dpB, sweepB, conf);
 	
-	EXPECT_EQ(output.get_state(), TOIOutput::e_failed);
+	EXPECT_EQ(output.get_state(), TOIOutput::e_separated);
 	EXPECT_FLOAT_EQ(output.get_t(), 1.0f);
 	EXPECT_EQ(output.get_toi_iters(), 2);
 	EXPECT_EQ(output.get_max_dist_iters(), 4);

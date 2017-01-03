@@ -33,6 +33,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 	
 	auto stats = TOIOutput::Stats{0, 0, 0, 0, 0};
 
+	assert(conf.tMax >= 0 && conf.tMax <=1);
 	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius();
 	assert(conf.targetDepth < totalRadius);
 	assert(!almost_equal(totalRadius - conf.targetDepth, totalRadius));
@@ -58,29 +59,32 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 	// This loop terminates when an axis is repeated (no progress is made).
 	while (stats.toi_iters < conf.maxToiIters)
 	{
+		// Get information on the distance between shapes. We can also use the results
+		// to get a separating axis.
+		const auto distanceInfo = Distance(proxyA, t1xfA, proxyB, t1xfB, cache);
+		cache = Simplex::GetCache(distanceInfo.simplex.GetEdges());
+
+		++stats.toi_iters;
+		stats.sum_dist_iters += distanceInfo.iterations;
+		stats.max_dist_iters = Max(stats.max_dist_iters, distanceInfo.iterations);
+
+		const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
+
+		// Get the real distance squared between shapes at the time of t1.
+		const auto distanceSquared = GetLengthSquared(witnessPoints.a - witnessPoints.b);
+		
+		// If the shapes aren't separated, give up on continuous collision.
+		if (distanceSquared <= 0) // Failure!
 		{
-			// Get the distance between shapes. We can also use the results
-			// to get a separating axis.
-			const auto distanceInfo = Distance(proxyA, t1xfA, proxyB, t1xfB, cache);
-			cache = Simplex::GetCache(distanceInfo.simplex.GetEdges());
-			const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
-
-			++stats.toi_iters;
-			stats.sum_dist_iters += distanceInfo.iterations;
-			stats.max_dist_iters = Max(stats.max_dist_iters, distanceInfo.iterations);
-			const auto distanceSquared = GetLengthSquared(witnessPoints.a - witnessPoints.b);
-			
-			// If the shapes aren't separated, give up on continuous collision.
-			if (distanceSquared <= float_t{0}) // Failure!
-			{
-				return TOIOutput{TOIOutput::e_overlapped, 0, stats};
-			}
-
-			if (distanceSquared <= maxTargetSquared) // Victory!
-			{
-				return TOIOutput{TOIOutput::e_touching, t1, stats};
-			}
+			return TOIOutput{TOIOutput::e_overlapped, 0, stats};
 		}
+
+		if (distanceSquared <= maxTargetSquared) // Victory!
+		{
+			return TOIOutput{TOIOutput::e_touching, t1, stats};
+		}
+
+		// From here on, the real distance squared at time t1 is > than maxTargetSquared
 
 		// Initialize the separating axis.
 		const auto fcn = SeparationFinder::Get(cache.GetIndices(), proxyA, t1xfA, proxyB, t1xfB);
@@ -108,23 +112,25 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 				return TOIOutput{TOIOutput::e_separated, t2, stats};
 			}
 
+			// From here on, t2MinSeparation.distance <= maxTarget
+
 			// Has the separation reached tolerance?
-			if (t2MinSeparation.distance > minTarget)
+			if (t2MinSeparation.distance >= minTarget)
 			{
-				// t2MinSeparation.distance <= maxTarget
 				if (t2 == t1)
 				{
 					//
-					// Can't advance t1 since t2 already the same. What should be done??
+					// Can't advance t1 since t2 already the same.
 					//
-					// If function not stopped, it runs till stats.toi_iters == conf.maxToiIters
-					// and returns TOIOutput{TOIOutput::e_failed, t1, stats}. No need to run
-					// anymore but unclear whether that return value is still reasonable as
-					// distance is within tolerance afterall.
+					// This state happens when the real distance is greater than maxTarget but the
+					// t2MinSeparation distance is less than maxTarget. If function not stopped,
+					// it runs till stats.toi_iters == conf.maxToiIters and returns
+					// TOIOutput{TOIOutput::e_failed, t1, stats}. Given that the function can't
+					// advance anymore, there's certainly no need to run anymore. Additionally,
+					// given that t1 is the same as t2 and the real distance is separated, this
+					// function can return the separated state.
 					//
-					// Till previous return state and time proven wrong, continue to return that...
-					//
-					return TOIOutput{TOIOutput::e_failed, t1, stats};
+					return TOIOutput{TOIOutput::e_separated, t2, stats};
 				}
 
 				// Advance the sweeps
@@ -133,6 +139,8 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 				t1xfB = t2xfB;
 				break;
 			}
+
+			// From here on, t2MinSeparation.distance is < minTarget.
 
 			// Compute the initial separation of the witness points.
 			const auto t1EvaluatedDistance = fcn.Evaluate(t2MinSeparation.indexPair, t1xfA, t1xfB);
