@@ -112,6 +112,10 @@ inline float_t round(float_t value, unsigned precision)
 	return std::round(value * precision) / precision;
 }
 
+/// Gets whether a given value is almost zero.
+/// @detail An almost zero value is "subnormal". Dividing by these values can lead to
+/// odd results like a divide by zero trap occuring.
+/// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 constexpr inline bool almost_zero(float_t value)
 {
 	return Abs(value) < std::numeric_limits<decltype(value)>::min();
@@ -120,11 +124,9 @@ constexpr inline bool almost_zero(float_t value)
 constexpr inline bool almost_equal(float_t x, float_t y, int ulp = 2)
 {
 	// From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
-	//
-	// "the machine epsilon has to be scaled to the magnitude of the values used
-	// and multiplied by the desired precision in ULPs (units in the last place)
-	// unless the result is subnormal".
-	//
+	//   "the machine epsilon has to be scaled to the magnitude of the values used
+	//    and multiplied by the desired precision in ULPs (units in the last place)
+	//    unless the result is subnormal".
 	// Where "subnormal" means almost zero.
 	//
 	return (Abs(x - y) < (std::numeric_limits<float_t>::epsilon() * Abs(x + y) * ulp)) || almost_zero(x - y);

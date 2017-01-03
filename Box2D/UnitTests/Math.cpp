@@ -446,3 +446,62 @@ TEST(Math, NextPowerOfTwo)
 		EXPECT_EQ(NextPowerOfTwo(i), next);
 	}
 }
+
+TEST(Math, Subtracting2UlpAlmostEqualNumbersNotAlmostZero)
+{
+	const auto a = 0.863826155f;
+	const auto b = 0.863826453f;
+	ASSERT_NE(a, b);
+	ASSERT_TRUE(almost_equal(a, b, 2));
+	ASSERT_FALSE(almost_equal(a, b, 1));
+	EXPECT_FALSE(almost_zero((a >= b)? a - b: b - a));
+}
+
+TEST(Math, Subtracting1UlpAlmostEqualNumbersIsNotAlmostZero)
+{
+	const auto a = 0.8638264550000f;
+	const auto b = 0.8638264238828f;
+	ASSERT_NE(a, b);
+	ASSERT_TRUE(almost_equal(a, b, 1));
+	ASSERT_FALSE(almost_equal(a, b, 0));
+	EXPECT_FALSE(almost_zero((a >= b)? a - b: b - a));
+}
+
+TEST(Math, nextafter)
+{
+	const auto a = float(0.863826394);
+	const auto b = float(0.863826453);
+	
+	ASSERT_NE(a, b);
+	ASSERT_TRUE(almost_equal(a, b, 2));
+
+	const auto ap = std::nextafter(a, a + 1);
+	
+	EXPECT_NE(a, ap);
+	EXPECT_EQ(ap, b);
+	EXPECT_EQ((a + b) / 2, a);
+}
+
+TEST(Math, Foo)
+{
+	const auto a = 0.863826155f;
+	const auto b = std::nextafter(a, 1.0f);
+	ASSERT_TRUE(almost_equal(a, b, 2));
+	ASSERT_TRUE(almost_equal(a, b, 1));
+	ASSERT_FALSE(almost_equal(a, b, 0));
+	ASSERT_TRUE(a != b);
+	const auto d = b - a;
+	ASSERT_FALSE(almost_zero(d));
+	EXPECT_EQ(a + d, b);
+	EXPECT_EQ(b - d, a);
+	const auto minfloat = std::numeric_limits<float>::min();
+	ASSERT_NE(minfloat, 0.0f);
+	ASSERT_TRUE(minfloat > 0.0f);
+	ASSERT_NE(minfloat, d);
+	ASSERT_FALSE(almost_zero(minfloat));
+	const auto subnormal = minfloat / 2;
+	ASSERT_TRUE(almost_zero(subnormal));
+	ASSERT_NE(minfloat, subnormal);
+	EXPECT_EQ(a + subnormal, a);
+	EXPECT_EQ(b + subnormal, b);
+}
