@@ -173,6 +173,12 @@ void Body::DestroyJoints()
 
 void Body::DestroyFixtures()
 {
+	assert(!m_world->IsLocked());
+	if (m_world->IsLocked())
+	{
+		return;
+	}
+	
 	// Delete the attached fixtures. This destroys broad-phase proxies.
 	while (!m_fixtures.empty())
 	{
@@ -189,6 +195,8 @@ void Body::DestroyFixtures()
 		Delete(&fixture, m_world->m_blockAllocator);
 		Delete(shape, m_world->m_blockAllocator);
 	}
+	
+	ResetMassData();
 }
 
 void Body::SetType(BodyType type)
@@ -241,9 +249,14 @@ void Body::SetType(BodyType type)
 
 Fixture* Body::CreateFixture(const FixtureDef& def, bool resetMassData)
 {
-	if (def.shape && (GetVertexRadius(*def.shape) < m_world->GetMinVertexRadius()))
+	if (def.shape)
 	{
-		return nullptr;
+		const auto vertexRadius = GetVertexRadius(*def.shape);
+		if (vertexRadius < m_world->GetMinVertexRadius())
+		{
+			return nullptr;
+		}
+		// TODO: check that vertexRadius is not > m_world->GetMaxVertexRadius()
 	}
 	
 	assert(!m_world->IsLocked());

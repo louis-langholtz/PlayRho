@@ -188,6 +188,8 @@ public:
 	/// @param fixture the fixture to be removed.
 	void DestroyFixture(Fixture* fixture, bool resetMassData = true);
 
+	void DestroyFixtures();
+	
 	/// Set the position of the body's origin and rotation.
 	/// Manipulating a body's transform may cause non-physical behavior.
 	/// Note: contacts are updated on the next call to World::Step.
@@ -477,7 +479,6 @@ private:
 
 	void DestroyContacts();
 	void DestroyJoints();
-	void DestroyFixtures();
 
 	void SetMassDataDirty() noexcept;
 	void UnsetMassDataDirty() noexcept;
