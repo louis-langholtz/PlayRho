@@ -431,7 +431,27 @@ TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)
 	const auto xfm0 = Transformation(Vec2{0, -2}, UnitVec2{rot0}); // bottom
 	const auto xfm1 = Transformation(Vec2{0, +2}, UnitVec2{rot1}); // top
 	
-	// Rotate square A and put it below square B
+	// Rotate square A and put it below square B.
+	// In ASCII art terms:
+	//
+	//   +---4---+
+	//   |   |   |
+	//   | B 3   |
+	//   |   |   |
+	//   |   2   |
+	//   |   |   |
+	//   |   1   |
+	//   |  /+\  |
+	//   2-1-*-1-2
+	//    /  1  \
+	//   / A |   \
+	//  +    2    +
+	//   \   |   /
+	//    \  3  /
+	//     \ | /
+	//      \4/
+	//       +
+
 	const auto manifold = CollideShapes(shape, xfm0, shape, xfm1);
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceB);
@@ -444,15 +464,15 @@ TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
 	
 	// localPoint is almost equal to Vec2(2, 2) but it's not exactly equal.
-	EXPECT_FLOAT_EQ(manifold.GetPoint(0).localPoint.x, float_t(+2)); // top right
-	EXPECT_FLOAT_EQ(manifold.GetPoint(0).localPoint.y, float_t(+2)); // top right
+	EXPECT_FLOAT_EQ(manifold.GetPoint(0).localPoint.x, float_t(+2)); // top right shape A
+	EXPECT_FLOAT_EQ(manifold.GetPoint(0).localPoint.y, float_t(+2)); // top right shape A
 	
 	EXPECT_EQ(manifold.GetPoint(0).normalImpulse, float_t(0));
 	EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, float_t(0));
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_vertex);
-	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexA, 1);
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexA, 1); // Shape A top right vertex
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_face);
-	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 3);
+	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 3); // Shape B bottom edge
 	
 	// Also check things in terms of world coordinates...
 	const auto world_manifold = GetWorldManifold(manifold, xfm0, float_t(0), xfm1, float_t(0));
@@ -472,14 +492,14 @@ TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)
 
 TEST(CollideShapes, HorizontalOverlappingRects1)
 {
-	// square
+	// Shape A: square
 	const auto shape0 = PolygonShape(2, 2);
 	ASSERT_EQ(shape0.GetVertex(0), Vec2(+2,-2)); // bottom right
 	ASSERT_EQ(shape0.GetVertex(1), Vec2(+2,+2)); // top right
 	ASSERT_EQ(shape0.GetVertex(2), Vec2(-2,+2)); // top left
 	ASSERT_EQ(shape0.GetVertex(3), Vec2(-2,-2)); // bottom left
 	
-	// wide rectangle
+	// Shape B: wide rectangle
 	const auto shape1 = PolygonShape(3, 1.5);
 	ASSERT_EQ(shape1.GetVertex(0), Vec2(float_t(+3.0), float_t(-1.5))); // bottom right
 	ASSERT_EQ(shape1.GetVertex(1), Vec2(float_t(+3.0), float_t(+1.5))); // top right
@@ -489,7 +509,8 @@ TEST(CollideShapes, HorizontalOverlappingRects1)
 	const auto xfm0 = Transformation(Vec2{-2, 0}, UnitVec2{0_deg}); // left
 	const auto xfm1 = Transformation(Vec2{+2, 0}, UnitVec2{0_deg}); // right
 	
-	// Put square left, wide rectangle right. Or in ASCII art terms:
+	// Put square left, wide rectangle right.
+	// In ASCII art terms:
 	//
 	//   +-------2
 	//   |     +-+---------+
@@ -512,7 +533,7 @@ TEST(CollideShapes, HorizontalOverlappingRects1)
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
 	
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
-	EXPECT_EQ(manifold.GetPoint(0).localPoint, Vec2(float_t(-3.0), float_t(+1.5))); // top left
+	EXPECT_EQ(manifold.GetPoint(0).localPoint, Vec2(float_t(-3.0), float_t(+1.5))); // top left shape B
 	EXPECT_EQ(manifold.GetPoint(0).normalImpulse, float_t(0));
 	EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, float_t(0));
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_face);
@@ -521,7 +542,7 @@ TEST(CollideShapes, HorizontalOverlappingRects1)
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 2);
 	
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
-	EXPECT_EQ(manifold.GetPoint(1).localPoint, Vec2(float_t(-3.0), float_t(-1.5))); // bottom left
+	EXPECT_EQ(manifold.GetPoint(1).localPoint, Vec2(float_t(-3.0), float_t(-1.5))); // bottom left shape B
 	EXPECT_EQ(manifold.GetPoint(1).normalImpulse, float_t(0));
 	EXPECT_EQ(manifold.GetPoint(1).tangentImpulse, float_t(0));
 	EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeA, ContactFeature::e_face);
@@ -548,14 +569,14 @@ TEST(CollideShapes, HorizontalOverlappingRects1)
 
 TEST(CollideShapes, HorizontalOverlappingRects2)
 {
-	// wide rectangle
+	// Shape A: wide rectangle
 	const auto shape0 = PolygonShape(3, 1.5);
 	ASSERT_EQ(shape0.GetVertex(0), Vec2(float_t(+3.0), float_t(-1.5))); // bottom right
 	ASSERT_EQ(shape0.GetVertex(1), Vec2(float_t(+3.0), float_t(+1.5))); // top right
 	ASSERT_EQ(shape0.GetVertex(2), Vec2(float_t(-3.0), float_t(+1.5))); // top left
 	ASSERT_EQ(shape0.GetVertex(3), Vec2(float_t(-3.0), float_t(-1.5))); // bottom left
 	
-	// square
+	// Shape B: square
 	const auto shape1 = PolygonShape(2, 2);
 	ASSERT_EQ(shape1.GetVertex(0), Vec2(+2,-2)); // bottom right
 	ASSERT_EQ(shape1.GetVertex(1), Vec2(+2,+2)); // top right
