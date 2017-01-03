@@ -106,7 +106,7 @@ constexpr auto AngularSlop = Pi * float_t{2} / float_t{180};
 constexpr auto MaxTOIIterations = BOX2D_MAGIC(uint8{20});
 
 /// Maximum time of impact root iterator count.
-constexpr auto MaxTOIRootIterCount = BOX2D_MAGIC(uint8{50});
+constexpr auto MaxTOIRootIterCount = BOX2D_MAGIC(uint8{30});
 
 /// Max number of distance iterations.
 constexpr auto MaxDistanceIterations = BOX2D_MAGIC(uint8{20});
