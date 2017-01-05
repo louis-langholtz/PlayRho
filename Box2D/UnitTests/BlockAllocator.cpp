@@ -63,3 +63,31 @@ TEST(BlockAllocator, Allocate_and_Clear)
 	
 	EXPECT_EQ(allocator.GetChunkCount(), decltype(allocator.GetChunkCount()){0});
 }
+
+static inline bool is_aligned(void* ptr, std::size_t siz)
+{
+	return reinterpret_cast<std::uintptr_t>(static_cast<void*>(ptr)) % siz == 0;
+}
+
+TEST(BlockAllocator, aligns_data)
+{
+	BlockAllocator foo;
+	
+	const auto p_char1 = static_cast<char*>(foo.Allocate(sizeof(char)));
+	const auto p_int = static_cast<int*>(foo.Allocate(sizeof(int)));
+	const auto p_char2 = static_cast<char*>(foo.Allocate(sizeof(char)));
+	
+	EXPECT_TRUE(is_aligned(p_char1, alignof(char)));
+	EXPECT_TRUE(is_aligned(p_char2, alignof(char)));
+	EXPECT_TRUE(is_aligned(p_int, alignof(int)));
+	
+	*p_char1 = 'W';
+	*p_int = 5;
+	
+	EXPECT_EQ(*p_char1, 'W');
+	EXPECT_EQ(*p_int, 5);
+	
+	foo.Free(p_int, sizeof(int));
+	foo.Free(p_char2, sizeof(char));
+	foo.Free(p_char1, sizeof(char));
+}
