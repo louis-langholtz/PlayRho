@@ -210,6 +210,43 @@ TEST(Math, CrossProductOfTwoVecTwoIsAntiCommutative)
 	EXPECT_EQ(Cross(a, b), -Cross(b, a));
 }
 
+TEST(Math, Vec2NegationAndRotationIsOrderIndependent)
+{
+	{
+		const auto v = Vec2{float_t(1), float_t(1)};
+		const auto r = UnitVec2{0_deg};
+		EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
+	}
+	{
+		const auto v = Vec2{float_t(1), float_t(1)};
+		const auto r = UnitVec2{33_deg};
+		EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
+	}
+	{
+		const auto v = Vec2{float_t(-3.2), float_t(1.9)};
+		const auto r = UnitVec2{33_deg};
+		EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
+	}
+	{
+		const auto v = Vec2{float_t(-3.2), float_t(-21.4)};
+		for (auto angle = -360_deg; angle < 360_deg; angle += 15_deg)
+		{
+			const auto r = UnitVec2{angle};
+			EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
+		}
+	}
+	{
+		const auto v = Vec2{float_t(-3.2), float_t(1.9)};
+		const auto r = UnitVec2{33_deg};
+		EXPECT_EQ(Rotate(v, r), -Rotate(-v, r));
+	}
+	{
+		const auto v = Vec2{float_t(-3.2), float_t(1.9)};
+		const auto r = UnitVec2{33_deg};
+		EXPECT_EQ(Rotate(v, r), -Rotate(v, -r));
+	}
+}
+
 TEST(Math, TransformIsRotatePlusTranslate)
 {
 	const auto vector = Vec2{float_t(19), float_t(-0.5)};
@@ -482,7 +519,7 @@ TEST(Math, nextafter)
 	EXPECT_EQ((a + b) / 2, a);
 }
 
-TEST(Math, Foo)
+TEST(Math, nextafter2)
 {
 	const auto a = 0.863826155f;
 	const auto b = std::nextafter(a, 1.0f);
