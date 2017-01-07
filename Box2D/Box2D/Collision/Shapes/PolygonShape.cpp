@@ -90,6 +90,7 @@ void PolygonShape::Set(Span<const Vec2> points) noexcept
 void PolygonShape::Set(const VertexSet<MaxPolygonVertices>& point_set) noexcept
 {
 	const auto n = static_cast<vertex_count_t>(point_set.size());
+	assert(n > 0);
 
 	// Create the convex hull using the Gift wrapping algorithm
 	// http://en.wikipedia.org/wiki/Gift_wrapping_algorithm
@@ -146,6 +147,10 @@ void PolygonShape::Set(const VertexSet<MaxPolygonVertices>& point_set) noexcept
 		{
 			m_normals[i] = GetUnitVector(GetFwdPerpendicular(GetEdge(*this, i)));
 		}
+	}
+	else if (m == 1)
+	{
+		m_normals[0] = UnitVec2{};
 	}
 
 	// Compute the polygon centroid.
@@ -231,6 +236,13 @@ bool box2d::TestPoint(const PolygonShape& shape, const Transformation& xf, const
 	const auto pLocal = InverseRotate(p - xf.p, xf.q);
 	const auto vr = shape.GetVertexRadius();
 	const auto count = shape.GetVertexCount();
+	
+	if (count == 1)
+	{
+		const auto center = xf.p + Rotate(shape.GetVertex(0), xf.q);
+		return GetLengthSquared(p - center) <= Square(vr);
+	}
+
 	auto maxDot = -MaxFloat;
 	auto maxIdx = PolygonShape::InvalidVertex;
 	for (auto i = decltype(count){0}; i < count; ++i)

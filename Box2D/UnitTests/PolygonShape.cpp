@@ -316,3 +316,16 @@ TEST(PolygonShape, CanSetTwoPoints)
 	EXPECT_EQ(shape.GetCentroid(), Average(points));
 	EXPECT_EQ(shape.GetVertexRadius(), vertexRadius);
 }
+
+TEST(PolygonShape, CanSetOnePoint)
+{
+	const auto points = Span<const Vec2>{Vec2{0, 0}};
+	const auto vertexRadius = float_t(2);
+	PolygonShape shape(vertexRadius);
+	shape.Set(points);
+	EXPECT_EQ(shape.GetVertexCount(), static_cast<PolygonShape::vertex_count_t>(points.size()));
+	EXPECT_EQ(shape.GetVertex(0), points[0]);
+	EXPECT_FALSE(IsValid(shape.GetNormal(0)));
+	EXPECT_EQ(shape.GetCentroid(), points[0]);
+	EXPECT_EQ(shape.GetVertexRadius(), vertexRadius);
+}

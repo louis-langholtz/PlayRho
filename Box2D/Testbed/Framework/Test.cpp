@@ -130,7 +130,7 @@ static void Draw(Drawer& drawer, const PolygonShape& shape, const Transformation
 			DrawCorner(drawer, vertices[i], r, angle0, angle1, skinColor);
 		}
 	}
-	if (vertexCount > 0)
+	if (vertexCount > 1)
 	{
 		const auto worldNormal0 = Rotate(shape.GetNormal(vertexCount - 1), xf.q);
 		drawer.DrawSegment(vertices[vertexCount - 1] + worldNormal0 * r, vertices[0] + worldNormal0 * r, skinColor);
@@ -139,7 +139,10 @@ static void Draw(Drawer& drawer, const PolygonShape& shape, const Transformation
 		const auto angle1 = GetAngle(worldNormal1);
 		DrawCorner(drawer, vertices[0], r, angle0, angle1, skinColor);
 	}
-
+	else if (vertexCount == 1)
+	{
+		DrawCorner(drawer, vertices[0], r, 0_deg, 360_deg, skinColor);
+	}
 }
 
 static void Draw(Drawer& drawer, const Fixture& fixture, const Transformation& xf, const Color& color, bool skins)

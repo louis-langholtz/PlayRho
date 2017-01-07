@@ -381,32 +381,13 @@ static inline Manifold GetFaceManifold(const Manifold::Type type,
 	return Manifold{};
 }
 
-/*
- * Definition of CollideShapes functions.
- * All CollideShapes functions return a Manifold object.
- */
-
-Manifold box2d::CollideShapes(const CircleShape& shapeA, const Transformation& xfA,
-							  const CircleShape& shapeB, const Transformation& xfB)
-{
-	const auto pA = Transform(shapeA.GetLocation(), xfA);
-	const auto pB = Transform(shapeB.GetLocation(), xfB);
-	const auto totalRadius = GetVertexRadius(shapeA) + GetVertexRadius(shapeB);
-	
-	if (GetLengthSquared(pB - pA) > Square(totalRadius))
-	{
-		return Manifold{};
-	}
-	return Manifold::GetForCircles(shapeA.GetLocation(), 0, shapeB.GetLocation(), 0);
-}
-
-Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& xfA,
-							  const CircleShape& shapeB, const Transformation& xfB)
+static Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA,
+							  Vec2 locationB, float_t radiusB, const Transformation& xfB)
 {
 	// Computes the center of the circle in the frame of the polygon.
-	const auto cLocal = InverseTransform(Transform(shapeB.GetLocation(), xfB), xfA); ///< Center of circle in frame of polygon.
+	const auto cLocal = InverseTransform(Transform(locationB, xfB), xfA); ///< Center of circle in frame of polygon.
 	
-	const auto totalRadius = GetVertexRadius(shapeA) + GetVertexRadius(shapeB);
+	const auto totalRadius = GetVertexRadius(shapeA) + radiusB;
 	const auto vertexCount = shapeA.GetVertexCount();
 	
 	// Find edge that circle is closest to.
@@ -440,7 +421,7 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	{
 		// Circle's center is inside the polygon and closest to edge[indexOfMax].
 		return Manifold::GetForFaceA(shapeA.GetNormal(indexOfMax), indexOfMax, (v1 + v2) / 2,
-									 ContactFeature::e_vertex, 0, shapeB.GetLocation());
+									 ContactFeature::e_vertex, 0, locationB);
 	}
 	
 	// Circle's center is outside polygon and closest to edge[indexOfMax].
@@ -453,7 +434,7 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 		{
 			return Manifold{};
 		}
-		return Manifold::GetForCircles(v1, indexOfMax, shapeB.GetLocation(), 0);
+		return Manifold::GetForCircles(v1, indexOfMax, locationB, 0);
 	}
 	
 	if (Dot(cLocal - v2, v1 - v2) <= 0)
@@ -463,7 +444,7 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 		{
 			return Manifold{};
 		}
-		return Manifold::GetForCircles(v2, indexOfMax2, shapeB.GetLocation(), 0);
+		return Manifold::GetForCircles(v2, indexOfMax2, locationB, 0);
 	}
 	
 	// Circle's center is between v1 and v2.
@@ -473,7 +454,35 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 		return Manifold{};
 	}
 	return Manifold::GetForFaceA(shapeA.GetNormal(indexOfMax), indexOfMax, faceCenter,
-								 ContactFeature::e_vertex, 0, shapeB.GetLocation());
+								 ContactFeature::e_vertex, 0, locationB);
+}
+
+static Manifold CollideShapes(Vec2 locationA, float_t radiusA, const Transformation& xfA,
+							  Vec2 locationB, float_t radiusB, const Transformation& xfB)
+{
+	const auto pA = Transform(locationA, xfA);
+	const auto pB = Transform(locationB, xfB);
+	const auto totalRadius = radiusA + radiusB;
+	return (GetLengthSquared(pB - pA) > Square(totalRadius))?
+		Manifold{}: Manifold::GetForCircles(locationA, 0, locationB, 0);
+}
+
+/*
+ * Definition of public CollideShapes functions.
+ * All CollideShapes functions return a Manifold object.
+ */
+
+Manifold box2d::CollideShapes(const CircleShape& shapeA, const Transformation& xfA,
+							  const CircleShape& shapeB, const Transformation& xfB)
+{
+	return ::CollideShapes(shapeA.GetLocation(), GetVertexRadius(shapeA), xfA,
+						   shapeB.GetLocation(), GetVertexRadius(shapeB), xfB);
+}
+
+Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& xfA,
+							  const CircleShape& shapeB, const Transformation& xfB)
+{
+	return ::CollideShapes(shapeA, xfA, shapeB.GetLocation(), shapeB.GetVertexRadius(), xfB);
 }
 
 Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA,
@@ -728,6 +737,27 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 	// Choose reference edge as min(minA, minB)
 	// Find incident edge
 	// Clip
+
+	const auto vertexCountShapeA = shapeA.GetVertexCount();
+	const auto vertexCountShapeB = shapeB.GetVertexCount();
+	if (vertexCountShapeA == 1)
+	{
+		if (vertexCountShapeB > 1)
+		{
+			return ::CollideShapes(shapeB, xfB, shapeA.GetCentroid(), shapeA.GetVertexRadius(), xfA);
+		}
+		return ::CollideShapes(shapeA.GetCentroid(), shapeA.GetVertexRadius(), xfA,
+							   shapeB.GetCentroid(), shapeB.GetVertexRadius(), xfB);
+	}
+	if (vertexCountShapeB == 1)
+	{
+		if (vertexCountShapeA > 1)
+		{
+			return ::CollideShapes(shapeA, xfA, shapeB.GetCentroid(), shapeB.GetVertexRadius(), xfB);
+		}
+		return ::CollideShapes(shapeA.GetCentroid(), shapeA.GetVertexRadius(), xfA,
+							   shapeB.GetCentroid(), shapeB.GetVertexRadius(), xfB);
+	}
 
 	const auto totalRadius = GetVertexRadius(shapeA) + GetVertexRadius(shapeB);
 	
