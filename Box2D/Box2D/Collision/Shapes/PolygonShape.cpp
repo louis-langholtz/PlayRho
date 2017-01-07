@@ -75,13 +75,6 @@ void PolygonShape::Transform(box2d::Transformation xf) noexcept
 
 void PolygonShape::Set(Span<const Vec2> points) noexcept
 {
-	assert((points.size() >= 3) && (points.size() <= MaxPolygonVertices));
-	if (points.size() < 3)
-	{
-		SetAsBox(float_t{1}, float_t{1});
-		return;
-	}
-	
 	// Perform welding and copy vertices into local buffer.
 	auto point_set = VertexSet<MaxPolygonVertices>(LinearSlop);
 	{
@@ -97,14 +90,6 @@ void PolygonShape::Set(Span<const Vec2> points) noexcept
 void PolygonShape::Set(const VertexSet<MaxPolygonVertices>& point_set) noexcept
 {
 	const auto n = static_cast<vertex_count_t>(point_set.size());
-
-	assert(n >= 3);
-	if (n < 3)
-	{
-		// Polygon is degenerate.
-		SetAsBox(float_t{1}, float_t{1});
-		return;
-	}
 
 	// Create the convex hull using the Gift wrapping algorithm
 	// http://en.wikipedia.org/wiki/Gift_wrapping_algorithm
@@ -146,14 +131,6 @@ void PolygonShape::Set(const VertexSet<MaxPolygonVertices>& point_set) noexcept
 		}
 	}
 	
-	assert(m >= 3);
-	if (m < 3)
-	{
-		// Polygon is degenerate.
-		SetAsBox(float_t{1}, float_t{1});
-		return;
-	}
-
 	m_count = m;
 
 	// Copy vertices.
@@ -162,14 +139,31 @@ void PolygonShape::Set(const VertexSet<MaxPolygonVertices>& point_set) noexcept
 		m_vertices[i] = point_set[hull[i]];
 	}
 
-	// Compute normals.
-	for (auto i = decltype(m){0}; i < m; ++i)
+	if (m > 1)
 	{
-		m_normals[i] = GetUnitVector(GetFwdPerpendicular(GetEdge(*this, i)));
+		// Compute normals.
+		for (auto i = decltype(m){0}; i < m; ++i)
+		{
+			m_normals[i] = GetUnitVector(GetFwdPerpendicular(GetEdge(*this, i)));
+		}
 	}
 
 	// Compute the polygon centroid.
-	m_centroid = ComputeCentroid(Span<const Vec2>(m_vertices, m));
+	switch (m)
+	{
+		case 0:
+			m_centroid = GetInvalid<Vec2>();
+			break;
+		case 1:
+			m_centroid = m_vertices[0];
+			break;
+		case 2:
+			m_centroid = (m_vertices[0] + m_vertices[1]) / 2;
+			break;
+		default:
+			m_centroid = ComputeCentroid(Span<const Vec2>(m_vertices, m));
+			break;
+	}
 }
 
 size_t box2d::FindLowestRightMostVertex(Span<const Vec2> vertices)
@@ -191,6 +185,8 @@ size_t box2d::FindLowestRightMostVertex(Span<const Vec2> vertices)
 
 Vec2 box2d::GetEdge(const PolygonShape& shape, PolygonShape::vertex_count_t index)
 {
+	assert(shape.GetVertexCount() > 1);
+
 	const auto i0 = index;
 	const auto i1 = GetModuloNext(index, shape.GetVertexCount());
 	return shape.GetVertex(i1) - shape.GetVertex(i0);

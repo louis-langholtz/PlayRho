@@ -81,7 +81,7 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
 	const auto i = 8.0 * 2.0 * 2.0 * 2.0 / 12.0 + 8.0 * 8.0 * 8.0 * 2.0 / 12.0;
 	EXPECT_FLOAT_EQ(mass_data.I, density * float_t(i));
 	
-	const auto i_z = GetPolarMomentOfPolygon(shape.GetVertices());
+	const auto i_z = GetPolarMoment(shape.GetVertices());
 	EXPECT_FLOAT_EQ(mass_data.I, density * i_z);
 	
 	EXPECT_FLOAT_EQ(GetAreaOfPolygon(shape.GetVertices()), float_t(16));
@@ -132,8 +132,8 @@ TEST(MassData, GetForCenteredEdge)
 	EXPECT_EQ(mass_data.mass, density * area);
 
 	EXPECT_FLOAT_EQ(mass_data.I, float_t(18.70351));
-	EXPECT_FLOAT_EQ(GetPolarMomentOfPolygon(vertices), float_t(5.6666665));
-	EXPECT_GT(mass_data.I, GetPolarMomentOfPolygon(vertices) * density);
+	EXPECT_FLOAT_EQ(GetPolarMoment(vertices), float_t(5.6666665));
+	EXPECT_GT(mass_data.I, GetPolarMoment(vertices) * density);
 	
 	EXPECT_EQ(mass_data.center.x, 0);
 	EXPECT_EQ(mass_data.center.y, 0);

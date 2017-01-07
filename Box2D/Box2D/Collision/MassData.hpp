@@ -33,7 +33,11 @@ namespace box2d {
 
 	float_t GetAreaOfCircle(float_t radius);
 	float_t GetAreaOfPolygon(Span<const Vec2> vertices);
-	float_t GetPolarMomentOfPolygon(Span<const Vec2> vertices);
+
+	/// Gets the polar moment of the area enclosed by the given vertices.
+	/// @warning Behavior is undefined if given collection has less than 3 vertices.
+	/// @param vertices Collection of three or more vertices.
+	float_t GetPolarMoment(Span<const Vec2> vertices);
 
 	/// Mass data.
 	/// @detail This holds the mass data computed for a shape.

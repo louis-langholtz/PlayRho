@@ -57,8 +57,9 @@ public:
 		polygonA.Set(Span<const Vec2>{Vec2{-8, -6}, Vec2{8, -6}, Vec2{0, 6}});
 		m_bodyA->CreateFixture(FixtureDef{&polygonA, 1});
 		
-		PolygonShape polygonB{radius};
-		polygonB.SetAsBox(7.2f, 0.8f);
+		PolygonShape polygonB{radius * 2};
+		//polygonB.SetAsBox(7.2f, 0.8f);
+		polygonB.Set(Span<const Vec2>{Vec2{float(-7.2), 0}, Vec2{float(7.2), 0}});
 		m_bodyB->CreateFixture(FixtureDef{&polygonB, 1});
 	}
 

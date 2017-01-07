@@ -28,6 +28,61 @@
 
 using namespace box2d;
 
+namespace
+{
+	MassData GetMassData(float_t r, float_t density, Vec2 location)
+	{
+		// Uses parallel axis theorem, perpendicular axis theorem, and the second moment of area.
+		// See: https://en.wikipedia.org/wiki/Second_moment_of_area
+		//
+		// Ixp = Ix + A * dx^2
+		// Iyp = Iy + A * dy^2
+		// Iz = Ixp + Iyp = Ix + A * dx^2 + Iy + A * dy^2
+		// Ix = Pi * r^4 / 4
+		// Iy = Pi * r^4 / 4
+		// Iz = (Pi * r^4 / 4) + (Pi * r^4 / 4) + (A * dx^2) + (A * dy^2)
+		//    = (Pi * r^4 / 2) + (A * (dx^2 + dy^2))
+		// A = Pi * r^2
+		// Iz = (Pi * r^4 / 2) + (2 * (Pi * r^2) * (dx^2 + dy^2))
+		// Iz = Pi * r^2 * ((r^2 / 2) + (dx^2 + dy^2))
+		assert(density >= 0);
+		const auto r_squared = Square(r);
+		const auto area = Pi * r_squared;
+		const auto mass = density * area;
+		const auto Iz = area * ((r_squared / 2) + GetLengthSquared(location));
+		return MassData{mass, location, Iz * density};
+	}
+
+	MassData GetMassData(float_t r, float_t density, Vec2 v0, Vec2 v1)
+	{
+		const auto r_squared = Square(r);
+		const auto circle_area = Pi * r_squared;
+		const auto circle_mass = density * circle_area;
+		const auto d = v1 - v0;
+		const auto offset = GetRevPerpendicular(GetUnitVector(d, UnitVec2::GetZero())) * r;
+		const auto b = GetLength(d);
+		const auto h = r * 2;
+		const auto rect_mass = density * b * h;
+		const auto totalMass = circle_mass + rect_mass;
+		
+		/// Use the fixture's areal mass density times the shape's second moment of area to derive I.
+		/// @sa https://en.wikipedia.org/wiki/Second_moment_of_area
+		const auto I0 = (circle_area / 2) * ((r_squared / 2) + GetLengthSquared(v0));
+		const auto I1 = (circle_area / 2) * ((r_squared / 2) + GetLengthSquared(v1));
+		
+		const auto vertices = Span<const Vec2>{
+			Vec2{v0 + offset},
+			Vec2{v0 - offset},
+			Vec2{v1 - offset},
+			Vec2{v1 + offset}
+		};
+		const auto I_z = GetPolarMoment(vertices);
+		
+		return MassData{totalMass, (v0 + v1) / 2, (I0 + I1 + I_z) * density};
+	}
+
+} // unnamed namespace
+
 float_t box2d::GetAreaOfCircle(float_t radius)
 {
 	return Pi * Square(radius);
@@ -49,8 +104,10 @@ float_t box2d::GetAreaOfPolygon(Span<const Vec2> vertices)
 	return sum / 2;
 }
 
-float_t box2d::GetPolarMomentOfPolygon(Span<const Vec2> vertices)
+float_t box2d::GetPolarMoment(Span<const Vec2> vertices)
 {
+	assert(vertices.size() > 2);
+
 	// Use formulas Ix and Iy for second moment of area of any simple polygon and apply
 	// the perpendicular axis theorem on these to get the desired answer.
 	//
@@ -106,7 +163,17 @@ MassData box2d::GetMassData(const PolygonShape& shape, float_t density)
 	// The rest of the derivation is handled by computer algebra.
 	
 	const auto count = shape.GetVertexCount();
-	assert(count >= 3);
+	switch (count)
+	{
+		case 0:
+			return MassData{GetInvalid<float_t>(), GetInvalid<Vec2>(), GetInvalid<float_t>()};
+		case 1:
+			return ::GetMassData(shape.GetVertexRadius(), density, shape.GetVertex(0));
+		case 2:
+			return ::GetMassData(shape.GetVertexRadius(), density, shape.GetVertex(0), shape.GetVertex(1));;
+		default:
+			break;
+	}
 	
 	auto center = Vec2_zero;
 	auto area = float_t{0};
@@ -156,63 +223,14 @@ MassData box2d::GetMassData(const PolygonShape& shape, float_t density)
 
 MassData box2d::GetMassData(const CircleShape& shape, float_t density)
 {
-	// Uses parallel axis theorem, perpendicular axis theorem, and the second moment of area.
-	// See: https://en.wikipedia.org/wiki/Second_moment_of_area
-	//
-	// Ixp = Ix + A * dx^2
-	// Iyp = Iy + A * dy^2
-	// Iz = Ixp + Iyp = Ix + A * dx^2 + Iy + A * dy^2
-	// Ix = Pi * r^4 / 4
-	// Iy = Pi * r^4 / 4
-	// Iz = (Pi * r^4 / 4) + (Pi * r^4 / 4) + (A * dx^2) + (A * dy^2)
-	//    = (Pi * r^4 / 2) + (A * (dx^2 + dy^2))
-	// A = Pi * r^2
-	// Iz = (Pi * r^4 / 2) + (2 * (Pi * r^2) * (dx^2 + dy^2))
-	// Iz = Pi * r^2 * ((r^2 / 2) + (dx^2 + dy^2))
-	assert(density >= 0);
-	const auto r = shape.GetRadius();
-	const auto r_squared = Square(r);
-	const auto area = Pi * r_squared;
-	const auto mass = density * area;
-	const auto Iz = area * ((r_squared / 2) + GetLengthSquared(shape.GetLocation()));
-	return MassData{mass, shape.GetLocation(), Iz * density};
+	return ::GetMassData(shape.GetVertexRadius(), density, shape.GetLocation());
 }
 
 MassData box2d::GetMassData(const EdgeShape& shape, float_t density)
 {
-	assert(density >= 0);
 	assert(!shape.HasVertex0());
 	assert(!shape.HasVertex3());
-
-	const auto r = shape.GetVertexRadius();
-	const auto r_squared = Square(r);
-	const auto circle_area = Pi * r_squared;
-	const auto circle_mass = density * circle_area;
-	const auto d = shape.GetVertex2() - shape.GetVertex1();
-	const auto offset = GetRevPerpendicular(GetUnitVector(d, UnitVec2::GetZero())) * r;
-	const auto b = GetLength(d);
-	const auto h = r * 2;
-	const auto rect_mass = density * b * h;
-	const auto totalMass = circle_mass + rect_mass;
-
-	/// Use the fixture's areal mass density times the shape's second moment of area to derive I.
-	/// @sa https://en.wikipedia.org/wiki/Second_moment_of_area
-	const auto I0 = (circle_area / 2) * ((r_squared / 2) + GetLengthSquared(shape.GetVertex1()));
-	const auto I1 = (circle_area / 2) * ((r_squared / 2) + GetLengthSquared(shape.GetVertex2()));
-
-	const auto vertices = Span<const Vec2>{
-		Vec2{shape.GetVertex1() + offset},
-		Vec2{shape.GetVertex1() - offset},
-		Vec2{shape.GetVertex2() - offset},
-		Vec2{shape.GetVertex2() + offset}
-	};
-	const auto I_z = GetPolarMomentOfPolygon(vertices);
-	
-	return MassData{
-		totalMass,
-		(shape.GetVertex1() + shape.GetVertex2()) / float_t(2),
-		(I0 + I1 + I_z) * density
-	};
+	return ::GetMassData(shape.GetVertexRadius(), density, shape.GetVertex1(), shape.GetVertex2());
 }
 
 MassData box2d::GetMassData(const ChainShape& shape, float_t density)

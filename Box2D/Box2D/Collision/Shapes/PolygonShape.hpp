@@ -148,6 +148,9 @@ inline UnitVec2 PolygonShape::GetNormal(vertex_count_t index) const
 	return m_normals[index];
 }
 
+/// Gets the identified edge of the given polygon shape.
+/// @note This must not be called for shapes with less than 2 vertices.
+/// @warning Behavior is undefined if called for a shape with less than 2 vertices.
 Vec2 GetEdge(const PolygonShape& shape, PolygonShape::vertex_count_t index);
 
 /// Gets the number of child primitives.
