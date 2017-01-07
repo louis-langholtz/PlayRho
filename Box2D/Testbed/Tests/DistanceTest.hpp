@@ -22,6 +22,7 @@
 
 #include <sstream>
 #include <Box2D/Collision/ShapeSeparation.hpp>
+#include <Box2D/Dynamics/Contacts/PositionSolverManifold.hpp>
 
 namespace box2d {
 
@@ -52,7 +53,8 @@ public:
 		const auto radius = RadiusIncrement * 40;
 
 		PolygonShape polygonA{radius};
-		polygonA.SetAsBox(8.0f, 6.0f);
+		//polygonA.SetAsBox(8.0f, 6.0f);
+		polygonA.Set(Span<const Vec2>{Vec2{-8, -6}, Vec2{8, -6}, Vec2{0, 6}});
 		m_bodyA->CreateFixture(FixtureDef{&polygonA, 1});
 		
 		PolygonShape polygonB{radius};
@@ -247,6 +249,13 @@ public:
 					const auto pB = Transform(manifold.GetPoint(0).localPoint, xfmB);
 					drawer.DrawCircle(pA, rA / 2, Color(1, 1, 1));
 					drawer.DrawCircle(pB, rB / 2, Color(1, 1, 1));
+					
+					const auto psm = GetPSM(manifold, 0, xfmA, xfmB);
+					const auto psm_separation = psm.m_separation - totalRadius;
+					drawer.DrawCircle(psm.m_point, psm_separation, psmPointColor);
+
+					drawer.DrawSegment(psm.m_point, psm.m_point + psm.m_normal * psm_separation, psmPointColor);
+
 					break;
 				}
 				case Manifold::e_faceA:
@@ -257,6 +266,12 @@ public:
 					{
 						const auto pB = Transform(manifold.GetOpposingPoint(i), xfmB);
 						drawer.DrawCircle(pB, rB / 2, Color(1, 1, 1));
+						
+						const auto psm = GetPSM(manifold, i, xfmA, xfmB);
+						const auto psm_separation = psm.m_separation - totalRadius;
+						drawer.DrawCircle(psm.m_point, psm_separation, psmPointColor);
+						
+						drawer.DrawSegment(psm.m_point, psm.m_point + psm.m_normal * psm_separation, psmPointColor);
 					}
 					break;
 				}
@@ -268,6 +283,12 @@ public:
 					{
 						const auto pA = Transform(manifold.GetOpposingPoint(i), xfmA);
 						drawer.DrawCircle(pA, rA / 2, Color(1, 1, 1));
+						
+						const auto psm = GetPSM(manifold, i, xfmA, xfmB);
+						const auto psm_separation = psm.m_separation - totalRadius;
+						drawer.DrawCircle(psm.m_point, psm_separation, psmPointColor);
+
+						drawer.DrawSegment(psm.m_point, psm.m_point + psm.m_normal * psm_separation, psmPointColor);
 					}
 					break;
 				}
@@ -403,6 +424,7 @@ private:
 	const Color witnessPointColor = Color{1, 1, 0, 0.5}; // semi-transparent yellow
 	const Color adjustedPointColor = Color{1, 0.5f, 0, 0.5f}; // semi-transparent light brown
 	const Color matchingPointColor = Color{1, 0, 0}; // red
+	const Color psmPointColor = Color{0.5f, 1, 1};
 
 	Body* m_bodyA;
 	Body* m_bodyB;
