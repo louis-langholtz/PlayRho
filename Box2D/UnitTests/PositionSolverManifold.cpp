@@ -86,7 +86,7 @@ TEST(PositionSolverManifold, GetPSM)
 	
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
 	ASSERT_FLOAT_EQ(manifold.GetPoint(0).localPoint.x, float_t(-2.0)); // left
-	ASSERT_FLOAT_EQ(manifold.GetPoint(0).localPoint.y, float_t(-1.5) - total_radius); // top
+	ASSERT_FLOAT_EQ(manifold.GetPoint(0).localPoint.y, float_t(-1.5)); // top
 	ASSERT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_vertex);
 	ASSERT_EQ(manifold.GetPoint(0).contactFeature.indexA, 0);
 	ASSERT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_face);
@@ -94,7 +94,7 @@ TEST(PositionSolverManifold, GetPSM)
 	
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
 	ASSERT_FLOAT_EQ(manifold.GetPoint(1).localPoint.x, float_t(-2.0)); // left
-	ASSERT_FLOAT_EQ(manifold.GetPoint(1).localPoint.y, float_t(+1.5) + total_radius); // bottom
+	ASSERT_FLOAT_EQ(manifold.GetPoint(1).localPoint.y, float_t(+1.5)); // bottom
 	ASSERT_EQ(manifold.GetPoint(1).contactFeature.typeA, ContactFeature::e_vertex);
 	ASSERT_EQ(manifold.GetPoint(1).contactFeature.indexA, 1);
 	ASSERT_EQ(manifold.GetPoint(1).contactFeature.typeB, ContactFeature::e_face);
@@ -112,12 +112,12 @@ TEST(PositionSolverManifold, GetPSM)
 		
 		ASSERT_GT(world_manifold.GetPointCount(), Manifold::size_type(0));
 		ASSERT_FLOAT_EQ(world_manifold.GetPoint(0).x, float_t(+0.5));
-		ASSERT_FLOAT_EQ(world_manifold.GetPoint(0).y, float_t(-1.5) - total_radius);
+		ASSERT_FLOAT_EQ(world_manifold.GetPoint(0).y, float_t(-1.5));
 		ASSERT_FLOAT_EQ(world_manifold.GetSeparation(0), float_t(-1) - total_radius);
 		
 		ASSERT_GT(world_manifold.GetPointCount(), Manifold::size_type(1));
 		ASSERT_FLOAT_EQ(world_manifold.GetPoint(1).x, float_t(+0.5));
-		ASSERT_FLOAT_EQ(world_manifold.GetPoint(1).y, float_t(+1.5) + total_radius);
+		ASSERT_FLOAT_EQ(world_manifold.GetPoint(1).y, float_t(+1.5));
 		ASSERT_FLOAT_EQ(world_manifold.GetSeparation(1), float_t(-1) - total_radius);
 	}
 	
@@ -127,7 +127,7 @@ TEST(PositionSolverManifold, GetPSM)
 		EXPECT_EQ(psm0.m_normal.GetY(), float_t(0));
 		EXPECT_EQ(psm0.m_separation, float_t(-1));
 		EXPECT_FLOAT_EQ(psm0.m_point.x, float_t(0));
-		EXPECT_FLOAT_EQ(psm0.m_point.y, float_t(-1.5) - total_radius);
+		EXPECT_FLOAT_EQ(psm0.m_point.y, float_t(-1.5));
 	}
 	{
 		const auto psm1 = GetPSM(manifold, 1, xfm0, xfm1);
@@ -135,6 +135,6 @@ TEST(PositionSolverManifold, GetPSM)
 		EXPECT_EQ(psm1.m_normal.GetY(), float_t(0));
 		EXPECT_EQ(psm1.m_separation, float_t(-1));
 		EXPECT_FLOAT_EQ(psm1.m_point.x, float_t(0));
-		EXPECT_FLOAT_EQ(psm1.m_point.y, float_t(+1.5) + total_radius);
+		EXPECT_FLOAT_EQ(psm1.m_point.y, float_t(+1.5));
 	}
 }
