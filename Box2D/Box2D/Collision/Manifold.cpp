@@ -96,7 +96,7 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
 			{
 				const auto b_idx0 = GetEdgeIndex(b_indices_array[0], b_indices_array[1], b_count);
 				assert(b_idx0 != IndexPair::InvalidIndex);
-				const auto b_idx1 = GetModuloNext(b_idx0, a_count);
+				const auto b_idx1 = GetModuloNext(b_idx0, b_count);
 				const auto b_v0 = proxyB.GetVertex(b_idx0);
 				const auto b_v1 = proxyB.GetVertex(b_idx1);
 				const auto lp = (b_v0 + b_v1) / 2;
@@ -138,7 +138,7 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
 				}
 				else
 				{
-					assert(false);
+					//assert(false);
 				}
 				return Manifold{};
 			}
@@ -196,7 +196,7 @@ Manifold box2d::GetManifold(const DistanceProxy& proxyA, const Transformation& t
 				}
 				else
 				{
-					assert(false);
+					//assert(false);
 				}
 				return Manifold{};
 			}
