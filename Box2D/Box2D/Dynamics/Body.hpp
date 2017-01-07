@@ -74,9 +74,15 @@ struct BodyDef
 
 	constexpr BodyDef& UseType(BodyType t) noexcept;
 	constexpr BodyDef& UseLocation(Vec2 l) noexcept;
+	constexpr BodyDef& UseAngle(Angle a) noexcept;
 	constexpr BodyDef& UseLinearDamping(float_t v) noexcept;
 	constexpr BodyDef& UseAngularDamping(float_t v) noexcept;
+	constexpr BodyDef& UseAllowSleep(bool value) noexcept;
+	constexpr BodyDef& UseAwake(bool value) noexcept;
+	constexpr BodyDef& UseFixedRotation(bool value) noexcept;
 	constexpr BodyDef& UseBullet(bool value) noexcept;
+	constexpr BodyDef& UseActive(bool value) noexcept;
+	constexpr BodyDef& UseUserData(void* value) noexcept;
 	
 	/// The body type: static, kinematic, or dynamic.
 	/// Note: if a dynamic body would have zero mass, the mass is set to one.
@@ -140,6 +146,12 @@ constexpr inline BodyDef& BodyDef::UseLocation(Vec2 l) noexcept
 	return *this;
 }
 
+constexpr inline BodyDef& BodyDef::UseAngle(Angle a) noexcept
+{
+	angle = a;
+	return *this;
+}
+	
 constexpr inline BodyDef& BodyDef::UseLinearDamping(float_t v) noexcept
 {
 	linearDamping = v;
@@ -152,9 +164,39 @@ constexpr inline BodyDef& BodyDef::UseAngularDamping(float_t v) noexcept
 	return *this;
 }
 
+constexpr inline BodyDef& BodyDef::UseAllowSleep(bool value) noexcept
+{
+	allowSleep = value;
+	return *this;
+}
+
+constexpr inline BodyDef& BodyDef::UseAwake(bool value) noexcept
+{
+	awake = value;
+	return *this;
+}
+
+constexpr inline BodyDef& BodyDef::UseFixedRotation(bool value) noexcept
+{
+	fixedRotation = value;
+	return *this;
+}
+
 constexpr inline BodyDef& BodyDef::UseBullet(bool value) noexcept
 {
 	bullet = value;
+	return *this;
+}
+
+constexpr inline BodyDef& BodyDef::UseActive(bool value) noexcept
+{
+	active = value;
+	return *this;
+}
+
+constexpr inline BodyDef& BodyDef::UseUserData(void* value) noexcept
+{
+	userData = value;
 	return *this;
 }
 
