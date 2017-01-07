@@ -45,9 +45,10 @@ enum class PointState
 	RemoveState		///< point was removed in the update
 };
 
-/// Compute the point states given two manifolds. The states pertain to the transition from manifold1
-/// to manifold2. So state1 is either persist or remove while state2 is either add or persist.
 using PointStateArray = std::array<PointState,MaxManifoldPoints>;
+	
+/// Computes the point states given two manifolds. The states pertain to the transition from manifold1
+/// to manifold2. So state1 is either persist or remove while state2 is either add or persist.
 void GetPointStates(PointStateArray& state1, PointStateArray& state2,
 					const Manifold& manifold1, const Manifold& manifold2);
 
