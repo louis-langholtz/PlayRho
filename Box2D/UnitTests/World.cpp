@@ -1457,8 +1457,6 @@ TEST(World, MouseJointWontCauseTunnelling)
 		{
 			// PreSolve...
 			const auto new_manifold = contact.GetManifold();
-			ASSERT_NE(old_manifold.GetType(), Manifold::e_circles);
-			ASSERT_NE(new_manifold.GetType(), Manifold::e_circles);
 #if 0
 			if (old_manifold.GetType() != Manifold::e_unset && new_manifold.GetType() != Manifold::e_unset)
 			{
