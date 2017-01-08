@@ -69,8 +69,7 @@ public:
 			const auto body = m_world->CreateBody(BodyDef{}
 												  .UseType(BodyType::Dynamic)
 												  .UseLocation(Vec2(0, 10)));
-			const auto shape = PolygonShape(0.125f, 0.125f);
-			body->CreateFixture(&shape, FixtureDef{}.UseDensity(0.1f));
+			body->CreateFixture(&m_shape, FixtureDef{}.UseDensity(1));
 			++m_count;
 		}
 	}
@@ -99,6 +98,7 @@ public:
 
 	RevoluteJoint* m_joint;
 	int32 m_count = 0;
+	PolygonShape m_shape{0.125f, 0.125f};
 };
 
 } // namespace box2d
