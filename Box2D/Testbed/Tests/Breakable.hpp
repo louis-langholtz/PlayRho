@@ -40,7 +40,7 @@ public:
 			const auto ground = m_world->CreateBody(bd);
 
 			const auto shape = EdgeShape(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		// Breakable dynamic body
@@ -52,10 +52,10 @@ public:
 			m_body1 = m_world->CreateBody(bd);
 
 			SetAsBox(m_shape1, 0.5f, 0.5f, Vec2(-0.5f, 0.0f), 0.0_rad);
-			m_piece1 = m_body1->CreateFixture(FixtureDef{&m_shape1, 1.0f});
+			m_piece1 = m_body1->CreateFixture(&m_shape1, FixtureDef{}.UseDensity(1));
 
 			SetAsBox(m_shape2, 0.5f, 0.5f, Vec2(0.5f, 0.0f), 0.0_rad);
-			m_piece2 = m_body1->CreateFixture(FixtureDef{&m_shape2, 1.0f});
+			m_piece2 = m_body1->CreateFixture(&m_shape2, FixtureDef{}.UseDensity(1));
 		}
 
 		m_break = false;
@@ -102,7 +102,7 @@ public:
 		bd.angle = body1->GetAngle();
 
 		const auto body2 = m_world->CreateBody(bd);
-		m_piece2 = body2->CreateFixture(FixtureDef{&m_shape2, 1.0f});
+		m_piece2 = body2->CreateFixture(&m_shape2, FixtureDef{}.UseDensity(1));
 
 		// Compute consistent velocities for new bodies based on
 		// cached velocity.

@@ -42,7 +42,6 @@ public:
 		CircleShape shape(radius, Vec2_zero);
 
 		FixtureDef fd;
-		fd.shape = &shape;
 		fd.density = 1.0f;
 		fd.friction = 0.1f;
 
@@ -55,7 +54,7 @@ public:
 				bd.position = Vec2(-10.0f + (2.1f * j + 1.0f + 0.01f * i) * radius, (2.0f * i + 1.0f) * radius);
 				Body* body = m_world->CreateBody(bd);
 
-				body->CreateFixture(fd);
+				body->CreateFixture(&shape, fd);
 			}
 		}
 
@@ -71,7 +70,6 @@ public:
 		//PolygonShape shape;
 		
 		FixtureDef fd;
-		fd.shape = &shape;
 		fd.restitution = float_t(0); // originally 0.9
 		
 		const auto btmLeft = Vec2(-wallLength/2, 0.0f);
@@ -82,22 +80,22 @@ public:
 		// Floor
 		shape.Set(btmLeft, btmRight);
 		//shape.Set(Span<const Vec2>{btmLeft, btmRight});
-		ground->CreateFixture(fd);
+		ground->CreateFixture(&shape, fd);
 		
 		// Left wall
 		shape.Set(btmLeft, topLeft);
 		//shape.Set(Span<const Vec2>{btmLeft, topLeft});
-		ground->CreateFixture(fd);
+		ground->CreateFixture(&shape, fd);
 		
 		// Right wall
 		shape.Set(btmRight, topRight);
 		//shape.Set(Span<const Vec2>{btmRight, topRight});
-		ground->CreateFixture(fd);
+		ground->CreateFixture(&shape, fd);
 		
 		// Roof
 		shape.Set(topLeft, topRight);
 		//shape.Set(Span<const Vec2>{topLeft, topRight});
-		ground->CreateFixture(fd);
+		ground->CreateFixture(&shape, fd);
 		
 		return ground;
 	}
@@ -108,7 +106,6 @@ public:
 		const auto shape = CircleShape(radius, Vec2_zero);
 
 		FixtureDef fd;
-		fd.shape = &shape;
 		fd.density = 1.0f;
 		fd.restitution = float_t(0.8);
 
@@ -119,7 +116,7 @@ public:
 		//bd.allowSleep = false;
 		Body* body = m_world->CreateBody(bd);
 
-		body->CreateFixture(fd);
+		body->CreateFixture(&shape, fd);
 	}
 
 	void CreateBox()
@@ -128,7 +125,6 @@ public:
 		const auto shape = PolygonShape(side_length/2, side_length/2);
 
 		FixtureDef fd;
-		fd.shape = &shape;
 		fd.density = 1.0f;
 		fd.restitution = float_t(0); // originally 0.8
 		
@@ -137,7 +133,7 @@ public:
 		bd.bullet = m_bullet_mode;
 		bd.position = Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));
 		auto* body = m_world->CreateBody(bd);
-		body->CreateFixture(fd);
+		body->CreateFixture(&shape, fd);
 	}
 
 	void ToggleBulletMode()

@@ -36,7 +36,7 @@ public:
 			Body* ground = m_world->CreateBody(bd);
 
 			const auto shape = EdgeShape(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		// Collinear edges with no adjacency information.
@@ -48,11 +48,11 @@ public:
 
 			EdgeShape shape;
 			shape.Set(Vec2(-8.0f, 1.0f), Vec2(-6.0f, 1.0f));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 			shape.Set(Vec2(-6.0f, 1.0f), Vec2(-4.0f, 1.0f));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 			shape.Set(Vec2(-4.0f, 1.0f), Vec2(-2.0f, 1.0f));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		// Chain shape
@@ -68,7 +68,7 @@ public:
 			vs[3] = Vec2(8.0f, 7.0f);
 			ChainShape shape;
 			shape.CreateChain(Span<const Vec2>(vs, 4));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		// Square tiles. This shows that adjacency shapes may
@@ -80,11 +80,11 @@ public:
 
 			PolygonShape shape;
 			SetAsBox(shape, 1.0f, 1.0f, Vec2(4.0f, 3.0f), 0.0_rad);
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 			SetAsBox(shape, 1.0f, 1.0f, Vec2(6.0f, 3.0f), 0.0_rad);
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 			SetAsBox(shape, 1.0f, 1.0f, Vec2(8.0f, 3.0f), 0.0_rad);
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		// Square made from an edge loop. Collision should be smooth.
@@ -99,7 +99,7 @@ public:
 			vs[3] = Vec2(-1.0f, 5.0f);
 			ChainShape shape;
 			shape.CreateLoop(Span<const Vec2>(vs, 4));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		// Edge loop. Collision should be smooth.
@@ -121,7 +121,7 @@ public:
 			vs[9] = Vec2(-6.0f, 0.0f);
 			ChainShape shape;
 			shape.CreateLoop(Span<const Vec2>(vs, 10));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		// Square character 1
@@ -137,9 +137,8 @@ public:
 			const auto shape = PolygonShape(0.5f, 0.5f);
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.density = 20.0f;
-			body->CreateFixture(fd);
+			body->CreateFixture(&shape, fd);
 		}
 
 		// Square character 2
@@ -155,9 +154,8 @@ public:
 			const auto shape = PolygonShape(0.25f, 0.25f);
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.density = 20.0f;
-			body->CreateFixture(fd);
+			body->CreateFixture(&shape, fd);
 		}
 
 		// Hexagon character
@@ -182,9 +180,8 @@ public:
 			const auto shape = PolygonShape(Span<const Vec2>(vertices, 6));
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.density = 20.0f;
-			body->CreateFixture(fd);
+			body->CreateFixture(&shape, fd);
 		}
 
 		// Circle character
@@ -200,9 +197,8 @@ public:
 			const auto shape = CircleShape(float_t(0.5));
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.density = 20.0f;
-			body->CreateFixture(fd);
+			body->CreateFixture(&shape, fd);
 		}
 
 		// Circle character
@@ -218,10 +214,9 @@ public:
 			shape.SetRadius(float_t(0.25));
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.density = 20.0f;
 			fd.friction = 1.0f;
-			m_character->CreateFixture(fd);
+			m_character->CreateFixture(&shape, fd);
 		}
 	}
 

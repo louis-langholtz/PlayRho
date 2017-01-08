@@ -42,7 +42,7 @@ public:
 		// Creates bottom ground
 		{
 			const auto shape = EdgeShape(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		// Creates left-end-fixed 8-part plank (below the top one)
@@ -50,7 +50,6 @@ public:
 			const auto shape = PolygonShape(0.5f, 0.125f);
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.density = 20.0f;
 
 			WeldJointDef jd;
@@ -62,7 +61,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-14.5f + 1.0f * i, 5.0f);
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(fd);
+				body->CreateFixture(&shape, fd);
 
 				jd.Initialize(prevBody, body, Vec2(-15.0f + 1.0f * i, 5.0f));
 				m_world->CreateJoint(jd);
@@ -76,7 +75,6 @@ public:
 			const auto shape = PolygonShape(1.0f, 0.125f);
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.density = 20.0f;
 
 			WeldJointDef jd;
@@ -90,7 +88,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-14.0f + 2.0f * i, 15.0f);
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(fd);
+				body->CreateFixture(&shape, fd);
 
 				jd.Initialize(prevBody, body, Vec2(-15.0f + 2.0f * i, 15.0f));
 				m_world->CreateJoint(jd);
@@ -104,7 +102,6 @@ public:
 			const auto shape = PolygonShape(0.5f, 0.125f);
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.density = 20.0f;
 
 			WeldJointDef jd;
@@ -116,7 +113,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-4.5f + 1.0f * i, 5.0f);
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(fd);
+				body->CreateFixture(&shape, fd);
 
 				if (i > 0)
 				{
@@ -133,7 +130,6 @@ public:
 			const auto shape = PolygonShape(0.5f, 0.125f);
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.density = 20.0f;
 
 			WeldJointDef jd;
@@ -147,7 +143,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(5.5f + 1.0f * i, 10.0f);
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(fd);
+				body->CreateFixture(&shape, fd);
 
 				if (i > 0)
 				{
@@ -165,14 +161,13 @@ public:
 			const auto shape = PolygonShape({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.density = 1.0f;
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-8.0f + 8.0f * i, 12.0f);
 			const auto body = m_world->CreateBody(bd);
-			body->CreateFixture(fd);
+			body->CreateFixture(&shape, fd);
 		}
 
 		// Creates circles
@@ -181,14 +176,13 @@ public:
 			const auto shape = CircleShape(float_t(0.5));
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.density = 1.0f;
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-6.0f + 6.0f * i, 10.0f);
 			const auto body = m_world->CreateBody(bd);
-			body->CreateFixture(fd);
+			body->CreateFixture(&shape, fd);
 		}
 	}
 

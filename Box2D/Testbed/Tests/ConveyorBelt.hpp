@@ -34,7 +34,7 @@ public:
 
 			EdgeShape shape;
 			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		// Platform
@@ -46,9 +46,8 @@ public:
 			const auto shape = PolygonShape(10.0f, 0.5f);
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.friction = 0.8f;
-			m_platform = body->CreateFixture(fd);
+			m_platform = body->CreateFixture(&shape, fd);
 		}
 
 		// Boxes
@@ -60,7 +59,7 @@ public:
 			Body* body = m_world->CreateBody(bd);
 
 			const auto shape = PolygonShape(0.5f, 0.5f);
-			body->CreateFixture(FixtureDef{&shape, 20.0f});
+			body->CreateFixture(&shape, FixtureDef{}.UseDensity(20));
 		}
 	}
 

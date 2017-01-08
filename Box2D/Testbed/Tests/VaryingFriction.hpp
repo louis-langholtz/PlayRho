@@ -34,7 +34,7 @@ public:
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		{
@@ -45,7 +45,7 @@ public:
 			bd.angle = -0.25_rad;
 
 			Body* ground = m_world->CreateBody(bd);
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		{
@@ -55,7 +55,7 @@ public:
 			bd.position = Vec2(10.5f, 19.0f);
 
 			Body* ground = m_world->CreateBody(bd);
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		{
@@ -66,7 +66,7 @@ public:
 			bd.angle = 0.25_rad;
 
 			Body* ground = m_world->CreateBody(bd);
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		{
@@ -76,7 +76,7 @@ public:
 			bd.position = Vec2(-10.5f, 11.0f);
 
 			Body* ground = m_world->CreateBody(bd);
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		{
@@ -87,14 +87,13 @@ public:
 			bd.angle = -0.25_rad;
 
 			Body* ground = m_world->CreateBody(bd);
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		{
 			const auto shape = PolygonShape(0.5f, 0.5f);
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.density = 25.0f;
 
 			float friction[5] = {0.75f, 0.5f, 0.35f, 0.1f, 0.0f};
@@ -107,7 +106,7 @@ public:
 				Body* body = m_world->CreateBody(bd);
 
 				fd.friction = friction[i];
-				body->CreateFixture(fd);
+				body->CreateFixture(&shape, fd);
 			}
 		}
 	}

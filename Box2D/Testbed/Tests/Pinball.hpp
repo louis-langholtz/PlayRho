@@ -42,9 +42,8 @@ public:
 			ChainShape loop;
 			loop.CreateLoop(Span<const Vec2>(vs, 5));
 			FixtureDef fd;
-			fd.shape = &loop;
 			fd.density = 0.0f;
-			ground->CreateFixture(fd);
+			ground->CreateFixture(&loop, fd);
 		}
 
 		// Flippers
@@ -63,11 +62,10 @@ public:
 			const auto box = PolygonShape(1.75f, 0.1f);
 
 			FixtureDef fd;
-			fd.shape = &box;
 			fd.density = 1.0f;
 
-			leftFlipper->CreateFixture(fd);
-			rightFlipper->CreateFixture(fd);
+			leftFlipper->CreateFixture(&box, fd);
+			rightFlipper->CreateFixture(&box, fd);
 
 			RevoluteJointDef jd;
 			jd.bodyA = ground;
@@ -104,9 +102,8 @@ public:
 			shape.SetRadius(float_t(0.2));
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.density = 1.0f;
-			m_ball->CreateFixture(fd);
+			m_ball->CreateFixture(&shape, fd);
 		}
 	}
 

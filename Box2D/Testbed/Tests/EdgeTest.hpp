@@ -38,31 +38,31 @@ public:
 
 			shape.Set(v1, v2);
 			shape.SetVertex3(v3);
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 
 			shape.Set(v2, v3);
 			shape.SetVertex0(v1);
 			shape.SetVertex3(v4);
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 
 			shape.Set(v3, v4);
 			shape.SetVertex0(v2);
 			shape.SetVertex3(v5);
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 
 			shape.Set(v4, v5);
 			shape.SetVertex0(v3);
 			shape.SetVertex3(v6);
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 
 			shape.Set(v5, v6);
 			shape.SetVertex0(v4);
 			shape.SetVertex3(v7);
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 
 			shape.Set(v6, v7);
 			shape.SetVertex0(v5);
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		{
@@ -73,7 +73,7 @@ public:
 			const auto body = m_world->CreateBody(bd);
 
 			const auto shape = CircleShape(float_t(0.5));
-			body->CreateFixture(FixtureDef{&shape, 1.0f});
+			body->CreateFixture(&shape, FixtureDef{}.UseDensity(1));
 		}
 
 		{
@@ -85,7 +85,7 @@ public:
 
 			auto shape = PolygonShape(1);
 			shape.SetAsBox(0.5f, 0.5f);
-			body->CreateFixture(FixtureDef{&shape, 1.0f});
+			body->CreateFixture(&shape, FixtureDef{}.UseDensity(1));
 		}
 	}
 

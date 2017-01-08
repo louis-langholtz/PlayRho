@@ -247,11 +247,15 @@ void Body::SetType(BodyType type)
 	}
 }
 
-Fixture* Body::CreateFixture(const FixtureDef& def, bool resetMassData)
+Fixture* Body::CreateFixture(const Shape* shape, const FixtureDef& def, bool resetMassData)
 {
-	if (def.shape)
+	if (!shape)
 	{
-		const auto vertexRadius = GetVertexRadius(*def.shape);
+		return nullptr;
+	}
+
+	{
+		const auto vertexRadius = GetVertexRadius(*shape);
 		if (vertexRadius < m_world->GetMinVertexRadius())
 		{
 			return nullptr;
@@ -266,9 +270,9 @@ Fixture* Body::CreateFixture(const FixtureDef& def, bool resetMassData)
 
 	auto& allocator = m_world->m_blockAllocator;
 
-	const auto shape = Clone(def.shape, allocator);
+	const auto lshape = Clone(shape, allocator);
 	const auto memory = allocator.Allocate(sizeof(Fixture));
-	const auto fixture = new (memory) Fixture{this, def, shape};
+	const auto fixture = new (memory) Fixture{this, def, lshape};
 	
 	if (IsActive())
 	{

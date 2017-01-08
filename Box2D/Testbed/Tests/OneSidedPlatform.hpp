@@ -39,7 +39,7 @@ public:
 		{
 			const auto ground = m_world->CreateBody(BodyDef{});
 			const auto shape = EdgeShape(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		// Platform
@@ -49,7 +49,7 @@ public:
 			const auto body = m_world->CreateBody(bd);
 
 			const auto shape = PolygonShape(3.0f, 0.5f);
-			m_platform = body->CreateFixture(FixtureDef{&shape, 0.0f});
+			m_platform = body->CreateFixture(&shape, FixtureDef{});
 
 			m_bottom = 10.0f - 0.5f;
 			m_top = 10.0f + 0.5f;
@@ -63,7 +63,7 @@ public:
 			const auto body = m_world->CreateBody(bd);
 
 			const auto shape = CircleShape(m_radius);
-			m_character = body->CreateFixture(FixtureDef{&shape, 20.0f});
+			m_character = body->CreateFixture(&shape, FixtureDef{}.UseDensity(20));
 
 			body->SetVelocity(Velocity{Vec2(0.0f, -50.0f), 0_rad});
 		}

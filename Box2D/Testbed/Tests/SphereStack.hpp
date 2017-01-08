@@ -39,7 +39,7 @@ public:
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		{
@@ -54,7 +54,7 @@ public:
 
 				m_bodies[i] = m_world->CreateBody(bd);
 
-				m_bodies[i]->CreateFixture(FixtureDef{&shape, 1.0f});
+				m_bodies[i]->CreateFixture(&shape, FixtureDef{}.UseDensity(1));
 
 				m_bodies[i]->SetVelocity(Velocity{Vec2(0.0f, -50.0f), 0_rad});
 			}

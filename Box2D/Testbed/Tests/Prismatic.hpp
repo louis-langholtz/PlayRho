@@ -35,7 +35,7 @@ public:
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		{
@@ -47,7 +47,7 @@ public:
 			bd.angle = 0.5_rad * Pi;
 			bd.allowSleep = false;
 			Body* body = m_world->CreateBody(bd);
-			body->CreateFixture(FixtureDef{&shape, 5.0f});
+			body->CreateFixture(&shape, FixtureDef{}.UseDensity(5));
 
 
 			// Bouncy limit

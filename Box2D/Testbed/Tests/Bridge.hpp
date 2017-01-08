@@ -37,14 +37,13 @@ public:
 
 		{
 			const auto shape = EdgeShape(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		{
 			const auto shape = PolygonShape(0.5f, 0.125f);
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.density = 20.0f;
 			fd.friction = 0.2f;
 
@@ -55,7 +54,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-14.5f + 1.0f * i, 5.0f);
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(fd);
+				body->CreateFixture(&shape, fd);
 
 				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-15.0f + 1.0f * i, 5.0f)});
 
@@ -74,14 +73,13 @@ public:
 			const auto shape = PolygonShape({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.density = 1.0f;
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-8.0f + 8.0f * i, 12.0f);
 			const auto body = m_world->CreateBody(bd);
-			body->CreateFixture(fd);
+			body->CreateFixture(&shape, fd);
 		}
 
 		for (auto i = 0; i < 3; ++i)
@@ -89,14 +87,13 @@ public:
 			const auto shape = CircleShape{float_t(0.5)};
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.density = 1.0f;
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-6.0f + 6.0f * i, 10.0f);
 			const auto body = m_world->CreateBody(bd);
-			body->CreateFixture(fd);
+			body->CreateFixture(&shape, fd);
 		}
 	}
 

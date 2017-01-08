@@ -42,7 +42,7 @@ public:
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		{
@@ -50,7 +50,6 @@ public:
 			shape.SetAsBox(0.5f, 0.125f);
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.density = 20.0f;
 			fd.friction = 0.2f;
 			fd.filter.categoryBits = 0x0001;
@@ -77,7 +76,7 @@ public:
 
 				Body* body = m_world->CreateBody(bd);
 
-				body->CreateFixture(fd);
+				body->CreateFixture(&shape, fd);
 
 				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(float_t(i), y)});
 

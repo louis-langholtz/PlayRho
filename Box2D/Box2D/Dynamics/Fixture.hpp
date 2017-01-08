@@ -35,8 +35,6 @@ class Shape;
 /// This holds contact filtering data.
 struct Filter
 {
-	constexpr Filter() = default;
-
 	/// The collision category bits. Normally you would just set one bit.
 	uint16 categoryBits = 0x0001;
 
@@ -56,16 +54,12 @@ struct Filter
 /// @sa Body::CreateFixture.
 struct FixtureDef
 {
-	/// The constructor sets the default fixture definition values.
-	constexpr FixtureDef() noexcept = default;
-
-	/// Initializing constructor.
-	/// @param s Shape.
-	/// @param d Density.
-	constexpr FixtureDef(const Shape* s, float_t d) noexcept: shape{s}, density{d} {}
-
-	/// Shape.
-	const Shape* shape = nullptr;
+	constexpr FixtureDef& UseUserData(void* value) noexcept;
+	constexpr FixtureDef& UseFriction(float_t value) noexcept;
+	constexpr FixtureDef& UseRestitution(float_t value) noexcept;
+	constexpr FixtureDef& UseDensity(float_t value) noexcept;
+	constexpr FixtureDef& UseIsSensor(bool value) noexcept;
+	constexpr FixtureDef& UseFilter(Filter value) noexcept;
 
 	/// Use this to store application specific fixture data.
 	void* userData = nullptr;
@@ -86,6 +80,42 @@ struct FixtureDef
 	/// Contact filtering data.
 	Filter filter;
 };
+
+constexpr inline FixtureDef& FixtureDef::UseUserData(void* value) noexcept
+{
+	userData = value;
+	return *this;
+}
+	
+constexpr inline FixtureDef& FixtureDef::UseFriction(float_t value) noexcept
+{
+	friction = value;
+	return *this;
+}
+	
+constexpr inline FixtureDef& FixtureDef::UseRestitution(float_t value) noexcept
+{
+	restitution = value;
+	return *this;
+}
+	
+constexpr inline FixtureDef& FixtureDef::UseDensity(float_t value) noexcept
+{
+	density = value;
+	return *this;
+}
+	
+constexpr inline FixtureDef& FixtureDef::UseIsSensor(bool value) noexcept
+{
+	isSensor = value;
+	return *this;
+}
+	
+constexpr inline FixtureDef& FixtureDef::UseFilter(Filter value) noexcept
+{
+	filter = value;
+	return *this;
+}
 
 /// Fixture.
 /// @detail

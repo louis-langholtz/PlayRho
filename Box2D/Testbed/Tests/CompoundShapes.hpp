@@ -36,7 +36,7 @@ public:
 			EdgeShape shape;
 			shape.Set(Vec2(50.0f, 0.0f), Vec2(-50.0f, 0.0f));
 
-			body->CreateFixture(FixtureDef{&shape, 0.0f});
+			body->CreateFixture(&shape, FixtureDef{});
 		}
 
 		{
@@ -52,8 +52,8 @@ public:
 				bd.position = Vec2(x + 5.0f, 1.05f + 2.5f * i);
 				bd.angle = 1_rad * RandomFloat(-Pi, Pi);
 				Body* body = m_world->CreateBody(bd);
-				body->CreateFixture(FixtureDef{&circle1, 2.0f});
-				body->CreateFixture(FixtureDef{&circle2, 0.0f});
+				body->CreateFixture(&circle1, FixtureDef{}.UseDensity(2));
+				body->CreateFixture(&circle2, FixtureDef{});
 			}
 		}
 
@@ -71,8 +71,8 @@ public:
 				bd.position = Vec2(x - 5.0f, 1.05f + 2.5f * i);
 				bd.angle = 1_rad * RandomFloat(-Pi, Pi);
 				Body* body = m_world->CreateBody(bd);
-				body->CreateFixture(FixtureDef{&polygon1, 2.0f});
-				body->CreateFixture(FixtureDef{&polygon2, 2.0f});
+				body->CreateFixture(&polygon1, FixtureDef{}.UseDensity(2));
+				body->CreateFixture(&polygon2, FixtureDef{}.UseDensity(2));
 			}
 		}
 
@@ -105,8 +105,8 @@ public:
 				bd.position = Vec2(x, 2.05f + 2.5f * i);
 				bd.angle = 0.0_rad;
 				Body* body = m_world->CreateBody(bd);
-				body->CreateFixture(FixtureDef{&triangle1, 2.0f});
-				body->CreateFixture(FixtureDef{&triangle2, 2.0f});
+				body->CreateFixture(&triangle1, FixtureDef{}.UseDensity(2));
+				body->CreateFixture(&triangle2, FixtureDef{}.UseDensity(2));
 			}
 		}
 
@@ -123,9 +123,9 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2( 0.0f, 2.0f );
 			Body* body = m_world->CreateBody(bd);
-			body->CreateFixture(FixtureDef{&bottom, 4.0f});
-			body->CreateFixture(FixtureDef{&left, 4.0f});
-			body->CreateFixture(FixtureDef{&right, 4.0f});
+			body->CreateFixture(&bottom, FixtureDef{}.UseDensity(4));
+			body->CreateFixture(&left, FixtureDef{}.UseDensity(4));
+			body->CreateFixture(&right, FixtureDef{}.UseDensity(4));
 		}
 	}
 

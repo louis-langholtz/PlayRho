@@ -36,7 +36,7 @@ public:
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		{
@@ -50,7 +50,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(0.0f, 7.0f);
 				Body* body = m_world->CreateBody(bd);
-				body->CreateFixture(FixtureDef{&shape, 2.0f});
+				body->CreateFixture(&shape, FixtureDef{}.UseDensity(2));
 
 				RevoluteJointDef rjd{prevBody, body, Vec2(0.0f, 5.0f)};
 				rjd.motorSpeed = 1.0f * Pi;
@@ -69,7 +69,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(0.0f, 13.0f);
 				Body* body = m_world->CreateBody(bd);
-				body->CreateFixture(FixtureDef{&shape, 2.0f});
+				body->CreateFixture(&shape, FixtureDef{}.UseDensity(2));
 
 				RevoluteJointDef rjd{prevBody, body, Vec2(0.0f, 9.0f)};
 				rjd.enableMotor = false;
@@ -87,7 +87,7 @@ public:
 				bd.fixedRotation = true;
 				bd.position = Vec2(0.0f, 17.0f);
 				Body* body = m_world->CreateBody(bd);
-				body->CreateFixture(FixtureDef{&shape, 2.0f});
+				body->CreateFixture(&shape, FixtureDef{}.UseDensity(2));
 
 				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(0.0f, 17.0f)});
 
@@ -107,7 +107,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(0.0f, 23.0f);
 				Body* body = m_world->CreateBody(bd);
-				body->CreateFixture(FixtureDef{&shape, 2.0f});
+				body->CreateFixture(&shape, FixtureDef{}.UseDensity(2));
 			}
 		}
 	}

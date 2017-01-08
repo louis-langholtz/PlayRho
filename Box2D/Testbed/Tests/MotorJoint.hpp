@@ -35,8 +35,7 @@ public:
 			const auto shape = EdgeShape(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
 
 			FixtureDef fd;
-			fd.shape = &shape;
-			ground->CreateFixture(fd);
+			ground->CreateFixture(&shape, fd);
 		}
 
 		// Define motorized body
@@ -49,10 +48,9 @@ public:
 			const auto shape = PolygonShape(2.0f, 0.5f);
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.friction = 0.6f;
 			fd.density = 2.0f;
-			body->CreateFixture(fd);
+			body->CreateFixture(&shape, fd);
 
 			MotorJointDef mjd;
 			mjd.Initialize(ground, body);

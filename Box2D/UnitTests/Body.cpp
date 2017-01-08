@@ -92,7 +92,7 @@ TEST(Body, CreateAndDestroyFixture)
 
 	CircleShape shape{float_t(2.871), Vec2{float_t(1.912), float_t(-77.31)}};
 	
-	auto fixture = body->CreateFixture(FixtureDef{&shape, 1}, false);
+	auto fixture = body->CreateFixture(&shape, FixtureDef{}.UseDensity(1), false);
 	ASSERT_NE(fixture, nullptr);
 	ASSERT_NE(fixture->GetShape(), nullptr);
 	EXPECT_EQ(fixture->GetShape()->GetType(), shape.GetType());
@@ -139,7 +139,7 @@ TEST(Body, CreateLotsOfFixtures)
 		
 		for (auto i = decltype(num){0}; i < num; ++i)
 		{
-			auto fixture = body->CreateFixture(FixtureDef{&shape, float_t(1.3)}, false);
+			auto fixture = body->CreateFixture(&shape, FixtureDef{}.UseDensity(1.3f), false);
 			ASSERT_NE(fixture, nullptr);
 		}
 		body->ResetMassData();
@@ -168,7 +168,7 @@ TEST(Body, CreateLotsOfFixtures)
 		
 		for (auto i = decltype(num){0}; i < num; ++i)
 		{
-			auto fixture = body->CreateFixture(FixtureDef{&shape, float_t(1.3)}, true);
+			auto fixture = body->CreateFixture(&shape, FixtureDef{}.UseDensity(1.3f), true);
 			ASSERT_NE(fixture, nullptr);
 		}
 		

@@ -39,26 +39,25 @@ public:
 
 			EdgeShape shape;
 
-			FixtureDef sd;
-			sd.shape = &shape;
+			FixtureDef sd{};
 			sd.density = float_t{0};
 			sd.restitution = k_restitution;
 
 			// Left vertical
 			shape.Set(Vec2(-20.0f, -20.0f), Vec2(-20.0f, 20.0f));
-			ground->CreateFixture(sd);
+			ground->CreateFixture(&shape, sd);
 
 			// Right vertical
 			shape.Set(Vec2(20.0f, -20.0f), Vec2(20.0f, 20.0f));
-			ground->CreateFixture(sd);
+			ground->CreateFixture(&shape, sd);
 
 			// Top horizontal
 			shape.Set(Vec2(-20.0f, 20.0f), Vec2(20.0f, 20.0f));
-			ground->CreateFixture(sd);
+			ground->CreateFixture(&shape, sd);
 
 			// Bottom horizontal
 			shape.Set(Vec2(-20.0f, -20.0f), Vec2(20.0f, -20.0f));
-			ground->CreateFixture(sd);
+			ground->CreateFixture(&shape, sd);
 		}
 
 		{
@@ -73,8 +72,7 @@ public:
 			
 			const auto poly1 = PolygonShape(Span<const Vec2>(vertices, 3));
 
-			FixtureDef sd1;
-			sd1.shape = &poly1;
+			FixtureDef sd1{};
 			sd1.density = 4.0f;
 
 			Transformation xf2;
@@ -87,8 +85,7 @@ public:
 			
 			const auto poly2 = PolygonShape(Span<const Vec2>(vertices, 3));
 
-			FixtureDef sd2;
-			sd2.shape = &poly2;
+			FixtureDef sd2{};
 			sd2.density = 2.0f;
 
 			BodyDef bd;
@@ -100,15 +97,14 @@ public:
 			bd.angle = Pi * 1_rad;
 			bd.allowSleep = false;
 			m_body = m_world->CreateBody(bd);
-			m_body->CreateFixture(sd1);
-			m_body->CreateFixture(sd2);
+			m_body->CreateFixture(&poly1, sd1);
+			m_body->CreateFixture(&poly2, sd2);
 		}
 
 		{
 			const auto shape = PolygonShape(0.5f, 0.5f);
 
-			FixtureDef fd;
-			fd.shape = &shape;
+			FixtureDef fd{};
 			fd.density = 1.0f;
 			fd.friction = 0.3f;
 
@@ -121,7 +117,7 @@ public:
 				bd.position = Vec2(float_t{0}, 5.0f + 1.54f * i);
 				const auto body = m_world->CreateBody(bd);
 
-				body->CreateFixture(fd);
+				body->CreateFixture(&shape, fd);
 
 				const auto I = GetLocalInertia(*body);
 				const auto mass = GetMass(*body);

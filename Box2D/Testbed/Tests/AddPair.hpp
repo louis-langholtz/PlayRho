@@ -43,7 +43,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(RandomFloat(minX,maxX),RandomFloat(minY,maxY));
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(FixtureDef{&shape, 0.01f});
+				body->CreateFixture(&shape, FixtureDef{}.UseDensity(0.01f));
 			}
 		}
 		
@@ -54,7 +54,7 @@ public:
 			bd.position = Vec2(-40.0f,5.0f);
 			bd.bullet = true;
 			const auto body = m_world->CreateBody(bd);
-			body->CreateFixture(FixtureDef{&shape, 1.0f});
+			body->CreateFixture(&shape, FixtureDef{}.UseDensity(1.0f));
 			body->SetVelocity(Velocity{Vec2(150.0f, 0.0f), 0_rad});
 		}
 	}

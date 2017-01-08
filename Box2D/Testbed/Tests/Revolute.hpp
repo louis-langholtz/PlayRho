@@ -32,10 +32,9 @@ public:
 			const auto shape = EdgeShape(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			//fd.filter.categoryBits = 2;
 
-			ground->CreateFixture(fd);
+			ground->CreateFixture(&shape, fd);
 		}
 
 		{
@@ -46,7 +45,7 @@ public:
 
 			bd.position = Vec2(-10.0f, 20.0f);
 			const auto body = m_world->CreateBody(bd);
-			body->CreateFixture(FixtureDef{&shape, 5.0f});
+			body->CreateFixture(&shape, FixtureDef{}.UseDensity(5));
 
 			const auto w = 100.0f;
 			body->SetVelocity(Velocity{Vec2(-8.0f * w, 0.0f), 1_rad * w});
@@ -73,10 +72,9 @@ public:
 			FixtureDef fd;
 			fd.density = 5.0f;
 			fd.filter.maskBits = 1;
-			fd.shape = &circle_shape;
 
 			m_ball = m_world->CreateBody(circle_bd);
-			m_ball->CreateFixture(fd);
+			m_ball->CreateFixture(&circle_shape, fd);
 
 			PolygonShape polygon_shape;
 			SetAsBox(polygon_shape, 10.0f, 0.2f, Vec2 (-10.0f, 0.0f), 0_rad);
@@ -86,7 +84,7 @@ public:
 			polygon_bd.type = BodyType::Dynamic;
 			polygon_bd.bullet = true;
 			const auto polygon_body = m_world->CreateBody(polygon_bd);
-			polygon_body->CreateFixture(FixtureDef{&polygon_shape, 2.0f});
+			polygon_body->CreateFixture(&polygon_shape, FixtureDef().UseDensity(2));
 
 			RevoluteJointDef rjd(ground, polygon_body, Vec2(20.0f, 10.0f));
 			rjd.lowerAngle = -0.25_rad * Pi;
@@ -104,10 +102,9 @@ public:
 			const auto polyShape = PolygonShape({Vec2(17.63f, 36.31f), Vec2(17.52f, 36.69f), Vec2(17.19f, 36.36f)});
 		
 			FixtureDef polyFixtureDef;
-			polyFixtureDef.shape = &polyShape;
 			polyFixtureDef.density = 1;
 
-			body->CreateFixture(polyFixtureDef);	//assertion hits inside here
+			body->CreateFixture(&polyShape, polyFixtureDef);	//assertion hits inside here
 		}
 
 	}

@@ -40,12 +40,11 @@ public:
 			EdgeShape shape;
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.density = 0.0f;
 			fd.friction = 0.6f;
 
 			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
-			ground->CreateFixture(fd);
+			ground->CreateFixture(&shape, fd);
 
 			float_t hs[10] = {0.25f, 1.0f, 4.0f, 0.0f, 0.0f, -1.0f, -2.0f, -2.0f, -1.25f, 0.0f};
 
@@ -55,7 +54,7 @@ public:
 			{
 				float_t y2 = hs[i];
 				shape.Set(Vec2(x, y1), Vec2(x + dx, y2));
-				ground->CreateFixture(fd);
+				ground->CreateFixture(&shape, fd);
 				y1 = y2;
 				x += dx;
 			}
@@ -64,29 +63,29 @@ public:
 			{
 				float_t y2 = hs[i];
 				shape.Set(Vec2(x, y1), Vec2(x + dx, y2));
-				ground->CreateFixture(fd);
+				ground->CreateFixture(&shape, fd);
 				y1 = y2;
 				x += dx;
 			}
 
 			shape.Set(Vec2(x, 0.0f), Vec2(x + 40.0f, 0.0f));
-			ground->CreateFixture(fd);
+			ground->CreateFixture(&shape, fd);
 
 			x += 80.0f;
 			shape.Set(Vec2(x, 0.0f), Vec2(x + 40.0f, 0.0f));
-			ground->CreateFixture(fd);
+			ground->CreateFixture(&shape, fd);
 
 			x += 40.0f;
 			shape.Set(Vec2(x, 0.0f), Vec2(x + 10.0f, 5.0f));
-			ground->CreateFixture(fd);
+			ground->CreateFixture(&shape, fd);
 
 			x += 20.0f;
 			shape.Set(Vec2(x, 0.0f), Vec2(x + 40.0f, 0.0f));
-			ground->CreateFixture(fd);
+			ground->CreateFixture(&shape, fd);
 
 			x += 40.0f;
 			shape.Set(Vec2(x, 0.0f), Vec2(x, 20.0f));
-			ground->CreateFixture(fd);
+			ground->CreateFixture(&shape, fd);
 		}
 
 		// Teeter
@@ -97,7 +96,7 @@ public:
 			Body* body = m_world->CreateBody(bd);
 
 			const auto box = PolygonShape(10.0f, 0.25f);
-			body->CreateFixture(FixtureDef{&box, 1.0f});
+			body->CreateFixture(&box, FixtureDef{}.UseDensity(1));
 
 			RevoluteJointDef jd(ground, body, body->GetLocation());
 			jd.lowerAngle = -8.0_deg;
@@ -114,7 +113,6 @@ public:
 			const auto shape = PolygonShape(1.0f, 0.125f);
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.density = 1.0f;
 			fd.friction = 0.6f;
 
@@ -125,7 +123,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(161.0f + 2.0f * i, -0.125f);
 				Body* body = m_world->CreateBody(bd);
-				body->CreateFixture(fd);
+				body->CreateFixture(&shape, fd);
 
 				m_world->CreateJoint(RevoluteJointDef{prevBody, body,
 					Vec2(160.0f + 2.0f * i, -0.125f)});
@@ -147,23 +145,23 @@ public:
 
 			bd.position = Vec2(230.0f, 0.5f);
 			body = m_world->CreateBody(bd);
-			body->CreateFixture(FixtureDef{&box, 0.5f});
+			body->CreateFixture(&box, FixtureDef{}.UseDensity(0.5f));
 
 			bd.position = Vec2(230.0f, 1.5f);
 			body = m_world->CreateBody(bd);
-			body->CreateFixture(FixtureDef{&box, 0.5f});
+			body->CreateFixture(&box, FixtureDef{}.UseDensity(0.5f));
 
 			bd.position = Vec2(230.0f, 2.5f);
 			body = m_world->CreateBody(bd);
-			body->CreateFixture(FixtureDef{&box, 0.5f});
+			body->CreateFixture(&box, FixtureDef().UseDensity(0.5f));
 
 			bd.position = Vec2(230.0f, 3.5f);
 			body = m_world->CreateBody(bd);
-			body->CreateFixture(FixtureDef{&box, 0.5f});
+			body->CreateFixture(&box, FixtureDef().UseDensity(0.5f));
 
 			bd.position = Vec2(230.0f, 4.5f);
 			body = m_world->CreateBody(bd);
-			body->CreateFixture(FixtureDef{&box, 0.5f});
+			body->CreateFixture(&box, FixtureDef().UseDensity(0.5f));
 		}
 
 		// Car
@@ -183,20 +181,19 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(0.0f, 1.0f);
 			m_car = m_world->CreateBody(bd);
-			m_car->CreateFixture(FixtureDef{&chassis, 1.0f});
+			m_car->CreateFixture(&chassis, FixtureDef().UseDensity(1));
 
 			FixtureDef fd;
-			fd.shape = &circle;
 			fd.density = 1.0f;
 			fd.friction = 0.9f;
 
 			bd.position = Vec2(-1.0f, 0.35f);
 			m_wheel1 = m_world->CreateBody(bd);
-			m_wheel1->CreateFixture(fd);
+			m_wheel1->CreateFixture(&circle, fd);
 
 			bd.position = Vec2(1.0f, 0.4f);
 			m_wheel2 = m_world->CreateBody(bd);
-			m_wheel2->CreateFixture(fd);
+			m_wheel2->CreateFixture(&circle, fd);
 
 			WheelJointDef jd;
 			Vec2 axis(0.0f, 1.0f);

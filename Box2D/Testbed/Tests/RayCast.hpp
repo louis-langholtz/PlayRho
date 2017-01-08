@@ -183,7 +183,7 @@ public:
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		{
@@ -259,25 +259,20 @@ public:
 		if (index < 4)
 		{
 			FixtureDef fd;
-			fd.shape = m_polygons + index;
 			fd.friction = 0.3f;
-			m_bodies[m_bodyIndex]->CreateFixture(fd);
+			m_bodies[m_bodyIndex]->CreateFixture(m_polygons + index, fd);
 		}
 		else if (index < 5)
 		{
 			FixtureDef fd;
-			fd.shape = &m_circle;
 			fd.friction = 0.3f;
-
-			m_bodies[m_bodyIndex]->CreateFixture(fd);
+			m_bodies[m_bodyIndex]->CreateFixture(&m_circle, fd);
 		}
 		else
 		{
 			FixtureDef fd;
-			fd.shape = &m_edge;
 			fd.friction = 0.3f;
-
-			m_bodies[m_bodyIndex]->CreateFixture(fd);
+			m_bodies[m_bodyIndex]->CreateFixture(&m_edge, fd);
 		}
 
 		m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));

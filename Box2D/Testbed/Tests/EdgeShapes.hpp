@@ -69,7 +69,7 @@ public:
 				float_t y2 = 2.0f * cosf(x2 / 10.0f * Pi);
 
 				const auto shape = EdgeShape(Vec2(x1, y1), Vec2(x2, y2));
-				ground->CreateFixture(FixtureDef{&shape, 0.0f});
+				ground->CreateFixture(&shape, FixtureDef{});
 
 				x1 = x2;
 				y1 = y2;
@@ -132,18 +132,16 @@ public:
 		if (index < 4)
 		{
 			FixtureDef fd;
-			fd.shape = m_polygons + index;
 			fd.friction = 0.3f;
 			fd.density = 20.0f;
-			m_bodies[m_bodyIndex]->CreateFixture(fd);
+			m_bodies[m_bodyIndex]->CreateFixture(m_polygons + index, fd);
 		}
 		else
 		{
 			FixtureDef fd;
-			fd.shape = &m_circle;
 			fd.friction = 0.3f;
 			fd.density = 20.0f;
-			m_bodies[m_bodyIndex]->CreateFixture(fd);
+			m_bodies[m_bodyIndex]->CreateFixture(&m_circle, fd);
 		}
 
 		m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));

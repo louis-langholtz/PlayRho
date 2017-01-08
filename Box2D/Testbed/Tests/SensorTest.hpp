@@ -41,7 +41,7 @@ public:
 			{
 				EdgeShape shape;
 				shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-				ground->CreateFixture(FixtureDef{&shape, 0.0f});
+				ground->CreateFixture(&shape, FixtureDef{});
 			}
 
 #if 0
@@ -56,9 +56,8 @@ public:
 				CircleShape shape(5.0f, Vec2(0.0f, 10.0f));
 
 				FixtureDef fd;
-				fd.shape = &shape;
 				fd.isSensor = true;
-				m_sensor = ground->CreateFixture(fd);
+				m_sensor = ground->CreateFixture(&shape, fd);
 			}
 #endif
 		}
@@ -77,7 +76,7 @@ public:
 				m_touching[i] = false;
 				m_bodies[i] = m_world->CreateBody(bd);
 
-				m_bodies[i]->CreateFixture(FixtureDef{&shape, 1.0f});
+				m_bodies[i]->CreateFixture(&shape, FixtureDef{}.UseDensity(1));
 			}
 		}
 	}

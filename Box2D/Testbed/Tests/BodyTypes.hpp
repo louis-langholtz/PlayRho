@@ -33,10 +33,8 @@ public:
 
 			const auto shape = EdgeShape(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
 
-			FixtureDef fd;
-			fd.shape = &shape;
-
-			ground->CreateFixture(fd);
+			FixtureDef fd{};
+			ground->CreateFixture(&shape, fd);
 		}
 
 		// Define attachment
@@ -47,7 +45,7 @@ public:
 			m_attachment = m_world->CreateBody(bd);
 
 			const auto shape = PolygonShape(0.5f, 2.0f);
-			m_attachment->CreateFixture(FixtureDef{&shape, 2.0f});
+			m_attachment->CreateFixture(&shape, FixtureDef{}.UseDensity(2));
 		}
 
 		// Define platform
@@ -60,11 +58,10 @@ public:
 			PolygonShape shape;
 			SetAsBox(shape, 0.5f, 4.0f, Vec2(4.0f, 0.0f), 0.5_rad * Pi);
 
-			FixtureDef fd;
-			fd.shape = &shape;
+			FixtureDef fd{};
 			fd.friction = 0.6f;
 			fd.density = 2.0f;
-			m_platform->CreateFixture(fd);
+			m_platform->CreateFixture(&shape, fd);
 
 			RevoluteJointDef rjd(m_attachment, m_platform, Vec2(0.0f, 5.0f));
 			rjd.maxMotorTorque = 50.0f;
@@ -91,12 +88,11 @@ public:
 
 			const auto shape = PolygonShape(0.75f, 0.75f);
 
-			FixtureDef fd;
-			fd.shape = &shape;
+			FixtureDef fd{};
 			fd.friction = 0.6f;
 			fd.density = 2.0f;
 
-			body->CreateFixture(fd);
+			body->CreateFixture(&shape, fd);
 		}
 	}
 

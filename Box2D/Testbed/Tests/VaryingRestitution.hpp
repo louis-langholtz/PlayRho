@@ -36,7 +36,7 @@ public:
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		{
@@ -44,7 +44,6 @@ public:
 			shape.SetRadius(float_t(1));
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.density = 1.0f;
 
 			float_t restitution[7] = {0.0f, 0.1f, 0.3f, 0.5f, 0.75f, 0.9f, 1.0f};
@@ -58,7 +57,7 @@ public:
 				Body* body = m_world->CreateBody(bd);
 
 				fd.restitution = restitution[i];
-				body->CreateFixture(fd);
+				body->CreateFixture(&shape, fd);
 			}
 		}
 	}

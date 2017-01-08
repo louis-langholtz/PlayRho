@@ -42,13 +42,13 @@ public:
 
 		PolygonShape shape;
 		SetAsBox(shape, 0.5f, 10.0f, Vec2( 10.0f, 0.0f), 0_rad);
-		body->CreateFixture(FixtureDef{&shape, 5.0f});
+		body->CreateFixture(&shape, FixtureDef{}.UseDensity(5));
 		SetAsBox(shape, 0.5f, 10.0f, Vec2(-10.0f, 0.0f), 0_rad);
-		body->CreateFixture(FixtureDef{&shape, 5.0f});
+		body->CreateFixture(&shape, FixtureDef{}.UseDensity(5));
 		SetAsBox(shape, 10.0f, 0.5f, Vec2(0.0f, 10.0f), 0_rad);
-		body->CreateFixture(FixtureDef{&shape, 5.0f});
+		body->CreateFixture(&shape, FixtureDef{}.UseDensity(5));
 		SetAsBox(shape, 10.0f, 0.5f, Vec2(0.0f, -10.0f), 0_rad);
-		body->CreateFixture(FixtureDef{&shape, 5.0f});
+		body->CreateFixture(&shape, FixtureDef{}.UseDensity(5));
 
 		RevoluteJointDef jd;
 		jd.bodyA = ground;
@@ -70,7 +70,7 @@ public:
 												  .UseType(BodyType::Dynamic)
 												  .UseLocation(Vec2(0, 10)));
 			const auto shape = PolygonShape(0.125f, 0.125f);
-			body->CreateFixture(FixtureDef{&shape, 0.1f});
+			body->CreateFixture(&shape, FixtureDef{}.UseDensity(0.1f));
 			++m_count;
 		}
 	}

@@ -30,7 +30,6 @@ TEST(Fixture, InitializingConstructor)
 {
 	const auto body = reinterpret_cast<Body*>(0x1);
 	const auto shapeA = reinterpret_cast<Shape*>(0x3);
-	const auto shapeB = reinterpret_cast<Shape*>(0x5);
 	const auto density = float_t(2);
 	int variable;
 	const auto userData = &variable;
@@ -38,7 +37,7 @@ TEST(Fixture, InitializingConstructor)
 	const auto restitution = float_t(0.4);
 	const auto isSensor = true;
 
-	auto def = FixtureDef{shapeB, density};
+	auto def = FixtureDef{}.UseDensity(density);
 	def.friction = friction;
 	def.userData = userData;
 	def.restitution = restitution;

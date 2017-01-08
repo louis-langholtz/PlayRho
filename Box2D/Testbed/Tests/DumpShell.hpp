@@ -60,6 +60,13 @@ public:
 			bodies[0] = m_world->CreateBody(bd);
 
 			{
+				PolygonShape shape;
+				Vec2 vs[8];
+				vs[0] = Vec2(7.733039855957031e-01f, -1.497260034084320e-01f);
+				vs[1] = Vec2(-4.487270116806030e-01f, 1.138330027461052e-01f);
+				vs[2] = Vec2(-1.880589962005615e+00f, -1.365900039672852e-01f);
+				vs[3] = Vec2(3.972740173339844e-01f, -3.897832870483398e+00f);
+				shape.Set(Span<const Vec2>(vs, 4));
 				FixtureDef fd;
 				fd.friction = 2.000000029802322e-01f;
 				fd.restitution = 0.000000000000000e+00f;
@@ -68,17 +75,8 @@ public:
 				fd.filter.categoryBits = uint16(1);
 				fd.filter.maskBits = uint16(65535);
 				fd.filter.groupIndex = int16(0);
-				PolygonShape shape;
-				Vec2 vs[8];
-				vs[0] = Vec2(7.733039855957031e-01f, -1.497260034084320e-01f);
-				vs[1] = Vec2(-4.487270116806030e-01f, 1.138330027461052e-01f);
-				vs[2] = Vec2(-1.880589962005615e+00f, -1.365900039672852e-01f);
-				vs[3] = Vec2(3.972740173339844e-01f, -3.897832870483398e+00f);
-				shape.Set(Span<const Vec2>(vs, 4));
 
-				fd.shape = &shape;
-
-				bodies[0]->CreateFixture(fd);
+				bodies[0]->CreateFixture(&shape, fd);
 			}
 		}
 		{
@@ -98,14 +96,6 @@ public:
 			bodies[1] = m_world->CreateBody(bd);
 
 			{
-				FixtureDef fd;
-				fd.friction = 5.000000000000000e-01f;
-				fd.restitution = 0.000000000000000e+00f;
-				fd.density = 5.000000000000000e+00f;
-				fd.isSensor = bool(0);
-				fd.filter.categoryBits = uint16(1);
-				fd.filter.maskBits = uint16(65535);
-				fd.filter.groupIndex = int16(0);
 				PolygonShape shape;
 				Vec2 vs[8];
 				vs[0] = Vec2(3.473900079727173e+00f, -2.009889930486679e-01f);
@@ -115,10 +105,15 @@ public:
 				vs[4] = Vec2(-2.590820074081421e+00f, -5.472509860992432e-01f);
 				vs[5] = Vec2(2.819370031356812e+00f, -5.402340292930603e-01f);
 				shape.Set(Span<const Vec2>(vs, 6));
-
-				fd.shape = &shape;
-
-				bodies[1]->CreateFixture(fd);
+				FixtureDef fd;
+				fd.friction = 5.000000000000000e-01f;
+				fd.restitution = 0.000000000000000e+00f;
+				fd.density = 5.000000000000000e+00f;
+				fd.isSensor = bool(0);
+				fd.filter.categoryBits = uint16(1);
+				fd.filter.maskBits = uint16(65535);
+				fd.filter.groupIndex = int16(0);
+				bodies[1]->CreateFixture(&shape, fd);
 			}
 		}
 		{
@@ -138,6 +133,13 @@ public:
 			bodies[2] = m_world->CreateBody(bd);
 
 			{
+				PolygonShape shape;
+				Vec2 vs[8];
+				vs[0] = Vec2(1.639146506786346e-01f, 4.428443685173988e-02f);
+				vs[1] = Vec2(-1.639146655797958e-01f, 4.428443685173988e-02f);
+				vs[2] = Vec2(-1.639146655797958e-01f, -4.428443312644958e-02f);
+				vs[3] = Vec2(1.639146357774734e-01f, -4.428444057703018e-02f);
+				shape.Set(Span<const Vec2>(vs, 4));
 				FixtureDef fd;
 				fd.friction = 9.499999880790710e-01f;
 				fd.restitution = 0.000000000000000e+00f;
@@ -146,17 +148,7 @@ public:
 				fd.filter.categoryBits = uint16(1);
 				fd.filter.maskBits = uint16(65535);
 				fd.filter.groupIndex = int16(-3);
-				PolygonShape shape;
-				Vec2 vs[8];
-				vs[0] = Vec2(1.639146506786346e-01f, 4.428443685173988e-02f);
-				vs[1] = Vec2(-1.639146655797958e-01f, 4.428443685173988e-02f);
-				vs[2] = Vec2(-1.639146655797958e-01f, -4.428443312644958e-02f);
-				vs[3] = Vec2(1.639146357774734e-01f, -4.428444057703018e-02f);
-				shape.Set(Span<const Vec2>(vs, 4));
-
-				fd.shape = &shape;
-
-				bodies[2]->CreateFixture(fd);
+				bodies[2]->CreateFixture(&shape, fd);
 			}
 		}
 		free(joints);

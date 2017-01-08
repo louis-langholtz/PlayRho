@@ -51,12 +51,11 @@ public:
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
 
 			FixtureDef sd;
-			sd.shape = &shape;
 			sd.friction = 0.3f;
 
 			BodyDef bd;
 			Body* ground = m_world->CreateBody(bd);
-			ground->CreateFixture(sd);
+			ground->CreateFixture(&shape, sd);
 		}
 
 		// Small triangle
@@ -68,7 +67,6 @@ public:
 		polygon.Set(Span<const Vec2>{vertices, 3});
 
 		FixtureDef triangleShapeDef;
-		triangleShapeDef.shape = &polygon;
 		triangleShapeDef.density = 1.0f;
 
 		triangleShapeDef.filter.groupIndex = k_smallGroup;
@@ -80,7 +78,7 @@ public:
 		triangleBodyDef.position = Vec2(-5.0f, 2.0f);
 
 		Body* body1 = m_world->CreateBody(triangleBodyDef);
-		body1->CreateFixture(triangleShapeDef);
+		body1->CreateFixture(&polygon, triangleShapeDef);
 
 		// Large triangle (recycle definitions)
 		vertices[0] *= 2.0f;
@@ -92,7 +90,7 @@ public:
 		triangleBodyDef.fixedRotation = true; // look at me!
 
 		Body* body2 = m_world->CreateBody(triangleBodyDef);
-		body2->CreateFixture(triangleShapeDef);
+		body2->CreateFixture(&polygon, triangleShapeDef);
 
 		{
 			BodyDef bd;
@@ -101,7 +99,7 @@ public:
 			Body* body = m_world->CreateBody(bd);
 
 			const auto p = PolygonShape(0.5f, 1.0f);
-			body->CreateFixture(FixtureDef{&p, 1.0f});
+			body->CreateFixture(&p, FixtureDef().UseDensity(1));
 
 			PrismaticJointDef jd;
 			jd.bodyA = body2;
@@ -119,7 +117,6 @@ public:
 		// Small box
 		polygon.SetAsBox(1.0f, 0.5f);
 		FixtureDef boxShapeDef;
-		boxShapeDef.shape = &polygon;
 		boxShapeDef.density = 1.0f;
 		boxShapeDef.restitution = 0.1f;
 
@@ -132,7 +129,7 @@ public:
 		boxBodyDef.position = Vec2(0.0f, 2.0f);
 
 		Body* body3 = m_world->CreateBody(boxBodyDef);
-		body3->CreateFixture(boxShapeDef);
+		body3->CreateFixture(&polygon, boxShapeDef);
 
 		// Large box (recycle definitions)
 		polygon.SetAsBox(2.0f, 1.0f);
@@ -140,14 +137,13 @@ public:
 		boxBodyDef.position = Vec2(0.0f, 6.0f);
 
 		Body* body4 = m_world->CreateBody(boxBodyDef);
-		body4->CreateFixture(boxShapeDef);
+		body4->CreateFixture(&polygon, boxShapeDef);
 
 		// Small circle
 		CircleShape circle;
 		circle.SetRadius(float_t{1});
 
 		FixtureDef circleShapeDef;
-		circleShapeDef.shape = &circle;
 		circleShapeDef.density = 1.0f;
 
 		circleShapeDef.filter.groupIndex = k_smallGroup;
@@ -159,7 +155,7 @@ public:
 		circleBodyDef.position = Vec2(5.0f, 2.0f);
 		
 		Body* body5 = m_world->CreateBody(circleBodyDef);
-		body5->CreateFixture(circleShapeDef);
+		body5->CreateFixture(&circle, circleShapeDef);
 
 		// Large circle
 		circle.SetRadius(circle.GetRadius() * 2);
@@ -167,7 +163,7 @@ public:
 		circleBodyDef.position = Vec2(5.0f, 6.0f);
 
 		Body* body6 = m_world->CreateBody(circleBodyDef);
-		body6->CreateFixture(circleShapeDef);
+		body6->CreateFixture(&circle, circleShapeDef);
 	}
 
 	static Test* Create()

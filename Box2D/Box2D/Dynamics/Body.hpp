@@ -32,6 +32,7 @@ namespace box2d {
 class Fixture;
 class World;
 struct FixtureDef;
+class Shape;
 
 /// The body type.
 /// static: zero mass, zero velocity, may be manually moved
@@ -212,13 +213,13 @@ public:
 	/// @detail
 	/// If the density is non-zero, this function automatically updates the mass of the body.
 	/// Contacts are not created until the next time step.
-	/// The shape given by the fixture definition will be copied, so it can be on the stack.
-	/// @param def Fixture definition.
+	/// @param shape Shape definition. This will be copied, so it can be on the stack.
+	/// @param def Initial fixture settings.
 	/// @warning This function is locked during callbacks.
 	/// @return <code>nullptr</code> if the world is locked or the fixture definition's shape
 	///    vertex radius is less than the minimum allowed by the body's world, else pointer to
 	///    created fixture.
-	Fixture* CreateFixture(const FixtureDef& def, bool resetMassData = true);
+	Fixture* CreateFixture(const Shape* shape, const FixtureDef& def, bool resetMassData = true);
 
 	/// Destroys a fixture.
 	/// @detail This removes the fixture from the broad-phase and

@@ -62,7 +62,7 @@ public:
 		const auto body = m_world->CreateBody(bodyDef);
 
 		const auto shape = PolygonShape(0.25f * a, a);
-		body->CreateFixture(FixtureDef{&shape, 20.0f});
+		body->CreateFixture(&shape, FixtureDef{}.UseDensity(20));
 
 		if (depth == e_depth)
 		{

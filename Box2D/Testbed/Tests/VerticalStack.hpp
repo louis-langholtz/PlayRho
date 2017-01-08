@@ -44,10 +44,10 @@ public:
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 
 			shape.Set(Vec2(20.0f, 0.0f), Vec2(20.0f, 20.0f));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		float_t xs[5] = {0.0f, -10.0f, -5.0f, 5.0f, 10.0f};
@@ -57,7 +57,6 @@ public:
 			const auto shape = PolygonShape(0.5f, 0.5f);
 
 			FixtureDef fd;
-			fd.shape = &shape;
 			fd.density = 1.0f;
 			fd.friction = 0.3f;
 
@@ -79,7 +78,7 @@ public:
 
 				m_bodies[n] = body;
 
-				body->CreateFixture(fd);
+				body->CreateFixture(&shape, fd);
 			}
 		}
 
@@ -102,7 +101,6 @@ public:
 				shape.SetRadius(float_t(0.25));
 
 				FixtureDef fd;
-				fd.shape = &shape;
 				fd.density = 20.0f;
 				fd.restitution = 0.05f;
 
@@ -112,7 +110,7 @@ public:
 				bd.position = Vec2(-31.0f, 5.0f);
 
 				m_bullet = m_world->CreateBody(bd);
-				m_bullet->CreateFixture(fd);
+				m_bullet->CreateFixture(&shape, fd);
 
 				m_bullet->SetVelocity(Velocity{Vec2(400.0f, 0.0f), 0_rad});
 			}

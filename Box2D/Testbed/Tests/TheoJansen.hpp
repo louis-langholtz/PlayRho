@@ -38,12 +38,6 @@ public:
 		Vec2 p5(6.0f * s, 1.5f);
 		Vec2 p6(2.5f * s, 3.7f);
 
-		FixtureDef fd1, fd2;
-		fd1.filter.groupIndex = -1;
-		fd2.filter.groupIndex = -1;
-		fd1.density = 1.0f;
-		fd2.density = 1.0f;
-
 		PolygonShape poly1, poly2;
 		if (s > 0.0f)
 		{
@@ -56,9 +50,12 @@ public:
 			poly2.Set({Vec2_zero, p6 - p4, p5 - p4});
 		}
 
-		fd1.shape = &poly1;
-		fd2.shape = &poly2;
-
+		FixtureDef fd1, fd2;
+		fd1.filter.groupIndex = -1;
+		fd2.filter.groupIndex = -1;
+		fd1.density = 1.0f;
+		fd2.density = 1.0f;
+		
 		BodyDef bd1, bd2;
 		bd1.type = BodyType::Dynamic;
 		bd2.type = BodyType::Dynamic;
@@ -71,8 +68,8 @@ public:
 		Body* body1 = m_world->CreateBody(bd1);
 		Body* body2 = m_world->CreateBody(bd2);
 
-		body1->CreateFixture(fd1);
-		body2->CreateFixture(fd2);
+		body1->CreateFixture(&poly1, fd1);
+		body2->CreateFixture(&poly2, fd2);
 
 		// Using a soft distance constraint can reduce some jitter.
 		// It also makes the structure seem a bit more fluid by
@@ -98,13 +95,13 @@ public:
 
 			EdgeShape shape;
 			shape.Set(Vec2(-50.0f, 0.0f), Vec2(50.0f, 0.0f));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 
 			shape.Set(Vec2(-50.0f, 0.0f), Vec2(-50.0f, 10.0f));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 
 			shape.Set(Vec2(50.0f, 0.0f), Vec2(50.0f, 10.0f));
-			ground->CreateFixture(FixtureDef{&shape, 0.0f});
+			ground->CreateFixture(&shape, FixtureDef{});
 		}
 
 		// Balls
@@ -118,7 +115,7 @@ public:
 			bd.position = Vec2(-40.0f + 2.0f * i, 0.5f);
 
 			Body* body = m_world->CreateBody(bd);
-			body->CreateFixture(FixtureDef{&shape, 1.0f});
+			body->CreateFixture(&shape, FixtureDef{}.UseDensity(1));
 		}
 
 		// Chassis
@@ -127,13 +124,12 @@ public:
 
 			FixtureDef sd;
 			sd.density = 1.0f;
-			sd.shape = &shape;
 			sd.filter.groupIndex = -1;
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = pivot + m_offset;
 			m_chassis = m_world->CreateBody(bd);
-			m_chassis->CreateFixture(sd);
+			m_chassis->CreateFixture(&shape, sd);
 		}
 
 		{
@@ -142,13 +138,12 @@ public:
 
 			FixtureDef sd;
 			sd.density = 1.0f;
-			sd.shape = &shape;
 			sd.filter.groupIndex = -1;
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = pivot + m_offset;
 			m_wheel = m_world->CreateBody(bd);
-			m_wheel->CreateFixture(sd);
+			m_wheel->CreateFixture(&shape, sd);
 		}
 
 		{

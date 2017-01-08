@@ -42,10 +42,10 @@ public:
 			//ground->CreateFixture(FixtureDef{&shape, 0.0f);
 
 			CircleShape circle(2.0f, Vec2(-10.0f, y + b + L));
-			ground->CreateFixture(FixtureDef{&circle, 0.0f});
+			ground->CreateFixture(&circle, FixtureDef());
 
 			circle.SetLocation(Vec2(10.0f, y + b + L));
-			ground->CreateFixture(FixtureDef{&circle, 0.0f});
+			ground->CreateFixture(&circle, FixtureDef());
 		}
 
 		{
@@ -58,11 +58,11 @@ public:
 			//bd.fixedRotation = true;
 			bd.position = Vec2(-10.0f, y);
 			Body* body1 = m_world->CreateBody(bd);
-			body1->CreateFixture(FixtureDef{&shape, 5.0f});
+			body1->CreateFixture(&shape, FixtureDef{}.UseDensity(5));
 
 			bd.position = Vec2(10.0f, y);
 			Body* body2 = m_world->CreateBody(bd);
-			body2->CreateFixture(FixtureDef{&shape, 5.0f});
+			body2->CreateFixture(&shape, FixtureDef{}.UseDensity(5));
 
 			PulleyJointDef pulleyDef;
 			Vec2 anchor1(-10.0f, y + b);
