@@ -33,68 +33,72 @@ public:
 
 	Tumbler()
 	{
-		Body* ground = nullptr;
-		{
-			BodyDef bd;
-			ground = m_world->CreateBody(bd);
-		}
+		const auto ground = m_world->CreateBody(BodyDef{});
 
-		{
-			BodyDef bd;
-			bd.type = BodyType::Dynamic;
-			bd.allowSleep = false;
-			bd.position = Vec2(0.0f, 10.0f);
-			Body* body = m_world->CreateBody(bd);
+		const auto body = m_world->CreateBody(BodyDef{}
+											  .UseType(BodyType::Dynamic)
+											  .UseLocation(Vec2(0, 10))
+											  .UseAllowSleep(false));
 
-			PolygonShape shape;
-			SetAsBox(shape, 0.5f, 10.0f, Vec2( 10.0f, 0.0f), 0_rad);
-			body->CreateFixture(FixtureDef{&shape, 5.0f});
-			SetAsBox(shape, 0.5f, 10.0f, Vec2(-10.0f, 0.0f), 0_rad);
-			body->CreateFixture(FixtureDef{&shape, 5.0f});
-			SetAsBox(shape, 10.0f, 0.5f, Vec2(0.0f, 10.0f), 0_rad);
-			body->CreateFixture(FixtureDef{&shape, 5.0f});
-			SetAsBox(shape, 10.0f, 0.5f, Vec2(0.0f, -10.0f), 0_rad);
-			body->CreateFixture(FixtureDef{&shape, 5.0f});
+		PolygonShape shape;
+		SetAsBox(shape, 0.5f, 10.0f, Vec2( 10.0f, 0.0f), 0_rad);
+		body->CreateFixture(FixtureDef{&shape, 5.0f});
+		SetAsBox(shape, 0.5f, 10.0f, Vec2(-10.0f, 0.0f), 0_rad);
+		body->CreateFixture(FixtureDef{&shape, 5.0f});
+		SetAsBox(shape, 10.0f, 0.5f, Vec2(0.0f, 10.0f), 0_rad);
+		body->CreateFixture(FixtureDef{&shape, 5.0f});
+		SetAsBox(shape, 10.0f, 0.5f, Vec2(0.0f, -10.0f), 0_rad);
+		body->CreateFixture(FixtureDef{&shape, 5.0f});
 
-			RevoluteJointDef jd;
-			jd.bodyA = ground;
-			jd.bodyB = body;
-			jd.localAnchorA = Vec2(0.0f, 10.0f);
-			jd.localAnchorB = Vec2(0.0f, 0.0f);
-			jd.referenceAngle = 0_rad;
-			jd.motorSpeed = 0.05f * Pi;
-			jd.maxMotorTorque = 1e8f;
-			jd.enableMotor = true;
-			m_joint = (RevoluteJoint*)m_world->CreateJoint(jd);
-		}
-
-		m_count = 0;
+		RevoluteJointDef jd;
+		jd.bodyA = ground;
+		jd.bodyB = body;
+		jd.localAnchorA = Vec2(0.0f, 10.0f);
+		jd.localAnchorB = Vec2(0.0f, 0.0f);
+		jd.referenceAngle = 0_rad;
+		jd.motorSpeed = 0.05f * Pi;
+		jd.maxMotorTorque = 1e8f;
+		jd.enableMotor = true;
+		m_joint = static_cast<RevoluteJoint*>(m_world->CreateJoint(jd));
 	}
 
 	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
 		if (m_count < e_count)
 		{
-			BodyDef bd;
-			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(0.0f, 10.0f);
-			Body* body = m_world->CreateBody(bd);
-
-			PolygonShape shape;
-			shape.SetAsBox(0.125f, 0.125f);
-			body->CreateFixture(FixtureDef{&shape, 1.0f});
-
+			const auto body = m_world->CreateBody(BodyDef{}
+												  .UseType(BodyType::Dynamic)
+												  .UseLocation(Vec2(0, 10)));
+			const auto shape = PolygonShape(0.125f, 0.125f);
+			body->CreateFixture(FixtureDef{&shape, 0.1f});
 			++m_count;
 		}
 	}
 
+	void Keyboard(Key key) override
+	{
+		switch (key)
+		{
+			case Key_Add:
+				m_joint->SetMotorSpeed(m_joint->GetMotorSpeed() + 0.01f * Pi);
+				break;
+			
+			case Key_Subtract:
+				m_joint->SetMotorSpeed(m_joint->GetMotorSpeed() - 0.01f * Pi);
+				break;
+	
+			default:
+				break;
+		}
+	}
+	
 	static Test* Create()
 	{
 		return new Tumbler;
 	}
 
 	RevoluteJoint* m_joint;
-	int32 m_count;
+	int32 m_count = 0;
 };
 
 } // namespace box2d

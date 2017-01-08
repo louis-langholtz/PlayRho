@@ -559,6 +559,8 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	stepConf.maxRotation = settings.maxRotation * 1_deg;
 	stepConf.maxLinearCorrection = settings.maxLinearCorrection;
 	stepConf.maxAngularCorrection = (settings.maxAngularCorrection * 1_deg) / 1_rad;
+	stepConf.regResolutionRate = settings.regPosResRate;
+	stepConf.toiResolutionRate = settings.toiPosResRate;
 
 	m_world->Step(stepConf);
 

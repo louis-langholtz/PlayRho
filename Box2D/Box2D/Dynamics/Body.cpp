@@ -256,7 +256,6 @@ Fixture* Body::CreateFixture(const FixtureDef& def, bool resetMassData)
 		{
 			return nullptr;
 		}
-		// TODO: check that vertexRadius is not > m_world->GetMaxVertexRadius()
 	}
 	
 	assert(!m_world->IsLocked());
