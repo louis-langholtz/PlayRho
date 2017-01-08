@@ -41,7 +41,7 @@ public:
 			{
 				EdgeShape shape;
 				shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-				ground->CreateFixture(&shape, FixtureDef{});
+				ground->CreateFixture(&shape);
 			}
 
 #if 0

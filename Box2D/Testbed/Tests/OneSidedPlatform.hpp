@@ -39,7 +39,7 @@ public:
 		{
 			const auto ground = m_world->CreateBody(BodyDef{});
 			const auto shape = EdgeShape(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
-			ground->CreateFixture(&shape, FixtureDef{});
+			ground->CreateFixture(&shape);
 		}
 
 		// Platform
@@ -49,7 +49,7 @@ public:
 			const auto body = m_world->CreateBody(bd);
 
 			const auto shape = PolygonShape(3.0f, 0.5f);
-			m_platform = body->CreateFixture(&shape, FixtureDef{});
+			m_platform = body->CreateFixture(&shape);
 
 			m_bottom = 10.0f - 0.5f;
 			m_top = 10.0f + 0.5f;

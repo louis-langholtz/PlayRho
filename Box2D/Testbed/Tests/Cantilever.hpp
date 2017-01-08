@@ -42,7 +42,7 @@ public:
 		// Creates bottom ground
 		{
 			const auto shape = EdgeShape(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape, FixtureDef{});
+			ground->CreateFixture(&shape);
 		}
 
 		// Creates left-end-fixed 8-part plank (below the top one)

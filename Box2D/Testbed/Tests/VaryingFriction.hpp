@@ -34,7 +34,7 @@ public:
 
 			EdgeShape shape;
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape, FixtureDef{});
+			ground->CreateFixture(&shape);
 		}
 
 		{
@@ -45,7 +45,7 @@ public:
 			bd.angle = -0.25_rad;
 
 			Body* ground = m_world->CreateBody(bd);
-			ground->CreateFixture(&shape, FixtureDef{});
+			ground->CreateFixture(&shape);
 		}
 
 		{
@@ -55,7 +55,7 @@ public:
 			bd.position = Vec2(10.5f, 19.0f);
 
 			Body* ground = m_world->CreateBody(bd);
-			ground->CreateFixture(&shape, FixtureDef{});
+			ground->CreateFixture(&shape);
 		}
 
 		{
@@ -66,7 +66,7 @@ public:
 			bd.angle = 0.25_rad;
 
 			Body* ground = m_world->CreateBody(bd);
-			ground->CreateFixture(&shape, FixtureDef{});
+			ground->CreateFixture(&shape);
 		}
 
 		{
@@ -76,7 +76,7 @@ public:
 			bd.position = Vec2(-10.5f, 11.0f);
 
 			Body* ground = m_world->CreateBody(bd);
-			ground->CreateFixture(&shape, FixtureDef{});
+			ground->CreateFixture(&shape);
 		}
 
 		{
@@ -87,7 +87,7 @@ public:
 			bd.angle = -0.25_rad;
 
 			Body* ground = m_world->CreateBody(bd);
-			ground->CreateFixture(&shape, FixtureDef{});
+			ground->CreateFixture(&shape);
 		}
 
 		{

@@ -34,11 +34,11 @@ public:
 			Body* body = m_world->CreateBody(bd);
 
 			const auto edge = EdgeShape(Vec2(-10.0f, 0.0f), Vec2(10.0f, 0.0f));
-			body->CreateFixture(&edge, FixtureDef{});
+			body->CreateFixture(&edge);
 
 			PolygonShape shape;
 			SetAsBox(shape, 0.2f, 1.0f, Vec2(0.5f, 1.0f), 0.0_rad);
-			body->CreateFixture(&shape, FixtureDef{});
+			body->CreateFixture(&shape);
 		}
 
 		{

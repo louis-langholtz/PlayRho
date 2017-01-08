@@ -35,7 +35,7 @@ public:
 
 			BodyDef bd;
 			b1 = m_world->CreateBody(bd);
-			b1->CreateFixture(&shape, FixtureDef{});
+			b1->CreateFixture(&shape);
 		}
 
 		{
@@ -44,7 +44,7 @@ public:
 			BodyDef bd;
 			bd.position = Vec2(-1.5f, 10.0f);
 			Body* ground = m_world->CreateBody(bd);
-			ground->CreateFixture(&shape, FixtureDef{});
+			ground->CreateFixture(&shape);
 		}
 
 		{
@@ -71,7 +71,7 @@ public:
 			BodyDef bd;
 			bd.position = Vec2(1.0f, 6.0f);
 			Body* ground = m_world->CreateBody(bd);
-			ground->CreateFixture(&shape, FixtureDef{});
+			ground->CreateFixture(&shape);
 		}
 
 		Body* b2;
@@ -81,7 +81,7 @@ public:
 			BodyDef bd;
 			bd.position = Vec2(-7.0f, 4.0f);
 			b2 = m_world->CreateBody(bd);
-			b2->CreateFixture(&shape, FixtureDef{});
+			b2->CreateFixture(&shape);
 		}
 
 		Body* b3;

@@ -42,10 +42,10 @@ public:
 			//ground->CreateFixture(FixtureDef{&shape, 0.0f);
 
 			CircleShape circle(2.0f, Vec2(-10.0f, y + b + L));
-			ground->CreateFixture(&circle, FixtureDef());
+			ground->CreateFixture(&circle);
 
 			circle.SetLocation(Vec2(10.0f, y + b + L));
-			ground->CreateFixture(&circle, FixtureDef());
+			ground->CreateFixture(&circle);
 		}
 
 		{

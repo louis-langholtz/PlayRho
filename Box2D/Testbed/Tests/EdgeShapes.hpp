@@ -69,7 +69,7 @@ public:
 				float_t y2 = 2.0f * cosf(x2 / 10.0f * Pi);
 
 				const auto shape = EdgeShape(Vec2(x1, y1), Vec2(x2, y2));
-				ground->CreateFixture(&shape, FixtureDef{});
+				ground->CreateFixture(&shape);
 
 				x1 = x2;
 				y1 = y2;

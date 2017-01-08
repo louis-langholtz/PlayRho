@@ -36,7 +36,7 @@ public:
 			EdgeShape shape;
 			shape.Set(Vec2(50.0f, 0.0f), Vec2(-50.0f, 0.0f));
 
-			body->CreateFixture(&shape, FixtureDef{});
+			body->CreateFixture(&shape);
 		}
 
 		{
@@ -53,7 +53,7 @@ public:
 				bd.angle = 1_rad * RandomFloat(-Pi, Pi);
 				Body* body = m_world->CreateBody(bd);
 				body->CreateFixture(&circle1, FixtureDef{}.UseDensity(2));
-				body->CreateFixture(&circle2, FixtureDef{});
+				body->CreateFixture(&circle2);
 			}
 		}
 

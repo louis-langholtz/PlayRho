@@ -29,6 +29,12 @@
 
 using namespace box2d;
 
+const FixtureDef& box2d::GetDefaultFixtureDef() noexcept
+{
+	static const auto def = FixtureDef{};
+	return def;
+}
+
 template <>
 inline void box2d::Delete(const Shape* shape, BlockAllocator& allocator)
 {

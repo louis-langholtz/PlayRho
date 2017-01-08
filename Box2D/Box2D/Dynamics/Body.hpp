@@ -34,6 +34,8 @@ class World;
 struct FixtureDef;
 class Shape;
 
+const FixtureDef &GetDefaultFixtureDef() noexcept;
+
 /// The body type.
 /// static: zero mass, zero velocity, may be manually moved
 /// kinematic: zero mass, non-zero velocity set by user, moved by solver
@@ -219,7 +221,7 @@ public:
 	/// @return <code>nullptr</code> if the world is locked or the fixture definition's shape
 	///    vertex radius is less than the minimum allowed by the body's world, else pointer to
 	///    created fixture.
-	Fixture* CreateFixture(const Shape* shape, const FixtureDef& def, bool resetMassData = true);
+	Fixture* CreateFixture(const Shape* shape, const FixtureDef& def = GetDefaultFixtureDef(), bool resetMassData = true);
 
 	/// Destroys a fixture.
 	/// @detail This removes the fixture from the broad-phase and
