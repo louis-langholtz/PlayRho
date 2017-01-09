@@ -45,19 +45,19 @@ public:
 
 			// Left vertical
 			shape.Set(Vec2(-20.0f, -20.0f), Vec2(-20.0f, 20.0f));
-			ground->CreateFixture(&shape, sd);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape), sd);
 
 			// Right vertical
 			shape.Set(Vec2(20.0f, -20.0f), Vec2(20.0f, 20.0f));
-			ground->CreateFixture(&shape, sd);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape), sd);
 
 			// Top horizontal
 			shape.Set(Vec2(-20.0f, 20.0f), Vec2(20.0f, 20.0f));
-			ground->CreateFixture(&shape, sd);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape), sd);
 
 			// Bottom horizontal
 			shape.Set(Vec2(-20.0f, -20.0f), Vec2(20.0f, -20.0f));
-			ground->CreateFixture(&shape, sd);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape), sd);
 		}
 
 		{
@@ -97,12 +97,12 @@ public:
 			bd.angle = Pi * 1_rad;
 			bd.allowSleep = false;
 			m_body = m_world->CreateBody(bd);
-			m_body->CreateFixture(&poly1, sd1);
-			m_body->CreateFixture(&poly2, sd2);
+			m_body->CreateFixture(std::make_shared<PolygonShape>(poly1), sd1);
+			m_body->CreateFixture(std::make_shared<PolygonShape>(poly2), sd2);
 		}
 
 		{
-			const auto shape = PolygonShape(0.5f, 0.5f);
+			const auto shape = std::make_shared<PolygonShape>(0.5f, 0.5f);
 
 			FixtureDef fd{};
 			fd.density = 1.0f;
@@ -117,7 +117,7 @@ public:
 				bd.position = Vec2(float_t{0}, 5.0f + 1.54f * i);
 				const auto body = m_world->CreateBody(bd);
 
-				body->CreateFixture(&shape, fd);
+				body->CreateFixture(shape, fd);
 
 				const auto I = GetLocalInertia(*body);
 				const auto mass = GetMass(*body);

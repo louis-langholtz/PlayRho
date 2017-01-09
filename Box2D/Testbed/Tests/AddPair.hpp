@@ -30,7 +30,7 @@ public:
 	{
 		m_world->SetGravity(Vec2(float_t{0}, float_t{0}));
 		{
-			const auto shape = CircleShape{float_t(0.1)};
+			const auto shape = std::make_shared<CircleShape>(float_t(0.1));
 
 			float minX = -6.0f;
 			float maxX = 0.0f;
@@ -43,18 +43,17 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(RandomFloat(minX,maxX),RandomFloat(minY,maxY));
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(&shape, FixtureDef{}.UseDensity(0.01f));
+				body->CreateFixture(shape, FixtureDef{}.UseDensity(0.01f));
 			}
 		}
 		
 		{
-			const auto shape = PolygonShape(1.5f, 1.5f);
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-40.0f,5.0f);
 			bd.bullet = true;
 			const auto body = m_world->CreateBody(bd);
-			body->CreateFixture(&shape, FixtureDef{}.UseDensity(1.0f));
+			body->CreateFixture(std::make_shared<PolygonShape>(1.5f, 1.5f), FixtureDef{}.UseDensity(1.0f));
 			body->SetVelocity(Velocity{Vec2(150.0f, 0.0f), 0_rad});
 		}
 	}

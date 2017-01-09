@@ -33,12 +33,11 @@ public:
 			bd.position = Vec2(0.0f, 0.0f);
 			Body* body = m_world->CreateBody(bd);
 
-			const auto edge = EdgeShape(Vec2(-10.0f, 0.0f), Vec2(10.0f, 0.0f));
-			body->CreateFixture(&edge);
+			body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f), Vec2(10.0f, 0.0f)));
 
 			PolygonShape shape;
 			SetAsBox(shape, 0.2f, 1.0f, Vec2(0.5f, 1.0f), 0.0_rad);
-			body->CreateFixture(&shape);
+			body->CreateFixture(std::make_shared<PolygonShape>(shape));
 		}
 
 		{
@@ -50,7 +49,7 @@ public:
 			box.SetAsBox(2.0f, 0.1f);
 
 			m_body = m_world->CreateBody(bd);
-			m_body->CreateFixture(&box, FixtureDef{}.UseDensity(1));
+			m_body->CreateFixture(std::make_shared<PolygonShape>(box), FixtureDef{}.UseDensity(1));
 
 			box.SetAsBox(0.25f, 0.25f);
 
@@ -60,7 +59,7 @@ public:
 			bd.bullet = true;
 
 			m_bullet = m_world->CreateBody(bd);
-			m_bullet->CreateFixture(&box, FixtureDef{}.UseDensity(100));
+			m_bullet->CreateFixture(std::make_shared<PolygonShape>(box), FixtureDef{}.UseDensity(100));
 
 			m_bullet->SetVelocity(Velocity{Vec2{0.0f, -50.0f}, 0_rad});
 		}

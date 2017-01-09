@@ -33,14 +33,11 @@ public:
 			bd.position = Vec2(0.0f, 0.0f);
 			Body* body = m_world->CreateBody(bd);
 
-			EdgeShape edge;
-
-			edge.Set(Vec2(-10.0f, 0.0f), Vec2(10.0f, 0.0f));
-			body->CreateFixture(&edge);
+			body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f), Vec2(10.0f, 0.0f)));
 
 			PolygonShape shape;
 			SetAsBox(shape, 0.2f, 1.0f, Vec2(0.5f, 1.0f), 0.0_rad);
-			body->CreateFixture(&shape);
+			body->CreateFixture(std::make_shared<PolygonShape>(shape));
 		}
 
 #if 1
@@ -50,10 +47,10 @@ public:
 			bd.position = Vec2(0.0f, 20.0f);
 			//bd.angle = 0.1f;
 
-			const auto shape = PolygonShape(2.0f, 0.1f);
+			const auto shape = std::make_shared<PolygonShape>(2.0f, 0.1f);
 
 			m_body = m_world->CreateBody(bd);
-			m_body->CreateFixture(&shape, FixtureDef{}.UseDensity(1));
+			m_body->CreateFixture(shape, FixtureDef{}.UseDensity(1));
 
 			m_angularVelocity = 1_rad * RandomFloat(-50.0f, 50.0f);
 			//m_angularVelocity = 46.661274f;

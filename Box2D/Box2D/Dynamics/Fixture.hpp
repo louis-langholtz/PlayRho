@@ -20,6 +20,7 @@
 #ifndef B2_FIXTURE_H
 #define B2_FIXTURE_H
 
+#include <memory>
 #include <Box2D/Common/Math.hpp>
 
 namespace box2d {
@@ -124,14 +125,14 @@ constexpr inline FixtureDef& FixtureDef::UseFilter(Filter value) noexcept
 /// such as friction, collision filters, etc.
 /// Fixtures are created via Body::CreateFixture.
 /// @warning you cannot reuse fixtures.
-/// @note This structure is 64-bytes large (on at least one 64-bit architecture/build).
+/// @note This structure is 72-bytes large (on at least one 64-bit architecture/build).
 class Fixture
 {
 public:
 	Fixture() = delete; // explicitly deleted
 
 	/// Initializing constructor.
-	Fixture(Body* body, const FixtureDef& def, Shape* shape):
+	Fixture(Body* body, const FixtureDef& def, std::shared_ptr<const Shape> shape):
 		m_body{body},
 		m_shape{shape},
 		m_density{Max(def.density, float_t{0})}, 
@@ -248,30 +249,30 @@ private:
 	
 	// 0-bytes of memory (at first).
 	Body* const m_body = nullptr; ///< Parent body. Set on construction. 8-bytes.
-	Shape* const m_shape; ///< Shape (of fixture). Set on construction. Either null or pointer to a heap-memory private copy of the assigned shape. 8-bytes.
+	std::shared_ptr<const Shape> m_shape; ///< Shape (of fixture). Set on construction. Either null or pointer to a heap-memory private copy of the assigned shape. 16-bytes.
 	Fixture* m_next = nullptr; ///< Next fixture in parent body's fixture list. 8-bytes.
 	FixtureProxy* m_proxies = nullptr; ///< Array of fixture proxies for the assigned shape. 8-bytes.
 	void* m_userData = nullptr; ///< User data. 8-bytes.
-	// 40-bytes so far.
+	// 48-bytes so far.
 	float_t m_density = float_t{0}; ///< Density. 4-bytes.
 	float_t m_friction = float_t{2} / float_t{10}; ///< Friction as a coefficient. 4-bytes.
 	float_t m_restitution = float_t{0}; ///< Restitution as a coefficient. 4-bytes.
 	child_count_t m_proxyCount = 0; ///< Proxy count. @detail This is the fixture shape's child count after proxy creation. 4-bytes.
-	// 40 + 16 = 56-bytes now.
+	// 48 + 16 = 64-bytes now.
 	Filter m_filter; ///< Filter object. 6-bytes.
 	bool m_isSensor = false; ///< Is/is-not sensor. 1-bytes.
 
-	// 63-bytes data + 1-byte alignment padding is 64-bytes.
+	// 71-bytes data + 1-byte alignment padding is 72-bytes.
 };
 
 inline const Shape* Fixture::GetShape() noexcept
 {
-	return m_shape;
+	return m_shape.get();
 }
 
 inline const Shape* Fixture::GetShape() const noexcept
 {
-	return m_shape;
+	return m_shape.get();
 }
 
 inline bool Fixture::IsSensor() const noexcept

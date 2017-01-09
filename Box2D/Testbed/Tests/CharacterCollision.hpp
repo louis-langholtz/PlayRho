@@ -32,43 +32,39 @@ public:
 	{
 		// Ground body
 		{
-			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
-
-			const auto shape = EdgeShape(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
-			ground->CreateFixture(&shape);
+			const auto ground = m_world->CreateBody(BodyDef{});
+			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f)));
 		}
 
 		// Collinear edges with no adjacency information.
 		// This shows the problematic case where a box shape can hit
 		// an internal vertex.
 		{
-			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
+			const auto ground = m_world->CreateBody(BodyDef{});
 
 			EdgeShape shape;
 			shape.Set(Vec2(-8.0f, 1.0f), Vec2(-6.0f, 1.0f));
-			ground->CreateFixture(&shape);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 			shape.Set(Vec2(-6.0f, 1.0f), Vec2(-4.0f, 1.0f));
-			ground->CreateFixture(&shape);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 			shape.Set(Vec2(-4.0f, 1.0f), Vec2(-2.0f, 1.0f));
-			ground->CreateFixture(&shape);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 		}
 
 		// Chain shape
 		{
 			BodyDef bd;
 			bd.angle = 0.25_rad * Pi;
-			Body* ground = m_world->CreateBody(bd);
+			const auto ground = m_world->CreateBody(bd);
 
 			Vec2 vs[4];
 			vs[0] = Vec2(5.0f, 7.0f);
 			vs[1] = Vec2(6.0f, 8.0f);
 			vs[2] = Vec2(7.0f, 8.0f);
 			vs[3] = Vec2(8.0f, 7.0f);
-			ChainShape shape;
-			shape.CreateChain(Span<const Vec2>(vs, 4));
-			ground->CreateFixture(&shape);
+			auto shape = std::make_shared<ChainShape>();
+			shape->CreateChain(Span<const Vec2>(vs, 4));
+			ground->CreateFixture(shape);
 		}
 
 		// Square tiles. This shows that adjacency shapes may
@@ -76,37 +72,37 @@ public:
 		// to this problem.
 		{
 			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
+			const auto ground = m_world->CreateBody(bd);
 
 			PolygonShape shape;
 			SetAsBox(shape, 1.0f, 1.0f, Vec2(4.0f, 3.0f), 0.0_rad);
-			ground->CreateFixture(&shape);
+			ground->CreateFixture(std::make_shared<PolygonShape>(shape));
 			SetAsBox(shape, 1.0f, 1.0f, Vec2(6.0f, 3.0f), 0.0_rad);
-			ground->CreateFixture(&shape);
+			ground->CreateFixture(std::make_shared<PolygonShape>(shape));
 			SetAsBox(shape, 1.0f, 1.0f, Vec2(8.0f, 3.0f), 0.0_rad);
-			ground->CreateFixture(&shape);
+			ground->CreateFixture(std::make_shared<PolygonShape>(shape));
 		}
 
 		// Square made from an edge loop. Collision should be smooth.
 		{
 			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
+			const auto ground = m_world->CreateBody(bd);
 
 			Vec2 vs[4];
 			vs[0] = Vec2(-1.0f, 3.0f);
 			vs[1] = Vec2(1.0f, 3.0f);
 			vs[2] = Vec2(1.0f, 5.0f);
 			vs[3] = Vec2(-1.0f, 5.0f);
-			ChainShape shape;
-			shape.CreateLoop(Span<const Vec2>(vs, 4));
-			ground->CreateFixture(&shape);
+			auto shape = std::make_shared<ChainShape>();
+			shape->CreateLoop(Span<const Vec2>(vs, 4));
+			ground->CreateFixture(shape);
 		}
 
 		// Edge loop. Collision should be smooth.
 		{
 			BodyDef bd;
 			bd.position = Vec2(-10.0f, 4.0f);
-			Body* ground = m_world->CreateBody(bd);
+			const auto ground = m_world->CreateBody(bd);
 
 			Vec2 vs[10];
 			vs[0] = Vec2(0.0f, 0.0f);
@@ -119,9 +115,9 @@ public:
 			vs[7] = Vec2(-4.0f, 3.0f);
 			vs[8] = Vec2(-6.0f, 2.0f);
 			vs[9] = Vec2(-6.0f, 0.0f);
-			ChainShape shape;
-			shape.CreateLoop(Span<const Vec2>(vs, 10));
-			ground->CreateFixture(&shape);
+			auto shape = std::make_shared<ChainShape>();
+			shape->CreateLoop(Span<const Vec2>(vs, 10));
+			ground->CreateFixture(shape);
 		}
 
 		// Square character 1
@@ -132,13 +128,11 @@ public:
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
 
-			Body* body = m_world->CreateBody(bd);
-
-			const auto shape = PolygonShape(0.5f, 0.5f);
+			const auto body = m_world->CreateBody(bd);
 
 			FixtureDef fd;
 			fd.density = 20.0f;
-			body->CreateFixture(&shape, fd);
+			body->CreateFixture(std::make_shared<PolygonShape>(0.5f, 0.5f), fd);
 		}
 
 		// Square character 2
@@ -149,13 +143,11 @@ public:
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
 
-			Body* body = m_world->CreateBody(bd);
-
-			const auto shape = PolygonShape(0.25f, 0.25f);
+			const auto body = m_world->CreateBody(bd);
 
 			FixtureDef fd;
 			fd.density = 20.0f;
-			body->CreateFixture(&shape, fd);
+			body->CreateFixture(std::make_shared<PolygonShape>(0.25f, 0.25f), fd);
 		}
 
 		// Hexagon character
@@ -166,10 +158,10 @@ public:
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
 
-			Body* body = m_world->CreateBody(bd);
+			const auto body = m_world->CreateBody(bd);
 
-			float_t angle = 0.0f;
-			float_t delta = Pi / 3.0f;
+			auto angle = 0.0f;
+			const auto delta = Pi / 3.0f;
 			Vec2 vertices[6];
 			for (int32 i = 0; i < 6; ++i)
 			{
@@ -177,11 +169,11 @@ public:
 				angle += delta;
 			}
 
-			const auto shape = PolygonShape(Span<const Vec2>(vertices, 6));
-
 			FixtureDef fd;
 			fd.density = 20.0f;
-			body->CreateFixture(&shape, fd);
+			auto hexshape = std::make_shared<PolygonShape>();
+			hexshape->Set(Span<const Vec2>(vertices, 6));
+			body->CreateFixture(hexshape, fd);
 		}
 
 		// Circle character
@@ -192,13 +184,10 @@ public:
 			bd.fixedRotation = true;
 			bd.allowSleep = false;
 
-			Body* body = m_world->CreateBody(bd);
-
-			const auto shape = CircleShape(float_t(0.5));
-
+			const auto body = m_world->CreateBody(bd);
 			FixtureDef fd;
 			fd.density = 20.0f;
-			body->CreateFixture(&shape, fd);
+			body->CreateFixture(std::make_shared<CircleShape>(float_t(0.5)), fd);
 		}
 
 		// Circle character
@@ -210,13 +199,10 @@ public:
 
 			m_character = m_world->CreateBody(bd);
 
-			CircleShape shape;
-			shape.SetRadius(float_t(0.25));
-
 			FixtureDef fd;
 			fd.density = 20.0f;
 			fd.friction = 1.0f;
-			m_character->CreateFixture(&shape, fd);
+			m_character->CreateFixture(std::make_shared<CircleShape>(float_t(0.25)), fd);
 		}
 	}
 

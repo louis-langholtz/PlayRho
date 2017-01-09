@@ -513,12 +513,12 @@ void Test::LaunchBomb(const Vec2& position, const Vec2& linearVelocity)
 	m_bomb = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(position).UseBullet(true));
 	m_bomb->SetVelocity(Velocity{linearVelocity, 0_rad});
 	
-	const auto circle = CircleShape(0.3f);
+	const auto circle = std::make_shared<CircleShape>(0.3f);
 
 	FixtureDef fd{};
 	fd.density = 20.0f;
 	fd.restitution = 0.0f;
-	m_bomb->CreateFixture(&circle, fd);
+	m_bomb->CreateFixture(circle, fd);
 }
 
 void Test::Step(const Settings& settings, Drawer& drawer)

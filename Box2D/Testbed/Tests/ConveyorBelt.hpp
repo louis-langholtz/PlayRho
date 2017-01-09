@@ -30,36 +30,30 @@ public:
 	{
 		// Ground
 		{
-			Body* ground = m_world->CreateBody(BodyDef{});
-
-			EdgeShape shape;
-			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
-			ground->CreateFixture(&shape);
+			const auto ground = m_world->CreateBody(BodyDef{});
+			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f)));
 		}
 
 		// Platform
 		{
 			BodyDef bd;
 			bd.position = Vec2(-5.0f, 5.0f);
-			Body* body = m_world->CreateBody(bd);
-
-			const auto shape = PolygonShape(10.0f, 0.5f);
+			const auto body = m_world->CreateBody(bd);
 
 			FixtureDef fd;
 			fd.friction = 0.8f;
-			m_platform = body->CreateFixture(&shape, fd);
+			m_platform = body->CreateFixture(std::make_shared<PolygonShape>(10.0f, 0.5f), fd);
 		}
 
 		// Boxes
-		for (int32 i = 0; i < 5; ++i)
+		const auto boxshape = std::make_shared<PolygonShape>(0.5f, 0.5f);
+		for (auto i = 0; i < 5; ++i)
 		{
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-10.0f + 2.0f * i, 7.0f);
-			Body* body = m_world->CreateBody(bd);
-
-			const auto shape = PolygonShape(0.5f, 0.5f);
-			body->CreateFixture(&shape, FixtureDef{}.UseDensity(20));
+			const auto body = m_world->CreateBody(bd);
+			body->CreateFixture(boxshape, FixtureDef{}.UseDensity(20));
 		}
 	}
 

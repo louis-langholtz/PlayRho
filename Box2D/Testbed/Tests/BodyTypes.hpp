@@ -27,15 +27,8 @@ class BodyTypes : public Test
 public:
 	BodyTypes()
 	{
-		Body* ground = nullptr;
-		{
-			ground = m_world->CreateBody(BodyDef{});
-
-			const auto shape = EdgeShape(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
-
-			FixtureDef fd{};
-			ground->CreateFixture(&shape, fd);
-		}
+		const auto ground = m_world->CreateBody(BodyDef{});
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f)));
 
 		// Define attachment
 		{
@@ -44,8 +37,7 @@ public:
 			bd.position = Vec2(0.0f, 3.0f);
 			m_attachment = m_world->CreateBody(bd);
 
-			const auto shape = PolygonShape(0.5f, 2.0f);
-			m_attachment->CreateFixture(&shape, FixtureDef{}.UseDensity(2));
+			m_attachment->CreateFixture(std::make_shared<PolygonShape>(0.5f, 2.0f), FixtureDef{}.UseDensity(2));
 		}
 
 		// Define platform
@@ -61,7 +53,7 @@ public:
 			FixtureDef fd{};
 			fd.friction = 0.6f;
 			fd.density = 2.0f;
-			m_platform->CreateFixture(&shape, fd);
+			m_platform->CreateFixture(std::make_shared<PolygonShape>(shape), fd);
 
 			RevoluteJointDef rjd(m_attachment, m_platform, Vec2(0.0f, 5.0f));
 			rjd.maxMotorTorque = 50.0f;
@@ -86,13 +78,11 @@ public:
 			bd.position = Vec2(0.0f, 8.0f);
 			Body* body = m_world->CreateBody(bd);
 
-			const auto shape = PolygonShape(0.75f, 0.75f);
-
 			FixtureDef fd{};
 			fd.friction = 0.6f;
 			fd.density = 2.0f;
 
-			body->CreateFixture(&shape, fd);
+			body->CreateFixture(std::make_shared<PolygonShape>(0.75f, 0.75f), fd);
 		}
 	}
 

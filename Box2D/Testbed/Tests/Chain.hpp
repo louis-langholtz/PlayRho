@@ -27,17 +27,11 @@ class Chain : public Test
 public:
 	Chain()
 	{
-		Body* ground = nullptr;
+		const auto ground = m_world->CreateBody(BodyDef{});
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
+	
 		{
-			BodyDef bd;
-			ground = m_world->CreateBody(bd);
-
-			const auto shape = EdgeShape(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape);
-		}
-
-		{
-			const auto shape = PolygonShape(0.6f, 0.125f);
+			const auto shape = std::make_shared<PolygonShape>(0.6f, 0.125f);
 
 			FixtureDef fd;
 			fd.density = 20.0f;
@@ -51,7 +45,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(0.5f + i, y);
 				Body* body = m_world->CreateBody(bd);
-				body->CreateFixture(&shape, fd);
+				body->CreateFixture(shape, fd);
 
 				m_world->CreateJoint(RevoluteJointDef(prevBody, body, Vec2(float_t(i), y)));
 

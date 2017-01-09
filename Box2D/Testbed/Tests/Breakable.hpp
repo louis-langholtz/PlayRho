@@ -36,11 +36,8 @@ public:
 	{
 		// Ground body
 		{
-			BodyDef bd;
-			const auto ground = m_world->CreateBody(bd);
-
-			const auto shape = EdgeShape(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape);
+			const auto ground = m_world->CreateBody(BodyDef{});
+			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
 		}
 
 		// Breakable dynamic body
@@ -51,11 +48,11 @@ public:
 			bd.angle = 0.25_rad * Pi;
 			m_body1 = m_world->CreateBody(bd);
 
-			SetAsBox(m_shape1, 0.5f, 0.5f, Vec2(-0.5f, 0.0f), 0.0_rad);
-			m_piece1 = m_body1->CreateFixture(&m_shape1, FixtureDef{}.UseDensity(1));
+			SetAsBox(*m_shape1, 0.5f, 0.5f, Vec2(-0.5f, 0.0f), 0.0_rad);
+			m_piece1 = m_body1->CreateFixture(m_shape1, FixtureDef{}.UseDensity(1));
 
-			SetAsBox(m_shape2, 0.5f, 0.5f, Vec2(0.5f, 0.0f), 0.0_rad);
-			m_piece2 = m_body1->CreateFixture(&m_shape2, FixtureDef{}.UseDensity(1));
+			SetAsBox(*m_shape2, 0.5f, 0.5f, Vec2(0.5f, 0.0f), 0.0_rad);
+			m_piece2 = m_body1->CreateFixture(m_shape2, FixtureDef{}.UseDensity(1));
 		}
 
 		m_break = false;
@@ -102,7 +99,7 @@ public:
 		bd.angle = body1->GetAngle();
 
 		const auto body2 = m_world->CreateBody(bd);
-		m_piece2 = body2->CreateFixture(&m_shape2, FixtureDef{}.UseDensity(1));
+		m_piece2 = body2->CreateFixture(m_shape2, FixtureDef{}.UseDensity(1));
 
 		// Compute consistent velocities for new bodies based on
 		// cached velocity.
@@ -142,8 +139,8 @@ public:
 	Body* m_body1;
 	Vec2 m_velocity;
 	Angle m_angularVelocity;
-	PolygonShape m_shape1;
-	PolygonShape m_shape2;
+	std::shared_ptr<PolygonShape> m_shape1 = std::make_shared<PolygonShape>();
+	std::shared_ptr<PolygonShape> m_shape2 = std::make_shared<PolygonShape>();
 	Fixture* m_piece1;
 	Fixture* m_piece2;
 

@@ -38,23 +38,22 @@ public:
 	{
 		m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
 
-		float_t radius = 0.5f;
-		CircleShape shape(radius, Vec2_zero);
+		const auto radius = 0.5f;
+		const auto shape = std::make_shared<CircleShape>(radius, Vec2_zero);
 
 		FixtureDef fd;
 		fd.density = 1.0f;
 		fd.friction = 0.1f;
 
-		for (int32 j = 0; j < e_columnCount; ++j)
+		for (auto j = 0; j < e_columnCount; ++j)
 		{
-			for (int i = 0; i < e_rowCount; ++i)
+			for (auto i = 0; i < e_rowCount; ++i)
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-10.0f + (2.1f * j + 1.0f + 0.01f * i) * radius, (2.0f * i + 1.0f) * radius);
-				Body* body = m_world->CreateBody(bd);
-
-				body->CreateFixture(&shape, fd);
+				const auto body = m_world->CreateBody(bd);
+				body->CreateFixture(shape, fd);
 			}
 		}
 
@@ -63,8 +62,7 @@ public:
 
 	Body* CreateEnclosure(float_t vertexRadius, float_t wallLength)
 	{
-		BodyDef bd;
-		const auto ground = m_world->CreateBody(bd);
+		const auto ground = m_world->CreateBody(BodyDef{});
 		
 		auto shape = EdgeShape{vertexRadius};
 		//PolygonShape shape;
@@ -80,22 +78,22 @@ public:
 		// Floor
 		shape.Set(btmLeft, btmRight);
 		//shape.Set(Span<const Vec2>{btmLeft, btmRight});
-		ground->CreateFixture(&shape, fd);
+		ground->CreateFixture(std::make_shared<EdgeShape>(shape), fd);
 		
 		// Left wall
 		shape.Set(btmLeft, topLeft);
 		//shape.Set(Span<const Vec2>{btmLeft, topLeft});
-		ground->CreateFixture(&shape, fd);
+		ground->CreateFixture(std::make_shared<EdgeShape>(shape), fd);
 		
 		// Right wall
 		shape.Set(btmRight, topRight);
 		//shape.Set(Span<const Vec2>{btmRight, topRight});
-		ground->CreateFixture(&shape, fd);
+		ground->CreateFixture(std::make_shared<EdgeShape>(shape), fd);
 		
 		// Roof
 		shape.Set(topLeft, topRight);
 		//shape.Set(Span<const Vec2>{topLeft, topRight});
-		ground->CreateFixture(&shape, fd);
+		ground->CreateFixture(std::make_shared<EdgeShape>(shape), fd);
 		
 		return ground;
 	}
@@ -103,7 +101,6 @@ public:
 	void CreateCircle()
 	{
 		constexpr auto radius = float_t(wall_length/10); // 2
-		const auto shape = CircleShape(radius, Vec2_zero);
 
 		FixtureDef fd;
 		fd.density = 1.0f;
@@ -114,26 +111,26 @@ public:
 		bd.bullet = m_bullet_mode;
 		bd.position = Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));
 		//bd.allowSleep = false;
-		Body* body = m_world->CreateBody(bd);
 
-		body->CreateFixture(&shape, fd);
+		const auto body = m_world->CreateBody(bd);
+		
+		body->CreateFixture(std::make_shared<CircleShape>(radius, Vec2_zero), fd);
 	}
 
 	void CreateBox()
 	{
 		constexpr auto side_length = float_t(wall_length/5); // 4
-		const auto shape = PolygonShape(side_length/2, side_length/2);
 
 		FixtureDef fd;
 		fd.density = 1.0f;
-		fd.restitution = float_t(0); // originally 0.8
+		fd.restitution = 0; // originally 0.8
 		
 		BodyDef bd;
 		bd.type = BodyType::Dynamic;
 		bd.bullet = m_bullet_mode;
 		bd.position = Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));
-		auto* body = m_world->CreateBody(bd);
-		body->CreateFixture(&shape, fd);
+		const auto body = m_world->CreateBody(bd);
+		body->CreateFixture(std::make_shared<PolygonShape>(side_length/2, side_length/2), fd);
 	}
 
 	void ToggleBulletMode()

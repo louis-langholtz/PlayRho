@@ -197,9 +197,7 @@ void Body::DestroyFixtures()
 		}
 		
 		fixture.DestroyProxies(m_world->m_blockAllocator, m_world->m_contactMgr.m_broadPhase);
-		const auto shape = fixture.GetShape();
 		Delete(&fixture, m_world->m_blockAllocator);
-		Delete(shape, m_world->m_blockAllocator);
 	}
 	
 	ResetMassData();
@@ -255,6 +253,29 @@ void Body::SetType(BodyType type)
 
 Fixture* Body::CreateFixture(const Shape* shape, const FixtureDef& def, bool resetMassData)
 {
+	std::shared_ptr<const Shape> s;
+	switch (shape->GetType())
+	{
+		case Shape::e_edge:
+			s = std::make_shared<const EdgeShape>(*static_cast<const EdgeShape*>(shape));
+			break;
+		case Shape::e_circle:
+			s = std::make_shared<const CircleShape>(*static_cast<const CircleShape*>(shape));
+			break;
+		case Shape::e_polygon:
+			s = std::make_shared<const PolygonShape>(*static_cast<const PolygonShape*>(shape));
+			break;
+		case Shape::e_chain:
+			s = std::make_shared<const ChainShape>(*static_cast<const ChainShape*>(shape));
+			break;
+		case Shape::e_typeCount:
+			break;
+	}
+	return CreateFixture(s, def, resetMassData);
+}
+
+Fixture* Body::CreateFixture(std::shared_ptr<const Shape> shape, const FixtureDef& def, bool resetMassData)
+{
 	if (!shape)
 	{
 		return nullptr;
@@ -276,9 +297,8 @@ Fixture* Body::CreateFixture(const Shape* shape, const FixtureDef& def, bool res
 
 	auto& allocator = m_world->m_blockAllocator;
 
-	const auto lshape = Clone(shape, allocator);
 	const auto memory = allocator.Allocate(sizeof(Fixture));
-	const auto fixture = new (memory) Fixture{this, def, lshape};
+	const auto fixture = new (memory) Fixture{this, def, shape};
 	
 	if (IsActive())
 	{
@@ -353,9 +373,7 @@ void Body::DestroyFixture(Fixture* fixture, bool resetMassData)
 
 	fixture->m_next = nullptr;
 	
-	const auto shape = fixture->GetShape();
 	Delete(fixture, m_world->m_blockAllocator);
-	Delete(shape, m_world->m_blockAllocator);
 	
 	SetMassDataDirty();		
 	if (resetMassData)

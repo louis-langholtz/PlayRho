@@ -18,18 +18,19 @@
 
 #include "gtest/gtest.h"
 #include <Box2D/Dynamics/Fixture.hpp>
+#include <Box2D/Collision/Shapes/CircleShape.hpp>
 
 using namespace box2d;
 
-TEST(Fixture, ByteSizeIs64)
+TEST(Fixture, ByteSizeIs72)
 {
-	EXPECT_EQ(sizeof(Fixture), size_t(64));
+	EXPECT_EQ(sizeof(Fixture), size_t(72));
 }
 
 TEST(Fixture, InitializingConstructor)
 {
 	const auto body = reinterpret_cast<Body*>(0x1);
-	const auto shapeA = reinterpret_cast<Shape*>(0x3);
+	const auto shapeA = std::make_shared<CircleShape>();
 	const auto density = float_t(2);
 	int variable;
 	const auto userData = &variable;
@@ -46,7 +47,7 @@ TEST(Fixture, InitializingConstructor)
 	Fixture f{body, def, shapeA};
 	
 	EXPECT_EQ(f.GetBody(), body);
-	EXPECT_EQ(f.GetShape(), shapeA);
+	EXPECT_EQ(f.GetShape(), &(*shapeA));
 
 	EXPECT_EQ(f.GetDensity(), density);
 	EXPECT_EQ(f.GetFriction(), friction);
