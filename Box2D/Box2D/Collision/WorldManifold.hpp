@@ -35,7 +35,7 @@ namespace box2d
 	class WorldManifold
 	{
 	public:
-		using size_type = std::remove_const<decltype(MaxPolygonVertices)>::type;
+		using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
 		
 		struct PointSeparation
 		{
