@@ -20,6 +20,7 @@
 #ifndef TIME_OF_IMPACT_H
 #define TIME_OF_IMPACT_H
 
+#include <vector>
 #include <Box2D/Collision/TimeOfImpact.hpp>
 
 namespace box2d {
@@ -70,46 +71,48 @@ public:
 						  output.get_toi_iters(), output.get_max_root_iters());
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		Vec2 vertices[MaxPolygonVertices];
-
 		{
-			const auto transformA = GetTransformation(sweepA, 0.0f);
 			const auto vertexCount = m_shapeA.GetVertexCount();
+			auto vertices = std::vector<Vec2>(vertexCount);
+			const auto transformA = GetTransformation(sweepA, 0.0f);
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
 				vertices[i] = Transform(m_shapeA.GetVertex(i), transformA);
 			}
-			drawer.DrawPolygon(vertices, vertexCount, Color(0.9f, 0.9f, 0.9f));
+			drawer.DrawPolygon(&vertices[0], vertexCount, Color(0.9f, 0.9f, 0.9f));
 		}
 
 		{
+			const auto vertexCount = m_shapeB.GetVertexCount();
+			auto vertices = std::vector<Vec2>(vertexCount);
 			const auto transformB = GetTransformation(sweepB, 0.0f);
-			const auto vertexCount = m_shapeB.GetVertexCount();
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
 				vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
 			}
-			drawer.DrawPolygon(vertices, vertexCount, Color(0.5f, 0.9f, 0.5f));
+			drawer.DrawPolygon(&vertices[0], vertexCount, Color(0.5f, 0.9f, 0.5f));
 		}
 
 		{
+			const auto vertexCount = m_shapeB.GetVertexCount();
+			auto vertices = std::vector<Vec2>(vertexCount);
 			const auto transformB = GetTransformation(sweepB, output.get_t());
-			const auto vertexCount = m_shapeB.GetVertexCount();
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
 				vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
 			}
-			drawer.DrawPolygon(vertices, vertexCount, Color(0.5f, 0.7f, 0.9f));
+			drawer.DrawPolygon(&vertices[0], vertexCount, Color(0.5f, 0.7f, 0.9f));
 		}
 
 		{
-			const auto transformB = GetTransformation(sweepB, 1.0f);
 			const auto vertexCount = m_shapeB.GetVertexCount();
+			auto vertices = std::vector<Vec2>(vertexCount);
+			const auto transformB = GetTransformation(sweepB, 1.0f);
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
 				vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
 			}
-			drawer.DrawPolygon(vertices, vertexCount, Color(0.9f, 0.5f, 0.5f));
+			drawer.DrawPolygon(&vertices[0], vertexCount, Color(0.9f, 0.5f, 0.5f));
 		}
 
 #if 1
@@ -117,11 +120,12 @@ public:
 		{
 			const auto transformB = GetTransformation(sweepB, t);
 			const auto vertexCount = m_shapeB.GetVertexCount();
+			auto vertices = std::vector<Vec2>(vertexCount);
 			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
 				vertices[i] = Transform(m_shapeB.GetVertex(i), transformB);
 			}
-			drawer.DrawPolygon(vertices, vertexCount, Color(0.9f, 0.5f, 0.5f));
+			drawer.DrawPolygon(&vertices[0], vertexCount, Color(0.9f, 0.5f, 0.5f));
 		}
 #endif
 	}

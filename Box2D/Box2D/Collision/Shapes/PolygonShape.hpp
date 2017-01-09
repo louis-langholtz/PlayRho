@@ -23,21 +23,21 @@
 #include <Box2D/Collision/Shapes/Shape.hpp>
 #include <Box2D/Common/VertexSet.hpp>
 #include <type_traits>
+#include <vector>
 
 namespace box2d {
 
 /// Polygon shape.
 /// @detail
 /// A convex polygon. The interior of the polygon is to the left of each edge.
-/// Polygons have a maximum number of vertices equal to MaxPolygonVertices.
+/// Polygons have a maximum number of vertices equal to MaxShapeVertices.
 /// In most cases you should not need many vertices for a convex polygon.
-/// @note This data structure is 276-bytes large (with 4-byte float_t and MaxPolygonVertices
-///    of 16).
+/// @note This data structure is 64-bytes large (with 4-byte float_t).
 class PolygonShape : public Shape
 {
 public:
 	/// Vertex count type.
-	using vertex_count_t = std::remove_const<decltype(MaxPolygonVertices)>::type;
+	using vertex_count_t = uint8;
 
 	static constexpr auto InvalidVertex = static_cast<vertex_count_t>(-1);
 
@@ -48,7 +48,7 @@ public:
 
 	/// Default constructor.
 	/// @detail Constructs a polygon shape with a 0,0 centroid and vertex count of 0.
-	/// @note Polygons with a vertex count less than 3 are "degenerate" and should be
+	/// @note Polygons with a vertex count less than 1 are "degenerate" and should be
 	///   treated as invalid.
 	PolygonShape(float_t vertexRadius = GetDefaultVertexRadius()) noexcept:
 		Shape{e_polygon, vertexRadius}
@@ -64,25 +64,25 @@ public:
 	explicit PolygonShape(float_t hx, float_t hy) noexcept;
 	
 	/// Creates a convex hull from the given array of local points.
-	/// The size of the span must be in the range [3, MaxPolygonVertices].
+	/// The size of the span must be in the range [1, MaxShapeVertices].
 	/// @warning the points may be re-ordered, even if they form a convex polygon
 	/// @warning collinear points are handled but not removed. Collinear points
 	/// may lead to poor stacking behavior.
 	PolygonShape(Span<const Vec2> points) noexcept;
 	
 	/// Creates a convex hull from the given array of local points.
-	/// The size of the span must be in the range [3, MaxPolygonVertices].
+	/// The size of the span must be in the range [1, MaxShapeVertices].
 	/// @warning the points may be re-ordered, even if they form a convex polygon
 	/// @warning collinear points are handled but not removed. Collinear points
 	/// may lead to poor stacking behavior.
 	void Set(Span<const Vec2> points) noexcept;
 
 	/// Creates a convex hull from the given set of local points.
-	/// The size of the set must be in the range [3, MaxPolygonVertices].
+	/// The size of the set must be in the range [1, MaxShapeVertices].
 	/// @warning the points may be re-ordered, even if they form a convex polygon
 	/// @warning collinear points are handled but not removed. Collinear points
 	/// may lead to poor stacking behavior.
-	void Set(const VertexSet<MaxPolygonVertices>& points) noexcept;
+	void Set(const VertexSet& points) noexcept;
 	
 	/// Build vertices to represent an axis-aligned box centered on the local origin.
 	/// @param hx the half-width.
@@ -92,9 +92,12 @@ public:
 	void Transform(Transformation xfm) noexcept;
 
 	/// Gets the vertex count.
-	/// @return value between 0 and MaxPolygonVertices inclusive.
-	/// @see MaxPolygonVertices.
-	vertex_count_t GetVertexCount() const noexcept { return m_count; }
+	/// @return value between 0 and MaxShapeVertices inclusive.
+	/// @see MaxShapeVertices.
+	vertex_count_t GetVertexCount() const noexcept
+	{
+		return static_cast<vertex_count_t>(m_vertices.size());
+	}
 
 	/// Gets a vertex by index.
 	/// @detail Vertices go counter-clockwise.
@@ -110,41 +113,36 @@ public:
 
 	/// Gets the span of vertices.
 	/// @detail Vertices go counter-clockwise.
-	Span<const Vec2> GetVertices() const noexcept { return Span<const Vec2>(m_vertices, m_count); }
+	Span<const Vec2> GetVertices() const noexcept { return Span<const Vec2>(&m_vertices[0], GetVertexCount()); }
 
-	Span<const UnitVec2> GetNormals() const noexcept { return Span<const UnitVec2>(m_normals, m_count); }
+	Span<const UnitVec2> GetNormals() const noexcept { return Span<const UnitVec2>(&m_normals[0], GetVertexCount()); }
 	
 	Vec2 GetCentroid() const noexcept { return m_centroid; }
 	
 private:
 	/// Array of vertices.
 	/// @detail Consecutive vertices constitute "edges" of the polygon.
-	/// @note This is some 16 x 8-bytes or 128-bytes large (on at least one platform).
-	Vec2 m_vertices[MaxPolygonVertices];
+	std::vector<Vec2> m_vertices;
 
 	/// Normals of edges.
 	/// @detail
 	/// These are 90-degree clockwise-rotated unit-vectors of the vectors defined by
 	/// consecutive pairs of elements of vertices.
-	/// @note This is some 16 x 8-bytes or 128-bytes large (on at least one platform).
-	UnitVec2 m_normals[MaxPolygonVertices];
+	std::vector<UnitVec2> m_normals;
 
 	/// Centroid of this shape.
 	Vec2 m_centroid = Vec2_zero;
-	
-	/// Count of valid vertices/normals.
-	vertex_count_t m_count = 0;
 };
 
 inline Vec2 PolygonShape::GetVertex(vertex_count_t index) const
 {
-	assert(0 <= index && index < m_count);
+	assert(0 <= index && index < GetVertexCount());
 	return m_vertices[index];
 }
 
 inline UnitVec2 PolygonShape::GetNormal(vertex_count_t index) const
 {
-	assert(0 <= index && index < m_count);
+	assert(0 <= index && index < GetVertexCount());
 	return m_normals[index];
 }
 

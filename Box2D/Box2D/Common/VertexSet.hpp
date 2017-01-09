@@ -19,11 +19,11 @@
 #ifndef VertexSet_hpp
 #define VertexSet_hpp
 
+#include <vector>
 #include <Box2D/Common/Math.hpp>
 
 namespace box2d
 {
-	template <size_t MAXSIZE>
 	class VertexSet
 	{
 	public:
@@ -39,24 +39,19 @@ namespace box2d
 
 		bool add(Vec2 value)
 		{
-			if (m_size < MAXSIZE)
+			if (find(value) != end())
 			{
-				if (find(value) != end())
-				{
-					return false;
-				}
-				m_elements[m_size] = value;
-				++m_size;
-				return true;
+				return false;
 			}
-			return false;
+			m_elements.push_back(value);
+			return true;
 		}
 
-		size_t size() const noexcept { return m_size; }
+		size_t size() const noexcept { return m_elements.size(); }
 		
-		const_pointer begin() const { return m_elements; }
+		const_pointer begin() const { return &m_elements[0]; }
 		
-		const_pointer end() const { return m_elements + m_size; }
+		const_pointer end() const { return &m_elements[m_elements.size()]; }
 
 		/// Finds contained point whose delta with the given point has a squared length less
 		/// than or equal to this set's minimum length squared value.
@@ -79,13 +74,11 @@ namespace box2d
 
 		Vec2 operator[](size_t index) const noexcept
 		{
-			assert(index < m_size);
 			return m_elements[index];
 		}
 
 	private:
-		size_t m_size = 0; ///< Size. 8-bytes.
-		Vec2 m_elements[MAXSIZE]; ///< Elements. MAXSIZE * sizeof(Vec2).
+		std::vector<Vec2> m_elements; ///< Elements.
 		const Vec2::data_type m_minlen2; ///< Minimum length squared. sizeof(Vec2)/2 or 4-bytes.
 	};
 }

@@ -20,6 +20,8 @@
 #ifndef POLYCOLLISION_H
 #define POLYCOLLISION_H
 
+#include <vector>
+
 namespace box2d {
 
 class PolyCollision : public Test
@@ -56,24 +58,25 @@ public:
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		{
-			Color color(0.9f, 0.9f, 0.9f);
-			Vec2 v[MaxPolygonVertices];
+			const auto color = Color(0.9f, 0.9f, 0.9f);
 			{
 				const auto vertexCount = m_polygonA.GetVertexCount();
+				auto v = std::vector<Vec2>(vertexCount);
 				for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 				{
 					v[i] = Transform(m_polygonA.GetVertex(i), m_transformA);
 				}
-				drawer.DrawPolygon(v, vertexCount, color);
+				drawer.DrawPolygon(&v[0], vertexCount, color);
 			}
 
 			{
 				const auto vertexCount = m_polygonB.GetVertexCount();
+				auto v = std::vector<Vec2>(vertexCount);
 				for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 				{
 					v[i] = Transform(m_polygonB.GetVertex(i), m_transformB);
 				}
-				drawer.DrawPolygon(v, vertexCount, color);
+				drawer.DrawPolygon(&v[0], vertexCount, color);
 			}
 		}
 

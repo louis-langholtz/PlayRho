@@ -20,14 +20,16 @@
 #ifndef CONVEX_HULL_H
 #define CONVEX_HULL_H
 
+#include <vector>
+
 namespace box2d {
 
 class ConvexHull : public Test
 {
 public:
-	enum
+	enum: std::size_t
 	{
-		e_count = MaxPolygonVertices
+		e_count = 16
 	};
 
 	ConvexHull()
@@ -38,22 +40,20 @@ public:
 
 	void Generate()
 	{
-		Vec2 lowerBound(-8.0f, -8.0f);
-		Vec2 upperBound(8.0f, 8.0f);
+		const auto lowerBound = Vec2(-8.0f, -8.0f);
+		const auto upperBound = Vec2(8.0f, 8.0f);
 
-		for (int32 i = 0; i < e_count; ++i)
+		m_points.clear();
+		for (auto i = std::size_t{0}; i < e_count; ++i)
 		{
-			float_t x = 10.0f * RandomFloat();
-			float_t y = 10.0f * RandomFloat();
+			const auto x = 10.0f * RandomFloat();
+			const auto y = 10.0f * RandomFloat();
 
 			// Clamp onto a square to help create collinearities.
 			// This will stress the convex hull algorithm.
-			Vec2 v(x, y);
-			v = Clamp(v, lowerBound, upperBound);
+			const auto v = Clamp(Vec2(x, y), lowerBound, upperBound);
 			m_points[i] = v;
 		}
-
-		m_count = e_count;
 	}
 
 	static Test* Create()
@@ -80,14 +80,14 @@ public:
 
 	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
-		const auto shape = PolygonShape(Span<const Vec2>{m_points, m_count});
+		const auto shape = PolygonShape(Span<const Vec2>{&m_points[0], m_points.size()});
 
 		drawer.DrawString(5, m_textLine, "Press g to generate a new random convex hull");
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		drawer.DrawPolygon(shape.GetVertices().begin(), shape.GetVertexCount(), Color(0.9f, 0.9f, 0.9f));
 
-		for (int32 i = 0; i < m_count; ++i)
+		for (auto i = std::size_t{0}; i < m_points.size(); ++i)
 		{
 			drawer.DrawPoint(m_points[i], 3.0f, Color(0.3f, 0.9f, 0.3f));
 			drawer.DrawString(m_points[i] + Vec2(0.05f, 0.05f), "%d", i);
@@ -105,8 +105,7 @@ public:
 		}
 	}
 
-	Vec2 m_points[MaxPolygonVertices];
-	std::remove_cv<decltype(MaxPolygonVertices)>::type m_count;
+	std::vector<Vec2> m_points{e_count};
 	bool m_auto;
 };
 

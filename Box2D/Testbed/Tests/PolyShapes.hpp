@@ -20,6 +20,8 @@
 #ifndef POLY_SHAPES_H
 #define POLY_SHAPES_H
 
+#include <vector>
+
 /// This tests stacking. It also shows how to use World::Query
 /// and TestOverlap.
 
@@ -42,37 +44,36 @@ public:
 		m_count = 0;
 	}
 
-	void DrawFixture(Fixture* fixture)
+	void DrawFixture(const Fixture* fixture)
 	{
-		Color color(0.95f, 0.95f, 0.6f);
-		const Transformation& xf = fixture->GetBody()->GetTransformation();
+		const auto color = Color(0.95f, 0.95f, 0.6f);
+		const auto xf = fixture->GetBody()->GetTransformation();
 
 		switch (GetType(*fixture))
 		{
 		case Shape::e_circle:
 			{
-				CircleShape* circle = (CircleShape*)fixture->GetShape();
+				const auto circle = static_cast<const CircleShape*>(fixture->GetShape());
 
-				Vec2 center = Transform(circle->GetLocation(), xf);
-				float_t radius = circle->GetRadius();
-
+				const auto center = Transform(circle->GetLocation(), xf);
+				const auto radius = circle->GetRadius();
+				
 				g_debugDraw->DrawCircle(center, radius, color);
 			}
 			break;
 
 		case Shape::e_polygon:
 			{
-				PolygonShape* poly = (PolygonShape*)fixture->GetShape();
+				const auto poly = static_cast<const PolygonShape*>(fixture->GetShape());
 				const auto vertexCount = poly->GetVertexCount();
-				assert(vertexCount <= MaxPolygonVertices);
-				Vec2 vertices[MaxPolygonVertices];
+				auto vertices = std::vector<Vec2>(vertexCount);
 
 				for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 				{
 					vertices[i] = Transform(poly->GetVertex(i), xf);
 				}
 
-				g_debugDraw->DrawPolygon(vertices, vertexCount, color);
+				g_debugDraw->DrawPolygon(&vertices[0], vertexCount, color);
 			}
 			break;
 				

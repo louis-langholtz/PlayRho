@@ -36,7 +36,6 @@ PolygonShape::PolygonShape(Span<const Vec2> points) noexcept:
 
 void PolygonShape::SetAsBox(float_t hx, float_t hy) noexcept
 {
-	m_count = 4;
 	m_centroid = Vec2_zero;
 
 	// vertices must be counter-clockwise
@@ -46,15 +45,17 @@ void PolygonShape::SetAsBox(float_t hx, float_t hy) noexcept
 	const auto top_lft = Vec2{-hx, +hy};
 	const auto btm_lft = Vec2{-hx, -hy};
 	
-	m_vertices[0] = btm_rgt;
-	m_vertices[1] = top_rgt;
-	m_vertices[2] = top_lft;
-	m_vertices[3] = btm_lft;
+	m_vertices.clear();
+	m_vertices.emplace_back(btm_rgt);
+	m_vertices.emplace_back(top_rgt);
+	m_vertices.emplace_back(top_lft);
+	m_vertices.emplace_back(btm_lft);
 
-	m_normals[0] = UnitVec2::GetRight();
-	m_normals[1] = UnitVec2::GetTop();
-	m_normals[2] = UnitVec2::GetLeft();
-	m_normals[3] = UnitVec2::GetBottom();
+	m_normals.clear();
+	m_normals.emplace_back(UnitVec2::GetRight());
+	m_normals.emplace_back(UnitVec2::GetTop());
+	m_normals.emplace_back(UnitVec2::GetLeft());
+	m_normals.emplace_back(UnitVec2::GetBottom());
 }
 
 void box2d::SetAsBox(PolygonShape& shape, float_t hx, float_t hy, const Vec2& center, Angle angle) noexcept
@@ -65,7 +66,7 @@ void box2d::SetAsBox(PolygonShape& shape, float_t hx, float_t hy, const Vec2& ce
 
 void PolygonShape::Transform(box2d::Transformation xf) noexcept
 {
-	for (auto i = decltype(m_count){0}; i < m_count; ++i)
+	for (auto i = decltype(GetVertexCount()){0}; i < GetVertexCount(); ++i)
 	{
 		m_vertices[i] = box2d::Transform(m_vertices[i], xf);
 		m_normals[i] = Rotate(m_normals[i], xf.q);
@@ -76,34 +77,33 @@ void PolygonShape::Transform(box2d::Transformation xf) noexcept
 void PolygonShape::Set(Span<const Vec2> points) noexcept
 {
 	// Perform welding and copy vertices into local buffer.
-	auto point_set = VertexSet<MaxPolygonVertices>(LinearSlop);
+	auto point_set = VertexSet(LinearSlop);
+	for (auto&& p: points)
 	{
-		const auto clampedCount = static_cast<vertex_count_t>(Min(points.size(), size_t{MaxPolygonVertices}));
-		for (auto i = decltype(clampedCount){0}; i < clampedCount; ++i)
-		{
-			point_set.add(points[i]);
-		}
+		point_set.add(p);
 	}
 	Set(point_set);
 }
 
-void PolygonShape::Set(const VertexSet<MaxPolygonVertices>& point_set) noexcept
+void PolygonShape::Set(const VertexSet& point_set) noexcept
 {
-	const auto n = static_cast<vertex_count_t>(point_set.size());
-	assert(n > 0);
+	const auto point_set_size = point_set.size();
+	assert(point_set_size > 0 && point_set_size < std::numeric_limits<vertex_count_t>::max());
+
+	const auto n = static_cast<vertex_count_t>(std::min(static_cast<std::size_t>(std::numeric_limits<vertex_count_t>::max()),
+														point_set_size));
 
 	// Create the convex hull using the Gift wrapping algorithm
 	// http://en.wikipedia.org/wiki/Gift_wrapping_algorithm
 
 	const auto index0 = static_cast<decltype(n)>(FindLowestRightMostVertex(point_set));
 
-	vertex_count_t hull[MaxPolygonVertices];
-	auto m = decltype(m_count){0};
+	auto hull = std::vector<vertex_count_t>();
 	auto ih = index0;
 
 	for (;;)
 	{
-		hull[m] = ih;
+		hull.emplace_back(ih);
 
 		auto ie = decltype(n){0};
 		for (auto j = decltype(n){1}; j < n; ++j)
@@ -114,8 +114,8 @@ void PolygonShape::Set(const VertexSet<MaxPolygonVertices>& point_set) noexcept
 				continue;
 			}
 
-			const auto r = point_set[ie] - point_set[hull[m]];
-			const auto v = point_set[j] - point_set[hull[m]];
+			const auto r = point_set[ie] - point_set[ih];
+			const auto v = point_set[j] - point_set[ih];
 			const auto c = Cross(r, v);
 			if ((c < 0) || ((c == 0) && (GetLengthSquared(v) > GetLengthSquared(r))))
 			{
@@ -123,38 +123,38 @@ void PolygonShape::Set(const VertexSet<MaxPolygonVertices>& point_set) noexcept
 			}
 		}
 
-		++m;
 		ih = ie;
-
 		if (ie == index0)
 		{
 			break;
 		}
 	}
 	
-	m_count = m;
+	const auto count = static_cast<vertex_count_t>(hull.size());
 
 	// Copy vertices.
-	for (auto i = decltype(m){0}; i < m; ++i)
+	m_vertices.clear();
+	for (auto i = decltype(count){0}; i < count; ++i)
 	{
-		m_vertices[i] = point_set[hull[i]];
+		m_vertices.emplace_back(point_set[hull[i]]);
 	}
 
-	if (m > 1)
+	m_normals.clear();
+	if (count > 1)
 	{
 		// Compute normals.
-		for (auto i = decltype(m){0}; i < m; ++i)
+		for (auto i = decltype(count){0}; i < count; ++i)
 		{
-			m_normals[i] = GetUnitVector(GetFwdPerpendicular(GetEdge(*this, i)));
+			m_normals.emplace_back(GetUnitVector(GetFwdPerpendicular(GetEdge(*this, i))));
 		}
 	}
-	else if (m == 1)
+	else if (count == 1)
 	{
-		m_normals[0] = UnitVec2{};
+		m_normals.emplace_back(UnitVec2{});
 	}
 
 	// Compute the polygon centroid.
-	switch (m)
+	switch (count)
 	{
 		case 0:
 			m_centroid = GetInvalid<Vec2>();
@@ -166,7 +166,7 @@ void PolygonShape::Set(const VertexSet<MaxPolygonVertices>& point_set) noexcept
 			m_centroid = (m_vertices[0] + m_vertices[1]) / 2;
 			break;
 		default:
-			m_centroid = ComputeCentroid(Span<const Vec2>(m_vertices, m));
+			m_centroid = ComputeCentroid(GetVertices());
 			break;
 	}
 }

@@ -20,6 +20,7 @@
 #include "Test.hpp"
 #include "Drawer.hpp"
 #include <stdio.h>
+#include <vector>
 
 #include <Box2D/Rope/Rope.hpp>
 #include <Box2D/Dynamics/FixtureProxy.hpp>
@@ -98,15 +99,14 @@ static void Draw(Drawer& drawer, const ChainShape& shape, const Transformation& 
 static void Draw(Drawer& drawer, const PolygonShape& shape, const Transformation& xf, const Color& color, bool skins)
 {
 	const auto vertexCount = shape.GetVertexCount();
-	assert(vertexCount <= MaxPolygonVertices);
-	Vec2 vertices[MaxPolygonVertices];
+	auto vertices = std::vector<Vec2>(vertexCount);
 	for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 	{
 		vertices[i] = Transform(shape.GetVertex(i), xf);
 	}
 	const auto fillColor = Color{0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f};
-	drawer.DrawSolidPolygon(vertices, vertexCount, fillColor);
-	drawer.DrawPolygon(vertices, vertexCount, color);
+	drawer.DrawSolidPolygon(&vertices[0], vertexCount, fillColor);
+	drawer.DrawPolygon(&vertices[0], vertexCount, color);
 	
 	if (!skins)
 	{

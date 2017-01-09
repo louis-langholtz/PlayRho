@@ -21,17 +21,14 @@
 
 using namespace box2d;
 
-TEST(VertexSet, ByteSizeIsSizePlusVecArrayPlusMin)
+TEST(VertexSet, ByteSizeIs32)
 {
-	// VertexSet winds up being 8 * 2 + MAXSIZE * 8
-	EXPECT_EQ(sizeof(VertexSet<1>), size_t(24));
-	EXPECT_EQ(sizeof(VertexSet<2>), size_t(32));
-	EXPECT_EQ(sizeof(VertexSet<MaxPolygonVertices>), size_t(144));
+	EXPECT_EQ(sizeof(VertexSet), size_t(32));
 }
 
 TEST(VertexSet, DefaultConstruction)
 {
-	const auto set = VertexSet<MaxPolygonVertices>{};
+	const auto set = VertexSet{};
 	EXPECT_EQ(set.size(), size_t(0));
 	EXPECT_EQ(set.begin(), set.end());
 	EXPECT_EQ(set.find(Vec2{0, 0}), set.end());
@@ -39,7 +36,7 @@ TEST(VertexSet, DefaultConstruction)
 
 TEST(VertexSet, Add)
 {
-	auto set = VertexSet<4>{};
+	auto set = VertexSet{};
 	ASSERT_EQ(set.size(), size_t(0));
 
 	EXPECT_TRUE(set.add(Vec2{1, 1}));
@@ -72,6 +69,6 @@ TEST(VertexSet, Add)
 	EXPECT_TRUE(set.add(Vec2{6, 5}));
 	EXPECT_EQ(set.size(), size_t(4));
 
-	EXPECT_FALSE(set.add(Vec2{8, 5}));
-	EXPECT_EQ(set.size(), size_t(4));
+	EXPECT_TRUE(set.add(Vec2{8, 5}));
+	EXPECT_EQ(set.size(), size_t(5));
 }

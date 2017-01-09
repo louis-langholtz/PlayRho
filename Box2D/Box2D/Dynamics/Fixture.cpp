@@ -202,14 +202,15 @@ void box2d::Dump(const Fixture& fixture, size_t bodyIndex)
 
 	case Shape::e_polygon:
 		{
-			auto s = static_cast<const PolygonShape*>(fixture.GetShape());
+			const auto s = static_cast<const PolygonShape*>(fixture.GetShape());
+			const auto vertexCount = s->GetVertexCount();
 			log("    PolygonShape shape;\n");
-			log("    Vec2 vs[%d];\n", MaxPolygonVertices);
-			for (auto i = decltype(s->GetVertexCount()){0}; i < s->GetVertexCount(); ++i)
+			log("    Vec2 vs[%d];\n", vertexCount);
+			for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
 			{
 				log("    vs[%d].Set(%.15lef, %.15lef);\n", i, s->GetVertex(i).x, s->GetVertex(i).y);
 			}
-			log("    shape.Set(vs, %d);\n", s->GetVertexCount());
+			log("    shape.Set(vs, %d);\n", vertexCount);
 		}
 		break;
 
