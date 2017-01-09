@@ -10,7 +10,7 @@ General influences on this fork are:
 - Hardware capabilities of popular CPU architectures like the
   [Intel-64 architecture](http://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-manual-325462.pdf).
  
-**NOTE**: These sources make heavy use of the standard C++ library [`std::assert`](http://en.cppreference.com/w/cpp/error/assert) macro to confirm code correctness.
+**NOTE**: These sources make heavy use of the standard C++ library [`assert`](http://en.cppreference.com/w/cpp/error/assert) macro to confirm code correctness.
 As such, this library *must* be compiled with the `NDEBUG` preprocessor macro enabled
 to see any kind of performance.
 
