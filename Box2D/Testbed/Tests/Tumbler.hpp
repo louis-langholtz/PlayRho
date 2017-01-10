@@ -33,7 +33,7 @@ public:
 
 	Tumbler()
 	{
-		const auto ground = m_world->CreateBody(BodyDef{});
+		const auto ground = m_world->CreateBody();
 
 		const auto body = m_world->CreateBody(BodyDef{}
 											  .UseType(BodyType::Dynamic)
@@ -42,13 +42,13 @@ public:
 
 		PolygonShape shape;
 		SetAsBox(shape, 0.5f, 10.0f, Vec2( 10.0f, 0.0f), 0_rad);
-		body->CreateFixture(&shape, FixtureDef{}.UseDensity(5));
+		body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(5));
 		SetAsBox(shape, 0.5f, 10.0f, Vec2(-10.0f, 0.0f), 0_rad);
-		body->CreateFixture(&shape, FixtureDef{}.UseDensity(5));
+		body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(5));
 		SetAsBox(shape, 10.0f, 0.5f, Vec2(0.0f, 10.0f), 0_rad);
-		body->CreateFixture(&shape, FixtureDef{}.UseDensity(5));
+		body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(5));
 		SetAsBox(shape, 10.0f, 0.5f, Vec2(0.0f, -10.0f), 0_rad);
-		body->CreateFixture(&shape, FixtureDef{}.UseDensity(5));
+		body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(5));
 
 		RevoluteJointDef jd;
 		jd.bodyA = ground;
@@ -69,7 +69,7 @@ public:
 			const auto body = m_world->CreateBody(BodyDef{}
 												  .UseType(BodyType::Dynamic)
 												  .UseLocation(Vec2(0, 10)));
-			body->CreateFixture(&m_shape, FixtureDef{}.UseDensity(1));
+			body->CreateFixture(m_shape, FixtureDef{}.UseDensity(1));
 			++m_count;
 		}
 	}
@@ -98,7 +98,7 @@ public:
 
 	RevoluteJoint* m_joint;
 	int32 m_count = 0;
-	PolygonShape m_shape{0.125f, 0.125f};
+	std::shared_ptr<PolygonShape> m_shape = std::make_shared<PolygonShape>(0.125f, 0.125f);
 };
 
 } // namespace box2d

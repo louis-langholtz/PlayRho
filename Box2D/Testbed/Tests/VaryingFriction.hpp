@@ -29,84 +29,73 @@ public:
 	VaryingFriction()
 	{
 		{
-			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
-
-			EdgeShape shape;
-			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape);
+			const auto ground = m_world->CreateBody();
+			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
 		}
 
+		const auto sliderPlank = std::make_shared<PolygonShape>(13.0f, 0.25f);
+		const auto sliderWall = std::make_shared<PolygonShape>(0.25f, 1.0f);
+		
 		{
-			const auto shape = PolygonShape(13.0f, 0.25f);
-
 			BodyDef bd;
 			bd.position = Vec2(-4.0f, 22.0f);
 			bd.angle = -0.25_rad;
 
-			Body* ground = m_world->CreateBody(bd);
-			ground->CreateFixture(&shape);
+			const auto ground = m_world->CreateBody(bd);
+			ground->CreateFixture(sliderPlank);
 		}
 
 		{
-			const auto shape = PolygonShape(0.25f, 1.0f);
-
 			BodyDef bd;
 			bd.position = Vec2(10.5f, 19.0f);
 
-			Body* ground = m_world->CreateBody(bd);
-			ground->CreateFixture(&shape);
+			const auto ground = m_world->CreateBody(bd);
+			ground->CreateFixture(sliderWall);
 		}
 
 		{
-			const auto shape = PolygonShape(13.0f, 0.25f);
-
 			BodyDef bd;
 			bd.position = Vec2(4.0f, 14.0f);
 			bd.angle = 0.25_rad;
 
-			Body* ground = m_world->CreateBody(bd);
-			ground->CreateFixture(&shape);
+			const auto ground = m_world->CreateBody(bd);
+			ground->CreateFixture(sliderPlank);
 		}
 
 		{
-			const auto shape = PolygonShape(0.25f, 1.0f);
-
 			BodyDef bd;
 			bd.position = Vec2(-10.5f, 11.0f);
 
-			Body* ground = m_world->CreateBody(bd);
-			ground->CreateFixture(&shape);
+			const auto ground = m_world->CreateBody(bd);
+			ground->CreateFixture(sliderWall);
 		}
 
 		{
-			const auto shape = PolygonShape(13.0f, 0.25f);
-
 			BodyDef bd;
 			bd.position = Vec2(-4.0f, 6.0f);
 			bd.angle = -0.25_rad;
 
-			Body* ground = m_world->CreateBody(bd);
-			ground->CreateFixture(&shape);
+			const auto ground = m_world->CreateBody(bd);
+			ground->CreateFixture(sliderPlank);
 		}
 
 		{
-			const auto shape = PolygonShape(0.5f, 0.5f);
+			const auto shape = std::make_shared<PolygonShape>(0.5f, 0.5f);
 
 			FixtureDef fd;
 			fd.density = 25.0f;
 
 			float friction[5] = {0.75f, 0.5f, 0.35f, 0.1f, 0.0f};
 
-			for (int i = 0; i < 5; ++i)
+			for (auto i = 0; i < 5; ++i)
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-15.0f + 4.0f * i, 28.0f);
-				Body* body = m_world->CreateBody(bd);
+				const auto body = m_world->CreateBody(bd);
 
 				fd.friction = friction[i];
-				body->CreateFixture(&shape, fd);
+				body->CreateFixture(shape, fd);
 			}
 		}
 	}

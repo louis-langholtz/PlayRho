@@ -326,7 +326,7 @@ Test::Test(const World::Def& conf):
 	m_world->SetDestructionListener(&m_destructionListener);
 	m_world->SetContactListener(this);
 	
-	m_groundBody = m_world->CreateBody(BodyDef{});
+	m_groundBody = m_world->CreateBody();
 
 	memset(&m_maxProfile, 0, sizeof(Profile));
 	memset(&m_totalProfile, 0, sizeof(Profile));

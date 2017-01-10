@@ -30,7 +30,7 @@ public:
 	Pinball()
 	{
 		// Ground body
-		const auto ground = m_world->CreateBody(BodyDef{});
+		const auto ground = m_world->CreateBody();
 		{
 			Vec2 vs[5];
 			vs[0] = Vec2(0.0f, -2.0f);
@@ -41,31 +41,30 @@ public:
 
 			ChainShape loop;
 			loop.CreateLoop(Span<const Vec2>(vs, 5));
-			FixtureDef fd;
-			fd.density = 0.0f;
-			ground->CreateFixture(&loop, fd);
+			ground->CreateFixture(std::make_shared<ChainShape>(loop), FixtureDef{}.UseDensity(0));
 		}
 
 		// Flippers
 		{
-			Vec2 p1(-2.0f, 0.0f), p2(2.0f, 0.0f);
+			const auto p1 = Vec2(-2.0f, 0.0f);
+			const auto p2 = Vec2(+2.0f, 0.0f);
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 
 			bd.position = p1;
-			Body* leftFlipper = m_world->CreateBody(bd);
+			const auto leftFlipper = m_world->CreateBody(bd);
 
 			bd.position = p2;
-			Body* rightFlipper = m_world->CreateBody(bd);
+			const auto rightFlipper = m_world->CreateBody(bd);
 
-			const auto box = PolygonShape(1.75f, 0.1f);
+			const auto box = std::make_shared<PolygonShape>(1.75f, 0.1f);
 
 			FixtureDef fd;
 			fd.density = 1.0f;
 
-			leftFlipper->CreateFixture(&box, fd);
-			rightFlipper->CreateFixture(&box, fd);
+			leftFlipper->CreateFixture(box, fd);
+			rightFlipper->CreateFixture(box, fd);
 
 			RevoluteJointDef jd;
 			jd.bodyA = ground;
@@ -98,12 +97,9 @@ public:
 
 			m_ball = m_world->CreateBody(bd);
 
-			CircleShape shape;
-			shape.SetRadius(float_t(0.2));
-
 			FixtureDef fd;
 			fd.density = 1.0f;
-			m_ball->CreateFixture(&shape, fd);
+			m_ball->CreateFixture(std::make_shared<CircleShape>(0.2f), fd);
 		}
 	}
 

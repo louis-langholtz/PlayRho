@@ -32,7 +32,7 @@ public:
 	{
 		// Ground body
 		{
-			const auto ground = m_world->CreateBody(BodyDef{});
+			const auto ground = m_world->CreateBody();
 			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f)));
 		}
 
@@ -40,7 +40,7 @@ public:
 		// This shows the problematic case where a box shape can hit
 		// an internal vertex.
 		{
-			const auto ground = m_world->CreateBody(BodyDef{});
+			const auto ground = m_world->CreateBody();
 
 			EdgeShape shape;
 			shape.Set(Vec2(-8.0f, 1.0f), Vec2(-6.0f, 1.0f));

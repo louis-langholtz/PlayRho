@@ -37,7 +37,7 @@ TEST(Body, WorldCreated)
 {
 	World world;
 	
-	auto body = world.CreateBody(BodyDef{});
+	auto body = world.CreateBody();
 	ASSERT_NE(body, nullptr);
 
 	EXPECT_EQ(body->GetWorld(), &world);
@@ -85,20 +85,20 @@ TEST(Body, CreateAndDestroyFixture)
 {
 	World world;
 
-	auto body = world.CreateBody(BodyDef{});
+	auto body = world.CreateBody();
 	ASSERT_NE(body, nullptr);
 	EXPECT_TRUE(body->GetFixtures().empty());
 	EXPECT_FALSE(body->IsMassDataDirty());
 
-	CircleShape shape{float_t(2.871), Vec2{float_t(1.912), float_t(-77.31)}};
+	const auto shape = std::make_shared<CircleShape>(2.871f, Vec2{1.912f, -77.31f});
 	
-	auto fixture = body->CreateFixture(&shape, FixtureDef{}.UseDensity(1), false);
+	auto fixture = body->CreateFixture(shape, FixtureDef{}.UseDensity(1), false);
 	ASSERT_NE(fixture, nullptr);
 	ASSERT_NE(fixture->GetShape(), nullptr);
-	EXPECT_EQ(fixture->GetShape()->GetType(), shape.GetType());
-	EXPECT_EQ(GetVertexRadius(*fixture->GetShape()), GetVertexRadius(shape));
-	EXPECT_EQ(static_cast<const CircleShape*>(fixture->GetShape())->GetLocation().x, shape.GetLocation().x);
-	EXPECT_EQ(static_cast<const CircleShape*>(fixture->GetShape())->GetLocation().y, shape.GetLocation().y);
+	EXPECT_EQ(fixture->GetShape()->GetType(), shape->GetType());
+	EXPECT_EQ(GetVertexRadius(*fixture->GetShape()), GetVertexRadius(*shape));
+	EXPECT_EQ(static_cast<const CircleShape*>(fixture->GetShape())->GetLocation().x, shape->GetLocation().x);
+	EXPECT_EQ(static_cast<const CircleShape*>(fixture->GetShape())->GetLocation().y, shape->GetLocation().y);
 	EXPECT_FALSE(body->GetFixtures().empty());
 	{
 		int i = 0;
@@ -125,7 +125,7 @@ TEST(Body, CreateLotsOfFixtures)
 {
 	BodyDef bd;
 	bd.type = BodyType::Dynamic;
-	CircleShape shape{float_t(2.871), Vec2{float_t(1.912), float_t(-77.31)}};
+	const auto shape = std::make_shared<CircleShape>(2.871f, Vec2{1.912f, -77.31f});
 	const auto num = 5000;
 	std::chrono::time_point<std::chrono::system_clock> start, end;
 	
@@ -139,7 +139,7 @@ TEST(Body, CreateLotsOfFixtures)
 		
 		for (auto i = decltype(num){0}; i < num; ++i)
 		{
-			auto fixture = body->CreateFixture(&shape, FixtureDef{}.UseDensity(1.3f), false);
+			auto fixture = body->CreateFixture(shape, FixtureDef{}.UseDensity(1.3f), false);
 			ASSERT_NE(fixture, nullptr);
 		}
 		body->ResetMassData();
@@ -168,7 +168,7 @@ TEST(Body, CreateLotsOfFixtures)
 		
 		for (auto i = decltype(num){0}; i < num; ++i)
 		{
-			auto fixture = body->CreateFixture(&shape, FixtureDef{}.UseDensity(1.3f), true);
+			auto fixture = body->CreateFixture(shape, FixtureDef{}.UseDensity(1.3f), true);
 			ASSERT_NE(fixture, nullptr);
 		}
 		

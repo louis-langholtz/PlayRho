@@ -58,19 +58,14 @@ public:
 	{
 		// Ground body
 		{
-			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
-
-			float_t x1 = -20.0f;
-			float_t y1 = 2.0f * cosf(x1 / 10.0f * Pi);
-			for (int32 i = 0; i < 80; ++i)
+			const auto ground = m_world->CreateBody();
+			auto x1 = -20.0f;
+			auto y1 = 2.0f * cosf(x1 / 10.0f * Pi);
+			for (auto i = 0; i < 80; ++i)
 			{
-				float_t x2 = x1 + 0.5f;
-				float_t y2 = 2.0f * cosf(x2 / 10.0f * Pi);
-
-				const auto shape = EdgeShape(Vec2(x1, y1), Vec2(x2, y2));
-				ground->CreateFixture(&shape);
-
+				const auto x2 = x1 + 0.5f;
+				const auto y2 = 2.0f * cosf(x2 / 10.0f * Pi);
+				ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(x1, y1), Vec2(x2, y2)));
 				x1 = x2;
 				y1 = y2;
 			}
@@ -80,9 +75,9 @@ public:
 		m_polygons[1].Set({Vec2(-0.1f, 0.0f), Vec2(0.1f, 0.0f), Vec2(0.0f, 1.5f)});
 
 		{
-			float_t w = 1.0f;
-			float_t b = w / (2.0f + Sqrt(2.0f));
-			float_t s = Sqrt(2.0f) * b;
+			const auto w = 1.0f;
+			const auto b = w / (2.0f + Sqrt(2.0f));
+			const auto s = Sqrt(2.0f) * b;
 
 			m_polygons[2].Set({
 				Vec2(0.5f * s, 0.0f),
@@ -97,8 +92,6 @@ public:
 		}
 
 		m_polygons[3].SetAsBox(0.5f, 0.5f);
-
-		m_circle.SetRadius(float_t(0.5));
 
 		m_bodyIndex = 0;
 		memset(m_bodies, 0, sizeof(m_bodies));
@@ -116,8 +109,8 @@ public:
 
 		BodyDef bd;
 
-		float_t x = RandomFloat(-10.0f, 10.0f);
-		float_t y = RandomFloat(10.0f, 20.0f);
+		const auto x = RandomFloat(-10.0f, 10.0f);
+		const auto y = RandomFloat(10.0f, 20.0f);
 		bd.position = Vec2(x, y);
 		bd.angle = 1_rad * RandomFloat(-Pi, Pi);
 		bd.type = BodyType::Dynamic;
@@ -134,14 +127,14 @@ public:
 			FixtureDef fd;
 			fd.friction = 0.3f;
 			fd.density = 20.0f;
-			m_bodies[m_bodyIndex]->CreateFixture(m_polygons + index, fd);
+			m_bodies[m_bodyIndex]->CreateFixture(std::make_shared<PolygonShape>(m_polygons[index]), fd);
 		}
 		else
 		{
 			FixtureDef fd;
 			fd.friction = 0.3f;
 			fd.density = 20.0f;
-			m_bodies[m_bodyIndex]->CreateFixture(&m_circle, fd);
+			m_bodies[m_bodyIndex]->CreateFixture(m_circle, fd);
 		}
 
 		m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));
@@ -224,7 +217,7 @@ public:
 	int32 m_bodyIndex;
 	Body* m_bodies[e_maxBodies];
 	PolygonShape m_polygons[4];
-	CircleShape m_circle;
+	std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>(0.5f);
 
 	float_t m_angle;
 };

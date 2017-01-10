@@ -28,29 +28,16 @@ public:
     
 	HeavyOnLightTwo()
 	{
-		{
-			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
-            
-			EdgeShape shape;
-			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape);
-		}
+		const auto ground = m_world->CreateBody();
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
+		
+		const auto shape = std::make_shared<CircleShape>(0.5f);
+
+		const auto body1 = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 2.5f)));
+		body1->CreateFixture(shape, FixtureDef{}.UseDensity(10));
         
-		BodyDef bd;
-		bd.type = BodyType::Dynamic;
-		bd.position = Vec2(0.0f, 2.5f);
-		Body* body = m_world->CreateBody(bd);
-        
-		CircleShape shape;
-		shape.SetRadius(float_t(0.5));
-		body->CreateFixture(&shape, FixtureDef{}.UseDensity(10));
-        
-        bd.position = Vec2(0.0f, 3.5f);
-        body = m_world->CreateBody(bd);
-		body->CreateFixture(&shape, FixtureDef{}.UseDensity(10));
-        
-        m_heavy = nullptr;
+        const auto body2 = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 3.5f)));
+		body2->CreateFixture(shape, FixtureDef{}.UseDensity(10));
 	}
     
     void ToggleHeavy()
@@ -62,14 +49,8 @@ public:
         }
         else
         {
-            BodyDef bd;
-            bd.type = BodyType::Dynamic;
-            bd.position = Vec2(0.0f, 9.0f);
-            m_heavy = m_world->CreateBody(bd);
-            
-            CircleShape shape;
-            shape.SetRadius(float_t(5));
-			m_heavy->CreateFixture(&shape, FixtureDef{}.UseDensity(10));
+            m_heavy = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 9.0f)));
+			m_heavy->CreateFixture(std::make_shared<CircleShape>(5.0f), FixtureDef{}.UseDensity(10));
         }
     }
     
@@ -90,7 +71,7 @@ public:
 		return new HeavyOnLightTwo;
 	}
     
-	Body* m_heavy;
+	Body* m_heavy = nullptr;
 };
 
 } // namespace box2d

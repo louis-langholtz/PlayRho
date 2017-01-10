@@ -40,7 +40,6 @@ public:
 			body->CreateFixture(std::make_shared<PolygonShape>(shape));
 		}
 
-#if 1
 		{
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
@@ -56,25 +55,6 @@ public:
 			//m_angularVelocity = 46.661274f;
 			m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f), m_angularVelocity});
 		}
-#else
-		{
-			BodyDef bd;
-			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(0.0f, 2.0f);
-			Body* body = m_world->CreateBody(bd);
-
-			CircleShape shape;
-			shape.m_p.SetZero();
-			shape.m_radius = 0.5f;
-			body->CreateFixture(&shape, FixtureDef{}.UseDensity(1));
-
-			bd.bullet = true;
-			bd.position = Vec2(0.0f, 10.0f);
-			body = m_world->CreateBody(bd);
-			body->CreateFixture(&shape, FixtureDef{}.UseDensity(1));
-			body->SetLinearVelocity(Vec2(0.0f, -100.0f));
-		}
-#endif
 	}
 
 	void Launch()

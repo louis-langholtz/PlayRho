@@ -38,32 +38,32 @@ public:
 		Timer timer;
 
 		{
-			float_t a = 0.5f;
+			const auto a = 0.5f;
 			BodyDef bd;
 			bd.position.y = -a;
-			Body* ground = m_world->CreateBody(bd);
+			const auto ground = m_world->CreateBody(bd);
 
 #if 1
-			int32 N = 200;
-			int32 M = 10;
+			const auto N = 200;
+			const auto M = 10;
 			Vec2 position;
 			position.y = 0.0f;
-			for (int32 j = 0; j < M; ++j)
+			for (auto j = 0; j < M; ++j)
 			{
 				position.x = -N * a;
-				for (int32 i = 0; i < N; ++i)
+				for (auto i = 0; i < N; ++i)
 				{
 					PolygonShape shape;
 					SetAsBox(shape, a, a, position, 0_rad);
-					ground->CreateFixture(&shape);
+					ground->CreateFixture(std::make_shared<PolygonShape>(shape));
 					++m_fixtureCount;
 					position.x += 2.0f * a;
 				}
 				position.y -= 2.0f * a;
 			}
 #else
-			int32 N = 200;
-			int32 M = 10;
+			const auto N = 200;
+			const auto M = 10;
 			Vec2 position;
 			position.x = -N * a;
 			for (int32 i = 0; i < N; ++i)
@@ -73,7 +73,7 @@ public:
 				{
 					PolygonShape shape;
 					SetAsBox(shape, a, a, position, 0.0f);
-					ground->CreateFixture(&shape);
+					ground->CreateFixture(std::make_shared<PolygonShape>(shape));
 					position.y -= 2.0f * a;
 				}
 				position.x += 2.0f * a;
@@ -82,19 +82,19 @@ public:
 		}
 
 		{
-			float_t a = 0.5f;
-			const auto shape = PolygonShape(a, a);
+			const auto a = 0.5f;
+			const auto shape = std::make_shared<PolygonShape>(a, a);
 
 			Vec2 x(-7.0f, 0.75f);
 			Vec2 y;
-			Vec2 deltaX(0.5625f, 1.25f);
-			Vec2 deltaY(1.125f, 0.0f);
+			const auto deltaX = Vec2(0.5625f, 1.25f);
+			const auto deltaY = Vec2(1.125f, 0.0f);
 
-			for (int32 i = 0; i < e_count; ++i)
+			for (auto i = 0; i < e_count; ++i)
 			{
 				y = x;
 
-				for (int32 j = i; j < e_count; ++j)
+				for (auto j = i; j < e_count; ++j)
 				{
 					BodyDef bd;
 					bd.type = BodyType::Dynamic;
@@ -109,8 +109,8 @@ public:
 					//	bd.allowSleep = true;
 					//}
 
-					Body* body = m_world->CreateBody(bd);
-					body->CreateFixture(&shape, FixtureDef{}.UseDensity(5));
+					const auto body = m_world->CreateBody(bd);
+					body->CreateFixture(shape, FixtureDef{}.UseDensity(5));
 					++m_fixtureCount;
 					y += deltaY;
 				}

@@ -73,5 +73,5 @@ TEST(Dump, OneBodyWorld)
 	buf << "free\\(bodies\\);\n";
 	buf << "joints = nullptr;\n";
 	buf << "bodies = nullptr;\n";
-	EXPECT_EXIT({ open_stderr_as_stdout(); World world; world.CreateBody(BodyDef{}); Dump(world); exit(0); }, ::testing::ExitedWithCode(0), buf.str());
+	EXPECT_EXIT({ open_stderr_as_stdout(); World world; world.CreateBody(); Dump(world); exit(0); }, ::testing::ExitedWithCode(0), buf.str());
 }

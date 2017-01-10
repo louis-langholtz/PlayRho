@@ -29,7 +29,7 @@ public:
 	EdgeTest()
 	{
 		{
-			const auto ground = m_world->CreateBody(BodyDef{});
+			const auto ground = m_world->CreateBody();
 
 			Vec2 v1(-10.0f, 0.0f), v2(-7.0f, -2.0f), v3(-4.0f, 0.0f);
 			Vec2 v4(0.0f, 0.0f), v5(4.0f, 0.0f), v6(7.0f, 2.0f), v7(10.0f, 0.0f);
@@ -38,31 +38,31 @@ public:
 
 			shape.Set(v1, v2);
 			shape.SetVertex3(v3);
-			ground->CreateFixture(&shape);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
 			shape.Set(v2, v3);
 			shape.SetVertex0(v1);
 			shape.SetVertex3(v4);
-			ground->CreateFixture(&shape);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
 			shape.Set(v3, v4);
 			shape.SetVertex0(v2);
 			shape.SetVertex3(v5);
-			ground->CreateFixture(&shape);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
 			shape.Set(v4, v5);
 			shape.SetVertex0(v3);
 			shape.SetVertex3(v6);
-			ground->CreateFixture(&shape);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
 			shape.Set(v5, v6);
 			shape.SetVertex0(v4);
 			shape.SetVertex3(v7);
-			ground->CreateFixture(&shape);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
 			shape.Set(v6, v7);
 			shape.SetVertex0(v5);
-			ground->CreateFixture(&shape);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 		}
 
 		{
@@ -72,8 +72,7 @@ public:
 			bd.allowSleep = false;
 			const auto body = m_world->CreateBody(bd);
 
-			const auto shape = CircleShape(float_t(0.5));
-			body->CreateFixture(&shape, FixtureDef{}.UseDensity(1));
+			body->CreateFixture(std::make_shared<CircleShape>(0.5f), FixtureDef{}.UseDensity(1));
 		}
 
 		{
@@ -81,11 +80,11 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(1.0f, 0.6f);
 			bd.allowSleep = false;
-			Body* body = m_world->CreateBody(bd);
+			const auto body = m_world->CreateBody(bd);
 
 			auto shape = PolygonShape(1);
 			shape.SetAsBox(0.5f, 0.5f);
-			body->CreateFixture(&shape, FixtureDef{}.UseDensity(1));
+			body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(1));
 		}
 	}
 

@@ -37,9 +37,8 @@ public:
 	{
 		// Ground
 		{
-			const auto ground = m_world->CreateBody(BodyDef{});
-			const auto shape = EdgeShape(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
-			ground->CreateFixture(&shape);
+			const auto ground = m_world->CreateBody();
+			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f)));
 		}
 
 		// Platform
@@ -47,10 +46,7 @@ public:
 			BodyDef bd;
 			bd.position = Vec2(0.0f, 10.0f);
 			const auto body = m_world->CreateBody(bd);
-
-			const auto shape = PolygonShape(3.0f, 0.5f);
-			m_platform = body->CreateFixture(&shape);
-
+			m_platform = body->CreateFixture(std::make_shared<PolygonShape>(3.0f, 0.5f));
 			m_bottom = 10.0f - 0.5f;
 			m_top = 10.0f + 0.5f;
 		}
@@ -61,10 +57,8 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(0.0f, 12.0f);
 			const auto body = m_world->CreateBody(bd);
-
-			const auto shape = CircleShape(m_radius);
-			m_character = body->CreateFixture(&shape, FixtureDef{}.UseDensity(20));
-
+			m_character = body->CreateFixture(std::make_shared<CircleShape>(m_radius),
+											  FixtureDef{}.UseDensity(20));
 			body->SetVelocity(Velocity{Vec2(0.0f, -50.0f), 0_rad});
 		}
 	}

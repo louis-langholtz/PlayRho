@@ -33,19 +33,12 @@ public:
 
 	MobileBalanced()
 	{
-		Body* ground;
+		const auto ground = m_world->CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f)));
 
-		// Create ground body.
-		{
-			BodyDef bodyDef;
-			bodyDef.position = Vec2(0.0f, 20.0f);
-			ground = m_world->CreateBody(bodyDef);
-		}
-
-		float a = 0.5f;
+		const auto a = 0.5f;
 		Vec2 h(0.0f, a);
 
-		Body* root = AddNode(ground, Vec2_zero, 0, 3.0f, a);
+		const auto root = AddNode(ground, Vec2_zero, 0, 3.0f, a);
 
 		RevoluteJointDef jointDef;
 		jointDef.bodyA = ground;
@@ -57,19 +50,19 @@ public:
 
 	Body* AddNode(Body* parent, const Vec2& localAnchor, int32 depth, float offset, float a)
 	{
-		float density = 20.0f;
-		Vec2 h(0.0f, a);
+		const auto density = 20.0f;
+		const auto h = Vec2(0.0f, a);
 
-		Vec2 p = parent->GetLocation() + localAnchor - h;
+		const auto p = parent->GetLocation() + localAnchor - h;
 
 		BodyDef bodyDef;
 		bodyDef.type = BodyType::Dynamic;
 		bodyDef.position = p;
-		Body* body = m_world->CreateBody(bodyDef);
+		const auto body = m_world->CreateBody(bodyDef);
 
 		PolygonShape shape;
 		shape.SetAsBox(0.25f * a, a);
-		body->CreateFixture(&shape, FixtureDef{}.UseDensity(density));
+		body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(density));
 
 		if (depth == e_depth)
 		{
@@ -77,12 +70,12 @@ public:
 		}
 
 		SetAsBox(shape, offset, 0.25f * a, Vec2(0, -a), 0.0_rad);
-		body->CreateFixture(&shape, FixtureDef{}.UseDensity(density));
+		body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(density));
 
-		Vec2 a1 = Vec2(offset, -a);
-		Vec2 a2 = Vec2(-offset, -a);
-		Body* body1 = AddNode(body, a1, depth + 1, 0.5f * offset, a);
-		Body* body2 = AddNode(body, a2, depth + 1, 0.5f * offset, a);
+		const auto a1 = Vec2(offset, -a);
+		const auto a2 = Vec2(-offset, -a);
+		const auto body1 = AddNode(body, a1, depth + 1, 0.5f * offset, a);
+		const auto body2 = AddNode(body, a2, depth + 1, 0.5f * offset, a);
 
 		RevoluteJointDef jointDef;
 		jointDef.bodyA = body;

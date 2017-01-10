@@ -27,42 +27,31 @@ class Gears : public Test
 public:
 	Gears()
 	{
-		Body* ground = nullptr;
+		const auto ground = m_world->CreateBody();
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(50.0f, 0.0f), Vec2(-50.0f, 0.0f)));
+
+		const auto circle1 = std::make_shared<CircleShape>(1);
+		const auto circle2 = std::make_shared<CircleShape>(2);
+		const auto box = std::make_shared<PolygonShape>(0.5f, 5.0f);
+	
 		{
-			BodyDef bd;
-			ground = m_world->CreateBody(bd);
-
-			EdgeShape shape;
-			shape.Set(Vec2(50.0f, 0.0f), Vec2(-50.0f, 0.0f));
-			ground->CreateFixture(&shape);
-		}
-
-		{
-			CircleShape circle1;
-			circle1.SetRadius(float_t(1.0));
-
-			const auto box = PolygonShape(0.5f, 5.0f);
-
-			CircleShape circle2;
-			circle2.SetRadius(float_t(2.0));
-			
 			BodyDef bd1;
 			bd1.type = BodyType::Static;
 			bd1.position = Vec2(10.0f, 9.0f);
-			Body* body1 = m_world->CreateBody(bd1);
-			body1->CreateFixture(&circle1, FixtureDef().UseDensity(5));
+			const auto body1 = m_world->CreateBody(bd1);
+			body1->CreateFixture(circle1, FixtureDef().UseDensity(5));
 
 			BodyDef bd2;
 			bd2.type = BodyType::Dynamic;
 			bd2.position = Vec2(10.0f, 8.0f);
-			Body* body2 = m_world->CreateBody(bd2);
-			body2->CreateFixture(&box, FixtureDef().UseDensity(5));
+			const auto body2 = m_world->CreateBody(bd2);
+			body2->CreateFixture(box, FixtureDef().UseDensity(5));
 
 			BodyDef bd3;
 			bd3.type = BodyType::Dynamic;
 			bd3.position = Vec2(10.0f, 6.0f);
-			Body* body3 = m_world->CreateBody(bd3);
-			body3->CreateFixture(&circle2, FixtureDef().UseDensity(5));
+			const auto body3 = m_world->CreateBody(bd3);
+			body3->CreateFixture(circle2, FixtureDef().UseDensity(5));
 
 			Joint* joint1 = m_world->CreateJoint(RevoluteJointDef{body2, body1, bd1.position});
 			Joint* joint2 = m_world->CreateJoint(RevoluteJointDef{body2, body3, bd3.position});
@@ -72,24 +61,16 @@ public:
 			jd4.bodyB = body3;
 			jd4.joint1 = joint1;
 			jd4.joint2 = joint2;
-			jd4.ratio = circle2.GetRadius() / circle1.GetRadius();
+			jd4.ratio = circle2->GetRadius() / circle1->GetRadius();
 			m_world->CreateJoint(jd4);
 		}
 
 		{
-			CircleShape circle1;
-			circle1.SetRadius(float_t(1));
-
-			CircleShape circle2;
-			circle2.SetRadius(float_t(2));
-			
-			const auto box = PolygonShape(0.5f, 5.0f);
-
 			BodyDef bd1;
 			bd1.type = BodyType::Dynamic;
 			bd1.position = Vec2(-3.0f, 12.0f);
-			Body* body1 = m_world->CreateBody(bd1);
-			body1->CreateFixture(&circle1, FixtureDef().UseDensity(5));
+			const auto body1 = m_world->CreateBody(bd1);
+			body1->CreateFixture(circle1, FixtureDef().UseDensity(5));
 
 			RevoluteJointDef jd1;
 			jd1.bodyA = ground;
@@ -102,8 +83,8 @@ public:
 			BodyDef bd2;
 			bd2.type = BodyType::Dynamic;
 			bd2.position = Vec2(0.0f, 12.0f);
-			Body* body2 = m_world->CreateBody(bd2);
-			body2->CreateFixture(&circle2, FixtureDef().UseDensity(5));
+			const auto body2 = m_world->CreateBody(bd2);
+			body2->CreateFixture(circle2, FixtureDef().UseDensity(5));
 
 			RevoluteJointDef jd2(ground, body2, bd2.position);
 			m_joint2 = (RevoluteJoint*)m_world->CreateJoint(jd2);
@@ -111,8 +92,8 @@ public:
 			BodyDef bd3;
 			bd3.type = BodyType::Dynamic;
 			bd3.position = Vec2(2.5f, 12.0f);
-			Body* body3 = m_world->CreateBody(bd3);
-			body3->CreateFixture(&box, FixtureDef().UseDensity(5));
+			const auto body3 = m_world->CreateBody(bd3);
+			body3->CreateFixture(box, FixtureDef().UseDensity(5));
 
 			PrismaticJointDef jd3(ground, body3, bd3.position, Vec2(0.0f, 1.0f));
 			jd3.lowerTranslation = -5.0f;
@@ -126,7 +107,7 @@ public:
 			jd4.bodyB = body2;
 			jd4.joint1 = m_joint1;
 			jd4.joint2 = m_joint2;
-			jd4.ratio = circle2.GetRadius() / circle1.GetRadius();
+			jd4.ratio = circle2->GetRadius() / circle1->GetRadius();
 			m_joint4 = (GearJoint*)m_world->CreateJoint(jd4);
 
 			GearJointDef jd5;
@@ -134,7 +115,7 @@ public:
 			jd5.bodyB = body3;
 			jd5.joint1 = m_joint2;
 			jd5.joint2 = m_joint3;
-			jd5.ratio = -1.0f / circle2.GetRadius();
+			jd5.ratio = -1.0f / circle2->GetRadius();
 			m_joint5 = (GearJoint*)m_world->CreateJoint(jd5);
 		}
 	}

@@ -124,20 +124,12 @@ public:
 	{
 		// Ground body
 		{
-			const auto ground = m_world->CreateBody(BodyDef{});
-
-			EdgeShape shape;
-			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape);
+			const auto ground = m_world->CreateBody();
+			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
 		}
 
-		{
-			m_polygons[0].Set({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
-		}
-		
-		{
-			m_polygons[1].Set({Vec2(-0.1f, 0.0f), Vec2(0.1f, 0.0f), Vec2(0.0f, 1.5f)});
-		}
+		m_polygons[0].Set({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
+		m_polygons[1].Set({Vec2(-0.1f, 0.0f), Vec2(0.1f, 0.0f), Vec2(0.0f, 1.5f)});
 
 		{
 			const auto w = float_t(1);
@@ -158,10 +150,6 @@ public:
 
 		{
 			m_polygons[3].SetAsBox(0.5f, 0.5f);
-		}
-
-		{
-			m_circle.SetRadius(float_t(0.5));
 		}
 
 		m_bodyIndex = 0;
@@ -190,19 +178,16 @@ public:
 
 		m_bodies[m_bodyIndex] = m_world->CreateBody(bd);
 
+		FixtureDef fd;
+		fd.density = 1.0f;
+		fd.friction = 0.3f;
 		if (index < 4)
 		{
-			FixtureDef fd;
-			fd.density = 1.0f;
-			fd.friction = 0.3f;
 			m_bodies[m_bodyIndex]->CreateFixture(m_polygons + index, fd);
 		}
 		else
 		{
-			FixtureDef fd;
-			fd.density = 1.0f;
-			fd.friction = 0.3f;
-			m_bodies[m_bodyIndex]->CreateFixture(&m_circle, fd);
+			m_bodies[m_bodyIndex]->CreateFixture(m_circle, fd);
 		}
 
 		m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));
@@ -284,7 +269,7 @@ public:
 	int32 m_bodyIndex;
 	Body* m_bodies[e_maxBodies];
 	PolygonShape m_polygons[4];
-	CircleShape m_circle;
+	std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>(0.5f);
 };
 
 } // namespace box2d

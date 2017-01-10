@@ -52,7 +52,7 @@ public:
 			// Clamp onto a square to help create collinearities.
 			// This will stress the convex hull algorithm.
 			const auto v = Clamp(Vec2(x, y), lowerBound, upperBound);
-			m_points[i] = v;
+			m_points.emplace_back(v);
 		}
 	}
 

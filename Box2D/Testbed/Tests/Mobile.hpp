@@ -33,14 +33,8 @@ public:
 
 	Mobile()
 	{
-		Body* ground;
-
 		// Create ground body.
-		{
-			BodyDef bodyDef;
-			bodyDef.position = Vec2(0.0f, 20.0f);
-			ground = m_world->CreateBody(bodyDef);
-		}
+		const auto ground = m_world->CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f)));
 
 		const auto a = 0.5f;
 
@@ -60,9 +54,7 @@ public:
 		bodyDef.type = BodyType::Dynamic;
 		bodyDef.position = parent->GetLocation() + localAnchor - h;
 		const auto body = m_world->CreateBody(bodyDef);
-
-		const auto shape = PolygonShape(0.25f * a, a);
-		body->CreateFixture(&shape, FixtureDef{}.UseDensity(20));
+		body->CreateFixture(std::make_shared<PolygonShape>(0.25f * a, a), FixtureDef{}.UseDensity(20));
 
 		if (depth == e_depth)
 		{

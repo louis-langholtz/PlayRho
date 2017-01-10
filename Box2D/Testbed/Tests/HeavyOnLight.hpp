@@ -29,27 +29,19 @@ public:
 	HeavyOnLight()
 	{
 		{
-			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
-            
-			EdgeShape shape;
-			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape);
+			const auto ground = m_world->CreateBody();
+			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
 		}
         
 		BodyDef bd;
 		bd.type = BodyType::Dynamic;
 		bd.position = Vec2(0.0f, 0.5f);
-		Body* body = m_world->CreateBody(bd);
-        
-		CircleShape shape;
-		shape.SetRadius(float_t(0.5));
-		body->CreateFixture(&shape, FixtureDef{}.UseDensity(10));
+		const auto body1 = m_world->CreateBody(bd);
+		body1->CreateFixture(std::make_shared<CircleShape>(0.5f), FixtureDef{}.UseDensity(10));
         
         bd.position = Vec2(0.0f, 6.0f);
-        body = m_world->CreateBody(bd);
-        shape.SetRadius(float_t(5));
-		body->CreateFixture(&shape, FixtureDef{}.UseDensity(10));
+        const auto body2 = m_world->CreateBody(bd);
+		body2->CreateFixture(std::make_shared<CircleShape>(5.0f), FixtureDef{}.UseDensity(10));
 	}
     
 	static Test* Create()

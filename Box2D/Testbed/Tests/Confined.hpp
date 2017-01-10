@@ -62,7 +62,7 @@ public:
 
 	Body* CreateEnclosure(float_t vertexRadius, float_t wallLength)
 	{
-		const auto ground = m_world->CreateBody(BodyDef{});
+		const auto ground = m_world->CreateBody();
 		
 		auto shape = EdgeShape{vertexRadius};
 		//PolygonShape shape;

@@ -36,7 +36,7 @@ public:
 	{
 		// Ground body
 		{
-			const auto ground = m_world->CreateBody(BodyDef{});
+			const auto ground = m_world->CreateBody();
 			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
 		}
 

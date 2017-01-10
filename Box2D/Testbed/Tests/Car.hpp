@@ -32,11 +32,8 @@ public:
 		m_zeta = 0.7f;
 		m_speed = 50_rad;
 
-		Body* ground = nullptr;
+		const auto ground = m_world->CreateBody();
 		{
-			BodyDef bd;
-			ground = m_world->CreateBody(bd);
-
 			EdgeShape shape;
 
 			FixtureDef fd;
@@ -48,20 +45,20 @@ public:
 
 			float_t hs[10] = {0.25f, 1.0f, 4.0f, 0.0f, 0.0f, -1.0f, -2.0f, -2.0f, -1.25f, 0.0f};
 
-			float_t x = 20.0f, y1 = 0.0f, dx = 5.0f;
+			auto x = 20.0f, y1 = 0.0f, dx = 5.0f;
 
-			for (int32 i = 0; i < 10; ++i)
+			for (auto i = 0; i < 10; ++i)
 			{
-				float_t y2 = hs[i];
+				const auto y2 = hs[i];
 				shape.Set(Vec2(x, y1), Vec2(x + dx, y2));
 				ground->CreateFixture(std::make_shared<EdgeShape>(shape), fd);
 				y1 = y2;
 				x += dx;
 			}
 
-			for (int32 i = 0; i < 10; ++i)
+			for (auto i = 0; i < 10; ++i)
 			{
-				float_t y2 = hs[i];
+				const auto y2 = hs[i];
 				shape.Set(Vec2(x, y1), Vec2(x + dx, y2));
 				ground->CreateFixture(std::make_shared<EdgeShape>(shape), fd);
 				y1 = y2;
@@ -93,7 +90,7 @@ public:
 			BodyDef bd;
 			bd.position = Vec2(140.0f, 1.0f);
 			bd.type = BodyType::Dynamic;
-			Body* body = m_world->CreateBody(bd);
+			const auto body = m_world->CreateBody(bd);
 
 			const auto box = std::make_shared<PolygonShape>(10.0f, 0.25f);
 			body->CreateFixture(box, FixtureDef{}.UseDensity(1));
@@ -109,20 +106,20 @@ public:
 
 		// Bridge
 		{
-			int32 N = 20;
+			const auto N = 20;
 			const auto shape = std::make_shared<PolygonShape>(1.0f, 0.125f);
 
 			FixtureDef fd;
 			fd.density = 1.0f;
 			fd.friction = 0.6f;
 
-			Body* prevBody = ground;
-			for (int32 i = 0; i < N; ++i)
+			auto prevBody = ground;
+			for (auto i = 0; i < N; ++i)
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(161.0f + 2.0f * i, -0.125f);
-				Body* body = m_world->CreateBody(bd);
+				const auto body = m_world->CreateBody(bd);
 				body->CreateFixture(shape, fd);
 
 				m_world->CreateJoint(RevoluteJointDef{prevBody, body,
@@ -139,7 +136,8 @@ public:
 		{
 			const auto box = std::make_shared<PolygonShape>(0.5f, 0.5f);
 
-			Body* body = nullptr;
+			auto body = static_cast<Body*>(nullptr);
+
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 

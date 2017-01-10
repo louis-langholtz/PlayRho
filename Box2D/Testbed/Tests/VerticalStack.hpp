@@ -39,46 +39,45 @@ public:
 	VerticalStack()
 	{
 		{
-			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
+			const auto ground = m_world->CreateBody();
 
 			EdgeShape shape;
+
 			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
 			shape.Set(Vec2(20.0f, 0.0f), Vec2(20.0f, 20.0f));
-			ground->CreateFixture(&shape);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 		}
 
 		float_t xs[5] = {0.0f, -10.0f, -5.0f, 5.0f, 10.0f};
 
-		for (int32 j = 0; j < e_columnCount; ++j)
+		const auto shape = std::make_shared<PolygonShape>(0.5f, 0.5f);
+		for (auto j = 0; j < e_columnCount; ++j)
 		{
-			const auto shape = PolygonShape(0.5f, 0.5f);
-
 			FixtureDef fd;
 			fd.density = 1.0f;
 			fd.friction = 0.3f;
 
-			for (int i = 0; i < e_rowCount; ++i)
+			for (auto i = 0; i < e_rowCount; ++i)
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 
-				int32 n = j * e_rowCount + i;
+				const auto n = j * e_rowCount + i;
 				assert(n < e_rowCount * e_columnCount);
 				m_indices[n] = n;
 				bd.userData = m_indices + n;
 
-				float_t x = 0.0f;
-				//float_t x = RandomFloat(-0.02f, 0.02f);
-				//float_t x = i % 2 == 0 ? -0.01f : 0.01f;
+				const auto x = 0.0f;
+				//const auto x = RandomFloat(-0.02f, 0.02f);
+				//const auto x = i % 2 == 0 ? -0.01f : 0.01f;
 				bd.position = Vec2(xs[j] + x, 0.55f + 1.1f * i);
-				Body* body = m_world->CreateBody(bd);
+				const auto body = m_world->CreateBody(bd);
 
 				m_bodies[n] = body;
 
-				body->CreateFixture(&shape, fd);
+				body->CreateFixture(shape, fd);
 			}
 		}
 
@@ -97,9 +96,6 @@ public:
 			}
 
 			{
-				CircleShape shape;
-				shape.SetRadius(float_t(0.25));
-
 				FixtureDef fd;
 				fd.density = 20.0f;
 				fd.restitution = 0.05f;
@@ -110,8 +106,7 @@ public:
 				bd.position = Vec2(-31.0f, 5.0f);
 
 				m_bullet = m_world->CreateBody(bd);
-				m_bullet->CreateFixture(&shape, fd);
-
+				m_bullet->CreateFixture(m_bulletshape, fd);
 				m_bullet->SetVelocity(Velocity{Vec2(400.0f, 0.0f), 0_rad});
 			}
 			break;
@@ -168,6 +163,7 @@ public:
 	Body* m_bullet;
 	Body* m_bodies[e_rowCount * e_columnCount];
 	int32 m_indices[e_rowCount * e_columnCount];
+	std::shared_ptr<CircleShape> m_bulletshape = std::make_shared<CircleShape>(0.25f);
 };
 	
 } // namespace box2d

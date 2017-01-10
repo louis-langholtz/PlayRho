@@ -30,34 +30,25 @@ class MotorJointTest : public Test
 public:
 	MotorJointTest()
 	{
-		const auto ground = m_world->CreateBody(BodyDef{});
-		{
-			const auto shape = EdgeShape(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
-
-			FixtureDef fd;
-			ground->CreateFixture(&shape, fd);
-		}
+		const auto ground = m_world->CreateBody();
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f)));
 
 		// Define motorized body
-		{
-			BodyDef bd;
-			bd.type = BodyType::Dynamic;
-			bd.position = Vec2(0.0f, 8.0f);
-			const auto body = m_world->CreateBody(bd);
+		BodyDef bd;
+		bd.type = BodyType::Dynamic;
+		bd.position = Vec2(0.0f, 8.0f);
+		const auto body = m_world->CreateBody(bd);
 
-			const auto shape = PolygonShape(2.0f, 0.5f);
+		FixtureDef fd;
+		fd.friction = 0.6f;
+		fd.density = 2.0f;
+		body->CreateFixture(std::make_shared<PolygonShape>(2.0f, 0.5f), fd);
 
-			FixtureDef fd;
-			fd.friction = 0.6f;
-			fd.density = 2.0f;
-			body->CreateFixture(&shape, fd);
-
-			MotorJointDef mjd;
-			mjd.Initialize(ground, body);
-			mjd.maxForce = 1000.0f;
-			mjd.maxTorque = 1000.0f;
-			m_joint = (MotorJoint*)m_world->CreateJoint(mjd);
-		}
+		MotorJointDef mjd;
+		mjd.Initialize(ground, body);
+		mjd.maxForce = 1000.0f;
+		mjd.maxTorque = 1000.0f;
+		m_joint = (MotorJoint*)m_world->CreateJoint(mjd);
 	}
 
 	void Keyboard(Key key) override
