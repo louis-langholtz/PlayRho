@@ -38,7 +38,8 @@ public:
 		const auto a = 0.5f;
 		Vec2 h(0.0f, a);
 
-		const auto root = AddNode(ground, Vec2_zero, 0, 3.0f, a);
+		const auto shape = std::make_shared<const PolygonShape>(0.25f * a, a);
+		const auto root = AddNode(ground, Vec2_zero, 0, 3.0f, a, shape);
 
 		RevoluteJointDef jointDef;
 		jointDef.bodyA = ground;
@@ -48,7 +49,8 @@ public:
 		m_world->CreateJoint(jointDef);
 	}
 
-	Body* AddNode(Body* parent, const Vec2& localAnchor, int32 depth, float offset, float a)
+	Body* AddNode(const Body* parent, const Vec2& localAnchor, const int32 depth,
+				  const float offset, const float a, std::shared_ptr<const Shape> shape)
 	{
 		const auto density = 20.0f;
 		const auto h = Vec2(0.0f, a);
@@ -60,22 +62,21 @@ public:
 		bodyDef.position = p;
 		const auto body = m_world->CreateBody(bodyDef);
 
-		PolygonShape shape;
-		shape.SetAsBox(0.25f * a, a);
-		body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(density));
+		body->CreateFixture(shape, FixtureDef{}.UseDensity(density));
 
 		if (depth == e_depth)
 		{
 			return body;
 		}
 
-		SetAsBox(shape, offset, 0.25f * a, Vec2(0, -a), 0.0_rad);
-		body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(density));
+		PolygonShape shape2(0.25f * a, a);
+		SetAsBox(shape2, offset, 0.25f * a, Vec2(0, -a), 0.0_rad);
+		body->CreateFixture(std::make_shared<PolygonShape>(shape2), FixtureDef{}.UseDensity(density));
 
 		const auto a1 = Vec2(offset, -a);
 		const auto a2 = Vec2(-offset, -a);
-		const auto body1 = AddNode(body, a1, depth + 1, 0.5f * offset, a);
-		const auto body2 = AddNode(body, a2, depth + 1, 0.5f * offset, a);
+		const auto body1 = AddNode(body, a1, depth + 1, 0.5f * offset, a, shape);
+		const auto body2 = AddNode(body, a2, depth + 1, 0.5f * offset, a, shape);
 
 		RevoluteJointDef jointDef;
 		jointDef.bodyA = body;

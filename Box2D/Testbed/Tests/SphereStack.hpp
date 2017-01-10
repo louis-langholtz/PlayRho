@@ -34,19 +34,14 @@ public:
 	SphereStack()
 	{
 		{
-			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
-
-			EdgeShape shape;
-			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape);
+			const auto ground = m_world->CreateBody();
+			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
 		}
 
 		{
-			CircleShape shape;
-			shape.SetRadius(1.0);
+			const auto shape = std::make_shared<CircleShape>(1);
 
-			for (int32 i = 0; i < e_count; ++i)
+			for (auto i = 0; i < e_count; ++i)
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
@@ -54,7 +49,7 @@ public:
 
 				m_bodies[i] = m_world->CreateBody(bd);
 
-				m_bodies[i]->CreateFixture(&shape, FixtureDef{}.UseDensity(1));
+				m_bodies[i]->CreateFixture(shape, FixtureDef{}.UseDensity(1));
 
 				m_bodies[i]->SetVelocity(Velocity{Vec2(0.0f, -50.0f), 0_rad});
 			}

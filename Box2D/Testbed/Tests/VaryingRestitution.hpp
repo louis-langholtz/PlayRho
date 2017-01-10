@@ -30,35 +30,26 @@ public:
 
 	VaryingRestitution()
 	{
+		const auto ground = m_world->CreateBody();
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
+
+		const auto shape = std::make_shared<CircleShape>(1);
+
+		FixtureDef fd;
+		fd.density = 1.0f;
+
+		float_t restitution[7] = {0.0f, 0.1f, 0.3f, 0.5f, 0.75f, 0.9f, 1.0f};
+
+		for (auto i = 0; i < 7; ++i)
 		{
 			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
+			bd.type = BodyType::Dynamic;
+			bd.position = Vec2(-10.0f + 3.0f * i, 20.0f);
 
-			EdgeShape shape;
-			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape);
-		}
+			auto body = m_world->CreateBody(bd);
 
-		{
-			CircleShape shape;
-			shape.SetRadius(float_t(1));
-
-			FixtureDef fd;
-			fd.density = 1.0f;
-
-			float_t restitution[7] = {0.0f, 0.1f, 0.3f, 0.5f, 0.75f, 0.9f, 1.0f};
-
-			for (int32 i = 0; i < 7; ++i)
-			{
-				BodyDef bd;
-				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(-10.0f + 3.0f * i, 20.0f);
-
-				Body* body = m_world->CreateBody(bd);
-
-				fd.restitution = restitution[i];
-				body->CreateFixture(&shape, fd);
-			}
+			fd.restitution = restitution[i];
+			body->CreateFixture(shape, fd);
 		}
 	}
 

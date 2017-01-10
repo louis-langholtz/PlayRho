@@ -37,16 +37,17 @@ public:
 		const auto ground = m_world->CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f)));
 
 		const auto a = 0.5f;
+		const auto shape = std::make_shared<PolygonShape>(0.25f * a, a);
 
 		RevoluteJointDef jointDef;
 		jointDef.bodyA = ground;
-		jointDef.bodyB = AddNode(ground, Vec2_zero, 0, 3.0f, a);
+		jointDef.bodyB = AddNode(ground, Vec2_zero, 0, 3.0f, a, shape);
 		jointDef.localAnchorA = Vec2_zero;
 		jointDef.localAnchorB = Vec2(0.0f, a);
 		m_world->CreateJoint(jointDef);
 	}
 
-	Body* AddNode(Body* parent, const Vec2& localAnchor, int32 depth, float offset, float a)
+	Body* AddNode(Body* parent, const Vec2& localAnchor, int32 depth, float offset, float a, std::shared_ptr<Shape> shape)
 	{
 		const auto h = Vec2(0.0f, a);
 
@@ -54,7 +55,7 @@ public:
 		bodyDef.type = BodyType::Dynamic;
 		bodyDef.position = parent->GetLocation() + localAnchor - h;
 		const auto body = m_world->CreateBody(bodyDef);
-		body->CreateFixture(std::make_shared<PolygonShape>(0.25f * a, a), FixtureDef{}.UseDensity(20));
+		body->CreateFixture(shape, FixtureDef{}.UseDensity(20));
 
 		if (depth == e_depth)
 		{
@@ -69,11 +70,11 @@ public:
 		jointDef.localAnchorB = h;
 
 		jointDef.localAnchorA = a1;
-		jointDef.bodyB = AddNode(body, a1, depth + 1, 0.5f * offset, a);
+		jointDef.bodyB = AddNode(body, a1, depth + 1, 0.5f * offset, a, shape);
 		m_world->CreateJoint(jointDef);
 
 		jointDef.localAnchorA = a2;
-		jointDef.bodyB = AddNode(body, a2, depth + 1, 0.5f * offset, a);
+		jointDef.bodyB = AddNode(body, a2, depth + 1, 0.5f * offset, a, shape);
 		m_world->CreateJoint(jointDef);
 
 		return body;
