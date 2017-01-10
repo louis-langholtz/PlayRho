@@ -587,7 +587,10 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 		const auto bodyCount = GetBodyCount(*m_world);
 		const auto contactCount = GetContactCount(*m_world);
 		const auto jointCount = GetJointCount(*m_world);
-		drawer.DrawString(5, m_textLine, "sleep/bodies/contacts/joints = %d/%d/%d/%d", sleepCount, bodyCount, contactCount, jointCount);
+		const auto fixtureCount = GetFixtureCount(*m_world);
+		const auto shapeCount = GetShapeCount(*m_world);
+		drawer.DrawString(5, m_textLine, "sleep=%d, bodies=%d, fixtures=%d, shapes=%d, contacts=%d, joints=%d",
+						  sleepCount, bodyCount, fixtureCount, shapeCount, contactCount, jointCount);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		const auto proxyCount = m_world->GetProxyCount();
