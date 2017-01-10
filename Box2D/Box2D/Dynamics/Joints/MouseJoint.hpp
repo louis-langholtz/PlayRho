@@ -168,8 +168,6 @@ inline float_t MouseJoint::GetDampingRatio() const noexcept
 	return m_dampingRatio;
 }
 
-void Dump(const MouseJoint& joint, size_t index);
-
 } // namespace box2d
 
 #endif

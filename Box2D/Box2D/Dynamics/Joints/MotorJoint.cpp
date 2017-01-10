@@ -286,17 +286,3 @@ Angle MotorJoint::GetAngularOffset() const
 {
 	return m_angularOffset;
 }
-
-void box2d::Dump(const MotorJoint& joint, size_t index)
-{
-	log("  MotorJointDef jd;\n");
-	log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
-	log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
-	log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
-	log("  jd.linearOffset = Vec2(%.15lef, %.15lef);\n", joint.GetLinearOffset().x, joint.GetLinearOffset().y);
-	log("  jd.angularOffset = %.15lef;\n", joint.GetAngularOffset());
-	log("  jd.maxForce = %.15lef;\n", joint.GetMaxForce());
-	log("  jd.maxTorque = %.15lef;\n", joint.GetMaxTorque());
-	log("  jd.correctionFactor = %.15lef;\n", joint.GetCorrectionFactor());
-	log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
-}

@@ -188,8 +188,6 @@ inline float_t RevoluteJoint::GetMotorSpeed() const
 	return m_motorSpeed;
 }
 
-void Dump(const RevoluteJoint& joint, size_t index);
-
 } // namespace box2d
 
 #endif

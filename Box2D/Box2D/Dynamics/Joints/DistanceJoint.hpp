@@ -156,9 +156,6 @@ inline float_t DistanceJoint::GetDampingRatio() const noexcept
 {
 	return m_dampingRatio;
 }
-
-/// Dump joint to dmLog
-void Dump(const DistanceJoint& joint, size_t index);
 	
 } // namespace box2d
 

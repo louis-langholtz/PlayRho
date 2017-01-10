@@ -104,8 +104,6 @@ private:
 	LimitState m_state;
 };
 
-void Dump(const RopeJoint& joint, size_t index);
-
 } // namespace box2d
 
 #endif

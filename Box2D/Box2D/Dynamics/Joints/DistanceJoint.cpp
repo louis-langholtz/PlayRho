@@ -244,17 +244,3 @@ float_t DistanceJoint::GetReactionTorque(float_t inv_dt) const
 	BOX2D_NOT_USED(inv_dt);
 	return 0;
 }
-
-void box2d::Dump(const DistanceJoint& joint, size_t index)
-{
-	log("  DistanceJointDef jd;\n");
-	log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
-	log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
-	log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
-	log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorA().x, joint.GetLocalAnchorA().y);
-	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorB().x, joint.GetLocalAnchorB().y);
-	log("  jd.length = %.15lef;\n", joint.GetLength());
-	log("  jd.frequencyHz = %.15lef;\n", joint.GetFrequency());
-	log("  jd.dampingRatio = %.15lef;\n", joint.GetDampingRatio());
-	log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
-}

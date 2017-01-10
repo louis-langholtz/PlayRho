@@ -382,20 +382,3 @@ float_t WheelJoint::GetMotorTorque(float_t inv_dt) const
 {
 	return inv_dt * m_motorImpulse;
 }
-
-void box2d::Dump(const WheelJoint& joint, size_t index)
-{
-	log("  WheelJointDef jd;\n");
-	log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
-	log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
-	log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
-	log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorA().x, joint.GetLocalAnchorA().y);
-	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorB().x, joint.GetLocalAnchorB().y);
-	log("  jd.localAxisA = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAxisA().x, joint.GetLocalAxisA().y);
-	log("  jd.enableMotor = bool(%d);\n", joint.IsMotorEnabled());
-	log("  jd.motorSpeed = %.15lef;\n", joint.GetMotorSpeed());
-	log("  jd.maxMotorTorque = %.15lef;\n", joint.GetMaxMotorTorque());
-	log("  jd.frequencyHz = %.15lef;\n", joint.GetSpringFrequencyHz());
-	log("  jd.dampingRatio = %.15lef;\n", joint.GetSpringDampingRatio());
-	log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
-}

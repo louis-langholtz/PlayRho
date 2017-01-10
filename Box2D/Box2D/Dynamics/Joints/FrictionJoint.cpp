@@ -230,16 +230,3 @@ float_t FrictionJoint::GetMaxTorque() const
 {
 	return m_maxTorque;
 }
-
-void box2d::Dump(const FrictionJoint& joint, size_t index)
-{
-	log("  FrictionJointDef jd;\n");
-	log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
-	log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
-	log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
-	log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorA().x, joint.GetLocalAnchorA().y);
-	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorB().x, joint.GetLocalAnchorB().y);
-	log("  jd.maxForce = %.15lef;\n", joint.GetMaxForce());
-	log("  jd.maxTorque = %.15lef;\n", joint.GetMaxTorque());
-	log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
-}

@@ -113,8 +113,6 @@ private:
 	Mat33 m_mass;
 };
 
-void Dump(const WeldJoint& joint, size_t index);
-
 } // namespace box2d
 
 #endif

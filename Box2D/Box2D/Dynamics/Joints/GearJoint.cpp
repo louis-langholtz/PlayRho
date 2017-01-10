@@ -404,15 +404,3 @@ float_t GearJoint::GetRatio() const
 {
 	return m_ratio;
 }
-
-void box2d::Dump(const GearJoint& joint, size_t index)
-{
-	log("  GearJointDef jd;\n");
-	log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
-	log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
-	log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
-	log("  jd.joint1 = joints[%d];\n", GetWorldIndex(joint.GetJoint1()));
-	log("  jd.joint2 = joints[%d];\n", GetWorldIndex(joint.GetJoint2()));
-	log("  jd.ratio = %.15lef;\n", joint.GetRatio());
-	log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
-}

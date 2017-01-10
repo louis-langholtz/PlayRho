@@ -120,8 +120,6 @@ private:
 	float_t m_angularMass;
 };
 
-void Dump(const MotorJoint& joint, size_t index);
-
 } // namespace box2d
 
 #endif

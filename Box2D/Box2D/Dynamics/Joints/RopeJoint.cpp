@@ -222,15 +222,3 @@ Joint::LimitState RopeJoint::GetLimitState() const
 {
 	return m_state;
 }
-
-void box2d::Dump(const RopeJoint& joint, size_t index)
-{
-	log("  RopeJointDef jd;\n");
-	log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
-	log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
-	log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
-	log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorA().x, joint.GetLocalAnchorA().y);
-	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorB().x, joint.GetLocalAnchorB().y);
-	log("  jd.maxLength = %.15lef;\n", joint.GetMaxLength());
-	log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
-}

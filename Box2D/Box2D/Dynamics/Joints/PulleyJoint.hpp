@@ -166,9 +166,6 @@ inline float_t PulleyJoint::GetRatio() const noexcept
 	return m_ratio;
 }
 
-/// Dump joint to dmLog
-void Dump(const PulleyJoint& joint, size_t index);
-
 } // namespace box2d
 
 #endif

@@ -1075,10 +1075,7 @@ inline Angle GetTorque(const Body& body) noexcept
 Velocity GetVelocity(const Body& body, float_t h) noexcept;
 
 size_t GetWorldIndex(const Body* body);
-	
-/// Dump body to a log file
-void Dump(const Body& body, size_t bodyIndex);
-	
+
 } // namespace box2d
 
 #endif

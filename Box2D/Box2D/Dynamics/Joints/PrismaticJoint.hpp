@@ -182,9 +182,7 @@ inline float_t PrismaticJoint::GetMotorSpeed() const noexcept
 {
 	return m_motorSpeed;
 }
-	
-void Dump(const PrismaticJoint& joint, size_t index);
-	
+
 } // namespace box2d
 
 #endif

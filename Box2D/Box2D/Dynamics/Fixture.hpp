@@ -348,9 +348,6 @@ bool TestPoint(const Fixture& f, const Vec2& p);
 
 void SetAwake(Fixture& f) noexcept;
 
-/// Dump fixture to log file.
-void Dump(const Fixture& fixture, size_t bodyIndex);
-
 } // namespace box2d
 
 #endif

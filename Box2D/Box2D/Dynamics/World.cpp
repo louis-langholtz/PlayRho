@@ -1412,37 +1412,4 @@ void World::ShiftOrigin(const Vec2& newOrigin)
 	m_contactMgr.m_broadPhase.ShiftOrigin(newOrigin);
 }
 
-void Dump(const World& world)
-{
-	const auto gravity = world.GetGravity();
-	log("Vec2 g(%.15lef, %.15lef);\n", gravity.x, gravity.y);
-	log("m_world->SetGravity(g);\n");
-
-	const auto& bodies = world.GetBodies();
-	log("Body** bodies = (Body**)alloc(%d * sizeof(Body*));\n", bodies.size());
-	auto i = size_t{0};
-	for (auto&& b: bodies)
-	{
-		Dump(b, i);
-		++i;
-	}
-
-	const auto& joints = world.GetJoints();
-	log("Joint** joints = (Joint**)alloc(%d * sizeof(Joint*));\n", joints.size());
-	i = 0;
-	for (auto&& j: joints)
-	{
-		log("{\n");
-		Dump(j, i);
-		log("}\n");
-		++i;
-	}
-
-	log("free(joints);\n");
-	log("free(bodies);\n");
-	log("joints = nullptr;\n");
-	log("bodies = nullptr;\n");
-}
-
-
 } // namespace box2d

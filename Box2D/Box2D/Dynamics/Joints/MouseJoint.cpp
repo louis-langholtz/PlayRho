@@ -187,16 +187,3 @@ void MouseJoint::ShiftOrigin(const Vec2& newOrigin)
 	m_targetA -= newOrigin;
 }
 
-void box2d::Dump(const MouseJoint& joint, size_t index)
-{
-	log("  MouseJointDef jd;\n");
-	log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
-	log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
-	log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
-	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorB().x, joint.GetLocalAnchorB().y);
-	log("  jd.frequencyHz = %.15lef;\n", joint.GetFrequency());
-	log("  jd.dampingRatio = %.15lef;\n", joint.GetDampingRatio());
-	log("  jd.maxForce = %.15lef;\n", joint.GetMaxForce());
-	log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
-}
-

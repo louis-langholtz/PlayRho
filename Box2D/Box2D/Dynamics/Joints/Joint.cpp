@@ -225,47 +225,4 @@ size_t GetWorldIndex(const Joint* joint)
 	return size_t(-1);
 }
 
-void Dump(const Joint& joint, size_t index)
-{
-	switch (joint.GetType())
-	{
-		case JointType::Pulley:
-			Dump(static_cast<const PulleyJoint&>(joint), index);
-			break;
-		case JointType::Distance:
-			Dump(static_cast<const DistanceJoint&>(joint), index);
-			break;
-		case JointType::Friction:
-			Dump(static_cast<const FrictionJoint&>(joint), index);
-			break;
-		case JointType::Motor:
-			Dump(static_cast<const MotorJoint&>(joint), index);
-			break;
-		case JointType::Weld:
-			Dump(static_cast<const WeldJoint&>(joint), index);
-			break;
-		case JointType::Mouse:
-			Dump(static_cast<const MouseJoint&>(joint), index);
-			break;
-		case JointType::Revolute:
-			Dump(static_cast<const RevoluteJoint&>(joint), index);
-			break;
-		case JointType::Prismatic:
-			Dump(static_cast<const PrismaticJoint&>(joint), index);
-			break;
-		case JointType::Gear:
-			Dump(static_cast<const GearJoint&>(joint), index);
-			break;
-		case JointType::Rope:
-			Dump(static_cast<const RopeJoint&>(joint), index);
-			break;
-		case JointType::Wheel:
-			Dump(static_cast<const WheelJoint&>(joint), index);
-			break;
-		case JointType::Unknown:
-			assert(false);
-			break;
-	}
-}
-
 } // namespace box2d

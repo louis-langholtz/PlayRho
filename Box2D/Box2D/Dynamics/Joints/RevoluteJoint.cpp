@@ -481,21 +481,3 @@ void RevoluteJoint::SetLimits(Angle lower, Angle upper)
 		m_upperAngle = upper;
 	}
 }
-
-void box2d::Dump(const RevoluteJoint& joint, size_t index)
-{
-	log("  RevoluteJointDef jd;\n");
-	log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
-	log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
-	log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
-	log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorA().x, joint.GetLocalAnchorA().y);
-	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorB().x, joint.GetLocalAnchorB().y);
-	log("  jd.referenceAngle = %.15lef;\n", joint.GetReferenceAngle());
-	log("  jd.enableLimit = bool(%d);\n", joint.IsLimitEnabled());
-	log("  jd.lowerAngle = %.15lef;\n", joint.GetLowerLimit());
-	log("  jd.upperAngle = %.15lef;\n", joint.GetUpperLimit());
-	log("  jd.enableMotor = bool(%d);\n", joint.IsMotorEnabled());
-	log("  jd.motorSpeed = %.15lef;\n", joint.GetMotorSpeed());
-	log("  jd.maxMotorTorque = %.15lef;\n", joint.GetMaxMotorTorque());
-	log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
-}

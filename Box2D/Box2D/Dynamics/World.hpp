@@ -683,10 +683,6 @@ inline float_t World::GetMinVertexRadius() const noexcept
 	// Making it larger may create artifacts for vertex collision.
 	return GetLinearSlop() * 2;
 }
-	
-/// Dump the world into the log file.
-/// @warning this should be called outside of a time step.
-void Dump(const World& world);
 
 /// Gets the AABB extension for the given world.
 /// @detail

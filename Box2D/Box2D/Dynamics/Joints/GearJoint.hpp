@@ -121,8 +121,6 @@ private:
 	float_t m_JwA, m_JwB, m_JwC, m_JwD;
 	float_t m_mass;
 };
-
-void Dump(const GearJoint& joint, size_t index);
 	
 } // namespace box2d
 

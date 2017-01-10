@@ -279,9 +279,6 @@ void SetAwake(Joint& j) noexcept;
 
 size_t GetWorldIndex(const Joint* joint);
 
-/// Dump joint to the log file.
-void Dump(const Joint& joint, size_t index);
-
 } // namespace box2d
 
 #endif

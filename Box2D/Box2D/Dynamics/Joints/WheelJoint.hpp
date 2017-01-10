@@ -195,8 +195,6 @@ inline float_t WheelJoint::GetSpringDampingRatio() const
 	return m_dampingRatio;
 }
 
-void Dump(const WheelJoint& joint, size_t index);
-
 } // namespace box2d
 
 #endif

@@ -18,6 +18,7 @@
 
 #include "gtest/gtest.h"
 #include <Box2D/Box2D.hpp>
+#include <Box2D/Common/CodeDumper.hpp>
 
 #include <unistd.h>
 

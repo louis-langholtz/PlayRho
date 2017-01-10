@@ -107,9 +107,6 @@ private:
 	float_t m_angularMass;
 };
 
-/// Dump joint to the log file.
-void Dump(const FrictionJoint& joint, size_t index);
-
 } // namespace box2d
 
 #endif
