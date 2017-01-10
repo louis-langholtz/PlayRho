@@ -552,21 +552,6 @@ inline const Profile& World::GetProfile() const noexcept
 	return m_profile;
 }
 
-inline body_count_t GetBodyCount(const World& world) noexcept
-{
-	return world.GetBodies().size();
-}
-
-inline World::size_type GetJointCount(const World& world) noexcept
-{
-	return world.GetJoints().size();
-}
-
-inline contact_count_t GetContactCount(const World& world) noexcept
-{
-	return world.GetContacts().size();
-}
-
 inline bool World::GetAllowSleeping() const noexcept
 {
 	return m_flags & e_allowSleep;
@@ -695,6 +680,25 @@ inline float_t GetAabbExtension(const World& world) noexcept
 {
 	return world.GetLinearSlop() * 20;
 }
+
+inline body_count_t GetBodyCount(const World& world) noexcept
+{
+	return world.GetBodies().size();
+}
+
+inline World::size_type GetJointCount(const World& world) noexcept
+{
+	return world.GetJoints().size();
+}
+
+inline contact_count_t GetContactCount(const World& world) noexcept
+{
+	return world.GetContacts().size();
+}
+
+size_t GetFixtureCount(const World& world) noexcept;
+
+size_t GetShapeCount(const World& world) noexcept;
 
 } // namespace box2d
 

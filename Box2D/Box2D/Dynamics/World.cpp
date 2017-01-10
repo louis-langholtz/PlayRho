@@ -40,6 +40,7 @@
 #include <functional>
 #include <type_traits>
 #include <memory>
+#include <set>
 
 namespace box2d
 {
@@ -1416,6 +1417,29 @@ void World::ShiftOrigin(const Vec2& newOrigin)
 	}
 
 	m_contactMgr.m_broadPhase.ShiftOrigin(newOrigin);
+}
+
+size_t GetFixtureCount(const World& world) noexcept
+{
+	size_t sum = 0;
+	for (auto&& b: world.GetBodies())
+	{
+		sum += GetFixtureCount(b);
+	}
+	return sum;
+}
+
+size_t GetShapeCount(const World& world) noexcept
+{
+	auto shapes = std::set<const Shape*>();
+	for (auto&& b: world.GetBodies())
+	{
+		for (auto&& f: b.GetFixtures())
+		{
+			shapes.insert(f.GetShape());
+		}
+	}
+	return shapes.size();
 }
 
 } // namespace box2d

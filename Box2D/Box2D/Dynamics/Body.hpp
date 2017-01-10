@@ -1076,6 +1076,8 @@ Velocity GetVelocity(const Body& body, float_t h) noexcept;
 
 size_t GetWorldIndex(const Body* body);
 
+size_t GetFixtureCount(const Body& body);
+
 } // namespace box2d
 
 #endif

@@ -614,3 +614,13 @@ Velocity box2d::GetVelocity(const Body& body, float_t h) noexcept
 	}
 	return velocity;
 }
+
+size_t box2d::GetFixtureCount(const Body& body)
+{
+	auto sum = size_t{0};
+	for (auto&& f: body.GetFixtures())
+	{
+		++sum;
+	}
+	return sum;
+}
