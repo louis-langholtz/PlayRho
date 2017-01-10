@@ -52,7 +52,7 @@ public:
 			WeldJointDef jd;
 
 			auto prevBody = ground;
-			for (int32 i = 0; i < e_count; ++i)
+			for (auto i = 0; i < e_count; ++i)
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
@@ -79,7 +79,7 @@ public:
 			jd.dampingRatio = 0.7f;
 
 			auto prevBody = ground;
-			for (int32 i = 0; i < 3; ++i)
+			for (auto i = 0; i < 3; ++i)
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
@@ -104,7 +104,7 @@ public:
 			WeldJointDef jd;
 
 			auto prevBody = ground;
-			for (int32 i = 0; i < e_count; ++i)
+			for (auto i = 0; i < e_count; ++i)
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
@@ -134,7 +134,7 @@ public:
 			jd.dampingRatio = 0.7f;
 
 			auto prevBody = ground;
-			for (int32 i = 0; i < e_count; ++i)
+			for (auto i = 0; i < e_count; ++i)
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
@@ -155,7 +155,7 @@ public:
 		// Creates triangles
 		auto polyshape = std::make_shared<PolygonShape>();
 		polyshape->Set({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
-		for (int32 i = 0; i < 2; ++i)
+		for (auto i = 0; i < 2; ++i)
 		{
 			FixtureDef fd;
 			fd.density = 1.0f;
@@ -169,7 +169,7 @@ public:
 
 		// Creates circles
 		const auto circleshape = std::make_shared<CircleShape>(float_t(0.5));
-		for (int32 i = 0; i < 2; ++i)
+		for (auto i = 0; i < 2; ++i)
 		{
 			FixtureDef fd;
 			fd.density = 1.0f;
