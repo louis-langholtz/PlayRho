@@ -21,7 +21,6 @@
 
 #include <Box2D/Common/Settings.hpp>
 #include <cmath>
-#include <iostream>
 
 namespace box2d
 {
