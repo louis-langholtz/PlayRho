@@ -347,6 +347,12 @@ namespace {
 	
 } // anonymous namespace
 
+const BodyDef& World::GetDefaultBodyDef()
+{
+	static const BodyDef def = BodyDef{};
+	return def;
+}
+
 World::World(const Def& def):
 	m_gravity(def.gravity),
 	m_linearSlop(def.linearSlop),

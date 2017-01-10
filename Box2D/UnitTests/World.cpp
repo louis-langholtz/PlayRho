@@ -135,7 +135,7 @@ TEST(World, CreateAndDestroyBody)
 	World world;
 	EXPECT_EQ(GetBodyCount(world), body_count_t(0));
 
-	const auto body = world.CreateBody(BodyDef{});
+	const auto body = world.CreateBody();
 	EXPECT_NE(body, nullptr);
 	EXPECT_EQ(body->GetType(), BodyType::Static);
 	EXPECT_FALSE(body->IsSpeedable());
@@ -192,8 +192,8 @@ TEST(World, CreateAndDestroyJoint)
 {
 	World world;
 
-	const auto body1 = world.CreateBody(BodyDef{});
-	const auto body2 = world.CreateBody(BodyDef{});
+	const auto body1 = world.CreateBody();
+	const auto body2 = world.CreateBody();
 	EXPECT_NE(body1, nullptr);
 	EXPECT_NE(body2, nullptr);
 	EXPECT_EQ(GetBodyCount(world), body_count_t(2));
@@ -227,11 +227,11 @@ TEST(World, MaxBodies)
 	World world;
 	for (auto i = decltype(MaxBodies){0}; i < MaxBodies; ++i)
 	{
-		const auto body = world.CreateBody(BodyDef{});
+		const auto body = world.CreateBody();
 		ASSERT_NE(body, nullptr);
 	}
 	{
-		const auto body = world.CreateBody(BodyDef{});
+		const auto body = world.CreateBody();
 		EXPECT_EQ(body, nullptr);		
 	}
 }
@@ -240,9 +240,9 @@ TEST(World, MaxJoints)
 {
 	World world;
 	
-	const auto body1 = world.CreateBody(BodyDef{});
+	const auto body1 = world.CreateBody();
 	ASSERT_NE(body1, nullptr);
-	const auto body2 = world.CreateBody(BodyDef{});
+	const auto body2 = world.CreateBody();
 	ASSERT_NE(body2, nullptr);
 	
 	for (auto i = decltype(MaxJoints){0}; i < MaxJoints; ++i)

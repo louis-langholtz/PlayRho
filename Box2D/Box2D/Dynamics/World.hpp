@@ -68,10 +68,12 @@ public:
 		float_t angularSlop = Pi * float_t{2} / float_t{180};
 	};
 	
-	static constexpr struct Def GetDefaultDef()
+	static constexpr Def GetDefaultDef()
 	{
 		return Def{};	
 	}
+
+	static const BodyDef& GetDefaultBodyDef();
 
 	/// Constructs a world object.
 	World(const Def& def = GetDefaultDef());
@@ -97,7 +99,7 @@ public:
 	/// Creates a rigid body given a definition.
 	/// @note No reference to the definition is retained.
 	/// @warning This function is locked during callbacks.
-	Body* CreateBody(const BodyDef& def);
+	Body* CreateBody(const BodyDef& def = GetDefaultBodyDef());
 
 	/// Destroys the given body.
 	/// @note This function is locked during callbacks.
