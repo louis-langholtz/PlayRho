@@ -43,6 +43,18 @@
 
 using namespace box2d;
 
+namespace
+{
+	// You can modify this to use your logging facility.
+	void log(const char* string, ...)
+	{
+		va_list args;
+		va_start(args, string);
+		std::vprintf(string, args);
+		va_end(args);
+	}
+}
+
 void box2d::Dump(const World& world)
 {
 	const auto gravity = world.GetGravity();

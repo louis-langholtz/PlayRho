@@ -42,13 +42,4 @@ void free(void* mem)
 	std::free(mem);
 }
 
-// You can modify this to use your logging facility.
-void log(const char* string, ...)
-{
-	va_list args;
-	va_start(args, string);
-	std::vprintf(string, args);
-	va_end(args);
-}
-
 } // namespace box2d
