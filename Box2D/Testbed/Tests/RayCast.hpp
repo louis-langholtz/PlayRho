@@ -37,11 +37,11 @@ public:
 
 	float_t ReportFixture(Fixture* fixture, const Vec2& point, const UnitVec2& normal, float_t fraction) override
 	{
-		Body* body = fixture->GetBody();
-		void* userData = body->GetUserData();
+		const auto body = fixture->GetBody();
+		const auto userData = body->GetUserData();
 		if (userData)
 		{
-			int32 index = *(int32*)userData;
+			const auto index = *static_cast<int32*>(userData);
 			if (index == 0)
 			{
 				// By returning -1, we instruct the calling code to ignore this fixture and
@@ -77,11 +77,11 @@ public:
 
 	float_t ReportFixture(Fixture* fixture, const Vec2& point, const UnitVec2& normal, float_t fraction) override
 	{
-		Body* body = fixture->GetBody();
-		void* userData = body->GetUserData();
+		const auto body = fixture->GetBody();
+		const auto userData = body->GetUserData();
 		if (userData)
 		{
-			int32 index = *(int32*)userData;
+			const auto index = *static_cast<int32*>(userData);
 			if (index == 0)
 			{
 				// By returning -1, we instruct the calling code to ignore this fixture
@@ -122,11 +122,11 @@ public:
 
 	float_t ReportFixture(Fixture* fixture, const Vec2& point, const UnitVec2& normal, float_t fraction) override
 	{
-		Body* body = fixture->GetBody();
-		void* userData = body->GetUserData();
+		const auto body = fixture->GetBody();
+		const auto userData = body->GetUserData();
 		if (userData)
 		{
-			int32 index = *(int32*)userData;
+			const auto index = *static_cast<int32*>(userData);
 			if (index == 0)
 			{
 				// By returning -1, we instruct the calling code to ignore this fixture
@@ -177,27 +177,17 @@ public:
 	RayCast()
 	{
 		// Ground body
-		{
-			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
+		const auto ground = m_world->CreateBody();
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
+		
+		m_polygons[0].Set({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
 
-			EdgeShape shape;
-			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape);
-		}
+		m_polygons[1].Set({Vec2(-0.1f, 0.0f), Vec2(0.1f, 0.0f), Vec2(0.0f, 1.5f)});
 
 		{
-			m_polygons[0].Set({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
-		}
-
-		{
-			m_polygons[1].Set({Vec2(-0.1f, 0.0f), Vec2(0.1f, 0.0f), Vec2(0.0f, 1.5f)});
-		}
-
-		{
-			float_t w = 1.0f;
-			float_t b = w / (2.0f + Sqrt(2.0f));
-			float_t s = Sqrt(2.0f) * b;
+			const auto w = 1.0f;
+			const auto b = w / (2.0f + Sqrt(2.0f));
+			const auto s = Sqrt(2.0f) * b;
 
 			m_polygons[2].Set({
 				Vec2(0.5f * s, 0.0f),
@@ -211,18 +201,8 @@ public:
 			});
 		}
 
-		{
-			m_polygons[3].SetAsBox(0.5f, 0.5f);
-		}
-
-		{
-			m_circle.SetRadius(0.5);
-		}
-
-		{
-			m_edge.Set(Vec2(-1.0f, 0.0f), Vec2(1.0f, 0.0f));
-		}
-
+		m_polygons[3].SetAsBox(0.5f, 0.5f);
+		
 		m_bodyIndex = 0;
 		memset(m_bodies, 0, sizeof(m_bodies));
 
@@ -241,8 +221,8 @@ public:
 
 		BodyDef bd;
 
-		float_t x = RandomFloat(-10.0f, 10.0f);
-		float_t y = RandomFloat(0.0f, 20.0f);
+		const auto x = RandomFloat(-10.0f, 10.0f);
+		const auto y = RandomFloat(0.0f, 20.0f);
 		bd.position = Vec2(x, y);
 		bd.angle = 1_rad * RandomFloat(-Pi, Pi);
 
@@ -266,13 +246,13 @@ public:
 		{
 			FixtureDef fd;
 			fd.friction = 0.3f;
-			m_bodies[m_bodyIndex]->CreateFixture(&m_circle, fd);
+			m_bodies[m_bodyIndex]->CreateFixture(m_circle, fd);
 		}
 		else
 		{
 			FixtureDef fd;
 			fd.friction = 0.3f;
-			m_bodies[m_bodyIndex]->CreateFixture(&m_edge, fd);
+			m_bodies[m_bodyIndex]->CreateFixture(m_edge, fd);
 		}
 
 		m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));
@@ -461,9 +441,9 @@ public:
 	Body* m_bodies[e_maxBodies];
 	int32 m_userData[e_maxBodies];
 	PolygonShape m_polygons[4];
-	CircleShape m_circle;
-	EdgeShape m_edge;
-
+	std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>(0.5f);
+	std::shared_ptr<EdgeShape> m_edge = std::make_shared<EdgeShape>(Vec2(-1.0f, 0.0f), Vec2(1.0f, 0.0f));
+	
 	float_t m_angle;
 
 	Mode m_mode;

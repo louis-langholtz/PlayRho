@@ -35,19 +35,12 @@ class RopeJointTest : public Test
 public:
 	RopeJointTest()
 	{
-		Body* ground = nullptr;
-		{
-			BodyDef bd;
-			ground = m_world->CreateBody(bd);
-
-			EdgeShape shape;
-			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape);
-		}
+		const auto ground = m_world->CreateBody();
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
 
 		{
-			PolygonShape shape;
-			shape.SetAsBox(0.5f, 0.125f);
+			const auto rectangle = std::make_shared<PolygonShape>(0.5f, 0.125f);
+			const auto square = std::make_shared<PolygonShape>(1.5f, 1.5f);
 
 			FixtureDef fd;
 			fd.density = 20.0f;
@@ -55,28 +48,29 @@ public:
 			fd.filter.categoryBits = 0x0001;
 			fd.filter.maskBits = 0xFFFF & ~0x0002;
 
-			const int32 N = 10;
-			const float_t y = 15.0f;
+			const auto N = 10;
+			const auto y = 15.0f;
 			m_ropeDef.localAnchorA = Vec2(0.0f, y);
 
-			Body* prevBody = ground;
-			for (int32 i = 0; i < N; ++i)
+			auto prevBody = ground;
+			for (auto i = 0; i < N; ++i)
 			{
+				auto shape = rectangle;
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(0.5f + 1.0f * i, y);
 				if (i == N - 1)
 				{
-					shape.SetAsBox(1.5f, 1.5f);
+					shape = square;
 					fd.density = 100.0f;
 					fd.filter.categoryBits = 0x0002;
 					bd.position = Vec2(1.0f * i, y);
 					bd.angularDamping = 0.4f;
 				}
 
-				Body* body = m_world->CreateBody(bd);
+				const auto body = m_world->CreateBody(bd);
 
-				body->CreateFixture(&shape, fd);
+				body->CreateFixture(shape, fd);
 
 				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(float_t(i), y)});
 
@@ -85,15 +79,13 @@ public:
 
 			m_ropeDef.localAnchorB = Vec2_zero;
 
-			float_t extraLength = 0.01f;
+			const auto extraLength = 0.01f;
 			m_ropeDef.maxLength = N - 1.0f + extraLength;
 			m_ropeDef.bodyB = prevBody;
 		}
 
-		{
-			m_ropeDef.bodyA = ground;
-			m_rope = m_world->CreateJoint(m_ropeDef);
-		}
+		m_ropeDef.bodyA = ground;
+		m_rope = m_world->CreateJoint(m_ropeDef);
 	}
 
 	void Keyboard(Key key) override
