@@ -29,28 +29,19 @@ class SliderCrank : public Test
 public:
 	SliderCrank()
 	{
-		Body* ground = nullptr;
-		{
-			BodyDef bd;
-			ground = m_world->CreateBody(bd);
-
-			EdgeShape shape;
-			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape);
-		}
+		const auto ground = m_world->CreateBody();
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
 
 		{
-			Body* prevBody = ground;
+			auto prevBody = ground;
 
 			// Define crank.
 			{
-				const auto shape = PolygonShape(0.5f, 2.0f);
-
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(0.0f, 7.0f);
-				Body* body = m_world->CreateBody(bd);
-				body->CreateFixture(&shape, FixtureDef{}.UseDensity(2));
+				const auto body = m_world->CreateBody(bd);
+				body->CreateFixture(std::make_shared<PolygonShape>(0.5f, 2.0f), FixtureDef{}.UseDensity(2));
 
 				RevoluteJointDef rjd{prevBody, body, Vec2(0.0f, 5.0f)};
 				rjd.motorSpeed = 1.0f * Pi;
@@ -63,13 +54,11 @@ public:
 
 			// Define follower.
 			{
-				const auto shape = PolygonShape(0.5f, 4.0f);
-
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(0.0f, 13.0f);
-				Body* body = m_world->CreateBody(bd);
-				body->CreateFixture(&shape, FixtureDef{}.UseDensity(2));
+				const auto body = m_world->CreateBody(bd);
+				body->CreateFixture(std::make_shared<PolygonShape>(0.5f, 4.0f), FixtureDef{}.UseDensity(2));
 
 				RevoluteJointDef rjd{prevBody, body, Vec2(0.0f, 9.0f)};
 				rjd.enableMotor = false;
@@ -80,14 +69,12 @@ public:
 
 			// Define piston
 			{
-				const auto shape = PolygonShape(1.5f, 1.5f);
-
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.fixedRotation = true;
 				bd.position = Vec2(0.0f, 17.0f);
-				Body* body = m_world->CreateBody(bd);
-				body->CreateFixture(&shape, FixtureDef{}.UseDensity(2));
+				const auto body = m_world->CreateBody(bd);
+				body->CreateFixture(std::make_shared<PolygonShape>(1.5f, 1.5f), FixtureDef{}.UseDensity(2));
 
 				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(0.0f, 17.0f)});
 
@@ -101,13 +88,11 @@ public:
 
 			// Create a payload
 			{
-				const auto shape = PolygonShape(1.5f, 1.5f);
-
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(0.0f, 23.0f);
-				Body* body = m_world->CreateBody(bd);
-				body->CreateFixture(&shape, FixtureDef{}.UseDensity(2));
+				const auto body = m_world->CreateBody(bd);
+				body->CreateFixture(std::make_shared<PolygonShape>(1.5f, 1.5f), FixtureDef{}.UseDensity(2));
 			}
 		}
 	}

@@ -28,37 +28,30 @@ class Web : public Test
 public:
 	Web()
 	{
-		Body* ground = nullptr;
-		{
-			BodyDef bd;
-			ground = m_world->CreateBody(bd);
-
-			EdgeShape shape;
-			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape);
-		}
+		const auto ground = m_world->CreateBody();
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
 
 		{
-			const auto shape = PolygonShape(0.5f, 0.5f);
+			const auto shape = std::make_shared<PolygonShape>(0.5f, 0.5f);
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 
 			bd.position = Vec2(-5.0f, 5.0f);
 			m_bodies[0] = m_world->CreateBody(bd);
-			m_bodies[0]->CreateFixture(&shape, FixtureDef{}.UseDensity(5));
+			m_bodies[0]->CreateFixture(shape, FixtureDef{}.UseDensity(5));
 
 			bd.position = Vec2(5.0f, 5.0f);
 			m_bodies[1] = m_world->CreateBody(bd);
-			m_bodies[1]->CreateFixture(&shape, FixtureDef{}.UseDensity(5));
+			m_bodies[1]->CreateFixture(shape, FixtureDef{}.UseDensity(5));
 
 			bd.position = Vec2(5.0f, 15.0f);
 			m_bodies[2] = m_world->CreateBody(bd);
-			m_bodies[2]->CreateFixture(&shape, FixtureDef{}.UseDensity(5));
+			m_bodies[2]->CreateFixture(shape, FixtureDef{}.UseDensity(5));
 
 			bd.position = Vec2(-5.0f, 15.0f);
 			m_bodies[3] = m_world->CreateBody(bd);
-			m_bodies[3]->CreateFixture(&shape, FixtureDef{}.UseDensity(5));
+			m_bodies[3]->CreateFixture(shape, FixtureDef{}.UseDensity(5));
 
 			DistanceJointDef jd;
 			Vec2 p1, p2, d;

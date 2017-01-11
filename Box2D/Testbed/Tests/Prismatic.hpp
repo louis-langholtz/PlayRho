@@ -28,27 +28,17 @@ class Prismatic : public Test
 public:
 	Prismatic()
 	{
-		Body* ground = nullptr;
-		{
-			BodyDef bd;
-			ground = m_world->CreateBody(bd);
-
-			EdgeShape shape;
-			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape);
-		}
+		const auto ground = m_world->CreateBody();
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
 
 		{
-			const auto shape = PolygonShape(2.0f, 0.5f);
-
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-10.0f, 10.0f);
 			bd.angle = 0.5_rad * Pi;
 			bd.allowSleep = false;
-			Body* body = m_world->CreateBody(bd);
-			body->CreateFixture(&shape, FixtureDef{}.UseDensity(5));
-
+			const auto body = m_world->CreateBody(bd);
+			body->CreateFixture(std::make_shared<PolygonShape>(2.0f, 0.5f), FixtureDef{}.UseDensity(5));
 
 			// Bouncy limit
 			const auto axis = GetUnitVector(Vec2(2.0f, 1.0f));

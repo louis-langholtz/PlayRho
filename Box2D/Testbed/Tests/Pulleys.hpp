@@ -27,42 +27,34 @@ class Pulleys : public Test
 public:
 	Pulleys()
 	{
-		float_t y = 16.0f;
-		float_t L = 12.0f;
-		float_t a = 1.0f;
-		float_t b = 2.0f;
+		const auto y = 16.0f;
+		const auto L = 12.0f;
+		const auto a = 1.0f;
+		const auto b = 2.0f;
 
-		Body* ground = nullptr;
+		const auto ground = m_world->CreateBody();
 		{
-			BodyDef bd;
-			ground = m_world->CreateBody(bd);
-
-			EdgeShape edge;
-			edge.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			//ground->CreateFixture(FixtureDef{&shape, 0.0f);
-
 			CircleShape circle(2.0f, Vec2(-10.0f, y + b + L));
-			ground->CreateFixture(&circle);
+			ground->CreateFixture(std::make_shared<CircleShape>(circle));
 
 			circle.SetLocation(Vec2(10.0f, y + b + L));
-			ground->CreateFixture(&circle);
+			ground->CreateFixture(std::make_shared<CircleShape>(circle));
 		}
 
 		{
-
-			const auto shape = PolygonShape(a, b);
+			const auto shape = std::make_shared<PolygonShape>(a, b);
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 
 			//bd.fixedRotation = true;
 			bd.position = Vec2(-10.0f, y);
-			Body* body1 = m_world->CreateBody(bd);
-			body1->CreateFixture(&shape, FixtureDef{}.UseDensity(5));
+			const auto body1 = m_world->CreateBody(bd);
+			body1->CreateFixture(shape, FixtureDef{}.UseDensity(5));
 
 			bd.position = Vec2(10.0f, y);
-			Body* body2 = m_world->CreateBody(bd);
-			body2->CreateFixture(&shape, FixtureDef{}.UseDensity(5));
+			const auto body2 = m_world->CreateBody(bd);
+			body2->CreateFixture(shape, FixtureDef{}.UseDensity(5));
 
 			PulleyJointDef pulleyDef;
 			Vec2 anchor1(-10.0f, y + b);

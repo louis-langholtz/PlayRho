@@ -58,7 +58,7 @@ namespace box2d {
 				
 				const auto frame_width = m_num_arms * frame_width_per_arm;
 				const auto shape = PolygonShape(frame_width/2, frame_width / 24);
-				body->CreateFixture(&shape, FixtureDef{}.UseDensity(20));
+				body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(20));
 				return body;
 			}();
 			
@@ -109,7 +109,7 @@ namespace box2d {
 				const auto body = m_world->CreateBody(def);
 				
 				const auto shape = PolygonShape(frame_width/24, arm_length / 2 + frame_width / 24);
-				body->CreateFixture(&shape, FixtureDef{}.UseDensity(20));
+				body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(20));
 				
 				m_right_side_wall = body;
 			}
@@ -126,7 +126,7 @@ namespace box2d {
 				const auto body = m_world->CreateBody(def);
 				
 				const auto shape = PolygonShape(frame_width/24, arm_length / 2 + frame_width / 24);
-				body->CreateFixture(&shape, FixtureDef{}.UseDensity(20));
+				body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(20));
 				
 				m_left_side_wall = body;
 			}
@@ -152,18 +152,17 @@ namespace box2d {
 
 		Fixture* CreateBall(Body* body, Vec2 pos, float_t radius)
 		{
-			CircleShape shape{radius, pos};
 			FixtureDef fd;
 			fd.density = 20;
 			fd.restitution = 1;
 			fd.friction = 0;
-			return body->CreateFixture(&shape, fd);
+			return body->CreateFixture(std::make_shared<CircleShape>(radius, pos), fd);
 		}
 
 		Fixture* CreateArm(Body* body, float_t length = float_t(10))
 		{
 			const auto shape = PolygonShape(length / 2000, length / 2);
-			return body->CreateFixture(&shape, FixtureDef{}.UseDensity(20));
+			return body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(20));
 		}
 
 		void ToggleRightSideWall()

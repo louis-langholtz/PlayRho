@@ -65,11 +65,11 @@ public:
 		bd1.angularDamping = 10.0f;
 		bd2.angularDamping = 10.0f;
 
-		Body* body1 = m_world->CreateBody(bd1);
-		Body* body2 = m_world->CreateBody(bd2);
+		const auto body1 = m_world->CreateBody(bd1);
+		const auto body2 = m_world->CreateBody(bd2);
 
-		body1->CreateFixture(&poly1, fd1);
-		body2->CreateFixture(&poly2, fd2);
+		body1->CreateFixture(std::make_shared<PolygonShape>(poly1), fd1);
+		body2->CreateFixture(std::make_shared<PolygonShape>(poly2), fd2);
 
 		// Using a soft distance constraint can reduce some jitter.
 		// It also makes the structure seem a bit more fluid by
@@ -91,37 +91,33 @@ public:
 		// Ground
 		{
 			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
+			const auto ground = m_world->CreateBody(bd);
 
 			EdgeShape shape;
 			shape.Set(Vec2(-50.0f, 0.0f), Vec2(50.0f, 0.0f));
-			ground->CreateFixture(&shape);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
 			shape.Set(Vec2(-50.0f, 0.0f), Vec2(-50.0f, 10.0f));
-			ground->CreateFixture(&shape);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
 			shape.Set(Vec2(50.0f, 0.0f), Vec2(50.0f, 10.0f));
-			ground->CreateFixture(&shape);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 		}
 
 		// Balls
-		for (int32 i = 0; i < 40; ++i)
+		const auto circle = std::make_shared<CircleShape>(0.25f);
+		for (auto i = 0; i < 40; ++i)
 		{
-			CircleShape shape;
-			shape.SetRadius(0.25);
-
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-40.0f + 2.0f * i, 0.5f);
 
-			Body* body = m_world->CreateBody(bd);
-			body->CreateFixture(&shape, FixtureDef{}.UseDensity(1));
+			const auto body = m_world->CreateBody(bd);
+			body->CreateFixture(circle, FixtureDef{}.UseDensity(1));
 		}
 
 		// Chassis
 		{
-			const auto shape = PolygonShape(2.5f, 1.0f);
-
 			FixtureDef sd;
 			sd.density = 1.0f;
 			sd.filter.groupIndex = -1;
@@ -129,13 +125,10 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.position = pivot + m_offset;
 			m_chassis = m_world->CreateBody(bd);
-			m_chassis->CreateFixture(&shape, sd);
+			m_chassis->CreateFixture(std::make_shared<PolygonShape>(2.5f, 1.0f), sd);
 		}
 
 		{
-			CircleShape shape;
-			shape.SetRadius(float_t(1.6));
-
 			FixtureDef sd;
 			sd.density = 1.0f;
 			sd.filter.groupIndex = -1;
@@ -143,7 +136,7 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.position = pivot + m_offset;
 			m_wheel = m_world->CreateBody(bd);
-			m_wheel->CreateFixture(&shape, sd);
+			m_wheel->CreateFixture(std::make_shared<CircleShape>(1.6f), sd);
 		}
 
 		{
@@ -155,9 +148,7 @@ public:
 			m_motorJoint = (RevoluteJoint*)m_world->CreateJoint(jd);
 		}
 
-		Vec2 wheelAnchor;
-		
-		wheelAnchor = pivot + Vec2(0.0f, -0.8f);
+		const auto wheelAnchor = pivot + Vec2(0.0f, -0.8f);
 
 		CreateLeg(-1.0f, wheelAnchor);
 		CreateLeg(1.0f, wheelAnchor);

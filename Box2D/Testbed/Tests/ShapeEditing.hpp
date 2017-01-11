@@ -28,15 +28,9 @@ public:
 
 	ShapeEditing()
 	{
-		{
-			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
-
-			EdgeShape shape;
-			shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-			ground->CreateFixture(&shape);
-		}
-
+		const auto ground = m_world->CreateBody();
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
+		
 		BodyDef bd;
 		bd.type = BodyType::Dynamic;
 		bd.position = Vec2(0.0f, 10.0f);
@@ -44,7 +38,7 @@ public:
 
 		PolygonShape shape;
 		SetAsBox(shape, 4.0f, 4.0f, Vec2(0.0f, 0.0f), 0_rad);
-		m_fixture1 = m_body->CreateFixture(&shape, FixtureDef{}.UseDensity(10));
+		m_fixture1 = m_body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(10));
 
 		m_fixture2 = nullptr;
 
@@ -58,8 +52,8 @@ public:
 		case Key_C:
 			if (!m_fixture2)
 			{
-				CircleShape shape(3.0, Vec2(0.5f, -4.0f));
-				m_fixture2 = m_body->CreateFixture(&shape, FixtureDef{}.UseDensity(10));
+				m_fixture2 = m_body->CreateFixture(std::make_shared<CircleShape>(3.0, Vec2(0.5f, -4.0f)),
+												   FixtureDef{}.UseDensity(10));
 				m_body->SetAwake();
 			}
 			break;
