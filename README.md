@@ -19,7 +19,7 @@ Rounded corners.
 *Capsule* shapes.
 Shared shapes for reduced memory usage.
 Greater runtime configurability.
-Newer C++ features like C++11's range-based loops and constant expressions.
+Support for C++11's range-based loops and constant expressions.
 Unit tested.
 And more.
 
