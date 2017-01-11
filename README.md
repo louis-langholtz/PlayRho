@@ -14,6 +14,15 @@ General influences on this fork are:
 As such, this library *must* be compiled with the `NDEBUG` preprocessor macro enabled
 to see any kind of performance.
 
+###Features
+Rounded corners.
+*Capsule* shapes.
+Shared shapes for reduced memory usage.
+Greater runtime configurability.
+Newer C++ features like C++11's range-based loops and constant expressions.
+Unit tested.
+And more.
+
 ##About
 
 Box2D is a 2D physics engine for games.
