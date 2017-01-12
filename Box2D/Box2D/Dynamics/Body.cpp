@@ -27,6 +27,8 @@
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
 #include <Box2D/Collision/Shapes/ChainShape.hpp>
 
+#include <iterator>
+
 using namespace box2d;
 
 const FixtureDef& box2d::GetDefaultFixtureDef() noexcept
@@ -594,10 +596,6 @@ Velocity box2d::GetVelocity(const Body& body, float_t h) noexcept
 
 size_t box2d::GetFixtureCount(const Body& body)
 {
-	auto sum = size_t{0};
-	for (auto&& f: body.GetFixtures())
-	{
-		++sum;
-	}
-	return sum;
+	return static_cast<size_t>(std::distance(std::begin(body.GetFixtures()),
+											 std::end(body.GetFixtures())));
 }
