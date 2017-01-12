@@ -128,15 +128,20 @@ public:
 			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
 		}
 
-		m_polygons[0].Set({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
-		m_polygons[1].Set({Vec2(-0.1f, 0.0f), Vec2(0.1f, 0.0f), Vec2(0.0f, 1.5f)});
+		for (auto&& p: m_polygons)
+		{
+			p = std::make_shared<PolygonShape>();
+		}
+
+		m_polygons[0]->Set({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
+		m_polygons[1]->Set({Vec2(-0.1f, 0.0f), Vec2(0.1f, 0.0f), Vec2(0.0f, 1.5f)});
 
 		{
 			const auto w = float_t(1);
 			const auto b = w / (2.0f + Sqrt(2.0f));
 			const auto s = Sqrt(2.0f) * b;
 
-			m_polygons[2].Set({
+			m_polygons[2]->Set({
 				Vec2(0.5f * s, 0.0f),
 				Vec2(0.5f * w, b),
 				Vec2(0.5f * w, b + s),
@@ -149,7 +154,7 @@ public:
 		}
 
 		{
-			m_polygons[3].SetAsBox(0.5f, 0.5f);
+			m_polygons[3]->SetAsBox(0.5f, 0.5f);
 		}
 
 		m_bodyIndex = 0;
@@ -183,7 +188,7 @@ public:
 		fd.friction = 0.3f;
 		if (index < 4)
 		{
-			m_bodies[m_bodyIndex]->CreateFixture(m_polygons + index, fd);
+			m_bodies[m_bodyIndex]->CreateFixture(m_polygons[index], fd);
 		}
 		else
 		{
@@ -268,7 +273,7 @@ public:
 
 	int32 m_bodyIndex;
 	Body* m_bodies[e_maxBodies];
-	PolygonShape m_polygons[4];
+	std::shared_ptr<PolygonShape> m_polygons[4];
 	std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>(0.5f);
 };
 

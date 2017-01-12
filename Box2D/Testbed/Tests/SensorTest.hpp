@@ -35,14 +35,8 @@ public:
 	SensorTest()
 	{
 		{
-			BodyDef bd;
-			Body* ground = m_world->CreateBody(bd);
-
-			{
-				EdgeShape shape;
-				shape.Set(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f));
-				ground->CreateFixture(&shape);
-			}
+			const auto ground = m_world->CreateBody();
+			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
 
 #if 0
 			{
@@ -53,43 +47,37 @@ public:
 			}
 #else
 			{
-				CircleShape shape(5.0f, Vec2(0.0f, 10.0f));
-
 				FixtureDef fd;
 				fd.isSensor = true;
-				m_sensor = ground->CreateFixture(&shape, fd);
+				m_sensor = ground->CreateFixture(std::make_shared<CircleShape>(5.0f, Vec2(0.0f, 10.0f)), fd);
 			}
 #endif
 		}
 
+		const auto shape = std::make_shared<CircleShape>(1);
+		for (auto i = 0; i < e_count; ++i)
 		{
-			CircleShape shape;
-			shape.SetRadius(1.0);
+			BodyDef bd;
+			bd.type = BodyType::Dynamic;
+			bd.position = Vec2(-10.0f + 3.0f * i, 20.0f);
+			bd.userData = m_touching + i;
 
-			for (int32 i = 0; i < e_count; ++i)
-			{
-				BodyDef bd;
-				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(-10.0f + 3.0f * i, 20.0f);
-				bd.userData = m_touching + i;
+			m_touching[i] = false;
+			m_bodies[i] = m_world->CreateBody(bd);
 
-				m_touching[i] = false;
-				m_bodies[i] = m_world->CreateBody(bd);
-
-				m_bodies[i]->CreateFixture(&shape, FixtureDef{}.UseDensity(1));
-			}
+			m_bodies[i]->CreateFixture(shape, FixtureDef{}.UseDensity(1));
 		}
 	}
 
 	// Implement contact listener.
 	void BeginContact(Contact& contact) override
 	{
-		Fixture* fixtureA = contact.GetFixtureA();
-		Fixture* fixtureB = contact.GetFixtureB();
+		const auto fixtureA = contact.GetFixtureA();
+		const auto fixtureB = contact.GetFixtureB();
 
 		if (fixtureA == m_sensor)
 		{
-			void* userData = fixtureB->GetBody()->GetUserData();
+			const auto userData = fixtureB->GetBody()->GetUserData();
 			if (userData)
 			{
 				bool* touching = (bool*)userData;
@@ -99,7 +87,7 @@ public:
 
 		if (fixtureB == m_sensor)
 		{
-			void* userData = fixtureA->GetBody()->GetUserData();
+			const auto userData = fixtureA->GetBody()->GetUserData();
 			if (userData)
 			{
 				bool* touching = (bool*)userData;
@@ -111,12 +99,12 @@ public:
 	// Implement contact listener.
 	void EndContact(Contact& contact) override
 	{
-		Fixture* fixtureA = contact.GetFixtureA();
-		Fixture* fixtureB = contact.GetFixtureB();
+		const auto fixtureA = contact.GetFixtureA();
+		const auto fixtureB = contact.GetFixtureB();
 
 		if (fixtureA == m_sensor)
 		{
-			void* userData = fixtureB->GetBody()->GetUserData();
+			const auto userData = fixtureB->GetBody()->GetUserData();
 			if (userData)
 			{
 				bool* touching = (bool*)userData;
@@ -126,7 +114,7 @@ public:
 
 		if (fixtureB == m_sensor)
 		{
-			void* userData = fixtureA->GetBody()->GetUserData();
+			const auto userData = fixtureA->GetBody()->GetUserData();
 			if (userData)
 			{
 				bool* touching = (bool*)userData;
@@ -139,28 +127,28 @@ public:
 	{
 		// Traverse the contact results. Apply a force on shapes
 		// that overlap the sensor.
-		for (int32 i = 0; i < e_count; ++i)
+		for (auto i = 0; i < e_count; ++i)
 		{
 			if (!m_touching[i])
 			{
 				continue;
 			}
 
-			Body* body = m_bodies[i];
-			Body* ground = m_sensor->GetBody();
+			const auto body = m_bodies[i];
+			const auto ground = m_sensor->GetBody();
 
 			CircleShape* circle = (CircleShape*)m_sensor->GetShape();
-			Vec2 center = GetWorldPoint(*ground, circle->GetLocation());
+			const auto center = GetWorldPoint(*ground, circle->GetLocation());
 
-			Vec2 position = body->GetLocation();
+			const auto position = body->GetLocation();
 
-			Vec2 d = center - position;
+			const auto d = center - position;
 			if (almost_zero(GetLengthSquared(d)))
 			{
 				continue;
 			}
 
-			Vec2 F = 100.0f * GetUnitVector(d);
+			const auto F = 100.0f * GetUnitVector(d);
 			ApplyForce(*body, F, position);
 		}
 	}

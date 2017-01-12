@@ -194,29 +194,6 @@ void Body::SetType(BodyType type)
 	}
 }
 
-Fixture* Body::CreateFixture(const Shape* shape, const FixtureDef& def, bool resetMassData)
-{
-	std::shared_ptr<const Shape> s;
-	switch (shape->GetType())
-	{
-		case Shape::e_edge:
-			s = std::make_shared<const EdgeShape>(*static_cast<const EdgeShape*>(shape));
-			break;
-		case Shape::e_circle:
-			s = std::make_shared<const CircleShape>(*static_cast<const CircleShape*>(shape));
-			break;
-		case Shape::e_polygon:
-			s = std::make_shared<const PolygonShape>(*static_cast<const PolygonShape*>(shape));
-			break;
-		case Shape::e_chain:
-			s = std::make_shared<const ChainShape>(*static_cast<const ChainShape*>(shape));
-			break;
-		case Shape::e_typeCount:
-			break;
-	}
-	return CreateFixture(s, def, resetMassData);
-}
-
 Fixture* Body::CreateFixture(std::shared_ptr<const Shape> shape, const FixtureDef& def, bool resetMassData)
 {
 	if (!shape)

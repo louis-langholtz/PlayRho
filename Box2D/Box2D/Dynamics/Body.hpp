@@ -223,7 +223,6 @@ public:
 	///    vertex radius is less than the minimum allowed by the body's world, else pointer to
 	///    created fixture.
 	Fixture* CreateFixture(std::shared_ptr<const Shape> shape, const FixtureDef& def = GetDefaultFixtureDef(), bool resetMassData = true);
-	Fixture* CreateFixture(const Shape* shape, const FixtureDef& def = GetDefaultFixtureDef(), bool resetMassData = true);
 	
 	/// Destroys a fixture.
 	/// @detail This removes the fixture from the broad-phase and

@@ -76,7 +76,7 @@ public:
 				fd.filter.maskBits = uint16(65535);
 				fd.filter.groupIndex = int16(0);
 
-				bodies[0]->CreateFixture(&shape, fd);
+				bodies[0]->CreateFixture(std::make_shared<PolygonShape>(shape), fd);
 			}
 		}
 		{
@@ -113,7 +113,7 @@ public:
 				fd.filter.categoryBits = uint16(1);
 				fd.filter.maskBits = uint16(65535);
 				fd.filter.groupIndex = int16(0);
-				bodies[1]->CreateFixture(&shape, fd);
+				bodies[1]->CreateFixture(std::make_shared<PolygonShape>(shape), fd);
 			}
 		}
 		{
@@ -148,7 +148,7 @@ public:
 				fd.filter.categoryBits = uint16(1);
 				fd.filter.maskBits = uint16(65535);
 				fd.filter.groupIndex = int16(-3);
-				bodies[2]->CreateFixture(&shape, fd);
+				bodies[2]->CreateFixture(std::make_shared<PolygonShape>(shape), fd);
 			}
 		}
 		free(joints);

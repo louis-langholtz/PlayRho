@@ -167,25 +167,25 @@ TEST(World, DynamicEdgeBodyHasCorrectMass)
 	
 	const auto v1 = Vec2{-1, 0};
 	const auto v2 = Vec2{+1, 0};
-	const auto shape = EdgeShape{v1, v2, GetInvalid<Vec2>(), GetInvalid<Vec2>(), 1};
-	ASSERT_EQ(shape.GetVertexRadius(), float_t(1));
-	ASSERT_EQ(shape.GetType(), Shape::e_edge);
+	const auto shape = std::make_shared<EdgeShape>(v1, v2, GetInvalid<Vec2>(), GetInvalid<Vec2>(), 1);
+	ASSERT_EQ(shape->GetVertexRadius(), float_t(1));
+	ASSERT_EQ(shape->GetType(), Shape::e_edge);
 
 	FixtureDef fixtureDef{};
 	fixtureDef.density = 1;
-	const auto fixture = body->CreateFixture(&shape, fixtureDef);
+	const auto fixture = body->CreateFixture(shape, fixtureDef);
 	ASSERT_NE(fixture, nullptr);
 	ASSERT_EQ(fixture->GetDensity(), float_t(1));
 
-	const auto circleMass = fixture->GetDensity() * Pi * Square(shape.GetVertexRadius());
-	const auto rectMass = fixture->GetDensity() * shape.GetVertexRadius() * 2 * GetLength(v2 - v1);
+	const auto circleMass = fixture->GetDensity() * Pi * Square(shape->GetVertexRadius());
+	const auto rectMass = fixture->GetDensity() * shape->GetVertexRadius() * 2 * GetLength(v2 - v1);
 	const auto totalMass = circleMass + rectMass;
 	
 	EXPECT_EQ(body->GetType(), BodyType::Dynamic);
 	EXPECT_EQ(body->GetInverseMass(), float_t(1) / totalMass);
 
 	ASSERT_NE(fixture->GetShape(), nullptr);
-	EXPECT_EQ(fixture->GetShape()->GetType(), shape.GetType());
+	EXPECT_EQ(fixture->GetShape()->GetType(), shape->GetType());
 }
 
 TEST(World, CreateAndDestroyJoint)
@@ -461,7 +461,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 	body_def.type = BodyType::Dynamic;
 	body_def.bullet = true;
 	
-	CircleShape shape{1};
+	const auto shape = std::make_shared<CircleShape>(1);
 	FixtureDef fixtureDef{};
 	fixtureDef.density = float_t(1);
 	fixtureDef.restitution = float_t(1);
@@ -473,14 +473,14 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 	EXPECT_EQ(body_a->GetType(), BodyType::Dynamic);
 	EXPECT_TRUE(body_a->IsSpeedable());
 	EXPECT_TRUE(body_a->IsAccelerable());
-	const auto fixture1 = body_a->CreateFixture(&shape, fixtureDef);
+	const auto fixture1 = body_a->CreateFixture(shape, fixtureDef);
 	ASSERT_NE(fixture1, nullptr);
 	
 	body_def.position = Vec2{+x, 0};
 	body_def.linearVelocity = Vec2{-x, 0};
 	const auto body_b = world.CreateBody(body_def);
 	ASSERT_NE(body_b, nullptr);
-	const auto fixture2 = body_b->CreateFixture(&shape, fixtureDef);
+	const auto fixture2 = body_b->CreateFixture(shape, fixtureDef);
 	ASSERT_NE(fixture2, nullptr);
 	EXPECT_EQ(body_b->GetType(), BodyType::Dynamic);
 	EXPECT_TRUE(body_b->IsSpeedable());
@@ -527,7 +527,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 TEST(World, PerfectlyOverlappedSameCirclesStayPut)
 {
 	const auto radius = float_t(1);
-	const CircleShape shape{radius};
+	const auto shape = std::make_shared<CircleShape>(radius);
 	const Vec2 gravity{0, 0};
 
 	World world{World::Def{}.UseGravity(gravity)};
@@ -543,7 +543,7 @@ TEST(World, PerfectlyOverlappedSameCirclesStayPut)
 
 	const auto body1 = world.CreateBody(body_def);
 	{
-		const auto fixture = body1->CreateFixture(&shape, fixtureDef);
+		const auto fixture = body1->CreateFixture(shape, fixtureDef);
 		ASSERT_NE(fixture, nullptr);
 	}
 	ASSERT_EQ(body1->GetLocation().x, body_def.position.x);
@@ -551,7 +551,7 @@ TEST(World, PerfectlyOverlappedSameCirclesStayPut)
 	
 	const auto body2 = world.CreateBody(body_def);
 	{
-		const auto fixture = body2->CreateFixture(&shape, fixtureDef);
+		const auto fixture = body2->CreateFixture(shape, fixtureDef);
 		ASSERT_NE(fixture, nullptr);
 	}
 	ASSERT_EQ(body2->GetLocation().x, body_def.position.x);
@@ -572,8 +572,8 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 {
 	const auto radius1 = float_t(1);
 	const auto radius2 = float_t(0.6);
-	const CircleShape shape1{radius1};
-	const CircleShape shape2{radius2};
+	const auto shape1 = std::make_shared<CircleShape>(radius1);
+	const auto shape2 = std::make_shared<CircleShape>(radius2);
 	const Vec2 gravity{0, 0};
 	
 	World world{World::Def{}.UseGravity(gravity)};
@@ -593,7 +593,7 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 
 	const auto body1 = world.CreateBody(body_def);
 	{
-		const auto fixture = body1->CreateFixture(&shape1, fixtureDef1);
+		const auto fixture = body1->CreateFixture(shape1, fixtureDef1);
 		ASSERT_NE(fixture, nullptr);
 	}
 	ASSERT_EQ(body1->GetLocation().x, body_def.position.x);
@@ -601,7 +601,7 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 	
 	const auto body2 = world.CreateBody(body_def);
 	{
-		const auto fixture = body2->CreateFixture(&shape2, fixtureDef2);
+		const auto fixture = body2->CreateFixture(shape2, fixtureDef2);
 		ASSERT_NE(fixture, nullptr);
 	}
 	ASSERT_EQ(body2->GetLocation().x, body_def.position.x);
@@ -631,7 +631,7 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
 	auto body_def = BodyDef{};
 	body_def.type = BodyType::Dynamic;
 	body_def.position = Vec2{float_t(0), float_t(0)};
-	auto shape = CircleShape{1};
+	const auto shape = std::make_shared<CircleShape>(1);
 	FixtureDef fixtureDef{};
 	fixtureDef.density = 1;
 	fixtureDef.restitution = 1;
@@ -639,7 +639,7 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
 	{
 		const auto body = world.CreateBody(body_def);
 		ASSERT_NE(body, nullptr);
-		ASSERT_NE(body->CreateFixture(&shape, fixtureDef), nullptr);
+		ASSERT_NE(body->CreateFixture(shape, fixtureDef), nullptr);
 	}
 
 	ASSERT_EQ(listener.begin_contacts, 0u);
@@ -668,8 +668,8 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
 	auto body_def = BodyDef{};
 	body_def.type = BodyType::Dynamic;
 	body_def.position = Vec2{float_t(0), float_t(0)};
-	auto shape = PolygonShape{1};
-	shape.SetAsBox(2, 2);
+	auto shape = std::make_shared<PolygonShape>(1);
+	shape->SetAsBox(2, 2);
 	FixtureDef fixtureDef{};
 	fixtureDef.density = 1;
 	fixtureDef.restitution = 1;
@@ -677,7 +677,7 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
 	{
 		const auto body = world.CreateBody(body_def);
 		ASSERT_NE(body, nullptr);
-		ASSERT_NE(body->CreateFixture(&shape, fixtureDef), nullptr);
+		ASSERT_NE(body->CreateFixture(shape, fixtureDef), nullptr);
 	}
 	
 	ASSERT_EQ(listener.begin_contacts, 0u);
@@ -704,7 +704,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 	body_def.type = BodyType::Dynamic;
 	body_def.bullet = false; // separation is faster if true.
 	
-	CircleShape shape{radius};
+	const auto shape = std::make_shared<CircleShape>(radius);
 	FixtureDef fixtureDef{};
 	fixtureDef.density = float_t(1);
 	fixtureDef.restitution = float_t(1); // changes where bodies will be after collision
@@ -713,7 +713,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 	body_def.position = body1pos;
 	const auto body1 = world.CreateBody(body_def);
 	{
-		const auto fixture = body1->CreateFixture(&shape, fixtureDef);
+		const auto fixture = body1->CreateFixture(shape, fixtureDef);
 		ASSERT_NE(fixture, nullptr);
 	}
 	ASSERT_EQ(body1->GetLocation().x, body_def.position.x);
@@ -723,7 +723,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 	body_def.position = body2pos;
 	const auto body2 = world.CreateBody(body_def);
 	{
-		const auto fixture = body2->CreateFixture(&shape, fixtureDef);
+		const auto fixture = body2->CreateFixture(shape, fixtureDef);
 		ASSERT_NE(fixture, nullptr);
 	}
 	ASSERT_EQ(body2->GetLocation().x, body_def.position.x);
@@ -788,7 +788,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 
 TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
 {
-	const auto shape = PolygonShape(1, 1);
+	const auto shape = std::make_shared<PolygonShape>(1, 1);
 	const Vec2 gravity{0, 0};
 	
 	World world{World::Def{}.UseGravity(gravity)};
@@ -804,7 +804,7 @@ TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
 	
 	const auto body1 = world.CreateBody(body_def);
 	{
-		const auto fixture = body1->CreateFixture(&shape, fixtureDef);
+		const auto fixture = body1->CreateFixture(shape, fixtureDef);
 		ASSERT_NE(fixture, nullptr);
 	}
 	ASSERT_EQ(body1->GetLocation().x, body_def.position.x);
@@ -812,7 +812,7 @@ TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
 	
 	const auto body2 = world.CreateBody(body_def);
 	{
-		const auto fixture = body2->CreateFixture(&shape, fixtureDef);
+		const auto fixture = body2->CreateFixture(shape, fixtureDef);
 		ASSERT_NE(fixture, nullptr);
 	}
 	ASSERT_EQ(body2->GetLocation().x, body_def.position.x);
@@ -861,7 +861,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	body_def.bullet = false; // separation is faster if true.
 	
 	const auto half_dim = float_t(64); // 1 causes additional y-axis separation
-	const auto shape = PolygonShape{half_dim, half_dim};
+	const auto shape = std::make_shared<PolygonShape>(half_dim, half_dim);
 	FixtureDef fixtureDef{};
 	fixtureDef.density = float_t(1);
 	fixtureDef.restitution = float_t(1); // changes where bodies will be after collision
@@ -870,7 +870,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	body_def.position = body1pos;
 	const auto body1 = world.CreateBody(body_def);
 	{
-		const auto fixture = body1->CreateFixture(&shape, fixtureDef);
+		const auto fixture = body1->CreateFixture(shape, fixtureDef);
 		ASSERT_NE(fixture, nullptr);
 	}
 	ASSERT_EQ(body1->GetLocation().x, body1pos.x);
@@ -880,7 +880,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	body_def.position = body2pos;
 	const auto body2 = world.CreateBody(body_def);
 	{
-		const auto fixture = body2->CreateFixture(&shape, fixtureDef);
+		const auto fixture = body2->CreateFixture(shape, fixtureDef);
 		ASSERT_NE(fixture, nullptr);
 	}
 	ASSERT_EQ(body2->GetLocation().x, body2pos.x);
@@ -1019,7 +1019,7 @@ TEST(World, CollidingDynamicBodies)
 	EXPECT_EQ(world.GetGravity(), gravity);
 	world.SetContactListener(&listener);
 	
-	CircleShape shape{radius};
+	const auto shape = std::make_shared<CircleShape>(radius);
 	FixtureDef fixtureDef{};
 	fixtureDef.density = float_t(1);
 	fixtureDef.restitution = float_t(1); // changes where bodies will be after collision
@@ -1031,14 +1031,14 @@ TEST(World, CollidingDynamicBodies)
 	EXPECT_EQ(body_a->GetType(), BodyType::Dynamic);
 	EXPECT_TRUE(body_a->IsSpeedable());
 	EXPECT_TRUE(body_a->IsAccelerable());
-	const auto fixture1 = body_a->CreateFixture(&shape, fixtureDef);
+	const auto fixture1 = body_a->CreateFixture(shape, fixtureDef);
 	ASSERT_NE(fixture1, nullptr);
 
 	body_def.position = Vec2{+(x + 1), 0};
 	body_def.linearVelocity = Vec2{-x, 0};
 	const auto body_b = world.CreateBody(body_def);
 	ASSERT_NE(body_b, nullptr);
-	const auto fixture2 = body_b->CreateFixture(&shape, fixtureDef);
+	const auto fixture2 = body_b->CreateFixture(shape, fixtureDef);
 	ASSERT_NE(fixture2, nullptr);
 	EXPECT_EQ(body_b->GetType(), BodyType::Dynamic);
 	EXPECT_TRUE(body_b->IsSpeedable());
@@ -1152,10 +1152,10 @@ TEST(World, SpeedingBulletBallWontTunnel)
 	const auto right_edge_x = float_t(+0.1);
 
 	BodyDef body_def;
-	EdgeShape edge_shape;
-	CircleShape circle_shape;
+	const auto edge_shape = std::make_shared<EdgeShape>(Vec2{0, +10}, Vec2{0, -10});
+	const auto ball_radius = float_t(.01);
+	const auto circle_shape = std::make_shared<CircleShape>(ball_radius);
 
-	edge_shape.Set(Vec2{0, +10}, Vec2{0, -10});
 	FixtureDef fixtureDef;
 	fixtureDef.restitution = float_t(1); // changes where bodies will be after collision
 	body_def.type = BodyType::Static;
@@ -1164,7 +1164,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 	const auto left_wall_body = world.CreateBody(body_def);
 	ASSERT_NE(left_wall_body, nullptr);
 	{
-		const auto wall_fixture = left_wall_body->CreateFixture(&edge_shape, fixtureDef);
+		const auto wall_fixture = left_wall_body->CreateFixture(edge_shape, fixtureDef);
 		ASSERT_NE(wall_fixture, nullptr);
 	}
 
@@ -1172,7 +1172,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 	const auto right_wall_body = world.CreateBody(body_def);
 	ASSERT_NE(right_wall_body, nullptr);
 	{
-		const auto wall_fixture = right_wall_body->CreateFixture(&edge_shape, fixtureDef);
+		const auto wall_fixture = right_wall_body->CreateFixture(edge_shape, fixtureDef);
 		ASSERT_NE(wall_fixture, nullptr);
 	}
 	
@@ -1184,11 +1184,9 @@ TEST(World, SpeedingBulletBallWontTunnel)
 	const auto ball_body = world.CreateBody(body_def);
 	ASSERT_NE(ball_body, nullptr);
 	
-	const auto ball_radius = float_t(.01);
-	circle_shape.SetRadius(ball_radius);
 	fixtureDef.density = float_t(1);
 	fixtureDef.restitution = float_t(1); // changes where bodies will be after collision
-	const auto ball_fixture = ball_body->CreateFixture(&circle_shape, fixtureDef);
+	const auto ball_fixture = ball_body->CreateFixture(circle_shape, fixtureDef);
 	ASSERT_NE(ball_fixture, nullptr);
 
 	const auto velocity = Vec2{+1, 0};
@@ -1321,7 +1319,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 		const auto left_wall_body = world.CreateBody(body_def);
 		ASSERT_NE(left_wall_body, nullptr);
 		{
-			const auto wall_fixture = left_wall_body->CreateFixture(&edge_shape, fixtureDef);
+			const auto wall_fixture = left_wall_body->CreateFixture(std::make_shared<EdgeShape>(edge_shape), fixtureDef);
 			ASSERT_NE(wall_fixture, nullptr);
 		}
 		container_aabb += ComputeAABB(*left_wall_body);
@@ -1332,7 +1330,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 		const auto right_wall_body = world.CreateBody(body_def);
 		ASSERT_NE(right_wall_body, nullptr);
 		{
-			const auto wall_fixture = right_wall_body->CreateFixture(&edge_shape, fixtureDef);
+			const auto wall_fixture = right_wall_body->CreateFixture(std::make_shared<EdgeShape>(edge_shape), fixtureDef);
 			ASSERT_NE(wall_fixture, nullptr);
 		}
 		container_aabb += ComputeAABB(*right_wall_body);
@@ -1346,7 +1344,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 		const auto btm_wall_body = world.CreateBody(body_def);
 		ASSERT_NE(btm_wall_body, nullptr);
 		{
-			const auto wall_fixture = btm_wall_body->CreateFixture(&edge_shape, fixtureDef);
+			const auto wall_fixture = btm_wall_body->CreateFixture(std::make_shared<EdgeShape>(edge_shape), fixtureDef);
 			ASSERT_NE(wall_fixture, nullptr);
 		}
 		container_aabb += ComputeAABB(*btm_wall_body);
@@ -1357,7 +1355,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 		const auto top_wall_body = world.CreateBody(body_def);
 		ASSERT_NE(top_wall_body, nullptr);
 		{
-			const auto wall_fixture = top_wall_body->CreateFixture(&edge_shape, fixtureDef);
+			const auto wall_fixture = top_wall_body->CreateFixture(std::make_shared<EdgeShape>(edge_shape), fixtureDef);
 			ASSERT_NE(wall_fixture, nullptr);
 		}
 		container_aabb += ComputeAABB(*top_wall_body);
@@ -1373,10 +1371,10 @@ TEST(World, MouseJointWontCauseTunnelling)
 	ASSERT_EQ(ball_body->GetLocation().y, 0);
 	
 	const auto ball_radius = float_t(half_box_width / 4);
-	const auto object_shape = PolygonShape{ball_radius, ball_radius};
+	const auto object_shape = std::make_shared<PolygonShape>(ball_radius, ball_radius);
 	fixtureDef.density = float_t(10);
 	{
-		const auto ball_fixture = ball_body->CreateFixture(&object_shape, fixtureDef);
+		const auto ball_fixture = ball_body->CreateFixture(object_shape, fixtureDef);
 		ASSERT_NE(ball_fixture, nullptr);
 	}
 
@@ -1395,7 +1393,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 		ASSERT_EQ(bodies[i]->GetLocation().y, y);
 		last_opos[i] = bodies[i]->GetLocation();
 		{
-			const auto fixture = bodies[i]->CreateFixture(&object_shape, fixtureDef);
+			const auto fixture = bodies[i]->CreateFixture(object_shape, fixtureDef);
 			ASSERT_NE(fixture, nullptr);
 		}
 	}
@@ -1725,8 +1723,8 @@ static void smaller_still_conserves_momentum(bool bullet, float_t multiplier, fl
 		};
 		world.SetContactListener(&listener);
 
-		const auto shape = CircleShape{scale * radius};
-		ASSERT_EQ(shape.GetRadius(), scale * radius);
+		const auto shape = std::make_shared<CircleShape>(scale * radius);
+		ASSERT_EQ(shape->GetRadius(), scale * radius);
 		
 		auto fixture_def = FixtureDef{}.UseDensity(1);
 		fixture_def.friction = 0;
@@ -1743,7 +1741,7 @@ static void smaller_still_conserves_momentum(bool bullet, float_t multiplier, fl
 		ASSERT_EQ(body_1->GetLocation().y, body_def.position.y);
 		ASSERT_EQ(GetLinearVelocity(*body_1).x, body_def.linearVelocity.x);
 		ASSERT_EQ(GetLinearVelocity(*body_1).y, body_def.linearVelocity.y);
-		body_1->CreateFixture(&shape, fixture_def);
+		body_1->CreateFixture(shape, fixture_def);
 		
 		body_def.position = Vec2{-(scale * start_distance), 0};
 		body_def.linearVelocity = Vec2{+start_distance, 0};
@@ -1752,7 +1750,7 @@ static void smaller_still_conserves_momentum(bool bullet, float_t multiplier, fl
 		ASSERT_EQ(body_2->GetLocation().y, body_def.position.y);
 		ASSERT_EQ(GetLinearVelocity(*body_2).x, body_def.linearVelocity.x);
 		ASSERT_EQ(GetLinearVelocity(*body_2).y, body_def.linearVelocity.y);
-		body_2->CreateFixture(&shape, fixture_def);
+		body_2->CreateFixture(shape, fixture_def);
 		
 		for (;;)
 		{
