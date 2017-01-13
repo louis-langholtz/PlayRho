@@ -241,7 +241,7 @@ public:
 	/// Note: contacts are updated on the next call to World::Step.
 	/// @param position Valid world position of the body's local origin. Behavior is undefined if value is invalid.
 	/// @param angle Valid world rotation in radians. Behavior is undefined if value is invalid.
-	void SetTransform(const Vec2& position, Angle angle);
+	void SetTransform(const Vec2 position, Angle angle);
 
 	/// Get the body transform for the body's origin.
 	/// @return the world transform of the body's origin.
@@ -276,7 +276,7 @@ public:
 	/// @note This has no effect on non-accelerable bodies.
 	/// @param linear Linear acceleration.
 	/// @param angular Angular acceleration.
-	void SetAcceleration(const Vec2& linear, const Angle angular) noexcept;
+	void SetAcceleration(const Vec2 linear, const Angle angular) noexcept;
 
 	Vec2 GetLinearAcceleration() const noexcept;
 
@@ -992,7 +992,7 @@ inline Angle GetAngularVelocity(const Body& body) noexcept
 /// Set the linear velocity of the center of mass.
 /// @param body Body to set the linear velocity of.
 /// @param v the new linear velocity of the center of mass.
-inline void SetLinearVelocity(Body& body, const Vec2& v) noexcept
+inline void SetLinearVelocity(Body& body, const Vec2 v) noexcept
 {
 	body.SetVelocity(Velocity{v, GetAngularVelocity(body)});
 }
@@ -1009,7 +1009,7 @@ inline void SetAngularVelocity(Body& body, Angle omega) noexcept
 /// @param body Body that the given point is relative to.
 /// @param localPoint a point measured relative the the body's origin.
 /// @return the same point expressed in world coordinates.
-inline Vec2 GetWorldPoint(const Body& body, const Vec2& localPoint) noexcept
+inline Vec2 GetWorldPoint(const Body& body, const Vec2 localPoint) noexcept
 {
 	return Transform(localPoint, body.GetTransformation());
 }
@@ -1018,7 +1018,7 @@ inline Vec2 GetWorldPoint(const Body& body, const Vec2& localPoint) noexcept
 /// @param body Body that the given vector is relative to.
 /// @param localVector a vector fixed in the body.
 /// @return the same vector expressed in world coordinates.
-inline Vec2 GetWorldVector(const Body& body, const Vec2& localVector) noexcept
+inline Vec2 GetWorldVector(const Body& body, const Vec2 localVector) noexcept
 {
 	return Rotate(localVector, body.GetTransformation().q);
 }
@@ -1027,7 +1027,7 @@ inline Vec2 GetWorldVector(const Body& body, const Vec2& localVector) noexcept
 /// @param body Body that the returned point should be relative to.
 /// @param worldPoint point in world coordinates.
 /// @return the corresponding local point relative to the body's origin.
-inline Vec2 GetLocalPoint(const Body& body, const Vec2& worldPoint) noexcept
+inline Vec2 GetLocalPoint(const Body& body, const Vec2 worldPoint) noexcept
 {
 	return InverseTransform(worldPoint, body.GetTransformation());
 }
@@ -1036,7 +1036,7 @@ inline Vec2 GetLocalPoint(const Body& body, const Vec2& worldPoint) noexcept
 /// @param body Body that the returned vector should be relative to.
 /// @param worldVector vector in world coordinates.
 /// @return the corresponding local vector.
-inline Vec2 GetLocalVector(const Body& body, const Vec2& worldVector) noexcept
+inline Vec2 GetLocalVector(const Body& body, const Vec2 worldVector) noexcept
 {
 	return InverseRotate(worldVector, body.GetTransformation().q);
 }
@@ -1044,7 +1044,7 @@ inline Vec2 GetLocalVector(const Body& body, const Vec2& worldVector) noexcept
 /// Get the world linear velocity of a world point attached to this body.
 /// @param worldPoint point in world coordinates.
 /// @return the world velocity of a point.
-inline Vec2 GetLinearVelocityFromWorldPoint(const Body& body, const Vec2& worldPoint) noexcept
+inline Vec2 GetLinearVelocityFromWorldPoint(const Body& body, const Vec2 worldPoint) noexcept
 {
 	const auto velocity = body.GetVelocity();
 	return velocity.v + GetRevPerpendicular(worldPoint - body.GetWorldCenter()) * velocity.w.ToRadians();
@@ -1053,7 +1053,7 @@ inline Vec2 GetLinearVelocityFromWorldPoint(const Body& body, const Vec2& worldP
 /// Get the world velocity of a local point.
 /// @param localPoint point in local coordinates.
 /// @return the world velocity of a point.
-inline Vec2 GetLinearVelocityFromLocalPoint(const Body& body, const Vec2& localPoint) noexcept
+inline Vec2 GetLinearVelocityFromLocalPoint(const Body& body, const Vec2 localPoint) noexcept
 {
 	return GetLinearVelocityFromWorldPoint(body, GetWorldPoint(body, localPoint));
 }

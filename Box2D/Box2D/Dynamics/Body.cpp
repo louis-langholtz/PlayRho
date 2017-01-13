@@ -418,7 +418,7 @@ void Body::SetVelocity(const Velocity& velocity) noexcept
 	m_velocity = velocity;
 }
 
-void Body::SetAcceleration(const Vec2& linear, const Angle angular) noexcept
+void Body::SetAcceleration(const Vec2 linear, const Angle angular) noexcept
 {
 	assert(IsValid(linear));
 	assert(IsValid(angular));
@@ -466,7 +466,7 @@ void Body::SynchronizeFixtures(const Transformation& t1, const Transformation& t
 	}
 }
 
-void Body::SetTransform(const Vec2& position, Angle angle)
+void Body::SetTransform(const Vec2 position, Angle angle)
 {
 	assert(IsValid(position));
 	assert(IsValid(angle));
