@@ -41,7 +41,7 @@ struct RevoluteJointDef : public JointDef
 
 	/// Initialize the bodies, anchors, and reference angle using a world
 	/// anchor point.
-	RevoluteJointDef(Body* bodyA, Body* bodyB, const Vec2& anchor, bool cc = false);
+	RevoluteJointDef(Body* bodyA, Body* bodyB, const Vec2 anchor, bool cc = false);
 
 	/// The local anchor point relative to bodyA's origin.
 	Vec2 localAnchorA = Vec2_zero;
@@ -65,11 +65,11 @@ struct RevoluteJointDef : public JointDef
 	bool enableMotor = false;
 
 	/// The desired motor speed. Usually in radians per second.
-	float_t motorSpeed = float_t{0};
+	float_t motorSpeed = 0;
 
 	/// The maximum motor torque used to achieve the desired motor speed.
 	/// Usually in N-m.
-	float_t maxMotorTorque = float_t{0};
+	float_t maxMotorTorque = 0;
 };
 
 /// A revolute joint constrains two bodies to share a common point while they
@@ -87,10 +87,10 @@ public:
 	Vec2 GetAnchorB() const override;
 
 	/// The local anchor point relative to bodyA's origin.
-	const Vec2& GetLocalAnchorA() const noexcept { return m_localAnchorA; }
+	Vec2 GetLocalAnchorA() const noexcept { return m_localAnchorA; }
 
 	/// The local anchor point relative to bodyB's origin.
-	const Vec2& GetLocalAnchorB() const noexcept { return m_localAnchorB; }
+	Vec2 GetLocalAnchorB() const noexcept { return m_localAnchorB; }
 
 	/// Get the reference angle.
 	Angle GetReferenceAngle() const noexcept { return m_referenceAngle; }

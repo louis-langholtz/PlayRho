@@ -40,7 +40,7 @@ using namespace box2d;
 // Cdot = wB - wA
 // J = [0 0 -1 0 0 1]
 
-void WheelJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor, const Vec2& axis)
+void WheelJointDef::Initialize(Body* bA, Body* bB, const Vec2 anchor, const Vec2 axis)
 {
 	bodyA = bA;
 	bodyB = bB;

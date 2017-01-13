@@ -122,7 +122,7 @@ child_count_t GetChildCount(const ChainShape& shape);
 /// @param xf the shape world transform.
 /// @param p a point in world coordinates.
 /// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
-bool TestPoint(const ChainShape& shape, const Transformation& xf, const Vec2& p);
+bool TestPoint(const ChainShape& shape, const Transformation& xf, const Vec2 p);
 
 } // namespace box2d
 

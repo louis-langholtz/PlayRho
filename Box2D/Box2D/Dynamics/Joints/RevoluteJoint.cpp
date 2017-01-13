@@ -37,7 +37,7 @@ using namespace box2d;
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-RevoluteJointDef::RevoluteJointDef(Body* bA, Body* bB, const Vec2& anchor, bool cc):
+RevoluteJointDef::RevoluteJointDef(Body* bA, Body* bB, const Vec2 anchor, bool cc):
 	JointDef{JointType::Revolute, bA, bB, cc},
 	localAnchorA{GetLocalPoint(*bA, anchor)},
 	localAnchorB{GetLocalPoint(*bB, anchor)},
@@ -53,7 +53,7 @@ RevoluteJoint::RevoluteJoint(const RevoluteJointDef& def)
 	m_referenceAngle = def.referenceAngle;
 
 	m_impulse = Vec3_zero;
-	m_motorImpulse = float_t{0};
+	m_motorImpulse = 0;
 
 	m_lowerAngle = def.lowerAngle;
 	m_upperAngle = def.upperAngle;
@@ -103,7 +103,7 @@ void RevoluteJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
 
-	const auto fixedRotation = ((iA + iB) == float_t{0});
+	const auto fixedRotation = ((iA + iB) == 0);
 
 	m_mass.ex.x = mA + mB + m_rA.y * m_rA.y * iA + m_rB.y * m_rB.y * iB;
 	m_mass.ey.x = -m_rA.y * m_rA.x * iA - m_rB.y * m_rB.x * iB;
@@ -116,14 +116,14 @@ void RevoluteJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	m_mass.ez.z = iA + iB;
 
 	m_motorMass = iA + iB;
-	if (m_motorMass > float_t{0})
+	if (m_motorMass > 0)
 	{
 		m_motorMass = float_t{1} / m_motorMass;
 	}
 
 	if (!m_enableMotor || fixedRotation)
 	{
-		m_motorImpulse = float_t{0};
+		m_motorImpulse = 0;
 	}
 
 	if (m_enableLimit && !fixedRotation)
@@ -137,7 +137,7 @@ void RevoluteJoint::InitVelocityConstraints(Span<Velocity> velocities,
 		{
 			if (m_limitState != e_atLowerLimit)
 			{
-				m_impulse.z = float_t{0};
+				m_impulse.z = 0;
 			}
 			m_limitState = e_atLowerLimit;
 		}
@@ -145,14 +145,14 @@ void RevoluteJoint::InitVelocityConstraints(Span<Velocity> velocities,
 		{
 			if (m_limitState != e_atUpperLimit)
 			{
-				m_impulse.z = float_t{0};
+				m_impulse.z = 0;
 			}
 			m_limitState = e_atUpperLimit;
 		}
 		else
 		{
 			m_limitState = e_inactiveLimit;
-			m_impulse.z = float_t{0};
+			m_impulse.z = 0;
 		}
 	}
 	else
@@ -177,7 +177,7 @@ void RevoluteJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	else
 	{
 		m_impulse = Vec3_zero;
-		m_motorImpulse = float_t{0};
+		m_motorImpulse = 0;
 	}
 
 	velocities[m_indexA].v = vA;
@@ -193,10 +193,12 @@ void RevoluteJoint::SolveVelocityConstraints(Span<Velocity> velocities, const Ti
 	auto vB = velocities[m_indexB].v;
 	auto wB = velocities[m_indexB].w;
 
-	const auto mA = m_invMassA, mB = m_invMassB;
-	const auto iA = m_invIA, iB = m_invIB;
+	const auto mA = m_invMassA;
+	const auto mB = m_invMassB;
+	const auto iA = m_invIA;
+	const auto iB = m_invIB;
 
-	const auto fixedRotation = (iA + iB == float_t{0});
+	const auto fixedRotation = (iA + iB == 0);
 
 	// Solve motor constraint.
 	if (m_enableMotor && (m_limitState != e_equalLimits) && !fixedRotation)
@@ -228,7 +230,7 @@ void RevoluteJoint::SolveVelocityConstraints(Span<Velocity> velocities, const Ti
 		else if (m_limitState == e_atLowerLimit)
 		{
 			const auto newImpulse = m_impulse.z + impulse.z;
-			if (newImpulse < float_t{0})
+			if (newImpulse < 0)
 			{
 				const auto rhs = -Cdot1 + m_impulse.z * Vec2{m_mass.ez.x, m_mass.ez.y};
 				const auto reduced = m_mass.Solve22(rhs);
@@ -237,7 +239,7 @@ void RevoluteJoint::SolveVelocityConstraints(Span<Velocity> velocities, const Ti
 				impulse.z = -m_impulse.z;
 				m_impulse.x += reduced.x;
 				m_impulse.y += reduced.y;
-				m_impulse.z = float_t{0};
+				m_impulse.z = 0;
 			}
 			else
 			{
@@ -247,7 +249,7 @@ void RevoluteJoint::SolveVelocityConstraints(Span<Velocity> velocities, const Ti
 		else if (m_limitState == e_atUpperLimit)
 		{
 			const auto newImpulse = m_impulse.z + impulse.z;
-			if (newImpulse > float_t{0})
+			if (newImpulse > 0)
 			{
 				const auto rhs = -Cdot1 + m_impulse.z * Vec2{m_mass.ez.x, m_mass.ez.y};
 				const auto reduced = m_mass.Solve22(rhs);
@@ -256,7 +258,7 @@ void RevoluteJoint::SolveVelocityConstraints(Span<Velocity> velocities, const Ti
 				impulse.z = -m_impulse.z;
 				m_impulse.x += reduced.x;
 				m_impulse.y += reduced.y;
-				m_impulse.z = float_t{0};
+				m_impulse.z = 0;
 			}
 			else
 			{
@@ -301,13 +303,10 @@ bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions, const Con
 	auto cB = positions[m_indexB].c;
 	auto aB = positions[m_indexB].a;
 
-	auto qA = UnitVec2(aA);
-	auto qB = UnitVec2(aB);
-
 	auto angularError = float_t{0};
 	auto positionError = float_t{0};
 
-	const auto fixedRotation = ((m_invIA + m_invIB) == float_t{0});
+	const auto fixedRotation = ((m_invIA + m_invIB) == 0);
 
 	// Solve angular limit constraint.
 	if (m_enableLimit && m_limitState != e_inactiveLimit && !fixedRotation)
@@ -347,16 +346,19 @@ bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions, const Con
 
 	// Solve point-to-point constraint.
 	{
-		qA = UnitVec2(aA);
-		qB = UnitVec2(aB);
+		const auto qA = UnitVec2(aA);
+		const auto qB = UnitVec2(aB);
+
 		const auto rA = Rotate(m_localAnchorA - m_localCenterA, qA);
 		const auto rB = Rotate(m_localAnchorB - m_localCenterB, qB);
 
 		const auto C = cB + rB - cA - rA;
 		positionError = GetLength(C);
 
-		const auto mA = m_invMassA, mB = m_invMassB;
-		const auto iA = m_invIA, iB = m_invIB;
+		const auto mA = m_invMassA;
+		const auto mB = m_invMassB;
+		const auto iA = m_invIA;
+		const auto iB = m_invIB;
 
 		Mat22 K;
 		K.ex.x = mA + mB + iA * rA.y * rA.y + iB * rB.y * rB.y;
@@ -454,7 +456,7 @@ void RevoluteJoint::EnableLimit(bool flag)
 		GetBodyA()->SetAwake();
 		GetBodyB()->SetAwake();
 		m_enableLimit = flag;
-		m_impulse.z = float_t{0};
+		m_impulse.z = 0;
 	}
 }
 
@@ -476,7 +478,7 @@ void RevoluteJoint::SetLimits(Angle lower, Angle upper)
 	{
 		GetBodyA()->SetAwake();
 		GetBodyB()->SetAwake();
-		m_impulse.z = float_t{0};
+		m_impulse.z = 0;
 		m_lowerAngle = lower;
 		m_upperAngle = upper;
 	}

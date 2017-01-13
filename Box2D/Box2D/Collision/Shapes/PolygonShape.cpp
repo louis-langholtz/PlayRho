@@ -58,7 +58,7 @@ void PolygonShape::SetAsBox(float_t hx, float_t hy) noexcept
 	m_normals.emplace_back(UnitVec2::GetBottom());
 }
 
-void box2d::SetAsBox(PolygonShape& shape, float_t hx, float_t hy, const Vec2& center, Angle angle) noexcept
+void box2d::SetAsBox(PolygonShape& shape, float_t hx, float_t hy, const Vec2 center, Angle angle) noexcept
 {
 	shape.SetAsBox(hx, hy);
 	shape.Transform(Transformation{center, UnitVec2{angle}});
@@ -231,7 +231,7 @@ child_count_t box2d::GetChildCount(const PolygonShape& shape)
 	return 1;
 }
 
-bool box2d::TestPoint(const PolygonShape& shape, const Transformation& xf, const Vec2& p)
+bool box2d::TestPoint(const PolygonShape& shape, const Transformation& xf, const Vec2 p)
 {
 	const auto pLocal = InverseRotate(p - xf.p, xf.q);
 	const auto vr = shape.GetVertexRadius();

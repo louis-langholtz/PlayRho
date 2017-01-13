@@ -91,7 +91,7 @@ using namespace box2d;
 // Now compute impulse to be applied:
 // df = f2 - f1
 
-PrismaticJointDef::PrismaticJointDef(Body* bA, Body* bB, const Vec2& anchor, const Vec2& axis) noexcept:
+PrismaticJointDef::PrismaticJointDef(Body* bA, Body* bB, const Vec2 anchor, const Vec2 axis) noexcept:
 	JointDef{JointType::Prismatic, bA, bB},
 	localAnchorA{GetLocalPoint(*bA, anchor)},
 	localAnchorB{GetLocalPoint(*bB, anchor)},

@@ -159,7 +159,7 @@ child_count_t GetChildCount(const PolygonShape& shape);
 /// @param xf the shape world transform.
 /// @param p a point in world coordinates.
 /// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
-bool TestPoint(const PolygonShape& shape, const Transformation& xf, const Vec2& p);
+bool TestPoint(const PolygonShape& shape, const Transformation& xf, const Vec2 p);
 
 /// Validate convexity of the given shape.
 /// @note This is a time consuming operation.
@@ -171,7 +171,7 @@ bool Validate(const PolygonShape& shape);
 /// @param hy the half-height.
 /// @param center the center of the box in local coordinates.
 /// @param angle the rotation of the box in local coordinates.
-void SetAsBox(PolygonShape& shape, float_t hx, float_t hy, const Vec2& center, Angle angle) noexcept;
+void SetAsBox(PolygonShape& shape, float_t hx, float_t hy, const Vec2 center, Angle angle) noexcept;
 	
 size_t FindLowestRightMostVertex(Span<const Vec2> vertices);
 	

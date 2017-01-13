@@ -387,7 +387,7 @@ void World::SetContactListener(ContactListener* listener) noexcept
 	m_contactMgr.m_contactListener = listener;
 }
 
-void World::SetGravity(const Vec2& gravity) noexcept
+void World::SetGravity(const Vec2 gravity) noexcept
 {
 	if (m_gravity != gravity)
 	{
@@ -1396,7 +1396,7 @@ float_t World::GetTreeQuality() const
 	return m_contactMgr.m_broadPhase.GetTreeQuality();
 }
 
-void World::ShiftOrigin(const Vec2& newOrigin)
+void World::ShiftOrigin(const Vec2 newOrigin)
 {
 	assert(!IsLocked());
 	if (IsLocked())

@@ -56,15 +56,15 @@ public:
 	EdgeShape(const EdgeShape&) = default;
 
 	/// Set this as an isolated edge.
-	void Set(const Vec2& v1, const Vec2& v2);
+	void Set(const Vec2 v1, const Vec2 v2);
 
 	Vec2 GetVertex0() const noexcept { return m_vertex0; }
 	Vec2 GetVertex1() const noexcept { return m_vertex1; }
 	Vec2 GetVertex2() const noexcept { return m_vertex2; }
 	Vec2 GetVertex3() const noexcept { return m_vertex3; }
 
-	void SetVertex0(const Vec2& v) noexcept;
-	void SetVertex3(const Vec2& v) noexcept;
+	void SetVertex0(const Vec2 v) noexcept;
+	void SetVertex3(const Vec2 v) noexcept;
 
 	bool HasVertex0() const noexcept { return IsValid(m_vertex0); }
 	bool HasVertex3() const noexcept { return IsValid(m_vertex3); }
@@ -79,12 +79,12 @@ private:
 	Vec2 m_vertex3 = GetInvalid<Vec2>();
 };
 
-inline void EdgeShape::SetVertex0(const Vec2& v) noexcept
+inline void EdgeShape::SetVertex0(const Vec2 v) noexcept
 {
 	m_vertex0 = v;
 }
 
-inline void EdgeShape::SetVertex3(const Vec2& v) noexcept
+inline void EdgeShape::SetVertex3(const Vec2 v) noexcept
 {
 	m_vertex3 = v;
 }
@@ -97,7 +97,7 @@ child_count_t GetChildCount(const EdgeShape& shape);
 /// @param xf the shape world transform.
 /// @param p a point in world coordinates.
 /// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
-bool TestPoint(const EdgeShape& shape, const Transformation& xf, const Vec2& p);
+bool TestPoint(const EdgeShape& shape, const Transformation& xf, const Vec2 p);
 
 } // namespace box2d
 

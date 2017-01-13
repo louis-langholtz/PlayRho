@@ -40,7 +40,7 @@ using namespace box2d;
 //   = invMass1 + invI1 * cross(r1, u)^2 + invMass2 + invI2 * cross(r2, u)^2
 
 DistanceJointDef::DistanceJointDef(Body* bA, Body* bB,
-								   const Vec2& anchor1, const Vec2& anchor2,
+								   const Vec2 anchor1, const Vec2 anchor2,
 								   float_t freq, float_t damp) noexcept:
 	JointDef{JointType::Distance, bA, bB},
 	localAnchorA{GetLocalPoint(*bA, anchor1)}, localAnchorB{GetLocalPoint(*bB, anchor2)},

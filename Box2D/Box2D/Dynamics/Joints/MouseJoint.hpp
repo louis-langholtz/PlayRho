@@ -80,7 +80,7 @@ public:
 	Vec2 GetLocalAnchorB() const noexcept;
 
 	/// Use this to update the target point.
-	void SetTarget(const Vec2& target) noexcept;
+	void SetTarget(const Vec2 target) noexcept;
 	Vec2 GetTarget() const noexcept;
 
 	/// Set/get the maximum force in Newtons.
@@ -96,7 +96,7 @@ public:
 	float_t GetDampingRatio() const noexcept;
 
 	/// Implement Joint::ShiftOrigin
-	void ShiftOrigin(const Vec2& newOrigin) override;
+	void ShiftOrigin(const Vec2 newOrigin) override;
 
 private:
 	void InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step, const ConstraintSolverConf& conf) override;

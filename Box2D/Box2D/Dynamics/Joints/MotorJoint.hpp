@@ -63,8 +63,8 @@ public:
 	float_t GetReactionTorque(float_t inv_dt) const override;
 
 	/// Set/get the target linear offset, in frame A, in meters.
-	void SetLinearOffset(const Vec2& linearOffset);
-	const Vec2& GetLinearOffset() const;
+	void SetLinearOffset(const Vec2 linearOffset);
+	const Vec2 GetLinearOffset() const;
 
 	/// Set/get the target angular offset, in radians.
 	void SetAngularOffset(Angle angularOffset);

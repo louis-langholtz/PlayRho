@@ -94,7 +94,7 @@ child_count_t GetChildCount(const Shape& shape);
 /// @param xf the shape world transform.
 /// @param p a point in world coordinates.
 /// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
-bool TestPoint(const Shape& shape, const Transformation& xf, const Vec2& p);
+bool TestPoint(const Shape& shape, const Transformation& xf, const Vec2 p);
 
 /// Determine if two generic shapes overlap.
 bool TestOverlap(const Shape& shapeA, child_count_t indexA, const Transformation& xfA,

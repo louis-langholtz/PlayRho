@@ -29,7 +29,7 @@ class TheoJansen : public Test
 {
 public:
 
-	void CreateLeg(float_t s, const Vec2& wheelAnchor)
+	void CreateLeg(float_t s, const Vec2 wheelAnchor)
 	{
 		Vec2 p1(5.4f * s, -6.1f);
 		Vec2 p2(7.2f * s, -1.2f);

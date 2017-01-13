@@ -21,7 +21,7 @@
 
 using namespace box2d;
 
-void EdgeShape::Set(const Vec2& v1, const Vec2& v2)
+void EdgeShape::Set(const Vec2 v1, const Vec2 v2)
 {
 	m_vertex1 = v1;
 	m_vertex2 = v2;
@@ -34,7 +34,7 @@ child_count_t box2d::GetChildCount(const EdgeShape& shape)
 	return 1;
 }
 
-bool box2d::TestPoint(const EdgeShape& shape, const Transformation& xf, const Vec2& p)
+bool box2d::TestPoint(const EdgeShape& shape, const Transformation& xf, const Vec2 p)
 {
 	BOX2D_NOT_USED(xf);
 	BOX2D_NOT_USED(p);

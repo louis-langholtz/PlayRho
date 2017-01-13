@@ -41,7 +41,7 @@ namespace box2d {
 		}
 	}
 	
-	bool TestPoint(const Shape& shape, const Transformation& xf, const Vec2& p)
+	bool TestPoint(const Shape& shape, const Transformation& xf, const Vec2 p)
 	{
 		assert(shape.GetType() < Shape::e_typeCount);
 		switch (shape.GetType())

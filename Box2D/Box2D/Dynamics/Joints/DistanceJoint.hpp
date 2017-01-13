@@ -37,7 +37,7 @@ struct DistanceJointDef : public JointDef
 
 	/// Initialize the bodies, anchors, and length using the world anchors.
 	DistanceJointDef(Body* bodyA, Body* bodyB,
-					 const Vec2& anchorA = Vec2_zero, const Vec2& anchorB = Vec2_zero,
+					 const Vec2 anchorA = Vec2_zero, const Vec2 anchorB = Vec2_zero,
 					 float_t freq = 0, float_t damp = 0) noexcept;
 
 	/// The local anchor point relative to bodyA's origin.
@@ -77,10 +77,10 @@ public:
 	float_t GetReactionTorque(float_t inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
-	const Vec2& GetLocalAnchorA() const noexcept { return m_localAnchorA; }
+	Vec2 GetLocalAnchorA() const noexcept { return m_localAnchorA; }
 
 	/// The local anchor point relative to bodyB's origin.
-	const Vec2& GetLocalAnchorB() const noexcept { return m_localAnchorB; }
+	Vec2 GetLocalAnchorB() const noexcept { return m_localAnchorB; }
 
 	/// Set/get the natural length.
 	/// Manipulating the length can lead to non-physical behavior when the frequency is zero.

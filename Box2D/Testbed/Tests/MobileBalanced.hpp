@@ -49,7 +49,7 @@ public:
 		m_world->CreateJoint(jointDef);
 	}
 
-	Body* AddNode(const Body* parent, const Vec2& localAnchor, const int32 depth,
+	Body* AddNode(const Body* parent, const Vec2 localAnchor, const int32 depth,
 				  const float offset, const float a, std::shared_ptr<const Shape> shape)
 	{
 		const auto density = 20.0f;

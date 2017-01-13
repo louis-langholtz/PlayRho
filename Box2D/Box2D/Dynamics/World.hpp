@@ -245,7 +245,7 @@ public:
 	float_t GetTreeQuality() const;
 
 	/// Change the global gravity vector.
-	void SetGravity(const Vec2& gravity) noexcept;
+	void SetGravity(const Vec2 gravity) noexcept;
 	
 	/// Get the global gravity vector.
 	Vec2 GetGravity() const noexcept;
@@ -263,7 +263,7 @@ public:
 	/// Shift the world origin. Useful for large worlds.
 	/// The body shift formula is: position -= newOrigin
 	/// @param newOrigin the new origin with respect to the old origin
-	void ShiftOrigin(const Vec2& newOrigin);
+	void ShiftOrigin(const Vec2 newOrigin);
 
 	/// Get the contact manager for testing.
 	const ContactManager& GetContactManager() const noexcept;

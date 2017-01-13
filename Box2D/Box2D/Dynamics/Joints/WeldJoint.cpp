@@ -38,7 +38,7 @@ using namespace box2d;
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-void WeldJointDef::Initialize(Body* bA, Body* bB, const Vec2& anchor)
+void WeldJointDef::Initialize(Body* bA, Body* bB, const Vec2 anchor)
 {
 	bodyA = bA;
 	bodyB = bB;

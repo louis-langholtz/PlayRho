@@ -36,7 +36,7 @@ struct WheelJointDef : public JointDef
 
 	/// Initialize the bodies, anchors, axis, and reference angle using the world
 	/// anchor and world axis.
-	void Initialize(Body* bodyA, Body* bodyB, const Vec2& anchor, const Vec2& axis);
+	void Initialize(Body* bodyA, Body* bodyB, const Vec2 anchor, const Vec2 axis);
 
 	/// The local anchor point relative to bodyA's origin.
 	Vec2 localAnchorA = Vec2_zero;
@@ -79,13 +79,13 @@ public:
 	float_t GetReactionTorque(float_t inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
-	const Vec2& GetLocalAnchorA() const { return m_localAnchorA; }
+	Vec2 GetLocalAnchorA() const { return m_localAnchorA; }
 
 	/// The local anchor point relative to bodyB's origin.
-	const Vec2& GetLocalAnchorB() const  { return m_localAnchorB; }
+	Vec2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
 	/// The local joint axis relative to bodyA.
-	const Vec2& GetLocalAxisA() const { return m_localXAxisA; }
+	Vec2 GetLocalAxisA() const { return m_localXAxisA; }
 
 	/// Get the current joint translation, usually in meters.
 	float_t GetJointTranslation() const;

@@ -150,7 +150,7 @@ void Fixture::SetSensor(bool sensor)
 	}
 }
 
-bool box2d::TestPoint(const Fixture& f, const Vec2& p)
+bool box2d::TestPoint(const Fixture& f, const Vec2 p)
 {
 	return TestPoint(*f.GetShape(), f.GetBody()->GetTransformation(), p);
 }

@@ -26,7 +26,7 @@ child_count_t box2d::GetChildCount(const CircleShape& shape)
 	return 1;
 }
 
-bool box2d::TestPoint(const CircleShape& shape, const Transformation& transform, const Vec2& p)
+bool box2d::TestPoint(const CircleShape& shape, const Transformation& transform, const Vec2 p)
 {
 	const auto center = transform.p + Rotate(shape.GetLocation(), transform.q);
 	return GetLengthSquared(p - center) <= Square(shape.GetRadius());

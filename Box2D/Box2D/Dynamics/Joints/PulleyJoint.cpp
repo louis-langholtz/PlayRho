@@ -37,8 +37,8 @@ using namespace box2d;
 //   = invMass1 + invI1 * cross(r1, u1)^2 + ratio^2 * (invMass2 + invI2 * cross(r2, u2)^2)
 
 void PulleyJointDef::Initialize(Body* bA, Body* bB,
-				const Vec2& groundA, const Vec2& groundB,
-				const Vec2& anchorA, const Vec2& anchorB,
+				const Vec2 groundA, const Vec2 groundB,
+				const Vec2 anchorA, const Vec2 anchorB,
 				float_t r)
 {
 	assert((r > 0) && !almost_zero(r));
@@ -284,7 +284,7 @@ float_t PulleyJoint::GetCurrentLengthB() const
 	return GetLength(GetWorldPoint(*GetBodyB(), m_localAnchorB) - m_groundAnchorB);
 }
 
-void PulleyJoint::ShiftOrigin(const Vec2& newOrigin)
+void PulleyJoint::ShiftOrigin(const Vec2 newOrigin)
 {
 	m_groundAnchorA -= newOrigin;
 	m_groundAnchorB -= newOrigin;

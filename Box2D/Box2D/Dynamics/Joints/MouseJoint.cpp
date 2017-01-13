@@ -42,7 +42,7 @@ MouseJoint::MouseJoint(const MouseJointDef& def):
 	assert(IsValid(def.dampingRatio) && (def.dampingRatio >= float_t{0}));
 }
 
-void MouseJoint::SetTarget(const Vec2& target) noexcept
+void MouseJoint::SetTarget(const Vec2 target) noexcept
 {
 	assert(IsValid(target));
 	if (!GetBodyB()->IsAwake())
@@ -182,7 +182,7 @@ float_t MouseJoint::GetReactionTorque(float_t inv_dt) const
 	return inv_dt * float_t{0};
 }
 
-void MouseJoint::ShiftOrigin(const Vec2& newOrigin)
+void MouseJoint::ShiftOrigin(const Vec2 newOrigin)
 {
 	m_targetA -= newOrigin;
 }

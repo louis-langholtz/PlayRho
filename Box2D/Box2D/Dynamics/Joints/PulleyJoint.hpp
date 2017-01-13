@@ -35,8 +35,8 @@ struct PulleyJointDef : public JointDef
 
 	/// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.
 	void Initialize(Body* bodyA, Body* bodyB,
-					const Vec2& groundAnchorA, const Vec2& groundAnchorB,
-					const Vec2& anchorA, const Vec2& anchorB,
+					const Vec2 groundAnchorA, const Vec2 groundAnchorB,
+					const Vec2 anchorA, const Vec2 anchorB,
 					float_t ratio);
 
 	/// The first ground anchor in world coordinates. This point never moves.
@@ -105,7 +105,7 @@ public:
 	float_t GetCurrentLengthB() const;
 
 	/// Implement Joint::ShiftOrigin
-	void ShiftOrigin(const Vec2& newOrigin) override;
+	void ShiftOrigin(const Vec2 newOrigin) override;
 
 private:
 

@@ -33,7 +33,7 @@ struct WeldJointDef : public JointDef
 
 	/// Initialize the bodies, anchors, and reference angle using a world
 	/// anchor point.
-	void Initialize(Body* bodyA, Body* bodyB, const Vec2& anchor);
+	void Initialize(Body* bodyA, Body* bodyB, const Vec2 anchor);
 
 	/// The local anchor point relative to bodyA's origin.
 	Vec2 localAnchorA = Vec2_zero;
@@ -66,10 +66,10 @@ public:
 	float_t GetReactionTorque(float_t inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
-	const Vec2& GetLocalAnchorA() const { return m_localAnchorA; }
+	Vec2 GetLocalAnchorA() const { return m_localAnchorA; }
 
 	/// The local anchor point relative to bodyB's origin.
-	const Vec2& GetLocalAnchorB() const  { return m_localAnchorB; }
+	Vec2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
 	/// Get the reference angle.
 	Angle GetReferenceAngle() const { return m_referenceAngle; }

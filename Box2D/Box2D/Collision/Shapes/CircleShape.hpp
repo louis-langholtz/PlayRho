@@ -65,7 +65,7 @@ public:
 	/// @sa SetPosition.
 	Vec2 GetLocation() const noexcept { return m_location; }
 	
-	void SetLocation(const Vec2& value) noexcept { m_location = value; }
+	void SetLocation(const Vec2 value) noexcept { m_location = value; }
 
 private:
 	/// Linear position of the shape as initialized on construction or as assigned using the SetPosition method.
@@ -80,7 +80,7 @@ child_count_t GetChildCount(const CircleShape& shape);
 /// @param xf the shape world transform.
 /// @param p a point in world coordinates.
 /// @return <code>true</code> if point is contained in this shape, <code>false</code> otherwise.
-bool TestPoint(const CircleShape& shape, const Transformation& xf, const Vec2& p);
+bool TestPoint(const CircleShape& shape, const Transformation& xf, const Vec2 p);
 
 } // namespace box2d
 

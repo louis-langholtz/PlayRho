@@ -64,10 +64,10 @@ public:
 	float_t GetReactionTorque(float_t inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
-	const Vec2& GetLocalAnchorA() const { return m_localAnchorA; }
+	Vec2 GetLocalAnchorA() const { return m_localAnchorA; }
 
 	/// The local anchor point relative to bodyB's origin.
-	const Vec2& GetLocalAnchorB() const  { return m_localAnchorB; }
+	Vec2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
 	/// Set/Get the maximum length of the rope.
 	void SetMaxLength(float_t length) { m_maxLength = length; }

@@ -257,7 +257,7 @@ float_t MotorJoint::GetCorrectionFactor() const
 	return m_correctionFactor;
 }
 
-void MotorJoint::SetLinearOffset(const Vec2& linearOffset)
+void MotorJoint::SetLinearOffset(const Vec2 linearOffset)
 {
 	if ((linearOffset.x != m_linearOffset.x) || (linearOffset.y != m_linearOffset.y))
 	{
@@ -267,7 +267,7 @@ void MotorJoint::SetLinearOffset(const Vec2& linearOffset)
 	}
 }
 
-const Vec2& MotorJoint::GetLinearOffset() const
+const Vec2 MotorJoint::GetLinearOffset() const
 {
 	return m_linearOffset;
 }
