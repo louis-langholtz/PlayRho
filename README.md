@@ -15,10 +15,11 @@ As such, this library *must* be compiled with the `NDEBUG` preprocessor macro en
 to see any kind of performance.
 
 ###Features
-Rounded corners.
+Rounded corner collisions.
 *Capsule* shapes.
+More stable polygon stacking.
 Shared shapes for reduced memory usage.
-Greater runtime configurability.
+Increased runtime configurability.
 Support for C++11's range-based loops and constant expressions.
 Unit tested.
 And more.
