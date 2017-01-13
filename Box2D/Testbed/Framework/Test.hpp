@@ -34,10 +34,10 @@ struct Settings
 	float maxRotation = 90; // in degrees
 	float hz = 60;
 	float dt = 1 / hz;
-	float maxLinearCorrection = 0.5f; // in meters
-	float maxAngularCorrection = 45; // in degrees
-	float regPosResRate = 0.2f;
-	float toiPosResRate = 0.75f;
+	float maxLinearCorrection = 0.2f; // in meters
+	float maxAngularCorrection = 8; // in degrees
+	int regPosResRate = 20; // in percent
+	int toiPosResRate = 75; // in percent
 	int regVelocityIterations = 8;
 	int regPositionIterations = 3;
 	int toiVelocityIterations = 8;
