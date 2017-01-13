@@ -78,14 +78,14 @@ public:
 			jd.bodyB = leftFlipper;
 			jd.lowerAngle = -30.0_deg;
 			jd.upperAngle = 5.0_deg;
-			m_leftJoint = (RevoluteJoint*)m_world->CreateJoint(jd);
+			m_leftJoint = static_cast<RevoluteJoint*>(m_world->CreateJoint(jd));
 
 			jd.motorSpeed = 0.0f;
 			jd.localAnchorA = p2;
 			jd.bodyB = rightFlipper;
 			jd.lowerAngle = -5.0_deg;
 			jd.upperAngle = 30.0_deg;
-			m_rightJoint = (RevoluteJoint*)m_world->CreateJoint(jd);
+			m_rightJoint = static_cast<RevoluteJoint*>(m_world->CreateJoint(jd));
 		}
 
 		// Circle character
