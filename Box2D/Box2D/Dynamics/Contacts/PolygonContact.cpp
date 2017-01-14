@@ -48,8 +48,12 @@ PolygonContact::PolygonContact(Fixture* fixtureA, Fixture* fixtureB)
 	assert(GetType(*fixtureB) == Shape::e_polygon);
 }
 
-Manifold PolygonContact::Evaluate(const Transformation& xfA, const Transformation& xfB) const
+Manifold PolygonContact::Evaluate() const
 {
-	return CollideShapes(*static_cast<const PolygonShape*>(GetFixtureA()->GetShape()), xfA,
-						 *static_cast<const PolygonShape*>(GetFixtureB()->GetShape()), xfB);
+	const auto fixtureA = GetFixtureA();
+	const auto fixtureB = GetFixtureB();
+	const auto xfA = fixtureA->GetBody()->GetTransformation();
+	const auto xfB = fixtureB->GetBody()->GetTransformation();
+	return CollideShapes(*static_cast<const PolygonShape*>(fixtureA->GetShape()), xfA,
+						 *static_cast<const PolygonShape*>(fixtureB->GetShape()), xfB);
 }

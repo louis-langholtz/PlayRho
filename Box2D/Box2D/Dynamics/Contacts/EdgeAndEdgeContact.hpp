@@ -36,7 +36,7 @@ namespace box2d {
 		EdgeAndEdgeContact(Fixture* fixtureA, Fixture* fixtureB);
 		~EdgeAndEdgeContact() {}
 		
-		Manifold Evaluate(const Transformation& xfA, const Transformation& xfB) const override;
+		Manifold Evaluate() const override;
 	};
 	
 } // namespace box2d

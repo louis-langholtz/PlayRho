@@ -37,7 +37,7 @@ public:
 	EdgeAndCircleContact(Fixture* fixtureA, Fixture* fixtureB);
 	~EdgeAndCircleContact() {}
 
-	Manifold Evaluate(const Transformation& xfA, const Transformation& xfB) const override;
+	Manifold Evaluate() const override;
 };
 
 } // namespace box2d

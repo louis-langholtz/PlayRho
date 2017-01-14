@@ -149,12 +149,10 @@ public:
 	/// Gets the desired tangent speed. In meters per second.
 	float_t GetTangentSpeed() const noexcept;
 
-	/// Calculates this contact's collision manifold for the given transforms.
-	/// @param xfA Transformation for the contact's fixture A shape.
-	/// @param xfB Transformation for the contact's fixture B shape.
-	/// @return Contact manifold for the given transforms with one or more points
+	/// Calculates this contact's collision manifold.
+	/// @return Contact manifold with one or more points
 	///   if the shapes are considered touching (collided).
-	virtual Manifold Evaluate(const Transformation& xfA, const Transformation& xfB) const = 0;
+	virtual Manifold Evaluate() const = 0;
 
 	substep_type GetToiCount() const noexcept;
 

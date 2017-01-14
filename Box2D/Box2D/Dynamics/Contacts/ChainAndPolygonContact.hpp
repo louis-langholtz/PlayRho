@@ -38,7 +38,7 @@ public:
 						   Fixture* fixtureB, child_count_t indexB);
 	~ChainAndPolygonContact() {}
 
-	Manifold Evaluate(const Transformation& xfA, const Transformation& xfB) const override;
+	Manifold Evaluate() const override;
 };
 
 } // namespace box2d

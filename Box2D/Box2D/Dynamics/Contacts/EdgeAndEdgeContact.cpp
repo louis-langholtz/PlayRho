@@ -18,6 +18,7 @@
 
 #include <Box2D/Dynamics/Contacts/EdgeAndEdgeContact.hpp>
 #include <Box2D/Common/BlockAllocator.hpp>
+#include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Collision/CollideShapes.hpp>
 #include <Box2D/Collision/Shapes/EdgeShape.hpp>
@@ -46,8 +47,12 @@ EdgeAndEdgeContact::EdgeAndEdgeContact(Fixture* fixtureA, Fixture* fixtureB)
 	assert(GetType(*fixtureB) == Shape::e_edge);
 }
 
-Manifold EdgeAndEdgeContact::Evaluate(const Transformation& xfA, const Transformation& xfB) const
+Manifold EdgeAndEdgeContact::Evaluate() const
 {
-	return CollideShapes(*static_cast<const EdgeShape*>(GetFixtureA()->GetShape()), xfA,
-						 *static_cast<const EdgeShape*>(GetFixtureB()->GetShape()), xfB);
+	const auto fixtureA = GetFixtureA();
+	const auto fixtureB = GetFixtureB();
+	const auto xfA = fixtureA->GetBody()->GetTransformation();
+	const auto xfB = fixtureB->GetBody()->GetTransformation();
+	return CollideShapes(*static_cast<const EdgeShape*>(fixtureA->GetShape()), xfA,
+						 *static_cast<const EdgeShape*>(fixtureB->GetShape()), xfB);
 }

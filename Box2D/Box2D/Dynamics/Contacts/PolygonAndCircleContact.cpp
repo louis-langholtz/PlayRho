@@ -19,6 +19,7 @@
 
 #include <Box2D/Dynamics/Contacts/PolygonAndCircleContact.hpp>
 #include <Box2D/Common/BlockAllocator.hpp>
+#include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Collision/CollideShapes.hpp>
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
@@ -48,8 +49,12 @@ PolygonAndCircleContact::PolygonAndCircleContact(Fixture* fixtureA, Fixture* fix
 	assert(GetType(*fixtureB) == Shape::e_circle);
 }
 
-Manifold PolygonAndCircleContact::Evaluate(const Transformation& xfA, const Transformation& xfB) const
+Manifold PolygonAndCircleContact::Evaluate() const
 {
-	return CollideShapes(*static_cast<const PolygonShape*>(GetFixtureA()->GetShape()), xfA,
-						 *static_cast<const CircleShape*>(GetFixtureB()->GetShape()), xfB);
+	const auto fixtureA = GetFixtureA();
+	const auto fixtureB = GetFixtureB();
+	const auto xfA = fixtureA->GetBody()->GetTransformation();
+	const auto xfB = fixtureB->GetBody()->GetTransformation();
+	return CollideShapes(*static_cast<const PolygonShape*>(fixtureA->GetShape()), xfA,
+						 *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB);
 }

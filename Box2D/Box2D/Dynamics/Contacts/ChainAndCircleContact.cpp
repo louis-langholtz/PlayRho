@@ -20,6 +20,7 @@
 #include <Box2D/Dynamics/Contacts/ChainAndCircleContact.hpp>
 #include <Box2D/Common/BlockAllocator.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
+#include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Collision/CollideShapes.hpp>
 #include <Box2D/Collision/Shapes/ChainShape.hpp>
 #include <Box2D/Collision/Shapes/EdgeShape.hpp>
@@ -50,8 +51,12 @@ ChainAndCircleContact::ChainAndCircleContact(Fixture* fixtureA, child_count_t in
 	assert(GetType(*fixtureB) == Shape::e_circle);
 }
 
-Manifold ChainAndCircleContact::Evaluate(const Transformation& xfA, const Transformation& xfB) const
+Manifold ChainAndCircleContact::Evaluate() const
 {
-	const auto edge = (static_cast<const ChainShape*>(GetFixtureA()->GetShape()))->GetChildEdge(GetChildIndexA());
-	return CollideShapes(edge, xfA, *static_cast<const CircleShape*>(GetFixtureB()->GetShape()), xfB);
+	const auto fixtureA = GetFixtureA();
+	const auto fixtureB = GetFixtureB();
+	const auto xfA = fixtureA->GetBody()->GetTransformation();
+	const auto xfB = fixtureB->GetBody()->GetTransformation();
+	const auto edge = (static_cast<const ChainShape*>(fixtureA->GetShape()))->GetChildEdge(GetChildIndexA());
+	return CollideShapes(edge, xfA, *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB);
 }

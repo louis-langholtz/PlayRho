@@ -1024,6 +1024,7 @@ void World::SolveTOI(const TimeStep& step, Contact& contact)
 	bB->Advance(toi);
 
 	// The TOI contact likely has some new contact points.
+	contact.SetEnabled();	
 	contact.Update(m_contactMgr.m_contactListener);
 	contact.UnsetToi();
 
@@ -1231,6 +1232,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi, Conta
 			}
 			
 			// Update the contact points
+			contact->SetEnabled();
 			contact->Update(listener);
 			
 			// Revert and skip if contact disabled by user or no contact points anymore.

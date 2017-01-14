@@ -136,80 +136,80 @@ void Contact::Update(ContactListener* listener)
 {
 	const auto oldManifold = m_manifold;
 
-	// Re-enable this contact.
-	m_flags |= e_enabledFlag;
-
 	// Note: do not assume the fixture AABBs are overlapping or are valid.
-	auto wasTouching = IsTouching();
-	auto touching = false;
+	const auto oldTouching = IsTouching();
+	auto newTouching = false;
 
-	const auto bodyA = GetFixtureA()->GetBody();
-	const auto bodyB = GetFixtureB()->GetBody();
+	const auto fixtureA = GetFixtureA();
+	const auto fixtureB = GetFixtureB();
+
+	const auto bodyA = fixtureA->GetBody();
+	const auto bodyB = fixtureB->GetBody();
 	
 	assert(bodyA);
 	assert(bodyB);
 
-	const auto xfA = bodyA->GetTransformation();
-	const auto xfB = bodyB->GetTransformation();
-
-	// Is this contact a sensor?
-	const auto sensor = HasSensor(*this);
+	const auto sensor = fixtureA->IsSensor() || fixtureB->IsSensor();
 	if (sensor)
 	{
-		const auto shapeA = GetFixtureA()->GetShape();
-		const auto shapeB = GetFixtureB()->GetShape();
-
-		touching = TestOverlap(*shapeA, m_indexA, xfA, *shapeB, m_indexB, xfB);
+		const auto shapeA = fixtureA->GetShape();
+		const auto shapeB = fixtureB->GetShape();
+		const auto xfA = bodyA->GetTransformation();
+		const auto xfB = bodyB->GetTransformation();
+		
+		newTouching = TestOverlap(*shapeA, GetChildIndexA(), xfA, *shapeB, GetChildIndexB(), xfB);
 
 		// Sensors don't generate manifolds.
 		m_manifold = Manifold{};
 	}
 	else
 	{
-		m_manifold = Evaluate(xfA, xfB);
+		auto newManifold = Evaluate();
 		
 		const auto old_point_count = oldManifold.GetPointCount();
-		const auto new_point_count = m_manifold.GetPointCount();
+		const auto new_point_count = newManifold.GetPointCount();
 
-		touching = new_point_count > 0;
+		newTouching = new_point_count > 0;
 
 		// Match old contact ids to new contact ids and copy the
 		// stored impulses to warm start the solver.
 		for (auto i = decltype(new_point_count){0}; i < new_point_count; ++i)
 		{
-			const auto new_cf = m_manifold.GetContactFeature(i);
+			const auto new_cf = newManifold.GetContactFeature(i);
 			for (auto j = decltype(old_point_count){0}; j < old_point_count; ++j)
 			{
 				if (new_cf == oldManifold.GetContactFeature(j))
 				{
-					m_manifold.SetContactImpulses(i, oldManifold.GetContactImpulses(j));
+					newManifold.SetContactImpulses(i, oldManifold.GetContactImpulses(j));
 					break;
 				}
 			}
 		}
 
-		if (touching != wasTouching)
+		m_manifold = newManifold;
+
+		if (newTouching != oldTouching)
 		{
 			bodyA->SetAwake();
 			bodyB->SetAwake();
 		}
 	}
 
-	SetTouching(touching);
+	SetTouching(newTouching);
 
 	if (listener)
 	{
-		if (!wasTouching && touching)
+		if (!oldTouching && newTouching)
 		{
 			listener->BeginContact(*this);
 		}
 
-		if (wasTouching && !touching)
+		if (oldTouching && !newTouching)
 		{
 			listener->EndContact(*this);
 		}
 
-		if (!sensor && touching)
+		if (!sensor && newTouching)
 		{
 			listener->PreSolve(*this, oldManifold);
 		}
