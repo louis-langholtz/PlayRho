@@ -116,7 +116,7 @@ void DynamicTree::DestroyProxy(size_type proxyId)
 	FreeNode(proxyId);
 }
 
-bool DynamicTree::MoveProxy(size_type proxyId, const AABB& aabb, const Vec2& displacement)
+bool DynamicTree::MoveProxy(size_type proxyId, const AABB& aabb, const Vec2 displacement)
 {
 	assert((0 <= proxyId) && (proxyId < m_nodeCapacity));
 	assert(IsValid(displacement));
@@ -764,7 +764,7 @@ void DynamicTree::RebuildBottomUp()
 	Validate();
 }
 
-void DynamicTree::ShiftOrigin(const Vec2& newOrigin)
+void DynamicTree::ShiftOrigin(const Vec2 newOrigin)
 {
 	// Build array of leaves. Free the rest.
 	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)

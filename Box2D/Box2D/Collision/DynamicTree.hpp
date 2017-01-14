@@ -77,7 +77,7 @@ public:
 	/// @param aabb Axis aligned bounding box.
 	/// @param displacement Displacement. Behavior is undefined if this is an invalid value.
 	/// @return true if the proxy was re-inserted.
-	bool MoveProxy(size_type proxyId, const AABB& aabb, const Vec2& displacement);
+	bool MoveProxy(size_type proxyId, const AABB& aabb, const Vec2 displacement);
 
 	/// Gets the user data for the node identified by the given identifier.
 	/// @param proxyId Identifier of node to get the user data for.
@@ -127,7 +127,7 @@ public:
 	/// Shifts the world origin. Useful for large worlds.
 	/// The shift formula is: position -= newOrigin
 	/// @param newOrigin the new origin with respect to the old origin
-	void ShiftOrigin(const Vec2& newOrigin);
+	void ShiftOrigin(const Vec2 newOrigin);
 
 private:
 

@@ -82,7 +82,7 @@ public:
 	/// @param proxyId Proxy ID. Behavior is undefined if this is the null proxy ID.
 	/// @param aabb Axis aligned bounding box.
 	/// @param displacement Displacement. Behavior is undefined if this is an invalid value.
-	void MoveProxy(size_type proxyId, const AABB& aabb, const Vec2& displacement);
+	void MoveProxy(size_type proxyId, const AABB& aabb, const Vec2 displacement);
 
 	/// Call to trigger a re-processing of it's pairs on the next call to UpdatePairs.
 	void TouchProxy(size_type proxyId);
@@ -128,7 +128,7 @@ public:
 	/// Shifts the world origin. Useful for large worlds.
 	/// The shift formula is: position -= newOrigin
 	/// @param newOrigin the new origin with respect to the old origin
-	void ShiftOrigin(const Vec2& newOrigin);
+	void ShiftOrigin(const Vec2 newOrigin);
 
 private:
 
@@ -258,7 +258,7 @@ inline void BroadPhase::RayCast(T* callback, const RayCastInput& input) const
 	m_tree.RayCast(callback, input);
 }
 
-inline void BroadPhase::ShiftOrigin(const Vec2& newOrigin)
+inline void BroadPhase::ShiftOrigin(const Vec2 newOrigin)
 {
 	m_tree.ShiftOrigin(newOrigin);
 }
