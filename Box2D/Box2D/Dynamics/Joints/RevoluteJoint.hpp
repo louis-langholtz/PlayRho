@@ -102,22 +102,22 @@ public:
 	Angle GetJointSpeed() const;
 
 	/// Is the joint limit enabled?
-	bool IsLimitEnabled() const;
+	bool IsLimitEnabled() const noexcept;
 
 	/// Enable/disable the joint limit.
 	void EnableLimit(bool flag);
 
 	/// Get the lower joint limit in radians.
-	Angle GetLowerLimit() const;
+	Angle GetLowerLimit() const noexcept;
 
 	/// Get the upper joint limit in radians.
-	Angle GetUpperLimit() const;
+	Angle GetUpperLimit() const noexcept;
 
 	/// Set the joint limits in radians.
 	void SetLimits(Angle lower, Angle upper);
 
 	/// Is the joint motor enabled?
-	bool IsMotorEnabled() const;
+	bool IsMotorEnabled() const noexcept;
 
 	/// Enable/disable the joint motor.
 	void EnableMotor(bool flag);
@@ -126,7 +126,7 @@ public:
 	void SetMotorSpeed(float_t speed);
 
 	/// Get the motor speed in radians per second.
-	float_t GetMotorSpeed() const;
+	float_t GetMotorSpeed() const noexcept;
 
 	/// Set the maximum motor torque, usually in N-m.
 	void SetMaxMotorTorque(float_t torque);
@@ -155,8 +155,8 @@ private:
 	// Solver shared
 	Vec2 m_localAnchorA;
 	Vec2 m_localAnchorB;
-	Vec3 m_impulse; ///< Impulse.
-	float_t m_motorImpulse;
+	Vec3 m_impulse = Vec3_zero; ///< Impulse.
+	float_t m_motorImpulse = 0;
 
 	bool m_enableMotor;
 	float_t m_maxMotorTorque;
@@ -180,10 +180,30 @@ private:
 	float_t m_invIB;
 	Mat33 m_mass;			// effective mass for point-to-point constraint.
 	float_t m_motorMass;	// effective mass for motor/limit angular constraint.
-	LimitState m_limitState;
+	LimitState m_limitState = e_inactiveLimit;
 };
 
-inline float_t RevoluteJoint::GetMotorSpeed() const
+inline bool RevoluteJoint::IsLimitEnabled() const noexcept
+{
+	return m_enableLimit;
+}
+
+inline Angle RevoluteJoint::GetLowerLimit() const noexcept
+{
+	return m_lowerAngle;
+}
+
+inline Angle RevoluteJoint::GetUpperLimit() const noexcept
+{
+	return m_upperAngle;
+}
+
+inline bool RevoluteJoint::IsMotorEnabled() const noexcept
+{
+	return m_enableMotor;
+}
+
+inline float_t RevoluteJoint::GetMotorSpeed() const noexcept
 {
 	return m_motorSpeed;
 }

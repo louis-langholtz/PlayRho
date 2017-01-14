@@ -43,25 +43,22 @@ RevoluteJointDef::RevoluteJointDef(Body* bA, Body* bB, const Vec2 anchor, bool c
 	localAnchorB{GetLocalPoint(*bB, anchor)},
 	referenceAngle{bB->GetAngle() - bA->GetAngle()}
 {
+	// Intentionally empty.
 }
 
-RevoluteJoint::RevoluteJoint(const RevoluteJointDef& def)
-: Joint(def)
+RevoluteJoint::RevoluteJoint(const RevoluteJointDef& def):
+	Joint{def},
+	m_localAnchorA{def.localAnchorA},
+	m_localAnchorB{def.localAnchorB},
+	m_enableMotor{def.enableMotor},
+	m_maxMotorTorque{def.maxMotorTorque},
+	m_motorSpeed{def.motorSpeed},
+	m_enableLimit{def.enableLimit},
+	m_referenceAngle{def.referenceAngle},
+	m_lowerAngle{def.lowerAngle},
+	m_upperAngle{def.upperAngle}
 {
-	m_localAnchorA = def.localAnchorA;
-	m_localAnchorB = def.localAnchorB;
-	m_referenceAngle = def.referenceAngle;
-
-	m_impulse = Vec3_zero;
-	m_motorImpulse = 0;
-
-	m_lowerAngle = def.lowerAngle;
-	m_upperAngle = def.upperAngle;
-	m_maxMotorTorque = def.maxMotorTorque;
-	m_motorSpeed = def.motorSpeed;
-	m_enableLimit = def.enableLimit;
-	m_enableMotor = def.enableMotor;
-	m_limitState = e_inactiveLimit;
+	// Intentionally empty.
 }
 
 void RevoluteJoint::InitVelocityConstraints(Span<Velocity> velocities,
@@ -128,7 +125,7 @@ void RevoluteJoint::InitVelocityConstraints(Span<Velocity> velocities,
 
 	if (m_enableLimit && !fixedRotation)
 	{
-		const auto jointAngle = aB - aA - m_referenceAngle;
+		const auto jointAngle = aB - aA - GetReferenceAngle();
 		if (Abs(m_upperAngle - m_lowerAngle) < (2_rad * conf.angularSlop))
 		{
 			m_limitState = e_equalLimits;
@@ -311,7 +308,7 @@ bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions, const Con
 	// Solve angular limit constraint.
 	if (m_enableLimit && m_limitState != e_inactiveLimit && !fixedRotation)
 	{
-		const auto angle = aB - aA - m_referenceAngle;
+		const auto angle = aB - aA - GetReferenceAngle();
 		auto limitImpulse = float_t{0};
 
 		if (m_limitState == e_equalLimits)
@@ -385,12 +382,12 @@ bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions, const Con
 
 Vec2 RevoluteJoint::GetAnchorA() const
 {
-	return GetWorldPoint(*GetBodyA(), m_localAnchorA);
+	return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
 }
 
 Vec2 RevoluteJoint::GetAnchorB() const
 {
-	return GetWorldPoint(*GetBodyB(), m_localAnchorB);
+	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
 Vec2 RevoluteJoint::GetReactionForce(float_t inv_dt) const
@@ -405,17 +402,12 @@ float_t RevoluteJoint::GetReactionTorque(float_t inv_dt) const
 
 Angle RevoluteJoint::GetJointAngle() const
 {
-	return GetBodyB()->GetAngle() - GetBodyA()->GetAngle() - m_referenceAngle;
+	return GetBodyB()->GetAngle() - GetBodyA()->GetAngle() - GetReferenceAngle();
 }
 
 Angle RevoluteJoint::GetJointSpeed() const
 {
 	return GetBodyB()->GetVelocity().w - GetBodyA()->GetVelocity().w;
-}
-
-bool RevoluteJoint::IsMotorEnabled() const
-{
-	return m_enableMotor;
 }
 
 void RevoluteJoint::EnableMotor(bool flag)
@@ -444,11 +436,6 @@ void RevoluteJoint::SetMaxMotorTorque(float_t torque)
 	m_maxMotorTorque = torque;
 }
 
-bool RevoluteJoint::IsLimitEnabled() const
-{
-	return m_enableLimit;
-}
-
 void RevoluteJoint::EnableLimit(bool flag)
 {
 	if (flag != m_enableLimit)
@@ -458,16 +445,6 @@ void RevoluteJoint::EnableLimit(bool flag)
 		m_enableLimit = flag;
 		m_impulse.z = 0;
 	}
-}
-
-Angle RevoluteJoint::GetLowerLimit() const
-{
-	return m_lowerAngle;
-}
-
-Angle RevoluteJoint::GetUpperLimit() const
-{
-	return m_upperAngle;
 }
 
 void RevoluteJoint::SetLimits(Angle lower, Angle upper)
