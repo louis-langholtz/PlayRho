@@ -28,6 +28,7 @@
 		472E301B1DBA925500DA821D /* VertexSet.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472E30181DBA925500DA821D /* VertexSet.hpp */; };
 		472E301C1DBA925500DA821D /* VertexSet.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472E30181DBA925500DA821D /* VertexSet.hpp */; };
 		472E301E1DBA98BC00DA821D /* VertexSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472E301D1DBA98BC00DA821D /* VertexSet.cpp */; };
+		47315E041E28A66100DDA856 /* RevoluteJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47315E031E28A66100DDA856 /* RevoluteJoint.cpp */; };
 		4731DDFA1DC7C9B000E7F931 /* Simplex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DDF91DC7C9B000E7F931 /* Simplex.cpp */; };
 		4731DDFC1DC8FBEE00E7F931 /* Island.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DDFB1DC8FBEE00E7F931 /* Island.cpp */; };
 		4731DE011DCD2F1700E7F931 /* Angle.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DDFE1DCD2F1700E7F931 /* Angle.hpp */; };
@@ -487,6 +488,7 @@
 		4726DD351D387D630012A882 /* Manifold.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Manifold.hpp; sourceTree = "<group>"; };
 		472E30181DBA925500DA821D /* VertexSet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VertexSet.hpp; sourceTree = "<group>"; };
 		472E301D1DBA98BC00DA821D /* VertexSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexSet.cpp; sourceTree = "<group>"; };
+		47315E031E28A66100DDA856 /* RevoluteJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RevoluteJoint.cpp; sourceTree = "<group>"; };
 		4731DDF91DC7C9B000E7F931 /* Simplex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Simplex.cpp; sourceTree = "<group>"; };
 		4731DDFB1DC8FBEE00E7F931 /* Island.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Island.cpp; sourceTree = "<group>"; };
 		4731DDFE1DCD2F1700E7F931 /* Angle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Angle.hpp; sourceTree = "<group>"; };
@@ -895,6 +897,7 @@
 				47FFD0FC1DAC6235000D6D0E /* PositionConstraint.cpp */,
 				47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */,
 				4731DE4A1DE7E5FA00E7F931 /* ProxyIdPair.cpp */,
+				47315E031E28A66100DDA856 /* RevoluteJoint.cpp */,
 				474BC4001D41278800447DCD /* Rot.cpp */,
 				4756CB991E0FAEF8009AD95C /* SeparationFinder.cpp */,
 				475A945A1D9593A4000CA9A8 /* Shape.cpp */,
@@ -1708,6 +1711,7 @@
 				474BC43C1D413DC200447DCD /* Vec2.cpp in Sources */,
 				47CF98501E0088ED0077F5F2 /* Angle.cpp in Sources */,
 				4731DE0A1DD7A4E000E7F931 /* ContactFilter.cpp in Sources */,
+				47315E041E28A66100DDA856 /* RevoluteJoint.cpp in Sources */,
 				4734B2361DC39F3E00F15E29 /* SimplexEdge.cpp in Sources */,
 				4731DDFA1DC7C9B000E7F931 /* Simplex.cpp in Sources */,
 				47AB01BA1D6FA40C0084D721 /* Dump.cpp in Sources */,
