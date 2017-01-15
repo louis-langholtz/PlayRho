@@ -80,8 +80,6 @@ TEST(World, DefaultInit)
 
 	EXPECT_EQ(world.GetGravity(), EarthlyGravity);
 	
-	EXPECT_TRUE(world.GetContinuousPhysics());
-	EXPECT_TRUE(world.GetWarmStarting());
 	EXPECT_TRUE(world.GetAllowSleeping());
 	EXPECT_TRUE(world.GetAutoClearForces());
 	
@@ -118,16 +116,6 @@ TEST(World, SetGravity)
 	EXPECT_EQ(world.GetGravity(), gravity);	
 	world.SetGravity(-gravity);
 	EXPECT_NE(world.GetGravity(), gravity);
-}
-
-TEST(World, SetContinuousPhysics)
-{
-	World world;
-	EXPECT_TRUE(world.GetContinuousPhysics());
-	world.SetContinuousPhysics(false);
-	EXPECT_FALSE(world.GetContinuousPhysics());
-	world.SetContinuousPhysics(true);
-	EXPECT_TRUE(world.GetContinuousPhysics());
 }
 
 TEST(World, CreateAndDestroyBody)
@@ -1292,7 +1280,6 @@ TEST(World, SpeedingBulletBallWontTunnel)
 TEST(World, MouseJointWontCauseTunnelling)
 {
 	World world{World::Def{}.UseGravity(Vec2_zero)};
-	world.SetContinuousPhysics(true);
 	
 	const auto half_box_width = float_t(0.2);
 	const auto left_edge_x = -half_box_width;

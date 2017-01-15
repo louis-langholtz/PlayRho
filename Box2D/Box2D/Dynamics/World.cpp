@@ -1271,8 +1271,6 @@ void World::Step(float_t dt, ts_iters_type velocityIterations, ts_iters_type pos
 		step.toiPositionIterations = 0;
 	}
 	step.dtRatio = dt * m_inv_dt0;
-	step.doWarmStart = GetWarmStarting();
-	step.doToi = GetContinuousPhysics();
 	Step(step);
 }
 	

@@ -214,17 +214,6 @@ public:
 	
 	bool GetAllowSleeping() const noexcept;
 
-	/// Enable/disable warm starting. For testing.
-	void SetWarmStarting(bool flag) noexcept;
-
-	bool GetWarmStarting() const noexcept;
-
-	/// Enable/disable continuous physics. For testing.
-	void SetContinuousPhysics(bool flag) noexcept;
-
-	/// Gets whether continuous physics is enabled or not.
-	bool GetContinuousPhysics() const noexcept;
-
 	bool GetSubStepping() const noexcept;
 
 	/// Enable/disable single stepped continuous physics. For testing.
@@ -292,12 +281,6 @@ private:
 		e_locked		= 0x0002,
 		e_clearForces	= 0x0004,
 
-		// These are for debugging the solver.
-		e_warmStart     = 0x0008,
-
-		/// Continuous physics.
-		e_contPhysics   = 0x0010,
-		
 		e_substepping   = 0x0020,
 		
 		/// Step complete. @detail Used for sub-stepping. @sa m_subStepping.
@@ -453,7 +436,7 @@ private:
 
 	DestructionListener* m_destructionListener = nullptr; ///< Destruction listener. 8-bytes.
 
-	flags_type m_flags = e_clearForces|e_warmStart|e_contPhysics|e_stepComplete|e_allowSleep;
+	flags_type m_flags = e_clearForces|e_stepComplete|e_allowSleep;
 
 	/// Inverse delta-t from previous step.
 	/// @detail Used to compute time step ratio to support a variable time step.
@@ -565,40 +548,6 @@ inline void World::SetAllowSleeping() noexcept
 inline void World::UnsetAllowSleeping() noexcept
 {
 	m_flags &= ~e_allowSleep;		
-}
-
-inline bool World::GetWarmStarting() const noexcept
-{
-	return m_flags & e_warmStart;
-}
-
-inline void World::SetWarmStarting(bool flag) noexcept
-{
-	if (flag)
-	{
-		m_flags |= e_warmStart;
-	}
-	else
-	{
-		m_flags &= ~e_warmStart;
-	}
-}
-
-inline bool World::GetContinuousPhysics() const noexcept
-{
-	return m_flags & e_contPhysics;
-}
-
-inline void World::SetContinuousPhysics(bool flag) noexcept
-{
-	if (flag)
-	{
-		m_flags |= e_contPhysics;
-	}
-	else
-	{
-		m_flags &= ~e_contPhysics;
-	}
 }
 
 inline bool World::IsStepComplete() const noexcept

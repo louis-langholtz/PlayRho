@@ -541,8 +541,6 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	}
 
 	m_world->SetAllowSleeping(settings.enableSleep);
-	m_world->SetWarmStarting(settings.enableWarmStarting);
-	m_world->SetContinuousPhysics(settings.enableContinuous);
 	m_world->SetSubStepping(settings.enableSubStepping);
 
 	m_pointCount = 0;
@@ -559,6 +557,8 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	stepConf.maxAngularCorrection = (settings.maxAngularCorrection * 1_deg) / 1_rad;
 	stepConf.regResolutionRate = settings.regPosResRate / 100.0f;
 	stepConf.toiResolutionRate = settings.toiPosResRate / 100.0f;
+	stepConf.doToi = settings.enableContinuous;
+	stepConf.doWarmStart = settings.enableWarmStarting;
 
 	m_world->Step(stepConf);
 
