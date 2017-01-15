@@ -88,6 +88,8 @@ TEST(Epsilon, AlmostEqual)
 		EXPECT_TRUE(almost_zero(std::numeric_limits<float>::min() * 0.5));
 		// (Abs(x - y) < (std::numeric_limits<float_t>::epsilon() * Abs(x + y) * ulp))
 	}
+	
+	EXPECT_TRUE(almost_equal(50.0001373f, 50.0001564f));
 }
 
 TEST(Epsilon, ten_epsilon_equal)
