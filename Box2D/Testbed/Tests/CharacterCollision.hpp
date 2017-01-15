@@ -209,7 +209,7 @@ public:
 	void PreStep(const Settings& settings, Drawer& drawer) override
 	{
 		auto velocity = m_character->GetVelocity();
-		velocity.v.x = -5.0f;
+		velocity.linear.x = -5.0f;
 		m_character->SetVelocity(velocity);
 	}
 

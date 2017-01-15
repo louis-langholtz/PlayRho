@@ -509,23 +509,23 @@ struct Velocity
 	
 	constexpr Velocity(const Velocity& copy) = default;
 
-	constexpr Velocity(Vec2 v_, Angle w_) noexcept: v{v_}, w{w_} {}
+	constexpr Velocity(Vec2 v_, Angle w_) noexcept: linear{v_}, angular{w_} {}
 	
 	Velocity& operator= (const Velocity& rhs) noexcept
 	{
-		v = rhs.v;
-		w = rhs.w;
+		linear = rhs.linear;
+		angular = rhs.angular;
 		return *this;
 	}
 
-	Vec2 v; ///< Linear velocity (in meters/second).
-	Angle w; ///< Angular velocity (in radians/second).
+	Vec2 linear; ///< Linear velocity (in meters/second).
+	Angle angular; ///< Angular velocity (in radians/second).
 };
 
 template <>
 inline bool IsValid(const Velocity& value) noexcept
 {
-	return IsValid(value.v) && IsValid(value.w);
+	return IsValid(value.linear) && IsValid(value.angular);
 }
 
 /// Sweep.
@@ -1097,41 +1097,41 @@ constexpr inline Position operator* (const float_t scalar, const Position& pos)
 	
 constexpr inline bool operator==(const Velocity& lhs, const Velocity& rhs)
 {
-	return (lhs.v == rhs.v) && (lhs.w == rhs.w);
+	return (lhs.linear == rhs.linear) && (lhs.angular == rhs.angular);
 }
 
 constexpr inline bool operator!=(const Velocity& lhs, const Velocity& rhs)
 {
-	return (lhs.v != rhs.v) || (lhs.w != rhs.w);
+	return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
 }
 
 constexpr inline Velocity& operator+= (Velocity& lhs, const Velocity& rhs)
 {
-	lhs.v += rhs.v;
-	lhs.w += rhs.w;
+	lhs.linear += rhs.linear;
+	lhs.angular += rhs.angular;
 	return lhs;
 }
 
 constexpr inline Velocity operator+ (const Velocity& lhs, const Velocity& rhs)
 {
-	return Velocity{lhs.v + rhs.v, lhs.w + rhs.w};
+	return Velocity{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
 }
 
 constexpr inline Velocity& operator-= (Velocity& lhs, const Velocity& rhs)
 {
-	lhs.v -= rhs.v;
-	lhs.w -= rhs.w;
+	lhs.linear -= rhs.linear;
+	lhs.angular -= rhs.angular;
 	return lhs;
 }
 
 constexpr inline Velocity operator- (const Velocity& lhs, const Velocity& rhs)
 {
-	return Velocity{lhs.v - rhs.v, lhs.w - rhs.w};
+	return Velocity{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
 }
 
 constexpr inline Velocity operator- (const Velocity& value)
 {
-	return Velocity{-value.v, -value.w};
+	return Velocity{-value.linear, -value.angular};
 }
 
 constexpr inline Velocity operator+ (const Velocity& value)
@@ -1141,12 +1141,12 @@ constexpr inline Velocity operator+ (const Velocity& value)
 
 constexpr inline Velocity operator* (const Velocity& lhs, const float_t rhs)
 {
-	return Velocity{lhs.v * rhs, lhs.w * rhs};
+	return Velocity{lhs.linear * rhs, lhs.angular * rhs};
 }
 
 constexpr inline Velocity operator* (const float_t lhs, const Velocity& rhs)
 {
-	return Velocity{rhs.v * lhs, rhs.w * lhs};
+	return Velocity{rhs.linear * lhs, rhs.angular * lhs};
 }
 
 constexpr inline Transformation GetTransformation(const Vec2 ctr, const UnitVec2 rot, const Vec2 local_ctr) noexcept
@@ -1244,16 +1244,17 @@ inline float_t Normalize(Vec2& vector)
 
 inline bool IsSleepable(Velocity velocity)
 {
-	return (Square(velocity.w.ToRadians()) <= Square(AngularSleepTolerance))
-	    && (GetLengthSquared(velocity.v) <= Square(LinearSleepTolerance));
+	return (Square(velocity.angular.ToRadians()) <= Square(AngularSleepTolerance))
+	    && (GetLengthSquared(velocity.linear) <= Square(LinearSleepTolerance));
 }
 
 /// Gets the contact relative velocity.
-/// @note If vcp_rA and vcp_rB are the zero vectors the resulting value is simply velB.v - velA.v.
+/// @note If vcp_rA and vcp_rB are the zero vectors the resulting value is simply velB.linear - velA.linear.
 constexpr inline Vec2 GetContactRelVelocity(const Velocity velA, const Vec2 vcp_rA,
 											const Velocity velB, const Vec2 vcp_rB) noexcept
 {
-	return (velB.v + (GetRevPerpendicular(vcp_rB) * velB.w.ToRadians())) - (velA.v + (GetRevPerpendicular(vcp_rA) * velA.w.ToRadians()));
+	return (velB.linear + (GetRevPerpendicular(vcp_rB) * velB.angular.ToRadians()))
+		 - (velA.linear + (GetRevPerpendicular(vcp_rA) * velA.angular.ToRadians()));
 }
 
 template <>

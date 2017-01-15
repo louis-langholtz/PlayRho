@@ -71,12 +71,12 @@ void WeldJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Po
 	m_invIB = GetBodyB()->GetInverseInertia();
 
 	const auto aA = positions[m_indexA].angular;
-	auto vA = velocities[m_indexA].v;
-	auto wA = velocities[m_indexA].w;
+	auto vA = velocities[m_indexA].linear;
+	auto wA = velocities[m_indexA].angular;
 
 	const auto aB = positions[m_indexB].angular;
-	auto vB = velocities[m_indexB].v;
-	auto wB = velocities[m_indexB].w;
+	auto vB = velocities[m_indexB].linear;
+	auto wB = velocities[m_indexB].angular;
 
 	const UnitVec2 qA(aA), qB(aB);
 
@@ -164,18 +164,18 @@ void WeldJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Po
 		m_impulse = Vec3_zero;
 	}
 
-	velocities[m_indexA].v = vA;
-	velocities[m_indexA].w = wA;
-	velocities[m_indexB].v = vB;
-	velocities[m_indexB].w = wB;
+	velocities[m_indexA].linear = vA;
+	velocities[m_indexA].angular = wA;
+	velocities[m_indexB].linear = vB;
+	velocities[m_indexB].angular = wB;
 }
 
 void WeldJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step)
 {
-	auto vA = velocities[m_indexA].v;
-	auto wA = velocities[m_indexA].w;
-	auto vB = velocities[m_indexB].v;
-	auto wB = velocities[m_indexB].w;
+	auto vA = velocities[m_indexA].linear;
+	auto wA = velocities[m_indexA].angular;
+	auto vB = velocities[m_indexB].linear;
+	auto wB = velocities[m_indexB].angular;
 
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
@@ -222,10 +222,10 @@ void WeldJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeSt
 		wB += 1_rad * iB * (Cross(m_rB, P) + impulse.z);
 	}
 
-	velocities[m_indexA].v = vA;
-	velocities[m_indexA].w = wA;
-	velocities[m_indexB].v = vB;
-	velocities[m_indexB].w = wB;
+	velocities[m_indexA].linear = vA;
+	velocities[m_indexA].angular = wA;
+	velocities[m_indexB].linear = vB;
+	velocities[m_indexB].angular = wB;
 }
 
 bool WeldJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)

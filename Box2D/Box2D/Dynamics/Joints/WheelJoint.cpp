@@ -94,13 +94,13 @@ void WheelJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 
 	const auto cA = positions[m_indexA].linear;
 	const auto aA = positions[m_indexA].angular;
-	auto vA = velocities[m_indexA].v;
-	auto wA = velocities[m_indexA].w;
+	auto vA = velocities[m_indexA].linear;
+	auto wA = velocities[m_indexA].angular;
 
 	const auto cB = positions[m_indexB].linear;
 	const auto aB = positions[m_indexB].angular;
-	auto vB = velocities[m_indexB].v;
-	auto wB = velocities[m_indexB].w;
+	auto vB = velocities[m_indexB].linear;
+	auto wB = velocities[m_indexB].angular;
 
 	const UnitVec2 qA(aA), qB(aB);
 
@@ -211,10 +211,10 @@ void WheelJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 		m_motorImpulse = float_t{0};
 	}
 
-	velocities[m_indexA].v = vA;
-	velocities[m_indexA].w = wA;
-	velocities[m_indexB].v = vB;
-	velocities[m_indexB].w = wB;
+	velocities[m_indexA].linear = vA;
+	velocities[m_indexA].angular = wA;
+	velocities[m_indexB].linear = vB;
+	velocities[m_indexB].angular = wB;
 }
 
 void WheelJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step)
@@ -222,10 +222,10 @@ void WheelJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeS
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
 
-	auto vA = velocities[m_indexA].v;
-	auto wA = velocities[m_indexA].w;
-	auto vB = velocities[m_indexB].v;
-	auto wB = velocities[m_indexB].w;
+	auto vA = velocities[m_indexA].linear;
+	auto wA = velocities[m_indexA].angular;
+	auto vB = velocities[m_indexB].linear;
+	auto wB = velocities[m_indexB].angular;
 
 	// Solve spring constraint
 	{
@@ -275,10 +275,10 @@ void WheelJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeS
 		wB += 1_rad * iB * LB;
 	}
 
-	velocities[m_indexA].v = vA;
-	velocities[m_indexA].w = wA;
-	velocities[m_indexB].v = vB;
-	velocities[m_indexB].w = wB;
+	velocities[m_indexA].linear = vA;
+	velocities[m_indexA].angular = wA;
+	velocities[m_indexB].linear = vB;
+	velocities[m_indexB].angular = wB;
 }
 
 bool WheelJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
@@ -354,7 +354,7 @@ float_t WheelJoint::GetJointTranslation() const
 
 Angle WheelJoint::GetJointSpeed() const
 {
-	return GetBodyB()->GetVelocity().w - GetBodyA()->GetVelocity().w;
+	return GetBodyB()->GetVelocity().angular - GetBodyA()->GetVelocity().angular;
 }
 
 void WheelJoint::EnableMotor(bool flag)

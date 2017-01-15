@@ -116,10 +116,10 @@ public:
 			const auto p = m_platform->GetLocation();
 			const auto velocity = m_platform->GetVelocity();
 
-			if ((p.x < -10.0f && velocity.v.x < 0.0f) ||
-				(p.x > 10.0f && velocity.v.x > 0.0f))
+			if ((p.x < -10.0f && velocity.linear.x < 0.0f) ||
+				(p.x > 10.0f && velocity.linear.x > 0.0f))
 			{
-				m_platform->SetVelocity(Velocity{Vec2{-velocity.v.x, velocity.v.y}, velocity.w});
+				m_platform->SetVelocity(Velocity{Vec2{-velocity.linear.x, velocity.linear.y}, velocity.angular});
 			}
 		}
 	}

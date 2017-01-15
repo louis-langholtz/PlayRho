@@ -937,8 +937,8 @@ inline void ApplyTorque(Body& body, const float_t torque) noexcept
 inline void ApplyLinearImpulse(Body& body, const Vec2 impulse, const Vec2 point) noexcept
 {
 	auto velocity = body.GetVelocity();
-	velocity.v += body.GetInverseMass() * impulse;
-	velocity.w += 1_rad * body.GetInverseInertia() * Cross(point - body.GetWorldCenter(), impulse);
+	velocity.linear += body.GetInverseMass() * impulse;
+	velocity.angular += 1_rad * body.GetInverseInertia() * Cross(point - body.GetWorldCenter(), impulse);
 	body.SetVelocity(velocity);
 }
 
@@ -948,7 +948,7 @@ inline void ApplyLinearImpulse(Body& body, const Vec2 impulse, const Vec2 point)
 inline void ApplyAngularImpulse(Body& body, float_t impulse) noexcept
 {
 	auto velocity = body.GetVelocity();
-	velocity.w += 1_rad * body.GetInverseInertia() * impulse;
+	velocity.angular += 1_rad * body.GetInverseInertia() * impulse;
 	body.SetVelocity(velocity);
 }
 
@@ -978,7 +978,7 @@ inline MassData GetMassData(const Body& body) noexcept
 /// @return the linear velocity of the center of mass.
 inline Vec2 GetLinearVelocity(const Body& body) noexcept
 {
-	return body.GetVelocity().v;
+	return body.GetVelocity().linear;
 }
 
 /// Get the angular velocity.
@@ -986,7 +986,7 @@ inline Vec2 GetLinearVelocity(const Body& body) noexcept
 /// @return the angular velocity in radians/second.
 inline Angle GetAngularVelocity(const Body& body) noexcept
 {
-	return body.GetVelocity().w;
+	return body.GetVelocity().angular;
 }
 
 /// Set the linear velocity of the center of mass.
@@ -1047,7 +1047,7 @@ inline Vec2 GetLocalVector(const Body& body, const Vec2 worldVector) noexcept
 inline Vec2 GetLinearVelocityFromWorldPoint(const Body& body, const Vec2 worldPoint) noexcept
 {
 	const auto velocity = body.GetVelocity();
-	return velocity.v + GetRevPerpendicular(worldPoint - body.GetWorldCenter()) * velocity.w.ToRadians();
+	return velocity.linear + GetRevPerpendicular(worldPoint - body.GetWorldCenter()) * velocity.angular.ToRadians();
 }
 
 /// Get the world velocity of a local point.

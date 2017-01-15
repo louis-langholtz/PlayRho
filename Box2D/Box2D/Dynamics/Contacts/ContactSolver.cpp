@@ -179,8 +179,8 @@ static inline bool BlockSolveNormalCase1(VelocityConstraint& vc, Velocity& velA,
 		auto& vcp2 = vc.PointAt(1);
 
 		// Postconditions
-		const auto post_dv1 = (velB.v + (velB.w * GetRevPerpendicular(vcp1.rB))) - (velA.v + (velA.w * GetRevPerpendicular(vcp1.rA)));
-		const auto post_dv2 = (velB.v + (velB.w * GetRevPerpendicular(vcp2.rB))) - (velA.v + (velA.w * GetRevPerpendicular(vcp2.rA)));
+		const auto post_dv1 = (velB.linear + (velB.angular * GetRevPerpendicular(vcp1.rB))) - (velA.linear + (velA.angular * GetRevPerpendicular(vcp1.rA)));
+		const auto post_dv2 = (velB.linear + (velB.angular * GetRevPerpendicular(vcp2.rB))) - (velA.linear + (velA.angular * GetRevPerpendicular(vcp2.rA)));
 		
 		// Compute normal velocity
 		const auto post_vn1 = Dot(post_dv1, vc.normal);
@@ -217,7 +217,7 @@ static inline bool BlockSolveNormalCase2(VelocityConstraint& vc, Velocity& velA,
 		auto& vcp1 = vc.PointAt(0);
 	
 		// Postconditions
-		const auto post_dv1 = (velB.v + (velB.w * GetRevPerpendicular(vcp1.rB))) - (velA.v + (velA.w * GetRevPerpendicular(vcp1.rA)));
+		const auto post_dv1 = (velB.linear + (velB.angular * GetRevPerpendicular(vcp1.rB))) - (velA.linear + (velA.angular * GetRevPerpendicular(vcp1.rA)));
 		
 		// Compute normal velocity
 		const auto post_vn1 = Dot(post_dv1, vc.normal);
@@ -252,7 +252,7 @@ static inline bool BlockSolveNormalCase3(VelocityConstraint& vc, Velocity& velA,
 		auto& vcp2 = vc.PointAt(1);
 
 		// Postconditions
-		const auto post_dv2 = (velB.v + (velB.w * GetRevPerpendicular(vcp2.rB))) - (velA.v + (velA.w * GetRevPerpendicular(vcp2.rA)));
+		const auto post_dv2 = (velB.linear + (velB.angular * GetRevPerpendicular(vcp2.rB))) - (velA.linear + (velA.angular * GetRevPerpendicular(vcp2.rA)));
 		
 		// Compute normal velocity
 		const auto post_vn2 = Dot(post_dv2, vc.normal);

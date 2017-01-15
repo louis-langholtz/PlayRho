@@ -101,20 +101,20 @@ namespace {
 		assert(IsValid(velocity));
 		assert(IsValid(h));
 		
-		auto translation = h * velocity.v;
+		auto translation = h * velocity.linear;
 		if (GetLengthSquared(translation) > Square(conf.maxTranslation))
 		{
 			const auto ratio = conf.maxTranslation / Sqrt(GetLengthSquared(translation));
-			velocity.v *= ratio;
-			translation = h * velocity.v;
+			velocity.linear *= ratio;
+			translation = h * velocity.linear;
 		}
 		
-		auto rotation = h * velocity.w;
+		auto rotation = h * velocity.angular;
 		if (Abs(rotation) > conf.maxRotation)
 		{
 			const auto ratio = conf.maxRotation / Abs(rotation);
-			velocity.w *= ratio;
-			rotation = h * velocity.w;
+			velocity.angular *= ratio;
+			rotation = h * velocity.angular;
 		}
 		
 		return Position{translation, rotation};

@@ -76,12 +76,12 @@ void RevoluteJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	m_invIB = GetBodyB()->GetInverseInertia();
 
 	const auto aA = positions[m_indexA].angular;
-	auto vA = velocities[m_indexA].v;
-	auto wA = velocities[m_indexA].w;
+	auto vA = velocities[m_indexA].linear;
+	auto wA = velocities[m_indexA].angular;
 
 	const auto aB = positions[m_indexB].angular;
-	auto vB = velocities[m_indexB].v;
-	auto wB = velocities[m_indexB].w;
+	auto vB = velocities[m_indexB].linear;
+	auto wB = velocities[m_indexB].angular;
 
 	const UnitVec2 qA(aA), qB(aB);
 
@@ -177,18 +177,18 @@ void RevoluteJoint::InitVelocityConstraints(Span<Velocity> velocities,
 		m_motorImpulse = 0;
 	}
 
-	velocities[m_indexA].v = vA;
-	velocities[m_indexA].w = wA;
-	velocities[m_indexB].v = vB;
-	velocities[m_indexB].w = wB;
+	velocities[m_indexA].linear = vA;
+	velocities[m_indexA].angular = wA;
+	velocities[m_indexB].linear = vB;
+	velocities[m_indexB].angular = wB;
 }
 
 void RevoluteJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step)
 {
-	auto vA = velocities[m_indexA].v;
-	auto wA = velocities[m_indexA].w;
-	auto vB = velocities[m_indexB].v;
-	auto wB = velocities[m_indexB].w;
+	auto vA = velocities[m_indexA].linear;
+	auto wA = velocities[m_indexA].angular;
+	auto vB = velocities[m_indexB].linear;
+	auto wB = velocities[m_indexB].angular;
 
 	const auto mA = m_invMassA;
 	const auto mB = m_invMassB;
@@ -287,10 +287,10 @@ void RevoluteJoint::SolveVelocityConstraints(Span<Velocity> velocities, const Ti
 		wB += 1_rad * iB * Cross(m_rB, impulse);
 	}
 
-	velocities[m_indexA].v = vA;
-	velocities[m_indexA].w = wA;
-	velocities[m_indexB].v = vB;
-	velocities[m_indexB].w = wB;
+	velocities[m_indexA].linear = vA;
+	velocities[m_indexA].angular = wA;
+	velocities[m_indexB].linear = vB;
+	velocities[m_indexB].angular = wB;
 }
 
 bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
@@ -407,7 +407,7 @@ Angle RevoluteJoint::GetJointAngle() const
 
 Angle RevoluteJoint::GetJointSpeed() const
 {
-	return GetBodyB()->GetVelocity().w - GetBodyA()->GetVelocity().w;
+	return GetBodyB()->GetVelocity().angular - GetBodyA()->GetVelocity().angular;
 }
 
 void RevoluteJoint::EnableMotor(bool flag)

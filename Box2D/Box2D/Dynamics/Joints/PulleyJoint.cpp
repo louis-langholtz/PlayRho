@@ -86,13 +86,13 @@ void PulleyJoint::InitVelocityConstraints(Span<Velocity> velocities,
 
 	const auto cA = positions[m_indexA].linear;
 	const auto aA = positions[m_indexA].angular;
-	auto vA = velocities[m_indexA].v;
-	auto wA = velocities[m_indexA].w;
+	auto vA = velocities[m_indexA].linear;
+	auto wA = velocities[m_indexA].angular;
 
 	const auto cB = positions[m_indexB].linear;
 	const auto aB = positions[m_indexB].angular;
-	auto vB = velocities[m_indexB].v;
-	auto wB = velocities[m_indexB].w;
+	auto vB = velocities[m_indexB].linear;
+	auto wB = velocities[m_indexB].angular;
 
 	const UnitVec2 qA(aA), qB(aB);
 
@@ -157,18 +157,18 @@ void PulleyJoint::InitVelocityConstraints(Span<Velocity> velocities,
 		m_impulse = float_t{0};
 	}
 
-	velocities[m_indexA].v = vA;
-	velocities[m_indexA].w = wA;
-	velocities[m_indexB].v = vB;
-	velocities[m_indexB].w = wB;
+	velocities[m_indexA].linear = vA;
+	velocities[m_indexA].angular = wA;
+	velocities[m_indexB].linear = vB;
+	velocities[m_indexB].angular = wB;
 }
 
 void PulleyJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step)
 {
-	auto vA = velocities[m_indexA].v;
-	auto wA = velocities[m_indexA].w;
-	auto vB = velocities[m_indexB].v;
-	auto wB = velocities[m_indexB].w;
+	auto vA = velocities[m_indexA].linear;
+	auto wA = velocities[m_indexA].angular;
+	auto vB = velocities[m_indexB].linear;
+	auto wB = velocities[m_indexB].angular;
 
 	const auto vpA = vA + GetRevPerpendicular(m_rA) * wA.ToRadians();
 	const auto vpB = vB + GetRevPerpendicular(m_rB) * wB.ToRadians();
@@ -184,10 +184,10 @@ void PulleyJoint::SolveVelocityConstraints(Span<Velocity> velocities, const Time
 	vB += m_invMassB * PB;
 	wB += 1_rad * m_invIB * Cross(m_rB, PB);
 
-	velocities[m_indexA].v = vA;
-	velocities[m_indexA].w = wA;
-	velocities[m_indexB].v = vB;
-	velocities[m_indexB].w = wB;
+	velocities[m_indexA].linear = vA;
+	velocities[m_indexA].angular = wA;
+	velocities[m_indexB].linear = vB;
+	velocities[m_indexB].angular = wB;
 }
 
 bool PulleyJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)

@@ -66,8 +66,8 @@ void MouseJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 
 	const auto velocityB = velocities[m_indexB];
 	assert(IsValid(velocityB));
-	auto vB = velocityB.v;
-	auto wB = velocityB.w;
+	auto vB = velocityB.linear;
+	auto wB = velocityB.angular;
 
 	const UnitVec2 qB(aB);
 
@@ -128,16 +128,16 @@ void MouseJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 		m_impulse = Vec2_zero;
 	}
 
-	velocities[m_indexB].v = vB;
-	velocities[m_indexB].w = wB;
+	velocities[m_indexB].linear = vB;
+	velocities[m_indexB].angular = wB;
 }
 
 void MouseJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step)
 {
 	const auto velocityB = velocities[m_indexB];
 	assert(IsValid(velocityB));
-	auto vB = velocityB.v;
-	auto wB = velocityB.w;
+	auto vB = velocityB.linear;
+	auto wB = velocityB.angular;
 
 	const auto Cdot = vB + (GetRevPerpendicular(m_rB) * wB.ToRadians());
 
@@ -156,8 +156,8 @@ void MouseJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeS
 	vB += m_invMassB * deltaImpulse;
 	wB += 1_rad * m_invIB * Cross(m_rB, deltaImpulse);
 
-	velocities[m_indexB].v = vB;
-	velocities[m_indexB].w = wB;
+	velocities[m_indexB].linear = vB;
+	velocities[m_indexB].angular = wB;
 }
 
 bool MouseJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)

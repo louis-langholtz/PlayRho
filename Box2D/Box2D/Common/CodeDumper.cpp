@@ -94,8 +94,8 @@ void box2d::Dump(const Body& body, size_t bodyIndex)
 	log("  bd.type = BodyType(%d);\n", body.GetType());
 	log("  bd.position = Vec2(%.15lef, %.15lef);\n", body.GetLocation().x, body.GetLocation().y);
 	log("  bd.angle = %.15lef;\n", body.GetAngle());
-	log("  bd.linearVelocity = Vec2(%.15lef, %.15lef);\n", body.GetVelocity().v.x, body.GetVelocity().v.y);
-	log("  bd.angularVelocity = %.15lef;\n", body.GetVelocity().w);
+	log("  bd.linearVelocity = Vec2(%.15lef, %.15lef);\n", body.GetVelocity().linear.x, body.GetVelocity().linear.y);
+	log("  bd.angularVelocity = %.15lef;\n", body.GetVelocity().angular);
 	log("  bd.linearDamping = %.15lef;\n", body.GetLinearDamping());
 	log("  bd.angularDamping = %.15lef;\n", body.GetAngularDamping());
 	log("  bd.allowSleep = bool(%d);\n", body.IsSleepingAllowed());

@@ -923,14 +923,14 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 		ASSERT_EQ(count, decltype(world.GetContacts().size())(1));
 
 		const auto v1 = body1->GetVelocity();
-		EXPECT_EQ(v1.w, 0_deg);
-		EXPECT_EQ(v1.v.x, float_t(0));
-		EXPECT_EQ(v1.v.y, float_t(0));
+		EXPECT_EQ(v1.angular, 0_deg);
+		EXPECT_EQ(v1.linear.x, float_t(0));
+		EXPECT_EQ(v1.linear.y, float_t(0));
 
 		const auto v2 = body2->GetVelocity();
-		EXPECT_EQ(v2.w, 0_deg);
-		EXPECT_EQ(v2.v.x, float_t(0));
-		EXPECT_EQ(v2.v.y, float_t(0));
+		EXPECT_EQ(v2.angular, 0_deg);
+		EXPECT_EQ(v2.linear.x, float_t(0));
+		EXPECT_EQ(v2.linear.y, float_t(0));
 
 		EXPECT_FLOAT_EQ(body1->GetAngle().ToRadians(), last_angle_1.ToRadians());
 		EXPECT_FLOAT_EQ(body2->GetAngle().ToRadians(), last_angle_2.ToRadians());
@@ -1214,24 +1214,24 @@ TEST(World, SpeedingBulletBallWontTunnel)
 			EXPECT_LT(ball_body->GetLocation().x, right_edge_x - (ball_radius/2));
 			EXPECT_GT(ball_body->GetLocation().x, left_edge_x + (ball_radius/2));
 
-			if (ball_body->GetVelocity().v.x >= max_velocity)
+			if (ball_body->GetVelocity().linear.x >= max_velocity)
 			{
 				return;
 			}
 
 			if (listener.begin_contacts % 2 != 0) // direction switched
 			{
-				EXPECT_LT(ball_body->GetVelocity().v.x, 0);
+				EXPECT_LT(ball_body->GetVelocity().linear.x, 0);
 				break; // going left now
 			}
 			else if (listener.begin_contacts > last_contact_count)
 			{
 				++increments;
-				ball_body->SetVelocity(Velocity{Vec2{+increments * velocity.x, ball_body->GetVelocity().v.y}, ball_body->GetVelocity().w});
+				ball_body->SetVelocity(Velocity{Vec2{+increments * velocity.x, ball_body->GetVelocity().linear.y}, ball_body->GetVelocity().angular});
 			}
 			else
 			{
-				EXPECT_FLOAT_EQ(ball_body->GetVelocity().v.x, +increments * velocity.x);				
+				EXPECT_FLOAT_EQ(ball_body->GetVelocity().linear.x, +increments * velocity.x);				
 			}
 		}
 		
@@ -1251,29 +1251,29 @@ TEST(World, SpeedingBulletBallWontTunnel)
 			EXPECT_LT(ball_body->GetLocation().x, right_edge_x - (ball_radius/2));
 			EXPECT_GT(ball_body->GetLocation().x, left_edge_x + (ball_radius/2));
 
-			if (ball_body->GetVelocity().v.x <= -max_velocity)
+			if (ball_body->GetVelocity().linear.x <= -max_velocity)
 			{
 				return;
 			}
 
 			if (listener.begin_contacts % 2 != 0) // direction switched
 			{
-				EXPECT_GT(ball_body->GetVelocity().v.x, 0);
+				EXPECT_GT(ball_body->GetVelocity().linear.x, 0);
 				break; // going right now
 			}
 			else if (listener.begin_contacts > last_contact_count)
 			{
 				++increments;
-				ball_body->SetVelocity(Velocity{Vec2{-increments * velocity.x, ball_body->GetVelocity().v.y}, ball_body->GetVelocity().w});
+				ball_body->SetVelocity(Velocity{Vec2{-increments * velocity.x, ball_body->GetVelocity().linear.y}, ball_body->GetVelocity().angular});
 			}
 			else
 			{
-				EXPECT_FLOAT_EQ(ball_body->GetVelocity().v.x, -increments * velocity.x);				
+				EXPECT_FLOAT_EQ(ball_body->GetVelocity().linear.x, -increments * velocity.x);				
 			}
 		}
 		
 		++increments;
-		ball_body->SetVelocity(Velocity{Vec2{+increments * velocity.x, ball_body->GetVelocity().v.y}, ball_body->GetVelocity().w});
+		ball_body->SetVelocity(Velocity{Vec2{+increments * velocity.x, ball_body->GetVelocity().linear.y}, ball_body->GetVelocity().angular});
 	}
 }
 
@@ -1592,7 +1592,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 			max_y = Max(ball_body->GetLocation().y, max_y);
 			min_y = Min(ball_body->GetLocation().y, min_y);
 
-			max_velocity = Max(GetLength(ball_body->GetVelocity().v), max_velocity);
+			max_velocity = Max(GetLength(ball_body->GetVelocity().linear), max_velocity);
 
 			if (loops > 50)
 			{

@@ -142,13 +142,13 @@ void PrismaticJoint::InitVelocityConstraints(Span<Velocity> velocities,
 
 	const auto cA = positions[m_indexA].linear;
 	const auto aA = positions[m_indexA].angular;
-	auto vA = velocities[m_indexA].v;
-	auto wA = velocities[m_indexA].w;
+	auto vA = velocities[m_indexA].linear;
+	auto wA = velocities[m_indexA].angular;
 
 	const auto cB = positions[m_indexB].linear;
 	const auto aB = positions[m_indexB].angular;
-	auto vB = velocities[m_indexB].v;
-	auto wB = velocities[m_indexB].w;
+	auto vB = velocities[m_indexB].linear;
+	auto wB = velocities[m_indexB].angular;
 
 	const auto qA = UnitVec2(aA);
 	const auto qB = UnitVec2(aB);
@@ -261,18 +261,18 @@ void PrismaticJoint::InitVelocityConstraints(Span<Velocity> velocities,
 		m_motorImpulse = float_t{0};
 	}
 
-	velocities[m_indexA].v = vA;
-	velocities[m_indexA].w = wA;
-	velocities[m_indexB].v = vB;
-	velocities[m_indexB].w = wB;
+	velocities[m_indexA].linear = vA;
+	velocities[m_indexA].angular = wA;
+	velocities[m_indexB].linear = vB;
+	velocities[m_indexB].angular = wB;
 }
 
 void PrismaticJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step)
 {
-	auto vA = velocities[m_indexA].v;
-	auto wA = velocities[m_indexA].w;
-	auto vB = velocities[m_indexB].v;
-	auto wB = velocities[m_indexB].w;
+	auto vA = velocities[m_indexA].linear;
+	auto wA = velocities[m_indexA].angular;
+	auto vB = velocities[m_indexB].linear;
+	auto wB = velocities[m_indexB].angular;
 
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
@@ -354,10 +354,10 @@ void PrismaticJoint::SolveVelocityConstraints(Span<Velocity> velocities, const T
 		wB += 1_rad * iB * LB;
 	}
 
-	velocities[m_indexA].v = vA;
-	velocities[m_indexA].w = wA;
-	velocities[m_indexB].v = vB;
-	velocities[m_indexB].w = wB;
+	velocities[m_indexA].linear = vA;
+	velocities[m_indexA].angular = wA;
+	velocities[m_indexB].linear = vB;
+	velocities[m_indexB].angular = wB;
 }
 
 // A velocity based solver computes reaction forces(impulses) using the velocity constraint solver.Under this context,
@@ -521,10 +521,10 @@ float_t PrismaticJoint::GetJointSpeed() const
 	const auto d = p2 - p1;
 	const auto axis = Rotate(m_localXAxisA, bA->GetTransformation().q);
 
-	const auto vA = bA->GetVelocity().v;
-	const auto vB = bB->GetVelocity().v;
-	const auto wA = bA->GetVelocity().w;
-	const auto wB = bB->GetVelocity().w;
+	const auto vA = bA->GetVelocity().linear;
+	const auto vB = bB->GetVelocity().linear;
+	const auto wA = bA->GetVelocity().angular;
+	const auto wB = bB->GetVelocity().angular;
 
 	return Dot(d, (GetRevPerpendicular(axis) * wA.ToRadians())) + Dot(axis, vB + (GetRevPerpendicular(rB) * wB.ToRadians()) - vA - (GetRevPerpendicular(rA) * wA.ToRadians()));
 }

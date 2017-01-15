@@ -126,8 +126,8 @@ public:
 		if (!m_broke)
 		{
 			const auto velocity = m_body1->GetVelocity();
-			m_velocity = velocity.v;
-			m_angularVelocity = velocity.w;
+			m_velocity = velocity.linear;
+			m_angularVelocity = velocity.angular;
 		}
 	}
 

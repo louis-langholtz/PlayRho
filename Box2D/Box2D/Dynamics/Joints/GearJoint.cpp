@@ -152,20 +152,20 @@ void GearJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Po
 	m_iD = m_bodyD->GetInverseInertia();
 
 	const auto aA = positions[m_indexA].angular;
-	auto vA = velocities[m_indexA].v;
-	auto wA = velocities[m_indexA].w;
+	auto vA = velocities[m_indexA].linear;
+	auto wA = velocities[m_indexA].angular;
 
 	const auto aB = positions[m_indexB].angular;
-	auto vB = velocities[m_indexB].v;
-	auto wB = velocities[m_indexB].w;
+	auto vB = velocities[m_indexB].linear;
+	auto wB = velocities[m_indexB].angular;
 
 	const auto aC = positions[m_indexC].angular;
-	auto vC = velocities[m_indexC].v;
-	auto wC = velocities[m_indexC].w;
+	auto vC = velocities[m_indexC].linear;
+	auto wC = velocities[m_indexC].angular;
 
 	const auto aD = positions[m_indexD].angular;
-	auto vD = velocities[m_indexD].v;
-	auto wD = velocities[m_indexD].w;
+	auto vD = velocities[m_indexD].linear;
+	auto wD = velocities[m_indexD].angular;
 
 	const auto qA = UnitVec2(aA);
 	const auto qB = UnitVec2(aB);
@@ -229,26 +229,26 @@ void GearJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Po
 		m_impulse = float_t{0};
 	}
 
-	velocities[m_indexA].v = vA;
-	velocities[m_indexA].w = wA;
-	velocities[m_indexB].v = vB;
-	velocities[m_indexB].w = wB;
-	velocities[m_indexC].v = vC;
-	velocities[m_indexC].w = wC;
-	velocities[m_indexD].v = vD;
-	velocities[m_indexD].w = wD;
+	velocities[m_indexA].linear = vA;
+	velocities[m_indexA].angular = wA;
+	velocities[m_indexB].linear = vB;
+	velocities[m_indexB].angular = wB;
+	velocities[m_indexC].linear = vC;
+	velocities[m_indexC].angular = wC;
+	velocities[m_indexD].linear = vD;
+	velocities[m_indexD].angular = wD;
 }
 
 void GearJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step)
 {
-	auto vA = velocities[m_indexA].v;
-	auto wA = velocities[m_indexA].w;
-	auto vB = velocities[m_indexB].v;
-	auto wB = velocities[m_indexB].w;
-	auto vC = velocities[m_indexC].v;
-	auto wC = velocities[m_indexC].w;
-	auto vD = velocities[m_indexD].v;
-	auto wD = velocities[m_indexD].w;
+	auto vA = velocities[m_indexA].linear;
+	auto wA = velocities[m_indexA].angular;
+	auto vB = velocities[m_indexB].linear;
+	auto wB = velocities[m_indexB].angular;
+	auto vC = velocities[m_indexC].linear;
+	auto wC = velocities[m_indexC].angular;
+	auto vD = velocities[m_indexD].linear;
+	auto wD = velocities[m_indexD].angular;
 
 	auto Cdot = Dot(m_JvAC, vA - vC) + Dot(m_JvBD, vB - vD);
 	Cdot += (m_JwA * wA.ToRadians() - m_JwC * wC.ToRadians()) + (m_JwB * wB.ToRadians() - m_JwD * wD.ToRadians());
@@ -265,14 +265,14 @@ void GearJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeSt
 	vD -= (m_mD * impulse) * m_JvBD;
 	wD -= 1_rad * m_iD * impulse * m_JwD;
 
-	velocities[m_indexA].v = vA;
-	velocities[m_indexA].w = wA;
-	velocities[m_indexB].v = vB;
-	velocities[m_indexB].w = wB;
-	velocities[m_indexC].v = vC;
-	velocities[m_indexC].w = wC;
-	velocities[m_indexD].v = vD;
-	velocities[m_indexD].w = wD;
+	velocities[m_indexA].linear = vA;
+	velocities[m_indexA].angular = wA;
+	velocities[m_indexB].linear = vB;
+	velocities[m_indexB].angular = wB;
+	velocities[m_indexC].linear = vC;
+	velocities[m_indexC].angular = wC;
+	velocities[m_indexD].linear = vD;
+	velocities[m_indexD].angular = wD;
 }
 
 bool GearJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)

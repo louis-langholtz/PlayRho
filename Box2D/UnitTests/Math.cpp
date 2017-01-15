@@ -453,7 +453,7 @@ TEST(Math, GetContactRelVelocity)
 	const auto relB = Vec2(0, 0);
 	const auto result = GetContactRelVelocity(velA, relA, velB, relB);
 	
-	EXPECT_EQ(result, velB.v - velA.v);
+	EXPECT_EQ(result, velB.linear - velA.linear);
 }
 
 TEST(Math, NextPowerOfTwo)

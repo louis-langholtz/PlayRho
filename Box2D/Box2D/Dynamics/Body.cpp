@@ -362,7 +362,7 @@ void Body::ResetMassData()
 	m_sweep = Sweep{Position{Transform(localCenter, GetTransformation()), GetAngle()}, localCenter};
 
 	// Update center of mass velocity.
-	m_velocity.v += GetRevPerpendicular(GetWorldCenter() - oldCenter) * m_velocity.w.ToRadians();
+	m_velocity.linear += GetRevPerpendicular(GetWorldCenter() - oldCenter) * m_velocity.angular.ToRadians();
 	
 	UnsetMassDataDirty();
 }
@@ -400,14 +400,14 @@ void Body::SetMassData(const MassData& massData)
 	m_sweep = Sweep{Position{Transform(massData.center, GetTransformation()), GetAngle()}, massData.center};
 
 	// Update center of mass velocity.
-	m_velocity.v += GetRevPerpendicular(GetWorldCenter() - oldCenter) * m_velocity.w.ToRadians();
+	m_velocity.linear += GetRevPerpendicular(GetWorldCenter() - oldCenter) * m_velocity.angular.ToRadians();
 	
 	UnsetMassDataDirty();
 }
 
 void Body::SetVelocity(const Velocity& velocity) noexcept
 {
-	if ((velocity.v != Vec2_zero) || (velocity.w != 0_rad))
+	if ((velocity.linear != Vec2_zero) || (velocity.angular != 0_rad))
 	{
 		if (!IsSpeedable())
 		{
@@ -545,7 +545,7 @@ void Body::SetFixedRotation(bool flag)
 		m_flags &= ~e_fixedRotationFlag;
 	}
 
-	m_velocity.w = 0_rad;
+	m_velocity.angular = 0_rad;
 
 	ResetMassData();
 }
@@ -578,8 +578,8 @@ Velocity box2d::GetVelocity(const Body& body, float_t h) noexcept
 	if (body.IsAccelerable())
 	{
 		// Integrate velocities.
-		velocity.v += h * body.GetLinearAcceleration();
-		velocity.w += h * body.GetAngularAcceleration();
+		velocity.linear += h * body.GetLinearAcceleration();
+		velocity.angular += h * body.GetAngularAcceleration();
 		
 		// Apply damping.
 		// ODE: dv/dt + c * v = 0
@@ -588,8 +588,8 @@ Velocity box2d::GetVelocity(const Body& body, float_t h) noexcept
 		// v2 = exp(-c * dt) * v1
 		// Pade approximation:
 		// v2 = v1 * 1 / (1 + c * dt)
-		velocity.v *= float_t{1} / (float_t{1} + h * body.GetLinearDamping());
-		velocity.w *= float_t{1} / (float_t{1} + h * body.GetAngularDamping());
+		velocity.linear *= float_t{1} / (float_t{1} + h * body.GetLinearDamping());
+		velocity.angular *= float_t{1} / (float_t{1} + h * body.GetAngularDamping());
 	}
 	return velocity;
 }
