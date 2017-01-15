@@ -61,8 +61,8 @@ void MouseJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 
 	const auto positionB = positions[m_indexB];
 	assert(IsValid(positionB));
-	const auto cB = positionB.c;
-	const auto aB = positionB.a;
+	const auto cB = positionB.linear;
+	const auto aB = positionB.angular;
 
 	const auto velocityB = velocities[m_indexB];
 	assert(IsValid(velocityB));

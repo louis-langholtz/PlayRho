@@ -306,7 +306,7 @@ namespace {
 			const auto posA = positions[pc.bodyA.index];
 			const auto posB = positions[pc.bodyB.index];
 			const auto worldManifold = GetWorldManifold(pc, posA, posB);
-			velocityConstraints[i].Update(worldManifold, posA.c, posB.c, velocities, conf);
+			velocityConstraints[i].Update(worldManifold, posA.linear, posB.linear, velocities, conf);
 			++i;
 		}
 	}
@@ -1407,8 +1407,8 @@ void World::ShiftOrigin(const Vec2 newOrigin)
 	for (auto&& b: m_bodies)
 	{
 		b.m_xf.p -= newOrigin;
-		b.m_sweep.pos0.c -= newOrigin;
-		b.m_sweep.pos1.c -= newOrigin;
+		b.m_sweep.pos0.linear -= newOrigin;
+		b.m_sweep.pos1.linear -= newOrigin;
 	}
 
 	for (auto&& j: m_joints)

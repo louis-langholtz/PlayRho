@@ -616,12 +616,12 @@ inline Vec2 Body::GetLocation() const noexcept
 
 inline Angle Body::GetAngle() const noexcept
 {
-	return m_sweep.pos1.a;
+	return m_sweep.pos1.angular;
 }
 
 inline Vec2 Body::GetWorldCenter() const noexcept
 {
-	return m_sweep.pos1.c;
+	return m_sweep.pos1.linear;
 }
 
 inline Vec2 Body::GetLocalCenter() const noexcept

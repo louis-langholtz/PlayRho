@@ -63,11 +63,11 @@ void FrictionJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<cons
 	m_invIA = GetBodyA()->GetInverseInertia();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto aA = positions[m_indexA].a;
+	const auto aA = positions[m_indexA].angular;
 	auto vA = velocities[m_indexA].v;
 	auto wA = velocities[m_indexA].w;
 
-	const auto aB = positions[m_indexB].a;
+	const auto aB = positions[m_indexB].angular;
 	auto vB = velocities[m_indexB].v;
 	auto wB = velocities[m_indexB].w;
 

@@ -388,7 +388,11 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 												ConstraintSolverConf conf)
 {
 	assert(IsValid(posA));
+	assert(moveA == 0 || moveA == 1);
+	
 	assert(IsValid(posB));
+	assert(moveB == 0 || moveB == 1);
+	
 	assert(IsValid(conf.resolutionRate));
 	assert(IsValid(conf.linearSlop));
 	assert(IsValid(conf.maxLinearCorrection));
@@ -443,7 +447,7 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 	if (pointCount == 1)
 	{
 		const auto psm0 = GetPSM(pc.manifold, 0, posA, localCenterA, posB, localCenterB);
-		return PositionSolution{posA, posB, 0} + solver_fn(psm0, posA.c, posB.c);
+		return PositionSolution{posA, posB, 0} + solver_fn(psm0, posA.linear, posB.linear);
 	}
 	if (pointCount == 2)
 	{
@@ -452,8 +456,10 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 		const auto psm1 = GetPSM(pc.manifold, 1, posA, localCenterA, posB, localCenterB);
 		if (almost_equal(psm0.m_separation, psm1.m_separation))
 		{
-			const auto s0 = solver_fn(psm0, posA.c, posB.c);
-			const auto s1 = solver_fn(psm1, posA.c, posB.c);
+			const auto s0 = solver_fn(psm0, posA.linear, posB.linear);
+			const auto s1 = solver_fn(psm1, posA.linear, posB.linear);
+			//assert(s0.pos_a.angular == -s1.pos_a.angular);
+			//assert(s0.pos_b.angular == -s1.pos_b.angular);
 			return PositionSolution{
 				posA + s0.pos_a + s1.pos_a,
 				posB + s0.pos_b + s1.pos_b,
@@ -462,22 +468,22 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 		}
 		if (psm0.m_separation < psm1.m_separation)
 		{
-			const auto s0 = solver_fn(psm0, posA.c, posB.c);
+			const auto s0 = solver_fn(psm0, posA.linear, posB.linear);
 			posA += s0.pos_a;
 			posB += s0.pos_b;
 			const auto psm1_prime = GetPSM(pc.manifold, 1, posA, localCenterA, posB, localCenterB);
-			const auto s1 = solver_fn(psm1_prime, posA.c, posB.c);
+			const auto s1 = solver_fn(psm1_prime, posA.linear, posB.linear);
 			posA += s1.pos_a;
 			posB += s1.pos_b;
 			return PositionSolution{posA, posB, s0.min_separation};
 		}
 		// psm1.separation < psm0.separation
 		{
-			const auto s1 = solver_fn(psm1, posA.c, posB.c);
+			const auto s1 = solver_fn(psm1, posA.linear, posB.linear);
 			posA += s1.pos_a;
 			posB += s1.pos_b;
 			const auto psm0_prime = GetPSM(pc.manifold, 0, posA, localCenterA, posB, localCenterB);
-			const auto s0 = solver_fn(psm0_prime, posA.c, posB.c);
+			const auto s0 = solver_fn(psm0_prime, posA.linear, posB.linear);
 			posA += s0.pos_a;
 			posB += s0.pos_b;
 			return PositionSolution{posA, posB, s1.min_separation};

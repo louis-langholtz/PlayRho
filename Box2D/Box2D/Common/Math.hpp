@@ -490,16 +490,16 @@ struct Position
 	/// Initializing constructor.
 	/// @param c_ Linear position.
 	/// @param a_ Angular position.
-	constexpr Position(Vec2 c_, Angle a_) noexcept: c{c_}, a{a_} {}
+	constexpr Position(Vec2 c_, Angle a_) noexcept: linear{c_}, angular{a_} {}
 	
-	Vec2 c; ///< Linear position (in meters).
-	Angle a; ///< Angular position (in radians).
+	Vec2 linear; ///< Linear position (in meters).
+	Angle angular; ///< Angular position (in radians).
 };
 
 template <>
 inline bool IsValid(const Position& value) noexcept
 {
-	return IsValid(value.c) && IsValid(value.a);
+	return IsValid(value.linear) && IsValid(value.angular);
 }
 
 /// Velocity related data structure.
@@ -579,7 +579,7 @@ private:
 	Vec2 localCenter; ///< Local center of mass position. 8-bytes.
 
 	/// Fraction of the current time step in the range [0,1]
-	/// pos0.c and pos0.a are the positions at alpha0.
+	/// pos0.linear and pos0.angular are the positions at alpha0.
 	/// @note 4-bytes.
 	float_t alpha0;
 };
@@ -1043,17 +1043,17 @@ inline uint64 NextPowerOfTwo(uint64 x)
 
 constexpr inline bool operator==(const Position& lhs, const Position& rhs)
 {
-	return (lhs.c == rhs.c) && (lhs.a == rhs.a);
+	return (lhs.linear == rhs.linear) && (lhs.angular == rhs.angular);
 }
 
 constexpr inline bool operator!=(const Position& lhs, const Position& rhs)
 {
-	return (lhs.c != rhs.c) || (lhs.a != rhs.a);
+	return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
 }
 
 constexpr inline Position operator- (const Position& value)
 {
-	return Position{-value.c, -value.a};
+	return Position{-value.linear, -value.angular};
 }
 
 constexpr inline Position operator+ (const Position& value)
@@ -1063,36 +1063,36 @@ constexpr inline Position operator+ (const Position& value)
 
 constexpr inline Position& operator+= (Position& lhs, const Position& rhs)
 {
-	lhs.c += rhs.c;
-	lhs.a += rhs.a;
+	lhs.linear += rhs.linear;
+	lhs.angular += rhs.angular;
 	return lhs;
 }
 
 constexpr inline Position operator+ (const Position& lhs, const Position& rhs)
 {
-	return Position{lhs.c + rhs.c, lhs.a + rhs.a};
+	return Position{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
 }
 	
 constexpr inline Position& operator-= (Position& lhs, const Position& rhs)
 {
-	lhs.c -= rhs.c;
-	lhs.a -= rhs.a;
+	lhs.linear -= rhs.linear;
+	lhs.angular -= rhs.angular;
 	return lhs;
 }
 
 constexpr inline Position operator- (const Position& lhs, const Position& rhs)
 {
-	return Position{lhs.c - rhs.c, lhs.a - rhs.a};
+	return Position{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
 }
 
 constexpr inline Position operator* (const Position& pos, const float_t scalar)
 {
-	return Position{pos.c * scalar, pos.a * scalar};
+	return Position{pos.linear * scalar, pos.angular * scalar};
 }
 
 constexpr inline Position operator* (const float_t scalar, const Position& pos)
 {
-	return Position{pos.c * scalar, pos.a * scalar};
+	return Position{pos.linear * scalar, pos.angular * scalar};
 }
 	
 constexpr inline bool operator==(const Velocity& lhs, const Velocity& rhs)
@@ -1158,7 +1158,7 @@ inline Transformation GetTransformation(const Position pos, const Vec2 local_ctr
 {
 	assert(IsValid(pos));
 	assert(IsValid(local_ctr));
-	return GetTransformation(pos.c, UnitVec2{pos.a}, local_ctr);
+	return GetTransformation(pos.linear, UnitVec2{pos.angular}, local_ctr);
 }
 
 inline Position GetPosition(const Position pos0, const Position pos1, const float_t beta)
@@ -1220,10 +1220,10 @@ inline void Sweep::ResetAlpha0() noexcept
 ///    and its pos1 angle reduced by the amount pos0's angle was reduced by.
 inline Sweep GetAnglesNormalized(Sweep sweep)
 {
-	const auto pos0a = GetNormalized(sweep.pos0.a);
-	const auto d = sweep.pos0.a - pos0a;
-	sweep.pos0.a = pos0a;
-	sweep.pos1.a -= d;
+	const auto pos0a = GetNormalized(sweep.pos0.angular);
+	const auto d = sweep.pos0.angular - pos0a;
+	sweep.pos0.angular = pos0a;
+	sweep.pos1.angular -= d;
 	return sweep;
 }
 

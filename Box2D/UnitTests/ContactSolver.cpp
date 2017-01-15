@@ -33,8 +33,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
-	const auto xfmA = Transformation(old_pA.c, UnitVec2{old_pA.a});
-	const auto xfmB = Transformation(old_pB.c, UnitVec2{old_pB.a});
+	const auto xfmA = Transformation(old_pA.linear, UnitVec2{old_pA.angular});
+	const auto xfmB = Transformation(old_pB.linear, UnitVec2{old_pB.angular});
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
 	ASSERT_EQ(manifold.GetPointCount(), 2);
@@ -52,13 +52,13 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 	
 	EXPECT_EQ(solution.min_separation, 0);
 	
-	EXPECT_EQ(old_pA.c.x, solution.pos_a.c.x);
-	EXPECT_EQ(old_pA.c.y, solution.pos_a.c.y);
-	EXPECT_EQ(old_pA.a, solution.pos_a.a);
+	EXPECT_EQ(old_pA.linear.x, solution.pos_a.linear.x);
+	EXPECT_EQ(old_pA.linear.y, solution.pos_a.linear.y);
+	EXPECT_EQ(old_pA.angular, solution.pos_a.angular);
 
-	EXPECT_EQ(old_pB.c.x, solution.pos_b.c.x);
-	EXPECT_EQ(old_pB.c.y, solution.pos_b.c.y);
-	EXPECT_EQ(old_pB.a, solution.pos_b.a);
+	EXPECT_EQ(old_pB.linear.x, solution.pos_b.linear.x);
+	EXPECT_EQ(old_pB.linear.y, solution.pos_b.linear.y);
+	EXPECT_EQ(old_pB.angular, solution.pos_b.angular);
 }
 
 TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
@@ -68,8 +68,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
 	
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
-	const auto xfmA = Transformation(old_pA.c, UnitVec2{old_pA.a});
-	const auto xfmB = Transformation(old_pB.c, UnitVec2{old_pB.a});
+	const auto xfmA = Transformation(old_pA.linear, UnitVec2{old_pA.angular});
+	const auto xfmB = Transformation(old_pB.linear, UnitVec2{old_pB.angular});
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
 	ASSERT_EQ(manifold.GetPointCount(), 2);
@@ -87,13 +87,13 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
 	
 	EXPECT_EQ(solution.min_separation, 0);
 	
-	EXPECT_EQ(old_pA.c.x, solution.pos_a.c.x);
-	EXPECT_EQ(old_pA.c.y, solution.pos_a.c.y);
-	EXPECT_EQ(old_pA.a, solution.pos_a.a);
+	EXPECT_EQ(old_pA.linear.x, solution.pos_a.linear.x);
+	EXPECT_EQ(old_pA.linear.y, solution.pos_a.linear.y);
+	EXPECT_EQ(old_pA.angular, solution.pos_a.angular);
 	
-	EXPECT_EQ(old_pB.c.x, solution.pos_b.c.x);
-	EXPECT_EQ(old_pB.c.y, solution.pos_b.c.y);
-	EXPECT_EQ(old_pB.a, solution.pos_b.a);
+	EXPECT_EQ(old_pB.linear.x, solution.pos_b.linear.x);
+	EXPECT_EQ(old_pB.linear.y, solution.pos_b.linear.y);
+	EXPECT_EQ(old_pB.angular, solution.pos_b.angular);
 }
 
 TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
@@ -123,13 +123,13 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
 
 	EXPECT_EQ(solution.min_separation, -2 * dim);
 	
-	EXPECT_EQ(old_pA.c.x, solution.pos_a.c.x);
-	EXPECT_EQ(old_pA.c.y, solution.pos_a.c.y);
-	EXPECT_EQ(old_pA.a, solution.pos_a.a);
+	EXPECT_EQ(old_pA.linear.x, solution.pos_a.linear.x);
+	EXPECT_EQ(old_pA.linear.y, solution.pos_a.linear.y);
+	EXPECT_EQ(old_pA.angular, solution.pos_a.angular);
 	
-	EXPECT_EQ(old_pB.c.x, solution.pos_b.c.x);
-	EXPECT_EQ(old_pB.c.y, solution.pos_b.c.y);
-	EXPECT_EQ(old_pB.a, solution.pos_b.a);
+	EXPECT_EQ(old_pB.linear.x, solution.pos_b.linear.x);
+	EXPECT_EQ(old_pB.linear.y, solution.pos_b.linear.y);
+	EXPECT_EQ(old_pB.angular, solution.pos_b.angular);
 }
 
 TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
@@ -142,8 +142,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
 	
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
-	const auto xfmA = Transformation(old_pA.c, UnitVec2{old_pA.a});
-	const auto xfmB = Transformation(old_pB.c, UnitVec2{old_pB.a});
+	const auto xfmA = Transformation(old_pA.linear, UnitVec2{old_pA.angular});
+	const auto xfmB = Transformation(old_pB.linear, UnitVec2{old_pB.angular});
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
 	ASSERT_EQ(Vec2{manifold.GetLocalNormal()}, Vec2(+1, 0));
@@ -167,14 +167,14 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
 	EXPECT_FLOAT_EQ(solution.min_separation, float_t(-2)); // -2.002398
 		
 	// object a just moves left
-	EXPECT_LT(solution.pos_a.c.x, old_pA.c.x);
-	EXPECT_EQ(solution.pos_a.c.y, old_pA.c.y);
-	EXPECT_EQ(solution.pos_a.a, old_pA.a);
+	EXPECT_LT(solution.pos_a.linear.x, old_pA.linear.x);
+	EXPECT_EQ(solution.pos_a.linear.y, old_pA.linear.y);
+	EXPECT_EQ(solution.pos_a.angular, old_pA.angular);
 	
 	// object b just moves right
-	EXPECT_GT(solution.pos_b.c.x, old_pB.c.x);
-	EXPECT_EQ(solution.pos_b.c.y, old_pB.c.y);
-	EXPECT_EQ(solution.pos_b.a, old_pB.a);
+	EXPECT_GT(solution.pos_b.linear.x, old_pB.linear.x);
+	EXPECT_EQ(solution.pos_b.linear.y, old_pB.linear.y);
+	EXPECT_EQ(solution.pos_b.angular, old_pB.angular);
 }
 
 TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
@@ -187,8 +187,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
 	
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
-	const auto xfmA = Transformation(old_pA.c, UnitVec2{old_pA.a});
-	const auto xfmB = Transformation(old_pB.c, UnitVec2{old_pB.a});
+	const auto xfmA = Transformation(old_pA.linear, UnitVec2{old_pA.angular});
+	const auto xfmB = Transformation(old_pB.linear, UnitVec2{old_pB.angular});
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
 	ASSERT_EQ(Vec2{manifold.GetLocalNormal()}, Vec2(-1, 0));
@@ -212,14 +212,14 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
 	EXPECT_FLOAT_EQ(solution.min_separation, float_t(-2)); // -2.002398
 	
 	// square A just moves right
-	EXPECT_GT(solution.pos_a.c.x, old_pA.c.x);
-	EXPECT_EQ(solution.pos_a.c.y, old_pA.c.y);
-	EXPECT_EQ(solution.pos_a.a, old_pA.a);
+	EXPECT_GT(solution.pos_a.linear.x, old_pA.linear.x);
+	EXPECT_EQ(solution.pos_a.linear.y, old_pA.linear.y);
+	EXPECT_EQ(solution.pos_a.angular, old_pA.angular);
 	
 	// square B just moves left
-	EXPECT_LT(solution.pos_b.c.x, old_pB.c.x);
-	EXPECT_EQ(solution.pos_b.c.y, old_pB.c.y);
-	EXPECT_EQ(solution.pos_b.a, old_pB.a);
+	EXPECT_LT(solution.pos_b.linear.x, old_pB.linear.x);
+	EXPECT_EQ(solution.pos_b.linear.y, old_pB.linear.y);
+	EXPECT_EQ(solution.pos_b.angular, old_pB.angular);
 }
 
 TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
@@ -232,8 +232,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
 	
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
-	const auto xfmA = Transformation(old_pA.c, UnitVec2{old_pA.a});
-	const auto xfmB = Transformation(old_pB.c, UnitVec2{old_pB.a});
+	const auto xfmA = Transformation(old_pA.linear, UnitVec2{old_pA.angular});
+	const auto xfmB = Transformation(old_pB.linear, UnitVec2{old_pB.angular});
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
 	ASSERT_EQ(Vec2{manifold.GetLocalNormal()}, Vec2(0, 1));
@@ -257,25 +257,25 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
 	EXPECT_FLOAT_EQ(solution.min_separation, float_t(-2)); // -2.002398
 	
 	// object a just moves down only
-	EXPECT_EQ(solution.pos_a.c.x, old_pA.c.x);
-	EXPECT_LT(solution.pos_a.c.y, old_pA.c.y);
-	EXPECT_EQ(solution.pos_a.a, old_pA.a);
+	EXPECT_EQ(solution.pos_a.linear.x, old_pA.linear.x);
+	EXPECT_LT(solution.pos_a.linear.y, old_pA.linear.y);
+	EXPECT_EQ(solution.pos_a.angular, old_pA.angular);
 	
 	{
 		// confirm object a moves more in x direction than in y direction.
 		const auto mov_a = solution.pos_a - old_pA;	
-		EXPECT_LT(Abs(mov_a.c.x), Abs(mov_a.c.y));
+		EXPECT_LT(Abs(mov_a.linear.x), Abs(mov_a.linear.y));
 	}
 	
 	// object b just moves up only
-	EXPECT_EQ(solution.pos_b.c.x, old_pB.c.x);
-	EXPECT_GT(solution.pos_b.c.y, old_pB.c.y);
-	EXPECT_EQ(solution.pos_b.a, old_pB.a);
+	EXPECT_EQ(solution.pos_b.linear.x, old_pB.linear.x);
+	EXPECT_GT(solution.pos_b.linear.y, old_pB.linear.y);
+	EXPECT_EQ(solution.pos_b.angular, old_pB.angular);
 	
 	{
 		// confirm object a moves more in x direction than in y direction.
 		const auto mov_b = solution.pos_b - old_pB;
-		EXPECT_LT(Abs(mov_b.c.x), Abs(mov_b.c.y));
+		EXPECT_LT(Abs(mov_b.linear.x), Abs(mov_b.linear.y));
 	}
 }
 
@@ -289,8 +289,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
 	
 	const auto dim = float_t(2);
 	const auto shape = PolygonShape(dim, dim);
-	const auto xfmA = Transformation(old_pA.c, UnitVec2{old_pA.a});
-	const auto xfmB = Transformation(old_pB.c, UnitVec2{old_pB.a});
+	const auto xfmA = Transformation(old_pA.linear, UnitVec2{old_pA.angular});
+	const auto xfmB = Transformation(old_pB.linear, UnitVec2{old_pB.angular});
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
 	
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
@@ -315,25 +315,25 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
 	EXPECT_FLOAT_EQ(solution.min_separation, float_t(-2)); // -2.002398
 	
 	// square A just moves up only
-	EXPECT_EQ(solution.pos_a.c.x, old_pA.c.x);
-	EXPECT_GT(solution.pos_a.c.y, old_pA.c.y);
-	EXPECT_EQ(solution.pos_a.a, old_pA.a);
+	EXPECT_EQ(solution.pos_a.linear.x, old_pA.linear.x);
+	EXPECT_GT(solution.pos_a.linear.y, old_pA.linear.y);
+	EXPECT_EQ(solution.pos_a.angular, old_pA.angular);
 	
 	{
 		// confirm object a moves more in x direction than in y direction.
 		const auto mov_a = solution.pos_a - old_pA;	
-		EXPECT_LT(Abs(mov_a.c.x), Abs(mov_a.c.y));
+		EXPECT_LT(Abs(mov_a.linear.x), Abs(mov_a.linear.y));
 	}
 	
 	// square B just moves down only
-	EXPECT_EQ(solution.pos_b.c.x, old_pB.c.x);
-	EXPECT_LT(solution.pos_b.c.y, old_pB.c.y);
-	EXPECT_EQ(solution.pos_b.a, old_pB.a);
+	EXPECT_EQ(solution.pos_b.linear.x, old_pB.linear.x);
+	EXPECT_LT(solution.pos_b.linear.y, old_pB.linear.y);
+	EXPECT_EQ(solution.pos_b.angular, old_pB.angular);
 	
 	{
 		// confirm object a moves more in x direction than in y direction.
 		const auto mov_b = solution.pos_b - old_pB;
-		EXPECT_LT(Abs(mov_b.c.x), Abs(mov_b.c.y));
+		EXPECT_LT(Abs(mov_b.linear.x), Abs(mov_b.linear.y));
 	}
 }
 
@@ -364,12 +364,12 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
 	EXPECT_LT(solution.min_separation, -conf.linearSlop);
 	
 	// object a moves left only
-	EXPECT_LT(solution.pos_a.c.x, old_pA.c.x);
-	EXPECT_EQ(solution.pos_a.c.y, old_pA.c.y);
-	EXPECT_EQ(solution.pos_a.a, old_pA.a);
+	EXPECT_LT(solution.pos_a.linear.x, old_pA.linear.x);
+	EXPECT_EQ(solution.pos_a.linear.y, old_pA.linear.y);
+	EXPECT_EQ(solution.pos_a.angular, old_pA.angular);
 	
 	// object b moves right only.
-	EXPECT_GT(solution.pos_b.c.x, old_pB.c.x);
-	EXPECT_EQ(solution.pos_b.c.y, old_pB.c.y);
-	EXPECT_EQ(solution.pos_b.a, old_pB.a);
+	EXPECT_GT(solution.pos_b.linear.x, old_pB.linear.x);
+	EXPECT_EQ(solution.pos_b.linear.y, old_pB.linear.y);
+	EXPECT_EQ(solution.pos_b.angular, old_pB.angular);
 }

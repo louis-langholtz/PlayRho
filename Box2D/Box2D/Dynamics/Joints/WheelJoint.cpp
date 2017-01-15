@@ -92,13 +92,13 @@ void WheelJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
 
-	const auto cA = positions[m_indexA].c;
-	const auto aA = positions[m_indexA].a;
+	const auto cA = positions[m_indexA].linear;
+	const auto aA = positions[m_indexA].angular;
 	auto vA = velocities[m_indexA].v;
 	auto wA = velocities[m_indexA].w;
 
-	const auto cB = positions[m_indexB].c;
-	const auto aB = positions[m_indexB].a;
+	const auto cB = positions[m_indexB].linear;
+	const auto aB = positions[m_indexB].angular;
 	auto vB = velocities[m_indexB].v;
 	auto wB = velocities[m_indexB].w;
 
@@ -283,10 +283,10 @@ void WheelJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeS
 
 bool WheelJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
 {
-	auto cA = positions[m_indexA].c;
-	auto aA = positions[m_indexA].a;
-	auto cB = positions[m_indexB].c;
-	auto aB = positions[m_indexB].a;
+	auto cA = positions[m_indexA].linear;
+	auto aA = positions[m_indexA].angular;
+	auto cB = positions[m_indexB].linear;
+	auto aB = positions[m_indexB].angular;
 
 	const auto qA = UnitVec2{aA};
 	const auto qB = UnitVec2{aB};
@@ -315,10 +315,10 @@ bool WheelJoint::SolvePositionConstraints(Span<Position> positions, const Constr
 	cB += m_invMassB * P;
 	aB += 1_rad * m_invIB * LB;
 
-	positions[m_indexA].c = cA;
-	positions[m_indexA].a = aA;
-	positions[m_indexB].c = cB;
-	positions[m_indexB].a = aB;
+	positions[m_indexA].linear = cA;
+	positions[m_indexA].angular = aA;
+	positions[m_indexB].linear = cB;
+	positions[m_indexB].angular = aB;
 
 	return Abs(C) <= conf.linearSlop;
 }

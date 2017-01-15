@@ -69,13 +69,13 @@ void MotorJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 	m_invMassB = GetBodyB()->GetInverseMass();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto cA = positions[m_indexA].c;
-	const auto aA = positions[m_indexA].a;
+	const auto cA = positions[m_indexA].linear;
+	const auto aA = positions[m_indexA].angular;
 	auto vA = velocities[m_indexA].v;
 	auto wA = velocities[m_indexA].w;
 
-	const auto cB = positions[m_indexB].c;
-	const auto aB = positions[m_indexB].a;
+	const auto cB = positions[m_indexB].linear;
+	const auto aB = positions[m_indexB].angular;
 	auto vB = velocities[m_indexB].v;
 	auto wB = velocities[m_indexB].w;
 
