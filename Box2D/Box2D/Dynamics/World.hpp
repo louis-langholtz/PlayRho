@@ -265,13 +265,6 @@ public:
 	/// Is the world locked (in the middle of a time step).
 	bool IsLocked() const noexcept;
 
-	/// Set flag to control automatic clearing of non-gravitational forces after each time step.
-	void SetAutoClearForces(bool flag) noexcept;
-
-	/// Gets the flag that controls automatic clearing of forces after each time step.
-	/// @note This only removes non-gravitational forces.
-	bool GetAutoClearForces() const noexcept;
-
 	/// Shift the world origin. Useful for large worlds.
 	/// The body shift formula is: position -= newOrigin
 	/// @param newOrigin the new origin with respect to the old origin
@@ -304,7 +297,6 @@ private:
 	{
 		e_newFixture	= 0x0001,
 		e_locked		= 0x0002,
-		e_clearForces	= 0x0004,
 
 		e_substepping   = 0x0020,
 		
@@ -459,7 +451,7 @@ private:
 
 	DestructionListener* m_destructionListener = nullptr; ///< Destruction listener. 8-bytes.
 
-	flags_type m_flags = e_clearForces|e_stepComplete;
+	flags_type m_flags = e_stepComplete;
 
 	/// Inverse delta-t from previous step.
 	/// @detail Used to compute time step ratio to support a variable time step.
@@ -529,23 +521,6 @@ inline Vec2 World::GetGravity() const noexcept
 inline bool World::IsLocked() const noexcept
 {
 	return (m_flags & e_locked) == e_locked;
-}
-
-inline void World::SetAutoClearForces(bool flag) noexcept
-{
-	if (flag)
-	{
-		m_flags |= e_clearForces;
-	}
-	else
-	{
-		m_flags &= ~e_clearForces;
-	}
-}
-
-inline bool World::GetAutoClearForces() const noexcept
-{
-	return (m_flags & e_clearForces) != 0;
 }
 
 inline const ContactManager& World::GetContactManager() const noexcept

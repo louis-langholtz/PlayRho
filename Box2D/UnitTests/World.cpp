@@ -79,9 +79,7 @@ TEST(World, DefaultInit)
 	EXPECT_EQ(world.GetTreeQuality(), float_t(0));
 
 	EXPECT_EQ(world.GetGravity(), EarthlyGravity);
-	
-	EXPECT_TRUE(world.GetAutoClearForces());
-	
+		
 	EXPECT_TRUE(world.GetBodies().empty());
 	EXPECT_EQ(world.GetBodies().size(), body_count_t(0));
 	EXPECT_EQ(world.GetBodies().begin(), world.GetBodies().end());
@@ -808,10 +806,13 @@ TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
 	auto lastpos1 = body1->GetLocation();
 	auto lastpos2 = body2->GetLocation();
 
+	auto stepConf = StepConf{};
 	const auto time_inc = float_t(.01);
+	stepConf.set_dt(time_inc);
+	stepConf.maxLinearCorrection = 0.0001f * 40;
 	for (auto i = 0; i < 100; ++i)
 	{
-		Step(world, time_inc);
+		world.Step(stepConf);
 		
 		// body1 moves left only
 		EXPECT_LT(body1->GetLocation().x, lastpos1.x);

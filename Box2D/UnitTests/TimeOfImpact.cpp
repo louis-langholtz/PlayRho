@@ -222,7 +222,11 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_1)
 	const auto proxyB = DistanceProxy{radius, Vec2{0, 0}};
 	const auto sweepB = Sweep{Position{Vec2{+x, 0}, 0_deg}, Position{Vec2{-x, 0}, 0_deg}};
 	
-	const auto conf = ToiConf{}.UseMaxToiIters(200).UseMaxRootIters(200);
+	const auto conf = ToiConf{}
+		.UseMaxToiIters(200)
+		.UseMaxRootIters(200)
+		.UseTargetDepth(0.0001f * 3)
+		.UseTolerance(0.0001f / 4);
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
@@ -243,7 +247,11 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
 	const auto proxyB = DistanceProxy{radius, Vec2{0, 0}};
 	const auto sweepB = Sweep{Position{Vec2{+x, 0}, 0_deg}, Position{Vec2{0, 0}, 0_deg}};
 	
-	const auto conf = ToiConf{}.UseMaxToiIters(200).UseMaxRootIters(200);
+	const auto conf = ToiConf{}
+		.UseMaxToiIters(200)
+		.UseMaxRootIters(200)
+		.UseTargetDepth(0.0001f * 3)
+		.UseTolerance(0.0001f / 4);
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
@@ -295,7 +303,11 @@ TEST(TimeOfImpact, FailsWithClosingSpeedOf1600)
 	const auto proxyB = DistanceProxy{radius, Vec2{0, 0}};
 	const auto sweepB = Sweep{Position{Vec2{+x, 0}, 0_deg}, Position{Vec2{-x, 0}, 0_deg}};
 	
-	const auto conf = ToiConf{}.UseMaxToiIters(200).UseMaxRootIters(200);
+	const auto conf = ToiConf{}
+		.UseMaxToiIters(200)
+		.UseMaxRootIters(200)
+		.UseTargetDepth(0.0001f * 3)
+		.UseTolerance(0.0001f / 4);
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_failed);
@@ -311,9 +323,9 @@ TEST(TimeOfImpact, ForNonCollidingShapesFailsIn27)
 {
 	// The data for shapes and sweeps comes from Box2D/Testbed/Tests/TimeOfImpact.hpp
 
-	auto shapeA = PolygonShape{};
+	auto shapeA = PolygonShape{0.0001f * 2};
 	shapeA.SetAsBox(25.0f, 5.0f);
-	auto shapeB = PolygonShape{};
+	auto shapeB = PolygonShape{0.0001f * 2};
 	shapeB.SetAsBox(2.5f, 2.5f);
 
 	const auto dpA = GetDistanceProxy(shapeA, 0);
@@ -369,7 +381,8 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
 		}
 	};
 	
-	auto shapeB = PolygonShape{0.5f, 0.5f};
+	auto shapeB = PolygonShape{0.0001f * 2};
+	shapeB.SetAsBox(0.5f, 0.5f);
 	const auto dpB = GetDistanceProxy(shapeB, 0);
 	
 	const auto conf = ToiConf{}

@@ -193,7 +193,8 @@ TEST(CollideShapes, CircleJustPastTrianglePointRightDoesntCollide)
 	const auto triangleTopPt = Vec2{0, +1};
 	const auto triangleLeftPt = Vec2{-1, -1};
 	const auto triangleRightPt = Vec2{+1, -1};
-	const auto triangle = PolygonShape({triangleLeftPt, triangleRightPt, triangleTopPt});
+	auto triangle = PolygonShape{0.0001f * 2};
+	triangle.Set({triangleLeftPt, triangleRightPt, triangleTopPt});
 	const auto circleXfm = Transformation{triangleRightPt + UnitVec2{-45_deg} * circleRadius * float_t(1.001), UnitVec2{0_deg}};
 	const auto triangleXfm = Transformation{Vec2{0, 0}, UnitVec2{0_deg}};
 	
