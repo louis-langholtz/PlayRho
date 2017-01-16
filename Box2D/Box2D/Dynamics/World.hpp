@@ -41,27 +41,32 @@ class Joint;
 class Island;
 class StepConf;
 
-struct CollideStats
+struct PreStepStats
 {
 	uint32 ignored = 0;
 	uint32 destroyed = 0;
 	uint32 updated = 0;
+	uint32 added = 0;
 };
 
 struct RegStepStats
 {
 	uint32 islandsFound = 0;
+	uint32 islandsSolved = 0;
+	uint32 contactsAdded = 0;
+	uint32 bodiesSlept = 0;
 };
 
 struct ToiStepStats
 {
 	uint32 islandsFound = 0;
 	uint32 contactsChecked = 0;
+	uint32 contactsAdded = 0;
 };
 
 struct StepStats
 {
-	CollideStats col;
+	PreStepStats pre;
 	RegStepStats reg;
 	ToiStepStats toi;
 };

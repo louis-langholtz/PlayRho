@@ -523,7 +523,7 @@ int main(int argc, char** argv)
 #endif
 
 	g_camera.m_width = 1024; // 1152;
-	g_camera.m_height = 640; // 864;
+	g_camera.m_height = 900; // 864;
     
 	if (glfwInit() == 0)
 	{

@@ -574,13 +574,21 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 
 	if (settings.drawStats)
 	{
-		drawer.DrawString(5, m_textLine, "step#=%d: col-ignored=%d col-destroyed=%d col-updated=%d reg-islands=%d toi-islands=%d toi-contacts=%d",
-						  m_stepCount,
-						  m_stepStats.col.ignored, m_stepStats.col.destroyed, m_stepStats.col.updated,
-						  m_stepStats.reg.islandsFound,
-						  m_stepStats.toi.islandsFound, m_stepStats.toi.contactsChecked);
+		drawer.DrawString(5, m_textLine, "step#=%d:", m_stepCount);
 		m_textLine += DRAW_STRING_NEW_LINE;
-		
+
+		drawer.DrawString(5, m_textLine, "  pre-info: contacts-added=%d contacts-ignored=%d contacts-destroyed=%d contacts-updated=%d",
+						  m_stepStats.pre.added, m_stepStats.pre.ignored, m_stepStats.pre.destroyed, m_stepStats.pre.updated);
+		m_textLine += DRAW_STRING_NEW_LINE;
+
+		drawer.DrawString(5, m_textLine, "  reg-info: contacts-added=%d islands-found=%d islands-solved=%d bodies-slept=%d",
+						  m_stepStats.reg.contactsAdded, m_stepStats.reg.islandsFound, m_stepStats.reg.islandsSolved, m_stepStats.reg.bodiesSlept);
+		m_textLine += DRAW_STRING_NEW_LINE;
+
+		drawer.DrawString(5, m_textLine, "  toi-info: contacts-added=%d islands-found=%d contacts-checked=%d",
+						  m_stepStats.toi.contactsAdded, m_stepStats.toi.islandsFound, m_stepStats.toi.contactsChecked);
+		m_textLine += DRAW_STRING_NEW_LINE;
+
 		const auto sleepCount = [&](){
 			auto count = unsigned(0);
 			for (auto&& body: m_world->GetBodies())

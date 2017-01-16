@@ -50,12 +50,12 @@ public:
 		m_allocator{allocator}, m_contactFilter{filter}, m_contactListener{listener} {}
 	
 	// Broad-phase callback.
-	void AddPair(void* proxyUserDataA, void* proxyUserDataB)
+	bool AddPair(void* proxyUserDataA, void* proxyUserDataB)
 	{
-		Add(*static_cast<FixtureProxy*>(proxyUserDataA), *static_cast<FixtureProxy*>(proxyUserDataB));
+		return Add(*static_cast<FixtureProxy*>(proxyUserDataA), *static_cast<FixtureProxy*>(proxyUserDataB));
 	}
 
-	void FindNewContacts();
+	contact_count_t FindNewContacts();
 
 	/// Destroys the given contact and removes it from its list.
 	/// @detail This updates the contact list, returns the memory to the allocator,
@@ -96,8 +96,9 @@ private:
 	///   5. There exists a contact-create function for the pair of shapes of the proxies.
 	/// @param proxyA Proxy A.
 	/// @param proxyB Proxy B.
+	/// @return <code>true</code> if a new contact was indeed added (and created), else <code>false</code>.
 	/// @sa bool Body::ShouldCollide(const Body* other) const
-	void Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB);
+	bool Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB);
 	
 	void Add(Contact* contact);
 

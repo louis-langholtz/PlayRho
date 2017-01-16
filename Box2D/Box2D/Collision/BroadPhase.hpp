@@ -98,7 +98,7 @@ public:
 
 	/// Update the pairs. This results in pair callbacks. This can only add pairs.
 	template <typename T>
-	void UpdatePairs(T* callback);
+	size_type UpdatePairs(T* callback);
 
 	/// Query an AABB for overlapping proxies. The callback class
 	/// is called for each proxy that overlaps the supplied AABB.
@@ -190,7 +190,7 @@ inline float_t BroadPhase::GetTreeQuality() const
 }
 
 template <typename T>
-void BroadPhase::UpdatePairs(T* callback)
+BroadPhase::size_type BroadPhase::UpdatePairs(T* callback)
 {
 	// Reset pair buffer
 	m_pairCount = 0;
@@ -220,6 +220,7 @@ void BroadPhase::UpdatePairs(T* callback)
 		return (p1.proxyIdA < p2.proxyIdA) || ((p1.proxyIdA == p2.proxyIdA) && (p1.proxyIdB < p2.proxyIdB));
 	});
 
+	auto added = size_type{0};
 	// Send the pairs back to the client.
 	for (auto i = decltype(m_pairCount){0}; i < m_pairCount; )
 	{
@@ -227,7 +228,10 @@ void BroadPhase::UpdatePairs(T* callback)
 		const auto userDataA = m_tree.GetUserData(primaryPair.proxyIdA);
 		const auto userDataB = m_tree.GetUserData(primaryPair.proxyIdB);
 
-		callback->AddPair(userDataA, userDataB);
+		if (callback->AddPair(userDataA, userDataB))
+		{
+			++added;
+		}
 		++i;
 
 		// Skip any duplicate pairs.
@@ -244,6 +248,7 @@ void BroadPhase::UpdatePairs(T* callback)
 
 	// Try to keep the tree balanced.
 	//m_tree.Rebalance(4);
+	return added;
 }
 
 template <typename T>

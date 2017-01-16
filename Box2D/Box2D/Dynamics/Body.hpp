@@ -365,7 +365,7 @@ public:
 	void SetAwake() noexcept;
 
 	/// Set the sleep state of the body to sleep.
-	void UnsetAwake() noexcept;
+	bool UnsetAwake() noexcept;
 
 	/// Get the sleeping state of this body.
 	/// @return true if the body is awake.
@@ -698,15 +698,19 @@ inline void Body::SetAwake() noexcept
 	if ((m_flags & e_awakeFlag) == 0)
 	{
 		m_flags |= e_awakeFlag;
-		m_sleepTime = float_t{0};
+		m_sleepTime = 0;
 	}
 }
 
-inline void Body::UnsetAwake() noexcept
+inline bool Body::UnsetAwake() noexcept
 {
+	const auto was_awake = IsAwake();
+
 	m_flags &= ~e_awakeFlag;
-	m_sleepTime = float_t{0};
+	m_sleepTime = 0;
 	m_velocity = Velocity{Vec2_zero, 0_rad};
+	
+	return was_awake;
 }
 
 inline bool Body::IsAwake() const noexcept

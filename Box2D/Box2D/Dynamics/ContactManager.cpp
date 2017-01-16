@@ -164,10 +164,10 @@ ContactManager::CollideStats ContactManager::Collide()
 	return stats;
 }
 
-void ContactManager::FindNewContacts()
+contact_count_t ContactManager::FindNewContacts()
 {
 	// Here m_broadPhase will call this object's ContactManager::AddPair method.
-	m_broadPhase.UpdatePairs(this);
+	return m_broadPhase.UpdatePairs(this);
 }
 
 static inline bool IsFor(const Contact& contact,
@@ -184,7 +184,7 @@ static inline bool IsFor(const Contact& contact,
 		((fA == fixtureB) && (fB == fixtureA) && (iA == indexB) && (iB == indexA));
 }
 
-void ContactManager::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
+bool ContactManager::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 {
 	const auto fixtureA = proxyA.fixture; ///< Fixture of proxyA (but may get switched with fixtureB).
 	const auto fixtureB = proxyB.fixture; ///< Fixture of proxyB (but may get switched with fixtureA).
@@ -195,7 +195,7 @@ void ContactManager::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 	// Are the fixtures on the same body?
 	if (bodyA == bodyB)
 	{
-		return;
+		return false;
 	}
 
 	const auto indexA = proxyA.childIndex;
@@ -211,7 +211,7 @@ void ContactManager::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 			if (IsFor(*(contactEdge.contact), fixtureA, indexA, fixtureB, indexB))
 			{
 				// Already have a contact for proxyA with proxyB, bail!
-				return;
+				return false;
 			}
 		}
 	}
@@ -219,13 +219,13 @@ void ContactManager::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 	// Does a joint override collision? Is at least one body dynamic?
 	if (!bodyB->ShouldCollide(bodyA))
 	{
-		return;
+		return false;
 	}
 
 	// Check user filtering.
 	if (m_contactFilter && !m_contactFilter->ShouldCollide(fixtureA, fixtureB))
 	{
-		return;
+		return false;
 	}
 
 	assert(GetContacts().size() < MaxContacts);
@@ -235,10 +235,11 @@ void ContactManager::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 	assert(c);
 	if (!c)
 	{
-		return;
+		return false;
 	}
 	
 	Add(c);
+	return true;
 }
 
 void ContactManager::Add(Contact* c)

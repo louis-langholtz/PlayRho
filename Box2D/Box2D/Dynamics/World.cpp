@@ -338,12 +338,17 @@ namespace {
 		return minSleepTime;
 	}
 	
-	inline void Sleepem(Island::BodyContainer& bodies)
+	inline size_t Sleepem(Island::BodyContainer& bodies)
 	{
+		auto unawoken = size_t{0};
 		for (auto&& b: bodies)
 		{
-			b->UnsetAwake();
+			if (b->UnsetAwake())
+			{
+				++unawoken;
+			}
 		}
+		return unawoken;
 	}
 	
 } // anonymous namespace
@@ -754,13 +759,17 @@ RegStepStats World::Solve(const StepConf& step)
 				
 				// Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions
 				const auto constraintsSolved = Solve(step, island);
-				
+				if (constraintsSolved)
+				{
+					++stats.islandsSolved;
+				}
+
 				if (GetAllowSleeping())
 				{
 					const auto minSleepTime = UpdateSleepTimes(island.m_bodies, step.get_dt());
 					if ((minSleepTime >= step.minStillTimeToSleep) && constraintsSolved)
 					{
-						Sleepem(island.m_bodies);
+						stats.bodiesSlept += Sleepem(island.m_bodies);
 					}
 				}
 				
@@ -788,7 +797,7 @@ RegStepStats World::Solve(const StepConf& step)
 	}
 
 	// Look for new contacts.
-	m_contactMgr.FindNewContacts();
+	stats.contactsAdded = m_contactMgr.FindNewContacts();
 	
 	return stats;
 }
@@ -1012,7 +1021,7 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 		
 		// Commit fixture proxy movements to the broad-phase so that new contacts are created.
 		// Also, some contacts can be destroyed.
-		m_contactMgr.FindNewContacts();
+		stats.contactsAdded += m_contactMgr.FindNewContacts();
 
 		if (GetSubStepping())
 		{
@@ -1283,7 +1292,7 @@ StepStats World::Step(const StepConf& conf)
 		UnsetNewFixtures();
 		
 		// New fixtures were added: need to find and create the new contacts.
-		m_contactMgr.FindNewContacts();
+		stepStats.pre.added = m_contactMgr.FindNewContacts();
 	}
 
 	assert(!IsLocked());
@@ -1291,9 +1300,9 @@ StepStats World::Step(const StepConf& conf)
 
 	// Update and destroy contacts. No new contacts are created though.
 	const auto collideStats = m_contactMgr.Collide();
-	stepStats.col.ignored = collideStats.ignored;
-	stepStats.col.destroyed = collideStats.destroyed;
-	stepStats.col.updated = collideStats.updated;
+	stepStats.pre.ignored = collideStats.ignored;
+	stepStats.pre.destroyed = collideStats.destroyed;
+	stepStats.pre.updated = collideStats.updated;
 
 	if (conf.get_dt() > 0)
 	{
