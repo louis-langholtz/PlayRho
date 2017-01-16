@@ -19,7 +19,7 @@
 
 #include <Box2D/Dynamics/Joints/MotorJoint.hpp>
 #include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Dynamics/TimeStep.hpp>
+#include <Box2D/Dynamics/StepConf.hpp>
 
 using namespace box2d;
 
@@ -57,7 +57,7 @@ MotorJoint::MotorJoint(const MotorJointDef& def)
 	m_correctionFactor = def.correctionFactor;
 }
 
-void MotorJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step, const ConstraintSolverConf& conf)
+void MotorJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf& conf)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_localCenterA = GetBodyA()->GetLocalCenter();
@@ -139,7 +139,7 @@ void MotorJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 	velocities[m_indexB].angular = wB;
 }
 
-void MotorJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step)
+void MotorJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step)
 {
 	auto vA = velocities[m_indexA].linear;
 	auto wA = velocities[m_indexA].angular;

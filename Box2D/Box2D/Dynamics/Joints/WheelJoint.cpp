@@ -19,7 +19,7 @@
 
 #include <Box2D/Dynamics/Joints/WheelJoint.hpp>
 #include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Dynamics/TimeStep.hpp>
+#include <Box2D/Dynamics/StepConf.hpp>
 #include <Box2D/Dynamics/Contacts/ContactSolver.hpp>
 
 using namespace box2d;
@@ -78,7 +78,7 @@ WheelJoint::WheelJoint(const WheelJointDef& def)
 	m_ay = Vec2_zero;
 }
 
-void WheelJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step, const ConstraintSolverConf& conf)
+void WheelJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf& conf)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -217,7 +217,7 @@ void WheelJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 	velocities[m_indexB].angular = wB;
 }
 
-void WheelJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step)
+void WheelJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step)
 {
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;

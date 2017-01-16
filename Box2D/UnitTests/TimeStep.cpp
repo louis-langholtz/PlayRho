@@ -17,23 +17,23 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Dynamics/TimeStep.hpp>
+#include <Box2D/Dynamics/StepConf.hpp>
 
 using namespace box2d;
 
-TEST(TimeStep, ByteSizeIs56)
+TEST(StepConf, ByteSizeIs56)
 {
-	EXPECT_EQ(sizeof(TimeStep), size_t(56));
+	EXPECT_EQ(sizeof(StepConf), size_t(56));
 }
 
-TEST(TimeStep, maxTranslation)
+TEST(StepConf, maxTranslation)
 {
 	const auto v = float_t(1);
 	const auto n = std::nextafter(v, float_t(0));
 	const auto inc = v - n;
 	ASSERT_GT(inc, float_t(0));
 	ASSERT_LT(inc, float_t(1));
-	const auto max_inc = inc * TimeStep{}.maxTranslation;
+	const auto max_inc = inc * StepConf{}.maxTranslation;
 	EXPECT_GT(max_inc, float_t(0));
 	EXPECT_LT(max_inc, LinearSlop / 2);
 #if 0
@@ -45,14 +45,14 @@ TEST(TimeStep, maxTranslation)
 #endif
 }
 
-TEST(TimeStep, maxRotation)
+TEST(StepConf, maxRotation)
 {
 	const auto v = float_t(1);
 	const auto n = std::nextafter(v, float_t(0));
 	const auto inc = v - n;
 	ASSERT_GT(inc, float_t(0));
 	ASSERT_LT(inc, float_t(1));
-	const auto max_inc = inc * TimeStep{}.maxRotation / 1_rad;
+	const auto max_inc = inc * StepConf{}.maxRotation / 1_rad;
 	EXPECT_GT(max_inc, float_t(0));
 	EXPECT_LT(max_inc, AngularSlop / 2);
 #if 0

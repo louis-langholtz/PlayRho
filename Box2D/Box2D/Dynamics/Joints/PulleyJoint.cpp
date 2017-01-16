@@ -19,7 +19,7 @@
 
 #include <Box2D/Dynamics/Joints/PulleyJoint.hpp>
 #include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Dynamics/TimeStep.hpp>
+#include <Box2D/Dynamics/StepConf.hpp>
 #include <Box2D/Dynamics/Contacts/ContactSolver.hpp>
 
 using namespace box2d;
@@ -72,7 +72,7 @@ PulleyJoint::PulleyJoint(const PulleyJointDef& def)
 
 void PulleyJoint::InitVelocityConstraints(Span<Velocity> velocities,
 										  Span<const Position> positions,
-										  const TimeStep& step,
+										  const StepConf& step,
 										  const ConstraintSolverConf& conf)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
@@ -163,7 +163,7 @@ void PulleyJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	velocities[m_indexB].angular = wB;
 }
 
-void PulleyJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step)
+void PulleyJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step)
 {
 	auto vA = velocities[m_indexA].linear;
 	auto wA = velocities[m_indexA].angular;

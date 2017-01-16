@@ -39,7 +39,7 @@ class Body;
 class Fixture;
 class Joint;
 class Island;
-class TimeStep;
+class StepConf;
 
 struct CollideStats
 {
@@ -178,7 +178,7 @@ public:
 	///
 	/// @return Statistics for the step.
 	///
-	StepStats Step(const TimeStep& conf);
+	StepStats Step(const StepConf& conf);
 
 	/// Clears forces.
 	/// @detail
@@ -321,7 +321,7 @@ private:
 	/// Sloves the step.
 	/// @detail Finds islands, integrates and solves constraints, solves position constraints.
 	/// @note This may miss collisions involving fast moving bodies and allow them to tunnel through each other.
-	RegStepStats Solve(const TimeStep& step);
+	RegStepStats Solve(const StepConf& step);
 
 	/// Solves the given island.
 	///
@@ -336,7 +336,7 @@ private:
 	/// @param island Island of bodies, contacts, and joints to solve for.
 	///
 	/// @return <code>true</code> if the contact and joint position constraints were solved, <code>false</code> otherwise.
-	bool Solve(const TimeStep& step, Island& island);
+	bool Solve(const StepConf& step, Island& island);
 
 	static body_count_t AddToIsland(Island& island, Body& body);
 
@@ -352,7 +352,7 @@ private:
 	/// @detail Used for continuous physics.
 	/// @note This is intended to detect and prevent the tunneling that the faster Solve method may miss.
 	/// @param step Time step value to use.
-	ToiStepStats SolveTOI(const TimeStep& step);
+	ToiStepStats SolveTOI(const StepConf& step);
 
 	/// "Solves" collisions for the given time of impact.
 	///
@@ -362,7 +362,7 @@ private:
 	/// @note Precondition 1: there is no contact having a lower TOI in this time step that has not already been solved for.
 	/// @note Precondition 2: there is not a lower TOI in the time step for which collisions have not already been processed.
 	///
-	bool SolveTOI(const TimeStep& step, Contact& contact);
+	bool SolveTOI(const StepConf& step, Contact& contact);
 
 	/// Solves the time of impact for bodies 0 and 1 of the given island.
 	///
@@ -380,7 +380,7 @@ private:
 	///
 	/// @return <code>true</code> if successful, <code>false</code> otherwise.
 	///
-	bool SolveTOI(const TimeStep& step, Island& island);
+	bool SolveTOI(const StepConf& step, Island& island);
 
 	/// Updates bodies.
 	/// @detail
@@ -436,7 +436,7 @@ private:
 	/// @detail While checking contacts and setting their time of impact values this also
 	///   finds the contact with the lowest (soonest) time of impact.
 	/// @return Contact with the least time of impact and its time of impact, or null contact.
-	ContactToiData UpdateContactTOIs(const TimeStep& step);
+	ContactToiData UpdateContactTOIs(const StepConf& step);
 
 	bool HasNewFixtures() const noexcept;
 

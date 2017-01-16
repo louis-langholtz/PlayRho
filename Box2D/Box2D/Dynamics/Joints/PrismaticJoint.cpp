@@ -19,7 +19,7 @@
 
 #include <Box2D/Dynamics/Joints/PrismaticJoint.hpp>
 #include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Dynamics/TimeStep.hpp>
+#include <Box2D/Dynamics/StepConf.hpp>
 #include <Box2D/Dynamics/Contacts/ContactSolver.hpp>
 
 using namespace box2d;
@@ -128,7 +128,7 @@ PrismaticJoint::PrismaticJoint(const PrismaticJointDef& def)
 
 void PrismaticJoint::InitVelocityConstraints(Span<Velocity> velocities,
 											 Span<const Position> positions,
-											 const TimeStep& step,
+											 const StepConf& step,
 											 const ConstraintSolverConf& conf)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
@@ -267,7 +267,7 @@ void PrismaticJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	velocities[m_indexB].angular = wB;
 }
 
-void PrismaticJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step)
+void PrismaticJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step)
 {
 	auto vA = velocities[m_indexA].linear;
 	auto wA = velocities[m_indexA].angular;

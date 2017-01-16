@@ -19,7 +19,7 @@
 
 #include <Box2D/Dynamics/Joints/WeldJoint.hpp>
 #include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Dynamics/TimeStep.hpp>
+#include <Box2D/Dynamics/StepConf.hpp>
 #include <Box2D/Dynamics/Contacts/ContactSolver.hpp>
 
 using namespace box2d;
@@ -59,7 +59,7 @@ WeldJoint::WeldJoint(const WeldJointDef& def)
 	m_impulse = Vec3_zero;
 }
 
-void WeldJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step, const ConstraintSolverConf& conf)
+void WeldJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf& conf)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -170,7 +170,7 @@ void WeldJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Po
 	velocities[m_indexB].angular = wB;
 }
 
-void WeldJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step)
+void WeldJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step)
 {
 	auto vA = velocities[m_indexA].linear;
 	auto wA = velocities[m_indexA].angular;

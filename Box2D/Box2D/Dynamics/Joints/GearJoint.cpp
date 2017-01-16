@@ -21,7 +21,7 @@
 #include <Box2D/Dynamics/Joints/RevoluteJoint.hpp>
 #include <Box2D/Dynamics/Joints/PrismaticJoint.hpp>
 #include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Dynamics/TimeStep.hpp>
+#include <Box2D/Dynamics/StepConf.hpp>
 #include <Box2D/Dynamics/Contacts/ContactSolver.hpp>
 
 using namespace box2d;
@@ -132,7 +132,7 @@ GearJoint::GearJoint(const GearJointDef& def)
 	m_impulse = float_t{0};
 }
 
-void GearJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step, const ConstraintSolverConf& conf)
+void GearJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf& conf)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -239,7 +239,7 @@ void GearJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Po
 	velocities[m_indexD].angular = wD;
 }
 
-void GearJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step)
+void GearJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step)
 {
 	auto vA = velocities[m_indexA].linear;
 	auto wA = velocities[m_indexA].angular;

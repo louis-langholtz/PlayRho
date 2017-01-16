@@ -19,7 +19,7 @@
 
 #include <Box2D/Dynamics/Joints/FrictionJoint.hpp>
 #include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Dynamics/TimeStep.hpp>
+#include <Box2D/Dynamics/StepConf.hpp>
 
 using namespace box2d;
 
@@ -52,7 +52,7 @@ FrictionJoint::FrictionJoint(const FrictionJointDef& def)
 	m_maxTorque = def.maxTorque;
 }
 
-void FrictionJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step, const ConstraintSolverConf& conf)
+void FrictionJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf& conf)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -125,7 +125,7 @@ void FrictionJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<cons
 	velocities[m_indexB].angular = wB;
 }
 
-void FrictionJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step)
+void FrictionJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step)
 {
 	auto vA = velocities[m_indexA].linear;
 	auto wA = velocities[m_indexA].angular;

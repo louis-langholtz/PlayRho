@@ -19,7 +19,7 @@
 
 #include <Box2D/Dynamics/Joints/MouseJoint.hpp>
 #include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Dynamics/TimeStep.hpp>
+#include <Box2D/Dynamics/StepConf.hpp>
 
 using namespace box2d;
 
@@ -52,7 +52,7 @@ void MouseJoint::SetTarget(const Vec2 target) noexcept
 	m_targetA = target;
 }
 
-void MouseJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step, const ConstraintSolverConf& conf)
+void MouseJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf& conf)
 {
 	m_indexB = GetBodyB()->GetIslandIndex();
 	m_localCenterB = GetBodyB()->GetLocalCenter();
@@ -132,7 +132,7 @@ void MouseJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 	velocities[m_indexB].angular = wB;
 }
 
-void MouseJoint::SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step)
+void MouseJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step)
 {
 	const auto velocityB = velocities[m_indexB];
 	assert(IsValid(velocityB));

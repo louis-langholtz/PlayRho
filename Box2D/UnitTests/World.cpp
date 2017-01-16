@@ -18,7 +18,7 @@
 
 #include "gtest/gtest.h"
 #include <Box2D/Dynamics/World.hpp>
-#include <Box2D/Dynamics/TimeStep.hpp>
+#include <Box2D/Dynamics/StepConf.hpp>
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/Contacts/Contact.hpp>
@@ -44,7 +44,7 @@ TEST(World, ByteSizeIs416)
 TEST(World, Def)
 {
 	const auto defaultDef = World::GetDefaultDef();
-	const auto stepConf = TimeStep{};
+	const auto stepConf = StepConf{};
 
 	// make sure max values are still substantially different when incremented by their respective slop values
 	EXPECT_FALSE(almost_equal(stepConf.maxTranslation * 2 + defaultDef.linearSlop / 64, stepConf.maxTranslation * 2));
@@ -1181,7 +1181,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 	ball_body->SetVelocity(Velocity{velocity, 0_deg});
 
 	const auto time_inc = float_t(.01);
-	auto stepConf = TimeStep{};
+	auto stepConf = StepConf{};
 	stepConf.set_dt(time_inc);
 	const auto max_velocity = stepConf.maxTranslation / time_inc;
 	Step(world, time_inc);

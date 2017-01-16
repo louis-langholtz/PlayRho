@@ -49,7 +49,7 @@ For discussion please visit http://box2d.org/forum
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/WorldCallbacks.hpp>
-#include <Box2D/Dynamics/TimeStep.hpp>
+#include <Box2D/Dynamics/StepConf.hpp>
 #include <Box2D/Dynamics/World.hpp>
 
 #include <Box2D/Dynamics/Contacts/Contact.hpp>

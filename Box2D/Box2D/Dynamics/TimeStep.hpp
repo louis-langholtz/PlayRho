@@ -28,7 +28,7 @@ namespace box2d {
 /// Time step.
 /// @detail Step configuration data.
 /// @note This data structure is 56-bytes large (on at least one 64-bit platform).
-class TimeStep
+class StepConf
 {
 public:
 	using iteration_type = ts_iters_t;
@@ -56,7 +56,7 @@ public:
 		inv_dt = (value != 0)? float_t{1} / value: float_t{0};
 	}
 
-	constexpr TimeStep& use_dt(float_t value) noexcept
+	constexpr StepConf& use_dt(float_t value) noexcept
 	{
 		set_dt(value);
 		return *this;

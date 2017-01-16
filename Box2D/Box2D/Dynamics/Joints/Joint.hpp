@@ -28,7 +28,7 @@ namespace box2d {
 class Body;
 class Joint;
 class BlockAllocator;
-class TimeStep;
+class StepConf;
 struct Velocity;
 struct ConstraintSolverConf;
 	
@@ -182,12 +182,12 @@ private:
 	/// Initializes velocity constraint data based on the given solver data.
 	/// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.
 	/// @sa SolveVelocityConstraints.
-	virtual void InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const TimeStep& step, const ConstraintSolverConf& conf) = 0;
+	virtual void InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf& conf) = 0;
 
 	/// Solves velocity constraints for the given solver data.
 	/// @pre <code>InitVelocityConstraints</code> has been called.
 	/// @sa InitVelocityConstraints.
-	virtual void SolveVelocityConstraints(Span<Velocity> velocities, const TimeStep& step) = 0;
+	virtual void SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step) = 0;
 
 	// This returns true if the position errors are within tolerance.
 	virtual bool SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) = 0;

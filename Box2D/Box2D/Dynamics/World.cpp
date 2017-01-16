@@ -19,7 +19,7 @@
 
 #include <Box2D/Dynamics/World.hpp>
 #include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Dynamics/TimeStep.hpp>
+#include <Box2D/Dynamics/StepConf.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/FixtureProxy.hpp>
 #include <Box2D/Dynamics/Island.hpp>
@@ -151,7 +151,7 @@ namespace {
 	inline void Report(ContactListener& listener,
 					   Span<Contact*> contacts,
 					   Span<const VelocityConstraint> constraints,
-					   TimeStep::iteration_type solved)
+					   StepConf::iteration_type solved)
 	{
 		const auto size = contacts.size();
 		for (auto i = decltype(size){0}; i < size; ++i)
@@ -720,7 +720,7 @@ Island World::BuildIsland(Body& seed,
 	return island;
 }
 	
-RegStepStats World::Solve(const TimeStep& step)
+RegStepStats World::Solve(const StepConf& step)
 {
 	auto stats = RegStepStats{};
 
@@ -793,7 +793,7 @@ RegStepStats World::Solve(const TimeStep& step)
 	return stats;
 }
 	
-bool World::Solve(const TimeStep& step, Island& island)
+bool World::Solve(const StepConf& step, Island& island)
 {
 	const auto ncontacts = static_cast<contact_count_t>(island.m_contacts.size());
 	const auto nbodies = island.m_bodies.size();
@@ -862,7 +862,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 	IntegratePositions(positions, velocities, h, MovementConf{step.maxTranslation, step.maxRotation});
 	
 	// Solve position constraints
-	auto iterationSolved = TimeStep::InvalidIteration;
+	auto iterationSolved = StepConf::InvalidIteration;
 	for (auto i = decltype(step.regPositionIterations){0}; i < step.regPositionIterations; ++i)
 	{
 		const auto minSep = SolvePositionConstraints(positionConstraints, positions, psConf);
@@ -900,7 +900,7 @@ bool World::Solve(const TimeStep& step, Island& island)
 			   iterationSolved);
 	}
 	
-	return iterationSolved != TimeStep::InvalidIteration;
+	return iterationSolved != StepConf::InvalidIteration;
 }
 
 void World::ResetBodiesForSolveTOI()
@@ -923,7 +923,7 @@ void World::ResetContactsForSolveTOI()
 	}	
 }
 
-World::ContactToiData World::UpdateContactTOIs(const TimeStep& step)
+World::ContactToiData World::UpdateContactTOIs(const StepConf& step)
 {
 	auto minContact = static_cast<Contact*>(nullptr);
 	auto minToi = MaxFloat;
@@ -981,7 +981,7 @@ World::ContactToiData World::UpdateContactTOIs(const TimeStep& step)
 }
 
 // Find TOI contacts and solve them.
-ToiStepStats World::SolveTOI(const TimeStep& step)
+ToiStepStats World::SolveTOI(const StepConf& step)
 {
 	auto stats = ToiStepStats{};
 
@@ -1023,7 +1023,7 @@ ToiStepStats World::SolveTOI(const TimeStep& step)
 	return stats;
 }
 
-bool World::SolveTOI(const TimeStep& step, Contact& contact)
+bool World::SolveTOI(const StepConf& step, Contact& contact)
 {
 	const auto toi = contact.GetToi();
 	auto bA = contact.GetFixtureA()->GetBody();
@@ -1090,7 +1090,7 @@ bool World::SolveTOI(const TimeStep& step, Contact& contact)
 	}
 
 	// Now solve for remainder of time step
-	SolveTOI(TimeStep{step}.use_dt((1 - toi) * step.get_dt()), island);
+	SolveTOI(StepConf{step}.use_dt((1 - toi) * step.get_dt()), island);
 
 	// Reset island flags and synchronize broad-phase proxies.
 	for (auto&& body: island.m_bodies)
@@ -1120,7 +1120,7 @@ void World::UpdateBodies(Span<Body*> bodies,
 	}
 }
 
-bool World::SolveTOI(const TimeStep& step, Island& island)
+bool World::SolveTOI(const StepConf& step, Island& island)
 {
 	const auto ncontacts = static_cast<contact_count_t>(island.m_contacts.size());
 	const auto nbodies = island.m_bodies.size();
@@ -1151,7 +1151,7 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 	}
 	
 	// Solve TOI-based position constraints.
-	auto positionConstraintsSolved = TimeStep::InvalidIteration;
+	auto positionConstraintsSolved = StepConf::InvalidIteration;
 	const auto psConf = ConstraintSolverConf{}
 		.UseResolutionRate(step.toiResolutionRate)
 		.UseLinearSlop(GetLinearSlop())
@@ -1215,7 +1215,7 @@ bool World::SolveTOI(const TimeStep& step, Island& island)
 			   positionConstraintsSolved);
 	}
 	
-	return positionConstraintsSolved != TimeStep::InvalidIteration;
+	return positionConstraintsSolved != StepConf::InvalidIteration;
 }
 	
 void World::ResetContactsForSolveTOI(Body& body)
@@ -1274,7 +1274,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi, Conta
 	}
 }
 
-StepStats World::Step(const TimeStep& conf)
+StepStats World::Step(const StepConf& conf)
 {
 	auto stepStats = StepStats{};
 
@@ -1427,7 +1427,7 @@ void World::ShiftOrigin(const Vec2 newOrigin)
 
 StepStats Step(World& world, float_t dt, World::ts_iters_type velocityIterations, World::ts_iters_type positionIterations)
 {
-	TimeStep step;
+	StepConf step;
 	step.set_dt(dt);
 	step.regVelocityIterations = velocityIterations;
 	step.regPositionIterations = positionIterations;

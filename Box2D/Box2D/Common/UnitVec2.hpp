@@ -90,12 +90,7 @@ namespace box2d
 		{
 			return m_y;
 		}
-#if 0
-		constexpr operator Vec2() const
-		{
-			return Vec2{GetX(), GetY()};
-		}
-#endif
+
 		constexpr inline UnitVec2 FlipXY() const noexcept
 		{
 			return UnitVec2{-GetX(), -GetY()};

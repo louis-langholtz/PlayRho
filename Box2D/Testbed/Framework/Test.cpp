@@ -545,12 +545,12 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 
 	m_pointCount = 0;
 
-	TimeStep stepConf;
+	StepConf stepConf;
 	stepConf.set_dt(settings.dt);
-	stepConf.regVelocityIterations = static_cast<TimeStep::iteration_type>(settings.regVelocityIterations);
-	stepConf.regPositionIterations = static_cast<TimeStep::iteration_type>(settings.regPositionIterations);
-	stepConf.toiVelocityIterations = static_cast<TimeStep::iteration_type>(settings.toiVelocityIterations);
-	stepConf.toiPositionIterations = static_cast<TimeStep::iteration_type>(settings.toiPositionIterations);
+	stepConf.regVelocityIterations = static_cast<StepConf::iteration_type>(settings.regVelocityIterations);
+	stepConf.regPositionIterations = static_cast<StepConf::iteration_type>(settings.regPositionIterations);
+	stepConf.toiVelocityIterations = static_cast<StepConf::iteration_type>(settings.toiVelocityIterations);
+	stepConf.toiPositionIterations = static_cast<StepConf::iteration_type>(settings.toiPositionIterations);
 	stepConf.maxTranslation = static_cast<decltype(stepConf.maxTranslation)>(settings.maxTranslation);
 	stepConf.maxRotation = settings.maxRotation * 1_deg;
 	stepConf.maxLinearCorrection = settings.maxLinearCorrection;
