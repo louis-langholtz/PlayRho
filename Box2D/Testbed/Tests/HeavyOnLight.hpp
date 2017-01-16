@@ -41,7 +41,7 @@ public:
         
         bd.position = Vec2(0.0f, 6.0f);
         const auto body2 = m_world->CreateBody(bd);
-		body2->CreateFixture(std::make_shared<CircleShape>(1.0f), FixtureDef{}.UseDensity(1000));
+		body2->CreateFixture(std::make_shared<CircleShape>(5.0f), FixtureDef{}.UseDensity(10));
 	}
     
 	static Test* Create()
