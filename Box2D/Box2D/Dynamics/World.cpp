@@ -621,27 +621,6 @@ void World::Destroy(Joint* j)
 	}
 }
 
-void World::SetAllowSleeping(bool flag) noexcept
-{
-	if (flag == GetAllowSleeping())
-	{
-		return;
-	}
-
-	if (flag)
-	{
-		SetAllowSleeping();
-	}
-	else // !flag
-	{
-		UnsetAllowSleeping();
-		for (auto&& b: m_bodies)
-		{
-			b.SetAwake();
-		}
-	}
-}
-
 body_count_t World::AddToIsland(Island& island, Body& body)
 {
 	const auto index = static_cast<body_count_t>(island.m_bodies.size());
@@ -764,7 +743,7 @@ RegStepStats World::Solve(const StepConf& step)
 					++stats.islandsSolved;
 				}
 
-				if (GetAllowSleeping())
+				if (IsValid(step.minStillTimeToSleep))
 				{
 					const auto minSleepTime = UpdateSleepTimes(island.m_bodies, step.get_dt());
 					if ((minSleepTime >= step.minStillTimeToSleep) && constraintsSolved)
@@ -1470,6 +1449,19 @@ size_t GetShapeCount(const World& world) noexcept
 		}
 	}
 	return shapes.size();
+}
+
+size_t Awaken(World& world)
+{
+	auto awoken = size_t{0};
+	for (auto&& b: world.GetBodies())
+	{
+		if (b.SetAwake())
+		{
+			++awoken;
+		}
+	}
+	return awoken;
 }
 
 } // namespace box2d

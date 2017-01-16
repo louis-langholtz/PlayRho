@@ -362,7 +362,7 @@ public:
 	[[deprecated]] void SetAwake(bool flag) noexcept;
 
 	/// Set the sleep state of the body to awake.
-	void SetAwake() noexcept;
+	bool SetAwake() noexcept;
 
 	/// Set the sleep state of the body to sleep.
 	bool UnsetAwake() noexcept;
@@ -693,13 +693,15 @@ inline void Body::SetAwake(bool flag) noexcept
 	}
 }
 
-inline void Body::SetAwake() noexcept
+inline bool Body::SetAwake() noexcept
 {
 	if ((m_flags & e_awakeFlag) == 0)
 	{
 		m_flags |= e_awakeFlag;
 		m_sleepTime = 0;
+		return true;
 	}
+	return false;
 }
 
 inline bool Body::UnsetAwake() noexcept

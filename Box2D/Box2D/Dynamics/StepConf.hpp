@@ -66,7 +66,9 @@ public:
 	///   Value of 1 indicates that the time step has not varied.
 	float_t dtRatio = 1;
 
-	/// The time that a body must be still before it will go to sleep.
+	/// Minimum still time to sleep.
+	/// @detail The time that a body must be still before it will go to sleep.
+	/// Set to an invalid value to disable sleeping.
 	float_t minStillTimeToSleep = float_t{1} / 2; // aka 0.5
 
 	/// This scale factor controls how fast overlap is resolved. Ideally this would be 1 so

@@ -237,11 +237,6 @@ public:
 	/// @return the head of the world contact list.
 	const ContactList& GetContacts() const noexcept;
 
-	/// Enable/disable sleep.
-	void SetAllowSleeping(bool flag) noexcept;
-	
-	bool GetAllowSleeping() const noexcept;
-
 	bool GetSubStepping() const noexcept;
 
 	/// Enable/disable single stepped continuous physics. For testing.
@@ -315,8 +310,6 @@ private:
 		
 		/// Step complete. @detail Used for sub-stepping. @sa m_subStepping.
 		e_stepComplete  = 0x0040,
-		
-		e_allowSleep    = 0x0080
 	};
 
 	friend class Body;
@@ -466,7 +459,7 @@ private:
 
 	DestructionListener* m_destructionListener = nullptr; ///< Destruction listener. 8-bytes.
 
-	flags_type m_flags = e_clearForces|e_stepComplete|e_allowSleep;
+	flags_type m_flags = e_clearForces|e_stepComplete;
 
 	/// Inverse delta-t from previous step.
 	/// @detail Used to compute time step ratio to support a variable time step.
@@ -563,21 +556,6 @@ inline const ContactManager& World::GetContactManager() const noexcept
 inline const Profile& World::GetProfile() const noexcept
 {
 	return m_profile;
-}
-
-inline bool World::GetAllowSleeping() const noexcept
-{
-	return m_flags & e_allowSleep;
-}
-
-inline void World::SetAllowSleeping() noexcept
-{
-	m_flags |= e_allowSleep;
-}
-
-inline void World::UnsetAllowSleeping() noexcept
-{
-	m_flags &= ~e_allowSleep;		
 }
 
 inline bool World::IsStepComplete() const noexcept
@@ -714,6 +692,8 @@ StepStats Step(World& world, float_t timeStep,
 size_t GetFixtureCount(const World& world) noexcept;
 
 size_t GetShapeCount(const World& world) noexcept;
+
+size_t Awaken(World& world);
 
 } // namespace box2d
 

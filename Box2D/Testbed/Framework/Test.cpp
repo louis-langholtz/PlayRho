@@ -540,7 +540,6 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 		}
 	}
 
-	m_world->SetAllowSleeping(settings.enableSleep);
 	m_world->SetSubStepping(settings.enableSubStepping);
 
 	m_pointCount = 0;
@@ -557,6 +556,11 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	stepConf.maxAngularCorrection = (settings.maxAngularCorrection * 1_deg) / 1_rad;
 	stepConf.regResolutionRate = settings.regPosResRate / 100.0f;
 	stepConf.toiResolutionRate = settings.toiPosResRate / 100.0f;
+	if (!settings.enableSleep)
+	{
+		stepConf.minStillTimeToSleep = GetInvalid<float_t>();
+		Awaken(*m_world);
+	}
 	stepConf.doToi = settings.enableContinuous;
 	stepConf.doWarmStart = settings.enableWarmStarting;
 

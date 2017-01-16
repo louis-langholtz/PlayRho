@@ -80,7 +80,6 @@ TEST(World, DefaultInit)
 
 	EXPECT_EQ(world.GetGravity(), EarthlyGravity);
 	
-	EXPECT_TRUE(world.GetAllowSleeping());
 	EXPECT_TRUE(world.GetAutoClearForces());
 	
 	EXPECT_TRUE(world.GetBodies().empty());
