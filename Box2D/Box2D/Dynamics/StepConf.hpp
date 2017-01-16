@@ -17,8 +17,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef B2_TIME_STEP_H
-#define B2_TIME_STEP_H
+#ifndef B2_STEP_CONF_HPP
+#define B2_STEP_CONF_HPP
 
 #include <Box2D/Common/Settings.hpp>
 #include <Box2D/Common/Angle.hpp>
