@@ -364,7 +364,6 @@ World::World(const Def& def):
 	m_linearSlop(def.linearSlop),
 	m_angularSlop(def.angularSlop)
 {
-	memset(&m_profile, 0, sizeof(Profile));
 }
 
 World::~World()

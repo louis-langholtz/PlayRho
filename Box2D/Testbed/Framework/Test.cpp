@@ -623,7 +623,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 
 	// Track maximum profile times
 	{
-		const auto& p = m_world->GetProfile();
+		const auto p = Profile{};
 		m_maxProfile.step = Max(m_maxProfile.step, p.step);
 		m_maxProfile.collide = Max(m_maxProfile.collide, p.collide);
 		m_maxProfile.solve = Max(m_maxProfile.solve, p.solve);
@@ -645,8 +645,8 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 
 	if (settings.drawProfile)
 	{
-		const Profile& p = m_world->GetProfile();
-
+		const auto p = Profile{};
+		
 		Profile aveProfile;
 		memset(&aveProfile, 0, sizeof(Profile));
 		if (m_stepCount > 0)

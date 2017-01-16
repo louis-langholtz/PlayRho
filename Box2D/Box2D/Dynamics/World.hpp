@@ -70,15 +70,15 @@ struct StepStats
 	RegStepStats reg;
 	ToiStepStats toi;
 };
-	
+
 constexpr auto EarthlyGravity = Vec2{0, float_t(-9.8)};
-	
+
 /// World.
 /// @detail
 /// The world class manages all physics entities, dynamic simulation,
 /// and asynchronous queries. The world also contains efficient memory
 /// management facilities.
-/// @note This data structure is 416-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 384-bytes large (on at least one 64-bit platform).
 class World
 {
 public:
@@ -273,9 +273,6 @@ public:
 	/// Get the contact manager for testing.
 	const ContactManager& GetContactManager() const noexcept;
 
-	/// Get the current profile.
-	const Profile& GetProfile() const noexcept;
-
 	float_t GetLinearSlop() const noexcept;
 
 	float_t GetAngularSlop() const noexcept;
@@ -461,8 +458,6 @@ private:
 
 	const float_t m_linearSlop;
 	const float_t m_angularSlop;
-	
-	Profile m_profile;	
 };
 
 constexpr inline World::Def& World::Def::UseGravity(Vec2 value) noexcept
@@ -526,11 +521,6 @@ inline bool World::IsLocked() const noexcept
 inline const ContactManager& World::GetContactManager() const noexcept
 {
 	return m_contactMgr;
-}
-
-inline const Profile& World::GetProfile() const noexcept
-{
-	return m_profile;
 }
 
 inline bool World::IsStepComplete() const noexcept
