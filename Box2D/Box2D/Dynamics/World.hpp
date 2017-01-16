@@ -185,17 +185,6 @@ public:
 	///
 	StepStats Step(const StepConf& conf);
 
-	/// Clears forces.
-	/// @detail
-	/// Manually clear the force buffer on all bodies. By default, forces are cleared automatically
-	/// after each call to Step. The default behavior is modified by calling SetAutoClearForces.
-	/// The purpose of this function is to support sub-stepping. Sub-stepping is often used to maintain
-	/// a fixed sized time step under a variable frame-rate.
-	/// When you perform sub-stepping you will disable auto clearing of forces and instead call
-	/// ClearForces after all sub-steps are complete in one pass of your game loop.
-	/// @see SetAutoClearForces
-	void ClearForces() noexcept;
-
 	/// Queries the world for all fixtures that potentially overlap the provided AABB.
 	/// @param callback a user implemented callback class.
 	/// @param aabb the query box.
@@ -278,10 +267,6 @@ public:
 	float_t GetAngularSlop() const noexcept;
 
 	float_t GetMinVertexRadius() const noexcept;
-
-	float_t GetMaxLinearCorrection() const noexcept;
-
-	float_t GetMaxAngularCorrection() const noexcept;
 	
 	float_t GetInvDeltaTime() const noexcept;
 
@@ -659,6 +644,11 @@ size_t GetFixtureCount(const World& world) noexcept;
 size_t GetShapeCount(const World& world) noexcept;
 
 size_t Awaken(World& world);
+
+/// Clears forces.
+/// @detail
+/// Manually clear the force buffer on all bodies.
+void ClearForces(World& world) noexcept;
 
 } // namespace box2d
 

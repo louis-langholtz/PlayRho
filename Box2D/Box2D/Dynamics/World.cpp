@@ -1301,14 +1301,6 @@ StepStats World::Step(const StepConf& conf)
 	return stepStats;
 }
 
-void World::ClearForces() noexcept
-{
-	for (auto&& body: m_bodies)
-	{
-		body.SetAcceleration(m_gravity, 0_rad);
-	}
-}
-
 struct WorldQueryWrapper
 {
 	using size_type = BroadPhase::size_type;
@@ -1461,6 +1453,15 @@ size_t Awaken(World& world)
 		}
 	}
 	return awoken;
+}
+
+void ClearForces(World& world) noexcept
+{
+	const auto g = world.GetGravity();
+	for (auto&& body: world.GetBodies())
+	{
+		body.SetAcceleration(g, 0_rad);
+	}
 }
 
 } // namespace box2d
