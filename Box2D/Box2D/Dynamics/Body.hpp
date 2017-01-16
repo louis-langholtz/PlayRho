@@ -539,13 +539,6 @@ private:
 	/// @sa IsInIsland().
 	void UnsetInIsland() noexcept;
 
-	/// Computes mass data.
- 	/// @detail This basically accumulates the mass data over all fixtures.
-	/// @note The center is the mass weighted sum of all fixture centers. Divide it by the
-	///   mass to get the averaged center.
-	/// @return accumalated mass data for all fixtures associated with this body.
-	MassData ComputeMassData() const noexcept;
-
 	//
 	// Member variables. Try to keep total size small.
 	//
@@ -1082,6 +1075,13 @@ Velocity GetVelocity(const Body& body, float_t h) noexcept;
 size_t GetWorldIndex(const Body* body);
 
 size_t GetFixtureCount(const Body& body);
+
+/// Computes the body's mass data.
+/// @detail This basically accumulates the mass data over all fixtures.
+/// @note The center is the mass weighted sum of all fixture centers. Divide it by the
+///   mass to get the averaged center.
+/// @return accumalated mass data for all fixtures associated with the given body.
+MassData ComputeMassData(const Body& body) noexcept;
 
 } // namespace box2d
 

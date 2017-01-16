@@ -304,24 +304,6 @@ void Body::DestroyFixture(Fixture* fixture, bool resetMassData)
 	}
 }
 
-MassData Body::ComputeMassData() const noexcept
-{
-	auto mass = float_t{0};
-	auto I = float_t{0};
-	auto center = Vec2_zero;
-	for (auto&& fixture: GetFixtures())
-	{
-		if (fixture.GetDensity() != float_t{0})
-		{
-			const auto massData = GetMassData(fixture);
-			mass += massData.mass;
-			center += massData.mass * massData.center;
-			I += massData.I;
-		}
-	}
-	return MassData{mass, center, I};
-}
-
 void Body::ResetMassData()
 {
 	// Compute mass data from shapes. Each shape has its own density.
@@ -336,7 +318,7 @@ void Body::ResetMassData()
 		return;
 	}
 
-	const auto massData = ComputeMassData();
+	const auto massData = ComputeMassData(*this);
 
 	// Force all dynamic bodies to have a positive mass.
 	const auto mass = (massData.mass > float_t{0})? massData.mass: float_t{1};
@@ -598,4 +580,22 @@ size_t box2d::GetFixtureCount(const Body& body)
 {
 	return static_cast<size_t>(std::distance(std::begin(body.GetFixtures()),
 											 std::end(body.GetFixtures())));
+}
+
+MassData box2d::ComputeMassData(const Body& body) noexcept
+{
+	auto mass = float_t{0};
+	auto I = float_t{0};
+	auto center = Vec2_zero;
+	for (auto&& fixture: body.GetFixtures())
+	{
+		if (fixture.GetDensity() != 0)
+		{
+			const auto massData = GetMassData(fixture);
+			mass += massData.mass;
+			center += massData.mass * massData.center;
+			I += massData.I;
+		}
+	}
+	return MassData{mass, center, I};
 }
