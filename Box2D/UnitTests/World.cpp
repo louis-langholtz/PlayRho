@@ -269,7 +269,7 @@ TEST(World, StepZeroTimeDoesNothing)
 	auto vel = GetLinearVelocity(*body);
 	for (auto i = 0; i < 100; ++i)
 	{
-		world.Step(time_inc);
+		Step(world, time_inc);
 		
 		EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
 		
@@ -306,21 +306,21 @@ TEST(World, GravitationalBodyMovement)
 	EXPECT_EQ(body->GetLocation().x, p0.x);
 	EXPECT_EQ(body->GetLocation().y, p0.y);
 
-	world.Step(t);
+	Step(world, t);
 	EXPECT_EQ(GetLinearVelocity(*body).x, 0);
 	EXPECT_EQ(GetLinearVelocity(*body).y, a * (t * 1));
 	EXPECT_EQ(body->GetLocation().x, p0.x);
 	EXPECT_EQ(body->GetLocation().y, p0.y + (GetLinearVelocity(*body).y * t));
 
 	p0 = body->GetLocation();
-	world.Step(t);
+	Step(world, t);
 	EXPECT_EQ(GetLinearVelocity(*body).x, 0);
 	EXPECT_EQ(GetLinearVelocity(*body).y, a * (t * 2));
 	EXPECT_EQ(body->GetLocation().x, p0.x);
 	EXPECT_EQ(body->GetLocation().y, p0.y + (GetLinearVelocity(*body).y * t));
 	
 	p0 = body->GetLocation();
-	world.Step(t);
+	Step(world, t);
 	EXPECT_EQ(GetLinearVelocity(*body).x, 0);
 	EXPECT_EQ(GetLinearVelocity(*body).y, a * (t * 3));
 	EXPECT_EQ(body->GetLocation().x, p0.x);
@@ -352,7 +352,7 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
 	auto vel = GetLinearVelocity(*body);
 	for (auto i = 0; i < 100; ++i)
 	{
-		world.Step(time_inc, 0, 0);
+		Step(world, time_inc, 0, 0);
 		
 		EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
 		
@@ -488,7 +488,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 	auto steps = unsigned{0};
 	while (pos_a.x < x && pos_b.x > -x)
 	{
-		world.Step(time_inc, 0, 0);
+		Step(world, time_inc, 0, 0);
 		++steps;
 		
 		EXPECT_EQ(body_a->GetLocation().x, pos_a.x + x * time_inc);
@@ -548,7 +548,7 @@ TEST(World, PerfectlyOverlappedSameCirclesStayPut)
 	const auto time_inc = float_t(.01);
 	for (auto i = 0; i < 100; ++i)
 	{
-		world.Step(time_inc);
+		Step(world, time_inc);
 		EXPECT_EQ(body1->GetLocation().x, body_def.position.x);
 		EXPECT_EQ(body1->GetLocation().y, body_def.position.y);
 		EXPECT_EQ(body2->GetLocation().x, body_def.position.x);
@@ -598,7 +598,7 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 	const auto time_inc = float_t(.01);
 	for (auto i = 0; i < 100; ++i)
 	{
-		world.Step(time_inc);
+		Step(world, time_inc);
 		EXPECT_EQ(body1->GetLocation().x, body_def.position.x);
 		EXPECT_EQ(body1->GetLocation().y, body_def.position.y);
 		EXPECT_EQ(body2->GetLocation().x, body_def.position.x);
@@ -635,7 +635,7 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
 	ASSERT_EQ(listener.pre_solves, 0u);
 	ASSERT_EQ(listener.post_solves, 0u);
 
-	world.Step(1);
+	Step(world, 1);
 
 	EXPECT_NE(listener.begin_contacts, 0u);
 	EXPECT_EQ(listener.end_contacts, 0u);
@@ -673,7 +673,7 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
 	ASSERT_EQ(listener.pre_solves, 0u);
 	ASSERT_EQ(listener.post_solves, 0u);
 	
-	world.Step(1);
+	Step(world, 1);
 	
 	EXPECT_NE(listener.begin_contacts, 0u);
 	EXPECT_EQ(listener.end_contacts, 0u);
@@ -730,7 +730,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 	const auto full_separation = radius * 2 - world.GetLinearSlop();
 	for (auto i = 0; i < 100; ++i)
 	{
-		world.Step(time_inc);
+		Step(world, time_inc);
 
 		const auto new_pos_diff = body2->GetLocation() - body1->GetLocation();
 		const auto new_distance = GetLength(new_pos_diff);
@@ -812,7 +812,7 @@ TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
 	const auto time_inc = float_t(.01);
 	for (auto i = 0; i < 100; ++i)
 	{
-		world.Step(time_inc);
+		Step(world, time_inc);
 		
 		// body1 moves left only
 		EXPECT_LT(body1->GetLocation().x, lastpos1.x);
@@ -899,7 +899,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	const auto full_separation = half_dim * 2 - world.GetLinearSlop();
 	for (auto i = 0; i < 100; ++i)
 	{
-		world.Step(time_inc, velocity_iters, position_iters);
+		Step(world, time_inc, velocity_iters, position_iters);
 		
 		ASSERT_EQ(world.GetContacts().size(), decltype(world.GetContacts().size())(1));
 
@@ -1043,7 +1043,7 @@ TEST(World, CollidingDynamicBodies)
 	auto elapsed_time = float_t(0);
 	for (;;)
 	{
-		world.Step(time_inc);
+		Step(world, time_inc);
 		elapsed_time += time_inc;
 		if (listener.contacting)
 		{
@@ -1076,7 +1076,7 @@ TEST(World, CollidingDynamicBodies)
 
 	for (;;)
 	{
-		world.Step(time_inc);
+		Step(world, time_inc);
 		elapsed_time += time_inc;
 		if (!listener.contacting && !listener.touching)
 		{
@@ -1184,7 +1184,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 	auto stepConf = TimeStep{};
 	stepConf.set_dt(time_inc);
 	const auto max_velocity = stepConf.maxTranslation / time_inc;
-	world.Step(time_inc);
+	Step(world, time_inc);
 
 	ASSERT_EQ(listener.begin_contacts, unsigned{0});
 
@@ -1209,7 +1209,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 			}
 
 			const auto last_contact_count = listener.begin_contacts;
-			ASSERT_USECS(world.Step(time_inc), 5000);
+			ASSERT_USECS(Step(world, time_inc), 5000);
 
 			EXPECT_LT(ball_body->GetLocation().x, right_edge_x - (ball_radius/2));
 			EXPECT_GT(ball_body->GetLocation().x, left_edge_x + (ball_radius/2));
@@ -1246,7 +1246,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 			}
 			
 			const auto last_contact_count = listener.begin_contacts;
-			ASSERT_USECS(world.Step(time_inc), 5000);
+			ASSERT_USECS(Step(world, time_inc), 5000);
 			
 			EXPECT_LT(ball_body->GetLocation().x, right_edge_x - (ball_radius/2));
 			EXPECT_GT(ball_body->GetLocation().x, left_edge_x + (ball_radius/2));
@@ -1572,7 +1572,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 			angle += anglular_speed;
 			distance += distance_speed;
 
-			ASSERT_USECS(world.Step(time_inc, 8, 3), 100000);
+			ASSERT_USECS(Step(world, time_inc, 8, 3), 100000);
 			
 			ASSERT_LT(ball_body->GetLocation().x, right_edge_x);
 			ASSERT_LT(ball_body->GetLocation().y, top_edge_y);
@@ -1771,7 +1771,7 @@ static void smaller_still_conserves_momentum(bool bullet, float_t multiplier, fl
 			}
 			
 			EXPECT_FLOAT_EQ(relative_velocity.x, Abs(body_def.linearVelocity.x) * -2);
-			world.Step(time_inc);
+			Step(world, time_inc);
 			++numSteps;
 		}
 		

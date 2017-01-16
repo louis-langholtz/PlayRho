@@ -82,7 +82,7 @@ TEST(RevoluteJoint, MovesDynamicCircles)
 	jd.bodyA = b1;
 	jd.bodyB = b2;
 	world.CreateJoint(jd);
-	world.Step(1);
+	Step(world, 1);
 	EXPECT_EQ(b1->GetLocation(), Vec2(0, -4));
 	EXPECT_EQ(b2->GetLocation(), Vec2(0, -4));
 	EXPECT_EQ(b1->GetAngle(), 0_deg);
@@ -108,7 +108,7 @@ TEST(RevoluteJoint, MovesDynamicPolygons)
 	jd.localAnchorA = Vec2{1, 1};
 	jd.localAnchorB = Vec2{0, 0};
 	world.CreateJoint(jd);
-	world.Step(1);
+	Step(world, 1);
 	EXPECT_EQ(b1->GetLocation(), Vec2(-0.5f, -4.5f));
 	EXPECT_EQ(b2->GetLocation(), Vec2(0.5f, -3.5f));
 }

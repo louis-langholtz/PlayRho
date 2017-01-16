@@ -39,6 +39,13 @@ struct FixtureProxy;
 class ContactManager
 {
 public:
+	struct CollideStats
+	{
+		uint32 ignored = 0;
+		uint32 destroyed = 0;
+		uint32 updated = 0;
+	};
+
 	ContactManager(BlockAllocator& allocator, ContactFilter* filter, ContactListener* listener):
 		m_allocator{allocator}, m_contactFilter{filter}, m_contactListener{listener} {}
 	
@@ -63,7 +70,7 @@ public:
 	/// have active bodies (either or both) get their Update methods called with the current
 	/// contact listener as its argument.
 	/// Essentially this really just purges contacts that are no longer relevant.
-	void Collide();
+	CollideStats Collide();
 	
 	/// Gets the contact list.
 	/// @return Contact list or <code>nullptr</code> if empty.

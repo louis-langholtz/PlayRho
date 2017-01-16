@@ -158,6 +158,7 @@ protected:
 		BOX2D_NOT_USED(drawer);		
 	}
 	
+	World* const m_world;
 	Body* m_groundBody;
 	Fixture* m_selectedFixture = nullptr;
 	AABB m_worldAABB;
@@ -165,13 +166,13 @@ protected:
 	PointCount m_pointCount = 0;
 	DestructionListenerImpl m_destructionListener;
 	TextLinePos m_textLine = TextLinePos{30};
-	World* m_world;
 	Body* m_bomb = nullptr;
 	MouseJoint* m_mouseJoint = nullptr;
 	Vec2 m_bombSpawnPoint;
 	bool m_bombSpawning = false;
 	Vec2 m_mouseWorld;
 	int32 m_stepCount = 0;
+	StepStats m_stepStats;
 
 	Profile m_maxProfile;
 	Profile m_totalProfile;

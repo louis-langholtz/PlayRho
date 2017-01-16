@@ -21,6 +21,7 @@
 #include "RenderGL3.h"
 #include "DebugDraw.hpp"
 #include "Test.hpp"
+#include <sstream>
 
 #if defined(__APPLE__)
 #include <OpenGL/gl3.h>
@@ -415,10 +416,17 @@ static void sInterface()
 
 		imguiSeparatorLine();
 
-		imguiLabel("Test");
+		imguiLabel("Test:");
 		if (imguiButton(entry->name, true))
 		{
 			ui.chooseTest = !ui.chooseTest;
+		}
+
+		imguiLabel("Zoom Factor:");
+		{
+			std::stringstream stream;
+			stream << g_camera.m_zoom;
+			imguiValue(stream.str().c_str());
 		}
 
 		imguiSeparatorLine();

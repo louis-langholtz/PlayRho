@@ -86,8 +86,10 @@ void ContactManager::Destroy(Contact* c)
 	Contact::Destroy(c, m_allocator);
 }
 
-void ContactManager::Collide()
+ContactManager::CollideStats ContactManager::Collide()
 {
+	auto stats = CollideStats{};
+
 	// Update awake contacts.
 	auto next = ContactIterator{nullptr};
 	for (auto c = m_contacts.begin(); c != m_contacts.end(); c = next)
@@ -106,6 +108,7 @@ void ContactManager::Collide()
 			if (!(bodyB->ShouldCollide(bodyA)))
 			{
 				Destroy(&(*c));
+				++stats.destroyed;
 				continue;
 			}
 
@@ -113,6 +116,7 @@ void ContactManager::Collide()
 			if (m_contactFilter && !(m_contactFilter->ShouldCollide(fixtureA, fixtureB)))
 			{
 				Destroy(&(*c));
+				++stats.destroyed;
 				continue;
 			}
 
@@ -129,6 +133,7 @@ void ContactManager::Collide()
 		// At least one body must be collidable
 		if (!is_collidable(bodyA) && !is_collidable(bodyB))
 		{
+			++stats.ignored;
 			continue;
 		}
 
@@ -144,6 +149,7 @@ void ContactManager::Collide()
 		if (!overlap)
 		{
 			Destroy(&(*c));
+			++stats.destroyed;
 			continue;
 		}
 
@@ -152,7 +158,10 @@ void ContactManager::Collide()
 		// Update the contact manifold and notify the listener.
 		c->SetEnabled();
 		c->Update(m_contactListener);
+		++stats.updated;
 	}
+	
+	return stats;
 }
 
 void ContactManager::FindNewContacts()

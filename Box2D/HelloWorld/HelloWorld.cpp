@@ -87,7 +87,7 @@ int main(int argc, char** argv)
 	{
 		// Instruct the world to perform a single step of simulation.
 		// It is generally best to keep the time step and iterations fixed.
-		world.Step(timeStep, velocityIterations, positionIterations);
+		Step(world, timeStep, velocityIterations, positionIterations);
 
 		// Now print the position and angle of the body.
 		Vec2 position = body->GetLocation();

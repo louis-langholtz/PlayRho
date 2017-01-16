@@ -560,7 +560,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	stepConf.doToi = settings.enableContinuous;
 	stepConf.doWarmStart = settings.enableWarmStarting;
 
-	m_world->Step(stepConf);
+	const auto stepStats = m_world->Step(stepConf);
 
 	Draw(drawer, *m_world, settings);
 
@@ -569,10 +569,18 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	if (settings.dt > 0)
 	{
 		++m_stepCount;
+		m_stepStats = stepStats;
 	}
 
 	if (settings.drawStats)
 	{
+		drawer.DrawString(5, m_textLine, "step#=%d: col-ignored=%d col-destroyed=%d col-updated=%d reg-islands=%d toi-islands=%d toi-contacts=%d",
+						  m_stepCount,
+						  m_stepStats.col.ignored, m_stepStats.col.destroyed, m_stepStats.col.updated,
+						  m_stepStats.reg.islandsFound,
+						  m_stepStats.toi.islandsFound, m_stepStats.toi.contactsChecked);
+		m_textLine += DRAW_STRING_NEW_LINE;
+		
 		const auto sleepCount = [&](){
 			auto count = unsigned(0);
 			for (auto&& body: m_world->GetBodies())
@@ -589,7 +597,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 		const auto jointCount = GetJointCount(*m_world);
 		const auto fixtureCount = GetFixtureCount(*m_world);
 		const auto shapeCount = GetShapeCount(*m_world);
-		drawer.DrawString(5, m_textLine, "sleep=%d, bodies=%d, fixtures=%d, shapes=%d, contacts=%d, joints=%d",
+		drawer.DrawString(5, m_textLine, "  sleep=%d, bodies=%d, fixtures=%d, shapes=%d, contacts=%d, joints=%d",
 						  sleepCount, bodyCount, fixtureCount, shapeCount, contactCount, jointCount);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
@@ -597,7 +605,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 		const auto height = m_world->GetTreeHeight();
 		const auto balance = m_world->GetTreeBalance();
 		const auto quality = m_world->GetTreeQuality();
-		drawer.DrawString(5, m_textLine, "proxies/height/balance/quality = %d/%d/%d/%g", proxyCount, height, balance, quality);
+		drawer.DrawString(5, m_textLine, "  proxies/height/balance/quality = %d/%d/%d/%g", proxyCount, height, balance, quality);
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 
@@ -631,7 +639,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 		memset(&aveProfile, 0, sizeof(Profile));
 		if (m_stepCount > 0)
 		{
-			float_t scale = 1.0f / m_stepCount;
+			const auto scale = 1.0f / m_stepCount;
 			aveProfile.step = scale * m_totalProfile.step;
 			aveProfile.collide = scale * m_totalProfile.collide;
 			aveProfile.solve = scale * m_totalProfile.solve;

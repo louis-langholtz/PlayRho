@@ -41,6 +41,31 @@ class Joint;
 class Island;
 class TimeStep;
 
+struct CollideStats
+{
+	uint32 ignored = 0;
+	uint32 destroyed = 0;
+	uint32 updated = 0;
+};
+
+struct RegStepStats
+{
+	uint32 islandsFound = 0;
+};
+
+struct ToiStepStats
+{
+	uint32 islandsFound = 0;
+	uint32 contactsChecked = 0;
+};
+
+struct StepStats
+{
+	CollideStats col;
+	RegStepStats reg;
+	ToiStepStats toi;
+};
+	
 constexpr auto EarthlyGravity = Vec2{0, float_t(-9.8)};
 	
 /// World.
@@ -125,7 +150,7 @@ public:
 	/// @param joint Joint, created by this world, to destroy.
 	void Destroy(Joint* joint);
 
-	/// Steps the world ahead by a given time amount.
+	/// Steps the world ahead by the given configuration.
 	///
 	/// @detail
 	/// Performs position and velocity updating, sleeping of non-moving bodies, updating
@@ -147,15 +172,13 @@ public:
 	/// @post Kinetic bodies are moved based on their previous velocities.
 	/// @post Dynamic bodies are moved based on their previous velocities, gravity,
 	/// applied forces, applied impulses, masses, damping, and the restitution and friction values
-	/// of their fixtures when they experience collisions.	
+	/// of their fixtures when they experience collisions.
 	///
-	/// @param timeStep Amount of time to simulate (in seconds). This should not vary.
-	/// @param velocityIterations Number of iterations for the velocity constraint solver.
-	/// @param positionIterations Number of iterations for the position constraint solver.
-	///   The position constraint solver resolves the positions of bodies that overlap.
-	void Step(float_t timeStep, ts_iters_type velocityIterations = 8, ts_iters_type positionIterations = 3);
-
-	void Step(const TimeStep& conf);
+	/// @param conf Configuration for the simulation step.
+	///
+	/// @return Statistics for the step.
+	///
+	StepStats Step(const TimeStep& conf);
 
 	/// Clears forces.
 	/// @detail
@@ -270,6 +293,8 @@ public:
 
 	float_t GetMaxAngularCorrection() const noexcept;
 	
+	float_t GetInvDeltaTime() const noexcept;
+
 private:
 
 	using flags_type = uint32;
@@ -296,7 +321,7 @@ private:
 	/// Sloves the step.
 	/// @detail Finds islands, integrates and solves constraints, solves position constraints.
 	/// @note This may miss collisions involving fast moving bodies and allow them to tunnel through each other.
-	void Solve(const TimeStep& step);
+	RegStepStats Solve(const TimeStep& step);
 
 	/// Solves the given island.
 	///
@@ -327,7 +352,7 @@ private:
 	/// @detail Used for continuous physics.
 	/// @note This is intended to detect and prevent the tunneling that the faster Solve method may miss.
 	/// @param step Time step value to use.
-	void SolveTOI(const TimeStep& step);
+	ToiStepStats SolveTOI(const TimeStep& step);
 
 	/// "Solves" collisions for the given time of impact.
 	///
@@ -337,7 +362,7 @@ private:
 	/// @note Precondition 1: there is no contact having a lower TOI in this time step that has not already been solved for.
 	/// @note Precondition 2: there is not a lower TOI in the time step for which collisions have not already been processed.
 	///
-	void SolveTOI(const TimeStep& step, Contact& contact);
+	bool SolveTOI(const TimeStep& step, Contact& contact);
 
 	/// Solves the time of impact for bodies 0 and 1 of the given island.
 	///
@@ -442,7 +467,7 @@ private:
 	/// @detail Used to compute time step ratio to support a variable time step.
 	/// @note 4-bytes large.
 	/// @sa Step.
-	float_t m_inv_dt0 = float_t{0};
+	float_t m_inv_dt0 = 0;
 
 	const float_t m_linearSlop;
 	const float_t m_angularSlop;
@@ -620,6 +645,11 @@ inline float_t World::GetMinVertexRadius() const noexcept
 	return GetLinearSlop() * 2;
 }
 
+inline float_t World::GetInvDeltaTime() const noexcept
+{
+	return m_inv_dt0;
+}
+
 /// Gets the AABB extension for the given world.
 /// @detail
 /// Fattens AABBs in the dynamic tree. This allows proxies
@@ -644,6 +674,37 @@ inline contact_count_t GetContactCount(const World& world) noexcept
 {
 	return world.GetContacts().size();
 }
+
+/// Steps the world ahead by a given time amount.
+///
+/// @detail
+/// Performs position and velocity updating, sleeping of non-moving bodies, updating
+/// of the contacts, and notifying the contact listener of begin-contact, end-contact,
+/// pre-solve, and post-solve events.
+/// If the given velocity and position iterations are more than zero,
+/// this method also respectively performs velocity and position resolution of the contacting bodies.
+///
+/// @note While body velocities are updated accordingly (per the sum of forces acting on them),
+/// body positions (barring any collisions) are updated as if they had moved the entire time step
+/// at those resulting velocities.
+/// In other words, a body initially at p0 going v0 fast with a sum acceleration of a,
+/// after time t and barring any collisions,
+/// will have a new velocity (v1) of v0 + (a * t) and a new position (p1) of p0 + v1 * t.
+///
+/// @warning Varying the time step may lead to non-physical behaviors.
+///
+/// @post Static bodies are unmoved.
+/// @post Kinetic bodies are moved based on their previous velocities.
+/// @post Dynamic bodies are moved based on their previous velocities, gravity,
+/// applied forces, applied impulses, masses, damping, and the restitution and friction values
+/// of their fixtures when they experience collisions.
+///
+/// @param timeStep Amount of time to simulate (in seconds). This should not vary.
+/// @param velocityIterations Number of iterations for the velocity constraint solver.
+/// @param positionIterations Number of iterations for the position constraint solver.
+///   The position constraint solver resolves the positions of bodies that overlap.
+StepStats Step(World& world, float_t timeStep,
+			   World::ts_iters_type velocityIterations = 8, World::ts_iters_type positionIterations = 3);
 
 size_t GetFixtureCount(const World& world) noexcept;
 

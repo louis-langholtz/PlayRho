@@ -720,8 +720,10 @@ Island World::BuildIsland(Body& seed,
 	return island;
 }
 	
-void World::Solve(const TimeStep& step)
+RegStepStats World::Solve(const TimeStep& step)
 {
+	auto stats = RegStepStats{};
+
 	// Clear all the island flags.
 	for (auto&& b: m_bodies)
 	{
@@ -746,6 +748,8 @@ void World::Solve(const TimeStep& step)
 		{
 			if (!body.IsInIsland() && body.IsSpeedable() && body.IsAwake() && body.IsActive())
 			{
+				++stats.islandsFound;
+
 				auto island = BuildIsland(body, remNumBodies, remNumContacts, remNumJoints);
 				
 				// Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions
@@ -785,6 +789,8 @@ void World::Solve(const TimeStep& step)
 
 	// Look for new contacts.
 	m_contactMgr.FindNewContacts();
+	
+	return stats;
 }
 	
 bool World::Solve(const TimeStep& step, Island& island)
@@ -975,8 +981,10 @@ World::ContactToiData World::UpdateContactTOIs(const TimeStep& step)
 }
 
 // Find TOI contacts and solve them.
-void World::SolveTOI(const TimeStep& step)
+ToiStepStats World::SolveTOI(const TimeStep& step)
 {
+	auto stats = ToiStepStats{};
+
 	if (IsStepComplete())
 	{
 		ResetBodiesForSolveTOI();
@@ -996,7 +1004,11 @@ void World::SolveTOI(const TimeStep& step)
 			break;
 		}
 
-		SolveTOI(step, *next.contact);
+		++stats.contactsChecked;
+		if (SolveTOI(step, *next.contact))
+		{
+			++stats.islandsFound;
+		}
 		
 		// Commit fixture proxy movements to the broad-phase so that new contacts are created.
 		// Also, some contacts can be destroyed.
@@ -1008,9 +1020,10 @@ void World::SolveTOI(const TimeStep& step)
 			break;
 		}
 	}
+	return stats;
 }
 
-void World::SolveTOI(const TimeStep& step, Contact& contact)
+bool World::SolveTOI(const TimeStep& step, Contact& contact)
 {
 	const auto toi = contact.GetToi();
 	auto bA = contact.GetFixtureA()->GetBody();
@@ -1048,7 +1061,7 @@ void World::SolveTOI(const TimeStep& step, Contact& contact)
 		bA->m_xf = GetTransform1(bA->m_sweep);
 		bB->m_sweep = backupB;
 		bB->m_xf = GetTransform1(bB->m_sweep);
-		return;
+		return false;
 	}
 
 	bA->SetAwake();
@@ -1090,6 +1103,8 @@ void World::SolveTOI(const TimeStep& step, Contact& contact)
 			ResetContactsForSolveTOI(*body);
 		}
 	}
+	
+	return true;
 }
 
 void World::UpdateBodies(Span<Body*> bodies,
@@ -1259,23 +1274,10 @@ void World::ProcessContactsForTOI(Island& island, Body& body, float_t toi, Conta
 	}
 }
 
-void World::Step(float_t dt, ts_iters_type velocityIterations, ts_iters_type positionIterations)
+StepStats World::Step(const TimeStep& conf)
 {
-	TimeStep step;
-	step.set_dt(dt);
-	step.regVelocityIterations = velocityIterations;
-	step.regPositionIterations = positionIterations;
-	step.toiVelocityIterations = velocityIterations;
-	if (positionIterations == 0)
-	{
-		step.toiPositionIterations = 0;
-	}
-	step.dtRatio = dt * m_inv_dt0;
-	Step(step);
-}
-	
-void World::Step(const TimeStep& conf)
-{
+	auto stepStats = StepStats{};
+
 	if (HasNewFixtures())
 	{
 		UnsetNewFixtures();
@@ -1288,7 +1290,10 @@ void World::Step(const TimeStep& conf)
 	FlagGuard<decltype(m_flags)> flagGaurd(m_flags, e_locked);
 
 	// Update and destroy contacts. No new contacts are created though.
-	m_contactMgr.Collide();
+	const auto collideStats = m_contactMgr.Collide();
+	stepStats.col.ignored = collideStats.ignored;
+	stepStats.col.destroyed = collideStats.destroyed;
+	stepStats.col.updated = collideStats.updated;
 
 	if (conf.get_dt() > 0)
 	{
@@ -1297,15 +1302,16 @@ void World::Step(const TimeStep& conf)
 		// Integrate velocities, solve velocity constraints, and integrate positions.
 		if (IsStepComplete())
 		{
-			Solve(conf);
+			stepStats.reg = Solve(conf);
 		}
 
 		// Handle TOI events.
 		if (conf.doToi)
 		{
-			SolveTOI(conf);
+			stepStats.toi = SolveTOI(conf);
 		}
 	}
+	return stepStats;
 }
 
 void World::ClearForces() noexcept
@@ -1417,6 +1423,21 @@ void World::ShiftOrigin(const Vec2 newOrigin)
 	}
 
 	m_contactMgr.m_broadPhase.ShiftOrigin(newOrigin);
+}
+
+StepStats Step(World& world, float_t dt, World::ts_iters_type velocityIterations, World::ts_iters_type positionIterations)
+{
+	TimeStep step;
+	step.set_dt(dt);
+	step.regVelocityIterations = velocityIterations;
+	step.regPositionIterations = positionIterations;
+	step.toiVelocityIterations = velocityIterations;
+	if (positionIterations == 0)
+	{
+		step.toiPositionIterations = 0;
+	}
+	step.dtRatio = dt * world.GetInvDeltaTime();
+	return world.Step(step);
 }
 
 size_t GetFixtureCount(const World& world) noexcept
