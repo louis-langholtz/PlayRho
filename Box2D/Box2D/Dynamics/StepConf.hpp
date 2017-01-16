@@ -25,8 +25,7 @@
 
 namespace box2d {
 
-/// Time step.
-/// @detail Step configuration data.
+/// Step configuration.
 /// @note This data structure is 56-bytes large (on at least one 64-bit platform).
 class StepConf
 {
