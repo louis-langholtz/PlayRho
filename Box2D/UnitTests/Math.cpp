@@ -542,3 +542,24 @@ TEST(Math, nextafter2)
 	EXPECT_EQ(a + subnormal, a);
 	EXPECT_EQ(b + subnormal, b);
 }
+
+TEST(Math, floatsIncreasinglyInaccurate)
+{
+	auto last_delta = float(0);
+	auto val = float(1);
+	for (auto i = 0; i < 18; ++i)
+	{
+		const auto next = std::nextafter(val, MaxFloat);
+		const auto delta = next - val;
+		ASSERT_EQ(val + (delta / 2), val);
+		std::cout << std::hexfloat;
+		std::cout << "For " << std::setw(7) << val << ", delta of next value is " << std::setw(7) << delta;
+		std::cout << std::defaultfloat;
+		std::cout << ": ie. at " << std::setw(6) << val;
+		std::cout << " delta is " << delta;
+		std::cout << std::endl;
+		val *= 2;
+		EXPECT_GT(delta, last_delta);
+		last_delta = delta;
+	}
+}
