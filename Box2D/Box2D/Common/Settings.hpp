@@ -69,7 +69,7 @@ using ts_iters_t = uint8;
 
 constexpr auto MaxFloat = std::numeric_limits<float_t>::max(); // FLT_MAX
 
-constexpr auto Pi = static_cast<float_t>(M_PI); ///< Pi as the "float_t" float-type (any narrowing is intentional).
+constexpr auto Pi = static_cast<float_t>(M_PI); ///< Pi as the "float_t" number-type (any narrowing is intentional).
 
 /// @file
 /// Global tuning constants based on meters-kilograms-seconds (MKS) units.

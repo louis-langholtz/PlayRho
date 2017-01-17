@@ -31,7 +31,7 @@ namespace box2d
 	class Angle
 	{
 	public:
-		using data_type = float;
+		using data_type = float_t;
 		
 		static constexpr Angle GetFromRadians(long double value) noexcept
 		{
