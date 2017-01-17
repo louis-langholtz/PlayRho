@@ -547,7 +547,7 @@ TEST(Math, floatsIncreasinglyInaccurate)
 {
 	auto last_delta = float(0);
 	auto val = float(1);
-	for (auto i = 0; i < 18; ++i)
+	for (auto i = 0; i < 20; ++i)
 	{
 		const auto next = std::nextafter(val, MaxFloat);
 		const auto delta = next - val;
@@ -556,10 +556,28 @@ TEST(Math, floatsIncreasinglyInaccurate)
 		std::cout << "For " << std::setw(7) << val << ", delta of next value is " << std::setw(7) << delta;
 		std::cout << std::defaultfloat;
 		std::cout << ": ie. at " << std::setw(6) << val;
-		std::cout << " delta is " << delta;
+		std::cout << std::fixed;
+		std::cout << ", delta is " << delta;
 		std::cout << std::endl;
 		val *= 2;
 		EXPECT_GT(delta, last_delta);
 		last_delta = delta;
+	}
+}
+
+TEST(Math, ToiTolerance)
+{
+	// What is the max vr for which the following still holds true?
+	//   vr + LinearSlop / 4 > vr
+	// The max vr for which (std::nextafter(vr, MaxFloat) - vr) <= LinearSlop / 4.
+	// I.e. the max vr for which (std::nextafter(vr, MaxFloat) - vr) <= 0.000025
+	const auto tolerance = LinearSlop / 4;
+	{
+		const auto vr = 511.0f;
+		EXPECT_GT(vr + tolerance, vr);
+	}
+	{
+		const auto vr = 512.0f;
+		EXPECT_EQ(vr + tolerance, vr);
 	}
 }

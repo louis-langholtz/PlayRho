@@ -34,18 +34,23 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 	auto stats = TOIOutput::Stats{0, 0, 0, 0, 0};
 
 	assert(conf.tMax >= 0 && conf.tMax <=1);
+	assert(conf.tolerance > 0);
+
 	const auto totalRadius = proxyA.GetRadius() + proxyB.GetRadius();
 	assert(conf.targetDepth < totalRadius);
-	assert(!almost_equal(totalRadius - conf.targetDepth, totalRadius));
+	
 	const auto target = totalRadius - conf.targetDepth;
 	assert(target != totalRadius);
-	assert(!almost_equal(target + conf.tolerance, target));
+	
 	const auto maxTarget = target + conf.tolerance;
+	assert(maxTarget != target);
 	assert(maxTarget <= totalRadius);
-	assert(!almost_equal(target - conf.tolerance, target));
+	
 	const auto minTarget = target - conf.tolerance;
-	assert(minTarget <= maxTarget);
+	assert(minTarget != target);
+	assert(minTarget < maxTarget);
 	assert(minTarget > 0 && !almost_zero(minTarget));
+	
 	const auto maxTargetSquared = Square(maxTarget);
 
 	auto t1 = float_t{0}; // Will be set to value of t2

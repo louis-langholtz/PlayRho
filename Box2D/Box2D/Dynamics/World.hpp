@@ -78,7 +78,7 @@ constexpr auto EarthlyGravity = Vec2{0, float_t(-9.8)};
 /// The world class manages all physics entities, dynamic simulation,
 /// and asynchronous queries. The world also contains efficient memory
 /// management facilities.
-/// @note This data structure is 384-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 392-bytes large (on at least one 64-bit platform).
 class World
 {
 public:
@@ -93,9 +93,11 @@ public:
 
 		Vec2 gravity = EarthlyGravity;
 		
-		float_t linearSlop = float_t{1} / float_t{10000}; // aka 0.0001, originally 0.005;
+		float_t linearSlop = 0.0001f; // originally 0.005;
 		
-		float_t angularSlop = Pi * float_t{2} / float_t{180};
+		float_t angularSlop = Pi * 2 / 180;
+
+		float_t maxVertexRadius = 255.0f; // linearSlop * 2550000
 	};
 	
 	static constexpr Def GetDefaultDef()
@@ -266,8 +268,12 @@ public:
 
 	float_t GetAngularSlop() const noexcept;
 
+	/// Gets the minimum vertex radius that shapes in this world can be.
 	float_t GetMinVertexRadius() const noexcept;
 	
+	/// Gets the maximum vertex radius that shapes in this world can be.
+	float_t GetMaxVertexRadius() const noexcept;
+
 	float_t GetInvDeltaTime() const noexcept;
 
 private:
@@ -443,6 +449,16 @@ private:
 
 	const float_t m_linearSlop;
 	const float_t m_angularSlop;
+
+	/// Maximum vertex radius.
+	/// @detail
+	/// This is the maximum shape vertex radius that any bodies' of this world should create
+	/// fixtures for. Requests to create fixtures for shapes with vertex radiuses bigger than
+	/// this must be rejected. As an upper bound, this value prevents shapes from getting
+	/// associated with this world that would otherwise not be able to be simulated due to
+	/// numerical issues. It can also be set below this upper bound to constrain the differences
+	/// between shape vertex radiuses to possibly more limited visual ranges.
+	const float_t m_maxVertexRadius;
 };
 
 constexpr inline World::Def& World::Def::UseGravity(Vec2 value) noexcept
@@ -567,15 +583,17 @@ inline float_t World::GetAngularSlop() const noexcept
 	return m_angularSlop;
 }
 
-/// Gets the minimum vertex radius for the given world.
-/// @detail
-/// The minimum radius of the vertices of any shape in the given world.
 inline float_t World::GetMinVertexRadius() const noexcept
 {
 	// This scaling factor should not be modified.
 	// Making it smaller means some shapes could have insufficient buffer for continuous collision.
 	// Making it larger may create artifacts for vertex collision.
 	return GetLinearSlop() * 2;
+}
+
+inline float_t World::GetMaxVertexRadius() const noexcept
+{
+	return m_maxVertexRadius;
 }
 
 inline float_t World::GetInvDeltaTime() const noexcept

@@ -219,10 +219,12 @@ public:
 	/// @param shape Shape definition. This will be copied, so it can be on the stack.
 	/// @param def Initial fixture settings.
 	/// @warning This function is locked during callbacks.
-	/// @return <code>nullptr</code> if the world is locked or the fixture definition's shape
-	///    vertex radius is less than the minimum allowed by the body's world, else pointer to
-	///    created fixture.
-	Fixture* CreateFixture(std::shared_ptr<const Shape> shape, const FixtureDef& def = GetDefaultFixtureDef(), bool resetMassData = true);
+	/// @return <code>nullptr</code> if the world is locked, or the fixture definition's shape
+	///    vertex radius is less than the minimum or more than the maximum allowed by the body's
+	///    world. A pointer to the created fixture otherwise.
+	Fixture* CreateFixture(std::shared_ptr<const Shape> shape,
+						   const FixtureDef& def = GetDefaultFixtureDef(),
+						   bool resetMassData = true);
 	
 	/// Destroys a fixture.
 	/// @detail This removes the fixture from the broad-phase and

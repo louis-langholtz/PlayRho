@@ -92,7 +92,7 @@ constexpr auto MaxShapeVertices = uint8{254};
 /// Lower or raise to decrease or increase respectively the minimum of space
 /// between bodies at rest.
 /// @note Smaller values relative to sizes of bodies increases the time it takes for bodies to come to rest.
-constexpr auto LinearSlop = float_t(0.005); // float_t{1} / float_t{10000}; // aka 0.0001, originally 0.005
+constexpr auto LinearSlop = float_t(0.0001); // float_t{1} / float_t{10000}; // aka 0.0001, originally 0.005
 
 /// A small angle used as a collision and constraint tolerance. Usually it is
 /// chosen to be numerically significant, but visually insignificant.

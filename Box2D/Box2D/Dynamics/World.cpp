@@ -350,7 +350,7 @@ namespace {
 		}
 		return unawoken;
 	}
-	
+
 } // anonymous namespace
 
 const BodyDef& World::GetDefaultBodyDef()
@@ -362,8 +362,11 @@ const BodyDef& World::GetDefaultBodyDef()
 World::World(const Def& def):
 	m_gravity(def.gravity),
 	m_linearSlop(def.linearSlop),
-	m_angularSlop(def.angularSlop)
+	m_angularSlop(def.angularSlop),
+	m_maxVertexRadius(def.maxVertexRadius)
 {
+	// Confirm that linearSlop and maxVertexRadius can work together
+	assert((def.maxVertexRadius * 2) + (def.linearSlop / 4) > (def.maxVertexRadius * 2));
 }
 
 World::~World()

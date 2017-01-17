@@ -204,8 +204,8 @@ Fixture* Body::CreateFixture(std::shared_ptr<const Shape> shape, const FixtureDe
 	}
 
 	{
-		const auto vertexRadius = GetVertexRadius(*shape);
-		if (vertexRadius < m_world->GetMinVertexRadius())
+		const auto vr = GetVertexRadius(*shape);
+		if ((vr < m_world->GetMinVertexRadius()) || (vr > m_world->GetMaxVertexRadius()))
 		{
 			return nullptr;
 		}
