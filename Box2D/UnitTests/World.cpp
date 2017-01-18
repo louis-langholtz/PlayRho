@@ -1794,3 +1794,90 @@ TEST(World, SmallerBulletStillConservesMomemtum)
 	// goin to smaller time increment fails nearly same point.
 // smaller_still_conserves_momentum(true, float_t(0.999), float_t(0.01));
 }
+
+class VerticalStackTest: public ::testing::TestWithParam<float_t>
+{
+public:
+	virtual void SetUp()
+	{
+		const auto hw_ground = 40.0f;
+		const auto ground = world.CreateBody();
+		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2{-hw_ground, 0}, Vec2{hw_ground, 0}));
+		
+		const auto numboxes = boxes.size();
+		
+		original_x = GetParam();
+		
+		const auto boxShape = std::make_shared<PolygonShape>(hdim, hdim);
+		for (auto i = decltype(numboxes){0}; i < numboxes; ++i)
+		{
+			// (hdim + 0.05f) + (hdim * 2 + 0.1f) * i
+			const auto location = Vec2{original_x, (i + 1) * hdim * 4};
+			const auto box = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location));
+			box->CreateFixture(boxShape, FixtureDef{}.UseDensity(1).UseFriction(0.3f));
+			boxes[i] = box;
+		}
+		
+		auto stepConf = StepConf{}.use_dt(1.0f/60);
+		while (loopsTillSleeping < maxLoops)
+		{
+			world.Step(stepConf);
+			if (GetAwakeCount(world) == 0)
+			{
+				break;
+			}
+			++loopsTillSleeping;
+		}
+	}
+
+protected:
+	World world{World::Def{}.UseGravity(Vec2(0, -10))};
+	size_t loopsTillSleeping = 0;
+	const size_t maxLoops = 10000;
+	std::vector<Body*> boxes{10};
+	float_t original_x = 0;
+	const float_t hdim = 0.1f;
+};
+
+TEST_P(VerticalStackTest, EndsBeforeMaxLoops)
+{
+	EXPECT_LT(loopsTillSleeping, maxLoops);
+}
+
+TEST_P(VerticalStackTest, BoxesAtOriginalX)
+{
+	for (auto&& box: boxes)
+	{
+		EXPECT_EQ(box->GetLocation().x, original_x);
+	}
+}
+
+TEST_P(VerticalStackTest, EachBoxAboveLast)
+{
+	auto lasty = 0.0f;
+	for (auto&& box: boxes)
+	{
+		EXPECT_GT(box->GetLocation().y, lasty + hdim);
+		lasty = box->GetLocation().y;
+	}
+}
+
+TEST_P(VerticalStackTest, EachBodyLevel)
+{
+	for (auto&& box: boxes)
+	{
+		EXPECT_EQ(box->GetAngle(), 0_deg);
+	}
+}
+
+static std::string test_suffix_generator(::testing::TestParamInfo<float_t> param_info)
+{
+	std::stringstream strbuf;
+	strbuf << param_info.index;
+	return strbuf.str();
+}
+
+extern ::testing::internal::ParamGenerator<VerticalStackTest::ParamType> gtest_WorldVerticalStackTest_EvalGenerator_();
+extern ::std::string gtest_WorldVerticalStackTest_EvalGenerateName_(const ::testing::TestParamInfo<VerticalStackTest::ParamType>& info);
+
+INSTANTIATE_TEST_CASE_P(World, VerticalStackTest, ::testing::Values(float_t(0), float_t(5)), test_suffix_generator);

@@ -661,6 +661,8 @@ size_t GetFixtureCount(const World& world) noexcept;
 
 size_t GetShapeCount(const World& world) noexcept;
 
+size_t GetAwakeCount(const World& world) noexcept;
+
 size_t Awaken(World& world);
 
 /// Clears forces.

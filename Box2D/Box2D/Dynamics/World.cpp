@@ -1445,6 +1445,19 @@ size_t GetShapeCount(const World& world) noexcept
 	return shapes.size();
 }
 
+size_t GetAwakeCount(const World& world) noexcept
+{
+	auto count = size_t(0);
+	for (auto&& body: world.GetBodies())
+	{
+		if (body.IsAwake())
+		{
+			++count;
+		}
+	}
+	return count;
+}
+	
 size_t Awaken(World& world)
 {
 	auto awoken = size_t{0};
