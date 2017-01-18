@@ -30,8 +30,8 @@ public:
 		m_fixture = nullptr;
 	}
 
-	float_t ReportFixture(Fixture* fixture, const Vec2& point,
-						  const UnitVec2& normal, float_t fraction) override
+	realnum ReportFixture(Fixture* fixture, const Vec2& point,
+						  const UnitVec2& normal, realnum fraction) override
 	{
 		m_fixture = fixture;
 		m_point = point;
@@ -179,7 +179,7 @@ public:
 		drawer.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		const auto L = float_t(25);
+		const auto L = realnum(25);
 		const auto point1 = Vec2(0.0f, 10.0f);
 		const auto d = Vec2(L * cosf(m_angle), -L * Abs(sinf(m_angle)));
 		const auto point2 = point1 + d;
@@ -219,7 +219,7 @@ public:
 	PolygonShape m_polygons[4];
 	std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>(0.5f);
 
-	float_t m_angle;
+	realnum m_angle;
 };
 
 } // namespace box2d

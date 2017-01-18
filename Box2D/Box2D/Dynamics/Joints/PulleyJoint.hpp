@@ -37,28 +37,28 @@ struct PulleyJointDef : public JointDef
 	void Initialize(Body* bodyA, Body* bodyB,
 					const Vec2 groundAnchorA, const Vec2 groundAnchorB,
 					const Vec2 anchorA, const Vec2 anchorB,
-					float_t ratio);
+					realnum ratio);
 
 	/// The first ground anchor in world coordinates. This point never moves.
-	Vec2 groundAnchorA = Vec2{-float_t{1}, float_t{1}};
+	Vec2 groundAnchorA = Vec2{-realnum{1}, realnum{1}};
 
 	/// The second ground anchor in world coordinates. This point never moves.
-	Vec2 groundAnchorB = Vec2{float_t{1}, float_t{1}};
+	Vec2 groundAnchorB = Vec2{realnum{1}, realnum{1}};
 
 	/// The local anchor point relative to bodyA's origin.
-	Vec2 localAnchorA = Vec2{-float_t{1}, float_t{0}};
+	Vec2 localAnchorA = Vec2{-realnum{1}, realnum{0}};
 
 	/// The local anchor point relative to bodyB's origin.
-	Vec2 localAnchorB = Vec2{float_t{1}, float_t{0}};
+	Vec2 localAnchorB = Vec2{realnum{1}, realnum{0}};
 
 	/// The a reference length for the segment attached to bodyA.
-	float_t lengthA = float_t{0};
+	realnum lengthA = realnum{0};
 
 	/// The a reference length for the segment attached to bodyB.
-	float_t lengthB = float_t{0};
+	realnum lengthB = realnum{0};
 
 	/// The pulley ratio, used to simulate a block-and-tackle.
-	float_t ratio = float_t{1};
+	realnum ratio = realnum{1};
 };
 
 /// The pulley joint is connected to two bodies and two fixed ground points.
@@ -80,8 +80,8 @@ public:
 	Vec2 GetAnchorA() const override;
 	Vec2 GetAnchorB() const override;
 
-	Vec2 GetReactionForce(float_t inv_dt) const override;
-	float_t GetReactionTorque(float_t inv_dt) const override;
+	Vec2 GetReactionForce(realnum inv_dt) const override;
+	realnum GetReactionTorque(realnum inv_dt) const override;
 
 	/// Get the first ground anchor.
 	Vec2 GetGroundAnchorA() const;
@@ -90,19 +90,19 @@ public:
 	Vec2 GetGroundAnchorB() const;
 
 	/// Get the current length of the segment attached to bodyA.
-	float_t GetLengthA() const noexcept;
+	realnum GetLengthA() const noexcept;
 
 	/// Get the current length of the segment attached to bodyB.
-	float_t GetLengthB() const noexcept;
+	realnum GetLengthB() const noexcept;
 
 	/// Get the pulley ratio.
-	float_t GetRatio() const noexcept;
+	realnum GetRatio() const noexcept;
 
 	/// Get the current length of the segment attached to bodyA.
-	float_t GetCurrentLengthA() const;
+	realnum GetCurrentLengthA() const;
 
 	/// Get the current length of the segment attached to bodyB.
-	float_t GetCurrentLengthB() const;
+	realnum GetCurrentLengthB() const;
 
 	/// Implement Joint::ShiftOrigin
 	void ShiftOrigin(const Vec2 newOrigin) override;
@@ -115,15 +115,15 @@ private:
 
 	Vec2 m_groundAnchorA;
 	Vec2 m_groundAnchorB;
-	float_t m_lengthA;
-	float_t m_lengthB;
+	realnum m_lengthA;
+	realnum m_lengthB;
 	
 	// Solver shared
 	Vec2 m_localAnchorA;
 	Vec2 m_localAnchorB;
-	float_t m_constant;
-	float_t m_ratio;
-	float_t m_impulse;
+	realnum m_constant;
+	realnum m_ratio;
+	realnum m_impulse;
 
 	// Solver temp
 	index_t m_indexA;
@@ -134,11 +134,11 @@ private:
 	Vec2 m_rB;
 	Vec2 m_localCenterA;
 	Vec2 m_localCenterB;
-	float_t m_invMassA;
-	float_t m_invMassB;
-	float_t m_invIA;
-	float_t m_invIB;
-	float_t m_mass;
+	realnum m_invMassA;
+	realnum m_invMassB;
+	realnum m_invIA;
+	realnum m_invIB;
+	realnum m_mass;
 };
 	
 inline Vec2 PulleyJoint::GetLocalAnchorA() const noexcept
@@ -151,17 +151,17 @@ inline Vec2 PulleyJoint::GetLocalAnchorB() const noexcept
 	return m_localAnchorB;
 }
 
-inline float_t PulleyJoint::GetLengthA() const noexcept
+inline realnum PulleyJoint::GetLengthA() const noexcept
 {
 	return m_lengthA;
 }
 
-inline float_t PulleyJoint::GetLengthB() const noexcept
+inline realnum PulleyJoint::GetLengthB() const noexcept
 {
 	return m_lengthB;
 }
 
-inline float_t PulleyJoint::GetRatio() const noexcept
+inline realnum PulleyJoint::GetRatio() const noexcept
 {
 	return m_ratio;
 }

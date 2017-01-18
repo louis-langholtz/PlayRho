@@ -38,12 +38,12 @@ namespace box2d
 		index_type GetIndex1() const noexcept { return m_idx1; };
 		Vec2 GetVertex1() const noexcept { return m_v1; };
 		UnitVec2 GetNormal1() const noexcept { return m_normal1; };
-		float_t GetOffset1() const noexcept { return m_offset1; };
+		realnum GetOffset1() const noexcept { return m_offset1; };
 		
 		index_type GetIndex2() const noexcept { return m_idx2; };
 		Vec2 GetVertex2() const noexcept { return m_v2; };
 		UnitVec2 GetNormal2() const noexcept { return m_normal2; };
-		float_t GetOffset2() const noexcept { return m_offset2; };
+		realnum GetOffset2() const noexcept { return m_offset2; };
 		
 		UnitVec2 GetNormal() const noexcept { return m_normal; };
 		
@@ -58,8 +58,8 @@ namespace box2d
 		UnitVec2 m_normal1;
 		UnitVec2 m_normal2;
 		
-		float_t m_offset1;	
-		float_t m_offset2;
+		realnum m_offset1;	
+		realnum m_offset2;
 		
 		index_type m_idx1;
 		index_type m_idx2;

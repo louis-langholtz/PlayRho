@@ -41,26 +41,26 @@ TEST(MassData, GetForZeroVertexRadiusCircle)
 
 TEST(MassData, GetForOriginCenteredCircle)
 {
-	const auto radius = float_t(1);
+	const auto radius = realnum(1);
 	const auto position = Vec2{0, 0};
 	const auto foo = CircleShape{radius, position};
-	const auto density = float_t(1);
+	const auto density = realnum(1);
 	const auto mass_data = GetMassData(foo, density);
 	EXPECT_EQ(mass_data.mass, Pi);
-	EXPECT_FLOAT_EQ(mass_data.I, float_t(1.5707964));
+	EXPECT_FLOAT_EQ(mass_data.I, realnum(1.5707964));
 	EXPECT_FLOAT_EQ(mass_data.I, density * (Pi * Square(radius) * Square(radius) / 2));
 	EXPECT_EQ(mass_data.center, position);
 }
 
 TEST(MassData, GetForCircle)
 {
-	const auto radius = float_t(1);
+	const auto radius = realnum(1);
 	const auto position = Vec2{-1, 1};
 	const auto foo = CircleShape{radius, position};
-	const auto density = float_t(1);
+	const auto density = realnum(1);
 	const auto mass_data = GetMassData(foo, density);
 	EXPECT_EQ(mass_data.mass, Pi);
-	EXPECT_FLOAT_EQ(mass_data.I, float_t(7.85398));
+	EXPECT_FLOAT_EQ(mass_data.I, realnum(7.85398));
 	EXPECT_EQ(mass_data.center, position);
 }
 
@@ -68,23 +68,23 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
 {
 	auto shape = PolygonShape(0);
 	shape.SetAsBox(4, 1);
-	ASSERT_EQ(shape.GetCentroid().x, float_t(0));
-	ASSERT_EQ(shape.GetCentroid().y, float_t(0));
-	const auto density = float_t(2.1);
+	ASSERT_EQ(shape.GetCentroid().x, realnum(0));
+	ASSERT_EQ(shape.GetCentroid().y, realnum(0));
+	const auto density = realnum(2.1);
 	const auto mass_data = GetMassData(shape, density);
-	EXPECT_FLOAT_EQ(mass_data.mass, float_t((8 * 2) * density));
-	EXPECT_FLOAT_EQ(mass_data.I, float_t(90.666664 * density));
+	EXPECT_FLOAT_EQ(mass_data.mass, realnum((8 * 2) * density));
+	EXPECT_FLOAT_EQ(mass_data.I, realnum(90.666664 * density));
 	EXPECT_FLOAT_EQ(mass_data.center.x, shape.GetCentroid().x);
 	EXPECT_FLOAT_EQ(mass_data.center.y, shape.GetCentroid().y);
 	
 	// Area moment of inertia (I) for a rectangle is Ix + Iy = (b * h^3) / 12 + (b^3 * h) / 12....
 	const auto i = 8.0 * 2.0 * 2.0 * 2.0 / 12.0 + 8.0 * 8.0 * 8.0 * 2.0 / 12.0;
-	EXPECT_FLOAT_EQ(mass_data.I, density * float_t(i));
+	EXPECT_FLOAT_EQ(mass_data.I, density * realnum(i));
 	
 	const auto i_z = GetPolarMoment(shape.GetVertices());
 	EXPECT_FLOAT_EQ(mass_data.I, density * i_z);
 	
-	EXPECT_FLOAT_EQ(GetAreaOfPolygon(shape.GetVertices()), float_t(16));
+	EXPECT_FLOAT_EQ(GetAreaOfPolygon(shape.GetVertices()), realnum(16));
 }
 
 TEST(MassData, GetForZeroVertexRadiusEdge)
@@ -93,7 +93,7 @@ TEST(MassData, GetForZeroVertexRadiusEdge)
 	const auto v2 = Vec2{+1, 0};
 	auto shape = EdgeShape(0);
 	shape.Set(v1, v2);
-	const auto density = float_t(2.1);
+	const auto density = realnum(2.1);
 	const auto mass_data = GetMassData(shape, density);
 	EXPECT_EQ(mass_data.mass, 0);
 	EXPECT_EQ(mass_data.I, 0);
@@ -106,13 +106,13 @@ TEST(MassData, GetForSamePointedEdgeIsSameAsCircle)
 	const auto v1 = Vec2{-1, 1};
 	auto shape = EdgeShape(1);
 	shape.Set(v1, v1);
-	const auto density = float_t(1);
+	const auto density = realnum(1);
 	const auto mass_data = GetMassData(shape, density);
 	
 	const auto circleMass = density * Pi * Square(shape.GetVertexRadius());
 
 	EXPECT_FLOAT_EQ(mass_data.mass, circleMass);
-	EXPECT_FLOAT_EQ(mass_data.I, float_t(7.85398));
+	EXPECT_FLOAT_EQ(mass_data.I, realnum(7.85398));
 	EXPECT_FLOAT_EQ(mass_data.center.x, v1.x);
 	EXPECT_FLOAT_EQ(mass_data.center.y, v1.y);
 }
@@ -121,18 +121,18 @@ TEST(MassData, GetForCenteredEdge)
 {
 	const auto v1 = Vec2{-2, 0};
 	const auto v2 = Vec2{+2, 0};
-	const auto radius = float_t(0.5);
+	const auto radius = realnum(0.5);
 	auto shape = EdgeShape(radius);
 	shape.Set(v1, v2);
-	const auto density = float_t(2.1);
+	const auto density = realnum(2.1);
 	const auto mass_data = GetMassData(shape, density);
 	
 	const auto vertices = Span<const Vec2>{Vec2(-2, +0.5), Vec2(-2, -0.5), Vec2(+2, -0.5), Vec2(+2, +0.5)};
 	const auto area = GetAreaOfPolygon(vertices) + GetAreaOfCircle(radius);
 	EXPECT_EQ(mass_data.mass, density * area);
 
-	EXPECT_FLOAT_EQ(mass_data.I, float_t(18.70351));
-	EXPECT_FLOAT_EQ(GetPolarMoment(vertices), float_t(5.6666665));
+	EXPECT_FLOAT_EQ(mass_data.I, realnum(18.70351));
+	EXPECT_FLOAT_EQ(GetPolarMoment(vertices), realnum(5.6666665));
 	EXPECT_GT(mass_data.I, GetPolarMoment(vertices) * density);
 	
 	EXPECT_EQ(mass_data.center.x, 0);

@@ -35,7 +35,7 @@ public:
 		m_hit = false;
 	}
 
-	float_t ReportFixture(Fixture* fixture, const Vec2& point, const UnitVec2& normal, float_t fraction) override
+	realnum ReportFixture(Fixture* fixture, const Vec2& point, const UnitVec2& normal, realnum fraction) override
 	{
 		const auto body = fixture->GetBody();
 		const auto userData = body->GetUserData();
@@ -75,7 +75,7 @@ public:
 		m_hit = false;
 	}
 
-	float_t ReportFixture(Fixture* fixture, const Vec2& point, const UnitVec2& normal, float_t fraction) override
+	realnum ReportFixture(Fixture* fixture, const Vec2& point, const UnitVec2& normal, realnum fraction) override
 	{
 		const auto body = fixture->GetBody();
 		const auto userData = body->GetUserData();
@@ -120,7 +120,7 @@ public:
 		m_count = 0;
 	}
 
-	float_t ReportFixture(Fixture* fixture, const Vec2& point, const UnitVec2& normal, float_t fraction) override
+	realnum ReportFixture(Fixture* fixture, const Vec2& point, const UnitVec2& normal, realnum fraction) override
 	{
 		const auto body = fixture->GetBody();
 		const auto userData = body->GetUserData();
@@ -449,7 +449,7 @@ public:
 	std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>(0.5f);
 	std::shared_ptr<EdgeShape> m_edge = std::make_shared<EdgeShape>(Vec2(-1.0f, 0.0f), Vec2(1.0f, 0.0f));
 	
-	float_t m_angle;
+	realnum m_angle;
 
 	Mode m_mode;
 };

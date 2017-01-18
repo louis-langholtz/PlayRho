@@ -115,7 +115,7 @@ void RevoluteJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	m_motorMass = iA + iB;
 	if (m_motorMass > 0)
 	{
-		m_motorMass = float_t{1} / m_motorMass;
+		m_motorMass = realnum{1} / m_motorMass;
 	}
 
 	if (!m_enableMotor || fixedRotation)
@@ -300,8 +300,8 @@ bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions, const Con
 	auto cB = positions[m_indexB].linear;
 	auto aB = positions[m_indexB].angular;
 
-	auto angularError = float_t{0};
-	auto positionError = float_t{0};
+	auto angularError = realnum{0};
+	auto positionError = realnum{0};
 
 	const auto fixedRotation = ((m_invIA + m_invIB) == 0);
 
@@ -309,7 +309,7 @@ bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions, const Con
 	if (m_enableLimit && m_limitState != e_inactiveLimit && !fixedRotation)
 	{
 		const auto angle = aB - aA - GetReferenceAngle();
-		auto limitImpulse = float_t{0};
+		auto limitImpulse = realnum{0};
 
 		if (m_limitState == e_equalLimits)
 		{
@@ -324,7 +324,7 @@ bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions, const Con
 			angularError = -C;
 
 			// Prevent large angular corrections and allow some slop.
-			C = Clamp(C + conf.angularSlop, -conf.maxAngularCorrection, float_t{0});
+			C = Clamp(C + conf.angularSlop, -conf.maxAngularCorrection, realnum{0});
 			limitImpulse = -m_motorMass * C;
 		}
 		else if (m_limitState == e_atUpperLimit)
@@ -333,7 +333,7 @@ bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions, const Con
 			angularError = C;
 
 			// Prevent large angular corrections and allow some slop.
-			C = Clamp(C - conf.angularSlop, float_t{0}, conf.maxAngularCorrection);
+			C = Clamp(C - conf.angularSlop, realnum{0}, conf.maxAngularCorrection);
 			limitImpulse = -m_motorMass * C;
 		}
 
@@ -390,12 +390,12 @@ Vec2 RevoluteJoint::GetAnchorB() const
 	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Vec2 RevoluteJoint::GetReactionForce(float_t inv_dt) const
+Vec2 RevoluteJoint::GetReactionForce(realnum inv_dt) const
 {
 	return inv_dt * Vec2{m_impulse.x, m_impulse.y};
 }
 
-float_t RevoluteJoint::GetReactionTorque(float_t inv_dt) const
+realnum RevoluteJoint::GetReactionTorque(realnum inv_dt) const
 {
 	return inv_dt * m_impulse.z;
 }
@@ -417,19 +417,19 @@ void RevoluteJoint::EnableMotor(bool flag)
 	m_enableMotor = flag;
 }
 
-float_t RevoluteJoint::GetMotorTorque(float_t inv_dt) const
+realnum RevoluteJoint::GetMotorTorque(realnum inv_dt) const
 {
 	return inv_dt * m_motorImpulse;
 }
 
-void RevoluteJoint::SetMotorSpeed(float_t speed)
+void RevoluteJoint::SetMotorSpeed(realnum speed)
 {
 	GetBodyA()->SetAwake();
 	GetBodyB()->SetAwake();
 	m_motorSpeed = speed;
 }
 
-void RevoluteJoint::SetMaxMotorTorque(float_t torque)
+void RevoluteJoint::SetMaxMotorTorque(realnum torque)
 {
 	GetBodyA()->SetAwake();
 	GetBodyB()->SetAwake();

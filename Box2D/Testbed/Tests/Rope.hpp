@@ -32,7 +32,7 @@ public:
 	{
 		const int32 N = 40;
 		Vec2 vertices[N];
-		float_t masses[N];
+		realnum masses[N];
 
 		for (int32 i = 0; i < N; ++i)
 		{
@@ -95,7 +95,7 @@ public:
 	}
 
 	Rope m_rope;
-	float_t m_angle;
+	realnum m_angle;
 };
 
 } // namespace box2d

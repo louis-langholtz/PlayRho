@@ -39,7 +39,7 @@ void Rope::Initialize(const RopeDef* def)
 	m_ps = alloc<Vec2>(m_count);
 	m_p0s = alloc<Vec2>(m_count);
 	m_vs = alloc<Vec2>(m_count);
-	m_ims = alloc<float_t>(m_count);
+	m_ims = alloc<realnum>(m_count);
 
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
@@ -48,20 +48,20 @@ void Rope::Initialize(const RopeDef* def)
 		m_vs[i] = Vec2_zero;
 
 		const auto m = def->masses[i];
-		if (m > float_t{0})
+		if (m > realnum{0})
 		{
-			m_ims[i] = float_t{1} / m;
+			m_ims[i] = realnum{1} / m;
 		}
 		else
 		{
-			m_ims[i] = float_t{0};
+			m_ims[i] = realnum{0};
 		}
 	}
 
 	const auto count2 = m_count - 1;
 	const auto count3 = m_count - 2;
-	m_Ls = alloc<float_t>(count2);
-	m_as = alloc<float_t>(count3);
+	m_Ls = alloc<realnum>(count2);
+	m_as = alloc<realnum>(count3);
 
 	for (auto i = decltype(count2){0}; i < count2; ++i)
 	{
@@ -91,7 +91,7 @@ void Rope::Initialize(const RopeDef* def)
 	m_k3 = def->k3;
 }
 
-void Rope::Step(float_t h, int32 iterations)
+void Rope::Step(realnum h, int32 iterations)
 {
 	if (h == 0.0)
 	{
@@ -103,7 +103,7 @@ void Rope::Step(float_t h, int32 iterations)
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		m_p0s[i] = m_ps[i];
-		if (m_ims[i] > float_t{0})
+		if (m_ims[i] > realnum{0})
 		{
 			m_vs[i] += h * m_gravity;
 		}
@@ -119,7 +119,7 @@ void Rope::Step(float_t h, int32 iterations)
 		SolveC2();
 	}
 
-	const auto inv_h = float_t{1} / h;
+	const auto inv_h = realnum{1} / h;
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
 		m_vs[i] = inv_h * (m_ps[i] - m_p0s[i]);
@@ -141,7 +141,7 @@ void Rope::SolveC2()
 		const auto im1 = m_ims[i];
 		const auto im2 = m_ims[i + 1];
 
-		if (im1 + im2 == float_t{0})
+		if (im1 + im2 == realnum{0})
 		{
 			continue;
 		}
@@ -157,7 +157,7 @@ void Rope::SolveC2()
 	}
 }
 
-void Rope::SetAngle(float_t angle)
+void Rope::SetAngle(realnum angle)
 {
 	const auto count3 = m_count - 2;
 	for (auto i = decltype(count3){0}; i < count3; ++i)
@@ -186,7 +186,7 @@ void Rope::SolveC3()
 		const auto L1sqr = GetLengthSquared(d1);
 		const auto L2sqr = GetLengthSquared(d2);
 
-		if (L1sqr * L2sqr == float_t{0})
+		if (L1sqr * L2sqr == realnum{0})
 		{
 			continue;
 		}
@@ -196,20 +196,20 @@ void Rope::SolveC3()
 
 		auto angle = Atan2(a, b);
 
-		const auto Jd1 = (-float_t{1} / L1sqr) * GetRevPerpendicular(d1);
-		const auto Jd2 = (float_t{1} / L2sqr) * GetRevPerpendicular(d2);
+		const auto Jd1 = (-realnum{1} / L1sqr) * GetRevPerpendicular(d1);
+		const auto Jd2 = (realnum{1} / L2sqr) * GetRevPerpendicular(d2);
 
 		const auto J1 = -Jd1;
 		const auto J2 = Jd1 - Jd2;
 		const auto J3 = Jd2;
 
 		auto mass = m1 * Dot(J1, J1) + m2 * Dot(J2, J2) + m3 * Dot(J3, J3);
-		if (mass == float_t{0})
+		if (mass == realnum{0})
 		{
 			continue;
 		}
 
-		mass = float_t{1} / mass;
+		mass = realnum{1} / mass;
 
 		auto C = angle - m_as[i];
 
@@ -221,7 +221,7 @@ void Rope::SolveC3()
 
 		while (C < -Pi)
 		{
-			angle += float_t{2} * Pi;
+			angle += realnum{2} * Pi;
 			C = angle - m_as[i];
 		}
 

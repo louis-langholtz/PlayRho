@@ -38,8 +38,8 @@ TEST(Manifold, DefaultConstruction)
 TEST(Manifold, PointInitializingConstructor)
 {
 	const auto lp = Vec2{3, 4};
-	const auto ni = float_t(1.2);
-	const auto ti = float_t(2.4);
+	const auto ni = realnum(1.2);
+	const auto ti = realnum(2.4);
 	const auto cf = ContactFeature{};
 	const auto foo = Manifold::Point{lp, cf, ni, ti};
 	EXPECT_EQ(foo.localPoint.x, lp.x);
@@ -71,10 +71,10 @@ TEST(Manifold, GetForFaceA)
 		EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(0));
 	}
 	{
-		const auto pl = Vec2{float_t(-0.12), float_t(0.34)};
+		const auto pl = Vec2{realnum(-0.12), realnum(0.34)};
 		const auto cf = GetFaceFaceContactFeature(0, 0);
-		const auto ni = float_t(2.9);
-		const auto ti = float_t(.7);
+		const auto ni = realnum(2.9);
+		const auto ti = realnum(.7);
 		const auto foo = Manifold::GetForFaceA(ln, lp, Manifold::Point{pl, cf, ni, ti});
 		EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
 		EXPECT_EQ(foo.GetLocalNormal(), ln);
@@ -88,10 +88,10 @@ TEST(Manifold, GetForFaceA)
 		EXPECT_EQ(p0.tangentImpulse, ti);
 	}
 	{
-		const auto pl = Vec2{float_t(-0.12), float_t(0.34)};
+		const auto pl = Vec2{realnum(-0.12), realnum(0.34)};
 		const auto cf = GetFaceFaceContactFeature(0, 1);
-		const auto ni = float_t(2.9);
-		const auto ti = float_t(.7);
+		const auto ni = realnum(2.9);
+		const auto ti = realnum(.7);
 		const auto foo = Manifold::GetForFaceA(ln, lp, Manifold::Point{pl, cf, ni, ti}, Manifold::Point{-pl, Flip(cf), -ni, -ti});
 		EXPECT_EQ(foo.GetType(), Manifold::e_faceA);
 		EXPECT_EQ(foo.GetLocalNormal(), ln);
@@ -123,10 +123,10 @@ TEST(Manifold, GetForFaceB)
 		EXPECT_EQ(foo.GetPointCount(), Manifold::size_type(0));
 	}
 	{
-		const auto pl = Vec2{float_t(-0.12), float_t(0.34)};
+		const auto pl = Vec2{realnum(-0.12), realnum(0.34)};
 		const auto cf = GetFaceFaceContactFeature(0, 0);
-		const auto ni = float_t(2.9);
-		const auto ti = float_t(.7);
+		const auto ni = realnum(2.9);
+		const auto ti = realnum(.7);
 		Manifold foo = Manifold::GetForFaceB(ln, lp, Manifold::Point{pl, cf, ni, ti});
 		EXPECT_EQ(foo.GetType(), Manifold::e_faceB);
 		EXPECT_EQ(foo.GetLocalNormal(), ln);
@@ -140,10 +140,10 @@ TEST(Manifold, GetForFaceB)
 		EXPECT_EQ(p0.tangentImpulse, ti);
 	}
 	{
-		const auto pl = Vec2{float_t(-0.12), float_t(0.34)};
+		const auto pl = Vec2{realnum(-0.12), realnum(0.34)};
 		const auto cf = GetFaceFaceContactFeature(0, 1);
-		const auto ni = float_t(2.9);
-		const auto ti = float_t(.7);
+		const auto ni = realnum(2.9);
+		const auto ti = realnum(.7);
 		Manifold foo = Manifold::GetForFaceB(ln, lp, Manifold::Point{pl, cf, ni, ti}, Manifold::Point{-pl, Flip(cf), -ni, -ti});
 		EXPECT_EQ(foo.GetType(), Manifold::e_faceB);
 		EXPECT_EQ(foo.GetLocalNormal(), ln);

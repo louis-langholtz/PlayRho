@@ -53,7 +53,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 	
 	const auto maxTargetSquared = Square(maxTarget);
 
-	auto t1 = float_t{0}; // Will be set to value of t2
+	auto t1 = realnum{0}; // Will be set to value of t2
 	auto t1xfA = GetTransformation(sweepA, t1);
 	auto t1xfB = GetTransformation(sweepB, t1);
 
@@ -181,7 +181,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 				if ((roots == conf.maxRootIters) || (a1 == a2) || (std::nextafter(a1, a2) >= a2))
 				{
 					// Reached max root iterations or...
-					// Reached the limit of the float_t type's precision!
+					// Reached the limit of the realnum type's precision!
 					// In this state, there's no way to make progress anymore.
 					// (a1 + a2) / 2 results in a1! So bail from function.
 					stats.sum_root_iters += roots;

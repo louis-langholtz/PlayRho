@@ -50,13 +50,13 @@ TEST(World, Def)
 	EXPECT_FALSE(almost_equal(stepConf.maxTranslation * 2 + defaultDef.linearSlop / 64, stepConf.maxTranslation * 2));
 	EXPECT_FALSE(almost_equal(stepConf.maxRotation.ToRadians() + defaultDef.angularSlop / 64, stepConf.maxRotation.ToRadians()));
 	
-	const auto v = float_t(1);
-	const auto n = std::nextafter(v, float_t(0));
+	const auto v = realnum(1);
+	const auto n = std::nextafter(v, realnum(0));
 	const auto time_inc = v - n;
-	ASSERT_GT(time_inc, float_t(0));
-	ASSERT_LT(time_inc, float_t(1));
+	ASSERT_GT(time_inc, realnum(0));
+	ASSERT_LT(time_inc, realnum(1));
 	const auto max_inc = time_inc * stepConf.maxTranslation;
-	EXPECT_GT(max_inc, float_t(0));
+	EXPECT_GT(max_inc, realnum(0));
 	EXPECT_LT(max_inc, defaultDef.linearSlop / 4);
 #if 1
 	std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
@@ -76,7 +76,7 @@ TEST(World, DefaultInit)
 	EXPECT_EQ(GetJointCount(world), World::size_type(0));
 	EXPECT_EQ(GetContactCount(world), contact_count_t(0));
 	EXPECT_EQ(world.GetTreeHeight(), World::size_type(0));
-	EXPECT_EQ(world.GetTreeQuality(), float_t(0));
+	EXPECT_EQ(world.GetTreeQuality(), realnum(0));
 
 	EXPECT_EQ(world.GetGravity(), EarthlyGravity);
 		
@@ -98,7 +98,7 @@ TEST(World, DefaultInit)
 
 TEST(World, Init)
 {
-	const auto gravity = Vec2{float_t(-4.2), float_t(3.4)};
+	const auto gravity = Vec2{realnum(-4.2), realnum(3.4)};
 	World world{World::Def{}.UseGravity(gravity)};
 	EXPECT_EQ(world.GetGravity(), gravity);
 	EXPECT_FALSE(world.IsLocked());
@@ -106,7 +106,7 @@ TEST(World, Init)
 
 TEST(World, SetGravity)
 {
-	const auto gravity = Vec2{float_t(-4.2), float_t(3.4)};
+	const auto gravity = Vec2{realnum(-4.2), realnum(3.4)};
 	World world;
 	EXPECT_NE(world.GetGravity(), gravity);
 	world.SetGravity(gravity);
@@ -153,21 +153,21 @@ TEST(World, DynamicEdgeBodyHasCorrectMass)
 	const auto v1 = Vec2{-1, 0};
 	const auto v2 = Vec2{+1, 0};
 	const auto shape = std::make_shared<EdgeShape>(v1, v2, GetInvalid<Vec2>(), GetInvalid<Vec2>(), 1);
-	ASSERT_EQ(shape->GetVertexRadius(), float_t(1));
+	ASSERT_EQ(shape->GetVertexRadius(), realnum(1));
 	ASSERT_EQ(shape->GetType(), Shape::e_edge);
 
 	FixtureDef fixtureDef{};
 	fixtureDef.density = 1;
 	const auto fixture = body->CreateFixture(shape, fixtureDef);
 	ASSERT_NE(fixture, nullptr);
-	ASSERT_EQ(fixture->GetDensity(), float_t(1));
+	ASSERT_EQ(fixture->GetDensity(), realnum(1));
 
 	const auto circleMass = fixture->GetDensity() * Pi * Square(shape->GetVertexRadius());
 	const auto rectMass = fixture->GetDensity() * shape->GetVertexRadius() * 2 * GetLength(v2 - v1);
 	const auto totalMass = circleMass + rectMass;
 	
 	EXPECT_EQ(body->GetType(), BodyType::Dynamic);
-	EXPECT_EQ(body->GetInverseMass(), float_t(1) / totalMass);
+	EXPECT_EQ(body->GetInverseMass(), realnum(1) / totalMass);
 
 	ASSERT_NE(fixture->GetShape(), nullptr);
 	EXPECT_EQ(fixture->GetShape()->GetType(), shape->GetType());
@@ -186,8 +186,8 @@ TEST(World, CreateAndDestroyJoint)
 	EXPECT_TRUE(world.GetJoints().empty());
 	EXPECT_EQ(world.GetJoints().begin(), world.GetJoints().end());
 	
-	const auto anchorA = Vec2{float_t(+0.4), float_t(-1.2)};
-	const auto anchorB = Vec2{float_t(-2.3), float_t(+0.7)};
+	const auto anchorA = Vec2{realnum(+0.4), realnum(-1.2)};
+	const auto anchorB = Vec2{realnum(-2.3), realnum(+0.7)};
 	const auto joint = world.CreateJoint(DistanceJointDef{body1, body2, anchorA, anchorB});
 	EXPECT_EQ(GetJointCount(world), joint_count_t(1));
 	EXPECT_FALSE(world.GetJoints().empty());
@@ -243,24 +243,24 @@ TEST(World, MaxJoints)
 
 TEST(World, StepZeroTimeDoesNothing)
 {
-	const auto gravity = Vec2{0, float_t(-9.8)};
+	const auto gravity = Vec2{0, realnum(-9.8)};
 	
 	World world{World::Def{}.UseGravity(gravity)};
 	
 	BodyDef def;
-	def.position = Vec2{float_t(31.9), float_t(-19.24)};
+	def.position = Vec2{realnum(31.9), realnum(-19.24)};
 	def.type = BodyType::Dynamic;
 	
 	const auto body = world.CreateBody(def);
 	ASSERT_NE(body, nullptr);
 	EXPECT_EQ(body->GetLocation().x, def.position.x);
 	EXPECT_EQ(body->GetLocation().y, def.position.y);
-	EXPECT_EQ(GetLinearVelocity(*body).x, float_t(0));
-	EXPECT_EQ(GetLinearVelocity(*body).y, float_t(0));
+	EXPECT_EQ(GetLinearVelocity(*body).x, realnum(0));
+	EXPECT_EQ(GetLinearVelocity(*body).y, realnum(0));
 	EXPECT_EQ(body->GetLinearAcceleration().x, 0);
 	EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
 	
-	const auto time_inc = float_t(0);
+	const auto time_inc = realnum(0);
 	
 	auto pos = body->GetLocation();
 	auto vel = GetLinearVelocity(*body);
@@ -274,7 +274,7 @@ TEST(World, StepZeroTimeDoesNothing)
 		EXPECT_EQ(body->GetLocation().y, pos.y);
 		pos = body->GetLocation();
 		
-		EXPECT_EQ(GetLinearVelocity(*body).x, float_t(0));
+		EXPECT_EQ(GetLinearVelocity(*body).x, realnum(0));
 		EXPECT_FLOAT_EQ(GetLinearVelocity(*body).y, vel.y);
 		vel = GetLinearVelocity(*body);
 	}
@@ -288,9 +288,9 @@ TEST(World, GravitationalBodyMovement)
 	body_def.type = BodyType::Dynamic;
 	body_def.position = p0;
 
-	const auto a = float_t(-10);
+	const auto a = realnum(-10);
 	const auto gravity = Vec2{0, a};
-	const auto t = float_t(.01);
+	const auto t = realnum(.01);
 	
 	World world{World::Def{}.UseGravity(gravity)};
 
@@ -326,24 +326,24 @@ TEST(World, GravitationalBodyMovement)
 
 TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
 {
-	const auto gravity = Vec2{0, float_t(-9.8)};
+	const auto gravity = Vec2{0, realnum(-9.8)};
 	
 	World world{World::Def{}.UseGravity(gravity)};
 	
 	BodyDef def;
-	def.position = Vec2{float_t(31.9), float_t(-19.24)};
+	def.position = Vec2{realnum(31.9), realnum(-19.24)};
 	def.type = BodyType::Dynamic;
 	
 	const auto body = world.CreateBody(def);
 	ASSERT_NE(body, nullptr);
 	EXPECT_EQ(body->GetLocation().x, def.position.x);
 	EXPECT_EQ(body->GetLocation().y, def.position.y);
-	EXPECT_EQ(GetLinearVelocity(*body).x, float_t(0));
-	EXPECT_EQ(GetLinearVelocity(*body).y, float_t(0));
+	EXPECT_EQ(GetLinearVelocity(*body).x, realnum(0));
+	EXPECT_EQ(GetLinearVelocity(*body).y, realnum(0));
 	EXPECT_EQ(body->GetLinearAcceleration().x, 0);
 	EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
 	
-	const auto time_inc = float_t(0.01);
+	const auto time_inc = realnum(0.01);
 	
 	auto pos = body->GetLocation();
 	auto vel = GetLinearVelocity(*body);
@@ -358,7 +358,7 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
 		EXPECT_EQ(body->GetLocation().y, pos.y + (vel.y + gravity.y * time_inc) * time_inc);
 		pos = body->GetLocation();
 		
-		EXPECT_EQ(GetLinearVelocity(*body).x, float_t(0));
+		EXPECT_EQ(GetLinearVelocity(*body).x, realnum(0));
 		EXPECT_LT(GetLinearVelocity(*body).y, vel.y);
 		EXPECT_FLOAT_EQ(GetLinearVelocity(*body).y, vel.y + gravity.y * time_inc);
 		vel = GetLinearVelocity(*body);
@@ -425,7 +425,7 @@ public:
 
 TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 {
-	const auto x = float_t(10); // other test parameters tuned to this value being 10
+	const auto x = realnum(10); // other test parameters tuned to this value being 10
 
 	auto presolved = unsigned{0};
 	auto postsolved = unsigned{0};
@@ -448,8 +448,8 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 	
 	const auto shape = std::make_shared<CircleShape>(1);
 	FixtureDef fixtureDef{};
-	fixtureDef.density = float_t(1);
-	fixtureDef.restitution = float_t(1);
+	fixtureDef.density = realnum(1);
+	fixtureDef.restitution = realnum(1);
 	
 	body_def.position = Vec2{-x, 0};
 	body_def.linearVelocity = Vec2{+x, 0};
@@ -476,7 +476,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 	EXPECT_EQ(GetLinearVelocity(*body_b).x, -x);
 	EXPECT_EQ(GetLinearVelocity(*body_b).y, 0);
 
-	const auto time_inc = float_t(.01);
+	const auto time_inc = realnum(.01);
 
 	auto pos_a = body_a->GetLocation();
 	auto pos_b = body_b->GetLocation();
@@ -511,7 +511,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 
 TEST(World, PerfectlyOverlappedSameCirclesStayPut)
 {
-	const auto radius = float_t(1);
+	const auto radius = realnum(1);
 	const auto shape = std::make_shared<CircleShape>(radius);
 	const Vec2 gravity{0, 0};
 
@@ -520,11 +520,11 @@ TEST(World, PerfectlyOverlappedSameCirclesStayPut)
 	auto body_def = BodyDef{};
 	body_def.type = BodyType::Dynamic;
 	body_def.bullet = false;
-	body_def.position = Vec2{float_t(0), float_t(0)};
+	body_def.position = Vec2{realnum(0), realnum(0)};
 
 	FixtureDef fixtureDef{};
-	fixtureDef.density = float_t(1);
-	fixtureDef.restitution = float_t(1); // changes where bodies will be after collision
+	fixtureDef.density = realnum(1);
+	fixtureDef.restitution = realnum(1); // changes where bodies will be after collision
 
 	const auto body1 = world.CreateBody(body_def);
 	{
@@ -542,7 +542,7 @@ TEST(World, PerfectlyOverlappedSameCirclesStayPut)
 	ASSERT_EQ(body2->GetLocation().x, body_def.position.x);
 	ASSERT_EQ(body2->GetLocation().y, body_def.position.y);
 	
-	const auto time_inc = float_t(.01);
+	const auto time_inc = realnum(.01);
 	for (auto i = 0; i < 100; ++i)
 	{
 		Step(world, time_inc);
@@ -555,8 +555,8 @@ TEST(World, PerfectlyOverlappedSameCirclesStayPut)
 
 TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 {
-	const auto radius1 = float_t(1);
-	const auto radius2 = float_t(0.6);
+	const auto radius1 = realnum(1);
+	const auto radius2 = realnum(0.6);
 	const auto shape1 = std::make_shared<CircleShape>(radius1);
 	const auto shape2 = std::make_shared<CircleShape>(radius2);
 	const Vec2 gravity{0, 0};
@@ -566,15 +566,15 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 	auto body_def = BodyDef{};
 	body_def.type = BodyType::Dynamic;
 	body_def.bullet = false;
-	body_def.position = Vec2{float_t(0), float_t(0)};
+	body_def.position = Vec2{realnum(0), realnum(0)};
 	
 	FixtureDef fixtureDef1{};
-	fixtureDef1.density = float_t(1);
-	fixtureDef1.restitution = float_t(1); // changes where bodies will be after collision
+	fixtureDef1.density = realnum(1);
+	fixtureDef1.restitution = realnum(1); // changes where bodies will be after collision
 	
 	FixtureDef fixtureDef2{};
-	fixtureDef2.density = float_t(1);
-	fixtureDef2.restitution = float_t(1); // changes where bodies will be after collision
+	fixtureDef2.density = realnum(1);
+	fixtureDef2.restitution = realnum(1); // changes where bodies will be after collision
 
 	const auto body1 = world.CreateBody(body_def);
 	{
@@ -592,7 +592,7 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 	ASSERT_EQ(body2->GetLocation().x, body_def.position.x);
 	ASSERT_EQ(body2->GetLocation().y, body_def.position.y);
 	
-	const auto time_inc = float_t(.01);
+	const auto time_inc = realnum(.01);
 	for (auto i = 0; i < 100; ++i)
 	{
 		Step(world, time_inc);
@@ -615,7 +615,7 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
 
 	auto body_def = BodyDef{};
 	body_def.type = BodyType::Dynamic;
-	body_def.position = Vec2{float_t(0), float_t(0)};
+	body_def.position = Vec2{realnum(0), realnum(0)};
 	const auto shape = std::make_shared<CircleShape>(1);
 	FixtureDef fixtureDef{};
 	fixtureDef.density = 1;
@@ -652,7 +652,7 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
 	
 	auto body_def = BodyDef{};
 	body_def.type = BodyType::Dynamic;
-	body_def.position = Vec2{float_t(0), float_t(0)};
+	body_def.position = Vec2{realnum(0), realnum(0)};
 	auto shape = std::make_shared<PolygonShape>(1);
 	shape->SetAsBox(2, 2);
 	FixtureDef fixtureDef{};
@@ -680,7 +680,7 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
 
 TEST(World, PartiallyOverlappedSameCirclesSeparate)
 {
-	const auto radius = float_t(1);
+	const auto radius = realnum(1);
 	
 	const Vec2 gravity{0, 0};
 	World world{World::Def{}.UseGravity(gravity)};
@@ -691,10 +691,10 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 	
 	const auto shape = std::make_shared<CircleShape>(radius);
 	FixtureDef fixtureDef{};
-	fixtureDef.density = float_t(1);
-	fixtureDef.restitution = float_t(1); // changes where bodies will be after collision
+	fixtureDef.density = realnum(1);
+	fixtureDef.restitution = realnum(1); // changes where bodies will be after collision
 	
-	const auto body1pos = Vec2{float_t(-radius/4), float_t(0)};
+	const auto body1pos = Vec2{realnum(-radius/4), realnum(0)};
 	body_def.position = body1pos;
 	const auto body1 = world.CreateBody(body_def);
 	{
@@ -704,7 +704,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 	ASSERT_EQ(body1->GetLocation().x, body_def.position.x);
 	ASSERT_EQ(body1->GetLocation().y, body_def.position.y);
 	
-	const auto body2pos = Vec2{float_t(radius/4), float_t(0)};
+	const auto body2pos = Vec2{realnum(radius/4), realnum(0)};
 	body_def.position = body2pos;
 	const auto body2 = world.CreateBody(body_def);
 	{
@@ -722,7 +722,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 	auto lastpos1 = body1->GetLocation();
 	auto lastpos2 = body2->GetLocation();
 
-	const auto time_inc = float_t(.01);
+	const auto time_inc = realnum(.01);
 	// Solver won't separate more than -world.GetLinearSlop().
 	const auto full_separation = radius * 2 - world.GetLinearSlop();
 	for (auto i = 0; i < 100; ++i)
@@ -749,7 +749,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 				EXPECT_NE(body1->GetLocation().y, lastpos1.y);
 				EXPECT_NE(body2->GetLocation().y, lastpos2.y);
 			}
-			ASSERT_GE(new_distance, float_t(2));
+			ASSERT_GE(new_distance, realnum(2));
 			break;
 		}
 
@@ -781,11 +781,11 @@ TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
 	auto body_def = BodyDef{};
 	body_def.type = BodyType::Dynamic;
 	body_def.bullet = false;
-	body_def.position = Vec2{float_t(0), float_t(0)};
+	body_def.position = Vec2{realnum(0), realnum(0)};
 	
 	FixtureDef fixtureDef{};
-	fixtureDef.density = float_t(1);
-	fixtureDef.restitution = float_t(1); // changes where bodies will be after collision
+	fixtureDef.density = realnum(1);
+	fixtureDef.restitution = realnum(1); // changes where bodies will be after collision
 	
 	const auto body1 = world.CreateBody(body_def);
 	{
@@ -807,7 +807,7 @@ TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
 	auto lastpos2 = body2->GetLocation();
 
 	auto stepConf = StepConf{};
-	const auto time_inc = float_t(.01);
+	const auto time_inc = realnum(.01);
 	stepConf.set_dt(time_inc);
 	stepConf.maxLinearCorrection = 0.0001f * 40;
 	for (auto i = 0; i < 100; ++i)
@@ -848,13 +848,13 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	body_def.type = BodyType::Dynamic;
 	body_def.bullet = false; // separation is faster if true.
 	
-	const auto half_dim = float_t(64); // 1 causes additional y-axis separation
+	const auto half_dim = realnum(64); // 1 causes additional y-axis separation
 	const auto shape = std::make_shared<PolygonShape>(half_dim, half_dim);
 	FixtureDef fixtureDef{};
-	fixtureDef.density = float_t(1);
-	fixtureDef.restitution = float_t(1); // changes where bodies will be after collision
+	fixtureDef.density = realnum(1);
+	fixtureDef.restitution = realnum(1); // changes where bodies will be after collision
 	
-	const auto body1pos = Vec2{float_t(half_dim/2), float_t(0)}; // 0 causes additional y-axis separation
+	const auto body1pos = Vec2{realnum(half_dim/2), realnum(0)}; // 0 causes additional y-axis separation
 	body_def.position = body1pos;
 	const auto body1 = world.CreateBody(body_def);
 	{
@@ -864,7 +864,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	ASSERT_EQ(body1->GetLocation().x, body1pos.x);
 	ASSERT_EQ(body1->GetLocation().y, body1pos.y);
 	
-	const auto body2pos = Vec2{-float_t(half_dim/2), float_t(0)}; // 0 causes additional y-axis separation
+	const auto body2pos = Vec2{-realnum(half_dim/2), realnum(0)}; // 0 causes additional y-axis separation
 	body_def.position = body2pos;
 	const auto body2 = world.CreateBody(body_def);
 	{
@@ -894,7 +894,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	const auto velocity_iters = 10u;
 	const auto position_iters = 10u;
 	
-	const auto time_inc = float_t(.01);
+	const auto time_inc = realnum(.01);
 	// Solver won't separate more than -world.GetLinearSlop().
 	const auto full_separation = half_dim * 2 - world.GetLinearSlop();
 	for (auto i = 0; i < 100; ++i)
@@ -924,13 +924,13 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 
 		const auto v1 = body1->GetVelocity();
 		EXPECT_EQ(v1.angular, 0_deg);
-		EXPECT_EQ(v1.linear.x, float_t(0));
-		EXPECT_EQ(v1.linear.y, float_t(0));
+		EXPECT_EQ(v1.linear.x, realnum(0));
+		EXPECT_EQ(v1.linear.y, realnum(0));
 
 		const auto v2 = body2->GetVelocity();
 		EXPECT_EQ(v2.angular, 0_deg);
-		EXPECT_EQ(v2.linear.x, float_t(0));
-		EXPECT_EQ(v2.linear.y, float_t(0));
+		EXPECT_EQ(v2.linear.x, realnum(0));
+		EXPECT_EQ(v2.linear.y, realnum(0));
 
 		EXPECT_FLOAT_EQ(body1->GetAngle().ToRadians(), last_angle_1.ToRadians());
 		EXPECT_FLOAT_EQ(body2->GetAngle().ToRadians(), last_angle_2.ToRadians());
@@ -957,7 +957,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 				EXPECT_NE(body1->GetLocation().y, lastpos1.y);
 				EXPECT_NE(body2->GetLocation().y, lastpos2.y);
 			}
-			ASSERT_GE(new_distance, float_t(2));
+			ASSERT_GE(new_distance, realnum(2));
 			break;
 		}
 		
@@ -990,8 +990,8 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 
 TEST(World, CollidingDynamicBodies)
 {
-	const auto radius = float_t(1);
-	const auto x = float_t(10); // other test parameters tuned to this value being 10
+	const auto radius = realnum(1);
+	const auto x = realnum(10); // other test parameters tuned to this value being 10
 
 	auto body_def = BodyDef{};
 	body_def.type = BodyType::Dynamic;
@@ -1009,8 +1009,8 @@ TEST(World, CollidingDynamicBodies)
 	
 	const auto shape = std::make_shared<CircleShape>(radius);
 	FixtureDef fixtureDef{};
-	fixtureDef.density = float_t(1);
-	fixtureDef.restitution = float_t(1); // changes where bodies will be after collision
+	fixtureDef.density = realnum(1);
+	fixtureDef.restitution = realnum(1); // changes where bodies will be after collision
 
 	body_def.position = Vec2{-(x + 1), 0};
 	body_def.linearVelocity = Vec2{+x, 0};
@@ -1037,10 +1037,10 @@ TEST(World, CollidingDynamicBodies)
 	EXPECT_EQ(GetLinearVelocity(*body_b).x, -x);
 	EXPECT_EQ(GetLinearVelocity(*body_b).y, 0);
 	
-	const auto time_collision = float_t(1.0099994); // only valid for x >= around 4.214
-	const auto time_inc = float_t(.01);
+	const auto time_collision = realnum(1.0099994); // only valid for x >= around 4.214
+	const auto time_inc = realnum(.01);
 	
-	auto elapsed_time = float_t(0);
+	auto elapsed_time = realnum(0);
 	for (;;)
 	{
 		Step(world, time_inc);
@@ -1061,12 +1061,12 @@ TEST(World, CollidingDynamicBodies)
 	const auto tolerance = x / 100;
 	
 	// x position for body1 depends on restitution but it should be around -1
-	EXPECT_GE(body_a->GetLocation().x, float_t(-1) - tolerance);
-	EXPECT_LT(body_a->GetLocation().x, float_t(-1) + tolerance);
+	EXPECT_GE(body_a->GetLocation().x, realnum(-1) - tolerance);
+	EXPECT_LT(body_a->GetLocation().x, realnum(-1) + tolerance);
 
 	// x position for body2 depends on restitution but it should be around +1
-	EXPECT_LE(body_b->GetLocation().x, float_t(+1) + tolerance);
-	EXPECT_GT(body_b->GetLocation().x, float_t(+1) - tolerance);
+	EXPECT_LE(body_b->GetLocation().x, realnum(+1) + tolerance);
+	EXPECT_GT(body_b->GetLocation().x, realnum(+1) - tolerance);
 	
 	// and their deltas from -1 and +1 should be about equal.
 	EXPECT_FLOAT_EQ(body_a->GetLocation().x + 1, 1 - body_b->GetLocation().x);
@@ -1088,8 +1088,8 @@ TEST(World, CollidingDynamicBodies)
 	EXPECT_FLOAT_EQ(elapsed_time, time_contacting + time_inc);
 	
 	// collision should be fully resolved now...
-	EXPECT_LT(body_a->GetLocation().x, float_t(-1));
-	EXPECT_GT(body_b->GetLocation().x, float_t(+1));
+	EXPECT_LT(body_a->GetLocation().x, realnum(-1));
+	EXPECT_GT(body_b->GetLocation().x, realnum(+1));
 	
 	// and their deltas from -1 and +1 should be about equal.
 	EXPECT_FLOAT_EQ(body_a->GetLocation().x + 1, 1 - body_b->GetLocation().x);
@@ -1136,16 +1136,16 @@ TEST(World, SpeedingBulletBallWontTunnel)
 
 	ASSERT_EQ(listener.begin_contacts, unsigned{0});
 
-	const auto left_edge_x = float_t(-0.1);
-	const auto right_edge_x = float_t(+0.1);
+	const auto left_edge_x = realnum(-0.1);
+	const auto right_edge_x = realnum(+0.1);
 
 	BodyDef body_def;
 	const auto edge_shape = std::make_shared<EdgeShape>(Vec2{0, +10}, Vec2{0, -10});
-	const auto ball_radius = float_t(.01);
+	const auto ball_radius = realnum(.01);
 	const auto circle_shape = std::make_shared<CircleShape>(ball_radius);
 
 	FixtureDef fixtureDef;
-	fixtureDef.restitution = float_t(1); // changes where bodies will be after collision
+	fixtureDef.restitution = realnum(1); // changes where bodies will be after collision
 	body_def.type = BodyType::Static;
 
 	body_def.position = Vec2{left_edge_x, 0};
@@ -1164,7 +1164,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 		ASSERT_NE(wall_fixture, nullptr);
 	}
 	
-	const auto begin_x = float_t(0);
+	const auto begin_x = realnum(0);
 
 	body_def.type = BodyType::Dynamic;
 	body_def.position = Vec2{begin_x, 0};
@@ -1172,15 +1172,15 @@ TEST(World, SpeedingBulletBallWontTunnel)
 	const auto ball_body = world.CreateBody(body_def);
 	ASSERT_NE(ball_body, nullptr);
 	
-	fixtureDef.density = float_t(1);
-	fixtureDef.restitution = float_t(1); // changes where bodies will be after collision
+	fixtureDef.density = realnum(1);
+	fixtureDef.restitution = realnum(1); // changes where bodies will be after collision
 	const auto ball_fixture = ball_body->CreateFixture(circle_shape, fixtureDef);
 	ASSERT_NE(ball_fixture, nullptr);
 
 	const auto velocity = Vec2{+1, 0};
 	ball_body->SetVelocity(Velocity{velocity, 0_deg});
 
-	const auto time_inc = float_t(.01);
+	const auto time_inc = realnum(.01);
 	auto stepConf = StepConf{};
 	stepConf.set_dt(time_inc);
 	const auto max_velocity = stepConf.maxTranslation / time_inc;
@@ -1281,11 +1281,11 @@ TEST(World, MouseJointWontCauseTunnelling)
 {
 	World world{World::Def{}.UseGravity(Vec2_zero)};
 	
-	const auto half_box_width = float_t(0.2);
+	const auto half_box_width = realnum(0.2);
 	const auto left_edge_x = -half_box_width;
 	const auto right_edge_x = +half_box_width;
 
-	const auto half_box_height = float_t(0.2);
+	const auto half_box_height = realnum(0.2);
 	const auto btm_edge_y = -half_box_height;
 	const auto top_edge_y = +half_box_height;
 
@@ -1294,8 +1294,8 @@ TEST(World, MouseJointWontCauseTunnelling)
 	BodyDef body_def;
 	EdgeShape edge_shape;
 	FixtureDef fixtureDef{};
-	fixtureDef.friction = float_t(0.4);
-	fixtureDef.restitution = float_t(0.94); // changes where bodies will be after collision
+	fixtureDef.friction = realnum(0.4);
+	fixtureDef.restitution = realnum(0.94); // changes where bodies will be after collision
 	body_def.type = BodyType::Static;
 	
 	// Setup vertical bounderies
@@ -1357,9 +1357,9 @@ TEST(World, MouseJointWontCauseTunnelling)
 	ASSERT_EQ(ball_body->GetLocation().x, 0);
 	ASSERT_EQ(ball_body->GetLocation().y, 0);
 	
-	const auto ball_radius = float_t(half_box_width / 4);
+	const auto ball_radius = realnum(half_box_width / 4);
 	const auto object_shape = std::make_shared<PolygonShape>(ball_radius, ball_radius);
-	fixtureDef.density = float_t(10);
+	fixtureDef.density = realnum(10);
 	{
 		const auto ball_fixture = ball_body->CreateFixture(object_shape, fixtureDef);
 		ASSERT_NE(ball_fixture, nullptr);
@@ -1371,8 +1371,8 @@ TEST(World, MouseJointWontCauseTunnelling)
 	for (auto i = decltype(numBodies){0}; i < numBodies; ++i)
 	{
 		const auto angle = i * 2 * Pi / numBodies;
-		const auto x = ball_radius * float_t(2.1) * std::cos(angle);
-		const auto y = ball_radius * float_t(2.1) * std::sin(angle);
+		const auto x = ball_radius * realnum(2.1) * std::cos(angle);
+		const auto y = ball_radius * realnum(2.1) * std::sin(angle);
 		body_def.position = Vec2{x, y};
 		bodies[i] = world.CreateBody(body_def);
 		ASSERT_NE(bodies[i], nullptr);
@@ -1394,32 +1394,32 @@ TEST(World, MouseJointWontCauseTunnelling)
 		mjd.bodyB = ball_body;
 		const auto ball_body_pos = ball_body->GetLocation();
 		mjd.target = Vec2{ball_body_pos.x - ball_radius / 2, ball_body_pos.y + ball_radius / 2};
-		mjd.maxForce = float_t(1000) * GetMass(*ball_body);
+		mjd.maxForce = realnum(1000) * GetMass(*ball_body);
 		return static_cast<MouseJoint*>(world.CreateJoint(mjd));
 	}();
 	ASSERT_NE(mouse_joint, nullptr);
 
 	ball_body->SetAwake();
 
-	auto max_x = float_t(0);
-	auto min_x = float_t(0);
-	auto max_y = float_t(0);
-	auto min_y = float_t(0);
+	auto max_x = realnum(0);
+	auto min_x = realnum(0);
+	auto max_y = realnum(0);
+	auto min_y = realnum(0);
 
-	auto max_velocity = float_t(0);
+	auto max_velocity = realnum(0);
 
-	//const auto time_inc = float_t(.0043268126901); // numBodies = 6, somewhat dependent on fixture density (10 or less?).
-	//const auto time_inc = float_t(.0039224); // numBodies = 4, maybe dependent on fixture density
-	//const auto time_inc = float_t(.003746); // numBodies = 2, maybe dependent on fixture density
-	//const auto time_inc = float_t(.0036728129); // numBodies = 1, maybe dependent on fixture density
-	const auto time_inc = float_t(.00367281295); // numBodies = 1, maybe dependent on fixture density
+	//const auto time_inc = realnum(.0043268126901); // numBodies = 6, somewhat dependent on fixture density (10 or less?).
+	//const auto time_inc = realnum(.0039224); // numBodies = 4, maybe dependent on fixture density
+	//const auto time_inc = realnum(.003746); // numBodies = 2, maybe dependent on fixture density
+	//const auto time_inc = realnum(.0036728129); // numBodies = 1, maybe dependent on fixture density
+	const auto time_inc = realnum(.00367281295); // numBodies = 1, maybe dependent on fixture density
 
-	auto angle = float_t(0);
-	auto anglular_speed = float_t(0.01); // radians / timestep
-	const auto anglular_accel = float_t(1.002);
+	auto angle = realnum(0);
+	auto anglular_speed = realnum(0.01); // radians / timestep
+	const auto anglular_accel = realnum(1.002);
 	auto distance = half_box_width / 2;
-	auto distance_speed = float_t(0.003); // meters / timestep
-	const auto distance_accel = float_t(1.001);
+	auto distance_speed = realnum(0.003); // meters / timestep
+	const auto distance_accel = realnum(1.001);
 
 	MyContactListener listener{
 		[&](Contact& contact, const Manifold& old_manifold)
@@ -1642,12 +1642,12 @@ TEST(World, MouseJointWontCauseTunnelling)
 	std::cout << std::endl;
 }
 
-static void smaller_still_conserves_momentum(bool bullet, float_t multiplier, float_t time_inc)
+static void smaller_still_conserves_momentum(bool bullet, realnum multiplier, realnum time_inc)
 {
-	const auto radius = float_t(1);
-	const auto start_distance = float_t(10);
+	const auto radius = realnum(1);
+	const auto start_distance = realnum(10);
 	
-	auto scale = float_t(1);
+	auto scale = realnum(1);
 	for (;;)
 	{
 		const auto gravity = Vec2_zero;
@@ -1655,8 +1655,8 @@ static void smaller_still_conserves_momentum(bool bullet, float_t multiplier, fl
 		ASSERT_EQ(world.GetGravity().x, 0);
 		ASSERT_EQ(world.GetGravity().y, 0);
 
-		auto maxNormalImpulse = float_t(0);
-		auto maxTangentImpulse = float_t(0);
+		auto maxNormalImpulse = realnum(0);
+		auto maxTangentImpulse = realnum(0);
 		auto maxPoints = 0u;
 		auto numSteps = 0u;
 		auto failed = false;
@@ -1781,21 +1781,21 @@ static void smaller_still_conserves_momentum(bool bullet, float_t multiplier, fl
 
 TEST(World, SmallerStillConservesMomemtum)
 {
-	// smaller_still_conserves_momentum(false, float_t(0.999), float_t(0.01));
+	// smaller_still_conserves_momentum(false, realnum(0.999), realnum(0.01));
 	// fails around scale=0.0899796 dist0=1.79959
 	// goin to smaller time increment fails nearly same point.
-	smaller_still_conserves_momentum(false, float_t(0.999), float_t(0.01));
+	smaller_still_conserves_momentum(false, realnum(0.999), realnum(0.01));
 }
 
 TEST(World, SmallerBulletStillConservesMomemtum)
 {
-	// smaller_still_conserves_momentum(true, float_t(0.999), float_t(0.01))
+	// smaller_still_conserves_momentum(true, realnum(0.999), realnum(0.01))
 	// fails around scale=4.99832e-05 dist0=0.000999664
 	// goin to smaller time increment fails nearly same point.
-// smaller_still_conserves_momentum(true, float_t(0.999), float_t(0.01));
+// smaller_still_conserves_momentum(true, realnum(0.999), realnum(0.01));
 }
 
-class VerticalStackTest: public ::testing::TestWithParam<float_t>
+class VerticalStackTest: public ::testing::TestWithParam<realnum>
 {
 public:
 	virtual void SetUp()
@@ -1835,8 +1835,8 @@ protected:
 	size_t loopsTillSleeping = 0;
 	const size_t maxLoops = 10000;
 	std::vector<Body*> boxes{10};
-	float_t original_x = 0;
-	const float_t hdim = 0.1f;
+	realnum original_x = 0;
+	const realnum hdim = 0.1f;
 };
 
 TEST_P(VerticalStackTest, EndsBeforeMaxLoops)
@@ -1870,7 +1870,7 @@ TEST_P(VerticalStackTest, EachBodyLevel)
 	}
 }
 
-static std::string test_suffix_generator(::testing::TestParamInfo<float_t> param_info)
+static std::string test_suffix_generator(::testing::TestParamInfo<realnum> param_info)
 {
 	std::stringstream strbuf;
 	strbuf << param_info.index;
@@ -1880,4 +1880,4 @@ static std::string test_suffix_generator(::testing::TestParamInfo<float_t> param
 extern ::testing::internal::ParamGenerator<VerticalStackTest::ParamType> gtest_WorldVerticalStackTest_EvalGenerator_();
 extern ::std::string gtest_WorldVerticalStackTest_EvalGenerateName_(const ::testing::TestParamInfo<VerticalStackTest::ParamType>& info);
 
-INSTANTIATE_TEST_CASE_P(World, VerticalStackTest, ::testing::Values(float_t(0), float_t(5)), test_suffix_generator);
+INSTANTIATE_TEST_CASE_P(World, VerticalStackTest, ::testing::Values(realnum(0), realnum(5)), test_suffix_generator);

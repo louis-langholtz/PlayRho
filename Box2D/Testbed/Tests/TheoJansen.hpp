@@ -29,7 +29,7 @@ class TheoJansen : public Test
 {
 public:
 
-	void CreateLeg(float_t s, const Vec2 wheelAnchor)
+	void CreateLeg(realnum s, const Vec2 wheelAnchor)
 	{
 		Vec2 p1(5.4f * s, -6.1f);
 		Vec2 p2(7.2f * s, -1.2f);
@@ -74,10 +74,10 @@ public:
 		// Using a soft distance constraint can reduce some jitter.
 		// It also makes the structure seem a bit more fluid by
 		// acting like a suspension system.
-		m_world->CreateJoint(DistanceJointDef{body1, body2, p2 + m_offset, p5 + m_offset, float_t(10), float_t(0.5)});
-		m_world->CreateJoint(DistanceJointDef{body1, body2, p3 + m_offset, p4 + m_offset, float_t(10), float_t(0.5)});
-		m_world->CreateJoint(DistanceJointDef(body1, m_wheel, p3 + m_offset, wheelAnchor + m_offset, float_t(10), float_t(0.5)));
-		m_world->CreateJoint(DistanceJointDef(body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset, float_t(10), float_t(0.5)));
+		m_world->CreateJoint(DistanceJointDef{body1, body2, p2 + m_offset, p5 + m_offset, realnum(10), realnum(0.5)});
+		m_world->CreateJoint(DistanceJointDef{body1, body2, p3 + m_offset, p4 + m_offset, realnum(10), realnum(0.5)});
+		m_world->CreateJoint(DistanceJointDef(body1, m_wheel, p3 + m_offset, wheelAnchor + m_offset, realnum(10), realnum(0.5)));
+		m_world->CreateJoint(DistanceJointDef(body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset, realnum(10), realnum(0.5)));
 		m_world->CreateJoint(RevoluteJointDef{body2, m_chassis, p4 + m_offset});
 	}
 
@@ -203,7 +203,7 @@ public:
 	Body* m_wheel;
 	RevoluteJoint* m_motorJoint;
 	bool m_motorOn;
-	float_t m_motorSpeed;
+	realnum m_motorSpeed;
 };
 
 } // namespace box2d

@@ -29,7 +29,7 @@ namespace box2d
 	/// @detail This structure is used to keep track of the best separating axis.
 	struct IndexSeparation
 	{
-		using distance_type = float_t;
+		using distance_type = realnum;
 		using index_type = std::remove_const<decltype(MaxShapeVertices)>::type;
 		
 		static constexpr distance_type InvalidDistance = MaxFloat;
@@ -43,7 +43,7 @@ namespace box2d
 	/// @detail This structure is used to keep track of the best separating axis.
 	struct IndexPairSeparation
 	{
-		using distance_type = float_t;
+		using distance_type = realnum;
 		using index_type = std::remove_const<decltype(MaxShapeVertices)>::type;
 		
 		static constexpr distance_type InvalidDistance = GetInvalid<distance_type>();
@@ -87,7 +87,7 @@ namespace box2d
 	///   distance from each other in the direction of that normal), and the maximal distance.
 	IndexPairSeparation	GetMaxSeparation(Span<const Vec2> verts1, Span<const UnitVec2> norms1,
 									 Span<const Vec2> verts2,
-									 float_t stop = MaxFloat);
+									 realnum stop = MaxFloat);
 
 	/// Gets the max separation information.
 	/// @return The index of the vertex and normal from <code>verts1</code> and <code>norms1</code>,
@@ -95,7 +95,7 @@ namespace box2d
 	///   distance from each other in the direction of that normal), and the maximal distance.
 	IndexPairSeparation	GetMaxSeparation(Span<const Vec2> verts1, Span<const UnitVec2> norms1, const Transformation& xf1,
 									 Span<const Vec2> verts2, const Transformation& xf2,
-									 float_t stop = MaxFloat);
+									 realnum stop = MaxFloat);
 
 } // namespace box2d
 

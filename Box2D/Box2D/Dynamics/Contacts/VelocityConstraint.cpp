@@ -50,10 +50,10 @@ void VelocityConstraint::Update(const WorldManifold& worldManifold,
 			SetVelocityBiasAtPoint(j, [&]() {
 				if (!IsValid(normal))
 				{
-					return float_t{0};
+					return realnum{0};
 				}
 				const auto vn = Dot(GetContactRelVelocity(velA, vcp_rA, velB, vcp_rB), normal);
-				return (vn < -conf.velocityThreshold)? -GetRestitution() * vn: float_t{0};
+				return (vn < -conf.velocityThreshold)? -GetRestitution() * vn: realnum{0};
 			}());
 		}
 	}
@@ -75,7 +75,7 @@ void VelocityConstraint::Update(const WorldManifold& worldManifold,
 		const auto k12 = totalInvMass + (bodyA.GetInvRotI() * rn1A * rn2A)  + (bodyB.GetInvRotI() * rn1B * rn2B);
 		
 		// Ensure a reasonable condition number.
-		constexpr auto k_maxConditionNumber = BOX2D_MAGIC(float_t(1000));
+		constexpr auto k_maxConditionNumber = BOX2D_MAGIC(realnum(1000));
 		if (Square(k11) < (k_maxConditionNumber * (k11 * k22 - Square(k12))))
 		{
 			// K is safe to invert.

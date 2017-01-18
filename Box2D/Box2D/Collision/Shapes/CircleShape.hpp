@@ -29,7 +29,7 @@ class CircleShape : public Shape
 {
 public:
 	
-	static float_t GetDefaultRadius() noexcept
+	static realnum GetDefaultRadius() noexcept
 	{
 		return 0;
 	}
@@ -40,7 +40,7 @@ public:
 	///
 	/// @param radius Radius of the circle shape (in meters).
 	/// @param location Location of the center of this shape.
-	constexpr explicit CircleShape(float_t radius = GetDefaultRadius(), Vec2 location = Vec2_zero) noexcept:
+	constexpr explicit CircleShape(realnum radius = GetDefaultRadius(), Vec2 location = Vec2_zero) noexcept:
 		Shape{e_circle, radius}, m_location{location}
 	{
 		// Intentionally empty.
@@ -52,9 +52,9 @@ public:
 
 	/// Gets the "radius" of the shape.
 	/// @return Non-negative distance.
-	float_t GetRadius() const noexcept { return GetVertexRadius(); }
+	realnum GetRadius() const noexcept { return GetVertexRadius(); }
 	
-	void SetRadius(float_t radius) noexcept
+	void SetRadius(realnum radius) noexcept
 	{
 		SetVertexRadius(radius);
 	}

@@ -71,7 +71,7 @@ struct StepStats
 	ToiStepStats toi;
 };
 
-constexpr auto EarthlyGravity = Vec2{0, float_t(-9.8)};
+constexpr auto EarthlyGravity = Vec2{0, realnum(-9.8)};
 
 /// World.
 /// @detail
@@ -88,16 +88,16 @@ public:
 	struct Def
 	{
 		constexpr Def& UseGravity(Vec2 value) noexcept;
-		constexpr Def& UseLinearSlop(float_t value) noexcept;
-		constexpr Def& UseAngularSlop(float_t value) noexcept;
+		constexpr Def& UseLinearSlop(realnum value) noexcept;
+		constexpr Def& UseAngularSlop(realnum value) noexcept;
 
 		Vec2 gravity = EarthlyGravity;
 		
-		float_t linearSlop = 0.0001f; // originally 0.005;
+		realnum linearSlop = 0.0001f; // originally 0.005;
 		
-		float_t angularSlop = Pi * 2 / 180;
+		realnum angularSlop = Pi * 2 / 180;
 
-		float_t maxVertexRadius = 255.0f; // linearSlop * 2550000
+		realnum maxVertexRadius = 255.0f; // linearSlop * 2550000
 	};
 	
 	static constexpr Def GetDefaultDef()
@@ -245,7 +245,7 @@ public:
 	/// Gets the quality metric of the dynamic tree.
 	/// @detail The smaller the better.
 	/// @return Value of zero or more.
-	float_t GetTreeQuality() const;
+	realnum GetTreeQuality() const;
 
 	/// Change the global gravity vector.
 	void SetGravity(const Vec2 gravity) noexcept;
@@ -264,17 +264,17 @@ public:
 	/// Get the contact manager for testing.
 	const ContactManager& GetContactManager() const noexcept;
 
-	float_t GetLinearSlop() const noexcept;
+	realnum GetLinearSlop() const noexcept;
 
-	float_t GetAngularSlop() const noexcept;
+	realnum GetAngularSlop() const noexcept;
 
 	/// Gets the minimum vertex radius that shapes in this world can be.
-	float_t GetMinVertexRadius() const noexcept;
+	realnum GetMinVertexRadius() const noexcept;
 	
 	/// Gets the maximum vertex radius that shapes in this world can be.
-	float_t GetMaxVertexRadius() const noexcept;
+	realnum GetMaxVertexRadius() const noexcept;
 
-	float_t GetInvDeltaTime() const noexcept;
+	realnum GetInvDeltaTime() const noexcept;
 
 private:
 
@@ -385,7 +385,7 @@ private:
 	/// @param[in,out] body A dynamic/accelerable body.
 	/// @param[in] toi Time of impact (TOI). Value between 0 and 1.
 	/// @param listener Pointer to listener that will be called, or nullptr.
-	static void ProcessContactsForTOI(Island& island, Body& body, float_t toi, ContactListener* listener = nullptr);
+	static void ProcessContactsForTOI(Island& island, Body& body, realnum toi, ContactListener* listener = nullptr);
 	
 	bool Add(Body& b);
 	bool Add(Joint& j);
@@ -407,7 +407,7 @@ private:
 	{
 		contact_count_t count = 0;
 		Contact* contact = nullptr; ///< Contact for which the time of impact is relavant.
-		float_t toi = MaxFloat; ///< Time of impact (TOI) as a fractional value between 0 and 1.
+		realnum toi = MaxFloat; ///< Time of impact (TOI) as a fractional value between 0 and 1.
 	};
 
 	/// Updates the contact times of impact.
@@ -445,10 +445,10 @@ private:
 	/// @detail Used to compute time step ratio to support a variable time step.
 	/// @note 4-bytes large.
 	/// @sa Step.
-	float_t m_inv_dt0 = 0;
+	realnum m_inv_dt0 = 0;
 
-	const float_t m_linearSlop;
-	const float_t m_angularSlop;
+	const realnum m_linearSlop;
+	const realnum m_angularSlop;
 
 	/// Maximum vertex radius.
 	/// @detail
@@ -458,7 +458,7 @@ private:
 	/// associated with this world that would otherwise not be able to be simulated due to
 	/// numerical issues. It can also be set below this upper bound to constrain the differences
 	/// between shape vertex radiuses to possibly more limited visual ranges.
-	const float_t m_maxVertexRadius;
+	const realnum m_maxVertexRadius;
 };
 
 constexpr inline World::Def& World::Def::UseGravity(Vec2 value) noexcept
@@ -467,13 +467,13 @@ constexpr inline World::Def& World::Def::UseGravity(Vec2 value) noexcept
 	return *this;
 }
 
-constexpr inline World::Def& World::Def::UseLinearSlop(float_t value) noexcept
+constexpr inline World::Def& World::Def::UseLinearSlop(realnum value) noexcept
 {
 	linearSlop = value;
 	return *this;
 }
 
-constexpr inline World::Def& World::Def::UseAngularSlop(float_t value) noexcept
+constexpr inline World::Def& World::Def::UseAngularSlop(realnum value) noexcept
 {
 	angularSlop = value;
 	return *this;
@@ -573,17 +573,17 @@ inline void World::UnsetNewFixtures() noexcept
 	m_flags &= ~e_newFixture;
 }
 
-inline float_t World::GetLinearSlop() const noexcept
+inline realnum World::GetLinearSlop() const noexcept
 {
 	return m_linearSlop;
 }
 
-inline float_t World::GetAngularSlop() const noexcept
+inline realnum World::GetAngularSlop() const noexcept
 {
 	return m_angularSlop;
 }
 
-inline float_t World::GetMinVertexRadius() const noexcept
+inline realnum World::GetMinVertexRadius() const noexcept
 {
 	// This scaling factor should not be modified.
 	// Making it smaller means some shapes could have insufficient buffer for continuous collision.
@@ -591,12 +591,12 @@ inline float_t World::GetMinVertexRadius() const noexcept
 	return GetLinearSlop() * 2;
 }
 
-inline float_t World::GetMaxVertexRadius() const noexcept
+inline realnum World::GetMaxVertexRadius() const noexcept
 {
 	return m_maxVertexRadius;
 }
 
-inline float_t World::GetInvDeltaTime() const noexcept
+inline realnum World::GetInvDeltaTime() const noexcept
 {
 	return m_inv_dt0;
 }
@@ -606,7 +606,7 @@ inline float_t World::GetInvDeltaTime() const noexcept
 /// Fattens AABBs in the dynamic tree. This allows proxies
 /// to move by a small amount without triggering a tree adjustment.
 /// This is in meters.
-inline float_t GetAabbExtension(const World& world) noexcept
+inline realnum GetAabbExtension(const World& world) noexcept
 {
 	return world.GetLinearSlop() * 20;
 }
@@ -654,7 +654,7 @@ inline contact_count_t GetContactCount(const World& world) noexcept
 /// @param velocityIterations Number of iterations for the velocity constraint solver.
 /// @param positionIterations Number of iterations for the position constraint solver.
 ///   The position constraint solver resolves the positions of bodies that overlap.
-StepStats Step(World& world, float_t timeStep,
+StepStats Step(World& world, realnum timeStep,
 			   World::ts_iters_type velocityIterations = 8, World::ts_iters_type positionIterations = 3);
 
 size_t GetFixtureCount(const World& world) noexcept;

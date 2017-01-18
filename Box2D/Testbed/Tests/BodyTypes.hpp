@@ -137,7 +137,7 @@ public:
 
 	Body* m_attachment;
 	Body* m_platform;
-	float_t m_speed;
+	realnum m_speed;
 };
 
 } // namespace box2d

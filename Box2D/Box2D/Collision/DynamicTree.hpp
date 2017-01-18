@@ -119,7 +119,7 @@ public:
 	/// Gets the ratio of the sum of the perimeters of nodes to the root perimeter.
 	/// @note Zero is returned if no proxies exist at the time of the call.
 	/// @return Value of zero or more.
-	float_t GetAreaRatio() const;
+	realnum GetAreaRatio() const;
 
 	/// Build an optimal tree. Very expensive. For testing.
 	void RebuildBottomUp();
@@ -276,7 +276,7 @@ inline void DynamicTree::RayCast(T* callback, const RayCastInput& input) const
 		const auto c = node->aabb.GetCenter();
 		const auto h = node->aabb.GetExtents();
 		const auto separation = Abs(Dot(v, p1 - c)) - Dot(abs_v, h);
-		if (separation > float_t{0})
+		if (separation > realnum{0})
 		{
 			continue;
 		}
@@ -287,13 +287,13 @@ inline void DynamicTree::RayCast(T* callback, const RayCastInput& input) const
 
 			const auto value = callback->RayCastCallback(subInput, nodeId);
 
-			if (value == float_t{0})
+			if (value == realnum{0})
 			{
 				// The client has terminated the ray cast.
 				return;
 			}
 
-			if (value > float_t{0})
+			if (value > realnum{0})
 			{
 				// Update segment bounding box.
 				maxFraction = value;

@@ -129,7 +129,7 @@ GearJoint::GearJoint(const GearJointDef& def)
 
 	m_constant = coordinateA + m_ratio * coordinateB;
 
-	m_impulse = float_t{0};
+	m_impulse = realnum{0};
 }
 
 void GearJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf& conf)
@@ -172,13 +172,13 @@ void GearJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Po
 	const auto qC = UnitVec2(aC);
 	const auto qD = UnitVec2(aD);
 
-	m_mass = float_t{0};
+	m_mass = realnum{0};
 
 	if (m_typeA == JointType::Revolute)
 	{
 		m_JvAC = Vec2_zero;
-		m_JwA = float_t{1};
-		m_JwC = float_t{1};
+		m_JwA = realnum{1};
+		m_JwC = realnum{1};
 		m_mass += m_iA + m_iC;
 	}
 	else
@@ -211,7 +211,7 @@ void GearJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Po
 	}
 
 	// Compute effective mass.
-	m_mass = (m_mass > float_t{0}) ? float_t{1} / m_mass : float_t{0};
+	m_mass = (m_mass > realnum{0}) ? realnum{1} / m_mass : realnum{0};
 
 	if (step.doWarmStart)
 	{
@@ -226,7 +226,7 @@ void GearJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Po
 	}
 	else
 	{
-		m_impulse = float_t{0};
+		m_impulse = realnum{0};
 	}
 
 	velocities[m_indexA].linear = vA;
@@ -288,19 +288,19 @@ bool GearJoint::SolvePositionConstraints(Span<Position> positions, const Constra
 
 	const UnitVec2 qA(aA), qB(aB), qC(aC), qD(aD);
 
-	const auto linearError = float_t{0};
+	const auto linearError = realnum{0};
 
 	Angle coordinateA, coordinateB;
 
 	Vec2 JvAC, JvBD;
-	float_t JwA, JwB, JwC, JwD;
-	auto mass = float_t{0};
+	realnum JwA, JwB, JwC, JwD;
+	auto mass = realnum{0};
 
 	if (m_typeA == JointType::Revolute)
 	{
 		JvAC = Vec2_zero;
-		JwA = float_t{1};
-		JwC = float_t{1};
+		JwA = realnum{1};
+		JwC = realnum{1};
 		mass += m_iA + m_iC;
 
 		coordinateA = aA - aC - m_referenceAngleA;
@@ -346,8 +346,8 @@ bool GearJoint::SolvePositionConstraints(Span<Position> positions, const Constra
 
 	const auto C = (coordinateA + m_ratio * coordinateB) - m_constant;
 
-	auto impulse = float_t{0};
-	if (mass > float_t{0})
+	auto impulse = realnum{0};
+	if (mass > realnum{0})
 	{
 		impulse = -C.ToRadians() / mass;
 	}
@@ -384,23 +384,23 @@ Vec2 GearJoint::GetAnchorB() const
 	return GetWorldPoint(*GetBodyB(), m_localAnchorB);
 }
 
-Vec2 GearJoint::GetReactionForce(float_t inv_dt) const
+Vec2 GearJoint::GetReactionForce(realnum inv_dt) const
 {
 	return inv_dt * m_impulse * m_JvAC;
 }
 
-float_t GearJoint::GetReactionTorque(float_t inv_dt) const
+realnum GearJoint::GetReactionTorque(realnum inv_dt) const
 {
 	return inv_dt * m_impulse * m_JwA;
 }
 
-void GearJoint::SetRatio(float_t ratio)
+void GearJoint::SetRatio(realnum ratio)
 {
 	assert(IsValid(ratio));
 	m_ratio = ratio;
 }
 
-float_t GearJoint::GetRatio() const
+realnum GearJoint::GetRatio() const
 {
 	return m_ratio;
 }

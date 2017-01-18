@@ -32,8 +32,8 @@ namespace box2d
 
 	struct ContactImpulses
 	{
-		float_t m_normal; ///< Normal impulse. This is the non-penetration impulse (4-bytes).
-		float_t m_tangent; ///< Tangent impulse. This is the friction impulse (4-bytes).
+		realnum m_normal; ///< Normal impulse. This is the non-penetration impulse (4-bytes).
+		realnum m_tangent; ///< Tangent impulse. This is the friction impulse (4-bytes).
 	};
 
 	/// Manifold for two convex shapes.
@@ -139,13 +139,13 @@ namespace box2d
 			/// @detail This is the non-penetration impulse.
 			/// @note This is only used for velocity constraint resolution.
 			/// @note 4-bytes.
-			float_t normalImpulse = 0;
+			realnum normalImpulse = 0;
 			
 			/// Tangent impulse.
 			/// @detail This is the friction impulse.
 			/// @note This is only used for velocity constraint resolution.
 			/// @note 4-bytes.
-			float_t tangentImpulse = 0;
+			realnum tangentImpulse = 0;
 		};
 		
 		// For Circles type manifolds...
@@ -335,7 +335,7 @@ namespace box2d
 			return m_points[index];
 		}
 		
-		void SetPointImpulses(size_type index, float_t n, float_t t)
+		void SetPointImpulses(size_type index, realnum n, realnum t)
 		{
 			assert((0 <= index) && (index < m_pointCount));
 			m_points[index].normalImpulse = n;

@@ -28,9 +28,9 @@ public:
 
 	AddPair()
 	{
-		m_world->SetGravity(Vec2(float_t{0}, float_t{0}));
+		m_world->SetGravity(Vec2(realnum{0}, realnum{0}));
 		{
-			const auto shape = std::make_shared<CircleShape>(float_t(0.1));
+			const auto shape = std::make_shared<CircleShape>(realnum(0.1));
 
 			float minX = -6.0f;
 			float maxX = 0.0f;

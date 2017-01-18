@@ -30,7 +30,7 @@ namespace box2d
 	{
 		Vec2 p1; ///< Point 1.
 		Vec2 p2; ///< Point 2.
-		float_t maxFraction; ///< Max fraction.
+		realnum maxFraction; ///< Max fraction.
 	};
 	
 } // namespace box2d

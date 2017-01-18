@@ -31,13 +31,13 @@ namespace box2d {
 	class CircleShape;
 	class ChainShape;
 
-	float_t GetAreaOfCircle(float_t radius);
-	float_t GetAreaOfPolygon(Span<const Vec2> vertices);
+	realnum GetAreaOfCircle(realnum radius);
+	realnum GetAreaOfPolygon(Span<const Vec2> vertices);
 
 	/// Gets the polar moment of the area enclosed by the given vertices.
 	/// @warning Behavior is undefined if given collection has less than 3 vertices.
 	/// @param vertices Collection of three or more vertices.
-	float_t GetPolarMoment(Span<const Vec2> vertices);
+	realnum GetPolarMoment(Span<const Vec2> vertices);
 
 	/// Mass data.
 	/// @detail This holds the mass data computed for a shape.
@@ -50,7 +50,7 @@ namespace box2d {
 		/// @param m Non-negative mass in kg.
 		/// @param c Position of the shape's centroid relative to the shape's origin.
 		/// @param i Non-negative rotational inertia of the shape about the local origin.
-		constexpr MassData(float_t m, Vec2 c, float_t i) noexcept: mass{m}, center{c}, I{i}
+		constexpr MassData(realnum m, Vec2 c, realnum i) noexcept: mass{m}, center{c}, I{i}
 		{
 			assert(mass >= 0);
 			assert(I >= 0);
@@ -62,7 +62,7 @@ namespace box2d {
 		/// Mass of the shape in kilograms.
 		/// This should NEVER be a negative value.
 		/// @note Behavior is undefined if this value is negative.
-		float_t mass;
+		realnum mass;
 
 		/// Moment of inertia.
 		/// @detail
@@ -70,7 +70,7 @@ namespace box2d {
 		/// This should NEVER be a negative value.
 		/// @note Behavior is undefined if this value is negative.
 		/// @sa https://en.wikipedia.org/wiki/Moment_of_inertia
-		float_t I;
+		realnum I;
 	};
 	
 	/// Computes the mass data for the given fixture.
@@ -85,35 +85,35 @@ namespace box2d {
 	/// @note Behavior is undefined if the given density is negative.
 	/// @param density Density in kilograms per meter squared (must be non-negative).
 	/// @return Mass data for this shape.
-	MassData GetMassData(const Shape& shape, float_t density);
+	MassData GetMassData(const Shape& shape, realnum density);
 
 	/// Computes the mass properties of this shape using its dimensions and density.
 	/// The inertia tensor is computed about the local origin.
 	/// @note Behavior is undefined if the given density is negative.
 	/// @param density Density in kilograms per meter squared (must be non-negative).
 	/// @return Mass data for this shape.
-	MassData GetMassData(const PolygonShape& shape, float_t density);
+	MassData GetMassData(const PolygonShape& shape, realnum density);
 	
 	/// Computes the mass properties of this shape using its dimensions and density.
 	/// The inertia tensor is computed about the local origin.
 	/// @note Behavior is undefined if the given density is negative.
 	/// @param density Density in kilograms per meter squared (must be non-negative).
 	/// @return Mass data for this shape.
-	MassData GetMassData(const EdgeShape& shape, float_t density);
+	MassData GetMassData(const EdgeShape& shape, realnum density);
 	
 	/// Computes the mass properties of this shape using its dimensions and density.
 	/// The inertia tensor is computed about the local origin.
 	/// @note Behavior is undefined if the given density is negative.
 	/// @param density Density in kilograms per meter squared (must be non-negative).
 	/// @return Mass data for this shape.
-	MassData GetMassData(const ChainShape& shape, float_t density);
+	MassData GetMassData(const ChainShape& shape, realnum density);
 	
 	/// Computes the mass properties of this shape using its dimensions and density.
 	/// The inertia tensor is computed about the local origin.
 	/// @note Behavior is undefined if the given density is negative.
 	/// @param density Density in kilograms per meter squared (must be non-negative).
 	/// @return Mass data for this shape.
-	MassData GetMassData(const CircleShape& shape, float_t density);
+	MassData GetMassData(const CircleShape& shape, realnum density);
 	
 }
 

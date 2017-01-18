@@ -30,7 +30,7 @@ namespace box2d
 	class UnitVec2
 	{
 	public:
-		using data_type = float_t;
+		using data_type = realnum;
 		
 		static constexpr UnitVec2 GetRight() noexcept
 		{

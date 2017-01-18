@@ -71,7 +71,7 @@ namespace box2d {
 			///   inertia is less than zero.
 			/// @param invMass Inverse mass. A value of 0 or more.
 			/// @param invI Inverse rotational inertia. A value of 0 or more.
-			constexpr BodyData(index_type index, float_t invMass, float_t invI) noexcept:
+			constexpr BodyData(index_type index, realnum invMass, realnum invI) noexcept:
 				m_index{index}, m_invMass{invMass}, m_invI{invI}
 			{
 				assert(invMass >= 0);
@@ -82,15 +82,15 @@ namespace box2d {
 			
 			/// Gets the inverse mass.
 			/// @return 0 or greater value.
-			float_t GetInvMass() const noexcept { return m_invMass; }
+			realnum GetInvMass() const noexcept { return m_invMass; }
 			
 			/// Gets the inverse rotational inertia.
 			/// @return 0 or greater value.
-			float_t GetInvRotI() const noexcept { return m_invI; }
+			realnum GetInvRotI() const noexcept { return m_invI; }
 			
 		private:
-			float_t m_invMass = 0; ///< Inverse mass of body. Value of 0 or greater.
-			float_t m_invI = 0; ///< Inverse rotational interia of body. Value of 0 or greater.
+			realnum m_invMass = 0; ///< Inverse mass of body. Value of 0 or greater.
+			realnum m_invI = 0; ///< Inverse rotational interia of body. Value of 0 or greater.
 			index_type m_index = GetInvalid<index_type>(); ///< Index within island of body.
 		};
 		
@@ -105,7 +105,7 @@ namespace box2d {
 		VelocityConstraint& operator= (const VelocityConstraint& copy) = default;
 		
 		VelocityConstraint(index_type contactIndex,
-						   float_t friction, float_t restitution, float_t tangentSpeed,
+						   realnum friction, realnum restitution, realnum tangentSpeed,
 						   BodyData bA, BodyData bB):
 			m_contactIndex{contactIndex},
 			m_friction{friction}, m_restitution{restitution}, m_tangentSpeed{tangentSpeed},
@@ -135,7 +135,7 @@ namespace box2d {
 		///   been added, call GetPointCount().
 		/// @note Behavior is undefined if an attempt is made to add more than MaxManifoldPoints points.
 		/// @sa GetPointCount().
-		void AddPoint(float_t normalImpulse, float_t tangentImpulse);
+		void AddPoint(realnum normalImpulse, realnum tangentImpulse);
 		
 		/// Gets the "K" value.
 		/// @note This value is only valid if previously set.
@@ -155,13 +155,13 @@ namespace box2d {
 		index_type GetContactIndex() const noexcept { return m_contactIndex; }
 		
 		/// Gets the combined friction of the associated contact.
-		float_t GetFriction() const noexcept { return m_friction; }
+		realnum GetFriction() const noexcept { return m_friction; }
 		
 		/// Gets the combined restitution of the associated contact.
-		float_t GetRestitution() const noexcept { return m_restitution; }
+		realnum GetRestitution() const noexcept { return m_restitution; }
 		
 		/// Gets the tangent speed of the associated contact.
-		float_t GetTangentSpeed() const noexcept { return m_tangentSpeed; }
+		realnum GetTangentSpeed() const noexcept { return m_tangentSpeed; }
 		
 		BodyData bodyA; ///< Body A contact velocity constraint data.
 		
@@ -172,19 +172,19 @@ namespace box2d {
 		///   to set this value.
 		/// @return Value previously set, or an invalid value.
 		/// @sa SetNormalImpulseAtPoint.
-		float_t GetNormalImpulseAtPoint(size_type index) const noexcept;
+		realnum GetNormalImpulseAtPoint(size_type index) const noexcept;
 		
 		/// Gets the tangent impulse at the given point.
 		/// @note Call the <code>AddPoint</code> or <code>SetTangentImpulseAtPoint</code> method
 		///   to set this value.
 		/// @return Value previously set, or an invalid value.
 		/// @sa SetTangentImpulseAtPoint.
-		float_t GetTangentImpulseAtPoint(size_type index) const noexcept;
+		realnum GetTangentImpulseAtPoint(size_type index) const noexcept;
 		
 		/// Gets the velocity bias at the given point.
 		/// @note Call the <code>Update</code> method to set this value.
 		/// @return Previously set value or an invalid value.
-		float_t GetVelocityBiasAtPoint(size_type index) const noexcept;
+		realnum GetVelocityBiasAtPoint(size_type index) const noexcept;
 
 		/// Gets the normal mass at the given point.
 		/// @note This value depends on the values of:
@@ -193,7 +193,7 @@ namespace box2d {
 		///   the point-relative A and B positions, and
 		///   the normal.
 		/// @note Call the <code>Update</code> method to set this value.
-		float_t GetNormalMassAtPoint(size_type index) const noexcept;
+		realnum GetNormalMassAtPoint(size_type index) const noexcept;
 		
 		/// Gets the tangent mass at the given point.
 		/// @note This value depends on the values of:
@@ -202,7 +202,7 @@ namespace box2d {
 		///   the point-relative A and B positions, and
 		///   the tangent.
 		/// @note Call the <code>Update</code> method to set this value.
-		float_t GetTangentMassAtPoint(size_type index) const noexcept;
+		realnum GetTangentMassAtPoint(size_type index) const noexcept;
 
 		/// Gets the point relative position of A.
 		/// @note Call the <code>Update</code> method to set this value.
@@ -216,7 +216,7 @@ namespace box2d {
 
 		struct UpdateConf
 		{
-			float_t velocityThreshold;
+			realnum velocityThreshold;
 			bool blockSolve;
 		};
 
@@ -238,9 +238,9 @@ namespace box2d {
 					Span<const Velocity> velocities,
 					const UpdateConf conf);
 		
-		void SetNormalImpulseAtPoint(size_type index, float_t value);
+		void SetNormalImpulseAtPoint(size_type index, realnum value);
 		
-		void SetTangentImpulseAtPoint(size_type index, float_t value);
+		void SetTangentImpulseAtPoint(size_type index, realnum value);
 
 	private:
 		/// Removes the last point added.
@@ -257,7 +257,7 @@ namespace box2d {
 		
 		void SetPointRelPositions(size_type index, Vec2 a, Vec2 b);
 		
-		void SetVelocityBiasAtPoint(size_type index, float_t value);
+		void SetVelocityBiasAtPoint(size_type index, realnum value);
 
 		/// Velocity constraint point.
 		/// @note This structure is at least 36-bytes large.
@@ -266,30 +266,30 @@ namespace box2d {
 			Point() = default;
 			
 #if defined(BOX2D_CACHE_VC_POINT_MASSES)
-			constexpr Point(Vec2 a, Vec2 b, float_t ni, float_t ti, float_t nm, float_t tm, float_t vb) noexcept:
+			constexpr Point(Vec2 a, Vec2 b, realnum ni, realnum ti, realnum nm, realnum tm, realnum vb) noexcept:
 				rA{a}, rB{b}, normalImpulse{ni}, tangentImpulse{ti}, normalMass{nm}, tangentMass{tm}, velocityBias{vb}
 			{
 				assert(nm >= 0);
 				assert(tm >= 0);
 			}
 #else
-			constexpr Point(Vec2 a, Vec2 b, float_t ni, float_t ti, float_t vb) noexcept:
+			constexpr Point(Vec2 a, Vec2 b, realnum ni, realnum ti, realnum vb) noexcept:
 				rA{a}, rB{b}, normalImpulse{ni}, tangentImpulse{ti}, velocityBias{vb}
 			{
 			}
 #endif
 			
-			constexpr Point(float_t ni, float_t ti) noexcept: normalImpulse{ni}, tangentImpulse{ti} {}
+			constexpr Point(realnum ni, realnum ti) noexcept: normalImpulse{ni}, tangentImpulse{ti} {}
 			
 			Vec2 rA = GetInvalid<decltype(rA)>(); ///< Position of body A relative to world manifold point (8-bytes).
 			Vec2 rB = GetInvalid<decltype(rB)>(); ///< Position of body B relative to world manifold point (8-bytes).
-			float_t normalImpulse = GetInvalid<decltype(normalImpulse)>(); ///< Normal impulse (4-bytes).
-			float_t tangentImpulse = GetInvalid<decltype(tangentImpulse)>(); ///< Tangent impulse (4-bytes).
+			realnum normalImpulse = GetInvalid<decltype(normalImpulse)>(); ///< Normal impulse (4-bytes).
+			realnum tangentImpulse = GetInvalid<decltype(tangentImpulse)>(); ///< Tangent impulse (4-bytes).
 #if defined(BOX2D_CACHE_VC_POINT_MASSES)
-			float_t normalMass = GetInvalid<decltype(normalMass)>(); ///< Normal mass (4-bytes). Dependent on rA and rB. 0 or greater.
-			float_t tangentMass = GetInvalid<decltype(tangentMass)>(); ///< Tangent mass (4-bytes). Dependent on rA and rB. 0 or greater.
+			realnum normalMass = GetInvalid<decltype(normalMass)>(); ///< Normal mass (4-bytes). Dependent on rA and rB. 0 or greater.
+			realnum tangentMass = GetInvalid<decltype(tangentMass)>(); ///< Tangent mass (4-bytes). Dependent on rA and rB. 0 or greater.
 #endif
-			float_t velocityBias = GetInvalid<decltype(velocityBias)>(); ///< Velocity bias (4-bytes).
+			realnum velocityBias = GetInvalid<decltype(velocityBias)>(); ///< Velocity bias (4-bytes).
 		};
 
 		/// Accesses the point identified by the given index.
@@ -319,11 +319,11 @@ namespace box2d {
 		UnitVec2 m_normal; ///< Normal of the world manifold. 8-bytes.
 
 		/// Friction coefficient (4-bytes). Usually in the range of [0,1].
-		float_t m_friction = GetInvalid<float_t>();
+		realnum m_friction = GetInvalid<realnum>();
 		
-		float_t m_restitution = GetInvalid<float_t>(); ///< Restitution coefficient (4-bytes).
+		realnum m_restitution = GetInvalid<realnum>(); ///< Restitution coefficient (4-bytes).
 		
-		float_t m_tangentSpeed = GetInvalid<float_t>(); ///< Tangent speed (4-bytes).
+		realnum m_tangentSpeed = GetInvalid<realnum>(); ///< Tangent speed (4-bytes).
 		
 		/// Index of the contact that this constraint is for (typically 8-bytes).
 		index_type m_contactIndex = GetInvalid<index_type>();
@@ -347,7 +347,7 @@ namespace box2d {
 		size_type m_pointCount = 0; ///< Point count (at least 1-byte).
 	};
 	
-	inline void VelocityConstraint::AddPoint(float_t normalImpulse, float_t tangentImpulse)
+	inline void VelocityConstraint::AddPoint(realnum normalImpulse, realnum tangentImpulse)
 	{
 		assert(m_pointCount < MaxManifoldPoints);
 		m_points[m_pointCount] = Point{normalImpulse, tangentImpulse};
@@ -401,7 +401,7 @@ namespace box2d {
 		return GetFwdPerpendicular(vc.GetNormal());
 	}
 
-	inline float_t GetInverseMass(const VelocityConstraint& vc) noexcept
+	inline realnum GetInverseMass(const VelocityConstraint& vc) noexcept
 	{
 		return vc.bodyA.GetInvMass() + vc.bodyB.GetInvMass();
 	}
@@ -426,33 +426,33 @@ namespace box2d {
 		return vc.GetPointRelPosB(index);
 	}
 	
-	inline float_t ComputeNormalMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
+	inline realnum ComputeNormalMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
 	{
 		const auto value = GetInverseMass(vc)
 			+ (vc.bodyA.GetInvRotI() * Square(Cross(GetPointRelPosA(vc, index), GetNormal(vc))))
 			+ (vc.bodyB.GetInvRotI() * Square(Cross(GetPointRelPosB(vc, index), GetNormal(vc))));
-		return (value != 0)? float_t{1} / value : float_t{0};
+		return (value != 0)? realnum{1} / value : realnum{0};
 	}
 	
-	inline float_t ComputeTangentMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
+	inline realnum ComputeTangentMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
 	{
 		const auto value = GetInverseMass(vc)
 			+ (vc.bodyA.GetInvRotI() * Square(Cross(GetPointRelPosA(vc, index), GetTangent(vc))))
 			+ (vc.bodyB.GetInvRotI() * Square(Cross(GetPointRelPosB(vc, index), GetTangent(vc))));
-		return (value != 0)? float_t{1} / value : float_t{0};
+		return (value != 0)? realnum{1} / value : realnum{0};
 	}
 	
-	inline float_t VelocityConstraint::GetVelocityBiasAtPoint(size_type index) const noexcept
+	inline realnum VelocityConstraint::GetVelocityBiasAtPoint(size_type index) const noexcept
 	{
 		return PointAt(index).velocityBias;
 	}
 	
-	inline float_t GetVelocityBiasAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
+	inline realnum GetVelocityBiasAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
 	{
 		return vc.GetVelocityBiasAtPoint(index);
 	}
 
-	inline float_t VelocityConstraint::GetNormalMassAtPoint(VelocityConstraint::size_type index) const noexcept
+	inline realnum VelocityConstraint::GetNormalMassAtPoint(VelocityConstraint::size_type index) const noexcept
 	{
 #if defined(BOX2D_CACHE_VC_POINT_MASSES)
 		return PointAt(index).normalMass;
@@ -461,7 +461,7 @@ namespace box2d {
 #endif
 	}
 	
-	inline float_t VelocityConstraint::GetTangentMassAtPoint(VelocityConstraint::size_type index) const noexcept
+	inline realnum VelocityConstraint::GetTangentMassAtPoint(VelocityConstraint::size_type index) const noexcept
 	{
 #if defined(BOX2D_CACHE_VC_POINT_MASSES)
 		return PointAt(index).tangentMass;
@@ -470,32 +470,32 @@ namespace box2d {
 #endif
 	}
 
-	inline float_t GetNormalMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
+	inline realnum GetNormalMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
 	{
 		return vc.GetNormalMassAtPoint(index);
 	}
 	
-	inline float_t GetTangentMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
+	inline realnum GetTangentMassAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
 	{
 		return vc.GetTangentMassAtPoint(index);
 	}
 
-	inline float_t VelocityConstraint::GetNormalImpulseAtPoint(VelocityConstraint::size_type index) const noexcept
+	inline realnum VelocityConstraint::GetNormalImpulseAtPoint(VelocityConstraint::size_type index) const noexcept
 	{
 		return PointAt(index).normalImpulse;
 	}
 	
-	inline float_t VelocityConstraint::GetTangentImpulseAtPoint(VelocityConstraint::size_type index) const noexcept
+	inline realnum VelocityConstraint::GetTangentImpulseAtPoint(VelocityConstraint::size_type index) const noexcept
 	{
 		return PointAt(index).tangentImpulse;
 	}
 	
-	inline float_t GetNormalImpulseAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
+	inline realnum GetNormalImpulseAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
 	{
 		return vc.GetNormalImpulseAtPoint(index);
 	}
 	
-	inline float_t GetTangentImpulseAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
+	inline realnum GetTangentImpulseAtPoint(const VelocityConstraint& vc, VelocityConstraint::size_type index)
 	{
 		return vc.GetTangentImpulseAtPoint(index);
 	}
@@ -521,27 +521,27 @@ namespace box2d {
 #endif
 	}
 
-	inline void VelocityConstraint::SetNormalImpulseAtPoint(VelocityConstraint::size_type index, float_t value)
+	inline void VelocityConstraint::SetNormalImpulseAtPoint(VelocityConstraint::size_type index, realnum value)
 	{
 		PointAt(index).normalImpulse = value;
 	}
 
-	inline void VelocityConstraint::SetTangentImpulseAtPoint(VelocityConstraint::size_type index, float_t value)
+	inline void VelocityConstraint::SetTangentImpulseAtPoint(VelocityConstraint::size_type index, realnum value)
 	{
 		PointAt(index).tangentImpulse = value;		
 	}
 
-	inline void VelocityConstraint::SetVelocityBiasAtPoint(VelocityConstraint::size_type index, float_t value)
+	inline void VelocityConstraint::SetVelocityBiasAtPoint(VelocityConstraint::size_type index, realnum value)
 	{
 		PointAt(index).velocityBias = value;
 	}
 
-	inline void SetNormalImpulseAtPoint(VelocityConstraint& vc, VelocityConstraint::size_type index, float_t value)
+	inline void SetNormalImpulseAtPoint(VelocityConstraint& vc, VelocityConstraint::size_type index, realnum value)
 	{
 		vc.SetNormalImpulseAtPoint(index, value);
 	}
 	
-	inline void SetTangentImpulseAtPoint(VelocityConstraint& vc, VelocityConstraint::size_type index, float_t value)
+	inline void SetTangentImpulseAtPoint(VelocityConstraint& vc, VelocityConstraint::size_type index, realnum value)
 	{
 		vc.SetTangentImpulseAtPoint(index, value);		
 	}

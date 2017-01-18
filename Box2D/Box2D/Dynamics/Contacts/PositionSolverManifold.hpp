@@ -47,7 +47,7 @@ namespace box2d
 		/// Separation.
 		/// @detail Separation between two points (i.e. penetration if negative).
 		/// @note This field is 4-bytes large.
-		float_t m_separation;
+		realnum m_separation;
 	};
 
 	/// Gets the normal-point-separation data in world coordinates for the given inputs.

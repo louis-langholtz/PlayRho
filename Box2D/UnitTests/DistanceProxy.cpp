@@ -28,8 +28,8 @@ TEST(DistanceProxy, ByteSizeIs32)
 
 TEST(DistanceProxy, OneVecInitialization)
 {
-	const auto radius = float_t{1};
-	const auto vertex0 = Vec2{float_t(2), float_t(-3)};
+	const auto radius = realnum{1};
+	const auto vertex0 = Vec2{realnum(2), realnum(-3)};
 	const DistanceProxy foo{radius, vertex0};
 	EXPECT_EQ(radius, foo.GetRadius());
 	EXPECT_EQ(1, foo.GetVertexCount());
@@ -38,8 +38,8 @@ TEST(DistanceProxy, OneVecInitialization)
 
 TEST(DistanceProxy, OneVecSupportIndex)
 {
-	const auto radius = float_t{1};
-	const auto vertex0 = Vec2{float_t(2), float_t(-3)};
+	const auto radius = realnum{1};
+	const auto vertex0 = Vec2{realnum(2), realnum(-3)};
 	const DistanceProxy foo{radius, vertex0};
 	EXPECT_EQ(0, GetSupportIndex(foo, vertex0));
 	EXPECT_EQ(0, GetSupportIndex(foo, Vec2_zero));
@@ -48,9 +48,9 @@ TEST(DistanceProxy, OneVecSupportIndex)
 
 TEST(DistanceProxy, TwoVecInitialization)
 {
-	const auto radius = float_t{1};
-	const auto vertex0 = Vec2{float_t(2), float_t(3)};
-	const auto vertex1 = Vec2{float_t(-10), float_t(-1)};
+	const auto radius = realnum{1};
+	const auto vertex0 = Vec2{realnum(2), realnum(3)};
+	const auto vertex1 = Vec2{realnum(-10), realnum(-1)};
 	const DistanceProxy foo{radius, vertex0, vertex1};
 	EXPECT_EQ(radius, foo.GetRadius());
 	EXPECT_EQ(2, foo.GetVertexCount());
@@ -60,9 +60,9 @@ TEST(DistanceProxy, TwoVecInitialization)
 
 TEST(DistanceProxy, TwoVecSupportIndex)
 {
-	const auto radius = float_t{1};
-	const auto vertex0 = Vec2{float_t(2), float_t(3)};
-	const auto vertex1 = Vec2{float_t(-10), float_t(-1)};
+	const auto radius = realnum{1};
+	const auto vertex0 = Vec2{realnum(2), realnum(3)};
+	const auto vertex1 = Vec2{realnum(-10), realnum(-1)};
 	const DistanceProxy foo{radius, vertex0, vertex1};
 	EXPECT_EQ(0, GetSupportIndex(foo, vertex0));
 	EXPECT_EQ(0, GetSupportIndex(foo, Vec2{vertex0.y, vertex0.x}));
@@ -73,11 +73,11 @@ TEST(DistanceProxy, TwoVecSupportIndex)
 
 TEST(DistanceProxy, ThreeVertices)
 {
-	const auto radius = float_t(33);
+	const auto radius = realnum(33);
 	const auto count = DistanceProxy::size_type(3);
-	const auto v0 = Vec2{float_t(1), float_t(2)};
-	const auto v1 = Vec2{float_t(-3), float_t(-4)};
-	const auto v2 = Vec2{float_t(-6), float_t(5)};
+	const auto v0 = Vec2{realnum(1), realnum(2)};
+	const auto v1 = Vec2{realnum(-3), realnum(-4)};
+	const auto v2 = Vec2{realnum(-6), realnum(5)};
 	const auto vertices = std::array<Vec2, count>{{v0, v1, v2}};
 	
 	const DistanceProxy foo{radius, vertices};

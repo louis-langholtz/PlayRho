@@ -52,7 +52,7 @@ using uint64 = std::uint64_t;
 
 /// Box2D floating point type.
 /// This should be float, double, or long double.
-using float_t = float;
+using realnum = float;
 
 /// Child count type. @detail Relating to "children" of Shape.
 using child_count_t = unsigned;
@@ -67,9 +67,9 @@ using island_count_t = size_t;
 /// @detail A type for countining iterations per time-step.
 using ts_iters_t = uint8;
 
-constexpr auto MaxFloat = std::numeric_limits<float_t>::max(); // FLT_MAX
+constexpr auto MaxFloat = std::numeric_limits<realnum>::max(); // FLT_MAX
 
-constexpr auto Pi = static_cast<float_t>(M_PI); ///< Pi as the "float_t" number-type (any narrowing is intentional).
+constexpr auto Pi = static_cast<realnum>(M_PI); ///< Pi as the "realnum" number-type (any narrowing is intentional).
 
 /// @file
 /// Global tuning constants based on meters-kilograms-seconds (MKS) units.
@@ -92,11 +92,11 @@ constexpr auto MaxShapeVertices = uint8{254};
 /// Lower or raise to decrease or increase respectively the minimum of space
 /// between bodies at rest.
 /// @note Smaller values relative to sizes of bodies increases the time it takes for bodies to come to rest.
-constexpr auto LinearSlop = float_t(0.0001); // float_t{1} / float_t{10000}; // aka 0.0001, originally 0.005
+constexpr auto LinearSlop = realnum(0.0001); // realnum{1} / realnum{10000}; // aka 0.0001, originally 0.005
 
 /// A small angle used as a collision and constraint tolerance. Usually it is
 /// chosen to be numerically significant, but visually insignificant.
-constexpr auto AngularSlop = Pi * float_t{2} / float_t{180};
+constexpr auto AngularSlop = Pi * realnum{2} / realnum{180};
 
 /// Maximum time of impact iterations.
 constexpr auto MaxTOIIterations = BOX2D_MAGIC(uint8{20});
@@ -132,10 +132,10 @@ constexpr auto MaxJoints = uint16{std::numeric_limits<uint16>::max() - uint16{1}
 // Sleep
 
 /// A body cannot sleep if its linear velocity is above this tolerance.
-constexpr auto LinearSleepTolerance = float_t{1} / float_t{100}; // aka 0.01
+constexpr auto LinearSleepTolerance = realnum{1} / realnum{100}; // aka 0.01
 
 /// A body cannot sleep if its angular velocity is above this tolerance.
-constexpr auto AngularSleepTolerance = Pi * float_t{2} / float_t{180};
+constexpr auto AngularSleepTolerance = Pi * realnum{2} / realnum{180};
 
 /// Maximum list size.
 template <typename T>

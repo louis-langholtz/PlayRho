@@ -40,10 +40,10 @@ struct FrictionJointDef : public JointDef
 	Vec2 localAnchorB = Vec2_zero;
 
 	/// The maximum friction force in N.
-	float_t maxForce = float_t{0};
+	realnum maxForce = realnum{0};
 
 	/// The maximum friction torque in N-m.
-	float_t maxTorque = float_t{0};
+	realnum maxTorque = realnum{0};
 };
 
 /// Friction joint. This is used for top-down friction.
@@ -56,8 +56,8 @@ public:
 	Vec2 GetAnchorA() const override;
 	Vec2 GetAnchorB() const override;
 
-	Vec2 GetReactionForce(float_t inv_dt) const override;
-	float_t GetReactionTorque(float_t inv_dt) const override;
+	Vec2 GetReactionForce(realnum inv_dt) const override;
+	realnum GetReactionTorque(realnum inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
 	Vec2 GetLocalAnchorA() const { return m_localAnchorA; }
@@ -66,16 +66,16 @@ public:
 	Vec2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
 	/// Set the maximum friction force in N.
-	void SetMaxForce(float_t force);
+	void SetMaxForce(realnum force);
 
 	/// Get the maximum friction force in N.
-	float_t GetMaxForce() const;
+	realnum GetMaxForce() const;
 
 	/// Set the maximum friction torque in N*m.
-	void SetMaxTorque(float_t torque);
+	void SetMaxTorque(realnum torque);
 
 	/// Get the maximum friction torque in N*m.
-	float_t GetMaxTorque() const;
+	realnum GetMaxTorque() const;
 
 private:
 
@@ -88,9 +88,9 @@ private:
 
 	// Solver shared
 	Vec2 m_linearImpulse = Vec2_zero; ///< Linear impulse.
-	float_t m_angularImpulse = float_t{0};
-	float_t m_maxForce;
-	float_t m_maxTorque;
+	realnum m_angularImpulse = realnum{0};
+	realnum m_maxForce;
+	realnum m_maxTorque;
 
 	// Solver temp
 	index_t m_indexA;
@@ -99,12 +99,12 @@ private:
 	Vec2 m_rB;
 	Vec2 m_localCenterA;
 	Vec2 m_localCenterB;
-	float_t m_invMassA;
-	float_t m_invMassB;
-	float_t m_invIA;
-	float_t m_invIB;
+	realnum m_invMassA;
+	realnum m_invMassB;
+	realnum m_invIA;
+	realnum m_invIB;
 	Mat22 m_linearMass;
-	float_t m_angularMass;
+	realnum m_angularMass;
 };
 
 } // namespace box2d

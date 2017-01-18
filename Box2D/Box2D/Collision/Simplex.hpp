@@ -63,7 +63,7 @@ namespace box2d
 		///
 		/// @note This data structure is 4 * 3 + 4 = 16-bytes large.
 		///
-		using Coefficients = ArrayList<float_t, MaxEdges, std::remove_const<decltype(MaxEdges)>::type>;
+		using Coefficients = ArrayList<realnum, MaxEdges, std::remove_const<decltype(MaxEdges)>::type>;
 
 		/// Index pairs.
 		///
@@ -89,7 +89,7 @@ namespace box2d
 			
 			Cache(const Cache& copy) = default;
 			
-			constexpr Cache(float_t metric, IndexPairs indices) noexcept;
+			constexpr Cache(realnum metric, IndexPairs indices) noexcept;
 			
 			/// Gets the metric that was set.
 			/// @note Behavior is undefined if metric was not previously set.
@@ -97,7 +97,7 @@ namespace box2d
 			/// @sa SetMetric.
 			/// @sa IsMetricSet.
 			/// @return Value previously set.
-			float_t GetMetric() const noexcept;
+			realnum GetMetric() const noexcept;
 			
 			bool IsMetricSet() const noexcept;
 			
@@ -108,7 +108,7 @@ namespace box2d
 			constexpr IndexPair GetIndexPair(size_type index) const noexcept;
 			
 		private:
-			float_t m_metric = GetInvalid<float_t>(); ///< Metric. @detail This is a length or area value.			
+			realnum m_metric = GetInvalid<realnum>(); ///< Metric. @detail This is a length or area value.			
 			IndexPairs m_indices; ///< Indices. @detail Collection of index-pairs.
 		};
 
@@ -125,7 +125,7 @@ namespace box2d
 		static constexpr Vec2 CalcSearchDirection(const Edges& simplexEdges) noexcept;
 		
 		/// Gets the given simplex's "metric".
-		static inline float_t CalcMetric(const Edges& simplexEdges);
+		static inline realnum CalcMetric(const Edges& simplexEdges);
 
 		static Simplex Get(const SimplexEdge& s0) noexcept;
 
@@ -160,7 +160,7 @@ namespace box2d
 
 		const SimplexEdge& GetSimplexEdge(size_type index) const noexcept;
 
-		constexpr float_t GetCoefficient(size_type index) const noexcept;
+		constexpr realnum GetCoefficient(size_type index) const noexcept;
 
 		constexpr size_type GetSize() const noexcept;
 
@@ -183,13 +183,13 @@ namespace box2d
 		Coefficients m_normalizedWeights;
 	};
 
-	constexpr inline Simplex::Cache::Cache(float_t metric, IndexPairs indices) noexcept:
+	constexpr inline Simplex::Cache::Cache(realnum metric, IndexPairs indices) noexcept:
 		m_metric{metric}, m_indices{indices}
 	{
 		// Intentionally empty
 	}
 
-	inline float_t Simplex::Cache::GetMetric() const noexcept
+	inline realnum Simplex::Cache::GetMetric() const noexcept
 	{
 		assert(IsValid(m_metric));
 		return m_metric;
@@ -243,7 +243,7 @@ namespace box2d
 				const auto e12 = GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]);
 				const auto sgn = Cross(e12, -GetPointDelta(simplexEdges[0]));
 				// If sgn > 0, then origin is left of e12, else origin is right of e12.
-				return (sgn > float_t{0})? GetRevPerpendicular(e12): GetFwdPerpendicular(e12);
+				return (sgn > realnum{0})? GetRevPerpendicular(e12): GetFwdPerpendicular(e12);
 			}
 				
 			default:
@@ -251,19 +251,19 @@ namespace box2d
 		}
 	}
 
-	inline float_t Simplex::CalcMetric(const Edges& simplexEdges)
+	inline realnum Simplex::CalcMetric(const Edges& simplexEdges)
 	{
 		assert(simplexEdges.size() < 4);
 		switch (simplexEdges.size())
 		{
-			case 0: return float_t{0};
-			case 1: return float_t{0};
+			case 0: return realnum{0};
+			case 1: return realnum{0};
 			case 2:	return Sqrt(GetLengthSquared(GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0])));
 			case 3:	return Cross(GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]),
 								 GetPointDelta(simplexEdges[2]) - GetPointDelta(simplexEdges[0]));
 			default: break; // should not be reached
 		}
-		return float_t{0};
+		return realnum{0};
 	}
 
 	constexpr inline Simplex::Simplex(const Edges& simplexEdges, const Coefficients& normalizedWeights) noexcept:
@@ -271,7 +271,7 @@ namespace box2d
 	{
 		assert(simplexEdges.size() == normalizedWeights.size());
 		assert(almost_equal(1, [&]() {
-			auto sum = float_t(0);
+			auto sum = realnum(0);
 			for (auto&& elem: normalizedWeights)
 			{
 				assert(elem > 0);
@@ -291,7 +291,7 @@ namespace box2d
 		return m_simplexEdges[index];
 	}
 	
-	constexpr inline float_t Simplex::GetCoefficient(size_type index) const noexcept
+	constexpr inline realnum Simplex::GetCoefficient(size_type index) const noexcept
 	{
 		return m_normalizedWeights[index];
 	}

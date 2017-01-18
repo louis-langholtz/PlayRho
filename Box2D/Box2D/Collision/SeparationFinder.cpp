@@ -58,7 +58,7 @@ SeparationFinder SeparationFinder::Get(Span<const IndexPair> indices,
 											UnitVec2::GetZero());
 			const auto normal = Rotate(axis, xfB.q);
 			
-			const auto localPoint = (localPointB1 + localPointB2) / float_t(2);
+			const auto localPoint = (localPointB1 + localPointB2) / realnum(2);
 			const auto pointB = Transform(localPoint, xfB);
 			
 			const auto localPointA = proxyA.GetVertex(ip0.a);
@@ -82,7 +82,7 @@ SeparationFinder SeparationFinder::Get(Span<const IndexPair> indices,
 			const auto axis = GetUnitVector(GetFwdPerpendicular(localPointA2 - localPointA1), UnitVec2::GetZero());
 			const auto normal = Rotate(axis, xfA.q);
 			
-			const auto localPoint = (localPointA1 + localPointA2) / float_t(2);
+			const auto localPoint = (localPointA1 + localPointA2) / realnum(2);
 			const auto pointA = Transform(localPoint, xfA);
 			
 			const auto localPointB = proxyB.GetVertex(ip0.b);
@@ -126,14 +126,14 @@ SeparationFinder::Data SeparationFinder::FindMinSeparationForFaceB(const Transfo
 	return Data{IndexPair{indexA, indexB}, Dot(pointA - pointB, normal)};
 }
 
-float_t SeparationFinder::EvaluateForPoints(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
+realnum SeparationFinder::EvaluateForPoints(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
 {
 	const auto pointA = Transform(m_proxyA.GetVertex(indexPair.a), xfA);
 	const auto pointB = Transform(m_proxyB.GetVertex(indexPair.b), xfB);
 	return Dot(pointB - pointA, m_axis);
 }
 
-float_t SeparationFinder::EvaluateForFaceA(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
+realnum SeparationFinder::EvaluateForFaceA(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
 {
 	const auto normal = Rotate(m_axis, xfA.q);
 	const auto pointA = Transform(m_localPoint, xfA);
@@ -141,7 +141,7 @@ float_t SeparationFinder::EvaluateForFaceA(IndexPair indexPair, const Transforma
 	return Dot(pointB - pointA, normal);
 }
 
-float_t SeparationFinder::EvaluateForFaceB(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
+realnum SeparationFinder::EvaluateForFaceB(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
 {
 	const auto normal = Rotate(m_axis, xfB.q);
 	const auto pointB = Transform(m_localPoint, xfB);

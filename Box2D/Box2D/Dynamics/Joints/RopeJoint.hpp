@@ -35,13 +35,13 @@ struct RopeJointDef : public JointDef
 	constexpr RopeJointDef(Body* bodyA, Body* bodyB) noexcept: JointDef(JointType::Rope, bodyA, bodyB) {}
 
 	/// The local anchor point relative to bodyA's origin.
-	Vec2 localAnchorA = Vec2{-float_t{1}, float_t{0}};
+	Vec2 localAnchorA = Vec2{-realnum{1}, realnum{0}};
 
 	/// The local anchor point relative to bodyB's origin.
-	Vec2 localAnchorB = Vec2{float_t{1}, float_t{0}};
+	Vec2 localAnchorB = Vec2{realnum{1}, realnum{0}};
 
 	/// The maximum length of the rope.
-	float_t maxLength = float_t{0};
+	realnum maxLength = realnum{0};
 };
 
 /// A rope joint enforces a maximum distance between two points
@@ -60,8 +60,8 @@ public:
 	Vec2 GetAnchorA() const override;
 	Vec2 GetAnchorB() const override;
 
-	Vec2 GetReactionForce(float_t inv_dt) const override;
-	float_t GetReactionTorque(float_t inv_dt) const override;
+	Vec2 GetReactionForce(realnum inv_dt) const override;
+	realnum GetReactionTorque(realnum inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
 	Vec2 GetLocalAnchorA() const { return m_localAnchorA; }
@@ -70,8 +70,8 @@ public:
 	Vec2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
 	/// Set/Get the maximum length of the rope.
-	void SetMaxLength(float_t length) { m_maxLength = length; }
-	float_t GetMaxLength() const;
+	void SetMaxLength(realnum length) { m_maxLength = length; }
+	realnum GetMaxLength() const;
 
 	LimitState GetLimitState() const;
 
@@ -84,9 +84,9 @@ private:
 	// Solver shared
 	Vec2 m_localAnchorA;
 	Vec2 m_localAnchorB;
-	float_t m_maxLength;
-	float_t m_length;
-	float_t m_impulse;
+	realnum m_maxLength;
+	realnum m_length;
+	realnum m_impulse;
 
 	// Solver temp
 	index_t m_indexA;
@@ -96,11 +96,11 @@ private:
 	Vec2 m_rB;
 	Vec2 m_localCenterA;
 	Vec2 m_localCenterB;
-	float_t m_invMassA;
-	float_t m_invMassB;
-	float_t m_invIA;
-	float_t m_invIB;
-	float_t m_mass;
+	realnum m_invMassA;
+	realnum m_invMassB;
+	realnum m_invIA;
+	realnum m_invIB;
+	realnum m_mass;
 	LimitState m_state;
 };
 

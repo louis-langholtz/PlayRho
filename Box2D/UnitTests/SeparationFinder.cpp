@@ -36,11 +36,11 @@ TEST(SeparationFinder, BehavesAsExpected)
 	const auto shape = PolygonShape{0.5f, 0.5f};
 	const auto distproxy = GetDistanceProxy(shape, 0);
 
-	const auto x = float_t(100);
+	const auto x = realnum(100);
 	const auto sweepA = Sweep{Position{Vec2{-x, 0}, 0_deg}, Position{Vec2{+x, 0}, 0_deg}};
 	const auto sweepB = Sweep{Position{Vec2{+x, 0}, 0_deg}, Position{Vec2{-x, 0}, 0_deg}};
 	
-	auto t = float_t{0}; // Will be set to value of t2
+	auto t = realnum{0}; // Will be set to value of t2
 	auto last_s = MaxFloat;
 	auto last_distance = MaxFloat;
 	auto xfA = GetTransformation(sweepA, t);
@@ -82,7 +82,7 @@ TEST(SeparationFinder, BehavesAsExpected)
 		EXPECT_LT(s, last_s);
 		
 		//t = std::nextafter(t, 1.0f);
-		t += float_t(.001);
+		t += realnum(.001);
 		last_distance = distance;
 		last_s = s;
 		xfA = GetTransformation(sweepA, t);

@@ -75,7 +75,7 @@ Body::Body(const BodyDef& bd, World* world):
 	m_world{world},
 	m_sweep{Position{bd.position, bd.angle}},
 	m_velocity{Velocity{bd.linearVelocity, bd.angularVelocity}},
-	m_invMass{(bd.type == BodyType::Dynamic)? float_t{1}: float_t{0}},
+	m_invMass{(bd.type == BodyType::Dynamic)? realnum{1}: realnum{0}},
 	m_linearDamping{bd.linearDamping},
 	m_angularDamping{bd.angularDamping},
 	m_userData{bd.userData}
@@ -84,8 +84,8 @@ Body::Body(const BodyDef& bd, World* world):
 	assert(IsValid(bd.linearVelocity));
 	assert(IsValid(bd.angle));
 	assert(IsValid(bd.angularVelocity));
-	assert(IsValid(bd.angularDamping) && (bd.angularDamping >= float_t{0}));
-	assert(IsValid(bd.linearDamping) && (bd.linearDamping >= float_t{0}));
+	assert(IsValid(bd.angularDamping) && (bd.angularDamping >= realnum{0}));
+	assert(IsValid(bd.linearDamping) && (bd.linearDamping >= realnum{0}));
 }
 
 Body::~Body()
@@ -230,7 +230,7 @@ Fixture* Body::CreateFixture(std::shared_ptr<const Shape> shape, const FixtureDe
 	m_fixtures.push_front(fixture);
 
 	// Adjust mass properties if needed.
-	if (fixture->GetDensity() > float_t{0})
+	if (fixture->GetDensity() > realnum{0})
 	{
 		SetMassDataDirty();
 		if (resetMassData)
@@ -311,8 +311,8 @@ void Body::ResetMassData()
 	// Non-dynamic bodies (Static and kinematic ones) have zero mass.
 	if (!IsAccelerable())
 	{
-		m_invMass = float_t{0};
-		m_invI = float_t{0};
+		m_invMass = realnum{0};
+		m_invI = realnum{0};
 		m_sweep = Sweep{Position{GetLocation(), GetAngle()}};
 		UnsetMassDataDirty();
 		return;
@@ -321,22 +321,22 @@ void Body::ResetMassData()
 	const auto massData = ComputeMassData(*this);
 
 	// Force all dynamic bodies to have a positive mass.
-	const auto mass = (massData.mass > float_t{0})? massData.mass: float_t{1};
-	m_invMass = float_t{1} / mass;
+	const auto mass = (massData.mass > realnum{0})? massData.mass: realnum{1};
+	m_invMass = realnum{1} / mass;
 	
 	// Compute center of mass.
 	const auto localCenter = massData.center * m_invMass;
 	
 	const auto I = massData.I;
-	if ((I > float_t{0}) && (!IsFixedRotation()))
+	if ((I > realnum{0}) && (!IsFixedRotation()))
 	{
 		// Center the inertia about the center of mass.
-		assert((I - mass * GetLengthSquared(localCenter)) > float_t{0});
-		m_invI = float_t{1} / (I - mass * GetLengthSquared(localCenter));
+		assert((I - mass * GetLengthSquared(localCenter)) > realnum{0});
+		m_invI = realnum{1} / (I - mass * GetLengthSquared(localCenter));
 	}
 	else
 	{
-		m_invI = float_t{0};
+		m_invI = realnum{0};
 	}
 
 	// Move center of mass.
@@ -362,18 +362,18 @@ void Body::SetMassData(const MassData& massData)
 		return;
 	}
 
-	const auto mass = (massData.mass > float_t(0))? massData.mass: float_t{1};
-	m_invMass = float_t{1} / mass;
+	const auto mass = (massData.mass > realnum(0))? massData.mass: realnum{1};
+	m_invMass = realnum{1} / mass;
 
-	if ((massData.I > float_t{0}) && (!IsFixedRotation()))
+	if ((massData.I > realnum{0}) && (!IsFixedRotation()))
 	{
 		const auto I = massData.I - mass * GetLengthSquared(massData.center);
-		assert(I > float_t{0});
-		m_invI = float_t{1} / I;
+		assert(I > realnum{0});
+		m_invI = realnum{1} / I;
 	}
 	else
 	{
-		m_invI = float_t{0};
+		m_invI = realnum{0};
 	}
 
 	// Move center of mass.
@@ -551,7 +551,7 @@ box2d::size_t box2d::GetWorldIndex(const Body* body)
 	return size_t(-1);
 }
 
-Velocity box2d::GetVelocity(const Body& body, float_t h) noexcept
+Velocity box2d::GetVelocity(const Body& body, realnum h) noexcept
 {
 	assert(IsValid(h));
 
@@ -570,8 +570,8 @@ Velocity box2d::GetVelocity(const Body& body, float_t h) noexcept
 		// v2 = exp(-c * dt) * v1
 		// Pade approximation:
 		// v2 = v1 * 1 / (1 + c * dt)
-		velocity.linear *= float_t{1} / (float_t{1} + h * body.GetLinearDamping());
-		velocity.angular *= float_t{1} / (float_t{1} + h * body.GetAngularDamping());
+		velocity.linear *= realnum{1} / (realnum{1} + h * body.GetLinearDamping());
+		velocity.angular *= realnum{1} / (realnum{1} + h * body.GetAngularDamping());
 	}
 	return velocity;
 }
@@ -584,8 +584,8 @@ size_t box2d::GetFixtureCount(const Body& body)
 
 MassData box2d::ComputeMassData(const Body& body) noexcept
 {
-	auto mass = float_t{0};
-	auto I = float_t{0};
+	auto mass = realnum{0};
+	auto I = realnum{0};
 	auto center = Vec2_zero;
 	for (auto&& fixture: body.GetFixtures())
 	{

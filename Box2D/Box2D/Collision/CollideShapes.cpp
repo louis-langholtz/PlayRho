@@ -79,7 +79,7 @@ static inline IndexSeparation GetPolygonSeparation(const PolygonShape& polygon, 
 
 static inline IndexPairSeparation GetMaxSeparation(const PolygonShape& shape1, const Transformation& xf1,
 												   const PolygonShape& shape2, const Transformation& xf2,
-												   float_t stop = MaxFloat)
+												   realnum stop = MaxFloat)
 {
 	return GetMaxSeparation(shape1.GetVertices(), shape1.GetNormals(), xf1, shape2.GetVertices(), xf2, stop);
 }
@@ -151,8 +151,8 @@ static ClipList GetIncidentEdgeClipList(ContactFeature::index_t index1, const Un
 #endif
 }
 
-static inline ClipList GetClipPoints(IndexSeparation::index_type iv1, float_t sideOffset1, UnitVec2 normal1,
-									 IndexSeparation::index_type iv2, float_t sideOffset2, UnitVec2 normal2,
+static inline ClipList GetClipPoints(IndexSeparation::index_type iv1, realnum sideOffset1, UnitVec2 normal1,
+									 IndexSeparation::index_type iv2, realnum sideOffset2, UnitVec2 normal2,
 									 const ClipList& incidentEdge)
 {
 	const auto points = ClipSegmentToLine(incidentEdge, normal1, sideOffset1, iv1);
@@ -382,7 +382,7 @@ static inline Manifold GetFaceManifold(const Manifold::Type type,
 }
 
 static Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& xfA,
-							  Vec2 locationB, float_t radiusB, const Transformation& xfB)
+							  Vec2 locationB, realnum radiusB, const Transformation& xfB)
 {
 	// Computes the center of the circle in the frame of the polygon.
 	const auto cLocal = InverseTransform(Transform(locationB, xfB), xfA); ///< Center of circle in frame of polygon.
@@ -457,8 +457,8 @@ static Manifold CollideShapes(const PolygonShape& shapeA, const Transformation& 
 								 ContactFeature::e_vertex, 0, locationB);
 }
 
-static Manifold CollideShapes(Vec2 locationA, float_t radiusA, const Transformation& xfA,
-							  Vec2 locationB, float_t radiusB, const Transformation& xfB)
+static Manifold CollideShapes(Vec2 locationA, realnum radiusA, const Transformation& xfA,
+							  Vec2 locationB, realnum radiusB, const Transformation& xfB)
 {
 	const auto pA = Transform(locationA, xfA);
 	const auto pB = Transform(locationB, xfB);
@@ -566,7 +566,7 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	const auto eLenSquared = GetLengthSquared(e);
 	assert(eLenSquared > 0);
 	
-	if (GetLengthSquared(Q - (u * A + v * B) * (float_t{1} / eLenSquared)) > Square(totalRadius))
+	if (GetLengthSquared(Q - (u * A + v * B) * (realnum{1} / eLenSquared)) > Square(totalRadius))
 	{
 		return Manifold{};
 	}
@@ -620,8 +620,8 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 			const auto shapeA_c0 = Dot(shapeB_v1_sub_shapeA_v1_p, shapeA_edge_p) / shapeA_len_squared_p; // t0
 			const auto shapeA_c1 = shapeA_c0 + (dot_edge_B_A / shapeA_len_squared_p); // t1
 			const auto interval = (dot_edge_B_A < 0)?
-				std::array<float_t, 2>{{shapeA_c1, shapeA_c0}}:
-				std::array<float_t, 2>{{shapeA_c0, shapeA_c1}};
+				std::array<realnum, 2>{{shapeA_c1, shapeA_c0}}:
+				std::array<realnum, 2>{{shapeA_c0, shapeA_c1}};
 			if ((interval[1] >= 0) && (interval[0] <= 1))
 			{
 				// The line segments are overlapping (and collinear).
@@ -714,7 +714,7 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	}
 	
 	// Use hysteresis for jitter reduction.
-	constexpr auto k_relativeTol = float_t(0.98);
+	constexpr auto k_relativeTol = realnum(0.98);
 	constexpr auto k_absoluteTol = LinearSlop / 5; // 0.001
 	
 	// Now:

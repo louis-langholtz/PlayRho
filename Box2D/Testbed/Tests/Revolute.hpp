@@ -125,7 +125,7 @@ public:
 		//	m_ball->SetTransform(Vec2(0.0f, 0.5f), 0.0f);
 		//}
 
-		//float_t torque1 = m_joint1->GetMotorTorque();
+		//realnum torque1 = m_joint1->GetMotorTorque();
 		//drawer.DrawString(5, m_textLine, "Motor Torque = %4.0f, %4.0f : Motor Force = %4.0f", (float) torque1, (float) torque2, (float) force3);
 		//m_textLine += DRAW_STRING_NEW_LINE;
 	}

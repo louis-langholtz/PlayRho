@@ -38,7 +38,7 @@ public:
 	void Reset();
 
 	/// Get the time since construction or the last reset.
-	float_t GetMilliseconds() const;
+	realnum GetMilliseconds() const;
 
 private:
 

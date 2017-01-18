@@ -137,7 +137,7 @@ public:
 		m_polygons[1]->Set({Vec2(-0.1f, 0.0f), Vec2(0.1f, 0.0f), Vec2(0.0f, 1.5f)});
 
 		{
-			const auto w = float_t(1);
+			const auto w = realnum(1);
 			const auto b = w / (2.0f + Sqrt(2.0f));
 			const auto s = Sqrt(2.0f) * b;
 
@@ -246,7 +246,7 @@ public:
 	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
 		PolyShapesCallback callback;
-		callback.m_circle.SetRadius(float_t(2.0));
+		callback.m_circle.SetRadius(realnum(2.0));
 		callback.m_circle.SetLocation(Vec2(0.0f, 1.1f));
 		callback.m_transform = Transform_identity;
 		callback.g_debugDraw = &drawer;

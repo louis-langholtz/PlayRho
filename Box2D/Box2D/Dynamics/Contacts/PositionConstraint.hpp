@@ -37,7 +37,7 @@ namespace box2d {
 			
 			BodyData() noexcept = default;
 			
-			constexpr BodyData(index_type i, float_t iM, float_t iI, Vec2 lc) noexcept:
+			constexpr BodyData(index_type i, realnum iM, realnum iI, Vec2 lc) noexcept:
 				index{i}, invMass{iM}, invI{iI}, localCenter{lc}
 			{
 				assert(iM >= 0);
@@ -45,14 +45,14 @@ namespace box2d {
 			}
 			
 			index_type index; ///< Index within island of the associated body (2-bytes).
-			float_t invMass; ///< Inverse mass of associated body (a non-negative value, 4-bytes).
-			float_t invI; ///< Inverse rotational inertia about the center of mass of the associated body (a non-negative value, 4-bytes).
+			realnum invMass; ///< Inverse mass of associated body (a non-negative value, 4-bytes).
+			realnum invI; ///< Inverse rotational inertia about the center of mass of the associated body (a non-negative value, 4-bytes).
 			Vec2 localCenter; ///< Local center of the associated body's sweep (8-bytes).
 		};
 		
 		PositionConstraint() = default;
 		
-		PositionConstraint(const Manifold& m, const BodyData& bA, float_t rA, const BodyData& bB, float_t rB):
+		PositionConstraint(const Manifold& m, const BodyData& bA, realnum rA, const BodyData& bB, realnum rB):
 			manifold{m}, bodyA{bA}, radiusA{rA}, bodyB{bB}, radiusB{rB}
 		{
 			assert(m.GetPointCount() > 0);
@@ -65,11 +65,11 @@ namespace box2d {
 		
 		BodyData bodyA; ///< Body A data (at least 18-bytes).
 		
-		float_t radiusA; ///< "Radius" distance from the associated shape of fixture A (4-bytes). 0 or greater.
+		realnum radiusA; ///< "Radius" distance from the associated shape of fixture A (4-bytes). 0 or greater.
 		
 		BodyData bodyB; ///< Body A data (at least 18-bytes).
 		
-		float_t radiusB; ///< "Radius" distance from the associated shape of fixture B (4-bytes). 0 or greater.
+		realnum radiusB; ///< "Radius" distance from the associated shape of fixture B (4-bytes). 0 or greater.
 	};
 
 } // namespace box2d

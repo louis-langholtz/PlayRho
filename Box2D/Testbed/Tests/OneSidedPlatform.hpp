@@ -111,9 +111,9 @@ public:
 		return new OneSidedPlatform;
 	}
 
-	float_t m_radius = 0.5f;
-	float_t m_top;
-	float_t m_bottom;
+	realnum m_radius = 0.5f;
+	realnum m_top;
+	realnum m_bottom;
 	State m_state = e_unknown;
 	Fixture* m_platform;
 	Fixture* m_character;

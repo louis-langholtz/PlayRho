@@ -47,7 +47,7 @@ public:
 				const auto body = m_world->CreateBody(bd);
 				body->CreateFixture(shape, fd);
 
-				m_world->CreateJoint(RevoluteJointDef(prevBody, body, Vec2(float_t(i), y)));
+				m_world->CreateJoint(RevoluteJointDef(prevBody, body, Vec2(realnum(i), y)));
 
 				prevBody = body;
 			}

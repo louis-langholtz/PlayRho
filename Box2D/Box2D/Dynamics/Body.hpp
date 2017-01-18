@@ -79,8 +79,8 @@ struct BodyDef
 	constexpr BodyDef& UseType(BodyType t) noexcept;
 	constexpr BodyDef& UseLocation(Vec2 l) noexcept;
 	constexpr BodyDef& UseAngle(Angle a) noexcept;
-	constexpr BodyDef& UseLinearDamping(float_t v) noexcept;
-	constexpr BodyDef& UseAngularDamping(float_t v) noexcept;
+	constexpr BodyDef& UseLinearDamping(realnum v) noexcept;
+	constexpr BodyDef& UseAngularDamping(realnum v) noexcept;
 	constexpr BodyDef& UseAllowSleep(bool value) noexcept;
 	constexpr BodyDef& UseAwake(bool value) noexcept;
 	constexpr BodyDef& UseFixedRotation(bool value) noexcept;
@@ -108,12 +108,12 @@ struct BodyDef
 	/// Linear damping is use to reduce the linear velocity. The damping parameter
 	/// can be larger than 1 but the damping effect becomes sensitive to the
 	/// time step when the damping parameter is large.
-	float_t linearDamping = float_t{0};
+	realnum linearDamping = realnum{0};
 
 	/// Angular damping is use to reduce the angular velocity. The damping parameter
 	/// can be larger than 1 but the damping effect becomes sensitive to the
 	/// time step when the damping parameter is large.
-	float_t angularDamping = float_t{0};
+	realnum angularDamping = realnum{0};
 
 	/// Set this flag to false if this body should never fall asleep. Note that
 	/// this increases CPU usage.
@@ -156,13 +156,13 @@ constexpr inline BodyDef& BodyDef::UseAngle(Angle a) noexcept
 	return *this;
 }
 	
-constexpr inline BodyDef& BodyDef::UseLinearDamping(float_t v) noexcept
+constexpr inline BodyDef& BodyDef::UseLinearDamping(realnum v) noexcept
 {
 	linearDamping = v;
 	return *this;
 }
 
-constexpr inline BodyDef& BodyDef::UseAngularDamping(float_t v) noexcept
+constexpr inline BodyDef& BodyDef::UseAngularDamping(realnum v) noexcept
 {
 	angularDamping = v;
 	return *this;
@@ -291,7 +291,7 @@ public:
 	/// them all the time by the mass.
 	/// @return Value of zero or more representing the body's inverse mass (in 1/kg).
 	/// @sa SetMassData.
-	float_t GetInverseMass() const noexcept;
+	realnum GetInverseMass() const noexcept;
 	
 	/// Gets the inverse rotational inertia of the body.
 	/// @detail This is the cached result of dividing 1 by the body's rotational inertia.
@@ -299,7 +299,7 @@ public:
 	/// As such, it's likely faster to multiply values by this inverse value than to redivide
 	/// them all the time by the rotational inertia.
 	/// @return Inverse rotational intertia (in 1/kg-m^2).
-	float_t GetInverseInertia() const noexcept;
+	realnum GetInverseInertia() const noexcept;
 
 	/// Set the mass properties to override the mass properties of the fixtures.
 	/// Note that this changes the center of mass position.
@@ -316,16 +316,16 @@ public:
 	void ResetMassData();
 
 	/// Get the linear damping of the body.
-	float_t GetLinearDamping() const noexcept;
+	realnum GetLinearDamping() const noexcept;
 
 	/// Set the linear damping of the body.
-	void SetLinearDamping(float_t linearDamping) noexcept;
+	void SetLinearDamping(realnum linearDamping) noexcept;
 
 	/// Get the angular damping of the body.
-	float_t GetAngularDamping() const noexcept;
+	realnum GetAngularDamping() const noexcept;
 
 	/// Set the angular damping of the body.
-	void SetAngularDamping(float_t angularDamping) noexcept;
+	void SetAngularDamping(realnum angularDamping) noexcept;
 
 	/// Set the type of this body. This may alter the mass and velocity.
 	void SetType(BodyType type);
@@ -373,14 +373,14 @@ public:
 	/// @return true if the body is awake.
 	bool IsAwake() const noexcept;
 
-	float_t GetSleepTime() const noexcept;
+	realnum GetSleepTime() const noexcept;
 	
 	/// Updates the body's sleep time for speedable bodies.
 	/// @param h Time to increment sleep time by if permissible.
 	/// @post Sleep time will be zero if not permissible. Otheriwse it's the incremented sleep time.
 	/// @note Behavior is undefined if called and this body is not speedable.
 	/// @return New sleep time for this body.
-	float_t UpdateSleepTime(float_t h) noexcept;
+	realnum UpdateSleepTime(realnum h) noexcept;
 
 	/// Set the active state of the body. An inactive body is not
 	/// simulated and cannot be collided with or woken up.
@@ -523,7 +523,7 @@ private:
 	///    2. updates the body's sweep positions (linear and angular) to the advanced ones; and
 	///    3. updates the body's transform to the new sweep one settings.
 	/// @param t Valid new time factor in [0,1) to advance the sweep to.
-	void Advance(float_t t);
+	void Advance(realnum t);
 
 	void DestroyContacts();
 	void DestroyJoints();
@@ -573,17 +573,17 @@ private:
 	/// @detail A non-negative value (in units of 1/kg).
 	/// Can only be zero for non-accelerable bodies.
 	/// @note 4-bytes.
-	float_t m_invMass = float_t{0};	
+	realnum m_invMass = realnum{0};	
 	
 	/// Inverse rotational inertia about the center of mass.
 	/// @detail A non-negative value (in units of 1/(kg*m^2)).
 	/// @note 4-bytes.
-	float_t m_invI = float_t{0};
+	realnum m_invI = realnum{0};
 
-	float_t m_linearDamping; ///< Linear damping. 4-bytes.
-	float_t m_angularDamping; ///< Angular damping. 4-bytes.
+	realnum m_linearDamping; ///< Linear damping. 4-bytes.
+	realnum m_angularDamping; ///< Angular damping. 4-bytes.
 
-	float_t m_sleepTime = float_t{0}; ///< Sleep time. 4-bytes.
+	realnum m_sleepTime = realnum{0}; ///< Sleep time. 4-bytes.
 
 	void* m_userData; ///< User data. 8-bytes.
 };
@@ -629,32 +629,32 @@ inline Velocity Body::GetVelocity() const noexcept
 	return m_velocity;
 }
 	
-inline float_t Body::GetInverseMass() const noexcept
+inline realnum Body::GetInverseMass() const noexcept
 {
 	return m_invMass;
 }
 
-inline float_t Body::GetInverseInertia() const noexcept
+inline realnum Body::GetInverseInertia() const noexcept
 {
 	return m_invI;
 }
 
-inline float_t Body::GetLinearDamping() const noexcept
+inline realnum Body::GetLinearDamping() const noexcept
 {
 	return m_linearDamping;
 }
 
-inline void Body::SetLinearDamping(float_t linearDamping) noexcept
+inline void Body::SetLinearDamping(realnum linearDamping) noexcept
 {
 	m_linearDamping = linearDamping;
 }
 
-inline float_t Body::GetAngularDamping() const noexcept
+inline realnum Body::GetAngularDamping() const noexcept
 {
 	return m_angularDamping;
 }
 
-inline void Body::SetAngularDamping(float_t angularDamping) noexcept
+inline void Body::SetAngularDamping(realnum angularDamping) noexcept
 {
 	m_angularDamping = angularDamping;
 }
@@ -715,15 +715,15 @@ inline bool Body::IsAwake() const noexcept
 	return (m_flags & e_awakeFlag) != 0;
 }
 
-inline float_t Body::GetSleepTime() const noexcept
+inline realnum Body::GetSleepTime() const noexcept
 {
 	return m_sleepTime;
 }
 
-inline float_t Body::UpdateSleepTime(float_t h) noexcept
+inline realnum Body::UpdateSleepTime(realnum h) noexcept
 {
 	assert(IsSpeedable());
-	const auto newSleepTime = (IsSleepingAllowed() && IsSleepable(GetVelocity()))? GetSleepTime() + h: float_t{0};
+	const auto newSleepTime = (IsSleepingAllowed() && IsSleepable(GetVelocity()))? GetSleepTime() + h: realnum{0};
 	m_sleepTime = newSleepTime;
 	return newSleepTime;
 }
@@ -816,7 +816,7 @@ inline Angle Body::GetAngularAcceleration() const noexcept
 	return m_angularAcceleration;
 }
 
-inline void Body::Advance(float_t alpha)
+inline void Body::Advance(realnum alpha)
 {
 	//assert(m_sweep.GetAlpha0() <= alpha);
 
@@ -888,9 +888,9 @@ inline bool IsValidIslandIndex(const Body& body) noexcept
 /// @return Value of zero or more representing the body's mass (in kg).
 /// @sa GetInverseMass.
 /// @sa SetMassData.
-inline float_t GetMass(const Body& body) noexcept
+inline realnum GetMass(const Body& body) noexcept
 {
-	return float_t{1} / body.GetInverseMass();
+	return realnum{1} / body.GetInverseMass();
 }
 
 inline void ApplyLinearAcceleration(Body& body, const Vec2 amount)
@@ -923,7 +923,7 @@ inline void ApplyForceToCenter(Body& body, const Vec2 force) noexcept
 /// without affecting the linear velocity of the center of mass.
 /// Non-zero forces wakes up the body.
 /// @param torque about the z-axis (out of the screen), usually in N-m.
-inline void ApplyTorque(Body& body, const float_t torque) noexcept
+inline void ApplyTorque(Body& body, const realnum torque) noexcept
 {
 	const auto linAccel = body.GetLinearAcceleration();
 	const auto angAccel = body.GetAngularAcceleration() + 1_rad * torque * body.GetInverseInertia();
@@ -946,7 +946,7 @@ inline void ApplyLinearImpulse(Body& body, const Vec2 impulse, const Vec2 point)
 /// Apply an angular impulse.
 /// @param body Body to apply the angular impulse to.
 /// @param impulse the angular impulse in units of kg*m*m/s
-inline void ApplyAngularImpulse(Body& body, float_t impulse) noexcept
+inline void ApplyAngularImpulse(Body& body, realnum impulse) noexcept
 {
 	auto velocity = body.GetVelocity();
 	velocity.angular += 1_rad * body.GetInverseInertia() * impulse;
@@ -955,14 +955,14 @@ inline void ApplyAngularImpulse(Body& body, float_t impulse) noexcept
 
 /// Gets the rotational inertia of the body.
 /// @return the rotational inertia, usually in kg-m^2.
-inline float_t GetInertia(const Body& body) noexcept
+inline realnum GetInertia(const Body& body) noexcept
 {
-	return float_t{1} / body.GetInverseInertia();
+	return realnum{1} / body.GetInverseInertia();
 }
 
 /// Gets the rotational inertia of the body about the local origin.
 /// @return the rotational inertia, usually in kg-m^2.
-inline float_t GetLocalInertia(const Body& body) noexcept
+inline realnum GetLocalInertia(const Body& body) noexcept
 {
 	return GetInertia(body) + GetMass(body) * GetLengthSquared(body.GetLocalCenter());
 }
@@ -1072,7 +1072,7 @@ inline Angle GetTorque(const Body& body) noexcept
 /// Gets the velocity of the body after the given time accounting for the body's acceleration.
 /// @param body Body to get the velocity for.
 /// @param h Time elapsed to get velocity for. Behavior is undefined if this value is invalid.
-Velocity GetVelocity(const Body& body, float_t h) noexcept;
+Velocity GetVelocity(const Body& body, realnum h) noexcept;
 
 size_t GetWorldIndex(const Body* body);
 

@@ -54,7 +54,7 @@ namespace box2d {
 
 			/// Distance.
 			/// @detail Distance of separation (in meters) between vertices indexed by the index-pair.
-			float_t distance;
+			realnum distance;
 		};
 		
 		/// Gets a separation finder for the given inputs.
@@ -86,7 +86,7 @@ namespace box2d {
 		/// @param indexPair Indexes of the proxy A and proxy B vertexes.
 		/// @return Separation distance which will be negative when the given transforms put the
 		///    vertices on the opposite sides of the separating axis.
-		float_t Evaluate(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
+		realnum Evaluate(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
 		{
 			switch (m_type)
 			{
@@ -96,7 +96,7 @@ namespace box2d {
 				default: break;
 			}
 			assert(false);
-			return float_t{0};
+			return realnum{0};
 		}
 		
 		constexpr Type GetType() const noexcept;
@@ -117,11 +117,11 @@ namespace box2d {
 		
 		Data FindMinSeparationForFaceB(const Transformation& xfA, const Transformation& xfB) const;
 		
-		float_t EvaluateForPoints(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
+		realnum EvaluateForPoints(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
 		
-		float_t EvaluateForFaceA(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
+		realnum EvaluateForFaceA(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
 		
-		float_t EvaluateForFaceB(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
+		realnum EvaluateForFaceB(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
 		
 		const DistanceProxy& m_proxyA;
 		const DistanceProxy& m_proxyB;

@@ -36,11 +36,11 @@ static void Draw(Drawer& drawer, const CircleShape& shape, const Transformation&
 	drawer.DrawCircle(center, radius, color);
 
 	// Draw a line fixed in the circle to animate rotation.
-	const auto axis = Rotate(Vec2{float_t{1}, float_t{0}}, xf.q);
+	const auto axis = Rotate(Vec2{realnum{1}, realnum{0}}, xf.q);
 	drawer.DrawSegment(center, center + radius * axis, color);
 }
 
-static void DrawCorner(Drawer& drawer, Vec2 p, float_t r, Angle a0, Angle a1, Color color)
+static void DrawCorner(Drawer& drawer, Vec2 p, realnum r, Angle a0, Angle a1, Color color)
 {
 	const auto angleDiff = GetRevRotationalAngle(a0, a1);
 	auto lastAngle = 0_deg;
@@ -91,7 +91,7 @@ static void Draw(Drawer& drawer, const ChainShape& shape, const Transformation& 
 	{
 		const auto v2 = Transform(shape.GetVertex(i), xf);
 		drawer.DrawSegment(v1, v2, color);
-		drawer.DrawCircle(v1, float_t(0.05), color);
+		drawer.DrawCircle(v1, realnum(0.05), color);
 		v1 = v2;
 	}
 }
@@ -212,7 +212,7 @@ static void Draw(Drawer& drawer, const Joint& joint)
 	const auto p1 = joint.GetAnchorA();
 	const auto p2 = joint.GetAnchorB();
 	
-	const Color color{float_t(0.5), float_t(0.8), float_t(0.8)};
+	const Color color{realnum(0.5), realnum(0.8), realnum(0.8)};
 	
 	switch (joint.GetType())
 	{
@@ -293,7 +293,7 @@ static void Draw(Drawer& drawer, const World& world, const Settings& settings)
 	
 	if (settings.drawCOMs)
 	{
-		const auto k_axisScale = float_t(0.4);
+		const auto k_axisScale = realnum(0.4);
 		const auto red = Color{1.0f, 0.0f, 0.0f};
 		const auto green = Color{0.0f, 1.0f, 0.0f};
 		for (auto&& b: world.GetBodies())
@@ -558,7 +558,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	stepConf.toiResolutionRate = settings.toiPosResRate / 100.0f;
 	if (!settings.enableSleep)
 	{
-		stepConf.minStillTimeToSleep = GetInvalid<float_t>();
+		stepConf.minStillTimeToSleep = GetInvalid<realnum>();
 		Awaken(*m_world);
 	}
 	stepConf.doToi = settings.enableContinuous;
@@ -699,8 +699,8 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 
 	if (settings.drawContactPoints)
 	{
-		const auto k_impulseScale = float_t(0.1);
-		const auto k_axisScale = float_t(0.3);
+		const auto k_impulseScale = realnum(0.1);
+		const auto k_axisScale = realnum(0.3);
 
 		for (auto i = decltype(m_pointCount){0}; i < m_pointCount; ++i)
 		{
@@ -750,17 +750,17 @@ void Test::ShiftOrigin(const Vec2& newOrigin)
 
 constexpr auto RAND_LIMIT = 32767;
 
-float_t box2d::RandomFloat()
+realnum box2d::RandomFloat()
 {
-	auto r = static_cast<float_t>(std::rand() & (RAND_LIMIT));
+	auto r = static_cast<realnum>(std::rand() & (RAND_LIMIT));
 	r /= RAND_LIMIT;
 	r = 2.0f * r - 1.0f;
 	return r;
 }
 
-float_t box2d::RandomFloat(float_t lo, float_t hi)
+realnum box2d::RandomFloat(realnum lo, realnum hi)
 {
-	auto r = static_cast<float_t>(std::rand() & (RAND_LIMIT));
+	auto r = static_cast<realnum>(std::rand() & (RAND_LIMIT));
 	r /= RAND_LIMIT;
 	r = (hi - lo) * r + lo;
 	return r;

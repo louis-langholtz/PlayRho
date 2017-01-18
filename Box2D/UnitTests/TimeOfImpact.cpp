@@ -25,7 +25,7 @@ using namespace box2d;
 
 TEST(TOIConf, DefaultConstruction)
 {
-	EXPECT_EQ(ToiConf{}.tMax, float_t(1));
+	EXPECT_EQ(ToiConf{}.tMax, realnum(1));
 	EXPECT_EQ(ToiConf{}.maxRootIters, MaxTOIRootIterCount);
 	EXPECT_EQ(ToiConf{}.maxToiIters, MaxTOIIterations);
 	EXPECT_EQ(ToiConf{}.targetDepth, LinearSlop * 3);
@@ -41,7 +41,7 @@ TEST(TOIOutput, DefaultConstruction)
 TEST(TOIOutput, InitConstruction)
 {
 	const auto state = TOIOutput::e_failed;
-	const auto time = float_t(0.6);
+	const auto time = realnum(0.6);
 	TOIOutput::Stats stats{3, 5, 11, 10, 4};
 	TOIOutput foo{state, time, stats};
 
@@ -57,24 +57,24 @@ TEST(TOIOutput, InitConstruction)
 
 TEST(TimeOfImpact, Overlapped)
 {
-	const auto limits = ToiConf{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
+	const auto limits = ToiConf{1, realnum(0.0001) * 3, realnum(0.0001) / 4};
 
-	const auto radius = float_t(1);
+	const auto radius = realnum(1);
 	const auto proxyA = DistanceProxy{radius, Vec2_zero};
 	const auto sweepA = Sweep{Position{{0, 0}, 0_deg}};
 	const auto proxyB = DistanceProxy{radius, Vec2_zero};
 	const auto sweepB = Sweep{Position{{0, 0}, 0_deg}};
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
 	EXPECT_EQ(output.get_state(), TOIOutput::e_overlapped);
-	EXPECT_EQ(output.get_t(), float_t(0));
+	EXPECT_EQ(output.get_t(), realnum(0));
 	EXPECT_EQ(output.get_toi_iters(), 1);
 }
 
 TEST(TimeOfImpact, Touching)
 {
-	const auto limits = ToiConf{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
+	const auto limits = ToiConf{1, realnum(0.0001) * 3, realnum(0.0001) / 4};
 
-	const auto radius = float_t(1.1);
+	const auto radius = realnum(1.1);
 
 	const auto proxyA = DistanceProxy{radius, Vec2_zero};
 	const auto sweepA = Sweep{Position{Vec2{0, 0}, 0_deg}};
@@ -85,14 +85,14 @@ TEST(TimeOfImpact, Touching)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
-	EXPECT_EQ(output.get_t(), float_t(0));
+	EXPECT_EQ(output.get_t(), realnum(0));
 	EXPECT_EQ(output.get_toi_iters(), 1);
 }
 
 TEST(TimeOfImpact, Separated)
 {
-	const auto limits = ToiConf{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
-	const auto radius = float_t(1);
+	const auto limits = ToiConf{1, realnum(0.0001) * 3, realnum(0.0001) / 4};
+	const auto radius = realnum(1);
 	
 	const auto proxyA = DistanceProxy{radius, Vec2_zero};
 	const auto sweepA = Sweep{Position{Vec2{0, 0}, 0_deg}};
@@ -103,18 +103,18 @@ TEST(TimeOfImpact, Separated)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_separated);
-	EXPECT_EQ(output.get_t(), float_t(1));
+	EXPECT_EQ(output.get_t(), realnum(1));
 	EXPECT_EQ(output.get_toi_iters(), 1);
 }
 
 TEST(TimeOfImpact, CollideCirclesHorizontally)
 {
-	const auto limits = ToiConf{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
+	const auto limits = ToiConf{1, realnum(0.0001) * 3, realnum(0.0001) / 4};
 
 	// Set up for two bodies moving toward each other at same speeds and each colliding
 	// with the other after they have moved roughly two-thirds of their sweep.
-	const auto radius = float_t(1);
-	const auto x = float_t(2);
+	const auto radius = realnum(1);
+	const auto x = realnum(2);
 	const auto proxyA = DistanceProxy{radius, Vec2_zero};
 	const auto sweepA = Sweep{Position{Vec2{-x, 0}, 0_deg}, Position{Vec2{0, 0}, 0_deg}};
 	const auto proxyB = DistanceProxy{radius, Vec2_zero};
@@ -132,9 +132,9 @@ TEST(TimeOfImpact, CollideCirclesHorizontally)
 
 TEST(TimeOfImpact, CollideCirclesVertically)
 {
-	const auto limits = ToiConf{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
-	const auto radius = float_t(1);
-	const auto y = float_t(20);
+	const auto limits = ToiConf{1, realnum(0.0001) * 3, realnum(0.0001) / 4};
+	const auto radius = realnum(1);
+	const auto y = realnum(20);
 
 	const auto proxyA = DistanceProxy{radius, Vec2_zero};
 	const auto sweepA = Sweep{Position{Vec2{0, -y}, 0_deg}, Position{Vec2{0, +y}, 0_deg}};
@@ -145,19 +145,19 @@ TEST(TimeOfImpact, CollideCirclesVertically)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
-	EXPECT_FLOAT_EQ(output.get_t(), float_t(0.47500378));
+	EXPECT_FLOAT_EQ(output.get_t(), realnum(0.47500378));
 	EXPECT_EQ(output.get_toi_iters(), 2);
 }
 
 TEST(TimeOfImpact, CirclesPassingParallelSeparatedPathsDontCollide)
 {
-	const auto limits = ToiConf{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
+	const auto limits = ToiConf{1, realnum(0.0001) * 3, realnum(0.0001) / 4};
 	
 	// Set up for two bodies moving toward each other at same speeds and each colliding
 	// with the other after they have moved roughly two-thirds of their sweep.
-	const auto radius = float_t(1);
-	const auto x = float_t(3);
-	const auto y = float_t(1);
+	const auto radius = realnum(1);
+	const auto x = realnum(3);
+	const auto y = realnum(1);
 	const auto proxyA = DistanceProxy{radius, Vec2_zero};
 	const auto sweepA = Sweep{Position{Vec2{-x, +y}, 0_deg}, Position{Vec2{+x, +y}, 0_deg}};
 	const auto proxyB = DistanceProxy{radius, Vec2_zero};
@@ -167,18 +167,18 @@ TEST(TimeOfImpact, CirclesPassingParallelSeparatedPathsDontCollide)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_separated);
-	EXPECT_FLOAT_EQ(output.get_t(), float_t(1.0));
+	EXPECT_FLOAT_EQ(output.get_t(), realnum(1.0));
 	EXPECT_EQ(output.get_toi_iters(), 8);
 }
 
 TEST(TimeOfImpact, RodCircleMissAt360)
 {
-	const auto limits = ToiConf{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
+	const auto limits = ToiConf{1, realnum(0.0001) * 3, realnum(0.0001) / 4};
 	
 	// Set up for two bodies moving toward each other at same speeds and each colliding
 	// with the other after they have moved roughly two-thirds of their sweep.
-	const auto radius = float_t(1);
-	const auto x = float_t(40);
+	const auto radius = realnum(1);
+	const auto x = realnum(40);
 	const auto proxyA = DistanceProxy{radius, Vec2{-4, 0}, Vec2{4, 0}};
 	const auto sweepA = Sweep{Position{Vec2{-x, 4}, 0_deg}, Position{Vec2{+x, 4}, 360_deg}};
 	const auto proxyB = DistanceProxy{radius, Vec2_zero};
@@ -188,18 +188,18 @@ TEST(TimeOfImpact, RodCircleMissAt360)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_separated);
-	EXPECT_FLOAT_EQ(output.get_t(), float_t(1.0));
+	EXPECT_FLOAT_EQ(output.get_t(), realnum(1.0));
 	EXPECT_EQ(output.get_toi_iters(), 4);
 }
 
 TEST(TimeOfImpact, RodCircleHitAt180)
 {
-	const auto limits = ToiConf{1, float_t(0.0001) * 3, float_t(0.0001) / 4};
+	const auto limits = ToiConf{1, realnum(0.0001) * 3, realnum(0.0001) / 4};
 	
 	// Set up for two bodies moving toward each other at same speeds and each colliding
 	// with the other after they have moved roughly two-thirds of their sweep.
-	const auto radius = float_t(1);
-	const auto x = float_t(40);
+	const auto radius = realnum(1);
+	const auto x = realnum(40);
 	const auto proxyA = DistanceProxy{radius, Vec2{-4, 0}, Vec2{4, 0}};
 	const auto sweepA = Sweep{Position{Vec2{-x, 4}, 0_deg}, Position{Vec2{+x, 4}, 180_deg}};
 	const auto proxyB = DistanceProxy{radius, Vec2_zero};
@@ -209,14 +209,14 @@ TEST(TimeOfImpact, RodCircleHitAt180)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
-	EXPECT_FLOAT_EQ(output.get_t(), float_t(0.48840469));
+	EXPECT_FLOAT_EQ(output.get_t(), realnum(0.48840469));
 	EXPECT_EQ(output.get_toi_iters(), 3);
 }
 
 TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_1)
 {
-	const auto radius = float_t(1);
-	const auto x = float_t(200);
+	const auto radius = realnum(1);
+	const auto x = realnum(200);
 	const auto proxyA = DistanceProxy{radius, Vec2{0, 0}};
 	const auto sweepA = Sweep{Position{Vec2{-x, 0}, 0_deg}, Position{Vec2{+x, 0}, 0_deg}};
 	const auto proxyB = DistanceProxy{radius, Vec2{0, 0}};
@@ -230,7 +230,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_1)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
-	EXPECT_FLOAT_EQ(output.get_t(), float_t(0.49750039));
+	EXPECT_FLOAT_EQ(output.get_t(), realnum(0.49750039));
 	EXPECT_EQ(output.get_toi_iters(), 2);
 	EXPECT_EQ(output.get_max_dist_iters(), 1);
 	EXPECT_EQ(output.get_max_root_iters(), 2);
@@ -240,8 +240,8 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_1)
 
 TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
 {
-	const auto radius = float_t(1);
-	const auto x = float_t(400);
+	const auto radius = realnum(1);
+	const auto x = realnum(400);
 	const auto proxyA = DistanceProxy{radius, Vec2{0, 0}};
 	const auto sweepA = Sweep{Position{Vec2{-x, 0}, 0_deg}, Position{Vec2{0, 0}, 0_deg}};
 	const auto proxyB = DistanceProxy{radius, Vec2{0, 0}};
@@ -255,7 +255,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
-	EXPECT_EQ(output.get_t(), float_t(0.99750036));
+	EXPECT_EQ(output.get_t(), realnum(0.99750036));
 	EXPECT_EQ(output.get_toi_iters(), 2);
 	EXPECT_EQ(output.get_max_dist_iters(), 1);
 	EXPECT_EQ(output.get_max_root_iters(), 6);
@@ -296,8 +296,8 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
 
 TEST(TimeOfImpact, FailsWithClosingSpeedOf1600)
 {
-	const auto radius = float_t(1);
-	const auto x = float_t(400);
+	const auto radius = realnum(1);
+	const auto x = realnum(400);
 	const auto proxyA = DistanceProxy{radius, Vec2{0, 0}};
 	const auto sweepA = Sweep{Position{Vec2{-x, 0}, 0_deg}, Position{Vec2{+x, 0}, 0_deg}};
 	const auto proxyB = DistanceProxy{radius, Vec2{0, 0}};
@@ -311,7 +311,7 @@ TEST(TimeOfImpact, FailsWithClosingSpeedOf1600)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_failed);
-	EXPECT_FLOAT_EQ(output.get_t(), float_t(0.49875015));
+	EXPECT_FLOAT_EQ(output.get_t(), realnum(0.49875015));
 	EXPECT_EQ(output.get_toi_iters(), 1);
 	EXPECT_EQ(output.get_max_dist_iters(), 1);
 	EXPECT_EQ(output.get_max_root_iters(), 4);

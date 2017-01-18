@@ -25,7 +25,7 @@ namespace box2d {
 class Confined : public Test
 {
 public:
-	static constexpr auto wall_length = float_t(0.05); // 20
+	static constexpr auto wall_length = realnum(0.05); // 20
 	static constexpr auto vertexRadiusIncrement = wall_length / 80;
 	
 	enum
@@ -60,7 +60,7 @@ public:
 		m_world->SetGravity(Vec2(0.0f, 0.0f));
 	}
 
-	Body* CreateEnclosure(float_t vertexRadius, float_t wallLength)
+	Body* CreateEnclosure(realnum vertexRadius, realnum wallLength)
 	{
 		const auto ground = m_world->CreateBody();
 		
@@ -68,7 +68,7 @@ public:
 		//PolygonShape shape;
 		
 		FixtureDef fd;
-		fd.restitution = float_t(0); // originally 0.9
+		fd.restitution = realnum(0); // originally 0.9
 		
 		const auto btmLeft = Vec2(-wallLength/2, 0.0f);
 		const auto btmRight = Vec2(wallLength/2, 0.0f);
@@ -100,11 +100,11 @@ public:
 	
 	void CreateCircle()
 	{
-		constexpr auto radius = float_t(wall_length/10); // 2
+		constexpr auto radius = realnum(wall_length/10); // 2
 
 		FixtureDef fd;
 		fd.density = 1.0f;
-		fd.restitution = float_t(0.8);
+		fd.restitution = realnum(0.8);
 
 		BodyDef bd;
 		bd.type = BodyType::Dynamic;
@@ -119,7 +119,7 @@ public:
 
 	void CreateBox()
 	{
-		constexpr auto side_length = float_t(wall_length/5); // 4
+		constexpr auto side_length = realnum(wall_length/5); // 4
 
 		FixtureDef fd;
 		fd.density = 1.0f;
@@ -255,7 +255,7 @@ public:
 	}
 	
 	bool m_bullet_mode = false;
-	float_t m_enclosureVertexRadius = vertexRadiusIncrement;
+	realnum m_enclosureVertexRadius = vertexRadiusIncrement;
 	Body* m_enclosure = nullptr;
 };
 

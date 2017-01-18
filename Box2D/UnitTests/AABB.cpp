@@ -78,10 +78,10 @@ TEST(AABB, DefaultAabbIncrementsToOther)
 
 TEST(AABB, InitializingConstruction)
 {
-	const auto lower_x = float_t(-2);
-	const auto lower_y = float_t(-3);
-	const auto upper_x = float_t(+1.6);
-	const auto upper_y = float_t(+1.9);
+	const auto lower_x = realnum(-2);
+	const auto lower_y = realnum(-3);
+	const auto upper_x = realnum(+1.6);
+	const auto upper_y = realnum(+1.9);
 	
 	const auto center_x = (lower_x + upper_x) / 2;
 	const auto center_y = (lower_y + upper_y) / 2;

@@ -187,7 +187,7 @@ public:
 			const auto body = m_world->CreateBody(bd);
 			FixtureDef fd;
 			fd.density = 20.0f;
-			body->CreateFixture(std::make_shared<CircleShape>(float_t(0.5)), fd);
+			body->CreateFixture(std::make_shared<CircleShape>(realnum(0.5)), fd);
 		}
 
 		// Circle character
@@ -202,7 +202,7 @@ public:
 			FixtureDef fd;
 			fd.density = 20.0f;
 			fd.friction = 1.0f;
-			m_character->CreateFixture(std::make_shared<CircleShape>(float_t(0.25)), fd);
+			m_character->CreateFixture(std::make_shared<CircleShape>(realnum(0.25)), fd);
 		}
 	}
 

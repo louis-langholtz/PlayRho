@@ -73,10 +73,10 @@ public:
 
 	count_t GetCount() const noexcept { return count; }
 
-	float_t GetEntryNormal(count_t index) const noexcept { return normalImpulses[index]; }
-	float_t GetEntryTanget(count_t index) const noexcept { return tangentImpulses[index]; }
+	realnum GetEntryNormal(count_t index) const noexcept { return normalImpulses[index]; }
+	realnum GetEntryTanget(count_t index) const noexcept { return tangentImpulses[index]; }
 	
-	void AddEntry(float_t normal, float_t tangent) noexcept
+	void AddEntry(realnum normal, realnum tangent) noexcept
 	{
 		assert(count < MaxManifoldPoints);
 		normalImpulses[count] = normal;
@@ -85,8 +85,8 @@ public:
 	}
 
 private:
-	float_t normalImpulses[MaxManifoldPoints];
-	float_t tangentImpulses[MaxManifoldPoints];
+	realnum normalImpulses[MaxManifoldPoints];
+	realnum tangentImpulses[MaxManifoldPoints];
 	count_t count = 0;
 };
 
@@ -191,8 +191,8 @@ public:
 	/// @return -1 to filter, 0 to terminate, fraction to clip the ray for closest hit,
 	///   1 to continue.
 	///
-	virtual float_t ReportFixture(Fixture* fixture, const Vec2& point,
-								  const UnitVec2& normal, float_t fraction) = 0;
+	virtual realnum ReportFixture(Fixture* fixture, const Vec2& point,
+								  const UnitVec2& normal, realnum fraction) = 0;
 };
 
 } // namespace box2d

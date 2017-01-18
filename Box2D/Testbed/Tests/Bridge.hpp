@@ -78,7 +78,7 @@ public:
 			body->CreateFixture(polyshape, fd);
 		}
 
-		const auto circleshape = std::make_shared<CircleShape>(float_t(0.5));
+		const auto circleshape = std::make_shared<CircleShape>(realnum(0.5));
 		for (auto i = 0; i < 3; ++i)
 		{
 			FixtureDef fd;

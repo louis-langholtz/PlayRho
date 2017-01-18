@@ -47,7 +47,7 @@ public:
 
 	/// Initializing constructor.
 	/// @param type Type of this shape object.
-	constexpr Shape(Type type, float_t vertexRadius) noexcept:
+	constexpr Shape(Type type, realnum vertexRadius) noexcept:
 		m_type{type}, m_vertexRadius{vertexRadius}
 	{
 		assert(type < e_typeCount);
@@ -63,17 +63,17 @@ public:
 	/// @return the shape type.
 	Type GetType() const noexcept { return m_type; }
 	
-	float_t GetVertexRadius() const noexcept { return m_vertexRadius; }
+	realnum GetVertexRadius() const noexcept { return m_vertexRadius; }
 
-	void SetVertexRadius(float_t vertexRadius)
+	void SetVertexRadius(realnum vertexRadius)
 	{
-		assert(vertexRadius > std::numeric_limits<float_t>::min());
+		assert(vertexRadius > std::numeric_limits<realnum>::min());
 		m_vertexRadius = vertexRadius;
 	}
 
 private:
 	Type m_type;
-	float_t m_vertexRadius;
+	realnum m_vertexRadius;
 };
 
 /// Gets the vertex radius of the given shape (in meters).
@@ -81,7 +81,7 @@ private:
 /// This is used for collision handling.
 /// @note This value should never be less than zero.
 /// @sa DistanceProxy.
-inline float_t GetVertexRadius(const Shape& shape)
+inline realnum GetVertexRadius(const Shape& shape)
 {
 	return shape.GetVertexRadius();
 }

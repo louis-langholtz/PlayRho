@@ -39,7 +39,7 @@ using namespace box2d;
 void PulleyJointDef::Initialize(Body* bA, Body* bB,
 				const Vec2 groundA, const Vec2 groundB,
 				const Vec2 anchorA, const Vec2 anchorB,
-				float_t r)
+				realnum r)
 {
 	assert((r > 0) && !almost_zero(r));
 	
@@ -67,7 +67,7 @@ PulleyJoint::PulleyJoint(const PulleyJointDef& def)
 	m_lengthB = def.lengthB;
 	m_ratio = def.ratio;
 	m_constant = def.lengthA + m_ratio * def.lengthB;
-	m_impulse = float_t{0};
+	m_impulse = realnum{0};
 }
 
 void PulleyJoint::InitVelocityConstraints(Span<Velocity> velocities,
@@ -106,18 +106,18 @@ void PulleyJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	const auto lengthA = GetLength(m_uA);
 	const auto lengthB = GetLength(m_uB);
 
-	if (lengthA > (float_t(10) * conf.linearSlop))
+	if (lengthA > (realnum(10) * conf.linearSlop))
 	{
-		m_uA *= float_t{1} / lengthA;
+		m_uA *= realnum{1} / lengthA;
 	}
 	else
 	{
 		m_uA = Vec2_zero;
 	}
 
-	if (lengthB > (float_t(10) * conf.linearSlop))
+	if (lengthB > (realnum(10) * conf.linearSlop))
 	{
-		m_uB *= float_t{1} / lengthB;
+		m_uB *= realnum{1} / lengthB;
 	}
 	else
 	{
@@ -133,9 +133,9 @@ void PulleyJoint::InitVelocityConstraints(Span<Velocity> velocities,
 
 	m_mass = mA + m_ratio * m_ratio * mB;
 
-	if (m_mass > float_t{0})
+	if (m_mass > realnum{0})
 	{
-		m_mass = float_t{1} / m_mass;
+		m_mass = realnum{1} / m_mass;
 	}
 
 	if (step.doWarmStart)
@@ -154,7 +154,7 @@ void PulleyJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	}
 	else
 	{
-		m_impulse = float_t{0};
+		m_impulse = realnum{0};
 	}
 
 	velocities[m_indexA].linear = vA;
@@ -203,11 +203,11 @@ bool PulleyJoint::SolvePositionConstraints(Span<Position> positions, const Const
 	// Get the pulley axes.
 	const auto pA = cA + rA - m_groundAnchorA;
 	const auto lengthA = GetLength(pA);
-	const auto uA = (lengthA > (float_t(10) * conf.linearSlop))? pA / lengthA: Vec2_zero;
+	const auto uA = (lengthA > (realnum(10) * conf.linearSlop))? pA / lengthA: Vec2_zero;
 
 	const auto pB = cB + rB - m_groundAnchorB;
 	const auto lengthB = GetLength(pB);
-	const auto uB = (lengthB > (float_t(10) * conf.linearSlop))? pB / lengthB: Vec2_zero;
+	const auto uB = (lengthB > (realnum(10) * conf.linearSlop))? pB / lengthB: Vec2_zero;
 
 	// Compute effective mass.
 	const auto ruA = Cross(rA, uA);
@@ -217,9 +217,9 @@ bool PulleyJoint::SolvePositionConstraints(Span<Position> positions, const Const
 	const auto mB = m_invMassB + m_invIB * ruB * ruB;
 
 	auto mass = mA + m_ratio * m_ratio * mB;
-	if (mass > float_t{0})
+	if (mass > realnum{0})
 	{
-		mass = float_t{1} / mass;
+		mass = realnum{1} / mass;
 	}
 
 	const auto C = m_constant - lengthA - (m_ratio * lengthB);
@@ -253,15 +253,15 @@ Vec2 PulleyJoint::GetAnchorB() const
 	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
-Vec2 PulleyJoint::GetReactionForce(float_t inv_dt) const
+Vec2 PulleyJoint::GetReactionForce(realnum inv_dt) const
 {
 	return inv_dt * m_impulse * m_uB;
 }
 
-float_t PulleyJoint::GetReactionTorque(float_t inv_dt) const
+realnum PulleyJoint::GetReactionTorque(realnum inv_dt) const
 {
 	BOX2D_NOT_USED(inv_dt);
-	return float_t{0};
+	return realnum{0};
 }
 
 Vec2 PulleyJoint::GetGroundAnchorA() const
@@ -274,12 +274,12 @@ Vec2 PulleyJoint::GetGroundAnchorB() const
 	return m_groundAnchorB;
 }
 
-float_t PulleyJoint::GetCurrentLengthA() const
+realnum PulleyJoint::GetCurrentLengthA() const
 {
 	return GetLength(GetWorldPoint(*GetBodyA(), m_localAnchorA) - m_groundAnchorA);
 }
 
-float_t PulleyJoint::GetCurrentLengthB() const
+realnum PulleyJoint::GetCurrentLengthB() const
 {
 	return GetLength(GetWorldPoint(*GetBodyB(), m_localAnchorB) - m_groundAnchorB);
 }

@@ -27,8 +27,8 @@
 namespace box2d {
 
 	static inline WorldManifold GetForCircles(const Manifold& manifold,
-											  const Transformation& xfA, const float_t radiusA,
-											  const Transformation& xfB, const float_t radiusB)
+											  const Transformation& xfA, const realnum radiusA,
+											  const Transformation& xfB, const realnum radiusB)
 	{
 		assert(manifold.GetPointCount() == 1);
 		
@@ -53,8 +53,8 @@ namespace box2d {
 	}
 	
 	static inline WorldManifold GetForFaceA(const Manifold& manifold,
-											const Transformation& xfA, const float_t radiusA,
-											const Transformation& xfB, const float_t radiusB)
+											const Transformation& xfA, const realnum radiusA,
+											const Transformation& xfB, const realnum radiusB)
 	{
 		const auto normal = Rotate(manifold.GetLocalNormal(), xfA.q);
 		const auto planePoint = Transform(manifold.GetLocalPoint(), xfA);
@@ -80,8 +80,8 @@ namespace box2d {
 	}
 	
 	static inline WorldManifold GetForFaceB(const Manifold& manifold,
-											const Transformation& xfA, const float_t radiusA,
-											const Transformation& xfB, const float_t radiusB)
+											const Transformation& xfA, const realnum radiusA,
+											const Transformation& xfB, const realnum radiusB)
 	{
 		const auto normal = Rotate(manifold.GetLocalNormal(), xfB.q);
 		const auto planePoint = Transform(manifold.GetLocalPoint(), xfB);
@@ -108,8 +108,8 @@ namespace box2d {
 	}
 	
 	WorldManifold GetWorldManifold(const Manifold& manifold,
-								   const Transformation& xfA, const float_t radiusA,
-								   const Transformation& xfB, const float_t radiusB)
+								   const Transformation& xfA, const realnum radiusA,
+								   const Transformation& xfB, const realnum radiusB)
 	{
 		const auto type = manifold.GetType();
 		assert((type == Manifold::e_circles) || (type == Manifold::e_faceA) || (type == Manifold::e_faceB) || (type == Manifold::e_unset));

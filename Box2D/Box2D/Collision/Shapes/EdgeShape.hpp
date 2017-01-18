@@ -33,12 +33,12 @@ namespace box2d {
 class EdgeShape : public Shape
 {
 public:
-	static constexpr float_t GetDefaultVertexRadius() noexcept
+	static constexpr realnum GetDefaultVertexRadius() noexcept
 	{
 		return LinearSlop * 2;
 	}
 
-	EdgeShape(float_t vertexRadius = GetDefaultVertexRadius()) noexcept:
+	EdgeShape(realnum vertexRadius = GetDefaultVertexRadius()) noexcept:
 		Shape{e_edge, vertexRadius}
 	{
 		// Intentionally empty.
@@ -46,7 +46,7 @@ public:
 
 	constexpr EdgeShape(Vec2 v1, Vec2 v2,
 						Vec2 v0 = GetInvalid<Vec2>(), Vec2 v3 = GetInvalid<Vec2>(),
-						float_t vertexRadius = GetDefaultVertexRadius()) noexcept:
+						realnum vertexRadius = GetDefaultVertexRadius()) noexcept:
 		Shape{e_edge, vertexRadius},
 		m_vertex0{v0}, m_vertex1{v1}, m_vertex2{v2}, m_vertex3{v3}
 	{

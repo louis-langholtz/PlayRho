@@ -47,7 +47,7 @@ struct PrismaticJointDef : public JointDef
 	Vec2 localAnchorB = Vec2_zero;
 
 	/// The local translation unit axis in bodyA.
-	Vec2 localAxisA = Vec2{float_t{1}, float_t{0}};
+	Vec2 localAxisA = Vec2{realnum{1}, realnum{0}};
 
 	/// The constrained angle between the bodies: bodyB_angle - bodyA_angle.
 	Angle referenceAngle = 0_rad;
@@ -56,19 +56,19 @@ struct PrismaticJointDef : public JointDef
 	bool enableLimit = false;
 
 	/// The lower translation limit, usually in meters.
-	float_t lowerTranslation = float_t{0};
+	realnum lowerTranslation = realnum{0};
 
 	/// The upper translation limit, usually in meters.
-	float_t upperTranslation = float_t{0};
+	realnum upperTranslation = realnum{0};
 
 	/// Enable/disable the joint motor.
 	bool enableMotor = false;
 
 	/// The maximum motor torque, usually in N-m.
-	float_t maxMotorForce = float_t{0};
+	realnum maxMotorForce = realnum{0};
 
 	/// The desired motor speed in radians per second.
-	float_t motorSpeed = float_t{0};
+	realnum motorSpeed = realnum{0};
 };
 
 /// A prismatic joint. This joint provides one degree of freedom: translation
@@ -83,8 +83,8 @@ public:
 	Vec2 GetAnchorA() const override;
 	Vec2 GetAnchorB() const override;
 
-	Vec2 GetReactionForce(float_t inv_dt) const override;
-	float_t GetReactionTorque(float_t inv_dt) const override;
+	Vec2 GetReactionForce(realnum inv_dt) const override;
+	realnum GetReactionTorque(realnum inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
 	Vec2 GetLocalAnchorA() const { return m_localAnchorA; }
@@ -99,10 +99,10 @@ public:
 	Angle GetReferenceAngle() const { return m_referenceAngle; }
 
 	/// Get the current joint translation, usually in meters.
-	float_t GetJointTranslation() const;
+	realnum GetJointTranslation() const;
 
 	/// Get the current joint translation speed, usually in meters per second.
-	float_t GetJointSpeed() const;
+	realnum GetJointSpeed() const;
 
 	/// Is the joint limit enabled?
 	bool IsLimitEnabled() const noexcept;
@@ -111,13 +111,13 @@ public:
 	void EnableLimit(bool flag) noexcept;
 
 	/// Get the lower joint limit, usually in meters.
-	float_t GetLowerLimit() const noexcept;
+	realnum GetLowerLimit() const noexcept;
 
 	/// Get the upper joint limit, usually in meters.
-	float_t GetUpperLimit() const noexcept;
+	realnum GetUpperLimit() const noexcept;
 
 	/// Set the joint limits, usually in meters.
-	void SetLimits(float_t lower, float_t upper);
+	void SetLimits(realnum lower, realnum upper);
 
 	/// Is the joint motor enabled?
 	bool IsMotorEnabled() const noexcept;
@@ -126,17 +126,17 @@ public:
 	void EnableMotor(bool flag) noexcept;
 
 	/// Set the motor speed, usually in meters per second.
-	void SetMotorSpeed(float_t speed) noexcept;
+	void SetMotorSpeed(realnum speed) noexcept;
 
 	/// Get the motor speed, usually in meters per second.
-	float_t GetMotorSpeed() const noexcept;
+	realnum GetMotorSpeed() const noexcept;
 
 	/// Set the maximum motor force, usually in N.
-	void SetMaxMotorForce(float_t force) noexcept;
-	float_t GetMaxMotorForce() const noexcept { return m_maxMotorForce; }
+	void SetMaxMotorForce(realnum force) noexcept;
+	realnum GetMaxMotorForce() const noexcept { return m_maxMotorForce; }
 
 	/// Get the current motor force given the inverse time step, usually in N.
-	float_t GetMotorForce(float_t inv_dt) const noexcept;
+	realnum GetMotorForce(realnum inv_dt) const noexcept;
 
 private:
 	friend class GearJoint;
@@ -152,11 +152,11 @@ private:
 	UnitVec2 m_localYAxisA;
 	Angle m_referenceAngle;
 	Vec3 m_impulse;
-	float_t m_motorImpulse;
-	float_t m_lowerTranslation;
-	float_t m_upperTranslation;
-	float_t m_maxMotorForce;
-	float_t m_motorSpeed;
+	realnum m_motorImpulse;
+	realnum m_lowerTranslation;
+	realnum m_upperTranslation;
+	realnum m_maxMotorForce;
+	realnum m_motorSpeed;
 	bool m_enableLimit;
 	bool m_enableMotor;
 	LimitState m_limitState;
@@ -166,19 +166,19 @@ private:
 	index_t m_indexB;
 	Vec2 m_localCenterA;
 	Vec2 m_localCenterB;
-	float_t m_invMassA;
-	float_t m_invMassB;
-	float_t m_invIA;
-	float_t m_invIB;
+	realnum m_invMassA;
+	realnum m_invMassB;
+	realnum m_invIA;
+	realnum m_invIB;
 	UnitVec2 m_axis;
 	UnitVec2 m_perp;
-	float_t m_s1, m_s2;
-	float_t m_a1, m_a2;
+	realnum m_s1, m_s2;
+	realnum m_a1, m_a2;
 	Mat33 m_K;
-	float_t m_motorMass;
+	realnum m_motorMass;
 };
 
-inline float_t PrismaticJoint::GetMotorSpeed() const noexcept
+inline realnum PrismaticJoint::GetMotorSpeed() const noexcept
 {
 	return m_motorSpeed;
 }

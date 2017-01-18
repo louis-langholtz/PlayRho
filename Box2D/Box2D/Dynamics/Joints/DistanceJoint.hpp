@@ -38,7 +38,7 @@ struct DistanceJointDef : public JointDef
 	/// Initialize the bodies, anchors, and length using the world anchors.
 	DistanceJointDef(Body* bodyA, Body* bodyB,
 					 const Vec2 anchorA = Vec2_zero, const Vec2 anchorB = Vec2_zero,
-					 float_t freq = 0, float_t damp = 0) noexcept;
+					 realnum freq = 0, realnum damp = 0) noexcept;
 
 	/// The local anchor point relative to bodyA's origin.
 	Vec2 localAnchorA = Vec2_zero;
@@ -47,14 +47,14 @@ struct DistanceJointDef : public JointDef
 	Vec2 localAnchorB = Vec2_zero;
 
 	/// The natural length between the anchor points.
-	float_t length = 1;
+	realnum length = 1;
 
 	/// The mass-spring-damper frequency in Hertz. A value of 0
 	/// disables softness.
-	float_t frequencyHz = 0;
+	realnum frequencyHz = 0;
 
 	/// The damping ratio. 0 = no damping, 1 = critical damping.
-	float_t dampingRatio = 0;
+	realnum dampingRatio = 0;
 };
 
 /// A distance joint constrains two points on two bodies
@@ -70,11 +70,11 @@ public:
 
 	/// Get the reaction force given the inverse time step.
 	/// Unit is N.
-	Vec2 GetReactionForce(float_t inv_dt) const override;
+	Vec2 GetReactionForce(realnum inv_dt) const override;
 
 	/// Get the reaction torque given the inverse time step.
 	/// Unit is N*m. This is always zero for a distance joint.
-	float_t GetReactionTorque(float_t inv_dt) const override;
+	realnum GetReactionTorque(realnum inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
 	Vec2 GetLocalAnchorA() const noexcept { return m_localAnchorA; }
@@ -84,16 +84,16 @@ public:
 
 	/// Set/get the natural length.
 	/// Manipulating the length can lead to non-physical behavior when the frequency is zero.
-	void SetLength(float_t length);
-	float_t GetLength() const noexcept;
+	void SetLength(realnum length);
+	realnum GetLength() const noexcept;
 
 	/// Set/get frequency in Hz.
-	void SetFrequency(float_t hz);
-	float_t GetFrequency() const noexcept;
+	void SetFrequency(realnum hz);
+	realnum GetFrequency() const noexcept;
 
 	/// Set/get damping ratio.
-	void SetDampingRatio(float_t ratio);
-	float_t GetDampingRatio() const noexcept;
+	void SetDampingRatio(realnum ratio);
+	realnum GetDampingRatio() const noexcept;
 
 private:
 
@@ -101,16 +101,16 @@ private:
 	void SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step) override;
 	bool SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) override;
 
-	float_t m_frequencyHz;
-	float_t m_dampingRatio;
-	float_t m_bias = 0;
+	realnum m_frequencyHz;
+	realnum m_dampingRatio;
+	realnum m_bias = 0;
 
 	// Solver shared
 	Vec2 m_localAnchorA;
 	Vec2 m_localAnchorB;
-	float_t m_gamma = 0;
-	float_t m_impulse = 0;
-	float_t m_length;
+	realnum m_gamma = 0;
+	realnum m_impulse = 0;
+	realnum m_length;
 
 	// Solver temp
 	index_t m_indexA;
@@ -120,39 +120,39 @@ private:
 	Vec2 m_rB;
 	Vec2 m_localCenterA;
 	Vec2 m_localCenterB;
-	float_t m_invMassA;
-	float_t m_invMassB;
-	float_t m_invIA;
-	float_t m_invIB;
-	float_t m_mass;
+	realnum m_invMassA;
+	realnum m_invMassB;
+	realnum m_invIA;
+	realnum m_invIB;
+	realnum m_mass;
 };
 
-inline void DistanceJoint::SetLength(float_t length)
+inline void DistanceJoint::SetLength(realnum length)
 {
 	m_length = length;
 }
 
-inline float_t DistanceJoint::GetLength() const noexcept
+inline realnum DistanceJoint::GetLength() const noexcept
 {
 	return m_length;
 }
 
-inline void DistanceJoint::SetFrequency(float_t hz)
+inline void DistanceJoint::SetFrequency(realnum hz)
 {
 	m_frequencyHz = hz;
 }
 
-inline float_t DistanceJoint::GetFrequency() const noexcept
+inline realnum DistanceJoint::GetFrequency() const noexcept
 {
 	return m_frequencyHz;
 }
 
-inline void DistanceJoint::SetDampingRatio(float_t ratio)
+inline void DistanceJoint::SetDampingRatio(realnum ratio)
 {
 	m_dampingRatio = ratio;
 }
 
-inline float_t DistanceJoint::GetDampingRatio() const noexcept
+inline realnum DistanceJoint::GetDampingRatio() const noexcept
 {
 	return m_dampingRatio;
 }

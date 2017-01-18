@@ -25,7 +25,7 @@ using namespace box2d;
 #if defined(DO_TIMER_FOR_REALS)
 #if defined(_WIN32)
 
-double Timer::s_invFrequency = float_t{0};
+double Timer::s_invFrequency = realnum{0};
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -34,11 +34,11 @@ Timer::Timer()
 {
 	LARGE_INTEGER largeInteger;
 
-	if (s_invFrequency == float_t{0})
+	if (s_invFrequency == realnum{0})
 	{
 		QueryPerformanceFrequency(&largeInteger);
 		s_invFrequency = double(largeInteger.QuadPart);
-		if (s_invFrequency > float_t{0})
+		if (s_invFrequency > realnum{0})
 		{
 			s_invFrequency = 1000.0f / s_invFrequency;
 		}
@@ -55,12 +55,12 @@ void Timer::Reset()
 	m_start = double(largeInteger.QuadPart);
 }
 
-float_t Timer::GetMilliseconds() const
+realnum Timer::GetMilliseconds() const
 {
 	LARGE_INTEGER largeInteger;
 	QueryPerformanceCounter(&largeInteger);
 	double count = double(largeInteger.QuadPart);
-	float_t ms = float_t(s_invFrequency * (count - m_start));
+	realnum ms = realnum(s_invFrequency * (count - m_start));
 	return ms;
 }
 
@@ -81,11 +81,11 @@ void Timer::Reset()
     m_start_usec = t.tv_usec;
 }
 
-float_t Timer::GetMilliseconds() const
+realnum Timer::GetMilliseconds() const
 {
     timeval t;
     gettimeofday(&t, 0);
-    return (float_t(1000) * (t.tv_sec - m_start_sec)) + (float_t(0.001) * (t.tv_usec - m_start_usec));
+    return (realnum(1000) * (t.tv_sec - m_start_sec)) + (realnum(0.001) * (t.tv_usec - m_start_usec));
 }
 
 #else
@@ -98,9 +98,9 @@ void Timer::Reset()
 {
 }
 
-float_t Timer::GetMilliseconds() const
+realnum Timer::GetMilliseconds() const
 {
-	return float_t{0};
+	return realnum{0};
 }
 
 #endif
@@ -114,9 +114,9 @@ void Timer::Reset()
 {
 }
 
-float_t Timer::GetMilliseconds() const
+realnum Timer::GetMilliseconds() const
 {
-	return float_t{0};
+	return realnum{0};
 }
 
 #endif

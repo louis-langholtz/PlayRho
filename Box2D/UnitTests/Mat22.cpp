@@ -45,18 +45,18 @@ TEST(Mat22, Invert)
 
 	const auto inverted = Invert(foo);
 	const auto cp = Cross(ex, ey);
-	ASSERT_EQ(cp, float_t(-2));
-	const auto det = (cp != 0)? float_t(1)/cp : float_t(0);
+	ASSERT_EQ(cp, realnum(-2));
+	const auto det = (cp != 0)? realnum(1)/cp : realnum(0);
 	
 	EXPECT_EQ(inverted.ex.x, det * foo.ey.y);
 	EXPECT_EQ(inverted.ex.y, -det * foo.ex.y);
 	EXPECT_EQ(inverted.ey.x, -det * foo.ey.x);
 	EXPECT_EQ(inverted.ey.y, det * foo.ex.x);
 	
-	EXPECT_EQ(inverted.ex.x, float_t(-2));
-	EXPECT_EQ(inverted.ex.y, float_t(1));
-	EXPECT_EQ(inverted.ey.x, float_t(1.5));
-	EXPECT_EQ(inverted.ey.y, float_t(-0.5));
+	EXPECT_EQ(inverted.ex.x, realnum(-2));
+	EXPECT_EQ(inverted.ex.y, realnum(1));
+	EXPECT_EQ(inverted.ey.x, realnum(1.5));
+	EXPECT_EQ(inverted.ey.y, realnum(-0.5));
 }
 
 TEST(Mat22, InvertInvertedIsOriginal)

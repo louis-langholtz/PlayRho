@@ -288,7 +288,7 @@ static void sMouseButton(GLFWwindow*, int32 button, int32 action, int32 mods)
 {
 	double xd, yd;
 	glfwGetCursorPos(mainWindow, &xd, &yd);
-	const auto ps = Vec2((float_t)xd, (float_t)yd);
+	const auto ps = Vec2((realnum)xd, (realnum)yd);
 
 	// Use the mouse to move things around.
 	if (button == GLFW_MOUSE_BUTTON_1)
@@ -330,7 +330,7 @@ static void sMouseButton(GLFWwindow*, int32 button, int32 action, int32 mods)
 //
 static void sMouseMotion(GLFWwindow*, double xd, double yd)
 {
-	const auto ps = Vec2{float_t(xd), float_t(yd)};
+	const auto ps = Vec2{realnum(xd), realnum(yd)};
 	const auto pw = ConvertScreenToWorld(g_camera, ps);
 
 	test->MouseMove(pw);
@@ -375,7 +375,7 @@ static void sSimulate(Drawer& drawer)
 {
 	glEnable(GL_DEPTH_TEST);
 	
-	settings.dt = (settings.hz > 0)? 1.0f / settings.hz : float_t(0.0f);
+	settings.dt = (settings.hz > 0)? 1.0f / settings.hz : realnum(0.0f);
 	if (settings.pause)
 	{
 		if (settings.singleStep)

@@ -39,13 +39,13 @@ struct MotorJointDef : public JointDef
 	Angle angularOffset = 0_rad;
 	
 	/// The maximum motor force in N.
-	float_t maxForce = float_t{1};
+	realnum maxForce = realnum{1};
 
 	/// The maximum motor torque in N-m.
-	float_t maxTorque = float_t{1};
+	realnum maxTorque = realnum{1};
 
 	/// Position correction factor in the range [0,1].
-	float_t correctionFactor = float_t(0.3);
+	realnum correctionFactor = realnum(0.3);
 };
 
 /// A motor joint is used to control the relative motion
@@ -59,8 +59,8 @@ public:
 	Vec2 GetAnchorA() const override;
 	Vec2 GetAnchorB() const override;
 
-	Vec2 GetReactionForce(float_t inv_dt) const override;
-	float_t GetReactionTorque(float_t inv_dt) const override;
+	Vec2 GetReactionForce(realnum inv_dt) const override;
+	realnum GetReactionTorque(realnum inv_dt) const override;
 
 	/// Set/get the target linear offset, in frame A, in meters.
 	void SetLinearOffset(const Vec2 linearOffset);
@@ -71,22 +71,22 @@ public:
 	Angle GetAngularOffset() const;
 
 	/// Set the maximum friction force in N.
-	void SetMaxForce(float_t force);
+	void SetMaxForce(realnum force);
 
 	/// Get the maximum friction force in N.
-	float_t GetMaxForce() const;
+	realnum GetMaxForce() const;
 
 	/// Set the maximum friction torque in N*m.
-	void SetMaxTorque(float_t torque);
+	void SetMaxTorque(realnum torque);
 
 	/// Get the maximum friction torque in N*m.
-	float_t GetMaxTorque() const;
+	realnum GetMaxTorque() const;
 
 	/// Set the position correction factor in the range [0,1].
-	void SetCorrectionFactor(float_t factor);
+	void SetCorrectionFactor(realnum factor);
 
 	/// Get the position correction factor in the range [0,1].
-	float_t GetCorrectionFactor() const;
+	realnum GetCorrectionFactor() const;
 
 private:
 
@@ -98,10 +98,10 @@ private:
 	Vec2 m_linearOffset;
 	Angle m_angularOffset;
 	Vec2 m_linearImpulse;
-	float_t m_angularImpulse;
-	float_t m_maxForce;
-	float_t m_maxTorque;
-	float_t m_correctionFactor;
+	realnum m_angularImpulse;
+	realnum m_maxForce;
+	realnum m_maxTorque;
+	realnum m_correctionFactor;
 
 	// Solver temp
 	index_t m_indexA;
@@ -112,12 +112,12 @@ private:
 	Vec2 m_localCenterB;
 	Vec2 m_linearError;
 	Angle m_angularError;
-	float_t m_invMassA;
-	float_t m_invMassB;
-	float_t m_invIA;
-	float_t m_invIB;
+	realnum m_invMassA;
+	realnum m_invMassB;
+	realnum m_invIA;
+	realnum m_invIB;
 	Mat22 m_linearMass;
-	float_t m_angularMass;
+	realnum m_angularMass;
 };
 
 } // namespace box2d

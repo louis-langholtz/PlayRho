@@ -168,7 +168,7 @@ public:
 		}
 
 		// Creates circles
-		const auto circleshape = std::make_shared<CircleShape>(float_t(0.5));
+		const auto circleshape = std::make_shared<CircleShape>(realnum(0.5));
 		for (auto i = 0; i < 2; ++i)
 		{
 			FixtureDef fd;
