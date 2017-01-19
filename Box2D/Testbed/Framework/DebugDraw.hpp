@@ -35,19 +35,52 @@ struct ProjectionMatrix
 {
 	float m[16];
 };
-	
+
+struct Coord2D
+{
+	float x;
+	float y;
+};
+
+inline Coord2D operator* (Coord2D coord, float scalar)
+{
+	return Coord2D{coord.x * scalar, coord.y * scalar};
+}
+
+inline Coord2D operator* (float scalar, Coord2D coord)
+{
+	return Coord2D{coord.x * scalar, coord.y * scalar};
+}
+
+inline Coord2D operator/ (Coord2D coord, float scalar)
+{
+	return Coord2D{coord.x / scalar, coord.y / scalar};
+}
+
+inline Coord2D operator+ (Coord2D a, Coord2D b)
+{
+	return Coord2D{a.x + b.x, a.y + b.y};
+}
+
+
+inline Coord2D operator- (Coord2D a, Coord2D b)
+{
+	return Coord2D{a.x - b.x, a.y - b.y};
+}
+
+
 //
 struct Camera
 {
-	Vec2 m_center = Vec2(0.0f, 20.0f);
-	realnum m_extent = 25.0f;
-	realnum m_zoom = 1.0f;
+	Coord2D m_center = Coord2D{0.0f, 20.0f};
+	float m_extent = 25.0f;
+	float m_zoom = 1.0f;
 	int32 m_width = 1280;
 	int32 m_height = 800;
 };
 
-Vec2 ConvertScreenToWorld(const Camera& camera, const Vec2 screenPoint);
-Vec2 ConvertWorldToScreen(const Camera& camera, const Vec2 worldPoint);
+Vec2 ConvertScreenToWorld(const Camera& camera, const Coord2D screenPoint);
+Coord2D ConvertWorldToScreen(const Camera& camera, const Vec2 worldPoint);
 ProjectionMatrix GetProjectionMatrix(const Camera& camera, realnum zBias);
 
 class DebugDraw : public Drawer

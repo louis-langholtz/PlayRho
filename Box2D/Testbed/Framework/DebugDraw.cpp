@@ -36,15 +36,15 @@
 namespace box2d {
 
 //
-Vec2 ConvertScreenToWorld(const Camera& camera, const Vec2 ps)
+Vec2 ConvertScreenToWorld(const Camera& camera, const Coord2D ps)
 {
-    const auto w = realnum(camera.m_width);
-    const auto h = realnum(camera.m_height);
+    const auto w = float(camera.m_width);
+    const auto h = float(camera.m_height);
 	const auto u = ps.x / w;
 	const auto v = (h - ps.y) / h;
 
 	const auto ratio = w / h;
-	const auto extents = Vec2(ratio * 25.0f, 25.0f) * camera.m_zoom;
+	const auto extents = Coord2D{ratio * 25.0f, 25.0f} * camera.m_zoom;
 
 	const auto lower = camera.m_center - extents;
 	const auto upper = camera.m_center + extents;
@@ -53,30 +53,30 @@ Vec2 ConvertScreenToWorld(const Camera& camera, const Vec2 ps)
 }
 
 //
-Vec2 ConvertWorldToScreen(const Camera& camera, const Vec2 pw)
+Coord2D ConvertWorldToScreen(const Camera& camera, const Vec2 pw)
 {
-	const auto w = realnum(camera.m_width);
-	const auto h = realnum(camera.m_height);
+	const auto w = float(camera.m_width);
+	const auto h = float(camera.m_height);
 	const auto ratio = w / h;
-	const auto extents = Vec2(ratio * 25.0f, 25.0f) * camera.m_zoom;
+	const auto extents = Coord2D{ratio * 25.0f, 25.0f} * camera.m_zoom;
 
 	const auto lower = camera.m_center - extents;
 	const auto upper = camera.m_center + extents;
 
-	const auto u = (pw.x - lower.x) / (upper.x - lower.x);
-	const auto v = (pw.y - lower.y) / (upper.y - lower.y);
+	const auto u = (float(pw.x) - lower.x) / (upper.x - lower.x);
+	const auto v = (float(pw.y) - lower.y) / (upper.y - lower.y);
 
-	return Vec2{u * w, (realnum(1) - v) * h};
+	return Coord2D{u * w, (float(1) - v) * h};
 }
 
 // Convert from world coordinates to normalized device coordinates.
 // http://www.songho.ca/opengl/gl_projectionmatrix.html
-ProjectionMatrix GetProjectionMatrix(const Camera& camera, realnum zBias)
+ProjectionMatrix GetProjectionMatrix(const Camera& camera, float zBias)
 {
-	const auto w = realnum(camera.m_width);
-	const auto h = realnum(camera.m_height);
+	const auto w = float(camera.m_width);
+	const auto h = float(camera.m_height);
 	const auto ratio = w / h;
-	const auto extents = Vec2(ratio * 25.0f, 25.0f) * camera.m_zoom;
+	const auto extents = Coord2D{ratio * 25.0f, 25.0f} * camera.m_zoom;
 
 	const auto lower = camera.m_center - extents;
 	const auto upper = camera.m_center + extents;
@@ -268,7 +268,7 @@ struct GLRenderPoints
 		}
 	}
     
-	void Vertex(Camera& camera, const Vec2& v, const Color& c, realnum size)
+	void Vertex(Camera& camera, const Coord2D& v, const Color& c, float size)
 	{
 		if (m_count == e_maxVertices)
 			Flush(camera);
@@ -293,13 +293,13 @@ struct GLRenderPoints
 		glBindVertexArray(m_vaoId);
         
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[0]);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<unsigned>(m_count) * sizeof(Vec2), m_vertices);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<unsigned>(m_count) * sizeof(m_vertices[0]), m_vertices);
         
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[1]);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<unsigned>(m_count) * sizeof(Color), m_colors);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<unsigned>(m_count) * sizeof(m_colors[0]), m_colors);
         
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[2]);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<unsigned>(m_count) * sizeof(realnum), m_sizes);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<unsigned>(m_count) * sizeof(m_sizes[0]), m_sizes);
 
 		glEnable(GL_PROGRAM_POINT_SIZE);
 		glDrawArrays(GL_POINTS, 0, m_count);
@@ -315,9 +315,9 @@ struct GLRenderPoints
 	}
     
 	enum { e_maxVertices = 512 };
-	Vec2 m_vertices[e_maxVertices];
+	Coord2D m_vertices[e_maxVertices];
 	Color m_colors[e_maxVertices];
-    realnum m_sizes[e_maxVertices];
+    float m_sizes[e_maxVertices];
 
 	int32 m_count;
     
@@ -401,7 +401,7 @@ struct GLRenderLines
 		}
 	}
     
-	void Vertex(Camera& camera, const Vec2& v, const Color& c)
+	void Vertex(Camera& camera, const Coord2D& v, const Color& c)
 	{
 		if (m_count == e_maxVertices)
 			Flush(camera);
@@ -425,10 +425,10 @@ struct GLRenderLines
 		glBindVertexArray(m_vaoId);
         
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[0]);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<unsigned>(m_count) * sizeof(Vec2), m_vertices);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<unsigned>(m_count) * sizeof(m_vertices[0]), m_vertices);
         
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[1]);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<unsigned>(m_count) * sizeof(Color), m_colors);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<unsigned>(m_count) * sizeof(m_colors[0]), m_colors);
         
 		glDrawArrays(GL_LINES, 0, m_count);
         
@@ -442,7 +442,7 @@ struct GLRenderLines
 	}
     
 	enum { e_maxVertices = 2 * 512 };
-	Vec2 m_vertices[e_maxVertices];
+	Coord2D m_vertices[e_maxVertices];
 	Color m_colors[e_maxVertices];
     
 	int32 m_count;
@@ -526,7 +526,7 @@ struct GLRenderTriangles
 		}
 	}
 
-	void Vertex(Camera& camera, const Vec2& v, const Color& c)
+	void Vertex(Camera& camera, const Coord2D& v, const Color& c)
 	{
 		if (m_count == e_maxVertices)
 			Flush(camera);
@@ -550,10 +550,10 @@ struct GLRenderTriangles
 		glBindVertexArray(m_vaoId);
         
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[0]);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<unsigned>(m_count) * sizeof(Vec2), m_vertices);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<unsigned>(m_count) * sizeof(m_vertices[0]), m_vertices);
         
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[1]);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<unsigned>(m_count) * sizeof(Color), m_colors);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<unsigned>(m_count) * sizeof(m_colors[0]), m_colors);
         
         glEnable(GL_BLEND);
         glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -570,7 +570,7 @@ struct GLRenderTriangles
 	}
     
 	enum { e_maxVertices = 3 * 512 };
-	Vec2 m_vertices[e_maxVertices];
+	Coord2D m_vertices[e_maxVertices];
 	Color m_colors[e_maxVertices];
 
 	int32 m_count;
@@ -586,8 +586,8 @@ struct GLRenderTriangles
 //
 DebugDraw::DebugDraw(Camera& camera):
 	m_camera(camera),
-	m_cosInc{cosf((2 * Pi) / m_circleParts)},
-	m_sinInc{sinf((2 * Pi) / m_circleParts)}
+	m_cosInc{std::cos((2 * Pi) / m_circleParts)},
+	m_sinInc{std::sin((2 * Pi) / m_circleParts)}
 {
 	m_points = new GLRenderPoints;
 	m_lines = new GLRenderLines;
@@ -604,21 +604,21 @@ DebugDraw::~DebugDraw() noexcept
 
 void DebugDraw::DrawTriangle(const Vec2& p1, const Vec2& p2, const Vec2& p3, const Color& color)
 {
-	m_triangles->Vertex(m_camera, p1, color);
-	m_triangles->Vertex(m_camera, p2, color);
-	m_triangles->Vertex(m_camera, p3, color);	
+	m_triangles->Vertex(m_camera, Coord2D{static_cast<float>(p1.x), static_cast<float>(p1.y)}, color);
+	m_triangles->Vertex(m_camera, Coord2D{static_cast<float>(p2.x), static_cast<float>(p2.y)}, color);
+	m_triangles->Vertex(m_camera, Coord2D{static_cast<float>(p3.x), static_cast<float>(p3.y)}, color);
 }
 
 //
 void DebugDraw::DrawSegment(const Vec2& p1, const Vec2& p2, const Color& color)
 {
-	m_lines->Vertex(m_camera, p1, color);
-	m_lines->Vertex(m_camera, p2, color);
+	m_lines->Vertex(m_camera, Coord2D{static_cast<float>(p1.x), static_cast<float>(p1.y)}, color);
+	m_lines->Vertex(m_camera, Coord2D{static_cast<float>(p2.x), static_cast<float>(p2.y)}, color);
 }
 
 void DebugDraw::DrawPoint(const Vec2& p, realnum size, const Color& color)
 {
-	m_points->Vertex(m_camera, p, color, size);
+	m_points->Vertex(m_camera, Coord2D{static_cast<float>(p.x), static_cast<float>(p.y)}, color, static_cast<float>(size));
 }
 
 //
@@ -684,7 +684,7 @@ void DebugDraw::DrawSolidCircle(const Vec2& center, realnum radius, const Color&
 
 void DebugDraw::DrawString(int x, int y, const char *string, ...)
 {
-	const auto h = realnum(m_camera.m_height);
+	const auto h = float(m_camera.m_height);
 
 	char buffer[256];
 
@@ -699,7 +699,7 @@ void DebugDraw::DrawString(int x, int y, const char *string, ...)
 void DebugDraw::DrawString(const Vec2& pw, const char *string, ...)
 {
 	const auto ps = ConvertWorldToScreen(m_camera, pw);
-	const auto h = realnum(m_camera.m_height);
+	const auto h = float(m_camera.m_height);
 
 	char buffer[128];
 
@@ -713,12 +713,12 @@ void DebugDraw::DrawString(const Vec2& pw, const char *string, ...)
 
 Vec2 DebugDraw::GetTranslation() const
 {
-	return m_camera.m_center;
+	return Vec2{m_camera.m_center.x, m_camera.m_center.y};
 }
 
 void DebugDraw::SetTranslation(Vec2 value)
 {
-	m_camera.m_center = value;
+	m_camera.m_center = Coord2D{static_cast<float>(value.x), static_cast<float>(value.y)};
 }
 	
 }

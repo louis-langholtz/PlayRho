@@ -50,8 +50,8 @@ using uint16 = std::uint16_t;
 using uint32 = std::uint32_t;
 using uint64 = std::uint64_t;
 
-/// Box2D floating point type.
-/// This should be float, double, or long double.
+/// Box2D real-number type.
+/// This can be float, double, or long double.
 using realnum = float;
 
 /// Child count type. @detail Relating to "children" of Shape.

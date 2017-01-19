@@ -216,7 +216,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
 		case GLFW_KEY_HOME:
 			// Reset view
 			g_camera.m_zoom = 1.0f;
-			g_camera.m_center = Vec2(0.0f, 20.0f);
+			g_camera.m_center = Coord2D{0.0f, 20.0f};
 			break;
 
 		case GLFW_KEY_Z:
@@ -288,7 +288,7 @@ static void sMouseButton(GLFWwindow*, int32 button, int32 action, int32 mods)
 {
 	double xd, yd;
 	glfwGetCursorPos(mainWindow, &xd, &yd);
-	const auto ps = Vec2((realnum)xd, (realnum)yd);
+	const auto ps = Coord2D{(float)xd, (float)yd};
 
 	// Use the mouse to move things around.
 	if (button == GLFW_MOUSE_BUTTON_1)
@@ -330,14 +330,16 @@ static void sMouseButton(GLFWwindow*, int32 button, int32 action, int32 mods)
 //
 static void sMouseMotion(GLFWwindow*, double xd, double yd)
 {
-	const auto ps = Vec2{realnum(xd), realnum(yd)};
+	const auto ps = Coord2D{static_cast<float>(xd), static_cast<float>(yd)};
 	const auto pw = ConvertScreenToWorld(g_camera, ps);
 
 	test->MouseMove(pw);
 	
 	if (rightMouseDown)
 	{
-		g_camera.m_center -= pw - lastp;
+		const auto movement = pw - lastp;
+		g_camera.m_center.x -= movement.x;
+		g_camera.m_center.y -= movement.y;
 		lastp = ConvertScreenToWorld(g_camera, ps);
 	}
 }
@@ -400,7 +402,7 @@ static void sSimulate(Drawer& drawer)
 		entry = g_testEntries + testIndex;
 		test = entry->createFcn();
 		g_camera.m_zoom = 1.0f;
-		g_camera.m_center = Vec2(0.0f, 20.0f);
+		g_camera.m_center = Coord2D{0.0f, 20.0f};
 	}
 }
 

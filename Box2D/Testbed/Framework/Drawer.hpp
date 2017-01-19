@@ -40,7 +40,7 @@ struct Color
 		assert(ai >= 0 && ai <= 1);
 	}
 
-	constexpr Color(Color copy, realnum new_a):
+	constexpr Color(Color copy, float new_a):
 		Color{copy.r, copy.g, copy.b, new_a}
 	{
 		// Intentionally empty.
