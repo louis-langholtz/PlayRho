@@ -81,7 +81,7 @@ struct Camera
 
 Vec2 ConvertScreenToWorld(const Camera& camera, const Coord2D screenPoint);
 Coord2D ConvertWorldToScreen(const Camera& camera, const Vec2 worldPoint);
-ProjectionMatrix GetProjectionMatrix(const Camera& camera, realnum zBias);
+ProjectionMatrix GetProjectionMatrix(const Camera& camera, RealNum zBias);
 
 class DebugDraw : public Drawer
 {
@@ -94,13 +94,13 @@ public:
 
 	void DrawSolidPolygon(const Vec2* vertices, size_type vertexCount, const Color& color) override;
 
-	void DrawCircle(const Vec2& center, realnum radius, const Color& color) override;
+	void DrawCircle(const Vec2& center, RealNum radius, const Color& color) override;
 
-	void DrawSolidCircle(const Vec2& center, realnum radius, const Color& color) override;
+	void DrawSolidCircle(const Vec2& center, RealNum radius, const Color& color) override;
 
 	void DrawSegment(const Vec2& p1, const Vec2& p2, const Color& color) override;
 
-    void DrawPoint(const Vec2& p, realnum size, const Color& color) override;
+    void DrawPoint(const Vec2& p, RealNum size, const Color& color) override;
 
     void DrawString(int x, int y, const char* string, ...) override; 
 
@@ -120,8 +120,8 @@ private:
     GLRenderLines* m_lines;
     GLRenderTriangles* m_triangles;
 	int m_circleParts = 16;
-	realnum m_cosInc;
-	realnum m_sinInc;
+	RealNum m_cosInc;
+	RealNum m_sinInc;
 };
 
 } // namespace box2d

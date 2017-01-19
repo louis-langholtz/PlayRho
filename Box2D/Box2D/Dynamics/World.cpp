@@ -52,7 +52,7 @@ using VelocityConstraintsContainer = AllocatedArray<VelocityConstraint, StackAll
 
 struct MovementConf
 {
-	realnum maxTranslation;
+	RealNum maxTranslation;
 	Angle maxRotation;
 };
 
@@ -96,7 +96,7 @@ namespace {
 	/// Calculates movement.
 	/// @detail Calculate the positional displacement based on the given velocity
 	///    that's possibly clamped to the maximum translation and rotation.
-	inline Position CalculateMovement(Velocity& velocity, realnum h, MovementConf conf)
+	inline Position CalculateMovement(Velocity& velocity, RealNum h, MovementConf conf)
 	{
 		assert(IsValid(velocity));
 		assert(IsValid(h));
@@ -121,7 +121,7 @@ namespace {
 	}
 	
 	inline void IntegratePositions(PositionContainer& positions, VelocityContainer& velocities,
-								   realnum h, MovementConf conf)
+								   RealNum h, MovementConf conf)
 	{
 		auto i = size_t{0};
 		for (auto&& velocity: velocities)
@@ -173,7 +173,7 @@ namespace {
 	}
 	
 	/// Gets the position-independent velocity constraint for the given contact, index, and time slot values.
-	inline VelocityConstraint GetVelocityConstraint(const Contact& contact, VelocityConstraint::index_type index, realnum dtRatio)
+	inline VelocityConstraint GetVelocityConstraint(const Contact& contact, VelocityConstraint::index_type index, RealNum dtRatio)
 	{
 		VelocityConstraint constraint(index,
 									  contact.GetFriction(),
@@ -212,7 +212,7 @@ namespace {
 	}
 	
 	inline void InitVelConstraints(VelocityConstraintsContainer& constraints,
-								   const Island::ContactContainer& contacts, realnum dtRatio)
+								   const Island::ContactContainer& contacts, RealNum dtRatio)
 	{
 		auto i = VelocityConstraint::index_type{0};
 		for (auto&& contact: contacts)
@@ -325,7 +325,7 @@ namespace {
 		}
 	}
 
-	inline realnum UpdateSleepTimes(Island::BodyContainer& bodies, realnum h)
+	inline RealNum UpdateSleepTimes(Island::BodyContainer& bodies, RealNum h)
 	{
 		auto minSleepTime = MaxFloat;
 		for (auto&& b: bodies)
@@ -1162,7 +1162,7 @@ bool World::SolveTOI(const StepConf& step, Island& island)
 		//   function is the one to be calling here.
 		//
 		const auto minSeparation = SolvePositionConstraints(positionConstraints, positions, psConf);
-		if (minSeparation >= -psConf.linearSlop * realnum(1.5))
+		if (minSeparation >= -psConf.linearSlop * RealNum(1.5))
 		{
 			positionConstraintsSolved = i;
 			break;
@@ -1218,7 +1218,7 @@ void World::ResetContactsForSolveTOI(Body& body)
 	}
 }
 
-void World::ProcessContactsForTOI(Island& island, Body& body, realnum toi, ContactListener* listener)
+void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi, ContactListener* listener)
 {
 	assert(body.IsAccelerable());
 
@@ -1330,7 +1330,7 @@ struct WorldRayCastWrapper
 {
 	using size_type = BroadPhase::size_type;
 
-	realnum RayCastCallback(const RayCastInput& input, size_type proxyId)
+	RealNum RayCastCallback(const RayCastInput& input, size_type proxyId)
 	{
 		auto userData = broadPhase->GetUserData(proxyId);
 		const auto proxy = static_cast<FixtureProxy*>(userData);
@@ -1342,7 +1342,7 @@ struct WorldRayCastWrapper
 		{
 			const auto fraction = output.fraction;
 			assert(fraction >= 0 && fraction <= 1);
-			const auto point = (realnum{1} - fraction) * input.p1 + fraction * input.p2;
+			const auto point = (RealNum{1} - fraction) * input.p1 + fraction * input.p2;
 			return callback->ReportFixture(fixture, point, output.normal, fraction);
 		}
 
@@ -1360,7 +1360,7 @@ struct WorldRayCastWrapper
 void World::RayCast(RayCastFixtureReporter* callback, const Vec2& point1, const Vec2& point2) const
 {
 	WorldRayCastWrapper wrapper(&m_contactMgr.m_broadPhase, callback);
-	const auto input = RayCastInput{point1, point2, realnum{1}};
+	const auto input = RayCastInput{point1, point2, RealNum{1}};
 	m_contactMgr.m_broadPhase.RayCast(&wrapper, input);
 }
 
@@ -1379,7 +1379,7 @@ World::size_type World::GetTreeBalance() const
 	return m_contactMgr.m_broadPhase.GetTreeBalance();
 }
 
-realnum World::GetTreeQuality() const
+RealNum World::GetTreeQuality() const
 {
 	return m_contactMgr.m_broadPhase.GetTreeQuality();
 }
@@ -1407,7 +1407,7 @@ void World::ShiftOrigin(const Vec2 newOrigin)
 	m_contactMgr.m_broadPhase.ShiftOrigin(newOrigin);
 }
 
-StepStats Step(World& world, realnum dt, World::ts_iters_type velocityIterations, World::ts_iters_type positionIterations)
+StepStats Step(World& world, RealNum dt, World::ts_iters_type velocityIterations, World::ts_iters_type positionIterations)
 {
 	StepConf step;
 	step.set_dt(dt);

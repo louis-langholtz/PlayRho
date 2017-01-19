@@ -42,10 +42,10 @@ namespace box2d
 			PointSeparation() noexcept = default;
 			PointSeparation(const PointSeparation& copy) noexcept = default;
 			
-			constexpr PointSeparation(Vec2 point, realnum separation) noexcept: p{point}, s{separation} {}
+			constexpr PointSeparation(Vec2 point, RealNum separation) noexcept: p{point}, s{separation} {}
 			
 			Vec2 p; ///< Point.
-			realnum s; ///< Separation.
+			RealNum s; ///< Separation.
 		};
 		
 		/// Default constructor.
@@ -57,7 +57,7 @@ namespace box2d
 		constexpr explicit WorldManifold(UnitVec2 normal) noexcept:
 			m_normal{normal}, m_count{0},
 			m_points{GetInvalid<Vec2>(), GetInvalid<Vec2>()},
-			m_separations{GetInvalid<realnum>(), GetInvalid<realnum>()}
+			m_separations{GetInvalid<RealNum>(), GetInvalid<RealNum>()}
 		{
 			// Intentionally empty.
 		}
@@ -65,7 +65,7 @@ namespace box2d
 		constexpr explicit WorldManifold(UnitVec2 normal, PointSeparation ps0) noexcept:
 			m_normal{normal}, m_count{1},
 			m_points{ps0.p, GetInvalid<Vec2>()},
-			m_separations{ps0.s, GetInvalid<realnum>()}
+			m_separations{ps0.s, GetInvalid<RealNum>()}
 		{
 			// Intentionally empty.
 		}
@@ -116,7 +116,7 @@ namespace box2d
 		/// @return Separation amount (a negative value), or an invalid value if the given index
 		///   was invalid.
 		///
-		realnum GetSeparation(size_type index) const noexcept
+		RealNum GetSeparation(size_type index) const noexcept
 		{
 			assert(index < MaxManifoldPoints);
 			return m_separations[index];
@@ -133,7 +133,7 @@ namespace box2d
 		
 		/// Separations (in meters).
 		/// @detail A negative value indicates overlap.
-		realnum m_separations[MaxManifoldPoints] = {GetInvalid<realnum>(), GetInvalid<realnum>()};
+		RealNum m_separations[MaxManifoldPoints] = {GetInvalid<RealNum>(), GetInvalid<RealNum>()};
 	};
 	
 	/// Gets the world manifold for the given data.
@@ -153,8 +153,8 @@ namespace box2d
 	///   manifold intersection.
 	///
 	WorldManifold GetWorldManifold(const Manifold& manifold,
-								   const Transformation& xfA, const realnum radiusA,
-								   const Transformation& xfB, const realnum radiusB);
+								   const Transformation& xfA, const RealNum radiusA,
+								   const Transformation& xfB, const RealNum radiusB);
 	
 	/// Gets the world manifold for the given data.
 	///

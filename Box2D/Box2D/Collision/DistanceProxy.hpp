@@ -55,7 +55,7 @@ namespace box2d
 		/// @detail Constructs a distance proxy for a single point shape (a circle).
 		/// @param radius Radius of the given vertex.
 		/// @param v0 Vertex 0 (relative to the shape's origin).
-		constexpr DistanceProxy(realnum radius, Vec2 v0) noexcept:
+		constexpr DistanceProxy(RealNum radius, Vec2 v0) noexcept:
 			m_radius{radius}, m_buffer{{v0}}, m_count{1}
 		{
 			assert(radius >= 0);
@@ -66,7 +66,7 @@ namespace box2d
 		/// @param radius Radius of the given vertices.
 		/// @param v0 Vertex 0 (relative to the shape's origin).
 		/// @param v1 Vertex 1 (relative to the shape's origin).
-		constexpr DistanceProxy(realnum radius, Vec2 v0, Vec2 v1) noexcept:
+		constexpr DistanceProxy(RealNum radius, Vec2 v0, Vec2 v1) noexcept:
 			m_radius{radius}, m_buffer{{v0, v1}}, m_count{2}
 		{
 			assert(radius >= 0);
@@ -80,7 +80,7 @@ namespace box2d
 		///    <code>MaxShapeVertices</code> elements.
 		/// @warning Behavior is undefined if the vertices collection has less than one element or
 		///   more than <code>MaxShapeVertices</code> elements.
-		constexpr DistanceProxy(realnum radius, const Span<const Vec2>& vertices) noexcept:
+		constexpr DistanceProxy(RealNum radius, const Span<const Vec2>& vertices) noexcept:
 			m_radius{radius},
 			m_buffer{},
 			m_vertices{vertices.begin()},
@@ -130,7 +130,7 @@ namespace box2d
 		const Vec2* m_vertices = &m_buffer[0];
 		
 		size_type m_count = 0; ///< Count of valid elements of m_vertices.
-		realnum m_radius = realnum{0}; ///< Radius of the vertices of the associated shape (in meters).
+		RealNum m_radius = RealNum{0}; ///< Radius of the vertices of the associated shape (in meters).
 	};
 	
 	/// Initialize the proxy using the given shape.

@@ -124,9 +124,9 @@ protected:
 		UnitVec2 normal;
 		Vec2 position;
 		PointState state;
-		realnum normalImpulse;
-		realnum tangentImpulse;
-		realnum separation;
+		RealNum normalImpulse;
+		RealNum tangentImpulse;
+		RealNum separation;
 	};
 	
 	// This is called when a joint in the world is implicitly destroyed
@@ -189,10 +189,10 @@ struct TestEntry
 extern const TestEntry g_testEntries[];
 
 /// Random number in range [-1,1]
-realnum RandomFloat();
+RealNum RandomFloat();
 
 /// Random floating point number in range [lo, hi]
-realnum RandomFloat(realnum lo, realnum hi);
+RealNum RandomFloat(RealNum lo, RealNum hi);
 
 ::std::ostream& operator<<(::std::ostream& os, const ContactFeature& value);
 

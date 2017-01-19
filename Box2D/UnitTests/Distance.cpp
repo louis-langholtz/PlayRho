@@ -47,7 +47,7 @@ TEST(Distance, MatchingCircles)
 	EXPECT_EQ(ip.b, IndexPair::size_type{0});
 
 	EXPECT_EQ(true, cache.IsMetricSet());
-	EXPECT_EQ(cache.GetMetric(), realnum{0});
+	EXPECT_EQ(cache.GetMetric(), RealNum{0});
 }
 
 TEST(Distance, OpposingCircles)
@@ -79,7 +79,7 @@ TEST(Distance, OpposingCircles)
 	EXPECT_EQ(ip.b, IndexPair::size_type{0});
 	
 	EXPECT_EQ(true, cache.IsMetricSet());
-	EXPECT_EQ(cache.GetMetric(), realnum{0});
+	EXPECT_EQ(cache.GetMetric(), RealNum{0});
 }
 
 TEST(Distance, HorTouchingCircles)
@@ -114,7 +114,7 @@ TEST(Distance, HorTouchingCircles)
 	EXPECT_EQ(ip.b, IndexPair::size_type{0});
 	
 	EXPECT_EQ(true, cache.IsMetricSet());
-	EXPECT_EQ(cache.GetMetric(), realnum{0});
+	EXPECT_EQ(cache.GetMetric(), RealNum{0});
 }
 
 TEST(Distance, OverlappingCirclesPN)
@@ -146,7 +146,7 @@ TEST(Distance, OverlappingCirclesPN)
 	EXPECT_EQ(ip.b, IndexPair::size_type{0});
 	
 	EXPECT_EQ(true, cache.IsMetricSet());
-	EXPECT_EQ(cache.GetMetric(), realnum{0});
+	EXPECT_EQ(cache.GetMetric(), RealNum{0});
 }
 
 TEST(Distance, OverlappingCirclesNP)
@@ -178,7 +178,7 @@ TEST(Distance, OverlappingCirclesNP)
 	EXPECT_EQ(ip.b, IndexPair::size_type{0});
 	
 	EXPECT_EQ(true, cache.IsMetricSet());
-	EXPECT_EQ(cache.GetMetric(), realnum{0});
+	EXPECT_EQ(cache.GetMetric(), RealNum{0});
 }
 
 
@@ -211,7 +211,7 @@ TEST(Distance, SeparatedCircles)
 	EXPECT_EQ(ip.b, IndexPair::size_type{0});
 	
 	EXPECT_EQ(true, cache.IsMetricSet());
-	EXPECT_EQ(cache.GetMetric(), realnum{0});
+	EXPECT_EQ(cache.GetMetric(), RealNum{0});
 }
 
 TEST(Distance, EdgeCircleOverlapping)
@@ -222,7 +222,7 @@ TEST(Distance, EdgeCircleOverlapping)
 	const auto pos1 = Vec2{0, 2};
 	const auto pos2 = Vec2{4, 2};
 	const auto pos3 = Vec2{2, 2};
-	DistanceProxy dp1{realnum(0.1), pos1, pos2};
+	DistanceProxy dp1{RealNum(0.1), pos1, pos2};
 	DistanceProxy dp2{1, pos3};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
@@ -248,7 +248,7 @@ TEST(Distance, EdgeCircleOverlapping)
 	EXPECT_EQ(ip1.b, IndexPair::size_type{0});
 	
 	EXPECT_EQ(true, cache.IsMetricSet());
-	EXPECT_EQ(cache.GetMetric(), realnum{4});
+	EXPECT_EQ(cache.GetMetric(), RealNum{4});
 }
 
 TEST(Distance, EdgeCircleOverlapping2)
@@ -259,7 +259,7 @@ TEST(Distance, EdgeCircleOverlapping2)
 	const auto pos1 = Vec2{-3, 2};
 	const auto pos2 = Vec2{7, 2};
 	const auto pos3 = Vec2{2, 2};
-	DistanceProxy dp1{realnum(0.1), pos1, pos2};
+	DistanceProxy dp1{RealNum(0.1), pos1, pos2};
 	DistanceProxy dp2{1, pos3};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
@@ -285,7 +285,7 @@ TEST(Distance, EdgeCircleOverlapping2)
 	EXPECT_EQ(ip1.b, IndexPair::size_type{0});
 	
 	EXPECT_EQ(true, cache.IsMetricSet());
-	EXPECT_EQ(cache.GetMetric(), realnum{10});
+	EXPECT_EQ(cache.GetMetric(), RealNum{10});
 }
 
 TEST(Distance, EdgeCircleTouching)
@@ -296,18 +296,18 @@ TEST(Distance, EdgeCircleTouching)
 	const auto pos1 = Vec2{0, 3};
 	const auto pos2 = Vec2{4, 3};
 	const auto pos3 = Vec2{2, 1};
-	DistanceProxy dp1{realnum(1), pos1, pos2};
+	DistanceProxy dp1{RealNum(1), pos1, pos2};
 	DistanceProxy dp2{1, pos3};
 	
 	const auto output = Distance(dp1, xf1, dp2, xf2, cache);
 	cache = Simplex::GetCache(output.simplex.GetEdges());
 	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(witnessPoints.a.x, realnum{2});
-	EXPECT_EQ(witnessPoints.a.y, realnum{3});
+	EXPECT_EQ(witnessPoints.a.x, RealNum{2});
+	EXPECT_EQ(witnessPoints.a.y, RealNum{3});
 	
-	EXPECT_EQ(witnessPoints.b.x, realnum{2});
-	EXPECT_EQ(witnessPoints.b.y, realnum{1});
+	EXPECT_EQ(witnessPoints.b.x, RealNum{2});
+	EXPECT_EQ(witnessPoints.b.y, RealNum{1});
 	
 	EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
 	
@@ -322,7 +322,7 @@ TEST(Distance, EdgeCircleTouching)
 	EXPECT_EQ(ip1.b, IndexPair::size_type{0});
 	
 	EXPECT_EQ(true, cache.IsMetricSet());
-	EXPECT_EQ(cache.GetMetric(), realnum{4});
+	EXPECT_EQ(cache.GetMetric(), RealNum{4});
 }
 
 TEST(Distance, HorEdgeSquareTouching)
@@ -332,11 +332,11 @@ TEST(Distance, HorEdgeSquareTouching)
 	const auto pos3 = Vec2{3, 3};
 	const auto pos4 = Vec2{3, 1};
 	const auto square = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{realnum(0.5), square};
+	DistanceProxy dp1{RealNum(0.5), square};
 
 	const auto pos5 = Vec2{-2, 0};
 	const auto pos6 = Vec2{6, 0};
-	DistanceProxy dp2{realnum(0.5), pos5, pos6};
+	DistanceProxy dp2{RealNum(0.5), pos5, pos6};
 	
 	Simplex::Cache cache;
 	Transformation xf1 = Transform_identity;
@@ -346,11 +346,11 @@ TEST(Distance, HorEdgeSquareTouching)
 	cache = Simplex::GetCache(output.simplex.GetEdges());
 	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(witnessPoints.a.x, realnum{1});
-	EXPECT_EQ(witnessPoints.a.y, realnum{1});
+	EXPECT_EQ(witnessPoints.a.x, RealNum{1});
+	EXPECT_EQ(witnessPoints.a.y, RealNum{1});
 	
-	EXPECT_EQ(witnessPoints.b.x, realnum{1});
-	EXPECT_EQ(witnessPoints.b.y, realnum{0});
+	EXPECT_EQ(witnessPoints.b.x, RealNum{1});
+	EXPECT_EQ(witnessPoints.b.y, RealNum{0});
 	
 	EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
 	
@@ -365,7 +365,7 @@ TEST(Distance, HorEdgeSquareTouching)
 	EXPECT_EQ(ip1.b, IndexPair::size_type{1});
 	
 	EXPECT_EQ(true, cache.IsMetricSet());
-	EXPECT_EQ(cache.GetMetric(), realnum{8});
+	EXPECT_EQ(cache.GetMetric(), RealNum{8});
 }
 
 TEST(Distance, VerEdgeSquareTouching)
@@ -375,11 +375,11 @@ TEST(Distance, VerEdgeSquareTouching)
 	const auto pos3 = Vec2{3, 3};
 	const auto pos4 = Vec2{3, 1};
 	const auto square = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{realnum(0.5), square};
+	DistanceProxy dp1{RealNum(0.5), square};
 	
 	const auto pos5 = Vec2{4, -2};
 	const auto pos6 = Vec2{4, 6};
-	DistanceProxy dp2{realnum(0.5), pos5, pos6};
+	DistanceProxy dp2{RealNum(0.5), pos5, pos6};
 	
 	Simplex::Cache cache;
 	Transformation xf1 = Transform_identity;
@@ -389,12 +389,12 @@ TEST(Distance, VerEdgeSquareTouching)
 	cache = Simplex::GetCache(output.simplex.GetEdges());
 	const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-	EXPECT_EQ(Sqrt(GetLengthSquared(witnessPoints.a - witnessPoints.b)), realnum(1));
-	EXPECT_EQ(witnessPoints.a.x, realnum{3});
-	EXPECT_EQ(witnessPoints.a.y, realnum{2});
+	EXPECT_EQ(Sqrt(GetLengthSquared(witnessPoints.a - witnessPoints.b)), RealNum(1));
+	EXPECT_EQ(witnessPoints.a.x, RealNum{3});
+	EXPECT_EQ(witnessPoints.a.y, RealNum{2});
 	
-	EXPECT_EQ(witnessPoints.b.x, realnum{4});
-	EXPECT_EQ(witnessPoints.b.y, realnum{2});
+	EXPECT_EQ(witnessPoints.b.x, RealNum{4});
+	EXPECT_EQ(witnessPoints.b.y, RealNum{2});
 	
 	EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
 	
@@ -409,7 +409,7 @@ TEST(Distance, VerEdgeSquareTouching)
 	EXPECT_EQ(ip1.b, IndexPair::size_type{1});
 	
 	EXPECT_EQ(true, cache.IsMetricSet());
-	EXPECT_EQ(cache.GetMetric(), realnum{10});
+	EXPECT_EQ(cache.GetMetric(), RealNum{10});
 }
 
 TEST(Distance, SquareTwice)
@@ -419,7 +419,7 @@ TEST(Distance, SquareTwice)
 	const auto pos3 = Vec2{4, 4};
 	const auto pos4 = Vec2{4, 2};
 	const auto square = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{realnum(0.05), square};
+	DistanceProxy dp1{RealNum(0.05), square};
 
 	Simplex::Cache cache;
 	Transformation xfm = Transform_identity;
@@ -443,7 +443,7 @@ TEST(Distance, SquareTwice)
 	EXPECT_EQ(ip.b, IndexPair::size_type{0});
 	
 	EXPECT_EQ(true, cache.IsMetricSet());
-	EXPECT_EQ(cache.GetMetric(), realnum{0});
+	EXPECT_EQ(cache.GetMetric(), RealNum{0});
 }
 
 
@@ -454,14 +454,14 @@ TEST(Distance, SquareSquareTouchingVertically)
 	const auto pos3 = Vec2{4, 4};
 	const auto pos4 = Vec2{4, 2};
 	const auto square1 = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{realnum(0.05), square1};
+	DistanceProxy dp1{RealNum(0.05), square1};
 	
 	const auto pos5 = Vec2{4, 2};
 	const auto pos6 = Vec2{4, 4};
 	const auto pos7 = Vec2{6, 4};
 	const auto pos8 = Vec2{6, 2};
 	const auto square2 = {pos5, pos6, pos7, pos8};
-	DistanceProxy dp2{realnum(0.05), square2};
+	DistanceProxy dp2{RealNum(0.05), square2};
 
 	Simplex::Cache cache;
 	Transformation xfm = Transform_identity;
@@ -485,7 +485,7 @@ TEST(Distance, SquareSquareTouchingVertically)
 	EXPECT_EQ(ip.b, IndexPair::size_type{1});
 	
 	EXPECT_EQ(true, cache.IsMetricSet());
-	EXPECT_EQ(cache.GetMetric(), realnum{4});
+	EXPECT_EQ(cache.GetMetric(), RealNum{4});
 }
 
 TEST(Distance, SquareSquareDiagonally)
@@ -495,14 +495,14 @@ TEST(Distance, SquareSquareDiagonally)
 	const auto pos3 = Vec2{-1, -1};
 	const auto pos4 = Vec2{-1, -3};
 	const auto square1 = {pos1, pos2, pos3, pos4};
-	DistanceProxy dp1{realnum(0.05), square1};
+	DistanceProxy dp1{RealNum(0.05), square1};
 	
 	const auto pos5 = Vec2{1, 3};
 	const auto pos6 = Vec2{3, 3};
 	const auto pos7 = Vec2{3, 1};
 	const auto pos8 = Vec2{1, 1};
 	const auto square2 = {pos5, pos6, pos7, pos8};
-	DistanceProxy dp2{realnum(0.05), square2};
+	DistanceProxy dp2{RealNum(0.05), square2};
 	
 	Simplex::Cache cache;
 	Transformation xfm = Transform_identity;
@@ -526,7 +526,7 @@ TEST(Distance, SquareSquareDiagonally)
 	EXPECT_EQ(ip.b, IndexPair::size_type{3});
 	
 	EXPECT_EQ(true, cache.IsMetricSet());
-	EXPECT_EQ(cache.GetMetric(), realnum{0});
+	EXPECT_EQ(cache.GetMetric(), RealNum{0});
 }
 
 TEST(Distance, SquareSquareOverlappingDiagnally)
@@ -591,5 +591,5 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
 	EXPECT_EQ(ip.b, IndexPair::size_type{0});
 	
 	EXPECT_EQ(true, cache.IsMetricSet());
-	EXPECT_EQ(cache.GetMetric(), realnum{-64});
+	EXPECT_EQ(cache.GetMetric(), RealNum{-64});
 }

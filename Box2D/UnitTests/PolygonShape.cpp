@@ -52,8 +52,8 @@ TEST(PolygonShape, FindLowestRightMostVertex)
 
 TEST(PolygonShape, BoxConstruction)
 {
-	const auto hx = realnum(2.3);
-	const auto hy = realnum(54.1);
+	const auto hx = RealNum(2.3);
+	const auto hy = RealNum(54.1);
 	const auto shape = PolygonShape{hx, hy};
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(shape.GetCentroid(), Vec2(0, 0));
@@ -77,8 +77,8 @@ TEST(PolygonShape, BoxConstruction)
 
 TEST(PolygonShape, Copy)
 {
-	const auto hx = realnum(2.3);
-	const auto hy = realnum(54.1);
+	const auto hx = RealNum(2.3);
+	const auto hy = RealNum(54.1);
 	
 	auto shape = PolygonShape{hx, hy};
 	ASSERT_EQ(shape.GetType(), Shape::e_polygon);
@@ -122,8 +122,8 @@ TEST(PolygonShape, Copy)
 
 TEST(PolygonShape, Translate)
 {
-	const auto hx = realnum(2.3);
-	const auto hy = realnum(54.1);
+	const auto hx = RealNum(2.3);
+	const auto hy = RealNum(54.1);
 	
 	auto shape = PolygonShape{hx, hy};
 	ASSERT_EQ(shape.GetType(), Shape::e_polygon);
@@ -166,8 +166,8 @@ TEST(PolygonShape, Translate)
 
 TEST(PolygonShape, SetAsBox)
 {
-	const auto hx = realnum(2.3);
-	const auto hy = realnum(54.1);
+	const auto hx = RealNum(2.3);
+	const auto hy = RealNum(54.1);
 	PolygonShape shape;
 	shape.SetAsBox(hx, hy);
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
@@ -192,8 +192,8 @@ TEST(PolygonShape, SetAsBox)
 
 TEST(PolygonShape, SetAsZeroCenteredRotatedBox)
 {
-	const auto hx = realnum(2.3);
-	const auto hy = realnum(54.1);
+	const auto hx = RealNum(2.3);
+	const auto hy = RealNum(54.1);
 	PolygonShape shape;
 	SetAsBox(shape, hx, hy, Vec2_zero, 0_deg);
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
@@ -218,11 +218,11 @@ TEST(PolygonShape, SetAsZeroCenteredRotatedBox)
 
 TEST(PolygonShape, SetAsCenteredBox)
 {
-	const auto hx = realnum(2.3);
-	const auto hy = realnum(54.1);
+	const auto hx = RealNum(2.3);
+	const auto hy = RealNum(54.1);
 	PolygonShape shape;
-	const auto x_off = realnum(10.2);
-	const auto y_off = realnum(-5);
+	const auto x_off = RealNum(10.2);
+	const auto y_off = RealNum(-5);
 	SetAsBox(shape, hx, hy, Vec2(x_off, y_off), 0_deg);
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(shape.GetCentroid(), Vec2(x_off, y_off));
@@ -246,15 +246,15 @@ TEST(PolygonShape, SetAsCenteredBox)
 
 TEST(PolygonShape, SetAsBoxAngledDegrees90)
 {
-	const auto hx = realnum(2.3);
-	const auto hy = realnum(54.1);
+	const auto hx = RealNum(2.3);
+	const auto hy = RealNum(54.1);
 	PolygonShape shape;
 	const auto angle = 90_deg;
 	SetAsBox(shape, hx, hy, Vec2_zero, angle);
 
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
-	EXPECT_EQ(shape.GetCentroid().x, realnum(0));
-	EXPECT_EQ(shape.GetCentroid().y, realnum(0));
+	EXPECT_EQ(shape.GetCentroid().x, RealNum(0));
+	EXPECT_EQ(shape.GetCentroid().y, RealNum(0));
 	EXPECT_EQ(GetChildCount(shape), child_count_t(1));
 	EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
 	
@@ -305,7 +305,7 @@ TEST(PolygonShape, SetPoints)
 TEST(PolygonShape, CanSetTwoPoints)
 {
 	const auto points = Span<const Vec2>{Vec2{-1, +0}, Vec2{+1, +0}};
-	const auto vertexRadius = realnum(2);
+	const auto vertexRadius = RealNum(2);
 	PolygonShape shape(vertexRadius);
 	shape.Set(points);
 	EXPECT_EQ(shape.GetVertexCount(), static_cast<PolygonShape::vertex_count_t>(points.size()));
@@ -320,7 +320,7 @@ TEST(PolygonShape, CanSetTwoPoints)
 TEST(PolygonShape, CanSetOnePoint)
 {
 	const auto points = Span<const Vec2>{Vec2{0, 0}};
-	const auto vertexRadius = realnum(2);
+	const auto vertexRadius = RealNum(2);
 	PolygonShape shape(vertexRadius);
 	shape.Set(points);
 	EXPECT_EQ(shape.GetVertexCount(), static_cast<PolygonShape::vertex_count_t>(points.size()));

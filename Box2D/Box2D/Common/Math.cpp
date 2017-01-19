@@ -26,7 +26,7 @@ Vec2 box2d::ComputeCentroid(const Span<const Vec2>& vertices)
 	assert(vertices.size() >= 3);
 	
 	auto c = Vec2_zero;
-	auto area = realnum{0};
+	auto area = RealNum{0};
 	
 	// pRef is the reference point for forming triangles.
 	// It's location doesn't change the result (except for rounding error).

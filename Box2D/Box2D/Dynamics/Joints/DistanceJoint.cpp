@@ -41,7 +41,7 @@ using namespace box2d;
 
 DistanceJointDef::DistanceJointDef(Body* bA, Body* bB,
 								   const Vec2 anchor1, const Vec2 anchor2,
-								   realnum freq, realnum damp) noexcept:
+								   RealNum freq, RealNum damp) noexcept:
 	JointDef{JointType::Distance, bA, bB},
 	localAnchorA{GetLocalPoint(*bA, anchor1)}, localAnchorB{GetLocalPoint(*bB, anchor2)},
 	length{GetLength(anchor2 - anchor1)},
@@ -93,7 +93,7 @@ void DistanceJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	const auto length = box2d::GetLength(m_u);
 	if (length > conf.linearSlop)
 	{
-		m_u *= realnum(1) / length;
+		m_u *= RealNum(1) / length;
 	}
 	else
 	{
@@ -105,17 +105,17 @@ void DistanceJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	auto invMass = m_invMassA + m_invIA * Square(crAu) + m_invMassB + m_invIB * Square(crBu);
 
 	// Compute the effective mass matrix.
-	m_mass = (invMass != 0) ? realnum{1} / invMass : realnum{0};
+	m_mass = (invMass != 0) ? RealNum{1} / invMass : RealNum{0};
 
 	if (m_frequencyHz > 0)
 	{
 		const auto C = length - m_length;
 
 		// Frequency
-		const auto omega = realnum(2) * Pi * m_frequencyHz;
+		const auto omega = RealNum(2) * Pi * m_frequencyHz;
 
 		// Damping coefficient
-		const auto d = realnum(2) * m_mass * m_dampingRatio * omega;
+		const auto d = RealNum(2) * m_mass * m_dampingRatio * omega;
 
 		// Spring stiffness
 		const auto k = m_mass * Square(omega);
@@ -123,16 +123,16 @@ void DistanceJoint::InitVelocityConstraints(Span<Velocity> velocities,
 		// magic formulas
 		const auto h = step.get_dt();
 		m_gamma = h * (d + h * k);
-		m_gamma = (m_gamma != 0) ? realnum{1} / m_gamma : realnum{0};
+		m_gamma = (m_gamma != 0) ? RealNum{1} / m_gamma : RealNum{0};
 		m_bias = C * h * k * m_gamma;
 
 		invMass += m_gamma;
-		m_mass = (invMass != 0) ? realnum{1} / invMass : realnum{0};
+		m_mass = (invMass != 0) ? RealNum{1} / invMass : RealNum{0};
 	}
 	else
 	{
-		m_gamma = realnum{0};
-		m_bias = realnum{0};
+		m_gamma = RealNum{0};
+		m_bias = RealNum{0};
 	}
 
 	if (step.doWarmStart)
@@ -148,7 +148,7 @@ void DistanceJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	}
 	else
 	{
-		m_impulse = realnum{0};
+		m_impulse = RealNum{0};
 	}
 
 	velocities[m_indexA].linear = vA;
@@ -186,7 +186,7 @@ void DistanceJoint::SolveVelocityConstraints(Span<Velocity> velocities, const St
 
 bool DistanceJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
 {
-	if (m_frequencyHz > realnum{0})
+	if (m_frequencyHz > RealNum{0})
 	{
 		// There is no position correction for soft distance constraints.
 		return true;
@@ -234,12 +234,12 @@ Vec2 DistanceJoint::GetAnchorB() const
 	return GetWorldPoint(*GetBodyB(), m_localAnchorB);
 }
 
-Vec2 DistanceJoint::GetReactionForce(realnum inv_dt) const
+Vec2 DistanceJoint::GetReactionForce(RealNum inv_dt) const
 {
 	return (inv_dt * m_impulse) * m_u;
 }
 
-realnum DistanceJoint::GetReactionTorque(realnum inv_dt) const
+RealNum DistanceJoint::GetReactionTorque(RealNum inv_dt) const
 {
 	BOX2D_NOT_USED(inv_dt);
 	return 0;

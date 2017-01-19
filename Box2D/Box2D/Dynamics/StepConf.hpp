@@ -35,27 +35,27 @@ public:
 	static constexpr auto InvalidIteration = static_cast<iteration_type>(-1);
 
 	/// Gets the delta time (time amount for this time step).
-	/// @sa set_dt(realnum).
+	/// @sa set_dt(RealNum).
 	/// @return Time step amount in seconds.
-	realnum get_dt() const noexcept { return dt; }
+	RealNum get_dt() const noexcept { return dt; }
 
 	/// Gets the inverse delta-t value.
 	/// @return 1/dt or 0 if dt is 0.
 	/// @sa get_dt().
-	realnum get_inv_dt() const noexcept { return inv_dt; }
+	RealNum get_inv_dt() const noexcept { return inv_dt; }
 	
 	/// Sets the delta time value.
 	/// @post Getting the delta time will return this set value.
 	/// @post The inverse delta time value is the inverse of this set value or zero if the value is zero.
 	/// @sa get_inv_dt().
 	/// @param value Elapsed time amount (in seconds).
-	void set_dt(realnum value) noexcept
+	void set_dt(RealNum value) noexcept
 	{
 		dt = value;
-		inv_dt = (value != 0)? realnum{1} / value: realnum{0};
+		inv_dt = (value != 0)? RealNum{1} / value: RealNum{0};
 	}
 
-	constexpr StepConf& use_dt(realnum value) noexcept
+	constexpr StepConf& use_dt(RealNum value) noexcept
 	{
 		set_dt(value);
 		return *this;
@@ -64,29 +64,29 @@ public:
 	/// Delta t ratio.
 	/// @detail This is the delta-t times the inverse delta t from the previous world step.
 	///   Value of 1 indicates that the time step has not varied.
-	realnum dtRatio = 1;
+	RealNum dtRatio = 1;
 
 	/// Minimum still time to sleep.
 	/// @detail The time that a body must be still before it will go to sleep.
 	/// Set to an invalid value to disable sleeping.
-	realnum minStillTimeToSleep = realnum{1} / 2; // aka 0.5
+	RealNum minStillTimeToSleep = RealNum{1} / 2; // aka 0.5
 
 	/// This scale factor controls how fast overlap is resolved. Ideally this would be 1 so
 	/// that overlap is removed in one time step. However using values close to 1 often lead
 	/// to overshoot.
-	realnum regResolutionRate = realnum{2} / 10; // aka 0.2.
+	RealNum regResolutionRate = RealNum{2} / 10; // aka 0.2.
 	
 	/// Time of impact resolution rate.
-	realnum toiResolutionRate = realnum{75} / 100; // aka .75
+	RealNum toiResolutionRate = RealNum{75} / 100; // aka .75
 
 	/// A velocity threshold for elastic collisions. Any collision with a relative linear
 	/// velocity below this threshold will be treated as inelastic.
-	realnum velocityThreshold = realnum{8} / 10; // realnum{1};
+	RealNum velocityThreshold = RealNum{8} / 10; // RealNum{1};
 
 	/// Maximum linear velocity of a body.
 	/// This limit is very large and is used to prevent numerical problems.
 	/// You shouldn't need to adjust this.
-	realnum maxTranslation = 4; // originally 2
+	RealNum maxTranslation = 4; // originally 2
 	
 	/// Maximum angular velocity of a body.
 	/// This limit is very large and is used to prevent numerical problems.
@@ -95,9 +95,9 @@ public:
 
 	/// Maximum linear correction.
 	/// @detail This value should be greater than the linear slop value.
-	realnum maxLinearCorrection = LinearSlop * 40; // 40 * linearSlop. aka 0.004
+	RealNum maxLinearCorrection = LinearSlop * 40; // 40 * linearSlop. aka 0.004
 	
-	realnum maxAngularCorrection = AngularSlop * 4;
+	RealNum maxAngularCorrection = AngularSlop * 4;
 
 	iteration_type regVelocityIterations = 8; ///< Velocity iterations.
 	iteration_type regPositionIterations = 3; ///< Position iterations.
@@ -121,8 +121,8 @@ public:
 	bool doToi = true; ///< Whether or not to perform continuous collision detection.
 
 private:
-	realnum dt; ///< Delta time. This is the time step in seconds.
-	realnum inv_dt; ///< Inverse time step (1/dt or 0 if dt == 0). @see dt.
+	RealNum dt; ///< Delta time. This is the time step in seconds.
+	RealNum inv_dt; ///< Inverse time step (1/dt or 0 if dt == 0). @see dt.
 };
 
 } // namespace box2d

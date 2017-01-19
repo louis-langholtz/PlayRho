@@ -68,7 +68,7 @@ public:
 		}
 
 		// Should the body break?
-		auto maxImpulse = realnum(0);
+		auto maxImpulse = RealNum(0);
 		{
 			const auto count = impulse.GetCount();
 			for (auto i = decltype(count){0}; i < count; ++i)

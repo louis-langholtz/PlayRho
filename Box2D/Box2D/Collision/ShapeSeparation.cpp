@@ -23,7 +23,7 @@ using namespace box2d;
 
 IndexPairSeparation box2d::GetMaxSeparation(Span<const Vec2> verts1, Span<const UnitVec2> norms1, const Transformation& xf1,
 										Span<const Vec2> verts2, const Transformation& xf2,
-										realnum stop)
+										RealNum stop)
 {
 	assert(verts1.size() == norms1.size());
 	
@@ -50,7 +50,7 @@ IndexPairSeparation box2d::GetMaxSeparation(Span<const Vec2> verts1, Span<const 
 
 IndexPairSeparation box2d::GetMaxSeparation(Span<const Vec2> verts1, Span<const UnitVec2> norms1,
 										Span<const Vec2> verts2,
-										realnum stop)
+										RealNum stop)
 {
 	assert(verts1.size() == norms1.size());
 	

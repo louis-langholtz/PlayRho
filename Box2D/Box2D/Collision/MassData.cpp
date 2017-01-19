@@ -30,7 +30,7 @@ using namespace box2d;
 
 namespace
 {
-	MassData GetMassData(realnum r, realnum density, Vec2 location)
+	MassData GetMassData(RealNum r, RealNum density, Vec2 location)
 	{
 		// Uses parallel axis theorem, perpendicular axis theorem, and the second moment of area.
 		// See: https://en.wikipedia.org/wiki/Second_moment_of_area
@@ -53,7 +53,7 @@ namespace
 		return MassData{mass, location, Iz * density};
 	}
 
-	MassData GetMassData(realnum r, realnum density, Vec2 v0, Vec2 v1)
+	MassData GetMassData(RealNum r, RealNum density, Vec2 v0, Vec2 v1)
 	{
 		const auto r_squared = Square(r);
 		const auto circle_area = Pi * r_squared;
@@ -83,16 +83,16 @@ namespace
 
 } // unnamed namespace
 
-realnum box2d::GetAreaOfCircle(realnum radius)
+RealNum box2d::GetAreaOfCircle(RealNum radius)
 {
 	return Pi * Square(radius);
 }
 
-realnum box2d::GetAreaOfPolygon(Span<const Vec2> vertices)
+RealNum box2d::GetAreaOfPolygon(Span<const Vec2> vertices)
 {
 	// Uses the "Shoelace formula".
 	// See: https://en.wikipedia.org/wiki/Shoelace_formula
-	auto sum = realnum(0);
+	auto sum = RealNum(0);
 	const auto count = vertices.size();
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
@@ -104,7 +104,7 @@ realnum box2d::GetAreaOfPolygon(Span<const Vec2> vertices)
 	return sum / 2;
 }
 
-realnum box2d::GetPolarMoment(Span<const Vec2> vertices)
+RealNum box2d::GetPolarMoment(Span<const Vec2> vertices)
 {
 	assert(vertices.size() > 2);
 
@@ -114,8 +114,8 @@ realnum box2d::GetPolarMoment(Span<const Vec2> vertices)
 	// See:
 	// https://en.wikipedia.org/wiki/Second_moment_of_area#Any_polygon
 	// https://en.wikipedia.org/wiki/Second_moment_of_area#Perpendicular_axis_theorem
-	auto sum_x = realnum(0);
-	auto sum_y = realnum(0);
+	auto sum_x = RealNum(0);
+	auto sum_y = RealNum(0);
 	const auto count = vertices.size();
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
@@ -134,7 +134,7 @@ realnum box2d::GetPolarMoment(Span<const Vec2> vertices)
 	return (sum_x + sum_y) / 12;
 }
 
-MassData box2d::GetMassData(const PolygonShape& shape, realnum density)
+MassData box2d::GetMassData(const PolygonShape& shape, RealNum density)
 {
 	assert(density >= 0);
 	
@@ -166,7 +166,7 @@ MassData box2d::GetMassData(const PolygonShape& shape, realnum density)
 	switch (count)
 	{
 		case 0:
-			return MassData{GetInvalid<realnum>(), GetInvalid<Vec2>(), GetInvalid<realnum>()};
+			return MassData{GetInvalid<RealNum>(), GetInvalid<Vec2>(), GetInvalid<RealNum>()};
 		case 1:
 			return ::GetMassData(shape.GetVertexRadius(), density, shape.GetVertex(0));
 		case 2:
@@ -176,15 +176,15 @@ MassData box2d::GetMassData(const PolygonShape& shape, realnum density)
 	}
 	
 	auto center = Vec2_zero;
-	auto area = realnum{0};
-	auto I = realnum{0};
+	auto area = RealNum{0};
+	auto I = RealNum{0};
 	
 	// s is the reference point for forming triangles.
 	// It's location doesn't change the result (except for rounding error).
 	// This code puts the reference point inside the polygon.
 	const auto s = Average(shape.GetVertices());
 	
-	constexpr auto k_inv3 = realnum{1} / realnum{3};
+	constexpr auto k_inv3 = RealNum{1} / RealNum{3};
 	
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
@@ -211,7 +211,7 @@ MassData box2d::GetMassData(const PolygonShape& shape, realnum density)
 	
 	// Center of mass
 	assert((area > 0) && !almost_zero(area));
-	center *= realnum{1} / area;
+	center *= RealNum{1} / area;
 	const auto massDataCenter = center + s;
 	
 	// Inertia tensor relative to the local origin (point s).
@@ -221,26 +221,26 @@ MassData box2d::GetMassData(const PolygonShape& shape, realnum density)
 	return MassData{mass, massDataCenter, massDataI};
 }
 
-MassData box2d::GetMassData(const CircleShape& shape, realnum density)
+MassData box2d::GetMassData(const CircleShape& shape, RealNum density)
 {
 	return ::GetMassData(shape.GetVertexRadius(), density, shape.GetLocation());
 }
 
-MassData box2d::GetMassData(const EdgeShape& shape, realnum density)
+MassData box2d::GetMassData(const EdgeShape& shape, RealNum density)
 {
 	assert(!shape.HasVertex0());
 	assert(!shape.HasVertex3());
 	return ::GetMassData(shape.GetVertexRadius(), density, shape.GetVertex1(), shape.GetVertex2());
 }
 
-MassData box2d::GetMassData(const ChainShape& shape, realnum density)
+MassData box2d::GetMassData(const ChainShape& shape, RealNum density)
 {
 	BOX2D_NOT_USED(density);
 	
-	return MassData{realnum{0}, Vec2_zero, realnum{0}};
+	return MassData{RealNum{0}, Vec2_zero, RealNum{0}};
 }
 
-MassData box2d::GetMassData(const Shape& shape, realnum density)
+MassData box2d::GetMassData(const Shape& shape, RealNum density)
 {
 	assert(shape.GetType() < Shape::e_typeCount);
 	switch (shape.GetType())

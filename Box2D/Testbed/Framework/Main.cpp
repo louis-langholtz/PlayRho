@@ -377,7 +377,7 @@ static void sSimulate(Drawer& drawer)
 {
 	glEnable(GL_DEPTH_TEST);
 	
-	settings.dt = (settings.hz > 0)? 1.0f / settings.hz : realnum(0.0f);
+	settings.dt = (settings.hz > 0)? 1.0f / settings.hz : RealNum(0.0f);
 	if (settings.pause)
 	{
 		if (settings.singleStep)

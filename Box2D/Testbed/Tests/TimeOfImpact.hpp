@@ -53,7 +53,7 @@ public:
 
 	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
-		const auto offset = Vec2{realnum(-35), realnum(70)};
+		const auto offset = Vec2{RealNum(-35), RealNum(70)};
 		const auto sweepA = Sweep{
 			Position{Vec2(24.0f, -60.0f) + offset, 2.95_rad}
 		};

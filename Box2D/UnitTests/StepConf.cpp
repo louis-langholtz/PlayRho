@@ -28,13 +28,13 @@ TEST(StepConf, ByteSizeIs56)
 
 TEST(StepConf, maxTranslation)
 {
-	const auto v = realnum(1);
-	const auto n = std::nextafter(v, realnum(0));
+	const auto v = RealNum(1);
+	const auto n = std::nextafter(v, RealNum(0));
 	const auto inc = v - n;
-	ASSERT_GT(inc, realnum(0));
-	ASSERT_LT(inc, realnum(1));
+	ASSERT_GT(inc, RealNum(0));
+	ASSERT_LT(inc, RealNum(1));
 	const auto max_inc = inc * StepConf{}.maxTranslation;
-	EXPECT_GT(max_inc, realnum(0));
+	EXPECT_GT(max_inc, RealNum(0));
 	EXPECT_LT(max_inc, LinearSlop / 2);
 #if 0
 	std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
@@ -47,13 +47,13 @@ TEST(StepConf, maxTranslation)
 
 TEST(StepConf, maxRotation)
 {
-	const auto v = realnum(1);
-	const auto n = std::nextafter(v, realnum(0));
+	const auto v = RealNum(1);
+	const auto n = std::nextafter(v, RealNum(0));
 	const auto inc = v - n;
-	ASSERT_GT(inc, realnum(0));
-	ASSERT_LT(inc, realnum(1));
+	ASSERT_GT(inc, RealNum(0));
+	ASSERT_LT(inc, RealNum(1));
 	const auto max_inc = inc * StepConf{}.maxRotation / 1_rad;
-	EXPECT_GT(max_inc, realnum(0));
+	EXPECT_GT(max_inc, RealNum(0));
 	EXPECT_LT(max_inc, AngularSlop / 2);
 #if 0
 	std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);

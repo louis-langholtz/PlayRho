@@ -65,11 +65,11 @@ struct RevoluteJointDef : public JointDef
 	bool enableMotor = false;
 
 	/// The desired motor speed. Usually in radians per second.
-	realnum motorSpeed = 0;
+	RealNum motorSpeed = 0;
 
 	/// The maximum motor torque used to achieve the desired motor speed.
 	/// Usually in N-m.
-	realnum maxMotorTorque = 0;
+	RealNum maxMotorTorque = 0;
 };
 
 /// A revolute joint constrains two bodies to share a common point while they
@@ -123,26 +123,26 @@ public:
 	void EnableMotor(bool flag);
 
 	/// Set the motor speed in radians per second.
-	void SetMotorSpeed(realnum speed);
+	void SetMotorSpeed(RealNum speed);
 
 	/// Get the motor speed in radians per second.
-	realnum GetMotorSpeed() const noexcept;
+	RealNum GetMotorSpeed() const noexcept;
 
 	/// Set the maximum motor torque, usually in N-m.
-	void SetMaxMotorTorque(realnum torque);
-	realnum GetMaxMotorTorque() const noexcept { return m_maxMotorTorque; }
+	void SetMaxMotorTorque(RealNum torque);
+	RealNum GetMaxMotorTorque() const noexcept { return m_maxMotorTorque; }
 
 	/// Get the reaction force given the inverse time step.
 	/// Unit is N.
-	Vec2 GetReactionForce(realnum inv_dt) const override;
+	Vec2 GetReactionForce(RealNum inv_dt) const override;
 
 	/// Get the reaction torque due to the joint limit given the inverse time step.
 	/// Unit is N*m.
-	realnum GetReactionTorque(realnum inv_dt) const override;
+	RealNum GetReactionTorque(RealNum inv_dt) const override;
 
 	/// Get the current motor torque given the inverse time step.
 	/// Unit is N*m.
-	realnum GetMotorTorque(realnum inv_dt) const;
+	RealNum GetMotorTorque(RealNum inv_dt) const;
 
 private:
 	
@@ -156,11 +156,11 @@ private:
 	Vec2 m_localAnchorA;
 	Vec2 m_localAnchorB;
 	Vec3 m_impulse = Vec3_zero; ///< Impulse.
-	realnum m_motorImpulse = 0;
+	RealNum m_motorImpulse = 0;
 
 	bool m_enableMotor;
-	realnum m_maxMotorTorque;
-	realnum m_motorSpeed;
+	RealNum m_maxMotorTorque;
+	RealNum m_motorSpeed;
 
 	bool m_enableLimit;
 	Angle m_referenceAngle;
@@ -174,12 +174,12 @@ private:
 	Vec2 m_rB;
 	Vec2 m_localCenterA;
 	Vec2 m_localCenterB;
-	realnum m_invMassA;
-	realnum m_invMassB;
-	realnum m_invIA;
-	realnum m_invIB;
+	RealNum m_invMassA;
+	RealNum m_invMassB;
+	RealNum m_invIA;
+	RealNum m_invIB;
 	Mat33 m_mass;			// effective mass for point-to-point constraint.
-	realnum m_motorMass;	// effective mass for motor/limit angular constraint.
+	RealNum m_motorMass;	// effective mass for motor/limit angular constraint.
 	LimitState m_limitState = e_inactiveLimit;
 };
 
@@ -203,7 +203,7 @@ inline bool RevoluteJoint::IsMotorEnabled() const noexcept
 	return m_enableMotor;
 }
 
-inline realnum RevoluteJoint::GetMotorSpeed() const noexcept
+inline RealNum RevoluteJoint::GetMotorSpeed() const noexcept
 {
 	return m_motorSpeed;
 }

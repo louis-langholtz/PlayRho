@@ -32,7 +32,7 @@ namespace box2d {
 	{
 		Position pos_a;
 		Position pos_b;
-		realnum min_separation;
+		RealNum min_separation;
 	};
 
 	inline PositionSolution operator+ (PositionSolution lhs, PositionSolution rhs)
@@ -51,15 +51,15 @@ namespace box2d {
 	/// @sa SolvePositionConstraint.
 	struct ConstraintSolverConf
 	{
-		ConstraintSolverConf& UseResolutionRate(realnum value) noexcept;
+		ConstraintSolverConf& UseResolutionRate(RealNum value) noexcept;
 
-		ConstraintSolverConf& UseLinearSlop(realnum value) noexcept;
+		ConstraintSolverConf& UseLinearSlop(RealNum value) noexcept;
 		
-		ConstraintSolverConf& UseAngularSlop(realnum value) noexcept;
+		ConstraintSolverConf& UseAngularSlop(RealNum value) noexcept;
 
-		ConstraintSolverConf& UseMaxLinearCorrection(realnum value) noexcept;
+		ConstraintSolverConf& UseMaxLinearCorrection(RealNum value) noexcept;
 
-		ConstraintSolverConf& UseMaxAngularCorrection(realnum value) noexcept;
+		ConstraintSolverConf& UseMaxAngularCorrection(RealNum value) noexcept;
 
 		/// Resolution rate.
 		/// @detail
@@ -69,55 +69,55 @@ namespace box2d {
 		/// However using values close to 1 often leads to overshoot.
 		/// @note Recommended values are: <code>0.2</code> for solving regular constraints
 		///   or <code>0.75</code> for solving TOI constraints.
-		realnum resolutionRate = realnum(0.2);
+		RealNum resolutionRate = RealNum(0.2);
 
 		/// Linear slop.
 		/// @note The negative of this amount is the maximum amount of separation to create.
 		/// @note Recommended value: <code>LinearSlop</code>.
-		realnum linearSlop = LinearSlop;
+		RealNum linearSlop = LinearSlop;
 
 		/// Angular slop.
 		/// @note Recommended value: <code>AngularSlop</code>.
-		realnum angularSlop = AngularSlop;
+		RealNum angularSlop = AngularSlop;
 
 		/// Maximum linear correction.
 		/// @detail
 		/// Maximum amount of overlap to resolve in a single solver call. Helps prevent overshoot.
 		/// @note Recommended value: <code>linearSlop * 40</code>.
-		realnum maxLinearCorrection = linearSlop * 20;
+		RealNum maxLinearCorrection = linearSlop * 20;
 		
 		/// Maximum angular correction.
 		/// @detail Maximum angular position correction used when solving constraints.
 		/// Helps to prevent overshoot.
 		/// @note Recommended value: <code>angularSlop * 4</code>.
-		realnum maxAngularCorrection = angularSlop * 4;
+		RealNum maxAngularCorrection = angularSlop * 4;
 	};
 
-	inline ConstraintSolverConf& ConstraintSolverConf::UseResolutionRate(realnum value) noexcept
+	inline ConstraintSolverConf& ConstraintSolverConf::UseResolutionRate(RealNum value) noexcept
 	{
 		resolutionRate = value;
 		return *this;
 	}
 
-	inline ConstraintSolverConf& ConstraintSolverConf::UseLinearSlop(realnum value) noexcept
+	inline ConstraintSolverConf& ConstraintSolverConf::UseLinearSlop(RealNum value) noexcept
 	{
 		linearSlop = value;
 		return *this;
 	}
 
-	inline ConstraintSolverConf& ConstraintSolverConf::UseAngularSlop(realnum value) noexcept
+	inline ConstraintSolverConf& ConstraintSolverConf::UseAngularSlop(RealNum value) noexcept
 	{
 		angularSlop = value;
 		return *this;
 	}
 
-	inline ConstraintSolverConf& ConstraintSolverConf::UseMaxLinearCorrection(realnum value) noexcept
+	inline ConstraintSolverConf& ConstraintSolverConf::UseMaxLinearCorrection(RealNum value) noexcept
 	{
 		maxLinearCorrection = value;
 		return *this;
 	}
 
-	inline ConstraintSolverConf& ConstraintSolverConf::UseMaxAngularCorrection(realnum value) noexcept
+	inline ConstraintSolverConf& ConstraintSolverConf::UseMaxAngularCorrection(RealNum value) noexcept
 	{
 		maxAngularCorrection = value;
 		return *this;
@@ -137,7 +137,7 @@ namespace box2d {
 	
 	inline ConstraintSolverConf GetDefaultPositionSolverConf()
 	{
-		return ConstraintSolverConf{}.UseResolutionRate(realnum(0.2));
+		return ConstraintSolverConf{}.UseResolutionRate(RealNum(0.2));
 	}
 	
 	/// Solves the given position constraints.
@@ -148,14 +148,14 @@ namespace box2d {
 	/// @return Minimum separation.
 	/// @sa MinSeparationThreshold.
 	/// @sa Solve.
-	realnum SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
+	RealNum SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
 									 Span<Position> positions,
 									 ConstraintSolverConf conf = GetDefaultPositionSolverConf());
 	
 	inline ConstraintSolverConf GetDefaultToiPositionSolverConf()
 	{
 		// For solving TOI events, use a faster/higher resolution rate than normally used.
-		return ConstraintSolverConf{}.UseResolutionRate(realnum(0.75));
+		return ConstraintSolverConf{}.UseResolutionRate(RealNum(0.75));
 	}
 
 	/// Solves the given position constraints.
@@ -167,7 +167,7 @@ namespace box2d {
 	///  ConstraintSolverConf.max_separation because code won't push the separation above this
 	///   amount to begin with.
 	/// @return Minimum separation.
-	realnum SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
+	RealNum SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
 									 Span<Position> positions,
 									 island_count_t indexA, island_count_t indexB,
 									 ConstraintSolverConf conf = GetDefaultToiPositionSolverConf());

@@ -50,7 +50,7 @@ MotorJoint::MotorJoint(const MotorJointDef& def)
 	m_angularOffset = def.angularOffset;
 
 	m_linearImpulse = Vec2_zero;
-	m_angularImpulse = realnum{0};
+	m_angularImpulse = RealNum{0};
 
 	m_maxForce = def.maxForce;
 	m_maxTorque = def.maxTorque;
@@ -107,9 +107,9 @@ void MotorJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 	m_linearMass = Invert(K);
 
 	m_angularMass = iA + iB;
-	if (m_angularMass > realnum{0})
+	if (m_angularMass > RealNum{0})
 	{
-		m_angularMass = realnum{1} / m_angularMass;
+		m_angularMass = RealNum{1} / m_angularMass;
 	}
 
 	m_linearError = cB + m_rB - cA - m_rA - Rotate(m_linearOffset, qA);
@@ -130,7 +130,7 @@ void MotorJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 	else
 	{
 		m_linearImpulse = Vec2_zero;
-		m_angularImpulse = realnum{0};
+		m_angularImpulse = RealNum{0};
 	}
 
 	velocities[m_indexA].linear = vA;
@@ -214,45 +214,45 @@ Vec2 MotorJoint::GetAnchorB() const
 	return GetBodyB()->GetLocation();
 }
 
-Vec2 MotorJoint::GetReactionForce(realnum inv_dt) const
+Vec2 MotorJoint::GetReactionForce(RealNum inv_dt) const
 {
 	return inv_dt * m_linearImpulse;
 }
 
-realnum MotorJoint::GetReactionTorque(realnum inv_dt) const
+RealNum MotorJoint::GetReactionTorque(RealNum inv_dt) const
 {
 	return inv_dt * m_angularImpulse;
 }
 
-void MotorJoint::SetMaxForce(realnum force)
+void MotorJoint::SetMaxForce(RealNum force)
 {
-	assert(IsValid(force) && (force >= realnum{0}));
+	assert(IsValid(force) && (force >= RealNum{0}));
 	m_maxForce = force;
 }
 
-realnum MotorJoint::GetMaxForce() const
+RealNum MotorJoint::GetMaxForce() const
 {
 	return m_maxForce;
 }
 
-void MotorJoint::SetMaxTorque(realnum torque)
+void MotorJoint::SetMaxTorque(RealNum torque)
 {
-	assert(IsValid(torque) && (torque >= realnum{0}));
+	assert(IsValid(torque) && (torque >= RealNum{0}));
 	m_maxTorque = torque;
 }
 
-realnum MotorJoint::GetMaxTorque() const
+RealNum MotorJoint::GetMaxTorque() const
 {
 	return m_maxTorque;
 }
 
-void MotorJoint::SetCorrectionFactor(realnum factor)
+void MotorJoint::SetCorrectionFactor(RealNum factor)
 {
-	assert(IsValid(factor) && (realnum{0} <= factor) && (factor <= realnum{1}));
+	assert(IsValid(factor) && (RealNum{0} <= factor) && (factor <= RealNum{1}));
 	m_correctionFactor = factor;
 }
 
-realnum MotorJoint::GetCorrectionFactor() const
+RealNum MotorJoint::GetCorrectionFactor() const
 {
 	return m_correctionFactor;
 }

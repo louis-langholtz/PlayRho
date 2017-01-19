@@ -93,7 +93,7 @@ PositionSolverManifold GetPSM(const Manifold& m, Manifold::size_type idx,
 	}
 
 	// should not be reached
-	return PositionSolverManifold{GetInvalid<UnitVec2>(), GetInvalid<Vec2>(), GetInvalid<realnum>()};
+	return PositionSolverManifold{GetInvalid<UnitVec2>(), GetInvalid<Vec2>(), GetInvalid<RealNum>()};
 }
 
 }; // namespace box2d

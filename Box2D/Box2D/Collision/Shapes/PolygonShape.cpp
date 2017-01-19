@@ -22,7 +22,7 @@
 
 using namespace box2d;
 
-PolygonShape::PolygonShape(realnum hx, realnum hy) noexcept:
+PolygonShape::PolygonShape(RealNum hx, RealNum hy) noexcept:
 	Shape{e_polygon, PolygonShape::GetDefaultVertexRadius()}
 {
 	SetAsBox(hx, hy);
@@ -34,7 +34,7 @@ PolygonShape::PolygonShape(Span<const Vec2> points) noexcept:
 	Set(points);
 }
 
-void PolygonShape::SetAsBox(realnum hx, realnum hy) noexcept
+void PolygonShape::SetAsBox(RealNum hx, RealNum hy) noexcept
 {
 	m_centroid = Vec2_zero;
 
@@ -58,7 +58,7 @@ void PolygonShape::SetAsBox(realnum hx, realnum hy) noexcept
 	m_normals.emplace_back(UnitVec2::GetBottom());
 }
 
-void box2d::SetAsBox(PolygonShape& shape, realnum hx, realnum hy, const Vec2 center, Angle angle) noexcept
+void box2d::SetAsBox(PolygonShape& shape, RealNum hx, RealNum hy, const Vec2 center, Angle angle) noexcept
 {
 	shape.SetAsBox(hx, hy);
 	shape.Transform(Transformation{center, UnitVec2{angle}});

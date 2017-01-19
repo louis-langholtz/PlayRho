@@ -27,47 +27,47 @@ TEST(Sweep, ByteSizeIs36)
 }
 
 TEST(Sweep, ConstructorSetsPos0and1) {
-	const auto pos = Position{Vec2{realnum(-0.4), realnum(2.34)}, 3.14_rad};
+	const auto pos = Position{Vec2{RealNum(-0.4), RealNum(2.34)}, 3.14_rad};
 	Sweep sweep{pos};
 	EXPECT_EQ(pos, sweep.pos0);
 	EXPECT_EQ(pos, sweep.pos1);
 }
 
 TEST(Sweep, ResetSetsAlpha0to0) {
-	const auto pos = Position{Vec2{realnum(-0.4), realnum(2.34)}, 3.14_rad};
-	Sweep sweep{pos, pos, Vec2_zero, realnum(0.6)};
-	EXPECT_NE(realnum{0}, sweep.GetAlpha0());
+	const auto pos = Position{Vec2{RealNum(-0.4), RealNum(2.34)}, 3.14_rad};
+	Sweep sweep{pos, pos, Vec2_zero, RealNum(0.6)};
+	EXPECT_NE(RealNum{0}, sweep.GetAlpha0());
 	sweep.ResetAlpha0();
-	EXPECT_EQ(realnum{0}, sweep.GetAlpha0());	
+	EXPECT_EQ(RealNum{0}, sweep.GetAlpha0());	
 }
 
 TEST(Sweep, GetPosition) {
-	const auto pos0 = Position{Vec2{realnum(-0.4), realnum(+2.34)}, 3.14_rad};
-	const auto pos1 = Position{Vec2{realnum(+0.4), realnum(-2.34)}, -3.14_rad};
-	Sweep sweep{pos0, pos1, Vec2_zero, realnum(0.6)};
+	const auto pos0 = Position{Vec2{RealNum(-0.4), RealNum(+2.34)}, 3.14_rad};
+	const auto pos1 = Position{Vec2{RealNum(+0.4), RealNum(-2.34)}, -3.14_rad};
+	Sweep sweep{pos0, pos1, Vec2_zero, RealNum(0.6)};
 	EXPECT_EQ(pos0, GetPosition(sweep.pos0, sweep.pos1, 0));
 	EXPECT_EQ(pos1, GetPosition(sweep.pos0, sweep.pos1, 1));
 }
 
 TEST(Sweep, Advance) {
-	const auto pos0 = Position{Vec2{realnum(-0.4), realnum(+2.34)}, 3.14_rad};
-	const auto pos1 = Position{Vec2{realnum(+0.4), realnum(-2.34)}, -3.14_rad};
+	const auto pos0 = Position{Vec2{RealNum(-0.4), RealNum(+2.34)}, 3.14_rad};
+	const auto pos1 = Position{Vec2{RealNum(+0.4), RealNum(-2.34)}, -3.14_rad};
 	
 	Sweep sweep{pos0, pos1, Vec2_zero, 0};
-	EXPECT_EQ(realnum{0}, sweep.GetAlpha0());
+	EXPECT_EQ(RealNum{0}, sweep.GetAlpha0());
 	
 	sweep.Advance0(0);
-	EXPECT_EQ(realnum{0}, sweep.GetAlpha0());
+	EXPECT_EQ(RealNum{0}, sweep.GetAlpha0());
 	EXPECT_EQ(pos0, sweep.pos0);
 	EXPECT_EQ(pos1, sweep.pos1);
 	
-	sweep.Advance0(realnum{1}/realnum{2});
-	EXPECT_EQ(realnum{1}/realnum{2}, sweep.GetAlpha0());
+	sweep.Advance0(RealNum{1}/RealNum{2});
+	EXPECT_EQ(RealNum{1}/RealNum{2}, sweep.GetAlpha0());
 	EXPECT_EQ(pos1, sweep.pos1);
 	EXPECT_EQ( (Position{ Vec2{0, 0}, 0_rad }), sweep.pos0);
 
 	sweep.Advance0(0);
-	EXPECT_EQ(realnum{0}, sweep.GetAlpha0());
+	EXPECT_EQ(RealNum{0}, sweep.GetAlpha0());
 	EXPECT_EQ(pos0, sweep.pos0);
 	EXPECT_EQ(pos1, sweep.pos1);
 }

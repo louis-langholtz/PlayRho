@@ -40,7 +40,7 @@ TEST(CircleShape, DefaultConstruction)
 
 TEST(CircleShape, InitConstruction)
 {
-	const auto radius = realnum(1);
+	const auto radius = RealNum(1);
 	const auto position = Vec2{-1, 1};
 	CircleShape foo{radius, position};
 	
@@ -53,7 +53,7 @@ TEST(CircleShape, InitConstruction)
 
 TEST(CircleShape, TestPoint)
 {
-	const auto radius = realnum(1);
+	const auto radius = RealNum(1);
 	const auto position = Vec2{0, 0};
 	CircleShape foo{radius, position};
 	EXPECT_TRUE(TestPoint(foo, Transform_identity, Vec2{ 0,  0}));
@@ -63,12 +63,12 @@ TEST(CircleShape, TestPoint)
 	EXPECT_TRUE(TestPoint(foo, Transform_identity, Vec2{-1,  0}));
 	EXPECT_FALSE(TestPoint(foo, Transform_identity, Vec2{-1,  -1}));
 	EXPECT_FALSE(TestPoint(foo, Transform_identity, Vec2{+1,  +1}));
-	EXPECT_FALSE(TestPoint(foo, Transform_identity, Vec2{+realnum(0.9),  +realnum(0.9)}));
+	EXPECT_FALSE(TestPoint(foo, Transform_identity, Vec2{+RealNum(0.9),  +RealNum(0.9)}));
 }
 
 TEST(CircleShape, ComputeAABB)
 {
-	const auto radius = realnum(2.4);
+	const auto radius = RealNum(2.4);
 	const auto position = Vec2{2, 1};
 	CircleShape foo{radius, position};
 	const auto aabb = ComputeAABB(foo, Transform_identity);

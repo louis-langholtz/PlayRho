@@ -23,15 +23,15 @@
 
 namespace box2d
 {
-	constexpr inline realnum CvtDegreesToRadians(const long double value)
+	constexpr inline RealNum CvtDegreesToRadians(const long double value)
 	{
-		return static_cast<realnum>(value * M_PI / 180);
+		return static_cast<RealNum>(value * M_PI / 180);
 	}
 	
 	class Angle
 	{
 	public:
-		using data_type = realnum;
+		using data_type = RealNum;
 		
 		static constexpr Angle GetFromRadians(long double value) noexcept
 		{

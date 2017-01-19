@@ -51,7 +51,7 @@ public:
 
 		m_stepCount = 0;
 
-		realnum h = m_worldExtent;
+		RealNum h = m_worldExtent;
 		m_queryAABB = AABB{Vec2(-3.0f, -4.0f + h), Vec2(5.0f, 6.0f + h)};
 
 		m_rayCastInput.p1 = Vec2(-5.0, 5.0f + h);
@@ -192,7 +192,7 @@ public:
 		return true;
 	}
 
-	realnum RayCastCallback(const RayCastInput& input, DynamicTree::size_type proxyId)
+	RealNum RayCastCallback(const RayCastInput& input, DynamicTree::size_type proxyId)
 	{
 		auto actor = static_cast<Actor*>(m_tree.GetUserData(proxyId));
 
@@ -214,7 +214,7 @@ private:
 	struct Actor
 	{
 		AABB aabb;
-		realnum fraction;
+		RealNum fraction;
 		bool overlap;
 		DynamicTree::size_type proxyId;
 	};
@@ -237,7 +237,7 @@ private:
 		aabb->Move(d);
 
 		const auto c0 = aabb->GetCenter();
-		const auto min = Vec2(-m_worldExtent, realnum(0));
+		const auto min = Vec2(-m_worldExtent, RealNum(0));
 		const auto max = Vec2(m_worldExtent, 2.0f * m_worldExtent);
 		const auto c = Clamp(c0, min, max);
 
@@ -367,8 +367,8 @@ private:
 		}
 	}
 
-	realnum m_worldExtent;
-	realnum m_proxyExtent;
+	RealNum m_worldExtent;
+	RealNum m_proxyExtent;
 
 	DynamicTree m_tree;
 	AABB m_queryAABB;

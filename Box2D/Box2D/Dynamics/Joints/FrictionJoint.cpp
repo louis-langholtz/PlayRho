@@ -96,9 +96,9 @@ void FrictionJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<cons
 	m_linearMass = Invert(K);
 
 	m_angularMass = iA + iB;
-	if (m_angularMass > realnum{0})
+	if (m_angularMass > RealNum{0})
 	{
-		m_angularMass = realnum{1} / m_angularMass;
+		m_angularMass = RealNum{1} / m_angularMass;
 	}
 
 	if (step.doWarmStart)
@@ -116,7 +116,7 @@ void FrictionJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<cons
 	else
 	{
 		m_linearImpulse = Vec2_zero;
-		m_angularImpulse = realnum{0};
+		m_angularImpulse = RealNum{0};
 	}
 
 	velocities[m_indexA].linear = vA;
@@ -199,34 +199,34 @@ Vec2 FrictionJoint::GetAnchorB() const
 	return GetWorldPoint(*GetBodyB(), m_localAnchorB);
 }
 
-Vec2 FrictionJoint::GetReactionForce(realnum inv_dt) const
+Vec2 FrictionJoint::GetReactionForce(RealNum inv_dt) const
 {
 	return inv_dt * m_linearImpulse;
 }
 
-realnum FrictionJoint::GetReactionTorque(realnum inv_dt) const
+RealNum FrictionJoint::GetReactionTorque(RealNum inv_dt) const
 {
 	return inv_dt * m_angularImpulse;
 }
 
-void FrictionJoint::SetMaxForce(realnum force)
+void FrictionJoint::SetMaxForce(RealNum force)
 {
-	assert(IsValid(force) && (force >= realnum{0}));
+	assert(IsValid(force) && (force >= RealNum{0}));
 	m_maxForce = force;
 }
 
-realnum FrictionJoint::GetMaxForce() const
+RealNum FrictionJoint::GetMaxForce() const
 {
 	return m_maxForce;
 }
 
-void FrictionJoint::SetMaxTorque(realnum torque)
+void FrictionJoint::SetMaxTorque(RealNum torque)
 {
-	assert(IsValid(torque) && (torque >= realnum{0}));
+	assert(IsValid(torque) && (torque >= RealNum{0}));
 	m_maxTorque = torque;
 }
 
-realnum FrictionJoint::GetMaxTorque() const
+RealNum FrictionJoint::GetMaxTorque() const
 {
 	return m_maxTorque;
 }

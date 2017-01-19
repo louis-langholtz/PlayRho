@@ -46,9 +46,9 @@ TEST(Mat33, GetInverse)
 	
 	const auto a = foo.ex.x, b = foo.ey.x, c = foo.ex.y, d = foo.ey.y;
 	auto det = (a * d) - (b * c);
-	if (det != realnum{0})
+	if (det != RealNum{0})
 	{
-		det = realnum{1} / det;
+		det = RealNum{1} / det;
 	}
 
 	Mat33 boo{c1, c2, c3};
@@ -75,9 +75,9 @@ TEST(Mat33, GetSymInverse33)
 	const Mat33 foo{c1, c2, c3};
 	
 	auto det = Dot(foo.ex, Cross(foo.ey, foo.ez));
-	if (det != realnum{0})
+	if (det != RealNum{0})
 	{
-		det = realnum{1} / det;
+		det = RealNum{1} / det;
 	}
 	
 	const auto a11 = foo.ex.x, a12 = foo.ey.x, a13 = foo.ez.x;

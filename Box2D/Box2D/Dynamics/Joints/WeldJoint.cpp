@@ -106,20 +106,20 @@ void WeldJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Po
 	K.ey.z = K.ez.y;
 	K.ez.z = iA + iB;
 
-	if (m_frequencyHz > realnum{0})
+	if (m_frequencyHz > RealNum{0})
 	{
 		m_mass = GetInverse22(K);
 
 		auto invM = iA + iB;
-		const auto m = (invM > realnum{0}) ? realnum{1} / invM : realnum{0};
+		const auto m = (invM > RealNum{0}) ? RealNum{1} / invM : RealNum{0};
 
 		const auto C = aB - aA - m_referenceAngle;
 
 		// Frequency
-		const auto omega = realnum(2) * Pi * m_frequencyHz;
+		const auto omega = RealNum(2) * Pi * m_frequencyHz;
 
 		// Damping coefficient
-		const auto d = realnum(2) * m * m_dampingRatio * omega;
+		const auto d = RealNum(2) * m * m_dampingRatio * omega;
 
 		// Spring stiffness
 		const auto k = m * omega * omega;
@@ -127,23 +127,23 @@ void WeldJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Po
 		// magic formulas
 		const auto h = step.get_dt();
 		m_gamma = h * (d + h * k);
-		m_gamma = (m_gamma != realnum{0}) ? realnum{1} / m_gamma : realnum{0};
+		m_gamma = (m_gamma != RealNum{0}) ? RealNum{1} / m_gamma : RealNum{0};
 		m_bias = C.ToRadians() * h * k * m_gamma;
 
 		invM += m_gamma;
-		m_mass.ez.z = (invM != realnum{0}) ? realnum{1} / invM : realnum{0};
+		m_mass.ez.z = (invM != RealNum{0}) ? RealNum{1} / invM : RealNum{0};
 	}
-	else if (K.ez.z == realnum{0})
+	else if (K.ez.z == RealNum{0})
 	{
 		m_mass = GetInverse22(K);
-		m_gamma = realnum{0};
-		m_bias = realnum{0};
+		m_gamma = RealNum{0};
+		m_bias = RealNum{0};
 	}
 	else
 	{
 		m_mass = GetSymInverse33(K);
-		m_gamma = realnum{0};
-		m_bias = realnum{0};
+		m_gamma = RealNum{0};
+		m_bias = RealNum{0};
 	}
 
 	if (step.doWarmStart)
@@ -180,7 +180,7 @@ void WeldJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepCo
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
 
-	if (m_frequencyHz > realnum{0})
+	if (m_frequencyHz > RealNum{0})
 	{
 		const auto Cdot2 = (wB - wA).ToRadians();
 
@@ -244,7 +244,7 @@ bool WeldJoint::SolvePositionConstraints(Span<Position> positions, const Constra
 	const auto rA = Rotate(m_localAnchorA - m_localCenterA, qA);
 	const auto rB = Rotate(m_localAnchorB - m_localCenterB, qB);
 
-	realnum positionError, angularError;
+	RealNum positionError, angularError;
 
 	Mat33 K;
 	K.ex.x = mA + mB + rA.y * rA.y * iA + rB.y * rB.y * iB;
@@ -257,12 +257,12 @@ bool WeldJoint::SolvePositionConstraints(Span<Position> positions, const Constra
 	K.ey.z = K.ez.y;
 	K.ez.z = iA + iB;
 
-	if (m_frequencyHz > realnum{0})
+	if (m_frequencyHz > RealNum{0})
 	{
 		const auto C1 =  cB + rB - cA - rA;
 
 		positionError = GetLength(C1);
-		angularError = realnum{0};
+		angularError = RealNum{0};
 
 		const auto P = -K.Solve22(C1);
 
@@ -283,14 +283,14 @@ bool WeldJoint::SolvePositionConstraints(Span<Position> positions, const Constra
 		const auto C = Vec3(C1.x, C1.y, C2);
 	
 		Vec3 impulse;
-		if (K.ez.z > realnum{0})
+		if (K.ez.z > RealNum{0})
 		{
 			impulse = -K.Solve33(C);
 		}
 		else
 		{
 			const auto impulse2 = -K.Solve22(C1);
-			impulse = Vec3(impulse2.x, impulse2.y, realnum{0});
+			impulse = Vec3(impulse2.x, impulse2.y, RealNum{0});
 		}
 
 		const auto P = Vec2{impulse.x, impulse.y};
@@ -320,13 +320,13 @@ Vec2 WeldJoint::GetAnchorB() const
 	return GetWorldPoint(*GetBodyB(), m_localAnchorB);
 }
 
-Vec2 WeldJoint::GetReactionForce(realnum inv_dt) const
+Vec2 WeldJoint::GetReactionForce(RealNum inv_dt) const
 {
 	const auto P = Vec2{m_impulse.x, m_impulse.y};
 	return inv_dt * P;
 }
 
-realnum WeldJoint::GetReactionTorque(realnum inv_dt) const
+RealNum WeldJoint::GetReactionTorque(RealNum inv_dt) const
 {
 	return inv_dt * m_impulse.z;
 }

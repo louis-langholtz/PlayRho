@@ -26,7 +26,7 @@ namespace box2d
 	class Length
 	{
 	public:
-		using data_type = realnum;
+		using data_type = RealNum;
 
 		static Length GetFromMeters(data_type value)
 		{

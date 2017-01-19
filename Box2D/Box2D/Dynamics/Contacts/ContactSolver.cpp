@@ -32,8 +32,8 @@ using namespace box2d;
 #endif
 
 #if defined(B2_DEBUG_SOLVER)
-static constexpr auto k_errorTol = realnum(2e-3); ///< error tolerance
-static constexpr auto k_majorErrorTol = realnum(1e-2); ///< error tolerance
+static constexpr auto k_errorTol = RealNum(2e-3); ///< error tolerance
+static constexpr auto k_majorErrorTol = RealNum(1e-2); ///< error tolerance
 #endif
 
 struct VelocityPair
@@ -107,7 +107,7 @@ static inline void SeqSolveNormalConstraint(VelocityConstraint& vc, Velocity& ve
 			
 			// Clamp the accumulated impulse
 			const auto oldImpulse = GetNormalImpulseAtPoint(vc, i);
-			const auto newImpulse = Max(oldImpulse - lambda, realnum{0});
+			const auto newImpulse = Max(oldImpulse - lambda, RealNum{0});
 			const auto incImpulse = newImpulse - oldImpulse;
 			
 			// Save new impulse
@@ -170,7 +170,7 @@ static inline bool BlockSolveNormalCase1(VelocityConstraint& vc, Velocity& velA,
 	assert(IsValid(normalMass));
 
 	const auto newImpulses = -Transform(b_prime, normalMass);
-	if ((newImpulses[0] >= realnum{0}) && (newImpulses[1] >= realnum{0}))
+	if ((newImpulses[0] >= RealNum{0}) && (newImpulses[1] >= RealNum{0}))
 	{
 		BlockSolveUpdate(vc, velA, velB, newImpulses);
 		
@@ -205,11 +205,11 @@ static inline bool BlockSolveNormalCase2(VelocityConstraint& vc, Velocity& velA,
 	//   0 = a11 * x1 + a12 * 0 + b1' 
 	// vn2 = a21 * x1 + a22 * 0 + b2'
 	//
-	const auto newImpulse = Vec2{-GetNormalMassAtPoint(vc, 0) * b_prime.x, realnum{0}};
+	const auto newImpulse = Vec2{-GetNormalMassAtPoint(vc, 0) * b_prime.x, RealNum{0}};
 	const auto K = vc.GetK();
 	assert(IsValid(K));
 	const auto vn2 = K.ex.y * newImpulse.x + b_prime.y;
-	if ((newImpulse.x >= realnum{0}) && (vn2 >= realnum{0}))
+	if ((newImpulse.x >= RealNum{0}) && (vn2 >= RealNum{0}))
 	{
 		BlockSolveUpdate(vc, velA, velB, newImpulse);
 		
@@ -240,11 +240,11 @@ static inline bool BlockSolveNormalCase3(VelocityConstraint& vc, Velocity& velA,
 	// vn1 = a11 * 0 + a12 * x2 + b1' 
 	//   0 = a21 * 0 + a22 * x2 + b2'
 	//
-	const auto newImpulse = Vec2{realnum{0}, -GetNormalMassAtPoint(vc, 1) * b_prime.y};
+	const auto newImpulse = Vec2{RealNum{0}, -GetNormalMassAtPoint(vc, 1) * b_prime.y};
 	const auto K = vc.GetK();
 	assert(IsValid(K));
 	const auto vn1 = K.ey.x * newImpulse.y + b_prime.x;
-	if ((newImpulse.y >= realnum{0}) && (vn1 >= realnum{0}))
+	if ((newImpulse.y >= RealNum{0}) && (vn1 >= RealNum{0}))
 	{
 		BlockSolveUpdate(vc, velA, velB, newImpulse);
 		
@@ -277,7 +277,7 @@ static inline bool BlockSolveNormalCase4(VelocityConstraint& vc, Velocity& velA,
 	const auto newImpulse = Vec2_zero;
 	const auto vn1 = b_prime.x;
 	const auto vn2 = b_prime.y;
-	if ((vn1 >= realnum{0}) && (vn2 >= realnum{0}))
+	if ((vn1 >= RealNum{0}) && (vn2 >= RealNum{0}))
 	{
 		BlockSolveUpdate(vc, velA, velB, newImpulse);
 		return true;
@@ -430,7 +430,7 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 		
 		// Prevent large corrections & don't push separation above -conf.linearSlop.
 		const auto C = Clamp(conf.resolutionRate * (separation + conf.linearSlop),
-							 -conf.maxLinearCorrection, realnum{0});
+							 -conf.maxLinearCorrection, RealNum{0});
 		
 		// Compute normal impulse
 		const auto P = psm.m_normal * -C / K;
@@ -492,7 +492,7 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 	return PositionSolution{posA, posB, MaxFloat};
 }
 
-realnum box2d::SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
+RealNum box2d::SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
 									 Span<Position> positions, ConstraintSolverConf conf)
 {
 	auto minSeparation = MaxFloat;
@@ -511,7 +511,7 @@ realnum box2d::SolvePositionConstraints(Span<const PositionConstraint> positionC
 	return minSeparation;
 }
 
-realnum box2d::SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
+RealNum box2d::SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
 										Span<Position> positions,
 										island_count_t indexA, island_count_t indexB,
 										ConstraintSolverConf conf)

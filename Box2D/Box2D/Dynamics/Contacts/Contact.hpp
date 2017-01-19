@@ -37,14 +37,14 @@ struct ToiConf;
 	
 /// Friction mixing law. The idea is to allow either fixture to drive the resulting friction to zero.
 /// For example, anything slides on ice.
-inline realnum MixFriction(realnum friction1, realnum friction2) noexcept(noexcept(Sqrt(friction1 * friction2)))
+inline RealNum MixFriction(RealNum friction1, RealNum friction2) noexcept(noexcept(Sqrt(friction1 * friction2)))
 {
 	return Sqrt(friction1 * friction2);
 }
 
 /// Restitution mixing law. The idea is allow for anything to bounce off an inelastic surface.
 /// For example, a superball bounces on anything.
-inline realnum MixRestitution(realnum restitution1, realnum restitution2) noexcept
+inline RealNum MixRestitution(RealNum restitution1, RealNum restitution2) noexcept
 {
 	return (restitution1 > restitution2) ? restitution1 : restitution2;
 }
@@ -131,23 +131,23 @@ public:
 
 	/// Override the default friction mixture. You can call this in ContactListener::PreSolve.
 	/// This value persists until set or reset.
-	void SetFriction(realnum friction) noexcept;
+	void SetFriction(RealNum friction) noexcept;
 
 	/// Get the friction.
-	realnum GetFriction() const noexcept;
+	RealNum GetFriction() const noexcept;
 
 	/// Override the default restitution mixture. You can call this in ContactListener::PreSolve.
 	/// The value persists until you set or reset.
-	void SetRestitution(realnum restitution) noexcept;
+	void SetRestitution(RealNum restitution) noexcept;
 
 	/// Get the restitution.
-	realnum GetRestitution() const noexcept;
+	RealNum GetRestitution() const noexcept;
 
 	/// Set the desired tangent speed for a conveyor belt behavior. In meters per second.
-	void SetTangentSpeed(realnum speed) noexcept;
+	void SetTangentSpeed(RealNum speed) noexcept;
 
 	/// Gets the desired tangent speed. In meters per second.
-	realnum GetTangentSpeed() const noexcept;
+	RealNum GetTangentSpeed() const noexcept;
 
 	/// Calculates this contact's collision manifold.
 	/// @return Contact manifold with one or more points
@@ -172,10 +172,10 @@ public:
 	
 	/// Gets the time of impact (TOI) as a fraction.
 	/// @note This is only valid if a TOI has been set.
-	/// @sa void SetToi(realnum toi).
+	/// @sa void SetToi(RealNum toi).
 	/// @return Time of impact fraction in the range of 0 to 1 if set (where 1
 	///   means no actual impact in current time slot), otheriwse undefined.
-	realnum GetToi() const;
+	RealNum GetToi() const;
 	
 protected:
 	friend class ContactManager;
@@ -229,10 +229,10 @@ protected:
 	/// Sets the time of impact (TOI).
 	/// @detail After returning, this object will have a TOI that is set as indicated by <code>HasValidToi()</code>.
 	/// @note Behavior is undefined if the value assigned is less than 0 or greater than 1.
-	/// @sa realnum GetToi() const.
+	/// @sa RealNum GetToi() const.
 	/// @sa HasValidToi.
 	/// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates no actual impact in the current time slot.
-	void SetToi(realnum toi) noexcept;
+	void SetToi(RealNum toi) noexcept;
 	
 	void UnsetToi() noexcept;
 
@@ -275,7 +275,7 @@ private:
 	child_count_t const m_indexA;
 	child_count_t const m_indexB;
 
-	realnum m_tangentSpeed = realnum{0};
+	RealNum m_tangentSpeed = RealNum{0};
 
 	Manifold m_manifold; ///< Manifold of the contact. 60-bytes. @sa Update.
 
@@ -290,11 +290,11 @@ private:
 	dist_max_type m_max_dist_iters = 0;
 	root_max_type m_max_root_iters = 0;
 	
-	realnum m_toi; // only valid if m_flags & e_toiFlag
+	RealNum m_toi; // only valid if m_flags & e_toiFlag
 
 	// initialized on construction (construction-time depedent)
-	realnum m_friction; ///< Mix of frictions of the associated fixtures. @sa MixFriction.
-	realnum m_restitution; ///< Mix of restitutions of the associated fixtures. @sa MixRestitution.
+	RealNum m_friction; ///< Mix of frictions of the associated fixtures. @sa MixFriction.
+	RealNum m_restitution; ///< Mix of restitutions of the associated fixtures. @sa MixRestitution.
 };
 
 inline Manifold& Contact::GetManifold() noexcept
@@ -402,32 +402,32 @@ inline bool Contact::NeedsFiltering() const noexcept
 	return m_flags & Contact::e_filterFlag;
 }
 
-inline void Contact::SetFriction(realnum friction) noexcept
+inline void Contact::SetFriction(RealNum friction) noexcept
 {
 	m_friction = friction;
 }
 
-inline realnum Contact::GetFriction() const noexcept
+inline RealNum Contact::GetFriction() const noexcept
 {
 	return m_friction;
 }
 
-inline void Contact::SetRestitution(realnum restitution) noexcept
+inline void Contact::SetRestitution(RealNum restitution) noexcept
 {
 	m_restitution = restitution;
 }
 
-inline realnum Contact::GetRestitution() const noexcept
+inline RealNum Contact::GetRestitution() const noexcept
 {
 	return m_restitution;
 }
 
-inline void Contact::SetTangentSpeed(realnum speed) noexcept
+inline void Contact::SetTangentSpeed(RealNum speed) noexcept
 {
 	m_tangentSpeed = speed;
 }
 
-inline realnum Contact::GetTangentSpeed() const noexcept
+inline RealNum Contact::GetTangentSpeed() const noexcept
 {
 	return m_tangentSpeed;
 }
@@ -437,13 +437,13 @@ inline bool Contact::HasValidToi() const noexcept
 	return (m_flags & Contact::e_toiFlag) != 0;
 }
 
-inline realnum Contact::GetToi() const
+inline RealNum Contact::GetToi() const
 {
 	assert(HasValidToi());
 	return m_toi;
 }
 
-inline void Contact::SetToi(realnum toi) noexcept
+inline void Contact::SetToi(RealNum toi) noexcept
 {
 	assert(toi >= 0 && toi <= 1);
 	m_toi = toi;

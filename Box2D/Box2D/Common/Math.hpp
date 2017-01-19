@@ -32,9 +32,9 @@ namespace box2d
 // forward declarations
 struct Vec2;
 struct Vec3;
-constexpr inline realnum Dot(const Vec2 a, const Vec2 b) noexcept;
-constexpr inline realnum Dot(const Vec3 a, const Vec3 b) noexcept;
-constexpr inline realnum Cross(const Vec2 a, const Vec2 b) noexcept;
+constexpr inline RealNum Dot(const Vec2 a, const Vec2 b) noexcept;
+constexpr inline RealNum Dot(const Vec3 a, const Vec3 b) noexcept;
+constexpr inline RealNum Cross(const Vec2 a, const Vec2 b) noexcept;
 constexpr inline Vec3 Cross(const Vec3 a, const Vec3 b) noexcept;
 constexpr bool operator == (const Vec2 a, const Vec2 b) noexcept;
 constexpr bool operator != (const Vec2 a, const Vec2 b) noexcept;
@@ -46,14 +46,14 @@ template <typename T>
 bool IsValid(const T& value) noexcept;
 	
 template <>
-constexpr realnum GetInvalid() noexcept
+constexpr RealNum GetInvalid() noexcept
 {
-	return std::numeric_limits<realnum>::signaling_NaN();
+	return std::numeric_limits<RealNum>::signaling_NaN();
 }
 
 /// This function is used to ensure that a floating point number is not a NaN or infinity.
 template <>
-inline bool IsValid(const realnum& x) noexcept
+inline bool IsValid(const RealNum& x) noexcept
 {
 	return !std::isnan(x); // && !std::isinf(x);
 }
@@ -73,7 +73,7 @@ inline bool IsValid(const size_t& x) noexcept
 template <>
 constexpr inline Angle GetInvalid() noexcept
 {
-	return Angle::GetFromRadians(GetInvalid<realnum>());
+	return Angle::GetFromRadians(GetInvalid<RealNum>());
 }
 
 template <>
@@ -107,7 +107,7 @@ template <typename T>
 inline T round(T value, unsigned precision = 1000000);
 
 template <>
-inline realnum round(realnum value, unsigned precision)
+inline RealNum round(RealNum value, unsigned precision)
 {
 	return std::round(value * precision) / precision;
 }
@@ -116,12 +116,12 @@ inline realnum round(realnum value, unsigned precision)
 /// @detail An almost zero value is "subnormal". Dividing by these values can lead to
 /// odd results like a divide by zero trap occuring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
-constexpr inline bool almost_zero(realnum value)
+constexpr inline bool almost_zero(RealNum value)
 {
 	return Abs(value) < std::numeric_limits<decltype(value)>::min();
 }
 
-constexpr inline bool almost_equal(realnum x, realnum y, int ulp = 2)
+constexpr inline bool almost_equal(RealNum x, RealNum y, int ulp = 2)
 {
 	// From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
 	//   "the machine epsilon has to be scaled to the magnitude of the values used
@@ -129,7 +129,7 @@ constexpr inline bool almost_equal(realnum x, realnum y, int ulp = 2)
 	//    unless the result is subnormal".
 	// Where "subnormal" means almost zero.
 	//
-	return (Abs(x - y) < (std::numeric_limits<realnum>::epsilon() * Abs(x + y) * ulp)) || almost_zero(x - y);
+	return (Abs(x - y) < (std::numeric_limits<RealNum>::epsilon() * Abs(x + y) * ulp)) || almost_zero(x - y);
 }
 
 template <typename T>
@@ -146,12 +146,12 @@ inline T Average(Span<const T> span)
 }
 
 /// Vector 2D.
-/// @note This data structure is two-times the size of the <code>realnum</code> type.
+/// @note This data structure is two-times the size of the <code>RealNum</code> type.
 /// This is two times 4-bytes for a total of 8-bytes (on at least one 64-bit platform).
 struct Vec2
 {
 	using size_type = size_t;
-	using data_type = realnum;
+	using data_type = RealNum;
 
 	/// Default constructor does nothing (for performance).
 	Vec2() noexcept = default;
@@ -218,7 +218,7 @@ constexpr auto Vec2_zero = Vec2{0, 0};
 template <>
 constexpr inline Vec2 GetInvalid() noexcept
 {
-	return Vec2{GetInvalid<realnum>(), GetInvalid<realnum>()};
+	return Vec2{GetInvalid<RealNum>(), GetInvalid<RealNum>()};
 }
 
 template <>
@@ -240,20 +240,20 @@ inline Angle GetAngle(UnitVec2 value)
 }
 
 /// A 2D column vector with 3 elements.
-/// @note This data structure is 3 times the size of <code>realnum</code> -
-///   i.e. 12-bytes (with 4-byte realnum).
+/// @note This data structure is 3 times the size of <code>RealNum</code> -
+///   i.e. 12-bytes (with 4-byte RealNum).
 struct Vec3
 {
 	/// Default constructor does nothing (for performance).
 	Vec3() noexcept = default;
 
 	/// Construct using coordinates.
-	constexpr Vec3(realnum x_, realnum y_, realnum z_) noexcept : x(x_), y(y_), z(z_) {}
+	constexpr Vec3(RealNum x_, RealNum y_, RealNum z_) noexcept : x(x_), y(y_), z(z_) {}
 
 	/// Negate this vector.
 	constexpr auto operator- () const noexcept { return Vec3{-x, -y, -z}; }
 
-	realnum x, y, z;
+	RealNum x, y, z;
 };
 
 /// An all zero Vec3 value.
@@ -263,29 +263,29 @@ constexpr auto Vec3_zero = Vec3{0, 0, 0};
 template <>
 constexpr inline Vec3 GetInvalid() noexcept
 {
-	return Vec3{GetInvalid<realnum>(), GetInvalid<realnum>(), GetInvalid<realnum>()};
+	return Vec3{GetInvalid<RealNum>(), GetInvalid<RealNum>(), GetInvalid<RealNum>()};
 }
 
 /// Gets the square of the length/magnitude of the given value.
 /// For performance, use this instead of GetLength(T value) (if possible).
 /// @return Non-negative value.
 template <typename T>
-constexpr inline realnum GetLengthSquared(T value) noexcept { return realnum{0}; }
+constexpr inline RealNum GetLengthSquared(T value) noexcept { return RealNum{0}; }
 
 template <>
-constexpr inline realnum GetLengthSquared(Vec2 value) noexcept
+constexpr inline RealNum GetLengthSquared(Vec2 value) noexcept
 {
 	return Square(value.x) + Square(value.y);		
 }
 
 template <>
-constexpr inline realnum GetLengthSquared(Vec3 value) noexcept
+constexpr inline RealNum GetLengthSquared(Vec3 value) noexcept
 {
 	return Square(value.x) + Square(value.y) + Square(value.z);		
 }
 
 template <typename T>
-inline realnum GetLength(T value)
+inline RealNum GetLength(T value)
 {
 	return Sqrt(GetLengthSquared(value));
 }
@@ -316,7 +316,7 @@ struct Mat22
 	constexpr Mat22(const Vec2 c1, const Vec2 c2) noexcept: ex{c1}, ey{c2} {}
 
 	/// Construct this matrix using scalars.
-	constexpr Mat22(realnum a11, realnum a12, realnum a21, realnum a22) noexcept: ex{a11, a21}, ey{a12, a22} {}
+	constexpr Mat22(RealNum a11, RealNum a12, RealNum a21, RealNum a22) noexcept: ex{a11, a21}, ey{a12, a22} {}
 
 	Vec2 ex, ey;
 };
@@ -346,7 +346,7 @@ constexpr auto Mat22_identity = Mat22(Vec2{1, 0}, Vec2{0, 1});
 constexpr Vec2 Solve(const Mat22 mat, const Vec2 b) noexcept
 {
 	const auto cp = Cross(mat.ex, mat.ey);
-	const auto det = (cp != 0)? realnum{1} / cp: realnum{0};
+	const auto det = (cp != 0)? RealNum{1} / cp: RealNum{0};
 	
 	// (a.x * b.y) - (a.y * b.x)
 	// Vec2{det * Cross(b, mat.ey), det * Cross(mat.ex, b)}
@@ -356,12 +356,12 @@ constexpr Vec2 Solve(const Mat22 mat, const Vec2 b) noexcept
 constexpr Mat22 Invert(const Mat22 value) noexcept
 {
 	const auto cp = Cross(value.ex, value.ey);
-	const auto det = (cp != 0)? realnum{1} / cp: realnum{0};
+	const auto det = (cp != 0)? RealNum{1} / cp: RealNum{0};
 	return Mat22{Vec2{det * value.ey.y, -det * value.ex.y}, Vec2{-det * value.ey.x, det * value.ex.x}};
 }
 
 /// A 3-by-3 matrix. Stored in column-major order.
-/// @note This data structure is 36-bytes large (on at least one 64-bit platform with 4-byte realnum).
+/// @note This data structure is 36-bytes large (on at least one 64-bit platform with 4-byte RealNum).
 struct Mat33
 {
 	/// The default constructor does nothing (for performance).
@@ -376,9 +376,9 @@ struct Mat33
 	constexpr Vec3 Solve33(const Vec3 b) const noexcept
 	{
 		auto det = Dot(ex, Cross(ey, ez));
-		if (det != realnum{0})
+		if (det != RealNum{0})
 		{
-			det = realnum{1} / det;
+			det = RealNum{1} / det;
 		}
 		return Vec3(det * Dot(b, Cross(ey, ez)), det * Dot(ex, Cross(b, ez)), det * Dot(ex, Cross(ey, b)));
 	}
@@ -390,9 +390,9 @@ struct Mat33
 	{
 		const auto a11 = ex.x, a12 = ey.x, a21 = ex.y, a22 = ey.y;
 		auto det = a11 * a22 - a12 * a21;
-		if (det != realnum{0})
+		if (det != RealNum{0})
 		{
-			det = realnum{1} / det;
+			det = RealNum{1} / det;
 		}
 		return Vec2{det * (a22 * b.x - a12 * b.y), det * (a11 * b.y - a21 * b.x)};
 	}
@@ -408,11 +408,11 @@ constexpr inline Mat33 GetInverse22(const Mat33& value) noexcept
 {
 	const auto a = value.ex.x, b = value.ey.x, c = value.ex.y, d = value.ey.y;
 	auto det = (a * d) - (b * c);
-	if (det != realnum{0})
+	if (det != RealNum{0})
 	{
-		det = realnum{1} / det;
+		det = RealNum{1} / det;
 	}
-	return Mat33{Vec3{det * d, -det * c, realnum{0}}, Vec3{-det * b, det * a, 0}, Vec3{0, 0, 0}};
+	return Mat33{Vec3{det * d, -det * c, RealNum{0}}, Vec3{-det * b, det * a, 0}, Vec3{0, 0, 0}};
 }
 	
 /// Get the symmetric inverse of this matrix as a 3-by-3.
@@ -420,9 +420,9 @@ constexpr inline Mat33 GetInverse22(const Mat33& value) noexcept
 constexpr inline Mat33 GetSymInverse33(const Mat33& value) noexcept
 {
 	auto det = Dot(value.ex, Cross(value.ey, value.ez));
-	if (det != realnum{0})
+	if (det != RealNum{0})
 	{
-		det = realnum{1} / det;
+		det = RealNum{1} / det;
 	}
 	
 	const auto a11 = value.ex.x, a12 = value.ey.x, a13 = value.ez.x;
@@ -545,7 +545,7 @@ public:
 	constexpr Sweep(const Sweep& copy) noexcept = default;
 
 	/// Initializing constructor.
-	constexpr Sweep(const Position& p0, const Position& p1, const Vec2 lc = Vec2_zero, realnum a0 = 0) noexcept:
+	constexpr Sweep(const Position& p0, const Position& p1, const Vec2 lc = Vec2_zero, RealNum a0 = 0) noexcept:
 		pos0{p0}, pos1{p1}, localCenter{lc}, alpha0{a0}
 	{
 		assert(a0 >= 0);
@@ -561,14 +561,14 @@ public:
 
 	/// Gets the alpha0 for this sweep.
 	/// @return Value between 0 and less than 1.
-	realnum GetAlpha0() const noexcept { return alpha0; }
+	RealNum GetAlpha0() const noexcept { return alpha0; }
 
 	/// Advances the sweep by a factor of the difference between the given time alpha and the sweep's alpha0.
 	/// @detail
 	/// This advances position 0 (<code>pos0</code>) of the sweep towards position 1 (<code>pos1</code>)
 	/// by a factor of the difference between the given alpha and the alpha0.
 	/// @param alpha Valid new time factor in [0,1) to update the sweep to. Behavior is undefined if value is invalid.
-	void Advance0(realnum alpha);
+	void Advance0(RealNum alpha);
 
 	void ResetAlpha0() noexcept;
 
@@ -581,7 +581,7 @@ private:
 	/// Fraction of the current time step in the range [0,1]
 	/// pos0.linear and pos0.angular are the positions at alpha0.
 	/// @note 4-bytes.
-	realnum alpha0;
+	RealNum alpha0;
 };
 
 /// Gets a vector counter-clockwise (reverse-clockwise) perpendicular to the given vector.
@@ -628,7 +628,7 @@ constexpr inline Vec2 GetFwdPerpendicular(const Vec2 vector) noexcept
 ///
 /// @return Dot product of the vectors (0 means the two vectors are perpendicular).
 ///
-constexpr inline realnum Dot(const Vec2 a, const Vec2 b) noexcept
+constexpr inline RealNum Dot(const Vec2 a, const Vec2 b) noexcept
 {
 	return (GetX(a) * GetX(b)) + (GetY(a) * GetY(b));
 }
@@ -661,7 +661,7 @@ constexpr inline realnum Dot(const Vec2 a, const Vec2 b) noexcept
 ///
 /// @return Cross product of the two vectors.
 ///
-constexpr inline realnum Cross(const Vec2 a, const Vec2 b) noexcept
+constexpr inline RealNum Cross(const Vec2 a, const Vec2 b) noexcept
 {
 	// Both vectors of same direction...
 	// If a = Vec2{1, 2} and b = Vec2{1, 2} then: a x b = 1 * 2 - 2 * 1 = 0.
@@ -750,32 +750,32 @@ constexpr inline bool operator != (const Vec2 a, const Vec2 b) noexcept
 	return (a.x != b.x) || (a.y != b.y);
 }
 
-constexpr inline realnum Dot(const UnitVec2 a, const UnitVec2 b) noexcept
+constexpr inline RealNum Dot(const UnitVec2 a, const UnitVec2 b) noexcept
 {
 	return (GetX(a) * GetX(b)) + (GetY(a) * GetY(b));
 }
 
-constexpr inline realnum Dot(const Vec2 a, const UnitVec2 b) noexcept
+constexpr inline RealNum Dot(const Vec2 a, const UnitVec2 b) noexcept
 {
 	return (GetX(a) * GetX(b)) + (GetY(a) * GetY(b));
 }
 
-constexpr inline realnum Dot(const UnitVec2 a, const Vec2 b) noexcept
+constexpr inline RealNum Dot(const UnitVec2 a, const Vec2 b) noexcept
 {
 	return (GetX(a) * GetX(b)) + (GetY(a) * GetY(b));
 }
 
-constexpr inline realnum Cross(const UnitVec2 a, const UnitVec2 b) noexcept
+constexpr inline RealNum Cross(const UnitVec2 a, const UnitVec2 b) noexcept
 {
 	return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
 }
 
-constexpr inline realnum Cross(const UnitVec2 a, const Vec2 b) noexcept
+constexpr inline RealNum Cross(const UnitVec2 a, const Vec2 b) noexcept
 {
 	return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
 }
 
-constexpr inline realnum Cross(const Vec2 a, const UnitVec2 b) noexcept
+constexpr inline RealNum Cross(const Vec2 a, const UnitVec2 b) noexcept
 {
 	return (GetX(a) * GetY(b)) - (GetY(a) * GetX(b));
 }
@@ -841,7 +841,7 @@ constexpr Vec3& operator -= (Vec3& lhs, const Vec3& rhs) noexcept
 	return lhs;
 }
 
-constexpr Vec3& operator *= (Vec3& lhs, const realnum rhs) noexcept
+constexpr Vec3& operator *= (Vec3& lhs, const RealNum rhs) noexcept
 {
 	lhs.x *= rhs;
 	lhs.y *= rhs;
@@ -849,7 +849,7 @@ constexpr Vec3& operator *= (Vec3& lhs, const realnum rhs) noexcept
 	return lhs;
 }
 
-constexpr inline Vec3 operator * (const realnum s, const Vec3 a) noexcept
+constexpr inline Vec3 operator * (const RealNum s, const Vec3 a) noexcept
 {
 	return Vec3{s * a.x, s * a.y, s * a.z};
 }
@@ -867,7 +867,7 @@ constexpr inline Vec3 operator - (const Vec3 a, const Vec3 b) noexcept
 }
 
 /// Perform the dot product on two vectors.
-constexpr inline realnum Dot(const Vec3 a, const Vec3 b) noexcept
+constexpr inline RealNum Dot(const Vec3 a, const Vec3 b) noexcept
 {
 	return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
 }
@@ -1085,12 +1085,12 @@ constexpr inline Position operator- (const Position& lhs, const Position& rhs)
 	return Position{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
 }
 
-constexpr inline Position operator* (const Position& pos, const realnum scalar)
+constexpr inline Position operator* (const Position& pos, const RealNum scalar)
 {
 	return Position{pos.linear * scalar, pos.angular * scalar};
 }
 
-constexpr inline Position operator* (const realnum scalar, const Position& pos)
+constexpr inline Position operator* (const RealNum scalar, const Position& pos)
 {
 	return Position{pos.linear * scalar, pos.angular * scalar};
 }
@@ -1139,12 +1139,12 @@ constexpr inline Velocity operator+ (const Velocity& value)
 	return value;
 }
 
-constexpr inline Velocity operator* (const Velocity& lhs, const realnum rhs)
+constexpr inline Velocity operator* (const Velocity& lhs, const RealNum rhs)
 {
 	return Velocity{lhs.linear * rhs, lhs.angular * rhs};
 }
 
-constexpr inline Velocity operator* (const realnum lhs, const Velocity& rhs)
+constexpr inline Velocity operator* (const RealNum lhs, const Velocity& rhs)
 {
 	return Velocity{rhs.linear * lhs, rhs.angular * lhs};
 }
@@ -1161,16 +1161,16 @@ inline Transformation GetTransformation(const Position pos, const Vec2 local_ctr
 	return GetTransformation(pos.linear, UnitVec2{pos.angular}, local_ctr);
 }
 
-inline Position GetPosition(const Position pos0, const Position pos1, const realnum beta)
+inline Position GetPosition(const Position pos0, const Position pos1, const RealNum beta)
 {
-	return pos0 * (realnum{1} - beta) + pos1 * beta;
+	return pos0 * (RealNum{1} - beta) + pos1 * beta;
 }
 
 /// Gets the interpolated transform at a specific time.
 /// @param sweep Sweep data to get the transform from.
 /// @param beta Time factor in [0,1], where 0 indicates alpha0.
 /// @return Transformation of the given sweep at the specified time.
-inline Transformation GetTransformation(const Sweep& sweep, const realnum beta)
+inline Transformation GetTransformation(const Sweep& sweep, const RealNum beta)
 {
 	assert(beta >= 0);
 	assert(beta <= 1);
@@ -1179,7 +1179,7 @@ inline Transformation GetTransformation(const Sweep& sweep, const realnum beta)
 
 /// Gets the transform at "time" zero.
 /// @note This is like calling GetTransformation(sweep, 0.0), except more efficiently.
-/// @sa GetTransformation(const Sweep& sweep, realnum beta).
+/// @sa GetTransformation(const Sweep& sweep, RealNum beta).
 /// @param sweep Sweep data to get the transform from.
 /// @return Transformation of the given sweep at time zero.
 inline Transformation GetTransform0(const Sweep& sweep)
@@ -1189,7 +1189,7 @@ inline Transformation GetTransform0(const Sweep& sweep)
 
 /// Gets the transform at "time" one.
 /// @note This is like calling GetTransformation(sweep, 1.0), except more efficiently.
-/// @sa GetTransformation(const Sweep& sweep, realnum beta).
+/// @sa GetTransformation(const Sweep& sweep, RealNum beta).
 /// @param sweep Sweep data to get the transform from.
 /// @return Transformation of the given sweep at time one.
 inline Transformation GetTransform1(const Sweep& sweep)
@@ -1197,21 +1197,21 @@ inline Transformation GetTransform1(const Sweep& sweep)
 	return GetTransformation(sweep.pos1, sweep.GetLocalCenter());
 }
 
-inline void Sweep::Advance0(const realnum alpha)
+inline void Sweep::Advance0(const RealNum alpha)
 {
 	assert(IsValid(alpha));
 	assert(alpha >= 0);
 	assert(alpha < 1);
 	assert(alpha0 < 1);
 	
-	const auto beta = (alpha - alpha0) / (realnum{1} - alpha0);
+	const auto beta = (alpha - alpha0) / (RealNum{1} - alpha0);
 	pos0 = GetPosition(pos0, pos1, beta);
 	alpha0 = alpha;
 }
 
 inline void Sweep::ResetAlpha0() noexcept
 {
-	alpha0 = realnum{0};
+	alpha0 = RealNum{0};
 }
 
 /// Gets a sweep with the given sweep's angles normalized.
@@ -1228,14 +1228,14 @@ inline Sweep GetAnglesNormalized(Sweep sweep)
 }
 
 /// Converts the given vector into a unit vector and returns its original length.
-inline realnum Normalize(Vec2& vector)
+inline RealNum Normalize(Vec2& vector)
 {
 	const auto length = GetLength(vector);
 	if (almost_zero(length))
 	{
-		return realnum{0};
+		return RealNum{0};
 	}
-	const auto invLength = realnum{1} / length;
+	const auto invLength = RealNum{1} / length;
 	vector.x *= invLength;
 	vector.y *= invLength;
 	

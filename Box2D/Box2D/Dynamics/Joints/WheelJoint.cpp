@@ -57,12 +57,12 @@ WheelJoint::WheelJoint(const WheelJointDef& def)
 	m_localXAxisA = def.localAxisA;
 	m_localYAxisA = GetRevPerpendicular(m_localXAxisA);
 
-	m_mass = realnum{0};
-	m_impulse = realnum{0};
-	m_motorMass = realnum{0};
-	m_motorImpulse = realnum{0};
-	m_springMass = realnum{0};
-	m_springImpulse = realnum{0};
+	m_mass = RealNum{0};
+	m_impulse = RealNum{0};
+	m_motorMass = RealNum{0};
+	m_motorImpulse = RealNum{0};
+	m_springMass = RealNum{0};
+	m_springImpulse = RealNum{0};
 
 	m_maxMotorTorque = def.maxMotorTorque;
 	m_motorSpeed = def.motorSpeed;
@@ -71,8 +71,8 @@ WheelJoint::WheelJoint(const WheelJointDef& def)
 	m_frequencyHz = def.frequencyHz;
 	m_dampingRatio = def.dampingRatio;
 
-	m_bias = realnum{0};
-	m_gamma = realnum{0};
+	m_bias = RealNum{0};
+	m_gamma = RealNum{0};
 
 	m_ax = Vec2_zero;
 	m_ay = Vec2_zero;
@@ -117,17 +117,17 @@ void WheelJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 
 		m_mass = mA + mB + iA * m_sAy * m_sAy + iB * m_sBy * m_sBy;
 
-		if (m_mass > realnum{0})
+		if (m_mass > RealNum{0})
 		{
-			m_mass = realnum{1} / m_mass;
+			m_mass = RealNum{1} / m_mass;
 		}
 	}
 
 	// Spring constraint
-	m_springMass = realnum{0};
-	m_bias = realnum{0};
-	m_gamma = realnum{0};
-	if (m_frequencyHz > realnum{0})
+	m_springMass = RealNum{0};
+	m_bias = RealNum{0};
+	m_gamma = RealNum{0};
+	if (m_frequencyHz > RealNum{0})
 	{
 		m_ax = Rotate(m_localXAxisA, qA);
 		m_sAx = Cross(dd + rA, m_ax);
@@ -135,17 +135,17 @@ void WheelJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 
 		const auto invMass = mA + mB + iA * m_sAx * m_sAx + iB * m_sBx * m_sBx;
 
-		if (invMass > realnum{0})
+		if (invMass > RealNum{0})
 		{
-			m_springMass = realnum{1} / invMass;
+			m_springMass = RealNum{1} / invMass;
 
 			const auto C = Dot(dd, m_ax);
 
 			// Frequency
-			const auto omega = realnum(2) * Pi * m_frequencyHz;
+			const auto omega = RealNum(2) * Pi * m_frequencyHz;
 
 			// Damping coefficient
-			const auto d = realnum(2) * m_springMass * m_dampingRatio * omega;
+			const auto d = RealNum(2) * m_springMass * m_dampingRatio * omega;
 
 			// Spring stiffness
 			const auto k = m_springMass * omega * omega;
@@ -153,38 +153,38 @@ void WheelJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 			// magic formulas
 			const auto h = step.get_dt();
 			m_gamma = h * (d + h * k);
-			if (m_gamma > realnum{0})
+			if (m_gamma > RealNum{0})
 			{
-				m_gamma = realnum{1} / m_gamma;
+				m_gamma = RealNum{1} / m_gamma;
 			}
 
 			m_bias = C * h * k * m_gamma;
 
 			m_springMass = invMass + m_gamma;
-			if (m_springMass > realnum{0})
+			if (m_springMass > RealNum{0})
 			{
-				m_springMass = realnum{1} / m_springMass;
+				m_springMass = RealNum{1} / m_springMass;
 			}
 		}
 	}
 	else
 	{
-		m_springImpulse = realnum{0};
+		m_springImpulse = RealNum{0};
 	}
 
 	// Rotational motor
 	if (m_enableMotor)
 	{
 		m_motorMass = iA + iB;
-		if (m_motorMass > realnum{0})
+		if (m_motorMass > RealNum{0})
 		{
-			m_motorMass = realnum{1} / m_motorMass;
+			m_motorMass = RealNum{1} / m_motorMass;
 		}
 	}
 	else
 	{
-		m_motorMass = realnum{0};
-		m_motorImpulse = realnum{0};
+		m_motorMass = RealNum{0};
+		m_motorImpulse = RealNum{0};
 	}
 
 	if (step.doWarmStart)
@@ -206,9 +206,9 @@ void WheelJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 	}
 	else
 	{
-		m_impulse = realnum{0};
-		m_springImpulse = realnum{0};
-		m_motorImpulse = realnum{0};
+		m_impulse = RealNum{0};
+		m_springImpulse = RealNum{0};
+		m_motorImpulse = RealNum{0};
 	}
 
 	velocities[m_indexA].linear = vA;
@@ -304,7 +304,7 @@ bool WheelJoint::SolvePositionConstraints(Span<Position> positions, const Constr
 
 	const auto k = m_invMassA + m_invMassB + m_invIA * m_sAy * m_sAy + m_invIB * m_sBy * m_sBy;
 
-	const auto impulse = (k != realnum{0})? - C / k: realnum{0};
+	const auto impulse = (k != RealNum{0})? - C / k: RealNum{0};
 
 	const auto P = impulse * ay;
 	const auto LA = impulse * sAy;
@@ -333,17 +333,17 @@ Vec2 WheelJoint::GetAnchorB() const
 	return GetWorldPoint(*GetBodyB(), m_localAnchorB);
 }
 
-Vec2 WheelJoint::GetReactionForce(realnum inv_dt) const
+Vec2 WheelJoint::GetReactionForce(RealNum inv_dt) const
 {
 	return inv_dt * (m_impulse * m_ay + m_springImpulse * m_ax);
 }
 
-realnum WheelJoint::GetReactionTorque(realnum inv_dt) const
+RealNum WheelJoint::GetReactionTorque(RealNum inv_dt) const
 {
 	return inv_dt * m_motorImpulse;
 }
 
-realnum WheelJoint::GetJointTranslation() const
+RealNum WheelJoint::GetJointTranslation() const
 {
 	const auto pA = GetWorldPoint(*GetBodyA(), m_localAnchorA);
 	const auto pB = GetWorldPoint(*GetBodyB(), m_localAnchorB);
@@ -371,14 +371,14 @@ void WheelJoint::SetMotorSpeed(Angle speed)
 	m_motorSpeed = speed;
 }
 
-void WheelJoint::SetMaxMotorTorque(realnum torque)
+void WheelJoint::SetMaxMotorTorque(RealNum torque)
 {
 	GetBodyA()->SetAwake();
 	GetBodyB()->SetAwake();
 	m_maxMotorTorque = torque;
 }
 
-realnum WheelJoint::GetMotorTorque(realnum inv_dt) const
+RealNum WheelJoint::GetMotorTorque(RealNum inv_dt) const
 {
 	return inv_dt * m_motorImpulse;
 }

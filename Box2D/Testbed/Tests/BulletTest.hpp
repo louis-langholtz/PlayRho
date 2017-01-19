@@ -95,7 +95,7 @@ public:
 		if (gjkCalls > 0)
 		{
 			drawer.DrawString(5, m_textLine, "gjk calls = %d, ave gjk iters = %3.1f, max gjk iters = %d",
-				gjkCalls, gjkIters / realnum(gjkCalls), gjkMaxIters);
+				gjkCalls, gjkIters / RealNum(gjkCalls), gjkMaxIters);
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
@@ -111,11 +111,11 @@ public:
 		if (toiCalls > 0)
 		{
 			drawer.DrawString(5, m_textLine, "toi calls = %d, ave toi iters = %3.1f, max toi iters = %d",
-				toiCalls, toiIters / realnum(toiCalls), toiMaxRootIters);
+				toiCalls, toiIters / RealNum(toiCalls), toiMaxRootIters);
 			m_textLine += DRAW_STRING_NEW_LINE;
 
 			drawer.DrawString(5, m_textLine, "ave toi root iters = %3.1f, max toi root iters = %d",
-				toiRootIters / realnum(toiCalls), toiMaxRootIters);
+				toiRootIters / RealNum(toiCalls), toiMaxRootIters);
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
@@ -132,7 +132,7 @@ public:
 
 	Body* m_body;
 	Body* m_bullet;
-	realnum m_x;
+	RealNum m_x;
 };
 
 } // namespace box2d

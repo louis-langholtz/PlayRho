@@ -78,7 +78,7 @@ int main(int argc, char** argv)
 	// Prepare for simulation. Typically we use a time step of 1/60 of a
 	// second (60Hz) and 10 iterations. This provides a high quality simulation
 	// in most game scenarios.
-	realnum timeStep = 1.0f / 60.0f;
+	RealNum timeStep = 1.0f / 60.0f;
 	int32 velocityIterations = 6;
 	int32 positionIterations = 2;
 
@@ -91,7 +91,7 @@ int main(int argc, char** argv)
 
 		// Now print the position and angle of the body.
 		Vec2 position = body->GetLocation();
-		realnum angle = body->GetAngle();
+		RealNum angle = body->GetAngle();
 
 		printf("%4.2f %4.2f %4.2f\n", position.x, position.y, angle);
 	}

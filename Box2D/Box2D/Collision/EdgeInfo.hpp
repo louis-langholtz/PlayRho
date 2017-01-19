@@ -54,7 +54,7 @@ namespace box2d
 		
 		UnitVec2 GetUpperLimit() const noexcept { return m_upperLimit; }
 		
-		realnum GetVertexRadius() const noexcept { return m_vertexRadius; }
+		RealNum GetVertexRadius() const noexcept { return m_vertexRadius; }
 		
 	private:
 		Vec2 m_vertex1;
@@ -72,7 +72,7 @@ namespace box2d
 		UnitVec2 m_lowerLimit;
 		UnitVec2 m_upperLimit;
 		
-		realnum m_vertexRadius;
+		RealNum m_vertexRadius;
 		
 		void SetNormalLowerUpper(UnitVec2 normal, UnitVec2 lower, UnitVec2 upper) noexcept
 		{

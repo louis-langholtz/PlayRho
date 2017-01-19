@@ -51,8 +51,8 @@ enum class JointType
 struct Jacobian
 {
 	Vec2 linear;
-	realnum angularA;
-	realnum angularB;
+	RealNum angularA;
+	RealNum angularB;
 };
 
 /// A joint edge is used to connect bodies and joints together
@@ -142,10 +142,10 @@ public:
 	virtual Vec2 GetAnchorB() const = 0;
 
 	/// Get the reaction force on bodyB at the joint anchor in Newtons.
-	virtual Vec2 GetReactionForce(realnum inv_dt) const = 0;
+	virtual Vec2 GetReactionForce(RealNum inv_dt) const = 0;
 
 	/// Get the reaction torque on bodyB in N*m.
-	virtual realnum GetReactionTorque(realnum inv_dt) const = 0;
+	virtual RealNum GetReactionTorque(RealNum inv_dt) const = 0;
 
 	/// Get the user data pointer.
 	void* GetUserData() const noexcept;

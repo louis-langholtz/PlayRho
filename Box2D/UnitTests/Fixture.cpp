@@ -31,11 +31,11 @@ TEST(Fixture, InitializingConstructor)
 {
 	const auto body = reinterpret_cast<Body*>(0x1);
 	const auto shapeA = std::make_shared<CircleShape>();
-	const auto density = realnum(2);
+	const auto density = RealNum(2);
 	int variable;
 	const auto userData = &variable;
-	const auto friction = realnum(0.5);
-	const auto restitution = realnum(0.4);
+	const auto friction = RealNum(0.5);
+	const auto restitution = RealNum(0.4);
 	const auto isSensor = true;
 
 	auto def = FixtureDef{}.UseDensity(density);

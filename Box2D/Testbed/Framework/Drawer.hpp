@@ -68,15 +68,15 @@ public:
 	virtual void DrawSolidPolygon(const Vec2* vertices, size_type vertexCount, const Color& color) = 0;
 
 	/// Draw a circle.
-	virtual void DrawCircle(const Vec2& center, realnum radius, const Color& color) = 0;
+	virtual void DrawCircle(const Vec2& center, RealNum radius, const Color& color) = 0;
 	
 	/// Draw a solid circle.
-	virtual void DrawSolidCircle(const Vec2& center, realnum radius, const Color& color) = 0;
+	virtual void DrawSolidCircle(const Vec2& center, RealNum radius, const Color& color) = 0;
 	
 	/// Draw a line segment.
 	virtual void DrawSegment(const Vec2& p1, const Vec2& p2, const Color& color) = 0;
 
-	virtual void DrawPoint(const Vec2& p, realnum size, const Color& color) = 0;
+	virtual void DrawPoint(const Vec2& p, RealNum size, const Color& color) = 0;
 	
 	/// Draws a string at the given screen coordinates.
 	virtual void DrawString(int x, int y, const char* string, ...) = 0; 

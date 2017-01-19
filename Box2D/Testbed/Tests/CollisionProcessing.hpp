@@ -92,7 +92,7 @@ public:
 
 		// Small circle
 		CircleShape circle;
-		circle.SetRadius(realnum{1});
+		circle.SetRadius(RealNum{1});
 
 		FixtureDef circleShapeDef;
 		circleShapeDef.density = 1.0f;

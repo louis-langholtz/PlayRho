@@ -37,9 +37,9 @@ MouseJoint::MouseJoint(const MouseJointDef& def):
 	m_targetA{def.target}, m_maxForce{def.maxForce}, m_frequencyHz{def.frequencyHz}, m_dampingRatio{def.dampingRatio}
 {
 	assert(IsValid(def.target));
-	assert(IsValid(def.maxForce) && (def.maxForce >= realnum{0}));
-	assert(IsValid(def.frequencyHz) && (def.frequencyHz >= realnum{0}));
-	assert(IsValid(def.dampingRatio) && (def.dampingRatio >= realnum{0}));
+	assert(IsValid(def.maxForce) && (def.maxForce >= RealNum{0}));
+	assert(IsValid(def.frequencyHz) && (def.frequencyHz >= RealNum{0}));
+	assert(IsValid(def.dampingRatio) && (def.dampingRatio >= RealNum{0}));
 }
 
 void MouseJoint::SetTarget(const Vec2 target) noexcept
@@ -74,10 +74,10 @@ void MouseJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 	const auto mass = GetMass(*GetBodyB());
 
 	// Frequency
-	const auto omega = realnum(2) * Pi * m_frequencyHz;
+	const auto omega = RealNum(2) * Pi * m_frequencyHz;
 
 	// Damping coefficient
-	const auto d = realnum(2) * mass * m_dampingRatio * omega;
+	const auto d = RealNum(2) * mass * m_dampingRatio * omega;
 
 	// Spring stiffness
 	const auto k = mass * Square(omega);
@@ -91,9 +91,9 @@ void MouseJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 	assert((tmp > 0) && !almost_zero(tmp));
 	m_gamma = h * tmp;
 	assert(IsValid(m_gamma));
-	if (m_gamma != realnum{0})
+	if (m_gamma != RealNum{0})
 	{
-		m_gamma = realnum{1} / m_gamma;
+		m_gamma = RealNum{1} / m_gamma;
 	}
 	const auto beta = h * k * m_gamma;
 
@@ -115,7 +115,7 @@ void MouseJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 	assert(IsValid(m_C));
 
 	// Cheat with some damping
-	wB *= realnum(0.98);
+	wB *= RealNum(0.98);
 
 	if (step.doWarmStart)
 	{
@@ -172,14 +172,14 @@ Vec2 MouseJoint::GetAnchorB() const
 	return GetWorldPoint(*GetBodyB(), m_localAnchorB);
 }
 
-Vec2 MouseJoint::GetReactionForce(realnum inv_dt) const
+Vec2 MouseJoint::GetReactionForce(RealNum inv_dt) const
 {
 	return inv_dt * m_impulse;
 }
 
-realnum MouseJoint::GetReactionTorque(realnum inv_dt) const
+RealNum MouseJoint::GetReactionTorque(RealNum inv_dt) const
 {
-	return inv_dt * realnum{0};
+	return inv_dt * RealNum{0};
 }
 
 void MouseJoint::ShiftOrigin(const Vec2 newOrigin)

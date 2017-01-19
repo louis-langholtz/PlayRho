@@ -38,7 +38,7 @@ struct GearJointDef : public JointDef
 
 	/// The gear ratio.
 	/// @see GearJoint for explanation.
-	realnum ratio = realnum{1};
+	RealNum ratio = RealNum{1};
 };
 
 /// A gear joint is used to connect two joints together. Either joint
@@ -58,8 +58,8 @@ public:
 	Vec2 GetAnchorA() const override;
 	Vec2 GetAnchorB() const override;
 
-	Vec2 GetReactionForce(realnum inv_dt) const override;
-	realnum GetReactionTorque(realnum inv_dt) const override;
+	Vec2 GetReactionForce(RealNum inv_dt) const override;
+	RealNum GetReactionTorque(RealNum inv_dt) const override;
 
 	/// Get the first joint.
 	Joint* GetJoint1() noexcept { return m_joint1; }
@@ -74,8 +74,8 @@ public:
 	const Joint* GetJoint2() const noexcept { return m_joint2; }
 	
 	/// Set/Get the gear ratio.
-	void SetRatio(realnum ratio);
-	realnum GetRatio() const;
+	void SetRatio(RealNum ratio);
+	RealNum GetRatio() const;
 
 private:
 
@@ -107,19 +107,19 @@ private:
 	Angle m_referenceAngleB;
 
 	Angle m_constant;
-	realnum m_ratio;
+	RealNum m_ratio;
 
-	realnum m_impulse;
+	RealNum m_impulse;
 
 	// Solver temp
 	index_t m_indexA, m_indexB, m_indexC, m_indexD;
 	Vec2 m_lcA, m_lcB, m_lcC, m_lcD;
-	realnum m_mA, m_mB, m_mC, m_mD;
-	realnum m_iA, m_iB, m_iC, m_iD;
+	RealNum m_mA, m_mB, m_mC, m_mD;
+	RealNum m_iA, m_iB, m_iC, m_iD;
 	Vec2 m_JvAC;
 	Vec2 m_JvBD;
-	realnum m_JwA, m_JwB, m_JwC, m_JwD;
-	realnum m_mass;
+	RealNum m_JwA, m_JwB, m_JwC, m_JwD;
+	RealNum m_mass;
 };
 	
 } // namespace box2d

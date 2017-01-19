@@ -111,9 +111,9 @@ public:
 		return new OneSidedPlatform;
 	}
 
-	realnum m_radius = 0.5f;
-	realnum m_top;
-	realnum m_bottom;
+	RealNum m_radius = 0.5f;
+	RealNum m_top;
+	RealNum m_bottom;
 	State m_state = e_unknown;
 	Fixture* m_platform;
 	Fixture* m_character;

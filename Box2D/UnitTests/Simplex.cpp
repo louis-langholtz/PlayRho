@@ -41,7 +41,7 @@ TEST(SimplexCache, DefaultInit)
 TEST(SimplexCache, InitializingConstructor)
 {
 	{
-		const auto metric = realnum(.3);
+		const auto metric = RealNum(.3);
 		const auto indices = Simplex::IndexPairs{};
 		Simplex::Cache foo{metric, indices};
 		
@@ -53,7 +53,7 @@ TEST(SimplexCache, InitializingConstructor)
 		const auto ip0 = IndexPair{0, 0};
 		const auto ip1 = IndexPair{1, 0};
 		const auto ip2 = IndexPair{4, 3};
-		const auto metric = realnum(-1.4);
+		const auto metric = RealNum(-1.4);
 		Simplex::Cache foo{metric, Simplex::IndexPairs{ip0, ip1, ip2}};
 		
 		EXPECT_EQ(foo.GetNumIndices(), decltype(foo.GetNumIndices()){3});
@@ -67,7 +67,7 @@ TEST(SimplexCache, InitializingConstructor)
 
 TEST(SimplexCache, Assignment)
 {
-	const auto metric = realnum(.3);
+	const auto metric = RealNum(.3);
 	const auto indices = Simplex::IndexPairs{};
 	Simplex::Cache foo{metric, indices};
 	
@@ -78,7 +78,7 @@ TEST(SimplexCache, Assignment)
 	const auto ip0 = IndexPair{0, 0};
 	const auto ip1 = IndexPair{1, 0};
 	const auto ip2 = IndexPair{4, 3};
-	const auto roo_metric = realnum(-1.4);
+	const auto roo_metric = RealNum(-1.4);
 	Simplex::Cache roo{roo_metric, Simplex::IndexPairs{ip0, ip1, ip2}};
 	
 	foo = roo;
@@ -111,7 +111,7 @@ TEST(Simplex, DefaultConstruction)
 TEST(Simplex, Get1)
 {
 	const auto va = Vec2{-4, 33};
-	const auto vb = Vec2{realnum(901.5), realnum(0.06)};
+	const auto vb = Vec2{RealNum(901.5), RealNum(0.06)};
 	const auto ia = SimplexEdge::index_type{2};
 	const auto ib = SimplexEdge::index_type{7};
 	const auto sv = SimplexEdge{va, ia, vb, ib};
@@ -127,13 +127,13 @@ TEST(Simplex, Get1)
 	EXPECT_EQ(sv.GetIndexB(), sv_new.GetIndexB());
 	
 	const auto ce_new = simplex.GetCoefficient(0);
-	EXPECT_EQ(ce_new, realnum(1));
+	EXPECT_EQ(ce_new, RealNum(1));
 }
 
 TEST(Simplex, Get2_of_same)
 {
 	const auto va = Vec2{-4, 33};
-	const auto vb = Vec2{realnum(901.5), realnum(0.06)};
+	const auto vb = Vec2{RealNum(901.5), RealNum(0.06)};
 	const auto ia = SimplexEdge::index_type{2};
 	const auto ib = SimplexEdge::index_type{7};
 	const auto sv = SimplexEdge{va, ia, vb, ib};
@@ -150,13 +150,13 @@ TEST(Simplex, Get2_of_same)
 	EXPECT_EQ(sv_new.GetIndexB(), ib);
 	
 	const auto ce_new = simplex.GetCoefficient(0);
-	EXPECT_EQ(ce_new, realnum(1));
+	EXPECT_EQ(ce_new, RealNum(1));
 }
 
 TEST(Simplex, Get2_fwd_perp)
 {
 	const auto va0 = Vec2{-4, 33};
-	const auto vb0 = Vec2{realnum(901.5), realnum(0.06)};
+	const auto vb0 = Vec2{RealNum(901.5), RealNum(0.06)};
 	const auto ia0 = SimplexEdge::index_type{2};
 	const auto ib0 = SimplexEdge::index_type{7};
 	const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
@@ -179,7 +179,7 @@ TEST(Simplex, Get2_fwd_perp)
 	EXPECT_EQ(sv_new_0.GetIndexB(), ib0);
 	
 	const auto ce_new_0 = simplex.GetCoefficient(0);
-	EXPECT_FLOAT_EQ(ce_new_0, realnum(0.5));
+	EXPECT_FLOAT_EQ(ce_new_0, RealNum(0.5));
 	
 	ASSERT_GT(simplex.GetSize(), decltype(simplex.GetSize()){1});
 	
@@ -190,13 +190,13 @@ TEST(Simplex, Get2_fwd_perp)
 	EXPECT_EQ(sv_new_1.GetIndexB(), ib1);
 	
 	const auto ce_new_1 = simplex.GetCoefficient(1);
-	EXPECT_FLOAT_EQ(ce_new_1, realnum(0.5));
+	EXPECT_FLOAT_EQ(ce_new_1, RealNum(0.5));
 }
 
 TEST(Simplex, Get2_rev_perp)
 {
 	const auto va0 = Vec2{-4, 33};
-	const auto vb0 = Vec2{realnum(901.5), realnum(0.06)};
+	const auto vb0 = Vec2{RealNum(901.5), RealNum(0.06)};
 	const auto ia0 = SimplexEdge::index_type{2};
 	const auto ib0 = SimplexEdge::index_type{7};
 	const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
@@ -219,7 +219,7 @@ TEST(Simplex, Get2_rev_perp)
 	EXPECT_EQ(sv_new_0.GetIndexB(), ib0);
 	
 	const auto ce_new_0 = simplex.GetCoefficient(0);
-	EXPECT_FLOAT_EQ(ce_new_0, realnum(0.5));
+	EXPECT_FLOAT_EQ(ce_new_0, RealNum(0.5));
 	
 	ASSERT_GT(simplex.GetSize(), decltype(simplex.GetSize()){1});
 	
@@ -230,13 +230,13 @@ TEST(Simplex, Get2_rev_perp)
 	EXPECT_EQ(sv_new_1.GetIndexB(), ib1);
 	
 	const auto ce_new_1 = simplex.GetCoefficient(1);
-	EXPECT_FLOAT_EQ(ce_new_1, realnum(0.5));
+	EXPECT_FLOAT_EQ(ce_new_1, RealNum(0.5));
 }
 
 TEST(Simplex, Get2_rot_plus_45)
 {
 	const auto va0 = Vec2{-4, 33};
-	const auto vb0 = Vec2{realnum(901.5), realnum(0.06)};
+	const auto vb0 = Vec2{RealNum(901.5), RealNum(0.06)};
 	const auto ia0 = SimplexEdge::index_type{2};
 	const auto ib0 = SimplexEdge::index_type{7};
 	const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
@@ -259,7 +259,7 @@ TEST(Simplex, Get2_rot_plus_45)
 	EXPECT_EQ(sv_new_0.GetIndexB(), ib0);
 	
 	const auto ce_new_0 = simplex.GetCoefficient(0);
-	EXPECT_FLOAT_EQ(ce_new_0, realnum(0.5));
+	EXPECT_FLOAT_EQ(ce_new_0, RealNum(0.5));
 	
 	ASSERT_GT(simplex.GetSize(), decltype(simplex.GetSize()){1});
 	
@@ -270,7 +270,7 @@ TEST(Simplex, Get2_rot_plus_45)
 	EXPECT_EQ(sv_new_1.GetIndexB(), ib1);
 	
 	const auto ce_new_1 = simplex.GetCoefficient(1);
-	EXPECT_FLOAT_EQ(ce_new_1, realnum(0.5));
+	EXPECT_FLOAT_EQ(ce_new_1, RealNum(0.5));
 }
 
 TEST(Simplex, Get2_rot45_half)
@@ -283,30 +283,30 @@ TEST(Simplex, Get2_rot45_half)
 	
 	const auto va1 = Rotate(va0, UnitVec2{45_deg}) / 2; // Vec2{-13.081475, 10.253049}
 	const auto vb1 = Rotate(vb0, UnitVec2{45_deg}) / 2; // Vec2{316.4303, 320.67291}
-	EXPECT_FLOAT_EQ(va1.x, realnum(-13.081475));
-	EXPECT_FLOAT_EQ(va1.y, realnum(10.253049));
-	EXPECT_FLOAT_EQ(vb1.x, realnum(316.4303));
-	EXPECT_FLOAT_EQ(vb1.y, realnum(320.67291));
+	EXPECT_FLOAT_EQ(va1.x, RealNum(-13.081475));
+	EXPECT_FLOAT_EQ(va1.y, RealNum(10.253049));
+	EXPECT_FLOAT_EQ(vb1.x, RealNum(316.4303));
+	EXPECT_FLOAT_EQ(vb1.y, RealNum(320.67291));
 	const auto ia1 = SimplexEdge::index_type{4};
 	const auto ib1 = SimplexEdge::index_type{1};
 	const auto sv1 = SimplexEdge{va1, ia1, vb1, ib1};
 
 	const auto w1 = vb0 - va0; // Vec2{901, 6} - Vec2{-4, 33} = Vec2{905, -27}
-	EXPECT_FLOAT_EQ(w1.x, realnum(905));
-	EXPECT_FLOAT_EQ(w1.y, realnum(-27));
+	EXPECT_FLOAT_EQ(w1.x, RealNum(905));
+	EXPECT_FLOAT_EQ(w1.y, RealNum(-27));
 	const auto w2 = vb1 - va1; // Vec2{316.4303, 320.67291} - Vec2{-13.081475, 10.253049} = Vec2{329.51178, 310.41986}
-	EXPECT_FLOAT_EQ(w2.x, realnum(329.51178));
-	EXPECT_FLOAT_EQ(w2.y, realnum(310.41986));
+	EXPECT_FLOAT_EQ(w2.x, RealNum(329.51178));
+	EXPECT_FLOAT_EQ(w2.y, RealNum(310.41986));
 	
 	const auto e12 = w2 - w1; // Vec2{329.51178, 310.41986} - Vec2{905, -27} = Vec2{-575.48822, 337.41986}
-	EXPECT_FLOAT_EQ(e12.x, realnum(-575.48822));
-	EXPECT_FLOAT_EQ(e12.y, realnum(337.41986));
+	EXPECT_FLOAT_EQ(e12.x, RealNum(-575.48822));
+	EXPECT_FLOAT_EQ(e12.y, RealNum(337.41986));
 
 	const auto d12_2 = -Dot(w1, e12); // -Dot(Vec2{905, -27}, Vec2{-575.48822, 337.41986}) = 529927.19
-	EXPECT_FLOAT_EQ(d12_2, realnum(529927.19));
+	EXPECT_FLOAT_EQ(d12_2, RealNum(529927.19));
 
 	const auto d12_1 = Dot(w2, e12); // Dot(Vec2{329.51178, 310.41986}, Vec2{-575.48822, 337.41986}) = -84888.312
-	EXPECT_FLOAT_EQ(d12_1, realnum(-84888.312));
+	EXPECT_FLOAT_EQ(d12_1, RealNum(-84888.312));
 
 	const auto simplex = Simplex::Get(sv0, sv1);
 	
@@ -321,7 +321,7 @@ TEST(Simplex, Get2_rot45_half)
 	EXPECT_EQ(sv_new_0.GetIndexB(), ib1);
 	
 	const auto ce_new_0 = simplex.GetCoefficient(0);
-	EXPECT_FLOAT_EQ(ce_new_0, realnum(1));
+	EXPECT_FLOAT_EQ(ce_new_0, RealNum(1));
 }
 
 TEST(Simplex, GetOfSimplexVertices)

@@ -287,7 +287,7 @@ bool Contact::UpdateTOI(const ToiConf& conf)
 	// Use Min function to handle floating point imprecision which possibly otherwise
 	// could provide a TOI that's greater than 1.
 	const auto toi = IsValidForTime(output.get_state())?
-		Min(alpha0 + (1 - alpha0) * output.get_t(), realnum{1}): realnum{1};
+		Min(alpha0 + (1 - alpha0) * output.get_t(), RealNum{1}): RealNum{1};
 	assert(toi >= alpha0);
 	SetToi(toi);
 	

@@ -24,14 +24,14 @@
 
 using namespace box2d;
 
-static constexpr auto Baumgarte = realnum{2} / realnum{10};
+static constexpr auto Baumgarte = RealNum{2} / RealNum{10};
 
 TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 {
 	const auto old_pA = Position{Vec2{-2, 0}, 0_deg};
 	const auto old_pB = Position{Vec2{+2, 0}, 0_deg};
 
-	const auto dim = realnum(2);
+	const auto dim = RealNum(2);
 	const auto shape = PolygonShape(dim, dim);
 	const auto xfmA = Transformation(old_pA.linear, UnitVec2{old_pA.angular});
 	const auto xfmB = Transformation(old_pB.linear, UnitVec2{old_pB.angular});
@@ -43,8 +43,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 	const auto indexB = PositionConstraint::BodyData::index_type{1};
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
-	const auto bA = PositionConstraint::BodyData{indexA, realnum(1), realnum(1), lcA};
-	const auto bB = PositionConstraint::BodyData{indexB, realnum(1), realnum(1), lcB};
+	const auto bA = PositionConstraint::BodyData{indexA, RealNum(1), RealNum(1), lcA};
+	const auto bB = PositionConstraint::BodyData{indexB, RealNum(1), RealNum(1), lcB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 	
 	const auto conf = ConstraintSolverConf{};
@@ -66,7 +66,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
 	const auto old_pA = Position{Vec2{0, -2}, 0_deg};
 	const auto old_pB = Position{Vec2{0, +2}, 0_deg};
 	
-	const auto dim = realnum(2);
+	const auto dim = RealNum(2);
 	const auto shape = PolygonShape(dim, dim);
 	const auto xfmA = Transformation(old_pA.linear, UnitVec2{old_pA.angular});
 	const auto xfmB = Transformation(old_pB.linear, UnitVec2{old_pB.angular});
@@ -78,8 +78,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
 	const auto indexB = PositionConstraint::BodyData::index_type{1};
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
-	const auto bA = PositionConstraint::BodyData{indexA, realnum(1), realnum(1), lcA};
-	const auto bB = PositionConstraint::BodyData{indexB, realnum(1), realnum(1), lcB};
+	const auto bA = PositionConstraint::BodyData{indexA, RealNum(1), RealNum(1), lcA};
+	const auto bB = PositionConstraint::BodyData{indexB, RealNum(1), RealNum(1), lcB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 	
 	const auto conf = ConstraintSolverConf{};
@@ -98,7 +98,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
 
 TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
 {
-	const auto dim = realnum(2);
+	const auto dim = RealNum(2);
 	const auto shape = PolygonShape(dim, dim);
 	const auto xfmA = Transformation(Vec2_zero, UnitVec2{0_deg});
 	const auto xfmB = Transformation(Vec2_zero, UnitVec2{0_deg});
@@ -110,14 +110,14 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
 	const auto indexB = PositionConstraint::BodyData::index_type{1};
 	const auto lcA = Vec2{};
 	const auto lcB = Vec2{};
-	const auto bA = PositionConstraint::BodyData{indexA, realnum(1), realnum(1), lcA};
-	const auto bB = PositionConstraint::BodyData{indexB, realnum(1), realnum(1), lcB};
+	const auto bA = PositionConstraint::BodyData{indexA, RealNum(1), RealNum(1), lcA};
+	const auto bB = PositionConstraint::BodyData{indexB, RealNum(1), RealNum(1), lcB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 
 	const auto old_pA = Position{Vec2{0, 0}, 0_deg};
 	const auto old_pB = Position{Vec2{0, 0}, 0_deg};
 	
-	const auto maxLinearCorrection = std::numeric_limits<realnum>::infinity();
+	const auto maxLinearCorrection = std::numeric_limits<RealNum>::infinity();
 	const auto conf = ConstraintSolverConf{}.UseResolutionRate(0).UseMaxLinearCorrection(maxLinearCorrection);
 	const auto solution = SolvePositionConstraint(pc, old_pA, true, old_pB, true, conf);
 
@@ -134,13 +134,13 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
 
 TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
 {
-	const auto ctr_x = realnum(100);
+	const auto ctr_x = RealNum(100);
 	
 	// square A is left of square B
 	const auto old_pA = Position{{ctr_x - 1, 0}, 0_deg};
 	const auto old_pB = Position{{ctr_x + 1, 0}, 0_deg};
 	
-	const auto dim = realnum(2);
+	const auto dim = RealNum(2);
 	const auto shape = PolygonShape(dim, dim);
 	const auto xfmA = Transformation(old_pA.linear, UnitVec2{old_pA.angular});
 	const auto xfmB = Transformation(old_pB.linear, UnitVec2{old_pB.angular});
@@ -156,15 +156,15 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
 	const auto indexB = PositionConstraint::BodyData::index_type{1};
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
-	const auto bA = PositionConstraint::BodyData{indexA, realnum(1), realnum(1), lcA};
-	const auto bB = PositionConstraint::BodyData{indexB, realnum(1), realnum(1), lcB};
+	const auto bA = PositionConstraint::BodyData{indexA, RealNum(1), RealNum(1), lcA};
+	const auto bB = PositionConstraint::BodyData{indexB, RealNum(1), RealNum(1), lcB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 	
-	const auto maxLinearCorrection = std::numeric_limits<realnum>::infinity();
+	const auto maxLinearCorrection = std::numeric_limits<RealNum>::infinity();
 	const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
 	const auto solution = SolvePositionConstraint(pc, old_pA, true, old_pB, true, conf);
 	
-	EXPECT_FLOAT_EQ(solution.min_separation, realnum(-2)); // -2.002398
+	EXPECT_FLOAT_EQ(solution.min_separation, RealNum(-2)); // -2.002398
 		
 	// object a just moves left
 	EXPECT_LT(solution.pos_a.linear.x, old_pA.linear.x);
@@ -179,13 +179,13 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
 
 TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
 {
-	const auto ctr_x = realnum(100);
+	const auto ctr_x = RealNum(100);
 	
 	// square A is right of square B
 	const auto old_pA =  Position{{ctr_x + 1, 0}, 0_deg};
 	const auto old_pB = Position{{ctr_x - 1, 0}, 0_deg};
 	
-	const auto dim = realnum(2);
+	const auto dim = RealNum(2);
 	const auto shape = PolygonShape(dim, dim);
 	const auto xfmA = Transformation(old_pA.linear, UnitVec2{old_pA.angular});
 	const auto xfmB = Transformation(old_pB.linear, UnitVec2{old_pB.angular});
@@ -201,15 +201,15 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
 	const auto indexB = PositionConstraint::BodyData::index_type{1};
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
-	const auto bA = PositionConstraint::BodyData{indexA, realnum(1), realnum(1), lcA};
-	const auto bB = PositionConstraint::BodyData{indexB, realnum(1), realnum(1), lcB};
+	const auto bA = PositionConstraint::BodyData{indexA, RealNum(1), RealNum(1), lcA};
+	const auto bB = PositionConstraint::BodyData{indexB, RealNum(1), RealNum(1), lcB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 	
-	const auto maxLinearCorrection = std::numeric_limits<realnum>::infinity();
+	const auto maxLinearCorrection = std::numeric_limits<RealNum>::infinity();
 	const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
 	const auto solution = SolvePositionConstraint(pc, old_pA, true, old_pB, true, conf);
 	
-	EXPECT_FLOAT_EQ(solution.min_separation, realnum(-2)); // -2.002398
+	EXPECT_FLOAT_EQ(solution.min_separation, RealNum(-2)); // -2.002398
 	
 	// square A just moves right
 	EXPECT_GT(solution.pos_a.linear.x, old_pA.linear.x);
@@ -224,13 +224,13 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
 
 TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
 {
-	const auto ctr_y = realnum(100);
+	const auto ctr_y = RealNum(100);
 	
 	// square A is below square B
 	const auto old_pA = Position{{0, ctr_y - 1}, 0_deg};
 	const auto old_pB = Position{{0, ctr_y + 1}, 0_deg};
 	
-	const auto dim = realnum(2);
+	const auto dim = RealNum(2);
 	const auto shape = PolygonShape(dim, dim);
 	const auto xfmA = Transformation(old_pA.linear, UnitVec2{old_pA.angular});
 	const auto xfmB = Transformation(old_pB.linear, UnitVec2{old_pB.angular});
@@ -246,15 +246,15 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
 	const auto indexB = PositionConstraint::BodyData::index_type{1};
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
-	const auto bA = PositionConstraint::BodyData{indexA, realnum(1), realnum(1), lcA};
-	const auto bB = PositionConstraint::BodyData{indexB, realnum(1), realnum(1), lcB};
+	const auto bA = PositionConstraint::BodyData{indexA, RealNum(1), RealNum(1), lcA};
+	const auto bB = PositionConstraint::BodyData{indexB, RealNum(1), RealNum(1), lcB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 	
-	const auto maxLinearCorrection = std::numeric_limits<realnum>::infinity();
+	const auto maxLinearCorrection = std::numeric_limits<RealNum>::infinity();
 	const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
 	const auto solution = SolvePositionConstraint(pc, old_pA, true, old_pB, true, conf);
 	
-	EXPECT_FLOAT_EQ(solution.min_separation, realnum(-2)); // -2.002398
+	EXPECT_FLOAT_EQ(solution.min_separation, RealNum(-2)); // -2.002398
 	
 	// object a just moves down only
 	EXPECT_EQ(solution.pos_a.linear.x, old_pA.linear.x);
@@ -281,13 +281,13 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
 
 TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
 {
-	const auto ctr_y = realnum(100);
+	const auto ctr_y = RealNum(100);
 
 	// square A is above square B
 	const auto old_pA = Position{{0, ctr_y + 1}, 0_deg};
 	const auto old_pB = Position{{0, ctr_y - 1}, 0_deg};
 	
-	const auto dim = realnum(2);
+	const auto dim = RealNum(2);
 	const auto shape = PolygonShape(dim, dim);
 	const auto xfmA = Transformation(old_pA.linear, UnitVec2{old_pA.angular});
 	const auto xfmB = Transformation(old_pB.linear, UnitVec2{old_pB.angular});
@@ -304,15 +304,15 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
 	const auto indexB = PositionConstraint::BodyData::index_type{1};
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
-	const auto bA = PositionConstraint::BodyData{indexA, realnum(1), realnum(1), lcA};
-	const auto bB = PositionConstraint::BodyData{indexB, realnum(1), realnum(1), lcB};
+	const auto bA = PositionConstraint::BodyData{indexA, RealNum(1), RealNum(1), lcA};
+	const auto bB = PositionConstraint::BodyData{indexB, RealNum(1), RealNum(1), lcB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 
-	const auto maxLinearCorrection = std::numeric_limits<realnum>::infinity();
+	const auto maxLinearCorrection = std::numeric_limits<RealNum>::infinity();
 	const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
 	const auto solution = SolvePositionConstraint(pc, old_pA, true, old_pB, true, conf);
 	
-	EXPECT_FLOAT_EQ(solution.min_separation, realnum(-2)); // -2.002398
+	EXPECT_FLOAT_EQ(solution.min_separation, RealNum(-2)); // -2.002398
 	
 	// square A just moves up only
 	EXPECT_EQ(solution.pos_a.linear.x, old_pA.linear.x);
@@ -339,7 +339,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
 
 TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
 {
-	const auto dim = realnum(2);
+	const auto dim = RealNum(2);
 	const auto shape = PolygonShape(dim, dim);
 	const auto xfmA = Transformation(Vec2_zero, UnitVec2{0_deg});
 	const auto xfmB = Transformation(Vec2_zero, UnitVec2{0_deg});
@@ -351,8 +351,8 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
 	const auto indexB = PositionConstraint::BodyData::index_type{1};
 	const auto lcA = Vec2{};
 	const auto lcB = Vec2{};
-	const auto bA = PositionConstraint::BodyData{indexA, realnum(1), realnum(1), lcA};
-	const auto bB = PositionConstraint::BodyData{indexB, realnum(1), realnum(1), lcB};
+	const auto bA = PositionConstraint::BodyData{indexA, RealNum(1), RealNum(1), lcA};
+	const auto bB = PositionConstraint::BodyData{indexB, RealNum(1), RealNum(1), lcB};
 	const auto pc = PositionConstraint{manifold, bA, GetVertexRadius(shape), bB, GetVertexRadius(shape)};
 
 	const auto old_pA = Position{Vec2{0, 0}, 0_deg};

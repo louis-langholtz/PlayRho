@@ -45,7 +45,7 @@ TEST(VertexSet, Add)
 	EXPECT_FALSE(set.add(Vec2{1, 1}));
 	EXPECT_EQ(set.size(), size_t(1));
 	
-	const auto v = Vec2{realnum(0), realnum(0)};
+	const auto v = Vec2{RealNum(0), RealNum(0)};
 
 	EXPECT_TRUE(set.add(v));
 	EXPECT_EQ(set.size(), size_t(2));
@@ -56,7 +56,7 @@ TEST(VertexSet, Add)
 	EXPECT_FALSE(set.add(v));
 	EXPECT_EQ(set.size(), size_t(2));
 	
-	const auto v_prime = v + Vec2{std::numeric_limits<realnum>::min(), std::numeric_limits<realnum>::min()};
+	const auto v_prime = v + Vec2{std::numeric_limits<RealNum>::min(), std::numeric_limits<RealNum>::min()};
 	
 	ASSERT_NE(v, v_prime);
 	

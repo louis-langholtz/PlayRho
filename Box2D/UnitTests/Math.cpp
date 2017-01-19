@@ -175,15 +175,15 @@ TEST(Math, AverageVec2)
 	EXPECT_EQ(Average<Vec2>({}), Vec2(0, 0));
 	
 	{
-		const auto val = Vec2{realnum(3.9), realnum(-0.1)};
+		const auto val = Vec2{RealNum(3.9), RealNum(-0.1)};
 		EXPECT_EQ(Average<Vec2>({val}), val);
 	}
 	
 	{
-		const auto val1 = Vec2{realnum(2.2), realnum(-1.1)};
-		const auto val2 = Vec2{realnum(4.4), realnum(-1.3)};
+		const auto val1 = Vec2{RealNum(2.2), RealNum(-1.1)};
+		const auto val2 = Vec2{RealNum(4.4), RealNum(-1.3)};
 		const auto average = Average<Vec2>({val1, val2});
-		const auto expected = Vec2(realnum(3.3), realnum(-1.2));
+		const auto expected = Vec2(RealNum(3.3), RealNum(-1.2));
 		EXPECT_FLOAT_EQ(average.x, expected.x);
 		EXPECT_FLOAT_EQ(average.y, expected.y);
 	}
@@ -191,44 +191,44 @@ TEST(Math, AverageVec2)
 
 TEST(Math, DotProductOfTwoVecTwoIsCommutative)
 {
-	const auto a = Vec2{realnum(-3.2), realnum(1.9)};
-	const auto b = Vec2{realnum(4.01), realnum(-0.002)};
+	const auto a = Vec2{RealNum(-3.2), RealNum(1.9)};
+	const auto b = Vec2{RealNum(4.01), RealNum(-0.002)};
 	EXPECT_EQ(Dot(a, b), Dot(b, a));
 }
 
 TEST(Math, DotProductOfTwoVecThreeIsCommutative)
 {
-	const auto a = Vec3{realnum(-3.2), realnum(1.9), realnum(36.01)};
-	const auto b = Vec3{realnum(4.01), realnum(-0.002), realnum(1.2)};
+	const auto a = Vec3{RealNum(-3.2), RealNum(1.9), RealNum(36.01)};
+	const auto b = Vec3{RealNum(4.01), RealNum(-0.002), RealNum(1.2)};
 	EXPECT_EQ(Dot(a, b), Dot(b, a));
 }
 
 TEST(Math, CrossProductOfTwoVecTwoIsAntiCommutative)
 {
-	const auto a = Vec2{realnum(-3.2), realnum(1.9)};
-	const auto b = Vec2{realnum(4.01), realnum(-0.002)};
+	const auto a = Vec2{RealNum(-3.2), RealNum(1.9)};
+	const auto b = Vec2{RealNum(4.01), RealNum(-0.002)};
 	EXPECT_EQ(Cross(a, b), -Cross(b, a));
 }
 
 TEST(Math, Vec2NegationAndRotationIsOrderIndependent)
 {
 	{
-		const auto v = Vec2{realnum(1), realnum(1)};
+		const auto v = Vec2{RealNum(1), RealNum(1)};
 		const auto r = UnitVec2{0_deg};
 		EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
 	}
 	{
-		const auto v = Vec2{realnum(1), realnum(1)};
+		const auto v = Vec2{RealNum(1), RealNum(1)};
 		const auto r = UnitVec2{33_deg};
 		EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
 	}
 	{
-		const auto v = Vec2{realnum(-3.2), realnum(1.9)};
+		const auto v = Vec2{RealNum(-3.2), RealNum(1.9)};
 		const auto r = UnitVec2{33_deg};
 		EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
 	}
 	{
-		const auto v = Vec2{realnum(-3.2), realnum(-21.4)};
+		const auto v = Vec2{RealNum(-3.2), RealNum(-21.4)};
 		for (auto angle = -360_deg; angle < 360_deg; angle += 15_deg)
 		{
 			const auto r = UnitVec2{angle};
@@ -236,12 +236,12 @@ TEST(Math, Vec2NegationAndRotationIsOrderIndependent)
 		}
 	}
 	{
-		const auto v = Vec2{realnum(-3.2), realnum(1.9)};
+		const auto v = Vec2{RealNum(-3.2), RealNum(1.9)};
 		const auto r = UnitVec2{33_deg};
 		EXPECT_EQ(Rotate(v, r), -Rotate(-v, r));
 	}
 	{
-		const auto v = Vec2{realnum(-3.2), realnum(1.9)};
+		const auto v = Vec2{RealNum(-3.2), RealNum(1.9)};
 		const auto r = UnitVec2{33_deg};
 		EXPECT_EQ(Rotate(v, r), -Rotate(v, -r));
 	}
@@ -249,8 +249,8 @@ TEST(Math, Vec2NegationAndRotationIsOrderIndependent)
 
 TEST(Math, TransformIsRotatePlusTranslate)
 {
-	const auto vector = Vec2{realnum(19), realnum(-0.5)};
-	const auto translation = Vec2{realnum(-3), realnum(+5)};
+	const auto vector = Vec2{RealNum(19), RealNum(-0.5)};
+	const auto translation = Vec2{RealNum(-3), RealNum(+5)};
 	const auto rotation = UnitVec2{90_deg};
 	const auto transformation = Transformation{translation, rotation};
 	
@@ -263,8 +263,8 @@ TEST(Math, TransformIsRotatePlusTranslate)
 
 TEST(Math, InverseTransformIsUntranslateAndInverseRotate)
 {
-	const auto vector = Vec2{realnum(19), realnum(-0.5)};
-	const auto translation = Vec2{realnum(-3), realnum(+5)};
+	const auto vector = Vec2{RealNum(19), RealNum(-0.5)};
+	const auto translation = Vec2{RealNum(-3), RealNum(+5)};
 	const auto rotation = UnitVec2{90_deg};
 	const auto transformation = Transformation{translation, rotation};
 	
@@ -277,8 +277,8 @@ TEST(Math, InverseTransformIsUntranslateAndInverseRotate)
 
 TEST(Math, InverseTransformTransformedIsOriginal)
 {
-	const auto vector = Vec2{realnum(19), realnum(-0.5)};
-	const auto translation = Vec2{realnum(-3), realnum(+5)};
+	const auto vector = Vec2{RealNum(19), RealNum(-0.5)};
+	const auto translation = Vec2{RealNum(-3), RealNum(+5)};
 	const auto rotation = UnitVec2{90_deg};
 	const auto transformation = Transformation{translation, rotation};
 
@@ -291,8 +291,8 @@ TEST(Math, InverseTransformTransformedIsOriginal)
 
 TEST(Math, TransformInverseTransformedIsOriginal)
 {
-	const auto vector = Vec2{realnum(19), realnum(-0.5)};
-	const auto translation = Vec2{realnum(-3), realnum(+5)};
+	const auto vector = Vec2{RealNum(19), RealNum(-0.5)};
+	const auto translation = Vec2{RealNum(-3), RealNum(+5)};
 	const auto rotation = UnitVec2{90_deg};
 	const auto transformation = Transformation{translation, rotation};
 
@@ -305,8 +305,8 @@ TEST(Math, TransformInverseTransformedIsOriginal)
 
 TEST(Math, ComputeCentroidCenteredR1)
 {
-	const auto hx = realnum(1);
-	const auto hy = realnum(1);
+	const auto hx = RealNum(1);
+	const auto hy = RealNum(1);
 	const auto real_center = Vec2{0, 0};
 	const auto vertices = {
 		Vec2{real_center.x + hx, real_center.y + hy},
@@ -325,8 +325,8 @@ TEST(Math, ComputeCentroidCenteredR1)
 
 TEST(Math, ComputeCentroidCentered0R1000)
 {
-	const auto hx = realnum(1000);
-	const auto hy = realnum(1000);
+	const auto hx = RealNum(1000);
+	const auto hy = RealNum(1000);
 	const auto real_center = Vec2{0, 0};
 	const auto vertices = {
 		Vec2{real_center.x + hx, real_center.y + hy},
@@ -345,8 +345,8 @@ TEST(Math, ComputeCentroidCentered0R1000)
 
 TEST(Math, ComputeCentroidUpRight1000R1)
 {
-	const auto hx = realnum(1);
-	const auto hy = realnum(1);
+	const auto hx = RealNum(1);
+	const auto hy = RealNum(1);
 	const auto real_center = Vec2{1000, 1000};
 	const auto vertices = {
 		Vec2{real_center.x + hx, real_center.y + hy},
@@ -365,8 +365,8 @@ TEST(Math, ComputeCentroidUpRight1000R1)
 
 TEST(Math, ComputeCentroidUpRight1000R100)
 {
-	const auto hx = realnum(100);
-	const auto hy = realnum(100);
+	const auto hx = RealNum(100);
+	const auto hy = RealNum(100);
 	const auto real_center = Vec2{1000, 1000};
 	const auto vertices = {
 		Vec2{real_center.x + hx, real_center.y + hy},
@@ -385,8 +385,8 @@ TEST(Math, ComputeCentroidUpRight1000R100)
 
 TEST(Math, ComputeCentroidUpRight10000R01)
 {
-	const auto hx = realnum(0.1);
-	const auto hy = realnum(0.1);
+	const auto hx = RealNum(0.1);
+	const auto hy = RealNum(0.1);
 	const auto real_center = Vec2{10000, 10000};
 	const auto vertices = {
 		Vec2{real_center.x + hx, real_center.y + hy},
@@ -405,8 +405,8 @@ TEST(Math, ComputeCentroidUpRight10000R01)
 
 TEST(Math, ComputeCentroidDownLeft1000R1)
 {
-	const auto hx = realnum(1);
-	const auto hy = realnum(1);
+	const auto hx = RealNum(1);
+	const auto hy = RealNum(1);
 	const auto real_center = Vec2{-1000, -1000};
 	const auto vertices = {
 		Vec2{real_center.x + hx, real_center.y + hy},
@@ -425,8 +425,8 @@ TEST(Math, ComputeCentroidDownLeft1000R1)
 
 TEST(Math, ComputeCentroidOfHexagonalVertices)
 {
-	const auto hx = realnum(1);
-	const auto hy = realnum(1);
+	const auto hx = RealNum(1);
+	const auto hy = RealNum(1);
 	const auto real_center = Vec2{-1000, -1000};
 	const auto vertices = {
 		Vec2{real_center.x + 00, real_center.y + 2 * hy},

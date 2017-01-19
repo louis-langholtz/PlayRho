@@ -26,7 +26,7 @@ namespace box2d
 	class LinearSpeed
 	{
 	public:
-		using data_type = realnum;
+		using data_type = RealNum;
 		
 		static LinearSpeed GetFromMetersPerSecond(data_type value)
 		{

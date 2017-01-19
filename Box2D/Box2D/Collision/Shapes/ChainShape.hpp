@@ -39,12 +39,12 @@ class EdgeShape;
 class ChainShape : public Shape
 {
 public:
-	static constexpr realnum GetDefaultVertexRadius() noexcept
+	static constexpr RealNum GetDefaultVertexRadius() noexcept
 	{
 		return LinearSlop * 2;
 	}
 	
-	ChainShape(realnum vertexRadius = GetDefaultVertexRadius()):
+	ChainShape(RealNum vertexRadius = GetDefaultVertexRadius()):
 		Shape{e_chain, vertexRadius}
 	{
 		// Intentionally empty.

@@ -39,10 +39,10 @@ namespace box2d
 	{
 		RayCastOutput() = default;
 		
-		constexpr RayCastOutput(UnitVec2 n, realnum f, bool h = true) noexcept: normal{n}, fraction{f}, hit{h} {}
+		constexpr RayCastOutput(UnitVec2 n, RealNum f, bool h = true) noexcept: normal{n}, fraction{f}, hit{h} {}
 		
 		UnitVec2 normal;
-		realnum fraction = 0;
+		RealNum fraction = 0;
 		bool hit = false;
 	};
 

@@ -33,32 +33,32 @@ TEST(Vec2, max_size) {
 }
 
 TEST(Vec2, Constructor) {
-	Vec2 vector{realnum{5}, realnum{-3}};
-	EXPECT_EQ(realnum{5}, vector.x);
-	EXPECT_EQ(realnum{-3}, vector.y);
+	Vec2 vector{RealNum{5}, RealNum{-3}};
+	EXPECT_EQ(RealNum{5}, vector.x);
+	EXPECT_EQ(RealNum{-3}, vector.y);
 }
 
 TEST(Vec2, OutputOperator)
 {
 	std::stringstream os;
-	const Vec2 value{realnum(1.5), realnum(-2.3)};
+	const Vec2 value{RealNum(1.5), RealNum(-2.3)};
 	os << value;
 	EXPECT_EQ(os.str(), "Vec2(1.5,-2.3)");
 }
 
 TEST(Vec2, Indexing) {
-	Vec2 vector{realnum{5}, realnum{-3}};
-	EXPECT_EQ(realnum{5}, vector[0]);
-	EXPECT_EQ(realnum{-3}, vector[1]);
-	vector[0] = realnum{4};
-	EXPECT_EQ(realnum{4}, vector[0]);
-	vector[1] = realnum{-2};
-	EXPECT_EQ(realnum{-2}, vector[1]);
+	Vec2 vector{RealNum{5}, RealNum{-3}};
+	EXPECT_EQ(RealNum{5}, vector[0]);
+	EXPECT_EQ(RealNum{-3}, vector[1]);
+	vector[0] = RealNum{4};
+	EXPECT_EQ(RealNum{4}, vector[0]);
+	vector[1] = RealNum{-2};
+	EXPECT_EQ(RealNum{-2}, vector[1]);
 }
 
 TEST(Vec2, Equality)
 {	
-	Vec2 vector{realnum{5}, realnum{-3}};
+	Vec2 vector{RealNum{5}, RealNum{-3}};
 	EXPECT_EQ(vector.x, vector.x);
 	EXPECT_EQ(vector.y, vector.y);
 	EXPECT_EQ(vector, vector);
@@ -66,8 +66,8 @@ TEST(Vec2, Equality)
 
 TEST(Vec2, Inequality)
 {	
-	Vec2 vector1{realnum{5}, realnum{-3}};
-	Vec2 vector2{realnum{-5}, realnum{+3}};
+	Vec2 vector1{RealNum{5}, RealNum{-3}};
+	Vec2 vector2{RealNum{-5}, RealNum{+3}};
 	EXPECT_NE(vector1.x, vector2.x);
 	EXPECT_NE(vector1.y, vector2.y);
 	EXPECT_NE(vector1, vector2);

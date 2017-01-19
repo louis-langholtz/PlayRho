@@ -28,11 +28,11 @@ namespace box2d {
 	class NewtonsCradle : public Test
 	{
 	public:
-		static constexpr auto scale = realnum(1);
-		static constexpr auto ball_radius = scale * realnum(2); // 2
+		static constexpr auto scale = RealNum(1);
+		static constexpr auto ball_radius = scale * RealNum(2); // 2
 		static constexpr auto frame_width_per_arm = ball_radius * 2;
-		static constexpr auto frame_height = scale * realnum(30); // 30
-		static constexpr auto arm_length = scale * realnum(16); // 16
+		static constexpr auto frame_height = scale * RealNum(30); // 30
+		static constexpr auto arm_length = scale * RealNum(16); // 16
 		static constexpr auto default_num_arms = unsigned{5};
 
 		NewtonsCradle()
@@ -64,7 +64,7 @@ namespace box2d {
 			
 			for (auto i = decltype(m_num_arms){0}; i < m_num_arms; ++i)
 			{
-				const auto x = (((i + realnum(0.5)) - realnum(m_num_arms) / realnum(2)) * frame_width_per_arm);
+				const auto x = (((i + RealNum(0.5)) - RealNum(m_num_arms) / RealNum(2)) * frame_width_per_arm);
 				
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
@@ -150,7 +150,7 @@ namespace box2d {
 			}
 		}
 
-		Fixture* CreateBall(Body* body, Vec2 pos, realnum radius)
+		Fixture* CreateBall(Body* body, Vec2 pos, RealNum radius)
 		{
 			FixtureDef fd;
 			fd.density = 20;
@@ -159,7 +159,7 @@ namespace box2d {
 			return body->CreateFixture(std::make_shared<CircleShape>(radius, pos), fd);
 		}
 
-		Fixture* CreateArm(Body* body, realnum length = realnum(10))
+		Fixture* CreateArm(Body* body, RealNum length = RealNum(10))
 		{
 			const auto shape = PolygonShape(length / 2000, length / 2);
 			return body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(20));

@@ -32,7 +32,7 @@ namespace box2d {
 /// A convex polygon. The interior of the polygon is to the left of each edge.
 /// Polygons have a maximum number of vertices equal to MaxShapeVertices.
 /// In most cases you should not need many vertices for a convex polygon.
-/// @note This data structure is 64-bytes large (with 4-byte realnum).
+/// @note This data structure is 64-bytes large (with 4-byte RealNum).
 class PolygonShape : public Shape
 {
 public:
@@ -41,7 +41,7 @@ public:
 
 	static constexpr auto InvalidVertex = static_cast<vertex_count_t>(-1);
 
-	static constexpr realnum GetDefaultVertexRadius() noexcept
+	static constexpr RealNum GetDefaultVertexRadius() noexcept
 	{
 		return LinearSlop * 2;
 	}
@@ -50,7 +50,7 @@ public:
 	/// @detail Constructs a polygon shape with a 0,0 centroid and vertex count of 0.
 	/// @note Polygons with a vertex count less than 1 are "degenerate" and should be
 	///   treated as invalid.
-	PolygonShape(realnum vertexRadius = GetDefaultVertexRadius()) noexcept:
+	PolygonShape(RealNum vertexRadius = GetDefaultVertexRadius()) noexcept:
 		Shape{e_polygon, vertexRadius}
 	{
 		// Intentionally empty.
@@ -61,7 +61,7 @@ public:
 	/// Initializing constructor for rectangles.
 	/// @param hx the half-width.
 	/// @param hy the half-height.
-	explicit PolygonShape(realnum hx, realnum hy) noexcept;
+	explicit PolygonShape(RealNum hx, RealNum hy) noexcept;
 	
 	/// Creates a convex hull from the given array of local points.
 	/// The size of the span must be in the range [1, MaxShapeVertices].
@@ -87,7 +87,7 @@ public:
 	/// Build vertices to represent an axis-aligned box centered on the local origin.
 	/// @param hx the half-width.
 	/// @param hy the half-height.
-	void SetAsBox(realnum hx, realnum hy) noexcept;
+	void SetAsBox(RealNum hx, RealNum hy) noexcept;
 	
 	void Transform(Transformation xfm) noexcept;
 
@@ -171,7 +171,7 @@ bool Validate(const PolygonShape& shape);
 /// @param hy the half-height.
 /// @param center the center of the box in local coordinates.
 /// @param angle the rotation of the box in local coordinates.
-void SetAsBox(PolygonShape& shape, realnum hx, realnum hy, const Vec2 center, Angle angle) noexcept;
+void SetAsBox(PolygonShape& shape, RealNum hx, RealNum hy, const Vec2 center, Angle angle) noexcept;
 	
 size_t FindLowestRightMostVertex(Span<const Vec2> vertices);
 	

@@ -46,10 +46,10 @@ struct WeldJointDef : public JointDef
 	
 	/// The mass-spring-damper frequency in Hertz. Rotation only.
 	/// Disable softness with a value of 0.
-	realnum frequencyHz = realnum{0};
+	RealNum frequencyHz = RealNum{0};
 
 	/// The damping ratio. 0 = no damping, 1 = critical damping.
-	realnum dampingRatio = realnum{0};
+	RealNum dampingRatio = RealNum{0};
 };
 
 /// A weld joint essentially glues two bodies together. A weld joint may
@@ -62,8 +62,8 @@ public:
 	Vec2 GetAnchorA() const override;
 	Vec2 GetAnchorB() const override;
 
-	Vec2 GetReactionForce(realnum inv_dt) const override;
-	realnum GetReactionTorque(realnum inv_dt) const override;
+	Vec2 GetReactionForce(RealNum inv_dt) const override;
+	RealNum GetReactionTorque(RealNum inv_dt) const override;
 
 	/// The local anchor point relative to bodyA's origin.
 	Vec2 GetLocalAnchorA() const { return m_localAnchorA; }
@@ -75,12 +75,12 @@ public:
 	Angle GetReferenceAngle() const { return m_referenceAngle; }
 
 	/// Set/get frequency in Hz.
-	void SetFrequency(realnum hz) { m_frequencyHz = hz; }
-	realnum GetFrequency() const { return m_frequencyHz; }
+	void SetFrequency(RealNum hz) { m_frequencyHz = hz; }
+	RealNum GetFrequency() const { return m_frequencyHz; }
 
 	/// Set/get damping ratio.
-	void SetDampingRatio(realnum ratio) { m_dampingRatio = ratio; }
-	realnum GetDampingRatio() const { return m_dampingRatio; }
+	void SetDampingRatio(RealNum ratio) { m_dampingRatio = ratio; }
+	RealNum GetDampingRatio() const { return m_dampingRatio; }
 
 private:
 
@@ -88,15 +88,15 @@ private:
 	void SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step) override;
 	bool SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) override;
 
-	realnum m_frequencyHz;
-	realnum m_dampingRatio;
-	realnum m_bias;
+	RealNum m_frequencyHz;
+	RealNum m_dampingRatio;
+	RealNum m_bias;
 
 	// Solver shared
 	Vec2 m_localAnchorA;
 	Vec2 m_localAnchorB;
 	Angle m_referenceAngle;
-	realnum m_gamma;
+	RealNum m_gamma;
 	Vec3 m_impulse;
 
 	// Solver temp
@@ -106,10 +106,10 @@ private:
 	Vec2 m_rB;
 	Vec2 m_localCenterA;
 	Vec2 m_localCenterB;
-	realnum m_invMassA;
-	realnum m_invMassB;
-	realnum m_invIA;
-	realnum m_invIB;
+	RealNum m_invMassA;
+	RealNum m_invMassB;
+	RealNum m_invIA;
+	RealNum m_invIB;
 	Mat33 m_mass;
 };
 

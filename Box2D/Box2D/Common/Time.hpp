@@ -15,7 +15,7 @@
 namespace box2d
 {
 
-using Time = std::chrono::duration<realnum>;
+using Time = std::chrono::duration<RealNum>;
 
 constexpr Time operator""_s(unsigned long long value)
 {

@@ -72,7 +72,7 @@ public:
 
 				body->CreateFixture(shape, fd);
 
-				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(realnum(i), y)});
+				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(RealNum(i), y)});
 
 				prevBody = body;
 			}

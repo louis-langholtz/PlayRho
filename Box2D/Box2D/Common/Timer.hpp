@@ -38,7 +38,7 @@ public:
 	void Reset();
 
 	/// Get the time since construction or the last reset.
-	realnum GetMilliseconds() const;
+	RealNum GetMilliseconds() const;
 
 private:
 

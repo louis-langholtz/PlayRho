@@ -53,7 +53,7 @@ RayCastOutput box2d::RayCast(const AABB& aabb, const RayCastInput& input)
 		}
 		else
 		{
-			const auto inv_d = realnum{1} / d[i];
+			const auto inv_d = RealNum{1} / d[i];
 			auto t1 = (aabb.GetLowerBound()[i] - p[i]) * inv_d;
 			auto t2 = (aabb.GetUpperBound()[i] - p[i]) * inv_d;
 			
@@ -114,7 +114,7 @@ RayCastOutput box2d::RayCast(const CircleShape& shape, const RayCastInput& input
 	const auto sigma = Square(c) - rr * b;
 	
 	// Check for negative discriminant and short segment.
-	if ((sigma < realnum{0}) || almost_zero(rr))
+	if ((sigma < RealNum{0}) || almost_zero(rr))
 	{
 		return RayCastOutput{};
 	}
@@ -123,7 +123,7 @@ RayCastOutput box2d::RayCast(const CircleShape& shape, const RayCastInput& input
 	const auto a = -(c + Sqrt(sigma));
 	
 	// Is the intersection point on the segment?
-	if ((a >= realnum{0}) && (a <= (input.maxFraction * rr)))
+	if ((a >= RealNum{0}) && (a <= (input.maxFraction * rr)))
 	{
 		const auto fraction = a / rr;
 		return RayCastOutput{GetUnitVector(s + fraction * r, UnitVec2::GetZero()), fraction};
@@ -198,7 +198,7 @@ RayCastOutput box2d::RayCast(const PolygonShape& shape, const RayCastInput& inpu
 	const auto p2 = InverseRotate(input.p2 - xf.p, xf.q);
 	const auto d = p2 - p1;
 	
-	auto lower = realnum{0};
+	auto lower = RealNum{0};
 	auto upper = input.maxFraction;
 	constexpr auto InvalidIndex = static_cast<PolygonShape::vertex_count_t>(-1);
 	auto index = InvalidIndex;
@@ -211,9 +211,9 @@ RayCastOutput box2d::RayCast(const PolygonShape& shape, const RayCastInput& inpu
 		const auto numerator = Dot(shape.GetNormal(i), shape.GetVertex(i) - p1);
 		const auto denominator = Dot(shape.GetNormal(i), d);
 		
-		if (denominator == realnum{0})
+		if (denominator == RealNum{0})
 		{	
-			if (numerator < realnum{0})
+			if (numerator < RealNum{0})
 			{
 				return RayCastOutput{};
 			}
@@ -224,14 +224,14 @@ RayCastOutput box2d::RayCast(const PolygonShape& shape, const RayCastInput& inpu
 			// lower < numerator / denominator, where denominator < 0
 			// Since denominator < 0, we have to flip the inequality:
 			// lower < numerator / denominator <==> denominator * lower > numerator.
-			if (denominator < realnum{0} && numerator < lower * denominator)
+			if (denominator < RealNum{0} && numerator < lower * denominator)
 			{
 				// Increase lower.
 				// The segment enters this half-space.
 				lower = numerator / denominator;
 				index = i;
 			}
-			else if (denominator > realnum{0} && numerator < upper * denominator)
+			else if (denominator > RealNum{0} && numerator < upper * denominator)
 			{
 				// Decrease upper.
 				// The segment exits this half-space.
@@ -245,7 +245,7 @@ RayCastOutput box2d::RayCast(const PolygonShape& shape, const RayCastInput& inpu
 		}
 	}
 	
-	assert((realnum{0} <= lower) && (lower <= input.maxFraction));
+	assert((RealNum{0} <= lower) && (lower <= input.maxFraction));
 	
 	if (index != InvalidIndex)
 	{

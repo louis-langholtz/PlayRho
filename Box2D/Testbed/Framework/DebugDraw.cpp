@@ -49,7 +49,7 @@ Vec2 ConvertScreenToWorld(const Camera& camera, const Coord2D ps)
 	const auto lower = camera.m_center - extents;
 	const auto upper = camera.m_center + extents;
 
-	return Vec2{(realnum(1) - u) * lower.x + u * upper.x, (realnum(1) - v) * lower.y + v * upper.y};
+	return Vec2{(RealNum(1) - u) * lower.x + u * upper.x, (RealNum(1) - v) * lower.y + v * upper.y};
 }
 
 //
@@ -616,7 +616,7 @@ void DebugDraw::DrawSegment(const Vec2& p1, const Vec2& p2, const Color& color)
 	m_lines->Vertex(m_camera, Coord2D{static_cast<float>(p2.x), static_cast<float>(p2.y)}, color);
 }
 
-void DebugDraw::DrawPoint(const Vec2& p, realnum size, const Color& color)
+void DebugDraw::DrawPoint(const Vec2& p, RealNum size, const Color& color)
 {
 	m_points->Vertex(m_camera, Coord2D{static_cast<float>(p.x), static_cast<float>(p.y)}, color, static_cast<float>(size));
 }
@@ -642,7 +642,7 @@ void DebugDraw::DrawPolygon(const Vec2* vertices, size_type vertexCount, const C
 }
 
 //
-void DebugDraw::DrawCircle(const Vec2& center, realnum radius, const Color& color)
+void DebugDraw::DrawCircle(const Vec2& center, RealNum radius, const Color& color)
 {
 	auto r1 = Vec2(1, 0);
 	auto v1 = center + radius * r1;
@@ -666,7 +666,7 @@ void DebugDraw::DrawSolidPolygon(const Vec2* vertices, size_type vertexCount, co
 }
 
 //
-void DebugDraw::DrawSolidCircle(const Vec2& center, realnum radius, const Color& color)
+void DebugDraw::DrawSolidCircle(const Vec2& center, RealNum radius, const Color& color)
 {
 	const auto v0 = center;
 	auto r1 = Vec2(m_cosInc, m_sinInc);

@@ -56,9 +56,9 @@ struct Filter
 struct FixtureDef
 {
 	constexpr FixtureDef& UseUserData(void* value) noexcept;
-	constexpr FixtureDef& UseFriction(realnum value) noexcept;
-	constexpr FixtureDef& UseRestitution(realnum value) noexcept;
-	constexpr FixtureDef& UseDensity(realnum value) noexcept;
+	constexpr FixtureDef& UseFriction(RealNum value) noexcept;
+	constexpr FixtureDef& UseRestitution(RealNum value) noexcept;
+	constexpr FixtureDef& UseDensity(RealNum value) noexcept;
 	constexpr FixtureDef& UseIsSensor(bool value) noexcept;
 	constexpr FixtureDef& UseFilter(Filter value) noexcept;
 
@@ -66,13 +66,13 @@ struct FixtureDef
 	void* userData = nullptr;
 
 	/// The friction coefficient, usually in the range [0,1].
-	realnum friction = realnum{2} / realnum{10};
+	RealNum friction = RealNum{2} / RealNum{10};
 
 	/// The restitution (elasticity) usually in the range [0,1].
-	realnum restitution = realnum{0};
+	RealNum restitution = RealNum{0};
 
 	/// The density, usually in kg/m^2.
-	realnum density = realnum{0};
+	RealNum density = RealNum{0};
 
 	/// A sensor shape collects contact information but never generates a collision
 	/// response.
@@ -88,19 +88,19 @@ constexpr inline FixtureDef& FixtureDef::UseUserData(void* value) noexcept
 	return *this;
 }
 	
-constexpr inline FixtureDef& FixtureDef::UseFriction(realnum value) noexcept
+constexpr inline FixtureDef& FixtureDef::UseFriction(RealNum value) noexcept
 {
 	friction = value;
 	return *this;
 }
 	
-constexpr inline FixtureDef& FixtureDef::UseRestitution(realnum value) noexcept
+constexpr inline FixtureDef& FixtureDef::UseRestitution(RealNum value) noexcept
 {
 	restitution = value;
 	return *this;
 }
 	
-constexpr inline FixtureDef& FixtureDef::UseDensity(realnum value) noexcept
+constexpr inline FixtureDef& FixtureDef::UseDensity(RealNum value) noexcept
 {
 	density = value;
 	return *this;
@@ -135,7 +135,7 @@ public:
 	Fixture(Body* body, const FixtureDef& def, std::shared_ptr<const Shape> shape):
 		m_body{body},
 		m_shape{shape},
-		m_density{Max(def.density, realnum{0})}, 
+		m_density{Max(def.density, RealNum{0})}, 
 		m_friction{def.friction},
 		m_restitution{def.restitution},
 		m_filter{def.filter},
@@ -195,25 +195,25 @@ public:
 	///   You must call Body::ResetMassData to update the body's mass.
 	/// @warning Behavior is undefined if given a negative value.
 	/// @param density Non-negative density in kg/m^2.
-	void SetDensity(realnum density) noexcept;
+	void SetDensity(RealNum density) noexcept;
 
 	/// Gets the density of this fixture.
 	/// @return Non-negative density in kg/m^2.
-	realnum GetDensity() const noexcept;
+	RealNum GetDensity() const noexcept;
 
 	/// Gets the coefficient of friction.
-	realnum GetFriction() const noexcept;
+	RealNum GetFriction() const noexcept;
 
 	/// Sets the coefficient of friction. This will _not_ change the friction of
 	/// existing contacts.
-	void SetFriction(realnum friction) noexcept;
+	void SetFriction(RealNum friction) noexcept;
 
 	/// Gets the coefficient of restitution.
-	realnum GetRestitution() const noexcept;
+	RealNum GetRestitution() const noexcept;
 
 	/// Sets the coefficient of restitution. This will _not_ change the restitution of
 	/// existing contacts.
-	void SetRestitution(realnum restitution) noexcept;
+	void SetRestitution(RealNum restitution) noexcept;
 
 	/// Get the fixture's AABB. This AABB may be enlarge and/or stale.
 	/// If you need a more accurate AABB, compute it using the shape and
@@ -254,9 +254,9 @@ private:
 	FixtureProxy* m_proxies = nullptr; ///< Array of fixture proxies for the assigned shape. 8-bytes.
 	void* m_userData = nullptr; ///< User data. 8-bytes.
 	// 48-bytes so far.
-	realnum m_density = realnum{0}; ///< Density. 4-bytes.
-	realnum m_friction = realnum{2} / realnum{10}; ///< Friction as a coefficient. 4-bytes.
-	realnum m_restitution = realnum{0}; ///< Restitution as a coefficient. 4-bytes.
+	RealNum m_density = RealNum{0}; ///< Density. 4-bytes.
+	RealNum m_friction = RealNum{2} / RealNum{10}; ///< Friction as a coefficient. 4-bytes.
+	RealNum m_restitution = RealNum{0}; ///< Restitution as a coefficient. 4-bytes.
 	child_count_t m_proxyCount = 0; ///< Proxy count. @detail This is the fixture shape's child count after proxy creation. 4-bytes.
 	// 48 + 16 = 64-bytes now.
 	Filter m_filter; ///< Filter object. 6-bytes.
@@ -305,33 +305,33 @@ inline const Body* Fixture::GetBody() const noexcept
 	return m_body;
 }
 
-inline void Fixture::SetDensity(realnum density) noexcept
+inline void Fixture::SetDensity(RealNum density) noexcept
 {
-	assert(IsValid(density) && density >= realnum{0});
+	assert(IsValid(density) && density >= RealNum{0});
 	m_density = density;
 }
 
-inline realnum Fixture::GetDensity() const noexcept
+inline RealNum Fixture::GetDensity() const noexcept
 {
 	return m_density;
 }
 
-inline realnum Fixture::GetFriction() const noexcept
+inline RealNum Fixture::GetFriction() const noexcept
 {
 	return m_friction;
 }
 
-inline void Fixture::SetFriction(realnum friction) noexcept
+inline void Fixture::SetFriction(RealNum friction) noexcept
 {
 	m_friction = friction;
 }
 
-inline realnum Fixture::GetRestitution() const noexcept
+inline RealNum Fixture::GetRestitution() const noexcept
 {
 	return m_restitution;
 }
 
-inline void Fixture::SetRestitution(realnum restitution) noexcept
+inline void Fixture::SetRestitution(RealNum restitution) noexcept
 {
 	m_restitution = restitution;
 }

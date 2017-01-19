@@ -43,7 +43,7 @@ public:
 			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
 			ground->CreateFixture(std::make_shared<EdgeShape>(shape), fd);
 
-			realnum hs[10] = {0.25f, 1.0f, 4.0f, 0.0f, 0.0f, -1.0f, -2.0f, -2.0f, -1.25f, 0.0f};
+			RealNum hs[10] = {0.25f, 1.0f, 4.0f, 0.0f, 0.0f, -1.0f, -2.0f, -2.0f, -1.25f, 0.0f};
 
 			auto x = 20.0f, y1 = 0.0f, dx = 5.0f;
 
@@ -174,7 +174,7 @@ public:
 				Vec2(-1.5f, 0.2f)
 			});
 
-			const auto circle = std::make_shared<CircleShape>(realnum(0.4));
+			const auto circle = std::make_shared<CircleShape>(RealNum(0.4));
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
@@ -232,7 +232,7 @@ public:
 			break;
 
 		case Key_Q:
-			m_hz = Max(realnum(0), m_hz - 1.0f);
+			m_hz = Max(RealNum(0), m_hz - 1.0f);
 			m_spring1->SetSpringFrequencyHz(m_hz);
 			m_spring2->SetSpringFrequencyHz(m_hz);
 			break;
@@ -270,8 +270,8 @@ public:
 	Body* m_wheel1;
 	Body* m_wheel2;
 
-	realnum m_hz;
-	realnum m_zeta;
+	RealNum m_hz;
+	RealNum m_zeta;
 	Angle m_speed;
 	WheelJoint* m_spring1;
 	WheelJoint* m_spring2;

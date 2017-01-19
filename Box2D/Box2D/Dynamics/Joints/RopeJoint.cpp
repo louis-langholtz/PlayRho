@@ -40,10 +40,10 @@ RopeJoint::RopeJoint(const RopeJointDef& def)
 
 	m_maxLength = def.maxLength;
 
-	m_mass = realnum{0};
-	m_impulse = realnum{0};
+	m_mass = RealNum{0};
+	m_impulse = RealNum{0};
 	m_state = e_inactiveLimit;
-	m_length = realnum{0};
+	m_length = RealNum{0};
 }
 
 void RopeJoint::InitVelocityConstraints(Span<Velocity> velocities,
@@ -79,17 +79,17 @@ void RopeJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	m_length = GetLength(m_u);
 
 	const auto C = m_length - m_maxLength;
-	m_state = (C > realnum{0})? e_atUpperLimit: e_inactiveLimit;
+	m_state = (C > RealNum{0})? e_atUpperLimit: e_inactiveLimit;
 
 	if (m_length > conf.linearSlop)
 	{
-		m_u *= realnum{1} / m_length;
+		m_u *= RealNum{1} / m_length;
 	}
 	else
 	{
 		m_u = Vec2_zero;
-		m_mass = realnum{0};
-		m_impulse = realnum{0};
+		m_mass = RealNum{0};
+		m_impulse = RealNum{0};
 		return;
 	}
 
@@ -98,7 +98,7 @@ void RopeJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	const auto crB = Cross(m_rB, m_u);
 	const auto invMass = m_invMassA + m_invIA * crA * crA + m_invMassB + m_invIB * crB * crB;
 
-	m_mass = (invMass != realnum{0}) ? realnum{1} / invMass : realnum{0};
+	m_mass = (invMass != RealNum{0}) ? RealNum{1} / invMass : RealNum{0};
 
 	if (step.doWarmStart)
 	{
@@ -113,7 +113,7 @@ void RopeJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	}
 	else
 	{
-		m_impulse = realnum{0};
+		m_impulse = RealNum{0};
 	}
 
 	velocities[m_indexA].linear = vA;
@@ -136,14 +136,14 @@ void RopeJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepCo
 	auto Cdot = Dot(m_u, vpB - vpA);
 
 	// Predictive constraint.
-	if (C < realnum{0})
+	if (C < RealNum{0})
 	{
 		Cdot += step.get_inv_dt() * C;
 	}
 
 	auto impulse = -m_mass * Cdot;
 	const auto oldImpulse = m_impulse;
-	m_impulse = Min(realnum{0}, m_impulse + impulse);
+	m_impulse = Min(RealNum{0}, m_impulse + impulse);
 	impulse = m_impulse - oldImpulse;
 
 	const auto P = impulse * m_u;
@@ -174,7 +174,7 @@ bool RopeJoint::SolvePositionConstraints(Span<Position> positions, const Constra
 	const auto length = Normalize(u);
 	auto C = length - m_maxLength;
 
-	C = Clamp(C, realnum{0}, conf.maxLinearCorrection);
+	C = Clamp(C, RealNum{0}, conf.maxLinearCorrection);
 
 	const auto impulse = -m_mass * C;
 	const auto P = impulse * u;
@@ -202,18 +202,18 @@ Vec2 RopeJoint::GetAnchorB() const
 	return GetWorldPoint(*GetBodyB(), m_localAnchorB);
 }
 
-Vec2 RopeJoint::GetReactionForce(realnum inv_dt) const
+Vec2 RopeJoint::GetReactionForce(RealNum inv_dt) const
 {
 	return (inv_dt * m_impulse) * m_u;
 }
 
-realnum RopeJoint::GetReactionTorque(realnum inv_dt) const
+RealNum RopeJoint::GetReactionTorque(RealNum inv_dt) const
 {
 	BOX2D_NOT_USED(inv_dt);
-	return realnum{0};
+	return RealNum{0};
 }
 
-realnum RopeJoint::GetMaxLength() const
+RealNum RopeJoint::GetMaxLength() const
 {
 	return m_maxLength;
 }

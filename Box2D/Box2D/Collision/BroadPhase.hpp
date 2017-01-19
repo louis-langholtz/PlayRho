@@ -123,7 +123,7 @@ public:
 
 	/// Gets the quality metric of the embedded tree.
 	/// @return Value of zero or more.
-	realnum GetTreeQuality() const;
+	RealNum GetTreeQuality() const;
 
 	/// Shifts the world origin. Useful for large worlds.
 	/// The shift formula is: position -= newOrigin
@@ -184,7 +184,7 @@ inline BroadPhase::size_type BroadPhase::GetTreeBalance() const
 	return m_tree.GetMaxBalance();
 }
 
-inline realnum BroadPhase::GetTreeQuality() const
+inline RealNum BroadPhase::GetTreeQuality() const
 {
 	return m_tree.GetAreaRatio();
 }

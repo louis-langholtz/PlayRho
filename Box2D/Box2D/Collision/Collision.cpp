@@ -66,7 +66,7 @@ void GetPointStates(PointStateArray& state1, PointStateArray& state2,
 	}
 }
 
-ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, realnum offset,
+ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, RealNum offset,
 						   ContactFeature::index_t indexA)
 {
 	ClipList vOut;

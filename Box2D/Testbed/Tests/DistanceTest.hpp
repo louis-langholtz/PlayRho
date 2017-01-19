@@ -33,7 +33,7 @@ public:
 	{
 		m_world->SetGravity(Vec2{0, 0});
 
-		const auto def = BodyDef{}.UseType(BodyType::Dynamic).UseLinearDamping(realnum(0.5)).UseAngularDamping(realnum(0.5));
+		const auto def = BodyDef{}.UseType(BodyType::Dynamic).UseLinearDamping(RealNum(0.5)).UseAngularDamping(RealNum(0.5));
 		m_bodyA = m_world->CreateBody(def);
 		m_bodyB = m_world->CreateBody(def);
 
@@ -143,7 +143,7 @@ public:
 		{
 			// Shapes are overlapped when radii are considered.
 			// Move the witness points to the middle.
-			const auto p = (witnessPoints.a + witnessPoints.b) / realnum{2};
+			const auto p = (witnessPoints.a + witnessPoints.b) / RealNum{2};
 			adjustedWitnessPoints.a = p;
 			adjustedWitnessPoints.b = p;
 			adjustedDistance = 0;
@@ -338,7 +338,7 @@ public:
 		case Key_A:
 			if (body)
 			{
-				body->SetTransform(body->GetLocation() - Vec2{realnum(0.1), 0}, body->GetAngle());
+				body->SetTransform(body->GetLocation() - Vec2{RealNum(0.1), 0}, body->GetAngle());
 				body->SetAwake();
 			}
 			break;
@@ -346,7 +346,7 @@ public:
 		case Key_D:
 			if (body)
 			{
-				body->SetTransform(body->GetLocation() + Vec2{realnum(0.1), 0}, body->GetAngle());
+				body->SetTransform(body->GetLocation() + Vec2{RealNum(0.1), 0}, body->GetAngle());
 				body->SetAwake();
 			}
 			break;
@@ -354,7 +354,7 @@ public:
 		case Key_S:
 			if (body)
 			{
-				body->SetTransform(body->GetLocation() - Vec2{0, realnum(0.1)}, body->GetAngle());
+				body->SetTransform(body->GetLocation() - Vec2{0, RealNum(0.1)}, body->GetAngle());
 				body->SetAwake();
 			}
 			break;
@@ -362,7 +362,7 @@ public:
 		case Key_W:
 			if (body)
 			{
-				body->SetTransform(body->GetLocation() + Vec2{0, realnum(0.1)}, body->GetAngle());
+				body->SetTransform(body->GetLocation() + Vec2{0, RealNum(0.1)}, body->GetAngle());
 				body->SetAwake();
 			}
 			break;

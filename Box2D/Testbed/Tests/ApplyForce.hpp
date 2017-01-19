@@ -27,20 +27,20 @@ class ApplyForce : public Test
 public:
 	ApplyForce()
 	{
-		m_world->SetGravity(Vec2(realnum{0}, realnum{0}));
+		m_world->SetGravity(Vec2(RealNum{0}, RealNum{0}));
 
-		const auto k_restitution = realnum(0.4);
+		const auto k_restitution = RealNum(0.4);
 
 		Body* ground;
 		{
 			BodyDef bd;
-			bd.position = Vec2(realnum{0}, 20.0f);
+			bd.position = Vec2(RealNum{0}, 20.0f);
 			ground = m_world->CreateBody(bd);
 
 			EdgeShape shape;
 
 			FixtureDef sd{};
-			sd.density = realnum{0};
+			sd.density = RealNum{0};
 			sd.restitution = k_restitution;
 
 			// Left vertical
@@ -66,9 +66,9 @@ public:
 			xf1.p = Vec2{GetXAxis(xf1.q)};
 
 			Vec2 vertices[3];
-			vertices[0] = Transform(Vec2(-1.0f, realnum{0}), xf1);
-			vertices[1] = Transform(Vec2(1.0f, realnum{0}), xf1);
-			vertices[2] = Transform(Vec2(realnum{0}, 0.5f), xf1);
+			vertices[0] = Transform(Vec2(-1.0f, RealNum{0}), xf1);
+			vertices[1] = Transform(Vec2(1.0f, RealNum{0}), xf1);
+			vertices[2] = Transform(Vec2(RealNum{0}, 0.5f), xf1);
 			
 			const auto poly1 = PolygonShape(Span<const Vec2>(vertices, 3));
 
@@ -79,9 +79,9 @@ public:
 			xf2.q = UnitVec2{-0.3524_rad * Pi};
 			xf2.p = Vec2{-GetXAxis(xf2.q)};
 
-			vertices[0] = Transform(Vec2(-1.0f, realnum{0}), xf2);
-			vertices[1] = Transform(Vec2(1.0f, realnum{0}), xf2);
-			vertices[2] = Transform(Vec2(realnum{0}, 0.5f), xf2);
+			vertices[0] = Transform(Vec2(-1.0f, RealNum{0}), xf2);
+			vertices[1] = Transform(Vec2(1.0f, RealNum{0}), xf2);
+			vertices[2] = Transform(Vec2(RealNum{0}, 0.5f), xf2);
 			
 			const auto poly2 = PolygonShape(Span<const Vec2>(vertices, 3));
 
@@ -93,7 +93,7 @@ public:
 			bd.angularDamping = 2.0f;
 			bd.linearDamping = 0.5f;
 
-			bd.position = Vec2(realnum{0}, 2.0);
+			bd.position = Vec2(RealNum{0}, 2.0);
 			bd.angle = Pi * 1_rad;
 			bd.allowSleep = false;
 			m_body = m_world->CreateBody(bd);
@@ -114,7 +114,7 @@ public:
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(realnum{0}, 5.0f + 1.54f * i);
+				bd.position = Vec2(RealNum{0}, 5.0f + 1.54f * i);
 				const auto body = m_world->CreateBody(bd);
 
 				body->CreateFixture(shape, fd);
@@ -145,8 +145,8 @@ public:
 		{
 		case Key_W:
 			{
-				const auto f = GetWorldVector(*m_body, Vec2(realnum{0}, -200.0f));
-				const auto p = GetWorldPoint(*m_body, Vec2(realnum{0}, 2.0f));
+				const auto f = GetWorldVector(*m_body, Vec2(RealNum{0}, -200.0f));
+				const auto p = GetWorldPoint(*m_body, Vec2(RealNum{0}, 2.0f));
 				box2d::ApplyForce(*m_body, f, p);
 			}
 			break;

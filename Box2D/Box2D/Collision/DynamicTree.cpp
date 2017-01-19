@@ -135,7 +135,7 @@ bool DynamicTree::MoveProxy(size_type proxyId, const AABB& aabb, const Vec2 disp
 	// Predict AABB displacement.
 	const auto d = AabbMultiplier * displacement;
 
-	if (d.x < realnum{0})
+	if (d.x < RealNum{0})
 	{
 		lowerBound.x += d.x;
 	}
@@ -144,7 +144,7 @@ bool DynamicTree::MoveProxy(size_type proxyId, const AABB& aabb, const Vec2 disp
 		upperBound.x += d.x;
 	}
 
-	if (d.y < realnum{0})
+	if (d.y < RealNum{0})
 	{
 		lowerBound.y += d.y;
 	}
@@ -186,13 +186,13 @@ void DynamicTree::InsertLeaf(size_type leaf)
 		const auto combinedArea = combinedAABB.GetPerimeter();
 
 		// Cost of creating a new parent for this node and the new leaf
-		const auto cost = realnum(2) * combinedArea;
+		const auto cost = RealNum(2) * combinedArea;
 
 		// Minimum cost of pushing the leaf further down the tree
-		const auto inheritanceCost = realnum(2) * (combinedArea - area);
+		const auto inheritanceCost = RealNum(2) * (combinedArea - area);
 
 		// Cost of descending into child1
-		realnum cost1;
+		RealNum cost1;
 		assert(child1 != NullNode);
 		assert(child1 < m_nodeCapacity);
 		if (m_nodes[child1].IsLeaf())
@@ -209,7 +209,7 @@ void DynamicTree::InsertLeaf(size_type leaf)
 		}
 
 		// Cost of descending into child2
-		realnum cost2;
+		RealNum cost2;
 		if (m_nodes[child2].IsLeaf())
 		{
 			const auto aabb = leafAABB + m_nodes[child2].aabb;
@@ -504,17 +504,17 @@ DynamicTree::size_type DynamicTree::Balance(size_type iA)
 	return iA;
 }
 
-realnum DynamicTree::GetAreaRatio() const
+RealNum DynamicTree::GetAreaRatio() const
 {
 	if (m_root == NullNode)
 	{
-		return realnum{0};
+		return RealNum{0};
 	}
 
 	const auto root = m_nodes + m_root;
 	const auto rootArea = root->aabb.GetPerimeter();
 
-	auto totalArea = realnum{0};
+	auto totalArea = RealNum{0};
 	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
 	{
 		const auto node = m_nodes + i;

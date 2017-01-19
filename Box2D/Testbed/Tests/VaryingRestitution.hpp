@@ -38,7 +38,7 @@ public:
 		FixtureDef fd;
 		fd.density = 1.0f;
 
-		realnum restitution[7] = {0.0f, 0.1f, 0.3f, 0.5f, 0.75f, 0.9f, 1.0f};
+		RealNum restitution[7] = {0.0f, 0.1f, 0.3f, 0.5f, 0.75f, 0.9f, 1.0f};
 
 		for (auto i = 0; i < 7; ++i)
 		{
