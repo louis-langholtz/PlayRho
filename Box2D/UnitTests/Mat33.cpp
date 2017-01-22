@@ -54,12 +54,12 @@ TEST(Mat33, GetInverse)
 	Mat33 boo{c1, c2, c3};
 	boo = GetInverse22(foo);
 
-	EXPECT_EQ(0, boo.ez.x);
-	EXPECT_EQ(0, boo.ez.y);
-	EXPECT_EQ(0, boo.ez.z);
+	EXPECT_EQ(RealNum{0}, boo.ez.x);
+	EXPECT_EQ(RealNum{0}, boo.ez.y);
+	EXPECT_EQ(RealNum{0}, boo.ez.z);
 	
-	EXPECT_EQ(0, boo.ey.z);
-	EXPECT_EQ(0, boo.ex.z);
+	EXPECT_EQ(RealNum{0}, boo.ey.z);
+	EXPECT_EQ(RealNum{0}, boo.ex.z);
 	
 	EXPECT_EQ(boo.ex.x, det * d);
 	EXPECT_EQ(boo.ex.y, -det * c);

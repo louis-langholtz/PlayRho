@@ -179,7 +179,7 @@ TEST(Simplex, Get2_fwd_perp)
 	EXPECT_EQ(sv_new_0.GetIndexB(), ib0);
 	
 	const auto ce_new_0 = simplex.GetCoefficient(0);
-	EXPECT_FLOAT_EQ(ce_new_0, RealNum(0.5));
+	EXPECT_TRUE(almost_equal(ce_new_0, RealNum(0.5)));
 	
 	ASSERT_GT(simplex.GetSize(), decltype(simplex.GetSize()){1});
 	
@@ -190,7 +190,7 @@ TEST(Simplex, Get2_fwd_perp)
 	EXPECT_EQ(sv_new_1.GetIndexB(), ib1);
 	
 	const auto ce_new_1 = simplex.GetCoefficient(1);
-	EXPECT_FLOAT_EQ(ce_new_1, RealNum(0.5));
+	EXPECT_TRUE(almost_equal(ce_new_1, RealNum(0.5)));
 }
 
 TEST(Simplex, Get2_rev_perp)
@@ -219,7 +219,7 @@ TEST(Simplex, Get2_rev_perp)
 	EXPECT_EQ(sv_new_0.GetIndexB(), ib0);
 	
 	const auto ce_new_0 = simplex.GetCoefficient(0);
-	EXPECT_FLOAT_EQ(ce_new_0, RealNum(0.5));
+	EXPECT_TRUE(almost_equal(ce_new_0, RealNum(0.5)));
 	
 	ASSERT_GT(simplex.GetSize(), decltype(simplex.GetSize()){1});
 	
@@ -230,7 +230,7 @@ TEST(Simplex, Get2_rev_perp)
 	EXPECT_EQ(sv_new_1.GetIndexB(), ib1);
 	
 	const auto ce_new_1 = simplex.GetCoefficient(1);
-	EXPECT_FLOAT_EQ(ce_new_1, RealNum(0.5));
+	EXPECT_TRUE(almost_equal(ce_new_1, RealNum(0.5)));
 }
 
 TEST(Simplex, Get2_rot_plus_45)
@@ -259,7 +259,7 @@ TEST(Simplex, Get2_rot_plus_45)
 	EXPECT_EQ(sv_new_0.GetIndexB(), ib0);
 	
 	const auto ce_new_0 = simplex.GetCoefficient(0);
-	EXPECT_FLOAT_EQ(ce_new_0, RealNum(0.5));
+	EXPECT_TRUE(almost_equal(ce_new_0, RealNum(0.5)));
 	
 	ASSERT_GT(simplex.GetSize(), decltype(simplex.GetSize()){1});
 	
@@ -270,7 +270,7 @@ TEST(Simplex, Get2_rot_plus_45)
 	EXPECT_EQ(sv_new_1.GetIndexB(), ib1);
 	
 	const auto ce_new_1 = simplex.GetCoefficient(1);
-	EXPECT_FLOAT_EQ(ce_new_1, RealNum(0.5));
+	EXPECT_TRUE(almost_equal(ce_new_1, RealNum(0.5)));
 }
 
 TEST(Simplex, Get2_rot45_half)
@@ -283,30 +283,30 @@ TEST(Simplex, Get2_rot45_half)
 	
 	const auto va1 = Rotate(va0, UnitVec2{45_deg}) / 2; // Vec2{-13.081475, 10.253049}
 	const auto vb1 = Rotate(vb0, UnitVec2{45_deg}) / 2; // Vec2{316.4303, 320.67291}
-	EXPECT_FLOAT_EQ(va1.x, RealNum(-13.081475));
-	EXPECT_FLOAT_EQ(va1.y, RealNum(10.253049));
-	EXPECT_FLOAT_EQ(vb1.x, RealNum(316.4303));
-	EXPECT_FLOAT_EQ(vb1.y, RealNum(320.67291));
+	EXPECT_TRUE(almost_equal(va1.x, RealNum(-13.081475)));
+	EXPECT_TRUE(almost_equal(va1.y, RealNum(10.253049)));
+	EXPECT_TRUE(almost_equal(vb1.x, RealNum(316.4303)));
+	EXPECT_TRUE(almost_equal(vb1.y, RealNum(320.67291)));
 	const auto ia1 = SimplexEdge::index_type{4};
 	const auto ib1 = SimplexEdge::index_type{1};
 	const auto sv1 = SimplexEdge{va1, ia1, vb1, ib1};
 
 	const auto w1 = vb0 - va0; // Vec2{901, 6} - Vec2{-4, 33} = Vec2{905, -27}
-	EXPECT_FLOAT_EQ(w1.x, RealNum(905));
-	EXPECT_FLOAT_EQ(w1.y, RealNum(-27));
+	EXPECT_TRUE(almost_equal(w1.x, RealNum(905)));
+	EXPECT_TRUE(almost_equal(w1.y, RealNum(-27)));
 	const auto w2 = vb1 - va1; // Vec2{316.4303, 320.67291} - Vec2{-13.081475, 10.253049} = Vec2{329.51178, 310.41986}
-	EXPECT_FLOAT_EQ(w2.x, RealNum(329.51178));
-	EXPECT_FLOAT_EQ(w2.y, RealNum(310.41986));
+	EXPECT_TRUE(almost_equal(w2.x, RealNum(329.51178)));
+	EXPECT_TRUE(almost_equal(w2.y, RealNum(310.41986)));
 	
 	const auto e12 = w2 - w1; // Vec2{329.51178, 310.41986} - Vec2{905, -27} = Vec2{-575.48822, 337.41986}
-	EXPECT_FLOAT_EQ(e12.x, RealNum(-575.48822));
-	EXPECT_FLOAT_EQ(e12.y, RealNum(337.41986));
+	EXPECT_TRUE(almost_equal(e12.x, RealNum(-575.48822)));
+	EXPECT_TRUE(almost_equal(e12.y, RealNum(337.41986)));
 
 	const auto d12_2 = -Dot(w1, e12); // -Dot(Vec2{905, -27}, Vec2{-575.48822, 337.41986}) = 529927.19
-	EXPECT_FLOAT_EQ(d12_2, RealNum(529927.19));
+	EXPECT_TRUE(almost_equal(d12_2, RealNum(529927.19)));
 
 	const auto d12_1 = Dot(w2, e12); // Dot(Vec2{329.51178, 310.41986}, Vec2{-575.48822, 337.41986}) = -84888.312
-	EXPECT_FLOAT_EQ(d12_1, RealNum(-84888.312));
+	EXPECT_TRUE(almost_equal(d12_1, RealNum(-84888.312)));
 
 	const auto simplex = Simplex::Get(sv0, sv1);
 	
@@ -321,7 +321,7 @@ TEST(Simplex, Get2_rot45_half)
 	EXPECT_EQ(sv_new_0.GetIndexB(), ib1);
 	
 	const auto ce_new_0 = simplex.GetCoefficient(0);
-	EXPECT_FLOAT_EQ(ce_new_0, RealNum(1));
+	EXPECT_TRUE(almost_equal(ce_new_0, RealNum(1)));
 }
 
 TEST(Simplex, GetOfSimplexVertices)

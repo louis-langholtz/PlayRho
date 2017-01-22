@@ -129,7 +129,7 @@ public:
 		const auto leafCount = cm.m_broadPhase.GetProxyCount();
 		assert(leafCount > 0);
 		const auto minimumNodeCount = 2 * leafCount - 1;
-		const auto minimumHeight = ceilf(logf(RealNum(minimumNodeCount)) / logf(2.0f));
+		const auto minimumHeight = ceilf(logf(float(minimumNodeCount)) / logf(2.0f));
 		drawer.DrawString(5, m_textLine, "dynamic tree height = %d, min = %d", height, int32(minimumHeight));
 		m_textLine += DRAW_STRING_NEW_LINE;
 

@@ -28,12 +28,12 @@ namespace box2d {
 	class NewtonsCradle : public Test
 	{
 	public:
-		static constexpr auto scale = RealNum(1);
-		static constexpr auto ball_radius = scale * RealNum(2); // 2
-		static constexpr auto frame_width_per_arm = ball_radius * 2;
-		static constexpr auto frame_height = scale * RealNum(30); // 30
-		static constexpr auto arm_length = scale * RealNum(16); // 16
-		static constexpr auto default_num_arms = unsigned{5};
+		const RealNum scale = RealNum(1);
+		const RealNum ball_radius = scale * 2; // 2
+		const RealNum frame_width_per_arm = ball_radius * 2;
+		const RealNum frame_height = scale * 30; // 30
+		const RealNum arm_length = scale * 16; // 16
+		static const auto default_num_arms = 5;
 
 		NewtonsCradle()
 		{
@@ -56,7 +56,7 @@ namespace box2d {
 				bd.position = Vec2{0, frame_height};
 				const auto body = m_world->CreateBody(bd);
 				
-				const auto frame_width = m_num_arms * frame_width_per_arm;
+				const auto frame_width = frame_width_per_arm * static_cast<RealNum>(m_num_arms);
 				const auto shape = PolygonShape(frame_width/2, frame_width / 24);
 				body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(20));
 				return body;
@@ -64,7 +64,7 @@ namespace box2d {
 			
 			for (auto i = decltype(m_num_arms){0}; i < m_num_arms; ++i)
 			{
-				const auto x = (((i + RealNum(0.5)) - RealNum(m_num_arms) / RealNum(2)) * frame_width_per_arm);
+				const auto x = (((i + RealNum(0.5f)) - RealNum(m_num_arms) / RealNum(2)) * frame_width_per_arm);
 				
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
@@ -255,7 +255,7 @@ namespace box2d {
 			return new NewtonsCradle;
 		}
 	
-		unsigned m_num_arms = default_num_arms;
+		int m_num_arms = default_num_arms;
 		bool m_bullet_mode = false;
 		Body *m_frame = nullptr;
 		Body *m_right_side_wall = nullptr;

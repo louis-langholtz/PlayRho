@@ -51,10 +51,10 @@ public:
 
 		m_stepCount = 0;
 
-		RealNum h = m_worldExtent;
+		const auto h = m_worldExtent;
 		m_queryAABB = AABB{Vec2(-3.0f, -4.0f + h), Vec2(5.0f, 6.0f + h)};
 
-		m_rayCastInput.p1 = Vec2(-5.0, 5.0f + h);
+		m_rayCastInput.p1 = Vec2(-5.0f, 5.0f + h);
 		m_rayCastInput.p2 = Vec2(7.0f, -4.0f + h);
 		//m_rayCastInput.p1 = Vec2(0.0f, 2.0f + h);
 		//m_rayCastInput.p2 = Vec2(0.0f, -2.0f + h);

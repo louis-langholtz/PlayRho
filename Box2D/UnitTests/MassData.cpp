@@ -47,8 +47,8 @@ TEST(MassData, GetForOriginCenteredCircle)
 	const auto density = RealNum(1);
 	const auto mass_data = GetMassData(foo, density);
 	EXPECT_EQ(mass_data.mass, Pi);
-	EXPECT_FLOAT_EQ(mass_data.I, RealNum(1.5707964));
-	EXPECT_FLOAT_EQ(mass_data.I, density * (Pi * Square(radius) * Square(radius) / 2));
+	EXPECT_TRUE(almost_equal(mass_data.I, RealNum(1.5707964)));
+	EXPECT_TRUE(almost_equal(mass_data.I, density * (Square(radius) * Square(radius) * Pi / 2)));
 	EXPECT_EQ(mass_data.center, position);
 }
 
@@ -60,7 +60,7 @@ TEST(MassData, GetForCircle)
 	const auto density = RealNum(1);
 	const auto mass_data = GetMassData(foo, density);
 	EXPECT_EQ(mass_data.mass, Pi);
-	EXPECT_FLOAT_EQ(mass_data.I, RealNum(7.85398));
+	EXPECT_TRUE(almost_equal(mass_data.I, RealNum(7.85398)));
 	EXPECT_EQ(mass_data.center, position);
 }
 
@@ -72,19 +72,19 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
 	ASSERT_EQ(shape.GetCentroid().y, RealNum(0));
 	const auto density = RealNum(2.1);
 	const auto mass_data = GetMassData(shape, density);
-	EXPECT_FLOAT_EQ(mass_data.mass, RealNum((8 * 2) * density));
-	EXPECT_FLOAT_EQ(mass_data.I, RealNum(90.666664 * density));
-	EXPECT_FLOAT_EQ(mass_data.center.x, shape.GetCentroid().x);
-	EXPECT_FLOAT_EQ(mass_data.center.y, shape.GetCentroid().y);
+	EXPECT_TRUE(almost_equal(mass_data.mass, RealNum(density * (8 * 2))));
+	EXPECT_TRUE(almost_equal(mass_data.I, RealNum(90.666664 * density)));
+	EXPECT_TRUE(almost_equal(mass_data.center.x, shape.GetCentroid().x));
+	EXPECT_TRUE(almost_equal(mass_data.center.y, shape.GetCentroid().y));
 	
 	// Area moment of inertia (I) for a rectangle is Ix + Iy = (b * h^3) / 12 + (b^3 * h) / 12....
 	const auto i = 8.0 * 2.0 * 2.0 * 2.0 / 12.0 + 8.0 * 8.0 * 8.0 * 2.0 / 12.0;
-	EXPECT_FLOAT_EQ(mass_data.I, density * RealNum(i));
+	EXPECT_TRUE(almost_equal(mass_data.I, density * RealNum(i)));
 	
 	const auto i_z = GetPolarMoment(shape.GetVertices());
-	EXPECT_FLOAT_EQ(mass_data.I, density * i_z);
+	EXPECT_TRUE(almost_equal(mass_data.I, density * i_z));
 	
-	EXPECT_FLOAT_EQ(GetAreaOfPolygon(shape.GetVertices()), RealNum(16));
+	EXPECT_TRUE(almost_equal(GetAreaOfPolygon(shape.GetVertices()), RealNum(16)));
 }
 
 TEST(MassData, GetForZeroVertexRadiusEdge)
@@ -111,10 +111,10 @@ TEST(MassData, GetForSamePointedEdgeIsSameAsCircle)
 	
 	const auto circleMass = density * Pi * Square(shape.GetVertexRadius());
 
-	EXPECT_FLOAT_EQ(mass_data.mass, circleMass);
-	EXPECT_FLOAT_EQ(mass_data.I, RealNum(7.85398));
-	EXPECT_FLOAT_EQ(mass_data.center.x, v1.x);
-	EXPECT_FLOAT_EQ(mass_data.center.y, v1.y);
+	EXPECT_TRUE(almost_equal(mass_data.mass, circleMass));
+	EXPECT_TRUE(almost_equal(mass_data.I, RealNum(7.85398)));
+	EXPECT_TRUE(almost_equal(mass_data.center.x, v1.x));
+	EXPECT_TRUE(almost_equal(mass_data.center.y, v1.y));
 }
 
 TEST(MassData, GetForCenteredEdge)
@@ -131,8 +131,8 @@ TEST(MassData, GetForCenteredEdge)
 	const auto area = GetAreaOfPolygon(vertices) + GetAreaOfCircle(radius);
 	EXPECT_EQ(mass_data.mass, density * area);
 
-	EXPECT_FLOAT_EQ(mass_data.I, RealNum(18.70351));
-	EXPECT_FLOAT_EQ(GetPolarMoment(vertices), RealNum(5.6666665));
+	EXPECT_TRUE(almost_equal(mass_data.I, RealNum(18.70351)));
+	EXPECT_TRUE(almost_equal(GetPolarMoment(vertices), RealNum(5.6666665)));
 	EXPECT_GT(mass_data.I, GetPolarMoment(vertices) * density);
 	
 	EXPECT_EQ(mass_data.center.x, 0);

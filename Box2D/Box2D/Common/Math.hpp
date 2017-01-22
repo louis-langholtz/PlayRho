@@ -53,9 +53,15 @@ constexpr RealNum GetInvalid() noexcept
 
 /// This function is used to ensure that a floating point number is not a NaN or infinity.
 template <>
-inline bool IsValid(const RealNum& x) noexcept
+inline bool IsValid(const float& x) noexcept
 {
 	return !std::isnan(x); // && !std::isinf(x);
+}
+
+template <>
+inline bool IsValid(const Fixed32& x) noexcept
+{
+	return true;
 }
 
 template <>
@@ -107,9 +113,17 @@ template <typename T>
 inline T round(T value, unsigned precision = 1000000);
 
 template <>
-inline RealNum round(RealNum value, unsigned precision)
+inline float round(float value, uint32_t precision)
 {
-	return std::round(value * precision) / precision;
+	const auto factor = float(static_cast<int64_t>(precision));
+	return std::round(value * factor) / factor;
+}
+
+template <>
+inline Fixed32 round(Fixed32 value, uint32_t precision)
+{
+	const auto factor = Fixed32(static_cast<int64_t>(precision));
+	return std::round(value * factor) / factor;
 }
 
 /// Gets whether a given value is almost zero.
@@ -121,7 +135,7 @@ constexpr inline bool almost_zero(RealNum value)
 	return Abs(value) < std::numeric_limits<decltype(value)>::min();
 }
 
-constexpr inline bool almost_equal(RealNum x, RealNum y, int ulp = 2)
+constexpr inline bool almost_equal(float x, float y, int ulp = 2)
 {
 	// From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
 	//   "the machine epsilon has to be scaled to the magnitude of the values used
@@ -129,7 +143,12 @@ constexpr inline bool almost_equal(RealNum x, RealNum y, int ulp = 2)
 	//    unless the result is subnormal".
 	// Where "subnormal" means almost zero.
 	//
-	return (Abs(x - y) < (std::numeric_limits<RealNum>::epsilon() * Abs(x + y) * ulp)) || almost_zero(x - y);
+	return (Abs(x - y) < (std::numeric_limits<float>::epsilon() * Abs(x + y) * ulp)) || almost_zero(x - y);
+}
+
+constexpr inline bool almost_equal(Fixed32 x, Fixed32 y, int ulp = 2)
+{
+	return Abs(x - y) <= Fixed32{0, 2};
 }
 
 template <typename T>
@@ -222,9 +241,9 @@ constexpr inline Vec2 GetInvalid() noexcept
 }
 
 template <>
-inline Vec2 round(Vec2 value, unsigned precision)
+inline Vec2 round(Vec2 value, uint32 precision)
 {
-	return Vec2{std::round(value.x * precision) / precision, std::round(value.y * precision) / precision};
+	return Vec2{round(value.x, precision), round(value.y, precision)};
 }
 
 /// Gets the angle.
@@ -346,7 +365,7 @@ constexpr auto Mat22_identity = Mat22(Vec2{1, 0}, Vec2{0, 1});
 constexpr Vec2 Solve(const Mat22 mat, const Vec2 b) noexcept
 {
 	const auto cp = Cross(mat.ex, mat.ey);
-	const auto det = (cp != 0)? RealNum{1} / cp: RealNum{0};
+	const auto det = (cp != decltype(cp){0})? decltype(cp){1} / cp: decltype(cp){0};
 	
 	// (a.x * b.y) - (a.y * b.x)
 	// Vec2{det * Cross(b, mat.ey), det * Cross(mat.ex, b)}
@@ -356,7 +375,7 @@ constexpr Vec2 Solve(const Mat22 mat, const Vec2 b) noexcept
 constexpr Mat22 Invert(const Mat22 value) noexcept
 {
 	const auto cp = Cross(value.ex, value.ey);
-	const auto det = (cp != 0)? RealNum{1} / cp: RealNum{0};
+	const auto det = (cp != decltype(cp){0})? decltype(cp){1} / cp: decltype(cp){0};
 	return Mat22{Vec2{det * value.ey.y, -det * value.ex.y}, Vec2{-det * value.ey.x, det * value.ex.x}};
 }
 
@@ -1260,13 +1279,12 @@ constexpr inline Vec2 GetContactRelVelocity(const Velocity velA, const Vec2 vcp_
 template <>
 inline Vec2 Average(Span<const Vec2> span)
 {
-	assert(span.size() < std::numeric_limits<Vec2::data_type>::max());
 	auto sum = Vec2(0, 0);
 	for (auto&& element: span)
 	{
 		sum += element;
 	}
-	return (span.size() > decltype(span.size()){0})? sum / span.size(): sum;
+	return (span.size() > decltype(span.size()){0})? sum / static_cast<Vec2::data_type>(span.size()): sum;
 }
 
 /// Computes the centroid of a counter-clockwise array of 3 or more vertices.
@@ -1293,6 +1311,8 @@ constexpr inline T GetModuloPrev(T value, T count) noexcept
 ::std::ostream& operator<<(::std::ostream& os, const UnitVec2& value);
 
 ::std::ostream& operator<<(::std::ostream& os, const Angle& value);
+
+::std::ostream& operator<<(::std::ostream& os, const Fixed32& value);
 
 }
 #endif

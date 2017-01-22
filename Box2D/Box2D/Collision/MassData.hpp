@@ -52,8 +52,8 @@ namespace box2d {
 		/// @param i Non-negative rotational inertia of the shape about the local origin.
 		constexpr MassData(RealNum m, Vec2 c, RealNum i) noexcept: mass{m}, center{c}, I{i}
 		{
-			assert(mass >= 0);
-			assert(I >= 0);
+			assert(m >= 0);
+			assert(i >= 0);
 		}
 				
 		/// The position of the shape's centroid relative to the shape's origin.

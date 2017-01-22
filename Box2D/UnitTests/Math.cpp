@@ -184,8 +184,8 @@ TEST(Math, AverageVec2)
 		const auto val2 = Vec2{RealNum(4.4), RealNum(-1.3)};
 		const auto average = Average<Vec2>({val1, val2});
 		const auto expected = Vec2(RealNum(3.3), RealNum(-1.2));
-		EXPECT_FLOAT_EQ(average.x, expected.x);
-		EXPECT_FLOAT_EQ(average.y, expected.y);
+		EXPECT_TRUE(almost_equal(average.x, expected.x));
+		EXPECT_TRUE(almost_equal(average.y, expected.y));
 	}
 }
 
@@ -285,8 +285,8 @@ TEST(Math, InverseTransformTransformedIsOriginal)
 	const auto transformed_vector = Transform(vector, transformation);
 	const auto inverse_transformed_vector = InverseTransform(transformed_vector, transformation);
 
-	EXPECT_FLOAT_EQ(vector.x, inverse_transformed_vector.x);
-	EXPECT_FLOAT_EQ(vector.y, inverse_transformed_vector.y);
+	EXPECT_TRUE(almost_equal(vector.x, inverse_transformed_vector.x));
+	EXPECT_TRUE(almost_equal(vector.y, inverse_transformed_vector.y));
 }
 
 TEST(Math, TransformInverseTransformedIsOriginal)
@@ -299,8 +299,8 @@ TEST(Math, TransformInverseTransformedIsOriginal)
 	const auto inverse_transformed_vector = InverseTransform(vector, transformation);
 	const auto transformed_inverse_vector = Transform(inverse_transformed_vector, transformation);
 	
-	EXPECT_FLOAT_EQ(vector.x, transformed_inverse_vector.x);
-	EXPECT_FLOAT_EQ(vector.y, transformed_inverse_vector.y);
+	EXPECT_TRUE(almost_equal(vector.x, transformed_inverse_vector.x));
+	EXPECT_TRUE(almost_equal(vector.y, transformed_inverse_vector.y));
 }
 
 TEST(Math, ComputeCentroidCenteredR1)
@@ -550,13 +550,14 @@ TEST(Math, ToiTolerance)
 	// The max vr for which (std::nextafter(vr, MaxFloat) - vr) <= LinearSlop / 4.
 	// I.e. the max vr for which (std::nextafter(vr, MaxFloat) - vr) <= 0.000025
 
-	const auto tolerance = LinearSlop / 4;
+	const auto linearSlop = RealNum(0.0001f);
+	const auto tolerance = linearSlop / 4;
 	{
-		const auto vr = 511.0f;
+		const auto vr = RealNum{511.0f};
 		EXPECT_GT(vr + tolerance, vr);
 	}
 	{
-		const auto vr = 512.0f;
+		const auto vr = RealNum{512.0f};
 		EXPECT_EQ(vr + tolerance, vr);
 	}
 }

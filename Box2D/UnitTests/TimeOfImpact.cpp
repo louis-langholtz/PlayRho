@@ -126,7 +126,7 @@ TEST(TimeOfImpact, CollideCirclesHorizontally)
 	const auto approx_time_of_collision = ((x - radius) + limits.targetDepth / 2) / x;
 
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
-	EXPECT_FLOAT_EQ(output.get_t(), approx_time_of_collision);
+	EXPECT_TRUE(almost_equal(output.get_t(), approx_time_of_collision));
 	EXPECT_EQ(output.get_toi_iters(), 2);
 }
 
@@ -145,7 +145,7 @@ TEST(TimeOfImpact, CollideCirclesVertically)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
-	EXPECT_FLOAT_EQ(output.get_t(), RealNum(0.47500378));
+	EXPECT_TRUE(almost_equal(output.get_t(), RealNum(0.47500378)));
 	EXPECT_EQ(output.get_toi_iters(), 2);
 }
 
@@ -167,7 +167,7 @@ TEST(TimeOfImpact, CirclesPassingParallelSeparatedPathsDontCollide)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_separated);
-	EXPECT_FLOAT_EQ(output.get_t(), RealNum(1.0));
+	EXPECT_TRUE(almost_equal(output.get_t(), RealNum(1.0)));
 	EXPECT_EQ(output.get_toi_iters(), 8);
 }
 
@@ -188,7 +188,7 @@ TEST(TimeOfImpact, RodCircleMissAt360)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_separated);
-	EXPECT_FLOAT_EQ(output.get_t(), RealNum(1.0));
+	EXPECT_TRUE(almost_equal(output.get_t(), RealNum(1.0)));
 	EXPECT_EQ(output.get_toi_iters(), 4);
 }
 
@@ -209,7 +209,7 @@ TEST(TimeOfImpact, RodCircleHitAt180)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
-	EXPECT_FLOAT_EQ(output.get_t(), RealNum(0.48840469));
+	EXPECT_TRUE(almost_equal(output.get_t(), RealNum(0.48840469)));
 	EXPECT_EQ(output.get_toi_iters(), 3);
 }
 
@@ -230,7 +230,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_1)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
-	EXPECT_FLOAT_EQ(output.get_t(), RealNum(0.49750039));
+	EXPECT_TRUE(almost_equal(output.get_t(), RealNum(0.49750039)));
 	EXPECT_EQ(output.get_toi_iters(), 2);
 	EXPECT_EQ(output.get_max_dist_iters(), 1);
 	EXPECT_EQ(output.get_max_root_iters(), 2);
@@ -311,7 +311,7 @@ TEST(TimeOfImpact, FailsWithClosingSpeedOf1600)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_failed);
-	EXPECT_FLOAT_EQ(output.get_t(), RealNum(0.49875015));
+	EXPECT_TRUE(almost_equal(output.get_t(), RealNum(0.49875015)));
 	EXPECT_EQ(output.get_toi_iters(), 1);
 	EXPECT_EQ(output.get_max_dist_iters(), 1);
 	EXPECT_EQ(output.get_max_root_iters(), 4);
@@ -323,9 +323,9 @@ TEST(TimeOfImpact, ForNonCollidingShapesFailsIn27)
 {
 	// The data for shapes and sweeps comes from Box2D/Testbed/Tests/TimeOfImpact.hpp
 
-	auto shapeA = PolygonShape{0.0001f * 2};
+	auto shapeA = PolygonShape{RealNum{0.0001f * 2}};
 	shapeA.SetAsBox(25.0f, 5.0f);
-	auto shapeB = PolygonShape{0.0001f * 2};
+	auto shapeB = PolygonShape{RealNum{0.0001f * 2}};
 	shapeB.SetAsBox(2.5f, 2.5f);
 
 	const auto dpA = GetDistanceProxy(shapeA, 0);
@@ -349,7 +349,7 @@ TEST(TimeOfImpact, ForNonCollidingShapesFailsIn27)
 	const auto output = TimeOfImpact(dpA, sweepA, dpB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_failed);
-	EXPECT_FLOAT_EQ(output.get_t(), 0.863826394f);
+	EXPECT_TRUE(almost_equal(output.get_t(), RealNum{0.863826394f}));
 	EXPECT_EQ(output.get_toi_iters(), 1);
 	EXPECT_EQ(output.get_max_dist_iters(), 4);
 	EXPECT_EQ(output.get_max_root_iters(), 27);
@@ -395,7 +395,7 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
 	const auto output = TimeOfImpact(dpA, sweepA, dpB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_separated);
-	EXPECT_FLOAT_EQ(output.get_t(), 1.0f);
+	EXPECT_TRUE(almost_equal(output.get_t(), 1.0f));
 	EXPECT_EQ(output.get_toi_iters(), 2);
 	EXPECT_EQ(output.get_max_dist_iters(), 4);
 	EXPECT_EQ(output.get_max_root_iters(), 0);

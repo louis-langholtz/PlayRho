@@ -164,7 +164,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
 	const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
 	const auto solution = SolvePositionConstraint(pc, old_pA, true, old_pB, true, conf);
 	
-	EXPECT_FLOAT_EQ(solution.min_separation, RealNum(-2)); // -2.002398
+	EXPECT_TRUE(almost_equal(solution.min_separation, RealNum(-2))); // -2.002398
 		
 	// object a just moves left
 	EXPECT_LT(solution.pos_a.linear.x, old_pA.linear.x);
@@ -209,7 +209,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
 	const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
 	const auto solution = SolvePositionConstraint(pc, old_pA, true, old_pB, true, conf);
 	
-	EXPECT_FLOAT_EQ(solution.min_separation, RealNum(-2)); // -2.002398
+	EXPECT_TRUE(almost_equal(solution.min_separation, RealNum(-2))); // -2.002398
 	
 	// square A just moves right
 	EXPECT_GT(solution.pos_a.linear.x, old_pA.linear.x);
@@ -254,7 +254,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
 	const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
 	const auto solution = SolvePositionConstraint(pc, old_pA, true, old_pB, true, conf);
 	
-	EXPECT_FLOAT_EQ(solution.min_separation, RealNum(-2)); // -2.002398
+	EXPECT_TRUE(almost_equal(solution.min_separation, RealNum(-2))); // -2.002398
 	
 	// object a just moves down only
 	EXPECT_EQ(solution.pos_a.linear.x, old_pA.linear.x);
@@ -312,7 +312,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
 	const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
 	const auto solution = SolvePositionConstraint(pc, old_pA, true, old_pB, true, conf);
 	
-	EXPECT_FLOAT_EQ(solution.min_separation, RealNum(-2)); // -2.002398
+	EXPECT_TRUE(almost_equal(solution.min_separation, RealNum(-2))); // -2.002398
 	
 	// square A just moves up only
 	EXPECT_EQ(solution.pos_a.linear.x, old_pA.linear.x);

@@ -50,7 +50,7 @@ public:
 	/// @detail Constructs a polygon shape with a 0,0 centroid and vertex count of 0.
 	/// @note Polygons with a vertex count less than 1 are "degenerate" and should be
 	///   treated as invalid.
-	PolygonShape(RealNum vertexRadius = GetDefaultVertexRadius()) noexcept:
+	explicit PolygonShape(RealNum vertexRadius = GetDefaultVertexRadius()) noexcept:
 		Shape{e_polygon, vertexRadius}
 	{
 		// Intentionally empty.
@@ -68,7 +68,7 @@ public:
 	/// @warning the points may be re-ordered, even if they form a convex polygon
 	/// @warning collinear points are handled but not removed. Collinear points
 	/// may lead to poor stacking behavior.
-	PolygonShape(Span<const Vec2> points) noexcept;
+	explicit PolygonShape(Span<const Vec2> points) noexcept;
 	
 	/// Creates a convex hull from the given array of local points.
 	/// The size of the span must be in the range [1, MaxShapeVertices].

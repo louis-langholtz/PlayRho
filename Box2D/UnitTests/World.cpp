@@ -275,7 +275,7 @@ TEST(World, StepZeroTimeDoesNothing)
 		pos = body->GetLocation();
 		
 		EXPECT_EQ(GetLinearVelocity(*body).x, RealNum(0));
-		EXPECT_FLOAT_EQ(GetLinearVelocity(*body).y, vel.y);
+		EXPECT_TRUE(almost_equal(GetLinearVelocity(*body).y, vel.y));
 		vel = GetLinearVelocity(*body);
 	}
 }
@@ -360,7 +360,7 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
 		
 		EXPECT_EQ(GetLinearVelocity(*body).x, RealNum(0));
 		EXPECT_LT(GetLinearVelocity(*body).y, vel.y);
-		EXPECT_FLOAT_EQ(GetLinearVelocity(*body).y, vel.y + gravity.y * time_inc);
+		EXPECT_TRUE(almost_equal(GetLinearVelocity(*body).y, vel.y + gravity.y * time_inc));
 		vel = GetLinearVelocity(*body);
 	}
 }
@@ -506,7 +506,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 	// d = 20, v = 10:
 	// 20 = 10 * t, t = d/v = 20 / 10 = 2
 	// steps = t / time_inc = 200
-	EXPECT_EQ(steps, ((x * 2) / x) / time_inc);
+	EXPECT_EQ(int64_t(steps), static_cast<int64_t>(((x * 2) / x) / time_inc));
 }
 
 TEST(World, PerfectlyOverlappedSameCirclesStayPut)
@@ -653,7 +653,7 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
 	auto body_def = BodyDef{};
 	body_def.type = BodyType::Dynamic;
 	body_def.position = Vec2{RealNum(0), RealNum(0)};
-	auto shape = std::make_shared<PolygonShape>(1);
+	auto shape = std::make_shared<PolygonShape>(RealNum{1});
 	shape->SetAsBox(2, 2);
 	FixtureDef fixtureDef{};
 	fixtureDef.density = 1;
@@ -739,12 +739,12 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 		
 		if (new_distance == distance)
 		{
-			if (cos(angle.ToRadians()) != 0)
+			if (std::cos(angle.ToRadians()) != 0)
 			{
 				EXPECT_NE(body1->GetLocation().x, lastpos1.x);
 				EXPECT_NE(body2->GetLocation().x, lastpos2.x);
 			}
-			if (sin(angle.ToRadians()) != 0)
+			if (std::sin(angle.ToRadians()) != 0)
 			{
 				EXPECT_NE(body1->GetLocation().y, lastpos1.y);
 				EXPECT_NE(body2->GetLocation().y, lastpos2.y);
@@ -886,7 +886,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	auto distance = GetLength(position_diff);
 	
 	auto angle = GetAngle(position_diff);
-	ASSERT_FLOAT_EQ(angle.ToRadians(), (0_deg).ToRadians());
+	EXPECT_TRUE(almost_equal(angle.ToRadians(), (0_deg).ToRadians()));
 	
 	auto lastpos1 = body1->GetLocation();
 	auto lastpos2 = body2->GetLocation();
@@ -932,8 +932,8 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 		EXPECT_EQ(v2.linear.x, RealNum(0));
 		EXPECT_EQ(v2.linear.y, RealNum(0));
 
-		EXPECT_FLOAT_EQ(body1->GetAngle().ToRadians(), last_angle_1.ToRadians());
-		EXPECT_FLOAT_EQ(body2->GetAngle().ToRadians(), last_angle_2.ToRadians());
+		EXPECT_TRUE(almost_equal(body1->GetAngle().ToRadians(), last_angle_1.ToRadians()));
+		EXPECT_TRUE(almost_equal(body2->GetAngle().ToRadians(), last_angle_2.ToRadians()));
 		last_angle_1 = body1->GetAngle();
 		last_angle_2 = body2->GetAngle();
 
@@ -947,12 +947,12 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 		
 		if (new_distance == distance)
 		{
-			if (cos(angle.ToRadians()) != 0)
+			if (std::cos(angle.ToRadians()) != 0)
 			{
 				EXPECT_NE(body1->GetLocation().x, lastpos1.x);
 				EXPECT_NE(body2->GetLocation().x, lastpos2.x);
 			}
-			if (sin(angle.ToRadians()) != 0)
+			if (std::sin(angle.ToRadians()) != 0)
 			{
 				EXPECT_NE(body1->GetLocation().y, lastpos1.y);
 				EXPECT_NE(body2->GetLocation().y, lastpos2.y);
@@ -966,11 +966,11 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 		
 		// Body 1 moves right only.
 		EXPECT_GT(body1->GetLocation().x, lastpos1.x);
-		EXPECT_FLOAT_EQ(body1->GetLocation().y, lastpos1.y);
+		EXPECT_TRUE(almost_equal(body1->GetLocation().y, lastpos1.y));
 
 		// Body 2 moves left only.
 		EXPECT_LT(body2->GetLocation().x, lastpos2.x);
-		EXPECT_FLOAT_EQ(body2->GetLocation().y, lastpos2.y);
+		EXPECT_TRUE(almost_equal(body2->GetLocation().y, lastpos2.y));
 
 		lastpos1 = body1->GetLocation();
 		lastpos2 = body2->GetLocation();
@@ -982,7 +982,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 		distance = new_distance;
 		
 		const auto new_angle = GetAngle(new_pos_diff);
-		EXPECT_FLOAT_EQ(angle.ToRadians(), new_angle.ToRadians());
+		EXPECT_TRUE(almost_equal(angle.ToRadians(), new_angle.ToRadians()));
 		
 		angle = new_angle;
 	}
@@ -1054,7 +1054,7 @@ TEST(World, CollidingDynamicBodies)
 	const auto time_contacting = elapsed_time;
 
 	EXPECT_TRUE(listener.touching);
-	EXPECT_FLOAT_EQ(time_contacting, time_collision);
+	EXPECT_TRUE(almost_equal(time_contacting, time_collision));
 	EXPECT_EQ(body_a->GetLocation().y, 0);
 	EXPECT_EQ(body_b->GetLocation().y, 0);
 
@@ -1069,7 +1069,7 @@ TEST(World, CollidingDynamicBodies)
 	EXPECT_GT(body_b->GetLocation().x, RealNum(+1) - tolerance);
 	
 	// and their deltas from -1 and +1 should be about equal.
-	EXPECT_FLOAT_EQ(body_a->GetLocation().x + 1, 1 - body_b->GetLocation().x);
+	EXPECT_TRUE(almost_equal(body_a->GetLocation().x + RealNum{1}, RealNum{1} - body_b->GetLocation().x));
 
 	EXPECT_GE(listener.body_a[0].x, -1);
 	EXPECT_LE(listener.body_b[0].x, +1);
@@ -1085,14 +1085,14 @@ TEST(World, CollidingDynamicBodies)
 	}
 	EXPECT_FALSE(listener.touching);
 	
-	EXPECT_FLOAT_EQ(elapsed_time, time_contacting + time_inc);
+	EXPECT_TRUE(almost_equal(elapsed_time, time_contacting + time_inc));
 	
 	// collision should be fully resolved now...
 	EXPECT_LT(body_a->GetLocation().x, RealNum(-1));
 	EXPECT_GT(body_b->GetLocation().x, RealNum(+1));
 	
 	// and their deltas from -1 and +1 should be about equal.
-	EXPECT_FLOAT_EQ(body_a->GetLocation().x + 1, 1 - body_b->GetLocation().x);
+	EXPECT_TRUE(almost_equal(body_a->GetLocation().x + RealNum{1}, RealNum{1} - body_b->GetLocation().x));
 
 	EXPECT_LT(listener.body_a[1].x, -1);
 	EXPECT_GT(listener.body_b[1].x, +1);
@@ -1231,7 +1231,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 			}
 			else
 			{
-				EXPECT_FLOAT_EQ(ball_body->GetVelocity().linear.x, +increments * velocity.x);				
+				EXPECT_TRUE(almost_equal(ball_body->GetVelocity().linear.x, +increments * velocity.x));
 			}
 		}
 		
@@ -1268,7 +1268,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 			}
 			else
 			{
-				EXPECT_FLOAT_EQ(ball_body->GetVelocity().linear.x, -increments * velocity.x);				
+				EXPECT_TRUE(almost_equal(ball_body->GetVelocity().linear.x, -increments * velocity.x));
 			}
 		}
 		
@@ -1744,7 +1744,7 @@ static void smaller_still_conserves_momentum(bool bullet, RealNum multiplier, Re
 			const auto relative_velocity = GetLinearVelocity(*body_1) - GetLinearVelocity(*body_2);
 			if (relative_velocity.x >= 0)
 			{
-				EXPECT_FLOAT_EQ(relative_velocity.x, Abs(body_def.linearVelocity.x) * +2);
+				EXPECT_TRUE(almost_equal(relative_velocity.x, Abs(body_def.linearVelocity.x) * +2));
 				break;
 			}
 			if (failed)
@@ -1770,7 +1770,7 @@ static void smaller_still_conserves_momentum(bool bullet, RealNum multiplier, Re
 				ASSERT_FALSE(failed);
 			}
 			
-			EXPECT_FLOAT_EQ(relative_velocity.x, Abs(body_def.linearVelocity.x) * -2);
+			EXPECT_TRUE(almost_equal(relative_velocity.x, Abs(body_def.linearVelocity.x) * -2));
 			Step(world, time_inc);
 			++numSteps;
 		}
@@ -1854,7 +1854,7 @@ TEST_P(VerticalStackTest, BoxesAtOriginalX)
 
 TEST_P(VerticalStackTest, EachBoxAboveLast)
 {
-	auto lasty = 0.0f;
+	auto lasty = RealNum{0};
 	for (auto&& box: boxes)
 	{
 		EXPECT_GT(box->GetLocation().y, lasty + hdim);

@@ -93,7 +93,7 @@ public:
 			bd.angularDamping = 2.0f;
 			bd.linearDamping = 0.5f;
 
-			bd.position = Vec2(RealNum{0}, 2.0);
+			bd.position = Vec2(0, 2);
 			bd.angle = Pi * 1_rad;
 			bd.allowSleep = false;
 			m_body = m_world->CreateBody(bd);

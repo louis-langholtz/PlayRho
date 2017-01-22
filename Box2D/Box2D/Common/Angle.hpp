@@ -23,9 +23,10 @@
 
 namespace box2d
 {
-	constexpr inline RealNum CvtDegreesToRadians(const long double value)
+	template <typename T>
+	constexpr inline RealNum CvtDegreesToRadians(T value)
 	{
-		return static_cast<RealNum>(value * M_PI / 180);
+		return static_cast<RealNum>(value * static_cast<float>(M_PI / 180.0));
 	}
 	
 	class Angle
@@ -33,11 +34,11 @@ namespace box2d
 	public:
 		using data_type = RealNum;
 		
-		static constexpr Angle GetFromRadians(long double value) noexcept
+		static constexpr Angle GetFromRadians(RealNum value) noexcept
 		{
-			return Angle{static_cast<data_type>(value)};
+			return Angle{value};
 		}
-		
+
 		Angle() = default;
 		
 		constexpr data_type ToRadians() const noexcept
@@ -81,7 +82,7 @@ namespace box2d
 	
 	constexpr Angle operator"" _rad(long double value) noexcept
 	{
-		return Angle::GetFromRadians(value);
+		return Angle::GetFromRadians(static_cast<RealNum>(value));
 	}
 	
 	constexpr Angle operator"" _rad(unsigned long long int value) noexcept
@@ -171,12 +172,16 @@ namespace box2d
 		// If a1=-45_deg and a2=0_deg then, 45_deg
 		// If a1=-90_deg and a2=-100_deg then, 360_deg - (-90_deg - -100_deg) = 350_deg
 		// If a1=-100_deg and a2=-90_deg then, -90_deg - -100_deg = 10_deg
-		return (a1 > a2) * (360_deg - (a1 - a2)) + (a2 > a1) * (a2 - a1);
+		return (a1 > a2)? 360_deg - (a1 - a2): a2 - a1;
 	}
 
 	inline Angle GetNormalized(Angle value) noexcept
 	{
-		return Angle::GetFromRadians(std::fmod(value.ToRadians(), Pi * 2));
+		const auto TwoPi = Pi * 2;
+		const auto res = value.ToRadians() / TwoPi;
+		const auto wholePart = static_cast<int>(res);
+		const auto fractionPart = res - wholePart;
+		return Angle::GetFromRadians(fractionPart * TwoPi);
 	}
 }
 

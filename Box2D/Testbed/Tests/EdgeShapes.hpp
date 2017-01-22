@@ -20,6 +20,8 @@
 #ifndef EDGE_SHAPES_H
 #define EDGE_SHAPES_H
 
+#include <cmath>
+
 namespace box2d {
 
 class EdgeShapesCallback : public RayCastFixtureReporter
@@ -181,7 +183,7 @@ public:
 
 		const auto L = RealNum(25);
 		const auto point1 = Vec2(0.0f, 10.0f);
-		const auto d = Vec2(L * cosf(m_angle), -L * Abs(sinf(m_angle)));
+		const auto d = Vec2(L * std::cos(m_angle), -L * Abs(std::sin(m_angle)));
 		const auto point2 = point1 + d;
 
 		EdgeShapesCallback callback;

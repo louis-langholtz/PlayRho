@@ -336,7 +336,7 @@ public:
 
 		const auto L = 11.0f;
 		const auto point1 = Vec2(0.0f, 10.0f);
-		const auto d = Vec2(L * cosf(m_angle), L * sinf(m_angle));
+		const auto d = Vec2(L * std::cos(m_angle), L * std::sin(m_angle));
 		const auto point2 = point1 + d;
 
 		if (m_mode == e_closest)

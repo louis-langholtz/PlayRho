@@ -44,10 +44,10 @@ public:
 		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
 		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(20.0f, 0.0f), Vec2(20.0f, 20.0f)));
 
-		const float xs[] = {5.0f, 0.0f, -10.0f, -5.0f, 5.0f, 10.0f};
+		const float xs[] = {0.0f, -10.0f, -5.0f, 5.0f, 10.0f};
 		assert(e_columnCount <= sizeof(xs)/sizeof(xs[0]));
 
-		const auto hdim = 0.01f; // 0.5f is less stable than 1.0f for boxes not at origin (x of 0)
+		const auto hdim = 0.1f; // 0.5f is less stable than 1.0f for boxes not at origin (x of 0)
 		const auto shape = std::make_shared<PolygonShape>(hdim, hdim);
 		for (auto j = 0; j < e_columnCount; ++j)
 		{
@@ -63,8 +63,8 @@ public:
 				const auto x = 0.0f;
 				//const auto x = RandomFloat(-0.02f, 0.02f);
 				//const auto x = i % 2 == 0 ? -0.01f : 0.01f;
-				//bd.position = Vec2(xs[j] + x, (hdim + 0.05f) + (hdim * 2 + 0.1f) * i);
-				bd.position = Vec2(xs[j] + x, (hdim - hdim/20) + (hdim * 2 - hdim / 20) * i);
+				//bd.position = Vec2(xs[j] + x, (hdim - hdim/20) + (hdim * 2 - hdim / 20) * i);
+				bd.position = Vec2(xs[j] + x, (i + 1) * hdim * 4);
 				
 				const auto body = m_world->CreateBody(bd);
 				body->CreateFixture(shape, fd);

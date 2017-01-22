@@ -230,7 +230,7 @@ Fixture* Body::CreateFixture(std::shared_ptr<const Shape> shape, const FixtureDe
 	m_fixtures.push_front(fixture);
 
 	// Adjust mass properties if needed.
-	if (fixture->GetDensity() > RealNum{0})
+	if (fixture->GetDensity() > 0)
 	{
 		SetMassDataDirty();
 		if (resetMassData)
@@ -311,8 +311,8 @@ void Body::ResetMassData()
 	// Non-dynamic bodies (Static and kinematic ones) have zero mass.
 	if (!IsAccelerable())
 	{
-		m_invMass = RealNum{0};
-		m_invI = RealNum{0};
+		m_invMass = 0;
+		m_invI = 0;
 		m_sweep = Sweep{Position{GetLocation(), GetAngle()}};
 		UnsetMassDataDirty();
 		return;
@@ -321,22 +321,22 @@ void Body::ResetMassData()
 	const auto massData = ComputeMassData(*this);
 
 	// Force all dynamic bodies to have a positive mass.
-	const auto mass = (massData.mass > RealNum{0})? massData.mass: RealNum{1};
-	m_invMass = RealNum{1} / mass;
+	const auto mass = (massData.mass > 0)? massData.mass: RealNum{1};
+	m_invMass = 1 / mass;
 	
 	// Compute center of mass.
 	const auto localCenter = massData.center * m_invMass;
 	
-	const auto I = massData.I;
-	if ((I > RealNum{0}) && (!IsFixedRotation()))
+	if ((massData.I > 0) && (!IsFixedRotation()))
 	{
 		// Center the inertia about the center of mass.
-		assert((I - mass * GetLengthSquared(localCenter)) > RealNum{0});
-		m_invI = RealNum{1} / (I - mass * GetLengthSquared(localCenter));
+		const auto lengthSquared = GetLengthSquared(localCenter);
+		//assert((massData.I - mass * lengthSquared) > 0);
+		m_invI = 1 / (massData.I - mass * lengthSquared);
 	}
 	else
 	{
-		m_invI = RealNum{0};
+		m_invI = 0;
 	}
 
 	// Move center of mass.
@@ -367,7 +367,8 @@ void Body::SetMassData(const MassData& massData)
 
 	if ((massData.I > RealNum{0}) && (!IsFixedRotation()))
 	{
-		const auto I = massData.I - mass * GetLengthSquared(massData.center);
+		const auto lengthSquared = GetLengthSquared(massData.center);
+		const auto I = massData.I - mass * lengthSquared;
 		assert(I > RealNum{0});
 		m_invI = RealNum{1} / I;
 	}

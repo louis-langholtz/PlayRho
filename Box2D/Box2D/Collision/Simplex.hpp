@@ -274,7 +274,7 @@ namespace box2d
 			auto sum = RealNum(0);
 			for (auto&& elem: normalizedWeights)
 			{
-				assert(elem > 0);
+				assert(elem >= 0);
 				sum += elem;
 			}
 			return sum;

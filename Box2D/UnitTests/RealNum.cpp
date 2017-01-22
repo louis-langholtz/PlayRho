@@ -35,8 +35,8 @@ TEST(RealNum, BiggerValsIdenticallyInaccurate)
 	for (auto i = 0; i < 24; ++i)
 	{
 		const auto next = std::nextafter(val, std::numeric_limits<float>::max());
-		const auto delta = next - val;
-		ASSERT_EQ(val + (delta / 2), val);
+		const auto delta = static_cast<float>(next - val);
+		ASSERT_EQ(val + (delta / 2.0f), val);
 #if 0
 		std::cout << std::hexfloat;
 		std::cout << "For " << std::setw(7) << val << ", delta of next value is " << std::setw(7) << delta;

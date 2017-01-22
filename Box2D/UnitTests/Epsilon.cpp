@@ -21,13 +21,13 @@
 
 using namespace box2d;
 
-static inline bool ten_epsilon_equal(RealNum x, RealNum y)
+static inline bool ten_epsilon_equal(float x, float y)
 {
 	// Here's essentially algorthm originally used in b2Collision.cpp b2TestOverlap function
 	// Pros: Probably faster and fine with larger LinearSlop settings.
 	// Cons: Doesn't scale to magnitude of values used which becomes more problematic with smaller
 	//   LinearSlop settings.
-	return std::abs(x - y) < (std::numeric_limits<RealNum>::epsilon() * 10);
+	return std::abs(x - y) < (std::numeric_limits<float>::epsilon() * 10);
 }
 
 TEST(Epsilon, AlmostEqual)
@@ -47,31 +47,31 @@ TEST(Epsilon, AlmostEqual)
 		EXPECT_FALSE(almost_equal(std::numeric_limits<float>::min(), -std::numeric_limits<float>::min()));
 	}
 	{
-		const auto a = RealNum(0);
-		const auto b = RealNum(0);
+		const auto a = float(0);
+		const auto b = float(0);
 		EXPECT_FLOAT_EQ(a, b);
-		EXPECT_PRED3(almost_equal, a, b, 1);
-		EXPECT_PRED3(almost_equal, a, b, 2);
+		EXPECT_TRUE(almost_equal(a, b, 1));
+		EXPECT_TRUE(almost_equal(a, b, 2));
 	}
 	{
-		const auto a = RealNum(1000);
-		const auto b = RealNum(1000 + 0.0001);
+		const auto a = float(1000);
+		const auto b = float(1000 + 0.0001);
 		EXPECT_FLOAT_EQ(a, b);
-		EXPECT_PRED3(almost_equal, a, b, 1);
-		EXPECT_PRED3(almost_equal, a, b, 2);
-		EXPECT_PRED3(almost_equal, a, b, 3);
+		EXPECT_TRUE(almost_equal(a, b, 1));
+		EXPECT_TRUE(almost_equal(a, b, 2));
+		EXPECT_TRUE(almost_equal(a, b, 3));
 	}
 	{
-		const auto a = RealNum(0.000001);
-		const auto b = RealNum(0.000001 * 2);
+		const auto a = float(0.000001);
+		const auto b = float(0.000001 * 2);
 		EXPECT_EQ(almost_equal(a, b), false);
 	}
 	{
-		const auto Epsilon = std::numeric_limits<RealNum>::epsilon();
-		EXPECT_FALSE(almost_equal(float(1) + Epsilon, RealNum(1), 0));
-		EXPECT_TRUE(almost_equal(float(1) + Epsilon, RealNum(1), 1));
-		EXPECT_TRUE(almost_equal(float(1) + Epsilon, RealNum(1), 2));
-		EXPECT_TRUE(almost_equal(float(1) + Epsilon, RealNum(1), 3));
+		const auto Epsilon = std::numeric_limits<float>::epsilon();
+		EXPECT_FALSE(almost_equal(float(1) + Epsilon, float(1), 0));
+		EXPECT_TRUE(almost_equal(float(1) + Epsilon, float(1), 1));
+		EXPECT_TRUE(almost_equal(float(1) + Epsilon, float(1), 2));
+		EXPECT_TRUE(almost_equal(float(1) + Epsilon, float(1), 3));
 		const auto a = std::numeric_limits<float>::min() * std::numeric_limits<float>::epsilon();
 		EXPECT_LT(a, std::numeric_limits<float>::min());
 		EXPECT_LT(a, std::numeric_limits<float>::epsilon());
@@ -86,7 +86,7 @@ TEST(Epsilon, AlmostEqual)
 		EXPECT_TRUE(almost_equal(std::numeric_limits<float>::min() * 0.5, std::numeric_limits<float>::min()));
 		EXPECT_TRUE(almost_equal(std::numeric_limits<float>::min() * 0.5, 0));
 		EXPECT_TRUE(almost_zero(std::numeric_limits<float>::min() * 0.5));
-		// (Abs(x - y) < (std::numeric_limits<RealNum>::epsilon() * Abs(x + y) * ulp))
+		// (Abs(x - y) < (std::numeric_limits<float>::epsilon() * Abs(x + y) * ulp))
 	}
 	
 	EXPECT_TRUE(almost_equal(50.0001373f, 50.0001564f));
@@ -95,22 +95,22 @@ TEST(Epsilon, AlmostEqual)
 TEST(Epsilon, ten_epsilon_equal)
 {
 	{
-		const auto a = RealNum(0);
-		const auto b = RealNum(0);
+		const auto a = float(0);
+		const auto b = float(0);
 		EXPECT_FLOAT_EQ(a, b);
 		EXPECT_EQ(ten_epsilon_equal(a, b), true);
 	}
 	{
 		// Demonstrates the problem with not scaling...
-		const auto a = RealNum(1000);
-		const auto b = RealNum(1000 + 0.0001);
+		const auto a = float(1000);
+		const auto b = float(1000 + 0.0001);
 		EXPECT_FLOAT_EQ(a, b); // Google test code says almost equal (as did almost_equal)
-		EXPECT_PRED2( [](RealNum lhs, RealNum rhs) { return !ten_epsilon_equal(lhs, rhs); }, a, b); // 10 Epsilon says not equal
+		EXPECT_PRED2( [](float lhs, float rhs) { return !ten_epsilon_equal(lhs, rhs); }, a, b); // 10 Epsilon says not equal
 	}
 	{
 		// Demonstrates the problem with not scaling...
-		const auto a = RealNum(0.000001);
-		const auto b = RealNum(0.000001 * 2);
+		const auto a = float(0.000001);
+		const auto b = float(0.000001 * 2);
 		EXPECT_EQ(almost_equal(a, b), false);
 		EXPECT_PRED2(ten_epsilon_equal, a, b);
 	}

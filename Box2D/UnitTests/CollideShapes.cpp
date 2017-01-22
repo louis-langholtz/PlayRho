@@ -221,8 +221,8 @@ TEST(CollideShapes, CircleOverRightFaceOfTriangle)
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	EXPECT_EQ(manifold.GetLocalPoint(), (triangleTopPt + triangleRightPt) / 2);
-	EXPECT_FLOAT_EQ(manifold.GetLocalNormal().GetX(), RealNum(0.894427));
-	EXPECT_FLOAT_EQ(manifold.GetLocalNormal().GetY(), RealNum(0.44721359));
+	EXPECT_TRUE(almost_equal(manifold.GetLocalNormal().GetX(), RealNum(0.894427)));
+	EXPECT_TRUE(almost_equal(manifold.GetLocalNormal().GetY(), RealNum(0.44721359)));
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
 	
@@ -248,8 +248,8 @@ TEST(CollideShapes, CircleOverLeftFaceOfTriangle)
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(-0.5, 0));
-	EXPECT_FLOAT_EQ(manifold.GetLocalNormal().GetX(), RealNum(-0.894427));
-	EXPECT_FLOAT_EQ(manifold.GetLocalNormal().GetY(), RealNum(0.44721359));
+	EXPECT_TRUE(almost_equal(manifold.GetLocalNormal().GetX(), RealNum(-0.894427)));
+	EXPECT_TRUE(almost_equal(manifold.GetLocalNormal().GetY(), RealNum(0.44721359)));
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
 	
@@ -503,8 +503,8 @@ TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
 	
 	// localPoint is almost equal to Vec2(2, 2) but it's not exactly equal.
-	EXPECT_FLOAT_EQ(manifold.GetPoint(0).localPoint.x, RealNum(+2)); // top right shape A
-	EXPECT_FLOAT_EQ(manifold.GetPoint(0).localPoint.y, RealNum(+2)); // top right shape A
+	EXPECT_TRUE(almost_equal(manifold.GetPoint(0).localPoint.x, RealNum(+2))); // top right shape A
+	EXPECT_TRUE(almost_equal(manifold.GetPoint(0).localPoint.y, RealNum(+2))); // top right shape A
 	
 	EXPECT_EQ(manifold.GetPoint(0).normalImpulse, RealNum(0));
 	EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, RealNum(0));
@@ -520,13 +520,13 @@ TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)
 	EXPECT_EQ(Vec2{world_manifold.GetNormal()}, Vec2(0, +1));
 	
 	const auto corner_point = Rotate(Vec2{dim, dim}, UnitVec2{rot0}) + xfm0.p;
-	EXPECT_FLOAT_EQ(corner_point.x, RealNum(0));
-	EXPECT_FLOAT_EQ(corner_point.y, RealNum(0.82842684));
+	EXPECT_TRUE(almost_equal(corner_point.x, RealNum(0)));
+	EXPECT_TRUE(almost_equal(corner_point.y, RealNum(0.82842684)));
 	
 	ASSERT_GT(world_manifold.GetPointCount(), Manifold::size_type(0));
-	EXPECT_FLOAT_EQ(world_manifold.GetPoint(0).x, corner_point.x / 2);
-	EXPECT_FLOAT_EQ(world_manifold.GetPoint(0).y, corner_point.y / 2);
-	EXPECT_FLOAT_EQ(world_manifold.GetSeparation(0), -corner_point.y);
+	EXPECT_TRUE(almost_equal(world_manifold.GetPoint(0).x, corner_point.x / 2));
+	EXPECT_TRUE(almost_equal(world_manifold.GetPoint(0).y, corner_point.y / 2));
+	EXPECT_TRUE(almost_equal(world_manifold.GetSeparation(0), -corner_point.y));
 }
 
 TEST(CollideShapes, HorizontalOverlappingRects1)
@@ -594,16 +594,16 @@ TEST(CollideShapes, HorizontalOverlappingRects1)
 												 xfm1, GetVertexRadius(shape1));
 	EXPECT_EQ(world_manifold.GetPointCount(), Manifold::size_type(2));
 	
-	EXPECT_FLOAT_EQ(world_manifold.GetNormal().GetX(), RealNum(1));
-	EXPECT_FLOAT_EQ(world_manifold.GetNormal().GetY(), RealNum(0));
+	EXPECT_TRUE(almost_equal(world_manifold.GetNormal().GetX(), RealNum(1)));
+	EXPECT_TRUE(almost_equal(world_manifold.GetNormal().GetY(), RealNum(0)));
 	
 	ASSERT_GT(world_manifold.GetPointCount(), Manifold::size_type(0));
-	EXPECT_FLOAT_EQ(world_manifold.GetPoint(0).x, RealNum(-0.5));
-	EXPECT_FLOAT_EQ(world_manifold.GetPoint(0).y, RealNum(+1.5));
+	EXPECT_TRUE(almost_equal(world_manifold.GetPoint(0).x, RealNum(-0.5)));
+	EXPECT_TRUE(almost_equal(world_manifold.GetPoint(0).y, RealNum(+1.5)));
 
 	ASSERT_GT(world_manifold.GetPointCount(), Manifold::size_type(1));
-	EXPECT_FLOAT_EQ(world_manifold.GetPoint(1).x, RealNum(-0.5));
-	EXPECT_FLOAT_EQ(world_manifold.GetPoint(1).y, RealNum(-1.5));
+	EXPECT_TRUE(almost_equal(world_manifold.GetPoint(1).x, RealNum(-0.5)));
+	EXPECT_TRUE(almost_equal(world_manifold.GetPoint(1).y, RealNum(-1.5)));
 }
 
 TEST(CollideShapes, HorizontalOverlappingRects2)
@@ -636,20 +636,20 @@ TEST(CollideShapes, HorizontalOverlappingRects2)
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
 	
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
-	EXPECT_FLOAT_EQ(manifold.GetPoint(0).localPoint.x, RealNum(-2.0)); // left
-	EXPECT_FLOAT_EQ(manifold.GetPoint(0).localPoint.y, RealNum(-1.5)); // top
-	EXPECT_FLOAT_EQ(manifold.GetPoint(0).normalImpulse, RealNum(0));
-	EXPECT_FLOAT_EQ(manifold.GetPoint(0).tangentImpulse, RealNum(0));
+	EXPECT_TRUE(almost_equal(manifold.GetPoint(0).localPoint.x, RealNum(-2.0))); // left
+	EXPECT_TRUE(almost_equal(manifold.GetPoint(0).localPoint.y, RealNum(-1.5))); // top
+	EXPECT_TRUE(almost_equal(manifold.GetPoint(0).normalImpulse, RealNum(0)));
+	EXPECT_TRUE(almost_equal(manifold.GetPoint(0).tangentImpulse, RealNum(0)));
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_vertex);
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexA, 0);
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_face);
 	EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 2);
 	
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(1));
-	EXPECT_FLOAT_EQ(manifold.GetPoint(1).localPoint.x, RealNum(-2.0)); // left
-	EXPECT_FLOAT_EQ(manifold.GetPoint(1).localPoint.y, RealNum(+1.5)); // bottom
-	EXPECT_FLOAT_EQ(manifold.GetPoint(1).normalImpulse, RealNum(0));
-	EXPECT_FLOAT_EQ(manifold.GetPoint(1).tangentImpulse, RealNum(0));
+	EXPECT_TRUE(almost_equal(manifold.GetPoint(1).localPoint.x, RealNum(-2.0))); // left
+	EXPECT_TRUE(almost_equal(manifold.GetPoint(1).localPoint.y, RealNum(+1.5))); // bottom
+	EXPECT_TRUE(almost_equal(manifold.GetPoint(1).normalImpulse, RealNum(0)));
+	EXPECT_TRUE(almost_equal(manifold.GetPoint(1).tangentImpulse, RealNum(0)));
 	EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeA, ContactFeature::e_vertex);
 	EXPECT_EQ(manifold.GetPoint(1).contactFeature.indexA, 1);
 	EXPECT_EQ(manifold.GetPoint(1).contactFeature.typeB, ContactFeature::e_face);
@@ -660,16 +660,16 @@ TEST(CollideShapes, HorizontalOverlappingRects2)
 												 xfm1, GetVertexRadius(shape1));
 	EXPECT_EQ(world_manifold.GetPointCount(), Manifold::size_type(2));
 	
-	EXPECT_FLOAT_EQ(world_manifold.GetNormal().GetX(), RealNum(1));
-	EXPECT_FLOAT_EQ(world_manifold.GetNormal().GetY(), RealNum(0));
+	EXPECT_TRUE(almost_equal(world_manifold.GetNormal().GetX(), RealNum(1)));
+	EXPECT_TRUE(almost_equal(world_manifold.GetNormal().GetY(), RealNum(0)));
 	
 	ASSERT_GT(world_manifold.GetPointCount(), Manifold::size_type(0));
-	EXPECT_FLOAT_EQ(world_manifold.GetPoint(0).x, RealNum(+0.5));
-	EXPECT_FLOAT_EQ(world_manifold.GetPoint(0).y, RealNum(-1.5));
+	EXPECT_TRUE(almost_equal(world_manifold.GetPoint(0).x, RealNum(+0.5)));
+	EXPECT_TRUE(almost_equal(world_manifold.GetPoint(0).y, RealNum(-1.5)));
 	
 	ASSERT_GT(world_manifold.GetPointCount(), Manifold::size_type(1));
-	EXPECT_FLOAT_EQ(world_manifold.GetPoint(1).x, RealNum(+0.5));
-	EXPECT_FLOAT_EQ(world_manifold.GetPoint(1).y, RealNum(+1.5));
+	EXPECT_TRUE(almost_equal(world_manifold.GetPoint(1).x, RealNum(+0.5)));
+	EXPECT_TRUE(almost_equal(world_manifold.GetPoint(1).y, RealNum(+1.5)));
 }
 
 TEST(CollideShapes, EdgeWithDefaultPolygon)
@@ -984,8 +984,8 @@ TEST(CollideShapes, EdgeFooTriangle)
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(-2, 2));
-	EXPECT_FLOAT_EQ(GetX(Vec2{manifold.GetLocalNormal()}), -0.707107f);
-	EXPECT_FLOAT_EQ(GetY(Vec2{manifold.GetLocalNormal()}), -0.707107f);
+	EXPECT_TRUE(almost_equal(GetX(Vec2{manifold.GetLocalNormal()}), -0.707107f));
+	EXPECT_TRUE(almost_equal(GetY(Vec2{manifold.GetLocalNormal()}), -0.707107f));
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
 	EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 1));
@@ -1008,15 +1008,15 @@ TEST(CollideShapes, EdgePolygonFaceB1)
 	const auto manifold = CollideShapes(edge_shape, edge_xfm, poly_shape, poly_xfm);
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceB);
-	EXPECT_FLOAT_EQ(GetX(manifold.GetLocalPoint()), -0.249999955f);
-	EXPECT_FLOAT_EQ(GetY(manifold.GetLocalPoint()), -0.43301272f);
-	EXPECT_FLOAT_EQ(GetX(Vec2{manifold.GetLocalNormal()}), 0.0f);
-	EXPECT_FLOAT_EQ(GetY(Vec2{manifold.GetLocalNormal()}), -1.0f);
+	EXPECT_TRUE(almost_equal(GetX(manifold.GetLocalPoint()), -0.249999955f));
+	EXPECT_TRUE(almost_equal(GetY(manifold.GetLocalPoint()), -0.43301272f));
+	EXPECT_TRUE(almost_equal(GetX(Vec2{manifold.GetLocalNormal()}), 0.0f));
+	EXPECT_TRUE(almost_equal(GetY(Vec2{manifold.GetLocalNormal()}), -1.0f));
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
 	EXPECT_EQ(manifold.GetContactFeature(0), GetVertexFaceContactFeature(1, 4));
-	EXPECT_FLOAT_EQ(GetX(manifold.GetOpposingPoint(0)), 7.0f);
-	EXPECT_FLOAT_EQ(GetY(manifold.GetOpposingPoint(0)), 8.0f);
+	EXPECT_TRUE(almost_equal(GetX(manifold.GetOpposingPoint(0)), 7.0f));
+	EXPECT_TRUE(almost_equal(GetY(manifold.GetOpposingPoint(0)), 8.0f));
 }
 
 TEST(CollideShapes, EdgePolygonFaceB2)
@@ -1034,15 +1034,15 @@ TEST(CollideShapes, EdgePolygonFaceB2)
 	const auto manifold = CollideShapes(edge_shape, edge_xfm, poly_shape, poly_xfm);
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceB);
-	EXPECT_FLOAT_EQ(GetX(manifold.GetLocalPoint()), 0.5f);
-	EXPECT_FLOAT_EQ(GetY(manifold.GetLocalPoint()), 0.5f);
-	EXPECT_FLOAT_EQ(GetX(Vec2{manifold.GetLocalNormal()}), 0.0f);
-	EXPECT_FLOAT_EQ(GetY(Vec2{manifold.GetLocalNormal()}), 1.0f);
+	EXPECT_TRUE(almost_equal(GetX(manifold.GetLocalPoint()), 0.5f));
+	EXPECT_TRUE(almost_equal(GetY(manifold.GetLocalPoint()), 0.5f));
+	EXPECT_TRUE(almost_equal(GetX(Vec2{manifold.GetLocalNormal()}), 0.0f));
+	EXPECT_TRUE(almost_equal(GetY(Vec2{manifold.GetLocalNormal()}), 1.0f));
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
 	EXPECT_EQ(manifold.GetContactFeature(0), GetVertexFaceContactFeature(1, 1));
-	EXPECT_FLOAT_EQ(GetX(manifold.GetOpposingPoint(0)), -6.0f);
-	EXPECT_FLOAT_EQ(GetY(manifold.GetOpposingPoint(0)), 0.0f);
+	EXPECT_TRUE(almost_equal(GetX(manifold.GetOpposingPoint(0)), -6.0f));
+	EXPECT_TRUE(almost_equal(GetY(manifold.GetOpposingPoint(0)), 0.0f));
 }
 
 TEST(CollideShapes, EdgeOverlapsItself)
@@ -1141,7 +1141,7 @@ TEST(CollideShapes, R0EdgePerpendicularCrossingFromR0Edge)
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	EXPECT_EQ(Vec2(manifold.GetLocalNormal()), Vec2(0, 1));
-	EXPECT_FLOAT_EQ(round(manifold.GetLocalPoint().x), 0);
-	EXPECT_FLOAT_EQ(round(manifold.GetLocalPoint().y), 0);
+	EXPECT_TRUE(almost_equal(round(manifold.GetLocalPoint().x), RealNum{0}));
+	EXPECT_TRUE(almost_equal(round(manifold.GetLocalPoint().y), RealNum{0}));
 	EXPECT_EQ(manifold.GetPointCount(), decltype(manifold.GetPointCount()){1});
 }

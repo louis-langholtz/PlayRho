@@ -82,7 +82,7 @@ public:
 			bd.allowSleep = false;
 			const auto body = m_world->CreateBody(bd);
 
-			auto shape = PolygonShape(1);
+			auto shape = PolygonShape(RealNum(1));
 			shape.SetAsBox(0.5f, 0.5f);
 			body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(1));
 		}

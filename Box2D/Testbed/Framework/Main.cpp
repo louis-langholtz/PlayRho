@@ -338,8 +338,8 @@ static void sMouseMotion(GLFWwindow*, double xd, double yd)
 	if (rightMouseDown)
 	{
 		const auto movement = pw - lastp;
-		g_camera.m_center.x -= movement.x;
-		g_camera.m_center.y -= movement.y;
+		g_camera.m_center.x -= static_cast<float>(movement.x);
+		g_camera.m_center.y -= static_cast<float>(movement.y);
 		lastp = ConvertScreenToWorld(g_camera, ps);
 	}
 }
@@ -377,7 +377,7 @@ static void sSimulate(Drawer& drawer)
 {
 	glEnable(GL_DEPTH_TEST);
 	
-	settings.dt = (settings.hz > 0)? 1.0f / settings.hz : RealNum(0.0f);
+	settings.dt = (settings.hz > 0)? 1.0f / settings.hz : 0.0f;
 	if (settings.pause)
 	{
 		if (settings.singleStep)

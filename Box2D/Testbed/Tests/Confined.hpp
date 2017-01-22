@@ -25,8 +25,8 @@ namespace box2d {
 class Confined : public Test
 {
 public:
-	static constexpr auto wall_length = RealNum(0.05); // 20
-	static constexpr auto vertexRadiusIncrement = wall_length / 80;
+	const RealNum wall_length = RealNum(0.05); // 20
+	const RealNum vertexRadiusIncrement = wall_length / 80;
 	
 	enum
 	{
@@ -100,7 +100,7 @@ public:
 	
 	void CreateCircle()
 	{
-		constexpr auto radius = RealNum(wall_length/10); // 2
+		const auto radius = RealNum(wall_length/10); // 2
 
 		FixtureDef fd;
 		fd.density = 1.0f;
@@ -119,7 +119,7 @@ public:
 
 	void CreateBox()
 	{
-		constexpr auto side_length = RealNum(wall_length/5); // 4
+		const auto side_length = RealNum(wall_length/5); // 4
 
 		FixtureDef fd;
 		fd.density = 1.0f;

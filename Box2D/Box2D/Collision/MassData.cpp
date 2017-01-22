@@ -47,7 +47,7 @@ namespace
 		// Iz = Pi * r^2 * ((r^2 / 2) + (dx^2 + dy^2))
 		assert(density >= 0);
 		const auto r_squared = Square(r);
-		const auto area = Pi * r_squared;
+		const auto area = r_squared * Pi;
 		const auto mass = density * area;
 		const auto Iz = area * ((r_squared / 2) + GetLengthSquared(location));
 		return MassData{mass, location, Iz * density};
@@ -56,7 +56,7 @@ namespace
 	MassData GetMassData(RealNum r, RealNum density, Vec2 v0, Vec2 v1)
 	{
 		const auto r_squared = Square(r);
-		const auto circle_area = Pi * r_squared;
+		const auto circle_area = r_squared * Pi;
 		const auto circle_mass = density * circle_area;
 		const auto d = v1 - v0;
 		const auto offset = GetRevPerpendicular(GetUnitVector(d, UnitVec2::GetZero())) * r;
@@ -85,7 +85,7 @@ namespace
 
 RealNum box2d::GetAreaOfCircle(RealNum radius)
 {
-	return Pi * Square(radius);
+	return Square(radius) * Pi;
 }
 
 RealNum box2d::GetAreaOfPolygon(Span<const Vec2> vertices)
@@ -136,6 +136,8 @@ RealNum box2d::GetPolarMoment(Span<const Vec2> vertices)
 
 MassData box2d::GetMassData(const PolygonShape& shape, RealNum density)
 {
+	// See: https://en.wikipedia.org/wiki/Centroid#Centroid_of_polygon
+
 	assert(density >= 0);
 	
 	// Polygon mass, centroid, and inertia.
@@ -216,7 +218,10 @@ MassData box2d::GetMassData(const PolygonShape& shape, RealNum density)
 	
 	// Inertia tensor relative to the local origin (point s).
 	// Shift to center of mass then to original body origin.
-	const auto massDataI = (density * I) + (mass * (GetLengthSquared(massDataCenter) - GetLengthSquared(center)));
+	const auto massCenterOffset = GetLengthSquared(massDataCenter);
+	const auto centerOffset = GetLengthSquared(center);
+	const auto intertialLever = massCenterOffset - centerOffset;
+	const auto massDataI = (density * I) + (mass * intertialLever);
 	
 	return MassData{mass, massDataCenter, massDataI};
 }

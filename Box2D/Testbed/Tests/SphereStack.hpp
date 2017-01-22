@@ -45,7 +45,7 @@ public:
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(0.0, 4.0f + 3.0f * i);
+				bd.position = Vec2(0, 4.0f + 3.0f * i);
 
 				m_bodies[i] = m_world->CreateBody(bd);
 

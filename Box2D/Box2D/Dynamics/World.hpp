@@ -93,7 +93,7 @@ public:
 
 		Vec2 gravity = EarthlyGravity;
 		
-		RealNum linearSlop = 0.0001f; // originally 0.005;
+		RealNum linearSlop = LinearSlop; // originally 0.005;
 		
 		RealNum angularSlop = Pi * 2 / 180;
 

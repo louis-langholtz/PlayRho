@@ -155,18 +155,18 @@ TEST(VelocityConstraint, Update)
 	vc.Update(worldManifold, posA, posB, velocities,
 			  VelocityConstraint::UpdateConf{VelocityThreshold, false});
 
-	EXPECT_FLOAT_EQ(vc.GetNormal().GetX(), normal.GetX());
-	EXPECT_FLOAT_EQ(vc.GetNormal().GetY(), normal.GetY());
+	EXPECT_TRUE(almost_equal(vc.GetNormal().GetX(), normal.GetX()));
+	EXPECT_TRUE(almost_equal(vc.GetNormal().GetY(), normal.GetY()));
 
-	EXPECT_FLOAT_EQ(vc.GetNormalImpulseAtPoint(0), ni);
-	EXPECT_FLOAT_EQ(vc.GetTangentImpulseAtPoint(0), ti);
-	EXPECT_FLOAT_EQ(vc.GetNormalMassAtPoint(0), RealNum(1.6666666));
-	EXPECT_FLOAT_EQ(vc.GetTangentMassAtPoint(0), RealNum(2.5000002));
-	EXPECT_FLOAT_EQ(vc.GetVelocityBiasAtPoint(0), RealNum(1.978));
-	EXPECT_FLOAT_EQ(vc.GetPointRelPosA(0).x, RealNum(-1));
-	EXPECT_FLOAT_EQ(vc.GetPointRelPosA(0).y, RealNum(-2));
-	EXPECT_FLOAT_EQ(vc.GetPointRelPosB(0).x, RealNum(-3));
-	EXPECT_FLOAT_EQ(vc.GetPointRelPosB(0).y, RealNum(-4));
+	EXPECT_TRUE(almost_equal(vc.GetNormalImpulseAtPoint(0), ni));
+	EXPECT_TRUE(almost_equal(vc.GetTangentImpulseAtPoint(0), ti));
+	EXPECT_TRUE(almost_equal(vc.GetNormalMassAtPoint(0), RealNum(1.6666666)));
+	EXPECT_TRUE(almost_equal(vc.GetTangentMassAtPoint(0), RealNum(2.5000002)));
+	EXPECT_TRUE(almost_equal(vc.GetVelocityBiasAtPoint(0), RealNum(1.978)));
+	EXPECT_TRUE(almost_equal(vc.GetPointRelPosA(0).x, RealNum(-1)));
+	EXPECT_TRUE(almost_equal(vc.GetPointRelPosA(0).y, RealNum(-2)));
+	EXPECT_TRUE(almost_equal(vc.GetPointRelPosB(0).x, RealNum(-3)));
+	EXPECT_TRUE(almost_equal(vc.GetPointRelPosB(0).y, RealNum(-4)));
 
 	EXPECT_FALSE(IsValid(vc.GetNormalImpulseAtPoint(1)));
 	EXPECT_FALSE(IsValid(vc.GetTangentImpulseAtPoint(1)));

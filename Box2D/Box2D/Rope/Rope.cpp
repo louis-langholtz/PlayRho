@@ -61,7 +61,7 @@ void Rope::Initialize(const RopeDef* def)
 	const auto count2 = m_count - 1;
 	const auto count3 = m_count - 2;
 	m_Ls = alloc<RealNum>(count2);
-	m_as = alloc<RealNum>(count3);
+	m_as = alloc<float>(count3);
 
 	for (auto i = decltype(count2){0}; i < count2; ++i)
 	{
@@ -93,12 +93,12 @@ void Rope::Initialize(const RopeDef* def)
 
 void Rope::Step(RealNum h, int32 iterations)
 {
-	if (h == 0.0)
+	if (h == 0.0f)
 	{
 		return;
 	}
 
-	const auto d = std::exp(- h * m_damping);
+	const auto d = std::exp(-h * m_damping);
 
 	for (auto i = decltype(m_count){0}; i < m_count; ++i)
 	{
@@ -107,9 +107,8 @@ void Rope::Step(RealNum h, int32 iterations)
 		{
 			m_vs[i] += h * m_gravity;
 		}
-		m_vs[i] *= d;
+		m_vs[i] *= RealNum{d};
 		m_ps[i] += h * m_vs[i];
-
 	}
 
 	for (auto i = decltype(iterations){0}; i < iterations; ++i)
@@ -162,7 +161,7 @@ void Rope::SetAngle(RealNum angle)
 	const auto count3 = m_count - 2;
 	for (auto i = decltype(count3){0}; i < count3; ++i)
 	{
-		m_as[i] = angle;
+		m_as[i] = static_cast<float>(angle);
 	}
 }
 
@@ -215,13 +214,13 @@ void Rope::SolveC3()
 
 		while (C > Pi)
 		{
-			angle -= 2 * Pi;
+			angle -= Pi * 2;
 			C = angle - m_as[i];
 		}
 
 		while (C < -Pi)
 		{
-			angle += RealNum{2} * Pi;
+			angle += Pi * 2;
 			C = angle - m_as[i];
 		}
 

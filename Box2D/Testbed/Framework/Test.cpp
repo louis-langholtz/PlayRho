@@ -212,7 +212,7 @@ static void Draw(Drawer& drawer, const Joint& joint)
 	const auto p1 = joint.GetAnchorA();
 	const auto p2 = joint.GetAnchorB();
 	
-	const Color color{RealNum(0.5), RealNum(0.8), RealNum(0.8)};
+	const Color color{0.5f, 0.8f, 0.8f};
 	
 	switch (joint.GetType())
 	{

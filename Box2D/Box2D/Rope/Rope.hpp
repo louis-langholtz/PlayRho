@@ -102,7 +102,7 @@ private:
 	RealNum* m_ims = nullptr;
 
 	RealNum* m_Ls = nullptr;
-	RealNum* m_as = nullptr;
+	float* m_as = nullptr;
 
 	Vec2 m_gravity = Vec2_zero;
 	RealNum m_damping = RealNum{0};

@@ -84,8 +84,8 @@ TEST(Vec2, Negate)
 	EXPECT_EQ(-v01.x, n01.x);
 	EXPECT_EQ(-v01.y, n01.y);
 	
-	EXPECT_EQ(-22, (-Vec2{22, 0}).x);
-	EXPECT_EQ(-3, (-Vec2{0, 3}).y);
+	EXPECT_EQ(RealNum{-22}, (-Vec2{22, 0}).x);
+	EXPECT_EQ(RealNum{-3}, (-Vec2{0, 3}).y);
 }
 
 TEST(Vec2, Rotate)
