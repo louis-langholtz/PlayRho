@@ -26,17 +26,20 @@
 
 namespace box2d
 {
+	/// Fixed 32.
+	/// @detail This is a 32-bit sized fixed point type with a 18.14 format.
+	/// With a 14-bit fraction part:
+	///   * 0.000061035156250 is the smallest double precision value that can be represented;
+	///   * 
 	class Fixed32
 	{
 	public:
 		using value_type = int32_t;
 		static constexpr unsigned FractionBits = 14;
-		static constexpr uint32_t FractionMask = (1u << FractionBits) - 1;
-		static constexpr value_type ScaleFactor = static_cast<value_type>(1 << FractionBits); // 2^16
 
 		static constexpr Fixed32 GetMin() noexcept
 		{
-			return Fixed32{0, 1};
+			return Fixed32{internal_type{1}};
 		}
 		
 		static constexpr Fixed32 GetMax() noexcept
@@ -114,7 +117,7 @@ namespace box2d
 		{
 			assert(val <= static_cast<decltype(val)>(GetMax()));
 			assert(val >= static_cast<decltype(val)>(GetLowest()));
-			assert(fraction < ScaleFactor);
+			assert(fraction <= (1u << box2d::Fixed32::FractionBits) - 1u);
 		}
 		
 		// Unary operations
@@ -175,6 +178,16 @@ namespace box2d
 		constexpr Fixed32 operator+ () const noexcept
 		{
 			return Fixed32{internal_type{+m_data.value}};
+		}
+		
+		explicit constexpr operator bool() const noexcept
+		{
+			return m_data.value != 0;
+		}
+		
+		constexpr bool operator! () const noexcept
+		{
+			return m_data.value == 0;
 		}
 		
 		constexpr Fixed32& operator+= (Fixed32 val) noexcept
@@ -246,7 +259,8 @@ namespace box2d
 		//friend bool operator> (Fixed32 lhs, Fixed32 rhs) noexcept;
 
 	private:
-		
+		static constexpr value_type ScaleFactor = static_cast<value_type>(1 << FractionBits); // 2^16
+
 		using intermediary_type = int64_t;
 	
 		struct internal_type
@@ -256,7 +270,11 @@ namespace box2d
 		
 		using numeric_limits = std::numeric_limits<value_type>;
 		
-		constexpr Fixed32(internal_type val) noexcept: m_data{val} {}
+		constexpr Fixed32(internal_type val) noexcept:
+			m_data{val}
+		{
+			// Intentionally empty.
+		}
 		
 		internal_type m_data;
 	};
@@ -342,17 +360,17 @@ namespace std
 		static constexpr bool is_specialized = true;
 		
 		static constexpr box2d::Fixed32 min() noexcept { return box2d::Fixed32::GetMin(); }
-		static constexpr box2d::Fixed32 max() noexcept { return box2d::Fixed32::GetMax(); }
+		static constexpr box2d::Fixed32 max() noexcept    { return box2d::Fixed32::GetMax(); }
 		static constexpr box2d::Fixed32 lowest() noexcept { return box2d::Fixed32::GetLowest(); }
 		
-		static constexpr int digits = 31;
-		static constexpr int digits10 = 0; // TODO
+		static constexpr int digits = 31 - box2d::Fixed32::FractionBits;
+		static constexpr int digits10 = 31 - box2d::Fixed32::FractionBits;
 		static constexpr int max_digits10 = 5; // TODO: check this
 		
 		static constexpr bool is_signed = true;
 		static constexpr bool is_integer = false;
 		static constexpr bool is_exact = true;
-		static constexpr int radix = 2; // TODO
+		static constexpr int radix = 0;
 		static constexpr box2d::Fixed32 epsilon() noexcept { return box2d::Fixed32{0}; } // TODO
 		static constexpr box2d::Fixed32 round_error() noexcept { return box2d::Fixed32{0}; } // TODO
 		
@@ -372,12 +390,12 @@ namespace std
 		static constexpr box2d::Fixed32 denorm_min() noexcept { return box2d::Fixed32{0}; }
 		
 		static constexpr bool is_iec559 = false;
-		static constexpr bool is_bounded = true; // TODO: check this
+		static constexpr bool is_bounded = true;
 		static constexpr bool is_modulo = false;
 		
-		static constexpr bool traps = true;
-		static constexpr bool tinyness_before = false; // TODO
-		static constexpr float_round_style round_style = round_toward_zero; // TODO
+		static constexpr bool traps = false;
+		static constexpr bool tinyness_before = false;
+		static constexpr float_round_style round_style = round_toward_zero;
 	};
 
 	inline box2d::Fixed32 abs(box2d::Fixed32 value) noexcept

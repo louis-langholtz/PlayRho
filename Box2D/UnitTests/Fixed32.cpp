@@ -151,22 +151,45 @@ TEST(Fixed32, Cos)
 TEST(Fixed32, Max)
 {
 	EXPECT_EQ(Fixed32::GetMax(), Fixed32::GetMax());
-	EXPECT_GT(Fixed32::GetMax(), Fixed32(0));
-	EXPECT_GT(Fixed32::GetMax(), Fixed32((1 << (31u - Fixed32::FractionBits)) - 1));
 	EXPECT_EQ(Fixed32::GetMax(), Fixed32((1 << (31u - Fixed32::FractionBits)) - 1, (1u << Fixed32::FractionBits) - 1u));
+	EXPECT_EQ(static_cast<long double>(Fixed32::GetMax()), 131071.99993896484375000000L);
+
+	EXPECT_GT(Fixed32::GetMax(), Fixed32(0));
+	EXPECT_GT(Fixed32::GetMax(), Fixed32::GetMin());
+	EXPECT_GT(Fixed32::GetMax(), Fixed32::GetLowest());
+	EXPECT_GT(Fixed32::GetMax(), Fixed32((1 << (31u - Fixed32::FractionBits)) - 1));
 }
 
 TEST(Fixed32, Min)
 {
 	EXPECT_EQ(Fixed32::GetMin(), Fixed32::GetMin());
 	EXPECT_EQ(Fixed32::GetMin(), Fixed32(0, 1));
+	EXPECT_EQ(static_cast<long double>(Fixed32::GetMin()), 0.00006103515625000000L);
+
+	EXPECT_LT(Fixed32::GetMin(), Fixed32::GetMax());
+	
+	EXPECT_GT(Fixed32::GetMin(), Fixed32(0));
+	EXPECT_GT(Fixed32::GetMin(), Fixed32::GetLowest());
 }
 
 TEST(Fixed32, Lowest)
 {
 	EXPECT_EQ(Fixed32::GetLowest(), Fixed32::GetLowest());
+	EXPECT_EQ(Fixed32::GetLowest(), Fixed32(-(1 << (31u - Fixed32::FractionBits)), 0));
+	EXPECT_EQ(static_cast<long double>(Fixed32::GetLowest()), -131072.00000000000000000000L);
+
 	EXPECT_LT(Fixed32::GetLowest(), Fixed32(0));
 	EXPECT_LT(Fixed32::GetLowest(), Fixed32(-((1 << (31u - Fixed32::FractionBits)) - 1), 0u));
 	EXPECT_LT(Fixed32::GetLowest(), Fixed32(-((1 << (31u - Fixed32::FractionBits)) - 1), (1u << Fixed32::FractionBits) - 1u));
 	EXPECT_LT(Fixed32::GetLowest(), -Fixed32::GetMax());
+}
+
+TEST(Fixed32, LowestWrapsAroundToMax)
+{
+	EXPECT_EQ(Fixed32::GetLowest() - Fixed32::GetMin(), Fixed32::GetMax());
+}
+
+TEST(Fixed32, MaxWrapsAroundToLowest)
+{
+	EXPECT_EQ(Fixed32::GetMax() + Fixed32::GetMin(), Fixed32::GetLowest());
 }
