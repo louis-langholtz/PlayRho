@@ -565,7 +565,9 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	// Region AB
 	const auto eLenSquared = GetLengthSquared(e);
 	assert(eLenSquared > 0);
-	const auto P = (u * A + v * B) / eLenSquared;
+
+	// Compute P in an order less likely to overflow
+	const auto P = ((A / eLenSquared) * u) + ((B / eLenSquared) * v);
 	
 	if (GetLengthSquared(Q - P) > Square(totalRadius))
 	{
