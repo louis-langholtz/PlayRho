@@ -119,9 +119,6 @@ Simplex Simplex::Get(const SimplexEdge& s0, const SimplexEdge& s1, const Simplex
 	
 	// Triangle123
 	const auto n123 = Cross(e12, e13);
-	const auto d123_1 = n123 * Cross(w2, w3);
-	const auto d123_2 = n123 * Cross(w3, w1);
-	const auto d123_3 = n123 * Cross(w1, w2);
 	
 	// w1 region
 	if ((d12_2 <= 0) && (d13_2 <= 0))
@@ -130,6 +127,7 @@ Simplex Simplex::Get(const SimplexEdge& s0, const SimplexEdge& s1, const Simplex
 	}
 	
 	// e12
+	const auto d123_3 = n123 * Cross(w1, w2);
 	if ((d12_1 > 0) && (d12_2 > 0) && (d123_3 <= 0))
 	{
 		const auto d12_sum = d12_1 + d12_2;
@@ -137,6 +135,7 @@ Simplex Simplex::Get(const SimplexEdge& s0, const SimplexEdge& s1, const Simplex
 	}
 	
 	// e13
+	const auto d123_2 = n123 * Cross(w3, w1);
 	if ((d13_1 > 0) && (d13_2 > 0) && (d123_2 <= 0))
 	{
 		const auto d13_sum = d13_1 + d13_2;
@@ -154,8 +153,9 @@ Simplex Simplex::Get(const SimplexEdge& s0, const SimplexEdge& s1, const Simplex
 	{
 		return Simplex{{s2}, {1}};
 	}
-	
+
 	// e23
+	const auto d123_1 = n123 * Cross(w2, w3);
 	if ((d23_1 > 0) && (d23_2 > 0) && (d123_1 <= 0))
 	{
 		const auto d23_sum = d23_1 + d23_2;

@@ -72,7 +72,7 @@ TEST(TimeOfImpact, Overlapped)
 
 TEST(TimeOfImpact, Touching)
 {
-	const auto limits = ToiConf{1, RealNum(0.0001) * 3, RealNum(0.0001) / 4};
+	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(0.001f * 3).UseTolerance(0.001f / 4);
 
 	const auto radius = RealNum(1.1);
 
@@ -91,7 +91,7 @@ TEST(TimeOfImpact, Touching)
 
 TEST(TimeOfImpact, Separated)
 {
-	const auto limits = ToiConf{1, RealNum(0.0001) * 3, RealNum(0.0001) / 4};
+	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(0.001f * 3).UseTolerance(0.001f / 4);
 	const auto radius = RealNum(1);
 	
 	const auto proxyA = DistanceProxy{radius, Vec2_zero};
@@ -109,7 +109,7 @@ TEST(TimeOfImpact, Separated)
 
 TEST(TimeOfImpact, CollideCirclesHorizontally)
 {
-	const auto limits = ToiConf{1, RealNum(0.0001) * 3, RealNum(0.0001) / 4};
+	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(0.001f * 3).UseTolerance(0.001f / 4);
 
 	// Set up for two bodies moving toward each other at same speeds and each colliding
 	// with the other after they have moved roughly two-thirds of their sweep.
@@ -132,7 +132,7 @@ TEST(TimeOfImpact, CollideCirclesHorizontally)
 
 TEST(TimeOfImpact, CollideCirclesVertically)
 {
-	const auto limits = ToiConf{1, RealNum(0.0001) * 3, RealNum(0.0001) / 4};
+	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(0.001f * 3).UseTolerance(0.001f / 4);
 	const auto radius = RealNum(1);
 	const auto y = RealNum(20);
 
@@ -151,7 +151,7 @@ TEST(TimeOfImpact, CollideCirclesVertically)
 
 TEST(TimeOfImpact, CirclesPassingParallelSeparatedPathsDontCollide)
 {
-	const auto limits = ToiConf{1, RealNum(0.0001) * 3, RealNum(0.0001) / 4};
+	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(0.001f * 3).UseTolerance(0.001f / 4);
 	
 	// Set up for two bodies moving toward each other at same speeds and each colliding
 	// with the other after they have moved roughly two-thirds of their sweep.
@@ -173,7 +173,7 @@ TEST(TimeOfImpact, CirclesPassingParallelSeparatedPathsDontCollide)
 
 TEST(TimeOfImpact, RodCircleMissAt360)
 {
-	const auto limits = ToiConf{1, RealNum(0.0001) * 3, RealNum(0.0001) / 4};
+	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(0.001f * 3).UseTolerance(0.001f / 4);
 	
 	// Set up for two bodies moving toward each other at same speeds and each colliding
 	// with the other after they have moved roughly two-thirds of their sweep.
@@ -194,7 +194,7 @@ TEST(TimeOfImpact, RodCircleMissAt360)
 
 TEST(TimeOfImpact, RodCircleHitAt180)
 {
-	const auto limits = ToiConf{1, RealNum(0.0001) * 3, RealNum(0.0001) / 4};
+	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(0.001f * 3).UseTolerance(0.001f / 4);
 	
 	// Set up for two bodies moving toward each other at same speeds and each colliding
 	// with the other after they have moved roughly two-thirds of their sweep.
@@ -225,8 +225,8 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_1)
 	const auto conf = ToiConf{}
 		.UseMaxToiIters(200)
 		.UseMaxRootIters(200)
-		.UseTargetDepth(0.0001f * 3)
-		.UseTolerance(0.0001f / 4);
+		.UseTargetDepth(0.001f * 3)
+		.UseTolerance(0.001f / 4);
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
@@ -250,8 +250,8 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
 	const auto conf = ToiConf{}
 		.UseMaxToiIters(200)
 		.UseMaxRootIters(200)
-		.UseTargetDepth(0.0001f * 3)
-		.UseTolerance(0.0001f / 4);
+		.UseTargetDepth(0.001f * 3)
+		.UseTolerance(0.001f / 4);
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
@@ -306,8 +306,8 @@ TEST(TimeOfImpact, FailsWithClosingSpeedOf1600)
 	const auto conf = ToiConf{}
 		.UseMaxToiIters(200)
 		.UseMaxRootIters(200)
-		.UseTargetDepth(0.0001f * 3)
-		.UseTolerance(0.0001f / 4);
+		.UseTargetDepth(0.001f * 3)
+		.UseTolerance(0.001f / 4);
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_failed);

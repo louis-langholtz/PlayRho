@@ -64,7 +64,7 @@ public:
 
 		const auto output = TimeOfImpact(GetDistanceProxy(m_shapeA, 0), sweepA, GetDistanceProxy(m_shapeB, 0), sweepB);
 
-		drawer.DrawString(5, m_textLine, "at toi=%g, state=%s", output.get_t(), GetName(output.get_state()));
+		drawer.DrawString(5, m_textLine, "at toi=%g, state=%s", static_cast<float>(output.get_t()), GetName(output.get_state()));
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		drawer.DrawString(5, m_textLine, "TOI iters = %d, max root iters = %d",

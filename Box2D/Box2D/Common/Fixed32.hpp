@@ -206,6 +206,10 @@ namespace box2d
 			assert(val.is_valid());
 
 			const auto result = intermediary_type{m_data.value} + val.m_data.value;
+			
+			assert(result <= GetMax().m_data.value);
+			assert(result >= GetLowest().m_data.value);
+
 			if (result > GetMax().m_data.value)
 			{
 				m_data.value = GetInfinity().m_data.value;
@@ -227,6 +231,10 @@ namespace box2d
 			assert(val.is_valid());
 
 			const auto result = intermediary_type{m_data.value} - val.m_data.value;
+			
+			assert(result <= GetMax().m_data.value);
+			assert(result >= GetLowest().m_data.value);
+
 			if (result > GetMax().m_data.value)
 			{
 				m_data.value = GetInfinity().m_data.value;
