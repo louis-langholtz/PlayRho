@@ -402,34 +402,32 @@ struct Mat33
 	constexpr Mat33(const Vec3 c1, const Vec3 c2, const Vec3 c3) noexcept:
 		ex{c1}, ey{c2}, ez{c3} {}
 
-	/// Solve A * x = b, where b is a column vector. This is more efficient
-	/// than computing the inverse in one-shot cases.
-	constexpr Vec3 Solve33(const Vec3 b) const noexcept
-	{
-		auto det = Dot(ex, Cross(ey, ez));
-		if (det != RealNum{0})
-		{
-			det = RealNum{1} / det;
-		}
-		return Vec3(det * Dot(b, Cross(ey, ez)), det * Dot(ex, Cross(b, ez)), det * Dot(ex, Cross(ey, b)));
-	}
-
-	/// Solve A * x = b, where b is a column vector. This is more efficient
-	/// than computing the inverse in one-shot cases. Solve only the upper
-	/// 2-by-2 matrix equation.
-	constexpr Vec2 Solve22(const Vec2 b) const noexcept
-	{
-		const auto a11 = ex.x, a12 = ey.x, a21 = ex.y, a22 = ey.y;
-		auto det = a11 * a22 - a12 * a21;
-		if (det != RealNum{0})
-		{
-			det = RealNum{1} / det;
-		}
-		return Vec2{det * (a22 * b.x - a12 * b.y), det * (a11 * b.y - a21 * b.x)};
-	}
-
 	Vec3 ex, ey, ez;
 };
+
+/// Solve A * x = b, where b is a column vector. This is more efficient
+/// than computing the inverse in one-shot cases.
+constexpr Vec3 Solve33(const Mat33& mat, const Vec3 b) noexcept
+{
+	const auto dp = Dot(mat.ex, Cross(mat.ey, mat.ez));
+	const auto det = (dp != 0)? RealNum{1} / dp: dp;
+	const auto x = det * Dot(b, Cross(mat.ey, mat.ez));
+	const auto y = det * Dot(mat.ex, Cross(b, mat.ez));
+	const auto z = det * Dot(mat.ex, Cross(mat.ey, b));
+	return Vec3{x, y, z};
+}
+	
+/// Solve A * x = b, where b is a column vector. This is more efficient
+/// than computing the inverse in one-shot cases. Solve only the upper
+/// 2-by-2 matrix equation.
+constexpr Vec2 Solve22(const Mat33& mat, const Vec2 b) noexcept
+{
+	const auto cp = mat.ex.x * mat.ey.y - mat.ey.x * mat.ex.y;
+	const auto det = (cp != 0)? RealNum{1} / cp: cp;
+	const auto x = det * (mat.ey.y * b.x - mat.ey.x * b.y);
+	const auto y = det * (mat.ex.x * b.y - mat.ex.y * b.x);
+	return Vec2{x, y};
+}
 
 constexpr auto Mat33_zero = Mat33(Vec3_zero, Vec3_zero, Vec3_zero);
 

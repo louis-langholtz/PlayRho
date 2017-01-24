@@ -307,7 +307,7 @@ void PrismaticJoint::SolveVelocityConstraints(Span<Velocity> velocities, const S
 		const auto Cdot = Vec3{Cdot1.x, Cdot1.y, Cdot2};
 
 		const auto f1 = m_impulse;
-		m_impulse += m_K.Solve33(-Cdot);
+		m_impulse += Solve33(m_K, -Cdot);
 
 		if (m_limitState == e_atLowerLimit)
 		{
@@ -320,7 +320,7 @@ void PrismaticJoint::SolveVelocityConstraints(Span<Velocity> velocities, const S
 
 		// f2(1:2) = invK(1:2,1:2) * (-Cdot(1:2) - K(1:2,3) * (f2(3) - f1(3))) + f1(1:2)
 		const auto b = -Cdot1 - (m_impulse.z - f1.z) * Vec2{m_K.ez.x, m_K.ez.y};
-		const auto f2r = m_K.Solve22(b) + Vec2{f1.x, f1.y};
+		const auto f2r = Solve22(m_K, b) + Vec2{f1.x, f1.y};
 		m_impulse.x = f2r.x;
 		m_impulse.y = f2r.y;
 
@@ -339,7 +339,7 @@ void PrismaticJoint::SolveVelocityConstraints(Span<Velocity> velocities, const S
 	else
 	{
 		// Limit is inactive, just solve the prismatic constraint in block form.
-		const auto df = m_K.Solve22(-Cdot1);
+		const auto df = Solve22(m_K, -Cdot1);
 		m_impulse.x += df.x;
 		m_impulse.y += df.y;
 
@@ -445,7 +445,7 @@ bool PrismaticJoint::SolvePositionConstraints(Span<Position> positions, const Co
 
 		const auto C = Vec3{C1.x, C1.y, C2};
 
-		impulse = K.Solve33(-C);
+		impulse = Solve33(K, -C);
 	}
 	else
 	{

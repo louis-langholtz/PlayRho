@@ -220,7 +220,7 @@ void RevoluteJoint::SolveVelocityConstraints(Span<Velocity> velocities, const St
 		const auto Cdot2 = (wB - wA).ToRadians();
 		const auto Cdot = Vec3(Cdot1.x, Cdot1.y, Cdot2);
 
-		auto impulse = -m_mass.Solve33(Cdot);
+		auto impulse = -Solve33(m_mass, Cdot);
 
 		if (m_limitState == e_equalLimits)
 		{
@@ -232,7 +232,7 @@ void RevoluteJoint::SolveVelocityConstraints(Span<Velocity> velocities, const St
 			if (newImpulse < 0)
 			{
 				const auto rhs = -Cdot1 + m_impulse.z * Vec2{m_mass.ez.x, m_mass.ez.y};
-				const auto reduced = m_mass.Solve22(rhs);
+				const auto reduced = Solve22(m_mass, rhs);
 				impulse.x = reduced.x;
 				impulse.y = reduced.y;
 				impulse.z = -m_impulse.z;
@@ -251,7 +251,7 @@ void RevoluteJoint::SolveVelocityConstraints(Span<Velocity> velocities, const St
 			if (newImpulse > 0)
 			{
 				const auto rhs = -Cdot1 + m_impulse.z * Vec2{m_mass.ez.x, m_mass.ez.y};
-				const auto reduced = m_mass.Solve22(rhs);
+				const auto reduced = Solve22(m_mass, rhs);
 				impulse.x = reduced.x;
 				impulse.y = reduced.y;
 				impulse.z = -m_impulse.z;
@@ -277,7 +277,7 @@ void RevoluteJoint::SolveVelocityConstraints(Span<Velocity> velocities, const St
 	{
 		// Solve point-to-point constraint
 		const auto Cdot = vB + (GetRevPerpendicular(m_rB) * wB.ToRadians()) - vA - (GetRevPerpendicular(m_rA) * wA.ToRadians());
-		const auto impulse = m_mass.Solve22(-Cdot);
+		const auto impulse = Solve22(m_mass, -Cdot);
 
 		m_impulse.x += impulse.x;
 		m_impulse.y += impulse.y;
@@ -402,16 +402,6 @@ RealNum RevoluteJoint::GetReactionTorque(RealNum inv_dt) const
 	return inv_dt * m_impulse.z;
 }
 
-Angle box2d::GetJointAngle(const RevoluteJoint& joint)
-{
-	return joint.GetBodyB()->GetAngle() - joint.GetBodyA()->GetAngle() - joint.GetReferenceAngle();
-}
-
-Angle box2d::GetJointSpeed(const RevoluteJoint& joint)
-{
-	return joint.GetBodyB()->GetVelocity().angular - joint.GetBodyA()->GetVelocity().angular;
-}
-
 void RevoluteJoint::EnableMotor(bool flag)
 {
 	GetBodyA()->SetAwake();
@@ -461,4 +451,14 @@ void RevoluteJoint::SetLimits(Angle lower, Angle upper)
 		m_lowerAngle = lower;
 		m_upperAngle = upper;
 	}
+}
+
+Angle box2d::GetJointAngle(const RevoluteJoint& joint)
+{
+	return joint.GetBodyB()->GetAngle() - joint.GetBodyA()->GetAngle() - joint.GetReferenceAngle();
+}
+
+Angle box2d::GetJointSpeed(const RevoluteJoint& joint)
+{
+	return joint.GetBodyB()->GetVelocity().angular - joint.GetBodyA()->GetVelocity().angular;
 }

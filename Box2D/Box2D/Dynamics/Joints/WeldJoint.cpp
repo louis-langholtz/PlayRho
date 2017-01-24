@@ -264,7 +264,7 @@ bool WeldJoint::SolvePositionConstraints(Span<Position> positions, const Constra
 		positionError = GetLength(C1);
 		angularError = RealNum{0};
 
-		const auto P = -K.Solve22(C1);
+		const auto P = -Solve22(K, C1);
 
 		cA -= mA * P;
 		aA -= 1_rad * iA * Cross(rA, P);
@@ -285,11 +285,11 @@ bool WeldJoint::SolvePositionConstraints(Span<Position> positions, const Constra
 		Vec3 impulse;
 		if (K.ez.z > RealNum{0})
 		{
-			impulse = -K.Solve33(C);
+			impulse = -Solve33(K, C);
 		}
 		else
 		{
-			const auto impulse2 = -K.Solve22(C1);
+			const auto impulse2 = -Solve22(K, C1);
 			impulse = Vec3(impulse2.x, impulse2.y, RealNum{0});
 		}
 
