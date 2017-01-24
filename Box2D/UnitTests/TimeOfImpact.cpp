@@ -145,7 +145,7 @@ TEST(TimeOfImpact, CollideCirclesVertically)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
-	EXPECT_TRUE(almost_equal(output.get_t(), RealNum(0.47500378)));
+	EXPECT_EQ(output.get_t(), RealNum(0.4750375f));
 	EXPECT_EQ(output.get_toi_iters(), 2);
 }
 
@@ -168,7 +168,7 @@ TEST(TimeOfImpact, CirclesPassingParallelSeparatedPathsDontCollide)
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_separated);
 	EXPECT_TRUE(almost_equal(output.get_t(), RealNum(1.0)));
-	EXPECT_EQ(output.get_toi_iters(), 8);
+	EXPECT_EQ(output.get_toi_iters(), 7);
 }
 
 TEST(TimeOfImpact, RodCircleMissAt360)
@@ -209,7 +209,7 @@ TEST(TimeOfImpact, RodCircleHitAt180)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
-	EXPECT_TRUE(almost_equal(output.get_t(), RealNum(0.48840469)));
+	EXPECT_EQ(output.get_t(), RealNum(0.4884203672409058));
 	EXPECT_EQ(output.get_toi_iters(), 3);
 }
 
@@ -230,7 +230,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_1)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
-	EXPECT_TRUE(almost_equal(output.get_t(), RealNum(0.49750039)));
+	EXPECT_EQ(output.get_t(), RealNum(0.4975037276744843));
 	EXPECT_EQ(output.get_toi_iters(), 2);
 	EXPECT_EQ(output.get_max_dist_iters(), 1);
 	EXPECT_EQ(output.get_max_root_iters(), 2);
@@ -255,12 +255,12 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
-	EXPECT_EQ(output.get_t(), RealNum(0.99750036));
+	EXPECT_EQ(output.get_t(), RealNum(0.9975037574768066));
 	EXPECT_EQ(output.get_toi_iters(), 2);
 	EXPECT_EQ(output.get_max_dist_iters(), 1);
-	EXPECT_EQ(output.get_max_root_iters(), 6);
+	EXPECT_EQ(output.get_max_root_iters(), 2);
 	EXPECT_EQ(output.get_sum_dist_iters(), 2);
-	EXPECT_EQ(output.get_sum_root_iters(), 6);
+	EXPECT_EQ(output.get_sum_root_iters(), 2);
 
 #if 0
 	ASSERT_EQ(output.get_state(), TOIOutput::e_touching);
@@ -294,7 +294,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
 #endif
 }
 
-TEST(TimeOfImpact, FailsWithClosingSpeedOf1600)
+TEST(TimeOfImpact, WithClosingSpeedOf1600)
 {
 	const auto radius = RealNum(1);
 	const auto x = RealNum(400);
@@ -310,13 +310,14 @@ TEST(TimeOfImpact, FailsWithClosingSpeedOf1600)
 		.UseTolerance(0.001f / 4);
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
 	
-	EXPECT_EQ(output.get_state(), TOIOutput::e_failed);
-	EXPECT_TRUE(almost_equal(output.get_t(), RealNum(0.49875015)));
-	EXPECT_EQ(output.get_toi_iters(), 1);
+	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
+	EXPECT_EQ(output.get_t(), RealNum(0.4987518787384033));
+	//std::cout << std::setprecision(std::numeric_limits<double>::digits10 + 1) << output.get_t() << std::defaultfloat << std::endl;
+	EXPECT_EQ(output.get_toi_iters(), 2);
 	EXPECT_EQ(output.get_max_dist_iters(), 1);
-	EXPECT_EQ(output.get_max_root_iters(), 4);
-	EXPECT_EQ(output.get_sum_dist_iters(), 1);
-	EXPECT_EQ(output.get_sum_root_iters(), 4);
+	EXPECT_EQ(output.get_max_root_iters(), 2);
+	EXPECT_EQ(output.get_sum_dist_iters(), 2);
+	EXPECT_EQ(output.get_sum_root_iters(), 2);
 }
 
 TEST(TimeOfImpact, ForNonCollidingShapesFailsIn27)
