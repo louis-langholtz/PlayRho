@@ -256,12 +256,12 @@ namespace box2d
 			assert(val.is_valid());
 
 			const auto product = intermediary_type{m_data.value} * intermediary_type{val.m_data.value};
-			const auto res = (product + ScaleFactor/2) / ScaleFactor;
+			const auto result = (product + ScaleFactor/2) / ScaleFactor;
 			
-			assert(res <= numeric_limits::max());
-			assert(res >= numeric_limits::lowest());
+			assert(result <= GetMax().m_data.value);
+			assert(result >= GetLowest().m_data.value);
 			
-			m_data.value = static_cast<value_type>(res);
+			m_data.value = static_cast<value_type>(result);
 			return *this;
 		}
 
@@ -271,12 +271,12 @@ namespace box2d
 			assert(val.is_valid());
 
 			const auto product = intermediary_type{m_data.value} * ScaleFactor;
-			const auto res = product / val.m_data.value;
+			const auto result = product / val.m_data.value;
 			
-			assert(res <= numeric_limits::max());
-			assert(res >= numeric_limits::lowest());
+			assert(result <= GetMax().m_data.value);
+			assert(result >= GetLowest().m_data.value);
 			
-			m_data.value = static_cast<value_type>(res);
+			m_data.value = static_cast<value_type>(result);
 			return *this;
 		}
 		
