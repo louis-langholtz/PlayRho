@@ -95,12 +95,6 @@ public:
 	/// Get the reference angle.
 	Angle GetReferenceAngle() const noexcept { return m_referenceAngle; }
 
-	/// Get the current joint angle in radians.
-	Angle GetJointAngle() const;
-
-	/// Get the current joint angle speed in radians per second.
-	Angle GetJointSpeed() const;
-
 	/// Is the joint limit enabled?
 	bool IsLimitEnabled() const noexcept;
 
@@ -207,6 +201,12 @@ inline RealNum RevoluteJoint::GetMotorSpeed() const noexcept
 {
 	return m_motorSpeed;
 }
+
+/// Get the current joint angle in radians.
+Angle GetJointAngle(const RevoluteJoint& joint);
+	
+/// Get the current joint angle speed in radians per second.
+Angle GetJointSpeed(const RevoluteJoint& joint);
 
 } // namespace box2d
 
