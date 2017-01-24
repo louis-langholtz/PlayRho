@@ -135,9 +135,9 @@ private:
 	Vec2 m_localXAxisA;
 	Vec2 m_localYAxisA;
 
-	RealNum m_impulse;
-	RealNum m_motorImpulse;
-	RealNum m_springImpulse;
+	RealNum m_impulse = 0;
+	RealNum m_motorImpulse = 0;
+	RealNum m_springImpulse = 0;
 
 	RealNum m_maxMotorTorque;
 	Angle m_motorSpeed;
@@ -148,21 +148,24 @@ private:
 	index_t m_indexB;
 	Vec2 m_localCenterA;
 	Vec2 m_localCenterB;
+	
 	RealNum m_invMassA;
 	RealNum m_invMassB;
 	RealNum m_invIA;
 	RealNum m_invIB;
 
-	Vec2 m_ax, m_ay;
+	Vec2 m_ax = Vec2_zero;
+	Vec2 m_ay = Vec2_zero;
+
 	RealNum m_sAx, m_sBx;
 	RealNum m_sAy, m_sBy;
 
-	RealNum m_mass;
-	RealNum m_motorMass;
-	RealNum m_springMass;
+	RealNum m_mass = 0;
+	RealNum m_motorMass = 0;
+	RealNum m_springMass = 0;
 
-	RealNum m_bias;
-	RealNum m_gamma;
+	RealNum m_bias = 0;
+	RealNum m_gamma = 0;
 };
 
 inline Angle WheelJoint::GetMotorSpeed() const

@@ -56,26 +56,11 @@ WheelJoint::WheelJoint(const WheelJointDef& def)
 	m_localAnchorB = def.localAnchorB;
 	m_localXAxisA = def.localAxisA;
 	m_localYAxisA = GetRevPerpendicular(m_localXAxisA);
-
-	m_mass = RealNum{0};
-	m_impulse = RealNum{0};
-	m_motorMass = RealNum{0};
-	m_motorImpulse = RealNum{0};
-	m_springMass = RealNum{0};
-	m_springImpulse = RealNum{0};
-
 	m_maxMotorTorque = def.maxMotorTorque;
 	m_motorSpeed = def.motorSpeed;
 	m_enableMotor = def.enableMotor;
-
 	m_frequencyHz = def.frequencyHz;
 	m_dampingRatio = def.dampingRatio;
-
-	m_bias = RealNum{0};
-	m_gamma = RealNum{0};
-
-	m_ax = Vec2_zero;
-	m_ay = Vec2_zero;
 }
 
 void WheelJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf& conf)
