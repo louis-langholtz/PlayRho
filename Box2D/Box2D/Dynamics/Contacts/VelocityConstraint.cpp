@@ -75,8 +75,11 @@ void VelocityConstraint::Update(const WorldManifold& worldManifold,
 		const auto k12 = totalInvMass + (bodyA.GetInvRotI() * rn1A * rn2A)  + (bodyB.GetInvRotI() * rn1B * rn2B);
 		
 		// Ensure a reasonable condition number.
-		constexpr auto k_maxConditionNumber = BOX2D_MAGIC(RealNum(1000));
-		if (Square(k11) < (k_maxConditionNumber * (k11 * k22 - Square(k12))))
+		constexpr auto maxCondNum = BOX2D_MAGIC(RealNum(1000));
+		const auto k11_squared = Square(k11);
+		const auto scaled_k11_squared = k11_squared / maxCondNum;
+		const auto k11_times_k22 = k11 * k22;
+		if (scaled_k11_squared < (k11_times_k22 - Square(k12))) 
 		{
 			// K is safe to invert.
 			SetK(Mat22{Vec2{k11, k12}, Vec2{k12, k22}});

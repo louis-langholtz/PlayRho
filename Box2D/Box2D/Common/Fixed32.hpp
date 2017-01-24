@@ -42,14 +42,24 @@ namespace box2d
 			return Fixed32{internal_type{1}};
 		}
 		
-		static constexpr Fixed32 GetMax() noexcept
+		static constexpr Fixed32 GetInfinity() noexcept
 		{
 			return Fixed32{internal_type{numeric_limits::max()}};
 		}
 		
-		static constexpr Fixed32 GetLowest() noexcept
+		static constexpr Fixed32 GetNegativeInfinity() noexcept
 		{
 			return Fixed32{internal_type{numeric_limits::lowest()}};
+		}
+		
+		static constexpr Fixed32 GetMax() noexcept
+		{
+			return Fixed32{internal_type{numeric_limits::max() - 1}};
+		}
+		
+		static constexpr Fixed32 GetLowest() noexcept
+		{
+			return Fixed32{internal_type{numeric_limits::lowest() + 1}};
 		}
 
 		Fixed32() = default;
@@ -192,21 +202,51 @@ namespace box2d
 		
 		constexpr Fixed32& operator+= (Fixed32 val) noexcept
 		{
-			// TODO bounds check for over or under flow
-			m_data.value += val.m_data.value;
+			assert(is_valid());
+			assert(val.is_valid());
+
+			const auto result = intermediary_type{m_data.value} + val.m_data.value;
+			if (result > GetMax().m_data.value)
+			{
+				m_data.value = GetInfinity().m_data.value;
+			}
+			else if (result < GetLowest().m_data.value)
+			{
+				m_data.value = GetNegativeInfinity().m_data.value;
+			}
+			else
+			{
+				m_data.value = static_cast<value_type>(result);
+			}
 			return *this;
 		}
 
 		constexpr Fixed32& operator-= (Fixed32 val) noexcept
 		{
-			// TODO bounds check for over or under flow
-			m_data.value -= val.m_data.value;
+			assert(is_valid());
+			assert(val.is_valid());
+
+			const auto result = intermediary_type{m_data.value} - val.m_data.value;
+			if (result > GetMax().m_data.value)
+			{
+				m_data.value = GetInfinity().m_data.value;
+			}
+			else if (result < GetLowest().m_data.value)
+			{
+				m_data.value = GetNegativeInfinity().m_data.value;
+			}
+			else
+			{
+				m_data.value = static_cast<value_type>(result);
+			}
 			return *this;
 		}
 
 		constexpr Fixed32& operator*= (Fixed32 val) noexcept
 		{
-			// TODO bounds check for over or under flow
+			assert(is_valid());
+			assert(val.is_valid());
+
 			const auto product = intermediary_type{m_data.value} * intermediary_type{val.m_data.value};
 			const auto res = (product + ScaleFactor/2) / ScaleFactor;
 			
@@ -219,7 +259,9 @@ namespace box2d
 
 		constexpr Fixed32& operator/= (Fixed32 val) noexcept
 		{
-			// TODO bounds check for over or under flow
+			assert(is_valid());
+			assert(val.is_valid());
+
 			const auto product = intermediary_type{m_data.value} * ScaleFactor;
 			const auto res = product / val.m_data.value;
 			
@@ -232,6 +274,9 @@ namespace box2d
 		
 		constexpr Fixed32& operator%= (Fixed32 val) noexcept
 		{
+			assert(is_valid());
+			assert(val.is_valid());
+
 			m_data.value %= val.m_data.value;
 			return *this;
 		}
@@ -274,6 +319,12 @@ namespace box2d
 			m_data{val}
 		{
 			// Intentionally empty.
+		}
+		
+		constexpr bool is_valid() const noexcept
+		{
+			return (m_data.value > GetNegativeInfinity().m_data.value)
+				&& (m_data.value < GetInfinity().m_data.value);
 		}
 		
 		internal_type m_data;

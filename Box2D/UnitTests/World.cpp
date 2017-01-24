@@ -488,9 +488,9 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 		Step(world, time_inc, 0, 0);
 		++steps;
 		
-		EXPECT_EQ(body_a->GetLocation().x, pos_a.x + x * time_inc);
+		EXPECT_TRUE(almost_equal(body_a->GetLocation().x, pos_a.x + x * time_inc));
 		EXPECT_EQ(body_a->GetLocation().y, 0);
-		EXPECT_EQ(body_b->GetLocation().x, pos_b.x - x * time_inc);
+		EXPECT_TRUE(almost_equal(body_b->GetLocation().x, pos_b.x - x * time_inc));
 		EXPECT_EQ(body_b->GetLocation().y, 0);
 
 		EXPECT_EQ(GetLinearVelocity(*body_a).x, +x);
@@ -694,7 +694,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 	fixtureDef.density = RealNum(1);
 	fixtureDef.restitution = RealNum(1); // changes where bodies will be after collision
 	
-	const auto body1pos = Vec2{RealNum(-radius/4), RealNum(0)};
+	const auto body1pos = Vec2{-radius/4, 0};
 	body_def.position = body1pos;
 	const auto body1 = world.CreateBody(body_def);
 	{
@@ -704,7 +704,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 	ASSERT_EQ(body1->GetLocation().x, body_def.position.x);
 	ASSERT_EQ(body1->GetLocation().y, body_def.position.y);
 	
-	const auto body2pos = Vec2{RealNum(radius/4), RealNum(0)};
+	const auto body2pos = Vec2{+radius/4, 0};
 	body_def.position = body2pos;
 	const auto body2 = world.CreateBody(body_def);
 	{
@@ -718,11 +718,12 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 	auto distance = GetLength(position_diff);
 
 	const auto angle = GetAngle(position_diff);
+	ASSERT_EQ(angle, 0_deg);
 
 	auto lastpos1 = body1->GetLocation();
 	auto lastpos2 = body2->GetLocation();
 
-	const auto time_inc = RealNum(.01);
+	const auto time_inc = RealNum(.01f);
 	// Solver won't separate more than -world.GetLinearSlop().
 	const auto full_separation = radius * 2 - world.GetLinearSlop();
 	for (auto i = 0; i < 100; ++i)
@@ -737,20 +738,26 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 			break;
 		}
 		
+		ASSERT_GE(new_distance, distance);
+
 		if (new_distance == distance)
+		{
+			// position resolution has come to tolerance
+			ASSERT_GE(new_distance, radius * 2 - world.GetLinearSlop() * 4);
+			break;
+		}
+		else // new_distance > distance
 		{
 			if (std::cos(angle.ToRadians()) != 0)
 			{
-				EXPECT_NE(body1->GetLocation().x, lastpos1.x);
-				EXPECT_NE(body2->GetLocation().x, lastpos2.x);
+				EXPECT_LT(body1->GetLocation().x, lastpos1.x);
+				EXPECT_GT(body2->GetLocation().x, lastpos2.x);
 			}
 			if (std::sin(angle.ToRadians()) != 0)
 			{
-				EXPECT_NE(body1->GetLocation().y, lastpos1.y);
-				EXPECT_NE(body2->GetLocation().y, lastpos2.y);
+				EXPECT_LT(body1->GetLocation().y, lastpos1.y);
+				EXPECT_GT(body2->GetLocation().y, lastpos2.y);
 			}
-			ASSERT_GE(new_distance, RealNum(2));
-			break;
 		}
 
 		ASSERT_NE(body1->GetLocation(), lastpos1);

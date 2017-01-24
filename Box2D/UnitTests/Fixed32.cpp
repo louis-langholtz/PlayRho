@@ -29,6 +29,9 @@ TEST(Fixed32, ByteSizeIs4)
 
 TEST(Fixed32, IntConstruction)
 {
+	EXPECT_EQ(int(Fixed32(-1)), -1);
+	EXPECT_EQ(int(Fixed32(+1)), +1);
+
 	const auto range = 30000;
 	for (auto i = -range; i < range; ++i)
 	{
@@ -38,6 +41,9 @@ TEST(Fixed32, IntConstruction)
 
 TEST(Fixed32, FloatConstruction)
 {
+	EXPECT_EQ(float(Fixed32(-1)), -1.0f);
+	EXPECT_EQ(float(Fixed32(+1)), +1.0f);
+
 	const auto range = 30000;
 	for (auto i = -range; i < range; ++i)
 	{
@@ -150,9 +156,13 @@ TEST(Fixed32, Cos)
 
 TEST(Fixed32, Max)
 {
+	const auto max_internal_val = std::numeric_limits<int32_t>::max() - 1;
+	const auto max_fixed32 = *reinterpret_cast<const Fixed32*>(&max_internal_val);
+	
 	EXPECT_EQ(Fixed32::GetMax(), Fixed32::GetMax());
-	EXPECT_EQ(Fixed32::GetMax(), Fixed32((1 << (31u - Fixed32::FractionBits)) - 1, (1u << Fixed32::FractionBits) - 1u));
-	EXPECT_EQ(static_cast<long double>(Fixed32::GetMax()), 131071.99993896484375000000L);
+	EXPECT_EQ(Fixed32::GetMax(), max_fixed32);
+	//EXPECT_EQ(static_cast<long double>(Fixed32::GetMax()), 131071.99993896484375000000L);
+	EXPECT_EQ(static_cast<long double>(Fixed32::GetMax()), 131071.99987792968750000000L);
 
 	EXPECT_GT(Fixed32::GetMax(), Fixed32(0));
 	EXPECT_GT(Fixed32::GetMax(), Fixed32::GetMin());
@@ -174,9 +184,13 @@ TEST(Fixed32, Min)
 
 TEST(Fixed32, Lowest)
 {
+	const auto lowest_internal_val = std::numeric_limits<int32_t>::min() + 1;
+	const auto lowest_fixed32 = *reinterpret_cast<const Fixed32*>(&lowest_internal_val);
+
 	EXPECT_EQ(Fixed32::GetLowest(), Fixed32::GetLowest());
-	EXPECT_EQ(Fixed32::GetLowest(), Fixed32(-(1 << (31u - Fixed32::FractionBits)), 0));
-	EXPECT_EQ(static_cast<long double>(Fixed32::GetLowest()), -131072.00000000000000000000L);
+	EXPECT_EQ(Fixed32::GetLowest(), lowest_fixed32);
+	//EXPECT_EQ(static_cast<long double>(Fixed32::GetLowest()), -131072.00000000000000000000L);
+	EXPECT_EQ(static_cast<long double>(Fixed32::GetLowest()), -131071.99993896484375000000L);
 
 	EXPECT_LT(Fixed32::GetLowest(), Fixed32(0));
 	EXPECT_LT(Fixed32::GetLowest(), Fixed32(-((1 << (31u - Fixed32::FractionBits)) - 1), 0u));
@@ -184,12 +198,14 @@ TEST(Fixed32, Lowest)
 	EXPECT_LT(Fixed32::GetLowest(), -Fixed32::GetMax());
 }
 
-TEST(Fixed32, LowestWrapsAroundToMax)
+TEST(Fixed32, SubtractingFromLowestGetsNegativeInfinity)
 {
-	EXPECT_EQ(Fixed32::GetLowest() - Fixed32::GetMin(), Fixed32::GetMax());
+	EXPECT_EQ(Fixed32::GetLowest() - Fixed32::GetMin(), Fixed32::GetNegativeInfinity());
+	EXPECT_EQ(Fixed32::GetLowest() - 1, Fixed32::GetNegativeInfinity());
 }
 
-TEST(Fixed32, MaxWrapsAroundToLowest)
+TEST(Fixed32, AddingToMaxGetsInfinity)
 {
-	EXPECT_EQ(Fixed32::GetMax() + Fixed32::GetMin(), Fixed32::GetLowest());
+	EXPECT_EQ(Fixed32::GetMax() + Fixed32::GetMin(), Fixed32::GetInfinity());
+	EXPECT_EQ(Fixed32::GetMax() + 1, Fixed32::GetInfinity());
 }

@@ -194,7 +194,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 				const auto t = (roots & 1)? a1 + (target - s1) * (a2 - a1) / (s2 - s1): (a1 + a2) / 2;
 				
 				// Using secant method, t may equal a2 now.
-				assert(t != a1);
+				//assert(t != a1);
 				++roots;
 
 				// If t == a1 or t == a2 then, there's a precision/rounding problem.

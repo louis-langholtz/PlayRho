@@ -57,7 +57,7 @@ TEST(TOIOutput, InitConstruction)
 
 TEST(TimeOfImpact, Overlapped)
 {
-	const auto limits = ToiConf{1, RealNum(0.0001) * 3, RealNum(0.0001) / 4};
+	const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(0.001f * 3).UseTolerance(0.001f / 4);
 
 	const auto radius = RealNum(1);
 	const auto proxyA = DistanceProxy{radius, Vec2_zero};
@@ -381,7 +381,7 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
 		}
 	};
 	
-	auto shapeB = PolygonShape{0.0001f * 2};
+	auto shapeB = PolygonShape{RealNum{0.0001f * 2}};
 	shapeB.SetAsBox(0.5f, 0.5f);
 	const auto dpB = GetDistanceProxy(shapeB, 0);
 	

@@ -54,7 +54,7 @@ using uint64 = std::uint64_t;
 
 /// Box2D real-number type.
 /// This can be Fixed32, float, double, or long double.
-using RealNum = float;
+using RealNum = float; // Fixed32;
 
 /// Child count type. @detail Relating to "children" of Shape.
 using child_count_t = unsigned;

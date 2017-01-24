@@ -46,9 +46,21 @@ template <typename T>
 bool IsValid(const T& value) noexcept;
 	
 template <>
-constexpr RealNum GetInvalid() noexcept
+constexpr float GetInvalid() noexcept
 {
-	return std::numeric_limits<RealNum>::signaling_NaN();
+	return std::numeric_limits<float>::signaling_NaN();
+}
+
+template <>
+constexpr double GetInvalid() noexcept
+{
+	return std::numeric_limits<double>::signaling_NaN();
+}
+
+template <>
+constexpr Fixed32 GetInvalid() noexcept
+{
+	return Fixed32::GetInfinity();
 }
 
 /// This function is used to ensure that a floating point number is not a NaN or infinity.
@@ -61,7 +73,7 @@ inline bool IsValid(const float& x) noexcept
 template <>
 inline bool IsValid(const Fixed32& x) noexcept
 {
-	return true;
+	return (x != Fixed32::GetInfinity()) && (x != Fixed32::GetNegativeInfinity());
 }
 
 template <>
@@ -110,7 +122,7 @@ constexpr inline Angle Abs(Angle a)
 }
 
 template <typename T>
-inline T round(T value, unsigned precision = 1000000);
+inline T round(T value, unsigned precision = 100000);
 
 template <>
 inline float round(float value, uint32_t precision)

@@ -66,7 +66,7 @@ TEST(MassData, GetForCircle)
 
 TEST(MassData, GetForZeroVertexRadiusRectangle)
 {
-	auto shape = PolygonShape(0);
+	auto shape = PolygonShape(RealNum{0});
 	shape.SetAsBox(4, 1);
 	ASSERT_EQ(shape.GetCentroid().x, RealNum(0));
 	ASSERT_EQ(shape.GetCentroid().y, RealNum(0));
