@@ -308,6 +308,10 @@ static inline Manifold GetFaceManifold(const Manifold::Type type,
 						//manifold.AddPoint(cp.cf.typeB, cp.cf.indexB, InverseTransform(cp.v, xf2));
 					}
 				}
+				if (manifold.GetPointCount() == 0)
+				{
+					break;
+				}
 				return manifold;
 			}
 			case Manifold::e_faceB:
@@ -319,6 +323,10 @@ static inline Manifold GetFaceManifold(const Manifold::Type type,
 					{
 						manifold.AddPoint(Manifold::Point{InverseTransform(cp.v, xf2), Flip(cp.cf)});
 					}
+				}
+				if (manifold.GetPointCount() == 0)
+				{
+					break;
 				}
 				return manifold;
 			}
