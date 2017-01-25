@@ -84,10 +84,10 @@ public:
 	RealNum GetReactionTorque(RealNum inv_dt) const override;
 
 	/// Get the first ground anchor.
-	Vec2 GetGroundAnchorA() const;
+	Vec2 GetGroundAnchorA() const noexcept;
 
 	/// Get the second ground anchor.
-	Vec2 GetGroundAnchorB() const;
+	Vec2 GetGroundAnchorB() const noexcept;
 
 	/// Get the current length of the segment attached to bodyA.
 	RealNum GetLengthA() const noexcept;
@@ -97,12 +97,6 @@ public:
 
 	/// Get the pulley ratio.
 	RealNum GetRatio() const noexcept;
-
-	/// Get the current length of the segment attached to bodyA.
-	RealNum GetCurrentLengthA() const;
-
-	/// Get the current length of the segment attached to bodyB.
-	RealNum GetCurrentLengthB() const;
 
 	/// Implement Joint::ShiftOrigin
 	void ShiftOrigin(const Vec2 newOrigin) override;
@@ -123,7 +117,7 @@ private:
 	Vec2 m_localAnchorB;
 	RealNum m_constant;
 	RealNum m_ratio;
-	RealNum m_impulse;
+	RealNum m_impulse = 0;
 
 	// Solver temp
 	index_t m_indexA;
@@ -151,6 +145,16 @@ inline Vec2 PulleyJoint::GetLocalAnchorB() const noexcept
 	return m_localAnchorB;
 }
 
+inline Vec2 PulleyJoint::GetGroundAnchorA() const noexcept
+{
+	return m_groundAnchorA;
+}
+
+inline Vec2 PulleyJoint::GetGroundAnchorB() const noexcept
+{
+	return m_groundAnchorB;
+}
+	
 inline RealNum PulleyJoint::GetLengthA() const noexcept
 {
 	return m_lengthA;
@@ -165,6 +169,12 @@ inline RealNum PulleyJoint::GetRatio() const noexcept
 {
 	return m_ratio;
 }
+
+/// Get the current length of the segment attached to bodyA.
+RealNum GetCurrentLengthA(const PulleyJoint& joint);
+
+/// Get the current length of the segment attached to bodyB.
+RealNum GetCurrentLengthB(const PulleyJoint& joint);
 
 } // namespace box2d
 

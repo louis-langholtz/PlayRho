@@ -67,7 +67,6 @@ PulleyJoint::PulleyJoint(const PulleyJointDef& def)
 	m_lengthB = def.lengthB;
 	m_ratio = def.ratio;
 	m_constant = def.lengthA + m_ratio * def.lengthB;
-	m_impulse = RealNum{0};
 }
 
 void PulleyJoint::InitVelocityConstraints(Span<Velocity> velocities,
@@ -264,24 +263,14 @@ RealNum PulleyJoint::GetReactionTorque(RealNum inv_dt) const
 	return RealNum{0};
 }
 
-Vec2 PulleyJoint::GetGroundAnchorA() const
+RealNum box2d::GetCurrentLengthA(const PulleyJoint& joint)
 {
-	return m_groundAnchorA;
+	return GetLength(GetWorldPoint(*joint.GetBodyA(), joint.GetLocalAnchorA()) - joint.GetGroundAnchorA());
 }
 
-Vec2 PulleyJoint::GetGroundAnchorB() const
+RealNum box2d::GetCurrentLengthB(const PulleyJoint& joint)
 {
-	return m_groundAnchorB;
-}
-
-RealNum PulleyJoint::GetCurrentLengthA() const
-{
-	return GetLength(GetWorldPoint(*GetBodyA(), m_localAnchorA) - m_groundAnchorA);
-}
-
-RealNum PulleyJoint::GetCurrentLengthB() const
-{
-	return GetLength(GetWorldPoint(*GetBodyB(), m_localAnchorB) - m_groundAnchorB);
+	return GetLength(GetWorldPoint(*joint.GetBodyB(), joint.GetLocalAnchorB()) - joint.GetGroundAnchorB());
 }
 
 void PulleyJoint::ShiftOrigin(const Vec2 newOrigin)
