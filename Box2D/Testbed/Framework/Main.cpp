@@ -22,6 +22,8 @@
 #include "DebugDraw.hpp"
 #include "Test.hpp"
 #include <sstream>
+#include <iostream>
+#include <iomanip>
 
 #if defined(__APPLE__)
 #include <OpenGL/gl3.h>
@@ -424,13 +426,6 @@ static void sInterface()
 			ui.chooseTest = !ui.chooseTest;
 		}
 
-		imguiLabel("Zoom Factor:");
-		{
-			std::stringstream stream;
-			stream << g_camera.m_zoom;
-			imguiValue(stream.str().c_str());
-		}
-
 		imguiSeparatorLine();
 
 		imguiSlider("Reg Vel Iters", &settings.regVelocityIterations, 0, 50, 1, true);
@@ -476,11 +471,9 @@ static void sInterface()
 			settings.drawCOMs = !settings.drawCOMs;
 		if (imguiCheck("Statistics", settings.drawStats, true))
 			settings.drawStats = !settings.drawStats;
-		if (imguiCheck("Profile", settings.drawProfile, true))
-			settings.drawProfile = !settings.drawProfile;
-
-		if (imguiButton("Pause", true))
+		if (imguiCheck("Pause", settings.pause, true))
 			settings.pause = !settings.pause;
+
 		if (imguiButton("Single Step", true))
 			settings.singleStep = !settings.singleStep;
 		if (imguiButton("Restart", true))
@@ -525,7 +518,7 @@ int main(int argc, char** argv)
 #endif
 
 	g_camera.m_width = 1024; // 1152;
-	g_camera.m_height = 900; // 864;
+	g_camera.m_height = 840; // 864;
     
 	if (glfwInit() == 0)
 	{
@@ -623,9 +616,18 @@ int main(int argc, char** argv)
 			frameTime = alpha * frameTime + (1.0 - alpha) * (time2 - time1);
 			time1 = time2;
 
-			char buffer[32];
-			snprintf(buffer, 32, "%.1f ms", 1000.0 * frameTime);
-			AddGfxCmdText(5, 5, TEXT_ALIGN_LEFT, buffer, static_cast<unsigned int>(WHITE));
+			{
+				std::stringstream stream;
+				stream << std::setprecision(1);
+				stream << std::fixed;
+				stream << (1000.0 * frameTime) << "ms";
+				//stream << std::defaultfloat;
+				stream << std::setprecision(4);
+				stream << " Zoom=" << g_camera.m_zoom;
+				stream << " Center=";
+				stream << "{" << g_camera.m_center.x << "," << g_camera.m_center.y << "}";
+				AddGfxCmdText(5, 5, TEXT_ALIGN_LEFT, stream.str().c_str(), static_cast<unsigned int>(WHITE));
+			}
 			
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
