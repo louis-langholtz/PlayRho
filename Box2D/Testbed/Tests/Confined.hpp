@@ -25,8 +25,8 @@ namespace box2d {
 class Confined : public Test
 {
 public:
-	const RealNum wall_length = RealNum(0.05); // 20
-	const RealNum vertexRadiusIncrement = wall_length / 80;
+	const RealNum wall_length = RealNum(LinearSlop * 100); // 20
+	const RealNum vertexRadiusIncrement = wall_length / 40;
 	
 	enum
 	{
@@ -110,11 +110,14 @@ public:
 		bd.type = BodyType::Dynamic;
 		bd.bullet = m_bullet_mode;
 		bd.position = Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));
+		bd.userData = reinterpret_cast<void*>(m_sequence);
 		//bd.allowSleep = false;
 
 		const auto body = m_world->CreateBody(bd);
 		
 		body->CreateFixture(std::make_shared<CircleShape>(radius, Vec2_zero), fd);
+
+		++m_sequence;
 	}
 
 	void CreateBox()
@@ -129,8 +132,11 @@ public:
 		bd.type = BodyType::Dynamic;
 		bd.bullet = m_bullet_mode;
 		bd.position = Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));
+		bd.userData = reinterpret_cast<void*>(m_sequence);
 		const auto body = m_world->CreateBody(bd);
 		body->CreateFixture(std::make_shared<PolygonShape>(side_length/2, side_length/2), fd);
+
+		++m_sequence;
 	}
 
 	void ToggleBulletMode()
@@ -236,7 +242,8 @@ public:
 			}
 			
 			const auto location = b.GetLocation();
-			drawer.DrawString(location, "B%d", i);
+			const auto userData = b.GetUserData();
+			drawer.DrawString(location, "B%d", reinterpret_cast<decltype(m_sequence)>(userData));
 		}
 		
 		drawer.DrawString(5, m_textLine, "Press 'c' to create a circle.");
@@ -257,6 +264,7 @@ public:
 	bool m_bullet_mode = false;
 	RealNum m_enclosureVertexRadius = vertexRadiusIncrement;
 	Body* m_enclosure = nullptr;
+	size_t m_sequence = 0;
 };
 
 } // namespace box2d
