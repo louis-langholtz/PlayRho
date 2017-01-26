@@ -45,7 +45,9 @@ public:
 
 			RealNum hs[10] = {0.25f, 1.0f, 4.0f, 0.0f, 0.0f, -1.0f, -2.0f, -2.0f, -1.25f, 0.0f};
 
-			auto x = RealNum{20.0f}, y1 = RealNum{0.0f}, dx = RealNum{5.0f};
+			auto x = RealNum{20.0f};
+			auto y1 = RealNum{0.0f};
+			const auto dx = RealNum{5.0f};
 
 			for (auto i = 0; i < 10; ++i)
 			{
