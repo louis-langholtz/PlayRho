@@ -28,7 +28,7 @@
 #include <cstdint>
 #include <algorithm>
 
-#include <Box2D/Common/Fixed32.hpp>
+#include <Box2D/Common/Fixed.hpp>
 
 #define BOX2D_NOT_USED(x) ((void)(x))
 #define BOX2D_MAGIC(x) (x)

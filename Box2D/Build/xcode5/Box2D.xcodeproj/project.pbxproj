@@ -27,10 +27,8 @@
 		4726DD391D387D630012A882 /* Manifold.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD351D387D630012A882 /* Manifold.hpp */; };
 		472724231E310BB400C64921 /* RealNum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472724221E310BB400C64921 /* RealNum.cpp */; };
 		472724251E310C7600C64921 /* float.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472724241E310C7600C64921 /* float.cpp */; };
-		4727242E1E315E1A00C64921 /* Fixed32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4727242C1E315E1A00C64921 /* Fixed32.cpp */; };
-		4727242F1E315E1A00C64921 /* Fixed32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4727242C1E315E1A00C64921 /* Fixed32.cpp */; };
-		472724301E315E1A00C64921 /* Fixed32.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4727242D1E315E1A00C64921 /* Fixed32.hpp */; };
-		472724311E315E1A00C64921 /* Fixed32.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4727242D1E315E1A00C64921 /* Fixed32.hpp */; };
+		472724301E315E1A00C64921 /* Fixed.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4727242D1E315E1A00C64921 /* Fixed.hpp */; };
+		472724311E315E1A00C64921 /* Fixed.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4727242D1E315E1A00C64921 /* Fixed.hpp */; };
 		472E301B1DBA925500DA821D /* VertexSet.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472E30181DBA925500DA821D /* VertexSet.hpp */; };
 		472E301C1DBA925500DA821D /* VertexSet.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472E30181DBA925500DA821D /* VertexSet.hpp */; };
 		472E301E1DBA98BC00DA821D /* VertexSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472E301D1DBA98BC00DA821D /* VertexSet.cpp */; };
@@ -497,8 +495,7 @@
 		4726DD351D387D630012A882 /* Manifold.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Manifold.hpp; sourceTree = "<group>"; };
 		472724221E310BB400C64921 /* RealNum.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RealNum.cpp; sourceTree = "<group>"; };
 		472724241E310C7600C64921 /* float.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = float.cpp; sourceTree = "<group>"; };
-		4727242C1E315E1A00C64921 /* Fixed32.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fixed32.cpp; sourceTree = "<group>"; };
-		4727242D1E315E1A00C64921 /* Fixed32.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Fixed32.hpp; sourceTree = "<group>"; };
+		4727242D1E315E1A00C64921 /* Fixed.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Fixed.hpp; sourceTree = "<group>"; };
 		472E30181DBA925500DA821D /* VertexSet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VertexSet.hpp; sourceTree = "<group>"; };
 		472E301D1DBA98BC00DA821D /* VertexSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexSet.cpp; sourceTree = "<group>"; };
 		47315E031E28A66100DDA856 /* RevoluteJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RevoluteJoint.cpp; sourceTree = "<group>"; };
@@ -1054,8 +1051,7 @@
 				80BB8940141C3E5900F1753A /* BlockAllocator.hpp */,
 				476162C61E245C9D002C7FB0 /* CodeDumper.cpp */,
 				476162C71E245C9D002C7FB0 /* CodeDumper.hpp */,
-				4727242C1E315E1A00C64921 /* Fixed32.cpp */,
-				4727242D1E315E1A00C64921 /* Fixed32.hpp */,
+				4727242D1E315E1A00C64921 /* Fixed.hpp */,
 				80BB8943141C3E5900F1753A /* GrowableStack.hpp */,
 				4731DE321DE1405900E7F931 /* Length.hpp */,
 				4731DE3E1DE14A9D00E7F931 /* LinearSpeed.hpp */,
@@ -1412,7 +1408,7 @@
 				472E301C1DBA925500DA821D /* VertexSet.hpp in Headers */,
 				47578BE21D8869110078CD40 /* WorldManifold.hpp in Headers */,
 				47AA5DF11C4C5FBE008AF2BA /* MouseJoint.hpp in Headers */,
-				472724311E315E1A00C64921 /* Fixed32.hpp in Headers */,
+				472724311E315E1A00C64921 /* Fixed.hpp in Headers */,
 				47AA5DF21C4C5FBE008AF2BA /* PrismaticJoint.hpp in Headers */,
 				47AA5DF31C4C5FBE008AF2BA /* PulleyJoint.hpp in Headers */,
 				47AA5DF41C4C5FBE008AF2BA /* RevoluteJoint.hpp in Headers */,
@@ -1460,7 +1456,7 @@
 				80BB8996141C3E5900F1753A /* ChainShape.hpp in Headers */,
 				4734B2211DC1340500F15E29 /* Span.hpp in Headers */,
 				80BB8998141C3E5900F1753A /* CircleShape.hpp in Headers */,
-				472724301E315E1A00C64921 /* Fixed32.hpp in Headers */,
+				472724301E315E1A00C64921 /* Fixed.hpp in Headers */,
 				80BB899A141C3E5900F1753A /* EdgeShape.hpp in Headers */,
 				80BB899C141C3E5900F1753A /* PolygonShape.hpp in Headers */,
 				4788690A1D78BE2B00AEC7F1 /* PositionConstraint.hpp in Headers */,
@@ -1807,7 +1803,6 @@
 				47AA5DBE1C4C5FBE008AF2BA /* GearJoint.cpp in Sources */,
 				47AA5DBF1C4C5FBE008AF2BA /* Joint.cpp in Sources */,
 				4731DE2D1DDF94A600E7F931 /* AABB.cpp in Sources */,
-				4727242F1E315E1A00C64921 /* Fixed32.cpp in Sources */,
 				47AA5DC01C4C5FBE008AF2BA /* MouseJoint.cpp in Sources */,
 				47AA5DC11C4C5FBE008AF2BA /* PrismaticJoint.cpp in Sources */,
 				47E841731DB4018D00E5F311 /* VelocityConstraint.cpp in Sources */,
@@ -1873,7 +1868,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4727242E1E315E1A00C64921 /* Fixed32.cpp in Sources */,
 				47AA63A81D10786F00726CA2 /* ContactIterator.cpp in Sources */,
 				4731DE2F1DDF9B6900E7F931 /* MassData.cpp in Sources */,
 				47AA63A41D1077E600726CA2 /* ContactList.cpp in Sources */,
