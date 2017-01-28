@@ -151,8 +151,8 @@ namespace box2d
 			// Intentionally empty.
 		}
 		
-		data_type m_x = std::numeric_limits<data_type>::signaling_NaN();
-		data_type m_y = std::numeric_limits<data_type>::signaling_NaN();
+		data_type m_x = GetInvalid<data_type>();
+		data_type m_y = GetInvalid<data_type>();
 	};
 		
 	/// Gets the unit vector for the given value.

@@ -16,8 +16,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef FixedPoint32_hpp
-#define FixedPoint32_hpp
+#ifndef Fixed_hpp
+#define Fixed_hpp
 
 #include <cstdint>
 #include <limits>
@@ -626,4 +626,4 @@ namespace std
 
 } // namespace std
 
-#endif /* FixedPoint32_hpp */
+#endif /* Fixed_hpp */

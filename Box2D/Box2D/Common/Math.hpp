@@ -39,66 +39,7 @@ constexpr inline Vec3 Cross(const Vec3 a, const Vec3 b) noexcept;
 constexpr bool operator == (const Vec2 a, const Vec2 b) noexcept;
 constexpr bool operator != (const Vec2 a, const Vec2 b) noexcept;
 
-template <typename T>
-constexpr inline T GetInvalid() noexcept;
-
-template <typename T>
-bool IsValid(const T& value) noexcept;
-	
-template <>
-constexpr float GetInvalid() noexcept
-{
-	return std::numeric_limits<float>::signaling_NaN();
-}
-
-template <>
-constexpr double GetInvalid() noexcept
-{
-	return std::numeric_limits<double>::signaling_NaN();
-}
-
-template <>
-constexpr Fixed32 GetInvalid() noexcept
-{
-	return Fixed32::GetInfinity();
-}
-
-template <>
-constexpr Fixed64 GetInvalid() noexcept
-{
-	return Fixed64::GetInfinity();
-}
-
-/// This function is used to ensure that a floating point number is not a NaN or infinity.
-template <>
-inline bool IsValid(const float& x) noexcept
-{
-	return !std::isnan(x); // && !std::isinf(x);
-}
-
-template <>
-inline bool IsValid(const Fixed32& x) noexcept
-{
-	return (x != Fixed32::GetInfinity()) && (x != Fixed32::GetNegativeInfinity());
-}
-
-template <>
-inline bool IsValid(const Fixed64& x) noexcept
-{
-	return (x != Fixed64::GetInfinity()) && (x != Fixed64::GetNegativeInfinity());
-}
-
-template <>
-constexpr size_t GetInvalid() noexcept
-{
-	return static_cast<size_t>(-1);
-}
-
-template <>
-inline bool IsValid(const size_t& x) noexcept
-{
-	return x != GetInvalid<size_t>();
-}
+// Addition GetInvalid and IsValid template specializations.
 
 template <>
 constexpr inline Angle GetInvalid() noexcept
@@ -111,6 +52,8 @@ inline bool IsValid(const Angle& a) noexcept
 {
 	return IsValid(a.ToRadians());
 }
+
+// Other templates.
 
 template<class T>
 constexpr inline auto Square(T t) noexcept { return t * t; }

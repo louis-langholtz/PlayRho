@@ -54,7 +54,7 @@ using uint64 = std::uint64_t;
 
 /// Box2D real-number type.
 /// This can be Fixed32, float, double, or long double.
-using RealNum = float; // Fixed32;
+using RealNum = float;
 
 /// Child count type. @detail Relating to "children" of Shape.
 using child_count_t = unsigned;
@@ -134,7 +134,7 @@ constexpr auto MaxJoints = uint16{std::numeric_limits<uint16>::max() - uint16{1}
 // Sleep
 
 /// A body cannot sleep if its linear velocity is above this tolerance.
-constexpr auto LinearSleepTolerance = RealNum{1.0f} / 100; // aka 0.01
+constexpr auto LinearSleepTolerance = RealNum{0.01f}; // aka 0.01
 
 /// A body cannot sleep if its angular velocity is above this tolerance.
 constexpr auto AngularSleepTolerance = RealNum{(Pi * 2) / 180};
@@ -159,6 +159,71 @@ template <>
 constexpr size_t max_list_size<Joint>()
 {
 	return MaxJoints;
+}
+
+// GetInvalid template and template specializations.
+
+template <typename T>
+constexpr inline T GetInvalid() noexcept;
+
+template <>
+constexpr float GetInvalid() noexcept
+{
+	return std::numeric_limits<float>::signaling_NaN();
+}
+
+template <>
+constexpr double GetInvalid() noexcept
+{
+	return std::numeric_limits<double>::signaling_NaN();
+}
+
+template <>
+constexpr Fixed32 GetInvalid() noexcept
+{
+	return Fixed32::GetInfinity();
+}
+
+template <>
+constexpr Fixed64 GetInvalid() noexcept
+{
+	return Fixed64::GetInfinity();
+}
+
+template <>
+constexpr size_t GetInvalid() noexcept
+{
+	return static_cast<size_t>(-1);
+}
+
+// IsValid template and template specializations.
+
+template <typename T>
+bool IsValid(const T& value) noexcept;
+
+/// This function is used to ensure that a floating point number is not a NaN or infinity.
+template <>
+inline bool IsValid(const float& x) noexcept
+{
+	return !std::isnan(x); // && !std::isinf(x);
+}
+
+template <>
+inline bool IsValid(const Fixed32& x) noexcept
+{
+	return (x != Fixed32::GetInfinity()) && (x != Fixed32::GetNegativeInfinity());
+}
+
+template <>
+inline bool IsValid(const Fixed64& x) noexcept
+{
+	return (x != Fixed64::GetInfinity()) && (x != Fixed64::GetNegativeInfinity());
+}
+
+template <>
+inline bool IsValid(const size_t& x) noexcept
+{
+	return x != GetInvalid<size_t>();
 }
 
 // Memory Allocation
