@@ -238,14 +238,14 @@ public:
 
 	void DestroyFixtures();
 	
-	/// Set the position of the body's origin and rotation.
+	/// Sets the position of the body's origin and rotation.
 	/// Manipulating a body's transform may cause non-physical behavior.
 	/// Note: contacts are updated on the next call to World::Step.
 	/// @param position Valid world position of the body's local origin. Behavior is undefined if value is invalid.
 	/// @param angle Valid world rotation in radians. Behavior is undefined if value is invalid.
 	void SetTransform(const Vec2 position, Angle angle);
 
-	/// Get the body transform for the body's origin.
+	/// Gets the body transform for the body's origin.
 	/// @return the world transform of the body's origin.
 	Transformation GetTransformation() const noexcept;
 
@@ -1084,6 +1084,14 @@ size_t GetFixtureCount(const Body& body);
 ///   mass to get the averaged center.
 /// @return accumalated mass data for all fixtures associated with the given body.
 MassData ComputeMassData(const Body& body) noexcept;
+
+/// Rotates a body a given amount around a point in body local coordinates.
+/// @detail This changes both the linear and angular positions of the body.
+/// @note Manipulating a body's position this way may cause non-physical behavior.
+/// @param body Body to rotate.
+/// @param amount Amount to rotate body by (in counter-clockwise direction).
+/// @param localPoint Point in local coordinates.
+void RotateAboutLocalPoint(Body& body, Angle amount, Vec2 localPoint);
 
 } // namespace box2d
 

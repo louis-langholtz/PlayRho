@@ -42,7 +42,7 @@ UnitVec2::UnitVec2(const Vec2& value, UnitVec2 fallback) noexcept
 }
 
 UnitVec2::UnitVec2(const Angle& angle) noexcept:
-	m_x{std::cos(angle.ToRadians())}, m_y{std::sin(angle.ToRadians())}
+	m_x{Cos(angle)}, m_y{Sin(angle)}
 {
 	// Intentionally empty.
 }

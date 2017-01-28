@@ -63,6 +63,12 @@ constexpr Fixed32 GetInvalid() noexcept
 	return Fixed32::GetInfinity();
 }
 
+template <>
+constexpr Fixed64 GetInvalid() noexcept
+{
+	return Fixed64::GetInfinity();
+}
+
 /// This function is used to ensure that a floating point number is not a NaN or infinity.
 template <>
 inline bool IsValid(const float& x) noexcept
@@ -74,6 +80,12 @@ template <>
 inline bool IsValid(const Fixed32& x) noexcept
 {
 	return (x != Fixed32::GetInfinity()) && (x != Fixed32::GetNegativeInfinity());
+}
+
+template <>
+inline bool IsValid(const Fixed64& x) noexcept
+{
+	return (x != Fixed64::GetInfinity()) && (x != Fixed64::GetNegativeInfinity());
 }
 
 template <>
@@ -121,6 +133,16 @@ constexpr inline Angle Abs(Angle a)
 	return (a >= 0_deg) ? a : -a;
 }
 
+inline RealNum Cos(Angle value)
+{
+	return RealNum{std::cos(value / 1_rad)};
+}
+
+inline RealNum Sin(Angle value)
+{
+	return RealNum{std::sin(value / 1_rad)};
+}
+
 template <typename T>
 inline T round(T value, unsigned precision = 100000);
 
@@ -135,6 +157,13 @@ template <>
 inline Fixed32 round(Fixed32 value, uint32_t precision)
 {
 	const auto factor = Fixed32(static_cast<int64_t>(precision));
+	return std::round(value * factor) / factor;
+}
+
+template <>
+inline Fixed64 round(Fixed64 value, uint32_t precision)
+{
+	const auto factor = Fixed64(static_cast<int64_t>(precision));
 	return std::round(value * factor) / factor;
 }
 
@@ -160,7 +189,12 @@ constexpr inline bool almost_equal(float x, float y, int ulp = 2)
 
 constexpr inline bool almost_equal(Fixed32 x, Fixed32 y, int ulp = 2)
 {
-	return Abs(x - y) <= Fixed32{0, 2};
+	return Abs(x - y) <= Fixed32{0, static_cast<uint32_t>(ulp)};
+}
+
+constexpr inline bool almost_equal(Fixed64 x, Fixed64 y, int ulp = 2)
+{
+	return Abs(x - y) <= Fixed64{0, static_cast<uint32_t>(ulp)};
 }
 
 template <typename T>
@@ -1323,6 +1357,8 @@ constexpr inline T GetModuloPrev(T value, T count) noexcept
 ::std::ostream& operator<<(::std::ostream& os, const Angle& value);
 
 ::std::ostream& operator<<(::std::ostream& os, const Fixed32& value);
+
+::std::ostream& operator<<(::std::ostream& os, const Fixed64& value);
 
 }
 #endif

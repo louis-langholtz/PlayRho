@@ -24,110 +24,117 @@
 #include <cassert>
 #include <cmath>
 
+#include <Box2D/Common/Wider.hpp>
+
 namespace box2d
 {
-	/// Fixed 32.
-	/// @detail This is a 32-bit sized fixed point type with a 18.14 format.
+	/// Fixed.
+	///
+	/// @detail This is a fixed point type template for a given base type using a given number
+	/// of fraction bits.
+	///
+	/// This is a 32-bit sized fixed point type with a 18.14 format.
 	/// With a 14-bit fraction part:
 	///   * 0.000061035156250 is the smallest double precision value that can be represented;
-	///   * 
-	class Fixed32
+	///   *
+	template <typename BASE_TYPE, unsigned int FRACTION_BITS>
+	class Fixed
 	{
 	public:
-		using value_type = int32_t;
-		static constexpr unsigned FractionBits = 14;
+		using value_type = BASE_TYPE;
+		static constexpr unsigned int FractionBits = FRACTION_BITS;
 
-		static constexpr Fixed32 GetMin() noexcept
+		static constexpr Fixed GetMin() noexcept
 		{
-			return Fixed32{internal_type{1}};
+			return Fixed{internal_type{1}};
 		}
 		
-		static constexpr Fixed32 GetInfinity() noexcept
+		static constexpr Fixed GetInfinity() noexcept
 		{
-			return Fixed32{internal_type{numeric_limits::max()}};
+			return Fixed{internal_type{numeric_limits::max()}};
 		}
 		
-		static constexpr Fixed32 GetNegativeInfinity() noexcept
+		static constexpr Fixed GetNegativeInfinity() noexcept
 		{
-			return Fixed32{internal_type{numeric_limits::lowest()}};
+			return Fixed{internal_type{numeric_limits::lowest()}};
 		}
 		
-		static constexpr Fixed32 GetMax() noexcept
+		static constexpr Fixed GetMax() noexcept
 		{
-			return Fixed32{internal_type{numeric_limits::max() - 1}};
+			return Fixed{internal_type{numeric_limits::max() - 1}};
 		}
 		
-		static constexpr Fixed32 GetLowest() noexcept
+		static constexpr Fixed GetLowest() noexcept
 		{
-			return Fixed32{internal_type{numeric_limits::lowest() + 1}};
+			return Fixed{internal_type{numeric_limits::lowest() + 1}};
 		}
 
-		Fixed32() = default;
+		Fixed() = default;
 
-		constexpr Fixed32(long double val) noexcept:
+		constexpr Fixed(const long double val) noexcept:
 			m_data{internal_type{static_cast<value_type>(val * ScaleFactor)}}
 		{
 			assert(val <= static_cast<decltype(val)>(GetMax()));
 			assert(val >= static_cast<decltype(val)>(GetLowest()));
 		}
 		
-		constexpr Fixed32(double val) noexcept:
+		constexpr Fixed(const double val) noexcept:
 			m_data{internal_type{static_cast<value_type>(val * ScaleFactor)}}
 		{
 			assert(val <= static_cast<decltype(val)>(GetMax()));
 			assert(val >= static_cast<decltype(val)>(GetLowest()));
 		}
 		
-		constexpr Fixed32(unsigned long long val) noexcept:
+		constexpr Fixed(const unsigned long long val) noexcept:
 			m_data{internal_type{static_cast<value_type>(val * ScaleFactor)}}
 		{
 			assert(val <= static_cast<decltype(val)>(GetMax()));
 		}
 
-		constexpr Fixed32(unsigned long val) noexcept:
+		constexpr Fixed(const unsigned long val) noexcept:
 			m_data{internal_type{static_cast<value_type>(val * ScaleFactor)}}
 		{
 			assert(val <= static_cast<decltype(val)>(GetMax()));
 		}
 		
-		constexpr Fixed32(unsigned int val) noexcept:
+		constexpr Fixed(const unsigned int val) noexcept:
 			m_data{internal_type{static_cast<value_type>(val * ScaleFactor)}}
 		{
 			assert(val <= static_cast<decltype(val)>(GetMax()));
 		}
 
-		constexpr Fixed32(long long val) noexcept:
+		constexpr Fixed(const long long val) noexcept:
 			m_data{internal_type{static_cast<value_type>(val * ScaleFactor)}}
 		{
 			assert(val <= static_cast<decltype(val)>(GetMax()));
 			assert(val >= static_cast<decltype(val)>(GetLowest()));
 		}
 		
-		constexpr Fixed32(float val) noexcept:
+		constexpr Fixed(const float val) noexcept:
 			m_data{internal_type{static_cast<value_type>(val * ScaleFactor)}}
 		{
 			assert(val <= static_cast<decltype(val)>(GetMax()));
 			assert(val >= static_cast<decltype(val)>(GetLowest()));
 		}
 
-		constexpr Fixed32(int val) noexcept:
+		constexpr Fixed(const int val) noexcept:
 			m_data{internal_type{static_cast<value_type>(val * ScaleFactor)}}
 		{
-			assert(val <= static_cast<decltype(val)>(GetMax()));
-			assert(val >= static_cast<decltype(val)>(GetLowest()));
+			//assert(val <= static_cast<decltype(val)>(GetMax()));
+			//assert(val >= static_cast<decltype(val)>(GetLowest()));
 		}
 		
-		constexpr Fixed32(short val) noexcept:
+		constexpr Fixed(short val) noexcept:
 			m_data{internal_type{static_cast<value_type>(val * ScaleFactor)}}
 		{
 		}
 		
-		constexpr Fixed32(int32_t val, uint32_t fraction) noexcept:
+		constexpr Fixed(value_type val, unsigned int fraction) noexcept:
 			m_data{internal_type{static_cast<value_type>(static_cast<uint32_t>(val * ScaleFactor) | fraction)}}
 		{
 			assert(val <= static_cast<decltype(val)>(GetMax()));
 			assert(val >= static_cast<decltype(val)>(GetLowest()));
-			assert(fraction <= (1u << box2d::Fixed32::FractionBits) - 1u);
+			assert(fraction <= (1u << FractionBits) - 1u);
 		}
 		
 		// Unary operations
@@ -172,7 +179,7 @@ namespace box2d
 
 		explicit constexpr operator int() const noexcept
 		{
-			return m_data.value / ScaleFactor;
+			return static_cast<int>(m_data.value / ScaleFactor);
 		}
 		
 		explicit constexpr operator short() const noexcept
@@ -180,14 +187,14 @@ namespace box2d
 			return static_cast<short>(m_data.value / ScaleFactor);
 		}
 		
-		constexpr Fixed32 operator- () const noexcept
+		constexpr Fixed operator- () const noexcept
 		{
-			return Fixed32{internal_type{-m_data.value}};
+			return Fixed{internal_type{-m_data.value}};
 		}
 		
-		constexpr Fixed32 operator+ () const noexcept
+		constexpr Fixed operator+ () const noexcept
 		{
-			return Fixed32{internal_type{+m_data.value}};
+			return Fixed{internal_type{+m_data.value}};
 		}
 		
 		explicit constexpr operator bool() const noexcept
@@ -200,7 +207,7 @@ namespace box2d
 			return m_data.value == 0;
 		}
 		
-		constexpr Fixed32& operator+= (Fixed32 val) noexcept
+		constexpr Fixed& operator+= (Fixed val) noexcept
 		{
 			assert(is_valid());
 			assert(val.is_valid());
@@ -225,7 +232,7 @@ namespace box2d
 			return *this;
 		}
 
-		constexpr Fixed32& operator-= (Fixed32 val) noexcept
+		constexpr Fixed& operator-= (Fixed val) noexcept
 		{
 			assert(is_valid());
 			assert(val.is_valid());
@@ -250,7 +257,7 @@ namespace box2d
 			return *this;
 		}
 
-		constexpr Fixed32& operator*= (Fixed32 val) noexcept
+		constexpr Fixed& operator*= (Fixed val) noexcept
 		{
 			assert(is_valid());
 			assert(val.is_valid());
@@ -265,7 +272,7 @@ namespace box2d
 			return *this;
 		}
 
-		constexpr Fixed32& operator/= (Fixed32 val) noexcept
+		constexpr Fixed& operator/= (Fixed val) noexcept
 		{
 			assert(is_valid());
 			assert(val.is_valid());
@@ -280,7 +287,7 @@ namespace box2d
 			return *this;
 		}
 		
-		constexpr Fixed32& operator%= (Fixed32 val) noexcept
+		constexpr Fixed& operator%= (Fixed val) noexcept
 		{
 			assert(is_valid());
 			assert(val.is_valid());
@@ -291,7 +298,7 @@ namespace box2d
 
 		// Comparison operators
 
-		constexpr int Compare(const Fixed32 other) const noexcept
+		constexpr int Compare(const Fixed other) const noexcept
 		{
 			if (m_data.value < other.m_data.value)
 			{
@@ -304,17 +311,10 @@ namespace box2d
 			return 0;
 		}
 		
-		//friend bool operator== (Fixed32 lhs, Fixed32 rhs) noexcept;
-		//friend bool operator!= (Fixed32 lhs, Fixed32 rhs) noexcept;
-		//friend bool operator<= (Fixed32 lhs, Fixed32 rhs) noexcept;
-		//friend bool operator>= (Fixed32 lhs, Fixed32 rhs) noexcept;
-		//friend bool operator< (Fixed32 lhs, Fixed32 rhs) noexcept;
-		//friend bool operator> (Fixed32 lhs, Fixed32 rhs) noexcept;
-
 	private:
-		static constexpr value_type ScaleFactor = static_cast<value_type>(1 << FractionBits); // 2^16
+		static constexpr value_type ScaleFactor = static_cast<value_type>(1u << FractionBits);
 
-		using intermediary_type = int64_t;
+		using intermediary_type = typename Wider<value_type>::type;
 	
 		struct internal_type
 		{
@@ -323,7 +323,7 @@ namespace box2d
 		
 		using numeric_limits = std::numeric_limits<value_type>;
 		
-		constexpr Fixed32(internal_type val) noexcept:
+		constexpr Fixed(internal_type val) noexcept:
 			m_data{val}
 		{
 			// Intentionally empty.
@@ -338,18 +338,19 @@ namespace box2d
 		internal_type m_data;
 	};
 	
-	// Free functions.
+	using Fixed32 = Fixed<std::int32_t,14>;
+	using Fixed64 = Fixed<std::int64_t,16>;
+
+	// Fixed32 free functions.
 	
 	constexpr Fixed32 operator+ (Fixed32 lhs, Fixed32 rhs) noexcept
 	{
-		// TODO bounds check for over or under flow
 		lhs += rhs;
 		return lhs;
 	}
 	
 	constexpr Fixed32 operator- (Fixed32 lhs, Fixed32 rhs) noexcept
 	{
-		// TODO bounds check for over or under flow
 		lhs -= rhs;
 		return lhs;
 	}
@@ -368,7 +369,6 @@ namespace box2d
 	
 	constexpr Fixed32 operator% (Fixed32 lhs, Fixed32 rhs) noexcept
 	{
-		// TODO bounds check for over or under flow
 		lhs %= rhs;
 		return lhs;
 	}	
@@ -404,6 +404,73 @@ namespace box2d
 	
 	
 	constexpr bool operator > (Fixed32 lhs, Fixed32 rhs) noexcept
+	{
+		return lhs.Compare(rhs) > 0;
+	}
+
+	// Fixed64 free functions.
+	
+	constexpr Fixed64 operator+ (Fixed64 lhs, Fixed64 rhs) noexcept
+	{
+		lhs += rhs;
+		return lhs;
+	}
+	
+	constexpr Fixed64 operator- (Fixed64 lhs, Fixed64 rhs) noexcept
+	{
+		lhs -= rhs;
+		return lhs;
+	}
+	
+	constexpr Fixed64 operator* (Fixed64 lhs, Fixed64 rhs) noexcept
+	{
+		lhs *= rhs;
+		return lhs;
+	}
+	
+	constexpr Fixed64 operator/ (Fixed64 lhs, Fixed64 rhs) noexcept
+	{
+		lhs /= rhs;
+		return lhs;
+	}
+	
+	constexpr Fixed64 operator% (Fixed64 lhs, Fixed64 rhs) noexcept
+	{
+		lhs %= rhs;
+		return lhs;
+	}
+	
+	constexpr bool operator== (Fixed64 lhs, Fixed64 rhs) noexcept
+	{
+		return lhs.Compare(rhs) == 0;
+	}
+	
+	
+	constexpr bool operator!= (Fixed64 lhs, Fixed64 rhs) noexcept
+	{
+		return lhs.Compare(rhs) != 0;
+	}
+	
+	
+	constexpr bool operator <= (Fixed64 lhs, Fixed64 rhs) noexcept
+	{
+		return lhs.Compare(rhs) <= 0;
+	}
+	
+	
+	constexpr bool operator >= (Fixed64 lhs, Fixed64 rhs) noexcept
+	{
+		return lhs.Compare(rhs) >= 0;
+	}
+	
+	
+	constexpr bool operator < (Fixed64 lhs, Fixed64 rhs) noexcept
+	{
+		return lhs.Compare(rhs) < 0;
+	}
+	
+	
+	constexpr bool operator > (Fixed64 lhs, Fixed64 rhs) noexcept
 	{
 		return lhs.Compare(rhs) > 0;
 	}
@@ -457,6 +524,8 @@ namespace std
 		static constexpr float_round_style round_style = round_toward_zero;
 	};
 
+	// Fixed32
+
 	inline box2d::Fixed32 abs(box2d::Fixed32 value) noexcept
 	{
 		return (value < box2d::Fixed32{0})? -value: value;
@@ -467,18 +536,15 @@ namespace std
 		return box2d::Fixed32{::std::sqrt(static_cast<float>(value))};
 	}
 
-	
 	inline float atan2(box2d::Fixed32 y, box2d::Fixed32 x)
 	{
 		return atan2(static_cast<float>(y), static_cast<float>(x));
 	}
-
 	
 	inline box2d::Fixed32 round(box2d::Fixed32 value) noexcept
 	{
 		return box2d::Fixed32{static_cast<int16_t>(value + (box2d::Fixed32{1} / box2d::Fixed32{2}))};
 	}
-	
 	
 	inline box2d::Fixed32 nextafter(box2d::Fixed32 from, box2d::Fixed32 to) noexcept
 	{
@@ -493,23 +559,71 @@ namespace std
 		return to;
 	}
 	
-	
 	inline float cos(box2d::Fixed32 value)
 	{
 		return static_cast<float>(cos(static_cast<double>(value)));
 	}
-	
 	
 	inline float sin(box2d::Fixed32 value)
 	{
 		return static_cast<float>(sin(static_cast<double>(value)));
 	}
 
-	
 	inline double exp(box2d::Fixed32 value)
 	{
 		return exp(static_cast<double>(value));
 	}
+	
+	// Fixed64
+
+	inline box2d::Fixed64 abs(box2d::Fixed64 value) noexcept
+	{
+		return (value < box2d::Fixed64{0})? -value: value;
+	}
+	
+	inline box2d::Fixed64 sqrt(box2d::Fixed64 value)
+	{
+		return box2d::Fixed64{::std::sqrt(static_cast<double>(value))};
+	}
+	
+	inline double atan2(box2d::Fixed64 y, box2d::Fixed64 x)
+	{
+		return atan2(static_cast<double>(y), static_cast<double>(x));
+	}
+	
+	inline box2d::Fixed64 round(box2d::Fixed64 value) noexcept
+	{
+		return box2d::Fixed64{static_cast<int16_t>(value + (box2d::Fixed64{1} / box2d::Fixed64{2}))};
+	}
+	
+	inline box2d::Fixed64 nextafter(box2d::Fixed64 from, box2d::Fixed64 to) noexcept
+	{
+		if (from < to)
+		{
+			return from + numeric_limits<box2d::Fixed64>::min();
+		}
+		if (from > to)
+		{
+			return from - numeric_limits<box2d::Fixed64>::min();
+		}
+		return to;
+	}
+	
+	inline double cos(box2d::Fixed64 value)
+	{
+		return cos(static_cast<double>(value));
+	}
+	
+	inline double sin(box2d::Fixed64 value)
+	{
+		return sin(static_cast<double>(value));
+	}
+	
+	inline double exp(box2d::Fixed64 value)
+	{
+		return exp(static_cast<double>(value));
+	}
+
 } // namespace std
 
 #endif /* FixedPoint32_hpp */

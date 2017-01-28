@@ -748,12 +748,12 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 		}
 		else // new_distance > distance
 		{
-			if (std::cos(angle.ToRadians()) != 0)
+			if (Cos(angle) != 0)
 			{
 				EXPECT_LT(body1->GetLocation().x, lastpos1.x);
 				EXPECT_GT(body2->GetLocation().x, lastpos2.x);
 			}
-			if (std::sin(angle.ToRadians()) != 0)
+			if (Sin(angle) != 0)
 			{
 				EXPECT_LT(body1->GetLocation().y, lastpos1.y);
 				EXPECT_GT(body2->GetLocation().y, lastpos2.y);

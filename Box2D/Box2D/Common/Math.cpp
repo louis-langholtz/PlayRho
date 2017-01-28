@@ -73,3 +73,8 @@ Vec2 box2d::ComputeCentroid(const Span<const Vec2>& vertices)
 {
 	return os << std::fixed << static_cast<double>(value) << std::defaultfloat;
 }
+
+::std::ostream& box2d::operator<<(::std::ostream& os, const Fixed64& value)
+{
+	return os << std::fixed << static_cast<double>(value) << std::defaultfloat;
+}
