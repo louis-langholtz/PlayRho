@@ -184,7 +184,7 @@ void DistanceJoint::SolveVelocityConstraints(Span<Velocity> velocities, const St
 	velocities[m_indexB].angular = wB;
 }
 
-bool DistanceJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
+bool DistanceJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const
 {
 	if (m_frequencyHz > RealNum{0})
 	{
@@ -226,12 +226,12 @@ bool DistanceJoint::SolvePositionConstraints(Span<Position> positions, const Con
 
 Vec2 DistanceJoint::GetAnchorA() const
 {
-	return GetWorldPoint(*GetBodyA(), m_localAnchorA);
+	return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
 }
 
 Vec2 DistanceJoint::GetAnchorB() const
 {
-	return GetWorldPoint(*GetBodyB(), m_localAnchorB);
+	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
 Vec2 DistanceJoint::GetReactionForce(RealNum inv_dt) const

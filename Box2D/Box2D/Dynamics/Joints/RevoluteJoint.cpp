@@ -70,6 +70,7 @@ void RevoluteJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	m_indexB = GetBodyB()->GetIslandIndex();
 	m_localCenterA = GetBodyA()->GetLocalCenter();
 	m_localCenterB = GetBodyB()->GetLocalCenter();
+
 	m_invMassA = GetBodyA()->GetInverseMass();
 	m_invMassB = GetBodyB()->GetInverseMass();
 	m_invIA = GetBodyA()->GetInverseInertia();
@@ -83,7 +84,8 @@ void RevoluteJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	auto vB = velocities[m_indexB].linear;
 	auto wB = velocities[m_indexB].angular;
 
-	const UnitVec2 qA(aA), qB(aB);
+	const auto qA = UnitVec2(aA);
+	const auto qB = UnitVec2(aB);
 
 	m_rA = Rotate(m_localAnchorA - m_localCenterA, qA);
 	m_rB = Rotate(m_localAnchorB - m_localCenterB, qB);
@@ -101,24 +103,21 @@ void RevoluteJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	const auto mB = m_invMassB;
 	const auto iA = m_invIA;
 	const auto iB = m_invIB;
+	const auto totInvI = iA + iB;
 
-	const auto fixedRotation = ((iA + iB) == 0);
+	const auto fixedRotation = (totInvI == 0);
 
-	m_mass.ex.x = mA + mB + m_rA.y * m_rA.y * iA + m_rB.y * m_rB.y * iB;
-	m_mass.ey.x = -m_rA.y * m_rA.x * iA - m_rB.y * m_rB.x * iB;
-	m_mass.ez.x = -m_rA.y * iA - m_rB.y * iB;
+	m_mass.ex.x = mA + mB + (m_rA.y * m_rA.y * iA) + (m_rB.y * m_rB.y * iB);
+	m_mass.ey.x = (-m_rA.y * m_rA.x * iA) + (-m_rB.y * m_rB.x * iB);
+	m_mass.ez.x = (-m_rA.y * iA) + (-m_rB.y * iB);
 	m_mass.ex.y = m_mass.ey.x;
-	m_mass.ey.y = mA + mB + m_rA.x * m_rA.x * iA + m_rB.x * m_rB.x * iB;
-	m_mass.ez.y = m_rA.x * iA + m_rB.x * iB;
+	m_mass.ey.y = mA + mB + (m_rA.x * m_rA.x * iA) + (m_rB.x * m_rB.x * iB);
+	m_mass.ez.y = (m_rA.x * iA) + (m_rB.x * iB);
 	m_mass.ex.z = m_mass.ez.x;
 	m_mass.ey.z = m_mass.ez.y;
-	m_mass.ez.z = iA + iB;
+	m_mass.ez.z = totInvI;
 
-	m_motorMass = iA + iB;
-	if (m_motorMass > 0)
-	{
-		m_motorMass = RealNum{1} / m_motorMass;
-	}
+	m_motorMass = (totInvI > 0)? 1 / totInvI: totInvI;
 
 	if (!m_enableMotor || fixedRotation)
 	{
@@ -202,8 +201,8 @@ void RevoluteJoint::SolveVelocityConstraints(Span<Velocity> velocities, const St
 	// Solve motor constraint.
 	if (m_enableMotor && (m_limitState != e_equalLimits) && !fixedRotation)
 	{
-		const auto Cdot = (wB - wA).ToRadians() - m_motorSpeed;
-		const auto impulse = -m_motorMass * Cdot;
+		const auto difSpeed = (wB - wA).ToRadians() - m_motorSpeed;
+		const auto impulse = -m_motorMass * difSpeed;
 		const auto oldImpulse = m_motorImpulse;
 		const auto maxImpulse = step.get_dt() * m_maxMotorTorque;
 		m_motorImpulse = Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
@@ -276,7 +275,8 @@ void RevoluteJoint::SolveVelocityConstraints(Span<Velocity> velocities, const St
 	else
 	{
 		// Solve point-to-point constraint
-		const auto Cdot = vB + (GetRevPerpendicular(m_rB) * wB.ToRadians()) - vA - (GetRevPerpendicular(m_rA) * wA.ToRadians());
+		const auto Cdot = (vB + (GetRevPerpendicular(m_rB) * wB.ToRadians()))
+		                - (vA + (GetRevPerpendicular(m_rA) * wA.ToRadians()));
 		const auto impulse = Solve22(m_mass, -Cdot);
 
 		m_impulse.x += impulse.x;
@@ -295,7 +295,7 @@ void RevoluteJoint::SolveVelocityConstraints(Span<Velocity> velocities, const St
 	velocities[m_indexB].angular = wB;
 }
 
-bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
+bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const
 {
 	auto cA = positions[m_indexA].linear;
 	auto aA = positions[m_indexA].angular;
@@ -305,7 +305,10 @@ bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions, const Con
 	auto angularError = RealNum{0};
 	auto positionError = RealNum{0};
 
-	const auto fixedRotation = ((m_invIA + m_invIB) == 0);
+	const auto iA = m_invIA;
+	const auto iB = m_invIB;
+
+	const auto fixedRotation = ((iA + iB) == 0);
 
 	// Solve angular limit constraint.
 	if (m_enableLimit && m_limitState != e_inactiveLimit && !fixedRotation)
@@ -339,8 +342,8 @@ bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions, const Con
 			limitImpulse = -m_motorMass * C;
 		}
 
-		aA -= 1_rad * m_invIA * limitImpulse;
-		aB += 1_rad * m_invIB * limitImpulse;
+		aA -= 1_rad * iA * limitImpulse;
+		aB += 1_rad * iB * limitImpulse;
 	}
 
 	// Solve point-to-point constraint.
@@ -351,19 +354,17 @@ bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions, const Con
 		const auto rA = Rotate(m_localAnchorA - m_localCenterA, qA);
 		const auto rB = Rotate(m_localAnchorB - m_localCenterB, qB);
 
-		const auto C = cB + rB - cA - rA;
+		const auto C = (cB + rB) - (cA + rA);
 		positionError = GetLength(C);
 
 		const auto mA = m_invMassA;
 		const auto mB = m_invMassB;
-		const auto iA = m_invIA;
-		const auto iB = m_invIB;
 
 		Mat22 K;
-		K.ex.x = mA + mB + iA * rA.y * rA.y + iB * rB.y * rB.y;
-		K.ex.y = -iA * rA.x * rA.y - iB * rB.x * rB.y;
+		K.ex.x = mA + mB + (iA * rA.y * rA.y) + (iB * rB.y * rB.y);
+		K.ex.y = (-iA * rA.x * rA.y) + (-iB * rB.x * rB.y);
 		K.ey.x = K.ex.y;
-		K.ey.y = mA + mB + iA * rA.x * rA.x + iB * rB.x * rB.x;
+		K.ey.y = mA + mB + (iA * rA.x * rA.x) + (iB * rB.x * rB.x);
 
 		const auto impulse = -Solve(K, C);
 

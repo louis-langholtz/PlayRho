@@ -266,7 +266,7 @@ void WheelJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepC
 	velocities[m_indexB].angular = wB;
 }
 
-bool WheelJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
+bool WheelJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const
 {
 	auto cA = positions[m_indexA].linear;
 	auto aA = positions[m_indexA].angular;
@@ -310,12 +310,12 @@ bool WheelJoint::SolvePositionConstraints(Span<Position> positions, const Constr
 
 Vec2 WheelJoint::GetAnchorA() const
 {
-	return GetWorldPoint(*GetBodyA(), m_localAnchorA);
+	return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
 }
 
 Vec2 WheelJoint::GetAnchorB() const
 {
-	return GetWorldPoint(*GetBodyB(), m_localAnchorB);
+	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
 Vec2 WheelJoint::GetReactionForce(RealNum inv_dt) const
@@ -330,8 +330,8 @@ RealNum WheelJoint::GetReactionTorque(RealNum inv_dt) const
 
 RealNum WheelJoint::GetJointTranslation() const
 {
-	const auto pA = GetWorldPoint(*GetBodyA(), m_localAnchorA);
-	const auto pB = GetWorldPoint(*GetBodyB(), m_localAnchorB);
+	const auto pA = GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
+	const auto pB = GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 	const auto d = pB - pA;
 	const auto axis = GetWorldVector(*GetBodyA(), m_localXAxisA);
 	return Dot(d, axis);

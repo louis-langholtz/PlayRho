@@ -190,12 +190,13 @@ private:
 	virtual void SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step) = 0;
 
 	// This returns true if the position errors are within tolerance.
-	virtual bool SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) = 0;
+	virtual bool SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const = 0;
 	
 	bool IsInIsland() const noexcept;
 	void SetInIsland(bool value) noexcept;
 
 	const JointType m_type;
+
 	Joint* m_prev = nullptr;
 	Joint* m_next = nullptr;
 	JointEdge m_edgeA = {nullptr, nullptr, nullptr, nullptr};

@@ -20,6 +20,7 @@
 #include <Box2D/Dynamics/Joints/RevoluteJoint.hpp>
 #include <Box2D/Dynamics/World.hpp>
 #include <Box2D/Dynamics/Body.hpp>
+#include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Collision/Shapes/CircleShape.hpp>
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
 
@@ -83,32 +84,48 @@ TEST(RevoluteJoint, MovesDynamicCircles)
 	jd.bodyB = b2;
 	world.CreateJoint(jd);
 	Step(world, 1);
-	EXPECT_EQ(b1->GetLocation(), Vec2(0, -4));
-	EXPECT_EQ(b2->GetLocation(), Vec2(0, -4));
+	EXPECT_EQ(round(b1->GetLocation(), 100), round(Vec2(0, -4), 100));
+	EXPECT_EQ(round(b2->GetLocation(), 100), round(Vec2(0, -4), 100));
 	EXPECT_EQ(b1->GetAngle(), 0_deg);
 	EXPECT_EQ(b2->GetAngle(), 0_deg);
 }
 
-TEST(RevoluteJoint, MovesDynamicPolygons)
+TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
 {
+	World world{World::Def{}.UseGravity(Vec2{0, -10})};
+	
+	const auto p1 = Vec2{0, 4}; // Vec2{-1, 0};
+	const auto p2 = Vec2{0, -2}; // Vec2{+1, 0};
+	const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Static).UseLocation(p1));
+	const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
+
 	const auto shape1 = std::make_shared<PolygonShape>();
 	shape1->SetAsBox(1, 1);
+	b1->CreateFixture(shape1);
+	
 	const auto shape2 = std::make_shared<PolygonShape>();
 	shape2->SetAsBox(0.5, 0.5);
-	World world;
-	const auto p1 = Vec2{0, 0}; // Vec2{-1, 0};
-	const auto p2 = Vec2{0, 0}; // Vec2{+1, 0};
-	const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
-	const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
-	b1->CreateFixture(shape1);
-	b2->CreateFixture(shape2);
-	auto jd = RevoluteJointDef{};
-	jd.bodyA = b1;
-	jd.bodyB = b2;
-	jd.localAnchorA = Vec2{1, 1};
-	jd.localAnchorB = Vec2{0, 0};
-	world.CreateJoint(jd);
-	Step(world, 1);
-	EXPECT_EQ(b1->GetLocation(), Vec2(-0.5f, -4.5f));
-	EXPECT_EQ(b2->GetLocation(), Vec2(0.5f, -3.5f));
+	b2->CreateFixture(shape2, FixtureDef{}.UseDensity(1));
+	
+	auto jd = RevoluteJointDef{b1, b2, Vec2{0, 0}};
+	const auto joint = world.CreateJoint(jd);
+	
+	for (auto i = 0; i < 1000; ++i)
+	{
+		Step(world, 0.1f);
+		EXPECT_EQ(b1->GetLocation(), p1);
+		EXPECT_EQ(round(b2->GetLocation(), 1000), round(p2, 1000));
+		EXPECT_EQ(b2->GetAngle(), 0_deg);
+	}
+	
+	world.Destroy(joint);
+	
+	for (auto i = 0; i < 10; ++i)
+	{
+		Step(world, 0.1f);
+		EXPECT_EQ(b1->GetLocation(), p1);
+		EXPECT_NE(b2->GetLocation(), p2);
+		EXPECT_EQ(b2->GetAngle(), 0_deg);
+	}
+
 }

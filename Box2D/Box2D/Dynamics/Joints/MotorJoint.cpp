@@ -196,7 +196,7 @@ void MotorJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepC
 	velocities[m_indexB].angular = wB;
 }
 
-bool MotorJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
+bool MotorJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const
 {
 	BOX2D_NOT_USED(positions);
 	BOX2D_NOT_USED(conf);

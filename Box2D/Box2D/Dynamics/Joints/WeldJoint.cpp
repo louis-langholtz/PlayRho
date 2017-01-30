@@ -228,7 +228,7 @@ void WeldJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepCo
 	velocities[m_indexB].angular = wB;
 }
 
-bool WeldJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
+bool WeldJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const
 {
 	auto cA = positions[m_indexA].linear;
 	auto aA = positions[m_indexA].angular;
@@ -312,12 +312,12 @@ bool WeldJoint::SolvePositionConstraints(Span<Position> positions, const Constra
 
 Vec2 WeldJoint::GetAnchorA() const
 {
-	return GetWorldPoint(*GetBodyA(), m_localAnchorA);
+	return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
 }
 
 Vec2 WeldJoint::GetAnchorB() const
 {
-	return GetWorldPoint(*GetBodyB(), m_localAnchorB);
+	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
 Vec2 WeldJoint::GetReactionForce(RealNum inv_dt) const

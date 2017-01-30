@@ -160,7 +160,7 @@ void MouseJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepC
 	velocities[m_indexB].angular = wB;
 }
 
-bool MouseJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
+bool MouseJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const
 {
 	BOX2D_NOT_USED(positions);
 	BOX2D_NOT_USED(conf);

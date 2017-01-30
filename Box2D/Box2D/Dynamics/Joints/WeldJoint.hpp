@@ -86,7 +86,7 @@ private:
 
 	void InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf& conf) override;
 	void SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step) override;
-	bool SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) override;
+	bool SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const override;
 
 	RealNum m_frequencyHz;
 	RealNum m_dampingRatio;

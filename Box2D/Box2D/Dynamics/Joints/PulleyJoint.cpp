@@ -189,7 +189,7 @@ void PulleyJoint::SolveVelocityConstraints(Span<Velocity> velocities, const Step
 	velocities[m_indexB].angular = wB;
 }
 
-bool PulleyJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
+bool PulleyJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const
 {
 	auto cA = positions[m_indexA].linear;
 	auto aA = positions[m_indexA].angular;

@@ -128,8 +128,6 @@ GearJoint::GearJoint(const GearJointDef& def)
 	m_ratio = def.ratio;
 
 	m_constant = coordinateA + m_ratio * coordinateB;
-
-	m_impulse = RealNum{0};
 }
 
 void GearJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf& conf)
@@ -275,7 +273,7 @@ void GearJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepCo
 	velocities[m_indexD].angular = wD;
 }
 
-bool GearJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
+bool GearJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const
 {
 	auto cA = positions[m_indexA].linear;
 	auto aA = positions[m_indexA].angular;
@@ -376,12 +374,12 @@ bool GearJoint::SolvePositionConstraints(Span<Position> positions, const Constra
 
 Vec2 GearJoint::GetAnchorA() const
 {
-	return GetWorldPoint(*GetBodyA(), m_localAnchorA);
+	return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
 }
 
 Vec2 GearJoint::GetAnchorB() const
 {
-	return GetWorldPoint(*GetBodyB(), m_localAnchorB);
+	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
 Vec2 GearJoint::GetReactionForce(RealNum inv_dt) const

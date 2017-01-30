@@ -61,6 +61,12 @@ public:
 	Vec2 GetReactionForce(RealNum inv_dt) const override;
 	RealNum GetReactionTorque(RealNum inv_dt) const override;
 
+	/// The local anchor point relative to bodyA's origin.
+	Vec2 GetLocalAnchorA() const { return m_localAnchorA; }
+	
+	/// The local anchor point relative to bodyB's origin.
+	Vec2 GetLocalAnchorB() const  { return m_localAnchorB; }
+
 	/// Get the first joint.
 	Joint* GetJoint1() noexcept { return m_joint1; }
 
@@ -81,7 +87,7 @@ private:
 
 	void InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf& conf) override;
 	void SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step) override;
-	bool SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) override;
+	bool SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const override;
 
 	Joint* m_joint1;
 	Joint* m_joint2;
@@ -109,7 +115,7 @@ private:
 	Angle m_constant;
 	RealNum m_ratio;
 
-	RealNum m_impulse;
+	RealNum m_impulse = 0;
 
 	// Solver temp
 	index_t m_indexA, m_indexB, m_indexC, m_indexD;

@@ -71,10 +71,14 @@ struct PrismaticJointDef : public JointDef
 	RealNum motorSpeed = RealNum{0};
 };
 
-/// A prismatic joint. This joint provides one degree of freedom: translation
-/// along an axis fixed in bodyA. Relative rotation is prevented. You can
-/// use a joint limit to restrict the range of motion and a joint motor to
-/// drive the motion or to model joint friction.
+/// Prismatic Joint.
+///
+/// @detail This joint provides one degree of freedom: translation along an axis fixed
+/// in bodyA. Relative rotation is prevented.
+///
+/// @note You can use a joint limit to restrict the range of motion and a joint motor
+/// to drive the motion or to model joint friction.
+///
 class PrismaticJoint : public Joint
 {
 public:
@@ -143,7 +147,7 @@ private:
 
 	void InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf& conf) override;
 	void SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step) override;
-	bool SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) override;
+	bool SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const override;
 
 	// Solver shared
 	Vec2 m_localAnchorA;
@@ -151,15 +155,15 @@ private:
 	UnitVec2 m_localXAxisA;
 	UnitVec2 m_localYAxisA;
 	Angle m_referenceAngle;
-	Vec3 m_impulse;
-	RealNum m_motorImpulse;
+	Vec3 m_impulse = Vec3_zero;
+	RealNum m_motorImpulse = 0;
 	RealNum m_lowerTranslation;
 	RealNum m_upperTranslation;
 	RealNum m_maxMotorForce;
 	RealNum m_motorSpeed;
 	bool m_enableLimit;
 	bool m_enableMotor;
-	LimitState m_limitState;
+	LimitState m_limitState = e_inactiveLimit;
 
 	// Solver temp
 	index_t m_indexA;
@@ -170,12 +174,12 @@ private:
 	RealNum m_invMassB;
 	RealNum m_invIA;
 	RealNum m_invIB;
-	UnitVec2 m_axis;
-	UnitVec2 m_perp;
+	UnitVec2 m_axis = UnitVec2::GetZero();
+	UnitVec2 m_perp = UnitVec2::GetZero();
 	RealNum m_s1, m_s2;
 	RealNum m_a1, m_a2;
 	Mat33 m_K;
-	RealNum m_motorMass;
+	RealNum m_motorMass = 0;
 };
 
 inline RealNum PrismaticJoint::GetMotorSpeed() const noexcept

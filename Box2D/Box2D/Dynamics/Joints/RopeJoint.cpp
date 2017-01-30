@@ -158,7 +158,7 @@ void RopeJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepCo
 	velocities[m_indexB].angular = wB;
 }
 
-bool RopeJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
+bool RopeJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const
 {
 	auto cA = positions[m_indexA].linear;
 	auto aA = positions[m_indexA].angular;
@@ -194,12 +194,12 @@ bool RopeJoint::SolvePositionConstraints(Span<Position> positions, const Constra
 
 Vec2 RopeJoint::GetAnchorA() const
 {
-	return GetWorldPoint(*GetBodyA(), m_localAnchorA);
+	return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
 }
 
 Vec2 RopeJoint::GetAnchorB() const
 {
-	return GetWorldPoint(*GetBodyB(), m_localAnchorB);
+	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
 Vec2 RopeJoint::GetReactionForce(RealNum inv_dt) const

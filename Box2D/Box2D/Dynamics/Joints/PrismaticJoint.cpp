@@ -110,20 +110,12 @@ PrismaticJoint::PrismaticJoint(const PrismaticJointDef& def)
 	m_localYAxisA = GetRevPerpendicular(m_localXAxisA);
 	m_referenceAngle = def.referenceAngle;
 
-	m_impulse = Vec3_zero;
-	m_motorMass = RealNum{0};
-	m_motorImpulse = RealNum{0};
-
 	m_lowerTranslation = def.lowerTranslation;
 	m_upperTranslation = def.upperTranslation;
 	m_maxMotorForce = def.maxMotorForce;
 	m_motorSpeed = def.motorSpeed;
 	m_enableLimit = def.enableLimit;
 	m_enableMotor = def.enableMotor;
-	m_limitState = e_inactiveLimit;
-
-	m_axis = UnitVec2::GetZero();
-	m_perp = UnitVec2::GetZero();
 }
 
 void PrismaticJoint::InitVelocityConstraints(Span<Velocity> velocities,
@@ -367,7 +359,7 @@ void PrismaticJoint::SolveVelocityConstraints(Span<Velocity> velocities, const S
 //
 // We could take the active state from the velocity solver.However, the joint might push past the limit when the velocity
 // solver indicates the limit is inactive.
-bool PrismaticJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
+bool PrismaticJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const
 {
 	auto cA = positions[m_indexA].linear;
 	auto aA = positions[m_indexA].angular;
@@ -484,12 +476,12 @@ bool PrismaticJoint::SolvePositionConstraints(Span<Position> positions, const Co
 
 Vec2 PrismaticJoint::GetAnchorA() const
 {
-	return GetWorldPoint(*GetBodyA(), m_localAnchorA);
+	return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
 }
 
 Vec2 PrismaticJoint::GetAnchorB() const
 {
-	return GetWorldPoint(*GetBodyB(), m_localAnchorB);
+	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
 Vec2 PrismaticJoint::GetReactionForce(RealNum inv_dt) const

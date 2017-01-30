@@ -72,12 +72,17 @@ struct RevoluteJointDef : public JointDef
 	RealNum maxMotorTorque = 0;
 };
 
-/// A revolute joint constrains two bodies to share a common point while they
+/// Revolute Joint.
+///
+/// @detail A revolute joint constrains two bodies to share a common point while they
 /// are free to rotate about the point. The relative rotation about the shared
-/// point is the joint angle. You can limit the relative rotation with
-/// a joint limit that specifies a lower and upper angle. You can use a motor
+/// point is the joint angle.
+///
+/// @note You can limit the relative rotation with a joint limit that specifies a
+/// lower and upper angle. You can use a motor
 /// to drive the relative rotation about the shared point. A maximum motor torque
 /// is provided so that infinite forces are not generated.
+///
 class RevoluteJoint : public Joint
 {
 public:
@@ -141,17 +146,18 @@ public:
 
 private:
 	
-	friend class GearJoint;
+	void InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions,
+								 const StepConf& step, const ConstraintSolverConf& conf) override;
 
-	void InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf& conf) override;
 	void SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step) override;
-	bool SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) override;
+	
+	bool SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const override;
 
 	// Solver shared
 	Vec2 m_localAnchorA;
 	Vec2 m_localAnchorB;
-	Vec3 m_impulse = Vec3_zero; ///< Impulse.
-	RealNum m_motorImpulse = 0;
+	Vec3 m_impulse = Vec3_zero; ///< Impulse. Mofified by: InitVelocityConstraints, SolveVelocityConstraints.
+	RealNum m_motorImpulse = 0; ///< Motor impulse. Modified by: InitVelocityConstraints, SolveVelocityConstraints.
 
 	bool m_enableMotor;
 	RealNum m_maxMotorTorque;
@@ -162,20 +168,21 @@ private:
 	Angle m_lowerAngle;
 	Angle m_upperAngle;
 
-	// Solver temp
-	index_t m_indexA;
-	index_t m_indexB;
-	Vec2 m_rA;
-	Vec2 m_rB;
-	Vec2 m_localCenterA;
-	Vec2 m_localCenterB;
-	RealNum m_invMassA;
-	RealNum m_invMassB;
-	RealNum m_invIA;
-	RealNum m_invIB;
-	Mat33 m_mass;			// effective mass for point-to-point constraint.
-	RealNum m_motorMass;	// effective mass for motor/limit angular constraint.
-	LimitState m_limitState = e_inactiveLimit;
+	// Solver cached temporary data. Values set by by InitVelocityConstraints.
+
+	index_t m_indexA; ///< Index of body A (in its island).
+	index_t m_indexB; ///< Index of body B (in its island).
+	Vec2 m_rA; ///< Rotated delta of body A's local center from local anchor A.
+	Vec2 m_rB; ///< Rotated delta of body B's local center from local anchor B.
+	Vec2 m_localCenterA; ///< Local center of body A.
+	Vec2 m_localCenterB; ///< Local center of body B.
+	RealNum m_invMassA; ///< Inverse mass of body A.
+	RealNum m_invMassB; ///< Inverse mass of body B.
+	RealNum m_invIA; ///< Inverse inertia of body A.
+	RealNum m_invIB; ///< Inverse inertia of body B.
+	Mat33 m_mass; ///< Effective mass for point-to-point constraint.
+	RealNum m_motorMass; ///< Effective mass for motor/limit angular constraint.
+	LimitState m_limitState = e_inactiveLimit; ///< Limit state.
 };
 
 inline bool RevoluteJoint::IsLimitEnabled() const noexcept

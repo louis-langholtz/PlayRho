@@ -181,7 +181,7 @@ void FrictionJoint::SolveVelocityConstraints(Span<Velocity> velocities, const St
 	velocities[m_indexB].angular = wB;
 }
 
-bool FrictionJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf)
+bool FrictionJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const
 {
 	BOX2D_NOT_USED(positions);
 	BOX2D_NOT_USED(conf);
@@ -191,12 +191,12 @@ bool FrictionJoint::SolvePositionConstraints(Span<Position> positions, const Con
 
 Vec2 FrictionJoint::GetAnchorA() const
 {
-	return GetWorldPoint(*GetBodyA(), m_localAnchorA);
+	return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
 }
 
 Vec2 FrictionJoint::GetAnchorB() const
 {
-	return GetWorldPoint(*GetBodyB(), m_localAnchorB);
+	return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
 Vec2 FrictionJoint::GetReactionForce(RealNum inv_dt) const

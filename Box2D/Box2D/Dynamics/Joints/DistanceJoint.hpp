@@ -84,22 +84,22 @@ public:
 
 	/// Set/get the natural length.
 	/// Manipulating the length can lead to non-physical behavior when the frequency is zero.
-	void SetLength(RealNum length);
+	void SetLength(RealNum length) noexcept;
 	RealNum GetLength() const noexcept;
 
 	/// Set/get frequency in Hz.
-	void SetFrequency(RealNum hz);
+	void SetFrequency(RealNum hz) noexcept;
 	RealNum GetFrequency() const noexcept;
 
 	/// Set/get damping ratio.
-	void SetDampingRatio(RealNum ratio);
+	void SetDampingRatio(RealNum ratio) noexcept;
 	RealNum GetDampingRatio() const noexcept;
 
 private:
 
 	void InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf& conf) override;
 	void SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step) override;
-	bool SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) override;
+	bool SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const override;
 
 	RealNum m_frequencyHz;
 	RealNum m_dampingRatio;
@@ -127,7 +127,7 @@ private:
 	RealNum m_mass;
 };
 
-inline void DistanceJoint::SetLength(RealNum length)
+inline void DistanceJoint::SetLength(RealNum length) noexcept
 {
 	m_length = length;
 }
@@ -137,7 +137,7 @@ inline RealNum DistanceJoint::GetLength() const noexcept
 	return m_length;
 }
 
-inline void DistanceJoint::SetFrequency(RealNum hz)
+inline void DistanceJoint::SetFrequency(RealNum hz) noexcept
 {
 	m_frequencyHz = hz;
 }
@@ -147,7 +147,7 @@ inline RealNum DistanceJoint::GetFrequency() const noexcept
 	return m_frequencyHz;
 }
 
-inline void DistanceJoint::SetDampingRatio(RealNum ratio)
+inline void DistanceJoint::SetDampingRatio(RealNum ratio) noexcept
 {
 	m_dampingRatio = ratio;
 }
