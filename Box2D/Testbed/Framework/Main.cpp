@@ -453,10 +453,10 @@ static void sInterface()
 
 		if (imguiCheck("Shapes", settings.drawShapes, true))
 			settings.drawShapes = !settings.drawShapes;
-		if (imguiCheck("Skins", settings.drawSkins, true))
-			settings.drawSkins = !settings.drawSkins;
 		if (imguiCheck("Joints", settings.drawJoints, true))
 			settings.drawJoints = !settings.drawJoints;
+		if (imguiCheck("Skins", settings.drawSkins, true))
+			settings.drawSkins = !settings.drawSkins;
 		if (imguiCheck("AABBs", settings.drawAABBs, true))
 			settings.drawAABBs = !settings.drawAABBs;
 		if (imguiCheck("Contact Points", settings.drawContactPoints, true))
