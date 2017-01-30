@@ -82,8 +82,8 @@ public:
 
 				pjd.maxMotorForce = 1000.0f;
 				pjd.enableMotor = true;
-
-				m_joint2 = (PrismaticJoint*)m_world->CreateJoint(pjd);
+				
+				m_joint2 = static_cast<PrismaticJoint*>(m_world->CreateJoint(pjd));
 			}
 
 			// Create a payload
