@@ -22,6 +22,8 @@ Shared shapes for reduced memory usage.
 Increased runtime configurability.
 Support for C++11's range-based loops and constant expressions.
 Unit tested.
+Initial support for fixed-point data types (in addition to float and double precision floating-point types)
+as alternatives for RealNum.
 And more.
 
 ##About
