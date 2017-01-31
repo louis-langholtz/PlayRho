@@ -73,7 +73,7 @@ using uint64 = std::uint64_t;
 /// @warning The note regarding division applies even more so when using a fixed-point type
 /// (for RealNum).
 ///
-using RealNum = float;
+using RealNum = long double;
 
 /// Child count type. @detail Relating to "children" of Shape.
 using child_count_t = unsigned;
@@ -198,6 +198,12 @@ constexpr double GetInvalid() noexcept
 }
 
 template <>
+constexpr long double GetInvalid() noexcept
+{
+	return std::numeric_limits<long double>::signaling_NaN();
+}
+
+template <>
 constexpr Fixed32 GetInvalid() noexcept
 {
 	return Fixed32::GetInfinity();
@@ -220,9 +226,23 @@ constexpr size_t GetInvalid() noexcept
 template <typename T>
 bool IsValid(const T& value) noexcept;
 
-/// This function is used to ensure that a floating point number is not a NaN or infinity.
+/// This function is used to ensure that a floating point number is not a NaN.
 template <>
 inline bool IsValid(const float& x) noexcept
+{
+	return !std::isnan(x); // && !std::isinf(x);
+}
+
+/// This function is used to ensure that a double precision floating point number is not NaN.
+template <>
+inline bool IsValid(const double& x) noexcept
+{
+	return !std::isnan(x); // && !std::isinf(x);
+}
+
+/// This function is used to ensure that a long double precision floating point number is not NaN.
+template <>
+inline bool IsValid(const long double& x) noexcept
 {
 	return !std::isnan(x); // && !std::isinf(x);
 }
