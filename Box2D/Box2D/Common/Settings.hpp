@@ -52,8 +52,27 @@ using uint16 = std::uint16_t;
 using uint32 = std::uint32_t;
 using uint64 = std::uint64_t;
 
-/// Box2D real-number type.
-/// This can be Fixed32, float, double, or long double.
+/// Real-number type.
+///
+/// @detail This is the number type underlying Box2D numerical calculations conceptually
+/// involving real-numbers. Ideally the implementation of this type doesn't suffer from things
+/// like catastrophic cancellation nor catastrophic division nor overflows nor underflows.
+///
+/// @note This can be implemented using Fixed32, Fixed64, float, double, or long double.
+///
+/// @note Regarding division:
+///
+/// While dividing 1 by a RealNum, caching the result, and then doing multiplications with the
+/// result may well be faster (than repeatedly dividing), dividing 1 by RealNum can also result
+/// in an underflow situation that's then compounded every time it's multiplied with other
+/// values.
+///
+/// Meanwhile, dividing every value by RealNum isolates any underflows to the particular
+/// division where underflow occurs.
+///
+/// @warning The note regarding division applies even more so when using a fixed-point type
+/// (for RealNum).
+///
 using RealNum = float;
 
 /// Child count type. @detail Relating to "children" of Shape.
