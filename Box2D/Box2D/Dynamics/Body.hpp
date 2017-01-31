@@ -890,7 +890,8 @@ inline bool IsValidIslandIndex(const Body& body) noexcept
 /// @sa SetMassData.
 inline RealNum GetMass(const Body& body) noexcept
 {
-	return RealNum{1} / body.GetInverseMass();
+	const auto invMass = body.GetInverseMass();
+	return (invMass != 0)? RealNum{1} / invMass: 0;
 }
 
 inline void ApplyLinearAcceleration(Body& body, const Vec2 amount)
