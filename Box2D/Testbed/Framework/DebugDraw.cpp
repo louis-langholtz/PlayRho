@@ -49,7 +49,7 @@ Vec2 ConvertScreenToWorld(const Camera& camera, const Coord2D ps)
 	const auto lower = camera.m_center - extents;
 	const auto upper = camera.m_center + extents;
 
-	return Vec2{(RealNum(1) - u) * lower.x + u * upper.x, (RealNum(1) - v) * lower.y + v * upper.y};
+	return Vec2{(1 - u) * lower.x + u * upper.x, (1 - v) * lower.y + v * upper.y};
 }
 
 //
