@@ -82,7 +82,7 @@ void Rope::Initialize(const RopeDef* def)
 		const auto a = Cross(d1, d2);
 		const auto b = Dot(d1, d2);
 
-		m_as[i] = Atan2(a, b);
+		m_as[i] = static_cast<float>(Atan2(a, b));
 	}
 
 	m_gravity = def->gravity;
