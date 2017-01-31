@@ -35,7 +35,6 @@
 
 namespace box2d {
 
-//
 Vec2 ConvertScreenToWorld(const Camera& camera, const Coord2D ps)
 {
     const auto w = float(camera.m_width);
@@ -52,7 +51,20 @@ Vec2 ConvertScreenToWorld(const Camera& camera, const Coord2D ps)
 	return Vec2{(1 - u) * lower.x + u * upper.x, (1 - v) * lower.y + v * upper.y};
 }
 
-//
+AABB ConvertScreenToWorld(const Camera& camera)
+{
+	const auto w = float(camera.m_width);
+	const auto h = float(camera.m_height);
+	
+	const auto ratio = w / h;
+	const auto extents = Coord2D{ratio * 25.0f, 25.0f} * camera.m_zoom;
+	
+	const auto lower = camera.m_center - extents;
+	const auto upper = camera.m_center + extents;
+
+	return AABB{Vec2{lower.x, lower.y}, Vec2{upper.x, upper.y}};
+}
+	
 Coord2D ConvertWorldToScreen(const Camera& camera, const Vec2 pw)
 {
 	const auto w = float(camera.m_width);

@@ -577,8 +577,9 @@ int main(int argc, char** argv)
 	// Control the frame rate. One draw per monitor refresh.
 	glfwSwapInterval(1);
 	
-	double time1 = glfwGetTime();
-	double frameTime = 0.0;
+	auto time1 = glfwGetTime();
+	auto frameTime = 0.0;
+	auto fps = 0.0;
 	
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 	
@@ -597,11 +598,10 @@ int main(int argc, char** argv)
 
 			double xd, yd;
 			glfwGetCursorPos(mainWindow, &xd, &yd);
-			int mousex = int(xd);
-			int mousey = int(yd);
+			const auto mousex = int(xd);
+			const auto mousey = g_camera.m_height - int(yd);
 
-			mousey = g_camera.m_height - mousey;
-			int leftButton = glfwGetMouseButton(mainWindow, GLFW_MOUSE_BUTTON_LEFT);
+			const auto leftButton = glfwGetMouseButton(mainWindow, GLFW_MOUSE_BUTTON_LEFT);
 			if (leftButton == GLFW_PRESS)
 				mousebutton |= IMGUI_MBUT_LEFT;
 
@@ -611,21 +611,30 @@ int main(int argc, char** argv)
 			sInterface();
 			
 			// Measure speed
-			double time2 = glfwGetTime();
-			double alpha = 0.9f;
-			frameTime = alpha * frameTime + (1.0 - alpha) * (time2 - time1);
+			const auto time2 = glfwGetTime();
+			const auto timeElapsed = time2 - time1;
+			const auto alpha = 0.9;
+			frameTime = alpha * frameTime + (1.0 - alpha) * timeElapsed;
+			fps = 0.99 * fps + (1.0 - 0.99) / timeElapsed;
 			time1 = time2;
 
 			{
 				std::stringstream stream;
-				stream << std::setprecision(1);
-				stream << std::fixed;
-				stream << (1000.0 * frameTime) << "ms";
-				//stream << std::defaultfloat;
-				stream << std::setprecision(4);
-				stream << " Zoom=" << g_camera.m_zoom;
+				const auto viewport = ConvertScreenToWorld(g_camera);
+				stream << "Zoom=" << g_camera.m_zoom;
 				stream << " Center=";
 				stream << "{" << g_camera.m_center.x << "," << g_camera.m_center.y << "}";
+				stream << " Viewport=";
+				stream << "{";
+				stream << viewport.GetLowerBound().x << "..." << viewport.GetUpperBound().x;
+				stream << ", ";
+				stream << viewport.GetLowerBound().y << "..." << viewport.GetUpperBound().y;
+				stream << "}";
+				stream << std::setprecision(1);
+				stream << std::fixed;
+				stream << " Refresh=" << (1000.0 * frameTime) << "ms";
+				stream << std::setprecision(0);
+				stream << " FPS=" << fps;
 				AddGfxCmdText(5, 5, TEXT_ALIGN_LEFT, stream.str().c_str(), static_cast<unsigned int>(WHITE));
 			}
 			

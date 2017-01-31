@@ -80,6 +80,7 @@ struct Camera
 };
 
 Vec2 ConvertScreenToWorld(const Camera& camera, const Coord2D screenPoint);
+AABB ConvertScreenToWorld(const Camera& camera);
 Coord2D ConvertWorldToScreen(const Camera& camera, const Vec2 worldPoint);
 ProjectionMatrix GetProjectionMatrix(const Camera& camera, RealNum zBias);
 
