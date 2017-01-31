@@ -219,10 +219,12 @@ namespace box2d
 
 			if (result > GetMax().m_data.value)
 			{
+				// overflow from max
 				m_data.value = GetInfinity().m_data.value;
 			}
 			else if (result < GetLowest().m_data.value)
 			{
+				// overflow from lowest
 				m_data.value = GetNegativeInfinity().m_data.value;
 			}
 			else
@@ -244,10 +246,12 @@ namespace box2d
 
 			if (result > GetMax().m_data.value)
 			{
+				// overflow from max
 				m_data.value = GetInfinity().m_data.value;
 			}
 			else if (result < GetLowest().m_data.value)
 			{
+				// overflow from lowest
 				m_data.value = GetNegativeInfinity().m_data.value;
 			}
 			else
@@ -268,7 +272,15 @@ namespace box2d
 			assert(result <= GetMax().m_data.value);
 			assert(result >= GetLowest().m_data.value);
 			
-			m_data.value = static_cast<value_type>(result);
+			if (product != 0 && result == 0)
+			{
+				// underflow
+				m_data.value = static_cast<value_type>(result);
+			}
+			else
+			{
+				m_data.value = static_cast<value_type>(result);
+			}
 			return *this;
 		}
 
@@ -283,7 +295,15 @@ namespace box2d
 			assert(result <= GetMax().m_data.value);
 			assert(result >= GetLowest().m_data.value);
 			
-			m_data.value = static_cast<value_type>(result);
+			if (product != 0 && result == 0)
+			{
+				// underflow
+				m_data.value = static_cast<value_type>(result);
+			}
+			else
+			{
+				m_data.value = static_cast<value_type>(result);
+			}
 			return *this;
 		}
 		
@@ -339,7 +359,7 @@ namespace box2d
 	};
 	
 	using Fixed32 = Fixed<std::int32_t,14>;
-	using Fixed64 = Fixed<std::int64_t,16>;
+	using Fixed64 = Fixed<std::int64_t,24>;
 
 	// Fixed32 free functions.
 	
@@ -479,6 +499,8 @@ namespace box2d
 
 namespace std
 {
+	// Fixed32
+
 	template <>
 	class numeric_limits<box2d::Fixed32>
 	{
@@ -523,8 +545,6 @@ namespace std
 		static constexpr bool tinyness_before = false;
 		static constexpr float_round_style round_style = round_toward_zero;
 	};
-
-	// Fixed32
 
 	inline box2d::Fixed32 abs(box2d::Fixed32 value) noexcept
 	{
@@ -576,6 +596,51 @@ namespace std
 	
 	// Fixed64
 
+	template <>
+	class numeric_limits<box2d::Fixed64>
+	{
+	public:
+		static constexpr bool is_specialized = true;
+		
+		static constexpr box2d::Fixed64 min() noexcept { return box2d::Fixed64::GetMin(); }
+		static constexpr box2d::Fixed64 max() noexcept    { return box2d::Fixed64::GetMax(); }
+		static constexpr box2d::Fixed64 lowest() noexcept { return box2d::Fixed64::GetLowest(); }
+		
+		static constexpr int digits = 63 - box2d::Fixed64::FractionBits;
+		static constexpr int digits10 = 63 - box2d::Fixed64::FractionBits;
+		static constexpr int max_digits10 = 10; // TODO: check this
+		
+		static constexpr bool is_signed = true;
+		static constexpr bool is_integer = false;
+		static constexpr bool is_exact = true;
+		static constexpr int radix = 0;
+		static constexpr box2d::Fixed64 epsilon() noexcept { return box2d::Fixed64{0}; } // TODO
+		static constexpr box2d::Fixed64 round_error() noexcept { return box2d::Fixed64{0}; } // TODO
+		
+		static constexpr int min_exponent = 0;
+		static constexpr int min_exponent10 = 0;
+		static constexpr int max_exponent = 0;
+		static constexpr int max_exponent10 = 0;
+		
+		static constexpr bool has_infinity = false;
+		static constexpr bool has_quiet_NaN = false;
+		static constexpr bool has_signaling_NaN = false;
+		static constexpr float_denorm_style has_denorm = denorm_absent;
+		static constexpr bool has_denorm_loss = false;
+		static constexpr box2d::Fixed64 infinity() noexcept { return box2d::Fixed64{0}; }
+		static constexpr box2d::Fixed64 quiet_NaN() noexcept { return box2d::Fixed64{0}; }
+		static constexpr box2d::Fixed64 signaling_NaN() noexcept { return box2d::Fixed64{0}; }
+		static constexpr box2d::Fixed64 denorm_min() noexcept { return box2d::Fixed64{0}; }
+		
+		static constexpr bool is_iec559 = false;
+		static constexpr bool is_bounded = true;
+		static constexpr bool is_modulo = false;
+		
+		static constexpr bool traps = false;
+		static constexpr bool tinyness_before = false;
+		static constexpr float_round_style round_style = round_toward_zero;
+	};
+
 	inline box2d::Fixed64 abs(box2d::Fixed64 value) noexcept
 	{
 		return (value < box2d::Fixed64{0})? -value: value;
@@ -593,7 +658,7 @@ namespace std
 	
 	inline box2d::Fixed64 round(box2d::Fixed64 value) noexcept
 	{
-		return box2d::Fixed64{static_cast<int16_t>(value + (box2d::Fixed64{1} / box2d::Fixed64{2}))};
+		return box2d::Fixed64{static_cast<box2d::Fixed64::value_type>(value + (box2d::Fixed64{1} / box2d::Fixed64{2}))};
 	}
 	
 	inline box2d::Fixed64 nextafter(box2d::Fixed64 from, box2d::Fixed64 to) noexcept
