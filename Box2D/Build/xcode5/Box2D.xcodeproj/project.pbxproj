@@ -151,6 +151,8 @@
 		4768D3F51E3A7ACA00574143 /* Wider.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3F21E3A7ACA00574143 /* Wider.hpp */; };
 		4768D3F61E3A7ACA00574143 /* Wider.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3F21E3A7ACA00574143 /* Wider.hpp */; };
 		4768D3F81E3E895A00574143 /* PrismaticJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4768D3F71E3E895A00574143 /* PrismaticJoint.cpp */; };
+		4768D3FD1E414A0100574143 /* Vec2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3FA1E414A0100574143 /* Vec2.hpp */; };
+		4768D3FE1E414A0100574143 /* Vec2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3FA1E414A0100574143 /* Vec2.hpp */; };
 		4775A9381E05B032001C2332 /* StepConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4775A9371E05B032001C2332 /* StepConf.cpp */; };
 		477D20061E32B6E80069D610 /* Fixed32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477D20051E32B6E80069D610 /* Fixed32.cpp */; };
 		477DB2941D14B9D500846ED6 /* ContactEdgeList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477DB2921D14B9D500846ED6 /* ContactEdgeList.cpp */; };
@@ -586,6 +588,7 @@
 		476162C71E245C9D002C7FB0 /* CodeDumper.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CodeDumper.hpp; sourceTree = "<group>"; };
 		4768D3F21E3A7ACA00574143 /* Wider.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Wider.hpp; sourceTree = "<group>"; };
 		4768D3F71E3E895A00574143 /* PrismaticJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PrismaticJoint.cpp; sourceTree = "<group>"; };
+		4768D3FA1E414A0100574143 /* Vec2.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Vec2.hpp; sourceTree = "<group>"; };
 		4775A9371E05B032001C2332 /* StepConf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StepConf.cpp; sourceTree = "<group>"; };
 		477D20051E32B6E80069D610 /* Fixed32.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fixed32.cpp; sourceTree = "<group>"; };
 		477DB2921D14B9D500846ED6 /* ContactEdgeList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactEdgeList.cpp; sourceTree = "<group>"; };
@@ -1071,6 +1074,7 @@
 				80BB894B141C3E5900F1753A /* Timer.hpp */,
 				4731DE541DEC908600E7F931 /* UnitVec2.cpp */,
 				4731DE551DEC908600E7F931 /* UnitVec2.hpp */,
+				4768D3FA1E414A0100574143 /* Vec2.hpp */,
 				472E30181DBA925500DA821D /* VertexSet.hpp */,
 				4768D3F21E3A7ACA00574143 /* Wider.hpp */,
 			);
@@ -1359,6 +1363,7 @@
 				47AA5DD31C4C5FBE008AF2BA /* EdgeShape.hpp in Headers */,
 				4731DE531DEB760400E7F931 /* EdgeAndEdgeContact.hpp in Headers */,
 				472134991C8D03D6009536F9 /* BodyList.hpp in Headers */,
+				4768D3FE1E414A0100574143 /* Vec2.hpp in Headers */,
 				47AA5DD41C4C5FBE008AF2BA /* PolygonShape.hpp in Headers */,
 				4731DE741DF7EB2200E7F931 /* EdgeInfo.hpp in Headers */,
 				47AA5DD51C4C5FBE008AF2BA /* Shape.hpp in Headers */,
@@ -1498,6 +1503,7 @@
 				80BB89BB141C3E5900F1753A /* ChainAndPolygonContact.hpp in Headers */,
 				4721349F1C8E4CB5009536F9 /* FixtureList.hpp in Headers */,
 				4751EE2B1CEDD79900D459CB /* ConveyorBelt.hpp in Headers */,
+				4768D3FD1E414A0100574143 /* Vec2.hpp in Headers */,
 				477DB2AD1D1C4BE800846ED6 /* PositionSolverManifold.hpp in Headers */,
 				47A9833B1D0F51A300AA7D1A /* JointIterator.hpp in Headers */,
 				4731DE291DDF84A900E7F931 /* RayCastInput.hpp in Headers */,

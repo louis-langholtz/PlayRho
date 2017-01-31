@@ -24,13 +24,13 @@
 #include <Box2D/Common/Span.hpp>
 #include <Box2D/Common/Angle.hpp>
 #include <Box2D/Common/UnitVec2.hpp>
+#include <Box2D/Common/Vec2.hpp>
 #include <cmath>
 #include <iostream>
 
 namespace box2d
 {
 // forward declarations
-struct Vec2;
 struct Vec3;
 constexpr inline RealNum Dot(const Vec2 a, const Vec2 b) noexcept;
 constexpr inline RealNum Dot(const Vec3 a, const Vec3 b) noexcept;
@@ -151,72 +151,6 @@ inline T Average(Span<const T> span)
 		sum += element;
 	}
 	return (span.size() > decltype(span.size()){0})? sum / static_cast<T>(span.size()): sum;
-}
-
-/// Vector 2D.
-/// @note This data structure is two-times the size of the <code>RealNum</code> type.
-/// This is two times 4-bytes for a total of 8-bytes (on at least one 64-bit platform).
-struct Vec2
-{
-	using size_type = size_t;
-	using data_type = RealNum;
-
-	/// Default constructor does nothing (for performance).
-	Vec2() noexcept = default;
-	
-	Vec2(const Vec2& copy) noexcept = default;
-	
-	/// Construct using coordinates.
-	constexpr Vec2(data_type x_, data_type y_) noexcept : x{x_}, y{y_} {}
-	
-	constexpr explicit Vec2(const UnitVec2 unitvector) noexcept: x{unitvector.GetX()}, y{unitvector.GetY()} {}
-
-	/// Negate this vector.
-	constexpr auto operator- () const noexcept { return Vec2{-x, -y}; }
-	
-	/// Maximum size.
-	/// @detail This is this vector type's dimensionality.
-	constexpr size_type max_size() const noexcept { return 2; }
-	
-	/// Accesses element by index.
-	/// @param i Index (0 for x, 1 for y).
-	auto operator[] (size_type i) const
-	{
-		assert(i < max_size());
-		switch (i)
-		{
-			case 0: return x;
-			case 1: return y;
-			default: break;
-		}
-		return x;
-	}
-	
-	/// Accesses element by index.
-	/// @param i Index (0 for x, 1 for y).
-	auto& operator[] (size_type i)
-	{
-		assert(i < max_size());
-		switch (i)
-		{
-			case 0: return x;
-			case 1: return y;
-			default: break;
-		}
-		return x;
-	}
-
-	data_type x, y;
-};
-
-constexpr inline Vec2::data_type GetX(const Vec2 value)
-{
-	return value.x;
-}
-
-constexpr inline Vec2::data_type GetY(const Vec2 value)
-{
-	return value.y;
 }
 
 /// An all zero Vec2 value.
@@ -354,18 +288,17 @@ constexpr auto Mat22_identity = Mat22(Vec2{1, 0}, Vec2{0, 1});
 constexpr Vec2 Solve(const Mat22 mat, const Vec2 b) noexcept
 {
 	const auto cp = Cross(mat.ex, mat.ey);
-	const auto det = (cp != decltype(cp){0})? decltype(cp){1} / cp: decltype(cp){0};
-	
-	// (a.x * b.y) - (a.y * b.x)
-	// Vec2{det * Cross(b, mat.ey), det * Cross(mat.ex, b)}
-	return Vec2{det * (mat.ey.y * b.x - mat.ey.x * b.y), det * (mat.ex.x * b.y - mat.ex.y * b.x)};
+	return (cp != 0)?
+		Vec2{(mat.ey.y * b.x - mat.ey.x * b.y) / cp, (mat.ex.x * b.y - mat.ex.y * b.x) / cp}:
+		Vec2{0, 0};
 }
 
 constexpr Mat22 Invert(const Mat22 value) noexcept
 {
 	const auto cp = Cross(value.ex, value.ey);
-	const auto det = (cp != decltype(cp){0})? decltype(cp){1} / cp: decltype(cp){0};
-	return Mat22{Vec2{det * value.ey.y, -det * value.ex.y}, Vec2{-det * value.ey.x, det * value.ex.x}};
+	return (cp != 0)?
+		Mat22{Vec2{value.ey.y / cp, -value.ex.y / cp}, Vec2{-value.ey.x / cp, value.ex.x / cp}}:
+		Mat22{Vec2{0, 0}, Vec2{0, 0}};
 }
 
 /// A 3-by-3 matrix. Stored in column-major order.
@@ -387,7 +320,7 @@ struct Mat33
 constexpr Vec3 Solve33(const Mat33& mat, const Vec3 b) noexcept
 {
 	const auto dp = Dot(mat.ex, Cross(mat.ey, mat.ez));
-	const auto det = (dp != 0)? RealNum{1} / dp: dp;
+	const auto det = (dp != 0)? 1 / dp: dp;
 	const auto x = det * Dot(b, Cross(mat.ey, mat.ez));
 	const auto y = det * Dot(mat.ex, Cross(b, mat.ez));
 	const auto z = det * Dot(mat.ex, Cross(mat.ey, b));
@@ -400,7 +333,7 @@ constexpr Vec3 Solve33(const Mat33& mat, const Vec3 b) noexcept
 constexpr Vec2 Solve22(const Mat33& mat, const Vec2 b) noexcept
 {
 	const auto cp = mat.ex.x * mat.ey.y - mat.ey.x * mat.ex.y;
-	const auto det = (cp != 0)? RealNum{1} / cp: cp;
+	const auto det = (cp != 0)? 1 / cp: cp;
 	const auto x = det * (mat.ey.y * b.x - mat.ey.x * b.y);
 	const auto y = det * (mat.ex.x * b.y - mat.ex.y * b.x);
 	return Vec2{x, y};
