@@ -103,15 +103,17 @@ private:
 	void SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step) override;
 	bool SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const override;
 
-	Vec2 m_localAnchorB;
+	Mat22 GetEffectiveMassMatrix() const noexcept;
+
 	Vec2 m_targetA;
+	Vec2 m_localAnchorB;
 	RealNum m_frequencyHz;
 	RealNum m_dampingRatio;
 	
 	// Solver shared
 	Vec2 m_impulse = Vec2_zero;
 	RealNum m_maxForce;
-	RealNum m_gamma = RealNum{0};
+	RealNum m_gamma = 0;
 
 	// Solver variables. These are only valid after InitVelocityConstraints called.
 	index_t m_indexB;
