@@ -186,8 +186,6 @@ MassData box2d::GetMassData(const PolygonShape& shape, RealNum density)
 	// This code puts the reference point inside the polygon.
 	const auto s = Average(shape.GetVertices());
 	
-	constexpr auto k_inv3 = RealNum{1} / RealNum{3};
-	
 	for (auto i = decltype(count){0}; i < count; ++i)
 	{
 		// Triangle vertices.
@@ -200,12 +198,13 @@ MassData box2d::GetMassData(const PolygonShape& shape, RealNum density)
 		area += triangleArea;
 		
 		// Area weighted centroid
-		center += triangleArea * k_inv3 * (e1 + e2);
+		center += triangleArea * (e1 + e2) / 3;
 		
 		const auto intx2 = e1.x * e1.x + e2.x * e1.x + e2.x * e2.x;
 		const auto inty2 = e1.y * e1.y + e2.y * e1.y + e2.y * e2.y;
 		
-		I += (D * k_inv3 / 4) * (intx2 + inty2);
+		const auto triangleI = D * (intx2 + inty2) / (3 * 4);
+		I += triangleI;
 	}
 	
 	// Total mass
@@ -213,7 +212,7 @@ MassData box2d::GetMassData(const PolygonShape& shape, RealNum density)
 	
 	// Center of mass
 	assert((area > 0) && !almost_zero(area));
-	center *= RealNum{1} / area;
+	center *= 1 / area;
 	const auto massDataCenter = center + s;
 	
 	// Inertia tensor relative to the local origin (point s).
