@@ -33,31 +33,30 @@ public:
 
 	Tumbler()
 	{
-		const auto ground = m_world->CreateBody();
+		const auto g = m_world->CreateBody(BodyDef{}.UseType(BodyType::Static));
 
-		const auto body = m_world->CreateBody(BodyDef{}
-											  .UseType(BodyType::Dynamic)
-											  .UseLocation(Vec2(0, 10))
-											  .UseAllowSleep(false));
+		const auto b = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic)
+										   .UseLocation(Vec2(0, 10))
+										   .UseAllowSleep(false));
 
 		PolygonShape shape;
 		SetAsBox(shape, 0.5f, 10.0f, Vec2( 10.0f, 0.0f), 0_rad);
-		body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(5));
+		b->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(5));
 		SetAsBox(shape, 0.5f, 10.0f, Vec2(-10.0f, 0.0f), 0_rad);
-		body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(5));
+		b->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(5));
 		SetAsBox(shape, 10.0f, 0.5f, Vec2(0.0f, 10.0f), 0_rad);
-		body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(5));
+		b->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(5));
 		SetAsBox(shape, 10.0f, 0.5f, Vec2(0.0f, -10.0f), 0_rad);
-		body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(5));
+		b->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(5));
 
 		RevoluteJointDef jd;
-		jd.bodyA = ground;
-		jd.bodyB = body;
+		jd.bodyA = g;
+		jd.bodyB = b;
 		jd.localAnchorA = Vec2(0.0f, 10.0f);
 		jd.localAnchorB = Vec2(0.0f, 0.0f);
 		jd.referenceAngle = 0_rad;
 		jd.motorSpeed = 0.05f * Pi;
-		jd.maxMotorTorque = 1e8f;
+		jd.maxMotorTorque = 100000; // 1e8f;
 		jd.enableMotor = true;
 		m_joint = static_cast<RevoluteJoint*>(m_world->CreateJoint(jd));
 	}
