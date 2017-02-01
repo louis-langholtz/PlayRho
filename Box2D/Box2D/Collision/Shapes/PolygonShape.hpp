@@ -36,7 +36,12 @@ namespace box2d {
 class PolygonShape : public Shape
 {
 public:
+
 	/// Vertex count type.
+	///
+	/// @note This type must not support more than 255 vertices as that would conflict
+	///   with the <code>ContactFeature::index_t</code> type.
+	///
 	using vertex_count_t = uint8;
 
 	static constexpr auto InvalidVertex = static_cast<vertex_count_t>(-1);
