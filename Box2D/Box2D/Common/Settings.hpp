@@ -73,7 +73,7 @@ using uint64 = std::uint64_t;
 /// @warning The note regarding division applies even more so when using a fixed-point type
 /// (for RealNum).
 ///
-using RealNum = long double;
+using RealNum = double;
 
 /// Child count type. @detail Relating to "children" of Shape.
 using child_count_t = unsigned;

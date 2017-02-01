@@ -129,9 +129,45 @@ inline Fixed64 round(Fixed64 value, uint32_t precision)
 /// @detail An almost zero value is "subnormal". Dividing by these values can lead to
 /// odd results like a divide by zero trap occuring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
-constexpr inline bool almost_zero(RealNum value)
+constexpr inline bool almost_zero(float value)
 {
 	return Abs(value) < std::numeric_limits<decltype(value)>::min();
+}
+
+/// Gets whether a given value is almost zero.
+/// @detail An almost zero value is "subnormal". Dividing by these values can lead to
+/// odd results like a divide by zero trap occuring.
+/// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
+constexpr inline bool almost_zero(double value)
+{
+	return Abs(value) < std::numeric_limits<decltype(value)>::min();
+}
+
+/// Gets whether a given value is almost zero.
+/// @detail An almost zero value is "subnormal". Dividing by these values can lead to
+/// odd results like a divide by zero trap occuring.
+/// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
+constexpr inline bool almost_zero(long double value)
+{
+	return Abs(value) < std::numeric_limits<decltype(value)>::min();
+}
+
+/// Gets whether a given value is almost zero.
+/// @detail An almost zero value is "subnormal". Dividing by these values can lead to
+/// odd results like a divide by zero trap occuring.
+/// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
+constexpr inline bool almost_zero(Fixed32 value)
+{
+	return value == 0;
+}
+
+/// Gets whether a given value is almost zero.
+/// @detail An almost zero value is "subnormal". Dividing by these values can lead to
+/// odd results like a divide by zero trap occuring.
+/// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
+constexpr inline bool almost_zero(Fixed64 value)
+{
+	return value == 0;
 }
 
 constexpr inline bool almost_equal(float x, float y, int ulp = 2)
@@ -1207,15 +1243,14 @@ inline Sweep GetAnglesNormalized(Sweep sweep)
 inline RealNum Normalize(Vec2& vector)
 {
 	const auto length = GetLength(vector);
-	if (almost_zero(length))
+	if (!almost_zero(length))
 	{
-		return RealNum{0};
+		const auto invLength = 1 / length;
+		vector.x *= invLength;
+		vector.y *= invLength;
+		return length;
 	}
-	const auto invLength = RealNum{1} / length;
-	vector.x *= invLength;
-	vector.y *= invLength;
-	
-	return length;
+	return 0;
 }
 
 inline bool IsSleepable(Velocity velocity)
