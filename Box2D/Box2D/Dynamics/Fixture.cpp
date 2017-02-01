@@ -22,10 +22,6 @@
 #include <Box2D/Dynamics/Contacts/Contact.hpp>
 #include <Box2D/Dynamics/World.hpp>
 #include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Collision/Shapes/CircleShape.hpp>
-#include <Box2D/Collision/Shapes/EdgeShape.hpp>
-#include <Box2D/Collision/Shapes/PolygonShape.hpp>
-#include <Box2D/Collision/Shapes/ChainShape.hpp>
 #include <Box2D/Collision/BroadPhase.hpp>
 #include <Box2D/Common/BlockAllocator.hpp>
 
