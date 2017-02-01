@@ -83,15 +83,29 @@ static void Draw(Drawer& drawer, const EdgeShape& shape, const Transformation& x
 	}
 }
 
-static void Draw(Drawer& drawer, const ChainShape& shape, const Transformation& xf, const Color& color)
+static void Draw(Drawer& drawer, const ChainShape& shape, const Transformation& xf, const Color& color, bool skins)
 {
 	const auto count = shape.GetVertexCount();
+	const auto r = shape.GetVertexRadius();
+	const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
+	
 	auto v1 = Transform(shape.GetVertex(0), xf);
 	for (auto i = decltype(count){1}; i < count; ++i)
 	{
 		const auto v2 = Transform(shape.GetVertex(i), xf);
 		drawer.DrawSegment(v1, v2, color);
 		drawer.DrawCircle(v1, RealNum(0.05), color);
+		if (skins && r > 0)
+		{
+			const auto worldNormal0 = GetFwdPerpendicular(GetUnitVector(v2 - v1));
+			const auto offset = worldNormal0 * r;
+			drawer.DrawSegment(v1 + offset, v2 + offset, skinColor);
+			drawer.DrawSegment(v1 - offset, v2 - offset, skinColor);
+			const auto angle0 = GetAngle(worldNormal0);
+			const auto angle1 = GetAngle(-worldNormal0);
+			DrawCorner(drawer, v2, r, angle0, angle1, skinColor);
+			DrawCorner(drawer, v1, r, angle1, angle0, skinColor);
+		}
 		v1 = v2;
 	}
 }
@@ -158,7 +172,7 @@ static void Draw(Drawer& drawer, const Fixture& fixture, const Transformation& x
 			break;
 			
 		case Shape::e_chain:
-			Draw(drawer, *static_cast<const ChainShape*>(fixture.GetShape()), xf, color);
+			Draw(drawer, *static_cast<const ChainShape*>(fixture.GetShape()), xf, color, skins);
 			break;
 			
 		case Shape::e_polygon:
