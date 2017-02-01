@@ -198,17 +198,17 @@ bool ContactManager::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 		return false;
 	}
 
-	const auto indexA = proxyA.childIndex;
-	const auto indexB = proxyB.childIndex;
+	const auto childIndexA = proxyA.childIndex;
+	const auto childIndexB = proxyB.childIndex;
 	
-	// TODO_ERIN use a hash table to remove a potential bottleneck when both
+	// TODO: use a hash table to remove a potential bottleneck when both
 	// bodies have a lot of contacts.
 	// Does a contact already exist?
 	for (auto&& contactEdge: bodyB->GetContactEdges())
 	{
 		if (contactEdge.other == bodyA)
 		{
-			if (IsFor(*(contactEdge.contact), fixtureA, indexA, fixtureB, indexB))
+			if (IsFor(*(contactEdge.contact), fixtureA, childIndexA, fixtureB, childIndexB))
 			{
 				// Already have a contact for proxyA with proxyB, bail!
 				return false;
@@ -231,7 +231,7 @@ bool ContactManager::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 	assert(GetContacts().size() < MaxContacts);
 
 	// Call the contact factory create method.
-	const auto c = Contact::Create(*fixtureA, indexA, *fixtureB, indexB, m_allocator);
+	const auto c = Contact::Create(*fixtureA, childIndexA, *fixtureB, childIndexB, m_allocator);
 	assert(c);
 	if (!c)
 	{
