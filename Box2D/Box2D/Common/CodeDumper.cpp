@@ -217,10 +217,6 @@ void box2d::Dump(const Fixture& fixture, size_t bodyIndex)
 				log("    vs[%d].Set(%.15lef, %.15lef);\n", i, s->GetVertex(i).x, s->GetVertex(i).y);
 			}
 			log("    shape.CreateChain(vs, %d);\n", s->GetVertexCount());
-			log("    shape.m_prevVertex.Set(%.15lef, %.15lef);\n", s->GetPrevVertex().x, s->GetPrevVertex().y);
-			log("    shape.m_nextVertex.Set(%.15lef, %.15lef);\n", s->GetNextVertex().x, s->GetNextVertex().y);
-			log("    shape.m_hasPrevVertex = bool(%d);\n", s->HasPrevVertex());
-			log("    shape.m_hasNextVertex = bool(%d);\n", s->HasNextVertex());
 		}
 			break;
 			

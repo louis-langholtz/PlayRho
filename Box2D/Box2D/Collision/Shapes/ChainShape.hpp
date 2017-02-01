@@ -69,14 +69,6 @@ public:
 	/// @param vertices an array of vertices, these are copied
 	void CreateChain(Span<const Vec2> vertices);
 
-	/// Establish connectivity to a vertex that precedes the first vertex.
-	/// Don't call this for loops.
-	void SetPrevVertex(Vec2 prevVertex) noexcept;
-
-	/// Establish connectivity to a vertex that follows the last vertex.
-	/// Don't call this for loops.
-	void SetNextVertex(Vec2 nextVertex) noexcept;
-
 	/// Get a child edge.
 	EdgeShape GetChildEdge(child_count_t index) const;
 
@@ -86,27 +78,24 @@ public:
 	/// Get a vertex by index.
 	Vec2 GetVertex(child_count_t index) const;
 
-	bool HasPrevVertex() const noexcept { return IsValid(m_prevVertex); }
-	bool HasNextVertex() const noexcept { return IsValid(m_nextVertex); }
-
-	Vec2 GetPrevVertex() const noexcept { return m_prevVertex; }
-	Vec2 GetNextVertex() const noexcept { return m_nextVertex; }
-	
 private:
 	/// The vertices. Owned by this class.
 	Vec2* m_vertices = nullptr;
 
 	/// The vertex count.
 	child_count_t m_count = 0;
-
-	Vec2 m_prevVertex = GetInvalid<Vec2>();
-	Vec2 m_nextVertex = GetInvalid<Vec2>();
 };
 
 inline Vec2 ChainShape::GetVertex(child_count_t index) const
 {
 	assert((0 <= index) && (index < m_count));
 	return m_vertices[index];
+}
+
+inline bool IsLooped(const ChainShape& shape) noexcept
+{
+	const auto count = shape.GetVertexCount();
+	return (count > 1)? (shape.GetVertex(count - 1) == shape.GetVertex(0)): false;
 }
 
 inline child_count_t GetNextIndex(const ChainShape& shape, child_count_t index) noexcept
