@@ -97,6 +97,21 @@ inline float round(float value, uint32_t precision)
 }
 
 template <>
+inline double round(double value, uint32_t precision)
+{
+	const auto factor = double(static_cast<int64_t>(precision));
+	return std::round(value * factor) / factor;
+}
+
+template <>
+inline long double round(long double value, uint32_t precision)
+{
+	using ldouble = long double;
+	const auto factor = ldouble(static_cast<int64_t>(precision));
+	return std::round(value * factor) / factor;
+}
+
+template <>
 inline Fixed32 round(Fixed32 value, uint32_t precision)
 {
 	const auto factor = Fixed32(static_cast<int64_t>(precision));
@@ -128,6 +143,28 @@ constexpr inline bool almost_equal(float x, float y, int ulp = 2)
 	// Where "subnormal" means almost zero.
 	//
 	return (Abs(x - y) < (std::numeric_limits<float>::epsilon() * Abs(x + y) * ulp)) || almost_zero(x - y);
+}
+
+constexpr inline bool almost_equal(double x, double y, int ulp = 2)
+{
+	// From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
+	//   "the machine epsilon has to be scaled to the magnitude of the values used
+	//    and multiplied by the desired precision in ULPs (units in the last place)
+	//    unless the result is subnormal".
+	// Where "subnormal" means almost zero.
+	//
+	return (Abs(x - y) < (std::numeric_limits<double>::epsilon() * Abs(x + y) * ulp)) || almost_zero(x - y);
+}
+
+constexpr inline bool almost_equal(long double x, long double y, int ulp = 2)
+{
+	// From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
+	//   "the machine epsilon has to be scaled to the magnitude of the values used
+	//    and multiplied by the desired precision in ULPs (units in the last place)
+	//    unless the result is subnormal".
+	// Where "subnormal" means almost zero.
+	//
+	return (Abs(x - y) < (std::numeric_limits<long double>::epsilon() * Abs(x + y) * ulp)) || almost_zero(x - y);
 }
 
 constexpr inline bool almost_equal(Fixed32 x, Fixed32 y, int ulp = 2)
