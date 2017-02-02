@@ -74,8 +74,8 @@ namespace box2d
 		/// Combine an AABB into this one.
 		constexpr AABB& operator += (const AABB& aabb)
 		{
-			lowerBound = Min(lowerBound, aabb.lowerBound);
-			upperBound = Max(upperBound, aabb.upperBound);
+			lowerBound = Vec2{Min(lowerBound.x, aabb.lowerBound.x), Min(lowerBound.y, aabb.lowerBound.y)};
+			upperBound = Vec2{Max(upperBound.x, aabb.upperBound.x), Max(upperBound.y, aabb.upperBound.y)};
 			return *this;
 		}
 		
@@ -108,9 +108,18 @@ namespace box2d
 		return AABB{GetInvalid<Vec2>(), GetInvalid<Vec2>()};
 	}
 	
-	constexpr inline AABB operator + (const AABB& aabb1, const AABB& aabb2)
+	constexpr inline AABB operator + (const AABB& lhs, const AABB& rhs)
 	{
-		return AABB{Min(aabb1.GetLowerBound(), aabb2.GetLowerBound()), Max(aabb1.GetUpperBound(), aabb2.GetUpperBound())};
+		const auto lhsLowerBound = lhs.GetLowerBound();
+		const auto lhsUpperBound = lhs.GetUpperBound();
+
+		const auto rhsLowerBound = rhs.GetLowerBound();
+		const auto rhsUpperBound = rhs.GetUpperBound();
+		
+		return AABB{
+			Vec2{Min(lhsLowerBound.x, rhsLowerBound.x), Min(lhsLowerBound.y, rhsLowerBound.y)},
+			Vec2{Max(lhsUpperBound.x, rhsUpperBound.x), Max(lhsUpperBound.y, rhsUpperBound.y)}
+		};
 	}
 	
 	constexpr inline AABB operator + (Vec2 lhs, const AABB& rhs)

@@ -239,7 +239,7 @@ private:
 		const auto c0 = aabb->GetCenter();
 		const auto min = Vec2(-m_worldExtent, RealNum(0));
 		const auto max = Vec2(m_worldExtent, 2.0f * m_worldExtent);
-		const auto c = Clamp(c0, min, max);
+		const auto c = Vec2{Clamp(c0.x, min.x, max.x), Clamp(c0.y, min.y, max.y)};
 
 		aabb->Move(c - c0);
 	}

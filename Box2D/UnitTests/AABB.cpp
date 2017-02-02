@@ -21,9 +21,9 @@
 
 using namespace box2d;
 
-TEST(AABB, ByteSizeIs16)
+TEST(AABB, ByteSizeIsTwiceVec2)
 {
-	EXPECT_EQ(sizeof(AABB), size_t(16));
+	EXPECT_EQ(sizeof(AABB), sizeof(Vec2) * 2);
 }
 
 TEST(AABB, DefaultConstruction)
