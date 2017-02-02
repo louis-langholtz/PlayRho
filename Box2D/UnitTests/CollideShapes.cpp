@@ -984,8 +984,8 @@ TEST(CollideShapes, EdgeFooTriangle)
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(-2, 2));
-	EXPECT_TRUE(almost_equal(GetX(Vec2{manifold.GetLocalNormal()}), -0.707107f));
-	EXPECT_TRUE(almost_equal(GetY(Vec2{manifold.GetLocalNormal()}), -0.707107f));
+	EXPECT_TRUE(almost_equal(GetX(Vec2{manifold.GetLocalNormal()}), RealNum{-0.707107f}));
+	EXPECT_TRUE(almost_equal(GetY(Vec2{manifold.GetLocalNormal()}), RealNum{-0.707107f}));
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
 	EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 1));
@@ -1008,15 +1008,15 @@ TEST(CollideShapes, EdgePolygonFaceB1)
 	const auto manifold = CollideShapes(edge_shape, edge_xfm, poly_shape, poly_xfm);
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceB);
-	EXPECT_TRUE(almost_equal(GetX(manifold.GetLocalPoint()), -0.249999955f));
-	EXPECT_TRUE(almost_equal(GetY(manifold.GetLocalPoint()), -0.43301272f));
-	EXPECT_TRUE(almost_equal(GetX(Vec2{manifold.GetLocalNormal()}), 0.0f));
-	EXPECT_TRUE(almost_equal(GetY(Vec2{manifold.GetLocalNormal()}), -1.0f));
+	EXPECT_TRUE(almost_equal(GetX(manifold.GetLocalPoint()), RealNum{-0.249999955f}));
+	EXPECT_TRUE(almost_equal(GetY(manifold.GetLocalPoint()), RealNum{-0.43301272f}));
+	EXPECT_TRUE(almost_equal(GetX(Vec2{manifold.GetLocalNormal()}), RealNum{0.0f}));
+	EXPECT_TRUE(almost_equal(GetY(Vec2{manifold.GetLocalNormal()}), RealNum{-1.0f}));
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
 	EXPECT_EQ(manifold.GetContactFeature(0), GetVertexFaceContactFeature(1, 4));
-	EXPECT_TRUE(almost_equal(GetX(manifold.GetOpposingPoint(0)), 7.0f));
-	EXPECT_TRUE(almost_equal(GetY(manifold.GetOpposingPoint(0)), 8.0f));
+	EXPECT_TRUE(almost_equal(GetX(manifold.GetOpposingPoint(0)), RealNum{7.0f}));
+	EXPECT_TRUE(almost_equal(GetY(manifold.GetOpposingPoint(0)), RealNum{8.0f}));
 }
 
 TEST(CollideShapes, EdgePolygonFaceB2)
@@ -1034,15 +1034,15 @@ TEST(CollideShapes, EdgePolygonFaceB2)
 	const auto manifold = CollideShapes(edge_shape, edge_xfm, poly_shape, poly_xfm);
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceB);
-	EXPECT_TRUE(almost_equal(GetX(manifold.GetLocalPoint()), 0.5f));
-	EXPECT_TRUE(almost_equal(GetY(manifold.GetLocalPoint()), 0.5f));
-	EXPECT_TRUE(almost_equal(GetX(Vec2{manifold.GetLocalNormal()}), 0.0f));
-	EXPECT_TRUE(almost_equal(GetY(Vec2{manifold.GetLocalNormal()}), 1.0f));
+	EXPECT_TRUE(almost_equal(GetX(manifold.GetLocalPoint()), RealNum{0.5f}));
+	EXPECT_TRUE(almost_equal(GetY(manifold.GetLocalPoint()), RealNum{0.5f}));
+	EXPECT_TRUE(almost_equal(GetX(Vec2{manifold.GetLocalNormal()}), RealNum{0.0f}));
+	EXPECT_TRUE(almost_equal(GetY(Vec2{manifold.GetLocalNormal()}), RealNum{1.0f}));
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
 	EXPECT_EQ(manifold.GetContactFeature(0), GetVertexFaceContactFeature(1, 1));
-	EXPECT_TRUE(almost_equal(GetX(manifold.GetOpposingPoint(0)), -6.0f));
-	EXPECT_TRUE(almost_equal(GetY(manifold.GetOpposingPoint(0)), 0.0f));
+	EXPECT_TRUE(almost_equal(GetX(manifold.GetOpposingPoint(0)), RealNum{-6.0f}));
+	EXPECT_TRUE(almost_equal(GetY(manifold.GetOpposingPoint(0)), RealNum{0.0f}));
 }
 
 TEST(CollideShapes, EdgeOverlapsItself)

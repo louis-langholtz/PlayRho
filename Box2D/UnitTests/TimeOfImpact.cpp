@@ -396,7 +396,7 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
 	const auto output = TimeOfImpact(dpA, sweepA, dpB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_separated);
-	EXPECT_TRUE(almost_equal(output.get_t(), 1.0f));
+	EXPECT_TRUE(almost_equal(output.get_t(), RealNum{1.0f}));
 	EXPECT_EQ(output.get_toi_iters(), 2);
 	EXPECT_EQ(output.get_max_dist_iters(), 4);
 	EXPECT_EQ(output.get_max_root_iters(), 0);
