@@ -173,6 +173,7 @@ protected:
 	Vec2 m_mouseWorld;
 	int32 m_stepCount = 0;
 	StepStats m_stepStats;
+	contact_count_t m_maxContacts = 0;
 
 	Profile m_maxProfile;
 	Profile m_totalProfile;
