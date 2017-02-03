@@ -918,13 +918,12 @@ World::ContactToiData World::UpdateContactTOIs(const StepConf& step)
 	auto minContact = static_cast<Contact*>(nullptr);
 	auto minToi = MaxFloat;
 	
-	const auto toiConf = ToiConf{
-		1, // tMax
-		GetLinearSlop() * 3, // Targetted depth of impact
-		GetLinearSlop() / 4, // Tolerance.
-		step.maxTOIRootIterCount,
-		step.maxTOIIterations
-	};
+	const auto toiConf = ToiConf{}
+		.UseTimeMax(1)
+		.UseTargetDepth(GetLinearSlop() * 3)
+		.UseTolerance(GetLinearSlop() / 4)
+		.UseMaxRootIters(step.maxTOIRootIterCount)
+		.UseMaxToiIters(step.maxTOIIterations);
 
 	auto count = contact_count_t{0};
 	for (auto&& c: m_contactMgr.GetContacts())
