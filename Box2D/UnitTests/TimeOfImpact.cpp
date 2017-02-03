@@ -32,6 +32,12 @@ TEST(TOIConf, DefaultConstruction)
 	EXPECT_EQ(ToiConf{}.tolerance, LinearSlop / 4);	
 }
 
+TEST(TOIOutput, Types)
+{
+	EXPECT_GT(sizeof(TOIOutput::dist_sum_type), sizeof(TOIOutput::dist_iter_type));
+	EXPECT_GT(sizeof(TOIOutput::root_sum_type), sizeof(TOIOutput::root_iter_type));
+}
+
 TEST(TOIOutput, DefaultConstruction)
 {
 	TOIOutput foo;

@@ -21,6 +21,7 @@
 #define B2_TIME_OF_IMPACT_H
 
 #include <Box2D/Common/Math.hpp>
+#include <Box2D/Common/Wider.hpp>
 
 namespace box2d {
 
@@ -118,8 +119,8 @@ namespace box2d {
 		using toi_iter_type = std::remove_const<decltype(MaxTOIIterations)>::type;
 		using dist_iter_type = std::remove_const<decltype(MaxDistanceIterations)>::type;
 		using root_iter_type = std::remove_const<decltype(MaxTOIRootIterCount)>::type;
-		using dist_sum_type = std::conditional<sizeof(dist_iter_type) < sizeof(uint16), uint16, uint32>::type;
-		using root_sum_type = std::conditional<sizeof(root_iter_type) < sizeof(uint16), uint16, uint32>::type;
+		using dist_sum_type = Wider<dist_iter_type>::type;
+		using root_sum_type = Wider<root_iter_type>::type;
 
 		struct Stats
 		{

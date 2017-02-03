@@ -21,6 +21,7 @@
 #define B2_CONTACT_H
 
 #include <Box2D/Common/Math.hpp>
+#include <Box2D/Common/Wider.hpp>
 #include <Box2D/Collision/Manifold.hpp>
 #include <Box2D/Collision/Shapes/Shape.hpp>
 
@@ -77,9 +78,9 @@ public:
 	using dist_max_type = std::remove_const<decltype(MaxDistanceIterations)>::type;
 	using root_max_type = std::remove_const<decltype(MaxTOIRootIterCount)>::type;
 	
-	using toi_sum_type = std::conditional<sizeof(toi_max_type) < sizeof(uint16), uint16, uint32>::type;
-	using dist_sum_type = std::conditional<sizeof(dist_max_type) < sizeof(uint16), uint16, uint32>::type;
-	using root_sum_type = std::conditional<sizeof(root_max_type) < sizeof(uint16), uint16, uint32>::type;
+	using toi_sum_type = Wider<toi_max_type>::type;
+	using dist_sum_type = Wider<dist_max_type>::type;
+	using root_sum_type = Wider<root_max_type>::type;
 	
 	Contact() = delete;
 	Contact(const Contact& copy) = delete;

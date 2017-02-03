@@ -28,6 +28,7 @@
 #include <cstdint>
 #include <algorithm>
 
+#include <Box2D/Common/Wider.hpp>
 #include <Box2D/Common/Fixed.hpp>
 
 #define BOX2D_NOT_USED(x) ((void)(x))
@@ -137,7 +138,7 @@ constexpr auto MaxBodies = uint16{std::numeric_limits<uint16>::max() - uint16{1}
 using body_count_t = std::remove_const<decltype(MaxBodies)>::type;
 
 /// Contact count type.
-using contact_count_t = std::conditional<sizeof(body_count_t) < sizeof(uint32), uint32, uint64>::type;
+using contact_count_t = Wider<body_count_t>::type;
 	
 /// Maximum number of contacts in a world (2147319811).
 /// @detail Uses the formula for the maximum number of edges in an undirectional graph of MaxBodies nodes. 
@@ -145,7 +146,7 @@ using contact_count_t = std::conditional<sizeof(body_count_t) < sizeof(uint32), 
 constexpr auto MaxContacts = contact_count_t{MaxBodies} * contact_count_t{MaxBodies - 1} / contact_count_t{2};
 
 /// Joint count type.
-using joint_count_t = std::conditional<sizeof(body_count_t) < sizeof(uint32), uint32, uint64>::type;
+using joint_count_t = Wider<body_count_t>::type;
 
 /// Maximum number of joints in a world (65534 based off uint16 and eliminating one value for invalid).
 constexpr auto MaxJoints = uint16{std::numeric_limits<uint16>::max() - uint16{1}};
