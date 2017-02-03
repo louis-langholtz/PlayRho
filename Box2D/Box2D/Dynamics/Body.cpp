@@ -194,7 +194,7 @@ void Body::SetType(BodyType type)
 
 Fixture* Body::CreateFixture(std::shared_ptr<const Shape> shape, const FixtureDef& def, bool resetMassData)
 {
-	if (!shape)
+	if ((!shape) || (def.density < 0) || (def.friction < 0))
 	{
 		return nullptr;
 	}
@@ -586,7 +586,7 @@ MassData box2d::ComputeMassData(const Body& body) noexcept
 	auto center = Vec2_zero;
 	for (auto&& fixture: body.GetFixtures())
 	{
-		if (fixture.GetDensity() != 0)
+		if (fixture.GetDensity() > 0)
 		{
 			const auto massData = GetMassData(fixture);
 			mass += massData.mass;

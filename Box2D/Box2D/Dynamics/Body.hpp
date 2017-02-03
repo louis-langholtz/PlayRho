@@ -205,23 +205,31 @@ constexpr inline BodyDef& BodyDef::UseUserData(void* value) noexcept
 }
 
 /// Body.
+///
 /// @detail A rigid body. These are created via World::Create.
-/// @note On a 64-bit architecture this data structure is at least 156-bytes large.
+///
+/// @note On a 64-bit architecture with 4-byte RealNum, this data structure is at least 156-bytes large.
+///
 class Body
 {
 public:
 	static constexpr auto InvalidIslandIndex = static_cast<body_count_t>(-1);
 	
 	/// Creates a fixture and attaches it to this body.
-	/// @detail
-	/// If the density is non-zero, this function automatically updates the mass of the body.
-	/// Contacts are not created until the next time step.
-	/// @param shape Shape definition. This will be copied, so it can be on the stack.
+	///
+	/// @param shape Sharable shape definition.
+	///   Its vertex radius must be less than the minimum or more than the maximum allowed by
+	///   the body's world.
 	/// @param def Initial fixture settings.
+	///   Friction and density must be >= 0.
+	/// @param resetMassData Whether or not to reset the mass data of the body.
+	///
+	/// @note This function should not be called if the world is locked.
 	/// @warning This function is locked during callbacks.
-	/// @return <code>nullptr</code> if the world is locked, or the fixture definition's shape
-	///    vertex radius is less than the minimum or more than the maximum allowed by the body's
-	///    world. A pointer to the created fixture otherwise.
+	///
+	/// @return <code>nullptr</code> if the world is locked or a parameter is dissallowed.
+	///   A pointer to the created fixture otherwise.
+	///
 	Fixture* CreateFixture(std::shared_ptr<const Shape> shape,
 						   const FixtureDef& def = GetDefaultFixtureDef(),
 						   bool resetMassData = true);

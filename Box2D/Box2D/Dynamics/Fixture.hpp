@@ -68,7 +68,6 @@ struct FixtureDef
 	/// Friction coefficient.
 	///
 	/// @note This must be a value between 0 and +infinity.
-	/// @warning Behavior is undefined if a negative value is used.
 	/// @note This is usually in the range [0,1].
 	/// @note The square-root of the product of this value multiplied by a touching fixture's
 	/// friction becomes the friction coefficient for the contact.
@@ -78,7 +77,12 @@ struct FixtureDef
 	/// The restitution (elasticity) usually in the range [0,1].
 	RealNum restitution = RealNum{0};
 
-	/// The density, usually in kg/m^2.
+	/// Density of the associated shape.
+	///
+	/// @note This is usually in kg/m^2.
+	/// @note This must be a non-negative value.
+	/// @note Use 0 to indicate that the shape's associated mass should be 0.
+	///
 	RealNum density = RealNum{0};
 
 	/// A sensor shape collects contact information but never generates a collision
@@ -126,19 +130,34 @@ constexpr inline FixtureDef& FixtureDef::UseFilter(Filter value) noexcept
 }
 
 /// Fixture.
+///
 /// @detail
 /// A fixture is used to attach a shape to a body for collision detection. A fixture
 /// inherits its transform from its parent. Fixtures hold additional non-geometric data
 /// such as friction, collision filters, etc.
-/// Fixtures are created via Body::CreateFixture.
+///
 /// @warning you cannot reuse fixtures.
-/// @note This structure is 72-bytes large (on at least one 64-bit architecture/build).
+/// @note Fixtures are created via Body::CreateFixture.
+/// @note This structure is 72-bytes large (using a 4-byte RealNum on at least one 64-bit architecture/build).
+///
 class Fixture
 {
 public:
 	Fixture() = delete; // explicitly deleted
 
 	/// Initializing constructor.
+	///
+	/// @warning Behavior is undefined if a <code>nullptr</code> initial body setting is used.
+	/// @warning Behavior is undefined if a <code>nullptr</code> initial shape setting is used.
+	/// @warning Behavior is undefined if a negative initial density setting is used.
+	/// @warning Behavior is undefined if a negative initial friction setting is used.
+	///
+	/// @param body Body the new fixture is to be associated with.
+	/// @param def Initial fixture settings.
+	///    Friction must be greater-than-or-equal-to zero.
+	///    Density must be greater-than-or-equal-to zero.
+	/// @param shape Sharable shape to associate fixture with. Must be non-null.
+	///
 	Fixture(Body* body, const FixtureDef& def, std::shared_ptr<const Shape> shape):
 		m_body{body},
 		m_shape{shape},

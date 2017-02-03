@@ -32,6 +32,8 @@ namespace
 {
 	MassData GetMassData(RealNum r, RealNum density, Vec2 location)
 	{
+		assert(density >= 0);
+
 		// Uses parallel axis theorem, perpendicular axis theorem, and the second moment of area.
 		// See: https://en.wikipedia.org/wiki/Second_moment_of_area
 		//
@@ -45,7 +47,6 @@ namespace
 		// A = Pi * r^2
 		// Iz = (Pi * r^4 / 2) + (2 * (Pi * r^2) * (dx^2 + dy^2))
 		// Iz = Pi * r^2 * ((r^2 / 2) + (dx^2 + dy^2))
-		assert(density >= 0);
 		const auto r_squared = Square(r);
 		const auto area = r_squared * Pi;
 		const auto mass = density * area;
@@ -55,6 +56,8 @@ namespace
 
 	MassData GetMassData(RealNum r, RealNum density, Vec2 v0, Vec2 v1)
 	{
+		assert(density >= 0);
+
 		const auto r_squared = Square(r);
 		const auto circle_area = r_squared * Pi;
 		const auto circle_mass = density * circle_area;
@@ -247,6 +250,7 @@ MassData box2d::GetMassData(const ChainShape& shape, RealNum density)
 MassData box2d::GetMassData(const Shape& shape, RealNum density)
 {
 	assert(shape.GetType() < Shape::e_typeCount);
+	assert(density >= 0);
 	switch (shape.GetType())
 	{
 		case Shape::e_edge: return GetMassData(static_cast<const EdgeShape&>(shape), density);
