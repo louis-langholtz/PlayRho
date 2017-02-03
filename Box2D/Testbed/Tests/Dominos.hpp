@@ -55,10 +55,10 @@ public:
 
 		{
 			PolygonShape shape;
-			SetAsBox(shape, 7.0f, 0.25f, Vec2_zero, 0.3_rad);
+			SetAsBox(shape, 7.2f, 0.25f, Vec2_zero, 0.3_rad);
 
 			BodyDef bd;
-			bd.position = Vec2(1.0f, 6.0f);
+			bd.position = Vec2(1.2f, 6.0f);
 			const auto ground = m_world->CreateBody(bd);
 			ground->CreateFixture(std::make_shared<PolygonShape>(shape));
 		}

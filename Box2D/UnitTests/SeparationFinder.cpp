@@ -53,7 +53,7 @@ TEST(SeparationFinder, BehavesAsExpected)
 	EXPECT_EQ(Vec2(fcn.GetAxis()), Vec2(1, 0));
 	EXPECT_EQ(fcn.GetLocalPoint(), Vec2(0.5, 0));
 
-	for (auto i = 0u; i < 1000; ++i)
+	for (auto i = 0u; i < 500; ++i)
 	{
 		// Prepare input for distance query.
 		const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
