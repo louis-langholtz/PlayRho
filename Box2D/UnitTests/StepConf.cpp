@@ -18,6 +18,7 @@
 
 #include "gtest/gtest.h"
 #include <Box2D/Dynamics/StepConf.hpp>
+#include <Box2D/Dynamics/World.hpp>
 
 using namespace box2d;
 
@@ -36,6 +37,7 @@ TEST(StepConf, maxTranslation)
 	const auto max_inc = inc * StepConf{}.maxTranslation;
 	EXPECT_GT(max_inc, RealNum(0));
 	EXPECT_LT(max_inc, LinearSlop / 2);
+	EXPECT_LT(max_inc, World::Def{}.linearSlop / 2);
 #if 0
 	std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
 	std::cout << " inc=" << inc;

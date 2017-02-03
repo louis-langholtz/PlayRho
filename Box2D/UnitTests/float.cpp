@@ -131,9 +131,8 @@ TEST(float, nan)
 	EXPECT_TRUE(std::isnan(std::numeric_limits<float>::quiet_NaN() / std::numeric_limits<float>::infinity()));
 	EXPECT_FALSE(std::numeric_limits<float>::quiet_NaN() > 0.0f);
 	EXPECT_FALSE(std::numeric_limits<float>::quiet_NaN() < 0.0f);
-	EXPECT_FALSE(std::numeric_limits<float>::quiet_NaN() == 0.0f);
-	EXPECT_TRUE(std::numeric_limits<float>::quiet_NaN() != 0.0f);
-	EXPECT_FALSE(std::numeric_limits<float>::quiet_NaN() == std::numeric_limits<float>::quiet_NaN());
+	EXPECT_NE(std::numeric_limits<float>::quiet_NaN(), std::numeric_limits<float>::quiet_NaN());
+	EXPECT_NE(std::numeric_limits<float>::quiet_NaN(), 0.0f);
 }
 
 TEST(float, sqrt)
@@ -143,4 +142,5 @@ TEST(float, sqrt)
 	EXPECT_EQ(std::sqrt(0.0f), 0.0f);
 	EXPECT_EQ(std::sqrt(std::numeric_limits<float>::infinity()), std::numeric_limits<float>::infinity());
 	EXPECT_TRUE(std::isnan(std::sqrt(-1.0f)));
+	EXPECT_TRUE(std::isnan(std::sqrt(std::numeric_limits<float>::quiet_NaN())));
 }

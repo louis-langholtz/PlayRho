@@ -236,6 +236,11 @@ TEST(Fixed32, InifnityDividedByPositiveIsInfinity)
 	EXPECT_EQ(Fixed32::GetInfinity() / 0.5, Fixed32::GetInfinity());
 }
 
+TEST(Fixed32, InfinityDividedByInfinityIsNaN)
+{
+	EXPECT_TRUE(std::isnan(Fixed32::GetInfinity() / Fixed32::GetInfinity()));
+}
+
 TEST(Fixed32, InifnityTimesNegativeIsNegativeInfinity)
 {
 	EXPECT_EQ(Fixed32::GetInfinity() * -1, -Fixed32::GetInfinity());
@@ -277,4 +282,34 @@ TEST(Fixed32, Comparators)
 	EXPECT_FALSE(Fixed32::GetNaN() == 0.0f);
 	EXPECT_TRUE(Fixed32::GetNaN() != 0.0f);
 	EXPECT_FALSE(Fixed32::GetNaN() == Fixed32::GetNaN());
+}
+
+TEST(Fixed32, BiggerValsIdenticallyInaccurate)
+{
+	// Check that RealNum doesn't suffer from inconstent inaccuracy (like float has depending on
+	// the float's value).
+	auto last_delta = float(0);
+	auto val = Fixed32{1};
+	const auto max = sizeof(Fixed32) * 8 - Fixed32::FractionBits - 1;
+	for (auto i = decltype(max){0}; i < max; ++i)
+	{
+		const auto next = std::nextafter(val, std::numeric_limits<Fixed32>::max());
+		const auto delta = static_cast<float>(next - val);
+		ASSERT_EQ(val + (delta / 2.0f), val);
+#if 0
+		std::cout << std::hexfloat;
+		std::cout << "For " << std::setw(7) << val << ", delta of next value is " << std::setw(7) << delta;
+		std::cout << std::defaultfloat;
+		std::cout << ": ie. at " << std::setw(6) << val;
+		std::cout << std::fixed;
+		std::cout << ", delta is " << delta;
+		std::cout << std::endl;
+#endif
+		val *= 2;
+		if (last_delta != 0)
+		{
+			ASSERT_EQ(delta, last_delta);
+		}
+		last_delta = delta;
+	}
 }

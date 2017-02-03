@@ -47,7 +47,10 @@ TEST(RealNum, BiggerValsIdenticallyInaccurate)
 		std::cout << std::endl;
 #endif
 		val *= 2;
-		EXPECT_EQ(delta, last_delta);
+		if (last_delta != 0)
+		{
+			ASSERT_EQ(delta, last_delta);
+		}
 		last_delta = delta;
 	}
 }
