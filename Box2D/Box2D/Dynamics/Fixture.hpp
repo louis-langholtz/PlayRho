@@ -65,7 +65,14 @@ struct FixtureDef
 	/// Use this to store application specific fixture data.
 	void* userData = nullptr;
 
-	/// The friction coefficient, usually in the range [0,1].
+	/// Friction coefficient.
+	///
+	/// @note This must be a value between 0 and +infinity.
+	/// @warning Behavior is undefined if a negative value is used.
+	/// @note This is usually in the range [0,1].
+	/// @note The square-root of the product of this value multiplied by a touching fixture's
+	/// friction becomes the friction coefficient for the contact.
+	///
 	RealNum friction = RealNum{2} / RealNum{10};
 
 	/// The restitution (elasticity) usually in the range [0,1].
@@ -145,6 +152,7 @@ public:
 		assert(body);
 		assert(shape);
 		assert(def.density >= 0);
+		assert(def.friction >= 0);
 	}
 
 	/// Gets the parent body of this fixture.

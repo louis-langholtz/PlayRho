@@ -1001,32 +1001,22 @@ constexpr inline T Min(T a, T b)
 	return (a < b) ? a : b;
 }
 
-template <>
-constexpr inline Vec2 Min(Vec2 a, Vec2 b)
-{
-	return Vec2{Min(a.x, b.x), Min(a.y, b.y)};
-}
-
 template <typename T>
 constexpr inline T Max(T a, T b)
 {
 	return (a > b) ? a : b;
 }
 
-template <>
-constexpr inline Vec2 Max(Vec2 a, Vec2 b)
-{
-	return Vec2{Max(a.x, b.x), Max(a.y, b.y)};
-}
-
 /// Clamps the given value within the given range (inclusive).
 /// @param a Value to clamp.
-/// @param low Lowest value to return.
-/// @param high Highest value to return.
+/// @param low Lowest value to return or NaN to keep the low-end unbounded.
+/// @param high Highest value to return or NaN to keep the high-end unbounded.
 template <typename T>
 constexpr inline T Clamp(T a, T low, T high)
 {
-	return Max(low, Min(a, high));
+	const auto b = std::isnan(high)? a: Min(a, high);
+	const auto c = std::isnan(low)? b: Max(b, low);
+	return c;
 }
 
 template<typename T>

@@ -44,6 +44,14 @@ namespace box2d
 		using value_type = BASE_TYPE;
 		static constexpr unsigned int FractionBits = FRACTION_BITS;
 
+		enum class ComparatorResult
+		{
+			Incomparable,
+			Equal,
+			LessThan,
+			GreaterThan
+		};
+
 		static constexpr Fixed GetMin() noexcept
 		{
 			return Fixed{internal_type{1}};
@@ -54,19 +62,28 @@ namespace box2d
 			return Fixed{internal_type{numeric_limits::max()}};
 		}
 		
-		static constexpr Fixed GetNegativeInfinity() noexcept
+		static constexpr Fixed GetMax() noexcept
+		{
+			// max reserved for +inf
+			return Fixed{internal_type{numeric_limits::max() - 1}};
+		}
+
+		static constexpr Fixed GetNaN() noexcept
 		{
 			return Fixed{internal_type{numeric_limits::lowest()}};
 		}
-		
-		static constexpr Fixed GetMax() noexcept
+
+		static constexpr Fixed GetNegativeInfinity() noexcept
 		{
-			return Fixed{internal_type{numeric_limits::max() - 1}};
+			// lowest reserved for NaN
+			return Fixed{internal_type{numeric_limits::lowest() + 1}};
 		}
 		
 		static constexpr Fixed GetLowest() noexcept
 		{
-			return Fixed{internal_type{numeric_limits::lowest() + 1}};
+			// lowest reserved for NaN
+			// lowest + 1 reserved for -inf
+			return Fixed{internal_type{numeric_limits::lowest() + 2}};
 		}
 
 		Fixed() = default;
@@ -137,6 +154,25 @@ namespace box2d
 			assert(fraction <= (1u << FractionBits) - 1u);
 		}
 		
+		// Methods
+		
+		constexpr ComparatorResult Compare(const Fixed other) const noexcept
+		{
+			if (isnan() || other.isnan())
+			{
+				return ComparatorResult::Incomparable;
+			}
+			if (m_data.value < other.m_data.value)
+			{
+				return ComparatorResult::LessThan;
+			}
+			if (m_data.value > other.m_data.value)
+			{
+				return ComparatorResult::GreaterThan;
+			}
+			return ComparatorResult::Equal;
+		}
+
 		// Unary operations
 
 		explicit constexpr operator long double() const noexcept
@@ -151,7 +187,9 @@ namespace box2d
 		
 		explicit constexpr operator float() const noexcept
 		{
-			return m_data.value / float(ScaleFactor);
+			return (isnan())? std::numeric_limits<float>::signaling_NaN():
+				(!isfinite())? std::numeric_limits<float>::infinity() * getsign():
+					m_data.value / float(ScaleFactor);
 		}
 	
 		explicit constexpr operator long long() const noexcept
@@ -189,12 +227,12 @@ namespace box2d
 		
 		constexpr Fixed operator- () const noexcept
 		{
-			return Fixed{internal_type{-m_data.value}};
+			return (isnan())? *this: Fixed{internal_type{-this->m_data.value}};
 		}
 		
 		constexpr Fixed operator+ () const noexcept
 		{
-			return Fixed{internal_type{+m_data.value}};
+			return *this;
 		}
 		
 		explicit constexpr operator bool() const noexcept
@@ -209,14 +247,11 @@ namespace box2d
 		
 		constexpr Fixed& operator+= (Fixed val) noexcept
 		{
-			assert(is_valid());
-			assert(val.is_valid());
+			assert(!isnan());
+			assert(!val.isnan());
 
 			const auto result = intermediary_type{m_data.value} + val.m_data.value;
 			
-			assert(result <= GetMax().m_data.value);
-			assert(result >= GetLowest().m_data.value);
-
 			if (result > GetMax().m_data.value)
 			{
 				// overflow from max
@@ -236,14 +271,11 @@ namespace box2d
 
 		constexpr Fixed& operator-= (Fixed val) noexcept
 		{
-			assert(is_valid());
-			assert(val.is_valid());
+			assert(!isnan());
+			assert(!val.isnan());
 
 			const auto result = intermediary_type{m_data.value} - val.m_data.value;
 			
-			assert(result <= GetMax().m_data.value);
-			assert(result >= GetLowest().m_data.value);
-
 			if (result > GetMax().m_data.value)
 			{
 				// overflow from max
@@ -263,72 +295,102 @@ namespace box2d
 
 		constexpr Fixed& operator*= (Fixed val) noexcept
 		{
-			assert(is_valid());
-			assert(val.is_valid());
-
-			const auto product = intermediary_type{m_data.value} * intermediary_type{val.m_data.value};
-			const auto result = (product + ScaleFactor/2) / ScaleFactor;
-			
-			assert(result <= GetMax().m_data.value);
-			assert(result >= GetLowest().m_data.value);
-			
-			if (product != 0 && result == 0)
+			if (isnan() || val.isnan())
 			{
-				// underflow
-				m_data.value = static_cast<value_type>(result);
+				*this = GetNaN();
+			}
+			else if (!isfinite() || !val.isfinite())
+			{
+				if (m_data.value == 0 || val.m_data.value == 0)
+				{
+					*this = GetNaN();
+				}
+				else
+				{
+					*this = ((m_data.value > 0) != (val.m_data.value > 0))? -GetInfinity(): GetInfinity();
+				}
 			}
 			else
 			{
-				m_data.value = static_cast<value_type>(result);
+				const auto product = intermediary_type{m_data.value} * intermediary_type{val.m_data.value};
+				const auto result = product / ScaleFactor;
+				
+				if (product != 0 && result == 0)
+				{
+					// underflow
+					m_data.value = static_cast<value_type>(result);
+				}
+				else if (result > GetMax().m_data.value)
+				{
+					// overflow from max
+					m_data.value = GetInfinity().m_data.value;
+				}
+				else if (result < GetLowest().m_data.value)
+				{
+					// overflow from lowest
+					m_data.value = GetNegativeInfinity().m_data.value;
+				}
+				else
+				{
+					m_data.value = static_cast<value_type>(result);
+				}
 			}
 			return *this;
 		}
 
 		constexpr Fixed& operator/= (Fixed val) noexcept
 		{
-			assert(is_valid());
-			assert(val.is_valid());
-
-			const auto product = intermediary_type{m_data.value} * ScaleFactor;
-			const auto result = product / val.m_data.value;
-			
-			assert(result <= GetMax().m_data.value);
-			assert(result >= GetLowest().m_data.value);
-			
-			if (product != 0 && result == 0)
+			if (isnan() || val.isnan())
 			{
-				// underflow
-				m_data.value = static_cast<value_type>(result);
+				*this = GetNaN();
+			}
+			else if (!isfinite() && !val.isfinite())
+			{
+				*this = GetNaN();
+			}
+			else if (!isfinite())
+			{
+				*this = ((m_data.value > 0) != (val.m_data.value > 0))? -GetInfinity(): GetInfinity();
+			}
+			else if (!val.isfinite())
+			{
+				*this = 0;
 			}
 			else
 			{
-				m_data.value = static_cast<value_type>(result);
+				const auto product = intermediary_type{m_data.value} * ScaleFactor;
+				const auto result = product / val.m_data.value;
+				
+				if (product != 0 && result == 0)
+				{
+					// underflow
+					m_data.value = static_cast<value_type>(result);
+				}
+				else if (result > GetMax().m_data.value)
+				{
+					// overflow from max
+					m_data.value = GetInfinity().m_data.value;
+				}
+				else if (result < GetLowest().m_data.value)
+				{
+					// overflow from lowest
+					m_data.value = GetNegativeInfinity().m_data.value;
+				}
+				else
+				{
+					m_data.value = static_cast<value_type>(result);
+				}
 			}
 			return *this;
 		}
 		
 		constexpr Fixed& operator%= (Fixed val) noexcept
 		{
-			assert(is_valid());
-			assert(val.is_valid());
+			assert(!isnan());
+			assert(!val.isnan());
 
 			m_data.value %= val.m_data.value;
 			return *this;
-		}
-
-		// Comparison operators
-
-		constexpr int Compare(const Fixed other) const noexcept
-		{
-			if (m_data.value < other.m_data.value)
-			{
-				return -1;
-			}
-			if (m_data.value > other.m_data.value)
-			{
-				return +1;
-			}
-			return 0;
 		}
 		
 	private:
@@ -349,10 +411,21 @@ namespace box2d
 			// Intentionally empty.
 		}
 		
-		constexpr bool is_valid() const noexcept
+		constexpr bool isfinite() const noexcept
 		{
-			return (m_data.value > GetNegativeInfinity().m_data.value)
-				&& (m_data.value < GetInfinity().m_data.value);
+			return (m_data.value < GetInfinity().m_data.value)
+				&& (m_data.value > GetNegativeInfinity().m_data.value);
+		}
+
+		constexpr bool isnan() const noexcept
+		{
+			return (m_data.value < GetNegativeInfinity().m_data.value)
+				|| (m_data.value > GetInfinity().m_data.value);
+		}
+		
+		constexpr int getsign() const noexcept
+		{
+			return (m_data.value >= 0)? +1: -1;
 		}
 		
 		internal_type m_data;
@@ -395,37 +468,36 @@ namespace box2d
 	
 	constexpr bool operator== (Fixed32 lhs, Fixed32 rhs) noexcept
 	{
-		return lhs.Compare(rhs) == 0;
+		return lhs.Compare(rhs) == Fixed32::ComparatorResult::Equal;
 	}
-	
 	
 	constexpr bool operator!= (Fixed32 lhs, Fixed32 rhs) noexcept
 	{
-		return lhs.Compare(rhs) != 0;
+		return lhs.Compare(rhs) != Fixed32::ComparatorResult::Equal;
 	}
-	
 	
 	constexpr bool operator <= (Fixed32 lhs, Fixed32 rhs) noexcept
 	{
-		return lhs.Compare(rhs) <= 0;
+		const auto result = lhs.Compare(rhs);
+		return (result == Fixed32::ComparatorResult::LessThan) || (result == Fixed32::ComparatorResult::Equal);
 	}
-	
 	
 	constexpr bool operator >= (Fixed32 lhs, Fixed32 rhs) noexcept
 	{
-		return lhs.Compare(rhs) >= 0;
+		const auto result = lhs.Compare(rhs);
+		return (result == Fixed32::ComparatorResult::GreaterThan) || (result == Fixed32::ComparatorResult::Equal);
 	}
-	
 	
 	constexpr bool operator < (Fixed32 lhs, Fixed32 rhs) noexcept
 	{
-		return lhs.Compare(rhs) < 0;
+		const auto result = lhs.Compare(rhs);
+		return result == Fixed32::ComparatorResult::LessThan;
 	}
-	
 	
 	constexpr bool operator > (Fixed32 lhs, Fixed32 rhs) noexcept
 	{
-		return lhs.Compare(rhs) > 0;
+		const auto result = lhs.Compare(rhs);
+		return result == Fixed32::ComparatorResult::GreaterThan;
 	}
 
 	// Fixed64 free functions.
@@ -462,37 +534,36 @@ namespace box2d
 	
 	constexpr bool operator== (Fixed64 lhs, Fixed64 rhs) noexcept
 	{
-		return lhs.Compare(rhs) == 0;
+		return lhs.Compare(rhs) == Fixed64::ComparatorResult::Equal;
 	}
-	
 	
 	constexpr bool operator!= (Fixed64 lhs, Fixed64 rhs) noexcept
 	{
-		return lhs.Compare(rhs) != 0;
+		return lhs.Compare(rhs) != Fixed64::ComparatorResult::Equal;
 	}
-	
 	
 	constexpr bool operator <= (Fixed64 lhs, Fixed64 rhs) noexcept
 	{
-		return lhs.Compare(rhs) <= 0;
+		const auto result = lhs.Compare(rhs);
+		return (result == Fixed64::ComparatorResult::LessThan) || (result == Fixed64::ComparatorResult::Equal);
 	}
-	
 	
 	constexpr bool operator >= (Fixed64 lhs, Fixed64 rhs) noexcept
 	{
-		return lhs.Compare(rhs) >= 0;
+		const auto result = lhs.Compare(rhs);
+		return (result == Fixed64::ComparatorResult::GreaterThan) || (result == Fixed64::ComparatorResult::Equal);
 	}
-	
 	
 	constexpr bool operator < (Fixed64 lhs, Fixed64 rhs) noexcept
 	{
-		return lhs.Compare(rhs) < 0;
+		const auto result = lhs.Compare(rhs);
+		return result == Fixed64::ComparatorResult::LessThan;
 	}
-	
 	
 	constexpr bool operator > (Fixed64 lhs, Fixed64 rhs) noexcept
 	{
-		return lhs.Compare(rhs) > 0;
+		const auto result = lhs.Compare(rhs);
+		return result == Fixed64::ComparatorResult::GreaterThan;
 	}
 
 } // namespace box2d
@@ -527,13 +598,13 @@ namespace std
 		static constexpr int max_exponent = 0;
 		static constexpr int max_exponent10 = 0;
 		
-		static constexpr bool has_infinity = false;
-		static constexpr bool has_quiet_NaN = false;
+		static constexpr bool has_infinity = true;
+		static constexpr bool has_quiet_NaN = true;
 		static constexpr bool has_signaling_NaN = false;
 		static constexpr float_denorm_style has_denorm = denorm_absent;
 		static constexpr bool has_denorm_loss = false;
-		static constexpr box2d::Fixed32 infinity() noexcept { return box2d::Fixed32{0}; }
-		static constexpr box2d::Fixed32 quiet_NaN() noexcept { return box2d::Fixed32{0}; }
+		static constexpr box2d::Fixed32 infinity() noexcept { return box2d::Fixed32::GetInfinity(); }
+		static constexpr box2d::Fixed32 quiet_NaN() noexcept { return box2d::Fixed32::GetNaN(); }
 		static constexpr box2d::Fixed32 signaling_NaN() noexcept { return box2d::Fixed32{0}; }
 		static constexpr box2d::Fixed32 denorm_min() noexcept { return box2d::Fixed32{0}; }
 		
@@ -594,6 +665,16 @@ namespace std
 		return exp(static_cast<double>(value));
 	}
 	
+	inline bool isfinite(box2d::Fixed32 value) noexcept
+	{
+		return (value != box2d::Fixed32::GetInfinity()) && (value != box2d::Fixed32::GetNegativeInfinity());
+	}
+	
+	inline bool isnan(box2d::Fixed32 value) noexcept
+	{
+		return value.Compare(0) == box2d::Fixed32::ComparatorResult::Incomparable;
+	}
+
 	// Fixed64
 
 	template <>
@@ -622,13 +703,13 @@ namespace std
 		static constexpr int max_exponent = 0;
 		static constexpr int max_exponent10 = 0;
 		
-		static constexpr bool has_infinity = false;
-		static constexpr bool has_quiet_NaN = false;
+		static constexpr bool has_infinity = true;
+		static constexpr bool has_quiet_NaN = true;
 		static constexpr bool has_signaling_NaN = false;
 		static constexpr float_denorm_style has_denorm = denorm_absent;
 		static constexpr bool has_denorm_loss = false;
-		static constexpr box2d::Fixed64 infinity() noexcept { return box2d::Fixed64{0}; }
-		static constexpr box2d::Fixed64 quiet_NaN() noexcept { return box2d::Fixed64{0}; }
+		static constexpr box2d::Fixed64 infinity() noexcept { return box2d::Fixed64::GetInfinity(); }
+		static constexpr box2d::Fixed64 quiet_NaN() noexcept { return box2d::Fixed64::GetNaN(); }
 		static constexpr box2d::Fixed64 signaling_NaN() noexcept { return box2d::Fixed64{0}; }
 		static constexpr box2d::Fixed64 denorm_min() noexcept { return box2d::Fixed64{0}; }
 		
@@ -687,6 +768,16 @@ namespace std
 	inline double exp(box2d::Fixed64 value)
 	{
 		return exp(static_cast<double>(value));
+	}
+
+	inline bool isfinite(box2d::Fixed64 value) noexcept
+	{
+		return (value != box2d::Fixed64::GetInfinity()) && (value != box2d::Fixed64::GetNegativeInfinity());
+	}
+
+	inline bool isnan(box2d::Fixed64 value) noexcept
+	{
+		return value.Compare(0) == box2d::Fixed64::ComparatorResult::Incomparable;
 	}
 
 } // namespace std

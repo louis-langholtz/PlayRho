@@ -133,7 +133,8 @@ public:
 	/// This value persists until set or reset.
 	void SetFriction(RealNum friction) noexcept;
 
-	/// Get the friction.
+	/// Gets the combined friction of the two fixtures associated with this contact.
+	/// @sa MixFriction.
 	RealNum GetFriction() const noexcept;
 
 	/// Override the default restitution mixture. You can call this in ContactListener::PreSolve.

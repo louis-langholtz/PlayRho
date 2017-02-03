@@ -68,9 +68,18 @@ static inline void SolveTangentConstraint(VelocityConstraint& vc, Velocity& velA
 			const auto lambda = GetTangentMassAtPoint(vc, i) * (vc.GetTangentSpeed() - Dot(GetContactRelVelocity(velA, rA, velB, rB), tangent));
 			
 			// Clamp the accumulated force
+			//
+			// Notes:
+			//
+			//   vc.GetFriction() can return any value between 0 and +Inf. If it's +Inf,
+			//   multiplying it any non-zero non-NaN value results in +/-Inf, and multiplying
+			//   it by zero or NaN results in NaN.
+			//
+			//   Meanwhile GetNormalImpulseAtPoint(vc, i) can often return 0.
+			//
 			const auto maxImpulse = vc.GetFriction() * GetNormalImpulseAtPoint(vc, i);
 			const auto oldImpulse = GetTangentImpulseAtPoint(vc, i);
-			const auto newImpulse = Clamp(GetTangentImpulseAtPoint(vc, i) + lambda, -maxImpulse, maxImpulse);
+			const auto newImpulse = Clamp(oldImpulse + lambda, -maxImpulse, maxImpulse);
 			const auto incImpulse = newImpulse - oldImpulse;
 			
 			// Save new impulse

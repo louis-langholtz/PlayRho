@@ -54,8 +54,9 @@ void Fixture::CreateProxies(BlockAllocator& allocator, BroadPhase& broadPhase, c
 	for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex)
 	{
 		const auto aabb = ComputeAABB(*shape, xf, childIndex);
-		const auto proxyId = broadPhase.CreateProxy(aabb + extension, proxies + childIndex);
-		new (proxies + childIndex) FixtureProxy{aabb, proxyId, this, childIndex};
+		const auto proxyPtr = proxies + childIndex;
+		const auto proxyId = broadPhase.CreateProxy(aabb + extension, proxyPtr);
+		new (proxyPtr) FixtureProxy{aabb, proxyId, this, childIndex};
 	}
 	m_proxies = proxies;
 	m_proxyCount = childCount;
