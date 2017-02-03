@@ -34,7 +34,7 @@ TEST(RealNum, BiggerValsIdenticallyInaccurate)
 	auto val = RealNum(1);
 	for (auto i = 0; i < 24; ++i)
 	{
-		const auto next = std::nextafter(val, std::numeric_limits<float>::max());
+		const auto next = std::nextafter(val, std::numeric_limits<decltype(val)>::max());
 		const auto delta = static_cast<float>(next - val);
 		ASSERT_EQ(val + (delta / 2.0f), val);
 #if 0

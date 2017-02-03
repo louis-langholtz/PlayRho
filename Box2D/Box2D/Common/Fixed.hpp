@@ -430,7 +430,16 @@ namespace box2d
 		
 		internal_type m_data;
 	};
-	
+
+#if 0
+	template <typename BT, unsigned int FB>
+	constexpr Fixed<BT, FB> operator+ (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+	{
+		lhs += rhs;
+		return lhs;
+	}
+#endif
+
 	using Fixed32 = Fixed<std::int32_t,14>;
 	using Fixed64 = Fixed<std::int64_t,24>;
 
@@ -441,7 +450,7 @@ namespace box2d
 		lhs += rhs;
 		return lhs;
 	}
-	
+
 	constexpr Fixed32 operator- (Fixed32 lhs, Fixed32 rhs) noexcept
 	{
 		lhs -= rhs;
@@ -624,7 +633,7 @@ namespace std
 	
 	inline box2d::Fixed32 sqrt(box2d::Fixed32 value)
 	{
-		return box2d::Fixed32{::std::sqrt(static_cast<float>(value))};
+		return box2d::Fixed32{::std::sqrt(static_cast<double>(value))};
 	}
 
 	inline float atan2(box2d::Fixed32 y, box2d::Fixed32 x)

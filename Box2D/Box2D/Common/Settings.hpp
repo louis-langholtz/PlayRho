@@ -74,7 +74,7 @@ using uint64 = std::uint64_t;
 /// @warning The note regarding division applies even more so when using a fixed-point type
 /// (for RealNum).
 ///
-using RealNum = float;
+using RealNum = Fixed64;
 
 /// Child count type. @detail Relating to "children" of Shape.
 using child_count_t = unsigned;
@@ -207,13 +207,13 @@ constexpr long double GetInvalid() noexcept
 template <>
 constexpr Fixed32 GetInvalid() noexcept
 {
-	return Fixed32::GetInfinity();
+	return Fixed32::GetNaN();
 }
 
 template <>
 constexpr Fixed64 GetInvalid() noexcept
 {
-	return Fixed64::GetInfinity();
+	return Fixed64::GetNaN();
 }
 
 template <>
@@ -251,13 +251,13 @@ inline bool IsValid(const long double& x) noexcept
 template <>
 inline bool IsValid(const Fixed32& x) noexcept
 {
-	return (x != Fixed32::GetInfinity()) && (x != Fixed32::GetNegativeInfinity());
+	return !std::isnan(x);
 }
 
 template <>
 inline bool IsValid(const Fixed64& x) noexcept
 {
-	return (x != Fixed64::GetInfinity()) && (x != Fixed64::GetNegativeInfinity());
+	return !std::isnan(x);
 }
 
 template <>
