@@ -194,7 +194,7 @@ void Body::SetType(BodyType type)
 
 Fixture* Body::CreateFixture(std::shared_ptr<const Shape> shape, const FixtureDef& def, bool resetMassData)
 {
-	if ((!shape) || (def.density < 0) || (def.friction < 0))
+	if ((!shape) || !(def.density >= 0) || !(def.friction >= 0) || std::isnan(def.restitution))
 	{
 		return nullptr;
 	}

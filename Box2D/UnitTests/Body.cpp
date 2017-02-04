@@ -81,6 +81,35 @@ TEST(Body, WorldCreated)
 	}
 }
 
+TEST(Body, CreateFixture)
+{
+	World world;
+	const auto body = world.CreateBody();
+	const auto shape = std::make_shared<CircleShape>(1);
+
+	// Check default settings
+	EXPECT_NE(body->CreateFixture(shape, FixtureDef{}), nullptr);
+	
+	// Check friction settings
+	EXPECT_NE(body->CreateFixture(shape, FixtureDef{}.UseFriction(1)), nullptr);
+	EXPECT_NE(body->CreateFixture(shape, FixtureDef{}.UseFriction(0)), nullptr);
+	EXPECT_NE(body->CreateFixture(shape, FixtureDef{}.UseFriction(std::numeric_limits<RealNum>::infinity())), nullptr);
+	EXPECT_EQ(body->CreateFixture(shape, FixtureDef{}.UseFriction(-0.1f)), nullptr);
+	EXPECT_EQ(body->CreateFixture(shape, FixtureDef{}.UseFriction(std::numeric_limits<RealNum>::quiet_NaN())), nullptr);
+	
+	// Check density settings
+	EXPECT_NE(body->CreateFixture(shape, FixtureDef{}.UseDensity(1)), nullptr);
+	EXPECT_NE(body->CreateFixture(shape, FixtureDef{}.UseDensity(0)), nullptr);
+	EXPECT_NE(body->CreateFixture(shape, FixtureDef{}.UseDensity(std::numeric_limits<RealNum>::infinity())), nullptr);
+	EXPECT_EQ(body->CreateFixture(shape, FixtureDef{}.UseDensity(-0.1f)), nullptr);
+	EXPECT_EQ(body->CreateFixture(shape, FixtureDef{}.UseDensity(std::numeric_limits<RealNum>::quiet_NaN())), nullptr);
+	
+	// Check restitution settings
+	EXPECT_NE(body->CreateFixture(shape, FixtureDef{}.UseRestitution(1)), nullptr);
+	EXPECT_NE(body->CreateFixture(shape, FixtureDef{}.UseRestitution(0)), nullptr);
+	EXPECT_EQ(body->CreateFixture(shape, FixtureDef{}.UseRestitution(std::numeric_limits<RealNum>::quiet_NaN())), nullptr);
+}
+
 TEST(Body, CreateAndDestroyFixture)
 {
 	World world;
