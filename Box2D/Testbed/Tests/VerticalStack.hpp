@@ -115,7 +115,7 @@ public:
 		drawer.DrawString(5, m_textLine, "Press: (,) to launch a bullet.");
 		m_textLine += DRAW_STRING_NEW_LINE;
 		drawer.DrawString(5, m_textLine, "Blocksolve = %d", g_blockSolve);
-		//if (m_stepCount == 300)
+		//if (GetStepCount() == 300)
 		//{
 		//	if (m_bullet)
 		//	{

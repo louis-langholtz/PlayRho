@@ -139,7 +139,7 @@ public:
 
 		//DynamicTree* tree = &m_world->m_contactManager.m_broadPhase.m_tree;
 
-		//if (m_stepCount == 400)
+		//if (GetStepCount() == 400)
 		//{
 		//	tree->RebuildBottomUp();
 		//}

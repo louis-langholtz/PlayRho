@@ -219,11 +219,6 @@ public:
 			}
 		}
 
-		if (m_stepCount == 180)
-		{
-			m_stepCount += 0;
-		}
-
 		//if (sleeping)
 		//{
 		//	CreateCircle();

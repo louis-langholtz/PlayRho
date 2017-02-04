@@ -113,9 +113,6 @@ public:
 	}
 
 protected:
-	friend class TestDestructionListener;
-	friend class BoundaryListener;
-	friend class ContactListener;
 
 	struct ContactPoint
 	{
@@ -157,15 +154,22 @@ protected:
 		BOX2D_NOT_USED(settings);
 		BOX2D_NOT_USED(drawer);		
 	}
+
+	int32 GetStepCount() const noexcept { return m_stepCount; }
+	PointCount GetPointCount() const noexcept { return m_pointCount; }
+	const ContactPoint* GetPoints() const noexcept { return m_points; }
+	const Body* GetBomb() const noexcept { return m_bomb; }
 	
 	World* const m_world;
+	TextLinePos m_textLine = TextLinePos{30};
+	
+private:
 	Body* m_groundBody;
 	Fixture* m_selectedFixture = nullptr;
 	AABB m_worldAABB;
 	ContactPoint m_points[k_maxContactPoints];
 	PointCount m_pointCount = 0;
 	DestructionListenerImpl m_destructionListener;
-	TextLinePos m_textLine = TextLinePos{30};
 	Body* m_bomb = nullptr;
 	MouseJoint* m_mouseJoint = nullptr;
 	Vec2 m_bombSpawnPoint;

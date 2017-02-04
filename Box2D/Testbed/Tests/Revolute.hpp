@@ -120,7 +120,7 @@ public:
 		drawer.DrawString(5, m_textLine, "Keys: (l) limits, (m) motor");
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		//if (m_stepCount == 360)
+		//if (GetStepCount() == 360)
 		//{
 		//	m_ball->SetTransform(Vec2(0.0f, 0.5f), 0.0f);
 		//}

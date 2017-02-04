@@ -123,9 +123,10 @@ public:
 
 		// Traverse the contact results. Destroy bodies that
 		// are touching heavier bodies.
-		for (auto i = decltype(m_pointCount){0}; i < m_pointCount; ++i)
+		const auto pointCount = GetPointCount();
+		for (auto i = decltype(pointCount){0}; i < pointCount; ++i)
 		{
-			auto point = m_points + i;
+			auto point = GetPoints() + i;
 
 			const auto body1 = point->fixtureA->GetBody();
 			const auto body2 = point->fixtureB->GetBody();
@@ -163,7 +164,7 @@ public:
 				++i;
 			}
 
-			if (b != m_bomb)
+			if (b != GetBomb())
 			{
 				m_world->Destroy(b);
 			}

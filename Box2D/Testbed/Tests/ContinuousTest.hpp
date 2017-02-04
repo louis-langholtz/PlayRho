@@ -95,7 +95,7 @@ public:
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 
-		if (m_stepCount % 60 == 0)
+		if (GetStepCount() % 60 == 0)
 		{
 			//Launch();
 		}
