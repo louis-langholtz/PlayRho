@@ -171,7 +171,6 @@ protected:
 private:
 	friend class World;
 	friend class Body;
-	friend class Island;
 	friend class JointIterator;
 	friend class ConstJointIterator;
 	friend class JointList;

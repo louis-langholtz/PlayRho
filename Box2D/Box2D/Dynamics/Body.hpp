@@ -461,7 +461,6 @@ public:
 private:
 
 	friend class World;
-	friend class Island;
 	friend class ContactManager;
 	friend class Contact;
 	friend class BodyIterator;

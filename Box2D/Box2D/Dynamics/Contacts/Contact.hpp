@@ -182,7 +182,6 @@ public:
 protected:
 	friend class ContactManager;
 	friend class World;
-	friend class Body;
 	friend class Fixture;
 	friend class ContactList;
 	friend class ContactIterator;
