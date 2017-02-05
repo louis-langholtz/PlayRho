@@ -25,62 +25,62 @@
 
 namespace box2d {
 
-	namespace {
-		
-		inline DistanceProxy GetDistanceProxy(const CircleShape& shape, child_count_t index)
-		{
-			return DistanceProxy{GetVertexRadius(shape), shape.GetLocation()};
-		}
-		
-		inline DistanceProxy GetDistanceProxy(const PolygonShape& shape, child_count_t index)
-		{
-			return DistanceProxy{GetVertexRadius(shape), shape.GetVertices()};		
-		}
-		
-		inline DistanceProxy GetDistanceProxy(const ChainShape& shape, child_count_t index)
-		{
-			return DistanceProxy{
-				GetVertexRadius(shape),
-				shape.GetVertex(index), shape.GetVertex(GetNextIndex(shape, index))
-			};
-		}
-		
-		inline DistanceProxy GetDistanceProxy(const EdgeShape& shape, child_count_t index)
-		{
-			return DistanceProxy{GetVertexRadius(shape), shape.GetVertex1(), shape.GetVertex2()};
-		}
-		
+namespace {
+	
+	inline DistanceProxy GetDistanceProxy(const CircleShape& shape, child_count_t index)
+	{
+		BOX2D_NOT_USED(index);
+		return DistanceProxy{GetVertexRadius(shape), shape.GetLocation()};
+	}
+
+	inline DistanceProxy GetDistanceProxy(const PolygonShape& shape, child_count_t index)
+	{
+		BOX2D_NOT_USED(index);
+		return DistanceProxy{GetVertexRadius(shape), shape.GetVertices()};
+	}
+
+	inline DistanceProxy GetDistanceProxy(const ChainShape& shape, child_count_t index)
+	{
+		return DistanceProxy{GetVertexRadius(shape), shape.GetVertex(index), shape.GetVertex(GetNextIndex(shape, index))};
+	}
+
+	inline DistanceProxy GetDistanceProxy(const EdgeShape& shape, child_count_t index)
+	{
+		BOX2D_NOT_USED(index);
+		return DistanceProxy{GetVertexRadius(shape), shape.GetVertex1(), shape.GetVertex2()};
 	}
 	
-	DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, const Vec2 d) noexcept
-	{
-		auto index = DistanceProxy::InvalidIndex; ///< Index of vertex that when dotted with d has the max value.
-		auto maxValue = -MaxFloat; ///< Max dot value.
-		const auto count = proxy.GetVertexCount();
-		for (auto i = decltype(count){0}; i < count; ++i)
-		{
-			const auto value = Dot(proxy.GetVertex(i), d);
-			if (maxValue < value)
-			{
-				maxValue = value;
-				index = i;
-			}
-		}
-		return index;
-	}
+} // anonymous namespace
 	
-	DistanceProxy GetDistanceProxy(const Shape& shape, child_count_t index)
+DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, const Vec2 d) noexcept
+{
+	auto index = DistanceProxy::InvalidIndex; ///< Index of vertex that when dotted with d has the max value.
+	auto maxValue = -MaxFloat; ///< Max dot value.
+	const auto count = proxy.GetVertexCount();
+	for (auto i = decltype(count){0}; i < count; ++i)
 	{
-		switch (shape.GetType())
+		const auto value = Dot(proxy.GetVertex(i), d);
+		if (maxValue < value)
 		{
-			case Shape::e_circle: return GetDistanceProxy(*static_cast<const CircleShape*>(&shape), index);
-			case Shape::e_polygon: return GetDistanceProxy(*static_cast<const PolygonShape*>(&shape), index);
-			case Shape::e_chain: return GetDistanceProxy(*static_cast<const ChainShape*>(&shape), index);
-			case Shape::e_edge: return GetDistanceProxy(*static_cast<const EdgeShape*>(&shape), index);
-			case Shape::e_typeCount: break;
+			maxValue = value;
+			index = i;
 		}
-		assert(false);
-		return DistanceProxy{0, Span<const Vec2>({})};
 	}
+	return index;
+}
+
+DistanceProxy GetDistanceProxy(const Shape& shape, child_count_t index)
+{
+	switch (shape.GetType())
+	{
+		case Shape::e_circle: return GetDistanceProxy(*static_cast<const CircleShape*>(&shape), index);
+		case Shape::e_polygon: return GetDistanceProxy(*static_cast<const PolygonShape*>(&shape), index);
+		case Shape::e_chain: return GetDistanceProxy(*static_cast<const ChainShape*>(&shape), index);
+		case Shape::e_edge: return GetDistanceProxy(*static_cast<const EdgeShape*>(&shape), index);
+		case Shape::e_typeCount: break;
+	}
+	assert(false);
+	return DistanceProxy{0, Span<const Vec2>({})};
+}
 
 } // namespace box2d
