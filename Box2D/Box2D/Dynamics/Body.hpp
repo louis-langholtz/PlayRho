@@ -222,6 +222,7 @@ public:
 	///   the body's world.
 	/// @param def Initial fixture settings.
 	///   Friction and density must be >= 0.
+	///   Restitution must be > -infinity and < infinity.
 	/// @param resetMassData Whether or not to reset the mass data of the body.
 	///
 	/// @note This function should not be called if the world is locked.

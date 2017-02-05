@@ -74,7 +74,11 @@ struct FixtureDef
 	///
 	RealNum friction = RealNum{2} / RealNum{10};
 
-	/// The restitution (elasticity) usually in the range [0,1].
+	/// Restitution (elasticity) of the associated shape.
+	///
+	/// @note This should be a valid finite value.
+ 	/// @note This is usually in the range [0,1].
+	///
 	RealNum restitution = RealNum{0};
 
 	/// Density of the associated shape.
@@ -151,6 +155,8 @@ public:
 	/// @warning Behavior is undefined if a <code>nullptr</code> initial shape setting is used.
 	/// @warning Behavior is undefined if a negative initial density setting is used.
 	/// @warning Behavior is undefined if a negative initial friction setting is used.
+	/// @warning Behavior is undefined if the restitution value is not less than infinity.
+	/// @warning Behavior is undefined if the restitution value is not greater than -infinity.
 	///
 	/// @param body Body the new fixture is to be associated with.
 	/// @param def Initial fixture settings.
@@ -172,6 +178,8 @@ public:
 		assert(shape);
 		assert(def.density >= 0);
 		assert(def.friction >= 0);
+		assert(def.restitution < std::numeric_limits<decltype(def.restitution)>::infinity());
+		assert(def.restitution > -std::numeric_limits<decltype(def.restitution)>::infinity());
 	}
 
 	/// Gets the parent body of this fixture.

@@ -192,21 +192,52 @@ void Body::SetType(BodyType type)
 	}
 }
 
+static inline bool IsValid(std::shared_ptr<const Shape> shape, const World* world)
+{
+	if (!shape)
+	{
+		return false;
+	}
+	const auto vr = GetVertexRadius(*shape);
+	if (!(vr >= world->GetMinVertexRadius()))
+	{
+		return false;
+	}
+	if (!(vr <= world->GetMaxVertexRadius()))
+	{
+		return false;
+	}
+	return true;
+}
+
+static inline bool IsValid(const FixtureDef& def)
+{
+	if (!(def.density >= 0))
+	{
+		return false;
+	}
+	if (!(def.friction >= 0))
+	{
+		return false;
+	}
+	if (!(def.restitution < std::numeric_limits<decltype(def.restitution)>::infinity()))
+	{
+		return false;
+	}
+	if (!(def.restitution > -std::numeric_limits<decltype(def.restitution)>::infinity()))
+	{
+		return false;
+	}
+	return true;
+}
+
 Fixture* Body::CreateFixture(std::shared_ptr<const Shape> shape, const FixtureDef& def, bool resetMassData)
 {
-	if ((!shape) || !(def.density >= 0) || !(def.friction >= 0) || std::isnan(def.restitution))
+	if (!::IsValid(shape, m_world) || !::IsValid(def))
 	{
 		return nullptr;
 	}
 
-	{
-		const auto vr = GetVertexRadius(*shape);
-		if ((vr < m_world->GetMinVertexRadius()) || (vr > m_world->GetMaxVertexRadius()))
-		{
-			return nullptr;
-		}
-	}
-	
 	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())
 	{
