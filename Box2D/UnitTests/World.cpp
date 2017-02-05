@@ -36,9 +36,20 @@
 
 using namespace box2d;
 
-TEST(World, ByteSizeIs392)
+TEST(World, ByteSizeIs_392_or_416)
 {
-	EXPECT_EQ(sizeof(World), size_t(392));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(World), size_t(392));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(World), size_t(416));
+	}
+	else
+	{
+		FAIL();
+	}
 }
 
 TEST(World, Def)
@@ -319,7 +330,7 @@ TEST(World, GravitationalBodyMovement)
 	p0 = body->GetLocation();
 	Step(world, t);
 	EXPECT_EQ(GetLinearVelocity(*body).x, 0);
-	EXPECT_EQ(GetLinearVelocity(*body).y, a * (t * 3));
+	EXPECT_NEAR(double(GetLinearVelocity(*body).y), double(a * (t * 3)), 0.00001);
 	EXPECT_EQ(body->GetLocation().x, p0.x);
 	EXPECT_EQ(body->GetLocation().y, p0.y + (GetLinearVelocity(*body).y * t));
 }
@@ -1061,7 +1072,7 @@ TEST(World, CollidingDynamicBodies)
 	const auto time_contacting = elapsed_time;
 
 	EXPECT_TRUE(listener.touching);
-	EXPECT_TRUE(almost_equal(time_contacting, time_collision));
+	EXPECT_NEAR(double(time_contacting), double(time_collision), 0.02);
 	EXPECT_EQ(body_a->GetLocation().y, 0);
 	EXPECT_EQ(body_b->GetLocation().y, 0);
 

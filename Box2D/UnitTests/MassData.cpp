@@ -24,9 +24,20 @@
 
 using namespace box2d;
 
-TEST(MassData, ByteSizeIs16)
+TEST(MassData, ByteSizeIs_16_or_32)
 {
-	EXPECT_EQ(sizeof(MassData), size_t(16));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(MassData), size_t(16));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(MassData), size_t(32));
+	}
+	else
+	{
+		FAIL();
+	}
 }
 
 TEST(MassData, GetForZeroVertexRadiusCircle)
@@ -47,7 +58,7 @@ TEST(MassData, GetForOriginCenteredCircle)
 	const auto density = RealNum(1);
 	const auto mass_data = GetMassData(foo, density);
 	EXPECT_EQ(mass_data.mass, Pi);
-	EXPECT_TRUE(almost_equal(mass_data.I, RealNum(1.5707964)));
+	EXPECT_NEAR(double(mass_data.I), 1.5707964, 0.000001);
 	EXPECT_TRUE(almost_equal(mass_data.I, density * (Square(radius) * Square(radius) * Pi / 2)));
 	EXPECT_EQ(mass_data.center, position);
 }
@@ -60,7 +71,7 @@ TEST(MassData, GetForCircle)
 	const auto density = RealNum(1);
 	const auto mass_data = GetMassData(foo, density);
 	EXPECT_EQ(mass_data.mass, Pi);
-	EXPECT_TRUE(almost_equal(mass_data.I, RealNum(7.85398)));
+	EXPECT_NEAR(double(mass_data.I), 7.85398, 0.00001);
 	EXPECT_EQ(mass_data.center, position);
 }
 
@@ -73,7 +84,7 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
 	const auto density = RealNum(2.1);
 	const auto mass_data = GetMassData(shape, density);
 	EXPECT_TRUE(almost_equal(mass_data.mass, RealNum(density * (8 * 2))));
-	EXPECT_TRUE(almost_equal(mass_data.I, RealNum(90.666664 * density)));
+	EXPECT_NEAR(double(mass_data.I), 90.666664 * double(density), 0.00001);
 	EXPECT_TRUE(almost_equal(mass_data.center.x, shape.GetCentroid().x));
 	EXPECT_TRUE(almost_equal(mass_data.center.y, shape.GetCentroid().y));
 	
@@ -112,7 +123,7 @@ TEST(MassData, GetForSamePointedEdgeIsSameAsCircle)
 	const auto circleMass = density * Pi * Square(shape.GetVertexRadius());
 
 	EXPECT_TRUE(almost_equal(mass_data.mass, circleMass));
-	EXPECT_TRUE(almost_equal(mass_data.I, RealNum(7.85398)));
+	EXPECT_NEAR(double(mass_data.I), 7.85398, 0.00001);
 	EXPECT_TRUE(almost_equal(mass_data.center.x, v1.x));
 	EXPECT_TRUE(almost_equal(mass_data.center.y, v1.y));
 }
@@ -131,8 +142,8 @@ TEST(MassData, GetForCenteredEdge)
 	const auto area = GetAreaOfPolygon(vertices) + GetAreaOfCircle(radius);
 	EXPECT_EQ(mass_data.mass, density * area);
 
-	EXPECT_TRUE(almost_equal(mass_data.I, RealNum(18.70351)));
-	EXPECT_TRUE(almost_equal(GetPolarMoment(vertices), RealNum(5.6666665)));
+	EXPECT_NEAR(double(mass_data.I), 18.70351, 0.00001);
+	EXPECT_NEAR(double(GetPolarMoment(vertices)), 5.6666665, 0.00001);
 	EXPECT_GT(mass_data.I, GetPolarMoment(vertices) * density);
 	
 	EXPECT_EQ(mass_data.center.x, 0);

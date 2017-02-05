@@ -27,10 +27,21 @@
 
 using namespace box2d;
 
-TEST(Body, ByteSizeIs160)
+TEST(Body, ByteSizeIs_160_or_256)
 {
 	// architecture dependent...
-	EXPECT_EQ(sizeof(Body), size_t(160));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(Body), size_t(160));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(Body), size_t(256));
+	}
+	else
+	{
+		FAIL();
+	}
 }
 
 TEST(Body, WorldCreated)

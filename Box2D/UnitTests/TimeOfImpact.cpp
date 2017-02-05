@@ -151,7 +151,7 @@ TEST(TimeOfImpact, CollideCirclesVertically)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
-	EXPECT_EQ(output.get_t(), RealNum(0.4750375f));
+	EXPECT_NEAR(double(output.get_t()), 0.4750375, 0.000001);
 	EXPECT_EQ(output.get_toi_iters(), 2);
 }
 
@@ -215,7 +215,7 @@ TEST(TimeOfImpact, RodCircleHitAt180)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, limits);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
-	EXPECT_EQ(output.get_t(), RealNum(0.4884203672409058));
+	EXPECT_NEAR(double(output.get_t()), 0.4884203672409058, 0.000001);
 	EXPECT_EQ(output.get_toi_iters(), 3);
 }
 
@@ -236,7 +236,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_1)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
-	EXPECT_EQ(output.get_t(), RealNum(0.4975037276744843));
+	EXPECT_NEAR(double(output.get_t()), 0.4975037276744843, 0.000001);
 	EXPECT_EQ(output.get_toi_iters(), 2);
 	EXPECT_EQ(output.get_max_dist_iters(), 1);
 	EXPECT_EQ(output.get_max_root_iters(), 2);
@@ -261,7 +261,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
-	EXPECT_EQ(output.get_t(), RealNum(0.9975037574768066));
+	EXPECT_NEAR(double(output.get_t()), 0.9975037574768066, 0.000001);
 	EXPECT_EQ(output.get_toi_iters(), 2);
 	EXPECT_EQ(output.get_max_dist_iters(), 1);
 	EXPECT_EQ(output.get_max_root_iters(), 2);
@@ -317,7 +317,7 @@ TEST(TimeOfImpact, WithClosingSpeedOf1600)
 	const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_touching);
-	EXPECT_EQ(output.get_t(), RealNum(0.4987518787384033));
+	EXPECT_NEAR(double(output.get_t()), 0.4987518787384033, 0.000001);
 	//std::cout << std::setprecision(std::numeric_limits<double>::digits10 + 1) << output.get_t() << std::defaultfloat << std::endl;
 	EXPECT_EQ(output.get_toi_iters(), 2);
 	EXPECT_EQ(output.get_max_dist_iters(), 1);
@@ -356,7 +356,7 @@ TEST(TimeOfImpact, ForNonCollidingShapesFailsIn27)
 	const auto output = TimeOfImpact(dpA, sweepA, dpB, sweepB, conf);
 	
 	EXPECT_EQ(output.get_state(), TOIOutput::e_failed);
-	EXPECT_TRUE(almost_equal(output.get_t(), RealNum{0.863826394f}));
+	EXPECT_NEAR(double(output.get_t()), 0.863826394, 0.000001);
 	EXPECT_EQ(output.get_toi_iters(), 1);
 	EXPECT_EQ(output.get_max_dist_iters(), 4);
 	EXPECT_EQ(output.get_max_root_iters(), 27);

@@ -25,8 +25,8 @@
 namespace box2d
 {
 	/// Vector 2D.
-	/// @note This data structure is two-times the size of the <code>RealNum</code> type.
-	/// This is two times 4-bytes for a total of 8-bytes (on at least one 64-bit platform).
+	/// @note This data structure is two-times the size of the <code>RealNum</code> type
+	/// (or 8 using RealNum of float).
 	struct Vec2
 	{
 		using size_type = size_t;

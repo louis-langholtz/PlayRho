@@ -21,9 +21,20 @@
 
 using namespace box2d;
 
-TEST(SimplexCache, ByteSizeIs12)
+TEST(SimplexCache, ByteSizeIs12_or_16)
 {
-	EXPECT_EQ(sizeof(Simplex::Cache), size_t(12));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(Simplex::Cache), size_t(12));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(Simplex::Cache), size_t(16));
+	}
+	else
+	{
+		FAIL();
+	}
 }
 
 TEST(SimplexCache, IndexPairListByteSizeIs7)
@@ -91,14 +102,36 @@ TEST(SimplexCache, Assignment)
 	EXPECT_EQ(foo.GetMetric(), roo_metric);
 }
 
-TEST(SimplexEdgeList, ByteSizeIs88)
+TEST(SimplexEdgeList, ByteSizeIs_88_or_176)
 {
-	EXPECT_EQ(sizeof(Simplex::Edges), size_t(88));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(Simplex::Edges), size_t(88));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(Simplex::Edges), size_t(176));
+	}
+	else
+	{
+		FAIL();
+	}
 }
 
-TEST(Simplex, ByteSizeIs104)
+TEST(Simplex, ByteSizeIs_104_or_208)
 {
-	EXPECT_EQ(sizeof(Simplex), size_t(104));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(Simplex), size_t(104));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(Simplex), size_t(208));
+	}
+	else
+	{
+		FAIL();
+	}
 }
 
 TEST(Simplex, DefaultConstruction)
@@ -283,10 +316,10 @@ TEST(Simplex, Get2_rot45_half)
 	
 	const auto va1 = Rotate(va0, UnitVec2{45_deg}) / 2; // Vec2{-13.081475, 10.253049}
 	const auto vb1 = Rotate(vb0, UnitVec2{45_deg}) / 2; // Vec2{316.4303, 320.67291}
-	EXPECT_TRUE(almost_equal(va1.x, RealNum(-13.081475)));
-	EXPECT_TRUE(almost_equal(va1.y, RealNum(10.253049)));
-	EXPECT_TRUE(almost_equal(vb1.x, RealNum(316.4303)));
-	EXPECT_TRUE(almost_equal(vb1.y, RealNum(320.67291)));
+	EXPECT_NEAR(double(va1.x), -13.081475, 0.000001);
+	EXPECT_NEAR(double(va1.y),  10.253049, 0.000001);
+	EXPECT_NEAR(double(vb1.x), 316.4303,   0.0001);
+	EXPECT_NEAR(double(vb1.y), 320.67291,  0.0001);
 	const auto ia1 = SimplexEdge::index_type{4};
 	const auto ib1 = SimplexEdge::index_type{1};
 	const auto sv1 = SimplexEdge{va1, ia1, vb1, ib1};
@@ -295,18 +328,18 @@ TEST(Simplex, Get2_rot45_half)
 	EXPECT_TRUE(almost_equal(w1.x, RealNum(905)));
 	EXPECT_TRUE(almost_equal(w1.y, RealNum(-27)));
 	const auto w2 = vb1 - va1; // Vec2{316.4303, 320.67291} - Vec2{-13.081475, 10.253049} = Vec2{329.51178, 310.41986}
-	EXPECT_TRUE(almost_equal(w2.x, RealNum(329.51178)));
-	EXPECT_TRUE(almost_equal(w2.y, RealNum(310.41986)));
+	EXPECT_NEAR(double(w2.x), 329.51178, 0.001);
+	EXPECT_NEAR(double(w2.y), 310.41986, 0.001);
 	
 	const auto e12 = w2 - w1; // Vec2{329.51178, 310.41986} - Vec2{905, -27} = Vec2{-575.48822, 337.41986}
-	EXPECT_TRUE(almost_equal(e12.x, RealNum(-575.48822)));
-	EXPECT_TRUE(almost_equal(e12.y, RealNum(337.41986)));
+	EXPECT_NEAR(double(e12.x), -575.48822, 0.001);
+	EXPECT_NEAR(double(e12.y),  337.41986, 0.001);
 
 	const auto d12_2 = -Dot(w1, e12); // -Dot(Vec2{905, -27}, Vec2{-575.48822, 337.41986}) = 529927.19
-	EXPECT_TRUE(almost_equal(d12_2, RealNum(529927.19)));
+	EXPECT_NEAR(double(d12_2), 529927.19, 0.1);
 
 	const auto d12_1 = Dot(w2, e12); // Dot(Vec2{329.51178, 310.41986}, Vec2{-575.48822, 337.41986}) = -84888.312
-	EXPECT_TRUE(almost_equal(d12_1, RealNum(-84888.312)));
+	EXPECT_NEAR(double(d12_1), -84888.312, 0.1);
 
 	const auto simplex = Simplex::Get(sv0, sv1);
 	

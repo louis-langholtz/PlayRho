@@ -21,7 +21,18 @@
 
 using namespace box2d;
 
-TEST(Shape, ByteSizeIs8)
+TEST(Shape, ByteSizeIs_8_or_16)
 {
-	EXPECT_EQ(sizeof(Shape), size_t(8));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(Shape), size_t(8));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(Shape), size_t(16));
+	}
+	else
+	{
+		FAIL();
+	}
 }

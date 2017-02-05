@@ -21,9 +21,20 @@
 
 using namespace box2d;
 
-TEST(SimplexEdge, ByteSizeIs28)
+TEST(SimplexEdge, ByteSizeIs_28_or_56)
 {
-	EXPECT_EQ(sizeof(SimplexEdge), size_t(28));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(SimplexEdge), size_t(28));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(SimplexEdge), size_t(56));
+	}
+	else
+	{
+		FAIL();
+	}
 }
 
 TEST(SimplexEdge, InitializingConstructor)

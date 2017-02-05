@@ -21,9 +21,24 @@
 
 using namespace box2d;
 
-TEST(DistanceProxy, ByteSizeIs32)
+TEST(DistanceProxy, ByteSizeIs_32_56_or_96)
 {
-	EXPECT_EQ(sizeof(DistanceProxy), size_t(32));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(DistanceProxy), size_t(32));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(DistanceProxy), size_t(56));
+	}
+	else if (sizeof(RealNum) == 16)
+	{
+		EXPECT_EQ(sizeof(DistanceProxy), size_t(96));
+	}
+	else
+	{
+		FAIL();
+	}
 }
 
 TEST(DistanceProxy, OneVecInitialization)

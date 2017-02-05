@@ -22,9 +22,24 @@
 
 using namespace box2d;
 
-TEST(CircleShape, ByteSizeIs16)
+TEST(CircleShape, ByteSizeIs_16_32_or_64)
 {
-	EXPECT_EQ(sizeof(CircleShape), size_t(16));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(CircleShape), size_t(16));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(CircleShape), size_t(32));
+	}
+	else if (sizeof(RealNum) == 16)
+	{
+		EXPECT_EQ(sizeof(CircleShape), size_t(64));
+	}
+	else
+	{
+		FAIL();
+	}
 }
 
 TEST(CircleShape, DefaultConstruction)

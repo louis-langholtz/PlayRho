@@ -22,9 +22,20 @@
 
 using namespace box2d;
 
-TEST(Fixture, ByteSizeIs72)
+TEST(Fixture, ByteSizeIs_72_or_88)
 {
-	EXPECT_EQ(sizeof(Fixture), size_t(72));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(Fixture), size_t(72));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(Fixture), size_t(88));
+	}
+	else
+	{
+		FAIL();
+	}
 }
 
 TEST(Fixture, InitializingConstructor)

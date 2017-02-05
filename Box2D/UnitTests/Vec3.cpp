@@ -22,7 +22,18 @@
 
 using namespace box2d;
 
-TEST(Vec3, ByteSizeIs12)
+TEST(Vec3, ByteSizeIs_12_or_24)
 {
-	EXPECT_EQ(sizeof(Vec3), size_t(12));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(Vec3), size_t(12));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(Vec3), size_t(24));
+	}
+	else
+	{
+		FAIL();
+	}
 }

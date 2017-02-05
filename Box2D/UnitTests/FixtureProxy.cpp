@@ -21,7 +21,18 @@
 
 using namespace box2d;
 
-TEST(FixtureProxy, ByteSizeIs32)
+TEST(FixtureProxy, ByteSizeIs_32_or_48)
 {
-	EXPECT_EQ(sizeof(FixtureProxy), size_t(32));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(FixtureProxy), size_t(32));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(FixtureProxy), size_t(48));
+	}
+	else
+	{
+		FAIL();
+	}
 }

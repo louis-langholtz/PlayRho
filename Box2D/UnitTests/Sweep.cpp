@@ -21,9 +21,20 @@
 
 using namespace box2d;
 
-TEST(Sweep, ByteSizeIs36)
+TEST(Sweep, ByteSizeIs_36_or_72)
 {
-	EXPECT_EQ(sizeof(Sweep), size_t(36));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(Sweep), size_t(36));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(Sweep), size_t(72));
+	}
+	else
+	{
+		FAIL();
+	}
 }
 
 TEST(Sweep, ConstructorSetsPos0and1) {
@@ -86,7 +97,7 @@ TEST(Sweep, GetAnglesNormalized)
 	EXPECT_EQ(GetAnglesNormalized(Sweep{Position{Vec2{0,0},360_deg}, Position{Vec2{0,0},360_deg}}).pos1.angular, 0_deg);
 	EXPECT_EQ(GetAnglesNormalized(Sweep{Position{Vec2{0,0},720_deg}, Position{Vec2{0,0},720_deg}}).pos0.angular, 0_deg);
 	EXPECT_EQ(GetAnglesNormalized(Sweep{Position{Vec2{0,0},720_deg}, Position{Vec2{0,0},720_deg}}).pos1.angular, 0_deg);
-	EXPECT_TRUE(almost_equal(GetAnglesNormalized(Sweep{Position{Vec2{0,0},720_deg}, Position{Vec2{0,0},90_deg}}).pos1.angular.ToRadians(), (-630_deg).ToRadians()));
+	EXPECT_NEAR(double(GetAnglesNormalized(Sweep{Position{Vec2{0,0},720_deg}, Position{Vec2{0,0},90_deg}}).pos1.angular.ToRadians()), double((-630_deg).ToRadians()), 0.0001);
 	EXPECT_EQ(GetAnglesNormalized(Sweep{Position{Vec2{0,0},-90_deg}, Position{Vec2{0,0},-90_deg}}).pos0.angular, -90_deg);
 	EXPECT_EQ(GetAnglesNormalized(Sweep{Position{Vec2{0,0},-90_deg}, Position{Vec2{0,0},-90_deg}}).pos1.angular, -90_deg);
 }

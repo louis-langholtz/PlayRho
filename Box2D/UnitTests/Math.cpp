@@ -299,8 +299,8 @@ TEST(Math, TransformInverseTransformedIsOriginal)
 	const auto inverse_transformed_vector = InverseTransform(vector, transformation);
 	const auto transformed_inverse_vector = Transform(inverse_transformed_vector, transformation);
 	
-	EXPECT_TRUE(almost_equal(vector.x, transformed_inverse_vector.x));
-	EXPECT_TRUE(almost_equal(vector.y, transformed_inverse_vector.y));
+	EXPECT_NEAR(double(vector.x), double(transformed_inverse_vector.x), 0.000001);
+	EXPECT_NEAR(double(vector.y), double(transformed_inverse_vector.y), 0.000001);
 }
 
 TEST(Math, ComputeCentroidCenteredR1)

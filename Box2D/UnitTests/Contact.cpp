@@ -26,9 +26,20 @@ TEST(ContactEdge, ByteSizeIs32)
 	EXPECT_EQ(sizeof(ContactEdge), size_t(32));
 }
 
-TEST(Contact, ByteSizeIs208)
+TEST(Contact, ByteSizeIs_208_or_288)
 {
-	EXPECT_EQ(sizeof(Contact), size_t(208));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(Contact), size_t(208));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(Contact), size_t(288));
+	}
+	else
+	{
+		FAIL();
+	}
 }
 
 TEST(Contact, IsNotDefaultConstructible)

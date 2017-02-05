@@ -22,9 +22,20 @@
 
 using namespace box2d;
 
-TEST(StepConf, ByteSizeIs56)
+TEST(StepConf, ByteSizeIs_56_or_104)
 {
-	EXPECT_EQ(sizeof(StepConf), size_t(56));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(StepConf), size_t(56));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(StepConf), size_t(104));
+	}
+	else
+	{
+		FAIL();
+	}
 }
 
 TEST(StepConf, maxTranslation)

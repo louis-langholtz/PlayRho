@@ -22,9 +22,20 @@
 
 using namespace box2d;
 
-TEST(WorldManifold, ByteSizeIs36)
+TEST(WorldManifold, ByteSizeIs_36_or_72)
 {
-	EXPECT_EQ(sizeof(WorldManifold), size_t(36));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(WorldManifold), size_t(36));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(WorldManifold), size_t(72));
+	}
+	else
+	{
+		FAIL();
+	}
 }
 
 TEST(WorldManifold, default_construction)

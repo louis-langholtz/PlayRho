@@ -21,9 +21,20 @@
 
 using namespace box2d;
 
-TEST(Transformation, ByteSizeIs16)
+TEST(Transformation, ByteSizeIs_16_or_32)
 {
-	EXPECT_EQ(sizeof(Transformation), size_t(16));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(Transformation), size_t(16));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(Transformation), size_t(32));
+	}
+	else
+	{
+		FAIL();
+	}
 }
 
 TEST(Transformation, Initialize)
@@ -72,6 +83,6 @@ TEST(Transformation, Mul)
 	EXPECT_EQ(xfm2.p.x, newP.x);
 	EXPECT_EQ(xfm2.p.y, newP.y);
 	
-	EXPECT_EQ(xfm2.q.cos(), rotation2.cos());
-	EXPECT_EQ(xfm2.q.sin(), rotation2.sin());
+	EXPECT_NEAR(double(xfm2.q.cos()), double(rotation2.cos()), 0.0001);
+	EXPECT_NEAR(double(xfm2.q.sin()), double(rotation2.sin()), 0.0001);
 }

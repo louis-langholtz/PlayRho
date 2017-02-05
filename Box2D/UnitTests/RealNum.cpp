@@ -21,9 +21,10 @@
 
 using namespace box2d;
 
-TEST(RealNum, ByteSizeIs4)
+TEST(RealNum, ByteSizeIs_4_8_or_16)
 {
-	EXPECT_EQ(sizeof(RealNum), size_t(4));
+	const auto size = sizeof(RealNum);
+	EXPECT_TRUE(size == size_t(4) || size == size_t(8) || size == size_t(16));
 }
 
 TEST(RealNum, BiggerValsIdenticallyInaccurate)

@@ -21,9 +21,20 @@
 
 using namespace box2d;
 
-TEST(Mat22, ByteSizeIs16)
+TEST(Mat22, ByteSizeIs_16_or_32)
 {
-	EXPECT_EQ(sizeof(Mat22), size_t(16));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(Mat22), size_t(16));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(Mat22), size_t(32));
+	}
+	else
+	{
+		FAIL();
+	}
 }
 
 TEST(Mat22, Init)

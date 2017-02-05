@@ -63,9 +63,20 @@ TEST(ListForBody, DefaultInit)
 	EXPECT_EQ(list.cbegin(), list.cend());
 }
 
-TEST(ListNodeForBody, ByteSizeIs176)
+TEST(ListNodeForBody, ByteSizeIs_176_or_272)
 {
-	EXPECT_EQ(sizeof(ListNode<Body>), size_t(176));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(ListNode<Body>), size_t(176));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(ListNode<Body>), size_t(272));
+	}
+	else
+	{
+		FAIL();
+	}
 }
 
 TEST(InternalListForBody, PushAndPop)

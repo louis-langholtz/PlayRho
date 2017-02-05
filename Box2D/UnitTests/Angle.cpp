@@ -22,9 +22,20 @@
 
 using namespace box2d;
 
-TEST(Angle, ByteSizeIs4)
+TEST(Angle, ByteSizeIs_4_or_8)
 {
-	EXPECT_EQ(sizeof(Angle), size_t(4));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(Angle), size_t(4));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(Angle), size_t(8));
+	}
+	else
+	{
+		FAIL();
+	}
 }
 
 TEST(Angle, GetFromRadiansMatchesToRadians)
@@ -40,7 +51,7 @@ TEST(Angle, GetRevRotationalAngle)
 	EXPECT_EQ(GetRevRotationalAngle(0_deg, 0_deg), 0_deg);
 	EXPECT_EQ(GetRevRotationalAngle(0_deg, 10_deg), 10_deg);
 	// GetRevRotationalAngle(100_deg, 110_deg) almost equals 10_deg (but not exactly)
-	EXPECT_TRUE(almost_equal(GetRevRotationalAngle(100_deg, 110_deg) / 1_deg, 10_deg / 1_deg));
+	EXPECT_NEAR(double(GetRevRotationalAngle(100_deg, 110_deg) / 1_deg), double(10_deg / 1_deg), 0.0001);
 	EXPECT_EQ(round(GetRevRotationalAngle(10_deg, 0_deg) / 1_deg), round(350_deg / 1_deg));
 	EXPECT_EQ(GetRevRotationalAngle(-10_deg, 0_deg), 10_deg);
 	EXPECT_EQ(GetRevRotationalAngle(90_deg, -90_deg), 180_deg);

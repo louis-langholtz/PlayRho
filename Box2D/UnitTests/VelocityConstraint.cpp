@@ -24,13 +24,24 @@ using namespace box2d;
 
 constexpr auto VelocityThreshold = RealNum{8} / RealNum{10}; // RealNum{1};
 
-TEST(VelocityConstraint, ByteSizeIs176or160)
+TEST(VelocityConstraint, ByteSizeIs_176or160_or_312)
 {
+	if (sizeof(RealNum) == 4)
+	{
 #if defined(BOX2D_CACHE_VC_POINT_MASSES)
 	EXPECT_EQ(sizeof(VelocityConstraint), size_t(176));
 #else
 	EXPECT_EQ(sizeof(VelocityConstraint), size_t(160));
 #endif
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+#if defined(BOX2D_CACHE_VC_POINT_MASSES)
+		EXPECT_EQ(sizeof(VelocityConstraint), size_t(312));
+#else
+		EXPECT_EQ(sizeof(VelocityConstraint), size_t(160));
+#endif
+	}
 }
 
 TEST(VelocityConstraint, DefaultInit)
@@ -160,8 +171,8 @@ TEST(VelocityConstraint, Update)
 
 	EXPECT_TRUE(almost_equal(vc.GetNormalImpulseAtPoint(0), ni));
 	EXPECT_TRUE(almost_equal(vc.GetTangentImpulseAtPoint(0), ti));
-	EXPECT_TRUE(almost_equal(vc.GetNormalMassAtPoint(0), RealNum(1.6666666)));
-	EXPECT_TRUE(almost_equal(vc.GetTangentMassAtPoint(0), RealNum(2.5000002)));
+	EXPECT_NEAR(double(vc.GetNormalMassAtPoint(0)),  1.6666666, 0.000001);
+	EXPECT_NEAR(double(vc.GetTangentMassAtPoint(0)), 2.5000002, 0.000001);
 	EXPECT_TRUE(almost_equal(vc.GetVelocityBiasAtPoint(0), RealNum(1.978)));
 	EXPECT_TRUE(almost_equal(vc.GetPointRelPosA(0).x, RealNum(-1)));
 	EXPECT_TRUE(almost_equal(vc.GetPointRelPosA(0).y, RealNum(-2)));

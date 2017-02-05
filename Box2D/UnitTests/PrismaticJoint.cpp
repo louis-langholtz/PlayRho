@@ -21,7 +21,18 @@
 
 using namespace box2d;
 
-TEST(PrismaticJoint, ByteSizeIs336)
+TEST(PrismaticJoint, ByteSizeIs_336_504_or_864)
 {
-	EXPECT_EQ(sizeof(PrismaticJoint), size_t(336));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(PrismaticJoint), size_t(336));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(PrismaticJoint), size_t(504));
+	}
+	else if (sizeof(RealNum) == 16)
+	{
+		EXPECT_EQ(sizeof(PrismaticJoint), size_t(864));
+	}
 }

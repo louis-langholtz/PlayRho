@@ -21,9 +21,20 @@
 
 using namespace box2d;
 
-TEST(PolygonShape, ByteSizeIs64)
+TEST(PolygonShape, ByteSizeIs_64_or_80)
 {
-	EXPECT_EQ(sizeof(PolygonShape), size_t(64));
+	if (sizeof(RealNum) == 4)
+	{
+		EXPECT_EQ(sizeof(PolygonShape), size_t(64));
+	}
+	else if (sizeof(RealNum) == 8)
+	{
+		EXPECT_EQ(sizeof(PolygonShape), size_t(80));
+	}
+	else
+	{
+		FAIL();
+	}
 }
 
 TEST(PolygonShape, DefaultConstruction)
