@@ -76,8 +76,8 @@ void VelocityConstraint::Update(const WorldManifold& worldManifold,
 		
 		// Ensure a reasonable condition number.
 		constexpr auto maxCondNum = BOX2D_MAGIC(RealNum(1000));
-		const auto k11_squared = Square(k11);
-		const auto scaled_k11_squared = k11_squared / maxCondNum;
+		//const auto k11_squared = Square(k11);
+		const auto scaled_k11_squared = k11 * (k11 / maxCondNum);
 		const auto k11_times_k22 = k11 * k22;
 		if (scaled_k11_squared < (k11_times_k22 - Square(k12))) 
 		{
