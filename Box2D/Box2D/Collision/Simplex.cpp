@@ -117,29 +117,10 @@ Simplex Simplex::Get(const SimplexEdge& s0, const SimplexEdge& s1, const Simplex
 	const auto d23_1 = Dot(w3, e23);
 	const auto d23_2 = -Dot(w2, e23);
 	
-	// Triangle123
-	const auto n123 = Cross(e12, e13);
-	
 	// w1 region
 	if ((d12_2 <= 0) && (d13_2 <= 0))
 	{
 		return Simplex{{s0}, {1}};
-	}
-	
-	// e12
-	const auto d123_3 = n123 * Cross(w1, w2);
-	if ((d12_1 > 0) && (d12_2 > 0) && (d123_3 <= 0))
-	{
-		const auto d12_sum = d12_1 + d12_2;
-		return Simplex{{s0, s1}, {d12_1 / d12_sum, d12_2 / d12_sum}};
-	}
-	
-	// e13
-	const auto d123_2 = n123 * Cross(w3, w1);
-	if ((d13_1 > 0) && (d13_2 > 0) && (d123_2 <= 0))
-	{
-		const auto d13_sum = d13_1 + d13_2;
-		return Simplex{{s0, s2}, {d13_1 / d13_sum, d13_2 / d13_sum}};
 	}
 	
 	// w2 region
@@ -154,8 +135,30 @@ Simplex Simplex::Get(const SimplexEdge& s0, const SimplexEdge& s1, const Simplex
 		return Simplex{{s2}, {1}};
 	}
 
+	// Triangle123
+	const auto n123 = Cross(e12, e13);
+
+	// e12
+	const auto cp_w1_w2 = Cross(w1, w2);
+	const auto d123_3 = n123 * cp_w1_w2;
+	if ((d12_1 > 0) && (d12_2 > 0) && (d123_3 <= 0))
+	{
+		const auto d12_sum = d12_1 + d12_2;
+		return Simplex{{s0, s1}, {d12_1 / d12_sum, d12_2 / d12_sum}};
+	}
+	
+	// e13
+	const auto cp_w3_w1 = Cross(w3, w1);
+	const auto d123_2 = n123 * cp_w3_w1;
+	if ((d13_1 > 0) && (d13_2 > 0) && (d123_2 <= 0))
+	{
+		const auto d13_sum = d13_1 + d13_2;
+		return Simplex{{s0, s2}, {d13_1 / d13_sum, d13_2 / d13_sum}};
+	}
+	
 	// e23
-	const auto d123_1 = n123 * Cross(w2, w3);
+	const auto cp_w2_w3 = Cross(w2, w3);
+	const auto d123_1 = n123 * cp_w2_w3;
 	if ((d23_1 > 0) && (d23_2 > 0) && (d123_1 <= 0))
 	{
 		const auto d23_sum = d23_1 + d23_2;
