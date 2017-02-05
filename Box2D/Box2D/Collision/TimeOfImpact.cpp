@@ -41,6 +41,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 	
 	const auto target = totalRadius - conf.targetDepth;
 	assert(target != totalRadius);
+	assert(target > conf.tolerance);
 	
 	const auto maxTarget = target + conf.tolerance;
 	assert(maxTarget != target);
