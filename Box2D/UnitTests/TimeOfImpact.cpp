@@ -355,11 +355,25 @@ TEST(TimeOfImpact, ForNonCollidingShapesFailsIn27)
 		.UseTolerance(1.0f / 40000);
 	const auto output = TimeOfImpact(dpA, sweepA, dpB, sweepB, conf);
 	
-	EXPECT_EQ(output.get_state(), TOIOutput::e_failed);
-	EXPECT_NEAR(double(output.get_t()), 0.863826394, 0.000001);
-	EXPECT_EQ(output.get_toi_iters(), 1);
-	EXPECT_EQ(output.get_max_dist_iters(), 4);
-	EXPECT_EQ(output.get_max_root_iters(), 27);
+	EXPECT_TRUE(output.get_state() == TOIOutput::e_failed || output.get_state() == TOIOutput::e_separated);
+	switch (output.get_state())
+	{
+		case TOIOutput::e_failed:
+			EXPECT_NEAR(double(output.get_t()), 0.863826394, 0.000001);
+			EXPECT_EQ(output.get_toi_iters(), 1);
+			EXPECT_EQ(output.get_max_dist_iters(), 4);
+			EXPECT_EQ(output.get_max_root_iters(), 27);
+			break;
+		case TOIOutput::e_separated:
+			EXPECT_EQ(output.get_t(), RealNum(1));
+			EXPECT_EQ(output.get_toi_iters(), 2);
+			EXPECT_GE(output.get_max_dist_iters(), 3);
+			EXPECT_LE(output.get_max_dist_iters(), 4);
+			EXPECT_EQ(output.get_max_root_iters(), 6);
+			break;
+		default:
+			break;
+	}
 	EXPECT_GE(output.get_sum_dist_iters(), output.get_max_dist_iters());
 	EXPECT_GE(output.get_sum_root_iters(), output.get_max_root_iters());
 }
@@ -400,10 +414,10 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
 		.UseTolerance(1.0f / 40000);
 
 	const auto output = TimeOfImpact(dpA, sweepA, dpB, sweepB, conf);
-	
-	EXPECT_EQ(output.get_state(), TOIOutput::e_separated);
+
+	EXPECT_TRUE(output.get_state() == TOIOutput::e_separated || output.get_state() == TOIOutput::e_touching);
 	EXPECT_TRUE(almost_equal(output.get_t(), RealNum{1.0f}));
-	EXPECT_EQ(output.get_toi_iters(), 2);
+	EXPECT_TRUE(output.get_toi_iters() == 1 || output.get_toi_iters() == 2);
 	EXPECT_EQ(output.get_max_dist_iters(), 4);
 	EXPECT_EQ(output.get_max_root_iters(), 0);
 	EXPECT_GE(output.get_sum_dist_iters(), output.get_max_dist_iters());

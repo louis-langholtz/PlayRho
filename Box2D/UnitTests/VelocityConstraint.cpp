@@ -171,8 +171,8 @@ TEST(VelocityConstraint, Update)
 
 	EXPECT_TRUE(almost_equal(vc.GetNormalImpulseAtPoint(0), ni));
 	EXPECT_TRUE(almost_equal(vc.GetTangentImpulseAtPoint(0), ti));
-	EXPECT_NEAR(double(vc.GetNormalMassAtPoint(0)),  1.6666666, 0.000001);
-	EXPECT_NEAR(double(vc.GetTangentMassAtPoint(0)), 2.5000002, 0.000001);
+	EXPECT_NEAR(double(vc.GetNormalMassAtPoint(0)),  1.6666666, 0.00001);
+	EXPECT_NEAR(double(vc.GetTangentMassAtPoint(0)), 2.5000002, 0.00001);
 	EXPECT_TRUE(almost_equal(vc.GetVelocityBiasAtPoint(0), RealNum(1.978)));
 	EXPECT_TRUE(almost_equal(vc.GetPointRelPosA(0).x, RealNum(-1)));
 	EXPECT_TRUE(almost_equal(vc.GetPointRelPosA(0).y, RealNum(-2)));

@@ -512,7 +512,9 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 	// d = 20, v = 10:
 	// 20 = 10 * t, t = d/v = 20 / 10 = 2
 	// steps = t / time_inc = 200
-	EXPECT_EQ(int64_t(steps), static_cast<int64_t>(((x * 2) / x) / time_inc));
+	EXPECT_GE(steps, 199u);
+	EXPECT_LE(steps, 201u);
+	//EXPECT_EQ(int64_t(steps), static_cast<int64_t>(std::round(((x * 2) / x) / time_inc)));
 }
 
 TEST(World, PerfectlyOverlappedSameCirclesStayPut)
@@ -1112,9 +1114,9 @@ TEST(World, CollidingDynamicBodies)
 	
 	// confirm conservation of momentum:
 	// velocities should now be same magnitude but in opposite directions
-	EXPECT_EQ(GetLinearVelocity(*body_a).x, -x);
+	EXPECT_NEAR(double(GetLinearVelocity(*body_a).x), double(-x), 0.0001);
 	EXPECT_EQ(GetLinearVelocity(*body_a).y, 0);
-	EXPECT_EQ(GetLinearVelocity(*body_b).x, +x);
+	EXPECT_NEAR(double(GetLinearVelocity(*body_b).x), double(+x), 0.0001);
 	EXPECT_EQ(GetLinearVelocity(*body_b).y, 0);
 }
 
@@ -1757,7 +1759,7 @@ static void smaller_still_conserves_momentum(bool bullet, RealNum multiplier, Re
 			const auto relative_velocity = GetLinearVelocity(*body_1) - GetLinearVelocity(*body_2);
 			if (relative_velocity.x >= 0)
 			{
-				EXPECT_TRUE(almost_equal(relative_velocity.x, Abs(body_def.linearVelocity.x) * +2));
+				EXPECT_NEAR(double(relative_velocity.x), double(Abs(body_def.linearVelocity.x) * +2), 0.0001);
 				break;
 			}
 			if (failed)

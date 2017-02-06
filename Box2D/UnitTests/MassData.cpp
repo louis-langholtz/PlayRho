@@ -88,7 +88,7 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
 	EXPECT_NEAR(double(mass_data.I), double(density * RealNum(i)), 0.00001);
 	
 	const auto i_z = GetPolarMoment(shape.GetVertices());
-	EXPECT_TRUE(almost_equal(mass_data.I, density * i_z));
+	EXPECT_NEAR(double(mass_data.I), double(density * i_z), 0.00001);
 	
 	EXPECT_TRUE(almost_equal(GetAreaOfPolygon(shape.GetVertices()), RealNum(16)));
 }

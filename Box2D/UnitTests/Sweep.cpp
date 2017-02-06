@@ -86,8 +86,8 @@ TEST(Sweep, GetAnglesNormalized)
 	EXPECT_EQ(GetAnglesNormalized(Sweep{Position{Vec2{0,0},90_deg}, Position{Vec2{0,0},90_deg}}).pos1.angular, 90_deg);
 	EXPECT_EQ(GetAnglesNormalized(Sweep{Position{Vec2{0,0},180_deg}, Position{Vec2{0,0},180_deg}}).pos0.angular, 180_deg);
 	EXPECT_EQ(GetAnglesNormalized(Sweep{Position{Vec2{0,0},180_deg}, Position{Vec2{0,0},180_deg}}).pos1.angular, 180_deg);
-	EXPECT_EQ(GetAnglesNormalized(Sweep{Position{Vec2{0,0},270_deg}, Position{Vec2{0,0},270_deg}}).pos0.angular, 270_deg);
-	EXPECT_EQ(GetAnglesNormalized(Sweep{Position{Vec2{0,0},270_deg}, Position{Vec2{0,0},270_deg}}).pos1.angular, 270_deg);
+	EXPECT_NEAR(double(GetAnglesNormalized(Sweep{Position{Vec2{0,0},270_deg}, Position{Vec2{0,0},270_deg}}).pos0.angular / 1_rad), double(270_deg / 1_rad), 0.0001);
+	EXPECT_NEAR(double(GetAnglesNormalized(Sweep{Position{Vec2{0,0},270_deg}, Position{Vec2{0,0},270_deg}}).pos1.angular / 1_rad), double(270_deg / 1_rad), 0.0001);
 	EXPECT_EQ(GetAnglesNormalized(Sweep{Position{Vec2{0,0},360_deg}, Position{Vec2{0,0},360_deg}}).pos0.angular, 0_deg);
 	EXPECT_EQ(GetAnglesNormalized(Sweep{Position{Vec2{0,0},360_deg}, Position{Vec2{0,0},360_deg}}).pos1.angular, 0_deg);
 	EXPECT_EQ(GetAnglesNormalized(Sweep{Position{Vec2{0,0},720_deg}, Position{Vec2{0,0},720_deg}}).pos0.angular, 0_deg);

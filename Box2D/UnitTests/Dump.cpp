@@ -30,17 +30,47 @@ static void open_stderr_as_stdout()
 	stdout = stderr;
 }
 
+template <typename RN>
+struct Vals {
+	static const char* GetGravity();
+};
+
+template <>
+struct Vals<float> {
+	static inline const char* GetGravity()
+	{
+		return "-9\\.800000190734863e\\+00f";
+	}
+};
+
+template <>
+struct Vals<double> {
+	static inline const char* GetGravity()
+	{
+		return "-9\\.800000000000001e\\+00f";
+	}
+};
+
+template <>
+struct Vals<long double> {
+	static inline const char* GetGravity()
+	{
+		return "-9\\.800000000000001e\\+00f";
+	}
+};
+
+template <>
+struct Vals<Fixed64> {
+	static inline const char* GetGravity()
+	{
+		return "-9\\.799999952316284e\\+00f";
+	}
+};
+
 TEST(Dump, EmptyWorld)
 {
 	std::stringstream buf;
-	if (sizeof(RealNum) == 4)
-	{
-		buf << "Vec2 g\\(0\\.000000000000000e\\+00f, -9\\.800000190734863e\\+00f\\);\n";
-	}
-	else if (sizeof(RealNum) == 8)
-	{
-		buf << "Vec2 g\\(0\\.000000000000000e\\+00f, -9\\.800000000000001e\\+00f\\);\n";
-	}
+	buf << "Vec2 g\\(0\\.000000000000000e\\+00f, " << Vals<RealNum>::GetGravity() << "\\);\n";
 	buf << "m_world->SetGravity\\(g\\);\n";
 	buf << "Body\\*\\* bodies = \\(Body\\*\\*\\)alloc\\(0 \\* sizeof\\(Body\\*\\)\\);\n";
 	buf << "Joint\\*\\* joints = \\(Joint\\*\\*\\)alloc\\(0 \\* sizeof\\(Joint\\*\\)\\);\n";
@@ -55,14 +85,7 @@ TEST(Dump, EmptyWorld)
 TEST(Dump, OneBodyWorld)
 {
 	std::stringstream buf;
-	if (sizeof(RealNum) == 4)
-	{
-		buf << "Vec2 g\\(0\\.000000000000000e\\+00f, -9\\.800000190734863e\\+00f\\);\n";
-	}
-	else if (sizeof(RealNum) == 8)
-	{
-		buf << "Vec2 g\\(0\\.000000000000000e\\+00f, -9\\.800000000000001e\\+00f\\);\n";
-	}
+	buf << "Vec2 g\\(0\\.000000000000000e\\+00f, " << Vals<RealNum>::GetGravity() << "\\);\n";
 	buf << "m_world->SetGravity\\(g\\);\n";
 	buf << "Body\\*\\* bodies = \\(Body\\*\\*\\)alloc\\(1 \\* sizeof\\(Body\\*\\)\\);\n";
 	buf << "{\n";

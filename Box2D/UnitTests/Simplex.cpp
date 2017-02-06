@@ -301,8 +301,8 @@ TEST(Simplex, Get2_rot45_half)
 	
 	const auto va1 = Rotate(va0, UnitVec2{45_deg}) / 2; // Vec2{-13.081475, 10.253049}
 	const auto vb1 = Rotate(vb0, UnitVec2{45_deg}) / 2; // Vec2{316.4303, 320.67291}
-	EXPECT_NEAR(double(va1.x), -13.081475, 0.000001);
-	EXPECT_NEAR(double(va1.y),  10.253049, 0.000001);
+	EXPECT_NEAR(double(va1.x), -13.081475, 0.00001);
+	EXPECT_NEAR(double(va1.y),  10.253049, 0.00001);
 	EXPECT_NEAR(double(vb1.x), 316.4303,   0.0001);
 	EXPECT_NEAR(double(vb1.y), 320.67291,  0.0001);
 	const auto ia1 = SimplexEdge::index_type{4};

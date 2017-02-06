@@ -280,14 +280,14 @@ TEST(PolygonShape, SetAsBoxAngledDegrees90)
 	EXPECT_TRUE(almost_equal(round(shape.GetNormal(0).GetX()), 0));
 	EXPECT_TRUE(almost_equal(round(shape.GetNormal(0).GetY()), +1));
 	
-	EXPECT_TRUE(almost_equal(round(shape.GetNormal(1).GetX()), -1));
-	EXPECT_TRUE(almost_equal(round(shape.GetNormal(1).GetY()), 0));
+	EXPECT_NEAR(double(shape.GetNormal(1).GetX()), -1.0, 0.000001);
+	EXPECT_NEAR(double(shape.GetNormal(1).GetY()),  0.0, 0.000001);
 
-	EXPECT_TRUE(almost_equal(round(shape.GetNormal(2).GetX()), 0));
-	EXPECT_TRUE(almost_equal(round(shape.GetNormal(2).GetY()), -1));
+	EXPECT_NEAR(double(shape.GetNormal(2).GetX()),  0.0, 0.000001);
+	EXPECT_NEAR(double(shape.GetNormal(2).GetY()), -1.0, 0.000001);
 	
-	EXPECT_TRUE(almost_equal(round(shape.GetNormal(3).GetX()), +1));
-	EXPECT_TRUE(almost_equal(round(shape.GetNormal(3).GetY()), 0));
+	EXPECT_NEAR(double(shape.GetNormal(3).GetX()), +1.0, 0.000001);
+	EXPECT_NEAR(double(shape.GetNormal(3).GetY()),  0.0, 0.000001);
 }
 
 TEST(PolygonShape, SetPoints)

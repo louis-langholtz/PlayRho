@@ -59,6 +59,7 @@ TEST(SeparationFinder, BehavesAsExpected)
 	EXPECT_EQ(Vec2(fcn.GetAxis()), Vec2(1, 0));
 	EXPECT_EQ(fcn.GetLocalPoint(), Vec2(0.5, 0));
 
+	auto last_min_sep = MaxFloat;
 	for (auto i = 0u; i < 500; ++i)
 	{
 		// Prepare input for distance query.
@@ -72,19 +73,27 @@ TEST(SeparationFinder, BehavesAsExpected)
 		if (minSeparation.distance > 0)
 		{
 			EXPECT_LT(distance, last_distance);
-			EXPECT_EQ(minSeparation.distance, distance);
+			EXPECT_NEAR(double(minSeparation.distance), double(distance), 0.00001);
 		}
 		else if (minSeparation.distance < 0)
 		{
-			if (distance != 0)
+			if (last_min_sep < 0 && distance != 0)
 			{
 				EXPECT_GT(distance, last_distance);
 			}
 		}
+		last_min_sep = minSeparation.distance;
 		
 		const auto s = fcn.Evaluate(minSeparation.indexPair, xfA, xfB);
 		EXPECT_EQ(s, minSeparation.distance);
-		EXPECT_LE(s, distance);
+		if (s >= 0)
+		{
+			EXPECT_NEAR(double(s), double(distance), 0.0001);
+		}
+		else
+		{
+			EXPECT_LE(double(s), double(distance));
+		}
 		EXPECT_LT(s, last_s);
 		
 		//t = std::nextafter(t, 1.0f);

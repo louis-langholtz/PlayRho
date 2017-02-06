@@ -57,7 +57,7 @@ TEST(Angle, GetNormalized)
 	EXPECT_EQ(GetNormalized(0_deg) / 1_deg, 0_deg / 1_deg);
 	EXPECT_EQ(GetNormalized(90_deg) / 1_deg, 90_deg / 1_deg);
 	EXPECT_EQ(GetNormalized(180_deg) / 1_deg, 180_deg / 1_deg);
-	EXPECT_EQ(GetNormalized(270_deg) / 1_deg, 270_deg / 1_deg);
+	EXPECT_NEAR(double(GetNormalized(270_deg) / 1_deg), double(270_deg / 1_deg), 0.0002);
 	EXPECT_EQ(GetNormalized(360_deg) / 1_deg, 0_deg / 1_deg);
 	EXPECT_EQ(round(GetNormalized(395_deg) / 1_deg, 1000), round(35_deg / 1_deg, 1000));
 	EXPECT_EQ(GetNormalized(720_deg) / 1_deg, 0_deg / 1_deg);

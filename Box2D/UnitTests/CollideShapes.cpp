@@ -503,8 +503,8 @@ TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
 	
 	// localPoint is almost equal to Vec2(2, 2) but it's not exactly equal.
-	EXPECT_TRUE(almost_equal(manifold.GetPoint(0).localPoint.x, RealNum(+2))); // top right shape A
-	EXPECT_TRUE(almost_equal(manifold.GetPoint(0).localPoint.y, RealNum(+2))); // top right shape A
+	EXPECT_NEAR(double(manifold.GetPoint(0).localPoint.x), 2.0, 0.00001); // top right shape A
+	EXPECT_NEAR(double(manifold.GetPoint(0).localPoint.y), 2.0, 0.00001); // top right shape A
 	
 	EXPECT_EQ(manifold.GetPoint(0).normalImpulse, RealNum(0));
 	EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, RealNum(0));
@@ -525,8 +525,8 @@ TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)
 	
 	ASSERT_GT(world_manifold.GetPointCount(), Manifold::size_type(0));
 	EXPECT_NEAR(double(world_manifold.GetPoint(0).x), double(corner_point.x / 2), 0.00001);
-	EXPECT_TRUE(almost_equal(world_manifold.GetPoint(0).y, corner_point.y / 2));
-	EXPECT_TRUE(almost_equal(world_manifold.GetSeparation(0), -corner_point.y));
+	EXPECT_NEAR(double(world_manifold.GetPoint(0).y), double(corner_point.y / 2), 0.00001);
+	EXPECT_NEAR(double(world_manifold.GetSeparation(0)), double(-corner_point.y), 0.00001);
 }
 
 TEST(CollideShapes, HorizontalOverlappingRects1)
