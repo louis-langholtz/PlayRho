@@ -913,23 +913,31 @@ void World::ResetContactsForSolveTOI()
 	}	
 }
 
-World::ContactToiData World::UpdateContactTOIs(const StepConf& step)
+void World::UpdateContactTOIs(const StepConf& step)
 {
-	auto minContact = static_cast<Contact*>(nullptr);
-	auto minToi = MaxFloat;
-	
 	const auto toiConf = ToiConf{}
 		.UseTimeMax(1)
 		.UseTargetDepth(GetLinearSlop() * 3)
 		.UseTolerance(GetLinearSlop() / 4)
 		.UseMaxRootIters(step.maxTOIRootIterCount)
 		.UseMaxToiIters(step.maxTOIIterations);
-
+	for (auto&& c: m_contactMgr.GetContacts())
+	{
+		if (c.IsEnabled() && (c.GetToiCount() < step.maxSubSteps) && !c.HasValidToi())
+		{
+			c.UpdateTOI(toiConf);
+		}
+	}
+}
+	
+World::ContactToiData World::GetSoonestContact(const StepConf& step)
+{
+	auto minToi = MaxFloat;
+	auto minContact = static_cast<Contact*>(nullptr);
 	auto count = contact_count_t{0};
 	for (auto&& c: m_contactMgr.GetContacts())
 	{
-		if (c.IsEnabled() && (c.GetToiCount() < step.maxSubSteps) &&
-			(c.HasValidToi() || c.UpdateTOI(toiConf)))
+		if (c.IsEnabled() && (c.GetToiCount() < step.maxSubSteps) && c.HasValidToi())
 		{
 			const auto toi = c.GetToi();
 			if (minToi > toi)
@@ -965,7 +973,6 @@ World::ContactToiData World::UpdateContactTOIs(const StepConf& step)
 			}
 		}
 	}
-
 	return ContactToiData{count, minContact, minToi};
 }
 
@@ -983,9 +990,9 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 	// Find TOI events and solve them.
 	for (;;)
 	{
-		// Find the first TOI - the soonest one.
-		const auto next = UpdateContactTOIs(step);
-
+		UpdateContactTOIs(step);
+		
+		const auto next = GetSoonestContact(step);
 		if ((!next.contact) || (next.toi >= 1))
 		{
 			// No more TOI events to handle within the current time step. Done!

@@ -996,13 +996,13 @@ inline Mat22 Abs(const Mat22& A)
 }
 
 template <typename T>
-constexpr inline T Min(T a, T b)
+constexpr inline T Min(T a, T b) noexcept
 {
 	return (a < b) ? a : b;
 }
 
 template <typename T>
-constexpr inline T Max(T a, T b)
+constexpr inline T Max(T a, T b) noexcept
 {
 	return (a > b) ? a : b;
 }
@@ -1012,7 +1012,7 @@ constexpr inline T Max(T a, T b)
 /// @param low Lowest value to return or NaN to keep the low-end unbounded.
 /// @param high Highest value to return or NaN to keep the high-end unbounded.
 template <typename T>
-constexpr inline T Clamp(T a, T low, T high)
+constexpr inline T Clamp(T a, T low, T high) noexcept
 {
 	const auto b = std::isnan(high)? a: Min(a, high);
 	const auto c = std::isnan(low)? b: Max(b, low);

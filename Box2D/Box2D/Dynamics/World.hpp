@@ -411,10 +411,12 @@ private:
 	};
 
 	/// Updates the contact times of impact.
-	/// @detail While checking contacts and setting their time of impact values this also
-	///   finds the contact with the lowest (soonest) time of impact.
+	void UpdateContactTOIs(const StepConf& step);
+
+	/// Gets the soonest contact.
+	/// @detail This finds the contact with the lowest (soonest) time of impact.
 	/// @return Contact with the least time of impact and its time of impact, or null contact.
-	ContactToiData UpdateContactTOIs(const StepConf& step);
+	ContactToiData GetSoonestContact(const StepConf& step);
 
 	bool HasNewFixtures() const noexcept;
 

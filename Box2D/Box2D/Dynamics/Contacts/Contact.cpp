@@ -216,7 +216,7 @@ void Contact::Update(ContactListener* listener)
 	}
 }
 
-static inline bool IsValidForTime(TOIOutput::State state)
+static inline bool IsValidForTime(TOIOutput::State state) noexcept
 {
 	return state == TOIOutput::e_touching;
 }
