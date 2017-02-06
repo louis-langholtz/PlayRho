@@ -21,19 +21,14 @@
 
 using namespace box2d;
 
-TEST(Manifold, ByteSizeIs_60_or_120)
+TEST(Manifold, ByteSizeIs_60_120_or_240)
 {
-	if (sizeof(RealNum) == 4)
+	switch (sizeof(RealNum))
 	{
-		EXPECT_EQ(sizeof(Manifold), size_t(60));
-	}
-	else if (sizeof(RealNum) == 8)
-	{
-		EXPECT_EQ(sizeof(Manifold), size_t(120));
-	}
-	else
-	{
-		FAIL();
+		case  4:  EXPECT_EQ(sizeof(Manifold), size_t(60)); break;
+		case  8: EXPECT_EQ(sizeof(Manifold), size_t(120)); break;
+		case 16: EXPECT_EQ(sizeof(Manifold), size_t(240)); break;
+		default: FAIL(); break;
 	}
 }
 

@@ -27,20 +27,15 @@
 
 using namespace box2d;
 
-TEST(Body, ByteSizeIs_160_or_256)
+TEST(Body, ByteSizeIs_160_256_or_464)
 {
 	// architecture dependent...
-	if (sizeof(RealNum) == 4)
+	switch (sizeof(RealNum))
 	{
-		EXPECT_EQ(sizeof(Body), size_t(160));
-	}
-	else if (sizeof(RealNum) == 8)
-	{
-		EXPECT_EQ(sizeof(Body), size_t(256));
-	}
-	else
-	{
-		FAIL();
+		case  4: EXPECT_EQ(sizeof(Body), size_t(160)); break;
+		case  8: EXPECT_EQ(sizeof(Body), size_t(256)); break;
+		case 16: EXPECT_EQ(sizeof(Body), size_t(464)); break;
+		default: FAIL(); break;
 	}
 }
 

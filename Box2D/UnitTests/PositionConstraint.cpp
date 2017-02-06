@@ -21,18 +21,13 @@
 
 using namespace box2d;
 
-TEST(PositionConstraint, ByteSizeIs_108_or_216)
+TEST(PositionConstraint, ByteSizeIs_108_216_or_432)
 {
-	if (sizeof(RealNum) == 4)
+	switch (sizeof(RealNum))
 	{
-		EXPECT_EQ(sizeof(PositionConstraint), size_t(108));
-	}
-	else if (sizeof(RealNum) == 8)
-	{
-		EXPECT_EQ(sizeof(PositionConstraint), size_t(216));
-	}
-	else
-	{
-		FAIL();
+		case  4: EXPECT_EQ(sizeof(PositionConstraint), size_t(108)); break;
+		case  8: EXPECT_EQ(sizeof(PositionConstraint), size_t(216)); break;
+		case 16: EXPECT_EQ(sizeof(PositionConstraint), size_t(432)); break;
+		default: FAIL(); break;
 	}
 }

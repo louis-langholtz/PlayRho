@@ -21,19 +21,14 @@
 
 using namespace box2d;
 
-TEST(SimplexCache, ByteSizeIs12_or_16)
+TEST(SimplexCache, ByteSizeIs_12_16_or_32)
 {
-	if (sizeof(RealNum) == 4)
+	switch (sizeof(RealNum))
 	{
-		EXPECT_EQ(sizeof(Simplex::Cache), size_t(12));
-	}
-	else if (sizeof(RealNum) == 8)
-	{
-		EXPECT_EQ(sizeof(Simplex::Cache), size_t(16));
-	}
-	else
-	{
-		FAIL();
+		case  4: EXPECT_EQ(sizeof(Simplex::Cache), size_t(12)); break;
+		case  8: EXPECT_EQ(sizeof(Simplex::Cache), size_t(16)); break;
+		case 16: EXPECT_EQ(sizeof(Simplex::Cache), size_t(32)); break;
+		default: FAIL(); break;
 	}
 }
 
@@ -102,35 +97,25 @@ TEST(SimplexCache, Assignment)
 	EXPECT_EQ(foo.GetMetric(), roo_metric);
 }
 
-TEST(SimplexEdgeList, ByteSizeIs_88_or_176)
+TEST(SimplexEdgeList, ByteSizeIs_88_176_or_352)
 {
-	if (sizeof(RealNum) == 4)
+	switch (sizeof(RealNum))
 	{
-		EXPECT_EQ(sizeof(Simplex::Edges), size_t(88));
-	}
-	else if (sizeof(RealNum) == 8)
-	{
-		EXPECT_EQ(sizeof(Simplex::Edges), size_t(176));
-	}
-	else
-	{
-		FAIL();
+		case  4: EXPECT_EQ(sizeof(Simplex::Edges), size_t(88)); break;
+		case  8: EXPECT_EQ(sizeof(Simplex::Edges), size_t(176)); break;
+		case 16: EXPECT_EQ(sizeof(Simplex::Edges), size_t(352)); break;
+		default: FAIL();
 	}
 }
 
-TEST(Simplex, ByteSizeIs_104_or_208)
+TEST(Simplex, ByteSizeIs_104_208_or_416)
 {
-	if (sizeof(RealNum) == 4)
+	switch (sizeof(RealNum))
 	{
-		EXPECT_EQ(sizeof(Simplex), size_t(104));
-	}
-	else if (sizeof(RealNum) == 8)
-	{
-		EXPECT_EQ(sizeof(Simplex), size_t(208));
-	}
-	else
-	{
-		FAIL();
+		case  4: EXPECT_EQ(sizeof(Simplex), size_t(104)); break;
+		case  8: EXPECT_EQ(sizeof(Simplex), size_t(208)); break;
+		case 16: EXPECT_EQ(sizeof(Simplex), size_t(416)); break;
+		default: FAIL();
 	}
 }
 

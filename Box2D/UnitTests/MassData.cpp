@@ -24,19 +24,14 @@
 
 using namespace box2d;
 
-TEST(MassData, ByteSizeIs_16_or_32)
+TEST(MassData, ByteSizeIs_16_32_or_64)
 {
-	if (sizeof(RealNum) == 4)
+	switch (sizeof(RealNum))
 	{
-		EXPECT_EQ(sizeof(MassData), size_t(16));
-	}
-	else if (sizeof(RealNum) == 8)
-	{
-		EXPECT_EQ(sizeof(MassData), size_t(32));
-	}
-	else
-	{
-		FAIL();
+		case  4: EXPECT_EQ(sizeof(MassData), size_t(16)); break;
+		case  8: EXPECT_EQ(sizeof(MassData), size_t(32)); break;
+		case 16: EXPECT_EQ(sizeof(MassData), size_t(64)); break;
+		default: FAIL(); break;
 	}
 }
 
@@ -90,7 +85,7 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
 	
 	// Area moment of inertia (I) for a rectangle is Ix + Iy = (b * h^3) / 12 + (b^3 * h) / 12....
 	const auto i = 8.0 * 2.0 * 2.0 * 2.0 / 12.0 + 8.0 * 8.0 * 8.0 * 2.0 / 12.0;
-	EXPECT_TRUE(almost_equal(mass_data.I, density * RealNum(i)));
+	EXPECT_NEAR(double(mass_data.I), double(density * RealNum(i)), 0.00001);
 	
 	const auto i_z = GetPolarMoment(shape.GetVertices());
 	EXPECT_TRUE(almost_equal(mass_data.I, density * i_z));

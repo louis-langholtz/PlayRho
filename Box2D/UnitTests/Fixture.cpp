@@ -22,19 +22,14 @@
 
 using namespace box2d;
 
-TEST(Fixture, ByteSizeIs_72_or_88)
+TEST(Fixture, ByteSizeIs_72_88_or_112)
 {
-	if (sizeof(RealNum) == 4)
+	switch (sizeof(RealNum))
 	{
-		EXPECT_EQ(sizeof(Fixture), size_t(72));
-	}
-	else if (sizeof(RealNum) == 8)
-	{
-		EXPECT_EQ(sizeof(Fixture), size_t(88));
-	}
-	else
-	{
-		FAIL();
+		case  4: EXPECT_EQ(sizeof(Fixture), size_t(72)); break;
+		case  8: EXPECT_EQ(sizeof(Fixture), size_t(88)); break;
+		case 16: EXPECT_EQ(sizeof(Fixture), size_t(112)); break;
+		default: FAIL(); break;
 	}
 }
 

@@ -21,19 +21,14 @@
 
 using namespace box2d;
 
-TEST(PolygonShape, ByteSizeIs_64_or_80)
+TEST(PolygonShape, ByteSizeIs_64_80_or_112)
 {
-	if (sizeof(RealNum) == 4)
+	switch (sizeof(RealNum))
 	{
-		EXPECT_EQ(sizeof(PolygonShape), size_t(64));
-	}
-	else if (sizeof(RealNum) == 8)
-	{
-		EXPECT_EQ(sizeof(PolygonShape), size_t(80));
-	}
-	else
-	{
-		FAIL();
+		case  4: EXPECT_EQ(sizeof(PolygonShape), size_t(64)); break;
+		case  8: EXPECT_EQ(sizeof(PolygonShape), size_t(80)); break;
+		case 16: EXPECT_EQ(sizeof(PolygonShape), size_t(112)); break;
+		default: FAIL(); break;
 	}
 }
 
@@ -273,15 +268,14 @@ TEST(PolygonShape, SetAsBoxAngledDegrees90)
 	
 	// vertices go counter-clockwise (and normals follow their edges)...
 	
-	const auto precision = 1000u;
-	EXPECT_TRUE(almost_equal(round(shape.GetVertex(0).x, precision), hy)); // right
-	EXPECT_TRUE(almost_equal(round(shape.GetVertex(0).y, precision), hx)); // top
-	EXPECT_TRUE(almost_equal(round(shape.GetVertex(1).x, precision), -hy)); // left
-	EXPECT_TRUE(almost_equal(round(shape.GetVertex(1).y, precision), hx)); // top
-	EXPECT_TRUE(almost_equal(round(shape.GetVertex(2).x, precision), -hy)); // left
-	EXPECT_TRUE(almost_equal(round(shape.GetVertex(2).y, precision), -hx)); // bottom
-	EXPECT_TRUE(almost_equal(round(shape.GetVertex(3).x, precision), hy)); // right
-	EXPECT_TRUE(almost_equal(round(shape.GetVertex(3).y, precision), -hx)); // bottom
+	EXPECT_NEAR(double(shape.GetVertex(0).x), double( hy), 0.0001); // right
+	EXPECT_NEAR(double(shape.GetVertex(0).y), double( hx), 0.0001); // top
+	EXPECT_NEAR(double(shape.GetVertex(1).x), double(-hy), 0.0001); // left
+	EXPECT_NEAR(double(shape.GetVertex(1).y), double( hx), 0.0001); // top
+	EXPECT_NEAR(double(shape.GetVertex(2).x), double(-hy), 0.0001); // left
+	EXPECT_NEAR(double(shape.GetVertex(2).y), double(-hx), 0.0001); // bottom
+	EXPECT_NEAR(double(shape.GetVertex(3).x), double( hy), 0.0001); // right
+	EXPECT_NEAR(double(shape.GetVertex(3).y), double(-hx), 0.0001); // bottom
 	
 	EXPECT_TRUE(almost_equal(round(shape.GetNormal(0).GetX()), 0));
 	EXPECT_TRUE(almost_equal(round(shape.GetNormal(0).GetY()), +1));

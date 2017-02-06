@@ -21,19 +21,14 @@
 
 using namespace box2d;
 
-TEST(Mat33, ByteSizeIs_36_or_72)
+TEST(Mat33, ByteSizeIs_36_72_or_144)
 {
-	if (sizeof(RealNum) == 4)
+	switch (sizeof(RealNum))
 	{
-		EXPECT_EQ(sizeof(Mat33), size_t(36));
-	}
-	else if (sizeof(RealNum) == 8)
-	{
-		EXPECT_EQ(sizeof(Mat33), size_t(72));
-	}
-	else
-	{
-		FAIL();
+		case  4:  EXPECT_EQ(sizeof(Mat33), size_t(36)); break;
+		case  8:  EXPECT_EQ(sizeof(Mat33), size_t(72)); break;
+		case 16: EXPECT_EQ(sizeof(Mat33), size_t(144)); break;
+		default: FAIL(); break;
 	}
 }
 

@@ -26,19 +26,14 @@
 
 using namespace box2d;
 
-TEST(SeparationFinder, ByteSizeIs_40_or_56)
+TEST(SeparationFinder, ByteSizeIs_40_56_or_96)
 {
-	if (sizeof(RealNum) == 4)
+	switch (sizeof(RealNum))
 	{
-		EXPECT_EQ(sizeof(SeparationFinder), size_t(40));
-	}
-	else if (sizeof(RealNum) == 8)
-	{
-		EXPECT_EQ(sizeof(SeparationFinder), size_t(56));
-	}
-	else
-	{
-		FAIL();
+		case  4: EXPECT_EQ(sizeof(SeparationFinder), size_t(40)); break;
+		case  8: EXPECT_EQ(sizeof(SeparationFinder), size_t(56)); break;
+		case 16: EXPECT_EQ(sizeof(SeparationFinder), size_t(96)); break;
+		default: FAIL(); break;
 	}
 }
 

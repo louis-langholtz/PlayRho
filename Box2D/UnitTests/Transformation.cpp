@@ -21,19 +21,14 @@
 
 using namespace box2d;
 
-TEST(Transformation, ByteSizeIs_16_or_32)
+TEST(Transformation, ByteSizeIs_16_32_or_64)
 {
-	if (sizeof(RealNum) == 4)
+	switch (sizeof(RealNum))
 	{
-		EXPECT_EQ(sizeof(Transformation), size_t(16));
-	}
-	else if (sizeof(RealNum) == 8)
-	{
-		EXPECT_EQ(sizeof(Transformation), size_t(32));
-	}
-	else
-	{
-		FAIL();
+		case  4: EXPECT_EQ(sizeof(Transformation), size_t(16)); break;
+		case  8: EXPECT_EQ(sizeof(Transformation), size_t(32)); break;
+		case 16: EXPECT_EQ(sizeof(Transformation), size_t(64)); break;
+		default: FAIL(); break;
 	}
 }
 

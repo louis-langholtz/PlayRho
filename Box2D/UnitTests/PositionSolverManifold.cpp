@@ -24,19 +24,14 @@
 
 using namespace box2d;
 
-TEST(PositionSolverManifold, ByteSizeIs_20_or_40)
+TEST(PositionSolverManifold, ByteSizeIs_20_40_or_80)
 {
-	if (sizeof(RealNum) == 4)
+	switch (sizeof(RealNum))
 	{
-		EXPECT_EQ(sizeof(PositionSolverManifold), size_t(20));
-	}
-	else if (sizeof(RealNum) == 8)
-	{
-		EXPECT_EQ(sizeof(PositionSolverManifold), size_t(40));
-	}
-	else
-	{
-		FAIL();
+		case  4: EXPECT_EQ(sizeof(PositionSolverManifold), size_t(20)); break;
+		case  8: EXPECT_EQ(sizeof(PositionSolverManifold), size_t(40)); break;
+		case 16: EXPECT_EQ(sizeof(PositionSolverManifold), size_t(80)); break;
+		default: FAIL(); break;
 	}
 }
 

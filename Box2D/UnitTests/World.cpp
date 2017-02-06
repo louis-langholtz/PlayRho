@@ -36,19 +36,14 @@
 
 using namespace box2d;
 
-TEST(World, ByteSizeIs_392_or_416)
+TEST(World, ByteSizeIs_392_416_or_464)
 {
-	if (sizeof(RealNum) == 4)
+	switch (sizeof(RealNum))
 	{
-		EXPECT_EQ(sizeof(World), size_t(392));
-	}
-	else if (sizeof(RealNum) == 8)
-	{
-		EXPECT_EQ(sizeof(World), size_t(416));
-	}
-	else
-	{
-		FAIL();
+		case  4: EXPECT_EQ(sizeof(World), size_t(392)); break;
+		case  8: EXPECT_EQ(sizeof(World), size_t(416)); break;
+		case 16: EXPECT_EQ(sizeof(World), size_t(464)); break;
+		default: FAIL(); break;
 	}
 }
 

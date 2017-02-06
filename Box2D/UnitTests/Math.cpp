@@ -184,8 +184,8 @@ TEST(Math, AverageVec2)
 		const auto val2 = Vec2{RealNum(4.4), RealNum(-1.3)};
 		const auto average = Average<Vec2>({val1, val2});
 		const auto expected = Vec2(RealNum(3.3), RealNum(-1.2));
-		EXPECT_TRUE(almost_equal(average.x, expected.x));
-		EXPECT_TRUE(almost_equal(average.y, expected.y));
+		EXPECT_NEAR(double(average.x), double(expected.x), 0.00001);
+		EXPECT_NEAR(double(average.y), double(expected.y), 0.00001);
 	}
 }
 

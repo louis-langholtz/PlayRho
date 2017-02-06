@@ -21,9 +21,15 @@
 
 using namespace box2d;
 
-TEST(VertexSet, ByteSizeIs32)
+TEST(VertexSet, ByteSizeIs_32_or_48)
 {
-	EXPECT_EQ(sizeof(VertexSet), size_t(32));
+	switch (sizeof(RealNum))
+	{
+		case  4: EXPECT_EQ(sizeof(VertexSet), size_t(32)); break;
+		case  8: EXPECT_EQ(sizeof(VertexSet), size_t(32)); break;
+		case 16: EXPECT_EQ(sizeof(VertexSet), size_t(48)); break;
+		default: FAIL(); break;
+	}
 }
 
 TEST(VertexSet, DefaultConstruction)

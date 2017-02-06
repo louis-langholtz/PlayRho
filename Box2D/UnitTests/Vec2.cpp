@@ -24,17 +24,12 @@ using namespace box2d;
 
 TEST(Vec2, ByteSizeIs_8_or_16)
 {
-	if (sizeof(RealNum) == 4)
+	switch (sizeof(RealNum))
 	{
-		EXPECT_EQ(sizeof(Vec2), size_t(8));
-	}
-	else if (sizeof(RealNum) == 8)
-	{
-		EXPECT_EQ(sizeof(Vec2), size_t(16));
-	}
-	else
-	{
-		FAIL();
+		case  4: EXPECT_EQ(sizeof(Vec2), size_t(8)); break;
+		case  8: EXPECT_EQ(sizeof(Vec2), size_t(16)); break;
+		case 16: EXPECT_EQ(sizeof(Vec2), size_t(32)); break;
+		default: FAIL(); break;
 	}
 }
 
