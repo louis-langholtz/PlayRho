@@ -81,6 +81,7 @@ struct BodyDef
 	constexpr BodyDef& UseAngle(Angle a) noexcept;
 	constexpr BodyDef& UseLinearDamping(RealNum v) noexcept;
 	constexpr BodyDef& UseAngularDamping(RealNum v) noexcept;
+	constexpr BodyDef& UseSleepTime(RealNum v) noexcept;
 	constexpr BodyDef& UseAllowSleep(bool value) noexcept;
 	constexpr BodyDef& UseAwake(bool value) noexcept;
 	constexpr BodyDef& UseFixedRotation(bool value) noexcept;
@@ -108,12 +109,16 @@ struct BodyDef
 	/// Linear damping is use to reduce the linear velocity. The damping parameter
 	/// can be larger than 1 but the damping effect becomes sensitive to the
 	/// time step when the damping parameter is large.
-	RealNum linearDamping = RealNum{0};
+	RealNum linearDamping = 0;
 
 	/// Angular damping is use to reduce the angular velocity. The damping parameter
 	/// can be larger than 1 but the damping effect becomes sensitive to the
 	/// time step when the damping parameter is large.
-	RealNum angularDamping = RealNum{0};
+	RealNum angularDamping = 0;
+
+	/// Sleep time.
+	/// @detail Set this to the value retrieved from Body::GetSleepTime() or leave it as 0.
+	RealNum sleepTime = 0;
 
 	/// Set this flag to false if this body should never fall asleep. Note that
 	/// this increases CPU usage.
@@ -168,6 +173,12 @@ constexpr inline BodyDef& BodyDef::UseAngularDamping(RealNum v) noexcept
 	return *this;
 }
 
+constexpr inline BodyDef& BodyDef::UseSleepTime(RealNum v) noexcept
+{
+	sleepTime = v;
+	return *this;
+}
+	
 constexpr inline BodyDef& BodyDef::UseAllowSleep(bool value) noexcept
 {
 	allowSleep = value;
@@ -382,6 +393,7 @@ public:
 	/// @return true if the body is awake.
 	bool IsAwake() const noexcept;
 
+	/// Gets this body's sleep time value.
 	RealNum GetSleepTime() const noexcept;
 	
 	/// Updates the body's sleep time for speedable bodies.

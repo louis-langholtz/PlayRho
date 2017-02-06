@@ -74,6 +74,7 @@ Body::Body(const BodyDef& bd, World* world):
 	m_invMass{(bd.type == BodyType::Dynamic)? RealNum{1}: RealNum{0}},
 	m_linearDamping{bd.linearDamping},
 	m_angularDamping{bd.angularDamping},
+	m_sleepTime{bd.sleepTime},
 	m_userData{bd.userData}
 {
 	assert(IsValid(bd.position));
