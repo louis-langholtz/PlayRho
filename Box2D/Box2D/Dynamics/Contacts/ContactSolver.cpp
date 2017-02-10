@@ -55,41 +55,40 @@ static inline void SolveTangentConstraint(VelocityConstraint& vc, Velocity& velA
 
 	const auto tangent = GetTangent(vc);
 	assert(IsValid(tangent));
-	{
-		const auto count = vc.GetPointCount();
-		assert((count == 1) || (count == 2));
-		
-		for (auto i = decltype(count){0}; i < count; ++i)
-		{
-			const auto rA = GetPointRelPosA(vc, i);
-			const auto rB = GetPointRelPosB(vc, i);
 
-			// Compute tangent force
-			const auto lambda = GetTangentMassAtPoint(vc, i) * (vc.GetTangentSpeed() - Dot(GetContactRelVelocity(velA, rA, velB, rB), tangent));
-			
-			// Clamp the accumulated force
-			//
-			// Notes:
-			//
-			//   vc.GetFriction() can return any value between 0 and +Inf. If it's +Inf,
-			//   multiplying it any non-zero non-NaN value results in +/-Inf, and multiplying
-			//   it by zero or NaN results in NaN.
-			//
-			//   Meanwhile GetNormalImpulseAtPoint(vc, i) can often return 0.
-			//
-			const auto maxImpulse = vc.GetFriction() * GetNormalImpulseAtPoint(vc, i);
-			const auto oldImpulse = GetTangentImpulseAtPoint(vc, i);
-			const auto newImpulse = Clamp(oldImpulse + lambda, -maxImpulse, maxImpulse);
-			const auto incImpulse = newImpulse - oldImpulse;
-			
-			// Save new impulse
-			SetTangentImpulseAtPoint(vc, i, newImpulse);
-			
-			// Apply contact impulse
-			const auto P = incImpulse * tangent;
-			velA -= Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(rA, P)};
-			velB += Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(rB, P)};
-		}
+	const auto count = vc.GetPointCount();
+	assert((count == 1) || (count == 2));
+	
+	for (auto i = decltype(count){0}; i < count; ++i)
+	{
+		const auto rA = GetPointRelPosA(vc, i);
+		const auto rB = GetPointRelPosB(vc, i);
+
+		// Compute tangent force
+		const auto lambda = GetTangentMassAtPoint(vc, i) * (vc.GetTangentSpeed() - Dot(GetContactRelVelocity(velA, rA, velB, rB), tangent));
+		
+		// Clamp the accumulated force
+		//
+		// Notes:
+		//
+		//   vc.GetFriction() can return any value between 0 and +Inf. If it's +Inf,
+		//   multiplying it any non-zero non-NaN value results in +/-Inf, and multiplying
+		//   it by zero or NaN results in NaN.
+		//
+		//   Meanwhile GetNormalImpulseAtPoint(vc, i) can often return 0.
+		//
+		const auto maxImpulse = vc.GetFriction() * GetNormalImpulseAtPoint(vc, i);
+		const auto oldImpulse = GetTangentImpulseAtPoint(vc, i);
+		const auto newImpulse = Clamp(oldImpulse + lambda, -maxImpulse, maxImpulse);
+		const auto incImpulse = newImpulse - oldImpulse;
+		
+		// Save new impulse
+		SetTangentImpulseAtPoint(vc, i, newImpulse);
+		
+		// Apply contact impulse
+		const auto P = incImpulse * tangent;
+		velA -= Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(rA, P)};
+		velB += Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(rB, P)};
 	}
 }
 
@@ -100,33 +99,34 @@ static inline void SeqSolveNormalConstraint(VelocityConstraint& vc, Velocity& ve
 	
 	const auto normal = GetNormal(vc);
 	assert(IsValid(normal));
+
+	const auto count = vc.GetPointCount();
+	assert((count == 1) || (count == 2));
+	
+	for (auto i = decltype(count){0}; i < count; ++i)
 	{
-		const auto count = vc.GetPointCount();	
-		for (auto i = decltype(count){0}; i < count; ++i)
-		{
-			const auto rA = GetPointRelPosA(vc, i);
-			const auto rB = GetPointRelPosB(vc, i);
-			
-			// Compute normal impulse
-			const auto lambda = [&](){
-				const auto dv = GetContactRelVelocity(velA, rA, velB, rB);
-				const auto vn = Dot(dv, normal);
-				return GetNormalMassAtPoint(vc, i) * (vn - GetVelocityBiasAtPoint(vc, i));
-			}();
-			
-			// Clamp the accumulated impulse
-			const auto oldImpulse = GetNormalImpulseAtPoint(vc, i);
-			const auto newImpulse = Max(oldImpulse - lambda, RealNum{0});
-			const auto incImpulse = newImpulse - oldImpulse;
-			
-			// Save new impulse
-			SetNormalImpulseAtPoint(vc, i, newImpulse);
-			
-			// Apply contact impulse
-			const auto P = incImpulse * normal;
-			velA -= Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(rA, P)};
-			velB += Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(rB, P)};
-		}
+		const auto rA = GetPointRelPosA(vc, i);
+		const auto rB = GetPointRelPosB(vc, i);
+		
+		// Compute normal impulse
+		const auto lambda = [&](){
+			const auto dv = GetContactRelVelocity(velA, rA, velB, rB);
+			const auto vn = Dot(dv, normal);
+			return GetNormalMassAtPoint(vc, i) * (vn - GetVelocityBiasAtPoint(vc, i));
+		}();
+		
+		// Clamp the accumulated impulse
+		const auto oldImpulse = GetNormalImpulseAtPoint(vc, i);
+		const auto newImpulse = Max(oldImpulse - lambda, RealNum{0});
+		const auto incImpulse = newImpulse - oldImpulse;
+		
+		// Save new impulse
+		SetNormalImpulseAtPoint(vc, i, newImpulse);
+		
+		// Apply contact impulse
+		const auto P = incImpulse * normal;
+		velA -= Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(rA, P)};
+		velB += Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(rB, P)};
 	}
 }
 
