@@ -428,10 +428,10 @@ static void sInterface()
 
 		imguiSeparatorLine();
 
-		imguiSlider("Reg Vel Iters", &settings.regVelocityIterations, 0, 50, 1, true);
-		imguiSlider("Reg Pos Iters", &settings.regPositionIterations, 0, 50, 1, true);
-		imguiSlider("TOI Vel Iters", &settings.toiVelocityIterations, 0, 50, 1, true);
-		imguiSlider("TOI Pos Iters", &settings.toiPositionIterations, 0, 50, 1, true);
+		imguiSlider("Reg Vel Iters", &settings.regVelocityIterations, 0, 100, 1, true);
+		imguiSlider("Reg Pos Iters", &settings.regPositionIterations, 0, 100, 1, true);
+		imguiSlider("TOI Vel Iters", &settings.toiVelocityIterations, 0, 100, 1, true);
+		imguiSlider("TOI Pos Iters", &settings.toiPositionIterations, 0, 100, 1, true);
 		imguiSlider("Hertz", &settings.hz, 5.0f, 120.0f, 5.0f, true);
 		imguiSlider("Max Translation", &settings.maxTranslation, 0.0f, 8.0f, 0.05f, true);
 		imguiSlider("Max Rotation", &settings.maxRotation, 0.0f, 360.0f, 1.0f, true);
