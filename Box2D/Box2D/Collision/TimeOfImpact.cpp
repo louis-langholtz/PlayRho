@@ -59,7 +59,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 	auto t1xfB = GetTransformation(sweepB, t1);
 
 	// Prepare input for distance query.
-	Simplex::Cache cache;
+	DistanceConf distanceConf;
 
 	// The outer loop progressively attempts to compute new separating axes.
 	// This loop terminates when an axis is repeated (no progress is made).
@@ -67,8 +67,10 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 	{
 		// Get information on the distance between shapes. We can also use the results
 		// to get a separating axis.
-		const auto distanceInfo = Distance(proxyA, t1xfA, proxyB, t1xfB, cache);
-		cache = Simplex::GetCache(distanceInfo.simplex.GetEdges());
+		const auto distanceInfo = Distance(proxyA, t1xfA, proxyB, t1xfB, distanceConf);
+		assert(distanceInfo.state != DistanceOutput::Unknown && distanceInfo.state != DistanceOutput::HitMaxIters);
+
+		distanceConf.cache = Simplex::GetCache(distanceInfo.simplex.GetEdges());
 
 		++stats.toi_iters;
 		stats.sum_dist_iters += distanceInfo.iterations;
@@ -93,7 +95,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 		// From here on, the real distance squared at time t1 is > than maxTargetSquared
 
 		// Initialize the separating axis.
-		const auto fcn = SeparationFinder::Get(cache.GetIndices(), proxyA, t1xfA, proxyB, t1xfB);
+		const auto fcn = SeparationFinder::Get(distanceConf.cache.GetIndices(), proxyA, t1xfA, proxyB, t1xfB);
 
 		// Compute the TOI on the separating axis. We do this by successively
 		// resolving the deepest point. This loop is bounded by the number of vertices.

@@ -90,7 +90,7 @@ Simplex::Edges GetSimplexEdges(const Simplex::IndexPairs& indexPairs,
 
 DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
 						const DistanceProxy& proxyB, const Transformation& transformB,
-						const Simplex::Cache& cache)
+						const DistanceConf conf)
 {
 	assert(proxyA.GetVertexCount() > 0);
 	assert(IsValid(transformA.p));
@@ -98,13 +98,13 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 	assert(IsValid(transformB.p));
 	
 	// Initialize the simplex.
-	auto simplexEdges = GetSimplexEdges(cache.GetIndices(), proxyA, transformA, proxyB, transformB);
+	auto simplexEdges = GetSimplexEdges(conf.cache.GetIndices(), proxyA, transformA, proxyB, transformB);
 
 	// Compute the new simplex metric, if it is substantially different than
 	// old metric then flush the simplex.
 	if (simplexEdges.size() > 1)
 	{
-		const auto metric1 = cache.GetMetric();
+		const auto metric1 = conf.cache.GetMetric();
 		const auto metric2 = Simplex::CalcMetric(simplexEdges);
 		if ((metric2 < (metric1 / 2)) || (metric2 > (metric1 * 2)) || (metric2 < 0) || almost_zero(metric2))
 		{
@@ -118,14 +118,15 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 	}
 
 	auto simplex = Simplex{};
+	auto state = DistanceOutput::HitMaxIters;
 
 #if defined(DO_COMPUTE_CLOSEST_POINT)
 	auto distanceSqr1 = MaxFloat;
 #endif
 
 	// Main iteration loop.
-	auto iter = std::remove_const<decltype(MaxDistanceIterations)>::type{0};
-	while (iter < MaxDistanceIterations)
+	auto iter = decltype(conf.maxIterations){0};
+	while (iter < conf.maxIterations)
 	{
 		++iter;
 	
@@ -138,6 +139,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 		// If we have max points (3), then the origin is in the corresponding triangle.
 		if (simplexEdges.size() == simplexEdges.max_size())
 		{
+			state = DistanceOutput::MaxPoints;
 			break;
 		}
 
@@ -160,6 +162,8 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 		// Ensure the search direction is numerically fit.
 		if (almost_zero(GetLengthSquared(d)))
 		{
+			state = DistanceOutput::UnfitSearchDir;
+			
 			// The origin is probably contained by a line segment
 			// or triangle. Thus the shapes are overlapped.
 
@@ -177,6 +181,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 		// If there's a duplicate support point, code must exit loop to avoid cycling.
 		if (Find(savedIndices, IndexPair{indexA, indexB}))
 		{
+			state = DistanceOutput::DuplicateIndexPair;
 			break;
 		}
 
@@ -186,7 +191,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 
 	// Note: simplexEdges is same here as simplex.GetSimplexEdges().
 	// GetWitnessPoints(simplex), iter, Simplex::GetCache(simplexEdges)
-	return DistanceOutput{simplex, iter};
+	return DistanceOutput{simplex, iter, state};
 }
 	
 } // namespace box2d

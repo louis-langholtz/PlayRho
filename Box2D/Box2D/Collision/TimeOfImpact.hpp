@@ -50,12 +50,14 @@ namespace box2d {
 	{
 		using root_iter_type = std::remove_const<decltype(MaxTOIRootIterCount)>::type;
 		using toi_iter_type = std::remove_const<decltype(MaxTOIIterations)>::type;
+		using dist_iter_type = std::remove_const<decltype(MaxDistanceIterations)>::type;
 
 		constexpr ToiConf& UseTimeMax(RealNum value) noexcept;
 		constexpr ToiConf& UseTargetDepth(RealNum value) noexcept;
 		constexpr ToiConf& UseTolerance(RealNum value) noexcept;
 		constexpr ToiConf& UseMaxRootIters(root_iter_type value) noexcept;
 		constexpr ToiConf& UseMaxToiIters(toi_iter_type value) noexcept;
+		constexpr ToiConf& UseMaxDistIters(dist_iter_type value) noexcept;
 
 		RealNum tMax = 1;
 		
@@ -75,6 +77,8 @@ namespace box2d {
 		root_iter_type maxRootIters = MaxTOIRootIterCount;
 		
 		toi_iter_type maxToiIters = MaxTOIIterations; ///< Max time of impact iterations.
+		
+		dist_iter_type maxDistIters = MaxDistanceIterations;
 	};
 
 	constexpr auto GetDefaultToiConf()
@@ -109,6 +113,12 @@ namespace box2d {
 	constexpr ToiConf& ToiConf::UseMaxToiIters(toi_iter_type value) noexcept
 	{
 		maxToiIters = value;
+		return *this;
+	}
+
+	constexpr ToiConf& ToiConf::UseMaxDistIters(dist_iter_type value) noexcept
+	{
+		maxDistIters = value;
 		return *this;
 	}
 

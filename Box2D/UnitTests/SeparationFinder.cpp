@@ -51,10 +51,10 @@ TEST(SeparationFinder, BehavesAsExpected)
 	auto last_distance = MaxFloat;
 	auto xfA = GetTransformation(sweepA, t);
 	auto xfB = GetTransformation(sweepB, t);
-	Simplex::Cache cache;
-	auto distanceInfo = Distance(distproxy, xfA, distproxy, xfB, cache);
-	cache = Simplex::GetCache(distanceInfo.simplex.GetEdges());
-	const auto fcn = SeparationFinder::Get(cache.GetIndices(), distproxy, xfA, distproxy, xfB);
+	DistanceConf conf;
+	auto distanceInfo = Distance(distproxy, xfA, distproxy, xfB, conf);
+	conf.cache = Simplex::GetCache(distanceInfo.simplex.GetEdges());
+	const auto fcn = SeparationFinder::Get(conf.cache.GetIndices(), distproxy, xfA, distproxy, xfB);
 	EXPECT_EQ(fcn.GetType(), SeparationFinder::e_faceA);
 	EXPECT_EQ(Vec2(fcn.GetAxis()), Vec2(1, 0));
 	EXPECT_EQ(fcn.GetLocalPoint(), Vec2(0.5, 0));
@@ -102,7 +102,7 @@ TEST(SeparationFinder, BehavesAsExpected)
 		last_s = s;
 		xfA = GetTransformation(sweepA, t);
 		xfB = GetTransformation(sweepB, t);
-		distanceInfo = Distance(distproxy, xfA, distproxy, xfB, cache);
-		cache = Simplex::GetCache(distanceInfo.simplex.GetEdges());
+		distanceInfo = Distance(distproxy, xfA, distproxy, xfB, conf);
+		conf.cache = Simplex::GetCache(distanceInfo.simplex.GetEdges());
 	}
 }

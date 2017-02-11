@@ -118,9 +118,9 @@ public:
 		const auto manifold = CollideShapes(*shapeA, xfmA, *shapeB, xfmB);
 		const auto panifold = GetManifold(proxyA, xfmA, proxyB, xfmB);
 
-		Simplex::Cache cache;
-		const auto output = Distance(proxyA, xfmA, proxyB, xfmB, cache);
-		cache = Simplex::GetCache(output.simplex.GetEdges());
+		DistanceConf distanceConf;
+		const auto output = Distance(proxyA, xfmA, proxyB, xfmB, distanceConf);
+		distanceConf.cache = Simplex::GetCache(output.simplex.GetEdges());
 		const auto witnessPoints = GetWitnessPoints(output.simplex);
 		const auto outputDistance = Sqrt(GetLengthSquared(witnessPoints.a - witnessPoints.b));
 		
