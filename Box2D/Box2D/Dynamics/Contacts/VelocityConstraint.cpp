@@ -41,7 +41,7 @@ void VelocityConstraint::Update(const WorldManifold& worldManifold,
 		const auto velA = velocities[bodyA.GetIndex()];
 		const auto velB = velocities[bodyB.GetIndex()];
 		
-		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
+		auto restitutionFunc = [&](decltype(pointCount) j)
 		{
 			const auto worldPoint = worldManifold.GetPoint(j);
 			const auto vcp_rA = worldPoint - posA;
@@ -55,6 +55,12 @@ void VelocityConstraint::Update(const WorldManifold& worldManifold,
 				const auto vn = Dot(GetContactRelVelocity(velA, vcp_rA, velB, vcp_rB), normal);
 				return (vn < -conf.velocityThreshold)? -GetRestitution() * vn: RealNum{0};
 			}());
+		};
+		switch (pointCount)
+		{
+			case 2: restitutionFunc(1);
+			case 1: restitutionFunc(0);
+			default: break;
 		}
 	}
 	

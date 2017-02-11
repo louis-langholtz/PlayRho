@@ -43,7 +43,6 @@ public:
 			bd.position.y = -a;
 			const auto ground = m_world->CreateBody(bd);
 
-#if 1
 			const auto N = 200;
 			const auto M = 10;
 			Vec2 position;
@@ -61,24 +60,6 @@ public:
 				}
 				position.y -= 2.0f * a;
 			}
-#else
-			const auto N = 200;
-			const auto M = 10;
-			Vec2 position;
-			position.x = -N * a;
-			for (int32 i = 0; i < N; ++i)
-			{
-				position.y = 0.0f;
-				for (int32 j = 0; j < M; ++j)
-				{
-					PolygonShape shape;
-					SetAsBox(shape, a, a, position, 0.0f);
-					ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-					position.y -= 2.0f * a;
-				}
-				position.x += 2.0f * a;
-			}
-#endif
 		}
 
 		{
@@ -99,15 +80,6 @@ public:
 					BodyDef bd;
 					bd.type = BodyType::Dynamic;
 					bd.position = y;
-
-					//if (i == 0 && j == 0)
-					//{
-					//	bd.allowSleep = false;
-					//}
-					//else
-					//{
-					//	bd.allowSleep = true;
-					//}
 
 					const auto body = m_world->CreateBody(bd);
 					body->CreateFixture(shape, FixtureDef{}.UseDensity(5));

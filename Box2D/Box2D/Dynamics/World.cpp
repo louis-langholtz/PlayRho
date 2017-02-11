@@ -350,6 +350,11 @@ namespace {
 		}
 		return unawoken;
 	}
+	
+	inline bool IsAllFlagsSet(uint16 value, uint16 flags)
+	{
+		return (value & flags) == flags;
+	}
 
 } // anonymous namespace
 
@@ -361,16 +366,31 @@ const BodyDef& World::GetDefaultBodyDef()
 
 World::World(const Def& def):
 	m_gravity(def.gravity),
-	m_linearSlop(def.linearSlop),
-	m_angularSlop(def.angularSlop),
+	m_aabbExtension(def.aabbExtension),
+	m_minVertexRadius(def.minVertexRadius),
 	m_maxVertexRadius(def.maxVertexRadius)
 {
-	// Confirm that linearSlop and maxVertexRadius can work together
-	assert((def.maxVertexRadius * 2) + (def.linearSlop / 4) > (def.maxVertexRadius * 2));
+	assert(IsValid(def.gravity));
+	assert(def.aabbExtension > 0);
+	assert(def.minVertexRadius > 0);
+	assert(def.minVertexRadius < def.maxVertexRadius);
 }
 
 World::~World()
 {
+	while (!m_contactMgr.GetContacts().empty())
+	{
+		const auto c = &m_contactMgr.GetContacts().front();
+		m_contactMgr.Remove(c);
+		Contact::Destroy(c, m_contactMgr.m_allocator);
+	}
+
+	// Delete the created joints.
+	while (!m_joints.empty())
+	{
+		InternalDestroy(&m_joints.front());
+	}
+	
 	// Some shapes allocate using alloc.
 	while (!m_bodies.empty())
 	{
@@ -552,7 +572,11 @@ void World::Destroy(Joint* j)
 	{
 		return;
 	}
-
+	InternalDestroy(j);
+}
+	
+void World::InternalDestroy(Joint* j)
+{
 	if (!Remove(*j))
 	{
 		return;
@@ -706,7 +730,7 @@ Island World::BuildIsland(Body& seed,
 	return island;
 }
 	
-RegStepStats World::Solve(const StepConf& step)
+RegStepStats World::SolveReg(const StepConf& step)
 {
 	auto stats = RegStepStats{};
 
@@ -739,16 +763,18 @@ RegStepStats World::Solve(const StepConf& step)
 				auto island = BuildIsland(body, remNumBodies, remNumContacts, remNumJoints);
 				
 				// Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions
-				const auto constraintsSolved = Solve(step, island);
-				if (constraintsSolved)
+				const auto solverResults = SolveReg(step, island);
+				if (solverResults.solved)
 				{
 					++stats.islandsSolved;
 				}
+				stats.sumPosIters += solverResults.positionIterations;
+				stats.sumVelIters += solverResults.velocityIterations;
 
 				if (IsValid(step.minStillTimeToSleep))
 				{
 					const auto minSleepTime = UpdateSleepTimes(island.m_bodies, step.get_dt());
-					if ((minSleepTime >= step.minStillTimeToSleep) && constraintsSolved)
+					if ((minSleepTime >= step.minStillTimeToSleep) && solverResults.solved)
 					{
 						stats.bodiesSlept += Sleepem(island.m_bodies);
 					}
@@ -782,8 +808,8 @@ RegStepStats World::Solve(const StepConf& step)
 	
 	return stats;
 }
-	
-bool World::Solve(const StepConf& step, Island& island)
+
+World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 {
 	const auto ncontacts = static_cast<contact_count_t>(island.m_contacts.size());
 	const auto nbodies = island.m_bodies.size();
@@ -828,8 +854,8 @@ bool World::Solve(const StepConf& step, Island& island)
 
 	const auto psConf = ConstraintSolverConf{}
 		.UseResolutionRate(step.regResolutionRate)
-		.UseLinearSlop(GetLinearSlop())
-		.UseAngularSlop(GetAngularSlop())
+		.UseLinearSlop(step.linearSlop)
+		.UseAngularSlop(step.angularSlop)
 		.UseMaxLinearCorrection(step.maxLinearCorrection)
 		.UseMaxAngularCorrection(step.maxAngularCorrection);
 
@@ -852,11 +878,12 @@ bool World::Solve(const StepConf& step, Island& island)
 	IntegratePositions(positions, velocities, h, MovementConf{step.maxTranslation, step.maxRotation});
 	
 	// Solve position constraints
-	auto iterationSolved = StepConf::InvalidIteration;
+	auto solved = false;
+	auto positionIterations = step.regPositionIterations;
 	for (auto i = decltype(step.regPositionIterations){0}; i < step.regPositionIterations; ++i)
 	{
-		const auto minSep = SolvePositionConstraints(positionConstraints, positions, psConf);
-		const auto contactsOkay = (minSep >= -psConf.linearSlop * 3);
+		const auto minSeparation = SolvePositionConstraints(positionConstraints, positions, psConf);
+		const auto contactsOkay = (minSeparation >= step.regMinSeparation);
 
 		const auto jointsOkay = [&]()
 		{
@@ -873,8 +900,9 @@ bool World::Solve(const StepConf& step, Island& island)
 		
 		if (contactsOkay && jointsOkay)
 		{
-			// Exit early if the position errors are small.
-			iterationSolved = i;
+			// Reached tolerance, early out...
+			positionIterations = i + 1;
+			solved = true;
 			break;
 		}
 	}
@@ -887,10 +915,10 @@ bool World::Solve(const StepConf& step, Island& island)
 	if (m_contactMgr.m_contactListener)
 	{
 		Report(*m_contactMgr.m_contactListener, island.m_contacts, velocityConstraints,
-			   iterationSolved);
+			   solved? positionIterations - 1: StepConf::InvalidIteration);
 	}
 	
-	return iterationSolved != StepConf::InvalidIteration;
+	return IslandSolverResults{solved, positionIterations, step.regVelocityIterations};
 }
 
 void World::ResetBodiesForSolveTOI()
@@ -909,35 +937,55 @@ void World::ResetContactsForSolveTOI()
 		// Invalidate TOI
 		c.UnsetInIsland();
 		c.UnsetToi();
-		c.m_toiCount = 0;
+		c.ResetToiCount();
 	}	
 }
 
-void World::UpdateContactTOIs(const StepConf& step)
+World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 {
+	contact_count_t numAtMaxSubSteps = 0;
+	contact_count_t numUpdated = 0;
+
 	const auto toiConf = ToiConf{}
 		.UseTimeMax(1)
-		.UseTargetDepth(GetLinearSlop() * 3)
-		.UseTolerance(GetLinearSlop() / 4)
+		.UseTargetDepth(step.targetDepth)
+		.UseTolerance(step.tolerance)
 		.UseMaxRootIters(step.maxTOIRootIterCount)
 		.UseMaxToiIters(step.maxTOIIterations);
 	for (auto&& c: m_contactMgr.GetContacts())
 	{
-		if (c.IsEnabled() && (c.GetToiCount() < step.maxSubSteps) && !c.HasValidToi())
+		if (c.HasValidToi())
 		{
-			c.UpdateTOI(toiConf);
+			continue;
 		}
+		if (!c.IsEnabled() || HasSensor(c) || !IsActive(c) || !IsImpenetrable(c))
+		{
+			continue;
+		}
+		if (c.GetToiCount() >= step.maxSubSteps)
+		{
+			// What are the pros/cons of this?
+			// Larger m_maxSubSteps slows down the simulation.
+			// m_maxSubSteps of 44 and higher seems to decrease the occurrance of tunneling of multiple
+			// bullet body collisions with static objects.
+			++numAtMaxSubSteps;
+			continue;
+		}
+		c.UpdateForCCD(toiConf);
+		++numUpdated;
 	}
+	
+	return UpdateContactsData{numAtMaxSubSteps, numUpdated};
 }
 	
-World::ContactToiData World::GetSoonestContact(const StepConf& step)
+World::ContactToiData World::GetSoonestContact()
 {
 	auto minToi = MaxFloat;
 	auto minContact = static_cast<Contact*>(nullptr);
 	auto count = contact_count_t{0};
 	for (auto&& c: m_contactMgr.GetContacts())
 	{
-		if (c.IsEnabled() && (c.GetToiCount() < step.maxSubSteps) && c.HasValidToi())
+		if (c.HasValidToi())
 		{
 			const auto toi = c.GetToi();
 			if (minToi > toi)
@@ -990,9 +1038,11 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 	// Find TOI events and solve them.
 	for (;;)
 	{
-		UpdateContactTOIs(step);
+		const auto updateData = UpdateContactTOIs(step);
+		stats.contactsAtMaxSubSteps += updateData.numAtMaxSubSteps;
+		stats.contactsUpdatedToi += updateData.numUpdatedTOI;
 		
-		const auto next = GetSoonestContact(step);
+		const auto next = GetSoonestContact();
 		if ((!next.contact) || (next.toi >= 1))
 		{
 			// No more TOI events to handle within the current time step. Done!
@@ -1000,10 +1050,17 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 			break;
 		}
 
-		++stats.contactsChecked;
-		if (SolveTOI(step, *next.contact))
+		++stats.contactsFound;
+		const auto solverResults = SolveTOI(step, *next.contact);
+		if (solverResults.solved)
+		{
+			++stats.islandsSolved;
+		}
+		if ((solverResults.positionIterations > 0) || (solverResults.velocityIterations > 0))
 		{
 			++stats.islandsFound;
+			stats.sumPosIters += solverResults.positionIterations;
+			stats.sumVelIters += solverResults.velocityIterations;
 		}
 		
 		// Commit fixture proxy movements to the broad-phase so that new contacts are created.
@@ -1019,45 +1076,36 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 	return stats;
 }
 
-bool World::SolveTOI(const StepConf& step, Contact& contact)
+World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contact)
 {
 	const auto toi = contact.GetToi();
 	auto bA = contact.GetFixtureA()->GetBody();
 	auto bB = contact.GetFixtureB()->GetBody();
 
-	const auto backupA = bA->m_sweep;
-	const auto backupB = bB->m_sweep;
-
-	// Advance the bodies to the TOI.
-	bA->Advance(toi);
-	bB->Advance(toi);
-
-	// The TOI contact likely has some new contact points.
-	contact.SetEnabled();	
-	contact.Update(m_contactMgr.m_contactListener);
-	contact.UnsetToi();
-
-	++contact.m_toiCount;
-	if (contact.m_toiCount >= step.maxSubSteps)
 	{
-		// Note: This contact won't be passed again to this method within the current world step
-		// (as the UpdateContactTOIs method won't return it anymore).
-		// What are the pros/cons of this?
-		// Larger m_maxSubSteps slows down the simulation.
-		// m_maxSubSteps of 44 and higher seems to decrease the occurrance of tunneling of multiple
-		// bullet body collisions with static objects.
-	}
+		const auto backupA = bA->m_sweep;
+		const auto backupB = bB->m_sweep;
 
-	// Is contact disabled or separated?
-	if (!contact.IsEnabled() || !contact.IsTouching())
-	{
-		// Restore the sweeps by undoing the body "advance" calls (and anything else done movement-wise)
-		contact.UnsetEnabled();
-		bA->m_sweep = backupA;
-		bA->m_xf = GetTransform1(bA->m_sweep);
-		bB->m_sweep = backupB;
-		bB->m_xf = GetTransform1(bB->m_sweep);
-		return false;
+		// Advance the bodies to the TOI.
+		bA->Advance(toi);
+		bB->Advance(toi);
+
+		// The TOI contact likely has some new contact points.
+		contact.SetEnabled();	
+		contact.Update(m_contactMgr.m_contactListener);
+		contact.UnsetToi();
+
+		// Is contact disabled or separated?
+		if (!contact.IsEnabled() || !contact.IsTouching())
+		{
+			// Restore the sweeps by undoing the body "advance" calls (and anything else done movement-wise)
+			contact.UnsetEnabled();
+			bA->m_sweep = backupA;
+			bA->m_xf = GetTransform1(bA->m_sweep);
+			bB->m_sweep = backupB;
+			bB->m_xf = GetTransform1(bB->m_sweep);
+			return IslandSolverResults{};
+		}
 	}
 
 	bA->SetAwake();
@@ -1086,7 +1134,7 @@ bool World::SolveTOI(const StepConf& step, Contact& contact)
 	}
 
 	// Now solve for remainder of time step
-	SolveTOI(StepConf{step}.use_dt((1 - toi) * step.get_dt()), island);
+	const auto results = SolveTOI(StepConf{step}.use_dt((1 - toi) * step.get_dt()), island);
 
 	// Reset island flags and synchronize broad-phase proxies.
 	for (auto&& body: island.m_bodies)
@@ -1100,7 +1148,7 @@ bool World::SolveTOI(const StepConf& step, Contact& contact)
 		}
 	}
 	
-	return true;
+	return results;
 }
 
 void World::UpdateBodies(Span<Body*> bodies,
@@ -1116,7 +1164,7 @@ void World::UpdateBodies(Span<Body*> bodies,
 	}
 }
 
-bool World::SolveTOI(const StepConf& step, Island& island)
+World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 {
 	const auto ncontacts = static_cast<contact_count_t>(island.m_contacts.size());
 	const auto nbodies = island.m_bodies.size();
@@ -1147,11 +1195,12 @@ bool World::SolveTOI(const StepConf& step, Island& island)
 	}
 	
 	// Solve TOI-based position constraints.
-	auto positionConstraintsSolved = StepConf::InvalidIteration;
+	auto solved = false;
+	auto positionIterations = step.toiPositionIterations;
 	const auto psConf = ConstraintSolverConf{}
 		.UseResolutionRate(step.toiResolutionRate)
-		.UseLinearSlop(GetLinearSlop())
-		.UseAngularSlop(GetAngularSlop())
+		.UseLinearSlop(step.linearSlop)
+		.UseAngularSlop(step.angularSlop)
 		.UseMaxLinearCorrection(step.maxLinearCorrection)
 		.UseMaxAngularCorrection(step.maxAngularCorrection);
 
@@ -1168,9 +1217,11 @@ bool World::SolveTOI(const StepConf& step, Island& island)
 		//   function is the one to be calling here.
 		//
 		const auto minSeparation = SolvePositionConstraints(positionConstraints, positions, psConf);
-		if (minSeparation >= -psConf.linearSlop * RealNum(1.5))
+		if (minSeparation >= step.toiMinSeparation)
 		{
-			positionConstraintsSolved = i;
+			// Reached tolerance, early out...
+			positionIterations = i + 1;
+			solved = true;
 			break;
 		}
 	}
@@ -1208,10 +1259,10 @@ bool World::SolveTOI(const StepConf& step, Island& island)
 	if (m_contactMgr.m_contactListener)
 	{
 		Report(*m_contactMgr.m_contactListener, island.m_contacts, velocityConstraints,
-			   positionConstraintsSolved);
+			   positionIterations);
 	}
 	
-	return positionConstraintsSolved != StepConf::InvalidIteration;
+	return IslandSolverResults{solved, positionIterations, step.toiVelocityIterations};
 }
 	
 void World::ResetContactsForSolveTOI(Body& body)
@@ -1272,6 +1323,8 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi, Conta
 
 StepStats World::Step(const StepConf& conf)
 {
+	assert((m_maxVertexRadius * 2) + (conf.linearSlop / 4) > (m_maxVertexRadius * 2));
+
 	auto stepStats = StepStats{};
 
 	if (HasNewFixtures())
@@ -1298,7 +1351,7 @@ StepStats World::Step(const StepConf& conf)
 		// Integrate velocities, solve velocity constraints, and integrate positions.
 		if (IsStepComplete())
 		{
-			stepStats.reg = Solve(conf);
+			stepStats.reg = SolveReg(conf);
 		}
 
 		// Handle TOI events.
@@ -1411,6 +1464,18 @@ void World::ShiftOrigin(const Vec2 newOrigin)
 	}
 
 	m_contactMgr.m_broadPhase.ShiftOrigin(newOrigin);
+}
+	
+bool World::IsActive(const Contact& contact) noexcept
+{
+	const auto bA = contact.GetFixtureA()->GetBody();
+	const auto bB = contact.GetFixtureB()->GetBody();
+	
+	const auto activeA = IsAllFlagsSet(bA->m_flags, Body::e_awakeFlag|Body::e_velocityFlag);
+	const auto activeB = IsAllFlagsSet(bB->m_flags, Body::e_awakeFlag|Body::e_velocityFlag);
+	
+	// Is at least one body active (awake and dynamic or kinematic)?
+	return activeA || activeB;
 }
 
 StepStats Step(World& world, RealNum dt, World::ts_iters_type velocityIterations, World::ts_iters_type positionIterations)

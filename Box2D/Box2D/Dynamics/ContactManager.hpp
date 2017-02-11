@@ -85,6 +85,7 @@ public:
 	ContactListener* m_contactListener; ///< Contact listener. 8-bytes.
 
 private:
+	friend class World;
 
 	/// Adds a contact for proxyA and proxyB if appropriate.
 	/// @detail Adds a new contact object to represent a contact between proxy A and proxy B if

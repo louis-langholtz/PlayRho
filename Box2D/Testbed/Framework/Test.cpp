@@ -579,6 +579,18 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	stepConf.doWarmStart = settings.enableWarmStarting;
 
 	const auto stepStats = m_world->Step(stepConf);
+	
+	m_sumRegIslandsFound += stepStats.reg.islandsFound;
+	m_sumRegIslandsSolved += stepStats.reg.islandsSolved;
+	m_sumRegPosIters += stepStats.reg.sumPosIters;
+	m_sumRegVelIters += stepStats.reg.sumVelIters;
+
+	m_sumToiIslandsFound += stepStats.toi.islandsFound;
+	m_sumToiIslandsSolved += stepStats.toi.islandsSolved;
+	m_sumToiPosIters += stepStats.toi.sumPosIters;
+	m_sumToiVelIters += stepStats.toi.sumVelIters;
+	m_sumContactsUpdatedToi += stepStats.toi.contactsUpdatedToi;
+	m_sumContactsAtMaxSubSteps += stepStats.toi.contactsAtMaxSubSteps;
 
 	Draw(drawer, *m_world, settings);
 
@@ -590,21 +602,30 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 		m_stepStats = stepStats;
 	}
 
+	const auto contactCount = GetContactCount(*m_world);
+	m_maxContacts = Max(m_maxContacts, contactCount);
+
 	if (settings.drawStats)
 	{
 		drawer.DrawString(5, m_textLine, "step#=%d:", m_stepCount);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		drawer.DrawString(5, m_textLine, "  pre-info: contacts-added=%d contacts-ignored=%d contacts-destroyed=%d contacts-updated=%d",
+		drawer.DrawString(5, m_textLine, "  pre-info: cts-added=%d cts-ignored=%d cts-destroyed=%d cts-updated=%d",
 						  m_stepStats.pre.added, m_stepStats.pre.ignored, m_stepStats.pre.destroyed, m_stepStats.pre.updated);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		drawer.DrawString(5, m_textLine, "  reg-info: contacts-added=%d islands-found=%d islands-solved=%d bodies-slept=%d",
-						  m_stepStats.reg.contactsAdded, m_stepStats.reg.islandsFound, m_stepStats.reg.islandsSolved, m_stepStats.reg.bodiesSlept);
+		drawer.DrawString(5, m_textLine, "  reg-info: cts-added=%u isl-found=%u isl-solved=%u bodies-slept=%u pos-iters=%u vel-iters=%u",
+						  m_stepStats.reg.contactsAdded, m_stepStats.reg.islandsFound, m_stepStats.reg.islandsSolved, m_stepStats.reg.bodiesSlept,
+						  m_stepStats.reg.sumPosIters, m_stepStats.reg.sumVelIters);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		drawer.DrawString(5, m_textLine, "  toi-info: contacts-added=%d islands-found=%d contacts-checked=%d",
-						  m_stepStats.toi.contactsAdded, m_stepStats.toi.islandsFound, m_stepStats.toi.contactsChecked);
+		drawer.DrawString(5, m_textLine, "  toi-info: cts-added=%d isl-found=%d isl-solved=%u cts-found=%d cts-atmaxsubsteps=%d cts-updated=%d",
+						  m_stepStats.toi.contactsAdded,
+						  m_stepStats.toi.islandsFound,
+						  m_stepStats.toi.islandsSolved,
+						  m_stepStats.toi.contactsFound,
+						  m_stepStats.toi.contactsAtMaxSubSteps,
+						  m_stepStats.toi.contactsUpdatedToi);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		const auto sleepCount = [&](){
@@ -619,8 +640,6 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 			return count;
 		}();
 		const auto bodyCount = GetBodyCount(*m_world);
-		const auto contactCount = GetContactCount(*m_world);
-		m_maxContacts = Max(m_maxContacts, contactCount);
 		const auto jointCount = GetJointCount(*m_world);
 		const auto fixtureCount = GetFixtureCount(*m_world);
 		const auto shapeCount = GetShapeCount(*m_world);
@@ -628,6 +647,15 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 						  sleepCount, bodyCount, fixtureCount, shapeCount, contactCount, m_maxContacts, jointCount);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
+		drawer.DrawString(5, m_textLine, "  Reg sums: isl-found=%llu, isl-solved=%llu, pos-iters=%llu, vel-iters=%llu",
+						  m_sumRegIslandsFound, m_sumRegIslandsSolved, m_sumRegPosIters, m_sumRegVelIters);
+		m_textLine += DRAW_STRING_NEW_LINE;
+
+		drawer.DrawString(5, m_textLine, "  TOI sums: isl-found=%llu, isl-solved=%llu, pos-iters=%llu, vel-iters=%llu, updates=%llu, cts-maxstepped=%llu",
+						  m_sumToiIslandsFound, m_sumToiIslandsSolved, m_sumToiPosIters, m_sumToiVelIters,
+						  m_sumContactsUpdatedToi, m_sumContactsAtMaxSubSteps);
+		m_textLine += DRAW_STRING_NEW_LINE;
+		
 		const auto proxyCount = m_world->GetProxyCount();
 		const auto height = m_world->GetTreeHeight();
 		const auto balance = m_world->GetTreeBalance();

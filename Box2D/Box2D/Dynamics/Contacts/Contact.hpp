@@ -236,13 +236,15 @@ protected:
 	void SetToi(RealNum toi) noexcept;
 	
 	void UnsetToi() noexcept;
+	
+	void ResetToiCount() noexcept;
 
-	/// Updates the time of impact information.
+	/// Updates the contact for CCD.
 	/// @detail This:
 	///   Ensures both bodies's sweeps are on the max alpha0 of the two (by advancing the sweep of the lesser body).
 	///   Calculates whether there's an impact and if so when.
 	///   Sets the new time of impact or sets it to 1.
-	bool UpdateTOI(const ToiConf& limits);
+	void UpdateForCCD(const ToiConf& limits);
 
 	bool IsInIsland() const noexcept;
 	void SetInIsland() noexcept;
@@ -280,8 +282,8 @@ private:
 
 	Manifold m_manifold; ///< Manifold of the contact. 60-bytes. @sa Update.
 
-	substep_type m_toiCount = 0; ///< Count of TOI substeps contact has gone through.
-	substep_type m_toiCalls = 0;
+	substep_type m_toiCount = 0; ///< Count of TOI calculations contact has gone through since last reset.
+	substep_type m_toiCalls = 0; ///< Count of TOI calculations contact has gone through in its lifetime.
 
 	toi_sum_type m_toiItersTotal = 0;
 	toi_max_type m_max_toi_iters = 0;
@@ -456,6 +458,11 @@ inline void Contact::UnsetToi() noexcept
 	m_flags &= ~Contact::e_toiFlag;
 }
 
+inline void Contact::ResetToiCount() noexcept
+{
+	m_toiCount = 0;
+}
+
 inline bool Contact::IsInIsland() const noexcept
 {
 	return m_flags & Contact::e_islandFlag;
@@ -512,6 +519,8 @@ inline Contact::root_max_type Contact::GetRootItersMax() const noexcept
 }
 
 bool HasSensor(const Contact& contact) noexcept;
+
+bool IsImpenetrable(const Contact& contact) noexcept;
 
 void SetAwake(Contact& c) noexcept;
 

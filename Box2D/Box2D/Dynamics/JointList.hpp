@@ -24,6 +24,8 @@ public:
 	using const_iterator = ConstJointIterator;
 
 	using pointer = Joint*;
+	using reference = Joint&;
+	using const_reference = const Joint&;
 	using size_type = joint_count_t;
 
 	JointList() = default;
@@ -43,6 +45,9 @@ public:
 
 	constexpr bool operator== (const JointList& rhs) const noexcept { return p == rhs.p; }
 	constexpr bool operator!= (const JointList& rhs) const noexcept { return p != rhs.p; }
+
+	reference front() noexcept { return *p; }
+	const_reference front() const noexcept { return *p; }
 
 private:
 	friend class World;

@@ -40,7 +40,7 @@ public:
 
 		srand(888);
 
-		const auto aabbExtension = GetAabbExtension(*m_world);
+		const auto aabbExtension = m_world->GetAabbExtension();
 		const auto extension = Vec2{aabbExtension, aabbExtension};
 		for (int32 i = 0; i < e_actorCount; ++i)
 		{
@@ -246,7 +246,7 @@ private:
 
 	void CreateProxy()
 	{
-		const auto aabbExtension = GetAabbExtension(*m_world);
+		const auto aabbExtension = m_world->GetAabbExtension();
 		const auto extension = Vec2{aabbExtension, aabbExtension};
 		for (int32 i = 0; i < e_actorCount; ++i)
 		{
@@ -278,7 +278,7 @@ private:
 
 	void MoveProxy()
 	{
-		const auto aabbExtension = GetAabbExtension(*m_world);
+		const auto aabbExtension = m_world->GetAabbExtension();
 		const auto extension = Vec2{aabbExtension, aabbExtension};
 		for (int32 i = 0; i < e_actorCount; ++i)
 		{

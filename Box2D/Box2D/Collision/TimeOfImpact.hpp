@@ -119,31 +119,21 @@ namespace box2d {
 		using toi_iter_type = std::remove_const<decltype(MaxTOIIterations)>::type;
 		using dist_iter_type = std::remove_const<decltype(MaxDistanceIterations)>::type;
 		using root_iter_type = std::remove_const<decltype(MaxTOIRootIterCount)>::type;
+		using toi_sum_type = Wider<toi_iter_type>::type;
 		using dist_sum_type = Wider<dist_iter_type>::type;
 		using root_sum_type = Wider<root_iter_type>::type;
 
 		struct Stats
 		{
-			Stats() = default;
-
-			constexpr Stats(toi_iter_type toi,
-							dist_sum_type dist_sum, dist_iter_type dist_max,
-							root_sum_type root_sum, root_iter_type root_max) noexcept:
-				toi_iters{toi},
-				max_dist_iters{dist_max},
-				max_root_iters{root_max},
-				sum_dist_iters{dist_sum},
-				sum_root_iters{root_sum}
-			{}
-
 			// 3-bytes
-			toi_iter_type toi_iters; ///< Time of impact iterations.
-			dist_iter_type max_dist_iters; ///< Max. distance iterations count.
-			root_iter_type max_root_iters; ///< Max. root finder iterations for all TOI iterations.
+			toi_iter_type toi_iters = 0; ///< Time of impact iterations.
+			dist_iter_type max_dist_iters = 0; ///< Max. distance iterations count.
+			root_iter_type max_root_iters = 0; ///< Max. root finder iterations for all TOI iterations.
 
 			// 4-bytes
-			dist_sum_type sum_dist_iters; ///< Sum total distance iterations.
-			root_sum_type sum_root_iters; ///< Sum total of root finder iterations.
+			toi_sum_type sum_finder_iters = 0; ///< Sum total TOI iterations.
+			dist_sum_type sum_dist_iters = 0; ///< Sum total distance iterations.
+			root_sum_type sum_root_iters = 0; ///< Sum total of root finder iterations.
 		};
 
 		enum State: uint16

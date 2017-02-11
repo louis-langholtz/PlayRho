@@ -49,7 +49,7 @@ void Fixture::CreateProxies(BlockAllocator& allocator, BroadPhase& broadPhase, c
 	// Reserve proxy space and create proxies in the broad-phase.
 	const auto childCount = GetChildCount(*shape);
 	const auto proxies = allocator.AllocateArray<FixtureProxy>(childCount);
-	const auto aabbExtension = GetAabbExtension(*(GetBody()->GetWorld()));
+	const auto aabbExtension = GetBody()->GetWorld()->GetAabbExtension();
 	const auto extension = Vec2{aabbExtension, aabbExtension};
 	for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex)
 	{
@@ -91,7 +91,7 @@ void Fixture::Synchronize(BroadPhase& broadPhase, const Transformation& transfor
 	assert(IsValid(transform2));
 
 	const auto shape = GetShape();
-	const auto aabbExtension = GetAabbExtension(*(GetBody()->GetWorld()));
+	const auto aabbExtension = GetBody()->GetWorld()->GetAabbExtension();
 	const auto extension = Vec2{aabbExtension, aabbExtension};
 
 	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)

@@ -71,13 +71,53 @@ public:
 	/// Set to an invalid value to disable sleeping.
 	RealNum minStillTimeToSleep = RealNum{1} / 2; // aka 0.5
 
-	/// This scale factor controls how fast overlap is resolved. Ideally this would be 1 so
-	/// that overlap is removed in one time step. However using values close to 1 often lead
-	/// to overshoot.
+	RealNum linearSlop = LinearSlop;
+	
+	RealNum angularSlop = AngularSlop;
+	
+	/// Regular resolution rate.
+	/// @detail
+	/// This scale factor controls how fast positional overlap is resolved.
+	/// Ideally this would be 1 so that overlap is removed in one time step.
+	/// However using values close to 1 often lead to overshoot.
 	RealNum regResolutionRate = RealNum{2} / 10; // aka 0.2.
 	
+	/// Regular minimum separation.
+	/// @detail
+	/// This is the minimum amount of separation there must be between regular-phase interacting
+	/// bodies for intra-step position resolution to be considered successful and end before all
+	/// of the regular position iterations have been done.
+	/// @sa regPositionIterations.
+	RealNum regMinSeparation = -LinearSlop * 3;
+	
 	/// Time of impact resolution rate.
+	/// @detail
+	/// This scale factor controls how fast positional overlap is resolved.
+	/// Ideally this would be 1 so that overlap is removed in one time step.
+	/// However using values close to 1 often lead to overshoot.
 	RealNum toiResolutionRate = RealNum{75} / 100; // aka .75
+
+	/// Time of impact minimum separation.
+	/// @detail
+	/// This is the minimum amount of separation there must be between TOI-phase interacting
+	/// bodies for intra-step position resolution to be considered successful and end before all
+	/// of the TOI position iterations have been done.
+	/// @sa toiPositionIterations.
+	RealNum toiMinSeparation = -LinearSlop * RealNum(1.5f);
+
+	/// Target depth.
+	/// @detail Target depth of overlap for calculating the TOI for CCD elligible bodies.
+	/// @note Must be greater than 0.
+	/// @note Must not be subnormal.
+ 	/// @note Must be less than twice the world's minimum vertex radius.
+	RealNum targetDepth = LinearSlop * 3;
+	
+	/// Tolerance.
+	/// @detail The acceptable plus or minus tolerance from the target depth for TOI calculations.
+	/// @note Must be greater than 0.
+	/// @note Must not be subnormal.
+	/// @note Must be less than the target depth.
+	RealNum tolerance = LinearSlop / 4;
 
 	/// A velocity threshold for elastic collisions. Any collision with a relative linear
 	/// velocity below this threshold will be treated as inelastic.
@@ -97,14 +137,35 @@ public:
 	/// @detail This value should be greater than the linear slop value.
 	RealNum maxLinearCorrection = LinearSlop * 40; // 40 * linearSlop. aka 0.004
 	
+	/// Maximum angular correction.
 	RealNum maxAngularCorrection = AngularSlop * 4;
 
-	iteration_type regVelocityIterations = 8; ///< Velocity iterations.
-	iteration_type regPositionIterations = 3; ///< Position iterations.
-	iteration_type toiVelocityIterations = 8; ///< Velocity iterations.
+	/// Regular velocity iterations.
+	/// This is the number of iterations of velocity resolution that will be done in the step.
+	iteration_type regVelocityIterations = 8;
+	
+	/// Regular position iterations.
+	/// @detail
+	/// This value is the maximum number of iterations of position resolution that will
+	/// be done before leaving any remaining unsatisfied positions for the next step.
+	/// In this context, positions are satisfied when the minimum separation is greater than
+	/// or equal to the regular minimum separation amount.
+	/// @sa regMinSeparation.
+	iteration_type regPositionIterations = 3;
 
-	/// Maximum TOI stage position iterations.
-	iteration_type toiPositionIterations = 20; ///< Position iterations.
+	/// TOI velocity iterations.
+	/// @detail
+	/// This is the number of iterations of velocity resolution that will be done in the step.
+	iteration_type toiVelocityIterations = 8;
+
+	/// TOI position iterations.
+	/// @detail
+	/// This value is the maximum number of iterations of position resolution that will
+	/// be done before leaving any remaining unsatisfied positions for the next step.
+	/// In this context, positions are satisfied when the minimum separation is greater than
+	/// or equal to the TOI minimum separation amount.
+	/// @sa toiMinSeparation.
+	iteration_type toiPositionIterations = 20;
 	
 	iteration_type maxTOIRootIterCount = MaxTOIRootIterCount;
 	
@@ -121,8 +182,8 @@ public:
 	bool doToi = true; ///< Whether or not to perform continuous collision detection.
 
 private:
-	RealNum dt; ///< Delta time. This is the time step in seconds.
-	RealNum inv_dt; ///< Inverse time step (1/dt or 0 if dt == 0). @see dt.
+	RealNum dt = 0; ///< Delta time. This is the time step in seconds.
+	RealNum inv_dt = 0; ///< Inverse time step (1/dt or 0 if dt == 0). @see dt.
 };
 
 } // namespace box2d

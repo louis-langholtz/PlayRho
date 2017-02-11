@@ -178,6 +178,16 @@ private:
 	int32 m_stepCount = 0;
 	StepStats m_stepStats;
 	contact_count_t m_maxContacts = 0;
+	uint64 m_sumContactsUpdatedToi = 0;
+	uint64 m_sumContactsAtMaxSubSteps = 0;
+	uint64 m_sumRegIslandsFound = 0;
+	uint64 m_sumRegIslandsSolved = 0;
+	uint64 m_sumToiIslandsFound = 0;
+	uint64 m_sumToiIslandsSolved = 0;
+	uint64 m_sumRegPosIters = 0;
+	uint64 m_sumRegVelIters = 0;
+	uint64 m_sumToiPosIters = 0;
+	uint64 m_sumToiVelIters = 0;
 
 	Profile m_maxProfile;
 	Profile m_totalProfile;

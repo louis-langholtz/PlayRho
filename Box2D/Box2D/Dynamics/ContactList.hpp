@@ -24,6 +24,7 @@ namespace box2d {
 		using const_iterator = ConstContactIterator;
 		
 		using pointer = Contact*;
+		using reference = Contact&;
 		using size_type = contact_count_t;
 		
 		ContactList() = default;
@@ -45,6 +46,8 @@ namespace box2d {
 		constexpr bool operator== (const ContactList& rhs) const noexcept { return p == rhs.p; }
 		constexpr bool operator!= (const ContactList& rhs) const noexcept { return p != rhs.p; }
 		
+		reference front() noexcept { return *p; }
+
 	private:
 		friend class ContactManager;
 

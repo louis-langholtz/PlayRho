@@ -39,6 +39,9 @@ TEST(StackAllocator, DefaultConstruction)
 
 TEST(StackAllocator, faster_than_allocfree)
 {
+	// If this test fails, the question arrises of whether the stack allocator code should be
+	// replaced with instead using malloc/free.
+
 	const auto ptr_val = reinterpret_cast<Body*>(0x768ea);
 	constexpr auto iterations = unsigned(10000000);
 	constexpr auto num_body_ptrs = size_t(100);

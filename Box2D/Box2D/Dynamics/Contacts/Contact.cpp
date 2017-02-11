@@ -221,42 +221,15 @@ static inline bool IsValidForTime(TOIOutput::State state) noexcept
 	return state == TOIOutput::e_touching;
 }
 
-static inline bool IsAllFlagsSet(uint16 value, uint16 flags)
-{
-	return (value & flags) == flags;
-}
-
-bool Contact::UpdateTOI(const ToiConf& conf)
+void Contact::UpdateForCCD(const ToiConf& conf)
 {
 	const auto fA = GetFixtureA();
 	const auto fB = GetFixtureB();
 	
-	// Is there a sensor?
-	if (fA->IsSensor() || fB->IsSensor())
-	{
-		return false;
-	}
-	
 	const auto bA = fA->GetBody();
 	const auto bB = fB->GetBody();
 	
-	const bool activeA = IsAllFlagsSet(bA->m_flags, Body::e_awakeFlag|Body::e_velocityFlag);
-	const bool activeB = IsAllFlagsSet(bB->m_flags, Body::e_awakeFlag|Body::e_velocityFlag);
-	
-	// Is at least one body active (awake and dynamic or kinematic)?
-	if ((!activeA) && (!activeB))
-	{
-		return false;
-	}
-	
-	// Are both bodies penetratable (are both non-bullet dynamic bodies)?
-	if (!bA->IsImpenetrable() && !bB->IsImpenetrable())
-	{
-		// No need then to do further CCD processing for this contact.
-		return false;
-	}
-	
-	// Compute the TOI for this contact (one or both bodies are impenetrable).
+	// Compute the TOI for this contact (one or both bodies are active and impenetrable).
 
 	// Put the sweeps onto the same time interval.
 	// Presumably no unresolved collisions happen before the maximum of the bodies' alpha-0 times.
@@ -275,6 +248,7 @@ bool Contact::UpdateTOI(const ToiConf& conf)
 									 GetAnglesNormalized(bB->m_sweep),
 									 conf);
 	++m_toiCalls;
+	++m_toiCount;
 	
 	m_toiItersTotal += output.get_toi_iters();
 	m_distItersTotal += output.get_sum_dist_iters();
@@ -290,13 +264,18 @@ bool Contact::UpdateTOI(const ToiConf& conf)
 		Min(alpha0 + (1 - alpha0) * output.get_t(), RealNum{1}): RealNum{1};
 	assert(toi >= alpha0);
 	SetToi(toi);
-	
-	return true;
 }
 
 bool box2d::HasSensor(const Contact& contact) noexcept
 {
 	return contact.GetFixtureA()->IsSensor() || contact.GetFixtureB()->IsSensor();
+}
+
+bool box2d::IsImpenetrable(const Contact& contact) noexcept
+{
+	const auto bA = contact.GetFixtureA()->GetBody();
+	const auto bB = contact.GetFixtureB()->GetBody();
+	return bA->IsImpenetrable() || bB->IsImpenetrable();
 }
 
 void box2d::SetAwake(Contact& c) noexcept

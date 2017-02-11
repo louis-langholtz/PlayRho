@@ -22,13 +22,13 @@
 
 using namespace box2d;
 
-TEST(StepConf, ByteSizeIs_56_104_or_192)
+TEST(StepConf, ByteSizeIs_80_152_or_288)
 {
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(StepConf), size_t(56)); break;
-		case  8: EXPECT_EQ(sizeof(StepConf), size_t(104)); break;
-		case 16: EXPECT_EQ(sizeof(StepConf), size_t(192)); break;
+		case  4: EXPECT_EQ(sizeof(StepConf), size_t(80)); break;
+		case  8: EXPECT_EQ(sizeof(StepConf), size_t(152)); break;
+		case 16: EXPECT_EQ(sizeof(StepConf), size_t(288)); break;
 		default: FAIL(); break;
 	}
 }
@@ -43,7 +43,7 @@ TEST(StepConf, maxTranslation)
 	const auto max_inc = inc * StepConf{}.maxTranslation;
 	EXPECT_GT(max_inc, RealNum(0));
 	EXPECT_LT(max_inc, LinearSlop / 2);
-	EXPECT_LT(max_inc, World::Def{}.linearSlop / 2);
+	EXPECT_LT(max_inc, StepConf{}.linearSlop / 2);
 #if 0
 	std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
 	std::cout << " inc=" << inc;

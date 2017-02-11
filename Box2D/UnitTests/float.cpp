@@ -114,8 +114,13 @@ TEST(float, infinity)
 	EXPECT_LT(0.0f, std::numeric_limits<float>::infinity());
 	EXPECT_EQ(std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity());
 
+#if 1
+	EXPECT_EQ(static_cast<int>(std::numeric_limits<float>::infinity()), 0);
+	EXPECT_EQ(static_cast<int>(-std::numeric_limits<float>::infinity()), 0);
+#else
 	EXPECT_EQ(static_cast<int>(std::numeric_limits<float>::infinity()), std::numeric_limits<int>::min());
 	EXPECT_EQ(static_cast<int>(-std::numeric_limits<float>::infinity()), std::numeric_limits<int>::min());
+#endif
 	EXPECT_EQ(static_cast<double>(std::numeric_limits<float>::infinity()), std::numeric_limits<double>::infinity());
 	EXPECT_EQ(static_cast<double>(-std::numeric_limits<float>::infinity()), -std::numeric_limits<double>::infinity());
 }

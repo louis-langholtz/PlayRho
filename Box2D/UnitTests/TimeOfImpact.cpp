@@ -48,17 +48,26 @@ TEST(TOIOutput, InitConstruction)
 {
 	const auto state = TOIOutput::e_failed;
 	const auto time = RealNum(0.6);
-	TOIOutput::Stats stats{3, 5, 11, 10, 4};
+	
+	TOIOutput::Stats stats;
+	stats.toi_iters = 3;
+	stats.max_dist_iters = 11;
+	stats.max_root_iters = 4;
+	stats.sum_finder_iters = 0;
+	stats.sum_dist_iters = 5;
+	stats.sum_root_iters = 10;
+
 	TOIOutput foo{state, time, stats};
 
 	EXPECT_EQ(foo.get_state(), state);
 	EXPECT_EQ(foo.get_t(), time);
 	
 	EXPECT_EQ(foo.get_toi_iters(), 3);
-	EXPECT_EQ(foo.get_sum_dist_iters(), 5);
 	EXPECT_EQ(foo.get_max_dist_iters(), 11);
-	EXPECT_EQ(foo.get_sum_root_iters(), 10);
 	EXPECT_EQ(foo.get_max_root_iters(), 4);
+	//EXPECT_EQ(foo.get_sum_finder_iters(), 0);
+	EXPECT_EQ(foo.get_sum_dist_iters(), 5);
+	EXPECT_EQ(foo.get_sum_root_iters(), 10);
 }
 
 TEST(TimeOfImpact, Overlapped)

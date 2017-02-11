@@ -29,10 +29,7 @@
 #include <Box2D/Dynamics/Joints/MouseJoint.hpp>
 #include <Box2D/Dynamics/Joints/RopeJoint.hpp>
 #include <Box2D/Common/Angle.hpp>
-
-#include <unistd.h>
-#include <setjmp.h>
-#include <signal.h>
+#include <chrono>
 
 using namespace box2d;
 
@@ -49,13 +46,15 @@ TEST(World, ByteSizeIs_392_416_or_464)
 
 TEST(World, Def)
 {
+	const auto worldDef = World::Def{};
 	const auto defaultDef = World::GetDefaultDef();
+	
+	EXPECT_EQ(defaultDef.aabbExtension, worldDef.aabbExtension);
+	EXPECT_EQ(defaultDef.gravity, worldDef.gravity);
+	EXPECT_EQ(defaultDef.maxVertexRadius, worldDef.maxVertexRadius);
+	EXPECT_EQ(defaultDef.minVertexRadius, worldDef.minVertexRadius);
 	const auto stepConf = StepConf{};
 
-	// make sure max values are still substantially different when incremented by their respective slop values
-	EXPECT_FALSE(almost_equal(stepConf.maxTranslation * 2 + defaultDef.linearSlop / 64, stepConf.maxTranslation * 2));
-	EXPECT_FALSE(almost_equal(stepConf.maxRotation.ToRadians() + defaultDef.angularSlop / 64, stepConf.maxRotation.ToRadians()));
-	
 	const auto v = RealNum(1);
 	const auto n = std::nextafter(v, RealNum(0));
 	const auto time_inc = v - n;
@@ -63,14 +62,6 @@ TEST(World, Def)
 	ASSERT_LT(time_inc, RealNum(1));
 	const auto max_inc = time_inc * stepConf.maxTranslation;
 	EXPECT_GT(max_inc, RealNum(0));
-	EXPECT_LT(max_inc, defaultDef.linearSlop / 4);
-#if 1
-	std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
-	std::cout << " time_inc=" << time_inc;
-	std::cout << " max_inc=" << max_inc;
-	std::cout << " tolerance=" << defaultDef.linearSlop / 4;
-	std::cout << std::endl;
-#endif
 }
 
 TEST(World, DefaultInit)
@@ -401,7 +392,10 @@ public:
 		body_a[1] = contact.GetFixtureA()->GetBody()->GetLocation();
 		body_b[1] = contact.GetFixtureB()->GetBody()->GetLocation();
 		
-		ender(contact);
+		if (ender)
+		{
+			ender(contact);
+		}
 	}
 	
 	void PreSolve(Contact& contact, const Manifold& oldManifold) override
@@ -732,11 +726,14 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 	auto lastpos2 = body2->GetLocation();
 
 	const auto time_inc = RealNum(.01f);
-	// Solver won't separate more than -world.GetLinearSlop().
-	const auto full_separation = radius * 2 - world.GetLinearSlop();
+	StepConf step;
+	step.set_dt(time_inc);
+
+	// Solver won't separate more than -step.linearSlop.
+	const auto full_separation = radius * 2 - step.linearSlop;
 	for (auto i = 0; i < 100; ++i)
 	{
-		Step(world, time_inc);
+		world.Step(step);
 
 		const auto new_pos_diff = body2->GetLocation() - body1->GetLocation();
 		const auto new_distance = GetLength(new_pos_diff);
@@ -751,7 +748,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 		if (new_distance == distance)
 		{
 			// position resolution has come to tolerance
-			ASSERT_GE(new_distance, radius * 2 - world.GetLinearSlop() * 4);
+			ASSERT_GE(new_distance, radius * 2 - step.linearSlop * 4);
 			break;
 		}
 		else // new_distance > distance
@@ -910,8 +907,10 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	const auto position_iters = 10u;
 	
 	const auto time_inc = RealNum(.01);
-	// Solver won't separate more than -world.GetLinearSlop().
-	const auto full_separation = half_dim * 2 - world.GetLinearSlop();
+	StepConf step;
+	step.set_dt(time_inc);
+	// Solver won't separate more than -step.linearSlop.
+	const auto full_separation = half_dim * 2 - step.linearSlop;
 	for (auto i = 0; i < 100; ++i)
 	{
 		Step(world, time_inc, velocity_iters, position_iters);
@@ -1119,6 +1118,96 @@ TEST(World, CollidingDynamicBodies)
 	EXPECT_NEAR(double(GetLinearVelocity(*body_b).x), double(+x), 0.0001);
 	EXPECT_EQ(GetLinearVelocity(*body_b).y, 0);
 }
+
+TEST(World, TilesComesToRestInUnder7secs)
+{
+	const auto m_world = std::make_unique<World>();
+
+	constexpr auto e_count = 36;
+
+	{
+		const auto a = 0.5f;
+		const auto ground = m_world->CreateBody(BodyDef{}.UseLocation(Vec2{0, -a}));
+		
+		const auto N = 200;
+		const auto M = 10;
+		Vec2 position;
+		position.y = 0.0f;
+		for (auto j = 0; j < M; ++j)
+		{
+			position.x = -N * a;
+			for (auto i = 0; i < N; ++i)
+			{
+				PolygonShape shape;
+				SetAsBox(shape, a, a, position, 0_rad);
+				ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+				position.x += 2.0f * a;
+			}
+			position.y -= 2.0f * a;
+		}
+	}
+	
+	{
+		const auto a = 0.5f;
+		const auto shape = std::make_shared<PolygonShape>(a, a);
+		
+		Vec2 x(-7.0f, 0.75f);
+		Vec2 y;
+		const auto deltaX = Vec2(0.5625f, 1.25f);
+		const auto deltaY = Vec2(1.125f, 0.0f);
+		
+		for (auto i = 0; i < e_count; ++i)
+		{
+			y = x;
+			
+			for (auto j = i; j < e_count; ++j)
+			{
+				const auto body = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(y));
+				body->CreateFixture(shape, FixtureDef{}.UseDensity(5));
+				y += deltaY;
+			}
+			
+			x += deltaX;
+		}
+	}
+	
+	StepConf step;
+	step.set_dt(1.0f/60);
+	
+	const auto start_time = std::chrono::high_resolution_clock::now();
+	while (GetAwakeCount(*m_world) > 0)
+	{
+		m_world->Step(step);
+	}
+	const auto end_time = std::chrono::high_resolution_clock::now();
+	
+	const std::chrono::duration<double> elapsed_time = end_time - start_time;
+	
+	// seeing e_count=20 times around:
+	//   0.447077s with RealNum=float and NDEBUG defined.
+	//   6.45222s with RealNum=float and NDEBUG not defined.
+	//   0.456306s with RealNum=double and NDEBUG defined.
+	//   6.74324s with RealNum=double and NDEBUG not defined.
+	
+	// seeing e_count=24 times around:
+	//   0.956078s with RealNum=float and NDEBUG defined.
+	//   0.989387s with RealNum=double and NDEBUG defined.
+	
+	// seeing e_count=30 times around:
+	//   2.35464s with RealNum=float and NDEBUG defined.
+	//   2.51661s with RealNum=double and NDEBUG defined.
+
+	// seeing e_count=36 times around:
+	//   4.85618s with RealNum=float and NDEBUG defined.
+	//   5.32973s with RealNum=double and NDEBUG defined.
+
+	std::cout << "Time: " << elapsed_time.count() << "s" << std::endl;
+	EXPECT_LT(elapsed_time.count(), 7.0);
+}
+
+#include <unistd.h>
+#include <setjmp.h>
+#include <signal.h>
 
 static jmp_buf jmp_env;
 
@@ -1440,8 +1529,8 @@ TEST(World, MouseJointWontCauseTunnelling)
 		[&](Contact& contact, const Manifold& old_manifold)
 		{
 			// PreSolve...
-			const auto new_manifold = contact.GetManifold();
 #if 0
+			const auto new_manifold = contact.GetManifold();
 			if (old_manifold.GetType() != Manifold::e_unset && new_manifold.GetType() != Manifold::e_unset)
 			{
 				if (old_manifold.GetType() != new_manifold.GetType())
@@ -1525,7 +1614,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 				//GTEST_FATAL_FAILURE_("");				
 			}
 		},
-		[=](Contact& contact) {
+		[&](Contact& contact) {
 			const auto fA = contact.GetFixtureA();
 			const auto fB = contact.GetFixtureB();
 			const auto body_a = fA->GetBody();
@@ -1575,9 +1664,10 @@ TEST(World, MouseJointWontCauseTunnelling)
 			}
 		},
 	};
-	world.SetContactListener(&listener);
 	ASSERT_EQ(listener.begin_contacts, unsigned{0});
 
+	world.SetContactListener(&listener);
+	
 	for (auto outer = unsigned{0}; outer < 2000; ++outer)
 	{
 		auto last_pos = ball_body->GetLocation();

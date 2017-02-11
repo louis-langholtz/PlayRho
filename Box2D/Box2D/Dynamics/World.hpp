@@ -55,13 +55,20 @@ struct RegStepStats
 	uint32 islandsSolved = 0;
 	uint32 contactsAdded = 0;
 	uint32 bodiesSlept = 0;
+	uint32 sumPosIters = 0;
+	uint32 sumVelIters = 0;
 };
 
 struct ToiStepStats
 {
 	uint32 islandsFound = 0;
-	uint32 contactsChecked = 0;
+	uint32 islandsSolved = 0;
+	uint32 contactsFound = 0;
+	uint32 contactsAtMaxSubSteps = 0;
+	uint32 contactsUpdatedToi = 0;
 	uint32 contactsAdded = 0;
+	uint32 sumPosIters = 0;
+	uint32 sumVelIters = 0;
 };
 
 struct StepStats
@@ -88,14 +95,19 @@ public:
 	struct Def
 	{
 		constexpr Def& UseGravity(Vec2 value) noexcept;
-		constexpr Def& UseLinearSlop(RealNum value) noexcept;
-		constexpr Def& UseAngularSlop(RealNum value) noexcept;
+		constexpr Def& UseAabbExtension(RealNum value) noexcept;
+		constexpr Def& UseMinVertexRadius(RealNum value) noexcept;
+		constexpr Def& UseMaxVertexRadius(RealNum value) noexcept;
 
 		Vec2 gravity = EarthlyGravity;
 		
-		RealNum linearSlop = LinearSlop; // originally 0.005;
-		
-		RealNum angularSlop = Pi * 2 / 180;
+		RealNum aabbExtension = LinearSlop * 20;
+
+		// Minimum vertex radius.
+		// @detail This scaling factor should not be modified.
+		// Making it smaller means some shapes could have insufficient buffer for continuous collision.
+		// Making it larger may create artifacts for vertex collision.
+		RealNum minVertexRadius = LinearSlop * 2;
 
 		RealNum maxVertexRadius = 255.0f; // linearSlop * 2550000
 	};
@@ -264,9 +276,12 @@ public:
 	/// Get the contact manager for testing.
 	const ContactManager& GetContactManager() const noexcept;
 
-	RealNum GetLinearSlop() const noexcept;
-
-	RealNum GetAngularSlop() const noexcept;
+	/// Gets the AABB extension.
+	/// @detail
+	/// Fattens AABBs in the dynamic tree. This allows proxies
+	/// to move by a small amount without triggering a tree adjustment.
+	/// This is in meters.
+	RealNum GetAabbExtension() const noexcept;
 
 	/// Gets the minimum vertex radius that shapes in this world can be.
 	RealNum GetMinVertexRadius() const noexcept;
@@ -292,16 +307,25 @@ private:
 		e_stepComplete  = 0x0040,
 	};
 
+	struct IslandSolverResults
+	{
+		bool solved = false; ///< Solved. <code>true</code> if position constraints solved, <code>false</code> otherwise.
+		ts_iters_t positionIterations = 0;
+		ts_iters_t velocityIterations = 0;
+	};
+
 	friend class Body;
 	friend class Fixture;
 	friend class ContactManager;
 
+	void InternalDestroy(Joint* joint);
+
 	/// Sloves the step.
 	/// @detail Finds islands, integrates and solves constraints, solves position constraints.
 	/// @note This may miss collisions involving fast moving bodies and allow them to tunnel through each other.
-	RegStepStats Solve(const StepConf& step);
+	RegStepStats SolveReg(const StepConf& step);
 
-	/// Solves the given island.
+	/// Solves the given island (regularly).
 	///
 	/// @detail This:
 	///   1. Updates every island-body's sweep.pos0 to its sweep.pos1.
@@ -313,8 +337,11 @@ private:
 	/// @param step Time step information.
 	/// @param island Island of bodies, contacts, and joints to solve for.
 	///
-	/// @return <code>true</code> if the contact and joint position constraints were solved, <code>false</code> otherwise.
-	bool Solve(const StepConf& step, Island& island);
+	/// @return Island solver results.
+	///
+	IslandSolverResults SolveReg(const StepConf& step, Island& island);
+
+	static bool IsActive(const Contact& contact) noexcept;
 
 	static body_count_t AddToIsland(Island& island, Body& body);
 
@@ -340,8 +367,8 @@ private:
 	/// @note Precondition 1: there is no contact having a lower TOI in this time step that has not already been solved for.
 	/// @note Precondition 2: there is not a lower TOI in the time step for which collisions have not already been processed.
 	///
-	bool SolveTOI(const StepConf& step, Contact& contact);
-
+	IslandSolverResults SolveTOI(const StepConf& step, Contact& contact);
+	
 	/// Solves the time of impact for bodies 0 and 1 of the given island.
 	///
 	/// @detail This:
@@ -356,9 +383,9 @@ private:
 	/// @param step Time step information.
 	/// @param island Island to do time of impact solving for.
 	///
-	/// @return <code>true</code> if successful, <code>false</code> otherwise.
+	/// @return Island solver results.
 	///
-	bool SolveTOI(const StepConf& step, Island& island);
+	IslandSolverResults SolveTOI(const StepConf& step, Island& island);
 
 	/// Updates bodies.
 	/// @detail
@@ -410,13 +437,19 @@ private:
 		RealNum toi = MaxFloat; ///< Time of impact (TOI) as a fractional value between 0 and 1.
 	};
 
+	struct UpdateContactsData
+	{
+		contact_count_t numAtMaxSubSteps = 0;
+		contact_count_t numUpdatedTOI = 0;
+	};
+
 	/// Updates the contact times of impact.
-	void UpdateContactTOIs(const StepConf& step);
+	UpdateContactsData UpdateContactTOIs(const StepConf& step);
 
 	/// Gets the soonest contact.
 	/// @detail This finds the contact with the lowest (soonest) time of impact.
 	/// @return Contact with the least time of impact and its time of impact, or null contact.
-	ContactToiData GetSoonestContact(const StepConf& step);
+	ContactToiData GetSoonestContact();
 
 	bool HasNewFixtures() const noexcept;
 
@@ -449,8 +482,11 @@ private:
 	/// @sa Step.
 	RealNum m_inv_dt0 = 0;
 
-	const RealNum m_linearSlop;
-	const RealNum m_angularSlop;
+	/// AABB Extension.
+	const RealNum m_aabbExtension;
+
+	/// Minimum vertex radius.
+	const RealNum m_minVertexRadius;
 
 	/// Maximum vertex radius.
 	/// @detail
@@ -469,15 +505,9 @@ constexpr inline World::Def& World::Def::UseGravity(Vec2 value) noexcept
 	return *this;
 }
 
-constexpr inline World::Def& World::Def::UseLinearSlop(RealNum value) noexcept
+constexpr inline World::Def& World::Def::UseAabbExtension(RealNum value) noexcept
 {
-	linearSlop = value;
-	return *this;
-}
-
-constexpr inline World::Def& World::Def::UseAngularSlop(RealNum value) noexcept
-{
-	angularSlop = value;
+	aabbExtension = value;
 	return *this;
 }
 
@@ -575,22 +605,14 @@ inline void World::UnsetNewFixtures() noexcept
 	m_flags &= ~e_newFixture;
 }
 
-inline RealNum World::GetLinearSlop() const noexcept
+inline RealNum World::GetAabbExtension() const noexcept
 {
-	return m_linearSlop;
-}
-
-inline RealNum World::GetAngularSlop() const noexcept
-{
-	return m_angularSlop;
+	return m_aabbExtension;
 }
 
 inline RealNum World::GetMinVertexRadius() const noexcept
 {
-	// This scaling factor should not be modified.
-	// Making it smaller means some shapes could have insufficient buffer for continuous collision.
-	// Making it larger may create artifacts for vertex collision.
-	return GetLinearSlop() * 2;
+	return m_minVertexRadius;
 }
 
 inline RealNum World::GetMaxVertexRadius() const noexcept
@@ -601,16 +623,6 @@ inline RealNum World::GetMaxVertexRadius() const noexcept
 inline RealNum World::GetInvDeltaTime() const noexcept
 {
 	return m_inv_dt0;
-}
-
-/// Gets the AABB extension for the given world.
-/// @detail
-/// Fattens AABBs in the dynamic tree. This allows proxies
-/// to move by a small amount without triggering a tree adjustment.
-/// This is in meters.
-inline RealNum GetAabbExtension(const World& world) noexcept
-{
-	return world.GetLinearSlop() * 20;
 }
 
 inline body_count_t GetBodyCount(const World& world) noexcept

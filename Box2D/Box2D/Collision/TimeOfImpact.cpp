@@ -31,7 +31,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 	// CCD via the local separating axis method. This seeks progression
 	// by computing the largest time at which separation is maintained.
 	
-	auto stats = TOIOutput::Stats{0, 0, 0, 0, 0};
+	auto stats = TOIOutput::Stats{};
 
 	assert(conf.tMax >= 0 && conf.tMax <=1);
 	assert(conf.tolerance > 0);
@@ -100,8 +100,9 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 		auto t2 = conf.tMax; // t2 goes to values between t1 and t2.
 		auto t2xfA = GetTransformation(sweepA, t2);
 		auto t2xfB = GetTransformation(sweepB, t2);
-	
-		for (auto pbIter = decltype(MaxShapeVertices){0}; pbIter < MaxShapeVertices; ++pbIter)
+
+		auto pbIter = decltype(MaxShapeVertices){0};
+		for (; pbIter < MaxShapeVertices; ++pbIter)
 		{
 			// Find the deepest point at t2. Store the witness point indices.
 			const auto t2MinSeparation = fcn.FindMinSeparation(t2xfA, t2xfB);
@@ -115,6 +116,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 				// return TOIOutput{TOIOutput::e_separated, tMax};
 				// t2 seems more appropriate however given s2 was derived from it.
 				// Meanwhile t2 always seems equal to input.tMax at this point.
+				stats.sum_finder_iters += pbIter;
 				return TOIOutput{TOIOutput::e_separated, t2, stats};
 			}
 
@@ -136,6 +138,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 					// given that t1 is the same as t2 and the real distance is separated, this
 					// function can return the separated state.
 					//
+					stats.sum_finder_iters += pbIter;
 					return TOIOutput{TOIOutput::e_separated, t2, stats};
 				}
 
@@ -156,6 +159,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 			//assert(s1 >= minTarget);
 			if (t1EvaluatedDistance < minTarget)
 			{
+				stats.sum_finder_iters += pbIter;
 				return TOIOutput{TOIOutput::e_failed, t1, stats};
 			}
 
@@ -163,6 +167,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 			if (t1EvaluatedDistance <= maxTarget)
 			{
 				// Victory! t1 should hold the TOI (could be 0.0).
+				stats.sum_finder_iters += pbIter;
 				return TOIOutput{TOIOutput::e_touching, t1, stats};
 			}
 
@@ -185,6 +190,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 					// Reached the limit of the RealNum type's precision!
 					// In this state, there's no way to make progress anymore.
 					// (a1 + a2) / 2 results in a1! So bail from function.
+					stats.sum_finder_iters += pbIter;
 					stats.sum_root_iters += roots;
 					stats.max_root_iters = Max(stats.max_root_iters, roots);
 					return TOIOutput{TOIOutput::e_failed, a1, stats};
@@ -231,6 +237,7 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 			stats.sum_root_iters += roots;
 			stats.max_root_iters = Max(stats.max_root_iters, roots);
 		}
+		stats.sum_finder_iters += pbIter;
 	}
 
 	// stats.toi_iters == conf.maxToiIters
