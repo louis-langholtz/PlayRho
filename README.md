@@ -23,7 +23,7 @@ Increased runtime configurability.
 Support for C++11's range-based loops and constant expressions.
 Exported symbols all within the library namespace of `box2d`.
 Unit tested.
-Initial support for fixed-point data types (in addition to `float` and `double` precision floating-point types)
+Initial support for fixed-point data types (in addition to `float`, `double`, and `long double` precision floating-point types)
 as alternatives for `RealNum`.
 And more.
 
