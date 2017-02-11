@@ -951,7 +951,9 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 		.UseTargetDepth(step.targetDepth)
 		.UseTolerance(step.tolerance)
 		.UseMaxRootIters(step.maxTOIRootIterCount)
-		.UseMaxToiIters(step.maxTOIIterations);
+		.UseMaxToiIters(step.maxTOIIterations)
+		.UseMaxDistIters(step.maxDistanceIters);
+	
 	for (auto&& c: m_contactMgr.GetContacts())
 	{
 		if (c.HasValidToi())

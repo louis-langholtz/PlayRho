@@ -171,6 +171,8 @@ public:
 	
 	iteration_type maxTOIIterations = MaxTOIIterations;
 	
+	iteration_type maxDistanceIters = MaxDistanceIterations;
+
 	/// Maximum sub steps.
 	/// @detail
 	/// This is the maximum number of sub-steps per contact in continuous physics simulation.
