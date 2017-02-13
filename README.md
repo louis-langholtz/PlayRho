@@ -15,17 +15,19 @@ As such, this library *must* be compiled with the `NDEBUG` preprocessor macro en
 to see any kind of performance.
 
 ###Features
-Rounded corner collisions.
-*Capsule* shapes.
-More stable polygon stacking.
-Shared shapes for reduced memory usage.
-Increased runtime configurability.
-Support for C++11's range-based loops and constant expressions.
-Exported symbols all within the library namespace of `box2d`.
-Unit tested.
-Initial support for fixed-point data types (in addition to `float`, `double`, and `long double` precision floating-point types)
-as alternatives for `RealNum`.
-And more.
+
+Here's some of the changes that might be considered "new features":
+- Exported symbols all within the library namespace of `box2d` (and no longer preficed by `b2`).
+- Rounded corner collisions.
+- *Capsule* shapes (using 2-vertex `PolygonShape` instances).
+- More stable polygon stacking.
+- Shared shapes for reduced memory usage.
+- Support for C++11's range-based loops and constant expressions.
+- Unit tested (via Google Test).
+- Compile-time support for `double` and `long double` floating-point types and 32-bit and 64-bit fixed-point types (in addition to `float`).
+- Fully per-step run-time configurable (of every setting that can be changed).
+- Provides per-step statistics.
+- Increased construction-time configurability of world instances.
 
 ##About
 
