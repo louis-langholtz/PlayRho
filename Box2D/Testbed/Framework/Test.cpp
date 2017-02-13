@@ -592,6 +592,10 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	m_sumContactsUpdatedToi += stepStats.toi.contactsUpdatedToi;
 	m_sumContactsAtMaxSubSteps += stepStats.toi.contactsAtMaxSubSteps;
 
+	m_maxDistIters = Max(m_maxDistIters, stepStats.toi.maxDistIters);
+	m_maxRootIters = Max(m_maxRootIters, stepStats.toi.maxRootIters);
+	m_maxToiIters = Max(m_maxToiIters, stepStats.toi.maxToiIters);
+	
 	Draw(drawer, *m_world, settings);
 
 	drawer.Flush();
@@ -619,13 +623,14 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 						  m_stepStats.reg.sumPosIters, m_stepStats.reg.sumVelIters);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		drawer.DrawString(5, m_textLine, "  toi-info: cts-added=%d isl-found=%d isl-solved=%u cts-found=%d cts-atmaxsubsteps=%d cts-updated=%d",
+		drawer.DrawString(5, m_textLine, "  toi-info: cts-added=%d isl-found=%d isl-solved=%u cts-found=%d cts-atmaxsubsteps=%d cts-updated=%d maxDistIters=%u maxToiIters=%u",
 						  m_stepStats.toi.contactsAdded,
 						  m_stepStats.toi.islandsFound,
 						  m_stepStats.toi.islandsSolved,
 						  m_stepStats.toi.contactsFound,
 						  m_stepStats.toi.contactsAtMaxSubSteps,
-						  m_stepStats.toi.contactsUpdatedToi);
+						  m_stepStats.toi.contactsUpdatedToi,
+						  m_stepStats.toi.maxDistIters, m_stepStats.toi.maxToiIters);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		const auto sleepCount = [&](){
@@ -647,13 +652,17 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 						  sleepCount, bodyCount, fixtureCount, shapeCount, contactCount, m_maxContacts, jointCount);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		drawer.DrawString(5, m_textLine, "  Reg sums: isl-found=%llu, isl-solved=%llu, pos-iters=%llu, vel-iters=%llu",
+		drawer.DrawString(5, m_textLine, "  Reg sums: isl-found=%llu isl-solved=%llu pos-iters=%llu vel-iters=%llu",
 						  m_sumRegIslandsFound, m_sumRegIslandsSolved, m_sumRegPosIters, m_sumRegVelIters);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		drawer.DrawString(5, m_textLine, "  TOI sums: isl-found=%llu, isl-solved=%llu, pos-iters=%llu, vel-iters=%llu, updates=%llu, cts-maxstepped=%llu",
+		drawer.DrawString(5, m_textLine, "  TOI sums: isl-found=%llu isl-solved=%llu pos-iters=%llu vel-iters=%llu updates=%llu cts-maxstepped=%llu",
 						  m_sumToiIslandsFound, m_sumToiIslandsSolved, m_sumToiPosIters, m_sumToiVelIters,
 						  m_sumContactsUpdatedToi, m_sumContactsAtMaxSubSteps);
+		m_textLine += DRAW_STRING_NEW_LINE;
+
+		drawer.DrawString(5, m_textLine, "  TOI maxs: dist-iters=%u toi-iters=%u root-iters=%u",
+						  m_maxDistIters, m_maxToiIters, m_maxRootIters);
 		m_textLine += DRAW_STRING_NEW_LINE;
 		
 		const auto proxyCount = m_world->GetProxyCount();

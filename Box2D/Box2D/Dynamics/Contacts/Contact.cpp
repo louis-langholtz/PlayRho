@@ -221,7 +221,7 @@ static inline bool IsValidForTime(TOIOutput::State state) noexcept
 	return state == TOIOutput::e_touching;
 }
 
-void Contact::UpdateForCCD(const ToiConf& conf)
+Contact::UpdateOutput Contact::UpdateForCCD(const ToiConf& conf)
 {
 	const auto fA = GetFixtureA();
 	const auto fB = GetFixtureB();
@@ -264,6 +264,8 @@ void Contact::UpdateForCCD(const ToiConf& conf)
 		Min(alpha0 + (1 - alpha0) * output.get_t(), RealNum{1}): RealNum{1};
 	assert(toi >= alpha0);
 	SetToi(toi);
+	
+	return UpdateOutput{toi, output.get_max_dist_iters(), output.get_toi_iters(), output.get_max_root_iters()};
 }
 
 bool box2d::HasSensor(const Contact& contact) noexcept

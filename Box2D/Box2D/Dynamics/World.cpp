@@ -945,6 +945,9 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 {
 	contact_count_t numAtMaxSubSteps = 0;
 	contact_count_t numUpdated = 0;
+	UpdateContactsData::dist_iter_type maxDistIters = 0;
+	UpdateContactsData::toi_iter_type maxToiIters = 0;
+	UpdateContactsData::root_iter_type maxRootIters = 0;
 
 	const auto toiConf = ToiConf{}
 		.UseTimeMax(1)
@@ -973,11 +976,14 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 			++numAtMaxSubSteps;
 			continue;
 		}
-		c.UpdateForCCD(toiConf);
+		const auto output = c.UpdateForCCD(toiConf);
+		maxDistIters = Max(maxDistIters, output.maxDistIters);
+		maxToiIters = Max(maxToiIters, output.toiIters);
+		maxRootIters = Max(maxRootIters, output.maxRootIters);
 		++numUpdated;
 	}
 	
-	return UpdateContactsData{numAtMaxSubSteps, numUpdated};
+	return UpdateContactsData{numAtMaxSubSteps, numUpdated, maxDistIters, maxToiIters, maxRootIters};
 }
 	
 World::ContactToiData World::GetSoonestContact()
@@ -1043,6 +1049,9 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 		const auto updateData = UpdateContactTOIs(step);
 		stats.contactsAtMaxSubSteps += updateData.numAtMaxSubSteps;
 		stats.contactsUpdatedToi += updateData.numUpdatedTOI;
+		stats.maxDistIters = Max(stats.maxDistIters, updateData.maxDistIters);
+		stats.maxRootIters = Max(stats.maxRootIters, updateData.maxRootIters);
+		stats.maxToiIters = Max(stats.maxToiIters, updateData.maxToiIters);
 		
 		const auto next = GetSoonestContact();
 		if ((!next.contact) || (next.toi >= 1))

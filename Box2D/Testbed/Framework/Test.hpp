@@ -189,6 +189,14 @@ private:
 	uint64 m_sumToiPosIters = 0;
 	uint64 m_sumToiVelIters = 0;
 
+	using dist_iter_type = std::remove_const<decltype(MaxDistanceIterations)>::type;
+	using toi_iter_type = std::remove_const<decltype(MaxTOIIterations)>::type;
+	using root_iter_type = std::remove_const<decltype(MaxTOIRootIterCount)>::type;
+	
+	dist_iter_type m_maxDistIters = 0;
+	toi_iter_type m_maxToiIters = 0;
+	root_iter_type m_maxRootIters = 0;
+
 	Profile m_maxProfile;
 	Profile m_totalProfile;
 };

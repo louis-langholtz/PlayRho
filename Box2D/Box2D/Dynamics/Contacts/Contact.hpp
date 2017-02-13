@@ -239,12 +239,24 @@ protected:
 	
 	void ResetToiCount() noexcept;
 
+	struct UpdateOutput
+	{
+		using dist_iter_type = std::remove_const<decltype(MaxDistanceIterations)>::type;
+		using toi_iter_type = std::remove_const<decltype(MaxTOIIterations)>::type;
+		using root_iter_type = std::remove_const<decltype(MaxTOIRootIterCount)>::type;
+
+		RealNum toi = 0;
+		dist_iter_type maxDistIters = 0;
+		toi_iter_type toiIters = 0;
+		root_iter_type maxRootIters = 0;
+	};
+
 	/// Updates the contact for CCD.
 	/// @detail This:
 	///   Ensures both bodies's sweeps are on the max alpha0 of the two (by advancing the sweep of the lesser body).
 	///   Calculates whether there's an impact and if so when.
 	///   Sets the new time of impact or sets it to 1.
-	void UpdateForCCD(const ToiConf& limits);
+	UpdateOutput UpdateForCCD(const ToiConf& limits);
 
 	bool IsInIsland() const noexcept;
 	void SetInIsland() noexcept;

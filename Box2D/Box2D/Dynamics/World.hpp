@@ -69,6 +69,14 @@ struct ToiStepStats
 	uint32 contactsAdded = 0;
 	uint32 sumPosIters = 0;
 	uint32 sumVelIters = 0;
+
+	using dist_iter_type = std::remove_const<decltype(MaxDistanceIterations)>::type;
+	using toi_iter_type = std::remove_const<decltype(MaxTOIIterations)>::type;
+	using root_iter_type = std::remove_const<decltype(MaxTOIRootIterCount)>::type;
+	
+	dist_iter_type maxDistIters = 0;
+	toi_iter_type maxToiIters = 0;
+	root_iter_type maxRootIters = 0;
 };
 
 struct StepStats
@@ -441,6 +449,14 @@ private:
 	{
 		contact_count_t numAtMaxSubSteps = 0;
 		contact_count_t numUpdatedTOI = 0;
+	
+		using dist_iter_type = std::remove_const<decltype(MaxDistanceIterations)>::type;
+		using toi_iter_type = std::remove_const<decltype(MaxTOIIterations)>::type;
+		using root_iter_type = std::remove_const<decltype(MaxTOIRootIterCount)>::type;
+		
+		dist_iter_type maxDistIters = 0;
+		toi_iter_type maxToiIters = 0;
+		root_iter_type maxRootIters = 0;
 	};
 
 	/// Updates the contact times of impact.
