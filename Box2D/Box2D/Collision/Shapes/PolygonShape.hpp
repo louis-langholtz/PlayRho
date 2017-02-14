@@ -48,7 +48,7 @@ public:
 
 	static constexpr RealNum GetDefaultVertexRadius() noexcept
 	{
-		return LinearSlop * 2;
+		return DefaultLinearSlop * 2;
 	}
 
 	/// Default constructor.

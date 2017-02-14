@@ -26,10 +26,10 @@ using namespace box2d;
 TEST(TOIConf, DefaultConstruction)
 {
 	EXPECT_EQ(ToiConf{}.tMax, RealNum(1));
-	EXPECT_EQ(ToiConf{}.maxRootIters, MaxTOIRootIterCount);
-	EXPECT_EQ(ToiConf{}.maxToiIters, MaxTOIIterations);
-	EXPECT_EQ(ToiConf{}.targetDepth, LinearSlop * 3);
-	EXPECT_EQ(ToiConf{}.tolerance, LinearSlop / 4);	
+	EXPECT_EQ(ToiConf{}.maxRootIters, DefaultMaxToiRootIters);
+	EXPECT_EQ(ToiConf{}.maxToiIters, DefaultMaxToiIters);
+	EXPECT_EQ(ToiConf{}.targetDepth, DefaultLinearSlop * 3);
+	EXPECT_EQ(ToiConf{}.tolerance, DefaultLinearSlop / 4);	
 }
 
 TEST(TOIOutput, Types)

@@ -24,9 +24,9 @@ using namespace box2d;
 static inline bool ten_epsilon_equal(float x, float y)
 {
 	// Here's essentially algorthm originally used in b2Collision.cpp b2TestOverlap function
-	// Pros: Probably faster and fine with larger LinearSlop settings.
+	// Pros: Probably faster and fine with larger DefaultLinearSlop settings.
 	// Cons: Doesn't scale to magnitude of values used which becomes more problematic with smaller
-	//   LinearSlop settings.
+	//   DefaultLinearSlop settings.
 	return std::abs(x - y) < (std::numeric_limits<float>::epsilon() * 10);
 }
 

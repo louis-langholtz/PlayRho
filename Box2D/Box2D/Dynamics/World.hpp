@@ -70,9 +70,9 @@ struct ToiStepStats
 	uint32 sumPosIters = 0;
 	uint32 sumVelIters = 0;
 
-	using dist_iter_type = std::remove_const<decltype(MaxDistanceIterations)>::type;
-	using toi_iter_type = std::remove_const<decltype(MaxTOIIterations)>::type;
-	using root_iter_type = std::remove_const<decltype(MaxTOIRootIterCount)>::type;
+	using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
+	using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
+	using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
 	
 	dist_iter_type maxDistIters = 0;
 	toi_iter_type maxToiIters = 0;
@@ -109,13 +109,13 @@ public:
 
 		Vec2 gravity = EarthlyGravity;
 		
-		RealNum aabbExtension = LinearSlop * 20;
+		RealNum aabbExtension = DefaultLinearSlop * 20;
 
 		// Minimum vertex radius.
 		// @detail This scaling factor should not be modified.
 		// Making it smaller means some shapes could have insufficient buffer for continuous collision.
 		// Making it larger may create artifacts for vertex collision.
-		RealNum minVertexRadius = LinearSlop * 2;
+		RealNum minVertexRadius = DefaultLinearSlop * 2;
 
 		RealNum maxVertexRadius = 255.0f; // linearSlop * 2550000
 	};
@@ -450,9 +450,9 @@ private:
 		contact_count_t numAtMaxSubSteps = 0;
 		contact_count_t numUpdatedTOI = 0;
 	
-		using dist_iter_type = std::remove_const<decltype(MaxDistanceIterations)>::type;
-		using toi_iter_type = std::remove_const<decltype(MaxTOIIterations)>::type;
-		using root_iter_type = std::remove_const<decltype(MaxTOIRootIterCount)>::type;
+		using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
+		using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
+		using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
 		
 		dist_iter_type maxDistIters = 0;
 		toi_iter_type maxToiIters = 0;
@@ -524,6 +524,18 @@ constexpr inline World::Def& World::Def::UseGravity(Vec2 value) noexcept
 constexpr inline World::Def& World::Def::UseAabbExtension(RealNum value) noexcept
 {
 	aabbExtension = value;
+	return *this;
+}
+
+constexpr inline World::Def& World::Def::UseMinVertexRadius(RealNum value) noexcept
+{
+	minVertexRadius = value;
+	return *this;
+}
+
+constexpr inline World::Def& World::Def::UseMaxVertexRadius(RealNum value) noexcept
+{
+	maxVertexRadius = value;
 	return *this;
 }
 

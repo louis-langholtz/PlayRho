@@ -25,6 +25,9 @@ UnitVec2::UnitVec2(const Vec2& value, UnitVec2 fallback) noexcept
 {
 	if (IsValid(value))
 	{
+		// XXX perhaps this should use std::hypot() instead like so:
+		//    const auto length = std::hypot(value.x, value.y);
+
 		const auto lengthSquared = GetLengthSquared(value);
 		if (lengthSquared > 0)
 		{

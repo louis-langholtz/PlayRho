@@ -481,6 +481,9 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 			// solve most penatrating point first or solve simultaneously if about the same penetration
 			const auto psm0 = GetPSM(pc.manifold, 0, posA, localCenterA, posB, localCenterB);
 			const auto psm1 = GetPSM(pc.manifold, 1, posA, localCenterA, posB, localCenterB);
+			
+			assert(IsValid(psm0.m_separation) && IsValid(psm1.m_separation));
+			
 			if (almost_equal(psm0.m_separation, psm1.m_separation))
 			{
 				const auto s0 = solver_fn(psm0, posA.linear, posB.linear);
@@ -504,7 +507,7 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 				posB += s1.pos_b;
 				return PositionSolution{posA, posB, s0.min_separation};
 			}
-			// psm1.separation < psm0.separation
+			if (psm1.m_separation < psm0.m_separation)
 			{
 				const auto s1 = solver_fn(psm1, posA.linear, posB.linear);
 				posA += s1.pos_a;
@@ -515,6 +518,8 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 				posB += s0.pos_b;
 				return PositionSolution{posA, posB, s1.min_separation};
 			}
+
+			// reaches here if one or both psm separation values was NaN (and NDEBUG is defined).
 		}
 		default: break;
 	}

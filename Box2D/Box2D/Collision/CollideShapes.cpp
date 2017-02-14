@@ -54,14 +54,14 @@ static inline IndexSeparation GetPolygonSeparation(const PolygonShape& polygon, 
 			// Adjacency
 			if (Dot(polygonNormal, perp) >= 0)
 			{
-				if (Dot(polygonNormal - edge.GetUpperLimit(), edge.GetNormal()) < BOX2D_MAGIC(-AngularSlop))
+				if (Dot(polygonNormal - edge.GetUpperLimit(), edge.GetNormal()) < BOX2D_MAGIC(-DefaultAngularSlop))
 				{
 					continue;
 				}
 			}
 			else
 			{
-				if (Dot(polygonNormal - edge.GetLowerLimit(), edge.GetNormal()) < BOX2D_MAGIC(-AngularSlop))
+				if (Dot(polygonNormal - edge.GetLowerLimit(), edge.GetNormal()) < BOX2D_MAGIC(-DefaultAngularSlop))
 				{
 					continue;
 				}
@@ -726,7 +726,7 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	
 	// Use hysteresis for jitter reduction.
 	constexpr auto k_relativeTol = RealNum(0.98);
-	constexpr auto k_absoluteTol = LinearSlop / 5; // 0.001
+	constexpr auto k_absoluteTol = DefaultLinearSlop / 5; // 0.001
 	
 	// Now:
 	//   (edgeAxis.separation <= MaxSeparation) AND
@@ -784,7 +784,7 @@ Manifold box2d::CollideShapes(const PolygonShape& shapeA, const Transformation& 
 		return Manifold{};
 	}
 	
-	constexpr auto k_tol = BOX2D_MAGIC(LinearSlop / 10);
+	constexpr auto k_tol = BOX2D_MAGIC(DefaultLinearSlop / 10);
 	return (edgeSepB.separation > (edgeSepA.separation + k_tol))?
 		GetFaceManifold(Manifold::e_faceB, shapeB, xfB, edgeSepB.index1, shapeA, xfA, edgeSepB.index2):
 		GetFaceManifold(Manifold::e_faceA, shapeA, xfA, edgeSepA.index1, shapeB, xfB, edgeSepA.index2);

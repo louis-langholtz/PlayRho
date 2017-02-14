@@ -559,13 +559,24 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	m_pointCount = 0;
 
 	StepConf stepConf;
+	
 	stepConf.set_dt(settings.dt);
+	
 	stepConf.regVelocityIterations = static_cast<StepConf::iteration_type>(settings.regVelocityIterations);
 	stepConf.regPositionIterations = static_cast<StepConf::iteration_type>(settings.regPositionIterations);
 	stepConf.toiVelocityIterations = static_cast<StepConf::iteration_type>(settings.toiVelocityIterations);
 	stepConf.toiPositionIterations = static_cast<StepConf::iteration_type>(settings.toiPositionIterations);
+	
 	stepConf.maxTranslation = static_cast<decltype(stepConf.maxTranslation)>(settings.maxTranslation);
 	stepConf.maxRotation = settings.maxRotation * 1_deg;
+	
+	stepConf.linearSlop = settings.linearSlop;
+	stepConf.angularSlop = settings.angularSlop;
+	stepConf.regMinSeparation = settings.linearSlop * -3;
+	stepConf.toiMinSeparation = settings.linearSlop * -1.5f;
+	stepConf.targetDepth = settings.linearSlop * 3;
+	stepConf.tolerance = settings.linearSlop / 4;
+	
 	stepConf.maxLinearCorrection = settings.maxLinearCorrection;
 	stepConf.maxAngularCorrection = (settings.maxAngularCorrection * 1_deg) / 1_rad;
 	stepConf.regResolutionRate = settings.regPosResRate / 100.0f;

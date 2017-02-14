@@ -114,20 +114,30 @@ constexpr auto MaxShapeVertices = uint8{254};
 /// Lower or raise to decrease or increase respectively the minimum of space
 /// between bodies at rest.
 /// @note Smaller values relative to sizes of bodies increases the time it takes for bodies to come to rest.
-constexpr auto LinearSlop = RealNum(0.001f); // originally 0.005
+constexpr auto DefaultLinearSlop = RealNum(0.001f); // originally 0.005
 
 /// A small angle used as a collision and constraint tolerance. Usually it is
 /// chosen to be numerically significant, but visually insignificant.
-constexpr auto AngularSlop = (Pi * 2) / 180;
+constexpr auto DefaultAngularSlop = (Pi * 2) / 180;
+
+/// Default maximum linear correction.
+/// @detail The maximum linear position correction used when solving constraints.
+///   This helps to prevent overshoot.
+/// @note This value should be greater than the linear slop value.
+constexpr auto DefaultMaxLinearCorrection = DefaultLinearSlop * 40; // aka 0.04f
+
+/// Default maximum angular correction.
+/// @note This value should be greater than the angular slop value.
+constexpr auto DefaultMaxAngularCorrection = DefaultAngularSlop * 4;
 
 /// Maximum time of impact iterations.
-constexpr auto MaxTOIIterations = BOX2D_MAGIC(uint8{20});
+constexpr auto DefaultMaxToiIters = BOX2D_MAGIC(uint8{20});
 
 /// Maximum time of impact root iterator count.
-constexpr auto MaxTOIRootIterCount = BOX2D_MAGIC(uint8{30});
+constexpr auto DefaultMaxToiRootIters = BOX2D_MAGIC(uint8{30});
 
 /// Max number of distance iterations.
-constexpr auto MaxDistanceIterations = BOX2D_MAGIC(uint8{20});
+constexpr auto DefaultMaxDistanceIters = BOX2D_MAGIC(uint8{20});
 	
 // Dynamics
 

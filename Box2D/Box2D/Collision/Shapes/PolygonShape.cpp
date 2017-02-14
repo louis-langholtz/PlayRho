@@ -77,7 +77,7 @@ void PolygonShape::Transform(box2d::Transformation xf) noexcept
 void PolygonShape::Set(Span<const Vec2> points) noexcept
 {
 	// Perform welding and copy vertices into local buffer.
-	auto point_set = VertexSet(LinearSlop);
+	auto point_set = VertexSet(DefaultLinearSlop);
 	for (auto&& p: points)
 	{
 		point_set.add(p);

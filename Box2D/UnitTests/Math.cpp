@@ -546,8 +546,8 @@ TEST(Math, nextafter2)
 TEST(Math, ToiTolerance)
 {
 	// What is the max vr for which the following still holds true?
-	//   vr + LinearSlop / 4 > vr
-	// The max vr for which (std::nextafter(vr, MaxFloat) - vr) <= LinearSlop / 4.
+	//   vr + DefaultLinearSlop / 4 > vr
+	// The max vr for which (std::nextafter(vr, MaxFloat) - vr) <= DefaultLinearSlop / 4.
 	// I.e. the max vr for which (std::nextafter(vr, MaxFloat) - vr) <= 0.000025
 
 	const auto linearSlop = 0.0001f;

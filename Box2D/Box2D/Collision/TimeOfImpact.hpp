@@ -38,7 +38,7 @@ namespace box2d {
 	/// @note Max target distance must be less than or equal to the total radius as the target
 	///   range has to be chosen such that the contact manifold will have a greater than zero
 	///   contact point count.
-	/// @note A max target of totalRadius - LinearSlop * x where x is <= 1 is increasingly slower
+	/// @note A max target of totalRadius - DefaultLinearSlop * x where x is <= 1 is increasingly slower
 	///   as x goes below 1.
 	/// @note Min target distance needs to be significantly less than the max target distance and
 	///   significantly more than 0.
@@ -48,9 +48,9 @@ namespace box2d {
 	///
 	struct ToiConf
 	{
-		using root_iter_type = std::remove_const<decltype(MaxTOIRootIterCount)>::type;
-		using toi_iter_type = std::remove_const<decltype(MaxTOIIterations)>::type;
-		using dist_iter_type = std::remove_const<decltype(MaxDistanceIterations)>::type;
+		using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
+		using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
+		using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
 
 		constexpr ToiConf& UseTimeMax(RealNum value) noexcept;
 		constexpr ToiConf& UseTargetDepth(RealNum value) noexcept;
@@ -63,9 +63,9 @@ namespace box2d {
 		
 		/// Targetted depth of impact.
 		/// @note Value must be less than twice the minimum vertex radius of any shape.
-		RealNum targetDepth = LinearSlop * 3;
+		RealNum targetDepth = DefaultLinearSlop * 3;
 
-		RealNum tolerance = LinearSlop / 4; ///< Tolerance.
+		RealNum tolerance = DefaultLinearSlop / 4; ///< Tolerance.
 		
 		/// Maximum number of root finder iterations.
 		/// @detail This is the maximum number of iterations for calculating the 1D root of
@@ -74,11 +74,11 @@ namespace box2d {
 		/// and <code>totalRadius</code> is the sum of the vertex radiuses of 2 distance proxies.
 		/// @note This value never needs to be more than the number of iterations needed to
 		/// achieve full machine precision. Any more than that are just wasted CPU cycles.
-		root_iter_type maxRootIters = MaxTOIRootIterCount;
+		root_iter_type maxRootIters = DefaultMaxToiRootIters;
 		
-		toi_iter_type maxToiIters = MaxTOIIterations; ///< Max time of impact iterations.
+		toi_iter_type maxToiIters = DefaultMaxToiIters; ///< Max time of impact iterations.
 		
-		dist_iter_type maxDistIters = MaxDistanceIterations;
+		dist_iter_type maxDistIters = DefaultMaxDistanceIters;
 	};
 
 	constexpr auto GetDefaultToiConf()
@@ -126,9 +126,9 @@ namespace box2d {
 	class TOIOutput
 	{
 	public:
-		using toi_iter_type = std::remove_const<decltype(MaxTOIIterations)>::type;
-		using dist_iter_type = std::remove_const<decltype(MaxDistanceIterations)>::type;
-		using root_iter_type = std::remove_const<decltype(MaxTOIRootIterCount)>::type;
+		using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
+		using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
+		using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
 		using toi_sum_type = Wider<toi_iter_type>::type;
 		using dist_sum_type = Wider<dist_iter_type>::type;
 		using root_sum_type = Wider<root_iter_type>::type;

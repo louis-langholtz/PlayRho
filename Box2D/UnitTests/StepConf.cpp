@@ -42,13 +42,13 @@ TEST(StepConf, maxTranslation)
 	ASSERT_LT(inc, RealNum(1));
 	const auto max_inc = inc * StepConf{}.maxTranslation;
 	EXPECT_GT(max_inc, RealNum(0));
-	EXPECT_LT(max_inc, LinearSlop / 2);
+	EXPECT_LT(max_inc, DefaultLinearSlop / 2);
 	EXPECT_LT(max_inc, StepConf{}.linearSlop / 2);
 #if 0
 	std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
 	std::cout << " inc=" << inc;
 	std::cout << " max_inc=" << max_inc;
-	std::cout << " slop=" << LinearSlop;
+	std::cout << " slop=" << DefaultLinearSlop;
 	std::cout << std::endl;
 #endif
 }
@@ -62,12 +62,12 @@ TEST(StepConf, maxRotation)
 	ASSERT_LT(inc, RealNum(1));
 	const auto max_inc = inc * StepConf{}.maxRotation / 1_rad;
 	EXPECT_GT(max_inc, RealNum(0));
-	EXPECT_LT(max_inc, AngularSlop / 2);
+	EXPECT_LT(max_inc, DefaultAngularSlop / 2);
 #if 0
 	std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
 	std::cout << " inc=" << inc;
 	std::cout << " max_inc=" << max_inc;
-	std::cout << " slop=" << AngularSlop;
+	std::cout << " slop=" << DefaultAngularSlop;
 	std::cout << std::endl;
 #endif
 }

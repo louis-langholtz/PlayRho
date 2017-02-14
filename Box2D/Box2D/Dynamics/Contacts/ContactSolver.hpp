@@ -73,24 +73,24 @@ namespace box2d {
 
 		/// Linear slop.
 		/// @note The negative of this amount is the maximum amount of separation to create.
-		/// @note Recommended value: <code>LinearSlop</code>.
-		RealNum linearSlop = LinearSlop;
+		/// @note Recommended value: <code>DefaultLinearSlop</code>.
+		RealNum linearSlop = DefaultLinearSlop;
 
 		/// Angular slop.
-		/// @note Recommended value: <code>AngularSlop</code>.
-		RealNum angularSlop = AngularSlop;
+		/// @note Recommended value: <code>DefaultAngularSlop</code>.
+		RealNum angularSlop = DefaultAngularSlop;
 
 		/// Maximum linear correction.
 		/// @detail
 		/// Maximum amount of overlap to resolve in a single solver call. Helps prevent overshoot.
 		/// @note Recommended value: <code>linearSlop * 40</code>.
-		RealNum maxLinearCorrection = linearSlop * 20;
+		RealNum maxLinearCorrection = DefaultLinearSlop * 20;
 		
 		/// Maximum angular correction.
 		/// @detail Maximum angular position correction used when solving constraints.
 		/// Helps to prevent overshoot.
 		/// @note Recommended value: <code>angularSlop * 4</code>.
-		RealNum maxAngularCorrection = angularSlop * 4;
+		RealNum maxAngularCorrection = DefaultAngularSlop * 4;
 	};
 
 	inline ConstraintSolverConf& ConstraintSolverConf::UseResolutionRate(RealNum value) noexcept

@@ -40,10 +40,10 @@ namespace box2d
 	/// Distance Configuration.
 	struct DistanceConf
 	{
-		using iteration_type = std::remove_const<decltype(MaxDistanceIterations)>::type;
+		using iteration_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
 
 		Simplex::Cache cache;
-		iteration_type maxIterations = MaxDistanceIterations;
+		iteration_type maxIterations = DefaultMaxDistanceIters;
 	};
 
 	/// Distance Output.
@@ -58,7 +58,7 @@ namespace box2d
 			HitMaxIters
 		};
 
-		using iteration_type = std::remove_const<decltype(MaxDistanceIterations)>::type;
+		using iteration_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
 
 		Simplex simplex; ///< Simplex.
 		iteration_type iterations = 0; ///< Count of iterations performed to return result.
@@ -77,7 +77,7 @@ namespace box2d
 	/// @param conf Configuration to use including the simplex cache for assisting the determination.
 	/// @return Closest points between the two shapes and the count of iterations it took to
 	///   determine them. The iteration count will always be greater than zero unless
-	///   <code>MaxDistanceIterations</code> is zero.
+	///   <code>DefaultMaxDistanceIters</code> is zero.
 	DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
 							const DistanceProxy& proxyB, const Transformation& transformB,
 							const DistanceConf conf = DistanceConf{});

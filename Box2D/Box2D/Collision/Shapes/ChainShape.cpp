@@ -28,7 +28,7 @@ namespace {
 	{
 		for (auto i = decltype(vertices.size()){1}; i < vertices.size(); ++i)
 		{
-			if (GetLengthSquared(vertices[i-1] - vertices[i]) <= LinearSlop)
+			if (GetLengthSquared(vertices[i-1] - vertices[i]) <= DefaultLinearSlop)
 			{
 				return false;
 			}

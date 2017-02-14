@@ -34,8 +34,10 @@ struct Settings
 	float maxRotation = 90; // in degrees
 	float hz = 60;
 	float dt = 1 / hz;
-	float maxLinearCorrection = 0.2f; // in meters
-	float maxAngularCorrection = 8; // in degrees
+	float maxLinearCorrection = DefaultMaxLinearCorrection; // in meters
+	float maxAngularCorrection = DefaultMaxAngularCorrection * 1_rad / 1_deg; // in degrees
+	float linearSlop = DefaultLinearSlop;
+	float angularSlop = DefaultAngularSlop;
 	int regPosResRate = 20; // in percent
 	int toiPosResRate = 75; // in percent
 	int regVelocityIterations = 8;
@@ -189,9 +191,9 @@ private:
 	uint64 m_sumToiPosIters = 0;
 	uint64 m_sumToiVelIters = 0;
 
-	using dist_iter_type = std::remove_const<decltype(MaxDistanceIterations)>::type;
-	using toi_iter_type = std::remove_const<decltype(MaxTOIIterations)>::type;
-	using root_iter_type = std::remove_const<decltype(MaxTOIRootIterCount)>::type;
+	using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
+	using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
+	using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
 	
 	dist_iter_type m_maxDistIters = 0;
 	toi_iter_type m_maxToiIters = 0;

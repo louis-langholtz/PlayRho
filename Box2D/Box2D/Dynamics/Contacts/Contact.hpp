@@ -74,9 +74,9 @@ class Contact
 public:
 	using substep_type = ts_iters_t;
 
-	using toi_max_type = std::remove_const<decltype(MaxTOIIterations)>::type;
-	using dist_max_type = std::remove_const<decltype(MaxDistanceIterations)>::type;
-	using root_max_type = std::remove_const<decltype(MaxTOIRootIterCount)>::type;
+	using toi_max_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
+	using dist_max_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
+	using root_max_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
 	
 	using toi_sum_type = Wider<toi_max_type>::type;
 	using dist_sum_type = Wider<dist_max_type>::type;
@@ -241,9 +241,9 @@ protected:
 
 	struct UpdateOutput
 	{
-		using dist_iter_type = std::remove_const<decltype(MaxDistanceIterations)>::type;
-		using toi_iter_type = std::remove_const<decltype(MaxTOIIterations)>::type;
-		using root_iter_type = std::remove_const<decltype(MaxTOIRootIterCount)>::type;
+		using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
+		using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
+		using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
 
 		RealNum toi = 0;
 		dist_iter_type maxDistIters = 0;

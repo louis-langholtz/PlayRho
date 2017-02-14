@@ -71,9 +71,9 @@ public:
 	/// Set to an invalid value to disable sleeping.
 	RealNum minStillTimeToSleep = RealNum{1} / 2; // aka 0.5
 
-	RealNum linearSlop = LinearSlop;
+	RealNum linearSlop = DefaultLinearSlop;
 	
-	RealNum angularSlop = AngularSlop;
+	RealNum angularSlop = DefaultAngularSlop;
 	
 	/// Regular resolution rate.
 	/// @detail
@@ -88,7 +88,7 @@ public:
 	/// bodies for intra-step position resolution to be considered successful and end before all
 	/// of the regular position iterations have been done.
 	/// @sa regPositionIterations.
-	RealNum regMinSeparation = -LinearSlop * 3;
+	RealNum regMinSeparation = -DefaultLinearSlop * 3;
 	
 	/// Time of impact resolution rate.
 	/// @detail
@@ -103,21 +103,21 @@ public:
 	/// bodies for intra-step position resolution to be considered successful and end before all
 	/// of the TOI position iterations have been done.
 	/// @sa toiPositionIterations.
-	RealNum toiMinSeparation = -LinearSlop * RealNum(1.5f);
+	RealNum toiMinSeparation = -DefaultLinearSlop * RealNum(1.5f);
 
 	/// Target depth.
 	/// @detail Target depth of overlap for calculating the TOI for CCD elligible bodies.
 	/// @note Must be greater than 0.
 	/// @note Must not be subnormal.
  	/// @note Must be less than twice the world's minimum vertex radius.
-	RealNum targetDepth = LinearSlop * 3;
+	RealNum targetDepth = DefaultLinearSlop * 3;
 	
 	/// Tolerance.
 	/// @detail The acceptable plus or minus tolerance from the target depth for TOI calculations.
 	/// @note Must be greater than 0.
 	/// @note Must not be subnormal.
 	/// @note Must be less than the target depth.
-	RealNum tolerance = LinearSlop / 4;
+	RealNum tolerance = DefaultLinearSlop / 4;
 
 	/// A velocity threshold for elastic collisions. Any collision with a relative linear
 	/// velocity below this threshold will be treated as inelastic.
@@ -135,10 +135,10 @@ public:
 
 	/// Maximum linear correction.
 	/// @detail This value should be greater than the linear slop value.
-	RealNum maxLinearCorrection = LinearSlop * 40; // 40 * linearSlop. aka 0.004
+	RealNum maxLinearCorrection = DefaultMaxLinearCorrection;
 	
 	/// Maximum angular correction.
-	RealNum maxAngularCorrection = AngularSlop * 4;
+	RealNum maxAngularCorrection = DefaultMaxAngularCorrection;
 
 	/// Regular velocity iterations.
 	/// This is the number of iterations of velocity resolution that will be done in the step.
@@ -167,11 +167,11 @@ public:
 	/// @sa toiMinSeparation.
 	iteration_type toiPositionIterations = 20;
 	
-	iteration_type maxTOIRootIterCount = MaxTOIRootIterCount;
+	iteration_type maxTOIRootIterCount = DefaultMaxToiRootIters;
 	
-	iteration_type maxTOIIterations = MaxTOIIterations;
+	iteration_type maxTOIIterations = DefaultMaxToiIters;
 	
-	iteration_type maxDistanceIters = MaxDistanceIterations;
+	iteration_type maxDistanceIters = DefaultMaxDistanceIters;
 
 	/// Maximum sub steps.
 	/// @detail

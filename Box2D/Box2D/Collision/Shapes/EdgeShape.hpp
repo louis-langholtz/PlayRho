@@ -35,7 +35,7 @@ class EdgeShape : public Shape
 public:
 	static constexpr RealNum GetDefaultVertexRadius() noexcept
 	{
-		return LinearSlop * 2;
+		return DefaultLinearSlop * 2;
 	}
 
 	EdgeShape(RealNum vertexRadius = GetDefaultVertexRadius()) noexcept:

@@ -75,7 +75,7 @@ public:
 		m_bullet->SetVelocity(Velocity{Vec2(0.0f, -50.0f), 0_rad});
 
 		uint32 gjkCalls, gjkIters, gjkMaxIters;
-		std::remove_const<decltype(MaxTOIIterations)>::type toiMaxIters;
+		std::remove_const<decltype(DefaultMaxToiIters)>::type toiMaxIters;
 		int32 toiRootIters, toiMaxRootIters;
 
 		gjkCalls = 0;
