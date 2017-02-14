@@ -88,6 +88,16 @@ TEST(Fixed32, Addition)
 	}
 }
 
+TEST(Fixed32, InfinityPlusValidIsInfinity)
+{
+	EXPECT_EQ(Fixed32::GetInfinity() + 0, Fixed32::GetInfinity());
+	EXPECT_EQ(Fixed32::GetInfinity() + 1, Fixed32::GetInfinity());
+	EXPECT_EQ(Fixed32::GetInfinity() + 100, Fixed32::GetInfinity());
+	EXPECT_EQ(Fixed32::GetInfinity() + -1, Fixed32::GetInfinity());
+	EXPECT_EQ(Fixed32::GetInfinity() + -100, Fixed32::GetInfinity());
+	EXPECT_EQ(Fixed32::GetInfinity() + Fixed32::GetInfinity(), Fixed32::GetInfinity());
+}
+
 TEST(Fixed32, EqualSubtraction)
 {
 	for (auto val = 0; val < 100; ++val)
@@ -271,6 +281,7 @@ TEST(Fixed32, NaN)
 	EXPECT_TRUE(std::isnan(Fixed32::GetInfinity() / Fixed32::GetInfinity()));
 	EXPECT_TRUE(std::isnan(Fixed32::GetInfinity() - Fixed32::GetInfinity()));
 	EXPECT_TRUE(std::isnan(-Fixed32::GetInfinity() - -Fixed32::GetInfinity()));
+	EXPECT_TRUE(std::isnan(-Fixed32::GetInfinity() + Fixed32::GetInfinity()));
 
 	EXPECT_FALSE(std::isnan(Fixed32{0}));
 	EXPECT_FALSE(std::isnan(Fixed32{10.0f}));
