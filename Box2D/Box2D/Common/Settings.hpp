@@ -55,11 +55,11 @@ using uint64 = std::uint64_t;
 
 /// Real-number type.
 ///
-/// @detail This is the number type underlying Box2D numerical calculations conceptually
-/// involving real-numbers. Ideally the implementation of this type doesn't suffer from things
-/// like catastrophic cancellation nor catastrophic division nor overflows nor underflows.
+/// @detail This is the number type underlying numerical calculations conceptually involving
+/// real-numbers. Ideally the implementation of this type doesn't suffer from things like:
+/// catastrophic cancellation, catastrophic division, overflows, nor underflows.
 ///
-/// @note This can be implemented using Fixed32, Fixed64, float, double, or long double.
+/// @note This can be implemented using float, double, long double, Fixed32, or Fixed64.
 ///
 /// @note Regarding division:
 ///

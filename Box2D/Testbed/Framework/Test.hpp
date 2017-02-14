@@ -34,9 +34,9 @@ struct Settings
 	float maxRotation = 90; // in degrees
 	float hz = 60;
 	float dt = 1 / hz;
-	float maxLinearCorrection = DefaultMaxLinearCorrection; // in meters
-	float maxAngularCorrection = DefaultMaxAngularCorrection * 1_rad / 1_deg; // in degrees
-	float linearSlop = DefaultLinearSlop;
+	float maxLinearCorrection = static_cast<float>(DefaultMaxLinearCorrection); // in meters
+	float maxAngularCorrection = static_cast<float>(DefaultMaxAngularCorrection * 1_rad / 1_deg); // in degrees
+	float linearSlop = static_cast<float>(DefaultLinearSlop);
 	float angularSlop = DefaultAngularSlop;
 	int regPosResRate = 20; // in percent
 	int toiPosResRate = 75; // in percent

@@ -433,8 +433,11 @@ static void sInterface()
 		imguiSlider("TOI Vel Iters", &settings.toiVelocityIterations, 0, 100, 1, true);
 		imguiSlider("TOI Pos Iters", &settings.toiPositionIterations, 0, 100, 1, true);
 		imguiSlider("Hertz", &settings.hz, 5.0f, 120.0f, 5.0f, true);
-		imguiSlider("Linear Slop", &settings.linearSlop, DefaultLinearSlop / 10, DefaultLinearSlop,
-					DefaultLinearSlop / 100, true);
+		imguiSlider("Linear Slop", &settings.linearSlop,
+					static_cast<float>(DefaultLinearSlop / 10),
+					static_cast<float>(DefaultLinearSlop),
+					static_cast<float>(DefaultLinearSlop / 100),
+					true);
 		imguiSlider("Angular Slop", &settings.angularSlop, (Pi * 2 / 1800), (Pi * 2 / 18), 0.001f, true);
 		imguiSlider("Max Translation", &settings.maxTranslation, 0.0f, 8.0f, 0.05f, true);
 		imguiSlider("Max Rotation", &settings.maxRotation, 0.0f, 360.0f, 1.0f, true);
