@@ -1243,10 +1243,10 @@ inline RealNum Normalize(Vec2& vector)
 	return 0;
 }
 
-inline bool IsSleepable(Velocity velocity)
+inline bool IsSleepable(Velocity velocity, RealNum linSleepTol, RealNum angSleepTol)
 {
-	return (Square(velocity.angular.ToRadians()) <= Square(AngularSleepTolerance))
-	    && (GetLengthSquared(velocity.linear) <= Square(LinearSleepTolerance));
+	return (Square(velocity.angular.ToRadians()) <= Square(angSleepTol))
+	    && (GetLengthSquared(velocity.linear) <= Square(linSleepTol));
 }
 
 /// Gets the contact relative velocity.

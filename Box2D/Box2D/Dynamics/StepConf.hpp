@@ -140,6 +140,12 @@ public:
 	/// Maximum angular correction.
 	RealNum maxAngularCorrection = DefaultMaxAngularCorrection;
 
+	/// Linear sleep tolerance.
+	RealNum linearSleepTolerance = DefaultLinearSleepTolerance;
+
+	/// Angular sleep tolerance.
+	RealNum angularSleepTolerance = DefaultAngularSleepTolerance;
+	
 	/// Regular velocity iterations.
 	/// This is the number of iterations of velocity resolution that will be done in the step.
 	iteration_type regVelocityIterations = 8;

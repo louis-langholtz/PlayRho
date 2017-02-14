@@ -401,7 +401,7 @@ public:
 	/// @post Sleep time will be zero if not permissible. Otheriwse it's the incremented sleep time.
 	/// @note Behavior is undefined if called and this body is not speedable.
 	/// @return New sleep time for this body.
-	RealNum UpdateSleepTime(RealNum h) noexcept;
+	RealNum UpdateSleepTime(RealNum h, RealNum linSleepTol, RealNum angSleepTol) noexcept;
 
 	/// Set the active state of the body. An inactive body is not
 	/// simulated and cannot be collided with or woken up.
@@ -740,10 +740,11 @@ inline RealNum Body::GetSleepTime() const noexcept
 	return m_sleepTime;
 }
 
-inline RealNum Body::UpdateSleepTime(RealNum h) noexcept
+inline RealNum Body::UpdateSleepTime(RealNum h, RealNum linSleepTol, RealNum angSleepTol) noexcept
 {
 	assert(IsSpeedable());
-	const auto newSleepTime = (IsSleepingAllowed() && IsSleepable(GetVelocity()))? GetSleepTime() + h: RealNum{0};
+	const auto sleepable = IsSleepable(GetVelocity(), linSleepTol, angSleepTol);
+	const auto newSleepTime = (IsSleepingAllowed() && sleepable)? GetSleepTime() + h: RealNum{0};
 	m_sleepTime = newSleepTime;
 	return newSleepTime;
 }

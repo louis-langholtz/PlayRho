@@ -109,6 +109,8 @@ constexpr auto MaxManifoldPoints = uint8{2};
 /// @note For memory efficiency, uses the smallest integral type that can hold the value.
 constexpr auto MaxShapeVertices = uint8{254};
 
+/// Default linear slop.
+/// @detail
 /// Length used as a collision and constraint tolerance.
 /// Usually chosen to be numerically significant, but visually insignificant.
 /// Lower or raise to decrease or increase respectively the minimum of space
@@ -116,6 +118,8 @@ constexpr auto MaxShapeVertices = uint8{254};
 /// @note Smaller values relative to sizes of bodies increases the time it takes for bodies to come to rest.
 constexpr auto DefaultLinearSlop = RealNum(0.001f); // originally 0.005
 
+/// Default angular slop.
+/// @detail
 /// A small angle used as a collision and constraint tolerance. Usually it is
 /// chosen to be numerically significant, but visually insignificant.
 constexpr auto DefaultAngularSlop = (Pi * 2) / 180;
@@ -163,11 +167,13 @@ constexpr auto MaxJoints = uint16{std::numeric_limits<uint16>::max() - uint16{1}
 
 // Sleep
 
-/// A body cannot sleep if its linear velocity is above this tolerance.
-constexpr auto LinearSleepTolerance = RealNum{0.01f}; // aka 0.01
+/// Default linear sleep tolerance.
+/// @detail A body cannot sleep if the magnitude of its linear velocity is above this amount.
+constexpr auto DefaultLinearSleepTolerance = RealNum{0.01f}; // aka 0.01
 
-/// A body cannot sleep if its angular velocity is above this tolerance.
-constexpr auto AngularSleepTolerance = RealNum{(Pi * 2) / 180};
+/// Default angular sleep tolerance.
+/// @detail A body cannot sleep if its angular velocity is above this amount.
+constexpr auto DefaultAngularSleepTolerance = RealNum{(Pi * 2) / 180};
 
 /// Maximum list size.
 template <typename T>

@@ -325,14 +325,17 @@ namespace {
 		}
 	}
 
-	inline RealNum UpdateSleepTimes(Island::BodyContainer& bodies, RealNum h)
+	inline RealNum UpdateSleepTimes(Island::BodyContainer& bodies, const StepConf& step)
 	{
 		auto minSleepTime = MaxFloat;
 		for (auto&& b: bodies)
 		{
 			if (b->IsSpeedable())
 			{
-				minSleepTime = Min(minSleepTime, b->UpdateSleepTime(h));
+				const auto sleepTime = b->UpdateSleepTime(step.get_dt(),
+														  step.linearSleepTolerance,
+														  step.angularSleepTolerance);
+				minSleepTime = Min(minSleepTime, sleepTime);
 			}
 		}
 		return minSleepTime;
@@ -773,7 +776,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 
 				if (IsValid(step.minStillTimeToSleep))
 				{
-					const auto minSleepTime = UpdateSleepTimes(island.m_bodies, step.get_dt());
+					const auto minSleepTime = UpdateSleepTimes(island.m_bodies, step);
 					if ((minSleepTime >= step.minStillTimeToSleep) && solverResults.solved)
 					{
 						stats.bodiesSlept += Sleepem(island.m_bodies);
