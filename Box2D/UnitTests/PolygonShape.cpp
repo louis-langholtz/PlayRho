@@ -277,8 +277,8 @@ TEST(PolygonShape, SetAsBoxAngledDegrees90)
 	EXPECT_NEAR(double(shape.GetVertex(3).x), double( hy), 0.0001); // right
 	EXPECT_NEAR(double(shape.GetVertex(3).y), double(-hx), 0.0001); // bottom
 	
-	EXPECT_TRUE(almost_equal(round(shape.GetNormal(0).GetX()), 0));
-	EXPECT_TRUE(almost_equal(round(shape.GetNormal(0).GetY()), +1));
+	EXPECT_NEAR(double(shape.GetNormal(0).GetX()),  0.0, 0.0001);
+	EXPECT_NEAR(double(shape.GetNormal(0).GetY()), +1.0, 0.0001);
 	
 	EXPECT_NEAR(double(shape.GetNormal(1).GetX()), -1.0, 0.000001);
 	EXPECT_NEAR(double(shape.GetNormal(1).GetY()),  0.0, 0.000001);
