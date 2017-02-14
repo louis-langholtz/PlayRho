@@ -60,6 +60,14 @@ struct Vals<long double> {
 };
 
 template <>
+struct Vals<Fixed32> {
+	static inline const char* GetGravity()
+	{
+		return "-9\\.799999952316284e\\+00f";
+	}
+};
+
+template <>
 struct Vals<Fixed64> {
 	static inline const char* GetGravity()
 	{

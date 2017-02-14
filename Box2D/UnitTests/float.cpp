@@ -102,6 +102,13 @@ TEST(float, infinity)
 	EXPECT_EQ(std::numeric_limits<float>::infinity() / -1, -std::numeric_limits<float>::infinity());
 	EXPECT_EQ(std::numeric_limits<float>::infinity() / -0.5f, -std::numeric_limits<float>::infinity());
 
+	EXPECT_EQ(std::numeric_limits<float>::infinity() - 0, std::numeric_limits<float>::infinity());
+	EXPECT_EQ(std::numeric_limits<float>::infinity() - 1000, std::numeric_limits<float>::infinity());
+	EXPECT_EQ(std::numeric_limits<float>::infinity() - -std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity());
+	EXPECT_EQ(0 - std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity());
+	EXPECT_EQ(0.5 - std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity());
+	EXPECT_EQ(1000 - std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity());
+
 	EXPECT_EQ(0.0f / std::numeric_limits<float>::infinity(), 0.0f);
 	EXPECT_EQ(1.0f / std::numeric_limits<float>::infinity(), 0.0f);
 	EXPECT_EQ(-1.0f / std::numeric_limits<float>::infinity(), 0.0f);
@@ -109,6 +116,8 @@ TEST(float, infinity)
 	EXPECT_TRUE(std::isnan(std::numeric_limits<float>::infinity() * 0));
 	EXPECT_TRUE(std::isnan(std::numeric_limits<float>::infinity() / std::numeric_limits<float>::infinity()));
 	EXPECT_TRUE(std::isnan(std::numeric_limits<float>::infinity() / -std::numeric_limits<float>::infinity()));
+	EXPECT_TRUE(std::isnan(std::numeric_limits<float>::infinity() - std::numeric_limits<float>::infinity()));
+	EXPECT_TRUE(std::isnan(-std::numeric_limits<float>::infinity() - -std::numeric_limits<float>::infinity()));
 	
 	EXPECT_GT(std::numeric_limits<float>::infinity(), 0.0f);
 	EXPECT_LT(0.0f, std::numeric_limits<float>::infinity());

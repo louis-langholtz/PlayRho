@@ -255,10 +255,22 @@ TEST(Fixed32, InifnityDividedByNegativeIsNegativeInfinity)
 	EXPECT_EQ(Fixed32::GetInfinity() / -0.5, -Fixed32::GetInfinity());
 }
 
+TEST(Fixed32, InfinityMinusNegativeInfinityIsInfinity)
+{
+	EXPECT_EQ(Fixed32::GetInfinity() - -Fixed32::GetInfinity(), Fixed32::GetInfinity());
+}
+
+TEST(Fixed32, NegativeInfinityMinusInfinityIsNegativeInfinity)
+{
+	EXPECT_EQ(-Fixed32::GetInfinity() - Fixed32::GetInfinity(), -Fixed32::GetInfinity());
+}
+
 TEST(Fixed32, NaN)
 {
 	EXPECT_TRUE(std::isnan(Fixed32::GetNaN()));
 	EXPECT_TRUE(std::isnan(Fixed32::GetInfinity() / Fixed32::GetInfinity()));
+	EXPECT_TRUE(std::isnan(Fixed32::GetInfinity() - Fixed32::GetInfinity()));
+	EXPECT_TRUE(std::isnan(-Fixed32::GetInfinity() - -Fixed32::GetInfinity()));
 
 	EXPECT_FALSE(std::isnan(Fixed32{0}));
 	EXPECT_FALSE(std::isnan(Fixed32{10.0f}));

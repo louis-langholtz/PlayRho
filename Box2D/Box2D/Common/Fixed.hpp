@@ -271,24 +271,38 @@ namespace box2d
 
 		constexpr Fixed& operator-= (Fixed val) noexcept
 		{
-			assert(!isnan());
-			assert(!val.isnan());
-
-			const auto result = intermediary_type{m_data.value} - val.m_data.value;
-			
-			if (result > GetMax().m_data.value)
+			if (isnan() || val.isnan()
+				|| ((m_data.value == GetInfinity().m_data.value) && (val.m_data.value == GetInfinity().m_data.value))
+				|| ((m_data.value == GetNegativeInfinity().m_data.value) && (val.m_data.value == GetNegativeInfinity().m_data.value))
+			)
 			{
-				// overflow from max
-				m_data.value = GetInfinity().m_data.value;
+				*this = GetNaN();
 			}
-			else if (result < GetLowest().m_data.value)
+			else if (val.m_data.value == GetInfinity().m_data.value)
 			{
-				// overflow from lowest
 				m_data.value = GetNegativeInfinity().m_data.value;
 			}
-			else
+			else if (val.m_data.value == GetNegativeInfinity().m_data.value)
 			{
-				m_data.value = static_cast<value_type>(result);
+				m_data.value = GetInfinity().m_data.value;
+			}
+			else if (isfinite() && val.isfinite())
+			{
+				const auto result = intermediary_type{m_data.value} - val.m_data.value;
+				if (result > GetMax().m_data.value)
+				{
+					// overflow from max
+					m_data.value = GetInfinity().m_data.value;
+				}
+				else if (result < GetLowest().m_data.value)
+				{
+					// overflow from lowest
+					m_data.value = GetNegativeInfinity().m_data.value;
+				}
+				else
+				{
+					m_data.value = static_cast<value_type>(result);
+				}
 			}
 			return *this;
 		}

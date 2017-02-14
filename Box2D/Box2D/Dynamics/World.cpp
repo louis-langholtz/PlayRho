@@ -393,12 +393,14 @@ World::~World()
 	{
 		InternalDestroy(&m_joints.front());
 	}
-	
+
 	// Some shapes allocate using alloc.
 	while (!m_bodies.empty())
 	{
 		auto&& b = m_bodies.front();
-		Destroy(&b);
+		m_bodies.erase(BodyIterator{&b});
+		b.~Body();
+		m_blockAllocator.Free(&b, sizeof(b));
 	}
 }
 

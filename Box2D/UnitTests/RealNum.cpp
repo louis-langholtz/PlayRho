@@ -33,7 +33,7 @@ TEST(RealNum, BiggerValsIdenticallyInaccurate)
 	// the float's value).
 	auto last_delta = float(0);
 	auto val = RealNum(1);
-	for (auto i = 0; i < 24; ++i)
+	for (auto i = 0; i < 16; ++i)
 	{
 		const auto next = std::nextafter(val, std::numeric_limits<decltype(val)>::max());
 		const auto delta = static_cast<float>(next - val);

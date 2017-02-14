@@ -221,8 +221,8 @@ TEST(CollideShapes, CircleOverRightFaceOfTriangle)
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	EXPECT_EQ(manifold.GetLocalPoint(), (triangleTopPt + triangleRightPt) / 2);
-	EXPECT_NEAR(double(manifold.GetLocalNormal().GetX()), 0.894427, 0.00001);
-	EXPECT_NEAR(double(manifold.GetLocalNormal().GetY()), 0.44721359, 0.00001);
+	EXPECT_NEAR(double(manifold.GetLocalNormal().GetX()), 0.894427  , 0.0001);
+	EXPECT_NEAR(double(manifold.GetLocalNormal().GetY()), 0.44721359, 0.0001);
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
 	
@@ -248,8 +248,8 @@ TEST(CollideShapes, CircleOverLeftFaceOfTriangle)
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(-0.5, 0));
-	EXPECT_NEAR(double(manifold.GetLocalNormal().GetX()), -0.894427, 0.00001);
-	EXPECT_NEAR(double(manifold.GetLocalNormal().GetY()), 0.44721359, 0.00001);
+	EXPECT_NEAR(double(manifold.GetLocalNormal().GetX()), -0.894427,   0.0001);
+	EXPECT_NEAR(double(manifold.GetLocalNormal().GetY()),  0.44721359, 0.0001);
 	
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
 	
@@ -503,8 +503,8 @@ TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
 	
 	// localPoint is almost equal to Vec2(2, 2) but it's not exactly equal.
-	EXPECT_NEAR(double(manifold.GetPoint(0).localPoint.x), 2.0, 0.00001); // top right shape A
-	EXPECT_NEAR(double(manifold.GetPoint(0).localPoint.y), 2.0, 0.00001); // top right shape A
+	EXPECT_NEAR(double(manifold.GetPoint(0).localPoint.x), 2.0, 0.0004); // top right shape A
+	EXPECT_NEAR(double(manifold.GetPoint(0).localPoint.y), 2.0, 0.0004); // top right shape A
 	
 	EXPECT_EQ(manifold.GetPoint(0).normalImpulse, RealNum(0));
 	EXPECT_EQ(manifold.GetPoint(0).tangentImpulse, RealNum(0));
@@ -520,13 +520,13 @@ TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)
 	EXPECT_EQ(Vec2{world_manifold.GetNormal()}, Vec2(0, +1));
 	
 	const auto corner_point = Rotate(Vec2{dim, dim}, UnitVec2{rot0}) + xfm0.p;
-	EXPECT_NEAR(double(corner_point.x), 0.0, 0.00001);
-	EXPECT_NEAR(double(corner_point.y), 0.82842684, 0.00001);
+	EXPECT_NEAR(double(corner_point.x), 0.0,        0.0002);
+	EXPECT_NEAR(double(corner_point.y), 0.82842684, 0.0002);
 	
 	ASSERT_GT(world_manifold.GetPointCount(), Manifold::size_type(0));
-	EXPECT_NEAR(double(world_manifold.GetPoint(0).x), double(corner_point.x / 2), 0.00001);
-	EXPECT_NEAR(double(world_manifold.GetPoint(0).y), double(corner_point.y / 2), 0.00001);
-	EXPECT_NEAR(double(world_manifold.GetSeparation(0)), double(-corner_point.y), 0.00001);
+	EXPECT_NEAR(double(world_manifold.GetPoint(0).x), double(corner_point.x / 2), 0.0004);
+	EXPECT_NEAR(double(world_manifold.GetPoint(0).y), double(corner_point.y / 2), 0.0004);
+	EXPECT_NEAR(double(world_manifold.GetSeparation(0)), double(-corner_point.y), 0.0005);
 }
 
 TEST(CollideShapes, HorizontalOverlappingRects1)
@@ -1019,8 +1019,8 @@ TEST(CollideShapes, EdgeFooTriangle)
 	
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 	EXPECT_EQ(manifold.GetLocalPoint(), Vec2(-2, 2));
-	EXPECT_NEAR(double(GetX(Vec2{manifold.GetLocalNormal()})), -0.707107, 0.00001);
-	EXPECT_NEAR(double(GetY(Vec2{manifold.GetLocalNormal()})), -0.707107, 0.00001);
+	EXPECT_NEAR(double(GetX(Vec2{manifold.GetLocalNormal()})), -0.707107, 0.0001);
+	EXPECT_NEAR(double(GetY(Vec2{manifold.GetLocalNormal()})), -0.707107, 0.0001);
 	EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
 	ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
 	EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(0, 1));
