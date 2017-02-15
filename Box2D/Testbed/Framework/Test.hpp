@@ -190,6 +190,8 @@ private:
 	uint64 m_sumRegVelIters = 0;
 	uint64 m_sumToiPosIters = 0;
 	uint64 m_sumToiVelIters = 0;
+	RealNum m_minRegSep = 0;
+	RealNum m_minToiSep = 0;
 
 	using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
 	using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;

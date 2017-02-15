@@ -698,7 +698,7 @@ void DebugDraw::DrawString(int x, int y, const char *string, ...)
 {
 	const auto h = float(m_camera.m_height);
 
-	char buffer[256];
+	char buffer[512];
 
 	va_list arg;
 	va_start(arg, string);
@@ -713,7 +713,7 @@ void DebugDraw::DrawString(const Vec2& pw, const char *string, ...)
 	const auto ps = ConvertWorldToScreen(m_camera, pw);
 	const auto h = float(m_camera.m_height);
 
-	char buffer[128];
+	char buffer[512];
 
 	va_list arg;
 	va_start(arg, string);

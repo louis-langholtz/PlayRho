@@ -769,6 +769,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 				
 				// Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions
 				const auto solverResults = SolveReg(step, island);
+				stats.minSeparation = Min(stats.minSeparation, solverResults.minSeparation);
 				if (solverResults.solved)
 				{
 					++stats.islandsSolved;
@@ -883,11 +884,13 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 	IntegratePositions(positions, velocities, h, MovementConf{step.maxTranslation, step.maxRotation});
 	
 	// Solve position constraints
+	auto finMinSeparation = MaxFloat;
 	auto solved = false;
 	auto positionIterations = step.regPositionIterations;
 	for (auto i = decltype(step.regPositionIterations){0}; i < step.regPositionIterations; ++i)
 	{
 		const auto minSeparation = SolvePositionConstraints(positionConstraints, positions, psConf);
+		finMinSeparation = Min(finMinSeparation, minSeparation);
 		const auto contactsOkay = (minSeparation >= step.regMinSeparation);
 
 		const auto jointsOkay = [&]()
@@ -923,7 +926,7 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 			   solved? positionIterations - 1: StepConf::InvalidIteration);
 	}
 	
-	return IslandSolverResults{solved, positionIterations, step.regVelocityIterations};
+	return IslandSolverResults{finMinSeparation, solved, positionIterations, step.regVelocityIterations};
 }
 
 void World::ResetBodiesForSolveTOI()
@@ -958,8 +961,8 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 		.UseTimeMax(1)
 		.UseTargetDepth(step.targetDepth)
 		.UseTolerance(step.tolerance)
-		.UseMaxRootIters(step.maxTOIRootIterCount)
-		.UseMaxToiIters(step.maxTOIIterations)
+		.UseMaxRootIters(step.maxToiRootIters)
+		.UseMaxToiIters(step.maxToiIters)
 		.UseMaxDistIters(step.maxDistanceIters);
 	
 	for (auto&& c: m_contactMgr.GetContacts())
@@ -1068,6 +1071,7 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 
 		++stats.contactsFound;
 		const auto solverResults = SolveTOI(step, *next.contact);
+		stats.minSeparation = Min(stats.minSeparation, solverResults.minSeparation);
 		if (solverResults.solved)
 		{
 			++stats.islandsSolved;
@@ -1211,6 +1215,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 	}
 	
 	// Solve TOI-based position constraints.
+	auto finMinSeparation = MaxFloat;
 	auto solved = false;
 	auto positionIterations = step.toiPositionIterations;
 	const auto psConf = ConstraintSolverConf{}
@@ -1233,6 +1238,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 		//   function is the one to be calling here.
 		//
 		const auto minSeparation = SolvePositionConstraints(positionConstraints, positions, psConf);
+		finMinSeparation = Min(finMinSeparation, minSeparation);
 		if (minSeparation >= step.toiMinSeparation)
 		{
 			// Reached tolerance, early out...
@@ -1278,7 +1284,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 			   positionIterations);
 	}
 	
-	return IslandSolverResults{solved, positionIterations, step.toiVelocityIterations};
+	return IslandSolverResults{finMinSeparation, solved, positionIterations, step.toiVelocityIterations};
 }
 	
 void World::ResetContactsForSolveTOI(Body& body)

@@ -922,12 +922,15 @@ constexpr inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
 }
 
 /// Rotates a vector by a given angle.
+/// @sa InverseRotate.
 constexpr inline Vec2 Rotate(const Vec2 vector, const UnitVec2& angle) noexcept
 {
 	return Vec2{(angle.cos() * vector.x) - (angle.sin() * vector.y), (angle.sin() * vector.x) + (angle.cos() * vector.y)};
 }
 
-/// Inverse rotate a vector
+/// Inverse rotate a vector.
+/// @detail This is the inverse of rotating a vector - it undoes what rotate does.
+/// @sa Rotate.
 constexpr inline Vec2 InverseRotate(const Vec2 vector, const UnitVec2& angle) noexcept
 {
 	return Vec2{(angle.cos() * vector.x) + (angle.sin() * vector.y), (angle.cos() * vector.y) - (angle.sin() * vector.x)};

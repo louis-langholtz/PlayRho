@@ -1300,7 +1300,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 	auto stepConf = StepConf{};
 	stepConf.set_dt(time_inc);
 	const auto max_velocity = stepConf.maxTranslation / time_inc;
-	Step(world, time_inc);
+	world.Step(stepConf);
 
 	ASSERT_EQ(listener.begin_contacts, unsigned{0});
 
@@ -1325,7 +1325,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 			}
 
 			const auto last_contact_count = listener.begin_contacts;
-			ASSERT_USECS(Step(world, time_inc), 5000);
+			ASSERT_USECS(world.Step(stepConf), 5000);
 
 			EXPECT_LT(ball_body->GetLocation().x, right_edge_x - (ball_radius/2));
 			EXPECT_GT(ball_body->GetLocation().x, left_edge_x + (ball_radius/2));
@@ -1362,7 +1362,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 			}
 			
 			const auto last_contact_count = listener.begin_contacts;
-			ASSERT_USECS(Step(world, time_inc), 5000);
+			ASSERT_USECS(world.Step(stepConf), 5000);
 			
 			EXPECT_LT(ball_body->GetLocation().x, right_edge_x - (ball_radius/2));
 			EXPECT_GT(ball_body->GetLocation().x, left_edge_x + (ball_radius/2));

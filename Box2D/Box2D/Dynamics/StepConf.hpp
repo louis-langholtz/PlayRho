@@ -80,6 +80,7 @@ public:
 	/// This scale factor controls how fast positional overlap is resolved.
 	/// Ideally this would be 1 so that overlap is removed in one time step.
 	/// However using values close to 1 often lead to overshoot.
+	/// @note Must be greater than 0 for any regular-phase positional resolution to get done.
 	RealNum regResolutionRate = RealNum{2} / 10; // aka 0.2.
 	
 	/// Regular minimum separation.
@@ -95,6 +96,7 @@ public:
 	/// This scale factor controls how fast positional overlap is resolved.
 	/// Ideally this would be 1 so that overlap is removed in one time step.
 	/// However using values close to 1 often lead to overshoot.
+	/// @note Must be greater than 0 for any TOI-phase positional resolution to get done.
 	RealNum toiResolutionRate = RealNum{75} / 100; // aka .75
 
 	/// Time of impact minimum separation.
@@ -119,22 +121,26 @@ public:
 	/// @note Must be less than the target depth.
 	RealNum tolerance = DefaultLinearSlop / 4;
 
-	/// A velocity threshold for elastic collisions. Any collision with a relative linear
+	/// Velocity threshold.
+	/// @detail A velocity threshold for elastic collisions. Any collision with a relative linear
 	/// velocity below this threshold will be treated as inelastic.
 	RealNum velocityThreshold = RealNum{8} / 10; // RealNum{1};
 
-	/// Maximum linear velocity of a body.
-	/// This limit is very large and is used to prevent numerical problems.
+	/// Maximum translation.
+	/// @detail The maximum linear velocity of a body.
+	/// @note This limit is very large and is used to prevent numerical problems.
 	/// You shouldn't need to adjust this.
 	RealNum maxTranslation = 4; // originally 2
 	
-	/// Maximum angular velocity of a body.
-	/// This limit is very large and is used to prevent numerical problems.
+	/// Maximum rotation.
+	/// @detail The maximum angular velocity of a body.
+	/// @note This limit is very large and is used to prevent numerical problems.
 	/// You shouldn't need to adjust this.
 	Angle maxRotation = 1_rad * Pi / 2;
 
 	/// Maximum linear correction.
-	/// @detail This value should be greater than the linear slop value.
+	/// @note Must be greater than 0 for any positional resolution to get done.
+	/// @note This value should be greater than the linear slop value.
 	RealNum maxLinearCorrection = DefaultMaxLinearCorrection;
 	
 	/// Maximum angular correction.
@@ -147,12 +153,12 @@ public:
 	RealNum angularSleepTolerance = DefaultAngularSleepTolerance;
 	
 	/// Regular velocity iterations.
-	/// This is the number of iterations of velocity resolution that will be done in the step.
+	/// @detail The number of iterations of velocity resolution that will be done in the step.
 	iteration_type regVelocityIterations = 8;
 	
 	/// Regular position iterations.
 	/// @detail
-	/// This value is the maximum number of iterations of position resolution that will
+	/// This is the maximum number of iterations of position resolution that will
 	/// be done before leaving any remaining unsatisfied positions for the next step.
 	/// In this context, positions are satisfied when the minimum separation is greater than
 	/// or equal to the regular minimum separation amount.
@@ -173,9 +179,9 @@ public:
 	/// @sa toiMinSeparation.
 	iteration_type toiPositionIterations = 20;
 	
-	iteration_type maxTOIRootIterCount = DefaultMaxToiRootIters;
+	iteration_type maxToiRootIters = DefaultMaxToiRootIters;
 	
-	iteration_type maxTOIIterations = DefaultMaxToiIters;
+	iteration_type maxToiIters = DefaultMaxToiIters;
 	
 	iteration_type maxDistanceIters = DefaultMaxDistanceIters;
 
@@ -193,6 +199,13 @@ private:
 	RealNum dt = 0; ///< Delta time. This is the time step in seconds.
 	RealNum inv_dt = 0; ///< Inverse time step (1/dt or 0 if dt == 0). @see dt.
 };
+
+inline RealNum GetMaxRegLinearCorrection(const StepConf& conf) noexcept
+{
+	return conf.maxLinearCorrection * conf.regPositionIterations;
+}
+
+bool IsMaxTranslationWithinTolerance(const StepConf& conf) noexcept;
 
 } // namespace box2d
 

@@ -441,10 +441,10 @@ static void sInterface()
 		imguiSlider("Angular Slop", &settings.angularSlop, (Pi * 2 / 1800), (Pi * 2 / 18), 0.001f, true);
 		imguiSlider("Max Translation", &settings.maxTranslation, 0.0f, 8.0f, 0.05f, true);
 		imguiSlider("Max Rotation", &settings.maxRotation, 0.0f, 360.0f, 1.0f, true);
-		imguiSlider("Max Lin. Correct", &settings.maxLinearCorrection, 0.0f, 1.0f, 0.01f, true);
-		imguiSlider("Max Ang. Correct", &settings.maxAngularCorrection, 0.0f, 90.0f, 1.0f, true);
-		imguiSlider("Reg Resol. % Rate", &settings.regPosResRate, 0, 100, 1, true);
-		imguiSlider("TOI Resol. % Rate", &settings.toiPosResRate, 0, 100, 1, true);
+		imguiSlider("Max Lin Correct", &settings.maxLinearCorrection, 0.0f, 1.0f, 0.01f, true);
+		imguiSlider("Max Ang Correct", &settings.maxAngularCorrection, 0.0f, 90.0f, 1.0f, true);
+		imguiSlider("Reg Resol % Rate", &settings.regPosResRate, 0, 100, 1, true);
+		imguiSlider("TOI Resol % Rate", &settings.toiPosResRate, 0, 100, 1, true);
 		
 		if (imguiCheck("Sleep", settings.enableSleep, true))
 			settings.enableSleep = !settings.enableSleep;
@@ -523,7 +523,7 @@ int main(int argc, char** argv)
 	_CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF | _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG));
 #endif
 
-	g_camera.m_width = 1152; // 1152;
+	g_camera.m_width = 1200; // 1152;
 	g_camera.m_height = 890; // 864;
     
 	if (glfwInit() == 0)

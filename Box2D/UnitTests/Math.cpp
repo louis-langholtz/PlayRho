@@ -18,6 +18,7 @@
 
 #include "gtest/gtest.h"
 #include <Box2D/Common/Math.hpp>
+#include <type_traits>
 
 using namespace box2d;
 
@@ -184,8 +185,8 @@ TEST(Math, AverageVec2)
 		const auto val2 = Vec2{RealNum(4.4), RealNum(-1.3)};
 		const auto average = Average<Vec2>({val1, val2});
 		const auto expected = Vec2(RealNum(3.3), RealNum(-1.2));
-		EXPECT_NEAR(double(average.x), double(expected.x), 0.00001);
-		EXPECT_NEAR(double(average.y), double(expected.y), 0.00001);
+		EXPECT_NEAR(double(average.x), double(expected.x), 0.0001);
+		EXPECT_NEAR(double(average.y), double(expected.y), 0.0001);
 	}
 }
 
@@ -244,6 +245,19 @@ TEST(Math, Vec2NegationAndRotationIsOrderIndependent)
 		const auto v = Vec2{RealNum(-3.2), RealNum(1.9)};
 		const auto r = UnitVec2{33_deg};
 		EXPECT_EQ(Rotate(v, r), -Rotate(v, -r));
+	}
+}
+
+TEST(Math, InverseRotationRevertsRotation)
+{
+	const auto vec_list = {Vec2{-10.7f, 5.3f}, Vec2{3.2f, 21.04f}, Vec2{-1.2f, -0.78f}};
+	for (auto&& vec: vec_list) {
+		for (auto angle = 0_deg; angle < 360_deg; angle += 10_deg)
+		{
+			const auto unit_vec = UnitVec2{angle};
+			EXPECT_NEAR(double(GetX(InverseRotate(Rotate(vec, unit_vec), unit_vec))), double(GetX(vec)), 0.004);
+			EXPECT_NEAR(double(GetY(InverseRotate(Rotate(vec, unit_vec), unit_vec))), double(GetY(vec)), 0.004);
+		}
 	}
 }
 
@@ -323,6 +337,16 @@ TEST(Math, ComputeCentroidCenteredR1)
 	EXPECT_EQ(average.y, center.y);
 }
 
+template <typename T>
+struct Results {
+	constexpr static auto expected_ctr = Vec2{0,0};
+};
+
+template <>
+struct Results<Fixed32> {
+	constexpr static auto expected_ctr = Vec2{0,0};
+};
+
 TEST(Math, ComputeCentroidCentered0R1000)
 {
 	const auto hx = RealNum(1000);
@@ -335,6 +359,7 @@ TEST(Math, ComputeCentroidCentered0R1000)
 		Vec2{real_center.x + hx, real_center.y - hy}
 	};
 	const auto center = ComputeCentroid(vertices);
+	
 	EXPECT_EQ(center.x, real_center.x);
 	EXPECT_EQ(center.y, real_center.y);
 	

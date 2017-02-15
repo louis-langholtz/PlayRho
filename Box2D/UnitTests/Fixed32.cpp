@@ -43,11 +43,18 @@ TEST(Fixed32, FloatConstruction)
 {
 	EXPECT_EQ(float(Fixed32(-1)), -1.0f);
 	EXPECT_EQ(float(Fixed32(+1)), +1.0f);
+	EXPECT_EQ(Fixed32(std::numeric_limits<float>::infinity()), Fixed32::GetInfinity());
+	EXPECT_EQ(Fixed32(-std::numeric_limits<float>::infinity()), -Fixed32::GetInfinity());
+	EXPECT_EQ(Fixed32(-std::numeric_limits<float>::infinity()), Fixed32::GetNegativeInfinity());
+	EXPECT_TRUE(std::isnan(Fixed32(std::numeric_limits<float>::quiet_NaN())));
+	EXPECT_TRUE(std::isnan(Fixed32(std::numeric_limits<float>::signaling_NaN())));
 
 	const auto range = 30000;
 	for (auto i = -range; i < range; ++i)
 	{
 		EXPECT_EQ(Fixed32(static_cast<float>(i)), i);
+		EXPECT_EQ(Fixed32(float(i)), i);
+		EXPECT_EQ(Fixed32(float(i)), Fixed32(i));
 	}
 }
 

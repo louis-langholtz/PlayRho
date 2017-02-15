@@ -54,104 +54,108 @@ namespace box2d
 
 		static constexpr Fixed GetMin() noexcept
 		{
-			return Fixed{internal_type{1}};
+			return Fixed{1, scalar_type{1}};
 		}
 		
 		static constexpr Fixed GetInfinity() noexcept
 		{
-			return Fixed{internal_type{numeric_limits::max()}};
+			return Fixed{numeric_limits::max(), scalar_type{1}};
 		}
 		
 		static constexpr Fixed GetMax() noexcept
 		{
 			// max reserved for +inf
-			return Fixed{internal_type{numeric_limits::max() - 1}};
+			return Fixed{numeric_limits::max() - 1, scalar_type{1}};
 		}
 
 		static constexpr Fixed GetNaN() noexcept
 		{
-			return Fixed{internal_type{numeric_limits::lowest()}};
+			return Fixed{numeric_limits::lowest(), scalar_type{1}};
 		}
 
 		static constexpr Fixed GetNegativeInfinity() noexcept
 		{
 			// lowest reserved for NaN
-			return Fixed{internal_type{numeric_limits::lowest() + 1}};
+			return Fixed{numeric_limits::lowest() + 1, scalar_type{1}};
 		}
 		
 		static constexpr Fixed GetLowest() noexcept
 		{
 			// lowest reserved for NaN
 			// lowest + 1 reserved for -inf
-			return Fixed{internal_type{numeric_limits::lowest() + 2}};
+			return Fixed{numeric_limits::lowest() + 2, scalar_type{1}};
 		}
 
 		Fixed() = default;
+		
+		constexpr Fixed(long double val) noexcept:
+			m_value{GetFromFloat(val)}
+		{
+			// Intentionally empty
+		}
+		
+		constexpr Fixed(double val) noexcept:
+			m_value{GetFromFloat(val)}
+		{
+			// Intentionally empty
+		}
 
-		constexpr Fixed(const long double val) noexcept:
-			m_data{internal_type{static_cast<value_type>(val * ScaleFactor)}}
+		constexpr Fixed(float val) noexcept:
+			m_value{GetFromFloat(val)}
+		{
+			// Intentionally empty
+		}
+		
+		constexpr Fixed(unsigned long long val) noexcept:
+			m_value{GetFromUnsignedInt(val)}
+		{
+			assert(val <= static_cast<decltype(val)>(GetMax()));
+		}
+
+		constexpr Fixed(unsigned long val) noexcept:
+			m_value{GetFromUnsignedInt(val)}
+		{
+			assert(val <= static_cast<decltype(val)>(GetMax()));
+		}
+		
+		constexpr Fixed(unsigned int val) noexcept:
+			m_value{GetFromUnsignedInt(val)}
+		{
+			assert(val <= static_cast<decltype(val)>(GetMax()));
+		}
+
+		constexpr Fixed(long long val) noexcept:
+			m_value{GetFromSignedInt(val)}
 		{
 			assert(val <= static_cast<decltype(val)>(GetMax()));
 			assert(val >= static_cast<decltype(val)>(GetLowest()));
 		}
 		
-		constexpr Fixed(const double val) noexcept:
-			m_data{internal_type{static_cast<value_type>(val * ScaleFactor)}}
+		constexpr Fixed(int val) noexcept:
+			m_value{GetFromSignedInt(val)}
 		{
 			assert(val <= static_cast<decltype(val)>(GetMax()));
 			assert(val >= static_cast<decltype(val)>(GetLowest()));
-		}
-		
-		constexpr Fixed(const unsigned long long val) noexcept:
-			m_data{internal_type{static_cast<value_type>(val * ScaleFactor)}}
-		{
-			assert(val <= static_cast<decltype(val)>(GetMax()));
-		}
-
-		constexpr Fixed(const unsigned long val) noexcept:
-			m_data{internal_type{static_cast<value_type>(val * ScaleFactor)}}
-		{
-			assert(val <= static_cast<decltype(val)>(GetMax()));
-		}
-		
-		constexpr Fixed(const unsigned int val) noexcept:
-			m_data{internal_type{static_cast<value_type>(val * ScaleFactor)}}
-		{
-			assert(val <= static_cast<decltype(val)>(GetMax()));
-		}
-
-		constexpr Fixed(const long long val) noexcept:
-			m_data{internal_type{static_cast<value_type>(val * ScaleFactor)}}
-		{
-			assert(val <= static_cast<decltype(val)>(GetMax()));
-			assert(val >= static_cast<decltype(val)>(GetLowest()));
-		}
-		
-		constexpr Fixed(const float val) noexcept:
-			m_data{internal_type{static_cast<value_type>(val * ScaleFactor)}}
-		{
-			assert(val <= static_cast<decltype(val)>(GetMax()));
-			assert(val >= static_cast<decltype(val)>(GetLowest()));
-		}
-
-		constexpr Fixed(const int val) noexcept:
-			m_data{internal_type{static_cast<value_type>(val * ScaleFactor)}}
-		{
-			//assert(val <= static_cast<decltype(val)>(GetMax()));
-			//assert(val >= static_cast<decltype(val)>(GetLowest()));
 		}
 		
 		constexpr Fixed(short val) noexcept:
-			m_data{internal_type{static_cast<value_type>(val * ScaleFactor)}}
+			m_value{GetFromSignedInt(val)}
 		{
 		}
 		
 		constexpr Fixed(value_type val, unsigned int fraction) noexcept:
-			m_data{internal_type{static_cast<value_type>(static_cast<uint32_t>(val * ScaleFactor) | fraction)}}
+			m_value{static_cast<value_type>(static_cast<uint32_t>(val * ScaleFactor) | fraction)}
 		{
 			assert(val <= static_cast<decltype(val)>(GetMax()));
 			assert(val >= static_cast<decltype(val)>(GetLowest()));
 			assert(fraction <= (1u << FractionBits) - 1u);
+		}
+		
+		template <typename BT, unsigned int FB>
+		constexpr Fixed(const Fixed<BT, FB> val) noexcept:
+			Fixed(static_cast<long double>(val))
+		{
+			// Intentionally empty
 		}
 		
 		// Methods
@@ -162,11 +166,11 @@ namespace box2d
 			{
 				return ComparatorResult::Incomparable;
 			}
-			if (m_data.value < other.m_data.value)
+			if (m_value < other.m_value)
 			{
 				return ComparatorResult::LessThan;
 			}
-			if (m_data.value > other.m_data.value)
+			if (m_value > other.m_value)
 			{
 				return ComparatorResult::GreaterThan;
 			}
@@ -177,57 +181,55 @@ namespace box2d
 
 		explicit constexpr operator long double() const noexcept
 		{
-			return m_data.value / double(ScaleFactor);
+			return ConvertTo<long double>();
 		}
 		
 		explicit constexpr operator double() const noexcept
 		{
-			return m_data.value / double(ScaleFactor);
+			return ConvertTo<double>();
 		}
 		
 		explicit constexpr operator float() const noexcept
 		{
-			return (isnan())? std::numeric_limits<float>::signaling_NaN():
-				(!isfinite())? std::numeric_limits<float>::infinity() * getsign():
-					m_data.value / float(ScaleFactor);
+			return ConvertTo<float>();
 		}
 	
 		explicit constexpr operator long long() const noexcept
 		{
-			return m_data.value / ScaleFactor;
+			return m_value / ScaleFactor;
 		}
 		
 		explicit constexpr operator unsigned long long() const noexcept
 		{
-			assert(m_data.value >= 0);
-			return static_cast<unsigned long long>(m_data.value / ScaleFactor);
+			assert(m_value >= 0);
+			return static_cast<unsigned long long>(m_value / ScaleFactor);
 		}
 
 		explicit constexpr operator unsigned long() const noexcept
 		{
-			assert(m_data.value >= 0);
-			return static_cast<unsigned long>(m_data.value / ScaleFactor);
+			assert(m_value >= 0);
+			return static_cast<unsigned long>(m_value / ScaleFactor);
 		}
 		
 		explicit constexpr operator unsigned int() const noexcept
 		{
-			assert(m_data.value >= 0);
-			return static_cast<unsigned int>(m_data.value / ScaleFactor);
+			assert(m_value >= 0);
+			return static_cast<unsigned int>(m_value / ScaleFactor);
 		}
 
 		explicit constexpr operator int() const noexcept
 		{
-			return static_cast<int>(m_data.value / ScaleFactor);
+			return static_cast<int>(m_value / ScaleFactor);
 		}
 		
 		explicit constexpr operator short() const noexcept
 		{
-			return static_cast<short>(m_data.value / ScaleFactor);
+			return static_cast<short>(m_value / ScaleFactor);
 		}
 		
 		constexpr Fixed operator- () const noexcept
 		{
-			return (isnan())? *this: Fixed{internal_type{-this->m_data.value}};
+			return (isnan())? *this: Fixed{-m_value, scalar_type{1}};
 		}
 		
 		constexpr Fixed operator+ () const noexcept
@@ -237,47 +239,47 @@ namespace box2d
 		
 		explicit constexpr operator bool() const noexcept
 		{
-			return m_data.value != 0;
+			return m_value != 0;
 		}
 		
 		constexpr bool operator! () const noexcept
 		{
-			return m_data.value == 0;
+			return m_value == 0;
 		}
 		
 		constexpr Fixed& operator+= (Fixed val) noexcept
 		{
 			if (isnan() || val.isnan()
-				|| ((m_data.value == GetInfinity().m_data.value) && (val.m_data.value == GetNegativeInfinity().m_data.value))
-				|| ((m_data.value == GetNegativeInfinity().m_data.value) && (val.m_data.value == GetInfinity().m_data.value))
+				|| ((m_value == GetInfinity().m_value) && (val.m_value == GetNegativeInfinity().m_value))
+				|| ((m_value == GetNegativeInfinity().m_value) && (val.m_value == GetInfinity().m_value))
 				)
 			{
 				*this = GetNaN();
 			}
-			else if (val.m_data.value == GetInfinity().m_data.value)
+			else if (val.m_value == GetInfinity().m_value)
 			{
-				m_data.value = GetInfinity().m_data.value;
+				m_value = GetInfinity().m_value;
 			}
-			else if (val.m_data.value == GetNegativeInfinity().m_data.value)
+			else if (val.m_value == GetNegativeInfinity().m_value)
 			{
-				m_data.value = GetNegativeInfinity().m_data.value;
+				m_value = GetNegativeInfinity().m_value;
 			}
 			else if (isfinite() && val.isfinite())
 			{
-				const auto result = intermediary_type{m_data.value} + val.m_data.value;
-				if (result > GetMax().m_data.value)
+				const auto result = intermediary_type{m_value} + val.m_value;
+				if (result > GetMax().m_value)
 				{
 					// overflow from max
-					m_data.value = GetInfinity().m_data.value;
+					m_value = GetInfinity().m_value;
 				}
-				else if (result < GetLowest().m_data.value)
+				else if (result < GetLowest().m_value)
 				{
 					// overflow from lowest
-					m_data.value = GetNegativeInfinity().m_data.value;
+					m_value = GetNegativeInfinity().m_value;
 				}
 				else
 				{
-					m_data.value = static_cast<value_type>(result);
+					m_value = static_cast<value_type>(result);
 				}
 			}
 			return *this;
@@ -286,36 +288,36 @@ namespace box2d
 		constexpr Fixed& operator-= (Fixed val) noexcept
 		{
 			if (isnan() || val.isnan()
-				|| ((m_data.value == GetInfinity().m_data.value) && (val.m_data.value == GetInfinity().m_data.value))
-				|| ((m_data.value == GetNegativeInfinity().m_data.value) && (val.m_data.value == GetNegativeInfinity().m_data.value))
+				|| ((m_value == GetInfinity().m_value) && (val.m_value == GetInfinity().m_value))
+				|| ((m_value == GetNegativeInfinity().m_value) && (val.m_value == GetNegativeInfinity().m_value))
 			)
 			{
 				*this = GetNaN();
 			}
-			else if (val.m_data.value == GetInfinity().m_data.value)
+			else if (val.m_value == GetInfinity().m_value)
 			{
-				m_data.value = GetNegativeInfinity().m_data.value;
+				m_value = GetNegativeInfinity().m_value;
 			}
-			else if (val.m_data.value == GetNegativeInfinity().m_data.value)
+			else if (val.m_value == GetNegativeInfinity().m_value)
 			{
-				m_data.value = GetInfinity().m_data.value;
+				m_value = GetInfinity().m_value;
 			}
 			else if (isfinite() && val.isfinite())
 			{
-				const auto result = intermediary_type{m_data.value} - val.m_data.value;
-				if (result > GetMax().m_data.value)
+				const auto result = intermediary_type{m_value} - val.m_value;
+				if (result > GetMax().m_value)
 				{
 					// overflow from max
-					m_data.value = GetInfinity().m_data.value;
+					m_value = GetInfinity().m_value;
 				}
-				else if (result < GetLowest().m_data.value)
+				else if (result < GetLowest().m_value)
 				{
 					// overflow from lowest
-					m_data.value = GetNegativeInfinity().m_data.value;
+					m_value = GetNegativeInfinity().m_value;
 				}
 				else
 				{
-					m_data.value = static_cast<value_type>(result);
+					m_value = static_cast<value_type>(result);
 				}
 			}
 			return *this;
@@ -329,38 +331,38 @@ namespace box2d
 			}
 			else if (!isfinite() || !val.isfinite())
 			{
-				if (m_data.value == 0 || val.m_data.value == 0)
+				if (m_value == 0 || val.m_value == 0)
 				{
 					*this = GetNaN();
 				}
 				else
 				{
-					*this = ((m_data.value > 0) != (val.m_data.value > 0))? -GetInfinity(): GetInfinity();
+					*this = ((m_value > 0) != (val.m_value > 0))? -GetInfinity(): GetInfinity();
 				}
 			}
 			else
 			{
-				const auto product = intermediary_type{m_data.value} * intermediary_type{val.m_data.value};
+				const auto product = intermediary_type{m_value} * intermediary_type{val.m_value};
 				const auto result = product / ScaleFactor;
 				
 				if (product != 0 && result == 0)
 				{
 					// underflow
-					m_data.value = static_cast<value_type>(result);
+					m_value = static_cast<value_type>(result);
 				}
-				else if (result > GetMax().m_data.value)
+				else if (result > GetMax().m_value)
 				{
 					// overflow from max
-					m_data.value = GetInfinity().m_data.value;
+					m_value = GetInfinity().m_value;
 				}
-				else if (result < GetLowest().m_data.value)
+				else if (result < GetLowest().m_value)
 				{
 					// overflow from lowest
-					m_data.value = GetNegativeInfinity().m_data.value;
+					m_value = GetNegativeInfinity().m_value;
 				}
 				else
 				{
-					m_data.value = static_cast<value_type>(result);
+					m_value = static_cast<value_type>(result);
 				}
 			}
 			return *this;
@@ -378,7 +380,7 @@ namespace box2d
 			}
 			else if (!isfinite())
 			{
-				*this = ((m_data.value > 0) != (val.m_data.value > 0))? -GetInfinity(): GetInfinity();
+				*this = ((m_value > 0) != (val.m_value > 0))? -GetInfinity(): GetInfinity();
 			}
 			else if (!val.isfinite())
 			{
@@ -386,27 +388,27 @@ namespace box2d
 			}
 			else
 			{
-				const auto product = intermediary_type{m_data.value} * ScaleFactor;
-				const auto result = product / val.m_data.value;
+				const auto product = intermediary_type{m_value} * ScaleFactor;
+				const auto result = product / val.m_value;
 				
 				if (product != 0 && result == 0)
 				{
 					// underflow
-					m_data.value = static_cast<value_type>(result);
+					m_value = static_cast<value_type>(result);
 				}
-				else if (result > GetMax().m_data.value)
+				else if (result > GetMax().m_value)
 				{
 					// overflow from max
-					m_data.value = GetInfinity().m_data.value;
+					m_value = GetInfinity().m_value;
 				}
-				else if (result < GetLowest().m_data.value)
+				else if (result < GetLowest().m_value)
 				{
 					// overflow from lowest
-					m_data.value = GetNegativeInfinity().m_data.value;
+					m_value = GetNegativeInfinity().m_value;
 				}
 				else
 				{
-					m_data.value = static_cast<value_type>(result);
+					m_value = static_cast<value_type>(result);
 				}
 			}
 			return *this;
@@ -417,46 +419,79 @@ namespace box2d
 			assert(!isnan());
 			assert(!val.isnan());
 
-			m_data.value %= val.m_data.value;
+			m_value %= val.m_value;
 			return *this;
 		}
 		
 	private:
 		static constexpr value_type ScaleFactor = static_cast<value_type>(1u << FractionBits);
-
+		
 		using intermediary_type = typename Wider<value_type>::type;
-	
-		struct internal_type
+		
+		struct scalar_type
 		{
-			value_type value;
+			value_type value = 1;
 		};
 		
 		using numeric_limits = std::numeric_limits<value_type>;
 		
-		constexpr Fixed(internal_type val) noexcept:
-			m_data{val}
+		constexpr Fixed(value_type val, scalar_type scalar) noexcept:
+			m_value{val * scalar.value}
 		{
 			// Intentionally empty.
 		}
 		
+		template <typename T>
+		constexpr T ConvertTo() const noexcept
+		{
+			return isnan()?
+				std::numeric_limits<T>::signaling_NaN(): !isfinite()?
+					std::numeric_limits<T>::infinity() * getsign(): m_value / static_cast<T>(ScaleFactor);
+		}
+
+		template <typename T>
+		static constexpr value_type GetFromFloat(T val) noexcept
+		{
+			return !(val >= 0 || val <= 0)? GetNaN().m_value: (val > static_cast<T>(GetMax()))?
+				GetInfinity().m_value: (val < static_cast<T>(GetLowest()))?
+					GetNegativeInfinity().m_value: static_cast<value_type>(val * ScaleFactor);
+		}
+
+		template <typename T>
+		static constexpr value_type GetFromSignedInt(T val) noexcept
+		{
+			static_assert(std::is_signed<T>::value, "must be signed");
+			return (val > static_cast<T>(GetMax()))?
+				GetInfinity().m_value: (val < static_cast<T>(GetLowest()))?
+					GetNegativeInfinity().m_value: static_cast<value_type>(val * ScaleFactor);
+		}
+		
+		template <typename T>
+		static constexpr value_type GetFromUnsignedInt(T val) noexcept
+		{
+			static_assert(!std::is_signed<T>::value, "must be unsigned");
+			return (val > static_cast<T>(GetMax()))?
+				GetInfinity().m_value: static_cast<value_type>(val * ScaleFactor);
+		}
+
 		constexpr bool isfinite() const noexcept
 		{
-			return (m_data.value < GetInfinity().m_data.value)
-				&& (m_data.value > GetNegativeInfinity().m_data.value);
+			return (m_value < GetInfinity().m_value)
+				&& (m_value > GetNegativeInfinity().m_value);
 		}
 
 		constexpr bool isnan() const noexcept
 		{
-			return (m_data.value < GetNegativeInfinity().m_data.value)
-				|| (m_data.value > GetInfinity().m_data.value);
+			return (m_value < GetNegativeInfinity().m_value)
+				|| (m_value > GetInfinity().m_value);
 		}
 		
 		constexpr int getsign() const noexcept
 		{
-			return (m_data.value >= 0)? +1: -1;
+			return (m_value >= 0)? +1: -1;
 		}
 		
-		internal_type m_data;
+		value_type m_value;
 	};
 
 #if 0
@@ -602,6 +637,8 @@ namespace box2d
 		const auto result = lhs.Compare(rhs);
 		return result == Fixed64::ComparatorResult::GreaterThan;
 	}
+
+	template<> struct Wider<Fixed32> { using type = Fixed64; };
 
 } // namespace box2d
 

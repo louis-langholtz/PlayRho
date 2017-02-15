@@ -51,6 +51,8 @@ struct PreStepStats
 
 struct RegStepStats
 {
+	RealNum minSeparation = 0;
+
 	uint32 islandsFound = 0;
 	uint32 islandsSolved = 0;
 	uint32 contactsAdded = 0;
@@ -61,6 +63,8 @@ struct RegStepStats
 
 struct ToiStepStats
 {
+	RealNum minSeparation = 0;
+
 	uint32 islandsFound = 0;
 	uint32 islandsSolved = 0;
 	uint32 contactsFound = 0;
@@ -317,6 +321,7 @@ private:
 
 	struct IslandSolverResults
 	{
+		RealNum minSeparation;
 		bool solved = false; ///< Solved. <code>true</code> if position constraints solved, <code>false</code> otherwise.
 		ts_iters_t positionIterations = 0;
 		ts_iters_t velocityIterations = 0;
