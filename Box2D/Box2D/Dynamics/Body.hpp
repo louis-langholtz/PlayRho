@@ -322,9 +322,9 @@ public:
 	RealNum GetInverseInertia() const noexcept;
 
 	/// Set the mass properties to override the mass properties of the fixtures.
-	/// Note that this changes the center of mass position.
-	/// Note that creating or destroying fixtures can also alter the mass.
-	/// This function has no effect if the body isn't dynamic.
+	/// @note This changes the center of mass position.
+	/// @note Creating or destroying fixtures can also alter the mass.
+	/// @note This function has no effect if the body isn't dynamic.
 	/// @param data the mass properties.
 	void SetMassData(const MassData& data);
 
