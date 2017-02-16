@@ -94,8 +94,7 @@ public:
 		const auto body = fixture->GetBody();
 		const auto shape = fixture->GetShape();
 
-		bool overlap = TestOverlap(*shape, 0, body->GetTransformation(), m_circle, 0, m_transform);
-
+		const auto overlap = TestOverlap(*shape, 0, body->GetTransformation(), m_circle, 0, m_transform);
 		if (overlap)
 		{
 			DrawFixture(fixture);
@@ -200,7 +199,7 @@ public:
 
 	void Destroy()
 	{
-		for (int32 i = 0; i < e_maxBodies; ++i)
+		for (auto i = 0; i < e_maxBodies; ++i)
 		{
 			if (m_bodies[i])
 			{
@@ -224,11 +223,11 @@ public:
 			break;
 
 		case Key_A:
-			for (int32 i = 0; i < e_maxBodies; i += 2)
+			for (auto i = 0; i < e_maxBodies; i += 2)
 			{
 				if (m_bodies[i])
 				{
-					bool active = m_bodies[i]->IsActive();
+					const auto active = m_bodies[i]->IsActive();
 					m_bodies[i]->SetActive(!active);
 				}
 			}

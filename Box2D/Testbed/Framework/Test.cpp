@@ -396,10 +396,9 @@ void Test::DrawTitle(Drawer& drawer, const char *string)
 class QueryCallback : public QueryFixtureReporter
 {
 public:
-	QueryCallback(const Vec2& point)
+	QueryCallback(const Vec2& point): m_point{point}
 	{
-		m_point = point;
-		m_fixture = nullptr;
+		// Intentionally empty.
 	}
 
 	bool ReportFixture(Fixture* fixture)
@@ -421,7 +420,7 @@ public:
 	}
 
 	Vec2 m_point;
-	Fixture* m_fixture;
+	Fixture* m_fixture = nullptr;
 };
 
 void Test::MouseDown(const Vec2& p)
