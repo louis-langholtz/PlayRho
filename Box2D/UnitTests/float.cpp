@@ -83,7 +83,17 @@ TEST(float, BiggerValsIncreasinglyInaccurate)
 TEST(float, max)
 {
 	EXPECT_EQ(std::numeric_limits<float>::max() * 2, std::numeric_limits<float>::infinity());
+	EXPECT_EQ(std::numeric_limits<float>::max() + std::numeric_limits<float>::max(), std::numeric_limits<float>::infinity());
 	
+	// Compared to float-max, 1 is insignificant.
+	// So adding 1 to float-max effectively results in adding 0 to float-max.
+	EXPECT_EQ(std::numeric_limits<float>::max() + 1, std::numeric_limits<float>::max());
+
+	EXPECT_LT(std::numeric_limits<float>::max() / 2, std::numeric_limits<float>::max());
+	EXPECT_GT(std::numeric_limits<float>::max() / 2, 0.0f);
+
+	EXPECT_EQ(std::numeric_limits<float>::max() + std::numeric_limits<float>::max() / 2, std::numeric_limits<float>::infinity());
+
 	EXPECT_LT(std::sqrtf(std::numeric_limits<float>::max()), std::numeric_limits<float>::max());
 	EXPECT_GT(std::numeric_limits<float>::max(), std::sqrtf(std::numeric_limits<float>::max()));
 }
