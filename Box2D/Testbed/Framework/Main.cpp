@@ -158,6 +158,8 @@ static Test::Key GlfwKeyToTestKey(int key)
 //
 static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mods)
 {
+	NOT_USED(scancode);
+
 	if (action == GLFW_PRESS)
 	{
 		switch (key)
