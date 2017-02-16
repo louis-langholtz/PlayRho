@@ -136,7 +136,7 @@ void RopeJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepCo
 	auto Cdot = Dot(m_u, vpB - vpA);
 
 	// Predictive constraint.
-	if (C < RealNum{0})
+	if (C < 0)
 	{
 		Cdot += step.get_inv_dt() * C;
 	}
