@@ -59,7 +59,7 @@ public:
 		m_broke = false;
 	}
 
-	void PostSolve(Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved) override
+	void PostSolve(Contact&, const ContactImpulsesList& impulse, ContactListener::iteration_type) override
 	{
 		if (m_broke)
 		{
@@ -113,7 +113,7 @@ public:
 		body2->SetVelocity(Velocity{velocity2, m_angularVelocity});
 	}
 
-	void PreStep(const Settings& settings, Drawer& drawer) override
+	void PreStep(const Settings&, Drawer&) override
 	{
 		if (m_break)
 		{

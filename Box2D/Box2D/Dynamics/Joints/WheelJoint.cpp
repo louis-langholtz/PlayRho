@@ -63,7 +63,7 @@ WheelJoint::WheelJoint(const WheelJointDef& def)
 	m_dampingRatio = def.dampingRatio;
 }
 
-void WheelJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf& conf)
+void WheelJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf&)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();

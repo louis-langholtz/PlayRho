@@ -75,7 +75,7 @@ public:
 		m_hit = false;
 	}
 
-	RealNum ReportFixture(Fixture* fixture, const Vec2& point, const UnitVec2& normal, RealNum fraction) override
+	RealNum ReportFixture(Fixture* fixture, const Vec2& point, const UnitVec2& normal, RealNum) override
 	{
 		const auto body = fixture->GetBody();
 		const auto userData = body->GetUserData();
@@ -120,7 +120,7 @@ public:
 		m_count = 0;
 	}
 
-	RealNum ReportFixture(Fixture* fixture, const Vec2& point, const UnitVec2& normal, RealNum fraction) override
+	RealNum ReportFixture(Fixture* fixture, const Vec2& point, const UnitVec2& normal, RealNum) override
 	{
 		const auto body = fixture->GetBody();
 		const auto userData = body->GetUserData();

@@ -70,7 +70,7 @@ public:
 
 	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
-		BOX2D_NOT_USED(settings);
+		NOT_USED(settings);
 
 		m_rayActor = nullptr;
 		for (int32 i = 0; i < e_actorCount; ++i)
@@ -328,7 +328,7 @@ private:
 			}
 
 			const auto overlap = TestOverlap(m_queryAABB, m_actors[i].aabb);
-			BOX2D_NOT_USED(overlap);
+			NOT_USED(overlap);
 			assert(overlap == m_actors[i].overlap);
 		}
 	}

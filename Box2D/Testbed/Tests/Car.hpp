@@ -250,12 +250,12 @@ public:
 		}
 	}
 
-	void PreStep(const Settings& settings, Drawer& drawer) override
+	void PreStep(const Settings&, Drawer& drawer) override
 	{
 		drawer.SetTranslation(Vec2{m_car->GetLocation().x, drawer.GetTranslation().y});
 	}
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings&, Drawer& drawer) override
 	{
 		drawer.DrawString(5, m_textLine, "Keys: left = a, brake = s, right = d, hz down = q, hz up = e");
 		m_textLine += DRAW_STRING_NEW_LINE;

@@ -31,7 +31,7 @@ public:
 	
 	static RealNum GetDefaultRadius() noexcept
 	{
-		return 0;
+		return DefaultLinearSlop * 2;
 	}
 
 	/// Initializing constructor.

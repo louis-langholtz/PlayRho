@@ -109,7 +109,7 @@ public:
 		}
 	}
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings&, Drawer& drawer) override
 	{
 		drawer.DrawString(5, m_textLine, "Press (j) to toggle the rope joint.");
 		m_textLine += DRAW_STRING_NEW_LINE;

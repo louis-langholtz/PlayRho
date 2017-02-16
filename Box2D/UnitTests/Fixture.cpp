@@ -18,6 +18,8 @@
 
 #include "gtest/gtest.h"
 #include <Box2D/Dynamics/Fixture.hpp>
+#include <Box2D/Dynamics/Body.hpp>
+#include <Box2D/Dynamics/World.hpp>
 #include <Box2D/Collision/Shapes/CircleShape.hpp>
 
 using namespace box2d;
@@ -33,9 +35,8 @@ TEST(Fixture, ByteSizeIs_72_88_or_112)
 	}
 }
 
-TEST(Fixture, InitializingConstructor)
+TEST(Fixture, CreateMatchesDef)
 {
-	const auto body = reinterpret_cast<Body*>(0x1);
 	const auto shapeA = std::make_shared<CircleShape>();
 	const auto density = RealNum(2);
 	int variable;
@@ -50,14 +51,16 @@ TEST(Fixture, InitializingConstructor)
 	def.restitution = restitution;
 	def.isSensor = isSensor;
 
-	Fixture f{body, def, shapeA};
+	World world;
+	const auto body = world.CreateBody();
+	const auto fixture = body->CreateFixture(shapeA, def);
 	
-	EXPECT_EQ(f.GetBody(), body);
-	EXPECT_EQ(f.GetShape(), &(*shapeA));
+	EXPECT_EQ(fixture->GetBody(), body);
+	EXPECT_EQ(fixture->GetShape(), &(*shapeA));
 
-	EXPECT_EQ(f.GetDensity(), density);
-	EXPECT_EQ(f.GetFriction(), friction);
-	EXPECT_EQ(f.GetUserData(), userData);
-	EXPECT_EQ(f.GetRestitution(), restitution);
-	EXPECT_EQ(f.IsSensor(), isSensor);
+	EXPECT_EQ(fixture->GetDensity(), density);
+	EXPECT_EQ(fixture->GetFriction(), friction);
+	EXPECT_EQ(fixture->GetUserData(), userData);
+	EXPECT_EQ(fixture->GetRestitution(), restitution);
+	EXPECT_EQ(fixture->IsSensor(), isSensor);
 }

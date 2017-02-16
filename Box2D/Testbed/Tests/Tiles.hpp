@@ -94,7 +94,7 @@ public:
 		m_createTime = timer.GetMilliseconds();
 	}
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings&, Drawer& drawer) override
 	{
 		const ContactManager& cm = m_world->GetContactManager();
 		const auto height = cm.m_broadPhase.GetTreeHeight();

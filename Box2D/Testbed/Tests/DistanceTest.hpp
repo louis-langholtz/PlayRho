@@ -100,7 +100,7 @@ public:
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings&, Drawer& drawer) override
 	{
 		const auto shapeA = static_cast<const PolygonShape*>(GetFixture(m_bodyA)->GetShape());
 		const auto shapeB = static_cast<const PolygonShape*>(GetFixture(m_bodyB)->GetShape());
@@ -186,6 +186,7 @@ public:
 			const auto s0 = Dot(nA, n0);
 			const auto s1 = Dot(nA, n1);
 			assert(s0 != s1);
+#if 0
 			const auto ifaceB = (s0 < s1)?
 				// shapeA face maxIndicesAB.index1 is coplanar to shapeB face i0, and
 				// nearest shapeB vertex maxIndicesAB.index2
@@ -193,6 +194,7 @@ public:
 				// shapeA face maxIndicesAB.index1 is coplanar to shapeB face i1, and
 				// nearest shapeB vertex maxIndicesAB.index2
 				i1;
+#endif
 		}
 		else if (maxIndicesAB.separation > maxIndicesBA.separation)
 		{

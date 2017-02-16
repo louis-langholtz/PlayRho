@@ -52,7 +52,7 @@ FrictionJoint::FrictionJoint(const FrictionJointDef& def)
 	m_maxTorque = def.maxTorque;
 }
 
-void FrictionJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf& conf)
+void FrictionJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf&)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -183,8 +183,8 @@ void FrictionJoint::SolveVelocityConstraints(Span<Velocity> velocities, const St
 
 bool FrictionJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const
 {
-	BOX2D_NOT_USED(positions);
-	BOX2D_NOT_USED(conf);
+	NOT_USED(positions);
+	NOT_USED(conf);
 
 	return true;
 }

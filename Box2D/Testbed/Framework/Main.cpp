@@ -516,7 +516,7 @@ static void sInterface()
 }
 
 //
-int main(int argc, char** argv)
+int main()
 {
 #if defined(_WIN32)
 	// Enable memory-leak reports

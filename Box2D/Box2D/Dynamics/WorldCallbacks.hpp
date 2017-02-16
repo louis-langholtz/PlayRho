@@ -107,7 +107,7 @@ public:
 	virtual ~ContactListener() {}
 
 	/// Called when two fixtures begin to touch.
-	virtual void BeginContact(Contact& contact) { BOX2D_NOT_USED(contact); }
+	virtual void BeginContact(Contact& contact) { NOT_USED(contact); }
 
 	/// End contact callback.
 	/// @detail
@@ -120,7 +120,7 @@ public:
 	/// @sa Contact::IsTouching().
 	/// @param contact Contact that's about to be destroyed or whose "touching" property has become
 	///   false.
-	virtual void EndContact(Contact& contact) { BOX2D_NOT_USED(contact); }
+	virtual void EndContact(Contact& contact) { NOT_USED(contact); }
 
 	/// Pre-solve callback.
 	/// @detail
@@ -136,8 +136,8 @@ public:
 	/// the next step.
 	virtual void PreSolve(Contact& contact, const Manifold& oldManifold)
 	{
-		BOX2D_NOT_USED(contact);
-		BOX2D_NOT_USED(oldManifold);
+		NOT_USED(contact);
+		NOT_USED(oldManifold);
 	}
 
 	/// Post-solve callback.
@@ -150,9 +150,9 @@ public:
 	/// @note This is only called for contacts that are touching, solid, and awake.
 	virtual void PostSolve(Contact& contact, const ContactImpulsesList& impulse, iteration_type solved)
 	{
-		BOX2D_NOT_USED(contact);
-		BOX2D_NOT_USED(impulse);
-		BOX2D_NOT_USED(solved);
+		NOT_USED(contact);
+		NOT_USED(impulse);
+		NOT_USED(solved);
 	}
 };
 

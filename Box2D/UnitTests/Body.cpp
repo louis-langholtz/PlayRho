@@ -69,7 +69,7 @@ TEST(Body, WorldCreated)
 		int i = 0;
 		for (auto&& joint: body->GetJoints())
 		{
-			BOX2D_NOT_USED(joint);
+			NOT_USED(joint);
 			++i;
 		}
 		EXPECT_EQ(i, 0);		
@@ -80,7 +80,7 @@ TEST(Body, WorldCreated)
 		int i = 0;
 		for (auto&& ce: body->GetContactEdges())
 		{
-			BOX2D_NOT_USED(ce);
+			NOT_USED(ce);
 			++i;
 		}
 		EXPECT_EQ(i, 0);		
@@ -184,7 +184,7 @@ TEST(Body, CreateLotsOfFixtures)
 			int i = decltype(num){0};
 			for (auto&& f: body->GetFixtures())
 			{
-				BOX2D_NOT_USED(f);
+				NOT_USED(f);
 				++i;
 			}
 			EXPECT_EQ(i, num);
@@ -212,7 +212,7 @@ TEST(Body, CreateLotsOfFixtures)
 			int i = decltype(num){0};
 			for (auto&& f: body->GetFixtures())
 			{
-				BOX2D_NOT_USED(f);
+				NOT_USED(f);
 				++i;
 			}
 			EXPECT_EQ(i, num);

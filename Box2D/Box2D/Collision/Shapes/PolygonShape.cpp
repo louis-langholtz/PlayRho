@@ -226,7 +226,7 @@ bool box2d::Validate(const PolygonShape& shape)
 	return true;
 }
 
-child_count_t box2d::GetChildCount(const PolygonShape& shape)
+child_count_t box2d::GetChildCount(const PolygonShape&)
 {
 	return 1;
 }

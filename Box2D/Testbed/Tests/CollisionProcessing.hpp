@@ -112,7 +112,7 @@ public:
 		body6->CreateFixture(std::make_shared<CircleShape>(circle), circleShapeDef);
 	}
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings&, Drawer&) override
 	{
 		// We are going to destroy some bodies according to contact
 		// points. We must buffer the bodies that should be destroyed

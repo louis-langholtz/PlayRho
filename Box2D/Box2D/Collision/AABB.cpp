@@ -30,7 +30,7 @@ using namespace box2d;
 
 AABB box2d::ComputeAABB(const EdgeShape& shape, const Transformation& xf, child_count_t childIndex)
 {
-	BOX2D_NOT_USED(childIndex);
+	NOT_USED(childIndex);
 	
 	const auto v1 = Transform(shape.GetVertex1(), xf);
 	const auto v2 = Transform(shape.GetVertex2(), xf);
@@ -45,7 +45,7 @@ AABB box2d::ComputeAABB(const EdgeShape& shape, const Transformation& xf, child_
 
 AABB box2d::ComputeAABB(const PolygonShape& shape, const Transformation& xf, child_count_t childIndex)
 {
-	BOX2D_NOT_USED(childIndex);
+	NOT_USED(childIndex);
 	
 	assert(shape.GetVertexCount() > 0);
 	
@@ -82,7 +82,7 @@ AABB box2d::ComputeAABB(const ChainShape& shape, const Transformation& xf, child
 
 AABB box2d::ComputeAABB(const CircleShape& shape, const Transformation& transform, child_count_t childIndex)
 {
-	BOX2D_NOT_USED(childIndex);
+	NOT_USED(childIndex);
 	
 	const auto p = transform.p + Rotate(shape.GetLocation(), transform.q);
 	return AABB{p, p} + Vec2{shape.GetRadius(), shape.GetRadius()};

@@ -242,7 +242,8 @@ MassData box2d::GetMassData(const EdgeShape& shape, RealNum density)
 
 MassData box2d::GetMassData(const ChainShape& shape, RealNum density)
 {
-	BOX2D_NOT_USED(density);
+	NOT_USED(shape);
+	NOT_USED(density);
 	
 	return MassData{RealNum{0}, Vec2_zero, RealNum{0}};
 }

@@ -149,39 +149,6 @@ class Fixture
 public:
 	Fixture() = delete; // explicitly deleted
 
-	/// Initializing constructor.
-	///
-	/// @warning Behavior is undefined if a <code>nullptr</code> initial body setting is used.
-	/// @warning Behavior is undefined if a <code>nullptr</code> initial shape setting is used.
-	/// @warning Behavior is undefined if a negative initial density setting is used.
-	/// @warning Behavior is undefined if a negative initial friction setting is used.
-	/// @warning Behavior is undefined if the restitution value is not less than infinity.
-	/// @warning Behavior is undefined if the restitution value is not greater than -infinity.
-	///
-	/// @param body Body the new fixture is to be associated with.
-	/// @param def Initial fixture settings.
-	///    Friction must be greater-than-or-equal-to zero.
-	///    Density must be greater-than-or-equal-to zero.
-	/// @param shape Sharable shape to associate fixture with. Must be non-null.
-	///
-	Fixture(Body* body, const FixtureDef& def, std::shared_ptr<const Shape> shape):
-		m_body{body},
-		m_shape{shape},
-		m_density{Max(def.density, RealNum{0})}, 
-		m_friction{def.friction},
-		m_restitution{def.restitution},
-		m_filter{def.filter},
-		m_isSensor{def.isSensor},
-		m_userData{def.userData}
-	{
-		assert(body);
-		assert(shape);
-		assert(def.density >= 0);
-		assert(def.friction >= 0);
-		assert(def.restitution < std::numeric_limits<decltype(def.restitution)>::infinity());
-		assert(def.restitution > -std::numeric_limits<decltype(def.restitution)>::infinity());
-	}
-
 	/// Gets the parent body of this fixture.
 	/// @detail This is nullptr if the fixture is not attached.
 	/// @return the parent body.
@@ -266,6 +233,39 @@ private:
 	friend class FixtureList;
 	friend class FixtureIterator;
 	friend class ConstFixtureIterator;
+
+	/// Initializing constructor.
+	///
+	/// @warning Behavior is undefined if a <code>nullptr</code> initial body setting is used.
+	/// @warning Behavior is undefined if a <code>nullptr</code> initial shape setting is used.
+	/// @warning Behavior is undefined if a negative initial density setting is used.
+	/// @warning Behavior is undefined if a negative initial friction setting is used.
+	/// @warning Behavior is undefined if the restitution value is not less than infinity.
+	/// @warning Behavior is undefined if the restitution value is not greater than -infinity.
+	///
+	/// @param body Body the new fixture is to be associated with.
+	/// @param def Initial fixture settings.
+	///    Friction must be greater-than-or-equal-to zero.
+	///    Density must be greater-than-or-equal-to zero.
+	/// @param shape Sharable shape to associate fixture with. Must be non-null.
+	///
+	Fixture(Body* body, const FixtureDef& def, std::shared_ptr<const Shape> shape):
+		m_body{body},
+		m_shape{shape},
+		m_density{Max(def.density, RealNum{0})},
+		m_friction{def.friction},
+		m_restitution{def.restitution},
+		m_filter{def.filter},
+		m_isSensor{def.isSensor},
+		m_userData{def.userData}
+	{
+		assert(body);
+		assert(shape);
+		assert(def.density >= 0);
+		assert(def.friction >= 0);
+		assert(def.restitution < std::numeric_limits<decltype(def.restitution)>::infinity());
+		assert(def.restitution > -std::numeric_limits<decltype(def.restitution)>::infinity());
+	}
 
 	/// Creates proxies for every child of this fixture's shape.
 	/// This sets the proxy count to the child count of the shape.

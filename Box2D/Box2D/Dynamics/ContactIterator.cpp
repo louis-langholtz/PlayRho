@@ -13,5 +13,5 @@ using namespace box2d;
 
 ContactIterator::pointer ContactIterator::next(pointer q) const noexcept
 {
-	return p->m_next;
+	return q->m_next;
 }

@@ -23,8 +23,8 @@
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Common/Span.hpp>
 
-// Define <code>BOX2D_CACHE_VC_POINT_MASSES</code> to cache velocity constraint point masses
-// instead of re-computing them every time these values are read. This uses an additional
+// Define <code>BOX2D_NOCACHE_VC_POINT_MASSES</code> to re-compute velocity constraint point
+// masses every time these values are read instead of caching them. This saves an additional
 // 16-bytes of memory per VelocityConstraint object.
 //
 // Note that with up to 4000 elements in the Tumbler test and using a library built without
@@ -32,7 +32,7 @@
 // It's unknown whether increasing the number of elements would eventually result in it being
 // faster not to cache the mass values.
 //
-#define BOX2D_CACHE_VC_POINT_MASSES
+//#define BOX2D_NOCACHE_VC_POINT_MASSES
 
 namespace box2d {
 	
@@ -265,7 +265,7 @@ namespace box2d {
 		{
 			Point() = default;
 			
-#if defined(BOX2D_CACHE_VC_POINT_MASSES)
+#if !defined(BOX2D_NOCACHE_VC_POINT_MASSES)
 			constexpr Point(Vec2 a, Vec2 b, RealNum ni, RealNum ti, RealNum nm, RealNum tm, RealNum vb) noexcept:
 				rA{a}, rB{b}, normalImpulse{ni}, tangentImpulse{ti}, normalMass{nm}, tangentMass{tm}, velocityBias{vb}
 			{
@@ -285,7 +285,7 @@ namespace box2d {
 			Vec2 rB = GetInvalid<decltype(rB)>(); ///< Position of body B relative to world manifold point (8-bytes).
 			RealNum normalImpulse = GetInvalid<decltype(normalImpulse)>(); ///< Normal impulse (4-bytes).
 			RealNum tangentImpulse = GetInvalid<decltype(tangentImpulse)>(); ///< Tangent impulse (4-bytes).
-#if defined(BOX2D_CACHE_VC_POINT_MASSES)
+#if !defined(BOX2D_NOCACHE_VC_POINT_MASSES)
 			RealNum normalMass = GetInvalid<decltype(normalMass)>(); ///< Normal mass (4-bytes). Dependent on rA and rB. 0 or greater.
 			RealNum tangentMass = GetInvalid<decltype(tangentMass)>(); ///< Tangent mass (4-bytes). Dependent on rA and rB. 0 or greater.
 #endif
@@ -454,19 +454,19 @@ namespace box2d {
 
 	inline RealNum VelocityConstraint::GetNormalMassAtPoint(VelocityConstraint::size_type index) const noexcept
 	{
-#if defined(BOX2D_CACHE_VC_POINT_MASSES)
+#if !defined(BOX2D_NOCACHE_VC_POINT_MASSES)
 		return PointAt(index).normalMass;
 #else
-		return ComputeNormalMassAtPoint(vc, index);
+		return ComputeNormalMassAtPoint(*this, index);
 #endif
 	}
 	
 	inline RealNum VelocityConstraint::GetTangentMassAtPoint(VelocityConstraint::size_type index) const noexcept
 	{
-#if defined(BOX2D_CACHE_VC_POINT_MASSES)
+#if !defined(BOX2D_NOCACHE_VC_POINT_MASSES)
 		return PointAt(index).tangentMass;
 #else
-		return ComputeTangentMassAtPoint(vc, index);
+		return ComputeTangentMassAtPoint(*this, index);
 #endif
 	}
 
@@ -515,7 +515,7 @@ namespace box2d {
 		auto& vcp = PointAt(index);
 		vcp.rA = a;
 		vcp.rB = b;
-#if defined(BOX2D_CACHE_VC_POINT_MASSES)
+#if !defined(BOX2D_NOCACHE_VC_POINT_MASSES)
 		vcp.normalMass = ComputeNormalMassAtPoint(*this, index);
 		vcp.tangentMass = ComputeTangentMassAtPoint(*this, index);
 #endif

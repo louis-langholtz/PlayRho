@@ -51,7 +51,7 @@ public:
 		}
 	}
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings&, Drawer& drawer) override
 	{
 		const auto offset = Vec2{RealNum(-35), RealNum(70)};
 		const auto sweepA = Sweep{

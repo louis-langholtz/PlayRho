@@ -31,16 +31,12 @@
 #include <Box2D/Common/Wider.hpp>
 #include <Box2D/Common/Fixed.hpp>
 
-#define BOX2D_NOT_USED(x) ((void)(x))
 #define BOX2D_MAGIC(x) (x)
-
-/// Current version.
-#define BOX2D_MAJOR_VERSION 3
-#define BOX2D_MINOR_VERSION 0
-#define BOX2D_REVISION 0
 
 namespace box2d
 {
+template<class... T> void NOT_USED(T&&...){}
+	
 class Body;
 class Contact;
 class Joint;
@@ -134,14 +130,14 @@ constexpr auto DefaultMaxLinearCorrection = DefaultLinearSlop * 40; // aka 0.04f
 /// @note This value should be greater than the angular slop value.
 constexpr auto DefaultMaxAngularCorrection = DefaultAngularSlop * 4;
 
-/// Maximum time of impact iterations.
-constexpr auto DefaultMaxToiIters = BOX2D_MAGIC(uint8{20});
+/// Default maximum time of impact iterations.
+constexpr auto DefaultMaxToiIters = uint8{20};
 
-/// Maximum time of impact root iterator count.
-constexpr auto DefaultMaxToiRootIters = BOX2D_MAGIC(uint8{30});
+/// Default maximum time of impact root iterator count.
+constexpr auto DefaultMaxToiRootIters = uint8{30};
 
-/// Max number of distance iterations.
-constexpr auto DefaultMaxDistanceIters = BOX2D_MAGIC(uint8{20});
+/// Default max number of distance iterations.
+constexpr auto DefaultMaxDistanceIters = uint8{20};
 	
 // Dynamics
 
@@ -314,7 +310,7 @@ struct Version
 	int32 revision;		///< bug fixes
 };
 
-constexpr auto BuiltVersion = Version{BOX2D_MAJOR_VERSION, BOX2D_MINOR_VERSION, BOX2D_REVISION};
+constexpr auto BuiltVersion = Version{3, 0, 0};
 }
 
 #endif

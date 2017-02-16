@@ -285,7 +285,7 @@ constexpr inline Vec3 GetInvalid() noexcept
 /// For performance, use this instead of GetLength(T value) (if possible).
 /// @return Non-negative value.
 template <typename T>
-constexpr inline RealNum GetLengthSquared(T value) noexcept { return RealNum{0}; }
+constexpr inline RealNum GetLengthSquared(T value) noexcept;
 
 template <>
 constexpr inline RealNum GetLengthSquared(Vec2 value) noexcept

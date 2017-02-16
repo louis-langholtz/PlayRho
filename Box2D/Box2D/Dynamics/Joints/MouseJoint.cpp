@@ -65,7 +65,7 @@ Mat22 MouseJoint::GetEffectiveMassMatrix() const noexcept
 	return K;
 }
 
-void MouseJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf& conf)
+void MouseJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf&)
 {
 	m_indexB = GetBodyB()->GetIslandIndex();
 	m_localCenterB = GetBodyB()->GetLocalCenter();
@@ -168,8 +168,8 @@ void MouseJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepC
 
 bool MouseJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const
 {
-	BOX2D_NOT_USED(positions);
-	BOX2D_NOT_USED(conf);
+	NOT_USED(positions);
+	NOT_USED(conf);
 	return true;
 }
 

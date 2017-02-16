@@ -120,7 +120,7 @@ public:
 		}
 	}
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings&, Drawer& drawer) override
 	{
 		{
 			const auto ratio = m_joint4->GetRatio();

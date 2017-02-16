@@ -61,7 +61,7 @@ public:
 		m_joint = static_cast<RevoluteJoint*>(m_world->CreateJoint(jd));
 	}
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings&, Drawer&) override
 	{
 		if (m_count < e_count)
 		{

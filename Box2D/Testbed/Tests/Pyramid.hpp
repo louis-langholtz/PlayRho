@@ -62,16 +62,6 @@ public:
 		}
 	}
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
-	{
-		//DynamicTree* tree = &m_world->m_contactManager.m_broadPhase.m_tree;
-
-		//if (GetStepCount() == 400)
-		//{
-		//	tree->RebuildBottomUp();
-		//}
-	}
-
 	static Test* Create()
 	{
 		return new Pyramid;

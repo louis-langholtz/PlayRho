@@ -243,7 +243,7 @@ public:
 		}
 	}
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings&, Drawer& drawer) override
 	{
 		PolyShapesCallback callback;
 		callback.m_circle.SetRadius(RealNum(2.0));

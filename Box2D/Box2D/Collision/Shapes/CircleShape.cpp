@@ -21,7 +21,7 @@
 
 using namespace box2d;
 
-child_count_t box2d::GetChildCount(const CircleShape& shape)
+child_count_t box2d::GetChildCount(const CircleShape&)
 {
 	return 1;
 }

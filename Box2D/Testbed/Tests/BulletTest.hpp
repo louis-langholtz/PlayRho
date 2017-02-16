@@ -87,7 +87,7 @@ public:
 		toiMaxRootIters = 0;
 	}
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings&, Drawer& drawer) override
 	{
 		uint32 gjkCalls = 0, gjkIters = 0, gjkMaxIters = 0;
 		int32 toiRootIters = 0, toiMaxRootIters = 0;

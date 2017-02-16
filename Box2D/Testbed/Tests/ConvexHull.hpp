@@ -78,7 +78,7 @@ public:
 		}
 	}
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings&, Drawer& drawer) override
 	{
 		const auto shape = PolygonShape(Span<const Vec2>{&m_points[0], m_points.size()});
 

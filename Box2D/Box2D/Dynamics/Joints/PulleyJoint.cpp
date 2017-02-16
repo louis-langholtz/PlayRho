@@ -162,7 +162,7 @@ void PulleyJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	velocities[m_indexB].angular = wB;
 }
 
-void PulleyJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step)
+void PulleyJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepConf&)
 {
 	auto vA = velocities[m_indexA].linear;
 	auto wA = velocities[m_indexA].angular;
@@ -259,7 +259,7 @@ Vec2 PulleyJoint::GetReactionForce(RealNum inv_dt) const
 
 RealNum PulleyJoint::GetReactionTorque(RealNum inv_dt) const
 {
-	BOX2D_NOT_USED(inv_dt);
+	NOT_USED(inv_dt);
 	return RealNum{0};
 }
 

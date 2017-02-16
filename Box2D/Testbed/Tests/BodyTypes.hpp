@@ -108,7 +108,7 @@ public:
 		}
 	}
 
-	void PreStep(const Settings& settings, Drawer& drawer) override
+	void PreStep(const Settings&, Drawer&) override
 	{
 		// Drive the kinematic body.
 		if (m_platform->GetType() == BodyType::Kinematic)
@@ -124,7 +124,7 @@ public:
 		}
 	}
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings&, Drawer& drawer) override
 	{
 		drawer.DrawString(5, m_textLine, "Keys: (d) dynamic, (s) static, (k) kinematic");
 		m_textLine += DRAW_STRING_NEW_LINE;

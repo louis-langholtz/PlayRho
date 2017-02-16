@@ -28,8 +28,8 @@
 // with your rendering engine in your game engine.
 int main(int argc, char** argv)
 {
-	BOX2D_NOT_USED(argc);
-	BOX2D_NOT_USED(argv);
+	NOT_USED(argc);
+	NOT_USED(argv);
 
 	// Define the gravity vector.
 	Vec2 gravity(0.0f, -10.0f);

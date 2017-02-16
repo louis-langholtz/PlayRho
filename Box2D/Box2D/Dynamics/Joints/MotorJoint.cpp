@@ -57,7 +57,7 @@ MotorJoint::MotorJoint(const MotorJointDef& def)
 	m_correctionFactor = def.correctionFactor;
 }
 
-void MotorJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf& conf)
+void MotorJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf&)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_localCenterA = GetBodyA()->GetLocalCenter();
@@ -198,8 +198,8 @@ void MotorJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepC
 
 bool MotorJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const
 {
-	BOX2D_NOT_USED(positions);
-	BOX2D_NOT_USED(conf);
+	NOT_USED(positions);
+	NOT_USED(conf);
 
 	return true;
 }

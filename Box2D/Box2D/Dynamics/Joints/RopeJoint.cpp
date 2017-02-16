@@ -209,7 +209,7 @@ Vec2 RopeJoint::GetReactionForce(RealNum inv_dt) const
 
 RealNum RopeJoint::GetReactionTorque(RealNum inv_dt) const
 {
-	BOX2D_NOT_USED(inv_dt);
+	NOT_USED(inv_dt);
 	return RealNum{0};
 }
 

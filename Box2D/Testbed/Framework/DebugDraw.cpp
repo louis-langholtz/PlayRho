@@ -31,8 +31,6 @@
 
 #include "RenderGL3.h"
 
-#define BUFFER_OFFSET(x)  ((const void*) (x))
-
 namespace box2d {
 
 Vec2 ConvertScreenToWorld(const Camera& camera, const Coord2D ps)
@@ -244,15 +242,15 @@ struct GLRenderPoints
         
 		// Vertex buffer
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[0]);
-		glVertexAttribPointer(m_vertexAttribute, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+		glVertexAttribPointer(m_vertexAttribute, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices), m_vertices, GL_DYNAMIC_DRAW);
         
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[1]);
-		glVertexAttribPointer(m_colorAttribute, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+		glVertexAttribPointer(m_colorAttribute, 4, GL_FLOAT, GL_FALSE, 0, nullptr);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(m_colors), m_colors, GL_DYNAMIC_DRAW);
         
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[2]);
-		glVertexAttribPointer(m_sizeAttribute, 1, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+		glVertexAttribPointer(m_sizeAttribute, 1, GL_FLOAT, GL_FALSE, 0, nullptr);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(m_sizes), m_sizes, GL_DYNAMIC_DRAW);
 
 		sCheckGLError();
@@ -383,11 +381,11 @@ struct GLRenderLines
         
 		// Vertex buffer
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[0]);
-		glVertexAttribPointer(m_vertexAttribute, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+		glVertexAttribPointer(m_vertexAttribute, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices), m_vertices, GL_DYNAMIC_DRAW);
         
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[1]);
-		glVertexAttribPointer(m_colorAttribute, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+		glVertexAttribPointer(m_colorAttribute, 4, GL_FLOAT, GL_FALSE, 0, nullptr);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(m_colors), m_colors, GL_DYNAMIC_DRAW);
         
 		sCheckGLError();
@@ -508,11 +506,11 @@ struct GLRenderTriangles
 
 		// Vertex buffer
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[0]);
-		glVertexAttribPointer(m_vertexAttribute, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+		glVertexAttribPointer(m_vertexAttribute, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices), m_vertices, GL_DYNAMIC_DRAW);
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[1]);
-		glVertexAttribPointer(m_colorAttribute, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+		glVertexAttribPointer(m_colorAttribute, 4, GL_FLOAT, GL_FALSE, 0, nullptr);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(m_colors), m_colors, GL_DYNAMIC_DRAW);
 
 		sCheckGLError();

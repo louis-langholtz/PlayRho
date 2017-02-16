@@ -80,7 +80,7 @@ public:
 		}
 	}
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings&, Drawer& drawer) override
 	{
 		drawer.DrawString(5, m_textLine, "Press: (c) create a shape, (d) destroy a shape.");
 		m_textLine += DRAW_STRING_NEW_LINE;

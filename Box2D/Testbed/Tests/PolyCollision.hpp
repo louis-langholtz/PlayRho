@@ -49,7 +49,7 @@ public:
 
 	void PostStep(const Settings& settings, Drawer& drawer) override
 	{
-		BOX2D_NOT_USED(settings);
+		NOT_USED(settings);
 
 		const auto manifold = CollideShapes(m_polygonA, m_transformA, m_polygonB, m_transformB);
 		const auto pointCount = manifold.GetPointCount();

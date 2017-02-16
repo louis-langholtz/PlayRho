@@ -101,7 +101,7 @@ RayCastOutput box2d::RayCast(const AABB& aabb, const RayCastInput& input)
 RayCastOutput box2d::RayCast(const CircleShape& shape, const RayCastInput& input,
 							 const Transformation& transform, child_count_t childIndex)
 {
-	BOX2D_NOT_USED(childIndex);
+	NOT_USED(childIndex);
 	
 	const auto position = transform.p + Rotate(shape.GetLocation(), transform.q);
 	const auto s = input.p1 - position;
@@ -139,7 +139,7 @@ RayCastOutput box2d::RayCast(const CircleShape& shape, const RayCastInput& input
 RayCastOutput box2d::RayCast(const EdgeShape& shape, const RayCastInput& input,
 							 const Transformation& xf, child_count_t childIndex)
 {
-	BOX2D_NOT_USED(childIndex);
+	NOT_USED(childIndex);
 	
 	// Put the ray into the edge's frame of reference.
 	const auto p1 = InverseRotate(input.p1 - xf.p, xf.q);
@@ -191,7 +191,7 @@ RayCastOutput box2d::RayCast(const EdgeShape& shape, const RayCastInput& input,
 RayCastOutput box2d::RayCast(const PolygonShape& shape, const RayCastInput& input,
 							 const Transformation& xf, child_count_t childIndex)
 {
-	BOX2D_NOT_USED(childIndex);
+	NOT_USED(childIndex);
 	
 	// Put the ray into the polygon's frame of reference.
 	const auto p1 = InverseRotate(input.p1 - xf.p, xf.q);

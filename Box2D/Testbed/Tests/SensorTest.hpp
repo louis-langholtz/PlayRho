@@ -123,7 +123,7 @@ public:
 		}
 	}
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings&, Drawer&) override
 	{
 		// Traverse the contact results. Apply a force on shapes
 		// that overlap the sensor.
@@ -137,7 +137,7 @@ public:
 			const auto body = m_bodies[i];
 			const auto ground = m_sensor->GetBody();
 
-			CircleShape* circle = (CircleShape*)m_sensor->GetShape();
+			const auto circle = static_cast<const CircleShape*>(m_sensor->GetShape());
 			const auto center = GetWorldPoint(*ground, circle->GetLocation());
 
 			const auto position = body->GetLocation();

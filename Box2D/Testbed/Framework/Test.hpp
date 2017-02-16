@@ -88,23 +88,23 @@ public:
 	void CompleteBombSpawn(const Vec2& p);
 	void ShiftOrigin(const Vec2& newOrigin);
 	
-	virtual void Keyboard(Key key) { BOX2D_NOT_USED(key); }
-	virtual void KeyboardUp(Key key) { BOX2D_NOT_USED(key); }
+	virtual void Keyboard(Key key) { NOT_USED(key); }
+	virtual void KeyboardUp(Key key) { NOT_USED(key); }
 	virtual void MouseDown(const Vec2& p);
 	virtual void MouseUp(const Vec2& p);
 	
 	// Let derived tests know that a joint was destroyed.
-	virtual void JointDestroyed(Joint* joint) { BOX2D_NOT_USED(joint); }
+	virtual void JointDestroyed(Joint* joint) { NOT_USED(joint); }
 
 	// Callbacks for derived classes.
-	virtual void BeginContact(Contact& contact) override { BOX2D_NOT_USED(contact); }
-	virtual void EndContact(Contact& contact) override { BOX2D_NOT_USED(contact); }
+	virtual void BeginContact(Contact& contact) override { NOT_USED(contact); }
+	virtual void EndContact(Contact& contact) override { NOT_USED(contact); }
 	virtual void PreSolve(Contact& contact, const Manifold& oldManifold) override;
 	virtual void PostSolve(Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved) override
 	{
-		BOX2D_NOT_USED(contact);
-		BOX2D_NOT_USED(impulse);
-		BOX2D_NOT_USED(solved);
+		NOT_USED(contact);
+		NOT_USED(impulse);
+		NOT_USED(solved);
 	}
 
 	Fixture* GetSelectedFixture() const noexcept { return m_selectedFixture; }
@@ -134,7 +134,7 @@ protected:
 	class DestructionListenerImpl : public DestructionListener
 	{
 	public:
-		void SayGoodbye(Fixture& fixture) { BOX2D_NOT_USED(fixture); }
+		void SayGoodbye(Fixture& fixture) { NOT_USED(fixture); }
 		void SayGoodbye(Joint& joint);
 		
 		Test* test;
@@ -147,14 +147,14 @@ protected:
 
 	virtual void PreStep(const Settings& settings, Drawer& drawer)
 	{
-		BOX2D_NOT_USED(settings);
-		BOX2D_NOT_USED(drawer);
+		NOT_USED(settings);
+		NOT_USED(drawer);
 	}
 
 	virtual void PostStep(const Settings& settings, Drawer& drawer)
 	{
-		BOX2D_NOT_USED(settings);
-		BOX2D_NOT_USED(drawer);		
+		NOT_USED(settings);
+		NOT_USED(drawer);		
 	}
 
 	int32 GetStepCount() const noexcept { return m_stepCount; }

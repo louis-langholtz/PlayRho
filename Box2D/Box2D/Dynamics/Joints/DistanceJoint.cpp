@@ -157,7 +157,7 @@ void DistanceJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	velocities[m_indexB].angular = wB;
 }
 
-void DistanceJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step)
+void DistanceJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepConf&)
 {
 	auto vA = velocities[m_indexA].linear;
 	auto wA = velocities[m_indexA].angular;
@@ -241,6 +241,6 @@ Vec2 DistanceJoint::GetReactionForce(RealNum inv_dt) const
 
 RealNum DistanceJoint::GetReactionTorque(RealNum inv_dt) const
 {
-	BOX2D_NOT_USED(inv_dt);
+	NOT_USED(inv_dt);
 	return 0;
 }

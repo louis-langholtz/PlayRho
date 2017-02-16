@@ -130,7 +130,7 @@ GearJoint::GearJoint(const GearJointDef& def)
 	m_constant = coordinateA + m_ratio * coordinateB;
 }
 
-void GearJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf& conf)
+void GearJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf&)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -237,7 +237,7 @@ void GearJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Po
 	velocities[m_indexD].angular = wD;
 }
 
-void GearJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step)
+void GearJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepConf&)
 {
 	auto vA = velocities[m_indexA].linear;
 	auto wA = velocities[m_indexA].angular;

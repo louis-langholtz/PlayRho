@@ -29,13 +29,13 @@ namespace {
 	
 	inline DistanceProxy GetDistanceProxy(const CircleShape& shape, child_count_t index)
 	{
-		BOX2D_NOT_USED(index);
+		NOT_USED(index);
 		return DistanceProxy{GetVertexRadius(shape), shape.GetLocation()};
 	}
 
 	inline DistanceProxy GetDistanceProxy(const PolygonShape& shape, child_count_t index)
 	{
-		BOX2D_NOT_USED(index);
+		NOT_USED(index);
 		return DistanceProxy{GetVertexRadius(shape), shape.GetVertices()};
 	}
 
@@ -46,7 +46,7 @@ namespace {
 
 	inline DistanceProxy GetDistanceProxy(const EdgeShape& shape, child_count_t index)
 	{
-		BOX2D_NOT_USED(index);
+		NOT_USED(index);
 		return DistanceProxy{GetVertexRadius(shape), shape.GetVertex1(), shape.GetVertex2()};
 	}
 	

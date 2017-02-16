@@ -159,7 +159,7 @@ public:
 	bool GetCollideConnected() const noexcept;
 
 	/// Shift the origin for any points stored in world coordinates.
-	virtual void ShiftOrigin(const Vec2 newOrigin) { BOX2D_NOT_USED(newOrigin);  }
+	virtual void ShiftOrigin(const Vec2 newOrigin) { NOT_USED(newOrigin);  }
 
 protected:
 	Joint(const JointDef& def);

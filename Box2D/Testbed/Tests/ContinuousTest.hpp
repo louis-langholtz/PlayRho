@@ -68,7 +68,7 @@ public:
 		m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f), m_angularVelocity});
 	}
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings&, Drawer& drawer) override
 	{
 		uint32 gjkCalls = 0, gjkIters = 0, gjkMaxIters = 0;
 

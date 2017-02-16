@@ -114,7 +114,8 @@ child_count_t box2d::GetChildCount(const ChainShape& shape)
 
 bool box2d::TestPoint(const ChainShape& shape, const Transformation& xf, const Vec2 p)
 {
-	BOX2D_NOT_USED(xf);
-	BOX2D_NOT_USED(p);
+	NOT_USED(shape);
+	NOT_USED(xf);
+	NOT_USED(p);
 	return false;
 }

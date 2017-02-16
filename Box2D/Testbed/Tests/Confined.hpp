@@ -203,7 +203,7 @@ public:
 		}
 	}
 
-	void PreStep(const Settings& settings, Drawer& drawer) override
+	void PreStep(const Settings&, Drawer&) override
 	{
 		auto sleeping = true;
 		for (auto& b: m_world->GetBodies())
@@ -225,7 +225,7 @@ public:
 		//}
 	}
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings&, Drawer& drawer) override
 	{
 		auto i = 0;
 		for (auto& b: m_world->GetBodies())

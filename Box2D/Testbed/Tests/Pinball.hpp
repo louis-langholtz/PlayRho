@@ -103,7 +103,7 @@ public:
 		}
 	}
 
-	void PreStep(const Settings& settings, Drawer& drawer) override
+	void PreStep(const Settings&, Drawer&) override
 	{
 		if (m_button)
 		{
@@ -117,7 +117,7 @@ public:
 		}
 	}
 
-	void PostStep(const Settings& settings, Drawer& drawer) override
+	void PostStep(const Settings&, Drawer& drawer) override
 	{
 		drawer.DrawString(5, m_textLine, "Press 'a' to control the flippers");
 		m_textLine += DRAW_STRING_NEW_LINE;
