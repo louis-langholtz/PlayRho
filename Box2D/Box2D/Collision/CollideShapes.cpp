@@ -27,6 +27,8 @@
 #include <Box2D/Collision/Shapes/EdgeShape.hpp>
 #include <array>
 
+#define BOX2D_MAGIC(x) (x)
+
 using namespace box2d;
 
 static inline IndexSeparation GetPolygonSeparation(const PolygonShape& polygon, const EdgeInfo& edge)

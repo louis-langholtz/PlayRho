@@ -19,7 +19,8 @@ to see any kind of performance.
 ###Features
 
 Here's some of the changes that might be considered "new features":
-- Exported symbols all within the library namespace of `box2d` (and no longer preficed by `b2`).
+- Exported symbols are all within the library namespace of `box2d` (and no longer preficed by `b2`).
+- All preprocessor defines - with the exception of those for include guards - have been removed from the API or replaced with C++ solutions.
 - Rounded corner collisions.
 - *Capsule* shapes (using 2-vertex `PolygonShape` instances).
 - More stable polygon stacking.
@@ -27,9 +28,9 @@ Here's some of the changes that might be considered "new features":
 - Support for C++11's range-based loops and constant expressions.
 - Unit tested (via Google Test).
 - Compile-time support for `double` and `long double` floating-point types and 32-bit and 64-bit fixed-point types (in addition to `float`).
-- Fully per-step run-time configurable (of every setting that can be changed).
-- Provides per-step statistics.
-- Increased construction-time configurability of world instances.
+- Fully per-step run-time configurable (via [`StepConf`](https://github.com/louis-langholtz/Box2D/blob/dev/Box2D/Box2D/Dynamics/StepConf.hpp)).
+- In-depth per-step return value statistics (via [`StepStats`](https://github.com/louis-langholtz/Box2D/blob/dev/Box2D/Box2D/Dynamics/World.hpp#L86)).
+- Increased construction-time configurability of world instances (via [`World::Def`](https://github.com/louis-langholtz/Box2D/blob/dev/Box2D/Box2D/Dynamics/World.hpp#L107)).
 
 ##About
 

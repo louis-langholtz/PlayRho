@@ -31,8 +31,6 @@
 #include <Box2D/Common/Wider.hpp>
 #include <Box2D/Common/Fixed.hpp>
 
-#define BOX2D_MAGIC(x) (x)
-
 namespace box2d
 {
 template<class... T> void NOT_USED(T&&...){}

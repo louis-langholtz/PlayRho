@@ -20,6 +20,8 @@
 #include <Box2D/Dynamics/Contacts/VelocityConstraint.hpp>
 #include <Box2D/Collision/WorldManifold.hpp>
 
+#define BOX2D_MAGIC(x) (x)
+
 using namespace box2d;
 
 void VelocityConstraint::Update(const WorldManifold& worldManifold,
