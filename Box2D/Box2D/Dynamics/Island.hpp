@@ -22,27 +22,26 @@
 
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Common/AllocatedArray.hpp>
+#include <vector>
 
 namespace box2d {
 
 class Body;
 class Contact;
 class Joint;
-class StackAllocator;
-class ContactListener;
 
 /// Island.
 /// @detail A container of bodies contacts and joints relavent to handling world dynamics.
 /// @note This is an internal class.
+/// @note This data structure is 72-bytes large (on at least one 64-bit platform).
 class Island
 {
 public:
-	using BodyContainer = AllocatedArray<Body*, StackAllocator&>;
-	using ContactContainer = AllocatedArray<Contact*, StackAllocator&>;
-	using JointContainer = AllocatedArray<Joint*, StackAllocator&>;
+	using BodyContainer = std::vector<Body*>;
+	using ContactContainer = std::vector<Contact*>;
+	using JointContainer = std::vector<Joint*>;
 	
-	Island(body_count_t bodyCapacity, contact_count_t contactCapacity, island_count_t jointCapacity,
-		   StackAllocator& allocator);
+	Island(body_count_t bodyCapacity, contact_count_t contactCapacity, island_count_t jointCapacity);
 
 	Island(const Island& copy) = delete;
 

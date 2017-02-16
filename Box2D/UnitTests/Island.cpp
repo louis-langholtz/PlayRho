@@ -23,24 +23,24 @@
 
 using namespace box2d;
 
-TEST(IslandBodyContainer, BytesSizeIs32)
+TEST(IslandBodyContainer, BytesSizeIs24)
 {
-	EXPECT_EQ(sizeof(Island::BodyContainer), size_t(32));
+	EXPECT_EQ(sizeof(Island::BodyContainer), size_t(24));
 }
 
-TEST(IslandContactContainer, BytesSizeIs32)
+TEST(IslandContactContainer, BytesSizeIs24)
 {
-	EXPECT_EQ(sizeof(Island::ContactContainer), size_t(32));
+	EXPECT_EQ(sizeof(Island::ContactContainer), size_t(24));
 }
 
-TEST(IslandJointContainer, BytesSizeIs32)
+TEST(IslandJointContainer, BytesSizeIs24)
 {
-	EXPECT_EQ(sizeof(Island::JointContainer), size_t(32));
+	EXPECT_EQ(sizeof(Island::JointContainer), size_t(24));
 }
 
-TEST(Island, ByteSizeIs96)
+TEST(Island, ByteSizeIs72)
 {
-	EXPECT_EQ(sizeof(Island), size_t(96));
+	EXPECT_EQ(sizeof(Island), size_t(72));
 }
 
 TEST(Island, NotDefaultConstructible)
@@ -73,9 +73,9 @@ TEST(Island, IsNothrowDestructible)
 	EXPECT_TRUE(std::is_nothrow_destructible<Island>::value);
 }
 
-static Island foo(StackAllocator& allocator)
+static Island foo()
 {
-	return Island(10, 10, 10, allocator);
+	return Island(10, 10, 10);
 }
 
 TEST(Island, IsReturnableByValue)
@@ -84,22 +84,11 @@ TEST(Island, IsReturnableByValue)
 	// construction support). For information on copy elision see:
 	//   http://en.cppreference.com/w/cpp/language/copy_elision
 
-	StackAllocator allocator;
-	ASSERT_EQ(allocator.GetIndex(), decltype(allocator.GetIndex()){0});
-	ASSERT_EQ(allocator.GetEntryCount(), decltype(allocator.GetEntryCount()){0});
-
 	{
-		const auto island = foo(allocator);
+		const auto island = foo();
 		
-		EXPECT_EQ(allocator.GetEntryCount(), decltype(allocator.GetEntryCount()){3});
-		const auto size = 10 * (sizeof(Body*) + sizeof(Contact*) + sizeof(Joint*));
-		EXPECT_EQ(allocator.GetIndex(), decltype(allocator.GetIndex()){size});
-
-		EXPECT_EQ(island.m_bodies.max_size(), decltype(island.m_bodies.max_size()){10});
-		EXPECT_EQ(island.m_contacts.max_size(), decltype(island.m_contacts.max_size()){10});
-		EXPECT_EQ(island.m_joints.max_size(), decltype(island.m_joints.max_size()){10});
+		EXPECT_EQ(island.m_bodies.capacity(), decltype(island.m_bodies.max_size()){10});
+		EXPECT_EQ(island.m_contacts.capacity(), decltype(island.m_contacts.max_size()){10});
+		EXPECT_EQ(island.m_joints.capacity(), decltype(island.m_joints.max_size()){10});
 	}
-	
-	EXPECT_EQ(allocator.GetEntryCount(), decltype(allocator.GetEntryCount()){0});
-	EXPECT_EQ(allocator.GetIndex(), decltype(allocator.GetIndex()){0});	
 }

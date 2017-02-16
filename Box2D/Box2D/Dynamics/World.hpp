@@ -22,7 +22,6 @@
 
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Common/BlockAllocator.hpp>
-#include <Box2D/Common/StackAllocator.hpp>
 #include <Box2D/Dynamics/ContactManager.hpp>
 #include <Box2D/Dynamics/WorldCallbacks.hpp>
 #include <Box2D/Dynamics/BodyList.hpp>
@@ -97,7 +96,7 @@ constexpr auto EarthlyGravity = Vec2{0, RealNum(-9.8)};
 /// The world class manages all physics entities, dynamic simulation,
 /// and asynchronous queries. The world also contains efficient memory
 /// management facilities.
-/// @note This data structure is 392-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 328-bytes large (with 4-byte RealNum on at least one 64-bit platform).
 class World
 {
 public:
@@ -479,8 +478,6 @@ private:
 	void UnsetNewFixtures() noexcept;
 	
 	BlockAllocator m_blockAllocator; ///< Block allocator. 136-bytes.
-
-	StackAllocator m_stackAllocator; ///< Stack allocator. 64-bytes.
 	
 	ContactFilter m_defaultFilter; ///< Default contact filter. 8-bytes.
 	

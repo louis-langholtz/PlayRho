@@ -23,6 +23,7 @@
 #include <cassert>
 #include <type_traits>
 #include <iterator>
+#include <vector>
 
 namespace box2d
 {
@@ -58,7 +59,9 @@ namespace box2d
 		
 		template <typename U, typename = std::enable_if_t< !std::is_array<U>::value > >
 		constexpr Span(const U& value) noexcept: m_array{value.begin()}, m_size{value.size()} {}
-		
+
+		constexpr Span(std::vector<T>& value) noexcept: m_array{value.data()}, m_size{value.size()} {}
+
 		constexpr Span(std::initializer_list<T> list) noexcept: m_array{list.begin()}, m_size{list.size()} {}
 				
 		pointer begin() const noexcept { return m_array; }

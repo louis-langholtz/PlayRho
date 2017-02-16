@@ -24,9 +24,6 @@
 #include <Box2D/Dynamics/World.hpp>
 #include <Box2D/Dynamics/Contacts/Contact.hpp>
 
-#include <Box2D/Dynamics/Joints/Joint.hpp>
-#include <Box2D/Common/StackAllocator.hpp>
-
 /*
 Position Correction Notes
 =========================
@@ -148,11 +145,10 @@ However, we can compute sin+cos of the same angle fast.
 using namespace box2d;
 
 
-Island::Island(body_count_t bodyCapacity, contact_count_t contactCapacity, island_count_t jointCapacity,
-			   StackAllocator& allocator):
-	m_bodies{bodyCapacity, allocator.AllocateArray<Body*>(bodyCapacity), allocator},
-	m_contacts{contactCapacity, allocator.AllocateArray<Contact*>(contactCapacity), allocator},
-	m_joints{jointCapacity, allocator.AllocateArray<Joint*>(jointCapacity), allocator}
+Island::Island(body_count_t bodyCapacity, contact_count_t contactCapacity, island_count_t jointCapacity)
 {
+	m_bodies.reserve(bodyCapacity);
+	m_contacts.reserve(contactCapacity);
+	m_joints.reserve(jointCapacity);
 }
 

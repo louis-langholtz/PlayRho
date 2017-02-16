@@ -41,15 +41,16 @@
 #include <type_traits>
 #include <memory>
 #include <set>
+#include <vector>
 
 namespace box2d
 {
 
-using VelocityContainer = AllocatedArray<Velocity, StackAllocator&>;
-using PositionContainer = AllocatedArray<Position, StackAllocator&>;
-using PositionConstraintsContainer = AllocatedArray<PositionConstraint, StackAllocator&>;
-using VelocityConstraintsContainer = AllocatedArray<VelocityConstraint, StackAllocator&>;
-
+using VelocityContainer = std::vector<Velocity>;
+using PositionContainer = std::vector<Position>;
+using PositionConstraintsContainer = std::vector<PositionConstraint>;
+using VelocityConstraintsContainer = std::vector<VelocityConstraint>;
+	
 struct MovementConf
 {
 	RealNum maxTranslation;
@@ -150,7 +151,7 @@ namespace {
 	/// @param constraints Array of m_contactCount contact velocity constraint elements.
 	inline void Report(ContactListener& listener,
 					   Span<Contact*> contacts,
-					   Span<const VelocityConstraint> constraints,
+					   const VelocityConstraintsContainer& constraints,
 					   StepConf::iteration_type solved)
 	{
 		const auto size = contacts.size();
@@ -236,7 +237,7 @@ namespace {
 	/// Stores impulses.
 	/// @detail Saves the normal and tangent impulses of all the velocity constraint points back to their
 	///   associated contacts' manifold points.
-	inline void StoreImpulses(Span<const VelocityConstraint> velocityConstraints, Span<Contact*> contacts)
+	inline void StoreImpulses(const VelocityConstraintsContainer& velocityConstraints, Span<Contact*> contacts)
 	{
 		for (auto&& vc: velocityConstraints)
 		{
@@ -276,7 +277,7 @@ namespace {
 		return vp;
 	}
 	
-	inline void WarmStartVelocities(Span<const VelocityConstraint> velocityConstraints, Span<Velocity> velocities)
+	inline void WarmStartVelocities(const VelocityConstraintsContainer& velocityConstraints, VelocityContainer& velocities)
 	{
 		for (auto&& vc: velocityConstraints)
 		{
@@ -294,19 +295,20 @@ namespace {
 	/// @post Velocity constraints will have their "normal" field set to the world manifold normal for them.
 	/// @post Velocity constraints will have their constraint points updated.
 	/// @sa SolveVelocityConstraints.
-	inline void UpdateVelocityConstraints(Span<VelocityConstraint> velocityConstraints,
-										  Span<const Velocity> velocities,
-										  Span<const PositionConstraint> positionConstraints,
-										  Span<const Position> positions,
+	inline void UpdateVelocityConstraints(VelocityConstraintsContainer& velocityConstraints,
+										  const VelocityContainer& velocities,
+										  const PositionConstraintsContainer& positionConstraints,
+										  const PositionContainer& positions,
 										  const VelocityConstraint::UpdateConf& conf)
 	{
+		const auto velspan = Span<const Velocity>(velocities.data(), velocities.size());
 		auto i = Span<VelocityConstraint>::size_type{0};
 		for (auto&& pc: positionConstraints)
 		{
 			const auto posA = positions[pc.bodyA.index];
 			const auto posB = positions[pc.bodyB.index];
 			const auto worldManifold = GetWorldManifold(pc, posA, posB);
-			velocityConstraints[i].Update(worldManifold, posA.linear, posB.linear, velocities, conf);
+			velocityConstraints[i].Update(worldManifold, posA.linear, posB.linear, velspan, conf);
 			++i;
 		}
 	}
@@ -314,8 +316,8 @@ namespace {
 	/// "Solves" the velocity constraints.
 	/// @detail Updates the velocities and velocity constraint points' normal and tangent impulses.
 	/// @pre <code>UpdateVelocityConstraints</code> has been called on the velocity constraints.
-	inline void SolveVelocityConstraints(Span<VelocityConstraint> velocityConstraints,
-										 Span<Velocity> velocities)
+	inline void SolveVelocityConstraints(VelocityConstraintsContainer& velocityConstraints,
+										 VelocityContainer& velocities)
 	{
 		for (auto&& vc: velocityConstraints)
 		{
@@ -668,10 +670,11 @@ Island World::BuildIsland(Body& seed,
 	assert(remNumBodies != 0);
 
 	// Size the island for the remaining un-evaluated bodies, contacts, and joints.
-	Island island(remNumBodies, remNumContacts, remNumJoints, m_stackAllocator);
+	Island island(remNumBodies, remNumContacts, remNumJoints);
 
 	// Perform a depth first search (DFS) on the constraint graph.
-	AllocatedArray<Body*, StackAllocator&> stack(remNumBodies, m_stackAllocator.AllocateArray<Body*>(remNumBodies), m_stackAllocator);
+	auto stack = std::vector<Body*>();
+	stack.reserve(remNumBodies);
 	stack.push_back(&seed);
 	seed.SetInIsland();
 	while (!stack.empty())
@@ -820,23 +823,18 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 	const auto ncontacts = static_cast<contact_count_t>(island.m_contacts.size());
 	const auto nbodies = island.m_bodies.size();
 
-	auto positionConstraints = PositionConstraintsContainer{
-		ncontacts, m_stackAllocator.AllocateArray<PositionConstraint>(ncontacts), m_stackAllocator
-	};
+	auto positionConstraints = PositionConstraintsContainer{};
+	positionConstraints.reserve(ncontacts);
 	InitPosConstraints(positionConstraints, island.m_contacts);
 
-	auto velocityConstraints = VelocityConstraintsContainer{
-		ncontacts, m_stackAllocator.AllocateArray<VelocityConstraint>(ncontacts), m_stackAllocator
-	};
+	auto velocityConstraints = VelocityConstraintsContainer{};
+	velocityConstraints.reserve(ncontacts);
 	InitVelConstraints(velocityConstraints, island.m_contacts, step.doWarmStart? step.dtRatio: 0);
 	
-	auto velocities = VelocityContainer{
-		nbodies, m_stackAllocator.AllocateArray<Velocity>(nbodies), m_stackAllocator
-	};
-	
-	auto positions = PositionContainer{
-		nbodies, m_stackAllocator.AllocateArray<Position>(nbodies), m_stackAllocator
-	};
+	auto velocities = std::vector<Velocity>();
+	velocities.reserve(nbodies);
+	auto positions = std::vector<Position>();
+	positions.reserve(nbodies);
 	
 	const auto h = step.get_dt(); ///< Time step (in seconds).
 	
@@ -867,14 +865,16 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 
 	for (auto&& joint: island.m_joints)
 	{
-		joint->InitVelocityConstraints(velocities, positions, step, psConf);
+		joint->InitVelocityConstraints(Span<Velocity>(velocities.data(), velocities.size()),
+									   Span<Position>(positions.data(), positions.size()),
+									   step, psConf);
 	}
 	
 	for (auto i = decltype(step.regVelocityIterations){0}; i < step.regVelocityIterations; ++i)
 	{
 		for (auto&& joint: island.m_joints)
 		{
-			joint->SolveVelocityConstraints(velocities, step);
+			joint->SolveVelocityConstraints(Span<Velocity>(velocities.data(), velocities.size()), step);
 		}
 
 		SolveVelocityConstraints(velocityConstraints, velocities);
@@ -889,7 +889,9 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 	auto positionIterations = step.regPositionIterations;
 	for (auto i = decltype(step.regPositionIterations){0}; i < step.regPositionIterations; ++i)
 	{
-		const auto minSeparation = SolvePositionConstraints(positionConstraints, positions, psConf);
+		const auto minSeparation = SolvePositionConstraints(Span<PositionConstraint>(positionConstraints.data(), positionConstraints.size()),
+															Span<Position>(positions.data(), positions.size()),
+															psConf);
 		finMinSeparation = Min(finMinSeparation, minSeparation);
 		const auto contactsOkay = (minSeparation >= step.regMinSeparation);
 
@@ -898,7 +900,7 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 			auto allOkay = true;
 			for (auto&& joint: island.m_joints)
 			{
-				if (!joint->SolvePositionConstraints(positions, psConf))
+				if (!joint->SolvePositionConstraints(Span<Position>(positions.data(), positions.size()), psConf))
 				{
 					allOkay = false;
 				}
@@ -918,7 +920,9 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 	// Update normal and tangent impulses of contacts' manifold points
 	StoreImpulses(velocityConstraints, island.m_contacts);
 	
-	UpdateBodies(island.m_bodies, positions, velocities);
+	UpdateBodies(island.m_bodies,
+				 Span<const Position>(positions.data(), positions.size()),
+				 Span<const Velocity>(velocities.data(), velocities.size()));
 
 	if (m_contactMgr.m_contactListener)
 	{
@@ -1132,7 +1136,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 	bB->SetAwake();
 
 	// Build the island
-	Island island(m_bodies.size(), m_contactMgr.GetContacts().size(), 0, m_stackAllocator);
+	Island island(m_bodies.size(), m_contactMgr.GetContacts().size(), 0);
 
 	AddToIsland(island, *bA);
 	bA->SetInIsland();
@@ -1192,18 +1196,14 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 	assert(nbodies >= 2);
 	assert(ncontacts >= 1);
 
-	auto velocities = VelocityContainer{
-		nbodies, m_stackAllocator.AllocateArray<Velocity>(nbodies), m_stackAllocator
-	};
-	auto positions = PositionContainer{
-		nbodies, m_stackAllocator.AllocateArray<Position>(nbodies), m_stackAllocator
-	};
-	auto positionConstraints = PositionConstraintsContainer{
-		ncontacts, m_stackAllocator.AllocateArray<PositionConstraint>(ncontacts), m_stackAllocator
-	};
-	auto velocityConstraints = VelocityConstraintsContainer{
-		ncontacts, m_stackAllocator.AllocateArray<VelocityConstraint>(ncontacts), m_stackAllocator
-	};
+	auto velocities = VelocityContainer{};
+	velocities.reserve(nbodies);
+	auto positions = PositionContainer{};
+	positions.reserve(nbodies);
+	auto positionConstraints = PositionConstraintsContainer{};
+	positionConstraints.reserve(ncontacts);
+	auto velocityConstraints = VelocityConstraintsContainer{};
+	velocityConstraints.reserve(ncontacts);
 	InitPosConstraints(positionConstraints, island.m_contacts);
 	InitVelConstraints(velocityConstraints, island.m_contacts, 0);
 	
@@ -1237,7 +1237,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 		//   it will do). Assuming that slower is preferable to tunnelling, then the non-selective
 		//   function is the one to be calling here.
 		//
-		const auto minSeparation = SolvePositionConstraints(positionConstraints, positions, psConf);
+		const auto minSeparation = SolvePositionConstraints(Span<const PositionConstraint>(positionConstraints.data(), positionConstraints.size()), positions, psConf);
 		finMinSeparation = Min(finMinSeparation, minSeparation);
 		if (minSeparation >= step.toiMinSeparation)
 		{
@@ -1276,7 +1276,9 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 	
 	IntegratePositions(positions, velocities, step.get_dt(), MovementConf{step.maxTranslation, step.maxRotation});
 	
-	UpdateBodies(island.m_bodies, positions, velocities);
+	UpdateBodies(island.m_bodies,
+				 Span<const Position>(positions.data(), positions.size()),
+				 Span<const Velocity>(velocities.data(), velocities.size()));
 
 	if (m_contactMgr.m_contactListener)
 	{

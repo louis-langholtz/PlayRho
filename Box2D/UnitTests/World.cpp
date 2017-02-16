@@ -33,11 +33,11 @@
 
 using namespace box2d;
 
-TEST(World, ByteSizeIs_392_416_or_464)
+TEST(World, ByteSizeIs_328_416_or_464)
 {
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(World), size_t(392)); break;
+		case  4: EXPECT_EQ(sizeof(World), size_t(328)); break;
 		case  8: EXPECT_EQ(sizeof(World), size_t(416)); break;
 		case 16: EXPECT_EQ(sizeof(World), size_t(464)); break;
 		default: FAIL(); break;
@@ -430,9 +430,9 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 	auto presolved = unsigned{0};
 	auto postsolved = unsigned{0};
 	MyContactListener listener{
-		[&](Contact& contact, const Manifold& oldManifold) { ++presolved; },
-		[&](Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved) { ++postsolved; },
-		[&](Contact& contact) {},
+		[&](Contact&, const Manifold&) { ++presolved; },
+		[&](Contact&, const ContactImpulsesList&, ContactListener::iteration_type) { ++postsolved; },
+		[&](Contact&) {},
 	};
 
 	const Vec2 gravity{0, 0};
@@ -609,9 +609,9 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
 {
 	World world{World::Def{}.UseGravity(Vec2(0, 0))};
 	MyContactListener listener{
-		[&](Contact& contact, const Manifold& oldManifold) {},
-		[&](Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved) {},
-		[&](Contact& contact) {},
+		[&](Contact&, const Manifold&) {},
+		[&](Contact&, const ContactImpulsesList&, ContactListener::iteration_type) {},
+		[&](Contact&) {},
 	};
 	world.SetContactListener(&listener);
 
@@ -646,9 +646,9 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
 {
 	World world{World::Def{}.UseGravity(Vec2(0, 0))};
 	MyContactListener listener{
-		[&](Contact& contact, const Manifold& oldManifold) {},
-		[&](Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved) {},
-		[&](Contact& contact) {},
+		[&](Contact&, const Manifold&) {},
+		[&](Contact&, const ContactImpulsesList&, ContactListener::iteration_type) {},
+		[&](Contact&) {},
 	};
 	world.SetContactListener(&listener);
 	
