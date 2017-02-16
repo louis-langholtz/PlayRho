@@ -1154,7 +1154,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 	}
 
 	// Now solve for remainder of time step
-	const auto results = SolveTOI(StepConf{step}.use_dt((1 - toi) * step.get_dt()), island);
+	const auto results = SolveTOI(StepConf{step}.set_dt((1 - toi) * step.get_dt()), island);
 
 	// Reset island flags and synchronize broad-phase proxies.
 	for (auto&& body: island.m_bodies)

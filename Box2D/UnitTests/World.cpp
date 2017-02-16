@@ -1935,7 +1935,7 @@ public:
 			boxes[i] = box;
 		}
 		
-		auto stepConf = StepConf{}.use_dt(1.0f/60);
+		const auto stepConf = StepConf{}.set_dt(1.0f/60);
 		while (loopsTillSleeping < maxLoops)
 		{
 			world.Step(stepConf);

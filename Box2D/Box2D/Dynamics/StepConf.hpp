@@ -26,12 +26,22 @@
 namespace box2d {
 
 /// Step configuration.
-/// @note This data structure is 56-bytes large (on at least one 64-bit platform).
+/// @detail
+/// Provides the primary means for configuring the per-step world physics simulation. All
+/// the values have defaults. These defaults are intended to most likely be the values desired.
+/// @note Be sure to confirm that the delta time (the time-per-step i.e. <code>dt</code>) is
+///   correct for your use.
+/// @note This data structure is 88-bytes large (with 4-byte RealNum on at least one 64-bit platform).
+/// @sa World::Step.
 class StepConf
 {
 public:
+	/// Step iterations type.
+	/// @detail A type for countining iterations per-step.
+	/// @note The special value of -1 is reserved for signifying an invalid iteration value.
 	using iteration_type = ts_iters_t;
 
+	/// Invalid iteration value.
 	static constexpr auto InvalidIteration = static_cast<iteration_type>(-1);
 
 	/// Gets the delta time (time amount for this time step).
@@ -49,15 +59,10 @@ public:
 	/// @post The inverse delta time value is the inverse of this set value or zero if the value is zero.
 	/// @sa get_inv_dt().
 	/// @param value Elapsed time amount (in seconds).
-	void set_dt(RealNum value) noexcept
+	constexpr StepConf& set_dt(RealNum value) noexcept
 	{
 		dt = value;
 		inv_dt = (value != 0)? RealNum{1} / value: RealNum{0};
-	}
-
-	constexpr StepConf& use_dt(RealNum value) noexcept
-	{
-		set_dt(value);
 		return *this;
 	}
 
@@ -71,8 +76,12 @@ public:
 	/// Set to an invalid value to disable sleeping.
 	RealNum minStillTimeToSleep = RealNum{1} / 2; // aka 0.5
 
+	/// Linear slop.
+	/// @note Must be greater than 0.
 	RealNum linearSlop = DefaultLinearSlop;
 	
+	/// Angular slop.
+	/// @note Must be greater than 0.
 	RealNum angularSlop = DefaultAngularSlop;
 	
 	/// Regular resolution rate.
@@ -179,10 +188,13 @@ public:
 	/// @sa toiMinSeparation.
 	iteration_type toiPositionIterations = 20;
 	
+	/// Max TOI root finder iterations.
 	iteration_type maxToiRootIters = DefaultMaxToiRootIters;
 	
+	/// Max TOI iterations.
 	iteration_type maxToiIters = DefaultMaxToiIters;
 	
+	/// Max distance iterations.
 	iteration_type maxDistanceIters = DefaultMaxDistanceIters;
 
 	/// Maximum sub steps.
@@ -192,12 +204,17 @@ public:
 	/// have continuous collision resolution done for it.
 	iteration_type maxSubSteps = 48;
 	
-	bool doWarmStart = true; ///< Whether or not to perform warm starting (in the regular phase).
-	bool doToi = true; ///< Whether or not to perform continuous collision detection.
+	/// Do warm start.
+	/// @detail Whether or not to perform warm starting (in the regular phase).
+	bool doWarmStart = true;
+	
+	/// Do TOI.
+	/// @detail Whether or not to perform continuous collision detection.
+	bool doToi = true;
 
 private:
-	RealNum dt = 0; ///< Delta time. This is the time step in seconds.
-	RealNum inv_dt = 0; ///< Inverse time step (1/dt or 0 if dt == 0). @see dt.
+	RealNum dt = RealNum{1} / 60; ///< Delta time. This is the time step in seconds.
+	RealNum inv_dt = 60; ///< Inverse time step (1/dt or 0 if dt == 0). @see dt.
 };
 
 inline RealNum GetMaxRegLinearCorrection(const StepConf& conf) noexcept
