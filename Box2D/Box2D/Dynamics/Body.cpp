@@ -87,12 +87,13 @@ Body::Body(const BodyDef& bd, World* world):
 
 Body::~Body()
 {
-	DestroyJoints();
-	DestroyContacts();
-	DestroyFixtures();
+	// Assumes destructor is private which it should be given factory handling of Body.
+	InternalDestroyJoints();
+	InternalDestroyContacts();
+	InternalDestroyFixtures();
 }
 
-void Body::DestroyContacts()
+void Body::InternalDestroyContacts()
 {
 	// Destroy the attached contacts.
 	while (!m_contacts.empty())
@@ -103,7 +104,7 @@ void Body::DestroyContacts()
 	}
 }
 
-void Body::DestroyJoints()
+void Body::InternalDestroyJoints()
 {
 	// Delete the attached joints.
 	while (!m_joints.empty())
@@ -122,11 +123,14 @@ void Body::DestroyJoints()
 void Body::DestroyFixtures()
 {
 	assert(!m_world->IsLocked());
-	if (m_world->IsLocked())
+	if (!m_world->IsLocked())
 	{
-		return;
+		InternalDestroyFixtures();
 	}
-	
+}
+
+void Body::InternalDestroyFixtures()
+{
 	// Delete the attached fixtures. This destroys broad-phase proxies.
 	while (!m_fixtures.empty())
 	{
@@ -184,7 +188,7 @@ void Body::SetType(BodyType type)
 		m_linearAcceleration += m_world->GetGravity();
 	}
 
-	DestroyContacts();
+	InternalDestroyContacts();
 
 	auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
 	for (auto&& fixture: GetFixtures())
@@ -535,7 +539,7 @@ void Body::SetActive(bool flag)
 			fixture.DestroyProxies(allocator, broadPhase);
 		}
 
-		DestroyContacts();
+		InternalDestroyContacts();
 	}
 }
 
