@@ -73,7 +73,7 @@ namespace box2d {
 		/// where <code>f(t)</code> is the distance between the shapes at time <code>t</code>,
 		/// and <code>totalRadius</code> is the sum of the vertex radiuses of 2 distance proxies.
 		/// @note This value never needs to be more than the number of iterations needed to
-		/// achieve full machine precision. Any more than that are just wasted CPU cycles.
+		///    achieve full machine precision.
 		root_iter_type maxRootIters = DefaultMaxToiRootIters;
 		
 		toi_iter_type maxToiIters = DefaultMaxToiIters; ///< Max time of impact iterations.
