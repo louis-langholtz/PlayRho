@@ -28,7 +28,7 @@ TEST(VelocityConstraint, ByteSizeIs_176or160_or_312)
 {
 	if (sizeof(RealNum) == 4)
 	{
-#if defined(BOX2D_CACHE_VC_POINT_MASSES)
+#if !defined(BOX2D_NOCACHE_VC_POINT_MASSES)
 	EXPECT_EQ(sizeof(VelocityConstraint), size_t(176));
 #else
 	EXPECT_EQ(sizeof(VelocityConstraint), size_t(160));
@@ -36,7 +36,7 @@ TEST(VelocityConstraint, ByteSizeIs_176or160_or_312)
 	}
 	else if (sizeof(RealNum) == 8)
 	{
-#if defined(BOX2D_CACHE_VC_POINT_MASSES)
+#if !defined(BOX2D_NOCACHE_VC_POINT_MASSES)
 		EXPECT_EQ(sizeof(VelocityConstraint), size_t(312));
 #else
 		EXPECT_EQ(sizeof(VelocityConstraint), size_t(160));

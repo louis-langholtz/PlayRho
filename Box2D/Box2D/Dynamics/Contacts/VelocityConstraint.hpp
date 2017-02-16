@@ -42,7 +42,7 @@ namespace box2d {
 	///
 	/// @note A valid contact velocity constraint must have a point count of either 1 or 2.
 	/// @note This data structure is 176-bytes large (on at least one 64-bit platform) if
-	///   <code>BOX2D_CACHE_VC_POINT_MASSES</code> is defined. It's 160-bytes large otherwise.
+	///   <code>BOX2D_NOCACHE_VC_POINT_MASSES</code> is not defined. It's 160-bytes large otherwise.
 	/// @note Class invariants are enforced via the <code>Update</code> method being the only
 	///   public access way to change certain properties.
 	///
