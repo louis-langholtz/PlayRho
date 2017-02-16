@@ -37,15 +37,13 @@ TEST(StackAllocator, DefaultConstruction)
 	EXPECT_EQ(foo.GetAllocation(), decltype(foo.GetAllocation()){0});
 }
 
-TEST(StackAllocator, faster_than_allocfree)
+TEST(StackAllocator, slower_than_mallocfree)
 {
 	// If this test fails, the question arrises of whether the stack allocator code should be
 	// replaced with instead using malloc/free.
 
 	const auto ptr_val = reinterpret_cast<Body*>(0x768ea);
-	constexpr auto iterations = unsigned(10000000);
-	constexpr auto num_body_ptrs = size_t(100);
-	constexpr auto elem_to_poke = num_body_ptrs / 2;
+	constexpr auto iterations = unsigned(500000);
 	
 	std::chrono::duration<double> elapsed_secs_custom;
 	std::chrono::duration<double> elapsed_secs_malloc;
@@ -58,10 +56,14 @@ TEST(StackAllocator, faster_than_allocfree)
 		{
 			for (auto i = decltype(iterations){0}; i < iterations; ++i)
 			{
-				auto buf = static_cast<Body**>(foo.Allocate(num_body_ptrs * sizeof(Body*)));
-				buf[elem_to_poke] = ptr_val;
-				ASSERT_EQ(buf[elem_to_poke], ptr_val);
-				foo.Free(buf);
+				for (auto num_body_ptrs = size_t(1); num_body_ptrs < 200; ++num_body_ptrs)
+				{
+					const auto elem_to_poke = num_body_ptrs / 2;
+					auto buf = static_cast<Body**>(foo.Allocate(num_body_ptrs * sizeof(Body*)));
+					buf[elem_to_poke] = ptr_val;
+					ASSERT_EQ(buf[elem_to_poke], ptr_val);
+					foo.Free(buf);
+				}
 			}
 		}
 		end = std::chrono::high_resolution_clock::now();
@@ -73,16 +75,20 @@ TEST(StackAllocator, faster_than_allocfree)
 		start = std::chrono::high_resolution_clock::now();
 		for (auto i = decltype(iterations){0}; i < iterations; ++i)
 		{
-			auto buf = static_cast<Body**>(std::malloc(num_body_ptrs * sizeof(Body*)));
-			buf[elem_to_poke] = ptr_val;
-			ASSERT_EQ(buf[elem_to_poke], ptr_val);
-			std::free(buf);
+			for (auto num_body_ptrs = size_t(1); num_body_ptrs < 200; ++num_body_ptrs)
+			{
+				const auto elem_to_poke = num_body_ptrs / 2;
+				auto buf = static_cast<Body**>(std::malloc(num_body_ptrs * sizeof(Body*)));
+				buf[elem_to_poke] = ptr_val;
+				ASSERT_EQ(buf[elem_to_poke], ptr_val);
+				std::free(buf);
+			}
 		}
 		end = std::chrono::high_resolution_clock::now();
 		elapsed_secs_malloc = end - start;
 	}
-	
-	EXPECT_LT(elapsed_secs_custom.count(), elapsed_secs_malloc.count());
+
+	EXPECT_GT(elapsed_secs_custom.count(), elapsed_secs_malloc.count());
 }
 
 static inline bool is_aligned(void* ptr, std::size_t siz)
