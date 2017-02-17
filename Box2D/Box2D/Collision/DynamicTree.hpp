@@ -119,7 +119,7 @@ public:
 	/// Gets the ratio of the sum of the perimeters of nodes to the root perimeter.
 	/// @note Zero is returned if no proxies exist at the time of the call.
 	/// @return Value of zero or more.
-	RealNum GetAreaRatio() const;
+	RealNum GetAreaRatio() const noexcept;
 
 	/// Build an optimal tree. Very expensive. For testing.
 	void RebuildBottomUp();
@@ -167,8 +167,8 @@ private:
 
 	size_type Balance(size_type index);
 
-	size_type ComputeHeight() const;
-	size_type ComputeHeight(size_type nodeId) const;
+	size_type ComputeHeight() const noexcept;
+	size_type ComputeHeight(size_type nodeId) const noexcept;
 
 	void ValidateStructure(size_type index) const;
 	void ValidateMetrics(size_type index) const;
@@ -217,8 +217,7 @@ inline void DynamicTree::Query(T* callback, const AABB& aabb) const
 			continue;
 		}
 
-		const TreeNode* node = m_nodes + nodeId;
-
+		const auto node = m_nodes + nodeId;
 		if (TestOverlap(node->aabb, aabb))
 		{
 			if (node->IsLeaf())
@@ -268,7 +267,6 @@ inline void DynamicTree::RayCast(T* callback, const RayCastInput& input) const
 		}
 
 		const auto node = m_nodes + nodeId;
-
 		if (!TestOverlap(node->aabb, segmentAABB))
 		{
 			continue;
@@ -279,7 +277,7 @@ inline void DynamicTree::RayCast(T* callback, const RayCastInput& input) const
 		const auto c = node->aabb.GetCenter();
 		const auto h = node->aabb.GetExtents();
 		const auto separation = Abs(Dot(v, p1 - c)) - Dot(abs_v, h);
-		if (separation > RealNum{0})
+		if (separation > 0)
 		{
 			continue;
 		}
@@ -289,14 +287,13 @@ inline void DynamicTree::RayCast(T* callback, const RayCastInput& input) const
 			const auto subInput = RayCastInput{input.p1, input.p2, maxFraction};
 
 			const auto value = callback->RayCastCallback(subInput, nodeId);
-
-			if (value == RealNum{0})
+			if (value == 0)
 			{
 				// The client has terminated the ray cast.
 				return;
 			}
 
-			if (value > RealNum{0})
+			if (value > 0)
 			{
 				// Update segment bounding box.
 				maxFraction = value;

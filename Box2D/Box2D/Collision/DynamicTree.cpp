@@ -185,42 +185,34 @@ void DynamicTree::InsertLeaf(size_type leaf)
 		const auto combinedAABB = m_nodes[index].aabb + leafAABB;
 		const auto combinedArea = combinedAABB.GetPerimeter();
 
+		assert(combinedArea >= area);
+
 		// Cost of creating a new parent for this node and the new leaf
-		const auto cost = RealNum(2) * combinedArea;
+		const auto cost = combinedArea * 2;
 
 		// Minimum cost of pushing the leaf further down the tree
-		const auto inheritanceCost = RealNum(2) * (combinedArea - area);
+		const auto inheritanceCost = (combinedArea - area) * 2;
 
-		// Cost of descending into child1
-		RealNum cost1;
 		assert(child1 != NullNode);
 		assert(child1 < m_nodeCapacity);
-		if (m_nodes[child1].IsLeaf())
-		{
+		
+		// Cost of descending into child1
+		const auto cost1 = [&]() {
 			const auto aabb = leafAABB + m_nodes[child1].aabb;
-			cost1 = aabb.GetPerimeter() + inheritanceCost;
-		}
-		else
-		{
-			const auto aabb = leafAABB + m_nodes[child1].aabb;
-			const auto oldArea = m_nodes[child1].aabb.GetPerimeter();
-			const auto newArea = aabb.GetPerimeter();
-			cost1 = (newArea - oldArea) + inheritanceCost;
-		}
+			const auto perimeter = aabb.GetPerimeter();
+			return (m_nodes[child1].IsLeaf())?
+				perimeter + inheritanceCost:
+				perimeter - m_nodes[child1].aabb.GetPerimeter() + inheritanceCost;
+		}();
 
 		// Cost of descending into child2
-		RealNum cost2;
-		if (m_nodes[child2].IsLeaf())
-		{
+		const auto cost2 = [&]() {
 			const auto aabb = leafAABB + m_nodes[child2].aabb;
-			cost2 = aabb.GetPerimeter() + inheritanceCost;
-		}
-		else
-		{
-			const auto aabb = leafAABB + m_nodes[child2].aabb;
-			const auto oldArea = m_nodes[child2].aabb.GetPerimeter();
-			cost2 = aabb.GetPerimeter() - oldArea + inheritanceCost;
-		}
+			const auto perimeter = aabb.GetPerimeter();
+			return (m_nodes[child2].IsLeaf())?
+				perimeter + inheritanceCost:
+				perimeter - m_nodes[child2].aabb.GetPerimeter() + inheritanceCost;
+		}();
 
 		// Descend according to the minimum cost.
 		if ((cost < cost1) && (cost < cost2))
@@ -504,7 +496,7 @@ DynamicTree::size_type DynamicTree::Balance(size_type iA)
 	return iA;
 }
 
-RealNum DynamicTree::GetAreaRatio() const
+RealNum DynamicTree::GetAreaRatio() const noexcept
 {
 	if (m_root == NullNode)
 	{
@@ -531,7 +523,7 @@ RealNum DynamicTree::GetAreaRatio() const
 }
 
 // Compute the height of a sub-tree.
-DynamicTree::size_type DynamicTree::ComputeHeight(size_type nodeId) const
+DynamicTree::size_type DynamicTree::ComputeHeight(size_type nodeId) const noexcept
 {
 	assert((0 <= nodeId) && (nodeId < m_nodeCapacity));
 	const auto node = m_nodes + nodeId;
@@ -546,7 +538,7 @@ DynamicTree::size_type DynamicTree::ComputeHeight(size_type nodeId) const
 	return 1 + Max(height1, height2);
 }
 
-DynamicTree::size_type DynamicTree::ComputeHeight() const
+DynamicTree::size_type DynamicTree::ComputeHeight() const noexcept
 {
 	return ComputeHeight(m_root);
 }
