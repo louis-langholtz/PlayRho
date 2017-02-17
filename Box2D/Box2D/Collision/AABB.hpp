@@ -132,6 +132,8 @@ namespace box2d
 		return AABB{lhs.GetLowerBound() - rhs, lhs.GetUpperBound() + rhs};
 	}
 
+	// Tests for overlap between two axis aligned bounding boxes.
+	// @note This function's complexity is constant.
 	inline bool TestOverlap(const AABB& a, const AABB& b) noexcept
 	{
 		const auto d1 = b.GetLowerBound() - a.GetUpperBound();

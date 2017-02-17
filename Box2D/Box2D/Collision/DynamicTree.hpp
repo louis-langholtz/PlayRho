@@ -83,12 +83,12 @@ public:
 	/// @param proxyId Identifier of node to get the user data for.
 	/// @return User data for the specified node.
 	/// @note Behavior is undefined if the given index is invalid.
-	void* GetUserData(size_type proxyId) const;
+	void* GetUserData(size_type proxyId) const noexcept;
 
 	/// Gets the fat AABB for a proxy.
 	/// @param proxyId Proxy ID. Must be a valid ID.
 	/// @warning Behavior is undefined if the given proxy ID is not a valid ID.
-	const AABB& GetFatAABB(size_type proxyId) const;
+	const AABB& GetFatAABB(size_type proxyId) const noexcept;
 
 	/// Query an AABB for overlapping proxies. The callback class
 	/// is called for each proxy that overlaps the supplied AABB.
@@ -97,8 +97,8 @@ public:
 
 	/// Ray-cast against the proxies in the tree. This relies on the callback
 	/// to perform a exact ray-cast in the case were the proxy contains a shape.
-	/// The callback also performs the any collision filtering. This has performance
-	/// roughly equal to k * log(n), where k is the number of collisions and n is the
+	/// The callback also performs the any collision filtering.
+	/// @note Performance is roughly k * log(n), where k is the number of collisions and n is the
 	/// number of proxies in the tree.
 	/// @param input the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
 	/// @param callback a callback class that is called for each proxy that is hit by the ray.
@@ -134,6 +134,9 @@ private:
 	/// A node in the dynamic tree. The client does not interact with this directly.
 	struct TreeNode
 	{
+		/// Whether or not this node is a leaf node.
+		/// @note This has constant complexity.
+		/// @return <code>true</code> if this is a leaf node, <code>false</code> otherwise.
 		bool IsLeaf() const noexcept
 		{
 			return child1 == NullNode;
@@ -181,14 +184,14 @@ private:
 	TreeNode* m_nodes;
 };
 
-inline void* DynamicTree::GetUserData(size_type proxyId) const
+inline void* DynamicTree::GetUserData(size_type proxyId) const noexcept
 {
 	assert(proxyId != NullNode);
 	assert(proxyId < m_nodeCapacity);
 	return m_nodes[proxyId].userData;
 }
 
-inline const AABB& DynamicTree::GetFatAABB(size_type proxyId) const
+inline const AABB& DynamicTree::GetFatAABB(size_type proxyId) const noexcept
 {
 	assert(proxyId != NullNode);
 	assert(proxyId < m_nodeCapacity);
