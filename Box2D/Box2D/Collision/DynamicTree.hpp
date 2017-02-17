@@ -165,6 +165,8 @@ private:
 	void InsertLeaf(size_type node);
 	void RemoveLeaf(size_type node);
 
+	size_type FindLowestCostNode(AABB leafAABB) const noexcept;
+
 	size_type Balance(size_type index);
 
 	size_type ComputeHeight() const noexcept;
