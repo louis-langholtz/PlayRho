@@ -441,6 +441,16 @@ static void sInterface()
 					static_cast<float>(DefaultLinearSlop / 100),
 					true);
 		imguiSlider("Angular Slop", &settings.angularSlop, (Pi * 2 / 1800), (Pi * 2 / 18), 0.001f, true);
+		imguiSlider("Reg Min Sep", &settings.regMinSeparation,
+					-5 * static_cast<float>(DefaultLinearSlop),
+					-0 * static_cast<float>(DefaultLinearSlop),
+					static_cast<float>(DefaultLinearSlop) / 20,
+					true);
+		imguiSlider("TOI Min Sep", &settings.toiMinSeparation,
+					-5 * static_cast<float>(DefaultLinearSlop),
+					-0 * static_cast<float>(DefaultLinearSlop),
+					static_cast<float>(DefaultLinearSlop) / 20,
+					true);
 		imguiSlider("Max Translation", &settings.maxTranslation, 0.0f, 8.0f, 0.05f, true);
 		imguiSlider("Max Rotation", &settings.maxRotation, 0.0f, 360.0f, 1.0f, true);
 		imguiSlider("Max Lin Correct", &settings.maxLinearCorrection, 0.0f, 1.0f, 0.01f, true);
@@ -525,8 +535,8 @@ int main()
 	_CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF | _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG));
 #endif
 
-	g_camera.m_width = 1200; // 1152;
-	g_camera.m_height = 890; // 864;
+	g_camera.m_width = 1280; // 1152;
+	g_camera.m_height = 940; // 864;
     
 	if (glfwInit() == 0)
 	{

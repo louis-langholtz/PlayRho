@@ -571,8 +571,8 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	
 	stepConf.linearSlop = settings.linearSlop;
 	stepConf.angularSlop = settings.angularSlop;
-	stepConf.regMinSeparation = settings.linearSlop * -3;
-	stepConf.toiMinSeparation = settings.linearSlop * -1.5f;
+	stepConf.regMinSeparation = settings.regMinSeparation;
+	stepConf.toiMinSeparation = settings.toiMinSeparation;
 	stepConf.targetDepth = settings.linearSlop * 3;
 	stepConf.tolerance = settings.linearSlop / 4;
 	
@@ -605,6 +605,12 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	m_maxDistIters = Max(m_maxDistIters, stepStats.toi.maxDistIters);
 	m_maxRootIters = Max(m_maxRootIters, stepStats.toi.maxRootIters);
 	m_maxToiIters = Max(m_maxToiIters, stepStats.toi.maxToiIters);
+
+	if (stepStats.reg.minSeparation < std::numeric_limits<RealNum>::infinity())
+	{
+		m_minRegSep = Min(m_minRegSep, stepStats.reg.minSeparation);
+		m_maxRegSep = Max(m_maxRegSep, stepStats.reg.minSeparation);
+	}
 	
 	Draw(drawer, *m_world, settings);
 
@@ -614,7 +620,6 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	{
 		++m_stepCount;
 		m_stepStats = stepStats;
-		m_minRegSep = Min(m_minRegSep, stepStats.reg.minSeparation);
 		m_minToiSep = Min(m_minToiSep, stepStats.toi.minSeparation);
 	}
 
@@ -672,8 +677,8 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 						  sleepCount, bodyCount, fixtureCount, shapeCount, contactCount, m_maxContacts, jointCount);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		drawer.DrawString(5, m_textLine, "  Reg sums: isl-found=%llu isl-solv=%llu pos-iter=%llu vel-iter=%llu min-sep=%f",
-						  m_sumRegIslandsFound, m_sumRegIslandsSolved, m_sumRegPosIters, m_sumRegVelIters, m_minRegSep);
+		drawer.DrawString(5, m_textLine, "  Reg sums: isl-found=%llu isl-solv=%llu pos-iter=%llu vel-iter=%llu min-sep=%f max-sep=%f",
+						  m_sumRegIslandsFound, m_sumRegIslandsSolved, m_sumRegPosIters, m_sumRegVelIters, float(m_minRegSep), float(m_maxRegSep));
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		drawer.DrawString(5, m_textLine, "  TOI sums: isl-found=%llu isl-solv=%llu pos-iter=%llu vel-iter=%llu upd=%llu cts-maxstep=%llu min-sep=%f",

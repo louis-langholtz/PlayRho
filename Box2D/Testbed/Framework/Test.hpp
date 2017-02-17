@@ -38,6 +38,8 @@ struct Settings
 	float maxAngularCorrection = static_cast<float>(DefaultMaxAngularCorrection * 1_rad / 1_deg); // in degrees
 	float linearSlop = static_cast<float>(DefaultLinearSlop);
 	float angularSlop = DefaultAngularSlop;
+	float regMinSeparation = static_cast<float>(DefaultLinearSlop) * -3;
+	float toiMinSeparation = static_cast<float>(DefaultLinearSlop) * -1.5f;
 	int regPosResRate = 20; // in percent
 	int toiPosResRate = 75; // in percent
 	int regVelocityIterations = 8;
@@ -190,7 +192,8 @@ private:
 	uint64 m_sumRegVelIters = 0;
 	uint64 m_sumToiPosIters = 0;
 	uint64 m_sumToiVelIters = 0;
-	RealNum m_minRegSep = 0;
+	RealNum m_minRegSep = std::numeric_limits<RealNum>::infinity();
+	RealNum m_maxRegSep = -std::numeric_limits<RealNum>::infinity();
 	RealNum m_minToiSep = 0;
 
 	using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;

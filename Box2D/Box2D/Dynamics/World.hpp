@@ -50,7 +50,7 @@ struct PreStepStats
 
 struct RegStepStats
 {
-	RealNum minSeparation = 0;
+	RealNum minSeparation = std::numeric_limits<RealNum>::infinity();
 
 	uint32 islandsFound = 0;
 	uint32 islandsSolved = 0;
