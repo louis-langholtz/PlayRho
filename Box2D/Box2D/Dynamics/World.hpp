@@ -40,6 +40,7 @@ class Joint;
 class Island;
 class StepConf;
 
+/// Pre-step statistics.
 struct PreStepStats
 {
 	uint32 ignored = 0;
@@ -48,6 +49,7 @@ struct PreStepStats
 	uint32 added = 0;
 };
 
+/// Regular step phase statistics.
 struct RegStepStats
 {
 	RealNum minSeparation = std::numeric_limits<RealNum>::infinity();
@@ -60,6 +62,7 @@ struct RegStepStats
 	uint32 sumVelIters = 0;
 };
 
+/// TOI step phase statistics.
 struct ToiStepStats
 {
 	RealNum minSeparation = 0;
@@ -82,13 +85,16 @@ struct ToiStepStats
 	root_iter_type maxRootIters = 0;
 };
 
+/// Per-step statistics.
 struct StepStats
 {
-	PreStepStats pre;
-	RegStepStats reg;
-	ToiStepStats toi;
+	PreStepStats pre; ///< Pre-phase step statistics.
+	RegStepStats reg; ///< Reg-phase step statistics.
+	ToiStepStats toi; ///< TOI-phase step statistics.
 };
 
+/// Earthly gravity.
+/// @detail An approximation of Earth's average gravity at sea-level.
 constexpr auto EarthlyGravity = Vec2{0, RealNum(-9.8)};
 
 /// World.
@@ -100,9 +106,14 @@ constexpr auto EarthlyGravity = Vec2{0, RealNum(-9.8)};
 class World
 {
 public:
+	
+	/// Size type.
 	using size_type = size_t;
+
+	/// Time step iteration type.
 	using ts_iters_type = ts_iters_t;
 
+	/// World construction definitions.
 	struct Def
 	{
 		constexpr Def& UseGravity(Vec2 value) noexcept;
@@ -110,24 +121,42 @@ public:
 		constexpr Def& UseMinVertexRadius(RealNum value) noexcept;
 		constexpr Def& UseMaxVertexRadius(RealNum value) noexcept;
 
+		/// Gravity.
+		/// @detail The acceleration all dynamic bodies are subject to.
+		/// @note Use Vec2{0, 0} to disable gravity.
 		Vec2 gravity = EarthlyGravity;
 		
+		/// AABB extension.
+		/// @detail This is the extension that will be applied to Axis Aligned Bounding Box
+		///    objects used in "broadphase" collision detection.
+		/// @note Should be greater than 0.
 		RealNum aabbExtension = DefaultLinearSlop * 20;
 
-		// Minimum vertex radius.
-		// @detail This scaling factor should not be modified.
-		// Making it smaller means some shapes could have insufficient buffer for continuous collision.
-		// Making it larger may create artifacts for vertex collision.
+		/// Minimum vertex radius.
+		/// @detail This is the minimum vertex radius that this world establishes which bodies
+		///    shall allow fixtures to be created with. Trying to create a fixture with a shape
+		///    having a smaller vertex radius shall be rejected with a <code>nullptr</code>
+		///    returned value.
+		/// @note This value probably should not be changed except to experiment with what can happen.
+		/// @note Making it smaller means some shapes could have insufficient buffer for continuous collision.
+		/// @note Making it larger may create artifacts for vertex collision.
 		RealNum minVertexRadius = DefaultLinearSlop * 2;
 
+		/// Maximum vertex radius.
+		/// @detail This is the maximum vertex radius that this world establishes which bodies
+		///    shall allow fixtures to be created with. Trying to create a fixture with a shape
+		///    having a larger vertex radius shall be rejected with a <code>nullptr</code>
+		///    returned value.
 		RealNum maxVertexRadius = 255.0f; // linearSlop * 2550000
 	};
 	
+	/// Gets the default definitions value.
 	static constexpr Def GetDefaultDef()
 	{
 		return Def{};	
 	}
 
+	/// Gets the default body definitions value.
 	static const BodyDef& GetDefaultBodyDef();
 
 	/// Constructs a world object.
@@ -251,6 +280,7 @@ public:
 	/// @return the head of the world contact list.
 	const ContactList& GetContacts() const noexcept;
 
+	/// Gets whether or not sub-stepping is enabled.
 	bool GetSubStepping() const noexcept;
 
 	/// Enable/disable single stepped continuous physics. For testing.
@@ -300,30 +330,37 @@ public:
 	/// Gets the maximum vertex radius that shapes in this world can be.
 	RealNum GetMaxVertexRadius() const noexcept;
 
+	/// Gets the inverse delta time.
 	RealNum GetInvDeltaTime() const noexcept;
 
 private:
 
-	using flags_type = uint32;
+	/// Flags type data type.
+	using FlagsType = uint32;
 
-	// m_flags
-	enum Flag: flags_type
+	// Flag enumeration.
+	enum Flag: FlagsType
 	{
+		/// New fixture.
 		e_newFixture	= 0x0001,
+
+		/// Locked.
 		e_locked		= 0x0002,
 
+		/// Substepping.
 		e_substepping   = 0x0020,
 		
-		/// Step complete. @detail Used for sub-stepping. @sa m_subStepping.
+		/// Step complete. @detail Used for sub-stepping. @sa e_substepping.
 		e_stepComplete  = 0x0040,
 	};
 
+	/// Island solver results.
 	struct IslandSolverResults
 	{
-		RealNum minSeparation;
+		RealNum minSeparation; ///< Minimum separation.
 		bool solved = false; ///< Solved. <code>true</code> if position constraints solved, <code>false</code> otherwise.
-		ts_iters_t positionIterations = 0;
-		ts_iters_t velocityIterations = 0;
+		ts_iters_t positionIterations = 0; ///< Position iterations actually performed.
+		ts_iters_t velocityIterations = 0; ///< Velocity iterations actually performed.
 	};
 
 	friend class Body;
@@ -477,6 +514,8 @@ private:
 	
 	void UnsetNewFixtures() noexcept;
 	
+	/******** Member variables. ********/
+
 	BlockAllocator m_blockAllocator; ///< Block allocator. 136-bytes.
 	
 	ContactFilter m_defaultFilter; ///< Default contact filter. 8-bytes.
@@ -492,7 +531,7 @@ private:
 
 	DestructionListener* m_destructionListener = nullptr; ///< Destruction listener. 8-bytes.
 
-	flags_type m_flags = e_stepComplete;
+	FlagsType m_flags = e_stepComplete;
 
 	/// Inverse delta-t from previous step.
 	/// @detail Used to compute time step ratio to support a variable time step.
@@ -655,16 +694,26 @@ inline RealNum World::GetInvDeltaTime() const noexcept
 	return m_inv_dt0;
 }
 
+// Free functions.
+
+/// Gets the body count in the given world.
+/// @return 0 or higher.
 inline body_count_t GetBodyCount(const World& world) noexcept
 {
 	return world.GetBodies().size();
 }
 
+/// Gets the count of joints in the given world.
+/// @return 0 or higher.
 inline World::size_type GetJointCount(const World& world) noexcept
 {
 	return world.GetJoints().size();
 }
 
+/// Gets the count of contacts in the given world.
+/// @note Not all contacts are for shapes that are actually touching. Some contacts are for
+///   shapes which merely have overlapping AABBs.
+/// @return 0 or higher.
 inline contact_count_t GetContactCount(const World& world) noexcept
 {
 	return world.GetContacts().size();
@@ -701,12 +750,19 @@ inline contact_count_t GetContactCount(const World& world) noexcept
 StepStats Step(World& world, RealNum timeStep,
 			   World::ts_iters_type velocityIterations = 8, World::ts_iters_type positionIterations = 3);
 
+/// Gets the count of fixtures in the given world.
 size_t GetFixtureCount(const World& world) noexcept;
 
+/// Gets the count of unique shapes in the given world.
 size_t GetShapeCount(const World& world) noexcept;
 
+/// Gets the count of awake bodies in the given world.
 size_t GetAwakeCount(const World& world) noexcept;
 
+/// Awakens all of the bodies in the given world.
+/// @detail Calls all of the world's bodies' <code>SetAwake</code> method.
+/// @return Sum total of calls to bodies' <code>SetAwake</code> method that returned true.
+/// @sa Body::SetAwake.
 size_t Awaken(World& world);
 
 /// Clears forces.
