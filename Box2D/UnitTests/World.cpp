@@ -1125,11 +1125,14 @@ TEST(World, CollidingDynamicBodies)
 
 static jmp_buf jmp_env;
 
-static void catch_alarm(int sig)
+static void catch_alarm(int)
 {
 	longjmp(jmp_env, 1);
 }
 
+/// Assert if the given function takes more than the given amount of microseconds.
+/// @warning The use of <code>setjmp</code> and <code>longjmp</code> will result in undefined
+///   behavior if non trivial destructors would be called if replaced with try and catch.
 #define ASSERT_USECS(fn, usecs) { \
 	const auto val = setjmp(jmp_env); \
 	if (val == 0) { \
@@ -1196,47 +1199,36 @@ TEST(World, TilesComesToRestInUnder7secs)
 	
 	StepConf step;
 	step.set_dt(1.0f/60);
-	
-	const auto val = setjmp(jmp_env);
-	if (val == 0)
-	{
-		signal(SIGALRM, catch_alarm);
-		ualarm(20000000, 0);
 
-		const auto start_time = std::chrono::high_resolution_clock::now();
-		while (GetAwakeCount(*m_world) > 0)
-		{
-			m_world->Step(step);
-		}
-		const auto end_time = std::chrono::high_resolution_clock::now();
-		
-		const std::chrono::duration<double> elapsed_time = end_time - start_time;
-		
-		// seeing e_count=20 times around:
-		//   0.447077s with RealNum=float and NDEBUG defined.
-		//   6.45222s with RealNum=float and NDEBUG not defined.
-		//   0.456306s with RealNum=double and NDEBUG defined.
-		//   6.74324s with RealNum=double and NDEBUG not defined.
-		
-		// seeing e_count=24 times around:
-		//   0.956078s with RealNum=float and NDEBUG defined.
-		//   0.989387s with RealNum=double and NDEBUG defined.
-		
-		// seeing e_count=30 times around:
-		//   2.35464s with RealNum=float and NDEBUG defined.
-		//   2.51661s with RealNum=double and NDEBUG defined.
-		
-		// seeing e_count=36 times around:
-		//   4.85618s with RealNum=float and NDEBUG defined.
-		//   5.32973s with RealNum=double and NDEBUG defined.
-		
-		std::cout << "Time: " << elapsed_time.count() << "s" << std::endl;
-		EXPECT_LT(elapsed_time.count(), 7.0);
-	}
-	else
+	const auto start_time = std::chrono::high_resolution_clock::now();
+	while (GetAwakeCount(*m_world) > 0)
 	{
-		GTEST_FATAL_FAILURE_("usecs timer tripped");
+		m_world->Step(step);
 	}
+	const auto end_time = std::chrono::high_resolution_clock::now();
+	
+	const std::chrono::duration<double> elapsed_time = end_time - start_time;
+	
+	// seeing e_count=20 times around:
+	//   0.447077s with RealNum=float and NDEBUG defined.
+	//   6.45222s with RealNum=float and NDEBUG not defined.
+	//   0.456306s with RealNum=double and NDEBUG defined.
+	//   6.74324s with RealNum=double and NDEBUG not defined.
+	
+	// seeing e_count=24 times around:
+	//   0.956078s with RealNum=float and NDEBUG defined.
+	//   0.989387s with RealNum=double and NDEBUG defined.
+	
+	// seeing e_count=30 times around:
+	//   2.35464s with RealNum=float and NDEBUG defined.
+	//   2.51661s with RealNum=double and NDEBUG defined.
+	
+	// seeing e_count=36 times around:
+	//   4.85618s with RealNum=float and NDEBUG defined.
+	//   5.32973s with RealNum=double and NDEBUG defined.
+	
+	std::cout << "Time: " << elapsed_time.count() << "s" << std::endl;
+	EXPECT_LT(elapsed_time.count(), 7.0);
 }
 
 TEST(World, SpeedingBulletBallWontTunnel)
