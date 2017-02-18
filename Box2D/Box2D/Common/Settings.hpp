@@ -161,6 +161,10 @@ constexpr auto MaxJoints = uint16{std::numeric_limits<uint16>::max() - uint16{1}
 
 // Sleep
 
+/// Default minimum still time to sleep.
+/// @detail The default minimum time bodies must be still for bodies to be put to sleep.
+constexpr auto DefaultMinStillTimeToSleep = RealNum{1} / 2; // aka 0.5
+
 /// Default linear sleep tolerance.
 /// @detail A body cannot sleep if the magnitude of its linear velocity is above this amount.
 constexpr auto DefaultLinearSleepTolerance = RealNum{0.01f}; // aka 0.01
