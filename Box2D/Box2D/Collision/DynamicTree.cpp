@@ -80,7 +80,7 @@ DynamicTree::size_type DynamicTree::AllocateNode()
 }
 
 // Return a node to the pool.
-void DynamicTree::FreeNode(size_type nodeId)
+void DynamicTree::FreeNode(size_type nodeId) noexcept
 {
 	assert(nodeId != NullNode);
 	assert(nodeId < m_nodeCapacity);

@@ -160,7 +160,7 @@ private:
 	};
 
 	size_type AllocateNode();
-	void FreeNode(size_type node);
+	void FreeNode(size_type node) noexcept;
 
 	void InsertLeaf(size_type node);
 	void RemoveLeaf(size_type node);
