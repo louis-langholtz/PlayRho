@@ -211,6 +211,27 @@ TEST(Math, CrossProductOfTwoVecTwoIsAntiCommutative)
 	EXPECT_EQ(Cross(a, b), -Cross(b, a));
 }
 
+TEST(Math, DotProductOfInvalidIsInvalid)
+{
+	EXPECT_TRUE(std::isnan(Dot(GetInvalid<Vec2>(), GetInvalid<Vec2>())));
+
+	EXPECT_TRUE(std::isnan(Dot(Vec2(0, 0), GetInvalid<Vec2>())));
+	EXPECT_TRUE(std::isnan(Dot(Vec2(0, 0), Vec2(GetInvalid<RealNum>(), 0))));
+	EXPECT_TRUE(std::isnan(Dot(Vec2(0, 0), Vec2(0, GetInvalid<RealNum>()))));
+	
+	EXPECT_TRUE(std::isnan(Dot(GetInvalid<Vec2>(),             Vec2(0, 0))));
+	EXPECT_TRUE(std::isnan(Dot(Vec2(GetInvalid<RealNum>(), 0), Vec2(0, 0))));
+	EXPECT_TRUE(std::isnan(Dot(Vec2(0, GetInvalid<RealNum>()), Vec2(0, 0))));
+
+	EXPECT_TRUE(std::isnan(Dot(GetInvalid<Vec2>(), GetInvalid<UnitVec2>())));
+	EXPECT_TRUE(std::isnan(Dot(Vec2(0, 0),         GetInvalid<UnitVec2>())));
+	EXPECT_TRUE(std::isnan(Dot(GetInvalid<Vec2>(), UnitVec2::GetZero())));
+
+	EXPECT_TRUE(std::isnan(Dot(GetInvalid<UnitVec2>(), GetInvalid<Vec2>())));
+	EXPECT_TRUE(std::isnan(Dot(GetInvalid<UnitVec2>(), Vec2(0, 0))));
+	EXPECT_TRUE(std::isnan(Dot(UnitVec2::GetZero(),    GetInvalid<Vec2>())));
+}
+
 TEST(Math, Vec2NegationAndRotationIsOrderIndependent)
 {
 	{

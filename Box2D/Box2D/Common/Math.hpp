@@ -767,11 +767,19 @@ constexpr inline RealNum Dot(const UnitVec2 a, const UnitVec2 b) noexcept
 	return (GetX(a) * GetX(b)) + (GetY(a) * GetY(b));
 }
 
+/// Performs the dot product operation on the given parameters.
+/// @note If either input parameter is invalid, an invalid value is returned.
+/// @param a Vector A.
+/// @param b Vector B.
 constexpr inline RealNum Dot(const Vec2 a, const UnitVec2 b) noexcept
 {
 	return (GetX(a) * GetX(b)) + (GetY(a) * GetY(b));
 }
 
+/// Performs the dot product operation on the given parameters.
+/// @note If either input parameter is invalid, an invalid value is returned.
+/// @param a Vector A.
+/// @param b Vector B.
 constexpr inline RealNum Dot(const UnitVec2 a, const Vec2 b) noexcept
 {
 	return (GetX(a) * GetX(b)) + (GetY(a) * GetY(b));
