@@ -19,6 +19,7 @@
 #include "gtest/gtest.h"
 #include <Box2D/Dynamics/Contacts/ContactSolver.hpp>
 #include <Box2D/Dynamics/Contacts/PositionConstraint.hpp>
+#include <Box2D/Dynamics/Contacts/VelocityConstraint.hpp>
 #include <Box2D/Collision/Shapes/PolygonShape.hpp>
 #include <Box2D/Collision/CollideShapes.hpp>
 
@@ -373,3 +374,52 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
 	EXPECT_EQ(solution.pos_b.linear.y, old_pB.linear.y);
 	EXPECT_EQ(solution.pos_b.angular, old_pB.angular);
 }
+
+#if 0
+TEST(ContactSolver, SolveVelocityConstraint)
+{
+	const auto body_data_a = VelocityConstraint::BodyData{0, 0, 0};
+	const auto body_data_b = VelocityConstraint::BodyData{1, 0, 0};
+	auto vc = VelocityConstraint{0, 0, 0, 0, body_data_a, body_data_b};
+	vc.AddPoint(0, 0);
+	
+	const auto linear_velocity = Vec2{1, 1};
+	const auto angular_velocity = 0_deg;
+	auto vel_a = Velocity{linear_velocity, angular_velocity};
+	auto vel_b = Velocity{linear_velocity, angular_velocity};
+	
+	SolveVelocityConstraint(vc, vel_a, vel_b);
+	
+	EXPECT_EQ(vel_a.linear, linear_velocity);
+	EXPECT_EQ(vel_a.angular, angular_velocity);
+	EXPECT_EQ(vel_b.linear, linear_velocity);
+	EXPECT_EQ(vel_b.angular, angular_velocity);
+	
+	EXPECT_FALSE(IsValid(vc.GetK()));
+	EXPECT_FALSE(IsValid(vc.GetNormalMass()));
+	EXPECT_FALSE(IsValid(vc.GetNormal()));
+	EXPECT_FALSE(IsValid(vc.GetFriction()));
+	EXPECT_FALSE(IsValid(vc.GetRestitution()));
+	EXPECT_FALSE(IsValid(vc.GetTangentSpeed()));
+	EXPECT_FALSE(IsValid(vc.GetContactIndex()));
+	
+	EXPECT_EQ(vc.GetPointCount(), VelocityConstraint::size_type{0});
+	
+	EXPECT_FALSE(IsValid(vc.GetNormalImpulseAtPoint(0)));
+	EXPECT_FALSE(IsValid(vc.GetTangentImpulseAtPoint(0)));
+	EXPECT_FALSE(IsValid(vc.GetNormalMassAtPoint(0)));
+	EXPECT_FALSE(IsValid(vc.GetTangentMassAtPoint(0)));
+	EXPECT_FALSE(IsValid(vc.GetVelocityBiasAtPoint(0)));
+	EXPECT_FALSE(IsValid(vc.GetPointRelPosA(0)));
+	EXPECT_FALSE(IsValid(vc.GetPointRelPosB(0)));
+	
+	EXPECT_FALSE(IsValid(vc.GetNormalImpulseAtPoint(1)));
+	EXPECT_FALSE(IsValid(vc.GetTangentImpulseAtPoint(1)));
+	EXPECT_FALSE(IsValid(vc.GetNormalMassAtPoint(1)));
+	EXPECT_FALSE(IsValid(vc.GetTangentMassAtPoint(1)));
+	EXPECT_FALSE(IsValid(vc.GetVelocityBiasAtPoint(1)));
+	EXPECT_FALSE(IsValid(vc.GetPointRelPosA(1)));
+	EXPECT_FALSE(IsValid(vc.GetPointRelPosB(1)));
+}
+
+#endif

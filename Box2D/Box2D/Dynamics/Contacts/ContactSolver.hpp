@@ -175,6 +175,7 @@ namespace box2d {
 	/// Solves the velocity constraint.
 	/// @detail This updates the tangent and normal impulses of the velocity constraint points of the given velocity
 	///   constraint and updates the given velocities.
+	/// @warning Behavior is undefined unless the velocity constraint point count is 1 or 2.
 	/// @pre The velocity constraint must have a valid normal, a valid tangent,
 	///   valid point relative positions, and valid velocity biases.
 	void SolveVelocityConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB);

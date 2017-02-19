@@ -80,6 +80,7 @@ static inline void SolveTangentConstraint(VelocityConstraint& vc, Velocity& velA
 /// Solves the tangential portion of the velocity constraint.
 /// @detail This updates the tangent impulses on the velocity constraint points and
 ///   updates the two given velocity structures.
+/// @warning Behavior is undefined unless the velocity constraint point count is 1 or 2.
 /// @param vc Contact velocity constraint.
 /// @param velA Velocity structure for body A. This is an input and output parameter modified to meet the constraint.
 /// @param velB Velocity structure for body B. This is an input and output parameter modified to meet the constraint.
@@ -195,7 +196,7 @@ static inline bool BlockSolveNormalCase1(VelocityConstraint& vc, Velocity& velA,
 	assert(IsValid(normalMass));
 
 	const auto newImpulses = -Transform(b_prime, normalMass);
-	if ((newImpulses[0] >= RealNum{0}) && (newImpulses[1] >= RealNum{0}))
+	if ((newImpulses[0] >= 0) && (newImpulses[1] >= 0))
 	{
 		BlockSolveUpdate(vc, velA, velB, newImpulses);
 		
@@ -230,11 +231,11 @@ static inline bool BlockSolveNormalCase2(VelocityConstraint& vc, Velocity& velA,
 	//   0 = a11 * x1 + a12 * 0 + b1' 
 	// vn2 = a21 * x1 + a22 * 0 + b2'
 	//
-	const auto newImpulse = Vec2{-GetNormalMassAtPoint(vc, 0) * b_prime.x, RealNum{0}};
+	const auto newImpulse = Vec2{-GetNormalMassAtPoint(vc, 0) * b_prime.x, 0};
 	const auto K = vc.GetK();
 	assert(IsValid(K));
 	const auto vn2 = K.ex.y * newImpulse.x + b_prime.y;
-	if ((newImpulse.x >= RealNum{0}) && (vn2 >= RealNum{0}))
+	if ((newImpulse.x >= 0) && (vn2 >= 0))
 	{
 		BlockSolveUpdate(vc, velA, velB, newImpulse);
 		
@@ -265,11 +266,11 @@ static inline bool BlockSolveNormalCase3(VelocityConstraint& vc, Velocity& velA,
 	// vn1 = a11 * 0 + a12 * x2 + b1' 
 	//   0 = a21 * 0 + a22 * x2 + b2'
 	//
-	const auto newImpulse = Vec2{RealNum{0}, -GetNormalMassAtPoint(vc, 1) * b_prime.y};
+	const auto newImpulse = Vec2{0, -GetNormalMassAtPoint(vc, 1) * b_prime.y};
 	const auto K = vc.GetK();
 	assert(IsValid(K));
 	const auto vn1 = K.ey.x * newImpulse.y + b_prime.x;
-	if ((newImpulse.y >= RealNum{0}) && (vn1 >= RealNum{0}))
+	if ((newImpulse.y >= 0) && (vn1 >= 0))
 	{
 		BlockSolveUpdate(vc, velA, velB, newImpulse);
 		
@@ -302,7 +303,7 @@ static inline bool BlockSolveNormalCase4(VelocityConstraint& vc, Velocity& velA,
 	const auto newImpulse = Vec2_zero;
 	const auto vn1 = b_prime.x;
 	const auto vn2 = b_prime.y;
-	if ((vn1 >= RealNum{0}) && (vn2 >= RealNum{0}))
+	if ((vn1 >= 0) && (vn2 >= 0))
 	{
 		BlockSolveUpdate(vc, velA, velB, newImpulse);
 		return true;
@@ -316,6 +317,8 @@ static inline void BlockSolveNormalConstraint(VelocityConstraint& vc, Velocity& 
 	assert(IsValid(K));
 	
 	const auto normal = GetNormal(vc);
+	
+	/// XXX ldl: This check should be removed.
 	if (!IsValid(normal))
 	{
 		return;
