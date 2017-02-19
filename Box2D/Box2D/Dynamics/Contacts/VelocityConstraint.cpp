@@ -50,10 +50,11 @@ void VelocityConstraint::Update(const WorldManifold& worldManifold,
 			const auto vcp_rB = worldPoint - posB;
 			SetPointRelPositions(j, vcp_rA, vcp_rB);
 			SetVelocityBiasAtPoint(j, [&]() {
-				if (!IsValid(normal))
-				{
-					return RealNum{0};
-				}
+				// Get the magnitude of the contact relative velocity in direction of the normal.
+				// This will be an invalid value if the normal is invalid. The comparison in this
+				// case will fail and this lambda will return 0. And that's fine. There's no need
+				// to have a check that the normal is valid and possibly incur the overhead of a
+				// conditional branch here.
 				const auto vn = Dot(GetContactRelVelocity(velA, vcp_rA, velB, vcp_rB), normal);
 				return (vn < -conf.velocityThreshold)? -GetRestitution() * vn: RealNum{0};
 			}());

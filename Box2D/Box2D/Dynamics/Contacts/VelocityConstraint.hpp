@@ -224,7 +224,7 @@ namespace box2d {
 		/// @detail Specifically this:
 		///   1. Sets the normal to the world manifold normal.
 		///   2. Sets the point relative positions (for all valid points).
-		///   3. Sets the velocity biases (for all valid points).
+		///   3. Sets the restitution scaled velocity biases (for all valid points).
 		///   4. Sets the K value (for the 2-point block solver).
 		///   5. Checks for redundant velocity constraint point and removes it if found.
 		/// @pre World manifold has the same number of points as this constraint.

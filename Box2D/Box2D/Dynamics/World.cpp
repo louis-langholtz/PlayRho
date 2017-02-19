@@ -308,7 +308,11 @@ namespace {
 			const auto posA = positions[pc.bodyA.index];
 			const auto posB = positions[pc.bodyB.index];
 			const auto worldManifold = GetWorldManifold(pc, posA, posB);
+
+			// Call the velocity constraint's update method which among other things
+			// handles restitution based changes in velocity necessary for bouncing.
 			velocityConstraints[i].Update(worldManifold, posA.linear, posB.linear, velspan, conf);
+			
 			++i;
 		}
 	}
