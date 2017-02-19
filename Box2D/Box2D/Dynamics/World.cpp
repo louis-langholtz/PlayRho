@@ -173,28 +173,6 @@ namespace {
 		return PositionConstraint::BodyData{val.GetIslandIndex(), val.GetInverseMass(), val.GetInverseInertia(), val.GetLocalCenter()};
 	}
 	
-	/// Gets the position-independent velocity constraint for the given contact, index, and time slot values.
-	inline VelocityConstraint GetVelocityConstraint(const Contact& contact, VelocityConstraint::index_type index, RealNum dtRatio)
-	{
-		VelocityConstraint constraint(index,
-									  contact.GetFriction(),
-									  contact.GetRestitution(),
-									  contact.GetTangentSpeed(),
-									  GetVelocityConstraintBodyData(*(contact.GetFixtureA()->GetBody())),
-									  GetVelocityConstraintBodyData(*(contact.GetFixtureB()->GetBody())));
-		
-		const auto& manifold = contact.GetManifold();
-		const auto pointCount = manifold.GetPointCount();
-		assert(pointCount > 0);
-		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
-		{
-			const auto ci = manifold.GetContactImpulses(j);
-			constraint.AddPoint(dtRatio * ci.m_normal, dtRatio * ci.m_tangent);
-		}
-		
-		return constraint;
-	}
-	
 	inline PositionConstraint GetPositionConstraint(const Manifold& manifold, const Fixture& fixtureA, const Fixture& fixtureB)
 	{
 		return PositionConstraint{manifold,
@@ -209,17 +187,6 @@ namespace {
 			constraints.push_back(GetPositionConstraint(contact->GetManifold(),
 														*(contact->GetFixtureA()),
 														*(contact->GetFixtureB())));
-		}
-	}
-	
-	inline void InitVelConstraints(VelocityConstraintsContainer& constraints,
-								   const Island::ContactContainer& contacts, RealNum dtRatio)
-	{
-		auto i = VelocityConstraint::index_type{0};
-		for (auto&& contact: contacts)
-		{
-			constraints.push_back(GetVelocityConstraint(*contact, i, dtRatio));
-			++i;
 		}
 	}
 	
@@ -286,7 +253,45 @@ namespace {
 			velocities[vc.bodyB.GetIndex()] += vp.b;
 		}
 	}
-	
+
+	/// Gets the position-independent velocity constraint for the given contact, index, and time slot values.
+	inline VelocityConstraint GetVelocityConstraint(const Contact& contact, VelocityConstraint::index_type index, RealNum dtRatio)
+	{
+		VelocityConstraint constraint(index,
+									  contact.GetFriction(),
+									  contact.GetRestitution(),
+									  contact.GetTangentSpeed(),
+									  GetVelocityConstraintBodyData(*(contact.GetFixtureA()->GetBody())),
+									  GetVelocityConstraintBodyData(*(contact.GetFixtureB()->GetBody())));
+		
+		const auto& manifold = contact.GetManifold();
+		const auto pointCount = manifold.GetPointCount();
+		assert(pointCount > 0);
+		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
+		{
+			const auto ci = manifold.GetContactImpulses(j);
+			constraint.AddPoint(dtRatio * ci.m_normal, dtRatio * ci.m_tangent);
+		}
+		
+		return constraint;
+	}
+
+	inline VelocityConstraintsContainer InitVelConstraints(const Island::ContactContainer& contacts,
+														   RealNum dtRatio)
+	{
+		auto velocityConstraints = VelocityConstraintsContainer{};
+		const auto numContacts = contacts.size();
+		velocityConstraints.reserve(numContacts);
+
+		//auto i = VelocityConstraint::index_type{0};
+		for (auto i = decltype(numContacts){0}; i < numContacts; ++i)
+		{
+			auto vc = GetVelocityConstraint(*contacts[i], static_cast<VelocityConstraint::index_type>(i), dtRatio);
+			velocityConstraints.push_back(vc);
+		}
+		return velocityConstraints;
+	}
+
 	/// Updates the given velocity constraints.
 	/// @detail
 	/// Updates the position dependent portions of the velocity constraints with the
@@ -831,10 +836,6 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 	positionConstraints.reserve(ncontacts);
 	InitPosConstraints(positionConstraints, island.m_contacts);
 
-	auto velocityConstraints = VelocityConstraintsContainer{};
-	velocityConstraints.reserve(ncontacts);
-	InitVelConstraints(velocityConstraints, island.m_contacts, step.doWarmStart? step.dtRatio: 0);
-	
 	auto velocities = std::vector<Velocity>();
 	velocities.reserve(nbodies);
 	auto positions = std::vector<Position>();
@@ -852,6 +853,7 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 		velocities.push_back(new_velocity);
 	}
 	
+	auto velocityConstraints = InitVelConstraints(island.m_contacts, step.doWarmStart? step.dtRatio: 0);
 	UpdateVelocityConstraints(velocityConstraints, velocities, positionConstraints, positions,
 							  VelocityConstraint::UpdateConf{step.velocityThreshold, true});
 	
@@ -1204,12 +1206,6 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 	velocities.reserve(nbodies);
 	auto positions = PositionContainer{};
 	positions.reserve(nbodies);
-	auto positionConstraints = PositionConstraintsContainer{};
-	positionConstraints.reserve(ncontacts);
-	auto velocityConstraints = VelocityConstraintsContainer{};
-	velocityConstraints.reserve(ncontacts);
-	InitPosConstraints(positionConstraints, island.m_contacts);
-	InitVelConstraints(velocityConstraints, island.m_contacts, 0);
 	
 	// Initialize the body state.
 	for (auto&& body: island.m_bodies)
@@ -1218,37 +1214,44 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 		velocities.push_back(body->GetVelocity());
 	}
 	
+	auto positionConstraints = PositionConstraintsContainer{};
+	positionConstraints.reserve(ncontacts);
+	InitPosConstraints(positionConstraints, island.m_contacts);
+	
 	// Solve TOI-based position constraints.
 	auto finMinSeparation = MaxFloat;
 	auto solved = false;
 	auto positionIterations = step.toiPositionIterations;
-	const auto psConf = ConstraintSolverConf{}
-		.UseResolutionRate(step.toiResolutionRate)
-		.UseLinearSlop(step.linearSlop)
-		.UseAngularSlop(step.angularSlop)
-		.UseMaxLinearCorrection(step.maxLinearCorrection)
-		.UseMaxAngularCorrection(step.maxAngularCorrection);
-
-	for (auto i = decltype(step.toiPositionIterations){0}; i < step.toiPositionIterations; ++i)
+	
 	{
-		//
-		// Note: There are two flavors of the SolvePositionConstraints function.
-		//   One takes an extra two arguments that are the indexes of two bodies that are okay to
-		//   move. The other one does not.
-		//   Calling the selective solver (that takes the two additional arguments) appears to
-		//   result in phsyics simulations that are more prone to tunneling. Meanwhile, using the
-		//   non-selective solver would presumably be slower (since it appears to have more that
-		//   it will do). Assuming that slower is preferable to tunnelling, then the non-selective
-		//   function is the one to be calling here.
-		//
-		const auto minSeparation = SolvePositionConstraints(Span<const PositionConstraint>(positionConstraints.data(), positionConstraints.size()), positions, psConf);
-		finMinSeparation = Min(finMinSeparation, minSeparation);
-		if (minSeparation >= step.toiMinSeparation)
+		const auto psConf = ConstraintSolverConf{}
+			.UseResolutionRate(step.toiResolutionRate)
+			.UseLinearSlop(step.linearSlop)
+			.UseAngularSlop(step.angularSlop)
+			.UseMaxLinearCorrection(step.maxLinearCorrection)
+			.UseMaxAngularCorrection(step.maxAngularCorrection);
+
+		for (auto i = decltype(step.toiPositionIterations){0}; i < step.toiPositionIterations; ++i)
 		{
-			// Reached tolerance, early out...
-			positionIterations = i + 1;
-			solved = true;
-			break;
+			//
+			// Note: There are two flavors of the SolvePositionConstraints function.
+			//   One takes an extra two arguments that are the indexes of two bodies that are okay to
+			//   move. The other one does not.
+			//   Calling the selective solver (that takes the two additional arguments) appears to
+			//   result in phsyics simulations that are more prone to tunneling. Meanwhile, using the
+			//   non-selective solver would presumably be slower (since it appears to have more that
+			//   it will do). Assuming that slower is preferable to tunnelling, then the non-selective
+			//   function is the one to be calling here.
+			//
+			const auto minSeparation = SolvePositionConstraints(Span<const PositionConstraint>(positionConstraints.data(), positionConstraints.size()), positions, psConf);
+			finMinSeparation = Min(finMinSeparation, minSeparation);
+			if (minSeparation >= step.toiMinSeparation)
+			{
+				// Reached tolerance, early out...
+				positionIterations = i + 1;
+				solved = true;
+				break;
+			}
 		}
 	}
 	
@@ -1265,11 +1268,13 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 		}
 	}
 	
-	// No warm starting is needed for TOI events because warm
-	// starting impulses were applied in the discrete solver.
+	auto velocityConstraints = InitVelConstraints(island.m_contacts, 0);
 	UpdateVelocityConstraints(velocityConstraints, velocities, positionConstraints, positions,
 							  VelocityConstraint::UpdateConf{step.velocityThreshold, true});
-	
+
+	// No warm starting is needed for TOI events because warm
+	// starting impulses were applied in the discrete solver.
+
 	// Solve velocity constraints.
 	for (auto i = decltype(step.toiVelocityIterations){0}; i < step.toiVelocityIterations; ++i)
 	{
