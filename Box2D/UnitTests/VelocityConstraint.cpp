@@ -164,7 +164,7 @@ TEST(VelocityConstraint, Update)
 	const auto velocities = {Velocity{Vec2{1, 0}, 0_deg}, Velocity{Vec2{-1, 0}, 0_deg}};
 
 	vc.Update(worldManifold, posA, posB, velocities,
-			  VelocityConstraint::UpdateConf{VelocityThreshold, false});
+			  VelocityConstraint::Conf{0, VelocityThreshold, false});
 
 	EXPECT_TRUE(almost_equal(vc.GetNormal().GetX(), normal.GetX()));
 	EXPECT_TRUE(almost_equal(vc.GetNormal().GetY(), normal.GetY()));

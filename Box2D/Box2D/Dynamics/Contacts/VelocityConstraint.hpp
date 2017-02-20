@@ -214,8 +214,9 @@ namespace box2d {
 		/// @return Previously set value or an invalid value.
 		Vec2 GetPointRelPosB(size_type index) const noexcept;
 
-		struct UpdateConf
+		struct Conf
 		{
+			RealNum dtRatio;
 			RealNum velocityThreshold;
 			bool blockSolve;
 		};
@@ -236,7 +237,7 @@ namespace box2d {
 		void Update(const WorldManifold& worldManifold,
 					const Vec2 posA, const Vec2 posB,
 					Span<const Velocity> velocities,
-					const UpdateConf conf);
+					const Conf conf);
 		
 		void SetNormalImpulseAtPoint(size_type index, RealNum value);
 		

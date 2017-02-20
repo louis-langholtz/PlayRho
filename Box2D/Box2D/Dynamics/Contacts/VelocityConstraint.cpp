@@ -27,7 +27,7 @@ using namespace box2d;
 void VelocityConstraint::Update(const WorldManifold& worldManifold,
 								const Vec2 posA, const Vec2 posB,
 								Span<const Velocity> velocities,
-								const UpdateConf conf)
+								const Conf conf)
 {
 	assert(IsValid(bodyA.GetIndex()));
 	assert(IsValid(bodyB.GetIndex()));

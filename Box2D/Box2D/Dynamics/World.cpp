@@ -276,52 +276,40 @@ namespace {
 		return constraint;
 	}
 
-	inline VelocityConstraintsContainer InitVelConstraints(const Island::ContactContainer& contacts,
-														   RealNum dtRatio)
+	/// Gets the velocity constraints for the given inputs.
+	/// @detail
+	/// Inializes the velocity constraints with the position dependent portions of the current position constraints.
+	/// @post Velocity constraints will have their "normal" field set to the world manifold normal for them.
+	/// @post Velocity constraints will have their constraint points set.
+	/// @sa SolveVelocityConstraints.
+	inline VelocityConstraintsContainer GetVelConstraints(const Island::ContactContainer& contacts,
+														   const VelocityContainer& velocities,
+														   const PositionConstraintsContainer& positionConstraints,
+														   const PositionContainer& positions,
+														   const VelocityConstraint::Conf conf)
 	{
 		auto velocityConstraints = VelocityConstraintsContainer{};
 		const auto numContacts = contacts.size();
 		velocityConstraints.reserve(numContacts);
 
+		const auto velspan = Span<const Velocity>(velocities.data(), velocities.size());
+
 		//auto i = VelocityConstraint::index_type{0};
 		for (auto i = decltype(numContacts){0}; i < numContacts; ++i)
 		{
-			auto vc = GetVelocityConstraint(*contacts[i], static_cast<VelocityConstraint::index_type>(i), dtRatio);
+			auto vc = GetVelocityConstraint(*contacts[i], static_cast<VelocityConstraint::index_type>(i), conf.dtRatio);
+
+			const auto pc = positionConstraints[i];
+			const auto posA = positions[pc.bodyA.index];
+			const auto posB = positions[pc.bodyB.index];
+			const auto worldManifold = GetWorldManifold(pc, posA, posB);
+			vc.Update(worldManifold, posA.linear, posB.linear, velspan, conf);
+
 			velocityConstraints.push_back(vc);
 		}
 		return velocityConstraints;
 	}
 
-	/// Updates the given velocity constraints.
-	/// @detail
-	/// Updates the position dependent portions of the velocity constraints with the
-	/// information from the current position constraints.
-	/// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.
-	/// @post Velocity constraints will have their "normal" field set to the world manifold normal for them.
-	/// @post Velocity constraints will have their constraint points updated.
-	/// @sa SolveVelocityConstraints.
-	inline void UpdateVelocityConstraints(VelocityConstraintsContainer& velocityConstraints,
-										  const VelocityContainer& velocities,
-										  const PositionConstraintsContainer& positionConstraints,
-										  const PositionContainer& positions,
-										  const VelocityConstraint::UpdateConf& conf)
-	{
-		const auto velspan = Span<const Velocity>(velocities.data(), velocities.size());
-		auto i = Span<VelocityConstraint>::size_type{0};
-		for (auto&& pc: positionConstraints)
-		{
-			const auto posA = positions[pc.bodyA.index];
-			const auto posB = positions[pc.bodyB.index];
-			const auto worldManifold = GetWorldManifold(pc, posA, posB);
-
-			// Call the velocity constraint's update method which among other things
-			// handles restitution based changes in velocity necessary for bouncing.
-			velocityConstraints[i].Update(worldManifold, posA.linear, posB.linear, velspan, conf);
-			
-			++i;
-		}
-	}
-	
 	/// "Solves" the velocity constraints.
 	/// @detail Updates the velocities and velocity constraint points' normal and tangent impulses.
 	/// @pre <code>UpdateVelocityConstraints</code> has been called on the velocity constraints.
@@ -853,9 +841,8 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 		velocities.push_back(new_velocity);
 	}
 	
-	auto velocityConstraints = InitVelConstraints(island.m_contacts, step.doWarmStart? step.dtRatio: 0);
-	UpdateVelocityConstraints(velocityConstraints, velocities, positionConstraints, positions,
-							  VelocityConstraint::UpdateConf{step.velocityThreshold, true});
+	auto velocityConstraints = GetVelConstraints(island.m_contacts, velocities, positionConstraints, positions,
+												 VelocityConstraint::Conf{step.doWarmStart? step.dtRatio: 0, step.velocityThreshold, true});
 	
 	if (step.doWarmStart)
 	{
@@ -1268,9 +1255,8 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 		}
 	}
 	
-	auto velocityConstraints = InitVelConstraints(island.m_contacts, 0);
-	UpdateVelocityConstraints(velocityConstraints, velocities, positionConstraints, positions,
-							  VelocityConstraint::UpdateConf{step.velocityThreshold, true});
+	auto velocityConstraints = GetVelConstraints(island.m_contacts, velocities, positionConstraints, positions,
+												 VelocityConstraint::Conf{0, step.velocityThreshold, true});
 
 	// No warm starting is needed for TOI events because warm
 	// starting impulses were applied in the discrete solver.
