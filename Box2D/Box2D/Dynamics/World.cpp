@@ -312,8 +312,6 @@ namespace {
 			{
 				const auto ci = manifold.GetContactImpulses(j);
 
-				vc.AddPoint(conf.dtRatio * ci.m_normal, conf.dtRatio * ci.m_tangent);
-
 				const auto worldPoint = worldManifold.GetPoint(j);
 				const auto vcp_rA = worldPoint - posA.linear;
 				const auto vcp_rB = worldPoint - posB.linear;
@@ -325,8 +323,8 @@ namespace {
 				// conditional branch here.
 				const auto vn = Dot(GetContactRelVelocity(velA, vcp_rA, velB, vcp_rB), vc.GetNormal());
 				const auto velocityBias = (vn < -conf.velocityThreshold)? -vc.GetRestitution() * vn: RealNum{0};
-				
-				vc.SetPointData(j, vcp_rA, vcp_rB, velocityBias);
+
+				vc.AddPoint(conf.dtRatio * ci.m_normal, conf.dtRatio * ci.m_tangent, vcp_rA, vcp_rB, velocityBias);
 			}
 			
 			vc.Update(conf);

@@ -30,7 +30,9 @@ VelocityConstraint::VelocityConstraint(index_type contactIndex,
 									   UnitVec2 normal):
 	m_contactIndex{contactIndex},
 	m_friction{friction}, m_restitution{restitution}, m_tangentSpeed{tangentSpeed},
-	bodyA{bA}, bodyB{bB}, m_normal{normal}
+	bodyA{bA}, bodyB{bB}, m_normal{normal},
+	m_tangent{GetFwdPerpendicular(normal)},
+	m_invMass{bA.GetInvMass() + bB.GetInvMass()}
 {
 	assert(IsValid(contactIndex));
 	assert(IsValid(friction));
@@ -39,24 +41,36 @@ VelocityConstraint::VelocityConstraint(index_type contactIndex,
 	assert(IsValid(normal));
 }
 
-void VelocityConstraint::AddPoint(RealNum normalImpulse, RealNum tangentImpulse)
+void VelocityConstraint::AddPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, RealNum velocityBias)
 {
 	assert(m_pointCount < MaxManifoldPoints);
-	m_points[m_pointCount] = Point{normalImpulse, tangentImpulse};
-	++m_pointCount;
-}
+	
+	auto point = Point{};
+	
+	point.normalImpulse = normalImpulse;
+	point.tangentImpulse = tangentImpulse;
+	point.rA = rA;
+	point.rB = rB;
+	point.velocityBias = velocityBias;
 
-void VelocityConstraint::SetPointData(size_type index, Vec2 rA, Vec2 rB, RealNum velocityBias)
-{
-	auto& vcp = PointAt(index);
-	vcp.rA = rA;
-	vcp.rB = rB;
 #if !defined(BOX2D_NOCACHE_VC_POINT_MASSES)
-	// Note: normal must have been set prior to calling ComputeNormalMassAtPoint!
-	vcp.normalMass = ComputeNormalMassAtPoint(*this, index);
-	vcp.tangentMass = ComputeTangentMassAtPoint(*this, index);
+	point.normalMass = [&](){
+		const auto value = GetInverseMass()
+			+ (bodyA.GetInvRotI() * Square(Cross(rA, GetNormal())))
+			+ (bodyB.GetInvRotI() * Square(Cross(rB, GetNormal())));
+		return (value != 0)? RealNum{1} / value : RealNum{0};
+	}();
+
+	point.tangentMass = [&]() {
+		const auto value = GetInverseMass()
+			+ (bodyA.GetInvRotI() * Square(Cross(rA, GetTangent())))
+			+ (bodyB.GetInvRotI() * Square(Cross(rB, GetTangent())));
+		return (value != 0)? RealNum{1} / value : RealNum{0};
+	}();
 #endif
-	vcp.velocityBias = velocityBias;
+
+	m_points[m_pointCount] = point;
+	++m_pointCount;
 }
 
 void VelocityConstraint::Update(const Conf conf)
@@ -75,7 +89,7 @@ void VelocityConstraint::Update(const Conf conf)
 		const auto rn2A = Cross(GetPointRelPosA(1), normal);
 		const auto rn2B = Cross(GetPointRelPosB(1), normal);
 		
-		const auto totalInvMass = GetInverseMass(*this);
+		const auto totalInvMass = GetInverseMass();
 		const auto k11 = totalInvMass + (bodyA.GetInvRotI() * Square(rn1A)) + (bodyB.GetInvRotI() * Square(rn1B));
 		const auto k22 = totalInvMass + (bodyA.GetInvRotI() * Square(rn2A)) + (bodyB.GetInvRotI() * Square(rn2B));
 		const auto k12 = totalInvMass + (bodyA.GetInvRotI() * rn1A * rn2A)  + (bodyB.GetInvRotI() * rn1B * rn2B);

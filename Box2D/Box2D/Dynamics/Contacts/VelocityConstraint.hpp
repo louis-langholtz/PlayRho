@@ -133,9 +133,7 @@ namespace box2d {
 		///   been added, call GetPointCount().
 		/// @note Behavior is undefined if an attempt is made to add more than MaxManifoldPoints points.
 		/// @sa GetPointCount().
-		void AddPoint(RealNum normalImpulse, RealNum tangentImpulse);
-
-		void SetPointData(size_type index, Vec2 rA, Vec2 rB, RealNum velocityBias);
+		void AddPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, RealNum velocityBias);
 
 		/// Gets the normal of the contact in world coordinates.
 		/// @note This value is only valid if previously set.
@@ -143,6 +141,10 @@ namespace box2d {
 		/// @return Contact normal (in world coordinates) if previously set, an invalid value
 		///   otherwise.
 		UnitVec2 GetNormal() const noexcept { return m_normal; }
+
+		UnitVec2 GetTangent() const noexcept { return m_tangent; }
+		
+		RealNum GetInverseMass() const noexcept { return m_invMass; }
 
 		/// Gets the count of points added to this object.
 		/// @return Value between 0 and MaxManifoldPoints
@@ -297,6 +299,9 @@ namespace box2d {
 		}
 
 		UnitVec2 m_normal; ///< Normal of the world manifold. 8-bytes.
+		UnitVec2 m_tangent; ///< Tangent of the world manifold. 8-bytes.
+
+		RealNum m_invMass; ///< Total inverse mass.
 
 		/// Friction coefficient (4-bytes). Usually in the range of [0,1].
 		RealNum m_friction = GetInvalid<RealNum>();
@@ -366,7 +371,7 @@ namespace box2d {
 
 	inline UnitVec2 GetTangent(const VelocityConstraint& vc) noexcept
 	{
-		return GetFwdPerpendicular(vc.GetNormal());
+		return vc.GetTangent();
 	}
 
 	inline RealNum GetInverseMass(const VelocityConstraint& vc) noexcept
