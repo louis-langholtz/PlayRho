@@ -255,7 +255,11 @@ namespace {
 	}
 
 	/// Gets the position-independent velocity constraint for the given contact, index, and time slot values.
-	inline VelocityConstraint GetVelocityConstraint(const Contact& contact, VelocityConstraint::index_type index, RealNum dtRatio)
+	inline VelocityConstraint GetVelocityConstraint(const Contact& contact, VelocityConstraint::index_type index,
+													const VelocityConstraint::Conf conf,
+													const WorldManifold& worldManifold,
+													const Vec2 posA, const Vec2 posB,
+													Span<const Velocity> velocities)
 	{
 		VelocityConstraint constraint(index,
 									  contact.GetFriction(),
@@ -270,9 +274,11 @@ namespace {
 		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 		{
 			const auto ci = manifold.GetContactImpulses(j);
-			constraint.AddPoint(dtRatio * ci.m_normal, dtRatio * ci.m_tangent);
+			constraint.AddPoint(conf.dtRatio * ci.m_normal, conf.dtRatio * ci.m_tangent);
 		}
-		
+
+		constraint.Update(worldManifold, posA, posB, velocities, conf);
+
 		return constraint;
 	}
 
@@ -297,14 +303,13 @@ namespace {
 		//auto i = VelocityConstraint::index_type{0};
 		for (auto i = decltype(numContacts){0}; i < numContacts; ++i)
 		{
-			auto vc = GetVelocityConstraint(*contacts[i], static_cast<VelocityConstraint::index_type>(i), conf.dtRatio);
-
 			const auto pc = positionConstraints[i];
 			const auto posA = positions[pc.bodyA.index];
 			const auto posB = positions[pc.bodyB.index];
 			const auto worldManifold = GetWorldManifold(pc, posA, posB);
-			vc.Update(worldManifold, posA.linear, posB.linear, velspan, conf);
 
+			auto vc = GetVelocityConstraint(*contacts[i], static_cast<VelocityConstraint::index_type>(i), conf,
+											worldManifold, posA.linear, posB.linear, velspan);
 			velocityConstraints.push_back(vc);
 		}
 		return velocityConstraints;

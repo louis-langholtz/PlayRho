@@ -24,6 +24,26 @@
 
 using namespace box2d;
 
+VelocityConstraint::VelocityConstraint(index_type contactIndex,
+									   RealNum friction, RealNum restitution, RealNum tangentSpeed,
+									   BodyData bA, BodyData bB):
+	m_contactIndex{contactIndex},
+	m_friction{friction}, m_restitution{restitution}, m_tangentSpeed{tangentSpeed},
+	bodyA{bA}, bodyB{bB}
+{
+	assert(IsValid(contactIndex));
+	assert(IsValid(friction));
+	assert(IsValid(restitution));
+	assert(IsValid(tangentSpeed));
+}
+
+void VelocityConstraint::AddPoint(RealNum normalImpulse, RealNum tangentImpulse)
+{
+	assert(m_pointCount < MaxManifoldPoints);
+	m_points[m_pointCount] = Point{normalImpulse, tangentImpulse};
+	++m_pointCount;
+}
+
 void VelocityConstraint::Update(const WorldManifold& worldManifold,
 								const Vec2 posA, const Vec2 posB,
 								Span<const Velocity> velocities,

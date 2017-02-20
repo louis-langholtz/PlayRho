@@ -57,6 +57,13 @@ namespace box2d {
 		using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
 		using index_type = size_t;
 
+		struct Conf
+		{
+			RealNum dtRatio;
+			RealNum velocityThreshold;
+			bool blockSolve;
+		};
+
 		/// Contact velocity constraint body data.
 		/// @invariant The inverse mass is a value of zero or more.
 		/// @invariant The inverse rotational inertia is a value of zero or more.
@@ -106,17 +113,33 @@ namespace box2d {
 		
 		VelocityConstraint(index_type contactIndex,
 						   RealNum friction, RealNum restitution, RealNum tangentSpeed,
-						   BodyData bA, BodyData bB):
-			m_contactIndex{contactIndex},
-			m_friction{friction}, m_restitution{restitution}, m_tangentSpeed{tangentSpeed},
-			bodyA{bA}, bodyB{bB}
-		{
-			assert(IsValid(contactIndex));
-			assert(IsValid(friction));
-			assert(IsValid(restitution));
-			assert(IsValid(tangentSpeed));
-		}
+						   BodyData bA, BodyData bB);
+
+		/// Updates with the given data.
+		/// @detail Specifically this:
+		///   1. Sets the normal to the world manifold normal.
+		///   2. Sets the point relative positions (for all valid points).
+		///   3. Sets the restitution scaled velocity biases (for all valid points).
+		///   4. Sets the K value (for the 2-point block solver).
+		///   5. Checks for redundant velocity constraint point and removes it if found.
+		/// @pre World manifold has the same number of points as this constraint.
+		/// @note Behavior is undefined if the world manifold does not have the same number of
+		///   points as this constraint.
+		/// @param worldManifold World manifold to update this constraint from.
+		/// @param posA Linear position of body A.
+		/// @param posB Linear position of body B.
+		void Update(const WorldManifold& worldManifold,
+					const Vec2 posA, const Vec2 posB,
+					Span<const Velocity> velocities,
+					const Conf conf);
 		
+		/// Adds the given point to this contact velocity constraint object.
+		/// @detail Adds up to <code>MaxManifoldPoints</code> points. To find out how many points have already
+		///   been added, call GetPointCount().
+		/// @note Behavior is undefined if an attempt is made to add more than MaxManifoldPoints points.
+		/// @sa GetPointCount().
+		void AddPoint(RealNum normalImpulse, RealNum tangentImpulse);
+
 		/// Gets the normal of the contact in world coordinates.
 		/// @note This value is only valid if previously set.
 		/// @note Call the <code>Update</code> method to set this value.
@@ -129,13 +152,6 @@ namespace box2d {
 		/// @sa MaxManifoldPoints.
 		/// @sa AddPoint.
 		size_type GetPointCount() const noexcept { return m_pointCount; }
-		
-		/// Adds the given point to this contact velocity constraint object.
-		/// @detail Adds up to <code>MaxManifoldPoints</code> points. To find out how many points have already
-		///   been added, call GetPointCount().
-		/// @note Behavior is undefined if an attempt is made to add more than MaxManifoldPoints points.
-		/// @sa GetPointCount().
-		void AddPoint(RealNum normalImpulse, RealNum tangentImpulse);
 		
 		/// Gets the "K" value.
 		/// @note This value is only valid if previously set.
@@ -213,31 +229,6 @@ namespace box2d {
 		/// @note Call the <code>Update</code> method to set this value.
 		/// @return Previously set value or an invalid value.
 		Vec2 GetPointRelPosB(size_type index) const noexcept;
-
-		struct Conf
-		{
-			RealNum dtRatio;
-			RealNum velocityThreshold;
-			bool blockSolve;
-		};
-
-		/// Updates with the given data.
-		/// @detail Specifically this:
-		///   1. Sets the normal to the world manifold normal.
-		///   2. Sets the point relative positions (for all valid points).
-		///   3. Sets the restitution scaled velocity biases (for all valid points).
-		///   4. Sets the K value (for the 2-point block solver).
-		///   5. Checks for redundant velocity constraint point and removes it if found.
-		/// @pre World manifold has the same number of points as this constraint.
-		/// @note Behavior is undefined if the world manifold does not have the same number of
-		///   points as this constraint.
-		/// @param worldManifold World manifold to update this constraint from.
-		/// @param posA Linear position of body A.
-		/// @param posB Linear position of body B.
-		void Update(const WorldManifold& worldManifold,
-					const Vec2 posA, const Vec2 posB,
-					Span<const Velocity> velocities,
-					const Conf conf);
 		
 		void SetNormalImpulseAtPoint(size_type index, RealNum value);
 		
@@ -347,14 +338,7 @@ namespace box2d {
 		Point m_points[MaxManifoldPoints]; ///< Velocity constraint points array (at least 72-bytes).
 		size_type m_pointCount = 0; ///< Point count (at least 1-byte).
 	};
-	
-	inline void VelocityConstraint::AddPoint(RealNum normalImpulse, RealNum tangentImpulse)
-	{
-		assert(m_pointCount < MaxManifoldPoints);
-		m_points[m_pointCount] = Point{normalImpulse, tangentImpulse};
-		++m_pointCount;
-	}
-	
+		
 	inline void VelocityConstraint::RemovePoint() noexcept
 	{
 		assert(m_pointCount > 0);
@@ -522,6 +506,11 @@ namespace box2d {
 #endif
 	}
 
+	inline void VelocityConstraint::SetVelocityBiasAtPoint(VelocityConstraint::size_type index, RealNum value)
+	{
+		PointAt(index).velocityBias = value;
+	}
+
 	inline void VelocityConstraint::SetNormalImpulseAtPoint(VelocityConstraint::size_type index, RealNum value)
 	{
 		PointAt(index).normalImpulse = value;
@@ -530,11 +519,6 @@ namespace box2d {
 	inline void VelocityConstraint::SetTangentImpulseAtPoint(VelocityConstraint::size_type index, RealNum value)
 	{
 		PointAt(index).tangentImpulse = value;		
-	}
-
-	inline void VelocityConstraint::SetVelocityBiasAtPoint(VelocityConstraint::size_type index, RealNum value)
-	{
-		PointAt(index).velocityBias = value;
 	}
 
 	inline void SetNormalImpulseAtPoint(VelocityConstraint& vc, VelocityConstraint::size_type index, RealNum value)
