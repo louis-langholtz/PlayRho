@@ -180,14 +180,17 @@ namespace {
 			GetPositionConstraintBodyData(*(fixtureB.GetBody())), GetVertexRadius(*fixtureB.GetShape())};
 	}
 	
-	inline void InitPosConstraints(PositionConstraintsContainer& constraints, const Island::ContactContainer& contacts)
+	inline PositionConstraintsContainer GetPositionConstraints(const Island::ContactContainer& contacts)
 	{
+		auto constraints = PositionConstraintsContainer{};
+		constraints.reserve(contacts.size());
 		for (auto&& contact: contacts)
 		{
 			constraints.push_back(GetPositionConstraint(contact->GetManifold(),
 														*(contact->GetFixtureA()),
 														*(contact->GetFixtureB())));
 		}
+		return constraints;
 	}
 	
 	inline void AssignImpulses(Manifold& var, const VelocityConstraint& vc)
@@ -262,7 +265,6 @@ namespace {
 	/// @sa SolveVelocityConstraints.
 	inline VelocityConstraintsContainer GetVelConstraints(const Island::ContactContainer& contacts,
 														   const VelocityContainer& velocities,
-														   const PositionConstraintsContainer& positionConstraints,
 														   const PositionContainer& positions,
 														   const VelocityConstraint::Conf conf)
 	{
@@ -275,29 +277,49 @@ namespace {
 		//auto i = VelocityConstraint::index_type{0};
 		for (auto i = decltype(numContacts){0}; i < numContacts; ++i)
 		{
-			const auto pc = positionConstraints[i];
-			const auto posA = positions[pc.bodyA.index];
-			const auto posB = positions[pc.bodyB.index];
-			
-			const auto xfA = GetTransformation(posA, pc.bodyA.localCenter);
-			const auto xfB = GetTransformation(posB, pc.bodyB.localCenter);
-
-			const auto worldManifold = GetWorldManifold(pc.manifold, xfA, pc.radiusA, xfB, pc.radiusB);
-
 			auto& contact = *contacts[i];
+			const auto fixtureA = contact.GetFixtureA();
+			const auto fixtureB = contact.GetFixtureB();
+
+			const auto radiusA = fixtureA->GetShape()->GetVertexRadius();
+			const auto bodyA = fixtureA->GetBody();
+			const auto indexA = bodyA->GetIslandIndex();
+			const auto localCenterA = bodyA->GetLocalCenter();
+			
+			const auto radiusB = fixtureB->GetShape()->GetVertexRadius();
+			const auto bodyB = fixtureB->GetBody();
+			const auto indexB = bodyB->GetIslandIndex();
+			const auto localCenterB = bodyB->GetLocalCenter();
+
+			const auto posA = positions[indexA];
+			const auto posB = positions[indexB];
+			
+			const auto xfA = GetTransformation(posA, localCenterA);
+			const auto xfB = GetTransformation(posB, localCenterB);
+
+			const auto& manifold = contact.GetManifold();
+			const auto worldManifold = GetWorldManifold(manifold, xfA, radiusA, xfB, radiusB);
 
 			VelocityConstraint vc(i, contact.GetFriction(), contact.GetRestitution(), contact.GetTangentSpeed(),
-								  GetVelocityConstraintBodyData(*(contact.GetFixtureA()->GetBody())),
-								  GetVelocityConstraintBodyData(*(contact.GetFixtureB()->GetBody())),
+								  GetVelocityConstraintBodyData(*bodyA),
+								  GetVelocityConstraintBodyData(*bodyB),
 								  worldManifold.GetNormal());
 			
-			const auto& manifold = contact.GetManifold();
 			const auto pointCount = manifold.GetPointCount();
 			assert(pointCount > 0);
-			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
+			switch (pointCount)
 			{
-				const auto ci = manifold.GetContactImpulses(j);
-				vc.AddPoint(conf.dtRatio * ci.m_normal, conf.dtRatio * ci.m_tangent);
+				case 2:
+				{
+					const auto ci = manifold.GetContactImpulses(1);
+					vc.AddPoint(conf.dtRatio * ci.m_normal, conf.dtRatio * ci.m_tangent);
+				}
+				case 1:
+				{
+					const auto ci = manifold.GetContactImpulses(0);
+					vc.AddPoint(conf.dtRatio * ci.m_normal, conf.dtRatio * ci.m_tangent);
+				}
+				default: break;
 			}
 			
 			vc.Update(worldManifold, posA.linear, posB.linear, velspan, conf);
@@ -814,13 +836,9 @@ RegStepStats World::SolveReg(const StepConf& step)
 
 World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 {
-	const auto ncontacts = static_cast<contact_count_t>(island.m_contacts.size());
+	auto positionConstraints = GetPositionConstraints(island.m_contacts);
+
 	const auto nbodies = island.m_bodies.size();
-
-	auto positionConstraints = PositionConstraintsContainer{};
-	positionConstraints.reserve(ncontacts);
-	InitPosConstraints(positionConstraints, island.m_contacts);
-
 	auto velocities = std::vector<Velocity>();
 	velocities.reserve(nbodies);
 	auto positions = std::vector<Position>();
@@ -838,7 +856,7 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 		velocities.push_back(new_velocity);
 	}
 	
-	auto velocityConstraints = GetVelConstraints(island.m_contacts, velocities, positionConstraints, positions,
+	auto velocityConstraints = GetVelConstraints(island.m_contacts, velocities, positions,
 												 VelocityConstraint::Conf{step.doWarmStart? step.dtRatio: 0, step.velocityThreshold, true});
 	
 	if (step.doWarmStart)
@@ -1180,12 +1198,8 @@ void World::UpdateBodies(Span<Body*> bodies,
 
 World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 {
-	const auto ncontacts = static_cast<contact_count_t>(island.m_contacts.size());
 	const auto nbodies = island.m_bodies.size();
-
 	assert(nbodies >= 2);
-	assert(ncontacts >= 1);
-
 	auto velocities = VelocityContainer{};
 	velocities.reserve(nbodies);
 	auto positions = PositionContainer{};
@@ -1198,9 +1212,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 		velocities.push_back(body->GetVelocity());
 	}
 	
-	auto positionConstraints = PositionConstraintsContainer{};
-	positionConstraints.reserve(ncontacts);
-	InitPosConstraints(positionConstraints, island.m_contacts);
+	auto positionConstraints = GetPositionConstraints(island.m_contacts);
 	
 	// Solve TOI-based position constraints.
 	auto finMinSeparation = MaxFloat;
@@ -1252,7 +1264,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 		}
 	}
 	
-	auto velocityConstraints = GetVelConstraints(island.m_contacts, velocities, positionConstraints, positions,
+	auto velocityConstraints = GetVelConstraints(island.m_contacts, velocities, positions,
 												 VelocityConstraint::Conf{0, step.velocityThreshold, true});
 
 	// No warm starting is needed for TOI events because warm
