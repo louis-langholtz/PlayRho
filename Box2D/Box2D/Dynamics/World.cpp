@@ -272,8 +272,6 @@ namespace {
 		const auto numContacts = contacts.size();
 		velocityConstraints.reserve(numContacts);
 
-		const auto velspan = Span<const Velocity>(velocities.data(), velocities.size());
-
 		//auto i = VelocityConstraint::index_type{0};
 		for (auto i = decltype(numContacts){0}; i < numContacts; ++i)
 		{
@@ -293,7 +291,10 @@ namespace {
 
 			const auto posA = positions[indexA];
 			const auto posB = positions[indexB];
-			
+
+			const auto velA = velocities[indexA];
+			const auto velB = velocities[indexB];
+
 			const auto xfA = GetTransformation(posA, localCenterA);
 			const auto xfB = GetTransformation(posB, localCenterB);
 
@@ -304,25 +305,31 @@ namespace {
 								  GetVelocityConstraintBodyData(*bodyA),
 								  GetVelocityConstraintBodyData(*bodyB),
 								  worldManifold.GetNormal());
-			
+
 			const auto pointCount = manifold.GetPointCount();
 			assert(pointCount > 0);
-			switch (pointCount)
+			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 			{
-				case 2:
-				{
-					const auto ci = manifold.GetContactImpulses(1);
-					vc.AddPoint(conf.dtRatio * ci.m_normal, conf.dtRatio * ci.m_tangent);
-				}
-				case 1:
-				{
-					const auto ci = manifold.GetContactImpulses(0);
-					vc.AddPoint(conf.dtRatio * ci.m_normal, conf.dtRatio * ci.m_tangent);
-				}
-				default: break;
+				const auto ci = manifold.GetContactImpulses(j);
+
+				vc.AddPoint(conf.dtRatio * ci.m_normal, conf.dtRatio * ci.m_tangent);
+
+				const auto worldPoint = worldManifold.GetPoint(j);
+				const auto vcp_rA = worldPoint - posA.linear;
+				const auto vcp_rB = worldPoint - posB.linear;
+				
+				// Get the magnitude of the contact relative velocity in direction of the normal.
+				// This will be an invalid value if the normal is invalid. The comparison in this
+				// case will fail and this lambda will return 0. And that's fine. There's no need
+				// to have a check that the normal is valid and possibly incur the overhead of a
+				// conditional branch here.
+				const auto vn = Dot(GetContactRelVelocity(velA, vcp_rA, velB, vcp_rB), vc.GetNormal());
+				const auto velocityBias = (vn < -conf.velocityThreshold)? -vc.GetRestitution() * vn: RealNum{0};
+				
+				vc.SetPointData(j, vcp_rA, vcp_rB, velocityBias);
 			}
 			
-			vc.Update(worldManifold, posA.linear, posB.linear, velspan, conf);
+			vc.Update(conf);
 			
 			velocityConstraints.push_back(vc);
 		}
@@ -873,8 +880,8 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 
 	for (auto&& joint: island.m_joints)
 	{
-		joint->InitVelocityConstraints(Span<Velocity>(velocities.data(), velocities.size()),
-									   Span<Position>(positions.data(), positions.size()),
+		joint->InitVelocityConstraints(velocities,
+									   Span<const Position>(positions.data(), positions.size()),
 									   step, psConf);
 	}
 	
@@ -882,7 +889,7 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 	{
 		for (auto&& joint: island.m_joints)
 		{
-			joint->SolveVelocityConstraints(Span<Velocity>(velocities.data(), velocities.size()), step);
+			joint->SolveVelocityConstraints(velocities, step);
 		}
 
 		SolveVelocityConstraints(velocityConstraints, velocities);
@@ -897,9 +904,8 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 	auto positionIterations = step.regPositionIterations;
 	for (auto i = decltype(step.regPositionIterations){0}; i < step.regPositionIterations; ++i)
 	{
-		const auto minSeparation = SolvePositionConstraints(Span<PositionConstraint>(positionConstraints.data(), positionConstraints.size()),
-															Span<Position>(positions.data(), positions.size()),
-															psConf);
+		const auto minSeparation = SolvePositionConstraints(Span<const PositionConstraint>(positionConstraints.data(), positionConstraints.size()),
+															positions, psConf);
 		finMinSeparation = Min(finMinSeparation, minSeparation);
 		const auto contactsOkay = (minSeparation >= step.regMinSeparation);
 
@@ -908,7 +914,7 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 			auto allOkay = true;
 			for (auto&& joint: island.m_joints)
 			{
-				if (!joint->SolvePositionConstraints(Span<Position>(positions.data(), positions.size()), psConf))
+				if (!joint->SolvePositionConstraints(positions, psConf))
 				{
 					allOkay = false;
 				}
@@ -1239,7 +1245,8 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 			//   it will do). Assuming that slower is preferable to tunnelling, then the non-selective
 			//   function is the one to be calling here.
 			//
-			const auto minSeparation = SolvePositionConstraints(Span<const PositionConstraint>(positionConstraints.data(), positionConstraints.size()), positions, psConf);
+			const auto minSeparation = SolvePositionConstraints(Span<const PositionConstraint>(positionConstraints.data(), positionConstraints.size()),
+																positions, psConf);
 			finMinSeparation = Min(finMinSeparation, minSeparation);
 			if (minSeparation >= step.toiMinSeparation)
 			{
@@ -1251,17 +1258,13 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 		}
 	}
 	
+	// Leap of faith to new safe state.
+	// Not doing this results in slower simulations.
+	// Originally this update was only done to island.m_bodies 0 and 1.
+	// Unclear whether rest of bodies should also be updated. No difference noticed.
+	for (auto i = decltype(nbodies){0}; i < nbodies; ++i)
 	{
-		// Leap of faith to new safe state.
-		// Not doing this results in slower simulations.
-		// Originally this update was only done to island.m_bodies 0 and 1.
-		// Unclear whether rest of bodies should also be updated. No difference noticed.
-		auto i = size_t{0};
-		for (auto&& body: island.m_bodies)
-		{
-			body->m_sweep.pos0 = positions[i];
-			++i;
-		}
+		island.m_bodies[i]->m_sweep.pos0 = positions[i];
 	}
 	
 	auto velocityConstraints = GetVelConstraints(island.m_contacts, velocities, positions,

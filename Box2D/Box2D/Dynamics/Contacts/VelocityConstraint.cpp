@@ -59,44 +59,8 @@ void VelocityConstraint::SetPointData(size_type index, Vec2 rA, Vec2 rB, RealNum
 	vcp.velocityBias = velocityBias;
 }
 
-void VelocityConstraint::Update(const WorldManifold& worldManifold,
-								const Vec2 posA, const Vec2 posB,
-								Span<const Velocity> velocities,
-								const Conf conf)
+void VelocityConstraint::Update(const Conf conf)
 {
-	assert(IsValid(bodyA.GetIndex()));
-	assert(IsValid(bodyB.GetIndex()));
-	assert(GetPointCount() == worldManifold.GetPointCount());
-	
-	{
-		const auto velA = velocities[bodyA.GetIndex()];
-		const auto velB = velocities[bodyB.GetIndex()];
-		
-		auto restitutionFunc = [&](size_type j)
-		{
-			const auto worldPoint = worldManifold.GetPoint(j);
-			const auto vcp_rA = worldPoint - posA;
-			const auto vcp_rB = worldPoint - posB;
-
-			// Get the magnitude of the contact relative velocity in direction of the normal.
-			// This will be an invalid value if the normal is invalid. The comparison in this
-			// case will fail and this lambda will return 0. And that's fine. There's no need
-			// to have a check that the normal is valid and possibly incur the overhead of a
-			// conditional branch here.
-			const auto vn = Dot(GetContactRelVelocity(velA, vcp_rA, velB, vcp_rB), GetNormal());
-			const auto velocityBias = (vn < -conf.velocityThreshold)? -GetRestitution() * vn: RealNum{0};
-		
-			SetPointData(j, vcp_rA, vcp_rB, velocityBias);
-		};
-		const auto pointCount = GetPointCount();
-		switch (pointCount)
-		{
-			case 2: restitutionFunc(1);
-			case 1: restitutionFunc(0);
-			default: break;
-		}
-	}
-	
 	SetK(GetInvalid<Mat22>());
 
 	const auto normal = GetNormal();

@@ -126,13 +126,7 @@ namespace box2d {
 		/// @pre World manifold has the same number of points as this constraint.
 		/// @note Behavior is undefined if the world manifold does not have the same number of
 		///   points as this constraint.
-		/// @param worldManifold World manifold to update this constraint from.
-		/// @param posA Linear position of body A.
-		/// @param posB Linear position of body B.
-		void Update(const WorldManifold& worldManifold,
-					const Vec2 posA, const Vec2 posB,
-					Span<const Velocity> velocities,
-					const Conf conf);
+		void Update(const Conf conf);
 		
 		/// Adds the given point to this contact velocity constraint object.
 		/// @detail Adds up to <code>MaxManifoldPoints</code> points. To find out how many points have already
@@ -140,6 +134,8 @@ namespace box2d {
 		/// @note Behavior is undefined if an attempt is made to add more than MaxManifoldPoints points.
 		/// @sa GetPointCount().
 		void AddPoint(RealNum normalImpulse, RealNum tangentImpulse);
+
+		void SetPointData(size_type index, Vec2 rA, Vec2 rB, RealNum velocityBias);
 
 		/// Gets the normal of the contact in world coordinates.
 		/// @note This value is only valid if previously set.
@@ -243,8 +239,6 @@ namespace box2d {
 		/// @param value A position constraint dependent value or the zero matrix (Mat22_zero).
 		void SetK(const Mat22& value) noexcept;
 		
-		void SetPointData(size_type index, Vec2 rA, Vec2 rB, RealNum velocityBias);
-
 		/// Velocity constraint point.
 		/// @note This structure is at least 36-bytes large.
 		struct Point
