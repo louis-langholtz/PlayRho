@@ -128,14 +128,14 @@ namespace box2d {
 	WorldManifold GetWorldManifold(const Contact& contact)
 	{
 		const auto fA = contact.GetFixtureA();
+		const auto xfA = fA->GetBody()->GetTransformation();
+		const auto radiusA = GetVertexRadius(*(fA->GetShape()));
+
 		const auto fB = contact.GetFixtureB();
-		const auto bodyA = fA->GetBody();
-		const auto bodyB = fB->GetBody();
-		const auto shapeA = fA->GetShape();
-		const auto shapeB = fB->GetShape();
-		return GetWorldManifold(contact.GetManifold(),
-								bodyA->GetTransformation(), GetVertexRadius(*shapeA),
-								bodyB->GetTransformation(), GetVertexRadius(*shapeB));
+		const auto xfB = fB->GetBody()->GetTransformation();
+		const auto radiusB = GetVertexRadius(*(fB->GetShape()));
+
+		return GetWorldManifold(contact.GetManifold(), xfA, radiusA, xfB, radiusB);
 	}
 
 	WorldManifold GetWorldManifold(const PositionConstraint& pc, Position posA, Position posB)

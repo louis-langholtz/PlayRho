@@ -158,6 +158,10 @@ namespace box2d
 	
 	/// Gets the world manifold for the given data.
 	///
+	/// @note This is a convenience function that in turn calls the
+	///    <code>GetWorldManifold(const Manifold&, const Transformation&, const RealNum, const Transformation& xfB, const RealNum)</code>
+	///    function.
+	///
 	/// @param contact Contact to return a world manifold for.
 	///
 	/// @return World manifold value for the given inputs which will have the same number of points as
@@ -166,6 +170,12 @@ namespace box2d
 	///
 	WorldManifold GetWorldManifold(const Contact& contact);
 	
+	/// Gets the world manifold for the given data.
+	///
+	/// @note This is a convenience function that in turns calls the
+	///   <code>GetWorldManifold(const Manifold&, const Transformation&, const RealNum, const Transformation& xfB, const RealNum)</code>
+	///   function.
+	///
 	WorldManifold GetWorldManifold(const PositionConstraint& pc, Position posA, Position posB);
 }
 
