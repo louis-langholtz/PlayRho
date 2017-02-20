@@ -26,15 +26,17 @@ using namespace box2d;
 
 VelocityConstraint::VelocityConstraint(index_type contactIndex,
 									   RealNum friction, RealNum restitution, RealNum tangentSpeed,
-									   BodyData bA, BodyData bB):
+									   BodyData bA, BodyData bB,
+									   UnitVec2 normal):
 	m_contactIndex{contactIndex},
 	m_friction{friction}, m_restitution{restitution}, m_tangentSpeed{tangentSpeed},
-	bodyA{bA}, bodyB{bB}
+	bodyA{bA}, bodyB{bB}, m_normal{normal}
 {
 	assert(IsValid(contactIndex));
 	assert(IsValid(friction));
 	assert(IsValid(restitution));
 	assert(IsValid(tangentSpeed));
+	assert(IsValid(normal));
 }
 
 void VelocityConstraint::AddPoint(RealNum normalImpulse, RealNum tangentImpulse)
@@ -42,6 +44,19 @@ void VelocityConstraint::AddPoint(RealNum normalImpulse, RealNum tangentImpulse)
 	assert(m_pointCount < MaxManifoldPoints);
 	m_points[m_pointCount] = Point{normalImpulse, tangentImpulse};
 	++m_pointCount;
+}
+
+void VelocityConstraint::SetPointData(size_type index, Vec2 rA, Vec2 rB, RealNum velocityBias)
+{
+	auto& vcp = PointAt(index);
+	vcp.rA = rA;
+	vcp.rB = rB;
+#if !defined(BOX2D_NOCACHE_VC_POINT_MASSES)
+	// Note: normal must have been set prior to calling ComputeNormalMassAtPoint!
+	vcp.normalMass = ComputeNormalMassAtPoint(*this, index);
+	vcp.tangentMass = ComputeTangentMassAtPoint(*this, index);
+#endif
+	vcp.velocityBias = velocityBias;
 }
 
 void VelocityConstraint::Update(const WorldManifold& worldManifold,
@@ -53,32 +68,27 @@ void VelocityConstraint::Update(const WorldManifold& worldManifold,
 	assert(IsValid(bodyB.GetIndex()));
 	assert(GetPointCount() == worldManifold.GetPointCount());
 	
-	const auto normal = worldManifold.GetNormal();
-	
-	SetNormal(normal);
-	
-	const auto pointCount = GetPointCount();
-	
 	{
 		const auto velA = velocities[bodyA.GetIndex()];
 		const auto velB = velocities[bodyB.GetIndex()];
 		
-		auto restitutionFunc = [&](decltype(pointCount) j)
+		auto restitutionFunc = [&](size_type j)
 		{
 			const auto worldPoint = worldManifold.GetPoint(j);
 			const auto vcp_rA = worldPoint - posA;
 			const auto vcp_rB = worldPoint - posB;
-			SetPointRelPositions(j, vcp_rA, vcp_rB);
-			SetVelocityBiasAtPoint(j, [&]() {
-				// Get the magnitude of the contact relative velocity in direction of the normal.
-				// This will be an invalid value if the normal is invalid. The comparison in this
-				// case will fail and this lambda will return 0. And that's fine. There's no need
-				// to have a check that the normal is valid and possibly incur the overhead of a
-				// conditional branch here.
-				const auto vn = Dot(GetContactRelVelocity(velA, vcp_rA, velB, vcp_rB), normal);
-				return (vn < -conf.velocityThreshold)? -GetRestitution() * vn: RealNum{0};
-			}());
+
+			// Get the magnitude of the contact relative velocity in direction of the normal.
+			// This will be an invalid value if the normal is invalid. The comparison in this
+			// case will fail and this lambda will return 0. And that's fine. There's no need
+			// to have a check that the normal is valid and possibly incur the overhead of a
+			// conditional branch here.
+			const auto vn = Dot(GetContactRelVelocity(velA, vcp_rA, velB, vcp_rB), GetNormal());
+			const auto velocityBias = (vn < -conf.velocityThreshold)? -GetRestitution() * vn: RealNum{0};
+		
+			SetPointData(j, vcp_rA, vcp_rB, velocityBias);
 		};
+		const auto pointCount = GetPointCount();
 		switch (pointCount)
 		{
 			case 2: restitutionFunc(1);
@@ -88,7 +98,10 @@ void VelocityConstraint::Update(const WorldManifold& worldManifold,
 	}
 	
 	SetK(GetInvalid<Mat22>());
-	
+
+	const auto normal = GetNormal();
+	const auto pointCount = GetPointCount();
+
 	// If we have two points, then prepare the block solver.
 	if ((pointCount == 2) && conf.blockSolve)
 	{

@@ -254,34 +254,6 @@ namespace {
 		}
 	}
 
-	/// Gets the position-independent velocity constraint for the given contact, index, and time slot values.
-	inline VelocityConstraint GetVelocityConstraint(const Contact& contact, VelocityConstraint::index_type index,
-													const VelocityConstraint::Conf conf,
-													const WorldManifold& worldManifold,
-													const Vec2 posA, const Vec2 posB,
-													Span<const Velocity> velocities)
-	{
-		VelocityConstraint constraint(index,
-									  contact.GetFriction(),
-									  contact.GetRestitution(),
-									  contact.GetTangentSpeed(),
-									  GetVelocityConstraintBodyData(*(contact.GetFixtureA()->GetBody())),
-									  GetVelocityConstraintBodyData(*(contact.GetFixtureB()->GetBody())));
-		
-		const auto& manifold = contact.GetManifold();
-		const auto pointCount = manifold.GetPointCount();
-		assert(pointCount > 0);
-		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
-		{
-			const auto ci = manifold.GetContactImpulses(j);
-			constraint.AddPoint(conf.dtRatio * ci.m_normal, conf.dtRatio * ci.m_tangent);
-		}
-
-		constraint.Update(worldManifold, posA, posB, velocities, conf);
-
-		return constraint;
-	}
-
 	/// Gets the velocity constraints for the given inputs.
 	/// @detail
 	/// Inializes the velocity constraints with the position dependent portions of the current position constraints.
@@ -306,10 +278,30 @@ namespace {
 			const auto pc = positionConstraints[i];
 			const auto posA = positions[pc.bodyA.index];
 			const auto posB = positions[pc.bodyB.index];
-			const auto worldManifold = GetWorldManifold(pc, posA, posB);
+			
+			const auto xfA = GetTransformation(posA, pc.bodyA.localCenter);
+			const auto xfB = GetTransformation(posB, pc.bodyB.localCenter);
 
-			auto vc = GetVelocityConstraint(*contacts[i], static_cast<VelocityConstraint::index_type>(i), conf,
-											worldManifold, posA.linear, posB.linear, velspan);
+			const auto worldManifold = GetWorldManifold(pc.manifold, xfA, pc.radiusA, xfB, pc.radiusB);
+
+			auto& contact = *contacts[i];
+
+			VelocityConstraint vc(i, contact.GetFriction(), contact.GetRestitution(), contact.GetTangentSpeed(),
+								  GetVelocityConstraintBodyData(*(contact.GetFixtureA()->GetBody())),
+								  GetVelocityConstraintBodyData(*(contact.GetFixtureB()->GetBody())),
+								  worldManifold.GetNormal());
+			
+			const auto& manifold = contact.GetManifold();
+			const auto pointCount = manifold.GetPointCount();
+			assert(pointCount > 0);
+			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
+			{
+				const auto ci = manifold.GetContactImpulses(j);
+				vc.AddPoint(conf.dtRatio * ci.m_normal, conf.dtRatio * ci.m_tangent);
+			}
+			
+			vc.Update(worldManifold, posA.linear, posB.linear, velspan, conf);
+			
 			velocityConstraints.push_back(vc);
 		}
 		return velocityConstraints;

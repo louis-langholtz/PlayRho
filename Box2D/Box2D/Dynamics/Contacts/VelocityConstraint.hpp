@@ -113,7 +113,8 @@ namespace box2d {
 		
 		VelocityConstraint(index_type contactIndex,
 						   RealNum friction, RealNum restitution, RealNum tangentSpeed,
-						   BodyData bA, BodyData bB);
+						   BodyData bA, BodyData bB,
+						   UnitVec2 normal);
 
 		/// Updates with the given data.
 		/// @detail Specifically this:
@@ -238,18 +239,11 @@ namespace box2d {
 		/// Removes the last point added.
 		void RemovePoint() noexcept;
 
-		/// Sets the normal.
-		/// @note This value should not be modified without also setting the point relative
-		///   positions for all points, the velocity biases for all points, and the K value.
-		void SetNormal(const UnitVec2 n) noexcept;
-		
 		/// Sets this object's K value.
 		/// @param value A position constraint dependent value or the zero matrix (Mat22_zero).
 		void SetK(const Mat22& value) noexcept;
 		
-		void SetPointRelPositions(size_type index, Vec2 a, Vec2 b);
-		
-		void SetVelocityBiasAtPoint(size_type index, RealNum value);
+		void SetPointData(size_type index, Vec2 rA, Vec2 rB, RealNum velocityBias);
 
 		/// Velocity constraint point.
 		/// @note This structure is at least 36-bytes large.
@@ -343,11 +337,6 @@ namespace box2d {
 	{
 		assert(m_pointCount > 0);
 		--m_pointCount;
-	}
-
-	inline void VelocityConstraint::SetNormal(const UnitVec2 n) noexcept
-	{
-		m_normal = n;
 	}
 
 	inline void VelocityConstraint::SetK(const Mat22& value) noexcept
@@ -495,22 +484,6 @@ namespace box2d {
 		return Vec2{GetTangentImpulseAtPoint(vc, 0), GetTangentImpulseAtPoint(vc, 1)};
 	}
 	
-	inline void VelocityConstraint::SetPointRelPositions(VelocityConstraint::size_type index, Vec2 a, Vec2 b)
-	{
-		auto& vcp = PointAt(index);
-		vcp.rA = a;
-		vcp.rB = b;
-#if !defined(BOX2D_NOCACHE_VC_POINT_MASSES)
-		vcp.normalMass = ComputeNormalMassAtPoint(*this, index);
-		vcp.tangentMass = ComputeTangentMassAtPoint(*this, index);
-#endif
-	}
-
-	inline void VelocityConstraint::SetVelocityBiasAtPoint(VelocityConstraint::size_type index, RealNum value)
-	{
-		PointAt(index).velocityBias = value;
-	}
-
 	inline void VelocityConstraint::SetNormalImpulseAtPoint(VelocityConstraint::size_type index, RealNum value)
 	{
 		PointAt(index).normalImpulse = value;
