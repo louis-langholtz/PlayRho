@@ -43,6 +43,8 @@
 #include <set>
 #include <vector>
 
+#define BOX2D_MAGIC(x) (x)
+
 namespace box2d
 {
 
@@ -257,6 +259,90 @@ namespace {
 		}
 	}
 
+	inline VelocityConstraint GetVelocityConstraint(VelocityConstraint::index_type i,
+													const Contact& contact,
+													const VelocityContainer& velocities,
+													const PositionContainer& positions,
+													const VelocityConstraint::Conf conf)
+	{
+		const auto fixtureA = contact.GetFixtureA();
+		const auto fixtureB = contact.GetFixtureB();
+		
+		const auto radiusA = fixtureA->GetShape()->GetVertexRadius();
+		const auto bodyA = fixtureA->GetBody();
+		const auto indexA = bodyA->GetIslandIndex();
+		const auto localCenterA = bodyA->GetLocalCenter();
+		
+		const auto radiusB = fixtureB->GetShape()->GetVertexRadius();
+		const auto bodyB = fixtureB->GetBody();
+		const auto indexB = bodyB->GetIslandIndex();
+		const auto localCenterB = bodyB->GetLocalCenter();
+		
+		const auto posA = positions[indexA];
+		const auto posB = positions[indexB];
+		
+		const auto velA = velocities[indexA];
+		const auto velB = velocities[indexB];
+		
+		const auto xfA = GetTransformation(posA, localCenterA);
+		const auto xfB = GetTransformation(posB, localCenterB);
+		
+		const auto& manifold = contact.GetManifold();
+		const auto worldManifold = GetWorldManifold(manifold, xfA, radiusA, xfB, radiusB);
+		
+		VelocityConstraint vc(i, contact.GetFriction(), contact.GetRestitution(), contact.GetTangentSpeed(),
+							  GetVelocityConstraintBodyData(*bodyA),
+							  GetVelocityConstraintBodyData(*bodyB),
+							  worldManifold.GetNormal());
+		
+		const auto pointCount = manifold.GetPointCount();
+		assert(pointCount > 0);
+		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
+		{
+			const auto ci = manifold.GetContactImpulses(j);
+			
+			const auto worldPoint = worldManifold.GetPoint(j);
+			const auto vcp_rA = worldPoint - posA.linear;
+			const auto vcp_rB = worldPoint - posB.linear;
+			
+			// Get the magnitude of the contact relative velocity in direction of the normal.
+			// This will be an invalid value if the normal is invalid. The comparison in this
+			// case will fail and this lambda will return 0. And that's fine. There's no need
+			// to have a check that the normal is valid and possibly incur the overhead of a
+			// conditional branch here.
+			const auto vn = Dot(GetContactRelVelocity(velA, vcp_rA, velB, vcp_rB), vc.GetNormal());
+			const auto velocityBias = (vn < -conf.velocityThreshold)? -vc.GetRestitution() * vn: RealNum{0};
+			
+			vc.AddPoint(conf.dtRatio * ci.m_normal, conf.dtRatio * ci.m_tangent, vcp_rA, vcp_rB, velocityBias);
+		}
+		
+		if (conf.blockSolve)
+		{
+			const auto k = vc.ComputeK();
+			if (IsValid(k))
+			{
+				// Ensure a reasonable condition number.
+				constexpr auto maxCondNum = BOX2D_MAGIC(RealNum(1000));
+				const auto scaled_k11_squared = k.ex.x * (k.ex.x / maxCondNum);
+				const auto k11_times_k22 = k.ex.x * k.ey.y;
+				if (scaled_k11_squared < (k11_times_k22 - Square(k.ex.y)))
+				{
+					// K is safe to invert.
+					// Prepare the block solver.
+					vc.SetK(k);
+				}
+				else
+				{
+					// The constraints are redundant, just use one.
+					// TODO_ERIN use deepest?
+					vc.RemovePoint();
+				}
+			}
+		}
+
+		return vc;
+	}
+
 	/// Gets the velocity constraints for the given inputs.
 	/// @detail
 	/// Inializes the velocity constraints with the position dependent portions of the current position constraints.
@@ -275,60 +361,7 @@ namespace {
 		//auto i = VelocityConstraint::index_type{0};
 		for (auto i = decltype(numContacts){0}; i < numContacts; ++i)
 		{
-			auto& contact = *contacts[i];
-			const auto fixtureA = contact.GetFixtureA();
-			const auto fixtureB = contact.GetFixtureB();
-
-			const auto radiusA = fixtureA->GetShape()->GetVertexRadius();
-			const auto bodyA = fixtureA->GetBody();
-			const auto indexA = bodyA->GetIslandIndex();
-			const auto localCenterA = bodyA->GetLocalCenter();
-			
-			const auto radiusB = fixtureB->GetShape()->GetVertexRadius();
-			const auto bodyB = fixtureB->GetBody();
-			const auto indexB = bodyB->GetIslandIndex();
-			const auto localCenterB = bodyB->GetLocalCenter();
-
-			const auto posA = positions[indexA];
-			const auto posB = positions[indexB];
-
-			const auto velA = velocities[indexA];
-			const auto velB = velocities[indexB];
-
-			const auto xfA = GetTransformation(posA, localCenterA);
-			const auto xfB = GetTransformation(posB, localCenterB);
-
-			const auto& manifold = contact.GetManifold();
-			const auto worldManifold = GetWorldManifold(manifold, xfA, radiusA, xfB, radiusB);
-
-			VelocityConstraint vc(i, contact.GetFriction(), contact.GetRestitution(), contact.GetTangentSpeed(),
-								  GetVelocityConstraintBodyData(*bodyA),
-								  GetVelocityConstraintBodyData(*bodyB),
-								  worldManifold.GetNormal());
-
-			const auto pointCount = manifold.GetPointCount();
-			assert(pointCount > 0);
-			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
-			{
-				const auto ci = manifold.GetContactImpulses(j);
-
-				const auto worldPoint = worldManifold.GetPoint(j);
-				const auto vcp_rA = worldPoint - posA.linear;
-				const auto vcp_rB = worldPoint - posB.linear;
-				
-				// Get the magnitude of the contact relative velocity in direction of the normal.
-				// This will be an invalid value if the normal is invalid. The comparison in this
-				// case will fail and this lambda will return 0. And that's fine. There's no need
-				// to have a check that the normal is valid and possibly incur the overhead of a
-				// conditional branch here.
-				const auto vn = Dot(GetContactRelVelocity(velA, vcp_rA, velB, vcp_rB), vc.GetNormal());
-				const auto velocityBias = (vn < -conf.velocityThreshold)? -vc.GetRestitution() * vn: RealNum{0};
-
-				vc.AddPoint(conf.dtRatio * ci.m_normal, conf.dtRatio * ci.m_tangent, vcp_rA, vcp_rB, velocityBias);
-			}
-			
-			vc.Update(conf);
-			
+			const auto vc = GetVelocityConstraint(i, *contacts[i], velocities, positions, conf);
 			velocityConstraints.push_back(vc);
 		}
 		return velocityConstraints;

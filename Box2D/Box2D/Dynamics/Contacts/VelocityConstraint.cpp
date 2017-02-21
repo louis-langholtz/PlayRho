@@ -53,7 +53,6 @@ void VelocityConstraint::AddPoint(RealNum normalImpulse, RealNum tangentImpulse,
 	point.rB = rB;
 	point.velocityBias = velocityBias;
 
-#if !defined(BOX2D_NOCACHE_VC_POINT_MASSES)
 	point.normalMass = [&](){
 		const auto value = GetInverseMass()
 			+ (bodyA.GetInvRotI() * Square(Cross(rA, GetNormal())))
@@ -67,22 +66,18 @@ void VelocityConstraint::AddPoint(RealNum normalImpulse, RealNum tangentImpulse,
 			+ (bodyB.GetInvRotI() * Square(Cross(rB, GetTangent())));
 		return (value != 0)? RealNum{1} / value : RealNum{0};
 	}();
-#endif
 
 	m_points[m_pointCount] = point;
 	++m_pointCount;
 }
 
-void VelocityConstraint::Update(const Conf conf)
+Mat22 VelocityConstraint::ComputeK() const noexcept
 {
-	SetK(GetInvalid<Mat22>());
-
-	const auto normal = GetNormal();
 	const auto pointCount = GetPointCount();
-
-	// If we have two points, then prepare the block solver.
-	if ((pointCount == 2) && conf.blockSolve)
+	if (pointCount == 2)
 	{
+		const auto normal = GetNormal();
+		
 		const auto rn1A = Cross(GetPointRelPosA(0), normal);
 		const auto rn1B = Cross(GetPointRelPosB(0), normal);
 		
@@ -93,22 +88,8 @@ void VelocityConstraint::Update(const Conf conf)
 		const auto k11 = totalInvMass + (bodyA.GetInvRotI() * Square(rn1A)) + (bodyB.GetInvRotI() * Square(rn1B));
 		const auto k22 = totalInvMass + (bodyA.GetInvRotI() * Square(rn2A)) + (bodyB.GetInvRotI() * Square(rn2B));
 		const auto k12 = totalInvMass + (bodyA.GetInvRotI() * rn1A * rn2A)  + (bodyB.GetInvRotI() * rn1B * rn2B);
-		
-		// Ensure a reasonable condition number.
-		constexpr auto maxCondNum = BOX2D_MAGIC(RealNum(1000));
-		//const auto k11_squared = Square(k11);
-		const auto scaled_k11_squared = k11 * (k11 / maxCondNum);
-		const auto k11_times_k22 = k11 * k22;
-		if (scaled_k11_squared < (k11_times_k22 - Square(k12))) 
-		{
-			// K is safe to invert.
-			SetK(Mat22{Vec2{k11, k12}, Vec2{k12, k22}});
-		}
-		else
-		{
-			// The constraints are redundant, just use one.
-			// TODO_ERIN use deepest?
-			RemovePoint();
-		}
+
+		return Mat22{Vec2{k11, k12}, Vec2{k12, k22}};
 	}
+	return GetInvalid<Mat22>();
 }
