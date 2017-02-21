@@ -22,25 +22,14 @@
 
 using namespace box2d;
 
-constexpr auto VelocityThreshold = RealNum{8} / RealNum{10}; // RealNum{1};
-
-TEST(VelocityConstraint, ByteSizeIs_176or160_or_312)
+TEST(VelocityConstraint, ByteSizeIs_184_or_328_or_656)
 {
-	if (sizeof(RealNum) == 4)
+	switch (sizeof(RealNum))
 	{
-#if !defined(BOX2D_NOCACHE_VC_POINT_MASSES)
-	EXPECT_EQ(sizeof(VelocityConstraint), size_t(176));
-#else
-	EXPECT_EQ(sizeof(VelocityConstraint), size_t(160));
-#endif
-	}
-	else if (sizeof(RealNum) == 8)
-	{
-#if !defined(BOX2D_NOCACHE_VC_POINT_MASSES)
-		EXPECT_EQ(sizeof(VelocityConstraint), size_t(312));
-#else
-		EXPECT_EQ(sizeof(VelocityConstraint), size_t(160));
-#endif
+		case  4: EXPECT_EQ(sizeof(VelocityConstraint), size_t(184)); break;
+		case  8: EXPECT_EQ(sizeof(VelocityConstraint), size_t(328)); break;
+		case 16: EXPECT_EQ(sizeof(VelocityConstraint), size_t(656)); break;
+		default: FAIL(); break;
 	}
 }
 
@@ -83,14 +72,16 @@ TEST(VelocityConstraint, InitializingConstructor)
 	
 	const auto bodyA = VelocityConstraint::BodyData{};
 	const auto bodyB = VelocityConstraint::BodyData{};
+	const auto normal = UnitVec2::GetTop();
 
-	const VelocityConstraint vc{contact_index, friction, restitution, tangent_speed, bodyA, bodyB};
+	const VelocityConstraint vc{contact_index, friction, restitution, tangent_speed, bodyA, bodyB, normal};
 
 	EXPECT_EQ(vc.GetContactIndex(), contact_index);
 	EXPECT_EQ(vc.GetFriction(), friction);
 	EXPECT_EQ(vc.GetRestitution(), restitution);
 	EXPECT_EQ(vc.GetTangentSpeed(), tangent_speed);
 	EXPECT_EQ(vc.GetPointCount(), VelocityConstraint::size_type(0));
+	EXPECT_EQ(vc.GetNormal(), normal);
 }
 
 TEST(VelocityConstraint, AddPoint)
@@ -102,22 +93,28 @@ TEST(VelocityConstraint, AddPoint)
 
 	const auto bodyA = VelocityConstraint::BodyData{};
 	const auto bodyB = VelocityConstraint::BodyData{};
+	const auto normal = UnitVec2::GetTop();
 
-	VelocityConstraint vc{contact_index, friction, restitution, tangent_speed, bodyA, bodyB};
+	VelocityConstraint vc{contact_index, friction, restitution, tangent_speed, bodyA, bodyB, normal};
 
 	ASSERT_EQ(vc.GetContactIndex(), contact_index);
 	ASSERT_EQ(vc.GetFriction(), friction);
 	ASSERT_EQ(vc.GetRestitution(), restitution);
 	ASSERT_EQ(vc.GetTangentSpeed(), tangent_speed);
 	ASSERT_EQ(vc.GetPointCount(), VelocityConstraint::size_type(0));
-	
+	ASSERT_EQ(vc.GetNormal(), normal);
+
 	const auto ni = RealNum(1.2);
 	const auto ti = RealNum(0.3);
 	
-	vc.AddPoint(ni, ti);
+	const auto rA = Vec2{0, 0};
+	const auto rB = Vec2{0, 0};
+	const auto velocityBias = RealNum(0);
+	
+	vc.AddPoint(ni, ti, rA, rB, velocityBias);
 	EXPECT_EQ(vc.GetPointCount(), VelocityConstraint::size_type(1));
 	
-	vc.AddPoint(ni + 2, ti + 2);
+	vc.AddPoint(ni + 2, ti + 2, rA, rB, velocityBias);
 	EXPECT_EQ(vc.GetPointCount(), VelocityConstraint::size_type(2));
 
 	EXPECT_EQ(GetNormalImpulseAtPoint(vc, 0), ni);
@@ -125,66 +122,3 @@ TEST(VelocityConstraint, AddPoint)
 	EXPECT_EQ(GetNormalImpulseAtPoint(vc, 1), ni + 2);
 	EXPECT_EQ(GetTangentImpulseAtPoint(vc, 1), ti + 2);
 }
-
-TEST(VelocityConstraint, Update)
-{
-	const auto contact_index = VelocityConstraint::index_type{3};
-	const auto friction = RealNum(0.432);
-	const auto restitution = RealNum(0.989);
-	const auto tangent_speed = RealNum(1.876);
-	
-	const auto invMass = RealNum(0.1);
-	const auto invI = RealNum(0.02);
-	const auto bodyA = VelocityConstraint::BodyData{0, invMass, invI};
-	const auto bodyB = VelocityConstraint::BodyData{1, invMass, invI};
-
-	VelocityConstraint vc{contact_index, friction, restitution, tangent_speed, bodyA, bodyB};
-	ASSERT_EQ(vc.GetPointCount(), VelocityConstraint::size_type(0));
-	ASSERT_EQ(vc.GetContactIndex(), contact_index);
-	ASSERT_EQ(vc.GetFriction(), friction);
-	ASSERT_EQ(vc.GetRestitution(), restitution);
-	ASSERT_EQ(vc.GetTangentSpeed(), tangent_speed);
-	
-	ASSERT_FALSE(IsValid(GetNormalMassAtPoint(vc, 0)));
-	ASSERT_FALSE(IsValid(GetNormalMassAtPoint(vc, 1)));
-
-	const auto ni = RealNum(1.2);
-	const auto ti = RealNum(0.3);
-	vc.AddPoint(ni, ti);
-	ASSERT_EQ(vc.GetPointCount(), VelocityConstraint::size_type(1));
-	ASSERT_EQ(vc.GetNormalImpulseAtPoint(0), ni);
-	ASSERT_EQ(vc.GetTangentImpulseAtPoint(0), ti);
-
-	const auto normal = UnitVec2::GetRight();
-	const auto ps = WorldManifold::PointSeparation{};
-	const auto worldManifold = WorldManifold{normal, ps};
-
-	const auto posA = Vec2{1, 2};
-	const auto posB = Vec2{3, 4};
-	const auto velocities = {Velocity{Vec2{1, 0}, 0_deg}, Velocity{Vec2{-1, 0}, 0_deg}};
-
-	vc.Update(worldManifold, posA, posB, velocities,
-			  VelocityConstraint::Conf{0, VelocityThreshold, false});
-
-	EXPECT_TRUE(almost_equal(vc.GetNormal().GetX(), normal.GetX()));
-	EXPECT_TRUE(almost_equal(vc.GetNormal().GetY(), normal.GetY()));
-
-	EXPECT_TRUE(almost_equal(vc.GetNormalImpulseAtPoint(0), ni));
-	EXPECT_TRUE(almost_equal(vc.GetTangentImpulseAtPoint(0), ti));
-	EXPECT_NEAR(double(vc.GetNormalMassAtPoint(0)),  1.6666666, 0.004);
-	EXPECT_NEAR(double(vc.GetTangentMassAtPoint(0)), 2.5000002, 0.004);
-	EXPECT_TRUE(almost_equal(vc.GetVelocityBiasAtPoint(0), RealNum(1.978)));
-	EXPECT_TRUE(almost_equal(vc.GetPointRelPosA(0).x, RealNum(-1)));
-	EXPECT_TRUE(almost_equal(vc.GetPointRelPosA(0).y, RealNum(-2)));
-	EXPECT_TRUE(almost_equal(vc.GetPointRelPosB(0).x, RealNum(-3)));
-	EXPECT_TRUE(almost_equal(vc.GetPointRelPosB(0).y, RealNum(-4)));
-
-	EXPECT_FALSE(IsValid(vc.GetNormalImpulseAtPoint(1)));
-	EXPECT_FALSE(IsValid(vc.GetTangentImpulseAtPoint(1)));
-	EXPECT_FALSE(IsValid(vc.GetNormalMassAtPoint(1)));
-	EXPECT_FALSE(IsValid(vc.GetTangentMassAtPoint(1)));	
-	EXPECT_FALSE(IsValid(vc.GetVelocityBiasAtPoint(1)));
-	EXPECT_FALSE(IsValid(vc.GetPointRelPosA(1)));
-	EXPECT_FALSE(IsValid(vc.GetPointRelPosB(1)));
-}
-

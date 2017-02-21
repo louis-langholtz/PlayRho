@@ -30,15 +30,14 @@ namespace box2d {
 	/// Contact velocity constraint.
 	///
 	/// @note A valid contact velocity constraint must have a point count of either 1 or 2.
-	/// @note This data structure is 176-bytes large (on at least one 64-bit platform).
-	/// @note Class invariants are enforced via the <code>Update</code> method being the only
-	///   public access way to change certain properties.
+	/// @note This data structure is 184-bytes large (on at least one 64-bit platform).
 	///
 	/// @invariant The "K" value cannot be changed independent of: the total inverse mass,
 	///   the normal, and the point relative positions.
-	/// @invarient The normal mass cannot be changed independent of: the "K" value.
-	/// @invarient The velocity biasses cannot be changed independent of: the normal, and the
+	/// @invariant The normal mass cannot be changed independent of: the "K" value.
+	/// @invariant The velocity biasses cannot be changed independent of: the normal, and the
 	///   point relative positions.
+	///
 	class VelocityConstraint
 	{
 	public:
@@ -232,6 +231,8 @@ namespace box2d {
 			RealNum tangentMass = GetInvalid<decltype(tangentMass)>(); ///< Tangent mass (4-bytes). Dependent on rA and rB. 0 or greater.
 			RealNum velocityBias = GetInvalid<decltype(velocityBias)>(); ///< Velocity bias (4-bytes).
 		};
+
+		Point GetPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, RealNum velocityBias) const noexcept;
 
 		/// Accesses the point identified by the given index.
 		/// @note Behavior is undefined if given index is not less than <code>MaxManifoldPoints</code>.

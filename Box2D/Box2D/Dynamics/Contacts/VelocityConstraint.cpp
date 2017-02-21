@@ -41,10 +41,8 @@ VelocityConstraint::VelocityConstraint(index_type contactIndex,
 	assert(IsValid(normal));
 }
 
-void VelocityConstraint::AddPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, RealNum velocityBias)
+VelocityConstraint::Point VelocityConstraint::GetPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, RealNum velocityBias) const noexcept
 {
-	assert(m_pointCount < MaxManifoldPoints);
-	
 	auto point = Point{};
 	
 	point.normalImpulse = normalImpulse;
@@ -52,22 +50,28 @@ void VelocityConstraint::AddPoint(RealNum normalImpulse, RealNum tangentImpulse,
 	point.rA = rA;
 	point.rB = rB;
 	point.velocityBias = velocityBias;
-
+	
 	point.normalMass = [&](){
 		const auto value = GetInverseMass()
-			+ (bodyA.GetInvRotI() * Square(Cross(rA, GetNormal())))
-			+ (bodyB.GetInvRotI() * Square(Cross(rB, GetNormal())));
+		+ (bodyA.GetInvRotI() * Square(Cross(rA, GetNormal())))
+		+ (bodyB.GetInvRotI() * Square(Cross(rB, GetNormal())));
 		return (value != 0)? RealNum{1} / value : RealNum{0};
 	}();
-
+	
 	point.tangentMass = [&]() {
 		const auto value = GetInverseMass()
-			+ (bodyA.GetInvRotI() * Square(Cross(rA, GetTangent())))
-			+ (bodyB.GetInvRotI() * Square(Cross(rB, GetTangent())));
+		+ (bodyA.GetInvRotI() * Square(Cross(rA, GetTangent())))
+		+ (bodyB.GetInvRotI() * Square(Cross(rB, GetTangent())));
 		return (value != 0)? RealNum{1} / value : RealNum{0};
 	}();
 
-	m_points[m_pointCount] = point;
+	return point;
+}
+
+void VelocityConstraint::AddPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, RealNum velocityBias)
+{
+	assert(m_pointCount < MaxManifoldPoints);
+	m_points[m_pointCount] = GetPoint(normalImpulse, tangentImpulse, rA, rB, velocityBias);
 	++m_pointCount;
 }
 

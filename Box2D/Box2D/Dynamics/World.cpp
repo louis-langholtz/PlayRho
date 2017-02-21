@@ -182,7 +182,7 @@ namespace {
 			GetPositionConstraintBodyData(*(fixtureB.GetBody())), GetVertexRadius(*fixtureB.GetShape())};
 	}
 	
-	inline PositionConstraintsContainer GetPositionConstraints(const Island::ContactContainer& contacts)
+	PositionConstraintsContainer GetPositionConstraints(const Island::ContactContainer& contacts)
 	{
 		auto constraints = PositionConstraintsContainer{};
 		constraints.reserve(contacts.size());
@@ -325,7 +325,9 @@ namespace {
 				constexpr auto maxCondNum = BOX2D_MAGIC(RealNum(1000));
 				const auto scaled_k11_squared = k.ex.x * (k.ex.x / maxCondNum);
 				const auto k11_times_k22 = k.ex.x * k.ey.y;
-				if (scaled_k11_squared < (k11_times_k22 - Square(k.ex.y)))
+				const auto k12_squared = Square(k.ex.y);
+				const auto k_diff = k11_times_k22 - k12_squared;
+				if (scaled_k11_squared < k_diff)
 				{
 					// K is safe to invert.
 					// Prepare the block solver.
@@ -349,10 +351,9 @@ namespace {
 	/// @post Velocity constraints will have their "normal" field set to the world manifold normal for them.
 	/// @post Velocity constraints will have their constraint points set.
 	/// @sa SolveVelocityConstraints.
-	inline VelocityConstraintsContainer GetVelConstraints(const Island::ContactContainer& contacts,
-														   const VelocityContainer& velocities,
-														   const PositionContainer& positions,
-														   const VelocityConstraint::Conf conf)
+	VelocityConstraintsContainer GetVelocityConstraints(const Island::ContactContainer& contacts,
+														const VelocityContainer& velocities,
+														const PositionContainer& positions,const VelocityConstraint::Conf conf)
 	{
 		auto velocityConstraints = VelocityConstraintsContainer{};
 		const auto numContacts = contacts.size();
@@ -894,8 +895,8 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 		velocities.push_back(new_velocity);
 	}
 	
-	auto velocityConstraints = GetVelConstraints(island.m_contacts, velocities, positions,
-												 VelocityConstraint::Conf{step.doWarmStart? step.dtRatio: 0, step.velocityThreshold, true});
+	auto velocityConstraints = GetVelocityConstraints(island.m_contacts, velocities, positions,
+													  VelocityConstraint::Conf{step.doWarmStart? step.dtRatio: 0, step.velocityThreshold, true});
 	
 	if (step.doWarmStart)
 	{
@@ -1298,8 +1299,8 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 		island.m_bodies[i]->m_sweep.pos0 = positions[i];
 	}
 	
-	auto velocityConstraints = GetVelConstraints(island.m_contacts, velocities, positions,
-												 VelocityConstraint::Conf{0, step.velocityThreshold, true});
+	auto velocityConstraints = GetVelocityConstraints(island.m_contacts, velocities, positions,
+													  VelocityConstraint::Conf{0, step.velocityThreshold, true});
 
 	// No warm starting is needed for TOI events because warm
 	// starting impulses were applied in the discrete solver.
