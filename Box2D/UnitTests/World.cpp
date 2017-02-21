@@ -1011,9 +1011,9 @@ TEST(World, CollidingDynamicBodies)
 	body_def.type = BodyType::Dynamic;
 	
 	MyContactListener listener{
-		[](Contact& contact, const Manifold& oldManifold) {},
-		[](Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved) {},
-		[&](Contact& contact) {},
+		[](Contact&, const Manifold&) {},
+		[](Contact&, const ContactImpulsesList&, ContactListener::iteration_type) {},
+		[&](Contact&) {},
 	};
 
 	const auto gravity = Vec2_zero;
