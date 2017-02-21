@@ -37,12 +37,20 @@ namespace box2d {
 
 	inline PositionSolution operator+ (PositionSolution lhs, PositionSolution rhs)
 	{
-		return PositionSolution{lhs.pos_a + rhs.pos_a, lhs.pos_b + rhs.pos_b, lhs.min_separation + rhs.min_separation};
+		return PositionSolution{
+			lhs.pos_a + rhs.pos_a,
+			lhs.pos_b + rhs.pos_b,
+			lhs.min_separation + rhs.min_separation
+		};
 	}
 
 	inline PositionSolution operator- (PositionSolution lhs, PositionSolution rhs)
 	{
-		return PositionSolution{lhs.pos_a - rhs.pos_a, lhs.pos_b - rhs.pos_b, lhs.min_separation - rhs.min_separation};
+		return PositionSolution{
+			lhs.pos_a - rhs.pos_a,
+			lhs.pos_b - rhs.pos_b,
+			lhs.min_separation - rhs.min_separation
+		};
 	}
 
 	/// Constraint solver configuration data.
@@ -159,25 +167,36 @@ namespace box2d {
 	}
 
 	/// Solves the given position constraints.
+	///
 	/// @detail This updates positions (and nothing else) for the two bodies identified by the
 	///   given indexes by calling the position constraint solving function.
+	///
+	/// @note Can't expect the returned minimum separation to be greater than or equal to
+	///  <code>ConstraintSolverConf.max_separation</code> because code won't push the separation
+	///   above this amount to begin with.
+	///
 	/// @param indexA Index within the island of body A.
 	/// @param indexB Index within the island of body B.
-	/// @note Can't expect the returned minimum separation to be greater than or equal to
-	///  ConstraintSolverConf.max_separation because code won't push the separation above this
-	///   amount to begin with.
-	/// @return Minimum separation.
+	///
+	/// @return Minimum separation (which is the same as the max amount of penetration/overlap).
+	///
 	RealNum SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
 									 Span<Position> positions,
 									 island_count_t indexA, island_count_t indexB,
 									 ConstraintSolverConf conf = GetDefaultToiPositionSolverConf());
 
 	/// Solves the velocity constraint.
-	/// @detail This updates the tangent and normal impulses of the velocity constraint points of the given velocity
-	///   constraint and updates the given velocities.
+	///
+	/// @detail This updates the tangent and normal impulses of the velocity constraint points of
+	///   the given velocity constraint and updates the given velocities.
+	///
 	/// @warning Behavior is undefined unless the velocity constraint point count is 1 or 2.
+	/// @note Linear velocity is only changed if the inverse mass of either body is non-zero.
+	/// @note Angular velocity is only changed if the inverse rotational inertia of either body is non-zero.
+	///
 	/// @pre The velocity constraint must have a valid normal, a valid tangent,
 	///   valid point relative positions, and valid velocity biases.
+	///
 	void SolveVelocityConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB);
 	
 } // namespace box2d

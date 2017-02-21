@@ -375,19 +375,30 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
 	EXPECT_EQ(solution.pos_b.angular, old_pB.angular);
 }
 
-#if 0
 TEST(ContactSolver, SolveVelocityConstraint)
 {
-	const auto body_data_a = VelocityConstraint::BodyData{0, 0, 0};
-	const auto body_data_b = VelocityConstraint::BodyData{1, 0, 0};
-	auto vc = VelocityConstraint{0, 0, 0, 0, body_data_a, body_data_b};
-	vc.AddPoint(0, 0);
-	
+	const auto inverse_mass_a = RealNum(0);
+	const auto inverse_mass_b = RealNum(0);
+	const auto inverse_mass = inverse_mass_a + inverse_mass_b;
+	const auto body_data_a = VelocityConstraint::BodyData{0, inverse_mass, 0};
+	const auto body_data_b = VelocityConstraint::BodyData{1, inverse_mass, 0};
+	const auto normal = UnitVec2::GetTop();
+	const auto friction = RealNum(1);
+	const auto restitution = RealNum(0.5f);
+	const auto tangent_speed = RealNum(0);
+	const auto contact_index = VelocityConstraint::index_type{0};
+	auto vc = VelocityConstraint{contact_index, friction, restitution, tangent_speed, body_data_a, body_data_b, normal};
+	const auto r_a = Vec2{0, 0};
+	const auto r_b = Vec2{0, 0};
+	const auto velocity_bias = RealNum(0);
+	vc.AddPoint(0, 0, r_a, r_b, velocity_bias);
+	ASSERT_EQ(vc.GetPointCount(), VelocityConstraint::size_type{1});
+
 	const auto linear_velocity = Vec2{1, 1};
 	const auto angular_velocity = 0_deg;
+
 	auto vel_a = Velocity{linear_velocity, angular_velocity};
 	auto vel_b = Velocity{linear_velocity, angular_velocity};
-	
 	SolveVelocityConstraint(vc, vel_a, vel_b);
 	
 	EXPECT_EQ(vel_a.linear, linear_velocity);
@@ -397,21 +408,23 @@ TEST(ContactSolver, SolveVelocityConstraint)
 	
 	EXPECT_FALSE(IsValid(vc.GetK()));
 	EXPECT_FALSE(IsValid(vc.GetNormalMass()));
-	EXPECT_FALSE(IsValid(vc.GetNormal()));
-	EXPECT_FALSE(IsValid(vc.GetFriction()));
-	EXPECT_FALSE(IsValid(vc.GetRestitution()));
-	EXPECT_FALSE(IsValid(vc.GetTangentSpeed()));
-	EXPECT_FALSE(IsValid(vc.GetContactIndex()));
+
+	EXPECT_EQ(vc.GetNormal(), normal);
+	EXPECT_EQ(vc.GetFriction(), friction);
+	EXPECT_EQ(vc.GetRestitution(), restitution);
+	EXPECT_EQ(vc.GetTangentSpeed(), tangent_speed);
+	EXPECT_EQ(vc.GetContactIndex(), contact_index);
+	EXPECT_EQ(vc.GetInverseMass(), inverse_mass);
 	
-	EXPECT_EQ(vc.GetPointCount(), VelocityConstraint::size_type{0});
+	EXPECT_EQ(vc.GetPointCount(), VelocityConstraint::size_type{1});
 	
-	EXPECT_FALSE(IsValid(vc.GetNormalImpulseAtPoint(0)));
-	EXPECT_FALSE(IsValid(vc.GetTangentImpulseAtPoint(0)));
-	EXPECT_FALSE(IsValid(vc.GetNormalMassAtPoint(0)));
-	EXPECT_FALSE(IsValid(vc.GetTangentMassAtPoint(0)));
-	EXPECT_FALSE(IsValid(vc.GetVelocityBiasAtPoint(0)));
-	EXPECT_FALSE(IsValid(vc.GetPointRelPosA(0)));
-	EXPECT_FALSE(IsValid(vc.GetPointRelPosB(0)));
+	EXPECT_EQ(vc.GetNormalImpulseAtPoint(0), RealNum(0));
+	EXPECT_EQ(vc.GetTangentImpulseAtPoint(0), RealNum(0));
+	EXPECT_EQ(vc.GetNormalMassAtPoint(0), RealNum(0));
+	EXPECT_EQ(vc.GetTangentMassAtPoint(0), RealNum(0));
+	EXPECT_EQ(vc.GetVelocityBiasAtPoint(0), RealNum(0));
+	EXPECT_EQ(vc.GetPointRelPosA(0), r_a);
+	EXPECT_EQ(vc.GetPointRelPosB(0), r_b);
 	
 	EXPECT_FALSE(IsValid(vc.GetNormalImpulseAtPoint(1)));
 	EXPECT_FALSE(IsValid(vc.GetTangentImpulseAtPoint(1)));
@@ -422,4 +435,3 @@ TEST(ContactSolver, SolveVelocityConstraint)
 	EXPECT_FALSE(IsValid(vc.GetPointRelPosB(1)));
 }
 
-#endif

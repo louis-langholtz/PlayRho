@@ -42,39 +42,49 @@ struct VelocityPair
 	Velocity vel_b;
 };
 
-static inline void SolveTangentConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB, VelocityConstraint::size_type i)
+struct VelocitySolution
+{
+	Velocity dvA;
+	Velocity dvB;
+	RealNum newImpulse;
+};
+
+static inline VelocitySolution SolveTangentConstraint(const VelocityConstraint& vc,
+													  const Velocity velA, const Velocity velB,
+													  const VelocityConstraint::size_type i)
 {
 	const auto tangent = GetTangent(vc);
-	assert(IsValid(tangent));
 
-	const auto rA = GetPointRelPosA(vc, i);
-	const auto rB = GetPointRelPosB(vc, i);
+	const auto vcp = vc.GetPointAt(i);
 	
 	// Compute tangent force
-	const auto lambda = GetTangentMassAtPoint(vc, i) * (vc.GetTangentSpeed() - Dot(GetContactRelVelocity(velA, rA, velB, rB), tangent));
+	const auto lambda = [&]() {
+		const auto dv = GetContactRelVelocity(velA, vcp.rA, velB, vcp.rB);
+		const auto vt = vc.GetTangentSpeed() - Dot(dv, tangent);
+		return vcp.tangentMass * vt;
+	}();
 	
 	// Clamp the accumulated force
 	//
 	// Notes:
 	//
 	//   vc.GetFriction() can return any value between 0 and +Inf. If it's +Inf,
-	//   multiplying it any non-zero non-NaN value results in +/-Inf, and multiplying
+	//   multiplying it by any non-zero non-NaN value results in +/-Inf, and multiplying
 	//   it by zero or NaN results in NaN.
 	//
-	//   Meanwhile GetNormalImpulseAtPoint(vc, i) can often return 0.
+	//   Meanwhile the normal impulse at the point can often be 0.
 	//
-	const auto maxImpulse = vc.GetFriction() * GetNormalImpulseAtPoint(vc, i);
-	const auto oldImpulse = GetTangentImpulseAtPoint(vc, i);
+	const auto maxImpulse = vc.GetFriction() * vcp.normalImpulse;
+	const auto oldImpulse = vcp.tangentImpulse;
 	const auto newImpulse = Clamp(oldImpulse + lambda, -maxImpulse, maxImpulse);
 	const auto incImpulse = newImpulse - oldImpulse;
 	
-	// Save new impulse
-	SetTangentImpulseAtPoint(vc, i, newImpulse);
-	
-	// Apply contact impulse
 	const auto P = incImpulse * tangent;
-	velA -= Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(rA, P)};
-	velB += Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(rB, P)};
+	return VelocitySolution{
+		-Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(vcp.rA, P)},
+		+Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(vcp.rB, P)},
+		newImpulse
+	};
 }
 
 /// Solves the tangential portion of the velocity constraint.
@@ -93,41 +103,53 @@ static inline void SolveTangentConstraint(VelocityConstraint& vc, Velocity& velA
 	assert((count == 1) || (count == 2));
 	switch (count)
 	{
-		case 2: SolveTangentConstraint(vc, velA, velB, 1);
+		case 2:
+		{
+			const auto solution = SolveTangentConstraint(vc, velA, velB, 1);
+			velA += solution.dvA;
+			velB += solution.dvB;
+			vc.SetTangentImpulseAtPoint(1, solution.newImpulse);
+		}
 			// intentional fallthrough
-		case 1: SolveTangentConstraint(vc, velA, velB, 0);
+		case 1:
+		{
+			const auto solution = SolveTangentConstraint(vc, velA, velB, 0);
+			velA += solution.dvA;
+			velB += solution.dvB;
+			vc.SetTangentImpulseAtPoint(0, solution.newImpulse);
+		}
 			// intentional fallthrough
 		default: break;
 	}
 }
 
-static inline void SeqSolveNormalConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB, VelocityConstraint::size_type i)
+static inline VelocitySolution SeqSolveNormalConstraint(const VelocityConstraint& vc,
+														const Velocity velA, const Velocity velB,
+														const VelocityConstraint::size_type i)
 {
 	const auto normal = GetNormal(vc);
-	assert(IsValid(normal));
 	
-	const auto rA = GetPointRelPosA(vc, i);
-	const auto rB = GetPointRelPosB(vc, i);
+	const auto vcp = vc.GetPointAt(i);
 	
 	// Compute normal impulse
 	const auto lambda = [&](){
-		const auto dv = GetContactRelVelocity(velA, rA, velB, rB);
+		const auto dv = GetContactRelVelocity(velA, vcp.rA, velB, vcp.rB);
 		const auto vn = Dot(dv, normal);
-		return GetNormalMassAtPoint(vc, i) * (vn - GetVelocityBiasAtPoint(vc, i));
+		return vcp.normalMass * (vn - vcp.velocityBias);
 	}();
 	
 	// Clamp the accumulated impulse
-	const auto oldImpulse = GetNormalImpulseAtPoint(vc, i);
+	const auto oldImpulse = vcp.normalImpulse;
 	const auto newImpulse = Max(oldImpulse - lambda, RealNum{0});
 	const auto incImpulse = newImpulse - oldImpulse;
 	
-	// Save new impulse
-	SetNormalImpulseAtPoint(vc, i, newImpulse);
-	
 	// Apply contact impulse
 	const auto P = incImpulse * normal;
-	velA -= Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(rA, P)};
-	velB += Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(rB, P)};
+	return VelocitySolution{
+		-Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(vcp.rA, P)},
+		+Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(vcp.rB, P)},
+		newImpulse
+	};
 }
 
 static inline void SeqSolveNormalConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
@@ -139,9 +161,21 @@ static inline void SeqSolveNormalConstraint(VelocityConstraint& vc, Velocity& ve
 	assert((count == 1) || (count == 2));
 	switch (count)
 	{
-		case 2: SeqSolveNormalConstraint(vc, velA, velB, 1);
+		case 2:
+		{
+			const auto solution = SeqSolveNormalConstraint(vc, velA, velB, 1);
+			velA += solution.dvA;
+			velB += solution.dvB;
+			vc.SetNormalImpulseAtPoint(1, solution.newImpulse);
+		}
 			// intentional fallthrough
-		case 1: SeqSolveNormalConstraint(vc, velA, velB, 0);
+		case 1:
+		{
+			const auto solution = SeqSolveNormalConstraint(vc, velA, velB, 0);
+			velA += solution.dvA;
+			velB += solution.dvB;
+			vc.SetNormalImpulseAtPoint(0, solution.newImpulse);
+		}
 			// intentional fallthrough
 		default: break;
 	}
@@ -540,9 +574,9 @@ RealNum box2d::SolvePositionConstraints(Span<const PositionConstraint> positionC
 		auto& posA = positions[pc.bodyA.index];
 		auto& posB = positions[pc.bodyB.index];
 		const auto res = SolvePositionConstraint(pc, posA, true, posB, true, conf);
-		minSeparation = Min(minSeparation, res.min_separation);
 		posA = res.pos_a;
 		posB = res.pos_b;
+		minSeparation = Min(minSeparation, res.min_separation);
 	}
 	
 	return minSeparation;
@@ -567,9 +601,9 @@ RealNum box2d::SolvePositionConstraints(Span<const PositionConstraint> positionC
 		auto& posA = positions[pc.bodyA.index];
 		auto& posB = positions[pc.bodyB.index];
 		const auto res = SolvePositionConstraint(pc, posA, moveA, posB, moveB, conf);
-		minSeparation = Min(minSeparation, res.min_separation);
 		posA = res.pos_a;
 		posB = res.pos_b;		
+		minSeparation = Min(minSeparation, res.min_separation);
 	}
 	
 	return minSeparation;
