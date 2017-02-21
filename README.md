@@ -5,12 +5,9 @@
 This is a fork by Louis Langholtz of the Box2D physics engine.
 
 General influences on this fork are:
-- [Unit testing](https://en.wikipedia.org/wiki/Unit_testing);
 - [C++11](https://en.wikipedia.org/wiki/C%2B%2B11) & [C++14](https://en.wikipedia.org/wiki/C%2B%2B14);
 - [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md);
-- Effective Modern C++ by Scott Meyers; and
-- Hardware capabilities of popular CPU architectures like the
-  [Intel-64 architecture](http://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-manual-325462.pdf).
+- [Unit testing](https://en.wikipedia.org/wiki/Unit_testing);
  
 **NOTE**: These sources make heavy use of the standard C++ library [`assert`](http://en.cppreference.com/w/cpp/error/assert) macro to confirm code correctness.
 As such, this library *must* be compiled with the `NDEBUG` preprocessor macro enabled
