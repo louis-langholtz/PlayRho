@@ -108,7 +108,7 @@ namespace box2d {
 		///   been added, call GetPointCount().
 		/// @note Behavior is undefined if an attempt is made to add more than MaxManifoldPoints points.
 		/// @sa GetPointCount().
-		void AddPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, RealNum velocityBias);
+		void AddPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, Velocity velA, Velocity velB, Conf conf);
 
 		/// Gets the normal of the contact in world coordinates.
 		/// @note This value is set on construction.
@@ -242,7 +242,7 @@ namespace box2d {
 
 	private:
 	
-		Point GetPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, RealNum velocityBias) const noexcept;
+		Point GetPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, Velocity velA, Velocity velB, Conf conf) const noexcept;
 
 		/// Accesses the point identified by the given index.
 		/// @note Behavior is undefined if given index is not less than <code>MaxManifoldPoints</code>.

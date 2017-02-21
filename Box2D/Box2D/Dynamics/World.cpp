@@ -305,15 +305,7 @@ namespace {
 			const auto vcp_rA = worldPoint - posA.linear;
 			const auto vcp_rB = worldPoint - posB.linear;
 			
-			// Get the magnitude of the contact relative velocity in direction of the normal.
-			// This will be an invalid value if the normal is invalid. The comparison in this
-			// case will fail and this lambda will return 0. And that's fine. There's no need
-			// to have a check that the normal is valid and possibly incur the overhead of a
-			// conditional branch here.
-			const auto vn = Dot(GetContactRelVelocity(velA, vcp_rA, velB, vcp_rB), vc.GetNormal());
-			const auto velocityBias = (vn < -conf.velocityThreshold)? -vc.GetRestitution() * vn: RealNum{0};
-			
-			vc.AddPoint(conf.dtRatio * ci.m_normal, conf.dtRatio * ci.m_tangent, vcp_rA, vcp_rB, velocityBias);
+			vc.AddPoint(ci.m_normal, ci.m_tangent, vcp_rA, vcp_rB, velA, velB, conf);
 		}
 		
 		if (conf.blockSolve)

@@ -41,10 +41,18 @@ VelocityConstraint::VelocityConstraint(index_type contactIndex,
 	assert(IsValid(normal));
 }
 
-VelocityConstraint::Point VelocityConstraint::GetPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, RealNum velocityBias) const noexcept
+VelocityConstraint::Point VelocityConstraint::GetPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB,  Velocity velA, Velocity velB, Conf conf) const noexcept
 {
 	auto point = Point{};
 	
+	// Get the magnitude of the contact relative velocity in direction of the normal.
+	// This will be an invalid value if the normal is invalid. The comparison in this
+	// case will fail and this lambda will return 0. And that's fine. There's no need
+	// to have a check that the normal is valid and possibly incur the overhead of a
+	// conditional branch here.
+	const auto vn = Dot(GetContactRelVelocity(velA, rA, velB, rB), GetNormal());
+	const auto velocityBias = (vn < -conf.velocityThreshold)? -GetRestitution() * vn: RealNum{0};
+
 	point.normalImpulse = normalImpulse;
 	point.tangentImpulse = tangentImpulse;
 	point.rA = rA;
@@ -68,10 +76,10 @@ VelocityConstraint::Point VelocityConstraint::GetPoint(RealNum normalImpulse, Re
 	return point;
 }
 
-void VelocityConstraint::AddPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, RealNum velocityBias)
+void VelocityConstraint::AddPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, Velocity velA, Velocity velB, Conf conf)
 {
 	assert(m_pointCount < MaxManifoldPoints);
-	m_points[m_pointCount] = GetPoint(normalImpulse, tangentImpulse, rA, rB, velocityBias);
+	m_points[m_pointCount] = GetPoint(normalImpulse * conf.dtRatio, tangentImpulse * conf.dtRatio, rA, rB, velA, velB, conf);
 	++m_pointCount;
 }
 
