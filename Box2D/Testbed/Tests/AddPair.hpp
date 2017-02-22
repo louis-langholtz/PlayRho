@@ -32,16 +32,16 @@ public:
 		{
 			const auto shape = std::make_shared<CircleShape>(RealNum(0.1));
 
-			float minX = -6.0f;
-			float maxX = 0.0f;
-			float minY = 4.0f;
-			float maxY = 6.0f;
+			const auto minX = -6.0f;
+			const auto maxX = 0.0f;
+			const auto minY = 4.0f;
+			const auto maxY = 6.0f;
 			
-			for (int32 i = 0; i < 400; ++i)
+			for (auto i = 0; i < 400; ++i)
 			{
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
-				bd.position = Vec2(RandomFloat(minX,maxX),RandomFloat(minY,maxY));
+				bd.position = Vec2(RandomFloat(minX, maxX), RandomFloat(minY, maxY));
 				const auto body = m_world->CreateBody(bd);
 				body->CreateFixture(shape, FixtureDef{}.UseDensity(0.01f));
 			}
