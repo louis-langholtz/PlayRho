@@ -146,12 +146,12 @@ public:
 
 private:
 	
-	void InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions,
+	void InitVelocityConstraints(Span<BodyConstraint> bodies,
 								 const StepConf& step, const ConstraintSolverConf& conf) override;
 
-	void SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step) override;
+	void SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
 	
-	bool SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const override;
+	bool SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const override;
 
 	// Solver shared
 	Vec2 m_localAnchorA;

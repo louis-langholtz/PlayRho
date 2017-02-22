@@ -139,8 +139,7 @@ namespace box2d {
 	/// @return Minimum separation distance of the position constraint's manifold points
 	///   (prior to "solving").
 	PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
-											 Position positionA, bool moveA,
-											 Position positionB, bool moveB,
+											 bool moveA, bool moveB,
 											 ConstraintSolverConf conf);
 	
 	inline ConstraintSolverConf GetDefaultPositionSolverConf()
@@ -156,8 +155,7 @@ namespace box2d {
 	/// @return Minimum separation.
 	/// @sa MinSeparationThreshold.
 	/// @sa Solve.
-	RealNum SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
-									 Span<Position> positions,
+	RealNum SolvePositionConstraints(Span<PositionConstraint> positionConstraints,
 									 ConstraintSolverConf conf = GetDefaultPositionSolverConf());
 	
 	inline ConstraintSolverConf GetDefaultToiPositionSolverConf()
@@ -180,8 +178,7 @@ namespace box2d {
 	///
 	/// @return Minimum separation (which is the same as the max amount of penetration/overlap).
 	///
-	RealNum SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
-									 Span<Position> positions,
+	RealNum SolvePositionConstraints(Span<PositionConstraint> positionConstraints,
 									 island_count_t indexA, island_count_t indexB,
 									 ConstraintSolverConf conf = GetDefaultToiPositionSolverConf());
 
@@ -197,7 +194,7 @@ namespace box2d {
 	/// @pre The velocity constraint must have a valid normal, a valid tangent,
 	///   valid point relative positions, and valid velocity biases.
 	///
-	void SolveVelocityConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB);
+	void SolveVelocityConstraint(VelocityConstraint& vc);
 	
 } // namespace box2d
 

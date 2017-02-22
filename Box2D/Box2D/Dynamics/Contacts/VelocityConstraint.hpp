@@ -22,6 +22,7 @@
 
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Common/Span.hpp>
+#include <Box2D/Dynamics/Contacts/BodyConstraint.hpp>
 
 namespace box2d {
 	
@@ -50,43 +51,6 @@ namespace box2d {
 			RealNum velocityThreshold;
 			bool blockSolve;
 		};
-
-		/// Contact velocity constraint body data.
-		/// @invariant The inverse mass is a value of zero or more.
-		/// @invariant The inverse rotational inertia is a value of zero or more.
-		class BodyData
-		{
-		public:
-			BodyData() noexcept = default;
-			BodyData(const BodyData& copy) noexcept = default;
-			
-			/// Initializing constructor.
-			/// @note Behavior is undefined if the given inverse mass or given inverse rotational
-			///   inertia is less than zero.
-			/// @param invMass Inverse mass. A value of 0 or more.
-			/// @param invI Inverse rotational inertia. A value of 0 or more.
-			constexpr BodyData(index_type index, RealNum invMass, RealNum invI) noexcept:
-				m_index{index}, m_invMass{invMass}, m_invI{invI}
-			{
-				assert(invMass >= 0);
-				assert(invI >= 0);
-			}
-			
-			index_type GetIndex() const noexcept { return m_index; }
-			
-			/// Gets the inverse mass.
-			/// @return 0 or greater value.
-			RealNum GetInvMass() const noexcept { return m_invMass; }
-			
-			/// Gets the inverse rotational inertia.
-			/// @return 0 or greater value.
-			RealNum GetInvRotI() const noexcept { return m_invI; }
-			
-		private:
-			RealNum m_invMass = 0; ///< Inverse mass of body. Value of 0 or greater.
-			RealNum m_invI = 0; ///< Inverse rotational interia of body. Value of 0 or greater.
-			index_type m_index = GetInvalid<index_type>(); ///< Index within island of body.
-		};
 		
 		/// Default constructor.
 		/// @detail
@@ -100,7 +64,7 @@ namespace box2d {
 		
 		VelocityConstraint(index_type contactIndex,
 						   RealNum friction, RealNum restitution, RealNum tangentSpeed,
-						   BodyData bA, BodyData bB,
+						   BodyConstraint& bA, BodyConstraint& bB,
 						   UnitVec2 normal);
 
 		/// Adds the given point to this contact velocity constraint object.
@@ -108,7 +72,7 @@ namespace box2d {
 		///   been added, call GetPointCount().
 		/// @note Behavior is undefined if an attempt is made to add more than MaxManifoldPoints points.
 		/// @sa GetPointCount().
-		void AddPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, Velocity velA, Velocity velB, Conf conf);
+		void AddPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, Conf conf);
 
 		/// Gets the normal of the contact in world coordinates.
 		/// @note This value is set on construction.
@@ -153,9 +117,9 @@ namespace box2d {
 		/// Gets the tangent speed of the associated contact.
 		RealNum GetTangentSpeed() const noexcept { return m_tangentSpeed; }
 		
-		BodyData bodyA; ///< Body A contact velocity constraint data.
+		BodyConstraint& bodyA; ///< Body A contact velocity constraint data.
 		
-		BodyData bodyB; ///< Body B contact velocity constraint data.
+		BodyConstraint& bodyB; ///< Body B contact velocity constraint data.
 		
 		/// Gets the normal impulse at the given point.
 		/// @note Call the <code>AddPoint</code> or <code>SetNormalImpulseAtPoint</code> method
@@ -242,7 +206,7 @@ namespace box2d {
 
 	private:
 	
-		Point GetPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, Velocity velA, Velocity velB, Conf conf) const noexcept;
+		Point GetPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, Conf conf) const noexcept;
 
 		/// Accesses the point identified by the given index.
 		/// @note Behavior is undefined if given index is not less than <code>MaxManifoldPoints</code>.

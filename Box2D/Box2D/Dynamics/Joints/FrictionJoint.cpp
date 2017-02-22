@@ -20,6 +20,7 @@
 #include <Box2D/Dynamics/Joints/FrictionJoint.hpp>
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/StepConf.hpp>
+#include <Box2D/Dynamics/Contacts/BodyConstraint.hpp>
 
 using namespace box2d;
 
@@ -52,7 +53,7 @@ FrictionJoint::FrictionJoint(const FrictionJointDef& def)
 	m_maxTorque = def.maxTorque;
 }
 
-void FrictionJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf&)
+void FrictionJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf&)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -63,13 +64,13 @@ void FrictionJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<cons
 	m_invIA = GetBodyA()->GetInverseInertia();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto aA = positions[m_indexA].angular;
-	auto vA = velocities[m_indexA].linear;
-	auto wA = velocities[m_indexA].angular;
+	const auto aA = bodies[m_indexA].GetPosition().angular;
+	const auto aB = bodies[m_indexB].GetPosition().angular;
 
-	const auto aB = positions[m_indexB].angular;
-	auto vB = velocities[m_indexB].linear;
-	auto wB = velocities[m_indexB].angular;
+	auto vA = bodies[m_indexA].GetVelocity().linear;
+	auto wA = bodies[m_indexA].GetVelocity().angular;
+	auto vB = bodies[m_indexB].GetVelocity().linear;
+	auto wB = bodies[m_indexB].GetVelocity().angular;
 
 	// Compute the effective mass matrix.
 	m_rA = Rotate(m_localAnchorA - m_localCenterA, UnitVec2{aA});
@@ -119,18 +120,16 @@ void FrictionJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<cons
 		m_angularImpulse = RealNum{0};
 	}
 
-	velocities[m_indexA].linear = vA;
-	velocities[m_indexA].angular = wA;
-	velocities[m_indexB].linear = vB;
-	velocities[m_indexB].angular = wB;
+	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
+	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
 }
 
-void FrictionJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step)
+void FrictionJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
 {
-	auto vA = velocities[m_indexA].linear;
-	auto wA = velocities[m_indexA].angular;
-	auto vB = velocities[m_indexB].linear;
-	auto wB = velocities[m_indexB].angular;
+	auto vA = bodies[m_indexA].GetVelocity().linear;
+	auto wA = bodies[m_indexA].GetVelocity().angular;
+	auto vB = bodies[m_indexB].GetVelocity().linear;
+	auto wB = bodies[m_indexB].GetVelocity().angular;
 
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
@@ -175,15 +174,13 @@ void FrictionJoint::SolveVelocityConstraints(Span<Velocity> velocities, const St
 		wB += 1_rad * iB * Cross(m_rB, impulse);
 	}
 
-	velocities[m_indexA].linear = vA;
-	velocities[m_indexA].angular = wA;
-	velocities[m_indexB].linear = vB;
-	velocities[m_indexB].angular = wB;
+	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
+	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
 }
 
-bool FrictionJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const
+bool FrictionJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const
 {
-	NOT_USED(positions);
+	NOT_USED(bodies);
 	NOT_USED(conf);
 
 	return true;

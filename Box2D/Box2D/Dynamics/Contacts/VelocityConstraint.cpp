@@ -26,7 +26,7 @@ using namespace box2d;
 
 VelocityConstraint::VelocityConstraint(index_type contactIndex,
 									   RealNum friction, RealNum restitution, RealNum tangentSpeed,
-									   BodyData bA, BodyData bB,
+									   BodyConstraint& bA, BodyConstraint& bB,
 									   UnitVec2 normal):
 	m_contactIndex{contactIndex},
 	m_friction{friction}, m_restitution{restitution}, m_tangentSpeed{tangentSpeed},
@@ -41,7 +41,7 @@ VelocityConstraint::VelocityConstraint(index_type contactIndex,
 	assert(IsValid(normal));
 }
 
-VelocityConstraint::Point VelocityConstraint::GetPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB,  Velocity velA, Velocity velB, Conf conf) const noexcept
+VelocityConstraint::Point VelocityConstraint::GetPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, Conf conf) const noexcept
 {
 	auto point = Point{};
 	
@@ -50,7 +50,7 @@ VelocityConstraint::Point VelocityConstraint::GetPoint(RealNum normalImpulse, Re
 	// case will fail and this lambda will return 0. And that's fine. There's no need
 	// to have a check that the normal is valid and possibly incur the overhead of a
 	// conditional branch here.
-	const auto vn = Dot(GetContactRelVelocity(velA, rA, velB, rB), GetNormal());
+	const auto vn = Dot(GetContactRelVelocity(bodyA.GetVelocity(), rA, bodyB.GetVelocity(), rB), GetNormal());
 	const auto velocityBias = (vn < -conf.velocityThreshold)? -GetRestitution() * vn: RealNum{0};
 
 	point.normalImpulse = normalImpulse;
@@ -76,10 +76,10 @@ VelocityConstraint::Point VelocityConstraint::GetPoint(RealNum normalImpulse, Re
 	return point;
 }
 
-void VelocityConstraint::AddPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, Velocity velA, Velocity velB, Conf conf)
+void VelocityConstraint::AddPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, Conf conf)
 {
 	assert(m_pointCount < MaxManifoldPoints);
-	m_points[m_pointCount] = GetPoint(normalImpulse * conf.dtRatio, tangentImpulse * conf.dtRatio, rA, rB, velA, velB, conf);
+	m_points[m_pointCount] = GetPoint(normalImpulse * conf.dtRatio, tangentImpulse * conf.dtRatio, rA, rB, conf);
 	++m_pointCount;
 }
 

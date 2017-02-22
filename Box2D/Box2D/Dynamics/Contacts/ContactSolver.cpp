@@ -50,7 +50,6 @@ struct VelocitySolution
 };
 
 static inline VelocitySolution SolveTangentConstraint(const VelocityConstraint& vc,
-													  const Velocity velA, const Velocity velB,
 													  const VelocityConstraint::size_type i)
 {
 	const auto tangent = GetTangent(vc);
@@ -59,7 +58,7 @@ static inline VelocitySolution SolveTangentConstraint(const VelocityConstraint& 
 	
 	// Compute tangent force
 	const auto lambda = [&]() {
-		const auto dv = GetContactRelVelocity(velA, vcp.rA, velB, vcp.rB);
+		const auto dv = GetContactRelVelocity(vc.bodyA.GetVelocity(), vcp.rA, vc.bodyB.GetVelocity(), vcp.rB);
 		const auto vt = vc.GetTangentSpeed() - Dot(dv, tangent);
 		return vcp.tangentMass * vt;
 	}();
@@ -92,30 +91,25 @@ static inline VelocitySolution SolveTangentConstraint(const VelocityConstraint& 
 ///   updates the two given velocity structures.
 /// @warning Behavior is undefined unless the velocity constraint point count is 1 or 2.
 /// @param vc Contact velocity constraint.
-/// @param velA Velocity structure for body A. This is an input and output parameter modified to meet the constraint.
-/// @param velB Velocity structure for body B. This is an input and output parameter modified to meet the constraint.
-static inline void SolveTangentConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
+static inline void SolveTangentConstraint(VelocityConstraint& vc)
 {
-	assert(IsValid(velA));
-	assert(IsValid(velB));
-
 	const auto count = vc.GetPointCount();
 	assert((count == 1) || (count == 2));
 	switch (count)
 	{
 		case 2:
 		{
-			const auto solution = SolveTangentConstraint(vc, velA, velB, 1);
-			velA += solution.dvA;
-			velB += solution.dvB;
+			const auto solution = SolveTangentConstraint(vc, 1);
+			vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() + solution.dvA);
+			vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + solution.dvB);
 			vc.SetTangentImpulseAtPoint(1, solution.newImpulse);
 		}
 			// intentional fallthrough
 		case 1:
 		{
-			const auto solution = SolveTangentConstraint(vc, velA, velB, 0);
-			velA += solution.dvA;
-			velB += solution.dvB;
+			const auto solution = SolveTangentConstraint(vc, 0);
+			vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() + solution.dvA);
+			vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + solution.dvB);
 			vc.SetTangentImpulseAtPoint(0, solution.newImpulse);
 		}
 			// intentional fallthrough
@@ -124,7 +118,6 @@ static inline void SolveTangentConstraint(VelocityConstraint& vc, Velocity& velA
 }
 
 static inline VelocitySolution SeqSolveNormalConstraint(const VelocityConstraint& vc,
-														const Velocity velA, const Velocity velB,
 														const VelocityConstraint::size_type i)
 {
 	const auto normal = GetNormal(vc);
@@ -133,7 +126,7 @@ static inline VelocitySolution SeqSolveNormalConstraint(const VelocityConstraint
 	
 	// Compute normal impulse
 	const auto lambda = [&](){
-		const auto dv = GetContactRelVelocity(velA, vcp.rA, velB, vcp.rB);
+		const auto dv = GetContactRelVelocity(vc.bodyA.GetVelocity(), vcp.rA, vc.bodyB.GetVelocity(), vcp.rB);
 		const auto vn = Dot(dv, normal);
 		return vcp.normalMass * (vn - vcp.velocityBias);
 	}();
@@ -152,28 +145,25 @@ static inline VelocitySolution SeqSolveNormalConstraint(const VelocityConstraint
 	};
 }
 
-static inline void SeqSolveNormalConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
+static inline void SeqSolveNormalConstraint(VelocityConstraint& vc)
 {
-	assert(IsValid(velA));
-	assert(IsValid(velB));
-	
 	const auto count = vc.GetPointCount();
 	assert((count == 1) || (count == 2));
 	switch (count)
 	{
 		case 2:
 		{
-			const auto solution = SeqSolveNormalConstraint(vc, velA, velB, 1);
-			velA += solution.dvA;
-			velB += solution.dvB;
+			const auto solution = SeqSolveNormalConstraint(vc, 1);
+			vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() + solution.dvA);
+			vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + solution.dvB);
 			vc.SetNormalImpulseAtPoint(1, solution.newImpulse);
 		}
 			// intentional fallthrough
 		case 1:
 		{
-			const auto solution = SeqSolveNormalConstraint(vc, velA, velB, 0);
-			velA += solution.dvA;
-			velB += solution.dvB;
+			const auto solution = SeqSolveNormalConstraint(vc, 0);
+			vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() + solution.dvA);
+			vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + solution.dvB);
 			vc.SetNormalImpulseAtPoint(0, solution.newImpulse);
 		}
 			// intentional fallthrough
@@ -202,20 +192,15 @@ static inline VelocityPair ApplyImpulses(const VelocityConstraint& vc, const Vec
 	};
 }
 
-static inline void BlockSolveUpdate(VelocityConstraint& vc, Velocity& velA, Velocity& velB,
-									const Vec2 newImpulses)
+static inline void BlockSolveUpdate(VelocityConstraint& vc, const Vec2 newImpulses)
 {
-	assert(IsValid(velA));
-	assert(IsValid(velB));
-	
 	const auto delta_v = ApplyImpulses(vc, newImpulses - GetNormalImpulses(vc));
-	velA += delta_v.vel_a;
-	velB += delta_v.vel_b;
+	vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() + delta_v.vel_a);
+	vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + delta_v.vel_b);
 	SetNormalImpulses(vc, newImpulses);
 }
 
-static inline bool BlockSolveNormalCase1(VelocityConstraint& vc, Velocity& velA, Velocity& velB,
-										 const Vec2 b_prime)
+static inline bool BlockSolveNormalCase1(VelocityConstraint& vc, const Vec2 b_prime)
 {
 	//
 	// Case 1: vn = 0
@@ -232,7 +217,7 @@ static inline bool BlockSolveNormalCase1(VelocityConstraint& vc, Velocity& velA,
 	const auto newImpulses = -Transform(b_prime, normalMass);
 	if ((newImpulses[0] >= 0) && (newImpulses[1] >= 0))
 	{
-		BlockSolveUpdate(vc, velA, velB, newImpulses);
+		BlockSolveUpdate(vc, newImpulses);
 		
 #if defined(B2_DEBUG_SOLVER)
 		auto& vcp1 = vc.PointAt(0);
@@ -256,8 +241,7 @@ static inline bool BlockSolveNormalCase1(VelocityConstraint& vc, Velocity& velA,
 	return false;
 }
 
-static inline bool BlockSolveNormalCase2(VelocityConstraint& vc, Velocity& velA, Velocity& velB,
-										 const Vec2 b_prime)
+static inline bool BlockSolveNormalCase2(VelocityConstraint& vc, const Vec2 b_prime)
 {
 	//
 	// Case 2: vn1 = 0 and x2 = 0
@@ -271,7 +255,7 @@ static inline bool BlockSolveNormalCase2(VelocityConstraint& vc, Velocity& velA,
 	const auto vn2 = K.ex.y * newImpulse.x + b_prime.y;
 	if ((newImpulse.x >= 0) && (vn2 >= 0))
 	{
-		BlockSolveUpdate(vc, velA, velB, newImpulse);
+		BlockSolveUpdate(vc, newImpulse);
 		
 #if defined(B2_DEBUG_SOLVER)
 		auto& vcp1 = vc.PointAt(0);
@@ -291,8 +275,7 @@ static inline bool BlockSolveNormalCase2(VelocityConstraint& vc, Velocity& velA,
 	return false;
 }
 
-static inline bool BlockSolveNormalCase3(VelocityConstraint& vc, Velocity& velA, Velocity& velB,
-										 const Vec2 b_prime)
+static inline bool BlockSolveNormalCase3(VelocityConstraint& vc, const Vec2 b_prime)
 {
 	//
 	// Case 3: vn2 = 0 and x1 = 0
@@ -306,7 +289,7 @@ static inline bool BlockSolveNormalCase3(VelocityConstraint& vc, Velocity& velA,
 	const auto vn1 = K.ey.x * newImpulse.y + b_prime.x;
 	if ((newImpulse.y >= 0) && (vn1 >= 0))
 	{
-		BlockSolveUpdate(vc, velA, velB, newImpulse);
+		BlockSolveUpdate(vc, newImpulse);
 		
 #if defined(B2_DEBUG_SOLVER)
 		auto& vcp2 = vc.PointAt(1);
@@ -326,8 +309,7 @@ static inline bool BlockSolveNormalCase3(VelocityConstraint& vc, Velocity& velA,
 	return false;
 }
 
-static inline bool BlockSolveNormalCase4(VelocityConstraint& vc, Velocity& velA, Velocity& velB,
-										 const Vec2 b_prime)
+static inline bool BlockSolveNormalCase4(VelocityConstraint& vc, const Vec2 b_prime)
 {
 	//
 	// Case 4: x1 = 0 and x2 = 0
@@ -339,13 +321,13 @@ static inline bool BlockSolveNormalCase4(VelocityConstraint& vc, Velocity& velA,
 	const auto vn2 = b_prime.y;
 	if ((vn1 >= 0) && (vn2 >= 0))
 	{
-		BlockSolveUpdate(vc, velA, velB, newImpulse);
+		BlockSolveUpdate(vc, newImpulse);
 		return true;
 	}
 	return false;
 }
 
-static inline void BlockSolveNormalConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
+static inline void BlockSolveNormalConstraint(VelocityConstraint& vc)
 {
 	const auto K = vc.GetK();
 	assert(IsValid(K));
@@ -357,6 +339,9 @@ static inline void BlockSolveNormalConstraint(VelocityConstraint& vc, Velocity& 
 	{
 		return;
 	}
+	
+	const auto velA = vc.bodyA.GetVelocity();
+	const auto velB = vc.bodyB.GetVelocity();
 	
 	// Block solver developed in collaboration with Dirk Gregorius (back in 01/07 on Box2D_Lite).
 	// Build the mini LCP for this contact patch
@@ -408,64 +393,60 @@ static inline void BlockSolveNormalConstraint(VelocityConstraint& vc, Velocity& 
 	}();
 	
 	
-	if (BlockSolveNormalCase1(vc, velA, velB, b_prime))
+	if (BlockSolveNormalCase1(vc, b_prime))
 		return;
-	if (BlockSolveNormalCase2(vc, velA, velB, b_prime))
+	if (BlockSolveNormalCase2(vc, b_prime))
 		return;
-	if (BlockSolveNormalCase3(vc, velA, velB, b_prime))
+	if (BlockSolveNormalCase3(vc, b_prime))
 		return;
-	if (BlockSolveNormalCase4(vc, velA, velB, b_prime))
+	if (BlockSolveNormalCase4(vc, b_prime))
 		return;
 	
 	// No solution, give up. This is hit sometimes, but it doesn't seem to matter.
 }
 
 /// Solves the normal portion of the velocity constraint.	
-static inline void SolveNormalConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
+static inline void SolveNormalConstraint(VelocityConstraint& vc)
 {
 	const auto count = vc.GetPointCount();
 	assert((count == 1) || (count == 2));
 	
 	if ((count == 1) || (!IsValid(vc.GetK())))
 	{
-		SeqSolveNormalConstraint(vc, velA, velB);
+		SeqSolveNormalConstraint(vc);
 	}
 	else
 	{
-		BlockSolveNormalConstraint(vc, velA, velB);
+		BlockSolveNormalConstraint(vc);
 	}
 }
 	
-void box2d::SolveVelocityConstraint(VelocityConstraint& vc, Velocity& velA, Velocity& velB)
+void box2d::SolveVelocityConstraint(VelocityConstraint& vc)
 {
 	// Solve tangent constraints first (before normal constraints) because non-penetration
 	// is more important than friction.
-	SolveTangentConstraint(vc, velA, velB);
-	SolveNormalConstraint(vc, velA, velB);
+	SolveTangentConstraint(vc);
+	SolveNormalConstraint(vc);
 }
 
 PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
-												Position posA, bool moveA,
-												Position posB, bool moveB,
+												bool moveA, bool moveB,
 												ConstraintSolverConf conf)
 {
-	assert(IsValid(posA));
 	assert(moveA == 0 || moveA == 1);
-	
-	assert(IsValid(posB));
 	assert(moveB == 0 || moveB == 1);
 	
 	assert(IsValid(conf.resolutionRate));
 	assert(IsValid(conf.linearSlop));
 	assert(IsValid(conf.maxLinearCorrection));
 	
-	const auto invMassA = pc.bodyA.invMass * moveA;
-	const auto invInertiaA = pc.bodyA.invI * moveA;
-	const auto localCenterA = pc.bodyA.localCenter;
+	const auto invMassA = pc.bodyA.GetInvMass() * moveA;
+	const auto invInertiaA = pc.bodyA.GetInvRotI() * moveA;
+	const auto localCenterA = pc.bodyA.GetLocalCenter();
 	
-	const auto invMassB = pc.bodyB.invMass * moveB;
-	const auto invInertiaB = pc.bodyB.invI * moveB;
-	const auto localCenterB = pc.bodyB.localCenter;
+	const auto invMassB = pc.bodyB.GetInvMass() * moveB;
+	const auto invInertiaB = pc.bodyB.GetInvRotI() * moveB;
+	const auto localCenterB = pc.bodyB.GetLocalCenter();
 	
 	// Compute inverse mass total.
 	// This must be > 0 unless doing TOI solving and neither bodies were the bodies specified.
@@ -504,6 +485,9 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 		};
 	};
 
+	auto posA = pc.bodyA.GetPosition();
+	auto posB = pc.bodyB.GetPosition();
+	
 	// Solve normal constraints
 	const auto pointCount = pc.manifold.GetPointCount();
 	switch (pointCount)
@@ -563,27 +547,24 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 	return PositionSolution{posA, posB, MaxFloat};
 }
 
-RealNum box2d::SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
-									 Span<Position> positions, ConstraintSolverConf conf)
+RealNum box2d::SolvePositionConstraints(Span<PositionConstraint> positionConstraints,
+										ConstraintSolverConf conf)
 {
 	auto minSeparation = MaxFloat;
 	
 	for (auto&& pc: positionConstraints)
 	{
-		assert(pc.bodyA.index != pc.bodyB.index); // Confirms ContactManager::Add() did its job.
-		auto& posA = positions[pc.bodyA.index];
-		auto& posB = positions[pc.bodyB.index];
-		const auto res = SolvePositionConstraint(pc, posA, true, posB, true, conf);
-		posA = res.pos_a;
-		posB = res.pos_b;
+		assert(pc.bodyA.GetIndex() != pc.bodyB.GetIndex()); // Confirms ContactManager::Add() did its job.
+		const auto res = SolvePositionConstraint(pc, true, true, conf);
+		pc.bodyA.SetPosition(res.pos_a);
+		pc.bodyB.SetPosition(res.pos_b);
 		minSeparation = Min(minSeparation, res.min_separation);
 	}
 	
 	return minSeparation;
 }
 
-RealNum box2d::SolvePositionConstraints(Span<const PositionConstraint> positionConstraints,
-										Span<Position> positions,
+RealNum box2d::SolvePositionConstraints(Span<PositionConstraint> positionConstraints,
 										island_count_t indexA, island_count_t indexB,
 										ConstraintSolverConf conf)
 {
@@ -593,16 +574,13 @@ RealNum box2d::SolvePositionConstraints(Span<const PositionConstraint> positionC
 	// modify the constraint temporarily if related to indexA or indexB.
 	for (auto&& pc: positionConstraints)
 	{
-		assert(pc.bodyA.index != pc.bodyB.index); // Confirms ContactManager::Add() did its job.
+		assert(pc.bodyA.GetIndex() != pc.bodyB.GetIndex()); // Confirms ContactManager::Add() did its job.
 		
-		const auto moveA = (pc.bodyA.index == indexA) || (pc.bodyA.index == indexB);
-		const auto moveB = (pc.bodyB.index == indexA) || (pc.bodyB.index == indexB);
-		
-		auto& posA = positions[pc.bodyA.index];
-		auto& posB = positions[pc.bodyB.index];
-		const auto res = SolvePositionConstraint(pc, posA, moveA, posB, moveB, conf);
-		posA = res.pos_a;
-		posB = res.pos_b;		
+		const auto moveA = (pc.bodyA.GetIndex() == indexA) || (pc.bodyA.GetIndex() == indexB);
+		const auto moveB = (pc.bodyB.GetIndex() == indexA) || (pc.bodyB.GetIndex() == indexB);		
+		const auto res = SolvePositionConstraint(pc, moveA, moveB, conf);
+		pc.bodyA.SetPosition(res.pos_a);
+		pc.bodyB.SetPosition(res.pos_b);
 		minSeparation = Min(minSeparation, res.min_separation);
 	}
 	

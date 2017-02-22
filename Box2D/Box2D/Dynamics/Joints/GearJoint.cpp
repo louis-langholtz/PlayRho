@@ -23,6 +23,7 @@
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/StepConf.hpp>
 #include <Box2D/Dynamics/Contacts/ContactSolver.hpp>
+#include <Box2D/Dynamics/Contacts/BodyConstraint.hpp>
 
 using namespace box2d;
 
@@ -130,7 +131,7 @@ GearJoint::GearJoint(const GearJointDef& def)
 	m_constant = coordinateA + m_ratio * coordinateB;
 }
 
-void GearJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf&)
+void GearJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf&)
 {
 	m_indexA = GetBodyA()->GetIslandIndex();
 	m_indexB = GetBodyB()->GetIslandIndex();
@@ -149,21 +150,21 @@ void GearJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Po
 	m_iC = m_bodyC->GetInverseInertia();
 	m_iD = m_bodyD->GetInverseInertia();
 
-	const auto aA = positions[m_indexA].angular;
-	auto vA = velocities[m_indexA].linear;
-	auto wA = velocities[m_indexA].angular;
+	const auto aA = bodies[m_indexA].GetPosition().angular;
+	const auto aB = bodies[m_indexB].GetPosition().angular;
+	
+	auto vA = bodies[m_indexA].GetVelocity().linear;
+	auto wA = bodies[m_indexA].GetVelocity().angular;
+	auto vB = bodies[m_indexB].GetVelocity().linear;
+	auto wB = bodies[m_indexB].GetVelocity().angular;
 
-	const auto aB = positions[m_indexB].angular;
-	auto vB = velocities[m_indexB].linear;
-	auto wB = velocities[m_indexB].angular;
+	const auto aC = bodies[m_indexC].GetPosition().angular;
+	auto vC = bodies[m_indexC].GetVelocity().linear;
+	auto wC = bodies[m_indexC].GetVelocity().angular;
 
-	const auto aC = positions[m_indexC].angular;
-	auto vC = velocities[m_indexC].linear;
-	auto wC = velocities[m_indexC].angular;
-
-	const auto aD = positions[m_indexD].angular;
-	auto vD = velocities[m_indexD].linear;
-	auto wD = velocities[m_indexD].angular;
+	const auto aD = bodies[m_indexD].GetPosition().angular;
+	auto vD = bodies[m_indexD].GetVelocity().linear;
+	auto wD = bodies[m_indexD].GetVelocity().angular;
 
 	const auto qA = UnitVec2(aA);
 	const auto qB = UnitVec2(aB);
@@ -227,26 +228,22 @@ void GearJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Po
 		m_impulse = RealNum{0};
 	}
 
-	velocities[m_indexA].linear = vA;
-	velocities[m_indexA].angular = wA;
-	velocities[m_indexB].linear = vB;
-	velocities[m_indexB].angular = wB;
-	velocities[m_indexC].linear = vC;
-	velocities[m_indexC].angular = wC;
-	velocities[m_indexD].linear = vD;
-	velocities[m_indexD].angular = wD;
+	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
+	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
+	bodies[m_indexC].SetVelocity(Velocity{vC, wC});
+	bodies[m_indexD].SetVelocity(Velocity{vD, wD});
 }
 
-void GearJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepConf&)
+void GearJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf&)
 {
-	auto vA = velocities[m_indexA].linear;
-	auto wA = velocities[m_indexA].angular;
-	auto vB = velocities[m_indexB].linear;
-	auto wB = velocities[m_indexB].angular;
-	auto vC = velocities[m_indexC].linear;
-	auto wC = velocities[m_indexC].angular;
-	auto vD = velocities[m_indexD].linear;
-	auto wD = velocities[m_indexD].angular;
+	auto vA = bodies[m_indexA].GetVelocity().linear;
+	auto wA = bodies[m_indexA].GetVelocity().angular;
+	auto vB = bodies[m_indexB].GetVelocity().linear;
+	auto wB = bodies[m_indexB].GetVelocity().angular;
+	auto vC = bodies[m_indexC].GetVelocity().linear;
+	auto wC = bodies[m_indexC].GetVelocity().angular;
+	auto vD = bodies[m_indexD].GetVelocity().linear;
+	auto wD = bodies[m_indexD].GetVelocity().angular;
 
 	auto Cdot = Dot(m_JvAC, vA - vC) + Dot(m_JvBD, vB - vD);
 	Cdot += (m_JwA * wA.ToRadians() - m_JwC * wC.ToRadians()) + (m_JwB * wB.ToRadians() - m_JwD * wD.ToRadians());
@@ -263,26 +260,22 @@ void GearJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepCo
 	vD -= (m_mD * impulse) * m_JvBD;
 	wD -= 1_rad * m_iD * impulse * m_JwD;
 
-	velocities[m_indexA].linear = vA;
-	velocities[m_indexA].angular = wA;
-	velocities[m_indexB].linear = vB;
-	velocities[m_indexB].angular = wB;
-	velocities[m_indexC].linear = vC;
-	velocities[m_indexC].angular = wC;
-	velocities[m_indexD].linear = vD;
-	velocities[m_indexD].angular = wD;
+	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
+	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
+	bodies[m_indexC].SetVelocity(Velocity{vC, wC});
+	bodies[m_indexD].SetVelocity(Velocity{vD, wD});
 }
 
-bool GearJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const
+bool GearJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const
 {
-	auto cA = positions[m_indexA].linear;
-	auto aA = positions[m_indexA].angular;
-	auto cB = positions[m_indexB].linear;
-	auto aB = positions[m_indexB].angular;
-	auto cC = positions[m_indexC].linear;
-	auto aC = positions[m_indexC].angular;
-	auto cD = positions[m_indexD].linear;
-	auto aD = positions[m_indexD].angular;
+	auto cA = bodies[m_indexA].GetPosition().linear;
+	auto aA = bodies[m_indexA].GetPosition().angular;
+	auto cB = bodies[m_indexB].GetPosition().linear;
+	auto aB = bodies[m_indexB].GetPosition().angular;
+	auto cC = bodies[m_indexC].GetPosition().linear;
+	auto aC = bodies[m_indexC].GetPosition().angular;
+	auto cD = bodies[m_indexD].GetPosition().linear;
+	auto aD = bodies[m_indexD].GetPosition().angular;
 
 	const UnitVec2 qA(aA), qB(aB), qC(aC), qD(aD);
 
@@ -359,14 +352,10 @@ bool GearJoint::SolvePositionConstraints(Span<Position> positions, const Constra
 	cD -= m_mD * impulse * JvBD;
 	aD -= 1_rad * m_iD * impulse * JwD;
 
-	positions[m_indexA].linear = cA;
-	positions[m_indexA].angular = aA;
-	positions[m_indexB].linear = cB;
-	positions[m_indexB].angular = aB;
-	positions[m_indexC].linear = cC;
-	positions[m_indexC].angular = aC;
-	positions[m_indexD].linear = cD;
-	positions[m_indexD].angular = aD;
+	bodies[m_indexA].SetPosition(Position{cA, aA});
+	bodies[m_indexB].SetPosition(Position{cB, aB});
+	bodies[m_indexC].SetPosition(Position{cC, aC});
+	bodies[m_indexD].SetPosition(Position{cD, aD});
 
 	// TODO_ERIN not implemented
 	return linearError < conf.linearSlop;

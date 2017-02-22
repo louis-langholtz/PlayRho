@@ -20,6 +20,7 @@
 #include <Box2D/Dynamics/Joints/MouseJoint.hpp>
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/StepConf.hpp>
+#include <Box2D/Dynamics/Contacts/BodyConstraint.hpp>
 
 using namespace box2d;
 
@@ -65,19 +66,19 @@ Mat22 MouseJoint::GetEffectiveMassMatrix() const noexcept
 	return K;
 }
 
-void MouseJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const Position> positions, const StepConf& step, const ConstraintSolverConf&)
+void MouseJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf&)
 {
 	m_indexB = GetBodyB()->GetIslandIndex();
 	m_localCenterB = GetBodyB()->GetLocalCenter();
 	m_invMassB = GetBodyB()->GetInverseMass();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto positionB = positions[m_indexB];
+	const auto positionB = bodies[m_indexB].GetPosition();
 	assert(IsValid(positionB));
 	const auto cB = positionB.linear;
 	const auto aB = positionB.angular;
 
-	const auto velocityB = velocities[m_indexB];
+	const auto velocityB = bodies[m_indexB].GetVelocity();
 	assert(IsValid(velocityB));
 	auto vB = velocityB.linear;
 	auto wB = velocityB.angular;
@@ -134,13 +135,12 @@ void MouseJoint::InitVelocityConstraints(Span<Velocity> velocities, Span<const P
 		m_impulse = Vec2_zero;
 	}
 
-	velocities[m_indexB].linear = vB;
-	velocities[m_indexB].angular = wB;
+	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
 }
 
-void MouseJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step)
+void MouseJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
 {
-	const auto velocityB = velocities[m_indexB];
+	const auto velocityB = bodies[m_indexB].GetVelocity();
 	assert(IsValid(velocityB));
 	auto vB = velocityB.linear;
 	auto wB = velocityB.angular;
@@ -162,13 +162,12 @@ void MouseJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepC
 	vB += m_invMassB * deltaImpulse;
 	wB += 1_rad * m_invIB * Cross(m_rB, deltaImpulse);
 
-	velocities[m_indexB].linear = vB;
-	velocities[m_indexB].angular = wB;
+	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
 }
 
-bool MouseJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const
+bool MouseJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const
 {
-	NOT_USED(positions);
+	NOT_USED(bodies);
 	NOT_USED(conf);
 	return true;
 }

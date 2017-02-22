@@ -21,6 +21,7 @@
 #define PositionConstraint_hpp
 
 #include <Box2D/Collision/Manifold.hpp>
+#include <Box2D/Dynamics/Contacts/BodyConstraint.hpp>
 
 namespace box2d {
 
@@ -30,44 +31,24 @@ namespace box2d {
 	{
 		using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
 		
-		/// Position constraint body data.
-		struct BodyData
-		{
-			using index_type = std::remove_const<decltype(MaxBodies)>::type;
-			
-			BodyData() noexcept = default;
-			
-			constexpr BodyData(index_type i, RealNum iM, RealNum iI, Vec2 lc) noexcept:
-				index{i}, invMass{iM}, invI{iI}, localCenter{lc}
-			{
-				assert(iM >= 0);
-				assert(iI >= 0);
-			}
-			
-			index_type index; ///< Index within island of the associated body (2-bytes).
-			RealNum invMass; ///< Inverse mass of associated body (a non-negative value, 4-bytes).
-			RealNum invI; ///< Inverse rotational inertia about the center of mass of the associated body (a non-negative value, 4-bytes).
-			Vec2 localCenter; ///< Local center of the associated body's sweep (8-bytes).
-		};
-		
 		PositionConstraint() = default;
 		
-		PositionConstraint(const Manifold& m, const BodyData& bA, RealNum rA, const BodyData& bB, RealNum rB):
+		PositionConstraint(const Manifold& m, BodyConstraint& bA, RealNum rA, BodyConstraint& bB, RealNum rB):
 			manifold{m}, bodyA{bA}, radiusA{rA}, bodyB{bB}, radiusB{rB}
 		{
 			assert(m.GetPointCount() > 0);
-			assert(bA.index != bB.index);
+			assert(bA.GetIndex() != bB.GetIndex());
 			assert(rA >= 0);
 			assert(rB >= 0);
 		}
 		
 		Manifold manifold; ///< Copy of contact's manifold with 1 or more contact points (60-bytes).
 		
-		BodyData bodyA; ///< Body A data (at least 18-bytes).
+		BodyConstraint& bodyA; ///< Body A data.
 		
 		RealNum radiusA; ///< "Radius" distance from the associated shape of fixture A (4-bytes). 0 or greater.
 		
-		BodyData bodyB; ///< Body A data (at least 18-bytes).
+		BodyConstraint& bodyB; ///< Body B data.
 		
 		RealNum radiusB; ///< "Radius" distance from the associated shape of fixture B (4-bytes). 0 or greater.
 	};

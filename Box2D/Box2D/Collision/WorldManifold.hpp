@@ -170,13 +170,6 @@ namespace box2d
 	///
 	WorldManifold GetWorldManifold(const Contact& contact);
 	
-	/// Gets the world manifold for the given data.
-	///
-	/// @note This is a convenience function that in turns calls the
-	///   <code>GetWorldManifold(const Manifold&, const Transformation&, const RealNum, const Transformation& xfB, const RealNum)</code>
-	///   function.
-	///
-	WorldManifold GetWorldManifold(const PositionConstraint& pc, Position posA, Position posB);
 }
 
 #endif /* WorldManifold_hpp */

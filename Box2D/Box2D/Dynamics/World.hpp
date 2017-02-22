@@ -39,6 +39,7 @@ class Fixture;
 class Joint;
 class Island;
 class StepConf;
+class BodyConstraint;
 
 /// Pre-step statistics.
 struct PreStepStats
@@ -441,7 +442,7 @@ private:
 	/// Updates bodies[i]->m_sweep.pos1 to position[i]
 	/// Copies velocity and position array data back out to the bodies
 	static void UpdateBodies(Span<Body*> bodies,
-							 Span<const Position> positions, Span<const Velocity> velocities);
+							 Span<const BodyConstraint> constraints);
 
 	void ResetBodiesForSolveTOI();
 	void ResetContactsForSolveTOI();

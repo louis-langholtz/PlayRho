@@ -21,6 +21,7 @@
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/StepConf.hpp>
 #include <Box2D/Dynamics/Contacts/ContactSolver.hpp>
+#include <Box2D/Dynamics/Contacts/BodyConstraint.hpp>
 
 using namespace box2d;
 
@@ -69,8 +70,7 @@ PulleyJoint::PulleyJoint(const PulleyJointDef& def)
 	m_constant = def.lengthA + m_ratio * def.lengthB;
 }
 
-void PulleyJoint::InitVelocityConstraints(Span<Velocity> velocities,
-										  Span<const Position> positions,
+void PulleyJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 										  const StepConf& step,
 										  const ConstraintSolverConf& conf)
 {
@@ -83,15 +83,15 @@ void PulleyJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	m_invIA = GetBodyA()->GetInverseInertia();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto cA = positions[m_indexA].linear;
-	const auto aA = positions[m_indexA].angular;
-	auto vA = velocities[m_indexA].linear;
-	auto wA = velocities[m_indexA].angular;
+	const auto cA = bodies[m_indexA].GetPosition().linear;
+	const auto aA = bodies[m_indexA].GetPosition().angular;
+	auto vA = bodies[m_indexA].GetVelocity().linear;
+	auto wA = bodies[m_indexA].GetVelocity().angular;
 
-	const auto cB = positions[m_indexB].linear;
-	const auto aB = positions[m_indexB].angular;
-	auto vB = velocities[m_indexB].linear;
-	auto wB = velocities[m_indexB].angular;
+	const auto cB = bodies[m_indexB].GetPosition().linear;
+	const auto aB = bodies[m_indexB].GetPosition().angular;
+	auto vB = bodies[m_indexB].GetVelocity().linear;
+	auto wB = bodies[m_indexB].GetVelocity().angular;
 
 	const UnitVec2 qA(aA), qB(aB);
 
@@ -156,18 +156,16 @@ void PulleyJoint::InitVelocityConstraints(Span<Velocity> velocities,
 		m_impulse = RealNum{0};
 	}
 
-	velocities[m_indexA].linear = vA;
-	velocities[m_indexA].angular = wA;
-	velocities[m_indexB].linear = vB;
-	velocities[m_indexB].angular = wB;
+	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
+	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
 }
 
-void PulleyJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepConf&)
+void PulleyJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf&)
 {
-	auto vA = velocities[m_indexA].linear;
-	auto wA = velocities[m_indexA].angular;
-	auto vB = velocities[m_indexB].linear;
-	auto wB = velocities[m_indexB].angular;
+	auto vA = bodies[m_indexA].GetVelocity().linear;
+	auto wA = bodies[m_indexA].GetVelocity().angular;
+	auto vB = bodies[m_indexB].GetVelocity().linear;
+	auto wB = bodies[m_indexB].GetVelocity().angular;
 
 	const auto vpA = vA + GetRevPerpendicular(m_rA) * wA.ToRadians();
 	const auto vpB = vB + GetRevPerpendicular(m_rB) * wB.ToRadians();
@@ -183,18 +181,16 @@ void PulleyJoint::SolveVelocityConstraints(Span<Velocity> velocities, const Step
 	vB += m_invMassB * PB;
 	wB += 1_rad * m_invIB * Cross(m_rB, PB);
 
-	velocities[m_indexA].linear = vA;
-	velocities[m_indexA].angular = wA;
-	velocities[m_indexB].linear = vB;
-	velocities[m_indexB].angular = wB;
+	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
+	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
 }
 
-bool PulleyJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const
+bool PulleyJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const
 {
-	auto cA = positions[m_indexA].linear;
-	auto aA = positions[m_indexA].angular;
-	auto cB = positions[m_indexB].linear;
-	auto aB = positions[m_indexB].angular;
+	auto cA = bodies[m_indexA].GetPosition().linear;
+	auto aA = bodies[m_indexA].GetPosition().angular;
+	auto cB = bodies[m_indexB].GetPosition().linear;
+	auto aB = bodies[m_indexB].GetPosition().angular;
 
 	const auto rA = Rotate(m_localAnchorA - m_localCenterA, UnitVec2{aA});
 	const auto rB = Rotate(m_localAnchorB - m_localCenterB, UnitVec2{aB});
@@ -234,10 +230,8 @@ bool PulleyJoint::SolvePositionConstraints(Span<Position> positions, const Const
 	cB += m_invMassB * PB;
 	aB += 1_rad * m_invIB * Cross(rB, PB);
 
-	positions[m_indexA].linear = cA;
-	positions[m_indexA].angular = aA;
-	positions[m_indexB].linear = cB;
-	positions[m_indexB].angular = aB;
+	bodies[m_indexA].SetPosition(Position{cA, aA});
+	bodies[m_indexB].SetPosition(Position{cB, aB});
 
 	return linearError < conf.linearSlop;
 }

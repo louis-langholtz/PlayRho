@@ -21,6 +21,7 @@
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/StepConf.hpp>
 #include <Box2D/Dynamics/Contacts/ContactSolver.hpp>
+#include <Box2D/Dynamics/Contacts/BodyConstraint.hpp>
 
 using namespace box2d;
 
@@ -118,8 +119,7 @@ PrismaticJoint::PrismaticJoint(const PrismaticJointDef& def)
 	m_enableMotor = def.enableMotor;
 }
 
-void PrismaticJoint::InitVelocityConstraints(Span<Velocity> velocities,
-											 Span<const Position> positions,
+void PrismaticJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 											 const StepConf& step,
 											 const ConstraintSolverConf& conf)
 {
@@ -132,15 +132,15 @@ void PrismaticJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	m_invIA = GetBodyA()->GetInverseInertia();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto cA = positions[m_indexA].linear;
-	const auto aA = positions[m_indexA].angular;
-	auto vA = velocities[m_indexA].linear;
-	auto wA = velocities[m_indexA].angular;
+	const auto cA = bodies[m_indexA].GetPosition().linear;
+	const auto aA = bodies[m_indexA].GetPosition().angular;
+	auto vA = bodies[m_indexA].GetVelocity().linear;
+	auto wA = bodies[m_indexA].GetVelocity().angular;
 
-	const auto cB = positions[m_indexB].linear;
-	const auto aB = positions[m_indexB].angular;
-	auto vB = velocities[m_indexB].linear;
-	auto wB = velocities[m_indexB].angular;
+	const auto cB = bodies[m_indexB].GetPosition().linear;
+	const auto aB = bodies[m_indexB].GetPosition().angular;
+	auto vB = bodies[m_indexB].GetVelocity().linear;
+	auto wB = bodies[m_indexB].GetVelocity().angular;
 
 	const auto qA = UnitVec2(aA);
 	const auto qB = UnitVec2(aB);
@@ -253,18 +253,16 @@ void PrismaticJoint::InitVelocityConstraints(Span<Velocity> velocities,
 		m_motorImpulse = RealNum{0};
 	}
 
-	velocities[m_indexA].linear = vA;
-	velocities[m_indexA].angular = wA;
-	velocities[m_indexB].linear = vB;
-	velocities[m_indexB].angular = wB;
+	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
+	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
 }
 
-void PrismaticJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step)
+void PrismaticJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
 {
-	auto vA = velocities[m_indexA].linear;
-	auto wA = velocities[m_indexA].angular;
-	auto vB = velocities[m_indexB].linear;
-	auto wB = velocities[m_indexB].angular;
+	auto vA = bodies[m_indexA].GetVelocity().linear;
+	auto wA = bodies[m_indexA].GetVelocity().angular;
+	auto vB = bodies[m_indexB].GetVelocity().linear;
+	auto wB = bodies[m_indexB].GetVelocity().angular;
 
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
@@ -346,10 +344,8 @@ void PrismaticJoint::SolveVelocityConstraints(Span<Velocity> velocities, const S
 		wB += 1_rad * iB * LB;
 	}
 
-	velocities[m_indexA].linear = vA;
-	velocities[m_indexA].angular = wA;
-	velocities[m_indexB].linear = vB;
-	velocities[m_indexB].angular = wB;
+	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
+	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
 }
 
 // A velocity based solver computes reaction forces(impulses) using the velocity constraint solver.Under this context,
@@ -359,12 +355,12 @@ void PrismaticJoint::SolveVelocityConstraints(Span<Velocity> velocities, const S
 //
 // We could take the active state from the velocity solver.However, the joint might push past the limit when the velocity
 // solver indicates the limit is inactive.
-bool PrismaticJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const
+bool PrismaticJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const
 {
-	auto cA = positions[m_indexA].linear;
-	auto aA = positions[m_indexA].angular;
-	auto cB = positions[m_indexB].linear;
-	auto aB = positions[m_indexB].angular;
+	auto cA = bodies[m_indexA].GetPosition().linear;
+	auto aA = bodies[m_indexA].GetPosition().angular;
+	auto cB = bodies[m_indexB].GetPosition().linear;
+	auto aB = bodies[m_indexB].GetPosition().angular;
 
 	const auto qA = UnitVec2{aA};
 	const auto qB = UnitVec2{aB};
@@ -466,10 +462,8 @@ bool PrismaticJoint::SolvePositionConstraints(Span<Position> positions, const Co
 	cB += mB * P;
 	aB += 1_rad * iB * LB;
 
-	positions[m_indexA].linear = cA;
-	positions[m_indexA].angular = aA;
-	positions[m_indexB].linear = cB;
-	positions[m_indexB].angular = aB;
+	bodies[m_indexA].SetPosition(Position{cA, aA});
+	bodies[m_indexB].SetPosition(Position{cB, aB});
 
 	return (linearError <= conf.linearSlop) && (angularError <= conf.angularSlop);
 }

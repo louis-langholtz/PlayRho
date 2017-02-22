@@ -20,7 +20,6 @@
 #include <Box2D/Collision/WorldManifold.hpp>
 #include <Box2D/Collision/Manifold.hpp>
 #include <Box2D/Dynamics/Contacts/Contact.hpp>
-#include <Box2D/Dynamics/Contacts/PositionConstraint.hpp>
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 
@@ -136,13 +135,6 @@ namespace box2d {
 		const auto radiusB = GetVertexRadius(*(fB->GetShape()));
 
 		return GetWorldManifold(contact.GetManifold(), xfA, radiusA, xfB, radiusB);
-	}
-
-	WorldManifold GetWorldManifold(const PositionConstraint& pc, Position posA, Position posB)
-	{
-		const auto xfA = GetTransformation(posA, pc.bodyA.localCenter);
-		const auto xfB = GetTransformation(posB, pc.bodyB.localCenter);
-		return GetWorldManifold(pc.manifold, xfA, pc.radiusA, xfB, pc.radiusB);
 	}
 	
 } /* namespace box2d */

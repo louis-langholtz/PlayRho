@@ -21,6 +21,7 @@
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/StepConf.hpp>
 #include <Box2D/Dynamics/Contacts/ContactSolver.hpp>
+#include <Box2D/Dynamics/Contacts/BodyConstraint.hpp>
 
 using namespace box2d;
 
@@ -61,8 +62,7 @@ RevoluteJoint::RevoluteJoint(const RevoluteJointDef& def):
 	// Intentionally empty.
 }
 
-void RevoluteJoint::InitVelocityConstraints(Span<Velocity> velocities,
-											Span<const Position> positions,
+void RevoluteJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 											const StepConf& step,
 											const ConstraintSolverConf& conf)
 {
@@ -76,13 +76,13 @@ void RevoluteJoint::InitVelocityConstraints(Span<Velocity> velocities,
 	m_invIA = GetBodyA()->GetInverseInertia();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto aA = positions[m_indexA].angular;
-	auto vA = velocities[m_indexA].linear;
-	auto wA = velocities[m_indexA].angular;
+	const auto aA = bodies[m_indexA].GetPosition().angular;
+	auto vA = bodies[m_indexA].GetVelocity().linear;
+	auto wA = bodies[m_indexA].GetVelocity().angular;
 
-	const auto aB = positions[m_indexB].angular;
-	auto vB = velocities[m_indexB].linear;
-	auto wB = velocities[m_indexB].angular;
+	const auto aB = bodies[m_indexB].GetPosition().angular;
+	auto vB = bodies[m_indexB].GetVelocity().linear;
+	auto wB = bodies[m_indexB].GetVelocity().angular;
 
 	const auto qA = UnitVec2(aA);
 	const auto qB = UnitVec2(aB);
@@ -178,18 +178,16 @@ void RevoluteJoint::InitVelocityConstraints(Span<Velocity> velocities,
 		m_motorImpulse = 0;
 	}
 
-	velocities[m_indexA].linear = vA;
-	velocities[m_indexA].angular = wA;
-	velocities[m_indexB].linear = vB;
-	velocities[m_indexB].angular = wB;
+	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
+	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
 }
 
-void RevoluteJoint::SolveVelocityConstraints(Span<Velocity> velocities, const StepConf& step)
+void RevoluteJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
 {
-	auto vA = velocities[m_indexA].linear;
-	auto wA = velocities[m_indexA].angular;
-	auto vB = velocities[m_indexB].linear;
-	auto wB = velocities[m_indexB].angular;
+	auto vA = bodies[m_indexA].GetVelocity().linear;
+	auto wA = bodies[m_indexA].GetVelocity().angular;
+	auto vB = bodies[m_indexB].GetVelocity().linear;
+	auto wB = bodies[m_indexB].GetVelocity().angular;
 
 	const auto mA = m_invMassA;
 	const auto mB = m_invMassB;
@@ -289,18 +287,16 @@ void RevoluteJoint::SolveVelocityConstraints(Span<Velocity> velocities, const St
 		wB += 1_rad * iB * Cross(m_rB, impulse);
 	}
 
-	velocities[m_indexA].linear = vA;
-	velocities[m_indexA].angular = wA;
-	velocities[m_indexB].linear = vB;
-	velocities[m_indexB].angular = wB;
+	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
+	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
 }
 
-bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions, const ConstraintSolverConf& conf) const
+bool RevoluteJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const
 {
-	auto cA = positions[m_indexA].linear;
-	auto aA = positions[m_indexA].angular;
-	auto cB = positions[m_indexB].linear;
-	auto aB = positions[m_indexB].angular;
+	auto cA = bodies[m_indexA].GetPosition().linear;
+	auto aA = bodies[m_indexA].GetPosition().angular;
+	auto cB = bodies[m_indexB].GetPosition().linear;
+	auto aB = bodies[m_indexB].GetPosition().angular;
 
 	auto angularError = RealNum{0};
 	auto positionError = RealNum{0};
@@ -375,10 +371,8 @@ bool RevoluteJoint::SolvePositionConstraints(Span<Position> positions, const Con
 		aB += 1_rad * iB * Cross(rB, impulse);
 	}
 
-	positions[m_indexA].linear = cA;
-	positions[m_indexA].angular = aA;
-	positions[m_indexB].linear = cB;
-	positions[m_indexB].angular = aB;
+	bodies[m_indexA].SetPosition(Position{cA, aA});
+	bodies[m_indexB].SetPosition(Position{cB, aB});
 	
 	return (positionError <= conf.linearSlop) && (angularError <= conf.angularSlop);
 }
