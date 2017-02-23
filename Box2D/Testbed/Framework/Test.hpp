@@ -46,6 +46,7 @@ struct Settings
 	int regPositionIterations = 3;
 	int toiVelocityIterations = 8;
 	int toiPositionIterations = 20;
+	int maxSubSteps = DefaultMaxSubSteps;
 	bool drawShapes = true;
 	bool drawSkins = false;
 	bool drawJoints = true;

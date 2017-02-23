@@ -229,7 +229,7 @@ public:
 	/// In other words, this is the maximum number of times in a world step that a contact will
 	/// have continuous collision resolution done for it.
 	/// @note Used in the TOI phase of step processing.
-	iteration_type maxSubSteps = 48;
+	iteration_type maxSubSteps = DefaultMaxSubSteps;
 	
 	/// Do warm start.
 	/// @detail Whether or not to perform warm starting (in the regular phase).

@@ -565,6 +565,8 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	stepConf.regPositionIterations = static_cast<StepConf::iteration_type>(settings.regPositionIterations);
 	stepConf.toiVelocityIterations = static_cast<StepConf::iteration_type>(settings.toiVelocityIterations);
 	stepConf.toiPositionIterations = static_cast<StepConf::iteration_type>(settings.toiPositionIterations);
+
+	stepConf.maxSubSteps           = static_cast<StepConf::iteration_type>(settings.maxSubSteps);
 	
 	stepConf.maxTranslation = static_cast<decltype(stepConf.maxTranslation)>(settings.maxTranslation);
 	stepConf.maxRotation = settings.maxRotation * 1_deg;

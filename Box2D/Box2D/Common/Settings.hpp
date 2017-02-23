@@ -136,6 +136,14 @@ constexpr auto DefaultMaxToiRootIters = uint8{30};
 
 /// Default max number of distance iterations.
 constexpr auto DefaultMaxDistanceIters = uint8{20};
+
+/// Default maximum number of sub steps.
+/// @detail
+/// This is the default maximum number of sub-steps per contact in continuous physics simulation.
+/// In other words, this is the default maximum number of times in a world step that a contact will
+/// have continuous collision resolution done for it.
+/// @note Used in the TOI phase of step processing.
+constexpr auto DefaultMaxSubSteps = uint8{48};
 	
 // Dynamics
 

@@ -434,6 +434,7 @@ static void sInterface()
 		imguiSlider("Reg Pos Iters", &settings.regPositionIterations, 0, 100, 1, true);
 		imguiSlider("TOI Vel Iters", &settings.toiVelocityIterations, 0, 100, 1, true);
 		imguiSlider("TOI Pos Iters", &settings.toiPositionIterations, 0, 100, 1, true);
+		imguiSlider("Max Sub Steps", &settings.maxSubSteps, 0, 100, 1, true);
 		imguiSlider("Hertz", &settings.hz, 5.0f, 120.0f, 5.0f, true);
 		imguiSlider("Linear Slop", &settings.linearSlop,
 					static_cast<float>(DefaultLinearSlop / 10),
@@ -536,7 +537,7 @@ int main()
 #endif
 
 	g_camera.m_width = 1280; // 1152;
-	g_camera.m_height = 940; // 864;
+	g_camera.m_height = 960; // 864;
     
 	if (glfwInit() == 0)
 	{
