@@ -1139,6 +1139,8 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 		contact.Update(m_contactMgr.m_contactListener);
 		contact.UnsetToi();
 
+		++contact.m_toiCount;
+
 		// Is contact disabled or separated?
 		if (!contact.IsEnabled() || !contact.IsTouching())
 		{

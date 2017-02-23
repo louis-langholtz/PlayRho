@@ -248,7 +248,6 @@ Contact::UpdateOutput Contact::UpdateForCCD(const ToiConf& conf)
 									 GetAnglesNormalized(bB->m_sweep),
 									 conf);
 	++m_toiCalls;
-	++m_toiCount;
 	
 	m_toiItersTotal += output.get_toi_iters();
 	m_distItersTotal += output.get_sum_dist_iters();
