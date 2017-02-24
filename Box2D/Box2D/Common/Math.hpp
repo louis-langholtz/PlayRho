@@ -1262,7 +1262,7 @@ inline bool IsSleepable(Velocity velocity, RealNum linSleepTol, RealNum angSleep
 }
 
 /// Gets the contact relative velocity.
-/// @note If vcp_rA and vcp_rB are the zero vectors the resulting value is simply velB.linear - velA.linear.
+/// @note If vcp_rA and vcp_rB are the zero vectors, the resulting value is simply velB.linear - velA.linear.
 constexpr inline Vec2 GetContactRelVelocity(const Velocity velA, const Vec2 vcp_rA,
 											const Velocity velB, const Vec2 vcp_rB) noexcept
 {

@@ -19,6 +19,7 @@
 
 #include <Box2D/Dynamics/Contacts/VelocityConstraint.hpp>
 #include <Box2D/Collision/WorldManifold.hpp>
+#include <Box2D/Collision/Manifold.hpp>
 
 #define BOX2D_MAGIC(x) (x)
 
@@ -26,19 +27,67 @@ using namespace box2d;
 
 VelocityConstraint::VelocityConstraint(index_type contactIndex,
 									   RealNum friction, RealNum restitution, RealNum tangentSpeed,
-									   BodyConstraint& bA, BodyConstraint& bB,
-									   UnitVec2 normal):
+									   const Manifold& manifold,
+									   BodyConstraint& bA, RealNum radiusA,
+									   BodyConstraint& bB, RealNum radiusB,
+									   Conf conf):
 	m_contactIndex{contactIndex},
 	m_friction{friction}, m_restitution{restitution}, m_tangentSpeed{tangentSpeed},
-	bodyA{bA}, bodyB{bB}, m_normal{normal},
-	m_tangent{GetFwdPerpendicular(normal)},
+	bodyA{bA}, bodyB{bB},
 	m_invMass{bA.GetInvMass() + bB.GetInvMass()}
 {
 	assert(IsValid(contactIndex));
 	assert(IsValid(friction));
 	assert(IsValid(restitution));
 	assert(IsValid(tangentSpeed));
-	assert(IsValid(normal));
+	
+	const auto worldManifold = GetWorldManifold(manifold,
+												GetTransformation(bA.GetPosition(), bA.GetLocalCenter()),
+												radiusA,
+												GetTransformation(bB.GetPosition(), bB.GetLocalCenter()),
+												radiusB);
+	m_normal = worldManifold.GetNormal();
+	assert(IsValid(m_normal));
+	m_tangent = GetFwdPerpendicular(m_normal);
+
+	const auto pointCount = manifold.GetPointCount();
+	assert(pointCount > 0);
+	for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
+	{
+		const auto ci = manifold.GetContactImpulses(j);
+		
+		const auto worldPoint = worldManifold.GetPoint(j);
+		const auto vcp_rA = worldPoint - bodyA.GetPosition().linear;
+		const auto vcp_rB = worldPoint - bodyB.GetPosition().linear;
+		
+		AddPoint(ci.m_normal, ci.m_tangent, vcp_rA, vcp_rB, conf);
+	}
+	
+	if (conf.blockSolve)
+	{
+		const auto k = ComputeK();
+		if (IsValid(k))
+		{
+			// Ensure a reasonable condition number.
+			constexpr auto maxCondNum = BOX2D_MAGIC(RealNum(1000));
+			const auto scaled_k11_squared = k.ex.x * (k.ex.x / maxCondNum);
+			const auto k11_times_k22 = k.ex.x * k.ey.y;
+			const auto k12_squared = Square(k.ex.y);
+			const auto k_diff = k11_times_k22 - k12_squared;
+			if (scaled_k11_squared < k_diff)
+			{
+				// K is safe to invert.
+				// Prepare the block solver.
+				SetK(k);
+			}
+			else
+			{
+				// The constraints are redundant, just use one.
+				// TODO_ERIN use deepest?
+				RemovePoint();
+			}
+		}
+	}
 }
 
 VelocityConstraint::Point VelocityConstraint::GetPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, Conf conf) const noexcept

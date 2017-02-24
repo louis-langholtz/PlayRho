@@ -168,29 +168,23 @@ namespace {
 		}
 	}
 	
-	inline PositionConstraint GetPositionConstraint(const Manifold& manifold,
-													const Fixture& fixtureA,
-													const Fixture& fixtureB,
-													BodyConstraints& bodies)
-	{
-		auto& bodyA = bodies[fixtureA.GetBody()->GetIslandIndex()];
-		auto& bodyB = bodies[fixtureB.GetBody()->GetIslandIndex()];
-		return PositionConstraint{manifold,
-			bodyA, GetVertexRadius(*fixtureA.GetShape()),
-			bodyB, GetVertexRadius(*fixtureB.GetShape())
-		};
-	}
-	
 	PositionConstraintsContainer GetPositionConstraints(const Island::ContactContainer& contacts, BodyConstraints& bodies)
 	{
 		auto constraints = PositionConstraintsContainer{};
 		constraints.reserve(contacts.size());
 		for (auto&& contact: contacts)
 		{
-			constraints.push_back(GetPositionConstraint(contact->GetManifold(),
-														*(contact->GetFixtureA()),
-														*(contact->GetFixtureB()),
-														bodies));
+			const auto& manifold = contact->GetManifold();
+			const auto& fixtureA = *(contact->GetFixtureA());
+			const auto& fixtureB = *(contact->GetFixtureB());
+			
+			auto& bodyA = bodies[fixtureA.GetBody()->GetIslandIndex()];
+			const auto radiusA = GetVertexRadius(*fixtureA.GetShape());
+			
+			auto& bodyB = bodies[fixtureB.GetBody()->GetIslandIndex()];
+			const auto radiusB = GetVertexRadius(*fixtureB.GetShape());
+			
+			constraints.emplace_back(manifold, bodyA, radiusA, bodyB, radiusB);
 		}
 		return constraints;
 	}
@@ -259,72 +253,6 @@ namespace {
 		}
 	}
 
-	inline VelocityConstraint GetVelocityConstraint(VelocityConstraint::index_type i,
-													const Contact& contact,
-													BodyConstraints& bodies,
-													const VelocityConstraint::Conf conf)
-	{
-		const auto fixtureA = contact.GetFixtureA();
-		const auto fixtureB = contact.GetFixtureB();
-		
-		const auto radiusA = fixtureA->GetShape()->GetVertexRadius();
-		auto& bodyA = bodies[fixtureA->GetBody()->GetIslandIndex()];
-		
-		const auto radiusB = fixtureB->GetShape()->GetVertexRadius();
-		auto& bodyB = bodies[fixtureB->GetBody()->GetIslandIndex()];
-		
-		const auto xfA = GetTransformation(bodyA.GetPosition(), bodyA.GetLocalCenter());
-		const auto xfB = GetTransformation(bodyB.GetPosition(), bodyB.GetLocalCenter());
-		
-		const auto& manifold = contact.GetManifold();
-		const auto worldManifold = GetWorldManifold(manifold, xfA, radiusA, xfB, radiusB);
-		
-		VelocityConstraint vc(i, contact.GetFriction(), contact.GetRestitution(), contact.GetTangentSpeed(),
-							  bodyA, bodyB,
-							  worldManifold.GetNormal());
-		
-		const auto pointCount = manifold.GetPointCount();
-		assert(pointCount > 0);
-		for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
-		{
-			const auto ci = manifold.GetContactImpulses(j);
-			
-			const auto worldPoint = worldManifold.GetPoint(j);
-			const auto vcp_rA = worldPoint - bodyA.GetPosition().linear;
-			const auto vcp_rB = worldPoint - bodyB.GetPosition().linear;
-			
-			vc.AddPoint(ci.m_normal, ci.m_tangent, vcp_rA, vcp_rB, conf);
-		}
-		
-		if (conf.blockSolve)
-		{
-			const auto k = vc.ComputeK();
-			if (IsValid(k))
-			{
-				// Ensure a reasonable condition number.
-				constexpr auto maxCondNum = BOX2D_MAGIC(RealNum(1000));
-				const auto scaled_k11_squared = k.ex.x * (k.ex.x / maxCondNum);
-				const auto k11_times_k22 = k.ex.x * k.ey.y;
-				const auto k12_squared = Square(k.ex.y);
-				const auto k_diff = k11_times_k22 - k12_squared;
-				if (scaled_k11_squared < k_diff)
-				{
-					// K is safe to invert.
-					// Prepare the block solver.
-					vc.SetK(k);
-				}
-				else
-				{
-					// The constraints are redundant, just use one.
-					// TODO_ERIN use deepest?
-					vc.RemovePoint();
-				}
-			}
-		}
-
-		return vc;
-	}
-
 	/// Gets the velocity constraints for the given inputs.
 	/// @detail
 	/// Inializes the velocity constraints with the position dependent portions of the current position constraints.
@@ -342,8 +270,25 @@ namespace {
 		//auto i = VelocityConstraint::index_type{0};
 		for (auto i = decltype(numContacts){0}; i < numContacts; ++i)
 		{
-			const auto vc = GetVelocityConstraint(i, *contacts[i], bodies, conf);
-			velocityConstraints.push_back(vc);
+			const auto& contact = *contacts[i];
+
+			const auto& manifold = contact.GetManifold();
+			const auto fixtureA = contact.GetFixtureA();
+			const auto fixtureB = contact.GetFixtureB();
+			const auto friction = contact.GetFriction();
+			const auto restitution = contact.GetRestitution();
+			const auto tangentSpeed = contact.GetTangentSpeed();
+			
+			const auto radiusA = fixtureA->GetShape()->GetVertexRadius();
+			auto& bodyA = bodies[fixtureA->GetBody()->GetIslandIndex()];
+			
+			const auto radiusB = fixtureB->GetShape()->GetVertexRadius();
+			auto& bodyB = bodies[fixtureB->GetBody()->GetIslandIndex()];
+			
+			velocityConstraints.emplace_back(i, friction, restitution, tangentSpeed,
+											 manifold, bodyA, radiusA, bodyB, radiusB,
+											 conf);
+
 		}
 		return velocityConstraints;
 	}

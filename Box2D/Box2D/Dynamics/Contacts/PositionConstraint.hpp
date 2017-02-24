@@ -42,13 +42,11 @@ namespace box2d {
 			assert(rB >= 0);
 		}
 		
-		// Note: ordering of the member variables matters to the overall size of this structure.
-
 		Manifold manifold; ///< Copy of contact's manifold with 1 or more contact points (60-bytes).
 		
-		BodyConstraint& bodyA; ///< Body A data.
+		BodyConstraint& bodyA; ///< Body A data (8-bytes).
 		
-		BodyConstraint& bodyB; ///< Body B data.
+		BodyConstraint& bodyB; ///< Body B data (8-bytes).
 
 		RealNum radiusA; ///< "Radius" distance from the associated shape of fixture A (4-bytes). 0 or greater.
 

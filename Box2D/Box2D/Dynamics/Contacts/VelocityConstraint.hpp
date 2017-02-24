@@ -26,7 +26,7 @@
 
 namespace box2d {
 	
-	class WorldManifold;
+	class Manifold;
 	
 	/// Contact velocity constraint.
 	///
@@ -64,15 +64,10 @@ namespace box2d {
 		
 		VelocityConstraint(index_type contactIndex,
 						   RealNum friction, RealNum restitution, RealNum tangentSpeed,
-						   BodyConstraint& bA, BodyConstraint& bB,
-						   UnitVec2 normal);
-
-		/// Adds the given point to this contact velocity constraint object.
-		/// @detail Adds up to <code>MaxManifoldPoints</code> points. To find out how many points have already
-		///   been added, call GetPointCount().
-		/// @note Behavior is undefined if an attempt is made to add more than MaxManifoldPoints points.
-		/// @sa GetPointCount().
-		void AddPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, Conf conf);
+						   const Manifold& manifold,
+						   BodyConstraint& bA, RealNum rA,
+						   BodyConstraint& bB, RealNum rB,
+						   Conf conf);
 
 		/// Gets the normal of the contact in world coordinates.
 		/// @note This value is set on construction.
@@ -90,8 +85,6 @@ namespace box2d {
 		/// @sa AddPoint.
 		size_type GetPointCount() const noexcept { return m_pointCount; }
 		
-		Mat22 ComputeK() const noexcept;
-
 		/// Gets the "K" value.
 		/// @note This value is only valid if previously set.
 		/// @note Call the <code>SetK</code> method to set this value.
@@ -172,24 +165,35 @@ namespace box2d {
 		
 		void SetTangentImpulseAtPoint(size_type index, RealNum value);
 
-		/// Removes the last point added.
-		void RemovePoint() noexcept;
-		
-		/// Sets this object's K value.
-		/// @param value A position constraint dependent value or the zero matrix (Mat22_zero).
-		void SetK(const Mat22& value) noexcept;
-
 		/// Velocity constraint point.
 		/// @note This structure is at least 36-bytes large.
 		struct Point
 		{
-			Vec2 rA = GetInvalid<decltype(rA)>(); ///< Position of body A relative to world manifold point (8-bytes).
-			Vec2 rB = GetInvalid<decltype(rB)>(); ///< Position of body B relative to world manifold point (8-bytes).
-			RealNum normalImpulse = GetInvalid<decltype(normalImpulse)>(); ///< Normal impulse (4-bytes).
-			RealNum tangentImpulse = GetInvalid<decltype(tangentImpulse)>(); ///< Tangent impulse (4-bytes).
-			RealNum normalMass = GetInvalid<decltype(normalMass)>(); ///< Normal mass (4-bytes). Dependent on rA and rB. 0 or greater.
-			RealNum tangentMass = GetInvalid<decltype(tangentMass)>(); ///< Tangent mass (4-bytes). Dependent on rA and rB. 0 or greater.
-			RealNum velocityBias = GetInvalid<decltype(velocityBias)>(); ///< Velocity bias (4-bytes).
+			/// Position of body A relative to world manifold point.
+			Vec2 rA = GetInvalid<decltype(rA)>();
+			
+			/// Position of body B relative to world manifold point.
+			Vec2 rB = GetInvalid<decltype(rB)>();
+			
+			/// Normal impulse.
+			RealNum normalImpulse = GetInvalid<decltype(normalImpulse)>();
+			
+			/// Tangent impulse.
+			RealNum tangentImpulse = GetInvalid<decltype(tangentImpulse)>();
+			
+			/// Normal mass.
+			/// @note 0 or greater.
+			/// @note Dependent on rA and rB.
+			RealNum normalMass = GetInvalid<decltype(normalMass)>();
+			
+			/// Tangent mass.
+			/// @note 0 or greater.
+			/// @note Dependent on rA and rB.
+			RealNum tangentMass = GetInvalid<decltype(tangentMass)>();
+
+			/// Velocity bias.
+			/// @note A product of the contact restitution.
+			RealNum velocityBias = GetInvalid<decltype(velocityBias)>();
 		};
 
 		/// Accesses the point identified by the given index.
@@ -206,7 +210,23 @@ namespace box2d {
 
 	private:
 	
+		/// Adds the given point to this contact velocity constraint object.
+		/// @detail Adds up to <code>MaxManifoldPoints</code> points. To find out how many points have already
+		///   been added, call GetPointCount().
+		/// @note Behavior is undefined if an attempt is made to add more than MaxManifoldPoints points.
+		/// @sa GetPointCount().
+		void AddPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, Conf conf);
+
+		/// Removes the last point added.
+		void RemovePoint() noexcept;
+
 		Point GetPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, Conf conf) const noexcept;
+
+		Mat22 ComputeK() const noexcept;
+
+		/// Sets this object's K value.
+		/// @param value A position constraint dependent value or the zero matrix (Mat22_zero).
+		void SetK(const Mat22& value) noexcept;
 
 		/// Accesses the point identified by the given index.
 		/// @note Behavior is undefined if given index is not less than <code>MaxManifoldPoints</code>.

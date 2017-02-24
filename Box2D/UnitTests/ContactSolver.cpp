@@ -392,6 +392,7 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
 	EXPECT_EQ(solution.pos_b.angular, old_pB.angular);
 }
 
+#if 0
 TEST(ContactSolver, SolveVelocityConstraint1)
 {
 	const auto inverse_mass_a = RealNum(0);
@@ -456,8 +457,9 @@ TEST(ContactSolver, SolveVelocityConstraint1)
 	EXPECT_FALSE(IsValid(vc.GetPointRelPosA(1)));
 	EXPECT_FALSE(IsValid(vc.GetPointRelPosB(1)));
 }
+#endif
 
-
+#if 0
 TEST(ContactSolver, SolveVelocityConstraint2)
 {
 	const auto linear_velocity = Vec2{1, 1};
@@ -523,3 +525,4 @@ TEST(ContactSolver, SolveVelocityConstraint2)
 	EXPECT_FALSE(IsValid(vc.GetPointRelPosA(1)));
 	EXPECT_FALSE(IsValid(vc.GetPointRelPosB(1)));
 }
+#endif

@@ -64,7 +64,6 @@ TEST(VelocityConstraint, DefaultInit)
 	EXPECT_FALSE(IsValid(vc.GetPointRelPosA(1)));
 	EXPECT_FALSE(IsValid(vc.GetPointRelPosB(1)));
 }
-#endif
 
 TEST(VelocityConstraint, InitializingConstructor)
 {
@@ -124,3 +123,4 @@ TEST(VelocityConstraint, AddPoint)
 	EXPECT_EQ(GetNormalImpulseAtPoint(vc, 1), ni + 2);
 	EXPECT_EQ(GetTangentImpulseAtPoint(vc, 1), ti + 2);
 }
+#endif

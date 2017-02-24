@@ -44,21 +44,22 @@ struct VelocityPair
 
 struct VelocitySolution
 {
-	Velocity dvA;
-	Velocity dvB;
+	Velocity velA;
+	Velocity velB;
 	RealNum newImpulse;
 };
 
 static inline VelocitySolution SolveTangentConstraint(const VelocityConstraint& vc,
 													  const VelocityConstraint::size_type i)
 {
-	const auto tangent = GetTangent(vc);
-
+	const auto tangent = vc.GetTangent();
+	const auto velA = vc.bodyA.GetVelocity();
+	const auto velB = vc.bodyB.GetVelocity();
 	const auto vcp = vc.GetPointAt(i);
 	
 	// Compute tangent force
 	const auto lambda = [&]() {
-		const auto dv = GetContactRelVelocity(vc.bodyA.GetVelocity(), vcp.rA, vc.bodyB.GetVelocity(), vcp.rB);
+		const auto dv = GetContactRelVelocity(velA, vcp.rA, velB, vcp.rB);
 		const auto vt = vc.GetTangentSpeed() - Dot(dv, tangent);
 		return vcp.tangentMass * vt;
 	}();
@@ -80,14 +81,16 @@ static inline VelocitySolution SolveTangentConstraint(const VelocityConstraint& 
 	
 	const auto P = incImpulse * tangent;
 	return VelocitySolution{
-		-Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(vcp.rA, P)},
-		+Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(vcp.rB, P)},
+		velA - Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(vcp.rA, P)},
+		velB + Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(vcp.rB, P)},
 		newImpulse
 	};
 }
 
 /// Solves the tangential portion of the velocity constraint.
-/// @detail This updates the tangent impulses on the velocity constraint points and
+/// @detail
+/// This imposes friction on the velocity.
+/// Specifically, this updates the tangent impulses on the velocity constraint points and
 ///   updates the two given velocity structures.
 /// @warning Behavior is undefined unless the velocity constraint point count is 1 or 2.
 /// @param vc Contact velocity constraint.
@@ -100,16 +103,16 @@ static inline void SolveTangentConstraint(VelocityConstraint& vc)
 		case 2:
 		{
 			const auto solution = SolveTangentConstraint(vc, 1);
-			vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() + solution.dvA);
-			vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + solution.dvB);
+			vc.bodyA.SetVelocity(solution.velA);
+			vc.bodyB.SetVelocity(solution.velB);
 			vc.SetTangentImpulseAtPoint(1, solution.newImpulse);
 		}
 			// intentional fallthrough
 		case 1:
 		{
 			const auto solution = SolveTangentConstraint(vc, 0);
-			vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() + solution.dvA);
-			vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + solution.dvB);
+			vc.bodyA.SetVelocity(solution.velA);
+			vc.bodyB.SetVelocity(solution.velB);
 			vc.SetTangentImpulseAtPoint(0, solution.newImpulse);
 		}
 			// intentional fallthrough
@@ -120,13 +123,14 @@ static inline void SolveTangentConstraint(VelocityConstraint& vc)
 static inline VelocitySolution SeqSolveNormalConstraint(const VelocityConstraint& vc,
 														const VelocityConstraint::size_type i)
 {
-	const auto normal = GetNormal(vc);
-	
+	const auto normal = vc.GetNormal();
+	const auto velA = vc.bodyA.GetVelocity();
+	const auto velB = vc.bodyB.GetVelocity();
 	const auto vcp = vc.GetPointAt(i);
 	
 	// Compute normal impulse
 	const auto lambda = [&](){
-		const auto dv = GetContactRelVelocity(vc.bodyA.GetVelocity(), vcp.rA, vc.bodyB.GetVelocity(), vcp.rB);
+		const auto dv = GetContactRelVelocity(velA, vcp.rA, velB, vcp.rB);
 		const auto vn = Dot(dv, normal);
 		return vcp.normalMass * (vn - vcp.velocityBias);
 	}();
@@ -139,8 +143,8 @@ static inline VelocitySolution SeqSolveNormalConstraint(const VelocityConstraint
 	// Apply contact impulse
 	const auto P = incImpulse * normal;
 	return VelocitySolution{
-		-Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(vcp.rA, P)},
-		+Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(vcp.rB, P)},
+		velA - Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(vcp.rA, P)},
+		velB + Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(vcp.rB, P)},
 		newImpulse
 	};
 }
@@ -154,16 +158,16 @@ static inline void SeqSolveNormalConstraint(VelocityConstraint& vc)
 		case 2:
 		{
 			const auto solution = SeqSolveNormalConstraint(vc, 1);
-			vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() + solution.dvA);
-			vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + solution.dvB);
+			vc.bodyA.SetVelocity(solution.velA);
+			vc.bodyB.SetVelocity(solution.velB);
 			vc.SetNormalImpulseAtPoint(1, solution.newImpulse);
 		}
 			// intentional fallthrough
 		case 1:
 		{
 			const auto solution = SeqSolveNormalConstraint(vc, 0);
-			vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() + solution.dvA);
-			vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + solution.dvB);
+			vc.bodyA.SetVelocity(solution.velA);
+			vc.bodyB.SetVelocity(solution.velB);
 			vc.SetNormalImpulseAtPoint(0, solution.newImpulse);
 		}
 			// intentional fallthrough
@@ -405,7 +409,9 @@ static inline void BlockSolveNormalConstraint(VelocityConstraint& vc)
 	// No solution, give up. This is hit sometimes, but it doesn't seem to matter.
 }
 
-/// Solves the normal portion of the velocity constraint.	
+/// Solves the normal portion of the velocity constraint.
+/// @detail
+/// This prevents penetration and applies the contact restitution to the velocity.
 static inline void SolveNormalConstraint(VelocityConstraint& vc)
 {
 	const auto count = vc.GetPointCount();
@@ -423,10 +429,8 @@ static inline void SolveNormalConstraint(VelocityConstraint& vc)
 	
 void box2d::SolveVelocityConstraint(VelocityConstraint& vc)
 {
-	// Solve tangent constraints first (before normal constraints) because non-penetration
-	// is more important than friction.
-	SolveTangentConstraint(vc);
-	SolveNormalConstraint(vc);
+	SolveTangentConstraint(vc); // Applies frictional changes to velocity.
+	SolveNormalConstraint(vc); // Applies restitutional changes to velocity.
 }
 
 PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
