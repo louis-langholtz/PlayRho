@@ -87,6 +87,35 @@ static inline VelocitySolution SolveTangentConstraint(const VelocityConstraint& 
 	};
 }
 
+static inline VelocitySolution SolveNormalConstraint(const VelocityConstraint& vc,
+													 const VelocityConstraint::size_type i)
+{
+	const auto normal = vc.GetNormal();
+	const auto velA = vc.bodyA.GetVelocity();
+	const auto velB = vc.bodyB.GetVelocity();
+	const auto vcp = vc.GetPointAt(i);
+	
+	// Compute normal impulse
+	const auto lambda = [&](){
+		const auto dv = GetContactRelVelocity(velA, vcp.rA, velB, vcp.rB);
+		const auto vn = Dot(dv, normal);
+		return vcp.normalMass * (vn - vcp.velocityBias);
+	}();
+	
+	// Clamp the accumulated impulse
+	const auto oldImpulse = vcp.normalImpulse;
+	const auto newImpulse = Max(oldImpulse - lambda, RealNum{0});
+	const auto incImpulse = newImpulse - oldImpulse;
+	
+	// Apply contact impulse
+	const auto P = incImpulse * normal;
+	return VelocitySolution{
+		velA - Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(vcp.rA, P)},
+		velB + Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(vcp.rB, P)},
+		newImpulse
+	};
+}
+
 /// Solves the tangential portion of the velocity constraint.
 /// @detail
 /// This imposes friction on the velocity.
@@ -120,35 +149,6 @@ static inline void SolveTangentConstraint(VelocityConstraint& vc)
 	}
 }
 
-static inline VelocitySolution SeqSolveNormalConstraint(const VelocityConstraint& vc,
-														const VelocityConstraint::size_type i)
-{
-	const auto normal = vc.GetNormal();
-	const auto velA = vc.bodyA.GetVelocity();
-	const auto velB = vc.bodyB.GetVelocity();
-	const auto vcp = vc.GetPointAt(i);
-	
-	// Compute normal impulse
-	const auto lambda = [&](){
-		const auto dv = GetContactRelVelocity(velA, vcp.rA, velB, vcp.rB);
-		const auto vn = Dot(dv, normal);
-		return vcp.normalMass * (vn - vcp.velocityBias);
-	}();
-	
-	// Clamp the accumulated impulse
-	const auto oldImpulse = vcp.normalImpulse;
-	const auto newImpulse = Max(oldImpulse - lambda, RealNum{0});
-	const auto incImpulse = newImpulse - oldImpulse;
-	
-	// Apply contact impulse
-	const auto P = incImpulse * normal;
-	return VelocitySolution{
-		velA - Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(vcp.rA, P)},
-		velB + Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(vcp.rB, P)},
-		newImpulse
-	};
-}
-
 static inline void SeqSolveNormalConstraint(VelocityConstraint& vc)
 {
 	const auto count = vc.GetPointCount();
@@ -157,7 +157,7 @@ static inline void SeqSolveNormalConstraint(VelocityConstraint& vc)
 	{
 		case 2:
 		{
-			const auto solution = SeqSolveNormalConstraint(vc, 1);
+			const auto solution = SolveNormalConstraint(vc, 1);
 			vc.bodyA.SetVelocity(solution.velA);
 			vc.bodyB.SetVelocity(solution.velB);
 			vc.SetNormalImpulseAtPoint(1, solution.newImpulse);
@@ -165,7 +165,7 @@ static inline void SeqSolveNormalConstraint(VelocityConstraint& vc)
 			// intentional fallthrough
 		case 1:
 		{
-			const auto solution = SeqSolveNormalConstraint(vc, 0);
+			const auto solution = SolveNormalConstraint(vc, 0);
 			vc.bodyA.SetVelocity(solution.velA);
 			vc.bodyB.SetVelocity(solution.velB);
 			vc.SetNormalImpulseAtPoint(0, solution.newImpulse);
