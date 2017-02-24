@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Louis Langholtz https://github.com/louis-langholtz/Box2D
+ * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the authors be held liable for any damages
