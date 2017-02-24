@@ -31,7 +31,7 @@ namespace box2d {
 	/// Contact velocity constraint.
 	///
 	/// @note A valid contact velocity constraint must have a point count of either 1 or 2.
-	/// @note This data structure is 184-bytes large (on at least one 64-bit platform).
+	/// @note This data structure is 168-bytes large (on at least one 64-bit platform).
 	///
 	/// @invariant The "K" value cannot be changed independent of: the total inverse mass,
 	///   the normal, and the point relative positions.
@@ -47,9 +47,9 @@ namespace box2d {
 
 		struct Conf
 		{
-			RealNum dtRatio;
-			RealNum velocityThreshold;
-			bool blockSolve;
+			RealNum dtRatio = 1;
+			RealNum velocityThreshold = DefaultVelocityThreshold;
+			bool blockSolve = true;
 		};
 		
 		/// Default constructor.
@@ -220,6 +220,23 @@ namespace box2d {
 			return m_points[index];
 		}
 
+		Point m_points[MaxManifoldPoints]; ///< Velocity constraint points array (at least 72-bytes).
+
+		// K and normalMass fields are only used for the block solver.
+		
+		/// Block solver "K" info.
+		/// @note Depends on the total inverse mass, the normal, and the point relative positions.
+		/// @note Only used by block solver.
+		/// @note This field is 16-bytes (on at least one 64-bit platform).
+		Mat22 m_K = GetInvalid<Mat22>();
+		
+		/// Normal mass information.
+		/// @detail This is the cached inverse of the K value or an invalid value.
+		/// @note Depends on the K value.
+		/// @note Only used by block solver.
+		/// @note This field is 16-bytes (on at least one 64-bit platform).
+		Mat22 m_normalMass = GetInvalid<Mat22>();
+
 		UnitVec2 m_normal = GetInvalid<UnitVec2>(); ///< Normal of the world manifold. 8-bytes.
 		UnitVec2 m_tangent = GetInvalid<UnitVec2>(); ///< Tangent of the world manifold. 8-bytes.
 
@@ -235,22 +252,6 @@ namespace box2d {
 		/// Index of the contact that this constraint is for (typically 8-bytes).
 		index_type m_contactIndex = GetInvalid<index_type>();
 		
-		// K and normalMass fields are only used for the block solver.
-
-		/// Block solver "K" info.
-		/// @note Depends on the total inverse mass, the normal, and the point relative positions.
-		/// @note Only used by block solver.
-		/// @note This field is 16-bytes (on at least one 64-bit platform).
-		Mat22 m_K = GetInvalid<Mat22>();
-
-		/// Normal mass information.
-		/// @detail This is the cached inverse of the K value or an invalid value.
-		/// @note Depends on the K value.
-		/// @note Only used by block solver.
-		/// @note This field is 16-bytes (on at least one 64-bit platform).
-		Mat22 m_normalMass = GetInvalid<Mat22>();
-		
-		Point m_points[MaxManifoldPoints]; ///< Velocity constraint points array (at least 72-bytes).
 		size_type m_pointCount = 0; ///< Point count (at least 1-byte).
 	};
 		

@@ -147,6 +147,9 @@ constexpr auto DefaultMaxSubSteps = uint8{48};
 	
 // Dynamics
 
+/// Default velocity threshold.
+constexpr auto DefaultVelocityThreshold = RealNum{8} / 10; // RealNum{1}
+
 /// Maximum number of bodies in a world (65534 based off uint16 and eliminating one value for invalid).
 constexpr auto MaxBodies = uint16{std::numeric_limits<uint16>::max() - uint16{1}};
 

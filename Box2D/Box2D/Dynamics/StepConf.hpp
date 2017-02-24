@@ -146,7 +146,7 @@ public:
 	/// @detail A velocity threshold for elastic collisions. Any collision with a relative linear
 	/// velocity below this threshold will be treated as inelastic.
 	/// @note Used in both the regular and TOI phases of step processing.
-	RealNum velocityThreshold = RealNum{8} / 10; // RealNum{1};
+	RealNum velocityThreshold = DefaultVelocityThreshold;
 
 	/// Maximum translation.
 	/// @detail The maximum linear velocity of a body.

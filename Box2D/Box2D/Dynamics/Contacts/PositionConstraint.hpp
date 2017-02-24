@@ -26,7 +26,7 @@
 namespace box2d {
 
 	/// Contact Position Constraint.
-	/// @note This structure is 108-bytes large on at least one 64-bit platform.
+	/// @note This structure is 88-bytes large on at least one 64-bit platform.
 	struct PositionConstraint
 	{
 		using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
@@ -42,14 +42,16 @@ namespace box2d {
 			assert(rB >= 0);
 		}
 		
+		// Note: ordering of the member variables matters to the overall size of this structure.
+
 		Manifold manifold; ///< Copy of contact's manifold with 1 or more contact points (60-bytes).
 		
 		BodyConstraint& bodyA; ///< Body A data.
 		
-		RealNum radiusA; ///< "Radius" distance from the associated shape of fixture A (4-bytes). 0 or greater.
-		
 		BodyConstraint& bodyB; ///< Body B data.
-		
+
+		RealNum radiusA; ///< "Radius" distance from the associated shape of fixture A (4-bytes). 0 or greater.
+
 		RealNum radiusB; ///< "Radius" distance from the associated shape of fixture B (4-bytes). 0 or greater.
 	};
 

@@ -33,13 +33,13 @@
 
 using namespace box2d;
 
-TEST(World, ByteSizeIs_328_416_or_464)
+TEST(World, ByteSizeIs_328_352_or_400)
 {
 	switch (sizeof(RealNum))
 	{
 		case  4: EXPECT_EQ(sizeof(World), size_t(328)); break;
-		case  8: EXPECT_EQ(sizeof(World), size_t(416)); break;
-		case 16: EXPECT_EQ(sizeof(World), size_t(464)); break;
+		case  8: EXPECT_EQ(sizeof(World), size_t(352)); break;
+		case 16: EXPECT_EQ(sizeof(World), size_t(400)); break;
 		default: FAIL(); break;
 	}
 }
@@ -1236,9 +1236,9 @@ TEST(World, SpeedingBulletBallWontTunnel)
 	World world{World::Def{}.UseGravity(Vec2_zero)};
 
 	MyContactListener listener{
-		[](Contact& contact, const Manifold& oldManifold) {},
-		[](Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved) {},
-		[&](Contact& contact) {},
+		[](Contact&, const Manifold&) {},
+		[](Contact&, const ContactImpulsesList&, ContactListener::iteration_type) {},
+		[&](Contact&) {},
 	};
 	world.SetContactListener(&listener);
 
@@ -1530,7 +1530,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 	const auto distance_accel = RealNum(1.001);
 
 	MyContactListener listener{
-		[&](Contact& contact, const Manifold& old_manifold)
+		[&](Contact&, const Manifold& /* old_manifold */)
 		{
 			// PreSolve...
 #if 0
@@ -1773,7 +1773,7 @@ static void smaller_still_conserves_momentum(bool bullet, RealNum multiplier, Re
 		auto preB2 = Vec2_zero;
 		
 		MyContactListener listener{
-			[&](Contact& contact, const Manifold& old_manifold)
+			[&](Contact& contact, const Manifold&)
 			{
 				const auto fA = contact.GetFixtureA();
 				const auto fB = contact.GetFixtureB();
@@ -1814,7 +1814,7 @@ static void smaller_still_conserves_momentum(bool bullet, RealNum multiplier, Re
 					std::cout << std::endl;
 				}
 			},
-			[=](Contact& contact) {
+			[=](Contact&) {
 			}
 		};
 		world.SetContactListener(&listener);

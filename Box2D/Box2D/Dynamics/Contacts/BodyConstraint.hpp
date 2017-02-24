@@ -27,6 +27,7 @@ namespace box2d {
 	/// Body Constraint.
 	/// @detail Body data related to constraint processing.
 	/// @note Only position and velocity is independently changable after construction.
+	/// @note This data structure is 44-bytes large (with 4-byte RealNum on at least one 64-bit platform).
 	class BodyConstraint
 	{
 	public:

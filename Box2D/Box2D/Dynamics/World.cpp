@@ -49,8 +49,6 @@ namespace box2d
 {
 
 using BodyConstraints = std::vector<BodyConstraint>;
-using VelocityContainer = std::vector<Velocity>;
-using PositionContainer = std::vector<Position>;
 using PositionConstraintsContainer = std::vector<PositionConstraint>;
 using VelocityConstraintsContainer = std::vector<VelocityConstraint>;
 	

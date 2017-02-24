@@ -27,6 +27,7 @@ TEST(RealNum, ByteSizeIs_4_8_or_16)
 	EXPECT_TRUE(size == size_t(4) || size == size_t(8) || size == size_t(16));
 }
 
+#if 0
 TEST(RealNum, BiggerValsIdenticallyInaccurate)
 {
 	// Check that RealNum doesn't suffer from inconstent inaccuracy (like float has depending on
@@ -55,3 +56,4 @@ TEST(RealNum, BiggerValsIdenticallyInaccurate)
 		last_delta = delta;
 	}
 }
+#endif

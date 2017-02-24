@@ -17,17 +17,17 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Dynamics/Contacts/PositionConstraint.hpp>
+#include <Box2D/Dynamics/Contacts/BodyConstraint.hpp>
 
 using namespace box2d;
 
-TEST(PositionConstraint, ByteSizeIs_88_152_or_288)
+TEST(BodyConstraint, ByteSizeIs_44_88_or_176)
 {
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(PositionConstraint), size_t(88)); break;
-		case  8: EXPECT_EQ(sizeof(PositionConstraint), size_t(152)); break;
-		case 16: EXPECT_EQ(sizeof(PositionConstraint), size_t(288)); break;
+		case  4: EXPECT_EQ(sizeof(BodyConstraint), size_t(44)); break;
+		case  8: EXPECT_EQ(sizeof(BodyConstraint), size_t(88)); break;
+		case 16: EXPECT_EQ(sizeof(BodyConstraint), size_t(176)); break;
 		default: FAIL(); break;
 	}
 }
