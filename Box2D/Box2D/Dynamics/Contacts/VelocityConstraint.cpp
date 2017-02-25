@@ -41,11 +41,9 @@ VelocityConstraint::VelocityConstraint(index_type contactIndex,
 	assert(IsValid(restitution));
 	assert(IsValid(tangentSpeed));
 	
-	const auto worldManifold = GetWorldManifold(manifold,
-												GetTransformation(bA.GetPosition(), bA.GetLocalCenter()),
-												radiusA,
-												GetTransformation(bB.GetPosition(), bB.GetLocalCenter()),
-												radiusB);
+	const auto xfA = GetTransformation(bA.GetPosition(), bA.GetLocalCenter());
+	const auto xfB = GetTransformation(bB.GetPosition(), bB.GetLocalCenter());
+	const auto worldManifold = GetWorldManifold(manifold, xfA, radiusA, xfB, radiusB);
 	m_normal = worldManifold.GetNormal();
 	assert(IsValid(m_normal));
 	m_tangent = GetFwdPerpendicular(m_normal);
@@ -92,21 +90,27 @@ VelocityConstraint::VelocityConstraint(index_type contactIndex,
 
 VelocityConstraint::Point VelocityConstraint::GetPoint(RealNum normalImpulse, RealNum tangentImpulse, Vec2 rA, Vec2 rB, Conf conf) const noexcept
 {
-	auto point = Point{};
+	assert(IsValid(normalImpulse));
+	assert(IsValid(tangentImpulse));
+	assert(IsValid(rA));
+	assert(IsValid(rB));
 	
-	// Get the magnitude of the contact relative velocity in direction of the normal.
-	// This will be an invalid value if the normal is invalid. The comparison in this
-	// case will fail and this lambda will return 0. And that's fine. There's no need
-	// to have a check that the normal is valid and possibly incur the overhead of a
-	// conditional branch here.
-	const auto vn = Dot(GetContactRelVelocity(bodyA.GetVelocity(), rA, bodyB.GetVelocity(), rB), GetNormal());
-	const auto velocityBias = (vn < -conf.velocityThreshold)? -GetRestitution() * vn: RealNum{0};
+	auto point = Point{};
 
 	point.normalImpulse = normalImpulse;
 	point.tangentImpulse = tangentImpulse;
 	point.rA = rA;
 	point.rB = rB;
-	point.velocityBias = velocityBias;
+	point.velocityBias = [&]() {
+		// Get the magnitude of the contact relative velocity in direction of the normal.
+		// This will be an invalid value if the normal is invalid. The comparison in this
+		// case will fail and this lambda will return 0. And that's fine. There's no need
+		// to have a check that the normal is valid and possibly incur the overhead of a
+		// conditional branch here.
+		const auto dv = GetContactRelVelocity(bodyA.GetVelocity(), rA, bodyB.GetVelocity(), rB);
+		const auto vn = Dot(dv, GetNormal());
+		return (vn < -conf.velocityThreshold)? -GetRestitution() * vn: RealNum{0};
+	}();
 	
 	point.normalMass = [&](){
 		const auto value = GetInverseMass()
