@@ -1,21 +1,21 @@
 /*
-* Original work Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #include <Box2D/Dynamics/Joints/DistanceJoint.hpp>
 #include <Box2D/Dynamics/Body.hpp>
@@ -50,14 +50,15 @@ DistanceJointDef::DistanceJointDef(Body* bA, Body* bB,
 {
 }
 
-DistanceJoint::DistanceJoint(const DistanceJointDef& def)
-: Joint(def)
+DistanceJoint::DistanceJoint(const DistanceJointDef& def):
+	Joint(def),
+	m_localAnchorA(def.localAnchorA),
+	m_localAnchorB(def.localAnchorB),
+	m_length(def.length),
+	m_frequencyHz(def.frequencyHz),
+	m_dampingRatio(def.dampingRatio)
 {
-	m_localAnchorA = def.localAnchorA;
-	m_localAnchorB = def.localAnchorB;
-	m_length = def.length;
-	m_frequencyHz = def.frequencyHz;
-	m_dampingRatio = def.dampingRatio;
+	// Intentionally empty.
 }
 
 void DistanceJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
@@ -73,21 +74,17 @@ void DistanceJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 	m_invIA = GetBodyA()->GetInverseInertia();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto cA = bodies[m_indexA].GetPosition().linear;
-	const auto aA = bodies[m_indexA].GetPosition().angular;
-	auto vA = bodies[m_indexA].GetVelocity().linear;
-	auto wA = bodies[m_indexA].GetVelocity().angular;
+	const auto posA = bodies[m_indexA].GetPosition();
+	auto velA = bodies[m_indexA].GetVelocity();
 
-	const auto cB = bodies[m_indexB].GetPosition().linear;
-	const auto aB = bodies[m_indexB].GetPosition().angular;
-	auto vB = bodies[m_indexB].GetVelocity().linear;
-	auto wB = bodies[m_indexB].GetVelocity().angular;
+	const auto posB = bodies[m_indexB].GetPosition();
+	auto velB = bodies[m_indexB].GetVelocity();
 
-	const UnitVec2 qA(aA), qB(aB);
+	const UnitVec2 qA(posA.angular), qB(posB.angular);
 
 	m_rA = Rotate(m_localAnchorA - m_localCenterA, qA);
 	m_rB = Rotate(m_localAnchorB - m_localCenterB, qB);
-	m_u = (cB + m_rB) - (cA + m_rA);
+	m_u = (posB.linear + m_rB) - (posA.linear + m_rA);
 
 	// Handle singularity.
 	const auto length = box2d::GetLength(m_u);
@@ -112,10 +109,10 @@ void DistanceJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 		const auto C = length - m_length;
 
 		// Frequency
-		const auto omega = RealNum(2) * Pi * m_frequencyHz;
+		const auto omega = 2 * Pi * m_frequencyHz;
 
 		// Damping coefficient
-		const auto d = RealNum(2) * m_mass * m_dampingRatio * omega;
+		const auto d = 2 * m_mass * m_dampingRatio * omega;
 
 		// Spring stiffness
 		const auto k = m_mass * Square(omega);
@@ -141,64 +138,56 @@ void DistanceJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 		m_impulse *= step.dtRatio;
 
 		const auto P = m_impulse * m_u;
-		vA -= m_invMassA * P;
-		wA -= 1_rad * m_invIA * Cross(m_rA, P);
-		vB += m_invMassB * P;
-		wB += 1_rad * m_invIB * Cross(m_rB, P);
+		velA -= Velocity{m_invMassA * P, 1_rad * m_invIA * Cross(m_rA, P)};
+		velB += Velocity{m_invMassB * P, 1_rad * m_invIB * Cross(m_rB, P)};
 	}
 	else
 	{
-		m_impulse = RealNum{0};
+		m_impulse = 0;
 	}
 
-	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
-	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
+	bodies[m_indexA].SetVelocity(velA);
+	bodies[m_indexB].SetVelocity(velB);
 }
 
 void DistanceJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf&)
 {
-	auto vA = bodies[m_indexA].GetVelocity().linear;
-	auto wA = bodies[m_indexA].GetVelocity().angular;
-	auto vB = bodies[m_indexB].GetVelocity().linear;
-	auto wB = bodies[m_indexB].GetVelocity().angular;
+	auto velA = bodies[m_indexA].GetVelocity();
+	auto velB = bodies[m_indexB].GetVelocity();
 
 	// Cdot = dot(u, v + cross(w, r))
-	const auto vpA = vA + GetRevPerpendicular(m_rA) * wA.ToRadians();
-	const auto vpB = vB + GetRevPerpendicular(m_rB) * wB.ToRadians();
+	const auto vpA = velA.linear + GetRevPerpendicular(m_rA) * velA.angular.ToRadians();
+	const auto vpB = velB.linear + GetRevPerpendicular(m_rB) * velB.angular.ToRadians();
 	const auto Cdot = Dot(m_u, vpB - vpA);
 
 	const auto impulse = -m_mass * (Cdot + m_bias + m_gamma * m_impulse);
 	m_impulse += impulse;
 
 	const auto P = impulse * m_u;
-	vA -= m_invMassA * P;
-	wA -= 1_rad * m_invIA * Cross(m_rA, P);
-	vB += m_invMassB * P;
-	wB += 1_rad * m_invIB * Cross(m_rB, P);
+	velA -= Velocity{m_invMassA * P, 1_rad * m_invIA * Cross(m_rA, P)};
+	velB += Velocity{m_invMassB * P, 1_rad * m_invIB * Cross(m_rB, P)};
 
-	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
-	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
+	bodies[m_indexA].SetVelocity(velA);
+	bodies[m_indexB].SetVelocity(velB);
 }
 
 bool DistanceJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const
 {
-	if (m_frequencyHz > RealNum{0})
+	if (m_frequencyHz > 0)
 	{
 		// There is no position correction for soft distance constraints.
 		return true;
 	}
 
-	auto cA = bodies[m_indexA].GetPosition().linear;
-	auto aA = bodies[m_indexA].GetPosition().angular;
-	auto cB = bodies[m_indexB].GetPosition().linear;
-	auto aB = bodies[m_indexB].GetPosition().angular;
+	auto posA = bodies[m_indexA].GetPosition();
+	auto posB = bodies[m_indexB].GetPosition();
 
-	const auto qA = UnitVec2(aA);
-	const auto qB = UnitVec2(aB);
+	const auto qA = UnitVec2(posA.angular);
+	const auto qB = UnitVec2(posB.angular);
 
 	const auto rA = Rotate(m_localAnchorA - m_localCenterA, qA);
 	const auto rB = Rotate(m_localAnchorB - m_localCenterB, qB);
-	auto u = cB + rB - cA - rA;
+	auto u = posB.linear + rB - posA.linear - rA;
 
 	const auto length = Normalize(u);
 	const auto deltaLength = length - m_length;
@@ -207,13 +196,11 @@ bool DistanceJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const 
 	const auto impulse = -m_mass * C;
 	const auto P = impulse * u;
 
-	cA -= m_invMassA * P;
-	aA -= 1_rad * m_invIA * Cross(rA, P);
-	cB += m_invMassB * P;
-	aB += 1_rad * m_invIB * Cross(rB, P);
+	posA -= Position{m_invMassA * P, 1_rad * m_invIA * Cross(rA, P)};
+	posB += Position{m_invMassB * P, 1_rad * m_invIB * Cross(rB, P)};
 
-	bodies[m_indexA].SetPosition(Position{cA, aA});
-	bodies[m_indexB].SetPosition(Position{cB, aB});
+	bodies[m_indexA].SetPosition(posA);
+	bodies[m_indexB].SetPosition(posB);
 
 	return Abs(C) < conf.linearSlop;
 }
