@@ -296,17 +296,19 @@ namespace {
 	/// "Solves" the velocity constraints.
 	/// @detail Updates the velocities and velocity constraint points' normal and tangent impulses.
 	/// @pre <code>UpdateVelocityConstraints</code> has been called on the velocity constraints.
-	inline void SolveVelocityConstraints(VelocityConstraintsContainer& velocityConstraints)
+	inline RealNum SolveVelocityConstraints(VelocityConstraintsContainer& velocityConstraints)
 	{
+		auto maxIncImpulse = RealNum{0};
 		for (auto&& vc: velocityConstraints)
 		{
-			SolveVelocityConstraint(vc);
+			maxIncImpulse = std::max(maxIncImpulse, SolveVelocityConstraint(vc));
 		}
+		return maxIncImpulse;
 	}
 
 	inline RealNum UpdateSleepTimes(Island::BodyContainer& bodies, const StepConf& step)
 	{
-		auto minSleepTime = MaxFloat;
+		auto minSleepTime = std::numeric_limits<RealNum>::infinity();
 		for (auto&& b: bodies)
 		{
 			if (b->IsSpeedable())
@@ -749,6 +751,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 				
 				// Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions
 				const auto solverResults = SolveReg(step, island);
+				stats.maxIncImpulse = Max(stats.maxIncImpulse, solverResults.maxIncImpulse);
 				stats.minSeparation = Min(stats.minSeparation, solverResults.minSeparation);
 				if (solverResults.solved)
 				{
@@ -797,7 +800,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 
 World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 {
-	auto finMinSeparation = MaxFloat;
+	auto finMinSeparation = std::numeric_limits<RealNum>::infinity();
 	auto solved = false;
 	auto positionIterations = step.regPositionIterations;
 
@@ -841,6 +844,8 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 		joint->InitVelocityConstraints(bodyConstraints, step, psConf);
 	}
 	
+	auto velocityIterations = step.regVelocityIterations;
+	auto maxIncImpulse = RealNum{0};
 	for (auto i = decltype(step.regVelocityIterations){0}; i < step.regVelocityIterations; ++i)
 	{
 		for (auto&& joint: island.m_joints)
@@ -848,7 +853,8 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 			joint->SolveVelocityConstraints(bodyConstraints, step);
 		}
 
-		SolveVelocityConstraints(velocityConstraints);
+		const auto newIncImpulse = SolveVelocityConstraints(velocityConstraints);
+		maxIncImpulse = std::max(maxIncImpulse, newIncImpulse);
 	}
 	
 	// updates array of tentative new body positions per the velocities as if there were no obstacles...
@@ -893,7 +899,7 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 		Report(*m_contactMgr.m_contactListener, island.m_contacts, velocityConstraints,
 			   solved? positionIterations - 1: StepConf::InvalidIteration);
 	}
-	return IslandSolverResults{finMinSeparation, solved, positionIterations, step.regVelocityIterations};
+	return IslandSolverResults{finMinSeparation, maxIncImpulse, solved, positionIterations, velocityIterations};
 }
 
 void World::ResetBodiesForSolveTOI()
@@ -963,7 +969,7 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 	
 World::ContactToiData World::GetSoonestContact()
 {
-	auto minToi = MaxFloat;
+	auto minToi = std::numeric_limits<RealNum>::infinity();
 	auto minContact = static_cast<Contact*>(nullptr);
 	auto count = contact_count_t{0};
 	for (auto&& c: m_contactMgr.GetContacts())
@@ -1039,6 +1045,7 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 		++stats.contactsFound;
 		const auto solverResults = SolveTOI(step, *next.contact);
 		stats.minSeparation = Min(stats.minSeparation, solverResults.minSeparation);
+		stats.maxIncImpulse = Max(stats.maxIncImpulse, solverResults.maxIncImpulse);
 		if (solverResults.solved)
 		{
 			++stats.islandsSolved;
@@ -1172,7 +1179,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 	auto positionConstraints = GetPositionConstraints(island.m_contacts, bodyConstraints);
 	
 	// Solve TOI-based position constraints.
-	auto finMinSeparation = MaxFloat;
+	auto finMinSeparation = std::numeric_limits<RealNum>::infinity();
 	auto solved = false;
 	auto positionIterations = step.toiPositionIterations;
 	
@@ -1224,9 +1231,12 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 	// starting impulses were applied in the discrete solver.
 
 	// Solve velocity constraints.
+	auto maxIncImpulse = RealNum{0};
+	auto velocityIterations = step.toiVelocityIterations;
 	for (auto i = decltype(step.toiVelocityIterations){0}; i < step.toiVelocityIterations; ++i)
 	{
-		SolveVelocityConstraints(velocityConstraints);
+		const auto newIncImpulse = SolveVelocityConstraints(velocityConstraints);
+		maxIncImpulse = std::max(maxIncImpulse, newIncImpulse);
 	}
 	
 	// Don't store TOI contact forces for warm starting because they can be quite large.
@@ -1241,7 +1251,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 			   positionIterations);
 	}
 	
-	return IslandSolverResults{finMinSeparation, solved, positionIterations, step.toiVelocityIterations};
+	return IslandSolverResults{finMinSeparation, maxIncImpulse, solved, positionIterations, velocityIterations};
 }
 	
 void World::ResetContactsForSolveTOI(Body& body)

@@ -54,6 +54,7 @@ struct PreStepStats
 struct RegStepStats
 {
 	RealNum minSeparation = std::numeric_limits<RealNum>::infinity();
+	RealNum maxIncImpulse = 0;
 
 	uint32 islandsFound = 0;
 	uint32 islandsSolved = 0;
@@ -66,7 +67,8 @@ struct RegStepStats
 /// TOI step phase statistics.
 struct ToiStepStats
 {
-	RealNum minSeparation = 0;
+	RealNum minSeparation = std::numeric_limits<RealNum>::infinity();
+	RealNum maxIncImpulse = 0;
 
 	uint32 islandsFound = 0;
 	uint32 islandsSolved = 0;
@@ -358,7 +360,8 @@ private:
 	/// Island solver results.
 	struct IslandSolverResults
 	{
-		RealNum minSeparation; ///< Minimum separation.
+		RealNum minSeparation = std::numeric_limits<decltype(minSeparation)>::infinity(); ///< Minimum separation.
+		RealNum maxIncImpulse = 0; ///< Maximum incremental impulse.
 		bool solved = false; ///< Solved. <code>true</code> if position constraints solved, <code>false</code> otherwise.
 		ts_iters_t positionIterations = 0; ///< Position iterations actually performed.
 		ts_iters_t velocityIterations = 0; ///< Velocity iterations actually performed.
@@ -484,7 +487,7 @@ private:
 	{
 		contact_count_t count = 0;
 		Contact* contact = nullptr; ///< Contact for which the time of impact is relavant.
-		RealNum toi = MaxFloat; ///< Time of impact (TOI) as a fractional value between 0 and 1.
+		RealNum toi = std::numeric_limits<RealNum>::infinity(); ///< Time of impact (TOI) as a fractional value between 0 and 1.
 	};
 
 	struct UpdateContactsData

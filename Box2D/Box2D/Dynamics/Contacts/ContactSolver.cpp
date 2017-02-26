@@ -49,7 +49,24 @@ struct VelocitySolution
 	RealNum newImpulse;
 };
 
-static inline VelocitySolution SolveTangentConstraint(const VelocityConstraint& vc,
+/// Impulse change.
+///
+/// @detail
+/// This describes the change in impulse necessary for a solution.
+/// To apply this: let P = magnitude * direction, then
+///   the change to body A's velocity is
+///   -Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(vcp.rA, P)}
+///   the change to body B's velocity is
+///   +Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(vcp.rB, P)}
+///   and the new impulse = oldImpulse + magnitude.
+///
+struct ImpulseChange
+{
+	RealNum magnitude; ///< Magnitude.
+	UnitVec2 direction; ///< Direction.
+};
+
+static inline ImpulseChange SolveTangentConstraint(const VelocityConstraint& vc,
 													  const VelocityConstraint::size_type i)
 {
 	const auto direction = vc.GetTangent();
@@ -79,15 +96,10 @@ static inline VelocitySolution SolveTangentConstraint(const VelocityConstraint& 
 	const auto newImpulse = Clamp(oldImpulse + lambda, -maxImpulse, maxImpulse);
 	const auto incImpulse = newImpulse - oldImpulse;
 	
-	const auto P = incImpulse * direction;
-	return VelocitySolution{
-		velA - Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(vcp.rA, P)},
-		velB + Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(vcp.rB, P)},
-		newImpulse
-	};
+	return ImpulseChange{incImpulse, direction};
 }
 
-static inline VelocitySolution SolveNormalConstraint(const VelocityConstraint& vc,
+static inline ImpulseChange SolveNormalConstraint(const VelocityConstraint& vc,
 													 const VelocityConstraint::size_type i)
 {
 	const auto direction = vc.GetNormal();
@@ -107,12 +119,7 @@ static inline VelocitySolution SolveNormalConstraint(const VelocityConstraint& v
 	const auto newImpulse = Max(oldImpulse - lambda, RealNum{0});
 	const auto incImpulse = newImpulse - oldImpulse;
 	
-	const auto P = incImpulse * direction;
-	return VelocitySolution{
-		velA - Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(vcp.rA, P)},
-		velB + Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(vcp.rB, P)},
-		newImpulse
-	};
+	return ImpulseChange{incImpulse, direction};
 }
 
 /// Solves the tangential portion of the velocity constraint.
@@ -122,8 +129,10 @@ static inline VelocitySolution SolveNormalConstraint(const VelocityConstraint& v
 ///   updates the two given velocity structures.
 /// @warning Behavior is undefined unless the velocity constraint point count is 1 or 2.
 /// @param vc Velocity constraint.
-static inline void SolveTangentConstraint(VelocityConstraint& vc)
+static inline RealNum SolveTangentConstraint(VelocityConstraint& vc)
 {
+	auto maxIncImpulse = RealNum{0};
+	
 	const auto count = vc.GetPointCount();
 	assert((count == 1) || (count == 2));
 	switch (count)
@@ -131,25 +140,43 @@ static inline void SolveTangentConstraint(VelocityConstraint& vc)
 		case 2:
 		{
 			const auto solution = SolveTangentConstraint(vc, 1);
-			vc.bodyA.SetVelocity(solution.velA);
-			vc.bodyB.SetVelocity(solution.velB);
-			vc.SetTangentImpulseAtPoint(1, solution.newImpulse);
+			const auto P = solution.magnitude * solution.direction;
+			const auto vcp = vc.GetPointAt(1);
+			vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() - Velocity{
+				vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(vcp.rA, P)
+			});
+			vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + Velocity{
+				vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(vcp.rB, P)
+			});
+			vc.SetTangentImpulseAtPoint(1, vcp.tangentImpulse + solution.magnitude);
+			maxIncImpulse = std::max(maxIncImpulse, std::abs(solution.magnitude));
 		}
 			// intentional fallthrough
 		case 1:
 		{
 			const auto solution = SolveTangentConstraint(vc, 0);
-			vc.bodyA.SetVelocity(solution.velA);
-			vc.bodyB.SetVelocity(solution.velB);
-			vc.SetTangentImpulseAtPoint(0, solution.newImpulse);
+			const auto P = solution.magnitude * solution.direction;
+			const auto vcp = vc.GetPointAt(0);
+			vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() - Velocity{
+				vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(vcp.rA, P)
+			});
+			vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + Velocity{
+				vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(vcp.rB, P)
+			});
+			vc.SetTangentImpulseAtPoint(0, vcp.tangentImpulse + solution.magnitude);
+			maxIncImpulse = std::max(maxIncImpulse, std::abs(solution.magnitude));
 		}
 			// intentional fallthrough
 		default: break;
 	}
+
+	return maxIncImpulse;
 }
 
-static inline void SeqSolveNormalConstraint(VelocityConstraint& vc)
+static inline RealNum SeqSolveNormalConstraint(VelocityConstraint& vc)
 {
+	auto maxIncImpulse = RealNum{0};
+
 	const auto count = vc.GetPointCount();
 	assert((count == 1) || (count == 2));
 	switch (count)
@@ -157,21 +184,36 @@ static inline void SeqSolveNormalConstraint(VelocityConstraint& vc)
 		case 2:
 		{
 			const auto solution = SolveNormalConstraint(vc, 1);
-			vc.bodyA.SetVelocity(solution.velA);
-			vc.bodyB.SetVelocity(solution.velB);
-			vc.SetNormalImpulseAtPoint(1, solution.newImpulse);
+			const auto P = solution.magnitude * solution.direction;
+			const auto vcp = vc.GetPointAt(1);
+			vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() - Velocity{
+				vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(vcp.rA, P)
+			});
+			vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + Velocity{
+				vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(vcp.rB, P)
+			});
+			vc.SetNormalImpulseAtPoint(1, vcp.normalImpulse + solution.magnitude);
+			maxIncImpulse = std::max(maxIncImpulse, std::abs(solution.magnitude));
 		}
 			// intentional fallthrough
 		case 1:
 		{
 			const auto solution = SolveNormalConstraint(vc, 0);
-			vc.bodyA.SetVelocity(solution.velA);
-			vc.bodyB.SetVelocity(solution.velB);
-			vc.SetNormalImpulseAtPoint(0, solution.newImpulse);
+			const auto P = solution.magnitude * solution.direction;
+			const auto vcp = vc.GetPointAt(0);
+			vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() - Velocity{
+				vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotI() * Cross(vcp.rA, P)
+			});
+			vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + Velocity{
+				vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotI() * Cross(vcp.rB, P)
+			});
+			vc.SetNormalImpulseAtPoint(0, vcp.normalImpulse + solution.magnitude);
+			maxIncImpulse = std::max(maxIncImpulse, std::abs(solution.magnitude));
 		}
 			// intentional fallthrough
 		default: break;
 	}
+	return maxIncImpulse;
 }
 
 static inline VelocityPair ApplyImpulses(const VelocityConstraint& vc, const Vec2 impulses)
@@ -195,15 +237,16 @@ static inline VelocityPair ApplyImpulses(const VelocityConstraint& vc, const Vec
 	};
 }
 
-static inline void BlockSolveUpdate(VelocityConstraint& vc, const Vec2 newImpulses)
+static inline RealNum BlockSolveUpdate(VelocityConstraint& vc, const Vec2 newImpulses)
 {
 	const auto delta_v = ApplyImpulses(vc, newImpulses - GetNormalImpulses(vc));
 	vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() + delta_v.vel_a);
 	vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + delta_v.vel_b);
 	SetNormalImpulses(vc, newImpulses);
+	return std::max(std::abs(newImpulses[0]), std::abs(newImpulses[1]));
 }
 
-static inline bool BlockSolveNormalCase1(VelocityConstraint& vc, const Vec2 b_prime)
+static inline RealNum BlockSolveNormalCase1(VelocityConstraint& vc, const Vec2 b_prime)
 {
 	//
 	// Case 1: vn = 0
@@ -215,8 +258,6 @@ static inline bool BlockSolveNormalCase1(VelocityConstraint& vc, const Vec2 b_pr
 	// x = -inv(A) * b'
 	//
 	const auto normalMass = vc.GetNormalMass();
-	assert(IsValid(normalMass));
-
 	const auto newImpulses = -Transform(b_prime, normalMass);
 	if ((newImpulses[0] >= 0) && (newImpulses[1] >= 0))
 	{
@@ -239,12 +280,12 @@ static inline bool BlockSolveNormalCase1(VelocityConstraint& vc, const Vec2 b_pr
 		assert(Abs(post_vn1 - vcp1.velocityBias) < k_errorTol);
 		assert(Abs(post_vn2 - vcp2.velocityBias) < k_errorTol);
 #endif
-		return true;
+		return std::max(newImpulses[0], newImpulses[1]);
 	}
-	return false;
+	return GetInvalid<RealNum>();
 }
 
-static inline bool BlockSolveNormalCase2(VelocityConstraint& vc, const Vec2 b_prime)
+static inline RealNum BlockSolveNormalCase2(VelocityConstraint& vc, const Vec2 b_prime)
 {
 	//
 	// Case 2: vn1 = 0 and x2 = 0
@@ -252,12 +293,12 @@ static inline bool BlockSolveNormalCase2(VelocityConstraint& vc, const Vec2 b_pr
 	//   0 = a11 * x1 + a12 * 0 + b1' 
 	// vn2 = a21 * x1 + a22 * 0 + b2'
 	//
-	const auto newImpulse = Vec2{-GetNormalMassAtPoint(vc, 0) * b_prime.x, 0};
+	const auto newImpulses = Vec2{-GetNormalMassAtPoint(vc, 0) * b_prime.x, 0};
 	const auto K = vc.GetK();
-	const auto vn2 = K.ex.y * newImpulse.x + b_prime.y;
-	if ((newImpulse.x >= 0) && (vn2 >= 0))
+	const auto vn2 = K.ex.y * newImpulses.x + b_prime.y;
+	if ((newImpulses.x >= 0) && (vn2 >= 0))
 	{
-		BlockSolveUpdate(vc, newImpulse);
+		BlockSolveUpdate(vc, newImpulses);
 		
 #if defined(B2_DEBUG_SOLVER)
 		auto& vcp1 = vc.PointAt(0);
@@ -271,13 +312,12 @@ static inline bool BlockSolveNormalCase2(VelocityConstraint& vc, const Vec2 b_pr
 		assert(Abs(post_vn1 - vcp1.velocityBias) < k_majorErrorTol);
 		assert(Abs(post_vn1 - vcp1.velocityBias) < k_errorTol);
 #endif
-		
-		return true;
+		return std::max(newImpulses[0], newImpulses[1]);
 	}
-	return false;
+	return GetInvalid<RealNum>();
 }
 
-static inline bool BlockSolveNormalCase3(VelocityConstraint& vc, const Vec2 b_prime)
+static inline RealNum BlockSolveNormalCase3(VelocityConstraint& vc, const Vec2 b_prime)
 {
 	//
 	// Case 3: vn2 = 0 and x1 = 0
@@ -285,12 +325,12 @@ static inline bool BlockSolveNormalCase3(VelocityConstraint& vc, const Vec2 b_pr
 	// vn1 = a11 * 0 + a12 * x2 + b1' 
 	//   0 = a21 * 0 + a22 * x2 + b2'
 	//
-	const auto newImpulse = Vec2{0, -GetNormalMassAtPoint(vc, 1) * b_prime.y};
+	const auto newImpulses = Vec2{0, -GetNormalMassAtPoint(vc, 1) * b_prime.y};
 	const auto K = vc.GetK();
-	const auto vn1 = K.ey.x * newImpulse.y + b_prime.x;
-	if ((newImpulse.y >= 0) && (vn1 >= 0))
+	const auto vn1 = K.ey.x * newImpulses.y + b_prime.x;
+	if ((newImpulses.y >= 0) && (vn1 >= 0))
 	{
-		BlockSolveUpdate(vc, newImpulse);
+		BlockSolveUpdate(vc, newImpulses);
 		
 #if defined(B2_DEBUG_SOLVER)
 		auto& vcp2 = vc.PointAt(1);
@@ -304,31 +344,30 @@ static inline bool BlockSolveNormalCase3(VelocityConstraint& vc, const Vec2 b_pr
 		assert(Abs(post_vn2 - vcp2.velocityBias) < k_majorErrorTol);
 		assert(Abs(post_vn2 - vcp2.velocityBias) < k_errorTol);
 #endif
-		
-		return true;
+		return std::max(newImpulses[0], newImpulses[1]);
 	}
-	return false;
+	return GetInvalid<RealNum>();
 }
 
-static inline bool BlockSolveNormalCase4(VelocityConstraint& vc, const Vec2 b_prime)
+static inline RealNum BlockSolveNormalCase4(VelocityConstraint& vc, const Vec2 b_prime)
 {
 	//
 	// Case 4: x1 = 0 and x2 = 0
 	// 
 	// vn1 = b1
 	// vn2 = b2;
-	const auto newImpulse = Vec2_zero;
+	const auto newImpulses = Vec2_zero;
 	const auto vn1 = b_prime.x;
 	const auto vn2 = b_prime.y;
 	if ((vn1 >= 0) && (vn2 >= 0))
 	{
-		BlockSolveUpdate(vc, newImpulse);
-		return true;
+		BlockSolveUpdate(vc, newImpulses);
+		return std::max(newImpulses[0], newImpulses[1]);
 	}
-	return false;
+	return GetInvalid<RealNum>();
 }
 
-static inline void BlockSolveNormalConstraint(VelocityConstraint& vc)
+static inline RealNum BlockSolveNormalConstraint(VelocityConstraint& vc)
 {
 	// Block solver developed in collaboration with Dirk Gregorius (back in 01/07 on Box2D_Lite).
 	// Build the mini LCP for this contact patch
@@ -389,41 +428,50 @@ static inline void BlockSolveNormalConstraint(VelocityConstraint& vc)
 		return b - Transform(GetNormalImpulses(vc), K);
 	}();
 	
-	
-	if (BlockSolveNormalCase1(vc, b_prime))
-		return;
-	if (BlockSolveNormalCase2(vc, b_prime))
-		return;
-	if (BlockSolveNormalCase3(vc, b_prime))
-		return;
-	if (BlockSolveNormalCase4(vc, b_prime))
-		return;
+	RealNum maxIncImpulse;
+	maxIncImpulse = BlockSolveNormalCase1(vc, b_prime);
+	if (IsValid(maxIncImpulse))
+		return maxIncImpulse;
+	maxIncImpulse = BlockSolveNormalCase2(vc, b_prime);
+	if (IsValid(maxIncImpulse))
+		return maxIncImpulse;
+	maxIncImpulse = BlockSolveNormalCase3(vc, b_prime);
+	if (IsValid(maxIncImpulse))
+		return maxIncImpulse;
+	maxIncImpulse = BlockSolveNormalCase4(vc, b_prime);
+	if (IsValid(maxIncImpulse))
+		return maxIncImpulse;
 	
 	// No solution, give up. This is hit sometimes, but it doesn't seem to matter.
+	return 0;
 }
 
 /// Solves the normal portion of the velocity constraint.
 /// @detail
 /// This prevents penetration and applies the contact restitution to the velocity.
-static inline void SolveNormalConstraint(VelocityConstraint& vc)
+static inline RealNum SolveNormalConstraint(VelocityConstraint& vc)
 {
 	const auto count = vc.GetPointCount();
 	assert((count == 1) || (count == 2));
 	
 	if ((count == 1) || (!IsValid(vc.GetK())))
 	{
-		SeqSolveNormalConstraint(vc);
+		return SeqSolveNormalConstraint(vc);
 	}
-	else
-	{
-		BlockSolveNormalConstraint(vc);
-	}
+	return BlockSolveNormalConstraint(vc);
 }
 	
-void box2d::SolveVelocityConstraint(VelocityConstraint& vc)
+RealNum box2d::SolveVelocityConstraint(VelocityConstraint& vc)
 {
-	SolveTangentConstraint(vc); // Applies frictional changes to velocity.
-	SolveNormalConstraint(vc); // Applies restitutional changes to velocity.
+	auto maxIncImpulse = RealNum{0};
+	
+	// Applies frictional changes to velocity.
+	maxIncImpulse = std::max(maxIncImpulse, SolveTangentConstraint(vc));
+
+	// Applies restitutional changes to velocity.
+	maxIncImpulse = std::max(maxIncImpulse, SolveNormalConstraint(vc));
+
+	return maxIncImpulse;
 }
 
 PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
@@ -541,13 +589,13 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 		}
 		default: break;
 	}
-	return PositionSolution{posA, posB, MaxFloat};
+	return PositionSolution{posA, posB, std::numeric_limits<RealNum>::infinity()};
 }
 
 RealNum box2d::SolvePositionConstraints(Span<PositionConstraint> positionConstraints,
 										ConstraintSolverConf conf)
 {
-	auto minSeparation = MaxFloat;
+	auto minSeparation = std::numeric_limits<RealNum>::infinity();
 	
 	for (auto&& pc: positionConstraints)
 	{
@@ -565,7 +613,7 @@ RealNum box2d::SolvePositionConstraints(Span<PositionConstraint> positionConstra
 										island_count_t indexA, island_count_t indexB,
 										ConstraintSolverConf conf)
 {
-	auto minSeparation = MaxFloat;
+	auto minSeparation = std::numeric_limits<RealNum>::infinity();
 	
 	// Intentionally copy position constraint to local variable in order to
 	// modify the constraint temporarily if related to indexA or indexB.

@@ -194,7 +194,7 @@ namespace box2d {
 	/// @pre The velocity constraint must have a valid normal, a valid tangent,
 	///   valid point relative positions, and valid velocity biases.
 	///
-	void SolveVelocityConstraint(VelocityConstraint& vc);
+	RealNum SolveVelocityConstraint(VelocityConstraint& vc);
 	
 } // namespace box2d
 

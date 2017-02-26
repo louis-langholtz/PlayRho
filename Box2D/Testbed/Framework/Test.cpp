@@ -637,17 +637,20 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 						  m_stepStats.pre.added, m_stepStats.pre.ignored, m_stepStats.pre.destroyed, m_stepStats.pre.updated);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		drawer.DrawString(5, m_textLine, "  reg-info: cts-add=%u isl-find=%u isl-solv=%u pos-iter=%u vel-iter=%u bod-slept=%u min-sep=%f",
+		drawer.DrawString(5, m_textLine,
+						  "  reg-info: cts-add=%u isl-find=%u isl-solv=%u pos-iter=%u vel-iter=%u bod-slept=%u min-sep=%f max-inc-imp=%f",
 						  m_stepStats.reg.contactsAdded,
 						  m_stepStats.reg.islandsFound,
 						  m_stepStats.reg.islandsSolved,
 						  m_stepStats.reg.sumPosIters,
 						  m_stepStats.reg.sumVelIters,
 						  m_stepStats.reg.bodiesSlept,
-						  float(m_stepStats.reg.minSeparation));
+						  float(m_stepStats.reg.minSeparation),
+						  float(m_stepStats.reg.maxIncImpulse));
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		drawer.DrawString(5, m_textLine, "  toi-info: cts-add=%d isl-find=%d isl-solv=%u pos-iter=%u vel-iter=%u cts-find=%d cts-atmaxsubs=%d cts-upd=%d max-dist-iter=%u max-toi-iter=%u min-sep=%f",
+		drawer.DrawString(5, m_textLine,
+						  "  toi-info: cts-add=%d isl-find=%d isl-solv=%u pos-iter=%u vel-iter=%u cts-find=%d cts-atmaxsubs=%d cts-upd=%d max-dist-iter=%u max-toi-iter=%u min-sep=%f max-inc-imp=%f",
 						  m_stepStats.toi.contactsAdded,
 						  m_stepStats.toi.islandsFound,
 						  m_stepStats.toi.islandsSolved,
@@ -657,7 +660,8 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 						  m_stepStats.toi.contactsAtMaxSubSteps,
 						  m_stepStats.toi.contactsUpdatedToi,
 						  m_stepStats.toi.maxDistIters, m_stepStats.toi.maxToiIters,
-						  float(m_stepStats.toi.minSeparation));
+						  float(m_stepStats.toi.minSeparation),
+						  float(m_stepStats.toi.maxIncImpulse));
 		m_textLine += DRAW_STRING_NEW_LINE;
 
 		const auto sleepCount = [&](){
