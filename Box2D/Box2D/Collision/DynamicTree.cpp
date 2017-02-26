@@ -709,7 +709,7 @@ void DynamicTree::RebuildBottomUp()
 
 	while (count > 1)
 	{
-		auto minCost = MaxFloat;
+		auto minCost = std::numeric_limits<RealNum>::infinity();
 		auto iMin = NullNode;
 		auto jMin = NullNode;
 		for (auto i = decltype(count){0}; i < count; ++i)
