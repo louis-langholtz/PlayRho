@@ -167,10 +167,10 @@ DynamicTree::size_type DynamicTree::FindLowestCostNode(AABB leafAABB) const noex
 		const auto child1 = m_nodes[index].child1;
 		const auto child2 = m_nodes[index].child2;
 		
-		const auto area = m_nodes[index].aabb.GetPerimeter();
+		const auto area = GetPerimeter(m_nodes[index].aabb);
 		
 		const auto combinedAABB = m_nodes[index].aabb + leafAABB;
-		const auto combinedArea = combinedAABB.GetPerimeter();
+		const auto combinedArea = GetPerimeter(combinedAABB);
 		
 		assert(combinedArea >= area);
 		
@@ -186,19 +186,19 @@ DynamicTree::size_type DynamicTree::FindLowestCostNode(AABB leafAABB) const noex
 		// Cost of descending into child1
 		const auto cost1 = [&]() {
 			const auto aabb = leafAABB + m_nodes[child1].aabb;
-			const auto perimeter = aabb.GetPerimeter();
+			const auto perimeter = GetPerimeter(aabb);
 			return (m_nodes[child1].IsLeaf())?
 			perimeter + inheritanceCost:
-			perimeter - m_nodes[child1].aabb.GetPerimeter() + inheritanceCost;
+			perimeter - GetPerimeter(m_nodes[child1].aabb) + inheritanceCost;
 		}();
 		
 		// Cost of descending into child2
 		const auto cost2 = [&]() {
 			const auto aabb = leafAABB + m_nodes[child2].aabb;
-			const auto perimeter = aabb.GetPerimeter();
+			const auto perimeter = GetPerimeter(aabb);
 			return (m_nodes[child2].IsLeaf())?
 			perimeter + inheritanceCost:
-			perimeter - m_nodes[child2].aabb.GetPerimeter() + inheritanceCost;
+			perimeter - GetPerimeter(m_nodes[child2].aabb) + inheritanceCost;
 		}();
 		
 		// Descend according to the minimum cost.
@@ -509,7 +509,7 @@ RealNum DynamicTree::GetAreaRatio() const noexcept
 	}
 
 	const auto root = m_nodes + m_root;
-	const auto rootArea = root->aabb.GetPerimeter();
+	const auto rootArea = GetPerimeter(root->aabb);
 
 	auto totalArea = RealNum{0};
 	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
@@ -521,7 +521,7 @@ RealNum DynamicTree::GetAreaRatio() const noexcept
 			continue;
 		}
 
-		totalArea += node->aabb.GetPerimeter();
+		totalArea += GetPerimeter(node->aabb);
 	}
 
 	return totalArea / rootArea;
@@ -720,7 +720,7 @@ void DynamicTree::RebuildBottomUp()
 			{
 				const auto& aabbj = m_nodes[nodes[j]].aabb;
 				const auto b = aabbi + aabbj;
-				const auto cost = b.GetPerimeter();
+				const auto cost = GetPerimeter(b);
 				if (minCost > cost)
 				{
 					iMin = i;

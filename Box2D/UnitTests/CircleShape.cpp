@@ -91,8 +91,8 @@ TEST(CircleShape, ComputeAABB)
 	EXPECT_EQ(aabb.GetLowerBound().y, position.y - radius);
 	EXPECT_EQ(aabb.GetUpperBound().x, position.x + radius);
 	EXPECT_EQ(aabb.GetUpperBound().y, position.y + radius);
-	EXPECT_TRUE(almost_equal(aabb.GetExtents().x, radius));
-	EXPECT_TRUE(almost_equal(aabb.GetExtents().y, radius));
-	EXPECT_EQ(aabb.GetCenter().x, position.x);
-	EXPECT_EQ(aabb.GetCenter().y, position.y);
+	EXPECT_TRUE(almost_equal(GetExtents(aabb).x, radius));
+	EXPECT_TRUE(almost_equal(GetExtents(aabb).y, radius));
+	EXPECT_EQ(GetCenter(aabb).x, position.x);
+	EXPECT_EQ(GetCenter(aabb).y, position.y);
 }

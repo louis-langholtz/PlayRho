@@ -236,7 +236,7 @@ private:
 		//d.y = 0.0f;
 		aabb->Move(d);
 
-		const auto c0 = aabb->GetCenter();
+		const auto c0 = GetCenter(*aabb);
 		const auto min = Vec2(-m_worldExtent, RealNum(0));
 		const auto max = Vec2(m_worldExtent, 2.0f * m_worldExtent);
 		const auto c = Vec2{Clamp(c0.x, min.x, max.x), Clamp(c0.y, min.y, max.y)};
@@ -291,7 +291,7 @@ private:
 
 			const auto aabb0 = actor->aabb;
 			MoveAABB(&actor->aabb);
-			const auto displacement = actor->aabb.GetCenter() - aabb0.GetCenter();
+			const auto displacement = GetCenter(actor->aabb) - GetCenter(aabb0);
 			m_tree.MoveProxy(actor->proxyId, actor->aabb + extension, displacement);
 			return;
 		}

@@ -50,27 +50,6 @@ namespace box2d
 			// Intentionally empty.
 		}
 		
-		/// Get the center of the AABB.
-		constexpr Vec2 GetCenter() const noexcept
-		{
-			return (GetLowerBound() + GetUpperBound()) / 2;
-		}
-		
-		/// Get the extents of the AABB (half-widths).
-		constexpr Vec2 GetExtents() const noexcept
-		{
-			return (GetUpperBound() - GetLowerBound()) / 2;
-		}
-		
-		/// Gets the perimeter length.
-		/// @return Twice the sum of the width and height.
-		constexpr RealNum GetPerimeter() const noexcept
-		{
-			const auto wx = upperBound.x - lowerBound.x;
-			const auto wy = upperBound.y - lowerBound.y;
-			return (wx + wy) * 2;
-		}
-		
 		/// Combine an AABB into this one.
 		constexpr AABB& operator += (const AABB& aabb)
 		{
@@ -79,18 +58,23 @@ namespace box2d
 			return *this;
 		}
 		
-		/// Does this aabb contain the provided AABB.
-		constexpr bool Contains(const AABB& aabb) const noexcept
+		/// Does this AABB fully contain the given AABB.
+		constexpr bool Contains(const AABB aabb) const noexcept
 		{
+			const auto lower = GetLowerBound();
+			const auto upper = GetUpperBound();
+			const auto other_lower = aabb.GetLowerBound();
+			const auto other_upper = aabb.GetUpperBound();
 			return
-				(lowerBound.x <= aabb.lowerBound.x) && (lowerBound.y <= aabb.lowerBound.y) &&
-				(aabb.upperBound.x <= upperBound.x) && (aabb.upperBound.y <= upperBound.y);
+				(lower.x <= other_lower.x) && (lower.y <= other_lower.y) &&
+				(other_upper.x <= upper.x) && (other_upper.y <= upper.y);
 		}
 				
-		Vec2 GetLowerBound() const noexcept { return lowerBound; }
-		Vec2 GetUpperBound() const noexcept { return upperBound; }
+		constexpr Vec2 GetLowerBound() const noexcept { return lowerBound; }
+
+		constexpr Vec2 GetUpperBound() const noexcept { return upperBound; }
 		
-		AABB& Move(Vec2 value) noexcept
+		AABB& Move(const Vec2 value) noexcept
 		{
 			lowerBound += value;
 			upperBound += value;
@@ -108,7 +92,30 @@ namespace box2d
 		return AABB{GetInvalid<Vec2>(), GetInvalid<Vec2>()};
 	}
 	
-	constexpr inline AABB operator + (const AABB& lhs, const AABB& rhs)
+	/// Gets the center of the AABB.
+	constexpr inline Vec2 GetCenter(const AABB aabb) noexcept
+	{
+		return (aabb.GetLowerBound() + aabb.GetUpperBound()) / 2;
+	}
+	
+	/// Gets the extents of the AABB (half-widths).
+	constexpr inline Vec2 GetExtents(const AABB aabb) noexcept
+	{
+		return (aabb.GetUpperBound() - aabb.GetLowerBound()) / 2;
+	}
+	
+	/// Gets the perimeter length of the AABB.
+	/// @return Twice the sum of the width and height.
+	constexpr inline RealNum GetPerimeter(const AABB aabb) noexcept
+	{
+		const auto upper = aabb.GetUpperBound();
+		const auto lower = aabb.GetLowerBound();
+		const auto wx = upper.x - lower.x;
+		const auto wy = upper.y - lower.y;
+		return (wx + wy) * 2;
+	}
+	
+	constexpr inline AABB operator + (const AABB lhs, const AABB rhs)
 	{
 		const auto lhsLowerBound = lhs.GetLowerBound();
 		const auto lhsUpperBound = lhs.GetUpperBound();
@@ -122,26 +129,26 @@ namespace box2d
 		};
 	}
 	
-	constexpr inline AABB operator + (Vec2 lhs, const AABB& rhs)
+	constexpr inline AABB operator + (const Vec2 lhs, const AABB rhs)
 	{
 		return AABB{rhs.GetLowerBound() - lhs, rhs.GetUpperBound() + lhs};
 	}
 	
-	constexpr inline AABB operator + (const AABB& lhs, Vec2 rhs)
+	constexpr inline AABB operator + (const AABB lhs, const Vec2 rhs)
 	{
 		return AABB{lhs.GetLowerBound() - rhs, lhs.GetUpperBound() + rhs};
 	}
 
 	// Tests for overlap between two axis aligned bounding boxes.
 	// @note This function's complexity is constant.
-	inline bool TestOverlap(const AABB& a, const AABB& b) noexcept
+	constexpr inline bool TestOverlap(const AABB a, const AABB b) noexcept
 	{
 		const auto d1 = b.GetLowerBound() - a.GetUpperBound();
 		const auto d2 = a.GetLowerBound() - b.GetUpperBound();
 
 		return (d1.x <= 0) && (d1.y <= 0) && (d2.x <= 0) && (d2.y <= 0);
 	}
-	
+
 	/// Given a transform, compute the associated axis aligned bounding box for a child shape.
 	/// @param xf the world transform of the shape.
 	/// @param childIndex the child shape

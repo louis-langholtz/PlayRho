@@ -91,8 +91,8 @@ TEST(AABB, InitializingConstruction)
 	
 	{
 		AABB foo{v0, v1};
-		EXPECT_EQ(foo.GetCenter().x, center_x);
-		EXPECT_EQ(foo.GetCenter().y, center_y);
+		EXPECT_EQ(GetCenter(foo).x, center_x);
+		EXPECT_EQ(GetCenter(foo).y, center_y);
 		EXPECT_EQ(foo.GetLowerBound().x, lower_x);
 		EXPECT_EQ(foo.GetLowerBound().y, lower_y);
 		EXPECT_EQ(foo.GetUpperBound().x, upper_x);
@@ -100,8 +100,8 @@ TEST(AABB, InitializingConstruction)
 	}
 	{
 		AABB foo{v1, v0};
-		EXPECT_EQ(foo.GetCenter().x, center_x);
-		EXPECT_EQ(foo.GetCenter().y, center_y);
+		EXPECT_EQ(GetCenter(foo).x, center_x);
+		EXPECT_EQ(GetCenter(foo).y, center_y);
 		EXPECT_EQ(foo.GetLowerBound().x, lower_x);
 		EXPECT_EQ(foo.GetLowerBound().y, lower_y);
 		EXPECT_EQ(foo.GetUpperBound().x, upper_x);
