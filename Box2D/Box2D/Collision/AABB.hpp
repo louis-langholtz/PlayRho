@@ -53,13 +53,13 @@ namespace box2d
 		/// Get the center of the AABB.
 		constexpr Vec2 GetCenter() const noexcept
 		{
-			return (lowerBound + upperBound) / RealNum(2);
+			return (GetLowerBound() + GetUpperBound()) / 2;
 		}
 		
 		/// Get the extents of the AABB (half-widths).
 		constexpr Vec2 GetExtents() const noexcept
 		{
-			return (upperBound - lowerBound) / RealNum(2);
+			return (GetUpperBound() - GetLowerBound()) / 2;
 		}
 		
 		/// Gets the perimeter length.
