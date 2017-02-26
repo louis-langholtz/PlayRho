@@ -1,21 +1,21 @@
 /*
-* Original work Copyright (c) 2007 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2007 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #include <Box2D/Dynamics/Joints/PulleyJoint.hpp>
 #include <Box2D/Dynamics/Body.hpp>
@@ -55,19 +55,18 @@ void PulleyJointDef::Initialize(Body* bA, Body* bB,
 	ratio = r;
 }
 
-PulleyJoint::PulleyJoint(const PulleyJointDef& def)
-: Joint(def)
+PulleyJoint::PulleyJoint(const PulleyJointDef& def):
+	Joint(def),
+	m_groundAnchorA(def.groundAnchorA),
+	m_groundAnchorB(def.groundAnchorB),
+	m_localAnchorA(def.localAnchorA),
+	m_localAnchorB(def.localAnchorB),
+	m_lengthA(def.lengthA),
+	m_lengthB(def.lengthB),
+	m_ratio(def.ratio),
+	m_constant(def.lengthA + def.ratio * def.lengthB)
 {
 	assert(!almost_zero(def.ratio));
-
-	m_groundAnchorA = def.groundAnchorA;
-	m_groundAnchorB = def.groundAnchorB;
-	m_localAnchorA = def.localAnchorA;
-	m_localAnchorB = def.localAnchorB;
-	m_lengthA = def.lengthA;
-	m_lengthB = def.lengthB;
-	m_ratio = def.ratio;
-	m_constant = def.lengthA + m_ratio * def.lengthB;
 }
 
 void PulleyJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
@@ -83,29 +82,25 @@ void PulleyJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 	m_invIA = GetBodyA()->GetInverseInertia();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto cA = bodies[m_indexA].GetPosition().linear;
-	const auto aA = bodies[m_indexA].GetPosition().angular;
-	auto vA = bodies[m_indexA].GetVelocity().linear;
-	auto wA = bodies[m_indexA].GetVelocity().angular;
+	const auto posA = bodies[m_indexA].GetPosition();
+	auto velA = bodies[m_indexA].GetVelocity();
 
-	const auto cB = bodies[m_indexB].GetPosition().linear;
-	const auto aB = bodies[m_indexB].GetPosition().angular;
-	auto vB = bodies[m_indexB].GetVelocity().linear;
-	auto wB = bodies[m_indexB].GetVelocity().angular;
+	const auto posB = bodies[m_indexB].GetPosition();
+	auto velB = bodies[m_indexB].GetVelocity();
 
-	const UnitVec2 qA(aA), qB(aB);
+	const UnitVec2 qA(posA.angular), qB(posB.angular);
 
 	m_rA = Rotate(m_localAnchorA - m_localCenterA, qA);
 	m_rB = Rotate(m_localAnchorB - m_localCenterB, qB);
 
 	// Get the pulley axes.
-	m_uA = cA + m_rA - m_groundAnchorA;
-	m_uB = cB + m_rB - m_groundAnchorB;
+	m_uA = posA.linear + m_rA - m_groundAnchorA;
+	m_uB = posB.linear + m_rB - m_groundAnchorB;
 
 	const auto lengthA = GetLength(m_uA);
 	const auto lengthB = GetLength(m_uB);
 
-	if (lengthA > (RealNum(10) * conf.linearSlop))
+	if (lengthA > (conf.linearSlop * 10))
 	{
 		m_uA *= RealNum{1} / lengthA;
 	}
@@ -114,7 +109,7 @@ void PulleyJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 		m_uA = Vec2_zero;
 	}
 
-	if (lengthB > (RealNum(10) * conf.linearSlop))
+	if (lengthB > (conf.linearSlop * 10))
 	{
 		m_uB *= RealNum{1} / lengthB;
 	}
@@ -132,7 +127,7 @@ void PulleyJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 
 	m_mass = mA + m_ratio * m_ratio * mB;
 
-	if (m_mass > RealNum{0})
+	if (m_mass > 0)
 	{
 		m_mass = RealNum{1} / m_mass;
 	}
@@ -146,29 +141,25 @@ void PulleyJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 		const auto PA = -(m_impulse) * m_uA;
 		const auto PB = (-m_ratio * m_impulse) * m_uB;
 
-		vA += m_invMassA * PA;
-		wA += 1_rad * m_invIA * Cross(m_rA, PA);
-		vB += m_invMassB * PB;
-		wB += 1_rad * m_invIB * Cross(m_rB, PB);
+		velA += Velocity{m_invMassA * PA, 1_rad * m_invIA * Cross(m_rA, PA)};
+		velB += Velocity{m_invMassB * PB, 1_rad * m_invIB * Cross(m_rB, PB)};
 	}
 	else
 	{
-		m_impulse = RealNum{0};
+		m_impulse = 0;
 	}
 
-	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
-	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
+	bodies[m_indexA].SetVelocity(velA);
+	bodies[m_indexB].SetVelocity(velB);
 }
 
 void PulleyJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf&)
 {
-	auto vA = bodies[m_indexA].GetVelocity().linear;
-	auto wA = bodies[m_indexA].GetVelocity().angular;
-	auto vB = bodies[m_indexB].GetVelocity().linear;
-	auto wB = bodies[m_indexB].GetVelocity().angular;
+	auto velA = bodies[m_indexA].GetVelocity();
+	auto velB = bodies[m_indexB].GetVelocity();
 
-	const auto vpA = vA + GetRevPerpendicular(m_rA) * wA.ToRadians();
-	const auto vpB = vB + GetRevPerpendicular(m_rB) * wB.ToRadians();
+	const auto vpA = velA.linear + GetRevPerpendicular(m_rA) * velA.angular.ToRadians();
+	const auto vpB = velB.linear + GetRevPerpendicular(m_rB) * velB.angular.ToRadians();
 
 	const auto Cdot = -Dot(m_uA, vpA) - m_ratio * Dot(m_uB, vpB);
 	const auto impulse = -m_mass * Cdot;
@@ -176,33 +167,29 @@ void PulleyJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const St
 
 	const auto PA = -impulse * m_uA;
 	const auto PB = -m_ratio * impulse * m_uB;
-	vA += m_invMassA * PA;
-	wA += 1_rad * m_invIA * Cross(m_rA, PA);
-	vB += m_invMassB * PB;
-	wB += 1_rad * m_invIB * Cross(m_rB, PB);
+	velA += Velocity{m_invMassA * PA, 1_rad * m_invIA * Cross(m_rA, PA)};
+	velB += Velocity{m_invMassB * PB, 1_rad * m_invIB * Cross(m_rB, PB)};
 
-	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
-	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
+	bodies[m_indexA].SetVelocity(velA);
+	bodies[m_indexB].SetVelocity(velB);
 }
 
 bool PulleyJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const
 {
-	auto cA = bodies[m_indexA].GetPosition().linear;
-	auto aA = bodies[m_indexA].GetPosition().angular;
-	auto cB = bodies[m_indexB].GetPosition().linear;
-	auto aB = bodies[m_indexB].GetPosition().angular;
+	auto posA = bodies[m_indexA].GetPosition();
+	auto posB = bodies[m_indexB].GetPosition();
 
-	const auto rA = Rotate(m_localAnchorA - m_localCenterA, UnitVec2{aA});
-	const auto rB = Rotate(m_localAnchorB - m_localCenterB, UnitVec2{aB});
+	const auto rA = Rotate(m_localAnchorA - m_localCenterA, UnitVec2{posA.angular});
+	const auto rB = Rotate(m_localAnchorB - m_localCenterB, UnitVec2{posB.angular});
 
 	// Get the pulley axes.
-	const auto pA = cA + rA - m_groundAnchorA;
+	const auto pA = posA.linear + rA - m_groundAnchorA;
 	const auto lengthA = GetLength(pA);
-	const auto uA = (lengthA > (RealNum(10) * conf.linearSlop))? pA / lengthA: Vec2_zero;
+	const auto uA = (lengthA > (conf.linearSlop * 10))? pA / lengthA: Vec2_zero;
 
-	const auto pB = cB + rB - m_groundAnchorB;
+	const auto pB = posB.linear + rB - m_groundAnchorB;
 	const auto lengthB = GetLength(pB);
-	const auto uB = (lengthB > (RealNum(10) * conf.linearSlop))? pB / lengthB: Vec2_zero;
+	const auto uB = (lengthB > (conf.linearSlop * 10))? pB / lengthB: Vec2_zero;
 
 	// Compute effective mass.
 	const auto ruA = Cross(rA, uA);
@@ -212,7 +199,7 @@ bool PulleyJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const Co
 	const auto mB = m_invMassB + m_invIB * ruB * ruB;
 
 	auto mass = mA + m_ratio * m_ratio * mB;
-	if (mass > RealNum{0})
+	if (mass > 0)
 	{
 		mass = RealNum{1} / mass;
 	}
@@ -225,13 +212,11 @@ bool PulleyJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const Co
 	const auto PA = -impulse * uA;
 	const auto PB = -m_ratio * impulse * uB;
 
-	cA += m_invMassA * PA;
-	aA += 1_rad * m_invIA * Cross(rA, PA);
-	cB += m_invMassB * PB;
-	aB += 1_rad * m_invIB * Cross(rB, PB);
+	posA += Position{m_invMassA * PA, 1_rad * m_invIA * Cross(rA, PA)};
+	posB += Position{m_invMassB * PB, 1_rad * m_invIB * Cross(rB, PB)};
 
-	bodies[m_indexA].SetPosition(Position{cA, aA});
-	bodies[m_indexB].SetPosition(Position{cB, aB});
+	bodies[m_indexA].SetPosition(posA);
+	bodies[m_indexB].SetPosition(posB);
 
 	return linearError < conf.linearSlop;
 }

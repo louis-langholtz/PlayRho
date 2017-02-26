@@ -1,21 +1,21 @@
 /*
-* Original work Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #ifndef B2_PULLEY_JOINT_H
 #define B2_PULLEY_JOINT_H
@@ -40,25 +40,25 @@ struct PulleyJointDef : public JointDef
 					RealNum ratio);
 
 	/// The first ground anchor in world coordinates. This point never moves.
-	Vec2 groundAnchorA = Vec2{-RealNum{1}, RealNum{1}};
+	Vec2 groundAnchorA = Vec2{-1, 1};
 
 	/// The second ground anchor in world coordinates. This point never moves.
-	Vec2 groundAnchorB = Vec2{RealNum{1}, RealNum{1}};
+	Vec2 groundAnchorB = Vec2{1, 1};
 
 	/// The local anchor point relative to bodyA's origin.
-	Vec2 localAnchorA = Vec2{-RealNum{1}, RealNum{0}};
+	Vec2 localAnchorA = Vec2{-1, 0};
 
 	/// The local anchor point relative to bodyB's origin.
-	Vec2 localAnchorB = Vec2{RealNum{1}, RealNum{0}};
+	Vec2 localAnchorB = Vec2{1, 0};
 
 	/// The a reference length for the segment attached to bodyA.
-	RealNum lengthA = RealNum{0};
+	RealNum lengthA = 0;
 
 	/// The a reference length for the segment attached to bodyB.
-	RealNum lengthB = RealNum{0};
+	RealNum lengthB = 0;
 
 	/// The pulley ratio, used to simulate a block-and-tackle.
-	RealNum ratio = RealNum{1};
+	RealNum ratio = 1;
 };
 
 /// The pulley joint is connected to two bodies and two fixed ground points.
