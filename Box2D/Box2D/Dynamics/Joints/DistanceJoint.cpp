@@ -128,8 +128,8 @@ void DistanceJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 	}
 	else
 	{
-		m_gamma = RealNum{0};
-		m_bias = RealNum{0};
+		m_gamma = 0;
+		m_bias = 0;
 	}
 
 	if (step.doWarmStart)
