@@ -40,17 +40,18 @@ void FrictionJointDef::Initialize(Body* bA, Body* bB, const Vec2 anchor)
 {
 	bodyA = bA;
 	bodyB = bB;
-	localAnchorA = GetLocalPoint(*bodyA, anchor);
-	localAnchorB = GetLocalPoint(*bodyB, anchor);
+	localAnchorA = GetLocalPoint(*bA, anchor);
+	localAnchorB = GetLocalPoint(*bB, anchor);
 }
 
-FrictionJoint::FrictionJoint(const FrictionJointDef& def)
-: Joint(def)
+FrictionJoint::FrictionJoint(const FrictionJointDef& def):
+	Joint(def),
+	m_localAnchorA(def.localAnchorA),
+	m_localAnchorB(def.localAnchorB),
+	m_maxForce(def.maxForce),
+	m_maxTorque(def.maxTorque)
 {
-	m_localAnchorA = def.localAnchorA;
-	m_localAnchorB = def.localAnchorB;
-	m_maxForce = def.maxForce;
-	m_maxTorque = def.maxTorque;
+	// Intentionally empty.
 }
 
 void FrictionJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf&)
@@ -97,7 +98,7 @@ void FrictionJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const S
 	m_linearMass = Invert(K);
 
 	m_angularMass = iA + iB;
-	if (m_angularMass > RealNum{0})
+	if (m_angularMass > 0)
 	{
 		m_angularMass = RealNum{1} / m_angularMass;
 	}
@@ -117,37 +118,38 @@ void FrictionJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const S
 	else
 	{
 		m_linearImpulse = Vec2_zero;
-		m_angularImpulse = RealNum{0};
+		m_angularImpulse = 0;
 	}
 
 	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
 	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
 }
 
-void FrictionJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
+RealNum FrictionJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
 {
 	auto vA = bodies[m_indexA].GetVelocity().linear;
 	auto wA = bodies[m_indexA].GetVelocity().angular;
 	auto vB = bodies[m_indexB].GetVelocity().linear;
 	auto wB = bodies[m_indexB].GetVelocity().angular;
 
-	const auto mA = m_invMassA, mB = m_invMassB;
-	const auto iA = m_invIA, iB = m_invIB;
+	const auto iA = m_invIA;
+	const auto iB = m_invIB;
 
 	const auto h = step.get_dt();
 
 	// Solve angular friction
+	auto angularImpulse = RealNum(0);
 	{
 		const auto Cdot = wB.ToRadians() - wA.ToRadians();
-		auto impulse = -m_angularMass * Cdot;
+		const auto impulse = -m_angularMass * Cdot;
 
 		const auto oldImpulse = m_angularImpulse;
 		const auto maxImpulse = h * m_maxTorque;
 		m_angularImpulse = Clamp(m_angularImpulse + impulse, -maxImpulse, maxImpulse);
-		impulse = m_angularImpulse - oldImpulse;
+		angularImpulse = m_angularImpulse - oldImpulse;
 
-		wA -= 1_rad * iA * impulse;
-		wB += 1_rad * iB * impulse;
+		wA -= 1_rad * iA * angularImpulse;
+		wB += 1_rad * iB * angularImpulse;
 	}
 
 	// Solve linear friction
@@ -167,15 +169,17 @@ void FrictionJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const 
 
 		impulse = m_linearImpulse - oldImpulse;
 
-		vA -= mA * impulse;
+		vA -= m_invMassA * impulse;
 		wA -= 1_rad * iA * Cross(m_rA, impulse);
 
-		vB += mB * impulse;
+		vB += m_invMassB * impulse;
 		wB += 1_rad * iB * Cross(m_rB, impulse);
 	}
 
 	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
 	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
+	
+	return GetInvalid<RealNum>(); // TODO
 }
 
 bool FrictionJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const
@@ -208,7 +212,7 @@ RealNum FrictionJoint::GetReactionTorque(RealNum inv_dt) const
 
 void FrictionJoint::SetMaxForce(RealNum force)
 {
-	assert(IsValid(force) && (force >= RealNum{0}));
+	assert(IsValid(force) && (force >= 0));
 	m_maxForce = force;
 }
 
@@ -219,7 +223,7 @@ RealNum FrictionJoint::GetMaxForce() const
 
 void FrictionJoint::SetMaxTorque(RealNum torque)
 {
-	assert(IsValid(torque) && (torque >= RealNum{0}));
+	assert(IsValid(torque) && (torque >= 0));
 	m_maxTorque = torque;
 }
 

@@ -106,8 +106,10 @@ struct JointDef
 	void* userData = nullptr;
 };
 
-/// The base joint class. Joints are used to constraint two bodies together in
-/// various fashions. Some joints also feature limits and motors.
+/// Base Joint class.
+/// @detail
+/// Joints are used to constraint two bodies together in various fashions.
+/// Some joints also feature limits and motors.
 class Joint
 {
 public:
@@ -120,6 +122,8 @@ public:
 	};
 	
 	using index_t = size_t;
+
+	static bool IsOkay(const JointDef& def) noexcept;
 
 	/// Get the type of the concrete joint.
 	JointType GetType() const noexcept;
@@ -187,7 +191,7 @@ private:
 	/// Solves velocity constraints for the given solver data.
 	/// @pre <code>InitVelocityConstraints</code> has been called.
 	/// @sa InitVelocityConstraints.
-	virtual void SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) = 0;
+	virtual RealNum SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) = 0;
 
 	// This returns true if the position errors are within tolerance.
 	virtual bool SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const = 0;

@@ -45,22 +45,22 @@ struct WheelJointDef : public JointDef
 	Vec2 localAnchorB = Vec2_zero;
 
 	/// The local translation axis in bodyA.
-	Vec2 localAxisA = Vec2{RealNum{1}, RealNum{0}};
+	Vec2 localAxisA = Vec2{1, 0};
 
 	/// Enable/disable the joint motor.
 	bool enableMotor = false;
 
 	/// The maximum motor torque, usually in N-m.
-	RealNum maxMotorTorque = RealNum{0};
+	RealNum maxMotorTorque = 0;
 
 	/// The desired motor speed in radians per second.
 	Angle motorSpeed = 0_rad;
 
 	/// Suspension frequency, zero indicates no suspension
-	RealNum frequencyHz = RealNum(2);
+	RealNum frequencyHz = 2;
 
 	/// Suspension damping ratio, one indicates critical damping
-	RealNum dampingRatio = RealNum(0.7);
+	RealNum dampingRatio = 0.7f;
 };
 
 /// A wheel joint. This joint provides two degrees of freedom: translation
@@ -123,7 +123,7 @@ public:
 private:
 
 	void InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
-	void SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
+	RealNum SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
 	bool SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const override;
 
 	RealNum m_frequencyHz;

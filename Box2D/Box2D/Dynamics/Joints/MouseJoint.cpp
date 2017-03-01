@@ -138,14 +138,12 @@ void MouseJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const Step
 	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
 }
 
-void MouseJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
+RealNum MouseJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
 {
-	const auto velocityB = bodies[m_indexB].GetVelocity();
-	assert(IsValid(velocityB));
-	auto vB = velocityB.linear;
-	auto wB = velocityB.angular;
+	auto velB = bodies[m_indexB].GetVelocity();
+	assert(IsValid(velB));
 
-	const auto Cdot = vB + (GetRevPerpendicular(m_rB) * wB.ToRadians());
+	const auto Cdot = velB.linear + (GetRevPerpendicular(m_rB) * velB.angular.ToRadians());
 
 	const auto oldImpulse = m_impulse;
 	const auto addImpulse = Transform(-(Cdot + m_C + m_gamma * m_impulse), m_mass);
@@ -159,10 +157,11 @@ void MouseJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const Ste
 
 	const auto deltaImpulse = m_impulse - oldImpulse;
 
-	vB += m_invMassB * deltaImpulse;
-	wB += 1_rad * m_invIB * Cross(m_rB, deltaImpulse);
+	velB += Velocity{m_invMassB * deltaImpulse, 1_rad * m_invIB * Cross(m_rB, deltaImpulse)};
 
-	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
+	bodies[m_indexB].SetVelocity(velB);
+	
+	return GetInvalid<RealNum>(); // TODO
 }
 
 bool MouseJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const

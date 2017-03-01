@@ -152,6 +152,11 @@ TEST(Fixed32, Division)
 	EXPECT_EQ(Fixed32(-10) / Fixed32(2), Fixed32(-5));
 	EXPECT_EQ(Fixed32(1) / Fixed32(2), Fixed32(0.5));
 	EXPECT_EQ(Fixed32(7) / Fixed32(3), Fixed32(7.0/3.0));
+
+	// Confirm int divided by Fixed32 gets promoted to Fixed32 divided by Fixed32
+	EXPECT_EQ(1 / Fixed32(2), Fixed32(0.5));
+	EXPECT_EQ(2 / Fixed32(2), Fixed32(1));
+	EXPECT_EQ(3 / Fixed32(2), Fixed32(1.5));
 }
 
 TEST(Fixed32, Sin)

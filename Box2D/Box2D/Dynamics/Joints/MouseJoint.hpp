@@ -41,16 +41,16 @@ struct MouseJointDef : public JointDef
 	/// as some multiple of the weight (multiplier * mass * gravity).
 	/// @note This may not be negative.
 	/// @warning Behavior is undefined if this is a negative value.
-	RealNum maxForce = RealNum{0};
+	RealNum maxForce = 0;
 
 	/// Frequency.
 	/// @detail The has to do with the response speed.
 	/// @note This value may not be negative.
 	/// @warning Behavior is undefined if this is a negative value.
-	RealNum frequencyHz = RealNum(5);
+	RealNum frequencyHz = 5;
 
 	/// The damping ratio. 0 = no damping, 1 = critical damping.
-	RealNum dampingRatio = RealNum(0.7);
+	RealNum dampingRatio = 0.7f;
 };
 
 /// A mouse joint is used to make a point on a body track a
@@ -100,7 +100,7 @@ public:
 
 private:
 	void InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
-	void SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
+	RealNum SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
 	bool SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const override;
 
 	Mat22 GetEffectiveMassMatrix() const noexcept;

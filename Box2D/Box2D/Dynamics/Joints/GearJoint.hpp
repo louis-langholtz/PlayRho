@@ -86,7 +86,7 @@ public:
 private:
 
 	void InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
-	void SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
+	RealNum SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
 	bool SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const override;
 
 	Joint* m_joint1;

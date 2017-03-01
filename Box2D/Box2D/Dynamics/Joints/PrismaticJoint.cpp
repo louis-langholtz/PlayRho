@@ -102,8 +102,8 @@ PrismaticJointDef::PrismaticJointDef(Body* bA, Body* bB, const Vec2 anchor, cons
 	// Intentionally empty.
 }
 
-PrismaticJoint::PrismaticJoint(const PrismaticJointDef& def)
-: Joint(def)
+PrismaticJoint::PrismaticJoint(const PrismaticJointDef& def):
+	Joint(def)
 {
 	m_localAnchorA = def.localAnchorA;
 	m_localAnchorB = def.localAnchorB;
@@ -160,7 +160,7 @@ void PrismaticJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 		m_a2 = Cross(rB, m_axis);
 
 		m_motorMass = mA + mB + iA * m_a1 * m_a1 + iB * m_a2 * m_a2;
-		if (m_motorMass > RealNum{0})
+		if (m_motorMass > 0)
 		{
 			m_motorMass = RealNum{1} / m_motorMass;
 		}
@@ -177,10 +177,10 @@ void PrismaticJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 		const auto k12 = iA * m_s1 + iB * m_s2;
 		const auto k13 = iA * m_s1 * m_a1 + iB * m_s2 * m_a2;
 		auto k22 = iA + iB;
-		if (k22 == RealNum{0})
+		if (k22 == 0)
 		{
 			// For bodies with fixed rotation.
-			k22 = RealNum{1};
+			k22 = 1;
 		}
 		const auto k23 = iA * m_a1 + iB * m_a2;
 		const auto k33 = mA + mB + iA * m_a1 * m_a1 + iB * m_a2 * m_a2;
@@ -203,7 +203,7 @@ void PrismaticJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 			if (m_limitState != e_atLowerLimit)
 			{
 				m_limitState = e_atLowerLimit;
-				m_impulse.z = RealNum{0};
+				m_impulse.z = 0;
 			}
 		}
 		else if (jointTranslation >= m_upperTranslation)
@@ -211,24 +211,24 @@ void PrismaticJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 			if (m_limitState != e_atUpperLimit)
 			{
 				m_limitState = e_atUpperLimit;
-				m_impulse.z = RealNum{0};
+				m_impulse.z = 0;
 			}
 		}
 		else
 		{
 			m_limitState = e_inactiveLimit;
-			m_impulse.z = RealNum{0};
+			m_impulse.z = 0;
 		}
 	}
 	else
 	{
 		m_limitState = e_inactiveLimit;
-		m_impulse.z = RealNum{0};
+		m_impulse.z = 0;
 	}
 
 	if (!m_enableMotor)
 	{
-		m_motorImpulse = RealNum{0};
+		m_motorImpulse = 0;
 	}
 
 	if (step.doWarmStart)
@@ -250,19 +250,17 @@ void PrismaticJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 	else
 	{
 		m_impulse = Vec3_zero;
-		m_motorImpulse = RealNum{0};
+		m_motorImpulse = 0;
 	}
 
 	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
 	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
 }
 
-void PrismaticJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
+RealNum PrismaticJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
 {
-	auto vA = bodies[m_indexA].GetVelocity().linear;
-	auto wA = bodies[m_indexA].GetVelocity().angular;
-	auto vB = bodies[m_indexB].GetVelocity().linear;
-	auto wB = bodies[m_indexB].GetVelocity().angular;
+	auto velA = bodies[m_indexA].GetVelocity();
+	auto velB = bodies[m_indexB].GetVelocity();
 
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
@@ -270,7 +268,7 @@ void PrismaticJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const
 	// Solve linear motor constraint.
 	if (m_enableMotor && m_limitState != e_equalLimits)
 	{
-		const auto Cdot = Dot(m_axis, vB - vA) + m_a2 * wB.ToRadians() - m_a1 * wA.ToRadians();
+		const auto Cdot = Dot(m_axis, velB.linear - velA.linear) + m_a2 * velB.angular.ToRadians() - m_a1 * velA.angular.ToRadians();
 		auto impulse = m_motorMass * (m_motorSpeed - Cdot);
 		const auto oldImpulse = m_motorImpulse;
 		const auto maxImpulse = step.get_dt() * m_maxMotorForce;
@@ -281,19 +279,19 @@ void PrismaticJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const
 		const auto LA = impulse * m_a1;
 		const auto LB = impulse * m_a2;
 
-		vA -= mA * P;
-		wA -= 1_rad * iA * LA;
-
-		vB += mB * P;
-		wB += 1_rad * iB * LB;
+		velA -= Velocity{mA * P, 1_rad * iA * LA};
+		velB += Velocity{mB * P, 1_rad * iB * LB};
 	}
 
-	const auto Cdot1 = Vec2{Dot(m_perp, vB - vA) + m_s2 * wB.ToRadians() - m_s1 * wA.ToRadians(), (wB - wA).ToRadians()};
+	const auto Cdot1 = Vec2{
+		Dot(m_perp, velB.linear - velA.linear) + m_s2 * velB.angular.ToRadians() - m_s1 * velA.angular.ToRadians(),
+		(velB.angular - velA.angular).ToRadians()
+	};
 
 	if (m_enableLimit && (m_limitState != e_inactiveLimit))
 	{
 		// Solve prismatic and limit constraint in block form.
-		const auto Cdot2 = Dot(m_axis, vB - vA) + m_a2 * wB.ToRadians() - m_a1 * wA.ToRadians();
+		const auto Cdot2 = Dot(m_axis, velB.linear - velA.linear) + m_a2 * velB.angular.ToRadians() - m_a1 * velA.angular.ToRadians();
 		const auto Cdot = Vec3{Cdot1.x, Cdot1.y, Cdot2};
 
 		const auto f1 = m_impulse;
@@ -320,11 +318,8 @@ void PrismaticJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const
 		const auto LA = df.x * m_s1 + df.y + df.z * m_a1;
 		const auto LB = df.x * m_s2 + df.y + df.z * m_a2;
 
-		vA -= mA * P;
-		wA -= 1_rad * iA * LA;
-
-		vB += mB * P;
-		wB += 1_rad * iB * LB;
+		velA -= Velocity{mA * P, 1_rad * iA * LA};
+		velB += Velocity{mB * P, 1_rad * iB * LB};
 	}
 	else
 	{
@@ -337,15 +332,14 @@ void PrismaticJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const
 		const auto LA = df.x * m_s1 + df.y;
 		const auto LB = df.x * m_s2 + df.y;
 
-		vA -= mA * P;
-		wA -= 1_rad * iA * LA;
-
-		vB += mB * P;
-		wB += 1_rad * iB * LB;
+		velA -= Velocity{mA * P, 1_rad * iA * LA};
+		velB += Velocity{mB * P, 1_rad * iB * LB};
 	}
 
-	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
-	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
+	bodies[m_indexA].SetVelocity(velA);
+	bodies[m_indexB].SetVelocity(velB);
+	
+	return GetInvalid<RealNum>(); // TODO
 }
 
 // A velocity based solver computes reaction forces(impulses) using the velocity constraint solver.Under this context,
@@ -421,7 +415,7 @@ bool PrismaticJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const
 		const auto k12 = iA * s1 + iB * s2;
 		const auto k13 = iA * s1 * a1 + iB * s2 * a2;
 		auto k22 = iA + iB;
-		if (k22 == RealNum{0})
+		if (k22 == 0)
 		{
 			// For fixed rotation
 			k22 = RealNum{1};
@@ -440,9 +434,9 @@ bool PrismaticJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const
 		const auto k11 = mA + mB + iA * s1 * s1 + iB * s2 * s2;
 		const auto k12 = iA * s1 + iB * s2;
 		auto k22 = iA + iB;
-		if (k22 == RealNum{0})
+		if (k22 == 0)
 		{
-			k22 = RealNum{1};
+			k22 = 1;
 		}
 
 		const auto K = Mat22{Vec2{k11, k12}, Vec2{k12, k22}};
@@ -450,7 +444,7 @@ bool PrismaticJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const
 		const auto impulse1 = Solve(K, -C1);
 		impulse.x = impulse1.x;
 		impulse.y = impulse1.y;
-		impulse.z = RealNum{0};
+		impulse.z = 0;
 	}
 
 	const auto P = impulse.x * perp + impulse.z * axis;
@@ -527,7 +521,7 @@ void PrismaticJoint::EnableLimit(bool flag) noexcept
 		GetBodyA()->SetAwake();
 		GetBodyB()->SetAwake();
 		m_enableLimit = flag;
-		m_impulse.z = RealNum{0};
+		m_impulse.z = 0;
 	}
 }
 
@@ -550,7 +544,7 @@ void PrismaticJoint::SetLimits(RealNum lower, RealNum upper)
 		GetBodyB()->SetAwake();
 		m_lowerTranslation = lower;
 		m_upperTranslation = upper;
-		m_impulse.z = RealNum{0};
+		m_impulse.z = 0;
 	}
 }
 

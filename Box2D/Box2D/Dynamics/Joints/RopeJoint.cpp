@@ -41,10 +41,10 @@ RopeJoint::RopeJoint(const RopeJointDef& def)
 
 	m_maxLength = def.maxLength;
 
-	m_mass = RealNum{0};
-	m_impulse = RealNum{0};
+	m_mass = 0;
+	m_impulse = 0;
 	m_state = e_inactiveLimit;
-	m_length = RealNum{0};
+	m_length = 0;
 }
 
 void RopeJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
@@ -79,7 +79,7 @@ void RopeJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 	m_length = GetLength(m_u);
 
 	const auto C = m_length - m_maxLength;
-	m_state = (C > RealNum{0})? e_atUpperLimit: e_inactiveLimit;
+	m_state = (C > 0)? e_atUpperLimit: e_inactiveLimit;
 
 	if (m_length > conf.linearSlop)
 	{
@@ -88,8 +88,8 @@ void RopeJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 	else
 	{
 		m_u = Vec2_zero;
-		m_mass = RealNum{0};
-		m_impulse = RealNum{0};
+		m_mass = 0;
+		m_impulse = 0;
 		return;
 	}
 
@@ -98,7 +98,7 @@ void RopeJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 	const auto crB = Cross(m_rB, m_u);
 	const auto invMass = m_invMassA + m_invIA * crA * crA + m_invMassB + m_invIB * crB * crB;
 
-	m_mass = (invMass != RealNum{0}) ? RealNum{1} / invMass : RealNum{0};
+	m_mass = (invMass != 0) ? RealNum{1} / invMass : RealNum{0};
 
 	if (step.doWarmStart)
 	{
@@ -113,14 +113,14 @@ void RopeJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 	}
 	else
 	{
-		m_impulse = RealNum{0};
+		m_impulse = 0;
 	}
 
 	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
 	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
 }
 
-void RopeJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
+RealNum RopeJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
 {
 	auto vA = bodies[m_indexA].GetVelocity().linear;
 	auto wA = bodies[m_indexA].GetVelocity().angular;
@@ -152,6 +152,8 @@ void RopeJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const Step
 
 	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
 	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
+	
+	return impulse;
 }
 
 bool RopeJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const

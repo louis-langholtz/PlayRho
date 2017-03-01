@@ -35,13 +35,13 @@ struct RopeJointDef : public JointDef
 	constexpr RopeJointDef(Body* bodyA, Body* bodyB) noexcept: JointDef(JointType::Rope, bodyA, bodyB) {}
 
 	/// The local anchor point relative to bodyA's origin.
-	Vec2 localAnchorA = Vec2{-RealNum{1}, RealNum{0}};
+	Vec2 localAnchorA = Vec2{-1, 0};
 
 	/// The local anchor point relative to bodyB's origin.
-	Vec2 localAnchorB = Vec2{RealNum{1}, RealNum{0}};
+	Vec2 localAnchorB = Vec2{1, 0};
 
 	/// The maximum length of the rope.
-	RealNum maxLength = RealNum{0};
+	RealNum maxLength = 0;
 };
 
 /// A rope joint enforces a maximum distance between two points
@@ -78,7 +78,7 @@ public:
 private:
 
 	void InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
-	void SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
+	RealNum SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
 	bool SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const override;
 
 	// Solver shared

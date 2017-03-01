@@ -182,7 +182,7 @@ void RevoluteJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
 }
 
-void RevoluteJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
+RealNum RevoluteJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
 {
 	auto vA = bodies[m_indexA].GetVelocity().linear;
 	auto wA = bodies[m_indexA].GetVelocity().angular;
@@ -289,6 +289,8 @@ void RevoluteJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const 
 
 	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
 	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
+	
+	return GetInvalid<RealNum>(); // TODO
 }
 
 bool RevoluteJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const

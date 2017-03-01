@@ -153,7 +153,7 @@ void PulleyJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 	bodies[m_indexB].SetVelocity(velB);
 }
 
-void PulleyJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf&)
+RealNum PulleyJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf&)
 {
 	auto velA = bodies[m_indexA].GetVelocity();
 	auto velB = bodies[m_indexB].GetVelocity();
@@ -172,6 +172,8 @@ void PulleyJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const St
 
 	bodies[m_indexA].SetVelocity(velA);
 	bodies[m_indexB].SetVelocity(velB);
+	
+	return impulse;
 }
 
 bool PulleyJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const

@@ -91,14 +91,14 @@ public:
 private:
 
 	void InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
-	void SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
+	RealNum SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
 	bool SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const override;
 
 	// Solver shared
 	Vec2 m_linearOffset;
 	Angle m_angularOffset;
-	Vec2 m_linearImpulse;
-	RealNum m_angularImpulse;
+	Vec2 m_linearImpulse = Vec2_zero;
+	RealNum m_angularImpulse = 0;
 	RealNum m_maxForce;
 	RealNum m_maxTorque;
 	RealNum m_correctionFactor;

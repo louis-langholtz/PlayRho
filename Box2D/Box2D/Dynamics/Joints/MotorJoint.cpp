@@ -44,18 +44,15 @@ void MotorJointDef::Initialize(Body* bA, Body* bB)
 	angularOffset = bodyB->GetAngle() - bodyA->GetAngle();
 }
 
-MotorJoint::MotorJoint(const MotorJointDef& def)
-: Joint{def}
+MotorJoint::MotorJoint(const MotorJointDef& def):
+	Joint(def),
+	m_linearOffset(def.linearOffset),
+	m_angularOffset(def.angularOffset),
+	m_maxForce(def.maxForce),
+	m_maxTorque(def.maxTorque),
+	m_correctionFactor(def.correctionFactor)
 {
-	m_linearOffset = def.linearOffset;
-	m_angularOffset = def.angularOffset;
-
-	m_linearImpulse = Vec2_zero;
-	m_angularImpulse = RealNum{0};
-
-	m_maxForce = def.maxForce;
-	m_maxTorque = def.maxTorque;
-	m_correctionFactor = def.correctionFactor;
+	// Intentionally empty.
 }
 
 void MotorJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf&)
@@ -108,7 +105,7 @@ void MotorJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const Step
 	m_linearMass = Invert(K);
 
 	m_angularMass = iA + iB;
-	if (m_angularMass > RealNum{0})
+	if (m_angularMass > 0)
 	{
 		m_angularMass = RealNum{1} / m_angularMass;
 	}
@@ -131,38 +128,41 @@ void MotorJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const Step
 	else
 	{
 		m_linearImpulse = Vec2_zero;
-		m_angularImpulse = RealNum{0};
+		m_angularImpulse = 0;
 	}
 
 	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
 	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
 }
 
-void MotorJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
+RealNum MotorJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
 {
 	auto vA = bodies[m_indexA].GetVelocity().linear;
 	auto wA = bodies[m_indexA].GetVelocity().angular;
 	auto vB = bodies[m_indexB].GetVelocity().linear;
 	auto wB = bodies[m_indexB].GetVelocity().angular;
 
-	const auto mA = m_invMassA, mB = m_invMassB;
-	const auto iA = m_invIA, iB = m_invIB;
+	const auto mA = m_invMassA;
+	const auto mB = m_invMassB;
+	const auto iA = m_invIA;
+	const auto iB = m_invIB;
 
 	const auto h = step.get_dt();
 	const auto inv_h = step.get_inv_dt();
 
 	// Solve angular friction
+	auto angularIncImpulse = RealNum(0);
 	{
 		const auto Cdot = wB - wA + inv_h * m_correctionFactor * m_angularError;
-		auto impulse = -m_angularMass * Cdot.ToRadians();
+		const auto impulse = -m_angularMass * Cdot.ToRadians();
 
 		const auto oldImpulse = m_angularImpulse;
 		const auto maxImpulse = h * m_maxTorque;
 		m_angularImpulse = Clamp(m_angularImpulse + impulse, -maxImpulse, maxImpulse);
-		impulse = m_angularImpulse - oldImpulse;
+		angularIncImpulse = m_angularImpulse - oldImpulse;
 
-		wA -= 1_rad * iA * impulse;
-		wB += 1_rad * iB * impulse;
+		wA -= 1_rad * iA * angularIncImpulse;
+		wB += 1_rad * iB * angularIncImpulse;
 	}
 
 	// Solve linear friction
@@ -223,7 +223,7 @@ RealNum MotorJoint::GetReactionTorque(RealNum inv_dt) const
 
 void MotorJoint::SetMaxForce(RealNum force)
 {
-	assert(IsValid(force) && (force >= RealNum{0}));
+	assert(IsValid(force) && (force >= 0));
 	m_maxForce = force;
 }
 
@@ -234,7 +234,7 @@ RealNum MotorJoint::GetMaxForce() const
 
 void MotorJoint::SetMaxTorque(RealNum torque)
 {
-	assert(IsValid(torque) && (torque >= RealNum{0}));
+	assert(IsValid(torque) && (torque >= 0));
 	m_maxTorque = torque;
 }
 
@@ -245,7 +245,7 @@ RealNum MotorJoint::GetMaxTorque() const
 
 void MotorJoint::SetCorrectionFactor(RealNum factor)
 {
-	assert(IsValid(factor) && (RealNum{0} <= factor) && (factor <= RealNum{1}));
+	assert(IsValid(factor) && (0 <= factor) && (factor <= RealNum{1}));
 	m_correctionFactor = factor;
 }
 

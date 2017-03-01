@@ -50,6 +50,19 @@ DistanceJointDef::DistanceJointDef(Body* bA, Body* bB,
 {
 }
 
+bool DistanceJoint::IsOkay(const DistanceJointDef& def) noexcept
+{
+	if (!Joint::IsOkay(def))
+	{
+		return false;
+	}
+	if (!(def.frequencyHz >= 0))
+	{
+		return false;
+	}
+	return true;
+}
+
 DistanceJoint::DistanceJoint(const DistanceJointDef& def):
 	Joint(def),
 	m_localAnchorA(def.localAnchorA),
@@ -58,7 +71,7 @@ DistanceJoint::DistanceJoint(const DistanceJointDef& def):
 	m_frequencyHz(def.frequencyHz),
 	m_dampingRatio(def.dampingRatio)
 {
-	// Intentionally empty.
+	assert(def.frequencyHz >= 0);
 }
 
 void DistanceJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
@@ -80,7 +93,8 @@ void DistanceJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 	const auto posB = bodies[m_indexB].GetPosition();
 	auto velB = bodies[m_indexB].GetVelocity();
 
-	const UnitVec2 qA(posA.angular), qB(posB.angular);
+	const auto qA = UnitVec2{posA.angular};
+	const auto qB = UnitVec2{posB.angular};
 
 	m_rA = Rotate(m_localAnchorA - m_localCenterA, qA);
 	m_rB = Rotate(m_localAnchorB - m_localCenterB, qB);
@@ -119,16 +133,16 @@ void DistanceJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 
 		// magic formulas
 		const auto h = step.get_dt();
-		m_gamma = h * (d + h * k);
-		m_gamma = (m_gamma != 0) ? RealNum{1} / m_gamma : RealNum{0};
-		m_bias = C * h * k * m_gamma;
+		const auto gamma = h * (d + h * k);
+		m_invGamma = (gamma != 0) ? 1 / gamma: 0;
+		m_bias = C * h * k * m_invGamma;
 
-		invMass += m_gamma;
-		m_mass = (invMass != 0) ? RealNum{1} / invMass : RealNum{0};
+		invMass += m_invGamma;
+		m_mass = (invMass != 0) ? 1 / invMass: 0;
 	}
 	else
 	{
-		m_gamma = 0;
+		m_invGamma = 0;
 		m_bias = 0;
 	}
 
@@ -150,7 +164,7 @@ void DistanceJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 	bodies[m_indexB].SetVelocity(velB);
 }
 
-void DistanceJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf&)
+RealNum DistanceJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf&)
 {
 	auto velA = bodies[m_indexA].GetVelocity();
 	auto velB = bodies[m_indexB].GetVelocity();
@@ -160,7 +174,7 @@ void DistanceJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const 
 	const auto vpB = velB.linear + GetRevPerpendicular(m_rB) * velB.angular.ToRadians();
 	const auto Cdot = Dot(m_u, vpB - vpA);
 
-	const auto impulse = -m_mass * (Cdot + m_bias + m_gamma * m_impulse);
+	const auto impulse = -m_mass * (Cdot + m_bias + m_invGamma * m_impulse);
 	m_impulse += impulse;
 
 	const auto P = impulse * m_u;
@@ -169,6 +183,8 @@ void DistanceJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const 
 
 	bodies[m_indexA].SetVelocity(velA);
 	bodies[m_indexB].SetVelocity(velB);
+	
+	return impulse;
 }
 
 bool DistanceJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const

@@ -46,10 +46,10 @@ struct WeldJointDef : public JointDef
 	
 	/// The mass-spring-damper frequency in Hertz. Rotation only.
 	/// Disable softness with a value of 0.
-	RealNum frequencyHz = RealNum{0};
+	RealNum frequencyHz = 0;
 
 	/// The damping ratio. 0 = no damping, 1 = critical damping.
-	RealNum dampingRatio = RealNum{0};
+	RealNum dampingRatio = 0;
 };
 
 /// A weld joint essentially glues two bodies together. A weld joint may
@@ -85,7 +85,7 @@ public:
 private:
 
 	void InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
-	void SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
+	RealNum SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
 	bool SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const override;
 
 	RealNum m_frequencyHz;

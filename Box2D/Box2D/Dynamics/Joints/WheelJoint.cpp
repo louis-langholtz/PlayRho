@@ -50,18 +50,19 @@ void WheelJointDef::Initialize(Body* bA, Body* bB, const Vec2 anchor, const Vec2
 	localAxisA = GetLocalVector(*bodyA, axis);
 }
 
-WheelJoint::WheelJoint(const WheelJointDef& def)
-: Joint(def)
+WheelJoint::WheelJoint(const WheelJointDef& def):
+	Joint(def),
+	m_localAnchorA(def.localAnchorA),
+	m_localAnchorB(def.localAnchorB),
+	m_localXAxisA(def.localAxisA),
+	m_localYAxisA(GetRevPerpendicular(m_localXAxisA)),
+	m_maxMotorTorque(def.maxMotorTorque),
+	m_motorSpeed(def.motorSpeed),
+	m_enableMotor(def.enableMotor),
+	m_frequencyHz(def.frequencyHz),
+	m_dampingRatio(def.dampingRatio)
 {
-	m_localAnchorA = def.localAnchorA;
-	m_localAnchorB = def.localAnchorB;
-	m_localXAxisA = def.localAxisA;
-	m_localYAxisA = GetRevPerpendicular(m_localXAxisA);
-	m_maxMotorTorque = def.maxMotorTorque;
-	m_motorSpeed = def.motorSpeed;
-	m_enableMotor = def.enableMotor;
-	m_frequencyHz = def.frequencyHz;
-	m_dampingRatio = def.dampingRatio;
+	// Intentionally empty.
 }
 
 void WheelJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf&)
@@ -75,8 +76,10 @@ void WheelJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const Step
 	m_invIA = GetBodyA()->GetInverseInertia();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto mA = m_invMassA, mB = m_invMassB;
-	const auto iA = m_invIA, iB = m_invIB;
+	const auto invMassA = m_invMassA;
+	const auto invMassB = m_invMassB;
+	const auto iA = m_invIA;
+	const auto iB = m_invIB;
 
 	const auto cA = bodies[m_indexA].GetPosition().linear;
 	const auto aA = bodies[m_indexA].GetPosition().angular;
@@ -88,7 +91,8 @@ void WheelJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const Step
 	auto vB = bodies[m_indexB].GetVelocity().linear;
 	auto wB = bodies[m_indexB].GetVelocity().angular;
 
-	const UnitVec2 qA(aA), qB(aB);
+	const auto qA = UnitVec2{aA};
+	const auto qB = UnitVec2{aB};
 
 	// Compute the effective masses.
 	const auto rA = Rotate(m_localAnchorA - m_localCenterA, qA);
@@ -101,37 +105,34 @@ void WheelJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const Step
 		m_sAy = Cross(dd + rA, m_ay);
 		m_sBy = Cross(rB, m_ay);
 
-		m_mass = mA + mB + iA * m_sAy * m_sAy + iB * m_sBy * m_sBy;
+		const auto invMass = invMassA + invMassB + iA * m_sAy * m_sAy + iB * m_sBy * m_sBy;
 
-		if (m_mass > RealNum{0})
-		{
-			m_mass = RealNum{1} / m_mass;
-		}
+		m_mass = (invMass > 0)? 1 / invMass: 0;
 	}
 
 	// Spring constraint
-	m_springMass = RealNum{0};
-	m_bias = RealNum{0};
-	m_gamma = RealNum{0};
-	if (m_frequencyHz > RealNum{0})
+	m_springMass = 0;
+	m_bias = 0;
+	m_gamma = 0;
+	if (m_frequencyHz > 0)
 	{
 		m_ax = Rotate(m_localXAxisA, qA);
 		m_sAx = Cross(dd + rA, m_ax);
 		m_sBx = Cross(rB, m_ax);
 
-		const auto invMass = mA + mB + iA * m_sAx * m_sAx + iB * m_sBx * m_sBx;
+		const auto invMass = invMassA + invMassB + iA * m_sAx * m_sAx + iB * m_sBx * m_sBx;
 
-		if (invMass > RealNum{0})
+		if (invMass > 0)
 		{
 			m_springMass = RealNum{1} / invMass;
 
 			const auto C = Dot(dd, m_ax);
 
 			// Frequency
-			const auto omega = RealNum(2) * Pi * m_frequencyHz;
+			const auto omega = 2 * Pi * m_frequencyHz;
 
 			// Damping coefficient
-			const auto d = RealNum(2) * m_springMass * m_dampingRatio * omega;
+			const auto d = 2 * m_springMass * m_dampingRatio * omega;
 
 			// Spring stiffness
 			const auto k = m_springMass * omega * omega;
@@ -139,38 +140,38 @@ void WheelJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const Step
 			// magic formulas
 			const auto h = step.get_dt();
 			m_gamma = h * (d + h * k);
-			if (m_gamma > RealNum{0})
+			if (m_gamma > 0)
 			{
-				m_gamma = RealNum{1} / m_gamma;
+				m_gamma = 1 / m_gamma;
 			}
 
 			m_bias = C * h * k * m_gamma;
 
 			m_springMass = invMass + m_gamma;
-			if (m_springMass > RealNum{0})
+			if (m_springMass > 0)
 			{
-				m_springMass = RealNum{1} / m_springMass;
+				m_springMass = 1 / m_springMass;
 			}
 		}
 	}
 	else
 	{
-		m_springImpulse = RealNum{0};
+		m_springImpulse = 0;
 	}
 
 	// Rotational motor
 	if (m_enableMotor)
 	{
 		m_motorMass = iA + iB;
-		if (m_motorMass > RealNum{0})
+		if (m_motorMass > 0)
 		{
-			m_motorMass = RealNum{1} / m_motorMass;
+			m_motorMass = 1 / m_motorMass;
 		}
 	}
 	else
 	{
-		m_motorMass = RealNum{0};
-		m_motorImpulse = RealNum{0};
+		m_motorMass = 0;
+		m_motorImpulse = 0;
 	}
 
 	if (step.doWarmStart)
@@ -192,19 +193,21 @@ void WheelJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const Step
 	}
 	else
 	{
-		m_impulse = RealNum{0};
-		m_springImpulse = RealNum{0};
-		m_motorImpulse = RealNum{0};
+		m_impulse = 0;
+		m_springImpulse = 0;
+		m_motorImpulse = 0;
 	}
 
 	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
 	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
 }
 
-void WheelJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
+RealNum WheelJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
 {
-	const auto mA = m_invMassA, mB = m_invMassB;
-	const auto iA = m_invIA, iB = m_invIB;
+	const auto invMassA = m_invMassA;
+	const auto invMassB = m_invMassB;
+	const auto iA = m_invIA;
+	const auto iB = m_invIB;
 
 	auto vA = bodies[m_indexA].GetVelocity().linear;
 	auto wA = bodies[m_indexA].GetVelocity().angular;
@@ -221,10 +224,10 @@ void WheelJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const Ste
 		const auto LA = impulse * m_sAx;
 		const auto LB = impulse * m_sBx;
 
-		vA -= mA * P;
+		vA -= invMassA * P;
 		wA -= 1_rad * iA * LA;
 
-		vB += mB * P;
+		vB += invMassB * P;
 		wB += 1_rad * iB * LB;
 	}
 
@@ -252,10 +255,10 @@ void WheelJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const Ste
 		const auto LA = impulse * m_sAy;
 		const auto LB = impulse * m_sBy;
 
-		vA -= mA * P;
+		vA -= invMassA * P;
 		wA -= 1_rad * iA * LA;
 
-		vB += mB * P;
+		vB += invMassB * P;
 		wB += 1_rad * iB * LB;
 	}
 
@@ -286,7 +289,7 @@ bool WheelJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const Con
 
 	const auto k = m_invMassA + m_invMassB + m_invIA * m_sAy * m_sAy + m_invIB * m_sBy * m_sBy;
 
-	const auto impulse = (k != RealNum{0})? - C / k: RealNum{0};
+	const auto impulse = (k != 0)? - C / k: RealNum{0};
 
 	const auto P = impulse * ay;
 	const auto LA = impulse * sAy;

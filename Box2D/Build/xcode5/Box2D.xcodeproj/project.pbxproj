@@ -180,6 +180,8 @@
 		478869111D78BF7200AEC7F1 /* VelocityConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */; };
 		479039D11D5BB9ED001A2145 /* Body.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 479039D01D5BB9ED001A2145 /* Body.cpp */; };
 		47928F351E5FE19C00EE6E9E /* BodyConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F341E5FE19C00EE6E9E /* BodyConstraint.cpp */; };
+		47928F371E66539000EE6E9E /* FrictionJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F361E66539000EE6E9E /* FrictionJoint.cpp */; };
+		47928F391E66586400EE6E9E /* DistanceJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F381E66586400EE6E9E /* DistanceJoint.cpp */; };
 		47A983361D0F4EFF00AA7D1A /* JointList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47A983341D0F4EFF00AA7D1A /* JointList.cpp */; };
 		47A983371D0F4EFF00AA7D1A /* JointList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47A983351D0F4EFF00AA7D1A /* JointList.hpp */; };
 		47A9833A1D0F51A300AA7D1A /* JointIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47A983381D0F51A300AA7D1A /* JointIterator.cpp */; };
@@ -618,6 +620,8 @@
 		4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VelocityConstraint.hpp; sourceTree = "<group>"; };
 		479039D01D5BB9ED001A2145 /* Body.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Body.cpp; sourceTree = "<group>"; };
 		47928F341E5FE19C00EE6E9E /* BodyConstraint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BodyConstraint.cpp; sourceTree = "<group>"; };
+		47928F361E66539000EE6E9E /* FrictionJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrictionJoint.cpp; sourceTree = "<group>"; };
+		47928F381E66586400EE6E9E /* DistanceJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceJoint.cpp; sourceTree = "<group>"; };
 		47A983341D0F4EFF00AA7D1A /* JointList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JointList.cpp; sourceTree = "<group>"; };
 		47A983351D0F4EFF00AA7D1A /* JointList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JointList.hpp; sourceTree = "<group>"; };
 		47A983381D0F51A300AA7D1A /* JointIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JointIterator.cpp; sourceTree = "<group>"; };
@@ -905,6 +909,7 @@
 				4731DE0D1DD7A74F00E7F931 /* ContactManager.cpp */,
 				473971A91D9F0E4E00F7137F /* ContactSolver.cpp */,
 				474BC3F81D41278800447DCD /* Distance.cpp */,
+				47928F381E66586400EE6E9E /* DistanceJoint.cpp */,
 				474BC3F91D41278800447DCD /* DistanceProxy.cpp */,
 				47AB01B91D6FA40C0084D721 /* Dump.cpp */,
 				4731DE1D1DDD0B8700E7F931 /* DynamicTree.cpp */,
@@ -913,6 +918,7 @@
 				475A94551D930E6C000CA9A8 /* Fixture.cpp */,
 				4731DE151DDCD00100E7F931 /* FixtureProxy.cpp */,
 				472724241E310C7600C64921 /* float.cpp */,
+				47928F361E66539000EE6E9E /* FrictionJoint.cpp */,
 				474BC3FB1D41278800447DCD /* IndexPair.cpp */,
 				4731DDFB1DC8FBEE00E7F931 /* Island.cpp */,
 				475A945C1D959537000CA9A8 /* Joint.cpp */,
@@ -1733,6 +1739,7 @@
 				474BC4311D413DC200447DCD /* Epsilon.cpp in Sources */,
 				472724251E310C7600C64921 /* float.cpp in Sources */,
 				474BC4321D413DC200447DCD /* IndexPair.cpp in Sources */,
+				47928F371E66539000EE6E9E /* FrictionJoint.cpp in Sources */,
 				474BC4331D413DC200447DCD /* main.cpp in Sources */,
 				47928F351E5FE19C00EE6E9E /* BodyConstraint.cpp in Sources */,
 				4756CB9A1E0FAEF8009AD95C /* SeparationFinder.cpp in Sources */,
@@ -1743,6 +1750,7 @@
 				474BC4341D413DC200447DCD /* Manifold.cpp in Sources */,
 				475A945B1D9593A4000CA9A8 /* Shape.cpp in Sources */,
 				474BC4351D413DC200447DCD /* Mat33.cpp in Sources */,
+				47928F391E66586400EE6E9E /* DistanceJoint.cpp in Sources */,
 				475A94611D9996B6000CA9A8 /* Contact.cpp in Sources */,
 				474BC4361D413DC200447DCD /* PolygonShape.cpp in Sources */,
 				4736DE891DB7DB3B003993CB /* Vec3.cpp in Sources */,

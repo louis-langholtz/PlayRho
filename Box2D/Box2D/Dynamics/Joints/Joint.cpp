@@ -45,6 +45,7 @@ Joint* Joint::Create(const JointDef& def, BlockAllocator& allocator)
 	switch (def.type)
 	{
 	case JointType::Distance:
+		if (DistanceJoint::IsOkay(static_cast<const DistanceJointDef&>(def)))
 		{
 			void* mem = allocator.Allocate(sizeof(DistanceJoint));
 			joint = new (mem) DistanceJoint(static_cast<const DistanceJointDef&>(def));
@@ -184,11 +185,20 @@ void Joint::Destroy(Joint* joint, BlockAllocator& allocator)
 	}
 }
 
+bool Joint::IsOkay(const JointDef& def) noexcept
+{
+	if (def.bodyA == def.bodyB)
+	{
+		return false;
+	}
+	return true;
+}
+
 Joint::Joint(const JointDef& def):
 	m_type{def.type}, m_bodyA{def.bodyA}, m_bodyB{def.bodyB},
 	m_collideConnected{def.collideConnected}, m_userData{def.userData}
 {
-	assert(def.bodyA != def.bodyB);
+	// Intentionally empty.
 }
 
 bool IsActive(const Joint& j) noexcept

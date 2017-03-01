@@ -40,10 +40,10 @@ struct FrictionJointDef : public JointDef
 	Vec2 localAnchorB = Vec2_zero;
 
 	/// The maximum friction force in N.
-	RealNum maxForce = RealNum{0};
+	RealNum maxForce = 0;
 
 	/// The maximum friction torque in N-m.
-	RealNum maxTorque = RealNum{0};
+	RealNum maxTorque = 0;
 };
 
 /// Friction joint. This is used for top-down friction.
@@ -80,7 +80,7 @@ public:
 private:
 
 	void InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
-	void SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
+	RealNum SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
 	bool SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const override;
 
 	Vec2 m_localAnchorA;
@@ -88,7 +88,7 @@ private:
 
 	// Solver shared
 	Vec2 m_linearImpulse = Vec2_zero; ///< Linear impulse.
-	RealNum m_angularImpulse = RealNum{0};
+	RealNum m_angularImpulse = 0;
 	RealNum m_maxForce;
 	RealNum m_maxTorque;
 

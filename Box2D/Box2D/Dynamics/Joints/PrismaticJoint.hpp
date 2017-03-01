@@ -47,7 +47,7 @@ struct PrismaticJointDef : public JointDef
 	Vec2 localAnchorB = Vec2_zero;
 
 	/// The local translation unit axis in bodyA.
-	Vec2 localAxisA = Vec2{RealNum{1}, RealNum{0}};
+	Vec2 localAxisA = Vec2{RealNum{1}, 0};
 
 	/// The constrained angle between the bodies: bodyB_angle - bodyA_angle.
 	Angle referenceAngle = 0_rad;
@@ -56,19 +56,19 @@ struct PrismaticJointDef : public JointDef
 	bool enableLimit = false;
 
 	/// The lower translation limit, usually in meters.
-	RealNum lowerTranslation = RealNum{0};
+	RealNum lowerTranslation = 0;
 
 	/// The upper translation limit, usually in meters.
-	RealNum upperTranslation = RealNum{0};
+	RealNum upperTranslation = 0;
 
 	/// Enable/disable the joint motor.
 	bool enableMotor = false;
 
 	/// The maximum motor torque, usually in N-m.
-	RealNum maxMotorForce = RealNum{0};
+	RealNum maxMotorForce = 0;
 
 	/// The desired motor speed in radians per second.
-	RealNum motorSpeed = RealNum{0};
+	RealNum motorSpeed = 0;
 };
 
 /// Prismatic Joint.
@@ -144,7 +144,7 @@ public:
 
 private:
 	void InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
-	void SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
+	RealNum SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
 	bool SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const override;
 
 	// Solver shared

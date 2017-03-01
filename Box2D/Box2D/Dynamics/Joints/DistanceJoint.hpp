@@ -49,20 +49,25 @@ struct DistanceJointDef : public JointDef
 	/// The natural length between the anchor points.
 	RealNum length = 1;
 
-	/// The mass-spring-damper frequency in Hertz. A value of 0
-	/// disables softness.
+	/// Mass-spring-damper frequency in Hertz.
+	/// @note 0 disables softness.
+	/// @note Should be 0 or greater.
 	RealNum frequencyHz = 0;
 
 	/// The damping ratio. 0 = no damping, 1 = critical damping.
 	RealNum dampingRatio = 0;
 };
 
+/// Distance Joint.
+/// @detail
 /// A distance joint constrains two points on two bodies
 /// to remain at a fixed distance from each other. You can view
 /// this as a massless, rigid rod.
 class DistanceJoint : public Joint
 {
 public:
+	static bool IsOkay(const DistanceJointDef& data) noexcept;
+
 	DistanceJoint(const DistanceJointDef& data);
 
 	Vec2 GetAnchorA() const override;
@@ -98,7 +103,7 @@ public:
 private:
 
 	void InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
-	void SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
+	RealNum SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
 	bool SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const override;
 
 	RealNum m_frequencyHz;
@@ -108,7 +113,7 @@ private:
 	// Solver shared
 	Vec2 m_localAnchorA;
 	Vec2 m_localAnchorB;
-	RealNum m_gamma = 0;
+	RealNum m_invGamma = 0;
 	RealNum m_impulse = 0;
 	RealNum m_length;
 
