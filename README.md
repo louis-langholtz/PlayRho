@@ -13,9 +13,9 @@ General influences on this fork are:
 As such, this library *must* be compiled with the `NDEBUG` preprocessor macro enabled
 to see any kind of performance.
 
-###Features
+###Specific Changes
 
-Here's some of the changes that might be considered "new features":
+Here's a run-down of some of the changes:
 - Exported symbols are all within the library namespace of `box2d` (and no longer preficed by `b2`).
 - All preprocessor defines - with the exception of those for include guards - have been removed from the API or replaced with C++ solutions.
 - Rounded corner collisions.
@@ -28,6 +28,8 @@ Here's some of the changes that might be considered "new features":
 - Fully per-step run-time configurable (via [`StepConf`](https://github.com/louis-langholtz/Box2D/blob/dev/Box2D/Box2D/Dynamics/StepConf.hpp)).
 - In-depth per-step return value statistics (via [`StepStats`](https://github.com/louis-langholtz/Box2D/blob/dev/Box2D/Box2D/Dynamics/World.hpp#L86)).
 - Increased construction-time configurability of world instances (via [`World::Def`](https://github.com/louis-langholtz/Box2D/blob/dev/Box2D/Box2D/Dynamics/World.hpp#L107)).
+- Various methods have been rewritten to be [non-member non-friend functions](http://www.drdobbs.com/cpp/how-non-member-functions-improve-encapsu/184401197).
+- Various functions and procedures have been rewritten to be ["pure functions"](https://en.wikipedia.org/wiki/Pure_function).
 
 ##About
 
