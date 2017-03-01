@@ -66,7 +66,7 @@ TEST(DistanceJoint, Construction)
 	EXPECT_EQ(joint.GetDampingRatio(), def.dampingRatio);
 }
 
-TEST(DistanceJoint, BodiesGetDistant)
+TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 {
 	World world{World::Def{}.UseGravity(Vec2_zero)};
 
@@ -117,4 +117,59 @@ TEST(DistanceJoint, BodiesGetDistant)
 		}
 		oldDistance = newDistance;
 	}
+}
+
+TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
+{
+	World world{World::Def{}.UseGravity(Vec2{0, 10})};
+	
+	const auto shape = std::make_shared<CircleShape>(0.2f);
+	
+	const auto location1 = Vec2{-10, 10};
+	const auto body1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location1));
+	ASSERT_EQ(body1->GetLocation(), location1);
+	ASSERT_NE(body1->CreateFixture(shape, FixtureDef{}.UseDensity(1)), nullptr);
+	
+	const auto location2 = Vec2{+10, -10};
+	const auto body2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location2));
+	ASSERT_EQ(body2->GetLocation(), location2);
+	ASSERT_NE(body2->CreateFixture(shape, FixtureDef{}.UseDensity(1)), nullptr);
+	
+	DistanceJointDef jointdef;
+	jointdef.bodyA = body1;
+	jointdef.bodyB = body2;
+	jointdef.collideConnected = false;
+	jointdef.localAnchorA = Vec2_zero;
+	jointdef.localAnchorB = Vec2_zero;
+	jointdef.length = 5;
+	jointdef.frequencyHz = 60;
+	jointdef.dampingRatio = 0;
+	EXPECT_NE(world.CreateJoint(jointdef), nullptr);
+	
+	auto oldDistance = GetLength(body1->GetLocation() - body2->GetLocation());
+	
+	auto distanceMet = 0u;
+	StepConf stepConf;
+	for (auto i = 0u; !distanceMet || i < distanceMet + 1000; ++i)
+	{
+		world.Step(stepConf);
+		
+		const auto newDistance = GetLength(body1->GetLocation() - body2->GetLocation());
+		if (!distanceMet && (newDistance - oldDistance) >= 0)
+		{
+			distanceMet = i;
+		}
+		if (distanceMet)
+		{
+			EXPECT_NEAR(double(newDistance), double(oldDistance), 2.5);
+		}
+		else
+		{
+			EXPECT_LE(newDistance, oldDistance);
+		}
+		
+		oldDistance = newDistance;
+	}
+	
+	EXPECT_NEAR(double(oldDistance), double(jointdef.length), 0.1);
 }
