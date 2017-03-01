@@ -32,6 +32,24 @@ using namespace box2d;
 // Identity used:
 // w k % (rx i + ry j) = w * (-ry i + rx j)
 
+
+bool MouseJoint::IsOkay(const MouseJointDef& def) noexcept
+{
+	if (!Joint::IsOkay(def))
+	{
+		return false;
+	}
+	if (!IsValid(def.target))
+	{
+		return false;
+	}
+	if (!(def.maxForce >= 0) || !(def.frequencyHz >= 0) || !(def.dampingRatio >= 0))
+	{
+		return false;
+	}
+	return true;
+}
+
 MouseJoint::MouseJoint(const MouseJointDef& def):
 	Joint{def},
 	m_localAnchorB{InverseTransform(def.target, GetBodyB()->GetTransformation())},

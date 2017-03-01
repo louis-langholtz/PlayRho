@@ -53,6 +53,7 @@ Joint* Joint::Create(const JointDef& def, BlockAllocator& allocator)
 		break;
 
 	case JointType::Mouse:
+		if (MouseJoint::IsOkay(static_cast<const MouseJointDef&>(def)))
 		{
 			void* mem = allocator.Allocate(sizeof(MouseJoint));
 			joint = new (mem) MouseJoint(static_cast<const MouseJointDef&>(def));

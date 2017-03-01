@@ -63,6 +63,8 @@ struct MouseJointDef : public JointDef
 class MouseJoint : public Joint
 {
 public:
+	static bool IsOkay(const MouseJointDef& def) noexcept;
+
 	MouseJoint(const MouseJointDef& def);
 
 	/// Implements Joint.

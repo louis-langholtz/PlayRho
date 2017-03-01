@@ -495,6 +495,10 @@ Joint* World::CreateJoint(const JointDef& def)
 
 	// Note: creating a joint doesn't wake the bodies.
 	auto j = Joint::Create(def, m_blockAllocator);
+	if (!j)
+	{
+		return nullptr;
+	}
 
 	// Connect to the bodies' doubly linked lists.
 	j->m_edgeA.joint = j;
