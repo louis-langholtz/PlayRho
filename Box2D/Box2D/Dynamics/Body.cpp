@@ -633,18 +633,20 @@ MassData box2d::ComputeMassData(const Body& body) noexcept
 	return MassData{mass, center, I};
 }
 
-void box2d::RotateAboutLocalPoint(Body& body, Angle amount, Vec2 localPoint)
+void box2d::RotateAboutWorldPoint(Body& body, Angle amount, Vec2 worldPoint)
 {
+	const auto xfm = body.GetTransformation();
+	const auto p = xfm.p - worldPoint;
 	const auto c = Cos(amount);
 	const auto s = Sin(amount);
-	
-	const auto pivot_point = GetWorldPoint(body, localPoint);
-	const auto xfm = body.GetTransformation();
-	const auto p = xfm.p - pivot_point;
 	const auto x = p.x * c - p.y * s;
 	const auto y = p.x * s + p.y * c;
-	
-	const auto pos = Vec2{x, y} + pivot_point;
+	const auto pos = Vec2{x, y} + worldPoint;
 	const auto angle = GetAngle(xfm.q) + amount;
 	body.SetTransform(pos, angle);
+}
+
+void box2d::RotateAboutLocalPoint(Body& body, Angle amount, Vec2 localPoint)
+{
+	RotateAboutWorldPoint(body, amount, GetWorldPoint(body, localPoint));
 }

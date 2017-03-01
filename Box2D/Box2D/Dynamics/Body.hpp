@@ -1113,9 +1113,19 @@ size_t GetFixtureCount(const Body& body);
 /// @return accumalated mass data for all fixtures associated with the given body.
 MassData ComputeMassData(const Body& body) noexcept;
 
+/// Rotates a body a given amount around a point in world coordinates.
+/// @detail This changes both the linear and angular positions of the body.
+/// @note Manipulating a body's position this way may cause non-physical behavior.
+/// @param body Body to rotate.
+/// @param amount Amount to rotate body by (in counter-clockwise direction).
+/// @param worldPoint Point in world coordinates.
+void RotateAboutWorldPoint(Body& body, Angle amount, Vec2 worldPoint);
+
 /// Rotates a body a given amount around a point in body local coordinates.
 /// @detail This changes both the linear and angular positions of the body.
 /// @note Manipulating a body's position this way may cause non-physical behavior.
+/// @note This is a convenience function that translates the local point into world coordinates
+///   and then calls the <code>RotateAboutWorldPoint</code> function.
 /// @param body Body to rotate.
 /// @param amount Amount to rotate body by (in counter-clockwise direction).
 /// @param localPoint Point in local coordinates.
