@@ -284,14 +284,20 @@ private:
 	
 	// 0-bytes of memory (at first).
 	Body* const m_body = nullptr; ///< Parent body. Set on construction. 8-bytes.
-	std::shared_ptr<const Shape> m_shape; ///< Shape (of fixture). Set on construction. Either null or pointer to a heap-memory private copy of the assigned shape. 16-bytes.
+
+	/// Shape (of fixture).
+	/// @note Set on construction.
+	/// @note Either null or pointer to a heap-memory private copy of the assigned shape.
+	/// @note 16-bytes.
+	std::shared_ptr<const Shape> m_shape;
+
 	Fixture* m_next = nullptr; ///< Next fixture in parent body's fixture list. 8-bytes.
 	FixtureProxy* m_proxies = nullptr; ///< Array of fixture proxies for the assigned shape. 8-bytes.
 	void* m_userData = nullptr; ///< User data. 8-bytes.
 	// 48-bytes so far.
-	RealNum m_density = RealNum{0}; ///< Density. 4-bytes.
+	RealNum m_density = 0; ///< Density. 4-bytes.
 	RealNum m_friction = RealNum{2} / RealNum{10}; ///< Friction as a coefficient. 4-bytes.
-	RealNum m_restitution = RealNum{0}; ///< Restitution as a coefficient. 4-bytes.
+	RealNum m_restitution = 0; ///< Restitution as a coefficient. 4-bytes.
 	child_count_t m_proxyCount = 0; ///< Proxy count. @detail This is the fixture shape's child count after proxy creation. 4-bytes.
 	// 48 + 16 = 64-bytes now.
 	Filter m_filter; ///< Filter object. 6-bytes.

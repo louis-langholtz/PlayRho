@@ -807,12 +807,11 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 	auto finMinSeparation = std::numeric_limits<RealNum>::infinity();
 	auto solved = false;
 	auto positionIterations = step.regPositionIterations;
+	const auto h = step.get_dt(); ///< Time step (in seconds).
 
 	auto bodyConstraints = BodyConstraints{};
 	bodyConstraints.reserve(island.m_bodies.size());
 
-	const auto h = step.get_dt(); ///< Time step (in seconds).
-	
 	// Update bodies' pos0 values then copy their pos1 and velocity data into local arrays.
 	for (auto&& body: island.m_bodies)
 	{
