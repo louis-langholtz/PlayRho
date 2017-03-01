@@ -38,97 +38,153 @@
 namespace box2d
 {
 
-Joint* Joint::Create(const JointDef& def, BlockAllocator& allocator)
+namespace
 {
-	auto joint = static_cast<Joint*>(nullptr);
-
-	switch (def.type)
+	inline DistanceJoint* Create(const DistanceJointDef& def, BlockAllocator& allocator)
 	{
-	case JointType::Distance:
-		if (DistanceJoint::IsOkay(static_cast<const DistanceJointDef&>(def)))
+		if (DistanceJoint::IsOkay(def))
 		{
 			void* mem = allocator.Allocate(sizeof(DistanceJoint));
-			joint = new (mem) DistanceJoint(static_cast<const DistanceJointDef&>(def));
+			return new (mem) DistanceJoint(def);
 		}
-		break;
-
-	case JointType::Mouse:
+		return nullptr;
+	}
+	
+	inline MouseJoint* Create(const MouseJointDef& def, BlockAllocator& allocator)
+	{
 		if (MouseJoint::IsOkay(static_cast<const MouseJointDef&>(def)))
 		{
 			void* mem = allocator.Allocate(sizeof(MouseJoint));
-			joint = new (mem) MouseJoint(static_cast<const MouseJointDef&>(def));
+			return new (mem) MouseJoint(def);
 		}
-		break;
-
-	case JointType::Prismatic:
+		return nullptr;
+	}
+	
+	inline PrismaticJoint* Create(const PrismaticJointDef& def, BlockAllocator& allocator)
+	{
+		if (PrismaticJoint::IsOkay(def))
 		{
 			void* mem = allocator.Allocate(sizeof(PrismaticJoint));
-			joint = new (mem) PrismaticJoint(static_cast<const PrismaticJointDef&>(def));
+			return new (mem) PrismaticJoint(def);
 		}
-		break;
-
-	case JointType::Revolute:
+		return nullptr;
+	}
+	
+	inline RevoluteJoint* Create(const RevoluteJointDef& def, BlockAllocator& allocator)
+	{
+		if (RevoluteJoint::IsOkay(def))
 		{
 			void* mem = allocator.Allocate(sizeof(RevoluteJoint));
-			joint = new (mem) RevoluteJoint(static_cast<const RevoluteJointDef&>(def));
+			return new (mem) RevoluteJoint(def);
 		}
-		break;
-
-	case JointType::Pulley:
+		return nullptr;
+	}
+	
+	inline PulleyJoint* Create(const PulleyJointDef& def, BlockAllocator& allocator)
+	{
+		if (PulleyJoint::IsOkay(def))
 		{
 			void* mem = allocator.Allocate(sizeof(PulleyJoint));
-			joint = new (mem) PulleyJoint(static_cast<const PulleyJointDef&>(def));
+			return new (mem) PulleyJoint(def);
 		}
-		break;
-
-	case JointType::Gear:
+		return nullptr;
+	}
+	
+	inline GearJoint* Create(const GearJointDef& def, BlockAllocator& allocator)
+	{
+		if (GearJoint::IsOkay(def))
 		{
 			void* mem = allocator.Allocate(sizeof(GearJoint));
-			joint = new (mem) GearJoint(static_cast<const GearJointDef&>(def));
+			return new (mem) GearJoint(def);
 		}
-		break;
-
-	case JointType::Wheel:
+		return nullptr;
+	}
+	
+	inline WheelJoint* Create(const WheelJointDef& def, BlockAllocator& allocator)
+	{
+		if (WheelJoint::IsOkay(def))
 		{
 			void* mem = allocator.Allocate(sizeof(WheelJoint));
-			joint = new (mem) WheelJoint(static_cast<const WheelJointDef&>(def));
+			return new (mem) WheelJoint(def);
 		}
-		break;
-
-	case JointType::Weld:
+		return nullptr;
+	}
+	
+	inline WeldJoint* Create(const WeldJointDef& def, BlockAllocator& allocator)
+	{
+		if (WeldJoint::IsOkay(def))
 		{
 			void* mem = allocator.Allocate(sizeof(WeldJoint));
-			joint = new (mem) WeldJoint(static_cast<const WeldJointDef&>(def));
+			return new (mem) WeldJoint(def);
 		}
-		break;
-        
-	case JointType::Friction:
+		return nullptr;
+	}
+	
+	inline FrictionJoint* Create(const FrictionJointDef& def, BlockAllocator& allocator)
+	{
+		if (FrictionJoint::IsOkay(def))
 		{
 			void* mem = allocator.Allocate(sizeof(FrictionJoint));
-			joint = new (mem) FrictionJoint(static_cast<const FrictionJointDef&>(def));
+			return new (mem) FrictionJoint(def);
 		}
-		break;
-
-	case JointType::Rope:
+		return nullptr;
+	}
+	
+	inline RopeJoint* Create(const RopeJointDef& def, BlockAllocator& allocator)
+	{
+		if (RopeJoint::IsOkay(def))
 		{
 			void* mem = allocator.Allocate(sizeof(RopeJoint));
-			joint = new (mem) RopeJoint(static_cast<const RopeJointDef&>(def));
+			return new (mem) RopeJoint(def);
 		}
-		break;
-
-	case JointType::Motor:
+		return nullptr;
+	}
+	
+	inline MotorJoint* Create(const MotorJointDef& def, BlockAllocator& allocator)
+	{
+		if (MotorJoint::IsOkay(def))
 		{
 			void* mem = allocator.Allocate(sizeof(MotorJoint));
-			joint = new (mem) MotorJoint(static_cast<const MotorJointDef&>(def));
+			return new (mem) MotorJoint(def);
 		}
-		break;
-
+		return nullptr;
+	}
+	
+} // anonymous namespace
+	
+Joint* Joint::Create(const JointDef& def, BlockAllocator& allocator)
+{
+	switch (def.type)
+	{
+	case JointType::Distance:
+		return box2d::Create(static_cast<const DistanceJointDef&>(def), allocator);
+	case JointType::Mouse:
+		return box2d::Create(static_cast<const MouseJointDef&>(def), allocator);
+	case JointType::Prismatic:
+		return box2d::Create(static_cast<const PrismaticJointDef&>(def), allocator);
+	case JointType::Revolute:
+		return box2d::Create(static_cast<const RevoluteJointDef&>(def), allocator);
+	case JointType::Pulley:
+		return box2d::Create(static_cast<const PulleyJointDef&>(def), allocator);
+	case JointType::Gear:
+		return box2d::Create(static_cast<const GearJointDef&>(def), allocator);
+	case JointType::Wheel:
+		return box2d::Create(static_cast<const WheelJointDef&>(def), allocator);
+	case JointType::Weld:
+		return box2d::Create(static_cast<const WeldJointDef&>(def), allocator);
+	case JointType::Friction:
+		return box2d::Create(static_cast<const FrictionJointDef&>(def), allocator);
+	case JointType::Rope:
+		return box2d::Create(static_cast<const RopeJointDef&>(def), allocator);
+	case JointType::Motor:
+		return box2d::Create(static_cast<const MotorJointDef&>(def), allocator);
 	case JointType::Unknown:
 		assert(false);
 		break;
+	default:
+		break;
 	}
-
-	return joint;
+	return nullptr;
 }
 
 void Joint::Destroy(Joint* joint, BlockAllocator& allocator)
