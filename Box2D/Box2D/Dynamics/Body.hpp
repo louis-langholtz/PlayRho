@@ -468,8 +468,6 @@ public:
 	/// @sa Island.
 	bool IsInIsland() const noexcept;
 	
-	body_count_t GetIslandIndex() const noexcept;
-
 	bool IsMassDataDirty() const noexcept;
 
 private:
@@ -568,8 +566,6 @@ private:
 	//
 
 	flags_type m_flags = 0; ///< Flags. 2-bytes.
-
-	body_count_t m_islandIndex = InvalidIslandIndex; ///< Index of this body in its island (only valid when in an island). 2-bytes.
 	
 	/// Transformation for body origin.
 	/// @detail
@@ -895,11 +891,6 @@ inline void Body::SetInIsland() noexcept
 inline void Body::UnsetInIsland() noexcept
 {
 	m_flags &= ~Body::e_islandFlag;
-}
-
-inline body_count_t Body::GetIslandIndex() const noexcept
-{
-	return m_islandIndex;
 }
 
 /// Gets the total mass of the body.

@@ -654,7 +654,6 @@ void World::InternalDestroy(Joint* j)
 body_count_t World::AddToIsland(Island& island, Body& body)
 {
 	const auto index = static_cast<body_count_t>(island.m_bodies.size());
-	body.m_islandIndex = index;
 	island.m_bodies.push_back(&body);
 	return index;
 }
@@ -989,6 +988,11 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 		.UseMaxToiIters(step.maxToiIters)
 		.UseMaxDistIters(step.maxDistanceIters);
 	
+#if defined(DO_THREADED)
+	std::vector<std::future<Contact::UpdateOutput>> futures;
+	futures.reserve(m_contactMgr.GetContacts().size());
+#endif
+
 	for (auto&& c: m_contactMgr.GetContacts())
 	{
 		if (c.HasValidToi())
@@ -1008,13 +1012,29 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 			++numAtMaxSubSteps;
 			continue;
 		}
+#if defined(DO_THREADED)
+		// Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions
+		futures.push_back(std::async(&Contact::UpdateForCCD, &c, toiConf));
+#else
 		const auto output = c.UpdateForCCD(toiConf);
 		maxDistIters = Max(maxDistIters, output.maxDistIters);
 		maxToiIters = Max(maxToiIters, output.toiIters);
 		maxRootIters = Max(maxRootIters, output.maxRootIters);
 		++numUpdated;
+#endif
 	}
-	
+
+#if defined(DO_THREADED)
+	for (auto&& f: futures)
+	{
+		const auto output = f.get();
+		maxDistIters = Max(maxDistIters, output.maxDistIters);
+		maxToiIters = Max(maxToiIters, output.toiIters);
+		maxRootIters = Max(maxRootIters, output.maxRootIters);
+		++numUpdated;
+	}
+#endif
+
 	return UpdateContactsData{numAtMaxSubSteps, numUpdated, maxDistIters, maxToiIters, maxRootIters};
 }
 	
