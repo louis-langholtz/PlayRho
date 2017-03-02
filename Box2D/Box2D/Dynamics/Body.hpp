@@ -312,7 +312,7 @@ public:
 	/// them all the time by the mass.
 	/// @return Value of zero or more representing the body's inverse mass (in 1/kg).
 	/// @sa SetMassData.
-	RealNum GetInverseMass() const noexcept;
+	RealNum GetInvMass() const noexcept;
 	
 	/// Gets the inverse rotational inertia of the body.
 	/// @detail This is the cached result of dividing 1 by the body's rotational inertia.
@@ -320,7 +320,7 @@ public:
 	/// As such, it's likely faster to multiply values by this inverse value than to redivide
 	/// them all the time by the rotational inertia.
 	/// @return Inverse rotational intertia (in 1/kg-m^2).
-	RealNum GetInverseInertia() const noexcept;
+	RealNum GetInvRotInertia() const noexcept;
 
 	/// Set the mass properties to override the mass properties of the fixtures.
 	/// @note This changes the center of mass position.
@@ -651,12 +651,12 @@ inline Velocity Body::GetVelocity() const noexcept
 	return m_velocity;
 }
 	
-inline RealNum Body::GetInverseMass() const noexcept
+inline RealNum Body::GetInvMass() const noexcept
 {
 	return m_invMass;
 }
 
-inline RealNum Body::GetInverseInertia() const noexcept
+inline RealNum Body::GetInvRotInertia() const noexcept
 {
 	return m_invI;
 }
@@ -904,11 +904,11 @@ inline body_count_t Body::GetIslandIndex() const noexcept
 
 /// Gets the total mass of the body.
 /// @return Value of zero or more representing the body's mass (in kg).
-/// @sa GetInverseMass.
+/// @sa GetInvMass.
 /// @sa SetMassData.
 inline RealNum GetMass(const Body& body) noexcept
 {
-	const auto invMass = body.GetInverseMass();
+	const auto invMass = body.GetInvMass();
 	return (invMass != 0)? RealNum{1} / invMass: 0;
 }
 
@@ -925,8 +925,8 @@ inline void ApplyLinearAcceleration(Body& body, const Vec2 amount)
 /// @param point World position of the point of application.
 inline void ApplyForce(Body& body, const Vec2 force, const Vec2 point) noexcept
 {
-	const auto linAccel = body.GetLinearAcceleration() + force * body.GetInverseMass();
-	const auto angAccel = body.GetAngularAcceleration() + 1_rad * Cross(point - body.GetWorldCenter(), force) * body.GetInverseInertia();
+	const auto linAccel = body.GetLinearAcceleration() + force * body.GetInvMass();
+	const auto angAccel = body.GetAngularAcceleration() + 1_rad * Cross(point - body.GetWorldCenter(), force) * body.GetInvRotInertia();
 	body.SetAcceleration(linAccel, angAccel);
 }
 
@@ -935,7 +935,7 @@ inline void ApplyForce(Body& body, const Vec2 force, const Vec2 point) noexcept
 /// @param force World force vector, usually in Newtons (N).
 inline void ApplyForceToCenter(Body& body, const Vec2 force) noexcept
 {
-	const auto linAccel = body.GetLinearAcceleration() + force * body.GetInverseMass();
+	const auto linAccel = body.GetLinearAcceleration() + force * body.GetInvMass();
 	const auto angAccel = body.GetAngularAcceleration();
 	body.SetAcceleration(linAccel, angAccel);
 }
@@ -947,7 +947,7 @@ inline void ApplyForceToCenter(Body& body, const Vec2 force) noexcept
 inline void ApplyTorque(Body& body, const RealNum torque) noexcept
 {
 	const auto linAccel = body.GetLinearAcceleration();
-	const auto angAccel = body.GetAngularAcceleration() + 1_rad * torque * body.GetInverseInertia();
+	const auto angAccel = body.GetAngularAcceleration() + 1_rad * torque * body.GetInvRotInertia();
 	body.SetAcceleration(linAccel, angAccel);
 }
 
@@ -961,8 +961,8 @@ inline void ApplyTorque(Body& body, const RealNum torque) noexcept
 inline void ApplyLinearImpulse(Body& body, const Vec2 impulse, const Vec2 point) noexcept
 {
 	auto velocity = body.GetVelocity();
-	velocity.linear += body.GetInverseMass() * impulse;
-	velocity.angular += 1_rad * body.GetInverseInertia() * Cross(point - body.GetWorldCenter(), impulse);
+	velocity.linear += body.GetInvMass() * impulse;
+	velocity.angular += 1_rad * body.GetInvRotInertia() * Cross(point - body.GetWorldCenter(), impulse);
 	body.SetVelocity(velocity);
 }
 
@@ -972,7 +972,7 @@ inline void ApplyLinearImpulse(Body& body, const Vec2 impulse, const Vec2 point)
 inline void ApplyAngularImpulse(Body& body, RealNum impulse) noexcept
 {
 	auto velocity = body.GetVelocity();
-	velocity.angular += 1_rad * body.GetInverseInertia() * impulse;
+	velocity.angular += 1_rad * body.GetInvRotInertia() * impulse;
 	body.SetVelocity(velocity);
 }
 
@@ -980,7 +980,7 @@ inline void ApplyAngularImpulse(Body& body, RealNum impulse) noexcept
 /// @return the rotational inertia, usually in kg-m^2.
 inline RealNum GetInertia(const Body& body) noexcept
 {
-	return RealNum{1} / body.GetInverseInertia();
+	return RealNum{1} / body.GetInvRotInertia();
 }
 
 /// Gets the rotational inertia of the body about the local origin.

@@ -54,7 +54,7 @@ namespace box2d {
 		
 		RealNum GetInvMass() const noexcept;
 		
-		RealNum GetInvRotI() const noexcept;
+		RealNum GetInvRotInertia() const noexcept;
 		
 		Vec2 GetLocalCenter() const noexcept;
 		
@@ -79,7 +79,7 @@ namespace box2d {
 		return m_invMass;
 	}
 	
-	inline RealNum BodyConstraint::GetInvRotI() const noexcept
+	inline RealNum BodyConstraint::GetInvRotInertia() const noexcept
 	{
 		return m_invRotI;
 	}

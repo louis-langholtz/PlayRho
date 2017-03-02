@@ -89,8 +89,8 @@ void MouseJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
 	auto& bodiesB = bodies.at(GetBodyB());
 
 	m_localCenterB = GetBodyB()->GetLocalCenter();
-	m_invMassB = GetBodyB()->GetInverseMass();
-	m_invIB = GetBodyB()->GetInverseInertia();
+	m_invMassB = GetBodyB()->GetInvMass();
+	m_invIB = GetBodyB()->GetInvRotInertia();
 
 	const auto positionB = bodiesB.GetPosition();
 	assert(IsValid(positionB));

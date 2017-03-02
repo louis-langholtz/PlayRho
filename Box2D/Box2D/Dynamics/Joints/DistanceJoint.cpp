@@ -81,12 +81,13 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraints& bodies,
 	auto& bodiesA = bodies.at(GetBodyA());
 	auto& bodiesB = bodies.at(GetBodyB());
 
-	m_localCenterA = GetBodyA()->GetLocalCenter();
-	m_localCenterB = GetBodyB()->GetLocalCenter();
-	m_invMassA = GetBodyA()->GetInverseMass();
-	m_invMassB = GetBodyB()->GetInverseMass();
-	m_invIA = GetBodyA()->GetInverseInertia();
-	m_invIB = GetBodyB()->GetInverseInertia();
+	m_localCenterA = bodiesA.GetLocalCenter();
+	m_invMassA = bodiesA.GetInvMass();
+	m_invIA = bodiesA.GetInvRotInertia();
+
+	m_localCenterB = bodiesB.GetLocalCenter();
+	m_invMassB = bodiesB.GetInvMass();
+	m_invIB = bodiesB.GetInvRotInertia();
 
 	const auto posA = bodiesA.GetPosition();
 	auto velA = bodiesA.GetVelocity();

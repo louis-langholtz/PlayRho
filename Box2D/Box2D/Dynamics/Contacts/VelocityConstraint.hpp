@@ -77,7 +77,7 @@ namespace box2d {
 
 		UnitVec2 GetTangent() const noexcept { return m_tangent; }
 		
-		RealNum GetInverseMass() const noexcept { return m_invMass; }
+		RealNum GetInvMass() const noexcept { return m_invMass; }
 
 		/// Gets the count of points added to this object.
 		/// @return Value between 0 and MaxManifoldPoints
@@ -327,7 +327,7 @@ namespace box2d {
 		return vc.GetTangent();
 	}
 
-	inline RealNum GetInverseMass(const VelocityConstraint& vc) noexcept
+	inline RealNum GetInvMass(const VelocityConstraint& vc) noexcept
 	{
 		return vc.bodyA.GetInvMass() + vc.bodyB.GetInvMass();
 	}

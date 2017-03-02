@@ -113,16 +113,16 @@ VelocityConstraint::Point VelocityConstraint::GetPoint(RealNum normalImpulse, Re
 	}();
 	
 	point.normalMass = [&](){
-		const auto value = GetInverseMass()
-		+ (bodyA.GetInvRotI() * Square(Cross(rA, GetNormal())))
-		+ (bodyB.GetInvRotI() * Square(Cross(rB, GetNormal())));
+		const auto value = GetInvMass()
+		+ (bodyA.GetInvRotInertia() * Square(Cross(rA, GetNormal())))
+		+ (bodyB.GetInvRotInertia() * Square(Cross(rB, GetNormal())));
 		return (value != 0)? RealNum{1} / value : RealNum{0};
 	}();
 	
 	point.tangentMass = [&]() {
-		const auto value = GetInverseMass()
-		+ (bodyA.GetInvRotI() * Square(Cross(rA, GetTangent())))
-		+ (bodyB.GetInvRotI() * Square(Cross(rB, GetTangent())));
+		const auto value = GetInvMass()
+		+ (bodyA.GetInvRotInertia() * Square(Cross(rA, GetTangent())))
+		+ (bodyB.GetInvRotInertia() * Square(Cross(rB, GetTangent())));
 		return (value != 0)? RealNum{1} / value : RealNum{0};
 	}();
 
@@ -149,10 +149,10 @@ Mat22 VelocityConstraint::ComputeK() const noexcept
 		const auto rn2A = Cross(GetPointRelPosA(1), normal);
 		const auto rn2B = Cross(GetPointRelPosB(1), normal);
 		
-		const auto totalInvMass = GetInverseMass();
-		const auto k11 = totalInvMass + (bodyA.GetInvRotI() * Square(rn1A)) + (bodyB.GetInvRotI() * Square(rn1B));
-		const auto k22 = totalInvMass + (bodyA.GetInvRotI() * Square(rn2A)) + (bodyB.GetInvRotI() * Square(rn2B));
-		const auto k12 = totalInvMass + (bodyA.GetInvRotI() * rn1A * rn2A)  + (bodyB.GetInvRotI() * rn1B * rn2B);
+		const auto totalInvMass = GetInvMass();
+		const auto k11 = totalInvMass + (bodyA.GetInvRotInertia() * Square(rn1A)) + (bodyB.GetInvRotInertia() * Square(rn1B));
+		const auto k22 = totalInvMass + (bodyA.GetInvRotInertia() * Square(rn2A)) + (bodyB.GetInvRotInertia() * Square(rn2B));
+		const auto k12 = totalInvMass + (bodyA.GetInvRotInertia() * rn1A * rn2A)  + (bodyB.GetInvRotInertia() * rn1B * rn2B);
 
 		return Mat22{Vec2{k11, k12}, Vec2{k12, k22}};
 	}

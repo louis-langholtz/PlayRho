@@ -59,24 +59,21 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepC
 	auto& bodiesA = bodies.at(GetBodyA());
 	auto& bodiesB = bodies.at(GetBodyB());
 
-	m_localCenterA = GetBodyA()->GetLocalCenter();
-	m_localCenterB = GetBodyB()->GetLocalCenter();
-	m_invMassA = GetBodyA()->GetInverseMass();
-	m_invMassB = GetBodyB()->GetInverseMass();
-	m_invIA = GetBodyA()->GetInverseInertia();
-	m_invIB = GetBodyB()->GetInverseInertia();
+	m_localCenterA = bodiesA.GetLocalCenter();
+	m_invMassA = bodiesA.GetInvMass();
+	m_invIA = bodiesA.GetInvRotInertia();
+	const auto posA = bodiesA.GetPosition();
+	auto velA = bodiesA.GetVelocity();
 
-	const auto aA = bodiesA.GetPosition().angular;
-	const auto aB = bodiesB.GetPosition().angular;
-
-	auto vA = bodiesA.GetVelocity().linear;
-	auto wA = bodiesA.GetVelocity().angular;
-	auto vB = bodiesB.GetVelocity().linear;
-	auto wB = bodiesB.GetVelocity().angular;
+	m_localCenterB = bodiesB.GetLocalCenter();
+	m_invMassB = bodiesB.GetInvMass();
+	m_invIB = bodiesB.GetInvRotInertia();
+	const auto posB = bodiesB.GetPosition();
+	auto velB = bodiesB.GetVelocity();
 
 	// Compute the effective mass matrix.
-	m_rA = Rotate(m_localAnchorA - m_localCenterA, UnitVec2{aA});
-	m_rB = Rotate(m_localAnchorB - m_localCenterB, UnitVec2{aB});
+	m_rA = Rotate(m_localAnchorA - m_localCenterA, UnitVec2{posA.angular});
+	m_rB = Rotate(m_localAnchorB - m_localCenterB, UnitVec2{posB.angular});
 
 	// J = [-I -r1_skew I r2_skew]
 	//     [ 0       -1 0       1]
@@ -111,10 +108,8 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepC
 		m_angularImpulse *= step.dtRatio;
 
 		const auto P = Vec2{m_linearImpulse.x, m_linearImpulse.y};
-		vA -= mA * P;
-		wA -= 1_rad * iA * (Cross(m_rA, P) + m_angularImpulse);
-		vB += mB * P;
-		wB += 1_rad * iB * (Cross(m_rB, P) + m_angularImpulse);
+		velA -= Velocity{mA * P, 1_rad * iA * (Cross(m_rA, P) + m_angularImpulse)};
+		velB += Velocity{mB * P, 1_rad * iB * (Cross(m_rB, P) + m_angularImpulse)};
 	}
 	else
 	{
@@ -122,8 +117,8 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepC
 		m_angularImpulse = 0;
 	}
 
-	bodiesA.SetVelocity(Velocity{vA, wA});
-	bodiesB.SetVelocity(Velocity{vB, wB});
+	bodiesA.SetVelocity(velA);
+	bodiesB.SetVelocity(velB);
 }
 
 RealNum FrictionJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
@@ -131,10 +126,8 @@ RealNum FrictionJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
 	auto& bodiesA = bodies.at(GetBodyA());
 	auto& bodiesB = bodies.at(GetBodyB());
 
-	auto vA = bodiesA.GetVelocity().linear;
-	auto wA = bodiesA.GetVelocity().angular;
-	auto vB = bodiesB.GetVelocity().linear;
-	auto wB = bodiesB.GetVelocity().angular;
+	auto velA = bodiesA.GetVelocity();
+	auto velB = bodiesB.GetVelocity();
 
 	const auto iA = m_invIA;
 	const auto iB = m_invIB;
@@ -144,7 +137,7 @@ RealNum FrictionJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
 	// Solve angular friction
 	auto angularImpulse = RealNum(0);
 	{
-		const auto Cdot = wB.ToRadians() - wA.ToRadians();
+		const auto Cdot = velB.angular.ToRadians() - velA.angular.ToRadians();
 		const auto impulse = -m_angularMass * Cdot;
 
 		const auto oldImpulse = m_angularImpulse;
@@ -152,13 +145,13 @@ RealNum FrictionJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
 		m_angularImpulse = Clamp(m_angularImpulse + impulse, -maxImpulse, maxImpulse);
 		angularImpulse = m_angularImpulse - oldImpulse;
 
-		wA -= 1_rad * iA * angularImpulse;
-		wB += 1_rad * iB * angularImpulse;
+		velA.angular -= 1_rad * iA * angularImpulse;
+		velB.angular += 1_rad * iB * angularImpulse;
 	}
 
 	// Solve linear friction
 	{
-		const auto Cdot = vB + (GetRevPerpendicular(m_rB) * wB.ToRadians()) - vA - (GetRevPerpendicular(m_rA) * wA.ToRadians());
+		const auto Cdot = velB.linear + (GetRevPerpendicular(m_rB) * velB.angular.ToRadians()) - velA.linear - (GetRevPerpendicular(m_rA) * velA.angular.ToRadians());
 
 		auto impulse = -Transform(Cdot, m_linearMass);
 		const auto oldImpulse = m_linearImpulse;
@@ -173,15 +166,12 @@ RealNum FrictionJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
 
 		impulse = m_linearImpulse - oldImpulse;
 
-		vA -= m_invMassA * impulse;
-		wA -= 1_rad * iA * Cross(m_rA, impulse);
-
-		vB += m_invMassB * impulse;
-		wB += 1_rad * iB * Cross(m_rB, impulse);
+		velA -= Velocity{m_invMassA * impulse, 1_rad * iA * Cross(m_rA, impulse)};
+		velB += Velocity{m_invMassB * impulse, 1_rad * iB * Cross(m_rB, impulse)};
 	}
 
-	bodiesA.SetVelocity(Velocity{vA, wA});
-	bodiesB.SetVelocity(Velocity{vB, wB});
+	bodiesA.SetVelocity(velA);
+	bodiesB.SetVelocity(velB);
 	
 	return GetInvalid<RealNum>(); // TODO
 }

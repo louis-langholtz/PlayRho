@@ -421,7 +421,7 @@ TEST(ContactSolver, SolveVelocityConstraint1)
 	EXPECT_EQ(vc.GetRestitution(), restitution);
 	EXPECT_EQ(vc.GetTangentSpeed(), tangent_speed);
 	EXPECT_EQ(vc.GetContactIndex(), contact_index);
-	EXPECT_EQ(vc.GetInverseMass(), inverse_mass);
+	EXPECT_EQ(vc.GetInvMass(), inverse_mass);
 	
 	EXPECT_EQ(vc.GetPointCount(), VelocityConstraint::size_type{1});
 	
@@ -489,7 +489,7 @@ TEST(ContactSolver, SolveVelocityConstraint2)
 	EXPECT_EQ(vc.GetRestitution(), restitution);
 	EXPECT_EQ(vc.GetTangentSpeed(), tangent_speed);
 	EXPECT_EQ(vc.GetContactIndex(), contact_index);
-	EXPECT_EQ(vc.GetInverseMass(), inverse_mass);
+	EXPECT_EQ(vc.GetInvMass(), inverse_mass);
 	
 	EXPECT_EQ(vc.GetPointCount(), VelocityConstraint::size_type{1});
 	

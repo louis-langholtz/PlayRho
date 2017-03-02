@@ -240,11 +240,11 @@ namespace {
 				const auto P = GetNormalImpulseAtPoint(vc, j) * normal + GetTangentImpulseAtPoint(vc, j) * tangent;
 				vp.a -= Velocity{
 					vc.bodyA.GetInvMass() * P,
-					1_rad * vc.bodyA.GetInvRotI() * Cross(GetPointRelPosA(vc, j), P)
+					1_rad * vc.bodyA.GetInvRotInertia() * Cross(GetPointRelPosA(vc, j), P)
 				};
 				vp.b += Velocity{
 					vc.bodyB.GetInvMass() * P,
-					1_rad * vc.bodyB.GetInvRotI() * Cross(GetPointRelPosB(vc, j), P)
+					1_rad * vc.bodyB.GetInvRotInertia() * Cross(GetPointRelPosB(vc, j), P)
 				};
 			}
 		}
@@ -850,8 +850,8 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& step, Island is
 		const auto new_velocity = GetVelocity(*body, h);
 		assert(IsValid(new_velocity));
 		bodyConstraints[body] = BodyConstraint{
-			body->GetInverseMass(),
-			body->GetInverseInertia(),
+			body->GetInvMass(),
+			body->GetInvRotInertia(),
 			body->GetLocalCenter(),
 			body->m_sweep.pos1,
 			new_velocity
@@ -1214,8 +1214,8 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 	for (auto&& body: island.m_bodies)
 	{
 		bodyConstraints[body] = BodyConstraint{
-			body->GetInverseMass(),
-			body->GetInverseInertia(),
+			body->GetInvMass(),
+			body->GetInvRotInertia(),
 			body->GetLocalCenter(),
 			body->m_sweep.pos1,
 			body->GetVelocity()

@@ -164,7 +164,7 @@ TEST(World, DynamicEdgeBodyHasCorrectMass)
 	const auto totalMass = circleMass + rectMass;
 	
 	EXPECT_EQ(body->GetType(), BodyType::Dynamic);
-	EXPECT_EQ(body->GetInverseMass(), RealNum(1) / totalMass);
+	EXPECT_EQ(body->GetInvMass(), RealNum(1) / totalMass);
 
 	ASSERT_NE(fixture->GetShape(), nullptr);
 	EXPECT_EQ(fixture->GetShape()->GetType(), shape->GetType());

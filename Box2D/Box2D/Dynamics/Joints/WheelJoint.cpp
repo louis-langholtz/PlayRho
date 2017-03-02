@@ -72,10 +72,10 @@ void WheelJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
 
 	m_localCenterA = GetBodyA()->GetLocalCenter();
 	m_localCenterB = GetBodyB()->GetLocalCenter();
-	m_invMassA = GetBodyA()->GetInverseMass();
-	m_invMassB = GetBodyB()->GetInverseMass();
-	m_invIA = GetBodyA()->GetInverseInertia();
-	m_invIB = GetBodyB()->GetInverseInertia();
+	m_invMassA = GetBodyA()->GetInvMass();
+	m_invMassB = GetBodyB()->GetInvMass();
+	m_invIA = GetBodyA()->GetInvRotInertia();
+	m_invIB = GetBodyB()->GetInvRotInertia();
 
 	const auto invMassA = m_invMassA;
 	const auto invMassB = m_invMassB;
