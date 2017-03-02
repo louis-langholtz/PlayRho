@@ -70,35 +70,29 @@ void WheelJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
 	auto& bodiesA = bodies.at(GetBodyA());
 	auto& bodiesB = bodies.at(GetBodyB());
 
-	m_localCenterA = GetBodyA()->GetLocalCenter();
-	m_localCenterB = GetBodyB()->GetLocalCenter();
-	m_invMassA = GetBodyA()->GetInvMass();
-	m_invMassB = GetBodyB()->GetInvMass();
-	m_invIA = GetBodyA()->GetInvRotInertia();
-	m_invIB = GetBodyB()->GetInvRotInertia();
-
+	m_localCenterA = bodiesA.GetLocalCenter();
+	m_invMassA = bodiesA.GetInvMass();
+	m_invIA = bodiesA.GetInvRotInertia();
+	const auto posA = bodiesA.GetPosition();
+	auto velA = bodiesA.GetVelocity();
 	const auto invMassA = m_invMassA;
-	const auto invMassB = m_invMassB;
 	const auto iA = m_invIA;
+
+	m_localCenterB = bodiesB.GetLocalCenter();
+	m_invMassB = bodiesB.GetInvMass();
+	m_invIB = bodiesB.GetInvRotInertia();
+	const auto posB = bodiesB.GetPosition();
+	auto velB = bodiesB.GetVelocity();
+	const auto invMassB = m_invMassB;
 	const auto iB = m_invIB;
 
-	const auto cA = bodiesA.GetPosition().linear;
-	const auto aA = bodiesA.GetPosition().angular;
-	auto vA = bodiesA.GetVelocity().linear;
-	auto wA = bodiesA.GetVelocity().angular;
-
-	const auto cB = bodiesB.GetPosition().linear;
-	const auto aB = bodiesB.GetPosition().angular;
-	auto vB = bodiesB.GetVelocity().linear;
-	auto wB = bodiesB.GetVelocity().angular;
-
-	const auto qA = UnitVec2{aA};
-	const auto qB = UnitVec2{aB};
+	const auto qA = UnitVec2{posA.angular};
+	const auto qB = UnitVec2{posB.angular};
 
 	// Compute the effective masses.
 	const auto rA = Rotate(m_localAnchorA - m_localCenterA, qA);
 	const auto rB = Rotate(m_localAnchorB - m_localCenterB, qB);
-	const auto dd = cB + rB - cA - rA;
+	const auto dd = posB.linear + rB - posA.linear - rA;
 
 	// Point to line constraint
 	{
@@ -186,11 +180,8 @@ void WheelJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
 		const auto LA = m_impulse * m_sAy + m_springImpulse * m_sAx + m_motorImpulse;
 		const auto LB = m_impulse * m_sBy + m_springImpulse * m_sBx + m_motorImpulse;
 
-		vA -= m_invMassA * P;
-		wA -= 1_rad * m_invIA * LA;
-
-		vB += m_invMassB * P;
-		wB += 1_rad * m_invIB * LB;
+		velA -= Velocity{m_invMassA * P, 1_rad * m_invIA * LA};
+		velB += Velocity{m_invMassB * P, 1_rad * m_invIB * LB};
 	}
 	else
 	{
@@ -199,8 +190,8 @@ void WheelJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
 		m_motorImpulse = 0;
 	}
 
-	bodiesA.SetVelocity(Velocity{vA, wA});
-	bodiesB.SetVelocity(Velocity{vB, wB});
+	bodiesA.SetVelocity(velA);
+	bodiesB.SetVelocity(velB);
 }
 
 RealNum WheelJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
@@ -208,19 +199,17 @@ RealNum WheelJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 	auto& bodiesA = bodies.at(GetBodyA());
 	auto& bodiesB = bodies.at(GetBodyB());
 
+	auto velA = bodiesA.GetVelocity();
 	const auto invMassA = m_invMassA;
-	const auto invMassB = m_invMassB;
 	const auto iA = m_invIA;
-	const auto iB = m_invIB;
 
-	auto vA = bodiesA.GetVelocity().linear;
-	auto wA = bodiesA.GetVelocity().angular;
-	auto vB = bodiesB.GetVelocity().linear;
-	auto wB = bodiesB.GetVelocity().angular;
+	auto velB = bodiesB.GetVelocity();
+	const auto invMassB = m_invMassB;
+	const auto iB = m_invIB;
 
 	// Solve spring constraint
 	{
-		const auto Cdot = Dot(m_ax, vB - vA) + m_sBx * wB.ToRadians() - m_sAx * wA.ToRadians();
+		const auto Cdot = Dot(m_ax, velB.linear - velA.linear) + m_sBx * velB.angular.ToRadians() - m_sAx * velA.angular.ToRadians();
 		const auto impulse = -m_springMass * (Cdot + m_bias + m_gamma * m_springImpulse);
 		m_springImpulse += impulse;
 
@@ -228,16 +217,13 @@ RealNum WheelJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 		const auto LA = impulse * m_sAx;
 		const auto LB = impulse * m_sBx;
 
-		vA -= invMassA * P;
-		wA -= 1_rad * iA * LA;
-
-		vB += invMassB * P;
-		wB += 1_rad * iB * LB;
+		velA -= Velocity{invMassA * P, 1_rad * iA * LA};
+		velB += Velocity{invMassB * P, 1_rad * iB * LB};
 	}
 
 	// Solve rotational motor constraint
 	{
-		const auto Cdot = wB - wA - m_motorSpeed;
+		const auto Cdot = velB.angular - velA.angular - m_motorSpeed;
 		auto impulse = -m_motorMass * Cdot.ToRadians();
 
 		const auto oldImpulse = m_motorImpulse;
@@ -245,13 +231,13 @@ RealNum WheelJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 		m_motorImpulse = Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
 		impulse = m_motorImpulse - oldImpulse;
 
-		wA -= 1_rad * iA * impulse;
-		wB += 1_rad * iB * impulse;
+		velA.angular -= 1_rad * iA * impulse;
+		velB.angular += 1_rad * iB * impulse;
 	}
 
 	// Solve point to line constraint
 	{
-		const auto Cdot = Dot(m_ay, vB - vA) + m_sBy * wB.ToRadians() - m_sAy * wA.ToRadians();
+		const auto Cdot = Dot(m_ay, velB.linear - velA.linear) + m_sBy * velB.angular.ToRadians() - m_sAy * velA.angular.ToRadians();
 		const auto impulse = -m_mass * Cdot;
 		m_impulse += impulse;
 
@@ -259,15 +245,12 @@ RealNum WheelJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 		const auto LA = impulse * m_sAy;
 		const auto LB = impulse * m_sBy;
 
-		vA -= invMassA * P;
-		wA -= 1_rad * iA * LA;
-
-		vB += invMassB * P;
-		wB += 1_rad * iB * LB;
+		velA -= Velocity{invMassA * P, 1_rad * iA * LA};
+		velB += Velocity{invMassB * P, 1_rad * iB * LB};
 	}
 
-	bodiesA.SetVelocity(Velocity{vA, wA});
-	bodiesB.SetVelocity(Velocity{vB, wB});
+	bodiesA.SetVelocity(velA);
+	bodiesB.SetVelocity(velB);
 	
 	return GetInvalid<RealNum>();
 }
@@ -277,17 +260,15 @@ bool WheelJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constra
 	auto& bodiesA = bodies.at(GetBodyA());
 	auto& bodiesB = bodies.at(GetBodyB());
 
-	auto cA = bodiesA.GetPosition().linear;
-	auto aA = bodiesA.GetPosition().angular;
-	auto cB = bodiesB.GetPosition().linear;
-	auto aB = bodiesB.GetPosition().angular;
+	auto posA = bodiesA.GetPosition();
+	auto posB = bodiesB.GetPosition();
 
-	const auto qA = UnitVec2{aA};
-	const auto qB = UnitVec2{aB};
+	const auto qA = UnitVec2{posA.angular};
+	const auto qB = UnitVec2{posB.angular};
 
 	const auto rA = Rotate(m_localAnchorA - m_localCenterA, qA);
 	const auto rB = Rotate(m_localAnchorB - m_localCenterB, qB);
-	const auto d = (cB - cA) + rB - rA;
+	const auto d = (posB.linear - posA.linear) + rB - rA;
 
 	const auto ay = Rotate(m_localYAxisA, qA);
 
@@ -304,13 +285,11 @@ bool WheelJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constra
 	const auto LA = impulse * sAy;
 	const auto LB = impulse * sBy;
 
-	cA -= m_invMassA * P;
-	aA -= 1_rad * m_invIA * LA;
-	cB += m_invMassB * P;
-	aB += 1_rad * m_invIB * LB;
+	posA -= Position{m_invMassA * P, 1_rad * m_invIA * LA};
+	posB += Position{m_invMassB * P, 1_rad * m_invIB * LB};
 
-	bodiesA.SetPosition(Position{cA, aA});
-	bodiesB.SetPosition(Position{cB, aB});
+	bodiesA.SetPosition(posA);
+	bodiesB.SetPosition(posB);
 
 	return Abs(C) <= conf.linearSlop;
 }

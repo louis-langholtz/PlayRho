@@ -97,7 +97,7 @@ private:
 	Vec2 m_localAnchorB;
 	Angle m_referenceAngle;
 	RealNum m_gamma;
-	Vec3 m_impulse;
+	Vec3 m_impulse = Vec3_zero;
 
 	// Solver temp
 	Vec2 m_rA;
