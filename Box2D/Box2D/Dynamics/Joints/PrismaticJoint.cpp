@@ -126,30 +126,27 @@ void PrismaticJoint::InitVelocityConstraints(BodyConstraints& bodies,
 	auto& bodiesA = bodies.at(GetBodyA());
 	auto& bodiesB = bodies.at(GetBodyB());
 
-	m_localCenterA = GetBodyA()->GetLocalCenter();
-	m_localCenterB = GetBodyB()->GetLocalCenter();
-	m_invMassA = GetBodyA()->GetInvMass();
-	m_invMassB = GetBodyB()->GetInvMass();
-	m_invIA = GetBodyA()->GetInvRotInertia();
-	m_invIB = GetBodyB()->GetInvRotInertia();
+	m_localCenterA = bodiesA.GetLocalCenter();
+	m_invMassA = bodiesA.GetInvMass();
+	m_invIA = bodiesA.GetInvRotInertia();
 
-	const auto cA = bodiesA.GetPosition().linear;
-	const auto aA = bodiesA.GetPosition().angular;
-	auto vA = bodiesA.GetVelocity().linear;
-	auto wA = bodiesA.GetVelocity().angular;
+	m_localCenterB = bodiesB.GetLocalCenter();
+	m_invMassB = bodiesB.GetInvMass();
+	m_invIB = bodiesB.GetInvRotInertia();
 
-	const auto cB = bodiesB.GetPosition().linear;
-	const auto aB = bodiesB.GetPosition().angular;
-	auto vB = bodiesB.GetVelocity().linear;
-	auto wB = bodiesB.GetVelocity().angular;
+	const auto posA = bodiesA.GetPosition();
+	auto velA = bodiesA.GetVelocity();
 
-	const auto qA = UnitVec2(aA);
-	const auto qB = UnitVec2(aB);
+	const auto posB = bodiesB.GetPosition();
+	auto velB = bodiesB.GetVelocity();
+
+	const auto qA = UnitVec2(posA.angular);
+	const auto qB = UnitVec2(posB.angular);
 
 	// Compute the effective masses.
 	const auto rA = Rotate(m_localAnchorA - m_localCenterA, qA);
 	const auto rB = Rotate(m_localAnchorB - m_localCenterB, qB);
-	const auto d = (cB - cA) + rB - rA;
+	const auto d = (posB.linear - posA.linear) + rB - rA;
 
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
@@ -242,11 +239,8 @@ void PrismaticJoint::InitVelocityConstraints(BodyConstraints& bodies,
 		const auto LA = m_impulse.x * m_s1 + m_impulse.y + (m_motorImpulse + m_impulse.z) * m_a1;
 		const auto LB = m_impulse.x * m_s2 + m_impulse.y + (m_motorImpulse + m_impulse.z) * m_a2;
 
-		vA -= mA * P;
-		wA -= 1_rad * iA * LA;
-
-		vB += mB * P;
-		wB += 1_rad * iB * LB;
+		velA -= Velocity{mA * P, 1_rad * iA * LA};
+		velB += Velocity{mB * P, 1_rad * iB * LB};
 	}
 	else
 	{
@@ -254,8 +248,8 @@ void PrismaticJoint::InitVelocityConstraints(BodyConstraints& bodies,
 		m_motorImpulse = 0;
 	}
 
-	bodiesA.SetVelocity(Velocity{vA, wA});
-	bodiesB.SetVelocity(Velocity{vB, wB});
+	bodiesA.SetVelocity(velA);
+	bodiesB.SetVelocity(velB);
 }
 
 RealNum PrismaticJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
@@ -266,8 +260,10 @@ RealNum PrismaticJoint::SolveVelocityConstraints(BodyConstraints& bodies, const 
 	auto velA = bodiesA.GetVelocity();
 	auto velB = bodiesB.GetVelocity();
 
-	const auto mA = m_invMassA, mB = m_invMassB;
-	const auto iA = m_invIA, iB = m_invIB;
+	const auto mA = m_invMassA;
+	const auto mB = m_invMassB;
+	const auto iA = m_invIA;
+	const auto iB = m_invIB;
 
 	// Solve linear motor constraint.
 	if (m_enableMotor && m_limitState != e_equalLimits)
@@ -358,13 +354,11 @@ bool PrismaticJoint::SolvePositionConstraints(BodyConstraints& bodies, const Con
 	auto& bodiesA = bodies.at(GetBodyA());
 	auto& bodiesB = bodies.at(GetBodyB());
 
-	auto cA = bodiesA.GetPosition().linear;
-	auto aA = bodiesA.GetPosition().angular;
-	auto cB = bodiesB.GetPosition().linear;
-	auto aB = bodiesB.GetPosition().angular;
+	auto posA = bodiesA.GetPosition();
+	auto posB = bodiesB.GetPosition();
 
-	const auto qA = UnitVec2{aA};
-	const auto qB = UnitVec2{aB};
+	const auto qA = UnitVec2{posA.angular};
+	const auto qB = UnitVec2{posB.angular};
 
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
@@ -372,7 +366,7 @@ bool PrismaticJoint::SolvePositionConstraints(BodyConstraints& bodies, const Con
 	// Compute fresh Jacobians
 	const auto rA = Rotate(m_localAnchorA - m_localCenterA, qA);
 	const auto rB = Rotate(m_localAnchorB - m_localCenterB, qB);
-	const auto d = cB + rB - cA - rA;
+	const auto d = posB.linear + rB - posA.linear - rA;
 
 	const auto axis = Rotate(m_localXAxisA, qA);
 	const auto a1 = Cross(d + rA, axis);
@@ -382,7 +376,7 @@ bool PrismaticJoint::SolvePositionConstraints(BodyConstraints& bodies, const Con
 	const auto s1 = Cross(d + rA, perp);
 	const auto s2 = Cross(rB, perp);
 
-	const auto C1 = Vec2{Dot(perp, d), (aB - aA - m_referenceAngle).ToRadians()};
+	const auto C1 = Vec2{Dot(perp, d), (posB.angular - posA.angular - m_referenceAngle).ToRadians()};
 
 	auto linearError = Abs(C1.x);
 	const auto angularError = Abs(C1.y);
@@ -458,13 +452,11 @@ bool PrismaticJoint::SolvePositionConstraints(BodyConstraints& bodies, const Con
 	const auto LA = impulse.x * s1 + impulse.y + impulse.z * a1;
 	const auto LB = impulse.x * s2 + impulse.y + impulse.z * a2;
 
-	cA -= mA * P;
-	aA -= 1_rad * iA * LA;
-	cB += mB * P;
-	aB += 1_rad * iB * LB;
+	posA -= Position{mA * P, 1_rad * iA * LA};
+	posB += Position{mB * P, 1_rad * iB * LB};
 
-	bodiesA.SetPosition(Position{cA, aA});
-	bodiesB.SetPosition(Position{cB, aB});
+	bodiesA.SetPosition(posA);
+	bodiesB.SetPosition(posB);
 
 	return (linearError <= conf.linearSlop) && (angularError <= conf.angularSlop);
 }

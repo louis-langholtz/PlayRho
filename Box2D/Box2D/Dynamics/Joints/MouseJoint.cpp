@@ -88,21 +88,13 @@ void MouseJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
 {
 	auto& bodiesB = bodies.at(GetBodyB());
 
-	m_localCenterB = GetBodyB()->GetLocalCenter();
-	m_invMassB = GetBodyB()->GetInvMass();
-	m_invIB = GetBodyB()->GetInvRotInertia();
+	m_localCenterB = bodiesB.GetLocalCenter();
+	m_invMassB = bodiesB.GetInvMass();
+	m_invIB = bodiesB.GetInvRotInertia();
+	const auto posB = bodiesB.GetPosition();
+	auto velB = bodiesB.GetVelocity();
 
-	const auto positionB = bodiesB.GetPosition();
-	assert(IsValid(positionB));
-	const auto cB = positionB.linear;
-	const auto aB = positionB.angular;
-
-	const auto velocityB = bodiesB.GetVelocity();
-	assert(IsValid(velocityB));
-	auto vB = velocityB.linear;
-	auto wB = velocityB.angular;
-
-	const UnitVec2 qB(aB);
+	const UnitVec2 qB(posB.angular);
 
 	const auto mass = GetMass(*GetBodyB());
 
@@ -137,24 +129,23 @@ void MouseJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
 
 	m_mass = Invert(K);
 
-	m_C = ((cB + m_rB) - m_targetA) * beta;
+	m_C = ((posB.linear + m_rB) - m_targetA) * beta;
 	assert(IsValid(m_C));
 
 	// Cheat with some damping
-	wB *= 0.98f;
+	velB.angular *= 0.98f;
 
 	if (step.doWarmStart)
 	{
 		m_impulse *= step.dtRatio;
-		vB += m_invMassB * m_impulse;
-		wB += 1_rad * m_invIB * Cross(m_rB, m_impulse);
+		velB += Velocity{m_invMassB * m_impulse, 1_rad * m_invIB * Cross(m_rB, m_impulse)};
 	}
 	else
 	{
 		m_impulse = Vec2_zero;
 	}
 
-	bodiesB.SetVelocity(Velocity{vB, wB});
+	bodiesB.SetVelocity(velB);
 }
 
 RealNum MouseJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)

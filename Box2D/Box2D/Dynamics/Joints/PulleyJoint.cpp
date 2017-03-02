@@ -76,16 +76,15 @@ void PulleyJoint::InitVelocityConstraints(BodyConstraints& bodies,
 	auto& bodiesA = bodies.at(GetBodyA());
 	auto& bodiesB = bodies.at(GetBodyB());
 
-	m_localCenterA = GetBodyA()->GetLocalCenter();
-	m_localCenterB = GetBodyB()->GetLocalCenter();
-	m_invMassA = GetBodyA()->GetInvMass();
-	m_invMassB = GetBodyB()->GetInvMass();
-	m_invIA = GetBodyA()->GetInvRotInertia();
-	m_invIB = GetBodyB()->GetInvRotInertia();
-
+	m_localCenterA = bodiesA.GetLocalCenter();
+	m_invMassA = bodiesA.GetInvMass();
+	m_invIA = bodiesA.GetInvRotInertia();
 	const auto posA = bodiesA.GetPosition();
 	auto velA = bodiesA.GetVelocity();
 
+	m_localCenterB = bodiesB.GetLocalCenter();
+	m_invMassB = bodiesB.GetInvMass();
+	m_invIB = bodiesB.GetInvRotInertia();
 	const auto posB = bodiesB.GetPosition();
 	auto velB = bodiesB.GetVelocity();
 
