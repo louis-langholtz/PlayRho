@@ -65,10 +65,11 @@ WheelJoint::WheelJoint(const WheelJointDef& def):
 	// Intentionally empty.
 }
 
-void WheelJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf&)
+void WheelJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf&)
 {
-	m_indexA = GetBodyA()->GetIslandIndex();
-	m_indexB = GetBodyB()->GetIslandIndex();
+	auto& bodiesA = bodies.at(GetBodyA());
+	auto& bodiesB = bodies.at(GetBodyB());
+
 	m_localCenterA = GetBodyA()->GetLocalCenter();
 	m_localCenterB = GetBodyB()->GetLocalCenter();
 	m_invMassA = GetBodyA()->GetInverseMass();
@@ -81,15 +82,15 @@ void WheelJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const Step
 	const auto iA = m_invIA;
 	const auto iB = m_invIB;
 
-	const auto cA = bodies[m_indexA].GetPosition().linear;
-	const auto aA = bodies[m_indexA].GetPosition().angular;
-	auto vA = bodies[m_indexA].GetVelocity().linear;
-	auto wA = bodies[m_indexA].GetVelocity().angular;
+	const auto cA = bodiesA.GetPosition().linear;
+	const auto aA = bodiesA.GetPosition().angular;
+	auto vA = bodiesA.GetVelocity().linear;
+	auto wA = bodiesA.GetVelocity().angular;
 
-	const auto cB = bodies[m_indexB].GetPosition().linear;
-	const auto aB = bodies[m_indexB].GetPosition().angular;
-	auto vB = bodies[m_indexB].GetVelocity().linear;
-	auto wB = bodies[m_indexB].GetVelocity().angular;
+	const auto cB = bodiesB.GetPosition().linear;
+	const auto aB = bodiesB.GetPosition().angular;
+	auto vB = bodiesB.GetVelocity().linear;
+	auto wB = bodiesB.GetVelocity().angular;
 
 	const auto qA = UnitVec2{aA};
 	const auto qB = UnitVec2{aB};
@@ -198,21 +199,24 @@ void WheelJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const Step
 		m_motorImpulse = 0;
 	}
 
-	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
-	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
+	bodiesA.SetVelocity(Velocity{vA, wA});
+	bodiesB.SetVelocity(Velocity{vB, wB});
 }
 
-RealNum WheelJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
+RealNum WheelJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
 {
+	auto& bodiesA = bodies.at(GetBodyA());
+	auto& bodiesB = bodies.at(GetBodyB());
+
 	const auto invMassA = m_invMassA;
 	const auto invMassB = m_invMassB;
 	const auto iA = m_invIA;
 	const auto iB = m_invIB;
 
-	auto vA = bodies[m_indexA].GetVelocity().linear;
-	auto wA = bodies[m_indexA].GetVelocity().angular;
-	auto vB = bodies[m_indexB].GetVelocity().linear;
-	auto wB = bodies[m_indexB].GetVelocity().angular;
+	auto vA = bodiesA.GetVelocity().linear;
+	auto wA = bodiesA.GetVelocity().angular;
+	auto vB = bodiesB.GetVelocity().linear;
+	auto wB = bodiesB.GetVelocity().angular;
 
 	// Solve spring constraint
 	{
@@ -262,16 +266,21 @@ RealNum WheelJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const 
 		wB += 1_rad * iB * LB;
 	}
 
-	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
-	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
+	bodiesA.SetVelocity(Velocity{vA, wA});
+	bodiesB.SetVelocity(Velocity{vB, wB});
+	
+	return GetInvalid<RealNum>();
 }
 
-bool WheelJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const
+bool WheelJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const
 {
-	auto cA = bodies[m_indexA].GetPosition().linear;
-	auto aA = bodies[m_indexA].GetPosition().angular;
-	auto cB = bodies[m_indexB].GetPosition().linear;
-	auto aB = bodies[m_indexB].GetPosition().angular;
+	auto& bodiesA = bodies.at(GetBodyA());
+	auto& bodiesB = bodies.at(GetBodyB());
+
+	auto cA = bodiesA.GetPosition().linear;
+	auto aA = bodiesA.GetPosition().angular;
+	auto cB = bodiesB.GetPosition().linear;
+	auto aB = bodiesB.GetPosition().angular;
 
 	const auto qA = UnitVec2{aA};
 	const auto qB = UnitVec2{aB};
@@ -300,8 +309,8 @@ bool WheelJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const Con
 	cB += m_invMassB * P;
 	aB += 1_rad * m_invIB * LB;
 
-	bodies[m_indexA].SetPosition(Position{cA, aA});
-	bodies[m_indexB].SetPosition(Position{cB, aB});
+	bodiesA.SetPosition(Position{cA, aA});
+	bodiesB.SetPosition(Position{cB, aB});
 
 	return Abs(C) <= conf.linearSlop;
 }

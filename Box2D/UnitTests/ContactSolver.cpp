@@ -43,12 +43,10 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
 	ASSERT_EQ(manifold.GetPointCount(), 2);
 
-	const auto indexA = BodyConstraint::index_type{0};
-	const auto indexB = BodyConstraint::index_type{1};
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
-	auto bA = BodyConstraint{indexA, RealNum(1), RealNum(1), lcA, old_pA, old_vA};
-	auto bB = BodyConstraint{indexB, RealNum(1), RealNum(1), lcB, old_pB, old_vB};
+	auto bA = BodyConstraint{RealNum(1), RealNum(1), lcA, old_pA, old_vA};
+	auto bB = BodyConstraint{RealNum(1), RealNum(1), lcB, old_pB, old_vB};
 	const auto pc = PositionConstraint{manifold, bA, RealNum{0}, bB, RealNum{0}};
 	
 	const auto conf = ConstraintSolverConf{};
@@ -80,12 +78,10 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
 	ASSERT_EQ(manifold.GetPointCount(), 2);
 	
-	const auto indexA = BodyConstraint::index_type{0};
-	const auto indexB = BodyConstraint::index_type{1};
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
-	auto bA = BodyConstraint{indexA, RealNum(1), RealNum(1), lcA, old_pA, old_vA};
-	auto bB = BodyConstraint{indexB, RealNum(1), RealNum(1), lcB, old_pB, old_vB};
+	auto bA = BodyConstraint{RealNum(1), RealNum(1), lcA, old_pA, old_vA};
+	auto bB = BodyConstraint{RealNum(1), RealNum(1), lcB, old_pB, old_vB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 	
 	const auto conf = ConstraintSolverConf{};
@@ -112,16 +108,14 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
 	ASSERT_EQ(manifold.GetPointCount(), 2);
 	
-	const auto indexA = BodyConstraint::index_type{0};
-	const auto indexB = BodyConstraint::index_type{1};
 	const auto lcA = Vec2{};
 	const auto lcB = Vec2{};
 	const auto old_pA = Position{Vec2{0, 0}, 0_deg};
 	const auto old_pB = Position{Vec2{0, 0}, 0_deg};
 	const auto old_vA = Velocity{};
 	const auto old_vB = Velocity{};
-	auto bA = BodyConstraint{indexA, RealNum(1), RealNum(1), lcA, old_pA, old_vA};
-	auto bB = BodyConstraint{indexB, RealNum(1), RealNum(1), lcB, old_pB, old_vB};
+	auto bA = BodyConstraint{RealNum(1), RealNum(1), lcA, old_pA, old_vA};
+	auto bB = BodyConstraint{RealNum(1), RealNum(1), lcB, old_pB, old_vB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 
 	const auto maxLinearCorrection = std::numeric_limits<RealNum>::infinity();
@@ -162,12 +156,10 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
 	ASSERT_EQ(manifold.GetPoint(0).localPoint, Vec2(-2, +2));
 	ASSERT_EQ(manifold.GetPoint(1).localPoint, Vec2(-2, -2));
 	
-	const auto indexA = BodyConstraint::index_type{0};
-	const auto indexB = BodyConstraint::index_type{1};
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
-	auto bA = BodyConstraint{indexA, RealNum(1), RealNum(1), lcA, old_pA, old_vA};
-	auto bB = BodyConstraint{indexB, RealNum(1), RealNum(1), lcB, old_pB, old_vB};
+	auto bA = BodyConstraint{RealNum(1), RealNum(1), lcA, old_pA, old_vA};
+	auto bB = BodyConstraint{RealNum(1), RealNum(1), lcB, old_pB, old_vB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 	
 	const auto maxLinearCorrection = std::numeric_limits<RealNum>::infinity();
@@ -209,12 +201,10 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
 	ASSERT_EQ(manifold.GetPoint(0).localPoint, Vec2(+2, -2));
 	ASSERT_EQ(manifold.GetPoint(1).localPoint, Vec2(+2, +2));
 	
-	const auto indexA = BodyConstraint::index_type{0};
-	const auto indexB = BodyConstraint::index_type{1};
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
-	auto bA = BodyConstraint{indexA, RealNum(1), RealNum(1), lcA, old_pA, old_vA};
-	auto bB = BodyConstraint{indexB, RealNum(1), RealNum(1), lcB, old_pB, old_vB};
+	auto bA = BodyConstraint{RealNum(1), RealNum(1), lcA, old_pA, old_vA};
+	auto bB = BodyConstraint{RealNum(1), RealNum(1), lcB, old_pB, old_vB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 	
 	const auto maxLinearCorrection = std::numeric_limits<RealNum>::infinity();
@@ -256,12 +246,10 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
 	ASSERT_EQ(manifold.GetPoint(0).localPoint, Vec2(-2, -2));
 	ASSERT_EQ(manifold.GetPoint(1).localPoint, Vec2(+2, -2));
 	
-	const auto indexA = BodyConstraint::index_type{0};
-	const auto indexB = BodyConstraint::index_type{1};
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
-	auto bA = BodyConstraint{indexA, RealNum(1), RealNum(1), lcA, old_pA, old_vA};
-	auto bB = BodyConstraint{indexB, RealNum(1), RealNum(1), lcB, old_pB, old_vB};
+	auto bA = BodyConstraint{RealNum(1), RealNum(1), lcA, old_pA, old_vA};
+	auto bB = BodyConstraint{RealNum(1), RealNum(1), lcB, old_pB, old_vB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 	
 	const auto maxLinearCorrection = std::numeric_limits<RealNum>::infinity();
@@ -316,12 +304,10 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
 	ASSERT_EQ(manifold.GetPoint(0).localPoint, Vec2(+2, +2));
 	ASSERT_EQ(manifold.GetPoint(1).localPoint, Vec2(-2, +2));
 	
-	const auto indexA = BodyConstraint::index_type{0};
-	const auto indexB = BodyConstraint::index_type{1};
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
-	auto bA = BodyConstraint{indexA, RealNum(1), RealNum(1), lcA, old_pA, old_vA};
-	auto bB = BodyConstraint{indexB, RealNum(1), RealNum(1), lcB, old_pB, old_vB};
+	auto bA = BodyConstraint{RealNum(1), RealNum(1), lcA, old_pA, old_vA};
+	auto bB = BodyConstraint{RealNum(1), RealNum(1), lcB, old_pB, old_vB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 
 	const auto maxLinearCorrection = std::numeric_limits<RealNum>::infinity();
@@ -368,12 +354,10 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
 	const auto old_vA = Velocity{};
 	const auto old_vB = Velocity{};
 
-	const auto indexA = BodyConstraint::index_type{0};
-	const auto indexB = BodyConstraint::index_type{1};
 	const auto lcA = Vec2{};
 	const auto lcB = Vec2{};
-	auto bA = BodyConstraint{indexA, RealNum(1), RealNum(1), lcA, old_pA, old_vA};
-	auto bB = BodyConstraint{indexB, RealNum(1), RealNum(1), lcB, old_pB, old_vB};
+	auto bA = BodyConstraint{RealNum(1), RealNum(1), lcA, old_pA, old_vA};
+	auto bB = BodyConstraint{RealNum(1), RealNum(1), lcB, old_pB, old_vB};
 	const auto pc = PositionConstraint{manifold, bA, GetVertexRadius(shape), bB, GetVertexRadius(shape)};
 	
 	const auto conf = ConstraintSolverConf{};

@@ -47,12 +47,13 @@ RopeJoint::RopeJoint(const RopeJointDef& def)
 	m_length = 0;
 }
 
-void RopeJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
+void RopeJoint::InitVelocityConstraints(BodyConstraints& bodies,
 										const StepConf& step,
 										const ConstraintSolverConf& conf)
 {
-	m_indexA = GetBodyA()->GetIslandIndex();
-	m_indexB = GetBodyB()->GetIslandIndex();
+	auto& bodiesA = bodies.at(GetBodyA());
+	auto& bodiesB = bodies.at(GetBodyB());
+
 	m_localCenterA = GetBodyA()->GetLocalCenter();
 	m_localCenterB = GetBodyB()->GetLocalCenter();
 	m_invMassA = GetBodyA()->GetInverseMass();
@@ -60,15 +61,15 @@ void RopeJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 	m_invIA = GetBodyA()->GetInverseInertia();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto cA = bodies[m_indexA].GetPosition().linear;
-	const auto aA = bodies[m_indexA].GetPosition().angular;
-	auto vA = bodies[m_indexA].GetVelocity().linear;
-	auto wA = bodies[m_indexA].GetVelocity().angular;
+	const auto cA = bodiesA.GetPosition().linear;
+	const auto aA = bodiesA.GetPosition().angular;
+	auto vA = bodiesA.GetVelocity().linear;
+	auto wA = bodiesA.GetVelocity().angular;
 
-	const auto cB = bodies[m_indexB].GetPosition().linear;
-	const auto aB = bodies[m_indexB].GetPosition().angular;
-	auto vB = bodies[m_indexB].GetVelocity().linear;
-	auto wB = bodies[m_indexB].GetVelocity().angular;
+	const auto cB = bodiesB.GetPosition().linear;
+	const auto aB = bodiesB.GetPosition().angular;
+	auto vB = bodiesB.GetVelocity().linear;
+	auto wB = bodiesB.GetVelocity().angular;
 
 	const UnitVec2 qA(aA), qB(aB);
 
@@ -116,16 +117,19 @@ void RopeJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 		m_impulse = 0;
 	}
 
-	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
-	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
+	bodiesA.SetVelocity(Velocity{vA, wA});
+	bodiesB.SetVelocity(Velocity{vB, wB});
 }
 
-RealNum RopeJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
+RealNum RopeJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
 {
-	auto vA = bodies[m_indexA].GetVelocity().linear;
-	auto wA = bodies[m_indexA].GetVelocity().angular;
-	auto vB = bodies[m_indexB].GetVelocity().linear;
-	auto wB = bodies[m_indexB].GetVelocity().angular;
+	auto& bodiesA = bodies.at(GetBodyA());
+	auto& bodiesB = bodies.at(GetBodyB());
+
+	auto vA = bodiesA.GetVelocity().linear;
+	auto wA = bodiesA.GetVelocity().angular;
+	auto vB = bodiesB.GetVelocity().linear;
+	auto wB = bodiesB.GetVelocity().angular;
 
 	// Cdot = dot(u, v + cross(w, r))
 	const auto vpA = vA + GetRevPerpendicular(m_rA) * wA.ToRadians();
@@ -150,18 +154,21 @@ RealNum RopeJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const S
 	vB += m_invMassB * P;
 	wB += 1_rad * m_invIB * Cross(m_rB, P);
 
-	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
-	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
+	bodiesA.SetVelocity(Velocity{vA, wA});
+	bodiesB.SetVelocity(Velocity{vB, wB});
 	
 	return impulse;
 }
 
-bool RopeJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const
+bool RopeJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const
 {
-	auto cA = bodies[m_indexA].GetPosition().linear;
-	auto aA = bodies[m_indexA].GetPosition().angular;
-	auto cB = bodies[m_indexB].GetPosition().linear;
-	auto aB = bodies[m_indexB].GetPosition().angular;
+	auto& bodiesA = bodies.at(GetBodyA());
+	auto& bodiesB = bodies.at(GetBodyB());
+
+	auto cA = bodiesA.GetPosition().linear;
+	auto aA = bodiesA.GetPosition().angular;
+	auto cB = bodiesB.GetPosition().linear;
+	auto aB = bodiesB.GetPosition().angular;
 
 	const UnitVec2 qA(aA), qB(aB);
 
@@ -182,8 +189,8 @@ bool RopeJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const Cons
 	cB += m_invMassB * P;
 	aB += 1_rad * m_invIB * Cross(rB, P);
 
-	bodies[m_indexA].SetPosition(Position{cA, aA});
-	bodies[m_indexB].SetPosition(Position{cB, aB});
+	bodiesA.SetPosition(Position{cA, aA});
+	bodiesB.SetPosition(Position{cB, aB});
 
 	return (length - m_maxLength) < conf.linearSlop;
 }

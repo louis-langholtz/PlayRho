@@ -365,6 +365,7 @@ private:
 		bool solved = false; ///< Solved. <code>true</code> if position constraints solved, <code>false</code> otherwise.
 		ts_iters_t positionIterations = 0; ///< Position iterations actually performed.
 		ts_iters_t velocityIterations = 0; ///< Velocity iterations actually performed.
+		uint16 bodiesSlept = 0;
 	};
 
 	friend class Body;
@@ -392,7 +393,7 @@ private:
 	///
 	/// @return Island solver results.
 	///
-	IslandSolverResults SolveReg(const StepConf& step, Island& island);
+	IslandSolverResults SolveRegIsland(const StepConf& step, Island island);
 
 	static bool IsActive(const Contact& contact) noexcept;
 
@@ -440,12 +441,7 @@ private:
 	///
 	IslandSolverResults SolveTOI(const StepConf& step, Island& island);
 
-	/// Updates bodies.
-	/// @detail
-	/// Updates bodies[i]->m_sweep.pos1 to position[i]
-	/// Copies velocity and position array data back out to the bodies
-	static void UpdateBodies(Span<Body*> bodies,
-							 Span<const BodyConstraint> constraints);
+	static void UpdateBody(Body& body, const Position& pos, const Velocity& vel);
 
 	void ResetBodiesForSolveTOI();
 	void ResetContactsForSolveTOI();

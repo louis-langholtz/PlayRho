@@ -85,9 +85,9 @@ public:
 
 private:
 
-	void InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
-	RealNum SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
-	bool SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const override;
+	void InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
+	RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
+	bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
 
 	Joint* m_joint1;
 	Joint* m_joint2;
@@ -118,7 +118,6 @@ private:
 	RealNum m_impulse = 0;
 
 	// Solver temp
-	index_t m_indexA, m_indexB, m_indexC, m_indexD;
 	Vec2 m_lcA, m_lcB, m_lcC, m_lcD;
 	RealNum m_mA, m_mB, m_mC, m_mD;
 	RealNum m_iA, m_iB, m_iC, m_iD;

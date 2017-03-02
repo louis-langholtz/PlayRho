@@ -37,7 +37,7 @@ namespace box2d {
 			manifold{m}, bodyA{bA}, radiusA{rA}, bodyB{bB}, radiusB{rB}
 		{
 			assert(m.GetPointCount() > 0);
-			assert(bA.GetIndex() != bB.GetIndex());
+			assert(&bA != &bB);
 			assert(rA >= 0);
 			assert(rB >= 0);
 		}

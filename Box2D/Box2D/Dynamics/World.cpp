@@ -42,13 +42,15 @@
 #include <memory>
 #include <set>
 #include <vector>
+#include <unordered_map>
+#include <future>
 
 #define BOX2D_MAGIC(x) (x)
 
 namespace box2d
 {
 
-using BodyConstraints = std::vector<BodyConstraint>;
+using BodyConstraints = std::unordered_map<const Body*, BodyConstraint>;
 using PositionConstraintsContainer = std::vector<PositionConstraint>;
 using VelocityConstraintsContainer = std::vector<VelocityConstraint>;
 	
@@ -133,9 +135,9 @@ namespace {
 	{
 		for (auto&& body: bodies)
 		{
-			const auto newPosAndVel = CalculateMovement(body, h, conf);
-			body.SetPosition(newPosAndVel.position);
-			body.SetVelocity(newPosAndVel.velocity);
+			const auto newPosAndVel = CalculateMovement(body.second, h, conf);
+			body.second.SetPosition(newPosAndVel.position);
+			body.second.SetVelocity(newPosAndVel.velocity);
 		}
 	}
 	
@@ -178,13 +180,19 @@ namespace {
 			const auto& fixtureA = *(contact->GetFixtureA());
 			const auto& fixtureB = *(contact->GetFixtureB());
 			
-			auto& bodyA = bodies[fixtureA.GetBody()->GetIslandIndex()];
-			const auto radiusA = GetVertexRadius(*fixtureA.GetShape());
+			const auto bodyA = fixtureA.GetBody();
+			const auto shapeA = fixtureA.GetShape();
+
+			const auto bodyB = fixtureB.GetBody();
+			const auto shapeB = fixtureB.GetShape();
+
+			auto& bodiesA = bodies.at(bodyA);
+			auto& bodiesB = bodies.at(bodyB);
+
+			const auto radiusA = GetVertexRadius(*shapeA);
+			const auto radiusB = GetVertexRadius(*shapeB);
 			
-			auto& bodyB = bodies[fixtureB.GetBody()->GetIslandIndex()];
-			const auto radiusB = GetVertexRadius(*fixtureB.GetShape());
-			
-			constraints.emplace_back(manifold, bodyA, radiusA, bodyB, radiusB);
+			constraints.emplace_back(manifold, bodiesA, radiusA, bodiesB, radiusB);
 		}
 		return constraints;
 	}
@@ -279,14 +287,20 @@ namespace {
 			const auto restitution = contact.GetRestitution();
 			const auto tangentSpeed = contact.GetTangentSpeed();
 			
-			const auto radiusA = fixtureA->GetShape()->GetVertexRadius();
-			auto& bodyA = bodies[fixtureA->GetBody()->GetIslandIndex()];
-			
-			const auto radiusB = fixtureB->GetShape()->GetVertexRadius();
-			auto& bodyB = bodies[fixtureB->GetBody()->GetIslandIndex()];
+			const auto bodyA = fixtureA->GetBody();
+			const auto shapeA = fixtureA->GetShape();
+
+			const auto bodyB = fixtureB->GetBody();
+			const auto shapeB = fixtureB->GetShape();
+
+			auto& bodiesA = bodies.at(bodyA);
+			auto& bodiesB = bodies.at(bodyB);
+
+			const auto radiusA = shapeA->GetVertexRadius();
+			const auto radiusB = shapeB->GetVertexRadius();
 			
 			velocityConstraints.emplace_back(i, friction, restitution, tangentSpeed,
-											 manifold, bodyA, radiusA, bodyB, radiusB,
+											 manifold, bodiesA, radiusA, bodiesB, radiusB,
 											 conf);
 
 		}
@@ -726,6 +740,9 @@ RegStepStats World::SolveReg(const StepConf& step)
 	auto stats = RegStepStats{};
 
 	// Clear all the island flags.
+	// This builds the logical set of bodies, contacts, and joints eligible for resolution.
+	// As bodies, contacts, or joints get added to resolution islands, they're essentially
+	// removed from this eligible set (and their IsInIsland method thereafter returns true.
 	for (auto&& b: m_bodies)
 	{
 		b.UnsetInIsland();
@@ -739,52 +756,66 @@ RegStepStats World::SolveReg(const StepConf& step)
 		j.SetInIsland(false);
 	}
 
+	auto remNumBodies = m_bodies.size(); ///< Remaining number of bodies.
+	auto remNumContacts = m_contactMgr.GetContacts().size(); ///< Remaining number of contacts.
+	auto remNumJoints = m_joints.size(); ///< Remaining number of joints.
+
+#define DO_THREADED
+#if defined(DO_THREADED)
+	std::vector<std::future<World::IslandSolverResults>> futures;
+	futures.reserve(remNumBodies);
+#endif
+	// Build and simulate all awake islands.
+	for (auto&& body: m_bodies)
 	{
-		auto remNumBodies = m_bodies.size(); ///< Remaining number of bodies.
-		auto remNumContacts = m_contactMgr.GetContacts().size(); ///< Remaining number of contacts.
-		auto remNumJoints = m_joints.size(); ///< Remaining number of joints.
-		
-		// Build and simulate all awake islands.
-		for (auto&& body: m_bodies)
+		if (!body.IsInIsland() && body.IsSpeedable() && body.IsAwake() && body.IsActive())
 		{
-			if (!body.IsInIsland() && body.IsSpeedable() && body.IsAwake() && body.IsActive())
+			++stats.islandsFound;
+
+			auto island = BuildIsland(body, remNumBodies, remNumContacts, remNumJoints);
+			for (auto&& b: island.m_bodies)
 			{
-				++stats.islandsFound;
+				// Allow static bodies to participate in other islands.
+				if (!b->IsSpeedable())
+				{
+					b->UnsetInIsland();
+					++remNumBodies;
+				}
+			}
 
-				auto island = BuildIsland(body, remNumBodies, remNumContacts, remNumJoints);
-				
-				// Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions
-				const auto solverResults = SolveReg(step, island);
-				stats.maxIncImpulse = Max(stats.maxIncImpulse, solverResults.maxIncImpulse);
-				stats.minSeparation = Min(stats.minSeparation, solverResults.minSeparation);
-				if (solverResults.solved)
-				{
-					++stats.islandsSolved;
-				}
-				stats.sumPosIters += solverResults.positionIterations;
-				stats.sumVelIters += solverResults.velocityIterations;
-
-				if (IsValid(step.minStillTimeToSleep))
-				{
-					const auto minSleepTime = UpdateSleepTimes(island.m_bodies, step);
-					if ((minSleepTime >= step.minStillTimeToSleep) && solverResults.solved)
-					{
-						stats.bodiesSlept += Sleepem(island.m_bodies);
-					}
-				}
-				
-				for (auto&& b: island.m_bodies)
-				{
-					// Allow static bodies to participate in other islands.
-					if (!b->IsSpeedable())
-					{
-						b->UnsetInIsland();
-						++remNumBodies;
-					}
-				}
-			}		
+#if defined(DO_THREADED)
+			// Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions
+			futures.push_back(std::async(&World::SolveRegIsland, this, step, island));
+#else
+			const auto solverResults = SolveRegIsland(step, island);
+			stats.maxIncImpulse = Max(stats.maxIncImpulse, solverResults.maxIncImpulse);
+			stats.minSeparation = Min(stats.minSeparation, solverResults.minSeparation);
+			if (solverResults.solved)
+			{
+				++stats.islandsSolved;
+			}
+			stats.sumPosIters += solverResults.positionIterations;
+			stats.sumVelIters += solverResults.velocityIterations;
+			stats.bodiesSlept += solverResults.bodiesSlept;
+#endif
 		}
 	}
+
+#if defined(DO_THREADED)
+	for (auto&& f: futures)
+	{
+		const auto solverResults = f.get();
+		stats.maxIncImpulse = Max(stats.maxIncImpulse, solverResults.maxIncImpulse);
+		stats.minSeparation = Min(stats.minSeparation, solverResults.minSeparation);
+		if (solverResults.solved)
+		{
+			++stats.islandsSolved;
+		}
+		stats.sumPosIters += solverResults.positionIterations;
+		stats.sumVelIters += solverResults.velocityIterations;
+		stats.bodiesSlept += solverResults.bodiesSlept;
+	}
+#endif
 
 	for (auto&& b: m_bodies)
 	{
@@ -802,7 +833,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 	return stats;
 }
 
-World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
+World::IslandSolverResults World::SolveRegIsland(const StepConf& step, Island island)
 {
 	auto finMinSeparation = std::numeric_limits<RealNum>::infinity();
 	auto solved = false;
@@ -818,12 +849,13 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 		body->m_sweep.pos0 = body->m_sweep.pos1; // like Advance0(1) on the sweep.
 		const auto new_velocity = GetVelocity(*body, h);
 		assert(IsValid(new_velocity));
-		bodyConstraints.emplace_back(body->GetIslandIndex(),
-									 body->GetInverseMass(),
-									 body->GetInverseInertia(),
-									 body->GetLocalCenter(),
-									 body->m_sweep.pos1,
-									 new_velocity);
+		bodyConstraints[body] = BodyConstraint{
+			body->GetInverseMass(),
+			body->GetInverseInertia(),
+			body->GetLocalCenter(),
+			body->m_sweep.pos1,
+			new_velocity
+		};
 	}
 	auto positionConstraints = GetPositionConstraints(island.m_contacts, bodyConstraints);
 
@@ -895,14 +927,30 @@ World::IslandSolverResults World::SolveReg(const StepConf& step, Island& island)
 	// Update normal and tangent impulses of contacts' manifold points
 	StoreImpulses(velocityConstraints, island.m_contacts);
 	
-	UpdateBodies(island.m_bodies, Span<const BodyConstraint>(bodyConstraints.data(), bodyConstraints.size()));
-
+	for (auto&& body: island.m_bodies)
+	{
+		const auto& constraint = bodyConstraints[body];
+		UpdateBody(*body, constraint.GetPosition(), constraint.GetVelocity());
+	}
+	
 	if (m_contactMgr.m_contactListener)
 	{
 		Report(*m_contactMgr.m_contactListener, island.m_contacts, velocityConstraints,
 			   solved? positionIterations - 1: StepConf::InvalidIteration);
 	}
-	return IslandSolverResults{finMinSeparation, maxIncImpulse, solved, positionIterations, velocityIterations};
+	
+	uint16 bodiesSlept = 0;
+	if (IsValid(step.minStillTimeToSleep))
+	{
+		const auto minSleepTime = UpdateSleepTimes(island.m_bodies, step);
+		if ((minSleepTime >= step.minStillTimeToSleep) && solved)
+		{
+			bodiesSlept = static_cast<decltype(bodiesSlept)>(Sleepem(island.m_bodies));
+		}
+	}
+
+	return IslandSolverResults{finMinSeparation, maxIncImpulse, solved,
+		positionIterations, velocityIterations, bodiesSlept};
 }
 
 void World::ResetBodiesForSolveTOI()
@@ -1150,17 +1198,11 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 	return results;
 }
 
-void World::UpdateBodies(Span<Body*> bodies,
-						 Span<const BodyConstraint> constraints)
+void World::UpdateBody(Body& body, const Position& pos, const Velocity& vel)
 {
-	auto i = size_t{0};
-	for (auto&& b: bodies)
-	{
-		b->m_velocity = constraints[i].GetVelocity(); // sets what Body::GetVelocity returns
-		b->m_sweep.pos1 = constraints[i].GetPosition(); // sets what Body::GetWorldCenter returns
-		b->m_xf = GetTransformation(b->m_sweep.pos1, b->m_sweep.GetLocalCenter()); // sets what Body::GetLocation returns
-		++i;
-	}
+	body.m_velocity = vel; // sets what Body::GetVelocity returns
+	body.m_sweep.pos1 = pos; // sets what Body::GetWorldCenter returns
+	body.m_xf = GetTransformation(body.m_sweep.pos1, body.m_sweep.GetLocalCenter()); // sets what Body::GetLocation returns
 }
 
 World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
@@ -1171,12 +1213,13 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 	// Initialize the body state.
 	for (auto&& body: island.m_bodies)
 	{
-		bodyConstraints.emplace_back(body->GetIslandIndex(),
-									 body->GetInverseMass(),
-									 body->GetInverseInertia(),
-									 body->GetLocalCenter(),
-									 body->m_sweep.pos1,
-									 body->GetVelocity());
+		bodyConstraints[body] = BodyConstraint{
+			body->GetInverseMass(),
+			body->GetInverseInertia(),
+			body->GetLocalCenter(),
+			body->m_sweep.pos1,
+			body->GetVelocity()
+		};
 	}
 	
 	auto positionConstraints = GetPositionConstraints(island.m_contacts, bodyConstraints);
@@ -1224,7 +1267,8 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 	// Unclear whether rest of bodies should also be updated. No difference noticed.
 	for (auto i = decltype(bodyConstraints.size()){0}; i < bodyConstraints.size(); ++i)
 	{
-		island.m_bodies[i]->m_sweep.pos0 = bodyConstraints[i].GetPosition();
+		const auto body = island.m_bodies[i];
+		body->m_sweep.pos0 = bodyConstraints[body].GetPosition();
 	}
 	
 	auto velocityConstraints = GetVelocityConstraints(island.m_contacts, bodyConstraints,
@@ -1246,7 +1290,11 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 	
 	IntegratePositions(bodyConstraints, step.get_dt(), MovementConf{step.maxTranslation, step.maxRotation});
 	
-	UpdateBodies(island.m_bodies, Span<const BodyConstraint>(bodyConstraints.data(), bodyConstraints.size()));
+	for (auto&& body: island.m_bodies)
+	{
+		const auto& constraint = bodyConstraints[body];
+		UpdateBody(*body, constraint.GetPosition(), constraint.GetVelocity());
+	}
 
 	if (m_contactMgr.m_contactListener)
 	{

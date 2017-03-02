@@ -74,12 +74,13 @@ DistanceJoint::DistanceJoint(const DistanceJointDef& def):
 	assert(def.frequencyHz >= 0);
 }
 
-void DistanceJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
+void DistanceJoint::InitVelocityConstraints(BodyConstraints& bodies,
 											const StepConf& step,
 											const ConstraintSolverConf& conf)
 {
-	m_indexA = GetBodyA()->GetIslandIndex();
-	m_indexB = GetBodyB()->GetIslandIndex();
+	auto& bodiesA = bodies.at(GetBodyA());
+	auto& bodiesB = bodies.at(GetBodyB());
+
 	m_localCenterA = GetBodyA()->GetLocalCenter();
 	m_localCenterB = GetBodyB()->GetLocalCenter();
 	m_invMassA = GetBodyA()->GetInverseMass();
@@ -87,11 +88,11 @@ void DistanceJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 	m_invIA = GetBodyA()->GetInverseInertia();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto posA = bodies[m_indexA].GetPosition();
-	auto velA = bodies[m_indexA].GetVelocity();
+	const auto posA = bodiesA.GetPosition();
+	auto velA = bodiesA.GetVelocity();
 
-	const auto posB = bodies[m_indexB].GetPosition();
-	auto velB = bodies[m_indexB].GetVelocity();
+	const auto posB = bodiesB.GetPosition();
+	auto velB = bodiesB.GetVelocity();
 
 	const auto qA = UnitVec2{posA.angular};
 	const auto qB = UnitVec2{posB.angular};
@@ -160,14 +161,17 @@ void DistanceJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 		m_impulse = 0;
 	}
 
-	bodies[m_indexA].SetVelocity(velA);
-	bodies[m_indexB].SetVelocity(velB);
+	bodiesA.SetVelocity(velA);
+	bodiesB.SetVelocity(velB);
 }
 
-RealNum DistanceJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf&)
+RealNum DistanceJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf&)
 {
-	auto velA = bodies[m_indexA].GetVelocity();
-	auto velB = bodies[m_indexB].GetVelocity();
+	auto& bodiesA = bodies.at(GetBodyA());
+	auto& bodiesB = bodies.at(GetBodyB());
+
+	auto velA = bodiesA.GetVelocity();
+	auto velB = bodiesB.GetVelocity();
 
 	// Cdot = dot(u, v + cross(w, r))
 	const auto vpA = velA.linear + GetRevPerpendicular(m_rA) * velA.angular.ToRadians();
@@ -181,13 +185,13 @@ RealNum DistanceJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, con
 	velA -= Velocity{m_invMassA * P, 1_rad * m_invIA * Cross(m_rA, P)};
 	velB += Velocity{m_invMassB * P, 1_rad * m_invIB * Cross(m_rB, P)};
 
-	bodies[m_indexA].SetVelocity(velA);
-	bodies[m_indexB].SetVelocity(velB);
+	bodiesA.SetVelocity(velA);
+	bodiesB.SetVelocity(velB);
 	
 	return impulse;
 }
 
-bool DistanceJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const
+bool DistanceJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const
 {
 	if (m_frequencyHz > 0)
 	{
@@ -195,8 +199,11 @@ bool DistanceJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const 
 		return true;
 	}
 
-	auto posA = bodies[m_indexA].GetPosition();
-	auto posB = bodies[m_indexB].GetPosition();
+	auto& bodiesA = bodies.at(GetBodyA());
+	auto& bodiesB = bodies.at(GetBodyB());
+
+	auto posA = bodiesA.GetPosition();
+	auto posB = bodiesB.GetPosition();
 
 	const auto qA = UnitVec2(posA.angular);
 	const auto qB = UnitVec2(posB.angular);
@@ -215,8 +222,8 @@ bool DistanceJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const 
 	posA -= Position{m_invMassA * P, 1_rad * m_invIA * Cross(rA, P)};
 	posB += Position{m_invMassB * P, 1_rad * m_invIB * Cross(rB, P)};
 
-	bodies[m_indexA].SetPosition(posA);
-	bodies[m_indexB].SetPosition(posB);
+	bodiesA.SetPosition(posA);
+	bodiesB.SetPosition(posB);
 
 	return Abs(C) < conf.linearSlop;
 }

@@ -27,6 +27,7 @@ namespace box2d {
 
 	class VelocityConstraint;
 	class PositionConstraint;
+	class BodyConstraint;
 	
 	struct PositionSolution
 	{
@@ -173,13 +174,13 @@ namespace box2d {
 	///  <code>ConstraintSolverConf.max_separation</code> because code won't push the separation
 	///   above this amount to begin with.
 	///
-	/// @param indexA Index within the island of body A.
-	/// @param indexB Index within the island of body B.
+	/// @param bodiesA Pointer to body constraint for body A.
+	/// @param bodiesB Pointer to body constraint for body B.
 	///
 	/// @return Minimum separation (which is the same as the max amount of penetration/overlap).
 	///
 	RealNum SolvePositionConstraints(Span<PositionConstraint> positionConstraints,
-									 island_count_t indexA, island_count_t indexB,
+									 const BodyConstraint* bodiesA, const BodyConstraint* bodiesB,
 									 ConstraintSolverConf conf = GetDefaultToiPositionSolverConf());
 
 	/// Solves the velocity constraint.

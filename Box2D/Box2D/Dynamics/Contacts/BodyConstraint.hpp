@@ -27,7 +27,7 @@ namespace box2d {
 	/// Body Constraint.
 	/// @detail Body data related to constraint processing.
 	/// @note Only position and velocity is independently changable after construction.
-	/// @note This data structure is 44-bytes large (with 4-byte RealNum on at least one 64-bit platform).
+	/// @note This data structure is 40-bytes large (with 4-byte RealNum on at least one 64-bit platform).
 	class BodyConstraint
 	{
 	public:
@@ -35,14 +35,13 @@ namespace box2d {
 		
 		BodyConstraint() noexcept = default;
 		
-		constexpr BodyConstraint(index_type index, RealNum invMass, RealNum invRotI, Vec2 localCenter,
+		constexpr BodyConstraint(RealNum invMass, RealNum invRotI, Vec2 localCenter,
 								 Position position, Velocity velocity) noexcept:
 			m_position{position},
 			m_velocity{velocity},
 			m_localCenter{localCenter},
 			m_invMass{invMass},
-			m_invRotI{invRotI},
-			m_index{index}
+			m_invRotI{invRotI}
 		{
 			assert(IsValid(position));
 			assert(IsValid(velocity));
@@ -73,13 +72,7 @@ namespace box2d {
 		Vec2 m_localCenter; ///< Local center of the associated body's sweep (8-bytes).
 		RealNum m_invMass; ///< Inverse mass of associated body (a non-negative value, 4-bytes).
 		RealNum m_invRotI; ///< Inverse rotational inertia about the center of mass of the associated body (a non-negative value, 4-bytes).
-		index_type m_index; ///< Index within island of the associated body (2-bytes).
 	};
-	
-	inline BodyConstraint::index_type BodyConstraint::GetIndex() const noexcept
-	{
-		return m_index;
-	}
 	
 	inline RealNum BodyConstraint::GetInvMass() const noexcept
 	{

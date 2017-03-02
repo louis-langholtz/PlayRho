@@ -60,10 +60,11 @@ WeldJoint::WeldJoint(const WeldJointDef& def)
 	m_impulse = Vec3_zero;
 }
 
-void WeldJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf&)
+void WeldJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf&)
 {
-	m_indexA = GetBodyA()->GetIslandIndex();
-	m_indexB = GetBodyB()->GetIslandIndex();
+	auto& bodiesA = bodies.at(GetBodyA());
+	auto& bodiesB = bodies.at(GetBodyB());
+
 	m_localCenterA = GetBodyA()->GetLocalCenter();
 	m_localCenterB = GetBodyB()->GetLocalCenter();
 	m_invMassA = GetBodyA()->GetInverseMass();
@@ -71,13 +72,13 @@ void WeldJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const StepC
 	m_invIA = GetBodyA()->GetInverseInertia();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto aA = bodies[m_indexA].GetPosition().angular;
-	auto vA = bodies[m_indexA].GetVelocity().linear;
-	auto wA = bodies[m_indexA].GetVelocity().angular;
+	const auto aA = bodiesA.GetPosition().angular;
+	auto vA = bodiesA.GetVelocity().linear;
+	auto wA = bodiesA.GetVelocity().angular;
 
-	const auto aB = bodies[m_indexB].GetPosition().angular;
-	auto vB = bodies[m_indexB].GetVelocity().linear;
-	auto wB = bodies[m_indexB].GetVelocity().angular;
+	const auto aB = bodiesB.GetPosition().angular;
+	auto vB = bodiesB.GetVelocity().linear;
+	auto wB = bodiesB.GetVelocity().angular;
 
 	const UnitVec2 qA(aA), qB(aB);
 
@@ -165,16 +166,19 @@ void WeldJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const StepC
 		m_impulse = Vec3_zero;
 	}
 
-	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
-	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
+	bodiesA.SetVelocity(Velocity{vA, wA});
+	bodiesB.SetVelocity(Velocity{vB, wB});
 }
 
-RealNum WeldJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf&)
+RealNum WeldJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf&)
 {
-	auto vA = bodies[m_indexA].GetVelocity().linear;
-	auto wA = bodies[m_indexA].GetVelocity().angular;
-	auto vB = bodies[m_indexB].GetVelocity().linear;
-	auto wB = bodies[m_indexB].GetVelocity().angular;
+	auto& bodiesA = bodies.at(GetBodyA());
+	auto& bodiesB = bodies.at(GetBodyB());
+
+	auto vA = bodiesA.GetVelocity().linear;
+	auto wA = bodiesA.GetVelocity().angular;
+	auto vB = bodiesB.GetVelocity().linear;
+	auto wB = bodiesB.GetVelocity().angular;
 	
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
@@ -221,18 +225,21 @@ RealNum WeldJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const S
 		wB += 1_rad * iB * (Cross(m_rB, P) + impulse.z);
 	}
 
-	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
-	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
+	bodiesA.SetVelocity(Velocity{vA, wA});
+	bodiesB.SetVelocity(Velocity{vB, wB});
 	
 	return GetInvalid<RealNum>(); // TODO
 }
 
-bool WeldJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const
+bool WeldJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const
 {
-	auto cA = bodies[m_indexA].GetPosition().linear;
-	auto aA = bodies[m_indexA].GetPosition().angular;
-	auto cB = bodies[m_indexB].GetPosition().linear;
-	auto aB = bodies[m_indexB].GetPosition().angular;
+	auto& bodiesA = bodies.at(GetBodyA());
+	auto& bodiesB = bodies.at(GetBodyB());
+
+	auto cA = bodiesA.GetPosition().linear;
+	auto aA = bodiesA.GetPosition().angular;
+	auto cB = bodiesB.GetPosition().linear;
+	auto aB = bodiesB.GetPosition().angular;
 
 	const auto qA = UnitVec2{aA};
 	const auto qB = UnitVec2{aB};
@@ -301,8 +308,8 @@ bool WeldJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const Cons
 		aB += 1_rad * iB * (Cross(rB, P) + impulse.z);
 	}
 
-	bodies[m_indexA].SetPosition(Position{cA, aA});
-	bodies[m_indexB].SetPosition(Position{cB, aB});
+	bodiesA.SetPosition(Position{cA, aA});
+	bodiesB.SetPosition(Position{cB, aB});
 
 	return (positionError <= conf.linearSlop) && (angularError <= conf.angularSlop);
 }

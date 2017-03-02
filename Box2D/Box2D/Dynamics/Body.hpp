@@ -902,11 +902,6 @@ inline body_count_t Body::GetIslandIndex() const noexcept
 	return m_islandIndex;
 }
 
-inline bool IsValidIslandIndex(const Body& body) noexcept
-{
-	return body.IsInIsland() && (body.GetIslandIndex() != Body::InvalidIslandIndex);
-}
-
 /// Gets the total mass of the body.
 /// @return Value of zero or more representing the body's mass (in kg).
 /// @sa GetInverseMass.

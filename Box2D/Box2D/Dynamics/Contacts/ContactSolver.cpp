@@ -610,7 +610,7 @@ RealNum box2d::SolvePositionConstraints(Span<PositionConstraint> positionConstra
 }
 
 RealNum box2d::SolvePositionConstraints(Span<PositionConstraint> positionConstraints,
-										island_count_t indexA, island_count_t indexB,
+										const BodyConstraint* bodiesA, const BodyConstraint* bodiesB,
 										ConstraintSolverConf conf)
 {
 	auto minSeparation = std::numeric_limits<RealNum>::infinity();
@@ -619,10 +619,8 @@ RealNum box2d::SolvePositionConstraints(Span<PositionConstraint> positionConstra
 	// modify the constraint temporarily if related to indexA or indexB.
 	for (auto&& pc: positionConstraints)
 	{
-		assert(pc.bodyA.GetIndex() != pc.bodyB.GetIndex()); // Confirms ContactManager::Add() did its job.
-		
-		const auto moveA = (pc.bodyA.GetIndex() == indexA) || (pc.bodyA.GetIndex() == indexB);
-		const auto moveB = (pc.bodyB.GetIndex() == indexA) || (pc.bodyB.GetIndex() == indexB);		
+		const auto moveA = (&(pc.bodyA) == bodiesA) || (&(pc.bodyA) == bodiesB);
+		const auto moveB = (&(pc.bodyB) == bodiesA) || (&(pc.bodyB) == bodiesB);
 		const auto res = SolvePositionConstraint(pc, moveA, moveB, conf);
 		pc.bodyA.SetPosition(res.pos_a);
 		pc.bodyB.SetPosition(res.pos_b);

@@ -43,7 +43,11 @@ public:
 	
 	Island(body_count_t bodyCapacity, contact_count_t contactCapacity, island_count_t jointCapacity);
 
-	Island(const Island& copy) = delete;
+	Island(const Island& copy) noexcept:
+		m_bodies(copy.m_bodies),
+		m_contacts(copy.m_contacts),
+		m_joints(copy.m_joints)
+	{}
 
 	Island(Island&& other) noexcept:
 		m_bodies{std::move(other.m_bodies)},
@@ -54,7 +58,13 @@ public:
 	/// Destructor.
 	~Island() = default;
 
-	Island& operator= (Island&& other) = delete;
+	Island& operator= (Island&& other) noexcept
+	{
+		m_bodies = std::move(other.m_bodies);
+		m_contacts = std::move(other.m_contacts);
+		m_joints = std::move(other.m_joints);
+		return *this;
+	}
 
 	BodyContainer m_bodies;
 	ContactContainer m_contacts;

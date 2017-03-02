@@ -143,9 +143,9 @@ public:
 	RealNum GetMotorForce(RealNum inv_dt) const noexcept;
 
 private:
-	void InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
-	RealNum SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
-	bool SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const override;
+	void InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
+	RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
+	bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
 
 	// Solver shared
 	Vec2 m_localAnchorA;
@@ -164,8 +164,6 @@ private:
 	LimitState m_limitState = e_inactiveLimit;
 
 	// Solver temp
-	index_t m_indexA;
-	index_t m_indexB;
 	Vec2 m_localCenterA;
 	Vec2 m_localCenterB;
 	RealNum m_invMassA;

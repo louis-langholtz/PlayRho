@@ -21,13 +21,13 @@
 
 using namespace box2d;
 
-TEST(BodyConstraint, ByteSizeIs_44_88_or_176)
+TEST(BodyConstraint, ByteSizeIs_40_80_or_160)
 {
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(BodyConstraint), size_t(44)); break;
-		case  8: EXPECT_EQ(sizeof(BodyConstraint), size_t(88)); break;
-		case 16: EXPECT_EQ(sizeof(BodyConstraint), size_t(176)); break;
+		case  4: EXPECT_EQ(sizeof(BodyConstraint), size_t(40)); break;
+		case  8: EXPECT_EQ(sizeof(BodyConstraint), size_t(80)); break;
+		case 16: EXPECT_EQ(sizeof(BodyConstraint), size_t(160)); break;
 		default: FAIL(); break;
 	}
 }

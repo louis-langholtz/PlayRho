@@ -22,6 +22,7 @@
 
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Common/Span.hpp>
+#include <unordered_map>
 
 namespace box2d {
 
@@ -32,6 +33,8 @@ class StepConf;
 struct Velocity;
 struct ConstraintSolverConf;
 class BodyConstraint;
+
+using BodyConstraints = std::unordered_map<const Body*, BodyConstraint>;
 
 enum class JointType
 {
@@ -186,15 +189,15 @@ private:
 	/// Initializes velocity constraint data based on the given solver data.
 	/// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.
 	/// @sa SolveVelocityConstraints.
-	virtual void InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf& conf) = 0;
+	virtual void InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf& conf) = 0;
 
 	/// Solves velocity constraints for the given solver data.
 	/// @pre <code>InitVelocityConstraints</code> has been called.
 	/// @sa InitVelocityConstraints.
-	virtual RealNum SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) = 0;
+	virtual RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) = 0;
 
 	// This returns true if the position errors are within tolerance.
-	virtual bool SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const = 0;
+	virtual bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const = 0;
 	
 	bool IsInIsland() const noexcept;
 	void SetInIsland(bool value) noexcept;

@@ -103,9 +103,9 @@ public:
 
 private:
 
-	void InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
-	RealNum SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
-	bool SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const override;
+	void InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
+	RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
+	bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
 
 	Vec2 m_groundAnchorA;
 	Vec2 m_groundAnchorB;
@@ -120,8 +120,6 @@ private:
 	RealNum m_impulse = 0;
 
 	// Solver temp
-	index_t m_indexA;
-	index_t m_indexB;
 	Vec2 m_uA;
 	Vec2 m_uB;
 	Vec2 m_rA;

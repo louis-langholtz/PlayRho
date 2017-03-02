@@ -101,9 +101,9 @@ public:
 	void ShiftOrigin(const Vec2 newOrigin) override;
 
 private:
-	void InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
-	RealNum SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
-	bool SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const override;
+	void InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf& conf) override;
+	RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
+	bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
 
 	Mat22 GetEffectiveMassMatrix() const noexcept;
 
@@ -118,7 +118,6 @@ private:
 	RealNum m_gamma = 0;
 
 	// Solver variables. These are only valid after InitVelocityConstraints called.
-	index_t m_indexB;
 	Vec2 m_rB;
 	Vec2 m_localCenterB;
 	RealNum m_invMassB;

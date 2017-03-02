@@ -84,19 +84,20 @@ Mat22 MouseJoint::GetEffectiveMassMatrix() const noexcept
 	return K;
 }
 
-void MouseJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step, const ConstraintSolverConf&)
+void MouseJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf& step, const ConstraintSolverConf&)
 {
-	m_indexB = GetBodyB()->GetIslandIndex();
+	auto& bodiesB = bodies.at(GetBodyB());
+
 	m_localCenterB = GetBodyB()->GetLocalCenter();
 	m_invMassB = GetBodyB()->GetInverseMass();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto positionB = bodies[m_indexB].GetPosition();
+	const auto positionB = bodiesB.GetPosition();
 	assert(IsValid(positionB));
 	const auto cB = positionB.linear;
 	const auto aB = positionB.angular;
 
-	const auto velocityB = bodies[m_indexB].GetVelocity();
+	const auto velocityB = bodiesB.GetVelocity();
 	assert(IsValid(velocityB));
 	auto vB = velocityB.linear;
 	auto wB = velocityB.angular;
@@ -153,12 +154,14 @@ void MouseJoint::InitVelocityConstraints(Span<BodyConstraint> bodies, const Step
 		m_impulse = Vec2_zero;
 	}
 
-	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
+	bodiesB.SetVelocity(Velocity{vB, wB});
 }
 
-RealNum MouseJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
+RealNum MouseJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
 {
-	auto velB = bodies[m_indexB].GetVelocity();
+	auto& bodiesB = bodies.at(GetBodyB());
+
+	auto velB = bodiesB.GetVelocity();
 	assert(IsValid(velB));
 
 	const auto Cdot = velB.linear + (GetRevPerpendicular(m_rB) * velB.angular.ToRadians());
@@ -177,12 +180,12 @@ RealNum MouseJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const 
 
 	velB += Velocity{m_invMassB * deltaImpulse, 1_rad * m_invIB * Cross(m_rB, deltaImpulse)};
 
-	bodies[m_indexB].SetVelocity(velB);
+	bodiesB.SetVelocity(velB);
 	
 	return GetInvalid<RealNum>(); // TODO
 }
 
-bool MouseJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const
+bool MouseJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const
 {
 	NOT_USED(bodies);
 	NOT_USED(conf);

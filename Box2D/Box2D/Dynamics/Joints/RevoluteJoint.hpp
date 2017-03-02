@@ -146,12 +146,12 @@ public:
 
 private:
 	
-	void InitVelocityConstraints(Span<BodyConstraint> bodies,
+	void InitVelocityConstraints(BodyConstraints& bodies,
 								 const StepConf& step, const ConstraintSolverConf& conf) override;
 
-	RealNum SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step) override;
+	RealNum SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step) override;
 	
-	bool SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const override;
+	bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const override;
 
 	// Solver shared
 	Vec2 m_localAnchorA;
@@ -170,8 +170,6 @@ private:
 
 	// Solver cached temporary data. Values set by by InitVelocityConstraints.
 
-	index_t m_indexA; ///< Index of body A (in its island).
-	index_t m_indexB; ///< Index of body B (in its island).
 	Vec2 m_rA; ///< Rotated delta of body A's local center from local anchor A.
 	Vec2 m_rB; ///< Rotated delta of body B's local center from local anchor B.
 	Vec2 m_localCenterA; ///< Local center of body A.

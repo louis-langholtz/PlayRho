@@ -119,12 +119,13 @@ PrismaticJoint::PrismaticJoint(const PrismaticJointDef& def):
 	m_enableMotor = def.enableMotor;
 }
 
-void PrismaticJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
+void PrismaticJoint::InitVelocityConstraints(BodyConstraints& bodies,
 											 const StepConf& step,
 											 const ConstraintSolverConf& conf)
 {
-	m_indexA = GetBodyA()->GetIslandIndex();
-	m_indexB = GetBodyB()->GetIslandIndex();
+	auto& bodiesA = bodies.at(GetBodyA());
+	auto& bodiesB = bodies.at(GetBodyB());
+
 	m_localCenterA = GetBodyA()->GetLocalCenter();
 	m_localCenterB = GetBodyB()->GetLocalCenter();
 	m_invMassA = GetBodyA()->GetInverseMass();
@@ -132,15 +133,15 @@ void PrismaticJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 	m_invIA = GetBodyA()->GetInverseInertia();
 	m_invIB = GetBodyB()->GetInverseInertia();
 
-	const auto cA = bodies[m_indexA].GetPosition().linear;
-	const auto aA = bodies[m_indexA].GetPosition().angular;
-	auto vA = bodies[m_indexA].GetVelocity().linear;
-	auto wA = bodies[m_indexA].GetVelocity().angular;
+	const auto cA = bodiesA.GetPosition().linear;
+	const auto aA = bodiesA.GetPosition().angular;
+	auto vA = bodiesA.GetVelocity().linear;
+	auto wA = bodiesA.GetVelocity().angular;
 
-	const auto cB = bodies[m_indexB].GetPosition().linear;
-	const auto aB = bodies[m_indexB].GetPosition().angular;
-	auto vB = bodies[m_indexB].GetVelocity().linear;
-	auto wB = bodies[m_indexB].GetVelocity().angular;
+	const auto cB = bodiesB.GetPosition().linear;
+	const auto aB = bodiesB.GetPosition().angular;
+	auto vB = bodiesB.GetVelocity().linear;
+	auto wB = bodiesB.GetVelocity().angular;
 
 	const auto qA = UnitVec2(aA);
 	const auto qB = UnitVec2(aB);
@@ -253,14 +254,17 @@ void PrismaticJoint::InitVelocityConstraints(Span<BodyConstraint> bodies,
 		m_motorImpulse = 0;
 	}
 
-	bodies[m_indexA].SetVelocity(Velocity{vA, wA});
-	bodies[m_indexB].SetVelocity(Velocity{vB, wB});
+	bodiesA.SetVelocity(Velocity{vA, wA});
+	bodiesB.SetVelocity(Velocity{vB, wB});
 }
 
-RealNum PrismaticJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, const StepConf& step)
+RealNum PrismaticJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepConf& step)
 {
-	auto velA = bodies[m_indexA].GetVelocity();
-	auto velB = bodies[m_indexB].GetVelocity();
+	auto& bodiesA = bodies.at(GetBodyA());
+	auto& bodiesB = bodies.at(GetBodyB());
+
+	auto velA = bodiesA.GetVelocity();
+	auto velB = bodiesB.GetVelocity();
 
 	const auto mA = m_invMassA, mB = m_invMassB;
 	const auto iA = m_invIA, iB = m_invIB;
@@ -336,8 +340,8 @@ RealNum PrismaticJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, co
 		velB += Velocity{mB * P, 1_rad * iB * LB};
 	}
 
-	bodies[m_indexA].SetVelocity(velA);
-	bodies[m_indexB].SetVelocity(velB);
+	bodiesA.SetVelocity(velA);
+	bodiesB.SetVelocity(velB);
 	
 	return GetInvalid<RealNum>(); // TODO
 }
@@ -349,12 +353,15 @@ RealNum PrismaticJoint::SolveVelocityConstraints(Span<BodyConstraint> bodies, co
 //
 // We could take the active state from the velocity solver.However, the joint might push past the limit when the velocity
 // solver indicates the limit is inactive.
-bool PrismaticJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const ConstraintSolverConf& conf) const
+bool PrismaticJoint::SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const
 {
-	auto cA = bodies[m_indexA].GetPosition().linear;
-	auto aA = bodies[m_indexA].GetPosition().angular;
-	auto cB = bodies[m_indexB].GetPosition().linear;
-	auto aB = bodies[m_indexB].GetPosition().angular;
+	auto& bodiesA = bodies.at(GetBodyA());
+	auto& bodiesB = bodies.at(GetBodyB());
+
+	auto cA = bodiesA.GetPosition().linear;
+	auto aA = bodiesA.GetPosition().angular;
+	auto cB = bodiesB.GetPosition().linear;
+	auto aB = bodiesB.GetPosition().angular;
 
 	const auto qA = UnitVec2{aA};
 	const auto qB = UnitVec2{aB};
@@ -456,8 +463,8 @@ bool PrismaticJoint::SolvePositionConstraints(Span<BodyConstraint> bodies, const
 	cB += mB * P;
 	aB += 1_rad * iB * LB;
 
-	bodies[m_indexA].SetPosition(Position{cA, aA});
-	bodies[m_indexB].SetPosition(Position{cB, aB});
+	bodiesA.SetPosition(Position{cA, aA});
+	bodiesB.SetPosition(Position{cB, aB});
 
 	return (linearError <= conf.linearSlop) && (angularError <= conf.angularSlop);
 }
