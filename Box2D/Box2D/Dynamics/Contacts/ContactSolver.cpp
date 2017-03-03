@@ -599,7 +599,7 @@ RealNum box2d::SolvePositionConstraints(Span<PositionConstraint> positionConstra
 	
 	for (auto&& pc: positionConstraints)
 	{
-		assert(pc.bodyA.GetIndex() != pc.bodyB.GetIndex()); // Confirms ContactManager::Add() did its job.
+		assert(&(pc.bodyA) != &(pc.bodyB)); // Confirms ContactManager::Add() did its job.
 		const auto res = SolvePositionConstraint(pc, true, true, conf);
 		pc.bodyA.SetPosition(res.pos_a);
 		pc.bodyB.SetPosition(res.pos_b);

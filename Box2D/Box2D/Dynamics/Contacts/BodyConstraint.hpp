@@ -49,9 +49,7 @@ namespace box2d {
 			assert(invMass >= 0);
 			assert(invRotI >= 0);
 		}
-		
-		index_type GetIndex() const noexcept;
-		
+				
 		RealNum GetInvMass() const noexcept;
 		
 		RealNum GetInvRotInertia() const noexcept;
