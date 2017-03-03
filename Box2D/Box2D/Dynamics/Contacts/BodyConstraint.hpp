@@ -24,6 +24,8 @@
 
 namespace box2d {
 	
+	class Body;
+	
 	/// Body Constraint.
 	/// @detail Body data related to constraint processing.
 	/// @note Only position and velocity is independently changable after construction.
@@ -109,6 +111,8 @@ namespace box2d {
 		return *this;
 	}
 	
+	BodyConstraint GetBodyConstraint(const Body& body) noexcept;
+
 } // namespace box2d
 
 #endif /* BodyConstraint_hpp */

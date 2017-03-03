@@ -182,6 +182,8 @@
 		47928F351E5FE19C00EE6E9E /* BodyConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F341E5FE19C00EE6E9E /* BodyConstraint.cpp */; };
 		47928F371E66539000EE6E9E /* FrictionJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F361E66539000EE6E9E /* FrictionJoint.cpp */; };
 		47928F391E66586400EE6E9E /* DistanceJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F381E66586400EE6E9E /* DistanceJoint.cpp */; };
+		47928F3B1E6A099900EE6E9E /* BodyConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F3A1E6A099900EE6E9E /* BodyConstraint.cpp */; };
+		47928F3C1E6A099900EE6E9E /* BodyConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F3A1E6A099900EE6E9E /* BodyConstraint.cpp */; };
 		47A983361D0F4EFF00AA7D1A /* JointList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47A983341D0F4EFF00AA7D1A /* JointList.cpp */; };
 		47A983371D0F4EFF00AA7D1A /* JointList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47A983351D0F4EFF00AA7D1A /* JointList.hpp */; };
 		47A9833A1D0F51A300AA7D1A /* JointIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47A983381D0F51A300AA7D1A /* JointIterator.cpp */; };
@@ -622,6 +624,7 @@
 		47928F341E5FE19C00EE6E9E /* BodyConstraint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BodyConstraint.cpp; sourceTree = "<group>"; };
 		47928F361E66539000EE6E9E /* FrictionJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrictionJoint.cpp; sourceTree = "<group>"; };
 		47928F381E66586400EE6E9E /* DistanceJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceJoint.cpp; sourceTree = "<group>"; };
+		47928F3A1E6A099900EE6E9E /* BodyConstraint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BodyConstraint.cpp; sourceTree = "<group>"; };
 		47A983341D0F4EFF00AA7D1A /* JointList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JointList.cpp; sourceTree = "<group>"; };
 		47A983351D0F4EFF00AA7D1A /* JointList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JointList.hpp; sourceTree = "<group>"; };
 		47A983381D0F51A300AA7D1A /* JointIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JointIterator.cpp; sourceTree = "<group>"; };
@@ -1151,6 +1154,7 @@
 		80BB895A141C3E5900F1753A /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
+				47928F3A1E6A099900EE6E9E /* BodyConstraint.cpp */,
 				474BAB2C1E5D00960058E08A /* BodyConstraint.hpp */,
 				80BB895B141C3E5900F1753A /* ChainAndCircleContact.cpp */,
 				80BB895C141C3E5900F1753A /* ChainAndCircleContact.hpp */,
@@ -1827,6 +1831,7 @@
 				47AA5DB41C4C5FBE008AF2BA /* ChainAndPolygonContact.cpp in Sources */,
 				47AA5DB51C4C5FBE008AF2BA /* CircleContact.cpp in Sources */,
 				47AA5DB61C4C5FBE008AF2BA /* Contact.cpp in Sources */,
+				47928F3C1E6A099900EE6E9E /* BodyConstraint.cpp in Sources */,
 				47AA5DB71C4C5FBE008AF2BA /* ContactSolver.cpp in Sources */,
 				47AA5DB81C4C5FBE008AF2BA /* EdgeAndCircleContact.cpp in Sources */,
 				47AA5DB91C4C5FBE008AF2BA /* EdgeAndPolygonContact.cpp in Sources */,
@@ -1918,6 +1923,7 @@
 				80BB8991141C3E5900F1753A /* DynamicTree.cpp in Sources */,
 				477DB29C1D14BCA700846ED6 /* ConstContactEdgeIterator.cpp in Sources */,
 				80BB8993141C3E5900F1753A /* TimeOfImpact.cpp in Sources */,
+				47928F3B1E6A099900EE6E9E /* BodyConstraint.cpp in Sources */,
 				80BB8995141C3E5900F1753A /* ChainShape.cpp in Sources */,
 				4726DD2A1D31B4090012A882 /* RayCastOutput.cpp in Sources */,
 				80BB8997141C3E5900F1753A /* CircleShape.cpp in Sources */,

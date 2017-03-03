@@ -280,6 +280,8 @@ public:
 	/// @return World location of the body's origin.
 	Vec2 GetLocation() const noexcept;
 
+	Position GetPosition1() const noexcept;
+
 	/// Get the angle in radians.
 	/// @return the current world rotation angle in radians.
 	Angle GetAngle() const noexcept;
@@ -627,6 +629,11 @@ inline Vec2 Body::GetLocation() const noexcept
 	return GetTransformation().p;
 }
 
+inline Position Body::GetPosition1() const noexcept
+{
+	return m_sweep.pos1;
+}
+	
 inline Angle Body::GetAngle() const noexcept
 {
 	return m_sweep.pos1.angular;
