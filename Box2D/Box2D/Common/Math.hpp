@@ -495,15 +495,6 @@ inline bool IsValid(const Transformation& value) noexcept
 /// @note This structure is likely to be 12-bytes large (at least on 64-bit platforms).
 struct Position
 {
-	Position() noexcept = default;
-	
-	constexpr Position(const Position& copy) noexcept = default;
-	
-	/// Initializing constructor.
-	/// @param c_ Linear position.
-	/// @param a_ Angular position.
-	constexpr Position(Vec2 c_, Angle a_) noexcept: linear{c_}, angular{a_} {}
-	
 	Vec2 linear; ///< Linear position (in meters).
 	Angle angular; ///< Angular position (in radians).
 };
