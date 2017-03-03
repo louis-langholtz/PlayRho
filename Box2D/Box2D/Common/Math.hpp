@@ -509,19 +509,6 @@ inline bool IsValid(const Position& value) noexcept
 /// @note This data structure is 12-bytes (with 4-byte RealNum on at least one 64-bit platform).
 struct Velocity
 {
-	Velocity() = default;
-	
-	constexpr Velocity(const Velocity& copy) = default;
-
-	constexpr Velocity(Vec2 v_, Angle w_) noexcept: linear{v_}, angular{w_} {}
-	
-	Velocity& operator= (const Velocity& rhs) noexcept
-	{
-		linear = rhs.linear;
-		angular = rhs.angular;
-		return *this;
-	}
-
 	Vec2 linear; ///< Linear velocity (in meters/second).
 	Angle angular; ///< Angular velocity (in radians/second).
 };
