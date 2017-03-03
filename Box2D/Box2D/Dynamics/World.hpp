@@ -397,8 +397,6 @@ private:
 
 	static bool IsActive(const Contact& contact) noexcept;
 
-	static body_count_t AddToIsland(Island& island, Body& body);
-
 	/// Builds island based off of a given "seed" body.
 	/// @post Contacts are listed in the island in the order that bodies list those contacts.
 	/// @post Joints are listed the island in the order that bodies list those joints.

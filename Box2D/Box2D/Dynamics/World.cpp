@@ -651,13 +651,6 @@ void World::InternalDestroy(Joint* j)
 	}
 }
 
-body_count_t World::AddToIsland(Island& island, Body& body)
-{
-	const auto index = static_cast<body_count_t>(island.m_bodies.size());
-	island.m_bodies.push_back(&body);
-	return index;
-}
-
 Island World::BuildIsland(Body& seed,
 				  BodyList::size_type& remNumBodies,
 				  contact_count_t& remNumContacts,
@@ -680,7 +673,7 @@ Island World::BuildIsland(Body& seed,
 		stack.pop_back();
 		
 		assert(b->IsActive());
-		AddToIsland(island, *b);
+		island.m_bodies.push_back(b);
 		--remNumBodies;
 		
 		// Make sure the body is awake.
@@ -1181,9 +1174,9 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 	// Build the island
 	Island island(m_bodies.size(), m_contactMgr.GetContacts().size(), 0);
 
-	AddToIsland(island, *bA);
+	island.m_bodies.push_back(bA);
 	bA->SetInIsland();
-	AddToIsland(island, *bB);
+	island.m_bodies.push_back(bB);
 	bB->SetInIsland();
 	island.m_contacts.push_back(&contact);
 	contact.SetInIsland();
@@ -1370,13 +1363,13 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi, Conta
 			
 			if (!other->IsInIsland())
 			{
-				other->SetInIsland();			
 				if (other->IsSpeedable())
 				{
 					other->SetAwake();
 				}
-				AddToIsland(island, *other);
-			}		
+				island.m_bodies.push_back(other);
+				other->SetInIsland();
+			}
 		}		
 	}
 }
