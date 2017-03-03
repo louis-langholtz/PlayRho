@@ -39,7 +39,7 @@ public:
 		m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
 
 		const auto radius = 0.5f;
-		const auto shape = std::make_shared<CircleShape>(radius, Vec2_zero);
+		const auto shape = std::make_shared<CircleShape>(radius);
 
 		FixtureDef fd;
 		fd.density = 1.0f;
