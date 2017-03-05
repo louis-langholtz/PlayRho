@@ -1137,8 +1137,8 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contact)
 {
 	const auto toi = contact.GetToi();
-	auto bA = contact.GetFixtureA()->GetBody();
-	auto bB = contact.GetFixtureB()->GetBody();
+	const auto bA = contact.GetFixtureA()->GetBody();
+	const auto bB = contact.GetFixtureB()->GetBody();
 
 	{
 		const auto backupA = bA->m_sweep;
