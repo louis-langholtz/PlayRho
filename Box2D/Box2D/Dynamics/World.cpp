@@ -1226,13 +1226,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 	// Initialize the body state.
 	for (auto&& body: island.m_bodies)
 	{
-		bodyConstraints[body] = BodyConstraint{
-			body->GetInvMass(),
-			body->GetInvRotInertia(),
-			body->GetLocalCenter(),
-			body->m_sweep.pos1,
-			body->GetVelocity()
-		};
+		bodyConstraints[body] = GetBodyConstraint(*body);
 	}
 	
 	auto positionConstraints = GetPositionConstraints(island.m_contacts, bodyConstraints);
