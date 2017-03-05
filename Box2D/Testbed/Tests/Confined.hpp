@@ -25,7 +25,7 @@ namespace box2d {
 class Confined : public Test
 {
 public:
-	const RealNum wall_length = RealNum(DefaultLinearSlop * 1000); // 20
+	const RealNum wall_length = RealNum(0.1f); // DefaultLinearSlop * 1000
 	const RealNum vertexRadiusIncrement = wall_length / 40;
 	
 	enum
