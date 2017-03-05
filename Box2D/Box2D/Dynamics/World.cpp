@@ -1136,6 +1136,8 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 
 World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contact)
 {
+	assert(!contact.IsInIsland());
+	
 	const auto toi = contact.GetToi();
 	const auto bA = contact.GetFixtureA()->GetBody();
 	const auto bB = contact.GetFixtureB()->GetBody();
@@ -1174,6 +1176,9 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 	// Build the island
 	Island island(m_bodies.size(), m_contactMgr.GetContacts().size(), 0);
 
+	assert(!bA->IsInIsland());
+	assert(!bB->IsInIsland());
+	
 	island.m_bodies.push_back(bA);
 	bA->SetInIsland();
 	island.m_bodies.push_back(bB);
@@ -1324,7 +1329,9 @@ void World::ResetContactsForSolveTOI(Body& body)
 
 void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi, ContactListener* listener)
 {
+	assert(body.IsInIsland());
 	assert(body.IsAccelerable());
+	assert(toi >= 0 && toi <= 1);
 
 	for (auto&& ce: body.GetContactEdges())
 	{
