@@ -29,6 +29,8 @@
 #include <Box2D/Dynamics/ContactList.hpp>
 #include <Box2D/Dynamics/Profile.hpp>
 
+#include <vector>
+
 namespace box2d {
 
 struct AABB;
@@ -78,6 +80,7 @@ struct ToiStepStats
 	uint32 contactsAdded = 0;
 	uint32 sumPosIters = 0;
 	uint32 sumVelIters = 0;
+	uint32 maxSimulContacts = 0; ///< Max contacts occuring simultaneously.
 
 	using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
 	using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
@@ -479,8 +482,7 @@ private:
 
 	struct ContactToiData
 	{
-		contact_count_t count = 0;
-		Contact* contact = nullptr; ///< Contact for which the time of impact is relavant.
+		std::vector<Contact*> contacts; ///< Contacts for which the time of impact is relavant.
 		RealNum toi = std::numeric_limits<RealNum>::infinity(); ///< Time of impact (TOI) as a fractional value between 0 and 1.
 	};
 
@@ -504,7 +506,7 @@ private:
 	/// Gets the soonest contact.
 	/// @detail This finds the contact with the lowest (soonest) time of impact.
 	/// @return Contact with the least time of impact and its time of impact, or null contact.
-	ContactToiData GetSoonestContact();
+	ContactToiData GetSoonestContacts();
 
 	bool HasNewFixtures() const noexcept;
 

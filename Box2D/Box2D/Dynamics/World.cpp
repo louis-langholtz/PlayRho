@@ -1031,11 +1031,10 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 	return UpdateContactsData{numAtMaxSubSteps, numUpdated, maxDistIters, maxToiIters, maxRootIters};
 }
 	
-World::ContactToiData World::GetSoonestContact()
+World::ContactToiData World::GetSoonestContacts()
 {
-	auto minToi = std::numeric_limits<RealNum>::infinity();
-	auto minContact = static_cast<Contact*>(nullptr);
-	auto count = contact_count_t{0};
+	auto minToi = std::nextafter(RealNum{1}, RealNum{0});
+	auto minContacts = std::vector<Contact*>();
 	for (auto&& c: m_contactMgr.GetContacts())
 	{
 		if (c.HasValidToi())
@@ -1044,37 +1043,17 @@ World::ContactToiData World::GetSoonestContact()
 			if (minToi > toi)
 			{
 				minToi = toi;
-				minContact = &c;
-				count = contact_count_t{1};
+				minContacts.clear();
+				minContacts.push_back(&c);
 			}
 			else if (minToi == toi)
 			{
 				// Have multiple contacts at the current minimum time of impact.
-				++count;
-
-				// Should the first one found be dealt with first?
-				// Does ordering of these contacts even matter?
-				//
-				//   Presumably if these contacts are independent then ordering won't matter
-				//   since they'd be dealt with in separate islands anyway.
-				//   OTOH, if these contacts are dependent, then the contact returned will be
-				//   first to have its two bodies positions handled for impact before other
-				//   bodies which seems like it will matter.
-				//
-				//   Prioritizing contact with non-accelerable body doesn't prevent
-				//   tunneling of bullet objects through static objects in the multi body
-				//   collision case however.
-#if 1
-				if (!c.GetFixtureB()->GetBody()->IsAccelerable() ||
-					!c.GetFixtureB()->GetBody()->IsAccelerable())
-				{
-					minContact = &c;
-				}
-#endif
+				minContacts.push_back(&c);
 			}
 		}
 	}
-	return ContactToiData{count, minContact, minToi};
+	return ContactToiData{minContacts, minToi};
 }
 
 // Find TOI contacts and solve them.
@@ -1098,16 +1077,18 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 		stats.maxRootIters = Max(stats.maxRootIters, updateData.maxRootIters);
 		stats.maxToiIters = Max(stats.maxToiIters, updateData.maxToiIters);
 		
-		const auto next = GetSoonestContact();
-		if ((!next.contact) || (next.toi >= 1))
+		const auto next = GetSoonestContacts();
+		const auto ncount = next.contacts.size();
+		if (ncount == 0)
 		{
 			// No more TOI events to handle within the current time step. Done!
 			SetStepComplete(true);
 			break;
 		}
 
+		stats.maxSimulContacts = std::max(stats.maxSimulContacts, static_cast<decltype(stats.maxSimulContacts)>(ncount));
 		++stats.contactsFound;
-		const auto solverResults = SolveTOI(step, *next.contact);
+		const auto solverResults = SolveTOI(step, *next.contacts.front());
 		stats.minSeparation = Min(stats.minSeparation, solverResults.minSeparation);
 		stats.maxIncImpulse = Max(stats.maxIncImpulse, solverResults.maxIncImpulse);
 		if (solverResults.solved)
