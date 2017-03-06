@@ -22,13 +22,13 @@
 
 using namespace box2d;
 
-box2d::BodyConstraint box2d::GetBodyConstraint(const Body& body) noexcept
+box2d::BodyConstraint box2d::GetBodyConstraint(const Body& body, RealNum time) noexcept
 {
 	return BodyConstraint{
 		body.GetInvMass(),
 		body.GetInvRotInertia(),
 		body.GetLocalCenter(),
 		body.GetPosition1(),
-		body.GetVelocity()
+		GetVelocity(body, time)
 	};
 }
