@@ -1204,6 +1204,12 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 	// Initialize the body state.
 	for (auto&& body: island.m_bodies)
 	{
+		/*
+		 * Presumably the regular phase resolution has already taken care of updating the
+		 * body's velocity w.r.t. acceleration and damping such that this call here to get
+		 * the body constraint doesn't need to pass an elapsed time (and doesn't need to
+		 * update the velocity from what it already is).
+		 */
 		bodyConstraints[body] = GetBodyConstraint(*body);
 	}
 	
