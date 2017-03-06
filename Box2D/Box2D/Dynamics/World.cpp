@@ -839,15 +839,7 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& step, Island is
 	for (auto&& body: island.m_bodies)
 	{
 		body->m_sweep.pos0 = body->m_sweep.pos1; // like Advance0(1) on the sweep.
-		const auto new_velocity = GetVelocity(*body, h);
-		assert(IsValid(new_velocity));
-		bodyConstraints[body] = BodyConstraint{
-			body->GetInvMass(),
-			body->GetInvRotInertia(),
-			body->GetLocalCenter(),
-			body->m_sweep.pos1,
-			new_velocity
-		};
+		bodyConstraints[body] = GetBodyConstraint(*body, h);
 	}
 	auto positionConstraints = GetPositionConstraints(island.m_contacts, bodyConstraints);
 
