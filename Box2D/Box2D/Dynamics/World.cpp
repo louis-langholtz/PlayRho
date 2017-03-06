@@ -656,6 +656,10 @@ Island World::BuildIsland(Body& seed,
 				  contact_count_t& remNumContacts,
 				  JointList::size_type& remNumJoints)
 {
+	assert(!seed.IsInIsland());
+	assert(seed.IsSpeedable());
+	assert(seed.IsAwake());
+	assert(seed.IsActive());
 	assert(remNumBodies != 0);
 
 	// Size the island for the remaining un-evaluated bodies, contacts, and joints.
@@ -690,11 +694,13 @@ Island World::BuildIsland(Body& seed,
 		for (auto&& ce: b->GetContactEdges())
 		{
 			const auto contact = ce.contact;
-			if (!contact->IsInIsland() && contact->IsEnabled() && contact->IsTouching() && !HasSensor(*contact))
+			const auto other = ce.other;
+
+			if (!contact->IsInIsland() && !HasSensor(*contact) && contact->IsEnabled() && contact->IsTouching())
 			{
 				island.m_contacts.push_back(contact);
 				contact->SetInIsland();
-				const auto other = ce.other;
+
 				if (!other->IsInIsland())
 				{				
 					stack.push_back(other);
