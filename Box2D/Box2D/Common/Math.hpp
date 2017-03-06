@@ -559,7 +559,7 @@ public:
 	/// This advances position 0 (<code>pos0</code>) of the sweep towards position 1 (<code>pos1</code>)
 	/// by a factor of the difference between the given alpha and the alpha0.
 	/// @param alpha Valid new time factor in [0,1) to update the sweep to. Behavior is undefined if value is invalid.
-	void Advance0(RealNum alpha);
+	void Advance0(RealNum alpha) noexcept;
 
 	void ResetAlpha0() noexcept;
 
@@ -1153,16 +1153,16 @@ inline Transformation GetTransformation(const Position pos, const Vec2 local_ctr
 	return GetTransformation(pos.linear, UnitVec2{pos.angular}, local_ctr);
 }
 
-inline Position GetPosition(const Position pos0, const Position pos1, const RealNum beta)
+inline Position GetPosition(const Position pos0, const Position pos1, const RealNum beta) noexcept
 {
-	return pos0 * (RealNum{1} - beta) + pos1 * beta;
+	return pos0 * (1 - beta) + pos1 * beta;
 }
 
 /// Gets the interpolated transform at a specific time.
 /// @param sweep Sweep data to get the transform from.
 /// @param beta Time factor in [0,1], where 0 indicates alpha0.
 /// @return Transformation of the given sweep at the specified time.
-inline Transformation GetTransformation(const Sweep& sweep, const RealNum beta)
+inline Transformation GetTransformation(const Sweep& sweep, const RealNum beta) noexcept
 {
 	assert(beta >= 0);
 	assert(beta <= 1);
@@ -1174,7 +1174,7 @@ inline Transformation GetTransformation(const Sweep& sweep, const RealNum beta)
 /// @sa GetTransformation(const Sweep& sweep, RealNum beta).
 /// @param sweep Sweep data to get the transform from.
 /// @return Transformation of the given sweep at time zero.
-inline Transformation GetTransform0(const Sweep& sweep)
+inline Transformation GetTransform0(const Sweep& sweep) noexcept
 {
 	return GetTransformation(sweep.pos0, sweep.GetLocalCenter());
 }
@@ -1184,19 +1184,19 @@ inline Transformation GetTransform0(const Sweep& sweep)
 /// @sa GetTransformation(const Sweep& sweep, RealNum beta).
 /// @param sweep Sweep data to get the transform from.
 /// @return Transformation of the given sweep at time one.
-inline Transformation GetTransform1(const Sweep& sweep)
+inline Transformation GetTransform1(const Sweep& sweep) noexcept
 {
 	return GetTransformation(sweep.pos1, sweep.GetLocalCenter());
 }
 
-inline void Sweep::Advance0(const RealNum alpha)
+inline void Sweep::Advance0(const RealNum alpha) noexcept
 {
 	assert(IsValid(alpha));
 	assert(alpha >= 0);
 	assert(alpha < 1);
 	assert(alpha0 < 1);
 	
-	const auto beta = (alpha - alpha0) / (RealNum{1} - alpha0);
+	const auto beta = (alpha - alpha0) / (1 - alpha0);
 	pos0 = GetPosition(pos0, pos1, beta);
 	alpha0 = alpha;
 }
@@ -1210,7 +1210,7 @@ inline void Sweep::ResetAlpha0() noexcept
 /// @param sweep Sweep to return with its angles normalized.
 /// @return Sweep with its pos0 angle in radians to be between -2 pi and 2 pi
 ///    and its pos1 angle reduced by the amount pos0's angle was reduced by.
-inline Sweep GetAnglesNormalized(Sweep sweep)
+inline Sweep GetAnglesNormalized(Sweep sweep) noexcept
 {
 	const auto pos0a = GetNormalized(sweep.pos0.angular);
 	const auto d = sweep.pos0.angular - pos0a;
