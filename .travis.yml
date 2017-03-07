@@ -27,11 +27,17 @@ xcode_scheme: UnitTest
 
 sudo: false
 
+# https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.tar.gz
+
+# For white-listed aliases, see https://github.com/travis-ci/apt-source-whitelist/blob/master/ubuntu.json
 addons:
   apt:
     sources:
+      - deadsnakes
       - ubuntu-toolchain-r-test
+      - george-edison55-precise-backports
     packages:
+      - build-essential
       - cmake
       - cmake-data
       - clang
