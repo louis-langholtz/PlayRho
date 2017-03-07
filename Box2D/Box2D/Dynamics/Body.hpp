@@ -20,13 +20,14 @@
 #ifndef B2_BODY_H
 #define B2_BODY_H
 
-#include <memory>
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Collision/MassData.hpp>
 #include <Box2D/Dynamics/BodyList.hpp>
-#include <Box2D/Dynamics/FixtureList.hpp>
 #include <Box2D/Dynamics/Contacts/ContactEdgeList.hpp>
 #include <Box2D/Dynamics/Joints/JointEdgeList.hpp>
+
+#include <forward_list>
+#include <memory>
 
 namespace box2d {
 
@@ -219,11 +220,14 @@ constexpr inline BodyDef& BodyDef::UseUserData(void* value) noexcept
 ///
 /// @detail A rigid body. These are created via World::Create.
 ///
-/// @note On a 64-bit architecture with 4-byte RealNum, this data structure is at least 156-bytes large.
+/// @note On a 64-bit architecture with 4-byte RealNum, this data structure is at least 160-bytes large.
 ///
 class Body
 {
 public:
+	using FixtureList = std::forward_list<Fixture*>;
+	using ConstFixtureList = std::forward_list<const Fixture*>;
+	
 	static constexpr auto InvalidIslandIndex = static_cast<body_count_t>(-1);
 	
 	/// Creates a fixture and attaches it to this body.
@@ -432,10 +436,10 @@ public:
 	bool IsFixedRotation() const noexcept;
 
 	/// Gets the list of all fixtures attached to this body.
-	FixtureList& GetFixtures() noexcept;
+	FixtureList GetFixtures() noexcept;
 	
 	/// Gets the list of all fixtures attached to this body.
-	const FixtureList& GetFixtures() const noexcept;
+	ConstFixtureList GetFixtures() const noexcept;
 
 	/// Gets the list of all joints attached to this body.
 	JointEdgeList& GetJoints() noexcept;
@@ -791,14 +795,14 @@ inline bool Body::IsSleepingAllowed() const noexcept
 	return (m_flags & e_autoSleepFlag) != 0;
 }
 
-inline FixtureList& Body::GetFixtures() noexcept
+inline Body::FixtureList Body::GetFixtures() noexcept
 {
 	return m_fixtures;
 }
 
-inline const FixtureList& Body::GetFixtures() const noexcept
+inline Body::ConstFixtureList Body::GetFixtures() const noexcept
 {
-	return m_fixtures;
+	return ConstFixtureList(m_fixtures.cbegin(), m_fixtures.cend());
 }
 
 inline JointEdgeList& Body::GetJoints() noexcept

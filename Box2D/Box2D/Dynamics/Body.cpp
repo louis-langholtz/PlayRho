@@ -134,16 +134,16 @@ void Body::InternalDestroyFixtures()
 	// Delete the attached fixtures. This destroys broad-phase proxies.
 	while (!m_fixtures.empty())
 	{
-		auto& fixture = m_fixtures.front();
+		const auto fixture = m_fixtures.front();
 		m_fixtures.pop_front();
 		
 		if (m_world->m_destructionListener)
 		{
-			m_world->m_destructionListener->SayGoodbye(fixture);
+			m_world->m_destructionListener->SayGoodbye(*fixture);
 		}
 		
-		fixture.DestroyProxies(m_world->m_blockAllocator, m_world->m_contactMgr.m_broadPhase);
-		Delete(&fixture, m_world->m_blockAllocator);
+		fixture->DestroyProxies(m_world->m_blockAllocator, m_world->m_contactMgr.m_broadPhase);
+		Delete(fixture, m_world->m_blockAllocator);
 	}
 	
 	ResetMassData();
@@ -193,7 +193,7 @@ void Body::SetType(BodyType type)
 	auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
 	for (auto&& fixture: GetFixtures())
 	{
-		fixture.TouchProxies(broadPhase);
+		fixture->TouchProxies(broadPhase);
 	}
 }
 
@@ -291,11 +291,11 @@ void Body::DestroyFixture(Fixture* fixture, bool resetMassData)
 	// Remove the fixture from this body's singly linked list.
 	auto found = false;
 	{
-		for (auto it = m_fixtures.begin(); it != m_fixtures.end(); ++it)
+		for (auto it = m_fixtures.before_begin(); it != m_fixtures.end(); ++it)
 		{
-			if (&(*it) == fixture)
+			if (*(std::next(it)) == fixture)
 			{
-				m_fixtures.erase(it);
+				m_fixtures.erase_after(it);
 				found = true;
 				break;
 			}
@@ -477,7 +477,7 @@ void Body::SynchronizeFixtures(const Transformation& t1, const Transformation& t
 	auto& broadPhase = m_world->m_contactMgr.m_broadPhase;
 	for (auto&& fixture: GetFixtures())
 	{
-		fixture.Synchronize(broadPhase, t1, t2);
+		fixture->Synchronize(broadPhase, t1, t2);
 	}
 }
 
@@ -522,7 +522,7 @@ void Body::SetActive(bool flag)
 		const auto xf = GetTransformation();
 		for (auto&& fixture: GetFixtures())
 		{
-			fixture.CreateProxies(allocator, broadPhase, xf);
+			fixture->CreateProxies(allocator, broadPhase, xf);
 		}
 
 		// Contacts are created the next time step.
@@ -536,7 +536,7 @@ void Body::SetActive(bool flag)
 		auto& allocator = m_world->m_blockAllocator;
 		for (auto&& fixture: GetFixtures())
 		{
-			fixture.DestroyProxies(allocator, broadPhase);
+			fixture->DestroyProxies(allocator, broadPhase);
 		}
 
 		InternalDestroyContacts();
@@ -622,9 +622,9 @@ MassData box2d::ComputeMassData(const Body& body) noexcept
 	auto center = Vec2_zero;
 	for (auto&& fixture: body.GetFixtures())
 	{
-		if (fixture.GetDensity() > 0)
+		if (fixture->GetDensity() > 0)
 		{
-			const auto massData = GetMassData(fixture);
+			const auto massData = GetMassData(*fixture);
 			mass += massData.mass;
 			center += massData.mass * massData.center;
 			I += massData.I;

@@ -1620,7 +1620,7 @@ size_t GetShapeCount(const World& world) noexcept
 	{
 		for (auto&& f: b.GetFixtures())
 		{
-			shapes.insert(f.GetShape());
+			shapes.insert(f->GetShape());
 		}
 	}
 	return shapes.size();

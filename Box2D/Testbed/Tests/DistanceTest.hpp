@@ -66,7 +66,7 @@ public:
 	static Fixture* GetFixture(Body* body)
 	{
 		return (body->GetFixtures().begin() != body->GetFixtures().end())?
-			&(body->GetFixtures().front()): nullptr;
+			body->GetFixtures().front(): nullptr;
 	}
 
 	void DestroyFixtures()

@@ -211,7 +211,7 @@ static void Draw(Drawer& drawer, const Body& body, bool skins)
 	const auto color = GetColor(body);
 	for (auto&& f: body.GetFixtures())
 	{
-		Draw(drawer, f, xf, color, skins);
+		Draw(drawer, *f, xf, color, skins);
 	}
 }
 
@@ -288,10 +288,10 @@ static void Draw(Drawer& drawer, const World& world, const Settings& settings)
 			
 			for (auto&& f: b.GetFixtures())
 			{
-				const auto proxy_count = f.GetProxyCount();
+				const auto proxy_count = f->GetProxyCount();
 				for (auto i = decltype(proxy_count){0}; i < proxy_count; ++i)
 				{
-					const auto proxy = f.GetProxy(i);
+					const auto proxy = f->GetProxy(i);
 					const auto aabb = bp->GetFatAABB(proxy->proxyId);
 					Vec2 vs[4];
 					vs[0] = Vec2{aabb.GetLowerBound().x, aabb.GetLowerBound().y};

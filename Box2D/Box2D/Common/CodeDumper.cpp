@@ -108,7 +108,7 @@ void box2d::Dump(const Body& body, size_t bodyIndex)
 	for (auto&& fixture: body.GetFixtures())
 	{
 		log("  {\n");
-		Dump(fixture, bodyIndex);
+		Dump(*fixture, bodyIndex);
 		log("  }\n");
 	}
 	log("}\n");
