@@ -114,14 +114,14 @@ inline long double round(long double value, uint32_t precision)
 template <>
 inline Fixed32 round(Fixed32 value, uint32_t precision)
 {
-	const auto factor = Fixed32(static_cast<int64_t>(precision));
+	const auto factor = Fixed32(precision);
 	return std::round(value * factor) / factor;
 }
 
 template <>
 inline Fixed64 round(Fixed64 value, uint32_t precision)
 {
-	const auto factor = Fixed64(static_cast<int64_t>(precision));
+	const auto factor = Fixed64(precision);
 	return std::round(value * factor) / factor;
 }
 

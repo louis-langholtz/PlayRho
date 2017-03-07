@@ -36,11 +36,13 @@ addons:
       - deadsnakes
       - ubuntu-toolchain-r-test
       - george-edison55-precise-backports
+      - llvm-toolchain-precise-3.7
     packages:
       - build-essential
       - cmake
       - cmake-data
       - clang
+      - clang-3.7
 
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then (cd Box2D && mkdir -p BuildLinux && cd BuildLinux && cmake -DBOX2D_BUILD_EXAMPLES=OFF -DBOX2D_INSTALL=OFF .. && make); fi

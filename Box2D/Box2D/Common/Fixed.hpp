@@ -199,6 +199,11 @@ namespace box2d
 			return m_value / ScaleFactor;
 		}
 		
+		explicit constexpr operator long() const noexcept
+		{
+			return m_value / ScaleFactor;
+		}
+
 		explicit constexpr operator unsigned long long() const noexcept
 		{
 			assert(m_value >= 0);
