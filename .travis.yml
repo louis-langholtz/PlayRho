@@ -1,5 +1,9 @@
 # This file configures the build and run environment on https://travis-ci.org/
 
+# Specify the operating systems on which to test for.
+os:
+  - osx
+
 # For details on building a C++ project see: https://docs.travis-ci.com/user/languages/cpp/
 language: cpp
 
