@@ -3,6 +3,7 @@
 # Specify the operating systems on which to test for.
 os:
   - osx
+  - linux
 
 # For details on building a C++ project see: https://docs.travis-ci.com/user/languages/cpp/
 language: cpp
