@@ -226,7 +226,6 @@ class Body
 {
 public:
 	using FixtureList = std::forward_list<Fixture*>;
-	using ConstFixtureList = std::forward_list<const Fixture*>;
 	
 	static constexpr auto InvalidIslandIndex = static_cast<body_count_t>(-1);
 	
@@ -436,10 +435,10 @@ public:
 	bool IsFixedRotation() const noexcept;
 
 	/// Gets the list of all fixtures attached to this body.
-	FixtureList GetFixtures() noexcept;
+	const FixtureList& GetFixtures() noexcept;
 	
 	/// Gets the list of all fixtures attached to this body.
-	ConstFixtureList GetFixtures() const noexcept;
+	const FixtureList& GetFixtures() const noexcept;
 
 	/// Gets the list of all joints attached to this body.
 	JointEdgeList& GetJoints() noexcept;
@@ -795,14 +794,14 @@ inline bool Body::IsSleepingAllowed() const noexcept
 	return (m_flags & e_autoSleepFlag) != 0;
 }
 
-inline Body::FixtureList Body::GetFixtures() noexcept
+inline const Body::FixtureList& Body::GetFixtures() noexcept
 {
 	return m_fixtures;
 }
 
-inline Body::ConstFixtureList Body::GetFixtures() const noexcept
+inline const Body::FixtureList& Body::GetFixtures() const noexcept
 {
-	return ConstFixtureList(m_fixtures.cbegin(), m_fixtures.cend());
+	return m_fixtures;
 }
 
 inline JointEdgeList& Body::GetJoints() noexcept

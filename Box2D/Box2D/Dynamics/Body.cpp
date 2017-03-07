@@ -609,8 +609,8 @@ Velocity box2d::GetVelocity(const Body& body, RealNum h) noexcept
 
 size_t box2d::GetFixtureCount(const Body& body)
 {
-	return static_cast<size_t>(std::distance(std::begin(body.GetFixtures()),
-											 std::end(body.GetFixtures())));
+	const auto& fixtures = body.GetFixtures();
+	return static_cast<size_t>(std::distance(std::begin(fixtures), std::end(fixtures)));
 }
 
 MassData box2d::ComputeMassData(const Body& body) noexcept
