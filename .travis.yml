@@ -1,0 +1,22 @@
+# This file configures the build and run environment on https://travis-ci.org/
+
+# For details on building a C++ project see: https://docs.travis-ci.com/user/languages/cpp/
+language: cpp
+
+# Specifiy which compiler or compilers to test against.
+# For details, see https://docs.travis-ci.com/user/languages/cpp/#Choosing-compilers-to-test-against
+compiler: clang
+
+# Specify explicitly which branches to build or not build
+# For details see: https://docs.travis-ci.com/user/customizing-the-build/#Building-Specific-Branches
+branches:
+  only:
+  - dev
+
+# Specify which OS X image to use.
+# "xcode8" is supposed to provide a macosx10.11 SK preinstalled.
+# For details see: https://docs.travis-ci.com/user/osx-ci-environment/
+osx_image: xcode8
+
+xcode_project: Box2D/Build/xcode5/Box2D.xcodeproj
+xcode_scheme: UnitTest
