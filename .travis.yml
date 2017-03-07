@@ -25,6 +25,12 @@ osx_image: xcode8
 xcode_project: Box2D/Build/xcode5/Box2D.xcodeproj
 xcode_scheme: UnitTest
 
+addons:
+  apt:
+    packages:
+    - cmake
+    - clang
+
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then (cd Box2D && mkdir -p BuildLinux && cd BuildLinux && cmake -DBOX2D_BUILD_EXAMPLES=OFF -DBOX2D_INSTALL=OFF .. && make); fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then (cd Box2D && xcodebuild -project Box2D/Build/xcode5/Box2D.xcodeproj -list); fi
