@@ -216,57 +216,6 @@ void Contact::Update(ContactListener* listener)
 	}
 }
 
-static inline bool IsValidForTime(TOIOutput::State state) noexcept
-{
-	return state == TOIOutput::e_touching;
-}
-
-Contact::UpdateOutput Contact::UpdateForCCD(const ToiConf& conf)
-{
-	const auto fA = GetFixtureA();
-	const auto fB = GetFixtureB();
-	
-	const auto bA = fA->GetBody();
-	const auto bB = fB->GetBody();
-	
-	// Compute the TOI for this contact (one or both bodies are active and impenetrable).
-
-	// Put the sweeps onto the same time interval.
-	// Presumably no unresolved collisions happen before the maximum of the bodies' alpha-0 times.
-	// So long as the least TOI of the contacts is always the first collision that gets dealt with,
-	// this presumption is safe.
-	const auto alpha0 = Max(bA->m_sweep.GetAlpha0(), bB->m_sweep.GetAlpha0());
-	assert(alpha0 >= 0 && alpha0 < 1);
-	bA->m_sweep.Advance0(alpha0);
-	bB->m_sweep.Advance0(alpha0);
-	
-	// Computes the time of impact in interval [0, 1]
-	// Large rotations can make the root finder of TimeOfImpact fail, so normalize the sweep angles.
-	const auto output = TimeOfImpact(GetDistanceProxy(*fA->GetShape(), GetChildIndexA()),
-									 GetAnglesNormalized(bA->m_sweep),
-									 GetDistanceProxy(*fB->GetShape(), GetChildIndexB()),
-									 GetAnglesNormalized(bB->m_sweep),
-									 conf);
-	++m_toiCalls;
-	
-	m_toiItersTotal += output.get_toi_iters();
-	m_distItersTotal += output.get_sum_dist_iters();
-	m_rootItersTotal += output.get_sum_root_iters();
-
-	m_max_toi_iters = Max(m_max_toi_iters, output.get_toi_iters());
-	m_max_dist_iters = Max(m_max_dist_iters, output.get_max_dist_iters());
-	m_max_root_iters = Max(m_max_root_iters, output.get_max_root_iters());
-	
-	// Use Min function to handle floating point imprecision which possibly otherwise
-	// could provide a TOI that's greater than 1.
-	const auto toi = IsValidForTime(output.get_state())?
-		Min(alpha0 + (1 - alpha0) * output.get_t(), RealNum{1}): RealNum{1};
-	assert(toi >= alpha0);
-	SetToi(toi);
-	
-	return UpdateOutput{toi, output.get_max_dist_iters(), output.get_toi_iters(), output.get_max_root_iters()};
-}
-
 bool box2d::HasSensor(const Contact& contact) noexcept
 {
 	return contact.GetFixtureA()->IsSensor() || contact.GetFixtureB()->IsSensor();

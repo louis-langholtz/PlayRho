@@ -48,9 +48,9 @@ TEST(Island, NotDefaultConstructible)
 	EXPECT_FALSE(std::is_default_constructible<Island>::value);
 }
 
-TEST(Island, NotCopyConstructible)
+TEST(Island, IsCopyConstructible)
 {
-	EXPECT_FALSE(std::is_copy_constructible<Island>::value);
+	EXPECT_TRUE(std::is_copy_constructible<Island>::value);
 }
 
 TEST(Island, IsNothrowMoveConstructible)
@@ -58,9 +58,9 @@ TEST(Island, IsNothrowMoveConstructible)
 	EXPECT_TRUE(std::is_nothrow_move_constructible<Island>::value);
 }
 
-TEST(Island, NotMoveAssignable)
+TEST(Island, IsMoveAssignable)
 {
-	EXPECT_FALSE(std::is_move_assignable<Island>::value);
+	EXPECT_TRUE(std::is_move_assignable<Island>::value);
 }
 
 TEST(Island, NotCopyAssignable)

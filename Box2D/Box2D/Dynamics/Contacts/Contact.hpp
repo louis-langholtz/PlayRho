@@ -68,7 +68,7 @@ struct ContactEdge
 /// The class manages contact between two shapes. A contact exists for each overlapping
 /// AABB in the broad-phase (except if filtered). Therefore a contact object may exist
 /// that has no contact points.
-/// @note This data structure is 208-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 200-bytes large (on at least one 64-bit platform).
 class Contact
 {
 public:
@@ -157,17 +157,7 @@ public:
 	virtual Manifold Evaluate() const = 0;
 
 	substep_type GetToiCount() const noexcept;
-
-	unsigned GetToiCalls() const noexcept;
-
-	toi_sum_type GetToiItersTotal() const noexcept;
-	dist_sum_type GetDistItersTotal() const noexcept;
-	root_sum_type GetRootItersTotal() const noexcept;
 	
-	toi_max_type GetToiItersMax() const noexcept;
-	dist_max_type GetDistItersMax() const noexcept;
-	root_max_type GetRootItersMax() const noexcept;
-
 	/// Gets whether a TOI is set.
 	/// @return true if this object has a TOI set for it, false otherwise.
 	bool HasValidToi() const noexcept;
@@ -295,15 +285,8 @@ private:
 	Manifold m_manifold; ///< Manifold of the contact. 60-bytes. @sa Update.
 
 	substep_type m_toiCount = 0; ///< Count of TOI calculations contact has gone through since last reset.
-	substep_type m_toiCalls = 0; ///< Count of TOI calculations contact has gone through in its lifetime.
 
-	toi_sum_type m_toiItersTotal = 0;
 	toi_max_type m_max_toi_iters = 0;
-	
-	dist_sum_type m_distItersTotal = 0;
-	root_sum_type m_rootItersTotal = 0;
-	dist_max_type m_max_dist_iters = 0;
-	root_max_type m_max_root_iters = 0;
 	
 	RealNum m_toi; // only valid if m_flags & e_toiFlag
 
@@ -464,7 +447,7 @@ inline void Contact::SetToi(RealNum toi) noexcept
 	m_toi = toi;
 	m_flags |= Contact::e_toiFlag;
 }
-
+	
 inline void Contact::UnsetToi() noexcept
 {
 	m_flags &= ~Contact::e_toiFlag;
@@ -495,45 +478,10 @@ inline Contact::substep_type Contact::GetToiCount() const noexcept
 	return m_toiCount;
 }
 
-inline unsigned Contact::GetToiCalls() const noexcept
-{
-	return m_toiCalls;
-}
-
-inline Contact::toi_sum_type Contact::GetToiItersTotal() const noexcept
-{
-	return m_toiItersTotal;
-}
-
-inline Contact::dist_sum_type Contact::GetDistItersTotal() const noexcept
-{
-	return m_distItersTotal;
-}
-	
-inline Contact::root_sum_type Contact::GetRootItersTotal() const noexcept
-{
-	return m_rootItersTotal;
-}
-
-inline Contact::toi_max_type Contact::GetToiItersMax() const noexcept
-{
-	return m_max_toi_iters;
-}
-
-inline Contact::dist_max_type Contact::GetDistItersMax() const noexcept
-{
-	return m_max_dist_iters;
-}
-
-inline Contact::root_max_type Contact::GetRootItersMax() const noexcept
-{
-	return m_max_root_iters;
-}
-
 bool HasSensor(const Contact& contact) noexcept;
 
 bool IsImpenetrable(const Contact& contact) noexcept;
-
+	
 void SetAwake(Contact& c) noexcept;
 
 /// Resets the friction mixture to the default value.

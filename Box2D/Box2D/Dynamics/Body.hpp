@@ -476,7 +476,6 @@ private:
 
 	friend class World;
 	friend class ContactManager;
-	friend class Contact;
 	friend class BodyIterator;
 	friend class ConstBodyIterator;
 	friend class BodyList;

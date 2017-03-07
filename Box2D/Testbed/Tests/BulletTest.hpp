@@ -105,7 +105,6 @@ public:
 		for (auto&& c: m_world->GetContacts())
 		{
 			c.GetToiCount();
-			c.m_toiCalls;
 		}
 #endif
 		if (toiCalls > 0)

@@ -26,11 +26,11 @@ TEST(ContactEdge, ByteSizeIs32)
 	EXPECT_EQ(sizeof(ContactEdge), size_t(32));
 }
 
-TEST(Contact, ByteSizeIs_208_288_or_448)
+TEST(Contact, ByteSizeIs_200_288_or_448)
 {
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(Contact), size_t(208)); break;
+		case  4: EXPECT_EQ(sizeof(Contact), size_t(200)); break;
 		case  8: EXPECT_EQ(sizeof(Contact), size_t(288)); break;
 		case 16: EXPECT_EQ(sizeof(Contact), size_t(448)); break;
 		default: FAIL(); break;

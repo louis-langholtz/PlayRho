@@ -21,7 +21,7 @@
 
 using namespace box2d;
 
-TEST(FrictionJoint, ByteSizeIs264)
+TEST(FrictionJoint, ByteSizeIs240)
 {
-	EXPECT_EQ(sizeof(FrictionJoint), size_t(264));
+	EXPECT_EQ(sizeof(FrictionJoint), size_t(240));
 }

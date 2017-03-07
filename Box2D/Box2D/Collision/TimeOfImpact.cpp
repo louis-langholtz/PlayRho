@@ -28,6 +28,8 @@ TOIOutput TimeOfImpact(const DistanceProxy& proxyA, const Sweep& sweepA,
 					   const DistanceProxy& proxyB, const Sweep& sweepB,
 					   const ToiConf conf)
 {
+	assert(sweepA.GetAlpha0() == sweepB.GetAlpha0());
+
 	// CCD via the local separating axis method. This seeks progression
 	// by computing the largest time at which separation is maintained.
 	

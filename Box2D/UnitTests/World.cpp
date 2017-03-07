@@ -1653,13 +1653,6 @@ TEST(World, MouseJointWontCauseTunnelling)
 			{
 				std::cout << "Escaped at EndContact[" << &contact << "]:";
 				std::cout << " toiSteps=" << static_cast<unsigned>(contact.GetToiCount());
-				std::cout << " toiCalls=" << static_cast<unsigned>(contact.GetToiCalls());
-				std::cout << " itersTot=" << static_cast<unsigned>(contact.GetToiItersTotal());
-				std::cout << " itersMax=" << static_cast<unsigned>(contact.GetToiItersMax());
-				std::cout << " distSum=" << static_cast<unsigned>(contact.GetDistItersTotal());
-				std::cout << " distMax=" << static_cast<unsigned>(contact.GetDistItersMax());
-				std::cout << " rootSum=" << static_cast<unsigned>(contact.GetRootItersTotal());
-				std::cout << " rootMax=" << static_cast<unsigned>(contact.GetRootItersMax());
 				std::cout << " toiValid=" << contact.HasValidToi();
 				std::cout << " a[" << body_a << "]@(" << body_a->GetLocation().x << "," << body_a->GetLocation().y << ")";
 				std::cout << " b[" << body_b << "]@(" << body_b->GetLocation().x << "," << body_b->GetLocation().y << ")";

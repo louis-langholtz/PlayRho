@@ -193,6 +193,8 @@ namespace box2d {
 	/// This uses a swept separating axis and may miss some intermediate,
 	/// non-tunneling collision.
 	/// If you change the time interval, you should call this function again.
+	/// @pre The given sweeps are both at the same alpha0.
+	/// @warning Behavior is undefined if the given sweeps are not at the same alpha0.
 	/// @note Uses Distance to compute the contact point and normal at the time of impact.
 	/// @param proxyA Proxy A. The proxy's vertex count must be 1 or more.
 	/// @param sweepA Sweep A. Sweep of motion for shape represented by proxy A.
