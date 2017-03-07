@@ -324,8 +324,6 @@ void Body::DestroyFixture(Fixture* fixture, bool resetMassData)
 	}
 
 	fixture->DestroyProxies(m_world->m_blockAllocator, m_world->m_contactMgr.m_broadPhase);
-
-	fixture->m_next = nullptr;
 	
 	Delete(fixture, m_world->m_blockAllocator);
 	

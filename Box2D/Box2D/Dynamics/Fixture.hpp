@@ -142,7 +142,7 @@ constexpr inline FixtureDef& FixtureDef::UseFilter(Filter value) noexcept
 ///
 /// @warning you cannot reuse fixtures.
 /// @note Fixtures are created via Body::CreateFixture.
-/// @note This structure is 72-bytes large (using a 4-byte RealNum on at least one 64-bit architecture/build).
+/// @note This structure is 64-bytes large (using a 4-byte RealNum on at least one 64-bit architecture/build).
 ///
 class Fixture
 {
@@ -288,7 +288,6 @@ private:
 	/// @note 16-bytes.
 	std::shared_ptr<const Shape> m_shape;
 
-	Fixture* m_next = nullptr; ///< Next fixture in parent body's fixture list. 8-bytes.
 	FixtureProxy* m_proxies = nullptr; ///< Array of fixture proxies for the assigned shape. 8-bytes.
 	void* m_userData = nullptr; ///< User data. 8-bytes.
 	// 48-bytes so far.

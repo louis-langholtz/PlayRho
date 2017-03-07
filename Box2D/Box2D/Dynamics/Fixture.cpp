@@ -144,7 +144,11 @@ void Fixture::SetSensor(bool sensor)
 	if (sensor != m_isSensor)
 	{
 		m_isSensor = sensor;
-		m_body->SetAwake();
+		const auto body = m_body;
+		if (body)
+		{
+			body->SetAwake();
+		}
 	}
 }
 
