@@ -68,7 +68,7 @@ struct ContactEdge
 /// The class manages contact between two shapes. A contact exists for each overlapping
 /// AABB in the broad-phase (except if filtered). Therefore a contact object may exist
 /// that has no contact points.
-/// @note This data structure is 200-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 192-bytes large (on at least one 64-bit platform).
 class Contact
 {
 public:
@@ -177,25 +177,6 @@ protected:
 	friend class ContactIterator;
 	friend class ConstContactIterator;
 
-	// Flags stored in m_flags
-	enum: uint32
-	{
-		// Used when crawling contact graph when forming islands.
-		e_islandFlag		= 0x0001,
-
-        // Set when the shapes are touching.
-		e_touchingFlag		= 0x0002,
-
-		// This contact can be disabled (by user)
-		e_enabledFlag		= 0x0004,
-
-		// This contact needs filtering because a fixture filter was changed.
-		e_filterFlag		= 0x0008,
-
-		// This contact has a valid TOI in m_toi
-		e_toiFlag			= 0x0010
-	};
-
 	/// Flag this contact for filtering. Filtering will occur the next time step.
 	void FlagForFiltering() noexcept;
 	void UnflagForFiltering() noexcept;
@@ -229,66 +210,71 @@ protected:
 	
 	void ResetToiCount() noexcept;
 
-	struct UpdateOutput
-	{
-		using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
-		using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
-		using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
-
-		RealNum toi = 0;
-		dist_iter_type maxDistIters = 0;
-		toi_iter_type toiIters = 0;
-		root_iter_type maxRootIters = 0;
-	};
-
-	/// Updates the contact for CCD.
-	/// @detail This:
-	///   Ensures both bodies's sweeps are on the max alpha0 of the two (by advancing the sweep of the lesser body).
-	///   Calculates whether there's an impact and if so when.
-	///   Sets the new time of impact or sets it to 1.
-	UpdateOutput UpdateForCCD(const ToiConf& limits);
-
 	bool IsInIsland() const noexcept;
 	void SetInIsland() noexcept;
 	void UnsetInIsland() noexcept;
 
+private:
+	
+	/// Flags type data type.
+	using FlagsType = uint8;
+
+	// Flags stored in m_flags
+	enum: FlagsType
+	{
+		// Used when crawling contact graph when forming islands.
+		e_islandFlag		= 0x0001,
+		
+		// Set when the shapes are touching.
+		e_touchingFlag		= 0x0002,
+		
+		// This contact can be disabled (by user)
+		e_enabledFlag		= 0x0004,
+		
+		// This contact needs filtering because a fixture filter was changed.
+		e_filterFlag		= 0x0008,
+		
+		// This contact has a valid TOI in m_toi
+		e_toiFlag			= 0x0010
+	};
+	
 	/// Sets the touching flag state.
 	/// @note This should only be called if either:
- 	///   1. The contact's manifold has more than 0 contact points, or
+	///   1. The contact's manifold has more than 0 contact points, or
 	///   2. The contact has sensors and the two shapes of this contact are found to be overlapping.
 	/// @sa IsTouching().
 	void SetTouching() noexcept;
-
+	
 	void UnsetTouching() noexcept;
 	
 	void SetTouching(bool value) noexcept;
-
-private:
-	uint32 m_flags = e_enabledFlag;
-
-	// World pool and list pointers.
-	Contact* m_prev = nullptr;
-	Contact* m_next = nullptr;
-
+	
 	// Nodes for connecting bodies.
 	ContactEdge m_nodeA = { nullptr, nullptr, nullptr, nullptr}; ///< Node A's contact edge. 32-bytes.
 	ContactEdge m_nodeB = { nullptr, nullptr, nullptr, nullptr}; ///< Node B's contact edge. 32-bytes.
 
+	// World pool and list pointers.
+	Contact* m_prev = nullptr;
+	Contact* m_next = nullptr;
+	
 	Fixture* const m_fixtureA; ///< Fixture A. @detail Non-null pointer to fixture A.
 	Fixture* const m_fixtureB; ///< Fixture B. @detail Non-null pointer to fixture B.
 
 	child_count_t const m_indexA;
 	child_count_t const m_indexB;
 
-	RealNum m_tangentSpeed = RealNum{0};
-
 	Manifold m_manifold; ///< Manifold of the contact. 60-bytes. @sa Update.
 
 	substep_type m_toiCount = 0; ///< Count of TOI calculations contact has gone through since last reset.
-
-	toi_max_type m_max_toi_iters = 0;
 	
-	RealNum m_toi; // only valid if m_flags & e_toiFlag
+	FlagsType m_flags = e_enabledFlag;
+	
+	RealNum m_tangentSpeed = 0;
+	
+	/// Time of impact.
+	/// @note This is a unit interval of time (a value between 0 and 1).
+	/// @note Only valid if m_flags & e_toiFlag
+	RealNum m_toi;
 
 	// initialized on construction (construction-time depedent)
 	RealNum m_friction; ///< Mix of frictions of the associated fixtures. @sa MixFriction.
