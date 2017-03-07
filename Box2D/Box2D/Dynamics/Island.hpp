@@ -21,7 +21,6 @@
 #define B2_ISLAND_H
 
 #include <Box2D/Common/Math.hpp>
-#include <Box2D/Common/AllocatedArray.hpp>
 #include <vector>
 
 namespace box2d {
