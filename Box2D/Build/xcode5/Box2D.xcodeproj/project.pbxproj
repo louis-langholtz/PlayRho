@@ -11,10 +11,6 @@
 		472134861C8CD7CF009536F9 /* BodyList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472134841C8CD7CF009536F9 /* BodyList.hpp */; };
 		472134991C8D03D6009536F9 /* BodyList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 472134841C8CD7CF009536F9 /* BodyList.hpp */; };
 		4721349A1C8D03D9009536F9 /* BodyList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 472134831C8CD7CF009536F9 /* BodyList.cpp */; };
-		4721349D1C8E4CB5009536F9 /* FixtureList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4721349B1C8E4CB5009536F9 /* FixtureList.cpp */; };
-		4721349E1C8E4CB5009536F9 /* FixtureList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4721349B1C8E4CB5009536F9 /* FixtureList.cpp */; };
-		4721349F1C8E4CB5009536F9 /* FixtureList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4721349C1C8E4CB5009536F9 /* FixtureList.hpp */; };
-		472134A01C8E4CB5009536F9 /* FixtureList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4721349C1C8E4CB5009536F9 /* FixtureList.hpp */; };
 		4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD101D3014990012A882 /* IndexPair.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD0C1D3014990012A882 /* IndexPair.hpp */; };
 		4726DD1F1D305E5D0012A882 /* ContactFeature.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */; };
@@ -278,12 +274,8 @@
 		47AA5DF81C4C5FBE008AF2BA /* Rope.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8986141C3E5900F1753A /* Rope.hpp */; };
 		47AA5DF91C4C5FBE008AF2BA /* MotorJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80620F8E168B934600D46C8D /* MotorJoint.hpp */; };
 		47AA639A1D0F7FDA00726CA2 /* ConstBodyIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AA63921D0F7FDA00726CA2 /* ConstBodyIterator.cpp */; };
-		47AA639B1D0F7FDA00726CA2 /* ConstFixtureIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AA63931D0F7FDA00726CA2 /* ConstFixtureIterator.cpp */; };
-		47AA639C1D0F7FDA00726CA2 /* FixtureIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AA63941D0F7FDA00726CA2 /* FixtureIterator.cpp */; };
 		47AA639D1D0F7FDA00726CA2 /* BodyIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AA63951D0F7FDA00726CA2 /* BodyIterator.cpp */; };
 		47AA639E1D0F7FDA00726CA2 /* BodyIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47AA63961D0F7FDA00726CA2 /* BodyIterator.hpp */; };
-		47AA639F1D0F7FDA00726CA2 /* ConstFixtureIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47AA63971D0F7FDA00726CA2 /* ConstFixtureIterator.hpp */; };
-		47AA63A01D0F7FDA00726CA2 /* FixtureIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47AA63981D0F7FDA00726CA2 /* FixtureIterator.hpp */; };
 		47AA63A11D0F7FDA00726CA2 /* ConstBodyIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47AA63991D0F7FDA00726CA2 /* ConstBodyIterator.hpp */; };
 		47AA63A41D1077E600726CA2 /* ContactList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AA63A21D1077E600726CA2 /* ContactList.cpp */; };
 		47AA63A51D1077E600726CA2 /* ContactList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47AA63A31D1077E600726CA2 /* ContactList.hpp */; };
@@ -498,8 +490,6 @@
 /* Begin PBXFileReference section */
 		472134831C8CD7CF009536F9 /* BodyList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BodyList.cpp; sourceTree = "<group>"; };
 		472134841C8CD7CF009536F9 /* BodyList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyList.hpp; sourceTree = "<group>"; };
-		4721349B1C8E4CB5009536F9 /* FixtureList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FixtureList.cpp; sourceTree = "<group>"; };
-		4721349C1C8E4CB5009536F9 /* FixtureList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureList.hpp; sourceTree = "<group>"; };
 		4726DD0C1D3014990012A882 /* IndexPair.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IndexPair.hpp; sourceTree = "<group>"; };
 		4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactFeature.hpp; sourceTree = "<group>"; };
 		4726DD261D3180980012A882 /* NewtonsCradle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NewtonsCradle.hpp; sourceTree = "<group>"; };
@@ -633,12 +623,8 @@
 		47A9833D1D0F7ABA00AA7D1A /* ConstJointIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConstJointIterator.hpp; sourceTree = "<group>"; };
 		47AA5DFD1C4C5FBE008AF2BA /* libBox2D iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libBox2D iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47AA63921D0F7FDA00726CA2 /* ConstBodyIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConstBodyIterator.cpp; sourceTree = "<group>"; };
-		47AA63931D0F7FDA00726CA2 /* ConstFixtureIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConstFixtureIterator.cpp; sourceTree = "<group>"; };
-		47AA63941D0F7FDA00726CA2 /* FixtureIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FixtureIterator.cpp; sourceTree = "<group>"; };
 		47AA63951D0F7FDA00726CA2 /* BodyIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BodyIterator.cpp; sourceTree = "<group>"; };
 		47AA63961D0F7FDA00726CA2 /* BodyIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyIterator.hpp; sourceTree = "<group>"; };
-		47AA63971D0F7FDA00726CA2 /* ConstFixtureIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConstFixtureIterator.hpp; sourceTree = "<group>"; };
-		47AA63981D0F7FDA00726CA2 /* FixtureIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureIterator.hpp; sourceTree = "<group>"; };
 		47AA63991D0F7FDA00726CA2 /* ConstBodyIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConstBodyIterator.hpp; sourceTree = "<group>"; };
 		47AA63A21D1077E600726CA2 /* ContactList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactList.cpp; sourceTree = "<group>"; };
 		47AA63A31D1077E600726CA2 /* ContactList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactList.hpp; sourceTree = "<group>"; };
@@ -1115,8 +1101,6 @@
 				47AA63991D0F7FDA00726CA2 /* ConstBodyIterator.hpp */,
 				47AA63AA1D1078D000726CA2 /* ConstContactIterator.cpp */,
 				47AA63AB1D1078D000726CA2 /* ConstContactIterator.hpp */,
-				47AA63931D0F7FDA00726CA2 /* ConstFixtureIterator.cpp */,
-				47AA63971D0F7FDA00726CA2 /* ConstFixtureIterator.hpp */,
 				47A9833C1D0F7ABA00AA7D1A /* ConstJointIterator.cpp */,
 				47A9833D1D0F7ABA00AA7D1A /* ConstJointIterator.hpp */,
 				47AA63A61D10786F00726CA2 /* ContactIterator.cpp */,
@@ -1128,10 +1112,6 @@
 				80BB895A141C3E5900F1753A /* Contacts */,
 				80BB8951141C3E5900F1753A /* Fixture.cpp */,
 				80BB8952141C3E5900F1753A /* Fixture.hpp */,
-				47AA63941D0F7FDA00726CA2 /* FixtureIterator.cpp */,
-				47AA63981D0F7FDA00726CA2 /* FixtureIterator.hpp */,
-				4721349B1C8E4CB5009536F9 /* FixtureList.cpp */,
-				4721349C1C8E4CB5009536F9 /* FixtureList.hpp */,
 				4731DE181DDCD0E100E7F931 /* FixtureProxy.hpp */,
 				80BB8953141C3E5900F1753A /* Island.cpp */,
 				80BB8954141C3E5900F1753A /* Island.hpp */,
@@ -1418,7 +1398,6 @@
 				47AA5DE31C4C5FBE008AF2BA /* WorldCallbacks.hpp in Headers */,
 				47AA5DE41C4C5FBE008AF2BA /* ChainAndCircleContact.hpp in Headers */,
 				47AA5DE51C4C5FBE008AF2BA /* ChainAndPolygonContact.hpp in Headers */,
-				472134A01C8E4CB5009536F9 /* FixtureList.hpp in Headers */,
 				4726DD101D3014990012A882 /* IndexPair.hpp in Headers */,
 				47AA5DE61C4C5FBE008AF2BA /* CircleContact.hpp in Headers */,
 				4731DE1C1DDCD0E100E7F931 /* FixtureProxy.hpp in Headers */,
@@ -1519,7 +1498,6 @@
 				80BB89B2141C3E5900F1753A /* Island.hpp in Headers */,
 				80BB89B3141C3E5900F1753A /* StepConf.hpp in Headers */,
 				4734B2191DC00AFD00F15E29 /* ArrayList.hpp in Headers */,
-				47AA63A01D0F7FDA00726CA2 /* FixtureIterator.hpp in Headers */,
 				80BB89B5141C3E5900F1753A /* World.hpp in Headers */,
 				478869101D78BF7200AEC7F1 /* VelocityConstraint.hpp in Headers */,
 				80BB89B7141C3E5900F1753A /* WorldCallbacks.hpp in Headers */,
@@ -1527,7 +1505,6 @@
 				80BB89B9141C3E5900F1753A /* ChainAndCircleContact.hpp in Headers */,
 				4751EE291CEDD78F00D459CB /* Mobile.hpp in Headers */,
 				80BB89BB141C3E5900F1753A /* ChainAndPolygonContact.hpp in Headers */,
-				4721349F1C8E4CB5009536F9 /* FixtureList.hpp in Headers */,
 				4751EE2B1CEDD79900D459CB /* ConveyorBelt.hpp in Headers */,
 				4768D3FD1E414A0100574143 /* Vec2.hpp in Headers */,
 				477DB2AD1D1C4BE800846ED6 /* PositionSolverManifold.hpp in Headers */,
@@ -1559,7 +1536,6 @@
 				80BB89D3141C3E5900F1753A /* MouseJoint.hpp in Headers */,
 				47578BF01D8899710078CD40 /* Profile.hpp in Headers */,
 				80BB89D5141C3E5900F1753A /* PrismaticJoint.hpp in Headers */,
-				47AA639F1D0F7FDA00726CA2 /* ConstFixtureIterator.hpp in Headers */,
 				47A983371D0F4EFF00AA7D1A /* JointList.hpp in Headers */,
 				80BB89D7141C3E5900F1753A /* PulleyJoint.hpp in Headers */,
 				4731DE441DE2570900E7F931 /* Collision.hpp in Headers */,
@@ -1807,7 +1783,6 @@
 				47AA5DA41C4C5FBE008AF2BA /* CircleShape.cpp in Sources */,
 				47AA5DA51C4C5FBE008AF2BA /* EdgeShape.cpp in Sources */,
 				4731DE571DEC908600E7F931 /* UnitVec2.cpp in Sources */,
-				4721349E1C8E4CB5009536F9 /* FixtureList.cpp in Sources */,
 				47AA5DA61C4C5FBE008AF2BA /* PolygonShape.cpp in Sources */,
 				47AA5DA71C4C5FBE008AF2BA /* BlockAllocator.cpp in Sources */,
 				47AA5DA91C4C5FBE008AF2BA /* Math.cpp in Sources */,
@@ -1914,7 +1889,6 @@
 				4731DE2F1DDF9B6900E7F931 /* MassData.cpp in Sources */,
 				47AA63A41D1077E600726CA2 /* ContactList.cpp in Sources */,
 				80BB8988141C3E5900F1753A /* BroadPhase.cpp in Sources */,
-				47AA639B1D0F7FDA00726CA2 /* ConstFixtureIterator.cpp in Sources */,
 				477DB2981D14BB2000846ED6 /* ContactEdgeIterator.cpp in Sources */,
 				80BB898D141C3E5900F1753A /* Collision.cpp in Sources */,
 				477DB2A41D15F60B00846ED6 /* JointEdgeIterator.cpp in Sources */,
@@ -1929,7 +1903,6 @@
 				80BB8997141C3E5900F1753A /* CircleShape.cpp in Sources */,
 				80BB8999141C3E5900F1753A /* EdgeShape.cpp in Sources */,
 				4731DE2C1DDF94A600E7F931 /* AABB.cpp in Sources */,
-				4721349D1C8E4CB5009536F9 /* FixtureList.cpp in Sources */,
 				80BB899B141C3E5900F1753A /* PolygonShape.cpp in Sources */,
 				4731DE6B1DF7E88500E7F931 /* ReferenceFace.cpp in Sources */,
 				47AA639D1D0F7FDA00726CA2 /* BodyIterator.cpp in Sources */,
@@ -1943,7 +1916,6 @@
 				80BB89A7141C3E5900F1753A /* StackAllocator.cpp in Sources */,
 				80BB89A9141C3E5900F1753A /* Timer.cpp in Sources */,
 				47AA63AC1D1078D000726CA2 /* ConstContactIterator.cpp in Sources */,
-				47AA639C1D0F7FDA00726CA2 /* FixtureIterator.cpp in Sources */,
 				80BB89AB141C3E5900F1753A /* Body.cpp in Sources */,
 				80BB89AD141C3E5900F1753A /* ContactManager.cpp in Sources */,
 				475A94581D9453A1000CA9A8 /* Shape.cpp in Sources */,

@@ -230,9 +230,6 @@ private:
 	friend class Body;
 	friend class World;
 	friend class ContactManager;
-	friend class FixtureList;
-	friend class FixtureIterator;
-	friend class ConstFixtureIterator;
 
 	/// Initializing constructor.
 	///
