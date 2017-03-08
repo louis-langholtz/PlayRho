@@ -27,11 +27,17 @@ TEST(Fixed32, ByteSizeIs4)
 	EXPECT_EQ(sizeof(Fixed32), size_t(4));
 }
 
+TEST(Fixed64, ByteSizeIs8)
+{
+	EXPECT_EQ(sizeof(Fixed64), size_t(8));
+}
+
 TEST(Fixed32, IntConstruction)
 {
-	EXPECT_EQ(int(Fixed32(-1)), -1);
-	EXPECT_EQ(int(Fixed32(+1)), +1);
-
+	EXPECT_EQ(Fixed32(0), 0);
+	EXPECT_EQ(Fixed32(-1), -1);
+	EXPECT_EQ(Fixed32(+1), +1);
+	
 	const auto range = 30000;
 	for (auto i = -range; i < range; ++i)
 	{
@@ -39,10 +45,75 @@ TEST(Fixed32, IntConstruction)
 	}
 }
 
+TEST(Fixed64, IntConstruction)
+{
+	EXPECT_EQ(Fixed64(0.0), 0.0);
+	EXPECT_EQ(Fixed64(-1.0), -1.0);
+	EXPECT_EQ(Fixed64(+1.0), +1.0);
+
+	EXPECT_EQ(Fixed64(0), 0);
+	EXPECT_EQ(Fixed64(-1), -1);
+	EXPECT_EQ(Fixed64(+1), +1);
+
+	const auto range = 30000;
+	for (auto i = -range; i < range; ++i)
+	{
+		EXPECT_EQ(Fixed64(i), i);
+	}
+}
+
+TEST(Fixed32, IntCast)
+{
+	EXPECT_EQ(static_cast<int>(Fixed32( 0)),  0);
+	EXPECT_EQ(static_cast<int>(Fixed32(-1)), -1);
+	EXPECT_EQ(static_cast<int>(Fixed32(-2)), -2);
+	EXPECT_EQ(static_cast<int>(Fixed32(+1)), +1);
+	EXPECT_EQ(static_cast<int>(Fixed32(+2)), +2);
+}
+
+TEST(Fixed64, IntCast)
+{
+	EXPECT_EQ(static_cast<int>(Fixed64( 0)),  0);
+	EXPECT_EQ(static_cast<int>(Fixed64(-1)), -1);
+	EXPECT_EQ(static_cast<int>(Fixed64(-2)), -2);
+	EXPECT_EQ(static_cast<int>(Fixed64(+1)), +1);
+	EXPECT_EQ(static_cast<int>(Fixed64(+2)), +2);
+}
+
+TEST(Fixed32, FloatCast)
+{
+	EXPECT_EQ(static_cast<float>(Fixed32( 0)),  0.0f);
+	EXPECT_EQ(static_cast<float>(Fixed32(-1)), -1.0f);
+	EXPECT_EQ(static_cast<float>(Fixed32(+1)), +1.0f);
+}
+
+TEST(Fixed64, FloatCast)
+{
+	EXPECT_EQ(static_cast<float>(Fixed64( 0)),  0.0f);
+	EXPECT_EQ(static_cast<float>(Fixed64(-1)), -1.0f);
+	EXPECT_EQ(static_cast<float>(Fixed64(+1)), +1.0f);
+}
+
+TEST(Fixed32, DoubleCast)
+{
+	EXPECT_EQ(static_cast<double>(Fixed32( 0)),  0.0);
+	EXPECT_EQ(static_cast<double>(Fixed32(-1)), -1.0);
+	EXPECT_EQ(static_cast<double>(Fixed32(+1)), +1.0);
+}
+
+TEST(Fixed64, DoubleCast)
+{
+	EXPECT_EQ(static_cast<double>(Fixed64( 0)),  0.0);
+	EXPECT_EQ(static_cast<double>(Fixed64(-1)), -1.0);
+	EXPECT_EQ(static_cast<double>(Fixed64(+1)), +1.0);
+}
+
 TEST(Fixed32, FloatConstruction)
 {
-	EXPECT_EQ(float(Fixed32(-1)), -1.0f);
-	EXPECT_EQ(float(Fixed32(+1)), +1.0f);
+	EXPECT_EQ(Fixed32(0.0), 0.0);
+	EXPECT_EQ(Fixed32(-1.0), -1.0);
+	EXPECT_EQ(Fixed32(+1.0), +1.0);
+
 	EXPECT_EQ(Fixed32(std::numeric_limits<float>::infinity()), Fixed32::GetInfinity());
 	EXPECT_EQ(Fixed32(-std::numeric_limits<float>::infinity()), -Fixed32::GetInfinity());
 	EXPECT_EQ(Fixed32(-std::numeric_limits<float>::infinity()), Fixed32::GetNegativeInfinity());
