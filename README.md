@@ -1,5 +1,9 @@
 ##What's New
 
+###Status
+
+[![Build Status](https://travis-ci.org/louis-langholtz/Box2D.svg?branch=dev)](https://travis-ci.org/louis-langholtz/Box2D)
+
 ###Overview
 
 This is a fork by Louis Langholtz of the Box2D physics engine.
