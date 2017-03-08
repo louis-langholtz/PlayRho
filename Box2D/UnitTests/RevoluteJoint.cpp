@@ -26,12 +26,12 @@
 
 using namespace box2d;
 
-TEST(RevoluteJoint, ByteSizeIs_288_456_or_768)
+TEST(RevoluteJoint, ByteSizeIs_288_440_or_768)
 {
 	switch (sizeof(RealNum))
 	{
 		case  4: EXPECT_EQ(sizeof(RevoluteJoint), size_t(288)); break;
-		case  8: EXPECT_EQ(sizeof(RevoluteJoint), size_t(456)); break;
+		case  8: EXPECT_EQ(sizeof(RevoluteJoint), size_t(440)); break;
 		case 16: EXPECT_EQ(sizeof(RevoluteJoint), size_t(768)); break;
 		default: FAIL(); break;
 	}
