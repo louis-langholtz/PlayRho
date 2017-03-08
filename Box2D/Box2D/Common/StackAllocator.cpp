@@ -20,6 +20,8 @@
 #include <Box2D/Common/StackAllocator.hpp>
 #include <Box2D/Common/Math.hpp>
 
+#include <memory>
+
 using namespace box2d;
 
 StackAllocator::StackAllocator(Configuration config) noexcept:
