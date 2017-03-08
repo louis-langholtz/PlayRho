@@ -20,6 +20,8 @@
 #include <Box2D/Collision/Shapes/ChainShape.hpp>
 #include <Box2D/Collision/Shapes/EdgeShape.hpp>
 
+#include <cstring>
+
 using namespace box2d;
 
 namespace {
@@ -53,7 +55,7 @@ ChainShape& ChainShape::operator=(const ChainShape& other)
 		m_count = other.m_count;
 
 		m_vertices = alloc<Vec2>(other.m_count);
-		memcpy(m_vertices, other.m_vertices, other.m_count * sizeof(Vec2));
+		std::memcpy(m_vertices, other.m_vertices, other.m_count * sizeof(Vec2));
 	}
 	return *this;
 }
@@ -79,7 +81,7 @@ void ChainShape::CreateLoop(Span<const Vec2> vertices)
 	
 	m_count = static_cast<child_count_t>(vertices.size() + 1);
 	m_vertices = alloc<Vec2>(m_count);
-	memcpy(m_vertices, vertices.begin(), vertices.size() * sizeof(Vec2));
+	std::memcpy(m_vertices, vertices.begin(), vertices.size() * sizeof(Vec2));
 	m_vertices[vertices.size()] = m_vertices[0];
 }
 
@@ -92,7 +94,7 @@ void ChainShape::CreateChain(Span<const Vec2> vertices)
 
 	m_count = static_cast<child_count_t>(vertices.size());
 	m_vertices = alloc<Vec2>(vertices.size());
-	memcpy(m_vertices, vertices.begin(), m_count * sizeof(Vec2));
+	std::memcpy(m_vertices, vertices.begin(), m_count * sizeof(Vec2));
 }
 
 EdgeShape ChainShape::GetChildEdge(child_count_t index) const
