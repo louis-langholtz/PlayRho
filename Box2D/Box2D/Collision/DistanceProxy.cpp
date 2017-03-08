@@ -80,7 +80,7 @@ DistanceProxy GetDistanceProxy(const Shape& shape, child_count_t index)
 		case Shape::e_typeCount: break;
 	}
 	assert(false);
-	return DistanceProxy{0, Span<const Vec2>({})};
+	return DistanceProxy{};
 }
 
 } // namespace box2d
