@@ -109,46 +109,43 @@ namespace box2d
 		constexpr Fixed(unsigned long long val) noexcept:
 			m_value{GetFromUnsignedInt(val)}
 		{
-			assert(val <= static_cast<decltype(val)>(GetMax()));
+			// Intentionally empty.
 		}
 
 		constexpr Fixed(unsigned long val) noexcept:
 			m_value{GetFromUnsignedInt(val)}
 		{
-			assert(val <= static_cast<decltype(val)>(GetMax()));
+			// Intentionally empty.
 		}
 		
 		constexpr Fixed(unsigned int val) noexcept:
 			m_value{GetFromUnsignedInt(val)}
 		{
-			assert(val <= static_cast<decltype(val)>(GetMax()));
+			// Intentionally empty.
 		}
 
 		constexpr Fixed(long long val) noexcept:
 			m_value{GetFromSignedInt(val)}
 		{
-			assert(val <= static_cast<decltype(val)>(GetMax()));
-			assert(val >= static_cast<decltype(val)>(GetLowest()));
+			// Intentionally empty.
 		}
 		
 		constexpr Fixed(int val) noexcept:
 			m_value{GetFromSignedInt(val)}
 		{
-			assert(val <= static_cast<decltype(val)>(GetMax()));
-			assert(val >= static_cast<decltype(val)>(GetLowest()));
+			// Intentionally empty.
 		}
 		
 		constexpr Fixed(short val) noexcept:
 			m_value{GetFromSignedInt(val)}
 		{
+			// Intentionally empty.
 		}
 		
 		constexpr Fixed(value_type val, unsigned int fraction) noexcept:
 			m_value{static_cast<value_type>(static_cast<uint32_t>(val * ScaleFactor) | fraction)}
 		{
-			assert(val <= static_cast<decltype(val)>(GetMax()));
-			assert(val >= static_cast<decltype(val)>(GetLowest()));
-			assert(fraction <= (1u << FractionBits) - 1u);
+			// Intentionally empty.
 		}
 		
 		template <typename BT, unsigned int FB>
@@ -206,19 +203,19 @@ namespace box2d
 
 		explicit constexpr operator unsigned long long() const noexcept
 		{
-			assert(m_value >= 0);
+			// Behavior is undefined if m_value is negative
 			return static_cast<unsigned long long>(m_value / ScaleFactor);
 		}
 
 		explicit constexpr operator unsigned long() const noexcept
 		{
-			assert(m_value >= 0);
+			// Behavior is undefined if m_value is negative
 			return static_cast<unsigned long>(m_value / ScaleFactor);
 		}
 		
 		explicit constexpr operator unsigned int() const noexcept
 		{
-			assert(m_value >= 0);
+			// Behavior is undefined if m_value is negative
 			return static_cast<unsigned int>(m_value / ScaleFactor);
 		}
 
@@ -487,8 +484,7 @@ namespace box2d
 
 		constexpr bool isnan() const noexcept
 		{
-			return (m_value < GetNegativeInfinity().m_value)
-				|| (m_value > GetInfinity().m_value);
+			return m_value == GetNaN().m_value;
 		}
 		
 		constexpr int getsign() const noexcept
@@ -818,7 +814,9 @@ namespace std
 	
 	inline box2d::Fixed64 round(box2d::Fixed64 value) noexcept
 	{
-		return box2d::Fixed64{static_cast<box2d::Fixed64::value_type>(value + (box2d::Fixed64{1} / box2d::Fixed64{2}))};
+		const auto tmp = value + (box2d::Fixed64{1} / box2d::Fixed64{2});
+		const auto truncated = static_cast<box2d::Fixed64::value_type>(tmp);
+		return box2d::Fixed64{truncated, 0};
 	}
 	
 	inline box2d::Fixed64 nextafter(box2d::Fixed64 from, box2d::Fixed64 to) noexcept
