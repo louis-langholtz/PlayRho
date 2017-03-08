@@ -32,35 +32,108 @@ TEST(Fixed64, ByteSizeIs8)
 	EXPECT_EQ(sizeof(Fixed64), size_t(8));
 }
 
-TEST(Fixed32, IntConstruction)
-{
-	EXPECT_EQ(Fixed32(0), 0);
-	EXPECT_EQ(Fixed32(-1), -1);
-	EXPECT_EQ(Fixed32(+1), +1);
-	
-	const auto range = 30000;
-	for (auto i = -range; i < range; ++i)
-	{
-		EXPECT_EQ(Fixed32(i), i);
-	}
+// Tests of Fixed<T>::GetFromUnsignedInt(v)
+
+#define DECL_GET_FROM_UNSIGNED_INT_TEST(type) \
+TEST(type, GetFromUnsignedInt) \
+{ \
+	EXPECT_EQ(type::GetFromUnsignedInt(0u),  0 * type::ScaleFactor); \
+	EXPECT_EQ(type::GetFromUnsignedInt(1u),  1 * type::ScaleFactor); \
+	EXPECT_EQ(type::GetFromUnsignedInt(2u),  2 * type::ScaleFactor); \
 }
 
-TEST(Fixed64, IntConstruction)
-{
-	EXPECT_EQ(Fixed64(0.0), 0.0);
-	EXPECT_EQ(Fixed64(-1.0), -1.0);
-	EXPECT_EQ(Fixed64(+1.0), +1.0);
+DECL_GET_FROM_UNSIGNED_INT_TEST(Fixed32)
+DECL_GET_FROM_UNSIGNED_INT_TEST(Fixed64)
 
-	EXPECT_EQ(Fixed64(0), 0);
-	EXPECT_EQ(Fixed64(-1), -1);
-	EXPECT_EQ(Fixed64(+1), +1);
+// Tests of Fixed<T>::GetFromSignedInt(v)
 
-	const auto range = 30000;
-	for (auto i = -range; i < range; ++i)
-	{
-		EXPECT_EQ(Fixed64(i), i);
-	}
+#define DECL_GET_FROM_SIGNED_INT_TEST(type) \
+TEST(type, GetFromSignedInt) \
+{ \
+	EXPECT_EQ(type::GetFromSignedInt( 0),  0 * type::ScaleFactor); \
+	EXPECT_EQ(type::GetFromSignedInt( 1),  1 * type::ScaleFactor); \
+	EXPECT_EQ(type::GetFromSignedInt( 2),  2 * type::ScaleFactor); \
+	EXPECT_EQ(type::GetFromSignedInt(-1), -1 * type::ScaleFactor); \
+	EXPECT_EQ(type::GetFromSignedInt(-2), -2 * type::ScaleFactor); \
 }
+
+DECL_GET_FROM_SIGNED_INT_TEST(Fixed32)
+DECL_GET_FROM_SIGNED_INT_TEST(Fixed64)
+
+// Tests of Fixed<T>::GetFromFloat(v)
+
+#define DECL_GET_FROM_FLOAT_TEST(type) \
+TEST(type, GetFromFloat) \
+{ \
+	EXPECT_EQ(type::GetFromFloat( 0.0),  0 * type::ScaleFactor); \
+	EXPECT_EQ(type::GetFromFloat( 1.0),  1 * type::ScaleFactor); \
+	EXPECT_EQ(type::GetFromFloat( 2.0),  2 * type::ScaleFactor); \
+	EXPECT_EQ(type::GetFromFloat(-1.0), -1 * type::ScaleFactor); \
+	EXPECT_EQ(type::GetFromFloat(-2.0), -2 * type::ScaleFactor); \
+	EXPECT_EQ(type::GetFromFloat(-4.7), static_cast<type::value_type>(-4.7 * type::ScaleFactor)); \
+	EXPECT_EQ(type::GetFromFloat( std::numeric_limits<long double>::max()),  type::GetInfinity()); \
+	EXPECT_EQ(type::GetFromFloat(-std::numeric_limits<long double>::max()), -type::GetInfinity()); \
+	EXPECT_EQ(type::GetFromFloat( std::numeric_limits<float>::infinity()),  type::GetInfinity()); \
+	EXPECT_EQ(type::GetFromFloat(-std::numeric_limits<float>::infinity()), -type::GetInfinity()); \
+}
+
+DECL_GET_FROM_FLOAT_TEST(Fixed32)
+DECL_GET_FROM_FLOAT_TEST(Fixed64)
+
+// Tests of Fixed<T>::Fixed(v) and comparisons
+
+#define DECL_INT_CONSTRUCTION_AND_COMPARE_TEST(type) \
+TEST(type, IntConstructionAndCompare) \
+{ \
+	EXPECT_EQ(type( 0), type( 0)); \
+	EXPECT_LT(type( 0), type( 1)); \
+	EXPECT_GT(type( 0), type(-1)); \
+	EXPECT_EQ(type(-10), type(-10)); \
+	EXPECT_LT(type(-10), type( -9)); \
+	EXPECT_GT(type(-10), type(-11)); \
+}
+
+DECL_INT_CONSTRUCTION_AND_COMPARE_TEST(Fixed32)
+DECL_INT_CONSTRUCTION_AND_COMPARE_TEST(Fixed64)
+
+// Tests of std::isfinite(Fixed<T>)
+
+#define DECL_ISFINITE_TEST(type) \
+TEST(type, isfinite) \
+{ \
+	EXPECT_TRUE(std::isfinite(type(0))); \
+	EXPECT_FALSE(std::isfinite( type::GetInfinity())); \
+	EXPECT_FALSE(std::isfinite(-type::GetInfinity())); \
+	EXPECT_FALSE(std::isfinite(type::GetNaN())); \
+}
+
+DECL_ISFINITE_TEST(Fixed32)
+DECL_ISFINITE_TEST(Fixed64)
+
+// Tests of std::isnan(Fixed<T>)
+
+#define DECL_ISNAN_TEST(type) \
+TEST(type, isnan) \
+{ \
+	EXPECT_FALSE(std::isnan(type( 0))); \
+	EXPECT_FALSE(std::isnan(type( 1))); \
+	EXPECT_FALSE(std::isnan(type(-1))); \
+	EXPECT_FALSE(std::isnan( type::GetInfinity())); \
+	EXPECT_FALSE(std::isnan(-type::GetInfinity())); \
+	EXPECT_FALSE(std::isnan( type::GetNegativeInfinity())); \
+	EXPECT_TRUE(std::isnan(type::GetNaN())); \
+	EXPECT_TRUE(std::isnan(type(std::numeric_limits<float>::quiet_NaN()))); \
+	EXPECT_TRUE(std::isnan(type(std::numeric_limits<float>::signaling_NaN()))); \
+	EXPECT_TRUE(std::isnan(type(std::numeric_limits<double>::quiet_NaN()))); \
+	EXPECT_TRUE(std::isnan(type(std::numeric_limits<double>::signaling_NaN()))); \
+	EXPECT_TRUE(std::isnan(type(std::numeric_limits<long double>::quiet_NaN()))); \
+	EXPECT_TRUE(std::isnan(type(std::numeric_limits<long double>::signaling_NaN()))); \
+}
+
+DECL_ISNAN_TEST(Fixed32)
+DECL_ISNAN_TEST(Fixed64)
+
+// Regular tests
 
 TEST(Fixed32, IntCast)
 {

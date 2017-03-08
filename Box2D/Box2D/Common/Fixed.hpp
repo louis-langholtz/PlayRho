@@ -19,12 +19,13 @@
 #ifndef Fixed_hpp
 #define Fixed_hpp
 
+#include <Box2D/Common/Wider.hpp>
+
 #include <cstdint>
 #include <limits>
 #include <cassert>
 #include <cmath>
-
-#include <Box2D/Common/Wider.hpp>
+#include <type_traits>
 
 namespace box2d
 {
@@ -43,6 +44,7 @@ namespace box2d
 	public:
 		using value_type = BASE_TYPE;
 		static constexpr unsigned int FractionBits = FRACTION_BITS;
+		static constexpr value_type ScaleFactor = static_cast<value_type>(1u << FractionBits);
 
 		enum class ComparatorResult
 		{
@@ -86,6 +88,36 @@ namespace box2d
 			return Fixed{numeric_limits::lowest() + 2, scalar_type{1}};
 		}
 
+		template <typename T>
+		static constexpr value_type GetFromFloat(T val) noexcept
+		{
+			static_assert(std::is_floating_point<T>::value, "floating point value required");
+			// Note: std::isnan(val) *NOT* constant expression, so can't use here!
+			return !(val <= 0 || val >= 0)? GetNaN().m_value:
+				(val > static_cast<long double>(GetMax()))? GetInfinity().m_value:
+				(val < static_cast<long double>(GetLowest()))? GetNegativeInfinity().m_value:
+				static_cast<value_type>(val * ScaleFactor);
+		}
+		
+		template <typename T>
+		static constexpr value_type GetFromSignedInt(T val) noexcept
+		{
+			static_assert(std::is_integral<T>::value, "integral value required");
+			static_assert(std::is_signed<T>::value, "must be signed");
+			return (val > (GetMax().m_value / ScaleFactor))? GetInfinity().m_value:
+				(val < (GetLowest().m_value / ScaleFactor))? GetNegativeInfinity().m_value:
+				val * ScaleFactor;
+		}
+		
+		template <typename T>
+		static constexpr value_type GetFromUnsignedInt(T val) noexcept
+		{
+			static_assert(std::is_integral<T>::value, "integral value required");
+			static_assert(!std::is_signed<T>::value, "must be unsigned");
+			return (val > (GetMax().m_value / ScaleFactor))? GetInfinity().m_value:
+				static_cast<value_type>(val) * ScaleFactor;
+		}
+		
 		Fixed() = default;
 		
 		constexpr Fixed(long double val) noexcept:
@@ -157,6 +189,14 @@ namespace box2d
 		
 		// Methods
 		
+		template <typename T>
+		constexpr T ConvertTo() const noexcept
+		{
+			return isnan()? std::numeric_limits<T>::signaling_NaN():
+				!isfinite()? std::numeric_limits<T>::infinity() * getsign():
+					m_value / static_cast<T>(ScaleFactor);
+		}
+
 		constexpr ComparatorResult Compare(const Fixed other) const noexcept
 		{
 			if (isnan() || other.isnan())
@@ -426,7 +466,6 @@ namespace box2d
 		}
 		
 	private:
-		static constexpr value_type ScaleFactor = static_cast<value_type>(1u << FractionBits);
 		
 		using intermediary_type = typename Wider<value_type>::type;
 		
@@ -443,43 +482,10 @@ namespace box2d
 			// Intentionally empty.
 		}
 		
-		template <typename T>
-		constexpr T ConvertTo() const noexcept
-		{
-			return isnan()?
-				std::numeric_limits<T>::signaling_NaN(): !isfinite()?
-					std::numeric_limits<T>::infinity() * getsign(): m_value / static_cast<T>(ScaleFactor);
-		}
-
-		template <typename T>
-		static constexpr value_type GetFromFloat(T val) noexcept
-		{
-			return !(val >= 0 || val <= 0)? GetNaN().m_value: (val > static_cast<T>(GetMax()))?
-				GetInfinity().m_value: (val < static_cast<T>(GetLowest()))?
-					GetNegativeInfinity().m_value: static_cast<value_type>(val * ScaleFactor);
-		}
-
-		template <typename T>
-		static constexpr value_type GetFromSignedInt(T val) noexcept
-		{
-			static_assert(std::is_signed<T>::value, "must be signed");
-			return (val > static_cast<T>(GetMax()))?
-				GetInfinity().m_value: (val < static_cast<T>(GetLowest()))?
-					GetNegativeInfinity().m_value: static_cast<value_type>(val * ScaleFactor);
-		}
-		
-		template <typename T>
-		static constexpr value_type GetFromUnsignedInt(T val) noexcept
-		{
-			static_assert(!std::is_signed<T>::value, "must be unsigned");
-			return (val > static_cast<T>(GetMax()))?
-				GetInfinity().m_value: static_cast<value_type>(val * ScaleFactor);
-		}
-
 		constexpr bool isfinite() const noexcept
 		{
-			return (m_value < GetInfinity().m_value)
-				&& (m_value > GetNegativeInfinity().m_value);
+			return (m_value > GetNegativeInfinity().m_value)
+				&& (m_value < GetInfinity().m_value);
 		}
 
 		constexpr bool isnan() const noexcept
@@ -742,7 +748,7 @@ namespace std
 	
 	inline bool isfinite(box2d::Fixed32 value) noexcept
 	{
-		return (value != box2d::Fixed32::GetInfinity()) && (value != box2d::Fixed32::GetNegativeInfinity());
+		return (value > box2d::Fixed32::GetNegativeInfinity()) && (value < box2d::Fixed32::GetInfinity());
 	}
 	
 	inline bool isnan(box2d::Fixed32 value) noexcept
@@ -849,7 +855,7 @@ namespace std
 
 	inline bool isfinite(box2d::Fixed64 value) noexcept
 	{
-		return (value != box2d::Fixed64::GetInfinity()) && (value != box2d::Fixed64::GetNegativeInfinity());
+		return (value > box2d::Fixed64::GetNegativeInfinity()) && (value < box2d::Fixed64::GetInfinity());
 	}
 
 	inline bool isnan(box2d::Fixed64 value) noexcept
