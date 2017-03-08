@@ -165,3 +165,17 @@ TEST(float, sqrt)
 	EXPECT_TRUE(std::isnan(std::sqrt(-1.0f)));
 	EXPECT_TRUE(std::isnan(std::sqrt(std::numeric_limits<float>::quiet_NaN())));
 }
+
+TEST(float, casting)
+{
+	EXPECT_EQ(int(0.0f), 0);
+	EXPECT_EQ(int(1.0f), 1);
+	EXPECT_EQ(int(-1.0f), -1);
+	
+	EXPECT_EQ(unsigned(1.0f), 1);
+	EXPECT_EQ(unsigned(4.7f), 4);
+
+	// Casting a negative float value to an unsigned integral type is not defined behavior.
+	// EXPECT_EQ(unsigned(-1.0f), 1);
+	// EXPECT_EQ(unsigned(-4.7f), 4);
+}
