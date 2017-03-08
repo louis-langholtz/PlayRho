@@ -11,7 +11,7 @@
 This is a fork by Louis Langholtz of the Box2D physics engine.
 
 General influences on this fork are:
-- [C++11](https://en.wikipedia.org/wiki/C%2B%2B11) & [C++14](https://en.wikipedia.org/wiki/C%2B%2B14);
+- [C++14](https://en.wikipedia.org/wiki/C%2B%2B14);
 - [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md);
 - [Unit testing](https://en.wikipedia.org/wiki/Unit_testing);
  
@@ -23,7 +23,7 @@ to see any kind of performance.
 
 Here's a run-down of some of the changes:
 - Exported symbols are all within the library namespace of `box2d` (and no longer preficed by `b2`).
-- All preprocessor defines - with the exception of those for include guards - have been removed from the API or replaced with C++ solutions.
+- Preprocessor defines except those used for include guards, have been replaced with C++ solutions or removed from the API.
 - Rounded corner collisions.
 - *Capsule* shapes (using 2-vertex `PolygonShape` instances).
 - More stable polygon stacking.
