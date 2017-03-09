@@ -55,8 +55,8 @@ namespace box2d
 {
 
 using BodyConstraints = std::unordered_map<const Body*, BodyConstraint>;
-using PositionConstraintsContainer = std::vector<PositionConstraint>;
-using VelocityConstraintsContainer = std::vector<VelocityConstraint>;
+using PositionConstraints = std::vector<PositionConstraint>;
+using VelocityConstraints = std::vector<VelocityConstraint>;
 	
 struct MovementConf
 {
@@ -164,7 +164,7 @@ namespace {
 	/// @param constraints Array of m_contactCount contact velocity constraint elements.
 	inline void Report(ContactListener& listener,
 					   Span<Contact*> contacts,
-					   const VelocityConstraintsContainer& constraints,
+					   const VelocityConstraints& constraints,
 					   StepConf::iteration_type solved)
 	{
 		const auto size = contacts.size();
@@ -174,9 +174,9 @@ namespace {
 		}
 	}
 	
-	PositionConstraintsContainer GetPositionConstraints(const Island::ContactContainer& contacts, BodyConstraints& bodies)
+	PositionConstraints GetPositionConstraints(const Island::ContactContainer& contacts, BodyConstraints& bodies)
 	{
-		auto constraints = PositionConstraintsContainer{};
+		auto constraints = PositionConstraints{};
 		constraints.reserve(contacts.size());
 		for (auto&& contact: contacts)
 		{
@@ -215,7 +215,7 @@ namespace {
 	/// Stores impulses.
 	/// @detail Saves the normal and tangent impulses of all the velocity constraint points back to their
 	///   associated contacts' manifold points.
-	inline void StoreImpulses(const VelocityConstraintsContainer& velocityConstraints, Span<Contact*> contacts)
+	inline void StoreImpulses(const VelocityConstraints& velocityConstraints, Span<Contact*> contacts)
 	{
 		for (auto&& vc: velocityConstraints)
 		{
@@ -255,7 +255,7 @@ namespace {
 		return vp;
 	}
 	
-	inline void WarmStartVelocities(const VelocityConstraintsContainer& velocityConstraints)
+	inline void WarmStartVelocities(const VelocityConstraints& velocityConstraints)
 	{
 		for (auto&& vc: velocityConstraints)
 		{
@@ -271,11 +271,11 @@ namespace {
 	/// @post Velocity constraints will have their "normal" field set to the world manifold normal for them.
 	/// @post Velocity constraints will have their constraint points set.
 	/// @sa SolveVelocityConstraints.
-	VelocityConstraintsContainer GetVelocityConstraints(const Island::ContactContainer& contacts,
+	VelocityConstraints GetVelocityConstraints(const Island::ContactContainer& contacts,
 														BodyConstraints& bodies,
 														const VelocityConstraint::Conf conf)
 	{
-		auto velocityConstraints = VelocityConstraintsContainer{};
+		auto velocityConstraints = VelocityConstraints{};
 		const auto numContacts = contacts.size();
 		velocityConstraints.reserve(numContacts);
 
@@ -314,7 +314,7 @@ namespace {
 	/// "Solves" the velocity constraints.
 	/// @detail Updates the velocities and velocity constraint points' normal and tangent impulses.
 	/// @pre <code>UpdateVelocityConstraints</code> has been called on the velocity constraints.
-	inline RealNum SolveVelocityConstraints(VelocityConstraintsContainer& velocityConstraints)
+	inline RealNum SolveVelocityConstraints(VelocityConstraints& velocityConstraints)
 	{
 		auto maxIncImpulse = RealNum{0};
 		for (auto&& vc: velocityConstraints)
