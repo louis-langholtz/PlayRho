@@ -271,7 +271,7 @@ public:
 
 	/// Gets the world joint list.
 	/// @return World joint list.
-	JointList& GetJoints() noexcept;
+	const JointList& GetJoints() noexcept;
 
 	/// Gets the world joint list.
 	/// @return World joint list.
@@ -593,7 +593,7 @@ inline const World::BodyList& World::GetBodies() const noexcept
 	return m_bodies;
 }
 
-inline JointList& World::GetJoints() noexcept
+inline const JointList& World::GetJoints() noexcept
 {
 	return m_joints;
 }
