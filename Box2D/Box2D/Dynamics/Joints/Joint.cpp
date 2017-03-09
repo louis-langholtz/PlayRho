@@ -281,7 +281,7 @@ size_t GetWorldIndex(const Joint* joint)
 			auto i = size_t{0};
 			for (auto&& j: world->GetJoints())
 			{
-				if (&j == joint)
+				if (j == joint)
 				{
 					return i;
 				}

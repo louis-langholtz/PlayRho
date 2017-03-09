@@ -107,7 +107,7 @@ constexpr auto EarthlyGravity = Vec2{0, RealNum(-9.8)};
 /// The world class manages all physics entities, dynamic simulation,
 /// and asynchronous queries. The world also contains efficient memory
 /// management facilities.
-/// @note This data structure is 344-bytes large (with 4-byte RealNum on at least one 64-bit platform).
+/// @note This data structure is 352-bytes large (with 4-byte RealNum on at least one 64-bit platform).
 class World
 {
 public:
@@ -121,6 +121,8 @@ public:
 	using BodyList = std::list<Body*>;
 
 	using ContactList = std::list<Contact*>;
+	
+	using JointList = std::list<Joint*>;
 	
 	/// World construction definitions.
 	struct Def
@@ -593,12 +595,12 @@ inline const World::BodyList& World::GetBodies() const noexcept
 	return m_bodies;
 }
 
-inline const JointList& World::GetJoints() noexcept
+inline const World::JointList& World::GetJoints() noexcept
 {
 	return m_joints;
 }
 
-inline const JointList& World::GetJoints() const noexcept
+inline const World::JointList& World::GetJoints() const noexcept
 {
 	return m_joints;
 }

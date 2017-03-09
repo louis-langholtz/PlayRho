@@ -395,7 +395,7 @@ World::~World()
 	// Delete the created joints.
 	while (!m_joints.empty())
 	{
-		InternalDestroy(&m_joints.front());
+		InternalDestroy(m_joints.front());
 	}
 
 	// Some shapes allocate using alloc.
@@ -503,7 +503,7 @@ void World::Destroy(Body* b)
 
 Joint* World::CreateJoint(const JointDef& def)
 {
-	if (m_joints.size() >= m_joints.max_size())
+	if (m_joints.size() >= MaxJoints)
 	{
 		return nullptr;
 	}
@@ -572,8 +572,15 @@ bool World::Add(Joint& j)
 
 bool World::Remove(Joint& j)
 {
-	const auto it = JointIterator{&j};
-	return m_joints.erase(it) != it;
+	for (auto iter = m_joints.begin(); iter != m_joints.end(); ++iter)
+	{
+		if (*iter == &j)
+		{
+			m_joints.erase(iter);
+			return true;
+		}
+	}
+	return false;
 }
 
 void World::Destroy(Joint* j)
@@ -758,7 +765,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 	}
 	for (auto&& j: m_joints)
 	{
-		j.SetInIsland(false);
+		j->SetInIsland(false);
 	}
 
 	auto remNumBodies = m_bodies.size(); ///< Remaining number of bodies.
@@ -1567,7 +1574,7 @@ void World::ShiftOrigin(const Vec2 newOrigin)
 
 	for (auto&& j: m_joints)
 	{
-		j.ShiftOrigin(newOrigin);
+		j->ShiftOrigin(newOrigin);
 	}
 
 	m_contactMgr.m_broadPhase.ShiftOrigin(newOrigin);

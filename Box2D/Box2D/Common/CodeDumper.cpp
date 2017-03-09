@@ -76,7 +76,7 @@ void box2d::Dump(const World& world)
 	for (auto&& j: joints)
 	{
 		log("{\n");
-		Dump(j, i);
+		Dump(*j, i);
 		log("}\n");
 		++i;
 	}

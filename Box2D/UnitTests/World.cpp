@@ -33,11 +33,11 @@
 
 using namespace box2d;
 
-TEST(World, ByteSizeIs_344_352_or_400)
+TEST(World, ByteSizeIs_352_352_or_400)
 {
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(World), size_t(344)); break;
+		case  4: EXPECT_EQ(sizeof(World), size_t(352)); break;
 		case  8: EXPECT_EQ(sizeof(World), size_t(352)); break;
 		case 16: EXPECT_EQ(sizeof(World), size_t(400)); break;
 		default: FAIL(); break;
@@ -189,8 +189,8 @@ TEST(World, CreateAndDestroyJoint)
 	EXPECT_EQ(GetJointCount(world), joint_count_t(1));
 	EXPECT_FALSE(world.GetJoints().empty());
 	EXPECT_NE(world.GetJoints().begin(), world.GetJoints().end());
-	const auto& first = *world.GetJoints().begin();
-	EXPECT_EQ(joint, &first);
+	const auto first = *world.GetJoints().begin();
+	EXPECT_EQ(joint, first);
 	EXPECT_EQ(joint->GetType(), JointType::Distance);
 	EXPECT_EQ(joint->GetBodyA(), body1);
 	EXPECT_EQ(joint->GetBodyB(), body2);

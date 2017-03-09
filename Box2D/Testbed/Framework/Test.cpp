@@ -270,7 +270,7 @@ static void Draw(Drawer& drawer, const World& world, const Settings& settings)
 	{
 		for (auto&& j: world.GetJoints())
 		{
-			Draw(drawer, j);
+			Draw(drawer, *j);
 		}
 	}
 	
