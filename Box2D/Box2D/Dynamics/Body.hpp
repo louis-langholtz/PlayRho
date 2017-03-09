@@ -440,7 +440,7 @@ public:
 	const FixtureList& GetFixtures() const noexcept;
 
 	/// Gets the list of all joints attached to this body.
-	JointEdgeList& GetJoints() noexcept;
+	const JointEdgeList& GetJoints() noexcept;
 	
 	/// Gets the list of all joints attached to this body.
 	const JointEdgeList& GetJoints() const noexcept;
@@ -798,7 +798,7 @@ inline const Body::FixtureList& Body::GetFixtures() const noexcept
 	return m_fixtures;
 }
 
-inline JointEdgeList& Body::GetJoints() noexcept
+inline const JointEdgeList& Body::GetJoints() noexcept
 {
 	return m_joints;
 }
