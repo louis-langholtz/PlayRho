@@ -450,7 +450,7 @@ public:
 	/// Gets the list of all contacts attached to this body.
 	/// @warning This list changes during the time step and you may
 	/// miss some collisions if you don't use ContactListener.
-	ContactEdgeList& GetContactEdges() noexcept;
+	const ContactEdgeList& GetContactEdges() noexcept;
 
 	/// Gets the list of all contacts attached to this body.
 	/// @warning This list changes during the time step and you may
@@ -810,7 +810,7 @@ inline const Body::Joints& Body::GetJoints() const noexcept
 	return m_joints;
 }
 
-inline ContactEdgeList& Body::GetContactEdges() noexcept
+inline const ContactEdgeList& Body::GetContactEdges() noexcept
 {
 	return m_contacts;
 }
