@@ -65,7 +65,7 @@ struct ContactEdge
 /// The class manages contact between two shapes. A contact exists for each overlapping
 /// AABB in the broad-phase (except if filtered). Therefore a contact object may exist
 /// that has no contact points.
-/// @note This data structure is 192-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 176-bytes large (on at least one 64-bit platform).
 class Contact
 {
 public:
@@ -238,10 +238,6 @@ private:
 	// Nodes for connecting bodies.
 	ContactEdge m_nodeA = { nullptr, nullptr, nullptr, nullptr}; ///< Node A's contact edge. 32-bytes.
 	ContactEdge m_nodeB = { nullptr, nullptr, nullptr, nullptr}; ///< Node B's contact edge. 32-bytes.
-
-	// World pool and list pointers.
-	Contact* m_prev = nullptr;
-	Contact* m_next = nullptr;
 	
 	Fixture* const m_fixtureA; ///< Fixture A. @detail Non-null pointer to fixture A.
 	Fixture* const m_fixtureB; ///< Fixture B. @detail Non-null pointer to fixture B.
