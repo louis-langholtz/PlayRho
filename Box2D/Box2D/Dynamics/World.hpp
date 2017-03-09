@@ -700,7 +700,7 @@ inline RealNum World::GetInvDeltaTime() const noexcept
 
 /// Gets the body count in the given world.
 /// @return 0 or higher.
-inline body_count_t GetBodyCount(const World& world) noexcept
+inline World::BodyList::size_type GetBodyCount(const World& world) noexcept
 {
 	return world.GetBodies().size();
 }
