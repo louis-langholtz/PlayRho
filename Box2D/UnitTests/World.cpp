@@ -923,14 +923,14 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 		{
 			++count;
 
-			const auto fa = c.GetFixtureA();
-			const auto fb = c.GetFixtureB();
+			const auto fa = c->GetFixtureA();
+			const auto fb = c->GetFixtureB();
 			const auto body_a = fa->GetBody();
 			const auto body_b = fb->GetBody();
 			EXPECT_EQ(body_a, body1);
 			EXPECT_EQ(body_b, body2);
 			
-			const auto& manifold = c.GetManifold();
+			const auto& manifold = c->GetManifold();
 			EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 			EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(2));
 		}

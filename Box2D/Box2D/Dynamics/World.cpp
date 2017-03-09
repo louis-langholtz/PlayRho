@@ -387,7 +387,7 @@ World::~World()
 {
 	while (!m_contactMgr.GetContacts().empty())
 	{
-		const auto c = &m_contactMgr.GetContacts().front();
+		const auto c = m_contactMgr.GetContacts().front();
 		m_contactMgr.Remove(c);
 		Contact::Destroy(c, m_contactMgr.m_allocator);
 	}
@@ -660,7 +660,7 @@ void World::InternalDestroy(Joint* j)
 
 Island World::BuildIsland(Body& seed,
 				  BodyList::size_type& remNumBodies,
-				  contact_count_t& remNumContacts,
+				  ContactList::size_type& remNumContacts,
 				  JointList::size_type& remNumJoints)
 {
 	assert(!seed.IsInIsland());
@@ -754,7 +754,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 	}
 	for (auto&& c: m_contactMgr.GetContacts())
 	{
-		c.UnsetInIsland();
+		c->UnsetInIsland();
 	}
 	for (auto&& j: m_joints)
 	{
@@ -963,9 +963,9 @@ void World::ResetContactsForSolveTOI()
 	for (auto&& c: m_contactMgr.GetContacts())
 	{
 		// Invalidate TOI
-		c.UnsetInIsland();
-		c.UnsetToi();
-		c.ResetToiCount();
+		c->UnsetInIsland();
+		c->UnsetToi();
+		c->ResetToiCount();
 	}	
 }
 	
@@ -987,15 +987,15 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 	
 	for (auto&& c: m_contactMgr.GetContacts())
 	{
-		if (c.HasValidToi())
+		if (c->HasValidToi())
 		{
 			continue;
 		}
-		if (!c.IsEnabled() || HasSensor(c) || !IsActive(c) || !IsImpenetrable(c))
+		if (!c->IsEnabled() || HasSensor(*c) || !IsActive(*c) || !IsImpenetrable(*c))
 		{
 			continue;
 		}
-		if (c.GetToiCount() >= step.maxSubSteps)
+		if (c->GetToiCount() >= step.maxSubSteps)
 		{
 			// What are the pros/cons of this?
 			// Larger m_maxSubSteps slows down the simulation.
@@ -1005,8 +1005,8 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 			continue;
 		}
 		
-		const auto fA = c.GetFixtureA();
-		const auto fB = c.GetFixtureB();
+		const auto fA = c->GetFixtureA();
+		const auto fB = c->GetFixtureB();
 		
 		const auto bA = fA->GetBody();
 		const auto bB = fB->GetBody();
@@ -1025,9 +1025,9 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 		// Compute the TOI for this contact (one or both bodies are active and impenetrable).
 		// Computes the time of impact in interval [0, 1]
 		// Large rotations can make the root finder of TimeOfImpact fail, so normalize the sweep angles.
-		const auto output = TimeOfImpact(GetDistanceProxy(*fA->GetShape(), c.GetChildIndexA()),
+		const auto output = TimeOfImpact(GetDistanceProxy(*fA->GetShape(), c->GetChildIndexA()),
 										 GetAnglesNormalized(bA->m_sweep),
-										 GetDistanceProxy(*fB->GetShape(), c.GetChildIndexB()),
+										 GetDistanceProxy(*fB->GetShape(), c->GetChildIndexB()),
 										 GetAnglesNormalized(bB->m_sweep),
 										 toiConf);
 		
@@ -1037,7 +1037,7 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 		const auto toi = IsValidForTime(output.get_state())?
 			Min(alpha0 + (1 - alpha0) * output.get_t(), RealNum{1}): RealNum{1};
 		assert(toi >= alpha0);
-		c.SetToi(toi);
+		c->SetToi(toi);
 		
 		maxDistIters = Max(maxDistIters, output.get_max_dist_iters());
 		maxToiIters = Max(maxToiIters, output.get_toi_iters());
@@ -1054,19 +1054,19 @@ World::ContactToiData World::GetSoonestContacts()
 	auto minContacts = std::vector<Contact*>();
 	for (auto&& c: m_contactMgr.GetContacts())
 	{
-		if (c.HasValidToi())
+		if (c->HasValidToi())
 		{
-			const auto toi = c.GetToi();
+			const auto toi = c->GetToi();
 			if (minToi > toi)
 			{
 				minToi = toi;
 				minContacts.clear();
-				minContacts.push_back(&c);
+				minContacts.push_back(c);
 			}
 			else if (minToi == toi)
 			{
 				// Have multiple contacts at the current minimum time of impact.
-				minContacts.push_back(&c);
+				minContacts.push_back(c);
 			}
 		}
 	}

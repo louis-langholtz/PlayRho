@@ -182,7 +182,7 @@ private:
 	Vec2 m_mouseWorld;
 	int32 m_stepCount = 0;
 	StepStats m_stepStats;
-	contact_count_t m_maxContacts = 0;
+	size_t m_maxContacts = 0;
 	uint64 m_sumContactsUpdatedToi = 0;
 	uint64 m_sumContactsAtMaxSubSteps = 0;
 	uint64 m_sumRegIslandsFound = 0;

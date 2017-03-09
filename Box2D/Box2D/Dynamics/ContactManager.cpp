@@ -32,7 +32,15 @@ void ContactManager::Remove(Contact* c)
 
 	// Remove from the world.
 	assert(!m_contacts.empty());
-	m_contacts.erase(ContactIterator{c});
+	
+	for (auto iter = m_contacts.begin(); iter != m_contacts.end(); ++iter)
+	{
+		if (*iter == c)
+		{
+			m_contacts.erase(iter);
+			break;
+		}
+	}
 	
 	const auto fixtureA = c->GetFixtureA();
 	const auto fixtureB = c->GetFixtureB();
@@ -91,10 +99,11 @@ ContactManager::CollideStats ContactManager::Collide()
 	auto stats = CollideStats{};
 
 	// Update awake contacts.
-	auto next = ContactIterator{nullptr};
-	for (auto c = m_contacts.begin(); c != m_contacts.end(); c = next)
+	auto next = m_contacts.begin();
+	for (auto iter = m_contacts.begin(); iter != m_contacts.end(); iter = next)
 	{
-		next = std::next(c);
+		const auto c = *iter;
+		next = std::next(iter);
 
 		const auto fixtureA = c->GetFixtureA();
 		const auto fixtureB = c->GetFixtureB();
@@ -107,7 +116,7 @@ ContactManager::CollideStats ContactManager::Collide()
 			// Can these bodies collide?
 			if (!(bodyB->ShouldCollide(bodyA)))
 			{
-				Destroy(&(*c));
+				Destroy(c);
 				++stats.destroyed;
 				continue;
 			}
@@ -115,7 +124,7 @@ ContactManager::CollideStats ContactManager::Collide()
 			// Check user filtering.
 			if (m_contactFilter && !(m_contactFilter->ShouldCollide(fixtureA, fixtureB)))
 			{
-				Destroy(&(*c));
+				Destroy(c);
 				++stats.destroyed;
 				continue;
 			}
@@ -148,7 +157,7 @@ ContactManager::CollideStats ContactManager::Collide()
 		// Here we destroy contacts that cease to overlap in the broad-phase.
 		if (!overlap)
 		{
-			Destroy(&(*c));
+			Destroy(c);
 			++stats.destroyed;
 			continue;
 		}

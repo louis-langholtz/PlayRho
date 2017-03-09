@@ -23,6 +23,8 @@
 #include <Box2D/Collision/BroadPhase.hpp>
 #include <Box2D/Dynamics/ContactList.hpp>
 
+#include <list>
+
 namespace box2d {
 
 class Contact;
@@ -46,6 +48,8 @@ public:
 		uint32 updated = 0;
 	};
 
+	using ContactList = std::list<Contact*>;
+	
 	ContactManager(BlockAllocator& allocator, ContactFilter* filter, ContactListener* listener):
 		m_allocator{allocator}, m_contactFilter{filter}, m_contactListener{listener} {}
 	
@@ -78,7 +82,7 @@ public:
 	
 	/// Gets the contact list.
 	/// @return Contact list or <code>nullptr</code> if empty.
-	ContactList& GetContacts() noexcept { return m_contacts; }
+	const ContactList& GetContacts() noexcept { return m_contacts; }
 
 	BroadPhase m_broadPhase; ///< Broad phase data. 72-bytes.
 	ContactFilter* m_contactFilter; ///< Contact filter. 8-bytes.

@@ -121,6 +121,8 @@ public:
 
 	using BodyList = std::list<Body*>;
 
+	using ContactList = std::list<Contact*>;
+	
 	/// World construction definitions.
 	struct Def
 	{
@@ -280,7 +282,7 @@ public:
 	/// @warning contacts are created and destroyed in the middle of a time step.
 	/// Use ContactListener to avoid missing contacts.
 	/// @return the head of the world contact list.
-	ContactList& GetContacts() noexcept;
+	const ContactList& GetContacts() noexcept;
 
 	/// Gets the world contact list.
 	/// @warning contacts are created and destroyed in the middle of a time step.
@@ -406,9 +408,9 @@ private:
 	/// @post Contacts are listed in the island in the order that bodies list those contacts.
 	/// @post Joints are listed the island in the order that bodies list those joints.
 	Island BuildIsland(Body& seed,
-						 BodyList::size_type& remNumBodies,
-						 contact_count_t& remNumContacts,
-						 JointList::size_type& remNumJoints);
+					   BodyList::size_type& remNumBodies,
+					   ContactList::size_type& remNumContacts,
+					   JointList::size_type& remNumJoints);
 
 	/// Solves the step using successive time of impact (TOI) events.
 	/// @detail Used for continuous physics.
@@ -602,12 +604,12 @@ inline const JointList& World::GetJoints() const noexcept
 	return m_joints;
 }
 
-inline ContactList& World::GetContacts() noexcept
+inline const World::ContactList& World::GetContacts() noexcept
 {
 	return m_contactMgr.GetContacts();
 }
 
-inline const ContactList& World::GetContacts() const noexcept
+inline const World::ContactList& World::GetContacts() const noexcept
 {
 	return m_contactMgr.GetContacts();
 }
@@ -716,7 +718,7 @@ inline World::size_type GetJointCount(const World& world) noexcept
 /// @note Not all contacts are for shapes that are actually touching. Some contacts are for
 ///   shapes which merely have overlapping AABBs.
 /// @return 0 or higher.
-inline contact_count_t GetContactCount(const World& world) noexcept
+inline World::ContactList::size_type GetContactCount(const World& world) noexcept
 {
 	return world.GetContacts().size();
 }

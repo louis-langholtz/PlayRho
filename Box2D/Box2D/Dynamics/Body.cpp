@@ -99,8 +99,9 @@ void Body::InternalDestroyContacts()
 	while (!m_contacts.empty())
 	{
 		auto& ce = m_contacts.front();
+		const auto contact = ce.contact;
 		m_contacts.pop_front();
-		m_world->m_contactMgr.Destroy(ce.contact);
+		m_world->m_contactMgr.Destroy(contact);
 	}
 }
 

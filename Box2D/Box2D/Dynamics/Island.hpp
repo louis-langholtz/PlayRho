@@ -40,7 +40,7 @@ public:
 	using ContactContainer = std::vector<Contact*>;
 	using JointContainer = std::vector<Joint*>;
 	
-	Island(BodyContainer::size_type bodyCapacity, contact_count_t contactCapacity, island_count_t jointCapacity);
+	Island(BodyContainer::size_type bodyCapacity, ContactContainer::size_type contactCapacity, island_count_t jointCapacity);
 
 	Island(const Island& copy) noexcept:
 		m_bodies(copy.m_bodies),
