@@ -79,10 +79,6 @@ public:
 	/// @return Contact list or <code>nullptr</code> if empty.
 	const Contacts& GetContacts() const noexcept { return m_contacts; }
 	
-	/// Gets the contact list.
-	/// @return Contact list or <code>nullptr</code> if empty.
-	const Contacts& GetContacts() noexcept { return m_contacts; }
-
 	BroadPhase m_broadPhase; ///< Broad phase data. 72-bytes.
 	ContactFilter* m_contactFilter; ///< Contact filter. 8-bytes.
 	ContactListener* m_contactListener; ///< Contact listener. 8-bytes.
