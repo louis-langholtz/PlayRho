@@ -275,4 +275,19 @@ inline bool TestOverlap(const BroadPhase& bp, BroadPhase::size_type proxyIdA, Br
 
 } // namespace box2d
 
+namespace std
+{
+	template <>
+	class hash<box2d::ProxyIdPair>
+	{
+	public:
+		size_t operator()(const box2d::ProxyIdPair& pidpair) const
+		{
+			auto result = size_t{pidpair.proxyIdA};
+			return (result << 32)|pidpair.proxyIdB;
+		}
+	};
+	
+} // namespace std
+
 #endif
