@@ -145,7 +145,7 @@ However, we can compute sin+cos of the same angle fast.
 using namespace box2d;
 
 
-Island::Island(BodyContainer::size_type bodyCapacity, ContactContainer::size_type contactCapacity, island_count_t jointCapacity)
+Island::Island(Bodies::size_type bodyCapacity, Contacts::size_type contactCapacity, Joints::size_type jointCapacity)
 {
 	m_bodies.reserve(bodyCapacity);
 	m_contacts.reserve(contactCapacity);

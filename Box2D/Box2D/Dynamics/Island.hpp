@@ -1,21 +1,21 @@
 /*
-* Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #ifndef B2_ISLAND_H
 #define B2_ISLAND_H
@@ -36,11 +36,11 @@ class Joint;
 class Island
 {
 public:
-	using BodyContainer = std::vector<Body*>;
-	using ContactContainer = std::vector<Contact*>;
-	using JointContainer = std::vector<Joint*>;
+	using Bodies = std::vector<Body*>;
+	using Contacts = std::vector<Contact*>;
+	using Joints = std::vector<Joint*>;
 	
-	Island(BodyContainer::size_type bodyCapacity, ContactContainer::size_type contactCapacity, island_count_t jointCapacity);
+	Island(Bodies::size_type bodyCapacity, Contacts::size_type contactCapacity, Joints::size_type jointCapacity);
 
 	Island(const Island& copy) noexcept:
 		m_bodies(copy.m_bodies),
@@ -65,9 +65,9 @@ public:
 		return *this;
 	}
 
-	BodyContainer m_bodies;
-	ContactContainer m_contacts;
-	JointContainer m_joints;
+	Bodies m_bodies;
+	Contacts m_contacts;
+	Joints m_joints;
 };
 
 inline bool IsFullOfBodies(const Island& island)

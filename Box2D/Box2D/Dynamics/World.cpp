@@ -174,7 +174,7 @@ namespace {
 		}
 	}
 	
-	PositionConstraints GetPositionConstraints(const Island::ContactContainer& contacts, BodyConstraints& bodies)
+	PositionConstraints GetPositionConstraints(const Island::Contacts& contacts, BodyConstraints& bodies)
 	{
 		auto constraints = PositionConstraints{};
 		constraints.reserve(contacts.size());
@@ -271,7 +271,7 @@ namespace {
 	/// @post Velocity constraints will have their "normal" field set to the world manifold normal for them.
 	/// @post Velocity constraints will have their constraint points set.
 	/// @sa SolveVelocityConstraints.
-	VelocityConstraints GetVelocityConstraints(const Island::ContactContainer& contacts,
+	VelocityConstraints GetVelocityConstraints(const Island::Contacts& contacts,
 														BodyConstraints& bodies,
 														const VelocityConstraint::Conf conf)
 	{
@@ -324,7 +324,7 @@ namespace {
 		return maxIncImpulse;
 	}
 
-	inline RealNum UpdateSleepTimes(Island::BodyContainer& bodies, const StepConf& step)
+	inline RealNum UpdateSleepTimes(Island::Bodies& bodies, const StepConf& step)
 	{
 		auto minSleepTime = std::numeric_limits<RealNum>::infinity();
 		for (auto&& b: bodies)
@@ -340,7 +340,7 @@ namespace {
 		return minSleepTime;
 	}
 	
-	inline size_t Sleepem(Island::BodyContainer& bodies)
+	inline size_t Sleepem(Island::Bodies& bodies)
 	{
 		auto unawoken = size_t{0};
 		for (auto&& b: bodies)
