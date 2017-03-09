@@ -402,9 +402,9 @@ World::~World()
 	while (!m_bodies.empty())
 	{
 		auto&& b = m_bodies.front();
-		m_bodies.erase(BodyIterator{&b});
-		b.~Body();
-		m_blockAllocator.Free(&b, sizeof(b));
+		b->~Body();
+		m_blockAllocator.Free(b, sizeof(Body));
+		m_bodies.pop_front();
 	}
 }
 
@@ -430,7 +430,7 @@ void World::SetGravity(const Vec2 gravity) noexcept
 		const auto diff = gravity - m_gravity;
 		for (auto&& body: m_bodies)
 		{
-			ApplyLinearAcceleration(body, diff);
+			ApplyLinearAcceleration(*body, diff);
 		}
 		m_gravity = gravity;
 	}
@@ -477,14 +477,15 @@ bool World::Add(Body& b)
 
 bool World::Remove(Body& b)
 {
-	assert(!m_bodies.empty());
-	if (m_bodies.empty())
+	for (auto iter = m_bodies.begin(); iter != m_bodies.end(); ++iter)
 	{
-		return false;
+		if (*iter == &b)
+		{
+			m_bodies.erase(iter);
+			return true;
+		}
 	}
-
-	m_bodies.erase(BodyIterator{&b});
-	return true;
+	return false;
 }
 
 void World::Destroy(Body* b)
@@ -752,7 +753,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 	// removed from this eligible set (and their IsInIsland method thereafter returns true.
 	for (auto&& b: m_bodies)
 	{
-		b.UnsetInIsland();
+		b->UnsetInIsland();
 	}
 	for (auto&& c: m_contactMgr.GetContacts())
 	{
@@ -774,11 +775,11 @@ RegStepStats World::SolveReg(const StepConf& step)
 	// Build and simulate all awake islands.
 	for (auto&& body: m_bodies)
 	{
-		if (!body.IsInIsland() && body.IsSpeedable() && body.IsAwake() && body.IsActive())
+		if (!body->IsInIsland() && body->IsSpeedable() && body->IsAwake() && body->IsActive())
 		{
 			++stats.islandsFound;
 
-			auto island = BuildIsland(body, remNumBodies, remNumContacts, remNumJoints);
+			auto island = BuildIsland(*body, remNumBodies, remNumContacts, remNumJoints);
 			for (auto&& b: island.m_bodies)
 			{
 				// Allow static bodies to participate in other islands.
@@ -826,10 +827,10 @@ RegStepStats World::SolveReg(const StepConf& step)
 	for (auto&& b: m_bodies)
 	{
 		// A non-static body that was in an island may have moved.
-		if ((b.m_flags & (Body::e_velocityFlag|Body::e_islandFlag)) == (Body::e_velocityFlag|Body::e_islandFlag))
+		if ((b->m_flags & (Body::e_velocityFlag|Body::e_islandFlag)) == (Body::e_velocityFlag|Body::e_islandFlag))
 		{
 			// Update fixtures (for broad-phase).
-			b.SynchronizeFixtures();
+			b->SynchronizeFixtures();
 		}
 	}
 
@@ -955,8 +956,8 @@ void World::ResetBodiesForSolveTOI()
 {
 	for (auto&& b: m_bodies)
 	{
-		b.UnsetInIsland();
-		b.m_sweep.ResetAlpha0();
+		b->UnsetInIsland();
+		b->m_sweep.ResetAlpha0();
 	}
 }
 
@@ -1133,13 +1134,13 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 		// Reset island flags and synchronize broad-phase proxies.
 		for (auto&& body: m_bodies)
 		{
-			if (body.IsInIsland())
+			if (body->IsInIsland())
 			{
-				body.UnsetInIsland();
-				if (body.IsAccelerable())
+				body->UnsetInIsland();
+				if (body->IsAccelerable())
 				{
-					body.SynchronizeFixtures();
-					ResetContactsForSolveTOI(body);
+					body->SynchronizeFixtures();
+					ResetContactsForSolveTOI(*body);
 				}
 			}
 		}
@@ -1562,9 +1563,9 @@ void World::ShiftOrigin(const Vec2 newOrigin)
 
 	for (auto&& b: m_bodies)
 	{
-		b.m_xf.p -= newOrigin;
-		b.m_sweep.pos0.linear -= newOrigin;
-		b.m_sweep.pos1.linear -= newOrigin;
+		b->m_xf.p -= newOrigin;
+		b->m_sweep.pos0.linear -= newOrigin;
+		b->m_sweep.pos1.linear -= newOrigin;
 	}
 
 	for (auto&& j: m_joints)
@@ -1607,7 +1608,7 @@ size_t GetFixtureCount(const World& world) noexcept
 	size_t sum = 0;
 	for (auto&& b: world.GetBodies())
 	{
-		sum += GetFixtureCount(b);
+		sum += GetFixtureCount(*b);
 	}
 	return sum;
 }
@@ -1617,7 +1618,7 @@ size_t GetShapeCount(const World& world) noexcept
 	auto shapes = std::set<const Shape*>();
 	for (auto&& b: world.GetBodies())
 	{
-		for (auto&& f: b.GetFixtures())
+		for (auto&& f: b->GetFixtures())
 		{
 			shapes.insert(f->GetShape());
 		}
@@ -1630,7 +1631,7 @@ size_t GetAwakeCount(const World& world) noexcept
 	auto count = size_t(0);
 	for (auto&& body: world.GetBodies())
 	{
-		if (body.IsAwake())
+		if (body->IsAwake())
 		{
 			++count;
 		}
@@ -1643,7 +1644,7 @@ size_t Awaken(World& world)
 	auto awoken = size_t{0};
 	for (auto&& b: world.GetBodies())
 	{
-		if (b.SetAwake())
+		if (b->SetAwake())
 		{
 			++awoken;
 		}
@@ -1656,7 +1657,7 @@ void ClearForces(World& world) noexcept
 	const auto g = world.GetGravity();
 	for (auto&& body: world.GetBodies())
 	{
-		body.SetAcceleration(g, 0_rad);
+		body->SetAcceleration(g, 0_rad);
 	}
 }
 

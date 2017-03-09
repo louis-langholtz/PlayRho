@@ -144,9 +144,9 @@ public:
 		m_bullet_mode = !m_bullet_mode;
 		for (auto& b: m_world->GetBodies())
 		{
-			if (b.GetType() == BodyType::Dynamic)
+			if (b->GetType() == BodyType::Dynamic)
 			{
-				b.SetBullet(m_bullet_mode);
+				b->SetBullet(m_bullet_mode);
 			}
 		}
 	}
@@ -155,15 +155,15 @@ public:
 	{
 		for (auto& b: m_world->GetBodies())
 		{
-			if (b.GetType() == BodyType::Dynamic)
+			if (b->GetType() == BodyType::Dynamic)
 			{
-				const auto position = b.GetLocation();
+				const auto position = b->GetLocation();
 				const auto angle_from_center = Atan2(position.y - wall_length/2, position.x);
 				const auto opposite_angle = angle_from_center + Pi;
 				const auto direction = opposite_angle;
-				const auto magnitude = Sqrt(Square(wall_length) * 2) * GetMass(b) * 20;
+				const auto magnitude = Sqrt(Square(wall_length) * 2) * GetMass(*b) * 20;
 				const auto impulse = Rotate(Vec2(magnitude, 0.0f), UnitVec2{1_rad * direction});
-				ApplyLinearImpulse(b, impulse, b.GetWorldCenter());
+				ApplyLinearImpulse(*b, impulse, b->GetWorldCenter());
 			}
 		}		
 	}
@@ -208,12 +208,12 @@ public:
 		auto sleeping = true;
 		for (auto& b: m_world->GetBodies())
 		{
-			if (b.GetType() != BodyType::Dynamic)
+			if (b->GetType() != BodyType::Dynamic)
 			{
 				continue;
 			}
 
-			if (b.IsAwake())
+			if (b->IsAwake())
 			{
 				sleeping = false;
 			}
@@ -231,13 +231,13 @@ public:
 		for (auto& b: m_world->GetBodies())
 		{
 			++i;
-			if (b.GetType() != BodyType::Dynamic)
+			if (b->GetType() != BodyType::Dynamic)
 			{
 				continue;
 			}
 			
-			const auto location = b.GetLocation();
-			const auto userData = b.GetUserData();
+			const auto location = b->GetLocation();
+			const auto userData = b->GetUserData();
 			drawer.DrawString(location, "B%d", reinterpret_cast<decltype(m_sequence)>(userData));
 		}
 		

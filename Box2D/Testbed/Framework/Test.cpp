@@ -262,7 +262,7 @@ static void Draw(Drawer& drawer, const World& world, const Settings& settings)
 	{
 		for (auto&& b: world.GetBodies())
 		{
-			Draw(drawer, b, settings.drawSkins);
+			Draw(drawer, *b, settings.drawSkins);
 		}
 	}
 	
@@ -281,12 +281,12 @@ static void Draw(Drawer& drawer, const World& world, const Settings& settings)
 		
 		for (auto&& b: world.GetBodies())
 		{
-			if (!b.IsActive())
+			if (!b->IsActive())
 			{
 				continue;
 			}
 			
-			for (auto&& f: b.GetFixtures())
+			for (auto&& f: b->GetFixtures())
 			{
 				const auto proxy_count = f->GetProxyCount();
 				for (auto i = decltype(proxy_count){0}; i < proxy_count; ++i)
@@ -312,8 +312,8 @@ static void Draw(Drawer& drawer, const World& world, const Settings& settings)
 		const auto green = Color{0.0f, 1.0f, 0.0f};
 		for (auto&& b: world.GetBodies())
 		{
-			auto xf = b.GetTransformation();
-			xf.p = b.GetWorldCenter();
+			auto xf = b->GetTransformation();
+			xf.p = b->GetWorldCenter();
 			const auto p1 = xf.p;
 			drawer.DrawSegment(p1, p1 + k_axisScale * GetXAxis(xf.q), red);
 			drawer.DrawSegment(p1, p1 + k_axisScale * GetYAxis(xf.q), green);			
@@ -668,7 +668,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 			auto count = unsigned(0);
 			for (auto&& body: m_world->GetBodies())
 			{
-				if (!body.IsAwake())
+				if (!body->IsAwake())
 				{
 					++count;
 				}

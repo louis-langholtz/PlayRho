@@ -24,12 +24,12 @@
 #include <Box2D/Common/BlockAllocator.hpp>
 #include <Box2D/Dynamics/ContactManager.hpp>
 #include <Box2D/Dynamics/WorldCallbacks.hpp>
-#include <Box2D/Dynamics/BodyList.hpp>
 #include <Box2D/Dynamics/JointList.hpp>
 #include <Box2D/Dynamics/ContactList.hpp>
 #include <Box2D/Dynamics/Profile.hpp>
 
 #include <vector>
+#include <list>
 
 namespace box2d {
 
@@ -118,6 +118,8 @@ public:
 
 	/// Time step iteration type.
 	using ts_iters_type = ts_iters_t;
+
+	using BodyList = std::list<Body*>;
 
 	/// World construction definitions.
 	struct Def
@@ -260,7 +262,7 @@ public:
 
 	/// Gets the world body list.
 	/// @return Body list that can be iterated over using its begin and end methods or using ranged-based for-loops.
-	BodyList& GetBodies() noexcept;
+	const BodyList& GetBodies() noexcept;
 
 	/// Gets the world body list for this constant world.
 	/// @return Body list that can be iterated over using its begin and end methods or using ranged-based for-loops.
@@ -580,12 +582,12 @@ constexpr inline World::Def& World::Def::UseMaxVertexRadius(RealNum value) noexc
 	return *this;
 }
 
-inline BodyList& World::GetBodies() noexcept
+inline const World::BodyList& World::GetBodies() noexcept
 {
 	return m_bodies;
 }
 
-inline const BodyList& World::GetBodies() const noexcept
+inline const World::BodyList& World::GetBodies() const noexcept
 {
 	return m_bodies;
 }

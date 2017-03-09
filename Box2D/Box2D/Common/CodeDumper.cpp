@@ -66,7 +66,7 @@ void box2d::Dump(const World& world)
 	auto i = size_t{0};
 	for (auto&& b: bodies)
 	{
-		Dump(b, i);
+		Dump(*b, i);
 		++i;
 	}
 	
