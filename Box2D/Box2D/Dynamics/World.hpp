@@ -363,7 +363,6 @@ private:
 
 	friend class Body;
 	friend class Fixture;
-	friend class ContactManager;
 
 	void InternalDestroy(Joint* joint);
 
