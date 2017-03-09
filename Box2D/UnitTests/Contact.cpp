@@ -21,11 +21,6 @@
 
 using namespace box2d;
 
-TEST(ContactEdge, ByteSizeIs32)
-{
-	EXPECT_EQ(sizeof(ContactEdge), size_t(32));
-}
-
 TEST(Contact, ByteSizeIs_176_272_or_448)
 {
 	switch (sizeof(RealNum))

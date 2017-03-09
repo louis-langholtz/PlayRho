@@ -47,19 +47,6 @@ inline RealNum MixRestitution(RealNum restitution1, RealNum restitution2) noexce
 	return (restitution1 > restitution2) ? restitution1 : restitution2;
 }
 
-/// A contact edge is used to connect bodies and contacts together
-/// in a contact graph where each body is a node and each contact
-/// is an edge. A contact edge belongs to a doubly linked list
-/// maintained in each attached body. Each contact has two contact
-/// nodes, one for each attached body.
-struct ContactEdge
-{
-	Body* other;			///< provides quick access to the other body attached.
-	Contact* contact;		///< the contact
-	ContactEdge* prev;	///< the previous contact edge in the body's contact list
-	ContactEdge* next;	///< the next contact edge in the body's contact list
-};
-
 /// Contact.
 /// @detail
 /// The class manages contact between two shapes. A contact exists for each overlapping
@@ -234,10 +221,6 @@ private:
 	void UnsetTouching() noexcept;
 	
 	void SetTouching(bool value) noexcept;
-	
-	// Nodes for connecting bodies.
-	ContactEdge m_nodeA = { nullptr, nullptr, nullptr, nullptr}; ///< Node A's contact edge. 32-bytes.
-	ContactEdge m_nodeB = { nullptr, nullptr, nullptr, nullptr}; ///< Node B's contact edge. 32-bytes.
 	
 	Fixture* const m_fixtureA; ///< Fixture A. @detail Non-null pointer to fixture A.
 	Fixture* const m_fixtureB; ///< Fixture B. @detail Non-null pointer to fixture B.
