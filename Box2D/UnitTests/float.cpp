@@ -172,8 +172,8 @@ TEST(float, casting)
 	EXPECT_EQ(int(1.0f), 1);
 	EXPECT_EQ(int(-1.0f), -1);
 	
-	EXPECT_EQ(unsigned(1.0f), 1);
-	EXPECT_EQ(unsigned(4.7f), 4);
+	EXPECT_EQ(unsigned(1.0f), 1u);
+	EXPECT_EQ(unsigned(4.7f), 4u);
 
 	// Casting a negative float value to an unsigned integral type is not defined behavior.
 	// EXPECT_EQ(unsigned(-1.0f), 1);
