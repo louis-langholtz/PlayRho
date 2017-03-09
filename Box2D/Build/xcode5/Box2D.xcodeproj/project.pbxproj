@@ -158,12 +158,6 @@
 		477DB2991D14BB2000846ED6 /* ContactEdgeIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 477DB2971D14BB2000846ED6 /* ContactEdgeIterator.hpp */; };
 		477DB29C1D14BCA700846ED6 /* ConstContactEdgeIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477DB29A1D14BCA700846ED6 /* ConstContactEdgeIterator.cpp */; };
 		477DB29D1D14BCA700846ED6 /* ConstContactEdgeIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 477DB29B1D14BCA700846ED6 /* ConstContactEdgeIterator.hpp */; };
-		477DB2A01D15F5C000846ED6 /* JointEdgeList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477DB29E1D15F5C000846ED6 /* JointEdgeList.cpp */; };
-		477DB2A11D15F5C000846ED6 /* JointEdgeList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 477DB29F1D15F5C000846ED6 /* JointEdgeList.hpp */; };
-		477DB2A41D15F60B00846ED6 /* JointEdgeIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477DB2A21D15F60B00846ED6 /* JointEdgeIterator.cpp */; };
-		477DB2A51D15F60B00846ED6 /* JointEdgeIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 477DB2A31D15F60B00846ED6 /* JointEdgeIterator.hpp */; };
-		477DB2A81D15F64A00846ED6 /* ConstJointEdgeIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477DB2A61D15F64A00846ED6 /* ConstJointEdgeIterator.cpp */; };
-		477DB2A91D15F64A00846ED6 /* ConstJointEdgeIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 477DB2A71D15F64A00846ED6 /* ConstJointEdgeIterator.hpp */; };
 		477DB2AC1D1C4BE800846ED6 /* PositionSolverManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477DB2AA1D1C4BE800846ED6 /* PositionSolverManifold.cpp */; };
 		477DB2AD1D1C4BE800846ED6 /* PositionSolverManifold.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 477DB2AB1D1C4BE800846ED6 /* PositionSolverManifold.hpp */; };
 		4788690A1D78BE2B00AEC7F1 /* PositionConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */; };
@@ -577,12 +571,6 @@
 		477DB2971D14BB2000846ED6 /* ContactEdgeIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactEdgeIterator.hpp; sourceTree = "<group>"; };
 		477DB29A1D14BCA700846ED6 /* ConstContactEdgeIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConstContactEdgeIterator.cpp; sourceTree = "<group>"; };
 		477DB29B1D14BCA700846ED6 /* ConstContactEdgeIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConstContactEdgeIterator.hpp; sourceTree = "<group>"; };
-		477DB29E1D15F5C000846ED6 /* JointEdgeList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JointEdgeList.cpp; sourceTree = "<group>"; };
-		477DB29F1D15F5C000846ED6 /* JointEdgeList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JointEdgeList.hpp; sourceTree = "<group>"; };
-		477DB2A21D15F60B00846ED6 /* JointEdgeIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JointEdgeIterator.cpp; sourceTree = "<group>"; };
-		477DB2A31D15F60B00846ED6 /* JointEdgeIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JointEdgeIterator.hpp; sourceTree = "<group>"; };
-		477DB2A61D15F64A00846ED6 /* ConstJointEdgeIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConstJointEdgeIterator.cpp; sourceTree = "<group>"; };
-		477DB2A71D15F64A00846ED6 /* ConstJointEdgeIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConstJointEdgeIterator.hpp; sourceTree = "<group>"; };
 		477DB2AA1D1C4BE800846ED6 /* PositionSolverManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PositionSolverManifold.cpp; sourceTree = "<group>"; };
 		477DB2AB1D1C4BE800846ED6 /* PositionSolverManifold.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PositionSolverManifold.hpp; sourceTree = "<group>"; };
 		478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PositionConstraint.hpp; sourceTree = "<group>"; };
@@ -1115,8 +1103,6 @@
 		80BB896D141C3E5900F1753A /* Joints */ = {
 			isa = PBXGroup;
 			children = (
-				477DB2A61D15F64A00846ED6 /* ConstJointEdgeIterator.cpp */,
-				477DB2A71D15F64A00846ED6 /* ConstJointEdgeIterator.hpp */,
 				80BB896E141C3E5900F1753A /* DistanceJoint.cpp */,
 				80BB896F141C3E5900F1753A /* DistanceJoint.hpp */,
 				80BB8970141C3E5900F1753A /* FrictionJoint.cpp */,
@@ -1125,10 +1111,6 @@
 				80BB8973141C3E5900F1753A /* GearJoint.hpp */,
 				80BB8974141C3E5900F1753A /* Joint.cpp */,
 				80BB8975141C3E5900F1753A /* Joint.hpp */,
-				477DB2A21D15F60B00846ED6 /* JointEdgeIterator.cpp */,
-				477DB2A31D15F60B00846ED6 /* JointEdgeIterator.hpp */,
-				477DB29E1D15F5C000846ED6 /* JointEdgeList.cpp */,
-				477DB29F1D15F5C000846ED6 /* JointEdgeList.hpp */,
 				80620F8D168B934600D46C8D /* MotorJoint.cpp */,
 				80620F8E168B934600D46C8D /* MotorJoint.hpp */,
 				80BB8976141C3E5900F1753A /* MouseJoint.cpp */,
@@ -1448,7 +1430,6 @@
 				477DB2AD1D1C4BE800846ED6 /* PositionSolverManifold.hpp in Headers */,
 				4731DE291DDF84A900E7F931 /* RayCastInput.hpp in Headers */,
 				80BB89BD141C3E5900F1753A /* CircleContact.hpp in Headers */,
-				477DB2A91D15F64A00846ED6 /* ConstJointEdgeIterator.hpp in Headers */,
 				80BB89BF141C3E5900F1753A /* Contact.hpp in Headers */,
 				80BB89C1141C3E5900F1753A /* ContactSolver.hpp in Headers */,
 				47CF984D1DF9C4A30077F5F2 /* ShapeSeparation.hpp in Headers */,
@@ -1460,8 +1441,6 @@
 				4726DD2C1D31B4090012A882 /* AABB.hpp in Headers */,
 				80BB89CD141C3E5900F1753A /* FrictionJoint.hpp in Headers */,
 				475A94661D99C264000CA9A8 /* List.hpp in Headers */,
-				477DB2A11D15F5C000846ED6 /* JointEdgeList.hpp in Headers */,
-				477DB2A51D15F60B00846ED6 /* JointEdgeIterator.hpp in Headers */,
 				4731DE6D1DF7E88500E7F931 /* ReferenceFace.hpp in Headers */,
 				80BB89CF141C3E5900F1753A /* GearJoint.hpp in Headers */,
 				80BB89D1141C3E5900F1753A /* Joint.hpp in Headers */,
@@ -1819,7 +1798,6 @@
 				80BB8988141C3E5900F1753A /* BroadPhase.cpp in Sources */,
 				477DB2981D14BB2000846ED6 /* ContactEdgeIterator.cpp in Sources */,
 				80BB898D141C3E5900F1753A /* Collision.cpp in Sources */,
-				477DB2A41D15F60B00846ED6 /* JointEdgeIterator.cpp in Sources */,
 				4731DE611DEF7B5100E7F931 /* Simplex.cpp in Sources */,
 				80BB898F141C3E5900F1753A /* Distance.cpp in Sources */,
 				80BB8991141C3E5900F1753A /* DynamicTree.cpp in Sources */,
@@ -1846,7 +1824,6 @@
 				475A94581D9453A1000CA9A8 /* Shape.cpp in Sources */,
 				80BB89AF141C3E5900F1753A /* Fixture.cpp in Sources */,
 				4731DE671DF0A73000E7F931 /* Manifold.cpp in Sources */,
-				477DB2A01D15F5C000846ED6 /* JointEdgeList.cpp in Sources */,
 				47E841721DB4018D00E5F311 /* VelocityConstraint.cpp in Sources */,
 				4731DE641DEF841600E7F931 /* SeparationFinder.cpp in Sources */,
 				47578BE41D886FED0078CD40 /* WorldManifold.cpp in Sources */,
@@ -1870,7 +1847,6 @@
 				80BB89CE141C3E5900F1753A /* GearJoint.cpp in Sources */,
 				4768D4001E54E7CC00574143 /* StepConf.cpp in Sources */,
 				80BB89D0141C3E5900F1753A /* Joint.cpp in Sources */,
-				477DB2A81D15F64A00846ED6 /* ConstJointEdgeIterator.cpp in Sources */,
 				80BB89D2141C3E5900F1753A /* MouseJoint.cpp in Sources */,
 				4731DE561DEC908600E7F931 /* UnitVec2.cpp in Sources */,
 				80BB89D4141C3E5900F1753A /* PrismaticJoint.cpp in Sources */,

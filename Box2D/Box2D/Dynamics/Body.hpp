@@ -23,7 +23,6 @@
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Collision/MassData.hpp>
 #include <Box2D/Dynamics/Contacts/ContactEdgeList.hpp>
-#include <Box2D/Dynamics/Joints/JointEdgeList.hpp>
 
 #include <forward_list>
 #include <unordered_set>
