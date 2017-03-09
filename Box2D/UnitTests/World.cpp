@@ -33,11 +33,11 @@
 
 using namespace box2d;
 
-TEST(World, ByteSizeIs_328_352_or_400)
+TEST(World, ByteSizeIs_344_352_or_400)
 {
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(World), size_t(328)); break;
+		case  4: EXPECT_EQ(sizeof(World), size_t(344)); break;
 		case  8: EXPECT_EQ(sizeof(World), size_t(352)); break;
 		case 16: EXPECT_EQ(sizeof(World), size_t(400)); break;
 		default: FAIL(); break;
@@ -892,7 +892,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	auto last_angle_2 = body2->GetAngle();
 
 	ASSERT_EQ(world.GetBodies().size(), World::BodyList::size_type(2));
-	ASSERT_EQ(world.GetContacts().size(), ContactList::size_type(0));
+	ASSERT_EQ(world.GetContacts().size(), World::ContactList::size_type(0));
 
 	auto position_diff = body1pos - body2pos;
 	auto distance = GetLength(position_diff);

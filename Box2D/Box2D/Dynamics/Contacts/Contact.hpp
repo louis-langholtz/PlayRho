@@ -162,9 +162,6 @@ protected:
 	friend class ContactManager;
 	friend class World;
 	friend class Fixture;
-	friend class ContactList;
-	friend class ContactIterator;
-	friend class ConstContactIterator;
 
 	/// Flag this contact for filtering. Filtering will occur the next time step.
 	void FlagForFiltering() noexcept;

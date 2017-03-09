@@ -25,7 +25,6 @@
 #include <Box2D/Dynamics/ContactManager.hpp>
 #include <Box2D/Dynamics/WorldCallbacks.hpp>
 #include <Box2D/Dynamics/JointList.hpp>
-#include <Box2D/Dynamics/ContactList.hpp>
 #include <Box2D/Dynamics/Profile.hpp>
 
 #include <vector>
@@ -108,7 +107,7 @@ constexpr auto EarthlyGravity = Vec2{0, RealNum(-9.8)};
 /// The world class manages all physics entities, dynamic simulation,
 /// and asynchronous queries. The world also contains efficient memory
 /// management facilities.
-/// @note This data structure is 328-bytes large (with 4-byte RealNum on at least one 64-bit platform).
+/// @note This data structure is 344-bytes large (with 4-byte RealNum on at least one 64-bit platform).
 class World
 {
 public:

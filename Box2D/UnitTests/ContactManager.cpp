@@ -21,7 +21,7 @@
 
 using namespace box2d;
 
-TEST(ContactManager, ByteSizeIs112)
+TEST(ContactManager, ByteSizeIs120)
 {
-	EXPECT_EQ(sizeof(ContactManager), size_t(112));
+	EXPECT_EQ(sizeof(ContactManager), size_t(120));
 }

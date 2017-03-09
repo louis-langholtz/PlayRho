@@ -21,7 +21,6 @@
 #define B2_CONTACT_MANAGER_H
 
 #include <Box2D/Collision/BroadPhase.hpp>
-#include <Box2D/Dynamics/ContactList.hpp>
 
 #include <list>
 
@@ -37,7 +36,7 @@ struct FixtureProxy;
 /// @detail
 /// This is a delegate of World (every World instance has one of these).
 /// Objects of this class manage the contacts for the world they are in.
-/// @note This data structure is 112-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 120-bytes large (on at least one 64-bit platform).
 class ContactManager
 {
 public:
