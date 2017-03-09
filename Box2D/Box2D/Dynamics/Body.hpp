@@ -26,6 +26,7 @@
 #include <Box2D/Dynamics/Joints/JointEdgeList.hpp>
 
 #include <forward_list>
+#include <unordered_set>
 #include <memory>
 
 namespace box2d {
@@ -225,6 +226,8 @@ class Body
 {
 public:
 	using FixtureList = std::forward_list<Fixture*>;
+	
+	using Joints = std::unordered_set<Joint*>;
 	
 	static constexpr auto InvalidIslandIndex = static_cast<body_count_t>(-1);
 	
@@ -440,10 +443,10 @@ public:
 	const FixtureList& GetFixtures() const noexcept;
 
 	/// Gets the list of all joints attached to this body.
-	const JointEdgeList& GetJoints() noexcept;
+	const Joints& GetJoints() noexcept;
 	
 	/// Gets the list of all joints attached to this body.
-	const JointEdgeList& GetJoints() const noexcept;
+	const Joints& GetJoints() const noexcept;
 
 	/// Gets the list of all contacts attached to this body.
 	/// @warning This list changes during the time step and you may
@@ -582,7 +585,7 @@ private:
 	World* const m_world; ///< World to which this body belongs. 8-bytes.
 
 	FixtureList m_fixtures; ///< Container of fixtures. 8-bytes.
-	JointEdgeList m_joints; ///< Container of joint edges. 8-bytes.
+	Joints m_joints; ///< Container of joint edges. 8-bytes.
 	ContactEdgeList m_contacts; ///< Container of contact edges. 8-bytes.
 
 	/// Inverse mass of the body.
@@ -798,12 +801,12 @@ inline const Body::FixtureList& Body::GetFixtures() const noexcept
 	return m_fixtures;
 }
 
-inline const JointEdgeList& Body::GetJoints() noexcept
+inline const Body::Joints& Body::GetJoints() noexcept
 {
 	return m_joints;
 }
 
-inline const JointEdgeList& Body::GetJoints() const noexcept
+inline const Body::Joints& Body::GetJoints() const noexcept
 {
 	return m_joints;
 }

@@ -110,14 +110,15 @@ void Body::InternalDestroyJoints()
 	// Delete the attached joints.
 	while (!m_joints.empty())
 	{
-		auto& je = m_joints.front();
-		m_joints.pop_front();
+		auto iter = m_joints.begin();
+		const auto joint = *iter;
+		m_joints.erase(iter);
 		if (m_world->m_destructionListener)
 		{
-			m_world->m_destructionListener->SayGoodbye(*(je.joint));
+			m_world->m_destructionListener->SayGoodbye(*joint);
 		}
 		
-		m_world->Destroy(je.joint);
+		m_world->Destroy(joint);
 	}
 }
 
@@ -457,11 +458,11 @@ bool Body::ShouldCollide(const Body* other) const
 	}
 
 	// Does a joint prevent collision?
-	for (auto&& jn: m_joints)
+	for (auto&& joint: m_joints)
 	{
-		if (jn.other == other)
+		if (joint->GetBodyA() == other || joint->GetBodyB() == other)
 		{
-			if (!jn.joint->m_collideConnected)
+			if (!(joint->m_collideConnected))
 			{
 				return false;
 			}

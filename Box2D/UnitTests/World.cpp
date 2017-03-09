@@ -1777,7 +1777,7 @@ static void smaller_still_conserves_momentum(bool bullet, RealNum multiplier, Re
 				preB1 = bA->GetLocation();
 				preB2 = bB->GetLocation();
 			},
-			[&](Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved)
+			[&](Contact& /* contact */, const ContactImpulsesList& impulse, ContactListener::iteration_type /* solved */)
 			{
 				{
 					const auto count = impulse.GetCount();

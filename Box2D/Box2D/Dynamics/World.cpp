@@ -522,28 +522,16 @@ Joint* World::CreateJoint(const JointDef& def)
 	}
 
 	// Connect to the bodies' doubly linked lists.
-	j->m_edgeA.joint = j;
-	j->m_edgeA.other = j->m_bodyB;
-	j->m_edgeA.prev = nullptr;
-	j->m_edgeA.next = j->m_bodyA->m_joints.p;
-	if (j->m_bodyA->m_joints.p)
+	const auto bodyA = j->GetBodyA();
+	const auto bodyB = j->GetBodyB();
+	if (bodyA)
 	{
-		j->m_bodyA->m_joints.p->prev = &j->m_edgeA;
+		bodyA->m_joints.insert(j);
 	}
-	j->m_bodyA->m_joints.p = &j->m_edgeA;
-
-	j->m_edgeB.joint = j;
-	j->m_edgeB.other = j->m_bodyA;
-	j->m_edgeB.prev = nullptr;
-	j->m_edgeB.next = j->m_bodyB->m_joints.p;
-	if (j->m_bodyB->m_joints.p)
+	if (bodyB)
 	{
-		j->m_bodyB->m_joints.p->prev = &j->m_edgeB;
+		bodyB->m_joints.insert(j);
 	}
-	j->m_bodyB->m_joints.p = &j->m_edgeB;
-
-	auto bodyA = def.bodyA;
-	auto bodyB = def.bodyB;
 
 	// If the joint prevents collisions, then flag any contacts for filtering.
 	if (!def.collideConnected)
@@ -603,50 +591,20 @@ void World::InternalDestroy(Joint* j)
 	const auto collideConnected = j->m_collideConnected;
 	
 	// Disconnect from island graph.
-	auto bodyA = j->m_bodyA;
-	auto bodyB = j->m_bodyB;
+	const auto bodyA = j->GetBodyA();
+	const auto bodyB = j->GetBodyB();
 
 	// Wake up connected bodies.
-	bodyA->SetAwake();
-	bodyB->SetAwake();
-
-	// Remove from body 1.
-	if (j->m_edgeA.prev)
+	if (bodyA)
 	{
-		j->m_edgeA.prev->next = j->m_edgeA.next;
+		bodyA->SetAwake();
+		bodyA->m_joints.erase(j);
 	}
-
-	if (j->m_edgeA.next)
+	if (bodyB)
 	{
-		j->m_edgeA.next->prev = j->m_edgeA.prev;
+		bodyB->SetAwake();
+		bodyA->m_joints.erase(j);
 	}
-
-	if (&j->m_edgeA == bodyA->m_joints.p)
-	{
-		bodyA->m_joints.p = j->m_edgeA.next;
-	}
-
-	j->m_edgeA.prev = nullptr;
-	j->m_edgeA.next = nullptr;
-
-	// Remove from body 2
-	if (j->m_edgeB.prev)
-	{
-		j->m_edgeB.prev->next = j->m_edgeB.next;
-	}
-
-	if (j->m_edgeB.next)
-	{
-		j->m_edgeB.next->prev = j->m_edgeB.prev;
-	}
-
-	if (&j->m_edgeB == bodyB->m_joints.p)
-	{
-		bodyB->m_joints.p = j->m_edgeB.next;
-	}
-
-	j->m_edgeB.prev = nullptr;
-	j->m_edgeB.next = nullptr;
 
 	Joint::Destroy(j, m_blockAllocator);
 
@@ -726,10 +684,11 @@ Island World::BuildIsland(Body& seed,
 		
 		const auto numJoints = island.m_joints.size();
 		// Adds appropriate joints of current body and appropriate 'other' bodies of those joint.
-		for (auto&& je: b->m_joints)
+		for (auto&& joint: b->m_joints)
 		{
-			const auto joint = je.joint;
-			const auto other = je.other;
+			const auto bodyA = joint->GetBodyA();
+			const auto bodyB = joint->GetBodyB();
+			const auto other = (b != bodyA)? bodyA: bodyB;
 			if (!joint->IsInIsland() && other->IsActive())
 			{
 				island.m_joints.push_back(joint);
