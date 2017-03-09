@@ -179,9 +179,6 @@ protected:
 private:
 	friend class World;
 	friend class Body;
-	friend class JointIterator;
-	friend class ConstJointIterator;
-	friend class JointList;
 
 	static Joint* Create(const JointDef& def, BlockAllocator& allocator);
 	static void Destroy(Joint* joint, BlockAllocator& allocator);

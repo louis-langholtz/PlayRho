@@ -24,7 +24,6 @@
 #include <Box2D/Common/BlockAllocator.hpp>
 #include <Box2D/Dynamics/ContactManager.hpp>
 #include <Box2D/Dynamics/WorldCallbacks.hpp>
-#include <Box2D/Dynamics/JointList.hpp>
 #include <Box2D/Dynamics/Profile.hpp>
 
 #include <vector>
