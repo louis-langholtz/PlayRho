@@ -39,7 +39,7 @@ Here's a run-down of some of the changes:
 
 ##About
 
-Box2D is a 2D physics engine for games.
+Box2D is a 2D physics engine [licensed](https://github.com/louis-langholtz/Box2D/blob/dev/LICENSE.txt) under a [Zlib License](https://opensource.org/licenses/Zlib).
 
 For help with Box2D, please visit http://www.box2d.org. There is a forum there where you may post your questions.
 
