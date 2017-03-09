@@ -219,7 +219,7 @@ constexpr inline BodyDef& BodyDef::UseUserData(void* value) noexcept
 ///
 /// @detail A rigid body. These are created via World::Create.
 ///
-/// @note On a 64-bit architecture with 4-byte RealNum, this data structure is at least 144-bytes large.
+/// @note On a 64-bit architecture with 4-byte RealNum, this data structure is at least 176-bytes large.
 ///
 class Body
 {

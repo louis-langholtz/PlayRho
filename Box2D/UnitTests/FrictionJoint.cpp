@@ -21,11 +21,11 @@
 
 using namespace box2d;
 
-TEST(FrictionJoint, ByteSizeIs_224_or_344)
+TEST(FrictionJoint, ByteSizeIs_160_or_344)
 {
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(FrictionJoint), size_t(224)); break;
+		case  4: EXPECT_EQ(sizeof(FrictionJoint), size_t(160)); break;
 		case  8: EXPECT_EQ(sizeof(FrictionJoint), size_t(344)); break;
 		case 16: EXPECT_EQ(sizeof(FrictionJoint), size_t(864)); break;
 		default: FAIL(); break;

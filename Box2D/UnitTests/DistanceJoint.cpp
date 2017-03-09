@@ -26,11 +26,11 @@
 
 using namespace box2d;
 
-TEST(DistanceJoint, ByteSizeIs_224_or_336)
+TEST(DistanceJoint, ByteSizeIs_160_or_336)
 {
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(DistanceJoint), size_t(224)); break;
+		case  4: EXPECT_EQ(sizeof(DistanceJoint), size_t(160)); break;
 		case  8: EXPECT_EQ(sizeof(DistanceJoint), size_t(336)); break;
 		case 16: EXPECT_EQ(sizeof(DistanceJoint), size_t(864)); break;
 		default: FAIL(); break;

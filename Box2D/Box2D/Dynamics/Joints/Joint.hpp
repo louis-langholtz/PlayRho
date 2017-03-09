@@ -59,19 +59,6 @@ struct Jacobian
 	RealNum angularB;
 };
 
-/// A joint edge is used to connect bodies and joints together
-/// in a joint graph where each body is a node and each joint
-/// is an edge. A joint edge belongs to a doubly linked list
-/// maintained in each attached body. Each joint has two joint
-/// nodes, one for each attached body.
-struct JointEdge
-{
-	Body* other;			///< provides quick access to the other body attached.
-	Joint* joint;			///< the joint
-	JointEdge* prev;		///< the previous joint edge in the body's joint list
-	JointEdge* next;		///< the next joint edge in the body's joint list
-};
-
 /// Abstract base Joint Definition class.
 /// @detail Joint definitions are used to construct joints.
 /// @note This class is not meant to be directly instantiated; it is meant
@@ -201,8 +188,6 @@ private:
 
 	const JointType m_type;
 
-	JointEdge m_edgeA = {nullptr, nullptr, nullptr, nullptr};
-	JointEdge m_edgeB = {nullptr, nullptr, nullptr, nullptr};
 	Body* m_bodyA;
 	Body* m_bodyB;
 
