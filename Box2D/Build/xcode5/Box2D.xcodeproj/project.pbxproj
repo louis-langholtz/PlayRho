@@ -152,12 +152,6 @@
 		4768D4011E54E7CC00574143 /* StepConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4768D3FF1E54E7CB00574143 /* StepConf.cpp */; };
 		4775A9381E05B032001C2332 /* StepConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4775A9371E05B032001C2332 /* StepConf.cpp */; };
 		477D20061E32B6E80069D610 /* Fixed.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477D20051E32B6E80069D610 /* Fixed.cpp */; };
-		477DB2941D14B9D500846ED6 /* ContactEdgeList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477DB2921D14B9D500846ED6 /* ContactEdgeList.cpp */; };
-		477DB2951D14B9D500846ED6 /* ContactEdgeList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 477DB2931D14B9D500846ED6 /* ContactEdgeList.hpp */; };
-		477DB2981D14BB2000846ED6 /* ContactEdgeIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477DB2961D14BB2000846ED6 /* ContactEdgeIterator.cpp */; };
-		477DB2991D14BB2000846ED6 /* ContactEdgeIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 477DB2971D14BB2000846ED6 /* ContactEdgeIterator.hpp */; };
-		477DB29C1D14BCA700846ED6 /* ConstContactEdgeIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477DB29A1D14BCA700846ED6 /* ConstContactEdgeIterator.cpp */; };
-		477DB29D1D14BCA700846ED6 /* ConstContactEdgeIterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 477DB29B1D14BCA700846ED6 /* ConstContactEdgeIterator.hpp */; };
 		477DB2AC1D1C4BE800846ED6 /* PositionSolverManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 477DB2AA1D1C4BE800846ED6 /* PositionSolverManifold.cpp */; };
 		477DB2AD1D1C4BE800846ED6 /* PositionSolverManifold.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 477DB2AB1D1C4BE800846ED6 /* PositionSolverManifold.hpp */; };
 		4788690A1D78BE2B00AEC7F1 /* PositionConstraint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */; };
@@ -565,12 +559,6 @@
 		4768D3FF1E54E7CB00574143 /* StepConf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StepConf.cpp; sourceTree = "<group>"; };
 		4775A9371E05B032001C2332 /* StepConf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StepConf.cpp; sourceTree = "<group>"; };
 		477D20051E32B6E80069D610 /* Fixed.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fixed.cpp; sourceTree = "<group>"; };
-		477DB2921D14B9D500846ED6 /* ContactEdgeList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactEdgeList.cpp; sourceTree = "<group>"; };
-		477DB2931D14B9D500846ED6 /* ContactEdgeList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactEdgeList.hpp; sourceTree = "<group>"; };
-		477DB2961D14BB2000846ED6 /* ContactEdgeIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactEdgeIterator.cpp; sourceTree = "<group>"; };
-		477DB2971D14BB2000846ED6 /* ContactEdgeIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactEdgeIterator.hpp; sourceTree = "<group>"; };
-		477DB29A1D14BCA700846ED6 /* ConstContactEdgeIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConstContactEdgeIterator.cpp; sourceTree = "<group>"; };
-		477DB29B1D14BCA700846ED6 /* ConstContactEdgeIterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConstContactEdgeIterator.hpp; sourceTree = "<group>"; };
 		477DB2AA1D1C4BE800846ED6 /* PositionSolverManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PositionSolverManifold.cpp; sourceTree = "<group>"; };
 		477DB2AB1D1C4BE800846ED6 /* PositionSolverManifold.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PositionSolverManifold.hpp; sourceTree = "<group>"; };
 		478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PositionConstraint.hpp; sourceTree = "<group>"; };
@@ -1071,14 +1059,8 @@
 				80BB895E141C3E5900F1753A /* ChainAndPolygonContact.hpp */,
 				80BB895F141C3E5900F1753A /* CircleContact.cpp */,
 				80BB8960141C3E5900F1753A /* CircleContact.hpp */,
-				477DB29A1D14BCA700846ED6 /* ConstContactEdgeIterator.cpp */,
-				477DB29B1D14BCA700846ED6 /* ConstContactEdgeIterator.hpp */,
 				80BB8961141C3E5900F1753A /* Contact.cpp */,
 				80BB8962141C3E5900F1753A /* Contact.hpp */,
-				477DB2961D14BB2000846ED6 /* ContactEdgeIterator.cpp */,
-				477DB2971D14BB2000846ED6 /* ContactEdgeIterator.hpp */,
-				477DB2921D14B9D500846ED6 /* ContactEdgeList.cpp */,
-				477DB2931D14B9D500846ED6 /* ContactEdgeList.hpp */,
 				80BB8963141C3E5900F1753A /* ContactSolver.cpp */,
 				80BB8964141C3E5900F1753A /* ContactSolver.hpp */,
 				80BB8965141C3E5900F1753A /* EdgeAndCircleContact.cpp */,
@@ -1379,7 +1361,6 @@
 				80BB8987141C3E5900F1753A /* Box2D.hpp in Headers */,
 				4731DE581DEC908600E7F931 /* UnitVec2.hpp in Headers */,
 				80BB8989141C3E5900F1753A /* BroadPhase.hpp in Headers */,
-				477DB29D1D14BCA700846ED6 /* ConstContactEdgeIterator.hpp in Headers */,
 				4731DE521DEB760400E7F931 /* EdgeAndEdgeContact.hpp in Headers */,
 				80BB8990141C3E5900F1753A /* Distance.hpp in Headers */,
 				47CB34401D6F3A8500828126 /* MassData.hpp in Headers */,
@@ -1410,7 +1391,6 @@
 				80BB89A8141C3E5900F1753A /* StackAllocator.hpp in Headers */,
 				80BB89AA141C3E5900F1753A /* Timer.hpp in Headers */,
 				80BB89AC141C3E5900F1753A /* Body.hpp in Headers */,
-				477DB2951D14B9D500846ED6 /* ContactEdgeList.hpp in Headers */,
 				80BB89AE141C3E5900F1753A /* ContactManager.hpp in Headers */,
 				80BB89B0141C3E5900F1753A /* Fixture.hpp in Headers */,
 				4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */,
@@ -1458,7 +1438,6 @@
 				4751EE2E1CEDD7A300D459CB /* MotorJoint.hpp in Headers */,
 				80BB89E1141C3E5900F1753A /* Rope.hpp in Headers */,
 				47578BE11D8869110078CD40 /* WorldManifold.hpp in Headers */,
-				477DB2991D14BB2000846ED6 /* ContactEdgeIterator.hpp in Headers */,
 				475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */,
 				80620F90168B934600D46C8D /* MotorJoint.hpp in Headers */,
 				4731DE1B1DDCD0E100E7F931 /* FixtureProxy.hpp in Headers */,
@@ -1796,12 +1775,10 @@
 			files = (
 				4731DE2F1DDF9B6900E7F931 /* MassData.cpp in Sources */,
 				80BB8988141C3E5900F1753A /* BroadPhase.cpp in Sources */,
-				477DB2981D14BB2000846ED6 /* ContactEdgeIterator.cpp in Sources */,
 				80BB898D141C3E5900F1753A /* Collision.cpp in Sources */,
 				4731DE611DEF7B5100E7F931 /* Simplex.cpp in Sources */,
 				80BB898F141C3E5900F1753A /* Distance.cpp in Sources */,
 				80BB8991141C3E5900F1753A /* DynamicTree.cpp in Sources */,
-				477DB29C1D14BCA700846ED6 /* ConstContactEdgeIterator.cpp in Sources */,
 				80BB8993141C3E5900F1753A /* TimeOfImpact.cpp in Sources */,
 				47928F3B1E6A099900EE6E9E /* BodyConstraint.cpp in Sources */,
 				80BB8995141C3E5900F1753A /* ChainShape.cpp in Sources */,
@@ -1811,7 +1788,6 @@
 				4731DE2C1DDF94A600E7F931 /* AABB.cpp in Sources */,
 				80BB899B141C3E5900F1753A /* PolygonShape.cpp in Sources */,
 				4731DE6B1DF7E88500E7F931 /* ReferenceFace.cpp in Sources */,
-				477DB2941D14B9D500846ED6 /* ContactEdgeList.cpp in Sources */,
 				4731DE501DEB760400E7F931 /* EdgeAndEdgeContact.cpp in Sources */,
 				80BB899E141C3E5900F1753A /* BlockAllocator.cpp in Sources */,
 				80BB89A3141C3E5900F1753A /* Math.cpp in Sources */,
