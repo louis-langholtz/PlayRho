@@ -22,7 +22,6 @@
 
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Collision/MassData.hpp>
-#include <Box2D/Dynamics/BodyList.hpp>
 #include <Box2D/Dynamics/Contacts/ContactEdgeList.hpp>
 #include <Box2D/Dynamics/Joints/JointEdgeList.hpp>
 
@@ -479,9 +478,6 @@ private:
 
 	friend class World;
 	friend class ContactManager;
-	friend class BodyIterator;
-	friend class ConstBodyIterator;
-	friend class BodyList;
 	
 	using flags_type = uint16;
 
