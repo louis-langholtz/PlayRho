@@ -1227,7 +1227,7 @@ TEST(World, TilesComesToRestInUnder7secs)
 	//   4.85618s with RealNum=float and NDEBUG defined.
 	//   5.32973s with RealNum=double and NDEBUG defined.
 	
-	std::cout << "Time: " << elapsed_time.count() << "s" << std::endl;
+	//std::cout << "Time: " << elapsed_time.count() << "s" << std::endl;
 	EXPECT_LT(elapsed_time.count(), 7.0);
 }
 
@@ -1737,11 +1737,13 @@ TEST(World, MouseJointWontCauseTunnelling)
 		}
 #endif
 	}
+#if 0
 	std::cout << "angle=" << angle;
 	std::cout << " target=(" << distance * std::cos(angle) << "," << distance * std::sin(angle) << ")";
 	std::cout << " maxvel=" << max_velocity;
 	std::cout << " range=(" << min_x << "," << min_y << ")-(" << max_x << "," << max_y << ")";
 	std::cout << std::endl;
+#endif
 }
 
 static void smaller_still_conserves_momentum(bool bullet, RealNum multiplier, RealNum time_inc)
@@ -1789,6 +1791,7 @@ static void smaller_still_conserves_momentum(bool bullet, RealNum multiplier, Re
 				if (maxNormalImpulse == 0 && maxTangentImpulse == 0)
 				{
 					failed = true;
+#if 0
 					const auto& manifold = contact.GetManifold();
 					std::cout << " solved=" << unsigned(solved);
 					std::cout << " numstp=" << numSteps;
@@ -1805,6 +1808,7 @@ static void smaller_still_conserves_momentum(bool bullet, RealNum multiplier, Re
 						std::cout << " lp[" << unsigned(i) << "].y=" << manifold.GetPoint(i).localPoint.y;
 					}
 					std::cout << std::endl;
+#endif
 				}
 			},
 			[=](Contact&) {

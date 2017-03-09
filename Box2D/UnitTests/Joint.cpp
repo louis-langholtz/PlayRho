@@ -21,7 +21,7 @@
 
 using namespace box2d;
 
-TEST(Joint, ByteSizeIs136)
+TEST(Joint, ByteSizeIs120)
 {
-	EXPECT_EQ(sizeof(Joint), size_t(136));
+	EXPECT_EQ(sizeof(Joint), size_t(120));
 }

@@ -21,11 +21,11 @@
 
 using namespace box2d;
 
-TEST(PrismaticJoint, ByteSizeIs_320_488_or_864)
+TEST(PrismaticJoint, ByteSizeIs_304_488_or_864)
 {
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(PrismaticJoint), size_t(320)); break;
+		case  4: EXPECT_EQ(sizeof(PrismaticJoint), size_t(304)); break;
 		case  8: EXPECT_EQ(sizeof(PrismaticJoint), size_t(488)); break;
 		case 16: EXPECT_EQ(sizeof(PrismaticJoint), size_t(864)); break;
 		default: FAIL(); break;

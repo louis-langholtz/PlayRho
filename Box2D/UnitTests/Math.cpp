@@ -62,6 +62,7 @@ TEST(Math, Square)
 	}
 	while (low < high);
 	
+#if 0
 	std::cout << "Min float is: ";
 	std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
 	std::cout << std::numeric_limits<float>::min();
@@ -79,12 +80,12 @@ TEST(Math, Square)
 	std::cout << high;
 	std::cout << std::defaultfloat;
 	std::cout << std::endl;
-
+#endif
 	EXPECT_EQ(high, float(2.646978275714050648e-23));
 
 	ASSERT_NE(Square(high), float(0));
 	ASSERT_EQ(Sqrt(Square(float(1))), float(1));
-
+#if 0
 	std::cout << "Sqrt(min) is: ";
 	std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
 	std::cout << Sqrt(std::numeric_limits<float>::min());
@@ -93,6 +94,7 @@ TEST(Math, Square)
 	std::cout << Sqrt(std::numeric_limits<float>::min());
 	std::cout << std::endl;
 	EXPECT_EQ(Sqrt(std::numeric_limits<float>::min()), float(0x1p-63)); // float(1.084202172485504434e-19)
+#endif
 	
 	// What is the smallest float a for which:
 	// almost_equal(sqrt(square(a)), a) and almost_equal(square(sqrt(a)), a)

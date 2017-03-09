@@ -201,8 +201,6 @@ private:
 
 	const JointType m_type;
 
-	Joint* m_prev = nullptr;
-	Joint* m_next = nullptr;
 	JointEdge m_edgeA = {nullptr, nullptr, nullptr, nullptr};
 	JointEdge m_edgeB = {nullptr, nullptr, nullptr, nullptr};
 	Body* m_bodyA;
