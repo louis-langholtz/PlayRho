@@ -46,38 +46,9 @@ void ContactManager::Remove(Contact* c)
 	const auto fixtureB = c->GetFixtureB();
 	const auto bodyA = fixtureA->GetBody();
 	const auto bodyB = fixtureB->GetBody();
-		
-	// Remove from body 1
-	if (c->m_nodeA.prev)
-	{
-		c->m_nodeA.prev->next = c->m_nodeA.next;
-	}
 	
-	if (c->m_nodeA.next)
-	{
-		c->m_nodeA.next->prev = c->m_nodeA.prev;
-	}
-	
-	if (&c->m_nodeA == bodyA->m_contacts.p)
-	{
-		bodyA->m_contacts.p = c->m_nodeA.next;
-	}
-	
-	// Remove from body 2
-	if (c->m_nodeB.prev)
-	{
-		c->m_nodeB.prev->next = c->m_nodeB.next;
-	}
-	
-	if (c->m_nodeB.next)
-	{
-		c->m_nodeB.next->prev = c->m_nodeB.prev;
-	}
-	
-	if (&c->m_nodeB == bodyB->m_contacts.p)
-	{
-		bodyB->m_contacts.p = c->m_nodeB.next;
-	}
+	bodyA->m_contacts.erase(c);
+	bodyB->m_contacts.erase(c);
 }
 
 void ContactManager::Destroy(Contact* c)
@@ -213,15 +184,12 @@ bool ContactManager::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 	// TODO: use a hash table to remove a potential bottleneck when both
 	// bodies have a lot of contacts.
 	// Does a contact already exist?
-	for (auto&& contactEdge: bodyB->GetContactEdges())
+	for (auto&& contact: bodyB->m_contacts)
 	{
-		if (contactEdge.other == bodyA)
+		if (IsFor(*contact, fixtureA, childIndexA, fixtureB, childIndexB))
 		{
-			if (IsFor(*(contactEdge.contact), fixtureA, childIndexA, fixtureB, childIndexB))
-			{
-				// Already have a contact for proxyA with proxyB, bail!
-				return false;
-			}
+			// Already have a contact for proxyA with proxyB, bail!
+			return false;
 		}
 	}
 
@@ -261,27 +229,8 @@ void ContactManager::Add(Contact* c)
 
 	// Connect to island graph.
 
-	// Connect to body A
-	c->m_nodeA.contact = c;
-	c->m_nodeA.other = bodyB;
-	c->m_nodeA.prev = nullptr;
-	c->m_nodeA.next = bodyA->m_contacts.p;
-	if (!bodyA->m_contacts.empty())
-	{
-		bodyA->m_contacts.p->prev = &c->m_nodeA;
-	}
-	bodyA->m_contacts.p = &c->m_nodeA;
-
-	// Connect to body B
-	c->m_nodeB.contact = c;
-	c->m_nodeB.other = bodyA;
-	c->m_nodeB.prev = nullptr;
-	c->m_nodeB.next = bodyB->m_contacts.p;
-	if (!bodyB->m_contacts.empty())
-	{
-		bodyB->m_contacts.p->prev = &c->m_nodeB;
-	}
-	bodyB->m_contacts.p = &c->m_nodeB;
+	bodyA->m_contacts.insert(c);
+	bodyB->m_contacts.insert(c);
 
 	// Wake up the bodies
 	if (!fixtureA->IsSensor() && !fixtureB->IsSensor())

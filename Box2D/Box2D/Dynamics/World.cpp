@@ -536,13 +536,18 @@ Joint* World::CreateJoint(const JointDef& def)
 	// If the joint prevents collisions, then flag any contacts for filtering.
 	if (!def.collideConnected)
 	{
-		for (auto&& edge: bodyB->GetContactEdges())
+		for (auto&& contact: bodyB->GetContactEdges())
 		{
-			if (edge.other == bodyA)
+			const auto fA = contact->GetFixtureA();
+			const auto fB = contact->GetFixtureB();
+			const auto bA = fA->GetBody();
+			const auto bB = fB->GetBody();
+			const auto other = (bA != bodyB)? bA: bB;
+			if (other == bodyA)
 			{
 				// Flag the contact for filtering at the next time step (where either
 				// body is awake).
-				edge.contact->FlagForFiltering();
+				contact->FlagForFiltering();
 			}
 		}
 	}
@@ -611,13 +616,18 @@ void World::InternalDestroy(Joint* j)
 	// If the joint prevents collisions, then flag any contacts for filtering.
 	if (!collideConnected)
 	{
-		for (auto&& edge: bodyB->GetContactEdges())
+		for (auto&& contact: bodyB->GetContactEdges())
 		{
-			if (edge.other == bodyA)
+			const auto fA = contact->GetFixtureA();
+			const auto fB = contact->GetFixtureB();
+			const auto bA = fA->GetBody();
+			const auto bB = fB->GetBody();
+			const auto other = (bA != bodyB)? bA: bB;
+			if (other == bodyA)
 			{
 				// Flag the contact for filtering at the next time step (where either
 				// body is awake).
-				edge.contact->FlagForFiltering();
+				contact->FlagForFiltering();
 			}
 		}
 	}
@@ -663,10 +673,13 @@ Island World::BuildIsland(Body& seed,
 		
 		const auto numContacts = island.m_contacts.size();
 		// Adds appropriate contacts of current body and appropriate 'other' bodies of those contacts.
-		for (auto&& ce: b->GetContactEdges())
+		for (auto&& contact: b->GetContactEdges())
 		{
-			const auto contact = ce.contact;
-			const auto other = ce.other;
+			const auto fA = contact->GetFixtureA();
+			const auto fB = contact->GetFixtureB();
+			const auto bA = fA->GetBody();
+			const auto bB = fB->GetBody();
+			const auto other = (bA != b)? bA: bB;
 
 			if (!contact->IsInIsland() && !HasSensor(*contact) && contact->IsEnabled() && contact->IsTouching())
 			{
@@ -1333,10 +1346,10 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 void World::ResetContactsForSolveTOI(Body& body)
 {
 	// Invalidate all contact TOIs on this displaced body.
-	for (auto&& ce: body.GetContactEdges())
+	for (auto&& contact: body.GetContactEdges())
 	{
-		ce.contact->UnsetInIsland();
-		ce.contact->UnsetToi();
+		contact->UnsetInIsland();
+		contact->UnsetToi();
 	}
 }
 
@@ -1346,10 +1359,13 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi, Conta
 	assert(body.IsAccelerable());
 	assert(toi >= 0 && toi <= 1);
 
-	for (auto&& ce: body.GetContactEdges())
+	for (auto&& contact: body.GetContactEdges())
 	{
-		auto contact = ce.contact;
-		auto other = ce.other;
+		const auto fA = contact->GetFixtureA();
+		const auto fB = contact->GetFixtureB();
+		const auto bA = fA->GetBody();
+		const auto bB = fB->GetBody();
+		const auto other = (bA != &body)? bA: bB;
 
 		if (!contact->IsInIsland() && !HasSensor(*contact) && (other->IsImpenetrable() || body.IsImpenetrable()))
 		{

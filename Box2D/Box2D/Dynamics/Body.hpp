@@ -228,6 +228,8 @@ public:
 	
 	using Joints = std::unordered_set<Joint*>;
 	
+	using Contacts = std::unordered_set<Contact*>;
+	
 	static constexpr auto InvalidIslandIndex = static_cast<body_count_t>(-1);
 	
 	/// Creates a fixture and attaches it to this body.
@@ -441,21 +443,21 @@ public:
 	/// Gets the list of all fixtures attached to this body.
 	const FixtureList& GetFixtures() const noexcept;
 
-	/// Gets the list of all joints attached to this body.
+	/// Gets the container of all joints attached to this body.
 	const Joints& GetJoints() noexcept;
 	
-	/// Gets the list of all joints attached to this body.
+	/// Gets the container of all joints attached to this body.
 	const Joints& GetJoints() const noexcept;
 
-	/// Gets the list of all contacts attached to this body.
+	/// Gets the container of all contacts attached to this body.
 	/// @warning This list changes during the time step and you may
 	/// miss some collisions if you don't use ContactListener.
-	const ContactEdgeList& GetContactEdges() noexcept;
+	const Contacts& GetContactEdges() noexcept;
 
-	/// Gets the list of all contacts attached to this body.
+	/// Gets the container of all contacts attached to this body.
 	/// @warning This list changes during the time step and you may
 	/// miss some collisions if you don't use ContactListener.
-	const ContactEdgeList& GetContactEdges() const noexcept;
+	const Contacts& GetContactEdges() const noexcept;
 
 	/// Get the user data pointer that was provided in the body definition.
 	void* GetUserData() const noexcept;
@@ -585,7 +587,7 @@ private:
 
 	FixtureList m_fixtures; ///< Container of fixtures. 8-bytes.
 	Joints m_joints; ///< Container of joint edges. 8-bytes.
-	ContactEdgeList m_contacts; ///< Container of contact edges. 8-bytes.
+	Contacts m_contacts; ///< Container of contact edges. 8-bytes.
 
 	/// Inverse mass of the body.
 	/// @detail A non-negative value (in units of 1/kg).
@@ -810,12 +812,12 @@ inline const Body::Joints& Body::GetJoints() const noexcept
 	return m_joints;
 }
 
-inline const ContactEdgeList& Body::GetContactEdges() noexcept
+inline const Body::Contacts& Body::GetContactEdges() noexcept
 {
 	return m_contacts;
 }
 
-inline const ContactEdgeList& Body::GetContactEdges() const noexcept
+inline const Body::Contacts& Body::GetContactEdges() const noexcept
 {
 	return m_contacts;
 }

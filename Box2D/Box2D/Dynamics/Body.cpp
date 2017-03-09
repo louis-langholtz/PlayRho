@@ -98,9 +98,9 @@ void Body::InternalDestroyContacts()
 	// Destroy the attached contacts.
 	while (!m_contacts.empty())
 	{
-		auto& ce = m_contacts.front();
-		const auto contact = ce.contact;
-		m_contacts.pop_front();
+		auto iter = m_contacts.begin();
+		const auto contact = *iter;
+		m_contacts.erase(iter);
 		m_world->m_contactMgr.Destroy(contact);
 	}
 }
@@ -308,20 +308,15 @@ void Body::DestroyFixture(Fixture* fixture, bool resetMassData)
 	assert(found);
 
 	// Destroy any contacts associated with the fixture.
-	auto edge = m_contacts.p;
-	while (edge)
+	for (auto&& contact: m_contacts)
 	{
-		auto c = edge->contact;
-		edge = edge->next;
-
-		const auto fixtureA = c->GetFixtureA();
-		const auto fixtureB = c->GetFixtureB();
-
+		const auto fixtureA = contact->GetFixtureA();
+		const auto fixtureB = contact->GetFixtureB();
 		if ((fixture == fixtureA) || (fixture == fixtureB))
 		{
 			// This destroys the contact and removes it from
 			// this body's contact list.
-			m_world->m_contactMgr.Destroy(c);
+			m_world->m_contactMgr.Destroy(contact);
 		}
 	}
 

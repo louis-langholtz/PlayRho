@@ -120,9 +120,8 @@ void Fixture::Refilter()
 	if (body)
 	{
 		// Flag associated contacts for filtering.
-		for (auto&& edge: body->GetContactEdges())
+		for (auto&& contact: body->GetContactEdges())
 		{
-			auto contact = edge.contact;
 			const auto fixtureA = contact->GetFixtureA();
 			const auto fixtureB = contact->GetFixtureB();
 			if ((fixtureA == this) || (fixtureB == this))
