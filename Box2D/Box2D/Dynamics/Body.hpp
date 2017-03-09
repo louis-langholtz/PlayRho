@@ -223,7 +223,7 @@ constexpr inline BodyDef& BodyDef::UseUserData(void* value) noexcept
 class Body
 {
 public:
-	using FixtureList = std::forward_list<Fixture*>;
+	using Fixtures = std::forward_list<Fixture*>;
 	
 	using Joints = std::unordered_set<Joint*>;
 	
@@ -435,15 +435,9 @@ public:
 
 	/// Does this body have fixed rotation?
 	bool IsFixedRotation() const noexcept;
-
-	/// Gets the list of all fixtures attached to this body.
-	const FixtureList& GetFixtures() noexcept;
 	
-	/// Gets the list of all fixtures attached to this body.
-	const FixtureList& GetFixtures() const noexcept;
-
-	/// Gets the container of all joints attached to this body.
-	const Joints& GetJoints() noexcept;
+	/// Gets the container of all fixtures attached to this body.
+	const Fixtures& GetFixtures() const noexcept;
 	
 	/// Gets the container of all joints attached to this body.
 	const Joints& GetJoints() const noexcept;
@@ -451,12 +445,7 @@ public:
 	/// Gets the container of all contacts attached to this body.
 	/// @warning This list changes during the time step and you may
 	/// miss some collisions if you don't use ContactListener.
-	const Contacts& GetContactEdges() noexcept;
-
-	/// Gets the container of all contacts attached to this body.
-	/// @warning This list changes during the time step and you may
-	/// miss some collisions if you don't use ContactListener.
-	const Contacts& GetContactEdges() const noexcept;
+	const Contacts& GetContacts() const noexcept;
 
 	/// Get the user data pointer that was provided in the body definition.
 	void* GetUserData() const noexcept;
@@ -584,7 +573,7 @@ private:
 
 	World* const m_world; ///< World to which this body belongs. 8-bytes.
 
-	FixtureList m_fixtures; ///< Container of fixtures. 8-bytes.
+	Fixtures m_fixtures; ///< Container of fixtures. 8-bytes.
 	Joints m_joints; ///< Container of joint edges. 8-bytes.
 	Contacts m_contacts; ///< Container of contact edges. 8-bytes.
 
@@ -791,19 +780,9 @@ inline bool Body::IsSleepingAllowed() const noexcept
 	return (m_flags & e_autoSleepFlag) != 0;
 }
 
-inline const Body::FixtureList& Body::GetFixtures() noexcept
+inline const Body::Fixtures& Body::GetFixtures() const noexcept
 {
 	return m_fixtures;
-}
-
-inline const Body::FixtureList& Body::GetFixtures() const noexcept
-{
-	return m_fixtures;
-}
-
-inline const Body::Joints& Body::GetJoints() noexcept
-{
-	return m_joints;
 }
 
 inline const Body::Joints& Body::GetJoints() const noexcept
@@ -811,12 +790,7 @@ inline const Body::Joints& Body::GetJoints() const noexcept
 	return m_joints;
 }
 
-inline const Body::Contacts& Body::GetContactEdges() noexcept
-{
-	return m_contacts;
-}
-
-inline const Body::Contacts& Body::GetContactEdges() const noexcept
+inline const Body::Contacts& Body::GetContacts() const noexcept
 {
 	return m_contacts;
 }

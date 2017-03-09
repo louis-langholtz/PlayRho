@@ -536,7 +536,7 @@ Joint* World::CreateJoint(const JointDef& def)
 	// If the joint prevents collisions, then flag any contacts for filtering.
 	if (!def.collideConnected)
 	{
-		for (auto&& contact: bodyB->GetContactEdges())
+		for (auto&& contact: bodyB->GetContacts())
 		{
 			const auto fA = contact->GetFixtureA();
 			const auto fB = contact->GetFixtureB();
@@ -616,7 +616,7 @@ void World::InternalDestroy(Joint* j)
 	// If the joint prevents collisions, then flag any contacts for filtering.
 	if (!collideConnected)
 	{
-		for (auto&& contact: bodyB->GetContactEdges())
+		for (auto&& contact: bodyB->GetContacts())
 		{
 			const auto fA = contact->GetFixtureA();
 			const auto fB = contact->GetFixtureB();
@@ -634,9 +634,9 @@ void World::InternalDestroy(Joint* j)
 }
 
 Island World::BuildIsland(Body& seed,
-				  BodyList::size_type& remNumBodies,
-				  ContactList::size_type& remNumContacts,
-				  JointList::size_type& remNumJoints)
+				  Bodies::size_type& remNumBodies,
+				  Contacts::size_type& remNumContacts,
+				  Joints::size_type& remNumJoints)
 {
 	assert(!seed.IsInIsland());
 	assert(seed.IsSpeedable());
@@ -673,7 +673,7 @@ Island World::BuildIsland(Body& seed,
 		
 		const auto numContacts = island.m_contacts.size();
 		// Adds appropriate contacts of current body and appropriate 'other' bodies of those contacts.
-		for (auto&& contact: b->GetContactEdges())
+		for (auto&& contact: b->GetContacts())
 		{
 			const auto fA = contact->GetFixtureA();
 			const auto fB = contact->GetFixtureB();
@@ -1346,7 +1346,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 void World::ResetContactsForSolveTOI(Body& body)
 {
 	// Invalidate all contact TOIs on this displaced body.
-	for (auto&& contact: body.GetContactEdges())
+	for (auto&& contact: body.GetContacts())
 	{
 		contact->UnsetInIsland();
 		contact->UnsetToi();
@@ -1359,7 +1359,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi, Conta
 	assert(body.IsAccelerable());
 	assert(toi >= 0 && toi <= 1);
 
-	for (auto&& contact: body.GetContactEdges())
+	for (auto&& contact: body.GetContacts())
 	{
 		const auto fA = contact->GetFixtureA();
 		const auto fB = contact->GetFixtureB();

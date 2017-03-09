@@ -891,8 +891,8 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	auto last_angle_1 = body1->GetAngle();
 	auto last_angle_2 = body2->GetAngle();
 
-	ASSERT_EQ(world.GetBodies().size(), World::BodyList::size_type(2));
-	ASSERT_EQ(world.GetContacts().size(), World::ContactList::size_type(0));
+	ASSERT_EQ(world.GetBodies().size(), World::Bodies::size_type(2));
+	ASSERT_EQ(world.GetContacts().size(), World::Contacts::size_type(0));
 
 	auto position_diff = body1pos - body2pos;
 	auto distance = GetLength(position_diff);

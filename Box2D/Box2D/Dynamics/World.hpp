@@ -117,11 +117,11 @@ public:
 	/// Time step iteration type.
 	using ts_iters_type = ts_iters_t;
 
-	using BodyList = std::list<Body*>;
+	using Bodies = std::list<Body*>;
 
-	using ContactList = std::list<Contact*>;
+	using Contacts = std::list<Contact*>;
 	
-	using JointList = std::list<Joint*>;
+	using Joints = std::list<Joint*>;
 	
 	/// World construction definitions.
 	struct Def
@@ -262,33 +262,19 @@ public:
 	/// @param point2 the ray ending point
 	void RayCast(RayCastFixtureReporter* callback, const Vec2& point1, const Vec2& point2) const;
 
-	/// Gets the world body list.
-	/// @return Body list that can be iterated over using its begin and end methods or using ranged-based for-loops.
-	const BodyList& GetBodies() noexcept;
+	/// Gets the world body container for this constant world.
+	/// @return Body container that can be iterated over using its begin and end methods or using ranged-based for-loops.
+	const Bodies& GetBodies() const noexcept;
 
-	/// Gets the world body list for this constant world.
-	/// @return Body list that can be iterated over using its begin and end methods or using ranged-based for-loops.
-	const BodyList& GetBodies() const noexcept;
+	/// Gets the world joint container.
+	/// @return World joint container.
+	const Joints& GetJoints() const noexcept;
 
-	/// Gets the world joint list.
-	/// @return World joint list.
-	const JointList& GetJoints() noexcept;
-
-	/// Gets the world joint list.
-	/// @return World joint list.
-	const JointList& GetJoints() const noexcept;
-
-	/// Gets the world contact list.
+	/// Gets the world contact container.
 	/// @warning contacts are created and destroyed in the middle of a time step.
 	/// Use ContactListener to avoid missing contacts.
-	/// @return the head of the world contact list.
-	const ContactList& GetContacts() noexcept;
-
-	/// Gets the world contact list.
-	/// @warning contacts are created and destroyed in the middle of a time step.
-	/// Use ContactListener to avoid missing contacts.
-	/// @return the head of the world contact list.
-	const ContactList& GetContacts() const noexcept;
+	/// @return World contact container.
+	const Contacts& GetContacts() const noexcept;
 
 	/// Gets whether or not sub-stepping is enabled.
 	bool GetSubStepping() const noexcept;
@@ -408,9 +394,9 @@ private:
 	/// @post Contacts are listed in the island in the order that bodies list those contacts.
 	/// @post Joints are listed the island in the order that bodies list those joints.
 	Island BuildIsland(Body& seed,
-					   BodyList::size_type& remNumBodies,
-					   ContactList::size_type& remNumContacts,
-					   JointList::size_type& remNumJoints);
+					   Bodies::size_type& remNumBodies,
+					   Contacts::size_type& remNumContacts,
+					   Joints::size_type& remNumJoints);
 
 	/// Solves the step using successive time of impact (TOI) events.
 	/// @detail Used for continuous physics.
@@ -528,8 +514,8 @@ private:
 		m_blockAllocator, &m_defaultFilter, nullptr
 	}; ///< Contact manager. 112-bytes.
 
-	BodyList m_bodies; ///< Body collection.
-	JointList m_joints; ///< Joint collection.
+	Bodies m_bodies; ///< Body collection.
+	Joints m_joints; ///< Joint collection.
 
 	Vec2 m_gravity; ///< Gravity setting. 8-bytes.
 
@@ -584,32 +570,17 @@ constexpr inline World::Def& World::Def::UseMaxVertexRadius(RealNum value) noexc
 	return *this;
 }
 
-inline const World::BodyList& World::GetBodies() noexcept
+inline const World::Bodies& World::GetBodies() const noexcept
 {
 	return m_bodies;
 }
 
-inline const World::BodyList& World::GetBodies() const noexcept
-{
-	return m_bodies;
-}
-
-inline const World::JointList& World::GetJoints() noexcept
+inline const World::Joints& World::GetJoints() const noexcept
 {
 	return m_joints;
 }
 
-inline const World::JointList& World::GetJoints() const noexcept
-{
-	return m_joints;
-}
-
-inline const World::ContactList& World::GetContacts() noexcept
-{
-	return m_contactMgr.GetContacts();
-}
-
-inline const World::ContactList& World::GetContacts() const noexcept
+inline const World::Contacts& World::GetContacts() const noexcept
 {
 	return m_contactMgr.GetContacts();
 }
@@ -702,7 +673,7 @@ inline RealNum World::GetInvDeltaTime() const noexcept
 
 /// Gets the body count in the given world.
 /// @return 0 or higher.
-inline World::BodyList::size_type GetBodyCount(const World& world) noexcept
+inline World::Bodies::size_type GetBodyCount(const World& world) noexcept
 {
 	return world.GetBodies().size();
 }
@@ -718,7 +689,7 @@ inline World::size_type GetJointCount(const World& world) noexcept
 /// @note Not all contacts are for shapes that are actually touching. Some contacts are for
 ///   shapes which merely have overlapping AABBs.
 /// @return 0 or higher.
-inline World::ContactList::size_type GetContactCount(const World& world) noexcept
+inline World::Contacts::size_type GetContactCount(const World& world) noexcept
 {
 	return world.GetContacts().size();
 }

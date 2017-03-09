@@ -47,7 +47,7 @@ public:
 		uint32 updated = 0;
 	};
 
-	using ContactList = std::list<Contact*>;
+	using Contacts = std::list<Contact*>;
 	
 	ContactManager(BlockAllocator& allocator, ContactFilter* filter, ContactListener* listener):
 		m_allocator{allocator}, m_contactFilter{filter}, m_contactListener{listener} {}
@@ -77,11 +77,11 @@ public:
 	
 	/// Gets the contact list.
 	/// @return Contact list or <code>nullptr</code> if empty.
-	const ContactList& GetContacts() const noexcept { return m_contacts; }
+	const Contacts& GetContacts() const noexcept { return m_contacts; }
 	
 	/// Gets the contact list.
 	/// @return Contact list or <code>nullptr</code> if empty.
-	const ContactList& GetContacts() noexcept { return m_contacts; }
+	const Contacts& GetContacts() noexcept { return m_contacts; }
 
 	BroadPhase m_broadPhase; ///< Broad phase data. 72-bytes.
 	ContactFilter* m_contactFilter; ///< Contact filter. 8-bytes.
@@ -111,7 +111,7 @@ private:
 	/// @param contact Non-null pointer to a contact that is managed by this manager.
 	void Remove(Contact* contact);
 	
-	ContactList m_contacts; ///< Container of contacts managed by this manager.
+	Contacts m_contacts; ///< Container of contacts managed by this manager.
 	BlockAllocator& m_allocator;
 };
 

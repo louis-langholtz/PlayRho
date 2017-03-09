@@ -75,10 +75,10 @@ TEST(Body, WorldCreated)
 		EXPECT_EQ(i, 0);		
 	}
 	
-	EXPECT_TRUE(body->GetContactEdges().empty());
+	EXPECT_TRUE(body->GetContacts().empty());
 	{
 		int i = 0;
-		for (auto&& ce: body->GetContactEdges())
+		for (auto&& ce: body->GetContacts())
 		{
 			NOT_USED(ce);
 			++i;
