@@ -462,9 +462,6 @@ Body* World::CreateBody(const BodyDef& def)
 
 bool World::Add(Body& b)
 {
-	assert(!b.m_prev);
-	assert(!b.m_next);
-
 	if (m_bodies.size() >= MaxBodies)
 	{
 		return false;

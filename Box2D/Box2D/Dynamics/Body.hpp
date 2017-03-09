@@ -219,7 +219,7 @@ constexpr inline BodyDef& BodyDef::UseUserData(void* value) noexcept
 ///
 /// @detail A rigid body. These are created via World::Create.
 ///
-/// @note On a 64-bit architecture with 4-byte RealNum, this data structure is at least 160-bytes large.
+/// @note On a 64-bit architecture with 4-byte RealNum, this data structure is at least 144-bytes large.
 ///
 class Body
 {
@@ -580,8 +580,6 @@ private:
 	Angle m_angularAcceleration = 0_rad; ///< Angular acceleration. 4-bytes.
 
 	World* const m_world; ///< World to which this body belongs. 8-bytes.
-	Body* m_prev = nullptr; ///< Previous body. 8-bytes.
-	Body* m_next = nullptr; ///< Next body. 8-bytes.
 
 	FixtureList m_fixtures; ///< Container of fixtures. 8-bytes.
 	JointEdgeList m_joints; ///< Container of joint edges. 8-bytes.
