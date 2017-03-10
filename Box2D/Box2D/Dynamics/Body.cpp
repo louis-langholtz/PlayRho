@@ -293,14 +293,16 @@ void Body::DestroyFixture(Fixture* fixture, bool resetMassData)
 	// Remove the fixture from this body's singly linked list.
 	auto found = false;
 	{
-		for (auto it = m_fixtures.before_begin(); it != m_fixtures.end(); ++it)
+		auto prev = m_fixtures.before_begin();
+		for (auto iter = m_fixtures.begin(); iter != m_fixtures.end(); ++iter)
 		{
-			if (*(std::next(it)) == fixture)
+			if (*iter == fixture)
 			{
-				m_fixtures.erase_after(it);
+				m_fixtures.erase_after(prev);
 				found = true;
 				break;
 			}
+			prev = iter;
 		}
 	}
 
