@@ -546,9 +546,37 @@ DynamicTree::size_type DynamicTree::ComputeHeight(const size_type nodeId) const 
 	return 1 + Max(height1, height2);
 }
 
-DynamicTree::size_type DynamicTree::ComputeHeight() const noexcept
+void DynamicTree::Query(std::function<bool(size_type)> callback, const AABB aabb) const
 {
-	return ComputeHeight(m_root);
+	GrowableStack<size_type, 256> stack;
+	stack.Push(m_root);
+	
+	while (stack.GetCount() > 0)
+	{
+		const auto nodeId = stack.Pop();
+		if (nodeId == NullNode)
+		{
+			continue;
+		}
+		
+		const auto node = m_nodes + nodeId;
+		if (TestOverlap(node->aabb, aabb))
+		{
+			if (node->IsLeaf())
+			{
+				const auto proceed = callback(nodeId);
+				if (!proceed)
+				{
+					return;
+				}
+			}
+			else
+			{
+				stack.Push(node->child1);
+				stack.Push(node->child2);
+			}
+		}
+	}
 }
 
 bool DynamicTree::ValidateStructure(const size_type index) const noexcept
