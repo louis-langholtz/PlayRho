@@ -144,6 +144,9 @@ public:
 	/// @return Time of impact fraction in the range of 0 to 1 if set (where 1
 	///   means no actual impact in current time slot), otheriwse undefined.
 	RealNum GetToi() const;
+
+	void FlagForFiltering() noexcept;
+	bool NeedsFiltering() const noexcept;
 	
 protected:
 	friend class ContactManager;
@@ -151,9 +154,7 @@ protected:
 	friend class Fixture;
 
 	/// Flag this contact for filtering. Filtering will occur the next time step.
-	void FlagForFiltering() noexcept;
 	void UnflagForFiltering() noexcept;
-	bool NeedsFiltering() const noexcept;
 
 	static Contact* Create(Fixture& fixtureA, child_count_t indexA, Fixture& fixtureB, child_count_t indexB,
 						   BlockAllocator& allocator);

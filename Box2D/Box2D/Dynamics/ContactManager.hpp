@@ -101,11 +101,16 @@ private:
 	bool Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB);
 	
 	void Add(Contact* contact);
+	void InternalDestroy(Contact* contact);
+	void Destroy(Contacts::iterator iter);
+	void Erase(Contact* contact);
 
 	/// Removes contact from this manager.
 	/// @warning Behavior is undefined if called with a contact that is not managed by this manager.
 	/// @param contact Non-null pointer to a contact that is managed by this manager.
 	void Remove(Contact* contact);
+	
+	void RemoveFromBodies(Contact* contact);
 	
 	Contacts m_contacts; ///< Container of contacts managed by this manager.
 	BlockAllocator& m_allocator;

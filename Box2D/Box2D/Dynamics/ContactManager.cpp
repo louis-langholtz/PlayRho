@@ -26,13 +26,10 @@
 
 using namespace box2d;
 
-void ContactManager::Remove(Contact* c)
+void ContactManager::Erase(Contact* c)
 {
 	assert(c);
 
-	// Remove from the world.
-	assert(!m_contacts.empty());
-	
 	for (auto iter = m_contacts.begin(); iter != m_contacts.end(); ++iter)
 	{
 		if (*iter == c)
@@ -41,7 +38,10 @@ void ContactManager::Remove(Contact* c)
 			break;
 		}
 	}
-	
+}
+
+void ContactManager::RemoveFromBodies(Contact* c)
+{
 	const auto fixtureA = c->GetFixtureA();
 	const auto fixtureB = c->GetFixtureB();
 	const auto bodyA = fixtureA->GetBody();
@@ -51,7 +51,7 @@ void ContactManager::Remove(Contact* c)
 	bodyB->m_contacts.erase(c);
 }
 
-void ContactManager::Destroy(Contact* c)
+void ContactManager::InternalDestroy(Contact* c)
 {
 	if (m_contactListener && c->IsTouching())
 	{
@@ -59,10 +59,29 @@ void ContactManager::Destroy(Contact* c)
 		m_contactListener->EndContact(*c);
 	}
 
-	Remove(c);
+	RemoveFromBodies(c);
 
-	// Call the factory destroy method.
 	Contact::Destroy(c, m_allocator);
+}
+
+void ContactManager::Remove(Contact* c)
+{
+	assert(c);
+	assert(!m_contacts.empty());
+	RemoveFromBodies(c);
+	Erase(c);
+}
+
+void ContactManager::Destroy(Contact* c)
+{
+	InternalDestroy(c);
+	Erase(c);
+}
+
+void ContactManager::Destroy(Contacts::iterator iter)
+{
+	InternalDestroy(*iter);
+	m_contacts.erase(iter);
 }
 
 ContactManager::CollideStats ContactManager::Collide()
@@ -87,7 +106,7 @@ ContactManager::CollideStats ContactManager::Collide()
 			// Can these bodies collide?
 			if (!(bodyB->ShouldCollide(bodyA)))
 			{
-				Destroy(c);
+				Destroy(iter);
 				++stats.destroyed;
 				continue;
 			}
@@ -95,7 +114,7 @@ ContactManager::CollideStats ContactManager::Collide()
 			// Check user filtering.
 			if (m_contactFilter && !(m_contactFilter->ShouldCollide(fixtureA, fixtureB)))
 			{
-				Destroy(c);
+				Destroy(iter);
 				++stats.destroyed;
 				continue;
 			}
@@ -128,7 +147,7 @@ ContactManager::CollideStats ContactManager::Collide()
 		// Here we destroy contacts that cease to overlap in the broad-phase.
 		if (!overlap)
 		{
-			Destroy(c);
+			Destroy(iter);
 			++stats.destroyed;
 			continue;
 		}
@@ -166,6 +185,13 @@ static inline bool IsFor(const Contact& contact,
 
 bool ContactManager::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 {
+	const auto pidA = proxyA.proxyId;
+	const auto pidB = proxyB.proxyId;
+	const auto pidpair = ProxyIdPair{pidA, pidB};
+	
+	assert(pidA != pidB);
+	assert(sizeof(pidA) + sizeof(pidB) == sizeof(size_t));
+	
 	const auto fixtureA = proxyA.fixture; ///< Fixture of proxyA (but may get switched with fixtureB).
 	const auto fixtureB = proxyB.fixture; ///< Fixture of proxyB (but may get switched with fixtureA).
 
@@ -205,7 +231,7 @@ bool ContactManager::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 		return false;
 	}
 
-	assert(GetContacts().size() < MaxContacts);
+	assert(m_contacts.size() < MaxContacts);
 
 	// Call the contact factory create method.
 	const auto c = Contact::Create(*fixtureA, childIndexA, *fixtureB, childIndexB, m_allocator);
