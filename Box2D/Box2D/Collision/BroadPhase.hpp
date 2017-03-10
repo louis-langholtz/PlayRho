@@ -125,7 +125,7 @@ public:
 	/// number of proxies in the tree.
 	/// @param input the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
 	/// @param callback a callback class that is called for each proxy that is hit by the ray.
-	void RayCast(std::function<RealNum(const RayCastInput& input, size_type proxyId)> callback,
+	void RayCast(std::function<RealNum(const RayCastInput&, size_type)> callback,
 				 const RayCastInput& input) const;
 
 	/// Gets the height of the embedded tree.
@@ -292,8 +292,8 @@ inline void BroadPhase::Query(std::function<bool(size_type)> callback, const AAB
 	m_tree.Query(callback, aabb);
 }
 
-inline void BroadPhase::RayCast(std::function<RealNum(const RayCastInput& input, size_type proxyId)> callback,
-									const RayCastInput& input) const
+inline void BroadPhase::RayCast(std::function<RealNum(const RayCastInput&, size_type)> callback,
+								const RayCastInput& input) const
 {
 	m_tree.RayCast(callback, input);
 }

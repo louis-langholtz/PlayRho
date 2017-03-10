@@ -18,6 +18,8 @@
  */
 
 #include <Box2D/Collision/DynamicTree.hpp>
+#include <Box2D/Common/GrowableStack.hpp>
+
 #include <cstring>
 
 using namespace box2d;
@@ -575,6 +577,78 @@ void DynamicTree::Query(std::function<bool(size_type)> callback, const AABB aabb
 				stack.Push(node->child1);
 				stack.Push(node->child2);
 			}
+		}
+	}
+}
+
+void DynamicTree::RayCast(std::function<RealNum(const RayCastInput& input, size_type proxyId)> callback,
+						  const RayCastInput& input) const
+{
+	const auto p1 = input.p1;
+	const auto p2 = input.p2;
+	
+	// v is perpendicular to the segment.
+	const auto v = GetRevPerpendicular(GetUnitVector(p2 - p1, UnitVec2::GetZero()));
+	const auto abs_v = Abs(v);
+	
+	// Separating axis for segment (Gino, p80).
+	// |dot(v, p1 - c)| > dot(|v|, h)
+	
+	auto maxFraction = input.maxFraction;
+	
+	// Build a bounding box for the segment.
+	auto segmentAABB = AABB{p1, p1 + maxFraction * (p2 - p1)};
+	
+	GrowableStack<size_type, 256> stack;
+	stack.Push(m_root);
+	
+	while (stack.GetCount() > 0)
+	{
+		const auto nodeId = stack.Pop();
+		if (nodeId == NullNode)
+		{
+			continue;
+		}
+		
+		const auto node = m_nodes + nodeId;
+		if (!TestOverlap(node->aabb, segmentAABB))
+		{
+			continue;
+		}
+		
+		// Separating axis for segment (Gino, p80).
+		// |dot(v, p1 - c)| > dot(|v|, h)
+		const auto c = GetCenter(node->aabb);
+		const auto h = GetExtents(node->aabb);
+		const auto separation = Abs(Dot(v, p1 - c)) - Dot(abs_v, h);
+		if (separation > 0)
+		{
+			continue;
+		}
+		
+		if (node->IsLeaf())
+		{
+			const auto subInput = RayCastInput{input.p1, input.p2, maxFraction};
+			
+			const auto value = callback(subInput, nodeId);
+			if (value == 0)
+			{
+				// The client has terminated the ray cast.
+				return;
+			}
+			
+			if (value > 0)
+			{
+				// Update segment bounding box.
+				maxFraction = value;
+				const auto t = p1 + maxFraction * (p2 - p1);
+				segmentAABB = AABB(p1, t);
+			}
+		}
+		else
+		{
+			stack.Push(node->child1);
+			stack.Push(node->child2);
 		}
 	}
 }
