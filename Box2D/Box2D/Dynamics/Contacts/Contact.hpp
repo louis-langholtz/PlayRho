@@ -52,7 +52,7 @@ inline RealNum MixRestitution(RealNum restitution1, RealNum restitution2) noexce
 /// The class manages contact between two shapes. A contact exists for each overlapping
 /// AABB in the broad-phase (except if filtered). Therefore a contact object may exist
 /// that has no contact points.
-/// @note This data structure is 176-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 112-bytes large (on at least one 64-bit platform).
 class Contact
 {
 public:

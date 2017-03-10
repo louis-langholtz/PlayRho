@@ -21,11 +21,11 @@
 
 using namespace box2d;
 
-TEST(Contact, ByteSizeIs_176_272_or_448)
+TEST(Contact, ByteSizeIs_112_272_or_448)
 {
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(Contact), size_t(176)); break;
+		case  4: EXPECT_EQ(sizeof(Contact), size_t(112)); break;
 		case  8: EXPECT_EQ(sizeof(Contact), size_t(272)); break;
 		case 16: EXPECT_EQ(sizeof(Contact), size_t(448)); break;
 		default: FAIL(); break;
