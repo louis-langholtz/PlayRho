@@ -161,7 +161,7 @@ public:
 	};
 	
 	/// Gets the default definitions value.
-	static constexpr Def GetDefaultDef()
+	static constexpr Def GetDefaultDef() noexcept
 	{
 		return Def{};	
 	}
