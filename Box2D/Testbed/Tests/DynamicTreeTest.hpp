@@ -28,10 +28,7 @@ class DynamicTreeTest : public Test
 {
 public:
 
-	enum
-	{
-		e_actorCount = 128
-	};
+	static constexpr auto e_actorCount = 128;
 
 	DynamicTreeTest()
 	{
@@ -248,10 +245,10 @@ private:
 	{
 		const auto aabbExtension = m_world->GetAabbExtension();
 		const auto extension = Vec2{aabbExtension, aabbExtension};
-		for (int32 i = 0; i < e_actorCount; ++i)
+		for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
 		{
-			int32 j = rand() % e_actorCount;
-			Actor* actor = m_actors + j;
+			const auto j = rand() % e_actorCount;
+			const auto actor = m_actors + j;
 			if (actor->proxyId == DynamicTree::NullNode)
 			{
 				actor->aabb = GetRandomAABB();
