@@ -280,15 +280,16 @@ Fixture* Body::CreateFixture(std::shared_ptr<const Shape> shape, const FixtureDe
 	return fixture;
 }
 
-void Body::DestroyFixture(Fixture* fixture, bool resetMassData)
+bool Body::DestroyFixture(Fixture* fixture, bool resetMassData)
 {
-	assert(!m_world->IsLocked());
+	if (!fixture || (fixture->m_body != this))
+	{
+		return false;
+	}
 	if (m_world->IsLocked())
 	{
-		return;
+		return false;
 	}
-
-	assert(fixture->m_body == this);
 
 	// Remove the fixture from this body's singly linked list.
 	auto found = false;
@@ -306,8 +307,11 @@ void Body::DestroyFixture(Fixture* fixture, bool resetMassData)
 		}
 	}
 
-	// You tried to remove a shape that is not attached to this body.
-	assert(found);
+	if (!found)
+	{
+		// Fixture probably destroyed already.
+		return false;
+	}
 
 	// Destroy any contacts associated with the fixture.
 	for (auto&& contact: m_contacts)
@@ -331,6 +335,8 @@ void Body::DestroyFixture(Fixture* fixture, bool resetMassData)
 	{
 		ResetMassData();
 	}
+
+	return true;
 }
 
 void Body::ResetMassData()

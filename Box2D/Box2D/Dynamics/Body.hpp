@@ -259,7 +259,7 @@ public:
 	/// @note Make sure to explicitly call ResetMassData after fixtures have been destroyed.
 	/// @sa ResetMassData.
 	/// @param fixture the fixture to be removed.
-	void DestroyFixture(Fixture* fixture, bool resetMassData = true);
+	bool DestroyFixture(Fixture* fixture, bool resetMassData = true);
 
 	void DestroyFixtures();
 	
