@@ -241,23 +241,9 @@ bool ContactManager::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 		return false;
 	}
 	
-	Add(c);
-	return true;
-}
-
-void ContactManager::Add(Contact* c)
-{
-	// Contact creation may swap fixtures.
-	const auto fixtureA = c->GetFixtureA();
-	const auto fixtureB = c->GetFixtureB();
-	const auto bodyA = fixtureA->GetBody();
-	const auto bodyB = fixtureB->GetBody();
-
-	// Connect to island graph.
-
 	bodyA->m_contacts.insert(c);
 	bodyB->m_contacts.insert(c);
-
+	
 	// Wake up the bodies
 	if (!fixtureA->IsSensor() && !fixtureB->IsSensor())
 	{
@@ -267,4 +253,7 @@ void ContactManager::Add(Contact* c)
 	
 	// Insert into the world.
 	m_contacts.push_front(c);
+	
+	return true;
 }
+

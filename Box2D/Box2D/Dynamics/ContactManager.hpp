@@ -100,7 +100,6 @@ private:
 	/// @sa bool Body::ShouldCollide(const Body* other) const
 	bool Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB);
 	
-	void Add(Contact* contact);
 	void InternalDestroy(Contact* contact);
 	void Destroy(Contacts::iterator iter);
 	void Erase(Contact* contact);
