@@ -62,7 +62,19 @@ public:
 		e_nullProxy = static_cast<size_type>(-1)
 	};
 
-	BroadPhase();
+	struct Conf
+	{
+		size_type moveCapacity = 16;
+		size_type pairCapacity = 16;
+	};
+
+	static constexpr Conf GetDefaultConf() noexcept
+	{
+		return Conf{};
+	}
+
+	BroadPhase(const Conf conf = GetDefaultConf());
+
 	~BroadPhase() noexcept;
 	
 	BroadPhase(const BroadPhase& copy) = delete;
@@ -88,6 +100,7 @@ public:
 	void TouchProxy(size_type proxyId);
 
 	/// Gets the fat AABB for a proxy.
+	/// @warning Behavior is undefined if the given proxy ID is not a valid ID.
 	AABB GetFatAABB(size_type proxyId) const;
 
 	/// Gets user data from a proxy.
@@ -130,6 +143,11 @@ public:
 	/// @param newOrigin the new origin with respect to the old origin
 	void ShiftOrigin(const Vec2 newOrigin);
 
+	size_type GetPairCapacity() const noexcept;
+	size_type GetMoveCapacity() const noexcept;
+	size_type GetMoveCount() const noexcept;
+	size_type GetPairCount() const noexcept;
+
 private:
 
 	friend class DynamicTree;
@@ -145,10 +163,10 @@ private:
 	
 	size_type m_proxyCount = 0;
 
-	size_type m_moveCapacity = 16; ///< Move buffer capacity. The # of elements pointed to by move buffer. @sa m_moveBuffer.
+	size_type m_moveCapacity; ///< Move buffer capacity. The # of elements pointed to by move buffer. @sa m_moveBuffer.
 	size_type m_moveCount = 0;
 
-	size_type m_pairCapacity = 16;
+	size_type m_pairCapacity;
 	size_type m_pairCount = 0;
 
 	// Initialized on construction
@@ -167,6 +185,26 @@ inline void* BroadPhase::GetUserData(size_type proxyId) const
 inline AABB BroadPhase::GetFatAABB(size_type proxyId) const
 {
 	return m_tree.GetFatAABB(proxyId);
+}
+
+inline BroadPhase::size_type BroadPhase::GetPairCapacity() const noexcept
+{
+	return m_pairCapacity;
+}
+
+inline BroadPhase::size_type BroadPhase::GetMoveCapacity() const noexcept
+{
+	return m_moveCapacity;
+}
+
+inline BroadPhase::size_type BroadPhase::GetMoveCount() const noexcept
+{
+	return m_moveCount;
+}
+
+inline BroadPhase::size_type BroadPhase::GetPairCount() const noexcept
+{
+	return m_pairCount;
 }
 
 inline BroadPhase::size_type BroadPhase::GetProxyCount() const noexcept

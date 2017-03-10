@@ -25,3 +25,49 @@ TEST(BroadPhase, ByteSizeIs72)
 {
 	EXPECT_EQ(sizeof(BroadPhase), size_t(72));
 }
+
+TEST(BroadPhase, DefaultConstruction)
+{
+	const auto defaultConf = BroadPhase::GetDefaultConf();
+	
+	BroadPhase foo;
+	
+	EXPECT_EQ(foo.GetPairCapacity(), defaultConf.pairCapacity);
+	EXPECT_EQ(foo.GetMoveCapacity(), defaultConf.moveCapacity);
+
+	EXPECT_EQ(foo.GetProxyCount(), BroadPhase::size_type(0));
+	EXPECT_EQ(foo.GetTreeHeight(), BroadPhase::size_type(0));
+	EXPECT_EQ(foo.GetTreeBalance(), BroadPhase::size_type(0));
+	EXPECT_EQ(foo.GetProxyCount(), BroadPhase::size_type(0));
+	EXPECT_EQ(foo.GetMoveCount(), BroadPhase::size_type(0));
+	EXPECT_EQ(foo.GetTreeQuality(), RealNum(0));
+}
+
+TEST(BroadPhase, CreateAndDestroyProxy)
+{
+	const auto defaultConf = BroadPhase::GetDefaultConf();
+
+	BroadPhase foo;
+	
+	ASSERT_EQ(foo.GetPairCapacity(), defaultConf.pairCapacity);
+	ASSERT_EQ(foo.GetMoveCapacity(), defaultConf.moveCapacity);
+	
+	const auto aabb = AABB{Vec2{3, 1}, Vec2{-5, -2}};
+	const auto userdata = nullptr;
+	
+	const auto pid = foo.CreateProxy(aabb, userdata);
+	EXPECT_EQ(foo.GetProxyCount(), BroadPhase::size_type(1));
+	EXPECT_EQ(foo.GetPairCapacity(), defaultConf.pairCapacity);
+	EXPECT_EQ(foo.GetFatAABB(pid), aabb);
+	EXPECT_EQ(foo.GetUserData(pid), userdata);
+	EXPECT_EQ(foo.GetTreeHeight(), BroadPhase::size_type(0));
+	EXPECT_EQ(foo.GetTreeBalance(), BroadPhase::size_type(0));
+	EXPECT_EQ(foo.GetTreeQuality(), RealNum(1));
+	
+	foo.DestroyProxy(pid);
+	EXPECT_EQ(foo.GetProxyCount(), BroadPhase::size_type(0));
+	EXPECT_EQ(foo.GetPairCapacity(), defaultConf.pairCapacity);
+	EXPECT_EQ(foo.GetTreeHeight(), BroadPhase::size_type(0));
+	EXPECT_EQ(foo.GetTreeBalance(), BroadPhase::size_type(0));
+	EXPECT_EQ(foo.GetTreeQuality(), RealNum(0));
+}
