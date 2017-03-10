@@ -43,7 +43,7 @@ namespace box2d
 		///   result will always be the other AABB.
 		AABB() = default;
 		
-		constexpr AABB(Vec2 a, Vec2 b) noexcept:
+		constexpr AABB(const Vec2 a, const Vec2 b) noexcept:
 			lowerBound{Vec2{Min(a.x, b.x), Min(a.y, b.y)}},
 			upperBound{Vec2{Max(a.x, b.x), Max(a.y, b.y)}}
 		{
@@ -137,6 +137,16 @@ namespace box2d
 	constexpr inline AABB operator + (const AABB lhs, const Vec2 rhs)
 	{
 		return AABB{lhs.GetLowerBound() - rhs, lhs.GetUpperBound() + rhs};
+	}
+
+	constexpr bool operator== (const AABB lhs, const AABB rhs)
+	{
+		return (lhs.GetLowerBound() == rhs.GetLowerBound()) && (lhs.GetUpperBound() == rhs.GetUpperBound());
+	}
+	
+	constexpr bool operator!= (const AABB lhs, const AABB rhs)
+	{
+		return !(lhs == rhs);
 	}
 
 	// Tests for overlap between two axis aligned bounding boxes.
