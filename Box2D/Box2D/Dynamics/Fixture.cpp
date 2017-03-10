@@ -101,7 +101,7 @@ void Fixture::Synchronize(BroadPhase& broadPhase, const Transformation& transfor
 		// Compute an AABB that covers the swept shape (may miss some rotation effect).
 		const auto aabb1 = ComputeAABB(*shape, transform1, proxy.childIndex);
 		const auto aabb2 = ComputeAABB(*shape, transform2, proxy.childIndex);
-		proxy.aabb = aabb1 + aabb2;
+		proxy.aabb = GetEnclosingAABB(aabb1, aabb2);
 
 		broadPhase.MoveProxy(proxy.proxyId, proxy.aabb + extension, transform2.p - transform1.p);
 	}

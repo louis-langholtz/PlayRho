@@ -41,7 +41,9 @@ namespace box2d {
 class DynamicTree
 {
 public:
-	
+
+	using size_type = std::remove_const<decltype(MaxContacts)>::type;
+
 	/// AABB Multiplier.
 	/// @detail
 	/// This is used to fatten AABBs in the dynamic tree. This is used to predict
@@ -49,13 +51,13 @@ public:
 	/// This is a dimensionless multiplier.
 	static constexpr auto AabbMultiplier = 2;
 
-	using size_type = std::remove_const<decltype(MaxContacts)>::type;
-
 	/// Null node index value.
-	static constexpr auto NullNode = static_cast<size_type>(-1);
-	
+	static constexpr size_type NullNode = static_cast<size_type>(-1);
+
+	static constexpr size_type GetDefaultInitialNodeCapacity() noexcept;
+
 	/// Constructing the tree initializes the node pool.
-	DynamicTree();
+	DynamicTree(const size_type nodeCapacity = GetDefaultInitialNodeCapacity());
 
 	/// Destroys the tree, freeing the node pool.
 	~DynamicTree() noexcept;
@@ -63,32 +65,34 @@ public:
 	DynamicTree(const DynamicTree& copy) = delete;
 	DynamicTree& operator=(const DynamicTree&) = delete;
 
-	/// Creates a proxy. Provide a tight fitting AABB and a userData pointer.
+	/// Creates a proxy.
+	/// @detail Creates a proxy for a tight fitting AABB and a userData pointer.
 	/// @return ID of the created proxy.
-	size_type CreateProxy(const AABB& aabb, void* userData);
+	size_type CreateProxy(const AABB aabb, void* userData);
 
 	/// Destroys a proxy. This asserts if the id is invalid.
-	void DestroyProxy(size_type proxyId);
+	void DestroyProxy(const size_type proxyId);
 
 	/// Move a proxy with a swepted AABB. If the proxy has moved outside of its fattened AABB,
 	/// then the proxy is removed from the tree and re-inserted. Otherwise
 	/// the function returns immediately.
-	/// @param proxyId Proxy ID. Behavior is undefined if this is the null proxy ID.
+	/// @warning Behavior is undefined if given an invalid proxy ID.
+	/// @param proxyId Proxy ID. Behavior is undefined if this is not a valid ID.
 	/// @param aabb Axis aligned bounding box.
 	/// @param displacement Displacement. Behavior is undefined if this is an invalid value.
 	/// @return true if the proxy was re-inserted.
-	bool MoveProxy(size_type proxyId, const AABB& aabb, const Vec2 displacement);
+	bool MoveProxy(const size_type proxyId, const AABB aabb, const Vec2 displacement);
 
 	/// Gets the user data for the node identified by the given identifier.
+	/// @warning Behavior is undefined if the given index is invalid.
 	/// @param proxyId Identifier of node to get the user data for.
 	/// @return User data for the specified node.
-	/// @note Behavior is undefined if the given index is invalid.
-	void* GetUserData(size_type proxyId) const noexcept;
+	void* GetUserData(const size_type proxyId) const noexcept;
 
 	/// Gets the fat AABB for a proxy.
-	/// @param proxyId Proxy ID. Must be a valid ID.
 	/// @warning Behavior is undefined if the given proxy ID is not a valid ID.
-	const AABB& GetFatAABB(size_type proxyId) const noexcept;
+	/// @param proxyId Proxy ID. Must be a valid ID.
+	AABB GetFatAABB(const size_type proxyId) const noexcept;
 
 	/// Query an AABB for overlapping proxies. The callback class
 	/// is called for each proxy that overlaps the supplied AABB.
@@ -105,15 +109,22 @@ public:
 	template <typename T>
 	void RayCast(T* callback, const RayCastInput& input) const;
 
-	/// Validate this tree. For testing.
-	void Validate() const;
+	/// Validate this tree.
+	/// @detail Validates this tree. Meant for testing.
+	/// @return <code>true</code> if valid, <code>false</code> otherwise.
+	bool Validate() const;
+
+	bool ValidateStructure(const size_type index) const noexcept;
+
+	bool ValidateMetrics(size_type index) const noexcept;
 
 	/// Gets the height of the binary tree.
-	/// @return Zero or more.
+	/// @return Height of the tree (as stored in the root node) or 0 if the root node is not valid.
 	size_type GetHeight() const noexcept;
 
-	/// Gets the maximum balance of an node in the tree. The balance is the difference
-	/// in height of the two children of a node.
+	/// Gets the maximum balance.
+	/// @detail This gets the maximum balance of nodes in the tree.
+	/// @note The balance is the difference in height of the two children of a node.
 	size_type GetMaxBalance() const;
 
 	/// Gets the ratio of the sum of the perimeters of nodes to the root perimeter.
@@ -128,6 +139,24 @@ public:
 	/// The shift formula is: position -= newOrigin
 	/// @param newOrigin the new origin with respect to the old origin
 	void ShiftOrigin(const Vec2 newOrigin);
+
+	/// Computes the height of the tree from a given node.
+	/// @warning Behavior is undefined if the given ID does not reference a valid node.
+	/// @param nodeId ID of node to compute height from.
+	size_type ComputeHeight(const size_type nodeId) const noexcept;
+
+	/// Computes the height of the tree from its root.
+	/// @warning Behavior is undefined if the tree doesn't have a valid root.
+	size_type ComputeHeight() const noexcept;
+
+	/// Gets the current node capacity of this tree.
+	size_type GetNodeCapacity() const noexcept;
+	
+	size_type GetNodeCount() const noexcept;
+
+	/// Finds the lowest code node.
+	/// @warning Behavior is undefined if the tree doesn't have a valid root.
+	size_type FindLowestCostNode(const AABB leafAABB) const noexcept;
 
 private:
 
@@ -160,25 +189,17 @@ private:
 	};
 
 	size_type AllocateNode();
-	void FreeNode(size_type node) noexcept;
+	void FreeNode(const size_type node) noexcept;
 
-	void InsertLeaf(size_type node);
-	void RemoveLeaf(size_type node);
+	void InsertLeaf(const size_type node);
+	void RemoveLeaf(const size_type node);
 
-	size_type FindLowestCostNode(AABB leafAABB) const noexcept;
-
-	size_type Balance(size_type index);
-
-	size_type ComputeHeight() const noexcept;
-	size_type ComputeHeight(size_type nodeId) const noexcept;
-
-	void ValidateStructure(size_type index) const;
-	void ValidateMetrics(size_type index) const;
+	size_type Balance(const size_type index);
 
 	size_type m_root = NullNode; ///< Index of root element in m_nodes or NullNode.
 
 	size_type m_nodeCount = 0;
-	size_type m_nodeCapacity = 16;
+	size_type m_nodeCapacity;
 
 	size_type m_freeList = 0;
 
@@ -186,14 +207,29 @@ private:
 	TreeNode* m_nodes;
 };
 
-inline void* DynamicTree::GetUserData(size_type proxyId) const noexcept
+constexpr DynamicTree::size_type DynamicTree::GetDefaultInitialNodeCapacity() noexcept
+{
+	return size_type{16};
+}
+
+inline DynamicTree::size_type DynamicTree::GetNodeCapacity() const noexcept
+{
+	return m_nodeCapacity;
+}
+
+inline DynamicTree::size_type DynamicTree::GetNodeCount() const noexcept
+{
+	return m_nodeCount;
+}
+
+inline void* DynamicTree::GetUserData(const size_type proxyId) const noexcept
 {
 	assert(proxyId != NullNode);
 	assert(proxyId < m_nodeCapacity);
 	return m_nodes[proxyId].userData;
 }
 
-inline const AABB& DynamicTree::GetFatAABB(size_type proxyId) const noexcept
+inline AABB DynamicTree::GetFatAABB(const size_type proxyId) const noexcept
 {
 	assert(proxyId != NullNode);
 	assert(proxyId < m_nodeCapacity);

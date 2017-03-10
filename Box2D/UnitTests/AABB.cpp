@@ -40,19 +40,19 @@ TEST(AABB, DefaultAabbAddsToOther)
 	const auto default_aabb = AABB{};
 	{
 		const auto other_aabb = AABB{Vec2_zero, Vec2_zero};
-		const auto sum_aabb = default_aabb + other_aabb;
+		const auto sum_aabb = GetEnclosingAABB(default_aabb, other_aabb);
 		EXPECT_EQ(sum_aabb.GetLowerBound(), other_aabb.GetLowerBound());
 		EXPECT_EQ(sum_aabb.GetUpperBound(), other_aabb.GetUpperBound());
 	}
 	{
 		const auto other_aabb = AABB{Vec2_zero, Vec2_zero};
-		const auto sum_aabb = other_aabb + default_aabb;
+		const auto sum_aabb = GetEnclosingAABB(other_aabb, default_aabb);
 		EXPECT_EQ(sum_aabb.GetLowerBound(), other_aabb.GetLowerBound());
 		EXPECT_EQ(sum_aabb.GetUpperBound(), other_aabb.GetUpperBound());
 	}
 	{
 		const auto other_aabb = AABB{Vec2{-1, -2}, Vec2{+99, +3}};
-		const auto sum_aabb = other_aabb + default_aabb;
+		const auto sum_aabb = GetEnclosingAABB(other_aabb, default_aabb);
 		EXPECT_EQ(sum_aabb.GetLowerBound(), other_aabb.GetLowerBound());
 		EXPECT_EQ(sum_aabb.GetUpperBound(), other_aabb.GetUpperBound());
 	}

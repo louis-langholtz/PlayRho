@@ -1,40 +1,41 @@
 /*
-* Original work Copyright (c) 2009 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2009 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #include <Box2D/Collision/DynamicTree.hpp>
 #include <cstring>
 
 using namespace box2d;
 
-DynamicTree::DynamicTree():
-	m_nodes(alloc<TreeNode>(m_nodeCapacity))
+DynamicTree::DynamicTree(const size_type nodeCapacity):
+	m_nodeCapacity{nodeCapacity},
+	m_nodes{alloc<TreeNode>(nodeCapacity)}
 {
-	std::memset(m_nodes, 0, m_nodeCapacity * sizeof(TreeNode));
+	std::memset(m_nodes, 0, nodeCapacity * sizeof(TreeNode));
 
 	// Build a linked list for the free list.
-	for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity - 1; ++i)
+	for (auto i = decltype(nodeCapacity){0}; i < nodeCapacity - 1; ++i)
 	{
 		m_nodes[i].next = i + 1;
 		m_nodes[i].height = NullNode;
 	}
-	m_nodes[m_nodeCapacity-1].next = NullNode;
-	m_nodes[m_nodeCapacity-1].height = NullNode;
+	m_nodes[nodeCapacity - 1].next = NullNode;
+	m_nodes[nodeCapacity - 1].height = NullNode;
 }
 
 DynamicTree::~DynamicTree() noexcept
@@ -62,8 +63,8 @@ DynamicTree::size_type DynamicTree::AllocateNode()
 			m_nodes[i].next = i + 1;
 			m_nodes[i].height = NullNode;
 		}
-		m_nodes[m_nodeCapacity-1].next = NullNode;
-		m_nodes[m_nodeCapacity-1].height = NullNode;
+		m_nodes[m_nodeCapacity - 1].next = NullNode;
+		m_nodes[m_nodeCapacity - 1].height = NullNode;
 		m_freeList = m_nodeCount;
 	}
 
@@ -80,11 +81,11 @@ DynamicTree::size_type DynamicTree::AllocateNode()
 }
 
 // Return a node to the pool.
-void DynamicTree::FreeNode(size_type nodeId) noexcept
+void DynamicTree::FreeNode(const size_type nodeId) noexcept
 {
 	assert(nodeId != NullNode);
 	assert(nodeId < m_nodeCapacity);
-	assert(m_nodeCount > 0);
+	assert(m_nodeCount > 0); // nodeId is not ncessarily less than m_nodeCount.
 	m_nodes[nodeId].next = m_freeList;
 	m_nodes[nodeId].height = NullNode;
 	m_freeList = nodeId;
@@ -94,7 +95,7 @@ void DynamicTree::FreeNode(size_type nodeId) noexcept
 // Create a proxy in the tree as a leaf node. We return the index
 // of the node instead of a pointer so that we can grow
 // the node pool.
-DynamicTree::size_type DynamicTree::CreateProxy(const AABB& aabb, void* userData)
+DynamicTree::size_type DynamicTree::CreateProxy(const AABB aabb, void* userData)
 {
 	const auto proxyId = AllocateNode();
 
@@ -107,7 +108,7 @@ DynamicTree::size_type DynamicTree::CreateProxy(const AABB& aabb, void* userData
 	return proxyId;
 }
 
-void DynamicTree::DestroyProxy(size_type proxyId)
+void DynamicTree::DestroyProxy(const size_type proxyId)
 {
 	assert((0 <= proxyId) && (proxyId < m_nodeCapacity));
 	assert(m_nodes[proxyId].IsLeaf());
@@ -116,7 +117,7 @@ void DynamicTree::DestroyProxy(size_type proxyId)
 	FreeNode(proxyId);
 }
 
-bool DynamicTree::MoveProxy(size_type proxyId, const AABB& aabb, const Vec2 displacement)
+bool DynamicTree::MoveProxy(const size_type proxyId, const AABB aabb, const Vec2 displacement)
 {
 	assert((0 <= proxyId) && (proxyId < m_nodeCapacity));
 	assert(IsValid(displacement));
@@ -159,8 +160,10 @@ bool DynamicTree::MoveProxy(size_type proxyId, const AABB& aabb, const Vec2 disp
 	return true;
 }
 
-DynamicTree::size_type DynamicTree::FindLowestCostNode(AABB leafAABB) const noexcept
+DynamicTree::size_type DynamicTree::FindLowestCostNode(const AABB leafAABB) const noexcept
 {
+	assert(m_root != NullNode);
+
 	auto index = m_root;
 	while (!m_nodes[index].IsLeaf())
 	{
@@ -169,7 +172,7 @@ DynamicTree::size_type DynamicTree::FindLowestCostNode(AABB leafAABB) const noex
 		
 		const auto area = GetPerimeter(m_nodes[index].aabb);
 		
-		const auto combinedAABB = m_nodes[index].aabb + leafAABB;
+		const auto combinedAABB = GetEnclosingAABB(m_nodes[index].aabb, leafAABB);
 		const auto combinedArea = GetPerimeter(combinedAABB);
 		
 		assert(combinedArea >= area);
@@ -185,7 +188,7 @@ DynamicTree::size_type DynamicTree::FindLowestCostNode(AABB leafAABB) const noex
 		
 		// Cost of descending into child1
 		const auto cost1 = [&]() {
-			const auto aabb = leafAABB + m_nodes[child1].aabb;
+			const auto aabb = GetEnclosingAABB(leafAABB, m_nodes[child1].aabb);
 			const auto perimeter = GetPerimeter(aabb);
 			return (m_nodes[child1].IsLeaf())?
 			perimeter + inheritanceCost:
@@ -194,7 +197,7 @@ DynamicTree::size_type DynamicTree::FindLowestCostNode(AABB leafAABB) const noex
 		
 		// Cost of descending into child2
 		const auto cost2 = [&]() {
-			const auto aabb = leafAABB + m_nodes[child2].aabb;
+			const auto aabb = GetEnclosingAABB(leafAABB, m_nodes[child2].aabb);
 			const auto perimeter = GetPerimeter(aabb);
 			return (m_nodes[child2].IsLeaf())?
 			perimeter + inheritanceCost:
@@ -213,7 +216,7 @@ DynamicTree::size_type DynamicTree::FindLowestCostNode(AABB leafAABB) const noex
 	return index;
 }
 
-void DynamicTree::InsertLeaf(size_type leaf)
+void DynamicTree::InsertLeaf(const size_type leaf)
 {
 	assert(leaf != NullNode);
 
@@ -236,7 +239,7 @@ void DynamicTree::InsertLeaf(size_type leaf)
 	const auto newParent = AllocateNode();
 	m_nodes[newParent].parent = oldParent;
 	m_nodes[newParent].userData = nullptr;
-	m_nodes[newParent].aabb = leafAABB + m_nodes[sibling].aabb;
+	m_nodes[newParent].aabb = GetEnclosingAABB(leafAABB, m_nodes[sibling].aabb);
 	assert(m_nodes[sibling].height != NullNode);
 	m_nodes[newParent].height = m_nodes[sibling].height + 1;
 
@@ -280,7 +283,7 @@ void DynamicTree::InsertLeaf(size_type leaf)
 		assert(child2 != NullNode);
 
 		m_nodes[index].height = 1 + Max(m_nodes[child1].height, m_nodes[child2].height);
-		m_nodes[index].aabb = m_nodes[child1].aabb + m_nodes[child2].aabb;
+		m_nodes[index].aabb = GetEnclosingAABB(m_nodes[child1].aabb, m_nodes[child2].aabb);
 
 		index = m_nodes[index].parent;
 	}
@@ -288,7 +291,7 @@ void DynamicTree::InsertLeaf(size_type leaf)
 	//Validate();
 }
 
-void DynamicTree::RemoveLeaf(size_type leaf)
+void DynamicTree::RemoveLeaf(const size_type leaf)
 {
 	if (leaf == m_root)
 	{
@@ -332,7 +335,7 @@ void DynamicTree::RemoveLeaf(size_type leaf)
 			assert(child2 != NullNode);
 			assert(child2 < m_nodeCapacity);
 
-			m_nodes[index].aabb = m_nodes[child1].aabb + m_nodes[child2].aabb;
+			m_nodes[index].aabb = GetEnclosingAABB(m_nodes[child1].aabb, m_nodes[child2].aabb);
 			assert(m_nodes[child1].height != NullNode);
 			assert(m_nodes[child2].height != NullNode);
 			m_nodes[index].height = 1 + Max(m_nodes[child1].height, m_nodes[child2].height);
@@ -352,7 +355,7 @@ void DynamicTree::RemoveLeaf(size_type leaf)
 
 // Perform a left or right rotation if node A is imbalanced.
 // Returns the new root index.
-DynamicTree::size_type DynamicTree::Balance(size_type iA)
+DynamicTree::size_type DynamicTree::Balance(const size_type iA)
 {
 	assert(iA != NullNode);
 	assert(iA < m_nodeCapacity);
@@ -418,8 +421,8 @@ DynamicTree::size_type DynamicTree::Balance(size_type iA)
 			C->child2 = iF;
 			A->child2 = iG;
 			G->parent = iA;
-			A->aabb = B->aabb + G->aabb;
-			C->aabb = A->aabb + F->aabb;
+			A->aabb = GetEnclosingAABB(B->aabb, G->aabb);
+			C->aabb = GetEnclosingAABB(A->aabb, F->aabb);
 			A->height = 1 + Max(B->height, G->height);
 			C->height = 1 + Max(A->height, F->height);
 		}
@@ -428,8 +431,8 @@ DynamicTree::size_type DynamicTree::Balance(size_type iA)
 			C->child2 = iG;
 			A->child2 = iF;
 			F->parent = iA;
-			A->aabb = B->aabb + F->aabb;
-			C->aabb = A->aabb + G->aabb;
+			A->aabb = GetEnclosingAABB(B->aabb, F->aabb);
+			C->aabb = GetEnclosingAABB(A->aabb, G->aabb);
 			A->height = 1 + Max(B->height, F->height);
 			C->height = 1 + Max(A->height, G->height);
 		}
@@ -479,8 +482,8 @@ DynamicTree::size_type DynamicTree::Balance(size_type iA)
 			B->child2 = iD;
 			A->child1 = iE;
 			E->parent = iA;
-			A->aabb = C->aabb + E->aabb;
-			B->aabb = A->aabb + D->aabb;
+			A->aabb = GetEnclosingAABB(C->aabb, E->aabb);
+			B->aabb = GetEnclosingAABB(A->aabb, D->aabb);
 			A->height = 1 + Max(C->height, E->height);
 			B->height = 1 + Max(A->height, D->height);
 		}
@@ -489,8 +492,8 @@ DynamicTree::size_type DynamicTree::Balance(size_type iA)
 			B->child2 = iE;
 			A->child1 = iD;
 			D->parent = iA;
-			A->aabb = C->aabb + D->aabb;
-			B->aabb = A->aabb + E->aabb;
+			A->aabb = GetEnclosingAABB(C->aabb, D->aabb);
+			B->aabb = GetEnclosingAABB(A->aabb, E->aabb);
 			A->height = 1 + Max(C->height, D->height);
 			B->height = 1 + Max(A->height, E->height);
 		}
@@ -528,7 +531,7 @@ RealNum DynamicTree::GetAreaRatio() const noexcept
 }
 
 // Compute the height of a sub-tree.
-DynamicTree::size_type DynamicTree::ComputeHeight(size_type nodeId) const noexcept
+DynamicTree::size_type DynamicTree::ComputeHeight(const size_type nodeId) const noexcept
 {
 	assert((0 <= nodeId) && (nodeId < m_nodeCapacity));
 	const auto node = m_nodes + nodeId;
@@ -548,19 +551,25 @@ DynamicTree::size_type DynamicTree::ComputeHeight() const noexcept
 	return ComputeHeight(m_root);
 }
 
-void DynamicTree::ValidateStructure(size_type index) const
+bool DynamicTree::ValidateStructure(const size_type index) const noexcept
 {
 	if (index == NullNode)
 	{
-		return;
+		return true;
 	}
 
 	if (index == m_root)
 	{
-		assert(m_nodes[index].parent == NullNode);
+		if (m_nodes[index].parent != NullNode)
+		{
+			return false;
+		}
 	}
 
-	assert(index < m_nodeCapacity);
+	if (index >= m_nodeCapacity)
+	{
+		return false;
+	}
 
 	const auto node = m_nodes + index;
 
@@ -569,30 +578,62 @@ void DynamicTree::ValidateStructure(size_type index) const
 
 	if (node->IsLeaf())
 	{
-		assert(child1 == NullNode);
-		assert(child2 == NullNode);
-		assert(node->height == 0);
-		return;
+		if (child1 != NullNode)
+		{
+			return false;
+		}
+		if (child2 != NullNode)
+		{
+			return false;
+		}
+		if (node->height != 0)
+		{
+			return false;
+		}
+		return true;
 	}
 
-	assert((0 <= child1) && (child1 < m_nodeCapacity));
-	assert((0 <= child2) && (child2 < m_nodeCapacity));
+	if (child1 >= m_nodeCapacity)
+	{
+		return false;
+	}
+	if (child2 >= m_nodeCapacity)
+	{
+		return false;
+	}
 
-	assert(m_nodes[child1].parent == index);
-	assert(m_nodes[child2].parent == index);
+	if (m_nodes[child1].parent != index)
+	{
+		return false;
+	}
+	if (m_nodes[child2].parent != index)
+	{
+		return false;
+	}
 
-	ValidateStructure(child1);
-	ValidateStructure(child2);
+	if (!ValidateStructure(child1))
+	{
+		return false;
+	}
+	if (!ValidateStructure(child2))
+	{
+		return false;
+	}
+	
+	return true;
 }
 
-void DynamicTree::ValidateMetrics(size_type index) const
+bool DynamicTree::ValidateMetrics(size_type index) const noexcept
 {
 	if (index == NullNode)
 	{
-		return;
+		return true;
 	}
 
-	assert(index < m_nodeCapacity);
+	if (index >= m_nodeCapacity)
+	{
+		return false;
+	}
 
 	const auto node = m_nodes + index;
 
@@ -601,50 +642,97 @@ void DynamicTree::ValidateMetrics(size_type index) const
 
 	if (node->IsLeaf())
 	{
-		assert(child1 == NullNode);
-		assert(child2 == NullNode);
-		assert(node->height == 0);
-		return;
+		if (child1 != NullNode)
+		{
+			return false;
+		}
+		if (child2 != NullNode)
+		{
+			return false;
+		}
+		if (node->height != 0)
+		{
+			return false;
+		}
+		return true;
 	}
 
-	assert((0 <= child1) && (child1 < m_nodeCapacity));
-	assert((0 <= child2) && (child2 < m_nodeCapacity));
+	if (child1 >= m_nodeCapacity)
+	{
+		return false;
+	}
+	if (child2 >= m_nodeCapacity)
+	{
+		return false;
+	}
 
-#if !defined(NDEBUG)
 	{
 		const auto height1 = m_nodes[child1].height;
 		const auto height2 = m_nodes[child2].height;
 		const auto height = 1 + Max(height1, height2);
-		assert(node->height == height);
+		if (node->height != height)
+		{
+			return false;
+		}
 	}
 	{
-		const auto aabb = m_nodes[child1].aabb + m_nodes[child2].aabb;
-		assert(aabb.GetLowerBound() == node->aabb.GetLowerBound());
-		assert(aabb.GetUpperBound() == node->aabb.GetUpperBound());
+		const auto aabb = GetEnclosingAABB(m_nodes[child1].aabb, m_nodes[child2].aabb);
+		if (aabb.GetLowerBound() != node->aabb.GetLowerBound())
+		{
+			return false;
+		}
+		if (aabb.GetUpperBound() != node->aabb.GetUpperBound())
+		{
+			return false;
+		}
 	}
-#endif
 
-	ValidateMetrics(child1);
-	ValidateMetrics(child2);
+	if (!ValidateMetrics(child1))
+	{
+		return false;
+	}
+	if (!ValidateMetrics(child2))
+	{
+		return false;
+	}
+	
+	return true;
 }
 
-void DynamicTree::Validate() const
+bool DynamicTree::Validate() const
 {
-	ValidateStructure(m_root);
-	ValidateMetrics(m_root);
+	if (!ValidateStructure(m_root))
+	{
+		return false;
+	}
+
+	if (!ValidateMetrics(m_root))
+	{
+		return false;
+	}
 
 	auto freeCount = size_type{0};
 	auto freeIndex = m_freeList;
 	while (freeIndex != NullNode)
 	{
-		assert((0 <= freeIndex) && (freeIndex < m_nodeCapacity));
+		if (freeIndex >= GetNodeCapacity())
+		{
+			return false;
+		}
 		freeIndex = m_nodes[freeIndex].next;
 		++freeCount;
 	}
 
-	assert(GetHeight() == ComputeHeight());
-
-	assert((m_nodeCount + freeCount) == m_nodeCapacity);
+	if ((m_root != NullNode) && (GetHeight() != ComputeHeight()))
+	{
+		return false;
+	}
+	if ((GetNodeCount() + freeCount) != GetNodeCapacity())
+	{
+		return false;
+	}
+	
+	return true;
 }
 
 DynamicTree::size_type DynamicTree::GetMaxBalance() const
@@ -719,7 +807,7 @@ void DynamicTree::RebuildBottomUp()
 			for (auto j = i + 1; j < count; ++j)
 			{
 				const auto& aabbj = m_nodes[nodes[j]].aabb;
-				const auto b = aabbi + aabbj;
+				const auto b = GetEnclosingAABB(aabbi, aabbj);
 				const auto cost = GetPerimeter(b);
 				if (minCost > cost)
 				{
@@ -744,7 +832,7 @@ void DynamicTree::RebuildBottomUp()
 		assert(child1->height != NullNode);
 		assert(child2->height != NullNode);
 		parent->height = 1 + Max(child1->height, child2->height);
-		parent->aabb = child1->aabb + child2->aabb;
+		parent->aabb = GetEnclosingAABB(child1->aabb, child2->aabb);
 		parent->parent = NullNode;
 
 		child1->parent = parentIndex;

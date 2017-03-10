@@ -51,7 +51,7 @@ namespace box2d
 		}
 		
 		/// Combine an AABB into this one.
-		constexpr AABB& operator += (const AABB& aabb)
+		constexpr AABB& operator += (const AABB aabb)
 		{
 			lowerBound = Vec2{Min(lowerBound.x, aabb.lowerBound.x), Min(lowerBound.y, aabb.lowerBound.y)};
 			upperBound = Vec2{Max(upperBound.x, aabb.upperBound.x), Max(upperBound.y, aabb.upperBound.y)};
@@ -93,20 +93,20 @@ namespace box2d
 	}
 	
 	/// Gets the center of the AABB.
-	constexpr inline Vec2 GetCenter(const AABB aabb) noexcept
+	constexpr Vec2 GetCenter(const AABB aabb) noexcept
 	{
 		return (aabb.GetLowerBound() + aabb.GetUpperBound()) / 2;
 	}
 	
 	/// Gets the extents of the AABB (half-widths).
-	constexpr inline Vec2 GetExtents(const AABB aabb) noexcept
+	constexpr Vec2 GetExtents(const AABB aabb) noexcept
 	{
 		return (aabb.GetUpperBound() - aabb.GetLowerBound()) / 2;
 	}
 	
 	/// Gets the perimeter length of the AABB.
 	/// @return Twice the sum of the width and height.
-	constexpr inline RealNum GetPerimeter(const AABB aabb) noexcept
+	constexpr RealNum GetPerimeter(const AABB aabb) noexcept
 	{
 		const auto upper = aabb.GetUpperBound();
 		const auto lower = aabb.GetLowerBound();
@@ -114,27 +114,19 @@ namespace box2d
 		const auto wy = upper.y - lower.y;
 		return (wx + wy) * 2;
 	}
-	
-	constexpr inline AABB operator + (const AABB lhs, const AABB rhs)
-	{
-		const auto lhsLowerBound = lhs.GetLowerBound();
-		const auto lhsUpperBound = lhs.GetUpperBound();
 
-		const auto rhsLowerBound = rhs.GetLowerBound();
-		const auto rhsUpperBound = rhs.GetUpperBound();
-		
-		return AABB{
-			Vec2{Min(lhsLowerBound.x, rhsLowerBound.x), Min(lhsLowerBound.y, rhsLowerBound.y)},
-			Vec2{Max(lhsUpperBound.x, rhsUpperBound.x), Max(lhsUpperBound.y, rhsUpperBound.y)}
-		};
+	constexpr AABB GetEnclosingAABB(AABB a, AABB b)
+	{
+		a += b;
+		return a;
 	}
 	
-	constexpr inline AABB operator + (const Vec2 lhs, const AABB rhs)
+	constexpr AABB operator + (const Vec2 lhs, const AABB rhs)
 	{
 		return AABB{rhs.GetLowerBound() - lhs, rhs.GetUpperBound() + lhs};
 	}
 	
-	constexpr inline AABB operator + (const AABB lhs, const Vec2 rhs)
+	constexpr AABB operator + (const AABB lhs, const Vec2 rhs)
 	{
 		return AABB{lhs.GetLowerBound() - rhs, lhs.GetUpperBound() + rhs};
 	}
@@ -151,7 +143,7 @@ namespace box2d
 
 	// Tests for overlap between two axis aligned bounding boxes.
 	// @note This function's complexity is constant.
-	constexpr inline bool TestOverlap(const AABB a, const AABB b) noexcept
+	constexpr bool TestOverlap(const AABB a, const AABB b) noexcept
 	{
 		const auto d1 = b.GetLowerBound() - a.GetUpperBound();
 		const auto d2 = a.GetLowerBound() - b.GetUpperBound();

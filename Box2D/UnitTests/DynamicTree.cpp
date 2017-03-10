@@ -25,3 +25,115 @@ TEST(DynamicTree, ByteSizeIs24)
 {
 	EXPECT_EQ(sizeof(DynamicTree), size_t(24));
 }
+
+TEST(DynamicTree, DefaultConstruction)
+{
+	DynamicTree foo;
+	EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
+	EXPECT_EQ(foo.GetNodeCount(), DynamicTree::size_type(0));
+	EXPECT_EQ(foo.GetHeight(), DynamicTree::size_type(0));
+	EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::size_type(0));
+	EXPECT_EQ(foo.GetAreaRatio(), RealNum(0));	
+	EXPECT_TRUE(foo.Validate());
+}
+
+TEST(DynamicTree, InitializingConstruction)
+{
+	constexpr auto initCapacity = DynamicTree::GetDefaultInitialNodeCapacity() * 2;
+	DynamicTree foo{initCapacity};
+	EXPECT_EQ(foo.GetNodeCapacity(), initCapacity);
+	EXPECT_EQ(foo.GetNodeCount(), DynamicTree::size_type(0));
+	EXPECT_TRUE(foo.Validate());
+}
+
+TEST(DynamicTree, CreateAndDestroyProxy)
+{
+	DynamicTree foo;
+
+	ASSERT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
+	ASSERT_EQ(foo.GetNodeCount(), DynamicTree::size_type(0));
+
+	const auto aabb = AABB{Vec2{3, 1}, Vec2{-5, -2}};
+	const auto userdata = nullptr;
+
+	const auto pid = foo.CreateProxy(aabb, userdata);
+	EXPECT_EQ(foo.GetNodeCount(), DynamicTree::size_type(1));
+	EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
+	EXPECT_EQ(foo.GetFatAABB(pid), aabb);
+	EXPECT_EQ(foo.GetUserData(pid), userdata);
+	EXPECT_EQ(foo.GetHeight(), DynamicTree::size_type(0));
+	EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::size_type(0));
+	EXPECT_EQ(foo.GetAreaRatio(), RealNum(1));
+
+	EXPECT_EQ(foo.ComputeHeight(), DynamicTree::size_type(0));
+
+	foo.DestroyProxy(pid);
+	EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
+	EXPECT_EQ(foo.GetNodeCount(), DynamicTree::size_type(0));
+	EXPECT_EQ(foo.GetHeight(), DynamicTree::size_type(0));
+	EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::size_type(0));
+	EXPECT_EQ(foo.GetAreaRatio(), RealNum(0));
+}
+
+TEST(DynamicTree, FourIdenticalProxies)
+{
+	DynamicTree foo;
+	
+	ASSERT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
+	ASSERT_EQ(foo.GetNodeCount(), DynamicTree::size_type(0));
+
+	const auto aabb = AABB{Vec2{3, 1}, Vec2{-5, -2}};
+	const auto userdata = nullptr;
+	
+	{
+		const auto pid = foo.CreateProxy(aabb, userdata);
+		EXPECT_EQ(foo.GetFatAABB(pid), aabb);
+		EXPECT_EQ(foo.GetUserData(pid), userdata);
+	}
+
+	EXPECT_EQ(foo.GetNodeCount(), DynamicTree::size_type(1));
+	EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
+	EXPECT_EQ(foo.GetHeight(), DynamicTree::size_type(0));
+	EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::size_type(0));
+	EXPECT_EQ(foo.GetAreaRatio(), RealNum(1));
+	EXPECT_EQ(foo.ComputeHeight(), DynamicTree::size_type(0));
+
+	{
+		const auto pid = foo.CreateProxy(aabb, userdata);
+		EXPECT_EQ(foo.GetFatAABB(pid), aabb);
+		EXPECT_EQ(foo.GetUserData(pid), userdata);
+	}
+
+	EXPECT_EQ(foo.GetNodeCount(), DynamicTree::size_type(3));
+	EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
+	EXPECT_EQ(foo.GetHeight(), DynamicTree::size_type(1));
+	EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::size_type(0));
+	EXPECT_EQ(foo.GetAreaRatio(), RealNum(3));
+	EXPECT_EQ(foo.ComputeHeight(), DynamicTree::size_type(1));
+	
+	{
+		const auto pid = foo.CreateProxy(aabb, userdata);
+		EXPECT_EQ(foo.GetFatAABB(pid), aabb);
+		EXPECT_EQ(foo.GetUserData(pid), userdata);
+	}
+	
+	EXPECT_EQ(foo.GetNodeCount(), DynamicTree::size_type(5));
+	EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
+	EXPECT_EQ(foo.GetHeight(), DynamicTree::size_type(2));
+	EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::size_type(1));
+	EXPECT_EQ(foo.GetAreaRatio(), RealNum(5));
+	EXPECT_EQ(foo.ComputeHeight(), DynamicTree::size_type(2));
+	
+	{
+		const auto pid = foo.CreateProxy(aabb, userdata);
+		EXPECT_EQ(foo.GetFatAABB(pid), aabb);
+		EXPECT_EQ(foo.GetUserData(pid), userdata);
+	}
+	
+	EXPECT_EQ(foo.GetNodeCount(), DynamicTree::size_type(7));
+	EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
+	EXPECT_EQ(foo.GetHeight(), DynamicTree::size_type(2));
+	EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::size_type(0));
+	EXPECT_EQ(foo.GetAreaRatio(), RealNum(7));
+	EXPECT_EQ(foo.ComputeHeight(), DynamicTree::size_type(2));
+}

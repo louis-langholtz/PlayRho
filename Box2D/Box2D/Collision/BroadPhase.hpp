@@ -88,7 +88,7 @@ public:
 	void TouchProxy(size_type proxyId);
 
 	/// Gets the fat AABB for a proxy.
-	const AABB& GetFatAABB(size_type proxyId) const;
+	AABB GetFatAABB(size_type proxyId) const;
 
 	/// Gets user data from a proxy.
 	void* GetUserData(size_type proxyId) const;
@@ -164,7 +164,7 @@ inline void* BroadPhase::GetUserData(size_type proxyId) const
 	return m_tree.GetUserData(proxyId);
 }
 
-inline const AABB& BroadPhase::GetFatAABB(size_type proxyId) const
+inline AABB BroadPhase::GetFatAABB(size_type proxyId) const
 {
 	return m_tree.GetFatAABB(proxyId);
 }
@@ -206,7 +206,7 @@ BroadPhase::size_type BroadPhase::UpdatePairs(T* callback)
 
 		// We have to query the tree with the fat AABB so that
 		// we don't fail to create a pair that may touch later.
-		const auto& fatAABB = m_tree.GetFatAABB(m_queryProxyId);
+		const auto fatAABB = m_tree.GetFatAABB(m_queryProxyId);
 
 		// Query tree, create pairs and add them pair buffer.
 		m_tree.Query(this, fatAABB);
@@ -283,11 +283,21 @@ namespace std
 	public:
 		size_t operator()(const box2d::ProxyIdPair& pidpair) const
 		{
-			auto result = size_t{pidpair.proxyIdA};
-			return (result << 32)|pidpair.proxyIdB;
+			const auto a = size_t{pidpair.proxyIdA} * 2654435761u;
+			const auto b = size_t{pidpair.proxyIdB} * 2654435761u;
+			return a ^ b;
 		}
 	};
 	
+	template <>
+	struct equal_to<box2d::ProxyIdPair>
+	{
+		constexpr bool operator()(const box2d::ProxyIdPair& lhs, const box2d::ProxyIdPair& rhs) const
+		{
+			return (lhs.proxyIdA == rhs.proxyIdA && lhs.proxyIdB == rhs.proxyIdB)
+			|| (lhs.proxyIdB == rhs.proxyIdA && lhs.proxyIdA == rhs.proxyIdB);
+		}
+	};
 } // namespace std
 
 #endif
