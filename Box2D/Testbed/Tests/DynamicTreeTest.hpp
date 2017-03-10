@@ -334,10 +334,12 @@ private:
 	{
 		m_rayActor = nullptr;
 
-		RayCastInput input = m_rayCastInput;
+		auto input = m_rayCastInput;
 
 		// Ray cast against the dynamic tree.
-		m_tree.RayCast(this, input);
+		m_tree.RayCast([&](const RayCastInput& rci, DynamicTree::size_type proxyId) {
+			return RayCastCallback(rci, proxyId);
+		}, input);
 
 		// Brute force ray cast.
 		Actor* bruteActor = nullptr;

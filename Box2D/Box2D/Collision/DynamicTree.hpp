@@ -107,8 +107,8 @@ public:
 	/// number of proxies in the tree.
 	/// @param input the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
 	/// @param callback a callback class that is called for each proxy that is hit by the ray.
-	template <typename T>
-	void RayCast(T* callback, const RayCastInput& input) const;
+	void RayCast(std::function<RealNum(const RayCastInput& input, size_type proxyId)> callback,
+				 const RayCastInput& input) const;
 
 	/// Validate this tree.
 	/// @detail Validates this tree. Meant for testing.
@@ -247,8 +247,8 @@ inline DynamicTree::size_type DynamicTree::ComputeHeight() const noexcept
 	return ComputeHeight(m_root);
 }
 
-template <typename T>
-inline void DynamicTree::RayCast(T* callback, const RayCastInput& input) const
+inline void DynamicTree::RayCast(std::function<RealNum(const RayCastInput& input, size_type proxyId)> callback,
+									 const RayCastInput& input) const
 {
 	const auto p1 = input.p1;
 	const auto p2 = input.p2;
@@ -296,7 +296,7 @@ inline void DynamicTree::RayCast(T* callback, const RayCastInput& input) const
 		{
 			const auto subInput = RayCastInput{input.p1, input.p2, maxFraction};
 
-			const auto value = callback->RayCastCallback(subInput, nodeId);
+			const auto value = callback(subInput, nodeId);
 			if (value == 0)
 			{
 				// The client has terminated the ray cast.

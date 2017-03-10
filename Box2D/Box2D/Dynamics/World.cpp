@@ -1509,7 +1509,9 @@ void World::RayCast(RayCastFixtureReporter* callback, const Vec2& point1, const 
 {
 	WorldRayCastWrapper wrapper(&m_contactMgr.m_broadPhase, callback);
 	const auto input = RayCastInput{point1, point2, RealNum{1}};
-	m_contactMgr.m_broadPhase.RayCast(&wrapper, input);
+	m_contactMgr.m_broadPhase.RayCast([&](const RayCastInput& rci, BroadPhase::size_type proxyId) {
+		return wrapper.RayCastCallback(rci, proxyId);
+	}, input);
 }
 
 World::size_type World::GetProxyCount() const noexcept
