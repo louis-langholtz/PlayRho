@@ -24,6 +24,8 @@
 #include <Box2D/Collision/RayCastInput.hpp>
 #include <Box2D/Common/GrowableStack.hpp>
 
+#include <functional>
+
 namespace box2d {
 
 /// A dynamic AABB tree broad-phase, inspired by Nathanael Presson's btDbvt.
@@ -96,8 +98,7 @@ public:
 
 	/// Query an AABB for overlapping proxies. The callback class
 	/// is called for each proxy that overlaps the supplied AABB.
-	template <typename T>
-	void Query(T* callback, const AABB& aabb) const;
+	void Query(std::function<bool(size_type)> callback, const AABB aabb) const;
 
 	/// Ray-cast against the proxies in the tree. This relies on the callback
 	/// to perform a exact ray-cast in the case were the proxy contains a shape.
@@ -241,8 +242,7 @@ inline DynamicTree::size_type DynamicTree::GetHeight() const noexcept
 	return (m_root != NullNode)? m_nodes[m_root].height: 0;
 }
 
-template <typename T>
-inline void DynamicTree::Query(T* callback, const AABB& aabb) const
+inline void DynamicTree::Query(std::function<bool(size_type)> callback, const AABB aabb) const
 {
 	GrowableStack<size_type, 256> stack;
 	stack.Push(m_root);
@@ -260,7 +260,7 @@ inline void DynamicTree::Query(T* callback, const AABB& aabb) const
 		{
 			if (node->IsLeaf())
 			{
-				const auto proceed = callback->QueryCallback(nodeId);
+				const auto proceed = callback(nodeId);
 				if (!proceed)
 				{
 					return;

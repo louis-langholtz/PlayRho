@@ -315,7 +315,7 @@ private:
 
 	void Query()
 	{
-		m_tree.Query(this, m_queryAABB);
+		m_tree.Query([&](DynamicTree::size_type nodeId){ return QueryCallback(nodeId); }, m_queryAABB);
 
 		for (int32 i = 0; i < e_actorCount; ++i)
 		{

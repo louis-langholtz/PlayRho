@@ -23,6 +23,7 @@
 #include <Box2D/Common/Settings.hpp>
 #include <Box2D/Collision/DynamicTree.hpp>
 #include <algorithm> // for std::sort
+#include <functional>
 
 namespace box2d {
 
@@ -115,8 +116,7 @@ public:
 
 	/// Query an AABB for overlapping proxies. The callback class
 	/// is called for each proxy that overlaps the supplied AABB.
-	template <typename T>
-	void Query(T* callback, const AABB& aabb) const;
+	void Query(std::function<bool(size_type)> callback, const AABB aabb) const;
 
 	/// Ray-cast against the proxies in the tree. This relies on the callback
 	/// to perform an exact ray-cast in the case were the proxy contains a shape.
@@ -149,8 +149,6 @@ public:
 	size_type GetPairCount() const noexcept;
 
 private:
-
-	friend class DynamicTree;
 
 	void BufferMove(size_type proxyId);
 	void UnBufferMove(size_type proxyId);
@@ -247,7 +245,7 @@ BroadPhase::size_type BroadPhase::UpdatePairs(T* callback)
 		const auto fatAABB = m_tree.GetFatAABB(m_queryProxyId);
 
 		// Query tree, create pairs and add them pair buffer.
-		m_tree.Query(this, fatAABB);
+		m_tree.Query([&](DynamicTree::size_type nodeId){ return QueryCallback(nodeId); }, fatAABB);
 	}
 
 	// Reset move buffer
@@ -289,8 +287,7 @@ BroadPhase::size_type BroadPhase::UpdatePairs(T* callback)
 	return added;
 }
 
-template <typename T>
-inline void BroadPhase::Query(T* callback, const AABB& aabb) const
+inline void BroadPhase::Query(std::function<bool(size_type)> callback, const AABB aabb) const
 {
 	m_tree.Query(callback, aabb);
 }

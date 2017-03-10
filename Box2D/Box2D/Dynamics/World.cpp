@@ -1471,7 +1471,7 @@ void World::QueryAABB(QueryFixtureReporter* callback, const AABB& aabb) const
 	WorldQueryWrapper wrapper;
 	wrapper.broadPhase = &m_contactMgr.m_broadPhase;
 	wrapper.callback = callback;
-	m_contactMgr.m_broadPhase.Query(&wrapper, aabb);
+	m_contactMgr.m_broadPhase.Query([&](BroadPhase::size_type nodeId){ return wrapper.QueryCallback(nodeId); }, aabb);
 }
 
 struct WorldRayCastWrapper
