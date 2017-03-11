@@ -1484,7 +1484,9 @@ void World::QueryAABB(QueryFixtureReporter* callback, const AABB& aabb) const
 	WorldQueryWrapper wrapper;
 	wrapper.broadPhase = &m_broadPhase;
 	wrapper.callback = callback;
-	m_broadPhase.Query([&](BroadPhase::size_type nodeId){ return wrapper.QueryCallback(nodeId); }, aabb);
+	m_broadPhase.Query(aabb, [&](BroadPhase::size_type nodeId) {
+		return wrapper.QueryCallback(nodeId);
+	});
 }
 
 struct WorldRayCastWrapper
@@ -1522,9 +1524,9 @@ void World::RayCast(RayCastFixtureReporter* callback, const Vec2& point1, const 
 {
 	WorldRayCastWrapper wrapper(&m_broadPhase, callback);
 	const auto input = RayCastInput{point1, point2, RealNum{1}};
-	m_broadPhase.RayCast([&](const RayCastInput& rci, BroadPhase::size_type proxyId) {
+	m_broadPhase.RayCast(input, [&](const RayCastInput& rci, BroadPhase::size_type proxyId) {
 		return wrapper.RayCastCallback(rci, proxyId);
-	}, input);
+	});
 }
 
 void World::ShiftOrigin(const Vec2 newOrigin)

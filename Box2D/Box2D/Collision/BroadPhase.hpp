@@ -58,6 +58,8 @@ class BroadPhase
 public:
 
 	using size_type = std::remove_const<decltype(MaxContacts)>::type;
+	using QueryCallback = std::function<bool(size_type)>;
+	using RayCastCallback = std::function<RealNum(const RayCastInput&, size_type)>;
 
 	enum: size_type
 	{
@@ -119,7 +121,7 @@ public:
 
 	/// Query an AABB for overlapping proxies. The callback class
 	/// is called for each proxy that overlaps the supplied AABB.
-	void Query(std::function<bool(size_type)> callback, const AABB aabb) const;
+	void Query(const AABB aabb, QueryCallback callback) const;
 
 	/// Ray-cast against the proxies in the tree. This relies on the callback
 	/// to perform an exact ray-cast in the case were the proxy contains a shape.
@@ -128,8 +130,7 @@ public:
 	/// number of proxies in the tree.
 	/// @param input the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
 	/// @param callback a callback class that is called for each proxy that is hit by the ray.
-	void RayCast(std::function<RealNum(const RayCastInput&, size_type)> callback,
-				 const RayCastInput& input) const;
+	void RayCast(const RayCastInput& input, RayCastCallback callback) const;
 
 	/// Gets the height of the embedded tree.
 	size_type GetTreeHeight() const noexcept;
@@ -217,13 +218,12 @@ inline RealNum BroadPhase::GetTreeQuality() const
 	return m_tree.GetAreaRatio();
 }
 
-inline void BroadPhase::Query(std::function<bool(size_type)> callback, const AABB aabb) const
+inline void BroadPhase::Query(const AABB aabb, QueryCallback callback) const
 {
 	m_tree.Query(aabb, callback);
 }
 
-inline void BroadPhase::RayCast(std::function<RealNum(const RayCastInput&, size_type)> callback,
-								const RayCastInput& input) const
+inline void BroadPhase::RayCast(const RayCastInput& input, RayCastCallback callback) const
 {
 	m_tree.RayCast(input, callback);
 }
