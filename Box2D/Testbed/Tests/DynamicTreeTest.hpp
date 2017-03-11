@@ -91,7 +91,7 @@ public:
 		for (int32 i = 0; i < e_actorCount; ++i)
 		{
 			const auto actor = m_actors + i;
-			if (actor->proxyId == DynamicTree::NullNode)
+			if (actor->proxyId == DynamicTree::InvalidIndex)
 				continue;
 
 			Color c(0.9f, 0.9f, 0.9f);
@@ -249,7 +249,7 @@ private:
 		{
 			const auto j = rand() % e_actorCount;
 			const auto actor = m_actors + j;
-			if (actor->proxyId == DynamicTree::NullNode)
+			if (actor->proxyId == DynamicTree::InvalidIndex)
 			{
 				actor->aabb = GetRandomAABB();
 				actor->proxyId = m_tree.CreateProxy(actor->aabb + extension, actor);
@@ -264,10 +264,10 @@ private:
 		{
 			int32 j = rand() % e_actorCount;
 			Actor* actor = m_actors + j;
-			if (actor->proxyId != DynamicTree::NullNode)
+			if (actor->proxyId != DynamicTree::InvalidIndex)
 			{
 				m_tree.DestroyProxy(actor->proxyId);
-				actor->proxyId = DynamicTree::NullNode;
+				actor->proxyId = DynamicTree::InvalidIndex;
 				return;
 			}
 		}
@@ -281,7 +281,7 @@ private:
 		{
 			int32 j = rand() % e_actorCount;
 			Actor* actor = m_actors + j;
-			if (actor->proxyId == DynamicTree::NullNode)
+			if (actor->proxyId == DynamicTree::InvalidIndex)
 			{
 				continue;
 			}
@@ -319,7 +319,7 @@ private:
 
 		for (int32 i = 0; i < e_actorCount; ++i)
 		{
-			if (m_actors[i].proxyId == DynamicTree::NullNode)
+			if (m_actors[i].proxyId == DynamicTree::InvalidIndex)
 			{
 				continue;
 			}
@@ -346,7 +346,7 @@ private:
 		RayCastOutput bruteOutput;
 		for (int32 i = 0; i < e_actorCount; ++i)
 		{
-			if (m_actors[i].proxyId == DynamicTree::NullNode)
+			if (m_actors[i].proxyId == DynamicTree::InvalidIndex)
 			{
 				continue;
 			}
