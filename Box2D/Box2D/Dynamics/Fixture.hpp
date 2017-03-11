@@ -226,8 +226,7 @@ private:
 
 	friend class Body;
 	friend class World;
-	friend class ContactManager;
-
+	
 	/// Initializing constructor.
 	///
 	/// @warning Behavior is undefined if a <code>nullptr</code> initial body setting is used.

@@ -96,9 +96,8 @@ public:
 
 	void PostStep(const Settings&, Drawer& drawer) override
 	{
-		const ContactManager& cm = m_world->GetContactManager();
-		const auto height = cm.m_broadPhase.GetTreeHeight();
-		const auto leafCount = cm.m_broadPhase.GetProxyCount();
+		const auto height = m_world->GetTreeHeight();
+		const auto leafCount = m_world->GetProxyCount();
 		assert(leafCount > 0);
 		const auto minimumNodeCount = 2 * leafCount - 1;
 		const auto minimumHeight = ceilf(logf(float(minimumNodeCount)) / logf(2.0f));

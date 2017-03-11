@@ -469,7 +469,6 @@ public:
 private:
 
 	friend class World;
-	friend class ContactManager;
 	
 	using flags_type = uint16;
 

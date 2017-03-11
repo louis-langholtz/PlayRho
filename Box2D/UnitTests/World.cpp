@@ -33,11 +33,11 @@
 
 using namespace box2d;
 
-TEST(World, ByteSizeIs_352_352_or_400)
+TEST(World, ByteSizeIs_344_352_or_400)
 {
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(World), size_t(352)); break;
+		case  4: EXPECT_EQ(sizeof(World), size_t(344)); break;
 		case  8: EXPECT_EQ(sizeof(World), size_t(352)); break;
 		case 16: EXPECT_EQ(sizeof(World), size_t(400)); break;
 		default: FAIL(); break;

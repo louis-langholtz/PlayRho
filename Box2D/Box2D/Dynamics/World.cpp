@@ -363,6 +363,20 @@ namespace {
 		return state == TOIOutput::e_touching;
 	}
 	
+	inline bool IsFor(const Contact& contact,
+					  const Fixture* fixtureA, child_count_t indexA,
+					  const Fixture* fixtureB, child_count_t indexB)
+	{
+		const auto fA = contact.GetFixtureA();
+		const auto fB = contact.GetFixtureB();
+		const auto iA = contact.GetChildIndexA();
+		const auto iB = contact.GetChildIndexB();
+		
+		return
+			((fA == fixtureA) && (fB == fixtureB) && (iA == indexA) && (iB == indexB)) ||
+			((fA == fixtureB) && (fB == fixtureA) && (iA == indexB) && (iB == indexA));
+	}
+
 } // anonymous namespace
 
 const BodyDef& World::GetDefaultBodyDef()
@@ -385,11 +399,11 @@ World::World(const Def& def):
 
 World::~World()
 {
-	while (!m_contactMgr.GetContacts().empty())
+	while (!m_contacts.empty())
 	{
-		const auto c = m_contactMgr.GetContacts().front();
-		m_contactMgr.Remove(c);
-		Contact::Destroy(c, m_contactMgr.m_allocator);
+		const auto c = m_contacts.front();
+		Remove(c);
+		Contact::Destroy(c, m_blockAllocator);
 	}
 
 	// Delete the created joints.
@@ -415,12 +429,12 @@ void World::SetDestructionListener(DestructionListener* listener) noexcept
 
 void World::SetContactFilter(ContactFilter* filter) noexcept
 {
-	m_contactMgr.m_contactFilter = filter;
+	m_contactFilter = filter;
 }
 
 void World::SetContactListener(ContactListener* listener) noexcept
 {
-	m_contactMgr.m_contactListener = listener;
+	m_contactListener = listener;
 }
 
 void World::SetGravity(const Vec2 gravity) noexcept
@@ -731,7 +745,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 	{
 		b->UnsetInIsland();
 	}
-	for (auto&& c: m_contactMgr.GetContacts())
+	for (auto&& c: m_contacts)
 	{
 		c->UnsetInIsland();
 	}
@@ -741,7 +755,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 	}
 
 	auto remNumBodies = m_bodies.size(); ///< Remaining number of bodies.
-	auto remNumContacts = m_contactMgr.GetContacts().size(); ///< Remaining number of contacts.
+	auto remNumContacts = m_contacts.size(); ///< Remaining number of contacts.
 	auto remNumJoints = m_joints.size(); ///< Remaining number of joints.
 
 #if defined(DO_THREADED)
@@ -811,7 +825,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 	}
 
 	// Look for new contacts.
-	stats.contactsAdded = m_contactMgr.FindNewContacts();
+	stats.contactsAdded = FindNewContacts();
 	
 	return stats;
 }
@@ -908,9 +922,9 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& step, Island is
 		UpdateBody(*body, constraint.GetPosition(), constraint.GetVelocity());
 	}
 	
-	if (m_contactMgr.m_contactListener)
+	if (m_contactListener)
 	{
-		Report(*m_contactMgr.m_contactListener, island.m_contacts, velocityConstraints,
+		Report(*m_contactListener, island.m_contacts, velocityConstraints,
 			   solved? positionIterations - 1: StepConf::InvalidIteration);
 	}
 	
@@ -939,7 +953,7 @@ void World::ResetBodiesForSolveTOI()
 
 void World::ResetContactsForSolveTOI()
 {
-	for (auto&& c: m_contactMgr.GetContacts())
+	for (auto&& c: m_contacts)
 	{
 		// Invalidate TOI
 		c->UnsetInIsland();
@@ -964,7 +978,7 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 		.UseMaxToiIters(step.maxToiIters)
 		.UseMaxDistIters(step.maxDistanceIters);
 	
-	for (auto&& c: m_contactMgr.GetContacts())
+	for (auto&& c: m_contacts)
 	{
 		if (c->HasValidToi())
 		{
@@ -1031,7 +1045,7 @@ World::ContactToiData World::GetSoonestContacts() const
 {
 	auto minToi = std::nextafter(RealNum{1}, RealNum{0});
 	auto minContacts = std::vector<Contact*>();
-	for (auto&& c: m_contactMgr.GetContacts())
+	for (auto&& c: m_contacts)
 	{
 		if (c->HasValidToi())
 		{
@@ -1123,7 +1137,7 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 
 		// Commit fixture proxy movements to the broad-phase so that new contacts are created.
 		// Also, some contacts can be destroyed.
-		stats.contactsAdded += m_contactMgr.FindNewContacts();
+		stats.contactsAdded += FindNewContacts();
 
 		if (GetSubStepping())
 		{
@@ -1152,7 +1166,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 
 		// The TOI contact likely has some new contact points.
 		contact.SetEnabled();	
-		contact.Update(m_contactMgr.m_contactListener);
+		contact.Update(m_contactListener);
 		contact.UnsetToi();
 
 		++contact.m_toiCount;
@@ -1174,7 +1188,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 	bB->SetAwake();
 
 	// Build the island
-	Island island(m_bodies.size(), m_contactMgr.GetContacts().size(), 0);
+	Island island(m_bodies.size(), m_contacts.size(), 0);
 
 	assert(!bA->IsInIsland());
 	assert(!bB->IsInIsland());
@@ -1191,11 +1205,11 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 	// bodies sweeps and transforms to the minimum contact's TOI.
 	if (bA->IsAccelerable())
 	{
-		ProcessContactsForTOI(island, *bA, toi, m_contactMgr.m_contactListener);
+		ProcessContactsForTOI(island, *bA, toi, m_contactListener);
 	}
 	if (bB->IsAccelerable())
 	{
-		ProcessContactsForTOI(island, *bB, toi, m_contactMgr.m_contactListener);
+		ProcessContactsForTOI(island, *bB, toi, m_contactListener);
 	}
 	
 	for (auto&& b: island.m_bodies)
@@ -1334,10 +1348,9 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 		UpdateBody(*body, constraint.GetPosition(), constraint.GetVelocity());
 	}
 
-	if (m_contactMgr.m_contactListener)
+	if (m_contactListener)
 	{
-		Report(*m_contactMgr.m_contactListener, island.m_contacts, velocityConstraints,
-			   positionIterations);
+		Report(*m_contactListener, island.m_contacts, velocityConstraints, positionIterations);
 	}
 	
 	return IslandSolverResults{finMinSeparation, maxIncImpulse, solved, positionIterations, velocityIterations};
@@ -1421,14 +1434,14 @@ StepStats World::Step(const StepConf& conf)
 		UnsetNewFixtures();
 		
 		// New fixtures were added: need to find and create the new contacts.
-		stepStats.pre.added = m_contactMgr.FindNewContacts();
+		stepStats.pre.added = FindNewContacts();
 	}
 
 	assert(!IsLocked());
 	FlagGuard<decltype(m_flags)> flagGaurd(m_flags, e_locked);
 
 	// Update and destroy contacts. No new contacts are created though.
-	const auto collideStats = m_contactMgr.Collide();
+	const auto collideStats = Collide();
 	stepStats.pre.ignored = collideStats.ignored;
 	stepStats.pre.destroyed = collideStats.destroyed;
 	stepStats.pre.updated = collideStats.updated;
@@ -1469,9 +1482,9 @@ struct WorldQueryWrapper
 void World::QueryAABB(QueryFixtureReporter* callback, const AABB& aabb) const
 {
 	WorldQueryWrapper wrapper;
-	wrapper.broadPhase = &m_contactMgr.m_broadPhase;
+	wrapper.broadPhase = &m_broadPhase;
 	wrapper.callback = callback;
-	m_contactMgr.m_broadPhase.Query([&](BroadPhase::size_type nodeId){ return wrapper.QueryCallback(nodeId); }, aabb);
+	m_broadPhase.Query([&](BroadPhase::size_type nodeId){ return wrapper.QueryCallback(nodeId); }, aabb);
 }
 
 struct WorldRayCastWrapper
@@ -1507,31 +1520,11 @@ struct WorldRayCastWrapper
 
 void World::RayCast(RayCastFixtureReporter* callback, const Vec2& point1, const Vec2& point2) const
 {
-	WorldRayCastWrapper wrapper(&m_contactMgr.m_broadPhase, callback);
+	WorldRayCastWrapper wrapper(&m_broadPhase, callback);
 	const auto input = RayCastInput{point1, point2, RealNum{1}};
-	m_contactMgr.m_broadPhase.RayCast([&](const RayCastInput& rci, BroadPhase::size_type proxyId) {
+	m_broadPhase.RayCast([&](const RayCastInput& rci, BroadPhase::size_type proxyId) {
 		return wrapper.RayCastCallback(rci, proxyId);
 	}, input);
-}
-
-World::size_type World::GetProxyCount() const noexcept
-{
-	return m_contactMgr.m_broadPhase.GetProxyCount();
-}
-
-World::size_type World::GetTreeHeight() const noexcept
-{
-	return m_contactMgr.m_broadPhase.GetTreeHeight();
-}
-
-World::size_type World::GetTreeBalance() const
-{
-	return m_contactMgr.m_broadPhase.GetTreeBalance();
-}
-
-RealNum World::GetTreeQuality() const
-{
-	return m_contactMgr.m_broadPhase.GetTreeQuality();
 }
 
 void World::ShiftOrigin(const Vec2 newOrigin)
@@ -1554,9 +1547,9 @@ void World::ShiftOrigin(const Vec2 newOrigin)
 		j->ShiftOrigin(newOrigin);
 	}
 
-	m_contactMgr.m_broadPhase.ShiftOrigin(newOrigin);
+	m_broadPhase.ShiftOrigin(newOrigin);
 }
-	
+
 bool World::IsActive(const Contact& contact) noexcept
 {
 	const auto bA = contact.GetFixtureA()->GetBody();
@@ -1568,6 +1561,222 @@ bool World::IsActive(const Contact& contact) noexcept
 	// Is at least one body active (awake and dynamic or kinematic)?
 	return activeA || activeB;
 }
+
+void World::Erase(Contact* c)
+{
+	assert(c);
+	
+	for (auto iter = m_contacts.begin(); iter != m_contacts.end(); ++iter)
+	{
+		if (*iter == c)
+		{
+			m_contacts.erase(iter);
+			break;
+		}
+	}
+}
+
+void World::RemoveFromBodies(Contact* c)
+{
+	const auto fixtureA = c->GetFixtureA();
+	const auto fixtureB = c->GetFixtureB();
+	const auto bodyA = fixtureA->GetBody();
+	const auto bodyB = fixtureB->GetBody();
+	
+	bodyA->m_contacts.erase(c);
+	bodyB->m_contacts.erase(c);
+}
+
+void World::InternalDestroy(Contact* c)
+{
+	if (m_contactListener && c->IsTouching())
+	{
+		// EndContact hadn't been called in Collide() since is-touching, so call it now
+		m_contactListener->EndContact(*c);
+	}
+	
+	RemoveFromBodies(c);
+	
+	Contact::Destroy(c, m_blockAllocator);
+}
+
+void World::Remove(Contact* c)
+{
+	assert(c);
+	assert(!m_contacts.empty());
+	RemoveFromBodies(c);
+	Erase(c);
+}
+
+void World::Destroy(Contact* c)
+{
+	InternalDestroy(c);
+	Erase(c);
+}
+
+void World::Destroy(Contacts::iterator iter)
+{
+	InternalDestroy(*iter);
+	m_contacts.erase(iter);
+}
+
+World::CollideStats World::Collide()
+{
+	auto stats = CollideStats{};
+	
+	// Update awake contacts.
+	auto next = m_contacts.begin();
+	for (auto iter = m_contacts.begin(); iter != m_contacts.end(); iter = next)
+	{
+		const auto c = *iter;
+		next = std::next(iter);
+		
+		const auto fixtureA = c->GetFixtureA();
+		const auto fixtureB = c->GetFixtureB();
+		const auto bodyA = fixtureA->GetBody();
+		const auto bodyB = fixtureB->GetBody();
+		
+		// Is this contact flagged for filtering?
+		if (c->NeedsFiltering())
+		{
+			// Can these bodies collide?
+			if (!(bodyB->ShouldCollide(bodyA)))
+			{
+				Destroy(iter);
+				++stats.destroyed;
+				continue;
+			}
+			
+			// Check user filtering.
+			if (m_contactFilter && !(m_contactFilter->ShouldCollide(fixtureA, fixtureB)))
+			{
+				Destroy(iter);
+				++stats.destroyed;
+				continue;
+			}
+			
+			// Clear the filtering flag.
+			c->UnflagForFiltering();
+		}
+		
+		// collidable means is-awake && is-speedable (dynamic or kinematic)
+		auto is_collidable = [&](Body* b) {
+			constexpr auto awake_and_speedable = Body::e_awakeFlag|Body::e_velocityFlag;
+			return (b->m_flags & awake_and_speedable) == awake_and_speedable;
+		};
+		
+		// At least one body must be collidable
+		if (!is_collidable(bodyA) && !is_collidable(bodyB))
+		{
+			++stats.ignored;
+			continue;
+		}
+		
+		const auto overlap = [&]() {
+			const auto indexA = c->GetChildIndexA();
+			const auto indexB = c->GetChildIndexB();
+			const auto proxyIdA = fixtureA->m_proxies[indexA].proxyId;
+			const auto proxyIdB = fixtureB->m_proxies[indexB].proxyId;
+			return TestOverlap(m_broadPhase, proxyIdA, proxyIdB);
+		}();
+		
+		// Here we destroy contacts that cease to overlap in the broad-phase.
+		if (!overlap)
+		{
+			Destroy(iter);
+			++stats.destroyed;
+			continue;
+		}
+		
+		// The contact persists.
+		
+		// Update the contact manifold and notify the listener.
+		c->SetEnabled();
+		c->Update(m_contactListener);
+		++stats.updated;
+	}
+	
+	return stats;
+}
+
+contact_count_t World::FindNewContacts()
+{
+	return m_broadPhase.UpdatePairs([&](void* a, void* b) { return AddPair(a, b); });
+}
+
+bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
+{
+	const auto pidA = proxyA.proxyId;
+	const auto fixtureA = proxyA.fixture; ///< Fixture of proxyA (but may get switched with fixtureB).
+	const auto pidB = proxyB.proxyId;
+	const auto fixtureB = proxyB.fixture; ///< Fixture of proxyB (but may get switched with fixtureA).
+	
+	assert(pidA != pidB);
+	assert(sizeof(pidA) + sizeof(pidB) == sizeof(size_t));
+	
+	const auto bodyA = fixtureA->GetBody();
+	const auto bodyB = fixtureB->GetBody();
+	
+	// Are the fixtures on the same body?
+	if (bodyA == bodyB)
+	{
+		return false;
+	}
+	
+	const auto childIndexA = proxyA.childIndex;
+	const auto childIndexB = proxyB.childIndex;
+	
+	// TODO: use a hash table to remove a potential bottleneck when both
+	// bodies have a lot of contacts.
+	// Does a contact already exist?
+	for (auto&& contact: bodyB->m_contacts)
+	{
+		if (IsFor(*contact, fixtureA, childIndexA, fixtureB, childIndexB))
+		{
+			// Already have a contact for proxyA with proxyB, bail!
+			return false;
+		}
+	}
+	
+	// Does a joint override collision? Is at least one body dynamic?
+	if (!bodyB->ShouldCollide(bodyA))
+	{
+		return false;
+	}
+	
+	// Check user filtering.
+	if (m_contactFilter && !m_contactFilter->ShouldCollide(fixtureA, fixtureB))
+	{
+		return false;
+	}
+	
+	assert(m_contacts.size() < MaxContacts);
+	
+	// Call the contact factory create method.
+	const auto c = Contact::Create(*fixtureA, childIndexA, *fixtureB, childIndexB, m_blockAllocator);
+	assert(c);
+	if (!c)
+	{
+		return false;
+	}
+	
+	bodyA->m_contacts.insert(c);
+	bodyB->m_contacts.insert(c);
+	
+	// Wake up the bodies
+	if (!fixtureA->IsSensor() && !fixtureB->IsSensor())
+	{
+		bodyA->SetAwake();
+		bodyB->SetAwake();
+	}
+	
+	// Insert into the world.
+	m_contacts.push_front(c);
+	
+	return true;
+}
+	
+// Free functions...
 
 StepStats Step(World& world, RealNum dt, World::ts_iters_type velocityIterations, World::ts_iters_type positionIterations)
 {

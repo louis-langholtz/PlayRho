@@ -22,9 +22,9 @@
 
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Common/BlockAllocator.hpp>
-#include <Box2D/Dynamics/ContactManager.hpp>
 #include <Box2D/Dynamics/WorldCallbacks.hpp>
 #include <Box2D/Dynamics/Profile.hpp>
+#include <Box2D/Collision/BroadPhase.hpp>
 
 #include <vector>
 #include <list>
@@ -34,6 +34,7 @@ namespace box2d {
 struct AABB;
 struct BodyDef;
 struct JointDef;
+struct FixtureProxy;
 class Body;
 class Fixture;
 class Joint;
@@ -106,13 +107,15 @@ constexpr auto EarthlyGravity = Vec2{0, RealNum(-9.8)};
 /// The world class manages all physics entities, dynamic simulation,
 /// and asynchronous queries. The world also contains efficient memory
 /// management facilities.
-/// @note This data structure is 352-bytes large (with 4-byte RealNum on at least one 64-bit platform).
+/// @note This data structure is 344-bytes large (with 4-byte RealNum on at least one 64-bit platform).
 class World
 {
 public:
 	
 	/// Size type.
 	using size_type = size_t;
+
+	using proxy_size_type = std::remove_const<decltype(MaxContacts)>::type;
 
 	/// Time step iteration type.
 	using ts_iters_type = ts_iters_t;
@@ -275,21 +278,21 @@ public:
 	/// Use ContactListener to avoid missing contacts.
 	/// @return World contact container.
 	const Contacts& GetContacts() const noexcept;
-
+	
 	/// Gets whether or not sub-stepping is enabled.
 	bool GetSubStepping() const noexcept;
 
 	/// Enable/disable single stepped continuous physics. For testing.
 	void SetSubStepping(bool flag) noexcept;
 
-	/// Get the number of broad-phase proxies.
-	size_type GetProxyCount() const noexcept;
+	/// Gets the number of broad-phase proxies.
+	proxy_size_type GetProxyCount() const noexcept;
 
 	/// Get the height of the dynamic tree.
-	size_type GetTreeHeight() const noexcept;
+	proxy_size_type GetTreeHeight() const noexcept;
 
 	/// Get the balance of the dynamic tree.
-	size_type GetTreeBalance() const;
+	proxy_size_type GetTreeBalance() const;
 
 	/// Gets the quality metric of the dynamic tree.
 	/// @detail The smaller the better.
@@ -310,9 +313,6 @@ public:
 	/// @param newOrigin the new origin with respect to the old origin
 	void ShiftOrigin(const Vec2 newOrigin);
 
-	/// Get the contact manager for testing.
-	const ContactManager& GetContactManager() const noexcept;
-
 	/// Gets the AABB extension.
 	/// @detail
 	/// Fattens AABBs in the dynamic tree. This allows proxies
@@ -329,6 +329,10 @@ public:
 	/// Gets the inverse delta time.
 	RealNum GetInvDeltaTime() const noexcept;
 
+	/// Gets the fat AABB for a proxy.
+	/// @warning Behavior is undefined if the given proxy ID is not a valid ID.
+	AABB GetFatAABB(proxy_size_type proxyId) const;
+	
 private:
 
 	/// Flags type data type.
@@ -468,7 +472,14 @@ private:
 
 	void SetAllowSleeping() noexcept;
 	void UnsetAllowSleeping() noexcept;
-
+	
+	struct CollideStats
+	{
+		uint32 ignored = 0;
+		uint32 destroyed = 0;
+		uint32 updated = 0;
+	};
+	
 	struct ContactToiData
 	{
 		std::vector<Contact*> contacts; ///< Contacts for which the time of impact is relavant.
@@ -488,7 +499,7 @@ private:
 		toi_iter_type maxToiIters = 0;
 		root_iter_type maxRootIters = 0;
 	};
-
+	
 	/// Updates the contact times of impact.
 	UpdateContactsData UpdateContactTOIs(const StepConf& step);
 
@@ -503,23 +514,74 @@ private:
 	
 	void UnsetNewFixtures() noexcept;
 	
+	contact_count_t FindNewContacts();
+	
+	/// Processes the narrow phase collision for the contact list.
+	/// @detail
+	/// This finds and destroys the contacts that need filtering and no longer should collide or
+	/// that no longer have AABB-based overlapping fixtures. Those contacts that persist and
+	/// have active bodies (either or both) get their Update methods called with the current
+	/// contact listener as its argument.
+	/// Essentially this really just purges contacts that are no longer relevant.
+	CollideStats Collide();
+	
+	// Broad-phase callback.
+	bool AddPair(void* proxyUserDataA, void* proxyUserDataB)
+	{
+		return Add(*static_cast<FixtureProxy*>(proxyUserDataA), *static_cast<FixtureProxy*>(proxyUserDataB));
+	}
+	
+	/// Destroys the given contact and removes it from its list.
+	/// @detail This updates the contact list, returns the memory to the allocator,
+	///   and decrements the contact manager's contact count.
+	/// @param c Contact to destroy.
+	void Destroy(Contact* c);
+	
+	/// Adds a contact for proxyA and proxyB if appropriate.
+	/// @detail Adds a new contact object to represent a contact between proxy A and proxy B if
+	/// all of the following are true:
+	///   1. The bodies of the fixtures of the proxies are not the one and the same.
+	///   2. No contact already exists for these two proxies.
+	///   3. The bodies of the proxies should collide (according to Body::ShouldCollide).
+	///   4. The contact filter says the fixtures of the proxies should collide.
+	///   5. There exists a contact-create function for the pair of shapes of the proxies.
+	/// @param proxyA Proxy A.
+	/// @param proxyB Proxy B.
+	/// @return <code>true</code> if a new contact was indeed added (and created), else <code>false</code>.
+	/// @sa bool Body::ShouldCollide(const Body* other) const
+	bool Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB);
+	
+	void InternalDestroy(Contact* contact);
+	void Destroy(Contacts::iterator iter);
+	void Erase(Contact* contact);
+	
+	/// Removes contact from this manager.
+	/// @warning Behavior is undefined if called with a contact that is not managed by this manager.
+	/// @param contact Non-null pointer to a contact that is managed by this manager.
+	void Remove(Contact* contact);
+	
+	void RemoveFromBodies(Contact* contact);
+
 	/******** Member variables. ********/
 
 	BlockAllocator m_blockAllocator; ///< Block allocator. 136-bytes.
 	
+	BroadPhase m_broadPhase; ///< Broad phase data. 72-bytes.
+	
 	ContactFilter m_defaultFilter; ///< Default contact filter. 8-bytes.
 	
-	ContactManager m_contactMgr{
-		m_blockAllocator, &m_defaultFilter, nullptr
-	}; ///< Contact manager. 112-bytes.
-
 	Bodies m_bodies; ///< Body collection.
 	Joints m_joints; ///< Joint collection.
+	Contacts m_contacts; ///< Container of contacts.
 
 	Vec2 m_gravity; ///< Gravity setting. 8-bytes.
 
 	DestructionListener* m_destructionListener = nullptr; ///< Destruction listener. 8-bytes.
-
+	
+	ContactListener* m_contactListener = nullptr; ///< Contact listener. 8-bytes.
+	
+	ContactFilter* m_contactFilter = &m_defaultFilter; ///< Contact filter. 8-bytes.
+	
 	FlagsType m_flags = e_stepComplete;
 
 	/// Inverse delta-t from previous step.
@@ -581,7 +643,7 @@ inline const World::Joints& World::GetJoints() const noexcept
 
 inline const World::Contacts& World::GetContacts() const noexcept
 {
-	return m_contactMgr.GetContacts();
+	return m_contacts;
 }
 
 inline Vec2 World::GetGravity() const noexcept
@@ -592,11 +654,6 @@ inline Vec2 World::GetGravity() const noexcept
 inline bool World::IsLocked() const noexcept
 {
 	return (m_flags & e_locked) == e_locked;
-}
-
-inline const ContactManager& World::GetContactManager() const noexcept
-{
-	return m_contactMgr;
 }
 
 inline bool World::IsStepComplete() const noexcept
@@ -666,6 +723,31 @@ inline RealNum World::GetMaxVertexRadius() const noexcept
 inline RealNum World::GetInvDeltaTime() const noexcept
 {
 	return m_inv_dt0;
+}
+
+inline AABB World::GetFatAABB(proxy_size_type proxyId) const
+{
+	return m_broadPhase.GetFatAABB(proxyId);
+}
+
+inline World::proxy_size_type World::GetProxyCount() const noexcept
+{
+	return m_broadPhase.GetProxyCount();
+}
+
+inline World::proxy_size_type World::GetTreeHeight() const noexcept
+{
+	return m_broadPhase.GetTreeHeight();
+}
+
+inline World::proxy_size_type World::GetTreeBalance() const
+{
+	return m_broadPhase.GetTreeBalance();
+}
+
+inline RealNum World::GetTreeQuality() const
+{
+	return m_broadPhase.GetTreeQuality();
 }
 
 // Free functions.

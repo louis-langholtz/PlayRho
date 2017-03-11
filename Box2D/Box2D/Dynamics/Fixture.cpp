@@ -133,7 +133,7 @@ void Fixture::Refilter()
 		const auto world = body->GetWorld();
 		if (world)
 		{
-			TouchProxies(world->m_contactMgr.m_broadPhase);
+			TouchProxies(world->m_broadPhase);
 		}
 	}
 }

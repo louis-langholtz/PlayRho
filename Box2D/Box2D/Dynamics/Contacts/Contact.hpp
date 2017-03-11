@@ -149,7 +149,6 @@ public:
 	bool NeedsFiltering() const noexcept;
 	
 protected:
-	friend class ContactManager;
 	friend class World;
 	friend class Fixture;
 

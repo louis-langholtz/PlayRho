@@ -277,7 +277,6 @@ static void Draw(Drawer& drawer, const World& world, const Settings& settings)
 	if (settings.drawAABBs)
 	{
 		const auto color = Color{0.9f, 0.3f, 0.9f};
-		const auto bp = &world.GetContactManager().m_broadPhase;
 		
 		for (auto&& b: world.GetBodies())
 		{
@@ -292,7 +291,7 @@ static void Draw(Drawer& drawer, const World& world, const Settings& settings)
 				for (auto i = decltype(proxy_count){0}; i < proxy_count; ++i)
 				{
 					const auto proxy = f->GetProxy(i);
-					const auto aabb = bp->GetFatAABB(proxy->proxyId);
+					const auto aabb = world.GetFatAABB(proxy->proxyId);
 					Vec2 vs[4];
 					vs[0] = Vec2{aabb.GetLowerBound().x, aabb.GetLowerBound().y};
 					vs[1] = Vec2{aabb.GetUpperBound().x, aabb.GetLowerBound().y};
