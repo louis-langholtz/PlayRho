@@ -165,8 +165,7 @@ ContactManager::CollideStats ContactManager::Collide()
 
 contact_count_t ContactManager::FindNewContacts()
 {
-	// Here m_broadPhase will call this object's ContactManager::AddPair method.
-	return m_broadPhase.UpdatePairs(this);
+	return m_broadPhase.UpdatePairs([&](void* a, void* b) { return AddPair(a, b); });
 }
 
 static inline bool IsFor(const Contact& contact,
@@ -186,14 +185,12 @@ static inline bool IsFor(const Contact& contact,
 bool ContactManager::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 {
 	const auto pidA = proxyA.proxyId;
+	const auto fixtureA = proxyA.fixture; ///< Fixture of proxyA (but may get switched with fixtureB).
 	const auto pidB = proxyB.proxyId;
-	const auto pidpair = ProxyIdPair{pidA, pidB};
+	const auto fixtureB = proxyB.fixture; ///< Fixture of proxyB (but may get switched with fixtureA).
 	
 	assert(pidA != pidB);
 	assert(sizeof(pidA) + sizeof(pidB) == sizeof(size_t));
-	
-	const auto fixtureA = proxyA.fixture; ///< Fixture of proxyA (but may get switched with fixtureB).
-	const auto fixtureB = proxyB.fixture; ///< Fixture of proxyB (but may get switched with fixtureA).
 
 	const auto bodyA = fixtureA->GetBody();
 	const auto bodyB = fixtureB->GetBody();

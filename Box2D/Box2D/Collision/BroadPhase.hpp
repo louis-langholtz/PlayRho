@@ -79,10 +79,11 @@ public:
 	~BroadPhase() noexcept;
 	
 	BroadPhase(const BroadPhase& copy) = delete;
+
 	BroadPhase& operator=(const BroadPhase&) = delete;
 
-	/// Creates a proxy with an initial AABB. Pairs are not reported until
-	/// UpdatePairs is called.
+	/// Creates a proxy with an initial AABB.
+	/// @note Pairs are not reported until UpdatePairs is called.
 	size_type CreateProxy(const AABB& aabb, void* userData);
 
 	/// Destroys a proxy. It is up to the client to remove any pairs.
@@ -91,7 +92,7 @@ public:
 	/// Moves the proxy.
 	/// @detail
 	/// Call MoveProxy as many times as you like, then when you are done
-	/// call UpdatePairs to finalized the proxy pairs (for your time step).
+	/// @note Call UpdatePairs to finalized the proxy pairs (for your time step).
 	/// @param proxyId Proxy ID. Behavior is undefined if this is the null proxy ID.
 	/// @param aabb Axis aligned bounding box.
 	/// @param displacement Displacement. Behavior is undefined if this is an invalid value.
@@ -110,9 +111,9 @@ public:
 	/// Get the number of proxies.
 	size_type GetProxyCount() const noexcept;
 
-	/// Update the pairs. This results in pair callbacks. This can only add pairs.
-	template <typename T>
-	size_type UpdatePairs(T* callback);
+	/// Updates the pairs.
+	/// @detail This results in pair callbacks. This can only add pairs.
+	size_type UpdatePairs(std::function<bool(void*,void*)> callback);
 
 	/// Query an AABB for overlapping proxies. The callback class
 	/// is called for each proxy that overlaps the supplied AABB.
@@ -223,68 +224,6 @@ inline BroadPhase::size_type BroadPhase::GetTreeBalance() const
 inline RealNum BroadPhase::GetTreeQuality() const
 {
 	return m_tree.GetAreaRatio();
-}
-
-template <typename T>
-BroadPhase::size_type BroadPhase::UpdatePairs(T* callback)
-{
-	// Reset pair buffer
-	m_pairCount = 0;
-
-	// Perform tree queries for all moving proxies.
-	for (auto i = decltype(m_moveCount){0}; i < m_moveCount; ++i)
-	{
-		m_queryProxyId = m_moveBuffer[i];
-		if (m_queryProxyId == e_nullProxy)
-		{
-			continue;
-		}
-
-		// We have to query the tree with the fat AABB so that
-		// we don't fail to create a pair that may touch later.
-		const auto fatAABB = m_tree.GetFatAABB(m_queryProxyId);
-
-		// Query tree, create pairs and add them pair buffer.
-		m_tree.Query([&](DynamicTree::size_type nodeId){ return QueryCallback(nodeId); }, fatAABB);
-	}
-
-	// Reset move buffer
-	m_moveCount = 0;
-
-	// Sort the pair buffer to expose duplicates.
-	std::sort(m_pairBuffer, m_pairBuffer + m_pairCount, [](ProxyIdPair p1, ProxyIdPair p2) {
-		return (p1.proxyIdA < p2.proxyIdA) || ((p1.proxyIdA == p2.proxyIdA) && (p1.proxyIdB < p2.proxyIdB));
-	});
-
-	auto added = size_type{0};
-	// Send the pairs back to the client.
-	for (auto i = decltype(m_pairCount){0}; i < m_pairCount; )
-	{
-		const auto& primaryPair = m_pairBuffer[i];
-		const auto userDataA = m_tree.GetUserData(primaryPair.proxyIdA);
-		const auto userDataB = m_tree.GetUserData(primaryPair.proxyIdB);
-
-		if (callback->AddPair(userDataA, userDataB))
-		{
-			++added;
-		}
-		++i;
-
-		// Skip any duplicate pairs.
-		while (i < m_pairCount)
-		{
-			const auto& pair = m_pairBuffer[i];
-			if (pair != primaryPair)
-			{
-				break;
-			}
-			++i;
-		}
-	}
-
-	// Try to keep the tree balanced.
-	//m_tree.Rebalance(4);
-	return added;
 }
 
 inline void BroadPhase::Query(std::function<bool(size_type)> callback, const AABB aabb) const

@@ -108,3 +108,64 @@ bool BroadPhase::QueryCallback(size_type proxyId)
 
 	return true;
 }
+
+BroadPhase::size_type BroadPhase::UpdatePairs(std::function<bool(void*,void*)> callback)
+{
+	// Reset pair buffer
+	m_pairCount = 0;
+	
+	// Perform tree queries for all moving proxies.
+	for (auto i = decltype(m_moveCount){0}; i < m_moveCount; ++i)
+	{
+		m_queryProxyId = m_moveBuffer[i];
+		if (m_queryProxyId == e_nullProxy)
+		{
+			continue;
+		}
+		
+		// We have to query the tree with the fat AABB so that
+		// we don't fail to create a pair that may touch later.
+		const auto fatAABB = m_tree.GetFatAABB(m_queryProxyId);
+		
+		// Query tree, create pairs and add them pair buffer.
+		m_tree.Query([&](DynamicTree::size_type nodeId){ return QueryCallback(nodeId); }, fatAABB);
+	}
+	
+	// Reset move buffer
+	m_moveCount = 0;
+	
+	// Sort the pair buffer to expose duplicates.
+	std::sort(m_pairBuffer, m_pairBuffer + m_pairCount, [](ProxyIdPair p1, ProxyIdPair p2) {
+		return (p1.proxyIdA < p2.proxyIdA) || ((p1.proxyIdA == p2.proxyIdA) && (p1.proxyIdB < p2.proxyIdB));
+	});
+	
+	auto added = size_type{0};
+	// Send the pairs back to the client.
+	for (auto i = decltype(m_pairCount){0}; i < m_pairCount; )
+	{
+		const auto& primaryPair = m_pairBuffer[i];
+		const auto userDataA = m_tree.GetUserData(primaryPair.proxyIdA);
+		const auto userDataB = m_tree.GetUserData(primaryPair.proxyIdB);
+		
+		if (callback(userDataA, userDataB))
+		{
+			++added;
+		}
+		++i;
+		
+		// Skip any duplicate pairs.
+		while (i < m_pairCount)
+		{
+			const auto& pair = m_pairBuffer[i];
+			if (pair != primaryPair)
+			{
+				break;
+			}
+			++i;
+		}
+	}
+	
+	// Try to keep the tree balanced.
+	//m_tree.Rebalance(4);
+	return added;
+}
