@@ -28,8 +28,9 @@ TEST(AABB, ByteSizeIsTwiceVec2)
 
 TEST(AABB, DefaultConstruction)
 {
-	const auto lb = Vec2{MaxFloat, MaxFloat};
-	const auto ub = Vec2{-MaxFloat, -MaxFloat};
+	const auto infinity = std::numeric_limits<RealNum>::infinity();
+	const auto lb = Vec2{infinity, infinity};
+	const auto ub = Vec2{-infinity, -infinity};
 	const auto aabb = AABB{};
 	EXPECT_EQ(aabb.GetLowerBound(), lb);
 	EXPECT_EQ(aabb.GetUpperBound(), ub);

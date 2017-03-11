@@ -69,21 +69,44 @@ namespace box2d
 				(lower.x <= other_lower.x) && (lower.y <= other_lower.y) &&
 				(other_upper.x <= upper.x) && (other_upper.y <= upper.y);
 		}
-				
+		
 		constexpr Vec2 GetLowerBound() const noexcept { return lowerBound; }
 
 		constexpr Vec2 GetUpperBound() const noexcept { return upperBound; }
 		
-		AABB& Move(const Vec2 value) noexcept
+		constexpr AABB& Move(const Vec2 value) noexcept
 		{
 			lowerBound += value;
 			upperBound += value;
 			return *this;
 		}
 		
+		constexpr AABB& Displace(const Vec2 value) noexcept
+		{
+			if (value.x < decltype(value.x){0})
+			{
+				lowerBound.x += value.x;
+			}
+			else
+			{
+				upperBound.x += value.x;
+			}
+			
+			if (value.y < decltype(value.y){0})
+			{
+				lowerBound.y += value.y;
+			}
+			else
+			{
+				upperBound.y += value.y;
+			}
+			return *this;
+		}
+		
 	private:
-		Vec2 lowerBound = Vec2{MaxFloat, MaxFloat}; ///< the lower vertex
-		Vec2 upperBound = Vec2{-MaxFloat, -MaxFloat}; ///< the upper vertex
+		static constexpr auto infinity = std::numeric_limits<RealNum>::infinity();
+		Vec2 lowerBound = Vec2{infinity, infinity}; ///< the lower vertex
+		Vec2 upperBound = Vec2{-infinity, -infinity}; ///< the upper vertex
 	};
 	
 	template <>
@@ -98,10 +121,15 @@ namespace box2d
 		return (aabb.GetLowerBound() + aabb.GetUpperBound()) / 2;
 	}
 	
+	constexpr Vec2 GetDimensions(const AABB aabb) noexcept
+	{
+		return aabb.GetUpperBound() - aabb.GetLowerBound();
+	}
+
 	/// Gets the extents of the AABB (half-widths).
 	constexpr Vec2 GetExtents(const AABB aabb) noexcept
 	{
-		return (aabb.GetUpperBound() - aabb.GetLowerBound()) / 2;
+		return GetDimensions(aabb) / 2;
 	}
 	
 	/// Gets the perimeter length of the AABB.
@@ -121,6 +149,19 @@ namespace box2d
 		return a;
 	}
 	
+	constexpr AABB GetDisplacedAABB(AABB aabb, const Vec2 displacement)
+	{
+		aabb.Displace(displacement);
+		return aabb;
+	}
+	
+	constexpr AABB GetExtendedAABB(AABB aabb, const Vec2 extension)
+	{
+		aabb.Displace(extension);
+		aabb.Displace(-extension);
+		return aabb;
+	}
+
 	constexpr AABB operator + (const Vec2 lhs, const AABB rhs)
 	{
 		return AABB{rhs.GetLowerBound() - lhs, rhs.GetUpperBound() + lhs};
