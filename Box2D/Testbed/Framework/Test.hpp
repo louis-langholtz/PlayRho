@@ -24,6 +24,7 @@
 #include <cstdlib>
 #include "Drawer.hpp"
 #include <Box2D/Collision/CollideShapes.hpp>
+#include <Box2D/Dynamics/Profile.hpp>
 
 namespace box2d {
 
