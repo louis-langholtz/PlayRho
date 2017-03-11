@@ -23,7 +23,6 @@
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Common/BlockAllocator.hpp>
 #include <Box2D/Dynamics/WorldCallbacks.hpp>
-#include <Box2D/Dynamics/Profile.hpp>
 #include <Box2D/Collision/BroadPhase.hpp>
 
 #include <vector>
