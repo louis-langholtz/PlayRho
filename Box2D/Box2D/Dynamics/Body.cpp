@@ -475,13 +475,15 @@ bool Body::ShouldCollide(const Body* other) const
 	return true;
 }
 
-void Body::SynchronizeFixtures(const Transformation& t1, const Transformation& t2)
+contact_count_t Body::SynchronizeFixtures(const Transformation& t1, const Transformation& t2)
 {
+	auto movedCount = contact_count_t{0};
 	auto& broadPhase = m_world->m_broadPhase;
 	for (auto&& fixture: GetFixtures())
 	{
-		fixture->Synchronize(broadPhase, t1, t2);
+		movedCount += fixture->Synchronize(broadPhase, t1, t2);
 	}
+	return movedCount;
 }
 
 void Body::SetTransform(const Vec2 position, Angle angle)
@@ -501,9 +503,9 @@ void Body::SetTransform(const Vec2 position, Angle angle)
 	SynchronizeFixtures(xf, xf);
 }
 
-void Body::SynchronizeFixtures()
+contact_count_t Body::SynchronizeFixtures()
 {
-	SynchronizeFixtures(GetTransform0(m_sweep), GetTransformation());
+	return SynchronizeFixtures(GetTransform0(m_sweep), GetTransformation());
 }
 
 void Body::SetActive(bool flag)

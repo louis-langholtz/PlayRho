@@ -44,7 +44,7 @@
 #include <vector>
 #include <unordered_map>
 
-#define DO_THREADED
+//#define DO_THREADED
 #if defined(DO_THREADED)
 #include <future>
 #endif
@@ -741,17 +741,17 @@ RegStepStats World::SolveReg(const StepConf& step)
 	// This builds the logical set of bodies, contacts, and joints eligible for resolution.
 	// As bodies, contacts, or joints get added to resolution islands, they're essentially
 	// removed from this eligible set (and their IsInIsland method thereafter returns true.
-	for (auto&& b: m_bodies)
+	for (auto&& body: m_bodies)
 	{
-		b->UnsetInIsland();
+		body->UnsetInIsland();
 	}
-	for (auto&& c: m_contacts)
+	for (auto&& contact: m_contacts)
 	{
-		c->UnsetInIsland();
+		contact->UnsetInIsland();
 	}
-	for (auto&& j: m_joints)
+	for (auto&& joint: m_joints)
 	{
-		j->SetInIsland(false);
+		joint->SetInIsland(false);
 	}
 
 	auto remNumBodies = m_bodies.size(); ///< Remaining number of bodies.
@@ -799,9 +799,9 @@ RegStepStats World::SolveReg(const StepConf& step)
 	}
 
 #if defined(DO_THREADED)
-	for (auto&& f: futures)
+	for (auto&& future: futures)
 	{
-		const auto solverResults = f.get();
+		const auto solverResults = future.get();
 		stats.maxIncImpulse = Max(stats.maxIncImpulse, solverResults.maxIncImpulse);
 		stats.minSeparation = Min(stats.minSeparation, solverResults.minSeparation);
 		if (solverResults.solved)
@@ -814,13 +814,13 @@ RegStepStats World::SolveReg(const StepConf& step)
 	}
 #endif
 
-	for (auto&& b: m_bodies)
+	for (auto&& body: m_bodies)
 	{
 		// A non-static body that was in an island may have moved.
-		if ((b->m_flags & (Body::e_velocityFlag|Body::e_islandFlag)) == (Body::e_velocityFlag|Body::e_islandFlag))
+		if ((body->m_flags & (Body::e_velocityFlag|Body::e_islandFlag)) == (Body::e_velocityFlag|Body::e_islandFlag))
 		{
 			// Update fixtures (for broad-phase).
-			b->SynchronizeFixtures();
+			stats.proxiesMoved += body->SynchronizeFixtures();
 		}
 	}
 
@@ -1129,7 +1129,7 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 				body->UnsetInIsland();
 				if (body->IsAccelerable())
 				{
-					body->SynchronizeFixtures();
+					stats.proxiesMoved += body->SynchronizeFixtures();
 					ResetContactsForSolveTOI(*body);
 				}
 			}
@@ -1630,16 +1630,16 @@ World::CollideStats World::Collide()
 	auto next = m_contacts.begin();
 	for (auto iter = m_contacts.begin(); iter != m_contacts.end(); iter = next)
 	{
-		const auto c = *iter;
+		const auto contact = *iter;
 		next = std::next(iter);
 		
-		const auto fixtureA = c->GetFixtureA();
-		const auto fixtureB = c->GetFixtureB();
+		const auto fixtureA = contact->GetFixtureA();
+		const auto fixtureB = contact->GetFixtureB();
 		const auto bodyA = fixtureA->GetBody();
 		const auto bodyB = fixtureB->GetBody();
 		
 		// Is this contact flagged for filtering?
-		if (c->NeedsFiltering())
+		if (contact->NeedsFiltering())
 		{
 			// Can these bodies collide?
 			if (!(bodyB->ShouldCollide(bodyA)))
@@ -1658,13 +1658,13 @@ World::CollideStats World::Collide()
 			}
 			
 			// Clear the filtering flag.
-			c->UnflagForFiltering();
+			contact->UnflagForFiltering();
 		}
 		
 		// collidable means is-awake && is-speedable (dynamic or kinematic)
-		auto is_collidable = [&](Body* b) {
+		auto is_collidable = [&](Body* body) {
 			constexpr auto awake_and_speedable = Body::e_awakeFlag|Body::e_velocityFlag;
-			return (b->m_flags & awake_and_speedable) == awake_and_speedable;
+			return (body->m_flags & awake_and_speedable) == awake_and_speedable;
 		};
 		
 		// At least one body must be collidable
@@ -1675,8 +1675,8 @@ World::CollideStats World::Collide()
 		}
 		
 		const auto overlap = [&]() {
-			const auto indexA = c->GetChildIndexA();
-			const auto indexB = c->GetChildIndexB();
+			const auto indexA = contact->GetChildIndexA();
+			const auto indexB = contact->GetChildIndexB();
 			const auto proxyIdA = fixtureA->m_proxies[indexA].proxyId;
 			const auto proxyIdB = fixtureB->m_proxies[indexB].proxyId;
 			return TestOverlap(m_broadPhase, proxyIdA, proxyIdB);
@@ -1693,8 +1693,8 @@ World::CollideStats World::Collide()
 		// The contact persists.
 		
 		// Update the contact manifold and notify the listener.
-		c->SetEnabled();
-		c->Update(m_contactListener);
+		contact->SetEnabled();
+		contact->Update(m_contactListener);
 		++stats.updated;
 	}
 	
@@ -1757,15 +1757,15 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 	assert(m_contacts.size() < MaxContacts);
 	
 	// Call the contact factory create method.
-	const auto c = Contact::Create(*fixtureA, childIndexA, *fixtureB, childIndexB, m_blockAllocator);
-	assert(c);
-	if (!c)
+	const auto contact = Contact::Create(*fixtureA, childIndexA, *fixtureB, childIndexB, m_blockAllocator);
+	assert(contact);
+	if (!contact)
 	{
 		return false;
 	}
 	
-	bodyA->m_contacts.insert(c);
-	bodyB->m_contacts.insert(c);
+	bodyA->m_contacts.insert(contact);
+	bodyB->m_contacts.insert(contact);
 	
 	// Wake up the bodies
 	if (!fixtureA->IsSensor() && !fixtureB->IsSensor())
@@ -1775,7 +1775,7 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 	}
 	
 	// Insert into the world.
-	m_contacts.push_front(c);
+	m_contacts.push_front(contact);
 	
 	return true;
 }
@@ -1800,9 +1800,9 @@ StepStats Step(World& world, RealNum dt, World::ts_iters_type velocityIterations
 size_t GetFixtureCount(const World& world) noexcept
 {
 	size_t sum = 0;
-	for (auto&& b: world.GetBodies())
+	for (auto&& body: world.GetBodies())
 	{
-		sum += GetFixtureCount(*b);
+		sum += GetFixtureCount(*body);
 	}
 	return sum;
 }
@@ -1810,11 +1810,11 @@ size_t GetFixtureCount(const World& world) noexcept
 size_t GetShapeCount(const World& world) noexcept
 {
 	auto shapes = std::set<const Shape*>();
-	for (auto&& b: world.GetBodies())
+	for (auto&& body: world.GetBodies())
 	{
-		for (auto&& f: b->GetFixtures())
+		for (auto&& fixture: body->GetFixtures())
 		{
-			shapes.insert(f->GetShape());
+			shapes.insert(fixture->GetShape());
 		}
 	}
 	return shapes.size();
@@ -1836,9 +1836,9 @@ size_t GetAwakeCount(const World& world) noexcept
 size_t Awaken(World& world)
 {
 	auto awoken = size_t{0};
-	for (auto&& b: world.GetBodies())
+	for (auto&& body: world.GetBodies())
 	{
-		if (b->SetAwake())
+		if (body->SetAwake())
 		{
 			++awoken;
 		}

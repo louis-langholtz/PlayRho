@@ -100,7 +100,13 @@ public:
 	/// @param proxyId Proxy ID. Behavior is undefined if this is the null proxy ID.
 	/// @param aabb Axis aligned bounding box.
 	/// @param displacement Displacement. Behavior is undefined if this is an invalid value.
-	void MoveProxy(size_type proxyId, const AABB& aabb, const Vec2 displacement);
+	/// @param multiplier Multiplier to displacement amount for new AABB.
+	///   This is used to fatten AABBs in the dynamic tree. This is used to predict
+	///   the future position based on the current displacement.
+	///   This is a dimensionless multiplier.
+	/// @param extension Extension. Amount to extend a new AABB by.
+	bool MoveProxy(size_type proxyId, const AABB& aabb, const Vec2 displacement,
+				   const RealNum multiplier = 2, const Vec2 extension = Vec2{0, 0});
 
 	/// Call to trigger a re-processing of it's pairs on the next call to UpdatePairs.
 	void TouchProxy(size_type proxyId);

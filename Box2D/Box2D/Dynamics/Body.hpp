@@ -519,9 +519,9 @@ private:
 	Body(const BodyDef& bd, World* world);
 	~Body();
 
-	void SynchronizeFixtures(const Transformation& t1, const Transformation& t2);
+	contact_count_t SynchronizeFixtures(const Transformation& t1, const Transformation& t2);
 	
-	void SynchronizeFixtures();
+	contact_count_t SynchronizeFixtures();
 	
 	/// Determines whether this body should possibly be able to collide with the given other body.
 	/// @return true if either body is dynamic and no joint prevents collision, false otherwise.

@@ -194,6 +194,8 @@ private:
 	uint64 m_sumRegVelIters = 0;
 	uint64 m_sumToiPosIters = 0;
 	uint64 m_sumToiVelIters = 0;
+	uint64 m_sumRegProxiesMoved = 0;
+	uint64 m_sumToiProxiesMoved = 0;
 	RealNum m_minRegSep = std::numeric_limits<RealNum>::infinity();
 	RealNum m_maxRegSep = -std::numeric_limits<RealNum>::infinity();
 	RealNum m_minToiSep = 0;

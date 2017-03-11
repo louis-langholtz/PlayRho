@@ -85,7 +85,8 @@ void Fixture::TouchProxies(BroadPhase& broadPhase)
 	}
 }
 
-void Fixture::Synchronize(BroadPhase& broadPhase, const Transformation& transform1, const Transformation& transform2)
+child_count_t Fixture::Synchronize(BroadPhase& broadPhase,
+								   const Transformation& transform1, const Transformation& transform2)
 {
 	assert(IsValid(transform1));
 	assert(IsValid(transform2));
@@ -94,6 +95,7 @@ void Fixture::Synchronize(BroadPhase& broadPhase, const Transformation& transfor
 	const auto aabbExtension = GetBody()->GetWorld()->GetAabbExtension();
 	const auto extension = Vec2{aabbExtension, aabbExtension};
 
+	auto movedCount = child_count_t{0};
 	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
 	{
 		auto& proxy = m_proxies[i];
@@ -103,8 +105,12 @@ void Fixture::Synchronize(BroadPhase& broadPhase, const Transformation& transfor
 		const auto aabb2 = ComputeAABB(*shape, transform2, proxy.childIndex);
 		proxy.aabb = GetEnclosingAABB(aabb1, aabb2);
 
-		broadPhase.MoveProxy(proxy.proxyId, proxy.aabb + extension, transform2.p - transform1.p);
+		if (broadPhase.MoveProxy(proxy.proxyId, proxy.aabb + extension, transform2.p - transform1.p))
+		{
+			++movedCount;
+		}
 	}
+	return movedCount;
 }
 
 void Fixture::SetFilterData(const Filter& filter)

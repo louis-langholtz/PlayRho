@@ -50,13 +50,15 @@ void BroadPhase::DestroyProxy(size_type proxyId)
 	m_tree.DestroyProxy(proxyId);
 }
 
-void BroadPhase::MoveProxy(size_type proxyId, const AABB& aabb, const Vec2 displacement)
+bool BroadPhase::MoveProxy(size_type proxyId, const AABB& aabb, const Vec2 displacement,
+						   const RealNum multiplier, const Vec2 extension)
 {
-	const auto moved = m_tree.MoveProxy(proxyId, aabb, displacement);
+	const auto moved = m_tree.MoveProxy(proxyId, aabb, displacement, multiplier, extension);
 	if (moved)
 	{
 		BufferMove(proxyId);
 	}
+	return moved;
 }
 
 void BroadPhase::TouchProxy(size_type proxyId)

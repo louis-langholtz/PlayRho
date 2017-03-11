@@ -595,11 +595,13 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	m_sumRegIslandsSolved += stepStats.reg.islandsSolved;
 	m_sumRegPosIters += stepStats.reg.sumPosIters;
 	m_sumRegVelIters += stepStats.reg.sumVelIters;
+	m_sumRegProxiesMoved += stepStats.reg.proxiesMoved;
 
 	m_sumToiIslandsFound += stepStats.toi.islandsFound;
 	m_sumToiIslandsSolved += stepStats.toi.islandsSolved;
 	m_sumToiPosIters += stepStats.toi.sumPosIters;
 	m_sumToiVelIters += stepStats.toi.sumVelIters;
+	m_sumToiProxiesMoved += stepStats.toi.proxiesMoved;
 	m_sumContactsUpdatedToi += stepStats.toi.contactsUpdatedToi;
 	m_sumContactsAtMaxSubSteps += stepStats.toi.contactsAtMaxSubSteps;
 
@@ -636,25 +638,39 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 						  m_stepStats.pre.added, m_stepStats.pre.ignored, m_stepStats.pre.destroyed, m_stepStats.pre.updated);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
+		drawer.DrawString(5, m_textLine, "  reg-info:");
+		m_textLine += DRAW_STRING_NEW_LINE;
+
 		drawer.DrawString(5, m_textLine,
-						  "  reg-info: cts-add=%u isl-find=%u isl-solv=%u pos-iter=%u vel-iter=%u bod-slept=%u min-sep=%f max-inc-imp=%f",
+						  "    cts-add=%u isl-find=%u isl-solv=%u pos-iter=%u vel-iter=%u p-moved=%u",
 						  m_stepStats.reg.contactsAdded,
 						  m_stepStats.reg.islandsFound,
 						  m_stepStats.reg.islandsSolved,
 						  m_stepStats.reg.sumPosIters,
 						  m_stepStats.reg.sumVelIters,
+						  m_stepStats.toi.proxiesMoved);
+		m_textLine += DRAW_STRING_NEW_LINE;
+		drawer.DrawString(5, m_textLine,
+						  "      bod-slept=%u min-sep=%f max-inc-imp=%f",
 						  m_stepStats.reg.bodiesSlept,
 						  float(m_stepStats.reg.minSeparation),
 						  float(m_stepStats.reg.maxIncImpulse));
 		m_textLine += DRAW_STRING_NEW_LINE;
-
+		
+		drawer.DrawString(5, m_textLine, "  toi-info:");
+		m_textLine += DRAW_STRING_NEW_LINE;
+		
 		drawer.DrawString(5, m_textLine,
-						  "  toi-info: cts-add=%d isl-find=%d isl-solv=%u pos-iter=%u vel-iter=%u cts-find=%d cts-atmaxsubs=%d cts-upd=%d max-dist-iter=%u max-toi-iter=%u min-sep=%f max-inc-imp=%f",
+						  "    cts-add=%d isl-find=%d isl-solv=%u pos-iter=%u vel-iter=%u p-moved=%u",
 						  m_stepStats.toi.contactsAdded,
 						  m_stepStats.toi.islandsFound,
 						  m_stepStats.toi.islandsSolved,
 						  m_stepStats.toi.sumPosIters,
 						  m_stepStats.toi.sumVelIters,
+						  m_stepStats.toi.proxiesMoved);
+		m_textLine += DRAW_STRING_NEW_LINE;
+		drawer.DrawString(5, m_textLine,
+						  "    cts-find=%d cts-atmaxsubs=%d cts-upd=%d max-dist-iter=%u max-toi-iter=%u min-sep=%f max-inc-imp=%f",
 						  m_stepStats.toi.contactsFound,
 						  m_stepStats.toi.contactsAtMaxSubSteps,
 						  m_stepStats.toi.contactsUpdatedToi,
@@ -662,7 +678,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 						  float(m_stepStats.toi.minSeparation),
 						  float(m_stepStats.toi.maxIncImpulse));
 		m_textLine += DRAW_STRING_NEW_LINE;
-
+		
 		const auto sleepCount = [&](){
 			auto count = unsigned(0);
 			for (auto&& body: m_world->GetBodies())
@@ -682,12 +698,12 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 						  sleepCount, bodyCount, fixtureCount, shapeCount, contactCount, m_maxContacts, jointCount);
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		drawer.DrawString(5, m_textLine, "  Reg sums: isl-found=%llu isl-solv=%llu pos-iter=%llu vel-iter=%llu min-sep=%f max-sep=%f",
-						  m_sumRegIslandsFound, m_sumRegIslandsSolved, m_sumRegPosIters, m_sumRegVelIters, float(m_minRegSep), float(m_maxRegSep));
+		drawer.DrawString(5, m_textLine, "  Reg sums: isl-found=%llu isl-solv=%llu pos-iter=%llu vel-iter=%llu p-moved=%llu min-sep=%f max-sep=%f",
+						  m_sumRegIslandsFound, m_sumRegIslandsSolved, m_sumRegPosIters, m_sumRegVelIters, m_sumRegProxiesMoved, float(m_minRegSep), float(m_maxRegSep));
 		m_textLine += DRAW_STRING_NEW_LINE;
 
-		drawer.DrawString(5, m_textLine, "  TOI sums: isl-found=%llu isl-solv=%llu pos-iter=%llu vel-iter=%llu upd=%llu cts-maxstep=%llu min-sep=%f",
-						  m_sumToiIslandsFound, m_sumToiIslandsSolved, m_sumToiPosIters, m_sumToiVelIters,
+		drawer.DrawString(5, m_textLine, "  TOI sums: isl-found=%llu isl-solv=%llu pos-iter=%llu vel-iter=%llu p-moved=%llu upd=%llu cts-maxstep=%llu min-sep=%f",
+						  m_sumToiIslandsFound, m_sumToiIslandsSolved, m_sumToiPosIters, m_sumToiVelIters, m_sumToiProxiesMoved,
 						  m_sumContactsUpdatedToi, m_sumContactsAtMaxSubSteps, m_minToiSep);
 		m_textLine += DRAW_STRING_NEW_LINE;
 

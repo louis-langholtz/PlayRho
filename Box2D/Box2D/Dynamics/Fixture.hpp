@@ -271,7 +271,7 @@ private:
 	/// Touches each proxy so that new pairs may be created.
 	void TouchProxies(BroadPhase& broadPhase);
 
-	void Synchronize(BroadPhase& broadPhase, const Transformation& xf1, const Transformation& xf2);
+	child_count_t Synchronize(BroadPhase& broadPhase, const Transformation& xf1, const Transformation& xf2);
 
 	// Data ordered here for memory compaction.
 	

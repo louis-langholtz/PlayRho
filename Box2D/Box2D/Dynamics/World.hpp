@@ -60,6 +60,7 @@ struct RegStepStats
 	uint32 islandsSolved = 0;
 	uint32 contactsAdded = 0;
 	uint32 bodiesSlept = 0;
+	uint32 proxiesMoved = 0;
 	uint32 sumPosIters = 0;
 	uint32 sumVelIters = 0;
 };
@@ -76,6 +77,7 @@ struct ToiStepStats
 	uint32 contactsAtMaxSubSteps = 0;
 	uint32 contactsUpdatedToi = 0;
 	uint32 contactsAdded = 0;
+	uint32 proxiesMoved = 0;
 	uint32 sumPosIters = 0;
 	uint32 sumVelIters = 0;
 	uint32 maxSimulContacts = 0; ///< Max contacts occuring simultaneously.
