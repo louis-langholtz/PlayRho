@@ -161,10 +161,6 @@ public:
 
 	/// Gets the child shape.
 	/// @detail The shape is not modifiable. Use a new fixture instead.
-	const Shape* GetShape() noexcept;
-
-	/// Gets the child shape.
-	/// @detail The shape is not modifiable. Use a new fixture instead.
 	const Shape* GetShape() const noexcept;
 
 	/// Set if this fixture is a sensor.
@@ -180,7 +176,7 @@ public:
 	void SetFilterData(const Filter& filter);
 
 	/// Get the contact filtering data.
-	const Filter& GetFilterData() const noexcept;
+	Filter GetFilterData() const noexcept;
 
 	/// Call this if you want to establish collision that was previously disabled by ContactFilter::ShouldCollide.
 	void Refilter();
@@ -220,10 +216,11 @@ public:
 	/// Get the fixture's AABB. This AABB may be enlarge and/or stale.
 	/// If you need a more accurate AABB, compute it using the shape and
 	/// the body transform.
-	const AABB& GetAABB(child_count_t childIndex) const;
+	AABB GetAABB(child_count_t childIndex) const noexcept;
 
-	child_count_t GetProxyCount() const;
-	const FixtureProxy* GetProxy(child_count_t index) const;
+	child_count_t GetProxyCount() const noexcept;
+
+	const FixtureProxy* GetProxy(child_count_t index) const noexcept;
 
 private:
 
@@ -302,11 +299,6 @@ private:
 	// 71-bytes data + 1-byte alignment padding is 72-bytes.
 };
 
-inline const Shape* Fixture::GetShape() noexcept
-{
-	return m_shape.get();
-}
-
 inline const Shape* Fixture::GetShape() const noexcept
 {
 	return m_shape.get();
@@ -317,7 +309,7 @@ inline bool Fixture::IsSensor() const noexcept
 	return m_isSensor;
 }
 
-inline const Filter& Fixture::GetFilterData() const noexcept
+inline Filter Fixture::GetFilterData() const noexcept
 {
 	return m_filter;
 }
@@ -373,7 +365,7 @@ inline void Fixture::SetRestitution(RealNum restitution) noexcept
 	m_restitution = restitution;
 }
 
-inline child_count_t Fixture::GetProxyCount() const
+inline child_count_t Fixture::GetProxyCount() const noexcept
 {
 	return m_proxyCount;
 }

@@ -495,7 +495,7 @@ private:
 	/// Gets the soonest contact.
 	/// @detail This finds the contact with the lowest (soonest) time of impact.
 	/// @return Contact with the least time of impact and its time of impact, or null contact.
-	ContactToiData GetSoonestContacts();
+	ContactToiData GetSoonestContacts() const;
 
 	bool HasNewFixtures() const noexcept;
 

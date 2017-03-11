@@ -1027,7 +1027,7 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 	return UpdateContactsData{numAtMaxSubSteps, numUpdated, maxDistIters, maxToiIters, maxRootIters};
 }
 	
-World::ContactToiData World::GetSoonestContacts()
+World::ContactToiData World::GetSoonestContacts() const
 {
 	auto minToi = std::nextafter(RealNum{1}, RealNum{0});
 	auto minContacts = std::vector<Contact*>();
