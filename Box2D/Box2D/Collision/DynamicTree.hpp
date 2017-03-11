@@ -44,12 +44,9 @@ class DynamicTree
 public:
 
 	using size_type = std::remove_const<decltype(MaxContacts)>::type;
+	using QueryCallback = std::function<bool(size_type)>;
+	using RayCastCallback = std::function<RealNum(const RayCastInput&, size_type)>;
 
-	/// AABB Multiplier.
-	/// @detail
-	/// This is used to fatten AABBs in the dynamic tree. This is used to predict
-	/// the future position based on the current displacement.
-	/// This is a dimensionless multiplier.
 	static constexpr auto AabbMultiplier = 2;
 
 	/// Invalid index value.
@@ -84,8 +81,14 @@ public:
 	/// @param index Proxy ID. Behavior is undefined if this is not a valid ID.
 	/// @param aabb Axis aligned bounding box.
 	/// @param displacement Displacement. Behavior is undefined if this is an invalid value.
+	/// @param multiplier Multiplier to displacement amount for new AABB.
+	///   This is used to fatten AABBs in the dynamic tree. This is used to predict
+	///   the future position based on the current displacement.
+	///   This is a dimensionless multiplier.
+	/// @param extension Extension. Amount to extend a new AABB by.
 	/// @return true if the proxy was re-inserted.
-	bool MoveProxy(const size_type index, const AABB aabb, const Vec2 displacement);
+	bool MoveProxy(const size_type index, const AABB aabb, const Vec2 displacement,
+				   const RealNum multiplier = 2, const Vec2 extension = Vec2{0, 0});
 
 	/// Gets the user data for the node identified by the given identifier.
 	/// @warning Behavior is undefined if the given index is not valid.
@@ -100,7 +103,7 @@ public:
 
 	/// Query an AABB for overlapping proxies. The callback class
 	/// is called for each proxy that overlaps the supplied AABB.
-	void Query(std::function<bool(size_type)> callback, const AABB aabb) const;
+	void Query(const AABB aabb, QueryCallback callback) const;
 
 	/// Ray-cast against the proxies in the tree. This relies on the callback
 	/// to perform a exact ray-cast in the case were the proxy contains a shape.
@@ -109,8 +112,7 @@ public:
 	/// number of proxies in the tree.
 	/// @param input the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
 	/// @param callback a callback class that is called for each proxy that is hit by the ray.
-	void RayCast(std::function<RealNum(const RayCastInput&, size_type)> callback,
-				 const RayCastInput& input) const;
+	void RayCast(const RayCastInput& input, RayCastCallback callback) const;
 
 	/// Validates this tree.
 	/// @note Meant for testing.

@@ -524,12 +524,6 @@ private:
 	/// Essentially this really just purges contacts that are no longer relevant.
 	CollideStats Collide();
 	
-	// Broad-phase callback.
-	bool AddPair(void* proxyUserDataA, void* proxyUserDataB)
-	{
-		return Add(*static_cast<FixtureProxy*>(proxyUserDataA), *static_cast<FixtureProxy*>(proxyUserDataB));
-	}
-	
 	/// Destroys the given contact and removes it from its list.
 	/// @detail This updates the contact list, returns the memory to the allocator,
 	///   and decrements the contact manager's contact count.

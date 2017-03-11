@@ -1701,7 +1701,9 @@ World::CollideStats World::Collide()
 
 contact_count_t World::FindNewContacts()
 {
-	return m_broadPhase.UpdatePairs([&](void* a, void* b) { return AddPair(a, b); });
+	return m_broadPhase.UpdatePairs([&](void* a, void* b) {
+		return Add(*static_cast<FixtureProxy*>(a), *static_cast<FixtureProxy*>(b));
+	});
 }
 
 bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)

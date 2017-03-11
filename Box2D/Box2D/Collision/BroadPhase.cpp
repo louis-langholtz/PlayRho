@@ -87,61 +87,53 @@ void BroadPhase::UnBufferMove(size_type proxyId)
 	}
 }
 
-// This is called from DynamicTree::Query when we are gathering pairs.
-bool BroadPhase::QueryCallback(size_type proxyId)
-{
-	// A proxy cannot form a pair with itself.
-	if (proxyId == m_queryProxyId)
-	{
-		return true;
-	}
-
-	// Grow the pair buffer as needed.
-	if (m_pairCapacity == m_pairCount)
-	{
-		m_pairCapacity *= BufferGrowthRate;
-		m_pairBuffer = realloc<ProxyIdPair>(m_pairBuffer, m_pairCapacity);
-	}
-
-	m_pairBuffer[m_pairCount] = ProxyIdPair{Min(proxyId, m_queryProxyId), Max(proxyId, m_queryProxyId)};
-	++m_pairCount;
-
-	return true;
-}
-
 BroadPhase::size_type BroadPhase::UpdatePairs(std::function<bool(void*,void*)> callback)
 {
 	// Reset pair buffer
-	m_pairCount = 0;
+	auto pairCount = size_type{0};
 	
 	// Perform tree queries for all moving proxies.
 	for (auto i = decltype(m_moveCount){0}; i < m_moveCount; ++i)
 	{
-		m_queryProxyId = m_moveBuffer[i];
-		if (m_queryProxyId == e_nullProxy)
+		const auto queryProxyId = m_moveBuffer[i];
+		if (queryProxyId == e_nullProxy)
 		{
 			continue;
 		}
 		
 		// We have to query the tree with the fat AABB so that
 		// we don't fail to create a pair that may touch later.
-		const auto fatAABB = m_tree.GetFatAABB(m_queryProxyId);
+		const auto aabb = m_tree.GetFatAABB(queryProxyId);
 		
-		// Query tree, create pairs and add them pair buffer.
-		m_tree.Query([&](DynamicTree::size_type nodeId){ return QueryCallback(nodeId); }, fatAABB);
+		// Query tree for nodes overlapping aabb, create pairs of those & add them pair buffer.
+		m_tree.Query(aabb, [&](DynamicTree::size_type nodeId) {
+			// A proxy cannot form a pair with itself.
+			if (nodeId != queryProxyId)
+			{
+				// Grow the pair buffer as needed.
+				if (m_pairCapacity == pairCount)
+				{
+					m_pairCapacity *= BufferGrowthRate;
+					m_pairBuffer = realloc<ProxyIdPair>(m_pairBuffer, m_pairCapacity);
+				}
+				m_pairBuffer[pairCount] = ProxyIdPair{Min(nodeId, queryProxyId), Max(nodeId, queryProxyId)};
+				++pairCount;
+			}
+			return true;
+		});
 	}
 	
 	// Reset move buffer
 	m_moveCount = 0;
 	
 	// Sort the pair buffer to expose duplicates.
-	std::sort(m_pairBuffer, m_pairBuffer + m_pairCount, [](ProxyIdPair p1, ProxyIdPair p2) {
+	std::sort(m_pairBuffer, m_pairBuffer + pairCount, [](ProxyIdPair p1, ProxyIdPair p2) {
 		return (p1.proxyIdA < p2.proxyIdA) || ((p1.proxyIdA == p2.proxyIdA) && (p1.proxyIdB < p2.proxyIdB));
 	});
 	
 	auto added = size_type{0};
 	// Send the pairs back to the client.
-	for (auto i = decltype(m_pairCount){0}; i < m_pairCount; )
+	for (auto i = decltype(pairCount){0}; i < pairCount; )
 	{
 		const auto& primaryPair = m_pairBuffer[i];
 		const auto userDataA = m_tree.GetUserData(primaryPair.proxyIdA);
@@ -154,7 +146,7 @@ BroadPhase::size_type BroadPhase::UpdatePairs(std::function<bool(void*,void*)> c
 		++i;
 		
 		// Skip any duplicate pairs.
-		while (i < m_pairCount)
+		while (i < pairCount)
 		{
 			const auto& pair = m_pairBuffer[i];
 			if (pair != primaryPair)

@@ -47,6 +47,8 @@ constexpr inline bool operator != (ProxyIdPair lhs, ProxyIdPair rhs)
 	return !(lhs == rhs);
 }
 
+/// Broad phase assistant.
+/// @detail
 /// The broad-phase is used for computing pairs and performing volume queries and ray casts.
 /// This broad-phase does not persist pairs. Instead, this reports potentially new pairs.
 /// It is up to the client to consume the new pairs and to track subsequent overlap.
@@ -154,8 +156,6 @@ private:
 	void BufferMove(size_type proxyId);
 	void UnBufferMove(size_type proxyId);
 
-	bool QueryCallback(size_type proxyId);
-
 	DynamicTree m_tree;
 
 	static constexpr size_type BufferGrowthRate = 2;
@@ -166,14 +166,10 @@ private:
 	size_type m_moveCount = 0;
 
 	size_type m_pairCapacity;
-	size_type m_pairCount = 0;
 
 	// Initialized on construction
 	size_type* m_moveBuffer; ///< Move buffer. @sa size_type. @sa <code>m_moveCapacity</code>. @sa <code>m_moveCount</code>.
 	ProxyIdPair* m_pairBuffer;
-
-	// Assigned on calling UpdatePairs
-	size_type m_queryProxyId;
 };
 
 inline void* BroadPhase::GetUserData(size_type proxyId) const
@@ -201,11 +197,6 @@ inline BroadPhase::size_type BroadPhase::GetMoveCount() const noexcept
 	return m_moveCount;
 }
 
-inline BroadPhase::size_type BroadPhase::GetPairCount() const noexcept
-{
-	return m_pairCount;
-}
-
 inline BroadPhase::size_type BroadPhase::GetProxyCount() const noexcept
 {
 	return m_proxyCount;
@@ -228,13 +219,13 @@ inline RealNum BroadPhase::GetTreeQuality() const
 
 inline void BroadPhase::Query(std::function<bool(size_type)> callback, const AABB aabb) const
 {
-	m_tree.Query(callback, aabb);
+	m_tree.Query(aabb, callback);
 }
 
 inline void BroadPhase::RayCast(std::function<RealNum(const RayCastInput&, size_type)> callback,
 								const RayCastInput& input) const
 {
-	m_tree.RayCast(callback, input);
+	m_tree.RayCast(input, callback);
 }
 
 inline void BroadPhase::ShiftOrigin(const Vec2 newOrigin)

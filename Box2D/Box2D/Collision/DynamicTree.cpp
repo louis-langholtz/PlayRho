@@ -120,7 +120,8 @@ void DynamicTree::DestroyProxy(const size_type index)
 	FreeNode(index);
 }
 
-bool DynamicTree::MoveProxy(const size_type index, const AABB aabb, const Vec2 displacement)
+bool DynamicTree::MoveProxy(const size_type index, const AABB aabb, const Vec2 displacement,
+							const RealNum multiplier, const Vec2 extension)
 {
 	assert(index != InvalidIndex);
 	assert(index < m_nodeCapacity);
@@ -134,33 +135,12 @@ bool DynamicTree::MoveProxy(const size_type index, const AABB aabb, const Vec2 d
 
 	RemoveLeaf(index);
 
-	auto lowerBound = aabb.GetLowerBound();
-	auto upperBound = aabb.GetUpperBound();
+	const auto extendedAabb = GetExtendedAABB(aabb, extension);
+	const auto displacedExtendedAabb = GetDisplacedAABB(extendedAabb, multiplier * displacement);
+	m_nodes[index].aabb = displacedExtendedAabb;
 	
-	// Predict AABB displacement.
-	const auto d = AabbMultiplier * displacement;
-
-	if (d.x < RealNum{0})
-	{
-		lowerBound.x += d.x;
-	}
-	else
-	{
-		upperBound.x += d.x;
-	}
-
-	if (d.y < RealNum{0})
-	{
-		lowerBound.y += d.y;
-	}
-	else
-	{
-		upperBound.y += d.y;
-	}
-
-	m_nodes[index].aabb = AABB{lowerBound, upperBound};
-
 	InsertLeaf(index);
+	
 	return true;
 }
 
@@ -551,7 +531,7 @@ DynamicTree::size_type DynamicTree::ComputeHeight(const size_type index) const n
 	return 1 + Max(height1, height2);
 }
 
-void DynamicTree::Query(std::function<bool(size_type)> callback, const AABB aabb) const
+void DynamicTree::Query(const AABB aabb, QueryCallback callback) const
 {
 	GrowableStack<size_type, 256> stack;
 	stack.Push(m_root);
@@ -584,8 +564,7 @@ void DynamicTree::Query(std::function<bool(size_type)> callback, const AABB aabb
 	}
 }
 
-void DynamicTree::RayCast(std::function<RealNum(const RayCastInput&, size_type)> callback,
-						  const RayCastInput& input) const
+void DynamicTree::RayCast(const RayCastInput& input, RayCastCallback callback) const
 {
 	const auto p1 = input.p1;
 	const auto p2 = input.p2;
@@ -645,7 +624,7 @@ void DynamicTree::RayCast(std::function<RealNum(const RayCastInput&, size_type)>
 				// Update segment bounding box.
 				maxFraction = value;
 				const auto t = p1 + maxFraction * (p2 - p1);
-				segmentAABB = AABB(p1, t);
+				segmentAABB = AABB{p1, t};
 			}
 		}
 		else
