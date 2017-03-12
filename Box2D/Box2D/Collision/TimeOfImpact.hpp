@@ -182,7 +182,7 @@ namespace box2d {
 		
 	private:
 		State m_state = e_unknown; ///< State at time factor.
-		RealNum m_time; ///< Time factor in range of [0,1] into the future.
+		RealNum m_time = 0; ///< Time factor in range of [0,1] into the future.
 		Stats m_stats;
 	};
 
