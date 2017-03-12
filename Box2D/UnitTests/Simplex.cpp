@@ -42,6 +42,9 @@ TEST(SimplexCache, DefaultInit)
 	Simplex::Cache foo;
 	EXPECT_EQ(decltype(foo.GetNumIndices()){0}, foo.GetNumIndices());
 	EXPECT_FALSE(foo.IsMetricSet());
+	
+	// Can't test following cause of undefined behavior (assert's in debug build).
+	//EXPECT_FALSE(IsValid(foo.GetMetric()));
 }
 
 TEST(SimplexCache, InitializingConstructor)
