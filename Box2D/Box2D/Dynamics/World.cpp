@@ -962,11 +962,7 @@ void World::ResetContactsForSolveTOI()
 	
 World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 {
-	contact_count_t numAtMaxSubSteps = 0;
-	contact_count_t numUpdated = 0;
-	UpdateContactsData::dist_iter_type maxDistIters = 0;
-	UpdateContactsData::toi_iter_type maxToiIters = 0;
-	UpdateContactsData::root_iter_type maxRootIters = 0;
+	auto results = UpdateContactsData{};
 
 	const auto toiConf = ToiConf{}
 		.UseTimeMax(1)
@@ -980,6 +976,7 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 	{
 		if (c->HasValidToi())
 		{
+			++results.numValidTOI;
 			continue;
 		}
 		if (!c->IsEnabled() || HasSensor(*c) || !IsActive(*c) || !IsImpenetrable(*c))
@@ -992,7 +989,7 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 			// Larger m_maxSubSteps slows down the simulation.
 			// m_maxSubSteps of 44 and higher seems to decrease the occurrance of tunneling of multiple
 			// bullet body collisions with static objects.
-			++numAtMaxSubSteps;
+			++results.numAtMaxSubSteps;
 			continue;
 		}
 		
@@ -1030,19 +1027,20 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 		assert(toi >= alpha0);
 		c->SetToi(toi);
 		
-		maxDistIters = Max(maxDistIters, output.get_max_dist_iters());
-		maxToiIters = Max(maxToiIters, output.get_toi_iters());
-		maxRootIters = Max(maxRootIters, output.get_max_root_iters());
-		++numUpdated;
+		results.maxDistIters = Max(results.maxDistIters, output.get_max_dist_iters());
+		results.maxToiIters = Max(results.maxToiIters, output.get_toi_iters());
+		results.maxRootIters = Max(results.maxRootIters, output.get_max_root_iters());
+		++results.numUpdatedTOI;
 	}
 
-	return UpdateContactsData{numAtMaxSubSteps, numUpdated, maxDistIters, maxToiIters, maxRootIters};
+	return results;
 }
 	
-World::ContactToiData World::GetSoonestContacts() const
+World::ContactToiData World::GetSoonestContacts(const size_t reserveSize) const
 {
 	auto minToi = std::nextafter(RealNum{1}, RealNum{0});
 	auto minContacts = std::vector<Contact*>();
+	minContacts.reserve(reserveSize);
 	for (auto&& c: m_contacts)
 	{
 		if (c->HasValidToi())
@@ -1085,7 +1083,7 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 		stats.maxRootIters = Max(stats.maxRootIters, updateData.maxRootIters);
 		stats.maxToiIters = Max(stats.maxToiIters, updateData.maxToiIters);
 		
-		const auto next = GetSoonestContacts();
+		const auto next = GetSoonestContacts(updateData.numValidTOI + updateData.numUpdatedTOI);
 		const auto ncount = next.contacts.size();
 		if (ncount == 0)
 		{
@@ -1114,7 +1112,7 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 					stats.sumPosIters += solverResults.positionIterations;
 					stats.sumVelIters += solverResults.velocityIterations;
 				}
-				break;
+				break; // TODO: get working without breaking.
 			}
 		}
 		stats.islandsFound += islandsFound;

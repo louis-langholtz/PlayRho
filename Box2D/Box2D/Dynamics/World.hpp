@@ -476,7 +476,8 @@ private:
 	struct UpdateContactsData
 	{
 		contact_count_t numAtMaxSubSteps = 0;
-		contact_count_t numUpdatedTOI = 0;
+		contact_count_t numUpdatedTOI = 0; ///< # updated TOIs (made valid).
+		contact_count_t numValidTOI = 0; ///< # already valid TOIs.
 	
 		using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
 		using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
@@ -493,7 +494,7 @@ private:
 	/// Gets the soonest contact.
 	/// @detail This finds the contact with the lowest (soonest) time of impact.
 	/// @return Contact with the least time of impact and its time of impact, or null contact.
-	ContactToiData GetSoonestContacts() const;
+	ContactToiData GetSoonestContacts(const size_t reserveSize) const;
 
 	bool HasNewFixtures() const noexcept;
 

@@ -27,6 +27,7 @@
 #include <list>
 #include <unordered_set>
 #include <memory>
+#include <cassert>
 
 namespace box2d {
 
@@ -605,6 +606,7 @@ private:
 inline bool Body::Insert(Contact* c)
 {
 #ifndef NDEBUG
+	// Prevent the same contact from being added more than once...
 	for (auto iter = m_contacts.begin(); iter != m_contacts.end(); ++iter)
 	{
 		assert(*iter != c);
