@@ -24,6 +24,7 @@
 #include <Box2D/Collision/MassData.hpp>
 
 #include <forward_list>
+#include <list>
 #include <unordered_set>
 #include <memory>
 
@@ -227,7 +228,7 @@ public:
 	
 	using Joints = std::unordered_set<Joint*>;
 	
-	using Contacts = std::unordered_set<Contact*>;
+	using Contacts = std::list<Contact*>;
 	
 	static constexpr auto InvalidIslandIndex = static_cast<body_count_t>(-1);
 	
@@ -554,6 +555,10 @@ private:
 	/// @sa IsInIsland().
 	void UnsetInIsland() noexcept;
 
+	bool Insert(Contact* contact);
+
+	bool Erase(const Contact* contact);
+
 	//
 	// Member variables. Try to keep total size small.
 	//
@@ -596,6 +601,35 @@ private:
 
 	void* m_userData; ///< User data. 8-bytes.
 };
+
+inline bool Body::Insert(Contact* c)
+{
+#ifndef NDEBUG
+	for (auto iter = m_contacts.begin(); iter != m_contacts.end(); ++iter)
+	{
+		assert(*iter != c);
+		if (*iter == c)
+		{
+			return false;
+		}
+	}
+#endif
+	m_contacts.push_back(c);
+	return true;
+}
+
+inline bool Body::Erase(const Contact* c)
+{
+	for (auto iter = m_contacts.begin(); iter != m_contacts.end(); ++iter)
+	{
+		if (*iter == c)
+		{
+			m_contacts.erase(iter);
+			return true;
+		}
+	}
+	return false;
+}
 
 inline BodyType Body::GetType() const noexcept
 {

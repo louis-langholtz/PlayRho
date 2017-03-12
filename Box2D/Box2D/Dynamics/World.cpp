@@ -1583,8 +1583,8 @@ void World::RemoveFromBodies(Contact* c)
 	const auto bodyA = fixtureA->GetBody();
 	const auto bodyB = fixtureB->GetBody();
 	
-	bodyA->m_contacts.erase(c);
-	bodyB->m_contacts.erase(c);
+	bodyA->Erase(c);
+	bodyB->Erase(c);
 }
 
 void World::InternalDestroy(Contact* c)
@@ -1762,8 +1762,8 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 		return false;
 	}
 	
-	bodyA->m_contacts.insert(contact);
-	bodyB->m_contacts.insert(contact);
+	bodyA->Insert(contact);
+	bodyB->Insert(contact);
 	
 	// Wake up the bodies
 	if (!fixtureA->IsSensor() && !fixtureB->IsSensor())
