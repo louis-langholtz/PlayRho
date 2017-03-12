@@ -52,7 +52,7 @@ constexpr inline bool operator != (ProxyIdPair lhs, ProxyIdPair rhs)
 /// The broad-phase is used for computing pairs and performing volume queries and ray casts.
 /// This broad-phase does not persist pairs. Instead, this reports potentially new pairs.
 /// It is up to the client to consume the new pairs and to track subsequent overlap.
-/// @note This data structure is 72-bytes large (on at least one 64-bit platform).
+/// @note This data structure is 56-bytes large (on at least one 64-bit platform).
 class BroadPhase
 {
 public:
@@ -104,9 +104,9 @@ public:
 	///   This is used to fatten AABBs in the dynamic tree. This is used to predict
 	///   the future position based on the current displacement.
 	///   This is a dimensionless multiplier.
-	/// @param extension Extension. Amount to extend a new AABB by.
+	/// @param extension Extension. Amount to extend a "moved" AABB by.
 	bool MoveProxy(size_type proxyId, const AABB& aabb, const Vec2 displacement,
-				   const RealNum multiplier = 2, const Vec2 extension = Vec2{0, 0});
+				   const RealNum multiplier = 1, const RealNum extension = 0);
 
 	/// Call to trigger a re-processing of it's pairs on the next call to UpdatePairs.
 	void TouchProxy(size_type proxyId);

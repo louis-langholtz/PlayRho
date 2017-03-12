@@ -31,7 +31,7 @@ namespace box2d {
 /// the values have defaults. These defaults are intended to most likely be the values desired.
 /// @note Be sure to confirm that the delta time (the time-per-step i.e. <code>dt</code>) is
 ///   correct for your use.
-/// @note This data structure is 88-bytes large (with 4-byte RealNum on at least one 64-bit platform).
+/// @note This data structure is 96-bytes large (with 4-byte RealNum on at least one 64-bit platform).
 /// @sa World::Step.
 class StepConf
 {
@@ -180,6 +180,17 @@ public:
 	/// @note Used in the regular phase of step processing.
 	RealNum angularSleepTolerance = DefaultAngularSleepTolerance;
 	
+	RealNum displaceMultiplier = DefaultDistanceMultiplier;
+	
+	/// AABB extension.
+	/// @detail This is the extension that will be applied to Axis Aligned Bounding Box
+	///    objects used in "broadphase" collision detection. This fattens AABBs in the
+	///    dynamic tree. This allows proxies to move by a small amount without triggering
+	///    a tree adjustment.
+	/// @note This is in meters.
+	/// @note Should be greater than 0.
+	RealNum aabbExtension = DefaultAabbExtension;
+
 	/// Regular velocity iterations.
 	/// @detail The number of iterations of velocity resolution that will be done in the step.
 	/// @note Used in the regular phase of step processing.

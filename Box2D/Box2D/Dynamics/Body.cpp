@@ -151,7 +151,7 @@ void Body::InternalDestroyFixtures()
 	ResetMassData();
 }
 
-void Body::SetType(BodyType type)
+void Body::SetType(BodyType type, const RealNum aabbExtension)
 {
 	assert(!m_world->IsLocked());
 	if (m_world->IsLocked())
@@ -178,7 +178,9 @@ void Body::SetType(BodyType type)
 	{
 		m_velocity = Velocity{Vec2_zero, 0_rad};
 		m_sweep.pos0 = m_sweep.pos1;
-		SynchronizeFixtures();
+		
+		// Note: displacement multiplier has no effect here since no displacement.
+		SynchronizeFixtures(0, aabbExtension);
 	}
 
 	SetAwake();
@@ -258,7 +260,7 @@ Fixture* Body::CreateFixture(std::shared_ptr<const Shape> shape, const FixtureDe
 	
 	if (IsActive())
 	{
-		fixture->CreateProxies(allocator, m_world->m_broadPhase, GetTransformation());
+		fixture->CreateProxies(allocator, m_world->m_broadPhase, GetTransformation(), def.aabbExtension);
 	}
 
 	m_fixtures.push_front(fixture);
@@ -475,18 +477,19 @@ bool Body::ShouldCollide(const Body* other) const
 	return true;
 }
 
-contact_count_t Body::SynchronizeFixtures(const Transformation& t1, const Transformation& t2)
+contact_count_t Body::SynchronizeFixtures(const Transformation& t1, const Transformation& t2,
+										  const RealNum multiplier, const RealNum aabbExtension)
 {
 	auto movedCount = contact_count_t{0};
 	auto& broadPhase = m_world->m_broadPhase;
 	for (auto&& fixture: GetFixtures())
 	{
-		movedCount += fixture->Synchronize(broadPhase, t1, t2);
+		movedCount += fixture->Synchronize(broadPhase, t1, t2, multiplier, aabbExtension);
 	}
 	return movedCount;
 }
 
-void Body::SetTransform(const Vec2 position, Angle angle)
+void Body::SetTransform(const Vec2 position, Angle angle, const RealNum aabbExtension)
 {
 	assert(IsValid(position));
 	assert(IsValid(angle));
@@ -500,15 +503,17 @@ void Body::SetTransform(const Vec2 position, Angle angle)
 	const auto xf = Transformation{position, UnitVec2{angle}};
 	m_xf = xf;
 	m_sweep = Sweep{Position{Transform(GetLocalCenter(), xf), angle}, GetLocalCenter()};
-	SynchronizeFixtures(xf, xf);
+	
+	// Note that distanceMultiplier parameter has no effect here since no displacement.
+	SynchronizeFixtures(xf, xf, 0, aabbExtension);
 }
 
-contact_count_t Body::SynchronizeFixtures()
+contact_count_t Body::SynchronizeFixtures(const RealNum multiplier, const RealNum aabbExtension)
 {
-	return SynchronizeFixtures(GetTransform0(m_sweep), GetTransformation());
+	return SynchronizeFixtures(GetTransform0(m_sweep), GetTransformation(), multiplier, aabbExtension);
 }
 
-void Body::SetActive(bool flag)
+void Body::SetActive(bool flag, const RealNum aabbExtension)
 {
 	assert(!m_world->IsLocked());
 
@@ -527,7 +532,7 @@ void Body::SetActive(bool flag)
 		const auto xf = GetTransformation();
 		for (auto&& fixture: GetFixtures())
 		{
-			fixture->CreateProxies(allocator, broadPhase, xf);
+			fixture->CreateProxies(allocator, broadPhase, xf, aabbExtension);
 		}
 
 		// Contacts are created the next time step.

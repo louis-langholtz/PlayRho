@@ -112,6 +112,10 @@ constexpr auto MaxShapeVertices = uint8{254};
 /// @note Smaller values relative to sizes of bodies increases the time it takes for bodies to come to rest.
 constexpr auto DefaultLinearSlop = RealNum(0.001f); // originally 0.005
 
+constexpr auto DefaultAabbExtension = DefaultLinearSlop * 20;
+
+constexpr auto DefaultDistanceMultiplier = RealNum{2};
+
 /// Default angular slop.
 /// @detail
 /// A small angle used as a collision and constraint tolerance. Usually it is

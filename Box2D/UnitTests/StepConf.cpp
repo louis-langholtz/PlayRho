@@ -22,11 +22,11 @@
 
 using namespace box2d;
 
-TEST(StepConf, ByteSizeIs_88_168_or_320)
+TEST(StepConf, ByteSizeIs_96_168_or_320)
 {
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(StepConf), size_t(88)); break;
+		case  4: EXPECT_EQ(sizeof(StepConf), size_t(96)); break;
 		case  8: EXPECT_EQ(sizeof(StepConf), size_t(168)); break;
 		case 16: EXPECT_EQ(sizeof(StepConf), size_t(320)); break;
 		default: FAIL(); break;

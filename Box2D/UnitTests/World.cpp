@@ -33,11 +33,11 @@
 
 using namespace box2d;
 
-TEST(World, ByteSizeIs_344_352_or_400)
+TEST(World, ByteSizeIs_320_352_or_400)
 {
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(World), size_t(344)); break;
+		case  4: EXPECT_EQ(sizeof(World), size_t(320)); break;
 		case  8: EXPECT_EQ(sizeof(World), size_t(352)); break;
 		case 16: EXPECT_EQ(sizeof(World), size_t(400)); break;
 		default: FAIL(); break;
@@ -49,7 +49,6 @@ TEST(World, Def)
 	const auto worldDef = World::Def{};
 	const auto defaultDef = World::GetDefaultDef();
 	
-	EXPECT_EQ(defaultDef.aabbExtension, worldDef.aabbExtension);
 	EXPECT_EQ(defaultDef.gravity, worldDef.gravity);
 	EXPECT_EQ(defaultDef.maxVertexRadius, worldDef.maxVertexRadius);
 	EXPECT_EQ(defaultDef.minVertexRadius, worldDef.minVertexRadius);

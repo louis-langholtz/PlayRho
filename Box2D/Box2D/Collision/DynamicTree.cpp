@@ -121,7 +121,7 @@ void DynamicTree::DestroyProxy(const size_type index)
 }
 
 bool DynamicTree::MoveProxy(const size_type index, const AABB aabb, const Vec2 displacement,
-							const RealNum multiplier, const Vec2 extension)
+							const RealNum multiplier, const RealNum extension)
 {
 	assert(index != InvalidIndex);
 	assert(index < m_nodeCapacity);
@@ -135,9 +135,9 @@ bool DynamicTree::MoveProxy(const size_type index, const AABB aabb, const Vec2 d
 
 	RemoveLeaf(index);
 
-	const auto extendedAabb = GetExtendedAABB(aabb, extension);
-	const auto displacedExtendedAabb = GetDisplacedAABB(extendedAabb, multiplier * displacement);
-	m_nodes[index].aabb = displacedExtendedAabb;
+	const auto fattenedAabb = GetFattenedAABB(aabb, extension);
+	const auto displacedFattenedAabb = GetDisplacedAABB(fattenedAabb, multiplier * displacement);
+	m_nodes[index].aabb = displacedFattenedAabb;
 	
 	InsertLeaf(index);
 	

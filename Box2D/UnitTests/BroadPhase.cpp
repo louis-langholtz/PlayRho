@@ -21,9 +21,9 @@
 
 using namespace box2d;
 
-TEST(BroadPhase, ByteSizeIs72)
+TEST(BroadPhase, ByteSizeIs56)
 {
-	EXPECT_EQ(sizeof(BroadPhase), size_t(72));
+	EXPECT_EQ(sizeof(BroadPhase), size_t(56));
 }
 
 TEST(BroadPhase, DefaultConstruction)

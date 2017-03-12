@@ -103,6 +103,18 @@ namespace box2d
 			return *this;
 		}
 		
+		/// Fattens an AABB by the given amount.
+		/// @warning Behavior is undefined if given a negative value.
+		constexpr AABB& Fatten(const RealNum value) noexcept
+		{
+			assert(value >= 0);
+			lowerBound.x -= value;
+			lowerBound.y -= value;
+			upperBound.x += value;
+			upperBound.y += value;
+			return *this;
+		}
+		
 	private:
 		static constexpr auto infinity = std::numeric_limits<RealNum>::infinity();
 		Vec2 lowerBound = Vec2{infinity, infinity}; ///< the lower vertex
@@ -154,22 +166,11 @@ namespace box2d
 		aabb.Displace(displacement);
 		return aabb;
 	}
-	
-	constexpr AABB GetExtendedAABB(AABB aabb, const Vec2 extension)
+		
+	constexpr AABB GetFattenedAABB(AABB aabb, const RealNum amount)
 	{
-		aabb.Displace(extension);
-		aabb.Displace(-extension);
+		aabb.Fatten(amount);
 		return aabb;
-	}
-
-	constexpr AABB operator + (const Vec2 lhs, const AABB rhs)
-	{
-		return AABB{rhs.GetLowerBound() - lhs, rhs.GetUpperBound() + lhs};
-	}
-	
-	constexpr AABB operator + (const AABB lhs, const Vec2 rhs)
-	{
-		return AABB{lhs.GetLowerBound() - rhs, lhs.GetUpperBound() + rhs};
 	}
 
 	constexpr bool operator== (const AABB lhs, const AABB rhs)

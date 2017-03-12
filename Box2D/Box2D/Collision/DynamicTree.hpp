@@ -85,10 +85,11 @@ public:
 	///   This is used to fatten AABBs in the dynamic tree. This is used to predict
 	///   the future position based on the current displacement.
 	///   This is a dimensionless multiplier.
-	/// @param extension Extension. Amount to extend a new AABB by.
+	/// @param extension Extension. Amount to fatten the given AABB by if the proxy does
+	///   not contain it.
 	/// @return true if the proxy was re-inserted.
 	bool MoveProxy(const size_type index, const AABB aabb, const Vec2 displacement,
-				   const RealNum multiplier = 2, const Vec2 extension = Vec2{0, 0});
+				   const RealNum multiplier = 1, const RealNum extension = 0);
 
 	/// Gets the user data for the node identified by the given identifier.
 	/// @warning Behavior is undefined if the given index is not valid.

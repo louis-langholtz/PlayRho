@@ -39,7 +39,8 @@ const FixtureProxy* Fixture::GetProxy(child_count_t index) const noexcept
 	return (index < m_proxyCount)? m_proxies + index: nullptr;
 }
 
-void Fixture::CreateProxies(BlockAllocator& allocator, BroadPhase& broadPhase, const Transformation& xf)
+void Fixture::CreateProxies(BlockAllocator& allocator, BroadPhase& broadPhase, const Transformation& xf,
+							const RealNum aabbExtension)
 {
 	assert(m_proxyCount == 0);
 	assert(m_proxies == nullptr);
@@ -49,13 +50,11 @@ void Fixture::CreateProxies(BlockAllocator& allocator, BroadPhase& broadPhase, c
 	// Reserve proxy space and create proxies in the broad-phase.
 	const auto childCount = GetChildCount(*shape);
 	const auto proxies = allocator.AllocateArray<FixtureProxy>(childCount);
-	const auto aabbExtension = GetBody()->GetWorld()->GetAabbExtension();
-	const auto extension = Vec2{aabbExtension, aabbExtension};
 	for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex)
 	{
 		const auto aabb = ComputeAABB(*shape, xf, childIndex);
 		const auto proxyPtr = proxies + childIndex;
-		const auto proxyId = broadPhase.CreateProxy(aabb + extension, proxyPtr);
+		const auto proxyId = broadPhase.CreateProxy(GetFattenedAABB(aabb, aabbExtension), proxyPtr);
 		new (proxyPtr) FixtureProxy{aabb, proxyId, this, childIndex};
 	}
 	m_proxies = proxies;
@@ -86,14 +85,13 @@ void Fixture::TouchProxies(BroadPhase& broadPhase)
 }
 
 child_count_t Fixture::Synchronize(BroadPhase& broadPhase,
-								   const Transformation& transform1, const Transformation& transform2)
+								   const Transformation& transform1, const Transformation& transform2,
+								   const RealNum multiplier, const RealNum extension)
 {
 	assert(IsValid(transform1));
 	assert(IsValid(transform2));
 
 	const auto shape = GetShape();
-	const auto aabbExtension = GetBody()->GetWorld()->GetAabbExtension();
-	const auto extension = Vec2{aabbExtension, aabbExtension};
 
 	auto movedCount = child_count_t{0};
 	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
@@ -105,7 +103,8 @@ child_count_t Fixture::Synchronize(BroadPhase& broadPhase,
 		const auto aabb2 = ComputeAABB(*shape, transform2, proxy.childIndex);
 		proxy.aabb = GetEnclosingAABB(aabb1, aabb2);
 
-		if (broadPhase.MoveProxy(proxy.proxyId, proxy.aabb + extension, transform2.p - transform1.p))
+		const auto displacement = transform2.p - transform1.p;
+		if (broadPhase.MoveProxy(proxy.proxyId, proxy.aabb, displacement, multiplier, extension))
 		{
 			++movedCount;
 		}

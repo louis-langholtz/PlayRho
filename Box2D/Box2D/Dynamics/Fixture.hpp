@@ -89,6 +89,8 @@ struct FixtureDef
 	///
 	RealNum density = RealNum{0};
 
+	RealNum aabbExtension = DefaultAabbExtension;
+
 	/// A sensor shape collects contact information but never generates a collision
 	/// response.
 	bool isSensor = false;
@@ -262,7 +264,8 @@ private:
 
 	/// Creates proxies for every child of this fixture's shape.
 	/// This sets the proxy count to the child count of the shape.
-	void CreateProxies(BlockAllocator& allocator, BroadPhase& broadPhase, const Transformation& xf);
+	void CreateProxies(BlockAllocator& allocator, BroadPhase& broadPhase, const Transformation& xf,
+					   const RealNum aabbExtension);
 
 	/// Destroys this fixture's proxies.
 	/// This resets the proxy count to 0.
@@ -270,8 +273,10 @@ private:
 
 	/// Touches each proxy so that new pairs may be created.
 	void TouchProxies(BroadPhase& broadPhase);
-
-	child_count_t Synchronize(BroadPhase& broadPhase, const Transformation& xf1, const Transformation& xf2);
+	
+	child_count_t Synchronize(BroadPhase& broadPhase,
+							  const Transformation& xf1, const Transformation& xf2,
+							  const RealNum multiplier, const RealNum extension);
 
 	// Data ordered here for memory compaction.
 	

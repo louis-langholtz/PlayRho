@@ -51,7 +51,7 @@ void BroadPhase::DestroyProxy(size_type proxyId)
 }
 
 bool BroadPhase::MoveProxy(size_type proxyId, const AABB& aabb, const Vec2 displacement,
-						   const RealNum multiplier, const Vec2 extension)
+						   const RealNum multiplier, const RealNum extension)
 {
 	const auto moved = m_tree.MoveProxy(proxyId, aabb, displacement, multiplier, extension);
 	if (moved)

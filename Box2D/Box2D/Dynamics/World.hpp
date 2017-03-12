@@ -108,7 +108,7 @@ constexpr auto EarthlyGravity = Vec2{0, RealNum(-9.8)};
 /// The world class manages all physics entities, dynamic simulation,
 /// and asynchronous queries. The world also contains efficient memory
 /// management facilities.
-/// @note This data structure is 344-bytes large (with 4-byte RealNum on at least one 64-bit platform).
+/// @note This data structure is 320-bytes large (with 4-byte RealNum on at least one 64-bit platform).
 class World
 {
 public:
@@ -140,12 +140,6 @@ public:
 		/// @note Use Vec2{0, 0} to disable gravity.
 		Vec2 gravity = EarthlyGravity;
 		
-		/// AABB extension.
-		/// @detail This is the extension that will be applied to Axis Aligned Bounding Box
-		///    objects used in "broadphase" collision detection.
-		/// @note Should be greater than 0.
-		RealNum aabbExtension = DefaultLinearSlop * 20;
-
 		/// Minimum vertex radius.
 		/// @detail This is the minimum vertex radius that this world establishes which bodies
 		///    shall allow fixtures to be created with. Trying to create a fixture with a shape
@@ -313,13 +307,6 @@ public:
 	/// The body shift formula is: position -= newOrigin
 	/// @param newOrigin the new origin with respect to the old origin
 	void ShiftOrigin(const Vec2 newOrigin);
-
-	/// Gets the AABB extension.
-	/// @detail
-	/// Fattens AABBs in the dynamic tree. This allows proxies
-	/// to move by a small amount without triggering a tree adjustment.
-	/// This is in meters.
-	RealNum GetAabbExtension() const noexcept;
 
 	/// Gets the minimum vertex radius that shapes in this world can be.
 	RealNum GetMinVertexRadius() const noexcept;
@@ -585,9 +572,6 @@ private:
 	/// @sa Step.
 	RealNum m_inv_dt0 = 0;
 
-	/// AABB Extension.
-	const RealNum m_aabbExtension;
-
 	/// Minimum vertex radius.
 	const RealNum m_minVertexRadius;
 
@@ -605,12 +589,6 @@ private:
 constexpr inline World::Def& World::Def::UseGravity(Vec2 value) noexcept
 {
 	gravity = value;
-	return *this;
-}
-
-constexpr inline World::Def& World::Def::UseAabbExtension(RealNum value) noexcept
-{
-	aabbExtension = value;
 	return *this;
 }
 
@@ -698,11 +676,6 @@ inline void World::SetNewFixtures() noexcept
 inline void World::UnsetNewFixtures() noexcept
 {
 	m_flags &= ~e_newFixture;
-}
-
-inline RealNum World::GetAabbExtension() const noexcept
-{
-	return m_aabbExtension;
 }
 
 inline RealNum World::GetMinVertexRadius() const noexcept

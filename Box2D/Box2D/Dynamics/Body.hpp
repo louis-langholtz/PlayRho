@@ -218,7 +218,7 @@ constexpr inline BodyDef& BodyDef::UseUserData(void* value) noexcept
 ///
 /// @detail A rigid body. These are created via World::Create.
 ///
-/// @note On a 64-bit architecture with 4-byte RealNum, this data structure is at least 176-bytes large.
+/// @note On a 64-bit architecture with 4-byte RealNum, this data structure is at least 208-bytes large.
 ///
 class Body
 {
@@ -268,7 +268,8 @@ public:
 	/// @note Contacts are updated on the next call to World::Step.
 	/// @param position Valid world position of the body's local origin. Behavior is undefined if value is invalid.
 	/// @param angle Valid world rotation in radians. Behavior is undefined if value is invalid.
-	void SetTransform(const Vec2 position, Angle angle);
+	void SetTransform(const Vec2 position, Angle angle,
+					  const RealNum aabbExtension = DefaultAabbExtension);
 
 	/// Gets the body transform for the body's origin.
 	/// @return the world transform of the body's origin.
@@ -356,7 +357,7 @@ public:
 	void SetAngularDamping(RealNum angularDamping) noexcept;
 
 	/// Set the type of this body. This may alter the mass and velocity.
-	void SetType(BodyType type);
+	void SetType(BodyType type, const RealNum aabbExtension = DefaultAabbExtension);
 
 	/// Get the type of this body.
 	BodyType GetType() const noexcept;
@@ -424,7 +425,7 @@ public:
 	/// Joints connected to an inactive body are implicitly inactive.
 	/// An inactive body is still owned by a World object and remains
 	/// in the body list.
-	void SetActive(bool flag);
+	void SetActive(bool flag, const RealNum aabbExtension = DefaultAabbExtension);
 
 	/// Get the active state of the body.
 	bool IsActive() const noexcept;
@@ -519,9 +520,10 @@ private:
 	Body(const BodyDef& bd, World* world);
 	~Body();
 
-	contact_count_t SynchronizeFixtures(const Transformation& t1, const Transformation& t2);
+	contact_count_t SynchronizeFixtures(const Transformation& t1, const Transformation& t2,
+										const RealNum multiplier, const RealNum aabbExtension);
 	
-	contact_count_t SynchronizeFixtures();
+	contact_count_t SynchronizeFixtures(const RealNum multiplier, const RealNum aabbExtension);
 	
 	/// Determines whether this body should possibly be able to collide with the given other body.
 	/// @return true if either body is dynamic and no joint prevents collision, false otherwise.

@@ -387,12 +387,10 @@ const BodyDef& World::GetDefaultBodyDef()
 
 World::World(const Def& def):
 	m_gravity(def.gravity),
-	m_aabbExtension(def.aabbExtension),
 	m_minVertexRadius(def.minVertexRadius),
 	m_maxVertexRadius(def.maxVertexRadius)
 {
 	assert(IsValid(def.gravity));
-	assert(def.aabbExtension > 0);
 	assert(def.minVertexRadius > 0);
 	assert(def.minVertexRadius < def.maxVertexRadius);
 }
@@ -820,7 +818,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 		if ((body->m_flags & (Body::e_velocityFlag|Body::e_islandFlag)) == (Body::e_velocityFlag|Body::e_islandFlag))
 		{
 			// Update fixtures (for broad-phase).
-			stats.proxiesMoved += body->SynchronizeFixtures();
+			stats.proxiesMoved += body->SynchronizeFixtures(step.displaceMultiplier, step.aabbExtension);
 		}
 	}
 
@@ -1129,7 +1127,7 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 				body->UnsetInIsland();
 				if (body->IsAccelerable())
 				{
-					stats.proxiesMoved += body->SynchronizeFixtures();
+					stats.proxiesMoved += body->SynchronizeFixtures(step.displaceMultiplier, step.aabbExtension);
 					ResetContactsForSolveTOI(*body);
 				}
 			}

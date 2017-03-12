@@ -432,7 +432,7 @@ void Test::MouseDown(const Vec2& p)
 	}
 
 	// Make a small box.
-	const auto aabb = AABB{p, p} + Vec2(0.001f, 0.001f);
+	const auto aabb = GetFattenedAABB(AABB{p, p}, 0.001f);
 	
 	// Query the world for overlapping shapes.
 	QueryCallback callback(p);

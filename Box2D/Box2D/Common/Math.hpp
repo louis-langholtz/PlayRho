@@ -1170,7 +1170,7 @@ inline Transformation GetTransformation(const Sweep& sweep, const RealNum beta) 
 }
 
 /// Gets the transform at "time" zero.
-/// @note This is like calling GetTransformation(sweep, 0.0), except more efficiently.
+/// @note This is like calling GetTransformation(sweep, 0), except more efficiently.
 /// @sa GetTransformation(const Sweep& sweep, RealNum beta).
 /// @param sweep Sweep data to get the transform from.
 /// @return Transformation of the given sweep at time zero.

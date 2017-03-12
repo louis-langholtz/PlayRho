@@ -37,13 +37,12 @@ public:
 
 		srand(888);
 
-		const auto aabbExtension = m_world->GetAabbExtension();
-		const auto extension = Vec2{aabbExtension, aabbExtension};
+		const auto aabbExtension = StepConf{}.aabbExtension;
 		for (int32 i = 0; i < e_actorCount; ++i)
 		{
 			Actor* actor = m_actors + i;
 			actor->aabb = GetRandomAABB();
-			actor->proxyId = m_tree.CreateProxy(actor->aabb + extension, actor);
+			actor->proxyId = m_tree.CreateProxy(GetFattenedAABB(actor->aabb, aabbExtension), actor);
 		}
 
 		m_stepCount = 0;
@@ -243,8 +242,7 @@ private:
 
 	void CreateProxy()
 	{
-		const auto aabbExtension = m_world->GetAabbExtension();
-		const auto extension = Vec2{aabbExtension, aabbExtension};
+		const auto extension = StepConf{}.aabbExtension;
 		for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
 		{
 			const auto j = rand() % e_actorCount;
@@ -252,7 +250,7 @@ private:
 			if (actor->proxyId == DynamicTree::InvalidIndex)
 			{
 				actor->aabb = GetRandomAABB();
-				actor->proxyId = m_tree.CreateProxy(actor->aabb + extension, actor);
+				actor->proxyId = m_tree.CreateProxy(GetFattenedAABB(actor->aabb, extension), actor);
 				return;
 			}
 		}
@@ -260,10 +258,10 @@ private:
 
 	void DestroyProxy()
 	{
-		for (int32 i = 0; i < e_actorCount; ++i)
+		for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
 		{
-			int32 j = rand() % e_actorCount;
-			Actor* actor = m_actors + j;
+			const auto j = rand() % e_actorCount;
+			const auto actor = m_actors + j;
 			if (actor->proxyId != DynamicTree::InvalidIndex)
 			{
 				m_tree.DestroyProxy(actor->proxyId);
@@ -275,12 +273,12 @@ private:
 
 	void MoveProxy()
 	{
-		const auto aabbExtension = m_world->GetAabbExtension();
-		const auto extension = Vec2{aabbExtension, aabbExtension};
-		for (int32 i = 0; i < e_actorCount; ++i)
+		const auto extension = StepConf{}.aabbExtension;
+		const auto multiplier = StepConf{}.displaceMultiplier;
+		for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
 		{
-			int32 j = rand() % e_actorCount;
-			Actor* actor = m_actors + j;
+			const auto j = rand() % e_actorCount;
+			const auto actor = m_actors + j;
 			if (actor->proxyId == DynamicTree::InvalidIndex)
 			{
 				continue;
@@ -289,14 +287,14 @@ private:
 			const auto aabb0 = actor->aabb;
 			MoveAABB(&actor->aabb);
 			const auto displacement = GetCenter(actor->aabb) - GetCenter(aabb0);
-			m_tree.MoveProxy(actor->proxyId, actor->aabb + extension, displacement);
+			m_tree.MoveProxy(actor->proxyId, actor->aabb, displacement, multiplier, extension);
 			return;
 		}
 	}
 
 	void Action()
 	{
-		int32 choice = rand() % 20;
+		const auto choice = rand() % 20;
 
 		switch (choice)
 		{
@@ -317,7 +315,7 @@ private:
 	{
 		m_tree.Query(m_queryAABB, [&](DynamicTree::size_type nodeId){ return QueryCallback(nodeId); });
 
-		for (int32 i = 0; i < e_actorCount; ++i)
+		for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
 		{
 			if (m_actors[i].proxyId == DynamicTree::InvalidIndex)
 			{
@@ -344,7 +342,7 @@ private:
 		// Brute force ray cast.
 		Actor* bruteActor = nullptr;
 		RayCastOutput bruteOutput;
-		for (int32 i = 0; i < e_actorCount; ++i)
+		for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
 		{
 			if (m_actors[i].proxyId == DynamicTree::InvalidIndex)
 			{

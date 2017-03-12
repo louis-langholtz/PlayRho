@@ -85,7 +85,7 @@ AABB box2d::ComputeAABB(const CircleShape& shape, const Transformation& transfor
 	NOT_USED(childIndex);
 	
 	const auto p = transform.p + Rotate(shape.GetLocation(), transform.q);
-	return AABB{p, p} + Vec2{shape.GetRadius(), shape.GetRadius()};
+	return GetFattenedAABB(AABB{p, p}, shape.GetRadius());
 }
 
 AABB box2d::ComputeAABB(const Shape& shape, const Transformation& xf, child_count_t childIndex)
