@@ -131,7 +131,6 @@ public:
 	struct Def
 	{
 		constexpr Def& UseGravity(Vec2 value) noexcept;
-		constexpr Def& UseAabbExtension(RealNum value) noexcept;
 		constexpr Def& UseMinVertexRadius(RealNum value) noexcept;
 		constexpr Def& UseMaxVertexRadius(RealNum value) noexcept;
 
