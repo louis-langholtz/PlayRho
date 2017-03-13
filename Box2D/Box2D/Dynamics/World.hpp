@@ -27,6 +27,7 @@
 
 #include <vector>
 #include <list>
+#include <memory>
 
 namespace box2d {
 
