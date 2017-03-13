@@ -61,7 +61,7 @@ TEST(forward_list, PopFromFrontUntilEmptyWhileLoop)
 {
 	std::forward_list<int> nums = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 	
-	EXPECT_EQ(std::distance(nums.begin(), nums.end()), std::forward_list<int>::size_type(9));
+	EXPECT_EQ(std::distance(nums.begin(), nums.end()), 9);
 	EXPECT_FALSE(nums.empty());
 	
 	while (!nums.empty())
@@ -83,7 +83,7 @@ TEST(forward_list, EraseFromBeginUntilEmptyForLoop)
 {
 	std::forward_list<int> nums = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-	EXPECT_EQ(std::distance(nums.begin(), nums.end()), std::forward_list<int>::size_type(9));
+	EXPECT_EQ(std::distance(nums.begin(), nums.end()), 9);
 	EXPECT_FALSE(nums.empty());
 	for (auto prev = nums.before_begin(); !nums.empty(); prev = nums.before_begin())
 	{
@@ -103,7 +103,7 @@ TEST(forward_list, EraseFromBeginUntilEmptyWhileLoop)
 {
 	std::forward_list<int> nums = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 	
-	EXPECT_EQ(std::distance(nums.begin(), nums.end()), std::forward_list<int>::size_type(9));
+	EXPECT_EQ(std::distance(nums.begin(), nums.end()), 9);
 	EXPECT_FALSE(nums.empty());
 	while (!nums.empty())
 	{
