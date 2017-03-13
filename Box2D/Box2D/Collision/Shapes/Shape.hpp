@@ -81,7 +81,7 @@ private:
 /// This is used for collision handling.
 /// @note This value should never be less than zero.
 /// @sa DistanceProxy.
-inline RealNum GetVertexRadius(const Shape& shape)
+inline RealNum GetVertexRadius(const Shape& shape) noexcept
 {
 	return shape.GetVertexRadius();
 }

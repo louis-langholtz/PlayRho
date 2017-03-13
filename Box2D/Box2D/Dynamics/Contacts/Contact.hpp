@@ -150,7 +150,6 @@ public:
 	
 protected:
 	friend class World;
-	friend class Fixture;
 
 	/// Flag this contact for filtering. Filtering will occur the next time step.
 	void UnflagForFiltering() noexcept;
@@ -160,6 +159,9 @@ protected:
 
 	static void Destroy(Contact* contact, Shape::Type typeA, Shape::Type typeB, BlockAllocator& allocator);
 	
+	/// Destroys the given contact.
+	/// @note This awakens the associated fixtures of a non-sensor touching contact.
+	/// @note This calls the contact's destructor.
 	static void Destroy(Contact* contact, BlockAllocator& allocator);
 
 	Contact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB);

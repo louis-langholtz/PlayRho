@@ -165,9 +165,11 @@ protected:
 
 private:
 	friend class World;
-	friend class Body;
 
 	static Joint* Create(const JointDef& def, BlockAllocator& allocator);
+
+	/// Destroys the given joint.
+	/// @note This calls the joint's destructor.
 	static void Destroy(Joint* joint, BlockAllocator& allocator);
 
 	/// Initializes velocity constraint data based on the given solver data.

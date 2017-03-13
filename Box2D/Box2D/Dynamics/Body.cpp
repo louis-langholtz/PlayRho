@@ -27,199 +27,7 @@
 
 using namespace box2d;
 
-const FixtureDef& box2d::GetDefaultFixtureDef() noexcept
-{
-	static const auto def = FixtureDef{};
-	return def;
-}
-
-uint16 Body::GetFlags(const BodyDef& bd) noexcept
-{
-	uint16 flags = 0;
-	if (bd.bullet)
-	{
-		flags |= e_impenetrableFlag;
-	}
-	if (bd.fixedRotation)
-	{
-		flags |= e_fixedRotationFlag;
-	}
-	if (bd.allowSleep)
-	{
-		flags |= e_autoSleepFlag;
-	}
-	if (bd.awake)
-	{
-		flags |= e_awakeFlag;
-	}
-	if (bd.active)
-	{
-		flags |= e_activeFlag;
-	}
-	switch (bd.type)
-	{
-		case BodyType::Dynamic:   flags |= (e_velocityFlag|e_accelerationFlag); break;
-		case BodyType::Kinematic: flags |= (e_impenetrableFlag|e_velocityFlag); break;
-		case BodyType::Static:    flags |= (e_impenetrableFlag); break;
-	}
-	return flags;
-}
-
-Body::Body(const BodyDef& bd, World* world):
-	m_flags{GetFlags(bd)},
-	m_xf{bd.position, UnitVec2{bd.angle}},
-	m_world{world},
-	m_sweep{Position{bd.position, bd.angle}},
-	m_velocity{Velocity{bd.linearVelocity, bd.angularVelocity}},
-	m_invMass{(bd.type == BodyType::Dynamic)? RealNum{1}: RealNum{0}},
-	m_linearDamping{bd.linearDamping},
-	m_angularDamping{bd.angularDamping},
-	m_sleepTime{bd.sleepTime},
-	m_userData{bd.userData}
-{
-	assert(IsValid(bd.position));
-	assert(IsValid(bd.linearVelocity));
-	assert(IsValid(bd.angle));
-	assert(IsValid(bd.angularVelocity));
-	assert(IsValid(bd.angularDamping) && (bd.angularDamping >= RealNum{0}));
-	assert(IsValid(bd.linearDamping) && (bd.linearDamping >= RealNum{0}));
-}
-
-Body::~Body()
-{
-	// Assumes destructor is private which it should be given factory handling of Body.
-	InternalDestroyJoints();
-	InternalDestroyContacts();
-	InternalDestroyFixtures();
-}
-
-void Body::InternalDestroyContacts()
-{
-	// Destroy the attached contacts.
-	while (!m_contacts.empty())
-	{
-		auto iter = m_contacts.begin();
-		const auto contact = *iter;
-		m_contacts.erase(iter);
-		m_world->Destroy(contact);
-	}
-}
-
-void Body::InternalDestroyJoints()
-{
-	// Delete the attached joints.
-	while (!m_joints.empty())
-	{
-		auto iter = m_joints.begin();
-		const auto joint = *iter;
-		m_joints.erase(iter);
-		if (m_world->m_destructionListener)
-		{
-			m_world->m_destructionListener->SayGoodbye(*joint);
-		}
-		
-		m_world->Destroy(joint);
-	}
-}
-
-void Body::DestroyFixtures()
-{
-	assert(!m_world->IsLocked());
-	if (!m_world->IsLocked())
-	{
-		InternalDestroyFixtures();
-	}
-}
-
-void Body::InternalDestroyFixtures()
-{
-	// Delete the attached fixtures. This destroys broad-phase proxies.
-	while (!m_fixtures.empty())
-	{
-		const auto fixture = m_fixtures.front();
-		m_fixtures.pop_front();
-		
-		if (m_world->m_destructionListener)
-		{
-			m_world->m_destructionListener->SayGoodbye(*fixture);
-		}
-		
-		fixture->DestroyProxies(m_world->m_blockAllocator, m_world->m_broadPhase);
-		Delete(fixture, m_world->m_blockAllocator);
-	}
-	
-	ResetMassData();
-}
-
-void Body::SetType(BodyType type, const RealNum aabbExtension)
-{
-	assert(!m_world->IsLocked());
-	if (m_world->IsLocked())
-	{
-		return;
-	}
-
-	if (GetType() == type)
-	{
-		return;
-	}
-
-	m_flags &= ~(e_impenetrableFlag|e_velocityFlag|e_accelerationFlag);
-	switch (type)
-	{
-		case BodyType::Dynamic:   m_flags |= (e_velocityFlag|e_accelerationFlag); break;
-		case BodyType::Kinematic: m_flags |= (e_impenetrableFlag|e_velocityFlag); break;
-		case BodyType::Static:    m_flags |= (e_impenetrableFlag); break;
-	}
-
-	ResetMassData();
-
-	if (type == BodyType::Static)
-	{
-		m_velocity = Velocity{Vec2_zero, 0_rad};
-		m_sweep.pos0 = m_sweep.pos1;
-		
-		// Note: displacement multiplier has no effect here since no displacement.
-		SynchronizeFixtures(0, aabbExtension);
-	}
-
-	SetAwake();
-
-	m_linearAcceleration = Vec2_zero;
-	m_angularAcceleration = 0_rad;
-	if (IsAccelerable())
-	{
-		m_linearAcceleration += m_world->GetGravity();
-	}
-
-	InternalDestroyContacts();
-
-	auto& broadPhase = m_world->m_broadPhase;
-	for (auto&& fixture: GetFixtures())
-	{
-		fixture->TouchProxies(broadPhase);
-	}
-}
-
-static inline bool IsValid(std::shared_ptr<const Shape> shape, const World* world)
-{
-	if (!shape)
-	{
-		return false;
-	}
-	const auto vr = GetVertexRadius(*shape);
-	if (!(vr >= world->GetMinVertexRadius()))
-	{
-		return false;
-	}
-	if (!(vr <= world->GetMaxVertexRadius()))
-	{
-		return false;
-	}
-	return true;
-}
-
-static inline bool IsValid(const FixtureDef& def)
+bool Body::IsValid(const FixtureDef& def)
 {
 	if (!(def.density >= 0))
 	{
@@ -240,105 +48,88 @@ static inline bool IsValid(const FixtureDef& def)
 	return true;
 }
 
+const FixtureDef& box2d::GetDefaultFixtureDef() noexcept
+{
+	static const auto def = FixtureDef{};
+	return def;
+}
+
+Body::FlagsType Body::GetFlags(const BodyDef& bd) noexcept
+{
+	auto flags = FlagsType{0};
+	if (bd.bullet)
+	{
+		flags |= e_impenetrableFlag;
+	}
+	if (bd.fixedRotation)
+	{
+		flags |= e_fixedRotationFlag;
+	}
+	if (bd.allowSleep)
+	{
+		flags |= e_autoSleepFlag;
+	}
+	if (bd.awake)
+	{
+		flags |= e_awakeFlag;
+	}
+	if (bd.active)
+	{
+		flags |= e_activeFlag;
+	}
+	flags |= GetFlags(bd.type);
+	return flags;
+}
+
+Body::Body(const BodyDef& bd, World* world):
+	m_flags{GetFlags(bd)},
+	m_xf{bd.position, UnitVec2{bd.angle}},
+	m_world{world},
+	m_sweep{Position{bd.position, bd.angle}},
+	m_velocity{Velocity{bd.linearVelocity, bd.angularVelocity}},
+	m_invMass{(bd.type == BodyType::Dynamic)? RealNum{1}: RealNum{0}},
+	m_linearDamping{bd.linearDamping},
+	m_angularDamping{bd.angularDamping},
+	m_sleepTime{bd.sleepTime},
+	m_userData{bd.userData}
+{
+	assert(::box2d::IsValid(bd.position));
+	assert(::box2d::IsValid(bd.linearVelocity));
+	assert(::box2d::IsValid(bd.angle));
+	assert(::box2d::IsValid(bd.angularVelocity));
+	assert(::box2d::IsValid(bd.angularDamping) && (bd.angularDamping >= RealNum{0}));
+	assert(::box2d::IsValid(bd.linearDamping) && (bd.linearDamping >= RealNum{0}));
+}
+
+Body::~Body()
+{
+	assert(m_joints.empty());
+	assert(m_contacts.empty());
+	assert(m_fixtures.empty());
+}
+
+void Body::DestroyFixtures()
+{
+	m_world->DestroyFixtures(*this);
+}
+
+void Body::SetType(BodyType type, const RealNum aabbExtension)
+{
+	m_world->SetType(*this, type, aabbExtension);
+}
+
 Fixture* Body::CreateFixture(std::shared_ptr<const Shape> shape, const FixtureDef& def, bool resetMassData)
 {
-	if (!::IsValid(shape, m_world) || !::IsValid(def))
-	{
-		return nullptr;
-	}
-
-	assert(!m_world->IsLocked());
-	if (m_world->IsLocked())
-	{
-		return nullptr;
-	}
-
-	auto& allocator = m_world->m_blockAllocator;
-
-	const auto memory = allocator.Allocate(sizeof(Fixture));
-	const auto fixture = new (memory) Fixture{this, def, shape};
-	
-	if (IsActive())
-	{
-		fixture->CreateProxies(allocator, m_world->m_broadPhase, GetTransformation(), def.aabbExtension);
-	}
-
-	m_fixtures.push_front(fixture);
-
-	// Adjust mass properties if needed.
-	if (fixture->GetDensity() > 0)
-	{
-		SetMassDataDirty();
-		if (resetMassData)
-		{
-			ResetMassData();
-		}
-	}
-
-	// Let the world know we have a new fixture. This will cause new contacts
-	// to be created at the beginning of the next time step.
-	m_world->SetNewFixtures();
-
-	return fixture;
+	return m_world->CreateFixture(*this, shape, def, resetMassData);
 }
 
 bool Body::DestroyFixture(Fixture* fixture, bool resetMassData)
 {
-	if (!fixture || (fixture->m_body != this))
+	if (fixture->GetBody() != this)
 	{
 		return false;
 	}
-	if (m_world->IsLocked())
-	{
-		return false;
-	}
-
-	// Remove the fixture from this body's singly linked list.
-	auto found = false;
-	{
-		auto prev = m_fixtures.before_begin();
-		for (auto iter = m_fixtures.begin(); iter != m_fixtures.end(); ++iter)
-		{
-			if (*iter == fixture)
-			{
-				m_fixtures.erase_after(prev);
-				found = true;
-				break;
-			}
-			prev = iter;
-		}
-	}
-
-	if (!found)
-	{
-		// Fixture probably destroyed already.
-		return false;
-	}
-
-	// Destroy any contacts associated with the fixture.
-	for (auto&& contact: m_contacts)
-	{
-		const auto fixtureA = contact->GetFixtureA();
-		const auto fixtureB = contact->GetFixtureB();
-		if ((fixture == fixtureA) || (fixture == fixtureB))
-		{
-			// This destroys the contact and removes it from
-			// this body's contact list.
-			m_world->Destroy(contact);
-		}
-	}
-
-	fixture->DestroyProxies(m_world->m_blockAllocator, m_world->m_broadPhase);
-	
-	Delete(fixture, m_world->m_blockAllocator);
-	
-	SetMassDataDirty();		
-	if (resetMassData)
-	{
-		ResetMassData();
-	}
-
-	return true;
+	return m_world->DestroyFixture(fixture, resetMassData);
 }
 
 void Body::ResetMassData()
@@ -399,7 +190,7 @@ void Body::SetMassData(const MassData& massData)
 		return;
 	}
 
-	const auto mass = (massData.mass > RealNum(0))? massData.mass: RealNum{1};
+	const auto mass = (massData.mass > 0)? massData.mass: RealNum{1};
 	m_invMass = RealNum{1} / mass;
 
 	if ((massData.I > RealNum{0}) && (!IsFixedRotation()))
@@ -411,7 +202,7 @@ void Body::SetMassData(const MassData& massData)
 	}
 	else
 	{
-		m_invI = RealNum{0};
+		m_invI = 0;
 	}
 
 	// Move center of mass.
@@ -440,8 +231,8 @@ void Body::SetVelocity(const Velocity& velocity) noexcept
 
 void Body::SetAcceleration(const Vec2 linear, const Angle angular) noexcept
 {
-	assert(IsValid(linear));
-	assert(IsValid(angular));
+	assert(::box2d::IsValid(linear));
+	assert(::box2d::IsValid(angular));
 
 	if ((linear != Vec2_zero) || (angular != 0_rad))
 	{
@@ -467,7 +258,7 @@ bool Body::ShouldCollide(const Body* other) const
 	{
 		if (joint->GetBodyA() == other || joint->GetBodyB() == other)
 		{
-			if (!(joint->m_collideConnected))
+			if (!(joint->GetCollideConnected()))
 			{
 				return false;
 			}
@@ -477,80 +268,14 @@ bool Body::ShouldCollide(const Body* other) const
 	return true;
 }
 
-contact_count_t Body::SynchronizeFixtures(const Transformation& t1, const Transformation& t2,
-										  const RealNum multiplier, const RealNum aabbExtension)
-{
-	auto movedCount = contact_count_t{0};
-	auto& broadPhase = m_world->m_broadPhase;
-	for (auto&& fixture: GetFixtures())
-	{
-		movedCount += fixture->Synchronize(broadPhase, t1, t2, multiplier, aabbExtension);
-	}
-	return movedCount;
-}
-
 void Body::SetTransform(const Vec2 position, Angle angle, const RealNum aabbExtension)
 {
-	assert(IsValid(position));
-	assert(IsValid(angle));
-
-	assert(!m_world->IsLocked());
-	if (m_world->IsLocked())
-	{
-		return;
-	}
-
-	const auto xf = Transformation{position, UnitVec2{angle}};
-	m_xf = xf;
-	m_sweep = Sweep{Position{Transform(GetLocalCenter(), xf), angle}, GetLocalCenter()};
-	
-	// Note that distanceMultiplier parameter has no effect here since no displacement.
-	SynchronizeFixtures(xf, xf, 0, aabbExtension);
-}
-
-contact_count_t Body::SynchronizeFixtures(const RealNum multiplier, const RealNum aabbExtension)
-{
-	return SynchronizeFixtures(GetTransform0(m_sweep), GetTransformation(), multiplier, aabbExtension);
+	m_world->SetTransform(*this, position, angle, aabbExtension);
 }
 
 void Body::SetActive(bool flag, const RealNum aabbExtension)
 {
-	assert(!m_world->IsLocked());
-
-	if (flag == IsActive())
-	{
-		return;
-	}
-
-	if (flag)
-	{
-		m_flags |= e_activeFlag;
-
-		// Create all proxies.
-		auto& broadPhase = m_world->m_broadPhase;
-		auto& allocator = m_world->m_blockAllocator;
-		const auto xf = GetTransformation();
-		for (auto&& fixture: GetFixtures())
-		{
-			fixture->CreateProxies(allocator, broadPhase, xf, aabbExtension);
-		}
-
-		// Contacts are created the next time step.
-	}
-	else
-	{
-		m_flags &= ~e_activeFlag;
-
-		// Destroy all proxies.
-		auto& broadPhase = m_world->m_broadPhase;
-		auto& allocator = m_world->m_blockAllocator;
-		for (auto&& fixture: GetFixtures())
-		{
-			fixture->DestroyProxies(allocator, broadPhase);
-		}
-
-		InternalDestroyContacts();
-	}
+	m_world->SetActive(*this, flag, aabbExtension);
 }
 
 void Body::SetFixedRotation(bool flag)

@@ -1,0 +1,62 @@
+/*
+ * Original work Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
+
+#ifndef BodyType_hpp
+#define BodyType_hpp
+
+namespace box2d
+{
+
+/// Body Type.
+///
+/// @note static: zero mass, zero velocity, may be manually moved
+/// @note kinematic: zero mass, non-zero velocity set by user, moved by solver
+/// @note dynamic: positive mass, non-zero velocity determined by forces, moved by solver
+///
+enum class BodyType
+{
+	/// Static body type.
+	/// @detail
+	/// Static bodies have no mass, have no forces applied to them, and aren't moved by
+	/// physical processeses. They are impenetrable.
+	/// @note Physics applied: none.
+	Static = 0,
+	
+	/// Kinematic body type.
+	/// @detail
+	/// Kinematic bodies have no mass and have no forces applied to them, but can move at set velocities.
+	/// They are impenetrable.
+	/// @note Physics applied: velocity.
+	Kinematic,
+	
+	/// Dynamic body type.
+	/// @detail
+	/// Dynamic bodies are fully simulated bodies.
+	/// Dynamic bodies always have a positive non-zero mass.
+	/// They may be penetrable.
+	/// @note Physics applied: velocity, acceleration.
+	Dynamic
+	
+	// TODO_ERIN
+	//BulletBody,
+};
+
+} // namespace box2d
+
+#endif /* BodyType_hpp */

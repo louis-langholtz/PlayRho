@@ -112,35 +112,11 @@ child_count_t Fixture::Synchronize(BroadPhase& broadPhase,
 	return movedCount;
 }
 
-void Fixture::SetFilterData(const Filter& filter)
-{
-	m_filter = filter;
-
-	Refilter();
-}
-
 void Fixture::Refilter()
 {
 	const auto body = GetBody();
-	if (body)
-	{
-		// Flag associated contacts for filtering.
-		for (auto&& contact: body->GetContacts())
-		{
-			const auto fixtureA = contact->GetFixtureA();
-			const auto fixtureB = contact->GetFixtureB();
-			if ((fixtureA == this) || (fixtureB == this))
-			{
-				contact->FlagForFiltering();
-			}
-		}
-		
-		const auto world = body->GetWorld();
-		if (world)
-		{
-			TouchProxies(world->m_broadPhase);
-		}
-	}
+	const auto world = body->GetWorld();
+	world->Refilter(*this);
 }
 
 void Fixture::SetSensor(bool sensor)

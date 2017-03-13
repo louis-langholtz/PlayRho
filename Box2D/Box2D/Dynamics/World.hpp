@@ -33,6 +33,7 @@ namespace box2d {
 struct AABB;
 struct BodyDef;
 struct JointDef;
+struct FixtureDef;
 struct FixtureProxy;
 class Body;
 class Fixture;
@@ -40,6 +41,10 @@ class Joint;
 class Island;
 class StepConf;
 class BodyConstraint;
+class Shape;
+enum class BodyType;
+
+const FixtureDef& GetDefaultFixtureDef() noexcept;
 
 /// Pre-step statistics.
 struct PreStepStats
@@ -320,6 +325,43 @@ public:
 	/// @warning Behavior is undefined if the given proxy ID is not a valid ID.
 	AABB GetFatAABB(proxy_size_type proxyId) const;
 	
+	void SetActive(Body& body, bool flag, const RealNum aabbExtension = DefaultAabbExtension);
+	
+	/// Refilter the given fixture.
+	/// @note Call this if you want to establish collision that was previously disabled by
+	///   ContactFilter::ShouldCollide.
+	void Refilter(Fixture& fixture);
+
+	void DestroyFixtures(Body& body);
+
+	/// Sets the type of the given body.
+	/// @note This may alter the body's mass and velocity.
+	void SetType(Body& body, BodyType type, const RealNum aabbExtension = DefaultAabbExtension);
+
+	Fixture* CreateFixture(Body& body, std::shared_ptr<const Shape> shape,
+						   const FixtureDef& def = GetDefaultFixtureDef(),
+						   bool resetMassData = true);
+
+	/// Destroys a fixture.
+	/// @detail This removes the fixture from the broad-phase and
+	/// destroys all contacts associated with this fixture.
+	/// All fixtures attached to a body are implicitly destroyed when the body is destroyed.
+	/// @warning This function is locked during callbacks.
+	/// @note Make sure to explicitly call ResetMassData after fixtures have been destroyed.
+	/// @sa ResetMassData.
+	/// @param fixture the fixture to be removed.
+	bool DestroyFixture(Fixture* fixture, bool resetMassData = true);
+
+	/// Sets the position of the body's origin and rotation.
+	/// @warning Manipulating a body's transform may cause non-physical behavior.
+	/// @note Contacts are updated on the next call to World::Step.
+	/// @param position Valid world position of the body's local origin. Behavior is undefined if value is invalid.
+	/// @param angle Valid world rotation in radians. Behavior is undefined if value is invalid.
+	void SetTransform(Body& body, const Vec2 position, Angle angle,
+					  const RealNum aabbExtension = DefaultAabbExtension);
+
+	bool IsValid(std::shared_ptr<const Shape> shape) const noexcept;
+	
 private:
 
 	/// Flags type data type.
@@ -351,9 +393,6 @@ private:
 		ts_iters_t velocityIterations = 0; ///< Velocity iterations actually performed.
 		uint16 bodiesSlept = 0;
 	};
-
-	friend class Body;
-	friend class Fixture;
 
 	void InternalDestroy(Joint* joint);
 
@@ -536,13 +575,15 @@ private:
 	void InternalDestroy(Contact* contact);
 	void Destroy(Contacts::iterator iter);
 	void Erase(Contact* contact);
+		
+	void EraseFromBodies(Contact* contact);
 	
-	/// Removes contact from this manager.
-	/// @warning Behavior is undefined if called with a contact that is not managed by this manager.
-	/// @param contact Non-null pointer to a contact that is managed by this manager.
-	void Remove(Contact* contact);
+	contact_count_t SynchronizeFixtures(Body& body,
+										const Transformation& t1, const Transformation& t2,
+										const RealNum multiplier, const RealNum aabbExtension);
 	
-	void RemoveFromBodies(Contact* contact);
+	contact_count_t SynchronizeFixtures(Body& body,
+										const RealNum multiplier, const RealNum aabbExtension);
 
 	/******** Member variables. ********/
 

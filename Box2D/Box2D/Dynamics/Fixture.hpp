@@ -175,7 +175,7 @@ public:
 	/// Set the contact filtering data. This will not update contacts until the next time
 	/// step when either parent body is active and awake.
 	/// This automatically calls Refilter.
-	void SetFilterData(const Filter& filter);
+	void SetFilterData(const Filter filter);
 
 	/// Get the contact filtering data.
 	Filter GetFilterData() const noexcept;
@@ -224,9 +224,14 @@ public:
 
 	const FixtureProxy* GetProxy(child_count_t index) const noexcept;
 
+	~Fixture()
+	{
+		assert(!m_proxies);
+		assert(m_proxyCount == 0);
+	}
+
 private:
 
-	friend class Body;
 	friend class World;
 	
 	/// Initializing constructor.
@@ -261,7 +266,7 @@ private:
 		assert(def.restitution < std::numeric_limits<decltype(def.restitution)>::infinity());
 		assert(def.restitution > -std::numeric_limits<decltype(def.restitution)>::infinity());
 	}
-
+	
 	/// Creates proxies for every child of this fixture's shape.
 	/// This sets the proxy count to the child count of the shape.
 	void CreateProxies(BlockAllocator& allocator, BroadPhase& broadPhase, const Transformation& xf,
@@ -277,7 +282,7 @@ private:
 	child_count_t Synchronize(BroadPhase& broadPhase,
 							  const Transformation& xf1, const Transformation& xf2,
 							  const RealNum multiplier, const RealNum extension);
-
+	
 	// Data ordered here for memory compaction.
 	
 	// 0-bytes of memory (at first).
@@ -372,6 +377,12 @@ inline void Fixture::SetRestitution(RealNum restitution) noexcept
 inline child_count_t Fixture::GetProxyCount() const noexcept
 {
 	return m_proxyCount;
+}
+
+inline void Fixture::SetFilterData(const Filter filter)
+{
+	m_filter = filter;
+	Refilter();
 }
 
 /// Test a point for containment in a fixture.

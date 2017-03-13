@@ -22,6 +22,7 @@
 
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Collision/MassData.hpp>
+#include <Box2D/Dynamics/BodyType.hpp>
 
 #include <forward_list>
 #include <list>
@@ -37,38 +38,6 @@ struct FixtureDef;
 class Shape;
 
 const FixtureDef &GetDefaultFixtureDef() noexcept;
-
-/// The body type.
-/// static: zero mass, zero velocity, may be manually moved
-/// kinematic: zero mass, non-zero velocity set by user, moved by solver
-/// dynamic: positive mass, non-zero velocity determined by forces, moved by solver
-enum class BodyType
-{
-	/// Static body type.
-	/// @detail
-	/// Static bodies have no mass, have no forces applied to them, and aren't moved by physical processeses.
-	/// They are impenetrable.
-	/// Physics applied: none.
-	Static = 0,
-	
-	/// Kinematic body type.
-	/// @detail
-	/// Kinematic bodies have no mass and have no forces applied to them, but can move at set velocities.
-	/// They are impenetrable.
-	/// Physics applied: velocity.
-	Kinematic,
-
-	/// Dynamic body type.
-	/// @detail
-	/// Dynamic bodies are fully simulated bodies.
-	/// Dynamic bodies always have a positive non-zero mass.
-	/// They may be penetrable.
-	/// Physics applied: velocity, acceleration.
-	Dynamic
-
-	// TODO_ERIN
-	//BulletBody,
-};
 
 /// A body definition holds all the data needed to construct a rigid body.
 /// You can safely re-use body definitions. Shapes are added to a body after construction.
@@ -233,6 +202,8 @@ public:
 	
 	static constexpr auto InvalidIslandIndex = static_cast<body_count_t>(-1);
 	
+	static bool IsValid(const FixtureDef& def);
+
 	/// Creates a fixture and attaches it to this body.
 	///
 	/// @param shape Sharable shape definition.
@@ -473,10 +444,10 @@ private:
 
 	friend class World;
 	
-	using flags_type = uint16;
+	using FlagsType = uint16;
 
 	// m_flags
-	enum Flag: flags_type
+	enum Flag: FlagsType
 	{
 		/// Island flag.
 		e_islandFlag		= 0x0001,
@@ -517,15 +488,11 @@ private:
 		e_massDataDirtyFlag	= 0x0200,
 	};
 	
-	static uint16 GetFlags(const BodyDef& bd) noexcept;
+	static FlagsType GetFlags(const BodyType type) noexcept;
+	static FlagsType GetFlags(const BodyDef& bd) noexcept;
 
 	Body(const BodyDef& bd, World* world);
 	~Body();
-
-	contact_count_t SynchronizeFixtures(const Transformation& t1, const Transformation& t2,
-										const RealNum multiplier, const RealNum aabbExtension);
-	
-	contact_count_t SynchronizeFixtures(const RealNum multiplier, const RealNum aabbExtension);
 	
 	/// Determines whether this body should possibly be able to collide with the given other body.
 	/// @return true if either body is dynamic and no joint prevents collision, false otherwise.
@@ -538,10 +505,6 @@ private:
 	///    3. updates the body's transform to the new sweep one settings.
 	/// @param t Valid new time factor in [0,1) to advance the sweep to.
 	void Advance(RealNum t);
-
-	void InternalDestroyFixtures();
-	void InternalDestroyContacts();
-	void InternalDestroyJoints();
 
 	void SetMassDataDirty() noexcept;
 	void UnsetMassDataDirty() noexcept;
@@ -558,13 +521,15 @@ private:
 
 	bool Insert(Contact* contact);
 
-	bool Erase(const Contact* contact);
+	bool Erase(Contact* const contact);
+	bool Erase(Joint* const joint);
+	bool Erase(Fixture* const fixture);
 
 	//
 	// Member variables. Try to keep total size small.
 	//
 
-	flags_type m_flags = 0; ///< Flags. 2-bytes.
+	FlagsType m_flags = 0; ///< Flags. 2-bytes.
 	
 	/// Transformation for body origin.
 	/// @detail
@@ -603,6 +568,18 @@ private:
 	void* m_userData; ///< User data. 8-bytes.
 };
 
+inline Body::FlagsType Body::GetFlags(const BodyType type) noexcept
+{
+	auto flags = FlagsType{0};
+	switch (type)
+	{
+		case BodyType::Dynamic:   flags |= (e_velocityFlag|e_accelerationFlag); break;
+		case BodyType::Kinematic: flags |= (e_impenetrableFlag|e_velocityFlag); break;
+		case BodyType::Static:    flags |= (e_impenetrableFlag); break;
+	}
+	return flags;
+}
+
 inline bool Body::Insert(Contact* c)
 {
 #ifndef NDEBUG
@@ -620,15 +597,35 @@ inline bool Body::Insert(Contact* c)
 	return true;
 }
 
-inline bool Body::Erase(const Contact* c)
+inline bool Body::Erase(Contact* const contact)
 {
 	for (auto iter = m_contacts.begin(); iter != m_contacts.end(); ++iter)
 	{
-		if (*iter == c)
+		if (*iter == contact)
 		{
 			m_contacts.erase(iter);
 			return true;
 		}
+	}
+	return false;
+}
+
+inline bool Body::Erase(Joint* const joint)
+{
+	return m_joints.erase(joint) > 0;
+}
+
+inline bool Body::Erase(Fixture* const fixture)
+{
+	auto prev = m_fixtures.before_begin();
+	for (auto iter = m_fixtures.begin(); iter != m_fixtures.end(); ++iter)
+	{
+		if (*iter == fixture)
+		{
+			m_fixtures.erase_after(prev);
+			return true;
+		}
+		prev = iter;
 	}
 	return false;
 }
