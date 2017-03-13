@@ -154,6 +154,14 @@ TEST(float, nan)
 	EXPECT_FALSE(std::numeric_limits<float>::quiet_NaN() < 0.0f);
 	EXPECT_NE(std::numeric_limits<float>::quiet_NaN(), std::numeric_limits<float>::quiet_NaN());
 	EXPECT_NE(std::numeric_limits<float>::quiet_NaN(), 0.0f);
+	EXPECT_TRUE(std::isnan(std::numeric_limits<float>::quiet_NaN() + 0.0f));
+	EXPECT_TRUE(std::isnan(std::numeric_limits<float>::quiet_NaN() + 0));
+	EXPECT_TRUE(std::isnan(0 + std::numeric_limits<float>::quiet_NaN()));
+	EXPECT_TRUE(std::isnan(std::numeric_limits<float>::signaling_NaN() + 0.0f));
+	EXPECT_TRUE(std::isnan(std::numeric_limits<float>::signaling_NaN() + 0));
+	EXPECT_TRUE(std::isnan(0 + std::numeric_limits<float>::signaling_NaN()));
+	float value = std::numeric_limits<float>::quiet_NaN();
+	EXPECT_TRUE(std::isnan(value+0));
 }
 
 TEST(float, sqrt)
