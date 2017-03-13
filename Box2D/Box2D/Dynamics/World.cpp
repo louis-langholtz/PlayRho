@@ -460,7 +460,7 @@ World::~World()
 			{
 				m_destructionListener->SayGoodbye(*fixture);
 			}
-			fixture->DestroyProxies(m_blockAllocator, m_broadPhase);
+			DestroyProxies(*fixture);
 			Delete(fixture, m_blockAllocator);
 		}
 		b->~Body();
@@ -586,7 +586,7 @@ void World::Destroy(Body* b)
 		{
 			m_destructionListener->SayGoodbye(*fixture);
 		}
-		fixture->DestroyProxies(m_blockAllocator, m_broadPhase);
+		DestroyProxies(*fixture);
 		Delete(fixture, m_blockAllocator);
 		b->m_fixtures.pop_front();
 	}
@@ -1851,7 +1851,7 @@ void World::SetActive(Body& body, bool flag, const RealNum aabbExtension)
 		const auto xf = body.GetTransformation();
 		for (auto&& fixture: body.GetFixtures())
 		{
-			fixture->CreateProxies(m_blockAllocator, m_broadPhase, xf, aabbExtension);
+			CreateProxies(*fixture, xf, aabbExtension);
 		}
 		
 		// Contacts are created the next time step.
@@ -1863,7 +1863,7 @@ void World::SetActive(Body& body, bool flag, const RealNum aabbExtension)
 		// Destroy all proxies.
 		for (auto&& fixture: body.GetFixtures())
 		{
-			fixture->DestroyProxies(m_blockAllocator, m_broadPhase);
+			DestroyProxies(*fixture);
 		}
 		
 		// Destroy the attached contacts.
@@ -1898,7 +1898,8 @@ void World::Refilter(Fixture& fixture)
 			}
 		}
 	
-		for (auto i = decltype(fixture.m_proxyCount){0}; i < fixture.m_proxyCount; ++i)
+		const auto proxyCount = fixture.GetProxyCount();
+		for (auto i = decltype(proxyCount){0}; i < proxyCount; ++i)
 		{
 			m_broadPhase.TouchProxy(fixture.m_proxies[i].proxyId);
 		}
@@ -1929,7 +1930,7 @@ void World::DestroyFixtures(Body& body)
 			m_destructionListener->SayGoodbye(*fixture);
 		}
 		
-		fixture->DestroyProxies(m_blockAllocator, m_broadPhase);
+		DestroyProxies(*fixture);
 		Delete(fixture, m_blockAllocator);
 	}
 	body.ResetMassData();
@@ -2030,7 +2031,7 @@ Fixture* World::CreateFixture(Body& body, std::shared_ptr<const Shape> shape,
 	
 	if (body.IsActive())
 	{
-		fixture->CreateProxies(m_blockAllocator, m_broadPhase, body.GetTransformation(), def.aabbExtension);
+		CreateProxies(*fixture, body.GetTransformation(), def.aabbExtension);
 	}
 	
 	body.m_fixtures.push_front(fixture);
@@ -2089,7 +2090,7 @@ bool World::DestroyFixture(Fixture* fixture, bool resetMassData)
 		}
 	}
 	
-	fixture->DestroyProxies(m_blockAllocator, m_broadPhase);
+	DestroyProxies(*fixture);
 	
 	Delete(fixture, m_blockAllocator);
 	
@@ -2100,6 +2101,41 @@ bool World::DestroyFixture(Fixture* fixture, bool resetMassData)
 	}
 	
 	return true;
+}
+
+void World::CreateProxies(Fixture& fixture, const Transformation& xf, const RealNum aabbExtension)
+{
+	assert(fixture.GetProxyCount() == 0);
+	
+	const auto shape = fixture.GetShape();
+	
+	// Reserve proxy space and create proxies in the broad-phase.
+	const auto childCount = GetChildCount(*shape);
+	const auto proxies = static_cast<FixtureProxy*>(malloc(sizeof(FixtureProxy) * childCount));
+	for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex)
+	{
+		const auto aabb = ComputeAABB(*shape, xf, childIndex);
+		const auto proxyPtr = proxies + childIndex;
+		const auto proxyId = m_broadPhase.CreateProxy(GetFattenedAABB(aabb, aabbExtension), proxyPtr);
+		new (proxyPtr) FixtureProxy{aabb, proxyId, &fixture, childIndex};
+	}
+	fixture.SetProxies(Span<FixtureProxy>(proxies, childCount));
+}
+
+void World::DestroyProxies(Fixture& fixture)
+{
+	const auto proxyCount = fixture.m_proxyCount;
+	const auto proxies = fixture.m_proxies;
+
+	// Destroy proxies in reverse order from what they were created in.
+	for (auto i = proxyCount - 1; i < proxyCount; --i)
+	{
+		m_broadPhase.DestroyProxy(proxies[i].proxyId);
+		proxies[i].~FixtureProxy();
+	}
+	free(proxies);
+	
+	fixture.SetProxies(Span<FixtureProxy>(static_cast<FixtureProxy*>(nullptr), child_count_t{0}));
 }
 
 contact_count_t World::SynchronizeFixtures(Body& body,

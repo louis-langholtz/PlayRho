@@ -27,53 +27,10 @@
 
 using namespace box2d;
 
-AABB Fixture::GetAABB(child_count_t index) const noexcept
-{
-	assert(index < m_proxyCount);
-	return m_proxies[index].aabb;
-}
-
 const FixtureProxy* Fixture::GetProxy(child_count_t index) const noexcept
 {
 	assert(index < m_proxyCount);
 	return (index < m_proxyCount)? m_proxies + index: nullptr;
-}
-
-void Fixture::CreateProxies(BlockAllocator& allocator, BroadPhase& broadPhase, const Transformation& xf,
-							const RealNum aabbExtension)
-{
-	assert(m_proxyCount == 0);
-	assert(m_proxies == nullptr);
-
-	const auto shape = GetShape();
-
-	// Reserve proxy space and create proxies in the broad-phase.
-	const auto childCount = GetChildCount(*shape);
-	const auto proxies = allocator.AllocateArray<FixtureProxy>(childCount);
-	for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex)
-	{
-		const auto aabb = ComputeAABB(*shape, xf, childIndex);
-		const auto proxyPtr = proxies + childIndex;
-		const auto proxyId = broadPhase.CreateProxy(GetFattenedAABB(aabb, aabbExtension), proxyPtr);
-		new (proxyPtr) FixtureProxy{aabb, proxyId, this, childIndex};
-	}
-	m_proxies = proxies;
-	m_proxyCount = childCount;
-}
-
-void Fixture::DestroyProxies(BlockAllocator& allocator, BroadPhase& broadPhase)
-{
-	// Destroy proxies in the broad-phase.
-	const auto childCount = m_proxyCount;
-	const auto proxies = m_proxies;
-	for (auto i = decltype(childCount){0}; i < childCount; ++i)
-	{
-		broadPhase.DestroyProxy(proxies[i].proxyId);
-		proxies[i].~FixtureProxy();
-	}
-	allocator.Free(proxies, childCount * sizeof(FixtureProxy));
-	m_proxyCount = 0;
-	m_proxies = nullptr;
 }
 
 void Fixture::TouchProxies(BroadPhase& broadPhase)
@@ -119,17 +76,22 @@ void Fixture::Refilter()
 	world->Refilter(*this);
 }
 
-void Fixture::SetSensor(bool sensor)
+void Fixture::SetSensor(bool sensor) noexcept
 {
 	if (sensor != m_isSensor)
 	{
 		m_isSensor = sensor;
-		const auto body = m_body;
+		const auto body = GetBody();
 		if (body)
 		{
 			body->SetAwake();
 		}
 	}
+}
+
+AABB box2d::GetAABB(const Fixture& fixture, child_count_t childIndex) noexcept
+{
+	return fixture.GetProxy(childIndex)->aabb;
 }
 
 bool box2d::TestPoint(const Fixture& f, const Vec2 p)

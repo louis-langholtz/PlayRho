@@ -579,6 +579,14 @@ private:
 		
 	void EraseFromBodies(Contact* contact);
 	
+	/// Creates proxies for every child of the given fixture's shape.
+	/// @note This sets the proxy count to the child count of the shape.
+	void CreateProxies(Fixture& fixture, const Transformation& xf, const RealNum aabbExtension);
+
+	/// Destroys the given fixture's proxies.
+	/// @note This resets the proxy count to 0.
+	void DestroyProxies(Fixture& fixture);
+
 	contact_count_t SynchronizeFixtures(Body& body,
 										const Transformation& t1, const Transformation& t2,
 										const RealNum multiplier, const RealNum aabbExtension);

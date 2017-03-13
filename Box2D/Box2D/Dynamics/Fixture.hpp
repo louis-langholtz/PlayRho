@@ -20,8 +20,10 @@
 #ifndef B2_FIXTURE_H
 #define B2_FIXTURE_H
 
+#include <limits>
 #include <memory>
 #include <Box2D/Common/Math.hpp>
+#include <Box2D/Common/Span.hpp>
 
 namespace box2d {
 
@@ -166,7 +168,7 @@ public:
 	const Shape* GetShape() const noexcept;
 
 	/// Set if this fixture is a sensor.
-	void SetSensor(bool sensor);
+	void SetSensor(bool sensor) noexcept;
 
 	/// Is this fixture a sensor (non-solid)?
 	/// @return the true if the shape is a sensor.
@@ -215,17 +217,16 @@ public:
 	/// existing contacts.
 	void SetRestitution(RealNum restitution) noexcept;
 
-	/// Get the fixture's AABB. This AABB may be enlarge and/or stale.
-	/// If you need a more accurate AABB, compute it using the shape and
-	/// the body transform.
-	AABB GetAABB(child_count_t childIndex) const noexcept;
-
 	child_count_t GetProxyCount() const noexcept;
 
 	const FixtureProxy* GetProxy(child_count_t index) const noexcept;
 
+	/// Destructor.
+	/// @pre Proxy count is zero.
+	/// @warning Behavior is undefined if proxy count is greater than zero.
 	~Fixture()
 	{
+		// No access to BroadPhase now so can't call DestroyProxies here.
 		assert(!m_proxies);
 		assert(m_proxyCount == 0);
 	}
@@ -234,6 +235,8 @@ private:
 
 	friend class World;
 	
+	using FixtureProxies = FixtureProxy*;
+
 	/// Initializing constructor.
 	///
 	/// @warning Behavior is undefined if a <code>nullptr</code> initial body setting is used.
@@ -267,15 +270,6 @@ private:
 		assert(def.restitution > -std::numeric_limits<decltype(def.restitution)>::infinity());
 	}
 	
-	/// Creates proxies for every child of this fixture's shape.
-	/// This sets the proxy count to the child count of the shape.
-	void CreateProxies(BlockAllocator& allocator, BroadPhase& broadPhase, const Transformation& xf,
-					   const RealNum aabbExtension);
-
-	/// Destroys this fixture's proxies.
-	/// This resets the proxy count to 0.
-	void DestroyProxies(BlockAllocator& allocator, BroadPhase& broadPhase);
-
 	/// Touches each proxy so that new pairs may be created.
 	void TouchProxies(BroadPhase& broadPhase);
 	
@@ -283,6 +277,8 @@ private:
 							  const Transformation& xf1, const Transformation& xf2,
 							  const RealNum multiplier, const RealNum extension);
 	
+	void SetProxies(Span<FixtureProxy> value);
+
 	// Data ordered here for memory compaction.
 	
 	// 0-bytes of memory (at first).
@@ -294,7 +290,7 @@ private:
 	/// @note 16-bytes.
 	std::shared_ptr<const Shape> m_shape;
 
-	FixtureProxy* m_proxies = nullptr; ///< Array of fixture proxies for the assigned shape. 8-bytes.
+	FixtureProxies m_proxies = nullptr; ///< Array of fixture proxies for the assigned shape. 8-bytes.
 	void* m_userData = nullptr; ///< User data. 8-bytes.
 	// 48-bytes so far.
 	RealNum m_density = 0; ///< Density. 4-bytes.
@@ -384,6 +380,20 @@ inline void Fixture::SetFilterData(const Filter filter)
 	m_filter = filter;
 	Refilter();
 }
+
+inline void Fixture::SetProxies(Span<FixtureProxy> value)
+{
+	assert(value.size() < std::numeric_limits<child_count_t>::max());
+	m_proxies = value.begin();
+	m_proxyCount = static_cast<decltype(m_proxyCount)>(value.size());
+}
+
+/// Gets the fixture's AABB.
+/// @note This AABB may be enlarged and/or stale. If you need a more accurate AABB,
+///   compute it using the shape and the body transform.
+/// @warning Behavior is undefined is child index is not a valid proxy index.
+/// @sa Fixture::GetProxy.
+AABB GetAABB(const Fixture& fixture, child_count_t childIndex) noexcept;
 
 /// Test a point for containment in a fixture.
 /// @param f Fixture to use for test.
