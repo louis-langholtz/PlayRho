@@ -620,7 +620,7 @@ void World::InternalDestroy(Joint* j)
 	if (bodyB)
 	{
 		bodyB->SetAwake();
-		bodyA->m_joints.erase(j);
+		bodyB->m_joints.erase(j);
 	}
 
 	Joint::Destroy(j, m_blockAllocator);
