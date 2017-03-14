@@ -397,6 +397,38 @@ namespace {
 	
 } // anonymous namespace
 
+
+/// Fixture Attorney.
+///
+/// @detail This class uses the "attorney-client" idiom to control the granularity of
+///   friend-based access to the Fixture class. This is meant to help preserve and enforce
+///   the invariants of the Fixture class.
+///
+/// @sa https://en.wikibooks.org/wiki/More_C++_Idioms/Friendship_and_the_Attorney-Client
+///
+class FixtureAtty
+{
+private:
+	static Span<FixtureProxy> GetProxies(const Fixture& fixture)
+	{
+		return fixture.GetProxies();
+	}
+	
+	static void SetProxies(Fixture& fixture, Span<FixtureProxy> value)
+	{
+		fixture.SetProxies(value);
+	}
+	
+	static Fixture* EmplacementNew(void* memory,
+								   Body* body, const FixtureDef& def,
+								   std::shared_ptr<const Shape> shape)
+	{
+		return new (memory) Fixture{body, def, shape};
+	}
+	
+	friend class World;
+};
+	
 const BodyDef& World::GetDefaultBodyDef()
 {
 	static const BodyDef def = BodyDef{};
@@ -1723,8 +1755,8 @@ World::CollideStats World::Collide()
 		const auto overlap = [&]() {
 			const auto indexA = contact->GetChildIndexA();
 			const auto indexB = contact->GetChildIndexB();
-			const auto proxyIdA = fixtureA->m_proxies[indexA].proxyId;
-			const auto proxyIdB = fixtureB->m_proxies[indexB].proxyId;
+			const auto proxyIdA = fixtureA->GetProxy(indexA)->proxyId;
+			const auto proxyIdB = fixtureB->GetProxy(indexB)->proxyId;
 			return TestOverlap(m_broadPhase, proxyIdA, proxyIdB);
 		}();
 		
@@ -1898,11 +1930,7 @@ void World::Refilter(Fixture& fixture)
 			}
 		}
 	
-		const auto proxyCount = fixture.GetProxyCount();
-		for (auto i = decltype(proxyCount){0}; i < proxyCount; ++i)
-		{
-			m_broadPhase.TouchProxy(fixture.m_proxies[i].proxyId);
-		}
+		TouchProxies(fixture);
 	}
 }
 
@@ -1986,7 +2014,7 @@ void World::SetType(Body& body, BodyType type, const RealNum aabbExtension)
 	
 	for (auto&& fixture: body.GetFixtures())
 	{
-		fixture->TouchProxies(m_broadPhase);
+		TouchProxies(*fixture);
 	}
 }
 
@@ -2027,14 +2055,13 @@ Fixture* World::CreateFixture(Body& body, std::shared_ptr<const Shape> shape,
 	}
 	
 	const auto memory = m_blockAllocator.Allocate(sizeof(Fixture));
-	const auto fixture = new (memory) Fixture{&body, def, shape};
-	
+	const auto fixture = FixtureAtty::EmplacementNew(memory, &body, def, shape);
+	body.m_fixtures.push_front(fixture);
+
 	if (body.IsActive())
 	{
 		CreateProxies(*fixture, body.GetTransformation(), def.aabbExtension);
 	}
-	
-	body.m_fixtures.push_front(fixture);
 	
 	// Adjust mass properties if needed.
 	if (fixture->GetDensity() > 0)
@@ -2119,23 +2146,58 @@ void World::CreateProxies(Fixture& fixture, const Transformation& xf, const Real
 		const auto proxyId = m_broadPhase.CreateProxy(GetFattenedAABB(aabb, aabbExtension), proxyPtr);
 		new (proxyPtr) FixtureProxy{aabb, proxyId, &fixture, childIndex};
 	}
-	fixture.SetProxies(Span<FixtureProxy>(proxies, childCount));
+	FixtureAtty::SetProxies(fixture, Span<FixtureProxy>(proxies, childCount));
 }
 
 void World::DestroyProxies(Fixture& fixture)
 {
-	const auto proxyCount = fixture.m_proxyCount;
-	const auto proxies = fixture.m_proxies;
+	const auto proxies = FixtureAtty::GetProxies(fixture);
 
 	// Destroy proxies in reverse order from what they were created in.
-	for (auto i = proxyCount - 1; i < proxyCount; --i)
+	for (auto i = proxies.size() - 1; i < proxies.size(); --i)
 	{
 		m_broadPhase.DestroyProxy(proxies[i].proxyId);
 		proxies[i].~FixtureProxy();
 	}
-	free(proxies);
+	free(proxies.begin());
 	
-	fixture.SetProxies(Span<FixtureProxy>(static_cast<FixtureProxy*>(nullptr), child_count_t{0}));
+	FixtureAtty::SetProxies(fixture, Span<FixtureProxy>(static_cast<FixtureProxy*>(nullptr), child_count_t{0}));
+}
+
+void World::TouchProxies(Fixture& fixture) noexcept
+{
+	const auto proxyCount = fixture.GetProxyCount();
+	for (auto i = decltype(proxyCount){0}; i < proxyCount; ++i)
+	{
+		m_broadPhase.TouchProxy(fixture.GetProxy(i)->proxyId);
+	}
+}
+
+child_count_t World::Synchronize(Fixture& fixture,
+								 const Transformation& transform1, const Transformation& transform2,
+								 const RealNum multiplier, const RealNum extension)
+{
+	assert(::box2d::IsValid(transform1));
+	assert(::box2d::IsValid(transform2));
+	
+	const auto shape = fixture.GetShape();
+	
+	auto movedCount = child_count_t{0};
+	const auto proxies = FixtureAtty::GetProxies(fixture);
+	for (auto&& proxy: proxies)
+	{
+		// Compute an AABB that covers the swept shape (may miss some rotation effect).
+		const auto aabb1 = ComputeAABB(*shape, transform1, proxy.childIndex);
+		const auto aabb2 = ComputeAABB(*shape, transform2, proxy.childIndex);
+		proxy.aabb = GetEnclosingAABB(aabb1, aabb2);
+		
+		const auto displacement = transform2.p - transform1.p;
+		if (m_broadPhase.MoveProxy(proxy.proxyId, proxy.aabb, displacement, multiplier, extension))
+		{
+			++movedCount;
+		}
+	}
+	return movedCount;
 }
 
 contact_count_t World::SynchronizeFixtures(Body& body,
@@ -2145,7 +2207,7 @@ contact_count_t World::SynchronizeFixtures(Body& body,
 	auto movedCount = contact_count_t{0};
 	for (auto&& fixture: body.GetFixtures())
 	{
-		movedCount += fixture->Synchronize(m_broadPhase, t1, t2, multiplier, aabbExtension);
+		movedCount += Synchronize(*fixture, t1, t2, multiplier, aabbExtension);
 	}
 	return movedCount;
 }

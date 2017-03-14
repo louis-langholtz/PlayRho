@@ -587,6 +587,14 @@ private:
 	/// @note This resets the proxy count to 0.
 	void DestroyProxies(Fixture& fixture);
 
+	/// Touches each proxy of the given fixture.
+	/// @note This sets things up so that pairs may be created for potentially new contacts.
+	void TouchProxies(Fixture& fixture) noexcept;
+
+	child_count_t Synchronize(Fixture& fixture,
+							  const Transformation& xf1, const Transformation& xf2,
+							  const RealNum multiplier, const RealNum extension);
+
 	contact_count_t SynchronizeFixtures(Body& body,
 										const Transformation& t1, const Transformation& t2,
 										const RealNum multiplier, const RealNum aabbExtension);

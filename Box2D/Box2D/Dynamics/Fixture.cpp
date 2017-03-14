@@ -22,8 +22,6 @@
 #include <Box2D/Dynamics/Contacts/Contact.hpp>
 #include <Box2D/Dynamics/World.hpp>
 #include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Collision/BroadPhase.hpp>
-#include <Box2D/Common/BlockAllocator.hpp>
 
 using namespace box2d;
 
@@ -31,42 +29,6 @@ const FixtureProxy* Fixture::GetProxy(child_count_t index) const noexcept
 {
 	assert(index < m_proxyCount);
 	return (index < m_proxyCount)? m_proxies + index: nullptr;
-}
-
-void Fixture::TouchProxies(BroadPhase& broadPhase)
-{
-	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
-	{
-		broadPhase.TouchProxy(m_proxies[i].proxyId);
-	}
-}
-
-child_count_t Fixture::Synchronize(BroadPhase& broadPhase,
-								   const Transformation& transform1, const Transformation& transform2,
-								   const RealNum multiplier, const RealNum extension)
-{
-	assert(IsValid(transform1));
-	assert(IsValid(transform2));
-
-	const auto shape = GetShape();
-
-	auto movedCount = child_count_t{0};
-	for (auto i = decltype(m_proxyCount){0}; i < m_proxyCount; ++i)
-	{
-		auto& proxy = m_proxies[i];
-
-		// Compute an AABB that covers the swept shape (may miss some rotation effect).
-		const auto aabb1 = ComputeAABB(*shape, transform1, proxy.childIndex);
-		const auto aabb2 = ComputeAABB(*shape, transform2, proxy.childIndex);
-		proxy.aabb = GetEnclosingAABB(aabb1, aabb2);
-
-		const auto displacement = transform2.p - transform1.p;
-		if (broadPhase.MoveProxy(proxy.proxyId, proxy.aabb, displacement, multiplier, extension))
-		{
-			++movedCount;
-		}
-	}
-	return movedCount;
 }
 
 void Fixture::Refilter()

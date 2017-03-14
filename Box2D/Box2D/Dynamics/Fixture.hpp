@@ -233,7 +233,7 @@ public:
 
 private:
 
-	friend class World;
+	friend class FixtureAtty;
 	
 	using FixtureProxies = FixtureProxy*;
 
@@ -270,14 +270,8 @@ private:
 		assert(def.restitution > -std::numeric_limits<decltype(def.restitution)>::infinity());
 	}
 	
-	/// Touches each proxy so that new pairs may be created.
-	void TouchProxies(BroadPhase& broadPhase);
-	
-	child_count_t Synchronize(BroadPhase& broadPhase,
-							  const Transformation& xf1, const Transformation& xf2,
-							  const RealNum multiplier, const RealNum extension);
-	
-	void SetProxies(Span<FixtureProxy> value);
+	Span<FixtureProxy> GetProxies() const noexcept;
+	void SetProxies(Span<FixtureProxy> value) noexcept;
 
 	// Data ordered here for memory compaction.
 	
@@ -381,7 +375,12 @@ inline void Fixture::SetFilterData(const Filter filter)
 	Refilter();
 }
 
-inline void Fixture::SetProxies(Span<FixtureProxy> value)
+inline Span<FixtureProxy> Fixture::GetProxies() const noexcept
+{
+	return Span<FixtureProxy>(m_proxies, m_proxyCount);
+}
+
+inline void Fixture::SetProxies(Span<FixtureProxy> value) noexcept
 {
 	assert(value.size() < std::numeric_limits<child_count_t>::max());
 	m_proxies = value.begin();
