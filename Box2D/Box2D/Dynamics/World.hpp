@@ -23,6 +23,7 @@
 #include <Box2D/Common/Math.hpp>
 #include <Box2D/Common/BlockAllocator.hpp>
 #include <Box2D/Dynamics/WorldCallbacks.hpp>
+#include <Box2D/Dynamics/StepStats.hpp>
 #include <Box2D/Collision/BroadPhase.hpp>
 
 #include <vector>
@@ -46,64 +47,6 @@ class Shape;
 enum class BodyType;
 
 const FixtureDef& GetDefaultFixtureDef() noexcept;
-
-/// Pre-step statistics.
-struct PreStepStats
-{
-	uint32 ignored = 0;
-	uint32 destroyed = 0;
-	uint32 updated = 0;
-	uint32 added = 0;
-};
-
-/// Regular step phase statistics.
-struct RegStepStats
-{
-	RealNum minSeparation = std::numeric_limits<RealNum>::infinity();
-	RealNum maxIncImpulse = 0;
-
-	uint32 islandsFound = 0;
-	uint32 islandsSolved = 0;
-	uint32 contactsAdded = 0;
-	uint32 bodiesSlept = 0;
-	uint32 proxiesMoved = 0;
-	uint32 sumPosIters = 0;
-	uint32 sumVelIters = 0;
-};
-
-/// TOI step phase statistics.
-struct ToiStepStats
-{
-	RealNum minSeparation = std::numeric_limits<RealNum>::infinity();
-	RealNum maxIncImpulse = 0;
-
-	uint32 islandsFound = 0;
-	uint32 islandsSolved = 0;
-	uint32 contactsFound = 0;
-	uint32 contactsAtMaxSubSteps = 0;
-	uint32 contactsUpdatedToi = 0;
-	uint32 contactsAdded = 0;
-	uint32 proxiesMoved = 0;
-	uint32 sumPosIters = 0;
-	uint32 sumVelIters = 0;
-	uint32 maxSimulContacts = 0; ///< Max contacts occuring simultaneously.
-
-	using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
-	using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
-	using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
-	
-	dist_iter_type maxDistIters = 0;
-	toi_iter_type maxToiIters = 0;
-	root_iter_type maxRootIters = 0;
-};
-
-/// Per-step statistics.
-struct StepStats
-{
-	PreStepStats pre; ///< Pre-phase step statistics.
-	RegStepStats reg; ///< Reg-phase step statistics.
-	ToiStepStats toi; ///< TOI-phase step statistics.
-};
 
 /// Earthly gravity.
 /// @detail An approximation of Earth's average gravity at sea-level.

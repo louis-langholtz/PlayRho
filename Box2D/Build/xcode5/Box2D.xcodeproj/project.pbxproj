@@ -162,6 +162,8 @@
 		478E67C61E760AB7009B9AD5 /* BodyType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 478E67C31E760AB7009B9AD5 /* BodyType.cpp */; };
 		478E67C71E760AB7009B9AD5 /* BodyType.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478E67C41E760AB7009B9AD5 /* BodyType.hpp */; };
 		478E67C81E760AB7009B9AD5 /* BodyType.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478E67C41E760AB7009B9AD5 /* BodyType.hpp */; };
+		478E67CD1E777A43009B9AD5 /* StepStats.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478E67CA1E777A43009B9AD5 /* StepStats.hpp */; };
+		478E67CE1E777A43009B9AD5 /* StepStats.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 478E67CA1E777A43009B9AD5 /* StepStats.hpp */; };
 		479039D11D5BB9ED001A2145 /* Body.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 479039D01D5BB9ED001A2145 /* Body.cpp */; };
 		47928F351E5FE19C00EE6E9E /* BodyConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F341E5FE19C00EE6E9E /* BodyConstraint.cpp */; };
 		47928F371E66539000EE6E9E /* FrictionJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F361E66539000EE6E9E /* FrictionJoint.cpp */; };
@@ -565,6 +567,7 @@
 		4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VelocityConstraint.hpp; sourceTree = "<group>"; };
 		478E67C31E760AB7009B9AD5 /* BodyType.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BodyType.cpp; sourceTree = "<group>"; };
 		478E67C41E760AB7009B9AD5 /* BodyType.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyType.hpp; sourceTree = "<group>"; };
+		478E67CA1E777A43009B9AD5 /* StepStats.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StepStats.hpp; sourceTree = "<group>"; };
 		479039D01D5BB9ED001A2145 /* Body.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Body.cpp; sourceTree = "<group>"; };
 		47928F341E5FE19C00EE6E9E /* BodyConstraint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BodyConstraint.cpp; sourceTree = "<group>"; };
 		47928F361E66539000EE6E9E /* FrictionJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrictionJoint.cpp; sourceTree = "<group>"; };
@@ -1040,6 +1043,7 @@
 				47578BED1D8899710078CD40 /* Profile.hpp */,
 				4768D3FF1E54E7CB00574143 /* StepConf.cpp */,
 				80BB8955141C3E5900F1753A /* StepConf.hpp */,
+				478E67CA1E777A43009B9AD5 /* StepStats.hpp */,
 				80BB8956141C3E5900F1753A /* World.cpp */,
 				80BB8957141C3E5900F1753A /* World.hpp */,
 				80BB8958141C3E5900F1753A /* WorldCallbacks.cpp */,
@@ -1320,6 +1324,7 @@
 				47AA5DED1C4C5FBE008AF2BA /* DistanceJoint.hpp in Headers */,
 				47AA5DEE1C4C5FBE008AF2BA /* FrictionJoint.hpp in Headers */,
 				47AA5DEF1C4C5FBE008AF2BA /* GearJoint.hpp in Headers */,
+				478E67CE1E777A43009B9AD5 /* StepStats.hpp in Headers */,
 				47AA5DF01C4C5FBE008AF2BA /* Joint.hpp in Headers */,
 				472E301C1DBA925500DA821D /* VertexSet.hpp in Headers */,
 				47578BE21D8869110078CD40 /* WorldManifold.hpp in Headers */,
@@ -1419,6 +1424,7 @@
 				80BB89C9141C3E5900F1753A /* PolygonContact.hpp in Headers */,
 				80BB89CB141C3E5900F1753A /* DistanceJoint.hpp in Headers */,
 				4726DD2C1D31B4090012A882 /* AABB.hpp in Headers */,
+				478E67CD1E777A43009B9AD5 /* StepStats.hpp in Headers */,
 				80BB89CD141C3E5900F1753A /* FrictionJoint.hpp in Headers */,
 				475A94661D99C264000CA9A8 /* List.hpp in Headers */,
 				4731DE6D1DF7E88500E7F931 /* ReferenceFace.hpp in Headers */,
