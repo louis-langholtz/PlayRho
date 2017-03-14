@@ -492,6 +492,53 @@ private:
 	friend class World;
 };
 
+class JointAtty
+{
+private:
+	static Joint* Create(const box2d::JointDef &def, BlockAllocator& allocator)
+	{
+		return Joint::Create(def, allocator);
+	}
+	
+	static void Destroy(Joint* j, BlockAllocator& allocator)
+	{
+		Joint::Destroy(j, allocator);
+	}
+	
+	static bool IsInIsland(const Joint& j) noexcept
+	{
+		return j.IsInIsland();
+	}
+	
+	static void SetInIsland(Joint& j) noexcept
+	{
+		j.SetInIsland(true);
+	}
+	
+	static void UnsetInIsland(Joint& j) noexcept
+	{
+		j.SetInIsland(false);
+	}
+
+	static void InitVelocityConstraints(Joint& j, BodyConstraints &bodies,
+										const box2d::StepConf &step, const ConstraintSolverConf &conf)
+	{
+		j.InitVelocityConstraints(bodies, step, conf);
+	}
+	
+	static RealNum SolveVelocityConstraints(Joint& j, BodyConstraints &bodies, const box2d::StepConf &conf)
+	{
+		return j.SolveVelocityConstraints(bodies, conf);
+	}
+	
+	static bool SolvePositionConstraints(Joint& j, BodyConstraints &bodies, const ConstraintSolverConf &conf)
+	{
+		return j.SolvePositionConstraints(bodies, conf);
+	}
+	
+	friend class World;
+};
+
 const BodyDef& World::GetDefaultBodyDef()
 {
 	static const BodyDef def = BodyDef{};
@@ -539,7 +586,7 @@ World::~World()
 			bodyB->Erase(j);
 		}
 		m_joints.pop_front();
-		Joint::Destroy(j, m_blockAllocator);
+		JointAtty::Destroy(j, m_blockAllocator);
 	}
 
 	// Gets rid of the created bodies and any associated fixtures.
@@ -706,7 +753,7 @@ Joint* World::CreateJoint(const JointDef& def)
 	}
 
 	// Note: creating a joint doesn't wake the bodies.
-	auto j = Joint::Create(def, m_blockAllocator);
+	auto j = JointAtty::Create(def, m_blockAllocator);
 	if (!j)
 	{
 		return nullptr;
@@ -771,7 +818,7 @@ void World::InternalDestroy(Joint* j)
 		return;
 	}
 
-	const auto collideConnected = j->m_collideConnected;
+	const auto collideConnected = j->GetCollideConnected();
 	
 	// Disconnect from island graph.
 	const auto bodyA = j->GetBodyA();
@@ -789,7 +836,7 @@ void World::InternalDestroy(Joint* j)
 		bodyB->m_joints.erase(j);
 	}
 
-	Joint::Destroy(j, m_blockAllocator);
+	JointAtty::Destroy(j, m_blockAllocator);
 
 	// If the joint prevented collisions, then flag any contacts for filtering.
 	if (!collideConnected)
@@ -867,10 +914,10 @@ Island World::BuildIsland(Body& seed,
 			const auto bodyA = joint->GetBodyA();
 			const auto bodyB = joint->GetBodyB();
 			const auto other = (b != bodyA)? bodyA: bodyB;
-			if (!joint->IsInIsland() && other->IsActive())
+			if (!JointAtty::IsInIsland(*joint) && other->IsActive())
 			{
 				island.m_joints.push_back(joint);
-				joint->SetInIsland(true);
+				JointAtty::SetInIsland(*joint);
 				if (!other->IsInIsland())
 				{					
 					stack.push_back(other);
@@ -902,7 +949,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 	}
 	for (auto&& joint: m_joints)
 	{
-		joint->SetInIsland(false);
+		JointAtty::UnsetInIsland(*joint);
 	}
 
 	auto remNumBodies = m_bodies.size(); ///< Remaining number of bodies.
@@ -1016,7 +1063,7 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& step, Island is
 
 	for (auto&& joint: island.m_joints)
 	{
-		joint->InitVelocityConstraints(bodyConstraints, step, psConf);
+		JointAtty::InitVelocityConstraints(*joint, bodyConstraints, step, psConf);
 	}
 	
 	auto velocityIterations = step.regVelocityIterations;
@@ -1025,7 +1072,7 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& step, Island is
 	{
 		for (auto&& joint: island.m_joints)
 		{
-			joint->SolveVelocityConstraints(bodyConstraints, step);
+			JointAtty::SolveVelocityConstraints(*joint, bodyConstraints, step);
 		}
 
 		const auto newIncImpulse = SolveVelocityConstraints(velocityConstraints);
@@ -1047,7 +1094,7 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& step, Island is
 			auto allOkay = true;
 			for (auto&& joint: island.m_joints)
 			{
-				if (!joint->SolvePositionConstraints(bodyConstraints, psConf))
+				if (!JointAtty::SolvePositionConstraints(*joint, bodyConstraints, psConf))
 				{
 					allOkay = false;
 				}

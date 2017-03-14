@@ -164,7 +164,7 @@ protected:
 	void SetBodyB(Body* value) noexcept;
 
 private:
-	friend class World;
+	friend class JointAtty;
 
 	static Joint* Create(const JointDef& def, BlockAllocator& allocator);
 
