@@ -109,7 +109,7 @@ public:
 				   const RealNum multiplier = 1, const RealNum extension = 0);
 
 	/// Call to trigger a re-processing of it's pairs on the next call to UpdatePairs.
-	void TouchProxy(size_type proxyId);
+	void TouchProxy(size_type proxyId) noexcept;
 
 	/// Gets the fat AABB for a proxy.
 	/// @warning Behavior is undefined if the given proxy ID is not a valid ID.
@@ -160,7 +160,7 @@ public:
 
 private:
 
-	void BufferMove(size_type proxyId);
+	void BufferMove(size_type proxyId) noexcept;
 	void UnBufferMove(size_type proxyId);
 
 	DynamicTree m_tree;
@@ -237,6 +237,11 @@ inline void BroadPhase::RayCast(const RayCastInput& input, RayCastCallback callb
 inline void BroadPhase::ShiftOrigin(const Vec2 newOrigin)
 {
 	m_tree.ShiftOrigin(newOrigin);
+}
+
+inline void BroadPhase::TouchProxy(size_type proxyId) noexcept
+{
+	BufferMove(proxyId);
 }
 
 inline bool TestOverlap(const BroadPhase& bp, BroadPhase::size_type proxyIdA, BroadPhase::size_type proxyIdB)

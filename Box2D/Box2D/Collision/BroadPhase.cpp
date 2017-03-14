@@ -61,12 +61,7 @@ bool BroadPhase::MoveProxy(size_type proxyId, const AABB& aabb, const Vec2 displ
 	return moved;
 }
 
-void BroadPhase::TouchProxy(size_type proxyId)
-{
-	BufferMove(proxyId);
-}
-
-void BroadPhase::BufferMove(size_type proxyId)
+void BroadPhase::BufferMove(size_type proxyId) noexcept
 {
 	if (m_moveCount == m_moveCapacity)
 	{
