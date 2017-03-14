@@ -149,7 +149,6 @@ public:
 	bool NeedsFiltering() const noexcept;
 	
 protected:
-	friend class World;
 
 	/// Flag this contact for filtering. Filtering will occur the next time step.
 	void UnflagForFiltering() noexcept;
@@ -190,6 +189,8 @@ protected:
 	void UnsetInIsland() noexcept;
 
 private:
+
+	friend class ContactAtty;
 	
 	/// Flags type data type.
 	using FlagsType = uint8;

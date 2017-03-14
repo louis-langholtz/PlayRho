@@ -428,7 +428,70 @@ private:
 	
 	friend class World;
 };
+
+class ContactAtty
+{
+private:
+	static Contact* Create(Fixture& fixtureA, child_count_t indexA,
+						   Fixture& fixtureB, child_count_t indexB,
+						   BlockAllocator& allocator)
+	{
+		return Contact::Create(fixtureA, indexA, fixtureB, indexB, allocator);
+	}
+
+	static void Destroy(Contact* c, BlockAllocator& allocator)
+	{
+		Contact::Destroy(c, allocator);
+	}
 	
+	static bool IsInIsland(const Contact& c) noexcept
+	{
+		return c.IsInIsland();
+	}
+	
+	static void SetInIsland(Contact& c) noexcept
+	{
+		c.SetInIsland();
+	}
+
+	static void UnsetInIsland(Contact& c) noexcept
+	{
+		c.UnsetInIsland();
+	}
+
+	static void SetToi(Contact& c, RealNum value) noexcept
+	{
+		c.SetToi(value);
+	}
+
+	static void UnsetToi(Contact& c) noexcept
+	{
+		c.UnsetToi();
+	}
+
+	static void IncrementToiCount(Contact& c) noexcept
+	{
+		++c.m_toiCount;
+	}
+	
+	static void ResetToiCount(Contact& c) noexcept
+	{
+		c.ResetToiCount();
+	}
+	
+	static void UnflagForFiltering(Contact& c) noexcept
+	{
+		c.UnflagForFiltering();
+	}
+	
+	static void Update(Contact& c, ContactListener* listener)
+	{
+		c.Update(listener);
+	}
+	
+	friend class World;
+};
+
 const BodyDef& World::GetDefaultBodyDef()
 {
 	static const BodyDef def = BodyDef{};
@@ -458,7 +521,7 @@ World::~World()
 		bodyA->Erase(c);
 		bodyB->Erase(c);
 		m_contacts.pop_front();
-		Contact::Destroy(c, m_blockAllocator);
+		ContactAtty::Destroy(c, m_blockAllocator);
 	}
 
 	// Gets rid of the created joints.
@@ -783,10 +846,10 @@ Island World::BuildIsland(Body& seed,
 			const auto bB = fB->GetBody();
 			const auto other = (bA != b)? bA: bB;
 
-			if (!contact->IsInIsland() && !HasSensor(*contact) && contact->IsEnabled() && contact->IsTouching())
+			if (!ContactAtty::IsInIsland(*contact) && !HasSensor(*contact) && contact->IsEnabled() && contact->IsTouching())
 			{
 				island.m_contacts.push_back(contact);
-				contact->SetInIsland();
+				ContactAtty::SetInIsland(*contact);
 
 				if (!other->IsInIsland())
 				{				
@@ -835,7 +898,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 	}
 	for (auto&& contact: m_contacts)
 	{
-		contact->UnsetInIsland();
+		ContactAtty::UnsetInIsland(*contact);
 	}
 	for (auto&& joint: m_joints)
 	{
@@ -1044,9 +1107,9 @@ void World::ResetContactsForSolveTOI()
 	for (auto&& c: m_contacts)
 	{
 		// Invalidate TOI
-		c->UnsetInIsland();
-		c->UnsetToi();
-		c->ResetToiCount();
+		ContactAtty::UnsetInIsland(*c);
+		ContactAtty::UnsetToi(*c);
+		ContactAtty::ResetToiCount(*c);
 	}	
 }
 	
@@ -1115,7 +1178,7 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 		const auto toi = IsValidForTime(output.get_state())?
 			Min(alpha0 + (1 - alpha0) * output.get_t(), RealNum{1}): RealNum{1};
 		assert(toi >= alpha0);
-		c->SetToi(toi);
+		ContactAtty::SetToi(*c, toi);
 		
 		results.maxDistIters = Max(results.maxDistIters, output.get_max_dist_iters());
 		results.maxToiIters = Max(results.maxToiIters, output.get_toi_iters());
@@ -1187,7 +1250,7 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 		auto islandsFound = 0u;
 		for (auto&& contact: next.contacts)
 		{
-			if (!contact->IsInIsland())
+			if (!ContactAtty::IsInIsland(*contact))
 			{
 				const auto solverResults = SolveTOI(step, *contact);
 				stats.minSeparation = Min(stats.minSeparation, solverResults.minSeparation);
@@ -1236,7 +1299,7 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 
 World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contact)
 {
-	assert(!contact.IsInIsland());
+	assert(!ContactAtty::IsInIsland(contact));
 	
 	const auto toi = contact.GetToi();
 	const auto bA = contact.GetFixtureA()->GetBody();
@@ -1252,10 +1315,9 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 
 		// The TOI contact likely has some new contact points.
 		contact.SetEnabled();	
-		contact.Update(m_contactListener);
-		contact.UnsetToi();
-
-		++contact.m_toiCount;
+		ContactAtty::Update(contact, m_contactListener);
+		ContactAtty::UnsetToi(contact);
+		ContactAtty::IncrementToiCount(contact);
 
 		// Is contact disabled or separated?
 		if (!contact.IsEnabled() || !contact.IsTouching())
@@ -1284,7 +1346,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 	island.m_bodies.push_back(bB);
 	bB->SetInIsland();
 	island.m_contacts.push_back(&contact);
-	contact.SetInIsland();
+	ContactAtty::SetInIsland(contact);
 
 	// Process the contacts of the two bodies, adding appropriate ones to the island,
 	// adding appropriate other bodies of added contacts, and advancing those other
@@ -1447,8 +1509,8 @@ void World::ResetContactsForSolveTOI(Body& body)
 	// Invalidate all contact TOIs on this displaced body.
 	for (auto&& contact: body.GetContacts())
 	{
-		contact->UnsetInIsland();
-		contact->UnsetToi();
+		ContactAtty::UnsetInIsland(*contact);
+		ContactAtty::UnsetToi(*contact);
 	}
 }
 
@@ -1466,7 +1528,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi, Conta
 		const auto bB = fB->GetBody();
 		const auto other = (bA != &body)? bA: bB;
 
-		if (!contact->IsInIsland() && !HasSensor(*contact) && (other->IsImpenetrable() || body.IsImpenetrable()))
+		if (!ContactAtty::IsInIsland(*contact) && !HasSensor(*contact) && (other->IsImpenetrable() || body.IsImpenetrable()))
 		{
 			// Tentatively advance the body to the TOI.
 			const auto backup = other->m_sweep;
@@ -1477,7 +1539,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi, Conta
 			
 			// Update the contact points
 			contact->SetEnabled();
-			contact->Update(listener);
+			ContactAtty::Update(*contact, listener);
 			
 			// Revert and skip if contact disabled by user or no contact points anymore.
 			if (!contact->IsEnabled() || !contact->IsTouching())
@@ -1488,7 +1550,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi, Conta
 			}
 			
 			island.m_contacts.push_back(contact);
-			contact->SetInIsland();
+			ContactAtty::SetInIsland(*contact);
 			
 			if (!other->IsInIsland())
 			{
@@ -1685,7 +1747,7 @@ void World::InternalDestroy(Contact* c)
 	
 	EraseFromBodies(c);
 	
-	Contact::Destroy(c, m_blockAllocator);
+	ContactAtty::Destroy(c, m_blockAllocator);
 }
 
 void World::Destroy(Contact* c)
@@ -1736,7 +1798,7 @@ World::CollideStats World::Collide()
 			}
 			
 			// Clear the filtering flag.
-			contact->UnflagForFiltering();
+			ContactAtty::UnflagForFiltering(*contact);
 		}
 		
 		// collidable means is-awake && is-speedable (dynamic or kinematic)
@@ -1772,7 +1834,7 @@ World::CollideStats World::Collide()
 		
 		// Update the contact manifold and notify the listener.
 		contact->SetEnabled();
-		contact->Update(m_contactListener);
+		ContactAtty::Update(*contact, m_contactListener);
 		++stats.updated;
 	}
 	
@@ -1835,7 +1897,8 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 	assert(m_contacts.size() < MaxContacts);
 	
 	// Call the contact factory create method.
-	const auto contact = Contact::Create(*fixtureA, childIndexA, *fixtureB, childIndexB, m_blockAllocator);
+	const auto contact = ContactAtty::Create(*fixtureA, childIndexA, *fixtureB, childIndexB,
+											 m_blockAllocator);
 	assert(contact);
 	if (!contact)
 	{
