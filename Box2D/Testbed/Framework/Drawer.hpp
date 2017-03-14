@@ -31,12 +31,12 @@ struct Color
 	Color() = default;
 	
 	constexpr Color(float ri, float gi, float bi, float ai = 1):
-		r(ri), g(gi), b(bi), a(ai)
+		r(Clamp(ri, 0.0f, 1.0f)),
+		g(Clamp(gi, 0.0f, 1.0f)),
+		b(Clamp(bi, 0.0f, 1.0f)),
+		a(Clamp(ai, 0.0f, 1.0f))
 	{
-		assert(ri >= 0 && ri <= 1);
-		assert(gi >= 0 && gi <= 1);
-		assert(bi >= 0 && bi <= 1);
-		assert(ai >= 0 && ai <= 1);
+		// Intentionally empty.
 	}
 
 	constexpr Color(Color copy, float new_a):
@@ -51,6 +51,8 @@ struct Color
 	float a = 1; ///< Alpha value. @detail 0 for fully transparent to 1 for fully opaque.
 };
 
+Color Brighten(Color color, float factor);
+	
 class Drawer
 {
 public:

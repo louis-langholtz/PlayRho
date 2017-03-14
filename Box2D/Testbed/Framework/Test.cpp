@@ -205,14 +205,23 @@ static Color GetColor(const Body& body)
 	return Color{0.9f, 0.7f, 0.7f};
 }
 
-static void Draw(Drawer& drawer, const Body& body, bool skins)
+static bool Draw(Drawer& drawer, const Body& body, bool skins, Fixture* selected)
 {
+	auto found = false;
 	const auto xf = body.GetTransformation();
-	const auto color = GetColor(body);
+	const auto bodyColor = GetColor(body);
+	const auto selectedColor = Brighten(bodyColor, 1.3f);
 	for (auto&& f: body.GetFixtures())
 	{
+		auto color = bodyColor;
+		if (f == selected)
+		{
+			color = selectedColor;
+			found = true;
+		}
 		Draw(drawer, *f, xf, color, skins);
 	}
+	return found;
 }
 
 static void Draw(Drawer& drawer, const Joint& joint)
@@ -256,13 +265,18 @@ static void Draw(Drawer& drawer, const Joint& joint)
 	}
 }
 
-static void Draw(Drawer& drawer, const World& world, const Settings& settings)
+static bool Draw(Drawer& drawer, const World& world, const Settings& settings, Fixture* selected)
 {
+	auto found = false;
+
 	if (settings.drawShapes)
 	{
 		for (auto&& b: world.GetBodies())
 		{
-			Draw(drawer, *b, settings.drawSkins);
+			if (Draw(drawer, *b, settings.drawSkins, selected))
+			{
+				found = true;
+			}
 		}
 	}
 	
@@ -318,6 +332,8 @@ static void Draw(Drawer& drawer, const World& world, const Settings& settings)
 			drawer.DrawSegment(p1, p1 + k_axisScale * GetYAxis(xf.q), green);			
 		}
 	}
+
+	return found;
 }
 
 void Test::DestructionListenerImpl::SayGoodbye(Joint& joint)
@@ -533,6 +549,108 @@ void Test::LaunchBomb(const Vec2& position, const Vec2& linearVelocity)
 	m_bomb->CreateFixture(circle, fd);
 }
 
+void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
+{
+	drawer.DrawString(5, m_textLine, "step#=%d:", m_stepCount);
+	m_textLine += DRAW_STRING_NEW_LINE;
+	
+	drawer.DrawString(5, m_textLine, "  pre-info: cts-add=%d cts-ignor=%d cts-del=%d cts-upd=%d",
+					  m_stepStats.pre.added, m_stepStats.pre.ignored, m_stepStats.pre.destroyed, m_stepStats.pre.updated);
+	m_textLine += DRAW_STRING_NEW_LINE;
+	
+	drawer.DrawString(5, m_textLine, "  reg-info:");
+	m_textLine += DRAW_STRING_NEW_LINE;
+	
+	drawer.DrawString(5, m_textLine,
+					  "    cts-add=%u isl-find=%u isl-solv=%u pos-iter=%u vel-iter=%u p-moved=%u",
+					  m_stepStats.reg.contactsAdded,
+					  m_stepStats.reg.islandsFound,
+					  m_stepStats.reg.islandsSolved,
+					  m_stepStats.reg.sumPosIters,
+					  m_stepStats.reg.sumVelIters,
+					  m_stepStats.toi.proxiesMoved);
+	m_textLine += DRAW_STRING_NEW_LINE;
+	drawer.DrawString(5, m_textLine,
+					  "      bod-slept=%u min-sep=%f max-inc-imp=%f",
+					  m_stepStats.reg.bodiesSlept,
+					  float(m_stepStats.reg.minSeparation),
+					  float(m_stepStats.reg.maxIncImpulse));
+	m_textLine += DRAW_STRING_NEW_LINE;
+	
+	drawer.DrawString(5, m_textLine, "  toi-info:");
+	m_textLine += DRAW_STRING_NEW_LINE;
+	
+	drawer.DrawString(5, m_textLine,
+					  "    cts-add=%d isl-find=%d isl-solv=%u pos-iter=%u vel-iter=%u p-moved=%u",
+					  m_stepStats.toi.contactsAdded,
+					  m_stepStats.toi.islandsFound,
+					  m_stepStats.toi.islandsSolved,
+					  m_stepStats.toi.sumPosIters,
+					  m_stepStats.toi.sumVelIters,
+					  m_stepStats.toi.proxiesMoved);
+	m_textLine += DRAW_STRING_NEW_LINE;
+	drawer.DrawString(5, m_textLine,
+					  "    cts-find=%d cts-atmaxsubs=%d cts-upd=%d max-dist-iter=%u max-toi-iter=%u min-sep=%f max-inc-imp=%f",
+					  m_stepStats.toi.contactsFound,
+					  m_stepStats.toi.contactsAtMaxSubSteps,
+					  m_stepStats.toi.contactsUpdatedToi,
+					  m_stepStats.toi.maxDistIters, m_stepStats.toi.maxToiIters,
+					  float(m_stepStats.toi.minSeparation),
+					  float(m_stepStats.toi.maxIncImpulse));
+	m_textLine += DRAW_STRING_NEW_LINE;
+	
+	const auto sleepCount = [&](){
+		auto count = unsigned(0);
+		for (auto&& body: m_world->GetBodies())
+		{
+			if (!body->IsAwake())
+			{
+				++count;
+			}
+		}
+		return count;
+	}();
+	const auto bodyCount = GetBodyCount(*m_world);
+	const auto jointCount = GetJointCount(*m_world);
+	const auto fixtureCount = GetFixtureCount(*m_world);
+	const auto shapeCount = GetShapeCount(*m_world);
+	drawer.DrawString(5, m_textLine, "  sleep=%d, bodies=%d, fixtures=%d, shapes=%d, contacts=%d (of %d), joints=%d",
+					  sleepCount, bodyCount, fixtureCount, shapeCount, m_numContacts, m_maxContacts, jointCount);
+	m_textLine += DRAW_STRING_NEW_LINE;
+	
+	drawer.DrawString(5, m_textLine, "  Reg sums: isl-found=%llu isl-solv=%llu pos-iter=%llu vel-iter=%llu p-moved=%llu min-sep=%f max-sep=%f",
+					  m_sumRegIslandsFound, m_sumRegIslandsSolved, m_sumRegPosIters, m_sumRegVelIters, m_sumRegProxiesMoved, float(m_minRegSep), float(m_maxRegSep));
+	m_textLine += DRAW_STRING_NEW_LINE;
+	
+	drawer.DrawString(5, m_textLine, "  TOI sums: isl-found=%llu isl-solv=%llu pos-iter=%llu vel-iter=%llu p-moved=%llu upd=%llu cts-maxstep=%llu min-sep=%f",
+					  m_sumToiIslandsFound, m_sumToiIslandsSolved, m_sumToiPosIters, m_sumToiVelIters, m_sumToiProxiesMoved,
+					  m_sumContactsUpdatedToi, m_sumContactsAtMaxSubSteps, m_minToiSep);
+	m_textLine += DRAW_STRING_NEW_LINE;
+	
+	drawer.DrawString(5, m_textLine, "  TOI maxs: dist-iter=%u/%u toi-iter=%u/%u root-iter=%u/%u",
+					  m_maxDistIters, stepConf.maxDistanceIters, m_maxToiIters, stepConf.maxToiIters, m_maxRootIters, stepConf.maxToiRootIters);
+	m_textLine += DRAW_STRING_NEW_LINE;
+	
+	const auto proxyCount = m_world->GetProxyCount();
+	const auto height = m_world->GetTreeHeight();
+	const auto balance = m_world->GetTreeBalance();
+	const auto quality = m_world->GetTreeQuality();
+	drawer.DrawString(5, m_textLine, "  proxies/height/balance/quality = %d/%d/%d/%g", proxyCount, height, balance, quality);
+	m_textLine += DRAW_STRING_NEW_LINE;
+	
+	const auto selectedFixture = GetSelectedFixture();
+	if (selectedFixture)
+	{
+		const auto body = selectedFixture->GetBody();
+		const auto location = body->GetLocation();
+		const auto velocity = body->GetVelocity();
+		drawer.DrawString(5, m_textLine, "Selected fixture: pos={%f,%f} vel={%f,%f}",
+						  GetX(location), GetY(location),
+						  GetX(velocity.linear), GetY(velocity.linear));
+		m_textLine += DRAW_STRING_NEW_LINE;
+	}
+}
+
 void Test::Step(const Settings& settings, Drawer& drawer)
 {
 	PreStep(settings, drawer);
@@ -615,7 +733,12 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 		m_maxRegSep = Max(m_maxRegSep, stepStats.reg.minSeparation);
 	}
 	
-	Draw(drawer, *m_world, settings);
+	const auto selectedFixture = GetSelectedFixture();
+	const auto selectedFound = Draw(drawer, *m_world, settings, selectedFixture);
+	if (selectedFixture && !selectedFound)
+	{
+		SetSelectedFixture(nullptr);
+	}
 
 	drawer.Flush();
 
@@ -626,97 +749,12 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 		m_minToiSep = Min(m_minToiSep, stepStats.toi.minSeparation);
 	}
 
-	const auto contactCount = GetContactCount(*m_world);
-	m_maxContacts = Max(m_maxContacts, contactCount);
+	m_numContacts = GetContactCount(*m_world);
+	m_maxContacts = Max(m_maxContacts, m_numContacts);
 
 	if (settings.drawStats)
 	{
-		drawer.DrawString(5, m_textLine, "step#=%d:", m_stepCount);
-		m_textLine += DRAW_STRING_NEW_LINE;
-
-		drawer.DrawString(5, m_textLine, "  pre-info: cts-add=%d cts-ignor=%d cts-del=%d cts-upd=%d",
-						  m_stepStats.pre.added, m_stepStats.pre.ignored, m_stepStats.pre.destroyed, m_stepStats.pre.updated);
-		m_textLine += DRAW_STRING_NEW_LINE;
-
-		drawer.DrawString(5, m_textLine, "  reg-info:");
-		m_textLine += DRAW_STRING_NEW_LINE;
-
-		drawer.DrawString(5, m_textLine,
-						  "    cts-add=%u isl-find=%u isl-solv=%u pos-iter=%u vel-iter=%u p-moved=%u",
-						  m_stepStats.reg.contactsAdded,
-						  m_stepStats.reg.islandsFound,
-						  m_stepStats.reg.islandsSolved,
-						  m_stepStats.reg.sumPosIters,
-						  m_stepStats.reg.sumVelIters,
-						  m_stepStats.toi.proxiesMoved);
-		m_textLine += DRAW_STRING_NEW_LINE;
-		drawer.DrawString(5, m_textLine,
-						  "      bod-slept=%u min-sep=%f max-inc-imp=%f",
-						  m_stepStats.reg.bodiesSlept,
-						  float(m_stepStats.reg.minSeparation),
-						  float(m_stepStats.reg.maxIncImpulse));
-		m_textLine += DRAW_STRING_NEW_LINE;
-		
-		drawer.DrawString(5, m_textLine, "  toi-info:");
-		m_textLine += DRAW_STRING_NEW_LINE;
-		
-		drawer.DrawString(5, m_textLine,
-						  "    cts-add=%d isl-find=%d isl-solv=%u pos-iter=%u vel-iter=%u p-moved=%u",
-						  m_stepStats.toi.contactsAdded,
-						  m_stepStats.toi.islandsFound,
-						  m_stepStats.toi.islandsSolved,
-						  m_stepStats.toi.sumPosIters,
-						  m_stepStats.toi.sumVelIters,
-						  m_stepStats.toi.proxiesMoved);
-		m_textLine += DRAW_STRING_NEW_LINE;
-		drawer.DrawString(5, m_textLine,
-						  "    cts-find=%d cts-atmaxsubs=%d cts-upd=%d max-dist-iter=%u max-toi-iter=%u min-sep=%f max-inc-imp=%f",
-						  m_stepStats.toi.contactsFound,
-						  m_stepStats.toi.contactsAtMaxSubSteps,
-						  m_stepStats.toi.contactsUpdatedToi,
-						  m_stepStats.toi.maxDistIters, m_stepStats.toi.maxToiIters,
-						  float(m_stepStats.toi.minSeparation),
-						  float(m_stepStats.toi.maxIncImpulse));
-		m_textLine += DRAW_STRING_NEW_LINE;
-		
-		const auto sleepCount = [&](){
-			auto count = unsigned(0);
-			for (auto&& body: m_world->GetBodies())
-			{
-				if (!body->IsAwake())
-				{
-					++count;
-				}
-			}
-			return count;
-		}();
-		const auto bodyCount = GetBodyCount(*m_world);
-		const auto jointCount = GetJointCount(*m_world);
-		const auto fixtureCount = GetFixtureCount(*m_world);
-		const auto shapeCount = GetShapeCount(*m_world);
-		drawer.DrawString(5, m_textLine, "  sleep=%d, bodies=%d, fixtures=%d, shapes=%d, contacts=%d (of %d), joints=%d",
-						  sleepCount, bodyCount, fixtureCount, shapeCount, contactCount, m_maxContacts, jointCount);
-		m_textLine += DRAW_STRING_NEW_LINE;
-
-		drawer.DrawString(5, m_textLine, "  Reg sums: isl-found=%llu isl-solv=%llu pos-iter=%llu vel-iter=%llu p-moved=%llu min-sep=%f max-sep=%f",
-						  m_sumRegIslandsFound, m_sumRegIslandsSolved, m_sumRegPosIters, m_sumRegVelIters, m_sumRegProxiesMoved, float(m_minRegSep), float(m_maxRegSep));
-		m_textLine += DRAW_STRING_NEW_LINE;
-
-		drawer.DrawString(5, m_textLine, "  TOI sums: isl-found=%llu isl-solv=%llu pos-iter=%llu vel-iter=%llu p-moved=%llu upd=%llu cts-maxstep=%llu min-sep=%f",
-						  m_sumToiIslandsFound, m_sumToiIslandsSolved, m_sumToiPosIters, m_sumToiVelIters, m_sumToiProxiesMoved,
-						  m_sumContactsUpdatedToi, m_sumContactsAtMaxSubSteps, m_minToiSep);
-		m_textLine += DRAW_STRING_NEW_LINE;
-
-		drawer.DrawString(5, m_textLine, "  TOI maxs: dist-iter=%u/%u toi-iter=%u/%u root-iter=%u/%u",
-						  m_maxDistIters, stepConf.maxDistanceIters, m_maxToiIters, stepConf.maxToiIters, m_maxRootIters, stepConf.maxToiRootIters);
-		m_textLine += DRAW_STRING_NEW_LINE;
-		
-		const auto proxyCount = m_world->GetProxyCount();
-		const auto height = m_world->GetTreeHeight();
-		const auto balance = m_world->GetTreeBalance();
-		const auto quality = m_world->GetTreeQuality();
-		drawer.DrawString(5, m_textLine, "  proxies/height/balance/quality = %d/%d/%d/%g", proxyCount, height, balance, quality);
-		m_textLine += DRAW_STRING_NEW_LINE;
+		DrawStats(drawer, stepConf);
 	}
 
 	// Track maximum profile times

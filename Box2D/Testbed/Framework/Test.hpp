@@ -84,6 +84,7 @@ public:
 
 	void DrawTitle(Drawer& drawer, const char *string);
 	void Step(const Settings& settings, Drawer& drawer);
+	void DrawStats(Drawer& drawer, const StepConf& stepConf);
 	void ShiftMouseDown(const Vec2& p);
 	void MouseMove(const Vec2& p);
 	void LaunchBomb();
@@ -183,6 +184,7 @@ private:
 	Vec2 m_mouseWorld;
 	int32 m_stepCount = 0;
 	StepStats m_stepStats;
+	size_t m_numContacts = 0;
 	size_t m_maxContacts = 0;
 	uint64 m_sumContactsUpdatedToi = 0;
 	uint64 m_sumContactsAtMaxSubSteps = 0;
