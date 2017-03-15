@@ -22,7 +22,7 @@ to see any kind of performance.
 ###Changes
 
 Here's a run-down of some of the changes:
-- Exported symbols are all within the library namespace of `box2d` (and no longer preficed by `b2`).
+- Exported symbols are all within the library namespace of `box2d` and are no longer preficed by `b2`.
 - Preprocessor defines except those used for include guards, have been replaced with C++ solutions or removed from the API.
 - Rounded corner collisions.
 - *Capsule* shapes (using 2-vertex `PolygonShape` instances).
