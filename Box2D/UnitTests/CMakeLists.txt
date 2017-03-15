@@ -2,6 +2,8 @@
 # Top level docs for 3.1.3 at: https://cmake.org/cmake/help/v3.1/
 # Commands herein described at: https://cmake.org/cmake/help/v3.1/manual/cmake-commands.7.html
 
+add_subdirectory(googletest)
+
 include_directories(${Box2D_SOURCE_DIR})
 
 file(GLOB UnitTest_SRCS *.cpp)

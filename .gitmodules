@@ -1,0 +1,3 @@
+[submodule "Box2D/UnitTests/googletest"]
+	path = Box2D/UnitTests/googletest
+	url = https://github.com/google/googletest
