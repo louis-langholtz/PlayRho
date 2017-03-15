@@ -352,7 +352,7 @@ namespace {
 		}
 		return unawoken;
 	}
-		
+	
 	inline bool IsValidForTime(TOIOutput::State state) noexcept
 	{
 		return state == TOIOutput::e_touching;
@@ -632,6 +632,8 @@ private:
 		b.m_sweep.pos0 = value;
 	}
 
+	/// Sets the body sweep's position 1 value.
+	/// @note This sets what Body::GetWorldCenter returns.
 	static void SetPosition1(Body& b, Position value) noexcept
 	{
 		b.m_sweep.pos1 = value;
@@ -647,11 +649,15 @@ private:
 		b.m_sweep = value;
 	}
 	
+	/// Sets the body's transformation.
+	/// @note This sets what Body::GetLocation returns.
 	static void SetTransformation(Body& b, const Transformation value) noexcept
 	{
 		b.SetTransformation(value);
 	}
 	
+	/// Sets the body's velocity.
+	/// @note This sets what Body::GetVelocity returns.
 	static void SetVelocity(Body& b, Velocity value) noexcept
 	{
 		b.m_velocity = value;
@@ -779,21 +785,6 @@ World::~World()
 		BodyAtty::Destruct(b);
 		m_blockAllocator.Free(b, sizeof(Body));
 	}
-}
-
-void World::SetDestructionListener(DestructionListener* listener) noexcept
-{
-	m_destructionListener = listener;
-}
-
-void World::SetContactFilter(ContactFilter* filter) noexcept
-{
-	m_contactFilter = filter;
-}
-
-void World::SetContactListener(ContactListener* listener) noexcept
-{
-	m_contactListener = listener;
 }
 
 void World::SetGravity(const Vec2 gravity) noexcept
@@ -1359,7 +1350,6 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 		
 		const auto fA = c->GetFixtureA();
 		const auto fB = c->GetFixtureB();
-		
 		const auto bA = fA->GetBody();
 		const auto bB = fB->GetBody();
 				
@@ -1426,7 +1416,6 @@ World::ContactToiData World::GetSoonestContacts(const size_t reserveSize) const
 	return ContactToiData{minContacts, minToi};
 }
 
-// Find TOI contacts and solve them.
 ToiStepStats World::SolveTOI(const StepConf& step)
 {
 	auto stats = ToiStepStats{};
@@ -1586,10 +1575,8 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 
 void World::UpdateBody(Body& body, const Position& pos, const Velocity& vel)
 {
-	BodyAtty::SetVelocity(body, vel); // sets what Body::GetVelocity returns
-	BodyAtty::SetPosition1(body, pos); // sets what Body::GetWorldCenter returns
-
-	// sets what Body::GetLocation returns
+	BodyAtty::SetVelocity(body, vel);
+	BodyAtty::SetPosition1(body, pos);
 	BodyAtty::SetTransformation(body, GetTransformation(GetPosition1(body), body.GetLocalCenter()));
 }
 
@@ -2086,10 +2073,10 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 	const auto childIndexA = proxyA.childIndex;
 	const auto childIndexB = proxyB.childIndex;
 	
-	// TODO: use a hash table to remove a potential bottleneck when both
-	// bodies have a lot of contacts.
+	// TODO: use hash table to remove potential bottleneck when both bodies have many contacts.
 	// Does a contact already exist?
-	for (auto&& contact: bodyB->GetContacts())
+	const auto searchBody = (bodyA->GetContacts().size() < bodyB->GetContacts().size())? bodyA: bodyB;
+	for (auto&& contact: searchBody->GetContacts())
 	{
 		if (IsFor(*contact, fixtureA, childIndexA, fixtureB, childIndexB))
 		{

@@ -717,6 +717,21 @@ inline RealNum World::GetTreeQuality() const
 	return m_broadPhase.GetTreeQuality();
 }
 
+inline void World::SetDestructionListener(DestructionListener* listener) noexcept
+{
+	m_destructionListener = listener;
+}
+
+inline void World::SetContactFilter(ContactFilter* filter) noexcept
+{
+	m_contactFilter = filter;
+}
+
+inline void World::SetContactListener(ContactListener* listener) noexcept
+{
+	m_contactListener = listener;
+}
+
 // Free functions.
 
 /// Gets the body count in the given world.
