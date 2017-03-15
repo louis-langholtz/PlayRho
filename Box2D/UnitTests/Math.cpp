@@ -19,6 +19,8 @@
 #include "gtest/gtest.h"
 #include <Box2D/Common/Math.hpp>
 #include <type_traits>
+#include <chrono>
+#include <cmath>
 
 using namespace box2d;
 
@@ -608,4 +610,71 @@ TEST(Math, ToiTolerance)
 		const auto vr = 512.0f;
 		EXPECT_EQ(vr + tolerance, vr);
 	}
+}
+
+struct Coords {
+	float x, y;
+};
+
+TEST(Math, LengthFasterThanHypot)
+{
+	constexpr auto iterations = unsigned(5000000);
+	
+	std::chrono::duration<double> elapsed_secs_length;
+	std::chrono::duration<double> elapsed_secs_hypot;
+	
+	const auto v1 = Coords{10.8f, 99.02f};
+	const auto v2 = Coords{-6.01f, 31.2f};
+	const auto v3 = Coords{409183.2f, 0.00023f};
+	const auto v4 = Coords{-0.004f, 0.001f};
+	const auto v5 = Coords{-432.1f, -9121.0f};
+	const auto v6 = Coords{32.1f, -21.0f};
+	const auto v7 = Coords{12088.032f, 7612.823f};
+	const auto v8 = Coords{7612.823f, -7612.823f};
+
+	auto totalLength = 0.0f;
+	auto totalHypot = 0.0f;
+
+	{
+		// Time the "length" algorithm: sqrt(x^2 + y^2).
+		std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
+		start = std::chrono::high_resolution_clock::now();
+		for (auto i = decltype(iterations){0}; i < iterations; ++i)
+		{
+			const auto l1 = std::sqrt(Square(v1.x * i) + Square(v1.y * i));
+			const auto l2 = std::sqrt(Square(v2.x * i) + Square(v2.y * i));
+			const auto l3 = std::sqrt(Square(v3.x * i) + Square(v3.y * i));
+			const auto l4 = std::sqrt(Square(v4.x * i) + Square(v4.y * i));
+			const auto l5 = std::sqrt(Square(v5.x * i) + Square(v5.y * i));
+			const auto l6 = std::sqrt(Square(v6.x * i) + Square(v6.y * i));
+			const auto l7 = std::sqrt(Square(v7.x * i) + Square(v7.y * i));
+			const auto l8 = std::sqrt(Square(v8.x * i) + Square(v8.y * i));
+			totalLength += l1 + l2 + l3 + l4 + l5 + l6 + l7 + l8;
+		}
+		end = std::chrono::high_resolution_clock::now();
+		elapsed_secs_length = end - start;
+	}
+	
+	{
+		// Time the "hypot" algorithm: hypot(x, y).
+		std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
+		start = std::chrono::high_resolution_clock::now();
+		for (auto i = decltype(iterations){0}; i < iterations; ++i)
+		{
+			const auto l1 = std::hypot(v1.x * i, v1.y * i);
+			const auto l2 = std::hypot(v2.x * i, v2.y * i);
+			const auto l3 = std::hypot(v3.x * i, v3.y * i);
+			const auto l4 = std::hypot(v4.x * i, v4.y * i);
+			const auto l5 = std::hypot(v5.x * i, v5.y * i);
+			const auto l6 = std::hypot(v6.x * i, v6.y * i);
+			const auto l7 = std::hypot(v7.x * i, v7.y * i);
+			const auto l8 = std::hypot(v8.x * i, v8.y * i);
+			totalHypot += l1 + l2 + l3 + l4 + l5 + l6 + l7 + l8;
+		}
+		end = std::chrono::high_resolution_clock::now();
+		elapsed_secs_hypot = end - start;
+	}
+	
+	EXPECT_LT(elapsed_secs_length.count(), elapsed_secs_hypot.count());
+	EXPECT_EQ(totalLength, totalHypot);
 }
