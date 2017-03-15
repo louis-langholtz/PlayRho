@@ -50,5 +50,5 @@ install:
   - if [ "$CXX" = "clang++" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then (cd Box2D && mkdir -p BuildLinux && cd BuildLinux && cmake -DBOX2D_BUILD_EXAMPLES=OFF -DBOX2D_INSTALL=OFF .. && make && ls -laFR); fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then (cd Box2D && mkdir -p BuildLinux && cd BuildLinux && cmake -DBOX2D_BUILD_UNIT_TESTS=ON .. && make && ls -laFR); fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then (cd Box2D && xcodebuild -project Box2D/Build/xcode5/Box2D.xcodeproj -list); fi
