@@ -28,7 +28,7 @@ box2d::BodyConstraint box2d::GetBodyConstraint(const Body& body, RealNum time) n
 		body.GetInvMass(),
 		body.GetInvRotInertia(),
 		body.GetLocalCenter(),
-		body.GetPosition1(),
+		GetPosition1(body),
 		GetVelocity(body, time)
 	};
 }

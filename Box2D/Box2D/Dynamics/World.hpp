@@ -500,7 +500,7 @@ private:
 	/// @detail This updates the contact list, returns the memory to the allocator,
 	///   and decrements the contact manager's contact count.
 	/// @param c Contact to destroy.
-	void Destroy(Contact* c);
+	void Destroy(Contact* c, Body* from);
 	
 	/// Adds a contact for proxyA and proxyB if appropriate.
 	/// @detail Adds a new contact object to represent a contact between proxy A and proxy B if
@@ -516,11 +516,9 @@ private:
 	/// @sa bool Body::ShouldCollide(const Body* other) const
 	bool Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB);
 	
-	void InternalDestroy(Contact* contact);
+	void InternalDestroy(Contact* contact, Body* from = nullptr);
 	void Destroy(Contacts::iterator iter);
-	void Erase(Contact* contact);
-		
-	void EraseFromBodies(Contact* contact);
+	bool Erase(Contact* contact);
 	
 	/// Creates proxies for every child of the given fixture's shape.
 	/// @note This sets the proxy count to the child count of the shape.

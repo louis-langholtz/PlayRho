@@ -352,12 +352,7 @@ namespace {
 		}
 		return unawoken;
 	}
-	
-	inline bool IsAllFlagsSet(uint16 value, uint16 flags)
-	{
-		return (value & flags) == flags;
-	}
-	
+		
 	inline bool IsValidForTime(TOIOutput::State state) noexcept
 	{
 		return state == TOIOutput::e_touching;
@@ -539,6 +534,184 @@ private:
 	friend class World;
 };
 
+class BodyAtty
+{
+private:
+	static Body* EmplacementNew(void* memory,
+								   World* world, const BodyDef& def)
+	{
+		return new (memory) Body(def, world);
+	}
+
+	static void Destruct(Body* b)
+	{
+		b->~Body();
+	}
+
+	static bool IsInIsland(const Body& b) noexcept
+	{
+		return b.IsInIsland();
+	}
+	
+	static void SetInIsland(Body& b) noexcept
+	{
+		b.SetInIsland();
+	}
+	
+	static bool IsNonStaticAndInIsland(const Body& b) noexcept
+	{
+		constexpr auto requiredFlags = Body::e_velocityFlag|Body::e_islandFlag;
+		return (b.m_flags & requiredFlags) == requiredFlags;
+	}
+	
+	static bool IsAwakeAndSpeedable(const Body& b) noexcept
+	{
+		constexpr auto requiredFlags = Body::e_awakeFlag|Body::e_velocityFlag;
+		return (b.m_flags & requiredFlags) == requiredFlags;
+	}
+	
+	static void SetTypeFlags(Body& b, BodyType type) noexcept
+	{
+		b.m_flags &= ~(Body::e_impenetrableFlag|Body::e_velocityFlag|Body::e_accelerationFlag);
+		b.m_flags |= Body::GetFlags(type);
+	}
+	
+	static void UnsetInIsland(Body& b) noexcept
+	{
+		b.UnsetInIsland();
+	}
+
+	static void SetActiveFlag(Body& b) noexcept
+	{
+		b.m_flags |= Body::e_activeFlag;
+	}
+
+	static void UnsetActiveFlag(Body& b) noexcept
+	{
+		b.m_flags &= ~Body::e_activeFlag;
+	}
+
+	static void SetMassDataDirty(Body& b) noexcept
+	{
+		b.SetMassDataDirty();
+	}
+
+	static bool Erase(Body& b, Fixture* value)
+	{
+		return b.Erase(value);
+	}
+	
+	static bool Erase(Body& b, Contact* value)
+	{
+		return b.Erase(value);
+	}
+
+	static bool Erase(Body& b, Joint* value)
+	{
+		return b.Erase(value);
+	}
+
+	static bool Insert(Body& b, Joint* value)
+	{
+		return b.Insert(value);
+	}
+	
+	static bool Insert(Body& b, Contact* value)
+	{
+		return b.Insert(value);
+	}
+	
+	static bool Insert(Body& b, Fixture* value)
+	{
+		b.m_fixtures.push_front(value);
+		return true;
+	}
+
+	static void SetPosition0(Body& b, Position value) noexcept
+	{
+		b.m_sweep.pos0 = value;
+	}
+
+	static void SetPosition1(Body& b, Position value) noexcept
+	{
+		b.m_sweep.pos1 = value;
+	}
+
+	static void ResetAlpha0(Body& b)
+	{
+		b.m_sweep.ResetAlpha0();
+	}
+	
+	static void SetSweep(Body& b, const Sweep value) noexcept
+	{
+		b.m_sweep = value;
+	}
+	
+	static void SetTransformation(Body& b, const Transformation value) noexcept
+	{
+		b.SetTransformation(value);
+	}
+	
+	static void SetVelocity(Body& b, Velocity value) noexcept
+	{
+		b.m_velocity = value;
+	}
+	
+	static void Advance0(Body& b, RealNum value) noexcept
+	{
+		b.m_sweep.Advance0(value);
+	}
+	
+	static void Advance(Body& b, RealNum toi) noexcept
+	{
+		b.Advance(toi);
+	}
+
+	static void ClearFixtures(Body& b, BlockAllocator& allocator, std::function<void(Fixture&)> callback)
+	{
+		while (!b.m_fixtures.empty())
+		{
+			const auto fixture = b.m_fixtures.front();
+			callback(*fixture);
+			Delete(fixture, allocator);
+			b.m_fixtures.pop_front();
+		}
+	}
+	
+	static void ClearJoints(Body& b, std::function<void(Joint&)> callback)
+	{
+		while (!b.m_joints.empty())
+		{
+			auto iter = b.m_joints.begin();
+			const auto joint = *iter;
+			b.m_joints.erase(iter);
+			callback(*joint);
+		}
+	}
+	
+	static void EraseContacts(Body& b, std::function<bool(Contact&)> callback)
+	{
+		const auto end = b.m_contacts.end();
+		auto iter = b.m_contacts.begin();
+		while (iter != end)
+		{
+			const auto contact = *iter;
+			if (callback(*contact))
+			{
+				const auto next = std::next(iter);
+				b.m_contacts.erase(iter);
+				iter = next;
+			}
+			else
+			{
+				iter = std::next(iter);
+			}
+		}
+	}
+	
+	friend class World;
+};
+
 const BodyDef& World::GetDefaultBodyDef()
 {
 	static const BodyDef def = BodyDef{};
@@ -565,8 +738,8 @@ World::~World()
 		const auto fixtureB = c->GetFixtureB();
 		const auto bodyA = fixtureA->GetBody();
 		const auto bodyB = fixtureB->GetBody();
-		bodyA->Erase(c);
-		bodyB->Erase(c);
+		BodyAtty::Erase(*bodyA, c);
+		BodyAtty::Erase(*bodyB, c);
 		m_contacts.pop_front();
 		ContactAtty::Destroy(c, m_blockAllocator);
 	}
@@ -579,11 +752,11 @@ World::~World()
 		const auto bodyB = j->GetBodyB();
 		if (bodyA)
 		{
-			bodyA->Erase(j);
+			BodyAtty::Erase(*bodyA, j);
 		}
 		if (bodyB)
 		{
-			bodyB->Erase(j);
+			BodyAtty::Erase(*bodyB, j);
 		}
 		m_joints.pop_front();
 		JointAtty::Destroy(j, m_blockAllocator);
@@ -594,18 +767,16 @@ World::~World()
 	{
 		const auto b = m_bodies.front();
 		m_bodies.pop_front();
-		while (!b->m_fixtures.empty())
-		{
-			const auto fixture = b->m_fixtures.front();
-			b->m_fixtures.pop_front();
+		BodyAtty::ClearFixtures(*b, m_blockAllocator, [&](Fixture& fixture) {
 			if (m_destructionListener)
 			{
-				m_destructionListener->SayGoodbye(*fixture);
+				m_destructionListener->SayGoodbye(fixture);
 			}
-			DestroyProxies(*fixture);
-			Delete(fixture, m_blockAllocator);
-		}
-		b->~Body();
+			DestroyProxies(fixture);
+		});
+		assert(b->GetJoints().empty());
+		assert(b->GetContacts().empty());
+		BodyAtty::Destruct(b);
 		m_blockAllocator.Free(b, sizeof(Body));
 	}
 }
@@ -647,12 +818,12 @@ Body* World::CreateBody(const BodyDef& def)
 	}
 
 	void* mem = m_blockAllocator.Allocate(sizeof(Body));
-	auto b = new (mem) Body(def, this);
+	auto b = BodyAtty::EmplacementNew(mem, this, def);
 	if (b)
 	{
 		if (!Add(*b))
 		{
-			b->~Body();
+			BodyAtty::Destruct(b);
 			m_blockAllocator.Free(b, sizeof(Body));
 			return nullptr;
 		}		
@@ -690,7 +861,7 @@ bool World::Remove(Body& b)
 void World::Destroy(Body* b)
 {
 	assert(b);
-	assert(b->m_world == this);
+	assert(b->GetWorld() == this);
 	
 	assert(!IsLocked());
 	if (IsLocked())
@@ -699,43 +870,32 @@ void World::Destroy(Body* b)
 	}
 	
 	// Delete the attached joints.
-	while (!b->m_joints.empty())
-	{
-		auto iter = b->m_joints.begin();
-		const auto joint = *iter;
-		b->m_joints.erase(iter);
+	BodyAtty::ClearJoints(*b, [&](Joint& joint) {
 		if (m_destructionListener)
 		{
-			m_destructionListener->SayGoodbye(*joint);
+			m_destructionListener->SayGoodbye(joint);
 		}
-		Destroy(joint);
-	}
-
+		InternalDestroy(&joint);
+	});
+	
 	// Destroy the attached contacts.
-	while (!b->m_contacts.empty())
-	{
-		auto iter = b->m_contacts.begin();
-		const auto contact = *iter;
-		b->m_contacts.erase(iter);
-		Destroy(contact);
-	}
-
+	BodyAtty::EraseContacts(*b, [&](Contact& contact) {
+		Destroy(&contact, b);
+		return true;
+	});
+	
 	// Delete the attached fixtures. This destroys broad-phase proxies.
-	while (!b->m_fixtures.empty())
-	{
-		const auto fixture = b->m_fixtures.front();
+	BodyAtty::ClearFixtures(*b, m_blockAllocator, [&](Fixture& fixture) {
 		if (m_destructionListener)
 		{
-			m_destructionListener->SayGoodbye(*fixture);
+			m_destructionListener->SayGoodbye(fixture);
 		}
-		DestroyProxies(*fixture);
-		Delete(fixture, m_blockAllocator);
-		b->m_fixtures.pop_front();
-	}
+		DestroyProxies(fixture);
+	});
 	
 	Remove(*b);
 	
-	b->~Body();
+	BodyAtty::Destruct(b);
 	m_blockAllocator.Free(b, sizeof(*b));
 }
 
@@ -764,11 +924,11 @@ Joint* World::CreateJoint(const JointDef& def)
 	const auto bodyB = j->GetBodyB();
 	if (bodyA)
 	{
-		bodyA->m_joints.insert(j);
+		BodyAtty::Insert(*bodyA, j);
 	}
 	if (bodyB)
 	{
-		bodyB->m_joints.insert(j);
+		BodyAtty::Insert(*bodyB, j);
 	}
 
 	// If the joint prevents collisions, then flag any contacts for filtering.
@@ -803,6 +963,10 @@ bool World::Remove(Joint& j)
 
 void World::Destroy(Joint* j)
 {
+	if (!j)
+	{
+		return;
+	}
 	assert(!IsLocked());
 	if (IsLocked())
 	{
@@ -817,8 +981,6 @@ void World::InternalDestroy(Joint* j)
 	{
 		return;
 	}
-
-	const auto collideConnected = j->GetCollideConnected();
 	
 	// Disconnect from island graph.
 	const auto bodyA = j->GetBodyA();
@@ -828,13 +990,15 @@ void World::InternalDestroy(Joint* j)
 	if (bodyA)
 	{
 		bodyA->SetAwake();
-		bodyA->m_joints.erase(j);
+		BodyAtty::Erase(*bodyA, j);
 	}
 	if (bodyB)
 	{
 		bodyB->SetAwake();
-		bodyB->m_joints.erase(j);
+		BodyAtty::Erase(*bodyB, j);
 	}
+
+	const auto collideConnected = j->GetCollideConnected();
 
 	JointAtty::Destroy(j, m_blockAllocator);
 
@@ -863,7 +1027,7 @@ Island World::BuildIsland(Body& seed,
 	auto stack = std::vector<Body*>();
 	stack.reserve(remNumBodies);
 	stack.push_back(&seed);
-	seed.SetInIsland();
+	BodyAtty::SetInIsland(seed);
 	while (!stack.empty())
 	{
 		// Grab the next body off the stack and add it to the island.
@@ -901,7 +1065,7 @@ Island World::BuildIsland(Body& seed,
 				if (!other->IsInIsland())
 				{				
 					stack.push_back(other);
-					other->SetInIsland();
+					BodyAtty::SetInIsland(*other);
 				}
 			}			
 		}
@@ -909,7 +1073,7 @@ Island World::BuildIsland(Body& seed,
 		
 		const auto numJoints = island.m_joints.size();
 		// Adds appropriate joints of current body and appropriate 'other' bodies of those joint.
-		for (auto&& joint: b->m_joints)
+		for (auto&& joint: b->GetJoints())
 		{
 			const auto bodyA = joint->GetBodyA();
 			const auto bodyB = joint->GetBodyB();
@@ -921,7 +1085,7 @@ Island World::BuildIsland(Body& seed,
 				if (!other->IsInIsland())
 				{					
 					stack.push_back(other);
-					other->SetInIsland();
+					BodyAtty::SetInIsland(*other);
 				}
 			}
 		}
@@ -941,7 +1105,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 	// removed from this eligible set (and their IsInIsland method thereafter returns true.
 	for (auto&& body: m_bodies)
 	{
-		body->UnsetInIsland();
+		BodyAtty::UnsetInIsland(*body);
 	}
 	for (auto&& contact: m_contacts)
 	{
@@ -973,7 +1137,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 				// Allow static bodies to participate in other islands.
 				if (!b->IsSpeedable())
 				{
-					b->UnsetInIsland();
+					BodyAtty::UnsetInIsland(*b);
 					++remNumBodies;
 				}
 			}
@@ -1015,7 +1179,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 	for (auto&& body: m_bodies)
 	{
 		// A non-static body that was in an island may have moved.
-		if ((body->m_flags & (Body::e_velocityFlag|Body::e_islandFlag)) == (Body::e_velocityFlag|Body::e_islandFlag))
+		if (BodyAtty::IsNonStaticAndInIsland(*body))
 		{
 			// Update fixtures (for broad-phase).
 			stats.proxiesMoved += SynchronizeFixtures(*body, step.displaceMultiplier, step.aabbExtension);
@@ -1041,7 +1205,7 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& step, Island is
 	// Update bodies' pos0 values then copy their pos1 and velocity data into local arrays.
 	for (auto&& body: island.m_bodies)
 	{
-		body->m_sweep.pos0 = body->m_sweep.pos1; // like Advance0(1) on the sweep.
+		BodyAtty::SetPosition0(*body, GetPosition1(*body)); // like Advance0(1) on the sweep.
 		bodyConstraints[body] = GetBodyConstraint(*body, h);
 	}
 	auto positionConstraints = GetPositionConstraints(island.m_contacts, bodyConstraints);
@@ -1144,8 +1308,8 @@ void World::ResetBodiesForSolveTOI()
 {
 	for (auto&& b: m_bodies)
 	{
-		b->UnsetInIsland();
-		b->m_sweep.ResetAlpha0();
+		BodyAtty::UnsetInIsland(*b);
+		BodyAtty::ResetAlpha0(*b);
 	}
 }
 
@@ -1205,18 +1369,18 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 		 * So long as the least TOI of the contacts is always the first collision that gets dealt with,
 		 * this presumption is safe.
 		 */
-		const auto alpha0 = Max(bA->m_sweep.GetAlpha0(), bB->m_sweep.GetAlpha0());
+		const auto alpha0 = Max(bA->GetSweep().GetAlpha0(), bB->GetSweep().GetAlpha0());
 		assert(alpha0 >= 0 && alpha0 < 1);
-		bA->m_sweep.Advance0(alpha0);
-		bB->m_sweep.Advance0(alpha0);
+		BodyAtty::Advance0(*bA, alpha0);
+		BodyAtty::Advance0(*bB, alpha0);
 		
 		// Compute the TOI for this contact (one or both bodies are active and impenetrable).
 		// Computes the time of impact in interval [0, 1]
 		// Large rotations can make the root finder of TimeOfImpact fail, so normalize the sweep angles.
 		const auto output = TimeOfImpact(GetDistanceProxy(*fA->GetShape(), c->GetChildIndexA()),
-										 GetAnglesNormalized(bA->m_sweep),
+										 GetAnglesNormalized(bA->GetSweep()),
 										 GetDistanceProxy(*fB->GetShape(), c->GetChildIndexB()),
-										 GetAnglesNormalized(bB->m_sweep),
+										 GetAnglesNormalized(bB->GetSweep()),
 										 toiConf);
 		
 		
@@ -1322,7 +1486,7 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 		{
 			if (body->IsInIsland())
 			{
-				body->UnsetInIsland();
+				BodyAtty::UnsetInIsland(*body);
 				if (body->IsAccelerable())
 				{
 					stats.proxiesMoved += SynchronizeFixtures(*body, step.displaceMultiplier, step.aabbExtension);
@@ -1353,12 +1517,12 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 	const auto bB = contact.GetFixtureB()->GetBody();
 
 	{
-		const auto backupA = bA->m_sweep;
-		const auto backupB = bB->m_sweep;
+		const auto backupA = bA->GetSweep();
+		const auto backupB = bB->GetSweep();
 
 		// Advance the bodies to the TOI.
-		bA->Advance(toi);
-		bB->Advance(toi);
+		BodyAtty::Advance(*bA, toi);
+		BodyAtty::Advance(*bB, toi);
 
 		// The TOI contact likely has some new contact points.
 		contact.SetEnabled();	
@@ -1371,10 +1535,10 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 		{
 			// Restore the sweeps by undoing the body "advance" calls (and anything else done movement-wise)
 			contact.UnsetEnabled();
-			bA->m_sweep = backupA;
-			bA->m_xf = GetTransform1(bA->m_sweep);
-			bB->m_sweep = backupB;
-			bB->m_xf = GetTransform1(bB->m_sweep);
+			BodyAtty::SetSweep(*bA, backupA);
+			BodyAtty::SetTransformation(*bA, GetTransform1(bA->GetSweep()));
+			BodyAtty::SetSweep(*bB, backupB);
+			BodyAtty::SetTransformation(*bB, GetTransform1(bB->GetSweep()));
 			return IslandSolverResults{};
 		}
 	}
@@ -1389,9 +1553,9 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 	assert(!bB->IsInIsland());
 	
 	island.m_bodies.push_back(bA);
-	bA->SetInIsland();
+	BodyAtty::SetInIsland(*bA);
 	island.m_bodies.push_back(bB);
-	bB->SetInIsland();
+	BodyAtty::SetInIsland(*bB);
 	island.m_contacts.push_back(&contact);
 	ContactAtty::SetInIsland(contact);
 
@@ -1412,7 +1576,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 		// Allow static bodies to participate in other islands.
 		if (!b->IsSpeedable())
 		{
-			b->UnsetInIsland();
+			BodyAtty::UnsetInIsland(*b);
 		}
 	}
 
@@ -1422,9 +1586,11 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 
 void World::UpdateBody(Body& body, const Position& pos, const Velocity& vel)
 {
-	body.m_velocity = vel; // sets what Body::GetVelocity returns
-	body.m_sweep.pos1 = pos; // sets what Body::GetWorldCenter returns
-	body.m_xf = GetTransformation(body.m_sweep.pos1, body.m_sweep.GetLocalCenter()); // sets what Body::GetLocation returns
+	BodyAtty::SetVelocity(body, vel); // sets what Body::GetVelocity returns
+	BodyAtty::SetPosition1(body, pos); // sets what Body::GetWorldCenter returns
+
+	// sets what Body::GetLocation returns
+	BodyAtty::SetTransformation(body, GetTransformation(GetPosition1(body), body.GetLocalCenter()));
 }
 
 World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
@@ -1514,7 +1680,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 #else
 	for (auto&& body: island.m_bodies)
 	{
-		body->m_sweep.pos0 = bodyConstraints[body].GetPosition();
+		BodyAtty::SetPosition0(*body, bodyConstraints[body].GetPosition());
 	}
 #endif
 	
@@ -1578,10 +1744,10 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi, Conta
 		if (!ContactAtty::IsInIsland(*contact) && !HasSensor(*contact) && (other->IsImpenetrable() || body.IsImpenetrable()))
 		{
 			// Tentatively advance the body to the TOI.
-			const auto backup = other->m_sweep;
+			const auto backup = other->GetSweep();
 			if (!other->IsInIsland())
 			{
-				other->Advance(toi);
+				BodyAtty::Advance(*other, toi);
 			}
 			
 			// Update the contact points
@@ -1591,8 +1757,8 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi, Conta
 			// Revert and skip if contact disabled by user or no contact points anymore.
 			if (!contact->IsEnabled() || !contact->IsTouching())
 			{
-				other->m_sweep = backup;
-				other->m_xf = GetTransform1(other->m_sweep);
+				BodyAtty::SetSweep(*other, backup);
+				BodyAtty::SetTransformation(*other, GetTransform1(other->GetSweep()));
 				continue;
 			}
 			
@@ -1606,7 +1772,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi, Conta
 					other->SetAwake();
 				}
 				island.m_bodies.push_back(other);
-				other->SetInIsland();
+				BodyAtty::SetInIsland(*other);
 #if 0
 				if (other->IsSpeedable())
 				{
@@ -1734,9 +1900,14 @@ void World::ShiftOrigin(const Vec2 newOrigin)
 
 	for (auto&& b: m_bodies)
 	{
-		b->m_xf.p -= newOrigin;
-		b->m_sweep.pos0.linear -= newOrigin;
-		b->m_sweep.pos1.linear -= newOrigin;
+		auto transformation = b->GetTransformation();
+		transformation.p -= newOrigin;
+		BodyAtty::SetTransformation(*b, transformation);
+		
+		auto sweep = b->GetSweep();
+		sweep.pos0.linear -= newOrigin;
+		sweep.pos1.linear -= newOrigin;
+		BodyAtty::SetSweep(*b, sweep);
 	}
 
 	for (auto&& j: m_joints)
@@ -1752,39 +1923,28 @@ bool World::IsActive(const Contact& contact) noexcept
 	const auto bA = contact.GetFixtureA()->GetBody();
 	const auto bB = contact.GetFixtureB()->GetBody();
 	
-	const auto activeA = IsAllFlagsSet(bA->m_flags, Body::e_awakeFlag|Body::e_velocityFlag);
-	const auto activeB = IsAllFlagsSet(bB->m_flags, Body::e_awakeFlag|Body::e_velocityFlag);
+	const auto activeA = BodyAtty::IsAwakeAndSpeedable(*bA);
+	const auto activeB = BodyAtty::IsAwakeAndSpeedable(*bB);
 	
 	// Is at least one body active (awake and dynamic or kinematic)?
 	return activeA || activeB;
 }
 
-void World::Erase(Contact* c)
+bool World::Erase(Contact* c)
 {
 	assert(c);
-	
 	for (auto iter = m_contacts.begin(); iter != m_contacts.end(); ++iter)
 	{
 		if (*iter == c)
 		{
 			m_contacts.erase(iter);
-			break;
+			return true;
 		}
 	}
+	return false;
 }
 
-void World::EraseFromBodies(Contact* c)
-{
-	const auto fixtureA = c->GetFixtureA();
-	const auto fixtureB = c->GetFixtureB();
-	const auto bodyA = fixtureA->GetBody();
-	const auto bodyB = fixtureB->GetBody();
-	
-	bodyA->Erase(c);
-	bodyB->Erase(c);
-}
-
-void World::InternalDestroy(Contact* c)
+void World::InternalDestroy(Contact* c, Body* from)
 {
 	if (m_contactListener && c->IsTouching())
 	{
@@ -1792,14 +1952,28 @@ void World::InternalDestroy(Contact* c)
 		m_contactListener->EndContact(*c);
 	}
 	
-	EraseFromBodies(c);
+	{
+		const auto fixtureA = c->GetFixtureA();
+		const auto fixtureB = c->GetFixtureB();
+		const auto bodyA = fixtureA->GetBody();
+		const auto bodyB = fixtureB->GetBody();
+		
+		if (bodyA != from)
+		{
+			BodyAtty::Erase(*bodyA, c);
+		}
+		if (bodyB != from)
+		{
+			BodyAtty::Erase(*bodyB, c);
+		}
+	}
 	
 	ContactAtty::Destroy(c, m_blockAllocator);
 }
 
-void World::Destroy(Contact* c)
+void World::Destroy(Contact* c, Body* from)
 {
-	InternalDestroy(c);
+	InternalDestroy(c, from);
 	Erase(c);
 }
 
@@ -1848,14 +2022,9 @@ World::CollideStats World::Collide()
 			ContactAtty::UnflagForFiltering(*contact);
 		}
 		
-		// collidable means is-awake && is-speedable (dynamic or kinematic)
-		auto is_collidable = [&](Body* body) {
-			constexpr auto awake_and_speedable = Body::e_awakeFlag|Body::e_velocityFlag;
-			return (body->m_flags & awake_and_speedable) == awake_and_speedable;
-		};
-		
+		// Awake && speedable (dynamic or kinematic) means collidable.
 		// At least one body must be collidable
-		if (!is_collidable(bodyA) && !is_collidable(bodyB))
+		if (!BodyAtty::IsAwakeAndSpeedable(*bodyA) && !BodyAtty::IsAwakeAndSpeedable(*bodyB))
 		{
 			++stats.ignored;
 			continue;
@@ -1920,7 +2089,7 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 	// TODO: use a hash table to remove a potential bottleneck when both
 	// bodies have a lot of contacts.
 	// Does a contact already exist?
-	for (auto&& contact: bodyB->m_contacts)
+	for (auto&& contact: bodyB->GetContacts())
 	{
 		if (IsFor(*contact, fixtureA, childIndexA, fixtureB, childIndexB))
 		{
@@ -1952,8 +2121,8 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 		return false;
 	}
 	
-	bodyA->Insert(contact);
-	bodyB->Insert(contact);
+	BodyAtty::Insert(*bodyA, contact);
+	BodyAtty::Insert(*bodyB, contact);
 	
 	// Wake up the bodies
 	if (!fixtureA->IsSensor() && !fixtureB->IsSensor())
@@ -1987,7 +2156,7 @@ void World::SetActive(Body& body, bool flag, const RealNum aabbExtension)
 	
 	if (flag)
 	{
-		body.m_flags |= Body::e_activeFlag;
+		BodyAtty::SetActiveFlag(body);
 		
 		// Create all proxies.
 		const auto xf = body.GetTransformation();
@@ -2000,7 +2169,7 @@ void World::SetActive(Body& body, bool flag, const RealNum aabbExtension)
 	}
 	else
 	{
-		body.m_flags &= ~Body::e_activeFlag;
+		BodyAtty::UnsetActiveFlag(body);
 		
 		// Destroy all proxies.
 		for (auto&& fixture: body.GetFixtures())
@@ -2009,13 +2178,10 @@ void World::SetActive(Body& body, bool flag, const RealNum aabbExtension)
 		}
 		
 		// Destroy the attached contacts.
-		while (!body.m_contacts.empty())
-		{
-			auto iter = body.m_contacts.begin();
-			const auto contact = *iter;
-			body.m_contacts.erase(iter);
-			Destroy(contact);
-		}
+		BodyAtty::EraseContacts(body, [&](Contact& contact) {
+			Destroy(&contact, &body);
+			return true;
+		});
 	}
 }
 
@@ -2058,19 +2224,13 @@ void World::DestroyFixtures(Body& body)
 	}
 
 	// Delete the attached fixtures. This destroys broad-phase proxies.
-	while (!body.m_fixtures.empty())
-	{
-		const auto fixture = body.m_fixtures.front();
-		body.m_fixtures.pop_front();
-		
+	BodyAtty::ClearFixtures(body, m_blockAllocator, [&](Fixture& fixture) {
 		if (m_destructionListener)
 		{
-			m_destructionListener->SayGoodbye(*fixture);
+			m_destructionListener->SayGoodbye(fixture);
 		}
-		
-		DestroyProxies(*fixture);
-		Delete(fixture, m_blockAllocator);
-	}
+		DestroyProxies(fixture);
+	});
 	body.ResetMassData();
 }
 
@@ -2091,36 +2251,26 @@ void World::SetType(Body& body, BodyType type, const RealNum aabbExtension)
 		return;
 	}
 	
-	body.m_flags &= ~(Body::e_impenetrableFlag|Body::e_velocityFlag|Body::e_accelerationFlag);
-	body.m_flags |= Body::GetFlags(type);	
+	BodyAtty::SetTypeFlags(body, type);
 	body.ResetMassData();
 	
 	if (type == BodyType::Static)
 	{
-		body.m_velocity = Velocity{Vec2_zero, 0_rad};
-		body.m_sweep.pos0 = body.m_sweep.pos1;
+		BodyAtty::SetVelocity(body, Velocity{Vec2_zero, 0_rad});
+		BodyAtty::SetPosition0(body, body.GetSweep().pos1);
 		
 		// Note: displacement multiplier has no effect here since no displacement.
 		SynchronizeFixtures(body, 0, aabbExtension);
 	}
 	
 	body.SetAwake();
-	
-	body.m_linearAcceleration = Vec2_zero;
-	body.m_angularAcceleration = 0_rad;
-	if (body.IsAccelerable())
-	{
-		body.m_linearAcceleration += GetGravity();
-	}
+	body.SetAcceleration(body.IsAccelerable()? GetGravity(): Vec2_zero, 0_rad);
 	
 	// Destroy the attached contacts.
-	while (!body.m_contacts.empty())
-	{
-		auto iter = body.m_contacts.begin();
-		const auto contact = *iter;
-		body.m_contacts.erase(iter);
-		Destroy(contact);
-	}
+	BodyAtty::EraseContacts(body, [&](Contact& contact) {
+		Destroy(&contact, &body);
+		return true;
+	});
 	
 	for (auto&& fixture: body.GetFixtures())
 	{
@@ -2166,7 +2316,7 @@ Fixture* World::CreateFixture(Body& body, std::shared_ptr<const Shape> shape,
 	
 	const auto memory = m_blockAllocator.Allocate(sizeof(Fixture));
 	const auto fixture = FixtureAtty::EmplacementNew(memory, &body, def, shape);
-	body.m_fixtures.push_front(fixture);
+	BodyAtty::Insert(body, fixture);
 
 	if (body.IsActive())
 	{
@@ -2176,7 +2326,7 @@ Fixture* World::CreateFixture(Body& body, std::shared_ptr<const Shape> shape,
 	// Adjust mass properties if needed.
 	if (fixture->GetDensity() > 0)
 	{
-		body.SetMassDataDirty();
+		BodyAtty::SetMassDataDirty(body);
 		if (resetMassData)
 		{
 			body.ResetMassData();
@@ -2207,7 +2357,7 @@ bool World::DestroyFixture(Fixture* fixture, bool resetMassData)
 	}
 	
 	// Remove the fixture from this body's singly linked list.
-	const auto found = body.Erase(fixture);
+	const auto found = BodyAtty::Erase(body, fixture);
 	if (!found)
 	{
 		// Fixture probably destroyed already.
@@ -2215,23 +2365,23 @@ bool World::DestroyFixture(Fixture* fixture, bool resetMassData)
 	}
 	
 	// Destroy any contacts associated with the fixture.
-	for (auto&& contact: body.m_contacts)
-	{
-		const auto fixtureA = contact->GetFixtureA();
-		const auto fixtureB = contact->GetFixtureB();
-		if ((fixture == fixtureA) || (fixture == fixtureB))
+	// XXX is it safe to use body.GetContacts() here while destroy some entries???
+	BodyAtty::EraseContacts(body, [&](Contact& contact) {
+		const auto fixtureA = contact.GetFixtureA();
+		const auto fixtureB = contact.GetFixtureB();
+		if ((fixtureA == fixture) || (fixtureB == fixture))
 		{
-			// This destroys the contact and removes it from
-			// this body's contact list.
-			Destroy(contact);
+			Destroy(&contact, &body);
+			return true;
 		}
-	}
+		return false;
+	});
 	
 	DestroyProxies(*fixture);
 	
 	Delete(fixture, m_blockAllocator);
 	
-	body.SetMassDataDirty();
+	BodyAtty::SetMassDataDirty(body);
 	if (resetMassData)
 	{
 		body.ResetMassData();
@@ -2324,7 +2474,7 @@ contact_count_t World::SynchronizeFixtures(Body& body,
 
 contact_count_t World::SynchronizeFixtures(Body& body, const RealNum multiplier, const RealNum aabbExtension)
 {
-	return SynchronizeFixtures(body, GetTransform0(body.m_sweep), body.GetTransformation(),
+	return SynchronizeFixtures(body, GetTransform0(body.GetSweep()), body.GetTransformation(),
 							   multiplier, aabbExtension);
 }
 
@@ -2345,8 +2495,8 @@ void World::SetTransform(Body& body, const Vec2 position, Angle angle, const Rea
 	}
 	
 	const auto xf = Transformation{position, UnitVec2{angle}};
-	body.m_xf = xf;
-	body.m_sweep = Sweep{Position{Transform(body.GetLocalCenter(), xf), angle}, body.GetLocalCenter()};
+	BodyAtty::SetTransformation(body, xf);
+	BodyAtty::SetSweep(body, Sweep{Position{Transform(body.GetLocalCenter(), xf), angle}, body.GetLocalCenter()});
 	
 	// Note that distanceMultiplier parameter has no effect here since no displacement.
 	SynchronizeFixtures(body, xf, xf, 0, aabbExtension);

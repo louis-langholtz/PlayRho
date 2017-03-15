@@ -245,7 +245,7 @@ void Body::SetAcceleration(const Vec2 linear, const Angle angular) noexcept
 	m_angularAcceleration = angular;
 }
 
-bool Body::ShouldCollide(const Body* other) const
+bool Body::ShouldCollide(const Body* other) const noexcept
 {
 	// At least one body should be accelerable/dynamic.
 	if (!IsAccelerable() && !other->IsAccelerable())

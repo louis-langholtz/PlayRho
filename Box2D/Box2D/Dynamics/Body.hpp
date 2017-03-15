@@ -259,7 +259,7 @@ public:
 	/// @return World location of the body's origin.
 	Vec2 GetLocation() const noexcept;
 
-	Position GetPosition1() const noexcept;
+	const Sweep& GetSweep() const noexcept;
 
 	/// Get the angle in radians.
 	/// @return the current world rotation angle in radians.
@@ -439,10 +439,14 @@ public:
 	bool IsInIsland() const noexcept;
 	
 	bool IsMassDataDirty() const noexcept;
-
+	
+	/// Determines whether this body should possibly be able to collide with the given other body.
+	/// @return true if either body is dynamic and no joint prevents collision, false otherwise.
+	bool ShouldCollide(const Body* other) const noexcept;
+	
 private:
 
-	friend class World;
+	friend class BodyAtty;
 	
 	using FlagsType = uint16;
 
@@ -493,10 +497,6 @@ private:
 
 	Body(const BodyDef& bd, World* world);
 	~Body();
-	
-	/// Determines whether this body should possibly be able to collide with the given other body.
-	/// @return true if either body is dynamic and no joint prevents collision, false otherwise.
-	bool ShouldCollide(const Body* other) const;
 
 	/// Advances the body by a given time ratio.
 	/// @detail This method:
@@ -504,7 +504,7 @@ private:
 	///    2. updates the body's sweep positions (linear and angular) to the advanced ones; and
 	///    3. updates the body's transform to the new sweep one settings.
 	/// @param t Valid new time factor in [0,1) to advance the sweep to.
-	void Advance(RealNum t);
+	void Advance(RealNum t) noexcept;
 
 	void SetMassDataDirty() noexcept;
 	void UnsetMassDataDirty() noexcept;
@@ -520,11 +520,14 @@ private:
 	void UnsetInIsland() noexcept;
 
 	bool Insert(Contact* contact);
-
+	bool Insert(Joint* joint);
+	
 	bool Erase(Contact* const contact);
 	bool Erase(Joint* const joint);
 	bool Erase(Fixture* const fixture);
 
+	void SetTransformation(const Transformation value) noexcept;
+	
 	//
 	// Member variables. Try to keep total size small.
 	//
@@ -597,6 +600,12 @@ inline bool Body::Insert(Contact* c)
 	return true;
 }
 
+inline bool Body::Insert(Joint* j)
+{
+	const auto results = m_joints.insert(j);
+	return results.second;
+}
+
 inline bool Body::Erase(Contact* const contact)
 {
 	for (auto iter = m_contacts.begin(); iter != m_contacts.end(); ++iter)
@@ -651,24 +660,24 @@ inline Vec2 Body::GetLocation() const noexcept
 	return GetTransformation().p;
 }
 
-inline Position Body::GetPosition1() const noexcept
+inline const Sweep& Body::GetSweep() const noexcept
 {
-	return m_sweep.pos1;
+	return m_sweep;
 }
 	
 inline Angle Body::GetAngle() const noexcept
 {
-	return m_sweep.pos1.angular;
+	return GetSweep().pos1.angular;
 }
 
 inline Vec2 Body::GetWorldCenter() const noexcept
 {
-	return m_sweep.pos1.linear;
+	return GetSweep().pos1.linear;
 }
 
 inline Vec2 Body::GetLocalCenter() const noexcept
 {
-	return m_sweep.GetLocalCenter();
+	return GetSweep().GetLocalCenter();
 }
 
 inline Velocity Body::GetVelocity() const noexcept
@@ -849,14 +858,14 @@ inline Angle Body::GetAngularAcceleration() const noexcept
 	return m_angularAcceleration;
 }
 
-inline void Body::Advance(RealNum alpha)
+inline void Body::Advance(RealNum alpha) noexcept
 {
 	//assert(m_sweep.GetAlpha0() <= alpha);
 
 	// Advance to the new safe time. This doesn't sync the broad-phase.
 	m_sweep.Advance0(alpha);
 	m_sweep.pos1 = m_sweep.pos0;
-	m_xf = GetTransform1(m_sweep);
+	SetTransformation(GetTransform1(m_sweep));
 }
 
 inline World* Body::GetWorld() noexcept
@@ -905,6 +914,16 @@ inline void Body::SetInIsland() noexcept
 inline void Body::UnsetInIsland() noexcept
 {
 	m_flags &= ~Body::e_islandFlag;
+}
+
+inline void Body::SetTransformation(const Transformation value) noexcept
+{
+	m_xf = value;
+}
+
+inline Position GetPosition1(const Body& body) noexcept
+{
+	return body.GetSweep().pos1;
 }
 
 /// Gets the total mass of the body.
