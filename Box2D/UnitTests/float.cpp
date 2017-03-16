@@ -94,8 +94,8 @@ TEST(float, max)
 
 	EXPECT_EQ(std::numeric_limits<float>::max() + std::numeric_limits<float>::max() / 2, std::numeric_limits<float>::infinity());
 
-	EXPECT_LT(std::sqrtf(std::numeric_limits<float>::max()), std::numeric_limits<float>::max());
-	EXPECT_GT(std::numeric_limits<float>::max(), std::sqrtf(std::numeric_limits<float>::max()));
+	EXPECT_LT(std::sqrt(std::numeric_limits<float>::max()), std::numeric_limits<float>::max());
+	EXPECT_GT(std::numeric_limits<float>::max(), std::sqrt(std::numeric_limits<float>::max()));
 }
 
 TEST(float, infinity)
