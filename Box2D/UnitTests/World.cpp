@@ -39,9 +39,13 @@ TEST(World, ByteSize)
 	{
 		case  4:
 		{
-			// Size is C++-library dependent.
-			// Some implementations it's 320-bytes. Others its 296.
-			EXPECT_TRUE(sizeof(World) == size_t(320) || sizeof(World) == size_t(296));
+			// Size is OS dependent.
+#ifdef __APPLE__
+			EXPECT_EQ(sizeof(World), size_t(440));
+#endif
+#ifdef __linux__
+			EXPECT_EQ(sizeof(World), size_t(440));
+#endif
 			break;
 		}
 		case  8: EXPECT_EQ(sizeof(World), size_t(352)); break;
