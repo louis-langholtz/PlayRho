@@ -58,7 +58,7 @@ public:
 
 	/// Return true if contact calculations should be performed between these two shapes.
 	/// @warning for performance reasons this is only called when the AABBs begin to overlap.
-	virtual bool ShouldCollide(Fixture* fixtureA, Fixture* fixtureB);
+	virtual bool ShouldCollide(const Fixture* fixtureA, const Fixture* fixtureB);
 };
 
 /// Contact Impulse.

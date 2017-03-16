@@ -362,12 +362,6 @@ public:
 	/// Is this body allowed to sleep
 	bool IsSleepingAllowed() const noexcept;
 
-	/// Set the sleep state of the body. A sleeping body has very
-	/// low CPU cost.
-	/// @param flag set to true to wake the body, false to put it to sleep.
-	/// @deprecated use Body::SetAwake() or Body::UnsetAwake() instead.
-	[[deprecated]] void SetAwake(bool flag) noexcept;
-
 	/// Set the sleep state of the body to awake.
 	bool SetAwake() noexcept;
 
@@ -705,18 +699,6 @@ inline void Body::SetBullet(bool flag) noexcept
 inline bool Body::IsImpenetrable() const noexcept
 {
 	return (m_flags & e_impenetrableFlag) != 0;
-}
-
-inline void Body::SetAwake(bool flag) noexcept
-{
-	if (flag)
-	{
-		SetAwake();
-	}
-	else
-	{
-		UnsetAwake();
-	}
 }
 
 inline bool Body::SetAwake() noexcept

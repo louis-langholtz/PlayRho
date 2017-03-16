@@ -498,6 +498,8 @@ private:
 	/// Essentially this really just purges contacts that are no longer relevant.
 	CollideStats Collide();
 	
+	bool ShouldCollide(const Fixture* fixtureA, const Fixture* fixtureB);
+
 	/// Destroys the given contact and removes it from its list.
 	/// @detail This updates the contact list, returns the memory to the allocator,
 	///   and decrements the contact manager's contact count.
@@ -736,6 +738,11 @@ inline void World::SetContactFilter(ContactFilter* filter) noexcept
 inline void World::SetContactListener(ContactListener* listener) noexcept
 {
 	m_contactListener = listener;
+}
+
+inline bool World::ShouldCollide(const Fixture *fixtureA, const Fixture *fixtureB)
+{
+	return !m_contactFilter || m_contactFilter->ShouldCollide(fixtureA, fixtureB);
 }
 
 // Free functions.

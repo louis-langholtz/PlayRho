@@ -24,7 +24,7 @@ using namespace box2d;
 
 // Return true if contact calculations should be performed between these two shapes.
 // If you implement your own collision filter you may want to build from this implementation.
-bool ContactFilter::ShouldCollide(Fixture* fixtureA, Fixture* fixtureB)
+bool ContactFilter::ShouldCollide(const Fixture* fixtureA, const Fixture* fixtureB)
 {
 	const auto filterA = fixtureA->GetFilterData();
 	const auto filterB = fixtureB->GetFilterData();

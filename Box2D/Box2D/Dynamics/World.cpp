@@ -396,6 +396,15 @@ namespace {
 		}
 	}
 	
+	inline bool TestOverlap(const BroadPhase& bp,
+							const Fixture* fixtureA, child_count_t indexA,
+							const Fixture* fixtureB, child_count_t indexB)
+	{
+		const auto proxyIdA = fixtureA->GetProxy(indexA)->proxyId;
+		const auto proxyIdB = fixtureB->GetProxy(indexB)->proxyId;
+		return TestOverlap(bp, proxyIdA, proxyIdB);
+	}
+
 } // anonymous namespace
 
 
@@ -1924,12 +1933,14 @@ World::CollideStats World::Collide()
 	auto stats = CollideStats{};
 	
 	// Update awake contacts.
-	auto next = m_contacts.begin();
+	decltype(m_contacts)::iterator next;
 	for (auto iter = m_contacts.begin(); iter != m_contacts.end(); iter = next)
 	{
-		const auto contact = *iter;
 		next = std::next(iter);
-		
+
+		const auto contact = *iter;
+		const auto indexA = contact->GetChildIndexA();
+		const auto indexB = contact->GetChildIndexB();
 		const auto fixtureA = contact->GetFixtureA();
 		const auto fixtureB = contact->GetFixtureB();
 		const auto bodyA = fixtureA->GetBody();
@@ -1938,23 +1949,12 @@ World::CollideStats World::Collide()
 		// Is this contact flagged for filtering?
 		if (contact->NeedsFiltering())
 		{
-			// Can these bodies collide?
-			if (!ShouldCollide(*bodyB, *bodyA))
+			if (!::box2d::ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(fixtureA, fixtureB))
 			{
 				Destroy(iter);
 				++stats.destroyed;
 				continue;
 			}
-			
-			// Check user filtering.
-			if (m_contactFilter && !(m_contactFilter->ShouldCollide(fixtureA, fixtureB)))
-			{
-				Destroy(iter);
-				++stats.destroyed;
-				continue;
-			}
-			
-			// Clear the filtering flag.
 			ContactAtty::UnflagForFiltering(*contact);
 		}
 		
@@ -1966,17 +1966,9 @@ World::CollideStats World::Collide()
 			continue;
 		}
 		
-		const auto overlap = [&]() {
-			const auto indexA = contact->GetChildIndexA();
-			const auto indexB = contact->GetChildIndexB();
-			const auto proxyIdA = fixtureA->GetProxy(indexA)->proxyId;
-			const auto proxyIdB = fixtureB->GetProxy(indexB)->proxyId;
-			return TestOverlap(m_broadPhase, proxyIdA, proxyIdB);
-		}();
-		
-		// Here we destroy contacts that cease to overlap in the broad-phase.
-		if (!overlap)
+		if (!TestOverlap(m_broadPhase, fixtureA, indexA, fixtureB, indexB))
 		{
+			// Destroy contacts that cease to overlap in the broad-phase.
 			Destroy(iter);
 			++stats.destroyed;
 			continue;
@@ -2035,7 +2027,7 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 	}
 	
 	// Does a joint override collision? Is at least one body dynamic?
-	if (!ShouldCollide(*bodyB, *bodyA))
+	if (!::box2d::ShouldCollide(*bodyB, *bodyA))
 	{
 		return false;
 	}
