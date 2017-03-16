@@ -52,13 +52,15 @@ TEST(Transformation, Equality)
 TEST(Transformation, Inequality)
 {
 	const Vec2 translation1{2, 4};
-	const UnitVec2 rotation1{1_rad * Pi / 2};
+	const UnitVec2 rotation1{1_rad * Pi * 0.7f};
 	const Transformation xfm1{translation1, rotation1};
 
 	const Vec2 translation2{-3, 37};
-	const UnitVec2 rotation2{1_rad * Pi * 2};
+	const UnitVec2 rotation2{1_rad * Pi * 0.002f};
 	const Transformation xfm2{translation2, rotation2};
 
+	ASSERT_NE(translation1, translation2);
+	ASSERT_NE(rotation1, rotation2);
 	EXPECT_NE(xfm1, xfm2);
 }
 
