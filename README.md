@@ -1,11 +1,8 @@
+## What's New
 
 |iOS|Linux|Mac OS X|Win32|
 |---|-----|--------|-----|
 |[![Build Status](https://travis-ci.org/louis-langholtz/Box2D.svg?branch=iosfoo)](https://travis-ci.org/louis-langholtz/Box2D)|[![Build Status](https://travis-ci.org/louis-langholtz/Box2D.svg?branch=dev)](https://travis-ci.org/louis-langholtz/Box2D)|[![Build Status](https://travis-ci.org/louis-langholtz/Box2D.svg?branch=macosxfoo)](https://travis-ci.org/louis-langholtz/Box2D)|[![Build Status](https://travis-ci.org/louis-langholtz/Box2D.svg?branch=win32foo)](https://travis-ci.org/louis-langholtz/Box2D)|
-
-## What's New
-
-### Overview
 
 This is a fork by Louis Langholtz of the Box2D physics engine.
 
@@ -17,8 +14,6 @@ General influences on this fork are:
 **NOTE**: These sources make heavy use of the standard C++ library [`assert`](http://en.cppreference.com/w/cpp/error/assert) macro to confirm code correctness.
 As such, this library *must* be compiled with the `NDEBUG` preprocessor macro enabled
 to see any kind of performance.
-
-### Changes
 
 Here's a run-down of some of the changes:
 - Exported symbols are all within the library namespace of `box2d` and are no longer preficed by `b2`.
