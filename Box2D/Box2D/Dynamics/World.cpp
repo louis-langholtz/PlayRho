@@ -506,21 +506,6 @@ private:
 		Joint::Destroy(j, allocator);
 	}
 	
-	static bool IsInIsland(const Joint& j) noexcept
-	{
-		return j.IsInIsland();
-	}
-	
-	static void SetInIsland(Joint& j) noexcept
-	{
-		j.SetInIsland(true);
-	}
-	
-	static void UnsetInIsland(Joint& j) noexcept
-	{
-		j.SetInIsland(false);
-	}
-
 	static void InitVelocityConstraints(Joint& j, BodyConstraints &bodies,
 										const box2d::StepConf &step, const ConstraintSolverConf &conf)
 	{
@@ -1054,10 +1039,10 @@ Island World::BuildIsland(Body& seed, BodySet& bodiesIslanded,
 			const auto bodyA = joint->GetBodyA();
 			const auto bodyB = joint->GetBodyB();
 			const auto other = (b != bodyA)? bodyA: bodyB;
-			if (!JointAtty::IsInIsland(*joint) && other->IsActive())
+			if (!m_jointsIslanded.count(joint) && other->IsActive())
 			{
 				island.m_joints.push_back(joint);
-				JointAtty::SetInIsland(*joint);
+				m_jointsIslanded.insert(joint);
 				if (!bodiesIslanded.count(other))
 				{					
 					stack.push_back(other);
@@ -1084,10 +1069,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 	{
 		ContactAtty::UnsetInIsland(*contact);
 	}
-	for (auto&& joint: m_joints)
-	{
-		JointAtty::UnsetInIsland(*joint);
-	}
+	m_jointsIslanded.clear();
 
 	auto remNumBodies = m_bodies.size(); ///< Remaining number of bodies.
 	auto remNumContacts = m_contacts.size(); ///< Remaining number of contacts.

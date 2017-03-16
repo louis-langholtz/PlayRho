@@ -185,9 +185,6 @@ private:
 	// This returns true if the position errors are within tolerance.
 	virtual bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const = 0;
 	
-	bool IsInIsland() const noexcept;
-	void SetInIsland(bool value) noexcept;
-
 	const JointType m_type;
 
 	Body* m_bodyA;
@@ -195,7 +192,6 @@ private:
 
 	index_t m_index = 0;
 
-	bool m_islandFlag = false;
 	bool m_collideConnected = false;
 
 	void* m_userData;
@@ -249,16 +245,6 @@ inline void Joint::SetUserData(void* data) noexcept
 inline bool Joint::GetCollideConnected() const noexcept
 {
 	return m_collideConnected;
-}
-
-inline bool Joint::IsInIsland() const noexcept
-{
-	return m_islandFlag;
-}
-
-inline void Joint::SetInIsland(bool value) noexcept
-{
-	m_islandFlag = value;
 }
 
 /// Short-cut function to determine if either body is inactive.

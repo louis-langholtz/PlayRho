@@ -311,6 +311,8 @@ private:
 	using FlagsType = uint32;
 
 	using BodySet = std::unordered_set<Body*>;
+	using JointSet = std::unordered_set<Joint*>;
+	using ContactSet = std::unordered_set<Contact*>;
 	
 	// Flag enumeration.
 	enum Flag: FlagsType
@@ -551,6 +553,7 @@ private:
 	BroadPhase m_broadPhase; ///< Broad phase data. 72-bytes.
 	
 	BodySet m_bodiesIslanded;
+	JointSet m_jointsIslanded;
 
 	ContactFilter m_defaultFilter; ///< Default contact filter. 8-bytes.
 	
