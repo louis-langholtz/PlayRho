@@ -105,7 +105,7 @@ public:
 	///   the future position based on the current displacement.
 	///   This is a dimensionless multiplier.
 	/// @param extension Extension. Amount to extend a "moved" AABB by.
-	bool MoveProxy(size_type proxyId, const AABB& aabb, const Vec2 displacement,
+	bool MoveProxy(const size_type proxyId, const AABB& aabb, const Vec2 displacement,
 				   const RealNum multiplier = 1, const RealNum extension = 0);
 
 	/// Call to trigger a re-processing of it's pairs on the next call to UpdatePairs.
@@ -237,6 +237,17 @@ inline void BroadPhase::RayCast(const RayCastInput& input, RayCastCallback callb
 inline void BroadPhase::ShiftOrigin(const Vec2 newOrigin)
 {
 	m_tree.ShiftOrigin(newOrigin);
+}
+
+inline bool BroadPhase::MoveProxy(const size_type proxyId, const AABB& aabb, const Vec2 displacement,
+						   const RealNum multiplier, const RealNum extension)
+{
+	const auto moved = m_tree.MoveProxy(proxyId, aabb, displacement, multiplier, extension);
+	if (moved)
+	{
+		BufferMove(proxyId);
+	}
+	return moved;
 }
 
 inline void BroadPhase::TouchProxy(size_type proxyId) noexcept

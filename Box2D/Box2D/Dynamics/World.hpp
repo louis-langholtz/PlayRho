@@ -537,16 +537,13 @@ private:
 	void TouchProxies(Fixture& fixture) noexcept;
 
 	child_count_t Synchronize(Fixture& fixture,
-							  const Transformation& xf1, const Transformation& xf2,
+							  const Transformation& xfm1, const Transformation& xfm2,
 							  const RealNum multiplier, const RealNum extension);
 
-	contact_count_t SynchronizeFixtures(Body& body,
-										const Transformation& t1, const Transformation& t2,
-										const RealNum multiplier, const RealNum aabbExtension);
+	contact_count_t Synchronize(Body& body,
+								const Transformation& xfm1, const Transformation& xfm2,
+								const RealNum multiplier, const RealNum aabbExtension);
 	
-	contact_count_t SynchronizeFixtures(Body& body,
-										const RealNum multiplier, const RealNum aabbExtension);
-
 	/******** Member variables. ********/
 
 	BlockAllocator m_blockAllocator; ///< Block allocator. 136-bytes.

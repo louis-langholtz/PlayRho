@@ -1131,7 +1131,8 @@ RegStepStats World::SolveReg(const StepConf& step)
 		if (body->IsSpeedable() && m_bodiesIslanded.count(body))
 		{
 			// Update fixtures (for broad-phase).
-			stats.proxiesMoved += SynchronizeFixtures(*body, step.displaceMultiplier, step.aabbExtension);
+			stats.proxiesMoved += Synchronize(*body, GetTransform0(body->GetSweep()), body->GetTransformation(),
+						step.displaceMultiplier, step.aabbExtension);
 		}
 	}
 
@@ -1436,7 +1437,8 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 				m_bodiesIslanded.erase(body);
 				if (body->IsAccelerable())
 				{
-					stats.proxiesMoved += SynchronizeFixtures(*body, step.displaceMultiplier, step.aabbExtension);
+					stats.proxiesMoved += Synchronize(*body, GetTransform0(body->GetSweep()), body->GetTransformation(),
+													  step.displaceMultiplier, step.aabbExtension);
 					ResetContactsForSolveTOI(*body);
 				}
 			}
@@ -2164,7 +2166,10 @@ void World::SetType(Body& body, BodyType type, const RealNum aabbExtension)
 		BodyAtty::SetPosition0(body, body.GetSweep().pos1);
 		
 		// Note: displacement multiplier has no effect here since no displacement.
-		SynchronizeFixtures(body, 0, aabbExtension);
+		const auto xfm1 = GetTransform0(body.GetSweep());
+		const auto xfm2 = body.GetTransformation();
+		assert(xfm1 == xfm2);
+		Synchronize(body, xfm1, xfm2, 0, aabbExtension);
 	}
 	
 	body.SetAwake();
@@ -2348,24 +2353,24 @@ void World::TouchProxies(Fixture& fixture) noexcept
 }
 
 child_count_t World::Synchronize(Fixture& fixture,
-								 const Transformation& transform1, const Transformation& transform2,
+								 const Transformation& xfm1, const Transformation& xfm2,
 								 const RealNum multiplier, const RealNum extension)
 {
-	assert(::box2d::IsValid(transform1));
-	assert(::box2d::IsValid(transform2));
+	assert(::box2d::IsValid(xfm1));
+	assert(::box2d::IsValid(xfm2));
 	
 	const auto shape = fixture.GetShape();
 	
 	auto movedCount = child_count_t{0};
+	const auto displacement = xfm2.p - xfm1.p;
 	const auto proxies = FixtureAtty::GetProxies(fixture);
 	for (auto&& proxy: proxies)
 	{
 		// Compute an AABB that covers the swept shape (may miss some rotation effect).
-		const auto aabb1 = ComputeAABB(*shape, transform1, proxy.childIndex);
-		const auto aabb2 = ComputeAABB(*shape, transform2, proxy.childIndex);
+		const auto aabb1 = ComputeAABB(*shape, xfm1, proxy.childIndex);
+		const auto aabb2 = ComputeAABB(*shape, xfm2, proxy.childIndex);
 		proxy.aabb = GetEnclosingAABB(aabb1, aabb2);
 		
-		const auto displacement = transform2.p - transform1.p;
 		if (m_broadPhase.MoveProxy(proxy.proxyId, proxy.aabb, displacement, multiplier, extension))
 		{
 			++movedCount;
@@ -2374,22 +2379,16 @@ child_count_t World::Synchronize(Fixture& fixture,
 	return movedCount;
 }
 
-contact_count_t World::SynchronizeFixtures(Body& body,
-										   const Transformation& t1, const Transformation& t2,
-										  const RealNum multiplier, const RealNum aabbExtension)
+contact_count_t World::Synchronize(Body& body,
+								   const Transformation& xfm1, const Transformation& xfm2,
+								   const RealNum multiplier, const RealNum aabbExtension)
 {
 	auto movedCount = contact_count_t{0};
 	for (auto&& fixture: body.GetFixtures())
 	{
-		movedCount += Synchronize(*fixture, t1, t2, multiplier, aabbExtension);
+		movedCount += Synchronize(*fixture, xfm1, xfm2, multiplier, aabbExtension);
 	}
 	return movedCount;
-}
-
-contact_count_t World::SynchronizeFixtures(Body& body, const RealNum multiplier, const RealNum aabbExtension)
-{
-	return SynchronizeFixtures(body, GetTransform0(body.GetSweep()), body.GetTransformation(),
-							   multiplier, aabbExtension);
 }
 
 void World::SetTransform(Body& body, const Vec2 position, Angle angle, const RealNum aabbExtension)
@@ -2408,12 +2407,14 @@ void World::SetTransform(Body& body, const Vec2 position, Angle angle, const Rea
 		return;
 	}
 	
-	const auto xf = Transformation{position, UnitVec2{angle}};
-	BodyAtty::SetTransformation(body, xf);
-	BodyAtty::SetSweep(body, Sweep{Position{Transform(body.GetLocalCenter(), xf), angle}, body.GetLocalCenter()});
+	const auto xfm = Transformation{position, UnitVec2{angle}};
+	BodyAtty::SetTransformation(body, xfm);
+	
+	const auto sweep = Sweep{Position{Transform(body.GetLocalCenter(), xfm), angle}, body.GetLocalCenter()};
+	BodyAtty::SetSweep(body, sweep);
 	
 	// Note that distanceMultiplier parameter has no effect here since no displacement.
-	SynchronizeFixtures(body, xf, xf, 0, aabbExtension);
+	Synchronize(body, xfm, xfm, 0, aabbExtension);
 }
 
 // Free functions...
