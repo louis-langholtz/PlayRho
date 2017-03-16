@@ -23,6 +23,7 @@
 
 using namespace box2d;
 
+#if 0
 TEST(InternalListForBody, ByteSizeIs16)
 {
 	EXPECT_EQ(sizeof(InternalList<Body>), size_t(16));
@@ -125,3 +126,4 @@ TEST(InternalListForBody, PushAndPop)
 	
 	box2d::free(list_nodes);
 }
+#endif

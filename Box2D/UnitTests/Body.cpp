@@ -27,12 +27,36 @@
 
 using namespace box2d;
 
-TEST(Body, ByteSizeIs_192_256_or_464)
+TEST(Body, ContactsByteSize)
 {
+	EXPECT_EQ(sizeof(Body::Contacts), size_t(24));
+}
+
+TEST(Body, JointsByteSize)
+{
+	EXPECT_EQ(sizeof(Body::Joints), size_t(40));
+}
+
+TEST(Body, FixturesByteSize)
+{
+	EXPECT_EQ(sizeof(Body::Fixtures), size_t(8));
+}
+
+TEST(Body, ByteSize)
+{
+	const auto contactsSize = sizeof(Body::Contacts);
+	const auto jointsSize = sizeof(Body::Joints);
+	const auto fixturesSize = sizeof(Body::Fixtures);
+	const auto allSize = contactsSize + jointsSize + fixturesSize;
+
 	// architecture dependent...
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(Body), size_t(192)); break;
+		case  4:
+		{
+			EXPECT_EQ(sizeof(Body), size_t(120 + allSize));
+			break;
+		}
 		case  8: EXPECT_EQ(sizeof(Body), size_t(256)); break;
 		case 16: EXPECT_EQ(sizeof(Body), size_t(464)); break;
 		default: FAIL(); break;

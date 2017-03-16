@@ -308,17 +308,17 @@ TEST(Fixed32, Division)
 
 TEST(Fixed32, Sin)
 {
-	EXPECT_EQ(std::sin(Fixed32(0)), float(0));
-	EXPECT_EQ(std::sin(Fixed32(1)), std::sin(1.0f));
-	EXPECT_EQ(std::sin(Fixed32(2)), std::sin(2.0f));
-	EXPECT_EQ(std::sin(Fixed32(Pi/2)), 1.0f);
+	EXPECT_FLOAT_EQ(std::sin(Fixed32(0)), 0.0f);
+	EXPECT_FLOAT_EQ(std::sin(Fixed32(1)), std::sin(1.0f));
+	EXPECT_FLOAT_EQ(std::sin(Fixed32(2)), std::sin(2.0f));
+	EXPECT_FLOAT_EQ(std::sin(Fixed32(Pi/2)), 1.0f);
 }
 
 TEST(Fixed32, Cos)
 {
-	EXPECT_EQ(std::cos(Fixed32(0)), float(1));
-	EXPECT_EQ(std::cos(Fixed32(1)), std::cos(1.0f));
-	EXPECT_EQ(std::cos(Fixed32(2)), std::cos(2.0f));
+	EXPECT_FLOAT_EQ(std::cos(Fixed32(0)), float(1));
+	EXPECT_FLOAT_EQ(std::cos(Fixed32(1)), std::cos(1.0f));
+	EXPECT_FLOAT_EQ(std::cos(Fixed32(2)), std::cos(2.0f));
 	EXPECT_LT(std::cos(Fixed32(Pi/2)), +0.001f);
 	EXPECT_GT(std::cos(Fixed32(Pi/2)), -0.001f);
 }
