@@ -71,8 +71,10 @@ TEST(type, GetFromFloat) \
 	EXPECT_EQ(type::GetFromFloat(-1.0), -1 * type::ScaleFactor); \
 	EXPECT_EQ(type::GetFromFloat(-2.0), -2 * type::ScaleFactor); \
 	EXPECT_EQ(type::GetFromFloat(-4.7), static_cast<type::value_type>(-4.7 * type::ScaleFactor)); \
-	EXPECT_EQ(type::GetFromFloat( std::numeric_limits<long double>::max()),  type::GetInfinity()); \
-	EXPECT_EQ(type::GetFromFloat(-std::numeric_limits<long double>::max()), -type::GetInfinity()); \
+	const auto long_double_max = std::numeric_limits<long double>::max(); \
+	const auto fixed_infinity = type::GetInfinity(); \
+	EXPECT_EQ(type::GetFromFloat( long_double_max),  fixed_infinity); \
+	EXPECT_EQ(type::GetFromFloat(-long_double_max), -fixed_infinity); \
 	EXPECT_EQ(type::GetFromFloat( std::numeric_limits<float>::infinity()),  type::GetInfinity()); \
 	EXPECT_EQ(type::GetFromFloat(-std::numeric_limits<float>::infinity()), -type::GetInfinity()); \
 }
