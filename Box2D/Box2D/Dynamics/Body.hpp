@@ -494,9 +494,7 @@ private:
 
 	void SetMassDataDirty() noexcept;
 	void UnsetMassDataDirty() noexcept;
-
-	[[deprecated]] void SetInIsland(bool value) noexcept;
-
+	
 	bool Insert(Contact* contact);
 	bool Insert(Joint* joint);
 	
