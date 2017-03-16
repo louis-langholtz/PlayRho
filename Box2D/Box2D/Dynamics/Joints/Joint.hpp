@@ -185,16 +185,14 @@ private:
 	// This returns true if the position errors are within tolerance.
 	virtual bool SolvePositionConstraints(BodyConstraints& bodies, const ConstraintSolverConf& conf) const = 0;
 	
-	const JointType m_type;
-
 	Body* m_bodyA;
 	Body* m_bodyB;
+	void* m_userData;
 
 	index_t m_index = 0;
-
+	
+	const JointType m_type;
 	bool m_collideConnected = false;
-
-	void* m_userData;
 };
 
 inline JointType Joint::GetType() const noexcept
