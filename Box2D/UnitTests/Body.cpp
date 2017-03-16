@@ -29,16 +29,21 @@ using namespace box2d;
 
 TEST(Body, ContactsByteSize)
 {
-	EXPECT_EQ(sizeof(Body::Contacts), size_t(24));
+	// Size is C++ library dependent.
+	// Some platforms it's 24-bytes. Others 16.
+	EXPECT_TRUE(sizeof(Body::Contacts) == size_t(24) || sizeof(Body::Contacts) == size_t(16));
 }
 
 TEST(Body, JointsByteSize)
 {
-	EXPECT_EQ(sizeof(Body::Joints), size_t(40));
+	// Size is C++ library dependent.
+	// Some platforms it's 40-bytes. Others 56.
+	EXPECT_TRUE(sizeof(Body::Joints) == size_t(40) || sizeof(Body::Joints) == size_t(56));
 }
 
 TEST(Body, FixturesByteSize)
 {
+	// Size is arch-dependent (on size of pointer/address)
 	EXPECT_EQ(sizeof(Body::Fixtures), size_t(8));
 }
 

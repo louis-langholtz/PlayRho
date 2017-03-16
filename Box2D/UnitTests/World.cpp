@@ -33,11 +33,17 @@
 
 using namespace box2d;
 
-TEST(World, ByteSizeIs_320_352_or_400)
+TEST(World, ByteSize)
 {
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(World), size_t(320)); break;
+		case  4:
+		{
+			// Size is C++-library dependent.
+			// Some implementations it's 320-bytes. Others its 296.
+			EXPECT_TRUE(sizeof(World) == size_t(320) || sizeof(World) == size_t(296));
+			break;
+		}
 		case  8: EXPECT_EQ(sizeof(World), size_t(352)); break;
 		case 16: EXPECT_EQ(sizeof(World), size_t(400)); break;
 		default: FAIL(); break;
