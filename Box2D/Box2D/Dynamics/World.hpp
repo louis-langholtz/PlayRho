@@ -369,7 +369,7 @@ private:
 	/// Builds island based off of a given "seed" body.
 	/// @post Contacts are listed in the island in the order that bodies list those contacts.
 	/// @post Joints are listed the island in the order that bodies list those joints.
-	Island BuildIsland(Body& seed, BodySet& bodiesIslanded,
+	Island BuildIsland(Body& seed,
 					   Bodies::size_type& remNumBodies,
 					   Contacts::size_type& remNumContacts,
 					   Joints::size_type& remNumJoints);
@@ -427,8 +427,7 @@ private:
 	/// @param[in,out] island Island. On return this may contain additional contacts or bodies.
 	/// @param[in,out] body A dynamic/accelerable body.
 	/// @param[in] toi Time of impact (TOI). Value between 0 and 1.
-	/// @param listener Pointer to listener that will be called, or nullptr.
-	static void ProcessContactsForTOI(Island& island, Body& body, BodySet& bodiesIslanded, RealNum toi, ContactListener* listener = nullptr);
+	void ProcessContactsForTOI(Island& island, Body& body, RealNum toi);
 	
 	bool Add(Body& b);
 	bool Add(Joint& j);
@@ -553,6 +552,7 @@ private:
 	BroadPhase m_broadPhase; ///< Broad phase data. 72-bytes.
 	
 	BodySet m_bodiesIslanded;
+	ContactSet m_contactsIslanded;
 	JointSet m_jointsIslanded;
 
 	ContactFilter m_defaultFilter; ///< Default contact filter. 8-bytes.

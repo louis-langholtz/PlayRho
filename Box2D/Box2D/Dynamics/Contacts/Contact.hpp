@@ -183,11 +183,7 @@ protected:
 	void UnsetToi() noexcept;
 	
 	void ResetToiCount() noexcept;
-
-	bool IsInIsland() const noexcept;
-	void SetInIsland() noexcept;
-	void UnsetInIsland() noexcept;
-
+	
 private:
 
 	friend class ContactAtty;
@@ -198,9 +194,6 @@ private:
 	// Flags stored in m_flags
 	enum: FlagsType
 	{
-		// Used when crawling contact graph when forming islands.
-		e_islandFlag		= 0x0001,
-		
 		// Set when the shapes are touching.
 		e_touchingFlag		= 0x0002,
 		
@@ -410,21 +403,6 @@ inline void Contact::UnsetToi() noexcept
 inline void Contact::ResetToiCount() noexcept
 {
 	m_toiCount = 0;
-}
-
-inline bool Contact::IsInIsland() const noexcept
-{
-	return m_flags & Contact::e_islandFlag;
-}
-
-inline void Contact::SetInIsland() noexcept
-{
-	m_flags |= Contact::e_islandFlag;
-}
-
-inline void Contact::UnsetInIsland() noexcept
-{	
-	m_flags &= ~Contact::e_islandFlag;
 }
 
 inline Contact::substep_type Contact::GetToiCount() const noexcept

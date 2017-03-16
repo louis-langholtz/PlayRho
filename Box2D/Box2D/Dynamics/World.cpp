@@ -445,21 +445,6 @@ private:
 		Contact::Destroy(c, allocator);
 	}
 	
-	static bool IsInIsland(const Contact& c) noexcept
-	{
-		return c.IsInIsland();
-	}
-	
-	static void SetInIsland(Contact& c) noexcept
-	{
-		c.SetInIsland();
-	}
-
-	static void UnsetInIsland(Contact& c) noexcept
-	{
-		c.UnsetInIsland();
-	}
-
 	static void SetToi(Contact& c, RealNum value) noexcept
 	{
 		c.SetToi(value);
@@ -970,12 +955,12 @@ void World::InternalDestroy(Joint* j)
 	}
 }
 
-Island World::BuildIsland(Body& seed, BodySet& bodiesIslanded,
+Island World::BuildIsland(Body& seed,
 				  Bodies::size_type& remNumBodies,
 				  Contacts::size_type& remNumContacts,
 				  Joints::size_type& remNumJoints)
 {
-	assert(!seed.IsInIsland());
+	assert(!m_bodiesIslanded.count(&seed));
 	assert(seed.IsSpeedable());
 	assert(seed.IsAwake());
 	assert(seed.IsActive());
@@ -988,7 +973,7 @@ Island World::BuildIsland(Body& seed, BodySet& bodiesIslanded,
 	auto stack = std::vector<Body*>();
 	stack.reserve(remNumBodies);
 	stack.push_back(&seed);
-	bodiesIslanded.insert(&seed);
+	m_bodiesIslanded.insert(&seed);
 	while (!stack.empty())
 	{
 		// Grab the next body off the stack and add it to the island.
@@ -1018,15 +1003,15 @@ Island World::BuildIsland(Body& seed, BodySet& bodiesIslanded,
 			const auto bB = fB->GetBody();
 			const auto other = (bA != b)? bA: bB;
 
-			if (!ContactAtty::IsInIsland(*contact) && !HasSensor(*contact) && contact->IsEnabled() && contact->IsTouching())
+			if (!m_contactsIslanded.count(contact) && !HasSensor(*contact) && contact->IsEnabled() && contact->IsTouching())
 			{
 				island.m_contacts.push_back(contact);
-				ContactAtty::SetInIsland(*contact);
+				m_contactsIslanded.insert(contact);
 
-				if (!bodiesIslanded.count(other))
+				if (!m_bodiesIslanded.count(other))
 				{				
 					stack.push_back(other);
-					bodiesIslanded.insert(other);
+					m_bodiesIslanded.insert(other);
 				}
 			}			
 		}
@@ -1043,10 +1028,10 @@ Island World::BuildIsland(Body& seed, BodySet& bodiesIslanded,
 			{
 				island.m_joints.push_back(joint);
 				m_jointsIslanded.insert(joint);
-				if (!bodiesIslanded.count(other))
+				if (!m_bodiesIslanded.count(other))
 				{					
 					stack.push_back(other);
-					bodiesIslanded.insert(other);
+					m_bodiesIslanded.insert(other);
 				}
 			}
 		}
@@ -1060,20 +1045,20 @@ RegStepStats World::SolveReg(const StepConf& step)
 {
 	auto stats = RegStepStats{};
 
-	// Clear all the island flags.
-	// This builds the logical set of bodies, contacts, and joints eligible for resolution.
-	// As bodies, contacts, or joints get added to resolution islands, they're essentially
-	// removed from this eligible set (and their IsInIsland method thereafter returns true.
-	m_bodiesIslanded.clear();
-	for (auto&& contact: m_contacts)
-	{
-		ContactAtty::UnsetInIsland(*contact);
-	}
-	m_jointsIslanded.clear();
-
 	auto remNumBodies = m_bodies.size(); ///< Remaining number of bodies.
 	auto remNumContacts = m_contacts.size(); ///< Remaining number of contacts.
 	auto remNumJoints = m_joints.size(); ///< Remaining number of joints.
+
+	// Clear all the island flags.
+	// This builds the logical set of bodies, contacts, and joints eligible for resolution.
+	// As bodies, contacts, or joints get added to resolution islands, they're essentially
+	// removed from this eligible set.
+	m_bodiesIslanded.clear();
+	m_bodiesIslanded.reserve(remNumBodies);
+	m_contactsIslanded.clear();
+	m_contactsIslanded.reserve(remNumContacts);
+	m_jointsIslanded.clear();
+	m_jointsIslanded.reserve(remNumJoints);
 
 #if defined(DO_THREADED)
 	std::vector<std::future<World::IslandSolverResults>> futures;
@@ -1086,7 +1071,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 		{
 			++stats.islandsFound;
 
-			auto island = BuildIsland(*body, m_bodiesIslanded, remNumBodies, remNumContacts, remNumJoints);
+			auto island = BuildIsland(*body, remNumBodies, remNumContacts, remNumJoints);
 			for (auto&& b: island.m_bodies)
 			{
 				// Allow static bodies to participate in other islands.
@@ -1270,13 +1255,13 @@ void World::ResetBodiesForSolveTOI()
 
 void World::ResetContactsForSolveTOI()
 {
+	m_contactsIslanded.clear();
 	for (auto&& c: m_contacts)
 	{
 		// Invalidate TOI
-		ContactAtty::UnsetInIsland(*c);
 		ContactAtty::UnsetToi(*c);
 		ContactAtty::ResetToiCount(*c);
-	}	
+	}
 }
 	
 World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
@@ -1414,7 +1399,7 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 		auto islandsFound = 0u;
 		for (auto&& contact: next.contacts)
 		{
-			if (!ContactAtty::IsInIsland(*contact))
+			if (!m_contactsIslanded.count(contact))
 			{
 				const auto solverResults = SolveTOI(step, *contact);
 				stats.minSeparation = Min(stats.minSeparation, solverResults.minSeparation);
@@ -1463,7 +1448,7 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 
 World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contact)
 {
-	assert(!ContactAtty::IsInIsland(contact));
+	assert(!m_contactsIslanded.count(&contact));
 	
 	const auto toi = contact.GetToi();
 	const auto bA = contact.GetFixtureA()->GetBody();
@@ -1502,26 +1487,26 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 	// Build the island
 	Island island(m_bodies.size(), m_contacts.size(), 0);
 
-	assert(!bA->IsInIsland());
-	assert(!bB->IsInIsland());
+	assert(!m_bodiesIslanded.count(bA));
+	assert(!m_bodiesIslanded.count(bB));
 	
 	island.m_bodies.push_back(bA);
 	m_bodiesIslanded.insert(bA);
 	island.m_bodies.push_back(bB);
 	m_bodiesIslanded.insert(bB);
 	island.m_contacts.push_back(&contact);
-	ContactAtty::SetInIsland(contact);
+	m_contactsIslanded.insert(&contact);
 
 	// Process the contacts of the two bodies, adding appropriate ones to the island,
 	// adding appropriate other bodies of added contacts, and advancing those other
 	// bodies sweeps and transforms to the minimum contact's TOI.
 	if (bA->IsAccelerable())
 	{
-		ProcessContactsForTOI(island, *bA, m_bodiesIslanded, toi, m_contactListener);
+		ProcessContactsForTOI(island, *bA, toi);
 	}
 	if (bB->IsAccelerable())
 	{
-		ProcessContactsForTOI(island, *bB, m_bodiesIslanded, toi, m_contactListener);
+		ProcessContactsForTOI(island, *bB, toi);
 	}
 	
 	for (auto&& b: island.m_bodies)
@@ -1673,14 +1658,14 @@ void World::ResetContactsForSolveTOI(Body& body)
 	// Invalidate all contact TOIs on this displaced body.
 	for (auto&& contact: body.GetContacts())
 	{
-		ContactAtty::UnsetInIsland(*contact);
+		m_contactsIslanded.erase(contact);
 		ContactAtty::UnsetToi(*contact);
 	}
 }
 
-void World::ProcessContactsForTOI(Island& island, Body& body, BodySet& bodiesIslanded, RealNum toi, ContactListener* listener)
+void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi)
 {
-	assert(body.IsInIsland());
+	assert(m_bodiesIslanded.count(&body));
 	assert(body.IsAccelerable());
 	assert(toi >= 0 && toi <= 1);
 
@@ -1692,18 +1677,18 @@ void World::ProcessContactsForTOI(Island& island, Body& body, BodySet& bodiesIsl
 		const auto bB = fB->GetBody();
 		const auto other = (bA != &body)? bA: bB;
 
-		if (!ContactAtty::IsInIsland(*contact) && !HasSensor(*contact) && (other->IsImpenetrable() || body.IsImpenetrable()))
+		if (!m_contactsIslanded.count(contact) && !HasSensor(*contact) && (other->IsImpenetrable() || body.IsImpenetrable()))
 		{
 			// Tentatively advance the body to the TOI.
 			const auto backup = other->GetSweep();
-			if (!bodiesIslanded.count(other))
+			if (!m_bodiesIslanded.count(other))
 			{
 				BodyAtty::Advance(*other, toi);
 			}
 			
 			// Update the contact points
 			contact->SetEnabled();
-			ContactAtty::Update(*contact, listener);
+			ContactAtty::Update(*contact, m_contactListener);
 			
 			// Revert and skip if contact disabled by user or no contact points anymore.
 			if (!contact->IsEnabled() || !contact->IsTouching())
@@ -1714,16 +1699,16 @@ void World::ProcessContactsForTOI(Island& island, Body& body, BodySet& bodiesIsl
 			}
 			
 			island.m_contacts.push_back(contact);
-			ContactAtty::SetInIsland(*contact);
+			m_contactsIslanded.insert(contact);
 			
-			if (!bodiesIslanded.count(other))
+			if (!m_bodiesIslanded.count(other))
 			{
 				if (other->IsSpeedable())
 				{
 					other->SetAwake();
 				}
 				island.m_bodies.push_back(other);
-				bodiesIslanded.insert(other);
+				m_bodiesIslanded.insert(other);
 #if 0
 				if (other->IsSpeedable())
 				{
