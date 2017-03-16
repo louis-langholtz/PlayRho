@@ -73,10 +73,11 @@ TEST(type, GetFromFloat) \
 	EXPECT_EQ(type::GetFromFloat(-4.7), static_cast<type::value_type>(-4.7 * type::ScaleFactor)); \
 	const auto long_double_max = std::numeric_limits<long double>::max(); \
 	const auto fixed_infinity = type::GetInfinity(); \
-	EXPECT_EQ(type::GetFromFloat( long_double_max),  fixed_infinity); \
-	EXPECT_EQ(type::GetFromFloat(-long_double_max), -fixed_infinity); \
-	EXPECT_EQ(type::GetFromFloat( std::numeric_limits<float>::infinity()),  type::GetInfinity()); \
-	EXPECT_EQ(type::GetFromFloat(-std::numeric_limits<float>::infinity()), -type::GetInfinity()); \
+	const auto fixed_infinity_as_vt = *reinterpret_cast<const type::value_type*>(&fixed_infinity); \
+	EXPECT_EQ(type::GetFromFloat( long_double_max),  fixed_infinity_as_vt); \
+	EXPECT_EQ(type::GetFromFloat(-long_double_max), -fixed_infinity_as_vt); \
+	EXPECT_EQ(type::GetFromFloat( std::numeric_limits<float>::infinity()),  fixed_infinity_as_vt); \
+	EXPECT_EQ(type::GetFromFloat(-std::numeric_limits<float>::infinity()), -fixed_infinity_as_vt); \
 }
 
 DECL_GET_FROM_FLOAT_TEST(Fixed32)
