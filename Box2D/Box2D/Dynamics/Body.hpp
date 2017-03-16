@@ -430,11 +430,6 @@ public:
 
 	/// Gets the parent world of this body.
 	const World* GetWorld() const noexcept;
-
-	/// Checks if flagged as being in an island or not.
-	/// @return true if flagged for being in an island, false otherwise.
-	/// @sa Island.
-	bool IsInIsland() const noexcept;
 	
 	bool IsMassDataDirty() const noexcept;
 		
@@ -447,9 +442,6 @@ private:
 	// m_flags
 	enum Flag: FlagsType
 	{
-		/// Island flag.
-		e_islandFlag		= 0x0001,
-		
 		/// Awake flag.
 		e_awakeFlag			= 0x0002,
 		
@@ -504,14 +496,6 @@ private:
 	void UnsetMassDataDirty() noexcept;
 
 	[[deprecated]] void SetInIsland(bool value) noexcept;
-
-	void SetInIsland() noexcept;
-
-	/// Unsets the in-island flag.
-	/// @detail Afterwards, IsInIsland returns false. This does the opposite of what SetInIsland() does.
-	/// @sa SetInIsland().
-	/// @sa IsInIsland().
-	void UnsetInIsland() noexcept;
 
 	bool Insert(Contact* contact);
 	bool Insert(Joint* joint);
@@ -880,29 +864,6 @@ inline void Body::UnsetMassDataDirty() noexcept
 inline bool Body::IsMassDataDirty() const noexcept
 {
 	return m_flags & e_massDataDirtyFlag;
-}
-
-inline bool Body::IsInIsland() const noexcept
-{
-	return m_flags & Body::e_islandFlag;
-}
-
-inline void Body::SetInIsland(bool value) noexcept
-{
-	if (value)
-		SetInIsland();
-	else
-		UnsetInIsland();
-}
-
-inline void Body::SetInIsland() noexcept
-{
-	m_flags |= Body::e_islandFlag;
-}
-
-inline void Body::UnsetInIsland() noexcept
-{
-	m_flags &= ~Body::e_islandFlag;
 }
 
 inline void Body::SetTransformation(const Transformation value) noexcept

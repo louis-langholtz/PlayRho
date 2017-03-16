@@ -28,6 +28,7 @@
 
 #include <vector>
 #include <list>
+#include <unordered_set>
 #include <memory>
 
 namespace box2d {
@@ -309,6 +310,8 @@ private:
 	/// Flags type data type.
 	using FlagsType = uint32;
 
+	using BodySet = std::unordered_set<Body*>;
+	
 	// Flag enumeration.
 	enum Flag: FlagsType
 	{
@@ -364,7 +367,7 @@ private:
 	/// Builds island based off of a given "seed" body.
 	/// @post Contacts are listed in the island in the order that bodies list those contacts.
 	/// @post Joints are listed the island in the order that bodies list those joints.
-	Island BuildIsland(Body& seed,
+	Island BuildIsland(Body& seed, BodySet& bodiesIslanded,
 					   Bodies::size_type& remNumBodies,
 					   Contacts::size_type& remNumContacts,
 					   Joints::size_type& remNumJoints);
@@ -423,7 +426,7 @@ private:
 	/// @param[in,out] body A dynamic/accelerable body.
 	/// @param[in] toi Time of impact (TOI). Value between 0 and 1.
 	/// @param listener Pointer to listener that will be called, or nullptr.
-	static void ProcessContactsForTOI(Island& island, Body& body, RealNum toi, ContactListener* listener = nullptr);
+	static void ProcessContactsForTOI(Island& island, Body& body, BodySet& bodiesIslanded, RealNum toi, ContactListener* listener = nullptr);
 	
 	bool Add(Body& b);
 	bool Add(Joint& j);
@@ -547,6 +550,8 @@ private:
 	
 	BroadPhase m_broadPhase; ///< Broad phase data. 72-bytes.
 	
+	BodySet m_bodiesIslanded;
+
 	ContactFilter m_defaultFilter; ///< Default contact filter. 8-bytes.
 	
 	Bodies m_bodies; ///< Body collection.

@@ -553,23 +553,7 @@ private:
 	{
 		b->~Body();
 	}
-
-	static bool IsInIsland(const Body& b) noexcept
-	{
-		return b.IsInIsland();
-	}
-	
-	static void SetInIsland(Body& b) noexcept
-	{
-		b.SetInIsland();
-	}
-	
-	static bool IsNonStaticAndInIsland(const Body& b) noexcept
-	{
-		constexpr auto requiredFlags = Body::e_velocityFlag|Body::e_islandFlag;
-		return (b.m_flags & requiredFlags) == requiredFlags;
-	}
-	
+		
 	static bool IsAwakeAndSpeedable(const Body& b) noexcept
 	{
 		constexpr auto requiredFlags = Body::e_awakeFlag|Body::e_velocityFlag;
@@ -582,11 +566,6 @@ private:
 		b.m_flags |= Body::GetFlags(type);
 	}
 	
-	static void UnsetInIsland(Body& b) noexcept
-	{
-		b.UnsetInIsland();
-	}
-
 	static void SetActiveFlag(Body& b) noexcept
 	{
 		b.m_flags |= Body::e_activeFlag;
@@ -1006,7 +985,7 @@ void World::InternalDestroy(Joint* j)
 	}
 }
 
-Island World::BuildIsland(Body& seed,
+Island World::BuildIsland(Body& seed, BodySet& bodiesIslanded,
 				  Bodies::size_type& remNumBodies,
 				  Contacts::size_type& remNumContacts,
 				  Joints::size_type& remNumJoints)
@@ -1024,7 +1003,7 @@ Island World::BuildIsland(Body& seed,
 	auto stack = std::vector<Body*>();
 	stack.reserve(remNumBodies);
 	stack.push_back(&seed);
-	BodyAtty::SetInIsland(seed);
+	bodiesIslanded.insert(&seed);
 	while (!stack.empty())
 	{
 		// Grab the next body off the stack and add it to the island.
@@ -1059,10 +1038,10 @@ Island World::BuildIsland(Body& seed,
 				island.m_contacts.push_back(contact);
 				ContactAtty::SetInIsland(*contact);
 
-				if (!other->IsInIsland())
+				if (!bodiesIslanded.count(other))
 				{				
 					stack.push_back(other);
-					BodyAtty::SetInIsland(*other);
+					bodiesIslanded.insert(other);
 				}
 			}			
 		}
@@ -1079,10 +1058,10 @@ Island World::BuildIsland(Body& seed,
 			{
 				island.m_joints.push_back(joint);
 				JointAtty::SetInIsland(*joint);
-				if (!other->IsInIsland())
+				if (!bodiesIslanded.count(other))
 				{					
 					stack.push_back(other);
-					BodyAtty::SetInIsland(*other);
+					bodiesIslanded.insert(other);
 				}
 			}
 		}
@@ -1100,10 +1079,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 	// This builds the logical set of bodies, contacts, and joints eligible for resolution.
 	// As bodies, contacts, or joints get added to resolution islands, they're essentially
 	// removed from this eligible set (and their IsInIsland method thereafter returns true.
-	for (auto&& body: m_bodies)
-	{
-		BodyAtty::UnsetInIsland(*body);
-	}
+	m_bodiesIslanded.clear();
 	for (auto&& contact: m_contacts)
 	{
 		ContactAtty::UnsetInIsland(*contact);
@@ -1124,17 +1100,17 @@ RegStepStats World::SolveReg(const StepConf& step)
 	// Build and simulate all awake islands.
 	for (auto&& body: m_bodies)
 	{
-		if (!body->IsInIsland() && body->IsSpeedable() && body->IsAwake() && body->IsActive())
+		if (!m_bodiesIslanded.count(body) && body->IsSpeedable() && body->IsAwake() && body->IsActive())
 		{
 			++stats.islandsFound;
 
-			auto island = BuildIsland(*body, remNumBodies, remNumContacts, remNumJoints);
+			auto island = BuildIsland(*body, m_bodiesIslanded, remNumBodies, remNumContacts, remNumJoints);
 			for (auto&& b: island.m_bodies)
 			{
 				// Allow static bodies to participate in other islands.
 				if (!b->IsSpeedable())
 				{
-					BodyAtty::UnsetInIsland(*b);
+					m_bodiesIslanded.erase(b);
 					++remNumBodies;
 				}
 			}
@@ -1176,7 +1152,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 	for (auto&& body: m_bodies)
 	{
 		// A non-static body that was in an island may have moved.
-		if (BodyAtty::IsNonStaticAndInIsland(*body))
+		if (body->IsSpeedable() && m_bodiesIslanded.count(body))
 		{
 			// Update fixtures (for broad-phase).
 			stats.proxiesMoved += SynchronizeFixtures(*body, step.displaceMultiplier, step.aabbExtension);
@@ -1303,9 +1279,9 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& step, Island is
 
 void World::ResetBodiesForSolveTOI()
 {
+	m_bodiesIslanded.clear();
 	for (auto&& b: m_bodies)
 	{
-		BodyAtty::UnsetInIsland(*b);
 		BodyAtty::ResetAlpha0(*b);
 	}
 }
@@ -1479,9 +1455,9 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 		// Reset island flags and synchronize broad-phase proxies.
 		for (auto&& body: m_bodies)
 		{
-			if (body->IsInIsland())
+			if (m_bodiesIslanded.count(body))
 			{
-				BodyAtty::UnsetInIsland(*body);
+				m_bodiesIslanded.erase(body);
 				if (body->IsAccelerable())
 				{
 					stats.proxiesMoved += SynchronizeFixtures(*body, step.displaceMultiplier, step.aabbExtension);
@@ -1548,9 +1524,9 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 	assert(!bB->IsInIsland());
 	
 	island.m_bodies.push_back(bA);
-	BodyAtty::SetInIsland(*bA);
+	m_bodiesIslanded.insert(bA);
 	island.m_bodies.push_back(bB);
-	BodyAtty::SetInIsland(*bB);
+	m_bodiesIslanded.insert(bB);
 	island.m_contacts.push_back(&contact);
 	ContactAtty::SetInIsland(contact);
 
@@ -1559,11 +1535,11 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 	// bodies sweeps and transforms to the minimum contact's TOI.
 	if (bA->IsAccelerable())
 	{
-		ProcessContactsForTOI(island, *bA, toi, m_contactListener);
+		ProcessContactsForTOI(island, *bA, m_bodiesIslanded, toi, m_contactListener);
 	}
 	if (bB->IsAccelerable())
 	{
-		ProcessContactsForTOI(island, *bB, toi, m_contactListener);
+		ProcessContactsForTOI(island, *bB, m_bodiesIslanded, toi, m_contactListener);
 	}
 	
 	for (auto&& b: island.m_bodies)
@@ -1571,7 +1547,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 		// Allow static bodies to participate in other islands.
 		if (!b->IsSpeedable())
 		{
-			BodyAtty::UnsetInIsland(*b);
+			m_bodiesIslanded.erase(b);
 		}
 	}
 
@@ -1720,7 +1696,7 @@ void World::ResetContactsForSolveTOI(Body& body)
 	}
 }
 
-void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi, ContactListener* listener)
+void World::ProcessContactsForTOI(Island& island, Body& body, BodySet& bodiesIslanded, RealNum toi, ContactListener* listener)
 {
 	assert(body.IsInIsland());
 	assert(body.IsAccelerable());
@@ -1738,7 +1714,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi, Conta
 		{
 			// Tentatively advance the body to the TOI.
 			const auto backup = other->GetSweep();
-			if (!other->IsInIsland())
+			if (!bodiesIslanded.count(other))
 			{
 				BodyAtty::Advance(*other, toi);
 			}
@@ -1758,14 +1734,14 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi, Conta
 			island.m_contacts.push_back(contact);
 			ContactAtty::SetInIsland(*contact);
 			
-			if (!other->IsInIsland())
+			if (!bodiesIslanded.count(other))
 			{
 				if (other->IsSpeedable())
 				{
 					other->SetAwake();
 				}
 				island.m_bodies.push_back(other);
-				BodyAtty::SetInIsland(*other);
+				bodiesIslanded.insert(other);
 #if 0
 				if (other->IsSpeedable())
 				{
