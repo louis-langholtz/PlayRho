@@ -276,8 +276,6 @@ public:
 	///   ContactFilter::ShouldCollide.
 	void Refilter(Fixture& fixture);
 
-	void DestroyFixtures(Body& body);
-
 	/// Sets the type of the given body.
 	/// @note This may alter the body's mass and velocity.
 	void SetType(Body& body, BodyType type, const RealNum aabbExtension = DefaultAabbExtension);

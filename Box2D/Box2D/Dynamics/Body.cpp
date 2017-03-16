@@ -108,11 +108,6 @@ Body::~Body()
 	assert(m_fixtures.empty());
 }
 
-void Body::DestroyFixtures()
-{
-	m_world->DestroyFixtures(*this);
-}
-
 void Body::SetType(BodyType type, const RealNum aabbExtension)
 {
 	m_world->SetType(*this, type, aabbExtension);
@@ -140,7 +135,7 @@ void Body::ResetMassData()
 	if (!IsAccelerable())
 	{
 		m_invMass = 0;
-		m_invI = 0;
+		m_invRotI = 0;
 		m_sweep = Sweep{Position{GetLocation(), GetAngle()}};
 		UnsetMassDataDirty();
 		return;
@@ -160,11 +155,11 @@ void Body::ResetMassData()
 		// Center the inertia about the center of mass.
 		const auto lengthSquared = GetLengthSquared(localCenter);
 		//assert((massData.I - mass * lengthSquared) > 0);
-		m_invI = 1 / (massData.I - mass * lengthSquared);
+		m_invRotI = 1 / (massData.I - mass * lengthSquared);
 	}
 	else
 	{
-		m_invI = 0;
+		m_invRotI = 0;
 	}
 
 	// Move center of mass.
@@ -190,19 +185,19 @@ void Body::SetMassData(const MassData& massData)
 		return;
 	}
 
-	const auto mass = (massData.mass > 0)? massData.mass: RealNum{1};
-	m_invMass = RealNum{1} / mass;
+	const auto mass = (massData.mass > 0)? massData.mass: decltype(massData.mass){1};
+	m_invMass = 1 / mass;
 
-	if ((massData.I > RealNum{0}) && (!IsFixedRotation()))
+	if ((massData.I > 0) && (!IsFixedRotation()))
 	{
 		const auto lengthSquared = GetLengthSquared(massData.center);
 		const auto I = massData.I - mass * lengthSquared;
-		assert(I > RealNum{0});
-		m_invI = RealNum{1} / I;
+		assert(I > 0);
+		m_invRotI = 1 / I;
 	}
 	else
 	{
-		m_invI = 0;
+		m_invRotI = 0;
 	}
 
 	// Move center of mass.
@@ -245,29 +240,6 @@ void Body::SetAcceleration(const Vec2 linear, const Angle angular) noexcept
 	m_angularAcceleration = angular;
 }
 
-bool Body::ShouldCollide(const Body* other) const noexcept
-{
-	// At least one body should be accelerable/dynamic.
-	if (!IsAccelerable() && !other->IsAccelerable())
-	{
-		return false;
-	}
-
-	// Does a joint prevent collision?
-	for (auto&& joint: m_joints)
-	{
-		if (joint->GetBodyA() == other || joint->GetBodyB() == other)
-		{
-			if (!(joint->GetCollideConnected()))
-			{
-				return false;
-			}
-		}
-	}
-
-	return true;
-}
-
 void Body::SetTransform(const Vec2 position, Angle angle, const RealNum aabbExtension)
 {
 	m_world->SetTransform(*this, position, angle, aabbExtension);
@@ -298,6 +270,40 @@ void Body::SetFixedRotation(bool flag)
 	m_velocity.angular = 0_rad;
 
 	ResetMassData();
+}
+
+// Free functions...
+
+bool box2d::ShouldCollide(const Body& lhs, const Body& rhs) noexcept
+{
+	// At least one body should be accelerable/dynamic.
+	if (!lhs.IsAccelerable() && !rhs.IsAccelerable())
+	{
+		return false;
+	}
+	
+	// Does a joint prevent collision?
+	for (auto&& joint: lhs.GetJoints())
+	{
+		if (joint->GetBodyA() == &rhs || joint->GetBodyB() == &rhs)
+		{
+			if (!(joint->GetCollideConnected()))
+			{
+				return false;
+			}
+		}
+	}
+	
+	return true;
+}
+
+void box2d::DestroyFixtures(Body& body)
+{
+	while (!body.GetFixtures().empty())
+	{
+		const auto fixture = body.GetFixtures().front();
+		body.DestroyFixture(fixture);
+	}
 }
 
 box2d::size_t box2d::GetWorldIndex(const Body* body)

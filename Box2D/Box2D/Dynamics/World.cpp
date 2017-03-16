@@ -1996,7 +1996,7 @@ World::CollideStats World::Collide()
 		if (contact->NeedsFiltering())
 		{
 			// Can these bodies collide?
-			if (!(bodyB->ShouldCollide(bodyA)))
+			if (!ShouldCollide(*bodyB, *bodyA))
 			{
 				Destroy(iter);
 				++stats.destroyed;
@@ -2092,7 +2092,7 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 	}
 	
 	// Does a joint override collision? Is at least one body dynamic?
-	if (!bodyB->ShouldCollide(bodyA))
+	if (!ShouldCollide(*bodyB, *bodyA))
 	{
 		return false;
 	}
@@ -2201,30 +2201,6 @@ void World::Refilter(Fixture& fixture)
 	
 		TouchProxies(fixture);
 	}
-}
-
-void World::DestroyFixtures(Body& body)
-{
-	if (body.GetWorld() != this)
-	{
-		return;
-	}
-
-	assert(!IsLocked());
-	if (IsLocked())
-	{
-		return;
-	}
-
-	// Delete the attached fixtures. This destroys broad-phase proxies.
-	BodyAtty::ClearFixtures(body, m_blockAllocator, [&](Fixture& fixture) {
-		if (m_destructionListener)
-		{
-			m_destructionListener->SayGoodbye(fixture);
-		}
-		DestroyProxies(fixture);
-	});
-	body.ResetMassData();
 }
 
 void World::SetType(Body& body, BodyType type, const RealNum aabbExtension)
@@ -2357,8 +2333,18 @@ bool World::DestroyFixture(Fixture* fixture, bool resetMassData)
 		return false;
 	}
 	
+#if 0
+	/*
+	 * XXX: Should the destruction listener be called when the user requested that
+	 *   the fixture be destroyed or only when the fixture is destroyed indirectly?
+	 */
+	if (m_destructionListener)
+	{
+		m_destructionListener->SayGoodbye(*fixture);
+	}
+#endif
+
 	// Destroy any contacts associated with the fixture.
-	// XXX is it safe to use body.GetContacts() here while destroy some entries???
 	BodyAtty::EraseContacts(body, [&](Contact& contact) {
 		const auto fixtureA = contact.GetFixtureA();
 		const auto fixtureB = contact.GetFixtureB();

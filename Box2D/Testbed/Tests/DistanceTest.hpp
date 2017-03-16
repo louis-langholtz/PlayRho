@@ -71,8 +71,8 @@ public:
 
 	void DestroyFixtures()
 	{
-		m_bodyA->DestroyFixtures();
-		m_bodyB->DestroyFixtures();
+		::box2d::DestroyFixtures(*m_bodyA);
+		::box2d::DestroyFixtures(*m_bodyB);
 	}
 	
 	void ShowManifold(Drawer& drawer, const Manifold& manifold, const char* name)

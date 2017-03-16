@@ -234,8 +234,6 @@ public:
 	/// @sa ResetMassData.
 	/// @param fixture the fixture to be removed.
 	bool DestroyFixture(Fixture* fixture, bool resetMassData = true);
-
-	void DestroyFixtures();
 	
 	/// Sets the position of the body's origin and rotation.
 	/// @warning Manipulating a body's transform may cause non-physical behavior.
@@ -275,6 +273,10 @@ public:
 	Velocity GetVelocity() const noexcept;
 
 	/// Sets the body's velocity (linear and angular velocity).
+	/// @note This method does nothing if this body is not speedable.
+	/// @note A non-zero velocity will awaken this body and reset its sleep time to zero.
+	/// @sa SetAwake.
+	/// @sa SetSleepTime.
 	void SetVelocity(const Velocity& v) noexcept;
 
 	/// Sets the linear and rotational accelerations on this body.
@@ -435,11 +437,7 @@ public:
 	bool IsInIsland() const noexcept;
 	
 	bool IsMassDataDirty() const noexcept;
-	
-	/// Determines whether this body should possibly be able to collide with the given other body.
-	/// @return true if either body is dynamic and no joint prevents collision, false otherwise.
-	bool ShouldCollide(const Body* other) const noexcept;
-	
+		
 private:
 
 	friend class BodyAtty;
@@ -558,7 +556,7 @@ private:
 	/// Inverse rotational inertia about the center of mass.
 	/// @detail A non-negative value (in units of 1/(kg*m^2)).
 	/// @note 4-bytes.
-	RealNum m_invI = 0;
+	RealNum m_invRotI = 0;
 
 	RealNum m_linearDamping; ///< Linear damping. 4-bytes.
 	RealNum m_angularDamping; ///< Angular damping. 4-bytes.
@@ -687,7 +685,7 @@ inline RealNum Body::GetInvMass() const noexcept
 
 inline RealNum Body::GetInvRotInertia() const noexcept
 {
-	return m_invI;
+	return m_invRotI;
 }
 
 inline RealNum Body::GetLinearDamping() const noexcept
@@ -912,6 +910,15 @@ inline void Body::SetTransformation(const Transformation value) noexcept
 	m_xf = value;
 }
 
+// Free functions...
+
+/// Should collide.
+/// @detail Determines whether a body should possibly be able to collide with the other body.
+/// @return true if either body is dynamic and no joint prevents collision, false otherwise.
+bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept;
+
+void DestroyFixtures(Body& body);
+	
 inline Position GetPosition1(const Body& body) noexcept
 {
 	return body.GetSweep().pos1;
@@ -924,7 +931,7 @@ inline Position GetPosition1(const Body& body) noexcept
 inline RealNum GetMass(const Body& body) noexcept
 {
 	const auto invMass = body.GetInvMass();
-	return (invMass != 0)? RealNum{1} / invMass: 0;
+	return (invMass != 0)? 1 / invMass: 0;
 }
 
 inline void ApplyLinearAcceleration(Body& body, const Vec2 amount)
