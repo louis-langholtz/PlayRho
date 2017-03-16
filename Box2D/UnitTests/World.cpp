@@ -1745,6 +1745,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 #endif
 }
 
+#if 0
 static void smaller_still_conserves_momentum(bool bullet, RealNum multiplier, RealNum time_inc)
 {
 	const auto radius = RealNum(1);
@@ -1899,6 +1900,7 @@ TEST(World, SmallerBulletStillConservesMomemtum)
 	// goin to smaller time increment fails nearly same point.
 // smaller_still_conserves_momentum(true, RealNum(0.999), RealNum(0.01));
 }
+#endif
 
 class VerticalStackTest: public ::testing::TestWithParam<RealNum>
 {

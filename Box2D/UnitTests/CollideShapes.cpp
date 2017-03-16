@@ -1080,6 +1080,7 @@ TEST(CollideShapes, EdgePolygonFaceB2)
 	EXPECT_TRUE(almost_equal(GetY(manifold.GetOpposingPoint(0)), RealNum{0.0f}));
 }
 
+#if 0
 TEST(CollideShapes, EdgeOverlapsItself)
 {
 	const auto p1 = Vec2(0, -1);
@@ -1092,6 +1093,7 @@ TEST(CollideShapes, EdgeOverlapsItself)
 	ASSERT_NE(manifold.GetType(), Manifold::e_unset);
 	EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
 }
+#endif
 
 TEST(CollideShapes, R0EdgeCollinearAndTouchingR0Edge)
 {
