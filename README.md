@@ -1,14 +1,14 @@
-#Box2D
+# Box2D
 
-##What's New
+## What's New
 
-###Status
+### Status
 
 |iOS|Linux|Mac OS X|Win32|
 |---|-----|--------|-----|
 |[![Build Status](https://travis-ci.org/louis-langholtz/Box2D.svg?branch=iosfoo)](https://travis-ci.org/louis-langholtz/Box2D)|[![Build Status](https://travis-ci.org/louis-langholtz/Box2D.svg?branch=dev)](https://travis-ci.org/louis-langholtz/Box2D)|[![Build Status](https://travis-ci.org/louis-langholtz/Box2D.svg?branch=macosxfoo)](https://travis-ci.org/louis-langholtz/Box2D)|[![Build Status](https://travis-ci.org/louis-langholtz/Box2D.svg?branch=win32foo)](https://travis-ci.org/louis-langholtz/Box2D)|
 
-###Overview
+### Overview
 
 This is a fork by Louis Langholtz of the Box2D physics engine.
 
@@ -21,7 +21,7 @@ General influences on this fork are:
 As such, this library *must* be compiled with the `NDEBUG` preprocessor macro enabled
 to see any kind of performance.
 
-###Changes
+### Changes
 
 Here's a run-down of some of the changes:
 - Exported symbols are all within the library namespace of `box2d` and are no longer preficed by `b2`.
@@ -40,7 +40,7 @@ Here's a run-down of some of the changes:
 - Various functions and procedures have been rewritten to be ["pure functions"](https://en.wikipedia.org/wiki/Pure_function).
 - Testbed enhancements: provides controls for per-step configurability, displays per-step statistics, ability to manipulate bodies while paused, and more.
 
-##About
+## About
 
 Box2D is a 2D physics engine [licensed](https://github.com/louis-langholtz/Box2D/blob/dev/LICENSE.txt) under a [Zlib License](https://opensource.org/licenses/Zlib).
 
