@@ -335,7 +335,7 @@ private:
 		bool solved = false; ///< Solved. <code>true</code> if position constraints solved, <code>false</code> otherwise.
 		ts_iters_t positionIterations = 0; ///< Position iterations actually performed.
 		ts_iters_t velocityIterations = 0; ///< Velocity iterations actually performed.
-		uint16 bodiesSlept = 0;
+		body_count_t bodiesSlept = 0;
 	};
 
 	void InternalDestroy(Joint* joint);

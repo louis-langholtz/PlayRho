@@ -379,13 +379,8 @@ public:
 	/// Gets this body's sleep time value.
 	RealNum GetSleepTime() const noexcept;
 	
-	/// Updates the body's sleep time for speedable bodies.
-	/// @param h Time to increment sleep time by if permissible.
-	/// @post Sleep time will be zero if not permissible. Otheriwse it's the incremented sleep time.
-	/// @note Behavior is undefined if called and this body is not speedable.
-	/// @return New sleep time for this body.
-	RealNum UpdateSleepTime(RealNum h, RealNum linSleepTol, RealNum angSleepTol) noexcept;
-
+	void SetSleepTime(RealNum value) noexcept;
+	
 	/// Set the active state of the body. An inactive body is not
 	/// simulated and cannot be collided with or woken up.
 	/// If you pass a flag of true, all fixtures will be added to the
@@ -528,13 +523,11 @@ private:
 	bool Erase(Fixture* const fixture);
 
 	void SetTransformation(const Transformation value) noexcept;
-	
+		
 	//
 	// Member variables. Try to keep total size small.
 	//
 
-	FlagsType m_flags = 0; ///< Flags. 2-bytes.
-	
 	/// Transformation for body origin.
 	/// @detail
 	/// This is essentially the cached result of <code>GetTransform1(m_sweep)</code>. 16-bytes.
@@ -543,33 +536,34 @@ private:
 	Sweep m_sweep; ///< Sweep motion for CCD. 36-bytes.
 
 	Velocity m_velocity; ///< Velocity (linear and angular). 12-bytes.
-
+	FlagsType m_flags = 0; ///< Flags. 2-bytes.
+	
 	Vec2 m_linearAcceleration = Vec2_zero; ///< Linear acceleration. 8-bytes.
-	Angle m_angularAcceleration = 0_rad; ///< Angular acceleration. 4-bytes.
 
 	World* const m_world; ///< World to which this body belongs. 8-bytes.
-
+	void* m_userData; ///< User data. 8-bytes.
+	
 	Fixtures m_fixtures; ///< Container of fixtures. 8-bytes.
-	Joints m_joints; ///< Container of joint edges. 8-bytes.
-	Contacts m_contacts; ///< Container of contact edges. 8-bytes.
-
+	Contacts m_contacts; ///< Container of contacts. 8-bytes.
+	Joints m_joints; ///< Container of joints. 8-bytes.
+	
+	Angle m_angularAcceleration = 0_rad; ///< Angular acceleration. 4-bytes.
+	
 	/// Inverse mass of the body.
 	/// @detail A non-negative value (in units of 1/kg).
 	/// Can only be zero for non-accelerable bodies.
 	/// @note 4-bytes.
-	RealNum m_invMass = RealNum{0};	
+	RealNum m_invMass = 0;
 	
 	/// Inverse rotational inertia about the center of mass.
 	/// @detail A non-negative value (in units of 1/(kg*m^2)).
 	/// @note 4-bytes.
-	RealNum m_invI = RealNum{0};
+	RealNum m_invI = 0;
 
 	RealNum m_linearDamping; ///< Linear damping. 4-bytes.
 	RealNum m_angularDamping; ///< Angular damping. 4-bytes.
 
-	RealNum m_sleepTime = RealNum{0}; ///< Sleep time. 4-bytes.
-
-	void* m_userData; ///< User data. 8-bytes.
+	RealNum m_sleepTime = 0; ///< Sleep time. 4-bytes.
 };
 
 inline Body::FlagsType Body::GetFlags(const BodyType type) noexcept
@@ -777,13 +771,9 @@ inline RealNum Body::GetSleepTime() const noexcept
 	return m_sleepTime;
 }
 
-inline RealNum Body::UpdateSleepTime(RealNum h, RealNum linSleepTol, RealNum angSleepTol) noexcept
+inline void Body::SetSleepTime(RealNum value) noexcept
 {
-	assert(IsSpeedable());
-	const auto sleepable = IsSleepable(GetVelocity(), linSleepTol, angSleepTol);
-	const auto newSleepTime = (IsSleepingAllowed() && sleepable)? GetSleepTime() + h: RealNum{0};
-	m_sleepTime = newSleepTime;
-	return newSleepTime;
+	m_sleepTime = value;
 }
 
 inline bool Body::IsActive() const noexcept

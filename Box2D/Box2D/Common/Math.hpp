@@ -1233,7 +1233,7 @@ inline RealNum Normalize(Vec2& vector)
 	return 0;
 }
 
-inline bool IsSleepable(Velocity velocity, RealNum linSleepTol, RealNum angSleepTol)
+inline bool IsSleepable(Velocity velocity, RealNum linSleepTol, RealNum angSleepTol) noexcept
 {
 	return (Square(velocity.angular.ToRadians()) <= Square(angSleepTol))
 	    && (GetLengthSquared(velocity.linear) <= Square(linSleepTol));

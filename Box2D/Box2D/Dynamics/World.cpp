@@ -323,21 +323,27 @@ namespace {
 		}
 		return maxIncImpulse;
 	}
+	
+	inline RealNum GetSleepTime(const Body& b, const StepConf& conf) noexcept
+	{
+		const auto sleepable = IsSleepable(b.GetVelocity(), conf.linearSleepTolerance, conf.angularSleepTolerance);
+		const auto allowable = b.IsSleepingAllowed();
+		return (allowable && sleepable)? b.GetSleepTime() + conf.get_dt(): RealNum{0};
+	}
 
 	inline RealNum UpdateSleepTimes(Island::Bodies& bodies, const StepConf& step)
 	{
-		auto minSleepTime = std::numeric_limits<RealNum>::infinity();
+		auto minNewSleepTime = std::numeric_limits<RealNum>::infinity();
 		for (auto&& b: bodies)
 		{
 			if (b->IsSpeedable())
 			{
-				const auto sleepTime = b->UpdateSleepTime(step.get_dt(),
-														  step.linearSleepTolerance,
-														  step.angularSleepTolerance);
-				minSleepTime = Min(minSleepTime, sleepTime);
+				const auto newSleepTime = GetSleepTime(*b, step);
+				b->SetSleepTime(newSleepTime);
+				minNewSleepTime = Min(minNewSleepTime, newSleepTime);
 			}
 		}
-		return minSleepTime;
+		return minNewSleepTime;
 	}
 	
 	inline size_t Sleepem(Island::Bodies& bodies)
@@ -1281,11 +1287,11 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& step, Island is
 			   solved? positionIterations - 1: StepConf::InvalidIteration);
 	}
 	
-	uint16 bodiesSlept = 0;
+	auto bodiesSlept = body_count_t{0};
 	if (::box2d::IsValid(step.minStillTimeToSleep))
 	{
-		const auto minSleepTime = UpdateSleepTimes(island.m_bodies, step);
-		if ((minSleepTime >= step.minStillTimeToSleep) && solved)
+		const auto minNewSleepTime = UpdateSleepTimes(island.m_bodies, step);
+		if ((minNewSleepTime >= step.minStillTimeToSleep) && solved)
 		{
 			bodiesSlept = static_cast<decltype(bodiesSlept)>(Sleepem(island.m_bodies));
 		}
