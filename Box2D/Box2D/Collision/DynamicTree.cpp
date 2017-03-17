@@ -120,8 +120,8 @@ void DynamicTree::DestroyProxy(const size_type index)
 	FreeNode(index);
 }
 
-bool DynamicTree::MoveProxy(const size_type index, const AABB aabb, const Vec2 displacement,
-							const RealNum multiplier, const RealNum extension)
+bool DynamicTree::UpdateProxy(const size_type index, const AABB aabb, const Vec2 displacement,
+							  const RealNum multiplier, const RealNum extension)
 {
 	assert(index != InvalidIndex);
 	assert(index < m_nodeCapacity);

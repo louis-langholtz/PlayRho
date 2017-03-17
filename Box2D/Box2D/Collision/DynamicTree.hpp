@@ -73,23 +73,22 @@ public:
 	/// @warning Behavior is undefined if the given index is not valid.
 	void DestroyProxy(const size_type index);
 
-	/// Moves a proxy.
-	/// @note If the proxy has moved outside of its fattened AABB,
-	///   then the proxy is removed from the tree and re-inserted (otherwise
-	///   the function returns immediately).
+	/// Updates a proxy.
+	/// @note If the stored AABB of the identified proxy doesn't contain the given new
+	///   AABB of the proxy, then the proxy is removed from the tree and re-inserted with
+	///   a fattened and displaced version of the given new AABB.
 	/// @warning Behavior is undefined if the given index is not valid.
 	/// @param index Proxy ID. Behavior is undefined if this is not a valid ID.
-	/// @param aabb Axis aligned bounding box.
-	/// @param displacement Displacement. Behavior is undefined if this is an invalid value.
+	/// @param aabb New axis aligned bounding box of the proxy.
+	/// @param displacement Displacement of the proxy. Behavior undefined if not a valid value.
 	/// @param multiplier Multiplier to displacement amount for new AABB.
-	///   This is used to fatten AABBs in the dynamic tree. This is used to predict
-	///   the future position based on the current displacement.
+	///   This is used to predict the future position based on the current displacement.
 	///   This is a dimensionless multiplier.
 	/// @param extension Extension. Amount to fatten the given AABB by if the proxy does
 	///   not contain it.
-	/// @return true if the proxy was re-inserted.
-	bool MoveProxy(const size_type index, const AABB aabb, const Vec2 displacement,
-				   const RealNum multiplier = 1, const RealNum extension = 0);
+	/// @return true if the proxy was re-inserted, false otherwise.
+	bool UpdateProxy(const size_type index, const AABB aabb, const Vec2 displacement,
+					 const RealNum multiplier = 1, const RealNum extension = 0);
 
 	/// Gets the user data for the node identified by the given identifier.
 	/// @warning Behavior is undefined if the given index is not valid.

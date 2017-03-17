@@ -242,12 +242,12 @@ inline void BroadPhase::ShiftOrigin(const Vec2 newOrigin)
 inline bool BroadPhase::MoveProxy(const size_type proxyId, const AABB& aabb, const Vec2 displacement,
 						   const RealNum multiplier, const RealNum extension)
 {
-	const auto moved = m_tree.MoveProxy(proxyId, aabb, displacement, multiplier, extension);
-	if (moved)
+	const auto updated = m_tree.UpdateProxy(proxyId, aabb, displacement, multiplier, extension);
+	if (updated)
 	{
 		BufferMove(proxyId);
 	}
-	return moved;
+	return updated;
 }
 
 inline void BroadPhase::TouchProxy(size_type proxyId) noexcept
