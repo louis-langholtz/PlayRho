@@ -236,6 +236,7 @@ public:
 	bool DestroyFixture(Fixture* fixture, bool resetMassData = true);
 	
 	/// Sets the position of the body's origin and rotation.
+	/// @detail This instantly adjusts the body to be at the new position and new orientation.
 	/// @warning Manipulating a body's transform may cause non-physical behavior.
 	/// @note Contacts are updated on the next call to World::Step.
 	/// @param position Valid world position of the body's local origin. Behavior is undefined if value is invalid.
