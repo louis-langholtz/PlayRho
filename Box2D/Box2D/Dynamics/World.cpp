@@ -2361,7 +2361,7 @@ child_count_t World::Synchronize(Fixture& fixture,
 	
 	const auto shape = fixture.GetShape();
 	
-	auto movedCount = child_count_t{0};
+	auto updatedCount = child_count_t{0};
 	const auto displacement = xfm2.p - xfm1.p;
 	const auto proxies = FixtureAtty::GetProxies(fixture);
 	for (auto&& proxy: proxies)
@@ -2371,24 +2371,24 @@ child_count_t World::Synchronize(Fixture& fixture,
 		const auto aabb2 = ComputeAABB(*shape, xfm2, proxy.childIndex);
 		proxy.aabb = GetEnclosingAABB(aabb1, aabb2);
 		
-		if (m_broadPhase.MoveProxy(proxy.proxyId, proxy.aabb, displacement, multiplier, extension))
+		if (m_broadPhase.UpdateProxy(proxy.proxyId, proxy.aabb, displacement, multiplier, extension))
 		{
-			++movedCount;
+			++updatedCount;
 		}
 	}
-	return movedCount;
+	return updatedCount;
 }
 
 contact_count_t World::Synchronize(Body& body,
 								   const Transformation& xfm1, const Transformation& xfm2,
 								   const RealNum multiplier, const RealNum aabbExtension)
 {
-	auto movedCount = contact_count_t{0};
+	auto updatedCount = contact_count_t{0};
 	for (auto&& fixture: body.GetFixtures())
 	{
-		movedCount += Synchronize(*fixture, xfm1, xfm2, multiplier, aabbExtension);
+		updatedCount += Synchronize(*fixture, xfm1, xfm2, multiplier, aabbExtension);
 	}
-	return movedCount;
+	return updatedCount;
 }
 
 void World::SetTransform(Body& body, const Vec2 position, Angle angle, const RealNum aabbExtension)

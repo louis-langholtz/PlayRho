@@ -38,19 +38,19 @@ BroadPhase::size_type BroadPhase::CreateProxy(const AABB& aabb, void* userData)
 {
 	const auto proxyId = m_tree.CreateProxy(aabb, userData);
 	++m_proxyCount;
-	BufferMove(proxyId);
+	EnqueueForOverlapProcessing(proxyId);
 	return proxyId;
 }
 
 void BroadPhase::DestroyProxy(size_type proxyId)
 {
 	assert(m_proxyCount > 0);
-	UnBufferMove(proxyId);
+	DequeueFromOverlapProcessing(proxyId);
 	--m_proxyCount;
 	m_tree.DestroyProxy(proxyId);
 }
 
-void BroadPhase::BufferMove(size_type proxyId) noexcept
+void BroadPhase::EnqueueForOverlapProcessing(size_type proxyId) noexcept
 {
 	if (m_moveCount == m_moveCapacity)
 	{
@@ -62,7 +62,7 @@ void BroadPhase::BufferMove(size_type proxyId) noexcept
 	++m_moveCount;
 }
 
-void BroadPhase::UnBufferMove(size_type proxyId)
+void BroadPhase::DequeueFromOverlapProcessing(size_type proxyId)
 {
 	for (auto i = decltype(m_moveCount){0}; i < m_moveCount; ++i)
 	{

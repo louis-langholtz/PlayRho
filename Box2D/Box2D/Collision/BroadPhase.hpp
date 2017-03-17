@@ -93,19 +93,19 @@ public:
 	/// Destroys a proxy. It is up to the client to remove any pairs.
 	void DestroyProxy(size_type proxyId);
 
-	/// Moves the proxy.
+	/// Updates the proxy.
 	/// @detail
-	/// Call MoveProxy as many times as you like, then when you are done
-	/// @note Call UpdatePairs to finalized the proxy pairs (for your time step).
+	/// Call this as many times as you like, then when you are done call UpdatePairs
+	/// to finalize the proxy pairs (for your time step).
 	/// @param proxyId Proxy ID. Behavior is undefined if this is the null proxy ID.
 	/// @param aabb Axis aligned bounding box.
 	/// @param displacement Displacement. Behavior is undefined if this is an invalid value.
 	/// @param multiplier Multiplier to displacement amount for new AABB.
-	///   This is used to fatten AABBs in the dynamic tree. This is used to predict
-	///   the future position based on the current displacement.
+	///   This is used to predict the future position based on the current displacement.
 	///   This is a dimensionless multiplier.
-	/// @param extension Extension. Amount to extend a "moved" AABB by.
-	bool MoveProxy(const size_type proxyId, const AABB& aabb, const Vec2 displacement,
+	/// @param extension Extension. Amount to extend the AABB by. This is used to fatten
+	///   AABBs in the dynamic tree.
+	bool UpdateProxy(const size_type proxyId, const AABB& aabb, const Vec2 displacement,
 				   const RealNum multiplier = 1, const RealNum extension = 0);
 
 	/// Call to trigger a re-processing of it's pairs on the next call to UpdatePairs.
@@ -160,8 +160,8 @@ public:
 
 private:
 
-	void BufferMove(size_type proxyId) noexcept;
-	void UnBufferMove(size_type proxyId);
+	void EnqueueForOverlapProcessing(size_type proxyId) noexcept;
+	void DequeueFromOverlapProcessing(size_type proxyId);
 
 	DynamicTree m_tree;
 
@@ -239,20 +239,23 @@ inline void BroadPhase::ShiftOrigin(const Vec2 newOrigin)
 	m_tree.ShiftOrigin(newOrigin);
 }
 
-inline bool BroadPhase::MoveProxy(const size_type proxyId, const AABB& aabb, const Vec2 displacement,
-						   const RealNum multiplier, const RealNum extension)
+inline bool BroadPhase::UpdateProxy(const size_type proxyId,
+									const AABB& aabb,
+									const Vec2 displacement,
+									const RealNum multiplier,
+									const RealNum extension)
 {
 	const auto updated = m_tree.UpdateProxy(proxyId, aabb, displacement, multiplier, extension);
 	if (updated)
 	{
-		BufferMove(proxyId);
+		EnqueueForOverlapProcessing(proxyId);
 	}
 	return updated;
 }
 
 inline void BroadPhase::TouchProxy(size_type proxyId) noexcept
 {
-	BufferMove(proxyId);
+	EnqueueForOverlapProcessing(proxyId);
 }
 
 inline bool TestOverlap(const BroadPhase& bp, BroadPhase::size_type proxyIdA, BroadPhase::size_type proxyIdB)
