@@ -63,7 +63,7 @@ public:
 	constexpr StepConf& set_dt(RealNum value) noexcept
 	{
 		dt = value;
-		inv_dt = (value != 0)? RealNum{1} / value: RealNum{0};
+		inv_dt = (value != 0)? decltype(inv_dt){1} / value: decltype(inv_dt){0};
 		return *this;
 	}
 

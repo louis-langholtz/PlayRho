@@ -107,6 +107,42 @@ namespace {
 		Velocity velocity;
 	};
 
+	inline MovementConf GetMovementConf(const StepConf& conf)
+	{
+		return MovementConf{conf.maxTranslation, conf.maxRotation};
+	}
+
+	inline ConstraintSolverConf GetRegConstraintSolverConf(const StepConf& conf)
+	{
+		return ConstraintSolverConf{}
+			.UseResolutionRate(conf.regResolutionRate)
+			.UseLinearSlop(conf.linearSlop)
+			.UseAngularSlop(conf.angularSlop)
+			.UseMaxLinearCorrection(conf.maxLinearCorrection)
+			.UseMaxAngularCorrection(conf.maxAngularCorrection);
+	}
+	
+	inline ConstraintSolverConf GetToiConstraintSolverConf(const StepConf& conf)
+	{
+		return ConstraintSolverConf{}
+			.UseResolutionRate(conf.toiResolutionRate)
+			.UseLinearSlop(conf.linearSlop)
+			.UseAngularSlop(conf.angularSlop)
+			.UseMaxLinearCorrection(conf.maxLinearCorrection)
+			.UseMaxAngularCorrection(conf.maxAngularCorrection);
+	}
+	
+	inline ToiConf GetToiConf(const StepConf& conf)
+	{
+		return ToiConf{}
+			.UseTimeMax(1)
+			.UseTargetDepth(conf.targetDepth)
+			.UseTolerance(conf.tolerance)
+			.UseMaxRootIters(conf.maxToiRootIters)
+			.UseMaxToiIters(conf.maxToiIters)
+			.UseMaxDistIters(conf.maxDistanceIters);
+	}
+	
 	/// Calculates movement.
 	/// @detail Calculate the positional displacement based on the given velocity
 	///    that's possibly clamped to the maximum translation and rotation.
@@ -331,14 +367,14 @@ namespace {
 		return (sleepable && underactive)? b.GetUnderActiveTime() + conf.get_dt(): RealNum{0};
 	}
 
-	inline RealNum UpdateUnderActiveTimes(Island::Bodies& bodies, const StepConf& step)
+	inline RealNum UpdateUnderActiveTimes(Island::Bodies& bodies, const StepConf& conf)
 	{
 		auto minUnderActiveTime = std::numeric_limits<RealNum>::infinity();
 		for (auto&& b: bodies)
 		{
 			if (b->IsSpeedable())
 			{
-				const auto underActiveTime = GetUnderActiveTime(*b, step);
+				const auto underActiveTime = GetUnderActiveTime(*b, conf);
 				b->SetUnderActiveTime(underActiveTime);
 				minUnderActiveTime = Min(minUnderActiveTime, underActiveTime);
 			}
@@ -1034,7 +1070,7 @@ Island World::BuildIsland(Body& seed,
 	return island;
 }
 	
-RegStepStats World::SolveReg(const StepConf& step)
+RegStepStats World::SolveReg(const StepConf& conf)
 {
 	auto stats = RegStepStats{};
 
@@ -1077,9 +1113,9 @@ RegStepStats World::SolveReg(const StepConf& step)
 
 #if defined(DO_THREADED)
 			// Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions
-			futures.push_back(std::async(&World::SolveRegIsland, this, step, island));
+			futures.push_back(std::async(&World::SolveRegIsland, this, conf, island));
 #else
-			const auto solverResults = SolveRegIsland(step, island);
+			const auto solverResults = SolveRegIsland(conf, island);
 			stats.maxIncImpulse = Max(stats.maxIncImpulse, solverResults.maxIncImpulse);
 			stats.minSeparation = Min(stats.minSeparation, solverResults.minSeparation);
 			if (solverResults.solved)
@@ -1116,7 +1152,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 		{
 			// Update fixtures (for broad-phase).
 			stats.proxiesMoved += Synchronize(*body, GetTransform0(body->GetSweep()), body->GetTransformation(),
-						step.displaceMultiplier, step.aabbExtension);
+						conf.displaceMultiplier, conf.aabbExtension);
 		}
 	}
 
@@ -1126,12 +1162,12 @@ RegStepStats World::SolveReg(const StepConf& step)
 	return stats;
 }
 
-World::IslandSolverResults World::SolveRegIsland(const StepConf& step, Island island)
+World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island island)
 {
 	auto finMinSeparation = std::numeric_limits<RealNum>::infinity();
 	auto solved = false;
-	auto positionIterations = step.regPositionIterations;
-	const auto h = step.get_dt(); ///< Time step (in seconds).
+	auto positionIterations = conf.regPositionIterations;
+	const auto h = conf.get_dt(); ///< Time step (in seconds).
 
 	auto bodyConstraints = BodyConstraints{};
 	bodyConstraints.reserve(island.m_bodies.size());
@@ -1145,32 +1181,27 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& step, Island is
 	auto positionConstraints = GetPositionConstraints(island.m_contacts, bodyConstraints);
 
 	auto velocityConstraints = GetVelocityConstraints(island.m_contacts, bodyConstraints,
-													  VelocityConstraint::Conf{step.doWarmStart? step.dtRatio: 0, step.velocityThreshold, true});
+													  VelocityConstraint::Conf{conf.doWarmStart? conf.dtRatio: 0, conf.velocityThreshold, true});
 	
-	if (step.doWarmStart)
+	if (conf.doWarmStart)
 	{
 		WarmStartVelocities(velocityConstraints);
 	}
 
-	const auto psConf = ConstraintSolverConf{}
-		.UseResolutionRate(step.regResolutionRate)
-		.UseLinearSlop(step.linearSlop)
-		.UseAngularSlop(step.angularSlop)
-		.UseMaxLinearCorrection(step.maxLinearCorrection)
-		.UseMaxAngularCorrection(step.maxAngularCorrection);
+	const auto psConf = GetRegConstraintSolverConf(conf);
 
 	for (auto&& joint: island.m_joints)
 	{
-		JointAtty::InitVelocityConstraints(*joint, bodyConstraints, step, psConf);
+		JointAtty::InitVelocityConstraints(*joint, bodyConstraints, conf, psConf);
 	}
 	
-	auto velocityIterations = step.regVelocityIterations;
+	auto velocityIterations = conf.regVelocityIterations;
 	auto maxIncImpulse = RealNum{0};
-	for (auto i = decltype(step.regVelocityIterations){0}; i < step.regVelocityIterations; ++i)
+	for (auto i = decltype(conf.regVelocityIterations){0}; i < conf.regVelocityIterations; ++i)
 	{
 		for (auto&& joint: island.m_joints)
 		{
-			JointAtty::SolveVelocityConstraints(*joint, bodyConstraints, step);
+			JointAtty::SolveVelocityConstraints(*joint, bodyConstraints, conf);
 		}
 
 		const auto newIncImpulse = SolveVelocityConstraints(velocityConstraints);
@@ -1178,14 +1209,14 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& step, Island is
 	}
 	
 	// updates array of tentative new body positions per the velocities as if there were no obstacles...
-	IntegratePositions(bodyConstraints, h, MovementConf{step.maxTranslation, step.maxRotation});
+	IntegratePositions(bodyConstraints, h, GetMovementConf(conf));
 	
 	// Solve position constraints
-	for (auto i = decltype(step.regPositionIterations){0}; i < step.regPositionIterations; ++i)
+	for (auto i = decltype(conf.regPositionIterations){0}; i < conf.regPositionIterations; ++i)
 	{
 		const auto minSeparation = SolvePositionConstraints(positionConstraints, psConf);
 		finMinSeparation = Min(finMinSeparation, minSeparation);
-		const auto contactsOkay = (minSeparation >= step.regMinSeparation);
+		const auto contactsOkay = (minSeparation >= conf.regMinSeparation);
 
 		const auto jointsOkay = [&]()
 		{
@@ -1225,10 +1256,10 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& step, Island is
 	}
 	
 	auto bodiesSlept = body_count_t{0};
-	if (::box2d::IsValid(step.minStillTimeToSleep))
+	if (::box2d::IsValid(conf.minStillTimeToSleep))
 	{
-		const auto minUnderActiveTime = UpdateUnderActiveTimes(island.m_bodies, step);
-		if ((minUnderActiveTime >= step.minStillTimeToSleep) && solved)
+		const auto minUnderActiveTime = UpdateUnderActiveTimes(island.m_bodies, conf);
+		if ((minUnderActiveTime >= conf.minStillTimeToSleep) && solved)
 		{
 			bodiesSlept = static_cast<decltype(bodiesSlept)>(Sleepem(island.m_bodies));
 		}
@@ -1258,17 +1289,11 @@ void World::ResetContactsForSolveTOI()
 	}
 }
 	
-World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
+World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
 {
 	auto results = UpdateContactsData{};
 
-	const auto toiConf = ToiConf{}
-		.UseTimeMax(1)
-		.UseTargetDepth(step.targetDepth)
-		.UseTolerance(step.tolerance)
-		.UseMaxRootIters(step.maxToiRootIters)
-		.UseMaxToiIters(step.maxToiIters)
-		.UseMaxDistIters(step.maxDistanceIters);
+	const auto toiConf = GetToiConf(conf);
 	
 	for (auto&& c: m_contacts)
 	{
@@ -1281,7 +1306,7 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& step)
 		{
 			continue;
 		}
-		if (c->GetToiCount() >= step.maxSubSteps)
+		if (c->GetToiCount() >= conf.maxSubSteps)
 		{
 			// What are the pros/cons of this?
 			// Larger m_maxSubSteps slows down the simulation.
@@ -1359,7 +1384,7 @@ World::ContactToiData World::GetSoonestContacts(const size_t reserveSize) const
 	return ContactToiData{minContacts, minToi};
 }
 
-ToiStepStats World::SolveTOI(const StepConf& step)
+ToiStepStats World::SolveTOI(const StepConf& conf)
 {
 	auto stats = ToiStepStats{};
 
@@ -1372,7 +1397,7 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 	// Find TOI events and solve them.
 	for (;;)
 	{
-		const auto updateData = UpdateContactTOIs(step);
+		const auto updateData = UpdateContactTOIs(conf);
 		stats.contactsAtMaxSubSteps += updateData.numAtMaxSubSteps;
 		stats.contactsUpdatedToi += updateData.numUpdatedTOI;
 		stats.maxDistIters = Max(stats.maxDistIters, updateData.maxDistIters);
@@ -1395,7 +1420,7 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 		{
 			if (!m_contactsIslanded.count(contact))
 			{
-				const auto solverResults = SolveTOI(step, *contact);
+				const auto solverResults = SolveTOI(conf, *contact);
 				stats.minSeparation = Min(stats.minSeparation, solverResults.minSeparation);
 				stats.maxIncImpulse = Max(stats.maxIncImpulse, solverResults.maxIncImpulse);
 				if (solverResults.solved)
@@ -1422,7 +1447,7 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 				if (body->IsAccelerable())
 				{
 					stats.proxiesMoved += Synchronize(*body, GetTransform0(body->GetSweep()), body->GetTransformation(),
-													  step.displaceMultiplier, step.aabbExtension);
+													  conf.displaceMultiplier, conf.aabbExtension);
 					ResetContactsForSolveTOI(*body);
 				}
 			}
@@ -1441,7 +1466,7 @@ ToiStepStats World::SolveTOI(const StepConf& step)
 	return stats;
 }
 
-World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contact)
+World::IslandSolverResults World::SolveTOI(const StepConf& conf, Contact& contact)
 {
 	assert(!m_contactsIslanded.count(&contact));
 	
@@ -1514,7 +1539,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Contact& contac
 	}
 
 	// Now solve for remainder of time step
-	return SolveTOI(StepConf{step}.set_dt((1 - toi) * step.get_dt()), island);
+	return SolveTOI(StepConf{conf}.set_dt((1 - toi) * conf.get_dt()), island);
 }
 
 void World::UpdateBody(Body& body, const Position& pos, const Velocity& vel)
@@ -1524,7 +1549,7 @@ void World::UpdateBody(Body& body, const Position& pos, const Velocity& vel)
 	BodyAtty::SetTransformation(body, GetTransformation(GetPosition1(body), body.GetLocalCenter()));
 }
 
-World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
+World::IslandSolverResults World::SolveTOI(const StepConf& conf, Island& island)
 {
 	auto bodyConstraints = BodyConstraints{};
 	bodyConstraints.reserve(island.m_bodies.size());
@@ -1559,17 +1584,12 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 	// Solve TOI-based position constraints.
 	auto finMinSeparation = std::numeric_limits<RealNum>::infinity();
 	auto solved = false;
-	auto positionIterations = step.toiPositionIterations;
+	auto positionIterations = conf.toiPositionIterations;
 	
 	{
-		const auto psConf = ConstraintSolverConf{}
-			.UseResolutionRate(step.toiResolutionRate)
-			.UseLinearSlop(step.linearSlop)
-			.UseAngularSlop(step.angularSlop)
-			.UseMaxLinearCorrection(step.maxLinearCorrection)
-			.UseMaxAngularCorrection(step.maxAngularCorrection);
+		const auto psConf = GetToiConstraintSolverConf(conf);
 
-		for (auto i = decltype(step.toiPositionIterations){0}; i < step.toiPositionIterations; ++i)
+		for (auto i = decltype(conf.toiPositionIterations){0}; i < conf.toiPositionIterations; ++i)
 		{
 			//
 			// Note: There are two flavors of the SolvePositionConstraints function.
@@ -1583,7 +1603,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 			//
 			const auto minSeparation = SolvePositionConstraints(positionConstraints, psConf);
 			finMinSeparation = Min(finMinSeparation, minSeparation);
-			if (minSeparation >= step.toiMinSeparation)
+			if (minSeparation >= conf.toiMinSeparation)
 			{
 				// Reached tolerance, early out...
 				positionIterations = i + 1;
@@ -1616,15 +1636,15 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 #endif
 	
 	auto velocityConstraints = GetVelocityConstraints(island.m_contacts, bodyConstraints,
-													  VelocityConstraint::Conf{0, step.velocityThreshold, true});
+													  VelocityConstraint::Conf{0, conf.velocityThreshold, true});
 
 	// No warm starting is needed for TOI events because warm
 	// starting impulses were applied in the discrete solver.
 
 	// Solve velocity constraints.
 	auto maxIncImpulse = RealNum{0};
-	auto velocityIterations = step.toiVelocityIterations;
-	for (auto i = decltype(step.toiVelocityIterations){0}; i < step.toiVelocityIterations; ++i)
+	auto velocityIterations = conf.toiVelocityIterations;
+	for (auto i = decltype(conf.toiVelocityIterations){0}; i < conf.toiVelocityIterations; ++i)
 	{
 		const auto newIncImpulse = SolveVelocityConstraints(velocityConstraints);
 		maxIncImpulse = std::max(maxIncImpulse, newIncImpulse);
@@ -1632,7 +1652,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& step, Island& island)
 	
 	// Don't store TOI contact forces for warm starting because they can be quite large.
 	
-	IntegratePositions(bodyConstraints, step.get_dt(), MovementConf{step.maxTranslation, step.maxRotation});
+	IntegratePositions(bodyConstraints, conf.get_dt(), GetMovementConf(conf));
 	
 	for (auto&& body: island.m_bodies)
 	{
@@ -2433,17 +2453,17 @@ contact_count_t World::Synchronize(Body& body,
 
 StepStats Step(World& world, RealNum dt, World::ts_iters_type velocityIterations, World::ts_iters_type positionIterations)
 {
-	StepConf step;
-	step.set_dt(dt);
-	step.regVelocityIterations = velocityIterations;
-	step.regPositionIterations = positionIterations;
-	step.toiVelocityIterations = velocityIterations;
+	StepConf conf;
+	conf.set_dt(dt);
+	conf.regVelocityIterations = velocityIterations;
+	conf.regPositionIterations = positionIterations;
+	conf.toiVelocityIterations = velocityIterations;
 	if (positionIterations == 0)
 	{
-		step.toiPositionIterations = 0;
+		conf.toiPositionIterations = 0;
 	}
-	step.dtRatio = dt * world.GetInvDeltaTime();
-	return world.Step(step);
+	conf.dtRatio = dt * world.GetInvDeltaTime();
+	return world.Step(conf);
 }
 
 size_t GetFixtureCount(const World& world) noexcept

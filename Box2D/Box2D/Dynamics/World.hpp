@@ -341,10 +341,10 @@ private:
 
 	void InternalDestroy(Joint* joint);
 
-	/// Sloves the step.
+	/// Solves the step.
 	/// @detail Finds islands, integrates and solves constraints, solves position constraints.
 	/// @note This may miss collisions involving fast moving bodies and allow them to tunnel through each other.
-	RegStepStats SolveReg(const StepConf& step);
+	RegStepStats SolveReg(const StepConf& conf);
 
 	/// Solves the given island (regularly).
 	///
@@ -373,8 +373,8 @@ private:
 	/// Solves the step using successive time of impact (TOI) events.
 	/// @detail Used for continuous physics.
 	/// @note This is intended to detect and prevent the tunneling that the faster Solve method may miss.
-	/// @param step Time step value to use.
-	ToiStepStats SolveTOI(const StepConf& step);
+	/// @param conf Time step configuration to use.
+	ToiStepStats SolveTOI(const StepConf& conf);
 
 	/// "Solves" collisions for the given time of impact.
 	///
@@ -477,7 +477,7 @@ private:
 	};
 	
 	/// Updates the contact times of impact.
-	UpdateContactsData UpdateContactTOIs(const StepConf& step);
+	UpdateContactsData UpdateContactTOIs(const StepConf& conf);
 
 	/// Gets the soonest contact.
 	/// @detail This finds the contact with the lowest (soonest) time of impact.
