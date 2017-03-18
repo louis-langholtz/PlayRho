@@ -73,9 +73,9 @@ Body::FlagsType Body::GetFlags(const BodyDef& bd) noexcept
 	{
 		flags |= e_awakeFlag;
 	}
-	if (bd.active)
+	if (bd.enabled)
 	{
-		flags |= e_activeFlag;
+		flags |= e_enabledFlag;
 	}
 	flags |= GetFlags(bd.type);
 	return flags;
@@ -90,7 +90,7 @@ Body::Body(const BodyDef& bd, World* world):
 	m_invMass{(bd.type == BodyType::Dynamic)? RealNum{1}: RealNum{0}},
 	m_linearDamping{bd.linearDamping},
 	m_angularDamping{bd.angularDamping},
-	m_sleepTime{bd.sleepTime},
+	m_underActiveTime{bd.underActiveTime},
 	m_userData{bd.userData}
 {
 	assert(::box2d::IsValid(bd.position));
@@ -108,9 +108,9 @@ Body::~Body()
 	assert(m_fixtures.empty());
 }
 
-void Body::SetType(BodyType type, const RealNum aabbExtension)
+void Body::SetType(BodyType type)
 {
-	m_world->SetType(*this, type, aabbExtension);
+	m_world->SetType(*this, type);
 }
 
 Fixture* Body::CreateFixture(std::shared_ptr<const Shape> shape, const FixtureDef& def, bool resetMassData)
@@ -240,14 +240,53 @@ void Body::SetAcceleration(const Vec2 linear, const Angle angular) noexcept
 	m_angularAcceleration = angular;
 }
 
-void Body::SetTransform(const Vec2 position, Angle angle, const RealNum aabbExtension)
+void Body::SetTransform(const Vec2 position, Angle angle)
 {
-	m_world->SetTransform(*this, position, angle, aabbExtension);
+	assert(::box2d::IsValid(position));
+	assert(::box2d::IsValid(angle));
+	assert(!GetWorld()->IsLocked());
+	
+	if (GetWorld()->IsLocked())
+	{
+		return;
+	}
+	
+	const auto xfm = Transformation{position, UnitVec2{angle}};
+	SetTransformation(xfm);
+	
+	const auto sweep = Sweep{Position{Transform(GetLocalCenter(), xfm), angle}, GetLocalCenter()};
+	m_sweep = sweep;
+	
+	GetWorld()->RegisterForProxies(this);
 }
 
-void Body::SetActive(bool flag, const RealNum aabbExtension)
+void Body::SetEnabled(bool flag)
 {
-	m_world->SetActive(*this, flag, aabbExtension);
+	if (IsEnabled() == flag)
+	{
+		return;
+	}
+	
+	assert(!m_world->IsLocked());
+	if (m_world->IsLocked())
+	{
+		return;
+	}
+	
+	if (flag)
+	{
+		SetEnabledFlag();
+	}
+	else
+	{
+		UnsetEnabledFlag();
+	}
+	
+	// Register for proxies so contacts created or destroyed the next time step.
+	for (auto&& fixture: GetFixtures())
+	{
+		m_world->RegisterForProxies(fixture);
+	}
 }
 
 void Body::SetFixedRotation(bool flag)

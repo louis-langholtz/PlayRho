@@ -35,7 +35,19 @@ void Fixture::Refilter()
 {
 	const auto body = GetBody();
 	const auto world = body->GetWorld();
-	world->Refilter(*this);
+
+	// Flag associated contacts for filtering.
+	for (auto&& contact: body->GetContacts())
+	{
+		const auto fixtureA = contact->GetFixtureA();
+		const auto fixtureB = contact->GetFixtureB();
+		if ((fixtureA == this) || (fixtureB == this))
+		{
+			contact->FlagForFiltering();
+		}
+	}
+	
+	world->TouchProxies(*this);
 }
 
 void Fixture::SetSensor(bool sensor) noexcept

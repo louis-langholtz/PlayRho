@@ -270,16 +270,12 @@ public:
 	/// @warning Behavior is undefined if the given proxy ID is not a valid ID.
 	AABB GetFatAABB(proxy_size_type proxyId) const;
 	
-	void SetActive(Body& body, bool flag, const RealNum aabbExtension = DefaultAabbExtension);
-	
-	/// Refilter the given fixture.
-	/// @note Call this if you want to establish collision that was previously disabled by
-	///   ContactFilter::ShouldCollide.
-	void Refilter(Fixture& fixture);
-
 	/// Sets the type of the given body.
 	/// @note This may alter the body's mass and velocity.
-	void SetType(Body& body, BodyType type, const RealNum aabbExtension = DefaultAabbExtension);
+	void SetType(Body& body, BodyType type);
+
+	bool RegisterForProxies(Fixture* fixture);
+	bool RegisterForProxies(Body* body);
 
 	Fixture* CreateFixture(Body& body, std::shared_ptr<const Shape> shape,
 						   const FixtureDef& def = GetDefaultFixtureDef(),
@@ -294,17 +290,15 @@ public:
 	/// @sa ResetMassData.
 	/// @param fixture the fixture to be removed.
 	bool DestroyFixture(Fixture* fixture, bool resetMassData = true);
-
-	/// Sets the position of the body's origin and rotation.
-	/// @warning Manipulating a body's transform may cause non-physical behavior.
-	/// @note Contacts are updated on the next call to World::Step.
-	/// @param position Valid world position of the body's local origin. Behavior is undefined if value is invalid.
-	/// @param angle Valid world rotation in radians. Behavior is undefined if value is invalid.
-	void SetTransform(Body& body, const Vec2 position, Angle angle,
-					  const RealNum aabbExtension = DefaultAabbExtension);
-
+	
 	bool IsValid(std::shared_ptr<const Shape> shape) const noexcept;
 	
+	/// Touches each proxy of the given fixture.
+	/// @note Fixture must belong to a body that belongs to this world or this method will
+	///   return false.
+	/// @note This sets things up so that pairs may be created for potentially new contacts.
+	bool TouchProxies(Fixture& fixture) noexcept;
+
 private:
 
 	/// Flags type data type.
@@ -313,6 +307,8 @@ private:
 	using BodySet = std::unordered_set<Body*>;
 	using JointSet = std::unordered_set<Joint*>;
 	using ContactSet = std::unordered_set<Contact*>;
+	using FixtureQueue = std::vector<Fixture*>;
+	using BodyQueue = std::vector<Body*>;
 	
 	// Flag enumeration.
 	enum Flag: FlagsType
@@ -445,11 +441,18 @@ private:
 	void SetAllowSleeping() noexcept;
 	void UnsetAllowSleeping() noexcept;
 	
-	struct CollideStats
+	struct UpdateContactsStats
 	{
-		uint32 ignored = 0;
-		uint32 destroyed = 0;
-		uint32 updated = 0;
+		contact_count_t ignored = 0;
+		contact_count_t updated = 0;
+	};
+	
+	struct DestroyContactsStats
+	{
+		contact_count_t ignored = 0;
+		contact_count_t filteredOut = 0;
+		contact_count_t notOverlapping = 0;
+		contact_count_t updatable = 0;
 	};
 	
 	struct ContactToiData
@@ -496,7 +499,9 @@ private:
 	/// have active bodies (either or both) get their Update methods called with the current
 	/// contact listener as its argument.
 	/// Essentially this really just purges contacts that are no longer relevant.
-	CollideStats Collide();
+	DestroyContactsStats DestroyContacts();
+	
+	UpdateContactsStats UpdateContacts();
 	
 	bool ShouldCollide(const Fixture* fixtureA, const Fixture* fixtureB);
 
@@ -526,7 +531,7 @@ private:
 	
 	/// Creates proxies for every child of the given fixture's shape.
 	/// @note This sets the proxy count to the child count of the shape.
-	void CreateProxies(Fixture& fixture, const Transformation& xf, const RealNum aabbExtension);
+	void CreateProxies(Fixture& fixture, const RealNum aabbExtension);
 
 	/// Destroys the given fixture's proxies.
 	/// @note This resets the proxy count to 0.
@@ -534,7 +539,7 @@ private:
 
 	/// Touches each proxy of the given fixture.
 	/// @note This sets things up so that pairs may be created for potentially new contacts.
-	void TouchProxies(Fixture& fixture) noexcept;
+	void InternalTouchProxies(Fixture& fixture) noexcept;
 
 	child_count_t Synchronize(Fixture& fixture,
 							  const Transformation& xfm1, const Transformation& xfm2,
@@ -544,6 +549,12 @@ private:
 								const Transformation& xfm1, const Transformation& xfm2,
 								const RealNum multiplier, const RealNum aabbExtension);
 	
+	void CreateAndDestroyProxies(const StepConf& conf);
+	void CreateAndDestroyProxies(Fixture& fixture, const StepConf& conf);
+	
+	void SynchronizeProxies(const StepConf& conf);
+	void SynchronizeProxies(Body& body, const StepConf& conf);
+
 	/******** Member variables. ********/
 
 	BlockAllocator m_blockAllocator; ///< Block allocator. 136-bytes.
@@ -553,6 +564,9 @@ private:
 	BodySet m_bodiesIslanded;
 	ContactSet m_contactsIslanded;
 	JointSet m_jointsIslanded;
+
+	FixtureQueue m_fixturesForProxies;
+	BodyQueue m_bodiesForProxies;
 
 	ContactFilter m_defaultFilter; ///< Default contact filter. 8-bytes.
 	

@@ -78,7 +78,7 @@ TEST(Body, WorldCreated)
 	EXPECT_EQ(body->GetWorld(), &world);
 	EXPECT_EQ(body->GetUserData(), nullptr);
 	EXPECT_TRUE(body->IsAwake());
-	EXPECT_TRUE(body->IsActive());
+	EXPECT_TRUE(body->IsEnabled());
 	EXPECT_FALSE(body->IsSpeedable());
 	EXPECT_FALSE(body->IsAccelerable());
 	

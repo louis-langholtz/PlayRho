@@ -39,8 +39,10 @@ class Shape;
 
 const FixtureDef &GetDefaultFixtureDef() noexcept;
 
+/// Body definition.
+/// @detail
 /// A body definition holds all the data needed to construct a rigid body.
-/// You can safely re-use body definitions. Shapes are added to a body after construction.
+/// You can safely re-use body definitions.
 struct BodyDef
 {
 	/// This constructor sets the body definition default values.
@@ -51,12 +53,12 @@ struct BodyDef
 	constexpr BodyDef& UseAngle(Angle a) noexcept;
 	constexpr BodyDef& UseLinearDamping(RealNum v) noexcept;
 	constexpr BodyDef& UseAngularDamping(RealNum v) noexcept;
-	constexpr BodyDef& UseSleepTime(RealNum v) noexcept;
+	constexpr BodyDef& UseUnderActiveTime(RealNum v) noexcept;
 	constexpr BodyDef& UseAllowSleep(bool value) noexcept;
 	constexpr BodyDef& UseAwake(bool value) noexcept;
 	constexpr BodyDef& UseFixedRotation(bool value) noexcept;
 	constexpr BodyDef& UseBullet(bool value) noexcept;
-	constexpr BodyDef& UseActive(bool value) noexcept;
+	constexpr BodyDef& UseEnabled(bool value) noexcept;
 	constexpr BodyDef& UseUserData(void* value) noexcept;
 	
 	/// The body type: static, kinematic, or dynamic.
@@ -86,9 +88,9 @@ struct BodyDef
 	/// time step when the damping parameter is large.
 	RealNum angularDamping = 0;
 
-	/// Sleep time.
-	/// @detail Set this to the value retrieved from Body::GetSleepTime() or leave it as 0.
-	RealNum sleepTime = 0;
+	/// Under-active time.
+	/// @detail Set this to the value retrieved from Body::GetUnderActiveTime() or leave it as 0.
+	RealNum underActiveTime = 0;
 
 	/// Set this flag to false if this body should never fall asleep. Note that
 	/// this increases CPU usage.
@@ -106,8 +108,8 @@ struct BodyDef
 	/// @note Use this flag sparingly since it increases processing time.
 	bool bullet = false;
 
-	/// Does this body start out active?
-	bool active = true;
+	/// Does this body start out enabled?
+	bool enabled = true;
 
 	/// Use this to store application specific body data.
 	void* userData = nullptr;
@@ -143,9 +145,9 @@ constexpr inline BodyDef& BodyDef::UseAngularDamping(RealNum v) noexcept
 	return *this;
 }
 
-constexpr inline BodyDef& BodyDef::UseSleepTime(RealNum v) noexcept
+constexpr inline BodyDef& BodyDef::UseUnderActiveTime(RealNum v) noexcept
 {
-	sleepTime = v;
+	underActiveTime = v;
 	return *this;
 }
 	
@@ -173,9 +175,9 @@ constexpr inline BodyDef& BodyDef::UseBullet(bool value) noexcept
 	return *this;
 }
 
-constexpr inline BodyDef& BodyDef::UseActive(bool value) noexcept
+constexpr inline BodyDef& BodyDef::UseEnabled(bool value) noexcept
 {
-	active = value;
+	enabled = value;
 	return *this;
 }
 
@@ -241,8 +243,7 @@ public:
 	/// @note Contacts are updated on the next call to World::Step.
 	/// @param position Valid world position of the body's local origin. Behavior is undefined if value is invalid.
 	/// @param angle Valid world rotation in radians. Behavior is undefined if value is invalid.
-	void SetTransform(const Vec2 position, Angle angle,
-					  const RealNum aabbExtension = DefaultAabbExtension);
+	void SetTransform(const Vec2 position, Angle angle);
 
 	/// Gets the body transform for the body's origin.
 	/// @return the world transform of the body's origin.
@@ -275,9 +276,9 @@ public:
 
 	/// Sets the body's velocity (linear and angular velocity).
 	/// @note This method does nothing if this body is not speedable.
-	/// @note A non-zero velocity will awaken this body and reset its sleep time to zero.
+	/// @note A non-zero velocity will awaken this body and reset its under-active time to zero.
 	/// @sa SetAwake.
-	/// @sa SetSleepTime.
+	/// @sa SetUnderActiveTime.
 	void SetVelocity(const Velocity& v) noexcept;
 
 	/// Sets the linear and rotational accelerations on this body.
@@ -334,7 +335,7 @@ public:
 	void SetAngularDamping(RealNum angularDamping) noexcept;
 
 	/// Set the type of this body. This may alter the mass and velocity.
-	void SetType(BodyType type, const RealNum aabbExtension = DefaultAabbExtension);
+	void SetType(BodyType type);
 
 	/// Get the type of this body.
 	BodyType GetType() const noexcept;
@@ -373,28 +374,34 @@ public:
 	/// @return true if the body is awake.
 	bool IsAwake() const noexcept;
 
-	/// Gets this body's sleep time value.
-	RealNum GetSleepTime() const noexcept;
+	/// Gets this body's under-active time value.
+	/// @return Zero or more time in seconds (of step time) that this body has been "under-active" for.
+	RealNum GetUnderActiveTime() const noexcept;
 	
-	void SetSleepTime(RealNum value) noexcept;
+	/// Sets the under-active time to the given value.
+	/// @detail This sets the under-active time to a greater than zero value for a speedable body.
+	/// @note A non-zero time is only valid for a speedable body.
+	/// @warning Behavior is undefined for negative values.
+	/// @warning Behavior is undefined if the value is not zero and this body is not speedable.
+	void SetUnderActiveTime(RealNum value) noexcept;
 	
-	/// Set the active state of the body. An inactive body is not
+	/// Set the enabled state of the body. A disabled body is not
 	/// simulated and cannot be collided with or woken up.
 	/// If you pass a flag of true, all fixtures will be added to the
 	/// broad-phase.
 	/// If you pass a flag of false, all fixtures will be removed from
 	/// the broad-phase and all contacts will be destroyed.
 	/// Fixtures and joints are otherwise unaffected. You may continue
-	/// to create/destroy fixtures and joints on inactive bodies.
-	/// Fixtures on an inactive body are implicitly inactive and will
+	/// to create/destroy fixtures and joints on disabled bodies.
+	/// Fixtures on a disabled body are implicitly disabled and will
 	/// not participate in collisions, ray-casts, or queries.
-	/// Joints connected to an inactive body are implicitly inactive.
-	/// An inactive body is still owned by a World object and remains
+	/// Joints connected to a disabled body are implicitly disabled.
+	/// A disabled body is still owned by a World object and remains
 	/// in the body list.
-	void SetActive(bool flag, const RealNum aabbExtension = DefaultAabbExtension);
+	void SetEnabled(bool flag);
 
-	/// Get the active state of the body.
-	bool IsActive() const noexcept;
+	/// Get the enabled/disabled state of the body.
+	bool IsEnabled() const noexcept;
 
 	/// Set this body to have fixed rotation. This causes the mass
 	/// to be reset.
@@ -451,8 +458,8 @@ private:
 		/// Fixed rotation flag.
 		e_fixedRotationFlag	= 0x0010,
 		
-		/// Active flag.
-		e_activeFlag		= 0x0020,
+		/// Enabled flag.
+		e_enabledFlag		= 0x0020,
 
 		/// TOI valid flag.
 		/// @detail Indicates whether the TOI field is valid.
@@ -490,6 +497,9 @@ private:
 	void SetMassDataDirty() noexcept;
 	void UnsetMassDataDirty() noexcept;
 	
+	void SetEnabledFlag() noexcept;
+	void UnsetEnabledFlag() noexcept;
+
 	bool Insert(Contact* contact);
 	bool Insert(Joint* joint);
 	
@@ -538,7 +548,11 @@ private:
 	RealNum m_linearDamping; ///< Linear damping. 4-bytes.
 	RealNum m_angularDamping; ///< Angular damping. 4-bytes.
 
-	RealNum m_sleepTime = 0; ///< Sleep time. 4-bytes.
+	/// Under-active time.
+	/// @detail A body under-active for enough time should have their awake flag unset.
+	///   I.e. if a body is under-active for long enough, it should go to sleep.
+	/// @note 4-bytes.
+	RealNum m_underActiveTime = 0;
 };
 
 inline Body::FlagsType Body::GetFlags(const BodyType type) noexcept
@@ -707,7 +721,7 @@ inline bool Body::SetAwake() noexcept
 	if ((m_flags & e_awakeFlag) == 0)
 	{
 		m_flags |= e_awakeFlag;
-		m_sleepTime = 0;
+		m_underActiveTime = 0;
 		return true;
 	}
 	return false;
@@ -718,7 +732,7 @@ inline bool Body::UnsetAwake() noexcept
 	const auto was_awake = IsAwake();
 
 	m_flags &= ~e_awakeFlag;
-	m_sleepTime = 0;
+	m_underActiveTime = 0;
 	m_velocity = Velocity{Vec2_zero, 0_rad};
 	
 	return was_awake;
@@ -729,19 +743,21 @@ inline bool Body::IsAwake() const noexcept
 	return (m_flags & e_awakeFlag) != 0;
 }
 
-inline RealNum Body::GetSleepTime() const noexcept
+inline RealNum Body::GetUnderActiveTime() const noexcept
 {
-	return m_sleepTime;
+	return m_underActiveTime;
 }
 
-inline void Body::SetSleepTime(RealNum value) noexcept
+inline void Body::SetUnderActiveTime(RealNum value) noexcept
 {
-	m_sleepTime = value;
+	assert(value >= 0);
+	assert(value == 0 || IsSpeedable());
+	m_underActiveTime = value;
 }
 
-inline bool Body::IsActive() const noexcept
+inline bool Body::IsEnabled() const noexcept
 {
-	return (m_flags & e_activeFlag) != 0;
+	return (m_flags & e_enabledFlag) != 0;
 }
 
 inline bool Body::IsFixedRotation() const noexcept
@@ -850,6 +866,16 @@ inline bool Body::IsMassDataDirty() const noexcept
 inline void Body::SetTransformation(const Transformation value) noexcept
 {
 	m_xf = value;
+}
+
+inline void Body::SetEnabledFlag() noexcept
+{
+	m_flags |= e_enabledFlag;
+}
+
+inline void Body::UnsetEnabledFlag() noexcept
+{
+	m_flags &= ~e_enabledFlag;
 }
 
 // Free functions...

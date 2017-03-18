@@ -245,8 +245,8 @@ inline bool Joint::GetCollideConnected() const noexcept
 	return m_collideConnected;
 }
 
-/// Short-cut function to determine if either body is inactive.
-bool IsActive(const Joint& j) noexcept;
+/// Short-cut function to determine if both bodies are enabled.
+bool IsEnabled(const Joint& j) noexcept;
 
 // Wakes up the joined bodies.
 void SetAwake(Joint& j) noexcept;

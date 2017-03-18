@@ -187,12 +187,21 @@ void Contact::Update(ContactListener* listener)
 		}
 
 		m_manifold = newManifold;
-
+		
+#ifdef MAKE_CONTACT_PROCESSING_ORDER_DEPENDENT
+		/*
+		 * The following code creates an ordering dependency in terms of update processing
+		 * over a container of contacts. It also puts this method into the situation of
+		 * modifying bodies which adds race potential in a multi-threaded mode of operation.
+		 * Lastly, without this code, the step-statistics show a world getting to sleep in
+		 * less TOI position iterations.
+		 */
 		if (newTouching != oldTouching)
 		{
 			bodyA->SetAwake();
 			bodyB->SetAwake();
 		}
+#endif
 	}
 
 	SetTouching(newTouching);

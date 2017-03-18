@@ -102,7 +102,7 @@ void box2d::Dump(const Body& body, size_t bodyIndex)
 	log("  bd.awake = bool(%d);\n", body.IsAwake());
 	log("  bd.fixedRotation = bool(%d);\n", body.IsFixedRotation());
 	log("  bd.bullet = bool(%d);\n", body.IsImpenetrable());
-	log("  bd.active = bool(%d);\n", body.IsActive());
+	log("  bd.enabled = bool(%d);\n", body.IsEnabled());
 	log("  bodies[%d] = m_world->CreateBody(bd);\n", bodyIndex);
 	log("\n");
 	for (auto&& fixture: body.GetFixtures())

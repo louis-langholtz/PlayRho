@@ -109,7 +109,7 @@ TEST(Dump, OneBodyWorld)
 	buf << "  bd\\.awake = bool\\(1\\);\n";
 	buf << "  bd\\.fixedRotation = bool\\(0\\);\n";
 	buf << "  bd\\.bullet = bool\\(1\\);\n";
-	buf << "  bd\\.active = bool\\(1\\);\n";
+	buf << "  bd\\.enabled = bool\\(1\\);\n";
 	buf << "  bodies\\[0\\] = m_world->CreateBody\\(bd\\);\n";
 	buf << "\n";
 	buf << "}\n";

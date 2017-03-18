@@ -90,9 +90,7 @@ struct FixtureDef
 	/// @note Use 0 to indicate that the shape's associated mass should be 0.
 	///
 	RealNum density = RealNum{0};
-
-	RealNum aabbExtension = DefaultAabbExtension;
-
+	
 	/// A sensor shape collects contact information but never generates a collision
 	/// response.
 	bool isSensor = false;
@@ -174,15 +172,18 @@ public:
 	/// @return the true if the shape is a sensor.
 	bool IsSensor() const noexcept;
 
-	/// Set the contact filtering data. This will not update contacts until the next time
-	/// step when either parent body is active and awake.
-	/// This automatically calls Refilter.
+	/// Sets the contact filtering data.
+	/// @note This won't update contacts until the next time step when either parent body
+	///    is speedable and awake.
+	/// @note This automatically calls Refilter.
 	void SetFilterData(const Filter filter);
 
 	/// Get the contact filtering data.
 	Filter GetFilterData() const noexcept;
 
-	/// Call this if you want to establish collision that was previously disabled by ContactFilter::ShouldCollide.
+	/// Refilter the fixture.
+	/// @note Call this if you want to establish collision that was previously disabled by
+	///   ContactFilter::ShouldCollide.
 	void Refilter();
 
 	/// Get the user data that was assigned in the fixture definition. Use this to

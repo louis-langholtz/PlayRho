@@ -186,7 +186,7 @@ static void Draw(Drawer& drawer, const Fixture& fixture, const Transformation& x
 
 static Color GetColor(const Body& body)
 {
-	if (!body.IsActive())
+	if (!body.IsEnabled())
 	{
 		return Color{0.5f, 0.5f, 0.3f};
 	}
@@ -294,7 +294,7 @@ static bool Draw(Drawer& drawer, const World& world, const Settings& settings, F
 		
 		for (auto&& b: world.GetBodies())
 		{
-			if (!b->IsActive())
+			if (!b->IsEnabled())
 			{
 				continue;
 			}

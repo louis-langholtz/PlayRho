@@ -258,9 +258,9 @@ Joint::Joint(const JointDef& def):
 	// Intentionally empty.
 }
 
-bool IsActive(const Joint& j) noexcept
+bool IsEnabled(const Joint& j) noexcept
 {
-	return j.GetBodyA()->IsActive() && j.GetBodyB()->IsActive();
+	return j.GetBodyA()->IsEnabled() && j.GetBodyB()->IsEnabled();
 }
 
 void SetAwake(Joint& j) noexcept

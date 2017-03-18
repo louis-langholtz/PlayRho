@@ -227,8 +227,8 @@ public:
 			{
 				if (m_bodies[i])
 				{
-					const auto active = m_bodies[i]->IsActive();
-					m_bodies[i]->SetActive(!active);
+					const auto enabled = m_bodies[i]->IsEnabled();
+					m_bodies[i]->SetEnabled(!enabled);
 				}
 			}
 			break;

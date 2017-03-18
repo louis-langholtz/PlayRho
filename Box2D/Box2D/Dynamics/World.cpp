@@ -324,26 +324,26 @@ namespace {
 		return maxIncImpulse;
 	}
 	
-	inline RealNum GetSleepTime(const Body& b, const StepConf& conf) noexcept
+	inline RealNum GetUnderActiveTime(const Body& b, const StepConf& conf) noexcept
 	{
-		const auto sleepable = IsSleepable(b.GetVelocity(), conf.linearSleepTolerance, conf.angularSleepTolerance);
-		const auto allowable = b.IsSleepingAllowed();
-		return (allowable && sleepable)? b.GetSleepTime() + conf.get_dt(): RealNum{0};
+		const auto underactive = IsUnderActive(b.GetVelocity(), conf.linearSleepTolerance, conf.angularSleepTolerance);
+		const auto sleepable = b.IsSleepingAllowed();
+		return (sleepable && underactive)? b.GetUnderActiveTime() + conf.get_dt(): RealNum{0};
 	}
 
-	inline RealNum UpdateSleepTimes(Island::Bodies& bodies, const StepConf& step)
+	inline RealNum UpdateUnderActiveTimes(Island::Bodies& bodies, const StepConf& step)
 	{
-		auto minNewSleepTime = std::numeric_limits<RealNum>::infinity();
+		auto minUnderActiveTime = std::numeric_limits<RealNum>::infinity();
 		for (auto&& b: bodies)
 		{
 			if (b->IsSpeedable())
 			{
-				const auto newSleepTime = GetSleepTime(*b, step);
-				b->SetSleepTime(newSleepTime);
-				minNewSleepTime = Min(minNewSleepTime, newSleepTime);
+				const auto underActiveTime = GetUnderActiveTime(*b, step);
+				b->SetUnderActiveTime(underActiveTime);
+				minUnderActiveTime = Min(minUnderActiveTime, underActiveTime);
 			}
 		}
-		return minNewSleepTime;
+		return minUnderActiveTime;
 	}
 	
 	inline size_t Sleepem(Island::Bodies& bodies)
@@ -532,12 +532,6 @@ private:
 	{
 		b->~Body();
 	}
-		
-	static bool IsAwakeAndSpeedable(const Body& b) noexcept
-	{
-		constexpr auto requiredFlags = Body::e_awakeFlag|Body::e_velocityFlag;
-		return (b.m_flags & requiredFlags) == requiredFlags;
-	}
 	
 	static void SetTypeFlags(Body& b, BodyType type) noexcept
 	{
@@ -545,16 +539,6 @@ private:
 		b.m_flags |= Body::GetFlags(type);
 	}
 	
-	static void SetActiveFlag(Body& b) noexcept
-	{
-		b.m_flags |= Body::e_activeFlag;
-	}
-
-	static void UnsetActiveFlag(Body& b) noexcept
-	{
-		b.m_flags &= ~Body::e_activeFlag;
-	}
-
 	static void SetMassDataDirty(Body& b) noexcept
 	{
 		b.SetMassDataDirty();
@@ -972,7 +956,7 @@ Island World::BuildIsland(Body& seed,
 	assert(!m_bodiesIslanded.count(&seed));
 	assert(seed.IsSpeedable());
 	assert(seed.IsAwake());
-	assert(seed.IsActive());
+	assert(seed.IsEnabled());
 	assert(remNumBodies != 0);
 
 	// Size the island for the remaining un-evaluated bodies, contacts, and joints.
@@ -989,7 +973,7 @@ Island World::BuildIsland(Body& seed,
 		const auto b = stack.back();
 		stack.pop_back();
 		
-		assert(b->IsActive());
+		assert(b->IsEnabled());
 		island.m_bodies.push_back(b);
 		--remNumBodies;
 		
@@ -1033,7 +1017,7 @@ Island World::BuildIsland(Body& seed,
 			const auto bodyA = joint->GetBodyA();
 			const auto bodyB = joint->GetBodyB();
 			const auto other = (b != bodyA)? bodyA: bodyB;
-			if (!m_jointsIslanded.count(joint) && other->IsActive())
+			if (!m_jointsIslanded.count(joint) && other->IsEnabled())
 			{
 				island.m_joints.push_back(joint);
 				m_jointsIslanded.insert(joint);
@@ -1076,7 +1060,7 @@ RegStepStats World::SolveReg(const StepConf& step)
 	// Build and simulate all awake islands.
 	for (auto&& body: m_bodies)
 	{
-		if (!m_bodiesIslanded.count(body) && body->IsSpeedable() && body->IsAwake() && body->IsActive())
+		if (!m_bodiesIslanded.count(body) && body->IsSpeedable() && body->IsAwake() && body->IsEnabled())
 		{
 			++stats.islandsFound;
 
@@ -1243,8 +1227,8 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& step, Island is
 	auto bodiesSlept = body_count_t{0};
 	if (::box2d::IsValid(step.minStillTimeToSleep))
 	{
-		const auto minNewSleepTime = UpdateSleepTimes(island.m_bodies, step);
-		if ((minNewSleepTime >= step.minStillTimeToSleep) && solved)
+		const auto minUnderActiveTime = UpdateUnderActiveTimes(island.m_bodies, step);
+		if ((minUnderActiveTime >= step.minStillTimeToSleep) && solved)
 		{
 			bodiesSlept = static_cast<decltype(bodiesSlept)>(Sleepem(island.m_bodies));
 		}
@@ -1734,40 +1718,46 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi)
 StepStats World::Step(const StepConf& conf)
 {
 	assert((m_maxVertexRadius * 2) + (conf.linearSlop / 4) > (m_maxVertexRadius * 2));
+	assert(!IsLocked());
 
 	auto stepStats = StepStats{};
-
-	if (HasNewFixtures())
 	{
-		UnsetNewFixtures();
-		
-		// New fixtures were added: need to find and create the new contacts.
-		stepStats.pre.added = FindNewContacts();
-	}
+		FlagGuard<decltype(m_flags)> flagGaurd(m_flags, e_locked);
 
-	assert(!IsLocked());
-	FlagGuard<decltype(m_flags)> flagGaurd(m_flags, e_locked);
+		CreateAndDestroyProxies(conf);
+		SynchronizeProxies(conf);
 
-	// Update and destroy contacts. No new contacts are created though.
-	const auto collideStats = Collide();
-	stepStats.pre.ignored = collideStats.ignored;
-	stepStats.pre.destroyed = collideStats.destroyed;
-	stepStats.pre.updated = collideStats.updated;
-
-	if (conf.get_dt() > 0)
-	{
-		m_inv_dt0 = conf.get_inv_dt();
-
-		// Integrate velocities, solve velocity constraints, and integrate positions.
-		if (IsStepComplete())
+		const auto destroyStats = DestroyContacts();
+		if (HasNewFixtures())
 		{
-			stepStats.reg = SolveReg(conf);
+			UnsetNewFixtures();
+			
+			// New fixtures were added: need to find and create the new contacts.
+			stepStats.pre.added = FindNewContacts();
 		}
+		const auto updateStats = UpdateContacts();
+		
+		assert(destroyStats.ignored == updateStats.ignored);
 
-		// Handle TOI events.
-		if (conf.doToi)
+		stepStats.pre.ignored = updateStats.ignored;
+		stepStats.pre.destroyed = destroyStats.filteredOut + destroyStats.notOverlapping;
+		stepStats.pre.updated = updateStats.updated;
+
+		if (conf.get_dt() > 0)
 		{
-			stepStats.toi = SolveTOI(conf);
+			m_inv_dt0 = conf.get_inv_dt();
+
+			// Integrate velocities, solve velocity constraints, and integrate positions.
+			if (IsStepComplete())
+			{
+				stepStats.reg = SolveReg(conf);
+			}
+
+			// Handle TOI events.
+			if (conf.doToi)
+			{
+				stepStats.toi = SolveTOI(conf);
+			}
 		}
 	}
 	return stepStats;
@@ -1870,8 +1860,8 @@ bool World::IsActive(const Contact& contact) noexcept
 	const auto bA = contact.GetFixtureA()->GetBody();
 	const auto bB = contact.GetFixtureB()->GetBody();
 	
-	const auto activeA = BodyAtty::IsAwakeAndSpeedable(*bA);
-	const auto activeB = BodyAtty::IsAwakeAndSpeedable(*bB);
+	const auto activeA = bA->IsSpeedable() && bA->IsAwake();
+	const auto activeB = bB->IsSpeedable() && bB->IsAwake();
 	
 	// Is at least one body active (awake and dynamic or kinematic)?
 	return activeA || activeB;
@@ -1895,7 +1885,7 @@ void World::InternalDestroy(Contact* c, Body* from)
 {
 	if (m_contactListener && c->IsTouching())
 	{
-		// EndContact hadn't been called in Collide() since is-touching, so call it now
+		// EndContact hadn't been called in DestroyOrUpdateContacts() since is-touching, so call it now
 		m_contactListener->EndContact(*c);
 	}
 	
@@ -1930,9 +1920,9 @@ void World::Destroy(Contacts::iterator iter)
 	m_contacts.erase(iter);
 }
 
-World::CollideStats World::Collide()
+World::DestroyContactsStats World::DestroyContacts()
 {
-	auto stats = CollideStats{};
+	auto stats = DestroyContactsStats{};
 	
 	// Update awake contacts.
 	decltype(m_contacts)::iterator next;
@@ -1954,7 +1944,7 @@ World::CollideStats World::Collide()
 			if (!::box2d::ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(fixtureA, fixtureB))
 			{
 				Destroy(iter);
-				++stats.destroyed;
+				++stats.filteredOut;
 				continue;
 			}
 			ContactAtty::UnflagForFiltering(*contact);
@@ -1962,7 +1952,7 @@ World::CollideStats World::Collide()
 		
 		// Awake && speedable (dynamic or kinematic) means collidable.
 		// At least one body must be collidable
-		if (!BodyAtty::IsAwakeAndSpeedable(*bodyA) && !BodyAtty::IsAwakeAndSpeedable(*bodyB))
+		if (!(bodyA->IsSpeedable() && bodyA->IsAwake()) && !(bodyB->IsSpeedable() && bodyB->IsAwake()))
 		{
 			++stats.ignored;
 			continue;
@@ -1972,11 +1962,37 @@ World::CollideStats World::Collide()
 		{
 			// Destroy contacts that cease to overlap in the broad-phase.
 			Destroy(iter);
-			++stats.destroyed;
+			++stats.notOverlapping;
 			continue;
 		}
 		
-		// The contact persists.
+		++stats.updatable;
+	}
+	
+	return stats;
+}
+	
+
+World::UpdateContactsStats World::UpdateContacts()
+{
+	auto stats = UpdateContactsStats{};
+	
+	// Update awake contacts.
+	for (auto iter = m_contacts.begin(); iter != m_contacts.end(); ++iter)
+	{
+		const auto contact = *iter;
+		const auto fixtureA = contact->GetFixtureA();
+		const auto fixtureB = contact->GetFixtureB();
+		const auto bodyA = fixtureA->GetBody();
+		const auto bodyB = fixtureB->GetBody();
+		
+		// Awake && speedable (dynamic or kinematic) means collidable.
+		// At least one body must be collidable
+		if (!(bodyA->IsSpeedable() && bodyA->IsAwake()) && !(bodyB->IsSpeedable() && bodyB->IsAwake()))
+		{
+			++stats.ignored;
+			continue;
+		}
 		
 		// Update the contact manifold and notify the listener.
 		contact->SetEnabled();
@@ -2067,80 +2083,97 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 	return true;
 }
 
-void World::SetActive(Body& body, bool flag, const RealNum aabbExtension)
+bool World::RegisterForProxies(Fixture* fixture)
 {
-	if (body.GetWorld() != this)
+	if (fixture)
 	{
-		return;
-	}
-	if (body.IsActive() == flag)
-	{
-		return;
-	}
-
-	assert(!IsLocked());
-	if (IsLocked())
-	{
-		return;
-	}
-	
-	if (flag)
-	{
-		BodyAtty::SetActiveFlag(body);
-		
-		// Create all proxies.
-		const auto xf = body.GetTransformation();
-		for (auto&& fixture: body.GetFixtures())
+		const auto body = fixture->GetBody();
+		if (body)
 		{
-			CreateProxies(*fixture, xf, aabbExtension);
+			const auto world = body->GetWorld();
+			if (world == this)
+			{
+				m_fixturesForProxies.push_back(fixture);
+				return true;
+			}
 		}
-		
-		// Contacts are created the next time step.
+	}
+	return false;
+}
+
+bool World::RegisterForProxies(Body* body)
+{
+	if (body)
+	{
+		const auto world = body->GetWorld();
+		if (world == this)
+		{
+			m_bodiesForProxies.push_back(body);
+			return true;
+		}
+	}
+	return false;
+}
+
+void World::CreateAndDestroyProxies(const StepConf& conf)
+{
+	for (auto&& fixture: m_fixturesForProxies)
+	{
+		CreateAndDestroyProxies(*fixture, conf);
+	}
+	m_fixturesForProxies.clear();
+}
+
+void World::CreateAndDestroyProxies(Fixture& fixture, const StepConf& conf)
+{
+	const auto body = fixture.GetBody();
+	const auto enabled = body->IsEnabled();
+
+	const auto proxies = FixtureAtty::GetProxies(fixture);
+	if (proxies.size() == 0)
+	{
+		if (enabled)
+		{
+			CreateProxies(fixture, conf.aabbExtension);
+		}
 	}
 	else
 	{
-		BodyAtty::UnsetActiveFlag(body);
-		
-		// Destroy all proxies.
-		for (auto&& fixture: body.GetFixtures())
+		if (!enabled)
 		{
-			DestroyProxies(*fixture);
+			DestroyProxies(fixture);
+
+			// Destroy any contacts associated with the fixture.
+			BodyAtty::EraseContacts(*body, [&](Contact& contact) {
+				const auto fixtureA = contact.GetFixtureA();
+				const auto fixtureB = contact.GetFixtureB();
+				if ((fixtureA == &fixture) || (fixtureB == &fixture))
+				{
+					Destroy(&contact, body);
+					return true;
+				}
+				return false;
+			});
 		}
-		
-		// Destroy the attached contacts.
-		BodyAtty::EraseContacts(body, [&](Contact& contact) {
-			Destroy(&contact, &body);
-			return true;
-		});
 	}
 }
 
-void World::Refilter(Fixture& fixture)
+void World::SynchronizeProxies(const StepConf& conf)
 {
-	const auto body = fixture.GetBody();
-	if (body)
+	for (auto&& body: m_bodiesForProxies)
 	{
-		if (body->GetWorld() != this)
-		{
-			return;
-		}
-
-		// Flag associated contacts for filtering.
-		for (auto&& contact: body->GetContacts())
-		{
-			const auto fixtureA = contact->GetFixtureA();
-			const auto fixtureB = contact->GetFixtureB();
-			if ((fixtureA == &fixture) || (fixtureB == &fixture))
-			{
-				contact->FlagForFiltering();
-			}
-		}
-	
-		TouchProxies(fixture);
+		SynchronizeProxies(*body, conf);
 	}
+	m_bodiesForProxies.clear();
 }
 
-void World::SetType(Body& body, BodyType type, const RealNum aabbExtension)
+void World::SynchronizeProxies(Body& body, const StepConf& conf)
+{
+	const auto xfm = body.GetTransformation();
+	Synchronize(body, xfm, xfm, conf.displaceMultiplier, conf.aabbExtension);
+}
+
+void World::SetType(Body& body, BodyType type)
 {
 	if (body.GetWorld() != this)
 	{
@@ -2160,30 +2193,33 @@ void World::SetType(Body& body, BodyType type, const RealNum aabbExtension)
 	BodyAtty::SetTypeFlags(body, type);
 	body.ResetMassData();
 	
-	if (type == BodyType::Static)
-	{
-		BodyAtty::SetVelocity(body, Velocity{Vec2_zero, 0_rad});
-		BodyAtty::SetPosition0(body, body.GetSweep().pos1);
-		
-		// Note: displacement multiplier has no effect here since no displacement.
-		const auto xfm1 = GetTransform0(body.GetSweep());
-		const auto xfm2 = body.GetTransformation();
-		assert(xfm1 == xfm2);
-		Synchronize(body, xfm1, xfm2, 0, aabbExtension);
-	}
-	
-	body.SetAwake();
-	body.SetAcceleration(body.IsAccelerable()? GetGravity(): Vec2_zero, 0_rad);
-	
 	// Destroy the attached contacts.
 	BodyAtty::EraseContacts(body, [&](Contact& contact) {
 		Destroy(&contact, &body);
 		return true;
 	});
-	
-	for (auto&& fixture: body.GetFixtures())
+
+	if (type == BodyType::Static)
 	{
-		TouchProxies(*fixture);
+		BodyAtty::SetVelocity(body, Velocity{Vec2_zero, 0_rad});
+		BodyAtty::SetPosition0(body, body.GetSweep().pos1);
+		
+#ifndef NDEBUG
+		const auto xfm1 = GetTransform0(body.GetSweep());
+		const auto xfm2 = body.GetTransformation();
+		assert(xfm1 == xfm2);
+#endif
+		RegisterForProxies(&body);
+	}
+	else
+	{
+		body.SetAwake();
+		body.SetAcceleration(body.IsAccelerable()? GetGravity(): Vec2_zero, 0_rad);
+		
+		for (auto&& fixture: body.GetFixtures())
+		{
+			InternalTouchProxies(*fixture);
+		}
 	}
 }
 
@@ -2227,9 +2263,9 @@ Fixture* World::CreateFixture(Body& body, std::shared_ptr<const Shape> shape,
 	const auto fixture = FixtureAtty::EmplacementNew(memory, &body, def, shape);
 	BodyAtty::Insert(body, fixture);
 
-	if (body.IsActive())
+	if (body.IsEnabled())
 	{
-		CreateProxies(*fixture, body.GetTransformation(), def.aabbExtension);
+		RegisterForProxies(fixture);
 	}
 	
 	// Adjust mass properties if needed.
@@ -2309,8 +2345,10 @@ bool World::DestroyFixture(Fixture* fixture, bool resetMassData)
 	return true;
 }
 
-void World::CreateProxies(Fixture& fixture, const Transformation& xf, const RealNum aabbExtension)
+void World::CreateProxies(Fixture& fixture, const RealNum aabbExtension)
 {
+	const auto body = fixture.GetBody();
+	const auto xf = body->GetTransformation();
 	assert(fixture.GetProxyCount() == 0);
 	
 	const auto shape = fixture.GetShape();
@@ -2318,6 +2356,7 @@ void World::CreateProxies(Fixture& fixture, const Transformation& xf, const Real
 	// Reserve proxy space and create proxies in the broad-phase.
 	const auto childCount = GetChildCount(*shape);
 	const auto proxies = static_cast<FixtureProxy*>(malloc(sizeof(FixtureProxy) * childCount));
+	
 	for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex)
 	{
 		const auto aabb = ComputeAABB(*shape, xf, childIndex);
@@ -2325,6 +2364,7 @@ void World::CreateProxies(Fixture& fixture, const Transformation& xf, const Real
 		const auto proxyId = m_broadPhase.CreateProxy(GetFattenedAABB(aabb, aabbExtension), proxyPtr);
 		new (proxyPtr) FixtureProxy{aabb, proxyId, &fixture, childIndex};
 	}
+
 	FixtureAtty::SetProxies(fixture, Span<FixtureProxy>(proxies, childCount));
 }
 
@@ -2339,11 +2379,26 @@ void World::DestroyProxies(Fixture& fixture)
 		proxies[i].~FixtureProxy();
 	}
 	free(proxies.begin());
-	
+
 	FixtureAtty::SetProxies(fixture, Span<FixtureProxy>(static_cast<FixtureProxy*>(nullptr), child_count_t{0}));
 }
 
-void World::TouchProxies(Fixture& fixture) noexcept
+bool World::TouchProxies(Fixture& fixture) noexcept
+{
+	const auto body = fixture.GetBody();
+	if (body)
+	{
+		const auto world = body->GetWorld();
+		if (world == this)
+		{
+			InternalTouchProxies(fixture);
+			return true;
+		}
+	}
+	return false;
+}
+
+void World::InternalTouchProxies(Fixture& fixture) noexcept
 {
 	const auto proxyCount = fixture.GetProxyCount();
 	for (auto i = decltype(proxyCount){0}; i < proxyCount; ++i)
@@ -2389,32 +2444,6 @@ contact_count_t World::Synchronize(Body& body,
 		updatedCount += Synchronize(*fixture, xfm1, xfm2, multiplier, aabbExtension);
 	}
 	return updatedCount;
-}
-
-void World::SetTransform(Body& body, const Vec2 position, Angle angle, const RealNum aabbExtension)
-{
-	assert(::box2d::IsValid(position));
-	assert(::box2d::IsValid(angle));
-	
-	if (body.GetWorld() != this)
-	{
-		return;
-	}
-
-	assert(!IsLocked());
-	if (IsLocked())
-	{
-		return;
-	}
-	
-	const auto xfm = Transformation{position, UnitVec2{angle}};
-	BodyAtty::SetTransformation(body, xfm);
-	
-	const auto sweep = Sweep{Position{Transform(body.GetLocalCenter(), xfm), angle}, body.GetLocalCenter()};
-	BodyAtty::SetSweep(body, sweep);
-	
-	// Note that distanceMultiplier parameter has no effect here since no displacement.
-	Synchronize(body, xfm, xfm, 0, aabbExtension);
 }
 
 // Free functions...
