@@ -153,15 +153,15 @@ protected:
 	/// Flag this contact for filtering. Filtering will occur the next time step.
 	void UnflagForFiltering() noexcept;
 
-	static Contact* Create(Fixture& fixtureA, child_count_t indexA, Fixture& fixtureB, child_count_t indexB,
-						   BlockAllocator& allocator);
+	static Contact* Create(Fixture& fixtureA, child_count_t indexA,
+						   Fixture& fixtureB, child_count_t indexB);
 
-	static void Destroy(Contact* contact, Shape::Type typeA, Shape::Type typeB, BlockAllocator& allocator);
+	static void Destroy(Contact* contact, Shape::Type typeA, Shape::Type typeB);
 	
 	/// Destroys the given contact.
 	/// @note This awakens the associated fixtures of a non-sensor touching contact.
 	/// @note This calls the contact's destructor.
-	static void Destroy(Contact* contact, BlockAllocator& allocator);
+	static void Destroy(Contact* contact);
 
 	Contact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB);
 	virtual ~Contact() = default;

@@ -479,15 +479,14 @@ class ContactAtty
 {
 private:
 	static Contact* Create(Fixture& fixtureA, child_count_t indexA,
-						   Fixture& fixtureB, child_count_t indexB,
-						   BlockAllocator& allocator)
+						   Fixture& fixtureB, child_count_t indexB)
 	{
-		return Contact::Create(fixtureA, indexA, fixtureB, indexB, allocator);
+		return Contact::Create(fixtureA, indexA, fixtureB, indexB);
 	}
 
-	static void Destroy(Contact* c, BlockAllocator& allocator)
+	static void Destroy(Contact* c)
 	{
-		Contact::Destroy(c, allocator);
+		Contact::Destroy(c);
 	}
 	
 	static void SetToi(Contact& c, RealNum value) noexcept
@@ -731,7 +730,7 @@ World::~World()
 		BodyAtty::Erase(*bodyA, c);
 		BodyAtty::Erase(*bodyB, c);
 		m_contacts.pop_front();
-		ContactAtty::Destroy(c, m_blockAllocator);
+		ContactAtty::Destroy(c);
 	}
 
 	// Gets rid of the created joints.
@@ -1914,7 +1913,7 @@ void World::InternalDestroy(Contact* c, Body* from)
 		}
 	}
 	
-	ContactAtty::Destroy(c, m_blockAllocator);
+	ContactAtty::Destroy(c);
 }
 
 void World::Destroy(Contact* c, Body* from)
@@ -2062,8 +2061,7 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 	assert(m_contacts.size() < MaxContacts);
 	
 	// Call the contact factory create method.
-	const auto contact = ContactAtty::Create(*fixtureA, childIndexA, *fixtureB, childIndexB,
-											 m_blockAllocator);
+	const auto contact = ContactAtty::Create(*fixtureA, childIndexA, *fixtureB, childIndexB);
 	assert(contact);
 	if (!contact)
 	{

@@ -24,15 +24,12 @@
 
 namespace box2d {
 
-class BlockAllocator;
-
 class PolygonContact : public Contact
 {
 public:
 	static Contact* Create(Fixture* fixtureA, child_count_t indexA,
-							 Fixture* fixtureB, child_count_t indexB,
-							 BlockAllocator& allocator);
-	static void Destroy(Contact* contact, BlockAllocator& allocator);
+						   Fixture* fixtureB, child_count_t indexB);
+	static void Destroy(Contact* contact);
 
 	PolygonContact(Fixture* fixtureA, Fixture* fixtureB);
 	~PolygonContact() {}

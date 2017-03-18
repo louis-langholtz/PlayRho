@@ -29,16 +29,14 @@
 using namespace box2d;
 
 Contact* PolygonContact::Create(Fixture* fixtureA, child_count_t,
-									Fixture* fixtureB, child_count_t,
-									BlockAllocator& allocator)
+								Fixture* fixtureB, child_count_t)
 {
-	void* mem = allocator.Allocate(sizeof(PolygonContact));
-	return new (mem) PolygonContact(fixtureA, fixtureB);
+	return new PolygonContact(fixtureA, fixtureB);
 }
 
-void PolygonContact::Destroy(Contact* contact, BlockAllocator& allocator)
+void PolygonContact::Destroy(Contact* contact)
 {
-	Delete(static_cast<PolygonContact*>(contact), allocator);
+	delete static_cast<PolygonContact*>(contact);
 }
 
 PolygonContact::PolygonContact(Fixture* fixtureA, Fixture* fixtureB)

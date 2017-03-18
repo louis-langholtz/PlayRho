@@ -28,16 +28,14 @@
 using namespace box2d;
 
 Contact* EdgeAndEdgeContact::Create(Fixture* fixtureA, child_count_t,
-									  Fixture* fixtureB, child_count_t,
-									  BlockAllocator& allocator)
+									Fixture* fixtureB, child_count_t)
 {
-	void* mem = allocator.Allocate(sizeof(EdgeAndEdgeContact));
-	return new (mem) EdgeAndEdgeContact(fixtureA, fixtureB);
+	return new EdgeAndEdgeContact(fixtureA, fixtureB);
 }
 
-void EdgeAndEdgeContact::Destroy(Contact* contact, BlockAllocator& allocator)
+void EdgeAndEdgeContact::Destroy(Contact* contact)
 {
-	Delete(static_cast<EdgeAndEdgeContact*>(contact), allocator);
+	delete static_cast<EdgeAndEdgeContact*>(contact);
 }
 
 EdgeAndEdgeContact::EdgeAndEdgeContact(Fixture* fixtureA, Fixture* fixtureB)
