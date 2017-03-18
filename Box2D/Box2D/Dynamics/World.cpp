@@ -2347,7 +2347,7 @@ void World::CreateProxies(Fixture& fixture, const RealNum aabbExtension)
 	
 	// Reserve proxy space and create proxies in the broad-phase.
 	const auto childCount = GetChildCount(*shape);
-	const auto proxies = static_cast<FixtureProxy*>(malloc(sizeof(FixtureProxy) * childCount));
+	const auto proxies = static_cast<FixtureProxy*>(alloc(sizeof(FixtureProxy) * childCount));
 	
 	for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex)
 	{
