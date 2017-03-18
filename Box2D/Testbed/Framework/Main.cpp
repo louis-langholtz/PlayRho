@@ -381,7 +381,7 @@ static void sSimulate(Drawer& drawer)
 {
 	glEnable(GL_DEPTH_TEST);
 	
-	settings.dt = (settings.hz > 0)? 1.0f / settings.hz : 0.0f;
+	settings.dt = (settings.hz != 0)? 1 / settings.hz : 0;
 	if (settings.pause)
 	{
 		if (settings.singleStep)
@@ -435,7 +435,7 @@ static void sInterface()
 		imguiSlider("TOI Vel Iters", &settings.toiVelocityIterations, 0, 100, 1, true);
 		imguiSlider("TOI Pos Iters", &settings.toiPositionIterations, 0, 100, 1, true);
 		imguiSlider("Max Sub Steps", &settings.maxSubSteps, 0, 100, 1, true);
-		imguiSlider("Hertz", &settings.hz, 5.0f, 120.0f, 5.0f, true);
+		imguiSlider("Hertz", &settings.hz, -120.0f, 120.0f, 5.0f, true);
 		imguiSlider("Linear Slop", &settings.linearSlop,
 					static_cast<float>(DefaultLinearSlop / 10),
 					static_cast<float>(DefaultLinearSlop),
