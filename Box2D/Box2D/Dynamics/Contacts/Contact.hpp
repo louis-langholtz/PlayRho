@@ -29,7 +29,6 @@ namespace box2d {
 class Body;
 class Contact;
 class Fixture;
-class BlockAllocator;
 class ContactListener;
 struct ToiConf;
 	

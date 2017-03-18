@@ -27,7 +27,6 @@
 
 namespace box2d {
 
-class BlockAllocator;
 class Body;
 class BroadPhase;
 class Fixture;

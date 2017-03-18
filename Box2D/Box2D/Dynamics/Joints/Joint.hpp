@@ -28,7 +28,6 @@ namespace box2d {
 
 class Body;
 class Joint;
-class BlockAllocator;
 class StepConf;
 struct Velocity;
 struct ConstraintSolverConf;
@@ -166,11 +165,11 @@ protected:
 private:
 	friend class JointAtty;
 
-	static Joint* Create(const JointDef& def, BlockAllocator& allocator);
+	static Joint* Create(const JointDef& def);
 
 	/// Destroys the given joint.
 	/// @note This calls the joint's destructor.
-	static void Destroy(Joint* joint, BlockAllocator& allocator);
+	static void Destroy(Joint* joint);
 
 	/// Initializes velocity constraint data based on the given solver data.
 	/// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.

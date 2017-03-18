@@ -465,11 +465,10 @@ private:
 		fixture.SetProxies(value);
 	}
 	
-	static Fixture* EmplacementNew(void* memory,
-								   Body* body, const FixtureDef& def,
+	static Fixture* EmplacementNew(Body* body, const FixtureDef& def,
 								   std::shared_ptr<const Shape> shape)
 	{
-		return new (memory) Fixture{body, def, shape};
+		return new Fixture{body, def, shape};
 	}
 	
 	friend class World;
@@ -525,14 +524,14 @@ private:
 class JointAtty
 {
 private:
-	static Joint* Create(const box2d::JointDef &def, BlockAllocator& allocator)
+	static Joint* Create(const box2d::JointDef &def)
 	{
-		return Joint::Create(def, allocator);
+		return Joint::Create(def);
 	}
 	
-	static void Destroy(Joint* j, BlockAllocator& allocator)
+	static void Destroy(Joint* j)
 	{
-		Joint::Destroy(j, allocator);
+		Joint::Destroy(j);
 	}
 	
 	static void InitVelocityConstraints(Joint& j, BodyConstraints &bodies,
@@ -557,15 +556,14 @@ private:
 class BodyAtty
 {
 private:
-	static Body* EmplacementNew(void* memory,
-								   World* world, const BodyDef& def)
+	static Body* EmplacementNew(World* world, const BodyDef& def)
 	{
-		return new (memory) Body(def, world);
+		return new Body(def, world);
 	}
 
 	static void Destruct(Body* b)
 	{
-		b->~Body();
+		delete b;
 	}
 	
 	static void SetTypeFlags(Body& b, BodyType type) noexcept
@@ -656,13 +654,13 @@ private:
 		b.Advance(toi);
 	}
 
-	static void ClearFixtures(Body& b, BlockAllocator& allocator, std::function<void(Fixture&)> callback)
+	static void ClearFixtures(Body& b, std::function<void(Fixture&)> callback)
 	{
 		while (!b.m_fixtures.empty())
 		{
 			const auto fixture = b.m_fixtures.front();
 			callback(*fixture);
-			Delete(fixture, allocator);
+			delete fixture;
 			b.m_fixtures.pop_front();
 		}
 	}
@@ -748,7 +746,7 @@ World::~World()
 			BodyAtty::Erase(*bodyB, j);
 		}
 		m_joints.pop_front();
-		JointAtty::Destroy(j, m_blockAllocator);
+		JointAtty::Destroy(j);
 	}
 
 	// Gets rid of the created bodies and any associated fixtures.
@@ -756,7 +754,7 @@ World::~World()
 	{
 		const auto b = m_bodies.front();
 		m_bodies.pop_front();
-		BodyAtty::ClearFixtures(*b, m_blockAllocator, [&](Fixture& fixture) {
+		BodyAtty::ClearFixtures(*b, [&](Fixture& fixture) {
 			if (m_destructionListener)
 			{
 				m_destructionListener->SayGoodbye(fixture);
@@ -766,7 +764,6 @@ World::~World()
 		assert(b->GetJoints().empty());
 		assert(b->GetContacts().empty());
 		BodyAtty::Destruct(b);
-		m_blockAllocator.Free(b, sizeof(Body));
 	}
 }
 
@@ -791,14 +788,12 @@ Body* World::CreateBody(const BodyDef& def)
 		return nullptr;
 	}
 
-	void* mem = m_blockAllocator.Allocate(sizeof(Body));
-	auto b = BodyAtty::EmplacementNew(mem, this, def);
+	auto b = BodyAtty::EmplacementNew(this, def);
 	if (b)
 	{
 		if (!Add(*b))
 		{
 			BodyAtty::Destruct(b);
-			m_blockAllocator.Free(b, sizeof(Body));
 			return nullptr;
 		}		
 	}
@@ -859,7 +854,7 @@ void World::Destroy(Body* b)
 	});
 	
 	// Delete the attached fixtures. This destroys broad-phase proxies.
-	BodyAtty::ClearFixtures(*b, m_blockAllocator, [&](Fixture& fixture) {
+	BodyAtty::ClearFixtures(*b, [&](Fixture& fixture) {
 		if (m_destructionListener)
 		{
 			m_destructionListener->SayGoodbye(fixture);
@@ -870,7 +865,6 @@ void World::Destroy(Body* b)
 	Remove(*b);
 	
 	BodyAtty::Destruct(b);
-	m_blockAllocator.Free(b, sizeof(*b));
 }
 
 Joint* World::CreateJoint(const JointDef& def)
@@ -887,7 +881,7 @@ Joint* World::CreateJoint(const JointDef& def)
 	}
 
 	// Note: creating a joint doesn't wake the bodies.
-	auto j = JointAtty::Create(def, m_blockAllocator);
+	auto j = JointAtty::Create(def);
 	if (!j)
 	{
 		return nullptr;
@@ -974,7 +968,7 @@ void World::InternalDestroy(Joint* j)
 
 	const auto collideConnected = j->GetCollideConnected();
 
-	JointAtty::Destroy(j, m_blockAllocator);
+	JointAtty::Destroy(j);
 
 	// If the joint prevented collisions, then flag any contacts for filtering.
 	if (!collideConnected)
@@ -2260,8 +2254,7 @@ Fixture* World::CreateFixture(Body& body, std::shared_ptr<const Shape> shape,
 		return nullptr;
 	}
 	
-	const auto memory = m_blockAllocator.Allocate(sizeof(Fixture));
-	const auto fixture = FixtureAtty::EmplacementNew(memory, &body, def, shape);
+	const auto fixture = FixtureAtty::EmplacementNew(&body, def, shape);
 	BodyAtty::Insert(body, fixture);
 
 	if (body.IsEnabled())
@@ -2334,8 +2327,7 @@ bool World::DestroyFixture(Fixture* fixture, bool resetMassData)
 	});
 	
 	DestroyProxies(*fixture);
-	
-	Delete(fixture, m_blockAllocator);
+	delete fixture;
 	
 	BodyAtty::SetMassDataDirty(body);
 	if (resetMassData)

@@ -21,7 +21,6 @@
 #define B2_WORLD_H
 
 #include <Box2D/Common/Math.hpp>
-#include <Box2D/Common/BlockAllocator.hpp>
 #include <Box2D/Dynamics/WorldCallbacks.hpp>
 #include <Box2D/Dynamics/StepStats.hpp>
 #include <Box2D/Collision/BroadPhase.hpp>
@@ -555,8 +554,6 @@ private:
 	void SynchronizeProxies(Body& body, const StepConf& conf);
 
 	/******** Member variables. ********/
-
-	BlockAllocator m_blockAllocator; ///< Block allocator. 136-bytes.
 	
 	BroadPhase m_broadPhase; ///< Broad phase data. 72-bytes.
 	
