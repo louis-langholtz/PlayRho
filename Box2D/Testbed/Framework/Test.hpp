@@ -182,6 +182,7 @@ private:
 	Vec2 m_bombSpawnPoint;
 	bool m_bombSpawning = false;
 	Vec2 m_mouseWorld;
+	double m_sumDeltaTime = 0.0;
 	int32 m_stepCount = 0;
 	StepStats m_stepStats;
 	size_t m_numContacts = 0;

@@ -394,9 +394,9 @@ static void sSimulate(Drawer& drawer)
 		}
 	}
 	
+	test->DrawTitle(drawer, entry->name);
 	test->Step(settings, drawer);
 
-	test->DrawTitle(drawer, entry->name);
 	glDisable(GL_DEPTH_TEST);
 
 	if (testSelection != testIndex)

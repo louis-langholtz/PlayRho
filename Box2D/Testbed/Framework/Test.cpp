@@ -551,7 +551,7 @@ void Test::LaunchBomb(const Vec2& position, const Vec2& linearVelocity)
 
 void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
 {
-	drawer.DrawString(5, m_textLine, "step#=%d:", m_stepCount);
+	drawer.DrawString(5, m_textLine, "step#=%d (@%fs):", m_stepCount, m_sumDeltaTime);
 	m_textLine += DRAW_STRING_NEW_LINE;
 	
 	drawer.DrawString(5, m_textLine, "  pre-info: cts-add=%d cts-ignor=%d cts-del=%d cts-upd=%d",
@@ -641,12 +641,16 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
 	const auto selectedFixture = GetSelectedFixture();
 	if (selectedFixture)
 	{
+		const auto density = selectedFixture->GetDensity();
+		const auto friction = selectedFixture->GetFriction();
+		const auto restitution = selectedFixture->GetRestitution();
 		const auto body = selectedFixture->GetBody();
 		const auto location = body->GetLocation();
 		const auto velocity = body->GetVelocity();
-		drawer.DrawString(5, m_textLine, "Selected fixture: pos={%f,%f} vel={%f,%f}",
+		drawer.DrawString(5, m_textLine, "Selected fixture: pos={%f,%f} vel={%f,%f} density=%f friction=%f restitution=%f",
 						  GetX(location), GetY(location),
-						  GetX(velocity.linear), GetY(velocity.linear));
+						  GetX(velocity.linear), GetY(velocity.linear),
+						  density, friction, restitution);
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 }
@@ -742,8 +746,9 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 
 	drawer.Flush();
 
-	if (settings.dt > 0)
+	if (settings.dt != 0)
 	{
+		m_sumDeltaTime += settings.dt;
 		++m_stepCount;
 		m_stepStats = stepStats;
 		m_minToiSep = Min(m_minToiSep, stepStats.toi.minSeparation);
