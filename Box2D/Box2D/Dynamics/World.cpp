@@ -465,8 +465,7 @@ private:
 		fixture.SetProxies(value);
 	}
 	
-	static Fixture* EmplacementNew(Body* body, const FixtureDef& def,
-								   std::shared_ptr<const Shape> shape)
+	static Fixture* Create(Body* body, const FixtureDef& def, std::shared_ptr<const Shape> shape)
 	{
 		return new Fixture{body, def, shape};
 	}
@@ -556,7 +555,7 @@ private:
 class BodyAtty
 {
 private:
-	static Body* EmplacementNew(World* world, const BodyDef& def)
+	static Body* Create(World* world, const BodyDef& def)
 	{
 		return new Body(def, world);
 	}
@@ -788,7 +787,7 @@ Body* World::CreateBody(const BodyDef& def)
 		return nullptr;
 	}
 
-	auto b = BodyAtty::EmplacementNew(this, def);
+	auto b = BodyAtty::Create(this, def);
 	if (b)
 	{
 		if (!Add(*b))
@@ -2254,7 +2253,7 @@ Fixture* World::CreateFixture(Body& body, std::shared_ptr<const Shape> shape,
 		return nullptr;
 	}
 	
-	const auto fixture = FixtureAtty::EmplacementNew(&body, def, shape);
+	const auto fixture = FixtureAtty::Create(&body, def, shape);
 	BodyAtty::Insert(body, fixture);
 
 	if (body.IsEnabled())
