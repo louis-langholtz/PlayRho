@@ -1727,7 +1727,7 @@ StepStats World::Step(const StepConf& conf)
 		CreateAndDestroyProxies(conf);
 		SynchronizeProxies(conf);
 
-		const auto destroyStats = DestroyContacts();
+		const auto destroyStats = DestroyContacts(m_contacts);
 		if (HasNewFixtures())
 		{
 			UnsetNewFixtures();
@@ -1735,17 +1735,18 @@ StepStats World::Step(const StepConf& conf)
 			// New fixtures were added: need to find and create the new contacts.
 			stepStats.pre.added = FindNewContacts();
 		}
-		const auto updateStats = UpdateContacts();
-		
-		assert(destroyStats.ignored == updateStats.ignored);
 
-		stepStats.pre.ignored = updateStats.ignored;
-		stepStats.pre.destroyed = destroyStats.filteredOut + destroyStats.notOverlapping;
-		stepStats.pre.updated = updateStats.updated;
-
-		if (conf.get_dt() > 0)
+		if (conf.get_dt() != 0)
 		{
 			m_inv_dt0 = conf.get_inv_dt();
+
+			const auto updateStats = UpdateContacts(m_contacts);
+			
+			assert(destroyStats.ignored == updateStats.ignored);
+			
+			stepStats.pre.ignored = updateStats.ignored;
+			stepStats.pre.destroyed = destroyStats.filteredOut + destroyStats.notOverlapping;
+			stepStats.pre.updated = updateStats.updated;
 
 			// Integrate velocities, solve velocity constraints, and integrate positions.
 			if (IsStepComplete())
@@ -1855,18 +1856,6 @@ void World::ShiftOrigin(const Vec2 newOrigin)
 	m_broadPhase.ShiftOrigin(newOrigin);
 }
 
-bool World::IsActive(const Contact& contact) noexcept
-{
-	const auto bA = contact.GetFixtureA()->GetBody();
-	const auto bB = contact.GetFixtureB()->GetBody();
-	
-	const auto activeA = bA->IsSpeedable() && bA->IsAwake();
-	const auto activeB = bB->IsSpeedable() && bB->IsAwake();
-	
-	// Is at least one body active (awake and dynamic or kinematic)?
-	return activeA || activeB;
-}
-
 bool World::Erase(Contact* c)
 {
 	assert(c);
@@ -1914,19 +1903,12 @@ void World::Destroy(Contact* c, Body* from)
 	Erase(c);
 }
 
-void World::Destroy(Contacts::iterator iter)
-{
-	InternalDestroy(*iter);
-	m_contacts.erase(iter);
-}
-
-World::DestroyContactsStats World::DestroyContacts()
+World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
 {
 	auto stats = DestroyContactsStats{};
 	
-	// Update awake contacts.
-	decltype(m_contacts)::iterator next;
-	for (auto iter = m_contacts.begin(); iter != m_contacts.end(); iter = next)
+	Contacts::iterator next;
+	for (auto iter = contacts.begin(); iter != contacts.end(); iter = next)
 	{
 		next = std::next(iter);
 
@@ -1943,7 +1925,8 @@ World::DestroyContactsStats World::DestroyContacts()
 		{
 			if (!::box2d::ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(fixtureA, fixtureB))
 			{
-				Destroy(iter);
+				InternalDestroy(*iter);
+				contacts.erase(iter);
 				++stats.filteredOut;
 				continue;
 			}
@@ -1961,7 +1944,8 @@ World::DestroyContactsStats World::DestroyContacts()
 		if (!TestOverlap(m_broadPhase, fixtureA, indexA, fixtureB, indexB))
 		{
 			// Destroy contacts that cease to overlap in the broad-phase.
-			Destroy(iter);
+			InternalDestroy(*iter);
+			contacts.erase(iter);
 			++stats.notOverlapping;
 			continue;
 		}
@@ -1971,14 +1955,13 @@ World::DestroyContactsStats World::DestroyContacts()
 	
 	return stats;
 }
-	
 
-World::UpdateContactsStats World::UpdateContacts()
+World::UpdateContactsStats World::UpdateContacts(Contacts& contacts)
 {
 	auto stats = UpdateContactsStats{};
 	
 	// Update awake contacts.
-	for (auto iter = m_contacts.begin(); iter != m_contacts.end(); ++iter)
+	for (auto iter = contacts.begin(); iter != contacts.end(); ++iter)
 	{
 		const auto contact = *iter;
 		const auto fixtureA = contact->GetFixtureA();
@@ -2519,6 +2502,18 @@ void ClearForces(World& world) noexcept
 	{
 		body->SetAcceleration(g, 0_rad);
 	}
+}
+
+bool IsActive(const Contact& contact) noexcept
+{
+	const auto bA = contact.GetFixtureA()->GetBody();
+	const auto bB = contact.GetFixtureB()->GetBody();
+	
+	const auto activeA = bA->IsSpeedable() && bA->IsAwake();
+	const auto activeB = bB->IsSpeedable() && bB->IsAwake();
+	
+	// Is at least one body active (awake and dynamic or kinematic)?
+	return activeA || activeB;
 }
 
 } // namespace box2d

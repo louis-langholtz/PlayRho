@@ -166,23 +166,25 @@ public:
 	/// @param joint Joint, created by this world, to destroy.
 	void Destroy(Joint* joint);
 
-	/// Steps the world ahead by the given configuration.
+	/// Steps the world simulation according to the given configuration.
 	///
 	/// @detail
 	/// Performs position and velocity updating, sleeping of non-moving bodies, updating
 	/// of the contacts, and notifying the contact listener of begin-contact, end-contact,
 	/// pre-solve, and post-solve events.
-	/// If the given velocity and position iterations are more than zero,
-	/// this method also respectively performs velocity and position resolution of the contacting bodies.
 	///
+	/// @warning Behavior is undefined if given a negative step time delta.
+	/// @warning Varying the step time delta may lead to non-physical behaviors.
+	///
+	/// @note Calling this with a zero step time delta results only in fixtures and bodies
+	///   registered for proxy handling being processed. No physics is performed.
+	/// @note If the given velocity and position iterations are zero, this method doesn't
+	///   do velocity or position resolutions respectively of the contacting bodies.
 	/// @note While body velocities are updated accordingly (per the sum of forces acting on them),
-	/// body positions (barring any collisions) are updated as if they had moved the entire time step
-	/// at those resulting velocities.
-	/// In other words, a body initially at p0 going v0 fast with a sum acceleration of a,
-	/// after time t and barring any collisions,
-	/// will have a new velocity (v1) of v0 + (a * t) and a new position (p1) of p0 + v1 * t.
-	///
-	/// @warning Varying the time step may lead to non-physical behaviors.
+	///   body positions (barring any collisions) are updated as if they had moved the entire time
+	///   step at those resulting velocities. In other words, a body initially at p0 going v0 fast
+	///   with a sum acceleration of a, after time t and barring any collisions, will have a new
+	///   velocity (v1) of v0 + (a * t) and a new position (p1) of p0 + v1 * t.
 	///
 	/// @post Static bodies are unmoved.
 	/// @post Kinetic bodies are moved based on their previous velocities.
@@ -359,9 +361,7 @@ private:
 	/// @return Island solver results.
 	///
 	IslandSolverResults SolveRegIsland(const StepConf& step, Island island);
-
-	static bool IsActive(const Contact& contact) noexcept;
-
+	
 	/// Builds island based off of a given "seed" body.
 	/// @post Contacts are listed in the island in the order that bodies list those contacts.
 	/// @post Joints are listed the island in the order that bodies list those joints.
@@ -499,9 +499,9 @@ private:
 	/// have active bodies (either or both) get their Update methods called with the current
 	/// contact listener as its argument.
 	/// Essentially this really just purges contacts that are no longer relevant.
-	DestroyContactsStats DestroyContacts();
+	DestroyContactsStats DestroyContacts(Contacts& contacts);
 	
-	UpdateContactsStats UpdateContacts();
+	UpdateContactsStats UpdateContacts(Contacts& contacts);
 	
 	bool ShouldCollide(const Fixture* fixtureA, const Fixture* fixtureB);
 
@@ -526,7 +526,6 @@ private:
 	bool Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB);
 	
 	void InternalDestroy(Contact* contact, Body* from = nullptr);
-	void Destroy(Contacts::iterator iter);
 	bool Erase(Contact* contact);
 	
 	/// Creates proxies for every child of the given fixture's shape.
@@ -572,7 +571,11 @@ private:
 	
 	Bodies m_bodies; ///< Body collection.
 	Joints m_joints; ///< Joint collection.
-	Contacts m_contacts; ///< Container of contacts.
+
+	/// Container of contacts.
+	/// @note In the "AddPair" stress-test, 401 bodies can have some 31000 contacts
+	///   during a given time step.
+	Contacts m_contacts;
 
 	Vec2 m_gravity; ///< Gravity setting. 8-bytes.
 
@@ -831,6 +834,8 @@ size_t Awaken(World& world);
 /// @detail
 /// Manually clear the force buffer on all bodies.
 void ClearForces(World& world) noexcept;
+
+bool IsActive(const Contact& contact) noexcept;
 
 } // namespace box2d
 

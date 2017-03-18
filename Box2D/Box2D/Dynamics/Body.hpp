@@ -370,7 +370,8 @@ public:
 	/// Set the sleep state of the body to sleep.
 	bool UnsetAwake() noexcept;
 
-	/// Get the sleeping state of this body.
+	/// Gets the awake/asleep state of this body.
+	/// @warning Being awake may or may not imply being speedable.
 	/// @return true if the body is awake.
 	bool IsAwake() const noexcept;
 
@@ -718,7 +719,7 @@ inline bool Body::IsImpenetrable() const noexcept
 
 inline bool Body::SetAwake() noexcept
 {
-	if ((m_flags & e_awakeFlag) == 0)
+	if (!IsAwake())
 	{
 		m_flags |= e_awakeFlag;
 		m_underActiveTime = 0;
