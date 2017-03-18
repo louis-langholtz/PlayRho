@@ -28,11 +28,17 @@ namespace box2d
 	class Shape;
 
 	/// Distance Proxy.
+	///
 	/// @detail
-	/// A distance proxy is used by the GJK algorithm.
-	/// It encapsulates any shape.
+	/// A distance proxy is a convex set. This can be visualized as a convex N-gon.
+	/// It encapsulates any single portion of a shape identified by its child-index.
+	/// These are used by the GJK algorithm: "a method for determining the minimium distance
+	/// between two convex sets".
+	///
 	/// @note This data structure is 32-bytes.
+	///
 	/// @sa https://en.wikipedia.org/wiki/Gilbert%2DJohnson%2DKeerthi_distance_algorithm
+	///
 	class DistanceProxy
 	{
 	public:

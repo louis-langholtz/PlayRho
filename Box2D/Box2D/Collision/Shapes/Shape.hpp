@@ -80,13 +80,12 @@ private:
 /// @detail Gets the radius (in meters) of every vertex of this shape.
 /// This is used for collision handling.
 /// @note This value should never be less than zero.
-/// @sa DistanceProxy.
 inline RealNum GetVertexRadius(const Shape& shape) noexcept
 {
 	return shape.GetVertexRadius();
 }
 
-/// Gets the number of child primitives.
+/// Gets the number of child primitives of the shape.
 /// @return Positive non-zero count.
 child_count_t GetChildCount(const Shape& shape);
 
