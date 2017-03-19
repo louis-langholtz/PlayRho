@@ -171,11 +171,11 @@ using contact_count_t = Wider<body_count_t>::type;
 /// This occurs when every possible body is connected to every other body.
 constexpr auto MaxContacts = contact_count_t{MaxBodies} * contact_count_t{MaxBodies - 1} / contact_count_t{2};
 
-/// Joint count type.
-using joint_count_t = Wider<body_count_t>::type;
-
 /// Maximum number of joints in a world (65534 based off uint16 and eliminating one value for invalid).
 constexpr auto MaxJoints = uint16{std::numeric_limits<uint16>::max() - uint16{1}};
+
+/// Joint count type.
+using joint_count_t = std::remove_const<decltype(MaxJoints)>::type;
 
 constexpr auto DefaultStepTime = TimeSpan{1} / 60;
 

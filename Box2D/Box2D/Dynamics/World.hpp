@@ -54,26 +54,25 @@ constexpr auto EarthlyGravity = Vec2{0, RealNum(-9.8)};
 
 /// World.
 /// @detail
-/// The world class manages all physics entities, dynamic simulation,
-/// and asynchronous queries. The world also contains efficient memory
-/// management facilities.
+/// The world class manages all physics entities, dynamic simulation, and queries.
 /// @note This data structure is 352-bytes large (with 4-byte RealNum on at least one 64-bit platform).
 class World
 {
 public:
 	
-	/// Size type.
-	using size_type = size_t;
-
+	/// Proxy size type.
 	using proxy_size_type = std::remove_const<decltype(MaxContacts)>::type;
 
 	/// Time step iteration type.
 	using ts_iters_type = ts_iters_t;
 
+	/// Bodies container type.
 	using Bodies = std::list<Body*>;
 
+	/// Contacts container type.
 	using Contacts = std::list<Contact*>;
 	
+	/// Joints container type.
 	using Joints = std::list<Joint*>;
 	
 	/// World construction definitions.
@@ -107,9 +106,13 @@ public:
 	};
 	
 	/// Gets the default definitions value.
+	/// @note This method exists as a work-around for providing the World constructor a default
+	///   value without otherwise getting a compiler error such as:
+	///     "cannot use defaulted constructor of 'Def' within 'World' outside of member functions
+	///      because 'gravity' has an initializer"
 	static constexpr Def GetDefaultDef() noexcept
 	{
-		return Def{};	
+		return Def{};
 	}
 
 	/// Gets the default body definitions value.
@@ -767,9 +770,9 @@ inline World::Bodies::size_type GetBodyCount(const World& world) noexcept
 
 /// Gets the count of joints in the given world.
 /// @return 0 or higher.
-inline World::size_type GetJointCount(const World& world) noexcept
+inline joint_count_t GetJointCount(const World& world) noexcept
 {
-	return world.GetJoints().size();
+	return static_cast<joint_count_t>(world.GetJoints().size());
 }
 
 /// Gets the count of contacts in the given world.

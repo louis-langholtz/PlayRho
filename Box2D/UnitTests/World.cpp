@@ -79,10 +79,10 @@ TEST(World, DefaultInit)
 	World world;
 
 	EXPECT_EQ(GetBodyCount(world), body_count_t(0));
-	EXPECT_EQ(world.GetProxyCount(), World::size_type(0));
-	EXPECT_EQ(GetJointCount(world), World::size_type(0));
+	EXPECT_EQ(world.GetProxyCount(), World::proxy_size_type(0));
+	EXPECT_EQ(GetJointCount(world), joint_count_t(0));
 	EXPECT_EQ(GetContactCount(world), contact_count_t(0));
-	EXPECT_EQ(world.GetTreeHeight(), World::size_type(0));
+	EXPECT_EQ(world.GetTreeHeight(), World::proxy_size_type(0));
 	EXPECT_EQ(world.GetTreeQuality(), RealNum(0));
 
 	EXPECT_EQ(world.GetGravity(), EarthlyGravity);
@@ -96,7 +96,7 @@ TEST(World, DefaultInit)
 	EXPECT_EQ(world.GetContacts().begin(), world.GetContacts().end());
 	
 	EXPECT_TRUE(world.GetJoints().empty());
-	EXPECT_EQ(world.GetJoints().size(), World::size_type(0));
+	EXPECT_EQ(world.GetJoints().size(), joint_count_t(0));
 	EXPECT_EQ(world.GetJoints().begin(), world.GetJoints().end());
 	
 	EXPECT_FALSE(world.GetSubStepping());
