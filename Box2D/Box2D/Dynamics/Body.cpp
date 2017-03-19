@@ -364,7 +364,7 @@ box2d::size_t box2d::GetWorldIndex(const Body* body)
 	return size_t(-1);
 }
 
-Velocity box2d::GetVelocity(const Body& body, RealNum h) noexcept
+Velocity box2d::GetVelocity(const Body& body, TimeSpan h) noexcept
 {
 	assert(IsValid(h));
 
@@ -383,8 +383,8 @@ Velocity box2d::GetVelocity(const Body& body, RealNum h) noexcept
 		// v2 = exp(-c * dt) * v1
 		// Pade approximation:
 		// v2 = v1 * 1 / (1 + c * dt)
-		velocity.linear *= RealNum{1} / (RealNum{1} + h * body.GetLinearDamping());
-		velocity.angular *= RealNum{1} / (RealNum{1} + h * body.GetAngularDamping());
+		velocity.linear  *= 1 / (1 + h * body.GetLinearDamping());
+		velocity.angular *= 1 / (1 + h * body.GetAngularDamping());
 	}
 	return velocity;
 }

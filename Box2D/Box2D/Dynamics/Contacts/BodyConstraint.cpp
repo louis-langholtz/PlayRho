@@ -22,7 +22,7 @@
 
 using namespace box2d;
 
-box2d::BodyConstraint box2d::GetBodyConstraint(const Body& body, RealNum time) noexcept
+box2d::BodyConstraint box2d::GetBodyConstraint(const Body& body, TimeSpan time) noexcept
 {
 	return BodyConstraint{
 		body.GetInvMass(),

@@ -372,6 +372,56 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
 	}
 }
 
+
+TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
+{
+	const auto gravity = Vec2{0, RealNum(-9.8)};
+	
+	World world{World::Def{}.UseGravity(gravity)};
+	
+	BodyDef def;
+	def.position = Vec2{RealNum(31.9), RealNum(-19.24)};
+	def.linearVelocity = Vec2{0, RealNum(-9.8)};
+	def.type = BodyType::Dynamic;
+	
+	const auto body = world.CreateBody(def);
+	ASSERT_NE(body, nullptr);
+	EXPECT_EQ(body->GetLocation().x, def.position.x);
+	EXPECT_EQ(body->GetLocation().y, def.position.y);
+	EXPECT_EQ(GetLinearVelocity(*body).x, RealNum(0));
+	EXPECT_EQ(GetLinearVelocity(*body).y, RealNum(-9.8));
+	EXPECT_EQ(body->GetLinearAcceleration().x, 0);
+	EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
+	
+	const auto time_inc = TimeSpan{-0.01f};
+	auto stepConf = StepConf{};
+	stepConf.set_dt(time_inc);
+	stepConf.dtRatio = -1;
+	stepConf.regPositionIterations = 0;
+	stepConf.regVelocityIterations = 0;
+	stepConf.toiPositionIterations = 0;
+	stepConf.toiVelocityIterations = 0;
+	
+	auto pos = body->GetLocation();
+	auto vel = GetLinearVelocity(*body);
+	for (auto i = 0; i < 99; ++i)
+	{
+		world.Step(stepConf);
+		
+		EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
+		
+		EXPECT_EQ(body->GetLocation().x, def.position.x);
+		EXPECT_GT(body->GetLocation().y, pos.y);
+		EXPECT_EQ(body->GetLocation().y, pos.y + (vel.y + gravity.y * time_inc) * time_inc);
+		pos = body->GetLocation();
+		
+		EXPECT_EQ(GetLinearVelocity(*body).x, RealNum(0));
+		EXPECT_GT(GetLinearVelocity(*body).y, vel.y);
+		EXPECT_TRUE(almost_equal(GetLinearVelocity(*body).y, vel.y + gravity.y * time_inc));
+		vel = GetLinearVelocity(*body);
+	}
+}
+
 class MyContactListener: public ContactListener
 {
 public:

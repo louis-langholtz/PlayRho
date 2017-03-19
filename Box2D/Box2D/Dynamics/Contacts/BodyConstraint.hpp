@@ -111,7 +111,7 @@ namespace box2d {
 		return *this;
 	}
 	
-	BodyConstraint GetBodyConstraint(const Body& body, RealNum time = 0) noexcept;
+	BodyConstraint GetBodyConstraint(const Body& body, TimeSpan time = 0) noexcept;
 
 } // namespace box2d
 

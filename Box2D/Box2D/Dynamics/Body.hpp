@@ -553,7 +553,7 @@ private:
 	/// @detail A body under-active for enough time should have their awake flag unset.
 	///   I.e. if a body is under-active for long enough, it should go to sleep.
 	/// @note 4-bytes.
-	RealNum m_underActiveTime = 0;
+	TimeSpan m_underActiveTime = 0;
 };
 
 inline Body::FlagsType Body::GetFlags(const BodyType type) noexcept
@@ -744,14 +744,13 @@ inline bool Body::IsAwake() const noexcept
 	return (m_flags & e_awakeFlag) != 0;
 }
 
-inline RealNum Body::GetUnderActiveTime() const noexcept
+inline TimeSpan Body::GetUnderActiveTime() const noexcept
 {
 	return m_underActiveTime;
 }
 
-inline void Body::SetUnderActiveTime(RealNum value) noexcept
+inline void Body::SetUnderActiveTime(TimeSpan value) noexcept
 {
-	assert(value >= 0);
 	assert(value == 0 || IsSpeedable());
 	m_underActiveTime = value;
 }

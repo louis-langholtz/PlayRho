@@ -265,7 +265,7 @@ public:
 	RealNum GetMaxVertexRadius() const noexcept;
 
 	/// Gets the inverse delta time.
-	RealNum GetInvDeltaTime() const noexcept;
+	InverseTimeSpan GetInvDeltaTime() const noexcept;
 
 	/// Gets the fat AABB for a proxy.
 	/// @warning Behavior is undefined if the given proxy ID is not a valid ID.
@@ -588,7 +588,7 @@ private:
 	/// @detail Used to compute time step ratio to support a variable time step.
 	/// @note 4-bytes large.
 	/// @sa Step.
-	RealNum m_inv_dt0 = 0;
+	InverseTimeSpan m_inv_dt0 = 0;
 
 	/// Minimum vertex radius.
 	const RealNum m_minVertexRadius;
@@ -706,7 +706,7 @@ inline RealNum World::GetMaxVertexRadius() const noexcept
 	return m_maxVertexRadius;
 }
 
-inline RealNum World::GetInvDeltaTime() const noexcept
+inline InverseTimeSpan World::GetInvDeltaTime() const noexcept
 {
 	return m_inv_dt0;
 }

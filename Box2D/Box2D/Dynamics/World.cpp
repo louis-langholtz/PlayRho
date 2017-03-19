@@ -146,7 +146,7 @@ namespace {
 	/// Calculates movement.
 	/// @detail Calculate the positional displacement based on the given velocity
 	///    that's possibly clamped to the maximum translation and rotation.
-	inline PositionAndVelocity CalculateMovement(const BodyConstraint& body, RealNum h, MovementConf conf)
+	inline PositionAndVelocity CalculateMovement(const BodyConstraint& body, TimeSpan h, MovementConf conf)
 	{
 		assert(IsValid(h));
 		
@@ -171,7 +171,7 @@ namespace {
 	}
 	
 	inline void IntegratePositions(BodyConstraints& bodies,
-								   RealNum h, MovementConf conf)
+								   TimeSpan h, MovementConf conf)
 	{
 		for (auto&& body: bodies)
 		{
@@ -367,9 +367,9 @@ namespace {
 		return (sleepable && underactive)? b.GetUnderActiveTime() + conf.get_dt(): RealNum{0};
 	}
 
-	inline RealNum UpdateUnderActiveTimes(Island::Bodies& bodies, const StepConf& conf)
+	inline TimeSpan UpdateUnderActiveTimes(Island::Bodies& bodies, const StepConf& conf)
 	{
-		auto minUnderActiveTime = std::numeric_limits<RealNum>::infinity();
+		auto minUnderActiveTime = std::numeric_limits<TimeSpan>::infinity();
 		for (auto&& b: bodies)
 		{
 			if (b->IsSpeedable())
@@ -986,6 +986,7 @@ Island World::BuildIsland(Body& seed,
 	assert(seed.IsAwake());
 	assert(seed.IsEnabled());
 	assert(remNumBodies != 0);
+	assert(remNumBodies < MaxBodies);
 
 	// Size the island for the remaining un-evaluated bodies, contacts, and joints.
 	Island island(remNumBodies, remNumContacts, remNumJoints);
@@ -1003,6 +1004,7 @@ Island World::BuildIsland(Body& seed,
 		
 		assert(b->IsEnabled());
 		island.m_bodies.push_back(b);
+		assert(remNumBodies > 0);
 		--remNumBodies;
 		
 		// Make sure the body is awake.
@@ -1014,7 +1016,7 @@ Island World::BuildIsland(Body& seed,
 			continue;
 		}
 		
-		const auto numContacts = island.m_contacts.size();
+		const auto oldNumContacts = island.m_contacts.size();
 		// Adds appropriate contacts of current body and appropriate 'other' bodies of those contacts.
 		for (auto&& contact: b->GetContacts())
 		{
@@ -1036,7 +1038,12 @@ Island World::BuildIsland(Body& seed,
 				}
 			}			
 		}
-		remNumContacts -= island.m_contacts.size() - numContacts;
+		
+		const auto newNumContacts = island.m_contacts.size();
+		assert(newNumContacts >= oldNumContacts);
+		const auto netNumContacts = newNumContacts - oldNumContacts;
+		assert(remNumContacts >= netNumContacts);
+		remNumContacts -= netNumContacts;
 		
 		const auto numJoints = island.m_joints.size();
 		// Adds appropriate joints of current body and appropriate 'other' bodies of those joint.
@@ -1159,7 +1166,7 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
 	auto finMinSeparation = std::numeric_limits<RealNum>::infinity();
 	auto solved = false;
 	auto positionIterations = conf.regPositionIterations;
-	const auto h = conf.get_dt(); ///< Time step (in seconds).
+	const auto h = conf.get_dt(); ///< Time step.
 
 	auto bodyConstraints = BodyConstraints{};
 	bodyConstraints.reserve(island.m_bodies.size());
@@ -1168,10 +1175,9 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
 	for (auto&& body: island.m_bodies)
 	{
 		BodyAtty::SetPosition0(*body, GetPosition1(*body)); // like Advance0(1) on the sweep.
-		bodyConstraints[body] = GetBodyConstraint(*body, h);
+		bodyConstraints[body] = GetBodyConstraint(*body, h); // new velocity = acceleration * h
 	}
 	auto positionConstraints = GetPositionConstraints(island.m_contacts, bodyConstraints);
-
 	auto velocityConstraints = GetVelocityConstraints(island.m_contacts, bodyConstraints,
 													  VelocityConstraint::Conf{conf.doWarmStart? conf.dtRatio: 0, conf.velocityThreshold, true});
 	
@@ -1195,7 +1201,6 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
 		{
 			JointAtty::SolveVelocityConstraints(*joint, bodyConstraints, conf);
 		}
-
 		const auto newIncImpulse = SolveVelocityConstraints(velocityConstraints);
 		maxIncImpulse = std::max(maxIncImpulse, newIncImpulse);
 	}
@@ -1405,7 +1410,8 @@ ToiStepStats World::SolveTOI(const StepConf& conf)
 			break;
 		}
 
-		stats.maxSimulContacts = std::max(stats.maxSimulContacts, static_cast<decltype(stats.maxSimulContacts)>(ncount));
+		stats.maxSimulContacts = std::max(stats.maxSimulContacts,
+										  static_cast<decltype(stats.maxSimulContacts)>(ncount));
 		stats.contactsFound += ncount;
 		auto islandsFound = 0u;
 		for (auto&& contact: next.contacts)

@@ -70,6 +70,9 @@ using uint64 = std::uint64_t;
 ///
 using RealNum = float;
 
+using TimeSpan = RealNum;
+using InverseTimeSpan = RealNum;
+
 /// Child count type. @detail Relating to "children" of Shape.
 using child_count_t = unsigned;
 
@@ -174,11 +177,13 @@ using joint_count_t = Wider<body_count_t>::type;
 /// Maximum number of joints in a world (65534 based off uint16 and eliminating one value for invalid).
 constexpr auto MaxJoints = uint16{std::numeric_limits<uint16>::max() - uint16{1}};
 
+constexpr auto DefaultStepTime = TimeSpan{1} / 60;
+
 // Sleep
 
 /// Default minimum still time to sleep.
 /// @detail The default minimum time bodies must be still for bodies to be put to sleep.
-constexpr auto DefaultMinStillTimeToSleep = RealNum{1} / 2; // aka 0.5
+constexpr auto DefaultMinStillTimeToSleep = TimeSpan{1} / 2; // aka 0.5
 
 /// Default linear sleep tolerance.
 /// @detail A body cannot sleep if the magnitude of its linear velocity is above this amount.

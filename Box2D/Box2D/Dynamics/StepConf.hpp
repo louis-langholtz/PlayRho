@@ -47,12 +47,12 @@ public:
 	/// Gets the delta time (time amount for this time step).
 	/// @sa set_dt(RealNum).
 	/// @return Time step amount in seconds.
-	RealNum get_dt() const noexcept { return dt; }
+	TimeSpan get_dt() const noexcept { return dt; }
 
 	/// Gets the inverse delta-t value.
 	/// @return 1/dt or 0 if dt is 0.
 	/// @sa get_dt().
-	RealNum get_inv_dt() const noexcept { return inv_dt; }
+	InverseTimeSpan get_inv_dt() const noexcept { return inv_dt; }
 	
 	/// Sets the delta time value.
 	/// @note Used in both the regular and TOI phases of step processing.
@@ -77,7 +77,7 @@ public:
 	/// @detail The time that a body must be still before it will be put to sleep.
 	/// @note Set to an invalid value to disable sleeping.
 	/// @note Used in the regular phase processing of the step.
-	RealNum minStillTimeToSleep = DefaultMinStillTimeToSleep;
+	TimeSpan minStillTimeToSleep = DefaultMinStillTimeToSleep;
 
 	/// Linear slop.
 	/// @detail Linear slop for position resolution.
@@ -253,8 +253,8 @@ public:
 	bool doToi = true;
 
 private:
-	RealNum dt = RealNum{1} / 60; ///< Delta time. This is the time step in seconds.
-	RealNum inv_dt = 60; ///< Inverse time step (1/dt or 0 if dt == 0). @see dt.
+	TimeSpan dt = DefaultStepTime; ///< Delta time. This is the time step in seconds.
+	InverseTimeSpan inv_dt = 1 / DefaultStepTime; ///< Inverse time step (1/dt or 0 if dt == 0). @see dt.
 };
 
 inline RealNum GetMaxRegLinearCorrection(const StepConf& conf) noexcept
