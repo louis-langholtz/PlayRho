@@ -569,6 +569,20 @@ private:
 	{
 		b.m_flags &= ~(Body::e_impenetrableFlag|Body::e_velocityFlag|Body::e_accelerationFlag);
 		b.m_flags |= Body::GetFlags(type);
+		
+		switch (type)
+		{
+			case BodyType::Dynamic:
+				break;
+			case BodyType::Kinematic:
+				break;
+			case BodyType::Static:
+				b.UnsetAwakeFlag();
+				b.m_underActiveTime = 0;
+				b.m_velocity = Velocity{Vec2_zero, 0_rad};
+				b.m_sweep.pos0 = b.GetSweep().pos1;
+				break;
+		}
 	}
 	
 	static void SetMassDataDirty(Body& b) noexcept
@@ -1100,7 +1114,8 @@ RegStepStats World::SolveReg(const StepConf& conf)
 	// Build and simulate all awake islands.
 	for (auto&& body: m_bodies)
 	{
-		if (!m_bodiesIslanded.count(body) && body->IsSpeedable() && body->IsAwake() && body->IsEnabled())
+		assert(!body->IsAwake() || body->IsSpeedable());
+		if (!m_bodiesIslanded.count(body) && body->IsAwake() && body->IsEnabled())
 		{
 			++stats.islandsFound;
 
@@ -1985,7 +2000,9 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts)
 		
 		// Awake && speedable (dynamic or kinematic) means collidable.
 		// At least one body must be collidable
-		if (!(bodyA->IsSpeedable() && bodyA->IsAwake()) && !(bodyB->IsSpeedable() && bodyB->IsAwake()))
+		assert(!bodyA->IsAwake() || bodyA->IsSpeedable());
+		assert(!bodyB->IsAwake() || bodyB->IsSpeedable());
+		if (!bodyA->IsAwake() && !bodyB->IsAwake())
 		{
 			++stats.ignored;
 			continue;
@@ -2227,9 +2244,6 @@ void World::SetType(Body& body, BodyType type)
 
 	if (type == BodyType::Static)
 	{
-		BodyAtty::SetVelocity(body, Velocity{Vec2_zero, 0_rad});
-		BodyAtty::SetPosition0(body, body.GetSweep().pos1);
-		
 #ifndef NDEBUG
 		const auto xfm1 = GetTransform0(body.GetSweep());
 		const auto xfm2 = body.GetTransformation();
@@ -2550,8 +2564,11 @@ bool IsActive(const Contact& contact) noexcept
 	const auto bA = contact.GetFixtureA()->GetBody();
 	const auto bB = contact.GetFixtureB()->GetBody();
 	
-	const auto activeA = bA->IsSpeedable() && bA->IsAwake();
-	const auto activeB = bB->IsSpeedable() && bB->IsAwake();
+	assert(!bA->IsAwake() || bA->IsSpeedable());
+	assert(!bB->IsAwake() || bB->IsSpeedable());
+
+	const auto activeA = bA->IsAwake();
+	const auto activeB = bB->IsAwake();
 	
 	// Is at least one body active (awake and dynamic or kinematic)?
 	return activeA || activeB;

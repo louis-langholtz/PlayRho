@@ -944,7 +944,7 @@ inline void Body::UnsetEnabledFlag() noexcept
 /// Awakens the body if it's asleep.
 inline bool Awaken(Body& body) noexcept
 {
-	if (!body.IsAwake())
+	if (!body.IsAwake() && body.IsSpeedable())
 	{
 		body.SetAwake();
 		return true;
