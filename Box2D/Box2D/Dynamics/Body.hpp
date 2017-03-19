@@ -51,6 +51,10 @@ struct BodyDef
 	constexpr BodyDef& UseType(BodyType t) noexcept;
 	constexpr BodyDef& UseLocation(Vec2 l) noexcept;
 	constexpr BodyDef& UseAngle(Angle a) noexcept;
+	constexpr BodyDef& UseLinearVelocity(Vec2 v) noexcept;
+	constexpr BodyDef& UseAngularVelocity(Angle v) noexcept;
+	constexpr BodyDef& UseLinearAcceleration(Vec2 v) noexcept;
+	constexpr BodyDef& UseAngularAcceleration(Angle v) noexcept;
 	constexpr BodyDef& UseLinearDamping(RealNum v) noexcept;
 	constexpr BodyDef& UseAngularDamping(RealNum v) noexcept;
 	constexpr BodyDef& UseUnderActiveTime(RealNum v) noexcept;
@@ -78,6 +82,10 @@ struct BodyDef
 	/// The angular velocity of the body.
 	Angle angularVelocity = 0_rad;
 
+	Vec2 linearAcceleration = Vec2_zero;
+	
+	Angle angularAcceleration = 0_rad;
+	
 	/// Linear damping is use to reduce the linear velocity. The damping parameter
 	/// can be larger than 1 but the damping effect becomes sensitive to the
 	/// time step when the damping parameter is large.
@@ -132,7 +140,31 @@ constexpr inline BodyDef& BodyDef::UseAngle(Angle a) noexcept
 	angle = a;
 	return *this;
 }
-	
+
+constexpr BodyDef& BodyDef::UseLinearVelocity(Vec2 v) noexcept
+{
+	linearVelocity = v;
+	return *this;
+}
+
+constexpr BodyDef& BodyDef::UseLinearAcceleration(Vec2 v) noexcept
+{
+	linearAcceleration = v;
+	return *this;
+}
+
+constexpr BodyDef& BodyDef::UseAngularVelocity(Angle v) noexcept
+{
+	angularVelocity = v;
+	return *this;
+}
+
+constexpr BodyDef& BodyDef::UseAngularAcceleration(Angle v) noexcept
+{
+	angularAcceleration = v;
+	return *this;
+}
+
 constexpr inline BodyDef& BodyDef::UseLinearDamping(RealNum v) noexcept
 {
 	linearDamping = v;
@@ -195,6 +227,7 @@ constexpr inline BodyDef& BodyDef::UseUserData(void* value) noexcept
 /// @invariant Only "speedable" bodies can be awake.
 /// @invariant Only "speedable" bodies can have non-zero velocities.
 /// @invariant Only "accelerable" bodies can have non-zero accelerations.
+/// @invariant Only "accelerable" bodies can have non-zero "under-active" times.
 ///
 /// @note Create these using the World::Create method.
 /// @note On a 64-bit architecture with 4-byte RealNum, this data structure is at least 192-bytes large.
@@ -370,10 +403,11 @@ public:
 	/// Is this body allowed to sleep
 	bool IsSleepingAllowed() const noexcept;
 	
-	/// Sets this body to awake.
+	/// Sets this body to awake if it's a "speedable" body.
 	/// @detail
-	/// This sets the sleep state of the body to awake.
-	/// @post This body's IsAwake method returns true.
+	/// This sets the sleep state of the body to awake if it's a "speedable" body. It has
+	/// no effect otherwise.
+	/// @post If this body is a "speedable" body, then this body's IsAwake method returns true.
 	void SetAwake() noexcept;
 
 	/// Sets this body to asleep if sleeping is allowed.
@@ -392,14 +426,17 @@ public:
 
 	/// Gets this body's under-active time value.
 	/// @return Zero or more time in seconds (of step time) that this body has been "under-active" for.
-	RealNum GetUnderActiveTime() const noexcept;
+	TimeSpan GetUnderActiveTime() const noexcept;
 	
-	/// Sets the under-active time to the given value.
-	/// @detail This sets the under-active time to a greater than zero value for a speedable body.
-	/// @note A non-zero time is only valid for a speedable body.
+	/// Sets the "under-active" time to the given value.
+	///
+	/// @detail Sets the "under-active" time to a value of zero or a non-zero value if the
+	///   body is "accelerable". Otherwise it does nothing.
+	///
 	/// @warning Behavior is undefined for negative values.
-	/// @warning Behavior is undefined if the value is not zero and this body is not speedable.
-	void SetUnderActiveTime(RealNum value) noexcept;
+	/// @note A non-zero time is only valid for an "accelerable" body.
+	///
+	void SetUnderActiveTime(TimeSpan value) noexcept;
 	
 	/// Set the enabled state of the body. A disabled body is not
 	/// simulated and cannot be collided with or woken up.
@@ -496,6 +533,9 @@ private:
 
 	Body(const BodyDef& bd, World* world);
 	~Body();
+
+	void SetAwakeFlag() noexcept;
+	void UnsetAwakeFlag() noexcept;
 
 	/// Advances the body by a given time ratio.
 	/// @detail This method:
@@ -727,20 +767,32 @@ inline bool Body::IsImpenetrable() const noexcept
 	return (m_flags & e_impenetrableFlag) != 0;
 }
 
+inline void Body::SetAwakeFlag() noexcept
+{
+	assert(IsSpeedable());
+	m_flags |= e_awakeFlag;
+}
+
+inline void Body::UnsetAwakeFlag() noexcept
+{
+	assert(!IsSpeedable() || IsSleepingAllowed());
+	m_flags &= ~e_awakeFlag;
+}
+
 inline void Body::SetAwake() noexcept
 {
 	if (IsSpeedable())
 	{
-		// Note: DO NOT reset m_underActiveTime here.
-		m_flags |= e_awakeFlag;
+		// Note: DO NOT reset m_underActiveTime for a callers to this method.
+		SetAwakeFlag();
 	}
 }
 
 inline void Body::UnsetAwake() noexcept
 {
-	if (IsSleepingAllowed())
+	if (!IsSpeedable() || IsSleepingAllowed())
 	{
-		m_flags &= ~e_awakeFlag;
+		UnsetAwakeFlag();
 		m_underActiveTime = 0;
 		m_velocity = Velocity{Vec2_zero, 0_rad};
 	}
@@ -758,8 +810,10 @@ inline TimeSpan Body::GetUnderActiveTime() const noexcept
 
 inline void Body::SetUnderActiveTime(TimeSpan value) noexcept
 {
-	assert(value == 0 || IsSpeedable());
-	m_underActiveTime = value;
+	if ((value == 0) || IsAccelerable())
+	{
+		m_underActiveTime = value;
+	}
 }
 
 inline bool Body::IsEnabled() const noexcept

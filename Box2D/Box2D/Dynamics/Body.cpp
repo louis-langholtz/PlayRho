@@ -56,7 +56,13 @@ const FixtureDef& box2d::GetDefaultFixtureDef() noexcept
 
 Body::FlagsType Body::GetFlags(const BodyDef& bd) noexcept
 {
-	auto flags = FlagsType{0};
+	// @invariant Only bodies that allow sleeping, can be put to sleep.
+	// @invariant Only "speedable" bodies can be awake.
+	// @invariant Only "speedable" bodies can have non-zero velocities.
+	// @invariant Only "accelerable" bodies can have non-zero accelerations.
+	// @invariant Only "accelerable" bodies can have non-zero "under-active" times.
+	
+	auto flags = GetFlags(bd.type);
 	if (bd.bullet)
 	{
 		flags |= e_impenetrableFlag;
@@ -71,13 +77,22 @@ Body::FlagsType Body::GetFlags(const BodyDef& bd) noexcept
 	}
 	if (bd.awake)
 	{
-		flags |= e_awakeFlag;
+		if (flags & e_velocityFlag)
+		{
+			flags |= e_awakeFlag;
+		}
+	}
+	else
+	{
+		if (!bd.allowSleep && (flags & e_velocityFlag))
+		{
+			flags |= e_awakeFlag;
+		}
 	}
 	if (bd.enabled)
 	{
 		flags |= e_enabledFlag;
 	}
-	flags |= GetFlags(bd.type);
 	return flags;
 }
 
@@ -86,11 +101,9 @@ Body::Body(const BodyDef& bd, World* world):
 	m_xf{bd.position, UnitVec2{bd.angle}},
 	m_world{world},
 	m_sweep{Position{bd.position, bd.angle}},
-	m_velocity{Velocity{bd.linearVelocity, bd.angularVelocity}},
 	m_invMass{(bd.type == BodyType::Dynamic)? RealNum{1}: RealNum{0}},
 	m_linearDamping{bd.linearDamping},
 	m_angularDamping{bd.angularDamping},
-	m_underActiveTime{bd.underActiveTime},
 	m_userData{bd.userData}
 {
 	assert(::box2d::IsValid(bd.position));
@@ -99,6 +112,10 @@ Body::Body(const BodyDef& bd, World* world):
 	assert(::box2d::IsValid(bd.angularVelocity));
 	assert(::box2d::IsValid(bd.angularDamping) && (bd.angularDamping >= RealNum{0}));
 	assert(::box2d::IsValid(bd.linearDamping) && (bd.linearDamping >= RealNum{0}));
+	
+	SetVelocity(Velocity{bd.linearVelocity, bd.angularVelocity});
+	SetAcceleration(bd.linearAcceleration, bd.angularAcceleration);
+	SetUnderActiveTime(bd.underActiveTime);
 }
 
 Body::~Body()
@@ -219,7 +236,7 @@ void Body::SetVelocity(const Velocity& velocity) noexcept
 		{
 			return;
 		}
-		SetAwake();
+		SetAwakeFlag();
 	}
 	m_velocity = velocity;
 }
@@ -235,7 +252,7 @@ void Body::SetAcceleration(const Vec2 linear, const Angle angular) noexcept
 		{
 			return;
 		}
-		SetAwake();
+		SetAwakeFlag();
 	}
 	m_linearAcceleration = linear;
 	m_angularAcceleration = angular;
