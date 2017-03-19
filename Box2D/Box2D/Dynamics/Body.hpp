@@ -189,7 +189,12 @@ constexpr inline BodyDef& BodyDef::UseUserData(void* value) noexcept
 
 /// Body.
 ///
-/// @detail A rigid body.
+/// @detail A rigid body entity created or destroyed through a World instance.
+///
+/// @invariant Only bodies that allow sleeping, can be put to sleep.
+/// @invariant Only "speedable" bodies can be awake.
+/// @invariant Only "speedable" bodies can have non-zero velocities.
+/// @invariant Only "accelerable" bodies can have non-zero accelerations.
 ///
 /// @note Create these using the World::Create method.
 /// @note On a 64-bit architecture with 4-byte RealNum, this data structure is at least 192-bytes large.
@@ -276,13 +281,14 @@ public:
 
 	/// Sets the body's velocity (linear and angular velocity).
 	/// @note This method does nothing if this body is not speedable.
-	/// @note A non-zero velocity will awaken this body and reset its under-active time to zero.
+	/// @note A non-zero velocity will awaken this body.
 	/// @sa SetAwake.
 	/// @sa SetUnderActiveTime.
 	void SetVelocity(const Velocity& v) noexcept;
 
 	/// Sets the linear and rotational accelerations on this body.
 	/// @note This has no effect on non-accelerable bodies.
+	/// @note A non-zero acceleration will also awaken the body.
 	/// @param linear Linear acceleration.
 	/// @param angular Angular acceleration.
 	void SetAcceleration(const Vec2 linear, const Angle angular) noexcept;
@@ -363,13 +369,22 @@ public:
 
 	/// Is this body allowed to sleep
 	bool IsSleepingAllowed() const noexcept;
+	
+	/// Sets this body to awake.
+	/// @detail
+	/// This sets the sleep state of the body to awake.
+	/// @post This body's IsAwake method returns true.
+	void SetAwake() noexcept;
 
-	/// Set the sleep state of the body to awake.
-	bool SetAwake() noexcept;
-
-	/// Set the sleep state of the body to sleep.
-	bool UnsetAwake() noexcept;
-
+	/// Sets this body to asleep if sleeping is allowed.
+	/// @detail
+	/// If this body is allowed to sleep, this: sets the sleep state of the body to asleep,
+	/// resets this body's under active time, and resets this body's velocity (linear and angular).
+	/// @post This body's IsAwake method returns false.
+	/// @post This body's GetUnderActiveTime method returns zero.
+	/// @post This body's GetVelocity method returns zero linear and zero angular speed.
+	void UnsetAwake() noexcept;
+	
 	/// Gets the awake/asleep state of this body.
 	/// @warning Being awake may or may not imply being speedable.
 	/// @return true if the body is awake.
@@ -461,20 +476,15 @@ private:
 		
 		/// Enabled flag.
 		e_enabledFlag		= 0x0020,
-
-		/// TOI valid flag.
-		/// @detail Indicates whether the TOI field is valid.
-		/// Enabled indicates TOI field is valid. It's otherwise invalid.
-		e_toiFlag			= 0x0040,
 		
 		/// Velocity flag.
 		/// @detail Set this to enable changes in position due to velocity.
-		/// Bodies with this set are either kinematic or dynamic bodies.
+		/// Bodies with this set are "speedable" - either kinematic or dynamic bodies.
 		e_velocityFlag      = 0x0080,
 
 		/// Acceleration flag.
 		/// @detail Set this to enable changes in velocity due to physical properties (like forces).
-		/// Bodies with this set are dynamic bodies.
+		/// Bodies with this set are "accelerable" - dynamic bodies.
 		e_accelerationFlag  = 0x0100,
 		
 		/// Mass Data Dirty Flag.
@@ -717,26 +727,23 @@ inline bool Body::IsImpenetrable() const noexcept
 	return (m_flags & e_impenetrableFlag) != 0;
 }
 
-inline bool Body::SetAwake() noexcept
+inline void Body::SetAwake() noexcept
 {
-	if (!IsAwake())
+	if (IsSpeedable())
 	{
+		// Note: DO NOT reset m_underActiveTime here.
 		m_flags |= e_awakeFlag;
-		m_underActiveTime = 0;
-		return true;
 	}
-	return false;
 }
 
-inline bool Body::UnsetAwake() noexcept
+inline void Body::UnsetAwake() noexcept
 {
-	const auto was_awake = IsAwake();
-
-	m_flags &= ~e_awakeFlag;
-	m_underActiveTime = 0;
-	m_velocity = Velocity{Vec2_zero, 0_rad};
-	
-	return was_awake;
+	if (IsSleepingAllowed())
+	{
+		m_flags &= ~e_awakeFlag;
+		m_underActiveTime = 0;
+		m_velocity = Velocity{Vec2_zero, 0_rad};
+	}
 }
 
 inline bool Body::IsAwake() const noexcept
@@ -781,7 +788,7 @@ inline void Body::SetSleepingAllowed(bool flag) noexcept
 	{
 		m_flags |= e_autoSleepFlag;
 	}
-	else
+	else if (IsSpeedable())
 	{
 		m_flags &= ~e_autoSleepFlag;
 		SetAwake();
@@ -879,6 +886,28 @@ inline void Body::UnsetEnabledFlag() noexcept
 }
 
 // Free functions...
+
+/// Awakens the body if it's asleep.
+inline bool Awaken(Body& body) noexcept
+{
+	if (!body.IsAwake())
+	{
+		body.SetAwake();
+		return true;
+	}
+	return false;
+}
+
+/// Puts the body to sleep if it's awake.
+inline bool Unawaken(Body& body) noexcept
+{
+	if (body.IsAwake() && body.IsSleepingAllowed())
+	{
+		body.UnsetAwake();
+		return true;
+	}
+	return false;
+}
 
 /// Should collide.
 /// @detail Determines whether a body should possibly be able to collide with the other body.

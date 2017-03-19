@@ -106,6 +106,8 @@ void Contact::Destroy(Contact* contact)
 	if ((contact->m_manifold.GetPointCount() > 0) &&
 		!fixtureA->IsSensor() && !fixtureB->IsSensor())
 	{
+		// Contact may have been keeping accelerable bodies of fixture A or B from moving.
+		// Need to awaken those bodies now in case they are again movable.
 		SetAwake(*fixtureA);
 		SetAwake(*fixtureB);
 	}

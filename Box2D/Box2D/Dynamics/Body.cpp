@@ -235,6 +235,7 @@ void Body::SetAcceleration(const Vec2 linear, const Angle angular) noexcept
 		{
 			return;
 		}
+		SetAwake();
 	}
 	m_linearAcceleration = linear;
 	m_angularAcceleration = angular;

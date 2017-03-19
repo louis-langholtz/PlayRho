@@ -387,7 +387,7 @@ namespace {
 		auto unawoken = size_t{0};
 		for (auto&& b: bodies)
 		{
-			if (b->UnsetAwake())
+			if (Unawaken(*b))
 			{
 				++unawoken;
 			}
@@ -1019,7 +1019,6 @@ Island World::BuildIsland(Body& seed,
 		}
 
 		// Make sure the body is awake.
-		// XXX Should this be done ONLY if body is speedable???
 		b->SetAwake();
 
 		const auto oldNumContacts = island.m_contacts.size();
@@ -2010,13 +2009,15 @@ contact_count_t World::FindNewContacts()
 
 bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 {
-	// const auto pidA = proxyA.proxyId;
 	const auto fixtureA = proxyA.fixture; ///< Fixture of proxyA (but may get switched with fixtureB).
-	// const auto pidB = proxyB.proxyId;
 	const auto fixtureB = proxyB.fixture; ///< Fixture of proxyB (but may get switched with fixtureA).
 	
+#ifndef NDEBUG
+	const auto pidA = proxyA.proxyId;
+	const auto pidB = proxyB.proxyId;
 	assert(pidA != pidB);
 	assert(sizeof(pidA) + sizeof(pidB) == sizeof(size_t));
+#endif
 	
 	const auto bodyA = fixtureA->GetBody();
 	const auto bodyB = fixtureB->GetBody();
@@ -2527,7 +2528,7 @@ size_t Awaken(World& world)
 	auto awoken = size_t{0};
 	for (auto&& body: world.GetBodies())
 	{
-		if (body->SetAwake())
+		if (Awaken(*body))
 		{
 			++awoken;
 		}
