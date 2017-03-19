@@ -454,7 +454,6 @@ private:
 		contact_count_t ignored = 0;
 		contact_count_t filteredOut = 0;
 		contact_count_t notOverlapping = 0;
-		contact_count_t updatable = 0;
 	};
 	
 	struct ContactToiData

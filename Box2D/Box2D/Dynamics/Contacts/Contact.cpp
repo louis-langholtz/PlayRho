@@ -201,21 +201,26 @@ void Contact::Update(ContactListener* listener)
 #endif
 	}
 
-	SetTouching(newTouching);
-
-	if (listener)
+	if (!oldTouching && newTouching)
 	{
-		if (!oldTouching && newTouching)
+		SetTouching();
+		if (listener)
 		{
 			listener->BeginContact(*this);
 		}
-
-		if (oldTouching && !newTouching)
+	}
+	else if (oldTouching && !newTouching)
+	{
+		UnsetTouching();
+		if (listener)
 		{
 			listener->EndContact(*this);
 		}
-
-		if (!sensor && newTouching)
+	}
+	
+	if (!sensor && newTouching)
+	{
+		if (listener)
 		{
 			listener->PreSolve(*this, oldManifold);
 		}

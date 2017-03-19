@@ -215,8 +215,6 @@ private:
 	
 	void UnsetTouching() noexcept;
 	
-	void SetTouching(bool value) noexcept;
-	
 	Fixture* const m_fixtureA; ///< Fixture A. @detail Non-null pointer to fixture A.
 	Fixture* const m_fixtureB; ///< Fixture B. @detail Non-null pointer to fixture B.
 
@@ -289,18 +287,6 @@ inline void Contact::UnsetTouching() noexcept
 	m_flags &= ~e_touchingFlag;
 }
 
-inline void Contact::SetTouching(bool value) noexcept
-{
-	if (value)
-	{
-		SetTouching();
-	}
-	else
-	{
-		UnsetTouching();
-	}
-}
-	
 inline Fixture* Contact::GetFixtureA() noexcept
 {
 	return m_fixtureA;

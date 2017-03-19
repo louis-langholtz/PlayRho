@@ -992,10 +992,14 @@ Island World::BuildIsland(Body& seed,
 	Island island(remNumBodies, remNumContacts, remNumJoints);
 
 	// Perform a depth first search (DFS) on the constraint graph.
+
+	// Create a stack for bodies to be islanded that aren't already islanded.
 	auto stack = std::vector<Body*>();
 	stack.reserve(remNumBodies);
+
 	stack.push_back(&seed);
 	m_bodiesIslanded.insert(&seed);
+	
 	while (!stack.empty())
 	{
 		// Grab the next body off the stack and add it to the island.
@@ -1007,15 +1011,17 @@ Island World::BuildIsland(Body& seed,
 		assert(remNumBodies > 0);
 		--remNumBodies;
 		
-		// Make sure the body is awake.
-		b->SetAwake();
-		
-		// To keep islands smaller, don't propagate islands across bodies that can't have a velocity (static bodies).
+		// Don't propagate islands across bodies that can't have a velocity (static bodies).
+		// This keeps islands smaller and helps with isolating separable collision clusters.
 		if (!b->IsSpeedable())
 		{
 			continue;
 		}
-		
+
+		// Make sure the body is awake.
+		// XXX Should this be done ONLY if body is speedable???
+		b->SetAwake();
+
 		const auto oldNumContacts = island.m_contacts.size();
 		// Adds appropriate contacts of current body and appropriate 'other' bodies of those contacts.
 		for (auto&& contact: b->GetContacts())
@@ -1751,6 +1757,7 @@ StepStats World::Step(const StepConf& conf)
 			UnsetNewFixtures();
 			
 			// New fixtures were added: need to find and create the new contacts.
+			// Note: this may update bodies.
 			stepStats.pre.added = FindNewContacts();
 		}
 
@@ -1759,8 +1766,6 @@ StepStats World::Step(const StepConf& conf)
 			m_inv_dt0 = conf.get_inv_dt();
 
 			const auto updateStats = UpdateContacts(m_contacts);
-			
-			assert(destroyStats.ignored == updateStats.ignored);
 			
 			stepStats.pre.ignored = updateStats.ignored;
 			stepStats.pre.destroyed = destroyStats.filteredOut + destroyStats.notOverlapping;
@@ -1951,14 +1956,6 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
 			ContactAtty::UnflagForFiltering(*contact);
 		}
 		
-		// Awake && speedable (dynamic or kinematic) means collidable.
-		// At least one body must be collidable
-		if (!(bodyA->IsSpeedable() && bodyA->IsAwake()) && !(bodyB->IsSpeedable() && bodyB->IsAwake()))
-		{
-			++stats.ignored;
-			continue;
-		}
-		
 		if (!TestOverlap(m_broadPhase, fixtureA, indexA, fixtureB, indexB))
 		{
 			// Destroy contacts that cease to overlap in the broad-phase.
@@ -1967,8 +1964,8 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
 			++stats.notOverlapping;
 			continue;
 		}
-		
-		++stats.updatable;
+
+		++stats.ignored;
 	}
 	
 	return stats;
@@ -2013,9 +2010,9 @@ contact_count_t World::FindNewContacts()
 
 bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 {
-	const auto pidA = proxyA.proxyId;
+	// const auto pidA = proxyA.proxyId;
 	const auto fixtureA = proxyA.fixture; ///< Fixture of proxyA (but may get switched with fixtureB).
-	const auto pidB = proxyB.proxyId;
+	// const auto pidB = proxyB.proxyId;
 	const auto fixtureB = proxyB.fixture; ///< Fixture of proxyB (but may get switched with fixtureA).
 	
 	assert(pidA != pidB);
@@ -2030,21 +2027,6 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 		return false;
 	}
 	
-	const auto childIndexA = proxyA.childIndex;
-	const auto childIndexB = proxyB.childIndex;
-	
-	// TODO: use hash table to remove potential bottleneck when both bodies have many contacts.
-	// Does a contact already exist?
-	const auto searchBody = (bodyA->GetContacts().size() < bodyB->GetContacts().size())? bodyA: bodyB;
-	for (auto&& contact: searchBody->GetContacts())
-	{
-		if (IsFor(*contact, fixtureA, childIndexA, fixtureB, childIndexB))
-		{
-			// Already have a contact for proxyA with proxyB, bail!
-			return false;
-		}
-	}
-	
 	// Does a joint override collision? Is at least one body dynamic?
 	if (!::box2d::ShouldCollide(*bodyB, *bodyA))
 	{
@@ -2055,6 +2037,24 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 	if (m_contactFilter && !m_contactFilter->ShouldCollide(fixtureA, fixtureB))
 	{
 		return false;
+	}
+
+	const auto childIndexA = proxyA.childIndex;
+	const auto childIndexB = proxyB.childIndex;
+	
+#ifndef NO_RACING
+	// Code herein may be racey in a multithreaded context...
+
+	// TODO: use hash table to remove potential bottleneck when both bodies have many contacts?
+	// Does a contact already exist?
+	const auto searchBody = (bodyA->GetContacts().size() < bodyB->GetContacts().size())? bodyA: bodyB;
+	for (auto&& contact: searchBody->GetContacts())
+	{
+		if (IsFor(*contact, fixtureA, childIndexA, fixtureB, childIndexB))
+		{
+			// Already have a contact for proxyA with proxyB, bail!
+			return false;
+		}
 	}
 	
 	assert(m_contacts.size() < MaxContacts);
@@ -2067,18 +2067,43 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 		return false;
 	}
 	
+	// Insert into the contacts container.
+	//
+	// Should the new contact be added at front or back?
+	//
+	// Original strategy added to the front. Since processing done front to back, front
+	// adding means container more a LIFO container, while back adding means more a FIFO.
+	//
+	// Does it matter statistically?
+	//
+	// Tiles push_front #s:
+	// Reg sums: 7927 isl-found, 7395 isl-solved, 8991 pos-iters, 63416 vel-iters, 3231 moved
+	// TOI sums: 3026 isl-found, 3026 isl-solved, 7373 pos-iters, 24208 vel-iters, 0 moved, 29825 upd
+	//   Total iters: 72407 reg, 31581 TOI, 103988 sum.
+	//
+	// Tiles push_back #s:
+	// Reg sums: 7930 isl-found, 7397 isl-solved, 8997 pos-iters, 63440 vel-iters, 3259 moved
+	// TOI sums: 2960 isl-found, 2960 isl-solved, 7189 pos-iters, 23680 vel-iters, 0 moved, 29701 upd
+	//   Total iters: 72437 reg, 30869 TOI, 103306 sum.
+	//
+	m_contacts.push_back(contact);
+
 	BodyAtty::Insert(*bodyA, contact);
 	BodyAtty::Insert(*bodyB, contact);
 	
 	// Wake up the bodies
 	if (!fixtureA->IsSensor() && !fixtureB->IsSensor())
 	{
-		bodyA->SetAwake();
-		bodyB->SetAwake();
+		if (bodyA->IsSpeedable())
+		{
+			bodyA->SetAwake();
+		}
+		if (bodyB->IsSpeedable())
+		{
+			bodyB->SetAwake();
+		}
 	}
-	
-	// Insert into the world.
-	m_contacts.push_front(contact);
+#endif
 	
 	return true;
 }
