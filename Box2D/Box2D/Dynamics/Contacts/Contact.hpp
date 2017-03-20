@@ -60,9 +60,6 @@ public:
 	using ManifoldCalcFunc = Manifold (*)(const Fixture* fixtureA, child_count_t indexA,
 										  const Fixture* fixtureB, child_count_t indexB);
 	
-	Contact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB,
-			ManifoldCalcFunc mcf);
-	
 	Contact() = delete;
 	Contact(const Contact& copy) = delete;
 	
@@ -153,39 +150,6 @@ public:
 	void FlagForFiltering() noexcept;
 	bool NeedsFiltering() const noexcept;
 	
-protected:
-
-	/// Flag this contact for filtering. Filtering will occur the next time step.
-	void UnflagForFiltering() noexcept;
-
-	static Contact* Create(Fixture& fixtureA, child_count_t indexA,
-						   Fixture& fixtureB, child_count_t indexB);
-
-	//static void Destroy(Contact* contact, Shape::Type typeA, Shape::Type typeB);
-	
-	/// Destroys the given contact.
-	/// @note This awakens the associated fixtures of a non-sensor touching contact.
-	/// @note This calls the contact's destructor.
-	static void Destroy(Contact* contact);
-
-	/// Updates the contact manifold and touching status and notifies listener (if one given).
-	/// @param listener Listener that if non-null is called with status information.
-	/// @sa GetManifold.
-	/// @sa IsTouching.
-	void Update(ContactListener* listener = nullptr);
-
-	/// Sets the time of impact (TOI).
-	/// @detail After returning, this object will have a TOI that is set as indicated by <code>HasValidToi()</code>.
-	/// @note Behavior is undefined if the value assigned is less than 0 or greater than 1.
-	/// @sa RealNum GetToi() const.
-	/// @sa HasValidToi.
-	/// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates no actual impact in the current time slot.
-	void SetToi(RealNum toi) noexcept;
-	
-	void UnsetToi() noexcept;
-	
-	void ResetToiCount() noexcept;
-	
 private:
 
 	friend class ContactAtty;
@@ -208,6 +172,38 @@ private:
 		// This contact has a valid TOI in m_toi
 		e_toiFlag			= 0x0010
 	};
+	
+	static Contact* Create(Fixture& fixtureA, child_count_t indexA,
+						   Fixture& fixtureB, child_count_t indexB);
+	
+	/// Destroys the given contact.
+	/// @note This awakens the associated fixtures of a non-sensor touching contact.
+	/// @note This calls the contact's destructor.
+	static void Destroy(Contact* contact);
+
+	Contact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB,
+			ManifoldCalcFunc mcf);
+	
+	/// Flag this contact for filtering. Filtering will occur the next time step.
+	void UnflagForFiltering() noexcept;
+	
+	/// Updates the contact manifold and touching status and notifies listener (if one given).
+	/// @param listener Listener that if non-null is called with status information.
+	/// @sa GetManifold.
+	/// @sa IsTouching.
+	void Update(ContactListener* listener = nullptr);
+	
+	/// Sets the time of impact (TOI).
+	/// @detail After returning, this object will have a TOI that is set as indicated by <code>HasValidToi()</code>.
+	/// @note Behavior is undefined if the value assigned is less than 0 or greater than 1.
+	/// @sa RealNum GetToi() const.
+	/// @sa HasValidToi.
+	/// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates no actual impact in the current time slot.
+	void SetToi(RealNum toi) noexcept;
+	
+	void UnsetToi() noexcept;
+	
+	void ResetToiCount() noexcept;
 	
 	/// Sets the touching flag state.
 	/// @note This should only be called if either:
