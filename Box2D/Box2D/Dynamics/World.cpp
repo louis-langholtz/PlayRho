@@ -667,6 +667,12 @@ private:
 		b.Advance(toi);
 	}
 
+	static void Restore(Body& b, const Sweep value) noexcept
+	{
+		BodyAtty::SetSweep(b, value);
+		BodyAtty::SetTransformation(b, GetTransform1(value));
+	}
+
 	static void ClearFixtures(Body& b, std::function<void(Fixture&)> callback)
 	{
 		while (!b.m_fixtures.empty())
@@ -1507,14 +1513,19 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Contact& contac
 		ContactAtty::IncrementToiCount(contact);
 
 		// Is contact disabled or separated?
+		//
+		// XXX: Not often, but sometimes, contact.IsTouching() is false now.
+		//      Seems like this is a bug, or at least suboptimal, condition.
+		//      This method shouldn't be getting called unless contact has an
+		//      impact indeed at the given TOI. Seen this happen in an edge-polygon
+		//      contact situation where the polygon had a larger than default
+		//      vertex radius. CollideShapes had called GetManifoldFaceB which
+		//      was failing to see 2 clip points after GetClipPoints was called.
 		if (!contact.IsEnabled() || !contact.IsTouching())
 		{
-			// Restore the sweeps by undoing the body "advance" calls (and anything else done movement-wise)
 			contact.UnsetEnabled();
-			BodyAtty::SetSweep(*bA, backupA);
-			BodyAtty::SetTransformation(*bA, GetTransform1(bA->GetSweep()));
-			BodyAtty::SetSweep(*bB, backupB);
-			BodyAtty::SetTransformation(*bB, GetTransform1(bB->GetSweep()));
+			BodyAtty::Restore(*bA, backupA);
+			BodyAtty::Restore(*bB, backupB);
 			return IslandSolverResults{};
 		}
 	}
@@ -1702,6 +1713,7 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi)
 	assert(body.IsAccelerable());
 	assert(toi >= 0 && toi <= 1);
 
+	// Note: the original contact (for body of which this method was called) already islanded.
 	for (auto&& contact: body.GetContacts())
 	{
 		const auto fA = contact->GetFixtureA();
@@ -1723,11 +1735,10 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi)
 			contact->SetEnabled();
 			ContactAtty::Update(*contact, m_contactListener);
 			
-			// Revert and skip if contact disabled by user or no contact points anymore.
+			// Revert and skip if contact disabled by user or not touching anymore (very possible).
 			if (!contact->IsEnabled() || !contact->IsTouching())
 			{
-				BodyAtty::SetSweep(*other, backup);
-				BodyAtty::SetTransformation(*other, GetTransform1(other->GetSweep()));
+				BodyAtty::Restore(*other, backup);
 				continue;
 			}
 			
@@ -1765,13 +1776,14 @@ StepStats World::Step(const StepConf& conf)
 		CreateAndDestroyProxies(conf);
 		SynchronizeProxies(conf);
 
+		// Note: this may update bodies (in addition to the contacts container).
 		const auto destroyStats = DestroyContacts(m_contacts);
 		if (HasNewFixtures())
 		{
 			UnsetNewFixtures();
 			
 			// New fixtures were added: need to find and create the new contacts.
-			// Note: this may update bodies.
+			// Note: this may update bodies (in addition to the contacts container).
 			stepStats.pre.added = FindNewContacts();
 		}
 
@@ -1779,6 +1791,7 @@ StepStats World::Step(const StepConf& conf)
 		{
 			m_inv_dt0 = conf.get_inv_dt();
 
+			// Could potentially run UpdateContacts multithreaded over split lists...
 			const auto updateStats = UpdateContacts(m_contacts);
 			
 			stepStats.pre.ignored = updateStats.ignored;
@@ -2010,6 +2023,8 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts)
 		
 		// Update the contact manifold and notify the listener.
 		contact->SetEnabled();
+		
+		// The following may call listener but is otherwise thread-safe.
 		ContactAtty::Update(*contact, m_contactListener);
 		++stats.updated;
 	}
