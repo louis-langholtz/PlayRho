@@ -37,12 +37,6 @@ using ContactCreateFcn = Contact* (Fixture* fixtureA, child_count_t indexA,
 									   Fixture* fixtureB, child_count_t indexB);
 using ContactDestroyFcn = void (Contact* contact);
 
-struct ContactRegister
-{
-	Contact::ManifoldCalcFunc calcfunc;
-	const bool primary;
-};
-
 static Manifold GetChainCircleManifold(const Fixture* fixtureA, child_count_t indexA,
 									   const Fixture* fixtureB, child_count_t)
 {
@@ -115,38 +109,74 @@ static Manifold GetPolygonPolygonManifold(const Fixture* fixtureA, child_count_t
 						 *static_cast<const PolygonShape*>(fixtureB->GetShape()), xfB);
 }
 
-// Order dependent on Shape::Type enumeration values
-static constexpr ContactRegister s_registers[Shape::e_typeCount][Shape::e_typeCount] =
+struct HandlerEntry
 {
-	// circle-* contacts
-	{
-		{GetCircleCircleManifold, true}, // circle
-		{GetEdgeCircleManifold, false}, // edge
-		{GetPolygonCircleManifold, false}, // polygon
-		{GetChainCircleManifold, false}, // chain
-	},
-	// edge-* contacts
-	{
-		{GetEdgeCircleManifold, true}, // circle
-		{GetEdgeEdgeManifold, false}, // edge
-		{GetEdgePolygonManifold, true}, // polygon
-		{nullptr, false}, // chain
-	},
-	// polygon-* contacts
-	{
-		{GetPolygonCircleManifold, true}, // circle
-		{GetEdgePolygonManifold, false}, // edge
-		{GetPolygonPolygonManifold, true}, // polygon
-		{GetChainPolygonManifold, false}, // chain
-	},
-	// chain-* contacts
-	{
-		{GetChainCircleManifold, true}, // circle
-		{nullptr, false}, // edge
-		{GetChainPolygonManifold, true}, // polygon
-		{nullptr, false}, // chain
-	},
+	Contact::ManifoldCalcFunc calcfunc;
+	const bool primary;
 };
+
+static HandlerEntry GetHandlerEntry(Shape::Type type1, Shape::Type type2)
+{
+	assert(type1 == Shape::e_circle || type1 == Shape::e_edge ||
+		   type1 == Shape::e_polygon || type1 == Shape::e_chain);
+	assert(type2 == Shape::e_circle || type2 == Shape::e_edge ||
+		   type2 == Shape::e_polygon || type2 == Shape::e_chain);
+
+	switch (type1)
+	{
+		case Shape::e_circle:
+		{
+			switch (type2)
+			{
+				case Shape::e_circle: return HandlerEntry{GetCircleCircleManifold, true};
+				case Shape::e_edge: return HandlerEntry{GetEdgeCircleManifold, false};
+				case Shape::e_polygon: return HandlerEntry{GetPolygonCircleManifold, false};
+				case Shape::e_chain: return HandlerEntry{GetChainCircleManifold, false};
+				default: break;
+			}
+			break;
+		}
+		case Shape::e_edge:
+		{
+			switch (type2)
+			{
+				case Shape::e_circle: return HandlerEntry{GetEdgeCircleManifold, true};
+				case Shape::e_edge: return HandlerEntry{GetEdgeEdgeManifold, false};
+				case Shape::e_polygon: return HandlerEntry{GetEdgePolygonManifold, true};
+				case Shape::e_chain: return HandlerEntry{nullptr, false};
+				default: break;
+			}
+			break;
+		}
+		case Shape::e_polygon:
+		{
+			switch (type2)
+			{
+				case Shape::e_circle: return HandlerEntry{GetPolygonCircleManifold, true};
+				case Shape::e_edge: return HandlerEntry{GetEdgePolygonManifold, false};
+				case Shape::e_polygon: return HandlerEntry{GetPolygonPolygonManifold, true};
+				case Shape::e_chain: return HandlerEntry{GetChainPolygonManifold, false};
+				default: break;
+			}
+			break;
+		}
+		case Shape::e_chain:
+		{
+			switch (type2)
+			{
+				case Shape::e_circle: return HandlerEntry{GetChainCircleManifold, true};
+				case Shape::e_edge: return HandlerEntry{nullptr, false};
+				case Shape::e_polygon: return HandlerEntry{GetChainPolygonManifold, true};
+				case Shape::e_chain: return HandlerEntry{nullptr, false};
+				default: break;
+			}
+			break;
+		}
+		default:
+			break;
+	}
+	return HandlerEntry{nullptr, false};
+}
 
 Contact* Contact::Create(Fixture& fixtureA, child_count_t indexA,
 						 Fixture& fixtureB, child_count_t indexB)
@@ -157,10 +187,11 @@ Contact* Contact::Create(Fixture& fixtureA, child_count_t indexA,
 	assert(0 <= type1 && type1 < Shape::e_typeCount);
 	assert(0 <= type2 && type2 < Shape::e_typeCount);
 	
-	const auto calcfunc = s_registers[type1][type2].calcfunc;
+	const auto handler = GetHandlerEntry(type1, type2);
+	const auto calcfunc = handler.calcfunc;
 	if (calcfunc)
 	{
-		return (s_registers[type1][type2].primary)?
+		return (handler.primary)?
 			new Contact{&fixtureA, indexA, &fixtureB, indexB, calcfunc}:
 			new Contact{&fixtureB, indexB, &fixtureA, indexA, calcfunc};
 	}
