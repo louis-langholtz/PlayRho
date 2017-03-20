@@ -53,10 +53,6 @@
 		4731DE451DE2572E00E7F931 /* Collision.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE431DE2570900E7F931 /* Collision.hpp */; };
 		4731DE4B1DE7E5FA00E7F931 /* ProxyIdPair.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE4A1DE7E5FA00E7F931 /* ProxyIdPair.cpp */; };
 		4731DE4D1DE90D8200E7F931 /* MassData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE4C1DE90D8200E7F931 /* MassData.cpp */; };
-		4731DE501DEB760400E7F931 /* EdgeAndEdgeContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE4E1DEB760400E7F931 /* EdgeAndEdgeContact.cpp */; };
-		4731DE511DEB760400E7F931 /* EdgeAndEdgeContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE4E1DEB760400E7F931 /* EdgeAndEdgeContact.cpp */; };
-		4731DE521DEB760400E7F931 /* EdgeAndEdgeContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE4F1DEB760400E7F931 /* EdgeAndEdgeContact.hpp */; };
-		4731DE531DEB760400E7F931 /* EdgeAndEdgeContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE4F1DEB760400E7F931 /* EdgeAndEdgeContact.hpp */; };
 		4731DE561DEC908600E7F931 /* UnitVec2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE541DEC908600E7F931 /* UnitVec2.cpp */; };
 		4731DE571DEC908600E7F931 /* UnitVec2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE541DEC908600E7F931 /* UnitVec2.cpp */; };
 		4731DE581DEC908600E7F931 /* UnitVec2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE551DEC908600E7F931 /* UnitVec2.hpp */; };
@@ -188,15 +184,8 @@
 		47AA5DB01C4C5FBE008AF2BA /* Island.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8953141C3E5900F1753A /* Island.cpp */; };
 		47AA5DB11C4C5FBE008AF2BA /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8956141C3E5900F1753A /* World.cpp */; };
 		47AA5DB21C4C5FBE008AF2BA /* WorldCallbacks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8958141C3E5900F1753A /* WorldCallbacks.cpp */; };
-		47AA5DB31C4C5FBE008AF2BA /* ChainAndCircleContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB895B141C3E5900F1753A /* ChainAndCircleContact.cpp */; };
-		47AA5DB41C4C5FBE008AF2BA /* ChainAndPolygonContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB895D141C3E5900F1753A /* ChainAndPolygonContact.cpp */; };
-		47AA5DB51C4C5FBE008AF2BA /* CircleContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB895F141C3E5900F1753A /* CircleContact.cpp */; };
 		47AA5DB61C4C5FBE008AF2BA /* Contact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8961141C3E5900F1753A /* Contact.cpp */; };
 		47AA5DB71C4C5FBE008AF2BA /* ContactSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8963141C3E5900F1753A /* ContactSolver.cpp */; };
-		47AA5DB81C4C5FBE008AF2BA /* EdgeAndCircleContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8965141C3E5900F1753A /* EdgeAndCircleContact.cpp */; };
-		47AA5DB91C4C5FBE008AF2BA /* EdgeAndPolygonContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8967141C3E5900F1753A /* EdgeAndPolygonContact.cpp */; };
-		47AA5DBA1C4C5FBE008AF2BA /* PolygonAndCircleContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8969141C3E5900F1753A /* PolygonAndCircleContact.cpp */; };
-		47AA5DBB1C4C5FBE008AF2BA /* PolygonContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB896B141C3E5900F1753A /* PolygonContact.cpp */; };
 		47AA5DBC1C4C5FBE008AF2BA /* DistanceJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB896E141C3E5900F1753A /* DistanceJoint.cpp */; };
 		47AA5DBD1C4C5FBE008AF2BA /* FrictionJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8970141C3E5900F1753A /* FrictionJoint.cpp */; };
 		47AA5DBE1C4C5FBE008AF2BA /* GearJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8972141C3E5900F1753A /* GearJoint.cpp */; };
@@ -232,15 +221,8 @@
 		47AA5DE11C4C5FBE008AF2BA /* StepConf.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8955141C3E5900F1753A /* StepConf.hpp */; };
 		47AA5DE21C4C5FBE008AF2BA /* World.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8957141C3E5900F1753A /* World.hpp */; };
 		47AA5DE31C4C5FBE008AF2BA /* WorldCallbacks.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8959141C3E5900F1753A /* WorldCallbacks.hpp */; };
-		47AA5DE41C4C5FBE008AF2BA /* ChainAndCircleContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB895C141C3E5900F1753A /* ChainAndCircleContact.hpp */; };
-		47AA5DE51C4C5FBE008AF2BA /* ChainAndPolygonContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB895E141C3E5900F1753A /* ChainAndPolygonContact.hpp */; };
-		47AA5DE61C4C5FBE008AF2BA /* CircleContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8960141C3E5900F1753A /* CircleContact.hpp */; };
 		47AA5DE71C4C5FBE008AF2BA /* Contact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8962141C3E5900F1753A /* Contact.hpp */; };
 		47AA5DE81C4C5FBE008AF2BA /* ContactSolver.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8964141C3E5900F1753A /* ContactSolver.hpp */; };
-		47AA5DE91C4C5FBE008AF2BA /* EdgeAndCircleContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8966141C3E5900F1753A /* EdgeAndCircleContact.hpp */; };
-		47AA5DEA1C4C5FBE008AF2BA /* EdgeAndPolygonContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8968141C3E5900F1753A /* EdgeAndPolygonContact.hpp */; };
-		47AA5DEB1C4C5FBE008AF2BA /* PolygonAndCircleContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896A141C3E5900F1753A /* PolygonAndCircleContact.hpp */; };
-		47AA5DEC1C4C5FBE008AF2BA /* PolygonContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896C141C3E5900F1753A /* PolygonContact.hpp */; };
 		47AA5DED1C4C5FBE008AF2BA /* DistanceJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896F141C3E5900F1753A /* DistanceJoint.hpp */; };
 		47AA5DEE1C4C5FBE008AF2BA /* FrictionJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8971141C3E5900F1753A /* FrictionJoint.hpp */; };
 		47AA5DEF1C4C5FBE008AF2BA /* GearJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8973141C3E5900F1753A /* GearJoint.hpp */; };
@@ -343,24 +325,10 @@
 		80BB89B5141C3E5900F1753A /* World.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8957141C3E5900F1753A /* World.hpp */; };
 		80BB89B6141C3E5900F1753A /* WorldCallbacks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8958141C3E5900F1753A /* WorldCallbacks.cpp */; };
 		80BB89B7141C3E5900F1753A /* WorldCallbacks.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8959141C3E5900F1753A /* WorldCallbacks.hpp */; };
-		80BB89B8141C3E5900F1753A /* ChainAndCircleContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB895B141C3E5900F1753A /* ChainAndCircleContact.cpp */; };
-		80BB89B9141C3E5900F1753A /* ChainAndCircleContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB895C141C3E5900F1753A /* ChainAndCircleContact.hpp */; };
-		80BB89BA141C3E5900F1753A /* ChainAndPolygonContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB895D141C3E5900F1753A /* ChainAndPolygonContact.cpp */; };
-		80BB89BB141C3E5900F1753A /* ChainAndPolygonContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB895E141C3E5900F1753A /* ChainAndPolygonContact.hpp */; };
-		80BB89BC141C3E5900F1753A /* CircleContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB895F141C3E5900F1753A /* CircleContact.cpp */; };
-		80BB89BD141C3E5900F1753A /* CircleContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8960141C3E5900F1753A /* CircleContact.hpp */; };
 		80BB89BE141C3E5900F1753A /* Contact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8961141C3E5900F1753A /* Contact.cpp */; };
 		80BB89BF141C3E5900F1753A /* Contact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8962141C3E5900F1753A /* Contact.hpp */; };
 		80BB89C0141C3E5900F1753A /* ContactSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8963141C3E5900F1753A /* ContactSolver.cpp */; };
 		80BB89C1141C3E5900F1753A /* ContactSolver.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8964141C3E5900F1753A /* ContactSolver.hpp */; };
-		80BB89C2141C3E5900F1753A /* EdgeAndCircleContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8965141C3E5900F1753A /* EdgeAndCircleContact.cpp */; };
-		80BB89C3141C3E5900F1753A /* EdgeAndCircleContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8966141C3E5900F1753A /* EdgeAndCircleContact.hpp */; };
-		80BB89C4141C3E5900F1753A /* EdgeAndPolygonContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8967141C3E5900F1753A /* EdgeAndPolygonContact.cpp */; };
-		80BB89C5141C3E5900F1753A /* EdgeAndPolygonContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8968141C3E5900F1753A /* EdgeAndPolygonContact.hpp */; };
-		80BB89C6141C3E5900F1753A /* PolygonAndCircleContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8969141C3E5900F1753A /* PolygonAndCircleContact.cpp */; };
-		80BB89C7141C3E5900F1753A /* PolygonAndCircleContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896A141C3E5900F1753A /* PolygonAndCircleContact.hpp */; };
-		80BB89C8141C3E5900F1753A /* PolygonContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB896B141C3E5900F1753A /* PolygonContact.cpp */; };
-		80BB89C9141C3E5900F1753A /* PolygonContact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896C141C3E5900F1753A /* PolygonContact.hpp */; };
 		80BB89CA141C3E5900F1753A /* DistanceJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB896E141C3E5900F1753A /* DistanceJoint.cpp */; };
 		80BB89CB141C3E5900F1753A /* DistanceJoint.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB896F141C3E5900F1753A /* DistanceJoint.hpp */; };
 		80BB89CC141C3E5900F1753A /* FrictionJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8970141C3E5900F1753A /* FrictionJoint.cpp */; };
@@ -486,8 +454,6 @@
 		4731DE431DE2570900E7F931 /* Collision.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Collision.hpp; sourceTree = "<group>"; };
 		4731DE4A1DE7E5FA00E7F931 /* ProxyIdPair.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProxyIdPair.cpp; sourceTree = "<group>"; };
 		4731DE4C1DE90D8200E7F931 /* MassData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MassData.cpp; sourceTree = "<group>"; };
-		4731DE4E1DEB760400E7F931 /* EdgeAndEdgeContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeAndEdgeContact.cpp; sourceTree = "<group>"; };
-		4731DE4F1DEB760400E7F931 /* EdgeAndEdgeContact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EdgeAndEdgeContact.hpp; sourceTree = "<group>"; };
 		4731DE541DEC908600E7F931 /* UnitVec2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitVec2.cpp; sourceTree = "<group>"; };
 		4731DE551DEC908600E7F931 /* UnitVec2.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = UnitVec2.hpp; sourceTree = "<group>"; };
 		4731DE5B1DEE3F0600E7F931 /* SeparationFinder.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SeparationFinder.hpp; sourceTree = "<group>"; };
@@ -668,24 +634,10 @@
 		80BB8957141C3E5900F1753A /* World.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = World.hpp; sourceTree = "<group>"; };
 		80BB8958141C3E5900F1753A /* WorldCallbacks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldCallbacks.cpp; sourceTree = "<group>"; };
 		80BB8959141C3E5900F1753A /* WorldCallbacks.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldCallbacks.hpp; sourceTree = "<group>"; };
-		80BB895B141C3E5900F1753A /* ChainAndCircleContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChainAndCircleContact.cpp; sourceTree = "<group>"; };
-		80BB895C141C3E5900F1753A /* ChainAndCircleContact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ChainAndCircleContact.hpp; sourceTree = "<group>"; };
-		80BB895D141C3E5900F1753A /* ChainAndPolygonContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChainAndPolygonContact.cpp; sourceTree = "<group>"; };
-		80BB895E141C3E5900F1753A /* ChainAndPolygonContact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ChainAndPolygonContact.hpp; sourceTree = "<group>"; };
-		80BB895F141C3E5900F1753A /* CircleContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CircleContact.cpp; sourceTree = "<group>"; };
-		80BB8960141C3E5900F1753A /* CircleContact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CircleContact.hpp; sourceTree = "<group>"; };
 		80BB8961141C3E5900F1753A /* Contact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; path = Contact.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		80BB8962141C3E5900F1753A /* Contact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 2; path = Contact.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		80BB8963141C3E5900F1753A /* ContactSolver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; path = ContactSolver.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		80BB8964141C3E5900F1753A /* ContactSolver.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactSolver.hpp; sourceTree = "<group>"; };
-		80BB8965141C3E5900F1753A /* EdgeAndCircleContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeAndCircleContact.cpp; sourceTree = "<group>"; };
-		80BB8966141C3E5900F1753A /* EdgeAndCircleContact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EdgeAndCircleContact.hpp; sourceTree = "<group>"; };
-		80BB8967141C3E5900F1753A /* EdgeAndPolygonContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeAndPolygonContact.cpp; sourceTree = "<group>"; };
-		80BB8968141C3E5900F1753A /* EdgeAndPolygonContact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EdgeAndPolygonContact.hpp; sourceTree = "<group>"; };
-		80BB8969141C3E5900F1753A /* PolygonAndCircleContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolygonAndCircleContact.cpp; sourceTree = "<group>"; };
-		80BB896A141C3E5900F1753A /* PolygonAndCircleContact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PolygonAndCircleContact.hpp; sourceTree = "<group>"; };
-		80BB896B141C3E5900F1753A /* PolygonContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolygonContact.cpp; sourceTree = "<group>"; };
-		80BB896C141C3E5900F1753A /* PolygonContact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PolygonContact.hpp; sourceTree = "<group>"; };
 		80BB896E141C3E5900F1753A /* DistanceJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceJoint.cpp; sourceTree = "<group>"; };
 		80BB896F141C3E5900F1753A /* DistanceJoint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DistanceJoint.hpp; sourceTree = "<group>"; };
 		80BB8970141C3E5900F1753A /* FrictionJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrictionJoint.cpp; sourceTree = "<group>"; };
@@ -1056,26 +1008,10 @@
 			children = (
 				47928F3A1E6A099900EE6E9E /* BodyConstraint.cpp */,
 				474BAB2C1E5D00960058E08A /* BodyConstraint.hpp */,
-				80BB895B141C3E5900F1753A /* ChainAndCircleContact.cpp */,
-				80BB895C141C3E5900F1753A /* ChainAndCircleContact.hpp */,
-				80BB895D141C3E5900F1753A /* ChainAndPolygonContact.cpp */,
-				80BB895E141C3E5900F1753A /* ChainAndPolygonContact.hpp */,
-				80BB895F141C3E5900F1753A /* CircleContact.cpp */,
-				80BB8960141C3E5900F1753A /* CircleContact.hpp */,
 				80BB8961141C3E5900F1753A /* Contact.cpp */,
 				80BB8962141C3E5900F1753A /* Contact.hpp */,
 				80BB8963141C3E5900F1753A /* ContactSolver.cpp */,
 				80BB8964141C3E5900F1753A /* ContactSolver.hpp */,
-				80BB8965141C3E5900F1753A /* EdgeAndCircleContact.cpp */,
-				80BB8966141C3E5900F1753A /* EdgeAndCircleContact.hpp */,
-				4731DE4E1DEB760400E7F931 /* EdgeAndEdgeContact.cpp */,
-				4731DE4F1DEB760400E7F931 /* EdgeAndEdgeContact.hpp */,
-				80BB8967141C3E5900F1753A /* EdgeAndPolygonContact.cpp */,
-				80BB8968141C3E5900F1753A /* EdgeAndPolygonContact.hpp */,
-				80BB8969141C3E5900F1753A /* PolygonAndCircleContact.cpp */,
-				80BB896A141C3E5900F1753A /* PolygonAndCircleContact.hpp */,
-				80BB896B141C3E5900F1753A /* PolygonContact.cpp */,
-				80BB896C141C3E5900F1753A /* PolygonContact.hpp */,
 				478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */,
 				477DB2AA1D1C4BE800846ED6 /* PositionSolverManifold.cpp */,
 				477DB2AB1D1C4BE800846ED6 /* PositionSolverManifold.hpp */,
@@ -1275,7 +1211,6 @@
 				4731DE241DDF83A600E7F931 /* RayCastOutput.hpp in Headers */,
 				47AA5DD21C4C5FBE008AF2BA /* CircleShape.hpp in Headers */,
 				47AA5DD31C4C5FBE008AF2BA /* EdgeShape.hpp in Headers */,
-				4731DE531DEB760400E7F931 /* EdgeAndEdgeContact.hpp in Headers */,
 				4768D3FE1E414A0100574143 /* Vec2.hpp in Headers */,
 				47AA5DD41C4C5FBE008AF2BA /* PolygonShape.hpp in Headers */,
 				4731DE741DF7EB2200E7F931 /* EdgeInfo.hpp in Headers */,
@@ -1303,23 +1238,16 @@
 				4726DD2D1D31B4090012A882 /* AABB.hpp in Headers */,
 				4731DE6E1DF7E88500E7F931 /* ReferenceFace.hpp in Headers */,
 				47AA5DE31C4C5FBE008AF2BA /* WorldCallbacks.hpp in Headers */,
-				47AA5DE41C4C5FBE008AF2BA /* ChainAndCircleContact.hpp in Headers */,
-				47AA5DE51C4C5FBE008AF2BA /* ChainAndPolygonContact.hpp in Headers */,
 				4726DD101D3014990012A882 /* IndexPair.hpp in Headers */,
-				47AA5DE61C4C5FBE008AF2BA /* CircleContact.hpp in Headers */,
 				4731DE1C1DDCD0E100E7F931 /* FixtureProxy.hpp in Headers */,
 				4726DD201D305E5D0012A882 /* ContactFeature.hpp in Headers */,
 				47AA5DE71C4C5FBE008AF2BA /* Contact.hpp in Headers */,
 				4734B22E1DC2B11D00F15E29 /* Simplex.hpp in Headers */,
 				47AA5DE81C4C5FBE008AF2BA /* ContactSolver.hpp in Headers */,
-				47AA5DE91C4C5FBE008AF2BA /* EdgeAndCircleContact.hpp in Headers */,
 				47CF984E1DF9C4A30077F5F2 /* ShapeSeparation.hpp in Headers */,
-				47AA5DEA1C4C5FBE008AF2BA /* EdgeAndPolygonContact.hpp in Headers */,
 				4768D3F61E3A7ACA00574143 /* Wider.hpp in Headers */,
 				4731DE361DE1405900E7F931 /* Length.hpp in Headers */,
 				4731DE3C1DE1412F00E7F931 /* Time.hpp in Headers */,
-				47AA5DEB1C4C5FBE008AF2BA /* PolygonAndCircleContact.hpp in Headers */,
-				47AA5DEC1C4C5FBE008AF2BA /* PolygonContact.hpp in Headers */,
 				47AA5DED1C4C5FBE008AF2BA /* DistanceJoint.hpp in Headers */,
 				47AA5DEE1C4C5FBE008AF2BA /* FrictionJoint.hpp in Headers */,
 				47AA5DEF1C4C5FBE008AF2BA /* GearJoint.hpp in Headers */,
@@ -1365,7 +1293,6 @@
 				80BB8987141C3E5900F1753A /* Box2D.hpp in Headers */,
 				4731DE581DEC908600E7F931 /* UnitVec2.hpp in Headers */,
 				80BB8989141C3E5900F1753A /* BroadPhase.hpp in Headers */,
-				4731DE521DEB760400E7F931 /* EdgeAndEdgeContact.hpp in Headers */,
 				80BB8990141C3E5900F1753A /* Distance.hpp in Headers */,
 				47CB34401D6F3A8500828126 /* MassData.hpp in Headers */,
 				4731DE231DDF83A600E7F931 /* RayCastOutput.hpp in Headers */,
@@ -1405,22 +1332,15 @@
 				478869101D78BF7200AEC7F1 /* VelocityConstraint.hpp in Headers */,
 				80BB89B7141C3E5900F1753A /* WorldCallbacks.hpp in Headers */,
 				4768D3F51E3A7ACA00574143 /* Wider.hpp in Headers */,
-				80BB89B9141C3E5900F1753A /* ChainAndCircleContact.hpp in Headers */,
 				4751EE291CEDD78F00D459CB /* Mobile.hpp in Headers */,
-				80BB89BB141C3E5900F1753A /* ChainAndPolygonContact.hpp in Headers */,
 				4751EE2B1CEDD79900D459CB /* ConveyorBelt.hpp in Headers */,
 				4768D3FD1E414A0100574143 /* Vec2.hpp in Headers */,
 				477DB2AD1D1C4BE800846ED6 /* PositionSolverManifold.hpp in Headers */,
 				4731DE291DDF84A900E7F931 /* RayCastInput.hpp in Headers */,
 				478E67C71E760AB7009B9AD5 /* BodyType.hpp in Headers */,
-				80BB89BD141C3E5900F1753A /* CircleContact.hpp in Headers */,
 				80BB89BF141C3E5900F1753A /* Contact.hpp in Headers */,
 				80BB89C1141C3E5900F1753A /* ContactSolver.hpp in Headers */,
 				47CF984D1DF9C4A30077F5F2 /* ShapeSeparation.hpp in Headers */,
-				80BB89C3141C3E5900F1753A /* EdgeAndCircleContact.hpp in Headers */,
-				80BB89C5141C3E5900F1753A /* EdgeAndPolygonContact.hpp in Headers */,
-				80BB89C7141C3E5900F1753A /* PolygonAndCircleContact.hpp in Headers */,
-				80BB89C9141C3E5900F1753A /* PolygonContact.hpp in Headers */,
 				80BB89CB141C3E5900F1753A /* DistanceJoint.hpp in Headers */,
 				4726DD2C1D31B4090012A882 /* AABB.hpp in Headers */,
 				478E67CD1E777A43009B9AD5 /* StepStats.hpp in Headers */,
@@ -1695,16 +1615,9 @@
 				47AA5DB11C4C5FBE008AF2BA /* World.cpp in Sources */,
 				475A94591D9453A1000CA9A8 /* Shape.cpp in Sources */,
 				47AA5DB21C4C5FBE008AF2BA /* WorldCallbacks.cpp in Sources */,
-				47AA5DB31C4C5FBE008AF2BA /* ChainAndCircleContact.cpp in Sources */,
-				47AA5DB41C4C5FBE008AF2BA /* ChainAndPolygonContact.cpp in Sources */,
-				47AA5DB51C4C5FBE008AF2BA /* CircleContact.cpp in Sources */,
 				47AA5DB61C4C5FBE008AF2BA /* Contact.cpp in Sources */,
 				47928F3C1E6A099900EE6E9E /* BodyConstraint.cpp in Sources */,
 				47AA5DB71C4C5FBE008AF2BA /* ContactSolver.cpp in Sources */,
-				47AA5DB81C4C5FBE008AF2BA /* EdgeAndCircleContact.cpp in Sources */,
-				47AA5DB91C4C5FBE008AF2BA /* EdgeAndPolygonContact.cpp in Sources */,
-				47AA5DBA1C4C5FBE008AF2BA /* PolygonAndCircleContact.cpp in Sources */,
-				47AA5DBB1C4C5FBE008AF2BA /* PolygonContact.cpp in Sources */,
 				47AA5DBC1C4C5FBE008AF2BA /* DistanceJoint.cpp in Sources */,
 				4731DE301DDF9B6900E7F931 /* MassData.cpp in Sources */,
 				47AA5DBD1C4C5FBE008AF2BA /* FrictionJoint.cpp in Sources */,
@@ -1721,7 +1634,6 @@
 				47AA5DC31C4C5FBE008AF2BA /* RevoluteJoint.cpp in Sources */,
 				47AA5DC41C4C5FBE008AF2BA /* RopeJoint.cpp in Sources */,
 				47AA5DC51C4C5FBE008AF2BA /* WeldJoint.cpp in Sources */,
-				4731DE511DEB760400E7F931 /* EdgeAndEdgeContact.cpp in Sources */,
 				47AA5DC61C4C5FBE008AF2BA /* WheelJoint.cpp in Sources */,
 				47AA5DC71C4C5FBE008AF2BA /* Rope.cpp in Sources */,
 				47AA5DC81C4C5FBE008AF2BA /* MotorJoint.cpp in Sources */,
@@ -1793,7 +1705,6 @@
 				4731DE2C1DDF94A600E7F931 /* AABB.cpp in Sources */,
 				80BB899B141C3E5900F1753A /* PolygonShape.cpp in Sources */,
 				4731DE6B1DF7E88500E7F931 /* ReferenceFace.cpp in Sources */,
-				4731DE501DEB760400E7F931 /* EdgeAndEdgeContact.cpp in Sources */,
 				80BB899E141C3E5900F1753A /* BlockAllocator.cpp in Sources */,
 				80BB89A3141C3E5900F1753A /* Math.cpp in Sources */,
 				80BB89A5141C3E5900F1753A /* Settings.cpp in Sources */,
@@ -1811,17 +1722,10 @@
 				475039911D2180D600D32047 /* DistanceProxy.cpp in Sources */,
 				80BB89B4141C3E5900F1753A /* World.cpp in Sources */,
 				80BB89B6141C3E5900F1753A /* WorldCallbacks.cpp in Sources */,
-				80BB89B8141C3E5900F1753A /* ChainAndCircleContact.cpp in Sources */,
-				80BB89BA141C3E5900F1753A /* ChainAndPolygonContact.cpp in Sources */,
-				80BB89BC141C3E5900F1753A /* CircleContact.cpp in Sources */,
 				80BB89BE141C3E5900F1753A /* Contact.cpp in Sources */,
 				80BB89C0141C3E5900F1753A /* ContactSolver.cpp in Sources */,
 				4736DE8C1DB806AE003993CB /* CollideShapes.cpp in Sources */,
-				80BB89C2141C3E5900F1753A /* EdgeAndCircleContact.cpp in Sources */,
-				80BB89C4141C3E5900F1753A /* EdgeAndPolygonContact.cpp in Sources */,
 				4731DE711DF7EB2200E7F931 /* EdgeInfo.cpp in Sources */,
-				80BB89C6141C3E5900F1753A /* PolygonAndCircleContact.cpp in Sources */,
-				80BB89C8141C3E5900F1753A /* PolygonContact.cpp in Sources */,
 				80BB89CA141C3E5900F1753A /* DistanceJoint.cpp in Sources */,
 				80BB89CC141C3E5900F1753A /* FrictionJoint.cpp in Sources */,
 				80BB89CE141C3E5900F1753A /* GearJoint.cpp in Sources */,
