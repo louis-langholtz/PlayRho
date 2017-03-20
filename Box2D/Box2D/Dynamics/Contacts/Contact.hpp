@@ -57,6 +57,12 @@ class Contact
 public:
 	using substep_type = ts_iters_t;
 	
+	using ManifoldCalcFunc = Manifold (*)(const Fixture* fixtureA, child_count_t indexA,
+										  const Fixture* fixtureB, child_count_t indexB);
+	
+	Contact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB,
+			ManifoldCalcFunc mcf);
+	
 	Contact() = delete;
 	Contact(const Contact& copy) = delete;
 	
@@ -129,7 +135,7 @@ public:
 	/// Calculates this contact's collision manifold.
 	/// @return Contact manifold with one or more points
 	///   if the shapes are considered touching (collided).
-	virtual Manifold Evaluate() const = 0;
+	Manifold Evaluate() const;
 
 	substep_type GetToiCount() const noexcept;
 	
@@ -155,15 +161,12 @@ protected:
 	static Contact* Create(Fixture& fixtureA, child_count_t indexA,
 						   Fixture& fixtureB, child_count_t indexB);
 
-	static void Destroy(Contact* contact, Shape::Type typeA, Shape::Type typeB);
+	//static void Destroy(Contact* contact, Shape::Type typeA, Shape::Type typeB);
 	
 	/// Destroys the given contact.
 	/// @note This awakens the associated fixtures of a non-sensor touching contact.
 	/// @note This calls the contact's destructor.
 	static void Destroy(Contact* contact);
-
-	Contact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB);
-	virtual ~Contact() = default;
 
 	/// Updates the contact manifold and touching status and notifies listener (if one given).
 	/// @param listener Listener that if non-null is called with status information.
@@ -215,6 +218,13 @@ private:
 	
 	void UnsetTouching() noexcept;
 	
+	// Member variables...
+	
+	/// Manifold calculating function.
+	/// @note This is a use of the strategy pattern via a function pointer rather than
+	///   using a virtual method and subclassing this class.
+	ManifoldCalcFunc const m_manifoldCalcFunc;
+
 	Fixture* const m_fixtureA; ///< Fixture A. @detail Non-null pointer to fixture A.
 	Fixture* const m_fixtureB; ///< Fixture B. @detail Non-null pointer to fixture B.
 
@@ -228,6 +238,7 @@ private:
 	FlagsType m_flags = e_enabledFlag;
 	
 	RealNum m_tangentSpeed = 0;
+
 	
 	/// Time of impact.
 	/// @note This is a unit interval of time (a value between 0 and 1).
@@ -394,6 +405,13 @@ inline Contact::substep_type Contact::GetToiCount() const noexcept
 {
 	return m_toiCount;
 }
+
+inline Manifold Contact::Evaluate() const
+{
+	return m_manifoldCalcFunc(m_fixtureA, m_indexA, m_fixtureB, m_indexB);
+}
+
+// Free functions...
 
 bool HasSensor(const Contact& contact) noexcept;
 

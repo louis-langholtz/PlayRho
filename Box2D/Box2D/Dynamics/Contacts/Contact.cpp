@@ -18,17 +18,15 @@
  */
 
 #include <Box2D/Dynamics/Contacts/Contact.hpp>
-#include <Box2D/Dynamics/Contacts/CircleContact.hpp>
-#include <Box2D/Dynamics/Contacts/PolygonAndCircleContact.hpp>
-#include <Box2D/Dynamics/Contacts/PolygonContact.hpp>
-#include <Box2D/Dynamics/Contacts/EdgeAndCircleContact.hpp>
-#include <Box2D/Dynamics/Contacts/EdgeAndPolygonContact.hpp>
-#include <Box2D/Dynamics/Contacts/ChainAndCircleContact.hpp>
-#include <Box2D/Dynamics/Contacts/ChainAndPolygonContact.hpp>
 
 #include <Box2D/Collision/Collision.hpp>
 #include <Box2D/Collision/TimeOfImpact.hpp>
+#include <Box2D/Collision/CollideShapes.hpp>
 #include <Box2D/Collision/Shapes/Shape.hpp>
+#include <Box2D/Collision/Shapes/ChainShape.hpp>
+#include <Box2D/Collision/Shapes/CircleShape.hpp>
+#include <Box2D/Collision/Shapes/PolygonShape.hpp>
+#include <Box2D/Collision/Shapes/EdgeShape.hpp>
 #include <Box2D/Dynamics/Body.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
 #include <Box2D/Dynamics/World.hpp>
@@ -41,41 +39,112 @@ using ContactDestroyFcn = void (Contact* contact);
 
 struct ContactRegister
 {
-	ContactCreateFcn* const createFcn;
-	ContactDestroyFcn* const destroyFcn;
+	Contact::ManifoldCalcFunc calcfunc;
 	const bool primary;
 };
+
+static Manifold GetChainCircleManifold(const Fixture* fixtureA, child_count_t indexA,
+									   const Fixture* fixtureB, child_count_t)
+{
+	const auto xfA = fixtureA->GetBody()->GetTransformation();
+	const auto xfB = fixtureB->GetBody()->GetTransformation();
+	const auto edge = (static_cast<const ChainShape*>(fixtureA->GetShape()))->GetChildEdge(indexA);
+	return CollideShapes(edge, xfA, *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB);
+}
+
+static Manifold GetChainPolygonManifold(const Fixture* fixtureA, child_count_t indexA,
+										const Fixture* fixtureB, child_count_t)
+{
+	const auto xfA = fixtureA->GetBody()->GetTransformation();
+	const auto xfB = fixtureB->GetBody()->GetTransformation();
+	const auto edge = static_cast<const ChainShape*>(fixtureA->GetShape())->GetChildEdge(indexA);
+	return CollideShapes(edge, xfA, *static_cast<const PolygonShape*>(fixtureB->GetShape()), xfB);
+}
+
+static Manifold GetCircleCircleManifold(const Fixture* fixtureA, child_count_t,
+										const Fixture* fixtureB, child_count_t)
+{
+	const auto xfA = fixtureA->GetBody()->GetTransformation();
+	const auto xfB = fixtureB->GetBody()->GetTransformation();
+	return CollideShapes(*static_cast<const CircleShape*>(fixtureA->GetShape()), xfA,
+						 *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB);
+}
+
+static Manifold GetEdgeCircleManifold(const Fixture* fixtureA, child_count_t,
+									  const Fixture* fixtureB, child_count_t)
+{
+	const auto xfA = fixtureA->GetBody()->GetTransformation();
+	const auto xfB = fixtureB->GetBody()->GetTransformation();
+	return CollideShapes(*static_cast<const EdgeShape*>(fixtureA->GetShape()), xfA,
+						 *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB);
+}
+
+static Manifold GetEdgeEdgeManifold(const Fixture* fixtureA, child_count_t,
+									const Fixture* fixtureB, child_count_t)
+{
+	const auto xfA = fixtureA->GetBody()->GetTransformation();
+	const auto xfB = fixtureB->GetBody()->GetTransformation();
+	return CollideShapes(*static_cast<const EdgeShape*>(fixtureA->GetShape()), xfA,
+						 *static_cast<const EdgeShape*>(fixtureB->GetShape()), xfB);
+}
+
+static Manifold GetEdgePolygonManifold(const Fixture* fixtureA, child_count_t,
+									   const Fixture* fixtureB, child_count_t)
+{
+	const auto xfA = fixtureA->GetBody()->GetTransformation();
+	const auto xfB = fixtureB->GetBody()->GetTransformation();
+	return CollideShapes(*static_cast<const EdgeShape*>(fixtureA->GetShape()), xfA,
+						 *static_cast<const PolygonShape*>(fixtureB->GetShape()), xfB);
+}
+
+static Manifold GetPolygonCircleManifold(const Fixture* fixtureA, child_count_t,
+										 const Fixture* fixtureB, child_count_t)
+{
+	const auto xfA = fixtureA->GetBody()->GetTransformation();
+	const auto xfB = fixtureB->GetBody()->GetTransformation();
+	return CollideShapes(*static_cast<const PolygonShape*>(fixtureA->GetShape()), xfA,
+						 *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB);
+}
+
+static Manifold GetPolygonPolygonManifold(const Fixture* fixtureA, child_count_t,
+										  const Fixture* fixtureB, child_count_t)
+{
+	const auto xfA = fixtureA->GetBody()->GetTransformation();
+	const auto xfB = fixtureB->GetBody()->GetTransformation();
+	return CollideShapes(*static_cast<const PolygonShape*>(fixtureA->GetShape()), xfA,
+						 *static_cast<const PolygonShape*>(fixtureB->GetShape()), xfB);
+}
 
 // Order dependent on Shape::Type enumeration values
 static constexpr ContactRegister s_registers[Shape::e_typeCount][Shape::e_typeCount] =
 {
 	// circle-* contacts
 	{
-		{CircleContact::Create, CircleContact::Destroy, true}, // circle
-		{EdgeAndCircleContact::Create, EdgeAndCircleContact::Destroy, false}, // edge
-		{PolygonAndCircleContact::Create, PolygonAndCircleContact::Destroy, false}, // polygon
-		{ChainAndCircleContact::Create, ChainAndCircleContact::Destroy, false}, // chain
+		{GetCircleCircleManifold, true}, // circle
+		{GetEdgeCircleManifold, false}, // edge
+		{GetPolygonCircleManifold, false}, // polygon
+		{GetChainCircleManifold, false}, // chain
 	},
 	// edge-* contacts
 	{
-		{EdgeAndCircleContact::Create, EdgeAndCircleContact::Destroy, true}, // circle
-		{nullptr, nullptr, false}, // edge
-		{EdgeAndPolygonContact::Create, EdgeAndPolygonContact::Destroy, true}, // polygon
-		{nullptr, nullptr, false}, // chain
+		{GetEdgeCircleManifold, true}, // circle
+		{GetEdgeEdgeManifold, false}, // edge
+		{GetEdgePolygonManifold, true}, // polygon
+		{nullptr, false}, // chain
 	},
 	// polygon-* contacts
 	{
-		{PolygonAndCircleContact::Create, PolygonAndCircleContact::Destroy, true}, // circle
-		{EdgeAndPolygonContact::Create, EdgeAndPolygonContact::Destroy, false}, // edge
-		{PolygonContact::Create, PolygonContact::Destroy, true}, // polygon
-		{nullptr, nullptr, false}, // chain
+		{GetPolygonCircleManifold, true}, // circle
+		{GetEdgePolygonManifold, false}, // edge
+		{GetPolygonPolygonManifold, true}, // polygon
+		{GetChainPolygonManifold, false}, // chain
 	},
 	// chain-* contacts
 	{
-		{ChainAndCircleContact::Create, ChainAndCircleContact::Destroy, true}, // circle
-		{nullptr, nullptr, false}, // edge
-		{ChainAndPolygonContact::Create, ChainAndPolygonContact::Destroy, true}, // polygon
-		{nullptr, nullptr, false}, // chain
+		{GetChainCircleManifold, true}, // circle
+		{nullptr, false}, // edge
+		{GetChainPolygonManifold, true}, // polygon
+		{nullptr, false}, // chain
 	},
 };
 
@@ -88,12 +157,12 @@ Contact* Contact::Create(Fixture& fixtureA, child_count_t indexA,
 	assert(0 <= type1 && type1 < Shape::e_typeCount);
 	assert(0 <= type2 && type2 < Shape::e_typeCount);
 	
-	const auto createFcn = s_registers[type1][type2].createFcn;
-	if (createFcn)
+	const auto calcfunc = s_registers[type1][type2].calcfunc;
+	if (calcfunc)
 	{
 		return (s_registers[type1][type2].primary)?
-			createFcn(&fixtureA, indexA, &fixtureB, indexB):
-			createFcn(&fixtureB, indexB, &fixtureA, indexA);
+			new Contact{&fixtureA, indexA, &fixtureB, indexB, calcfunc}:
+			new Contact{&fixtureB, indexB, &fixtureA, indexA, calcfunc};
 	}
 	return nullptr;
 }
@@ -111,18 +180,13 @@ void Contact::Destroy(Contact* contact)
 		SetAwake(*fixtureA);
 		SetAwake(*fixtureB);
 	}
-
-	const auto typeA = GetType(*fixtureA);
-	const auto typeB = GetType(*fixtureB);
-
-	assert(0 <= typeA && typeB < Shape::e_typeCount);
-	assert(0 <= typeA && typeB < Shape::e_typeCount);
-
-	const auto destroyFcn = s_registers[typeA][typeB].destroyFcn;
-	destroyFcn(contact);
+	
+	delete contact;
 }
 
-Contact::Contact(Fixture* fA, child_count_t indexA, Fixture* fB, child_count_t indexB):
+Contact::Contact(Fixture* fA, child_count_t indexA, Fixture* fB, child_count_t indexB,
+				 ManifoldCalcFunc mcf):
+	m_manifoldCalcFunc{mcf},
 	m_fixtureA{fA}, m_fixtureB{fB}, m_indexA{indexA}, m_indexB{indexB},
 	m_friction{MixFriction(fA->GetFriction(), fB->GetFriction())},
 	m_restitution{MixRestitution(fA->GetRestitution(), fB->GetRestitution())}

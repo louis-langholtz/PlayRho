@@ -1,6 +1,5 @@
 /*
- * Original work Copyright (c) 2006-2010 Erin Catto http://www.box2d.org
- * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
+ * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/Box2D
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the authors be held liable for any damages
@@ -17,14 +16,22 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <Box2D/Dynamics/Contacts/EdgeAndCircleContact.hpp>
-#include <Box2D/Dynamics/Body.hpp>
-#include <Box2D/Dynamics/Fixture.hpp>
-#include <Box2D/Collision/CollideShapes.hpp>
-#include <Box2D/Collision/Shapes/EdgeShape.hpp>
-#include <Box2D/Collision/Shapes/CircleShape.hpp>
+#include "gtest/gtest.h"
+#include <functional>
 
-#include <new>
+TEST(functional, FunctionSize)
+{
+	EXPECT_EQ(sizeof(std::function<int()>), std::size_t(48));
+	EXPECT_EQ(sizeof(std::function<void(int)>), std::size_t(48));
+	EXPECT_EQ(sizeof(std::function<float(int)>), std::size_t(48));
+	EXPECT_EQ(sizeof(std::function<int(float)>), std::size_t(48));
+	EXPECT_EQ(sizeof(std::function<int(double)>), std::size_t(48));
+	EXPECT_EQ(sizeof(std::function<int(double, long, void*)>), std::size_t(48));
+}
 
-using namespace box2d;
-
+TEST(functional, FunctionSizeGreaterThanFunctionPtr)
+{
+	using FunctionPtr = int (*)(int);
+	using StdFunction = std::function<int(int)>;
+	EXPECT_GT(sizeof(StdFunction), sizeof(FunctionPtr));
+}

@@ -24,20 +24,6 @@
 
 namespace box2d {
 
-class ChainAndPolygonContact : public Contact
-{
-public:
-	static Contact* Create(Fixture* fixtureA, child_count_t indexA,
-						   Fixture* fixtureB, child_count_t indexB);
-	static void Destroy(Contact* contact);
-
-	ChainAndPolygonContact(Fixture* fixtureA, child_count_t indexA,
-						   Fixture* fixtureB, child_count_t indexB);
-	~ChainAndPolygonContact() {}
-
-	Manifold Evaluate() const override;
-};
-
 } // namespace box2d
 
 #endif

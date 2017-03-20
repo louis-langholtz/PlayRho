@@ -29,31 +29,3 @@
 
 using namespace box2d;
 
-Contact* ChainAndPolygonContact::Create(Fixture* fixtureA, child_count_t indexA,
-										Fixture* fixtureB, child_count_t indexB)
-{
-	return new ChainAndPolygonContact(fixtureA, indexA, fixtureB, indexB);
-}
-
-void ChainAndPolygonContact::Destroy(Contact* contact)
-{
-	delete static_cast<ChainAndPolygonContact*>(contact);
-}
-
-ChainAndPolygonContact::ChainAndPolygonContact(Fixture* fixtureA, child_count_t indexA,
-											   Fixture* fixtureB, child_count_t indexB)
-: Contact{fixtureA, indexA, fixtureB, indexB}
-{
-	assert(GetType(*fixtureA) == Shape::e_chain);
-	assert(GetType(*fixtureB) == Shape::e_polygon);
-}
-
-Manifold ChainAndPolygonContact::Evaluate() const
-{
-	const auto fixtureA = GetFixtureA();
-	const auto fixtureB = GetFixtureB();
-	const auto xfA = fixtureA->GetBody()->GetTransformation();
-	const auto xfB = fixtureB->GetBody()->GetTransformation();
-	const auto edge = static_cast<const ChainShape*>(fixtureA->GetShape())->GetChildEdge(GetChildIndexA());
-	return CollideShapes(edge, xfA, *static_cast<const PolygonShape*>(fixtureB->GetShape()), xfB);
-}

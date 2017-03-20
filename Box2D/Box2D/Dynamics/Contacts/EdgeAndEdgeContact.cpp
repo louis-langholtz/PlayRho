@@ -26,30 +26,3 @@
 
 using namespace box2d;
 
-Contact* EdgeAndEdgeContact::Create(Fixture* fixtureA, child_count_t,
-									Fixture* fixtureB, child_count_t)
-{
-	return new EdgeAndEdgeContact(fixtureA, fixtureB);
-}
-
-void EdgeAndEdgeContact::Destroy(Contact* contact)
-{
-	delete static_cast<EdgeAndEdgeContact*>(contact);
-}
-
-EdgeAndEdgeContact::EdgeAndEdgeContact(Fixture* fixtureA, Fixture* fixtureB)
-: Contact{fixtureA, 0, fixtureB, 0}
-{
-	assert(GetType(*fixtureA) == Shape::e_edge);
-	assert(GetType(*fixtureB) == Shape::e_edge);
-}
-
-Manifold EdgeAndEdgeContact::Evaluate() const
-{
-	const auto fixtureA = GetFixtureA();
-	const auto fixtureB = GetFixtureB();
-	const auto xfA = fixtureA->GetBody()->GetTransformation();
-	const auto xfB = fixtureB->GetBody()->GetTransformation();
-	return CollideShapes(*static_cast<const EdgeShape*>(fixtureA->GetShape()), xfA,
-						 *static_cast<const EdgeShape*>(fixtureB->GetShape()), xfB);
-}

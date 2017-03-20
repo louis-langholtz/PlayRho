@@ -28,30 +28,3 @@
 
 using namespace box2d;
 
-Contact* PolygonAndCircleContact::Create(Fixture* fixtureA, child_count_t,
-										 Fixture* fixtureB, child_count_t)
-{
-	return new PolygonAndCircleContact(fixtureA, fixtureB);
-}
-
-void PolygonAndCircleContact::Destroy(Contact* contact)
-{
-	delete static_cast<PolygonAndCircleContact*>(contact);
-}
-
-PolygonAndCircleContact::PolygonAndCircleContact(Fixture* fixtureA, Fixture* fixtureB)
-: Contact{fixtureA, 0, fixtureB, 0}
-{
-	assert(GetType(*fixtureA) == Shape::e_polygon);
-	assert(GetType(*fixtureB) == Shape::e_circle);
-}
-
-Manifold PolygonAndCircleContact::Evaluate() const
-{
-	const auto fixtureA = GetFixtureA();
-	const auto fixtureB = GetFixtureB();
-	const auto xfA = fixtureA->GetBody()->GetTransformation();
-	const auto xfB = fixtureB->GetBody()->GetTransformation();
-	return CollideShapes(*static_cast<const PolygonShape*>(fixtureA->GetShape()), xfA,
-						 *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB);
-}

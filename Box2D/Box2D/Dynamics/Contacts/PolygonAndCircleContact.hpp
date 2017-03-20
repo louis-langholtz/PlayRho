@@ -24,18 +24,6 @@
 
 namespace box2d {
 
-class PolygonAndCircleContact : public Contact
-{
-public:
-	static Contact* Create(Fixture* fixtureA, child_count_t indexA,
-						   Fixture* fixtureB, child_count_t indexB);
-	static void Destroy(Contact* contact);
-
-	PolygonAndCircleContact(Fixture* fixtureA, Fixture* fixtureB);
-	~PolygonAndCircleContact() {}
-
-	Manifold Evaluate() const override;
-};
 
 } // namespace box2d
 

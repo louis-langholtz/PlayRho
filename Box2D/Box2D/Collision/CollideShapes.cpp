@@ -198,6 +198,7 @@ static Manifold GetManifoldFaceB(const EdgeInfo& edgeInfo,
 								 PolygonShape::vertex_count_t index)
 {
 #if 1
+	// XXX Is this code really correct??
 	const auto incidentEdge = ClipList{
 		ClipVertex{edgeInfo.GetVertex1(), GetVertexFaceContactFeature(0, index)}, // 0, index originally
 		ClipVertex{edgeInfo.GetVertex2(), GetVertexFaceContactFeature(1, index)} // also 0, index originally
@@ -737,8 +738,10 @@ Manifold box2d::CollideShapes(const EdgeShape& shapeA, const Transformation& xfA
 	if ((polygonAxis.index != IndexSeparation::InvalidIndex) &&
 		(polygonAxis.separation > ((k_relativeTol * edgeAxis.separation) + k_absoluteTol)))
 	{
+		// polygonAxis
 		return GetManifoldFaceB(edgeInfo, shapeB, localShapeB, polygonAxis.index);
 	}
+	// edgeAxis
 	return GetManifoldFaceA(edgeInfo, localShapeB, xf);	
 }
 
