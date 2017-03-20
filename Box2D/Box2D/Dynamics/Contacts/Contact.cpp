@@ -18,9 +18,7 @@
  */
 
 #include <Box2D/Dynamics/Contacts/Contact.hpp>
-
 #include <Box2D/Collision/Collision.hpp>
-#include <Box2D/Collision/TimeOfImpact.hpp>
 #include <Box2D/Collision/CollideShapes.hpp>
 #include <Box2D/Collision/Shapes/Shape.hpp>
 #include <Box2D/Collision/Shapes/ChainShape.hpp>
