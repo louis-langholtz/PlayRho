@@ -44,7 +44,9 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-8.0f, 20.0f);
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(std::make_shared<PolygonShape>(4.0f, 1.0f), FixtureDef{}.UseDensity(2));
+				auto conf = PolygonShape::Conf{};
+				conf.density = 2;
+				body->CreateFixture(std::make_shared<PolygonShape>(4.0f, 1.0f, conf));
                 
 				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-12.0f, 20.0f)});
                 
@@ -57,7 +59,9 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(4.0f, 20.0f);
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(std::make_shared<PolygonShape>(8.0f, 1.0f), FixtureDef{}.UseDensity(2));
+				auto conf = PolygonShape::Conf{};
+				conf.density = 2;
+				body->CreateFixture(std::make_shared<PolygonShape>(8.0f, 1.0f, conf));
                 
 				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-4.0f, 20.0f)});
                 
@@ -71,7 +75,9 @@ public:
 				bd.fixedRotation = true;
 				bd.position = Vec2(12.0f, 20.0f);
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(std::make_shared<PolygonShape>(3.0f, 3.0f), FixtureDef{}.UseDensity(2));
+				auto conf = PolygonShape::Conf{};
+				conf.density = 2;
+				body->CreateFixture(std::make_shared<PolygonShape>(3.0f, 3.0f, conf));
                 
 				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(12.0f, 20.0f)});
                 

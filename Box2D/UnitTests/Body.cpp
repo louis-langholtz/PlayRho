@@ -120,29 +120,29 @@ TEST(Body, CreateFixture)
 {
 	World world;
 	const auto body = world.CreateBody();
-	const auto shape = std::make_shared<CircleShape>(1);
+
+	const auto valid_shape = std::make_shared<CircleShape>(1);
+
+	const auto invalid_friction_shape = std::make_shared<CircleShape>(1);
+	invalid_friction_shape->SetFriction(-0.1f);
+	
+	const auto invalid_density_shape = std::make_shared<CircleShape>(1);
+	invalid_density_shape->SetDensity(std::numeric_limits<RealNum>::quiet_NaN());
+	
+	const auto invalid_restitution_shape = std::make_shared<CircleShape>(1);
+	invalid_restitution_shape->SetRestitution(std::numeric_limits<RealNum>::quiet_NaN());
 
 	// Check default settings
-	EXPECT_NE(body->CreateFixture(shape, FixtureDef{}), nullptr);
+	EXPECT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);
 	
 	// Check friction settings
-	EXPECT_NE(body->CreateFixture(shape, FixtureDef{}.UseFriction(1)), nullptr);
-	EXPECT_NE(body->CreateFixture(shape, FixtureDef{}.UseFriction(0)), nullptr);
-	EXPECT_NE(body->CreateFixture(shape, FixtureDef{}.UseFriction(std::numeric_limits<RealNum>::infinity())), nullptr);
-	EXPECT_EQ(body->CreateFixture(shape, FixtureDef{}.UseFriction(-0.1f)), nullptr);
-	EXPECT_EQ(body->CreateFixture(shape, FixtureDef{}.UseFriction(std::numeric_limits<RealNum>::quiet_NaN())), nullptr);
+	EXPECT_EQ(body->CreateFixture(invalid_friction_shape), nullptr);
 	
 	// Check density settings
-	EXPECT_NE(body->CreateFixture(shape, FixtureDef{}.UseDensity(1)), nullptr);
-	EXPECT_NE(body->CreateFixture(shape, FixtureDef{}.UseDensity(0)), nullptr);
-	EXPECT_NE(body->CreateFixture(shape, FixtureDef{}.UseDensity(std::numeric_limits<RealNum>::infinity())), nullptr);
-	EXPECT_EQ(body->CreateFixture(shape, FixtureDef{}.UseDensity(-0.1f)), nullptr);
-	EXPECT_EQ(body->CreateFixture(shape, FixtureDef{}.UseDensity(std::numeric_limits<RealNum>::quiet_NaN())), nullptr);
+	EXPECT_EQ(body->CreateFixture(invalid_density_shape), nullptr);
 	
 	// Check restitution settings
-	EXPECT_NE(body->CreateFixture(shape, FixtureDef{}.UseRestitution(1)), nullptr);
-	EXPECT_NE(body->CreateFixture(shape, FixtureDef{}.UseRestitution(0)), nullptr);
-	EXPECT_EQ(body->CreateFixture(shape, FixtureDef{}.UseRestitution(std::numeric_limits<RealNum>::quiet_NaN())), nullptr);
+	EXPECT_EQ(body->CreateFixture(invalid_restitution_shape), nullptr);
 }
 
 TEST(Body, CreateAndDestroyFixture)
@@ -154,9 +154,13 @@ TEST(Body, CreateAndDestroyFixture)
 	EXPECT_TRUE(body->GetFixtures().empty());
 	EXPECT_FALSE(body->IsMassDataDirty());
 
-	const auto shape = std::make_shared<CircleShape>(2.871f, Vec2{1.912f, -77.31f});
+	auto conf = CircleShape::Conf{};
+	conf.vertexRadius = 2.871f;
+	conf.location = Vec2{1.912f, -77.31f};
+	conf.density = 1;
+	const auto shape = std::make_shared<CircleShape>(conf);
 	
-	auto fixture = body->CreateFixture(shape, FixtureDef{}.UseDensity(1), false);
+	auto fixture = body->CreateFixture(shape, FixtureDef{}, false);
 	ASSERT_NE(fixture, nullptr);
 	ASSERT_NE(fixture->GetShape(), nullptr);
 	EXPECT_EQ(fixture->GetShape()->GetType(), shape->GetType());
@@ -189,7 +193,11 @@ TEST(Body, CreateLotsOfFixtures)
 {
 	BodyDef bd;
 	bd.type = BodyType::Dynamic;
-	const auto shape = std::make_shared<CircleShape>(2.871f, Vec2{1.912f, -77.31f});
+	auto conf = CircleShape::Conf{};
+	conf.vertexRadius = 2.871f;
+	conf.location = Vec2{1.912f, -77.31f};
+	conf.density = 1.3f;
+	const auto shape = std::make_shared<CircleShape>(conf);
 	const auto num = 5000;
 	std::chrono::time_point<std::chrono::system_clock> start, end;
 	
@@ -203,7 +211,7 @@ TEST(Body, CreateLotsOfFixtures)
 		
 		for (auto i = decltype(num){0}; i < num; ++i)
 		{
-			auto fixture = body->CreateFixture(shape, FixtureDef{}.UseDensity(1.3f), false);
+			auto fixture = body->CreateFixture(shape, FixtureDef{}, false);
 			ASSERT_NE(fixture, nullptr);
 		}
 		body->ResetMassData();
@@ -232,7 +240,7 @@ TEST(Body, CreateLotsOfFixtures)
 		
 		for (auto i = decltype(num){0}; i < num; ++i)
 		{
-			auto fixture = body->CreateFixture(shape, FixtureDef{}.UseDensity(1.3f), true);
+			auto fixture = body->CreateFixture(shape, FixtureDef{}, true);
 			ASSERT_NE(fixture, nullptr);
 		}
 		

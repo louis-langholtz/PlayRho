@@ -72,7 +72,10 @@ public:
 			bd.allowSleep = false;
 			const auto body = m_world->CreateBody(bd);
 
-			body->CreateFixture(std::make_shared<CircleShape>(0.5f), FixtureDef{}.UseDensity(1));
+			auto conf = CircleShape::Conf{};
+			conf.density = 1;
+			conf.vertexRadius = 0.5f;
+			body->CreateFixture(std::make_shared<CircleShape>(conf));
 		}
 
 		{
@@ -82,9 +85,11 @@ public:
 			bd.allowSleep = false;
 			const auto body = m_world->CreateBody(bd);
 
-			auto shape = PolygonShape(RealNum(1));
+			auto shape = PolygonShape{};
+			shape.SetVertexRadius(1);
 			shape.SetAsBox(0.5f, 0.5f);
-			body->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(1));
+			shape.SetDensity(1);
+			body->CreateFixture(std::make_shared<PolygonShape>(shape));
 		}
 	}
 

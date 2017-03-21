@@ -38,7 +38,10 @@ public:
 			bd.angle = 0.5_rad * Pi;
 			bd.allowSleep = false;
 			const auto body = m_world->CreateBody(bd);
-			body->CreateFixture(std::make_shared<PolygonShape>(2.0f, 0.5f), FixtureDef{}.UseDensity(5));
+			
+			auto polygonConf = PolygonShape::Conf{};
+			polygonConf.density = 5;
+			body->CreateFixture(std::make_shared<PolygonShape>(2.0f, 0.5f, polygonConf));
 
 			// Bouncy limit
 			const auto axis = GetUnitVector(Vec2(2.0f, 1.0f));

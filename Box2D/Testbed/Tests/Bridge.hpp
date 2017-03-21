@@ -37,11 +37,10 @@ public:
 		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
 
 		{
-			const auto shape = std::make_shared<PolygonShape>(0.5f, 0.125f);
-
-			FixtureDef fd;
-			fd.density = 20.0f;
-			fd.friction = 0.2f;
+			auto conf = PolygonShape::Conf{};
+			conf.density = 20.0f;
+			conf.friction = 0.2f;
+			const auto shape = std::make_shared<PolygonShape>(0.5f, 0.125f, conf);
 
 			auto prevBody = ground;
 			for (auto i = 0; i < e_count; ++i)
@@ -50,7 +49,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-14.5f + 1.0f * i, 5.0f);
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(shape, fd);
+				body->CreateFixture(shape);
 
 				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-15.0f + 1.0f * i, 5.0f)});
 
@@ -64,31 +63,30 @@ public:
 			m_world->CreateJoint(RevoluteJointDef{prevBody, ground, Vec2(-15.0f + 1.0f * e_count, 5.0f)});
 		}
 
-		auto polyshape = std::make_shared<PolygonShape>();
+		auto polyconf = PolygonShape::Conf{};
+		polyconf.density = 1.0f;
+		auto polyshape = std::make_shared<PolygonShape>(polyconf);
 		polyshape->Set({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
 		for (auto i = 0; i < 2; ++i)
 		{
-			FixtureDef fd;
-			fd.density = 1.0f;
-
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-8.0f + 8.0f * i, 12.0f);
 			const auto body = m_world->CreateBody(bd);
-			body->CreateFixture(polyshape, fd);
+			body->CreateFixture(polyshape);
 		}
 
-		const auto circleshape = std::make_shared<CircleShape>(RealNum(0.5));
+		auto circleconf = CircleShape::Conf{};
+		circleconf.density = 1;
+		circleconf.vertexRadius = 0.5f;
+		const auto circleshape = std::make_shared<CircleShape>(circleconf);
 		for (auto i = 0; i < 3; ++i)
 		{
-			FixtureDef fd;
-			fd.density = 1.0f;
-
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-6.0f + 6.0f * i, 10.0f);
 			const auto body = m_world->CreateBody(bd);
-			body->CreateFixture(circleshape, fd);
+			body->CreateFixture(circleshape);
 		}
 	}
 

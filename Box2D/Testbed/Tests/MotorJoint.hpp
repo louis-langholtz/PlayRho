@@ -39,10 +39,10 @@ public:
 		bd.position = Vec2(0.0f, 8.0f);
 		const auto body = m_world->CreateBody(bd);
 
-		FixtureDef fd;
-		fd.friction = 0.6f;
-		fd.density = 2.0f;
-		body->CreateFixture(std::make_shared<PolygonShape>(2.0f, 0.5f), fd);
+		auto conf = PolygonShape::Conf{};
+		conf.friction = 0.6f;
+		conf.density = 2.0f;
+		body->CreateFixture(std::make_shared<PolygonShape>(2.0f, 0.5f, conf));
 
 		MotorJointDef mjd;
 		mjd.Initialize(ground, body);

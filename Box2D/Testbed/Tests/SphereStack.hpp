@@ -40,6 +40,7 @@ public:
 
 		{
 			const auto shape = std::make_shared<CircleShape>(1);
+			shape->SetDensity(1);
 
 			for (auto i = 0; i < e_count; ++i)
 			{
@@ -48,9 +49,7 @@ public:
 				bd.position = Vec2(0, 4.0f + 3.0f * i);
 
 				m_bodies[i] = m_world->CreateBody(bd);
-
-				m_bodies[i]->CreateFixture(shape, FixtureDef{}.UseDensity(1));
-
+				m_bodies[i]->CreateFixture(shape);
 				m_bodies[i]->SetVelocity(Velocity{Vec2(0.0f, -50.0f), 0_rad});
 			}
 		}

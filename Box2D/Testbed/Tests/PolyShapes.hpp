@@ -121,6 +121,9 @@ public:
 
 	PolyShapes()
 	{
+		m_circle->SetDensity(1.0f);
+		m_circle->SetFriction(0.3f);
+
 		// Ground body
 		{
 			const auto ground = m_world->CreateBody();
@@ -130,6 +133,8 @@ public:
 		for (auto&& p: m_polygons)
 		{
 			p = std::make_shared<PolygonShape>();
+			p->SetDensity(1.0f);
+			p->SetFriction(0.3f);
 		}
 
 		m_polygons[0]->Set({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
@@ -182,16 +187,13 @@ public:
 
 		m_bodies[m_bodyIndex] = m_world->CreateBody(bd);
 
-		FixtureDef fd;
-		fd.density = 1.0f;
-		fd.friction = 0.3f;
 		if (index < 4)
 		{
-			m_bodies[m_bodyIndex]->CreateFixture(m_polygons[index], fd);
+			m_bodies[m_bodyIndex]->CreateFixture(m_polygons[index]);
 		}
 		else
 		{
-			m_bodies[m_bodyIndex]->CreateFixture(m_circle, fd);
+			m_bodies[m_bodyIndex]->CreateFixture(m_circle);
 		}
 
 		m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));

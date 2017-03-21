@@ -2303,7 +2303,7 @@ Fixture* World::CreateFixture(Body& body, std::shared_ptr<const Shape> shape,
 	{
 		return nullptr;
 	}
-	if (!IsValid(shape) || !Body::IsValid(def))
+	if (!IsValid(shape) || !Body::IsValid(*shape))
 	{
 		return nullptr;
 	}

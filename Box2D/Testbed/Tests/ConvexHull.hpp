@@ -80,7 +80,8 @@ public:
 
 	void PostStep(const Settings&, Drawer& drawer) override
 	{
-		const auto shape = PolygonShape(Span<const Vec2>{&m_points[0], m_points.size()});
+		const auto conf = PolygonShape::Conf{};
+		const auto shape = PolygonShape{Span<const Vec2>{&m_points[0], m_points.size()}, conf};
 
 		drawer.DrawString(5, m_textLine, "Press g to generate a new random convex hull");
 		m_textLine += DRAW_STRING_NEW_LINE;

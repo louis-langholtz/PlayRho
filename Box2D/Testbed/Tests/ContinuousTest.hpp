@@ -47,9 +47,10 @@ public:
 			//bd.angle = 0.1f;
 
 			const auto shape = std::make_shared<PolygonShape>(2.0f, 0.1f);
+			shape->SetDensity(1);
 
 			m_body = m_world->CreateBody(bd);
-			m_body->CreateFixture(shape, FixtureDef{}.UseDensity(1));
+			m_body->CreateFixture(shape);
 
 			m_angularVelocity = 1_rad * RandomFloat(-50.0f, 50.0f);
 			//m_angularVelocity = 46.661274f;

@@ -80,13 +80,10 @@ public:
 		}
 
 		{
-			const auto shape = std::make_shared<PolygonShape>(0.5f, 0.5f);
-
-			FixtureDef fd;
-			fd.density = 25.0f;
+			auto shape = PolygonShape(0.5f, 0.5f);
+			shape.SetDensity(25.0f);
 
 			float friction[5] = {std::numeric_limits<float>::infinity(), 0.5f, 0.35f, -0.1f, 0.0f};
-
 			for (auto i = 0; i < 5; ++i)
 			{
 				BodyDef bd;
@@ -94,8 +91,8 @@ public:
 				bd.position = Vec2(-15.0f + 4.0f * i, 28.0f);
 				const auto body = m_world->CreateBody(bd);
 
-				fd.friction = friction[i];
-				body->CreateFixture(shape, fd);
+				shape.SetFriction(friction[i]);
+				body->CreateFixture(std::make_shared<PolygonShape>(shape));
 			}
 		}
 	}

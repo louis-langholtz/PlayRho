@@ -41,7 +41,8 @@ public:
 
 			ChainShape loop;
 			loop.CreateLoop(Span<const Vec2>(vs, 5));
-			ground->CreateFixture(std::make_shared<ChainShape>(loop), FixtureDef{}.UseDensity(0));
+			loop.SetDensity(0);
+			ground->CreateFixture(std::make_shared<ChainShape>(loop));
 		}
 
 		// Flippers
@@ -59,12 +60,10 @@ public:
 			const auto rightFlipper = m_world->CreateBody(bd);
 
 			const auto box = std::make_shared<PolygonShape>(1.75f, 0.1f);
+			box->SetDensity(1.0f);
 
-			FixtureDef fd;
-			fd.density = 1.0f;
-
-			leftFlipper->CreateFixture(box, fd);
-			rightFlipper->CreateFixture(box, fd);
+			leftFlipper->CreateFixture(box);
+			rightFlipper->CreateFixture(box);
 
 			RevoluteJointDef jd;
 			jd.bodyA = ground;
@@ -97,9 +96,10 @@ public:
 
 			m_ball = m_world->CreateBody(bd);
 
-			FixtureDef fd;
-			fd.density = 1.0f;
-			m_ball->CreateFixture(std::make_shared<CircleShape>(0.2f), fd);
+			auto conf = CircleShape::Conf{};
+			conf.density = 1.0f;
+			conf.vertexRadius = 0.2f;
+			m_ball->CreateFixture(std::make_shared<CircleShape>(conf));
 		}
 	}
 

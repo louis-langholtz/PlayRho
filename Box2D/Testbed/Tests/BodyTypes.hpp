@@ -36,8 +36,9 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(0.0f, 3.0f);
 			m_attachment = m_world->CreateBody(bd);
-
-			m_attachment->CreateFixture(std::make_shared<PolygonShape>(0.5f, 2.0f), FixtureDef{}.UseDensity(2));
+			auto conf = PolygonShape::Conf{};
+			conf.density = 2;
+			m_attachment->CreateFixture(std::make_shared<PolygonShape>(0.5f, 2.0f, conf));
 		}
 
 		// Define platform
@@ -47,13 +48,13 @@ public:
 			bd.position = Vec2(-4.0f, 5.0f);
 			m_platform = m_world->CreateBody(bd);
 
-			PolygonShape shape;
+			auto conf = PolygonShape::Conf{};
+			conf.friction = 0.6f;
+			conf.density = 2.0f;
+			PolygonShape shape{conf};
 			SetAsBox(shape, 0.5f, 4.0f, Vec2(4.0f, 0.0f), 0.5_rad * Pi);
 
-			FixtureDef fd{};
-			fd.friction = 0.6f;
-			fd.density = 2.0f;
-			m_platform->CreateFixture(std::make_shared<PolygonShape>(shape), fd);
+			m_platform->CreateFixture(std::make_shared<PolygonShape>(shape));
 
 			RevoluteJointDef rjd(m_attachment, m_platform, Vec2(0.0f, 5.0f));
 			rjd.maxMotorTorque = 50.0f;
@@ -78,11 +79,11 @@ public:
 			bd.position = Vec2(0.0f, 8.0f);
 			Body* body = m_world->CreateBody(bd);
 
-			FixtureDef fd{};
-			fd.friction = 0.6f;
-			fd.density = 2.0f;
+			auto conf = PolygonShape::Conf{};
+			conf.friction = 0.6f;
+			conf.density = 2.0f;
 
-			body->CreateFixture(std::make_shared<PolygonShape>(0.75f, 0.75f), fd);
+			body->CreateFixture(std::make_shared<PolygonShape>(0.75f, 0.75f, conf));
 		}
 	}
 

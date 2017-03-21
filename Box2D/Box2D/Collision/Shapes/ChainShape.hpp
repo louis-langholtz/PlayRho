@@ -44,8 +44,20 @@ public:
 		return DefaultLinearSlop * 2;
 	}
 	
-	ChainShape(RealNum vertexRadius = GetDefaultVertexRadius()):
-		Shape{e_chain, vertexRadius}
+	struct Conf: public Shape::Conf
+	{
+		constexpr Conf(): Shape::Conf{Shape::Conf{}.UseVertexRadius(GetDefaultVertexRadius())}
+		{
+		}
+	};
+
+	static constexpr Conf GetDefaultConf() noexcept
+	{
+		return Conf{};
+	}
+	
+	ChainShape(const Conf& conf = GetDefaultConf()):
+		Shape{e_chain, conf}
 	{
 		// Intentionally empty.
 	}

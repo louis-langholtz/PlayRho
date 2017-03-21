@@ -32,10 +32,8 @@ public:
 	
 		{
 			const auto shape = std::make_shared<PolygonShape>(0.6f, 0.125f);
-
-			FixtureDef fd;
-			fd.density = 20.0f;
-			fd.friction = 0.2f;
+			shape->SetDensity(20.0f);
+			shape->SetFriction(0.2f);
 
 			const auto y = 25.0f;
 			auto prevBody = ground;
@@ -45,7 +43,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(0.5f + i, y);
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(shape, fd);
+				body->CreateFixture(shape);
 
 				m_world->CreateJoint(RevoluteJointDef(prevBody, body, Vec2(RealNum(i), y)));
 

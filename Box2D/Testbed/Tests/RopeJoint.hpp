@@ -40,11 +40,14 @@ public:
 
 		{
 			const auto rectangle = std::make_shared<PolygonShape>(0.5f, 0.125f);
+			rectangle->SetDensity(20.0f);
+			rectangle->SetFriction(0.2f);
+
 			const auto square = std::make_shared<PolygonShape>(1.5f, 1.5f);
+			square->SetDensity(100.0f);
+			square->SetFriction(0.2f);
 
 			FixtureDef fd;
-			fd.density = 20.0f;
-			fd.friction = 0.2f;
 			fd.filter.categoryBits = 0x0001;
 			fd.filter.maskBits = 0xFFFF & ~0x0002;
 
@@ -62,7 +65,6 @@ public:
 				if (i == N - 1)
 				{
 					shape = square;
-					fd.density = 100.0f;
 					fd.filter.categoryBits = 0x0002;
 					bd.position = Vec2(1.0f * i, y);
 					bd.angularDamping = 0.4f;

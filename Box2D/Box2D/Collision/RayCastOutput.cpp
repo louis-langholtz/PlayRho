@@ -262,7 +262,9 @@ RayCastOutput box2d::RayCast(const ChainShape& shape, const RayCastInput& input,
 	
 	const auto i1 = childIndex;
 	const auto i2 = GetNextIndex(shape, childIndex);
-	const auto edgeShape = EdgeShape(shape.GetVertex(i1), shape.GetVertex(i2));
+	auto conf = EdgeShape::Conf{};
+	conf.vertexRadius = shape.GetVertexRadius();
+	const auto edgeShape = EdgeShape{shape.GetVertex(i1), shape.GetVertex(i2), conf};
 	return RayCast(edgeShape, input, xf, 0);
 }
 

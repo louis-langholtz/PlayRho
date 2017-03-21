@@ -40,20 +40,21 @@ public:
 			bd.position = Vec2(-5.0f, 5.0f);
 			const auto body = m_world->CreateBody(bd);
 
-			FixtureDef fd;
-			fd.friction = 0.8f;
-			m_platform = body->CreateFixture(std::make_shared<PolygonShape>(10.0f, 0.5f), fd);
+			auto conf = PolygonShape::Conf{};
+			conf.friction = 0.8f;
+			m_platform = body->CreateFixture(std::make_shared<PolygonShape>(10.0f, 0.5f, conf));
 		}
 
 		// Boxes
 		const auto boxshape = std::make_shared<PolygonShape>(0.5f, 0.5f);
+		boxshape->SetDensity(20);
 		for (auto i = 0; i < 5; ++i)
 		{
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-10.0f + 2.0f * i, 7.0f);
 			const auto body = m_world->CreateBody(bd);
-			body->CreateFixture(boxshape, FixtureDef{}.UseDensity(20));
+			body->CreateFixture(boxshape);
 		}
 	}
 

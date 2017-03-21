@@ -41,7 +41,7 @@ namespace {
 } // anonymous namespace
 
 ChainShape::ChainShape(const ChainShape& other):
-	Shape{e_chain, other.GetVertexRadius()}
+	Shape{e_chain, Conf{}.UseVertexRadius(other.GetVertexRadius())}
 {
 	*this = other;
 }
@@ -104,7 +104,11 @@ EdgeShape ChainShape::GetChildEdge(child_count_t index) const
 	const auto isLooped = ::IsLooped(*this);
 	const auto v0 = (index > 0)? m_vertices[index - 1]: isLooped? m_vertices[m_count - 2]: GetInvalid<Vec2>();
 	const auto v3 = (index < (m_count - 2))? m_vertices[index + 2]: isLooped? m_vertices[1]: GetInvalid<Vec2>();
-	return EdgeShape{m_vertices[index + 0], m_vertices[index + 1], v0, v3};
+	auto conf = EdgeShape::Conf{};
+	conf.UseVertexRadius(GetVertexRadius());
+	conf.v0 = v0;
+	conf.v3 = v3;
+	return EdgeShape{m_vertices[index + 0], m_vertices[index + 1], conf};
 }
 
 child_count_t box2d::GetChildCount(const ChainShape& shape)

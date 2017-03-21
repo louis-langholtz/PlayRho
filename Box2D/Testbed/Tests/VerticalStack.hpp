@@ -40,6 +40,10 @@ public:
 
 	VerticalStack()
 	{
+		m_bulletshape->SetVertexRadius(0.25f);
+		m_bulletshape->SetDensity(20.0f);
+		m_bulletshape->SetRestitution(0.05f);
+
 		const auto ground = m_world->CreateBody();
 		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
 		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(20.0f, 0.0f), Vec2(20.0f, 20.0f)));
@@ -49,12 +53,10 @@ public:
 
 		const auto hdim = 0.1f; // 0.5f is less stable than 1.0f for boxes not at origin (x of 0)
 		const auto shape = std::make_shared<PolygonShape>(hdim, hdim);
+		shape->SetDensity(1.0f);
+		shape->SetFriction(0.3f);
 		for (auto j = 0; j < e_columnCount; ++j)
 		{
-			FixtureDef fd;
-			fd.density = 1.0f;
-			fd.friction = 0.3f;
-
 			for (auto i = 0; i < e_rowCount; ++i)
 			{
 				BodyDef bd;
@@ -67,7 +69,7 @@ public:
 				bd.position = Vec2(xs[j] + x, (i + 1) * hdim * 4);
 				
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(shape, fd);
+				body->CreateFixture(shape);
 			}
 		}
 
@@ -86,17 +88,13 @@ public:
 			}
 
 			{
-				FixtureDef fd;
-				fd.density = 20.0f;
-				fd.restitution = 0.05f;
-
 				BodyDef bd;
 				bd.type = BodyType::Dynamic;
 				bd.bullet = true;
 				bd.position = Vec2(-31.0f, 5.0f);
 
 				m_bullet = m_world->CreateBody(bd);
-				m_bullet->CreateFixture(m_bulletshape, fd);
+				m_bullet->CreateFixture(m_bulletshape);
 				m_bullet->SetVelocity(Velocity{Vec2(400.0f, 0.0f), 0_rad});
 			}
 			break;
@@ -151,7 +149,7 @@ public:
 	}
 
 	Body* m_bullet;
-	std::shared_ptr<CircleShape> m_bulletshape = std::make_shared<CircleShape>(0.25f);
+	std::shared_ptr<CircleShape> m_bulletshape = std::make_shared<CircleShape>();
 };
 	
 } // namespace box2d

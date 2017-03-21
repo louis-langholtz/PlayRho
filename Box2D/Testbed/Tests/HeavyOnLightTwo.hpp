@@ -32,12 +32,13 @@ public:
 		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
 		
 		const auto shape = std::make_shared<CircleShape>(0.5f);
+		shape->SetDensity(10);
 
 		const auto body1 = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 2.5f)));
-		body1->CreateFixture(shape, FixtureDef{}.UseDensity(10));
+		body1->CreateFixture(shape);
         
         const auto body2 = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 3.5f)));
-		body2->CreateFixture(shape, FixtureDef{}.UseDensity(10));
+		body2->CreateFixture(shape);
 	}
     
     void ToggleHeavy()
@@ -50,7 +51,11 @@ public:
         else
         {
             m_heavy = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 9.0f)));
-			m_heavy->CreateFixture(std::make_shared<CircleShape>(5.0f), FixtureDef{}.UseDensity(10));
+			
+			auto conf = CircleShape::Conf{};
+			conf.density = 10;
+			conf.vertexRadius = 5.0f;
+			m_heavy->CreateFixture(std::make_shared<CircleShape>(conf));
         }
     }
     

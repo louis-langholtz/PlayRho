@@ -243,7 +243,7 @@ public:
 	
 	static constexpr auto InvalidIslandIndex = static_cast<body_count_t>(-1);
 	
-	static bool IsValid(const FixtureDef& def);
+	static bool IsValid(const Shape& shape);
 
 	/// Creates a fixture and attaches it to this body.
 	///

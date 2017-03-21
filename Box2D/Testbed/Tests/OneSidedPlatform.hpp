@@ -57,8 +57,10 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(0.0f, 12.0f);
 			const auto body = m_world->CreateBody(bd);
-			m_character = body->CreateFixture(std::make_shared<CircleShape>(m_radius),
-											  FixtureDef{}.UseDensity(20));
+			auto conf = CircleShape::Conf{};
+			conf.vertexRadius = m_radius;
+			conf.density = 20;
+			m_character = body->CreateFixture(std::make_shared<CircleShape>(conf));
 			body->SetVelocity(Velocity{Vec2(0.0f, -50.0f), 0_rad});
 		}
 	}

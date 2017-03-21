@@ -38,17 +38,30 @@ public:
 		return DefaultLinearSlop * 2;
 	}
 
-	EdgeShape(RealNum vertexRadius = GetDefaultVertexRadius()) noexcept:
-		Shape{e_edge, vertexRadius}
+	struct Conf: public Shape::Conf
+	{
+		constexpr Conf(): Shape::Conf{Shape::Conf{}.UseVertexRadius(GetDefaultVertexRadius())}
+		{
+		}
+		
+		Vec2 v0 = GetInvalid<Vec2>();
+		Vec2 v3 = GetInvalid<Vec2>();
+	};
+	
+	static Conf GetDefaultConf() noexcept
+	{
+		return Conf{};
+	}
+
+	EdgeShape(const Conf& conf = GetDefaultConf()) noexcept:
+		Shape{e_edge, conf}
 	{
 		// Intentionally empty.
 	}
 
-	constexpr EdgeShape(Vec2 v1, Vec2 v2,
-						Vec2 v0 = GetInvalid<Vec2>(), Vec2 v3 = GetInvalid<Vec2>(),
-						RealNum vertexRadius = GetDefaultVertexRadius()) noexcept:
-		Shape{e_edge, vertexRadius},
-		m_vertex0{v0}, m_vertex1{v1}, m_vertex2{v2}, m_vertex3{v3}
+	constexpr EdgeShape(Vec2 v1, Vec2 v2, const Conf& conf = GetDefaultConf()) noexcept:
+		Shape{e_edge, conf},
+		m_vertex0{conf.v0}, m_vertex1{v1}, m_vertex2{v2}, m_vertex3{conf.v3}
 	{
 		// Intentionally empty.
 	}

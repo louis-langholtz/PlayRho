@@ -57,38 +57,11 @@ struct Filter
 struct FixtureDef
 {
 	constexpr FixtureDef& UseUserData(void* value) noexcept;
-	constexpr FixtureDef& UseFriction(RealNum value) noexcept;
-	constexpr FixtureDef& UseRestitution(RealNum value) noexcept;
-	constexpr FixtureDef& UseDensity(RealNum value) noexcept;
 	constexpr FixtureDef& UseIsSensor(bool value) noexcept;
 	constexpr FixtureDef& UseFilter(Filter value) noexcept;
 
 	/// Use this to store application specific fixture data.
 	void* userData = nullptr;
-
-	/// Friction coefficient.
-	///
-	/// @note This must be a value between 0 and +infinity.
-	/// @note This is usually in the range [0,1].
-	/// @note The square-root of the product of this value multiplied by a touching fixture's
-	/// friction becomes the friction coefficient for the contact.
-	///
-	RealNum friction = RealNum{2} / RealNum{10};
-
-	/// Restitution (elasticity) of the associated shape.
-	///
-	/// @note This should be a valid finite value.
- 	/// @note This is usually in the range [0,1].
-	///
-	RealNum restitution = RealNum{0};
-
-	/// Density of the associated shape.
-	///
-	/// @note This is usually in kg/m^2.
-	/// @note This must be a non-negative value.
-	/// @note Use 0 to indicate that the shape's associated mass should be 0.
-	///
-	RealNum density = RealNum{0};
 	
 	/// A sensor shape collects contact information but never generates a collision
 	/// response.
@@ -103,25 +76,7 @@ constexpr inline FixtureDef& FixtureDef::UseUserData(void* value) noexcept
 	userData = value;
 	return *this;
 }
-	
-constexpr inline FixtureDef& FixtureDef::UseFriction(RealNum value) noexcept
-{
-	friction = value;
-	return *this;
-}
-	
-constexpr inline FixtureDef& FixtureDef::UseRestitution(RealNum value) noexcept
-{
-	restitution = value;
-	return *this;
-}
-	
-constexpr inline FixtureDef& FixtureDef::UseDensity(RealNum value) noexcept
-{
-	density = value;
-	return *this;
-}
-	
+
 constexpr inline FixtureDef& FixtureDef::UseIsSensor(bool value) noexcept
 {
 	isSensor = value;
@@ -255,19 +210,12 @@ private:
 	Fixture(Body* body, const FixtureDef& def, std::shared_ptr<const Shape> shape):
 		m_body{body},
 		m_shape{shape},
-		m_density{Max(def.density, RealNum{0})},
-		m_friction{def.friction},
-		m_restitution{def.restitution},
 		m_filter{def.filter},
 		m_isSensor{def.isSensor},
 		m_userData{def.userData}
 	{
 		assert(body);
 		assert(shape);
-		assert(def.density >= 0);
-		assert(def.friction >= 0);
-		assert(def.restitution < std::numeric_limits<decltype(def.restitution)>::infinity());
-		assert(def.restitution > -std::numeric_limits<decltype(def.restitution)>::infinity());
 	}
 	
 	Span<FixtureProxy> GetProxies() const noexcept;
@@ -287,9 +235,6 @@ private:
 	FixtureProxies m_proxies = nullptr; ///< Array of fixture proxies for the assigned shape. 8-bytes.
 	void* m_userData = nullptr; ///< User data. 8-bytes.
 	// 48-bytes so far.
-	RealNum m_density = 0; ///< Density. 4-bytes.
-	RealNum m_friction = RealNum{2} / RealNum{10}; ///< Friction as a coefficient. 4-bytes.
-	RealNum m_restitution = 0; ///< Restitution as a coefficient. 4-bytes.
 	child_count_t m_proxyCount = 0; ///< Proxy count. @detail This is the fixture shape's child count after proxy creation. 4-bytes.
 	// 48 + 16 = 64-bytes now.
 	Filter m_filter; ///< Filter object. 6-bytes.
@@ -331,37 +276,6 @@ inline Body* Fixture::GetBody() noexcept
 inline const Body* Fixture::GetBody() const noexcept
 {
 	return m_body;
-}
-
-inline void Fixture::SetDensity(RealNum density) noexcept
-{
-	assert(IsValid(density) && density >= RealNum{0});
-	m_density = density;
-}
-
-inline RealNum Fixture::GetDensity() const noexcept
-{
-	return m_density;
-}
-
-inline RealNum Fixture::GetFriction() const noexcept
-{
-	return m_friction;
-}
-
-inline void Fixture::SetFriction(RealNum friction) noexcept
-{
-	m_friction = friction;
-}
-
-inline RealNum Fixture::GetRestitution() const noexcept
-{
-	return m_restitution;
-}
-
-inline void Fixture::SetRestitution(RealNum restitution) noexcept
-{
-	m_restitution = restitution;
 }
 
 inline child_count_t Fixture::GetProxyCount() const noexcept

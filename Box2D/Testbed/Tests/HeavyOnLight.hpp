@@ -32,16 +32,22 @@ public:
 			const auto ground = m_world->CreateBody();
 			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
 		}
-        
+		
+		auto conf = CircleShape::Conf{};
+		conf.density = 10;
+
 		BodyDef bd;
 		bd.type = BodyType::Dynamic;
+
 		bd.position = Vec2(0.0f, 0.5f);
 		const auto body1 = m_world->CreateBody(bd);
-		body1->CreateFixture(std::make_shared<CircleShape>(0.5f), FixtureDef{}.UseDensity(10));
+		conf.vertexRadius = 0.5f;
+		body1->CreateFixture(std::make_shared<CircleShape>(conf));
         
         bd.position = Vec2(0.0f, 6.0f);
         const auto body2 = m_world->CreateBody(bd);
-		body2->CreateFixture(std::make_shared<CircleShape>(5.0f), FixtureDef{}.UseDensity(10));
+		conf.vertexRadius = 5.0f;
+		body2->CreateFixture(std::make_shared<CircleShape>(conf));
 	}
     
 	static Test* Create()

@@ -47,12 +47,12 @@ public:
 	{
 		// Ground body
 		{
-			FixtureDef sd;
-			sd.friction = 0.3f;
+			auto conf = EdgeShape::Conf{};
+			conf.friction = 0.3f;
 
 			BodyDef bd;
 			const auto ground = m_world->CreateBody(bd);
-			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)), sd);
+			ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f), conf));
 		}
 
 		// Small triangle
@@ -62,9 +62,9 @@ public:
 		vertices[2] = Vec2(0.0f, 2.0f);
 		PolygonShape polygon;
 		polygon.Set(Span<const Vec2>{vertices, 3});
+		polygon.SetDensity(1.0f);
 
 		FixtureDef triangleShapeDef;
-		triangleShapeDef.density = 1.0f;
 
 		triangleShapeDef.filter.groupIndex = k_smallGroup;
 		triangleShapeDef.filter.categoryBits = k_triangleCategory;
@@ -94,7 +94,9 @@ public:
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-5.0f, 10.0f);
 			const auto body = m_world->CreateBody(bd);
-			body->CreateFixture(std::make_shared<PolygonShape>(0.5f, 1.0f), FixtureDef().UseDensity(1));
+			auto conf = PolygonShape::Conf{};
+			conf.density = 1;
+			body->CreateFixture(std::make_shared<PolygonShape>(0.5f, 1.0f, conf));
 
 			PrismaticJointDef jd;
 			jd.bodyA = body2;
@@ -111,9 +113,10 @@ public:
 
 		// Small box
 		polygon.SetAsBox(1.0f, 0.5f);
+		polygon.SetDensity(1.0f);
+		polygon.SetRestitution(0.1f);
+
 		FixtureDef boxShapeDef;
-		boxShapeDef.density = 1.0f;
-		boxShapeDef.restitution = 0.1f;
 
 		boxShapeDef.filter.groupIndex = k_smallGroup;
 		boxShapeDef.filter.categoryBits = k_boxCategory;
@@ -135,10 +138,12 @@ public:
 		body4->CreateFixture(std::make_shared<PolygonShape>(polygon), boxShapeDef);
 
 		// Small circle
-		auto circle = CircleShape(1);
+		auto circleConf = CircleShape::Conf{};
+		circleConf.vertexRadius = 1;
+		circleConf.density = 1.0f;
+		auto circle = CircleShape(circleConf);
 
 		FixtureDef circleShapeDef;
-		circleShapeDef.density = 1.0f;
 
 		circleShapeDef.filter.groupIndex = k_smallGroup;
 		circleShapeDef.filter.categoryBits = k_circleCategory;

@@ -27,21 +27,21 @@
 
 using namespace box2d;
 
-bool Body::IsValid(const FixtureDef& def)
+bool Body::IsValid(const Shape& shape)
 {
-	if (!(def.density >= 0))
+	if (!(shape.GetDensity() >= 0))
 	{
 		return false;
 	}
-	if (!(def.friction >= 0))
+	if (!(shape.GetFriction() >= 0))
 	{
 		return false;
 	}
-	if (!(def.restitution < std::numeric_limits<decltype(def.restitution)>::infinity()))
+	if (!(shape.GetRestitution() < std::numeric_limits<decltype(shape.GetRestitution())>::infinity()))
 	{
 		return false;
 	}
-	if (!(def.restitution > -std::numeric_limits<decltype(def.restitution)>::infinity()))
+	if (!(shape.GetRestitution() > -std::numeric_limits<decltype(shape.GetRestitution())>::infinity()))
 	{
 		return false;
 	}

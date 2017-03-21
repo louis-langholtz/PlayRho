@@ -31,27 +31,29 @@ public:
 		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(50.0f, 0.0f), Vec2(-50.0f, 0.0f)));
 
 		const auto circle1 = std::make_shared<CircleShape>(1);
+		circle1->SetDensity(5);
 		const auto circle2 = std::make_shared<CircleShape>(2);
+		circle2->SetDensity(5);
 		const auto box = std::make_shared<PolygonShape>(0.5f, 5.0f);
+		box->SetDensity(5);
 	
 		{
 			BodyDef bd1;
 			bd1.type = BodyType::Static;
 			bd1.position = Vec2(10.0f, 9.0f);
 			const auto body1 = m_world->CreateBody(bd1);
-			body1->CreateFixture(circle1, FixtureDef().UseDensity(5));
 
 			BodyDef bd2;
 			bd2.type = BodyType::Dynamic;
 			bd2.position = Vec2(10.0f, 8.0f);
 			const auto body2 = m_world->CreateBody(bd2);
-			body2->CreateFixture(box, FixtureDef().UseDensity(5));
+			body2->CreateFixture(box);
 
 			BodyDef bd3;
 			bd3.type = BodyType::Dynamic;
 			bd3.position = Vec2(10.0f, 6.0f);
 			const auto body3 = m_world->CreateBody(bd3);
-			body3->CreateFixture(circle2, FixtureDef().UseDensity(5));
+			body3->CreateFixture(circle2);
 
 			Joint* joint1 = m_world->CreateJoint(RevoluteJointDef{body2, body1, bd1.position});
 			Joint* joint2 = m_world->CreateJoint(RevoluteJointDef{body2, body3, bd3.position});
@@ -70,7 +72,7 @@ public:
 			bd1.type = BodyType::Dynamic;
 			bd1.position = Vec2(-3.0f, 12.0f);
 			const auto body1 = m_world->CreateBody(bd1);
-			body1->CreateFixture(circle1, FixtureDef().UseDensity(5));
+			body1->CreateFixture(circle1);
 
 			RevoluteJointDef jd1;
 			jd1.bodyA = ground;
@@ -84,7 +86,7 @@ public:
 			bd2.type = BodyType::Dynamic;
 			bd2.position = Vec2(0.0f, 12.0f);
 			const auto body2 = m_world->CreateBody(bd2);
-			body2->CreateFixture(circle2, FixtureDef().UseDensity(5));
+			body2->CreateFixture(circle2);
 
 			RevoluteJointDef jd2(ground, body2, bd2.position);
 			m_joint2 = (RevoluteJoint*)m_world->CreateJoint(jd2);
@@ -93,7 +95,7 @@ public:
 			bd3.type = BodyType::Dynamic;
 			bd3.position = Vec2(2.5f, 12.0f);
 			const auto body3 = m_world->CreateBody(bd3);
-			body3->CreateFixture(box, FixtureDef().UseDensity(5));
+			body3->CreateFixture(box);
 
 			PrismaticJointDef jd3(ground, body3, bd3.position, Vec2(0.0f, 1.0f));
 			jd3.lowerTranslation = -5.0f;

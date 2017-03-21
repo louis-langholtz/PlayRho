@@ -65,6 +65,7 @@ public:
 		{
 			const auto a = 0.5f;
 			const auto shape = std::make_shared<PolygonShape>(a, a);
+			shape->SetDensity(5);
 
 			Vec2 x(-7.0f, 0.75f);
 			Vec2 y;
@@ -82,7 +83,7 @@ public:
 					bd.position = y;
 
 					const auto body = m_world->CreateBody(bd);
-					body->CreateFixture(shape, FixtureDef{}.UseDensity(5));
+					body->CreateFixture(shape);
 					++m_fixtureCount;
 					y += deltaY;
 				}

@@ -34,7 +34,10 @@ public:
 
 		const auto ground = m_world->CreateBody();
 		{
-			CircleShape circle(2.0f, Vec2(-10.0f, y + b + L));
+			auto conf = CircleShape::Conf{};
+			conf.vertexRadius = 2.0f;
+			conf.location = Vec2(-10.0f, y + b + L);
+			CircleShape circle(conf);
 			ground->CreateFixture(std::make_shared<CircleShape>(circle));
 
 			circle.SetLocation(Vec2(10.0f, y + b + L));
@@ -43,6 +46,7 @@ public:
 
 		{
 			const auto shape = std::make_shared<PolygonShape>(a, b);
+			shape->SetDensity(5);
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
@@ -50,11 +54,11 @@ public:
 			//bd.fixedRotation = true;
 			bd.position = Vec2(-10.0f, y);
 			const auto body1 = m_world->CreateBody(bd);
-			body1->CreateFixture(shape, FixtureDef{}.UseDensity(5));
+			body1->CreateFixture(shape);
 
 			bd.position = Vec2(10.0f, y);
 			const auto body2 = m_world->CreateBody(bd);
-			body2->CreateFixture(shape, FixtureDef{}.UseDensity(5));
+			body2->CreateFixture(shape);
 
 			PulleyJointDef pulleyDef;
 			Vec2 anchor1(-10.0f, y + b);

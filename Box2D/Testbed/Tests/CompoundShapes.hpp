@@ -36,8 +36,14 @@ public:
 		}
 
 		{
-			const auto circle1 = std::make_shared<CircleShape>(0.5f, Vec2{-0.5f, 0.5f});
-			const auto circle2 = std::make_shared<CircleShape>(0.5f, Vec2{0.5f, 0.5f});
+			auto conf = CircleShape::Conf{};
+			conf.vertexRadius = 0.5f;
+			
+			conf.location = Vec2{-0.5f, 0.5f};
+			const auto circle1 = std::make_shared<CircleShape>(conf);
+			circle1->SetDensity(2);
+			conf.location = Vec2{0.5f, 0.5f};
+			const auto circle2 = std::make_shared<CircleShape>(conf);
 			for (auto i = 0; i < 10; ++i)
 			{
 				const auto x = RandomFloat(-0.1f, 0.1f);
@@ -46,14 +52,16 @@ public:
 				bd.position = Vec2(x + 5.0f, 1.05f + 2.5f * i);
 				bd.angle = 1_rad * RandomFloat(-Pi, Pi);
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(circle1, FixtureDef{}.UseDensity(2));
+				body->CreateFixture(circle1);
 				body->CreateFixture(circle2);
 			}
 		}
 
 		{
 			const auto polygon1 = std::make_shared<PolygonShape>(0.25f, 0.5f);
+			polygon1->SetDensity(2);
 			auto polygon2 = std::make_shared<PolygonShape>();
+			polygon2->SetDensity(2);
 			SetAsBox(*polygon2, 0.25f, 0.5f, Vec2(0.0f, -0.5f), 0.5_rad * Pi);
 			for (int i = 0; i < 10; ++i)
 			{
@@ -63,8 +71,8 @@ public:
 				bd.position = Vec2(x - 5.0f, 1.05f + 2.5f * i);
 				bd.angle = 1_rad * RandomFloat(-Pi, Pi);
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(polygon1, FixtureDef{}.UseDensity(2));
-				body->CreateFixture(polygon2, FixtureDef{}.UseDensity(2));
+				body->CreateFixture(polygon1);
+				body->CreateFixture(polygon2);
 			}
 		}
 
@@ -79,6 +87,7 @@ public:
 				Transform(Vec2(1.0f, 0.0f), xf1),
 				Transform(Vec2(0.0f, 0.5f), xf1)
 			});
+			triangle1->SetDensity(2);
 
 			Transformation xf2;
 			xf2.q = UnitVec2{-0.3524_rad * Pi};
@@ -90,6 +99,7 @@ public:
 				Transform(Vec2(1.0f, 0.0f), xf2),
 				Transform(Vec2(0.0f, 0.5f), xf2)
 			});
+			triangle2->SetDensity(2);
 			
 			for (auto i = 0; i < 10; ++i)
 			{
@@ -99,27 +109,30 @@ public:
 				bd.position = Vec2(x, 2.05f + 2.5f * i);
 				bd.angle = 0.0_rad;
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(triangle1, FixtureDef{}.UseDensity(2));
-				body->CreateFixture(triangle2, FixtureDef{}.UseDensity(2));
+				body->CreateFixture(triangle1);
+				body->CreateFixture(triangle2);
 			}
 		}
 
 		{
 			const auto bottom = std::make_shared<PolygonShape>(1.5f, 0.15f);
+			bottom->SetDensity(4);
 
 			auto left = std::make_shared<PolygonShape>();
+			left->SetDensity(4);
 			SetAsBox(*left, 0.15f, 2.7f, Vec2(-1.45f, 2.35f), 0.2_rad);
 
 			auto right = std::make_shared<PolygonShape>();
+			right->SetDensity(4);
 			SetAsBox(*right, 0.15f, 2.7f, Vec2(1.45f, 2.35f), -0.2_rad);
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2( 0.0f, 2.0f );
 			const auto body = m_world->CreateBody(bd);
-			body->CreateFixture(bottom, FixtureDef{}.UseDensity(4));
-			body->CreateFixture(left, FixtureDef{}.UseDensity(4));
-			body->CreateFixture(right, FixtureDef{}.UseDensity(4));
+			body->CreateFixture(bottom);
+			body->CreateFixture(left);
+			body->CreateFixture(right);
 		}
 	}
 

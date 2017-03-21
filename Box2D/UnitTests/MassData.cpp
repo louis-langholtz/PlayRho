@@ -47,23 +47,28 @@ TEST(MassData, GetForZeroVertexRadiusCircle)
 
 TEST(MassData, GetForOriginCenteredCircle)
 {
-	const auto radius = RealNum(1);
-	const auto position = Vec2{0, 0};
-	const auto foo = CircleShape{radius, position};
-	const auto density = RealNum(1);
-	const auto mass_data = GetMassData(foo, density);
+	auto conf = CircleShape::Conf{};
+	conf.vertexRadius = 1;
+	conf.location = Vec2{0, 0};
+	conf.density = RealNum(1);
+	const auto foo = CircleShape{conf};
+	const auto mass_data = GetMassData(foo, conf.density);
 	EXPECT_EQ(mass_data.mass, Pi);
 	EXPECT_NEAR(double(mass_data.I), 1.5707964, 0.0001);
-	EXPECT_TRUE(almost_equal(mass_data.I, density * (Square(radius) * Square(radius) * Pi / 2)));
-	EXPECT_EQ(mass_data.center, position);
+	EXPECT_TRUE(almost_equal(mass_data.I, conf.density * (Square(conf.vertexRadius) * Square(conf.vertexRadius) * Pi / 2)));
+	EXPECT_EQ(mass_data.center, conf.location);
 }
 
 TEST(MassData, GetForCircle)
 {
 	const auto radius = RealNum(1);
 	const auto position = Vec2{-1, 1};
-	const auto foo = CircleShape{radius, position};
 	const auto density = RealNum(1);
+	auto conf = CircleShape::Conf{};
+	conf.vertexRadius = radius;
+	conf.location = position;
+	conf.density = density;
+	const auto foo = CircleShape{conf};
 	const auto mass_data = GetMassData(foo, density);
 	EXPECT_EQ(mass_data.mass, Pi);
 	EXPECT_NEAR(double(mass_data.I), 7.85398, 0.0002);
@@ -72,11 +77,14 @@ TEST(MassData, GetForCircle)
 
 TEST(MassData, GetForZeroVertexRadiusRectangle)
 {
-	auto shape = PolygonShape(RealNum{0});
+	const auto density = RealNum(2.1);
+	auto conf = PolygonShape::Conf{};
+	conf.vertexRadius = 0;
+	conf.density = density;
+	auto shape = PolygonShape(conf);
 	shape.SetAsBox(4, 1);
 	ASSERT_EQ(shape.GetCentroid().x, RealNum(0));
 	ASSERT_EQ(shape.GetCentroid().y, RealNum(0));
-	const auto density = RealNum(2.1);
 	const auto mass_data = GetMassData(shape, density);
 	EXPECT_TRUE(almost_equal(mass_data.mass, RealNum(density * (8 * 2))));
 	EXPECT_NEAR(double(mass_data.I), 90.666664 * double(density), 0.0004);
@@ -97,9 +105,12 @@ TEST(MassData, GetForZeroVertexRadiusEdge)
 {
 	const auto v1 = Vec2{-1, 0};
 	const auto v2 = Vec2{+1, 0};
-	auto shape = EdgeShape(0);
-	shape.Set(v1, v2);
 	const auto density = RealNum(2.1);
+	auto conf = EdgeShape::Conf{};
+	conf.vertexRadius = 0;
+	conf.density = density;
+	auto shape = EdgeShape(conf);
+	shape.Set(v1, v2);
 	const auto mass_data = GetMassData(shape, density);
 	EXPECT_EQ(mass_data.mass, 0);
 	EXPECT_EQ(mass_data.I, 0);
@@ -110,9 +121,12 @@ TEST(MassData, GetForZeroVertexRadiusEdge)
 TEST(MassData, GetForSamePointedEdgeIsSameAsCircle)
 {
 	const auto v1 = Vec2{-1, 1};
-	auto shape = EdgeShape(1);
-	shape.Set(v1, v1);
 	const auto density = RealNum(1);
+	auto conf = EdgeShape::Conf{};
+	conf.vertexRadius = 1;
+	conf.density = density;
+	auto shape = EdgeShape(conf);
+	shape.Set(v1, v1);
 	const auto mass_data = GetMassData(shape, density);
 	
 	const auto circleMass = density * Pi * Square(shape.GetVertexRadius());
@@ -128,9 +142,12 @@ TEST(MassData, GetForCenteredEdge)
 	const auto v1 = Vec2{-2, 0};
 	const auto v2 = Vec2{+2, 0};
 	const auto radius = RealNum(0.5);
-	auto shape = EdgeShape(radius);
-	shape.Set(v1, v2);
 	const auto density = RealNum(2.1);
+	auto conf = EdgeShape::Conf{};
+	conf.vertexRadius = radius;
+	conf.density = density;
+	auto shape = EdgeShape(conf);
+	shape.Set(v1, v2);
 	const auto mass_data = GetMassData(shape, density);
 	
 	const auto vertices = Span<const Vec2>{Vec2(-2, +0.5), Vec2(-2, -0.5), Vec2(+2, -0.5), Vec2(+2, +0.5)};

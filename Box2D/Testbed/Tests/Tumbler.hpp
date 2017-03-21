@@ -33,6 +33,8 @@ public:
 
 	Tumbler()
 	{
+		m_shape->SetDensity(1);
+
 		const auto g = m_world->CreateBody(BodyDef{}.UseType(BodyType::Static));
 
 		const auto b = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic)
@@ -40,14 +42,15 @@ public:
 										   .UseAllowSleep(false));
 
 		PolygonShape shape;
+		shape.SetDensity(5);
 		SetAsBox(shape, 0.5f, 10.0f, Vec2( 10.0f, 0.0f), 0_rad);
-		b->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(5));
+		b->CreateFixture(std::make_shared<PolygonShape>(shape));
 		SetAsBox(shape, 0.5f, 10.0f, Vec2(-10.0f, 0.0f), 0_rad);
-		b->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(5));
+		b->CreateFixture(std::make_shared<PolygonShape>(shape));
 		SetAsBox(shape, 10.0f, 0.5f, Vec2(0.0f, 10.0f), 0_rad);
-		b->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(5));
+		b->CreateFixture(std::make_shared<PolygonShape>(shape));
 		SetAsBox(shape, 10.0f, 0.5f, Vec2(0.0f, -10.0f), 0_rad);
-		b->CreateFixture(std::make_shared<PolygonShape>(shape), FixtureDef{}.UseDensity(5));
+		b->CreateFixture(std::make_shared<PolygonShape>(shape));
 
 		RevoluteJointDef jd;
 		jd.bodyA = g;
@@ -68,7 +71,7 @@ public:
 			const auto body = m_world->CreateBody(BodyDef{}
 												  .UseType(BodyType::Dynamic)
 												  .UseLocation(Vec2(0, 10)));
-			body->CreateFixture(m_shape, FixtureDef{}.UseDensity(1));
+			body->CreateFixture(m_shape);
 			++m_count;
 		}
 	}

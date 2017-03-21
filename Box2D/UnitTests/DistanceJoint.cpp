@@ -130,16 +130,17 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
 	World world{World::Def{}.UseGravity(Vec2{0, 10})};
 	
 	const auto shape = std::make_shared<CircleShape>(0.2f);
+	shape->SetDensity(1);
 	
 	const auto location1 = Vec2{-10, 10};
 	const auto body1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location1));
 	ASSERT_EQ(body1->GetLocation(), location1);
-	ASSERT_NE(body1->CreateFixture(shape, FixtureDef{}.UseDensity(1)), nullptr);
+	ASSERT_NE(body1->CreateFixture(shape), nullptr);
 	
 	const auto location2 = Vec2{+10, -10};
 	const auto body2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location2));
 	ASSERT_EQ(body2->GetLocation(), location2);
-	ASSERT_NE(body2->CreateFixture(shape, FixtureDef{}.UseDensity(1)), nullptr);
+	ASSERT_NE(body2->CreateFixture(shape), nullptr);
 	
 	DistanceJointDef jointdef;
 	jointdef.bodyA = body1;

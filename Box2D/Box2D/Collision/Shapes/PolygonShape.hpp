@@ -51,12 +51,24 @@ public:
 		return DefaultLinearSlop * 2;
 	}
 
+	struct Conf: public Shape::Conf
+	{
+		constexpr Conf(): Shape::Conf{Shape::Conf{}.UseVertexRadius(GetDefaultVertexRadius())}
+		{
+		}
+	};
+	
+	static constexpr Conf GetDefaultConf() noexcept
+	{
+		return Conf{};
+	}
+	
 	/// Default constructor.
 	/// @detail Constructs a polygon shape with a 0,0 centroid and vertex count of 0.
 	/// @note Polygons with a vertex count less than 1 are "degenerate" and should be
 	///   treated as invalid.
-	explicit PolygonShape(RealNum vertexRadius = GetDefaultVertexRadius()) noexcept:
-		Shape{e_polygon, vertexRadius}
+	explicit PolygonShape(const Conf& conf = GetDefaultConf()) noexcept:
+		Shape{e_polygon, conf}
 	{
 		// Intentionally empty.
 	}
@@ -66,14 +78,14 @@ public:
 	/// Initializing constructor for rectangles.
 	/// @param hx the half-width.
 	/// @param hy the half-height.
-	explicit PolygonShape(RealNum hx, RealNum hy) noexcept;
+	explicit PolygonShape(RealNum hx, RealNum hy, const Conf& conf = GetDefaultConf()) noexcept;
 	
 	/// Creates a convex hull from the given array of local points.
 	/// The size of the span must be in the range [1, MaxShapeVertices].
 	/// @warning the points may be re-ordered, even if they form a convex polygon
 	/// @warning collinear points are handled but not removed. Collinear points
 	/// may lead to poor stacking behavior.
-	explicit PolygonShape(Span<const Vec2> points) noexcept;
+	explicit PolygonShape(Span<const Vec2> points, const Conf& conf = GetDefaultConf()) noexcept;
 	
 	/// Creates a convex hull from the given array of local points.
 	/// The size of the span must be in the range [1, MaxShapeVertices].

@@ -58,6 +58,9 @@ public:
 
 	EdgeShapes()
 	{
+		m_circle->SetFriction(0.3f);
+		m_circle->SetDensity(20.0f);
+
 		// Ground body
 		{
 			const auto ground = m_world->CreateBody();
@@ -73,6 +76,12 @@ public:
 			}
 		}
 
+		for (auto i = 0; i < 4; ++i)
+		{
+			m_polygons[i].SetFriction(0.3f);
+			m_polygons[i].SetDensity(20.0f);
+		}
+		
 		m_polygons[0].Set({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
 		m_polygons[1].Set({Vec2(-0.1f, 0.0f), Vec2(0.1f, 0.0f), Vec2(0.0f, 1.5f)});
 
@@ -126,17 +135,11 @@ public:
 
 		if (index < 4)
 		{
-			FixtureDef fd;
-			fd.friction = 0.3f;
-			fd.density = 20.0f;
-			m_bodies[m_bodyIndex]->CreateFixture(std::make_shared<PolygonShape>(m_polygons[index]), fd);
+			m_bodies[m_bodyIndex]->CreateFixture(std::make_shared<PolygonShape>(m_polygons[index]));
 		}
 		else
 		{
-			FixtureDef fd;
-			fd.friction = 0.3f;
-			fd.density = 20.0f;
-			m_bodies[m_bodyIndex]->CreateFixture(m_circle, fd);
+			m_bodies[m_bodyIndex]->CreateFixture(m_circle);
 		}
 
 		m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));

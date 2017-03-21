@@ -130,9 +130,9 @@ public:
 
 			const auto body = m_world->CreateBody(bd);
 
-			FixtureDef fd;
-			fd.density = 20.0f;
-			body->CreateFixture(std::make_shared<PolygonShape>(0.5f, 0.5f), fd);
+			auto conf = PolygonShape::Conf{};
+			conf.density = 20.0f;
+			body->CreateFixture(std::make_shared<PolygonShape>(0.5f, 0.5f, conf));
 		}
 
 		// Square character 2
@@ -145,9 +145,9 @@ public:
 
 			const auto body = m_world->CreateBody(bd);
 
-			FixtureDef fd;
-			fd.density = 20.0f;
-			body->CreateFixture(std::make_shared<PolygonShape>(0.25f, 0.25f), fd);
+			auto conf = PolygonShape::Conf{};
+			conf.density = 20.0f;
+			body->CreateFixture(std::make_shared<PolygonShape>(0.25f, 0.25f, conf));
 		}
 
 		// Hexagon character
@@ -169,11 +169,11 @@ public:
 				angle += delta;
 			}
 
-			FixtureDef fd;
-			fd.density = 20.0f;
-			auto hexshape = std::make_shared<PolygonShape>();
+			auto conf = PolygonShape::Conf{};
+			conf.density = 20.0f;
+			auto hexshape = std::make_shared<PolygonShape>(conf);
 			hexshape->Set(Span<const Vec2>(vertices, 6));
-			body->CreateFixture(hexshape, fd);
+			body->CreateFixture(hexshape);
 		}
 
 		// Circle character
@@ -185,9 +185,10 @@ public:
 			bd.allowSleep = false;
 
 			const auto body = m_world->CreateBody(bd);
-			FixtureDef fd;
-			fd.density = 20.0f;
-			body->CreateFixture(std::make_shared<CircleShape>(RealNum(0.5)), fd);
+			auto conf = CircleShape::Conf{};
+			conf.density = 20.0f;
+			conf.vertexRadius = 0.5f;
+			body->CreateFixture(std::make_shared<CircleShape>(conf));
 		}
 
 		// Circle character
@@ -199,10 +200,11 @@ public:
 
 			m_character = m_world->CreateBody(bd);
 
-			FixtureDef fd;
-			fd.density = 20.0f;
-			fd.friction = 1.0f;
-			m_character->CreateFixture(std::make_shared<CircleShape>(RealNum(0.25)), fd);
+			auto conf = CircleShape::Conf{};
+			conf.density = 20.0f;
+			conf.friction = 1.0f;
+			conf.vertexRadius = 0.25f;
+			m_character->CreateFixture(std::make_shared<CircleShape>(conf));
 		}
 	}
 

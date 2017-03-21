@@ -33,25 +33,26 @@ public:
 
 		{
 			const auto shape = std::make_shared<PolygonShape>(0.5f, 0.5f);
+			shape->SetDensity(5);
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 
 			bd.position = Vec2(-5.0f, 5.0f);
 			m_bodies[0] = m_world->CreateBody(bd);
-			m_bodies[0]->CreateFixture(shape, FixtureDef{}.UseDensity(5));
+			m_bodies[0]->CreateFixture(shape);
 
 			bd.position = Vec2(5.0f, 5.0f);
 			m_bodies[1] = m_world->CreateBody(bd);
-			m_bodies[1]->CreateFixture(shape, FixtureDef{}.UseDensity(5));
+			m_bodies[1]->CreateFixture(shape);
 
 			bd.position = Vec2(5.0f, 15.0f);
 			m_bodies[2] = m_world->CreateBody(bd);
-			m_bodies[2]->CreateFixture(shape, FixtureDef{}.UseDensity(5));
+			m_bodies[2]->CreateFixture(shape);
 
 			bd.position = Vec2(-5.0f, 15.0f);
 			m_bodies[3] = m_world->CreateBody(bd);
-			m_bodies[3]->CreateFixture(shape, FixtureDef{}.UseDensity(5));
+			m_bodies[3]->CreateFixture(shape);
 
 			DistanceJointDef jd;
 			Vec2 p1, p2, d;

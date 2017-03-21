@@ -39,11 +39,11 @@ public:
 		m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
 
 		const auto radius = 0.5f;
-		const auto shape = std::make_shared<CircleShape>(radius);
-
-		FixtureDef fd;
-		fd.density = 1.0f;
-		fd.friction = 0.1f;
+		auto conf = CircleShape::Conf{};
+		conf.vertexRadius = radius;
+		conf.density = 1.0f;
+		conf.friction = 0.1f;
+		const auto shape = std::make_shared<CircleShape>(conf);
 
 		for (auto j = 0; j < e_columnCount; ++j)
 		{
@@ -53,7 +53,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-10.0f + (2.1f * j + 1.0f + 0.01f * i) * radius, (2.0f * i + 1.0f) * radius);
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(shape, fd);
+				body->CreateFixture(shape);
 			}
 		}
 
@@ -64,11 +64,11 @@ public:
 	{
 		const auto ground = m_world->CreateBody();
 		
-		auto shape = EdgeShape{vertexRadius};
+		auto conf = EdgeShape::Conf{};
+		conf.restitution = 0; // originally 0.9
+		conf.vertexRadius = vertexRadius;
+		auto shape = EdgeShape{conf};
 		//PolygonShape shape;
-		
-		FixtureDef fd;
-		fd.restitution = RealNum(0); // originally 0.9
 		
 		const auto btmLeft = Vec2(-wallLength/2, 0.0f);
 		const auto btmRight = Vec2(wallLength/2, 0.0f);
@@ -78,22 +78,22 @@ public:
 		// Floor
 		shape.Set(btmLeft, btmRight);
 		//shape.Set(Span<const Vec2>{btmLeft, btmRight});
-		ground->CreateFixture(std::make_shared<EdgeShape>(shape), fd);
+		ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 		
 		// Left wall
 		shape.Set(btmLeft, topLeft);
 		//shape.Set(Span<const Vec2>{btmLeft, topLeft});
-		ground->CreateFixture(std::make_shared<EdgeShape>(shape), fd);
+		ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 		
 		// Right wall
 		shape.Set(btmRight, topRight);
 		//shape.Set(Span<const Vec2>{btmRight, topRight});
-		ground->CreateFixture(std::make_shared<EdgeShape>(shape), fd);
+		ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 		
 		// Roof
 		shape.Set(topLeft, topRight);
 		//shape.Set(Span<const Vec2>{topLeft, topRight});
-		ground->CreateFixture(std::make_shared<EdgeShape>(shape), fd);
+		ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 		
 		return ground;
 	}
@@ -101,10 +101,6 @@ public:
 	void CreateCircle()
 	{
 		const auto radius = RealNum(wall_length/10); // 2
-
-		FixtureDef fd;
-		fd.density = 1.0f;
-		fd.restitution = RealNum(0.8);
 
 		BodyDef bd;
 		bd.type = BodyType::Dynamic;
@@ -115,7 +111,11 @@ public:
 
 		const auto body = m_world->CreateBody(bd);
 		
-		body->CreateFixture(std::make_shared<CircleShape>(radius, Vec2_zero), fd);
+		auto conf = CircleShape::Conf{};
+		conf.density = 1.0f;
+		conf.restitution = 0.8f;
+		conf.vertexRadius = radius;
+		body->CreateFixture(std::make_shared<CircleShape>(conf));
 
 		++m_sequence;
 	}
@@ -124,9 +124,9 @@ public:
 	{
 		const auto side_length = RealNum(wall_length/5); // 4
 
-		FixtureDef fd;
-		fd.density = 1.0f;
-		fd.restitution = 0; // originally 0.8
+		auto conf = PolygonShape::Conf{};
+		conf.density = 1.0f;
+		conf.restitution = 0; // originally 0.8
 		
 		BodyDef bd;
 		bd.type = BodyType::Dynamic;
@@ -134,7 +134,7 @@ public:
 		bd.position = Vec2(RandomFloat(-wall_length/2, +wall_length/2), RandomFloat(0, wall_length));
 		bd.userData = reinterpret_cast<void*>(m_sequence);
 		const auto body = m_world->CreateBody(bd);
-		body->CreateFixture(std::make_shared<PolygonShape>(side_length/2, side_length/2), fd);
+		body->CreateFixture(std::make_shared<PolygonShape>(side_length/2, side_length/2, conf));
 
 		++m_sequence;
 	}

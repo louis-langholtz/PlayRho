@@ -176,6 +176,10 @@ public:
 
 	RayCast()
 	{
+		m_circle->SetVertexRadius(0.5f);
+		m_circle->SetFriction(0.3f);
+		m_edge->SetFriction(0.3f);
+		
 		// Ground body
 		const auto ground = m_world->CreateBody();
 		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f), Vec2(40.0f, 0.0f)));
@@ -183,6 +187,7 @@ public:
 		for (auto&& p: m_polygons)
 		{
 			p = std::make_shared<PolygonShape>();
+			p->SetFriction(0.3f);
 		}
 
 		m_polygons[0]->Set({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
@@ -243,21 +248,15 @@ public:
 
 		if (index < 4)
 		{
-			FixtureDef fd;
-			fd.friction = 0.3f;
-			m_bodies[m_bodyIndex]->CreateFixture(m_polygons[index], fd);
+			m_bodies[m_bodyIndex]->CreateFixture(m_polygons[index]);
 		}
 		else if (index < 5)
 		{
-			FixtureDef fd;
-			fd.friction = 0.3f;
-			m_bodies[m_bodyIndex]->CreateFixture(m_circle, fd);
+			m_bodies[m_bodyIndex]->CreateFixture(m_circle);
 		}
 		else
 		{
-			FixtureDef fd;
-			fd.friction = 0.3f;
-			m_bodies[m_bodyIndex]->CreateFixture(m_edge, fd);
+			m_bodies[m_bodyIndex]->CreateFixture(m_edge);
 		}
 
 		m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));
@@ -446,7 +445,7 @@ public:
 	Body* m_bodies[e_maxBodies];
 	int32 m_userData[e_maxBodies];
 	std::shared_ptr<PolygonShape> m_polygons[4];
-	std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>(0.5f);
+	std::shared_ptr<CircleShape> m_circle = std::make_shared<CircleShape>();
 	std::shared_ptr<EdgeShape> m_edge = std::make_shared<EdgeShape>(Vec2(-1.0f, 0.0f), Vec2(1.0f, 0.0f));
 	
 	RealNum m_angle;

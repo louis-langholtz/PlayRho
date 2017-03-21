@@ -37,27 +37,26 @@ public:
 			bd.position = Vec2(RealNum{0}, 20.0f);
 			ground = m_world->CreateBody(bd);
 
-			EdgeShape shape;
-
-			FixtureDef sd{};
-			sd.density = RealNum{0};
-			sd.restitution = k_restitution;
-
+			auto conf = EdgeShape::Conf{};
+			conf.density = 0;
+			conf.restitution = k_restitution;
+			EdgeShape shape(conf);
+			
 			// Left vertical
 			shape.Set(Vec2(-20.0f, -20.0f), Vec2(-20.0f, 20.0f));
-			ground->CreateFixture(std::make_shared<EdgeShape>(shape), sd);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
 			// Right vertical
 			shape.Set(Vec2(20.0f, -20.0f), Vec2(20.0f, 20.0f));
-			ground->CreateFixture(std::make_shared<EdgeShape>(shape), sd);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
 			// Top horizontal
 			shape.Set(Vec2(-20.0f, 20.0f), Vec2(20.0f, 20.0f));
-			ground->CreateFixture(std::make_shared<EdgeShape>(shape), sd);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
 			// Bottom horizontal
 			shape.Set(Vec2(-20.0f, -20.0f), Vec2(20.0f, -20.0f));
-			ground->CreateFixture(std::make_shared<EdgeShape>(shape), sd);
+			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 		}
 
 		{
@@ -70,10 +69,10 @@ public:
 			vertices[1] = Transform(Vec2(1.0f, RealNum{0}), xf1);
 			vertices[2] = Transform(Vec2(RealNum{0}, 0.5f), xf1);
 			
-			const auto poly1 = PolygonShape(Span<const Vec2>(vertices, 3));
-
-			FixtureDef sd1{};
-			sd1.density = 4.0f;
+			auto conf = PolygonShape::Conf{};
+			
+			conf.density = 4.0f;
+			const auto poly1 = PolygonShape(Span<const Vec2>(vertices, 3), conf);
 
 			Transformation xf2;
 			xf2.q = UnitVec2{-0.3524_rad * Pi};
@@ -82,11 +81,9 @@ public:
 			vertices[0] = Transform(Vec2(-1.0f, RealNum{0}), xf2);
 			vertices[1] = Transform(Vec2(1.0f, RealNum{0}), xf2);
 			vertices[2] = Transform(Vec2(RealNum{0}, 0.5f), xf2);
-			
-			const auto poly2 = PolygonShape(Span<const Vec2>(vertices, 3));
 
-			FixtureDef sd2{};
-			sd2.density = 2.0f;
+			conf.density = 2.0f;
+			const auto poly2 = PolygonShape(Span<const Vec2>(vertices, 3), conf);
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
@@ -97,16 +94,15 @@ public:
 			bd.angle = Pi * 1_rad;
 			bd.allowSleep = false;
 			m_body = m_world->CreateBody(bd);
-			m_body->CreateFixture(std::make_shared<PolygonShape>(poly1), sd1);
-			m_body->CreateFixture(std::make_shared<PolygonShape>(poly2), sd2);
+			m_body->CreateFixture(std::make_shared<PolygonShape>(poly1));
+			m_body->CreateFixture(std::make_shared<PolygonShape>(poly2));
 		}
 
 		{
-			const auto shape = std::make_shared<PolygonShape>(0.5f, 0.5f);
-
-			FixtureDef fd{};
-			fd.density = 1.0f;
-			fd.friction = 0.3f;
+			auto conf = PolygonShape::Conf{};
+			conf.density = 1.0f;
+			conf.friction = 0.3f;
+			const auto shape = std::make_shared<PolygonShape>(0.5f, 0.5f, conf);
 
 			const auto gravity = 10.0f;
 			
@@ -117,7 +113,7 @@ public:
 				bd.position = Vec2(RealNum{0}, 5.0f + 1.54f * i);
 				const auto body = m_world->CreateBody(bd);
 
-				body->CreateFixture(shape, fd);
+				body->CreateFixture(shape);
 
 				const auto I = GetLocalInertia(*body);
 				const auto mass = GetMass(*body);

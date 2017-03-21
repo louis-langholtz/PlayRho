@@ -25,6 +25,21 @@
 
 using namespace box2d;
 
+RealNum Fixture::GetDensity() const noexcept
+{
+	return m_shape->GetDensity();
+}
+
+RealNum Fixture::GetFriction() const noexcept
+{
+	return m_shape->GetFriction();
+}
+
+RealNum Fixture::GetRestitution() const noexcept
+{
+	return m_shape->GetRestitution();
+}
+
 const FixtureProxy* Fixture::GetProxy(child_count_t index) const noexcept
 {
 	assert(index < m_proxyCount);

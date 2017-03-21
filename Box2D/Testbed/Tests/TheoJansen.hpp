@@ -49,12 +49,12 @@ public:
 			poly1.Set({p1, p3, p2});
 			poly2.Set({Vec2_zero, p6 - p4, p5 - p4});
 		}
+		poly1.SetDensity(1.0f);
+		poly2.SetDensity(1.0f);
 
 		FixtureDef fd1, fd2;
 		fd1.filter.groupIndex = -1;
 		fd2.filter.groupIndex = -1;
-		fd1.density = 1.0f;
-		fd2.density = 1.0f;
 		
 		BodyDef bd1, bd2;
 		bd1.type = BodyType::Dynamic;
@@ -105,7 +105,10 @@ public:
 		}
 
 		// Balls
-		const auto circle = std::make_shared<CircleShape>(0.25f);
+		auto circleConf = CircleShape::Conf{};
+		circleConf.vertexRadius = 0.25f;
+		circleConf.density = 1;
+		const auto circle = std::make_shared<CircleShape>(circleConf);
 		for (auto i = 0; i < 40; ++i)
 		{
 			BodyDef bd;
@@ -113,30 +116,33 @@ public:
 			bd.position = Vec2(-40.0f + 2.0f * i, 0.5f);
 
 			const auto body = m_world->CreateBody(bd);
-			body->CreateFixture(circle, FixtureDef{}.UseDensity(1));
+			body->CreateFixture(circle);
 		}
 
 		// Chassis
 		{
 			FixtureDef sd;
-			sd.density = 1.0f;
 			sd.filter.groupIndex = -1;
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = pivot + m_offset;
 			m_chassis = m_world->CreateBody(bd);
-			m_chassis->CreateFixture(std::make_shared<PolygonShape>(2.5f, 1.0f), sd);
+			auto polygonConf = PolygonShape::Conf{};
+			polygonConf.density = 1.0f;
+			m_chassis->CreateFixture(std::make_shared<PolygonShape>(2.5f, 1.0f, polygonConf), sd);
 		}
 
 		{
 			FixtureDef sd;
-			sd.density = 1.0f;
 			sd.filter.groupIndex = -1;
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = pivot + m_offset;
 			m_wheel = m_world->CreateBody(bd);
-			m_wheel->CreateFixture(std::make_shared<CircleShape>(1.6f), sd);
+			auto conf = CircleShape::Conf{};
+			conf.vertexRadius = 1.6f;
+			conf.density = 1.0f;
+			m_wheel->CreateFixture(std::make_shared<CircleShape>(conf), sd);
 		}
 
 		{

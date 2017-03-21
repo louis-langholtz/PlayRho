@@ -339,9 +339,12 @@ TEST(TimeOfImpact, ForNonCollidingShapesFailsIn27)
 {
 	// The data for shapes and sweeps comes from Box2D/Testbed/Tests/TimeOfImpact.hpp
 
-	auto shapeA = PolygonShape{RealNum{0.0001f * 2}};
+	auto shapeA = PolygonShape{};
+	shapeA.SetVertexRadius(RealNum{0.0001f * 2});
 	shapeA.SetAsBox(25.0f, 5.0f);
-	auto shapeB = PolygonShape{RealNum{0.0001f * 2}};
+
+	auto shapeB = PolygonShape{};
+	shapeB.SetVertexRadius(RealNum{0.0001f * 2});
 	shapeB.SetAsBox(2.5f, 2.5f);
 
 	const auto dpA = GetDistanceProxy(shapeA, 0);
@@ -411,7 +414,8 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
 		}
 	};
 	
-	auto shapeB = PolygonShape{RealNum{0.0001f * 2}};
+	auto shapeB = PolygonShape{};
+	shapeB.SetVertexRadius(RealNum{0.0001f * 2});
 	shapeB.SetAsBox(0.5f, 0.5f);
 	const auto dpB = GetDistanceProxy(shapeB, 0);
 	

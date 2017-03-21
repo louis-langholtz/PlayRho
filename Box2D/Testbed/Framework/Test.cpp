@@ -541,12 +541,13 @@ void Test::LaunchBomb(const Vec2& position, const Vec2& linearVelocity)
 	m_bomb = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(position).UseBullet(true));
 	m_bomb->SetVelocity(Velocity{linearVelocity, 0_rad});
 	
-	const auto circle = std::make_shared<CircleShape>(0.3f);
+	auto conf = CircleShape::Conf{};
+	conf.vertexRadius = 0.3f;
+	conf.density = 20.0f;
+	conf.restitution = 0.0f;
+	const auto circle = std::make_shared<CircleShape>(conf);
 
-	FixtureDef fd{};
-	fd.density = 20.0f;
-	fd.restitution = 0.0f;
-	m_bomb->CreateFixture(circle, fd);
+	m_bomb->CreateFixture(circle);
 }
 
 void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)

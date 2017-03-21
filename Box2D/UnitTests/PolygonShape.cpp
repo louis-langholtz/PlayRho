@@ -25,9 +25,9 @@ TEST(PolygonShape, ByteSizeIs_64_80_or_112)
 {
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(PolygonShape), size_t(64)); break;
-		case  8: EXPECT_EQ(sizeof(PolygonShape), size_t(80)); break;
-		case 16: EXPECT_EQ(sizeof(PolygonShape), size_t(112)); break;
+		case  4: EXPECT_EQ(sizeof(PolygonShape), size_t(80)); break;
+		case  8: EXPECT_EQ(sizeof(PolygonShape), size_t(104)); break;
+		case 16: EXPECT_EQ(sizeof(PolygonShape), size_t(160)); break;
 		default: FAIL(); break;
 	}
 }
@@ -311,7 +311,8 @@ TEST(PolygonShape, CanSetTwoPoints)
 {
 	const auto points = Span<const Vec2>{Vec2{-1, +0}, Vec2{+1, +0}};
 	const auto vertexRadius = RealNum(2);
-	PolygonShape shape(vertexRadius);
+	PolygonShape shape;
+	shape.SetVertexRadius(vertexRadius);
 	shape.Set(points);
 	EXPECT_EQ(shape.GetVertexCount(), static_cast<PolygonShape::vertex_count_t>(points.size()));
 	EXPECT_EQ(shape.GetVertex(0), points[1]);
@@ -326,7 +327,8 @@ TEST(PolygonShape, CanSetOnePoint)
 {
 	const auto points = Span<const Vec2>{Vec2{0, 0}};
 	const auto vertexRadius = RealNum(2);
-	PolygonShape shape(vertexRadius);
+	PolygonShape shape;
+	shape.SetVertexRadius(vertexRadius);
 	shape.Set(points);
 	EXPECT_EQ(shape.GetVertexCount(), static_cast<PolygonShape::vertex_count_t>(points.size()));
 	EXPECT_EQ(shape.GetVertex(0), points[0]);

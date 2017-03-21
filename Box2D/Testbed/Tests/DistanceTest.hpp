@@ -51,16 +51,20 @@ public:
 	void CreateFixtures()
 	{
 		const auto radius = RadiusIncrement * 40;
+		auto conf = PolygonShape::Conf{};
+		conf.density = 1;
 
-		PolygonShape polygonA{radius};
+		conf.vertexRadius = radius;
+		PolygonShape polygonA{conf};
 		//polygonA.SetAsBox(8.0f, 6.0f);
 		polygonA.Set(Span<const Vec2>{Vec2{-8, -6}, Vec2{8, -6}, Vec2{0, 6}});
-		m_bodyA->CreateFixture(std::make_shared<PolygonShape>(polygonA), FixtureDef().UseDensity(1));
+		m_bodyA->CreateFixture(std::make_shared<PolygonShape>(polygonA));
 		
-		PolygonShape polygonB{radius * 2};
+		conf.vertexRadius = radius * 2;
+		PolygonShape polygonB{conf};
 		polygonB.SetAsBox(7.2f, 0.8f);
 		//polygonB.Set(Span<const Vec2>{Vec2{float(-7.2), 0}, Vec2{float(7.2), 0}});
-		m_bodyB->CreateFixture(std::make_shared<PolygonShape>(polygonB), FixtureDef().UseDensity(1));
+		m_bodyB->CreateFixture(std::make_shared<PolygonShape>(polygonB));
 	}
 
 	static Fixture* GetFixture(Body* body)
@@ -391,7 +395,7 @@ public:
 				const auto shape = fixture->GetShape();
 				auto polygon = *static_cast<const PolygonShape*>(shape);
 				polygon.SetVertexRadius(shape->GetVertexRadius() + RadiusIncrement);
-				SetSelectedFixture(body->CreateFixture(std::make_shared<PolygonShape>(polygon), FixtureDef().UseDensity(1)));
+				SetSelectedFixture(body->CreateFixture(std::make_shared<PolygonShape>(polygon)));
 				body->DestroyFixture(fixture);
 			}
 			break;
@@ -402,7 +406,7 @@ public:
 				const auto shape = fixture->GetShape();
 				PolygonShape polygon{*static_cast<const PolygonShape*>(shape)};
 				polygon.SetVertexRadius(shape->GetVertexRadius() - RadiusIncrement);
-				SetSelectedFixture(body->CreateFixture(std::make_shared<PolygonShape>(polygon), FixtureDef().UseDensity(1)));
+				SetSelectedFixture(body->CreateFixture(std::make_shared<PolygonShape>(polygon)));
 				body->DestroyFixture(fixture);
 			}
 			break;

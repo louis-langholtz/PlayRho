@@ -38,6 +38,7 @@ public:
 
 		const auto a = 0.5f;
 		const auto shape = std::make_shared<PolygonShape>(0.25f * a, a);
+		shape->SetDensity(20);
 
 		RevoluteJointDef jointDef;
 		jointDef.bodyA = ground;
@@ -55,7 +56,7 @@ public:
 		bodyDef.type = BodyType::Dynamic;
 		bodyDef.position = parent->GetLocation() + localAnchor - h;
 		const auto body = m_world->CreateBody(bodyDef);
-		body->CreateFixture(shape, FixtureDef{}.UseDensity(20));
+		body->CreateFixture(shape);
 
 		if (depth == e_depth)
 		{

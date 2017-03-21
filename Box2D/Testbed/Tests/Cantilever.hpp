@@ -44,10 +44,9 @@ public:
 
 		// Creates left-end-fixed 8-part plank (below the top one)
 		{
-			const auto shape = std::make_shared<PolygonShape>(0.5f, 0.125f);
-
-			FixtureDef fd;
-			fd.density = 20.0f;
+			auto conf = PolygonShape::Conf{};
+			conf.density = 20.0f;
+			const auto shape = std::make_shared<PolygonShape>(0.5f, 0.125f, conf);
 
 			WeldJointDef jd;
 
@@ -58,7 +57,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-14.5f + 1.0f * i, 5.0f);
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(shape, fd);
+				body->CreateFixture(shape);
 
 				jd.Initialize(prevBody, body, Vec2(-15.0f + 1.0f * i, 5.0f));
 				m_world->CreateJoint(jd);
@@ -69,10 +68,9 @@ public:
 
 		// Creates left-end-fixed 3-part plank at top
 		{
-			const auto shape = std::make_shared<PolygonShape>(1.0f, 0.125f);
-
-			FixtureDef fd;
-			fd.density = 20.0f;
+			auto conf = PolygonShape::Conf{};
+			conf.density = 20.0f;
+			const auto shape = std::make_shared<PolygonShape>(1.0f, 0.125f, conf);
 
 			WeldJointDef jd;
 			jd.frequencyHz = 5.0f;
@@ -85,7 +83,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-14.0f + 2.0f * i, 15.0f);
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(shape, fd);
+				body->CreateFixture(shape);
 
 				jd.Initialize(prevBody, body, Vec2(-15.0f + 2.0f * i, 15.0f));
 				m_world->CreateJoint(jd);
@@ -96,10 +94,9 @@ public:
 
 		// Creates 8-part plank to the right of the fixed planks (but not farthest right)
 		{
-			const auto shape = std::make_shared<PolygonShape>(0.5f, 0.125f);
-
-			FixtureDef fd;
-			fd.density = 20.0f;
+			auto conf = PolygonShape::Conf{};
+			conf.density = 20.0f;
+			const auto shape = std::make_shared<PolygonShape>(0.5f, 0.125f, conf);
 
 			WeldJointDef jd;
 
@@ -110,7 +107,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(-4.5f + 1.0f * i, 5.0f);
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(shape, fd);
+				body->CreateFixture(shape);
 
 				if (i > 0)
 				{
@@ -124,10 +121,9 @@ public:
 
 		// Creates 8-part farthest-right plank
 		{
-			const auto shape = std::make_shared<PolygonShape>(0.5f, 0.125f);
-
-			FixtureDef fd;
-			fd.density = 20.0f;
+			auto conf = PolygonShape::Conf{};
+			conf.density = 20.0f;
+			const auto shape = std::make_shared<PolygonShape>(0.5f, 0.125f, conf);
 
 			WeldJointDef jd;
 			jd.frequencyHz = 8.0f;
@@ -140,7 +136,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(5.5f + 1.0f * i, 10.0f);
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(shape, fd);
+				body->CreateFixture(shape);
 
 				if (i > 0)
 				{
@@ -155,30 +151,26 @@ public:
 		// Creates triangles
 		auto polyshape = std::make_shared<PolygonShape>();
 		polyshape->Set({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
+		polyshape->SetDensity(1.0f);
 		for (auto i = 0; i < 2; ++i)
 		{
-			FixtureDef fd;
-			fd.density = 1.0f;
-
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-8.0f + 8.0f * i, 12.0f);
 			const auto body = m_world->CreateBody(bd);
-			body->CreateFixture(polyshape, fd);
+			body->CreateFixture(polyshape);
 		}
 
 		// Creates circles
 		const auto circleshape = std::make_shared<CircleShape>(RealNum(0.5));
+		circleshape->SetDensity(1.0f);
 		for (auto i = 0; i < 2; ++i)
 		{
-			FixtureDef fd;
-			fd.density = 1.0f;
-
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-6.0f + 6.0f * i, 10.0f);
 			const auto body = m_world->CreateBody(bd);
-			body->CreateFixture(circleshape, fd);
+			body->CreateFixture(circleshape);
 		}
 	}
 

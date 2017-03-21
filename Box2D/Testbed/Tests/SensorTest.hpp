@@ -49,12 +49,16 @@ public:
 			{
 				FixtureDef fd;
 				fd.isSensor = true;
-				m_sensor = ground->CreateFixture(std::make_shared<CircleShape>(5.0f, Vec2(0.0f, 10.0f)), fd);
+				auto conf = CircleShape::Conf{};
+				conf.vertexRadius = 5.0f;
+				conf.location = Vec2(0.0f, 10.0f);
+				m_sensor = ground->CreateFixture(std::make_shared<CircleShape>(conf), fd);
 			}
 #endif
 		}
 
 		const auto shape = std::make_shared<CircleShape>(1);
+		shape->SetDensity(1);
 		for (auto i = 0; i < e_count; ++i)
 		{
 			BodyDef bd;
@@ -65,7 +69,7 @@ public:
 			m_touching[i] = false;
 			m_bodies[i] = m_world->CreateBody(bd);
 
-			m_bodies[i]->CreateFixture(shape, FixtureDef{}.UseDensity(1));
+			m_bodies[i]->CreateFixture(shape);
 		}
 	}
 

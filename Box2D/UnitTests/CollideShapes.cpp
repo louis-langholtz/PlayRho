@@ -193,7 +193,8 @@ TEST(CollideShapes, CircleJustPastTrianglePointRightDoesntCollide)
 	const auto triangleTopPt = Vec2{0, +1};
 	const auto triangleLeftPt = Vec2{-1, -1};
 	const auto triangleRightPt = Vec2{+1, -1};
-	auto triangle = PolygonShape{RealNum{0.0001f * 2}};
+	auto triangle = PolygonShape{};
+	triangle.SetVertexRadius(RealNum{0.0001f * 2});
 	triangle.Set({triangleLeftPt, triangleRightPt, triangleTopPt});
 	const auto circleXfm = Transformation{triangleRightPt + UnitVec2{-45_deg} * circleRadius * RealNum(1.001), UnitVec2{0_deg}};
 	const auto triangleXfm = Transformation{Vec2{0, 0}, UnitVec2{0_deg}};
@@ -1009,10 +1010,13 @@ TEST(CollideShapes, EdgeFooTriangle)
 {
 	const auto p1 = Vec2(2, -2);
 	const auto p2 = Vec2(-2, +2);
-	auto edge_shape = EdgeShape(0);
+	auto conf = EdgeShape::Conf{};
+	conf.vertexRadius = 0;
+	auto edge_shape = EdgeShape(conf);
 	edge_shape.Set(p2, p1);
 	const auto edge_xfm = Transformation{Vec2(0, 0.5), UnitVec2{-5_deg}};
-	auto polygon_shape = PolygonShape(RealNum{0});
+	auto polygon_shape = PolygonShape{};
+	polygon_shape.SetVertexRadius(0);
 	const auto triangleTopPt = Vec2{0, +1};
 	const auto triangleLeftPt = Vec2{-1, -1};
 	const auto triangleRightPt = Vec2{+1, -1};
@@ -1032,7 +1036,11 @@ TEST(CollideShapes, EdgeFooTriangle)
 
 TEST(CollideShapes, EdgePolygonFaceB1)
 {
-	const auto edge_shape = EdgeShape(Vec2(6, 8), Vec2(7, 8), Vec2(5, 7), Vec2(8, 7), 0);
+	auto conf = EdgeShape::Conf{};
+	conf.vertexRadius = 0;
+	conf.v0 = Vec2(5, 7);
+	conf.v3 = Vec2(8, 7);
+	const auto edge_shape = EdgeShape(Vec2(6, 8), Vec2(7, 8), conf);
 	const auto edge_xfm = Transformation(Vec2(0, 0), GetUnitVector(Vec2(RealNum(0.707106769), RealNum(0.707106769))));
 	const auto poly_shape = PolygonShape({
 		Vec2(0.5, 0),
@@ -1060,7 +1068,11 @@ TEST(CollideShapes, EdgePolygonFaceB1)
 
 TEST(CollideShapes, EdgePolygonFaceB2)
 {
-	const auto edge_shape = EdgeShape(Vec2(-6, 2), Vec2(-6, 0), Vec2(-4, 3), Vec2(0, 0), 0.000199999995f);
+	auto conf = EdgeShape::Conf{};
+	conf.vertexRadius = 0.000199999995f;
+	conf.v0 = Vec2(-4, 3);
+	conf.v3 = Vec2(0, 0);
+	const auto edge_shape = EdgeShape(Vec2(-6, 2), Vec2(-6, 0), conf);
 	const auto edge_xfm = Transformation(Vec2(-9.99999904f, 4.0f), GetUnitVector(Vec2(RealNum(1), RealNum(0))));
 	const auto poly_shape = PolygonShape({
 		Vec2(0.5f, -0.5f),
@@ -1103,7 +1115,9 @@ TEST(CollideShapes, R0EdgeCollinearAndTouchingR0Edge)
 {
 	const auto p1 = Vec2(-1, 0);
 	const auto p2 = Vec2(+1, 0);
-	auto edge_shape = EdgeShape(0);
+	auto conf = EdgeShape::Conf{};
+	conf.vertexRadius = 0;
+	auto edge_shape = EdgeShape(conf);
 	edge_shape.Set(p1, p2);
 	const auto xfm1 = Transformation{Vec2{+1, 0}, UnitVec2{0_deg}};
 	const auto xfm2 = Transformation{Vec2{+3, 0}, UnitVec2{0_deg}};
@@ -1119,7 +1133,9 @@ TEST(CollideShapes, R1EdgeCollinearAndTouchingR1Edge)
 {
 	const auto p1 = Vec2(-1, 0);
 	const auto p2 = Vec2(+1, 0);
-	auto edge_shape = EdgeShape(1);
+	auto conf = EdgeShape::Conf{};
+	conf.vertexRadius = 1;
+	auto edge_shape = EdgeShape(conf);
 	edge_shape.Set(p1, p2);
 	const auto xfm1 = Transformation{Vec2{+1, 0}, UnitVec2{0_deg}};
 	const auto xfm2 = Transformation{Vec2{+5, 0}, UnitVec2{0_deg}};
@@ -1137,7 +1153,9 @@ TEST(CollideShapes, R0EdgeCollinearAndSeparateFromR0Edge)
 {
 	const auto p1 = Vec2(-1, 0);
 	const auto p2 = Vec2(+1, 0);
-	auto edge_shape = EdgeShape(0);
+	auto conf = EdgeShape::Conf{};
+	conf.vertexRadius = 0;
+	auto edge_shape = EdgeShape(conf);
 	edge_shape.Set(p1, p2);
 	const auto xfm1 = Transformation{Vec2{+1, 0}, UnitVec2{0_deg}};
 	const auto xfm2 = Transformation{Vec2{+4, 0}, UnitVec2{0_deg}};
@@ -1153,7 +1171,9 @@ TEST(CollideShapes, R0EdgeParallelAndSeparateFromR0Edge)
 {
 	const auto p1 = Vec2(-1, 0);
 	const auto p2 = Vec2(+1, 0);
-	auto edge_shape = EdgeShape(0);
+	auto conf = EdgeShape::Conf{};
+	conf.vertexRadius = 0;
+	auto edge_shape = EdgeShape(conf);
 	edge_shape.Set(p1, p2);
 	const auto xfm1 = Transformation{Vec2{-4, 1}, UnitVec2{0_deg}};
 	const auto xfm2 = Transformation{Vec2{-4, 0}, UnitVec2{0_deg}};
@@ -1169,7 +1189,9 @@ TEST(CollideShapes, R0EdgePerpendicularCrossingFromR0Edge)
 {
 	const auto p1 = Vec2(-1, 0);
 	const auto p2 = Vec2(+1, 0);
-	auto edge_shape = EdgeShape(0);
+	auto conf = EdgeShape::Conf{};
+	conf.vertexRadius = 0;
+	auto edge_shape = EdgeShape(conf);
 	edge_shape.Set(p1, p2);
 	const auto xfm1 = Transformation{Vec2{0, 0}, UnitVec2{0_deg}};
 	const auto xfm2 = Transformation{Vec2{0, 0}, UnitVec2{90_deg}};

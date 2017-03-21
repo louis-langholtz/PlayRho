@@ -34,16 +34,34 @@ public:
 		return DefaultLinearSlop * 2;
 	}
 
+	struct Conf: public Shape::Conf
+	{
+		Conf(): Shape::Conf{Shape::Conf{}.UseVertexRadius(GetDefaultRadius())}
+		{
+		}
+		
+		Vec2 location = Vec2_zero;
+	};
+
+	static Conf GetDefaultConf() noexcept
+	{
+		return Conf{};
+	}
+
 	/// Initializing constructor.
 	///
 	/// @note Behavior is undefined if a negative radius is given.
 	///
-	/// @param radius Radius of the circle shape (in meters).
-	/// @param location Location of the center of this shape.
-	constexpr explicit CircleShape(RealNum radius = GetDefaultRadius(), Vec2 location = Vec2_zero) noexcept:
-		Shape{e_circle, radius}, m_location{location}
+	constexpr explicit CircleShape(const Conf& conf = GetDefaultConf()) noexcept:
+		Shape{e_circle, conf}, m_location{conf.location}
 	{
 		// Intentionally empty.
+	}
+
+	constexpr explicit CircleShape(RealNum radius, const Conf& conf = GetDefaultConf()) noexcept:
+		Shape{e_circle, conf}, m_location{conf.location}
+	{
+		SetVertexRadius(radius);
 	}
 
 	CircleShape(const CircleShape&) = default;

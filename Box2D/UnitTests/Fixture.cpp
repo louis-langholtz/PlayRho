@@ -37,18 +37,19 @@ TEST(Fixture, ByteSizeIs_64_80_or_112)
 
 TEST(Fixture, CreateMatchesDef)
 {
-	const auto shapeA = std::make_shared<CircleShape>();
 	const auto density = RealNum(2);
 	int variable;
 	const auto userData = &variable;
 	const auto friction = RealNum(0.5);
 	const auto restitution = RealNum(0.4);
 	const auto isSensor = true;
+	const auto shapeA = std::make_shared<CircleShape>();
+	shapeA->SetFriction(friction);
+	shapeA->SetRestitution(restitution);
+	shapeA->SetDensity(density);
 
-	auto def = FixtureDef{}.UseDensity(density);
-	def.friction = friction;
+	auto def = FixtureDef{};
 	def.userData = userData;
-	def.restitution = restitution;
 	def.isSensor = isSensor;
 
 	World world;

@@ -26,15 +26,15 @@ TEST(CircleShape, ByteSizeIs_16_32_or_64)
 {
 	if (sizeof(RealNum) == 4)
 	{
-		EXPECT_EQ(sizeof(CircleShape), size_t(16));
+		EXPECT_EQ(sizeof(CircleShape), size_t(28));
 	}
 	else if (sizeof(RealNum) == 8)
 	{
-		EXPECT_EQ(sizeof(CircleShape), size_t(32));
+		EXPECT_EQ(sizeof(CircleShape), size_t(56));
 	}
 	else if (sizeof(RealNum) == 16)
 	{
-		EXPECT_EQ(sizeof(CircleShape), size_t(64));
+		EXPECT_EQ(sizeof(CircleShape), size_t(112));
 	}
 	else
 	{
@@ -57,7 +57,10 @@ TEST(CircleShape, InitConstruction)
 {
 	const auto radius = RealNum(1);
 	const auto position = Vec2{-1, 1};
-	CircleShape foo{radius, position};
+	auto conf = CircleShape::Conf{};
+	conf.vertexRadius = radius;
+	conf.location = position;
+	CircleShape foo{conf};
 	
 	EXPECT_EQ(foo.GetType(), Shape::e_circle);
 	EXPECT_EQ(GetChildCount(foo), child_count_t{1});
@@ -70,7 +73,10 @@ TEST(CircleShape, TestPoint)
 {
 	const auto radius = RealNum(1);
 	const auto position = Vec2{0, 0};
-	CircleShape foo{radius, position};
+	auto conf = CircleShape::Conf{};
+	conf.vertexRadius = radius;
+	conf.location = position;
+	CircleShape foo{conf};
 	EXPECT_TRUE(TestPoint(foo, Transform_identity, Vec2{ 0,  0}));
 	EXPECT_TRUE(TestPoint(foo, Transform_identity, Vec2{+1,  0}));
 	EXPECT_TRUE(TestPoint(foo, Transform_identity, Vec2{ 0, +1}));
@@ -85,7 +91,10 @@ TEST(CircleShape, ComputeAABB)
 {
 	const auto radius = RealNum(2.4);
 	const auto position = Vec2{2, 1};
-	CircleShape foo{radius, position};
+	auto conf = CircleShape::Conf{};
+	conf.vertexRadius = radius;
+	conf.location = position;
+	CircleShape foo{conf};
 	const auto aabb = ComputeAABB(foo, Transform_identity);
 	EXPECT_EQ(aabb.GetLowerBound().x, position.x - radius);
 	EXPECT_EQ(aabb.GetLowerBound().y, position.y - radius);

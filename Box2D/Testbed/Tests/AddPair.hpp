@@ -20,6 +20,9 @@
 #ifndef AddPair_H
 #define AddPair_H
 
+#include <Box2D/Collision/Shapes/CircleShape.hpp>
+#include <Box2D/Collision/Shapes/PolygonShape.hpp>
+
 namespace box2d {
 	
 class AddPair : public Test
@@ -30,7 +33,10 @@ public:
 	{
 		m_world->SetGravity(Vec2(RealNum{0}, RealNum{0}));
 		{
-			const auto shape = std::make_shared<CircleShape>(RealNum(0.1));
+			auto conf = CircleShape::Conf{};
+			conf.vertexRadius = 0.1f;
+			conf.density = 0.01f;
+			const auto shape = std::make_shared<CircleShape>(conf);
 
 			const auto minX = -6.0f;
 			const auto maxX = 0.0f;
@@ -43,7 +49,7 @@ public:
 				bd.type = BodyType::Dynamic;
 				bd.position = Vec2(RandomFloat(minX, maxX), RandomFloat(minY, maxY));
 				const auto body = m_world->CreateBody(bd);
-				body->CreateFixture(shape, FixtureDef{}.UseDensity(0.01f));
+				body->CreateFixture(shape);
 			}
 		}
 		
@@ -53,7 +59,9 @@ public:
 			bd.position = Vec2(-40.0f,5.0f);
 			bd.bullet = true;
 			const auto body = m_world->CreateBody(bd);
-			body->CreateFixture(std::make_shared<PolygonShape>(1.5f, 1.5f), FixtureDef{}.UseDensity(1.0f));
+			auto conf = PolygonShape::Conf{};
+			conf.density = 1.0f;
+			body->CreateFixture(std::make_shared<PolygonShape>(1.5f, 1.5f, conf));
 			body->SetVelocity(Velocity{Vec2(150.0f, 0.0f), 0_rad});
 		}
 	}

@@ -111,7 +111,8 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
 	
 	const auto shape2 = std::make_shared<PolygonShape>();
 	shape2->SetAsBox(0.5, 0.5);
-	b2->CreateFixture(shape2, FixtureDef{}.UseDensity(1));
+	shape2->SetDensity(1);
+	b2->CreateFixture(shape2);
 	
 	auto jd = RevoluteJointDef{b1, b2, Vec2{0, 0}};
 	const auto joint = world.CreateJoint(jd);

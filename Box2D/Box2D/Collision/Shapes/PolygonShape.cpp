@@ -22,14 +22,14 @@
 
 using namespace box2d;
 
-PolygonShape::PolygonShape(RealNum hx, RealNum hy) noexcept:
-	Shape{e_polygon, PolygonShape::GetDefaultVertexRadius()}
+PolygonShape::PolygonShape(RealNum hx, RealNum hy, const Conf& conf) noexcept:
+	Shape{e_polygon, conf}
 {
 	SetAsBox(hx, hy);
 }
 
-PolygonShape::PolygonShape(Span<const Vec2> points) noexcept:
-	Shape{e_polygon, PolygonShape::GetDefaultVertexRadius()}
+PolygonShape::PolygonShape(Span<const Vec2> points, const Conf& conf) noexcept:
+	Shape{e_polygon, conf}
 {
 	Set(points);
 }
