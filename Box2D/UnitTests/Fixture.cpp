@@ -28,7 +28,7 @@ TEST(Fixture, ByteSizeIs_64_80_or_112)
 {
 	switch (sizeof(RealNum))
 	{
-		case  4: EXPECT_EQ(sizeof(Fixture), size_t(64)); break;
+		case  4: EXPECT_EQ(sizeof(Fixture), size_t(72)); break;
 		case  8: EXPECT_EQ(sizeof(Fixture), size_t(80)); break;
 		case 16: EXPECT_EQ(sizeof(Fixture), size_t(112)); break;
 		default: FAIL(); break;

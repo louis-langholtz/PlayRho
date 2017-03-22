@@ -284,5 +284,6 @@ RayCastOutput box2d::RayCast(const Shape& shape, const RayCastInput& input,
 
 RayCastOutput box2d::RayCast(const Fixture& f, const RayCastInput& input, child_count_t childIndex)
 {
-	return RayCast(*f.GetShape(), input, f.GetBody()->GetTransformation(), childIndex);
+	const auto xfm = Mul(f.GetBody()->GetTransformation(), f.GetTransformation());
+	return RayCast(*f.GetShape(), input, xfm, childIndex);
 }

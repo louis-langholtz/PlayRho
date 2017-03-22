@@ -542,7 +542,7 @@ private:
 	void InternalTouchProxies(Fixture& fixture) noexcept;
 
 	child_count_t Synchronize(Fixture& fixture,
-							  const Transformation& xfm1, const Transformation& xfm2,
+							  Transformation xfm1, Transformation xfm2,
 							  const RealNum multiplier, const RealNum extension);
 
 	contact_count_t Synchronize(Body& body,

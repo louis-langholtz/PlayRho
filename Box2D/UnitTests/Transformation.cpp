@@ -83,3 +83,16 @@ TEST(Transformation, Mul)
 	EXPECT_NEAR(double(xfm2.q.cos()), double(rotation2.cos()), 0.0001);
 	EXPECT_NEAR(double(xfm2.q.sin()), double(rotation2.sin()), 0.0001);
 }
+
+TEST(Transformation, MulSameAsTransformTwice)
+{
+	const Vec2 translation1{2, 4};
+	const UnitVec2 rotation1{1_rad * Pi / 2};
+	const Transformation xfm{translation1, rotation1};
+	const auto xfm2 = Mul(xfm, xfm);
+
+	const auto location = Vec2{-23.4f, 0.81f};
+	const auto twice = Transform(Transform(location, xfm), xfm);
+	const auto location2 = Transform(location, xfm2);
+	EXPECT_EQ(twice, location2);
+}

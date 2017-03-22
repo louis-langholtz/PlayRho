@@ -114,7 +114,7 @@ AABB box2d::ComputeAABB(const Shape& shape, const Transformation& xf)
 
 AABB box2d::ComputeAABB(const Fixture& fixture, const Transformation& xf)
 {
-	return ComputeAABB(*fixture.GetShape(), xf);
+	return ComputeAABB(*fixture.GetShape(), Mul(xf, fixture.GetTransformation()));
 }
 
 AABB box2d::ComputeAABB(const Body& body)

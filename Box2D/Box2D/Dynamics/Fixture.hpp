@@ -63,6 +63,12 @@ struct FixtureDef
 	/// Use this to store application specific fixture data.
 	void* userData = nullptr;
 	
+	/// The local location of the shape.
+	Vec2 location = Vec2_zero;
+	
+	/// The local angle of the shape in radians.
+	Angle angle = 0_rad;
+	
 	/// A sensor shape collects contact information but never generates a collision
 	/// response.
 	bool isSensor = false;
@@ -98,7 +104,7 @@ constexpr inline FixtureDef& FixtureDef::UseFilter(Filter value) noexcept
 ///
 /// @warning you cannot reuse fixtures.
 /// @note Fixtures are created via Body::CreateFixture.
-/// @note This structure is 64-bytes large (using a 4-byte RealNum on at least one 64-bit architecture/build).
+/// @note This structure is 72-bytes large (using a 4-byte RealNum on at least one 64-bit architecture/build).
 ///
 class Fixture
 {
@@ -119,6 +125,10 @@ public:
 	/// @detail The shape is not modifiable. Use a new fixture instead.
 	const Shape* GetShape() const noexcept;
 
+	/// Gets the fixture's shape transform for the shape's origin.
+	/// @return the local transform of the shape's origin.
+	Transformation GetTransformation() const noexcept;
+	
 	/// Set if this fixture is a sensor.
 	void SetSensor(bool sensor) noexcept;
 
@@ -210,6 +220,7 @@ private:
 	Fixture(Body* body, const FixtureDef& def, std::shared_ptr<const Shape> shape):
 		m_body{body},
 		m_shape{shape},
+		m_xfm{def.location, UnitVec2{def.angle}},
 		m_filter{def.filter},
 		m_isSensor{def.isSensor},
 		m_userData{def.userData}
@@ -223,7 +234,6 @@ private:
 
 	// Data ordered here for memory compaction.
 	
-	// 0-bytes of memory (at first).
 	Body* const m_body = nullptr; ///< Parent body. Set on construction. 8-bytes.
 
 	/// Shape (of fixture).
@@ -232,15 +242,19 @@ private:
 	/// @note 16-bytes.
 	std::shared_ptr<const Shape> m_shape;
 
+	Transformation m_xfm;
+	
 	FixtureProxies m_proxies = nullptr; ///< Array of fixture proxies for the assigned shape. 8-bytes.
+	
 	void* m_userData = nullptr; ///< User data. 8-bytes.
-	// 48-bytes so far.
-	child_count_t m_proxyCount = 0; ///< Proxy count. @detail This is the fixture shape's child count after proxy creation. 4-bytes.
-	// 48 + 16 = 64-bytes now.
-	Filter m_filter; ///< Filter object. 6-bytes.
-	bool m_isSensor = false; ///< Is/is-not sensor. 1-bytes.
 
-	// 71-bytes data + 1-byte alignment padding is 72-bytes.
+	/// Proxy count.
+	/// @detail This is the fixture shape's child count after proxy creation. 4-bytes.
+	child_count_t m_proxyCount = 0;
+
+	Filter m_filter; ///< Filter object. 6-bytes.
+	
+	bool m_isSensor = false; ///< Is/is-not sensor. 1-bytes.
 };
 
 inline const Shape* Fixture::GetShape() const noexcept
@@ -276,6 +290,11 @@ inline Body* Fixture::GetBody() noexcept
 inline const Body* Fixture::GetBody() const noexcept
 {
 	return m_body;
+}
+
+inline Transformation Fixture::GetTransformation() const noexcept
+{
+	return m_xfm;
 }
 
 inline child_count_t Fixture::GetProxyCount() const noexcept

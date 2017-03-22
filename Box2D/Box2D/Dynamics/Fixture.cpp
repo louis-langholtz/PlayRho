@@ -85,7 +85,8 @@ AABB box2d::GetAABB(const Fixture& fixture, child_count_t childIndex) noexcept
 
 bool box2d::TestPoint(const Fixture& f, const Vec2 p)
 {
-	return TestPoint(*f.GetShape(), f.GetBody()->GetTransformation(), p);
+	const auto xfm = Mul(f.GetBody()->GetTransformation(), f.GetTransformation());
+	return TestPoint(*f.GetShape(), xfm, p);
 }
 
 void box2d::SetAwake(Fixture& f) noexcept
