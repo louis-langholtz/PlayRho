@@ -191,6 +191,8 @@ bool Validate(const PolygonShape& shape);
 void SetAsBox(PolygonShape& shape, RealNum hx, RealNum hy, const Vec2 center, Angle angle) noexcept;
 	
 size_t FindLowestRightMostVertex(Span<const Vec2> vertices);
+
+std::vector<Vec2> GetConvexHullVector(Span<const Vec2> vertices);
 	
 inline PolygonShape Transform(PolygonShape value, Transformation xfm) noexcept
 {

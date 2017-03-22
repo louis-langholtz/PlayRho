@@ -24,18 +24,28 @@
 
 namespace box2d
 {
+	/// Vertex Set.
+	///
+	/// @detail This is a container that enforces the invariant that no two
+	/// vertices can be closer together than the minimum separation distance.
+	///
 	class VertexSet
 	{
 	public:
 		using const_pointer = const Vec2*;
 
-		VertexSet(Vec2::data_type minlen2 = Sqrt(std::numeric_limits<Vec2::data_type>::min()) * 2):
-			m_minlen2{std::abs(minlen2)}
+		static Vec2::data_type GetDefaultMinSeparationSquared()
 		{
-			assert(minlen2 >= 0);
+			return Sqrt(std::numeric_limits<Vec2::data_type>::min()) * 2;
+		}
+		
+		VertexSet(Vec2::data_type minSepSquared = GetDefaultMinSeparationSquared()):
+			m_minSepSquared{std::abs(minSepSquared)}
+		{
+			assert(minSepSquared >= 0);
 		}
 
-		Vec2::data_type get_minlen2() const noexcept { return m_minlen2; }
+		Vec2::data_type GetMinSeparationSquared() const noexcept { return m_minSepSquared; }
 
 		bool add(Vec2 value)
 		{
@@ -63,7 +73,7 @@ namespace box2d
 			for (auto&& elem: *this)
 			{
 				// length squared must be large enough to have a reasonable enough unit vector.
-				if (GetLengthSquared(value - elem) <= m_minlen2)
+				if (GetLengthSquared(value - elem) <= m_minSepSquared)
 				{
 					// found or delta poorly conditioned
 					return &elem;
@@ -79,7 +89,7 @@ namespace box2d
 
 	private:
 		std::vector<Vec2> m_elements; ///< Elements.
-		const Vec2::data_type m_minlen2; ///< Minimum length squared. sizeof(Vec2)/2 or 4-bytes.
+		const Vec2::data_type m_minSepSquared; ///< Minimum length squared. sizeof(Vec2)/2 or 4-bytes.
 	};
 }
 
