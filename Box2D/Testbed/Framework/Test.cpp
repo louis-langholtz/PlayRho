@@ -219,7 +219,7 @@ static bool Draw(Drawer& drawer, const Body& body, bool skins, Fixture* selected
 			color = selectedColor;
 			found = true;
 		}
-		Draw(drawer, *f, xf, color, skins);
+		Draw(drawer, *f, Mul(xf, f->GetTransformation()), color, skins);
 	}
 	return found;
 }

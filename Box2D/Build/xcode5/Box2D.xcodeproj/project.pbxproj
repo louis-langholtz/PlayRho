@@ -424,6 +424,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		470D533C1E82364F00E96896 /* SpinningCircle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SpinningCircle.hpp; sourceTree = "<group>"; };
 		4726DD0C1D3014990012A882 /* IndexPair.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IndexPair.hpp; sourceTree = "<group>"; };
 		4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactFeature.hpp; sourceTree = "<group>"; };
 		4726DD261D3180980012A882 /* NewtonsCradle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NewtonsCradle.hpp; sourceTree = "<group>"; };
@@ -1148,6 +1149,7 @@
 				80BB8A60141C3E8600F1753A /* ShapeEditing.hpp */,
 				80BB8A61141C3E8600F1753A /* SliderCrank.hpp */,
 				80BB8A62141C3E8600F1753A /* SphereStack.hpp */,
+				470D533C1E82364F00E96896 /* SpinningCircle.hpp */,
 				80BB8A63141C3E8600F1753A /* TestEntries.cpp */,
 				80BB8A64141C3E8600F1753A /* TheoJansen.hpp */,
 				80BB8A65141C3E8600F1753A /* Tiles.hpp */,
