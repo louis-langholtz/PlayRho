@@ -39,29 +39,32 @@ namespace box2d {
 			bodyDef.angularVelocity = 45_deg;
 			bodyDef.linearVelocity = Vec2{0, 0};
 			bodyDef.linearDamping = 0.8f;
+			bodyDef.bullet = true;
 
-			bodyDef.position = Vec2{ 6, 20};
+			bodyDef.position = Vec2{0, 26};
 			const auto body1 = m_world->CreateBody(bodyDef);
-			bodyDef.position = Vec2{-6, 20};
+			bodyDef.position = Vec2{0, 14};
 			const auto body2 = m_world->CreateBody(bodyDef);
 			
 			auto shapeConf = CircleShape::Conf{};
+			shapeConf.density = 10;
+
 			shapeConf.vertexRadius = 2;
-			shapeConf.density = 1;
 			shapeConf.location = Vec2{0, 0};
 			auto circle = std::make_shared<CircleShape>(shapeConf);
-			
-			auto fixtureConf = FixtureDef{};
-			
-			fixtureConf.location = Vec2{0, 3};
-			body1->CreateFixture(circle, fixtureConf);
-			fixtureConf.location = Vec2{0, -3};
-			body1->CreateFixture(circle, fixtureConf);
 
-			fixtureConf.location = Vec2{0,  3};
-			body2->CreateFixture(circle, fixtureConf);
-			fixtureConf.location = Vec2{0, -3};
-			body2->CreateFixture(circle, fixtureConf);
+			shapeConf.vertexRadius = 1.5;
+			shapeConf.location = Vec2{0,  3};
+			auto circleA = std::make_shared<CircleShape>(shapeConf);
+			shapeConf.vertexRadius = 1.5;
+			shapeConf.location = Vec2{0, -3};
+			auto circleB = std::make_shared<CircleShape>(shapeConf);
+			
+			body1->CreateFixture(circleA);
+			body1->CreateFixture(circleB);
+			
+			body2->CreateFixture(circleA);
+			body2->CreateFixture(circleB);
 		}
 		
 		static Test* Create()

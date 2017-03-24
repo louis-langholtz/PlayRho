@@ -26,7 +26,6 @@
 #include <Box2D/Collision/Shapes/ChainShape.hpp>
 #include <Box2D/Collision/Shapes/Shape.hpp>
 #include <Box2D/Dynamics/Fixture.hpp>
-#include <Box2D/Dynamics/Body.hpp>
 
 using namespace box2d;
 	
@@ -284,6 +283,5 @@ RayCastOutput box2d::RayCast(const Shape& shape, const RayCastInput& input,
 
 RayCastOutput box2d::RayCast(const Fixture& f, const RayCastInput& input, child_count_t childIndex)
 {
-	const auto xfm = Mul(f.GetBody()->GetTransformation(), f.GetTransformation());
-	return RayCast(*f.GetShape(), input, xfm, childIndex);
+	return RayCast(*f.GetShape(), input, GetTransformation(f), childIndex);
 }

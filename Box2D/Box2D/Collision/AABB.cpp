@@ -112,18 +112,13 @@ AABB box2d::ComputeAABB(const Shape& shape, const Transformation& xf)
 	return sum;
 }
 
-AABB box2d::ComputeAABB(const Fixture& fixture, const Transformation& xf)
-{
-	return ComputeAABB(*fixture.GetShape(), Mul(xf, fixture.GetTransformation()));
-}
-
 AABB box2d::ComputeAABB(const Body& body)
 {
 	auto sum = AABB{};
 	const auto xf = body.GetTransformation();
 	for (auto&& f: body.GetFixtures())
 	{
-		sum += ComputeAABB(*f, xf);
+		sum += ComputeAABB(*(f->GetShape()), xf);
 	}
 	return sum;
 }

@@ -38,8 +38,8 @@ using ContactDestroyFcn = void (Contact* contact);
 static Manifold GetChainCircleManifold(const Fixture* fixtureA, child_count_t indexA,
 									   const Fixture* fixtureB, child_count_t)
 {
-	const auto xfA = Mul(fixtureA->GetBody()->GetTransformation(), fixtureA->GetTransformation());
-	const auto xfB = Mul(fixtureB->GetBody()->GetTransformation(), fixtureB->GetTransformation());
+	const auto xfA = GetTransformation(*fixtureA);
+	const auto xfB = GetTransformation(*fixtureB);
 	const auto edge = (static_cast<const ChainShape*>(fixtureA->GetShape()))->GetChildEdge(indexA);
 	return CollideShapes(edge, xfA, *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB);
 }
@@ -47,8 +47,8 @@ static Manifold GetChainCircleManifold(const Fixture* fixtureA, child_count_t in
 static Manifold GetChainPolygonManifold(const Fixture* fixtureA, child_count_t indexA,
 										const Fixture* fixtureB, child_count_t)
 {
-	const auto xfA = Mul(fixtureA->GetBody()->GetTransformation(), fixtureA->GetTransformation());
-	const auto xfB = Mul(fixtureB->GetBody()->GetTransformation(), fixtureB->GetTransformation());
+	const auto xfA = GetTransformation(*fixtureA);
+	const auto xfB = GetTransformation(*fixtureB);
 	const auto edge = static_cast<const ChainShape*>(fixtureA->GetShape())->GetChildEdge(indexA);
 	return CollideShapes(edge, xfA, *static_cast<const PolygonShape*>(fixtureB->GetShape()), xfB);
 }
@@ -56,8 +56,8 @@ static Manifold GetChainPolygonManifold(const Fixture* fixtureA, child_count_t i
 static Manifold GetCircleCircleManifold(const Fixture* fixtureA, child_count_t,
 										const Fixture* fixtureB, child_count_t)
 {
-	const auto xfA = Mul(fixtureA->GetBody()->GetTransformation(), fixtureA->GetTransformation());
-	const auto xfB = Mul(fixtureB->GetBody()->GetTransformation(), fixtureB->GetTransformation());
+	const auto xfA = GetTransformation(*fixtureA);
+	const auto xfB = GetTransformation(*fixtureB);
 	return CollideShapes(*static_cast<const CircleShape*>(fixtureA->GetShape()), xfA,
 						 *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB);
 }
@@ -65,8 +65,8 @@ static Manifold GetCircleCircleManifold(const Fixture* fixtureA, child_count_t,
 static Manifold GetEdgeCircleManifold(const Fixture* fixtureA, child_count_t,
 									  const Fixture* fixtureB, child_count_t)
 {
-	const auto xfA = Mul(fixtureA->GetBody()->GetTransformation(), fixtureA->GetTransformation());
-	const auto xfB = Mul(fixtureB->GetBody()->GetTransformation(), fixtureB->GetTransformation());
+	const auto xfA = GetTransformation(*fixtureA);
+	const auto xfB = GetTransformation(*fixtureB);
 	return CollideShapes(*static_cast<const EdgeShape*>(fixtureA->GetShape()), xfA,
 						 *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB);
 }
@@ -74,8 +74,8 @@ static Manifold GetEdgeCircleManifold(const Fixture* fixtureA, child_count_t,
 static Manifold GetEdgeEdgeManifold(const Fixture* fixtureA, child_count_t,
 									const Fixture* fixtureB, child_count_t)
 {
-	const auto xfA = Mul(fixtureA->GetBody()->GetTransformation(), fixtureA->GetTransformation());
-	const auto xfB = Mul(fixtureB->GetBody()->GetTransformation(), fixtureB->GetTransformation());
+	const auto xfA = GetTransformation(*fixtureA);
+	const auto xfB = GetTransformation(*fixtureB);
 	return CollideShapes(*static_cast<const EdgeShape*>(fixtureA->GetShape()), xfA,
 						 *static_cast<const EdgeShape*>(fixtureB->GetShape()), xfB);
 }
@@ -83,8 +83,8 @@ static Manifold GetEdgeEdgeManifold(const Fixture* fixtureA, child_count_t,
 static Manifold GetEdgePolygonManifold(const Fixture* fixtureA, child_count_t,
 									   const Fixture* fixtureB, child_count_t)
 {
-	const auto xfA = Mul(fixtureA->GetBody()->GetTransformation(), fixtureA->GetTransformation());
-	const auto xfB = Mul(fixtureB->GetBody()->GetTransformation(), fixtureB->GetTransformation());
+	const auto xfA = GetTransformation(*fixtureA);
+	const auto xfB = GetTransformation(*fixtureB);
 	return CollideShapes(*static_cast<const EdgeShape*>(fixtureA->GetShape()), xfA,
 						 *static_cast<const PolygonShape*>(fixtureB->GetShape()), xfB);
 }
@@ -92,8 +92,8 @@ static Manifold GetEdgePolygonManifold(const Fixture* fixtureA, child_count_t,
 static Manifold GetPolygonCircleManifold(const Fixture* fixtureA, child_count_t,
 										 const Fixture* fixtureB, child_count_t)
 {
-	const auto xfA = Mul(fixtureA->GetBody()->GetTransformation(), fixtureA->GetTransformation());
-	const auto xfB = Mul(fixtureB->GetBody()->GetTransformation(), fixtureB->GetTransformation());
+	const auto xfA = GetTransformation(*fixtureA);
+	const auto xfB = GetTransformation(*fixtureB);
 	return CollideShapes(*static_cast<const PolygonShape*>(fixtureA->GetShape()), xfA,
 						 *static_cast<const CircleShape*>(fixtureB->GetShape()), xfB);
 }
@@ -101,8 +101,8 @@ static Manifold GetPolygonCircleManifold(const Fixture* fixtureA, child_count_t,
 static Manifold GetPolygonPolygonManifold(const Fixture* fixtureA, child_count_t,
 										  const Fixture* fixtureB, child_count_t)
 {
-	const auto xfA = Mul(fixtureA->GetBody()->GetTransformation(), fixtureA->GetTransformation());
-	const auto xfB = Mul(fixtureB->GetBody()->GetTransformation(), fixtureB->GetTransformation());
+	const auto xfA = GetTransformation(*fixtureA);
+	const auto xfB = GetTransformation(*fixtureB);
 	return CollideShapes(*static_cast<const PolygonShape*>(fixtureA->GetShape()), xfA,
 						 *static_cast<const PolygonShape*>(fixtureB->GetShape()), xfB);
 }
@@ -246,8 +246,8 @@ void Contact::Update(ContactListener* listener)
 	{
 		const auto shapeA = fixtureA->GetShape();
 		const auto shapeB = fixtureB->GetShape();
-		const auto xfA = Mul(bodyA->GetTransformation(), fixtureA->GetTransformation());
-		const auto xfB = Mul(bodyB->GetTransformation(), fixtureB->GetTransformation());
+		const auto xfA = GetTransformation(*fixtureA);
+		const auto xfB = GetTransformation(*fixtureB);
 		
 		newTouching = TestOverlap(*shapeA, GetChildIndexA(), xfA, *shapeB, GetChildIndexB(), xfB);
 

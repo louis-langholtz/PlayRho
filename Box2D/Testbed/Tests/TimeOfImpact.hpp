@@ -62,7 +62,8 @@ public:
 			Position{Vec2(54.595478f, -51.083473f) + offset, 513.62781_rad}
 		};
 
-		const auto output = TimeOfImpact(GetDistanceProxy(m_shapeA, 0), sweepA, GetDistanceProxy(m_shapeB, 0), sweepB);
+		const auto output = TimeOfImpact(GetDistanceProxy(m_shapeA, 0), sweepA,
+										 GetDistanceProxy(m_shapeB, 0), sweepB);
 
 		drawer.DrawString(5, m_textLine, "at toi=%g, state=%s", static_cast<float>(output.get_t()), GetName(output.get_state()));
 		m_textLine += DRAW_STRING_NEW_LINE;

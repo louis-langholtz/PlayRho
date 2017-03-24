@@ -225,8 +225,6 @@ namespace box2d
 
 	AABB ComputeAABB(const Shape& shape, const Transformation& xf);
 
-	AABB ComputeAABB(const Fixture& fixture, const Transformation& xf);
-
 	AABB ComputeAABB(const Body& body);
 
 } // namespace box2d

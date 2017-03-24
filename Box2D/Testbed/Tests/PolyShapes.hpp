@@ -47,7 +47,7 @@ public:
 	void DrawFixture(const Fixture* fixture)
 	{
 		const auto color = Color(0.95f, 0.95f, 0.6f);
-		const auto xf = Mul(fixture->GetBody()->GetTransformation(), fixture->GetTransformation());
+		const auto xf = GetTransformation(*fixture);
 
 		switch (GetType(*fixture))
 		{
@@ -91,11 +91,10 @@ public:
 			return false;
 		}
 
-		const auto body = fixture->GetBody();
+		const auto xfm = GetTransformation(*fixture);
 		const auto shape = fixture->GetShape();
 
-		const auto overlap = TestOverlap(*shape, 0, Mul(body->GetTransformation(), fixture->GetTransformation()),
-										 m_circle, 0, m_transform);
+		const auto overlap = TestOverlap(*shape, 0, xfm, m_circle, 0, m_transform);
 		if (overlap)
 		{
 			DrawFixture(fixture);

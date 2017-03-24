@@ -159,8 +159,9 @@ static void Draw(Drawer& drawer, const PolygonShape& shape, const Transformation
 	}
 }
 
-static void Draw(Drawer& drawer, const Fixture& fixture, const Transformation& xf, const Color& color, bool skins)
+static void Draw(Drawer& drawer, const Fixture& fixture, const Color& color, bool skins)
 {
+	const auto xf = GetTransformation(fixture);
 	switch (GetType(fixture))
 	{
 		case Shape::e_circle:
@@ -208,7 +209,6 @@ static Color GetColor(const Body& body)
 static bool Draw(Drawer& drawer, const Body& body, bool skins, Fixture* selected)
 {
 	auto found = false;
-	const auto xf = body.GetTransformation();
 	const auto bodyColor = GetColor(body);
 	const auto selectedColor = Brighten(bodyColor, 1.3f);
 	for (auto&& f: body.GetFixtures())
@@ -219,7 +219,7 @@ static bool Draw(Drawer& drawer, const Body& body, bool skins, Fixture* selected
 			color = selectedColor;
 			found = true;
 		}
-		Draw(drawer, *f, Mul(xf, f->GetTransformation()), color, skins);
+		Draw(drawer, *f, color, skins);
 	}
 	return found;
 }

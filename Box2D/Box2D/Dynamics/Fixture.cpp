@@ -85,8 +85,7 @@ AABB box2d::GetAABB(const Fixture& fixture, child_count_t childIndex) noexcept
 
 bool box2d::TestPoint(const Fixture& f, const Vec2 p)
 {
-	const auto xfm = Mul(f.GetBody()->GetTransformation(), f.GetTransformation());
-	return TestPoint(*f.GetShape(), xfm, p);
+	return TestPoint(*f.GetShape(), GetTransformation(f), p);
 }
 
 void box2d::SetAwake(Fixture& f) noexcept
@@ -96,4 +95,16 @@ void box2d::SetAwake(Fixture& f) noexcept
 	{
 		b->SetAwake();
 	}
+}
+
+Transformation box2d::GetTransformation(const Fixture& f) noexcept
+{
+	/*
+	 * If fixtures have transformations (in addition to the body transformation),
+	 * this could be implemented like:
+	 *   return Mul(f.GetBody()->GetTransformation(), f.GetTransformation());
+	 * Note that adding transformations to fixtures requires work to also be done
+	 * to the manifold calculating code to handle that.
+	 */
+	return f.GetBody()->GetTransformation();
 }

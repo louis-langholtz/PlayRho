@@ -1365,15 +1365,14 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
 		BodyAtty::Advance0(*bB, alpha0);
 		
 		const auto proxyA = GetDistanceProxy(*fA->GetShape(), c->GetChildIndexA());
-		const auto sweepA = Transform(GetAnglesNormalized(bA->GetSweep()), fA->GetTransformation());
+		const auto sweepA = GetAnglesNormalized(bA->GetSweep());
 		const auto proxyB = GetDistanceProxy(*fB->GetShape(), c->GetChildIndexB());
-		const auto sweepB = Transform(GetAnglesNormalized(bB->GetSweep()), fB->GetTransformation());
+		const auto sweepB = GetAnglesNormalized(bB->GetSweep());
 
 		// Compute the TOI for this contact (one or both bodies are active and impenetrable).
 		// Computes the time of impact in interval [0, 1]
 		// Large rotations can make the root finder of TimeOfImpact fail, so normalize the sweep angles.
 		const auto output = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, toiConf);
-		
 		
 		// Use Min function to handle floating point imprecision which possibly otherwise
 		// could provide a TOI that's greater than 1.
@@ -2410,21 +2409,18 @@ bool World::DestroyFixture(Fixture* fixture, bool resetMassData)
 
 void World::CreateProxies(Fixture& fixture, const RealNum aabbExtension)
 {
-	const auto body = fixture.GetBody();
-	const auto bodyXfm = body->GetTransformation();
 	assert(fixture.GetProxyCount() == 0);
 	
 	const auto shape = fixture.GetShape();
-	const auto fixtureXfm = fixture.GetTransformation();
 	
 	// Reserve proxy space and create proxies in the broad-phase.
 	const auto childCount = GetChildCount(*shape);
 	const auto proxies = static_cast<FixtureProxy*>(alloc(sizeof(FixtureProxy) * childCount));
 	
-	const auto xf = Mul(bodyXfm, fixtureXfm);
+	const auto xfm = GetTransformation(fixture);
 	for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex)
 	{
-		const auto aabb = ComputeAABB(*shape, xf, childIndex);
+		const auto aabb = ComputeAABB(*shape, xfm, childIndex);
 		const auto proxyPtr = proxies + childIndex;
 		const auto proxyId = m_broadPhase.CreateProxy(GetFattenedAABB(aabb, aabbExtension), proxyPtr);
 		new (proxyPtr) FixtureProxy{aabb, proxyId, &fixture, childIndex};
@@ -2473,19 +2469,14 @@ void World::InternalTouchProxies(Fixture& fixture) noexcept
 }
 
 child_count_t World::Synchronize(Fixture& fixture,
-								 Transformation xfm1, Transformation xfm2,
+								 const Transformation xfm1, const Transformation xfm2,
 								 const RealNum multiplier, const RealNum extension)
 {
 	assert(::box2d::IsValid(xfm1));
 	assert(::box2d::IsValid(xfm2));
 	
-	const auto shape = fixture.GetShape();
-	const auto fixtureXfm = fixture.GetTransformation();
-	
-	xfm1 = Mul(xfm1, fixtureXfm);
-	xfm2 = Mul(xfm2, fixtureXfm);
-
 	auto updatedCount = child_count_t{0};
+	const auto shape = fixture.GetShape();
 	const auto displacement = xfm2.p - xfm1.p;
 	const auto proxies = FixtureAtty::GetProxies(fixture);
 	for (auto&& proxy: proxies)
