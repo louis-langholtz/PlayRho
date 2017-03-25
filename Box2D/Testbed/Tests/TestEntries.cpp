@@ -73,6 +73,7 @@
 #include "VerticalStack.hpp"
 #include "Web.hpp"
 #include "SpinningCircle.hpp"
+#include "HalfPipe.hpp"
 #include "NewtonsCradle.hpp"
 
 namespace box2d {
@@ -130,7 +131,8 @@ const TestEntry g_testEntries[] =
 	{"Dominos", Dominos::Create},
 	{"Dynamic Tree", DynamicTreeTest::Create},
 	{"Sensor Test", SensorTest::Create},
-	{"Spinning Circle", SpinningCircle::Create},
+	{"Spinning Circles", SpinningCircle::Create},
+	{"Half Pipe", HalfPipe::Create},
 	{"Varying Friction", VaryingFriction::Create},
 	{"Add Pair Stress Test", AddPair::Create},
 	{"Newton's Cradle", NewtonsCradle::Create},
