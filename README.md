@@ -16,21 +16,22 @@ As such, this library *must* be compiled with the `NDEBUG` preprocessor macro en
 to see any kind of performance.
 
 Here's a run-down of some of the changes:
-- Exported symbols are all within the library namespace of `box2d` and are no longer preficed by `b2`.
+- Exported symbols are now all within the library namespace of `box2d` and are no longer preficed by `b2`.
 - Preprocessor defines except those used for include guards, have been replaced with C++ solutions or removed from the API.
 - Rounded corner collisions.
 - *Capsule* shapes (using 2-vertex `PolygonShape` instances).
 - More stable polygon stacking.
-- Shared shapes for reduced memory usage.
+- Shared shapes with friction, density, and restitution moved into them (from Fixture class) for reduced memory usage.
 - Support for C++11's range-based loops and constant expressions.
-- Unit tested (via Google Test).
+- Unit tested via Google Test and over 400 tests.
 - Compile-time support for `double` and `long double` floating-point types and 32-bit and 64-bit fixed-point types (in addition to `float`).
 - Fully per-step run-time configurable (via [`StepConf`](https://github.com/louis-langholtz/Box2D/blob/dev/Box2D/Box2D/Dynamics/StepConf.hpp)).
 - In-depth per-step return value statistics (via [`StepStats`](https://github.com/louis-langholtz/Box2D/blob/dev/Box2D/Box2D/Dynamics/StepStats.hpp)).
 - Increased construction-time configurability of world instances (via [`World::Def`](https://github.com/louis-langholtz/Box2D/blob/dev/Box2D/Box2D/Dynamics/World.hpp#L107)).
 - Various methods have been rewritten to be [non-member non-friend functions](http://www.drdobbs.com/cpp/how-non-member-functions-improve-encapsu/184401197).
 - Various functions and procedures have been rewritten to be ["pure functions"](https://en.wikipedia.org/wiki/Pure_function).
-- Testbed enhancements: provides controls for per-step configurability, displays per-step statistics, ability to manipulate bodies while paused, and more.
+- Testbed enhancements: per-step configurability, per-step statistics, ability to manipulate bodies while paused, and more.
+- Testbed test additions: Half Pipe, Newton's Cradle, and Spinning Circles.
 
 ## About
 
