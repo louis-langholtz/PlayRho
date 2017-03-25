@@ -479,6 +479,7 @@
 		473971A91D9F0E4E00F7137F /* ContactSolver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactSolver.cpp; sourceTree = "<group>"; };
 		473971AC1DA45C4C00F7137F /* Drawer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawer.cpp; sourceTree = "<group>"; };
 		473971AD1DA45C4C00F7137F /* Drawer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Drawer.hpp; sourceTree = "<group>"; };
+		474527361E86E903002E28FB /* HalfPipe.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = HalfPipe.hpp; sourceTree = "<group>"; };
 		474B67211E80466D00B6D126 /* functional.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = functional.cpp; sourceTree = "<group>"; };
 		474BAB291E5CBA010058E08A /* Velocity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Velocity.cpp; sourceTree = "<group>"; };
 		474BAB2C1E5D00960058E08A /* BodyConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyConstraint.hpp; sourceTree = "<group>"; };
@@ -1128,6 +1129,7 @@
 				80BB8A51141C3E8600F1753A /* EdgeShapes.hpp */,
 				80BB8A52141C3E8600F1753A /* EdgeTest.hpp */,
 				80BB8A53141C3E8600F1753A /* Gears.hpp */,
+				474527361E86E903002E28FB /* HalfPipe.hpp */,
 				809BC10118B855CB00F5D9F0 /* HeavyOnLight.hpp */,
 				809BC10218B85A4900F5D9F0 /* HeavyOnLightTwo.hpp */,
 				4751EE281CEDD78F00D459CB /* Mobile.hpp */,
