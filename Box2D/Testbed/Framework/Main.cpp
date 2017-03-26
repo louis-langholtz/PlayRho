@@ -413,11 +413,14 @@ static void sSimulate(Drawer& drawer)
 //
 static void sInterface()
 {
-	int menuWidth = 200;
+	const auto menuWidth = 200;
 	ui.mouseOverMenu = false;
 	if (ui.showMenu)
 	{
-		bool over = imguiBeginScrollArea("Testbed Controls", g_camera.m_width - menuWidth - 10, 10, menuWidth, g_camera.m_height - 20, &ui.scrollarea1);
+		const auto over = imguiBeginScrollArea("Testbed Controls",
+											   g_camera.m_width - menuWidth - 10, 10,
+											   menuWidth, g_camera.m_height - 20,
+											   &ui.scrollarea1);
 		if (over) ui.mouseOverMenu = true;
 
 		imguiSeparatorLine();
@@ -503,11 +506,14 @@ static void sInterface()
 		imguiEndScrollArea();
 	}
 
-	int testMenuWidth = 200;
+	const auto testMenuWidth = 200;
 	if (ui.chooseTest)
 	{
 		static int testScroll = 0;
-		bool over = imguiBeginScrollArea("Choose Sample", g_camera.m_width - menuWidth - testMenuWidth - 20, 10, testMenuWidth, g_camera.m_height - 20, &testScroll);
+		const auto over = imguiBeginScrollArea("Choose Sample",
+											   g_camera.m_width - menuWidth - testMenuWidth - 20, 10,
+											   testMenuWidth, g_camera.m_height - 20,
+											   &testScroll);
 		if (over) ui.mouseOverMenu = true;
 
 		for (int i = 0; i < testCount; ++i)
@@ -525,7 +531,6 @@ static void sInterface()
 	}
 
 	imguiEndFrame();
-
 }
 
 //
@@ -583,7 +588,6 @@ int main()
 		exit(EXIT_FAILURE);
 	}
 #endif
-
 	
 	sCreateUI();
 	
@@ -612,7 +616,7 @@ int main()
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			unsigned char mousebutton = 0;
-			int mscroll = ui.scroll;
+			const auto mscroll = ui.scroll;
 			ui.scroll = 0;
 
 			double xd, yd;

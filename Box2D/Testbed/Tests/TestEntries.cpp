@@ -74,6 +74,7 @@
 #include "Web.hpp"
 #include "SpinningCircle.hpp"
 #include "HalfPipe.hpp"
+#include "Orbiter.hpp"
 #include "NewtonsCradle.hpp"
 
 namespace box2d {
@@ -133,6 +134,7 @@ const TestEntry g_testEntries[] =
 	{"Sensor Test", SensorTest::Create},
 	{"Spinning Circles", SpinningCircle::Create},
 	{"Half Pipe", HalfPipe::Create},
+	{"Orbiter", Orbiter::Create},
 	{"Varying Friction", VaryingFriction::Create},
 	{"Add Pair Stress Test", AddPair::Create},
 	{"Newton's Cradle", NewtonsCradle::Create},
