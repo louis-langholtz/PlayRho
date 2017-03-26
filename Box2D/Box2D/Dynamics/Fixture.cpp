@@ -99,6 +99,8 @@ void box2d::SetAwake(Fixture& f) noexcept
 
 Transformation box2d::GetTransformation(const Fixture& f) noexcept
 {
+	assert(f.GetBody() != nullptr);
+
 	/*
 	 * If fixtures have transformations (in addition to the body transformation),
 	 * this could be implemented like:

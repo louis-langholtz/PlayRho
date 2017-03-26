@@ -316,6 +316,9 @@ bool TestPoint(const Fixture& f, const Vec2 p);
 
 void SetAwake(Fixture& f) noexcept;
 
+/// Gets the transformation associated with the given fixture.
+/// @warning Behavior is undefined if the fixture doesn't have an associated body - i.e.
+///   behavior is undefined if the fixture has <code>nullptr</code> as its associated body.
 Transformation GetTransformation(const Fixture& f) noexcept;
 	
 } // namespace box2d
