@@ -1049,6 +1049,8 @@ inline void ApplyAngularImpulse(Body& body, RealNum impulse) noexcept
 	body.SetVelocity(velocity);
 }
 
+Vec2 GetCentripetalForce(const Body& body, const Vec2 axis);
+
 /// Gets the rotational inertia of the body.
 /// @return the rotational inertia, usually in kg-m^2.
 inline RealNum GetInertia(const Body& body) noexcept
@@ -1166,6 +1168,7 @@ inline Angle GetTorque(const Body& body) noexcept
 }
 
 /// Gets the velocity of the body after the given time accounting for the body's acceleration.
+/// @warning Behavior is undefined if the given elapsed time is an invalid value (like NaN).
 /// @param body Body to get the velocity for.
 /// @param h Time elapsed to get velocity for. Behavior is undefined if this value is invalid.
 Velocity GetVelocity(const Body& body, RealNum h) noexcept;

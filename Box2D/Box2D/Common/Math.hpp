@@ -704,6 +704,13 @@ constexpr Vec2& operator *= (Vec2& lhs, Vec2::data_type rhs) noexcept
 	return lhs;
 }
 
+constexpr Vec2& operator /= (Vec2& lhs, Vec2::data_type rhs) noexcept
+{
+	lhs.x /= rhs;
+	lhs.y /= rhs;
+	return lhs;
+}
+
 /// Add two vectors component-wise.
 constexpr inline Vec2 operator + (const Vec2 a, const Vec2 b) noexcept
 {
@@ -1097,6 +1104,20 @@ constexpr inline bool operator!=(const Velocity& lhs, const Velocity& rhs)
 	return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
 }
 
+constexpr inline Velocity& operator*= (Velocity& lhs, const RealNum rhs)
+{
+	lhs.linear *= rhs;
+	lhs.angular *= rhs;
+	return lhs;
+}
+
+constexpr inline Velocity& operator/= (Velocity& lhs, const RealNum rhs)
+{
+	lhs.linear /= rhs;
+	lhs.angular /= rhs;
+	return lhs;
+}
+
 constexpr inline Velocity& operator+= (Velocity& lhs, const Velocity& rhs)
 {
 	lhs.linear += rhs.linear;
@@ -1139,6 +1160,21 @@ constexpr inline Velocity operator* (const Velocity& lhs, const RealNum rhs)
 constexpr inline Velocity operator* (const RealNum lhs, const Velocity& rhs)
 {
 	return Velocity{rhs.linear * lhs, rhs.angular * lhs};
+}
+
+constexpr inline Velocity operator/ (const Velocity& lhs, const RealNum rhs)
+{
+	/*
+	 * While it can be argued that division operations shouldn't be supported due to
+	 * hardware support for division typically being significantly slower than hardware
+	 * support for multiplication, it can also be argued that it shouldn't be the
+	 * software developer's role to attempt to optimize what the compiler should be
+	 * much better at knowing how to optimize. So here the code chooses the latter
+	 * strategy which allows the intention to be clearer, and just passes the division
+	 * on down to the Vec2 and Angle types (rather than manually rewriting the divisions
+	 * as multiplications).
+	 */
+	return Velocity{lhs.linear / rhs, lhs.angular / rhs};
 }
 
 constexpr inline Transformation GetTransformation(const Vec2 ctr, const UnitVec2 rot, const Vec2 local_ctr) noexcept

@@ -395,14 +395,14 @@ Velocity box2d::GetVelocity(const Body& body, TimeSpan h) noexcept
 		velocity.angular += h * body.GetAngularAcceleration();
 		
 		// Apply damping.
-		// ODE: dv/dt + c * v = 0
-		// Solution: v(t) = v0 * exp(-c * t)
+		// Ordinary differential equation: dv/dt + c * v = 0
+		//                       Solution: v(t) = v0 * exp(-c * t)
 		// Time step: v(t + dt) = v0 * exp(-c * (t + dt)) = v0 * exp(-c * t) * exp(-c * dt) = v * exp(-c * dt)
 		// v2 = exp(-c * dt) * v1
-		// Pade approximation:
+		// Pade approximation (see https://en.wikipedia.org/wiki/Pad%C3%A9_approximant ):
 		// v2 = v1 * 1 / (1 + c * dt)
-		velocity.linear  *= 1 / (1 + h * body.GetLinearDamping());
-		velocity.angular *= 1 / (1 + h * body.GetAngularDamping());
+		velocity.linear  /= (1 + h * body.GetLinearDamping());
+		velocity.angular /= (1 + h * body.GetAngularDamping());
 	}
 	return velocity;
 }
@@ -447,4 +447,15 @@ void box2d::RotateAboutWorldPoint(Body& body, Angle amount, Vec2 worldPoint)
 void box2d::RotateAboutLocalPoint(Body& body, Angle amount, Vec2 localPoint)
 {
 	RotateAboutWorldPoint(body, amount, GetWorldPoint(body, localPoint));
+}
+
+Vec2 box2d::GetCentripetalForce(const Body& body, const Vec2 axis)
+{
+	const auto velocity = GetLength(GetLinearVelocity(body));
+	const auto location = body.GetLocation();
+	const auto mass = GetMass(body);
+	const auto delta = axis - location;
+	const auto radius = GetLength(delta);
+	const auto dir = delta / radius;
+	return dir * (mass * Square(velocity) / radius);
 }
