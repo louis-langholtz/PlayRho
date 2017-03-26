@@ -235,12 +235,6 @@ void Contact::Update(ContactListener* listener)
 	const auto fixtureA = GetFixtureA();
 	const auto fixtureB = GetFixtureB();
 
-	const auto bodyA = fixtureA->GetBody();
-	const auto bodyB = fixtureB->GetBody();
-	
-	assert(bodyA);
-	assert(bodyB);
-
 	const auto sensor = fixtureA->IsSensor() || fixtureB->IsSensor();
 	if (sensor)
 	{
@@ -281,6 +275,12 @@ void Contact::Update(ContactListener* listener)
 		m_manifold = newManifold;
 		
 #ifdef MAKE_CONTACT_PROCESSING_ORDER_DEPENDENT
+		const auto bodyA = fixtureA->GetBody();
+		const auto bodyB = fixtureB->GetBody();
+		
+		assert(bodyA);
+		assert(bodyB);
+
 		/*
 		 * The following code creates an ordering dependency in terms of update processing
 		 * over a container of contacts. It also puts this method into the situation of
