@@ -85,7 +85,7 @@ void PolygonShape::Set(Span<const Vec2> points) noexcept
 	Set(point_set);
 }
 
-std::vector<Vec2> box2d::GetConvexHullVector(Span<const Vec2> vertices)
+std::vector<Vec2> box2d::GetConvexHullAsVector(Span<const Vec2> vertices)
 {
 	std::vector<Vec2> result;
 	
@@ -145,7 +145,7 @@ void PolygonShape::Set(const VertexSet& point_set) noexcept
 	assert(point_set_size > 0 && point_set_size < std::numeric_limits<vertex_count_t>::max());
 #endif
 
-	m_vertices = GetConvexHullVector(point_set);
+	m_vertices = GetConvexHullAsVector(point_set);
 	assert(m_vertices.size() > 0 && m_vertices.size() < std::numeric_limits<vertex_count_t>::max());
 	
 	const auto count = static_cast<vertex_count_t>(m_vertices.size());

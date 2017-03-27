@@ -451,6 +451,9 @@ void box2d::RotateAboutLocalPoint(Body& body, Angle amount, Vec2 localPoint)
 
 Vec2 box2d::GetCentripetalForce(const Body& body, const Vec2 axis)
 {
+	// For background on centripetal force, see:
+	//   https://en.wikipedia.org/wiki/Centripetal_force
+
 	const auto velocity = GetLength(GetLinearVelocity(body));
 	const auto location = body.GetLocation();
 	const auto mass = GetMass(body);
