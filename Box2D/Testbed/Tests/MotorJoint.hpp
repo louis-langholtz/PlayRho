@@ -51,7 +51,7 @@ public:
 		m_joint = (MotorJoint*)m_world->CreateJoint(mjd);
 	}
 
-	void Keyboard(Key key) override
+	void KeyboardDown(Key key) override
 	{
 		switch (key)
 		{

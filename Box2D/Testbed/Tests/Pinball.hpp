@@ -123,7 +123,7 @@ public:
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 	
-	void Keyboard(Key key) override
+	void KeyboardDown(Key key) override
 	{
 		switch (key)
 		{

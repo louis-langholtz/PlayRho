@@ -481,6 +481,7 @@
 		473971AD1DA45C4C00F7137F /* Drawer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Drawer.hpp; sourceTree = "<group>"; };
 		474527361E86E903002E28FB /* HalfPipe.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = HalfPipe.hpp; sourceTree = "<group>"; };
 		474527391E8877DD002E28FB /* Orbiter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Orbiter.hpp; sourceTree = "<group>"; };
+		4745273F1E8AC88F002E28FB /* iforce2d_TopdownCar.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = iforce2d_TopdownCar.hpp; sourceTree = "<group>"; };
 		474B67211E80466D00B6D126 /* functional.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = functional.cpp; sourceTree = "<group>"; };
 		474BAB291E5CBA010058E08A /* Velocity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Velocity.cpp; sourceTree = "<group>"; };
 		474BAB2C1E5D00960058E08A /* BodyConstraint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyConstraint.hpp; sourceTree = "<group>"; };
@@ -1133,6 +1134,7 @@
 				474527361E86E903002E28FB /* HalfPipe.hpp */,
 				809BC10118B855CB00F5D9F0 /* HeavyOnLight.hpp */,
 				809BC10218B85A4900F5D9F0 /* HeavyOnLightTwo.hpp */,
+				4745273F1E8AC88F002E28FB /* iforce2d_TopdownCar.hpp */,
 				4751EE281CEDD78F00D459CB /* Mobile.hpp */,
 				4751EE2D1CEDD7A300D459CB /* MobileBalanced.hpp */,
 				4751EE2C1CEDD7A300D459CB /* MotorJoint.hpp */,

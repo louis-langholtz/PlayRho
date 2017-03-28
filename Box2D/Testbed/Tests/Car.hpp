@@ -214,7 +214,7 @@ public:
 		}
 	}
 
-	void Keyboard(Key key) override
+	void KeyboardDown(Key key) override
 	{
 		switch (key)
 		{

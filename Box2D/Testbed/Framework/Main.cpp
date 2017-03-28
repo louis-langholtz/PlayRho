@@ -276,7 +276,7 @@ static void sKeyCallback(GLFWwindow*, int key, int scancode, int action, int mod
 		default:
 			if (test)
 			{
-				test->Keyboard(GlfwKeyToTestKey(key));
+				test->KeyboardDown(GlfwKeyToTestKey(key));
 			}
 		}
 	}

@@ -334,7 +334,7 @@ public:
 		}
 	}
 
-	void Keyboard(Key key) override
+	void KeyboardDown(Key key) override
 	{
 		const auto fixture = GetSelectedFixture();
 		const auto body = fixture? fixture->GetBody(): nullptr;

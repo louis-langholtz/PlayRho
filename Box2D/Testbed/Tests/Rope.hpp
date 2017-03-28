@@ -57,7 +57,7 @@ public:
 		m_rope.SetAngle(m_angle);
 	}
 
-	void Keyboard(int key) override
+	void KeyboardDown(int key) override
 	{
 		switch (key)
 		{

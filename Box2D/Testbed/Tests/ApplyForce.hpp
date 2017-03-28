@@ -135,7 +135,7 @@ public:
 		}
 	}
 
-	void Keyboard(Key key)
+	void KeyboardDown(Key key)
 	{
 		switch (key)
 		{

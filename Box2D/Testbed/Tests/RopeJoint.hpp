@@ -90,7 +90,7 @@ public:
 		m_rope = m_world->CreateJoint(m_ropeDef);
 	}
 
-	void Keyboard(Key key) override
+	void KeyboardDown(Key key) override
 	{
 		switch (key)
 		{

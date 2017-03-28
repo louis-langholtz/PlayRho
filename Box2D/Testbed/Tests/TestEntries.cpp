@@ -76,6 +76,7 @@
 #include "HalfPipe.hpp"
 #include "Orbiter.hpp"
 #include "NewtonsCradle.hpp"
+#include "iforce2d_TopdownCar.hpp"
 
 namespace box2d {
 
@@ -138,6 +139,7 @@ const TestEntry g_testEntries[] =
 	{"Varying Friction", VaryingFriction::Create},
 	{"Add Pair Stress Test", AddPair::Create},
 	{"Newton's Cradle", NewtonsCradle::Create},
+	{"Top-down Car", iforce2d_TopdownCar::Create},
 	{nullptr, nullptr}
 };
 	

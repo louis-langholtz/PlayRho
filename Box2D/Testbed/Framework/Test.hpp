@@ -93,7 +93,7 @@ public:
 	void CompleteBombSpawn(const Vec2& p);
 	void ShiftOrigin(const Vec2& newOrigin);
 	
-	virtual void Keyboard(Key key) { NOT_USED(key); }
+	virtual void KeyboardDown(Key key) { NOT_USED(key); }
 	virtual void KeyboardUp(Key key) { NOT_USED(key); }
 	virtual void MouseDown(const Vec2& p);
 	virtual void MouseUp(const Vec2& p);
