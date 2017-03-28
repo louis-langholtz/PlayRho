@@ -213,15 +213,17 @@ void Contact::Destroy(Contact* contact)
 	delete contact;
 }
 
-Contact::Contact(Fixture* fA, child_count_t indexA, Fixture* fB, child_count_t indexB,
-				 ManifoldCalcFunc mcf):
+Contact::Contact(Fixture* fA, child_count_t iA, Fixture* fB, child_count_t iB, ManifoldCalcFunc mcf):
 	m_manifoldCalcFunc{mcf},
-	m_fixtureA{fA}, m_fixtureB{fB}, m_indexA{indexA}, m_indexB{indexB},
+	m_fixtureA{fA}, m_fixtureB{fB}, m_indexA{iA}, m_indexB{iB},
 	m_friction{MixFriction(fA->GetFriction(), fB->GetFriction())},
 	m_restitution{MixRestitution(fA->GetRestitution(), fB->GetRestitution())}
 {
+	assert(fA && fB);
+	assert(fA != fB);
 	assert(fA->GetShape());
 	assert(fB->GetShape());
+	assert(fA->GetBody() != fB->GetBody());
 }
 
 void Contact::Update(ContactListener* listener)

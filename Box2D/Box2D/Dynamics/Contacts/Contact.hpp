@@ -181,6 +181,22 @@ private:
 	/// @note This calls the contact's destructor.
 	static void Destroy(Contact* contact);
 
+	/// Initializing constructor.
+	///
+	/// @param fixtureA Fixture A. A non-null pointer to fixture A that must have a shape
+	///   and may not be the same fixture or have the same body as the other fixture.
+	/// @param indexA Index of child A (from fixture A).
+	/// @param fixtureB Fixture B. A non-null pointer to fixture B that must have a shape
+	///   and may not be the same fixture or have the same body as the other fixture.
+	/// @param indexB Index of child B (from fixture B).
+	///
+	/// @warning Behavior is undefined if <code>fixtureA</code> is null.
+	/// @warning Behavior is undefined if <code>fixtureB</code> is null.
+	/// @warning Behavior is undefined if <code>fixtureA == fixtureB</code>.
+	/// @warning Behavior is undefined if <code>fixtureA</code> has no associated shape.
+	/// @warning Behavior is undefined if <code>fixtureB</code> has no associated shape.
+	/// @warning Behavior is undefined if both fixtures have the same body.
+	///
 	Contact(Fixture* fixtureA, child_count_t indexA, Fixture* fixtureB, child_count_t indexB,
 			ManifoldCalcFunc mcf);
 	
