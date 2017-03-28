@@ -892,6 +892,7 @@ inline Angle Body::GetAngularAcceleration() const noexcept
 inline void Body::Advance(RealNum alpha) noexcept
 {
 	//assert(m_sweep.GetAlpha0() <= alpha);
+	assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
 
 	// Advance to the new safe time. This doesn't sync the broad-phase.
 	m_sweep.Advance0(alpha);
@@ -990,6 +991,13 @@ inline void ApplyLinearAcceleration(Body& body, const Vec2 amount)
 	body.SetAcceleration(body.GetLinearAcceleration() + amount, body.GetAngularAcceleration());
 }
 
+inline void SetForce(Body& body, const Vec2 force, const Vec2 point) noexcept
+{
+	const auto linAccel = force * body.GetInvMass();
+	const auto angAccel = 1_rad * Cross(point - body.GetWorldCenter(), force) * body.GetInvRotInertia();
+	body.SetAcceleration(linAccel, angAccel);
+}
+
 /// Apply a force at a world point.
 /// @note If the force is not applied at the center of mass, it will generate a torque and
 ///   affect the angular velocity.
@@ -998,9 +1006,9 @@ inline void ApplyLinearAcceleration(Body& body, const Vec2 amount)
 /// @param point World position of the point of application.
 inline void ApplyForce(Body& body, const Vec2 force, const Vec2 point) noexcept
 {
-	const auto linAccel = body.GetLinearAcceleration() + force * body.GetInvMass();
-	const auto angAccel = body.GetAngularAcceleration() + 1_rad * Cross(point - body.GetWorldCenter(), force) * body.GetInvRotInertia();
-	body.SetAcceleration(linAccel, angAccel);
+	const auto linAccel = force * body.GetInvMass();
+	const auto angAccel = 1_rad * Cross(point - body.GetWorldCenter(), force) * body.GetInvRotInertia();
+	body.SetAcceleration(body.GetLinearAcceleration() + linAccel, body.GetAngularAcceleration() + angAccel);
 }
 
 /// Apply a force to the center of mass.
@@ -1010,6 +1018,13 @@ inline void ApplyForceToCenter(Body& body, const Vec2 force) noexcept
 {
 	const auto linAccel = body.GetLinearAcceleration() + force * body.GetInvMass();
 	const auto angAccel = body.GetAngularAcceleration();
+	body.SetAcceleration(linAccel, angAccel);
+}
+
+inline void SetTorque(Body& body, const RealNum torque) noexcept
+{
+	const auto linAccel = body.GetLinearAcceleration();
+	const auto angAccel = 1_rad * torque * body.GetInvRotInertia();
 	body.SetAcceleration(linAccel, angAccel);
 }
 
