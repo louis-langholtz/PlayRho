@@ -1976,21 +1976,6 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
 		const auto indexB = contact->GetChildIndexB();
 		const auto fixtureA = contact->GetFixtureA();
 		const auto fixtureB = contact->GetFixtureB();
-		const auto bodyA = fixtureA->GetBody();
-		const auto bodyB = fixtureB->GetBody();
-		
-		// Is this contact flagged for filtering?
-		if (contact->NeedsFiltering())
-		{
-			if (!::box2d::ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(fixtureA, fixtureB))
-			{
-				InternalDestroy(*iter);
-				contacts.erase(iter);
-				++stats.filteredOut;
-				continue;
-			}
-			ContactAtty::UnflagForFiltering(*contact);
-		}
 		
 		if (!TestOverlap(m_broadPhase, fixtureA, indexA, fixtureB, indexB))
 		{
@@ -1999,6 +1984,22 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
 			contacts.erase(iter);
 			++stats.notOverlapping;
 			continue;
+		}
+		
+		// Is this contact flagged for filtering?
+		if (contact->NeedsFiltering())
+		{
+			const auto bodyA = fixtureA->GetBody();
+			const auto bodyB = fixtureB->GetBody();
+
+			if (!::box2d::ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(fixtureA, fixtureB))
+			{
+				InternalDestroy(*iter);
+				contacts.erase(iter);
+				++stats.filteredOut;
+				continue;
+			}
+			ContactAtty::UnflagForFiltering(*contact);
 		}
 
 		++stats.ignored;
@@ -2076,7 +2077,7 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 	}
 	
 	// Check user filtering.
-	if (m_contactFilter && !m_contactFilter->ShouldCollide(fixtureA, fixtureB))
+	if (!ShouldCollide(fixtureA, fixtureB))
 	{
 		return false;
 	}
@@ -2086,6 +2087,9 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 	
 #ifndef NO_RACING
 	// Code herein may be racey in a multithreaded context...
+	// Would need a lock on bodyA, bodyB, and m_contacts.
+	// A global lock on the world instance should work but then would it have so much
+	// contention as to make multi-threaded handing of adding new connections senseless?
 
 	// TODO: use hash table to remove potential bottleneck when both bodies have many contacts?
 	// Does a contact already exist?
