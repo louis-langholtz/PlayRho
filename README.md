@@ -16,8 +16,9 @@ As such, this library *must* be compiled with the `NDEBUG` preprocessor macro en
 to see any kind of performance.
 
 Here's a run-down of some of the changes:
-- Exported symbols are now all within the library namespace of `box2d` and are no longer preficed by `b2`.
-- Preprocessor defines except those used for include guards, have been replaced with C++ solutions or removed from the API.
+- Exported symbols are now within the library namespace of `box2d` and are no longer preficed by `b2`.
+- Mutable global variables in the library have been removed or replaced with runtime-time parameters.
+- Preprocessor defines, except those used for include guards, have been replaced with C++ solutions or removed from the API.
 - Rounded corner collisions.
 - *Capsule* shapes (using 2-vertex `PolygonShape` instances).
 - More stable polygon stacking.
@@ -31,7 +32,7 @@ Here's a run-down of some of the changes:
 - Various methods have been rewritten to be [non-member non-friend functions](http://www.drdobbs.com/cpp/how-non-member-functions-improve-encapsu/184401197).
 - Various functions and procedures have been rewritten to be ["pure functions"](https://en.wikipedia.org/wiki/Pure_function).
 - Testbed enhancements: per-step configurability, per-step statistics, ability to manipulate bodies while paused, and more.
-- Testbed test additions: Half Pipe, Newton's Cradle, and Spinning Circles.
+- Testbed test additions: Half Pipe, Orbiter, Newton's Cradle, and Spinning Circles.
 
 ## About
 

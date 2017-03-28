@@ -123,6 +123,7 @@ public:
 
 	/// Updates the pairs.
 	/// @detail This results in pair callbacks. This can only add pairs.
+	/// @param callback Callback that's called for AABB overlapping pairs.
 	size_type UpdatePairs(std::function<bool(void*,void*)> callback);
 
 	/// Query an AABB for overlapping proxies. The callback class

@@ -491,6 +491,9 @@ private:
 	
 	void UnsetNewFixtures() noexcept;
 	
+	/// Finds new contacts.
+	/// @detail Finds and adds new valid contacts to the contacts container.
+	/// @note The new contacts will all have overlapping AABBs.
 	contact_count_t FindNewContacts();
 	
 	/// Processes the narrow phase collision for the contact list.
