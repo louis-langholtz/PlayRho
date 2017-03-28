@@ -364,10 +364,10 @@ private:
 	///
 	IslandSolverResults SolveRegIsland(const StepConf& step, Island island);
 	
-	/// Builds island based off of a given "seed" body.
+	/// Adds to the island based off of a given "seed" body.
 	/// @post Contacts are listed in the island in the order that bodies list those contacts.
 	/// @post Joints are listed the island in the order that bodies list those joints.
-	Island BuildIsland(Body& seed,
+	void AddToIsland(Island& island, Body& seed,
 					   Bodies::size_type& remNumBodies,
 					   Contacts::size_type& remNumContacts,
 					   Joints::size_type& remNumJoints);

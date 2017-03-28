@@ -996,7 +996,7 @@ void World::InternalDestroy(Joint* j)
 	}
 }
 
-Island World::BuildIsland(Body& seed,
+void World::AddToIsland(Island& island, Body& seed,
 				  Bodies::size_type& remNumBodies,
 				  Contacts::size_type& remNumContacts,
 				  Joints::size_type& remNumJoints)
@@ -1007,10 +1007,7 @@ Island World::BuildIsland(Body& seed,
 	assert(seed.IsEnabled());
 	assert(remNumBodies != 0);
 	assert(remNumBodies < MaxBodies);
-
-	// Size the island for the remaining un-evaluated bodies, contacts, and joints.
-	Island island(remNumBodies, remNumContacts, remNumJoints);
-
+	
 	// Perform a depth first search (DFS) on the constraint graph.
 
 	// Create a stack for bodies to be islanded that aren't already islanded.
@@ -1090,8 +1087,6 @@ Island World::BuildIsland(Body& seed,
 		}
 		remNumJoints -= island.m_joints.size() - numJoints;
 	}
-	
-	return island;
 }
 	
 RegStepStats World::SolveReg(const StepConf& conf)
@@ -1125,7 +1120,10 @@ RegStepStats World::SolveReg(const StepConf& conf)
 		{
 			++stats.islandsFound;
 
-			auto island = BuildIsland(*body, remNumBodies, remNumContacts, remNumJoints);
+			// Size the island for the remaining un-evaluated bodies, contacts, and joints.
+			Island island(remNumBodies, remNumContacts, remNumJoints);
+
+			AddToIsland(island, *body, remNumBodies, remNumContacts, remNumJoints);
 			for (auto&& b: island.m_bodies)
 			{
 				// Allow static bodies to participate in other islands.
@@ -2054,33 +2052,28 @@ bool World::Add(const FixtureProxy& proxyA, const FixtureProxy& proxyB)
 	const auto fixtureA = proxyA.fixture; ///< Fixture of proxyA (but may get switched with fixtureB).
 	const auto fixtureB = proxyB.fixture; ///< Fixture of proxyB (but may get switched with fixtureA).
 	
-#ifndef NDEBUG
-	const auto pidA = proxyA.proxyId;
-	const auto pidB = proxyB.proxyId;
-	assert(pidA != pidB);
-	assert(sizeof(pidA) + sizeof(pidB) == sizeof(size_t));
-#endif
-	
 	const auto bodyA = fixtureA->GetBody();
 	const auto bodyB = fixtureB->GetBody();
 	
-	// Are the fixtures on the same body?
+	// Are the fixtures on the same body? They can be, and they often are.
+	// Don't need nor want a contact for these fixtures if they are on the same body.
 	if (bodyA == bodyB)
 	{
 		return false;
 	}
 	
 	// Does a joint override collision? Is at least one body dynamic?
-	if (!::box2d::ShouldCollide(*bodyB, *bodyA))
+	if (!::box2d::ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(fixtureA, fixtureB))
 	{
 		return false;
 	}
-	
-	// Check user filtering.
-	if (!ShouldCollide(fixtureA, fixtureB))
-	{
-		return false;
-	}
+
+#ifndef NDEBUG
+	const auto pidA = proxyA.proxyId;
+	const auto pidB = proxyB.proxyId;
+	assert(pidA != pidB);
+	assert(sizeof(pidA) + sizeof(pidB) == sizeof(size_t));
+#endif
 
 	const auto childIndexA = proxyA.childIndex;
 	const auto childIndexB = proxyB.childIndex;
