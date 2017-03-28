@@ -32,7 +32,7 @@ Here's a run-down of some of the changes:
 - Various methods have been rewritten to be [non-member non-friend functions](http://www.drdobbs.com/cpp/how-non-member-functions-improve-encapsu/184401197).
 - Various functions and procedures have been rewritten to be ["pure functions"](https://en.wikipedia.org/wiki/Pure_function).
 - Testbed enhancements: per-step configurability, per-step statistics, ability to manipulate bodies while paused, and more.
-- Testbed test additions: Half Pipe, Orbiter, Newton's Cradle, and Spinning Circles.
+- Testbed test additions: Half Pipe, iforce2d's Topdown Car, Orbiter, Newton's Cradle, and Spinning Circles.
 
 ## About
 
