@@ -79,7 +79,11 @@ inline bool IsFullOfContacts(const Island& island)
 {
 	return island.m_contacts.size() == island.m_contacts.max_size();
 }
-	
+
+std::size_t Count(const Island& island, const Body* entry);
+std::size_t Count(const Island& island, const Contact* entry);
+std::size_t Count(const Island& island, const Joint* entry);
+
 } // namespace box2d
 
 #endif
