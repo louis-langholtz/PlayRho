@@ -372,6 +372,8 @@ private:
 					   Contacts::size_type& remNumContacts,
 					   Joints::size_type& remNumJoints);
 
+	Bodies::size_type RemoveUnspeedablesFromIslanded(const std::vector<Body*>& bodies);
+
 	/// Solves the step using successive time of impact (TOI) events.
 	/// @detail Used for continuous physics.
 	/// @note This is intended to detect and prevent the tunneling that the faster Solve method may miss.

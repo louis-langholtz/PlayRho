@@ -1088,7 +1088,22 @@ void World::AddToIsland(Island& island, Body& seed,
 		remNumJoints -= island.m_joints.size() - numJoints;
 	}
 }
-	
+
+World::Bodies::size_type World::RemoveUnspeedablesFromIslanded(const std::vector<Body*>& bodies)
+{
+	auto numRemoved = Bodies::size_type{0};
+	for (auto&& body: bodies)
+	{
+		// Allow static bodies to participate in other islands.
+		if (!body->IsSpeedable())
+		{
+			UnsetIslanded(body);
+			++numRemoved;
+		}
+	}
+	return numRemoved;
+}
+
 RegStepStats World::SolveReg(const StepConf& conf)
 {
 	auto stats = RegStepStats{};
@@ -1124,15 +1139,7 @@ RegStepStats World::SolveReg(const StepConf& conf)
 			Island island(remNumBodies, remNumContacts, remNumJoints);
 
 			AddToIsland(island, *body, remNumBodies, remNumContacts, remNumJoints);
-			for (auto&& b: island.m_bodies)
-			{
-				// Allow static bodies to participate in other islands.
-				if (!b->IsSpeedable())
-				{
-					UnsetIslanded(b);
-					++remNumBodies;
-				}
-			}
+			remNumBodies += RemoveUnspeedablesFromIslanded(island.m_bodies);
 
 #if defined(DO_THREADED)
 			// Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions
@@ -1556,14 +1563,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Contact& contac
 		ProcessContactsForTOI(island, *bB, toi);
 	}
 	
-	for (auto&& b: island.m_bodies)
-	{
-		// Allow static bodies to participate in other islands.
-		if (!b->IsSpeedable())
-		{
-			UnsetIslanded(b);
-		}
-	}
+	RemoveUnspeedablesFromIslanded(island.m_bodies);
 
 	// Now solve for remainder of time step
 	return SolveTOI(StepConf{conf}.set_dt((1 - toi) * conf.get_dt()), island);
