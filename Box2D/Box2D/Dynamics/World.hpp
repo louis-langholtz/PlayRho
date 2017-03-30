@@ -558,6 +558,18 @@ private:
 	void SynchronizeProxies(const StepConf& conf);
 	void SynchronizeProxies(Body& body, const StepConf& conf);
 
+	bool IsIslanded(Body* body);
+	bool IsIslanded(Contact* contact);
+	bool IsIslanded(Joint* joint);
+
+	void SetIslanded(Body* body);
+	void SetIslanded(Contact* contact);
+	void SetIslanded(Joint* joint);
+
+	void UnsetIslanded(Body* body);
+	void UnsetIslanded(Contact* contact);
+	void UnsetIslanded(Joint* joint);
+
 	/******** Member variables. ********/
 	
 	BroadPhase m_broadPhase; ///< Broad phase data. 72-bytes.
@@ -759,6 +771,51 @@ inline void World::SetContactListener(ContactListener* listener) noexcept
 inline bool World::ShouldCollide(const Fixture *fixtureA, const Fixture *fixtureB)
 {
 	return !m_contactFilter || m_contactFilter->ShouldCollide(fixtureA, fixtureB);
+}
+
+inline bool World::IsIslanded(Body* key)
+{
+	return m_bodiesIslanded.count(key) != 0;
+}
+
+inline bool World::IsIslanded(Contact* key)
+{
+	return m_contactsIslanded.count(key) != 0;
+}
+
+inline bool World::IsIslanded(Joint* key)
+{
+	return m_jointsIslanded.count(key) != 0;
+}
+
+inline void World::SetIslanded(Body* key)
+{
+	m_bodiesIslanded.insert(key);
+}
+
+inline void World::SetIslanded(Contact* key)
+{
+	m_contactsIslanded.insert(key);
+}
+
+inline void World::SetIslanded(Joint* key)
+{
+	m_jointsIslanded.insert(key);
+}
+
+inline void World::UnsetIslanded(Body* key)
+{
+	m_bodiesIslanded.erase(key);
+}
+
+inline void World::UnsetIslanded(Contact* key)
+{
+	m_contactsIslanded.erase(key);
+}
+
+inline void World::UnsetIslanded(Joint* key)
+{
+	m_jointsIslanded.erase(key);
 }
 
 // Free functions.
