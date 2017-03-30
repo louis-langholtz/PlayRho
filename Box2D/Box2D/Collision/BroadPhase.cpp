@@ -117,7 +117,7 @@ BroadPhase::size_type BroadPhase::UpdatePairs(std::function<bool(void*,void*)> c
 		return (p1.proxyIdA < p2.proxyIdA) || ((p1.proxyIdA == p2.proxyIdA) && (p1.proxyIdB < p2.proxyIdB));
 	});
 	
-	auto added = size_type{0};
+	auto count = size_type{0};
 	// Send the pairs back to the client.
 	for (auto i = decltype(pairCount){0}; i < pairCount; )
 	{
@@ -127,7 +127,7 @@ BroadPhase::size_type BroadPhase::UpdatePairs(std::function<bool(void*,void*)> c
 		
 		if (callback(userDataA, userDataB))
 		{
-			++added;
+			++count;
 		}
 		++i;
 		
@@ -145,5 +145,5 @@ BroadPhase::size_type BroadPhase::UpdatePairs(std::function<bool(void*,void*)> c
 	
 	// Try to keep the tree balanced.
 	//m_tree.Rebalance(4);
-	return added;
+	return count;
 }
