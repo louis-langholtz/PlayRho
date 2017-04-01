@@ -217,6 +217,8 @@ namespace {
 		for (auto&& contact: contacts)
 		{
 			const auto& manifold = contact->GetManifold();
+			assert(manifold.GetPointCount() > 0);
+
 			const auto& fixtureA = *(contact->GetFixtureA());
 			const auto& fixtureB = *(contact->GetFixtureB());
 			
@@ -580,7 +582,7 @@ private:
 				b.UnsetAwakeFlag();
 				b.m_underActiveTime = 0;
 				b.m_velocity = Velocity{Vec2_zero, 0_rad};
-				b.m_sweep.pos0 = b.GetSweep().pos1;
+				b.m_sweep.pos0 = b.m_sweep.pos1;
 				break;
 		}
 	}
@@ -621,15 +623,17 @@ private:
 		return true;
 	}
 
-	static void SetPosition0(Body& b, Position value) noexcept
+	static void SetPosition0(Body& b, const Position value) noexcept
 	{
+		assert(b.IsSpeedable() || b.m_sweep.pos0 == value);
 		b.m_sweep.pos0 = value;
 	}
 
 	/// Sets the body sweep's position 1 value.
 	/// @note This sets what Body::GetWorldCenter returns.
-	static void SetPosition1(Body& b, Position value) noexcept
+	static void SetPosition1(Body& b, const Position value) noexcept
 	{
+		assert(b.IsSpeedable() || b.m_sweep.pos1 == value);
 		b.m_sweep.pos1 = value;
 	}
 
@@ -640,6 +644,7 @@ private:
 	
 	static void SetSweep(Body& b, const Sweep value) noexcept
 	{
+		assert(b.IsSpeedable() || value.pos0 == value.pos1);
 		b.m_sweep = value;
 	}
 	
@@ -659,7 +664,15 @@ private:
 	
 	static void Advance0(Body& b, RealNum value) noexcept
 	{
+		// Note: Static bodies must **never** have different sweep position values.
+		
+		// Confirm bodies don't have different sweep positions to begin with...
+		assert(b.IsSpeedable() || b.m_sweep.pos1 == b.m_sweep.pos0);
+
 		b.m_sweep.Advance0(value);
+
+		// Confirm bodies don't have different sweep positions to end with...
+		assert(b.IsSpeedable() || b.m_sweep.pos1 == b.m_sweep.pos0);
 	}
 	
 	static void Advance(Body& b, RealNum toi) noexcept
@@ -1449,6 +1462,15 @@ ToiStepStats World::SolveTOI(const StepConf& conf)
 		{
 			if (!IsIslanded(contact))
 			{
+				/*
+				 * Confirm that contact is as it's supposed to be according to contract of the
+				 * GetSoonestContacts method from which this contact was obtained.
+				 */
+				assert(contact->IsEnabled());
+				assert(!HasSensor(*contact));
+				assert(IsActive(*contact));
+				assert(IsImpenetrable(*contact));
+
 				const auto solverResults = SolveTOI(conf, *contact);
 				stats.minSeparation = Min(stats.minSeparation, solverResults.minSeparation);
 				stats.maxIncImpulse = Max(stats.maxIncImpulse, solverResults.maxIncImpulse);
@@ -1497,17 +1519,29 @@ ToiStepStats World::SolveTOI(const StepConf& conf)
 
 World::IslandSolverResults World::SolveTOI(const StepConf& conf, Contact& contact)
 {
+	/*
+	 * Confirm that contact is as it's supposed to be according to contract of the
+	 * GetSoonestContacts method from which this contact should have been obtained.
+	 */
+	assert(contact.IsEnabled());
+	assert(!HasSensor(contact));
+	assert(IsActive(contact));
+	assert(IsImpenetrable(contact));
 	assert(!IsIslanded(&contact));
 	
 	const auto toi = contact.GetToi();
 	const auto bA = contact.GetFixtureA()->GetBody();
 	const auto bB = contact.GetFixtureB()->GetBody();
 
+	/* XXX: if (toi != 0)? */
+	/* if (bA->GetSweep().GetAlpha0() != toi || bB->GetSweep().GetAlpha0() != toi) */
+	// Seems contact manifold needs updating regardless.
 	{
 		const auto backupA = bA->GetSweep();
 		const auto backupB = bB->GetSweep();
 
 		// Advance the bodies to the TOI.
+		assert(toi != 0 || (bA->GetSweep().GetAlpha0() == 0 && bB->GetSweep().GetAlpha0() == 0));
 		BodyAtty::Advance(*bA, toi);
 		BodyAtty::Advance(*bB, toi);
 
@@ -1528,19 +1562,29 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Contact& contac
 		//      was failing to see 2 clip points after GetClipPoints was called.
 		if (!contact.IsEnabled() || !contact.IsTouching())
 		{
+			// assert(!contact.IsEnabled() || contact.IsTouching());
 			contact.UnsetEnabled();
 			BodyAtty::Restore(*bA, backupA);
 			BodyAtty::Restore(*bB, backupB);
 			return IslandSolverResults{};
 		}
 	}
-
+#if 0
+	else if (!contact.IsTouching())
+	{
+		const auto newManifold = contact.Evaluate();
+		assert(contact.IsTouching());
+		return IslandSolverResults{};
+	}
+#endif
+	
 	bA->SetAwake();
 	bB->SetAwake();
 
 	// Build the island
 	Island island(m_bodies.size(), m_contacts.size(), 0);
 
+	 // These asserts get triggered sometimes if contacts within TOI are iterated over.
 	assert(!IsIslanded(bA));
 	assert(!IsIslanded(bB));
 	
@@ -1594,6 +1638,7 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Island& island)
 		bodyConstraints[bodyB] = GetBodyConstraint(*bodyB);
 	}
 #else
+	// Sometimes island.m_bodies misses body(s) when processing multiple contacts within same TOI.
 	for (auto&& body: island.m_bodies)
 	{
 		/*
@@ -1652,8 +1697,8 @@ World::IslandSolverResults World::SolveTOI(const StepConf& conf, Island& island)
 		const auto bodyA = fixtureA->GetBody();
 		const auto bodyB = fixtureB->GetBody();
 		
-		bodyA->m_sweep.pos0 = bodyConstraints[bodyA].GetPosition();
-		bodyB->m_sweep.pos0 = bodyConstraints[bodyB].GetPosition();
+		BodyAtty::SetPosition0(*bodyA, bodyConstraints[bodyA].GetPosition());
+		BodyAtty::SetPosition0(*bodyB, bodyConstraints[bodyB].GetPosition());
 	}
 #else
 	for (auto&& body: island.m_bodies)
@@ -1722,28 +1767,31 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi)
 
 		if (!IsIslanded(contact) && !HasSensor(*contact) && (other->IsImpenetrable() || body.IsImpenetrable()))
 		{
-			// Tentatively advance the body to the TOI.
-			const auto backup = other->GetSweep();
-			if (!IsIslanded(other))
+			const auto otherIslanded = IsIslanded(other);
+
 			{
-				BodyAtty::Advance(*other, toi);
-			}
-			
-			// Update the contact points
-			contact->SetEnabled();
-			ContactAtty::Update(*contact, m_contactListener);
-			
-			// Revert and skip if contact disabled by user or not touching anymore (very possible).
-			if (!contact->IsEnabled() || !contact->IsTouching())
-			{
-				BodyAtty::Restore(*other, backup);
-				continue;
+				const auto backup = other->GetSweep();
+				if (!otherIslanded /* && other->GetSweep().GetAlpha0() != toi */)
+				{
+					BodyAtty::Advance(*other, toi);
+				}
+				
+				// Update the contact points
+				contact->SetEnabled();
+				ContactAtty::Update(*contact, m_contactListener);
+				
+				// Revert and skip if contact disabled by user or not touching anymore (very possible).
+				if (!contact->IsEnabled() || !contact->IsTouching())
+				{
+					BodyAtty::Restore(*other, backup);
+					continue;
+				}
 			}
 			
 			island.m_contacts.push_back(contact);
 			SetIslanded(contact);
 			
-			if (!IsIslanded(other))
+			if (!otherIslanded)
 			{
 				if (other->IsSpeedable())
 				{
@@ -1752,13 +1800,26 @@ void World::ProcessContactsForTOI(Island& island, Body& body, RealNum toi)
 				island.m_bodies.push_back(other);
 				SetIslanded(other);
 #if 0
-				if (other->IsSpeedable())
+				if (other->IsAccelerable())
 				{
-					ProcessContactsForTOI(island, *other, toi, listener);
+					ProcessContactsForTOI(island, *other, toi);
 				}
 #endif
 			}
-		}		
+#ifndef NDEBUG
+			else
+			{
+				/*
+				 * If other is islanded but not in current island, then something's gone wrong.
+				 * Other needs to be in current island but was already islanded.
+				 * A previous contact island didn't grow to include all the bodies it needed or
+				 * perhaps the current contact is-touching while another one wasn't and the
+				 * inconsistency is throwing things off.
+				 */
+				assert(Count(island, other) > 0);
+			}
+#endif
+		}
 	}
 }
 
@@ -1774,8 +1835,12 @@ StepStats World::Step(const StepConf& conf)
 		CreateAndDestroyProxies(conf);
 		SynchronizeProxies(conf);
 
-		// Note: this may update bodies (in addition to the contacts container).
-		const auto destroyStats = DestroyContacts(m_contacts);
+		{
+			// Note: this may update bodies (in addition to the contacts container).
+			const auto destroyStats = DestroyContacts(m_contacts);
+			stepStats.pre.destroyed = destroyStats.filteredOut + destroyStats.notOverlapping;
+		}
+
 		if (HasNewFixtures())
 		{
 			UnsetNewFixtures();
@@ -1789,12 +1854,12 @@ StepStats World::Step(const StepConf& conf)
 		{
 			m_inv_dt0 = conf.get_inv_dt();
 
+#if 1
 			// Could potentially run UpdateContacts multithreaded over split lists...
 			const auto updateStats = UpdateContacts(m_contacts);
 			stepStats.pre.ignored = updateStats.ignored;
-			stepStats.pre.destroyed = destroyStats.filteredOut + destroyStats.notOverlapping;
 			stepStats.pre.updated = updateStats.updated;
-
+#endif
 			// Integrate velocities, solve velocity constraints, and integrate positions.
 			if (IsStepComplete())
 			{
@@ -2019,6 +2084,9 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts)
 			continue;
 		}
 		
+		// Possible that bodyA->GetSweep().GetAlpha0() != 0
+		// Possible that bodyB->GetSweep().GetAlpha0() != 0
+
 		// Update the contact manifold and notify the listener.
 		contact->SetEnabled();
 		

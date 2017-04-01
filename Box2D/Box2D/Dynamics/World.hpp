@@ -484,7 +484,8 @@ private:
 
 	/// Gets the soonest contact.
 	/// @detail This finds the contact with the lowest (soonest) time of impact.
-	/// @return Contact with the least time of impact and its time of impact, or null contact.
+	/// @return Contacts with the least time of impact and its time of impact, or null contact.
+	///  These contacts will all be enabled, not have sensors, be active, and impenetrable.
 	ContactToiData GetSoonestContacts(const size_t reserveSize) const;
 
 	bool HasNewFixtures() const noexcept;

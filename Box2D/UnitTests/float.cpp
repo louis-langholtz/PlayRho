@@ -187,3 +187,19 @@ TEST(float, casting)
 	// EXPECT_EQ(unsigned(-1.0f), 1);
 	// EXPECT_EQ(unsigned(-4.7f), 4);
 }
+
+TEST(float, beta0)
+{
+	const auto beta = std::nextafter(0.0f, 1.0f);
+	const auto coefficient0 = 1 - beta;
+	const auto coefficient1 = beta;
+	EXPECT_EQ(coefficient0 + coefficient1, 1.0f);
+}
+
+TEST(float, beta1)
+{
+	const auto beta = std::nextafter(1.0f, 0.0f);
+	const auto coefficient0 = 1 - beta;
+	const auto coefficient1 = beta;
+	EXPECT_EQ(coefficient0 + coefficient1, 1.0f);
+}

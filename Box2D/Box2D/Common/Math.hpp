@@ -536,7 +536,7 @@ public:
 	constexpr Sweep(const Sweep& copy) noexcept = default;
 
 	/// Initializing constructor.
-	constexpr Sweep(const Position& p0, const Position& p1, const Vec2 lc = Vec2_zero, RealNum a0 = 0) noexcept:
+	constexpr Sweep(const Position p0, const Position p1, const Vec2 lc = Vec2_zero, RealNum a0 = 0) noexcept:
 		pos0{p0}, pos1{p1}, localCenter{lc}, alpha0{a0}
 	{
 		assert(a0 >= 0);
@@ -544,7 +544,7 @@ public:
 	}
 	
 	/// Initializing constructor.
-	constexpr explicit Sweep(const Position& p, const Vec2 lc = Vec2_zero) noexcept: Sweep{p, p, lc, 0} {}
+	constexpr explicit Sweep(const Position p, const Vec2 lc = Vec2_zero) noexcept: Sweep{p, p, lc, 0} {}
 
 	/// Gets the local center of mass position.
  	/// @note This value can only be set via a sweep constructed using an initializing constructor.
@@ -1189,9 +1189,23 @@ inline Transformation GetTransformation(const Position pos, const Vec2 local_ctr
 	return GetTransformation(pos.linear, UnitVec2{pos.angular}, local_ctr);
 }
 
+/// Gets the position between two positions at a given unit interval.
+/// @param pos0 Position at unit interval value of 0.
+/// @param pos1 Position at unit interval value of 1.
+/// @return pos0 if pos0 == pos1 or beta == 0, pos1 if beta == 1, or at the given
+///   unit interval value between pos0 and pos1.
 inline Position GetPosition(const Position pos0, const Position pos1, const RealNum beta) noexcept
 {
-	return pos0 * (1 - beta) + pos1 * beta;
+	// Note: have to be careful how this is done.
+	//   If pos0 == pos1 then return value should always be equal to pos0 too.
+	//   But if RealNum is float, pos0 * (1 - beta) + pos1 * beta can fail this requirement.
+	//   Meanwhile, pos0 + (pos1 - pos0) * beta always works.
+	
+	// pos0 * (1 - beta) + pos1 * beta
+	// pos0 - pos0 * beta + pos1 * beta
+	// pos0 + (pos1 * beta - pos0 * beta)
+	// pos0 + (pos1 - pos0) * beta
+	return pos0 + (pos1 - pos0) * beta;
 }
 
 /// Gets the interpolated transform at a specific time.
@@ -1239,7 +1253,7 @@ inline void Sweep::Advance0(const RealNum alpha) noexcept
 
 inline void Sweep::ResetAlpha0() noexcept
 {
-	alpha0 = RealNum{0};
+	alpha0 = 0;
 }
 
 /// Gets a sweep with the given sweep's angles normalized.

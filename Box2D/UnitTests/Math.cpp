@@ -593,6 +593,29 @@ TEST(Math, nextafter2)
 	EXPECT_EQ(b + subnormal, b);
 }
 
+TEST(Math, GetPosition)
+{
+	/*
+	 * If GetPosition is implemented as: pos0 * (1 - beta) + pos1 * beta.
+	 * Then it fails the following test when RealNum is implemented via float.
+	 * This is due to floating point inaccuracy.
+	 *
+	 * If GetPosition is implemented as: pos0 + (pos1 - pos0) * beta.
+	 * Then it passes the following test when RealNum is implemented via float.
+	 */
+
+	const auto x = RealNum{2.587699890136719e-02f};
+	const auto y = RealNum{5.515012264251709e+00f};
+	const auto value = RealNum{0.0866042823f};
+
+	const auto oldPos = Position{Vec2{x, y}, 0.0_rad};
+	const auto newPos = GetPosition(oldPos, oldPos, value);
+	
+	EXPECT_EQ(oldPos.linear.x, newPos.linear.x);
+	EXPECT_EQ(oldPos.linear.y, newPos.linear.y);
+	EXPECT_EQ(oldPos.angular, newPos.angular);
+}
+
 TEST(Math, ToiTolerance)
 {
 	// What is the max vr for which the following still holds true?
