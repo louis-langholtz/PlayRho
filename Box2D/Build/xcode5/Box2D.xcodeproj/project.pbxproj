@@ -45,8 +45,6 @@
 		4731DE301DDF9B6900E7F931 /* MassData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE2E1DDF9B6900E7F931 /* MassData.cpp */; };
 		4731DE351DE1405900E7F931 /* Length.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE321DE1405900E7F931 /* Length.hpp */; };
 		4731DE361DE1405900E7F931 /* Length.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE321DE1405900E7F931 /* Length.hpp */; };
-		4731DE3B1DE1412F00E7F931 /* Time.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE381DE1412F00E7F931 /* Time.hpp */; };
-		4731DE3C1DE1412F00E7F931 /* Time.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE381DE1412F00E7F931 /* Time.hpp */; };
 		4731DE411DE14A9D00E7F931 /* LinearSpeed.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE3E1DE14A9D00E7F931 /* LinearSpeed.hpp */; };
 		4731DE421DE14A9D00E7F931 /* LinearSpeed.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE3E1DE14A9D00E7F931 /* LinearSpeed.hpp */; };
 		4731DE441DE2570900E7F931 /* Collision.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE431DE2570900E7F931 /* Collision.hpp */; };
@@ -450,7 +448,6 @@
 		4731DE2B1DDF94A600E7F931 /* AABB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AABB.cpp; sourceTree = "<group>"; };
 		4731DE2E1DDF9B6900E7F931 /* MassData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MassData.cpp; sourceTree = "<group>"; };
 		4731DE321DE1405900E7F931 /* Length.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Length.hpp; sourceTree = "<group>"; };
-		4731DE381DE1412F00E7F931 /* Time.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Time.hpp; sourceTree = "<group>"; };
 		4731DE3E1DE14A9D00E7F931 /* LinearSpeed.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LinearSpeed.hpp; sourceTree = "<group>"; };
 		4731DE431DE2570900E7F931 /* Collision.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Collision.hpp; sourceTree = "<group>"; };
 		4731DE4A1DE7E5FA00E7F931 /* ProxyIdPair.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProxyIdPair.cpp; sourceTree = "<group>"; };
@@ -970,7 +967,6 @@
 				4734B21E1DC1340500F15E29 /* Span.hpp */,
 				80BB8948141C3E5900F1753A /* StackAllocator.cpp */,
 				80BB8949141C3E5900F1753A /* StackAllocator.hpp */,
-				4731DE381DE1412F00E7F931 /* Time.hpp */,
 				80BB894A141C3E5900F1753A /* Timer.cpp */,
 				80BB894B141C3E5900F1753A /* Timer.hpp */,
 				4731DE541DEC908600E7F931 /* UnitVec2.cpp */,
@@ -1255,7 +1251,6 @@
 				47CF984E1DF9C4A30077F5F2 /* ShapeSeparation.hpp in Headers */,
 				4768D3F61E3A7ACA00574143 /* Wider.hpp in Headers */,
 				4731DE361DE1405900E7F931 /* Length.hpp in Headers */,
-				4731DE3C1DE1412F00E7F931 /* Time.hpp in Headers */,
 				47AA5DED1C4C5FBE008AF2BA /* DistanceJoint.hpp in Headers */,
 				47AA5DEE1C4C5FBE008AF2BA /* FrictionJoint.hpp in Headers */,
 				47AA5DEF1C4C5FBE008AF2BA /* GearJoint.hpp in Headers */,
@@ -1318,7 +1313,6 @@
 				80BB899D141C3E5900F1753A /* Shape.hpp in Headers */,
 				4751EE2F1CEDD7A300D459CB /* MobileBalanced.hpp in Headers */,
 				4734B22D1DC2B11D00F15E29 /* Simplex.hpp in Headers */,
-				4731DE3B1DE1412F00E7F931 /* Time.hpp in Headers */,
 				80BB899F141C3E5900F1753A /* BlockAllocator.hpp in Headers */,
 				4726DD381D387D630012A882 /* Manifold.hpp in Headers */,
 				4731DE5E1DEE3F0600E7F931 /* SeparationFinder.hpp in Headers */,
@@ -1986,7 +1980,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_CPP_RTTI = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2014,7 +2008,10 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = ../..;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/boost_1_63_0,
+					../..,
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_GENERATE_MAP_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
@@ -2050,7 +2047,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = c11;
-				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_CPP_RTTI = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 3;
@@ -2073,7 +2070,10 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = ../..;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/boost_1_63_0,
+					../..,
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_GENERATE_MAP_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;

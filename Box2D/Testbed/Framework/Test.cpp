@@ -681,7 +681,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 
 	StepConf stepConf;
 	
-	stepConf.set_dt(settings.dt);
+	stepConf.set_dt(second * settings.dt);
 	
 	stepConf.regVelocityIterations = static_cast<StepConf::iteration_type>(settings.regVelocityIterations);
 	stepConf.regPositionIterations = static_cast<StepConf::iteration_type>(settings.regPositionIterations);
@@ -706,7 +706,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	stepConf.toiResolutionRate = settings.toiPosResRate / 100.0f;
 	if (!settings.enableSleep)
 	{
-		stepConf.minStillTimeToSleep = GetInvalid<RealNum>();
+		stepConf.minStillTimeToSleep = second * GetInvalid<RealNum>();
 		Awaken(*m_world);
 	}
 	stepConf.doToi = settings.enableContinuous;

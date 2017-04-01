@@ -384,15 +384,16 @@ box2d::size_t box2d::GetWorldIndex(const Body* body)
 
 Velocity box2d::GetVelocity(const Body& body, TimeSpan h) noexcept
 {
-	assert(IsValid(h));
+	const auto timeInSecs = RealNum{h / second};
+	assert(IsValid(timeInSecs));
 
 	// Integrate velocity and apply damping.
 	auto velocity = body.GetVelocity();
 	if (body.IsAccelerable())
 	{
 		// Integrate velocities.
-		velocity.linear += h * body.GetLinearAcceleration();
-		velocity.angular += h * body.GetAngularAcceleration();
+		velocity.linear += timeInSecs * body.GetLinearAcceleration();
+		velocity.angular += timeInSecs * body.GetAngularAcceleration();
 		
 		// Apply damping.
 		// Ordinary differential equation: dv/dt + c * v = 0
@@ -401,8 +402,8 @@ Velocity box2d::GetVelocity(const Body& body, TimeSpan h) noexcept
 		// v2 = exp(-c * dt) * v1
 		// Pade approximation (see https://en.wikipedia.org/wiki/Pad%C3%A9_approximant ):
 		// v2 = v1 * 1 / (1 + c * dt)
-		velocity.linear  /= (1 + h * body.GetLinearDamping());
-		velocity.angular /= (1 + h * body.GetAngularDamping());
+		velocity.linear  /= (1 + timeInSecs * body.GetLinearDamping());
+		velocity.angular /= (1 + timeInSecs * body.GetAngularDamping());
 	}
 	return velocity;
 }

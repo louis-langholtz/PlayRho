@@ -132,10 +132,10 @@ RealNum FrictionJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
 	const auto iA = m_invIA;
 	const auto iB = m_invIB;
 
-	const auto h = step.get_dt();
+	const auto h = RealNum{step.get_dt() / second};
 
 	// Solve angular friction
-	auto angularImpulse = RealNum(0);
+	auto angularImpulse = RealNum{0};
 	{
 		const auto Cdot = velB.angular.ToRadians() - velA.angular.ToRadians();
 		const auto impulse = -m_angularMass * Cdot;

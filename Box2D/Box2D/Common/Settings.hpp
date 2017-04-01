@@ -28,6 +28,11 @@
 #include <cstdint>
 #include <algorithm>
 
+#include <boost/units/io.hpp>
+#include <boost/units/systems/si/length.hpp>
+#include <boost/units/systems/si/time.hpp>
+#include <boost/units/systems/si/frequency.hpp>
+
 #include <Box2D/Common/Wider.hpp>
 #include <Box2D/Common/Fixed.hpp>
 
@@ -70,8 +75,11 @@ using uint64 = std::uint64_t;
 ///
 using RealNum = float;
 
-using TimeSpan = RealNum;
-using InverseTimeSpan = RealNum;
+using TimeSpan = boost::units::quantity<boost::units::si::time, RealNum>;
+constexpr auto second = TimeSpan{boost::units::si::second * RealNum{1}};
+
+using InverseTimeSpan = boost::units::quantity<boost::units::si::frequency, RealNum>;
+constexpr auto hertz = InverseTimeSpan{boost::units::si::hertz * RealNum{1}};
 
 /// Child count type. @detail Relating to "children" of Shape.
 using child_count_t = unsigned;
@@ -177,13 +185,14 @@ constexpr auto MaxJoints = uint16{std::numeric_limits<uint16>::max() - uint16{1}
 /// Joint count type.
 using joint_count_t = std::remove_const<decltype(MaxJoints)>::type;
 
-constexpr auto DefaultStepTime = TimeSpan{1} / 60;
+constexpr auto DefaultStepTime = TimeSpan{second / RealNum{60}};
+constexpr auto DefaultStepFrequency = InverseTimeSpan{hertz * RealNum{60}};
 
 // Sleep
 
 /// Default minimum still time to sleep.
 /// @detail The default minimum time bodies must be still for bodies to be put to sleep.
-constexpr auto DefaultMinStillTimeToSleep = TimeSpan{1} / 2; // aka 0.5
+constexpr auto DefaultMinStillTimeToSleep = TimeSpan{second / RealNum{2}}; // aka 0.5 secs
 
 /// Default linear sleep tolerance.
 /// @detail A body cannot sleep if the magnitude of its linear velocity is above this amount.

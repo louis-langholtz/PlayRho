@@ -143,8 +143,8 @@ RealNum MotorJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 	const auto iA = m_invIA;
 	const auto iB = m_invIB;
 
-	const auto h = step.get_dt();
-	const auto inv_h = step.get_inv_dt();
+	const auto h = RealNum{step.get_dt() / second};
+	const auto inv_h = RealNum{step.get_inv_dt() / hertz};
 
 	// Solve angular friction
 	auto angularIncImpulse = RealNum(0);

@@ -148,23 +148,24 @@ namespace {
 	///    that's possibly clamped to the maximum translation and rotation.
 	inline PositionAndVelocity CalculateMovement(const BodyConstraint& body, TimeSpan h, MovementConf conf)
 	{
-		assert(IsValid(h));
+		const auto timeInSecs = RealNum{h / second};
+		assert(IsValid(timeInSecs));
 		
 		auto velocity = body.GetVelocity();
-		auto translation = h * velocity.linear;
+		auto translation = timeInSecs * velocity.linear;
 		if (GetLengthSquared(translation) > Square(conf.maxTranslation))
 		{
 			const auto ratio = conf.maxTranslation / Sqrt(GetLengthSquared(translation));
 			velocity.linear *= ratio;
-			translation = h * velocity.linear;
+			translation = timeInSecs * velocity.linear;
 		}
 		
-		auto rotation = h * velocity.angular;
+		auto rotation = timeInSecs * velocity.angular;
 		if (Abs(rotation) > conf.maxRotation)
 		{
 			const auto ratio = conf.maxRotation / Abs(rotation);
 			velocity.angular *= ratio;
-			rotation = h * velocity.angular;
+			rotation = timeInSecs * velocity.angular;
 		}
 		
 		return PositionAndVelocity{body.GetPosition() + Position{translation, rotation}, velocity};
@@ -362,16 +363,16 @@ namespace {
 		return maxIncImpulse;
 	}
 	
-	inline RealNum GetUnderActiveTime(const Body& b, const StepConf& conf) noexcept
+	inline TimeSpan GetUnderActiveTime(const Body& b, const StepConf& conf) noexcept
 	{
 		const auto underactive = IsUnderActive(b.GetVelocity(), conf.linearSleepTolerance, conf.angularSleepTolerance);
 		const auto sleepable = b.IsSleepingAllowed();
-		return (sleepable && underactive)? b.GetUnderActiveTime() + conf.get_dt(): RealNum{0};
+		return (sleepable && underactive)? b.GetUnderActiveTime() + conf.get_dt(): second * RealNum{0};
 	}
 
 	inline TimeSpan UpdateUnderActiveTimes(Island::Bodies& bodies, const StepConf& conf)
 	{
-		auto minUnderActiveTime = std::numeric_limits<TimeSpan>::infinity();
+		auto minUnderActiveTime = second * std::numeric_limits<RealNum>::infinity();
 		for (auto&& b: bodies)
 		{
 			if (b->IsSpeedable())
@@ -1297,7 +1298,7 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
 	}
 	
 	auto bodiesSlept = body_count_t{0};
-	if (::box2d::IsValid(conf.minStillTimeToSleep))
+	if (::box2d::IsValid(RealNum{conf.minStillTimeToSleep / second}))
 	{
 		const auto minUnderActiveTime = UpdateUnderActiveTimes(island.m_bodies, conf);
 		if ((minUnderActiveTime >= conf.minStillTimeToSleep) && solved)
@@ -1850,7 +1851,7 @@ StepStats World::Step(const StepConf& conf)
 			stepStats.pre.added = FindNewContacts();
 		}
 
-		if (conf.get_dt() != 0)
+		if (conf.get_dt() != second * RealNum{0})
 		{
 			m_inv_dt0 = conf.get_inv_dt();
 
@@ -2563,7 +2564,7 @@ contact_count_t World::Synchronize(Body& body,
 
 // Free functions...
 
-StepStats Step(World& world, RealNum dt, World::ts_iters_type velocityIterations, World::ts_iters_type positionIterations)
+StepStats Step(World& world, TimeSpan dt, World::ts_iters_type velocityIterations, World::ts_iters_type positionIterations)
 {
 	StepConf conf;
 	conf.set_dt(dt);

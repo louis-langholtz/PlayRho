@@ -874,7 +874,7 @@ inline World::Contacts::size_type GetContactCount(const World& world) noexcept
 /// @param velocityIterations Number of iterations for the velocity constraint solver.
 /// @param positionIterations Number of iterations for the position constraint solver.
 ///   The position constraint solver resolves the positions of bodies that overlap.
-StepStats Step(World& world, RealNum timeStep,
+StepStats Step(World& world, TimeSpan timeStep,
 			   World::ts_iters_type velocityIterations = 8, World::ts_iters_type positionIterations = 3);
 
 /// Gets the count of fixtures in the given world.

@@ -60,10 +60,10 @@ public:
 	/// @post The inverse delta time value is the inverse of this set value or zero if the value is zero.
 	/// @sa get_inv_dt().
 	/// @param value Elapsed time amount (in seconds).
-	constexpr StepConf& set_dt(RealNum value) noexcept
+	constexpr StepConf& set_dt(TimeSpan value) noexcept
 	{
 		dt = value;
-		inv_dt = (value != 0)? decltype(inv_dt){1} / value: decltype(inv_dt){0};
+		inv_dt = (value != second * RealNum{0})? RealNum{1} / value: hertz * RealNum{0};
 		return *this;
 	}
 
@@ -254,7 +254,7 @@ public:
 
 private:
 	TimeSpan dt = DefaultStepTime; ///< Delta time. This is the time step in seconds.
-	InverseTimeSpan inv_dt = 1 / DefaultStepTime; ///< Inverse time step (1/dt or 0 if dt == 0). @see dt.
+	InverseTimeSpan inv_dt = DefaultStepFrequency; ///< Inverse time step (1/dt or 0 if dt == 0). @see dt.
 };
 
 inline RealNum GetMaxRegLinearCorrection(const StepConf& conf) noexcept
