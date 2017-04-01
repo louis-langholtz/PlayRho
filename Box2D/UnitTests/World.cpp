@@ -270,7 +270,7 @@ TEST(World, StepZeroTimeDoesNothing)
 	EXPECT_EQ(body->GetLinearAcceleration().x, 0);
 	EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
 	
-	const auto time_inc = RealNum(0);
+	const auto time_inc = TimeSpan{second * RealNum{0}};
 	
 	auto pos = body->GetLocation();
 	auto vel = GetLinearVelocity(*body);
@@ -313,21 +313,21 @@ TEST(World, GravitationalBodyMovement)
 	EXPECT_EQ(body->GetLocation().x, p0.x);
 	EXPECT_EQ(body->GetLocation().y, p0.y);
 
-	Step(world, t);
+	Step(world, TimeSpan{second * t});
 	EXPECT_EQ(GetLinearVelocity(*body).x, 0);
 	EXPECT_EQ(GetLinearVelocity(*body).y, a * (t * 1));
 	EXPECT_EQ(body->GetLocation().x, p0.x);
 	EXPECT_EQ(body->GetLocation().y, p0.y + (GetLinearVelocity(*body).y * t));
 
 	p0 = body->GetLocation();
-	Step(world, t);
+	Step(world, TimeSpan{second * t});
 	EXPECT_EQ(GetLinearVelocity(*body).x, 0);
 	EXPECT_EQ(GetLinearVelocity(*body).y, a * (t * 2));
 	EXPECT_EQ(body->GetLocation().x, p0.x);
 	EXPECT_EQ(body->GetLocation().y, p0.y + (GetLinearVelocity(*body).y * t));
 	
 	p0 = body->GetLocation();
-	Step(world, t);
+	Step(world, TimeSpan{second * t});
 	EXPECT_EQ(GetLinearVelocity(*body).x, 0);
 	EXPECT_NEAR(double(GetLinearVelocity(*body).y), double(a * (t * 3)), 0.00001);
 	EXPECT_EQ(body->GetLocation().x, p0.x);
@@ -359,7 +359,7 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
 	auto vel = GetLinearVelocity(*body);
 	for (auto i = 0; i < 100; ++i)
 	{
-		Step(world, time_inc, 0, 0);
+		Step(world, TimeSpan{second * time_inc}, 0, 0);
 		
 		EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
 		
@@ -396,9 +396,9 @@ TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
 	EXPECT_EQ(body->GetLinearAcceleration().x, 0);
 	EXPECT_EQ(body->GetLinearAcceleration().y, gravity.y);
 	
-	const auto time_inc = TimeSpan{-0.01f};
+	const auto time_inc = RealNum{-0.01f};
 	auto stepConf = StepConf{};
-	stepConf.set_dt(time_inc);
+	stepConf.set_dt(TimeSpan{second * time_inc});
 	stepConf.dtRatio = -1;
 	stepConf.regPositionIterations = 0;
 	stepConf.regVelocityIterations = 0;
@@ -547,7 +547,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 	auto steps = unsigned{0};
 	while (pos_a.x < x && pos_b.x > -x)
 	{
-		Step(world, time_inc, 0, 0);
+		Step(world, TimeSpan{second * time_inc}, 0, 0);
 		++steps;
 		
 		EXPECT_TRUE(almost_equal(body_a->GetLocation().x, pos_a.x + x * time_inc));
@@ -607,7 +607,7 @@ TEST(World, PerfectlyOverlappedSameCirclesStayPut)
 	const auto time_inc = RealNum(.01);
 	for (auto i = 0; i < 100; ++i)
 	{
-		Step(world, time_inc);
+		Step(world, TimeSpan{second * time_inc});
 		EXPECT_EQ(body1->GetLocation().x, body_def.position.x);
 		EXPECT_EQ(body1->GetLocation().y, body_def.position.y);
 		EXPECT_EQ(body2->GetLocation().x, body_def.position.x);
@@ -656,7 +656,7 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 	const auto time_inc = RealNum(.01);
 	for (auto i = 0; i < 100; ++i)
 	{
-		Step(world, time_inc);
+		Step(world, TimeSpan{second * time_inc});
 		EXPECT_EQ(body1->GetLocation().x, body_def.position.x);
 		EXPECT_EQ(body1->GetLocation().y, body_def.position.y);
 		EXPECT_EQ(body2->GetLocation().x, body_def.position.x);
@@ -692,7 +692,7 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
 	ASSERT_EQ(listener.pre_solves, 0u);
 	ASSERT_EQ(listener.post_solves, 0u);
 
-	Step(world, 1);
+	Step(world, second);
 
 	EXPECT_NE(listener.begin_contacts, 0u);
 	EXPECT_EQ(listener.end_contacts, 0u);
@@ -730,7 +730,7 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
 	ASSERT_EQ(listener.pre_solves, 0u);
 	ASSERT_EQ(listener.post_solves, 0u);
 	
-	Step(world, 1);
+	Step(world, second);
 	
 	EXPECT_NE(listener.begin_contacts, 0u);
 	EXPECT_EQ(listener.end_contacts, 0u);
@@ -784,7 +784,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 
 	const auto time_inc = RealNum(.01f);
 	StepConf step;
-	step.set_dt(time_inc);
+	step.set_dt(TimeSpan{second * time_inc});
 
 	// Solver won't separate more than -step.linearSlop.
 	const auto full_separation = radius * 2 - step.linearSlop;
@@ -876,7 +876,7 @@ TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
 
 	auto stepConf = StepConf{};
 	const auto time_inc = RealNum(.01);
-	stepConf.set_dt(time_inc);
+	stepConf.set_dt(TimeSpan{second * time_inc});
 	stepConf.maxLinearCorrection = 0.0001f * 40;
 	for (auto i = 0; i < 100; ++i)
 	{
@@ -963,12 +963,12 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	
 	const auto time_inc = RealNum(.01);
 	StepConf step;
-	step.set_dt(time_inc);
+	step.set_dt(TimeSpan{second * time_inc});
 	// Solver won't separate more than -step.linearSlop.
 	const auto full_separation = half_dim * 2 - step.linearSlop;
 	for (auto i = 0; i < 100; ++i)
 	{
-		Step(world, time_inc, velocity_iters, position_iters);
+		Step(world, TimeSpan{second * time_inc}, velocity_iters, position_iters);
 		
 		ASSERT_EQ(world.GetContacts().size(), decltype(world.GetContacts().size())(1));
 
@@ -1111,7 +1111,7 @@ TEST(World, CollidingDynamicBodies)
 	auto elapsed_time = RealNum(0);
 	for (;;)
 	{
-		Step(world, time_inc);
+		Step(world, TimeSpan{second * time_inc});
 		elapsed_time += time_inc;
 		if (listener.contacting)
 		{
@@ -1144,7 +1144,7 @@ TEST(World, CollidingDynamicBodies)
 
 	for (;;)
 	{
-		Step(world, time_inc);
+		Step(world, TimeSpan{second * time_inc});
 		elapsed_time += time_inc;
 		if (!listener.contacting && !listener.touching)
 		{
@@ -1253,7 +1253,7 @@ TEST(World, TilesComesToRestInUnder7secs)
 	}
 	
 	StepConf step;
-	step.set_dt(1.0f/60);
+	step.set_dt(TimeSpan{second / RealNum{60}});
 
 	const auto start_time = std::chrono::high_resolution_clock::now();
 	while (GetAwakeCount(*m_world) > 0)
@@ -1344,7 +1344,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 
 	const auto time_inc = RealNum(.01);
 	auto stepConf = StepConf{};
-	stepConf.set_dt(time_inc);
+	stepConf.set_dt(TimeSpan{second * time_inc});
 	const auto max_velocity = stepConf.maxTranslation / time_inc;
 	world.Step(stepConf);
 
@@ -1727,7 +1727,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 			angle += anglular_speed;
 			distance += distance_speed;
 
-			ASSERT_USECS(Step(world, time_inc, 8, 3), 100000);
+			ASSERT_USECS(Step(world, TimeSpan{second * time_inc}, 8, 3), 100000);
 			
 			ASSERT_LT(ball_body->GetLocation().x, right_edge_x);
 			ASSERT_LT(ball_body->GetLocation().y, top_edge_y);
@@ -1981,7 +1981,7 @@ public:
 			boxes[i] = box;
 		}
 		
-		const auto stepConf = StepConf{}.set_dt(1.0f/60);
+		const auto stepConf = StepConf{}.set_dt(TimeSpan{second / RealNum{60}});
 		while (loopsTillSleeping < maxLoops)
 		{
 			world.Step(stepConf);

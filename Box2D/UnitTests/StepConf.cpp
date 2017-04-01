@@ -35,17 +35,17 @@ TEST(StepConf, ByteSizeIs_96_168_or_320)
 
 TEST(StepConf, CopyConstruction)
 {
-	const auto dt = RealNum{10};
+	const auto dt = second * RealNum{10};
 	const auto displacementMultiplier = RealNum{3.4f};
 
 	StepConf conf;
 	conf.set_dt(dt);
 	conf.displaceMultiplier = displacementMultiplier;
 
-	ASSERT_EQ(conf.get_inv_dt(), 1 / dt);
+	ASSERT_EQ(conf.get_inv_dt(), RealNum{1} / dt);
 	
 	EXPECT_EQ(StepConf{conf}.get_dt(), dt);
-	EXPECT_EQ(StepConf{conf}.get_inv_dt(), 1 / dt);
+	EXPECT_EQ(StepConf{conf}.get_inv_dt(), RealNum{1} / dt);
 	EXPECT_EQ(StepConf{conf}.displaceMultiplier, displacementMultiplier);
 	
 	const auto cdt = conf.get_dt() * 0.8f;
