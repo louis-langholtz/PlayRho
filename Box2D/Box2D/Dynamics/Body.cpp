@@ -384,7 +384,7 @@ box2d::size_t box2d::GetWorldIndex(const Body* body)
 
 Velocity box2d::GetVelocity(const Body& body, Time h) noexcept
 {
-	const auto timeInSecs = RealNum{h / second};
+	const auto timeInSecs = RealNum{h / Second};
 	assert(IsValid(timeInSecs));
 
 	// Integrate velocity and apply damping.

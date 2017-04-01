@@ -133,7 +133,7 @@ void WheelJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
 			const auto k = m_springMass * omega * omega;
 
 			// magic formulas
-			const auto h = RealNum{step.get_dt() / second};
+			const auto h = RealNum{step.get_dt() / Second};
 			m_gamma = h * (d + h * k);
 			if (m_gamma > 0)
 			{
@@ -227,7 +227,7 @@ RealNum WheelJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 		auto impulse = -m_motorMass * Cdot.ToRadians();
 
 		const auto oldImpulse = m_motorImpulse;
-		const auto maxImpulse = RealNum{step.get_dt() / second} * m_maxMotorTorque;
+		const auto maxImpulse = RealNum{step.get_dt() / Second} * m_maxMotorTorque;
 		m_motorImpulse = Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
 		impulse = m_motorImpulse - oldImpulse;
 

@@ -148,7 +148,7 @@ namespace {
 	///    that's possibly clamped to the maximum translation and rotation.
 	inline PositionAndVelocity CalculateMovement(const BodyConstraint& body, Time h, MovementConf conf)
 	{
-		const auto timeInSecs = RealNum{h / second};
+		const auto timeInSecs = RealNum{h / Second};
 		assert(IsValid(timeInSecs));
 		
 		auto velocity = body.GetVelocity();
@@ -367,12 +367,12 @@ namespace {
 	{
 		const auto underactive = IsUnderActive(b.GetVelocity(), conf.linearSleepTolerance, conf.angularSleepTolerance);
 		const auto sleepable = b.IsSleepingAllowed();
-		return (sleepable && underactive)? b.GetUnderActiveTime() + conf.get_dt(): second * RealNum{0};
+		return (sleepable && underactive)? b.GetUnderActiveTime() + conf.get_dt(): Second * RealNum{0};
 	}
 
 	inline Time UpdateUnderActiveTimes(Island::Bodies& bodies, const StepConf& conf)
 	{
-		auto minUnderActiveTime = second * std::numeric_limits<RealNum>::infinity();
+		auto minUnderActiveTime = Second * std::numeric_limits<RealNum>::infinity();
 		for (auto&& b: bodies)
 		{
 			if (b->IsSpeedable())
@@ -1298,7 +1298,7 @@ World::IslandSolverResults World::SolveRegIsland(const StepConf& conf, Island is
 	}
 	
 	auto bodiesSlept = body_count_t{0};
-	if (::box2d::IsValid(RealNum{conf.minStillTimeToSleep / second}))
+	if (::box2d::IsValid(RealNum{conf.minStillTimeToSleep / Second}))
 	{
 		const auto minUnderActiveTime = UpdateUnderActiveTimes(island.m_bodies, conf);
 		if ((minUnderActiveTime >= conf.minStillTimeToSleep) && solved)
@@ -1851,7 +1851,7 @@ StepStats World::Step(const StepConf& conf)
 			stepStats.pre.added = FindNewContacts();
 		}
 
-		if (conf.get_dt() != second * RealNum{0})
+		if (conf.get_dt() != Second * RealNum{0})
 		{
 			m_inv_dt0 = conf.get_inv_dt();
 

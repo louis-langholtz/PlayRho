@@ -131,7 +131,7 @@ RealNum RopeJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepC
 	// Predictive constraint.
 	if (C < 0)
 	{
-		Cdot += RealNum{step.get_inv_dt() / hertz} * C;
+		Cdot += RealNum{step.get_inv_dt() / Hertz} * C;
 	}
 
 	auto impulse = -m_mass * Cdot;

@@ -63,7 +63,7 @@ public:
 	constexpr StepConf& set_dt(Time value) noexcept
 	{
 		dt = value;
-		inv_dt = (value != second * RealNum{0})? RealNum{1} / value: hertz * RealNum{0};
+		inv_dt = (value != Second * RealNum{0})? RealNum{1} / value: Hertz * RealNum{0};
 		return *this;
 	}
 

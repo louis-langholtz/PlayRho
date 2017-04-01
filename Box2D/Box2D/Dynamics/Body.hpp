@@ -98,7 +98,7 @@ struct BodyDef
 
 	/// Under-active time.
 	/// @detail Set this to the value retrieved from Body::GetUnderActiveTime() or leave it as 0.
-	Time underActiveTime = second * RealNum{0};
+	Time underActiveTime = Second * RealNum{0};
 
 	/// Set this flag to false if this body should never fall asleep. Note that
 	/// this increases CPU usage.
@@ -810,7 +810,7 @@ inline Time Body::GetUnderActiveTime() const noexcept
 
 inline void Body::SetUnderActiveTime(Time value) noexcept
 {
-	if ((value == second * RealNum{0}) || IsAccelerable())
+	if ((value == Second * RealNum{0}) || IsAccelerable())
 	{
 		m_underActiveTime = value;
 	}

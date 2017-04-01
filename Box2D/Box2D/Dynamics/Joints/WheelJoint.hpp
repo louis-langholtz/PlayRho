@@ -112,7 +112,7 @@ public:
 	/// Get the current motor torque given the inverse time step, usually in N-m.
 	RealNum GetMotorTorque(RealNum inv_dt) const;
 
-	/// Set/Get the spring frequency in hertz. Setting the frequency to zero disables the spring.
+	/// Set/Get the spring frequency in Hertz. Setting the frequency to zero disables the spring.
 	void SetSpringFrequencyHz(RealNum hz);
 	RealNum GetSpringFrequencyHz() const;
 

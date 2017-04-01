@@ -271,7 +271,7 @@ RealNum PrismaticJoint::SolveVelocityConstraints(BodyConstraints& bodies, const 
 		const auto Cdot = Dot(m_axis, velB.linear - velA.linear) + m_a2 * velB.angular.ToRadians() - m_a1 * velA.angular.ToRadians();
 		auto impulse = m_motorMass * (m_motorSpeed - Cdot);
 		const auto oldImpulse = m_motorImpulse;
-		const auto maxImpulse = RealNum{step.get_dt() / second} * m_maxMotorForce;
+		const auto maxImpulse = RealNum{step.get_dt() / Second} * m_maxMotorForce;
 		m_motorImpulse = Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
 		impulse = m_motorImpulse - oldImpulse;
 

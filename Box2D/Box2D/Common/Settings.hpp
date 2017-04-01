@@ -32,6 +32,8 @@
 #include <boost/units/systems/si/length.hpp>
 #include <boost/units/systems/si/time.hpp>
 #include <boost/units/systems/si/frequency.hpp>
+#include <boost/units/systems/si/velocity.hpp>
+#include <boost/units/systems/si/mass.hpp>
 
 #include <Box2D/Common/Wider.hpp>
 #include <Box2D/Common/Fixed.hpp>
@@ -76,10 +78,19 @@ using uint64 = std::uint64_t;
 using RealNum = float;
 
 using Time = boost::units::quantity<boost::units::si::time, RealNum>;
-constexpr auto second = Time{boost::units::si::second * RealNum{1}};
+constexpr auto Second = Time{boost::units::si::second * RealNum{1}};
 
 using Frequency = boost::units::quantity<boost::units::si::frequency, RealNum>;
-constexpr auto hertz = Frequency{boost::units::si::hertz * RealNum{1}};
+constexpr auto Hertz = Frequency{boost::units::si::hertz * RealNum{1}};
+
+using Length = boost::units::quantity<boost::units::si::length, RealNum>;
+constexpr auto Meter = Length{boost::units::si::meter * RealNum{1}};
+
+using LengthPerTime = boost::units::quantity<boost::units::si::velocity, RealNum>;
+constexpr auto MeterPerSecond = LengthPerTime{boost::units::si::meter_per_second * RealNum{1}};
+
+using Mass = boost::units::quantity<boost::units::si::mass, RealNum>;
+constexpr auto Kilogram = Mass{boost::units::si::kilogram * RealNum{1}};
 
 /// Child count type. @detail Relating to "children" of Shape.
 using child_count_t = unsigned;
@@ -185,14 +196,14 @@ constexpr auto MaxJoints = uint16{std::numeric_limits<uint16>::max() - uint16{1}
 /// Joint count type.
 using joint_count_t = std::remove_const<decltype(MaxJoints)>::type;
 
-constexpr auto DefaultStepTime = Time{second / RealNum{60}};
-constexpr auto DefaultStepFrequency = Frequency{hertz * RealNum{60}};
+constexpr auto DefaultStepTime = Time{Second / RealNum{60}};
+constexpr auto DefaultStepFrequency = Frequency{Hertz * RealNum{60}};
 
 // Sleep
 
 /// Default minimum still time to sleep.
 /// @detail The default minimum time bodies must be still for bodies to be put to sleep.
-constexpr auto DefaultMinStillTimeToSleep = Time{second / RealNum{2}}; // aka 0.5 secs
+constexpr auto DefaultMinStillTimeToSleep = Time{Second / RealNum{2}}; // aka 0.5 secs
 
 /// Default linear sleep tolerance.
 /// @detail A body cannot sleep if the magnitude of its linear velocity is above this amount.

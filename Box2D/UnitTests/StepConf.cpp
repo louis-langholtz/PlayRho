@@ -35,7 +35,7 @@ TEST(StepConf, ByteSizeIs_96_168_or_320)
 
 TEST(StepConf, CopyConstruction)
 {
-	const auto dt = second * RealNum{10};
+	const auto dt = Second * RealNum{10};
 	const auto displacementMultiplier = RealNum{3.4f};
 
 	StepConf conf;
