@@ -43,10 +43,6 @@
 		4731DE2D1DDF94A600E7F931 /* AABB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE2B1DDF94A600E7F931 /* AABB.cpp */; };
 		4731DE2F1DDF9B6900E7F931 /* MassData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE2E1DDF9B6900E7F931 /* MassData.cpp */; };
 		4731DE301DDF9B6900E7F931 /* MassData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE2E1DDF9B6900E7F931 /* MassData.cpp */; };
-		4731DE351DE1405900E7F931 /* Length.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE321DE1405900E7F931 /* Length.hpp */; };
-		4731DE361DE1405900E7F931 /* Length.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE321DE1405900E7F931 /* Length.hpp */; };
-		4731DE411DE14A9D00E7F931 /* LinearSpeed.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE3E1DE14A9D00E7F931 /* LinearSpeed.hpp */; };
-		4731DE421DE14A9D00E7F931 /* LinearSpeed.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE3E1DE14A9D00E7F931 /* LinearSpeed.hpp */; };
 		4731DE441DE2570900E7F931 /* Collision.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE431DE2570900E7F931 /* Collision.hpp */; };
 		4731DE451DE2572E00E7F931 /* Collision.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE431DE2570900E7F931 /* Collision.hpp */; };
 		4731DE4B1DE7E5FA00E7F931 /* ProxyIdPair.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE4A1DE7E5FA00E7F931 /* ProxyIdPair.cpp */; };
@@ -447,8 +443,6 @@
 		4731DE261DDF84A900E7F931 /* RayCastInput.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RayCastInput.hpp; sourceTree = "<group>"; };
 		4731DE2B1DDF94A600E7F931 /* AABB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AABB.cpp; sourceTree = "<group>"; };
 		4731DE2E1DDF9B6900E7F931 /* MassData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MassData.cpp; sourceTree = "<group>"; };
-		4731DE321DE1405900E7F931 /* Length.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Length.hpp; sourceTree = "<group>"; };
-		4731DE3E1DE14A9D00E7F931 /* LinearSpeed.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LinearSpeed.hpp; sourceTree = "<group>"; };
 		4731DE431DE2570900E7F931 /* Collision.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Collision.hpp; sourceTree = "<group>"; };
 		4731DE4A1DE7E5FA00E7F931 /* ProxyIdPair.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProxyIdPair.cpp; sourceTree = "<group>"; };
 		4731DE4C1DE90D8200E7F931 /* MassData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MassData.cpp; sourceTree = "<group>"; };
@@ -957,8 +951,6 @@
 				476162C71E245C9D002C7FB0 /* CodeDumper.hpp */,
 				4727242D1E315E1A00C64921 /* Fixed.hpp */,
 				80BB8943141C3E5900F1753A /* GrowableStack.hpp */,
-				4731DE321DE1405900E7F931 /* Length.hpp */,
-				4731DE3E1DE14A9D00E7F931 /* LinearSpeed.hpp */,
 				475A94631D99C264000CA9A8 /* List.hpp */,
 				80BB8944141C3E5900F1753A /* Math.cpp */,
 				80BB8945141C3E5900F1753A /* Math.hpp */,
@@ -1250,7 +1242,6 @@
 				47AA5DE81C4C5FBE008AF2BA /* ContactSolver.hpp in Headers */,
 				47CF984E1DF9C4A30077F5F2 /* ShapeSeparation.hpp in Headers */,
 				4768D3F61E3A7ACA00574143 /* Wider.hpp in Headers */,
-				4731DE361DE1405900E7F931 /* Length.hpp in Headers */,
 				47AA5DED1C4C5FBE008AF2BA /* DistanceJoint.hpp in Headers */,
 				47AA5DEE1C4C5FBE008AF2BA /* FrictionJoint.hpp in Headers */,
 				47AA5DEF1C4C5FBE008AF2BA /* GearJoint.hpp in Headers */,
@@ -1269,7 +1260,6 @@
 				47AA5DF61C4C5FBE008AF2BA /* WeldJoint.hpp in Headers */,
 				47AA5DF71C4C5FBE008AF2BA /* WheelJoint.hpp in Headers */,
 				47AA5DF81C4C5FBE008AF2BA /* Rope.hpp in Headers */,
-				4731DE421DE14A9D00E7F931 /* LinearSpeed.hpp in Headers */,
 				47578BF11D8899710078CD40 /* Profile.hpp in Headers */,
 				47AA5DF91C4C5FBE008AF2BA /* MotorJoint.hpp in Headers */,
 			);
@@ -1318,7 +1308,6 @@
 				4731DE5E1DEE3F0600E7F931 /* SeparationFinder.hpp in Headers */,
 				80BB89A2141C3E5900F1753A /* GrowableStack.hpp in Headers */,
 				474BAB301E5D00960058E08A /* BodyConstraint.hpp in Headers */,
-				4731DE351DE1405900E7F931 /* Length.hpp in Headers */,
 				80BB89A4141C3E5900F1753A /* Math.hpp in Headers */,
 				80BB89A6141C3E5900F1753A /* Settings.hpp in Headers */,
 				80BB89A8141C3E5900F1753A /* StackAllocator.hpp in Headers */,
@@ -1358,7 +1347,6 @@
 				80BB89D7141C3E5900F1753A /* PulleyJoint.hpp in Headers */,
 				4731DE441DE2570900E7F931 /* Collision.hpp in Headers */,
 				80BB89D9141C3E5900F1753A /* RevoluteJoint.hpp in Headers */,
-				4731DE411DE14A9D00E7F931 /* LinearSpeed.hpp in Headers */,
 				80BB89DB141C3E5900F1753A /* RopeJoint.hpp in Headers */,
 				80BB89DD141C3E5900F1753A /* WeldJoint.hpp in Headers */,
 				80BB89DF141C3E5900F1753A /* WheelJoint.hpp in Headers */,
