@@ -382,7 +382,7 @@ box2d::size_t box2d::GetWorldIndex(const Body* body)
 	return size_t(-1);
 }
 
-Velocity box2d::GetVelocity(const Body& body, TimeSpan h) noexcept
+Velocity box2d::GetVelocity(const Body& body, Time h) noexcept
 {
 	const auto timeInSecs = RealNum{h / second};
 	assert(IsValid(timeInSecs));

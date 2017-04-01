@@ -146,7 +146,7 @@ namespace {
 	/// Calculates movement.
 	/// @detail Calculate the positional displacement based on the given velocity
 	///    that's possibly clamped to the maximum translation and rotation.
-	inline PositionAndVelocity CalculateMovement(const BodyConstraint& body, TimeSpan h, MovementConf conf)
+	inline PositionAndVelocity CalculateMovement(const BodyConstraint& body, Time h, MovementConf conf)
 	{
 		const auto timeInSecs = RealNum{h / second};
 		assert(IsValid(timeInSecs));
@@ -172,7 +172,7 @@ namespace {
 	}
 	
 	inline void IntegratePositions(BodyConstraints& bodies,
-								   TimeSpan h, MovementConf conf)
+								   Time h, MovementConf conf)
 	{
 		for (auto&& body: bodies)
 		{
@@ -363,14 +363,14 @@ namespace {
 		return maxIncImpulse;
 	}
 	
-	inline TimeSpan GetUnderActiveTime(const Body& b, const StepConf& conf) noexcept
+	inline Time GetUnderActiveTime(const Body& b, const StepConf& conf) noexcept
 	{
 		const auto underactive = IsUnderActive(b.GetVelocity(), conf.linearSleepTolerance, conf.angularSleepTolerance);
 		const auto sleepable = b.IsSleepingAllowed();
 		return (sleepable && underactive)? b.GetUnderActiveTime() + conf.get_dt(): second * RealNum{0};
 	}
 
-	inline TimeSpan UpdateUnderActiveTimes(Island::Bodies& bodies, const StepConf& conf)
+	inline Time UpdateUnderActiveTimes(Island::Bodies& bodies, const StepConf& conf)
 	{
 		auto minUnderActiveTime = second * std::numeric_limits<RealNum>::infinity();
 		for (auto&& b: bodies)
@@ -2564,7 +2564,7 @@ contact_count_t World::Synchronize(Body& body,
 
 // Free functions...
 
-StepStats Step(World& world, TimeSpan dt, World::ts_iters_type velocityIterations, World::ts_iters_type positionIterations)
+StepStats Step(World& world, Time dt, World::ts_iters_type velocityIterations, World::ts_iters_type positionIterations)
 {
 	StepConf conf;
 	conf.set_dt(dt);

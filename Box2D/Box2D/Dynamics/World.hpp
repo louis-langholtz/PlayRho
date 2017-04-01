@@ -268,7 +268,7 @@ public:
 	RealNum GetMaxVertexRadius() const noexcept;
 
 	/// Gets the inverse delta time.
-	InverseTimeSpan GetInvDeltaTime() const noexcept;
+	Frequency GetInvDeltaTime() const noexcept;
 
 	/// Gets the fat AABB for a proxy.
 	/// @warning Behavior is undefined if the given proxy ID is not a valid ID.
@@ -608,7 +608,7 @@ private:
 	/// @detail Used to compute time step ratio to support a variable time step.
 	/// @note 4-bytes large.
 	/// @sa Step.
-	InverseTimeSpan m_inv_dt0 = 0;
+	Frequency m_inv_dt0 = 0;
 
 	/// Minimum vertex radius.
 	const RealNum m_minVertexRadius;
@@ -726,7 +726,7 @@ inline RealNum World::GetMaxVertexRadius() const noexcept
 	return m_maxVertexRadius;
 }
 
-inline InverseTimeSpan World::GetInvDeltaTime() const noexcept
+inline Frequency World::GetInvDeltaTime() const noexcept
 {
 	return m_inv_dt0;
 }
@@ -874,7 +874,7 @@ inline World::Contacts::size_type GetContactCount(const World& world) noexcept
 /// @param velocityIterations Number of iterations for the velocity constraint solver.
 /// @param positionIterations Number of iterations for the position constraint solver.
 ///   The position constraint solver resolves the positions of bodies that overlap.
-StepStats Step(World& world, TimeSpan timeStep,
+StepStats Step(World& world, Time timeStep,
 			   World::ts_iters_type velocityIterations = 8, World::ts_iters_type positionIterations = 3);
 
 /// Gets the count of fixtures in the given world.

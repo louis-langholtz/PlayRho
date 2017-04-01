@@ -89,7 +89,7 @@ TEST(RevoluteJoint, MovesDynamicCircles)
 	jd.bodyA = b1;
 	jd.bodyB = b2;
 	world.CreateJoint(jd);
-	Step(world, TimeSpan{second * RealNum{1}});
+	Step(world, Time{second * RealNum{1}});
 	EXPECT_EQ(round(b1->GetLocation(), 100), round(Vec2(0, -4), 100));
 	EXPECT_EQ(round(b2->GetLocation(), 100), round(Vec2(0, -4), 100));
 	EXPECT_EQ(b1->GetAngle(), 0_deg);
@@ -119,7 +119,7 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
 	
 	for (auto i = 0; i < 1000; ++i)
 	{
-		Step(world, TimeSpan{second * RealNum{0.1f}});
+		Step(world, Time{second * RealNum{0.1f}});
 		EXPECT_EQ(b1->GetLocation(), p1);
 		EXPECT_EQ(round(b2->GetLocation(), 1000), round(p2, 1000));
 		EXPECT_EQ(b2->GetAngle(), 0_deg);
@@ -129,7 +129,7 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
 	
 	for (auto i = 0; i < 10; ++i)
 	{
-		Step(world, TimeSpan{second * RealNum{0.1f}});
+		Step(world, Time{second * RealNum{0.1f}});
 		EXPECT_EQ(b1->GetLocation(), p1);
 		EXPECT_NE(b2->GetLocation(), p2);
 		EXPECT_EQ(b2->GetAngle(), 0_deg);

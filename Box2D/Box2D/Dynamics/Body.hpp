@@ -57,7 +57,7 @@ struct BodyDef
 	constexpr BodyDef& UseAngularAcceleration(Angle v) noexcept;
 	constexpr BodyDef& UseLinearDamping(RealNum v) noexcept;
 	constexpr BodyDef& UseAngularDamping(RealNum v) noexcept;
-	constexpr BodyDef& UseUnderActiveTime(TimeSpan v) noexcept;
+	constexpr BodyDef& UseUnderActiveTime(Time v) noexcept;
 	constexpr BodyDef& UseAllowSleep(bool value) noexcept;
 	constexpr BodyDef& UseAwake(bool value) noexcept;
 	constexpr BodyDef& UseFixedRotation(bool value) noexcept;
@@ -98,7 +98,7 @@ struct BodyDef
 
 	/// Under-active time.
 	/// @detail Set this to the value retrieved from Body::GetUnderActiveTime() or leave it as 0.
-	TimeSpan underActiveTime = second * RealNum{0};
+	Time underActiveTime = second * RealNum{0};
 
 	/// Set this flag to false if this body should never fall asleep. Note that
 	/// this increases CPU usage.
@@ -177,7 +177,7 @@ constexpr inline BodyDef& BodyDef::UseAngularDamping(RealNum v) noexcept
 	return *this;
 }
 
-constexpr inline BodyDef& BodyDef::UseUnderActiveTime(TimeSpan v) noexcept
+constexpr inline BodyDef& BodyDef::UseUnderActiveTime(Time v) noexcept
 {
 	underActiveTime = v;
 	return *this;
@@ -426,7 +426,7 @@ public:
 
 	/// Gets this body's under-active time value.
 	/// @return Zero or more time in seconds (of step time) that this body has been "under-active" for.
-	TimeSpan GetUnderActiveTime() const noexcept;
+	Time GetUnderActiveTime() const noexcept;
 	
 	/// Sets the "under-active" time to the given value.
 	///
@@ -436,7 +436,7 @@ public:
 	/// @warning Behavior is undefined for negative values.
 	/// @note A non-zero time is only valid for an "accelerable" body.
 	///
-	void SetUnderActiveTime(TimeSpan value) noexcept;
+	void SetUnderActiveTime(Time value) noexcept;
 	
 	/// Set the enabled state of the body. A disabled body is not
 	/// simulated and cannot be collided with or woken up.
@@ -603,7 +603,7 @@ private:
 	/// @detail A body under-active for enough time should have their awake flag unset.
 	///   I.e. if a body is under-active for long enough, it should go to sleep.
 	/// @note 4-bytes.
-	TimeSpan m_underActiveTime = 0;
+	Time m_underActiveTime = 0;
 };
 
 inline Body::FlagsType Body::GetFlags(const BodyType type) noexcept
@@ -803,12 +803,12 @@ inline bool Body::IsAwake() const noexcept
 	return (m_flags & e_awakeFlag) != 0;
 }
 
-inline TimeSpan Body::GetUnderActiveTime() const noexcept
+inline Time Body::GetUnderActiveTime() const noexcept
 {
 	return m_underActiveTime;
 }
 
-inline void Body::SetUnderActiveTime(TimeSpan value) noexcept
+inline void Body::SetUnderActiveTime(Time value) noexcept
 {
 	if ((value == second * RealNum{0}) || IsAccelerable())
 	{
@@ -1186,7 +1186,7 @@ inline Angle GetTorque(const Body& body) noexcept
 /// @warning Behavior is undefined if the given elapsed time is an invalid value (like NaN).
 /// @param body Body to get the velocity for.
 /// @param h Time elapsed to get velocity for. Behavior is undefined if this value is invalid.
-Velocity GetVelocity(const Body& body, TimeSpan h) noexcept;
+Velocity GetVelocity(const Body& body, Time h) noexcept;
 
 size_t GetWorldIndex(const Body* body);
 
