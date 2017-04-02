@@ -28,6 +28,7 @@
 #include <cstdint>
 #include <algorithm>
 
+#ifdef USE_BOOST_UNITS
 #include <boost/units/io.hpp>
 #include <boost/units/systems/si/length.hpp>
 #include <boost/units/systems/si/time.hpp>
@@ -41,6 +42,7 @@
 #include <boost/units/systems/si/moment_of_inertia.hpp>
 #include <boost/units/systems/si/force.hpp>
 #include <boost/units/systems/si/torque.hpp>
+#endif
 
 #include <Box2D/Common/Wider.hpp>
 #include <Box2D/Common/Fixed.hpp>
@@ -84,6 +86,8 @@ using uint64 = std::uint64_t;
 ///
 using RealNum = float;
 
+#ifdef USE_BOOST_UNITS
+
 using Time = boost::units::quantity<boost::units::si::time, RealNum>;
 constexpr auto Second = Time{boost::units::si::second * RealNum{1}};
 
@@ -118,6 +122,45 @@ constexpr auto NewtonMeter = Torque{boost::units::si::newton_meter * RealNum{1}}
 using SecondMomentOfArea = boost::units::quantity<boost::units::si::second_moment_of_area, RealNum>;
 
 using MomentOfInertia = boost::units::quantity<boost::units::si::moment_of_inertia, RealNum>;
+
+#else // USE_BOOST_UNITS
+
+using Time = RealNum;
+constexpr auto Second = RealNum{1};
+
+using Frequency = RealNum;
+constexpr auto Hertz = RealNum{1};
+
+using Length = RealNum;
+constexpr auto Meter = RealNum{1};
+
+using LengthPerTime = RealNum;
+constexpr auto MeterPerSecond = RealNum{1};
+
+using Mass = RealNum;
+constexpr auto Kilogram = RealNum{1};
+
+using Area = RealNum;
+constexpr auto SquareMeter = RealNum{1};
+
+using Density = RealNum;
+constexpr auto KilogramPerSquareMeter = RealNum{1};
+
+using PlaneAngle = RealNum;
+constexpr auto Radian = RealNum{1};
+constexpr auto SquareRadian = Radian * Radian;
+
+using Force = RealNum;
+constexpr auto Newton = RealNum{1};
+
+using Torque = RealNum;
+constexpr auto NewtonMeter = RealNum{1};
+
+using SecondMomentOfArea = RealNum;
+
+using MomentOfInertia = RealNum;
+
+#endif // USE_BOOST_UNITS
 
 /// Child count type. @detail Relating to "children" of Shape.
 using child_count_t = unsigned;
