@@ -35,7 +35,7 @@ public:
 		{
 			auto conf = CircleShape::Conf{};
 			conf.vertexRadius = 0.1f;
-			conf.density = 0.01f;
+			conf.density = RealNum{0.01f} * KilogramPerSquareMeter;
 			const auto shape = std::make_shared<CircleShape>(conf);
 
 			const auto minX = -6.0f;
@@ -60,7 +60,7 @@ public:
 			bd.bullet = true;
 			const auto body = m_world->CreateBody(bd);
 			auto conf = PolygonShape::Conf{};
-			conf.density = 1.0f;
+			conf.density = RealNum{1.0f} * KilogramPerSquareMeter;
 			body->CreateFixture(std::make_shared<PolygonShape>(1.5f, 1.5f, conf));
 			body->SetVelocity(Velocity{Vec2(150.0f, 0.0f), 0_rad});
 		}

@@ -71,7 +71,7 @@ public:
 			
 			auto conf = PolygonShape::Conf{};
 			
-			conf.density = 4.0f;
+			conf.density = RealNum{4} * Kilogram / SquareMeter;
 			const auto poly1 = PolygonShape(Span<const Vec2>(vertices, 3), conf);
 
 			Transformation xf2;
@@ -82,7 +82,7 @@ public:
 			vertices[1] = Transform(Vec2(1.0f, RealNum{0}), xf2);
 			vertices[2] = Transform(Vec2(RealNum{0}, 0.5f), xf2);
 
-			conf.density = 2.0f;
+			conf.density = RealNum{2} * Kilogram / SquareMeter;
 			const auto poly2 = PolygonShape(Span<const Vec2>(vertices, 3), conf);
 
 			BodyDef bd;
@@ -100,7 +100,7 @@ public:
 
 		{
 			auto conf = PolygonShape::Conf{};
-			conf.density = 1.0f;
+			conf.density = RealNum{1} * Kilogram / SquareMeter;
 			conf.friction = 0.3f;
 			const auto shape = std::make_shared<PolygonShape>(0.5f, 0.5f, conf);
 
@@ -116,7 +116,7 @@ public:
 				body->CreateFixture(shape);
 
 				const auto I = GetLocalInertia(*body);
-				const auto mass = GetMass(*body);
+				const auto mass = RealNum{GetMass(*body) / Kilogram};
 
 				// For a circle: I = 0.5 * m * r * r ==> r = sqrt(2 * I / m)
 				const auto radius = Sqrt(2.0f * I / mass);

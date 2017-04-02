@@ -47,7 +47,7 @@ public:
 
 		// Boxes
 		const auto boxshape = std::make_shared<PolygonShape>(0.5f, 0.5f);
-		boxshape->SetDensity(20);
+		boxshape->SetDensity(RealNum{20} * KilogramPerSquareMeter);
 		for (auto i = 0; i < 5; ++i)
 		{
 			BodyDef bd;

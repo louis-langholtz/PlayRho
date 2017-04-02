@@ -48,7 +48,7 @@ public:
 
 		PolygonShape polygon;
 		polygon.Set(Span<const Vec2>{vertices, 3});
-		polygon.SetDensity(1.0f);
+		polygon.SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
 		BodyDef triangleBodyDef;
 		triangleBodyDef.type = BodyType::Dynamic;
@@ -88,7 +88,7 @@ public:
 		// Small circle
 		CircleShape circle;
 		circle.SetRadius(RealNum{1});
-		circle.SetDensity(1.0f);
+		circle.SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
 		BodyDef circleBodyDef;
 		circleBodyDef.type = BodyType::Dynamic;
@@ -126,7 +126,7 @@ public:
 			const auto mass1 = GetMass(*body1);
 			const auto mass2 = GetMass(*body2);
 
-			if (mass1 > 0.0f && mass2 > 0.0f)
+			if (mass1 > Mass{0} && mass2 > Mass{0})
 			{
 				if (mass2 > mass1)
 				{

@@ -58,7 +58,7 @@ namespace box2d {
 				
 				const auto frame_width = frame_width_per_arm * static_cast<RealNum>(m_num_arms);
 				auto shape = PolygonShape(frame_width/2, frame_width / 24);
-				shape.SetDensity(20);
+				shape.SetDensity(RealNum{20} * KilogramPerSquareMeter);
 				body->CreateFixture(std::make_shared<PolygonShape>(shape));
 				return body;
 			}();
@@ -110,7 +110,7 @@ namespace box2d {
 				const auto body = m_world->CreateBody(def);
 				
 				auto shape = PolygonShape(frame_width/24, arm_length / 2 + frame_width / 24);
-				shape.SetDensity(20);
+				shape.SetDensity(RealNum{20} * KilogramPerSquareMeter);
 				body->CreateFixture(std::make_shared<PolygonShape>(shape));
 				
 				m_right_side_wall = body;
@@ -128,7 +128,7 @@ namespace box2d {
 				const auto body = m_world->CreateBody(def);
 				
 				auto shape = PolygonShape(frame_width/24, arm_length / 2 + frame_width / 24);
-				shape.SetDensity(20);
+				shape.SetDensity(RealNum{20} * KilogramPerSquareMeter);
 				body->CreateFixture(std::make_shared<PolygonShape>(shape));
 				
 				m_left_side_wall = body;
@@ -158,7 +158,7 @@ namespace box2d {
 			auto conf = CircleShape::Conf{};
 			conf.vertexRadius = radius;
 			conf.location = pos;
-			conf.density = 20;
+			conf.density = RealNum{20} * KilogramPerSquareMeter;
 			conf.restitution = 1;
 			conf.friction = 0;
 			return body->CreateFixture(std::make_shared<CircleShape>(conf));
@@ -167,7 +167,7 @@ namespace box2d {
 		Fixture* CreateArm(Body* body, RealNum length = RealNum(10))
 		{
 			auto shape = PolygonShape(length / 2000, length / 2);
-			shape.SetDensity(20);
+			shape.SetDensity(RealNum{20} * KilogramPerSquareMeter);
 			return body->CreateFixture(std::make_shared<PolygonShape>(shape));
 		}
 

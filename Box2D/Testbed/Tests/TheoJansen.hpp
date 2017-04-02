@@ -49,8 +49,8 @@ public:
 			poly1.Set({p1, p3, p2});
 			poly2.Set({Vec2_zero, p6 - p4, p5 - p4});
 		}
-		poly1.SetDensity(1.0f);
-		poly2.SetDensity(1.0f);
+		poly1.SetDensity(RealNum{1} * KilogramPerSquareMeter);
+		poly2.SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
 		FixtureDef fd1, fd2;
 		fd1.filter.groupIndex = -1;
@@ -107,7 +107,7 @@ public:
 		// Balls
 		auto circleConf = CircleShape::Conf{};
 		circleConf.vertexRadius = 0.25f;
-		circleConf.density = 1;
+		circleConf.density = RealNum{1} * KilogramPerSquareMeter;
 		const auto circle = std::make_shared<CircleShape>(circleConf);
 		for (auto i = 0; i < 40; ++i)
 		{
@@ -128,7 +128,7 @@ public:
 			bd.position = pivot + m_offset;
 			m_chassis = m_world->CreateBody(bd);
 			auto polygonConf = PolygonShape::Conf{};
-			polygonConf.density = 1.0f;
+			polygonConf.density = RealNum{1} * KilogramPerSquareMeter;
 			m_chassis->CreateFixture(std::make_shared<PolygonShape>(2.5f, 1.0f, polygonConf), sd);
 		}
 
@@ -141,7 +141,7 @@ public:
 			m_wheel = m_world->CreateBody(bd);
 			auto conf = CircleShape::Conf{};
 			conf.vertexRadius = 1.6f;
-			conf.density = 1.0f;
+			conf.density = RealNum{1} * KilogramPerSquareMeter;
 			m_wheel->CreateFixture(std::make_shared<CircleShape>(conf), sd);
 		}
 

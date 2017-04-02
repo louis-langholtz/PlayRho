@@ -31,11 +31,11 @@ public:
 		ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(50.0f, 0.0f), Vec2(-50.0f, 0.0f)));
 
 		const auto circle1 = std::make_shared<CircleShape>(1);
-		circle1->SetDensity(5);
+		circle1->SetDensity(RealNum{5} * KilogramPerSquareMeter);
 		const auto circle2 = std::make_shared<CircleShape>(2);
-		circle2->SetDensity(5);
+		circle2->SetDensity(RealNum{5} * KilogramPerSquareMeter);
 		const auto box = std::make_shared<PolygonShape>(0.5f, 5.0f);
-		box->SetDensity(5);
+		box->SetDensity(RealNum{5} * KilogramPerSquareMeter);
 	
 		{
 			BodyDef bd1;

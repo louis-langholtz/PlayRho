@@ -38,7 +38,7 @@ public:
 			const auto body = m_world->CreateBody(bd);
 			auto circleConf = CircleShape::Conf{};
 			circleConf.vertexRadius = 0.5f;
-			circleConf.density = 5;
+			circleConf.density = RealNum{5} * KilogramPerSquareMeter;
 			body->CreateFixture(std::make_shared<CircleShape>(circleConf));
 
 			const auto w = 100.0f;
@@ -67,12 +67,12 @@ public:
 			m_ball = m_world->CreateBody(circle_bd);
 			auto circleConf = CircleShape::Conf{};
 			circleConf.vertexRadius = 3.0f;
-			circleConf.density = 5.0f;
+			circleConf.density = RealNum{5} * KilogramPerSquareMeter;
 			m_ball->CreateFixture(std::make_shared<CircleShape>(circleConf), fd);
 
 			PolygonShape polygon_shape;
 			SetAsBox(polygon_shape, 10.0f, 0.2f, Vec2 (-10.0f, 0.0f), 0_rad);
-			polygon_shape.SetDensity(2);
+			polygon_shape.SetDensity(RealNum{2} * KilogramPerSquareMeter);
 
 			BodyDef polygon_bd;
 			polygon_bd.position = Vec2(20.0f, 10.0f);
@@ -95,7 +95,7 @@ public:
 			const auto body = m_world->CreateBody(bodyDef);
 		
 			auto polyShape = PolygonShape({Vec2(17.63f, 36.31f), Vec2(17.52f, 36.69f), Vec2(17.19f, 36.36f)});
-			polyShape.SetDensity(1);
+			polyShape.SetDensity(RealNum{1} * KilogramPerSquareMeter);
 		
 			body->CreateFixture(std::make_shared<PolygonShape>(polyShape));	//assertion hits inside here
 		}

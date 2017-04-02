@@ -42,7 +42,7 @@ public:
 				bd.position = Vec2(0.0f, 7.0f);
 				const auto body = m_world->CreateBody(bd);
 				auto shapeConf = PolygonShape::Conf{};
-				shapeConf.density = 2;
+				shapeConf.density = RealNum{2} * KilogramPerSquareMeter;
 				body->CreateFixture(std::make_shared<PolygonShape>(0.5f, 2.0f, shapeConf));
 
 				RevoluteJointDef rjd{prevBody, body, Vec2(0.0f, 5.0f)};
@@ -61,7 +61,7 @@ public:
 				bd.position = Vec2(0.0f, 13.0f);
 				const auto body = m_world->CreateBody(bd);
 				auto shapeConf = PolygonShape::Conf{};
-				shapeConf.density = 2;
+				shapeConf.density = RealNum{2} * KilogramPerSquareMeter;
 				body->CreateFixture(std::make_shared<PolygonShape>(0.5f, 4.0f, shapeConf));
 
 				RevoluteJointDef rjd{prevBody, body, Vec2(0.0f, 9.0f)};
@@ -79,7 +79,7 @@ public:
 				bd.position = Vec2(0.0f, 17.0f);
 				const auto body = m_world->CreateBody(bd);
 				auto shapeConf = PolygonShape::Conf{};
-				shapeConf.density = 2;
+				shapeConf.density = RealNum{2} * KilogramPerSquareMeter;
 				body->CreateFixture(std::make_shared<PolygonShape>(1.5f, 1.5f, shapeConf));
 
 				m_world->CreateJoint(RevoluteJointDef{prevBody, body, Vec2(0.0f, 17.0f)});
@@ -99,7 +99,7 @@ public:
 				bd.position = Vec2(0.0f, 23.0f);
 				const auto body = m_world->CreateBody(bd);
 				auto shapeConf = PolygonShape::Conf{};
-				shapeConf.density = 2;
+				shapeConf.density = RealNum{2} * KilogramPerSquareMeter;
 				body->CreateFixture(std::make_shared<PolygonShape>(1.5f, 1.5f, shapeConf));
 			}
 		}

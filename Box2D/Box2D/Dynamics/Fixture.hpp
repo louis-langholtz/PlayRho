@@ -156,7 +156,7 @@ public:
 
 	/// Gets the density of this fixture.
 	/// @return Non-negative density in kg/m^2.
-	RealNum GetDensity() const noexcept;
+	Density GetDensity() const noexcept;
 
 	/// Gets the coefficient of friction.
 	RealNum GetFriction() const noexcept;

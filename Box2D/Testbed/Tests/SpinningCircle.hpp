@@ -47,7 +47,7 @@ namespace box2d {
 			const auto body2 = m_world->CreateBody(bodyDef);
 			
 			auto shapeConf = CircleShape::Conf{};
-			shapeConf.density = 10;
+			shapeConf.density = RealNum{10} * KilogramPerSquareMeter;
 
 			shapeConf.vertexRadius = 2;
 			shapeConf.location = Vec2{0, 0};

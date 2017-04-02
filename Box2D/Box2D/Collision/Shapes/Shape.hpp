@@ -39,7 +39,7 @@ public:
 		constexpr Conf& UseVertexRadius(RealNum value) noexcept;
 		constexpr Conf& UseFriction(RealNum value) noexcept;
 		constexpr Conf& UseRestitution(RealNum value) noexcept;
-		constexpr Conf& UseDensity(RealNum value) noexcept;
+		constexpr Conf& UseDensity(Density value) noexcept;
 
 		RealNum vertexRadius = DefaultLinearSlop;
 
@@ -65,7 +65,7 @@ public:
 		/// @note This must be a non-negative value.
 		/// @note Use 0 to indicate that the shape's associated mass should be 0.
 		///
-		RealNum density = RealNum{0};
+		Density density = Density{0};
 	};
 
 	enum Type
@@ -84,13 +84,13 @@ public:
 	constexpr Shape(Type type, const Conf& conf) noexcept:
 		m_type{type},
 		m_vertexRadius{conf.vertexRadius},
-		m_density{Max(conf.density, RealNum{0})},
+		m_density{Max(conf.density, Density{0})},
 		m_friction{conf.friction},
 		m_restitution{conf.restitution}
 	{
 		assert(type < e_typeCount);
 		assert(conf.vertexRadius >= 0);
-		assert(conf.density >= 0);
+		assert(conf.density >= Density{0});
 		assert(conf.friction >= 0);
 		assert(conf.restitution < std::numeric_limits<decltype(conf.restitution)>::infinity());
 		assert(conf.restitution > -std::numeric_limits<decltype(conf.restitution)>::infinity());
@@ -115,14 +115,14 @@ public:
 
 	/// Gets the density of this fixture.
 	/// @return Non-negative density in kg/m^2.
-	RealNum GetDensity() const noexcept;
+	Density GetDensity() const noexcept;
 
 	/// Sets the density of this fixture.
 	/// @note This will _not_ automatically adjust the mass of the body.
 	///   You must call Body::ResetMassData to update the body's mass.
 	/// @warning Behavior is undefined if given a negative value.
 	/// @param density Non-negative density in kg/m^2.
-	void SetDensity(RealNum density) noexcept;
+	void SetDensity(Density density) noexcept;
 	
 	/// Gets the coefficient of friction.
 	RealNum GetFriction() const noexcept;
@@ -141,7 +141,7 @@ public:
 private:
 	Type m_type;
 	RealNum m_vertexRadius;
-	RealNum m_density = 0; ///< Density. 4-bytes.
+	Density m_density = KilogramPerSquareMeter * RealNum{0}; ///< Density in kg/m^2. 4-bytes.
 	RealNum m_friction = RealNum{2} / RealNum{10}; ///< Friction as a coefficient. 4-bytes.
 	RealNum m_restitution = 0; ///< Restitution as a coefficient. 4-bytes.
 };
@@ -164,13 +164,13 @@ constexpr inline Shape::Conf& Shape::Conf::UseRestitution(RealNum value) noexcep
 	return *this;
 }
 
-constexpr inline Shape::Conf& Shape::Conf::UseDensity(RealNum value) noexcept
+constexpr inline Shape::Conf& Shape::Conf::UseDensity(Density value) noexcept
 {
 	density = value;
 	return *this;
 }
 
-inline RealNum Shape::GetDensity() const noexcept
+inline Density Shape::GetDensity() const noexcept
 {
 	return m_density;
 }
@@ -185,7 +185,7 @@ inline RealNum Shape::GetRestitution() const noexcept
 	return m_restitution;
 }
 
-inline void Shape::SetDensity(RealNum density) noexcept
+inline void Shape::SetDensity(Density density) noexcept
 {
 	m_density = density;
 }

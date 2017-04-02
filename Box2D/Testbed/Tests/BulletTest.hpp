@@ -47,13 +47,13 @@ public:
 
 			PolygonShape box;
 			box.SetAsBox(2.0f, 0.1f);
-			box.SetDensity(1);
+			box.SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
 			m_body = m_world->CreateBody(bd);
 			m_body->CreateFixture(std::make_shared<PolygonShape>(box));
 
 			box.SetAsBox(0.25f, 0.25f);
-			box.SetDensity(100);
+			box.SetDensity(RealNum{100} * KilogramPerSquareMeter);
 
 			//m_x = RandomFloat(-1.0f, 1.0f);
 			m_x = 0.20352793f;

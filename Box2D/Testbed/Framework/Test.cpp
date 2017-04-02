@@ -463,7 +463,7 @@ void Test::MouseDown(const Vec2& p)
 		md.bodyA = m_groundBody;
 		md.bodyB = body;
 		md.target = p;
-		md.maxForce = 1000.0f * GetMass(*body);
+		md.maxForce = 1000.0f * RealNum{GetMass(*body) / Kilogram};
 		m_mouseJoint = static_cast<MouseJoint*>(m_world->CreateJoint(md));
 		body->SetAwake();
 	}
@@ -543,7 +543,7 @@ void Test::LaunchBomb(const Vec2& position, const Vec2& linearVelocity)
 	
 	auto conf = CircleShape::Conf{};
 	conf.vertexRadius = 0.3f;
-	conf.density = 20.0f;
+	conf.density = Density{RealNum{20} * Kilogram / SquareMeter};
 	conf.restitution = 0.0f;
 	const auto circle = std::make_shared<CircleShape>(conf);
 
@@ -651,7 +651,9 @@ void Test::DrawStats(Drawer& drawer, const StepConf& stepConf)
 		drawer.DrawString(5, m_textLine, "Selected fixture: pos={%f,%f} vel={%f,%f} density=%f friction=%f restitution=%f",
 						  GetX(location), GetY(location),
 						  GetX(velocity.linear), GetY(velocity.linear),
-						  density, friction, restitution);
+						  double{density * SquareMeter / Kilogram},
+						  friction,
+						  restitution);
 		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 }

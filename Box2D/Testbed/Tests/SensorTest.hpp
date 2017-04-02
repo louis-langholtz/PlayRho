@@ -58,7 +58,7 @@ public:
 		}
 
 		const auto shape = std::make_shared<CircleShape>(1);
-		shape->SetDensity(1);
+		shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 		for (auto i = 0; i < e_count; ++i)
 		{
 			BodyDef bd;

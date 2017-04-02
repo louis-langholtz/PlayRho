@@ -46,7 +46,7 @@ public:
 
 		{
 			const auto shape = std::make_shared<PolygonShape>(a, b);
-			shape->SetDensity(5);
+			shape->SetDensity(RealNum{5} * KilogramPerSquareMeter);
 
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;

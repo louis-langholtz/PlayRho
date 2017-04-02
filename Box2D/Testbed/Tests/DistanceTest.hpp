@@ -52,7 +52,7 @@ public:
 	{
 		const auto radius = RadiusIncrement * 40;
 		auto conf = PolygonShape::Conf{};
-		conf.density = 1;
+		conf.density = RealNum{1} * KilogramPerSquareMeter;
 
 		conf.vertexRadius = radius;
 		PolygonShape polygonA{conf};

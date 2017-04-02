@@ -34,8 +34,8 @@ public:
 
 	Breakable()
 	{
-		m_shape1->SetDensity(1);
-		m_shape2->SetDensity(1);
+		m_shape1->SetDensity(RealNum{1} * KilogramPerSquareMeter);
+		m_shape2->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
 		// Ground body
 		{

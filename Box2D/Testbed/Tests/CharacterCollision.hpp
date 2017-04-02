@@ -131,7 +131,7 @@ public:
 			const auto body = m_world->CreateBody(bd);
 
 			auto conf = PolygonShape::Conf{};
-			conf.density = 20.0f;
+			conf.density = RealNum{20} * KilogramPerSquareMeter;
 			body->CreateFixture(std::make_shared<PolygonShape>(0.5f, 0.5f, conf));
 		}
 
@@ -146,7 +146,7 @@ public:
 			const auto body = m_world->CreateBody(bd);
 
 			auto conf = PolygonShape::Conf{};
-			conf.density = 20.0f;
+			conf.density = RealNum{20} * KilogramPerSquareMeter;
 			body->CreateFixture(std::make_shared<PolygonShape>(0.25f, 0.25f, conf));
 		}
 
@@ -170,7 +170,7 @@ public:
 			}
 
 			auto conf = PolygonShape::Conf{};
-			conf.density = 20.0f;
+			conf.density = RealNum{20} * KilogramPerSquareMeter;
 			auto hexshape = std::make_shared<PolygonShape>(conf);
 			hexshape->Set(Span<const Vec2>(vertices, 6));
 			body->CreateFixture(hexshape);
@@ -186,7 +186,7 @@ public:
 
 			const auto body = m_world->CreateBody(bd);
 			auto conf = CircleShape::Conf{};
-			conf.density = 20.0f;
+			conf.density = RealNum{20} * KilogramPerSquareMeter;
 			conf.vertexRadius = 0.5f;
 			body->CreateFixture(std::make_shared<CircleShape>(conf));
 		}
@@ -201,7 +201,7 @@ public:
 			m_character = m_world->CreateBody(bd);
 
 			auto conf = CircleShape::Conf{};
-			conf.density = 20.0f;
+			conf.density = RealNum{20} * KilogramPerSquareMeter;
 			conf.friction = 1.0f;
 			conf.vertexRadius = 0.25f;
 			m_character->CreateFixture(std::make_shared<CircleShape>(conf));

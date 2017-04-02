@@ -35,7 +35,7 @@ public:
 
 		auto shapeConf = CircleShape::Conf{};
 		shapeConf.vertexRadius = 1;
-		shapeConf.density = 1.0f;
+		shapeConf.density = RealNum{1} * KilogramPerSquareMeter;
 		auto shape = CircleShape(shapeConf);
 		
 		RealNum restitution[7] = {0.0f, 0.1f, 0.3f, 0.5f, 0.75f, 0.9f, 1.0f};

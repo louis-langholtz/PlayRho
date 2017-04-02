@@ -41,7 +41,7 @@ public:
 
 		auto conf = PolygonShape::Conf{};
 		conf.friction = 0.6f;
-		conf.density = 2.0f;
+		conf.density = RealNum{2} * KilogramPerSquareMeter;
 		body->CreateFixture(std::make_shared<PolygonShape>(2.0f, 0.5f, conf));
 
 		MotorJointDef mjd;

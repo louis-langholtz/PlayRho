@@ -41,7 +41,7 @@ public:
 		const auto radius = 0.5f;
 		auto conf = CircleShape::Conf{};
 		conf.vertexRadius = radius;
-		conf.density = 1.0f;
+		conf.density = RealNum{1} * KilogramPerSquareMeter;
 		conf.friction = 0.1f;
 		const auto shape = std::make_shared<CircleShape>(conf);
 
@@ -112,7 +112,7 @@ public:
 		const auto body = m_world->CreateBody(bd);
 		
 		auto conf = CircleShape::Conf{};
-		conf.density = 1.0f;
+		conf.density = RealNum{1} * KilogramPerSquareMeter;
 		conf.restitution = 0.8f;
 		conf.vertexRadius = radius;
 		body->CreateFixture(std::make_shared<CircleShape>(conf));
@@ -125,7 +125,7 @@ public:
 		const auto side_length = RealNum(wall_length/5); // 4
 
 		auto conf = PolygonShape::Conf{};
-		conf.density = 1.0f;
+		conf.density = RealNum{1} * KilogramPerSquareMeter;
 		conf.restitution = 0; // originally 0.8
 		
 		BodyDef bd;
@@ -161,7 +161,7 @@ public:
 				const auto angle_from_center = Atan2(position.y - wall_length/2, position.x);
 				const auto opposite_angle = angle_from_center + Pi;
 				const auto direction = opposite_angle;
-				const auto magnitude = Sqrt(Square(wall_length) * 2) * GetMass(*b) * 20;
+				const auto magnitude = Sqrt(Square(wall_length) * 2) * (GetMass(*b) / Kilogram) * 20;
 				const auto impulse = Rotate(Vec2(magnitude, 0.0f), UnitVec2{1_rad * direction});
 				ApplyLinearImpulse(*b, impulse, b->GetWorldCenter());
 			}

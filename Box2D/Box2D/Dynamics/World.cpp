@@ -2388,7 +2388,7 @@ Fixture* World::CreateFixture(Body& body, std::shared_ptr<const Shape> shape,
 	}
 	
 	// Adjust mass properties if needed.
-	if (fixture->GetDensity() > 0)
+	if (fixture->GetDensity() > Density{0})
 	{
 		BodyAtty::SetMassDataDirty(body);
 		if (resetMassData)

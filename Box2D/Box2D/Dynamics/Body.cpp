@@ -29,7 +29,7 @@ using namespace box2d;
 
 bool Body::IsValid(const Shape& shape)
 {
-	if (!(shape.GetDensity() >= 0))
+	if (!(shape.GetDensity() >= Density{0}))
 	{
 		return false;
 	}
@@ -161,18 +161,19 @@ void Body::ResetMassData()
 	const auto massData = ComputeMassData(*this);
 
 	// Force all dynamic bodies to have a positive mass.
-	const auto mass = (massData.mass > 0)? massData.mass: RealNum{1};
-	m_invMass = 1 / mass;
+	const auto mass = (massData.mass > Mass{0})? massData.mass: Kilogram;
+	m_invMass = RealNum{Kilogram / mass};
 	
 	// Compute center of mass.
 	const auto localCenter = massData.center * m_invMass;
 	
-	if ((massData.I > 0) && (!IsFixedRotation()))
+	if ((massData.I > MomentOfInertia{0}) && (!IsFixedRotation()))
 	{
 		// Center the inertia about the center of mass.
-		const auto lengthSquared = GetLengthSquared(localCenter);
+		const auto lengthSquared = GetLengthSquared(localCenter) * SquareMeter;
+		const auto I = massData.I - MomentOfInertia{(mass * lengthSquared / SquareRadian)};
 		//assert((massData.I - mass * lengthSquared) > 0);
-		m_invRotI = 1 / (massData.I - mass * lengthSquared);
+		m_invRotI = RealNum{(SquareMeter * Kilogram / SquareRadian) / I};
 	}
 	else
 	{
@@ -202,15 +203,15 @@ void Body::SetMassData(const MassData& massData)
 		return;
 	}
 
-	const auto mass = (massData.mass > 0)? massData.mass: decltype(massData.mass){1};
-	m_invMass = 1 / mass;
+	const auto mass = (massData.mass > Mass{0})? massData.mass: Kilogram;
+	m_invMass = RealNum{Kilogram / mass};
 
-	if ((massData.I > 0) && (!IsFixedRotation()))
+	if ((massData.I > MomentOfInertia{0}) && (!IsFixedRotation()))
 	{
-		const auto lengthSquared = GetLengthSquared(massData.center);
-		const auto I = massData.I - mass * lengthSquared;
-		assert(I > 0);
-		m_invRotI = 1 / I;
+		const auto lengthSquared = GetLengthSquared(massData.center) * SquareMeter;
+		const auto I = massData.I - MomentOfInertia{mass * lengthSquared / SquareRadian};
+		assert(I > MomentOfInertia{0});
+		m_invRotI = RealNum{(SquareMeter * Kilogram / SquareRadian) / I};
 	}
 	else
 	{
@@ -416,16 +417,16 @@ size_t box2d::GetFixtureCount(const Body& body)
 
 MassData box2d::ComputeMassData(const Body& body) noexcept
 {
-	auto mass = RealNum{0};
-	auto I = RealNum{0};
+	auto mass = Mass{0};
+	auto I = MomentOfInertia{0};
 	auto center = Vec2_zero;
 	for (auto&& fixture: body.GetFixtures())
 	{
-		if (fixture->GetDensity() > 0)
+		if (fixture->GetDensity() > Density{0})
 		{
 			const auto massData = GetMassData(*fixture);
 			mass += massData.mass;
-			center += massData.mass * massData.center;
+			center += RealNum{massData.mass / Kilogram} * massData.center;
 			I += massData.I;
 		}
 	}
@@ -461,5 +462,5 @@ Vec2 box2d::GetCentripetalForce(const Body& body, const Vec2 axis)
 	const auto delta = axis - location;
 	const auto radius = GetLength(delta);
 	const auto dir = delta / radius;
-	return dir * (mass * Square(velocity) / radius);
+	return dir * (RealNum{mass / Kilogram} * Square(velocity) / radius);
 }

@@ -160,9 +160,9 @@ void box2d::Dump(const Joint& joint, size_t index)
 void box2d::Dump(const Fixture& fixture, size_t bodyIndex)
 {
 	log("    FixtureDef fd;\n");
-	log("    fd.friction = %.15lef;\n", fixture.GetFriction());
-	log("    fd.restitution = %.15lef;\n", fixture.GetRestitution());
-	log("    fd.density = %.15lef;\n", fixture.GetDensity());
+	log("    fd.friction = %.15lef;\n", double{fixture.GetFriction()});
+	log("    fd.restitution = %.15lef;\n", double{fixture.GetRestitution()});
+	log("    fd.density = %.15lef;\n", double{fixture.GetDensity() * SquareMeter / Kilogram});
 	log("    fd.isSensor = bool(%d);\n", fixture.IsSensor());
 	log("    fd.filter.categoryBits = uint16(%d);\n", fixture.GetFilterData().categoryBits);
 	log("    fd.filter.maskBits = uint16(%d);\n", fixture.GetFilterData().maskBits);

@@ -102,10 +102,10 @@ void MouseJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
 	const auto omega = 2 * Pi * m_frequencyHz;
 
 	// Damping coefficient
-	const auto d = 2 * mass * m_dampingRatio * omega;
+	const auto d = 2 * RealNum{mass / Kilogram} * m_dampingRatio * omega;
 
 	// Spring stiffness
-	const auto k = mass * Square(omega);
+	const auto k = RealNum{mass / Kilogram} * Square(omega);
 
 	// magic formulas
 	// gamma has units of inverse mass.

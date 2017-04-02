@@ -38,7 +38,7 @@ public:
 
 		const auto a = 0.5f;
 		const auto shape = std::make_shared<PolygonShape>(0.25f * a, a);
-		shape->SetDensity(20);
+		shape->SetDensity(RealNum{20} * KilogramPerSquareMeter);
 
 		RevoluteJointDef jointDef;
 		jointDef.bodyA = ground;

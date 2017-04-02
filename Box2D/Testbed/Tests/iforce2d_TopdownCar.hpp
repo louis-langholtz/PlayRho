@@ -103,7 +103,7 @@ public:
 		
 		PolygonShape polygonShape;
 		polygonShape.SetAsBox( 0.5f, 1.25f );
-		polygonShape.SetDensity(1);
+		polygonShape.SetDensity(RealNum{1} * KilogramPerSquareMeter);
 		Fixture* fixture = m_body->CreateFixture(std::make_shared<PolygonShape>(polygonShape));//shape, density
 		fixture->SetUserData( new CarTireFUD() );
 		
@@ -167,7 +167,7 @@ public:
 	void updateFriction()
 	{
 		//lateral linear velocity
-		auto impulse = GetMass(*m_body) * -getLateralVelocity();
+		auto impulse = RealNum{GetMass(*m_body) / Kilogram} * -getLateralVelocity();
 		const auto length = GetLength(impulse);
 		if ( length > m_maxLateralImpulse )
 			impulse *= m_maxLateralImpulse / length;
@@ -249,7 +249,7 @@ public:
 		vertices[7] = Vec2(-1.5f,  +0.0f);
 		PolygonShape polygonShape;
 		polygonShape.Set(Span<const Vec2>(vertices, 8));
-		polygonShape.SetDensity(0.1f);
+		polygonShape.SetDensity(RealNum{0.1f} * KilogramPerSquareMeter);
 		m_body->CreateFixture(std::make_shared<PolygonShape>(polygonShape));
 		
 		//prepare common joint parameters

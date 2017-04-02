@@ -38,7 +38,7 @@ public:
 
 		PolygonShape shape;
 		SetAsBox(shape, 4.0f, 4.0f, Vec2(0.0f, 0.0f), 0_rad);
-		shape.SetDensity(10);
+		shape.SetDensity(RealNum{10} * KilogramPerSquareMeter);
 		m_fixture1 = m_body->CreateFixture(std::make_shared<PolygonShape>(shape));
 
 		m_fixture2 = nullptr;
@@ -56,7 +56,7 @@ public:
 				auto conf = CircleShape::Conf{};
 				conf.vertexRadius = 3.0f;
 				conf.location = Vec2(0.5f, -4.0f);
-				conf.density = 10;
+				conf.density = RealNum{10} * KilogramPerSquareMeter;
 				m_fixture2 = m_body->CreateFixture(std::make_shared<CircleShape>(conf));
 				m_body->SetAwake();
 			}

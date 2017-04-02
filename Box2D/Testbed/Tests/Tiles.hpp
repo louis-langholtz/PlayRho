@@ -65,7 +65,7 @@ public:
 		{
 			const auto a = 0.5f;
 			const auto shape = std::make_shared<PolygonShape>(a, a);
-			shape->SetDensity(5);
+			shape->SetDensity(RealNum{5} * KilogramPerSquareMeter);
 
 			Vec2 x(-7.0f, 0.75f);
 			Vec2 y;

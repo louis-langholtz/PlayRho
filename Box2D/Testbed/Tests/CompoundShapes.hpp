@@ -41,7 +41,7 @@ public:
 			
 			conf.location = Vec2{-0.5f, 0.5f};
 			const auto circle1 = std::make_shared<CircleShape>(conf);
-			circle1->SetDensity(2);
+			circle1->SetDensity(RealNum{2} * KilogramPerSquareMeter);
 			conf.location = Vec2{0.5f, 0.5f};
 			const auto circle2 = std::make_shared<CircleShape>(conf);
 			for (auto i = 0; i < 10; ++i)
@@ -59,9 +59,9 @@ public:
 
 		{
 			const auto polygon1 = std::make_shared<PolygonShape>(0.25f, 0.5f);
-			polygon1->SetDensity(2);
+			polygon1->SetDensity(RealNum{2} * KilogramPerSquareMeter);
 			auto polygon2 = std::make_shared<PolygonShape>();
-			polygon2->SetDensity(2);
+			polygon2->SetDensity(RealNum{2} * KilogramPerSquareMeter);
 			SetAsBox(*polygon2, 0.25f, 0.5f, Vec2(0.0f, -0.5f), 0.5_rad * Pi);
 			for (int i = 0; i < 10; ++i)
 			{
@@ -87,7 +87,7 @@ public:
 				Transform(Vec2(1.0f, 0.0f), xf1),
 				Transform(Vec2(0.0f, 0.5f), xf1)
 			});
-			triangle1->SetDensity(2);
+			triangle1->SetDensity(RealNum{2} * KilogramPerSquareMeter);
 
 			Transformation xf2;
 			xf2.q = UnitVec2{-0.3524_rad * Pi};
@@ -99,7 +99,7 @@ public:
 				Transform(Vec2(1.0f, 0.0f), xf2),
 				Transform(Vec2(0.0f, 0.5f), xf2)
 			});
-			triangle2->SetDensity(2);
+			triangle2->SetDensity(RealNum{2} * KilogramPerSquareMeter);
 			
 			for (auto i = 0; i < 10; ++i)
 			{
@@ -116,14 +116,14 @@ public:
 
 		{
 			const auto bottom = std::make_shared<PolygonShape>(1.5f, 0.15f);
-			bottom->SetDensity(4);
+			bottom->SetDensity(RealNum{4} * KilogramPerSquareMeter);
 
 			auto left = std::make_shared<PolygonShape>();
-			left->SetDensity(4);
+			left->SetDensity(RealNum{4} * KilogramPerSquareMeter);
 			SetAsBox(*left, 0.15f, 2.7f, Vec2(-1.45f, 2.35f), 0.2_rad);
 
 			auto right = std::make_shared<PolygonShape>();
-			right->SetDensity(4);
+			right->SetDensity(RealNum{4} * KilogramPerSquareMeter);
 			SetAsBox(*right, 0.15f, 2.7f, Vec2(1.45f, 2.35f), -0.2_rad);
 
 			BodyDef bd;

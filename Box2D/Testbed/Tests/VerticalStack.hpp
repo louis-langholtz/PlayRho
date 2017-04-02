@@ -41,7 +41,7 @@ public:
 	VerticalStack()
 	{
 		m_bulletshape->SetVertexRadius(0.25f);
-		m_bulletshape->SetDensity(20.0f);
+		m_bulletshape->SetDensity(RealNum{20} * KilogramPerSquareMeter);
 		m_bulletshape->SetRestitution(0.05f);
 
 		const auto ground = m_world->CreateBody();
@@ -53,7 +53,7 @@ public:
 
 		const auto hdim = 0.1f; // 0.5f is less stable than 1.0f for boxes not at origin (x of 0)
 		const auto shape = std::make_shared<PolygonShape>(hdim, hdim);
-		shape->SetDensity(1.0f);
+		shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 		shape->SetFriction(0.3f);
 		for (auto j = 0; j < e_columnCount; ++j)
 		{

@@ -49,7 +49,7 @@ namespace box2d {
 			bd.position = Vec2(-19, 28);
 			const auto ballBody = m_world->CreateBody(bd);
 			auto conf = CircleShape::Conf{};
-			conf.density = 0.01f;
+			conf.density = RealNum{0.01f} * KilogramPerSquareMeter;
 			conf.vertexRadius = 1;
 			conf.friction = 1.0f;
 			ballBody->CreateFixture(std::make_shared<CircleShape>(conf));

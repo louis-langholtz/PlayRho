@@ -31,13 +31,13 @@ namespace box2d {
 	class CircleShape;
 	class ChainShape;
 
-	RealNum GetAreaOfCircle(RealNum radius);
-	RealNum GetAreaOfPolygon(Span<const Vec2> vertices);
+	Area GetAreaOfCircle(Length radius);
+	Area GetAreaOfPolygon(Span<const Vec2> vertices);
 
 	/// Gets the polar moment of the area enclosed by the given vertices.
 	/// @warning Behavior is undefined if given collection has less than 3 vertices.
 	/// @param vertices Collection of three or more vertices.
-	RealNum GetPolarMoment(Span<const Vec2> vertices);
+	SecondMomentOfArea GetPolarMoment(Span<const Vec2> vertices);
 
 	/// Mass data.
 	/// @detail This holds the mass data computed for a shape.
@@ -50,10 +50,10 @@ namespace box2d {
 		/// @param m Non-negative mass in kg.
 		/// @param c Position of the shape's centroid relative to the shape's origin.
 		/// @param i Non-negative rotational inertia of the shape about the local origin.
-		constexpr MassData(RealNum m, Vec2 c, RealNum i) noexcept: mass{m}, center{c}, I{i}
+		constexpr MassData(Mass m, Vec2 c, MomentOfInertia i) noexcept: mass{m}, center{c}, I{i}
 		{
-			assert(m >= 0);
-			assert(i >= 0);
+			assert(m >= Mass{0});
+			assert(i >= MomentOfInertia{0});
 		}
 				
 		/// The position of the shape's centroid relative to the shape's origin.
@@ -62,7 +62,7 @@ namespace box2d {
 		/// Mass of the shape in kilograms.
 		/// This should NEVER be a negative value.
 		/// @note Behavior is undefined if this value is negative.
-		RealNum mass;
+		Mass mass;
 
 		/// Moment of inertia.
 		/// @detail
@@ -70,7 +70,7 @@ namespace box2d {
 		/// This should NEVER be a negative value.
 		/// @note Behavior is undefined if this value is negative.
 		/// @sa https://en.wikipedia.org/wiki/Moment_of_inertia
-		RealNum I;
+		MomentOfInertia I;
 	};
 	
 	/// Computes the mass data for the given fixture.
@@ -85,35 +85,35 @@ namespace box2d {
 	/// @note Behavior is undefined if the given density is negative.
 	/// @param density Density in kilograms per meter squared (must be non-negative).
 	/// @return Mass data for this shape.
-	MassData GetMassData(const Shape& shape, RealNum density);
+	MassData GetMassData(const Shape& shape, Density density);
 
 	/// Computes the mass properties of this shape using its dimensions and density.
 	/// The inertia tensor is computed about the local origin.
 	/// @note Behavior is undefined if the given density is negative.
 	/// @param density Density in kilograms per meter squared (must be non-negative).
 	/// @return Mass data for this shape.
-	MassData GetMassData(const PolygonShape& shape, RealNum density);
+	MassData GetMassData(const PolygonShape& shape, Density density);
 	
 	/// Computes the mass properties of this shape using its dimensions and density.
 	/// The inertia tensor is computed about the local origin.
 	/// @note Behavior is undefined if the given density is negative.
 	/// @param density Density in kilograms per meter squared (must be non-negative).
 	/// @return Mass data for this shape.
-	MassData GetMassData(const EdgeShape& shape, RealNum density);
+	MassData GetMassData(const EdgeShape& shape, Density density);
 	
 	/// Computes the mass properties of this shape using its dimensions and density.
 	/// The inertia tensor is computed about the local origin.
 	/// @note Behavior is undefined if the given density is negative.
 	/// @param density Density in kilograms per meter squared (must be non-negative).
 	/// @return Mass data for this shape.
-	MassData GetMassData(const ChainShape& shape, RealNum density);
+	MassData GetMassData(const ChainShape& shape, Density density);
 	
 	/// Computes the mass properties of this shape using its dimensions and density.
 	/// The inertia tensor is computed about the local origin.
 	/// @note Behavior is undefined if the given density is negative.
 	/// @param density Density in kilograms per meter squared (must be non-negative).
 	/// @return Mass data for this shape.
-	MassData GetMassData(const CircleShape& shape, RealNum density);
+	MassData GetMassData(const CircleShape& shape, Density density);
 	
 }
 

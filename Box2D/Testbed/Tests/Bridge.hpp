@@ -38,7 +38,7 @@ public:
 
 		{
 			auto conf = PolygonShape::Conf{};
-			conf.density = 20.0f;
+			conf.density = RealNum{20} * KilogramPerSquareMeter;
 			conf.friction = 0.2f;
 			const auto shape = std::make_shared<PolygonShape>(0.5f, 0.125f, conf);
 
@@ -64,7 +64,7 @@ public:
 		}
 
 		auto polyconf = PolygonShape::Conf{};
-		polyconf.density = 1.0f;
+		polyconf.density = RealNum{1} * KilogramPerSquareMeter;
 		auto polyshape = std::make_shared<PolygonShape>(polyconf);
 		polyshape->Set({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
 		for (auto i = 0; i < 2; ++i)
@@ -77,7 +77,7 @@ public:
 		}
 
 		auto circleconf = CircleShape::Conf{};
-		circleconf.density = 1;
+		circleconf.density = RealNum{1} * KilogramPerSquareMeter;
 		circleconf.vertexRadius = 0.5f;
 		const auto circleshape = std::make_shared<CircleShape>(circleconf);
 		for (auto i = 0; i < 3; ++i)

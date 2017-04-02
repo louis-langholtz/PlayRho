@@ -59,7 +59,7 @@ public:
 			const auto body = m_world->CreateBody(bd);
 			auto conf = CircleShape::Conf{};
 			conf.vertexRadius = m_radius;
-			conf.density = 20;
+			conf.density = RealNum{20} * KilogramPerSquareMeter;
 			m_character = body->CreateFixture(std::make_shared<CircleShape>(conf));
 			body->SetVelocity(Velocity{Vec2(0.0f, -50.0f), 0_rad});
 		}

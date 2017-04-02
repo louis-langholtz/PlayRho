@@ -62,7 +62,7 @@ public:
 		vertices[2] = Vec2(0.0f, 2.0f);
 		PolygonShape polygon;
 		polygon.Set(Span<const Vec2>{vertices, 3});
-		polygon.SetDensity(1.0f);
+		polygon.SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
 		FixtureDef triangleShapeDef;
 
@@ -95,7 +95,7 @@ public:
 			bd.position = Vec2(-5.0f, 10.0f);
 			const auto body = m_world->CreateBody(bd);
 			auto conf = PolygonShape::Conf{};
-			conf.density = 1;
+			conf.density = RealNum{1} * KilogramPerSquareMeter;
 			body->CreateFixture(std::make_shared<PolygonShape>(0.5f, 1.0f, conf));
 
 			PrismaticJointDef jd;
@@ -113,7 +113,7 @@ public:
 
 		// Small box
 		polygon.SetAsBox(1.0f, 0.5f);
-		polygon.SetDensity(1.0f);
+		polygon.SetDensity(RealNum{1} * KilogramPerSquareMeter);
 		polygon.SetRestitution(0.1f);
 
 		FixtureDef boxShapeDef;
@@ -140,7 +140,7 @@ public:
 		// Small circle
 		auto circleConf = CircleShape::Conf{};
 		circleConf.vertexRadius = 1;
-		circleConf.density = 1.0f;
+		circleConf.density = RealNum{1} * KilogramPerSquareMeter;
 		auto circle = CircleShape(circleConf);
 
 		FixtureDef circleShapeDef;

@@ -34,6 +34,13 @@
 #include <boost/units/systems/si/frequency.hpp>
 #include <boost/units/systems/si/velocity.hpp>
 #include <boost/units/systems/si/mass.hpp>
+#include <boost/units/systems/si/area.hpp>
+#include <boost/units/systems/si/plane_angle.hpp>
+#include <boost/units/systems/si/second_moment_of_area.hpp>
+#include <boost/units/systems/si/areal_mass_density.hpp>
+#include <boost/units/systems/si/moment_of_inertia.hpp>
+#include <boost/units/systems/si/force.hpp>
+#include <boost/units/systems/si/torque.hpp>
 
 #include <Box2D/Common/Wider.hpp>
 #include <Box2D/Common/Fixed.hpp>
@@ -91,6 +98,26 @@ constexpr auto MeterPerSecond = LengthPerTime{boost::units::si::meter_per_second
 
 using Mass = boost::units::quantity<boost::units::si::mass, RealNum>;
 constexpr auto Kilogram = Mass{boost::units::si::kilogram * RealNum{1}};
+
+using Area = boost::units::quantity<boost::units::si::area, RealNum>;
+constexpr auto SquareMeter = Area{boost::units::si::square_meter * RealNum{1}};
+
+using Density = boost::units::quantity<boost::units::si::areal_mass_density, RealNum>;
+constexpr auto KilogramPerSquareMeter = Density{boost::units::si::kilogram_per_square_meter * RealNum{1}};
+
+using PlaneAngle = boost::units::quantity<boost::units::si::plane_angle, RealNum>;
+constexpr auto Radian = PlaneAngle{boost::units::si::radian * RealNum{1}};
+constexpr auto SquareRadian = Radian * Radian;
+
+using Force = boost::units::quantity<boost::units::si::force, RealNum>;
+constexpr auto Newton = Force{boost::units::si::newton * RealNum{1}};
+
+using Torque = boost::units::quantity<boost::units::si::torque, RealNum>;
+constexpr auto NewtonMeter = Torque{boost::units::si::newton_meter * RealNum{1}};
+
+using SecondMomentOfArea = boost::units::quantity<boost::units::si::second_moment_of_area, RealNum>;
+
+using MomentOfInertia = boost::units::quantity<boost::units::si::moment_of_inertia, RealNum>;
 
 /// Child count type. @detail Relating to "children" of Shape.
 using child_count_t = unsigned;

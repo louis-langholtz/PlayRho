@@ -60,7 +60,7 @@ public:
 			const auto rightFlipper = m_world->CreateBody(bd);
 
 			const auto box = std::make_shared<PolygonShape>(1.75f, 0.1f);
-			box->SetDensity(1.0f);
+			box->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
 			leftFlipper->CreateFixture(box);
 			rightFlipper->CreateFixture(box);
@@ -97,7 +97,7 @@ public:
 			m_ball = m_world->CreateBody(bd);
 
 			auto conf = CircleShape::Conf{};
-			conf.density = 1.0f;
+			conf.density = RealNum{1} * KilogramPerSquareMeter;
 			conf.vertexRadius = 0.2f;
 			m_ball->CreateFixture(std::make_shared<CircleShape>(conf));
 		}

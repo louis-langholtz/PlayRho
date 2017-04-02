@@ -37,7 +37,7 @@ public:
 			EdgeShape shape;
 
 			shape.Set(Vec2(-20.0f, 0.0f), Vec2(20.0f, 0.0f));
-			shape.SetDensity(0.0f);
+			shape.SetDensity(RealNum{0} * KilogramPerSquareMeter);
 			shape.SetFriction(0.6f);
 			ground->CreateFixture(std::make_shared<EdgeShape>(shape));
 
@@ -93,7 +93,7 @@ public:
 			const auto body = m_world->CreateBody(bd);
 
 			const auto box = std::make_shared<PolygonShape>(10.0f, 0.25f);
-			box->SetDensity(1);
+			box->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 			body->CreateFixture(box);
 
 			RevoluteJointDef jd(ground, body, body->GetLocation());
@@ -109,7 +109,7 @@ public:
 		{
 			const auto N = 20;
 			const auto shape = std::make_shared<PolygonShape>(1.0f, 0.125f);
-			shape->SetDensity(1.0f);
+			shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 			shape->SetFriction(0.6f);
 
 			auto prevBody = ground;
@@ -134,7 +134,7 @@ public:
 		// Boxes
 		{
 			const auto box = std::make_shared<PolygonShape>(0.5f, 0.5f);
-			box->SetDensity(0.5f);
+			box->SetDensity(RealNum{0.5f} * KilogramPerSquareMeter);
 
 			auto body = static_cast<Body*>(nullptr);
 
@@ -173,10 +173,10 @@ public:
 				Vec2(-1.15f, 0.9f),
 				Vec2(-1.5f, 0.2f)
 			});
-			chassis->SetDensity(1);
+			chassis->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
 			const auto circle = std::make_shared<CircleShape>(RealNum(0.4));
-			circle->SetDensity(1.0f);
+			circle->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 			circle->SetFriction(0.9f);
 
 			BodyDef bd;

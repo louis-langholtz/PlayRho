@@ -40,7 +40,7 @@ public:
 			const auto body = m_world->CreateBody(bd);
 			
 			auto polygonConf = PolygonShape::Conf{};
-			polygonConf.density = 5;
+			polygonConf.density = RealNum{5} * KilogramPerSquareMeter;
 			body->CreateFixture(std::make_shared<PolygonShape>(2.0f, 0.5f, polygonConf));
 
 			// Bouncy limit

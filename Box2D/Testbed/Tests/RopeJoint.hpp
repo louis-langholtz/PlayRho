@@ -40,11 +40,11 @@ public:
 
 		{
 			const auto rectangle = std::make_shared<PolygonShape>(0.5f, 0.125f);
-			rectangle->SetDensity(20.0f);
+			rectangle->SetDensity(RealNum{20} * KilogramPerSquareMeter);
 			rectangle->SetFriction(0.2f);
 
 			const auto square = std::make_shared<PolygonShape>(1.5f, 1.5f);
-			square->SetDensity(100.0f);
+			square->SetDensity(RealNum{100} * KilogramPerSquareMeter);
 			square->SetFriction(0.2f);
 
 			FixtureDef fd;

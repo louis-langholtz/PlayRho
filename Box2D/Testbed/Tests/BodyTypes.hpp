@@ -37,7 +37,7 @@ public:
 			bd.position = Vec2(0.0f, 3.0f);
 			m_attachment = m_world->CreateBody(bd);
 			auto conf = PolygonShape::Conf{};
-			conf.density = 2;
+			conf.density = RealNum{2} * KilogramPerSquareMeter;
 			m_attachment->CreateFixture(std::make_shared<PolygonShape>(0.5f, 2.0f, conf));
 		}
 
@@ -50,7 +50,7 @@ public:
 
 			auto conf = PolygonShape::Conf{};
 			conf.friction = 0.6f;
-			conf.density = 2.0f;
+			conf.density = RealNum{2} * KilogramPerSquareMeter;
 			PolygonShape shape{conf};
 			SetAsBox(shape, 0.5f, 4.0f, Vec2(4.0f, 0.0f), 0.5_rad * Pi);
 
@@ -81,7 +81,7 @@ public:
 
 			auto conf = PolygonShape::Conf{};
 			conf.friction = 0.6f;
-			conf.density = 2.0f;
+			conf.density = RealNum{2} * KilogramPerSquareMeter;
 
 			body->CreateFixture(std::make_shared<PolygonShape>(0.75f, 0.75f, conf));
 		}

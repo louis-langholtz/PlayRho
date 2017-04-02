@@ -32,7 +32,7 @@ public:
 	
 		{
 			const auto shape = std::make_shared<PolygonShape>(0.6f, 0.125f);
-			shape->SetDensity(20.0f);
+			shape->SetDensity(RealNum{20} * KilogramPerSquareMeter);
 			shape->SetFriction(0.2f);
 
 			const auto y = 25.0f;

@@ -59,7 +59,7 @@ public:
 	EdgeShapes()
 	{
 		m_circle->SetFriction(0.3f);
-		m_circle->SetDensity(20.0f);
+		m_circle->SetDensity(RealNum{20} * KilogramPerSquareMeter);
 
 		// Ground body
 		{
@@ -79,7 +79,7 @@ public:
 		for (auto i = 0; i < 4; ++i)
 		{
 			m_polygons[i].SetFriction(0.3f);
-			m_polygons[i].SetDensity(20.0f);
+			m_polygons[i].SetDensity(RealNum{20} * KilogramPerSquareMeter);
 		}
 		
 		m_polygons[0].Set({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});

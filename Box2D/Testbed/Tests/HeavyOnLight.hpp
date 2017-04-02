@@ -34,7 +34,7 @@ public:
 		}
 		
 		auto conf = CircleShape::Conf{};
-		conf.density = 10;
+		conf.density = RealNum{10} * KilogramPerSquareMeter;
 
 		BodyDef bd;
 		bd.type = BodyType::Dynamic;

@@ -69,7 +69,7 @@ public:
 				shape.Set(Span<const Vec2>(vs, 4));
 				shape.SetFriction(2.000000029802322e-01f);
 				shape.SetRestitution(0.000000000000000e+00f);
-				shape.SetDensity(1.000000000000000e+00f);
+				shape.SetDensity(RealNum{1.000000000000000e+00f} * KilogramPerSquareMeter);
 				FixtureDef fd;
 				fd.isSensor = bool(0);
 				fd.filter.categoryBits = uint16(1);
@@ -107,7 +107,7 @@ public:
 				shape.Set(Span<const Vec2>(vs, 6));
 				shape.SetFriction(5.000000000000000e-01f);
 				shape.SetRestitution(0.000000000000000e+00f);
-				shape.SetDensity(5.000000000000000e+00f);
+				shape.SetDensity(RealNum{5.000000000000000e+00f} * KilogramPerSquareMeter);
 				FixtureDef fd;
 				fd.isSensor = bool(0);
 				fd.filter.categoryBits = uint16(1);
@@ -142,7 +142,7 @@ public:
 				shape.Set(Span<const Vec2>(vs, 4));
 				shape.SetFriction(9.499999880790710e-01f);
 				shape.SetRestitution(0.000000000000000e+00f);
-				shape.SetDensity(1.000000000000000e+01f);
+				shape.SetDensity(RealNum{1.000000000000000e+01f} * KilogramPerSquareMeter);
 				FixtureDef fd;
 				fd.isSensor = bool(0);
 				fd.filter.categoryBits = uint16(1);

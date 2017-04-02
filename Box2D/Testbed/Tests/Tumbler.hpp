@@ -33,7 +33,7 @@ public:
 
 	Tumbler()
 	{
-		m_shape->SetDensity(1);
+		m_shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
 		const auto g = m_world->CreateBody(BodyDef{}.UseType(BodyType::Static));
 
@@ -42,7 +42,7 @@ public:
 										   .UseAllowSleep(false));
 
 		PolygonShape shape;
-		shape.SetDensity(5);
+		shape.SetDensity(RealNum{5} * KilogramPerSquareMeter);
 		SetAsBox(shape, 0.5f, 10.0f, Vec2( 10.0f, 0.0f), 0_rad);
 		b->CreateFixture(std::make_shared<PolygonShape>(shape));
 		SetAsBox(shape, 0.5f, 10.0f, Vec2(-10.0f, 0.0f), 0_rad);

@@ -25,7 +25,7 @@
 
 using namespace box2d;
 
-RealNum Fixture::GetDensity() const noexcept
+Density Fixture::GetDensity() const noexcept
 {
 	return m_shape->GetDensity();
 }

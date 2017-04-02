@@ -980,10 +980,10 @@ inline Position GetPosition1(const Body& body) noexcept
 /// @return Value of zero or more representing the body's mass (in kg).
 /// @sa GetInvMass.
 /// @sa SetMassData.
-inline RealNum GetMass(const Body& body) noexcept
+inline Mass GetMass(const Body& body) noexcept
 {
 	const auto invMass = body.GetInvMass();
-	return (invMass != 0)? 1 / invMass: 0;
+	return ((invMass != 0)? RealNum{1} / invMass: RealNum{0}) * Kilogram;
 }
 
 inline void ApplyLinearAcceleration(Body& body, const Vec2 amount)
@@ -1077,14 +1077,15 @@ inline RealNum GetInertia(const Body& body) noexcept
 /// @return the rotational inertia, usually in kg-m^2.
 inline RealNum GetLocalInertia(const Body& body) noexcept
 {
-	return GetInertia(body) + GetMass(body) * GetLengthSquared(body.GetLocalCenter());
+	return GetInertia(body) + RealNum{GetMass(body) / Kilogram} * GetLengthSquared(body.GetLocalCenter());
 }
 
 /// Gets the mass data of the body.
 /// @return a struct containing the mass, inertia and center of the body.
 inline MassData GetMassData(const Body& body) noexcept
 {
-	return MassData{GetMass(body), body.GetLocalCenter(), GetLocalInertia(body)};
+	const auto I = MomentOfInertia{GetLocalInertia(body) * Kilogram * SquareMeter / SquareRadian};
+	return MassData{GetMass(body), body.GetLocalCenter(), I};
 }
 
 /// Gets the linear velocity of the center of mass.
@@ -1174,7 +1175,7 @@ inline Vec2 GetLinearVelocityFromLocalPoint(const Body& body, const Vec2 localPo
 
 inline Vec2 GetForce(const Body& body) noexcept
 {
-	return body.GetLinearAcceleration() * GetMass(body);
+	return body.GetLinearAcceleration() * (GetMass(body) / Kilogram);
 }
 
 inline Angle GetTorque(const Body& body) noexcept

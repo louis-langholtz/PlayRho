@@ -73,7 +73,7 @@ public:
 			const auto body = m_world->CreateBody(bd);
 
 			auto conf = CircleShape::Conf{};
-			conf.density = 1;
+			conf.density = RealNum{1} * KilogramPerSquareMeter;
 			conf.vertexRadius = 0.5f;
 			body->CreateFixture(std::make_shared<CircleShape>(conf));
 		}
@@ -88,7 +88,7 @@ public:
 			auto shape = PolygonShape{};
 			shape.SetVertexRadius(1);
 			shape.SetAsBox(0.5f, 0.5f);
-			shape.SetDensity(1);
+			shape.SetDensity(RealNum{1} * KilogramPerSquareMeter);
 			body->CreateFixture(std::make_shared<PolygonShape>(shape));
 		}
 	}

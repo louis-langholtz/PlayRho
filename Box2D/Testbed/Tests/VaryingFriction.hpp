@@ -81,7 +81,7 @@ public:
 
 		{
 			auto shape = PolygonShape(0.5f, 0.5f);
-			shape.SetDensity(25.0f);
+			shape.SetDensity(RealNum{25} * KilogramPerSquareMeter);
 
 			float friction[5] = {std::numeric_limits<float>::infinity(), 0.5f, 0.35f, -0.1f, 0.0f};
 			for (auto i = 0; i < 5; ++i)

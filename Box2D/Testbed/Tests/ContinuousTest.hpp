@@ -47,7 +47,7 @@ public:
 			//bd.angle = 0.1f;
 
 			const auto shape = std::make_shared<PolygonShape>(2.0f, 0.1f);
-			shape->SetDensity(1);
+			shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 
 			m_body = m_world->CreateBody(bd);
 			m_body->CreateFixture(shape);

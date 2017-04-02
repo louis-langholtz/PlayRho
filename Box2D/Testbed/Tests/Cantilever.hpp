@@ -45,7 +45,7 @@ public:
 		// Creates left-end-fixed 8-part plank (below the top one)
 		{
 			auto conf = PolygonShape::Conf{};
-			conf.density = 20.0f;
+			conf.density = RealNum{20} * KilogramPerSquareMeter;
 			const auto shape = std::make_shared<PolygonShape>(0.5f, 0.125f, conf);
 
 			WeldJointDef jd;
@@ -69,7 +69,7 @@ public:
 		// Creates left-end-fixed 3-part plank at top
 		{
 			auto conf = PolygonShape::Conf{};
-			conf.density = 20.0f;
+			conf.density = RealNum{20} * KilogramPerSquareMeter;
 			const auto shape = std::make_shared<PolygonShape>(1.0f, 0.125f, conf);
 
 			WeldJointDef jd;
@@ -95,7 +95,7 @@ public:
 		// Creates 8-part plank to the right of the fixed planks (but not farthest right)
 		{
 			auto conf = PolygonShape::Conf{};
-			conf.density = 20.0f;
+			conf.density = RealNum{20} * KilogramPerSquareMeter;
 			const auto shape = std::make_shared<PolygonShape>(0.5f, 0.125f, conf);
 
 			WeldJointDef jd;
@@ -122,7 +122,7 @@ public:
 		// Creates 8-part farthest-right plank
 		{
 			auto conf = PolygonShape::Conf{};
-			conf.density = 20.0f;
+			conf.density = RealNum{20} * KilogramPerSquareMeter;
 			const auto shape = std::make_shared<PolygonShape>(0.5f, 0.125f, conf);
 
 			WeldJointDef jd;
@@ -151,7 +151,7 @@ public:
 		// Creates triangles
 		auto polyshape = std::make_shared<PolygonShape>();
 		polyshape->Set({Vec2(-0.5f, 0.0f), Vec2(0.5f, 0.0f), Vec2(0.0f, 1.5f)});
-		polyshape->SetDensity(1.0f);
+		polyshape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 		for (auto i = 0; i < 2; ++i)
 		{
 			BodyDef bd;
@@ -163,7 +163,7 @@ public:
 
 		// Creates circles
 		const auto circleshape = std::make_shared<CircleShape>(RealNum(0.5));
-		circleshape->SetDensity(1.0f);
+		circleshape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 		for (auto i = 0; i < 2; ++i)
 		{
 			BodyDef bd;

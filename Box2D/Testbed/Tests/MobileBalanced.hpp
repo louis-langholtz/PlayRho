@@ -31,7 +31,7 @@ public:
 		e_depth = 4
 	};
 
-	static constexpr auto density = 20.0f;
+	const Density density = RealNum{20} * KilogramPerSquareMeter;
 
 	MobileBalanced()
 	{
