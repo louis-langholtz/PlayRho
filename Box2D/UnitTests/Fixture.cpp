@@ -37,7 +37,7 @@ TEST(Fixture, ByteSize)
 
 TEST(Fixture, CreateMatchesDef)
 {
-	const auto density = RealNum(2);
+	const auto density = RealNum{2} * KilogramPerSquareMeter;
 	int variable;
 	const auto userData = &variable;
 	const auto friction = RealNum(0.5);

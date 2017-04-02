@@ -130,7 +130,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
 	World world{World::Def{}.UseGravity(Vec2{0, 10})};
 	
 	const auto shape = std::make_shared<CircleShape>(0.2f);
-	shape->SetDensity(1);
+	shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 	
 	const auto location1 = Vec2{-10, 10};
 	const auto body1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location1));

@@ -127,7 +127,7 @@ TEST(Body, CreateFixture)
 	invalid_friction_shape->SetFriction(-0.1f);
 	
 	const auto invalid_density_shape = std::make_shared<CircleShape>(1);
-	invalid_density_shape->SetDensity(std::numeric_limits<RealNum>::quiet_NaN());
+	invalid_density_shape->SetDensity(std::numeric_limits<RealNum>::quiet_NaN() * KilogramPerSquareMeter);
 	
 	const auto invalid_restitution_shape = std::make_shared<CircleShape>(1);
 	invalid_restitution_shape->SetRestitution(std::numeric_limits<RealNum>::quiet_NaN());
@@ -157,7 +157,7 @@ TEST(Body, CreateAndDestroyFixture)
 	auto conf = CircleShape::Conf{};
 	conf.vertexRadius = 2.871f;
 	conf.location = Vec2{1.912f, -77.31f};
-	conf.density = 1;
+	conf.density = RealNum{1} * KilogramPerSquareMeter;
 	const auto shape = std::make_shared<CircleShape>(conf);
 	
 	auto fixture = body->CreateFixture(shape, FixtureDef{}, false);
@@ -196,7 +196,7 @@ TEST(Body, CreateLotsOfFixtures)
 	auto conf = CircleShape::Conf{};
 	conf.vertexRadius = 2.871f;
 	conf.location = Vec2{1.912f, -77.31f};
-	conf.density = 1.3f;
+	conf.density = RealNum{1.3f} * KilogramPerSquareMeter;
 	const auto shape = std::make_shared<CircleShape>(conf);
 	const auto num = 5000;
 	std::chrono::time_point<std::chrono::system_clock> start, end;

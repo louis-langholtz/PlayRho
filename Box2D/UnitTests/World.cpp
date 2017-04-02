@@ -164,16 +164,16 @@ TEST(World, DynamicEdgeBodyHasCorrectMass)
 	conf.v3 = GetInvalid<Vec2>();
 	conf.vertexRadius = 1;
 	const auto shape = std::make_shared<EdgeShape>(v1, v2, conf);
-	shape->SetDensity(1);
+	shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 	ASSERT_EQ(shape->GetVertexRadius(), RealNum(1));
 	ASSERT_EQ(shape->GetType(), Shape::e_edge);
 
 	const auto fixture = body->CreateFixture(shape);
 	ASSERT_NE(fixture, nullptr);
-	ASSERT_EQ(fixture->GetDensity(), RealNum(1));
+	ASSERT_EQ(fixture->GetDensity(), RealNum{1} * KilogramPerSquareMeter);
 
-	const auto circleMass = fixture->GetDensity() * Pi * Square(shape->GetVertexRadius());
-	const auto rectMass = fixture->GetDensity() * shape->GetVertexRadius() * 2 * GetLength(v2 - v1);
+	const auto circleMass = RealNum{fixture->GetDensity() / KilogramPerSquareMeter} * Pi * Square(shape->GetVertexRadius());
+	const auto rectMass = RealNum{fixture->GetDensity() / KilogramPerSquareMeter} * shape->GetVertexRadius() * 2 * GetLength(v2 - v1);
 	const auto totalMass = circleMass + rectMass;
 	
 	EXPECT_EQ(body->GetType(), BodyType::Dynamic);
@@ -510,7 +510,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 	body_def.bullet = true;
 	
 	const auto shape = std::make_shared<CircleShape>(1);
-	shape->SetDensity(1);
+	shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 	shape->SetRestitution(1);
 	
 	body_def.position = Vec2{-x, 0};
@@ -577,7 +577,7 @@ TEST(World, PerfectlyOverlappedSameCirclesStayPut)
 {
 	const auto radius = RealNum(1);
 	const auto shape = std::make_shared<CircleShape>(radius);
-	shape->SetDensity(1);
+	shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 	shape->SetRestitution(1); // changes where bodies will be after collision
 	const Vec2 gravity{0, 0};
 
@@ -621,11 +621,11 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 	const auto radius2 = RealNum(0.6);
 	
 	const auto shape1 = std::make_shared<CircleShape>(radius1);
-	shape1->SetDensity(1);
+	shape1->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 	shape1->SetRestitution(1); // changes where bodies will be after collision
 	
 	const auto shape2 = std::make_shared<CircleShape>(radius2);
-	shape2->SetDensity(1);
+	shape2->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 	shape2->SetRestitution(1); // changes where bodies will be after collision
 
 	const Vec2 gravity{0, 0};
@@ -678,7 +678,7 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
 	body_def.type = BodyType::Dynamic;
 	body_def.position = Vec2{RealNum(0), RealNum(0)};
 	const auto shape = std::make_shared<CircleShape>(1);
-	shape->SetDensity(1);
+	shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 	shape->SetRestitution(1);
 	for (auto i = 0; i < 2; ++i)
 	{
@@ -716,7 +716,7 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
 	auto shape = std::make_shared<PolygonShape>();
 	shape->SetVertexRadius(1);
 	shape->SetAsBox(2, 2);
-	shape->SetDensity(1);
+	shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 	shape->SetRestitution(1);
 	for (auto i = 0; i < 2; ++i)
 	{
@@ -750,7 +750,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 	body_def.bullet = false; // separation is faster if true.
 	
 	const auto shape = std::make_shared<CircleShape>(radius);
-	shape->SetDensity(1);
+	shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 	shape->SetRestitution(1); // changes where bodies will be after collision
 	
 	const auto body1pos = Vec2{-radius/4, 0};
@@ -843,7 +843,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
 {
 	const auto shape = std::make_shared<PolygonShape>(1, 1);
-	shape->SetDensity(1);
+	shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 	shape->SetRestitution(1); // changes where bodies will be after collision
 
 	const Vec2 gravity{0, 0};
@@ -918,7 +918,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	
 	const auto half_dim = RealNum(64); // 1 causes additional y-axis separation
 	const auto shape = std::make_shared<PolygonShape>(half_dim, half_dim);
-	shape->SetDensity(1);
+	shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 	shape->SetRestitution(1); // changes where bodies will be after collision
 	
 	const auto body1pos = Vec2{RealNum(half_dim/2), RealNum(0)}; // 0 causes additional y-axis separation
@@ -1077,7 +1077,7 @@ TEST(World, CollidingDynamicBodies)
 	world.SetContactListener(&listener);
 	
 	const auto shape = std::make_shared<CircleShape>(radius);
-	shape->SetDensity(1);
+	shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 	shape->SetRestitution(1); // changes where bodies will be after collision
 
 	body_def.position = Vec2{-(x + 1), 0};
@@ -1230,7 +1230,7 @@ TEST(World, TilesComesToRestInUnder7secs)
 	{
 		const auto a = 0.5f;
 		const auto shape = std::make_shared<PolygonShape>(a, a);
-		shape->SetDensity(5);
+		shape->SetDensity(RealNum{5} * KilogramPerSquareMeter);
 		
 		Vec2 x(-7.0f, 0.75f);
 		Vec2 y;
@@ -1334,7 +1334,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 	
 	const auto ball_radius = RealNum(.01);
 	const auto circle_shape = std::make_shared<CircleShape>(ball_radius);
-	circle_shape->SetDensity(1);
+	circle_shape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 	circle_shape->SetRestitution(1); // changes where bodies will be after collision
 	const auto ball_fixture = ball_body->CreateFixture(circle_shape);
 	ASSERT_NE(ball_fixture, nullptr);
@@ -1520,7 +1520,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 	
 	const auto ball_radius = RealNum(half_box_width / 4);
 	const auto object_shape = std::make_shared<PolygonShape>(ball_radius, ball_radius);
-	object_shape->SetDensity(10);
+	object_shape->SetDensity(RealNum{10} * KilogramPerSquareMeter);
 	{
 		const auto ball_fixture = ball_body->CreateFixture(object_shape);
 		ASSERT_NE(ball_fixture, nullptr);
@@ -1555,7 +1555,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 		mjd.bodyB = ball_body;
 		const auto ball_body_pos = ball_body->GetLocation();
 		mjd.target = Vec2{ball_body_pos.x - ball_radius / 2, ball_body_pos.y + ball_radius / 2};
-		mjd.maxForce = RealNum(1000) * GetMass(*ball_body);
+		mjd.maxForce = RealNum(1000) * RealNum{GetMass(*ball_body) / Kilogram};
 		return static_cast<MouseJoint*>(world.CreateJoint(mjd));
 	}();
 	ASSERT_NE(mouse_joint, nullptr);
@@ -1970,7 +1970,7 @@ public:
 		original_x = GetParam();
 		
 		const auto boxShape = std::make_shared<PolygonShape>(hdim, hdim);
-		boxShape->SetDensity(1);
+		boxShape->SetDensity(RealNum{1} * KilogramPerSquareMeter);
 		boxShape->SetFriction(0.3f);
 		for (auto i = decltype(numboxes){0}; i < numboxes; ++i)
 		{
