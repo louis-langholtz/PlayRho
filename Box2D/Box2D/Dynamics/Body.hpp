@@ -1038,12 +1038,12 @@ inline void SetTorque(Body& body, const Torque torque) noexcept
 /// @note This affects the angular velocity without affecting the linear velocity of the center of mass.
 /// @note Non-zero forces wakes up the body.
 /// @param torque about the z-axis (out of the screen), usually in N-m.
-inline void ApplyTorque(Body& body, const RealNum torque) noexcept
+inline void ApplyTorque(Body& body, const Torque torque) noexcept
 {
 	const auto linAccel = body.GetLinearAcceleration();
 	const auto invRotI = body.GetInvRotInertia();
 	const auto intRotInertiaUnitless = invRotI * (SquareMeter * Kilogram / SquareRadian);
-	const auto angAccel = body.GetAngularAcceleration() + Radian * torque * intRotInertiaUnitless;
+	const auto angAccel = body.GetAngularAcceleration() + RealNum{torque / NewtonMeter} * intRotInertiaUnitless * Radian;
 	body.SetAcceleration(linAccel, angAccel);
 }
 
@@ -1190,9 +1190,9 @@ inline Vec2 GetForce(const Body& body) noexcept
 	return body.GetLinearAcceleration() * (GetMass(body) / Kilogram);
 }
 
-inline Angle GetTorque(const Body& body) noexcept
+inline Torque GetTorque(const Body& body) noexcept
 {
-	return body.GetAngularAcceleration() * RealNum{GetRotInertia(body) * SquareRadian / (SquareMeter * Kilogram)};
+	return body.GetAngularAcceleration() * GetRotInertia(body) / (Second * Second);
 }
 
 /// Gets the velocity of the body after the given time accounting for the body's acceleration.

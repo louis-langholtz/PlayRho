@@ -149,13 +149,13 @@ public:
 
 		case Key_A:
 			{
-				ApplyTorque(*m_body, 50.0f);
+				ApplyTorque(*m_body, 50.0f * NewtonMeter);
 			}
 			break;
 
 		case Key_D:
 			{
-				ApplyTorque(*m_body, -50.0f);
+				ApplyTorque(*m_body, -50.0f * NewtonMeter);
 			}
 			break;
 
