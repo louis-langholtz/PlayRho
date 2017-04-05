@@ -101,7 +101,7 @@ Body::Body(const BodyDef& bd, World* world):
 	m_xf{bd.position, UnitVec2{bd.angle}},
 	m_world{world},
 	m_sweep{Position{bd.position, bd.angle}},
-	m_invMass{(bd.type == BodyType::Dynamic)? RealNum{1}: RealNum{0}},
+	m_invMass{(bd.type == BodyType::Dynamic)? InverseMass{RealNum{1} / Kilogram}: InverseMass{0}},
 	m_linearDamping{bd.linearDamping},
 	m_angularDamping{bd.angularDamping},
 	m_userData{bd.userData}
@@ -162,10 +162,10 @@ void Body::ResetMassData()
 
 	// Force all dynamic bodies to have a positive mass.
 	const auto mass = (massData.mass > Mass{0})? massData.mass: Kilogram;
-	m_invMass = RealNum{Kilogram / mass};
+	m_invMass = RealNum{1} / mass;
 	
 	// Compute center of mass.
-	const auto localCenter = massData.center * m_invMass;
+	const auto localCenter = massData.center * RealNum{m_invMass * Kilogram};
 	
 	if ((massData.I > MomentOfInertia{0}) && (!IsFixedRotation()))
 	{
@@ -204,7 +204,7 @@ void Body::SetMassData(const MassData& massData)
 	}
 
 	const auto mass = (massData.mass > Mass{0})? massData.mass: Kilogram;
-	m_invMass = RealNum{Kilogram / mass};
+	m_invMass = RealNum{1} / mass;
 
 	if ((massData.I > MomentOfInertia{0}) && (!IsFixedRotation()))
 	{

@@ -56,7 +56,7 @@ namespace box2d {
 		void PreStep(const Settings&, Drawer&) override
 		{
 			const auto force = GetCentripetalForce(*m_orbiter, m_center);
-			const auto linAccel = force * m_orbiter->GetInvMass();
+			const auto linAccel = force * RealNum{m_orbiter->GetInvMass() * Kilogram};
 			const auto angAccel = 0.0f * Degree;
 			m_orbiter->SetAcceleration(linAccel, angAccel);
 		}

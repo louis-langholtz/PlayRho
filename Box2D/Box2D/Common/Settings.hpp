@@ -36,10 +36,11 @@
 #include <boost/units/systems/si/frequency.hpp>
 #include <boost/units/systems/si/velocity.hpp>
 #include <boost/units/systems/si/mass.hpp>
+#include <boost/units/systems/si/inverse_mass.hpp>
 #include <boost/units/systems/si/area.hpp>
 #include <boost/units/systems/si/plane_angle.hpp>
 #include <boost/units/systems/si/second_moment_of_area.hpp>
-#include <boost/units/systems/si/areal_mass_density.hpp>
+#include <boost/units/systems/si/surface_density.hpp>
 #include <boost/units/systems/si/moment_of_inertia.hpp>
 #include <boost/units/systems/si/force.hpp>
 #include <boost/units/systems/si/torque.hpp>
@@ -106,10 +107,12 @@ constexpr auto MeterPerSecond = LengthPerTime{boost::units::si::meter_per_second
 using Mass = boost::units::quantity<boost::units::si::mass, RealNum>;
 constexpr auto Kilogram = Mass{boost::units::si::kilogram * RealNum{1}};
 
+using InverseMass = boost::units::quantity<boost::units::si::inverse_mass, RealNum>;
+
 using Area = boost::units::quantity<boost::units::si::area, RealNum>;
 constexpr auto SquareMeter = Area{boost::units::si::square_meter * RealNum{1}};
 
-using Density = boost::units::quantity<boost::units::si::areal_mass_density, RealNum>;
+using Density = boost::units::quantity<boost::units::si::surface_density, RealNum>;
 constexpr auto KilogramPerSquareMeter = Density{boost::units::si::kilogram_per_square_meter * RealNum{1}};
 
 using Angle = boost::units::quantity<boost::units::si::plane_angle, RealNum>;
@@ -143,6 +146,8 @@ constexpr auto MeterPerSecond = RealNum{1};
 
 using Mass = RealNum;
 constexpr auto Kilogram = RealNum{1};
+
+using InverseMass = RealNum;
 
 using Area = RealNum;
 constexpr auto SquareMeter = RealNum{1};
@@ -404,6 +409,18 @@ template <>
 inline bool IsValid(const Angle& x) noexcept
 {
 	return IsValid(RealNum{x / Radian});
+}
+
+template <>
+constexpr inline InverseMass GetInvalid<InverseMass>() noexcept
+{
+	return GetInvalid<RealNum>() / Kilogram;
+}
+
+template <>
+inline bool IsValid(const InverseMass& x) noexcept
+{
+	return IsValid(RealNum{x * Kilogram});
 }
 #endif
 

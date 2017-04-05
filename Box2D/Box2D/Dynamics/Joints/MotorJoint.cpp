@@ -61,11 +61,11 @@ void MotorJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
 	auto& bodiesB = bodies.at(GetBodyB());
 
 	m_localCenterA = bodiesA.GetLocalCenter();
-	m_invMassA = bodiesA.GetInvMass();
+	m_invMassA = RealNum{bodiesA.GetInvMass() * Kilogram};
 	m_invIA = bodiesA.GetInvRotInertia();
 
 	m_localCenterB = bodiesB.GetLocalCenter();
-	m_invMassB = bodiesB.GetInvMass();
+	m_invMassB = RealNum{bodiesB.GetInvMass() * Kilogram};
 	m_invIB = bodiesB.GetInvRotInertia();
 
 	const auto posA = bodiesA.GetPosition();

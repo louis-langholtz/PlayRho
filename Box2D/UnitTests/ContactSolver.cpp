@@ -45,8 +45,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
-	auto bA = BodyConstraint{RealNum(1), RealNum(1), lcA, old_pA, old_vA};
-	auto bB = BodyConstraint{RealNum(1), RealNum(1), lcB, old_pB, old_vB};
+	auto bA = BodyConstraint{RealNum(1) / Kilogram, RealNum(1), lcA, old_pA, old_vA};
+	auto bB = BodyConstraint{RealNum(1) / Kilogram, RealNum(1), lcB, old_pB, old_vB};
 	const auto pc = PositionConstraint{manifold, bA, RealNum{0}, bB, RealNum{0}};
 	
 	const auto conf = ConstraintSolverConf{};
@@ -80,8 +80,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
 	
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
-	auto bA = BodyConstraint{RealNum(1), RealNum(1), lcA, old_pA, old_vA};
-	auto bB = BodyConstraint{RealNum(1), RealNum(1), lcB, old_pB, old_vB};
+	auto bA = BodyConstraint{RealNum(1) / Kilogram, RealNum(1), lcA, old_pA, old_vA};
+	auto bB = BodyConstraint{RealNum(1) / Kilogram, RealNum(1), lcB, old_pB, old_vB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 	
 	const auto conf = ConstraintSolverConf{};
@@ -114,8 +114,8 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
 	const auto old_pB = Position{Vec2{0, 0}, RealNum{0} * Degree};
 	const auto old_vA = Velocity{};
 	const auto old_vB = Velocity{};
-	auto bA = BodyConstraint{RealNum(1), RealNum(1), lcA, old_pA, old_vA};
-	auto bB = BodyConstraint{RealNum(1), RealNum(1), lcB, old_pB, old_vB};
+	auto bA = BodyConstraint{RealNum(1) / Kilogram, RealNum(1), lcA, old_pA, old_vA};
+	auto bB = BodyConstraint{RealNum(1) / Kilogram, RealNum(1), lcB, old_pB, old_vB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 
 	const auto maxLinearCorrection = std::numeric_limits<RealNum>::infinity();
@@ -158,8 +158,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
 	
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
-	auto bA = BodyConstraint{RealNum(1), RealNum(1), lcA, old_pA, old_vA};
-	auto bB = BodyConstraint{RealNum(1), RealNum(1), lcB, old_pB, old_vB};
+	auto bA = BodyConstraint{RealNum(1) / Kilogram, RealNum(1), lcA, old_pA, old_vA};
+	auto bB = BodyConstraint{RealNum(1) / Kilogram, RealNum(1), lcB, old_pB, old_vB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 	
 	const auto maxLinearCorrection = std::numeric_limits<RealNum>::infinity();
@@ -203,8 +203,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
 	
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
-	auto bA = BodyConstraint{RealNum(1), RealNum(1), lcA, old_pA, old_vA};
-	auto bB = BodyConstraint{RealNum(1), RealNum(1), lcB, old_pB, old_vB};
+	auto bA = BodyConstraint{RealNum(1) / Kilogram, RealNum(1), lcA, old_pA, old_vA};
+	auto bB = BodyConstraint{RealNum(1) / Kilogram, RealNum(1), lcB, old_pB, old_vB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 	
 	const auto maxLinearCorrection = std::numeric_limits<RealNum>::infinity();
@@ -248,8 +248,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
 	
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
-	auto bA = BodyConstraint{RealNum(1), RealNum(1), lcA, old_pA, old_vA};
-	auto bB = BodyConstraint{RealNum(1), RealNum(1), lcB, old_pB, old_vB};
+	auto bA = BodyConstraint{RealNum(1) / Kilogram, RealNum(1), lcA, old_pA, old_vA};
+	auto bB = BodyConstraint{RealNum(1) / Kilogram, RealNum(1), lcB, old_pB, old_vB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 	
 	const auto maxLinearCorrection = std::numeric_limits<RealNum>::infinity();
@@ -306,8 +306,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
 	
 	const auto lcA = Vec2{0, 0};
 	const auto lcB = Vec2{0, 0};
-	auto bA = BodyConstraint{RealNum(1), RealNum(1), lcA, old_pA, old_vA};
-	auto bB = BodyConstraint{RealNum(1), RealNum(1), lcB, old_pB, old_vB};
+	auto bA = BodyConstraint{RealNum(1) / Kilogram, RealNum(1), lcA, old_pA, old_vA};
+	auto bB = BodyConstraint{RealNum(1) / Kilogram, RealNum(1), lcB, old_pB, old_vB};
 	const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
 
 	const auto maxLinearCorrection = std::numeric_limits<RealNum>::infinity();
@@ -356,8 +356,8 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
 
 	const auto lcA = Vec2{};
 	const auto lcB = Vec2{};
-	auto bA = BodyConstraint{RealNum(1), RealNum(1), lcA, old_pA, old_vA};
-	auto bB = BodyConstraint{RealNum(1), RealNum(1), lcB, old_pB, old_vB};
+	auto bA = BodyConstraint{RealNum(1) / Kilogram, RealNum(1), lcA, old_pA, old_vA};
+	auto bB = BodyConstraint{RealNum(1) / Kilogram, RealNum(1), lcB, old_pB, old_vB};
 	const auto pc = PositionConstraint{manifold, bA, GetVertexRadius(shape), bB, GetVertexRadius(shape)};
 	
 	const auto conf = ConstraintSolverConf{};

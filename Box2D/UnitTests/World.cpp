@@ -171,8 +171,8 @@ TEST(World, DynamicEdgeBodyHasCorrectMass)
 	ASSERT_NE(fixture, nullptr);
 	ASSERT_EQ(fixture->GetDensity(), RealNum{1} * KilogramPerSquareMeter);
 
-	const auto circleMass = RealNum{fixture->GetDensity() / KilogramPerSquareMeter} * Pi * Square(shape->GetVertexRadius());
-	const auto rectMass = RealNum{fixture->GetDensity() / KilogramPerSquareMeter} * shape->GetVertexRadius() * 2 * GetLength(v2 - v1);
+	const auto circleMass = fixture->GetDensity() * (Pi * Square(shape->GetVertexRadius())) * SquareMeter;
+	const auto rectMass = fixture->GetDensity() * (shape->GetVertexRadius() * 2 * GetLength(v2 - v1)) * SquareMeter;
 	const auto totalMass = circleMass + rectMass;
 	
 	EXPECT_EQ(body->GetType(), BodyType::Dynamic);

@@ -281,11 +281,11 @@ namespace {
 			{
 				const auto P = GetNormalImpulseAtPoint(vc, j) * normal + GetTangentImpulseAtPoint(vc, j) * tangent;
 				vp.a -= Velocity{
-					vc.bodyA.GetInvMass() * P,
+					RealNum{vc.bodyA.GetInvMass() * Kilogram} * P,
 					Radian * vc.bodyA.GetInvRotInertia() * Cross(GetPointRelPosA(vc, j), P)
 				};
 				vp.b += Velocity{
-					vc.bodyB.GetInvMass() * P,
+					RealNum{vc.bodyB.GetInvMass() * Kilogram} * P,
 					Radian * vc.bodyB.GetInvRotInertia() * Cross(GetPointRelPosB(vc, j), P)
 				};
 			}

@@ -37,7 +37,7 @@ namespace box2d {
 		
 		BodyConstraint() = default;
 		
-		constexpr BodyConstraint(RealNum invMass, RealNum invRotI, Vec2 localCenter,
+		constexpr BodyConstraint(InverseMass invMass, RealNum invRotI, Vec2 localCenter,
 								 Position position, Velocity velocity) noexcept:
 			m_position{position},
 			m_velocity{velocity},
@@ -48,11 +48,11 @@ namespace box2d {
 			assert(IsValid(position));
 			assert(IsValid(velocity));
 			assert(IsValid(localCenter));
-			assert(invMass >= 0);
+			assert(invMass >= InverseMass{0});
 			assert(invRotI >= 0);
 		}
 				
-		RealNum GetInvMass() const noexcept;
+		InverseMass GetInvMass() const noexcept;
 		
 		RealNum GetInvRotInertia() const noexcept;
 		
@@ -70,11 +70,11 @@ namespace box2d {
 		Position m_position; ///< Body position data.
 		Velocity m_velocity; ///< Body velocity data.
 		Vec2 m_localCenter; ///< Local center of the associated body's sweep (8-bytes).
-		RealNum m_invMass; ///< Inverse mass of associated body (a non-negative value, 4-bytes).
+		InverseMass m_invMass; ///< Inverse mass of associated body (a non-negative value, 4-bytes).
 		RealNum m_invRotI; ///< Inverse rotational inertia about the center of mass of the associated body (a non-negative value, 4-bytes).
 	};
 	
-	inline RealNum BodyConstraint::GetInvMass() const noexcept
+	inline InverseMass BodyConstraint::GetInvMass() const noexcept
 	{
 		return m_invMass;
 	}

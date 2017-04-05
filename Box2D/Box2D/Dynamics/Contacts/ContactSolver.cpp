@@ -143,10 +143,10 @@ static inline RealNum SolveTangentConstraint(VelocityConstraint& vc)
 			const auto P = solution.magnitude * solution.direction;
 			const auto vcp = vc.GetPointAt(1);
 			vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() - Velocity{
-				vc.bodyA.GetInvMass() * P, Radian * vc.bodyA.GetInvRotInertia() * Cross(vcp.rA, P)
+				RealNum{vc.bodyA.GetInvMass() * Kilogram} * P, Radian * vc.bodyA.GetInvRotInertia() * Cross(vcp.rA, P)
 			});
 			vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + Velocity{
-				vc.bodyB.GetInvMass() * P, Radian * vc.bodyB.GetInvRotInertia() * Cross(vcp.rB, P)
+				RealNum{vc.bodyB.GetInvMass() * Kilogram} * P, Radian * vc.bodyB.GetInvRotInertia() * Cross(vcp.rB, P)
 			});
 			vc.SetTangentImpulseAtPoint(1, vcp.tangentImpulse + solution.magnitude);
 			maxIncImpulse = std::max(maxIncImpulse, std::abs(solution.magnitude));
@@ -158,10 +158,10 @@ static inline RealNum SolveTangentConstraint(VelocityConstraint& vc)
 			const auto P = solution.magnitude * solution.direction;
 			const auto vcp = vc.GetPointAt(0);
 			vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() - Velocity{
-				vc.bodyA.GetInvMass() * P, Radian * vc.bodyA.GetInvRotInertia() * Cross(vcp.rA, P)
+				RealNum{vc.bodyA.GetInvMass() * Kilogram} * P, Radian * vc.bodyA.GetInvRotInertia() * Cross(vcp.rA, P)
 			});
 			vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + Velocity{
-				vc.bodyB.GetInvMass() * P, Radian * vc.bodyB.GetInvRotInertia() * Cross(vcp.rB, P)
+				RealNum{vc.bodyB.GetInvMass() * Kilogram} * P, Radian * vc.bodyB.GetInvRotInertia() * Cross(vcp.rB, P)
 			});
 			vc.SetTangentImpulseAtPoint(0, vcp.tangentImpulse + solution.magnitude);
 			maxIncImpulse = std::max(maxIncImpulse, std::abs(solution.magnitude));
@@ -187,10 +187,10 @@ static inline RealNum SeqSolveNormalConstraint(VelocityConstraint& vc)
 			const auto P = solution.magnitude * solution.direction;
 			const auto vcp = vc.GetPointAt(1);
 			vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() - Velocity{
-				vc.bodyA.GetInvMass() * P, Radian * vc.bodyA.GetInvRotInertia() * Cross(vcp.rA, P)
+				RealNum{vc.bodyA.GetInvMass() * Kilogram} * P, Radian * vc.bodyA.GetInvRotInertia() * Cross(vcp.rA, P)
 			});
 			vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + Velocity{
-				vc.bodyB.GetInvMass() * P, Radian * vc.bodyB.GetInvRotInertia() * Cross(vcp.rB, P)
+				RealNum{vc.bodyB.GetInvMass() * Kilogram} * P, Radian * vc.bodyB.GetInvRotInertia() * Cross(vcp.rB, P)
 			});
 			vc.SetNormalImpulseAtPoint(1, vcp.normalImpulse + solution.magnitude);
 			maxIncImpulse = std::max(maxIncImpulse, std::abs(solution.magnitude));
@@ -202,10 +202,10 @@ static inline RealNum SeqSolveNormalConstraint(VelocityConstraint& vc)
 			const auto P = solution.magnitude * solution.direction;
 			const auto vcp = vc.GetPointAt(0);
 			vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() - Velocity{
-				vc.bodyA.GetInvMass() * P, Radian * vc.bodyA.GetInvRotInertia() * Cross(vcp.rA, P)
+				RealNum{vc.bodyA.GetInvMass() * Kilogram} * P, Radian * vc.bodyA.GetInvRotInertia() * Cross(vcp.rA, P)
 			});
 			vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + Velocity{
-				vc.bodyB.GetInvMass() * P, Radian * vc.bodyB.GetInvRotInertia() * Cross(vcp.rB, P)
+				RealNum{vc.bodyB.GetInvMass() * Kilogram} * P, Radian * vc.bodyB.GetInvRotInertia() * Cross(vcp.rB, P)
 			});
 			vc.SetNormalImpulseAtPoint(0, vcp.normalImpulse + solution.magnitude);
 			maxIncImpulse = std::max(maxIncImpulse, std::abs(solution.magnitude));
@@ -227,11 +227,11 @@ static inline VelocityPair ApplyImpulses(const VelocityConstraint& vc, const Vec
 	const auto P = P0 + P1;
 	return VelocityPair{
 		-Velocity{
-			vc.bodyA.GetInvMass() * P,
+			RealNum{vc.bodyA.GetInvMass() * Kilogram} * P,
 			Radian * vc.bodyA.GetInvRotInertia() * (Cross(GetPointRelPosA(vc, 0), P0) + Cross(GetPointRelPosA(vc, 1), P1))
 		},
 		+Velocity{
-			vc.bodyB.GetInvMass() * P,
+			RealNum{vc.bodyB.GetInvMass() * Kilogram} * P,
 			Radian * vc.bodyB.GetInvRotInertia() * (Cross(GetPointRelPosB(vc, 0), P0) + Cross(GetPointRelPosB(vc, 1), P1))
 		}
 	};
@@ -485,11 +485,11 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 	assert(IsValid(conf.linearSlop));
 	assert(IsValid(conf.maxLinearCorrection));
 	
-	const auto invMassA = pc.bodyA.GetInvMass() * moveA;
+	const auto invMassA = RealNum{pc.bodyA.GetInvMass() * Kilogram} * moveA;
 	const auto invInertiaA = pc.bodyA.GetInvRotInertia() * moveA;
 	const auto localCenterA = pc.bodyA.GetLocalCenter();
 	
-	const auto invMassB = pc.bodyB.GetInvMass() * moveB;
+	const auto invMassB = RealNum{pc.bodyB.GetInvMass() * Kilogram} * moveB;
 	const auto invInertiaB = pc.bodyB.GetInvRotInertia() * moveB;
 	const auto localCenterB = pc.bodyB.GetLocalCenter();
 	

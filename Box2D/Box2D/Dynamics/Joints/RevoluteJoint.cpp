@@ -70,13 +70,13 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraints& bodies,
 	auto& bodiesB = bodies.at(GetBodyB());
 
 	m_localCenterA = bodiesA.GetLocalCenter();
-	m_invMassA = bodiesA.GetInvMass();
+	m_invMassA = RealNum{bodiesA.GetInvMass() * Kilogram};
 	m_invIA = bodiesA.GetInvRotInertia();
 	const auto aA = bodiesA.GetPosition().angular;
 	auto velA = bodiesA.GetVelocity();
 
 	m_localCenterB = bodiesB.GetLocalCenter();
-	m_invMassB = bodiesB.GetInvMass();
+	m_invMassB = RealNum{bodiesB.GetInvMass() * Kilogram};
 	m_invIB = bodiesB.GetInvRotInertia();
 	const auto aB = bodiesB.GetPosition().angular;
 	auto velB = bodiesB.GetVelocity();

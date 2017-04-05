@@ -136,25 +136,25 @@ void GearJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
 	auto& bodiesD = bodies.at(m_bodyD);
 
 	m_lcA = bodiesA.GetLocalCenter();
-	m_mA = bodiesA.GetInvMass();
+	m_mA = RealNum{bodiesA.GetInvMass() * Kilogram};
 	m_iA = bodiesA.GetInvRotInertia();
 	auto velA = bodiesA.GetVelocity();
 	const auto aA = bodiesA.GetPosition().angular;
 
 	m_lcB = bodiesB.GetLocalCenter();
-	m_mB = bodiesB.GetInvMass();
+	m_mB = RealNum{bodiesB.GetInvMass() * Kilogram};
 	m_iB = bodiesB.GetInvRotInertia();
 	auto velB = bodiesB.GetVelocity();
 	const auto aB = bodiesB.GetPosition().angular;
 
 	m_lcC = bodiesC.GetLocalCenter();
-	m_mC = bodiesC.GetInvMass();
+	m_mC = RealNum{bodiesC.GetInvMass() * Kilogram};
 	m_iC = bodiesC.GetInvRotInertia();
 	auto velC = bodiesC.GetVelocity();
 	const auto aC = bodiesC.GetPosition().angular;
 
 	m_lcD = bodiesD.GetLocalCenter();
-	m_mD = bodiesD.GetInvMass();
+	m_mD = RealNum{bodiesD.GetInvMass() * Kilogram};
 	m_iD = bodiesD.GetInvRotInertia();
 	auto velD = bodiesD.GetVelocity();
 	const auto aD = bodiesD.GetPosition().angular;
