@@ -171,10 +171,11 @@ public:
 		const auto length = GetLength(impulse);
 		if ( length > m_maxLateralImpulse )
 			impulse *= m_maxLateralImpulse / length;
-		ApplyLinearImpulse(*m_body, m_currentTraction * impulse, m_body->GetWorldCenter() );
+		ApplyLinearImpulse(*m_body, m_currentTraction * impulse, m_body->GetWorldCenter());
 		
 		//angular velocity
-		ApplyAngularImpulse(*m_body, m_currentTraction * 0.1f * GetRotInertia(*m_body) * -GetAngularVelocity(*m_body) / Radian );
+		const auto rotInertia = GetRotInertia(*m_body) * SquareRadian / (SquareMeter * Kilogram);
+		ApplyAngularImpulse(*m_body, m_currentTraction * 0.1f * rotInertia * -GetAngularVelocity(*m_body) / Radian);
 		
 		//forward linear velocity
 		auto currentForwardNormal = getForwardVelocity();

@@ -115,7 +115,7 @@ public:
 
 				body->CreateFixture(shape);
 
-				const auto I = GetLocalInertia(*body);
+				const auto I = GetLocalInertia(*body) * SquareRadian / (SquareMeter * Kilogram);
 				const auto mass = RealNum{GetMass(*body) / Kilogram};
 
 				// For a circle: I = 0.5 * m * r * r ==> r = sqrt(2 * I / m)
