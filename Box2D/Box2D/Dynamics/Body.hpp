@@ -1068,7 +1068,7 @@ Vec2 GetCentripetalForce(const Body& body, const Vec2 axis);
 
 /// Gets the rotational inertia of the body.
 /// @return the rotational inertia, usually in kg-m^2.
-inline RealNum GetInertia(const Body& body) noexcept
+inline RealNum GetRotInertia(const Body& body) noexcept
 {
 	return RealNum{1} / body.GetInvRotInertia();
 }
@@ -1077,7 +1077,7 @@ inline RealNum GetInertia(const Body& body) noexcept
 /// @return the rotational inertia, usually in kg-m^2.
 inline RealNum GetLocalInertia(const Body& body) noexcept
 {
-	return GetInertia(body) + RealNum{GetMass(body) / Kilogram} * GetLengthSquared(body.GetLocalCenter());
+	return GetRotInertia(body) + RealNum{GetMass(body) / Kilogram} * GetLengthSquared(body.GetLocalCenter());
 }
 
 /// Gets the mass data of the body.
@@ -1180,7 +1180,7 @@ inline Vec2 GetForce(const Body& body) noexcept
 
 inline Angle GetTorque(const Body& body) noexcept
 {
-	return body.GetAngularAcceleration() * GetInertia(body);;
+	return body.GetAngularAcceleration() * GetRotInertia(body);;
 }
 
 /// Gets the velocity of the body after the given time accounting for the body's acceleration.
