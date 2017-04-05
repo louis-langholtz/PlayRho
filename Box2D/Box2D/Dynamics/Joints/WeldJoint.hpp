@@ -42,7 +42,7 @@ struct WeldJointDef : public JointDef
 	Vec2 localAnchorB = Vec2_zero;
 
 	/// The bodyB angle minus bodyA angle in the reference state (radians).
-	Angle referenceAngle = 0_rad;
+	Angle referenceAngle = Angle{0};
 	
 	/// The mass-spring-damper frequency in Hertz. Rotation only.
 	/// Disable softness with a value of 0.

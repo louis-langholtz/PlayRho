@@ -35,9 +35,9 @@ namespace box2d {
 				const auto pipeRadius = 20.0f;
 				for (auto i = 0; i < 90; ++i)
 				{
-					const auto angle = (i * 2 + 180) * 1_deg;
-					const auto x = pipeRadius * Cos(angle);
-					const auto y = pipeRadius * Sin(angle);
+					const auto angle = RealNum{((i * 2 + 180.0f) * Degree) / Radian};
+					const auto x = pipeRadius * std::cos(angle);
+					const auto y = pipeRadius * std::sin(angle);
 					vertices.push_back(Vec2{x, y + 20});
 				}
 				pipeShape->CreateChain(Span<const Vec2>(vertices.data(), vertices.size()));

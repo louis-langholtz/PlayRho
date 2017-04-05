@@ -55,11 +55,11 @@ public:
 	{
 		const auto offset = Vec2{RealNum(-35), RealNum(70)};
 		const auto sweepA = Sweep{
-			Position{Vec2(24.0f, -60.0f) + offset, 2.95_rad}
+			Position{Vec2(24.0f, -60.0f) + offset, 2.95f * Radian}
 		};
 		const auto sweepB = Sweep{
-			Position{Vec2(53.474274f, -50.252514f) + offset, 513.36676_rad},
-			Position{Vec2(54.595478f, -51.083473f) + offset, 513.62781_rad}
+			Position{Vec2(53.474274f, -50.252514f) + offset, 513.36676f * Radian},
+			Position{Vec2(54.595478f, -51.083473f) + offset, 513.62781f * Radian}
 		};
 
 		const auto output = TimeOfImpact(GetDistanceProxy(m_shapeA, 0), sweepA,

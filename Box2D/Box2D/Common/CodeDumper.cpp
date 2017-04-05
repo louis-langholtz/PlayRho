@@ -93,9 +93,9 @@ void box2d::Dump(const Body& body, size_t bodyIndex)
 	log("  BodyDef bd;\n");
 	log("  bd.type = BodyType(%d);\n", body.GetType());
 	log("  bd.position = Vec2(%.15lef, %.15lef);\n", static_cast<double>(body.GetLocation().x), static_cast<double>(body.GetLocation().y));
-	log("  bd.angle = %.15lef;\n", body.GetAngle());
+	log("  bd.angle = %.15lef;\n", double{RealNum{body.GetAngle() / Radian}});
 	log("  bd.linearVelocity = Vec2(%.15lef, %.15lef);\n", static_cast<double>(body.GetVelocity().linear.x), static_cast<double>(body.GetVelocity().linear.y));
-	log("  bd.angularVelocity = %.15lef;\n", static_cast<double>(body.GetVelocity().angular / 1_rad));
+	log("  bd.angularVelocity = %.15lef;\n", static_cast<double>(body.GetVelocity().angular / Radian));
 	log("  bd.linearDamping = %.15lef;\n", static_cast<double>(body.GetLinearDamping()));
 	log("  bd.angularDamping = %.15lef;\n", static_cast<double>(body.GetAngularDamping()));
 	log("  bd.allowSleep = bool(%d);\n", body.IsSleepingAllowed());
@@ -276,7 +276,7 @@ void box2d::Dump(const MotorJoint& joint, size_t index)
 	log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
 	log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
 	log("  jd.linearOffset = Vec2(%.15lef, %.15lef);\n", joint.GetLinearOffset().x, joint.GetLinearOffset().y);
-	log("  jd.angularOffset = %.15lef;\n", joint.GetAngularOffset());
+	log("  jd.angularOffset = %.15lef;\n", double{RealNum{joint.GetAngularOffset() / Radian}});
 	log("  jd.maxForce = %.15lef;\n", joint.GetMaxForce());
 	log("  jd.maxTorque = %.15lef;\n", joint.GetMaxTorque());
 	log("  jd.correctionFactor = %.15lef;\n", joint.GetCorrectionFactor());
@@ -305,7 +305,7 @@ void box2d::Dump(const PrismaticJoint& joint, size_t index)
 	log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorA().x, joint.GetLocalAnchorA().y);
 	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorB().x, joint.GetLocalAnchorB().y);
 	log("  jd.localAxisA = Vec2(%.15lef, %.15lef);\n", GetX(joint.GetLocalAxisA()), GetY(joint.GetLocalAxisA()));
-	log("  jd.referenceAngle = %.15lef;\n", joint.GetReferenceAngle());
+	log("  jd.referenceAngle = %.15lef;\n", double{RealNum{joint.GetReferenceAngle() / Radian}});
 	log("  jd.enableLimit = bool(%d);\n", joint.IsLimitEnabled());
 	log("  jd.lowerTranslation = %.15lef;\n", joint.GetLowerLimit());
 	log("  jd.upperTranslation = %.15lef;\n", joint.GetUpperLimit());
@@ -339,10 +339,10 @@ void box2d::Dump(const RevoluteJoint& joint, size_t index)
 	log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
 	log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorA().x, joint.GetLocalAnchorA().y);
 	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorB().x, joint.GetLocalAnchorB().y);
-	log("  jd.referenceAngle = %.15lef;\n", joint.GetReferenceAngle());
+	log("  jd.referenceAngle = %.15lef;\n", double{RealNum{joint.GetReferenceAngle() / Radian}});
 	log("  jd.enableLimit = bool(%d);\n", joint.IsLimitEnabled());
-	log("  jd.lowerAngle = %.15lef;\n", joint.GetLowerLimit());
-	log("  jd.upperAngle = %.15lef;\n", joint.GetUpperLimit());
+	log("  jd.lowerAngle = %.15lef;\n", double{RealNum{joint.GetLowerLimit() / Radian}});
+	log("  jd.upperAngle = %.15lef;\n", double{RealNum{joint.GetUpperLimit() / Radian}});
 	log("  jd.enableMotor = bool(%d);\n", joint.IsMotorEnabled());
 	log("  jd.motorSpeed = %.15lef;\n", joint.GetMotorSpeed());
 	log("  jd.maxMotorTorque = %.15lef;\n", joint.GetMaxMotorTorque());
@@ -369,7 +369,7 @@ void box2d::Dump(const WeldJoint& joint, size_t index)
 	log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
 	log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorA().x, joint.GetLocalAnchorA().y);
 	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorB().x, joint.GetLocalAnchorB().y);
-	log("  jd.referenceAngle = %.15lef;\n", joint.GetReferenceAngle());
+	log("  jd.referenceAngle = %.15lef;\n", double{RealNum{joint.GetReferenceAngle() / Radian}});
 	log("  jd.frequencyHz = %.15lef;\n", joint.GetFrequency());
 	log("  jd.dampingRatio = %.15lef;\n", joint.GetDampingRatio());
 	log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
@@ -385,7 +385,7 @@ void box2d::Dump(const WheelJoint& joint, size_t index)
 	log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAnchorB().x, joint.GetLocalAnchorB().y);
 	log("  jd.localAxisA = Vec2(%.15lef, %.15lef);\n", joint.GetLocalAxisA().x, joint.GetLocalAxisA().y);
 	log("  jd.enableMotor = bool(%d);\n", joint.IsMotorEnabled());
-	log("  jd.motorSpeed = %.15lef;\n", joint.GetMotorSpeed());
+	log("  jd.motorSpeed = %.15lef;\n", double{RealNum{joint.GetMotorSpeed() / Radian}});
 	log("  jd.maxMotorTorque = %.15lef;\n", joint.GetMaxMotorTorque());
 	log("  jd.frequencyHz = %.15lef;\n", joint.GetSpringFrequencyHz());
 	log("  jd.dampingRatio = %.15lef;\n", joint.GetSpringDampingRatio());

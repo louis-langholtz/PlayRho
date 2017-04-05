@@ -43,8 +43,8 @@ static void Draw(Drawer& drawer, const CircleShape& shape, const Transformation&
 static void DrawCorner(Drawer& drawer, Vec2 p, RealNum r, Angle a0, Angle a1, Color color)
 {
 	const auto angleDiff = GetRevRotationalAngle(a0, a1);
-	auto lastAngle = 0_deg;
-	for (auto angle = 5_deg; angle < angleDiff; angle += 5_deg)
+	auto lastAngle = Angle{0};
+	for (auto angle = Degree * RealNum{5}; angle < angleDiff; angle += Degree * RealNum{5})
 	{
 		const auto c0 = p + r * UnitVec2(a0 + lastAngle);
 		const auto c1 = p + r * UnitVec2(a0 + angle);
@@ -155,7 +155,7 @@ static void Draw(Drawer& drawer, const PolygonShape& shape, const Transformation
 	}
 	else if (vertexCount == 1)
 	{
-		DrawCorner(drawer, vertices[0], r, 0_deg, 360_deg, skinColor);
+		DrawCorner(drawer, vertices[0], r, RealNum{0} * Degree, RealNum{360} * Degree, skinColor);
 	}
 }
 
@@ -539,7 +539,7 @@ void Test::LaunchBomb(const Vec2& position, const Vec2& linearVelocity)
 	}
 
 	m_bomb = m_world->CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(position).UseBullet(true));
-	m_bomb->SetVelocity(Velocity{linearVelocity, 0_rad});
+	m_bomb->SetVelocity(Velocity{linearVelocity, Angle{0}});
 	
 	auto conf = CircleShape::Conf{};
 	conf.vertexRadius = 0.3f;
@@ -693,7 +693,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	stepConf.maxSubSteps           = static_cast<StepConf::iteration_type>(settings.maxSubSteps);
 	
 	stepConf.maxTranslation = static_cast<decltype(stepConf.maxTranslation)>(settings.maxTranslation);
-	stepConf.maxRotation = settings.maxRotation * 1_deg;
+	stepConf.maxRotation = settings.maxRotation * Degree;
 	
 	stepConf.linearSlop = settings.linearSlop;
 	stepConf.angularSlop = settings.angularSlop;
@@ -703,7 +703,7 @@ void Test::Step(const Settings& settings, Drawer& drawer)
 	stepConf.tolerance = settings.linearSlop / 4;
 	
 	stepConf.maxLinearCorrection = settings.maxLinearCorrection;
-	stepConf.maxAngularCorrection = (settings.maxAngularCorrection * 1_deg) / 1_rad;
+	stepConf.maxAngularCorrection = (settings.maxAngularCorrection * Degree) / Radian;
 	stepConf.regResolutionRate = settings.regPosResRate / 100.0f;
 	stepConf.toiResolutionRate = settings.toiPosResRate / 100.0f;
 	if (!settings.enableSleep)

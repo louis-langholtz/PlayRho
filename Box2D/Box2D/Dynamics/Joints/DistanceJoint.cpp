@@ -154,8 +154,8 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraints& bodies,
 		m_impulse *= step.dtRatio;
 
 		const auto P = m_impulse * m_u;
-		velA -= Velocity{m_invMassA * P, 1_rad * m_invIA * Cross(m_rA, P)};
-		velB += Velocity{m_invMassB * P, 1_rad * m_invIB * Cross(m_rB, P)};
+		velA -= Velocity{m_invMassA * P, Radian * m_invIA * Cross(m_rA, P)};
+		velB += Velocity{m_invMassB * P, Radian * m_invIB * Cross(m_rB, P)};
 	}
 	else
 	{
@@ -175,16 +175,16 @@ RealNum DistanceJoint::SolveVelocityConstraints(BodyConstraints& bodies, const S
 	auto velB = bodiesB.GetVelocity();
 
 	// Cdot = dot(u, v + cross(w, r))
-	const auto vpA = velA.linear + GetRevPerpendicular(m_rA) * velA.angular.ToRadians();
-	const auto vpB = velB.linear + GetRevPerpendicular(m_rB) * velB.angular.ToRadians();
+	const auto vpA = velA.linear + GetRevPerpendicular(m_rA) * RealNum{velA.angular / Radian};
+	const auto vpB = velB.linear + GetRevPerpendicular(m_rB) * RealNum{velB.angular / Radian};
 	const auto Cdot = Dot(m_u, vpB - vpA);
 
 	const auto impulse = -m_mass * (Cdot + m_bias + m_invGamma * m_impulse);
 	m_impulse += impulse;
 
 	const auto P = impulse * m_u;
-	velA -= Velocity{m_invMassA * P, 1_rad * m_invIA * Cross(m_rA, P)};
-	velB += Velocity{m_invMassB * P, 1_rad * m_invIB * Cross(m_rB, P)};
+	velA -= Velocity{m_invMassA * P, Radian * m_invIA * Cross(m_rA, P)};
+	velB += Velocity{m_invMassB * P, Radian * m_invIB * Cross(m_rB, P)};
 
 	bodiesA.SetVelocity(velA);
 	bodiesB.SetVelocity(velB);
@@ -220,8 +220,8 @@ bool DistanceJoint::SolvePositionConstraints(BodyConstraints& bodies, const Cons
 	const auto impulse = -m_mass * C;
 	const auto P = impulse * u;
 
-	posA -= Position{m_invMassA * P, 1_rad * m_invIA * Cross(rA, P)};
-	posB += Position{m_invMassB * P, 1_rad * m_invIB * Cross(rB, P)};
+	posA -= Position{m_invMassA * P, Radian * m_invIA * Cross(rA, P)};
+	posB += Position{m_invMassB * P, Radian * m_invIB * Cross(rB, P)};
 
 	bodiesA.SetPosition(posA);
 	bodiesB.SetPosition(posB);

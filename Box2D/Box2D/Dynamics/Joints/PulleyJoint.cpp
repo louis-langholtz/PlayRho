@@ -141,8 +141,8 @@ void PulleyJoint::InitVelocityConstraints(BodyConstraints& bodies,
 		const auto PA = -(m_impulse) * m_uA;
 		const auto PB = (-m_ratio * m_impulse) * m_uB;
 
-		velA += Velocity{m_invMassA * PA, 1_rad * m_invIA * Cross(m_rA, PA)};
-		velB += Velocity{m_invMassB * PB, 1_rad * m_invIB * Cross(m_rB, PB)};
+		velA += Velocity{m_invMassA * PA, Radian * m_invIA * Cross(m_rA, PA)};
+		velB += Velocity{m_invMassB * PB, Radian * m_invIB * Cross(m_rB, PB)};
 	}
 	else
 	{
@@ -161,8 +161,8 @@ RealNum PulleyJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Ste
 	auto velA = bodiesA.GetVelocity();
 	auto velB = bodiesB.GetVelocity();
 
-	const auto vpA = velA.linear + GetRevPerpendicular(m_rA) * velA.angular.ToRadians();
-	const auto vpB = velB.linear + GetRevPerpendicular(m_rB) * velB.angular.ToRadians();
+	const auto vpA = velA.linear + GetRevPerpendicular(m_rA) * RealNum{velA.angular / Radian};
+	const auto vpB = velB.linear + GetRevPerpendicular(m_rB) * RealNum{velB.angular / Radian};
 
 	const auto Cdot = -Dot(m_uA, vpA) - m_ratio * Dot(m_uB, vpB);
 	const auto impulse = -m_mass * Cdot;
@@ -170,8 +170,8 @@ RealNum PulleyJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Ste
 
 	const auto PA = -impulse * m_uA;
 	const auto PB = -m_ratio * impulse * m_uB;
-	velA += Velocity{m_invMassA * PA, 1_rad * m_invIA * Cross(m_rA, PA)};
-	velB += Velocity{m_invMassB * PB, 1_rad * m_invIB * Cross(m_rB, PB)};
+	velA += Velocity{m_invMassA * PA, Radian * m_invIA * Cross(m_rA, PA)};
+	velB += Velocity{m_invMassB * PB, Radian * m_invIB * Cross(m_rB, PB)};
 
 	bodiesA.SetVelocity(velA);
 	bodiesB.SetVelocity(velB);
@@ -220,8 +220,8 @@ bool PulleyJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constr
 	const auto PA = -impulse * uA;
 	const auto PB = -m_ratio * impulse * uB;
 
-	posA += Position{m_invMassA * PA, 1_rad * m_invIA * Cross(rA, PA)};
-	posB += Position{m_invMassB * PB, 1_rad * m_invIB * Cross(rB, PB)};
+	posA += Position{m_invMassA * PA, Radian * m_invIA * Cross(rA, PA)};
+	posB += Position{m_invMassB * PB, Radian * m_invIB * Cross(rB, PB)};
 
 	bodiesA.SetPosition(posA);
 	bodiesB.SetPosition(posB);

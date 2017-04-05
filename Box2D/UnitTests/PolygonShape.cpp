@@ -150,7 +150,7 @@ TEST(PolygonShape, Translate)
 	ASSERT_EQ(shape.GetNormal(3) * 1, Vec2(0, -1));
 	
 	const auto new_ctr = Vec2{-3, 67};
-	shape.Transform(Transformation{new_ctr, UnitVec2{0_deg}});
+	shape.Transform(Transformation{new_ctr, UnitVec2{RealNum{0} * Degree}});
 	
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(shape.GetCentroid(), new_ctr);
@@ -201,7 +201,7 @@ TEST(PolygonShape, SetAsZeroCenteredRotatedBox)
 	const auto hx = RealNum(2.3);
 	const auto hy = RealNum(54.1);
 	PolygonShape shape;
-	SetAsBox(shape, hx, hy, Vec2_zero, 0_deg);
+	SetAsBox(shape, hx, hy, Vec2_zero, RealNum{0} * Degree);
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(shape.GetCentroid(), Vec2(0, 0));
 	EXPECT_EQ(GetChildCount(shape), child_count_t(1));
@@ -229,7 +229,7 @@ TEST(PolygonShape, SetAsCenteredBox)
 	PolygonShape shape;
 	const auto x_off = RealNum(10.2);
 	const auto y_off = RealNum(-5);
-	SetAsBox(shape, hx, hy, Vec2(x_off, y_off), 0_deg);
+	SetAsBox(shape, hx, hy, Vec2(x_off, y_off), RealNum{0} * Degree);
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);
 	EXPECT_EQ(shape.GetCentroid(), Vec2(x_off, y_off));
 	EXPECT_EQ(GetChildCount(shape), child_count_t(1));
@@ -255,7 +255,7 @@ TEST(PolygonShape, SetAsBoxAngledDegrees90)
 	const auto hx = RealNum(2.3);
 	const auto hy = RealNum(54.1);
 	PolygonShape shape;
-	const auto angle = 90_deg;
+	const auto angle = 90.0f * Degree;
 	SetAsBox(shape, hx, hy, Vec2_zero, angle);
 
 	EXPECT_EQ(shape.GetType(), Shape::e_polygon);

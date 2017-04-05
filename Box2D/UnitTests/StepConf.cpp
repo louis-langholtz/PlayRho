@@ -89,7 +89,7 @@ TEST(StepConf, maxRotation)
 	const auto inc = v - n;
 	ASSERT_GT(inc, RealNum(0));
 	ASSERT_LT(inc, RealNum(1));
-	const auto max_inc = inc * StepConf{}.maxRotation / 1_rad;
+	const auto max_inc = inc * StepConf{}.maxRotation / Radian;
 	EXPECT_GT(max_inc, RealNum(0));
 	EXPECT_LT(max_inc, DefaultAngularSlop / 2);
 #if 0

@@ -37,7 +37,7 @@ public:
 		m_body = m_world->CreateBody(bd);
 
 		PolygonShape shape;
-		SetAsBox(shape, 4.0f, 4.0f, Vec2(0.0f, 0.0f), 0_rad);
+		SetAsBox(shape, 4.0f, 4.0f, Vec2(0.0f, 0.0f), Angle{0});
 		shape.SetDensity(RealNum{10} * KilogramPerSquareMeter);
 		m_fixture1 = m_body->CreateFixture(std::make_shared<PolygonShape>(shape));
 

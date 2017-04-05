@@ -240,22 +240,22 @@ TEST(Math, Vec2NegationAndRotationIsOrderIndependent)
 {
 	{
 		const auto v = Vec2{RealNum(1), RealNum(1)};
-		const auto r = UnitVec2{0_deg};
+		const auto r = UnitVec2{RealNum{0} * Degree};
 		EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
 	}
 	{
 		const auto v = Vec2{RealNum(1), RealNum(1)};
-		const auto r = UnitVec2{33_deg};
+		const auto r = UnitVec2{33.0f * Degree};
 		EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
 	}
 	{
 		const auto v = Vec2{RealNum(-3.2), RealNum(1.9)};
-		const auto r = UnitVec2{33_deg};
+		const auto r = UnitVec2{33.0f * Degree};
 		EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
 	}
 	{
 		const auto v = Vec2{RealNum(-3.2), RealNum(-21.4)};
-		for (auto angle = -360_deg; angle < 360_deg; angle += 15_deg)
+		for (auto angle = -360.0f * Degree; angle < 360.0f * Degree; angle += 15.0f * Degree)
 		{
 			const auto r = UnitVec2{angle};
 			EXPECT_EQ(Rotate(-v, r), -Rotate(v, r));
@@ -263,12 +263,12 @@ TEST(Math, Vec2NegationAndRotationIsOrderIndependent)
 	}
 	{
 		const auto v = Vec2{RealNum(-3.2), RealNum(1.9)};
-		const auto r = UnitVec2{33_deg};
+		const auto r = UnitVec2{33.0f * Degree};
 		EXPECT_EQ(Rotate(v, r), -Rotate(-v, r));
 	}
 	{
 		const auto v = Vec2{RealNum(-3.2), RealNum(1.9)};
-		const auto r = UnitVec2{33_deg};
+		const auto r = UnitVec2{33.0f * Degree};
 		EXPECT_EQ(Rotate(v, r), -Rotate(v, -r));
 	}
 }
@@ -277,7 +277,7 @@ TEST(Math, InverseRotationRevertsRotation)
 {
 	const auto vec_list = {Vec2{-10.7f, 5.3f}, Vec2{3.2f, 21.04f}, Vec2{-1.2f, -0.78f}};
 	for (auto&& vec: vec_list) {
-		for (auto angle = 0_deg; angle < 360_deg; angle += 10_deg)
+		for (auto angle = RealNum{0} * Degree; angle < 360.0f * Degree; angle += 10.0f * Degree)
 		{
 			const auto unit_vec = UnitVec2{angle};
 			EXPECT_NEAR(double(GetX(InverseRotate(Rotate(vec, unit_vec), unit_vec))), double(GetX(vec)), 0.004);
@@ -290,7 +290,7 @@ TEST(Math, TransformIsRotatePlusTranslate)
 {
 	const auto vector = Vec2{RealNum(19), RealNum(-0.5)};
 	const auto translation = Vec2{RealNum(-3), RealNum(+5)};
-	const auto rotation = UnitVec2{90_deg};
+	const auto rotation = UnitVec2{90.0f * Degree};
 	const auto transformation = Transformation{translation, rotation};
 	
 	const auto transformed_vector = Transform(vector, transformation);
@@ -304,7 +304,7 @@ TEST(Math, InverseTransformIsUntranslateAndInverseRotate)
 {
 	const auto vector = Vec2{RealNum(19), RealNum(-0.5)};
 	const auto translation = Vec2{RealNum(-3), RealNum(+5)};
-	const auto rotation = UnitVec2{90_deg};
+	const auto rotation = UnitVec2{90.0f * Degree};
 	const auto transformation = Transformation{translation, rotation};
 	
 	const auto inv_vector = InverseTransform(vector, transformation);
@@ -318,7 +318,7 @@ TEST(Math, InverseTransformTransformedIsOriginal)
 {
 	const auto vector = Vec2{RealNum(19), RealNum(-0.5)};
 	const auto translation = Vec2{RealNum(-3), RealNum(+5)};
-	const auto rotation = UnitVec2{90_deg};
+	const auto rotation = UnitVec2{90.0f * Degree};
 	const auto transformation = Transformation{translation, rotation};
 
 	const auto transformed_vector = Transform(vector, transformation);
@@ -332,7 +332,7 @@ TEST(Math, TransformInverseTransformedIsOriginal)
 {
 	const auto vector = Vec2{RealNum(19), RealNum(-0.5)};
 	const auto translation = Vec2{RealNum(-3), RealNum(+5)};
-	const auto rotation = UnitVec2{90_deg};
+	const auto rotation = UnitVec2{90.0f * Degree};
 	const auto transformation = Transformation{translation, rotation};
 
 	const auto inverse_transformed_vector = InverseTransform(vector, transformation);
@@ -497,8 +497,8 @@ TEST(Math, ComputeCentroidOfHexagonalVertices)
 
 TEST(Math, GetContactRelVelocity)
 {
-	const auto velA = Velocity{Vec2(+1, +4), 3.2_rad};
-	const auto velB = Velocity{Vec2(+3, +1), 0.4_rad};
+	const auto velA = Velocity{Vec2(+1, +4), 3.2f * Radian};
+	const auto velB = Velocity{Vec2(+3, +1), 0.4f * Radian};
 	const auto relA = Vec2(0, 0);
 	const auto relB = Vec2(0, 0);
 	const auto result = GetContactRelVelocity(velA, relA, velB, relB);
@@ -608,7 +608,7 @@ TEST(Math, GetPosition)
 	const auto y = RealNum{5.515012264251709e+00f};
 	const auto value = RealNum{0.0866042823f};
 
-	const auto oldPos = Position{Vec2{x, y}, 0.0_rad};
+	const auto oldPos = Position{Vec2{x, y}, 0.0f * Radian};
 	const auto newPos = GetPosition(oldPos, oldPos, value);
 	
 	EXPECT_EQ(oldPos.linear.x, newPos.linear.x);

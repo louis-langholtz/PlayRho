@@ -54,7 +54,7 @@ public:
 		// Chain shape
 		{
 			BodyDef bd;
-			bd.angle = 0.25_rad * Pi;
+			bd.angle = 0.25f * Radian * Pi;
 			const auto ground = m_world->CreateBody(bd);
 
 			Vec2 vs[4];
@@ -75,11 +75,11 @@ public:
 			const auto ground = m_world->CreateBody(bd);
 
 			PolygonShape shape;
-			SetAsBox(shape, 1.0f, 1.0f, Vec2(4.0f, 3.0f), 0.0_rad);
+			SetAsBox(shape, 1.0f, 1.0f, Vec2(4.0f, 3.0f), 0.0f * Radian);
 			ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-			SetAsBox(shape, 1.0f, 1.0f, Vec2(6.0f, 3.0f), 0.0_rad);
+			SetAsBox(shape, 1.0f, 1.0f, Vec2(6.0f, 3.0f), 0.0f * Radian);
 			ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-			SetAsBox(shape, 1.0f, 1.0f, Vec2(8.0f, 3.0f), 0.0_rad);
+			SetAsBox(shape, 1.0f, 1.0f, Vec2(8.0f, 3.0f), 0.0f * Radian);
 			ground->CreateFixture(std::make_shared<PolygonShape>(shape));
 		}
 

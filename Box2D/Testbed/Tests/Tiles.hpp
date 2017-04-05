@@ -53,7 +53,7 @@ public:
 				for (auto i = 0; i < N; ++i)
 				{
 					PolygonShape shape;
-					SetAsBox(shape, a, a, position, 0_rad);
+					SetAsBox(shape, a, a, position, Angle{0});
 					ground->CreateFixture(std::make_shared<PolygonShape>(shape));
 					++m_fixtureCount;
 					position.x += 2.0f * a;

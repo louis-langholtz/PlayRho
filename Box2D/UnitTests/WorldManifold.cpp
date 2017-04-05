@@ -44,8 +44,8 @@ TEST(WorldManifold, default_construction)
 TEST(WorldManifold, GetWorldManifoldForCirclesTouchingManifold)
 {
 	const auto manifold = Manifold::GetForCircles(Vec2{0, 0}, 0, Vec2{0, 0}, 0);
-	const auto xfA = Transformation{Vec2{4-1, 0}, UnitVec2{0_deg}};
-	const auto xfB = Transformation{Vec2{4+1, 0}, UnitVec2{0_deg}};
+	const auto xfA = Transformation{Vec2{4-1, 0}, UnitVec2{RealNum{0} * Degree}};
+	const auto xfB = Transformation{Vec2{4+1, 0}, UnitVec2{RealNum{0} * Degree}};
 	const auto rA = RealNum(1);
 	const auto rB = RealNum(1);
 	const auto wm = GetWorldManifold(manifold, xfA, rA, xfB, rB);
@@ -60,8 +60,8 @@ TEST(WorldManifold, GetWorldManifoldForCirclesTouchingManifold)
 TEST(WorldManifold, GetWorldManifoldForCirclesHalfOverlappingManifold)
 {
 	const auto manifold = Manifold::GetForCircles(Vec2{0, 0}, 0, Vec2{0, 0}, 0);
-	const auto xfA = Transformation{Vec2{7-0.5, 0}, UnitVec2{0_deg}};
-	const auto xfB = Transformation{Vec2{7+0.5, 0}, UnitVec2{0_deg}};
+	const auto xfA = Transformation{Vec2{7-0.5, 0}, UnitVec2{RealNum{0} * Degree}};
+	const auto xfB = Transformation{Vec2{7+0.5, 0}, UnitVec2{RealNum{0} * Degree}};
 	const auto rA = RealNum(1);
 	const auto rB = RealNum(1);
 	const auto wm = GetWorldManifold(manifold, xfA, rA, xfB, rB);
@@ -76,8 +76,8 @@ TEST(WorldManifold, GetWorldManifoldForCirclesHalfOverlappingManifold)
 TEST(WorldManifold, GetWorldManifoldForCirclesFullyOverlappingManifold)
 {
 	const auto manifold = Manifold::GetForCircles(Vec2{0, 0}, 0, Vec2{0, 0}, 0);
-	const auto xfA = Transformation{Vec2{3-0, 0}, UnitVec2{0_deg}};
-	const auto xfB = Transformation{Vec2{3+0, 0}, UnitVec2{0_deg}};
+	const auto xfA = Transformation{Vec2{3-0, 0}, UnitVec2{RealNum{0} * Degree}};
+	const auto xfB = Transformation{Vec2{3+0, 0}, UnitVec2{RealNum{0} * Degree}};
 	const auto rA = RealNum(1);
 	const auto rB = RealNum(1);
 	const auto wm = GetWorldManifold(manifold, xfA, rA, xfB, rB);

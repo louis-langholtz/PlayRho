@@ -50,16 +50,16 @@ struct RevoluteJointDef : public JointDef
 	Vec2 localAnchorB = Vec2_zero;
 
 	/// The bodyB angle minus bodyA angle in the reference state (radians).
-	Angle referenceAngle = 0_rad;
+	Angle referenceAngle = Angle{0};
 
 	/// A flag to enable joint limits.
 	bool enableLimit = false;
 
 	/// The lower angle for the joint limit (radians).
-	Angle lowerAngle = 0_rad;
+	Angle lowerAngle = Angle{0};
 
 	/// The upper angle for the joint limit (radians).
-	Angle upperAngle = 0_rad;
+	Angle upperAngle = Angle{0};
 
 	/// A flag to enable the joint motor.
 	bool enableMotor = false;

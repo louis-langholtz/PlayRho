@@ -178,7 +178,7 @@ public:
 
 		const auto x = RandomFloat(-2.0f, 2.0f);
 		bd.position = Vec2(x, 10.0f);
-		bd.angle = 1_rad * RandomFloat(-Pi, Pi);
+		bd.angle = Radian * RandomFloat(-Pi, Pi);
 
 		if (index == 4)
 		{

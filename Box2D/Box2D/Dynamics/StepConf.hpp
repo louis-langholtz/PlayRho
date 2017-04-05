@@ -21,7 +21,6 @@
 #define B2_STEP_CONF_HPP
 
 #include <Box2D/Common/Settings.hpp>
-#include <Box2D/Common/Angle.hpp>
 
 namespace box2d {
 
@@ -160,7 +159,7 @@ public:
 	/// @note This limit is very large and is used to prevent numerical problems.
 	/// You shouldn't need to adjust this.
 	/// @note Used in both the regular and TOI phases of step processing.
-	Angle maxRotation = 1_rad * Pi / 2;
+	Angle maxRotation = Radian * (Pi / 2);
 
 	/// Maximum linear correction.
 	/// @note Must be greater than 0 for any positional resolution to get done.

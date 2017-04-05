@@ -174,7 +174,7 @@ public:
 		ApplyLinearImpulse(*m_body, m_currentTraction * impulse, m_body->GetWorldCenter() );
 		
 		//angular velocity
-		ApplyAngularImpulse(*m_body, m_currentTraction * 0.1f * GetInertia(*m_body) * -GetAngularVelocity(*m_body) / 1_rad );
+		ApplyAngularImpulse(*m_body, m_currentTraction * 0.1f * GetInertia(*m_body) * -GetAngularVelocity(*m_body) / Radian );
 		
 		//forward linear velocity
 		auto currentForwardNormal = getForwardVelocity();
@@ -210,14 +210,14 @@ public:
 	
 	void updateTurn(ControlStateType controlState)
 	{
-		float desiredTorque = 0;
+		auto desiredTorque = RealNum{0} * NewtonMeter;
 		switch ( controlState & (TDC_LEFT|TDC_RIGHT) )
 		{
-			case TDC_LEFT:  desiredTorque = 15;  break;
-			case TDC_RIGHT: desiredTorque = -15; break;
+			case TDC_LEFT:  desiredTorque = RealNum{+15} * NewtonMeter; break;
+			case TDC_RIGHT: desiredTorque = RealNum{-15} * NewtonMeter; break;
 			default: ;//nothing
 		}
-		SetTorque(*m_body, desiredTorque );
+		SetTorque(*m_body, desiredTorque);
 	}
 };
 
@@ -256,8 +256,8 @@ public:
 		RevoluteJointDef jointDef;
 		jointDef.bodyA = m_body;
 		jointDef.enableLimit = true;
-		jointDef.lowerAngle = 0_deg;
-		jointDef.upperAngle = 0_deg;
+		jointDef.lowerAngle = 0.0f * Degree;
+		jointDef.upperAngle = 0.0f * Degree;
 		jointDef.localAnchorB = Vec2{0, 0}; //center of tire
 		
 		const auto maxForwardSpeed = 250.0f;
@@ -320,10 +320,10 @@ public:
 		}
 		
 		//control steering
-		const auto lockAngle = 35_deg;
-		const auto turnSpeedPerSec = 160_deg;//from lock to lock in 0.5 sec
+		const auto lockAngle = 35.0f * Degree;
+		const auto turnSpeedPerSec = 160.0f * Degree;//from lock to lock in 0.5 sec
 		const auto turnPerTimeStep = turnSpeedPerSec / 60.0f;
-		auto desiredAngle = 0_deg;
+		auto desiredAngle = 0.0f * Degree;
 		switch ( controlState & (TDC_LEFT|TDC_RIGHT) ) {
 			case TDC_LEFT:  desiredAngle = lockAngle;  break;
 			case TDC_RIGHT: desiredAngle = -lockAngle; break;
@@ -331,7 +331,7 @@ public:
 		}
 		const auto angleNow = GetJointAngle(*flJoint);
 		auto angleToTurn = desiredAngle - angleNow;
-		angleToTurn = Clamp( angleToTurn / 1_rad, -turnPerTimeStep / 1_rad, turnPerTimeStep / 1_rad) * 1_rad;
+		angleToTurn = Clamp( RealNum{angleToTurn / Radian}, RealNum{-turnPerTimeStep / Radian}, RealNum{turnPerTimeStep / Radian}) * Radian;
 		const auto newAngle = angleNow + angleToTurn;
 		flJoint->SetLimits( newAngle, newAngle );
 		frJoint->SetLimits( newAngle, newAngle );
@@ -372,11 +372,11 @@ public:
 			FixtureDef fixtureDef;
 			fixtureDef.isSensor = true;
 			
-			SetAsBox(polygonShape, 9, 7, Vec2(-10,15), 20_deg );
+			SetAsBox(polygonShape, 9, 7, Vec2(-10,15), 20.0f * Degree );
 			groundAreaFixture = m_groundBody->CreateFixture(std::make_shared<PolygonShape>(polygonShape), fixtureDef);
 			groundAreaFixture->SetUserData( new GroundAreaFUD( 0.5f, false ) );
 			
-			SetAsBox(polygonShape, 9, 5, Vec2(5,20), -40_deg );
+			SetAsBox(polygonShape, 9, 5, Vec2(5,20), -40.0f * Degree );
 			groundAreaFixture = m_groundBody->CreateFixture(std::make_shared<PolygonShape>(polygonShape), fixtureDef);
 			groundAreaFixture->SetUserData( new GroundAreaFUD( 0.2f, false ) );
 		}

@@ -50,7 +50,7 @@ struct PrismaticJointDef : public JointDef
 	Vec2 localAxisA = Vec2{RealNum{1}, 0};
 
 	/// The constrained angle between the bodies: bodyB_angle - bodyA_angle.
-	Angle referenceAngle = 0_rad;
+	Angle referenceAngle = Angle{0};
 
 	/// Enable/disable the joint limit.
 	bool enableLimit = false;

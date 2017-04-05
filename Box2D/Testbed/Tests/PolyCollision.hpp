@@ -31,13 +31,13 @@ public:
 	{
 		{
 			m_polygonA.SetAsBox(0.2f, 0.4f);
-			m_transformA = Transformation{Vec2(0.0f, 0.0f), UnitVec2{0_rad}};
+			m_transformA = Transformation{Vec2(0.0f, 0.0f), UnitVec2{Angle{0}}};
 		}
 
 		{
 			m_polygonB.SetAsBox(0.5f, 0.5f);
 			m_positionB = Vec2(19.345284f, 1.5632932f);
-			m_angleB = 1.9160721_rad;
+			m_angleB = 1.9160721f * Radian;
 			m_transformB = Transformation{m_positionB, UnitVec2{m_angleB}};
 		}
 	}
@@ -110,11 +110,11 @@ public:
 			break;
 
 		case Key_Q:
-			m_angleB += 0.1_rad * Pi;
+			m_angleB += 0.1f * Radian * Pi;
 			break;
 
 		case Key_E:
-			m_angleB -= 0.1_rad * Pi;
+			m_angleB -= 0.1f * Radian * Pi;
 			break;
 
 		default:

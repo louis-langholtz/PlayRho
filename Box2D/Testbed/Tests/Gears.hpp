@@ -126,8 +126,8 @@ public:
 	{
 		{
 			const auto ratio = m_joint4->GetRatio();
-			const auto value = GetJointAngle(*m_joint1) + ratio * GetJointAngle(*m_joint2);
-			drawer.DrawString(5, m_textLine, "theta1 + %4.2f * theta2 = %4.2f", (float) ratio, value.ToRadians());
+			const auto value = double{(GetJointAngle(*m_joint1) + ratio * GetJointAngle(*m_joint2)) / Radian};
+			drawer.DrawString(5, m_textLine, "theta1 + %4.2f * theta2 = %4.2f", (float) ratio, value);
 			m_textLine += DRAW_STRING_NEW_LINE;
 		}
 

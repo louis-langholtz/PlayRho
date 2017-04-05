@@ -117,8 +117,8 @@ void MotorJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
 		m_angularImpulse *= step.dtRatio;
 
 		const auto P = Vec2{m_linearImpulse.x, m_linearImpulse.y};
-		velA -= Velocity{mA * P, 1_rad * iA * (Cross(m_rA, P) + m_angularImpulse)};
-		velB += Velocity{mB * P, 1_rad * iB * (Cross(m_rB, P) + m_angularImpulse)};
+		velA -= Velocity{mA * P, Radian * iA * (Cross(m_rA, P) + m_angularImpulse)};
+		velB += Velocity{mB * P, Radian * iB * (Cross(m_rB, P) + m_angularImpulse)};
 	}
 	else
 	{
@@ -149,21 +149,23 @@ RealNum MotorJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 	// Solve angular friction
 	auto angularIncImpulse = RealNum(0);
 	{
-		const auto Cdot = velB.angular - velA.angular + inv_h * m_correctionFactor * m_angularError;
-		const auto impulse = -m_angularMass * Cdot.ToRadians();
+		const auto Cdot = RealNum{(velB.angular - velA.angular + inv_h * m_correctionFactor * m_angularError) / Radian};
+		const auto impulse = -m_angularMass * Cdot;
 
 		const auto oldImpulse = m_angularImpulse;
 		const auto maxImpulse = h * m_maxTorque;
 		m_angularImpulse = Clamp(m_angularImpulse + impulse, -maxImpulse, maxImpulse);
 		angularIncImpulse = m_angularImpulse - oldImpulse;
 
-		velA.angular -= 1_rad * iA * angularIncImpulse;
-		velB.angular += 1_rad * iB * angularIncImpulse;
+		velA.angular -= Radian * iA * angularIncImpulse;
+		velB.angular += Radian * iB * angularIncImpulse;
 	}
 
 	// Solve linear friction
 	{
-		const auto Cdot = velB.linear + (GetRevPerpendicular(m_rB) * velB.angular.ToRadians()) - velA.linear - (GetRevPerpendicular(m_rA) * velA.angular.ToRadians()) + inv_h * m_correctionFactor * m_linearError;
+		const auto vb = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / Radian});
+		const auto va = velA.linear - (GetRevPerpendicular(m_rA) * RealNum{velA.angular / Radian});
+		const auto Cdot = vb - va + inv_h * m_correctionFactor * m_linearError;
 
 		auto impulse = -Transform(Cdot, m_linearMass);
 		const auto oldImpulse = m_linearImpulse;
@@ -178,8 +180,8 @@ RealNum MotorJoint::SolveVelocityConstraints(BodyConstraints& bodies, const Step
 
 		impulse = m_linearImpulse - oldImpulse;
 
-		velA -= Velocity{mA * impulse, 1_rad * iA * Cross(m_rA, impulse)};
-		velB += Velocity{mB * impulse, 1_rad * iB * Cross(m_rB, impulse)};
+		velA -= Velocity{mA * impulse, Radian * iA * Cross(m_rA, impulse)};
+		velB += Velocity{mB * impulse, Radian * iB * Cross(m_rB, impulse)};
 	}
 
 	bodiesA.SetVelocity(velA);

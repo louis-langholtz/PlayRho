@@ -25,7 +25,6 @@
 namespace box2d
 {
 	struct Vec2;
-	class Angle;
 
 	class UnitVec2
 	{

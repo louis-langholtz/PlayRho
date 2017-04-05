@@ -86,7 +86,7 @@ int main(int, char**)
 		const auto position = body->GetLocation();
 		const auto angle = body->GetAngle();
 
-		printf("%4.2f %4.2f %4.2f\n", position.x, position.y, angle / 1_deg);
+		printf("%4.2f %4.2f %4.2f\n", position.x, position.y, angle / 1 * Degree);
 	}
 
 	// When the world destructor is called, all bodies and joints are freed. This can

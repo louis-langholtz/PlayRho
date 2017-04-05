@@ -36,7 +36,7 @@ struct Settings
 	float hz = 60;
 	float dt = 1 / hz;
 	float maxLinearCorrection = static_cast<float>(DefaultMaxLinearCorrection); // in meters
-	float maxAngularCorrection = static_cast<float>(DefaultMaxAngularCorrection * 1_rad / 1_deg); // in degrees
+	float maxAngularCorrection = static_cast<float>(DefaultMaxAngularCorrection * Radian / Degree); // in degrees
 	float linearSlop = static_cast<float>(DefaultLinearSlop);
 	float angularSlop = DefaultAngularSlop;
 	float regMinSeparation = static_cast<float>(DefaultLinearSlop) * -3;

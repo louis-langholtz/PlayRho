@@ -30,7 +30,7 @@ public:
 	{		
 		m_hz = 4.0f;
 		m_zeta = 0.7f;
-		m_speed = 50_rad;
+		m_speed = RealNum{50} * Radian;
 
 		const auto ground = m_world->CreateBody();
 		{
@@ -97,8 +97,8 @@ public:
 			body->CreateFixture(box);
 
 			RevoluteJointDef jd(ground, body, body->GetLocation());
-			jd.lowerAngle = -8.0_deg;
-			jd.upperAngle = 8.0_deg;
+			jd.lowerAngle = -8.0f * Degree;
+			jd.upperAngle = +8.0f * Degree;
 			jd.enableLimit = true;
 			m_world->CreateJoint(jd);
 
@@ -197,7 +197,7 @@ public:
 			Vec2 axis(0.0f, 1.0f);
 
 			jd.Initialize(m_car, m_wheel1, m_wheel1->GetLocation(), axis);
-			jd.motorSpeed = 0_rad;
+			jd.motorSpeed = Angle{0};
 			jd.maxMotorTorque = 20.0f;
 			jd.enableMotor = true;
 			jd.frequencyHz = m_hz;
@@ -205,7 +205,7 @@ public:
 			m_spring1 = (WheelJoint*)m_world->CreateJoint(jd);
 
 			jd.Initialize(m_car, m_wheel2, m_wheel2->GetLocation(), axis);
-			jd.motorSpeed = 0_rad;
+			jd.motorSpeed = Angle{0};
 			jd.maxMotorTorque = 10.0f;
 			jd.enableMotor = false;
 			jd.frequencyHz = m_hz;
@@ -223,7 +223,7 @@ public:
 			break;
 
 		case Key_S:
-			m_spring1->SetMotorSpeed(0_rad);
+			m_spring1->SetMotorSpeed(Angle{0});
 			break;
 
 		case Key_D:

@@ -28,7 +28,6 @@
 #include <Box2D/Collision/Shapes/EdgeShape.hpp>
 #include <Box2D/Dynamics/Joints/MouseJoint.hpp>
 #include <Box2D/Dynamics/Joints/RopeJoint.hpp>
-#include <Box2D/Common/Angle.hpp>
 #include <chrono>
 
 using namespace box2d;
@@ -777,7 +776,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 	auto distance = GetLength(position_diff);
 
 	const auto angle = GetAngle(position_diff);
-	ASSERT_EQ(angle, 0_deg);
+	ASSERT_EQ(angle, RealNum{0} * Degree);
 
 	auto lastpos1 = body1->GetLocation();
 	auto lastpos2 = body2->GetLocation();
@@ -810,12 +809,12 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 		}
 		else // new_distance > distance
 		{
-			if (Cos(angle) != 0)
+			if (std::cos(angle / Radian) != 0)
 			{
 				EXPECT_LT(body1->GetLocation().x, lastpos1.x);
 				EXPECT_GT(body2->GetLocation().x, lastpos2.x);
 			}
-			if (Sin(angle) != 0)
+			if (std::sin(angle / Radian) != 0)
 			{
 				EXPECT_LT(body1->GetLocation().y, lastpos1.y);
 				EXPECT_GT(body2->GetLocation().y, lastpos2.y);
@@ -941,8 +940,8 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	ASSERT_EQ(body2->GetLocation().x, body2pos.x);
 	ASSERT_EQ(body2->GetLocation().y, body2pos.y);
 
-	ASSERT_EQ(body1->GetAngle(), 0_deg);
-	ASSERT_EQ(body2->GetAngle(), 0_deg);
+	ASSERT_EQ(body1->GetAngle(), RealNum{0} * Degree);
+	ASSERT_EQ(body2->GetAngle(), RealNum{0} * Degree);
 	auto last_angle_1 = body1->GetAngle();
 	auto last_angle_2 = body2->GetAngle();
 
@@ -953,7 +952,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 	auto distance = GetLength(position_diff);
 	
 	auto angle = GetAngle(position_diff);
-	EXPECT_TRUE(almost_equal(angle.ToRadians(), (0_deg).ToRadians()));
+	EXPECT_TRUE(almost_equal(angle / Radian, RealNum{0}));
 	
 	auto lastpos1 = body1->GetLocation();
 	auto lastpos2 = body2->GetLocation();
@@ -992,17 +991,17 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 		ASSERT_EQ(count, decltype(world.GetContacts().size())(1));
 
 		const auto v1 = body1->GetVelocity();
-		EXPECT_EQ(v1.angular, 0_deg);
+		EXPECT_EQ(v1.angular, RealNum{0} * Degree);
 		EXPECT_EQ(v1.linear.x, RealNum(0));
 		EXPECT_EQ(v1.linear.y, RealNum(0));
 
 		const auto v2 = body2->GetVelocity();
-		EXPECT_EQ(v2.angular, 0_deg);
+		EXPECT_EQ(v2.angular, RealNum{0} * Degree);
 		EXPECT_EQ(v2.linear.x, RealNum(0));
 		EXPECT_EQ(v2.linear.y, RealNum(0));
 
-		EXPECT_TRUE(almost_equal(body1->GetAngle().ToRadians(), last_angle_1.ToRadians()));
-		EXPECT_TRUE(almost_equal(body2->GetAngle().ToRadians(), last_angle_2.ToRadians()));
+		EXPECT_TRUE(almost_equal(body1->GetAngle() / Radian, last_angle_1 / Radian));
+		EXPECT_TRUE(almost_equal(body2->GetAngle() / Radian, last_angle_2 / Radian));
 		last_angle_1 = body1->GetAngle();
 		last_angle_2 = body2->GetAngle();
 
@@ -1016,12 +1015,12 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 		
 		if (new_distance == distance)
 		{
-			if (std::cos(angle.ToRadians()) != 0)
+			if (std::cos(angle / Radian) != 0)
 			{
 				EXPECT_NE(body1->GetLocation().x, lastpos1.x);
 				EXPECT_NE(body2->GetLocation().x, lastpos2.x);
 			}
-			if (std::sin(angle.ToRadians()) != 0)
+			if (std::sin(angle / Radian) != 0)
 			{
 				EXPECT_NE(body1->GetLocation().y, lastpos1.y);
 				EXPECT_NE(body2->GetLocation().y, lastpos2.y);
@@ -1051,7 +1050,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
 		distance = new_distance;
 		
 		const auto new_angle = GetAngle(new_pos_diff);
-		EXPECT_TRUE(almost_equal(angle.ToRadians(), new_angle.ToRadians()));
+		EXPECT_TRUE(almost_equal(angle / Radian, new_angle / Radian));
 		
 		angle = new_angle;
 	}
@@ -1219,7 +1218,7 @@ TEST(World, TilesComesToRestInUnder7secs)
 			for (auto i = 0; i < N; ++i)
 			{
 				PolygonShape shape;
-				SetAsBox(shape, a, a, position, 0_rad);
+				SetAsBox(shape, a, a, position, Angle{0});
 				ground->CreateFixture(std::make_shared<PolygonShape>(shape));
 				position.x += 2.0f * a;
 			}
@@ -1340,7 +1339,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 	ASSERT_NE(ball_fixture, nullptr);
 
 	const auto velocity = Vec2{+1, 0};
-	ball_body->SetVelocity(Velocity{velocity, 0_deg});
+	ball_body->SetVelocity(Velocity{velocity, RealNum{0} * Degree});
 
 	const auto time_inc = RealNum(.01);
 	auto stepConf = StepConf{};
@@ -2029,7 +2028,7 @@ TEST_P(VerticalStackTest, EachBodyLevel)
 {
 	for (auto&& box: boxes)
 	{
-		EXPECT_EQ(box->GetAngle(), 0_deg);
+		EXPECT_EQ(box->GetAngle(), RealNum{0} * Degree);
 	}
 }
 

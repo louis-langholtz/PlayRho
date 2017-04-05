@@ -185,7 +185,7 @@ void Body::ResetMassData()
 	m_sweep = Sweep{Position{Transform(localCenter, GetTransformation()), GetAngle()}, localCenter};
 
 	// Update center of mass velocity.
-	m_velocity.linear += GetRevPerpendicular(GetWorldCenter() - oldCenter) * m_velocity.angular.ToRadians();
+	m_velocity.linear += GetRevPerpendicular(GetWorldCenter() - oldCenter) * RealNum{m_velocity.angular / Radian};
 	
 	UnsetMassDataDirty();
 }
@@ -224,14 +224,14 @@ void Body::SetMassData(const MassData& massData)
 	m_sweep = Sweep{Position{Transform(massData.center, GetTransformation()), GetAngle()}, massData.center};
 
 	// Update center of mass velocity.
-	m_velocity.linear += GetRevPerpendicular(GetWorldCenter() - oldCenter) * m_velocity.angular.ToRadians();
+	m_velocity.linear += GetRevPerpendicular(GetWorldCenter() - oldCenter) * RealNum{m_velocity.angular / Radian};
 	
 	UnsetMassDataDirty();
 }
 
 void Body::SetVelocity(const Velocity& velocity) noexcept
 {
-	if ((velocity.linear != Vec2_zero) || (velocity.angular != 0_rad))
+	if ((velocity.linear != Vec2_zero) || (velocity.angular != Angle{0}))
 	{
 		if (!IsSpeedable())
 		{
@@ -247,7 +247,7 @@ void Body::SetAcceleration(const Vec2 linear, const Angle angular) noexcept
 	assert(::box2d::IsValid(linear));
 	assert(::box2d::IsValid(angular));
 
-	if ((linear != Vec2_zero) || (angular != 0_rad))
+	if ((linear != Vec2_zero) || (angular != Angle{0}))
 	{
 		if (!IsAccelerable())
 		{
@@ -325,7 +325,7 @@ void Body::SetFixedRotation(bool flag)
 		m_flags &= ~e_fixedRotationFlag;
 	}
 
-	m_velocity.angular = 0_rad;
+	m_velocity.angular = Angle{0};
 
 	ResetMassData();
 }
@@ -437,8 +437,8 @@ void box2d::RotateAboutWorldPoint(Body& body, Angle amount, Vec2 worldPoint)
 {
 	const auto xfm = body.GetTransformation();
 	const auto p = xfm.p - worldPoint;
-	const auto c = Cos(amount);
-	const auto s = Sin(amount);
+	const auto c = std::cos(amount / Radian);
+	const auto s = std::sin(amount / Radian);
 	const auto x = p.x * c - p.y * s;
 	const auto y = p.x * s + p.y * c;
 	const auto pos = Vec2{x, y} + worldPoint;

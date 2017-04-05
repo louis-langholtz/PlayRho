@@ -36,7 +36,7 @@ public:
 			body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f), Vec2(10.0f, 0.0f)));
 
 			PolygonShape shape;
-			SetAsBox(shape, 0.2f, 1.0f, Vec2(0.5f, 1.0f), 0.0_rad);
+			SetAsBox(shape, 0.2f, 1.0f, Vec2(0.5f, 1.0f), 0.0f * Radian);
 			body->CreateFixture(std::make_shared<PolygonShape>(shape));
 		}
 
@@ -52,7 +52,7 @@ public:
 			m_body = m_world->CreateBody(bd);
 			m_body->CreateFixture(shape);
 
-			m_angularVelocity = 1_rad * RandomFloat(-50.0f, 50.0f);
+			m_angularVelocity = Radian * RandomFloat(-50.0f, 50.0f);
 			//m_angularVelocity = 46.661274f;
 			m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f), m_angularVelocity});
 		}
@@ -64,8 +64,8 @@ public:
 
 		gjkCalls = 0; gjkIters = 0; gjkMaxIters = 0;
 
-		m_body->SetTransform(Vec2(0.0f, 20.0f), 0_rad);
-		m_angularVelocity = 1_rad * RandomFloat(-50.0f, 50.0f);
+		m_body->SetTransform(Vec2(0.0f, 20.0f), Angle{0});
+		m_angularVelocity = Radian * RandomFloat(-50.0f, 50.0f);
 		m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f), m_angularVelocity});
 	}
 

@@ -55,9 +55,9 @@ struct VelocitySolution
 /// This describes the change in impulse necessary for a solution.
 /// To apply this: let P = magnitude * direction, then
 ///   the change to body A's velocity is
-///   -Velocity{vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotInertia() * Cross(vcp.rA, P)}
+///   -Velocity{vc.bodyA.GetInvMass() * P, Radian * vc.bodyA.GetInvRotInertia() * Cross(vcp.rA, P)}
 ///   the change to body B's velocity is
-///   +Velocity{vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotInertia() * Cross(vcp.rB, P)}
+///   +Velocity{vc.bodyB.GetInvMass() * P, Radian * vc.bodyB.GetInvRotInertia() * Cross(vcp.rB, P)}
 ///   and the new impulse = oldImpulse + magnitude.
 ///
 struct ImpulseChange
@@ -143,10 +143,10 @@ static inline RealNum SolveTangentConstraint(VelocityConstraint& vc)
 			const auto P = solution.magnitude * solution.direction;
 			const auto vcp = vc.GetPointAt(1);
 			vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() - Velocity{
-				vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotInertia() * Cross(vcp.rA, P)
+				vc.bodyA.GetInvMass() * P, Radian * vc.bodyA.GetInvRotInertia() * Cross(vcp.rA, P)
 			});
 			vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + Velocity{
-				vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotInertia() * Cross(vcp.rB, P)
+				vc.bodyB.GetInvMass() * P, Radian * vc.bodyB.GetInvRotInertia() * Cross(vcp.rB, P)
 			});
 			vc.SetTangentImpulseAtPoint(1, vcp.tangentImpulse + solution.magnitude);
 			maxIncImpulse = std::max(maxIncImpulse, std::abs(solution.magnitude));
@@ -158,10 +158,10 @@ static inline RealNum SolveTangentConstraint(VelocityConstraint& vc)
 			const auto P = solution.magnitude * solution.direction;
 			const auto vcp = vc.GetPointAt(0);
 			vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() - Velocity{
-				vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotInertia() * Cross(vcp.rA, P)
+				vc.bodyA.GetInvMass() * P, Radian * vc.bodyA.GetInvRotInertia() * Cross(vcp.rA, P)
 			});
 			vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + Velocity{
-				vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotInertia() * Cross(vcp.rB, P)
+				vc.bodyB.GetInvMass() * P, Radian * vc.bodyB.GetInvRotInertia() * Cross(vcp.rB, P)
 			});
 			vc.SetTangentImpulseAtPoint(0, vcp.tangentImpulse + solution.magnitude);
 			maxIncImpulse = std::max(maxIncImpulse, std::abs(solution.magnitude));
@@ -187,10 +187,10 @@ static inline RealNum SeqSolveNormalConstraint(VelocityConstraint& vc)
 			const auto P = solution.magnitude * solution.direction;
 			const auto vcp = vc.GetPointAt(1);
 			vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() - Velocity{
-				vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotInertia() * Cross(vcp.rA, P)
+				vc.bodyA.GetInvMass() * P, Radian * vc.bodyA.GetInvRotInertia() * Cross(vcp.rA, P)
 			});
 			vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + Velocity{
-				vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotInertia() * Cross(vcp.rB, P)
+				vc.bodyB.GetInvMass() * P, Radian * vc.bodyB.GetInvRotInertia() * Cross(vcp.rB, P)
 			});
 			vc.SetNormalImpulseAtPoint(1, vcp.normalImpulse + solution.magnitude);
 			maxIncImpulse = std::max(maxIncImpulse, std::abs(solution.magnitude));
@@ -202,10 +202,10 @@ static inline RealNum SeqSolveNormalConstraint(VelocityConstraint& vc)
 			const auto P = solution.magnitude * solution.direction;
 			const auto vcp = vc.GetPointAt(0);
 			vc.bodyA.SetVelocity(vc.bodyA.GetVelocity() - Velocity{
-				vc.bodyA.GetInvMass() * P, 1_rad * vc.bodyA.GetInvRotInertia() * Cross(vcp.rA, P)
+				vc.bodyA.GetInvMass() * P, Radian * vc.bodyA.GetInvRotInertia() * Cross(vcp.rA, P)
 			});
 			vc.bodyB.SetVelocity(vc.bodyB.GetVelocity() + Velocity{
-				vc.bodyB.GetInvMass() * P, 1_rad * vc.bodyB.GetInvRotInertia() * Cross(vcp.rB, P)
+				vc.bodyB.GetInvMass() * P, Radian * vc.bodyB.GetInvRotInertia() * Cross(vcp.rB, P)
 			});
 			vc.SetNormalImpulseAtPoint(0, vcp.normalImpulse + solution.magnitude);
 			maxIncImpulse = std::max(maxIncImpulse, std::abs(solution.magnitude));
@@ -228,11 +228,11 @@ static inline VelocityPair ApplyImpulses(const VelocityConstraint& vc, const Vec
 	return VelocityPair{
 		-Velocity{
 			vc.bodyA.GetInvMass() * P,
-			1_rad * vc.bodyA.GetInvRotInertia() * (Cross(GetPointRelPosA(vc, 0), P0) + Cross(GetPointRelPosA(vc, 1), P1))
+			Radian * vc.bodyA.GetInvRotInertia() * (Cross(GetPointRelPosA(vc, 0), P0) + Cross(GetPointRelPosA(vc, 1), P1))
 		},
 		+Velocity{
 			vc.bodyB.GetInvMass() * P,
-			1_rad * vc.bodyB.GetInvRotInertia() * (Cross(GetPointRelPosB(vc, 0), P0) + Cross(GetPointRelPosB(vc, 1), P1))
+			Radian * vc.bodyB.GetInvRotInertia() * (Cross(GetPointRelPosB(vc, 0), P0) + Cross(GetPointRelPosB(vc, 1), P1))
 		}
 	};
 }
@@ -524,8 +524,8 @@ PositionSolution box2d::SolvePositionConstraint(const PositionConstraint& pc,
 		const auto P = psm.m_normal * -C / K;
 		
 		return PositionSolution{
-			-Position{invMassA * P, 1_rad * invInertiaA * Cross(rA, P)},
-			+Position{invMassB * P, 1_rad * invInertiaB * Cross(rB, P)},
+			-Position{invMassA * P, Radian * invInertiaA * Cross(rA, P)},
+			+Position{invMassB * P, Radian * invInertiaB * Cross(rB, P)},
 			separation
 		};
 	};

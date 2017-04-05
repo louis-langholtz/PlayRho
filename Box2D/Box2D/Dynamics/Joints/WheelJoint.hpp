@@ -54,7 +54,7 @@ struct WheelJointDef : public JointDef
 	RealNum maxMotorTorque = 0;
 
 	/// The desired motor speed in radians per second.
-	Angle motorSpeed = 0_rad;
+	Angle motorSpeed = Angle{0};
 
 	/// Suspension frequency, zero indicates no suspension
 	RealNum frequencyHz = 2;

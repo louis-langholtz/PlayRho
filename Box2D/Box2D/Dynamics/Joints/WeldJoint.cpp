@@ -111,7 +111,7 @@ void WeldJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
 		auto invM = iA + iB;
 		const auto m = (invM > 0) ? RealNum{1} / invM : RealNum{0};
 
-		const auto C = aB - aA - m_referenceAngle;
+		const auto C = RealNum{(aB - aA - m_referenceAngle) / Radian};
 
 		// Frequency
 		const auto omega = RealNum(2) * Pi * m_frequencyHz;
@@ -126,7 +126,7 @@ void WeldJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
 		const auto h = RealNum{step.get_dt() / Second};
 		m_gamma = h * (d + h * k);
 		m_gamma = (m_gamma != 0) ? RealNum{1} / m_gamma : RealNum{0};
-		m_bias = C.ToRadians() * h * k * m_gamma;
+		m_bias = C * h * k * m_gamma;
 
 		invM += m_gamma;
 		m_mass.ez.z = (invM != 0) ? RealNum{1} / invM : RealNum{0};
@@ -151,8 +151,8 @@ void WeldJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
 
 		const auto P = Vec2{m_impulse.x, m_impulse.y};
 
-		velA -= Velocity{mA * P, 1_rad * iA * (Cross(m_rA, P) + m_impulse.z)};
-		velB += Velocity{mB * P, 1_rad * iB * (Cross(m_rB, P) + m_impulse.z)};
+		velA -= Velocity{mA * P, Radian * iA * (Cross(m_rA, P) + m_impulse.z)};
+		velB += Velocity{mB * P, Radian * iB * (Cross(m_rB, P) + m_impulse.z)};
 	}
 	else
 	{
@@ -178,15 +178,17 @@ RealNum WeldJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepC
 
 	if (m_frequencyHz > 0)
 	{
-		const auto Cdot2 = (velB.angular - velA.angular).ToRadians();
+		const auto Cdot2 = RealNum{(velB.angular - velA.angular) / Radian};
 
 		const auto impulse2 = -m_mass.ez.z * (Cdot2 + m_bias + m_gamma * m_impulse.z);
 		m_impulse.z += impulse2;
 
-		velA.angular -= 1_rad * iA * impulse2;
-		velB.angular += 1_rad * iB * impulse2;
+		velA.angular -= Radian * iA * impulse2;
+		velB.angular += Radian * iB * impulse2;
 
-		const auto Cdot1 = velB.linear + (GetRevPerpendicular(m_rB) * velB.angular.ToRadians()) - velA.linear - (GetRevPerpendicular(m_rA) * velA.angular.ToRadians());
+		const auto vb = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / Radian});
+		const auto va = velA.linear + (GetRevPerpendicular(m_rA) * RealNum{velA.angular / Radian});
+		const auto Cdot1 = vb - va;
 
 		const auto impulse1 = -Transform(Cdot1, m_mass);
 		m_impulse.x += impulse1.x;
@@ -194,13 +196,15 @@ RealNum WeldJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepC
 
 		const auto P = impulse1;
 
-		velA -= Velocity{mA * P, 1_rad * iA * Cross(m_rA, P)};
-		velB += Velocity{mB * P, 1_rad * iB * Cross(m_rB, P)};
+		velA -= Velocity{mA * P, Radian * iA * Cross(m_rA, P)};
+		velB += Velocity{mB * P, Radian * iB * Cross(m_rB, P)};
 	}
 	else
 	{
-		const auto Cdot1 = velB.linear + (GetRevPerpendicular(m_rB) * velB.angular.ToRadians()) - velA.linear - (GetRevPerpendicular(m_rA) * velA.angular.ToRadians());
-		const auto Cdot2 = (velB.angular - velA.angular).ToRadians();
+		const auto vb = velB.linear + (GetRevPerpendicular(m_rB) * RealNum{velB.angular / Radian});
+		const auto va = velA.linear + (GetRevPerpendicular(m_rA) * RealNum{velA.angular / Radian});
+		const auto Cdot1 = vb - va;
+		const auto Cdot2 = RealNum{(velB.angular - velA.angular) / Radian};
 		const auto Cdot = Vec3(Cdot1.x, Cdot1.y, Cdot2);
 
 		const auto impulse = -Transform(Cdot, m_mass);
@@ -208,8 +212,8 @@ RealNum WeldJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepC
 
 		const auto P = Vec2{impulse.x, impulse.y};
 
-		velA -= Velocity{mA * P, 1_rad * iA * (Cross(m_rA, P) + impulse.z)};
-		velB += Velocity{mB * P, 1_rad * iB * (Cross(m_rB, P) + impulse.z)};
+		velA -= Velocity{mA * P, Radian * iA * (Cross(m_rA, P) + impulse.z)};
+		velB += Velocity{mB * P, Radian * iB * (Cross(m_rB, P) + impulse.z)};
 	}
 
 	bodiesA.SetVelocity(velA);
@@ -259,13 +263,13 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constrai
 
 		const auto P = -Solve22(K, C1);
 
-		posA -= Position{mA * P, 1_rad * iA * Cross(rA, P)};
-		posB += Position{mB * P, 1_rad * iB * Cross(rB, P)};
+		posA -= Position{mA * P, Radian * iA * Cross(rA, P)};
+		posB += Position{mB * P, Radian * iB * Cross(rB, P)};
 	}
 	else
 	{
 		const auto C1 = posB.linear + rB - posA.linear - rA;
-		const auto C2 = (posB.angular - posA.angular - m_referenceAngle).ToRadians();
+		const auto C2 = RealNum{(posB.angular - posA.angular - m_referenceAngle) / Radian};
 
 		positionError = GetLength(C1);
 		angularError = Abs(C2);
@@ -285,8 +289,8 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constrai
 
 		const auto P = Vec2{impulse.x, impulse.y};
 
-		posA -= Position{mA * P, 1_rad * iA * (Cross(rA, P) + impulse.z)};
-		posB += Position{mB * P, 1_rad * iB * (Cross(rB, P) + impulse.z)};
+		posA -= Position{mA * P, Radian * iA * (Cross(rA, P) + impulse.z)};
+		posB += Position{mB * P, Radian * iB * (Cross(rB, P) + impulse.z)};
 	}
 
 	bodiesA.SetPosition(posA);

@@ -37,8 +37,8 @@ public:
 		m_bodyA = m_world->CreateBody(def);
 		m_bodyB = m_world->CreateBody(def);
 
-		m_bodyA->SetTransform(Vec2(-10.0f, 20.2f), 0_deg);
-		m_bodyB->SetTransform(m_bodyA->GetLocation() + Vec2(19.017401f, 0.13678508f), 0_deg);
+		m_bodyA->SetTransform(Vec2(-10.0f, 20.2f), 0.0f * Degree);
+		m_bodyB->SetTransform(m_bodyA->GetLocation() + Vec2(19.017401f, 0.13678508f), 0.0f * Degree);
 		
 		CreateFixtures();
 	}
@@ -376,7 +376,7 @@ public:
 		case Key_Q:
 			if (body)
 			{
-				body->SetTransform(body->GetLocation(), body->GetAngle() + 5_deg);
+				body->SetTransform(body->GetLocation(), body->GetAngle() + 5.0f * Degree);
 				body->SetAwake();
 			}
 			break;
@@ -384,7 +384,7 @@ public:
 		case Key_E:
 			if (body)
 			{
-				body->SetTransform(body->GetLocation(), body->GetAngle() - 5_deg);
+				body->SetTransform(body->GetLocation(), body->GetAngle() - 5.0f * Degree);
 				body->SetAwake();
 			}
 			break;

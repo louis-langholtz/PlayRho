@@ -89,7 +89,7 @@ GearJoint::GearJoint(const GearJointDef& def):
 
 		const auto pC = m_localAnchorC;
 		const auto pA = InverseRotate(Rotate(m_localAnchorA, xfA.q) + (xfA.p - xfC.p), xfC.q);
-		coordinateA = Dot(pA - pC, m_localAxisC) * 1_rad;
+		coordinateA = Dot(pA - pC, m_localAxisC) * Radian;
 	}
 
 	m_bodyD = m_joint2->GetBodyA();
@@ -122,7 +122,7 @@ GearJoint::GearJoint(const GearJointDef& def):
 
 		const auto pD = m_localAnchorD;
 		const auto pB = InverseRotate(Rotate(m_localAnchorB, xfB.q) + (xfB.p - xfD.p), xfD.q);
-		coordinateB = Dot(pB - pD, m_localAxisD) * 1_rad;
+		coordinateB = Dot(pB - pD, m_localAxisD) * Radian;
 	}
 
 	m_constant = coordinateA + m_ratio * coordinateB;
@@ -207,10 +207,10 @@ void GearJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
 
 	if (step.doWarmStart)
 	{
-		velA += Velocity{(m_mA * m_impulse) * m_JvAC, 1_rad * m_iA * m_impulse * m_JwA};
-		velB += Velocity{(m_mB * m_impulse) * m_JvBD, 1_rad * m_iB * m_impulse * m_JwB};
-		velC -= Velocity{(m_mC * m_impulse) * m_JvAC, 1_rad * m_iC * m_impulse * m_JwC};
-		velD -= Velocity{(m_mD * m_impulse) * m_JvBD, 1_rad * m_iD * m_impulse * m_JwD};
+		velA += Velocity{(m_mA * m_impulse) * m_JvAC, Radian * m_iA * m_impulse * m_JwA};
+		velB += Velocity{(m_mB * m_impulse) * m_JvBD, Radian * m_iB * m_impulse * m_JwB};
+		velC -= Velocity{(m_mC * m_impulse) * m_JvAC, Radian * m_iC * m_impulse * m_JwC};
+		velD -= Velocity{(m_mD * m_impulse) * m_JvBD, Radian * m_iD * m_impulse * m_JwD};
 	}
 	else
 	{
@@ -238,16 +238,16 @@ RealNum GearJoint::SolveVelocityConstraints(BodyConstraints& bodies, const StepC
 	const auto deltaVelAC = velA.linear - velC.linear;
 	const auto deltaVelBD = velB.linear - velD.linear;
 	const auto Cdot = Dot(m_JvAC, deltaVelAC) + Dot(m_JvBD, deltaVelBD)
-		+ (m_JwA * velA.angular.ToRadians() - m_JwC * velC.angular.ToRadians())
-		+ (m_JwB * velB.angular.ToRadians() - m_JwD * velD.angular.ToRadians());
+		+ RealNum{(m_JwA * velA.angular - m_JwC * velC.angular) / Radian}
+		+ RealNum{(m_JwB * velB.angular - m_JwD * velD.angular) / Radian};
 
 	const auto impulse = -m_mass * Cdot;
 	m_impulse += impulse;
 
-	velA += Velocity{(m_mA * impulse) * m_JvAC, 1_rad * m_iA * impulse * m_JwA};
-	velB += Velocity{(m_mB * impulse) * m_JvBD, 1_rad * m_iB * impulse * m_JwB};
-	velC -= Velocity{(m_mC * impulse) * m_JvAC, 1_rad * m_iC * impulse * m_JwC};
-	velD -= Velocity{(m_mD * impulse) * m_JvBD, 1_rad * m_iD * impulse * m_JwD};
+	velA += Velocity{(m_mA * impulse) * m_JvAC, Radian * m_iA * impulse * m_JwA};
+	velB += Velocity{(m_mB * impulse) * m_JvBD, Radian * m_iB * impulse * m_JwB};
+	velC -= Velocity{(m_mC * impulse) * m_JvAC, Radian * m_iC * impulse * m_JwC};
+	velD -= Velocity{(m_mD * impulse) * m_JvBD, Radian * m_iD * impulse * m_JwD};
 
 	bodiesA.SetVelocity(velA);
 	bodiesB.SetVelocity(velB);
@@ -300,7 +300,7 @@ bool GearJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constrai
 
 		const auto pC = m_localAnchorC - m_lcC;
 		const auto pA = InverseRotate(rA + (posA.linear - posC.linear), qC);
-		coordinateA = 1_rad * Dot(pA - pC, m_localAxisC);
+		coordinateA = Radian * Dot(pA - pC, m_localAxisC);
 	}
 
 	if (m_typeB == JointType::Revolute)
@@ -324,21 +324,21 @@ bool GearJoint::SolvePositionConstraints(BodyConstraints& bodies, const Constrai
 
 		const auto pD = m_localAnchorD - m_lcD;
 		const auto pB = InverseRotate(rB + (posB.linear - posD.linear), qD);
-		coordinateB = 1_rad * Dot(pB - pD, m_localAxisD);
+		coordinateB = Radian * Dot(pB - pD, m_localAxisD);
 	}
 
-	const auto C = (coordinateA + m_ratio * coordinateB) - m_constant;
+	const auto C = RealNum{((coordinateA + m_ratio * coordinateB) - m_constant) / Radian};
 
 	auto impulse = RealNum{0};
 	if (mass > 0)
 	{
-		impulse = -C.ToRadians() / mass;
+		impulse = -C / mass;
 	}
 
-	posA += Position{m_mA * impulse * JvAC, 1_rad * m_iA * impulse * JwA};
-	posB += Position{m_mB * impulse * JvBD, 1_rad * m_iB * impulse * JwB};
-	posC -= Position{m_mC * impulse * JvAC, 1_rad * m_iC * impulse * JwC};
-	posD -= Position{m_mD * impulse * JvBD, 1_rad * m_iD * impulse * JwD};
+	posA += Position{m_mA * impulse * JvAC, Radian * m_iA * impulse * JwA};
+	posB += Position{m_mB * impulse * JvBD, Radian * m_iB * impulse * JwB};
+	posC -= Position{m_mC * impulse * JvAC, Radian * m_iC * impulse * JwC};
+	posD -= Position{m_mD * impulse * JvBD, Radian * m_iD * impulse * JwD};
 
 	bodiesA.SetPosition(posA);
 	bodiesB.SetPosition(posB);

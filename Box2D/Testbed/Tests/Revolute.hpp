@@ -42,14 +42,14 @@ public:
 			body->CreateFixture(std::make_shared<CircleShape>(circleConf));
 
 			const auto w = 100.0f;
-			body->SetVelocity(Velocity{Vec2(-8.0f * w, 0.0f), 1_rad * w});
+			body->SetVelocity(Velocity{Vec2(-8.0f * w, 0.0f), Radian * w});
 			
 			RevoluteJointDef rjd(ground, body, Vec2(-10.0f, 12.0f));
 			rjd.motorSpeed = 1.0f * Pi;
 			rjd.maxMotorTorque = 10000.0f;
 			rjd.enableMotor = false;
-			rjd.lowerAngle = -0.25_rad * Pi;
-			rjd.upperAngle = 0.5_rad * Pi;
+			rjd.lowerAngle = -0.25f * Radian * Pi;
+			rjd.upperAngle = 0.5f * Radian * Pi;
 			rjd.enableLimit = true;
 			rjd.collideConnected = true;
 
@@ -71,7 +71,7 @@ public:
 			m_ball->CreateFixture(std::make_shared<CircleShape>(circleConf), fd);
 
 			PolygonShape polygon_shape;
-			SetAsBox(polygon_shape, 10.0f, 0.2f, Vec2 (-10.0f, 0.0f), 0_rad);
+			SetAsBox(polygon_shape, 10.0f, 0.2f, Vec2 (-10.0f, 0.0f), Angle{0});
 			polygon_shape.SetDensity(RealNum{2} * KilogramPerSquareMeter);
 
 			BodyDef polygon_bd;
@@ -82,8 +82,8 @@ public:
 			polygon_body->CreateFixture(std::make_shared<PolygonShape>(polygon_shape));
 
 			RevoluteJointDef rjd(ground, polygon_body, Vec2(20.0f, 10.0f));
-			rjd.lowerAngle = -0.25_rad * Pi;
-			rjd.upperAngle = 0.0_rad * Pi;
+			rjd.lowerAngle = -0.25f * Radian * Pi;
+			rjd.upperAngle = 0.0f * Radian * Pi;
 			rjd.enableLimit = true;
 			m_world->CreateJoint(rjd);
 		}

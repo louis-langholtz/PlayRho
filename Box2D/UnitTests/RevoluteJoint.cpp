@@ -52,9 +52,9 @@ TEST(RevoluteJoint, Construction)
 	jd.enableMotor = true;
 	jd.motorSpeed = 4.4f;
 	jd.maxMotorTorque = 1.0f;
-	jd.lowerAngle = 33_deg;
-	jd.upperAngle = 40_deg;
-	jd.referenceAngle = 45_deg;
+	jd.lowerAngle = 33.0f * Degree;
+	jd.upperAngle = 40.0f * Degree;
+	jd.referenceAngle = 45.0f * Degree;
 	
 	const auto joint = RevoluteJoint{jd};
 
@@ -92,8 +92,8 @@ TEST(RevoluteJoint, MovesDynamicCircles)
 	Step(world, Time{Second * RealNum{1}});
 	EXPECT_EQ(round(b1->GetLocation(), 100), round(Vec2(0, -4), 100));
 	EXPECT_EQ(round(b2->GetLocation(), 100), round(Vec2(0, -4), 100));
-	EXPECT_EQ(b1->GetAngle(), 0_deg);
-	EXPECT_EQ(b2->GetAngle(), 0_deg);
+	EXPECT_EQ(b1->GetAngle(), RealNum{0} * Degree);
+	EXPECT_EQ(b2->GetAngle(), RealNum{0} * Degree);
 }
 
 TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
@@ -122,7 +122,7 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
 		Step(world, Time{Second * RealNum{0.1f}});
 		EXPECT_EQ(b1->GetLocation(), p1);
 		EXPECT_EQ(round(b2->GetLocation(), 1000), round(p2, 1000));
-		EXPECT_EQ(b2->GetAngle(), 0_deg);
+		EXPECT_EQ(b2->GetAngle(), RealNum{0} * Degree);
 	}
 	
 	world.Destroy(joint);
@@ -132,7 +132,7 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
 		Step(world, Time{Second * RealNum{0.1f}});
 		EXPECT_EQ(b1->GetLocation(), p1);
 		EXPECT_NE(b2->GetLocation(), p2);
-		EXPECT_EQ(b2->GetAngle(), 0_deg);
+		EXPECT_EQ(b2->GetAngle(), RealNum{0} * Degree);
 	}
 
 }

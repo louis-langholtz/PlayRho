@@ -36,7 +36,7 @@ public:
 			body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f), Vec2(10.0f, 0.0f)));
 
 			PolygonShape shape;
-			SetAsBox(shape, 0.2f, 1.0f, Vec2(0.5f, 1.0f), 0.0_rad);
+			SetAsBox(shape, 0.2f, 1.0f, Vec2(0.5f, 1.0f), 0.0f * Radian);
 			body->CreateFixture(std::make_shared<PolygonShape>(shape));
 		}
 
@@ -63,18 +63,18 @@ public:
 			m_bullet = m_world->CreateBody(bd);
 			m_bullet->CreateFixture(std::make_shared<PolygonShape>(box));
 
-			m_bullet->SetVelocity(Velocity{Vec2{0.0f, -50.0f}, 0_rad});
+			m_bullet->SetVelocity(Velocity{Vec2{0.0f, -50.0f}, Angle{0}});
 		}
 	}
 
 	void Launch()
 	{
-		m_body->SetTransform(Vec2(0.0f, 4.0f), 0.0_rad);
-		m_body->SetVelocity(Velocity{Vec2_zero, 0_rad});
+		m_body->SetTransform(Vec2(0.0f, 4.0f), 0.0f * Radian);
+		m_body->SetVelocity(Velocity{Vec2_zero, Angle{0}});
 
 		m_x = RandomFloat(-1.0f, 1.0f);
-		m_bullet->SetTransform(Vec2(m_x, 10.0f), 0.0_rad);
-		m_bullet->SetVelocity(Velocity{Vec2(0.0f, -50.0f), 0_rad});
+		m_bullet->SetTransform(Vec2(m_x, 10.0f), 0.0f * Radian);
+		m_bullet->SetVelocity(Velocity{Vec2(0.0f, -50.0f), Angle{0}});
 
 		uint32 gjkCalls, gjkIters, gjkMaxIters;
 		std::remove_const<decltype(DefaultMaxToiIters)>::type toiMaxIters;

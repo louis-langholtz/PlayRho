@@ -262,8 +262,8 @@ TEST(Simplex, Get2_rot_plus_45)
 	const auto ib0 = SimplexEdge::index_type{7};
 	const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
 	
-	const auto va1 = Rotate(va0, UnitVec2{45_deg});
-	const auto vb1 = Rotate(vb0, UnitVec2{45_deg});
+	const auto va1 = Rotate(va0, UnitVec2{45.0f * Degree});
+	const auto vb1 = Rotate(vb0, UnitVec2{45.0f * Degree});
 	const auto ia1 = SimplexEdge::index_type{4};
 	const auto ib1 = SimplexEdge::index_type{1};
 	const auto sv1 = SimplexEdge{va1, ia1, vb1, ib1};
@@ -302,8 +302,8 @@ TEST(Simplex, Get2_rot45_half)
 	const auto ib0 = SimplexEdge::index_type{7};
 	const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
 	
-	const auto va1 = Rotate(va0, UnitVec2{45_deg}) / 2; // Vec2{-13.081475, 10.253049}
-	const auto vb1 = Rotate(vb0, UnitVec2{45_deg}) / 2; // Vec2{316.4303, 320.67291}
+	const auto va1 = Rotate(va0, UnitVec2{45.0f * Degree}) / 2; // Vec2{-13.081475, 10.253049}
+	const auto vb1 = Rotate(vb0, UnitVec2{45.0f * Degree}) / 2; // Vec2{316.4303, 320.67291}
 	EXPECT_NEAR(double(va1.x), -13.081475, 0.00001);
 	EXPECT_NEAR(double(va1.y),  10.253049, 0.00001);
 	EXPECT_NEAR(double(vb1.x), 316.4303,   0.0001);

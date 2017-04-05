@@ -271,7 +271,7 @@ namespace {
 	
 	inline VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc)
 	{
-		VelocityPair vp{Velocity{Vec2_zero, 0_rad}, Velocity{Vec2_zero, 0_rad}};
+		VelocityPair vp{Velocity{Vec2_zero, Angle{0}}, Velocity{Vec2_zero, Angle{0}}};
 		
 		const auto normal = GetNormal(vc);
 		const auto tangent = GetTangent(vc);
@@ -283,11 +283,11 @@ namespace {
 				const auto P = GetNormalImpulseAtPoint(vc, j) * normal + GetTangentImpulseAtPoint(vc, j) * tangent;
 				vp.a -= Velocity{
 					vc.bodyA.GetInvMass() * P,
-					1_rad * vc.bodyA.GetInvRotInertia() * Cross(GetPointRelPosA(vc, j), P)
+					Radian * vc.bodyA.GetInvRotInertia() * Cross(GetPointRelPosA(vc, j), P)
 				};
 				vp.b += Velocity{
 					vc.bodyB.GetInvMass() * P,
-					1_rad * vc.bodyB.GetInvRotInertia() * Cross(GetPointRelPosB(vc, j), P)
+					Radian * vc.bodyB.GetInvRotInertia() * Cross(GetPointRelPosB(vc, j), P)
 				};
 			}
 		}
@@ -582,7 +582,7 @@ private:
 			case BodyType::Static:
 				b.UnsetAwakeFlag();
 				b.m_underActiveTime = 0;
-				b.m_velocity = Velocity{Vec2_zero, 0_rad};
+				b.m_velocity = Velocity{Vec2_zero, Angle{0}};
 				b.m_sweep.pos0 = b.m_sweep.pos1;
 				break;
 		}
@@ -831,7 +831,7 @@ Body* World::CreateBody(const BodyDef& def)
 		}		
 	}
 
-	b->SetAcceleration(m_gravity, 0_rad);
+	b->SetAcceleration(m_gravity, Angle{0});
 	return b;
 }
 
@@ -2334,7 +2334,7 @@ void World::SetType(Body& body, BodyType type)
 	else
 	{
 		body.SetAwake();
-		body.SetAcceleration(body.IsAccelerable()? GetGravity(): Vec2_zero, 0_rad);
+		body.SetAcceleration(body.IsAccelerable()? GetGravity(): Vec2_zero, Angle{0});
 		
 		for (auto&& fixture: body.GetFixtures())
 		{
@@ -2633,7 +2633,7 @@ void ClearForces(World& world) noexcept
 	const auto g = world.GetGravity();
 	for (auto&& body: world.GetBodies())
 	{
-		body->SetAcceleration(g, 0_rad);
+		body->SetAcceleration(g, Angle{0});
 	}
 }
 

@@ -48,13 +48,13 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(0.0f, 40.0f);
-			bd.angle = 0.25_rad * Pi;
+			bd.angle = 0.25f * Pi * Radian;
 			m_body1 = m_world->CreateBody(bd);
 
-			SetAsBox(*m_shape1, 0.5f, 0.5f, Vec2(-0.5f, 0.0f), 0.0_rad);
+			SetAsBox(*m_shape1, 0.5f, 0.5f, Vec2(-0.5f, 0.0f), 0.0f * Radian);
 			m_piece1 = m_body1->CreateFixture(m_shape1);
 
-			SetAsBox(*m_shape2, 0.5f, 0.5f, Vec2(0.5f, 0.0f), 0.0_rad);
+			SetAsBox(*m_shape2, 0.5f, 0.5f, Vec2(0.5f, 0.0f), 0.0f * Radian);
 			m_piece2 = m_body1->CreateFixture(m_shape2);
 		}
 
@@ -109,8 +109,8 @@ public:
 		const auto center1 = body1->GetWorldCenter();
 		const auto center2 = body2->GetWorldCenter();
 		
-		const auto velocity1 = m_velocity + GetRevPerpendicular(center1 - center) * m_angularVelocity.ToRadians();
-		const auto velocity2 = m_velocity + GetRevPerpendicular(center2 - center) * m_angularVelocity.ToRadians();
+		const auto velocity1 = m_velocity + GetRevPerpendicular(center1 - center) * RealNum{m_angularVelocity / Radian};
+		const auto velocity2 = m_velocity + GetRevPerpendicular(center2 - center) * RealNum{m_angularVelocity / Radian};
 
 		body1->SetVelocity(Velocity{velocity1, m_angularVelocity});
 		body2->SetVelocity(Velocity{velocity2, m_angularVelocity});

@@ -61,7 +61,7 @@ public:
 
 		{
 			Transformation xf1;
-			xf1.q = UnitVec2{0.3524_rad * Pi};
+			xf1.q = UnitVec2{0.3524f * Pi * Radian};
 			xf1.p = Vec2{GetXAxis(xf1.q)};
 
 			Vec2 vertices[3];
@@ -75,7 +75,7 @@ public:
 			const auto poly1 = PolygonShape(Span<const Vec2>(vertices, 3), conf);
 
 			Transformation xf2;
-			xf2.q = UnitVec2{-0.3524_rad * Pi};
+			xf2.q = UnitVec2{-0.3524f * Pi * Radian};
 			xf2.p = Vec2{-GetXAxis(xf2.q)};
 
 			vertices[0] = Transform(Vec2(-1.0f, RealNum{0}), xf2);
@@ -91,7 +91,7 @@ public:
 			bd.linearDamping = 0.5f;
 
 			bd.position = Vec2(0, 2);
-			bd.angle = Pi * 1_rad;
+			bd.angle = Pi * Radian;
 			bd.allowSleep = false;
 			m_body = m_world->CreateBody(bd);
 			m_body->CreateFixture(std::make_shared<PolygonShape>(poly1));

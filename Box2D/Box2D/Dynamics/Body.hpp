@@ -74,17 +74,17 @@ struct BodyDef
 	Vec2 position = Vec2_zero;
 
 	/// The world angle of the body in radians.
-	Angle angle = 0_rad;
+	Angle angle = Angle{0};
 
 	/// The linear velocity of the body's origin in world co-ordinates (in m/s).
 	Vec2 linearVelocity = Vec2_zero;
 
 	/// The angular velocity of the body.
-	Angle angularVelocity = 0_rad;
+	Angle angularVelocity = Angle{0};
 
 	Vec2 linearAcceleration = Vec2_zero;
 	
-	Angle angularAcceleration = 0_rad;
+	Angle angularAcceleration = Angle{0};
 	
 	/// Linear damping is use to reduce the linear velocity. The damping parameter
 	/// can be larger than 1 but the damping effect becomes sensitive to the
@@ -583,7 +583,7 @@ private:
 	Contacts m_contacts; ///< Container of contacts. 8-bytes.
 	Joints m_joints; ///< Container of joints. 8-bytes.
 	
-	Angle m_angularAcceleration = 0_rad; ///< Angular acceleration. 4-bytes.
+	Angle m_angularAcceleration = Angle{0}; ///< Angular acceleration. 4-bytes.
 	
 	/// Inverse mass of the body.
 	/// @detail A non-negative value (in units of 1/kg).
@@ -794,7 +794,7 @@ inline void Body::UnsetAwake() noexcept
 	{
 		UnsetAwakeFlag();
 		m_underActiveTime = 0;
-		m_velocity = Velocity{Vec2_zero, 0_rad};
+		m_velocity = Velocity{Vec2_zero, Angle{0}};
 	}
 }
 
@@ -994,7 +994,7 @@ inline void ApplyLinearAcceleration(Body& body, const Vec2 amount)
 inline void SetForce(Body& body, const Vec2 force, const Vec2 point) noexcept
 {
 	const auto linAccel = force * body.GetInvMass();
-	const auto angAccel = 1_rad * Cross(point - body.GetWorldCenter(), force) * body.GetInvRotInertia();
+	const auto angAccel = Radian * Cross(point - body.GetWorldCenter(), force) * body.GetInvRotInertia();
 	body.SetAcceleration(linAccel, angAccel);
 }
 
@@ -1007,7 +1007,7 @@ inline void SetForce(Body& body, const Vec2 force, const Vec2 point) noexcept
 inline void ApplyForce(Body& body, const Vec2 force, const Vec2 point) noexcept
 {
 	const auto linAccel = force * body.GetInvMass();
-	const auto angAccel = 1_rad * Cross(point - body.GetWorldCenter(), force) * body.GetInvRotInertia();
+	const auto angAccel = Radian * Cross(point - body.GetWorldCenter(), force) * body.GetInvRotInertia();
 	body.SetAcceleration(body.GetLinearAcceleration() + linAccel, body.GetAngularAcceleration() + angAccel);
 }
 
@@ -1021,10 +1021,10 @@ inline void ApplyForceToCenter(Body& body, const Vec2 force) noexcept
 	body.SetAcceleration(linAccel, angAccel);
 }
 
-inline void SetTorque(Body& body, const RealNum torque) noexcept
+inline void SetTorque(Body& body, const Torque torque) noexcept
 {
 	const auto linAccel = body.GetLinearAcceleration();
-	const auto angAccel = 1_rad * torque * body.GetInvRotInertia();
+	const auto angAccel = RealNum{torque / NewtonMeter} * body.GetInvRotInertia() * Radian;
 	body.SetAcceleration(linAccel, angAccel);
 }
 
@@ -1035,7 +1035,7 @@ inline void SetTorque(Body& body, const RealNum torque) noexcept
 inline void ApplyTorque(Body& body, const RealNum torque) noexcept
 {
 	const auto linAccel = body.GetLinearAcceleration();
-	const auto angAccel = body.GetAngularAcceleration() + 1_rad * torque * body.GetInvRotInertia();
+	const auto angAccel = body.GetAngularAcceleration() + Radian * torque * body.GetInvRotInertia();
 	body.SetAcceleration(linAccel, angAccel);
 }
 
@@ -1050,7 +1050,7 @@ inline void ApplyLinearImpulse(Body& body, const Vec2 impulse, const Vec2 point)
 {
 	auto velocity = body.GetVelocity();
 	velocity.linear += body.GetInvMass() * impulse;
-	velocity.angular += 1_rad * body.GetInvRotInertia() * Cross(point - body.GetWorldCenter(), impulse);
+	velocity.angular += Radian * body.GetInvRotInertia() * Cross(point - body.GetWorldCenter(), impulse);
 	body.SetVelocity(velocity);
 }
 
@@ -1060,7 +1060,7 @@ inline void ApplyLinearImpulse(Body& body, const Vec2 impulse, const Vec2 point)
 inline void ApplyAngularImpulse(Body& body, RealNum impulse) noexcept
 {
 	auto velocity = body.GetVelocity();
-	velocity.angular += 1_rad * body.GetInvRotInertia() * impulse;
+	velocity.angular += Radian * body.GetInvRotInertia() * impulse;
 	body.SetVelocity(velocity);
 }
 
@@ -1162,7 +1162,7 @@ inline Vec2 GetLocalVector(const Body& body, const Vec2 worldVector) noexcept
 inline Vec2 GetLinearVelocityFromWorldPoint(const Body& body, const Vec2 worldPoint) noexcept
 {
 	const auto velocity = body.GetVelocity();
-	return velocity.linear + GetRevPerpendicular(worldPoint - body.GetWorldCenter()) * velocity.angular.ToRadians();
+	return velocity.linear + GetRevPerpendicular(worldPoint - body.GetWorldCenter()) * RealNum{velocity.angular / Radian};
 }
 
 /// Get the world velocity of a local point.

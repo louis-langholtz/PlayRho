@@ -43,8 +43,8 @@ TEST(SeparationFinder, BehavesAsExpected)
 	const auto distproxy = GetDistanceProxy(shape, 0);
 
 	const auto x = RealNum(100);
-	const auto sweepA = Sweep{Position{Vec2{-x, 0}, 0_deg}, Position{Vec2{+x, 0}, 0_deg}};
-	const auto sweepB = Sweep{Position{Vec2{+x, 0}, 0_deg}, Position{Vec2{-x, 0}, 0_deg}};
+	const auto sweepA = Sweep{Position{Vec2{-x, 0}, 0.0f * Degree}, Position{Vec2{+x, 0}, 0.0f * Degree}};
+	const auto sweepB = Sweep{Position{Vec2{+x, 0}, 0.0f * Degree}, Position{Vec2{-x, 0}, 0.0f * Degree}};
 	
 	auto t = RealNum{0}; // Will be set to value of t2
 	auto last_s = MaxFloat;

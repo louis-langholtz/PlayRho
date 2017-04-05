@@ -30,10 +30,10 @@ static constexpr auto Baumgarte = RealNum{2} / RealNum{10};
 
 TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 {
-	const auto old_pA = Position{Vec2{-2, 0}, 0_deg};
-	const auto old_pB = Position{Vec2{+2, 0}, 0_deg};
-	const auto old_vA = Velocity{Vec2{0, 0}, 0_deg};
-	const auto old_vB = Velocity{Vec2{0, 0}, 0_deg};
+	const auto old_pA = Position{Vec2{-2, 0}, RealNum{0} * Degree};
+	const auto old_pB = Position{Vec2{+2, 0}, RealNum{0} * Degree};
+	const auto old_vA = Velocity{Vec2{0, 0}, RealNum{0} * Degree};
+	const auto old_vB = Velocity{Vec2{0, 0}, RealNum{0} * Degree};
 
 	const auto dim = RealNum(2);
 	const auto shape = PolygonShape(dim, dim);
@@ -65,8 +65,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 
 TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
 {
-	const auto old_pA = Position{Vec2{0, -2}, 0_deg};
-	const auto old_pB = Position{Vec2{0, +2}, 0_deg};
+	const auto old_pA = Position{Vec2{0, -2}, RealNum{0} * Degree};
+	const auto old_pB = Position{Vec2{0, +2}, RealNum{0} * Degree};
 	const auto old_vA = Velocity{};
 	const auto old_vB = Velocity{};
 	
@@ -102,16 +102,16 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
 {
 	const auto dim = RealNum(2);
 	const auto shape = PolygonShape(dim, dim);
-	const auto xfmA = Transformation(Vec2_zero, UnitVec2{0_deg});
-	const auto xfmB = Transformation(Vec2_zero, UnitVec2{0_deg});
+	const auto xfmA = Transformation(Vec2_zero, UnitVec2{RealNum{0} * Degree});
+	const auto xfmB = Transformation(Vec2_zero, UnitVec2{RealNum{0} * Degree});
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
 	ASSERT_EQ(manifold.GetPointCount(), 2);
 	
 	const auto lcA = Vec2{};
 	const auto lcB = Vec2{};
-	const auto old_pA = Position{Vec2{0, 0}, 0_deg};
-	const auto old_pB = Position{Vec2{0, 0}, 0_deg};
+	const auto old_pA = Position{Vec2{0, 0}, RealNum{0} * Degree};
+	const auto old_pB = Position{Vec2{0, 0}, RealNum{0} * Degree};
 	const auto old_vA = Velocity{};
 	const auto old_vB = Velocity{};
 	auto bA = BodyConstraint{RealNum(1), RealNum(1), lcA, old_pA, old_vA};
@@ -138,8 +138,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
 	const auto ctr_x = RealNum(100);
 	
 	// square A is left of square B
-	const auto old_pA = Position{{ctr_x - 1, 0}, 0_deg};
-	const auto old_pB = Position{{ctr_x + 1, 0}, 0_deg};
+	const auto old_pA = Position{{ctr_x - 1, 0}, RealNum{0} * Degree};
+	const auto old_pB = Position{{ctr_x + 1, 0}, RealNum{0} * Degree};
 
 	const auto old_vA = Velocity{};
 	const auto old_vB = Velocity{};
@@ -184,8 +184,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
 	const auto ctr_x = RealNum(100);
 	
 	// square A is right of square B
-	const auto old_pA =  Position{{ctr_x + 1, 0}, 0_deg};
-	const auto old_pB = Position{{ctr_x - 1, 0}, 0_deg};
+	const auto old_pA =  Position{{ctr_x + 1, 0}, RealNum{0} * Degree};
+	const auto old_pB = Position{{ctr_x - 1, 0}, RealNum{0} * Degree};
 	const auto old_vA = Velocity{};
 	const auto old_vB = Velocity{};
 
@@ -229,8 +229,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
 	const auto ctr_y = RealNum(100);
 	
 	// square A is below square B
-	const auto old_pA = Position{{0, ctr_y - 1}, 0_deg};
-	const auto old_pB = Position{{0, ctr_y + 1}, 0_deg};
+	const auto old_pA = Position{{0, ctr_y - 1}, RealNum{0} * Degree};
+	const auto old_pB = Position{{0, ctr_y + 1}, RealNum{0} * Degree};
 	const auto old_vA = Velocity{};
 	const auto old_vB = Velocity{};
 
@@ -286,8 +286,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
 	const auto ctr_y = RealNum(100);
 
 	// square A is above square B
-	const auto old_pA = Position{{0, ctr_y + 1}, 0_deg};
-	const auto old_pB = Position{{0, ctr_y - 1}, 0_deg};
+	const auto old_pA = Position{{0, ctr_y + 1}, RealNum{0} * Degree};
+	const auto old_pB = Position{{0, ctr_y - 1}, RealNum{0} * Degree};
 	const auto old_vA = Velocity{};
 	const auto old_vB = Velocity{};
 
@@ -343,14 +343,14 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
 {
 	const auto dim = RealNum(2);
 	const auto shape = PolygonShape(dim, dim);
-	const auto xfmA = Transformation(Vec2_zero, UnitVec2{0_deg});
-	const auto xfmB = Transformation(Vec2_zero, UnitVec2{0_deg});
+	const auto xfmA = Transformation(Vec2_zero, UnitVec2{RealNum{0} * Degree});
+	const auto xfmB = Transformation(Vec2_zero, UnitVec2{RealNum{0} * Degree});
 	const auto manifold = CollideShapes(shape, xfmA, shape, xfmB);
 	ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
 	ASSERT_EQ(manifold.GetPointCount(), 2);
 
-	const auto old_pA = Position{Vec2{0, 0}, 0_deg};
-	const auto old_pB = Position{Vec2{0, 0}, 0_deg};
+	const auto old_pA = Position{Vec2{0, 0}, RealNum{0} * Degree};
+	const auto old_pB = Position{Vec2{0, 0}, RealNum{0} * Degree};
 	const auto old_vA = Velocity{};
 	const auto old_vB = Velocity{};
 
@@ -384,10 +384,10 @@ TEST(ContactSolver, SolveVelocityConstraint1)
 	const auto inverse_mass = inverse_mass_a + inverse_mass_b;
 
 	const auto linear_velocity = Vec2{1, 1};
-	const auto angular_velocity = 0_deg;
+	const auto angular_velocity = RealNum{0} * Degree;
 
-	const auto old_pA = Position{Vec2{0, 0}, 0_deg};
-	const auto old_pB = Position{Vec2{0, 0}, 0_deg};
+	const auto old_pA = Position{Vec2{0, 0}, RealNum{0} * Degree};
+	const auto old_pB = Position{Vec2{0, 0}, RealNum{0} * Degree};
 	const auto vel_a = Velocity{linear_velocity, angular_velocity};
 	const auto vel_b = Velocity{linear_velocity, angular_velocity};
 	const auto lcA = Vec2{};
@@ -447,10 +447,10 @@ TEST(ContactSolver, SolveVelocityConstraint1)
 TEST(ContactSolver, SolveVelocityConstraint2)
 {
 	const auto linear_velocity = Vec2{1, 1};
-	const auto angular_velocity = 0_deg;
+	const auto angular_velocity = RealNum{0} * Degree;
 	
-	const auto old_pA = Position{Vec2{0, 0}, 0_deg};
-	const auto old_pB = Position{Vec2{0, 0}, 0_deg};
+	const auto old_pA = Position{Vec2{0, 0}, RealNum{0} * Degree};
+	const auto old_pB = Position{Vec2{0, 0}, RealNum{0} * Degree};
 	
 	auto vel_a = Velocity{linear_velocity, angular_velocity};
 	auto vel_b = Velocity{linear_velocity, angular_velocity};

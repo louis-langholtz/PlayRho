@@ -39,7 +39,7 @@ public:
 		{
 			BodyDef bd;
 			bd.position = Vec2(-4.0f, 22.0f);
-			bd.angle = -0.25_rad;
+			bd.angle = -0.25f * Radian;
 
 			const auto ground = m_world->CreateBody(bd);
 			ground->CreateFixture(sliderPlank);
@@ -56,7 +56,7 @@ public:
 		{
 			BodyDef bd;
 			bd.position = Vec2(4.0f, 14.0f);
-			bd.angle = 0.25_rad;
+			bd.angle = 0.25f * Radian;
 
 			const auto ground = m_world->CreateBody(bd);
 			ground->CreateFixture(sliderPlank);
@@ -73,7 +73,7 @@ public:
 		{
 			BodyDef bd;
 			bd.position = Vec2(-4.0f, 6.0f);
-			bd.angle = -0.25_rad;
+			bd.angle = -0.25f * Radian;
 
 			const auto ground = m_world->CreateBody(bd);
 			ground->CreateFixture(sliderPlank);

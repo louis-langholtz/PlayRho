@@ -35,7 +35,7 @@ namespace box2d {
 	public:
 		using index_type = std::remove_const<decltype(MaxBodies)>::type;
 		
-		BodyConstraint() noexcept = default;
+		BodyConstraint() = default;
 		
 		constexpr BodyConstraint(RealNum invMass, RealNum invRotI, Vec2 localCenter,
 								 Position position, Velocity velocity) noexcept:

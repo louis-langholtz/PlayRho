@@ -73,7 +73,7 @@ public:
 		const auto linearOffset = Vec2{6.0f * sinf(2.0f * m_time), 8.0f + 4.0f * sinf(1.0f * m_time)};
 
 		m_joint->SetLinearOffset(linearOffset);
-		m_joint->SetAngularOffset(4_rad * m_time);
+		m_joint->SetAngularOffset(4.0f * Radian * m_time);
 
 		drawer.DrawPoint(linearOffset, 4.0f, Color(0.9f, 0.9f, 0.9f));
 	}

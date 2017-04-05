@@ -234,7 +234,7 @@ public:
 		const auto x = RandomFloat(-10.0f, 10.0f);
 		const auto y = RandomFloat(0.0f, 20.0f);
 		bd.position = Vec2(x, y);
-		bd.angle = 1_rad * RandomFloat(-Pi, Pi);
+		bd.angle = Radian * RandomFloat(-Pi, Pi);
 
 		m_userData[m_bodyIndex] = index;
 		bd.userData = m_userData + m_bodyIndex;

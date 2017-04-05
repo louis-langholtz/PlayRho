@@ -54,7 +54,7 @@ public:
 
 		{
 			PolygonShape shape;
-			SetAsBox(shape, 7.2f, 0.25f, Vec2_zero, 0.3_rad);
+			SetAsBox(shape, 7.2f, 0.25f, Vec2_zero, 0.3f * Radian);
 
 			BodyDef bd;
 			bd.position = Vec2(1.2f, 6.0f);
@@ -70,7 +70,7 @@ public:
 			BodyDef bd;
 			bd.type = BodyType::Dynamic;
 			bd.position = Vec2(-0.9f, 1.0f);
-			bd.angle = -0.15_rad;
+			bd.angle = -0.15f * Radian;
 
 			b3 = m_world->CreateBody(bd);
 			auto conf = PolygonShape::Conf{};
@@ -106,13 +106,13 @@ public:
 
 			PolygonShape shape{conf};
 
-			SetAsBox(shape, 1.0f, 0.1f, Vec2(0.0f, -0.9f), 0.0_rad);
+			SetAsBox(shape, 1.0f, 0.1f, Vec2(0.0f, -0.9f), 0.0f * Radian);
 			b5->CreateFixture(std::make_shared<PolygonShape>(shape));
 
-			SetAsBox(shape, 0.1f, 1.0f, Vec2(-0.9f, 0.0f), 0.0_rad);
+			SetAsBox(shape, 0.1f, 1.0f, Vec2(-0.9f, 0.0f), 0.0f * Radian);
 			b5->CreateFixture(std::make_shared<PolygonShape>(shape));
 
-			SetAsBox(shape, 0.1f, 1.0f, Vec2(0.9f, 0.0f), 0.0_rad);
+			SetAsBox(shape, 0.1f, 1.0f, Vec2(0.9f, 0.0f), 0.0f * Radian);
 			b5->CreateFixture(std::make_shared<PolygonShape>(shape));
 		}
 

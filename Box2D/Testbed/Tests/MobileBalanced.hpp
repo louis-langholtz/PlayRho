@@ -74,7 +74,7 @@ public:
 
 		PolygonShape shape2(0.25f * a, a);
 		shape2.SetDensity(density);
-		SetAsBox(shape2, offset, 0.25f * a, Vec2(0, -a), 0.0_rad);
+		SetAsBox(shape2, offset, 0.25f * a, Vec2(0, -a), 0.0f * Radian);
 		body->CreateFixture(std::make_shared<PolygonShape>(shape2));
 
 		const auto a1 = Vec2(offset, -a);

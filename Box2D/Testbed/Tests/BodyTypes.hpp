@@ -52,7 +52,7 @@ public:
 			conf.friction = 0.6f;
 			conf.density = RealNum{2} * KilogramPerSquareMeter;
 			PolygonShape shape{conf};
-			SetAsBox(shape, 0.5f, 4.0f, Vec2(4.0f, 0.0f), 0.5_rad * Pi);
+			SetAsBox(shape, 0.5f, 4.0f, Vec2(4.0f, 0.0f), 0.5f * Pi * Radian);
 
 			m_platform->CreateFixture(std::make_shared<PolygonShape>(shape));
 
@@ -101,7 +101,7 @@ public:
 
 		case Key_K:
 			m_platform->SetType(BodyType::Kinematic);
-			m_platform->SetVelocity(Velocity{Vec2(-m_speed, 0.0f), 0_rad});
+			m_platform->SetVelocity(Velocity{Vec2(-m_speed, 0.0f), Angle{0}});
 			break;
 	
 		default:

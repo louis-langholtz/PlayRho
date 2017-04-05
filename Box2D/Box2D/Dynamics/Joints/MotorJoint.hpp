@@ -36,7 +36,7 @@ struct MotorJointDef : public JointDef
 	Vec2 linearOffset = Vec2_zero;
 
 	/// The bodyB angle minus bodyA angle in radians.
-	Angle angularOffset = 0_rad;
+	Angle angularOffset = Angle{0};
 	
 	/// The maximum motor force in N.
 	RealNum maxForce = RealNum{1};

@@ -22,7 +22,6 @@
 
 #include <Box2D/Common/Settings.hpp>
 #include <Box2D/Common/Span.hpp>
-#include <Box2D/Common/Angle.hpp>
 #include <Box2D/Common/UnitVec2.hpp>
 #include <Box2D/Common/Vec2.hpp>
 #include <cmath>
@@ -39,20 +38,6 @@ constexpr inline Vec3 Cross(const Vec3 a, const Vec3 b) noexcept;
 constexpr bool operator == (const Vec2 a, const Vec2 b) noexcept;
 constexpr bool operator != (const Vec2 a, const Vec2 b) noexcept;
 
-// Addition GetInvalid and IsValid template specializations.
-
-template <>
-constexpr inline Angle GetInvalid() noexcept
-{
-	return Angle::GetFromRadians(GetInvalid<RealNum>());
-}
-
-template <>
-inline bool IsValid(const Angle& a) noexcept
-{
-	return IsValid(a.ToRadians());
-}
-
 // Other templates.
 
 template<class T>
@@ -68,22 +53,6 @@ template <typename T>
 constexpr inline T Abs(T a)
 {
 	return (a >= T(0)) ? a : -a;
-}
-
-template <>
-constexpr inline Angle Abs(Angle a)
-{
-	return (a >= 0_deg) ? a : -a;
-}
-
-inline RealNum Cos(Angle value)
-{
-	return RealNum{std::cos(value / 1_rad)};
-}
-
-inline RealNum Sin(Angle value)
-{
-	return RealNum{std::sin(value / 1_rad)};
 }
 
 template <typename T>
@@ -246,12 +215,12 @@ inline Vec2 round(Vec2 value, uint32 precision)
 /// @return Anglular value in the range of -Pi to +Pi radians.
 inline Angle GetAngle(Vec2 value)
 {
-	return 1_rad * Atan2(GetY(value), GetX(value));
+	return Radian * Atan2(GetY(value), GetX(value));
 }
 
 inline Angle GetAngle(UnitVec2 value)
 {
-	return 1_rad * Atan2(GetY(value), GetX(value));
+	return Radian * Atan2(GetY(value), GetX(value));
 }
 
 /// A 2D column vector with 3 elements.
@@ -533,7 +502,7 @@ public:
 	Sweep() = default;
 
 	/// Copy constructor.
-	constexpr Sweep(const Sweep& copy) noexcept = default;
+	constexpr Sweep(const Sweep& copy) = default;
 
 	/// Initializing constructor.
 	constexpr Sweep(const Position p0, const Position p1, const Vec2 lc = Vec2_zero, RealNum a0 = 0) noexcept:
@@ -1256,6 +1225,22 @@ inline void Sweep::ResetAlpha0() noexcept
 	alpha0 = 0;
 }
 
+	
+inline Angle GetNormalized(Angle value)
+{
+#if 1
+	constexpr auto radsPerCircle = RealNum{2 * Pi} * Radian;
+	const auto laps = static_cast<int>(value / radsPerCircle);
+	return value - (laps * RealNum{1} * radsPerCircle);
+#else
+	const auto TwoPi = Pi * 2;
+	const auto res = RealNum{value / Radian} / TwoPi;
+	const auto wholePart = static_cast<int>(res);
+	const auto fractionPart = res - wholePart;
+	return RealNum{fractionPart * TwoPi} * Radian;
+#endif
+}
+
 /// Gets a sweep with the given sweep's angles normalized.
 /// @param sweep Sweep to return with its angles normalized.
 /// @return Sweep with its pos0 angle in radians to be between -2 pi and 2 pi
@@ -1285,7 +1270,7 @@ inline RealNum Normalize(Vec2& vector)
 
 inline bool IsUnderActive(Velocity velocity, RealNum linSleepTol, RealNum angSleepTol) noexcept
 {
-	return (Square(velocity.angular.ToRadians()) <= Square(angSleepTol))
+	return (Square(RealNum{velocity.angular / Radian}) <= Square(angSleepTol))
 	    && (GetLengthSquared(velocity.linear) <= Square(linSleepTol));
 }
 
@@ -1294,8 +1279,8 @@ inline bool IsUnderActive(Velocity velocity, RealNum linSleepTol, RealNum angSle
 constexpr inline Vec2 GetContactRelVelocity(const Velocity velA, const Vec2 vcp_rA,
 											const Velocity velB, const Vec2 vcp_rB) noexcept
 {
-	return (velB.linear + (GetRevPerpendicular(vcp_rB) * velB.angular.ToRadians()))
-		 - (velA.linear + (GetRevPerpendicular(vcp_rA) * velA.angular.ToRadians()));
+	return (velB.linear + (GetRevPerpendicular(vcp_rB) * RealNum{velB.angular / Radian}))
+	     - (velA.linear + (GetRevPerpendicular(vcp_rA) * RealNum{velA.angular / Radian}));
 }
 
 template <>
@@ -1326,6 +1311,21 @@ constexpr inline T GetModuloPrev(T value, T count) noexcept
 {
 	assert(value < count);
 	return (value? value: count) - 1;
+}
+
+/// Gets the reverse (counter) clockwise rotational angle to go from angle 1 to angle 2.
+/// @note The given angles must be normalized between -Pi to Pi radians.
+/// @return Angular rotation in the counter clockwise direction to go from angle 1 to angle 2.
+constexpr inline Angle GetRevRotationalAngle(Angle a1, Angle a2) noexcept
+{
+	// If a1=90 * Degree and a2=45 * Degree then, 360 * Degree - (90 * Degree - 45) = 315 * Degree
+	// If a1=90 * Degree and a2=-90 * Degree then, 360 * Degree - (90 * Degree - -90 * Degree) = 180 * Degree
+	// If a1=45 * Degree and a2=90 * Degree then, 90 * Degree - 45 * Degree = 45 * Degree
+	// If a1=90 * Degree and a2=45 * Degree then, 360 * Degree - 45 * Degree - 90 * Degree = 235 * Degree
+	// If a1=-45 * Degree and a2=0 * Degree then, 45 * Degree
+	// If a1=-90 * Degree and a2=-100 * Degree then, 360 * Degree - (-90 * Degree - -100 * Degree) = 350 * Degree
+	// If a1=-100 * Degree and a2=-90 * Degree then, -90 * Degree - -100 * Degree = 10 * Degree
+	return (a1 > a2)? RealNum{360} * Degree - (a1 - a2): a2 - a1;
 }
 
 ::std::ostream& operator<<(::std::ostream& os, const Vec2& value);

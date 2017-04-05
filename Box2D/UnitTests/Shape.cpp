@@ -39,7 +39,7 @@ TEST(Shape, ByteSizeIs_8_16_or_32)
 TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
 {
 	const auto shape = CircleShape{2};
-	const auto xfm = Transformation{Vec2{0, 0}, UnitVec2{0_deg}};
+	const auto xfm = Transformation{Vec2{0, 0}, UnitVec2{RealNum{0} * Degree}};
 
 	const auto maxloops = 1000000u;
 
@@ -86,7 +86,7 @@ TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
 TEST(Shape, TestOverlapFasterThanCollideShapesForPolygons)
 {
 	const auto shape = PolygonShape{2, 2};
-	const auto xfm = Transformation{Vec2{0, 0}, UnitVec2{0_deg}};
+	const auto xfm = Transformation{Vec2{0, 0}, UnitVec2{RealNum{0} * Degree}};
 	
 	const auto maxloops = 1000000u;
 	

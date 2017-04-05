@@ -17,7 +17,6 @@
  */
 
 #include "gtest/gtest.h"
-#include <Box2D/Common/Angle.hpp>
 #include <Box2D/Common/Math.hpp>
 
 using namespace box2d;
@@ -33,36 +32,28 @@ TEST(Angle, ByteSizeIs_4_8_or_16)
 	}
 }
 
-TEST(Angle, GetFromRadiansMatchesToRadians)
-{
-	EXPECT_EQ(Angle::GetFromRadians(Pi).ToRadians(), RealNum(Pi));
-	EXPECT_EQ(Angle::GetFromRadians(-Pi).ToRadians(), -Pi);
-	EXPECT_EQ(Angle::GetFromRadians(0.0f).ToRadians(), 0.0f);
-	EXPECT_EQ(Angle::GetFromRadians(-101.8f).ToRadians(), -101.8f);
-}
-
 TEST(Angle, GetRevRotationalAngle)
 {
-	EXPECT_EQ(GetRevRotationalAngle(0_deg, 0_deg), 0_deg);
-	EXPECT_EQ(GetRevRotationalAngle(0_deg, 10_deg), 10_deg);
-	// GetRevRotationalAngle(100_deg, 110_deg) almost equals 10_deg (but not exactly)
-	EXPECT_NEAR(double(GetRevRotationalAngle(100_deg, 110_deg) / 1_deg), double(10_deg / 1_deg), 0.0001);
-	EXPECT_NEAR(double(GetRevRotationalAngle(10_deg, 0_deg) / 1_deg), double(350_deg / 1_deg), 0.0001);
-	EXPECT_EQ(GetRevRotationalAngle(-10_deg, 0_deg), 10_deg);
-	EXPECT_EQ(GetRevRotationalAngle(90_deg, -90_deg), 180_deg);
+	EXPECT_EQ(GetRevRotationalAngle(RealNum{0} * Degree, RealNum{0} * Degree), RealNum{0} * Degree);
+	EXPECT_EQ(GetRevRotationalAngle(RealNum{0} * Degree, 10.0f * Degree), 10.0f * Degree);
+	// GetRevRotationalAngle(100 * Degree, 110 * Degree) almost equals 10 * Degree (but not exactly)
+	EXPECT_NEAR(double(GetRevRotationalAngle(100.0f * Degree, 110.0f * Degree) / Degree), double(10), 0.0001);
+	EXPECT_NEAR(double(GetRevRotationalAngle( 10.0f * Degree, RealNum{0} * Degree) / Degree), double(350), 0.0001);
+	EXPECT_EQ(GetRevRotationalAngle(-10.0f * Degree, RealNum{0} * Degree), 10.0f * Degree);
+	EXPECT_EQ(GetRevRotationalAngle(90.0f * Degree, -90.0f * Degree), 180.0f * Degree);
 }
 
 TEST(Angle, GetNormalized)
 {
-	EXPECT_EQ(GetNormalized(0_deg) / 1_deg, 0_deg / 1_deg);
-	EXPECT_EQ(GetNormalized(90_deg) / 1_deg, 90_deg / 1_deg);
-	EXPECT_EQ(GetNormalized(180_deg) / 1_deg, 180_deg / 1_deg);
-	EXPECT_NEAR(double(GetNormalized(270_deg) / 1_deg), double(270_deg / 1_deg), 0.0002);
-	EXPECT_EQ(GetNormalized(360_deg) / 1_deg, 0_deg / 1_deg);
-	EXPECT_EQ(round(GetNormalized(395_deg) / 1_deg, 1000), round(35_deg / 1_deg, 1000));
-	EXPECT_EQ(GetNormalized(720_deg) / 1_deg, 0_deg / 1_deg);
-	EXPECT_EQ(round(GetNormalized(733_deg) / 1_deg, 1000), round(13_deg / 1_deg, 1000));
-	EXPECT_EQ(GetNormalized(-45_deg) / 1_deg, -45_deg / 1_deg);
-	EXPECT_EQ(GetNormalized(-90_deg) / 1_deg, -90_deg / 1_deg);
-	EXPECT_EQ(round(GetNormalized(-3610_deg) / 1_deg, 1000), round(-10_deg / 1_deg, 1000));
+	EXPECT_EQ(GetNormalized(RealNum{0} * Degree) / Degree, RealNum{0});
+	EXPECT_EQ(GetNormalized(90.0f * Degree) / Degree, RealNum{90});
+	EXPECT_EQ(GetNormalized(180.0f * Degree) / Degree, RealNum{180});
+	EXPECT_NEAR(double(GetNormalized(270.0f * Degree) / Degree), double(270), 0.0002);
+	EXPECT_EQ(GetNormalized(360.0f * Degree) / Degree, RealNum{0});
+	EXPECT_NEAR(GetNormalized(395.0f * Degree) / Degree, 35.0, 0.0002);
+	EXPECT_EQ(GetNormalized(720.0f * Degree) / Degree, RealNum{0});
+	EXPECT_NEAR(GetNormalized(733.0f * Degree) / Degree, 13.0f, 0.001);
+	EXPECT_EQ(GetNormalized(-45.0f * Degree) / Degree, RealNum{-45});
+	EXPECT_EQ(GetNormalized(-90.0f * Degree) / Degree, RealNum{-90});
+	EXPECT_NEAR(GetNormalized(-3610.0f * Degree) / Degree, -10.0, 0.001);
 }
