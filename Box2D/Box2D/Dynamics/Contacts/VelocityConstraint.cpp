@@ -112,17 +112,21 @@ VelocityConstraint::Point VelocityConstraint::GetPoint(RealNum normalImpulse, Re
 		return (vn < -conf.velocityThreshold)? -GetRestitution() * vn: RealNum{0};
 	}();
 	
+	const auto invMass = RealNum{GetInvMass() * Kilogram};
+	const auto invRotInertiaA = bodyA.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
+	const auto invRotInertiaB = bodyB.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
+
 	point.normalMass = [&](){
-		const auto value = RealNum{GetInvMass() * Kilogram}
-		+ (bodyA.GetInvRotInertia() * Square(Cross(rA, GetNormal())))
-		+ (bodyB.GetInvRotInertia() * Square(Cross(rB, GetNormal())));
+		const auto value = invMass
+			+ (invRotInertiaA * Square(Cross(rA, GetNormal())))
+			+ (invRotInertiaB * Square(Cross(rB, GetNormal())));
 		return (value != 0)? RealNum{1} / value : RealNum{0};
 	}();
 	
 	point.tangentMass = [&]() {
-		const auto value = RealNum{GetInvMass() * Kilogram}
-		+ (bodyA.GetInvRotInertia() * Square(Cross(rA, GetTangent())))
-		+ (bodyB.GetInvRotInertia() * Square(Cross(rB, GetTangent())));
+		const auto value = invMass
+			+ (invRotInertiaA * Square(Cross(rA, GetTangent())))
+			+ (invRotInertiaB * Square(Cross(rB, GetTangent())));
 		return (value != 0)? RealNum{1} / value : RealNum{0};
 	}();
 
@@ -149,10 +153,13 @@ Mat22 VelocityConstraint::ComputeK() const noexcept
 		const auto rn2A = Cross(GetPointRelPosA(1), normal);
 		const auto rn2B = Cross(GetPointRelPosB(1), normal);
 		
-		const auto totalInvMass = RealNum{GetInvMass() * Kilogram};
-		const auto k11 = totalInvMass + (bodyA.GetInvRotInertia() * Square(rn1A)) + (bodyB.GetInvRotInertia() * Square(rn1B));
-		const auto k22 = totalInvMass + (bodyA.GetInvRotInertia() * Square(rn2A)) + (bodyB.GetInvRotInertia() * Square(rn2B));
-		const auto k12 = totalInvMass + (bodyA.GetInvRotInertia() * rn1A * rn2A)  + (bodyB.GetInvRotInertia() * rn1B * rn2B);
+		const auto invMass = RealNum{GetInvMass() * Kilogram};
+		const auto invRotInertiaA = bodyA.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
+		const auto invRotInertiaB = bodyB.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
+
+		const auto k11 = invMass + (invRotInertiaA * Square(rn1A)) + (invRotInertiaB * Square(rn1B));
+		const auto k22 = invMass + (invRotInertiaA * Square(rn2A)) + (invRotInertiaB * Square(rn2B));
+		const auto k12 = invMass + (invRotInertiaA * rn1A * rn2A)  + (invRotInertiaB * rn1B * rn2B);
 
 		return Mat22{Vec2{k11, k12}, Vec2{k12, k22}};
 	}

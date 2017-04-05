@@ -83,11 +83,12 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraints& bodies,
 
 	m_localCenterA = bodiesA.GetLocalCenter();
 	m_invMassA = RealNum{bodiesA.GetInvMass() * Kilogram};
-	m_invIA = bodiesA.GetInvRotInertia();
+	
+	m_invIA = bodiesA.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
 
 	m_localCenterB = bodiesB.GetLocalCenter();
 	m_invMassB = RealNum{bodiesB.GetInvMass() * Kilogram};
-	m_invIB = bodiesB.GetInvRotInertia();
+	m_invIB = bodiesB.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
 
 	const auto posA = bodiesA.GetPosition();
 	auto velA = bodiesA.GetVelocity();

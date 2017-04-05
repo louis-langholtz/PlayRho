@@ -173,7 +173,7 @@ void Body::ResetMassData()
 		const auto lengthSquared = GetLengthSquared(localCenter) * SquareMeter;
 		const auto I = massData.I - RotInertia{(mass * lengthSquared / SquareRadian)};
 		//assert((massData.I - mass * lengthSquared) > 0);
-		m_invRotI = RealNum{(SquareMeter * Kilogram / SquareRadian) / I};
+		m_invRotI = RealNum{1} / I;
 	}
 	else
 	{
@@ -211,7 +211,7 @@ void Body::SetMassData(const MassData& massData)
 		const auto lengthSquared = GetLengthSquared(massData.center) * SquareMeter;
 		const auto I = massData.I - RotInertia{mass * lengthSquared / SquareRadian};
 		assert(I > RotInertia{0});
-		m_invRotI = RealNum{(SquareMeter * Kilogram / SquareRadian) / I};
+		m_invRotI = RealNum{1} / I;
 	}
 	else
 	{

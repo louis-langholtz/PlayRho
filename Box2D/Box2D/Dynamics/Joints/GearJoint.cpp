@@ -137,25 +137,25 @@ void GearJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf&
 
 	m_lcA = bodiesA.GetLocalCenter();
 	m_mA = RealNum{bodiesA.GetInvMass() * Kilogram};
-	m_iA = bodiesA.GetInvRotInertia();
+	m_iA = bodiesA.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
 	auto velA = bodiesA.GetVelocity();
 	const auto aA = bodiesA.GetPosition().angular;
 
 	m_lcB = bodiesB.GetLocalCenter();
 	m_mB = RealNum{bodiesB.GetInvMass() * Kilogram};
-	m_iB = bodiesB.GetInvRotInertia();
+	m_iB = bodiesB.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
 	auto velB = bodiesB.GetVelocity();
 	const auto aB = bodiesB.GetPosition().angular;
 
 	m_lcC = bodiesC.GetLocalCenter();
 	m_mC = RealNum{bodiesC.GetInvMass() * Kilogram};
-	m_iC = bodiesC.GetInvRotInertia();
+	m_iC = bodiesC.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
 	auto velC = bodiesC.GetVelocity();
 	const auto aC = bodiesC.GetPosition().angular;
 
 	m_lcD = bodiesD.GetLocalCenter();
 	m_mD = RealNum{bodiesD.GetInvMass() * Kilogram};
-	m_iD = bodiesD.GetInvRotInertia();
+	m_iD = bodiesD.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
 	auto velD = bodiesD.GetVelocity();
 	const auto aD = bodiesD.GetPosition().angular;
 

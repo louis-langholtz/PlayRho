@@ -90,7 +90,7 @@ void MouseJoint::InitVelocityConstraints(BodyConstraints& bodies, const StepConf
 
 	m_localCenterB = bodiesB.GetLocalCenter();
 	m_invMassB = RealNum{bodiesB.GetInvMass() * Kilogram};
-	m_invIB = bodiesB.GetInvRotInertia();
+	m_invIB = bodiesB.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
 	const auto posB = bodiesB.GetPosition();
 	auto velB = bodiesB.GetVelocity();
 

@@ -276,17 +276,20 @@ namespace {
 		const auto tangent = GetTangent(vc);
 		if (IsValid(normal) && IsValid(tangent))
 		{
+			const auto invRotInertiaA = vc.bodyA.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
+			const auto invRotInertiaB = vc.bodyB.GetInvRotInertia() * (SquareMeter * Kilogram / SquareRadian);
+
 			const auto pointCount = vc.GetPointCount();
 			for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
 			{
 				const auto P = GetNormalImpulseAtPoint(vc, j) * normal + GetTangentImpulseAtPoint(vc, j) * tangent;
 				vp.a -= Velocity{
 					RealNum{vc.bodyA.GetInvMass() * Kilogram} * P,
-					Radian * vc.bodyA.GetInvRotInertia() * Cross(GetPointRelPosA(vc, j), P)
+					Radian * invRotInertiaA * Cross(GetPointRelPosA(vc, j), P)
 				};
 				vp.b += Velocity{
 					RealNum{vc.bodyB.GetInvMass() * Kilogram} * P,
-					Radian * vc.bodyB.GetInvRotInertia() * Cross(GetPointRelPosB(vc, j), P)
+					Radian * invRotInertiaB * Cross(GetPointRelPosB(vc, j), P)
 				};
 			}
 		}
