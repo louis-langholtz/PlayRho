@@ -1332,8 +1332,6 @@ constexpr inline Angle GetRevRotationalAngle(Angle a1, Angle a2) noexcept
 
 ::std::ostream& operator<<(::std::ostream& os, const UnitVec2& value);
 
-::std::ostream& operator<<(::std::ostream& os, const Angle& value);
-
 ::std::ostream& operator<<(::std::ostream& os, const Fixed32& value);
 
 ::std::ostream& operator<<(::std::ostream& os, const Fixed64& value);
