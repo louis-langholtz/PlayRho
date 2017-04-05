@@ -337,7 +337,7 @@ public:
 	/// them all the time by the mass.
 	/// @return Value of zero or more representing the body's inverse mass (in 1/kg).
 	/// @sa SetMassData.
-	InverseMass GetInvMass() const noexcept;
+	InvMass GetInvMass() const noexcept;
 	
 	/// Gets the inverse rotational inertia of the body.
 	/// @detail This is the cached result of dividing 1 by the body's rotational inertia.
@@ -589,7 +589,7 @@ private:
 	/// @detail A non-negative value (in units of 1/kg).
 	/// Can only be zero for non-accelerable bodies.
 	/// @note 4-bytes.
-	InverseMass m_invMass = 0;
+	InvMass m_invMass = 0;
 	
 	/// Inverse rotational inertia about the center of mass.
 	/// @detail A non-negative value (in units of 1/(kg*m^2)).
@@ -720,7 +720,7 @@ inline Velocity Body::GetVelocity() const noexcept
 	return m_velocity;
 }
 	
-inline InverseMass Body::GetInvMass() const noexcept
+inline InvMass Body::GetInvMass() const noexcept
 {
 	return m_invMass;
 }
@@ -983,7 +983,7 @@ inline Position GetPosition1(const Body& body) noexcept
 inline Mass GetMass(const Body& body) noexcept
 {
 	const auto invMass = body.GetInvMass();
-	return (invMass != InverseMass{0})? Mass{RealNum{1} / invMass}: Mass{0};
+	return (invMass != InvMass{0})? Mass{RealNum{1} / invMass}: Mass{0};
 }
 
 inline void ApplyLinearAcceleration(Body& body, const Vec2 amount)
@@ -1084,7 +1084,7 @@ inline RealNum GetLocalInertia(const Body& body) noexcept
 /// @return a struct containing the mass, inertia and center of the body.
 inline MassData GetMassData(const Body& body) noexcept
 {
-	const auto I = MomentOfInertia{GetLocalInertia(body) * Kilogram * SquareMeter / SquareRadian};
+	const auto I = RotInertia{GetLocalInertia(body) * Kilogram * SquareMeter / SquareRadian};
 	return MassData{GetMass(body), body.GetLocalCenter(), I};
 }
 

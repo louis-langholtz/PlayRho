@@ -50,10 +50,10 @@ namespace box2d {
 		/// @param m Non-negative mass in kg.
 		/// @param c Position of the shape's centroid relative to the shape's origin.
 		/// @param i Non-negative rotational inertia of the shape about the local origin.
-		constexpr MassData(Mass m, Vec2 c, MomentOfInertia i) noexcept: mass{m}, center{c}, I{i}
+		constexpr MassData(Mass m, Vec2 c, RotInertia i) noexcept: mass{m}, center{c}, I{i}
 		{
 			assert(m >= Mass{0});
-			assert(i >= MomentOfInertia{0});
+			assert(i >= RotInertia{0});
 		}
 				
 		/// The position of the shape's centroid relative to the shape's origin.
@@ -64,13 +64,13 @@ namespace box2d {
 		/// @note Behavior is undefined if this value is negative.
 		Mass mass;
 
-		/// Moment of inertia.
+		/// Rotational inertia, a.k.a. moment of inertia.
 		/// @detail
 		/// This is the rotational inertia of the shape about the local origin.
 		/// This should NEVER be a negative value.
 		/// @note Behavior is undefined if this value is negative.
 		/// @sa https://en.wikipedia.org/wiki/Moment_of_inertia
-		MomentOfInertia I;
+		RotInertia I;
 	};
 	
 	/// Computes the mass data for the given fixture.

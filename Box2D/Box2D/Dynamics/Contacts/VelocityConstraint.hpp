@@ -77,7 +77,7 @@ namespace box2d {
 
 		UnitVec2 GetTangent() const noexcept { return m_tangent; }
 		
-		InverseMass GetInvMass() const noexcept { return m_invMass; }
+		InvMass GetInvMass() const noexcept { return m_invMass; }
 
 		/// Gets the count of points added to this object.
 		/// @return Value between 0 and MaxManifoldPoints
@@ -260,7 +260,7 @@ namespace box2d {
 		UnitVec2 m_normal = GetInvalid<UnitVec2>(); ///< Normal of the world manifold. 8-bytes.
 		UnitVec2 m_tangent = GetInvalid<UnitVec2>(); ///< Tangent of the world manifold. 8-bytes.
 
-		InverseMass m_invMass = GetInvalid<InverseMass>(); ///< Total inverse mass.
+		InvMass m_invMass = GetInvalid<InvMass>(); ///< Total inverse mass.
 
 		/// Friction coefficient (4-bytes). Usually in the range of [0,1].
 		RealNum m_friction = GetInvalid<RealNum>();
@@ -327,7 +327,7 @@ namespace box2d {
 		return vc.GetTangent();
 	}
 
-	inline InverseMass GetInvMass(const VelocityConstraint& vc) noexcept
+	inline InvMass GetInvMass(const VelocityConstraint& vc) noexcept
 	{
 		return vc.bodyA.GetInvMass() + vc.bodyB.GetInvMass();
 	}

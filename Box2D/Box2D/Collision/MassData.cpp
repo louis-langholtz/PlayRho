@@ -51,7 +51,7 @@ namespace
 		const auto area = r_squared * Pi;
 		const auto mass = Mass{density * area};
 		const auto Iz = SecondMomentOfArea{area * ((r_squared / RealNum{2}) + SquareMeter * GetLengthSquared(location))};
-		const auto I = MomentOfInertia{Iz * density / SquareRadian};
+		const auto I = RotInertia{Iz * density / SquareRadian};
 		return MassData{mass, location, I};
 	}
 
@@ -81,7 +81,7 @@ namespace
 			Vec2{v1 + offset}
 		};
 		const auto I_z = GetPolarMoment(vertices);
-		const auto I = MomentOfInertia{(I0 + I1 + I_z) * density / SquareRadian};
+		const auto I = RotInertia{(I0 + I1 + I_z) * density / SquareRadian};
 		return MassData{totalMass, (v0 + v1) / 2, I};
 	}
 
@@ -177,7 +177,7 @@ MassData box2d::GetMassData(const PolygonShape& shape, Density density)
 			return MassData{
 				Mass{Kilogram * GetInvalid<RealNum>()},
 				GetInvalid<Vec2>(),
-				MomentOfInertia{SquareMeter * Kilogram * GetInvalid<RealNum>() / SquareRadian}
+				RotInertia{SquareMeter * Kilogram * GetInvalid<RealNum>() / SquareRadian}
 			};
 		case 1:
 			return ::GetMassData(Meter * shape.GetVertexRadius(), density, shape.GetVertex(0));
@@ -231,7 +231,7 @@ MassData box2d::GetMassData(const PolygonShape& shape, Density density)
 	const auto centerOffset = GetLengthSquared(center);
 	const auto intertialLever = SquareMeter * (massCenterOffset - centerOffset);
 	const auto secondMomentOfArea = SecondMomentOfArea{SquareMeter * SquareMeter * I};
-	const auto massDataI = MomentOfInertia{((density * secondMomentOfArea) + (mass * intertialLever)) / SquareRadian};
+	const auto massDataI = RotInertia{((density * secondMomentOfArea) + (mass * intertialLever)) / SquareRadian};
 	
 	return MassData{mass, massDataCenter, massDataI};
 }
@@ -253,7 +253,7 @@ MassData box2d::GetMassData(const ChainShape& shape, Density density)
 	NOT_USED(shape);
 	NOT_USED(density);
 	
-	return MassData{Mass{0}, Vec2_zero, MomentOfInertia{0}};
+	return MassData{Mass{0}, Vec2_zero, RotInertia{0}};
 }
 
 MassData box2d::GetMassData(const Shape& shape, Density density)

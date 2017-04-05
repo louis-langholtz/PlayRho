@@ -101,7 +101,7 @@ Body::Body(const BodyDef& bd, World* world):
 	m_xf{bd.position, UnitVec2{bd.angle}},
 	m_world{world},
 	m_sweep{Position{bd.position, bd.angle}},
-	m_invMass{(bd.type == BodyType::Dynamic)? InverseMass{RealNum{1} / Kilogram}: InverseMass{0}},
+	m_invMass{(bd.type == BodyType::Dynamic)? InvMass{RealNum{1} / Kilogram}: InvMass{0}},
 	m_linearDamping{bd.linearDamping},
 	m_angularDamping{bd.angularDamping},
 	m_userData{bd.userData}
@@ -167,11 +167,11 @@ void Body::ResetMassData()
 	// Compute center of mass.
 	const auto localCenter = massData.center * RealNum{m_invMass * Kilogram};
 	
-	if ((massData.I > MomentOfInertia{0}) && (!IsFixedRotation()))
+	if ((massData.I > RotInertia{0}) && (!IsFixedRotation()))
 	{
 		// Center the inertia about the center of mass.
 		const auto lengthSquared = GetLengthSquared(localCenter) * SquareMeter;
-		const auto I = massData.I - MomentOfInertia{(mass * lengthSquared / SquareRadian)};
+		const auto I = massData.I - RotInertia{(mass * lengthSquared / SquareRadian)};
 		//assert((massData.I - mass * lengthSquared) > 0);
 		m_invRotI = RealNum{(SquareMeter * Kilogram / SquareRadian) / I};
 	}
@@ -206,11 +206,11 @@ void Body::SetMassData(const MassData& massData)
 	const auto mass = (massData.mass > Mass{0})? massData.mass: Kilogram;
 	m_invMass = RealNum{1} / mass;
 
-	if ((massData.I > MomentOfInertia{0}) && (!IsFixedRotation()))
+	if ((massData.I > RotInertia{0}) && (!IsFixedRotation()))
 	{
 		const auto lengthSquared = GetLengthSquared(massData.center) * SquareMeter;
-		const auto I = massData.I - MomentOfInertia{mass * lengthSquared / SquareRadian};
-		assert(I > MomentOfInertia{0});
+		const auto I = massData.I - RotInertia{mass * lengthSquared / SquareRadian};
+		assert(I > RotInertia{0});
 		m_invRotI = RealNum{(SquareMeter * Kilogram / SquareRadian) / I};
 	}
 	else
@@ -418,7 +418,7 @@ size_t box2d::GetFixtureCount(const Body& body)
 MassData box2d::ComputeMassData(const Body& body) noexcept
 {
 	auto mass = Mass{0};
-	auto I = MomentOfInertia{0};
+	auto I = RotInertia{0};
 	auto center = Vec2_zero;
 	for (auto&& fixture: body.GetFixtures())
 	{

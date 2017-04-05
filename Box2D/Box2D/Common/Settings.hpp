@@ -42,6 +42,7 @@
 #include <boost/units/systems/si/second_moment_of_area.hpp>
 #include <boost/units/systems/si/surface_density.hpp>
 #include <boost/units/systems/si/moment_of_inertia.hpp>
+#include <boost/units/systems/si/inverse_moment_of_inertia.hpp>
 #include <boost/units/systems/si/force.hpp>
 #include <boost/units/systems/si/torque.hpp>
 #endif
@@ -107,7 +108,7 @@ constexpr auto MeterPerSecond = LengthPerTime{boost::units::si::meter_per_second
 using Mass = boost::units::quantity<boost::units::si::mass, RealNum>;
 constexpr auto Kilogram = Mass{boost::units::si::kilogram * RealNum{1}};
 
-using InverseMass = boost::units::quantity<boost::units::si::inverse_mass, RealNum>;
+using InvMass = boost::units::quantity<boost::units::si::inverse_mass, RealNum>;
 
 using Area = boost::units::quantity<boost::units::si::area, RealNum>;
 constexpr auto SquareMeter = Area{boost::units::si::square_meter * RealNum{1}};
@@ -128,7 +129,8 @@ constexpr auto NewtonMeter = Torque{boost::units::si::newton_meter * RealNum{1}}
 
 using SecondMomentOfArea = boost::units::quantity<boost::units::si::second_moment_of_area, RealNum>;
 
-using MomentOfInertia = boost::units::quantity<boost::units::si::moment_of_inertia, RealNum>;
+using RotInertia = boost::units::quantity<boost::units::si::moment_of_inertia, RealNum>;
+using InvRotInertia = boost::units::quantity<boost::units::si::inverse_moment_of_inertia, RealNum>;
 
 #else // USE_BOOST_UNITS
 
@@ -147,7 +149,7 @@ constexpr auto MeterPerSecond = RealNum{1};
 using Mass = RealNum;
 constexpr auto Kilogram = RealNum{1};
 
-using InverseMass = RealNum;
+using InvMass = RealNum;
 
 using Area = RealNum;
 constexpr auto SquareMeter = RealNum{1};
@@ -168,7 +170,8 @@ constexpr auto NewtonMeter = RealNum{1};
 
 using SecondMomentOfArea = RealNum;
 
-using MomentOfInertia = RealNum;
+using RotInertia = RealNum;
+using InvRotInertia = RealNum;
 
 #endif // USE_BOOST_UNITS
 
@@ -412,13 +415,13 @@ inline bool IsValid(const Angle& x) noexcept
 }
 
 template <>
-constexpr inline InverseMass GetInvalid<InverseMass>() noexcept
+constexpr inline InvMass GetInvalid<InvMass>() noexcept
 {
 	return GetInvalid<RealNum>() / Kilogram;
 }
 
 template <>
-inline bool IsValid(const InverseMass& x) noexcept
+inline bool IsValid(const InvMass& x) noexcept
 {
 	return IsValid(RealNum{x * Kilogram});
 }

@@ -40,7 +40,7 @@ TEST(MassData, GetForZeroVertexRadiusCircle)
 	const auto shape = CircleShape(0);
 	const auto mass_data = GetMassData(shape, KilogramPerSquareMeter);
 	EXPECT_EQ(mass_data.mass, Mass{0});
-	EXPECT_EQ(mass_data.I, MomentOfInertia{0});
+	EXPECT_EQ(mass_data.I, RotInertia{0});
 	EXPECT_EQ(mass_data.center.x, 0);
 	EXPECT_EQ(mass_data.center.y, 0);
 }
@@ -114,7 +114,7 @@ TEST(MassData, GetForZeroVertexRadiusEdge)
 	shape.Set(v1, v2);
 	const auto mass_data = GetMassData(shape, density);
 	EXPECT_EQ(RealNum{mass_data.mass / Kilogram}, RealNum{0});
-	EXPECT_EQ(mass_data.I, MomentOfInertia{0});
+	EXPECT_EQ(mass_data.I, RotInertia{0});
 	EXPECT_EQ(mass_data.center.x, 0);
 	EXPECT_EQ(mass_data.center.y, 0);
 }
