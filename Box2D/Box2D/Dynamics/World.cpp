@@ -30,7 +30,6 @@
 #include <Box2D/Collision/TimeOfImpact.hpp>
 #include <Box2D/Collision/RayCastOutput.hpp>
 #include <Box2D/Collision/DistanceProxy.hpp>
-#include <Box2D/Common/Timer.hpp>
 
 #include <Box2D/Dynamics/Contacts/ContactSolver.hpp>
 #include <Box2D/Dynamics/Contacts/VelocityConstraint.hpp>
