@@ -106,8 +106,8 @@ constexpr auto Hertz = Frequency{boost::units::si::hertz * RealNum{1}};
 using Length = boost::units::quantity<boost::units::si::length, RealNum>;
 constexpr auto Meter = Length{boost::units::si::meter * RealNum{1}};
 
-using LengthPerTime = boost::units::quantity<boost::units::si::velocity, RealNum>;
-constexpr auto MeterPerSecond = LengthPerTime{boost::units::si::meter_per_second * RealNum{1}};
+using LinearVelocity = boost::units::quantity<boost::units::si::velocity, RealNum>;
+constexpr auto MeterPerSecond = LinearVelocity{boost::units::si::meter_per_second * RealNum{1}};
 
 using Mass = boost::units::quantity<boost::units::si::mass, RealNum>;
 constexpr auto Kilogram = Mass{boost::units::si::kilogram * RealNum{1}};
@@ -150,7 +150,7 @@ constexpr auto Hertz = RealNum{1};
 using Length = RealNum;
 constexpr auto Meter = RealNum{1};
 
-using LengthPerTime = RealNum;
+using LinearVelocity = RealNum;
 constexpr auto MeterPerSecond = RealNum{1};
 
 using Mass = RealNum;
